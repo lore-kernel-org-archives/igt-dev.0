@@ -1,20 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-qt1-x831.google.com (mail-qt1-x831.google.com
- [IPv6:2607:f8b0:4864:20::831])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 69DC010E3C6
- for <igt-dev@lists.freedesktop.org>; Fri, 29 Jul 2022 14:52:01 +0000 (UTC)
-Received: by mail-qt1-x831.google.com with SMTP id a9so3438935qtw.10
- for <igt-dev@lists.freedesktop.org>; Fri, 29 Jul 2022 07:52:01 -0700 (PDT)
-From: Mark Yacoub <markyacoub@chromium.org>
-To: igt-dev@lists.freedesktop.org
-Date: Fri, 29 Jul 2022 10:51:54 -0400
-Message-Id: <20220729145154.1101502-1-markyacoub@chromium.org>
-In-Reply-To: <20220715192200.1782193-1-markyacoub@chromium.org>
-References: <20220715192200.1782193-1-markyacoub@chromium.org>
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 33B1193AC3
+ for <igt-dev@lists.freedesktop.org>; Thu,  4 Aug 2022 09:59:17 +0000 (UTC)
+Message-ID: <e21e6000-dd6b-692d-9535-2ee18b29b58a@intel.com>
+Date: Thu, 4 Aug 2022 15:28:43 +0530
+Content-Language: en-US
+To: Swati Sharma <swati2.sharma@intel.com>, <igt-dev@lists.freedesktop.org>
+References: <20220804094739.25175-1-swati2.sharma@intel.com>
+From: Karthik B S <karthik.b.s@intel.com>
+In-Reply-To: <20220804094739.25175-1-swati2.sharma@intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH v2] lib/igt_chamelium: Check for error instead of
- port id for invalid
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/testdisplay: Skip modeset if no
+ display is connected
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,36 +25,32 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-[Why]
-Chamelium V3 has a valid port 0 so 0 should not be rejected.
+On 8/4/2022 3:17 PM, Swati Sharma wrote:
+> Even if no display is connected; test executes and result in
+> SUCCESS with no modeset happening.
+> Made changes, to SKIP test if there is no display connected.
+>
+> Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
+Reviewed-by: Karthik B S <karthik.b.s@intel.com>
+> ---
+>   tests/testdisplay.c | 4 ++++
+>   1 file changed, 4 insertions(+)
+>
+> diff --git a/tests/testdisplay.c b/tests/testdisplay.c
+> index e9fbd2601..c6b819399 100644
+> --- a/tests/testdisplay.c
+> +++ b/tests/testdisplay.c
+> @@ -476,8 +476,12 @@ set_stereo_mode(struct connector *c)
+>   int update_display(bool probe)
+>   {
+>   	struct connector *connectors;
+> +	igt_display_t display;
+>   	int c;
+>   
+> +	igt_display_require(&display, drm_fd);
+> +	igt_display_require_output(&display);
+> +
+>   	resources = drmModeGetResources(drm_fd);
+>   	igt_require(resources);
+>   
 
-[How]
-Check if there is an error set from g_key_file_get_integer instead of
-depending on port id.
-
-v1:
-Use GError instead of check for port ID range.
-
-Test: ./kms_chamelium --run-subtest dp-hp
-Tested on: Volteer & cv3
-
-Signed-off-by: Mark Yacoub <markyacoub@chromium.org>
----
- lib/igt_chamelium.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/lib/igt_chamelium.c b/lib/igt_chamelium.c
-index c7b99ebc..fbdb87ac 100644
---- a/lib/igt_chamelium.c
-+++ b/lib/igt_chamelium.c
-@@ -2311,7 +2311,7 @@ static bool chamelium_read_port_mappings(struct chamelium *chamelium,
- 		port->id = g_key_file_get_integer(igt_key_file, group,
- 						  "ChameliumPortID",
- 						  &error);
--		if (!port->id) {
-+		if (error) {
- 			igt_warn("Failed to read chamelium port ID for %s: %s\n",
- 				 map_name, error->message);
- 			ret = false;
--- 
-2.37.1.455.g008518b4e5-goog
