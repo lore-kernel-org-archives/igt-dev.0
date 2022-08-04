@@ -1,28 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mx1.riseup.net (mx1.riseup.net [198.252.153.129])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0F668A366F
- for <igt-dev@lists.freedesktop.org>; Thu,  4 Aug 2022 18:09:38 +0000 (UTC)
-Received: from mx0.riseup.net (mx0-pn.riseup.net [10.0.1.42])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256
- client-signature RSA-PSS (2048 bits) client-digest SHA256)
- (Client CN "mx0.riseup.net", Issuer "R3" (not verified))
- by mx1.riseup.net (Postfix) with ESMTPS id 4LzGw245qMzDqQF
- for <igt-dev@lists.freedesktop.org>; Thu,  4 Aug 2022 18:09:38 +0000 (UTC)
-Message-ID: <0e8c1548-b5cc-4984-f690-812fb8d24e10@riseup.net>
-Date: Thu, 4 Aug 2022 15:09:32 -0300
+Received: from mail-yb1-xb2f.google.com (mail-yb1-xb2f.google.com
+ [IPv6:2607:f8b0:4864:20::b2f])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6C8C2A38EA
+ for <igt-dev@lists.freedesktop.org>; Thu,  4 Aug 2022 18:16:02 +0000 (UTC)
+Received: by mail-yb1-xb2f.google.com with SMTP id 21so360530ybf.4
+ for <igt-dev@lists.freedesktop.org>; Thu, 04 Aug 2022 11:16:01 -0700 (PDT)
 MIME-Version: 1.0
-Content-Language: en-US
-To: Tales Aparecida <tales.aparecida@gmail.com>,
- igt-dev@lists.freedesktop.org, Chris Wilson <chris@chris-wilson.co.uk>
-References: <20220803052654.98827-1-tales.aparecida@gmail.com>
- <20220803052654.98827-4-tales.aparecida@gmail.com>
-From: =?UTF-8?Q?Ma=c3=adra_Canal?= <mairacanal@riseup.net>
-In-Reply-To: <20220803052654.98827-4-tales.aparecida@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Subject: Re: [igt-dev] [PATCH i-g-t 3/4] lib/kselftests: return non-zero on
- open(kmsg) failure
+References: <20220804180357.417821-1-alex.hung@amd.com>
+In-Reply-To: <20220804180357.417821-1-alex.hung@amd.com>
+From: Mark Yacoub <markyacoub@chromium.org>
+Date: Thu, 4 Aug 2022 14:15:50 -0400
+Message-ID: <CAJUqKUrWJs-MJHnZ-48d4HSoeFMvpJBZU8Xoz-9nqG5RCc0=ew@mail.gmail.com>
+To: Alex Hung <alex.hung@amd.com>
+Content-Type: text/plain; charset="UTF-8"
+Subject: Re: [igt-dev] [PATCH] tests/kms_plane: Check plane format before
+ using
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -30,42 +22,37 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: siqueirajordao@riseup.net, magalilemes00@gmail.com,
- Isabella Basso <isabbasso@riseup.net>, andrealmeid@riseup.net,
- Trevor Woerner <twoerner@gmail.com>
+Cc: igt-dev@lists.freedesktop.org, markyacoub@google.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Tales,
-
-On 8/3/22 02:26, Tales Aparecida wrote:
-> Previously igt_kselftest_begin() always returned 0.
-> Return non-zero if failed to open kmsg, instead.
-> 
-> Signed-off-by: Tales Aparecida <tales.aparecida@gmail.com>
+On Thu, Aug 4, 2022 at 2:04 PM Alex Hung <alex.hung@amd.com> wrote:
+>
+> If a plane does not support the format or modifier, skip testing
+> for this plane.
+>
+> Signed-off-by: Alex Hung <alex.hung@amd.com>
+Reviewed-by: Mark Yacoub <markyacoub@chromium.org>
 > ---
->  lib/igt_kmod.c | 2 ++
->  1 file changed, 2 insertions(+)
-> 
-> diff --git a/lib/igt_kmod.c b/lib/igt_kmod.c
-> index bde0461a..63636243 100644
-> --- a/lib/igt_kmod.c
-> +++ b/lib/igt_kmod.c
-> @@ -933,6 +933,8 @@ int igt_kselftest_begin(struct igt_kselftest *tst)
->  	igt_require(err == 0 || err == -ENOENT);
->  
->  	tst->kmsg = open("/dev/kmsg", O_RDONLY | O_NONBLOCK);
-> +	if (tst->kmsg < 0)
-> +		return 1;
-
-Wouldn't be better to return the open() error? As open() returns an
-errno, it would make it easier to identify what went wrong while opening
-kmsg.
-
-Best Regards,
-- Maíra Canal
-
->  
->  	return 0;
->  }
+>  tests/kms_plane.c | 3 +++
+>  1 file changed, 3 insertions(+)
+>
+> diff --git a/tests/kms_plane.c b/tests/kms_plane.c
+> index c885a813..3cf3cfd3 100644
+> --- a/tests/kms_plane.c
+> +++ b/tests/kms_plane.c
+> @@ -224,6 +224,9 @@ test_plane_position_with_output(data_t *data,
+>         create_fb_for_mode(data, mode, &green, &rect, 1, &primary_fb);
+>         igt_plane_set_fb(primary, &primary_fb);
+>
+> +       if (!igt_plane_has_format_mod(sprite, DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR))
+> +               return;
+> +
+looks reasonable to me.
+>         igt_create_color_fb(data->drm_fd,
+>                             64, 64, /* width, height */
+>                             DRM_FORMAT_XRGB8888,
+> --
+> 2.37.1
+>
