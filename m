@@ -1,15 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============2997433433462896292=="
+Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 09DF9A0C72
+ for <igt-dev@lists.freedesktop.org>; Thu,  4 Aug 2022 16:57:35 +0000 (UTC)
+Date: Thu, 4 Aug 2022 18:57:32 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Message-ID: <Yuv6fIKsQs9D7Ohq@kamilkon-desk1>
+References: <20220729192741.3355557-1-umesh.nerlige.ramappa@intel.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Karolina Drobnik" <karolina.drobnik@intel.com>
-Date: Thu, 04 Aug 2022 14:13:49 -0000
-Message-ID: <165962242963.14888.7271101412241618178@emeril.freedesktop.org>
-References: <20220804132617.2179474-1-karolina.drobnik@intel.com>
-In-Reply-To: <20220804132617.2179474-1-karolina.drobnik@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3IgaTkxNS9p?=
- =?utf-8?q?915=5Fpm=5Frps=3A_Don=27t_use_gem=5Fwrite_in_batch=5Fcreate?=
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20220729192741.3355557-1-umesh.nerlige.ramappa@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t] i915/hangman: Fix gt hang/error tests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,330 +19,263 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============2997433433462896292==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Hi Umesh,
 
-== Series Details ==
+On 2022-07-29 at 12:27:41 -0700, Nerlige Ramappa, Umesh wrote:
+> From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+> 
+> gt-engine-hang and gt-engine-error tests were still using reset=2
+> setting so that ended up just doing an engine reset. Fix the tests so
+> that they actually do the gt specific reset and set the expectations
+> correctly.
+> 
+> In some rare failures, some of the background spinners show up as
+> innocent and keep spinning after the hang recovery. This can only happen
+> if the spinners did not start for some reason. Check that the spinners
+> actually started before submitting a hanging batch.
 
-Series: i915/i915_pm_rps: Don't use gem_write in batch_create
-URL   : https://patchwork.freedesktop.org/series/106977/
-State : failure
+imho this is a fix, it is worth to split into separate patch.
 
-== Summary ==
+> 
+> For engine specific hang, only one context is marked guilty, but for a
+> gt hang all contexts are marked guilty. Check for different expected
+> behavior for engine vs. gt reset.
 
-CI Bug Log - changes from CI_DRM_11966 -> IGTPW_7606
-====================================================
+This is true only for GuC submission on new platforms.
+When execlist is used, these tests are the same as engine-engine-*
+as you noted at beginning.
 
-Summary
--------
+> 
+> v2:
+> - gt-reset resets all contexts on all engines. The execlist implementation
+>   of gt-engine-* tests expected that a preemptible background spinner
+>   running on the target engine should be marked innocent. While i915 can
+>   mark such a context for execlist mode, GuC scheduling does not guarantee
+>   that the background spinner can be marked as innocent. Since the state
+>   of the background spinner depends on the scheduling backend, do no
+>   validate the state of the background spinner for the target engine.
+> 
+> v3:
+> - omit checking background spinner state only for gt-reset case
+> 
+> v4: (Kamil)
+> - check has_gpu_reset and gem_scheduler_has_preemption for the
+>   gt-engine-hang and gt-engine-error tests.
+> 
+> Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+> ---
+>  tests/i915/i915_hangman.c | 75 +++++++++++++++++++++++++++++++--------
+>  1 file changed, 60 insertions(+), 15 deletions(-)
+> 
+> diff --git a/tests/i915/i915_hangman.c b/tests/i915/i915_hangman.c
+> index c7d69fdd..bdf47bc0 100644
+> --- a/tests/i915/i915_hangman.c
+> +++ b/tests/i915/i915_hangman.c
+> @@ -295,9 +295,15 @@ static void context_unban(int fd, unsigned ctx)
+>  	gem_context_set_param(fd, &param);
+>  }
+>  
+> +enum reset_type {
+> +	GT_RESET = 1,
+> +	ENGINE_RESET = 2,
+> +};
+> +
+>  static void
+>  test_engine_hang(const intel_ctx_t *ctx,
+> -		 const struct intel_execution_engine2 *e, unsigned int flags)
+> +		 const struct intel_execution_engine2 *e, unsigned int flags,
+> +		 enum reset_type reset)
 
-  **FAILURE**
+Using bool as param are no good, imho we should split this into
+two functions, see below after your comment on
+egine-engine-hang.
 
-  Serious unknown changes coming with IGTPW_7606 absolutely need to be
-  verified manually.
-  
-  If you think the reported changes have nothing to do with the changes
-  introduced in IGTPW_7606, please notify your bug team to allow them
-  to document this new failure mode, which will reduce false positives in CI.
+>  {
+>  	const struct intel_execution_engine2 *other;
+>  	const intel_ctx_t *local_ctx[GEM_MAX_ENGINES];
+> @@ -309,6 +315,7 @@ test_engine_hang(const intel_ctx_t *ctx,
+>  	igt_skip_on(flags & IGT_SPIN_INVALID_CS &&
+>  		    gem_engine_has_cmdparser(device, &ctx->cfg, e->flags));
+>  
+> +	igt_assert(reset == GT_RESET || reset == ENGINE_RESET);
+>  	/*
+>  	 * Fill all engines with background load.
+>  	 * This verifies that independent engines are unaffected and gives
+> @@ -324,7 +331,10 @@ test_engine_hang(const intel_ctx_t *ctx,
+>  				      .ahnd = ahndN,
+>  				      .ctx = local_ctx[num_ctx],
+>  				      .engine = other->flags,
+> -				      .flags = IGT_SPIN_FENCE_OUT);
+> +				      .flags = IGT_SPIN_FENCE_OUT |
+> +					       IGT_SPIN_POLL_RUN);
+> +		igt_spin_busywait_until_started(spin);
+> +
 
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7606/index.html
+This is a fix, please split it to separate patch.
 
-Participating hosts (41 -> 41)
-------------------------------
+>  		num_ctx++;
+>  
+>  		igt_list_move(&spin->link, &list);
+> @@ -344,14 +354,44 @@ test_engine_hang(const intel_ctx_t *ctx,
+>  	igt_assert_eq(sync_fence_status(spin->out_fence), -EIO);
+>  	igt_spin_free(device, spin);
+>  
+> -	/* But no other engines/clients should be affected */
+> -	igt_list_for_each_entry_safe(spin, next, &list, link) {
+> +	/*
+> +	 * engine-engine-hang: Other engines/clients should not be affected for
+> +	 * engine reset, so innocent contexts complete successfully once the
+> +	 * spinner is ended.
+> +	 *
+> +	 * gt-engine-hang: All engines/clients are guilty and complete with a
+> +	 * -EIO fence status, however the background task that was submitted to
+> +	 * the target engine is innocent and is expected to complete
+> +	 * successfully.
+> +	 */
 
-  Additional (3): bat-rpls-1 bat-jsl-3 bat-dg2-8 
-  Missing    (3): fi-kbl-soraka fi-rkl-11600 bat-dg1-5 
+From this description maybe it it worth to split this function
+into two separate functions : gt_engine_hang and engine_engine_hang.
+Latter one will be old and in former one we could add different
+bahaviour. I will add Janusz to Cc for this topic.
 
-Possible new issues
--------------------
+> +	igt_list_for_each_entry_safe_reverse(spin, next, &list, link) {
 
-  Here are the unknown changes that may have been introduced in IGTPW_7606:
+Why do you change this into _reverse ?
 
-### IGT changes ###
+> +		bool innocent = reset == ENGINE_RESET;
 
-#### Possible regressions ####
+When we split functionality then we can remove this check.
 
-  * igt@gem_render_tiled_blits@basic:
-    - fi-apl-guc:         [PASS][1] -> [INCOMPLETE][2]
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11966/fi-apl-guc/igt@gem_render_tiled_blits@basic.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7606/fi-apl-guc/igt@gem_render_tiled_blits@basic.html
+> +		int expect = innocent ? 1 : -EIO;
+> +
+>  		ahndN = spin->opts.ahnd;
+> -		igt_assert(sync_fence_wait(spin->out_fence, 0) == -ETIME);
+> -		igt_spin_end(spin);
+> +		if (innocent) {
+> +			igt_assert_eq(sync_fence_wait(spin->out_fence, 0), -ETIME);
+> +			igt_spin_end(spin);
+> +		}
+>  
+> -		igt_assert(sync_fence_wait(spin->out_fence, 500) == 0);
+> -		igt_assert_eq(sync_fence_status(spin->out_fence), 1);
+> +		if (reset == GT_RESET && spin->opts.engine == e->flags) {
+---------------------------------------  ^
+Here you will check execlist or GuC ? This shows we need to split
+functionality to avoid logic errors and further simplify our
+checks.
 
-  
-#### Suppressed ####
+> +			/*
+> +			 * gt-reset resets everything. The execlist
+> +			 * implementation of gt-engine-* tests expect that a
+> +			 * preemptible background spinner running on the target
+> +			 * engine should be marked innocent. While i915 can mark
+> +			 * such a context innocent for execlist mode, GuC
+> +			 * scheduling does not guarantee that the background
+> +			 * spinner can be marked as innocent. Since the state of
+> +			 * the background spinner depends on the scheduling
+> +			 * backend, do no validate the state of the background
+> +			 * spinner for the target engine when doing a gt-reset.
+> +			 */
+> +			igt_spin_end(spin);
+> +		} else {
+> +			igt_assert_eq(sync_fence_wait(spin->out_fence, 500), 0);
+> +			igt_assert_eq(sync_fence_status(spin->out_fence), expect);
+> +		}
+>  		igt_spin_free(device, spin);
+>  		put_ahnd(ahndN);
+>  	}
+> @@ -439,6 +479,10 @@ static void do_tests(const char *name, const char *prefix,
+>  {
+>  	const struct intel_execution_engine2 *e;
+>  	char buff[256];
+> +	enum reset_type reset = ENGINE_RESET;
+> +
+> +	if (!strncmp(prefix, "gt", 2))
+> +		reset = GT_RESET;
+>  
+>  	snprintf(buff, sizeof(buff), "Per engine error capture (%s reset)", name);
+>  	igt_describe(buff);
+> @@ -461,13 +505,13 @@ static void do_tests(const char *name, const char *prefix,
+>  		};
+>  
+>  		igt_require(gem_scheduler_has_preemption(device));
+> -		igt_params_set(device, "reset", "%u", -1);
+>                  ioctl(device, DRM_IOCTL_I915_GETPARAM, &gp);
+> -		igt_require(has_gpu_reset > 1);
+> +		igt_require((reset == GT_RESET && has_gpu_reset == 1) ||
+> +			    (reset == ENGINE_RESET && has_gpu_reset > 1));
 
-  The following results come from untrusted machines, tests, or statuses.
-  They do not affect the overall result.
+Move above checks into separate function (avoid code duplication),
+so here:
+		check_reset(reset);
+and
+check_reset(enum reset_type reset)
+{
+	...put data declarations here...
 
-  * igt@i915_suspend@basic-s3-without-i915:
-    - {bat-dg2-8}:        NOTRUN -> [FAIL][3]
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7606/bat-dg2-8/igt@i915_suspend@basic-s3-without-i915.html
+	ioctl(device, DRM_IOCTL_I915_GETPARAM, &gp);
+	igt_require((reset == GT_RESET && has_gpu_reset == 1) ||
+		    (reset == ENGINE_RESET && has_gpu_reset > 1));
+}
 
-  
-Known issues
-------------
+>  
+>  		for_each_ctx_engine(device, ctx, e) {
+>  			igt_dynamic_f("%s", e->name)
+> -				test_engine_hang(ctx, e, 0);
+> +				test_engine_hang(ctx, e, 0, reset);
 
-  Here are the changes found in IGTPW_7606 that come from known issues:
+It is better to make this into:
+				gt_reset ? gt_engine_hang(ctx, e, 0) : engine_engine_hang(ctx, e, 0);
 
-### IGT changes ###
+and before that set:
 
-#### Issues hit ####
+	bool gt_reset = reset == GT_RESET && gem_using_guc_submission(device) &&
+				 intel_gen(intel_get_drm_devid(i915)) >= 12;
 
-  * igt@gem_huc_copy@huc-copy:
-    - fi-kbl-8809g:       NOTRUN -> [SKIP][4] ([fdo#109271] / [i915#2190])
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7606/fi-kbl-8809g/igt@gem_huc_copy@huc-copy.html
+imho we want to check both old execlist and new GuC behaviour.
 
-  * igt@gem_lmem_swapping@parallel-random-engines:
-    - fi-kbl-8809g:       NOTRUN -> [SKIP][5] ([fdo#109271] / [i915#4613]) +3 similar issues
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7606/fi-kbl-8809g/igt@gem_lmem_swapping@parallel-random-engines.html
+>  		}
+>  	}
+>  
+> @@ -481,13 +525,14 @@ static void do_tests(const char *name, const char *prefix,
+>  			.value = &has_gpu_reset,
+>  		};
+>  
+> -		igt_params_set(device, "reset", "%u", -1);
+> -		ioctl(device, DRM_IOCTL_I915_GETPARAM, &gp);
+> -		igt_require(has_gpu_reset > 1);
+> +		igt_require(gem_scheduler_has_preemption(device));
 
-  * igt@i915_pm_backlight@basic-brightness:
-    - fi-kbl-8809g:       NOTRUN -> [SKIP][6] ([fdo#109271]) +26 similar issues
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7606/fi-kbl-8809g/igt@i915_pm_backlight@basic-brightness.html
+Why is it needed here ?
 
-  * igt@i915_selftest@live@requests:
-    - fi-blb-e6850:       [PASS][7] -> [DMESG-FAIL][8] ([i915#4528])
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11966/fi-blb-e6850/igt@i915_selftest@live@requests.html
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7606/fi-blb-e6850/igt@i915_selftest@live@requests.html
+> +                ioctl(device, DRM_IOCTL_I915_GETPARAM, &gp);
+-- ^
+Use tabs, not spaces here.
 
-  * igt@kms_chamelium@dp-hpd-fast:
-    - fi-kbl-8809g:       NOTRUN -> [SKIP][9] ([fdo#109271] / [fdo#111827]) +8 similar issues
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7606/fi-kbl-8809g/igt@kms_chamelium@dp-hpd-fast.html
+> +		igt_require((reset == GT_RESET && has_gpu_reset == 1) ||
+> +			    (reset == ENGINE_RESET && has_gpu_reset > 1));
 
-  * igt@runner@aborted:
-    - fi-bdw-5557u:       NOTRUN -> [FAIL][10] ([i915#4312])
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7606/fi-bdw-5557u/igt@runner@aborted.html
+Instead of above use check_reset(reset) here.
 
-  
-#### Possible fixes ####
+>  
+>  		for_each_ctx_engine(device, ctx, e) {
+>  			igt_dynamic_f("%s", e->name)
+> -				test_engine_hang(ctx, e, IGT_SPIN_INVALID_CS);
+> +				test_engine_hang(ctx, e, IGT_SPIN_INVALID_CS, reset);
 
-  * igt@fbdev@read:
-    - {bat-rpls-2}:       [SKIP][11] ([i915#2582]) -> [PASS][12] +4 similar issues
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11966/bat-rpls-2/igt@fbdev@read.html
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7606/bat-rpls-2/igt@fbdev@read.html
+Same here, call gt_engine_hang or engine_engine_hang instead 
+(see above). What happens when there are no preemption ?
 
-  * igt@gem_exec_suspend@basic-s0@smem:
-    - {bat-rplp-1}:       [DMESG-WARN][13] ([i915#2867]) -> [PASS][14]
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11966/bat-rplp-1/igt@gem_exec_suspend@basic-s0@smem.html
-   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7606/bat-rplp-1/igt@gem_exec_suspend@basic-s0@smem.html
+>  		}
+>  	}
+>  }
+> -- 
+> 2.36.1
+> 
 
-  * igt@kms_frontbuffer_tracking@basic:
-    - {bat-rpls-2}:       [SKIP][15] ([i915#1849]) -> [PASS][16]
-   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11966/bat-rpls-2/igt@kms_frontbuffer_tracking@basic.html
-   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7606/bat-rpls-2/igt@kms_frontbuffer_tracking@basic.html
-
-  * igt@prime_vgem@basic-fence-flip:
-    - {bat-rpls-2}:       [SKIP][17] ([fdo#109295] / [i915#1845] / [i915#3708]) -> [PASS][18]
-   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11966/bat-rpls-2/igt@prime_vgem@basic-fence-flip.html
-   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7606/bat-rpls-2/igt@prime_vgem@basic-fence-flip.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
-  [fdo#109285]: https://bugs.freedesktop.org/show_bug.cgi?id=109285
-  [fdo#109295]: https://bugs.freedesktop.org/show_bug.cgi?id=109295
-  [fdo#111827]: https://bugs.freedesktop.org/show_bug.cgi?id=111827
-  [i915#1072]: https://gitlab.freedesktop.org/drm/intel/issues/1072
-  [i915#1155]: https://gitlab.freedesktop.org/drm/intel/issues/1155
-  [i915#1845]: https://gitlab.freedesktop.org/drm/intel/issues/1845
-  [i915#1849]: https://gitlab.freedesktop.org/drm/intel/issues/1849
-  [i915#1886]: https://gitlab.freedesktop.org/drm/intel/issues/1886
-  [i915#2190]: https://gitlab.freedesktop.org/drm/intel/issues/2190
-  [i915#2582]: https://gitlab.freedesktop.org/drm/intel/issues/2582
-  [i915#2867]: https://gitlab.freedesktop.org/drm/intel/issues/2867
-  [i915#3003]: https://gitlab.freedesktop.org/drm/intel/issues/3003
-  [i915#3282]: https://gitlab.freedesktop.org/drm/intel/issues/3282
-  [i915#3291]: https://gitlab.freedesktop.org/drm/intel/issues/3291
-  [i915#3301]: https://gitlab.freedesktop.org/drm/intel/issues/3301
-  [i915#3555]: https://gitlab.freedesktop.org/drm/intel/issues/3555
-  [i915#3595]: https://gitlab.freedesktop.org/drm/intel/issues/3595
-  [i915#3637]: https://gitlab.freedesktop.org/drm/intel/issues/3637
-  [i915#3708]: https://gitlab.freedesktop.org/drm/intel/issues/3708
-  [i915#4077]: https://gitlab.freedesktop.org/drm/intel/issues/4077
-  [i915#4079]: https://gitlab.freedesktop.org/drm/intel/issues/4079
-  [i915#4083]: https://gitlab.freedesktop.org/drm/intel/issues/4083
-  [i915#4103]: https://gitlab.freedesktop.org/drm/intel/issues/4103
-  [i915#4212]: https://gitlab.freedesktop.org/drm/intel/issues/4212
-  [i915#4215]: https://gitlab.freedesktop.org/drm/intel/issues/4215
-  [i915#4312]: https://gitlab.freedesktop.org/drm/intel/issues/4312
-  [i915#4528]: https://gitlab.freedesktop.org/drm/intel/issues/4528
-  [i915#4579]: https://gitlab.freedesktop.org/drm/intel/issues/4579
-  [i915#4613]: https://gitlab.freedesktop.org/drm/intel/issues/4613
-  [i915#4873]: https://gitlab.freedesktop.org/drm/intel/issues/4873
-  [i915#5087]: https://gitlab.freedesktop.org/drm/intel/issues/5087
-  [i915#5190]: https://gitlab.freedesktop.org/drm/intel/issues/5190
-  [i915#5274]: https://gitlab.freedesktop.org/drm/intel/issues/5274
-  [i915#5354]: https://gitlab.freedesktop.org/drm/intel/issues/5354
-  [i915#5950]: https://gitlab.freedesktop.org/drm/intel/issues/5950
-  [i915#6257]: https://gitlab.freedesktop.org/drm/intel/issues/6257
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_6613 -> IGTPW_7606
-
-  CI-20190529: 20190529
-  CI_DRM_11966: f3c1d1b53388aaa69e20a1b72f8307ad57116565 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_7606: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7606/index.html
-  IGT_6613: 209230467200f2fa63a6f71fe6299996470dd813 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7606/index.html
-
---===============2997433433462896292==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>i915/i915_pm_rps: Don&#39;t use gem_write in batch_create</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/106977/">https://patchwork.freedesktop.org/series/106977/</a></td></tr>
-<tr><td><b>State:</b></td><td>failure</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7606/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7606/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from CI_DRM_11966 -&gt; IGTPW_7606</h1>
-<h2>Summary</h2>
-<p><strong>FAILURE</strong></p>
-<p>Serious unknown changes coming with IGTPW_7606 absolutely need to be<br />
-  verified manually.</p>
-<p>If you think the reported changes have nothing to do with the changes<br />
-  introduced in IGTPW_7606, please notify your bug team to allow them<br />
-  to document this new failure mode, which will reduce false positives in CI.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7606/index.html</p>
-<h2>Participating hosts (41 -&gt; 41)</h2>
-<p>Additional (3): bat-rpls-1 bat-jsl-3 bat-dg2-8 <br />
-  Missing    (3): fi-kbl-soraka fi-rkl-11600 bat-dg1-5 </p>
-<h2>Possible new issues</h2>
-<p>Here are the unknown changes that may have been introduced in IGTPW_7606:</p>
-<h3>IGT changes</h3>
-<h4>Possible regressions</h4>
-<ul>
-<li>igt@gem_render_tiled_blits@basic:<ul>
-<li>fi-apl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11966/fi-apl-guc/igt@gem_render_tiled_blits@basic.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7606/fi-apl-guc/igt@gem_render_tiled_blits@basic.html">INCOMPLETE</a></li>
-</ul>
-</li>
-</ul>
-<h4>Suppressed</h4>
-<p>The following results come from untrusted machines, tests, or statuses.<br />
-  They do not affect the overall result.</p>
-<ul>
-<li>igt@i915_suspend@basic-s3-without-i915:<ul>
-<li>{bat-dg2-8}:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7606/bat-dg2-8/igt@i915_suspend@basic-s3-without-i915.html">FAIL</a></li>
-</ul>
-</li>
-</ul>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_7606 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@gem_huc_copy@huc-copy:</p>
-<ul>
-<li>fi-kbl-8809g:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7606/fi-kbl-8809g/igt@gem_huc_copy@huc-copy.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2190">i915#2190</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_lmem_swapping@parallel-random-engines:</p>
-<ul>
-<li>fi-kbl-8809g:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7606/fi-kbl-8809g/igt@gem_lmem_swapping@parallel-random-engines.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4613">i915#4613</a>) +3 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_pm_backlight@basic-brightness:</p>
-<ul>
-<li>fi-kbl-8809g:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7606/fi-kbl-8809g/igt@i915_pm_backlight@basic-brightness.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +26 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@requests:</p>
-<ul>
-<li>fi-blb-e6850:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11966/fi-blb-e6850/igt@i915_selftest@live@requests.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7606/fi-blb-e6850/igt@i915_selftest@live@requests.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4528">i915#4528</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_chamelium@dp-hpd-fast:</p>
-<ul>
-<li>fi-kbl-8809g:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7606/fi-kbl-8809g/igt@kms_chamelium@dp-hpd-fast.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://bugs.freedesktop.org/show_bug.cgi?id=111827">fdo#111827</a>) +8 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@runner@aborted:</p>
-<ul>
-<li>fi-bdw-5557u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7606/fi-bdw-5557u/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4312">i915#4312</a>)</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@fbdev@read:</p>
-<ul>
-<li>{bat-rpls-2}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11966/bat-rpls-2/igt@fbdev@read.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2582">i915#2582</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7606/bat-rpls-2/igt@fbdev@read.html">PASS</a> +4 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_exec_suspend@basic-s0@smem:</p>
-<ul>
-<li>{bat-rplp-1}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11966/bat-rplp-1/igt@gem_exec_suspend@basic-s0@smem.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2867">i915#2867</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7606/bat-rplp-1/igt@gem_exec_suspend@basic-s0@smem.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@kms_frontbuffer_tracking@basic:</p>
-<ul>
-<li>{bat-rpls-2}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11966/bat-rpls-2/igt@kms_frontbuffer_tracking@basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1849">i915#1849</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7606/bat-rpls-2/igt@kms_frontbuffer_tracking@basic.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@prime_vgem@basic-fence-flip:</p>
-<ul>
-<li>{bat-rpls-2}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11966/bat-rpls-2/igt@prime_vgem@basic-fence-flip.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109295">fdo#109295</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/1845">i915#1845</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3708">i915#3708</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7606/bat-rpls-2/igt@prime_vgem@basic-fence-flip.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_6613 -&gt; IGTPW_7606</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_11966: f3c1d1b53388aaa69e20a1b72f8307ad57116565 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_7606: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7606/index.html<br />
-  IGT_6613: 209230467200f2fa63a6f71fe6299996470dd813 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-
-</body>
-</html>
-
---===============2997433433462896292==--
+Regards,
+Kamil
