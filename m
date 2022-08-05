@@ -1,14 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Fri,  5 Aug 2022 16:27:15 +0200
-Message-Id: <20220805142716.185077-2-janusz.krzysztofik@linux.intel.com>
+Date: Fri,  5 Aug 2022 16:27:16 +0200
+Message-Id: <20220805142716.185077-3-janusz.krzysztofik@linux.intel.com>
 In-Reply-To: <20220805142716.185077-1-janusz.krzysztofik@linux.intel.com>
 References: <20220805142716.185077-1-janusz.krzysztofik@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v2 2/3] tests/gem_exec_fence: Exclude 0 from
- use in store batches
+Subject: [igt-dev] [PATCH i-g-t v2 3/3] tests/gem_exec_fence: Restore
+ pre-hang checks in *await-hang scenarios
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,61 +21,121 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-When i = 0, condition out[i] == i will be true even if a batch supposed
-to store i in out[i] fails.  Don't use i = 0 in batches that store values
-in out[i].
+Commit c8f6aaf32d83 "tests/gem_exec_fence: Check stored values only for
+valid workloads" resolved an issue, observed in *await-hang scenarios,
+where a fence exposed by an invalid spin batch was signaled asynchronously
+to pending checks for depended test batches still waiting for that fence.
+Those checks have been disabled, weakening those scenarios.
 
-v2: still check for out[0] == 0 (Chris)
+This change takes an alternative approach: it makes the invalid spin batch
+dependent on another fence so the test has full control over the moment
+when that batch starts, triggers a GPU hang and its fence is signaled.
+With that in place, the test is able to check synchronously if execution
+of dependent test batches is still blocked on the not yet signaled fence
+of the not yet completed spin batch, as it does in counterpart non-hanging
+scenarios.
+
+v2: preserve checking the pipeline runs ahead of the hang (Chris)
 
 Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
 ---
- tests/i915/gem_exec_fence.c | 13 ++++++++-----
- 1 file changed, 8 insertions(+), 5 deletions(-)
+ tests/i915/gem_exec_fence.c | 41 ++++++++++++++++++++++++++++++-------
+ 1 file changed, 34 insertions(+), 7 deletions(-)
 
 diff --git a/tests/i915/gem_exec_fence.c b/tests/i915/gem_exec_fence.c
-index 048870053a..78d83460f7 100644
+index 78d83460f7..34f6b89337 100644
 --- a/tests/i915/gem_exec_fence.c
 +++ b/tests/i915/gem_exec_fence.c
-@@ -334,6 +334,8 @@ static void test_fence_await(int fd, const intel_ctx_t *ctx,
- 		if (!gem_class_can_store_dword(fd, e2->class))
- 			continue;
+@@ -309,10 +309,10 @@ static void test_fence_await(int fd, const intel_ctx_t *ctx,
+ {
+ 	const struct intel_execution_engine2 *e2;
+ 	uint32_t scratch = gem_create(fd, 4096);
+-	igt_spin_t *spin;
++	igt_spin_t *spin, *invalid_spin;
+ 	uint32_t *out;
+ 	uint64_t scratch_offset, ahnd = get_reloc_ahnd(fd, ctx->id);
+-	int i;
++	int out_fence, i;
  
-+		i++;
+ 	scratch_offset = get_offset(ahnd, scratch, 4096, 0);
+ 
+@@ -325,10 +325,25 @@ static void test_fence_await(int fd, const intel_ctx_t *ctx,
+ 			    .ctx = ctx,
+ 			    .engine = e->flags,
+ 			    .flags = IGT_SPIN_FENCE_OUT |
+-				     IGT_SPIN_POLL_RUN |
+-				     spin_hang(flags));
++				     IGT_SPIN_POLL_RUN);
+ 	igt_assert(spin->out_fence != -1);
+ 
++	if (flags & HANG) {
++		invalid_spin = igt_spin_new(fd,
++					    .ahnd = ahnd,
++					    .ctx = ctx,
++					    .engine = e->flags,
++					    .fence = spin->out_fence,
++					    .flags = IGT_SPIN_FENCE_IN |
++						     IGT_SPIN_FENCE_OUT |
++						     IGT_SPIN_POLL_RUN |
++						     spin_hang(flags));
++		igt_assert(invalid_spin->out_fence != -1);
++		out_fence = invalid_spin->out_fence;
++	} else {
++		out_fence = spin->out_fence;
++	}
 +
+ 	i = 0;
+ 	for_each_ctx_engine(fd, ctx, e2) {
+ 		if (!gem_class_can_store_dword(fd, e2->class))
+@@ -337,12 +352,12 @@ static void test_fence_await(int fd, const intel_ctx_t *ctx,
+ 		i++;
+ 
  		if (flags & NONBLOCK) {
- 			igt_store_word(fd, ahnd, ctx, e2, spin->out_fence,
+-			igt_store_word(fd, ahnd, ctx, e2, spin->out_fence,
++			igt_store_word(fd, ahnd, ctx, e2, out_fence,
  				       scratch, scratch_offset, i, i);
-@@ -345,8 +347,6 @@ static void test_fence_await(int fd, const intel_ctx_t *ctx,
+ 		} else {
+ 			igt_fork(child, 1) {
+ 				ahnd = get_reloc_ahnd(fd, ctx->id);
+-				igt_store_word(fd, ahnd, ctx, e2, spin->out_fence,
++				igt_store_word(fd, ahnd, ctx, e2, out_fence,
+ 					       scratch, scratch_offset, i, i);
  				put_ahnd(ahnd);
  			}
- 		}
--
--		i++;
+@@ -350,6 +365,16 @@ static void test_fence_await(int fd, const intel_ctx_t *ctx,
  	}
  
  	igt_spin_busywait_until_started(spin);
-@@ -356,7 +356,7 @@ static void test_fence_await(int fd, const intel_ctx_t *ctx,
- 	if ((flags & HANG) == 0) {
- 		/* Check for invalidly completing the task early */
- 		igt_assert(fence_busy(spin->out_fence));
--		for (int n = 0; n < i; n++)
++	if (flags & HANG) {
++		igt_assert(fence_busy(spin->out_fence));
++		igt_fail_on(igt_spin_has_started(invalid_spin));
++		igt_assert(fence_busy(out_fence));
 +		for (int n = 0; n <= i; n++)
- 			igt_assert_eq_u32(out[n], 0);
++			igt_assert_eq_u32(out[n], 0);
++
++		igt_spin_end(spin);
++		igt_spin_busywait_until_started(invalid_spin);
++	}
+ 	/* Long, but not too long to anger preemption disable checks */
+ 	usleep(50 * 1000); /* 50 ms, typical preempt reset is 150+ms */
  
- 		igt_spin_end(spin);
-@@ -366,8 +366,11 @@ static void test_fence_await(int fd, const intel_ctx_t *ctx,
+@@ -365,7 +390,7 @@ static void test_fence_await(int fd, const intel_ctx_t *ctx,
+ 	igt_waitchildren();
  
  	gem_set_domain(fd, scratch, I915_GEM_DOMAIN_GTT, 0);
- 	igt_assert(!fence_busy(spin->out_fence));
--	while ((flags & HANG) == 0 && i--)
--		igt_assert_eq_u32(out[i], i);
-+	if ((flags & HANG) == 0) {
-+		do
-+			igt_assert_eq_u32(out[i], i);
-+		while (i--);
-+	}
+-	igt_assert(!fence_busy(spin->out_fence));
++	igt_assert(!fence_busy(out_fence));
+ 	if ((flags & HANG) == 0) {
+ 		do
+ 			igt_assert_eq_u32(out[i], i);
+@@ -373,6 +398,8 @@ static void test_fence_await(int fd, const intel_ctx_t *ctx,
+ 	}
  	munmap(out, 4096);
  
++	if (flags & HANG)
++		igt_spin_free(fd, invalid_spin);
  	igt_spin_free(fd, spin);
+ 	gem_close(fd, scratch);
+ 	put_offset(ahnd, scratch);
 -- 
 2.25.1
