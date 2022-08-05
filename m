@@ -1,14 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Fri,  5 Aug 2022 10:09:28 +0200
-Message-Id: <20220805080928.169952-3-janusz.krzysztofik@linux.intel.com>
-In-Reply-To: <20220805080928.169952-1-janusz.krzysztofik@linux.intel.com>
-References: <20220805080928.169952-1-janusz.krzysztofik@linux.intel.com>
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 796F5112FB5
+ for <igt-dev@lists.freedesktop.org>; Fri,  5 Aug 2022 08:21:26 +0000 (UTC)
+Message-ID: <65adb1f4-1e3d-e94f-459c-bae0e2ff3033@intel.com>
+Date: Fri, 5 Aug 2022 10:21:18 +0200
+Content-Language: en-US
+To: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+References: <20220804132617.2179474-1-karolina.drobnik@intel.com>
+ <YuwlNYdSnMqTKhY/@kamilkon-desk1>
+From: Karolina Drobnik <karolina.drobnik@intel.com>
+In-Reply-To: <YuwlNYdSnMqTKhY/@kamilkon-desk1>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 3/3] tests/gem_exec_fence: Restore pre-hang
- checks in *await-hang scenarios
+Subject: Re: [igt-dev] [PATCH i-g-t] i915/i915_pm_rps: Don't use gem_write
+ in batch_create
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -16,127 +22,69 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: intel-gfx@lists.freedesktop.org, Chris Wilson <chris@chris-wilson.co.uk>
+Cc: igt-dev@lists.freedesktop.org, Chris Wilson <chris@chris-wilson.co.uk>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Commit c8f6aaf32d83 "tests/gem_exec_fence: Check stored values only for
-valid workloads" resolved an issue, observed in *await-hang scenarios,
-where a fence exposed by an invalid spin batch was signaled asynchronously
-to pending checks for depended test batches still waiting for that fence.
-Those checks have been disabled, weakening those scenarios.
+Hi Kamil,
 
-This change takes an alternative approach: it makes the invalid spin batch
-dependent on another fence so the test has full control over the moment
-when that batch starts, triggers a GPU hang and its fence is signaled.
-With that in place, the test is able to check synchronously if execution
-of dependent test batches is still blocked on the not yet signaled fence
-of the not yet completed spin batch, as it does in counterpart non-hanging
-scenarios.
+Thanks for your swift review.
 
-Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
----
- tests/i915/gem_exec_fence.c | 45 ++++++++++++++++++++++++++-----------
- 1 file changed, 32 insertions(+), 13 deletions(-)
+On 04.08.2022 21:59, Kamil Konieczny wrote:
+> Hi,
+> 
+> On 2022-08-04 at 15:26:17 +0200, Karolina Drobnik wrote:
+>> From: Chris Wilson <chris@chris-wilson.co.uk>
+>>
+>> In fence_order and engine_order we are repeatedly creating big mmaps
+>> that are very slow when done via gem_write, causing test timeouts.
+>> Rewrite batch_create to mmap the buffer directly instead of using
+>> gem_write.
+>>
+>> Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
+>> Signed-off-by: Karolina Drobnik <karolina.drobnik@intel.com>
+>> ---
+>>   tests/i915/i915_pm_rps.c | 10 +++++++---
+>>   1 file changed, 7 insertions(+), 3 deletions(-)
+>>
+>> diff --git a/tests/i915/i915_pm_rps.c b/tests/i915/i915_pm_rps.c
+>> index a45a6905..d06ade27 100644
+>> --- a/tests/i915/i915_pm_rps.c
+>> +++ b/tests/i915/i915_pm_rps.c
+>> @@ -621,11 +621,15 @@ static uint32_t batch_create(int i915, uint64_t sz)
+>>   	const uint32_t bbe = MI_BATCH_BUFFER_END;
+>>   	const uint32_t chk = 0x5 << 23;
+>>   	uint32_t handle = gem_create(i915, sz);
+>> +	uint32_t *map;
+>>   
+>> -	for (uint64_t pg = 4096; pg + 4096 < sz; pg += 4096)
+>> -		gem_write(i915, handle, pg, &chk, sizeof(chk));
+>> +	map = gem_mmap__device_coherent(i915, handle, 0, sz, PROT_WRITE);
+>>   
+>> -	gem_write(i915, handle, sz - sizeof(bbe), &bbe, sizeof(bbe));
+>> +	for (uint64_t pg = 1; pg * 4096 < sz; pg++)
+>> +		map[(pg * 4096) / sizeof(*map)] = chk;
+>> +
+>> +	map[sz / sizeof(*map) - 1] = bbe;
+> 
+> Are there any arch where we run igt/i915 and sizeof(*map) == 4 ?
+> Just curious.
 
-diff --git a/tests/i915/gem_exec_fence.c b/tests/i915/gem_exec_fence.c
-index 11d99781b0..27af9718d9 100644
---- a/tests/i915/gem_exec_fence.c
-+++ b/tests/i915/gem_exec_fence.c
-@@ -309,10 +309,10 @@ static void test_fence_await(int fd, const intel_ctx_t *ctx,
- {
- 	const struct intel_execution_engine2 *e2;
- 	uint32_t scratch = gem_create(fd, 4096);
--	igt_spin_t *spin;
-+	igt_spin_t *spin, *invalid_spin;
- 	uint32_t *out;
- 	uint64_t scratch_offset, ahnd = get_reloc_ahnd(fd, ctx->id);
--	int i;
-+	int out_fence, i;
- 
- 	scratch_offset = get_offset(ahnd, scratch, 4096, 0);
- 
-@@ -325,10 +325,25 @@ static void test_fence_await(int fd, const intel_ctx_t *ctx,
- 			    .ctx = ctx,
- 			    .engine = e->flags,
- 			    .flags = IGT_SPIN_FENCE_OUT |
--				     IGT_SPIN_POLL_RUN |
--				     spin_hang(flags));
-+				     IGT_SPIN_POLL_RUN);
- 	igt_assert(spin->out_fence != -1);
- 
-+	if (flags & HANG) {
-+		invalid_spin = igt_spin_new(fd,
-+					    .ahnd = ahnd,
-+					    .ctx = ctx,
-+					    .engine = e->flags,
-+					    .fence = spin->out_fence,
-+					    .flags = IGT_SPIN_FENCE_IN |
-+						     IGT_SPIN_FENCE_OUT |
-+						     IGT_SPIN_POLL_RUN |
-+						     spin_hang(flags));
-+		igt_assert(invalid_spin->out_fence != -1);
-+		out_fence = invalid_spin->out_fence;
-+	} else {
-+		out_fence = spin->out_fence;
-+	}
-+
- 	i = 0;
- 	for_each_ctx_engine(fd, ctx, e2) {
- 		if (!gem_class_can_store_dword(fd, e2->class))
-@@ -337,12 +352,12 @@ static void test_fence_await(int fd, const intel_ctx_t *ctx,
- 		i++;
- 
- 		if (flags & NONBLOCK) {
--			igt_store_word(fd, ahnd, ctx, e2, spin->out_fence,
-+			igt_store_word(fd, ahnd, ctx, e2, out_fence,
- 				       scratch, scratch_offset, i, i);
- 		} else {
- 			igt_fork(child, 1) {
- 				ahnd = get_reloc_ahnd(fd, ctx->id);
--				igt_store_word(fd, ahnd, ctx, e2, spin->out_fence,
-+				igt_store_word(fd, ahnd, ctx, e2, out_fence,
- 					       scratch, scratch_offset, i, i);
- 				put_ahnd(ahnd);
- 			}
-@@ -353,19 +368,21 @@ static void test_fence_await(int fd, const intel_ctx_t *ctx,
- 	/* Long, but not too long to anger preemption disable checks */
- 	usleep(50 * 1000); /* 50 ms, typical preempt reset is 150+ms */
- 
--	if ((flags & HANG) == 0) {
--		/* Check for invalidly completing the task early */
-+	/* Check for invalidly completing the task early */
-+	if (flags & HANG) {
- 		igt_assert(fence_busy(spin->out_fence));
--		for (int n = 1; n <= i; n++)
--			igt_assert_eq_u32(out[n], 0);
--
--		igt_spin_end(spin);
-+		igt_fail_on(igt_spin_has_started(invalid_spin));
- 	}
-+	igt_assert(fence_busy(out_fence));
-+	for (int n = 1; n <= i; n++)
-+		igt_assert_eq_u32(out[n], 0);
-+
-+	igt_spin_end(spin);
- 
- 	igt_waitchildren();
- 
- 	gem_set_domain(fd, scratch, I915_GEM_DOMAIN_GTT, 0);
--	igt_assert(!fence_busy(spin->out_fence));
-+	igt_assert(!fence_busy(out_fence));
- 	if ((flags & HANG) == 0) {
- 		do
- 			igt_assert_eq_u32(out[i], i);
-@@ -373,6 +390,8 @@ static void test_fence_await(int fd, const intel_ctx_t *ctx,
- 	}
- 	munmap(out, 4096);
- 
-+	if (flags & HANG)
-+		igt_spin_free(fd, invalid_spin);
- 	igt_spin_free(fd, spin);
- 	gem_close(fd, scratch);
- 	put_offset(ahnd, scratch);
--- 
-2.25.1
+Do you mean the size of the pointer or the actual value? iiuc, we test 
+igts on x86_64, arm64, armhf (which is 32 bit) and mips, so there is at
+least one platform with 4 byte-wide pointers; uint32_t is size-fixed
+
+All the best,
+Karolina
+
+>> +	munmap(map, sz);
+> 
+> Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> 
+>>   
+>>   	return handle;
+>>   }
+>> -- 
+>> 2.25.1
+>>
