@@ -1,18 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mx07-00178001.pphosted.com (mx08-00178001.pphosted.com
- [91.207.212.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B1D42B3EE0
- for <igt-dev@lists.freedesktop.org>; Fri,  5 Aug 2022 10:17:04 +0000 (UTC)
+Received: from mx07-00178001.pphosted.com (mx07-00178001.pphosted.com
+ [185.132.182.106])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 99B4914B4CD
+ for <igt-dev@lists.freedesktop.org>; Fri,  5 Aug 2022 10:18:55 +0000 (UTC)
 From: Raphael Gallais-Pou <raphael.gallais-pou@foss.st.com>
 To: Petri Latvala <petri.latvala@intel.com>
-Date: Fri, 5 Aug 2022 12:16:52 +0200
-Message-ID: <20220805101654.1152678-2-raphael.gallais-pou@foss.st.com>
-In-Reply-To: <20220805101654.1152678-1-raphael.gallais-pou@foss.st.com>
-References: <20220805101654.1152678-1-raphael.gallais-pou@foss.st.com>
+Date: Fri, 5 Aug 2022 12:18:43 +0200
+Message-ID: <20220805101843.1153103-1-raphael.gallais-pou@foss.st.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-Subject: [igt-dev] [PATCH i-g-t 1/3] stm-ci: Add STM blacklist
+Subject: [igt-dev] [PATCH i-g-t 2/3] lib/drmtest: add support for STM drivers
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,86 +24,89 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-This blacklist contains all tests that do not run on STM platforms.
-This list is inspired from intel-ci 'blacklist.txt'.
+Since CRC feature is now supported on STM display drivers, IGT would be
+an interesting solution for testing.
+
+This patch adds basic support for IGT to run with STM drivers.
 
 Signed-off-by: Raphael Gallais-Pou <raphael.gallais-pou@foss.st.com>
 ---
- tests/meson.build              |  2 ++
- tests/stm-ci/blacklist-stm.txt | 41 ++++++++++++++++++++++++++++++++++
- tests/stm-ci/meson.build       |  6 +++++
- 3 files changed, 49 insertions(+)
- create mode 100644 tests/stm-ci/blacklist-stm.txt
- create mode 100644 tests/stm-ci/meson.build
+ lib/drmtest.c | 13 +++++++++++++
+ lib/drmtest.h |  3 +++
+ 2 files changed, 16 insertions(+)
 
-diff --git a/tests/meson.build b/tests/meson.build
-index b548dc3b..99c59152 100644
---- a/tests/meson.build
-+++ b/tests/meson.build
-@@ -473,3 +473,5 @@ image_files = [
- install_data(sources : image_files, install_dir : datadir)
+diff --git a/lib/drmtest.c b/lib/drmtest.c
+index 4f9d8a11..1051b4fe 100644
+--- a/lib/drmtest.c
++++ b/lib/drmtest.c
+@@ -134,6 +134,11 @@ bool is_nouveau_device(int fd)
+ #endif
+ }
  
- subdir('intel-ci')
++bool is_stm_device(int fd)
++{
++	return __is_device(fd, "stm");
++}
 +
-+subdir('stm-ci')
-diff --git a/tests/stm-ci/blacklist-stm.txt b/tests/stm-ci/blacklist-stm.txt
-new file mode 100644
-index 00000000..bd4bb21f
---- /dev/null
-+++ b/tests/stm-ci/blacklist-stm.txt
-@@ -0,0 +1,41 @@
-+###############################################
-+# Broadcom
-+###############################################
-+igt@vc4_.*
-+igt@v3d_.*
-+###############################################
-+# AMD
-+###############################################
-+igt@amdgpu/.*
-+###############################################
-+# Panfrost
-+###############################################
-+igt@panfrost_.*
-+###############################################
-+# Qualcomm
-+###############################################
-+igt@msm_.*
-+###############################################
-+# Intel
-+###############################################
-+igt@i915_.*
-+igt@(.*)i915.*
-+igt@gen3_.*
-+igt@gen7_.*
-+igt@gen9_.*
-+###############################################
-+# GEM
-+###############################################
-+igt@gem_.*
-+###############################################
-+# Hibernate: not configured correctly on CI
-+###############################################
-+igt@.*@.*-hibernate
-+###############################################
-+# pipe-b to pipe-f no current HW support
-+###############################################
-+igt@.*@.*pipe-b($|-.*)
-+igt@.*@.*pipe-c($|-.*)
-+igt@.*@.*pipe-d($|-.*)
-+igt@.*@.*pipe-e($|-.*)
-+igt@.*@.*pipe-f($|-.*)
-diff --git a/tests/stm-ci/meson.build b/tests/stm-ci/meson.build
-new file mode 100644
-index 00000000..43f94a27
---- /dev/null
-+++ b/tests/stm-ci/meson.build
-@@ -0,0 +1,6 @@
+ bool is_vc4_device(int fd)
+ {
+ 	return __is_device(fd, "vc4");
+@@ -186,6 +191,7 @@ static const struct module {
+ 	{ DRIVER_INTEL, "i915", modprobe_i915 },
+ 	{ DRIVER_MSM, "msm" },
+ 	{ DRIVER_PANFROST, "panfrost" },
++	{ DRIVER_STM, "stm32-display" },
+ 	{ DRIVER_V3D, "v3d" },
+ 	{ DRIVER_VC4, "vc4" },
+ 	{ DRIVER_VGEM, "vgem" },
+@@ -548,6 +554,8 @@ static const char *chipset_to_str(int chipset)
+ 		return "panfrost";
+ 	case DRIVER_MSM:
+ 		return "msm";
++	case DRIVER_STM:
++		return "stm";
+ 	case DRIVER_ANY:
+ 		return "any";
+ 	default:
+@@ -652,6 +660,11 @@ void igt_require_nouveau(int fd)
+ 	igt_require(is_nouveau_device(fd));
+ }
+ 
++void igt_require_stm(int fd)
++{
++	igt_require(is_stm_device(fd));
++}
 +
-+stmci_files = [
-+  'blacklist-stm.txt',
-+]
-+
-+install_data(sources : stmci_files, install_dir : datadir)
+ void igt_require_vc4(int fd)
+ {
+ 	igt_require(is_vc4_device(fd));
+diff --git a/lib/drmtest.h b/lib/drmtest.h
+index b5debd44..6a7ab082 100644
+--- a/lib/drmtest.h
++++ b/lib/drmtest.h
+@@ -51,6 +51,7 @@
+ #define DRIVER_V3D	(1 << 4)
+ #define DRIVER_PANFROST	(1 << 5)
+ #define DRIVER_MSM	(1 << 6)
++#define DRIVER_STM	(1 << 7)
+ 
+ /*
+  * Exclude DRVER_VGEM from DRIVER_ANY since if you run on a system
+@@ -99,6 +100,7 @@ int __drm_open_driver_render(int chipset);
+ void igt_require_amdgpu(int fd);
+ void igt_require_intel(int fd);
+ void igt_require_nouveau(int fd);
++void igt_require_stm(int fd);
+ void igt_require_vc4(int fd);
+ 
+ bool is_amdgpu_device(int fd);
+@@ -106,6 +108,7 @@ bool is_i915_device(int fd);
+ bool is_mtk_device(int fd);
+ bool is_msm_device(int fd);
+ bool is_nouveau_device(int fd);
++bool is_stm_device(int fd);
+ bool is_vc4_device(int fd);
+ 
+ /**
 -- 
 2.25.1
