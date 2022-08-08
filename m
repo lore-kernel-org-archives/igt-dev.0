@@ -1,19 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7B1FD10E0EC
- for <igt-dev@lists.freedesktop.org>; Tue,  2 Aug 2022 09:45:47 +0000 (UTC)
-Date: Tue, 2 Aug 2022 11:45:43 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Message-ID: <YujyR7jUfgHyTeP0@kamilkon-desk1>
-References: <20220801095806.23914-1-zbigniew.kempczynski@intel.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Date: Mon, 8 Aug 2022 06:37:14 +0530
+From: Ramalingam C <ramalingam.c@intel.com>
+To: Matthew Auld <matthew.auld@intel.com>
+Message-ID: <YvBhwvj+umyYqqry@ramaling-i9x>
+References: <20220805131052.441896-1-matthew.auld@intel.com>
+Content-Type: text/plain; charset="utf-8"
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20220801095806.23914-1-zbigniew.kempczynski@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t] i915/gem_pipe_control_store_loop: Use a
- simple spinner to preuse the buffer
+In-Reply-To: <20220805131052.441896-1-matthew.auld@intel.com>
+MIME-Version: 1.0
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/gem_lmem_swapping: add some
+ coverage for big objects
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,92 +18,89 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Chris Wilson <chris.p.wilson@intel.com>
+Cc: igt-dev@lists.freedesktop.org,
+ Thomas =?utf-8?Q?Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+ intel-gfx@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On 2022-08-01 at 11:58:06 +0200, Zbigniew Kempczyński wrote:
-> From: Chris Wilson <chris.p.wilson@intel.com>
+On 2022-08-05 at 14:10:52 +0100, Matthew Auld wrote:
+> Everything we are testing here unfortunately fits within one packet (8M)
+> which means we have zero coverage when we need to split the copy over
+> multiple packets (including the aux CCS state).
 > 
-> Replace the blit commands that need to be adjusted for different archs,
-> and use the library routines to make a buffer busy for a controlled
-> length of time. This has the added advantage of ensuring that the buffer
-> is busy during the w/a processing inside the execbuf ioctl.
-> 
-> Signed-off-by: Chris Wilson <chris.p.wilson@intel.com>
-> Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-> Tested-by: Arjun Melkaveri <arjun.melkaveri@intel.com>
-
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-
+> Signed-off-by: Matthew Auld <matthew.auld@intel.com>
+> Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+> Cc: Ramalingam C <ramalingam.c@intel.com>
 > ---
->  tests/i915/gem_pipe_control_store_loop.c | 39 +++++++++---------------
->  1 file changed, 15 insertions(+), 24 deletions(-)
+>  tests/i915/gem_lmem_swapping.c | 16 +++++++++++++++-
+>  1 file changed, 15 insertions(+), 1 deletion(-)
 > 
-> diff --git a/tests/i915/gem_pipe_control_store_loop.c b/tests/i915/gem_pipe_control_store_loop.c
-> index 20fdc9c155..df3da9f5b2 100644
-> --- a/tests/i915/gem_pipe_control_store_loop.c
-> +++ b/tests/i915/gem_pipe_control_store_loop.c
-> @@ -71,36 +71,25 @@ store_pipe_control_loop(bool preuse_buffer, int timeout)
->  	ibb = intel_bb_create(buf_ops_get_fd(bops), 4096);
+> diff --git a/tests/i915/gem_lmem_swapping.c b/tests/i915/gem_lmem_swapping.c
+> index 1a4f4ca5..67e95cea 100644
+> --- a/tests/i915/gem_lmem_swapping.c
+> +++ b/tests/i915/gem_lmem_swapping.c
+> @@ -63,6 +63,7 @@ struct params {
+>  #define TEST_ENGINES	(1 << 4)
+>  #define TEST_MULTI	(1 << 5)
+>  #define TEST_CCS	(1 << 6)
+> +#define TEST_BIG	(1 << 7)
+>  	unsigned int flags;
+>  	unsigned int seed;
+>  	bool oom_test;
+> @@ -477,8 +478,8 @@ static void fill_params(int i915, struct params *params,
+>  {
+>  	const int swap_mb = /* For lmem, swap is total of smem + swap. */
+>  		igt_get_total_ram_mb() + igt_get_total_swap_mb();
+> -	const unsigned int size = 1 << 20;
+>  	const int max_swap_pct = 75;
+> +	unsigned int size;
+Since we are extending, could we test for >2G too? Might catch if we ever break the obj size
+support for >=2G in kernel. Like using int/uint instead of u64.
+
+May be another test as TEST_HUGE!?
+
+Otherwise looks good to me
+Reveiwed-by: Ramalingam C<ramalingam.c@intel.com>
+
+>  	/*
+>  	 * In random mode, add 85% hard limit to use system memory.
+>  	 * noticed that 88.8% can trigger OOM on some system.
+> @@ -487,6 +488,17 @@ static void fill_params(int i915, struct params *params,
+>  	int spill_mb;
+>  	uint32_t handle;
 >  
->  	igt_until_timeout(timeout) {
-> +		igt_spin_t *spin = NULL;
-> +
->  		/* we want to check tlb consistency of the pipe_control target,
->  		 * so get a new buffer every time around */
->  		target_buf = intel_buf_create(bops, 4096, 1, 8, 0,
->  					      I915_TILING_NONE,
->  					      I915_COMPRESSION_NONE);
->  
-> -		if (preuse_buffer) {
-> -			intel_bb_add_intel_buf(ibb, target_buf, true);
-> -			intel_bb_out(ibb, XY_COLOR_BLT_CMD_NOLEN |
-> -				     COLOR_BLT_WRITE_ALPHA |
-> -				     XY_COLOR_BLT_WRITE_RGB |
-> -				     (4 + (ibb->gen >= 8)));
-> -
-> -			intel_bb_out(ibb, (3 << 24) | (0xf0 << 16) | 64);
-> -			intel_bb_out(ibb, 0);
-> -			intel_bb_out(ibb, 1 << 16 | 1);
-> -
-> -			/*
-> -			 * IMPORTANT: We need to preuse the buffer in a
-> -			 * different domain than what the pipe control write
-> -			 * (and kernel wa) uses!
-> -			 */
-> -			intel_bb_emit_reloc_fenced(ibb, target_buf->handle,
-> -						   I915_GEM_DOMAIN_RENDER,
-> -						   I915_GEM_DOMAIN_RENDER,
-> -						   0, target_buf->addr.offset);
-> -			intel_bb_out(ibb, 0xdeadbeef);
-> -
-> -			intel_bb_flush_blit(ibb);
-> -		}
+> +	size = 1 << 20;
+> +	if (flags & TEST_BIG) {
 > +		/*
-> +		 * IMPORTANT: We need to preuse the buffer in a
-> +		 * different domain than what the pipe control write
-> +		 * (and kernel wa) uses!
-> +		 *
-> +		 * The dependency sets (RENDER, RENDER).
+> +		 * The kernel only copies in small chunks, so make sure we
+> +		 * have some coverage where multiple packets are needed to copy
+> +		 * the entire object.
 > +		 */
-> +		if (preuse_buffer)
-> +			spin = igt_spin_new(buf_ops_get_fd(bops),
-> +					    .ahnd = ibb->allocator_handle,
-> +					    .dependency = target_buf->handle);
->  
->  		/* gem_storedw_batches_loop.c is a bit overenthusiastic with
->  		 * creating new batchbuffers - with buffer reuse disabled, the
-> @@ -149,6 +138,8 @@ store_pipe_control_loop(bool preuse_buffer, int timeout)
->  		}
->  
->  		intel_bb_flush(ibb, 0);
-> +		if (spin)
-> +			igt_spin_free(buf_ops_get_fd(bops), spin);
->  
->  		intel_buf_cpu_map(target_buf, 1);
->  
+> +		size = 1u << 26; /* 64M */
+> +		size += 1u << 16; /* So we also exceed NUM_CCS_BLKS_PER_XFER */
+> +	}
+> +
+>  	if (flags & TEST_RANDOM) {
+>  		params->size.min = 4096;
+>  		handle = create_bo(i915, &params->size.min, &region->region,
+> @@ -733,6 +745,7 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
+>  		unsigned int flags;
+>  	} *test, tests[] = {
+>  		{ "basic", 0 },
+> +		{ "basic-big", TEST_BIG },
+>  		{ "random", TEST_RANDOM },
+>  		{ "random-engines", TEST_RANDOM | TEST_ENGINES },
+>  		{ "heavy-random", TEST_RANDOM | TEST_HEAVY },
+> @@ -746,6 +759,7 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
+>  		{ "parallel-random-verify", TEST_PARALLEL | TEST_RANDOM | TEST_VERIFY },
+>  		{ "parallel-multi", TEST_PARALLEL | TEST_RANDOM | TEST_VERIFY | TEST_ENGINES | TEST_MULTI },
+>  		{ "verify-ccs", TEST_CCS },
+> +		{ "verify-ccs-big", TEST_CCS | TEST_BIG },
+>  		{ "verify-random-ccs", TEST_CCS | TEST_RANDOM },
+>  		{ "heavy-verify-random-ccs", TEST_CCS | TEST_RANDOM | TEST_HEAVY },
+>  		{ "heavy-verify-multi-ccs", TEST_CCS | TEST_RANDOM | TEST_HEAVY | TEST_ENGINES | TEST_MULTI },
 > -- 
-> 2.34.1
+> 2.37.1
 > 
