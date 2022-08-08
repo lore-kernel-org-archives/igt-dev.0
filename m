@@ -1,13 +1,24 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-From: Matthew Auld <matthew.auld@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Tue,  9 Aug 2022 11:26:38 +0100
-Message-Id: <20220809102638.146913-1-matthew.auld@intel.com>
+Received: from alexa-out-sd-02.qualcomm.com (alexa-out-sd-02.qualcomm.com
+ [199.106.114.39])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D7469112D4D
+ for <igt-dev@lists.freedesktop.org>; Mon,  8 Aug 2022 19:59:13 +0000 (UTC)
+Message-ID: <74ab4d10-183f-0450-87ae-57fb6324eaa4@quicinc.com>
+Date: Mon, 8 Aug 2022 12:59:08 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Language: en-US
+To: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
+References: <20220804220235.26076-1-quic_rohiiyer@quicinc.com>
+ <20220804220235.26076-4-quic_rohiiyer@quicinc.com>
+ <85r11q8wkn.wl-ashutosh.dixit@intel.com>
+ <b8fd14ff-681b-df11-ae6b-c9b859142571@quicinc.com>
+ <85pmha8qj0.wl-ashutosh.dixit@intel.com>
+From: Abhinav Kumar <quic_abhinavk@quicinc.com>
+In-Reply-To: <85pmha8qj0.wl-ashutosh.dixit@intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v2] tests/gem_lmem_swapping: add some
- coverage for big objects
+Subject: Re: [igt-dev] [PATCH i-g-t v6 3/3] tests/kms_writeback: Enhance
+ kms_writeback for custom modes
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -15,84 +26,54 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: =?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
- intel-gfx@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org, quic_aravindh@quicinc.com,
+ petri.latvala@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Everything we are testing here unfortunately fits within one packet (8M)
-which means we have zero coverage when we need to split the copy over
-multiple packets (including the aux CCS state).
+Hi Ashutosh
 
-v2:
- - Add some coverage for 2G objects, just to see if something blows up
-   with overflowing int. (Ram)
- - Just make TEST_RANDOM use bigger sizes to ensure we get coverage of
-   objects that require splitting the copy into multiple packets.
+On 8/8/2022 12:49 PM, Dixit, Ashutosh wrote:
+> On Mon, 08 Aug 2022 10:41:50 -0700, Abhinav Kumar wrote:
+>>
+>> Hi Ashutosh
+>>
+>> On 8/8/2022 10:38 AM, Dixit, Ashutosh wrote:
+>>> On Thu, 04 Aug 2022 15:02:35 -0700, Rohith Iyer wrote:
+>>>>
+>>>> 	igt_subtest("writeback-pixel-formats") {
+>>>> +		igt_skip_on(data.dump_check || data.list_modes);
+>>>> 		drmModePropertyBlobRes *formats_blob = get_writeback_formats_blob(output);
+>>>> 		const char *valid_chars = "01234568 ABCGNRUVXY";
+>>>> 		unsigned int i;
+>>>
+>>> $ ninja -C build
+>>> ninja: Entering directory `build'
+>>> [120/1183] Compiling C object tests/kms_writeback.p/kms_writeback.c.o
+>>> ../tests/kms_writeback.c: In function ‘__igt_unique____real_main480’:
+>>> ../tests/kms_writeback.c:532:17: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+>>>     532 |                 drmModePropertyBlobRes *formats_blob = get_writeback_formats_blob(output);
+>>>         |                 ^~~~~~~~~~~~~~~~~~~~~~
+>>> ../tests/kms_writeback.c:555:17: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+>>>     555 |                 igt_fb_t invalid_output_fb;
+>>>         |                 ^~~~~~~~
+>>> ../tests/kms_writeback.c:571:17: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+>>>     571 |                 igt_fb_t output_fb;
+>>>         |                 ^~~~~~~~
+>>> ../tests/kms_writeback.c:586:17: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+>>>     586 |                 igt_fb_t output_fb;
+>>>         |                 ^~~~~~~~
+>>
+>> All these warnings were pre-existing warnings in kms_writeback even before
+>> this series and not introduced by this series.
+> 
+> Hi Abhinav, doesn't seem to be the case, git blame:
+> 
+>      531 22fa5ae83a885 (Rohith Iyer                   2022-08-04 15:02:35 -0700 531)             igt_skip_on(data.dump_check || data.list
 
-Signed-off-by: Matthew Auld <matthew.auld@intel.com>
-Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
-Cc: Ramalingam C <ramalingam.c@intel.com>
----
- tests/i915/gem_lmem_swapping.c | 18 ++++++++++++++++--
- 1 file changed, 16 insertions(+), 2 deletions(-)
-
-diff --git a/tests/i915/gem_lmem_swapping.c b/tests/i915/gem_lmem_swapping.c
-index 1a4f4ca5..cccdb319 100644
---- a/tests/i915/gem_lmem_swapping.c
-+++ b/tests/i915/gem_lmem_swapping.c
-@@ -63,6 +63,7 @@ struct params {
- #define TEST_ENGINES	(1 << 4)
- #define TEST_MULTI	(1 << 5)
- #define TEST_CCS	(1 << 6)
-+#define TEST_MASSIVE	(1 << 7)
- 	unsigned int flags;
- 	unsigned int seed;
- 	bool oom_test;
-@@ -477,8 +478,8 @@ static void fill_params(int i915, struct params *params,
- {
- 	const int swap_mb = /* For lmem, swap is total of smem + swap. */
- 		igt_get_total_ram_mb() + igt_get_total_swap_mb();
--	const unsigned int size = 1 << 20;
- 	const int max_swap_pct = 75;
-+	unsigned int size;
- 	/*
- 	 * In random mode, add 85% hard limit to use system memory.
- 	 * noticed that 88.8% can trigger OOM on some system.
-@@ -487,12 +488,23 @@ static void fill_params(int i915, struct params *params,
- 	int spill_mb;
- 	uint32_t handle;
- 
-+	size = 1 << 20;
-+	if (flags & TEST_MASSIVE)
-+		size = 1u << 31;
-+
- 	if (flags & TEST_RANDOM) {
- 		params->size.min = 4096;
- 		handle = create_bo(i915, &params->size.min, &region->region,
- 				   do_oom_test);
- 		gem_close(i915, handle);
--		params->size.max = 2 * size + params->size.min;
-+		/*
-+		 * Big enough to ensure we need to split the copy (both the
-+		 * actual pages and aux CCS state) into multiple packets. Also
-+		 * larger enough to ensure we get a mix of 64K and 2M GTT pages
-+		 * (1G GTT pages are still missing from the kernel).
-+		 */
-+		params->size.max = (1ul << 24) + size + params->size.min;
-+		size = params->size.max;
- 	} else {
- 		params->size.min = size;
- 		params->size.max = size;
-@@ -733,6 +745,8 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
- 		unsigned int flags;
- 	} *test, tests[] = {
- 		{ "basic", 0 },
-+		{ "massive",  TEST_MASSIVE }, /* check for (int) overflows */
-+		{ "massive-random",  TEST_RANDOM | TEST_MASSIVE },
- 		{ "random", TEST_RANDOM },
- 		{ "random-engines", TEST_RANDOM | TEST_ENGINES },
- 		{ "heavy-random", TEST_RANDOM | TEST_HEAVY },
--- 
-2.37.1
+Ah, you are right. Will fix this asap.
+> 
+>> However, we will be happy to fix these for the benefit of all.
+> 
+> Thanks, yes please fix.
