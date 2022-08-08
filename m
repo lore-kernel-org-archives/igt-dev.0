@@ -1,17 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5232B10ED75
- for <igt-dev@lists.freedesktop.org>; Mon,  8 Aug 2022 16:20:16 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 306DB10E3B0
+ for <igt-dev@lists.freedesktop.org>; Mon,  8 Aug 2022 16:20:17 +0000 (UTC)
 From: Ryszard Knop <ryszard.knop@intel.com>
 To: Development mailing list for IGT GPU Tools <igt-dev@lists.freedesktop.org>
-Date: Mon,  8 Aug 2022 18:18:22 +0200
-Message-Id: <20220808161825.1942387-4-ryszard.knop@intel.com>
+Date: Mon,  8 Aug 2022 18:18:23 +0200
+Message-Id: <20220808161825.1942387-5-ryszard.knop@intel.com>
 In-Reply-To: <20220808161825.1942387-1-ryszard.knop@intel.com>
 References: <20220628094435.854519-1-ryszard.knop@intel.com>
  <20220808161825.1942387-1-ryszard.knop@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v2 3/7] runner: Add the --environment flag
+Subject: [igt-dev] [PATCH i-g-t v2 4/7] runner: Serialize the provided
+ environment flags
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,229 +24,275 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Allows specifying additional environment variables to be set for the
-launched test processes. This commit introduces the argument parsing.
+Settings serialization now creates a separate file, environment.txt,
+which contains KEY=VALUE pairs of environment variables to use for test
+process spawning. Only vars created with --environment are serialized.
+Also add misc warning fixes.
 
 v2:
-- Moved warning fixes from later commits here
-- igt_list_empty_or_null -> igt_list_empty (Mauro)
-- Optimized the parser, more error handling (Mauro)
+- Simplify env var reading from files (Mauro)
+- Don't align settings loading block (Mauro)
+- Make filenames static const (Mauro)
 
 Signed-off-by: Ryszard Knop <ryszard.knop@intel.com>
 ---
- runner/settings.c | 123 +++++++++++++++++++++++++++++++++++++++++++++-
- runner/settings.h |   9 ++++
- 2 files changed, 131 insertions(+), 1 deletion(-)
+ runner/settings.c | 183 ++++++++++++++++++++++++++++++++++++++--------
+ 1 file changed, 152 insertions(+), 31 deletions(-)
 
 diff --git a/runner/settings.c b/runner/settings.c
-index ba288043..d0f642a4 100644
+index d0f642a4..b57ab080 100644
 --- a/runner/settings.c
 +++ b/runner/settings.c
-@@ -35,6 +35,7 @@ enum {
- 	OPT_DRY_RUN = 'd',
- 	OPT_INCLUDE = 't',
- 	OPT_EXCLUDE = 'x',
-+	OPT_ENVIRONMENT = 'e',
- 	OPT_SYNC = 's',
- 	OPT_LOG_LEVEL = 'l',
- 	OPT_OVERWRITE = 'o',
-@@ -390,6 +391,119 @@ static void free_regexes(struct regex_list *regexes)
- 	free(regexes->regexes);
+@@ -79,6 +79,9 @@ static struct {
+ 	{ 0, 0 },
+ };
+ 
++static const char settings_filename[] = "metadata.txt";
++static const char env_filename[] = "environment.txt";
++
+ static bool set_log_level(struct settings* settings, const char *level)
+ {
+ 	typeof(*log_levels) *it;
+@@ -504,6 +507,11 @@ static void free_env_vars(struct igt_list_head *env_vars) {
+ 	}
  }
  
-+/**
-+ * string_trim_and_duplicate() - returns a duplicated, trimmed string
-+ * @string: string to trim and duplicate
-+ * 
-+ * If the provided string is NULL, a NULL is returned. In any other case, a
-+ * newly-allocated string of length up to strlen(string) is returned. The
-+ * returned string has its whitespace removed (as detected by isspace), while
-+ * the original string is left unmodified.
-+ */
-+static char *string_trim_and_duplicate(const char *string) {
-+	size_t length;
-+
-+	if (string == NULL)
-+		return NULL;
-+
-+	length = strlen(string);
-+
-+	while (length > 0 && isspace(string[0])) {
-+		string++;
-+		length--;
-+	}
-+
-+	while (length > 0 && isspace(string[length - 1])) {
-+		length--;
-+	}
-+
-+	return strndup(string, length);
-+}
-+
-+/**
-+ * add_env_var() - Adds a new environment variable to the runner settings.
-+ * @env_vars: Pointer to the env var list head from the settings.
-+ * @key_value: Environment variable key-value pair string to add.
-+ *
-+ * key_value must be a string like "KEY=VALUE" or just "KEY" if the value is to
-+ * be loaded from the runner's environment variables. In the latter case, if
-+ * the requested variable is not set, the operation will fail.
-+ * 
-+ * An empty variable may be set by providing an key_value of "KEY=" or setting
-+ * an empty variable for the runner process, then providing just the "KEY".
-+ */
-+static bool add_env_var(struct igt_list_head *env_vars, const char *key_value) {
-+	char *env_kv, *value_str;
-+	struct environment_variable *var = NULL;
-+
-+	if (env_vars == NULL || key_value == NULL || strlen(key_value) == 0)
-+		goto error;
-+
-+	env_kv = strdup(key_value);
-+	value_str = strpbrk(env_kv, "\n=");
-+
-+	if (value_str == env_kv) {
-+		fprintf(stderr, "Missing key for --environment \"%s\"\n", key_value);
-+		goto error;
-+	}
-+
-+	if (value_str != NULL && value_str[0] != '=') {
-+		fprintf(stderr, "Invalid characters in key for --environment \"%s\"\n", key_value);
-+		goto error;
-+	}
-+
-+	if (value_str != NULL) {
-+		/* value provided - copy string contents after '=' */
-+		value_str[0] = '\0';
-+		value_str++;
-+	} else {
-+		/* env_kv is the key - use the runner's environment, if set */
-+		value_str = getenv(env_kv);
-+		if (value_str == NULL) {
-+			fprintf(stderr, "No value provided for --environment \"%s\" and "
-+			                "variable is not set for igt_runner\n", env_kv);
-+			goto error;
-+		}
-+	}
-+
-+	var = malloc(sizeof(struct environment_variable));
-+
-+	var->key = string_trim_and_duplicate(env_kv);
-+	if (strlen(var->key) == 0) {
-+		fprintf(stderr, "Environment variable key is empty for \"%s\"\n", key_value);
-+		goto error;
-+	}
-+
-+	var->value = strdup(value_str); /* Can be empty, that's okay */
-+
-+	igt_list_add_tail(&var->link, env_vars);
-+	free(env_kv);
-+	return true;
-+
-+error:
-+	if (var != NULL)
-+		free(var);
-+
-+	if (env_kv != NULL)
-+		free(env_kv);
-+
-+	return false;
-+}
-+
-+static void free_env_vars(struct igt_list_head *env_vars) {
-+	struct environment_variable *iter;
-+
-+	while (!igt_list_empty(env_vars)) {
-+		iter = igt_list_first_entry(env_vars, iter, link);
-+
-+		free(iter->key);
-+		free(iter->value);
-+
-+		igt_list_del(&iter->link);
-+		free(iter);
-+	}
++static bool file_exists_at(int dirfd, const char *filename)
++{
++	return faccessat(dirfd, filename, F_OK, 0) == 0;
 +}
 +
  static bool readable_file(const char *filename)
  {
  	return !access(filename, R_OK);
-@@ -486,6 +600,7 @@ static void print_version(void)
- void init_settings(struct settings *settings)
+@@ -893,14 +901,78 @@ bool validate_settings(struct settings *settings)
+ 	return true;
+ }
+ 
+-static char settings_filename[] = "metadata.txt";
++/**
++ * fopenat() - wrapper for fdopen(openat(dirfd, filename))
++ * @dirfd: directory fd to pass to openat
++ * @filename: file name to open with openat
++ * @flags: flags to pass to openat
++ * @openat_mode: (octal) mode to pass to openat
++ * @fdopen_mode: (text) mode to pass to fdopen
++ */
++static FILE *fopenat(int dirfd, const char *filename, int flags, mode_t openat_mode, const char *fdopen_mode)
++{
++	int fd;
++	FILE *f;
++
++	if ((fd = openat(dirfd, filename, flags, openat_mode)) < 0) {
++		usage(stderr, "fopenat(%s, %d) failed: %s",
++		      filename, flags, strerror(errno));
++		return NULL;
++	}
++
++	f = fdopen(fd, fdopen_mode);
++	if (!f) {
++		close(fd);
++		return NULL;
++	}
++
++	return f;
++}
++
++static FILE *fopenat_read(int dirfd, const char *filename)
++{
++	return fopenat(dirfd, filename, O_RDONLY, 0000, "r");
++}
++
++static FILE *fopenat_create(int dirfd, const char *filename, bool overwrite)
++{
++	mode_t mode_if_exists = overwrite ? O_TRUNC : O_EXCL;
++	return fopenat(dirfd, filename, O_CREAT | O_RDWR | mode_if_exists, 0666, "w");
++}
++
++static bool serialize_environment(struct settings *settings, int dirfd)
++{
++	struct environment_variable *iter;
++	FILE *f;
++
++	if (file_exists_at(dirfd, env_filename) && !settings->overwrite) {
++		usage(stderr, "%s already exists, not overwriting", env_filename);
++		return false;
++	}
++
++	if ((f = fopenat_create(dirfd, env_filename, settings->overwrite)) == NULL)
++		return false;
++
++	igt_list_for_each_entry(iter, &settings->env_vars, link) {
++		fprintf(f, "%s=%s\n", iter->key, iter->value);
++	}
++
++	if (settings->sync) {
++		fflush(f);
++		fsync(fileno(f));
++	}
++
++	fclose(f);
++	return true;
++}
++
+ bool serialize_settings(struct settings *settings)
  {
- 	memset(settings, 0, sizeof(*settings));
-+	IGT_INIT_LIST_HEAD(&settings->env_vars);
+ #define SERIALIZE_LINE(f, s, name, format) fprintf(f, "%s : " format "\n", #name, s->name)
+ 
+-	int dirfd, covfd, fd;
+-	char path[PATH_MAX];
+ 	FILE *f;
++	int dirfd, covfd;
++	char path[PATH_MAX];
+ 
+ 	if (!settings->results_path) {
+ 		usage(stderr, "No results-path set; this shouldn't happen");
+@@ -928,28 +1000,13 @@ bool serialize_settings(struct settings *settings)
+ 		}
+ 	}
+ 
+-	if (!settings->overwrite &&
+-	    faccessat(dirfd, settings_filename, F_OK, 0) == 0) {
+-		usage(stderr, "Settings metadata already exists and not overwriting");
+-		return false;
+-	}
+-
+-	if (settings->overwrite &&
+-	    unlinkat(dirfd, settings_filename, 0) != 0 &&
+-	    errno != ENOENT) {
+-		usage(stderr, "Error removing old settings metadata");
+-		return false;
+-	}
+-
+-	if ((fd = openat(dirfd, settings_filename, O_CREAT | O_EXCL | O_WRONLY, 0666)) < 0) {
+-		usage(stderr, "Creating settings serialization file failed: %s", strerror(errno));
++	if (file_exists_at(dirfd, settings_filename) && !settings->overwrite) {
++		usage(stderr, "%s already exists, not overwriting", settings_filename);
+ 		close(dirfd);
+ 		return false;
+ 	}
+ 
+-	f = fdopen(fd, "w");
+-	if (!f) {
+-		close(fd);
++	if ((f = fopenat_create(dirfd, settings_filename, settings->overwrite)) == NULL) {
+ 		close(dirfd);
+ 		return false;
+ 	}
+@@ -980,11 +1037,22 @@ bool serialize_settings(struct settings *settings)
+ 	SERIALIZE_LINE(f, settings, code_coverage_script, "%s");
+ 
+ 	if (settings->sync) {
+-		fsync(fd);
+-		fsync(dirfd);
++		fflush(f);
++		fsync(fileno(f));
+ 	}
+ 
+ 	fclose(f);
++
++	if (!igt_list_empty(&settings->env_vars)) {
++		if (!serialize_environment(settings, dirfd)) {
++			close(dirfd);
++			return false;
++		}
++	}
++
++	if (settings->sync)
++		fsync(dirfd);
++
+ 	close(dirfd);
+ 	return true;
+ 
+@@ -1053,22 +1121,62 @@ bool read_settings_from_file(struct settings *settings, FILE *f)
+ #undef PARSE_LINE
  }
  
- void clear_settings(struct settings *settings)
-@@ -497,6 +612,7 @@ void clear_settings(struct settings *settings)
++/**
++ * read_env_vars_from_file() - load env vars from a file
++ * @env_vars: list head to add env var entries to
++ * @f: opened file stream to read
++ *
++ * Loads the environment.txt file and adds each line-separated KEY=VALUE pair
++ * into the provided env_vars list. Lines not containing the '=' K-V separator,
++ * starting with a '#' (comments) or '=' (missing keys) are ignored.
++ *
++ * The function returns true if the env vars were read successfully, or there
++ * was nothing to be read.
++ */
++static bool read_env_vars_from_file(struct igt_list_head *env_vars, FILE *f)
++{
++	char *line = NULL;
++	ssize_t line_length;
++	size_t line_buffer_length = 0;
++
++	while ((line_length = getline(&line, &line_buffer_length, f)) != -1) {
++		char *line_ptr = line;
++
++		while (isspace(line_ptr)) {
++			line_length--;
++			line_ptr++;
++		}
++
++		if (*line_ptr == '\0' || *line_ptr == '#' || *line_ptr == '=')
++			continue; /* Empty, whitespace, comment or missing key */
++
++		if (strchr(line_ptr, '=') == NULL)
++			continue; /* Missing value */
++
++		/* Strip the line feed, but keep trailing whitespace */
++		if (line_length > 0 && line[line_length - 1] == '\n')
++			line[line_length - 1] = '\0';
++
++		add_env_var(env_vars, line);
++	}
++
++	/* input file can be empty */
++	if (line != NULL)
++		free(line);
++
++	return true;
++}
++
+ bool read_settings_from_dir(struct settings *settings, int dirfd)
+ {
+-	int fd;
+ 	FILE *f;
  
- 	free_regexes(&settings->include_regexes);
- 	free_regexes(&settings->exclude_regexes);
-+	free_env_vars(&settings->env_vars);
+ 	clear_settings(settings);
  
- 	init_settings(settings);
+-	if ((fd = openat(dirfd, settings_filename, O_RDONLY)) < 0)
++	/* settings are always there */
++	if ((f = fopenat_read(dirfd, settings_filename)) == NULL)
+ 		return false;
+ 
+-	f = fdopen(fd, "r");
+-	if (!f) {
+-		close(fd);
+-		return false;
+-	}
+-
+ 	if (!read_settings_from_file(settings, f)) {
+ 		fclose(f);
+ 		return false;
+@@ -1076,5 +1184,18 @@ bool read_settings_from_dir(struct settings *settings, int dirfd)
+ 
+ 	fclose(f);
+ 
++	/* env file may not exist if no --environment was set */
++	if (file_exists_at(dirfd, env_filename)) {
++		if ((f = fopenat_read(dirfd, env_filename)) == NULL)
++			return false;
++
++		if (!read_env_vars_from_file(&settings->env_vars, f)) {
++			fclose(f);
++			return false;
++		}
++
++		fclose(f);
++	}
++
+ 	return true;
  }
-@@ -515,6 +631,7 @@ bool parse_options(int argc, char **argv,
- 		{"allow-non-root", no_argument, NULL, OPT_ALLOW_NON_ROOT},
- 		{"include-tests", required_argument, NULL, OPT_INCLUDE},
- 		{"exclude-tests", required_argument, NULL, OPT_EXCLUDE},
-+		{"environment", required_argument, NULL, OPT_ENVIRONMENT},
- 		{"abort-on-monitored-error", optional_argument, NULL, OPT_ABORT_ON_ERROR},
- 		{"disk-usage-limit", required_argument, NULL, OPT_DISK_USAGE_LIMIT},
- 		{"sync", no_argument, NULL, OPT_SYNC},
-@@ -544,7 +661,7 @@ bool parse_options(int argc, char **argv,
- 
- 	settings->dmesg_warn_level = -1;
- 
--	while ((c = getopt_long(argc, argv, "hn:dt:x:sl:omb:L",
-+	while ((c = getopt_long(argc, argv, "hn:dt:x:e:sl:omb:L",
- 				long_options, NULL)) != -1) {
- 		switch (c) {
- 		case OPT_VERSION:
-@@ -570,6 +687,10 @@ bool parse_options(int argc, char **argv,
- 			if (!add_regex(&settings->exclude_regexes, strdup(optarg)))
- 				goto error;
- 			break;
-+		case OPT_ENVIRONMENT:
-+			if (!add_env_var(&settings->env_vars, optarg))
-+				goto error;
-+			break;
- 		case OPT_ABORT_ON_ERROR:
- 			if (!parse_abort_conditions(settings, optarg))
- 				goto error;
-diff --git a/runner/settings.h b/runner/settings.h
-index 6d444d01..819c3460 100644
---- a/runner/settings.h
-+++ b/runner/settings.h
-@@ -7,6 +7,8 @@
- #include <stdio.h>
- #include <glib.h>
- 
-+#include "igt_list.h"
-+
- enum {
- 	LOG_LEVEL_NORMAL = 0,
- 	LOG_LEVEL_QUIET = -1,
-@@ -37,6 +39,12 @@ struct regex_list {
- 	size_t size;
- };
- 
-+struct environment_variable {
-+	struct igt_list_head link;
-+	char * key;
-+	char * value;
-+};
-+
- struct settings {
- 	int abort_mask;
- 	size_t disk_usage_limit;
-@@ -46,6 +54,7 @@ struct settings {
- 	bool allow_non_root;
- 	struct regex_list include_regexes;
- 	struct regex_list exclude_regexes;
-+	struct igt_list_head env_vars;
- 	bool sync;
- 	int log_level;
- 	bool overwrite;
 -- 
 2.37.1
