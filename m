@@ -1,21 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from alexa-out-sd-02.qualcomm.com (alexa-out-sd-02.qualcomm.com
- [199.106.114.39])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9A3CA2BB40
- for <igt-dev@lists.freedesktop.org>; Mon,  8 Aug 2022 21:31:12 +0000 (UTC)
-Message-ID: <bc3ba67f-49e6-f490-ed0c-1f0441061cee@quicinc.com>
-Date: Mon, 8 Aug 2022 14:31:10 -0700
+Content-Type: multipart/alternative;
+ boundary="===============8618134547132699112=="
 MIME-Version: 1.0
-Content-Language: en-US
-To: Abhinav Kumar <quic_abhinavk@quicinc.com>, <igt-dev@lists.freedesktop.org>
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Jessica Zhang" <quic_jesszhan@quicinc.com>
+Date: Mon, 08 Aug 2022 21:38:05 -0000
+Message-ID: <165999468578.13151.3960651944332302135@emeril.freedesktop.org>
 References: <20220808203909.403-1-quic_jesszhan@quicinc.com>
- <4eeab4a5-f42f-0227-ded9-959578ef8991@quicinc.com>
-From: Jessica Zhang <quic_jesszhan@quicinc.com>
-In-Reply-To: <4eeab4a5-f42f-0227-ded9-959578ef8991@quicinc.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-Subject: Re: [igt-dev] [PATCH i-g-t v1] tests/kms_writeback: Fix build
- warnings
+In-Reply-To: <20220808203909.403-1-quic_jesszhan@quicinc.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
+ =?utf-8?q?kms=5Fwriteback=3A_Fix_build_warnings?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,114 +17,270 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: quic_aravindh@quicinc.com, petri.latvala@intel.com
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
+--===============8618134547132699112==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+== Series Details ==
+
+Series: tests/kms_writeback: Fix build warnings
+URL   : https://patchwork.freedesktop.org/series/107067/
+State : success
+
+== Summary ==
+
+CI Bug Log - changes from CI_DRM_11975 -> IGTPW_7621
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7621/index.html
+
+Participating hosts (42 -> 41)
+------------------------------
+
+  Missing    (1): fi-bdw-samus 
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in IGTPW_7621:
+
+### IGT changes ###
+
+#### Suppressed ####
+
+  The following results come from untrusted machines, tests, or statuses.
+  They do not affect the overall result.
+
+  * igt@i915_module_load@reload:
+    - {bat-dg2-10}:       [PASS][1] -> [DMESG-WARN][2]
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11975/bat-dg2-10/igt@i915_module_load@reload.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7621/bat-dg2-10/igt@i915_module_load@reload.html
+
+  * igt@i915_pm_rpm@basic-rte:
+    - {bat-dg2-8}:        [PASS][3] -> [DMESG-WARN][4]
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11975/bat-dg2-8/igt@i915_pm_rpm@basic-rte.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7621/bat-dg2-8/igt@i915_pm_rpm@basic-rte.html
+
+  
+Known issues
+------------
+
+  Here are the changes found in IGTPW_7621 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@i915_module_load@load:
+    - fi-kbl-soraka:      [PASS][5] -> [DMESG-WARN][6] ([i915#1982])
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11975/fi-kbl-soraka/igt@i915_module_load@load.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7621/fi-kbl-soraka/igt@i915_module_load@load.html
+
+  * igt@i915_selftest@live@requests:
+    - fi-blb-e6850:       [PASS][7] -> [DMESG-FAIL][8] ([i915#4528])
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11975/fi-blb-e6850/igt@i915_selftest@live@requests.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7621/fi-blb-e6850/igt@i915_selftest@live@requests.html
+
+  * igt@kms_chamelium@common-hpd-after-suspend:
+    - fi-pnv-d510:        NOTRUN -> [SKIP][9] ([fdo#109271])
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7621/fi-pnv-d510/igt@kms_chamelium@common-hpd-after-suspend.html
+
+  
+#### Possible fixes ####
+
+  * igt@gem_exec_suspend@basic-s3@smem:
+    - {bat-adlm-1}:       [DMESG-WARN][10] ([i915#2867]) -> [PASS][11]
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11975/bat-adlm-1/igt@gem_exec_suspend@basic-s3@smem.html
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7621/bat-adlm-1/igt@gem_exec_suspend@basic-s3@smem.html
+
+  * igt@i915_selftest@live@hangcheck:
+    - bat-dg1-5:          [DMESG-FAIL][12] ([i915#4494] / [i915#4957]) -> [PASS][13]
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11975/bat-dg1-5/igt@i915_selftest@live@hangcheck.html
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7621/bat-dg1-5/igt@i915_selftest@live@hangcheck.html
+    - bat-dg1-6:          [DMESG-FAIL][14] ([i915#4494] / [i915#4957]) -> [PASS][15]
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11975/bat-dg1-6/igt@i915_selftest@live@hangcheck.html
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7621/bat-dg1-6/igt@i915_selftest@live@hangcheck.html
+
+  * igt@i915_selftest@live@requests:
+    - fi-pnv-d510:        [DMESG-FAIL][16] ([i915#4528]) -> [PASS][17]
+   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11975/fi-pnv-d510/igt@i915_selftest@live@requests.html
+   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7621/fi-pnv-d510/igt@i915_selftest@live@requests.html
+
+  * igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions:
+    - fi-bsw-kefka:       [FAIL][18] ([i915#6298]) -> [PASS][19]
+   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11975/fi-bsw-kefka/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions.html
+   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7621/fi-bsw-kefka/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [i915#1982]: https://gitlab.freedesktop.org/drm/intel/issues/1982
+  [i915#2867]: https://gitlab.freedesktop.org/drm/intel/issues/2867
+  [i915#4312]: https://gitlab.freedesktop.org/drm/intel/issues/4312
+  [i915#4494]: https://gitlab.freedesktop.org/drm/intel/issues/4494
+  [i915#4528]: https://gitlab.freedesktop.org/drm/intel/issues/4528
+  [i915#4957]: https://gitlab.freedesktop.org/drm/intel/issues/4957
+  [i915#4983]: https://gitlab.freedesktop.org/drm/intel/issues/4983
+  [i915#5828]: https://gitlab.freedesktop.org/drm/intel/issues/5828
+  [i915#6298]: https://gitlab.freedesktop.org/drm/intel/issues/6298
 
 
-On 8/8/2022 2:09 PM, Abhinav Kumar wrote:
-> 
-> 
-> On 8/8/2022 1:39 PM, Jessica Zhang wrote:
->> Fix the following build warnings for kms_writeback:
->>
->> $ ninja -C build
->> ninja: Entering directory `build'
->> [120/1183] Compiling C object tests/kms_writeback.p/kms_writeback.c.o
->> ../tests/kms_writeback.c: In function ‘__igt_unique____real_main480’:
->> ../tests/kms_writeback.c:532:17: warning: ISO C90 forbids mixed 
->> declarations and code [-Wdeclaration-after-statement]
->>    532 |                 drmModePropertyBlobRes *formats_blob = 
->> get_writeback_formats_blob(output);
->>        |                 ^~~~~~~~~~~~~~~~~~~~~~
->> ../tests/kms_writeback.c:555:17: warning: ISO C90 forbids mixed 
->> declarations and code [-Wdeclaration-after-statement]
->>    555 |                 igt_fb_t invalid_output_fb;
->>        |                 ^~~~~~~~
->> ../tests/kms_writeback.c:571:17: warning: ISO C90 forbids mixed 
->> declarations and code [-Wdeclaration-after-statement]
->>    571 |                 igt_fb_t output_fb;
->>        |                 ^~~~~~~~
->> ../tests/kms_writeback.c:586:17: warning: ISO C90 forbids mixed 
->> declarations and code [-Wdeclaration-after-statement]
->>    86 |                 igt_fb_t output_fb;
->>       |                 ^~~~~~~~
->>
->> Reported-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
->> Signed-off-by: Jessica Zhang <quic_jesszhan@quicinc.com>
-> 
-> LGTM,
+Build changes
+-------------
 
-Merged and applied. Thanks!
+  * CI: CI-20190529 -> None
+  * IGT: IGT_6617 -> IGTPW_7621
 
-- Jessica Zhang
+  CI-20190529: 20190529
+  CI_DRM_11975: 5b5ad12f8d971a9feeb54a3f3d58b48de8978ad2 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_7621: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7621/index.html
+  IGT_6617: 22fa5ae83a8854f32e28b2c2a8581f4e36f78288 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
 
-> 
-> Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
-> 
->> ---
->>   tests/kms_writeback.c | 18 ++++++++++++------
->>   1 file changed, 12 insertions(+), 6 deletions(-)
->>
->> diff --git a/tests/kms_writeback.c b/tests/kms_writeback.c
->> index 82c244ffaa01..9d13458577b6 100644
->> --- a/tests/kms_writeback.c
->> +++ b/tests/kms_writeback.c
->> @@ -528,11 +528,14 @@ igt_main_args("b:c:dl", long_options, help_str, 
->> opt_handler, NULL)
->>        */
->>       igt_describe("Check the writeback format");
->>       igt_subtest("writeback-pixel-formats") {
->> -        igt_skip_on(data.dump_check || data.list_modes);
->> -        drmModePropertyBlobRes *formats_blob = 
->> get_writeback_formats_blob(output);
->> -        const char *valid_chars = "01234568 ABCGNRUVXY";
->>           unsigned int i;
->>           char *c;
->> +        drmModePropertyBlobRes *formats_blob;
->> +        const char *valid_chars;
->> +
->> +        igt_skip_on(data.dump_check || data.list_modes);
->> +        formats_blob = get_writeback_formats_blob(output);
->> +        valid_chars = "01234568 ABCGNRUVXY";
->>           /*
->>            * We don't have a comprehensive list of formats, so just check
->> @@ -551,8 +554,9 @@ igt_main_args("b:c:dl", long_options, help_str, 
->> opt_handler, NULL)
->>                "(output framebuffer and fence); this test goes through"
->>                "the combination of possible bad options");
->>       igt_subtest("writeback-invalid-parameters") {
->> -        igt_skip_on(data.dump_check || data.list_modes);
->>           igt_fb_t invalid_output_fb;
->> +
->> +        igt_skip_on(data.dump_check || data.list_modes);
->>           fb_id = igt_create_fb(display.drm_fd, mode.hdisplay / 2,
->>                         mode.vdisplay / 2,
->>                         DRM_FORMAT_XRGB8888,
->> @@ -567,8 +571,9 @@ igt_main_args("b:c:dl", long_options, help_str, 
->> opt_handler, NULL)
->>       igt_describe("Validate WRITEBACK_FB_ID with valid and invalid 
->> options");
->>       igt_subtest("writeback-fb-id") {
->> -        igt_skip_on(data.dump_check || data.list_modes);
->>           igt_fb_t output_fb;
->> +
->> +        igt_skip_on(data.dump_check || data.list_modes);
->>           fb_id = igt_create_fb(display.drm_fd, mode.hdisplay, 
->> mode.vdisplay,
->>                         DRM_FORMAT_XRGB8888,
->>                         DRM_FORMAT_MOD_LINEAR,
->> @@ -582,8 +587,9 @@ igt_main_args("b:c:dl", long_options, help_str, 
->> opt_handler, NULL)
->>       igt_describe("Check writeback output with CRC validation");
->>       igt_subtest("writeback-check-output") {
->> -        igt_skip_on(data.dump_check || data.list_modes);
->>           igt_fb_t output_fb;
->> +
->> +        igt_skip_on(data.dump_check || data.list_modes);
->>           fb_id = igt_create_fb(display.drm_fd, mode.hdisplay, 
->> mode.vdisplay,
->>                         DRM_FORMAT_XRGB8888,
->>                         igt_fb_mod_to_tiling(0),
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7621/index.html
+
+--===============8618134547132699112==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/kms_writeback: Fix build warnings</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/107067/">https://patchwork.freedesktop.org/series/107067/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7621/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7621/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_11975 -&gt; IGTPW_7621</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7621/index.html</p>
+<h2>Participating hosts (42 -&gt; 41)</h2>
+<p>Missing    (1): fi-bdw-samus </p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in IGTPW_7621:</p>
+<h3>IGT changes</h3>
+<h4>Suppressed</h4>
+<p>The following results come from untrusted machines, tests, or statuses.<br />
+  They do not affect the overall result.</p>
+<ul>
+<li>
+<p>igt@i915_module_load@reload:</p>
+<ul>
+<li>{bat-dg2-10}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11975/bat-dg2-10/igt@i915_module_load@reload.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7621/bat-dg2-10/igt@i915_module_load@reload.html">DMESG-WARN</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_pm_rpm@basic-rte:</p>
+<ul>
+<li>{bat-dg2-8}:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11975/bat-dg2-8/igt@i915_pm_rpm@basic-rte.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7621/bat-dg2-8/igt@i915_pm_rpm@basic-rte.html">DMESG-WARN</a></li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_7621 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@i915_module_load@load:</p>
+<ul>
+<li>fi-kbl-soraka:      <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11975/fi-kbl-soraka/igt@i915_module_load@load.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7621/fi-kbl-soraka/igt@i915_module_load@load.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1982">i915#1982</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@requests:</p>
+<ul>
+<li>fi-blb-e6850:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11975/fi-blb-e6850/igt@i915_selftest@live@requests.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7621/fi-blb-e6850/igt@i915_selftest@live@requests.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4528">i915#4528</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_chamelium@common-hpd-after-suspend:</p>
+<ul>
+<li>fi-pnv-d510:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7621/fi-pnv-d510/igt@kms_chamelium@common-hpd-after-suspend.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@gem_exec_suspend@basic-s3@smem:</p>
+<ul>
+<li>{bat-adlm-1}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11975/bat-adlm-1/igt@gem_exec_suspend@basic-s3@smem.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2867">i915#2867</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7621/bat-adlm-1/igt@gem_exec_suspend@basic-s3@smem.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@hangcheck:</p>
+<ul>
+<li>
+<p>bat-dg1-5:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11975/bat-dg1-5/igt@i915_selftest@live@hangcheck.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4494">i915#4494</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4957">i915#4957</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7621/bat-dg1-5/igt@i915_selftest@live@hangcheck.html">PASS</a></p>
+</li>
+<li>
+<p>bat-dg1-6:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11975/bat-dg1-6/igt@i915_selftest@live@hangcheck.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4494">i915#4494</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4957">i915#4957</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7621/bat-dg1-6/igt@i915_selftest@live@hangcheck.html">PASS</a></p>
+</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@requests:</p>
+<ul>
+<li>fi-pnv-d510:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11975/fi-pnv-d510/igt@i915_selftest@live@requests.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4528">i915#4528</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7621/fi-pnv-d510/igt@i915_selftest@live@requests.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions:</p>
+<ul>
+<li>fi-bsw-kefka:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11975/fi-bsw-kefka/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6298">i915#6298</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7621/fi-bsw-kefka/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_6617 -&gt; IGTPW_7621</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_11975: 5b5ad12f8d971a9feeb54a3f3d58b48de8978ad2 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_7621: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7621/index.html<br />
+  IGT_6617: 22fa5ae83a8854f32e28b2c2a8581f4e36f78288 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============8618134547132699112==--
