@@ -1,17 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D4B8BC673F
- for <igt-dev@lists.freedesktop.org>; Tue,  9 Aug 2022 12:51:22 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E6139D4773
+ for <igt-dev@lists.freedesktop.org>; Tue,  9 Aug 2022 12:51:18 +0000 (UTC)
 From: Ryszard Knop <ryszard.knop@intel.com>
 To: Development mailing list for IGT GPU Tools <igt-dev@lists.freedesktop.org>
-Date: Tue,  9 Aug 2022 14:50:37 +0200
-Message-Id: <20220809125037.1231032-19-ryszard.knop@intel.com>
+Date: Tue,  9 Aug 2022 14:50:32 +0200
+Message-Id: <20220809125037.1231032-14-ryszard.knop@intel.com>
 In-Reply-To: <20220809125037.1231032-1-ryszard.knop@intel.com>
 References: <20220809125037.1231032-1-ryszard.knop@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v2 18/19] lib,
- tools: Add the 'graphics' build-time setting
+Subject: [igt-dev] [PATCH i-g-t v2 13/19] tests/i915/*: Remove unused headers
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,503 +22,622 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-The graphics=<enabled/disabled> setting decides whenever igt will depend
-on cairo and pixman. Disabling those dependencies prevents transitive
-dependencies on a large number of graphics-related libraries (X11, etc),
-thus allowing igt tools to be installed in compute-only environments.
-
-In practice this works for tools and benchmarks only - tests or overlays
-depend on those libraries too much to selectively disable features in
-there while keeping it all maintainable.
+Using CLion's automated code inspection, most unused includes were found
+and removed. Some warnings remain as CLion is unable to track code usage
+across certain attributes, but the vast majority of unneeded headers are
+now gone.
 
 Signed-off-by: Ryszard Knop <ryszard.knop@intel.com>
 ---
- lib/igt.h             |  7 +++-
- lib/igt_debugfs.c     |  2 +
- lib/igt_debugfs.h     |  5 ++-
- lib/igt_fb.h          | 10 ++++-
- lib/intel_bufops.c    |  5 +++
- lib/intel_bufops.h    |  2 +
- lib/meson.build       | 18 +++++----
- lib/tests/meson.build |  5 ++-
- meson.build           | 32 ++++++++++-----
- meson_options.txt     |  4 ++
- tools/meson.build     | 93 ++++++++++++++++++++++++-------------------
- 11 files changed, 121 insertions(+), 62 deletions(-)
+ tests/i915/api_intel_bb.c             | 5 -----
+ tests/i915/drm_fdinfo.c               | 1 -
+ tests/i915/gen3_mixed_blits.c         | 7 -------
+ tests/i915/gen3_render_linear_blits.c | 6 ------
+ tests/i915/gen3_render_mixed_blits.c  | 7 -------
+ tests/i915/gen3_render_tiledx_blits.c | 7 -------
+ tests/i915/gen3_render_tiledy_blits.c | 7 -------
+ tests/i915/gen7_exec_parse.c          | 2 --
+ tests/i915/gen9_exec_parse.c          | 1 -
+ tests/i915/i915_hangman.c             | 3 ---
+ tests/i915/i915_module_load.c         | 4 ----
+ tests/i915/i915_pm_backlight.c        | 1 -
+ tests/i915/i915_pm_dc.c               | 1 -
+ tests/i915/i915_pm_lpsp.c             | 1 -
+ tests/i915/i915_pm_rpm.c              | 4 ----
+ tests/i915/i915_pm_rps.c              | 1 -
+ tests/i915/i915_pm_sseu.c             | 1 -
+ tests/i915/i915_suspend.c             | 6 ------
+ tests/i915/kms_dsc.c                  | 8 --------
+ tests/i915/kms_fbcon_fbt.c            | 1 -
+ tests/i915/kms_fence_pin_leak.c       | 3 ---
+ tests/i915/kms_frontbuffer_tracking.c | 1 -
+ tests/i915/kms_mmap_write_crc.c       | 2 --
+ tests/i915/kms_psr.c                  | 1 -
+ tests/i915/kms_psr2_sf.c              | 2 --
+ tests/i915/kms_psr2_su.c              | 2 --
+ tests/i915/kms_psr_stress_test.c      | 3 ---
+ tests/i915/kms_pwrite_crc.c           | 4 ----
+ tests/i915/perf.c                     | 3 ---
+ tests/i915/perf_pmu.c                 | 6 ------
+ tests/i915/sysfs_clients.c            | 4 ----
+ tests/i915/sysfs_defaults.c           | 3 ---
+ tests/i915/sysfs_heartbeat_interval.c | 5 -----
+ tests/i915/sysfs_preempt_timeout.c    | 3 ---
+ tests/i915/sysfs_timeslice_duration.c | 3 ---
+ 35 files changed, 119 deletions(-)
 
-diff --git a/lib/igt.h b/lib/igt.h
-index 869515e8..95f60881 100644
---- a/lib/igt.h
-+++ b/lib/igt.h
-@@ -32,8 +32,6 @@
- #include "igt_debugfs.h"
- #include "igt_draw.h"
- #include "igt_dummyload.h"
--#include "igt_fb.h"
--#include "igt_frame.h"
- #include "igt_gt.h"
- #include "igt_kms.h"
- #include "igt_params.h"
-@@ -50,6 +48,11 @@
- #include "i915/gem_mman.h"
- #include "i915/gem_engine_topology.h"
+diff --git a/tests/i915/api_intel_bb.c b/tests/i915/api_intel_bb.c
+index 1f663d2a..58151c7c 100644
+--- a/tests/i915/api_intel_bb.c
++++ b/tests/i915/api_intel_bb.c
+@@ -23,18 +23,13 @@
  
-+#ifdef HAVE_GRAPHICS
-+#include "igt_fb.h"
-+#include "igt_frame.h"
-+#endif
-+
- #ifdef HAVE_CHAMELIUM
- #include "igt_alsa.h"
- #include "igt_audio.h"
-diff --git a/lib/igt_debugfs.c b/lib/igt_debugfs.c
-index ca893c12..b3460327 100644
---- a/lib/igt_debugfs.c
-+++ b/lib/igt_debugfs.c
-@@ -1041,6 +1041,7 @@ igt_pipe_crc_get_for_frame(int drm_fd, igt_pipe_crc_t *pipe_crc,
- 	crc_sanity_checks(pipe_crc, crc);
- }
- 
-+#ifdef HAVE_GRAPHICS
- /**
-  * igt_pipe_crc_get_current:
-  * @drm_fd: Pointer to drm fd for vblank counter
-@@ -1058,6 +1059,7 @@ igt_pipe_crc_get_current(int drm_fd, igt_pipe_crc_t *pipe_crc, igt_crc_t *crc)
- 
- 	return igt_pipe_crc_get_for_frame(drm_fd, pipe_crc, vblank, crc);
- }
-+#endif /* HAVE_GRAPHICS */
- 
- /**
-  * igt_pipe_crc_collect_crc:
-diff --git a/lib/igt_debugfs.h b/lib/igt_debugfs.h
-index 37e85067..c7fbf78c 100644
---- a/lib/igt_debugfs.h
-+++ b/lib/igt_debugfs.h
-@@ -119,10 +119,13 @@ int igt_pipe_crc_get_crcs(igt_pipe_crc_t *pipe_crc, int n_crcs,
- 			  igt_crc_t **out_crcs);
- void igt_pipe_crc_drain(igt_pipe_crc_t *pipe_crc);
- void igt_pipe_crc_get_single(igt_pipe_crc_t *pipe_crc, igt_crc_t *out_crc);
--void igt_pipe_crc_get_current(int drm_fd, igt_pipe_crc_t *pipe_crc, igt_crc_t *crc);
- void igt_pipe_crc_get_for_frame(int drm_fd, igt_pipe_crc_t *pipe_crc,
- 				unsigned int vblank, igt_crc_t *crc);
- 
-+#ifdef HAVE_GRAPHICS
-+void igt_pipe_crc_get_current(int drm_fd, igt_pipe_crc_t *pipe_crc, igt_crc_t *crc);
-+#endif /* HAVE_GRAPHICS */
-+
- void igt_pipe_crc_collect_crc(igt_pipe_crc_t *pipe_crc, igt_crc_t *out_crc);
- 
- void igt_hpd_storm_set_threshold(int fd, unsigned int threshold);
-diff --git a/lib/igt_fb.h b/lib/igt_fb.h
-index b3f096fe..2c48ff4f 100644
---- a/lib/igt_fb.h
-+++ b/lib/igt_fb.h
-@@ -29,7 +29,10 @@
- #ifndef __IGT_FB_H__
- #define __IGT_FB_H__
- 
-+#ifdef HAVE_GRAPHICS
+ #include "igt.h"
+ #include "igt_crc.h"
+-#include "i915/gem.h"
+ #include "i915/gem_create.h"
+ #include <unistd.h>
+ #include <stdlib.h>
+ #include <stdio.h>
+ #include <string.h>
+-#include <fcntl.h>
+ #include <inttypes.h>
  #include <cairo.h>
-+#endif
-+
- #include <stddef.h>
- #include <stdbool.h>
- #include <drm_fourcc.h>
-@@ -90,7 +93,6 @@ typedef struct igt_fb {
- 	enum igt_color_range color_range;
- 	uint64_t modifier;
- 	uint64_t size;
--	cairo_surface_t *cairo_surface;
- 	unsigned int domain;
- 	unsigned int num_planes;
- 	uint32_t strides[4];
-@@ -99,6 +101,10 @@ typedef struct igt_fb {
- 	unsigned int plane_width[4];
- 	unsigned int plane_height[4];
- 	void *driver_priv;
-+
-+#ifdef HAVE_GRAPHICS
-+	cairo_surface_t *cairo_surface;
-+#endif /* HAVE_GRAPHICS */
- } igt_fb_t;
+-#include <errno.h>
+-#include <sys/stat.h>
+-#include <sys/ioctl.h>
+ #include <glib.h>
+ #include <zlib.h>
+ #include "intel_bufops.h"
+diff --git a/tests/i915/drm_fdinfo.c b/tests/i915/drm_fdinfo.c
+index 65b8b830..59e8da55 100644
+--- a/tests/i915/drm_fdinfo.c
++++ b/tests/i915/drm_fdinfo.c
+@@ -24,7 +24,6 @@
  
- /**
-@@ -184,6 +190,7 @@ bool igt_fb_is_ccs_plane(const struct igt_fb *fb, int plane);
- bool igt_fb_is_gen12_ccs_cc_plane(const struct igt_fb *fb, int plane);
- int igt_fb_ccs_to_main_plane(const struct igt_fb *fb, int ccs_plane);
- 
-+#ifdef HAVE_GRAPHICS
- /* cairo-based painting */
- cairo_surface_t *igt_get_cairo_surface(int fd, struct igt_fb *fb);
- cairo_surface_t *igt_cairo_image_surface_create_from_png(const char *filename);
-@@ -205,6 +212,7 @@ void igt_paint_image(cairo_t *cr, const char *filename,
- int igt_cairo_printf_line(cairo_t *cr, enum igt_text_align align,
- 			       double yspacing, const char *fmt, ...)
- 			       __attribute__((format (printf, 4, 5)));
-+#endif /* HAVE_GRAPHICS */
- 
- /* helpers to handle drm fourcc codes */
- uint32_t igt_bpp_depth_to_drm_format(int bpp, int depth);
-diff --git a/lib/intel_bufops.c b/lib/intel_bufops.c
-index 356ffddf..adbdd04d 100644
---- a/lib/intel_bufops.c
-+++ b/lib/intel_bufops.c
-@@ -23,7 +23,10 @@
+ #include "igt.h"
+ #include "igt_core.h"
+-#include "igt_device.h"
+ #include "igt_drm_fdinfo.h"
+ #include "i915/gem.h"
+ #include "i915/gem_vm.h"
+diff --git a/tests/i915/gen3_mixed_blits.c b/tests/i915/gen3_mixed_blits.c
+index 242b9985..5f2ffbeb 100644
+--- a/tests/i915/gen3_mixed_blits.c
++++ b/tests/i915/gen3_mixed_blits.c
+@@ -34,16 +34,9 @@
   */
  
- #include <sys/ioctl.h>
-+
-+#ifdef HAVE_GRAPHICS
- #include <cairo.h>
-+#endif
+ #include <stdlib.h>
+-#include <stdio.h>
+ #include <string.h>
+-#include <fcntl.h>
+ #include <inttypes.h>
+-#include <errno.h>
+-#include <sys/stat.h>
+-#include <sys/time.h>
+-#include <sys/ioctl.h>
  
- #include "igt_x86.h"
- #include "intel_bufops.h"
-@@ -1208,6 +1211,7 @@ const char *intel_buf_set_name(struct intel_buf *buf, const char *name)
- 	return strncpy(buf->name, name, INTEL_BUF_NAME_MAXSIZE);
- }
+-#include "drm.h"
+ #include "i915/gem.h"
+ #include "i915/gem_create.h"
+ #include "i915_reg.h"
+diff --git a/tests/i915/gen3_render_linear_blits.c b/tests/i915/gen3_render_linear_blits.c
+index 9c6b4c70..88294efb 100644
+--- a/tests/i915/gen3_render_linear_blits.c
++++ b/tests/i915/gen3_render_linear_blits.c
+@@ -34,15 +34,9 @@
+  */
  
-+#ifdef HAVE_GRAPHICS
- static void __intel_buf_write_to_png(struct buf_ops *bops,
- 				     struct intel_buf *buf,
- 				     const char *filename,
-@@ -1250,6 +1254,7 @@ void intel_buf_write_aux_to_png(struct intel_buf *buf, const char *filename)
+ #include <stdlib.h>
+-#include <stdio.h>
+ #include <string.h>
+-#include <fcntl.h>
+ #include <inttypes.h>
+-#include <errno.h>
+-#include <sys/stat.h>
+-#include <sys/time.h>
  
- 	__intel_buf_write_to_png(buf->bops, buf, filename, true);
- }
-+#endif /* HAVE_GRAPHICS */
+-#include "drm.h"
+ #include "i915/gem.h"
+ #include "i915/gem_create.h"
+ #include "i915_reg.h"
+diff --git a/tests/i915/gen3_render_mixed_blits.c b/tests/i915/gen3_render_mixed_blits.c
+index 1393055f..4fdb60c2 100644
+--- a/tests/i915/gen3_render_mixed_blits.c
++++ b/tests/i915/gen3_render_mixed_blits.c
+@@ -34,16 +34,9 @@
+  */
  
- #define DEFAULT_BUFOPS(__gen_start, __gen_end) \
- 	.gen_start          = __gen_start, \
-diff --git a/lib/intel_bufops.h b/lib/intel_bufops.h
-index 25b43073..d2b17329 100644
---- a/lib/intel_bufops.h
-+++ b/lib/intel_bufops.h
-@@ -187,7 +187,9 @@ void intel_buf_print(const struct intel_buf *buf);
- void intel_buf_dump(const struct intel_buf *buf, const char *filename);
- const char *intel_buf_set_name(struct intel_buf *buf, const char *name);
+ #include <stdlib.h>
+-#include <stdio.h>
+ #include <string.h>
+-#include <fcntl.h>
+ #include <inttypes.h>
+-#include <errno.h>
+-#include <sys/stat.h>
+-#include <sys/time.h>
+-#include <sys/ioctl.h>
  
-+#ifdef HAVE_GRAPHICS
- void intel_buf_write_to_png(struct intel_buf *buf, const char *filename);
- void intel_buf_write_aux_to_png(struct intel_buf *buf, const char *filename);
-+#endif /* HAVE_GRAPHICS */
+-#include "drm.h"
+ #include "i915/gem.h"
+ #include "i915/gem_create.h"
+ #include "i915_reg.h"
+diff --git a/tests/i915/gen3_render_tiledx_blits.c b/tests/i915/gen3_render_tiledx_blits.c
+index ece86749..d7e6e330 100644
+--- a/tests/i915/gen3_render_tiledx_blits.c
++++ b/tests/i915/gen3_render_tiledx_blits.c
+@@ -34,16 +34,9 @@
+  */
  
- #endif
-diff --git a/lib/meson.build b/lib/meson.build
-index 98c2803b..f9f908aa 100644
---- a/lib/meson.build
-+++ b/lib/meson.build
-@@ -12,7 +12,6 @@ lib_sources = [
- 	'i915/gem_vm.c',
- 	'i915/intel_memory_region.c',
- 	'i915/intel_mocs.c',
--	'i915/i915_blt.c',
- 	'i915/i915_crc.c',
- 	'igt_collection.c',
- 	'igt_color_encoding.c',
-@@ -69,10 +68,7 @@ lib_sources = [
- 	'intel_aux_pgtable.c',
- 	'intel_reg_map.c',
- 	'intel_iosf.c',
--	'igt_kms.c',
--	'igt_fb.c',
- 	'igt_core.c',
--	'igt_draw.c',
- 	'igt_list.c',
- 	'igt_map.c',
- 	'igt_pm.c',
-@@ -93,7 +89,6 @@ lib_sources = [
- ]
+ #include <stdlib.h>
+-#include <stdio.h>
+ #include <string.h>
+-#include <fcntl.h>
+ #include <inttypes.h>
+-#include <errno.h>
+-#include <sys/stat.h>
+-#include <sys/time.h>
+-#include <sys/ioctl.h>
  
- lib_deps = [
--	cairo,
- 	glib,
- 	libatomic,
- 	libdrm,
-@@ -103,12 +98,21 @@ lib_deps = [
- 	libudev,
- 	math,
- 	pciaccess,
--	pixman,
- 	pthreads,
- 	realtime,
- 	zlib
- ]
+-#include "drm.h"
+ #include "i915/gem.h"
+ #include "i915/gem_create.h"
+ #include "i915_reg.h"
+diff --git a/tests/i915/gen3_render_tiledy_blits.c b/tests/i915/gen3_render_tiledy_blits.c
+index 30097be6..8a738118 100644
+--- a/tests/i915/gen3_render_tiledy_blits.c
++++ b/tests/i915/gen3_render_tiledy_blits.c
+@@ -34,15 +34,8 @@
+  */
  
-+if build_graphics
-+	lib_deps += [cairo, pixman]
-+	lib_sources += [
-+		'igt_fb.c',
-+		'igt_kms.c',
-+		'igt_draw.c',
-+		'i915/i915_blt.c',
-+	]
-+endif
-+
- if libdrm_intel.found()
- 	lib_deps += libdrm_intel
- else
-@@ -146,7 +150,7 @@ if valgrind.found()
- 	lib_deps += valgrind
- endif
+ #include <stdlib.h>
+-#include <stdio.h>
+ #include <string.h>
+-#include <fcntl.h>
+ #include <inttypes.h>
+-#include <errno.h>
+-#include <sys/stat.h>
+-#include <sys/time.h>
+-#include <sys/ioctl.h>
+-#include "drm.h"
  
--if gsl.found()
-+if gsl.found() and build_graphics
- 	lib_deps += gsl
- 	lib_sources += [ 'igt_frame.c', 'igt_audio.c' ]
- endif
-diff --git a/lib/tests/meson.build b/lib/tests/meson.build
-index ceaf548b..196699a8 100644
---- a/lib/tests/meson.build
-+++ b/lib/tests/meson.build
-@@ -6,7 +6,6 @@ lib_tests = [
- 	'igt_conflicting_args',
- 	'igt_describe',
- 	'igt_dynamic_subtests',
--	'igt_edid',
- 	'igt_exit_handler',
- 	'igt_fork',
- 	'igt_fork_helper',
-@@ -22,6 +21,10 @@ lib_tests = [
- 	'i915_perf_data_alignment',
- ]
+ #include "i915/gem.h"
+ #include "i915/gem_create.h"
+diff --git a/tests/i915/gen7_exec_parse.c b/tests/i915/gen7_exec_parse.c
+index 69b768ed..b7ae3ea6 100644
+--- a/tests/i915/gen7_exec_parse.c
++++ b/tests/i915/gen7_exec_parse.c
+@@ -27,8 +27,6 @@
+ #include <stdio.h>
+ #include <errno.h>
  
-+if build_graphics
-+	lib_tests += 'igt_edid'
-+endif
-+
- lib_fail_tests = [
- 	'igt_no_subtest',
- 	'igt_simple_test_subtests',
-diff --git a/meson.build b/meson.build
-index 3e937f5a..03f46d63 100644
---- a/meson.build
-+++ b/meson.build
-@@ -82,8 +82,13 @@ endforeach
- build_chamelium = get_option('chamelium')
- build_docs = get_option('docs')
- build_tests = not get_option('tests').disabled()
-+build_graphics = not get_option('graphics').disabled()
- with_libdrm = get_option('libdrm_drivers')
- 
-+if build_tests and not build_graphics
-+	error('Building tests without graphics features is not supported')
-+endif
-+
- build_info = ['Build type: ' + get_option('buildtype')]
- 
- inc = include_directories('include/drm-uapi', 'include/linux-uapi', 'lib', 'lib/stubs/syscalls', '.')
-@@ -127,7 +132,6 @@ libunwind = dependency('libunwind', required : get_option('libunwind'))
- build_info += 'With libunwind: @0@'.format(libunwind.found())
- 
- libdw = dependency('libdw', required : true)
--pixman = dependency('pixman-1', required : true)
- 
- valgrind = dependency('valgrind', required : get_option('valgrind'))
- if valgrind.found()
-@@ -135,7 +139,15 @@ if valgrind.found()
- endif
- build_info += 'Valgrind annotations: @0@'.format(valgrind.found())
- 
--cairo = dependency('cairo', version : '>1.12.0', required : true)
-+if build_graphics
-+	config.set('HAVE_GRAPHICS', 1)
-+	cairo = dependency('cairo', version : '>1.12.0', required : true)
-+	pixman = dependency('pixman-1', required : true)
-+else
-+	cairo = disabler()
-+	pixman = disabler()
-+endif
-+
- libudev = dependency('libudev', required : true)
- glib = dependency('glib-2.0', required : true)
- 
-@@ -331,12 +343,14 @@ foreach str : build_info
- 	message(str)
- endforeach
- 
--if cairo.version().version_compare('<1.17.2')
--	if pixman.version().version_compare('<0.36.0')
--		warning('Pixman < 0.36.0 found, cannot test HDR formats')
-+if build_graphics
-+	if cairo.version().version_compare('<1.17.2')
-+		if pixman.version().version_compare('<0.36.0')
-+			warning('Pixman < 0.36.0 found, cannot test HDR formats')
-+		endif
-+		warning('Cairo < 1.17.2 found, cannot test HDR formats')
-+	elif pixman.version().version_compare('<0.36.0')
-+		# Cairo 1.17.2 requires 0.36.0 to compile, but somehow it went missing?
-+		error('Cairo with floating point support found, but pixman version too old')
- 	endif
--	warning('Cairo < 1.17.2 found, cannot test HDR formats')
--elif pixman.version().version_compare('<0.36.0')
--	# Cairo 1.17.2 requires 0.36.0 to compile, but somehow it went missing?
--	error('Cairo with floating point support found, but pixman version too old')
- endif
-diff --git a/meson_options.txt b/meson_options.txt
-index bed63efa..84dbe3a6 100644
---- a/meson_options.txt
-+++ b/meson_options.txt
-@@ -34,6 +34,10 @@ option('libdrm_drivers',
-        choices : ['', 'auto', 'intel', 'nouveau', 'amdgpu'],
-        description : 'libdrm libraries to be used')
- 
-+option('graphics',
-+       type : 'feature',
-+       description : 'Enable graphics-dependent features (cairo)')
-+
- option('libunwind',
-        type : 'feature',
-        description : 'Use libunwind')
-diff --git a/tools/meson.build b/tools/meson.build
-index 24d0ea71..106a7b04 100644
---- a/tools/meson.build
-+++ b/tools/meson.build
-@@ -16,7 +16,6 @@ tools_progs = [
- 	'intel_audio_dump',
- 	'intel_backlight',
- 	'intel_bios_dumper',
--	'intel_display_crc',
- 	'intel_display_poller',
- 	'intel_forcewaked',
- 	'intel_gpu_frequency',
-@@ -28,9 +27,7 @@ tools_progs = [
- 	'intel_lid',
- 	'intel_opregion_decode',
- 	'intel_panel_fitter',
--	'intel_pm_rpm',
- 	'intel_reg_checker',
--	'intel_residency',
- 	'intel_stepping',
- 	'intel_vbt_decode',
- 	'intel_watermark',
-@@ -39,50 +36,51 @@ tools_progs = [
- 	'dpcd_reg',
- 	'lsgpu',
- ]
--tool_deps = igt_deps
- 
- if libdrm_intel.found()
- 	tools_progs += [
- 		'intel_dump_decode',
- 		'intel_error_decode',
--		'intel_framebuffer_dump',
- 		'intel_perf_counters',
- 	]
--	tool_deps += zlib
-+endif
-+
-+if libdrm_intel.found() and build_graphics
-+	tools_progs += [
-+		'intel_pm_rpm',
-+		'intel_residency',
-+		'intel_display_crc',
-+		'intel_framebuffer_dump',
-+	]
- endif
- 
- foreach prog : tools_progs
- 	executable(prog, prog + '.c',
--		   dependencies : tool_deps,
-+		   dependencies : igt_deps,
- 		   install_rpath : bindir_rpathdir,
- 		   install : true)
- endforeach
- 
--if libudev.found()
--	intel_dp_compliance_src = [
--		'intel_dp_compliance.c',
--		'igt_dp_compliance_hotplug.c',
--		'igt_compliance_utils.c'
--	]
--	executable('intel_dp_compliance', sources : intel_dp_compliance_src,
--		   dependencies : [tool_deps, libudev],
--		   install_rpath : bindir_rpathdir,
--		   install : true)
--endif
+-#include <drm.h>
 -
--intel_l3_parity_src = [ 'intel_l3_parity.c', 'intel_l3_udev_listener.c' ]
--executable('intel_l3_parity', sources : intel_l3_parity_src,
--	   dependencies : tool_deps,
-+executable('intel_l3_parity',
-+	   sources : [
-+		'intel_l3_parity.c',
-+		'intel_l3_udev_listener.c',
-+	   ],
-+	   dependencies : igt_deps,
- 	   install_rpath : bindir_rpathdir,
- 	   install : true)
+ #include "igt.h"
+ #include "igt_device.h"
+ #include "i915/gem.h"
+diff --git a/tests/i915/gen9_exec_parse.c b/tests/i915/gen9_exec_parse.c
+index c8743a78..228a3d73 100644
+--- a/tests/i915/gen9_exec_parse.c
++++ b/tests/i915/gen9_exec_parse.c
+@@ -26,7 +26,6 @@
+ #include <stdbool.h>
+ #include <stdint.h>
+ #include <stdio.h>
+-#include <stdlib.h>
  
--intel_reg_src = [ 'intel_reg.c', 'intel_reg_decode.c', 'intel_reg_spec.c' ]
--executable('intel_reg', sources : intel_reg_src,
--	   dependencies : tool_deps,
-+executable('intel_reg',
-+	   sources : [
-+		'intel_reg.c',
-+		'intel_reg_decode.c',
-+		'intel_reg_spec.c',
-+	   ],
-+	   dependencies : igt_deps,
- 	   install : true,
- 	   install_rpath : bindir_rpathdir,
- 	   c_args : [
--	     '-DIGT_DATADIR="@0@"'.format(join_paths(prefix, datadir)),
-+		'-DIGT_DATADIR="@0@"'.format(join_paths(prefix, datadir)),
- 	   ])
+ #include "i915/gem.h"
+ #include "i915/gem_create.h"
+diff --git a/tests/i915/i915_hangman.c b/tests/i915/i915_hangman.c
+index c7d69fdd..7d55a1e0 100644
+--- a/tests/i915/i915_hangman.c
++++ b/tests/i915/i915_hangman.c
+@@ -26,10 +26,7 @@
+  *
+  */
  
- install_data('intel_gpu_abrt', install_dir : bindir)
-@@ -92,23 +90,36 @@ install_subdir('registers', install_dir : datadir)
- executable('intel_gpu_top', 'intel_gpu_top.c',
- 	   install : true,
- 	   install_rpath : bindir_rpathdir,
--	   dependencies : [lib_igt_perf,lib_igt_device_scan,lib_igt_drm_fdinfo,math])
-+	   dependencies : [lib_igt_perf, lib_igt_device_scan, lib_igt_drm_fdinfo, math])
+-#include <limits.h>
+ #include <sys/ioctl.h>
+-#include <sys/stat.h>
+-#include <sys/types.h>
+ #include <fcntl.h>
+ #include <signal.h>
  
--executable('amd_hdmi_compliance', 'amd_hdmi_compliance.c',
--	   dependencies : [tool_deps],
--	   install_rpath : bindir_rpathdir,
--	   install : true)
-+if build_graphics
-+	executable('amd_hdmi_compliance',
-+		   sources : [ 'amd_hdmi_compliance.c' ],
-+		   dependencies : [igt_deps],
-+		   install_rpath : bindir_rpathdir,
-+		   install : true)
-+endif
+diff --git a/tests/i915/i915_module_load.c b/tests/i915/i915_module_load.c
+index 4c72157c..70b2f4a7 100644
+--- a/tests/i915/i915_module_load.c
++++ b/tests/i915/i915_module_load.c
+@@ -22,10 +22,6 @@
+  */
+ #include "igt.h"
+ #include <dirent.h>
+-#include <sys/utsname.h>
+-#include <linux/limits.h>
+-#include <signal.h>
+-#include <libgen.h>
+ #include <signal.h>
+ #include <sys/ioctl.h>
+ #include <fcntl.h>
+diff --git a/tests/i915/i915_pm_backlight.c b/tests/i915/i915_pm_backlight.c
+index cafae7f7..c30e924d 100644
+--- a/tests/i915/i915_pm_backlight.c
++++ b/tests/i915/i915_pm_backlight.c
+@@ -27,7 +27,6 @@
  
--if libudev.found()
--	msm_dp_compliance_src = [
--		'msm_dp_compliance.c',
--		'igt_dp_compliance_hotplug.c',
--		'igt_compliance_utils.c'
--	]
--	executable('msm_dp_compliance', sources : msm_dp_compliance_src,
--			dependencies : [tool_deps, libudev],
--			install_rpath : bindir_rpathdir,
--			install : true)
-+if libudev.found() and build_graphics
-+	executable('intel_dp_compliance',
-+		   sources : [
-+			'intel_dp_compliance.c',
-+			'igt_dp_compliance_hotplug.c',
-+			'igt_compliance_utils.c'
-+		   ],
-+		   dependencies : [igt_deps, libudev],
-+		   install_rpath : bindir_rpathdir,
-+		   install : true)
-+
-+	executable('msm_dp_compliance',
-+		   sources : [
-+			'msm_dp_compliance.c',
-+			'igt_dp_compliance_hotplug.c',
-+			'igt_compliance_utils.c'
-+		   ],
-+		   dependencies : [igt_deps, libudev],
-+		   install_rpath : bindir_rpathdir,
-+		   install : true)
- endif
+ #include "igt.h"
+ #include <limits.h>
+-#include <sys/types.h>
+ #include <sys/stat.h>
+ #include <fcntl.h>
+ #include <stdio.h>
+diff --git a/tests/i915/i915_pm_dc.c b/tests/i915/i915_pm_dc.c
+index f664a2a2..78fe096b 100644
+--- a/tests/i915/i915_pm_dc.c
++++ b/tests/i915/i915_pm_dc.c
+@@ -25,7 +25,6 @@
+ #include <errno.h>
+ #include <fcntl.h>
+ #include <stdbool.h>
+-#include <stdio.h>
+ #include <string.h>
+ #include "igt.h"
+ #include "igt_kmod.h"
+diff --git a/tests/i915/i915_pm_lpsp.c b/tests/i915/i915_pm_lpsp.c
+index 3ad8b260..fc85c9f7 100644
+--- a/tests/i915/i915_pm_lpsp.c
++++ b/tests/i915/i915_pm_lpsp.c
+@@ -28,7 +28,6 @@
+ #include "igt_kmod.h"
+ #include "igt_pm.h"
+ #include "igt_sysfs.h"
+-#include <sys/types.h>
+ #include <sys/stat.h>
+ #include <fcntl.h>
+ #include <unistd.h>
+diff --git a/tests/i915/i915_pm_rpm.c b/tests/i915/i915_pm_rpm.c
+index e95875dc..912b9e4d 100644
+--- a/tests/i915/i915_pm_rpm.c
++++ b/tests/i915/i915_pm_rpm.c
+@@ -25,8 +25,6 @@
+  *
+  */
  
- subdir('i915-perf')
+-#include "config.h"
+-
+ #include <stdio.h>
+ #include <stdint.h>
+ #include <stdbool.h>
+@@ -38,8 +36,6 @@
+ #include <dirent.h>
+ #include <sys/ioctl.h>
+ #include <sys/mman.h>
+-#include <sys/types.h>
+-#include <sys/stat.h>
+ #include <linux/i2c.h>
+ #include <linux/i2c-dev.h>
+ 
+diff --git a/tests/i915/i915_pm_rps.c b/tests/i915/i915_pm_rps.c
+index a45a6905..3c744d75 100644
+--- a/tests/i915/i915_pm_rps.c
++++ b/tests/i915/i915_pm_rps.c
+@@ -34,7 +34,6 @@
+ #include <signal.h>
+ #include <errno.h>
+ #include <time.h>
+-#include <sys/wait.h>
+ 
+ #include "i915/gem.h"
+ #include "i915/gem_create.h"
+diff --git a/tests/i915/i915_pm_sseu.c b/tests/i915/i915_pm_sseu.c
+index 1b428c9b..2e2101e4 100644
+--- a/tests/i915/i915_pm_sseu.c
++++ b/tests/i915/i915_pm_sseu.c
+@@ -27,7 +27,6 @@
+ #include <fcntl.h>
+ #include <unistd.h>
+ #include <string.h>
+-#include <errno.h>
+ #include <time.h>
+ 
+ #include "i915_drm.h"
+diff --git a/tests/i915/i915_suspend.c b/tests/i915/i915_suspend.c
+index 94935595..a54ff612 100644
+--- a/tests/i915/i915_suspend.c
++++ b/tests/i915/i915_suspend.c
+@@ -30,13 +30,7 @@
+ #include <stdlib.h>
+ #include <stdio.h>
+ #include <string.h>
+-#include <fcntl.h>
+ #include <inttypes.h>
+-#include <errno.h>
+-#include <sys/stat.h>
+-#include <sys/ioctl.h>
+-
+-#include <drm.h>
+ 
+ #include "i915/gem.h"
+ #include "i915/gem_create.h"
+diff --git a/tests/i915/kms_dsc.c b/tests/i915/kms_dsc.c
+index be15238e..b66a5c43 100644
+--- a/tests/i915/kms_dsc.c
++++ b/tests/i915/kms_dsc.c
+@@ -30,19 +30,11 @@
+  *
+  */
+ #include "igt.h"
+-#include "igt_sysfs.h"
+-#include <errno.h>
+-#include <getopt.h>
+-#include <math.h>
+ #include <stdint.h>
+ #include <stdbool.h>
+ #include <strings.h>
+ #include <unistd.h>
+ #include <stdlib.h>
+-#include <signal.h>
+-#include <time.h>
+-#include <fcntl.h>
+-#include <termios.h>
+ 
+ IGT_TEST_DESCRIPTION("Test to validate display stream compression");
+ 
+diff --git a/tests/i915/kms_fbcon_fbt.c b/tests/i915/kms_fbcon_fbt.c
+index 98c452c4..ab59883d 100644
+--- a/tests/i915/kms_fbcon_fbt.c
++++ b/tests/i915/kms_fbcon_fbt.c
+@@ -28,7 +28,6 @@
+ #include "igt_device.h"
+ #include "igt_psr.h"
+ #include "igt_sysfs.h"
+-#include <sys/types.h>
+ #include <sys/stat.h>
+ #include <fcntl.h>
+ 
+diff --git a/tests/i915/kms_fence_pin_leak.c b/tests/i915/kms_fence_pin_leak.c
+index 16eb595f..500258b1 100644
+--- a/tests/i915/kms_fence_pin_leak.c
++++ b/tests/i915/kms_fence_pin_leak.c
+@@ -22,10 +22,7 @@
+  *
+  */
+ 
+-#include <errno.h>
+-#include <limits.h>
+ #include <stdbool.h>
+-#include <stdio.h>
+ #include <string.h>
+ 
+ #include "i915/gem.h"
+diff --git a/tests/i915/kms_frontbuffer_tracking.c b/tests/i915/kms_frontbuffer_tracking.c
+index 9518c706..5ca614de 100644
+--- a/tests/i915/kms_frontbuffer_tracking.c
++++ b/tests/i915/kms_frontbuffer_tracking.c
+@@ -25,7 +25,6 @@
+  */
+ 
+ #include <sys/types.h>
+-#include <sys/stat.h>
+ #include <fcntl.h>
+ #include <poll.h>
+ #include <pthread.h>
+diff --git a/tests/i915/kms_mmap_write_crc.c b/tests/i915/kms_mmap_write_crc.c
+index a57938b5..33823d2e 100644
+--- a/tests/i915/kms_mmap_write_crc.c
++++ b/tests/i915/kms_mmap_write_crc.c
+@@ -25,9 +25,7 @@
+  */
+ 
+ #include <errno.h>
+-#include <limits.h>
+ #include <stdbool.h>
+-#include <stdio.h>
+ #include <string.h>
+ 
+ #include "drmtest.h"
+diff --git a/tests/i915/kms_psr.c b/tests/i915/kms_psr.c
+index 480e2cc7..4b52c0ee 100644
+--- a/tests/i915/kms_psr.c
++++ b/tests/i915/kms_psr.c
+@@ -23,7 +23,6 @@
+  */
+ 
+ #include "igt.h"
+-#include "igt_sysfs.h"
+ #include "igt_psr.h"
+ #include <errno.h>
+ #include <stdbool.h>
+diff --git a/tests/i915/kms_psr2_sf.c b/tests/i915/kms_psr2_sf.c
+index 6612587c..a8de28b0 100644
+--- a/tests/i915/kms_psr2_sf.c
++++ b/tests/i915/kms_psr2_sf.c
+@@ -23,9 +23,7 @@
+  */
+ 
+ #include "igt.h"
+-#include "igt_sysfs.h"
+ #include "igt_psr.h"
+-#include <errno.h>
+ #include <stdbool.h>
+ #include <stdio.h>
+ #include <string.h>
+diff --git a/tests/i915/kms_psr2_su.c b/tests/i915/kms_psr2_su.c
+index caccf713..41180374 100644
+--- a/tests/i915/kms_psr2_su.c
++++ b/tests/i915/kms_psr2_su.c
+@@ -23,9 +23,7 @@
+  */
+ 
+ #include "igt.h"
+-#include "igt_sysfs.h"
+ #include "igt_psr.h"
+-#include <errno.h>
+ #include <stdbool.h>
+ #include <stdio.h>
+ #include <string.h>
+diff --git a/tests/i915/kms_psr_stress_test.c b/tests/i915/kms_psr_stress_test.c
+index daac41d4..444ae074 100644
+--- a/tests/i915/kms_psr_stress_test.c
++++ b/tests/i915/kms_psr_stress_test.c
+@@ -1,10 +1,7 @@
+ #include "igt.h"
+-#include "igt_sysfs.h"
+ #include "igt_psr.h"
+-#include <errno.h>
+ #include <poll.h>
+ #include <stdbool.h>
+-#include <stdio.h>
+ #include <string.h>
+ #include <sys/timerfd.h>
+ 
+diff --git a/tests/i915/kms_pwrite_crc.c b/tests/i915/kms_pwrite_crc.c
+index 584e6a19..7455b427 100644
+--- a/tests/i915/kms_pwrite_crc.c
++++ b/tests/i915/kms_pwrite_crc.c
+@@ -23,10 +23,6 @@
+  */
+ 
+ #include "igt.h"
+-#include <errno.h>
+-#include <limits.h>
+-#include <stdbool.h>
+-#include <stdio.h>
+ #include <string.h>
+ 
+ 
+diff --git a/tests/i915/perf.c b/tests/i915/perf.c
+index 5502a3fb..5ddd4f39 100644
+--- a/tests/i915/perf.c
++++ b/tests/i915/perf.c
+@@ -30,13 +30,10 @@
+ #include <errno.h>
+ #include <signal.h>
+ #include <sys/stat.h>
+-#include <sys/time.h>
+ #include <sys/times.h>
+ #include <sys/types.h>
+-#include <dirent.h>
+ #include <time.h>
+ #include <poll.h>
+-#include <math.h>
+ 
+ #include "i915/gem.h"
+ #include "i915/perf.h"
+diff --git a/tests/i915/perf_pmu.c b/tests/i915/perf_pmu.c
+index f363db2b..20a83212 100644
+--- a/tests/i915/perf_pmu.c
++++ b/tests/i915/perf_pmu.c
+@@ -29,14 +29,8 @@
+ #include <inttypes.h>
+ #include <errno.h>
+ #include <signal.h>
+-#include <sys/stat.h>
+-#include <sys/time.h>
+-#include <sys/times.h>
+-#include <sys/types.h>
+-#include <dirent.h>
+ #include <time.h>
+ #include <poll.h>
+-#include <sched.h>
+ 
+ #include "i915/gem.h"
+ #include "i915/gem_create.h"
+diff --git a/tests/i915/sysfs_clients.c b/tests/i915/sysfs_clients.c
+index ab79ff18..b1d41d89 100644
+--- a/tests/i915/sysfs_clients.c
++++ b/tests/i915/sysfs_clients.c
+@@ -5,15 +5,11 @@
+ 
+ #include <ctype.h>
+ #include <dirent.h>
+-#include <errno.h>
+ #include <fcntl.h>
+ #include <inttypes.h>
+-#include <limits.h>
+ #include <math.h>
+ #include <sched.h>
+ #include <sys/socket.h>
+-#include <sys/stat.h>
+-#include <sys/types.h>
+ #include <unistd.h>
+ 
+ #include "drmtest.h"
+diff --git a/tests/i915/sysfs_defaults.c b/tests/i915/sysfs_defaults.c
+index dda27a0a..6ab73491 100644
+--- a/tests/i915/sysfs_defaults.c
++++ b/tests/i915/sysfs_defaults.c
+@@ -22,11 +22,8 @@
+  */
+ 
+ #include <dirent.h>
+-#include <errno.h>
+ #include <fcntl.h>
+-#include <inttypes.h>
+ #include <sys/stat.h>
+-#include <sys/types.h>
+ #include <unistd.h>
+ 
+ #include "drmtest.h"
+diff --git a/tests/i915/sysfs_heartbeat_interval.c b/tests/i915/sysfs_heartbeat_interval.c
+index 8cebf627..60661862 100644
+--- a/tests/i915/sysfs_heartbeat_interval.c
++++ b/tests/i915/sysfs_heartbeat_interval.c
+@@ -24,11 +24,7 @@
+ #include <dirent.h>
+ #include <errno.h>
+ #include <fcntl.h>
+-#include <inttypes.h>
+ #include <signal.h>
+-#include <sys/stat.h>
+-#include <sys/types.h>
+-#include <sys/wait.h>
+ #include <unistd.h>
+ 
+ #include "igt_params.h"
+@@ -37,7 +33,6 @@
+ #include "i915/gem_context.h"
+ #include "i915/gem_engine_topology.h"
+ #include "intel_allocator.h"
+-#include "igt_debugfs.h"
+ #include "igt_dummyload.h"
+ #include "igt_sysfs.h"
+ #include "sw_sync.h"
+diff --git a/tests/i915/sysfs_preempt_timeout.c b/tests/i915/sysfs_preempt_timeout.c
+index 51503828..572a0e75 100644
+--- a/tests/i915/sysfs_preempt_timeout.c
++++ b/tests/i915/sysfs_preempt_timeout.c
+@@ -24,9 +24,7 @@
+ #include <dirent.h>
+ #include <errno.h>
+ #include <fcntl.h>
+-#include <inttypes.h>
+ #include <sched.h>
+-#include <sys/types.h>
+ #include <unistd.h>
+ 
+ #include "igt.h"
+@@ -35,7 +33,6 @@
+ #include "i915/gem.h"
+ #include "i915/gem_context.h"
+ #include "i915/gem_engine_topology.h"
+-#include "igt_debugfs.h"
+ #include "igt_dummyload.h"
+ #include "igt_sysfs.h"
+ #include "intel_allocator.h"
+diff --git a/tests/i915/sysfs_timeslice_duration.c b/tests/i915/sysfs_timeslice_duration.c
+index 8a2f1c2f..ef5d7f3d 100644
+--- a/tests/i915/sysfs_timeslice_duration.c
++++ b/tests/i915/sysfs_timeslice_duration.c
+@@ -24,9 +24,6 @@
+ #include <dirent.h>
+ #include <errno.h>
+ #include <fcntl.h>
+-#include <inttypes.h>
+-#include <sys/stat.h>
+-#include <sys/types.h>
+ #include <unistd.h>
+ 
+ #include "igt_params.h"
 -- 
 2.37.1
