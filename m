@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 859D8D4771
- for <igt-dev@lists.freedesktop.org>; Tue,  9 Aug 2022 12:51:18 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D4B8BC673F
+ for <igt-dev@lists.freedesktop.org>; Tue,  9 Aug 2022 12:51:22 +0000 (UTC)
 From: Ryszard Knop <ryszard.knop@intel.com>
 To: Development mailing list for IGT GPU Tools <igt-dev@lists.freedesktop.org>
-Date: Tue,  9 Aug 2022 14:50:31 +0200
-Message-Id: <20220809125037.1231032-13-ryszard.knop@intel.com>
+Date: Tue,  9 Aug 2022 14:50:37 +0200
+Message-Id: <20220809125037.1231032-19-ryszard.knop@intel.com>
 In-Reply-To: <20220809125037.1231032-1-ryszard.knop@intel.com>
 References: <20220809125037.1231032-1-ryszard.knop@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v2 12/19] tools: Remove unused headers
+Subject: [igt-dev] [PATCH i-g-t v2 18/19] lib,
+ tools: Add the 'graphics' build-time setting
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,768 +23,503 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Using CLion's automated code inspection, most unused includes were found
-and removed. Some warnings remain as CLion is unable to track code usage
-across certain attributes, but the vast majority of unneeded headers are
-now gone.
+The graphics=<enabled/disabled> setting decides whenever igt will depend
+on cairo and pixman. Disabling those dependencies prevents transitive
+dependencies on a large number of graphics-related libraries (X11, etc),
+thus allowing igt tools to be installed in compute-only environments.
+
+In practice this works for tools and benchmarks only - tests or overlays
+depend on those libraries too much to selectively disable features in
+there while keeping it all maintainable.
 
 Signed-off-by: Ryszard Knop <ryszard.knop@intel.com>
 ---
- tools/cnl_compute_wrpll.c                     |  1 -
- tools/hsw_compute_wrpll.c                     |  3 ---
- tools/i915-perf/i915_perf_configs.c           |  1 -
- tools/i915-perf/i915_perf_reader.c            |  5 -----
- tools/i915-perf/i915_perf_recorder.c          |  4 ----
- tools/igt_compliance_utils.c                  |  3 ---
- tools/igt_dp_compliance_hotplug.c             |  1 -
- tools/igt_stats.c                             |  3 ---
- tools/intel_audio_dump.c                      |  3 ---
- tools/intel_backlight.c                       |  1 -
- tools/intel_bios_dumper.c                     |  1 -
- tools/intel_display_poller.c                  |  3 ---
- tools/intel_dp_compliance.c                   | 11 -----------
- tools/intel_error_decode.c                    |  3 ---
- tools/intel_firmware_decode.c                 |  3 ---
- tools/intel_forcewaked.c                      |  3 ---
- tools/intel_framebuffer_dump.c                |  3 ---
- tools/intel_gem_info.c                        |  2 --
- tools/intel_gpu_top.c                         |  1 -
- tools/intel_gtt.c                             |  3 ---
- tools/intel_guc_logger.c                      |  4 ----
- tools/intel_gvtg_test.c                       | 15 ---------------
- tools/intel_l3_parity.c                       |  3 ---
- tools/intel_l3_udev_listener.c                |  3 ---
- tools/intel_lid.c                             |  5 -----
- tools/intel_opregion_decode.c                 |  2 --
- tools/intel_panel_fitter.c                    |  2 --
- tools/intel_perf_counters.c                   |  3 ---
- tools/intel_pm_rpm.c                          |  3 ---
- tools/intel_reg.c                             |  1 -
- tools/intel_reg_checker.c                     |  3 ---
- tools/intel_residency.c                       |  1 -
- tools/intel_stepping.c                        |  2 --
- tools/intel_vbt_decode.c                      |  3 +--
- tools/intel_watermark.c                       |  1 -
- tools/lsgpu.c                                 |  3 ---
- tools/msm_dp_compliance.c                     | 11 -----------
- tools/null_state_gen/intel_batchbuffer.c      |  1 -
- tools/null_state_gen/intel_null_state_gen.c   |  1 -
- tools/null_state_gen/intel_renderstate_gen8.c |  1 -
- tools/skl_compute_wrpll.c                     |  2 --
- 41 files changed, 1 insertion(+), 127 deletions(-)
+ lib/igt.h             |  7 +++-
+ lib/igt_debugfs.c     |  2 +
+ lib/igt_debugfs.h     |  5 ++-
+ lib/igt_fb.h          | 10 ++++-
+ lib/intel_bufops.c    |  5 +++
+ lib/intel_bufops.h    |  2 +
+ lib/meson.build       | 18 +++++----
+ lib/tests/meson.build |  5 ++-
+ meson.build           | 32 ++++++++++-----
+ meson_options.txt     |  4 ++
+ tools/meson.build     | 93 ++++++++++++++++++++++++-------------------
+ 11 files changed, 121 insertions(+), 62 deletions(-)
 
-diff --git a/tools/cnl_compute_wrpll.c b/tools/cnl_compute_wrpll.c
-index 9caf69f1..e4fd09e6 100644
---- a/tools/cnl_compute_wrpll.c
-+++ b/tools/cnl_compute_wrpll.c
-@@ -22,7 +22,6 @@
-  */
+diff --git a/lib/igt.h b/lib/igt.h
+index 869515e8..95f60881 100644
+--- a/lib/igt.h
++++ b/lib/igt.h
+@@ -32,8 +32,6 @@
+ #include "igt_debugfs.h"
+ #include "igt_draw.h"
+ #include "igt_dummyload.h"
+-#include "igt_fb.h"
+-#include "igt_frame.h"
+ #include "igt_gt.h"
+ #include "igt_kms.h"
+ #include "igt_params.h"
+@@ -50,6 +48,11 @@
+ #include "i915/gem_mman.h"
+ #include "i915/gem_engine_topology.h"
  
- #include <assert.h>
--#include <inttypes.h>
- #include <limits.h>
- #include <stdio.h>
- #include <stdbool.h>
-diff --git a/tools/hsw_compute_wrpll.c b/tools/hsw_compute_wrpll.c
-index b1eeb7c7..5a498608 100644
---- a/tools/hsw_compute_wrpll.c
-+++ b/tools/hsw_compute_wrpll.c
-@@ -23,11 +23,8 @@
++#ifdef HAVE_GRAPHICS
++#include "igt_fb.h"
++#include "igt_frame.h"
++#endif
++
+ #ifdef HAVE_CHAMELIUM
+ #include "igt_alsa.h"
+ #include "igt_audio.h"
+diff --git a/lib/igt_debugfs.c b/lib/igt_debugfs.c
+index ca893c12..b3460327 100644
+--- a/lib/igt_debugfs.c
++++ b/lib/igt_debugfs.c
+@@ -1041,6 +1041,7 @@ igt_pipe_crc_get_for_frame(int drm_fd, igt_pipe_crc_t *pipe_crc,
+ 	crc_sanity_checks(pipe_crc, crc);
+ }
  
- #include <inttypes.h>
- #include <stdio.h>
--#include <stdbool.h>
- #include <stdint.h>
--#include <stdlib.h>
++#ifdef HAVE_GRAPHICS
+ /**
+  * igt_pipe_crc_get_current:
+  * @drm_fd: Pointer to drm fd for vblank counter
+@@ -1058,6 +1059,7 @@ igt_pipe_crc_get_current(int drm_fd, igt_pipe_crc_t *pipe_crc, igt_crc_t *crc)
  
--#include "intel_io.h"
- #include "drmtest.h"
+ 	return igt_pipe_crc_get_for_frame(drm_fd, pipe_crc, vblank, crc);
+ }
++#endif /* HAVE_GRAPHICS */
  
- #define LC_FREQ 2700
-diff --git a/tools/i915-perf/i915_perf_configs.c b/tools/i915-perf/i915_perf_configs.c
-index bce3bd0f..5ba06bdc 100644
---- a/tools/i915-perf/i915_perf_configs.c
-+++ b/tools/i915-perf/i915_perf_configs.c
-@@ -33,7 +33,6 @@
- #include <string.h>
- #include <sys/ioctl.h>
- #include <sys/sysmacros.h>
--#include <sys/types.h>
- #include <sys/stat.h>
- #include <unistd.h>
+ /**
+  * igt_pipe_crc_collect_crc:
+diff --git a/lib/igt_debugfs.h b/lib/igt_debugfs.h
+index 37e85067..c7fbf78c 100644
+--- a/lib/igt_debugfs.h
++++ b/lib/igt_debugfs.h
+@@ -119,10 +119,13 @@ int igt_pipe_crc_get_crcs(igt_pipe_crc_t *pipe_crc, int n_crcs,
+ 			  igt_crc_t **out_crcs);
+ void igt_pipe_crc_drain(igt_pipe_crc_t *pipe_crc);
+ void igt_pipe_crc_get_single(igt_pipe_crc_t *pipe_crc, igt_crc_t *out_crc);
+-void igt_pipe_crc_get_current(int drm_fd, igt_pipe_crc_t *pipe_crc, igt_crc_t *crc);
+ void igt_pipe_crc_get_for_frame(int drm_fd, igt_pipe_crc_t *pipe_crc,
+ 				unsigned int vblank, igt_crc_t *crc);
  
-diff --git a/tools/i915-perf/i915_perf_reader.c b/tools/i915-perf/i915_perf_reader.c
-index e51f5a5d..83242c4a 100644
---- a/tools/i915-perf/i915_perf_reader.c
-+++ b/tools/i915-perf/i915_perf_reader.c
-@@ -20,23 +20,18 @@
-  * SOFTWARE.
-  */
++#ifdef HAVE_GRAPHICS
++void igt_pipe_crc_get_current(int drm_fd, igt_pipe_crc_t *pipe_crc, igt_crc_t *crc);
++#endif /* HAVE_GRAPHICS */
++
+ void igt_pipe_crc_collect_crc(igt_pipe_crc_t *pipe_crc, igt_crc_t *out_crc);
  
--#include <assert.h>
- #include <errno.h>
- #include <fcntl.h>
- #include <getopt.h>
- #include <inttypes.h>
--#include <stdbool.h>
- #include <stdint.h>
- #include <stdio.h>
- #include <stdlib.h>
- #include <string.h>
--#include <sys/types.h>
--#include <sys/stat.h>
- #include <unistd.h>
+ void igt_hpd_storm_set_threshold(int fd, unsigned int threshold);
+diff --git a/lib/igt_fb.h b/lib/igt_fb.h
+index b3f096fe..2c48ff4f 100644
+--- a/lib/igt_fb.h
++++ b/lib/igt_fb.h
+@@ -29,7 +29,10 @@
+ #ifndef __IGT_FB_H__
+ #define __IGT_FB_H__
  
- #include <i915_drm.h>
- 
--#include "igt_core.h"
- #include "intel_chipset.h"
- #include "i915/perf.h"
- #include "i915/perf_data_reader.h"
-diff --git a/tools/i915-perf/i915_perf_recorder.c b/tools/i915-perf/i915_perf_recorder.c
-index 00195290..f6b7e625 100644
---- a/tools/i915-perf/i915_perf_recorder.c
-+++ b/tools/i915-perf/i915_perf_recorder.c
-@@ -21,7 +21,6 @@
-  */
- 
- #include <assert.h>
--#include <dirent.h>
- #include <errno.h>
- #include <fcntl.h>
- #include <getopt.h>
-@@ -35,9 +34,6 @@
- #include <string.h>
- #include <sys/ioctl.h>
- #include <sys/stat.h>
--#include <sys/sysmacros.h>
--#include <sys/time.h>
--#include <sys/types.h>
- #include <time.h>
- #include <unistd.h>
- 
-diff --git a/tools/igt_compliance_utils.c b/tools/igt_compliance_utils.c
-index 0faf3fc8..e206740d 100644
---- a/tools/igt_compliance_utils.c
-+++ b/tools/igt_compliance_utils.c
-@@ -24,13 +24,10 @@
-  */
- 
- #include "igt.h"
--#include <stdio.h>
- #include <string.h>
--#include <stdlib.h>
- #include <signal.h>
- #include <termios.h>
- #include <libgen.h>
--#include <sys/stat.h>
- 
- #include "igt_dp_compliance.h"
- 
-diff --git a/tools/igt_dp_compliance_hotplug.c b/tools/igt_dp_compliance_hotplug.c
-index d05e45ca..3e0cf3d5 100644
---- a/tools/igt_dp_compliance_hotplug.c
-+++ b/tools/igt_dp_compliance_hotplug.c
-@@ -24,7 +24,6 @@
-  */
- 
- #include "igt.h"
--#include <stdio.h>
- #include <string.h>
- #include <stdlib.h>
- 
-diff --git a/tools/igt_stats.c b/tools/igt_stats.c
-index 105e9bc5..dc4e66ea 100644
---- a/tools/igt_stats.c
-+++ b/tools/igt_stats.c
-@@ -28,10 +28,7 @@
- 
- #include <stdlib.h>
- #include <stdio.h>
--#include <stdint.h>
- #include <string.h>
--#include <errno.h>
--#include <unistd.h>
- 
- #include "igt_stats.h"
- 
-diff --git a/tools/intel_audio_dump.c b/tools/intel_audio_dump.c
-index 6d11659e..ecd14ad7 100644
---- a/tools/intel_audio_dump.c
-+++ b/tools/intel_audio_dump.c
-@@ -26,11 +26,8 @@
-  *
-  */
- 
--#include <unistd.h>
- #include <stdlib.h>
- #include <stdio.h>
--#include <string.h>
--#include <err.h>
- #include <arpa/inet.h>
- #include "intel_io.h"
- #include "intel_reg.h"
-diff --git a/tools/intel_backlight.c b/tools/intel_backlight.c
-index edf06022..f5e8a3b5 100644
---- a/tools/intel_backlight.c
-+++ b/tools/intel_backlight.c
-@@ -28,7 +28,6 @@
- #include <stdint.h>
- #include <stdlib.h>
- #include <stdio.h>
--#include <string.h>
- 
- #include "intel_io.h"
- #include "intel_chipset.h"
-diff --git a/tools/intel_bios_dumper.c b/tools/intel_bios_dumper.c
-index 85bea97b..2c5246ee 100644
---- a/tools/intel_bios_dumper.c
-+++ b/tools/intel_bios_dumper.c
-@@ -28,7 +28,6 @@
- #include <stdio.h>
- #include <stdlib.h>
- #include <string.h>
--#include <stdarg.h>
- #include <sys/stat.h>
- #include <fcntl.h>
- #include <unistd.h>
-diff --git a/tools/intel_display_poller.c b/tools/intel_display_poller.c
-index 30d9242c..673a682a 100644
---- a/tools/intel_display_poller.c
-+++ b/tools/intel_display_poller.c
-@@ -23,19 +23,16 @@
-  */
- 
- #include <assert.h>
--#include <fcntl.h>
- #include <getopt.h>
- #include <unistd.h>
- #include <signal.h>
- #include <stdbool.h>
- #include <stdlib.h>
- #include <stdio.h>
--#include <err.h>
- #include <string.h>
- #include "intel_chipset.h"
- #include "intel_io.h"
- #include "intel_reg.h"
--#include "igt_debugfs.h"
- #include "drmtest.h"
- #include "igt_aux.h"
- 
-diff --git a/tools/intel_dp_compliance.c b/tools/intel_dp_compliance.c
-index 2e20d7f0..7390348f 100644
---- a/tools/intel_dp_compliance.c
-+++ b/tools/intel_dp_compliance.c
-@@ -109,27 +109,16 @@
- #include "igt.h"
- #include <errno.h>
- #include <getopt.h>
--#include <math.h>
- #include <stdint.h>
- #include <stdbool.h>
- #include <strings.h>
- #include <unistd.h>
--#include <termios.h>
--#include <sys/poll.h>
--#include <sys/time.h>
--#include <sys/ioctl.h>
--#include <sys/types.h>
- #include <sys/stat.h>
--#include <sys/select.h>
--#include <assert.h>
--#include <signal.h>
- #include <fcntl.h>
--#include <time.h>
- 
- #include "igt_dp_compliance.h"
- 
- #include <stdlib.h>
--#include <signal.h>
- 
- /* User Input definitions */
- #define HELP_DESCRIPTION 1
-diff --git a/tools/intel_error_decode.c b/tools/intel_error_decode.c
-index 90a18a07..bb16110e 100644
---- a/tools/intel_error_decode.c
-+++ b/tools/intel_error_decode.c
-@@ -41,7 +41,6 @@
- #include <stdbool.h>
- #include <stdio.h>
- #include <stdlib.h>
--#include <stdarg.h>
- #include <string.h>
- #include <unistd.h>
- #include <inttypes.h>
-@@ -54,10 +53,8 @@
- #include <ctype.h>
- 
- #include "intel_chipset.h"
--#include "intel_io.h"
- #include "instdone.h"
- #include "intel_reg.h"
--#include "drmtest.h"
- 
- static uint32_t
- print_head(unsigned int reg)
-diff --git a/tools/intel_firmware_decode.c b/tools/intel_firmware_decode.c
-index 61ce3a53..b750a771 100644
---- a/tools/intel_firmware_decode.c
-+++ b/tools/intel_firmware_decode.c
-@@ -28,10 +28,7 @@
- #include <inttypes.h>
- #include <stdio.h>
- #include <stdint.h>
--#include <stdlib.h>
- #include <string.h>
--#include <unistd.h>
--#include <sys/types.h>
- #include <sys/mman.h>
- #include <sys/stat.h>
- 
-diff --git a/tools/intel_forcewaked.c b/tools/intel_forcewaked.c
-index 87b26d43..0864357c 100644
---- a/tools/intel_forcewaked.c
-+++ b/tools/intel_forcewaked.c
-@@ -26,9 +26,7 @@
-  */
- 
- #include <assert.h>
--#include <err.h>
- #include <string.h>
--#include <stdarg.h>
- #include <stdbool.h>
- #include <stdio.h>
- #include <stdlib.h>
-@@ -36,7 +34,6 @@
- #include <unistd.h>
- #include "intel_io.h"
- #include "intel_chipset.h"
--#include "drmtest.h"
- 
- bool daemonized;
- 
-diff --git a/tools/intel_framebuffer_dump.c b/tools/intel_framebuffer_dump.c
-index 79c0688b..420167b8 100644
---- a/tools/intel_framebuffer_dump.c
-+++ b/tools/intel_framebuffer_dump.c
-@@ -26,15 +26,12 @@
-  * Read back all the KMS framebuffers attached to the CRTC and record as PNG.
-  */
- 
--#include <stdint.h>
--#include <sys/types.h>
- #include <sys/mman.h>
- #include <errno.h>
- #include <xf86drmMode.h>
- #include <i915_drm.h>
++#ifdef HAVE_GRAPHICS
  #include <cairo.h>
++#endif
++
+ #include <stddef.h>
+ #include <stdbool.h>
+ #include <drm_fourcc.h>
+@@ -90,7 +93,6 @@ typedef struct igt_fb {
+ 	enum igt_color_range color_range;
+ 	uint64_t modifier;
+ 	uint64_t size;
+-	cairo_surface_t *cairo_surface;
+ 	unsigned int domain;
+ 	unsigned int num_planes;
+ 	uint32_t strides[4];
+@@ -99,6 +101,10 @@ typedef struct igt_fb {
+ 	unsigned int plane_width[4];
+ 	unsigned int plane_height[4];
+ 	void *driver_priv;
++
++#ifdef HAVE_GRAPHICS
++	cairo_surface_t *cairo_surface;
++#endif /* HAVE_GRAPHICS */
+ } igt_fb_t;
  
--#include "intel_io.h"
- #include "drmtest.h"
+ /**
+@@ -184,6 +190,7 @@ bool igt_fb_is_ccs_plane(const struct igt_fb *fb, int plane);
+ bool igt_fb_is_gen12_ccs_cc_plane(const struct igt_fb *fb, int plane);
+ int igt_fb_ccs_to_main_plane(const struct igt_fb *fb, int ccs_plane);
  
- int main(int argc, char **argv)
-diff --git a/tools/intel_gem_info.c b/tools/intel_gem_info.c
-index 75444438..3700d20e 100644
---- a/tools/intel_gem_info.c
-+++ b/tools/intel_gem_info.c
-@@ -1,8 +1,6 @@
- #include "igt.h"
++#ifdef HAVE_GRAPHICS
+ /* cairo-based painting */
+ cairo_surface_t *igt_get_cairo_surface(int fd, struct igt_fb *fb);
+ cairo_surface_t *igt_cairo_image_surface_create_from_png(const char *filename);
+@@ -205,6 +212,7 @@ void igt_paint_image(cairo_t *cr, const char *filename,
+ int igt_cairo_printf_line(cairo_t *cr, enum igt_text_align align,
+ 			       double yspacing, const char *fmt, ...)
+ 			       __attribute__((format (printf, 4, 5)));
++#endif /* HAVE_GRAPHICS */
+ 
+ /* helpers to handle drm fourcc codes */
+ uint32_t igt_bpp_depth_to_drm_format(int bpp, int depth);
+diff --git a/lib/intel_bufops.c b/lib/intel_bufops.c
+index 356ffddf..adbdd04d 100644
+--- a/lib/intel_bufops.c
++++ b/lib/intel_bufops.c
+@@ -23,7 +23,10 @@
+  */
+ 
  #include <sys/ioctl.h>
--#include <fcntl.h>
- #include <errno.h>
--#include <string.h>
- #include <signal.h>
- #include <i915_drm.h>
++
++#ifdef HAVE_GRAPHICS
+ #include <cairo.h>
++#endif
  
-diff --git a/tools/intel_gpu_top.c b/tools/intel_gpu_top.c
-index 6de8a164..742542e5 100644
---- a/tools/intel_gpu_top.c
-+++ b/tools/intel_gpu_top.c
-@@ -40,7 +40,6 @@
- #include <string.h>
- #include <sys/ioctl.h>
- #include <sys/stat.h>
--#include <sys/types.h>
- #include <unistd.h>
- #include <termios.h>
- #include <sys/sysmacros.h>
-diff --git a/tools/intel_gtt.c b/tools/intel_gtt.c
-index 311694ba..80ba0293 100644
---- a/tools/intel_gtt.c
-+++ b/tools/intel_gtt.c
-@@ -30,11 +30,8 @@
- #include <stdio.h>
- #include <stdlib.h>
- #include <string.h>
--#include <stdarg.h>
- #include <pciaccess.h>
--#include <unistd.h>
+ #include "igt_x86.h"
+ #include "intel_bufops.h"
+@@ -1208,6 +1211,7 @@ const char *intel_buf_set_name(struct intel_buf *buf, const char *name)
+ 	return strncpy(buf->name, name, INTEL_BUF_NAME_MAXSIZE);
+ }
  
--#include "intel_io.h"
- #include "intel_chipset.h"
++#ifdef HAVE_GRAPHICS
+ static void __intel_buf_write_to_png(struct buf_ops *bops,
+ 				     struct intel_buf *buf,
+ 				     const char *filename,
+@@ -1250,6 +1254,7 @@ void intel_buf_write_aux_to_png(struct intel_buf *buf, const char *filename)
  
- #define KB(x) ((x) * 1024)
-diff --git a/tools/intel_guc_logger.c b/tools/intel_guc_logger.c
-index 5f1de8db..ec76eb30 100644
---- a/tools/intel_guc_logger.c
-+++ b/tools/intel_guc_logger.c
-@@ -26,18 +26,14 @@
- #include <stdio.h>
- #include <fcntl.h>
- #include <sched.h>
--#include <sys/ioctl.h>
- #include <string.h>
- #include <errno.h>
- #include <signal.h>
- #include <stdlib.h>
- #include <unistd.h>
- #include <sys/poll.h>
--#include <sys/wait.h>
- #include <sys/types.h>
--#include <sys/syscall.h>
- #include <sys/mman.h>
--#include <assert.h>
- #include <pthread.h>
+ 	__intel_buf_write_to_png(buf->bops, buf, filename, true);
+ }
++#endif /* HAVE_GRAPHICS */
  
- #include "igt.h"
-diff --git a/tools/intel_gvtg_test.c b/tools/intel_gvtg_test.c
-index ad5ee6a6..4ede5f08 100644
---- a/tools/intel_gvtg_test.c
-+++ b/tools/intel_gvtg_test.c
-@@ -28,31 +28,16 @@
-  * TODO:
-  * Enable more GVT-g related test cases.
-  */
--#include "config.h"
+ #define DEFAULT_BUFOPS(__gen_start, __gen_end) \
+ 	.gen_start          = __gen_start, \
+diff --git a/lib/intel_bufops.h b/lib/intel_bufops.h
+index 25b43073..d2b17329 100644
+--- a/lib/intel_bufops.h
++++ b/lib/intel_bufops.h
+@@ -187,7 +187,9 @@ void intel_buf_print(const struct intel_buf *buf);
+ void intel_buf_dump(const struct intel_buf *buf, const char *filename);
+ const char *intel_buf_set_name(struct intel_buf *buf, const char *name);
  
- #include "igt.h"
- #include <errno.h>
- #include <getopt.h>
--#include <math.h>
--#include <stdint.h>
--#include <stdbool.h>
- #include <strings.h>
- #include <unistd.h>
--#include <termios.h>
--#include <sys/poll.h>
--#include <sys/time.h>
--#include <sys/ioctl.h>
--#include <sys/types.h>
--#include <sys/stat.h>
- #include <string.h>
- #include <stdlib.h>
--#include <signal.h>
- #include <stdio.h>
--#include <stdlib.h>
--#include <time.h>
--#include <unistd.h>
- #include <pwd.h>
--#include <limits.h>
- #include <dirent.h>
++#ifdef HAVE_GRAPHICS
+ void intel_buf_write_to_png(struct intel_buf *buf, const char *filename);
+ void intel_buf_write_aux_to_png(struct intel_buf *buf, const char *filename);
++#endif /* HAVE_GRAPHICS */
  
- #define RANDOM(x) (rand() % x)
-diff --git a/tools/intel_l3_parity.c b/tools/intel_l3_parity.c
-index 8225b272..2faac29e 100644
---- a/tools/intel_l3_parity.c
-+++ b/tools/intel_l3_parity.c
-@@ -25,8 +25,6 @@
-  *
-  */
+ #endif
+diff --git a/lib/meson.build b/lib/meson.build
+index 98c2803b..f9f908aa 100644
+--- a/lib/meson.build
++++ b/lib/meson.build
+@@ -12,7 +12,6 @@ lib_sources = [
+ 	'i915/gem_vm.c',
+ 	'i915/intel_memory_region.c',
+ 	'i915/intel_mocs.c',
+-	'i915/i915_blt.c',
+ 	'i915/i915_crc.c',
+ 	'igt_collection.c',
+ 	'igt_color_encoding.c',
+@@ -69,10 +68,7 @@ lib_sources = [
+ 	'intel_aux_pgtable.c',
+ 	'intel_reg_map.c',
+ 	'intel_iosf.c',
+-	'igt_kms.c',
+-	'igt_fb.c',
+ 	'igt_core.c',
+-	'igt_draw.c',
+ 	'igt_list.c',
+ 	'igt_map.c',
+ 	'igt_pm.c',
+@@ -93,7 +89,6 @@ lib_sources = [
+ ]
  
--#include <sys/types.h>
--#include <sys/stat.h>
- #include <assert.h>
- #include <fcntl.h>
- #include <stdio.h>
-@@ -39,7 +37,6 @@
- #include "igt_device.h"
- #include "igt_sysfs.h"
- #include "drmtest.h"
--#include "config.h"
- #include <libudev.h>
- #include <syslog.h>
- #include "intel_l3_parity.h"
-diff --git a/tools/intel_l3_udev_listener.c b/tools/intel_l3_udev_listener.c
-index ff62f407..084ed689 100644
---- a/tools/intel_l3_udev_listener.c
-+++ b/tools/intel_l3_udev_listener.c
-@@ -21,13 +21,10 @@
-  * DEALINGS IN THE SOFTWARE.
-  */
+ lib_deps = [
+-	cairo,
+ 	glib,
+ 	libatomic,
+ 	libdrm,
+@@ -103,12 +98,21 @@ lib_deps = [
+ 	libudev,
+ 	math,
+ 	pciaccess,
+-	pixman,
+ 	pthreads,
+ 	realtime,
+ 	zlib
+ ]
  
--#include "config.h"
++if build_graphics
++	lib_deps += [cairo, pixman]
++	lib_sources += [
++		'igt_fb.c',
++		'igt_kms.c',
++		'igt_draw.c',
++		'i915/i915_blt.c',
++	]
++endif
++
+ if libdrm_intel.found()
+ 	lib_deps += libdrm_intel
+ else
+@@ -146,7 +150,7 @@ if valgrind.found()
+ 	lib_deps += valgrind
+ endif
+ 
+-if gsl.found()
++if gsl.found() and build_graphics
+ 	lib_deps += gsl
+ 	lib_sources += [ 'igt_frame.c', 'igt_audio.c' ]
+ endif
+diff --git a/lib/tests/meson.build b/lib/tests/meson.build
+index ceaf548b..196699a8 100644
+--- a/lib/tests/meson.build
++++ b/lib/tests/meson.build
+@@ -6,7 +6,6 @@ lib_tests = [
+ 	'igt_conflicting_args',
+ 	'igt_describe',
+ 	'igt_dynamic_subtests',
+-	'igt_edid',
+ 	'igt_exit_handler',
+ 	'igt_fork',
+ 	'igt_fork_helper',
+@@ -22,6 +21,10 @@ lib_tests = [
+ 	'i915_perf_data_alignment',
+ ]
+ 
++if build_graphics
++	lib_tests += 'igt_edid'
++endif
++
+ lib_fail_tests = [
+ 	'igt_no_subtest',
+ 	'igt_simple_test_subtests',
+diff --git a/meson.build b/meson.build
+index 3e937f5a..03f46d63 100644
+--- a/meson.build
++++ b/meson.build
+@@ -82,8 +82,13 @@ endforeach
+ build_chamelium = get_option('chamelium')
+ build_docs = get_option('docs')
+ build_tests = not get_option('tests').disabled()
++build_graphics = not get_option('graphics').disabled()
+ with_libdrm = get_option('libdrm_drivers')
+ 
++if build_tests and not build_graphics
++	error('Building tests without graphics features is not supported')
++endif
++
+ build_info = ['Build type: ' + get_option('buildtype')]
+ 
+ inc = include_directories('include/drm-uapi', 'include/linux-uapi', 'lib', 'lib/stubs/syscalls', '.')
+@@ -127,7 +132,6 @@ libunwind = dependency('libunwind', required : get_option('libunwind'))
+ build_info += 'With libunwind: @0@'.format(libunwind.found())
+ 
+ libdw = dependency('libdw', required : true)
+-pixman = dependency('pixman-1', required : true)
+ 
+ valgrind = dependency('valgrind', required : get_option('valgrind'))
+ if valgrind.found()
+@@ -135,7 +139,15 @@ if valgrind.found()
+ endif
+ build_info += 'Valgrind annotations: @0@'.format(valgrind.found())
+ 
+-cairo = dependency('cairo', version : '>1.12.0', required : true)
++if build_graphics
++	config.set('HAVE_GRAPHICS', 1)
++	cairo = dependency('cairo', version : '>1.12.0', required : true)
++	pixman = dependency('pixman-1', required : true)
++else
++	cairo = disabler()
++	pixman = disabler()
++endif
++
+ libudev = dependency('libudev', required : true)
+ glib = dependency('glib-2.0', required : true)
+ 
+@@ -331,12 +343,14 @@ foreach str : build_info
+ 	message(str)
+ endforeach
+ 
+-if cairo.version().version_compare('<1.17.2')
+-	if pixman.version().version_compare('<0.36.0')
+-		warning('Pixman < 0.36.0 found, cannot test HDR formats')
++if build_graphics
++	if cairo.version().version_compare('<1.17.2')
++		if pixman.version().version_compare('<0.36.0')
++			warning('Pixman < 0.36.0 found, cannot test HDR formats')
++		endif
++		warning('Cairo < 1.17.2 found, cannot test HDR formats')
++	elif pixman.version().version_compare('<0.36.0')
++		# Cairo 1.17.2 requires 0.36.0 to compile, but somehow it went missing?
++		error('Cairo with floating point support found, but pixman version too old')
+ 	endif
+-	warning('Cairo < 1.17.2 found, cannot test HDR formats')
+-elif pixman.version().version_compare('<0.36.0')
+-	# Cairo 1.17.2 requires 0.36.0 to compile, but somehow it went missing?
+-	error('Cairo with floating point support found, but pixman version too old')
+ endif
+diff --git a/meson_options.txt b/meson_options.txt
+index bed63efa..84dbe3a6 100644
+--- a/meson_options.txt
++++ b/meson_options.txt
+@@ -34,6 +34,10 @@ option('libdrm_drivers',
+        choices : ['', 'auto', 'intel', 'nouveau', 'amdgpu'],
+        description : 'libdrm libraries to be used')
+ 
++option('graphics',
++       type : 'feature',
++       description : 'Enable graphics-dependent features (cairo)')
++
+ option('libunwind',
+        type : 'feature',
+        description : 'Use libunwind')
+diff --git a/tools/meson.build b/tools/meson.build
+index 24d0ea71..106a7b04 100644
+--- a/tools/meson.build
++++ b/tools/meson.build
+@@ -16,7 +16,6 @@ tools_progs = [
+ 	'intel_audio_dump',
+ 	'intel_backlight',
+ 	'intel_bios_dumper',
+-	'intel_display_crc',
+ 	'intel_display_poller',
+ 	'intel_forcewaked',
+ 	'intel_gpu_frequency',
+@@ -28,9 +27,7 @@ tools_progs = [
+ 	'intel_lid',
+ 	'intel_opregion_decode',
+ 	'intel_panel_fitter',
+-	'intel_pm_rpm',
+ 	'intel_reg_checker',
+-	'intel_residency',
+ 	'intel_stepping',
+ 	'intel_vbt_decode',
+ 	'intel_watermark',
+@@ -39,50 +36,51 @@ tools_progs = [
+ 	'dpcd_reg',
+ 	'lsgpu',
+ ]
+-tool_deps = igt_deps
+ 
+ if libdrm_intel.found()
+ 	tools_progs += [
+ 		'intel_dump_decode',
+ 		'intel_error_decode',
+-		'intel_framebuffer_dump',
+ 		'intel_perf_counters',
+ 	]
+-	tool_deps += zlib
++endif
++
++if libdrm_intel.found() and build_graphics
++	tools_progs += [
++		'intel_pm_rpm',
++		'intel_residency',
++		'intel_display_crc',
++		'intel_framebuffer_dump',
++	]
+ endif
+ 
+ foreach prog : tools_progs
+ 	executable(prog, prog + '.c',
+-		   dependencies : tool_deps,
++		   dependencies : igt_deps,
+ 		   install_rpath : bindir_rpathdir,
+ 		   install : true)
+ endforeach
+ 
+-if libudev.found()
+-	intel_dp_compliance_src = [
+-		'intel_dp_compliance.c',
+-		'igt_dp_compliance_hotplug.c',
+-		'igt_compliance_utils.c'
+-	]
+-	executable('intel_dp_compliance', sources : intel_dp_compliance_src,
+-		   dependencies : [tool_deps, libudev],
+-		   install_rpath : bindir_rpathdir,
+-		   install : true)
+-endif
 -
- #include <libudev.h>
- #include <stdio.h>
- #include <stdlib.h>
- #include <string.h>
--#include <unistd.h>
- #include <assert.h>
- #include <syslog.h>
- #include "i915_drm.h"
-diff --git a/tools/intel_lid.c b/tools/intel_lid.c
-index 2a1d9800..a9b46d5f 100644
---- a/tools/intel_lid.c
-+++ b/tools/intel_lid.c
-@@ -28,14 +28,9 @@
- #include <stdio.h>
- #include <stdlib.h>
- #include <string.h>
--#include <stdarg.h>
--#include <pciaccess.h>
--#include <err.h>
- #include <fcntl.h>
- #include <unistd.h>
- #include <dirent.h>
--#include <sys/stat.h>
--#include <sys/types.h>
+-intel_l3_parity_src = [ 'intel_l3_parity.c', 'intel_l3_udev_listener.c' ]
+-executable('intel_l3_parity', sources : intel_l3_parity_src,
+-	   dependencies : tool_deps,
++executable('intel_l3_parity',
++	   sources : [
++		'intel_l3_parity.c',
++		'intel_l3_udev_listener.c',
++	   ],
++	   dependencies : igt_deps,
+ 	   install_rpath : bindir_rpathdir,
+ 	   install : true)
  
- #include "intel_io.h"
- #include "intel_reg.h"
-diff --git a/tools/intel_opregion_decode.c b/tools/intel_opregion_decode.c
-index b0a503e1..f75c3c4b 100644
---- a/tools/intel_opregion_decode.c
-+++ b/tools/intel_opregion_decode.c
-@@ -36,9 +36,7 @@
- #include <unistd.h>
- #include <sys/mman.h>
- #include <sys/stat.h>
--#include <sys/types.h>
+-intel_reg_src = [ 'intel_reg.c', 'intel_reg_decode.c', 'intel_reg_spec.c' ]
+-executable('intel_reg', sources : intel_reg_src,
+-	   dependencies : tool_deps,
++executable('intel_reg',
++	   sources : [
++		'intel_reg.c',
++		'intel_reg_decode.c',
++		'intel_reg_spec.c',
++	   ],
++	   dependencies : igt_deps,
+ 	   install : true,
+ 	   install_rpath : bindir_rpathdir,
+ 	   c_args : [
+-	     '-DIGT_DATADIR="@0@"'.format(join_paths(prefix, datadir)),
++		'-DIGT_DATADIR="@0@"'.format(join_paths(prefix, datadir)),
+ 	   ])
  
--#include "intel_io.h"
- #include "drmtest.h"
+ install_data('intel_gpu_abrt', install_dir : bindir)
+@@ -92,23 +90,36 @@ install_subdir('registers', install_dir : datadir)
+ executable('intel_gpu_top', 'intel_gpu_top.c',
+ 	   install : true,
+ 	   install_rpath : bindir_rpathdir,
+-	   dependencies : [lib_igt_perf,lib_igt_device_scan,lib_igt_drm_fdinfo,math])
++	   dependencies : [lib_igt_perf, lib_igt_device_scan, lib_igt_drm_fdinfo, math])
  
- #define OPREGION_HEADER_OFFSET		0
-diff --git a/tools/intel_panel_fitter.c b/tools/intel_panel_fitter.c
-index c6ee2101..6f65542a 100644
---- a/tools/intel_panel_fitter.c
-+++ b/tools/intel_panel_fitter.c
-@@ -29,11 +29,9 @@
- #include <stdio.h>
- #include <unistd.h>
- #include <stdlib.h>
--#include <string.h>
- #include "intel_io.h"
- #include "intel_chipset.h"
- #include "intel_reg.h"
--#include "drmtest.h"
+-executable('amd_hdmi_compliance', 'amd_hdmi_compliance.c',
+-	   dependencies : [tool_deps],
+-	   install_rpath : bindir_rpathdir,
+-	   install : true)
++if build_graphics
++	executable('amd_hdmi_compliance',
++		   sources : [ 'amd_hdmi_compliance.c' ],
++		   dependencies : [igt_deps],
++		   install_rpath : bindir_rpathdir,
++		   install : true)
++endif
  
- int gen;
+-if libudev.found()
+-	msm_dp_compliance_src = [
+-		'msm_dp_compliance.c',
+-		'igt_dp_compliance_hotplug.c',
+-		'igt_compliance_utils.c'
+-	]
+-	executable('msm_dp_compliance', sources : msm_dp_compliance_src,
+-			dependencies : [tool_deps, libudev],
+-			install_rpath : bindir_rpathdir,
+-			install : true)
++if libudev.found() and build_graphics
++	executable('intel_dp_compliance',
++		   sources : [
++			'intel_dp_compliance.c',
++			'igt_dp_compliance_hotplug.c',
++			'igt_compliance_utils.c'
++		   ],
++		   dependencies : [igt_deps, libudev],
++		   install_rpath : bindir_rpathdir,
++		   install : true)
++
++	executable('msm_dp_compliance',
++		   sources : [
++			'msm_dp_compliance.c',
++			'igt_dp_compliance_hotplug.c',
++			'igt_compliance_utils.c'
++		   ],
++		   dependencies : [igt_deps, libudev],
++		   install_rpath : bindir_rpathdir,
++		   install : true)
+ endif
  
-diff --git a/tools/intel_perf_counters.c b/tools/intel_perf_counters.c
-index d297f2e8..1b85c992 100644
---- a/tools/intel_perf_counters.c
-+++ b/tools/intel_perf_counters.c
-@@ -39,10 +39,7 @@
- #include <stdbool.h>
- #include <stdlib.h>
- #include <stdio.h>
--#include <err.h>
--#include <sys/ioctl.h>
- 
--#include "drm.h"
- #include "i915_drm.h"
- #include "igt_device.h"
- #include "drmtest.h"
-diff --git a/tools/intel_pm_rpm.c b/tools/intel_pm_rpm.c
-index 53ad252d..85ae115a 100644
---- a/tools/intel_pm_rpm.c
-+++ b/tools/intel_pm_rpm.c
-@@ -22,10 +22,7 @@
-  *
-  */
- 
--#include <errno.h>
- #include <getopt.h>
--#include <glib.h>
--#include <stdio.h>
- #include <stdlib.h>
- #include <string.h>
- #include <stdbool.h>
-diff --git a/tools/intel_reg.c b/tools/intel_reg.c
-index 584a2ccd..6ff34b4e 100644
---- a/tools/intel_reg.c
-+++ b/tools/intel_reg.c
-@@ -29,7 +29,6 @@
- #include <stdlib.h>
- #include <string.h>
- #include <sys/stat.h>
--#include <sys/types.h>
- #include <unistd.h>
- 
- #include "i915/gem_create.h"
-diff --git a/tools/intel_reg_checker.c b/tools/intel_reg_checker.c
-index 2aefabc6..01074a6d 100644
---- a/tools/intel_reg_checker.c
-+++ b/tools/intel_reg_checker.c
-@@ -21,10 +21,7 @@
-  */
- 
- #include <unistd.h>
--#include <stdlib.h>
- #include <stdio.h>
--#include <err.h>
--#include <string.h>
- #include <stdbool.h>
- #include "intel_io.h"
- #include "intel_chipset.h"
-diff --git a/tools/intel_residency.c b/tools/intel_residency.c
-index 0932e362..1d329e1f 100644
---- a/tools/intel_residency.c
-+++ b/tools/intel_residency.c
-@@ -25,7 +25,6 @@
-  */
- 
- #include <sys/time.h>
--#include <sys/types.h>
- #include <sys/stat.h>
- #include <fcntl.h>
- #include <inttypes.h>
-diff --git a/tools/intel_stepping.c b/tools/intel_stepping.c
-index 7839ef59..88b37856 100644
---- a/tools/intel_stepping.c
-+++ b/tools/intel_stepping.c
-@@ -28,11 +28,9 @@
- #include <stdio.h>
- #include <stdlib.h>
- #include <string.h>
--#include <stdarg.h>
- #include <pciaccess.h>
- #include <err.h>
- #include "intel_chipset.h"
--#include "intel_io.h"
- #include "intel_reg.h"
- 
- static void
-diff --git a/tools/intel_vbt_decode.c b/tools/intel_vbt_decode.c
-index 5494a34b..77bba676 100644
---- a/tools/intel_vbt_decode.c
-+++ b/tools/intel_vbt_decode.c
-@@ -1,5 +1,5 @@
- /*
-- * Copyright © 2006 Intel Corporation
-+ * Copyright ï¿½ 2006 Intel Corporation
-  *
-  * Permission is hereby granted, free of charge, to any person obtaining a
-  * copy of this software and associated documentation files (the "Software"),
-@@ -36,7 +36,6 @@
- #include <arpa/inet.h>
- #include <sys/mman.h>
- #include <sys/stat.h>
--#include <sys/types.h>
- 
- #include "igt_aux.h"
- #include "intel_io.h"
-diff --git a/tools/intel_watermark.c b/tools/intel_watermark.c
-index 1e235ed3..51e1e8c0 100644
---- a/tools/intel_watermark.c
-+++ b/tools/intel_watermark.c
-@@ -27,7 +27,6 @@
- #include <stdlib.h>
- #include <stdio.h>
- #include <stdbool.h>
--#include <err.h>
- #include <string.h>
- #include "intel_io.h"
- #include "intel_chipset.h"
-diff --git a/tools/lsgpu.c b/tools/lsgpu.c
-index da84e205..0a5c114a 100644
---- a/tools/lsgpu.c
-+++ b/tools/lsgpu.c
-@@ -24,9 +24,6 @@
- 
- #include "igt_device_scan.h"
- #include "igt.h"
--#include <sys/ioctl.h>
--#include <fcntl.h>
--#include <errno.h>
- #include <string.h>
- #include <signal.h>
- #include <glib.h>
-diff --git a/tools/msm_dp_compliance.c b/tools/msm_dp_compliance.c
-index 6941d385..e7d4524e 100644
---- a/tools/msm_dp_compliance.c
-+++ b/tools/msm_dp_compliance.c
-@@ -110,27 +110,16 @@
- #include "igt.h"
- #include <errno.h>
- #include <getopt.h>
--#include <math.h>
- #include <stdint.h>
- #include <stdbool.h>
- #include <strings.h>
- #include <unistd.h>
--#include <termios.h>
--#include <sys/poll.h>
--#include <sys/time.h>
--#include <sys/ioctl.h>
--#include <sys/types.h>
- #include <sys/stat.h>
--#include <sys/select.h>
--#include <assert.h>
--#include <signal.h>
- #include <fcntl.h>
--#include <time.h>
- 
- #include "igt_dp_compliance.h"
- 
- #include <stdlib.h>
--#include <signal.h>
- 
- /* User Input definitions */
- #define HELP_DESCRIPTION 1
-diff --git a/tools/null_state_gen/intel_batchbuffer.c b/tools/null_state_gen/intel_batchbuffer.c
-index 2ead22e1..7f5de7ad 100644
---- a/tools/null_state_gen/intel_batchbuffer.c
-+++ b/tools/null_state_gen/intel_batchbuffer.c
-@@ -31,7 +31,6 @@
- #include <stdio.h>
- #include <stdlib.h>
- #include <string.h>
--#include <errno.h>
- #include <assert.h>
- 
- #include "intel_batchbuffer.h"
-diff --git a/tools/null_state_gen/intel_null_state_gen.c b/tools/null_state_gen/intel_null_state_gen.c
-index 7d5887eb..9cefe183 100644
---- a/tools/null_state_gen/intel_null_state_gen.c
-+++ b/tools/null_state_gen/intel_null_state_gen.c
-@@ -28,7 +28,6 @@
- #include <stdio.h>
- #include <stdlib.h>
- #include <errno.h>
--#include <assert.h>
- 
- #include "intel_renderstate.h"
- #include "intel_batchbuffer.h"
-diff --git a/tools/null_state_gen/intel_renderstate_gen8.c b/tools/null_state_gen/intel_renderstate_gen8.c
-index 17822c44..de2ef06f 100644
---- a/tools/null_state_gen/intel_renderstate_gen8.c
-+++ b/tools/null_state_gen/intel_renderstate_gen8.c
-@@ -28,7 +28,6 @@
- #include "intel_batchbuffer.h"
- #include <lib/gen8_render.h>
- #include <lib/intel_reg.h>
--#include <string.h>
- 
- static void gen8_emit_wm(struct intel_batchbuffer *batch)
- {
-diff --git a/tools/skl_compute_wrpll.c b/tools/skl_compute_wrpll.c
-index 0e5965cf..65438aed 100644
---- a/tools/skl_compute_wrpll.c
-+++ b/tools/skl_compute_wrpll.c
-@@ -23,11 +23,9 @@
- 
- #include <assert.h>
- #include <inttypes.h>
--#include <limits.h>
- #include <stdio.h>
- #include <stdbool.h>
- #include <stdint.h>
--#include <stdlib.h>
- #include <string.h>
- 
- #include "igt_stats.h"
+ subdir('i915-perf')
 -- 
 2.37.1
