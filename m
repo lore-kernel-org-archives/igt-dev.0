@@ -1,18 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 007ACD4774
- for <igt-dev@lists.freedesktop.org>; Tue,  9 Aug 2022 12:51:19 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0217FD471F
+ for <igt-dev@lists.freedesktop.org>; Tue,  9 Aug 2022 12:51:20 +0000 (UTC)
 From: Ryszard Knop <ryszard.knop@intel.com>
 To: Development mailing list for IGT GPU Tools <igt-dev@lists.freedesktop.org>
-Date: Tue,  9 Aug 2022 14:50:34 +0200
-Message-Id: <20220809125037.1231032-16-ryszard.knop@intel.com>
+Date: Tue,  9 Aug 2022 14:50:35 +0200
+Message-Id: <20220809125037.1231032-17-ryszard.knop@intel.com>
 In-Reply-To: <20220809125037.1231032-1-ryszard.knop@intel.com>
 References: <20220809125037.1231032-1-ryszard.knop@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v2 15/19] lib/i915: Replace igt.h with
- individual header imports
+Subject: [igt-dev] [PATCH i-g-t v2 16/19] lib/igt*,
+ lib/intel*: Replace igt.h with individual header imports
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -30,113 +29,215 @@ It's fine to use it in tests, benchmarks and the runner.
 
 Signed-off-by: Ryszard Knop <ryszard.knop@intel.com>
 ---
- lib/i915/gem.c        |  6 ++++--
- lib/i915/gem_mman.h   |  1 +
- lib/i915/i915_blt.c   | 17 +++++++++++++++--
- lib/i915/i915_blt.h   |  7 ++++++-
- lib/i915/intel_mocs.c |  6 ++++--
- 5 files changed, 30 insertions(+), 7 deletions(-)
+ lib/igt_amd.c                    | 8 ++++++--
+ lib/igt_amd.h                    | 3 ++-
+ lib/igt_collection.c             | 3 ++-
+ lib/igt_device.c                 | 9 +++++++--
+ lib/igt_nouveau.c                | 2 +-
+ lib/igt_syncobj.c                | 3 ++-
+ lib/intel_allocator.c            | 9 ++++++++-
+ lib/intel_allocator_msgchannel.c | 6 +++++-
+ lib/intel_allocator_random.c     | 6 +++++-
+ lib/intel_allocator_reloc.c      | 5 ++++-
+ lib/intel_bufops.c               | 7 +++++--
+ 11 files changed, 47 insertions(+), 14 deletions(-)
 
-diff --git a/lib/i915/gem.c b/lib/i915/gem.c
-index 27b872c2..bb5ee125 100644
---- a/lib/i915/gem.c
-+++ b/lib/i915/gem.c
-@@ -26,10 +26,12 @@
+diff --git a/lib/igt_amd.c b/lib/igt_amd.c
+index bef9c193..74a180b1 100644
+--- a/lib/igt_amd.c
++++ b/lib/igt_amd.c
+@@ -23,10 +23,14 @@
  #include <fcntl.h>
- #include <sys/ioctl.h>
+ #include <sys/stat.h>
  
--#include "i915/gem.h"
--#include "igt.h"
-+#include "igt_dummyload.h"
- #include "igt_debugfs.h"
-+#include "igt_params.h"
- #include "igt_sysfs.h"
-+#include "i915/gem.h"
-+#include "drmtest.h"
- 
- static void __restore_defaults(int engine)
- {
-diff --git a/lib/i915/gem_mman.h b/lib/i915/gem_mman.h
-index 5966ddb5..a5f12dee 100644
---- a/lib/i915/gem_mman.h
-+++ b/lib/i915/gem_mman.h
-@@ -26,6 +26,7 @@
- #define GEM_MMAN_H
- 
- #include <stdint.h>
-+#include <stdbool.h>
- 
- void *gem_mmap__gtt(int fd, uint32_t handle, uint64_t size, unsigned prot);
- void *gem_mmap__cpu(int fd, uint32_t handle, uint64_t offset, uint64_t size, unsigned prot);
-diff --git a/lib/i915/i915_blt.c b/lib/i915/i915_blt.c
-index d2d13a53..4e255f79 100644
---- a/lib/i915/i915_blt.c
-+++ b/lib/i915/i915_blt.c
-@@ -4,10 +4,23 @@
-  */
- 
- #include <malloc.h>
-+#include <string.h>
-+#include <inttypes.h>
-+
- #include <cairo.h>
--#include "igt.h"
--#include "gem_create.h"
++#include <amdgpu_drm.h>
 +
 +#include "igt_core.h"
+ #include "igt_amd.h"
+-#include "igt.h"
++#include "igt_kms.h"
+ #include "igt_sysfs.h"
+-#include <amdgpu_drm.h>
++#include "igt_debugfs.h"
++#include "drmtest.h"
+ 
+ #define X0 1
+ #define X1 2
+diff --git a/lib/igt_amd.h b/lib/igt_amd.h
+index 428bfe6f..901a19c7 100644
+--- a/lib/igt_amd.h
++++ b/lib/igt_amd.h
+@@ -24,8 +24,9 @@
+ #define IGT_AMD_H
+ 
+ #include <stdint.h>
+-#include "igt.h"
++
+ #include "igt_fb.h"
++#include "igt_kms.h"
+ #include "igt_psr.h"
+ 
+ /* Read & Write DSC parameters */
+diff --git a/lib/igt_collection.c b/lib/igt_collection.c
+index 35e09c89..1511ded9 100644
+--- a/lib/igt_collection.c
++++ b/lib/igt_collection.c
+@@ -21,7 +21,8 @@
+  * IN THE SOFTWARE.
+  */
+ 
+-#include "igt.h"
 +#include "igt_aux.h"
++#include "igt_core.h"
+ #include "igt_collection.h"
+ 
+ /**
+diff --git a/lib/igt_device.c b/lib/igt_device.c
+index 83ae7b21..526049a7 100644
+--- a/lib/igt_device.c
++++ b/lib/igt_device.c
+@@ -22,10 +22,15 @@
+  *
+  */
+ #include <fcntl.h>
+-
++#include <errno.h>
+ #include <sys/stat.h>
+ #include <sys/sysmacros.h>
+-#include "igt.h"
 +
- #include "i915_blt.h"
-+#include "gem_mman.h"
-+#include "gem_create.h"
++#include <pciaccess.h>
++#include <xf86drm.h>
 +
-+#include "intel_reg.h"
++#include "igt_core.h"
++#include "igt_debugfs.h"
+ #include "igt_device.h"
+ #include "igt_sysfs.h"
+ 
+diff --git a/lib/igt_nouveau.c b/lib/igt_nouveau.c
+index 0a1326e9..0a47dc52 100644
+--- a/lib/igt_nouveau.c
++++ b/lib/igt_nouveau.c
+@@ -27,7 +27,7 @@
+ #include <nouveau/nouveau.h>
+ #include <nouveau/nvif/class.h>
+ 
+-#include "igt.h"
++#include "igt_fb.h"
+ #include "igt_list.h"
+ #include "igt_nouveau.h"
+ 
+diff --git a/lib/igt_syncobj.c b/lib/igt_syncobj.c
+index a24ed10b..fe086e0f 100644
+--- a/lib/igt_syncobj.c
++++ b/lib/igt_syncobj.c
+@@ -24,8 +24,9 @@
+ #include <errno.h>
+ #include <xf86drm.h>
+ 
+-#include "igt.h"
++#include "igt_core.h"
+ #include "igt_syncobj.h"
++#include "ioctl_wrappers.h"
+ 
+ /**
+  * SECTION:igt_syncobj
+diff --git a/lib/intel_allocator.c b/lib/intel_allocator.c
+index 717d7fc5..46417b83 100644
+--- a/lib/intel_allocator.c
++++ b/lib/intel_allocator.c
+@@ -12,11 +12,18 @@
+ #include <signal.h>
+ #include <stdlib.h>
+ #include <unistd.h>
+-#include "igt.h"
++#include <errno.h>
++
+ #include "igt_map.h"
++#include "ioctl_wrappers.h"
++
+ #include "intel_allocator.h"
+ #include "intel_allocator_msgchannel.h"
+ 
++#include "i915/gem_mman.h"
++#include "i915/gem_context.h"
++#include "i915/intel_memory_region.h"
++
+ //#define ALLOCDBG
+ #ifdef ALLOCDBG
+ #define alloc_info igt_info
+diff --git a/lib/intel_allocator_msgchannel.c b/lib/intel_allocator_msgchannel.c
+index d1f6486c..2a45bf80 100644
+--- a/lib/intel_allocator_msgchannel.c
++++ b/lib/intel_allocator_msgchannel.c
+@@ -6,8 +6,12 @@
+ #include <sys/types.h>
+ #include <sys/ipc.h>
+ #include <sys/msg.h>
++#include <stdbool.h>
++#include <string.h>
++#include <errno.h>
+ #include <fcntl.h>
+-#include "igt.h"
++
++#include "igt_core.h"
+ #include "intel_allocator_msgchannel.h"
+ 
+ extern __thread pid_t child_tid;
+diff --git a/lib/intel_allocator_random.c b/lib/intel_allocator_random.c
+index 9ed92383..d0a59dd2 100644
+--- a/lib/intel_allocator_random.c
++++ b/lib/intel_allocator_random.c
+@@ -4,8 +4,12 @@
+  */
+ 
+ #include <stdlib.h>
+-#include "igt.h"
++#include <inttypes.h>
++
++#include "igt_aux.h"
+ #include "igt_rand.h"
++#include "drmtest.h"
++#include "ioctl_wrappers.h"
+ #include "intel_allocator.h"
+ 
+ struct intel_allocator *
+diff --git a/lib/intel_allocator_reloc.c b/lib/intel_allocator_reloc.c
+index bf4d9c43..4db8ae4b 100644
+--- a/lib/intel_allocator_reloc.c
++++ b/lib/intel_allocator_reloc.c
+@@ -4,8 +4,11 @@
+  */
+ 
+ #include <stdlib.h>
+-#include "igt.h"
++
++#include "igt_aux.h"
+ #include "igt_rand.h"
++#include "drmtest.h"
++#include "ioctl_wrappers.h"
+ #include "intel_allocator.h"
+ 
+ struct intel_allocator *
+diff --git a/lib/intel_bufops.c b/lib/intel_bufops.c
+index c63a5760..356ffddf 100644
+--- a/lib/intel_bufops.c
++++ b/lib/intel_bufops.c
+@@ -25,10 +25,13 @@
+ #include <sys/ioctl.h>
+ #include <cairo.h>
+ 
+-#include "i915/gem_create.h"
+-#include "igt.h"
+ #include "igt_x86.h"
+ #include "intel_bufops.h"
 +#include "intel_chipset.h"
 +#include "ioctl_wrappers.h"
-+#include "intel_allocator.h"
-+#include "intel_memory_region.h"
- 
- #define BITRANGE(start, end) (end - start + 1)
- 
-diff --git a/lib/i915/i915_blt.h b/lib/i915/i915_blt.h
-index e0e8b52b..2fe83900 100644
---- a/lib/i915/i915_blt.h
-+++ b/lib/i915/i915_blt.h
-@@ -42,11 +42,16 @@
-  */
- 
- #include <errno.h>
-+#include <stdbool.h>
- #include <sys/ioctl.h>
- #include <sys/time.h>
- #include <malloc.h>
 +
- #include "drm.h"
--#include "igt.h"
-+
-+#include "intel_ctx.h"
-+#include "igt_gt.h"
-+
++#include "i915/gem_mman.h"
++#include "i915/gem_create.h"
  
- #define CCS_RATIO 256
- 
-diff --git a/lib/i915/intel_mocs.c b/lib/i915/intel_mocs.c
-index df541ab0..083ed67b 100644
---- a/lib/i915/intel_mocs.c
-+++ b/lib/i915/intel_mocs.c
-@@ -3,9 +3,11 @@
-  * Copyright © 2022 Intel Corporation
-  */
- 
--#include "igt.h"
--#include "i915/gem.h"
-+#include "i915_drm.h"
-+
-+#include "intel_chipset.h"
- #include "intel_mocs.h"
-+#include "i915/gem.h"
- 
- #define DG1_MOCS_UC_IDX				1
- #define DG1_MOCS_WB_IDX				5
+ /**
+  * SECTION:intel_bufops
 -- 
 2.37.1
