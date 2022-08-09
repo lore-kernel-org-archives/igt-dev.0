@@ -1,16 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A53C4D476A
- for <igt-dev@lists.freedesktop.org>; Tue,  9 Aug 2022 12:51:14 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E0511D476C
+ for <igt-dev@lists.freedesktop.org>; Tue,  9 Aug 2022 12:51:16 +0000 (UTC)
 From: Ryszard Knop <ryszard.knop@intel.com>
 To: Development mailing list for IGT GPU Tools <igt-dev@lists.freedesktop.org>
-Date: Tue,  9 Aug 2022 14:50:27 +0200
-Message-Id: <20220809125037.1231032-9-ryszard.knop@intel.com>
+Date: Tue,  9 Aug 2022 14:50:28 +0200
+Message-Id: <20220809125037.1231032-10-ryszard.knop@intel.com>
 In-Reply-To: <20220809125037.1231032-1-ryszard.knop@intel.com>
 References: <20220809125037.1231032-1-ryszard.knop@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v2 08/19] tests/v3d*: Remove unused headers
+Subject: [igt-dev] [PATCH i-g-t v2 09/19] tests/panfrost*: Remove unused
+ headers
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -29,18 +30,38 @@ now gone.
 
 Signed-off-by: Ryszard Knop <ryszard.knop@intel.com>
 ---
- tests/v3d_get_bo_offset.c | 7 -------
- tests/v3d_get_param.c     | 7 -------
- tests/v3d_mmap.c          | 9 ---------
- 3 files changed, 23 deletions(-)
+ tests/panfrost_gem_new.c   | 5 -----
+ tests/panfrost_get_param.c | 6 ------
+ tests/panfrost_prime.c     | 5 -----
+ tests/panfrost_submit.c    | 4 ----
+ 4 files changed, 20 deletions(-)
 
-diff --git a/tests/v3d_get_bo_offset.c b/tests/v3d_get_bo_offset.c
-index 0923dc85..3b32a203 100644
---- a/tests/v3d_get_bo_offset.c
-+++ b/tests/v3d_get_bo_offset.c
-@@ -24,17 +24,10 @@
+diff --git a/tests/panfrost_gem_new.c b/tests/panfrost_gem_new.c
+index 940525ff..7e753f82 100644
+--- a/tests/panfrost_gem_new.c
++++ b/tests/panfrost_gem_new.c
+@@ -25,14 +25,9 @@
  #include "igt.h"
- #include "igt_v3d.h"
+ #include "igt_panfrost.h"
+ #include <unistd.h>
+-#include <stdlib.h>
+-#include <stdio.h>
+ #include <string.h>
+-#include <fcntl.h>
+ #include <inttypes.h>
+ #include <errno.h>
+-#include <sys/stat.h>
+-#include <sys/ioctl.h>
+ #include "panfrost_drm.h"
+ 
+ igt_main
+diff --git a/tests/panfrost_get_param.c b/tests/panfrost_get_param.c
+index 11c2632b..943d62eb 100644
+--- a/tests/panfrost_get_param.c
++++ b/tests/panfrost_get_param.c
+@@ -25,15 +25,9 @@
+ #include "igt.h"
+ #include "igt_panfrost.h"
  #include <unistd.h>
 -#include <stdlib.h>
 -#include <stdio.h>
@@ -51,18 +72,16 @@ index 0923dc85..3b32a203 100644
 -#include <sys/stat.h>
 -#include <sys/ioctl.h>
 -#include <poll.h>
- #include "v3d_drm.h"
--#include "igt_v3d.h"
+ #include "panfrost_drm.h"
  
  igt_main
- {
-diff --git a/tests/v3d_get_param.c b/tests/v3d_get_param.c
-index 76563406..5759f41a 100644
---- a/tests/v3d_get_param.c
-+++ b/tests/v3d_get_param.c
-@@ -24,17 +24,10 @@
+diff --git a/tests/panfrost_prime.c b/tests/panfrost_prime.c
+index 40ba036b..02eb6507 100644
+--- a/tests/panfrost_prime.c
++++ b/tests/panfrost_prime.c
+@@ -25,14 +25,9 @@
  #include "igt.h"
- #include "igt_v3d.h"
+ #include "igt_panfrost.h"
  #include <unistd.h>
 -#include <stdlib.h>
 -#include <stdio.h>
@@ -72,35 +91,27 @@ index 76563406..5759f41a 100644
  #include <errno.h>
 -#include <sys/stat.h>
 -#include <sys/ioctl.h>
--#include <poll.h>
- #include "v3d_drm.h"
--#include "igt_v3d.h"
+ #include "panfrost_drm.h"
  
- igt_main
- {
-diff --git a/tests/v3d_mmap.c b/tests/v3d_mmap.c
-index a6fe7e5a..d8d9a03e 100644
---- a/tests/v3d_mmap.c
-+++ b/tests/v3d_mmap.c
-@@ -22,19 +22,10 @@
-  */
- 
- #include "igt.h"
--#include "igt_v3d.h"
+ static bool igt_has_dumb(int fd)
+diff --git a/tests/panfrost_submit.c b/tests/panfrost_submit.c
+index 4747d295..fb7c0e58 100644
+--- a/tests/panfrost_submit.c
++++ b/tests/panfrost_submit.c
+@@ -26,14 +26,10 @@
+ #include "igt_panfrost.h"
+ #include "igt_syncobj.h"
  #include <unistd.h>
 -#include <stdlib.h>
 -#include <stdio.h>
  #include <string.h>
--#include <fcntl.h>
--#include <inttypes.h>
+ #include <fcntl.h>
+ #include <inttypes.h>
  #include <errno.h>
 -#include <sys/stat.h>
 -#include <sys/ioctl.h>
--#include <poll.h>
- #include "v3d_drm.h"
--#include "igt_v3d.h"
+ #include "panfrost-job.h"
+ #include "panfrost_drm.h"
  
- igt_main
- {
 -- 
 2.37.1
