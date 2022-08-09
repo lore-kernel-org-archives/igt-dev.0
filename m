@@ -1,19 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 62E30CA765
- for <igt-dev@lists.freedesktop.org>; Tue,  9 Aug 2022 08:01:10 +0000 (UTC)
-Message-ID: <2d470ecd-43fa-4733-cd2d-e983d6d75ae5@intel.com>
-Date: Tue, 9 Aug 2022 13:30:47 +0530
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 49A4FCAF72
+ for <igt-dev@lists.freedesktop.org>; Tue,  9 Aug 2022 08:15:26 +0000 (UTC)
+Message-ID: <c9867a60-8399-e4d7-9a48-1e2451df2c05@intel.com>
+Date: Tue, 9 Aug 2022 13:45:07 +0530
 Content-Language: en-US
-To: Nidhi Gupta <nidhi1.gupta@intel.com>, <igt-dev@lists.freedesktop.org>
-References: <20220804034029.17355-1-nidhi1.gupta@intel.com>
- <20220804034029.17355-3-nidhi1.gupta@intel.com>
+To: Mohammed Thasleem <mohammed.thasleem@intel.com>,
+ <igt-dev@lists.freedesktop.org>
+References: <20220803102927.134117-1-mohammed.thasleem@intel.com>
+ <20220803102927.134117-2-mohammed.thasleem@intel.com>
 From: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
-In-Reply-To: <20220804034029.17355-3-nidhi1.gupta@intel.com>
+In-Reply-To: <20220803102927.134117-2-mohammed.thasleem@intel.com>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH 2/2] tests/i915/kms_draw_crc: Test Cleanup
+Subject: Re: [igt-dev] [PATCH v4 1/2] tests/kms_lease: Create dynamic
+ subtests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,203 +27,144 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Thu-04-08-2022 09:10 am, Nidhi Gupta wrote:
-> v2: -Replace drm function call with existing library functions
->       (Bhanu)
+On Wed-03-08-2022 03:59 pm, Mohammed Thasleem wrote:
+> Modified tests/kms_lease to include dynamic test cases.
 > 
-> v3: -Replace PIPE_A with compatible pipe/output combo.
->       (Bhanu)
+> v2: Updated dynamic test cases to all test cases.
+> v3: Removed dynamic test for which it's not required.
+> v4: Moved content of for loop in to igt_dynamic.
 > 
-> v4: -use for_each_pipe_with_single_output() for finding
->       compatible pipe/ouput combo.
->       -remove crtc_id as not used anywhere.
->       -set fb to primary plane before commiting.
->       (Bhanu)
-> 
-> Signed-off-by: Nidhi Gupta <nidhi1.gupta@intel.com>
+> Signed-off-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
 > ---
->   tests/i915/kms_draw_crc.c | 73 +++++++++++++++------------------------
->   1 file changed, 28 insertions(+), 45 deletions(-)
+>   tests/kms_lease.c | 68 +++++++++++++++++++++--------------------------
+>   1 file changed, 30 insertions(+), 38 deletions(-)
 > 
-> diff --git a/tests/i915/kms_draw_crc.c b/tests/i915/kms_draw_crc.c
-> index 48c7d931..c7354df9 100644
-> --- a/tests/i915/kms_draw_crc.c
-> +++ b/tests/i915/kms_draw_crc.c
-> @@ -31,12 +31,12 @@
->   
->   struct modeset_params {
->   	uint32_t crtc_id;
-> -	uint32_t connector_id;
->   	drmModeModeInfoPtr mode;
->   };
-
-This entire structure is not required, only mode is enough.
-
->   
->   int drm_fd;
-> -drmModeResPtr drm_res;
-> +igt_display_t display;
-> +igt_output_t *output;
->   drmModeConnectorPtr drm_connectors[MAX_CONNECTORS];
-
-Unused variable, please drop it.
-
->   struct buf_ops *bops;
->   igt_pipe_crc_t *pipe_crc;
-> @@ -64,30 +64,25 @@ struct modeset_params ms;
->   
->   static void find_modeset_params(void)
->   {
-> -	int i;
-> -	uint32_t crtc_id;
-> -	drmModeConnectorPtr connector = NULL;
-> -	drmModeModeInfoPtr mode = NULL;
-> -
-> -	for (i = 0; i < drm_res->count_connectors; i++) {
-> -		drmModeConnectorPtr c = drm_connectors[i];
-> +	enum pipe pipe1;
-
-s/pipe1/pipe/
-
-> +	drmModeModeInfo *mode;
->   
-> -		if (c->count_modes) {
-> -			connector = c;
-> -			mode = &c->modes[0];
-> -			break;
-> -		}
-> -	}
-> -	igt_require(connector);
-> +	igt_display_reset(&display);
-> +	igt_display_commit(&display);
->   
-> -	crtc_id = kmstest_find_crtc_for_connector(drm_fd, drm_res, connector,
-> -						  0);
-> -	igt_assert(mode);
-> +	for_each_pipe_with_single_output(&display, pipe1, output) {
-> +		output = igt_get_single_output_for_pipe(&display, pipe1);
-> +		igt_require(output);
-
-These 2 lines are redundant, please drop those. You can directly use output.
-
-> +		igt_output_set_pipe(output, pipe1);
->   
-> -	ms.connector_id = connector->connector_id;
-> -	ms.crtc_id = crtc_id;
-> -	ms.mode = mode;
-> +		mode = igt_output_get_mode(output);
-> +		igt_assert(mode);
-
-hmm, Instead of asserting, how about trying with another output?
-for_each_pipe_with_valid_output() {
-	if (!mode)
-		continue;
-}
-igt_require(mode);
-
->   
-> +		ms.mode = mode;
-
-Please update this as per the first comment in this patch.
-
-> +		pipe_crc = igt_pipe_crc_new(drm_fd, pipe1, INTEL_PIPE_CRC_SOURCE_AUTO);
-> +		/*Only one pipe/output is enough*/
-> +		break;
-> +	}
+> diff --git a/tests/kms_lease.c b/tests/kms_lease.c
+> index 0bf102a6..d734143c 100644
+> --- a/tests/kms_lease.c
+> +++ b/tests/kms_lease.c
+> @@ -809,39 +809,20 @@ static void lease_invalid_plane(data_t *data)
 >   }
 >   
->   static uint32_t get_color(uint32_t drm_format, bool r, bool g, bool b)
-> @@ -122,9 +117,14 @@ static void get_method_crc(enum igt_draw_method method, uint32_t drm_format,
+>   
+> -static void run_test(data_t *data, void (*testfunc)(data_t *))
+> +static void run_test(data_t *data, void (*testfunc)(data_t *), enum pipe p, igt_output_t *output)
 >   {
->   	struct igt_fb fb;
->   	int rc;
-> +	igt_plane_t *primary;
-> +
-> +	primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
+>   	lease_t *master = &data->master;
+>   	igt_display_t *display = &master->display;
+> -	igt_output_t *output;
+> -	enum pipe p;
+> -	unsigned int valid_tests = 0;
+> -
+> -	for_each_pipe_with_valid_output(display, p, output) {
+> -		igt_info("Beginning %s on pipe %s, connector %s\n",
+> -			 igt_subtest_name(),
+> -			 kmstest_pipe_name(p),
+> -			 igt_output_name(output));
+> -
+> -		data->pipe = p;
+> -		data->crtc_id = pipe_to_crtc_id(display, p);
+> -		data->connector_id = output->id;
+> -		data->plane_id =
+> -			igt_pipe_get_plane_type(&data->master.display.pipes[data->pipe],
+> -						DRM_PLANE_TYPE_PRIMARY)->drm_plane->plane_id;
+>   
+> -		testfunc(data);
+> +	data->pipe = p;
+> +	data->crtc_id = pipe_to_crtc_id(display, p);
+> +	data->connector_id = output->id;
 
-We need similar logic to "fill_fb_subtest()" too.
+We can do these assignments at caller, right?
+
+> +	data->plane_id =
+> +		igt_pipe_get_plane_type(&data->master.display.pipes[data->pipe],
+> +					DRM_PLANE_TYPE_PRIMARY)->drm_plane->plane_id;
+>   
+> -		igt_info("\n%s on pipe %s, connector %s: PASSED\n\n",
+> -			 igt_subtest_name(),
+> -			 kmstest_pipe_name(p),
+> -			 igt_output_name(output));
+> -
+> -		valid_tests++;
+> -	}
+> +	testfunc(data);
+>   
+> -	igt_require_f(valid_tests,
+> -		      "no valid crtc/connector combinations found\n");
+>   }
+>   
+>   #define assert_double_id_err(ret) \
+> @@ -1020,19 +1001,23 @@ static void possible_crtcs_filtering(data_t *data)
+>   	mcl.flags = 0;
+>   
+>   	for (i = 0; i < resources->count_crtcs; i++) {
+> -		int lease_fd;
+>   
+> -		object_ids[mcl.object_count - 1] =
+> -			resources->crtcs[i];
+> +		igt_dynamic_f("pipe-%s", kmstest_pipe_name(i)) {
+> +			int lease_fd;
+>   
+> -		igt_assert_eq(create_lease(master_fd, &mcl), 0);
+> -		lease_fd = mcl.fd;
+> +			object_ids[mcl.object_count - 1] =
+> +				resources->crtcs[i];
+>   
+> -		drmSetClientCap(lease_fd, DRM_CLIENT_CAP_UNIVERSAL_PLANES, 1);
+> +			igt_assert_eq(create_lease(master_fd, &mcl), 0);
+> +			lease_fd = mcl.fd;
+>   
+> -		check_crtc_masks(master_fd, lease_fd, 1 << i);
+> +			drmSetClientCap(lease_fd,
+> +					DRM_CLIENT_CAP_UNIVERSAL_PLANES, 1);
+>   
+> -		close(lease_fd);
+> +			check_crtc_masks(master_fd, lease_fd, 1 << i);
+> +
+> +			close(lease_fd);
+> +		}
+>   	}
+>   
+>   	free(object_ids);
+> @@ -1218,6 +1203,8 @@ static void lease_uevent(data_t *data)
+>   igt_main
+>   {
+>   	data_t data;
+> +	igt_output_t *output;
+> +	enum pipe p;
+>   	const struct {
+>   		const char *name;
+>   		void (*func)(data_t *);
+> @@ -1255,8 +1242,13 @@ igt_main
+>   	for (f = funcs; f->name; f++) {
+>   
+>   		igt_describe(f->desc);
+> -		igt_subtest_f("%s", f->name) {
+> -			run_test(&data, f->func);
+> +		igt_subtest_with_dynamic_f("%s", f->name) {
+> +			for_each_pipe_with_valid_output(&data.master.display, p, output) {
+
+Cont.. to the previous comment, we can use as below.
+for_each_pipe_with_valid_output(display, data->pipe, data->output)
+
+Apart from these minor comments, this patch looks good to me.
 
 - Bhanu
 
+> +				igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(p),
+> +					      igt_output_name(output)) {
+> +					run_test(&data, f->func, p, output);
+> +				}
+> +			}
+>   		}
+>   	}
 >   
->   	igt_create_fb(drm_fd, ms.mode->hdisplay, ms.mode->vdisplay,
->   		      drm_format, modifier, &fb);
-> +	igt_plane_set_fb(primary, &fb);
-> +
->   	igt_draw_rect_fb(drm_fd, bops, 0, &fb, method,
->   			 0, 0, fb.width, fb.height,
->   			 get_color(drm_format, 0, 0, 1));
-> @@ -144,8 +144,7 @@ static void get_method_crc(enum igt_draw_method method, uint32_t drm_format,
->   	igt_draw_rect_fb(drm_fd, bops, 0, &fb, method, 1, 1, 15, 15,
->   			 get_color(drm_format, 0, 1, 1));
+> @@ -1267,7 +1259,7 @@ igt_main
 >   
-> -	rc = drmModeSetCrtc(drm_fd, ms.crtc_id, fb.fb_id, 0, 0,
-> -			    &ms.connector_id, 1, ms.mode);
-> +	rc = igt_display_commit2(&display, display.is_atomic ? COMMIT_ATOMIC : COMMIT_LEGACY);
->   	igt_assert_eq(rc, 0);
+>   	igt_describe("Tests that  possible_crtcs logically match between master and "
+>   		     "lease, and that the values are correctly renumbered on the lease side.");
+> -	igt_subtest("possible-crtcs-filtering")
+> +	igt_subtest_with_dynamic("possible-crtcs-filtering")
+>   		possible_crtcs_filtering(&data);
 >   
->   	igt_pipe_crc_collect_crc(pipe_crc, crc);
-> @@ -203,8 +202,7 @@ static void get_fill_crc(uint64_t modifier, igt_crc_t *crc)
->   
->   	igt_draw_fill_fb(drm_fd, &fb, 0xFF);
->   
-> -	rc = drmModeSetCrtc(drm_fd, ms.crtc_id, fb.fb_id, 0, 0,
-> -			    &ms.connector_id, 1, ms.mode);
-> +	rc = igt_display_commit2(&display, display.is_atomic ? COMMIT_ATOMIC : COMMIT_LEGACY);
->   	igt_assert_eq(rc, 0);
->   
->   	igt_pipe_crc_collect_crc(pipe_crc, crc);
-> @@ -227,8 +225,7 @@ static void fill_fb_subtest(void)
->   							 IGT_DRAW_MMAP_WC,
->   			 0, 0, fb.width, fb.height, 0xFF);
->   
-> -	rc = drmModeSetCrtc(drm_fd, ms.crtc_id, fb.fb_id, 0, 0,
-> -			    &ms.connector_id, 1, ms.mode);
-> +	rc = igt_display_commit2(&display, display.is_atomic ? COMMIT_ATOMIC : COMMIT_LEGACY);
->   	igt_assert_eq(rc, 0);
->   
->   	igt_pipe_crc_collect_crc(pipe_crc, &base_crc);
-> @@ -251,40 +248,26 @@ static void fill_fb_subtest(void)
->   
->   static void setup_environment(void)
->   {
-> -	int i;
-> -
->   	drm_fd = drm_open_driver_master(DRIVER_INTEL);
->   	igt_require(drm_fd >= 0);
-> -
-> -	drm_res = drmModeGetResources(drm_fd);
-> -	igt_require(drm_res);
-> -	igt_assert(drm_res->count_connectors <= MAX_CONNECTORS);
-> -
-> -	for (i = 0; i < drm_res->count_connectors; i++)
-> -		drm_connectors[i] = drmModeGetConnectorCurrent(drm_fd,
-> -							       drm_res->connectors[i]);
-> +	igt_display_require(&display, drm_fd);
-> +	igt_display_require_output(&display);
->   
->   	kmstest_set_vt_graphics_mode();
->   
->   	bops = buf_ops_create(drm_fd);
->   
->   	find_modeset_params();
-> -	pipe_crc = igt_pipe_crc_new(drm_fd, kmstest_get_crtc_idx(drm_res, ms.crtc_id),
-> -				    INTEL_PIPE_CRC_SOURCE_AUTO);
->   }
->   
->   static void teardown_environment(void)
->   {
-> -	int i;
-> -
->   	igt_pipe_crc_free(pipe_crc);
->   
->   	buf_ops_destroy(bops);
->   
-> -	for (i = 0; i < drm_res->count_connectors; i++)
-> -		drmModeFreeConnector(drm_connectors[i]);
-> +	igt_display_reset(&display);
->   
-> -	drmModeFreeResources(drm_res);
->   	close(drm_fd);
->   }
->   
+>   	igt_describe("Tests the drop/set_master interactions.");
