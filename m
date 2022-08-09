@@ -1,17 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0217FD471F
- for <igt-dev@lists.freedesktop.org>; Tue,  9 Aug 2022 12:51:20 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1F582D4769
+ for <igt-dev@lists.freedesktop.org>; Tue,  9 Aug 2022 12:51:13 +0000 (UTC)
 From: Ryszard Knop <ryszard.knop@intel.com>
 To: Development mailing list for IGT GPU Tools <igt-dev@lists.freedesktop.org>
-Date: Tue,  9 Aug 2022 14:50:35 +0200
-Message-Id: <20220809125037.1231032-17-ryszard.knop@intel.com>
+Date: Tue,  9 Aug 2022 14:50:26 +0200
+Message-Id: <20220809125037.1231032-8-ryszard.knop@intel.com>
 In-Reply-To: <20220809125037.1231032-1-ryszard.knop@intel.com>
 References: <20220809125037.1231032-1-ryszard.knop@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v2 16/19] lib/igt*,
- lib/intel*: Replace igt.h with individual header imports
+Subject: [igt-dev] [PATCH i-g-t v2 07/19] tests/vc4*: Remove unused headers
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,221 +22,174 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Prevents pulling in unnecessary definitions in the library, tools etc.
-Also makes it easier and faster to automatically analyze library files.
-It's fine to use it in tests, benchmarks and the runner.
+Using CLion's automated code inspection, most unused includes were found
+and removed. Some warnings remain as CLion is unable to track code usage
+across certain attributes, but the vast majority of unneeded headers are
+now gone.
 
 Signed-off-by: Ryszard Knop <ryszard.knop@intel.com>
 ---
- lib/igt_amd.c                    | 8 ++++++--
- lib/igt_amd.h                    | 3 ++-
- lib/igt_collection.c             | 3 ++-
- lib/igt_device.c                 | 9 +++++++--
- lib/igt_nouveau.c                | 2 +-
- lib/igt_syncobj.c                | 3 ++-
- lib/intel_allocator.c            | 9 ++++++++-
- lib/intel_allocator_msgchannel.c | 6 +++++-
- lib/intel_allocator_random.c     | 6 +++++-
- lib/intel_allocator_reloc.c      | 5 ++++-
- lib/intel_bufops.c               | 7 +++++--
- 11 files changed, 47 insertions(+), 14 deletions(-)
+ tests/vc4_create_bo.c    | 5 -----
+ tests/vc4_dmabuf_poll.c  | 5 -----
+ tests/vc4_label_bo.c     | 6 ------
+ tests/vc4_lookup_fail.c  | 5 -----
+ tests/vc4_purgeable_bo.c | 5 -----
+ tests/vc4_tiling.c       | 7 -------
+ tests/vc4_wait_bo.c      | 4 ----
+ tests/vc4_wait_seqno.c   | 6 ------
+ 8 files changed, 43 deletions(-)
 
-diff --git a/lib/igt_amd.c b/lib/igt_amd.c
-index bef9c193..74a180b1 100644
---- a/lib/igt_amd.c
-+++ b/lib/igt_amd.c
-@@ -23,10 +23,14 @@
- #include <fcntl.h>
- #include <sys/stat.h>
- 
-+#include <amdgpu_drm.h>
-+
-+#include "igt_core.h"
- #include "igt_amd.h"
--#include "igt.h"
-+#include "igt_kms.h"
- #include "igt_sysfs.h"
--#include <amdgpu_drm.h>
-+#include "igt_debugfs.h"
-+#include "drmtest.h"
- 
- #define X0 1
- #define X1 2
-diff --git a/lib/igt_amd.h b/lib/igt_amd.h
-index 428bfe6f..901a19c7 100644
---- a/lib/igt_amd.h
-+++ b/lib/igt_amd.h
-@@ -24,8 +24,9 @@
- #define IGT_AMD_H
- 
- #include <stdint.h>
--#include "igt.h"
-+
- #include "igt_fb.h"
-+#include "igt_kms.h"
- #include "igt_psr.h"
- 
- /* Read & Write DSC parameters */
-diff --git a/lib/igt_collection.c b/lib/igt_collection.c
-index 35e09c89..1511ded9 100644
---- a/lib/igt_collection.c
-+++ b/lib/igt_collection.c
-@@ -21,7 +21,8 @@
-  * IN THE SOFTWARE.
-  */
- 
--#include "igt.h"
-+#include "igt_aux.h"
-+#include "igt_core.h"
- #include "igt_collection.h"
- 
- /**
-diff --git a/lib/igt_device.c b/lib/igt_device.c
-index 83ae7b21..526049a7 100644
---- a/lib/igt_device.c
-+++ b/lib/igt_device.c
-@@ -22,10 +22,15 @@
-  *
-  */
- #include <fcntl.h>
--
-+#include <errno.h>
- #include <sys/stat.h>
- #include <sys/sysmacros.h>
--#include "igt.h"
-+
-+#include <pciaccess.h>
-+#include <xf86drm.h>
-+
-+#include "igt_core.h"
-+#include "igt_debugfs.h"
- #include "igt_device.h"
- #include "igt_sysfs.h"
- 
-diff --git a/lib/igt_nouveau.c b/lib/igt_nouveau.c
-index 0a1326e9..0a47dc52 100644
---- a/lib/igt_nouveau.c
-+++ b/lib/igt_nouveau.c
-@@ -27,7 +27,7 @@
- #include <nouveau/nouveau.h>
- #include <nouveau/nvif/class.h>
- 
--#include "igt.h"
-+#include "igt_fb.h"
- #include "igt_list.h"
- #include "igt_nouveau.h"
- 
-diff --git a/lib/igt_syncobj.c b/lib/igt_syncobj.c
-index a24ed10b..fe086e0f 100644
---- a/lib/igt_syncobj.c
-+++ b/lib/igt_syncobj.c
-@@ -24,8 +24,9 @@
+diff --git a/tests/vc4_create_bo.c b/tests/vc4_create_bo.c
+index 99d180a8..dc5d565d 100644
+--- a/tests/vc4_create_bo.c
++++ b/tests/vc4_create_bo.c
+@@ -24,14 +24,9 @@
+ #include "igt.h"
+ #include "igt_vc4.h"
+ #include <unistd.h>
+-#include <stdlib.h>
+-#include <stdio.h>
+ #include <string.h>
+-#include <fcntl.h>
+ #include <inttypes.h>
  #include <errno.h>
- #include <xf86drm.h>
+-#include <sys/stat.h>
+-#include <sys/ioctl.h>
+ #include "vc4_drm.h"
  
--#include "igt.h"
-+#include "igt_core.h"
- #include "igt_syncobj.h"
-+#include "ioctl_wrappers.h"
+ igt_main
+diff --git a/tests/vc4_dmabuf_poll.c b/tests/vc4_dmabuf_poll.c
+index 260e30c3..9027a352 100644
+--- a/tests/vc4_dmabuf_poll.c
++++ b/tests/vc4_dmabuf_poll.c
+@@ -24,14 +24,9 @@
+ #include "igt.h"
+ #include "igt_vc4.h"
+ #include <unistd.h>
+-#include <stdlib.h>
+-#include <stdio.h>
+ #include <string.h>
+-#include <fcntl.h>
+ #include <inttypes.h>
+ #include <errno.h>
+-#include <sys/stat.h>
+-#include <sys/ioctl.h>
+ #include <poll.h>
+ #include "vc4_drm.h"
  
- /**
-  * SECTION:igt_syncobj
-diff --git a/lib/intel_allocator.c b/lib/intel_allocator.c
-index 717d7fc5..46417b83 100644
---- a/lib/intel_allocator.c
-+++ b/lib/intel_allocator.c
-@@ -12,11 +12,18 @@
+diff --git a/tests/vc4_label_bo.c b/tests/vc4_label_bo.c
+index 7510f87d..e77c0a35 100644
+--- a/tests/vc4_label_bo.c
++++ b/tests/vc4_label_bo.c
+@@ -24,15 +24,9 @@
+ #include "igt.h"
+ #include "igt_vc4.h"
+ #include <unistd.h>
+-#include <stdlib.h>
+-#include <stdio.h>
+ #include <string.h>
+-#include <fcntl.h>
+ #include <inttypes.h>
+ #include <errno.h>
+-#include <sys/stat.h>
+-#include <sys/ioctl.h>
+-#include <poll.h>
+ #include "vc4_drm.h"
+ 
+ static void
+diff --git a/tests/vc4_lookup_fail.c b/tests/vc4_lookup_fail.c
+index f0234ee5..0b200514 100644
+--- a/tests/vc4_lookup_fail.c
++++ b/tests/vc4_lookup_fail.c
+@@ -24,14 +24,9 @@
+ #include "igt.h"
+ #include <assert.h>
+ #include <unistd.h>
+-#include <stdlib.h>
+-#include <stdio.h>
+ #include <string.h>
+-#include <fcntl.h>
+ #include <inttypes.h>
+ #include <errno.h>
+-#include <sys/stat.h>
+-#include <sys/ioctl.h>
+ #include "vc4_drm.h"
+ #include "vc4_packet.h"
+ 
+diff --git a/tests/vc4_purgeable_bo.c b/tests/vc4_purgeable_bo.c
+index d9f7547f..e0a01d42 100644
+--- a/tests/vc4_purgeable_bo.c
++++ b/tests/vc4_purgeable_bo.c
+@@ -26,13 +26,8 @@
+ #include <unistd.h>
  #include <signal.h>
  #include <stdlib.h>
+-#include <stdio.h>
+ #include <string.h>
+-#include <fcntl.h>
+ #include <inttypes.h>
+-#include <errno.h>
+-#include <sys/stat.h>
+-#include <sys/ioctl.h>
+ #include "vc4_drm.h"
+ 
+ struct igt_vc4_bo {
+diff --git a/tests/vc4_tiling.c b/tests/vc4_tiling.c
+index b96fe4ad..06e8e64e 100644
+--- a/tests/vc4_tiling.c
++++ b/tests/vc4_tiling.c
+@@ -24,15 +24,8 @@
+ #include "igt.h"
+ #include "igt_vc4.h"
  #include <unistd.h>
--#include "igt.h"
-+#include <errno.h>
-+
- #include "igt_map.h"
-+#include "ioctl_wrappers.h"
-+
- #include "intel_allocator.h"
- #include "intel_allocator_msgchannel.h"
+-#include <stdlib.h>
+-#include <stdio.h>
+ #include <string.h>
+-#include <fcntl.h>
+-#include <inttypes.h>
+ #include <errno.h>
+-#include <sys/stat.h>
+-#include <sys/ioctl.h>
+-#include <poll.h>
+ #include "vc4_drm.h"
  
-+#include "i915/gem_mman.h"
-+#include "i915/gem_context.h"
-+#include "i915/intel_memory_region.h"
-+
- //#define ALLOCDBG
- #ifdef ALLOCDBG
- #define alloc_info igt_info
-diff --git a/lib/intel_allocator_msgchannel.c b/lib/intel_allocator_msgchannel.c
-index d1f6486c..2a45bf80 100644
---- a/lib/intel_allocator_msgchannel.c
-+++ b/lib/intel_allocator_msgchannel.c
-@@ -6,8 +6,12 @@
- #include <sys/types.h>
- #include <sys/ipc.h>
- #include <sys/msg.h>
-+#include <stdbool.h>
-+#include <string.h>
-+#include <errno.h>
- #include <fcntl.h>
--#include "igt.h"
-+
-+#include "igt_core.h"
- #include "intel_allocator_msgchannel.h"
- 
- extern __thread pid_t child_tid;
-diff --git a/lib/intel_allocator_random.c b/lib/intel_allocator_random.c
-index 9ed92383..d0a59dd2 100644
---- a/lib/intel_allocator_random.c
-+++ b/lib/intel_allocator_random.c
-@@ -4,8 +4,12 @@
-  */
- 
- #include <stdlib.h>
--#include "igt.h"
-+#include <inttypes.h>
-+
-+#include "igt_aux.h"
- #include "igt_rand.h"
-+#include "drmtest.h"
-+#include "ioctl_wrappers.h"
- #include "intel_allocator.h"
- 
- struct intel_allocator *
-diff --git a/lib/intel_allocator_reloc.c b/lib/intel_allocator_reloc.c
-index bf4d9c43..4db8ae4b 100644
---- a/lib/intel_allocator_reloc.c
-+++ b/lib/intel_allocator_reloc.c
-@@ -4,8 +4,11 @@
-  */
- 
- #include <stdlib.h>
--#include "igt.h"
-+
-+#include "igt_aux.h"
- #include "igt_rand.h"
-+#include "drmtest.h"
-+#include "ioctl_wrappers.h"
- #include "intel_allocator.h"
- 
- struct intel_allocator *
-diff --git a/lib/intel_bufops.c b/lib/intel_bufops.c
-index c63a5760..356ffddf 100644
---- a/lib/intel_bufops.c
-+++ b/lib/intel_bufops.c
-@@ -25,10 +25,13 @@
+ igt_main
+diff --git a/tests/vc4_wait_bo.c b/tests/vc4_wait_bo.c
+index 65a085a3..eba5a2b5 100644
+--- a/tests/vc4_wait_bo.c
++++ b/tests/vc4_wait_bo.c
+@@ -24,13 +24,9 @@
+ #include "igt.h"
+ #include "igt_vc4.h"
+ #include <unistd.h>
+-#include <stdlib.h>
+-#include <stdio.h>
+ #include <string.h>
+-#include <fcntl.h>
+ #include <inttypes.h>
+ #include <errno.h>
+-#include <sys/stat.h>
  #include <sys/ioctl.h>
- #include <cairo.h>
+ #include "vc4_drm.h"
  
--#include "i915/gem_create.h"
--#include "igt.h"
- #include "igt_x86.h"
- #include "intel_bufops.h"
-+#include "intel_chipset.h"
-+#include "ioctl_wrappers.h"
-+
-+#include "i915/gem_mman.h"
-+#include "i915/gem_create.h"
+diff --git a/tests/vc4_wait_seqno.c b/tests/vc4_wait_seqno.c
+index bcc263cb..08b85f5b 100644
+--- a/tests/vc4_wait_seqno.c
++++ b/tests/vc4_wait_seqno.c
+@@ -23,14 +23,8 @@
  
- /**
-  * SECTION:intel_bufops
+ #include "igt.h"
+ #include <unistd.h>
+-#include <stdlib.h>
+-#include <stdio.h>
+ #include <string.h>
+-#include <fcntl.h>
+-#include <inttypes.h>
+ #include <errno.h>
+-#include <sys/stat.h>
+-#include <sys/ioctl.h>
+ #include "vc4_drm.h"
+ 
+ igt_main
 -- 
 2.37.1
