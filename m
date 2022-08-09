@@ -1,15 +1,24 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============8952335813224919842=="
+Received: from mail-ed1-x52c.google.com (mail-ed1-x52c.google.com
+ [IPv6:2a00:1450:4864:20::52c])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id AA517D8B59
+ for <igt-dev@lists.freedesktop.org>; Tue,  9 Aug 2022 14:36:47 +0000 (UTC)
+Received: by mail-ed1-x52c.google.com with SMTP id e13so15323147edj.12
+ for <igt-dev@lists.freedesktop.org>; Tue, 09 Aug 2022 07:36:47 -0700 (PDT)
+Message-ID: <210664fd-359a-4700-c540-3d81981e04b3@gmail.com>
+Date: Tue, 9 Aug 2022 17:36:39 +0300
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Ryszard Knop" <ryszard.knop@intel.com>
-Date: Tue, 09 Aug 2022 13:17:26 -0000
-Message-ID: <166005104652.12845.11437059489711482546@emeril.freedesktop.org>
-References: <20220809121801.1044402-1-ryszard.knop@intel.com>
-In-Reply-To: <20220809121801.1044402-1-ryszard.knop@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgU3dpdGNo?=
- =?utf-8?q?_the_FFT_library_from_GSL_to_meow=5Ffft?=
+Content-Language: en-US
+To: "Sharma, Swati2" <swati2.sharma@intel.com>,
+ Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
+ igt-dev@lists.freedesktop.org, petri.latvala@intel.com
+References: <20220726031116.974261-1-bhanuprakash.modem@intel.com>
+ <4330ad72-d7b5-80eb-0236-83944fd6f063@intel.com>
+From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+In-Reply-To: <4330ad72-d7b5-80eb-0236-83944fd6f063@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Subject: Re: [igt-dev] [i-g-t] tests/kms_cursor_crc: Drop max-size test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,337 +26,138 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
+Reply-To: juhapekka.heikkila@gmail.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============8952335813224919842==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+On 27.7.2022 21.42, Sharma, Swati2 wrote:
+> LGTM
+> Reviewed-by:  Swati Sharma <swati2.sharma@intel.com>
+> 
+> On 26-Jul-22 8:41 AM, Bhanuprakash Modem wrote:
+>> As we already covering it by the other tests, there is no point in
+>> doing the "max-size" test. Hence dropping it.
 
-== Series Details ==
+This doesn't look correct.
 
-Series: Switch the FFT library from GSL to meow_fft
-URL   : https://patchwork.freedesktop.org/series/107093/
-State : success
+>>
+>> This patch will also do some cleanup to avoid skips in igt_dynamic.
+>>
+>> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+>> ---
+>>   tests/kms_cursor_crc.c | 47 ++++++++++++++++++++----------------------
+>>   1 file changed, 22 insertions(+), 25 deletions(-)
+>>
+>> diff --git a/tests/kms_cursor_crc.c b/tests/kms_cursor_crc.c
+>> index f07a045a..14d4c4ca 100644
+>> --- a/tests/kms_cursor_crc.c
+>> +++ b/tests/kms_cursor_crc.c
+>> @@ -576,7 +576,7 @@ static void test_cursor_opaque(data_t *data)
+>>       test_cursor_alpha(data);
+>>   }
+>> -static void require_cursor_size(data_t *data, int w, int h)
+>> +static bool require_cursor_size(data_t *data, int w, int h)
+>>   {
+>>       igt_fb_t primary_fb;
+>>       drmModeModeInfo *mode;
+>> @@ -618,14 +618,11 @@ static void require_cursor_size(data_t *data, 
+>> int w, int h)
+>>       igt_remove_fb(data->drm_fd, &primary_fb);
+>>       igt_output_set_pipe(output, PIPE_NONE);
+>> -    igt_skip_on_f(ret, "Cursor size %dx%d not supported by driver\n", 
+>> w, h);
+>> +    return !!ret;
+>>   }
+>>   static void run_test(data_t *data, void (*testfunc)(data_t *), int 
+>> cursor_w, int cursor_h)
+>>   {
+>> -    if (data->fb.fb_id != 0)
+>> -        require_cursor_size(data, cursor_w, cursor_h);
+>> -
+>>       prepare_crtc(data, cursor_w, cursor_h);
+>>       testfunc(data);
+>>       cleanup_crtc(data);
+>> @@ -696,24 +693,15 @@ static void run_size_tests(data_t *data, void 
+>> (*testfunc)(data_t *),
+>>       char name[32];
+>>       enum pipe pipe;
+>> -    if (w == 0 && h == 0)
+>> -        strcpy(name, "max-size");
+>> -    else
+>> -        snprintf(name, sizeof(name), "%dx%d", w, h);
+>> -
+>> -    if (w == 0 && h == 0) {
+>> -        w = data->cursor_max_w;
+>> -        h = data->cursor_max_h;
+>> -        /*
+>> -         * No point in doing the "max-size" test if
+>> -         * it was already covered by the other tests.
+>> -         */
+>> -        igt_require_f(w != h || w > 512 || h > 512 ||
+>> -                  !is_power_of_two(w) || !is_power_of_two(h),
+>> -                  "Cursor max size %dx%d already covered by other 
+>> tests\n",
+>> -                  w, h);
 
-== Summary ==
+Reading from above, for cursor maximum size if any of:
 
-CI Bug Log - changes from CI_DRM_11976 -> IGTPW_7624
-====================================================
+* width is not equal to height
+* width > 512 or height > 512
+* (width & (width - 1)) != 0 or (height & (height - 1)) != 0
 
-Summary
--------
+then maximum cursor size was not covered by any other test. You can see 
+from where run_size_tests is called why these conditions.
 
-  **SUCCESS**
+/Juha-Pekka
 
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7624/index.html
-
-Participating hosts (43 -> 41)
-------------------------------
-
-  Additional (1): fi-kbl-soraka 
-  Missing    (3): fi-ctg-p8600 fi-ilk-m540 fi-hsw-4200u 
-
-Possible new issues
--------------------
-
-  Here are the unknown changes that may have been introduced in IGTPW_7624:
-
-### IGT changes ###
-
-#### Suppressed ####
-
-  The following results come from untrusted machines, tests, or statuses.
-  They do not affect the overall result.
-
-  * igt@core_hotunplug@unbind-rebind:
-    - {bat-dg2-10}:       NOTRUN -> [DMESG-WARN][1]
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7624/bat-dg2-10/igt@core_hotunplug@unbind-rebind.html
-
-  
-Known issues
-------------
-
-  Here are the changes found in IGTPW_7624 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@gem_exec_gttfill@basic:
-    - fi-kbl-soraka:      NOTRUN -> [SKIP][2] ([fdo#109271]) +8 similar issues
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7624/fi-kbl-soraka/igt@gem_exec_gttfill@basic.html
-
-  * igt@gem_huc_copy@huc-copy:
-    - fi-kbl-soraka:      NOTRUN -> [SKIP][3] ([fdo#109271] / [i915#2190])
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7624/fi-kbl-soraka/igt@gem_huc_copy@huc-copy.html
-
-  * igt@gem_lmem_swapping@basic:
-    - fi-kbl-soraka:      NOTRUN -> [SKIP][4] ([fdo#109271] / [i915#4613]) +3 similar issues
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7624/fi-kbl-soraka/igt@gem_lmem_swapping@basic.html
-
-  * igt@i915_selftest@live@gt_pm:
-    - fi-kbl-soraka:      NOTRUN -> [DMESG-FAIL][5] ([i915#1886])
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7624/fi-kbl-soraka/igt@i915_selftest@live@gt_pm.html
-
-  * igt@i915_selftest@live@hangcheck:
-    - bat-dg1-6:          [PASS][6] -> [DMESG-FAIL][7] ([i915#4494] / [i915#4957])
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11976/bat-dg1-6/igt@i915_selftest@live@hangcheck.html
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7624/bat-dg1-6/igt@i915_selftest@live@hangcheck.html
-
-  * igt@kms_chamelium@hdmi-hpd-fast:
-    - fi-kbl-soraka:      NOTRUN -> [SKIP][8] ([fdo#109271] / [fdo#111827]) +7 similar issues
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7624/fi-kbl-soraka/igt@kms_chamelium@hdmi-hpd-fast.html
-
-  * igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions-varying-size:
-    - fi-bsw-kefka:       [PASS][9] -> [FAIL][10] ([i915#6298])
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11976/fi-bsw-kefka/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions-varying-size.html
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7624/fi-bsw-kefka/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions-varying-size.html
-
-  * igt@runner@aborted:
-    - fi-bdw-5557u:       NOTRUN -> [FAIL][11] ([i915#4312])
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7624/fi-bdw-5557u/igt@runner@aborted.html
-
-  
-#### Possible fixes ####
-
-  * igt@gem_exec_suspend@basic-s0@smem:
-    - {bat-rplp-1}:       [DMESG-WARN][12] ([i915#2867]) -> [PASS][13]
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11976/bat-rplp-1/igt@gem_exec_suspend@basic-s0@smem.html
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7624/bat-rplp-1/igt@gem_exec_suspend@basic-s0@smem.html
-
-  * igt@i915_module_load@load:
-    - {bat-dg2-10}:       [DMESG-WARN][14] -> [PASS][15]
-   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11976/bat-dg2-10/igt@i915_module_load@load.html
-   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7624/bat-dg2-10/igt@i915_module_load@load.html
-
-  * igt@i915_pm_rpm@basic-rte:
-    - {bat-dg2-8}:        [DMESG-WARN][16] -> [PASS][17]
-   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11976/bat-dg2-8/igt@i915_pm_rpm@basic-rte.html
-   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7624/bat-dg2-8/igt@i915_pm_rpm@basic-rte.html
-
-  * igt@i915_selftest@live@hangcheck:
-    - {fi-jsl-1}:         [INCOMPLETE][18] ([i915#5134]) -> [PASS][19]
-   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11976/fi-jsl-1/igt@i915_selftest@live@hangcheck.html
-   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7624/fi-jsl-1/igt@i915_selftest@live@hangcheck.html
-    - bat-dg1-5:          [DMESG-FAIL][20] ([i915#4494] / [i915#4957]) -> [PASS][21]
-   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11976/bat-dg1-5/igt@i915_selftest@live@hangcheck.html
-   [21]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7624/bat-dg1-5/igt@i915_selftest@live@hangcheck.html
-
-  * igt@i915_suspend@basic-s3-without-i915:
-    - fi-bdw-5557u:       [INCOMPLETE][22] ([i915#146]) -> [PASS][23]
-   [22]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11976/fi-bdw-5557u/igt@i915_suspend@basic-s3-without-i915.html
-   [23]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7624/fi-bdw-5557u/igt@i915_suspend@basic-s3-without-i915.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
-  [fdo#109285]: https://bugs.freedesktop.org/show_bug.cgi?id=109285
-  [fdo#111827]: https://bugs.freedesktop.org/show_bug.cgi?id=111827
-  [i915#1072]: https://gitlab.freedesktop.org/drm/intel/issues/1072
-  [i915#1155]: https://gitlab.freedesktop.org/drm/intel/issues/1155
-  [i915#146]: https://gitlab.freedesktop.org/drm/intel/issues/146
-  [i915#1886]: https://gitlab.freedesktop.org/drm/intel/issues/1886
-  [i915#2190]: https://gitlab.freedesktop.org/drm/intel/issues/2190
-  [i915#2867]: https://gitlab.freedesktop.org/drm/intel/issues/2867
-  [i915#3291]: https://gitlab.freedesktop.org/drm/intel/issues/3291
-  [i915#3555]: https://gitlab.freedesktop.org/drm/intel/issues/3555
-  [i915#3708]: https://gitlab.freedesktop.org/drm/intel/issues/3708
-  [i915#4077]: https://gitlab.freedesktop.org/drm/intel/issues/4077
-  [i915#4312]: https://gitlab.freedesktop.org/drm/intel/issues/4312
-  [i915#4494]: https://gitlab.freedesktop.org/drm/intel/issues/4494
-  [i915#4579]: https://gitlab.freedesktop.org/drm/intel/issues/4579
-  [i915#4613]: https://gitlab.freedesktop.org/drm/intel/issues/4613
-  [i915#4873]: https://gitlab.freedesktop.org/drm/intel/issues/4873
-  [i915#4957]: https://gitlab.freedesktop.org/drm/intel/issues/4957
-  [i915#4983]: https://gitlab.freedesktop.org/drm/intel/issues/4983
-  [i915#5087]: https://gitlab.freedesktop.org/drm/intel/issues/5087
-  [i915#5134]: https://gitlab.freedesktop.org/drm/intel/issues/5134
-  [i915#5270]: https://gitlab.freedesktop.org/drm/intel/issues/5270
-  [i915#5354]: https://gitlab.freedesktop.org/drm/intel/issues/5354
-  [i915#5828]: https://gitlab.freedesktop.org/drm/intel/issues/5828
-  [i915#6257]: https://gitlab.freedesktop.org/drm/intel/issues/6257
-  [i915#6298]: https://gitlab.freedesktop.org/drm/intel/issues/6298
-  [i915#6531]: https://gitlab.freedesktop.org/drm/intel/issues/6531
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_6619 -> IGTPW_7624
-
-  CI-20190529: 20190529
-  CI_DRM_11976: 33740045ce83ed20c52a6f213faadb0443bc40f3 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_7624: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7624/index.html
-  IGT_6619: ec2ab8e3a151ce05bd2726319c528c2ab99e8a96 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7624/index.html
-
---===============8952335813224919842==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>Switch the FFT library from GSL to meow_fft</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/107093/">https://patchwork.freedesktop.org/series/107093/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7624/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7624/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from CI_DRM_11976 -&gt; IGTPW_7624</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7624/index.html</p>
-<h2>Participating hosts (43 -&gt; 41)</h2>
-<p>Additional (1): fi-kbl-soraka <br />
-  Missing    (3): fi-ctg-p8600 fi-ilk-m540 fi-hsw-4200u </p>
-<h2>Possible new issues</h2>
-<p>Here are the unknown changes that may have been introduced in IGTPW_7624:</p>
-<h3>IGT changes</h3>
-<h4>Suppressed</h4>
-<p>The following results come from untrusted machines, tests, or statuses.<br />
-  They do not affect the overall result.</p>
-<ul>
-<li>igt@core_hotunplug@unbind-rebind:<ul>
-<li>{bat-dg2-10}:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7624/bat-dg2-10/igt@core_hotunplug@unbind-rebind.html">DMESG-WARN</a></li>
-</ul>
-</li>
-</ul>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_7624 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@gem_exec_gttfill@basic:</p>
-<ul>
-<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7624/fi-kbl-soraka/igt@gem_exec_gttfill@basic.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +8 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_huc_copy@huc-copy:</p>
-<ul>
-<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7624/fi-kbl-soraka/igt@gem_huc_copy@huc-copy.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2190">i915#2190</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_lmem_swapping@basic:</p>
-<ul>
-<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7624/fi-kbl-soraka/igt@gem_lmem_swapping@basic.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4613">i915#4613</a>) +3 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@gt_pm:</p>
-<ul>
-<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7624/fi-kbl-soraka/igt@i915_selftest@live@gt_pm.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1886">i915#1886</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@hangcheck:</p>
-<ul>
-<li>bat-dg1-6:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11976/bat-dg1-6/igt@i915_selftest@live@hangcheck.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7624/bat-dg1-6/igt@i915_selftest@live@hangcheck.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4494">i915#4494</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4957">i915#4957</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_chamelium@hdmi-hpd-fast:</p>
-<ul>
-<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7624/fi-kbl-soraka/igt@kms_chamelium@hdmi-hpd-fast.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://bugs.freedesktop.org/show_bug.cgi?id=111827">fdo#111827</a>) +7 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions-varying-size:</p>
-<ul>
-<li>fi-bsw-kefka:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11976/fi-bsw-kefka/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions-varying-size.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7624/fi-bsw-kefka/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions-varying-size.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6298">i915#6298</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@runner@aborted:</p>
-<ul>
-<li>fi-bdw-5557u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7624/fi-bdw-5557u/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4312">i915#4312</a>)</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@gem_exec_suspend@basic-s0@smem:</p>
-<ul>
-<li>{bat-rplp-1}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11976/bat-rplp-1/igt@gem_exec_suspend@basic-s0@smem.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2867">i915#2867</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7624/bat-rplp-1/igt@gem_exec_suspend@basic-s0@smem.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@i915_module_load@load:</p>
-<ul>
-<li>{bat-dg2-10}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11976/bat-dg2-10/igt@i915_module_load@load.html">DMESG-WARN</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7624/bat-dg2-10/igt@i915_module_load@load.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@i915_pm_rpm@basic-rte:</p>
-<ul>
-<li>{bat-dg2-8}:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11976/bat-dg2-8/igt@i915_pm_rpm@basic-rte.html">DMESG-WARN</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7624/bat-dg2-8/igt@i915_pm_rpm@basic-rte.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@hangcheck:</p>
-<ul>
-<li>
-<p>{fi-jsl-1}:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11976/fi-jsl-1/igt@i915_selftest@live@hangcheck.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5134">i915#5134</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7624/fi-jsl-1/igt@i915_selftest@live@hangcheck.html">PASS</a></p>
-</li>
-<li>
-<p>bat-dg1-5:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11976/bat-dg1-5/igt@i915_selftest@live@hangcheck.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4494">i915#4494</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4957">i915#4957</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7624/bat-dg1-5/igt@i915_selftest@live@hangcheck.html">PASS</a></p>
-</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_suspend@basic-s3-without-i915:</p>
-<ul>
-<li>fi-bdw-5557u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_11976/fi-bdw-5557u/igt@i915_suspend@basic-s3-without-i915.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/146">i915#146</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7624/fi-bdw-5557u/igt@i915_suspend@basic-s3-without-i915.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_6619 -&gt; IGTPW_7624</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_11976: 33740045ce83ed20c52a6f213faadb0443bc40f3 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_7624: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7624/index.html<br />
-  IGT_6619: ec2ab8e3a151ce05bd2726319c528c2ab99e8a96 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-
-</body>
-</html>
-
---===============8952335813224919842==--
+>> -    }
+>> +    snprintf(name, sizeof(name), "%dx%d", w, h);
+>> +
+>>       create_cursor_fb(data, w, h);
+>> +    if (require_cursor_size(data, w, h)) {
+>> +        igt_debug("Cursor size %dx%d not supported by driver\n", w, h);
+>> +
+>> +        igt_remove_fb(data->drm_fd, &data->fb);
+>> +        return;
+>> +    }
+>>       for_each_pipe(&data->display, pipe) {
+>>           data->pipe = pipe;
+>> @@ -807,6 +795,12 @@ static void run_tests_on_pipe(data_t *data)
+>>               data->pipe = pipe;
+>>               data->flags = TEST_DPMS;
+>> +            if (require_cursor_size(data, data->cursor_max_w, 
+>> data->cursor_max_h)) {
+>> +                igt_debug("Cursor size %dx%d not supported by driver\n",
+>> +                      data->cursor_max_w, data->cursor_max_h);
+>> +                continue;
+>> +            }
+>> +
+>>               igt_dynamic_f("pipe-%s-%s",
+>>                         kmstest_pipe_name(pipe),
+>>                         data->output->name)
+>> @@ -822,6 +816,12 @@ static void run_tests_on_pipe(data_t *data)
+>>               data->pipe = pipe;
+>>               data->flags = TEST_SUSPEND;
+>> +            if (require_cursor_size(data, data->cursor_max_w, 
+>> data->cursor_max_h)) {
+>> +                igt_debug("Cursor size %dx%d not supported by driver\n",
+>> +                      data->cursor_max_w, data->cursor_max_h);
+>> +                continue;
+>> +            }
+>> +
+>>               igt_dynamic_f("pipe-%s-%s",
+>>                         kmstest_pipe_name(pipe),
+>>                         data->output->name)
+>> @@ -855,9 +855,6 @@ static void run_tests_on_pipe(data_t *data)
+>>                       igt_subtest_group
+>>                           run_size_tests(data, size_tests[i].testfunc, 
+>> w, h);
+>>                   }
+>> -
+>> -                igt_subtest_group
+>> -                    run_size_tests(data, size_tests[i].testfunc, 0, 0);
+>>               }
+>>           }
+>>       }
+> 
