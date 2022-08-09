@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3CB65D476D
- for <igt-dev@lists.freedesktop.org>; Tue,  9 Aug 2022 12:51:17 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A53C4D476A
+ for <igt-dev@lists.freedesktop.org>; Tue,  9 Aug 2022 12:51:14 +0000 (UTC)
 From: Ryszard Knop <ryszard.knop@intel.com>
 To: Development mailing list for IGT GPU Tools <igt-dev@lists.freedesktop.org>
-Date: Tue,  9 Aug 2022 14:50:30 +0200
-Message-Id: <20220809125037.1231032-12-ryszard.knop@intel.com>
+Date: Tue,  9 Aug 2022 14:50:27 +0200
+Message-Id: <20220809125037.1231032-9-ryszard.knop@intel.com>
 In-Reply-To: <20220809125037.1231032-1-ryszard.knop@intel.com>
 References: <20220809125037.1231032-1-ryszard.knop@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v2 11/19] tests/*: Remove unused headers
+Subject: [igt-dev] [PATCH i-g-t v2 08/19] tests/v3d*: Remove unused headers
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -29,416 +29,78 @@ now gone.
 
 Signed-off-by: Ryszard Knop <ryszard.knop@intel.com>
 ---
- tests/core_auth.c              | 11 +----------
- tests/core_getclient.c         |  1 -
- tests/core_getstats.c          |  1 -
- tests/core_getversion.c        |  1 -
- tests/core_hotunplug.c         |  3 ---
- tests/core_setmaster_vs_auth.c |  2 --
- tests/debugfs_test.c           |  2 --
- tests/drm_import_export.c      |  7 -------
- tests/drm_read.c               |  7 -------
- tests/dumb_buffer.c            |  4 ----
- tests/fbdev.c                  |  6 ------
- tests/msm/msm_mapping.c        |  1 -
- tests/prime_mmap.c             |  5 -----
- tests/prime_nv_pcopy.c         |  2 --
- tests/prime_nv_test.c          |  1 -
- tests/prime_self_import.c      |  2 --
- tests/syncobj_timeline.c       |  1 -
- tests/syncobj_wait.c           |  1 -
- tests/testdisplay.c            |  6 ------
- tests/testdisplay_hotplug.c    |  2 --
- tests/tools_test.c             |  4 ----
- tests/vgem_slow.c              |  2 --
- 22 files changed, 1 insertion(+), 71 deletions(-)
+ tests/v3d_get_bo_offset.c | 7 -------
+ tests/v3d_get_param.c     | 7 -------
+ tests/v3d_mmap.c          | 9 ---------
+ 3 files changed, 23 deletions(-)
 
-diff --git a/tests/core_auth.c b/tests/core_auth.c
-index c9ad3fb9..1dd5f2f8 100644
---- a/tests/core_auth.c
-+++ b/tests/core_auth.c
-@@ -28,24 +28,15 @@
+diff --git a/tests/v3d_get_bo_offset.c b/tests/v3d_get_bo_offset.c
+index 0923dc85..3b32a203 100644
+--- a/tests/v3d_get_bo_offset.c
++++ b/tests/v3d_get_bo_offset.c
+@@ -24,17 +24,10 @@
  #include "igt.h"
- #include <unistd.h>
- #include <stdlib.h>
--#include <stdint.h>
- #include <stdio.h>
- #include <string.h>
--#include <signal.h>
- #include <fcntl.h>
--#include <inttypes.h>
- #include <errno.h>
--#include <sched.h>
--#include <sys/mount.h>
--#include <sys/stat.h>
--#include <sys/ioctl.h>
--#include <sys/time.h>
--#include <sys/poll.h>
- #include <sys/resource.h>
- #include "drm.h"
- 
- #ifndef __linux__
--# include <pthread.h>
-+#include <pthread.h>
- #endif
- 
- IGT_TEST_DESCRIPTION("Call drmGetMagic() and drmAuthMagic() and see if it behaves.");
-diff --git a/tests/core_getclient.c b/tests/core_getclient.c
-index 40a1c194..7c48851a 100644
---- a/tests/core_getclient.c
-+++ b/tests/core_getclient.c
-@@ -26,7 +26,6 @@
-  */
- 
- #include "igt.h"
--#include <limits.h>
- #include <sys/ioctl.h>
- #include <stdlib.h>
- #include <errno.h>
-diff --git a/tests/core_getstats.c b/tests/core_getstats.c
-index fde27cdc..76195a31 100644
---- a/tests/core_getstats.c
-+++ b/tests/core_getstats.c
-@@ -26,7 +26,6 @@
-  */
- 
- #include "igt.h"
--#include <limits.h>
- #include <sys/ioctl.h>
- #include <sys/types.h>
- 
-diff --git a/tests/core_getversion.c b/tests/core_getversion.c
-index f6953b31..118e5835 100644
---- a/tests/core_getversion.c
-+++ b/tests/core_getversion.c
-@@ -27,7 +27,6 @@
- 
- #include "igt.h"
- #include <string.h>
--#include <sys/ioctl.h>
- 
- IGT_TEST_DESCRIPTION("Tests the DRM_IOCTL_GET_VERSION ioctl and libdrm's "
- 		     "drmGetVersion() interface to it.");
-diff --git a/tests/core_hotunplug.c b/tests/core_hotunplug.c
-index a0d29b79..bf8bc3f2 100644
---- a/tests/core_hotunplug.c
-+++ b/tests/core_hotunplug.c
-@@ -26,10 +26,7 @@
- #include <stdlib.h>
- #include <string.h>
- #include <sys/ioctl.h>
--#include <sys/stat.h>
--#include <sys/types.h>
- #include <unistd.h>
--#include <signal.h>
- 
- #include "i915/gem.h"
- #include "i915/gem_create.h"
-diff --git a/tests/core_setmaster_vs_auth.c b/tests/core_setmaster_vs_auth.c
-index 0b4b8613..03446c33 100644
---- a/tests/core_setmaster_vs_auth.c
-+++ b/tests/core_setmaster_vs_auth.c
-@@ -35,8 +35,6 @@
- 
- #include "igt.h"
+ #include "igt_v3d.h"
  #include <unistd.h>
 -#include <stdlib.h>
 -#include <stdio.h>
  #include <string.h>
- 
- #include "igt_device.h"
-diff --git a/tests/debugfs_test.c b/tests/debugfs_test.c
-index 0b4b6e23..e73402ab 100644
---- a/tests/debugfs_test.c
-+++ b/tests/debugfs_test.c
-@@ -20,13 +20,11 @@
-  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
-  * IN THE SOFTWARE.
-  */
--#include "config.h"
- 
- #include "i915/gem.h"
- #include "igt.h"
- #include "igt_sysfs.h"
- #include <fcntl.h>
--#include <sys/types.h>
- #include <dirent.h>
- 
- IGT_TEST_DESCRIPTION("Read entries from debugfs and sysfs paths.");
-diff --git a/tests/drm_import_export.c b/tests/drm_import_export.c
-index 06245e8b..c3c0bc20 100644
---- a/tests/drm_import_export.c
-+++ b/tests/drm_import_export.c
-@@ -25,20 +25,13 @@
-  */
- 
- #include "igt.h"
--#include <stdio.h>
- #include <sys/types.h>
--#include <sys/stat.h>
- #include <fcntl.h>
--#include <stdlib.h>
- #include <string.h>
--#include <drm.h>
--#include <i915_drm.h>
--#include <xf86drm.h>
- #include <intel_bufmgr.h>
- #include <errno.h>
- #include <pthread.h>
- #include <unistd.h>
--#include <sys/syscall.h>
- 
- #include "i915/gem.h"
- 
-diff --git a/tests/drm_read.c b/tests/drm_read.c
-index 4a966a23..49af0b77 100644
---- a/tests/drm_read.c
-+++ b/tests/drm_read.c
-@@ -31,17 +31,10 @@
- 
- #include "igt.h"
- #include <unistd.h>
--#include <stdlib.h>
--#include <stdint.h>
--#include <stdio.h>
- #include <string.h>
- #include <signal.h>
- #include <fcntl.h>
--#include <inttypes.h>
- #include <errno.h>
--#include <sys/stat.h>
--#include <sys/ioctl.h>
--#include <sys/time.h>
- #include <sys/poll.h>
- #include <pthread.h>
- #include "drm.h"
-diff --git a/tests/dumb_buffer.c b/tests/dumb_buffer.c
-index 2c6261bd..e2bfab25 100644
---- a/tests/dumb_buffer.c
-+++ b/tests/dumb_buffer.c
-@@ -32,16 +32,12 @@
-  */
- 
- #include <errno.h>
 -#include <fcntl.h>
  #include <inttypes.h>
- #include <pthread.h>
- #include <signal.h>
- #include <stdatomic.h>
--#include <stdio.h>
- #include <stdlib.h>
- #include <string.h>
--#include <sys/ioctl.h>
+ #include <errno.h>
 -#include <sys/stat.h>
- #include <sys/time.h>
+-#include <sys/ioctl.h>
+-#include <poll.h>
+ #include "v3d_drm.h"
+-#include "igt_v3d.h"
  
- #include <drm.h>
-diff --git a/tests/fbdev.c b/tests/fbdev.c
-index 794882a6..64c86c08 100644
---- a/tests/fbdev.c
-+++ b/tests/fbdev.c
-@@ -21,8 +21,6 @@
-  * IN THE SOFTWARE.
+ igt_main
+ {
+diff --git a/tests/v3d_get_param.c b/tests/v3d_get_param.c
+index 76563406..5759f41a 100644
+--- a/tests/v3d_get_param.c
++++ b/tests/v3d_get_param.c
+@@ -24,17 +24,10 @@
+ #include "igt.h"
+ #include "igt_v3d.h"
+ #include <unistd.h>
+-#include <stdlib.h>
+-#include <stdio.h>
+ #include <string.h>
+-#include <fcntl.h>
+ #include <inttypes.h>
+ #include <errno.h>
+-#include <sys/stat.h>
+-#include <sys/ioctl.h>
+-#include <poll.h>
+ #include "v3d_drm.h"
+-#include "igt_v3d.h"
+ 
+ igt_main
+ {
+diff --git a/tests/v3d_mmap.c b/tests/v3d_mmap.c
+index a6fe7e5a..d8d9a03e 100644
+--- a/tests/v3d_mmap.c
++++ b/tests/v3d_mmap.c
+@@ -22,19 +22,10 @@
   */
  
--#include "config.h"
--
  #include "igt.h"
- 
- #include <errno.h>
-@@ -31,14 +29,10 @@
- #include <string.h>
- #include <sys/ioctl.h>
- #include <sys/mman.h>
--#include <sys/stat.h>
--#include <sys/types.h>
+-#include "igt_v3d.h"
  #include <unistd.h>
- 
- #include <linux/fb.h>
- 
--#include "igt.h"
--
- #define PANSTEP(panstep_) \
- 	((panstep_) ? (panstep_) : 1)
- 
-diff --git a/tests/msm/msm_mapping.c b/tests/msm/msm_mapping.c
-index 21cdc8e1..88837673 100644
---- a/tests/msm/msm_mapping.c
-+++ b/tests/msm/msm_mapping.c
-@@ -26,7 +26,6 @@
- #include <glob.h>
+-#include <stdlib.h>
+-#include <stdio.h>
  #include <string.h>
- #include <sys/poll.h>
--#include <sys/stat.h>
- 
- #include "igt.h"
- #include "igt_msm.h"
-diff --git a/tests/prime_mmap.c b/tests/prime_mmap.c
-index d53185ff..0c075214 100644
---- a/tests/prime_mmap.c
-+++ b/tests/prime_mmap.c
-@@ -34,11 +34,7 @@
- #include <stdio.h>
- #include <string.h>
- #include <fcntl.h>
+-#include <fcntl.h>
 -#include <inttypes.h>
  #include <errno.h>
 -#include <sys/stat.h>
 -#include <sys/ioctl.h>
--#include <pthread.h>
+-#include <poll.h>
+ #include "v3d_drm.h"
+-#include "igt_v3d.h"
  
- #include "drm.h"
- #include "drmtest.h"
-@@ -47,7 +43,6 @@
- #include "i915_drm.h"
- #include "i915/gem_create.h"
- #include "i915/gem_mman.h"
--#include "igt_debugfs.h"
- #include "ioctl_wrappers.h"
- #include "i915/intel_memory_region.h"
- 
-diff --git a/tests/prime_nv_pcopy.c b/tests/prime_nv_pcopy.c
-index e465e5fc..e98e48ee 100644
---- a/tests/prime_nv_pcopy.c
-+++ b/tests/prime_nv_pcopy.c
-@@ -22,8 +22,6 @@
- #include <fcntl.h>
- #include <string.h>
- #include <sys/stat.h>
--#include <sys/ioctl.h>
--#include <errno.h>
- 
- #include "intel_bufmgr.h"
- #include "nouveau.h"
-diff --git a/tests/prime_nv_test.c b/tests/prime_nv_test.c
-index 81d142f4..eb647668 100644
---- a/tests/prime_nv_test.c
-+++ b/tests/prime_nv_test.c
-@@ -21,7 +21,6 @@
- #include <fcntl.h>
- #include <string.h>
- #include <sys/stat.h>
--#include <sys/ioctl.h>
- 
- #include "intel_bufmgr.h"
- #include "nouveau.h"
-diff --git a/tests/prime_self_import.c b/tests/prime_self_import.c
-index bf548619..1494b86a 100644
---- a/tests/prime_self_import.c
-+++ b/tests/prime_self_import.c
-@@ -34,12 +34,10 @@
- #include "igt.h"
- #include <unistd.h>
- #include <stdlib.h>
--#include <stdio.h>
- #include <string.h>
- #include <fcntl.h>
- #include <inttypes.h>
- #include <errno.h>
--#include <sys/stat.h>
- #include <sys/ioctl.h>
- #include <pthread.h>
- 
-diff --git a/tests/syncobj_timeline.c b/tests/syncobj_timeline.c
-index 20375cdd..b4858673 100644
---- a/tests/syncobj_timeline.c
-+++ b/tests/syncobj_timeline.c
-@@ -26,7 +26,6 @@
- #include "igt_syncobj.h"
- #include <unistd.h>
- #include <time.h>
--#include <sys/ioctl.h>
- #include <pthread.h>
- #include <signal.h>
- #include "drm.h"
-diff --git a/tests/syncobj_wait.c b/tests/syncobj_wait.c
-index 669d0adf..19995544 100644
---- a/tests/syncobj_wait.c
-+++ b/tests/syncobj_wait.c
-@@ -26,7 +26,6 @@
- #include "igt_syncobj.h"
- #include <unistd.h>
- #include <time.h>
--#include <sys/ioctl.h>
- #include <pthread.h>
- #include <signal.h>
- #include "drm.h"
-diff --git a/tests/testdisplay.c b/tests/testdisplay.c
-index d45a722b..f707444f 100644
---- a/tests/testdisplay.c
-+++ b/tests/testdisplay.c
-@@ -45,23 +45,17 @@
-  *  - DP commands (e.g. poweroff)
-  * - verify outputs against VBT/physical connectors
-  */
--#include "config.h"
- 
- #include "igt.h"
- #include <cairo.h>
- #include <errno.h>
- #include <getopt.h>
- #include <libgen.h>
--#include <math.h>
- #include <stdint.h>
- #include <stdbool.h>
- #include <strings.h>
- #include <unistd.h>
- #include <termios.h>
--#include <sys/poll.h>
--#include <sys/time.h>
--#include <sys/ioctl.h>
--#include <sys/types.h>
- #include <sys/stat.h>
- 
- #include "testdisplay.h"
-diff --git a/tests/testdisplay_hotplug.c b/tests/testdisplay_hotplug.c
-index cd784895..f77554ca 100644
---- a/tests/testdisplay_hotplug.c
-+++ b/tests/testdisplay_hotplug.c
-@@ -22,14 +22,12 @@
-  */
- 
- #include "igt.h"
--#include <stdio.h>
- #include <string.h>
- #include <stdlib.h>
- 
- #include <sys/stat.h>
- 
- #include "testdisplay.h"
--#include "config.h"
- 
- 
- #include <libudev.h>
-diff --git a/tests/tools_test.c b/tests/tools_test.c
-index 237f0433..476b2434 100644
---- a/tests/tools_test.c
-+++ b/tests/tools_test.c
-@@ -20,12 +20,8 @@
-  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
-  * IN THE SOFTWARE.
-  */
--#include "config.h"
- #include "igt.h"
- #include <stdio.h>
--#include <sys/types.h>
--#include <sys/stat.h>
--#include <fcntl.h>
- #include <libgen.h>
- #include <unistd.h>
- #include <linux/limits.h>
-diff --git a/tests/vgem_slow.c b/tests/vgem_slow.c
-index 58b09e42..91fe6f20 100644
---- a/tests/vgem_slow.c
-+++ b/tests/vgem_slow.c
-@@ -28,8 +28,6 @@
- 
- #include <sys/mman.h>
- #include <sys/poll.h>
--#include <sys/stat.h>
--#include <dirent.h>
- 
- IGT_TEST_DESCRIPTION("Extended sanity check of Virtual GEM module (vGEM).");
- 
+ igt_main
+ {
 -- 
 2.37.1
