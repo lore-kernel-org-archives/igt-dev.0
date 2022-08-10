@@ -1,16 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6F79A10F0F3
- for <igt-dev@lists.freedesktop.org>; Wed, 10 Aug 2022 13:45:03 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1C48CB2F48
+ for <igt-dev@lists.freedesktop.org>; Wed, 10 Aug 2022 13:45:02 +0000 (UTC)
 From: Ryszard Knop <ryszard.knop@intel.com>
 To: Development mailing list for IGT GPU Tools <igt-dev@lists.freedesktop.org>
-Date: Wed, 10 Aug 2022 15:44:53 +0200
-Message-Id: <20220810134453.951186-2-ryszard.knop@intel.com>
-In-Reply-To: <20220810134453.951186-1-ryszard.knop@intel.com>
-References: <20220810134453.951186-1-ryszard.knop@intel.com>
+Date: Wed, 10 Aug 2022 15:44:52 +0200
+Message-Id: <20220810134453.951186-1-ryszard.knop@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 2/2] runner: Remove some unused values
+Subject: [igt-dev] [PATCH i-g-t 1/2] runner: Check for strchr result in
+ parse_dmesg_line
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,51 +21,27 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-These values were immediately overwritten or left unused, remove them.
+The intent here most likely was that if strchr returns NULL, the error
+below is printed out, but the condition was to check if the provided
+buffer was not NULL.
 
 Signed-off-by: Ryszard Knop <ryszard.knop@intel.com>
 ---
- runner/resultgen.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ runner/resultgen.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/runner/resultgen.c b/runner/resultgen.c
-index 38d90bda..479d6d4f 100644
+index 6ecf325b..38d90bda 100644
 --- a/runner/resultgen.c
 +++ b/runner/resultgen.c
-@@ -621,7 +621,7 @@ static void process_dynamic_subtest_output(const char *piglit_name,
- 
- 	for (k = begin_idx + 1; k < result_idx; k++) {
- 		struct json_object *current_dynamic_test = NULL;
--		int dyn_result_idx = -1;
-+		int dyn_result_idx;
- 		char dynamic_name[256];
- 		char dynamic_piglit_name[256];
- 		const char *dynbeg, *dynend;
-@@ -748,7 +748,7 @@ static bool fill_from_output(int fd, const char *binary, const char *key,
- 	matches = find_matches(buf, bufend, needles);
- 
- 	for (i = 0; i < subtests->size; i++) {
--		int begin_idx = -1, result_idx = -1;
-+		int begin_idx, result_idx;
- 		const char *resulttext;
- 		const char *beg, *end;
- 		double time;
-@@ -975,7 +975,6 @@ static bool fill_from_dmesg(int fd,
- 	FILE *f = fdopen(fd, "r");
- 	char piglit_name[256];
- 	char dynamic_piglit_name[256];
--	ssize_t read;
- 	size_t i;
- 	GRegex *re;
- 
-@@ -988,7 +987,7 @@ static bool fill_from_dmesg(int fd,
- 		return false;
+@@ -864,7 +864,7 @@ static bool parse_dmesg_line(char* line,
  	}
  
--	while ((read = getline(&line, &linelen, f)) > 0) {
-+	while (getline(&line, &linelen, f) > 0) {
- 		char *formatted;
- 		unsigned flags;
- 		unsigned long long ts_usec;
+ 	*message = strchr(line, ';');
+-	if (!message) {
++	if (*message == NULL) {
+ 		fprintf(stderr, "No ; found in kmsg record, this shouldn't happen\n");
+ 		return false;
+ 	}
 -- 
 2.37.1
