@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from us-smtp-delivery-124.mimecast.com
  (us-smtp-delivery-124.mimecast.com [170.10.129.124])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D33978BB16
- for <igt-dev@lists.freedesktop.org>; Wed, 10 Aug 2022 19:43:06 +0000 (UTC)
-Received: by mail-qt1-f200.google.com with SMTP id
- bl15-20020a05622a244f00b0034218498b06so11835691qtb.14
- for <igt-dev@lists.freedesktop.org>; Wed, 10 Aug 2022 12:43:04 -0700 (PDT)
-Message-ID: <13200bc5a5393da4d800de24de0dec3fa42de7b6.camel@redhat.com>
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4CA5111258B
+ for <igt-dev@lists.freedesktop.org>; Wed, 10 Aug 2022 19:44:25 +0000 (UTC)
+Received: by mail-qk1-f197.google.com with SMTP id
+ de4-20020a05620a370400b006a9711bd9f8so13209128qkb.9
+ for <igt-dev@lists.freedesktop.org>; Wed, 10 Aug 2022 12:44:23 -0700 (PDT)
+Message-ID: <2fee0fff4bc46d58677a281764a1ec2ee1285446.camel@redhat.com>
 From: Lyude Paul <lyude@redhat.com>
 To: Mark Yacoub <markyacoub@chromium.org>, Khaled Almahallawy
  <khaled.almahallawy@intel.com>
-Date: Wed, 10 Aug 2022 15:43:01 -0400
+Date: Wed, 10 Aug 2022 15:44:21 -0400
 In-Reply-To: <CAJUqKUrbf=jJn=iXf5y9LRGGj-0K0w6KWeoi_axoeA21hpuK9w@mail.gmail.com>
 References: <20220809002044.264300-1-khaled.almahallawy@intel.com>
  <CAJUqKUrbf=jJn=iXf5y9LRGGj-0K0w6KWeoi_axoeA21hpuK9w@mail.gmail.com>
@@ -35,7 +35,7 @@ List-ID: <igt-dev@lists.freedesktop.org>
 I'm not sure if I'd count as a maintainer (I did write some of the original
 chamelium code for igt though :) but you can consider this:
 
-Reviewed-by: Lyude Paul <lyude@redhat.com>
+Acked-by: Lyude Paul <lyude@redhat.com>
 
 On Wed, 2022-08-10 at 10:55 -0400, Mark Yacoub wrote:
 > Makes sense to me. Great idea towards the right direction of
