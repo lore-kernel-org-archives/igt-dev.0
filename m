@@ -1,16 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 778F7AFECE
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 405BDB15C4
  for <igt-dev@lists.freedesktop.org>; Wed, 10 Aug 2022 13:55:46 +0000 (UTC)
 From: Ryszard Knop <ryszard.knop@intel.com>
 To: Development mailing list for IGT GPU Tools <igt-dev@lists.freedesktop.org>
-Date: Wed, 10 Aug 2022 15:55:29 +0200
-Message-Id: <20220810135530.992455-3-ryszard.knop@intel.com>
+Date: Wed, 10 Aug 2022 15:55:30 +0200
+Message-Id: <20220810135530.992455-4-ryszard.knop@intel.com>
 In-Reply-To: <20220810135530.992455-1-ryszard.knop@intel.com>
 References: <20220810135530.992455-1-ryszard.knop@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 2/3] runner/tests: Fix JSON test data
+Subject: [igt-dev] [PATCH i-g-t 3/3] runner: Add an on-demand test for large
+ files
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,193 +23,265 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-JSON files contained extra (invalid) commas which json-c was able to
-handle, but Jansson, Firefox and Python parsers are unhappy with.
+The test in question does not carry large files, as that would require
+adding massive files to Git. The tested logic is not any different for
+large files, it's just a check if the JSON library can handle them.
+
+To run this test, use generate_data.py. You'll need around 13GB of free
+space and 10+ minutes to run this test successfully. The test will be
+skipped by default if the SKIP_ME marker exists.
 
 Signed-off-by: Ryszard Knop <ryszard.knop@intel.com>
 ---
- .../json_tests_data/aborted-after-a-test/reference.json   | 6 +++---
- runner/json_tests_data/aborted-on-boot/reference.json     | 4 ++--
- runner/json_tests_data/dmesg-escapes/reference.json       | 8 ++++----
- runner/json_tests_data/empty-result-files/reference.json  | 4 ++--
- runner/json_tests_data/graceful-notrun/reference.json     | 6 +++---
- .../incomplete-before-any-subtests/reference.json         | 2 +-
- .../notrun-results-multiple-mode/reference.json           | 2 +-
- runner/json_tests_data/notrun-results/reference.json      | 2 +-
- 8 files changed, 17 insertions(+), 17 deletions(-)
+ .../really-large-files/.gitignore             |  3 +
+ .../really-large-files/0/dmesg.txt            |  0
+ .../really-large-files/0/err.txt              |  0
+ .../really-large-files/0/journal.txt          |  0
+ .../really-large-files/0/out.txt              |  1 +
+ .../really-large-files/README.txt             |  7 +++
+ .../really-large-files/SKIP_ME                |  1 +
+ .../really-large-files/endtime.txt            |  1 +
+ .../really-large-files/generate_data.py       | 20 ++++++
+ .../really-large-files/joblist.txt            |  1 +
+ .../really-large-files/metadata.txt           | 12 ++++
+ .../really-large-files/reference.json         | 62 +++++++++++++++++++
+ .../really-large-files/starttime.txt          |  1 +
+ .../really-large-files/uname.txt              |  1 +
+ runner/runner_json_tests.c                    |  8 ++-
+ 15 files changed, 117 insertions(+), 1 deletion(-)
+ create mode 100644 runner/json_tests_data/really-large-files/.gitignore
+ create mode 100644 runner/json_tests_data/really-large-files/0/dmesg.txt
+ create mode 100644 runner/json_tests_data/really-large-files/0/err.txt
+ create mode 100644 runner/json_tests_data/really-large-files/0/journal.txt
+ create mode 100644 runner/json_tests_data/really-large-files/0/out.txt
+ create mode 100644 runner/json_tests_data/really-large-files/README.txt
+ create mode 100644 runner/json_tests_data/really-large-files/SKIP_ME
+ create mode 100644 runner/json_tests_data/really-large-files/endtime.txt
+ create mode 100644 runner/json_tests_data/really-large-files/generate_data.py
+ create mode 100644 runner/json_tests_data/really-large-files/joblist.txt
+ create mode 100644 runner/json_tests_data/really-large-files/metadata.txt
+ create mode 100644 runner/json_tests_data/really-large-files/reference.json
+ create mode 100644 runner/json_tests_data/really-large-files/starttime.txt
+ create mode 100644 runner/json_tests_data/really-large-files/uname.txt
 
-diff --git a/runner/json_tests_data/aborted-after-a-test/reference.json b/runner/json_tests_data/aborted-after-a-test/reference.json
-index 0776f758..3f4a3fc0 100644
---- a/runner/json_tests_data/aborted-after-a-test/reference.json
-+++ b/runner/json_tests_data/aborted-after-a-test/reference.json
-@@ -49,7 +49,7 @@
- 	"out":"Aborted after: successtest (first-subtest)\n\nKernel tainted (0x200)\n",
- 	"result":"fail",
- 	"err":"",
--	"dmesg":"",
-+	"dmesg":""
-     }
-   },
-   "totals":{
-@@ -130,7 +130,7 @@
-       "notrun":0,
-       "fail":1,
-       "warn":0
--    },
+diff --git a/runner/json_tests_data/really-large-files/.gitignore b/runner/json_tests_data/really-large-files/.gitignore
+new file mode 100644
+index 00000000..6a445ba9
+--- /dev/null
++++ b/runner/json_tests_data/really-large-files/.gitignore
+@@ -0,0 +1,3 @@
++reference.json
++0/out.txt
++SKIP_ME
+\ No newline at end of file
+diff --git a/runner/json_tests_data/really-large-files/0/dmesg.txt b/runner/json_tests_data/really-large-files/0/dmesg.txt
+new file mode 100644
+index 00000000..e69de29b
+diff --git a/runner/json_tests_data/really-large-files/0/err.txt b/runner/json_tests_data/really-large-files/0/err.txt
+new file mode 100644
+index 00000000..e69de29b
+diff --git a/runner/json_tests_data/really-large-files/0/journal.txt b/runner/json_tests_data/really-large-files/0/journal.txt
+new file mode 100644
+index 00000000..e69de29b
+diff --git a/runner/json_tests_data/really-large-files/0/out.txt b/runner/json_tests_data/really-large-files/0/out.txt
+new file mode 100644
+index 00000000..e85778cd
+--- /dev/null
++++ b/runner/json_tests_data/really-large-files/0/out.txt
+@@ -0,0 +1 @@
++This test requires massive files generated with generate_data.py to actually test stuff.
+\ No newline at end of file
+diff --git a/runner/json_tests_data/really-large-files/README.txt b/runner/json_tests_data/really-large-files/README.txt
+new file mode 100644
+index 00000000..20f6f3b2
+--- /dev/null
++++ b/runner/json_tests_data/really-large-files/README.txt
+@@ -0,0 +1,7 @@
++Check if an incredibly large JSON is generated and tested properly.
++This requires a large out.txt file to be available - it's not in
++the repo directly, run generate_data.py to test that properly.
++The SKIP_ME marker file exists to skip this test by default.
++
++The logic for small/large files does not change, testing this for each
++commit takes a long time and does not really check anything special.
+diff --git a/runner/json_tests_data/really-large-files/SKIP_ME b/runner/json_tests_data/really-large-files/SKIP_ME
+new file mode 100644
+index 00000000..c76d0b57
+--- /dev/null
++++ b/runner/json_tests_data/really-large-files/SKIP_ME
+@@ -0,0 +1 @@
++This marker file exists to skip this test by default.
+\ No newline at end of file
+diff --git a/runner/json_tests_data/really-large-files/endtime.txt b/runner/json_tests_data/really-large-files/endtime.txt
+new file mode 100644
+index 00000000..635f6ae9
+--- /dev/null
++++ b/runner/json_tests_data/really-large-files/endtime.txt
+@@ -0,0 +1 @@
++1539953735.172373
+diff --git a/runner/json_tests_data/really-large-files/generate_data.py b/runner/json_tests_data/really-large-files/generate_data.py
+new file mode 100644
+index 00000000..d3852c6b
+--- /dev/null
++++ b/runner/json_tests_data/really-large-files/generate_data.py
+@@ -0,0 +1,20 @@
++import json
++
++print("Hope you've got enough memory for this! Generating text...")
++PREFIX = "it's time for " + ("A" * 1024 * 1024 * 1024 * 4)
++
++print("Writing to out.txt...")
++with open('0/out.txt', 'w') as f:
++	f.write(PREFIX)
++
++print("Loading reference.json...")
++with open('reference.json', 'r') as f:
++	data = json.load(f)
++
++print("Writing new reference.json...")
++with open('reference.json', 'w') as f:
++	data['tests']['igt@successtest@first-subtest']['out'] = PREFIX
++	json.dump(data, f)
++
++print("Removing SKIP_ME...")
++os.unlink("SKIP_ME")
+diff --git a/runner/json_tests_data/really-large-files/joblist.txt b/runner/json_tests_data/really-large-files/joblist.txt
+new file mode 100644
+index 00000000..81f914a7
+--- /dev/null
++++ b/runner/json_tests_data/really-large-files/joblist.txt
+@@ -0,0 +1 @@
++successtest first-subtest
+diff --git a/runner/json_tests_data/really-large-files/metadata.txt b/runner/json_tests_data/really-large-files/metadata.txt
+new file mode 100644
+index 00000000..08db4cc0
+--- /dev/null
++++ b/runner/json_tests_data/really-large-files/metadata.txt
+@@ -0,0 +1,12 @@
++abort_mask : 0
++name : really-large-files
++dry_run : 0
++sync : 0
++log_level : 0
++overwrite : 0
++multiple_mode : 0
++inactivity_timeout : 0
++use_watchdog : 0
++piglit_style_dmesg : 0
++test_root : /path/does/not/exist
++results_path : /path/does/not/exist
+diff --git a/runner/json_tests_data/really-large-files/reference.json b/runner/json_tests_data/really-large-files/reference.json
+new file mode 100644
+index 00000000..5e662938
+--- /dev/null
++++ b/runner/json_tests_data/really-large-files/reference.json
+@@ -0,0 +1,62 @@
++{
++  "__type__":"TestrunResult",
++  "results_version":10,
++  "name":"really-large-files",
++  "uname":"Linux hostname 4.18.0-1-amd64 #1 SMP Debian 4.18.6-1 (2018-09-06) x86_64",
++  "time_elapsed":{
++    "__type__":"TimeAttribute",
++    "start":1539953735.1110389,
++    "end":1539953735.1723731
++  },
++  "tests":{
++    "igt@successtest@first-subtest":{
++	"out":"This test requires massive files generated with generate_data.py to actually test stuff.",
++	"err":"",
++	"dmesg":"",
++	"result":"incomplete"
 +    }
-   },
-   "runtimes":{
-     "igt@successtest":{
-@@ -139,6 +139,6 @@
-         "start":0,
-         "end":0.014
-       }
--    },
++  },
++  "totals":{
++    "":{
++      "crash":0,
++      "pass":0,
++      "dmesg-fail":0,
++      "dmesg-warn":0,
++      "skip":0,
++      "incomplete":1,
++      "abort":0,
++      "timeout":0,
++      "notrun":0,
++      "fail":0,
++      "warn":0
++    },
++    "root":{
++      "crash":0,
++      "pass":0,
++      "dmesg-fail":0,
++      "dmesg-warn":0,
++      "skip":0,
++      "incomplete":1,
++      "abort":0,
++      "timeout":0,
++      "notrun":0,
++      "fail":0,
++      "warn":0
++    },
++    "igt@successtest":{
++      "crash":0,
++      "pass":0,
++      "dmesg-fail":0,
++      "dmesg-warn":0,
++      "skip":0,
++      "incomplete":1,
++      "abort":0,
++      "timeout":0,
++      "notrun":0,
++      "fail":0,
++      "warn":0
 +    }
-   }
- }
-diff --git a/runner/json_tests_data/aborted-on-boot/reference.json b/runner/json_tests_data/aborted-on-boot/reference.json
-index 75f19466..5e9b905a 100644
---- a/runner/json_tests_data/aborted-on-boot/reference.json
-+++ b/runner/json_tests_data/aborted-on-boot/reference.json
-@@ -43,7 +43,7 @@
- 	"out":"Aborted after: startup\n\nKernel tainted (0x200)\n",
- 	"result":"fail",
- 	"err":"",
--	"dmesg":"",
-+	"dmesg":""
-     }
-   },
-   "totals":{
-@@ -124,7 +124,7 @@
-       "notrun":0,
-       "fail":1,
-       "warn":0
--    },
-+    }
-   },
-   "runtimes":{
-   }
-diff --git a/runner/json_tests_data/dmesg-escapes/reference.json b/runner/json_tests_data/dmesg-escapes/reference.json
-index 91c57310..4798db52 100644
---- a/runner/json_tests_data/dmesg-escapes/reference.json
-+++ b/runner/json_tests_data/dmesg-escapes/reference.json
-@@ -19,8 +19,8 @@
-         "end":0
-       },
-       "err":"Starting subtest: first-subtest\nSubtest first-subtest: SUCCESS (0.000s)\n",
--	"dmesg":"<6> [3216186.095083] Console: switching to colour dummy device 80x25\n<6> [3216186.095097] [IGT] successtest: executing\n<6> [3216186.101115] [IGT] successtest: starting subtest first-subtest\n<6> [3216186.101159] String with a\nnewline\n<6> [3216186.101159] String with a\ttab\n<6> [3216186.101159] String with an explicit\\x00NUL\n<6> [3216186.101159] The character \\x13 should be nonprintable\n<6> [3216186.101159] Escaped backslash is \\\n<6> [3216186.101159] Kernel shouldn't output this but cutoff escape \\x1\n<6> [3216186.101159] More cutoff \\x\n<6> [3216186.101159] One more \\\n<6> [3216186.101160] [IGT] successtest: exiting, ret=0\n<6> [3216186.101299] Console: switching to colour frame buffer device 240x75\n",
--    },
-+	"dmesg":"<6> [3216186.095083] Console: switching to colour dummy device 80x25\n<6> [3216186.095097] [IGT] successtest: executing\n<6> [3216186.101115] [IGT] successtest: starting subtest first-subtest\n<6> [3216186.101159] String with a\nnewline\n<6> [3216186.101159] String with a\ttab\n<6> [3216186.101159] String with an explicit\\x00NUL\n<6> [3216186.101159] The character \\x13 should be nonprintable\n<6> [3216186.101159] Escaped backslash is \\\n<6> [3216186.101159] Kernel shouldn't output this but cutoff escape \\x1\n<6> [3216186.101159] More cutoff \\x\n<6> [3216186.101159] One more \\\n<6> [3216186.101160] [IGT] successtest: exiting, ret=0\n<6> [3216186.101299] Console: switching to colour frame buffer device 240x75\n"
-+    }
-   },
-   "totals":{
-     "":{
-@@ -61,7 +61,7 @@
-       "notrun":0,
-       "fail":0,
-       "warn":0
--    },
-+    }
-   },
-   "runtimes":{
-     "igt@successtest":{
-@@ -70,6 +70,6 @@
-         "start":0,
-         "end":0.014
-       }
--    },
-+    }
-   }
- }
-diff --git a/runner/json_tests_data/empty-result-files/reference.json b/runner/json_tests_data/empty-result-files/reference.json
-index f81ffb81..7c3a052a 100644
---- a/runner/json_tests_data/empty-result-files/reference.json
-+++ b/runner/json_tests_data/empty-result-files/reference.json
-@@ -14,7 +14,7 @@
- 	"err":"",
- 	"dmesg":"",
- 	"result":"incomplete"
--    },
-+    }
-   },
-   "totals":{
-     "":{
-@@ -55,7 +55,7 @@
-       "notrun":0,
-       "fail":0,
-       "warn":0
--    },
-+    }
-   },
-   "runtimes":{
-   }
-diff --git a/runner/json_tests_data/graceful-notrun/reference.json b/runner/json_tests_data/graceful-notrun/reference.json
-index c95bdfec..2c9888e4 100644
---- a/runner/json_tests_data/graceful-notrun/reference.json
-+++ b/runner/json_tests_data/graceful-notrun/reference.json
-@@ -39,7 +39,7 @@
- 	"err":"",
- 	"dmesg":"",
- 	"result":"notrun"
--    },
-+    }
-   },
-   "totals":{
-     "":{
-@@ -106,7 +106,7 @@
-       "notrun":2,
-       "fail":0,
-       "warn":0
--    },
-+    }
-   },
-   "runtimes":{
-     "igt@successtest":{
-@@ -115,6 +115,6 @@
-         "start":0,
-         "end":0.014
-       }
--    },
-+    }
-   }
- }
-diff --git a/runner/json_tests_data/incomplete-before-any-subtests/reference.json b/runner/json_tests_data/incomplete-before-any-subtests/reference.json
-index 2a4bd456..ed2a3753 100644
---- a/runner/json_tests_data/incomplete-before-any-subtests/reference.json
-+++ b/runner/json_tests_data/incomplete-before-any-subtests/reference.json
-@@ -39,7 +39,7 @@
- 	"err":"",
- 	"dmesg":"",
- 	"result":"notrun"
--    },
-+    }
-   },
-   "totals":{
-     "":{
-diff --git a/runner/json_tests_data/notrun-results-multiple-mode/reference.json b/runner/json_tests_data/notrun-results-multiple-mode/reference.json
-index 3f8b7fb0..9820ecae 100644
---- a/runner/json_tests_data/notrun-results-multiple-mode/reference.json
-+++ b/runner/json_tests_data/notrun-results-multiple-mode/reference.json
-@@ -101,6 +101,6 @@
-         "start":0,
-         "end":0.014
-       }
--    },
-+    }
-   }
- }
-diff --git a/runner/json_tests_data/notrun-results/reference.json b/runner/json_tests_data/notrun-results/reference.json
-index 800de38c..f419f7a1 100644
---- a/runner/json_tests_data/notrun-results/reference.json
-+++ b/runner/json_tests_data/notrun-results/reference.json
-@@ -120,6 +120,6 @@
-         "start":0,
-         "end":0.014
-       }
--    },
-+    }
-   }
- }
++  },
++  "runtimes":{
++  }
++}
+diff --git a/runner/json_tests_data/really-large-files/starttime.txt b/runner/json_tests_data/really-large-files/starttime.txt
+new file mode 100644
+index 00000000..ae038f18
+--- /dev/null
++++ b/runner/json_tests_data/really-large-files/starttime.txt
+@@ -0,0 +1 @@
++1539953735.111039
+diff --git a/runner/json_tests_data/really-large-files/uname.txt b/runner/json_tests_data/really-large-files/uname.txt
+new file mode 100644
+index 00000000..a7aef6f7
+--- /dev/null
++++ b/runner/json_tests_data/really-large-files/uname.txt
+@@ -0,0 +1 @@
++Linux hostname 4.18.0-1-amd64 #1 SMP Debian 4.18.6-1 (2018-09-06) x86_64
+diff --git a/runner/runner_json_tests.c b/runner/runner_json_tests.c
+index 9f487855..6bb1eb9f 100644
+--- a/runner/runner_json_tests.c
++++ b/runner/runner_json_tests.c
+@@ -89,12 +89,17 @@ static void compare(struct json_t *one,
+ static void run_results_and_compare(int dirfd, const char *dirname)
+ {
+ 	int testdirfd = openat(dirfd, dirname, O_RDONLY | O_DIRECTORY);
+-	int reference;
++	int skipfd, reference;
+ 	struct json_t *resultsobj, *referenceobj;
+ 	struct json_error_t error;
+ 
+ 	igt_assert_fd(testdirfd);
+ 
++	skipfd = openat(testdirfd, "SKIP_ME", O_RDONLY);
++	igt_skip_on_f(skipfd != -1, "SKIP_ME marker exists - see the README "
++				    "for this test for more information.\n");
++	close(skipfd);
++
+ 	igt_assert((resultsobj = generate_results_json(testdirfd)) != NULL);
+ 
+ 	reference = openat(testdirfd, "reference.json", O_RDONLY);
+@@ -134,6 +139,7 @@ static const char *dirnames[] = {
+ 	"dynamic-subtest-name-in-multiple-subtests",
+ 	"unprintable-characters",
+ 	"empty-result-files",
++	"really-large-files",
+ 	"graceful-notrun",
+ };
+ 
 -- 
 2.37.1
