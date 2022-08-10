@@ -1,17 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 405BDB15C4
- for <igt-dev@lists.freedesktop.org>; Wed, 10 Aug 2022 13:55:46 +0000 (UTC)
-From: Ryszard Knop <ryszard.knop@intel.com>
-To: Development mailing list for IGT GPU Tools <igt-dev@lists.freedesktop.org>
-Date: Wed, 10 Aug 2022 15:55:30 +0200
-Message-Id: <20220810135530.992455-4-ryszard.knop@intel.com>
-In-Reply-To: <20220810135530.992455-1-ryszard.knop@intel.com>
-References: <20220810135530.992455-1-ryszard.knop@intel.com>
+Content-Type: multipart/alternative;
+ boundary="===============4588247376450330007=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 3/3] runner: Add an on-demand test for large
- files
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Bhanuprakash Modem" <bhanuprakash.modem@intel.com>
+Date: Wed, 10 Aug 2022 14:23:53 -0000
+Message-ID: <166014143345.12354.1811098663805137134@emeril.freedesktop.org>
+References: <20220810122023.1816804-1-bhanuprakash.modem@intel.com>
+In-Reply-To: <20220810122023.1816804-1-bhanuprakash.modem@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
+ =?utf-8?q?kms=5Fplane=5Fcursor=3A_Convert_tests_to_dynamic?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,269 +17,402 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-The test in question does not carry large files, as that would require
-adding massive files to Git. The tested logic is not any different for
-large files, it's just a check if the JSON library can handle them.
+--===============4588247376450330007==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-To run this test, use generate_data.py. You'll need around 13GB of free
-space and 10+ minutes to run this test successfully. The test will be
-skipped by default if the SKIP_ME marker exists.
+== Series Details ==
 
-Signed-off-by: Ryszard Knop <ryszard.knop@intel.com>
----
- .../really-large-files/.gitignore             |  3 +
- .../really-large-files/0/dmesg.txt            |  0
- .../really-large-files/0/err.txt              |  0
- .../really-large-files/0/journal.txt          |  0
- .../really-large-files/0/out.txt              |  1 +
- .../really-large-files/README.txt             |  7 +++
- .../really-large-files/SKIP_ME                |  1 +
- .../really-large-files/endtime.txt            |  1 +
- .../really-large-files/generate_data.py       | 20 ++++++
- .../really-large-files/joblist.txt            |  1 +
- .../really-large-files/metadata.txt           | 12 ++++
- .../really-large-files/reference.json         | 62 +++++++++++++++++++
- .../really-large-files/starttime.txt          |  1 +
- .../really-large-files/uname.txt              |  1 +
- runner/runner_json_tests.c                    |  8 ++-
- 15 files changed, 117 insertions(+), 1 deletion(-)
- create mode 100644 runner/json_tests_data/really-large-files/.gitignore
- create mode 100644 runner/json_tests_data/really-large-files/0/dmesg.txt
- create mode 100644 runner/json_tests_data/really-large-files/0/err.txt
- create mode 100644 runner/json_tests_data/really-large-files/0/journal.txt
- create mode 100644 runner/json_tests_data/really-large-files/0/out.txt
- create mode 100644 runner/json_tests_data/really-large-files/README.txt
- create mode 100644 runner/json_tests_data/really-large-files/SKIP_ME
- create mode 100644 runner/json_tests_data/really-large-files/endtime.txt
- create mode 100644 runner/json_tests_data/really-large-files/generate_data.py
- create mode 100644 runner/json_tests_data/really-large-files/joblist.txt
- create mode 100644 runner/json_tests_data/really-large-files/metadata.txt
- create mode 100644 runner/json_tests_data/really-large-files/reference.json
- create mode 100644 runner/json_tests_data/really-large-files/starttime.txt
- create mode 100644 runner/json_tests_data/really-large-files/uname.txt
+Series: tests/kms_plane_cursor: Convert tests to dynamic
+URL   : https://patchwork.freedesktop.org/series/107119/
+State : success
 
-diff --git a/runner/json_tests_data/really-large-files/.gitignore b/runner/json_tests_data/really-large-files/.gitignore
-new file mode 100644
-index 00000000..6a445ba9
---- /dev/null
-+++ b/runner/json_tests_data/really-large-files/.gitignore
-@@ -0,0 +1,3 @@
-+reference.json
-+0/out.txt
-+SKIP_ME
-\ No newline at end of file
-diff --git a/runner/json_tests_data/really-large-files/0/dmesg.txt b/runner/json_tests_data/really-large-files/0/dmesg.txt
-new file mode 100644
-index 00000000..e69de29b
-diff --git a/runner/json_tests_data/really-large-files/0/err.txt b/runner/json_tests_data/really-large-files/0/err.txt
-new file mode 100644
-index 00000000..e69de29b
-diff --git a/runner/json_tests_data/really-large-files/0/journal.txt b/runner/json_tests_data/really-large-files/0/journal.txt
-new file mode 100644
-index 00000000..e69de29b
-diff --git a/runner/json_tests_data/really-large-files/0/out.txt b/runner/json_tests_data/really-large-files/0/out.txt
-new file mode 100644
-index 00000000..e85778cd
---- /dev/null
-+++ b/runner/json_tests_data/really-large-files/0/out.txt
-@@ -0,0 +1 @@
-+This test requires massive files generated with generate_data.py to actually test stuff.
-\ No newline at end of file
-diff --git a/runner/json_tests_data/really-large-files/README.txt b/runner/json_tests_data/really-large-files/README.txt
-new file mode 100644
-index 00000000..20f6f3b2
---- /dev/null
-+++ b/runner/json_tests_data/really-large-files/README.txt
-@@ -0,0 +1,7 @@
-+Check if an incredibly large JSON is generated and tested properly.
-+This requires a large out.txt file to be available - it's not in
-+the repo directly, run generate_data.py to test that properly.
-+The SKIP_ME marker file exists to skip this test by default.
-+
-+The logic for small/large files does not change, testing this for each
-+commit takes a long time and does not really check anything special.
-diff --git a/runner/json_tests_data/really-large-files/SKIP_ME b/runner/json_tests_data/really-large-files/SKIP_ME
-new file mode 100644
-index 00000000..c76d0b57
---- /dev/null
-+++ b/runner/json_tests_data/really-large-files/SKIP_ME
-@@ -0,0 +1 @@
-+This marker file exists to skip this test by default.
-\ No newline at end of file
-diff --git a/runner/json_tests_data/really-large-files/endtime.txt b/runner/json_tests_data/really-large-files/endtime.txt
-new file mode 100644
-index 00000000..635f6ae9
---- /dev/null
-+++ b/runner/json_tests_data/really-large-files/endtime.txt
-@@ -0,0 +1 @@
-+1539953735.172373
-diff --git a/runner/json_tests_data/really-large-files/generate_data.py b/runner/json_tests_data/really-large-files/generate_data.py
-new file mode 100644
-index 00000000..d3852c6b
---- /dev/null
-+++ b/runner/json_tests_data/really-large-files/generate_data.py
-@@ -0,0 +1,20 @@
-+import json
-+
-+print("Hope you've got enough memory for this! Generating text...")
-+PREFIX = "it's time for " + ("A" * 1024 * 1024 * 1024 * 4)
-+
-+print("Writing to out.txt...")
-+with open('0/out.txt', 'w') as f:
-+	f.write(PREFIX)
-+
-+print("Loading reference.json...")
-+with open('reference.json', 'r') as f:
-+	data = json.load(f)
-+
-+print("Writing new reference.json...")
-+with open('reference.json', 'w') as f:
-+	data['tests']['igt@successtest@first-subtest']['out'] = PREFIX
-+	json.dump(data, f)
-+
-+print("Removing SKIP_ME...")
-+os.unlink("SKIP_ME")
-diff --git a/runner/json_tests_data/really-large-files/joblist.txt b/runner/json_tests_data/really-large-files/joblist.txt
-new file mode 100644
-index 00000000..81f914a7
---- /dev/null
-+++ b/runner/json_tests_data/really-large-files/joblist.txt
-@@ -0,0 +1 @@
-+successtest first-subtest
-diff --git a/runner/json_tests_data/really-large-files/metadata.txt b/runner/json_tests_data/really-large-files/metadata.txt
-new file mode 100644
-index 00000000..08db4cc0
---- /dev/null
-+++ b/runner/json_tests_data/really-large-files/metadata.txt
-@@ -0,0 +1,12 @@
-+abort_mask : 0
-+name : really-large-files
-+dry_run : 0
-+sync : 0
-+log_level : 0
-+overwrite : 0
-+multiple_mode : 0
-+inactivity_timeout : 0
-+use_watchdog : 0
-+piglit_style_dmesg : 0
-+test_root : /path/does/not/exist
-+results_path : /path/does/not/exist
-diff --git a/runner/json_tests_data/really-large-files/reference.json b/runner/json_tests_data/really-large-files/reference.json
-new file mode 100644
-index 00000000..5e662938
---- /dev/null
-+++ b/runner/json_tests_data/really-large-files/reference.json
-@@ -0,0 +1,62 @@
-+{
-+  "__type__":"TestrunResult",
-+  "results_version":10,
-+  "name":"really-large-files",
-+  "uname":"Linux hostname 4.18.0-1-amd64 #1 SMP Debian 4.18.6-1 (2018-09-06) x86_64",
-+  "time_elapsed":{
-+    "__type__":"TimeAttribute",
-+    "start":1539953735.1110389,
-+    "end":1539953735.1723731
-+  },
-+  "tests":{
-+    "igt@successtest@first-subtest":{
-+	"out":"This test requires massive files generated with generate_data.py to actually test stuff.",
-+	"err":"",
-+	"dmesg":"",
-+	"result":"incomplete"
-+    }
-+  },
-+  "totals":{
-+    "":{
-+      "crash":0,
-+      "pass":0,
-+      "dmesg-fail":0,
-+      "dmesg-warn":0,
-+      "skip":0,
-+      "incomplete":1,
-+      "abort":0,
-+      "timeout":0,
-+      "notrun":0,
-+      "fail":0,
-+      "warn":0
-+    },
-+    "root":{
-+      "crash":0,
-+      "pass":0,
-+      "dmesg-fail":0,
-+      "dmesg-warn":0,
-+      "skip":0,
-+      "incomplete":1,
-+      "abort":0,
-+      "timeout":0,
-+      "notrun":0,
-+      "fail":0,
-+      "warn":0
-+    },
-+    "igt@successtest":{
-+      "crash":0,
-+      "pass":0,
-+      "dmesg-fail":0,
-+      "dmesg-warn":0,
-+      "skip":0,
-+      "incomplete":1,
-+      "abort":0,
-+      "timeout":0,
-+      "notrun":0,
-+      "fail":0,
-+      "warn":0
-+    }
-+  },
-+  "runtimes":{
-+  }
-+}
-diff --git a/runner/json_tests_data/really-large-files/starttime.txt b/runner/json_tests_data/really-large-files/starttime.txt
-new file mode 100644
-index 00000000..ae038f18
---- /dev/null
-+++ b/runner/json_tests_data/really-large-files/starttime.txt
-@@ -0,0 +1 @@
-+1539953735.111039
-diff --git a/runner/json_tests_data/really-large-files/uname.txt b/runner/json_tests_data/really-large-files/uname.txt
-new file mode 100644
-index 00000000..a7aef6f7
---- /dev/null
-+++ b/runner/json_tests_data/really-large-files/uname.txt
-@@ -0,0 +1 @@
-+Linux hostname 4.18.0-1-amd64 #1 SMP Debian 4.18.6-1 (2018-09-06) x86_64
-diff --git a/runner/runner_json_tests.c b/runner/runner_json_tests.c
-index 9f487855..6bb1eb9f 100644
---- a/runner/runner_json_tests.c
-+++ b/runner/runner_json_tests.c
-@@ -89,12 +89,17 @@ static void compare(struct json_t *one,
- static void run_results_and_compare(int dirfd, const char *dirname)
- {
- 	int testdirfd = openat(dirfd, dirname, O_RDONLY | O_DIRECTORY);
--	int reference;
-+	int skipfd, reference;
- 	struct json_t *resultsobj, *referenceobj;
- 	struct json_error_t error;
- 
- 	igt_assert_fd(testdirfd);
- 
-+	skipfd = openat(testdirfd, "SKIP_ME", O_RDONLY);
-+	igt_skip_on_f(skipfd != -1, "SKIP_ME marker exists - see the README "
-+				    "for this test for more information.\n");
-+	close(skipfd);
-+
- 	igt_assert((resultsobj = generate_results_json(testdirfd)) != NULL);
- 
- 	reference = openat(testdirfd, "reference.json", O_RDONLY);
-@@ -134,6 +139,7 @@ static const char *dirnames[] = {
- 	"dynamic-subtest-name-in-multiple-subtests",
- 	"unprintable-characters",
- 	"empty-result-files",
-+	"really-large-files",
- 	"graceful-notrun",
- };
- 
--- 
-2.37.1
+== Summary ==
+
+CI Bug Log - changes from IGT_6620 -> IGTPW_7631
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7631/index.html
+
+Participating hosts (30 -> 29)
+------------------------------
+
+  Additional (1): fi-cfl-8109u 
+  Missing    (2): fi-ctg-p8600 fi-hsw-4200u 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_7631 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@gem_huc_copy@huc-copy:
+    - fi-cfl-8109u:       NOTRUN -> [SKIP][1] ([fdo#109271] / [i915#2190])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7631/fi-cfl-8109u/igt@gem_huc_copy@huc-copy.html
+
+  * igt@gem_lmem_swapping@basic:
+    - fi-apl-guc:         NOTRUN -> [SKIP][2] ([fdo#109271] / [i915#4613]) +3 similar issues
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7631/fi-apl-guc/igt@gem_lmem_swapping@basic.html
+
+  * igt@gem_lmem_swapping@verify-random:
+    - fi-cfl-8109u:       NOTRUN -> [SKIP][3] ([fdo#109271] / [i915#4613]) +3 similar issues
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7631/fi-cfl-8109u/igt@gem_lmem_swapping@verify-random.html
+
+  * igt@i915_selftest@live@hangcheck:
+    - fi-hsw-g3258:       [PASS][4] -> [INCOMPLETE][5] ([i915#3303] / [i915#4785])
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6620/fi-hsw-g3258/igt@i915_selftest@live@hangcheck.html
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7631/fi-hsw-g3258/igt@i915_selftest@live@hangcheck.html
+
+  * igt@i915_selftest@live@objects:
+    - fi-kbl-soraka:      [PASS][6] -> [INCOMPLETE][7] ([i915#6155])
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6620/fi-kbl-soraka/igt@i915_selftest@live@objects.html
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7631/fi-kbl-soraka/igt@i915_selftest@live@objects.html
+
+  * igt@kms_chamelium@common-hpd-after-suspend:
+    - fi-pnv-d510:        NOTRUN -> [SKIP][8] ([fdo#109271])
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7631/fi-pnv-d510/igt@kms_chamelium@common-hpd-after-suspend.html
+
+  * igt@kms_chamelium@dp-crc-fast:
+    - fi-cfl-8109u:       NOTRUN -> [SKIP][9] ([fdo#109271] / [fdo#111827]) +8 similar issues
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7631/fi-cfl-8109u/igt@kms_chamelium@dp-crc-fast.html
+
+  * igt@kms_chamelium@hdmi-crc-fast:
+    - fi-apl-guc:         NOTRUN -> [SKIP][10] ([fdo#109271] / [fdo#111827]) +8 similar issues
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7631/fi-apl-guc/igt@kms_chamelium@hdmi-crc-fast.html
+
+  * igt@kms_force_connector_basic@force-connector-state:
+    - fi-apl-guc:         NOTRUN -> [SKIP][11] ([fdo#109271]) +11 similar issues
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7631/fi-apl-guc/igt@kms_force_connector_basic@force-connector-state.html
+
+  * igt@prime_vgem@basic-userptr:
+    - fi-cfl-8109u:       NOTRUN -> [SKIP][12] ([fdo#109271]) +10 similar issues
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7631/fi-cfl-8109u/igt@prime_vgem@basic-userptr.html
+
+  * igt@runner@aborted:
+    - fi-kbl-soraka:      NOTRUN -> [FAIL][13] ([i915#4312] / [i915#5257])
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7631/fi-kbl-soraka/igt@runner@aborted.html
+    - fi-hsw-g3258:       NOTRUN -> [FAIL][14] ([fdo#109271] / [i915#4312] / [i915#6246])
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7631/fi-hsw-g3258/igt@runner@aborted.html
+
+  
+#### Possible fixes ####
+
+  * igt@gem_render_tiled_blits@basic:
+    - fi-apl-guc:         [INCOMPLETE][15] -> [PASS][16]
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6620/fi-apl-guc/igt@gem_render_tiled_blits@basic.html
+   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7631/fi-apl-guc/igt@gem_render_tiled_blits@basic.html
+
+  * igt@i915_selftest@live@requests:
+    - fi-pnv-d510:        [DMESG-FAIL][17] ([i915#4528]) -> [PASS][18]
+   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6620/fi-pnv-d510/igt@i915_selftest@live@requests.html
+   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7631/fi-pnv-d510/igt@i915_selftest@live@requests.html
+
+  
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [fdo#111827]: https://bugs.freedesktop.org/show_bug.cgi?id=111827
+  [i915#2190]: https://gitlab.freedesktop.org/drm/intel/issues/2190
+  [i915#3303]: https://gitlab.freedesktop.org/drm/intel/issues/3303
+  [i915#4312]: https://gitlab.freedesktop.org/drm/intel/issues/4312
+  [i915#4528]: https://gitlab.freedesktop.org/drm/intel/issues/4528
+  [i915#4613]: https://gitlab.freedesktop.org/drm/intel/issues/4613
+  [i915#4785]: https://gitlab.freedesktop.org/drm/intel/issues/4785
+  [i915#5257]: https://gitlab.freedesktop.org/drm/intel/issues/5257
+  [i915#6155]: https://gitlab.freedesktop.org/drm/intel/issues/6155
+  [i915#6246]: https://gitlab.freedesktop.org/drm/intel/issues/6246
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_6620 -> IGTPW_7631
+
+  CI-20190529: 20190529
+  CI_DRM_11981: 6f207fdd93a13166b4adfe2f3a2972a9c632e757 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_7631: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7631/index.html
+  IGT_6620: 90549cfba1606b695fe60f78ef87b7d54586eab7 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+
+Testlist changes
+----------------
+
++igt@kms_plane_cursor@overlay
++igt@kms_plane_cursor@primary
++igt@kms_plane_cursor@viewport
+-igt@kms_plane_cursor@pipe-a-overlay-size-64
+-igt@kms_plane_cursor@pipe-a-overlay-size-128
+-igt@kms_plane_cursor@pipe-a-overlay-size-256
+-igt@kms_plane_cursor@pipe-a-primary-size-64
+-igt@kms_plane_cursor@pipe-a-primary-size-128
+-igt@kms_plane_cursor@pipe-a-primary-size-256
+-igt@kms_plane_cursor@pipe-a-viewport-size-64
+-igt@kms_plane_cursor@pipe-a-viewport-size-128
+-igt@kms_plane_cursor@pipe-a-viewport-size-256
+-igt@kms_plane_cursor@pipe-b-overlay-size-64
+-igt@kms_plane_cursor@pipe-b-overlay-size-128
+-igt@kms_plane_cursor@pipe-b-overlay-size-256
+-igt@kms_plane_cursor@pipe-b-primary-size-64
+-igt@kms_plane_cursor@pipe-b-primary-size-128
+-igt@kms_plane_cursor@pipe-b-primary-size-256
+-igt@kms_plane_cursor@pipe-b-viewport-size-64
+-igt@kms_plane_cursor@pipe-b-viewport-size-128
+-igt@kms_plane_cursor@pipe-b-viewport-size-256
+-igt@kms_plane_cursor@pipe-c-overlay-size-64
+-igt@kms_plane_cursor@pipe-c-overlay-size-128
+-igt@kms_plane_cursor@pipe-c-overlay-size-256
+-igt@kms_plane_cursor@pipe-c-primary-size-64
+-igt@kms_plane_cursor@pipe-c-primary-size-128
+-igt@kms_plane_cursor@pipe-c-primary-size-256
+-igt@kms_plane_cursor@pipe-c-viewport-size-64
+-igt@kms_plane_cursor@pipe-c-viewport-size-128
+-igt@kms_plane_cursor@pipe-c-viewport-size-256
+-igt@kms_plane_cursor@pipe-d-overlay-size-64
+-igt@kms_plane_cursor@pipe-d-overlay-size-128
+-igt@kms_plane_cursor@pipe-d-overlay-size-256
+-igt@kms_plane_cursor@pipe-d-primary-size-64
+-igt@kms_plane_cursor@pipe-d-primary-size-128
+-igt@kms_plane_cursor@pipe-d-primary-size-256
+-igt@kms_plane_cursor@pipe-d-viewport-size-64
+-igt@kms_plane_cursor@pipe-d-viewport-size-128
+-igt@kms_plane_cursor@pipe-d-viewport-size-256
+-igt@kms_plane_cursor@pipe-e-overlay-size-64
+-igt@kms_plane_cursor@pipe-e-overlay-size-128
+-igt@kms_plane_cursor@pipe-e-overlay-size-256
+-igt@kms_plane_cursor@pipe-e-primary-size-64
+-igt@kms_plane_cursor@pipe-e-primary-size-128
+-igt@kms_plane_cursor@pipe-e-primary-size-256
+-igt@kms_plane_cursor@pipe-e-viewport-size-64
+-igt@kms_plane_cursor@pipe-e-viewport-size-128
+-igt@kms_plane_cursor@pipe-e-viewport-size-256
+-igt@kms_plane_cursor@pipe-f-overlay-size-64
+-igt@kms_plane_cursor@pipe-f-overlay-size-128
+-igt@kms_plane_cursor@pipe-f-overlay-size-256
+-igt@kms_plane_cursor@pipe-f-primary-size-64
+-igt@kms_plane_cursor@pipe-f-primary-size-128
+-igt@kms_plane_cursor@pipe-f-primary-size-256
+-igt@kms_plane_cursor@pipe-f-viewport-size-64
+-igt@kms_plane_cursor@pipe-f-viewport-size-128
+-igt@kms_plane_cursor@pipe-f-viewport-size-256
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7631/index.html
+
+--===============4588247376450330007==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/kms_plane_cursor: Convert tests to dynamic</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/107119/">https://patchwork.freedesktop.org/series/107119/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7631/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7631/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_6620 -&gt; IGTPW_7631</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7631/index.html</p>
+<h2>Participating hosts (30 -&gt; 29)</h2>
+<p>Additional (1): fi-cfl-8109u <br />
+  Missing    (2): fi-ctg-p8600 fi-hsw-4200u </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_7631 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@gem_huc_copy@huc-copy:</p>
+<ul>
+<li>fi-cfl-8109u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7631/fi-cfl-8109u/igt@gem_huc_copy@huc-copy.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2190">i915#2190</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_lmem_swapping@basic:</p>
+<ul>
+<li>fi-apl-guc:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7631/fi-apl-guc/igt@gem_lmem_swapping@basic.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4613">i915#4613</a>) +3 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_lmem_swapping@verify-random:</p>
+<ul>
+<li>fi-cfl-8109u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7631/fi-cfl-8109u/igt@gem_lmem_swapping@verify-random.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4613">i915#4613</a>) +3 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@hangcheck:</p>
+<ul>
+<li>fi-hsw-g3258:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6620/fi-hsw-g3258/igt@i915_selftest@live@hangcheck.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7631/fi-hsw-g3258/igt@i915_selftest@live@hangcheck.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3303">i915#3303</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4785">i915#4785</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@objects:</p>
+<ul>
+<li>fi-kbl-soraka:      <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6620/fi-kbl-soraka/igt@i915_selftest@live@objects.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7631/fi-kbl-soraka/igt@i915_selftest@live@objects.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6155">i915#6155</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_chamelium@common-hpd-after-suspend:</p>
+<ul>
+<li>fi-pnv-d510:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7631/fi-pnv-d510/igt@kms_chamelium@common-hpd-after-suspend.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_chamelium@dp-crc-fast:</p>
+<ul>
+<li>fi-cfl-8109u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7631/fi-cfl-8109u/igt@kms_chamelium@dp-crc-fast.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://bugs.freedesktop.org/show_bug.cgi?id=111827">fdo#111827</a>) +8 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_chamelium@hdmi-crc-fast:</p>
+<ul>
+<li>fi-apl-guc:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7631/fi-apl-guc/igt@kms_chamelium@hdmi-crc-fast.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://bugs.freedesktop.org/show_bug.cgi?id=111827">fdo#111827</a>) +8 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_force_connector_basic@force-connector-state:</p>
+<ul>
+<li>fi-apl-guc:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7631/fi-apl-guc/igt@kms_force_connector_basic@force-connector-state.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +11 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@prime_vgem@basic-userptr:</p>
+<ul>
+<li>fi-cfl-8109u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7631/fi-cfl-8109u/igt@prime_vgem@basic-userptr.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +10 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@runner@aborted:</p>
+<ul>
+<li>
+<p>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7631/fi-kbl-soraka/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4312">i915#4312</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/5257">i915#5257</a>)</p>
+</li>
+<li>
+<p>fi-hsw-g3258:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7631/fi-hsw-g3258/igt@runner@aborted.html">FAIL</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4312">i915#4312</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/6246">i915#6246</a>)</p>
+</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@gem_render_tiled_blits@basic:</p>
+<ul>
+<li>fi-apl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6620/fi-apl-guc/igt@gem_render_tiled_blits@basic.html">INCOMPLETE</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7631/fi-apl-guc/igt@gem_render_tiled_blits@basic.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@requests:</p>
+<ul>
+<li>fi-pnv-d510:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6620/fi-pnv-d510/igt@i915_selftest@live@requests.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4528">i915#4528</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7631/fi-pnv-d510/igt@i915_selftest@live@requests.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_6620 -&gt; IGTPW_7631</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_11981: 6f207fdd93a13166b4adfe2f3a2972a9c632e757 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_7631: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7631/index.html<br />
+  IGT_6620: 90549cfba1606b695fe60f78ef87b7d54586eab7 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+<h2>Testlist changes</h2>
+<p>+igt@kms_plane_cursor@overlay<br />
++igt@kms_plane_cursor@primary<br />
++igt@kms_plane_cursor@viewport<br />
+-igt@kms_plane_cursor@pipe-a-overlay-size-64<br />
+-igt@kms_plane_cursor@pipe-a-overlay-size-128<br />
+-igt@kms_plane_cursor@pipe-a-overlay-size-256<br />
+-igt@kms_plane_cursor@pipe-a-primary-size-64<br />
+-igt@kms_plane_cursor@pipe-a-primary-size-128<br />
+-igt@kms_plane_cursor@pipe-a-primary-size-256<br />
+-igt@kms_plane_cursor@pipe-a-viewport-size-64<br />
+-igt@kms_plane_cursor@pipe-a-viewport-size-128<br />
+-igt@kms_plane_cursor@pipe-a-viewport-size-256<br />
+-igt@kms_plane_cursor@pipe-b-overlay-size-64<br />
+-igt@kms_plane_cursor@pipe-b-overlay-size-128<br />
+-igt@kms_plane_cursor@pipe-b-overlay-size-256<br />
+-igt@kms_plane_cursor@pipe-b-primary-size-64<br />
+-igt@kms_plane_cursor@pipe-b-primary-size-128<br />
+-igt@kms_plane_cursor@pipe-b-primary-size-256<br />
+-igt@kms_plane_cursor@pipe-b-viewport-size-64<br />
+-igt@kms_plane_cursor@pipe-b-viewport-size-128<br />
+-igt@kms_plane_cursor@pipe-b-viewport-size-256<br />
+-igt@kms_plane_cursor@pipe-c-overlay-size-64<br />
+-igt@kms_plane_cursor@pipe-c-overlay-size-128<br />
+-igt@kms_plane_cursor@pipe-c-overlay-size-256<br />
+-igt@kms_plane_cursor@pipe-c-primary-size-64<br />
+-igt@kms_plane_cursor@pipe-c-primary-size-128<br />
+-igt@kms_plane_cursor@pipe-c-primary-size-256<br />
+-igt@kms_plane_cursor@pipe-c-viewport-size-64<br />
+-igt@kms_plane_cursor@pipe-c-viewport-size-128<br />
+-igt@kms_plane_cursor@pipe-c-viewport-size-256<br />
+-igt@kms_plane_cursor@pipe-d-overlay-size-64<br />
+-igt@kms_plane_cursor@pipe-d-overlay-size-128<br />
+-igt@kms_plane_cursor@pipe-d-overlay-size-256<br />
+-igt@kms_plane_cursor@pipe-d-primary-size-64<br />
+-igt@kms_plane_cursor@pipe-d-primary-size-128<br />
+-igt@kms_plane_cursor@pipe-d-primary-size-256<br />
+-igt@kms_plane_cursor@pipe-d-viewport-size-64<br />
+-igt@kms_plane_cursor@pipe-d-viewport-size-128<br />
+-igt@kms_plane_cursor@pipe-d-viewport-size-256<br />
+-igt@kms_plane_cursor@pipe-e-overlay-size-64<br />
+-igt@kms_plane_cursor@pipe-e-overlay-size-128<br />
+-igt@kms_plane_cursor@pipe-e-overlay-size-256<br />
+-igt@kms_plane_cursor@pipe-e-primary-size-64<br />
+-igt@kms_plane_cursor@pipe-e-primary-size-128<br />
+-igt@kms_plane_cursor@pipe-e-primary-size-256<br />
+-igt@kms_plane_cursor@pipe-e-viewport-size-64<br />
+-igt@kms_plane_cursor@pipe-e-viewport-size-128<br />
+-igt@kms_plane_cursor@pipe-e-viewport-size-256<br />
+-igt@kms_plane_cursor@pipe-f-overlay-size-64<br />
+-igt@kms_plane_cursor@pipe-f-overlay-size-128<br />
+-igt@kms_plane_cursor@pipe-f-overlay-size-256<br />
+-igt@kms_plane_cursor@pipe-f-primary-size-64<br />
+-igt@kms_plane_cursor@pipe-f-primary-size-128<br />
+-igt@kms_plane_cursor@pipe-f-primary-size-256<br />
+-igt@kms_plane_cursor@pipe-f-viewport-size-64<br />
+-igt@kms_plane_cursor@pipe-f-viewport-size-128<br />
+-igt@kms_plane_cursor@pipe-f-viewport-size-256</p>
+
+</body>
+</html>
+
+--===============4588247376450330007==--
