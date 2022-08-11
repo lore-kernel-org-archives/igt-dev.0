@@ -1,17 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from NAM12-DM6-obe.outbound.protection.outlook.com
- (mail-dm6nam12on2040.outbound.protection.outlook.com [40.107.243.40])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E0A3611AE8A
- for <igt-dev@lists.freedesktop.org>; Thu, 11 Aug 2022 18:41:42 +0000 (UTC)
+Received: from NAM11-BN8-obe.outbound.protection.outlook.com
+ (mail-bn8nam11on2041.outbound.protection.outlook.com [40.107.236.41])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C43E3112E89
+ for <igt-dev@lists.freedesktop.org>; Thu, 11 Aug 2022 18:41:44 +0000 (UTC)
 From: <vitaly.prosyak@amd.com>
 To: <igt-dev@lists.freedesktop.org>
-Date: Thu, 11 Aug 2022 14:41:28 -0400
-Message-ID: <20220811184134.9565-1-vitaly.prosyak@amd.com>
+Date: Thu, 11 Aug 2022 14:41:30 -0400
+Message-ID: <20220811184134.9565-3-vitaly.prosyak@amd.com>
+In-Reply-To: <20220811184134.9565-1-vitaly.prosyak@amd.com>
+References: <20220811184134.9565-1-vitaly.prosyak@amd.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH 1/7] lib/amdgpu: improve operations to create
- commands and misc
+Subject: [igt-dev] [PATCH 3/7] lib/amdgpu: added dispatch helper functions
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,138 +27,85 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Vitaly Prosyak <vitaly.prosyak@amd.com>
 
- Add and refactor the following methods to amdgpu_cmd_base:
- - emit_aligned
- - emit_repeat
- - emit_at_offset
- - emit_buf (refactor)
+ Refactor amdgpu_sync_dependency_test to use new
+ approach for registers offset.
 
- Added register declarations and access functions.
- We will use MESA registers declarations in future commits.
+ Refactor amd_PM4.h
 
 Signed-off-by: Vitaly Prosyak <vitaly.prosyak@amd.com>
 Acked-by: Christian König <christian.koenig@amd.com>
 ---
- lib/amdgpu/amd_gfx_v8_0.c  | 53 +++++++++++++++++++++++++++++++++++++
- lib/amdgpu/amd_gfx_v8_0.h  | 31 ++++++++++++++++++++++
- lib/amdgpu/amd_gfx_v9_0.c  | 32 ++++++++++++++++++++++
- lib/amdgpu/amd_gfx_v9_0.h  | 29 ++++++++++++++++++++
- lib/amdgpu/amd_ip_blocks.c | 54 +++++++++++++++++++++++++++-----------
- lib/amdgpu/amd_ip_blocks.h | 12 ++++++---
- lib/amdgpu/amd_registers.h | 44 +++++++++++++++++++++++++++++++
- lib/meson.build            |  2 ++
- tests/amdgpu/amd_basic.c   |  4 +--
- 9 files changed, 240 insertions(+), 21 deletions(-)
- create mode 100644 lib/amdgpu/amd_gfx_v8_0.c
- create mode 100644 lib/amdgpu/amd_gfx_v8_0.h
- create mode 100644 lib/amdgpu/amd_gfx_v9_0.c
- create mode 100644 lib/amdgpu/amd_gfx_v9_0.h
- create mode 100644 lib/amdgpu/amd_registers.h
+ lib/amdgpu/amd_PM4.h              |  16 +---
+ lib/amdgpu/amd_dispatch_helpers.c | 146 ++++++++++++++++++++++++++++++
+ lib/amdgpu/amd_dispatch_helpers.h |  37 ++++++++
+ lib/meson.build                   |   1 +
+ tests/amdgpu/amd_basic.c          |  18 ++--
+ 5 files changed, 195 insertions(+), 23 deletions(-)
+ create mode 100644 lib/amdgpu/amd_dispatch_helpers.c
+ create mode 100644 lib/amdgpu/amd_dispatch_helpers.h
 
-diff --git a/lib/amdgpu/amd_gfx_v8_0.c b/lib/amdgpu/amd_gfx_v8_0.c
+diff --git a/lib/amdgpu/amd_PM4.h b/lib/amdgpu/amd_PM4.h
+index dec70c1a4..0588b4258 100644
+--- a/lib/amdgpu/amd_PM4.h
++++ b/lib/amdgpu/amd_PM4.h
+@@ -49,6 +49,7 @@
+ 			 (((op) & 0xFF) << 8) |				\
+ 			 ((n) & 0x3FFF) << 16)
+ 
++#define PACKET3_COMPUTE(op, n) PACKET3(op, n) | (1 << 1)
+ /* Packet 3 types */
+ #define	PACKET3_NOP					0x10
+ 
+@@ -137,7 +138,6 @@
+ #              define PACKET3_DMA_DATA_CMD_DAIC    (1 << 29)
+ #              define PACKET3_DMA_DATA_CMD_RAW_WAIT  (1 << 30)
+ 
+-
+ #define	PACKET3_ATOMIC_MEM				0x1E
+ #define     TC_OP_ATOMIC_CMPSWAP_RTN_32          0x00000008
+ #define     ATOMIC_MEM_COMMAND(x)               ((x) << 8)
+@@ -151,8 +151,6 @@
+ #define     ATOMIC_MEM_ENGINESEL(x)             ((x) << 30)
+             /* 0 - micro_engine.*/
+ 
+-
+-
+ #define PKT3_CONTEXT_CONTROL                   0x28
+ #define     CONTEXT_CONTROL_LOAD_ENABLE(x)     (((unsigned)(x) & 0x1) << 31)
+ #define     CONTEXT_CONTROL_LOAD_CE_RAM(x)     (((unsigned)(x) & 0x1) << 28)
+@@ -161,7 +159,6 @@
+ #define PKT3_CLEAR_STATE			0x12
+ 
+ #define PKT3_SET_SH_REG				0x76
+-#define	PACKET3_SET_SH_REG_START		0x00002c00
+ 
+ #define PKT3_SET_SH_REG_INDEX			0x9B
+ 
+@@ -172,15 +169,4 @@
+ #define PACKET3_SET_UCONFIG_REG			0x79
+ #define PACKET3_DRAW_INDEX_AUTO			0x2D
+ 
+-/*TODO organize as iit is in MESA*/
+-/* gfx 8 */
+-#define mmCOMPUTE_PGM_LO			0x2e0c
+-#define mmCOMPUTE_PGM_RSRC1			0x2e12
+-#define mmCOMPUTE_TMPRING_SIZE			0x2e18
+-#define mmCOMPUTE_USER_DATA_0			0x2e40
+-#define mmCOMPUTE_USER_DATA_1			0x2e41
+-#define mmCOMPUTE_RESOURCE_LIMITS		0x2e15
+-#define mmCOMPUTE_NUM_THREAD_X			0x2e07
+-
+-
+ #endif
+diff --git a/lib/amdgpu/amd_dispatch_helpers.c b/lib/amdgpu/amd_dispatch_helpers.c
 new file mode 100644
-index 000000000..987d7053a
+index 000000000..3eddae968
 --- /dev/null
-+++ b/lib/amdgpu/amd_gfx_v8_0.c
-@@ -0,0 +1,53 @@
-+/*
-+ * Copyright 2022 Advanced Micro Devices, Inc.
-+ *  *
-+ * Permission is hereby granted, free of charge, to any person obtaining a
-+ * copy of this software and associated documentation files (the "Software"),
-+ * to deal in the Software without restriction, including without limitation
-+ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
-+ * and/or sell copies of the Software, and to permit persons to whom the
-+ * Software is furnished to do so, subject to the following conditions:
-+ *
-+ * The above copyright notice and this permission notice shall be included in
-+ * all copies or substantial portions of the Software.
-+ *
-+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
-+ * THE COPYRIGHT HOLDER(S) OR AUTHOR(S) BE LIABLE FOR ANY CLAIM, DAMAGES OR
-+ * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
-+ * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-+ * OTHER DEALINGS IN THE SOFTWARE.
-+ *
-+ *
-+ */
-+#include "amd_registers.h"
-+#include "amd_gfx_v8_0.h"
-+#include "igt_core.h"
-+
-+#define mmCOMPUTE_PGM_LO			0x2e0c
-+#define mmCOMPUTE_PGM_RSRC1			0x2e12
-+#define mmCOMPUTE_TMPRING_SIZE			0x2e18
-+#define mmCOMPUTE_USER_DATA_0			0x2e40
-+#define mmCOMPUTE_USER_DATA_1			0x2e41
-+#define mmCOMPUTE_RESOURCE_LIMITS		0x2e15
-+#define mmCOMPUTE_NUM_THREAD_X			0x2e07
-+
-+#define	PACKET3_SET_SH_REG_START		0x00002c00
-+
-+static const struct amd_reg registers[] = {
-+	{ COMPUTE_PGM_LO,		mmCOMPUTE_PGM_LO },
-+	{ COMPUTE_PGM_RSRC1,		mmCOMPUTE_PGM_RSRC1 },
-+	{ COMPUTE_TMPRING_SIZE,		mmCOMPUTE_TMPRING_SIZE },
-+	{ COMPUTE_USER_DATA_0,		mmCOMPUTE_USER_DATA_0 },
-+	{ COMPUTE_USER_DATA_1,		mmCOMPUTE_USER_DATA_1 },
-+	{ COMPUTE_RESOURCE_LIMITS,	mmCOMPUTE_RESOURCE_LIMITS },
-+	{ COMPUTE_NUM_THREAD_X,		mmCOMPUTE_NUM_THREAD_X },
-+};
-+
-+int gfx_v8_0_get_reg_offset(enum general_reg reg_name)
-+{
-+	/* validate correctness of the offset */
-+	igt_assert_eq(reg_name, registers[reg_name].reg_name);
-+	return registers[reg_name].reg_offset - PACKET3_SET_SH_REG_START;
-+}
-diff --git a/lib/amdgpu/amd_gfx_v8_0.h b/lib/amdgpu/amd_gfx_v8_0.h
-new file mode 100644
-index 000000000..52ed418cb
---- /dev/null
-+++ b/lib/amdgpu/amd_gfx_v8_0.h
-@@ -0,0 +1,31 @@
++++ b/lib/amdgpu/amd_dispatch_helpers.c
+@@ -0,0 +1,146 @@
 +/*
 + * Copyright 2014 Advanced Micro Devices, Inc.
 + * Copyright 2022 Advanced Micro Devices, Inc.
-+ *
-+ * Permission is hereby granted, free of charge, to any person obtaining a
-+ * copy of this software and associated documentation files (the "Software"),
-+ * to deal in the Software without restriction, including without limitation
-+ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
-+ * and/or sell copies of the Software, and to permit persons to whom the
-+ * Software is furnished to do so, subject to the following conditions:
-+ *
-+ * The above copyright notice and this permission notice shall be included in
-+ * all copies or substantial portions of the Software.
-+ *
-+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
-+ * THE COPYRIGHT HOLDER(S) OR AUTHOR(S) BE LIABLE FOR ANY CLAIM, DAMAGES OR
-+ * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
-+ * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-+ * OTHER DEALINGS IN THE SOFTWARE.
-+ *
-+ *
-+ */
-+#ifndef __AMD_GFX_V8_0_H__
-+#define __AMD_GFX_V8_0_H__
-+
-+int gfx_v8_0_get_reg_offset(enum general_reg reg_name);
-+
-+#endif
-+
-diff --git a/lib/amdgpu/amd_gfx_v9_0.c b/lib/amdgpu/amd_gfx_v9_0.c
-new file mode 100644
-index 000000000..175411795
---- /dev/null
-+++ b/lib/amdgpu/amd_gfx_v9_0.c
-@@ -0,0 +1,32 @@
-+/*
-+ * Copyright 2022 Advanced Micro Devices, Inc.
 + *  *
 + * Permission is hereby granted, free of charge, to any person obtaining a
 + * copy of this software and associated documentation files (the "Software"),
@@ -179,219 +127,134 @@ index 000000000..175411795
 + *
 + *
 + */
-+#include "amd_registers.h"
-+#include "amd_gfx_v9_0.h"
-+#include "amd_gfx_v8_0.h"
 +
-+int gfx_v9_0_get_reg_offset(enum general_reg reg_name)
++#include "amd_dispatch_helpers.h"
++#include <amdgpu_drm.h>
++#include "amd_PM4.h"
++#include "amd_ip_blocks.h"
++#include "igt.h"
++
++ int amdgpu_dispatch_init(uint32_t ip_type, struct amdgpu_cmd_base * base, uint32_t version)
 +{
-+	int ret = gfx_v8_0_get_reg_offset(reg_name);
-+	return ret;
-+}
-diff --git a/lib/amdgpu/amd_gfx_v9_0.h b/lib/amdgpu/amd_gfx_v9_0.h
-new file mode 100644
-index 000000000..e44a7d944
---- /dev/null
-+++ b/lib/amdgpu/amd_gfx_v9_0.h
-@@ -0,0 +1,29 @@
-+/*
-+ * Copyright 2022 Advanced Micro Devices, Inc.
-+ *
-+ * Permission is hereby granted, free of charge, to any person obtaining a
-+ * copy of this software and associated documentation files (the "Software"),
-+ * to deal in the Software without restriction, including without limitation
-+ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
-+ * and/or sell copies of the Software, and to permit persons to whom the
-+ * Software is furnished to do so, subject to the following conditions:
-+ *
-+ * The above copyright notice and this permission notice shall be included in
-+ * all copies or substantial portions of the Software.
-+ *
-+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
-+ * THE COPYRIGHT HOLDER(S) OR AUTHOR(S) BE LIABLE FOR ANY CLAIM, DAMAGES OR
-+ * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
-+ * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-+ * OTHER DEALINGS IN THE SOFTWARE.
-+ *
-+ *
-+ */
-+#ifndef __AMD_GFX_V9_0_H__
-+#define __AMD_GFX_V9_0_H__
++	int i = base->cdw;
 +
-+int gfx_v9_0_get_reg_offset(enum general_reg reg_name);
-+
-+#endif
-diff --git a/lib/amdgpu/amd_ip_blocks.c b/lib/amdgpu/amd_ip_blocks.c
-index 795eb1984..3e11b34d3 100644
---- a/lib/amdgpu/amd_ip_blocks.c
-+++ b/lib/amdgpu/amd_ip_blocks.c
-@@ -32,6 +32,7 @@
- #include <amdgpu_drm.h>
- #include "amdgpu_asic_addr.h"
- #include "amd_family.h"
-+#include "amd_gfx_v8_0.h"
- 
- /*
-  * SDMA functions:
-@@ -328,10 +329,10 @@ static const struct amdgpu_ip_funcs gfx_v8_x_ip_funcs = {
- 	.const_fill = gfx_ring_const_fill,
- 	.copy_linear = gfx_ring_copy_linear,
- 	.compare = x_compare,
--	.compare_pattern = x_compare_pattern
-+	.compare_pattern = x_compare_pattern,
-+	.get_reg_offset = gfx_v8_0_get_reg_offset,
- };
- 
--
- static const struct amdgpu_ip_funcs sdma_v3_x_ip_funcs = {
- 	.family_id = FAMILY_VI,
- 	.align_mask = 0xff,
-@@ -342,10 +343,10 @@ static const struct amdgpu_ip_funcs sdma_v3_x_ip_funcs = {
- 	.const_fill = sdma_ring_const_fill,
- 	.copy_linear = sdma_ring_copy_linear,
- 	.compare = x_compare,
--	.compare_pattern = x_compare_pattern
-+	.compare_pattern = x_compare_pattern,
-+	.get_reg_offset = gfx_v8_0_get_reg_offset,
- };
- 
--
- const struct amdgpu_ip_block_version gfx_v8_x_ip_block = {
- 	.type = AMD_IP_GFX,
- 	.major = 8,
-@@ -452,13 +453,40 @@ cmd_emit(struct amdgpu_cmd_base  *base, uint32_t value)
- 	base->buf[base->cdw++] = value;
- }
- 
-+static void
-+cmd_emit_aligned(struct amdgpu_cmd_base *base, uint32_t mask, uint32_t cmd)
-+{
-+	while(base->cdw & mask)
-+		base->emit(base, cmd);
-+}
- static void
- cmd_emit_buf(struct amdgpu_cmd_base  *base, const void *ptr, uint32_t offset_bytes, uint32_t size_bytes)
- {
--	/* we assume that caller knows what is doing and we loose the buffer current index */
--	/* we may do this later abstract the internal index */
--	assert(base->cdw + ((offset_bytes + size_bytes)>>2) <  base->max_dw  );
--	memcpy(base->buf + offset_bytes , ptr, size_bytes);
-+	uint32_t total_offset_dw = (offset_bytes + size_bytes) >> 2;
-+	uint32_t offset_dw = offset_bytes >> 2;
-+	/*TODO read the requirements to fix */
-+	assert(size_bytes % 4 == 0); /* no gaps */
-+	assert(offset_bytes % 4 == 0);
-+	assert(base->cdw + total_offset_dw <  base->max_dw);
-+	memcpy(base->buf + base->cdw + offset_dw , ptr, size_bytes);
-+	base->cdw += total_offset_dw;
-+}
-+
-+static void
-+cmd_emit_repeat(struct amdgpu_cmd_base  *base, uint32_t value, uint32_t number_of_times)
-+{
-+	while (number_of_times > 0) {
-+		assert(base->cdw <  base->max_dw);
-+		base->buf[base->cdw++] = value;
-+		number_of_times--;
++	/* Write context control and load shadowing register if necessary */
++	if (ip_type == AMDGPU_HW_IP_GFX) {
++		base->emit(base, PACKET3(PKT3_CONTEXT_CONTROL, 1));
++		base->emit(base, 0x80000000);
++		base->emit(base, 0x80000000);
 +	}
++
++	/* Issue commands to set default compute state. */
++	/* clear mmCOMPUTE_START_Z - mmCOMPUTE_START_X */
++	base->emit(base, PACKET3_COMPUTE(PKT3_SET_SH_REG, 3));
++	base->emit(base, 0x204);
++	base->emit(base, 0);
++	base->emit(base, 0);
++	base->emit(base, 0);
++
++	/* clear mmCOMPUTE_TMPRING_SIZE */
++	base->emit(base, PACKET3_COMPUTE(PKT3_SET_SH_REG, 1));
++	base->emit(base, 0x218);
++	base->emit(base, 0);
++	if (version == 10) {
++		/* mmCOMPUTE_SHADER_CHKSUM */
++		base->emit(base, PACKET3_COMPUTE(PKT3_SET_SH_REG, 1));
++		base->emit(base, 0x22a);
++		base->emit(base, 0);
++		/* mmCOMPUTE_REQ_CTRL */
++		base->emit(base, PACKET3_COMPUTE(PKT3_SET_SH_REG, 6));
++		base->emit(base, 0x222);
++		base->emit(base, 0x222);
++		base->emit(base, 0x222);
++		base->emit(base, 0x222);
++		base->emit(base, 0x222);
++		base->emit(base, 0x222);
++		base->emit(base, 0x222);
++		/* mmCP_COHER_START_DELAY */
++		base->emit(base, PACKET3(PACKET3_SET_UCONFIG_REG, 1));
++		base->emit(base, 0x7b);
++		base->emit(base, 0x20);
++	}
++
++	return base->cdw - i;
 +}
 +
-+static void
-+cmd_emit_at_offset(struct amdgpu_cmd_base  *base, uint32_t value, uint32_t offset_dwords)
++int amdgpu_dispatch_write_cumask(struct amdgpu_cmd_base * base, uint32_t version)
++ {
++ 	int offset_prev = base->cdw;
++ 	if (version == 9) {
++ 	/*  Issue commands to set cu mask used in current dispatch */
++ 	/* set mmCOMPUTE_STATIC_THREAD_MGMT_SE1 - mmCOMPUTE_STATIC_THREAD_MGMT_SE0 */
++ 		base->emit(base, PACKET3_COMPUTE(PKT3_SET_SH_REG, 2));
++ 		base->emit(base, 0x216);
++ 		base->emit(base, 0xffffffff);
++ 		base->emit(base, 0xffffffff);
++ 	} else if(version == 10) {
++		/* set mmCOMPUTE_STATIC_THREAD_MGMT_SE1 - mmCOMPUTE_STATIC_THREAD_MGMT_SE0 */
++ 		base->emit(base, PACKET3_COMPUTE(PKT3_SET_SH_REG_INDEX, 2));
++ 		base->emit(base, 0x30000216);
++ 		base->emit(base, 0xffffffff);
++ 		base->emit(base, 0xffffffff);
++		/* set mmCOMPUTE_STATIC_THREAD_MGMT_SE3 - mmCOMPUTE_STATIC_THREAD_MGMT_SE2 */
++ 		base->emit(base, PACKET3_COMPUTE(PKT3_SET_SH_REG_INDEX, 2));
++ 		base->emit(base, 0x30000219);
++ 		base->emit(base, 0xffffffff);
++ 		base->emit(base, 0xffffffff);
++	}
++
++
++ 	/* set mmCOMPUTE_STATIC_THREAD_MGMT_SE3 - mmCOMPUTE_STATIC_THREAD_MGMT_SE2 */
++ 	base->emit(base, PACKET3_COMPUTE(PKT3_SET_SH_REG, 2));
++ 	base->emit(base, 0x219);
++ 	base->emit(base, 0xffffffff);
++ 	base->emit(base, 0xffffffff);
++
++ 	return base->cdw - offset_prev;
++ }
++
++
++int amdgpu_dispatch_write2hw(struct amdgpu_cmd_base * base, uint64_t shader_addr, uint32_t version)
 +{
-+	assert(base->cdw + offset_dwords <  base->max_dw);
-+	base->buf[base->cdw + offset_dwords] = value;
- }
- 
- struct amdgpu_cmd_base *
-@@ -474,6 +502,9 @@ get_cmd_base(void)
- 	base->allocate_buf = cmd_allocate_buf;
- 	base->attach_buf = cmd_attach_buf;
- 	base->emit = cmd_emit;
-+	base->emit_aligned= cmd_emit_aligned;
-+	base->emit_repeat = cmd_emit_repeat;
-+	base->emit_at_offset = cmd_emit_at_offset;
- 	base->emit_buf = cmd_emit_buf;
- 
- 	return base;
-@@ -490,13 +521,6 @@ free_cmd_base(struct amdgpu_cmd_base * base)
- 
- }
- 
--void
--append_cmd_base(struct amdgpu_cmd_base *base, uint32_t mask, uint32_t cmd)
--{
--	while(base->cdw & mask)
--		base->emit(base, cmd);
--}
--
- /*
-  * GFX: 8.x
-  * COMPUTE: 8.x
-diff --git a/lib/amdgpu/amd_ip_blocks.h b/lib/amdgpu/amd_ip_blocks.h
-index 83809efee..9c24eba2a 100644
---- a/lib/amdgpu/amd_ip_blocks.h
-+++ b/lib/amdgpu/amd_ip_blocks.h
-@@ -25,6 +25,8 @@
- #ifndef AMD_IP_BLOCKS_H
- #define AMD_IP_BLOCKS_H
- 
-+#include "amd_registers.h"
++	static const uint32_t bufferclear_cs_shader_registers_gfx9[][2] = {
++		{0x2e12, 0x000C0041},	//{ mmCOMPUTE_PGM_RSRC1,	0x000C0041 },
++		{0x2e13, 0x00000090},	//{ mmCOMPUTE_PGM_RSRC2,	0x00000090 },
++		{0x2e07, 0x00000040},	//{ mmCOMPUTE_NUM_THREAD_X,	0x00000040 },
++		{0x2e08, 0x00000001},	//{ mmCOMPUTE_NUM_THREAD_Y,	0x00000001 },
++		{0x2e09, 0x00000001},	//{ mmCOMPUTE_NUM_THREAD_Z,	0x00000001 }
++	};
 +
- enum amd_ip_block_type {
- 	AMD_IP_GFX,
- 	AMD_IP_COMPUTE,
-@@ -34,7 +36,6 @@ enum amd_ip_block_type {
- 	AMD_IP_MAX,
- };
- 
--
- /* aux struct to hold misc parameters for convenience to maintain */
- struct amdgpu_ring_context {
- 
-@@ -72,6 +73,7 @@ struct amdgpu_ring_context {
- 	struct amdgpu_cs_request ibs_request; /* amdgpu_cs_query_fence_status */
- };
- 
++	static const uint32_t bufferclear_cs_shader_registers_num_gfx9 = ARRAY_SIZE(bufferclear_cs_shader_registers_gfx9);
++	int offset_prev = base->cdw;
++	int j;
 +
- struct amdgpu_ip_funcs {
- 	uint32_t	family_id;
- 	uint32_t	align_mask;
-@@ -84,6 +86,8 @@ struct amdgpu_ip_funcs {
- 	int (*copy_linear)(const struct amdgpu_ip_funcs *func, const struct amdgpu_ring_context *context, uint32_t *pm4_dw);
- 	int (*compare)(const struct amdgpu_ip_funcs *func, const struct amdgpu_ring_context *context, int div);
- 	int (*compare_pattern)(const struct amdgpu_ip_funcs *func, const struct amdgpu_ring_context *context, int div);
-+	int (*get_reg_offset)(enum general_reg reg);
-+
- };
- 
- extern const struct amdgpu_ip_block_version gfx_v6_0_ip_block;
-@@ -122,6 +126,9 @@ struct amdgpu_cmd_base {
- 	int (*allocate_buf)(struct amdgpu_cmd_base  *base, uint32_t size);
- 	int (*attach_buf)(struct amdgpu_cmd_base  *base, void *ptr, uint32_t size_bytes);
- 	void (*emit)(struct amdgpu_cmd_base  *base, uint32_t value);
-+	void (*emit_aligned)(struct amdgpu_cmd_base  *base,uint32_t mask, uint32_t value);
-+	void (*emit_repeat)(struct amdgpu_cmd_base  *base, uint32_t value, uint32_t number_of_times);
-+	void (*emit_at_offset)(struct amdgpu_cmd_base  *base, uint32_t value, uint32_t offset_dwords);
- 	void (*emit_buf)(struct amdgpu_cmd_base  *base, const void *ptr, uint32_t offset_bytes, uint32_t size_bytes);
- };
- 
-@@ -129,7 +136,4 @@ struct amdgpu_cmd_base* get_cmd_base(void);
- 
- void free_cmd_base(struct amdgpu_cmd_base *base);
- 
--void
--append_cmd_base(struct amdgpu_cmd_base *base, uint32_t mask, uint32_t cmd);
--
- #endif
-diff --git a/lib/amdgpu/amd_registers.h b/lib/amdgpu/amd_registers.h
++	/* Writes shader state to HW */
++	/* set mmCOMPUTE_PGM_HI - mmCOMPUTE_PGM_LO */
++	base->emit(base, PACKET3_COMPUTE(PKT3_SET_SH_REG, 2));
++	base->emit(base, 0x20c);
++	base->emit(base, shader_addr >> 8);
++	base->emit(base, shader_addr >> 40);
++	/* write sh regs */
++	for (j = 0; j < bufferclear_cs_shader_registers_num_gfx9; j++) {
++		base->emit(base, PACKET3_COMPUTE(PKT3_SET_SH_REG, 1));
++		/* - Gfx9ShRegBase */
++		base->emit(base,bufferclear_cs_shader_registers_gfx9[j][0] - 0x2c00);
++		base->emit(base,bufferclear_cs_shader_registers_gfx9[j][1]);
++	}
++	if (version == 10) {
++		/* mmCOMPUTE_PGM_RSRC3 */
++		base->emit(base, PACKET3_COMPUTE(PKT3_SET_SH_REG, 1));
++		base->emit(base,0x228);
++		base->emit(base, 0 );
++	}
++	return base->cdw - offset_prev;
++}
+diff --git a/lib/amdgpu/amd_dispatch_helpers.h b/lib/amdgpu/amd_dispatch_helpers.h
 new file mode 100644
-index 000000000..a01c9a84f
+index 000000000..bea0c4248
 --- /dev/null
-+++ b/lib/amdgpu/amd_registers.h
-@@ -0,0 +1,44 @@
++++ b/lib/amdgpu/amd_dispatch_helpers.h
+@@ -0,0 +1,37 @@
 +/*
 + * Copyright 2022 Advanced Micro Devices, Inc.
 + *
@@ -415,61 +278,103 @@ index 000000000..a01c9a84f
 + *
 + *
 + */
-+#ifndef __AMD_REGISTERS_H
-+#define __AMD_REGISTERS_H
++#ifndef AMD_DISPATCH_HELPERS_H
++#define AMD_DISPATCH_HELPERS_H
 +
-+enum general_reg {
-+	COMPUTE_PGM_LO,
-+	COMPUTE_PGM_RSRC1,
-+	COMPUTE_TMPRING_SIZE,
-+	COMPUTE_USER_DATA_0,
-+	COMPUTE_USER_DATA_1,
-+	COMPUTE_RESOURCE_LIMITS,
-+	COMPUTE_NUM_THREAD_X,
-+};
++#include <amdgpu.h>
 +
-+struct amd_reg {
-+	enum general_reg reg_name;
-+	int 	 reg_offset;
-+};
++struct amdgpu_cmd_base;
 +
++int amdgpu_dispatch_init( uint32_t ip_type,struct amdgpu_cmd_base *base_cmd, uint32_t version);
 +
++int amdgpu_dispatch_write_cumask(struct amdgpu_cmd_base *base_cmd, uint32_t version);
++
++int amdgpu_dispatch_write2hw(struct amdgpu_cmd_base *base_cmd, uint64_t shader_addr, uint32_t version);
 +
 +#endif
 diff --git a/lib/meson.build b/lib/meson.build
-index 98c2803b9..7339bf98b 100644
+index 7339bf98b..956c73095 100644
 --- a/lib/meson.build
 +++ b/lib/meson.build
-@@ -133,6 +133,8 @@ if libdrm_amdgpu.found()
- 		'amdgpu/amd_gfx.c',
- 		'amdgpu/amd_ip_blocks.c',
+@@ -135,6 +135,7 @@ if libdrm_amdgpu.found()
  		'amdgpu/amd_shaders.c',
-+		'amdgpu/amd_gfx_v8_0.c',
-+		'amdgpu/amd_gfx_v9_0.c',
+ 		'amdgpu/amd_gfx_v8_0.c',
+ 		'amdgpu/amd_gfx_v9_0.c',
++		'amdgpu/amd_dispatch_helpers.c'
  	]
  endif
  
 diff --git a/tests/amdgpu/amd_basic.c b/tests/amdgpu/amd_basic.c
-index ae424e819..82964016a 100644
+index 82964016a..68a8ac9de 100644
 --- a/tests/amdgpu/amd_basic.c
 +++ b/tests/amdgpu/amd_basic.c
-@@ -544,7 +544,7 @@ amdgpu_sync_dependency_test(amdgpu_device_handle device_handle)
+@@ -477,6 +477,7 @@ amdgpu_sync_dependency_test(amdgpu_device_handle device_handle)
+ 	const uint32_t *shader;
+ 
+ 	struct amdgpu_cmd_base * base = get_cmd_base();
++	const struct amdgpu_ip_block_version * ip_block = get_ip_block(device_handle, AMD_IP_GFX);
+ 
+ 	r = amdgpu_cs_ctx_create(device_handle, &context_handle[0]);
+ 	igt_assert_eq(r, 0);
+@@ -499,6 +500,7 @@ amdgpu_sync_dependency_test(amdgpu_device_handle device_handle)
+ 	/* assign cmd buffer */
+ 	base->attach_buf(base, ib_result_cpu, const_size);
+ 
++
+ 	base->emit(base, PACKET3(PKT3_CONTEXT_CONTROL, 1));
+ 	base->emit(base, 0x80000000);
+ 	base->emit(base, 0x80000000);
+@@ -509,31 +511,31 @@ amdgpu_sync_dependency_test(amdgpu_device_handle device_handle)
+ 	/* Program compute regs */
+ 	/* TODO ASIC registers do based on predefined offsets */
+ 	base->emit(base, PACKET3(PKT3_SET_SH_REG, 2));
+-	base->emit(base, mmCOMPUTE_PGM_LO - PACKET3_SET_SH_REG_START);
++	base->emit(base, ip_block->funcs->get_reg_offset(COMPUTE_PGM_LO));
+ 	base->emit(base, (ib_result_mc_address + code_offset * 4) >> 8);
+ 	base->emit(base, (ib_result_mc_address + code_offset * 4) >> 40);
+ 
+ 	base->emit(base,PACKET3(PKT3_SET_SH_REG, 2));
+-	base->emit(base, mmCOMPUTE_PGM_RSRC1 - PACKET3_SET_SH_REG_START);
++	base->emit(base, ip_block->funcs->get_reg_offset(COMPUTE_PGM_RSRC1));
+ 
+ 	base->emit(base, 0x002c0040);
+ 	base->emit(base, 0x00000010);
+ 
+ 	base->emit(base, PACKET3(PKT3_SET_SH_REG, 1));
+-	base->emit(base, mmCOMPUTE_TMPRING_SIZE - PACKET3_SET_SH_REG_START);
++	base->emit(base, ip_block->funcs->get_reg_offset(COMPUTE_TMPRING_SIZE));
+ 	base->emit(base, 0x00000100);
+ 
+ 	base->emit(base, PACKET3(PKT3_SET_SH_REG, 2));
+-	base->emit(base, mmCOMPUTE_USER_DATA_0 - PACKET3_SET_SH_REG_START);
++	base->emit(base, ip_block->funcs->get_reg_offset(COMPUTE_USER_DATA_0));
+ 	base->emit(base, 0xffffffff & (ib_result_mc_address + data_offset * 4));
+ 	base->emit(base, (0xffffffff00000000 & (ib_result_mc_address + data_offset * 4)) >> 32);
+ 
+ 	base->emit(base, PACKET3(PKT3_SET_SH_REG, 1));
+-	base->emit(base, mmCOMPUTE_RESOURCE_LIMITS - PACKET3_SET_SH_REG_START);
++	base->emit(base, ip_block->funcs->get_reg_offset(COMPUTE_RESOURCE_LIMITS));
+ 	base->emit(base, 0);
+ 
+ 	base->emit(base, PACKET3(PKT3_SET_SH_REG, 3));
+-	base->emit(base, mmCOMPUTE_NUM_THREAD_X - PACKET3_SET_SH_REG_START);
++	base->emit(base, ip_block->funcs->get_reg_offset(COMPUTE_NUM_THREAD_X));
  	base->emit(base, 1);
  	base->emit(base, 1);
+ 	base->emit(base, 1);
+@@ -546,11 +548,11 @@ amdgpu_sync_dependency_test(amdgpu_device_handle device_handle)
  	base->emit(base, 0x00000045);
--	append_cmd_base(base, 7, GFX_COMPUTE_NOP);
-+	base->emit_aligned(base, 7, GFX_COMPUTE_NOP);
+ 	base->emit_aligned(base, 7, GFX_COMPUTE_NOP);
  
- 	base->emit_buf(base, shader, code_offset,size_bytes);
- 
-@@ -571,7 +571,7 @@ amdgpu_sync_dependency_test(amdgpu_device_handle device_handle)
- 	base->emit(base,  0xfffffffc & (ib_result_mc_address + data_offset * 4));
- 	base->emit(base,  (0xffffffff00000000 & (ib_result_mc_address + data_offset * 4)) >> 32);
- 	base->emit(base,  99);
--	append_cmd_base(base, 7, GFX_COMPUTE_NOP);
-+	base->emit_aligned(base, 7, GFX_COMPUTE_NOP);
+-	base->emit_buf(base, shader, code_offset,size_bytes);
++	memcpy(base->buf + code_offset , shader, size_bytes);
  
  	memset(&ib_info, 0, sizeof(struct amdgpu_cs_ib_info));
- 	ib_info.ib_mc_address = ib_result_mc_address + cdw_old * 4;
+ 	ib_info.ib_mc_address = ib_result_mc_address;
+-	ib_info.size = base->cdw;;
++	ib_info.size = base->cdw;
+ 
+ 	memset(&ibs_request, 0, sizeof(struct amdgpu_cs_request));
+ 	ibs_request.ip_type = AMDGPU_HW_IP_GFX;
 -- 
 2.25.1
