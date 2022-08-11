@@ -1,19 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from NAM12-DM6-obe.outbound.protection.outlook.com
- (mail-dm6nam12on2068.outbound.protection.outlook.com [40.107.243.68])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 044B8972B8
- for <igt-dev@lists.freedesktop.org>; Thu, 11 Aug 2022 00:29:39 +0000 (UTC)
+Received: from NAM11-BN8-obe.outbound.protection.outlook.com
+ (mail-bn8nam11on2041.outbound.protection.outlook.com [40.107.236.41])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D72EA9729D
+ for <igt-dev@lists.freedesktop.org>; Thu, 11 Aug 2022 00:29:46 +0000 (UTC)
 From: <vitaly.prosyak@amd.com>
 To: <igt-dev@lists.freedesktop.org>
-Date: Wed, 10 Aug 2022 20:29:15 -0400
-Message-ID: <20220811002920.32207-2-vitaly.prosyak@amd.com>
+Date: Wed, 10 Aug 2022 20:29:19 -0400
+Message-ID: <20220811002920.32207-6-vitaly.prosyak@amd.com>
 In-Reply-To: <20220811002920.32207-1-vitaly.prosyak@amd.com>
 References: <20220811002920.32207-1-vitaly.prosyak@amd.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-Subject: [igt-dev] [PATCH 2/7] lib/amdgpu: added binary shaders with
- disassembled annotations
+Subject: [igt-dev] [PATCH 6/7] lib/amdgpu: added draw test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,415 +27,470 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Vitaly Prosyak <vitaly.prosyak@amd.com>
 
- UMR was used to dissemble binary shaders.
- Add shader type declarations enum cs_type
- and enum ps_type.
+Use UMR to disassemble binary shaders.
 
 Signed-off-by: Vitaly Prosyak <vitaly.prosyak@amd.com>
 ---
- lib/amdgpu/amd_shaders.c         | 338 ++++++++++++++++++++++++++++++-
- lib/amdgpu/amd_shaders.h         |  14 +-
- lib/amdgpu/amd_shared_dispatch.h |  42 ++++
- 3 files changed, 387 insertions(+), 7 deletions(-)
- create mode 100644 lib/amdgpu/amd_shared_dispatch.h
+ lib/amdgpu/amd_draw.c    | 440 +++++++++++++++++++++++++++++++++++++++
+ lib/amdgpu/amd_draw.h    |  34 +++
+ lib/meson.build          |   3 +-
+ tests/amdgpu/amd_basic.c |   4 +
+ 4 files changed, 480 insertions(+), 1 deletion(-)
+ create mode 100644 lib/amdgpu/amd_draw.c
+ create mode 100644 lib/amdgpu/amd_draw.h
 
-diff --git a/lib/amdgpu/amd_shaders.c b/lib/amdgpu/amd_shaders.c
-index 31722744f..5505e504e 100644
---- a/lib/amdgpu/amd_shaders.c
-+++ b/lib/amdgpu/amd_shaders.c
-@@ -22,9 +22,9 @@
-  *
-  *
-  */
--
-+#include <amdgpu.h>
- #include "amd_shaders.h"
--
-+#include <amdgpu_drm.h>
- 
- #define CODE_OFFSET 512
- #define DATA_OFFSET 1024
-@@ -33,19 +33,345 @@
- 		      ((num & 0x0000ff00) << 8) | \
- 		      ((num & 0x00ff0000) >> 8) | \
- 		      ((num & 0x000000ff) << 24))
--
--
--static  uint32_t shader_bin[] = {
-+/**
+diff --git a/lib/amdgpu/amd_draw.c b/lib/amdgpu/amd_draw.c
+new file mode 100644
+index 000000000..542569693
+--- /dev/null
++++ b/lib/amdgpu/amd_draw.c
+@@ -0,0 +1,440 @@
++/*
++ * Copyright 2022 Advanced Micro Devices, Inc.
++ *  *
++ * Permission is hereby granted, free of charge, to any person obtaining a
++ * copy of this software and associated documentation files (the "Software"),
++ * to deal in the Software without restriction, including without limitation
++ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
++ * and/or sell copies of the Software, and to permit persons to whom the
++ * Software is furnished to do so, subject to the following conditions:
 + *
-+ *s_mov_b32 s2, 0
-+ * s_cmp_gt_u32 s2, 0x98967f
-+ * ;;
-+ * s_cbranch_scc1 4
-+ * s_add_i32 s2, s2, 1
-+ * s_cmp_gt_u32 s2, 0x98967f
-+ * ;;
-+ * s_cbranch_scc0 65532
-+ * s_mov_b32 s3, 0xf000
-+ * ;;
-+ * s_mov_b32 s2, -1
-+ * v_mov_b32_e32 v0, 42
-+ * buffer_store_dword v0, off, s[0:3], 0
-+ * ;;
-+ * s_endpgm
++ * The above copyright notice and this permission notice shall be included in
++ * all copies or substantial portions of the Software.
++ *
++ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
++ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
++ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
++ * THE COPYRIGHT HOLDER(S) OR AUTHOR(S) BE LIABLE FOR ANY CLAIM, DAMAGES OR
++ * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
++ * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
++ * OTHER DEALINGS IN THE SOFTWARE.
++ *
++ *
 + */
-+static  const
-+uint32_t shader_bin[] = {
- 	SWAP_32(0x800082be), SWAP_32(0x02ff08bf), SWAP_32(0x7f969800), SWAP_32(0x040085bf),
- 	SWAP_32(0x02810281), SWAP_32(0x02ff08bf), SWAP_32(0x7f969800), SWAP_32(0xfcff84bf),
- 	SWAP_32(0xff0083be), SWAP_32(0x00f00000), SWAP_32(0xc10082be), SWAP_32(0xaa02007e),
- 	SWAP_32(0x000070e0), SWAP_32(0x00000080), SWAP_32(0x000081bf)
- };
- 
--const uint32_t * get_shader_bin(uint32_t *size_bytes, uint32_t *code_offset, uint32_t *data_offset)
-+const uint32_t *
-+get_shader_bin(uint32_t *size_bytes, uint32_t *code_offset, uint32_t *data_offset)
- {
- 	*size_bytes = sizeof(shader_bin);
- 	*code_offset =  CODE_OFFSET;
- 	*data_offset = DATA_OFFSET;
- 	return shader_bin;
- }
++#include "amd_draw.h"
++#include "amd_draw_helpers.h"
++#include "amd_memory.h"
++#include "amd_dispatch.h"
++#include "amd_shared_dispatch.h"  /*cs_type ps_type*/
 +
-+struct amdgpu_test_shader {
-+	uint32_t *shader;
-+	uint32_t header_length;
-+	uint32_t body_length;
-+	uint32_t foot_length;
++
++/**
++ * shared between
++ * amdgpu_dispatch_load_cs_shader
++ * amdgpu_draw_load_ps_shader
++ */
++	/**
++	...
++	s_bcnt0_i32_b32 exec_lo, exec_lo
++	...
++	...
++	s_dcache_inv
++	;;
++	...
++	...
++	...
++	s_waitcnt lgkmcnt(0)
++	image_sample v[0:3], v2, s[4:11], s[0:3] dmask:0xf
++	;;
++	s_not_b32 exec_lo, s12
++	s_waitcnt vmcnt(0)
++	s_nop 0
++	s_nop 0
++	...
++	v_add_f32_e32 v129, v0, v0
++	s_endpgm
++	 */
++unsigned int memcpy_ps_hang[] = {
++        0xFFFFFFFF, 0xBEFE0A7E, 0xBEFC0304, 0xC0C20100,
++        0xC0800300, 0xC8080000, 0xC80C0100, 0xC8090001,
++        0xC80D0101, 0xBF8C007F, 0xF0800F00, 0x00010002,
++        0xBEFE040C, 0xBF8C0F70, 0xBF800000, 0xBF800000,
++        0xF800180F, 0x03020100, 0xBF810000
 +};
 +
-+int amdgpu_dispatch_load_cs_shader_hang_slow(uint32_t *ptr, uint32_t family_id)
++static int amdgpu_draw_load_ps_shader(uint8_t *ptr, int ps_type, uint32_t version)
 +{
 +	/**
-+	 * v_sub_f32_e32 v0, s8, v134
-+	 * buffer_load_format_xyzw v[1:4], v0, s[0:3], 0 idxen
-+	 * ;;
-+	 * s_waitcnt vmcnt(0)
-+	 * buffer_store_format_xyzw v[1:4], v0, s[4:7], 0 idxen
-+	 * ;;
-+	 * s_endpgm
++	v_mov_b32_e32 v0, s0
++	v_mov_b32_e32 v1, s1
++	v_mov_b32_e32 v2, s2
++	v_mov_b32_e32 v3, s3
++	v_cvt_pkrtz_f16_f32 v0, v0, v1
++	;;
++	v_cvt_pkrtz_f16_f32 v1, v2, v3
++	;;
++	exp mrt0 v0, v0, v1, v1 done compr vm
++	;;
++	s_endpgm
 +	 */
-+	unsigned int memcpy_cs_hang_slow_ai_codes[] = {
-+	    0xd1fd0000, 0x04010c08, 0xe00c2000, 0x80000100,
-+	    0xbf8c0f70, 0xe01c2000, 0x80010100, 0xbf810000
++	static const uint32_t ps_const_shader_gfx9[] = {
++	    0x7E000200, 0x7E020201, 0x7E040202, 0x7E060203,
++	    0xD2960000, 0x00020300, 0xD2960001, 0x00020702,
++	    0xC4001C0F, 0x00000100, 0xBF810000
++	};
++	static const uint32_t ps_const_shader_patchinfo_code_size_gfx9 = 6;
++
++	static const uint32_t ps_const_shader_patchinfo_code_gfx9[][10][6] = {
++	    {{ 0xBF800000, 0xBF800000, 0xBF800000, 0xBF800000, 0xC4001890, 0x00000000 },
++	     { 0xBF800000, 0xBF800000, 0xBF800000, 0xBF800000, 0xC4001801, 0x00000000 },
++	     { 0xBF800000, 0xBF800000, 0xBF800000, 0xBF800000, 0xC4001803, 0x00000100 },
++	     { 0xBF800000, 0xBF800000, 0xBF800000, 0xBF800000, 0xC4001803, 0x00000300 },
++	     { 0xD2960000, 0x00020300, 0xD2960001, 0x00020702, 0xC4001C0F, 0x00000100 },
++	     { 0xD2950000, 0x00020300, 0xD2950001, 0x00020702, 0xC4001C0F, 0x00000100 },
++	     { 0xD2940000, 0x00020300, 0xD2940001, 0x00020702, 0xC4001C0F, 0x00000100 },
++	     { 0xD2970000, 0x00020300, 0xD2970001, 0x00020702, 0xC4001C0F, 0x00000100 },
++	     { 0xD2980000, 0x00020300, 0xD2980001, 0x00020702, 0xC4001C0F, 0x00000100 },
++	     { 0xBF800000, 0xBF800000, 0xBF800000, 0xBF800000, 0xC400180F, 0x03020100 }
++	    }
 +	};
 +
-+	struct amdgpu_test_shader memcpy_cs_hang_slow_ai = {
-+		memcpy_cs_hang_slow_ai_codes,
-+		4,
-+		3,
-+		1
-+	};
-+	/**
-+	 * s_lshl_b32 s0, s12, 6
-+	 * v_add_u32_e32 v0, vcc, s0, v0
-+	 * buffer_load_format_xyzw v[1:4], v0, s[4:7], 0 idxen
-+	 * ;;
-+	 * s_waitcnt vmcnt(0)
-+	 * buffer_store_format_xyzw v[1:4], v0, s[8:11], 0 idxen
-+	 * ;;
-+	 * s_endpgm
-+	 */
-+	unsigned int memcpy_cs_hang_slow_rv_codes[] = {
-+	    0x8e00860c, 0x32000000, 0xe00c2000, 0x80010100,
-+	    0xbf8c0f70, 0xe01c2000, 0x80020100, 0xbf810000
-+	};
-+
-+	struct amdgpu_test_shader memcpy_cs_hang_slow_rv = {
-+		memcpy_cs_hang_slow_rv_codes,
-+		4,
-+		3,
-+		1
-+	};
-+	/**
-+	 * v_interp_mov_f32_e32 v209, p10, attr0.x
-+	 * v_sub_f32_e32 v0, s8, v134
-+	 * buffer_load_format_xyzw v[1:4], v0, s[0:3], 0 idxen
-+	 * ;;
-+	 * s_waitcnt vmcnt(0)
-+	 * buffer_store_format_xyzw v[1:4], v0, s[4:7], 0 idxen
-+	 * ;;
-+	 * s_endpgm
-+	 */
-+	unsigned int memcpy_cs_hang_slow_nv_codes[] = {
-+	    0xd7460000, 0x04010c08, 0xe00c2000, 0x80000100,
-+	    0xbf8c0f70, 0xe01ca000, 0x80010100, 0xbf810000
-+	};
-+
-+	struct amdgpu_test_shader memcpy_cs_hang_slow_nv = {
-+	        memcpy_cs_hang_slow_nv_codes,
-+	        4,
-+	        3,
-+	        1
-+	};
-+	struct amdgpu_test_shader *shader;
-+	int i, loop = 0x10000;
-+
-+	switch (family_id) {
-+		case AMDGPU_FAMILY_AI:
-+			shader = &memcpy_cs_hang_slow_ai;
-+			break;
-+		case AMDGPU_FAMILY_RV:
-+			shader = &memcpy_cs_hang_slow_rv;
-+			break;
-+		case AMDGPU_FAMILY_NV:
-+			shader = &memcpy_cs_hang_slow_nv;
-+			break;
-+		default:
-+			return -1;
-+	}
-+
-+	memcpy(ptr, shader->shader, shader->header_length * sizeof(uint32_t));
-+
-+	for (i = 0; i < loop; i++)
-+		memcpy(ptr + shader->header_length + shader->body_length * i,
-+			shader->shader + shader->header_length,
-+			shader->body_length * sizeof(uint32_t));
-+
-+	memcpy(ptr + shader->header_length + shader->body_length * loop,
-+		shader->shader + shader->header_length + shader->body_length,
-+		shader->foot_length * sizeof(uint32_t));
-+
-+	return 0;
-+}
-+
-+int  amdgpu_dispatch_load_cs_shader(uint8_t *ptr, int cs_type, uint32_t version)
-+{
-+	/**
-+	 * v_and_b32_e32 v0, 0x3ff, v0
-+	 * ;;
-+	 * ...
-+	 * v_sub_f32_e32 v0, s8, v134
-+	 * v_mov_b32_e32 v1, 0
-+	 * v_mov_b32_e32 v2, s4
-+	 * mov_b32_e32 v3, s5
-+	 * v_mov_b32_e32 v4, s6
-+	 * v_mov_b32_e32 v5, s7
-+	 * buffer_store_format_xyzw v[2:5], v0, s[0:3], 0 idxen
-+	 * ;;
-+	 * s_waitcnt vmcnt(0) expcnt(0) lgkmcnt(0)
-+	 * s_endpgm
-+	 */
-+	static const uint32_t bufferclear_cs_shader_gfx9[] = {
-+	    0x260000ff, 0x000003ff, 0xd1fd0000, 0x04010c08,
-+	    0x7e020280, 0x7e040204, 0x7e060205, 0x7e080206,
-+	    0x7e0a0207, 0xe01c2000, 0x80000200, 0xbf8c0000,
-+	    0xbf810000
++	static const uint32_t ps_const_shader_patchinfo_offset_gfx9[] = {
++	    0x00000004
 +	};
 +
 +	/**
-+	 *
-+	 * v_and_b32_e32 v0, 0x3ff, v0
-+	 * ;;
-+	 * ...
-+	 * v_sub_f32_e32 v0, s8, v134
-+	 * v_mov_b32_e32 v1, 0
-+	 * buffer_load_format_xyzw v[2:5], v0, s[0:3], 0 idxen
-+	 * ;;
-+	 * s_waitcnt vmcnt(0)
-+	 * buffer_store_format_xyzw v[2:5], v0, s[4:7], 0 idxen
-+	 * ;;
-+	 * s_endpgm
++	s_mov_b32 m0, s12
++	s_mov_b64 s[14:15], exec
++	s_wqm_b64 exec, exec
++	v_interp_p1_f32_e32 v6, v0, attr0.x
++	v_interp_p2_f32_e32 v6, v1, attr0.x
++	v_interp_p1_f32_e32 v7, v0, attr0.y
++	v_interp_p2_f32_e32 v7, v1, attr0.y
++	image_sample v[2:5], v6, s[0:7], s[8:11] dmask:0xf
++	;;
++	s_mov_b64 exec, s[14:15]
++	s_waitcnt vmcnt(0)
++	v_cvt_pkrtz_f16_f32 v0, v2, v3
++	;;
++	v_cvt_pkrtz_f16_f32 v1, v4, v5
++	;;
++	exp mrt0 v0, v0, v1, v1 done compr vm
++	;;
++	s_endpgm
 +	 */
-+	static const uint32_t buffercopy_cs_shader_gfx9[] = {
-+	    0x260000ff, 0x000003ff, 0xd1fd0000, 0x04010c08,
-+	    0x7e020280, 0xe00c2000, 0x80000200, 0xbf8c0f70,
-+	    0xe01c2000, 0x80010200, 0xbf810000
++	static const uint32_t ps_tex_shader_gfx9[] = {
++	    0xBEFC000C, 0xBE8E017E, 0xBEFE077E, 0xD4180000,
++	    0xD4190001, 0xD41C0100, 0xD41D0101, 0xF0800F00,
++	    0x00400206, 0xBEFE010E, 0xBF8C0F70, 0xD2960000,
++	    0x00020702, 0xD2960001, 0x00020B04, 0xC4001C0F,
++	    0x00000100, 0xBF810000
++	};
++
++	static const uint32_t ps_tex_shader_patchinfo_offset_gfx9[] = {
++	    0x0000000B
++	};
++
++	static const uint32_t ps_tex_shader_patchinfo_code_size_gfx9 = 6;
++
++	static const uint32_t ps_tex_shader_patchinfo_code_gfx9[][10][6] = {
++	    {{ 0xBF800000, 0xBF800000, 0xBF800000, 0xBF800000, 0xC4001890, 0x00000000 },
++	     { 0xBF800000, 0xBF800000, 0xBF800000, 0xBF800000, 0xC4001801, 0x00000002 },
++	     { 0xBF800000, 0xBF800000, 0xBF800000, 0xBF800000, 0xC4001803, 0x00000302 },
++	     { 0xBF800000, 0xBF800000, 0xBF800000, 0xBF800000, 0xC4001803, 0x00000502 },
++	     { 0xD2960000, 0x00020702, 0xD2960001, 0x00020B04, 0xC4001C0F, 0x00000100 },
++	     { 0xD2950000, 0x00020702, 0xD2950001, 0x00020B04, 0xC4001C0F, 0x00000100 },
++	     { 0xD2940000, 0x00020702, 0xD2940001, 0x00020B04, 0xC4001C0F, 0x00000100 },
++	     { 0xD2970000, 0x00020702, 0xD2970001, 0x00020B04, 0xC4001C0F, 0x00000100 },
++	     { 0xD2980000, 0x00020702, 0xD2980001, 0x00020B04, 0xC4001C0F, 0x00000100 },
++	     { 0xBF800000, 0xBF800000, 0xBF800000, 0xBF800000, 0xC400180F, 0x05040302 }
++	    }
 +	};
 +
 +	/**
-+	 * ...
-+	 * s_bcnt0_i32_b32 exec_lo, exec_lo
-+	 * ...
-+	 * ...
-+	 * s_dcache_inv
-+	 * ;;
-+	 * ...
-+	 * ...
-+	 * ...
-+	 * s_waitcnt lgkmcnt(0)
-+	 * image_sample v[0:3], v2, s[4:11], s[0:3] dmask:0xf
-+	 * ;;
-+	 * s_not_b32 exec_lo, s12
-+	 * s_waitcnt vmcnt(0)
-+	 * s_nop 0
-+	 * s_nop 0
-+	 * ...
-+	 * v_add_f32_e32 v129, v0, v0
-+	 *s_endpgm
++	v_mov_b32_e32 v0, s0
++	v_mov_b32_e32 v1, s1
++	v_mov_b32_e32 v2, s2
++	v_mov_b32_e32 v3, s3
++	v_max_u16_e32 v0, v0, v1
++	v_max_u16_e32 v1, v2, v3
++	s_nop 0
++	s_nop 0
++	...
++	v_cndmask_b32_e32 v0, v0, v0, vcc
++	s_endpgm
 +	 */
-+	static const uint32_t memcpy_ps_hang[] = {
-+			0xFFFFFFFF, 0xBEFE0A7E, 0xBEFC0304, 0xC0C20100,
-+			0xC0800300, 0xC8080000, 0xC80C0100, 0xC8090001,
-+			0xC80D0101, 0xBF8C007F, 0xF0800F00, 0x00010002,
-+			0xBEFE040C, 0xBF8C0F70, 0xBF800000, 0xBF800000,
-+			0xF800180F, 0x03020100, 0xBF810000
++	static const uint32_t ps_const_shader_gfx10[] = {
++	    0x7E000200, 0x7E020201, 0x7E040202, 0x7E060203,
++	    0x5E000300, 0x5E020702, 0xBF800000, 0xBF800000,
++	    0xF8001C0F, 0x00000100, 0xBF810000
++	};
++
++	static const uint32_t ps_const_shader_patchinfo_code_size_gfx10 = 6;
++
++	static const uint32_t ps_const_shader_patchinfo_code_gfx10[][10][6] = {
++	    {{ 0xBF800000, 0xBF800000, 0xBF800000, 0xBF800000, 0xF8001890, 0x00000000 },
++	     { 0xBF800000, 0xBF800000, 0xBF800000, 0xBF800000, 0xF8001801, 0x00000000 },
++	     { 0xBF800000, 0xBF800000, 0xBF800000, 0xBF800000, 0xF8001803, 0x00000100 },
++	     { 0xBF800000, 0xBF800000, 0xBF800000, 0xBF800000, 0xF8001803, 0x00000300 },
++	     { 0x5E000300, 0x5E020702, 0xBF800000, 0xBF800000, 0xF8001C0F, 0x00000100 },
++	     { 0xD7690000, 0x00020300, 0xD7690001, 0x00020702, 0xF8001C0F, 0x00000100 },
++	     { 0xD7680000, 0x00020300, 0xD7680001, 0x00020702, 0xF8001C0F, 0x00000100 },
++	     { 0xD76A0000, 0x00020300, 0xD76A0001, 0x00020702, 0xF8001C0F, 0x00000100 },
++	     { 0xD76B0000, 0x00020300, 0xD76B0001, 0x00020702, 0xF8001C0F, 0x00000100 },
++	     { 0xBF800000, 0xBF800000, 0xBF800000, 0xBF800000, 0xF800180F, 0x03020100 }
++	    }
++	};
++
++	static const uint32_t ps_const_shader_patchinfo_offset_gfx10[] = {
++	    0x00000004
 +	};
 +
 +	/**
-+	 * v_interp_mov_f32_e32 v209, invalid_param_4, attr0.x
-+	 * v_sub_f32_e32 v0, s8, v134
-+	 * v_mov_b32_e32 v0, s4
-+	 * v_mov_b32_e32 v1, s5
-+	 * v_mov_b32_e32 v2, s6
-+	 * v_mov_b32_e32 v3, s7
-+	 * buffer_store_format_xyzw v[0:3], v4, s[0:3], 0 idxen
-+	 * ;;
-+	  *s_endpgm
-+	  */
-+	static const uint32_t bufferclear_cs_shader_gfx10[] = {
-+		0xD7460004, 0x04010C08, 0x7E000204, 0x7E020205,
-+		0x7E040206, 0x7E060207, 0xE01C2000, 0x80000004,
-+		0xBF810000
-+	};
-+
-+	/**
-+	 * v_interp_mov_f32_e32 v209, p20, attr0.x
-+	 * v_sub_f32_e32 v0, s8, v134
-+	 * buffer_load_format_xyzw v[2:5], v1, s[0:3], 0 idxen
-+	 * ;;
-+	 * s_waitcnt vmcnt(0)
-+	 * buffer_store_format_xyzw v[2:5], v1, s[4:7], 0 idxen
-+	 * ;;
-+	 * s_endpgm
++		...
++	s_not_b32 s14, exec_lo
++	s_bcnt0_i32_b32 exec_lo, exec_lo
++	...
++	...
++	...
++	...
++	image_sample v[4:7], v2, s[0:7], s[8:11] dmask:0xf
++	;;
++	v_cndmask_b32_e32 v0, s3, v0, vcc
++	s_not_b32 exec_lo, s14
++	s_waitcnt vmcnt(0)
++	v_max_u16_e32 v0, v4, v5
++	v_max_u16_e32 v1, v6, v7
++	s_nop 0
++	s_nop 0
++	...
++	v_cndmask_b32_e32 v0, v0, v0, vcc
++	s_endpgm
 +	 */
-+	static const uint32_t buffercopy_cs_shader_gfx10[] = {
-+		0xD7460001, 0x04010C08, 0xE00C2000, 0x80000201,
-+		0xBF8C3F70, 0xE01C2000, 0x80010201, 0xBF810000
++	static const uint32_t ps_tex_shader_gfx10[] = {
++	    0xBEFC030C, 0xBE8E047E, 0xBEFE0A7E, 0xC8080000,
++	    0xC80C0100, 0xC8090001, 0xC80D0101, 0xF0800F0A,
++	    0x00400402, 0x00000003, 0xBEFE040E, 0xBF8C0F70,
++	    0x5E000B04, 0x5E020F06, 0xBF800000, 0xBF800000,
++	    0xF8001C0F, 0x00000100, 0xBF810000
 +	};
 +
-+	uint32_t shader_size;
++	static const uint32_t ps_tex_shader_patchinfo_offset_gfx10[] = {
++	    0x0000000C
++	};
++
++	static const uint32_t ps_tex_shader_patchinfo_code_size_gfx10 = 6;
++
++	static const uint32_t ps_tex_shader_patchinfo_code_gfx10[][10][6] = {
++	    {{ 0xBF800000, 0xBF800000, 0xBF800000, 0xBF800000, 0xF8001890, 0x00000000 },
++	     { 0xBF800000, 0xBF800000, 0xBF800000, 0xBF800000, 0xF8001801, 0x00000004 },
++	     { 0xBF800000, 0xBF800000, 0xBF800000, 0xBF800000, 0xF8001803, 0x00000504 },
++	     { 0xBF800000, 0xBF800000, 0xBF800000, 0xBF800000, 0xF8001803, 0x00000704 },
++	     { 0x5E000B04, 0x5E020F06, 0xBF800000, 0xBF800000, 0xF8001C0F, 0x00000100 },
++	     { 0xD7690000, 0x00020B04, 0xD7690001, 0x00020F06, 0xF8001C0F, 0x00000100 },
++	     { 0xD7680000, 0x00020B04, 0xD7680001, 0x00020F06, 0xF8001C0F, 0x00000100 },
++	     { 0xD76A0000, 0x00020B04, 0xD76A0001, 0x00020F06, 0xF8001C0F, 0x00000100 },
++	     { 0xD76B0000, 0x00020B04, 0xD76B0001, 0x00020F06, 0xF8001C0F, 0x00000100 },
++	     { 0xBF800000, 0xBF800000, 0xBF800000, 0xBF800000, 0xF800180F, 0x07060504 }
++	    }
++	};
++
++	int i;
++	uint32_t shader_offset= 256;
++	uint32_t mem_offset, patch_code_offset;
++	uint32_t shader_size, patchinfo_code_size;
 +	const uint32_t *shader;
++	const uint32_t *patchinfo_code;
++	const uint32_t *patchcode_offset;
 +
-+	switch (cs_type) {
-+		case CS_BUFFERCLEAR:
++	switch (ps_type) {
++		case PS_CONST:
 +			if (version == 9) {
-+				shader = bufferclear_cs_shader_gfx9;
-+				shader_size = sizeof(bufferclear_cs_shader_gfx9);
-+			} else if (version == 10) {
-+				shader = bufferclear_cs_shader_gfx10;
-+				shader_size = sizeof(bufferclear_cs_shader_gfx10);
++				shader = ps_const_shader_gfx9;
++				shader_size = sizeof(ps_const_shader_gfx9);
++				patchinfo_code = (const uint32_t *)ps_const_shader_patchinfo_code_gfx9;
++				patchinfo_code_size = ps_const_shader_patchinfo_code_size_gfx9;
++				patchcode_offset = ps_const_shader_patchinfo_offset_gfx9;
++			} else if (version == 10){
++				shader = ps_const_shader_gfx10;
++				shader_size = sizeof(ps_const_shader_gfx10);
++				patchinfo_code = (const uint32_t *)ps_const_shader_patchinfo_code_gfx10;
++				patchinfo_code_size = ps_const_shader_patchinfo_code_size_gfx10;
++				patchcode_offset = ps_const_shader_patchinfo_offset_gfx10;
 +			}
 +			break;
-+		case CS_BUFFERCOPY:
++		case PS_TEX:
 +			if (version == 9) {
-+				shader = buffercopy_cs_shader_gfx9;
-+				shader_size = sizeof(buffercopy_cs_shader_gfx9);
++				shader = ps_tex_shader_gfx9;
++				shader_size = sizeof(ps_tex_shader_gfx9);
++				patchinfo_code = (const uint32_t *)ps_tex_shader_patchinfo_code_gfx9;
++				patchinfo_code_size = ps_tex_shader_patchinfo_code_size_gfx9;
++				patchcode_offset = ps_tex_shader_patchinfo_offset_gfx9;
 +			} else if (version == 10) {
-+				shader = buffercopy_cs_shader_gfx10;
-+				shader_size = sizeof(buffercopy_cs_shader_gfx10);
++				shader = ps_tex_shader_gfx10;
++				shader_size = sizeof(ps_tex_shader_gfx10);
++				patchinfo_code = (const uint32_t *)ps_tex_shader_patchinfo_code_gfx10;
++				patchinfo_code_size = ps_tex_shader_patchinfo_code_size_gfx10;
++				patchcode_offset = ps_tex_shader_patchinfo_offset_gfx10;
 +			}
 +			break;
-+		case CS_HANG:
++		case PS_HANG:
 +			shader = memcpy_ps_hang;
 +			shader_size = sizeof(memcpy_ps_hang);
-+			break;
++
++			memcpy(ptr, shader, shader_size);
++			return 0;
 +		default:
 +			return -1;
++			break;
 +	}
 +
-+	memcpy(ptr, shader, shader_size);
++	/* write main shader program */
++	for (i = 0 ; i < 10; i++) {
++		mem_offset = i * shader_offset;
++		memcpy(ptr + mem_offset, shader, shader_size);
++	}
++
++	/* overwrite patch codes */
++	for (i = 0 ; i < 10; i++) {
++		mem_offset = i * shader_offset + patchcode_offset[0] * sizeof(uint32_t);
++		patch_code_offset = i * patchinfo_code_size;
++		memcpy(ptr + mem_offset,
++			patchinfo_code + patch_code_offset,
++			patchinfo_code_size * sizeof(uint32_t));
++	}
++
 +	return 0;
 +}
 +
-+
-+int
-+amdgpu_draw_load_ps_shader_hang_slow(uint32_t *ptr, int family)
++static void
++amdgpu_memcpy_draw_test(amdgpu_device_handle device_handle, uint32_t ring,
++				    int version, int hang)
 +{
++	amdgpu_bo_handle bo_shader_ps, bo_shader_vs;
++	void *ptr_shader_ps;
++	void *ptr_shader_vs;
++	uint64_t mc_address_shader_ps, mc_address_shader_vs;
++	amdgpu_va_handle va_shader_ps, va_shader_vs;
++	int bo_shader_size = 4096;
++	enum ps_type ps_type = hang ? PS_HANG : PS_TEX;
++	int r;
++
++	r = amdgpu_bo_alloc_and_map(device_handle, bo_shader_size, 4096,
++					AMDGPU_GEM_DOMAIN_VRAM, 0,
++					&bo_shader_ps, &ptr_shader_ps,
++					&mc_address_shader_ps, &va_shader_ps);
++	igt_assert_eq(r, 0);
++	memset(ptr_shader_ps, 0, bo_shader_size);
++
++	r = amdgpu_bo_alloc_and_map(device_handle, bo_shader_size, 4096,
++					AMDGPU_GEM_DOMAIN_VRAM, 0,
++					&bo_shader_vs, &ptr_shader_vs,
++					&mc_address_shader_vs, &va_shader_vs);
++	igt_assert_eq(r, 0);
++	memset(ptr_shader_vs, 0, bo_shader_size);
++
++	r = amdgpu_draw_load_ps_shader(ptr_shader_ps, ps_type, version);
++	igt_assert_eq(r, 0);
++
++	r = amdgpu_draw_load_vs_shader(ptr_shader_vs, version);
++	igt_assert_eq(r, 0);
++
++	amdgpu_memcpy_draw(device_handle, bo_shader_ps, bo_shader_vs,
++			mc_address_shader_ps, mc_address_shader_vs, ring, version, hang);
++
++	amdgpu_bo_unmap_and_free(bo_shader_ps, va_shader_ps, mc_address_shader_ps, bo_shader_size);
++
++	amdgpu_bo_unmap_and_free(bo_shader_vs, va_shader_vs, mc_address_shader_vs, bo_shader_size);
++}
++
++static void
++amdgpu_memset_draw_test(amdgpu_device_handle device_handle,
++			uint32_t ring, int version)
++{
++	amdgpu_bo_handle bo_shader_ps, bo_shader_vs;
++	void *ptr_shader_ps, *ptr_shader_vs;
++	uint64_t mc_address_shader_ps, mc_address_shader_vs;
++	amdgpu_va_handle va_shader_ps, va_shader_vs;
++	int r;
++	int bo_shader_size = 4096;
++
++	r = amdgpu_bo_alloc_and_map(device_handle, bo_shader_size, 4096,
++					AMDGPU_GEM_DOMAIN_VRAM, 0,
++					&bo_shader_ps, &ptr_shader_ps,
++					&mc_address_shader_ps, &va_shader_ps);
++	igt_assert_eq(r, 0);
++	memset(ptr_shader_ps, 0, bo_shader_size);
++
++	r = amdgpu_bo_alloc_and_map(device_handle, bo_shader_size, 4096,
++					AMDGPU_GEM_DOMAIN_VRAM, 0,
++					&bo_shader_vs, &ptr_shader_vs,
++					&mc_address_shader_vs, &va_shader_vs);
++	igt_assert_eq(r, 0);
++	memset(ptr_shader_vs, 0, bo_shader_size);
++
++	r = amdgpu_draw_load_ps_shader(ptr_shader_ps, PS_CONST, version);//
++	igt_assert_eq(r, 0);
++
++	r = amdgpu_draw_load_vs_shader(ptr_shader_vs, version);//
++	igt_assert_eq(r, 0);
++
++	amdgpu_memset_draw(device_handle, bo_shader_ps, bo_shader_vs,
++			mc_address_shader_ps, mc_address_shader_vs, ring, version);//
++
++	amdgpu_bo_unmap_and_free(bo_shader_ps, va_shader_ps, mc_address_shader_ps, bo_shader_size);
++	amdgpu_bo_unmap_and_free(bo_shader_vs, va_shader_vs, mc_address_shader_vs, bo_shader_size);
++
++}
++
++void
++amdgpu_draw_test(amdgpu_device_handle device_handle)
++{
++	int r;
++	struct drm_amdgpu_info_hw_ip info;
++	uint32_t ring_id, version;
++
++	r = amdgpu_query_hw_ip_info(device_handle, AMDGPU_HW_IP_GFX, 0, &info);
++	igt_assert_eq(r, 0);
++	if (!info.available_rings)
++		printf("SKIP ... as there's no graphics ring\n");
++
++	version = info.hw_ip_version_major;
++	if (version != 9 && version != 10) {
++		printf("SKIP ... unsupported gfx version %d\n", version);
++		return;
++	}
 +	/**
-+	 * s_mov_b32 m0, s12
-+	 * s_mov_b64 s[14:15], exec
-+	 * s_wqm_b64 exec, exec
-+	 * v_interp_p1_f32_e32 v2, v0, attr0.x
-+	 * v_interp_p2_f32_e32 v2, v1, attr0.x
-+	 * v_interp_p1_f32_e32 v3, v0, attr0.y
-+	 * v_interp_p2_f32_e32 v3, v1, attr0.y
-+	 * image_sample v[0:3], v2, s[0:7], s[8:11] dmask:0xf
-+	 * ;;
-+	 * s_mov_b64 exec, s[14:15]
-+	 * s_waitcnt vmcnt(0)
-+	 * s_nop 0
-+	 * s_nop 0
-+	 * s_nop 0
-+	 * s_nop 0
-+	 * exp mrt0 v0, v1, v2, v3 done vm
-+	 * ;;
-+	 * s_endpgm
++	 *  there are many if 9 else if 10
++	 *  so we should have always 9 or 10
 +	 */
-+	unsigned int memcpy_ps_hang_slow_ai_codes[] = {
-+		0xbefc000c, 0xbe8e017e, 0xbefe077e, 0xd4080000,
-+		0xd4090001, 0xd40c0100, 0xd40d0101, 0xf0800f00,
-+		0x00400002, 0xbefe010e, 0xbf8c0f70, 0xbf800000,
-+		0xbf800000, 0xbf800000, 0xbf800000, 0xc400180f,
-+		0x03020100, 0xbf810000
-+	};
++	if (version < 9 )
++		version = 9;
 +
-+	struct amdgpu_test_shader memcpy_ps_hang_slow_ai = {
-+		memcpy_ps_hang_slow_ai_codes,
-+		7,
-+		2,
-+		9
-+	};
++	for (ring_id = 0; (1 << ring_id) & info.available_rings; ring_id++) {
++		amdgpu_memset_draw_test(device_handle, ring_id, version);
++		amdgpu_memcpy_draw_test(device_handle, ring_id, version, 0);
++	}
++}
 +
-+	struct amdgpu_test_shader *shader;
-+	int i, loop = 0x40000;
++void
++amdgpu_draw_hang_slow_gfx(amdgpu_device_handle device_handle)
++{
++	struct drm_amdgpu_info_hw_ip info;
++	uint32_t ring_id, version;
++	int r;
 +
-+	switch (family) {
-+		case AMDGPU_FAMILY_AI:
-+		case AMDGPU_FAMILY_RV:
-+		case AMDGPU_FAMILY_NV: /* TODO check for correctness */
-+		shader = &memcpy_ps_hang_slow_ai;
-+			break;
-+		default:
-+			return -1;
-+			break;
++	r = amdgpu_query_hw_ip_info(device_handle, AMDGPU_HW_IP_GFX, 0, &info);
++	igt_assert_eq(r, 0);
++
++	version = info.hw_ip_version_major;
++	if (version != 9 && version != 10) {
++		printf("SKIP ... unsupported gfx version %d\n", version);
++		return;
 +	}
 +
-+	memcpy(ptr, shader->shader, shader->header_length * sizeof(uint32_t));
-+
-+	for (i = 0; i < loop; i++)
-+		memcpy(ptr + shader->header_length + shader->body_length * i,
-+			shader->shader + shader->header_length,
-+			shader->body_length * sizeof(uint32_t));
-+
-+	memcpy(ptr + shader->header_length + shader->body_length * loop,
-+		shader->shader + shader->header_length + shader->body_length,
-+		shader->foot_length * sizeof(uint32_t));
-+
-+	return 0;
++	for (ring_id = 0; (1 << ring_id) & info.available_rings; ring_id++) {
++		amdgpu_memcpy_draw_test(device_handle, ring_id, version, 0);
++		amdgpu_memcpy_draw_hang_slow_test(device_handle, ring_id, version);
++		amdgpu_memcpy_draw_test(device_handle, ring_id, version, 0);
++	}
 +}
-diff --git a/lib/amdgpu/amd_shaders.h b/lib/amdgpu/amd_shaders.h
-index 1abb23ac3..22fc474fc 100644
---- a/lib/amdgpu/amd_shaders.h
-+++ b/lib/amdgpu/amd_shaders.h
-@@ -26,7 +26,19 @@
- #define AMD_SHADERS_H
- 
- #include "drmtest.h"
-+#include <amdgpu.h>
-+#include "amd_shared_dispatch.h"
- 
--const uint32_t * get_shader_bin(uint32_t *size_bytes, uint32_t *code_offset, uint32_t *data_offset);
-+const uint32_t *
-+get_shader_bin(uint32_t *size_bytes, uint32_t *code_offset, uint32_t *data_offset);
-+
-+int
-+amdgpu_dispatch_load_cs_shader_hang_slow(uint32_t *ptr, uint32_t family_id);
-+
-+int
-+amdgpu_dispatch_load_cs_shader(uint8_t *ptr, int cs_type, uint32_t version);
-+
-+int
-+amdgpu_draw_load_ps_shader_hang_slow(uint32_t *ptr, int family);
- 
- #endif
-diff --git a/lib/amdgpu/amd_shared_dispatch.h b/lib/amdgpu/amd_shared_dispatch.h
+diff --git a/lib/amdgpu/amd_draw.h b/lib/amdgpu/amd_draw.h
 new file mode 100644
-index 000000000..0dc5792f9
+index 000000000..57ffce099
 --- /dev/null
-+++ b/lib/amdgpu/amd_shared_dispatch.h
-@@ -0,0 +1,42 @@
++++ b/lib/amdgpu/amd_draw.h
+@@ -0,0 +1,34 @@
 +/*
 + * Copyright 2022 Advanced Micro Devices, Inc.
 + *
@@ -460,24 +514,52 @@ index 000000000..0dc5792f9
 + *
 + *
 + */
-+#ifndef AMD_SHARED_DISPATCH_H
-+#define AMD_SHARED_DISPATCH_H
++#ifndef __AMD_DRAW_H__
++#define __AMD_DRAW_H__
++#include <amdgpu.h>
 +
++void
++amdgpu_draw_test(amdgpu_device_handle device_handle);
 +
-+enum cs_type {
-+	CS_BUFFERCLEAR,
-+	CS_BUFFERCOPY,
-+	CS_HANG,
-+	CS_HANG_SLOW
-+};
-+
-+enum ps_type {
-+	PS_CONST,
-+	PS_TEX,
-+	PS_HANG,
-+	PS_HANG_SLOW
-+};
++void
++amdgpu_draw_hang_slow_gfx(amdgpu_device_handle device_handle);
 +
 +#endif
+diff --git a/lib/meson.build b/lib/meson.build
+index f110d8901..e0bc8a522 100644
+--- a/lib/meson.build
++++ b/lib/meson.build
+@@ -137,7 +137,8 @@ if libdrm_amdgpu.found()
+ 		'amdgpu/amd_gfx_v9_0.c',
+ 		'amdgpu/amd_dispatch_helpers.c',
+ 		'amdgpu/amd_dispatch.c',
+-		'amdgpu/amd_draw_helpers.c'
++		'amdgpu/amd_draw_helpers.c',
++		'amdgpu/amd_draw.c'
+ 	]
+ endif
+ 
+diff --git a/tests/amdgpu/amd_basic.c b/tests/amdgpu/amd_basic.c
+index 9be034975..891d1674c 100644
+--- a/tests/amdgpu/amd_basic.c
++++ b/tests/amdgpu/amd_basic.c
+@@ -31,6 +31,7 @@
+ #include "lib/amdgpu/amd_gfx.h"
+ #include "lib/amdgpu/amd_shaders.h"
+ #include "lib/amdgpu/amd_dispatch.h"
++#include "lib/amdgpu/amd_draw.h"
+ 
+ #define BUFFER_SIZE (8 * 1024)
+ 
+@@ -697,6 +698,9 @@ igt_main
+ 	igt_subtest("amdgpu_gfx_dispatch_test_gfx")
+ 	amdgpu_gfx_dispatch_test_gfx(device);
+ 
++	igt_subtest("amdgpu_draw_test")
++	amdgpu_draw_test(device);
++
+ 	igt_fixture {
+ 		amdgpu_device_deinitialize(device);
+ 		close(fd);
 -- 
 2.25.1
