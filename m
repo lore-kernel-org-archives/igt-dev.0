@@ -1,18 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from NAM11-CO1-obe.outbound.protection.outlook.com
- (mail-co1nam11on2045.outbound.protection.outlook.com [40.107.220.45])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 610A61128A4
- for <igt-dev@lists.freedesktop.org>; Thu, 11 Aug 2022 18:41:43 +0000 (UTC)
-From: <vitaly.prosyak@amd.com>
-To: <igt-dev@lists.freedesktop.org>
-Date: Thu, 11 Aug 2022 14:41:34 -0400
-Message-ID: <20220811184134.9565-7-vitaly.prosyak@amd.com>
-In-Reply-To: <20220811184134.9565-1-vitaly.prosyak@amd.com>
-References: <20220811184134.9565-1-vitaly.prosyak@amd.com>
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH 7/7] tests/amdgpu: add deadlock tests
+Content-Transfer-Encoding: 7bit
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: vitaly.prosyak@amd.com
+Date: Thu, 11 Aug 2022 19:17:17 -0000
+Message-ID: <166024543745.11992.1100778075938145210@emeril.freedesktop.org>
+References: <20220811184134.9565-1-vitaly.prosyak@amd.com>
+In-Reply-To: <20220811184134.9565-1-vitaly.prosyak@amd.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_s?=
+ =?utf-8?q?eries_starting_with_=5B1/7=5D_lib/amdgpu=3A_improve_operations_?=
+ =?utf-8?q?to_create_commands_and_misc?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,126 +18,45 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: christian.koenig@amd.com
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Vitaly Prosyak <vitaly.prosyak@amd.com>
+== Series Details ==
 
-Added following sub tests:
- - dispatch_hang_slow_compute
- - dispatch_hang_slow_gfx
- - draw_hang_slow_gfx
+Series: series starting with [1/7] lib/amdgpu: improve operations to create commands and misc
+URL   : https://patchwork.freedesktop.org/series/107177/
+State : warning
 
-Signed-off-by: Vitaly Prosyak <vitaly.prosyak@amd.com>
-Acked-by: Christian König <christian.koenig@amd.com>
----
- tests/amdgpu/amd_deadlock.c | 83 +++++++++++++++++++++++++++++++++++++
- tests/amdgpu/meson.build    |  1 +
- 2 files changed, 84 insertions(+)
- create mode 100644 tests/amdgpu/amd_deadlock.c
+== Summary ==
 
-diff --git a/tests/amdgpu/amd_deadlock.c b/tests/amdgpu/amd_deadlock.c
-new file mode 100644
-index 000000000..f1e1b1c29
---- /dev/null
-+++ b/tests/amdgpu/amd_deadlock.c
-@@ -0,0 +1,83 @@
-+/*
-+ * Copyright 2014 Advanced Micro Devices, Inc.
-+ * Copyright 2022 Advanced Micro Devices, Inc.
-+ *
-+ * Permission is hereby granted, free of charge, to any person obtaining a
-+ * copy of this software and associated documentation files (the "Software"),
-+ * to deal in the Software without restriction, including without limitation
-+ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
-+ * and/or sell copies of the Software, and to permit persons to whom the
-+ * Software is furnished to do so, subject to the following conditions:
-+ *
-+ * The above copyright notice and this permission notice shall be included in
-+ * all copies or substantial portions of the Software.
-+ *
-+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
-+ * THE COPYRIGHT HOLDER(S) OR AUTHOR(S) BE LIABLE FOR ANY CLAIM, DAMAGES OR
-+ * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
-+ * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-+ * OTHER DEALINGS IN THE SOFTWARE.
-+ *
-+ * Based on libdrm/tests/amdgpu/deadlock_tests.c
-+ */
-+
-+#include "lib/amdgpu/amd_memory.h"
-+#include "lib/amdgpu/amd_command_submission.h"
-+#include "lib/amdgpu/amd_draw.h"
-+#include "lib/amdgpu/amd_dispatch.h"
-+
-+static void
-+amdgpu_dispatch_hang_slow_gfx(amdgpu_device_handle device_handle)
-+{
-+	amdgpu_dispatch_hang_slow_helper(device_handle, AMDGPU_HW_IP_GFX);
-+}
-+
-+static void
-+amdgpu_dispatch_hang_slow_compute(amdgpu_device_handle device_handle)
-+{
-+	amdgpu_dispatch_hang_slow_helper(device_handle, AMDGPU_HW_IP_COMPUTE);
-+}
-+
-+igt_main
-+{
-+	amdgpu_device_handle device;
-+	struct amdgpu_gpu_info gpu_info = {0};
-+	int fd = -1;
-+	int r;
-+
-+	igt_fixture {
-+		uint32_t major, minor;
-+		int err;
-+
-+		fd = drm_open_driver(DRIVER_AMDGPU);
-+
-+		err = amdgpu_device_initialize(fd, &major, &minor, &device);
-+		igt_require(err == 0);
-+
-+		igt_info("Initialized amdgpu, driver version %d.%d\n",
-+			 major, minor);
-+
-+		r = amdgpu_query_gpu_info(device, &gpu_info);
-+		igt_assert_eq(r, 0);
-+		r = setup_amdgpu_ip_blocks( major, minor,  &gpu_info, device);
-+		igt_assert_eq(r, 0);
-+
-+	}
-+
-+	igt_subtest("dispatch_hang_slow_compute")
-+	amdgpu_dispatch_hang_slow_compute(device);
-+
-+	igt_subtest("dispatch_hang_slow_gfx")
-+	amdgpu_dispatch_hang_slow_gfx(device);
-+
-+	igt_subtest("amdgpu_draw_hang_slow_gfx")
-+	amdgpu_draw_hang_slow_gfx(device);
-+
-+
-+	igt_fixture {
-+		amdgpu_device_deinitialize(device);
-+		close(fd);
-+	}
-+}
-diff --git a/tests/amdgpu/meson.build b/tests/amdgpu/meson.build
-index 12c2ba99d..36b83ab1c 100644
---- a/tests/amdgpu/meson.build
-+++ b/tests/amdgpu/meson.build
-@@ -6,6 +6,7 @@ if libdrm_amdgpu.found()
- 			  'amd_assr',
- 			  'amd_basic',
- 			  'amd_bypass',
-+			  'amd_deadlock',
- 			  'amd_color',
- 			  'amd_cs_nop',
- 			  'amd_hotplug',
--- 
-2.25.1
+Pipeline status: FAILED.
+
+see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/662387 for the overview.
+
+test:ninja-test-mips has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/26705265):
+  Ok:                   22
+  Expected Fail:         3
+  Fail:                291
+  Unexpected Pass:       0
+  Skipped:               0
+  Timeout:               0
+  
+  Full log written to /builds/gfx-ci/igt-ci-tags/build/meson-logs/testlog.txt
+  section_end:1660245163:step_script
+  section_start:1660245163:upload_artifacts_on_failure
+  Uploading artifacts for failed job
+  Uploading artifacts...
+  build: found 1776 matching files and directories   
+  Uploading artifacts as "archive" to coordinator... 201 Created  id=26705265 responseStatus=201 Created token=kUp1H9jt
+  section_end:1660245173:upload_artifacts_on_failure
+  section_start:1660245173:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1660245174:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+
+== Logs ==
+
+For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/662387
