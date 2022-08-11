@@ -1,18 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from NAM11-BN8-obe.outbound.protection.outlook.com
- (mail-bn8nam11on2041.outbound.protection.outlook.com [40.107.236.41])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C43E3112E89
- for <igt-dev@lists.freedesktop.org>; Thu, 11 Aug 2022 18:41:44 +0000 (UTC)
+ (mail-bn8nam11on2040.outbound.protection.outlook.com [40.107.236.40])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 063DF11BC78
+ for <igt-dev@lists.freedesktop.org>; Thu, 11 Aug 2022 18:41:45 +0000 (UTC)
 From: <vitaly.prosyak@amd.com>
 To: <igt-dev@lists.freedesktop.org>
-Date: Thu, 11 Aug 2022 14:41:30 -0400
-Message-ID: <20220811184134.9565-3-vitaly.prosyak@amd.com>
+Date: Thu, 11 Aug 2022 14:41:29 -0400
+Message-ID: <20220811184134.9565-2-vitaly.prosyak@amd.com>
 In-Reply-To: <20220811184134.9565-1-vitaly.prosyak@amd.com>
 References: <20220811184134.9565-1-vitaly.prosyak@amd.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH 3/7] lib/amdgpu: added dispatch helper functions
+Subject: [igt-dev] [PATCH 2/7] lib/amdgpu: added binary shaders with
+ disassembled annotations
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,234 +28,416 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Vitaly Prosyak <vitaly.prosyak@amd.com>
 
- Refactor amdgpu_sync_dependency_test to use new
- approach for registers offset.
-
- Refactor amd_PM4.h
+ UMR was used to dissemble binary shaders.
+ Add shader type declarations enum cs_type
+ and enum ps_type.
 
 Signed-off-by: Vitaly Prosyak <vitaly.prosyak@amd.com>
 Acked-by: Christian König <christian.koenig@amd.com>
 ---
- lib/amdgpu/amd_PM4.h              |  16 +---
- lib/amdgpu/amd_dispatch_helpers.c | 146 ++++++++++++++++++++++++++++++
- lib/amdgpu/amd_dispatch_helpers.h |  37 ++++++++
- lib/meson.build                   |   1 +
- tests/amdgpu/amd_basic.c          |  18 ++--
- 5 files changed, 195 insertions(+), 23 deletions(-)
- create mode 100644 lib/amdgpu/amd_dispatch_helpers.c
- create mode 100644 lib/amdgpu/amd_dispatch_helpers.h
+ lib/amdgpu/amd_shaders.c         | 338 ++++++++++++++++++++++++++++++-
+ lib/amdgpu/amd_shaders.h         |  14 +-
+ lib/amdgpu/amd_shared_dispatch.h |  42 ++++
+ 3 files changed, 387 insertions(+), 7 deletions(-)
+ create mode 100644 lib/amdgpu/amd_shared_dispatch.h
 
-diff --git a/lib/amdgpu/amd_PM4.h b/lib/amdgpu/amd_PM4.h
-index dec70c1a4..0588b4258 100644
---- a/lib/amdgpu/amd_PM4.h
-+++ b/lib/amdgpu/amd_PM4.h
-@@ -49,6 +49,7 @@
- 			 (((op) & 0xFF) << 8) |				\
- 			 ((n) & 0x3FFF) << 16)
- 
-+#define PACKET3_COMPUTE(op, n) PACKET3(op, n) | (1 << 1)
- /* Packet 3 types */
- #define	PACKET3_NOP					0x10
- 
-@@ -137,7 +138,6 @@
- #              define PACKET3_DMA_DATA_CMD_DAIC    (1 << 29)
- #              define PACKET3_DMA_DATA_CMD_RAW_WAIT  (1 << 30)
- 
+diff --git a/lib/amdgpu/amd_shaders.c b/lib/amdgpu/amd_shaders.c
+index 31722744f..5505e504e 100644
+--- a/lib/amdgpu/amd_shaders.c
++++ b/lib/amdgpu/amd_shaders.c
+@@ -22,9 +22,9 @@
+  *
+  *
+  */
 -
- #define	PACKET3_ATOMIC_MEM				0x1E
- #define     TC_OP_ATOMIC_CMPSWAP_RTN_32          0x00000008
- #define     ATOMIC_MEM_COMMAND(x)               ((x) << 8)
-@@ -151,8 +151,6 @@
- #define     ATOMIC_MEM_ENGINESEL(x)             ((x) << 30)
-             /* 0 - micro_engine.*/
- 
++#include <amdgpu.h>
+ #include "amd_shaders.h"
 -
--
- #define PKT3_CONTEXT_CONTROL                   0x28
- #define     CONTEXT_CONTROL_LOAD_ENABLE(x)     (((unsigned)(x) & 0x1) << 31)
- #define     CONTEXT_CONTROL_LOAD_CE_RAM(x)     (((unsigned)(x) & 0x1) << 28)
-@@ -161,7 +159,6 @@
- #define PKT3_CLEAR_STATE			0x12
- 
- #define PKT3_SET_SH_REG				0x76
--#define	PACKET3_SET_SH_REG_START		0x00002c00
- 
- #define PKT3_SET_SH_REG_INDEX			0x9B
- 
-@@ -172,15 +169,4 @@
- #define PACKET3_SET_UCONFIG_REG			0x79
- #define PACKET3_DRAW_INDEX_AUTO			0x2D
- 
--/*TODO organize as iit is in MESA*/
--/* gfx 8 */
--#define mmCOMPUTE_PGM_LO			0x2e0c
--#define mmCOMPUTE_PGM_RSRC1			0x2e12
--#define mmCOMPUTE_TMPRING_SIZE			0x2e18
--#define mmCOMPUTE_USER_DATA_0			0x2e40
--#define mmCOMPUTE_USER_DATA_1			0x2e41
--#define mmCOMPUTE_RESOURCE_LIMITS		0x2e15
--#define mmCOMPUTE_NUM_THREAD_X			0x2e07
--
--
- #endif
-diff --git a/lib/amdgpu/amd_dispatch_helpers.c b/lib/amdgpu/amd_dispatch_helpers.c
-new file mode 100644
-index 000000000..3eddae968
---- /dev/null
-+++ b/lib/amdgpu/amd_dispatch_helpers.c
-@@ -0,0 +1,146 @@
-+/*
-+ * Copyright 2014 Advanced Micro Devices, Inc.
-+ * Copyright 2022 Advanced Micro Devices, Inc.
-+ *  *
-+ * Permission is hereby granted, free of charge, to any person obtaining a
-+ * copy of this software and associated documentation files (the "Software"),
-+ * to deal in the Software without restriction, including without limitation
-+ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
-+ * and/or sell copies of the Software, and to permit persons to whom the
-+ * Software is furnished to do so, subject to the following conditions:
-+ *
-+ * The above copyright notice and this permission notice shall be included in
-+ * all copies or substantial portions of the Software.
-+ *
-+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
-+ * THE COPYRIGHT HOLDER(S) OR AUTHOR(S) BE LIABLE FOR ANY CLAIM, DAMAGES OR
-+ * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
-+ * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-+ * OTHER DEALINGS IN THE SOFTWARE.
-+ *
-+ *
-+ */
-+
-+#include "amd_dispatch_helpers.h"
 +#include <amdgpu_drm.h>
-+#include "amd_PM4.h"
-+#include "amd_ip_blocks.h"
-+#include "igt.h"
+ 
+ #define CODE_OFFSET 512
+ #define DATA_OFFSET 1024
+@@ -33,19 +33,345 @@
+ 		      ((num & 0x0000ff00) << 8) | \
+ 		      ((num & 0x00ff0000) >> 8) | \
+ 		      ((num & 0x000000ff) << 24))
+-
+-
+-static  uint32_t shader_bin[] = {
++/**
++ *
++ *s_mov_b32 s2, 0
++ * s_cmp_gt_u32 s2, 0x98967f
++ * ;;
++ * s_cbranch_scc1 4
++ * s_add_i32 s2, s2, 1
++ * s_cmp_gt_u32 s2, 0x98967f
++ * ;;
++ * s_cbranch_scc0 65532
++ * s_mov_b32 s3, 0xf000
++ * ;;
++ * s_mov_b32 s2, -1
++ * v_mov_b32_e32 v0, 42
++ * buffer_store_dword v0, off, s[0:3], 0
++ * ;;
++ * s_endpgm
++ */
++static  const
++uint32_t shader_bin[] = {
+ 	SWAP_32(0x800082be), SWAP_32(0x02ff08bf), SWAP_32(0x7f969800), SWAP_32(0x040085bf),
+ 	SWAP_32(0x02810281), SWAP_32(0x02ff08bf), SWAP_32(0x7f969800), SWAP_32(0xfcff84bf),
+ 	SWAP_32(0xff0083be), SWAP_32(0x00f00000), SWAP_32(0xc10082be), SWAP_32(0xaa02007e),
+ 	SWAP_32(0x000070e0), SWAP_32(0x00000080), SWAP_32(0x000081bf)
+ };
+ 
+-const uint32_t * get_shader_bin(uint32_t *size_bytes, uint32_t *code_offset, uint32_t *data_offset)
++const uint32_t *
++get_shader_bin(uint32_t *size_bytes, uint32_t *code_offset, uint32_t *data_offset)
+ {
+ 	*size_bytes = sizeof(shader_bin);
+ 	*code_offset =  CODE_OFFSET;
+ 	*data_offset = DATA_OFFSET;
+ 	return shader_bin;
+ }
 +
-+ int amdgpu_dispatch_init(uint32_t ip_type, struct amdgpu_cmd_base * base, uint32_t version)
++struct amdgpu_test_shader {
++	uint32_t *shader;
++	uint32_t header_length;
++	uint32_t body_length;
++	uint32_t foot_length;
++};
++
++int amdgpu_dispatch_load_cs_shader_hang_slow(uint32_t *ptr, uint32_t family_id)
 +{
-+	int i = base->cdw;
-+
-+	/* Write context control and load shadowing register if necessary */
-+	if (ip_type == AMDGPU_HW_IP_GFX) {
-+		base->emit(base, PACKET3(PKT3_CONTEXT_CONTROL, 1));
-+		base->emit(base, 0x80000000);
-+		base->emit(base, 0x80000000);
-+	}
-+
-+	/* Issue commands to set default compute state. */
-+	/* clear mmCOMPUTE_START_Z - mmCOMPUTE_START_X */
-+	base->emit(base, PACKET3_COMPUTE(PKT3_SET_SH_REG, 3));
-+	base->emit(base, 0x204);
-+	base->emit(base, 0);
-+	base->emit(base, 0);
-+	base->emit(base, 0);
-+
-+	/* clear mmCOMPUTE_TMPRING_SIZE */
-+	base->emit(base, PACKET3_COMPUTE(PKT3_SET_SH_REG, 1));
-+	base->emit(base, 0x218);
-+	base->emit(base, 0);
-+	if (version == 10) {
-+		/* mmCOMPUTE_SHADER_CHKSUM */
-+		base->emit(base, PACKET3_COMPUTE(PKT3_SET_SH_REG, 1));
-+		base->emit(base, 0x22a);
-+		base->emit(base, 0);
-+		/* mmCOMPUTE_REQ_CTRL */
-+		base->emit(base, PACKET3_COMPUTE(PKT3_SET_SH_REG, 6));
-+		base->emit(base, 0x222);
-+		base->emit(base, 0x222);
-+		base->emit(base, 0x222);
-+		base->emit(base, 0x222);
-+		base->emit(base, 0x222);
-+		base->emit(base, 0x222);
-+		base->emit(base, 0x222);
-+		/* mmCP_COHER_START_DELAY */
-+		base->emit(base, PACKET3(PACKET3_SET_UCONFIG_REG, 1));
-+		base->emit(base, 0x7b);
-+		base->emit(base, 0x20);
-+	}
-+
-+	return base->cdw - i;
-+}
-+
-+int amdgpu_dispatch_write_cumask(struct amdgpu_cmd_base * base, uint32_t version)
-+ {
-+ 	int offset_prev = base->cdw;
-+ 	if (version == 9) {
-+ 	/*  Issue commands to set cu mask used in current dispatch */
-+ 	/* set mmCOMPUTE_STATIC_THREAD_MGMT_SE1 - mmCOMPUTE_STATIC_THREAD_MGMT_SE0 */
-+ 		base->emit(base, PACKET3_COMPUTE(PKT3_SET_SH_REG, 2));
-+ 		base->emit(base, 0x216);
-+ 		base->emit(base, 0xffffffff);
-+ 		base->emit(base, 0xffffffff);
-+ 	} else if(version == 10) {
-+		/* set mmCOMPUTE_STATIC_THREAD_MGMT_SE1 - mmCOMPUTE_STATIC_THREAD_MGMT_SE0 */
-+ 		base->emit(base, PACKET3_COMPUTE(PKT3_SET_SH_REG_INDEX, 2));
-+ 		base->emit(base, 0x30000216);
-+ 		base->emit(base, 0xffffffff);
-+ 		base->emit(base, 0xffffffff);
-+		/* set mmCOMPUTE_STATIC_THREAD_MGMT_SE3 - mmCOMPUTE_STATIC_THREAD_MGMT_SE2 */
-+ 		base->emit(base, PACKET3_COMPUTE(PKT3_SET_SH_REG_INDEX, 2));
-+ 		base->emit(base, 0x30000219);
-+ 		base->emit(base, 0xffffffff);
-+ 		base->emit(base, 0xffffffff);
-+	}
-+
-+
-+ 	/* set mmCOMPUTE_STATIC_THREAD_MGMT_SE3 - mmCOMPUTE_STATIC_THREAD_MGMT_SE2 */
-+ 	base->emit(base, PACKET3_COMPUTE(PKT3_SET_SH_REG, 2));
-+ 	base->emit(base, 0x219);
-+ 	base->emit(base, 0xffffffff);
-+ 	base->emit(base, 0xffffffff);
-+
-+ 	return base->cdw - offset_prev;
-+ }
-+
-+
-+int amdgpu_dispatch_write2hw(struct amdgpu_cmd_base * base, uint64_t shader_addr, uint32_t version)
-+{
-+	static const uint32_t bufferclear_cs_shader_registers_gfx9[][2] = {
-+		{0x2e12, 0x000C0041},	//{ mmCOMPUTE_PGM_RSRC1,	0x000C0041 },
-+		{0x2e13, 0x00000090},	//{ mmCOMPUTE_PGM_RSRC2,	0x00000090 },
-+		{0x2e07, 0x00000040},	//{ mmCOMPUTE_NUM_THREAD_X,	0x00000040 },
-+		{0x2e08, 0x00000001},	//{ mmCOMPUTE_NUM_THREAD_Y,	0x00000001 },
-+		{0x2e09, 0x00000001},	//{ mmCOMPUTE_NUM_THREAD_Z,	0x00000001 }
++	/**
++	 * v_sub_f32_e32 v0, s8, v134
++	 * buffer_load_format_xyzw v[1:4], v0, s[0:3], 0 idxen
++	 * ;;
++	 * s_waitcnt vmcnt(0)
++	 * buffer_store_format_xyzw v[1:4], v0, s[4:7], 0 idxen
++	 * ;;
++	 * s_endpgm
++	 */
++	unsigned int memcpy_cs_hang_slow_ai_codes[] = {
++	    0xd1fd0000, 0x04010c08, 0xe00c2000, 0x80000100,
++	    0xbf8c0f70, 0xe01c2000, 0x80010100, 0xbf810000
 +	};
 +
-+	static const uint32_t bufferclear_cs_shader_registers_num_gfx9 = ARRAY_SIZE(bufferclear_cs_shader_registers_gfx9);
-+	int offset_prev = base->cdw;
-+	int j;
++	struct amdgpu_test_shader memcpy_cs_hang_slow_ai = {
++		memcpy_cs_hang_slow_ai_codes,
++		4,
++		3,
++		1
++	};
++	/**
++	 * s_lshl_b32 s0, s12, 6
++	 * v_add_u32_e32 v0, vcc, s0, v0
++	 * buffer_load_format_xyzw v[1:4], v0, s[4:7], 0 idxen
++	 * ;;
++	 * s_waitcnt vmcnt(0)
++	 * buffer_store_format_xyzw v[1:4], v0, s[8:11], 0 idxen
++	 * ;;
++	 * s_endpgm
++	 */
++	unsigned int memcpy_cs_hang_slow_rv_codes[] = {
++	    0x8e00860c, 0x32000000, 0xe00c2000, 0x80010100,
++	    0xbf8c0f70, 0xe01c2000, 0x80020100, 0xbf810000
++	};
 +
-+	/* Writes shader state to HW */
-+	/* set mmCOMPUTE_PGM_HI - mmCOMPUTE_PGM_LO */
-+	base->emit(base, PACKET3_COMPUTE(PKT3_SET_SH_REG, 2));
-+	base->emit(base, 0x20c);
-+	base->emit(base, shader_addr >> 8);
-+	base->emit(base, shader_addr >> 40);
-+	/* write sh regs */
-+	for (j = 0; j < bufferclear_cs_shader_registers_num_gfx9; j++) {
-+		base->emit(base, PACKET3_COMPUTE(PKT3_SET_SH_REG, 1));
-+		/* - Gfx9ShRegBase */
-+		base->emit(base,bufferclear_cs_shader_registers_gfx9[j][0] - 0x2c00);
-+		base->emit(base,bufferclear_cs_shader_registers_gfx9[j][1]);
++	struct amdgpu_test_shader memcpy_cs_hang_slow_rv = {
++		memcpy_cs_hang_slow_rv_codes,
++		4,
++		3,
++		1
++	};
++	/**
++	 * v_interp_mov_f32_e32 v209, p10, attr0.x
++	 * v_sub_f32_e32 v0, s8, v134
++	 * buffer_load_format_xyzw v[1:4], v0, s[0:3], 0 idxen
++	 * ;;
++	 * s_waitcnt vmcnt(0)
++	 * buffer_store_format_xyzw v[1:4], v0, s[4:7], 0 idxen
++	 * ;;
++	 * s_endpgm
++	 */
++	unsigned int memcpy_cs_hang_slow_nv_codes[] = {
++	    0xd7460000, 0x04010c08, 0xe00c2000, 0x80000100,
++	    0xbf8c0f70, 0xe01ca000, 0x80010100, 0xbf810000
++	};
++
++	struct amdgpu_test_shader memcpy_cs_hang_slow_nv = {
++	        memcpy_cs_hang_slow_nv_codes,
++	        4,
++	        3,
++	        1
++	};
++	struct amdgpu_test_shader *shader;
++	int i, loop = 0x10000;
++
++	switch (family_id) {
++		case AMDGPU_FAMILY_AI:
++			shader = &memcpy_cs_hang_slow_ai;
++			break;
++		case AMDGPU_FAMILY_RV:
++			shader = &memcpy_cs_hang_slow_rv;
++			break;
++		case AMDGPU_FAMILY_NV:
++			shader = &memcpy_cs_hang_slow_nv;
++			break;
++		default:
++			return -1;
 +	}
-+	if (version == 10) {
-+		/* mmCOMPUTE_PGM_RSRC3 */
-+		base->emit(base, PACKET3_COMPUTE(PKT3_SET_SH_REG, 1));
-+		base->emit(base,0x228);
-+		base->emit(base, 0 );
-+	}
-+	return base->cdw - offset_prev;
++
++	memcpy(ptr, shader->shader, shader->header_length * sizeof(uint32_t));
++
++	for (i = 0; i < loop; i++)
++		memcpy(ptr + shader->header_length + shader->body_length * i,
++			shader->shader + shader->header_length,
++			shader->body_length * sizeof(uint32_t));
++
++	memcpy(ptr + shader->header_length + shader->body_length * loop,
++		shader->shader + shader->header_length + shader->body_length,
++		shader->foot_length * sizeof(uint32_t));
++
++	return 0;
 +}
-diff --git a/lib/amdgpu/amd_dispatch_helpers.h b/lib/amdgpu/amd_dispatch_helpers.h
++
++int  amdgpu_dispatch_load_cs_shader(uint8_t *ptr, int cs_type, uint32_t version)
++{
++	/**
++	 * v_and_b32_e32 v0, 0x3ff, v0
++	 * ;;
++	 * ...
++	 * v_sub_f32_e32 v0, s8, v134
++	 * v_mov_b32_e32 v1, 0
++	 * v_mov_b32_e32 v2, s4
++	 * mov_b32_e32 v3, s5
++	 * v_mov_b32_e32 v4, s6
++	 * v_mov_b32_e32 v5, s7
++	 * buffer_store_format_xyzw v[2:5], v0, s[0:3], 0 idxen
++	 * ;;
++	 * s_waitcnt vmcnt(0) expcnt(0) lgkmcnt(0)
++	 * s_endpgm
++	 */
++	static const uint32_t bufferclear_cs_shader_gfx9[] = {
++	    0x260000ff, 0x000003ff, 0xd1fd0000, 0x04010c08,
++	    0x7e020280, 0x7e040204, 0x7e060205, 0x7e080206,
++	    0x7e0a0207, 0xe01c2000, 0x80000200, 0xbf8c0000,
++	    0xbf810000
++	};
++
++	/**
++	 *
++	 * v_and_b32_e32 v0, 0x3ff, v0
++	 * ;;
++	 * ...
++	 * v_sub_f32_e32 v0, s8, v134
++	 * v_mov_b32_e32 v1, 0
++	 * buffer_load_format_xyzw v[2:5], v0, s[0:3], 0 idxen
++	 * ;;
++	 * s_waitcnt vmcnt(0)
++	 * buffer_store_format_xyzw v[2:5], v0, s[4:7], 0 idxen
++	 * ;;
++	 * s_endpgm
++	 */
++	static const uint32_t buffercopy_cs_shader_gfx9[] = {
++	    0x260000ff, 0x000003ff, 0xd1fd0000, 0x04010c08,
++	    0x7e020280, 0xe00c2000, 0x80000200, 0xbf8c0f70,
++	    0xe01c2000, 0x80010200, 0xbf810000
++	};
++
++	/**
++	 * ...
++	 * s_bcnt0_i32_b32 exec_lo, exec_lo
++	 * ...
++	 * ...
++	 * s_dcache_inv
++	 * ;;
++	 * ...
++	 * ...
++	 * ...
++	 * s_waitcnt lgkmcnt(0)
++	 * image_sample v[0:3], v2, s[4:11], s[0:3] dmask:0xf
++	 * ;;
++	 * s_not_b32 exec_lo, s12
++	 * s_waitcnt vmcnt(0)
++	 * s_nop 0
++	 * s_nop 0
++	 * ...
++	 * v_add_f32_e32 v129, v0, v0
++	 *s_endpgm
++	 */
++	static const uint32_t memcpy_ps_hang[] = {
++			0xFFFFFFFF, 0xBEFE0A7E, 0xBEFC0304, 0xC0C20100,
++			0xC0800300, 0xC8080000, 0xC80C0100, 0xC8090001,
++			0xC80D0101, 0xBF8C007F, 0xF0800F00, 0x00010002,
++			0xBEFE040C, 0xBF8C0F70, 0xBF800000, 0xBF800000,
++			0xF800180F, 0x03020100, 0xBF810000
++	};
++
++	/**
++	 * v_interp_mov_f32_e32 v209, invalid_param_4, attr0.x
++	 * v_sub_f32_e32 v0, s8, v134
++	 * v_mov_b32_e32 v0, s4
++	 * v_mov_b32_e32 v1, s5
++	 * v_mov_b32_e32 v2, s6
++	 * v_mov_b32_e32 v3, s7
++	 * buffer_store_format_xyzw v[0:3], v4, s[0:3], 0 idxen
++	 * ;;
++	  *s_endpgm
++	  */
++	static const uint32_t bufferclear_cs_shader_gfx10[] = {
++		0xD7460004, 0x04010C08, 0x7E000204, 0x7E020205,
++		0x7E040206, 0x7E060207, 0xE01C2000, 0x80000004,
++		0xBF810000
++	};
++
++	/**
++	 * v_interp_mov_f32_e32 v209, p20, attr0.x
++	 * v_sub_f32_e32 v0, s8, v134
++	 * buffer_load_format_xyzw v[2:5], v1, s[0:3], 0 idxen
++	 * ;;
++	 * s_waitcnt vmcnt(0)
++	 * buffer_store_format_xyzw v[2:5], v1, s[4:7], 0 idxen
++	 * ;;
++	 * s_endpgm
++	 */
++	static const uint32_t buffercopy_cs_shader_gfx10[] = {
++		0xD7460001, 0x04010C08, 0xE00C2000, 0x80000201,
++		0xBF8C3F70, 0xE01C2000, 0x80010201, 0xBF810000
++	};
++
++	uint32_t shader_size;
++	const uint32_t *shader;
++
++	switch (cs_type) {
++		case CS_BUFFERCLEAR:
++			if (version == 9) {
++				shader = bufferclear_cs_shader_gfx9;
++				shader_size = sizeof(bufferclear_cs_shader_gfx9);
++			} else if (version == 10) {
++				shader = bufferclear_cs_shader_gfx10;
++				shader_size = sizeof(bufferclear_cs_shader_gfx10);
++			}
++			break;
++		case CS_BUFFERCOPY:
++			if (version == 9) {
++				shader = buffercopy_cs_shader_gfx9;
++				shader_size = sizeof(buffercopy_cs_shader_gfx9);
++			} else if (version == 10) {
++				shader = buffercopy_cs_shader_gfx10;
++				shader_size = sizeof(buffercopy_cs_shader_gfx10);
++			}
++			break;
++		case CS_HANG:
++			shader = memcpy_ps_hang;
++			shader_size = sizeof(memcpy_ps_hang);
++			break;
++		default:
++			return -1;
++	}
++
++	memcpy(ptr, shader, shader_size);
++	return 0;
++}
++
++
++int
++amdgpu_draw_load_ps_shader_hang_slow(uint32_t *ptr, int family)
++{
++	/**
++	 * s_mov_b32 m0, s12
++	 * s_mov_b64 s[14:15], exec
++	 * s_wqm_b64 exec, exec
++	 * v_interp_p1_f32_e32 v2, v0, attr0.x
++	 * v_interp_p2_f32_e32 v2, v1, attr0.x
++	 * v_interp_p1_f32_e32 v3, v0, attr0.y
++	 * v_interp_p2_f32_e32 v3, v1, attr0.y
++	 * image_sample v[0:3], v2, s[0:7], s[8:11] dmask:0xf
++	 * ;;
++	 * s_mov_b64 exec, s[14:15]
++	 * s_waitcnt vmcnt(0)
++	 * s_nop 0
++	 * s_nop 0
++	 * s_nop 0
++	 * s_nop 0
++	 * exp mrt0 v0, v1, v2, v3 done vm
++	 * ;;
++	 * s_endpgm
++	 */
++	unsigned int memcpy_ps_hang_slow_ai_codes[] = {
++		0xbefc000c, 0xbe8e017e, 0xbefe077e, 0xd4080000,
++		0xd4090001, 0xd40c0100, 0xd40d0101, 0xf0800f00,
++		0x00400002, 0xbefe010e, 0xbf8c0f70, 0xbf800000,
++		0xbf800000, 0xbf800000, 0xbf800000, 0xc400180f,
++		0x03020100, 0xbf810000
++	};
++
++	struct amdgpu_test_shader memcpy_ps_hang_slow_ai = {
++		memcpy_ps_hang_slow_ai_codes,
++		7,
++		2,
++		9
++	};
++
++	struct amdgpu_test_shader *shader;
++	int i, loop = 0x40000;
++
++	switch (family) {
++		case AMDGPU_FAMILY_AI:
++		case AMDGPU_FAMILY_RV:
++		case AMDGPU_FAMILY_NV: /* TODO check for correctness */
++		shader = &memcpy_ps_hang_slow_ai;
++			break;
++		default:
++			return -1;
++			break;
++	}
++
++	memcpy(ptr, shader->shader, shader->header_length * sizeof(uint32_t));
++
++	for (i = 0; i < loop; i++)
++		memcpy(ptr + shader->header_length + shader->body_length * i,
++			shader->shader + shader->header_length,
++			shader->body_length * sizeof(uint32_t));
++
++	memcpy(ptr + shader->header_length + shader->body_length * loop,
++		shader->shader + shader->header_length + shader->body_length,
++		shader->foot_length * sizeof(uint32_t));
++
++	return 0;
++}
+diff --git a/lib/amdgpu/amd_shaders.h b/lib/amdgpu/amd_shaders.h
+index 1abb23ac3..22fc474fc 100644
+--- a/lib/amdgpu/amd_shaders.h
++++ b/lib/amdgpu/amd_shaders.h
+@@ -26,7 +26,19 @@
+ #define AMD_SHADERS_H
+ 
+ #include "drmtest.h"
++#include <amdgpu.h>
++#include "amd_shared_dispatch.h"
+ 
+-const uint32_t * get_shader_bin(uint32_t *size_bytes, uint32_t *code_offset, uint32_t *data_offset);
++const uint32_t *
++get_shader_bin(uint32_t *size_bytes, uint32_t *code_offset, uint32_t *data_offset);
++
++int
++amdgpu_dispatch_load_cs_shader_hang_slow(uint32_t *ptr, uint32_t family_id);
++
++int
++amdgpu_dispatch_load_cs_shader(uint8_t *ptr, int cs_type, uint32_t version);
++
++int
++amdgpu_draw_load_ps_shader_hang_slow(uint32_t *ptr, int family);
+ 
+ #endif
+diff --git a/lib/amdgpu/amd_shared_dispatch.h b/lib/amdgpu/amd_shared_dispatch.h
 new file mode 100644
-index 000000000..bea0c4248
+index 000000000..0dc5792f9
 --- /dev/null
-+++ b/lib/amdgpu/amd_dispatch_helpers.h
-@@ -0,0 +1,37 @@
++++ b/lib/amdgpu/amd_shared_dispatch.h
+@@ -0,0 +1,42 @@
 +/*
 + * Copyright 2022 Advanced Micro Devices, Inc.
 + *
@@ -278,103 +461,24 @@ index 000000000..bea0c4248
 + *
 + *
 + */
-+#ifndef AMD_DISPATCH_HELPERS_H
-+#define AMD_DISPATCH_HELPERS_H
++#ifndef AMD_SHARED_DISPATCH_H
++#define AMD_SHARED_DISPATCH_H
 +
-+#include <amdgpu.h>
 +
-+struct amdgpu_cmd_base;
++enum cs_type {
++	CS_BUFFERCLEAR,
++	CS_BUFFERCOPY,
++	CS_HANG,
++	CS_HANG_SLOW
++};
 +
-+int amdgpu_dispatch_init( uint32_t ip_type,struct amdgpu_cmd_base *base_cmd, uint32_t version);
-+
-+int amdgpu_dispatch_write_cumask(struct amdgpu_cmd_base *base_cmd, uint32_t version);
-+
-+int amdgpu_dispatch_write2hw(struct amdgpu_cmd_base *base_cmd, uint64_t shader_addr, uint32_t version);
++enum ps_type {
++	PS_CONST,
++	PS_TEX,
++	PS_HANG,
++	PS_HANG_SLOW
++};
 +
 +#endif
-diff --git a/lib/meson.build b/lib/meson.build
-index 7339bf98b..956c73095 100644
---- a/lib/meson.build
-+++ b/lib/meson.build
-@@ -135,6 +135,7 @@ if libdrm_amdgpu.found()
- 		'amdgpu/amd_shaders.c',
- 		'amdgpu/amd_gfx_v8_0.c',
- 		'amdgpu/amd_gfx_v9_0.c',
-+		'amdgpu/amd_dispatch_helpers.c'
- 	]
- endif
- 
-diff --git a/tests/amdgpu/amd_basic.c b/tests/amdgpu/amd_basic.c
-index 82964016a..68a8ac9de 100644
---- a/tests/amdgpu/amd_basic.c
-+++ b/tests/amdgpu/amd_basic.c
-@@ -477,6 +477,7 @@ amdgpu_sync_dependency_test(amdgpu_device_handle device_handle)
- 	const uint32_t *shader;
- 
- 	struct amdgpu_cmd_base * base = get_cmd_base();
-+	const struct amdgpu_ip_block_version * ip_block = get_ip_block(device_handle, AMD_IP_GFX);
- 
- 	r = amdgpu_cs_ctx_create(device_handle, &context_handle[0]);
- 	igt_assert_eq(r, 0);
-@@ -499,6 +500,7 @@ amdgpu_sync_dependency_test(amdgpu_device_handle device_handle)
- 	/* assign cmd buffer */
- 	base->attach_buf(base, ib_result_cpu, const_size);
- 
-+
- 	base->emit(base, PACKET3(PKT3_CONTEXT_CONTROL, 1));
- 	base->emit(base, 0x80000000);
- 	base->emit(base, 0x80000000);
-@@ -509,31 +511,31 @@ amdgpu_sync_dependency_test(amdgpu_device_handle device_handle)
- 	/* Program compute regs */
- 	/* TODO ASIC registers do based on predefined offsets */
- 	base->emit(base, PACKET3(PKT3_SET_SH_REG, 2));
--	base->emit(base, mmCOMPUTE_PGM_LO - PACKET3_SET_SH_REG_START);
-+	base->emit(base, ip_block->funcs->get_reg_offset(COMPUTE_PGM_LO));
- 	base->emit(base, (ib_result_mc_address + code_offset * 4) >> 8);
- 	base->emit(base, (ib_result_mc_address + code_offset * 4) >> 40);
- 
- 	base->emit(base,PACKET3(PKT3_SET_SH_REG, 2));
--	base->emit(base, mmCOMPUTE_PGM_RSRC1 - PACKET3_SET_SH_REG_START);
-+	base->emit(base, ip_block->funcs->get_reg_offset(COMPUTE_PGM_RSRC1));
- 
- 	base->emit(base, 0x002c0040);
- 	base->emit(base, 0x00000010);
- 
- 	base->emit(base, PACKET3(PKT3_SET_SH_REG, 1));
--	base->emit(base, mmCOMPUTE_TMPRING_SIZE - PACKET3_SET_SH_REG_START);
-+	base->emit(base, ip_block->funcs->get_reg_offset(COMPUTE_TMPRING_SIZE));
- 	base->emit(base, 0x00000100);
- 
- 	base->emit(base, PACKET3(PKT3_SET_SH_REG, 2));
--	base->emit(base, mmCOMPUTE_USER_DATA_0 - PACKET3_SET_SH_REG_START);
-+	base->emit(base, ip_block->funcs->get_reg_offset(COMPUTE_USER_DATA_0));
- 	base->emit(base, 0xffffffff & (ib_result_mc_address + data_offset * 4));
- 	base->emit(base, (0xffffffff00000000 & (ib_result_mc_address + data_offset * 4)) >> 32);
- 
- 	base->emit(base, PACKET3(PKT3_SET_SH_REG, 1));
--	base->emit(base, mmCOMPUTE_RESOURCE_LIMITS - PACKET3_SET_SH_REG_START);
-+	base->emit(base, ip_block->funcs->get_reg_offset(COMPUTE_RESOURCE_LIMITS));
- 	base->emit(base, 0);
- 
- 	base->emit(base, PACKET3(PKT3_SET_SH_REG, 3));
--	base->emit(base, mmCOMPUTE_NUM_THREAD_X - PACKET3_SET_SH_REG_START);
-+	base->emit(base, ip_block->funcs->get_reg_offset(COMPUTE_NUM_THREAD_X));
- 	base->emit(base, 1);
- 	base->emit(base, 1);
- 	base->emit(base, 1);
-@@ -546,11 +548,11 @@ amdgpu_sync_dependency_test(amdgpu_device_handle device_handle)
- 	base->emit(base, 0x00000045);
- 	base->emit_aligned(base, 7, GFX_COMPUTE_NOP);
- 
--	base->emit_buf(base, shader, code_offset,size_bytes);
-+	memcpy(base->buf + code_offset , shader, size_bytes);
- 
- 	memset(&ib_info, 0, sizeof(struct amdgpu_cs_ib_info));
- 	ib_info.ib_mc_address = ib_result_mc_address;
--	ib_info.size = base->cdw;;
-+	ib_info.size = base->cdw;
- 
- 	memset(&ibs_request, 0, sizeof(struct amdgpu_cs_request));
- 	ibs_request.ip_type = AMDGPU_HW_IP_GFX;
 -- 
 2.25.1
