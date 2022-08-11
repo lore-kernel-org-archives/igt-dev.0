@@ -1,21 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4C08C9B9FB
- for <igt-dev@lists.freedesktop.org>; Thu, 11 Aug 2022 08:01:50 +0000 (UTC)
-Date: Thu, 11 Aug 2022 10:01:45 +0200
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: Petri Latvala <petri.latvala@intel.com>
-Message-ID: <YvS3acwtaeMPrHe9@zkempczy-mobl2>
-References: <20220810081949.17706-1-zbigniew.kempczynski@intel.com>
- <YvOm0ASUb2cN+EcO@platvala-desk.ger.corp.intel.com>
- <YvSx/FLfmokc3sYb@zkempczy-mobl2>
- <YvS02pYIx4f6KJ+Y@platvala-desk.ger.corp.intel.com>
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8B492A7E54
+ for <igt-dev@lists.freedesktop.org>; Thu, 11 Aug 2022 09:16:06 +0000 (UTC)
+Date: Thu, 11 Aug 2022 12:14:54 +0300
+From: Petri Latvala <petri.latvala@intel.com>
+To: Ryszard Knop <ryszard.knop@intel.com>
+Message-ID: <YvTIjlCyxzJft4PF@platvala-desk.ger.corp.intel.com>
+References: <20220810135530.992455-1-ryszard.knop@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <YvS02pYIx4f6KJ+Y@platvala-desk.ger.corp.intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t] lib/igt_device_scan: Rescan pci
- properties if PCI_SLOT_NAME wasn't found
+In-Reply-To: <20220810135530.992455-1-ryszard.knop@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 0/3] Use Jansson instead of json-c in
+ igt_runner
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,31 +20,29 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org
+Cc: Development mailing list for IGT GPU Tools <igt-dev@lists.freedesktop.org>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Thu, Aug 11, 2022 at 10:50:50AM +0300, Petri Latvala wrote:
-
-<cut>
-
-> > > > -		dump_props_and_attrs(dev);
-> > > > +		if (is_pci_subsystem(dev))
-> > > > +			dump_props_and_attrs(dev);
-> > 
-> > This incidentally left in patch I've sent (I just narrowed debugging
-> > to pci subsystem). Do you want to resend or I can just go back with 
-> > previous code and merge?
+On Wed, Aug 10, 2022 at 03:55:27PM +0200, Ryszard Knop wrote:
+> The json-c library has a hard limit of 2GB of its output. While normally
+> it's not a problem, some very verbose edge cases make the results.json
+> output go past that limit.
 > 
-> Up to you. Breakage potential very small I'd say.
-
-I decided to merge, nothing wrong should happen.
-
---
-Zbigniew
-
+> This series converts igt_runner's json-c usage to Jansson.
 > 
 > 
-> -- 
-> Petri Latvala
+
+I haven't been able to review this thoroughly yet, but an initial
+comment can be made:
+
+Absolute blockers for this series are having gitlab CI correctly set
+up so it builds there (should be just a matter of adding the packages
+to the dockerfiles), and having the required libs installed in our
+CI. Latter we're able to see fully done by having a successful
+premerge on this series.
+
+
+-- 
+Petri Latvala
