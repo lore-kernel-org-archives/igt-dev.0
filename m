@@ -1,21 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 658C48CF3D
- for <igt-dev@lists.freedesktop.org>; Fri, 12 Aug 2022 12:52:35 +0000 (UTC)
-Date: Fri, 12 Aug 2022 15:49:13 +0300
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B4FA2B1D36
+ for <igt-dev@lists.freedesktop.org>; Fri, 12 Aug 2022 12:54:21 +0000 (UTC)
+Date: Fri, 12 Aug 2022 15:53:10 +0300
 From: Petri Latvala <petri.latvala@intel.com>
-To: Adrian Larumbe <adrian.larumbe@collabora.com>
-Message-ID: <YvZMSYDfu0TnzTyT@platvala-desk.ger.corp.intel.com>
-References: <20220516205000.2960491-1-adrian.larumbe@collabora.com>
- <20220516205000.2960491-2-adrian.larumbe@collabora.com>
- <Yuo/ZbZwC01pFDw1@platvala-desk.ger.corp.intel.com>
- <20220809155645.ilrafxgdpyg5c4j7@sobremesa>
+To: Jim Shargo <jshargo@chromium.org>
+Message-ID: <YvZNNsz6RspU1vZl@platvala-desk.ger.corp.intel.com>
+References: <YuJA8zCW9wFQh5M6@platvala-desk.ger.corp.intel.com>
+ <20220728175736.1893691-1-jshargo@chromium.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20220809155645.ilrafxgdpyg5c4j7@sobremesa>
-Subject: Re: [igt-dev] [PATCH i-g-t v2 2/2] i915/gem_ctx_isolation:: change
- semantics of ctx isolation uAPI
+In-Reply-To: <20220728175736.1893691-1-jshargo@chromium.org>
+Subject: Re: [igt-dev] [PATCH i-g-t v3] tooling: Add linux's .clang-format
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,202 +20,263 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org, bob.beckett@collabora.com, daniel@ffwll.ch,
- Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+Cc: Development mailing list for IGT GPU Tools <igt-dev@lists.freedesktop.org>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Tue, Aug 09, 2022 at 04:56:45PM +0100, Adrian Larumbe wrote:
-> On 03.08.2022 12:27, Petri Latvala wrote:
-> > On Mon, May 16, 2022 at 09:50:00PM +0100, Adrian Larumbe wrote:
-> > > ioctl I915_PARAM_HAS_CONTEXT_ISOLATION param is meant to report whether all
-> > > the engines in the system support context isolation, but the way the return
-> > > value was being used did not respect the contract on the uAPI.
-> > > 
-> > > Skip all engine tests for which context isolation is not supported. Also skip
-> > > tests that involve an engine reset if both RCS and CCS engines are present in
-> > > the system. This is because they belong to the same reset domain.
-> > > 
-> > > Signed-Off-By: Adrian Larumbe <adrian.larumbe@collabora.com>
-> > > ---
-> > >  include/drm-uapi/i915_drm.h    |   6 +-
-> > >  tests/i915/gem_ctx_isolation.c | 101 +++++++++++++++++++++++----------
-> > >  2 files changed, 72 insertions(+), 35 deletions(-)
-> > > 
-> > > diff --git a/include/drm-uapi/i915_drm.h b/include/drm-uapi/i915_drm.h
-> > > index f0067d26123e..327465ac3eb1 100644
-> > > --- a/include/drm-uapi/i915_drm.h
-> > > +++ b/include/drm-uapi/i915_drm.h
-> > > @@ -678,11 +678,7 @@ typedef struct drm_i915_irq_wait {
-> > >   * rather than default HW values. If true, it also ensures (insofar as HW
-> > >   * supports) that all state set by this context will not leak to any other
-> > >   * context.
-> > > - *
-> > > - * As not every engine across every gen support contexts, the returned
-> > > - * value reports the support of context isolation for individual engines by
-> > > - * returning a bitmask of each engine class set to true if that class supports
-> > > - * isolation.
-> > > + * 
-> > >   */
-> > 
-> > Is this chunk here accidentally? Modifications to files in
-> > include/drm-uapi/* should only be done by directly copying from the
-> > kernel.
+On Thu, Jul 28, 2022 at 01:57:36PM -0400, Jim Shargo wrote:
+> As I was authoring my first patchset for IGT, I found myself fighting
+> the tooling a bit to get everything right. I had to add a bunch of extra
+> command line args to use my linux checkout's formatting rules to get the
+> style right.
 > 
-> I've handled that already in a parallel kernel patch, you can browse it at
-> https://lists.freedesktop.org/archives/intel-gfx/2022-July/302531.html
+> I grabbed this from a recent checkout of torvald's repo.
 > 
-> > >  #define I915_PARAM_HAS_CONTEXT_ISOLATION 50
-> > >  
-> > > diff --git a/tests/i915/gem_ctx_isolation.c b/tests/i915/gem_ctx_isolation.c
-> > > index 4233ea5784dc..ddfae493bc2c 100644
-> > > --- a/tests/i915/gem_ctx_isolation.c
-> > > +++ b/tests/i915/gem_ctx_isolation.c
-> > > @@ -45,6 +45,7 @@ enum {
-> > >  	VCS2 = ENGINE(I915_ENGINE_CLASS_VIDEO, 2),
-> > >  	VCS3 = ENGINE(I915_ENGINE_CLASS_VIDEO, 3),
-> > >  	VECS0 = ENGINE(I915_ENGINE_CLASS_VIDEO_ENHANCE, 0),
-> > > +	CCS0 = ENGINE(I915_ENGINE_CLASS_COMPUTE, 0),
-> > >  };
-> > >  
-> > >  #define ALL ~0u
-> > > @@ -627,9 +628,40 @@ static void compare_regs(int fd, const struct intel_execution_engine2 *e,
-> > >  		     num_errors, who);
-> > >  }
-> > >  
-> > > +static bool
-> > > +engine_has_context_isolation(const struct intel_execution_engine2 *e,
-> > > +			     int gen)
-> > > +{
-> > > +	if (gen > 8)
-> > > +		return true;
-> > > +
-> > > +	if (gen >= 6 && gen <= 8 && e->class == I915_ENGINE_CLASS_RENDER)
-> > > +		return true;
-> > > +
-> > > +	return false;
-> > > +}
-> > > +
-> > > +static bool
-> > > +has_engine_class(const intel_ctx_cfg_t *cfg, unsigned int class)
-> > > +{
-> > > +	const struct i915_engine_class_instance *eci;
-> > > +	unsigned int i;
-> > > +
-> > > +	igt_require(class <= I915_ENGINE_CLASS_COMPUTE);
-> > > +
-> > > +	for (i = 0; i < cfg->num_engines; i++) {
-> > > +		eci = &cfg->engines[i];
-> > > +		if (eci->engine_class == class)
-> > > +			return true;
-> > > +	}
-> > > +
-> > > +	return false;
-> > > +}
-> > > +
-> > >  static void nonpriv(int fd, const intel_ctx_cfg_t *cfg,
-> > >  		    const struct intel_execution_engine2 *e,
-> > > -		    unsigned int flags)
-> > > +		    unsigned int flags,
-> > > +		    int gen)
-> > >  {
-> > >  	static const uint32_t values[] = {
-> > >  		0x0,
-> > > @@ -646,7 +678,7 @@ static void nonpriv(int fd, const intel_ctx_cfg_t *cfg,
-> > >  	unsigned int num_values = ARRAY_SIZE(values);
-> > >  
-> > >  	/* Sigh -- hsw: we need cmdparser access to our own registers! */
-> > > -	igt_skip_on(intel_gen(intel_get_drm_devid(fd)) < 8);
-> > > +	igt_skip_on(!engine_has_context_isolation(e, gen));
-> > 
-> > The comment explains that hsw (among others) needs to have this test
-> > skipped, but this allows execution on hsw. Did the reasoning change?
-> > Either way the comment and the skip line tell different things, one
-> > needs changing.
-> > 
-> > Also, avoid unnecessary negation. igt_skip_on(!f) is equivalent to
-> > igt_require(f).
+> The commit I used was: e0dccc3b76fb35bb257b4118367a883073d7390e
 > 
-> I could maybe leave that as:
+> To make this discoverable to new contributors, this change also
+> updates CONTRIBUTING.md with:
 > 
-> igt_skip_on(intel_gen(intel_get_drm_devid(fd)) < 8);
-> igt_require(engine_has_context_isolation(e, gen));
+>   - A link to git-clang-format, which is a useful tool for using
+>   clang-format from git just on a commit's changes
+>   - A link to .editorconfig to make it more discoverable
 > 
-> to enforce both checks.
+> Changes made to the linux kernel style:
+> 
+>   - Reflowing comments, including multi-line comments (ReflowComments)
+>   - Support for magic code blocks (ForEachMacros, IfMacros)
+> 
+> Signed-off-by: Jim Shargo <jshargo@chromium.org>
+> ---
+> V2 -> V3: Update CONTRIBUTING.md with a note about .editorconfig,
+>           remove reference to .clang-format from the .editorconfig
+> V1 -> V2: Better support for IGT style and addressing comments
+> 
+>  .clang-format   | 176 ++++++++++++++++++++++++++++++++++++++++++++++++
+>  CONTRIBUTING.md |   9 ++-
+>  2 files changed, 182 insertions(+), 3 deletions(-)
+>  create mode 100644 .clang-format
+> 
+> diff --git a/.clang-format b/.clang-format
+> new file mode 100644
+> index 00000000..da42bead
+> --- /dev/null
+> +++ b/.clang-format
+> @@ -0,0 +1,176 @@
+> +# SPDX-License-Identifier: GPL-2.0
+> +#
+> +# clang-format configuration file. Intended for clang-format >= 11.
+> +#
+> +# For more information, see:
+> +#
+> +#   Documentation/process/clang-format.rst
+> +#   https://clang.llvm.org/docs/ClangFormat.html
+> +#   https://clang.llvm.org/docs/ClangFormatStyleOptions.html
+> +#
+> +# This file was pulled from the linux kernel at revision
+> +# e0dccc3b76fb35bb257b4118367a883073d7390e.
+> +#
+> +# Changes made for IGT-specific styles should include a comment noting
+> +# the previous value with "kernel-value". This makes it clear what we
+> +# want to keep when updating this file.
+> +---
+> +AccessModifierOffset: -4
+> +AlignAfterOpenBracket: Align
+> +AlignConsecutiveAssignments: false
+> +AlignConsecutiveDeclarations: false
+> +AlignEscapedNewlines: Left
+> +AlignOperands: true
+> +AlignTrailingComments: false
+> +AllowAllParametersOfDeclarationOnNextLine: false
+> +AllowShortBlocksOnASingleLine: false
+> +AllowShortCaseLabelsOnASingleLine: false
+> +AllowShortFunctionsOnASingleLine: None
+> +AllowShortIfStatementsOnASingleLine: false
+> +AllowShortLoopsOnASingleLine: false
+> +AlwaysBreakAfterDefinitionReturnType: None
+> +AlwaysBreakAfterReturnType: None
+> +AlwaysBreakBeforeMultilineStrings: false
+> +AlwaysBreakTemplateDeclarations: false
+> +BinPackArguments: true
+> +BinPackParameters: true
+> +BraceWrapping:
+> +  AfterClass: false
+> +  AfterControlStatement: false
+> +  AfterEnum: false
+> +  AfterFunction: true
+> +  AfterNamespace: true
+> +  AfterObjCDeclaration: false
+> +  AfterStruct: false
+> +  AfterUnion: false
+> +  AfterExternBlock: false
+> +  BeforeCatch: false
+> +  BeforeElse: false
+> +  IndentBraces: false
+> +  SplitEmptyFunction: true
+> +  SplitEmptyRecord: true
+> +  SplitEmptyNamespace: true
+> +BreakBeforeBinaryOperators: None
+> +BreakBeforeBraces: Custom
+> +BreakBeforeInheritanceComma: false
+> +BreakBeforeTernaryOperators: false
+> +BreakConstructorInitializersBeforeComma: false
+> +BreakConstructorInitializers: BeforeComma
+> +BreakAfterJavaFieldAnnotations: false
+> +BreakStringLiterals: false
+> +ColumnLimit: 80
+> +CommentPragmas: '^ IWYU pragma:'
+> +CompactNamespaces: false
+> +ConstructorInitializerAllOnOneLineOrOnePerLine: false
+> +ConstructorInitializerIndentWidth: 8
+> +ContinuationIndentWidth: 8
+> +Cpp11BracedListStyle: false
+> +DerivePointerAlignment: false
+> +DisableFormat: false
+> +ExperimentalAutoDetectBinPacking: false
+> +FixNamespaceComments: false
+> +
+> +# Taken from:
+> +#   git grep -h '^#define [^[:space:]]*for_each[^[:space:]]*(' include/ tools/ \
+> +#   | sed "s,^#define \([^[:space:]]*for_each[^[:space:]]*\)(.*$,  - '\1'," \
+> +#   | LC_ALL=C sort -u
+> +ForEachMacros: # kernel-value: (long list removed)
+> +  # IGT rules, found via:
+> +  # git grep -h '^#define [^[:space:]]*for_each[^[:space:]]*(' include/ lib/ |
+> +  #     sed "s,^#define \([^(]\+\).*,'\1'," |
+> +  #     grep -v "__" |
+> +  #     sort -u    
+> +  - 'for_each_collection_data'
+> +  - 'for_each_combination'
+> +  - 'for_each_connected_output'
+> +  - 'for_each_connector_mode'
+> +  - 'for_each_ctx_cfg_engine'
+> +  - 'for_each_ctx_engine'
+> +  - 'for_each_format'
+> +  - 'for_each_if'
+> +  - 'for_each_memory_region'
+> +  - 'for_each_mmap_offset_type'
+> +  - 'for_each_physical_engine'
+> +  - 'for_each_physical_ring'
+> +  - 'for_each_pipe'
+> +  - 'for_each_pipe_static'
+> +  - 'for_each_pipe_with_single_output'
+> +  - 'for_each_pipe_with_valid_output'
+> +  - 'for_each_plane_on_pipe'
+> +  - 'for_each_prime_number'
+> +  - 'for_each_ring'
+> +  - 'for_each_subset'
+> +  - 'for_each_sysfs_gt_dirfd'
+> +  - 'for_each_sysfs_gt_path'
+> +  - 'for_each_valid_output_on_pipe'
+> +  - 'for_each_variation_nr'
+> +  - 'for_each_variation_r'
+> +  - 'igt_list_for_each_entry'
+> +  - 'igt_list_for_each_entry_reverse'
+> +  - 'igt_list_for_each_entry_safe'
+> +  - 'igt_list_for_each_entry_safe_reverse'
+> +
+> +IfMacros: # kernel-value: none
+> +  - 'igt_dynamic'
+> +  - 'igt_fixture'
+> +  - 'igt_fork'
+> +  - 'igt_subtest'
+> +  - 'igt_subtest_f'
+> +  - 'igt_subtest_group'
+> +  - 'igt_subtest_with_dynamic'
+> +  - 'igt_subtest_with_dynamic_f'
+> +  - 'igt_until_timeout'
 
-Yeah sounds good.
-
-
-> 
-> > >  
-> > >  	gem_quiescent_gpu(fd);
-> > >  
-> > > @@ -729,7 +761,8 @@ static void nonpriv(int fd, const intel_ctx_cfg_t *cfg,
-> > >  
-> > >  static void isolation(int fd, const intel_ctx_cfg_t *cfg,
-> > >  		      const struct intel_execution_engine2 *e,
-> > > -		      unsigned int flags)
-> > > +		      unsigned int flags,
-> > > +		      int gen)
-> > >  {
-> > >  	static const uint32_t values[] = {
-> > >  		0x0,
-> > > @@ -743,6 +776,8 @@ static void isolation(int fd, const intel_ctx_cfg_t *cfg,
-> > >  	unsigned int num_values =
-> > >  		flags & (DIRTY1 | DIRTY2) ? ARRAY_SIZE(values) : 1;
-> > >  
-> > > +	igt_skip_on(!engine_has_context_isolation(e, gen));
-> > 
-> > Avoid negation, igt_require instead.
-> > 
-> > > +
-> > >  	gem_quiescent_gpu(fd);
-> > >  
-> > >  	for (int v = 0; v < num_values; v++) {
-> > > @@ -865,7 +900,8 @@ static void inject_reset_context(int fd, const intel_ctx_cfg_t *cfg,
-> > >  
-> > >  static void preservation(int fd, const intel_ctx_cfg_t *cfg,
-> > >  			 const struct intel_execution_engine2 *e,
-> > > -			 unsigned int flags)
-> > > +			 unsigned int flags,
-> > > +			 int gen)
-> > >  {
-> > >  	static const uint32_t values[] = {
-> > >  		0x0,
-> > > @@ -882,6 +918,8 @@ static void preservation(int fd, const intel_ctx_cfg_t *cfg,
-> > >  	uint64_t ahnd[num_values + 1];
-> > >  	igt_spin_t *spin;
-> > >  
-> > > +	igt_skip_on(!engine_has_context_isolation(e, gen));
-> > 
-> > Avoid negation.
-> > 
-> > > +
-> > >  	gem_quiescent_gpu(fd);
-> > >  
-> > >  	ctx[num_values] = intel_ctx_create(fd, cfg);
-> > > @@ -902,8 +940,12 @@ static void preservation(int fd, const intel_ctx_cfg_t *cfg,
-> > >  	gem_close(fd, read_regs(fd, ahnd[num_values], ctx[num_values], e, flags));
-> > >  	igt_spin_free(fd, spin);
-> > >  
-> > > -	if (flags & RESET)
-> > > +	if (flags & RESET) {
-> > > +		igt_skip_on(has_engine_class(cfg, I915_ENGINE_CLASS_RENDER) &&
-> > > +			    has_engine_class(cfg, I915_ENGINE_CLASS_COMPUTE));
-> > > +
-> > >  		inject_reset_context(fd, cfg, e);
-> > > +	}
-> > 
-> > This and the other bits of this patch do what it says on the commit
-> > message, but I'm unable to judge whether that's correct to do so. Can
-> > a gem dev take a look at this? Tvrtko maybe (random selection)?
-> 
-> Daniel Vetter raised this issue on gitlab some time ago, maybe he could join to
-> have a quick look: https://gitlab.freedesktop.org/drm/intel/-/issues/4264
-
-That's enough to convince me.
+What version of clang-format is needed for IfMacros?
 
 
 -- 
 Petri Latvala
+
+
+> +
+> +IncludeBlocks: Preserve
+> +IncludeCategories:
+> +  - Regex: '.*'
+> +    Priority: 1
+> +IncludeIsMainRegex: '(Test)?$'
+> +IndentCaseLabels: false
+> +IndentGotoLabels: false
+> +IndentPPDirectives: None
+> +IndentWidth: 8
+> +IndentWrappedFunctionNames: false
+> +JavaScriptQuotes: Leave
+> +JavaScriptWrapImports: true
+> +KeepEmptyLinesAtTheStartOfBlocks: false
+> +MacroBlockBegin: ''
+> +MacroBlockEnd: ''
+> +MaxEmptyLinesToKeep: 1
+> +NamespaceIndentation: None
+> +ObjCBinPackProtocolList: Auto
+> +ObjCBlockIndentWidth: 8
+> +ObjCSpaceAfterProperty: true
+> +ObjCSpaceBeforeProtocolList: true
+> +
+> +# Taken from git's rules
+> +PenaltyBreakAssignment: 10
+> +PenaltyBreakBeforeFirstCallParameter: 30
+> +PenaltyBreakComment: 10
+> +PenaltyBreakFirstLessLess: 0
+> +PenaltyBreakString: 10
+> +PenaltyExcessCharacter: 100
+> +PenaltyReturnTypeOnItsOwnLine: 60
+> +
+> +PointerAlignment: Right
+> +ReflowComments: true # kernel-value: false
+> +SortIncludes: false
+> +SortUsingDeclarations: false
+> +SpaceAfterCStyleCast: false
+> +SpaceAfterTemplateKeyword: true
+> +SpaceBeforeAssignmentOperators: true
+> +SpaceBeforeCtorInitializerColon: true
+> +SpaceBeforeInheritanceColon: true
+> +SpaceBeforeParens: ControlStatementsExceptForEachMacros
+> +SpaceBeforeRangeBasedForLoopColon: true
+> +SpaceInEmptyParentheses: false
+> +SpacesBeforeTrailingComments: 1
+> +SpacesInAngles: false
+> +SpacesInContainerLiterals: false
+> +SpacesInCStyleCastParentheses: false
+> +SpacesInParentheses: false
+> +SpacesInSquareBrackets: false
+> +Standard: Cpp03
+> +TabWidth: 8
+> +UseTab: Always
+> +...
+> diff --git a/CONTRIBUTING.md b/CONTRIBUTING.md
+> index 6d1294ad..f2af5a18 100644
+> --- a/CONTRIBUTING.md
+> +++ b/CONTRIBUTING.md
+> @@ -10,8 +10,10 @@ improvements for documentation and new tools and testcases.
+>  The Code
+>  --------
+>  
+> -- The code should follow kernel coding style:
+> -  https://www.kernel.org/doc/html/latest/process/coding-style.html
+> +- The code should follow [kernel coding style](coding-style). Before
+> +  sending out a patch, changes can be formatted with
+> +  [git-clang-format](git-clang-format). Editors can be configured
+> +  using .editorconfig for additional style support.
+>  
+>  - Testcases (subtests) have to use minus signs (-) as a word separator.
+>    The generated documentation contains glossary of commonly used terms.
+> @@ -30,9 +32,10 @@ The Code
+>    provided by the igt library. The semantic patch lib/igt.cocci can help with
+>    more automatic conversions.
+>  
+> +[coding-style]: https://www.kernel.org/doc/html/latest/process/coding-style.html
+> +[git-clang-format]: https://github.com/llvm-mirror/clang/blob/master/tools/clang-format/git-clang-format
+>  [igt-describe]: https://drm.pages.freedesktop.org/igt-gpu-tools/igt-gpu-tools-Core.html#igt-describe
+>  
+> -
+>  Sending Patches
+>  ---------------
+>  
+> -- 
+> 2.37.1.455.g008518b4e5-goog
+> 
