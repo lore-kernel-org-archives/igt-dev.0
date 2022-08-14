@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A14798D306
- for <igt-dev@lists.freedesktop.org>; Sun, 14 Aug 2022 18:13:04 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 21B9B8D306
+ for <igt-dev@lists.freedesktop.org>; Sun, 14 Aug 2022 18:13:07 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Sun, 14 Aug 2022 23:39:04 +0530
-Message-Id: <20220814180908.2553394-48-bhanuprakash.modem@intel.com>
+Date: Sun, 14 Aug 2022 23:39:06 +0530
+Message-Id: <20220814180908.2553394-50-bhanuprakash.modem@intel.com>
 In-Reply-To: <20220814180908.2553394-1-bhanuprakash.modem@intel.com>
 References: <20220814180908.2553394-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t 47/51] tests/i915/kms_psr2_sf: Add support for
+Subject: [igt-dev] [i-g-t 49/51] tests/i915/kms_psr: Add support for
  Bigjoiner
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -32,14 +32,14 @@ Example:
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/i915/kms_psr2_sf.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ tests/i915/kms_psr.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/tests/i915/kms_psr2_sf.c b/tests/i915/kms_psr2_sf.c
-index 6612587c..920e5a4e 100644
---- a/tests/i915/kms_psr2_sf.c
-+++ b/tests/i915/kms_psr2_sf.c
-@@ -115,7 +115,11 @@ static void setup_output(data_t *data)
+diff --git a/tests/i915/kms_psr.c b/tests/i915/kms_psr.c
+index 480e2cc7..82148e2f 100644
+--- a/tests/i915/kms_psr.c
++++ b/tests/i915/kms_psr.c
+@@ -102,7 +102,11 @@ static void setup_output(data_t *data)
  		if (c->connector_type != DRM_MODE_CONNECTOR_eDP)
  			continue;
  
@@ -48,18 +48,8 @@ index 6612587c..920e5a4e 100644
 +		if (!igt_test_constraint(display))
 +			continue;
 +
+ 		data->crtc_id = output->config.crtc->crtc_id;
  		data->output = output;
  		data->mode = igt_output_get_mode(output);
- 
-@@ -127,6 +131,9 @@ static void display_init(data_t *data)
- {
- 	igt_display_require(&data->display, data->drm_fd);
- 	setup_output(data);
-+
-+	igt_require_f(data->output, "No available output found\n");
-+	igt_require_f(data->mode, "No available mode found on %s\n", data->output->name);
- }
- 
- static void display_fini(data_t *data)
 -- 
 2.35.1
