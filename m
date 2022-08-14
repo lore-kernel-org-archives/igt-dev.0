@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9B7D398D00
- for <igt-dev@lists.freedesktop.org>; Sun, 14 Aug 2022 18:12:47 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DCA3C98E4C
+ for <igt-dev@lists.freedesktop.org>; Sun, 14 Aug 2022 18:13:05 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Sun, 14 Aug 2022 23:38:50 +0530
-Message-Id: <20220814180908.2553394-34-bhanuprakash.modem@intel.com>
+Date: Sun, 14 Aug 2022 23:39:05 +0530
+Message-Id: <20220814180908.2553394-49-bhanuprakash.modem@intel.com>
 In-Reply-To: <20220814180908.2553394-1-bhanuprakash.modem@intel.com>
 References: <20220814180908.2553394-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t 33/51] tests/kms_sequence: Add support for
+Subject: [igt-dev] [i-g-t 48/51] tests/i915/kms_psr2_su: Add support for
  Bigjoiner
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -32,25 +32,34 @@ Example:
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/kms_sequence.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ tests/i915/kms_psr2_su.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/tests/kms_sequence.c b/tests/kms_sequence.c
-index 1655d7d1..e6442e8e 100644
---- a/tests/kms_sequence.c
-+++ b/tests/kms_sequence.c
-@@ -285,6 +285,12 @@ igt_main
- 				     "drmCrtcQueueSequence");
- 			igt_subtest_with_dynamic_f("%s-%s", f->name, m->name) {
- 				for_each_pipe_with_valid_output(&data.display, p, output) {
-+					igt_display_reset(&data.display);
+diff --git a/tests/i915/kms_psr2_su.c b/tests/i915/kms_psr2_su.c
+index caccf713..b8247e25 100644
+--- a/tests/i915/kms_psr2_su.c
++++ b/tests/i915/kms_psr2_su.c
+@@ -104,7 +104,11 @@ static void setup_output(data_t *data)
+ 		if (c->connector_type != DRM_MODE_CONNECTOR_eDP)
+ 			continue;
+ 
++		igt_display_reset(display);
+ 		igt_output_set_pipe(output, pipe);
++		if (!igt_test_constraint(display))
++			continue;
 +
-+					igt_output_set_pipe(output, p);
-+					if (!igt_test_constraint(&data.display))
-+						continue;
+ 		data->output = output;
+ 		data->mode = igt_output_get_mode(output);
+ 
+@@ -116,6 +120,9 @@ static void display_init(data_t *data)
+ {
+ 	igt_display_require(&data->display, data->drm_fd);
+ 	setup_output(data);
 +
- 					igt_dynamic_f("%s-pipe-%s", igt_output_name(output), kmstest_pipe_name(p)) {
- 						data.pipe = p;
- 						data.output = output;
++	igt_require_f(data->output, "No available output found\n");
++	igt_require_f(data->mode, "No available mode found on %s\n", data->output->name);
+ }
+ 
+ static void display_fini(data_t *data)
 -- 
 2.35.1
