@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7C11C2B5A7
- for <igt-dev@lists.freedesktop.org>; Sun, 14 Aug 2022 18:12:28 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 17BDD113DE0
+ for <igt-dev@lists.freedesktop.org>; Sun, 14 Aug 2022 18:12:17 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Sun, 14 Aug 2022 23:38:35 +0530
-Message-Id: <20220814180908.2553394-19-bhanuprakash.modem@intel.com>
+Date: Sun, 14 Aug 2022 23:38:26 +0530
+Message-Id: <20220814180908.2553394-10-bhanuprakash.modem@intel.com>
 In-Reply-To: <20220814180908.2553394-1-bhanuprakash.modem@intel.com>
 References: <20220814180908.2553394-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t 18/51] tests/kms_invalid_mode: Add support for
- Bigjoiner
+Subject: [igt-dev] [i-g-t 09/51] tests/chamelium/kms_color_chamelium: Add
+ support for Bigjoiner
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -32,25 +32,42 @@ Example:
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/kms_invalid_mode.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ tests/chamelium/kms_color_chamelium.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/tests/kms_invalid_mode.c b/tests/kms_invalid_mode.c
-index 0ae98a31..7c3866d8 100644
---- a/tests/kms_invalid_mode.c
-+++ b/tests/kms_invalid_mode.c
-@@ -293,6 +293,12 @@ igt_main
- 	for (int i = 0; i < ARRAY_SIZE(subtests); i++) {
- 		igt_subtest_with_dynamic(subtests[i].name) {
- 			for_each_pipe_with_valid_output(&data.display, pipe, output) {
-+				igt_display_reset(&data.display);
+diff --git a/tests/chamelium/kms_color_chamelium.c b/tests/chamelium/kms_color_chamelium.c
+index 678931aa..42289e91 100644
+--- a/tests/chamelium/kms_color_chamelium.c
++++ b/tests/chamelium/kms_color_chamelium.c
+@@ -458,6 +458,9 @@ run_gamma_degamma_tests_for_pipe(data_t *data, enum pipe p,
+ 	data->drm_format = DRM_FORMAT_XRGB8888;
+ 	data->mode = igt_output_get_mode(data->output);
+ 
++	if (!test_constraint(data, p))
++		return;
 +
-+				igt_output_set_pipe(output, pipe);
-+				if (!igt_test_constraint(&data.display))
-+					continue;
+ 	igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(p), data->output->name)
+ 		igt_assert(test_t(data, data->primary, data->ports[port_idx]));
+ }
+@@ -493,6 +496,9 @@ run_ctm_tests_for_pipe(data_t *data, enum pipe p,
+ 	data->drm_format = DRM_FORMAT_XRGB8888;
+ 	data->mode = igt_output_get_mode(data->output);
+ 
++	if (!test_constraint(data, p))
++		return;
 +
- 				igt_dynamic_f("%s-pipe-%s", igt_output_name(output), kmstest_pipe_name(pipe)) {
- 					data.output = output;
- 					data.pipe = pipe;
+ 	igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(p), data->output->name) {
+ 		bool success = false;
+ 		int i;
+@@ -538,6 +544,9 @@ run_limited_range_ctm_test_for_pipe(data_t *data, enum pipe p,
+ 	data->drm_format = DRM_FORMAT_XRGB8888;
+ 	data->mode = igt_output_get_mode(data->output);
+ 
++	if (!test_constraint(data, p))
++		return;
++
+ 	igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(p), data->output->name)
+ 		igt_assert(test_t(data, data->primary, data->ports[port_idx]));
+ }
 -- 
 2.35.1
