@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2952398CA4
- for <igt-dev@lists.freedesktop.org>; Sun, 14 Aug 2022 18:12:42 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8B9889486E
+ for <igt-dev@lists.freedesktop.org>; Sun, 14 Aug 2022 18:12:59 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Sun, 14 Aug 2022 23:38:46 +0530
-Message-Id: <20220814180908.2553394-30-bhanuprakash.modem@intel.com>
+Date: Sun, 14 Aug 2022 23:39:00 +0530
+Message-Id: <20220814180908.2553394-44-bhanuprakash.modem@intel.com>
 In-Reply-To: <20220814180908.2553394-1-bhanuprakash.modem@intel.com>
 References: <20220814180908.2553394-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t 29/51] tests/kms_properties: Add support for
- Bigjoiner
+Subject: [igt-dev] [i-g-t 43/51] tests/i915/kms_flip_scaled_crc: Add support
+ for Bigjoiner
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -32,51 +32,40 @@ Example:
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/kms_properties.c | 18 ++++++++++++++++++
- 1 file changed, 18 insertions(+)
+ tests/i915/kms_flip_scaled_crc.c | 13 ++++++++++++-
+ 1 file changed, 12 insertions(+), 1 deletion(-)
 
-diff --git a/tests/kms_properties.c b/tests/kms_properties.c
-index dd5a93aa..a9c2b7df 100644
---- a/tests/kms_properties.c
-+++ b/tests/kms_properties.c
-@@ -241,6 +241,12 @@ static void plane_properties(igt_display_t *display, bool atomic)
- 		found = false;
- 
- 		for_each_valid_output_on_pipe(display, pipe, output) {
-+			igt_display_reset(display);
+diff --git a/tests/i915/kms_flip_scaled_crc.c b/tests/i915/kms_flip_scaled_crc.c
+index 764eb70f..bc9d8cb4 100644
+--- a/tests/i915/kms_flip_scaled_crc.c
++++ b/tests/i915/kms_flip_scaled_crc.c
+@@ -648,8 +648,13 @@ igt_main
+ 			for_each_pipe(&data.display, pipe) {
+ 				bool found = false;
+ 				for_each_valid_output_on_pipe(&data.display, pipe, output) {
++					igt_display_reset(&data.display);
 +
-+			igt_output_set_pipe(output, pipe);
-+			if (!igt_test_constraint(display))
-+				continue;
+ 					modetoset = find_mode(&data, output);
+-					if (modetoset) {
++					igt_output_set_pipe(output, pipe);
++					igt_output_override_mode(output, modetoset);
 +
- 			found_any = found = true;
- 
- 			run_plane_property_tests(display, pipe, output, atomic);
-@@ -264,6 +270,12 @@ static void crtc_properties(igt_display_t *display, bool atomic)
- 		found = false;
- 
- 		for_each_valid_output_on_pipe(display, pipe, output) {
-+			igt_display_reset(display);
++					if (modetoset && igt_test_constraint(&data.display)) {
+ 						found = true;
+ 						igt_dynamic_f("pipe-%s-valid-mode", kmstest_pipe_name(pipe))
+ 							run_tests(&data, index, pipe, output, modetoset);
+@@ -658,6 +663,12 @@ igt_main
+ 				}
+ 				if (!found) {
+ 					for_each_valid_output_on_pipe(&data.display, pipe, output) {
++						igt_display_reset(&data.display);
 +
-+			igt_output_set_pipe(output, pipe);
-+			if (!igt_test_constraint(display))
-+				continue;
++						igt_output_set_pipe(output, pipe);
++						if (!igt_test_constraint(&data.display))
++							continue;
 +
- 			found_any_valid_pipe = found = true;
- 
- 			run_crtc_property_tests(display, pipe, output, atomic);
-@@ -290,6 +302,12 @@ static void connector_properties(igt_display_t *display, bool atomic)
- 			if (!igt_pipe_connector_valid(pipe, output))
- 				continue;
- 
-+			igt_display_reset(display);
-+
-+			igt_output_set_pipe(output, pipe);
-+			if (!igt_test_constraint(display))
-+				continue;
-+
- 			found = true;
- 			run_connector_property_tests(display, pipe, output, atomic);
- 			break;
+ 						igt_dynamic_f("pipe-%s-default-mode", kmstest_pipe_name(pipe))
+ 							run_tests(&data, index, pipe, output, modetoset);
+ 					}
 -- 
 2.35.1
