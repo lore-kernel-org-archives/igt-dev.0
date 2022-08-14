@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AD17398E4C
- for <igt-dev@lists.freedesktop.org>; Sun, 14 Aug 2022 18:13:09 +0000 (UTC)
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9B7D398D00
+ for <igt-dev@lists.freedesktop.org>; Sun, 14 Aug 2022 18:12:47 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Sun, 14 Aug 2022 23:39:08 +0530
-Message-Id: <20220814180908.2553394-52-bhanuprakash.modem@intel.com>
+Date: Sun, 14 Aug 2022 23:38:50 +0530
+Message-Id: <20220814180908.2553394-34-bhanuprakash.modem@intel.com>
 In-Reply-To: <20220814180908.2553394-1-bhanuprakash.modem@intel.com>
 References: <20220814180908.2553394-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t 51/51] tests/i915/kms_pwrite_crc: Add support for
+Subject: [igt-dev] [i-g-t 33/51] tests/kms_sequence: Add support for
  Bigjoiner
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -32,33 +32,25 @@ Example:
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/i915/kms_pwrite_crc.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ tests/kms_sequence.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/tests/i915/kms_pwrite_crc.c b/tests/i915/kms_pwrite_crc.c
-index 584e6a19..cc24efbf 100644
---- a/tests/i915/kms_pwrite_crc.c
-+++ b/tests/i915/kms_pwrite_crc.c
-@@ -110,6 +110,7 @@ static void prepare_crtc(data_t *data)
- 	igt_output_t *output = data->output;
- 	drmModeModeInfo *mode;
- 
-+	igt_display_reset(display);
- 	/* select the pipe we want to use */
- 	igt_output_set_pipe(output, data->pipe);
- 
-@@ -160,6 +161,12 @@ static void run_test(data_t *data)
- 	enum pipe pipe;
- 
- 	for_each_pipe_with_valid_output(display, pipe, output) {
-+		igt_display_reset(display);
+diff --git a/tests/kms_sequence.c b/tests/kms_sequence.c
+index 1655d7d1..e6442e8e 100644
+--- a/tests/kms_sequence.c
++++ b/tests/kms_sequence.c
+@@ -285,6 +285,12 @@ igt_main
+ 				     "drmCrtcQueueSequence");
+ 			igt_subtest_with_dynamic_f("%s-%s", f->name, m->name) {
+ 				for_each_pipe_with_valid_output(&data.display, p, output) {
++					igt_display_reset(&data.display);
 +
-+		igt_output_set_pipe(output, data->pipe);
-+		if (!igt_test_constraint(display))
-+			continue;
++					igt_output_set_pipe(output, p);
++					if (!igt_test_constraint(&data.display))
++						continue;
 +
- 		data->output = output;
- 		data->pipe = pipe;
- 
+ 					igt_dynamic_f("%s-pipe-%s", igt_output_name(output), kmstest_pipe_name(p)) {
+ 						data.pipe = p;
+ 						data.output = output;
 -- 
 2.35.1
