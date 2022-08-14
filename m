@@ -1,16 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 02F3D14BD33
- for <igt-dev@lists.freedesktop.org>; Sun, 14 Aug 2022 18:12:40 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5188412B6B2
+ for <igt-dev@lists.freedesktop.org>; Sun, 14 Aug 2022 18:12:18 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Sun, 14 Aug 2022 23:38:45 +0530
-Message-Id: <20220814180908.2553394-29-bhanuprakash.modem@intel.com>
+Date: Sun, 14 Aug 2022 23:38:27 +0530
+Message-Id: <20220814180908.2553394-11-bhanuprakash.modem@intel.com>
 In-Reply-To: <20220814180908.2553394-1-bhanuprakash.modem@intel.com>
 References: <20220814180908.2553394-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t 28/51] tests/kms_prime: Add support for Bigjoiner
+Subject: [igt-dev] [i-g-t 10/51] tests/kms_concurrent: Add support for
+ Bigjoiner
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -31,33 +32,30 @@ Example:
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/kms_prime.c | 11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ tests/kms_concurrent.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/tests/kms_prime.c b/tests/kms_prime.c
-index 3df690e0..a2a7ce1f 100644
---- a/tests/kms_prime.c
-+++ b/tests/kms_prime.c
-@@ -89,14 +89,17 @@ static igt_output_t *setup_display(int importer_fd, igt_display_t *display,
- 	bool found = false;
- 
- 	for_each_pipe_with_valid_output(display, *pipe, output) {
--		found = true;
--		break;
-+		igt_display_reset(display);
+diff --git a/tests/kms_concurrent.c b/tests/kms_concurrent.c
+index 6f8ffd4a..a6b9189e 100644
+--- a/tests/kms_concurrent.c
++++ b/tests/kms_concurrent.c
+@@ -330,9 +330,17 @@ run_tests_for_pipe(data_t *data, enum pipe pipe)
+ 	igt_describe("Test atomic mode setting concurrently with multiple planes and screen "
+ 		     "resolution.");
+ 	igt_subtest_with_dynamic_f("pipe-%s", kmstest_pipe_name(pipe)) {
+-		for_each_valid_output_on_pipe(&data->display, pipe, output)
++		for_each_valid_output_on_pipe(&data->display, pipe, output) {
++			igt_display_reset(&data->display);
 +
-+		igt_output_set_pipe(output, *pipe);
-+		if (igt_test_constraint(display)) {
-+			found = true;
-+			break;
++			igt_output_set_pipe(output, pipe);
++			if (!igt_test_constraint(&data->display))
++				continue;
++
++			igt_output_set_pipe(output, PIPE_NONE);
+ 			igt_dynamic_f("%s", igt_output_name(output))
+ 				run_test(data, pipe, output);
 +		}
  	}
- 
- 	igt_require_f(found, "No valid connector/pipe found\n");
- 
--	igt_display_reset(display);
--	igt_output_set_pipe(output, *pipe);
- 	return output;
  }
  
 -- 
