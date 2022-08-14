@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6B89D911BC
- for <igt-dev@lists.freedesktop.org>; Sun, 14 Aug 2022 18:12:38 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 14ACE98D0B
+ for <igt-dev@lists.freedesktop.org>; Sun, 14 Aug 2022 18:12:52 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Sun, 14 Aug 2022 23:38:43 +0530
-Message-Id: <20220814180908.2553394-27-bhanuprakash.modem@intel.com>
+Date: Sun, 14 Aug 2022 23:38:54 +0530
+Message-Id: <20220814180908.2553394-38-bhanuprakash.modem@intel.com>
 In-Reply-To: <20220814180908.2553394-1-bhanuprakash.modem@intel.com>
 References: <20220814180908.2553394-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t 26/51] tests/kms_plane_multiple: Add support for
+Subject: [igt-dev] [i-g-t 37/51] tests/i915/kms_big_fb: Add support for
  Bigjoiner
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -32,42 +32,46 @@ Example:
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/kms_plane_multiple.c | 11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
+ tests/i915/kms_big_fb.c | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
-diff --git a/tests/kms_plane_multiple.c b/tests/kms_plane_multiple.c
-index 1679f7ce..c59fd4df 100644
---- a/tests/kms_plane_multiple.c
-+++ b/tests/kms_plane_multiple.c
-@@ -296,6 +296,9 @@ test_plane_position_with_output(data_t *data, enum pipe pipe,
- 	bool loop_forever;
- 	char info[256];
+diff --git a/tests/i915/kms_big_fb.c b/tests/i915/kms_big_fb.c
+index d50fde45..6f12c59d 100644
+--- a/tests/i915/kms_big_fb.c
++++ b/tests/i915/kms_big_fb.c
+@@ -397,6 +397,9 @@ static bool test_pipe(data_t *data)
+ 	igt_plane_t *primary;
+ 	bool ret = false;
  
 +	igt_info("Using (pipe %s + %s) to run the subtest.\n",
-+		 kmstest_pipe_name(pipe), igt_output_name(output));
++		 kmstest_pipe_name(data->pipe), igt_output_name(data->output));
 +
- 	if (opt.iterations == LOOP_FOREVER) {
- 		loop_forever = true;
- 		sprintf(info, "forever");
-@@ -366,12 +369,18 @@ static void
- test_plane_position(data_t *data, enum pipe pipe, uint64_t modifier)
- {
- 	igt_output_t *output;
-+	igt_display_t *display = &data->display;
- 	int n_planes = opt.all_planes ?
- 			data->display.pipes[pipe].n_planes : DEFAULT_N_PLANES;
+ 	if (data->format == DRM_FORMAT_C8 &&
+ 	    !igt_pipe_obj_has_prop(&data->display.pipes[data->pipe],
+ 				   IGT_CRTC_GAMMA_LUT))
+@@ -472,6 +475,10 @@ max_hw_stride_async_flip_test(data_t *data)
+ 	igt_crc_t compare_crc, async_crc;
  
--	output = igt_get_single_output_for_pipe(&data->display, pipe);
-+	output = igt_get_single_output_for_pipe(display, pipe);
- 	igt_require(output);
- 
-+	igt_display_reset(display);
+ 	igt_require(data->display.is_atomic);
 +
-+	igt_output_set_pipe(output, pipe);
-+	igt_require(igt_test_constraint(display));
++	igt_info("Using (pipe %s + %s) to run the subtest.\n",
++		 kmstest_pipe_name(data->pipe), igt_output_name(data->output));
 +
- 	if (!opt.user_seed)
- 		opt.seed = time(NULL);
+ 	igt_output_set_pipe(data->output, data->pipe);
  
+ 	primary = igt_output_get_plane_type(data->output, DRM_PLANE_TYPE_PRIMARY);
+@@ -582,6 +589,12 @@ static void test_scanout(data_t *data)
+ 		    data->format, data->modifier);
+ 
+ 	for_each_pipe_with_valid_output(&data->display, data->pipe, data->output) {
++		igt_display_reset(&data->display);
++
++		igt_output_set_pipe(data->output, data->pipe);
++		if (!igt_test_constraint(&data->display))
++			continue;
++
+ 		if (data->async_flip_test) {
+ 			if (max_hw_stride_async_flip_test(data))
+ 				return;
 -- 
 2.35.1
