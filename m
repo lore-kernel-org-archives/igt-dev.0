@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8EA2E12B6B2
- for <igt-dev@lists.freedesktop.org>; Sun, 14 Aug 2022 18:12:19 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7C11C2B5A7
+ for <igt-dev@lists.freedesktop.org>; Sun, 14 Aug 2022 18:12:28 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Sun, 14 Aug 2022 23:38:28 +0530
-Message-Id: <20220814180908.2553394-12-bhanuprakash.modem@intel.com>
+Date: Sun, 14 Aug 2022 23:38:35 +0530
+Message-Id: <20220814180908.2553394-19-bhanuprakash.modem@intel.com>
 In-Reply-To: <20220814180908.2553394-1-bhanuprakash.modem@intel.com>
 References: <20220814180908.2553394-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t 11/51] tests/kms_content_protection: Add support
- for Bigjoiner
+Subject: [igt-dev] [i-g-t 18/51] tests/kms_invalid_mode: Add support for
+ Bigjoiner
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -32,43 +32,25 @@ Example:
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/kms_content_protection.c | 17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
+ tests/kms_invalid_mode.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/tests/kms_content_protection.c b/tests/kms_content_protection.c
-index 3041f1cd..9134e1ca 100644
---- a/tests/kms_content_protection.c
-+++ b/tests/kms_content_protection.c
-@@ -338,6 +338,15 @@ static void test_content_protection_on_output(igt_output_t *output,
- 		if (!igt_pipe_is_free(display, pipe))
- 			continue;
- 
-+		igt_output_set_pipe(output, pipe);
-+		if (!igt_test_constraint(display)) {
-+			igt_output_set_pipe(output, PIPE_NONE);
-+			continue;
-+		}
+diff --git a/tests/kms_invalid_mode.c b/tests/kms_invalid_mode.c
+index 0ae98a31..7c3866d8 100644
+--- a/tests/kms_invalid_mode.c
++++ b/tests/kms_invalid_mode.c
+@@ -293,6 +293,12 @@ igt_main
+ 	for (int i = 0; i < ARRAY_SIZE(subtests); i++) {
+ 		igt_subtest_with_dynamic(subtests[i].name) {
+ 			for_each_pipe_with_valid_output(&data.display, pipe, output) {
++				igt_display_reset(&data.display);
 +
-+		igt_info("Using (pipe %s + %s) to run the subtest.\n",
-+			 kmstest_pipe_name(pipe), igt_output_name(output));
++				igt_output_set_pipe(output, pipe);
++				if (!igt_test_constraint(&data.display))
++					continue;
 +
- 		modeset_with_fb(pipe, output, s);
- 		test_cp_enable_with_retry(output, s, 3, content_type, false,
- 					  false);
-@@ -610,6 +619,14 @@ test_content_protection_mst(int content_type)
- 		igt_assert_f(igt_pipe_connector_valid(pipe, output), "Output-pipe combination invalid\n");
- 
- 		igt_output_set_pipe(output, pipe);
-+		if (!igt_test_constraint(display)){
-+			igt_output_set_pipe(output, PIPE_NONE);
-+			continue;
-+		}
-+
-+		igt_info("Using (pipe %s + %s) to run the subtest.\n",
-+			 kmstest_pipe_name(pipe), igt_output_name(output));
-+
- 		prepare_modeset_on_mst_output(output);
- 		mst_output[dp_mst_outputs++] = output;
- 
+ 				igt_dynamic_f("%s-pipe-%s", igt_output_name(output), kmstest_pipe_name(pipe)) {
+ 					data.output = output;
+ 					data.pipe = pipe;
 -- 
 2.35.1
