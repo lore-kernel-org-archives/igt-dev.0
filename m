@@ -1,15 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 85D7FC9EE7
- for <igt-dev@lists.freedesktop.org>; Mon, 15 Aug 2022 13:59:11 +0000 (UTC)
-From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Mon, 15 Aug 2022 19:26:09 +0530
-Message-Id: <20220815135609.2566980-1-bhanuprakash.modem@intel.com>
+Received: from mail-vk1-xa36.google.com (mail-vk1-xa36.google.com
+ [IPv6:2607:f8b0:4864:20::a36])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 318ECA9E86
+ for <igt-dev@lists.freedesktop.org>; Mon, 15 Aug 2022 14:52:25 +0000 (UTC)
+Received: by mail-vk1-xa36.google.com with SMTP id c22so3779572vko.7
+ for <igt-dev@lists.freedesktop.org>; Mon, 15 Aug 2022 07:52:25 -0700 (PDT)
+From: Tales Aparecida <tales.aparecida@gmail.com>
+To: Petri Latvala <petri.latvala@intel.com>,
+	igt-dev@lists.freedesktop.org
+Date: Mon, 15 Aug 2022 11:51:44 -0300
+Message-Id: <20220815145146.24038-3-tales.aparecida@gmail.com>
+In-Reply-To: <20220815145146.24038-1-tales.aparecida@gmail.com>
+References: <20220815145146.24038-1-tales.aparecida@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t 40/51] tests/i915/kms_ccs: Add support for
- Bigjoiner
+Subject: [igt-dev] [PATCH i-g-t v3 2/4] CONTRIBUTING: Add reference for
+ GTKDoc
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,58 +23,44 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: siqueirajordao@riseup.net, magalilemes00@gmail.com,
+ tales.aparecida@gmail.com, Isabella Basso <isabbasso@riseup.net>,
+ andrealmeid@riseup.net, Trevor Woerner <twoerner@gmail.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-This patch will add a check to Skip the subtest if a selected pipe/output
-combo won't support Bigjoiner or 8K mode.
+Add reference links about code documentation.
 
-Example:
-* Pipe-D wont support a mode > 5K
-* To use 8K mode on a pipe then consecutive pipe must be available & free.
-
-Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Signed-off-by: Tales Aparecida <tales.aparecida@gmail.com>
 ---
- tests/i915/kms_ccs.c | 17 ++++++++++++-----
- 1 file changed, 12 insertions(+), 5 deletions(-)
+ CONTRIBUTING.md | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/tests/i915/kms_ccs.c b/tests/i915/kms_ccs.c
-index 4df611f7..1d55cd2d 100644
---- a/tests/i915/kms_ccs.c
-+++ b/tests/i915/kms_ccs.c
-@@ -589,12 +589,20 @@ static int test_ccs(data_t *data)
- static void test_output(data_t *data, const int testnum)
- {
- 	igt_fixture {
-+		bool found = false;
- 		data->flags = tests[testnum].flags;
+diff --git a/CONTRIBUTING.md b/CONTRIBUTING.md
+index 6d1294ad..1c50063a 100644
+--- a/CONTRIBUTING.md
++++ b/CONTRIBUTING.md
+@@ -13,6 +13,12 @@ The Code
+ - The code should follow kernel coding style:
+   https://www.kernel.org/doc/html/latest/process/coding-style.html
  
--		data->output = igt_get_single_output_for_pipe(&data->display,
--							      data->pipe);
--		igt_require(data->output);
--		igt_output_set_pipe(data->output, data->pipe);
-+		for_each_valid_output_on_pipe(&data->display, data->pipe, data->output) {
-+			igt_display_reset(&data->display);
++- The in-code documentation should follow GtkDoc specifications:
++  https://developer-old.gnome.org/gtk-doc-manual/stable/documenting.html.
++  For an updated version, you can also download the GtkDoc's
++  [source code][gtkdoc-repo] and open its manual with `yelp` directly by typing
++  in a terminal: `yelp file:///absolute/path/to/gtk-doc/help/manual/C/index.docbook`
 +
-+			igt_output_set_pipe(data->output, data->pipe);
-+			if (igt_test_constraint(&data->display)) {
-+				found = true;
-+				break;
-+			}
-+
-+		}
-+		igt_require_f(found, "No valid pipe/output combo found.\n");
- 	}
+ - Testcases (subtests) have to use minus signs (-) as a word separator.
+   The generated documentation contains glossary of commonly used terms.
  
- 	for (int i = 0; i < ARRAY_SIZE(ccs_modifiers); i++) {
-@@ -610,7 +618,6 @@ static void test_output(data_t *data, const int testnum)
- 		igt_subtest_f("pipe-%s-%s-%s", kmstest_pipe_name(data->pipe),
- 			      tests[testnum].testname, ccs_modifiers[i].str) {
- 			int valid_tests = 0;
--			igt_require(data->output);
+@@ -30,6 +36,7 @@ The Code
+   provided by the igt library. The semantic patch lib/igt.cocci can help with
+   more automatic conversions.
  
- 			if (data->flags == TEST_RANDOM)
- 				igt_info("Testing with seed %d\n", data->seed);
++[gtkdoc-repo]: https://gitlab.gnome.org/GNOME/gtk-doc
+ [igt-describe]: https://drm.pages.freedesktop.org/igt-gpu-tools/igt-gpu-tools-Core.html#igt-describe
+ 
+ 
 -- 
-2.35.1
+2.37.1
