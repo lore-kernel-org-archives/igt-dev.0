@@ -1,13 +1,11 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D03A898D4C
- for <igt-dev@lists.freedesktop.org>; Sun, 14 Aug 2022 18:12:55 +0000 (UTC)
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 85D7FC9EE7
+ for <igt-dev@lists.freedesktop.org>; Mon, 15 Aug 2022 13:59:11 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Sun, 14 Aug 2022 23:38:57 +0530
-Message-Id: <20220814180908.2553394-41-bhanuprakash.modem@intel.com>
-In-Reply-To: <20220814180908.2553394-1-bhanuprakash.modem@intel.com>
-References: <20220814180908.2553394-1-bhanuprakash.modem@intel.com>
+Date: Mon, 15 Aug 2022 19:26:09 +0530
+Message-Id: <20220815135609.2566980-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Subject: [igt-dev] [i-g-t 40/51] tests/i915/kms_ccs: Add support for
