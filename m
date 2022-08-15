@@ -1,19 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id F1AFBB6E55
- for <igt-dev@lists.freedesktop.org>; Mon, 15 Aug 2022 09:43:28 +0000 (UTC)
-Date: Mon, 15 Aug 2022 12:42:18 +0300
-From: Petri Latvala <petri.latvala@intel.com>
-To: =?iso-8859-1?Q?Ma=EDra?= Canal <mairacanal@riseup.net>
-Message-ID: <YvoU+g7G8M1dK4pK@platvala-desk.ger.corp.intel.com>
-References: <20220813150750.216610-1-mairacanal@riseup.net>
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E0C0BC9C94
+ for <igt-dev@lists.freedesktop.org>; Mon, 15 Aug 2022 13:57:17 +0000 (UTC)
+Message-ID: <c445849e-4238-5675-6174-f4bca67ebf36@intel.com>
+Date: Mon, 15 Aug 2022 19:26:57 +0530
+Content-Language: en-US
+To: Petri Latvala <petri.latvala@intel.com>
+References: <20220814180908.2553394-1-bhanuprakash.modem@intel.com>
+ <20220814180908.2553394-2-bhanuprakash.modem@intel.com>
+ <YvoWwFdTQMmzoBSk@platvala-desk.ger.corp.intel.com>
+From: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
+In-Reply-To: <YvoWwFdTQMmzoBSk@platvala-desk.ger.corp.intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20220813150750.216610-1-mairacanal@riseup.net>
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/amdgpu/amd_bypass: skip if
- connector is not DisplayPort
+Subject: Re: [igt-dev] [i-g-t 01/51] lib/igt_kms: Add a helper for igt test
+ constraint
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,53 +23,71 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: magalilemes00@gmail.com, tales.aparecida@gmail.com,
- igt-dev@lists.freedesktop.org, Alexander Deucher <alexander.deucher@amd.com>,
- Isabella Basso <isabbasso@riseup.net>, andrealmeid@riseup.net,
- Christian Koenig <christian.koenig@amd.com>
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Sat, Aug 13, 2022 at 12:07:50PM -0300, Maíra Canal wrote:
-> [why & how]
-> It is not possible to access the DSC_CLOCK_EN for non-DP connectors.
-> Moreover, the kernel fails when asked to set the CRC source to DPRX on
-> non-DP connectors. Therefore, skip the test if the connector is not
-> a DisplayPort or eDP connector.
+On Mon-15-08-2022 03:19 pm, Petri Latvala wrote:
+> On Sun, Aug 14, 2022 at 11:38:18PM +0530, Bhanuprakash Modem wrote:
+>> This patch will create a helper with super set of all test constraints.
+>>
+>> Example:
+>> * Pipe-D can't support mode > 5K
+>> * To use 8K mode on a pipe then consecutive pipe must be available & free.
+>> * MSO is supported only on PIPE_A/PIPE_B.
+>>
+>> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+>> ---
+>>   lib/igt_kms.c | 22 ++++++++++++++++++++++
+>>   lib/igt_kms.h |  1 +
+>>   2 files changed, 23 insertions(+)
+>>
+>> diff --git a/lib/igt_kms.c b/lib/igt_kms.c
+>> index 1ba3bd2a..e1a65244 100644
+>> --- a/lib/igt_kms.c
+>> +++ b/lib/igt_kms.c
+>> @@ -5803,3 +5803,25 @@ bool igt_parse_mode_string(const char *mode_string, drmModeModeInfo *mode)
+>>   
+>>   	return true;
+>>   }
+>> +
+>> +/*
+>> + * igt_test_constraint:
+>> + * @display: a pointer to an #igt_display_t structure
+>> + *
+>> + * Get all active pipes from connected outputs (i.e. pending_pipe != PIPE_NONE)
+>> + * and check those pipes supports the selected mode(s).
+>> + *
+>> + * This is a super set of all test constraints.
+>> + *
+>> + * Example:
+>> + *  * Pipe-D can't support mode > 5K
+>> + *  * To use 8K mode on a pipe then consecutive pipe must be free.
+>> + *  * MSO is supported only on PIPE_A/PIPE_B.
+>> + *
+>> + * Returns: true if a valid crtc/connector mode combo found, else false
 > 
-> Signed-off-by: Maíra Canal <mairacanal@riseup.net>
-> ---
->  tests/amdgpu/amd_bypass.c | 7 +++++++
->  1 file changed, 7 insertions(+)
+> "all test constraints" sounds very broad, with very implied
+> specifics. Please write the specifics so potential users can easily
+> see if they need to call this function or not. Is this meant to be for
+> all kms testing, or just for bigjoiner-related hardware limitations?
+
+Our intention is that all kms tests should use this helper to decide 
+whether to run/skip the subtest. But for now, I can see that only 
+hardware/configuration-related limitations like Bigjoiner/MSO can go 
+through this helper.
+
 > 
-> diff --git a/tests/amdgpu/amd_bypass.c b/tests/amdgpu/amd_bypass.c
-> index 5ec90884..e5bfcaa2 100644
-> --- a/tests/amdgpu/amd_bypass.c
-> +++ b/tests/amdgpu/amd_bypass.c
-> @@ -316,6 +316,13 @@ static void bypass_8bpc_test(data_t *data)
->  
->  	test_init(data);
->  
-> +	/*
-> +	 * CRC source cannot be selected without an DP/eDP connector
-> +	 */
-> +	igt_skip_on_f(data->output->config.connector->connector_type != DRM_MODE_CONNECTOR_DisplayPort ||
-> +			data->output->config.connector->connector_type != DRM_MODE_CONNECTOR_eDP,
-> +			"no DisplayPort connector found\n");
+> Speaking of hardware limitations, this sounds very intel-specific but
+> the documentation (or the code) doesn't specify. Same comment goes for
+> the function igt_check_bigjoiner_support, even though that's already
+> merged.
 
-This condition is always true, you need && instead of ||.
+Agreed, we need a check for i915 device as above mentioned limitations 
+are intel-specific.
 
+- Bhanu
 
--- 
-Petri Latvala
-
-
-
-> +
->  	/**
->  	 * 8bpc bypass only makes sense without DSC.
->  	 * DSC is visually lossless but actually still loss exists and any bypass mode
-> -- 
-> 2.37.1
+> 
 > 
