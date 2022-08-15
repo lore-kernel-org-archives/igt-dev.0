@@ -1,20 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-vs1-xe2a.google.com (mail-vs1-xe2a.google.com
- [IPv6:2607:f8b0:4864:20::e2a])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8CD72ACB19
- for <igt-dev@lists.freedesktop.org>; Mon, 15 Aug 2022 16:35:12 +0000 (UTC)
-Received: by mail-vs1-xe2a.google.com with SMTP id o123so7679947vsc.3
- for <igt-dev@lists.freedesktop.org>; Mon, 15 Aug 2022 09:35:12 -0700 (PDT)
-From: Tales Aparecida <tales.aparecida@gmail.com>
-To: igt-dev@lists.freedesktop.org
-Date: Mon, 15 Aug 2022 13:35:05 -0300
-Message-Id: <20220815163505.36380-1-tales.aparecida@gmail.com>
-In-Reply-To: <20220815145146.24038-1-tales.aparecida@gmail.com>
-References: <20220815145146.24038-1-tales.aparecida@gmail.com>
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3CF77CEA90
+ for <igt-dev@lists.freedesktop.org>; Mon, 15 Aug 2022 17:08:56 +0000 (UTC)
+Date: Mon, 15 Aug 2022 10:05:53 -0700
+From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+To: Ashutosh Dixit <ashutosh.dixit@intel.com>
+Message-ID: <Yvp88SKKSswq7+qo@orsosgc001.jf.intel.com>
+References: <20220812005039.450842-1-ashutosh.dixit@intel.com>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Disposition: inline
+In-Reply-To: <20220812005039.450842-1-ashutosh.dixit@intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v3 2/4] CONTRIBUTING: Add reference for
- GTKDoc
+Subject: Re: [igt-dev] [PATCH i-g-t] lib/igt_sysfs: Drop igt_debug_on from
+ igt_sysfs_gt_open
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,46 +20,46 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Tales Aparecida <tales.aparecida@gmail.com>
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add reference links about code documentation.
+On Thu, Aug 11, 2022 at 05:50:39PM -0700, Ashutosh Dixit wrote:
+>igt_sysfs_gt_open() is called from for_each_sysfs_gt_dirfd() which counts
+>to 1 greater than the actual number of gt's where igt_sysfs_gt_open() fails
+>and the loop exits. This means that the final failure is an expected
+>condition which happens during normal course of operation.
+>
+>Therefore drop igt_debug_on() from igt_sysfs_gt_open() since the debug
+>print is a false positive which makes it appear that something has gone
+>wrong when it hasn't.
+>
+>Cc: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+>Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+>Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
+>---
+> lib/igt_sysfs.c | 2 +-
+> 1 file changed, 1 insertion(+), 1 deletion(-)
+>
+>diff --git a/lib/igt_sysfs.c b/lib/igt_sysfs.c
+>index 40c9a2e36a90..9c3076947b35 100644
+>--- a/lib/igt_sysfs.c
+>+++ b/lib/igt_sysfs.c
+>@@ -258,7 +258,7 @@ int igt_sysfs_gt_open(int device, int gt)
+> {
+> 	char path[96];
+>
+>-	if (igt_debug_on(!igt_sysfs_gt_path(device, gt, path, sizeof(path))))
+>+	if (!igt_sysfs_gt_path(device, gt, path, sizeof(path)))
+> 		return -1;
 
-Signed-off-by: Tales Aparecida <tales.aparecida@gmail.com>
----
+Reviewed-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 
-Notes:
-    resend to fix incomplete patchwork
-
- CONTRIBUTING.md | 7 +++++++
- 1 file changed, 7 insertions(+)
-
-diff --git a/CONTRIBUTING.md b/CONTRIBUTING.md
-index 6d1294ad..1c50063a 100644
---- a/CONTRIBUTING.md
-+++ b/CONTRIBUTING.md
-@@ -13,6 +13,12 @@ The Code
- - The code should follow kernel coding style:
-   https://www.kernel.org/doc/html/latest/process/coding-style.html
- 
-+- The in-code documentation should follow GtkDoc specifications:
-+  https://developer-old.gnome.org/gtk-doc-manual/stable/documenting.html.
-+  For an updated version, you can also download the GtkDoc's
-+  [source code][gtkdoc-repo] and open its manual with `yelp` directly by typing
-+  in a terminal: `yelp file:///absolute/path/to/gtk-doc/help/manual/C/index.docbook`
-+
- - Testcases (subtests) have to use minus signs (-) as a word separator.
-   The generated documentation contains glossary of commonly used terms.
- 
-@@ -30,6 +36,7 @@ The Code
-   provided by the igt library. The semantic patch lib/igt.cocci can help with
-   more automatic conversions.
- 
-+[gtkdoc-repo]: https://gitlab.gnome.org/GNOME/gtk-doc
- [igt-describe]: https://drm.pages.freedesktop.org/igt-gpu-tools/igt-gpu-tools-Core.html#igt-describe
- 
- 
--- 
-2.37.1
+Regards,
+Umesh
+>
+> 	return open(path, O_RDONLY);
+>-- 
+>2.34.1
+>
