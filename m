@@ -1,19 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 76ABAA22B9
- for <igt-dev@lists.freedesktop.org>; Mon, 15 Aug 2022 09:41:48 +0000 (UTC)
-Date: Mon, 15 Aug 2022 12:40:37 +0300
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id F1AFBB6E55
+ for <igt-dev@lists.freedesktop.org>; Mon, 15 Aug 2022 09:43:28 +0000 (UTC)
+Date: Mon, 15 Aug 2022 12:42:18 +0300
 From: Petri Latvala <petri.latvala@intel.com>
-To: Tales Aparecida <tales.aparecida@gmail.com>
-Message-ID: <YvoUlRyN0UhU9y/T@platvala-desk.ger.corp.intel.com>
-References: <20220812161826.4074-1-tales.aparecida@gmail.com>
- <20220812161826.4074-4-tales.aparecida@gmail.com>
+To: =?iso-8859-1?Q?Ma=EDra?= Canal <mairacanal@riseup.net>
+Message-ID: <YvoU+g7G8M1dK4pK@platvala-desk.ger.corp.intel.com>
+References: <20220813150750.216610-1-mairacanal@riseup.net>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <20220812161826.4074-4-tales.aparecida@gmail.com>
-Subject: Re: [igt-dev] [PATCH i-g-t v2 3/4] lib/kselftests: Skip kselftest
- when opening kmsg fails
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20220813150750.216610-1-mairacanal@riseup.net>
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/amdgpu/amd_bypass: skip if
+ connector is not DisplayPort
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,55 +21,42 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: siqueirajordao@riseup.net, magalilemes00@gmail.com,
- Chris Wilson <chris@chris-wilson.co.uk>, igt-dev@lists.freedesktop.org,
+Cc: magalilemes00@gmail.com, tales.aparecida@gmail.com,
+ igt-dev@lists.freedesktop.org, Alexander Deucher <alexander.deucher@amd.com>,
  Isabella Basso <isabbasso@riseup.net>, andrealmeid@riseup.net,
- Trevor Woerner <twoerner@gmail.com>
+ Christian Koenig <christian.koenig@amd.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Fri, Aug 12, 2022 at 01:18:25PM -0300, Tales Aparecida wrote:
-> Check for errors in igt_kselftest_begin() during open("/dev/kmsg")
-> and fail appropriately, removing the always-zero return of the function.
+On Sat, Aug 13, 2022 at 12:07:50PM -0300, Maíra Canal wrote:
+> [why & how]
+> It is not possible to access the DSC_CLOCK_EN for non-DP connectors.
+> Moreover, the kernel fails when asked to set the CRC source to DPRX on
+> non-DP connectors. Therefore, skip the test if the connector is not
+> a DisplayPort or eDP connector.
 > 
-> Signed-off-by: Tales Aparecida <tales.aparecida@gmail.com>
+> Signed-off-by: Maíra Canal <mairacanal@riseup.net>
 > ---
+>  tests/amdgpu/amd_bypass.c | 7 +++++++
+>  1 file changed, 7 insertions(+)
 > 
-> Notes:
->     v1 -> v2: Removed return from igt_kselftest_begin and added assertion instead
-> 
->  lib/igt_kmod.c | 7 +++----
->  lib/igt_kmod.h | 2 +-
->  2 files changed, 4 insertions(+), 5 deletions(-)
-> 
-> diff --git a/lib/igt_kmod.c b/lib/igt_kmod.c
-> index bde0461a..6356a3e9 100644
-> --- a/lib/igt_kmod.c
-> +++ b/lib/igt_kmod.c
-> @@ -922,7 +922,7 @@ int igt_kselftest_init(struct igt_kselftest *tst,
->  	return 0;
->  }
+> diff --git a/tests/amdgpu/amd_bypass.c b/tests/amdgpu/amd_bypass.c
+> index 5ec90884..e5bfcaa2 100644
+> --- a/tests/amdgpu/amd_bypass.c
+> +++ b/tests/amdgpu/amd_bypass.c
+> @@ -316,6 +316,13 @@ static void bypass_8bpc_test(data_t *data)
 >  
-> -int igt_kselftest_begin(struct igt_kselftest *tst)
-> +void igt_kselftest_begin(struct igt_kselftest *tst)
->  {
->  	int err;
+>  	test_init(data);
 >  
-> @@ -933,8 +933,7 @@ int igt_kselftest_begin(struct igt_kselftest *tst)
->  	igt_require(err == 0 || err == -ENOENT);
->  
->  	tst->kmsg = open("/dev/kmsg", O_RDONLY | O_NONBLOCK);
-> -
-> -	return 0;
-> +	igt_assert_fd(tst->kmsg);
+> +	/*
+> +	 * CRC source cannot be selected without an DP/eDP connector
+> +	 */
+> +	igt_skip_on_f(data->output->config.connector->connector_type != DRM_MODE_CONNECTOR_DisplayPort ||
+> +			data->output->config.connector->connector_type != DRM_MODE_CONNECTOR_eDP,
+> +			"no DisplayPort connector found\n");
 
-Asserting on the open failure leaves the test result as 'FAIL',
-indicating a kernel bug. Opening failure rather means there's an
-incorrect setup and the test cannot be executed, meaning the correct
-result would be 'SKIP'.
-
-In other words, make this an igt_require_fd instead.
+This condition is always true, you need && instead of ||.
 
 
 -- 
@@ -77,31 +64,10 @@ Petri Latvala
 
 
 
->  }
->  
->  int igt_kselftest_execute(struct igt_kselftest *tst,
-> @@ -1012,7 +1011,7 @@ void igt_kselftests(const char *module_name,
->  		return;
->  
->  	igt_fixture
-> -		igt_require(igt_kselftest_begin(&tst) == 0);
-> +		igt_kselftest_begin(&tst);
->  
->  	igt_kselftest_get_tests(tst.kmod, filter, &tests);
->  	igt_subtest_with_dynamic(filter ?: "all") {
-> diff --git a/lib/igt_kmod.h b/lib/igt_kmod.h
-> index f98dd29f..0d80451b 100644
-> --- a/lib/igt_kmod.h
-> +++ b/lib/igt_kmod.h
-> @@ -65,7 +65,7 @@ struct igt_kselftest_list {
->  
->  int igt_kselftest_init(struct igt_kselftest *tst,
->  		       const char *module_name);
-> -int igt_kselftest_begin(struct igt_kselftest *tst);
-> +void igt_kselftest_begin(struct igt_kselftest *tst);
->  
->  void igt_kselftest_get_tests(struct kmod_module *kmod,
->  			     const char *filter,
+> +
+>  	/**
+>  	 * 8bpc bypass only makes sense without DSC.
+>  	 * DSC is visually lossless but actually still loss exists and any bypass mode
 > -- 
 > 2.37.1
 > 
