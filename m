@@ -1,16 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 925568D306
- for <igt-dev@lists.freedesktop.org>; Sun, 14 Aug 2022 18:12:49 +0000 (UTC)
-From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Sun, 14 Aug 2022 23:38:52 +0530
-Message-Id: <20220814180908.2553394-36-bhanuprakash.modem@intel.com>
-In-Reply-To: <20220814180908.2553394-1-bhanuprakash.modem@intel.com>
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BDA7E9FCD5
+ for <igt-dev@lists.freedesktop.org>; Mon, 15 Aug 2022 09:51:00 +0000 (UTC)
+Date: Mon, 15 Aug 2022 12:49:52 +0300
+From: Petri Latvala <petri.latvala@intel.com>
+To: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Message-ID: <YvoWwFdTQMmzoBSk@platvala-desk.ger.corp.intel.com>
 References: <20220814180908.2553394-1-bhanuprakash.modem@intel.com>
+ <20220814180908.2553394-2-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t 35/51] tests/kms_vblank: Add support for Bigjoiner
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220814180908.2553394-2-bhanuprakash.modem@intel.com>
+Subject: Re: [igt-dev] [i-g-t 01/51] lib/igt_kms: Add a helper for igt test
+ constraint
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,129 +21,83 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-This patch will add a check to Skip the subtest if a selected pipe/output
-combo won't support Bigjoiner or 8K mode.
+On Sun, Aug 14, 2022 at 11:38:18PM +0530, Bhanuprakash Modem wrote:
+> This patch will create a helper with super set of all test constraints.
+> 
+> Example:
+> * Pipe-D can't support mode > 5K
+> * To use 8K mode on a pipe then consecutive pipe must be available & free.
+> * MSO is supported only on PIPE_A/PIPE_B.
+> 
+> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+> ---
+>  lib/igt_kms.c | 22 ++++++++++++++++++++++
+>  lib/igt_kms.h |  1 +
+>  2 files changed, 23 insertions(+)
+> 
+> diff --git a/lib/igt_kms.c b/lib/igt_kms.c
+> index 1ba3bd2a..e1a65244 100644
+> --- a/lib/igt_kms.c
+> +++ b/lib/igt_kms.c
+> @@ -5803,3 +5803,25 @@ bool igt_parse_mode_string(const char *mode_string, drmModeModeInfo *mode)
+>  
+>  	return true;
+>  }
+> +
+> +/*
+> + * igt_test_constraint:
+> + * @display: a pointer to an #igt_display_t structure
+> + *
+> + * Get all active pipes from connected outputs (i.e. pending_pipe != PIPE_NONE)
+> + * and check those pipes supports the selected mode(s).
+> + *
+> + * This is a super set of all test constraints.
+> + *
+> + * Example:
+> + *  * Pipe-D can't support mode > 5K
+> + *  * To use 8K mode on a pipe then consecutive pipe must be free.
+> + *  * MSO is supported only on PIPE_A/PIPE_B.
+> + *
+> + * Returns: true if a valid crtc/connector mode combo found, else false
 
-Example:
-* Pipe-D wont support a mode > 5K
-* To use 8K mode on a pipe then consecutive pipe must be available & free.
+"all test constraints" sounds very broad, with very implied
+specifics. Please write the specifics so potential users can easily
+see if they need to call this function or not. Is this meant to be for
+all kms testing, or just for bigjoiner-related hardware limitations?
 
-Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
----
- tests/kms_vblank.c | 54 ++++++++++++++++++++++++++++++++++++++++++++--
- 1 file changed, 52 insertions(+), 2 deletions(-)
+Speaking of hardware limitations, this sounds very intel-specific but
+the documentation (or the code) doesn't specify. Same comment goes for
+the function igt_check_bigjoiner_support, even though that's already
+merged.
 
-diff --git a/tests/kms_vblank.c b/tests/kms_vblank.c
-index e65e8522..811ba6d0 100644
---- a/tests/kms_vblank.c
-+++ b/tests/kms_vblank.c
-@@ -175,6 +175,21 @@ static void run_test(data_t *data, void (*testfunc)(data_t *, int, int))
- 	cleanup_crtc(data, fd, output);
- }
- 
-+static bool
-+is_valid_combo(igt_display_t *display, enum pipe pipe, igt_output_t *output)
-+{
-+	bool ret = true;
-+
-+	igt_display_reset(display);
-+
-+	igt_output_set_pipe(output, pipe);
-+	if (!igt_test_constraint(display))
-+		ret = false;
-+	igt_output_set_pipe(output, PIPE_NONE);
-+
-+	return ret;
-+}
-+
- static void crtc_id_subtest(data_t *data, int fd)
- {
- 	igt_display_t *display = &data->display;
-@@ -188,6 +203,15 @@ static void crtc_id_subtest(data_t *data, int fd)
- 		uint64_t val;
- 		union drm_wait_vblank vbl;
- 
-+		igt_display_reset(display);
-+
-+		igt_output_set_pipe(output, p);
-+		if (!igt_test_constraint(display))
-+			continue;
-+
-+		igt_info("Using (pipe %s + %s) to run the subtest.\n",
-+			 kmstest_pipe_name(p), igt_output_name(output));
-+
- 		crtc_id = display->pipes[p].crtc_id;
- 		if (drmGetCap(display->drm_fd, DRM_CAP_CRTC_IN_VBLANK_EVENT, &val) == 0)
- 			expected_crtc_id = crtc_id;
-@@ -449,10 +473,18 @@ static void run_subtests_for_pipe(data_t *data)
- 			igt_subtest_f("pipe-%s-%s-%s",
- 				      kmstest_pipe_name(data->pipe),
- 				      f->name, m->name) {
-+				int found = 0;
-+
- 				for_each_valid_output_on_pipe(&data->display, data->pipe, data->output) {
-+					if (!is_valid_combo(&data->display, data->pipe, data->output))
-+						continue;
-+
- 					data->flags = m->flags | NOHANG;
- 					run_test(data, f->func);
-+
-+					found++;
- 				}
-+				igt_require_f(found, "No valid pipe/output combo found.\n");
- 			}
- 
- 			/* Skip the -hang version if NOHANG flag is set */
-@@ -464,13 +496,20 @@ static void run_subtests_for_pipe(data_t *data)
- 				      kmstest_pipe_name(data->pipe),
- 				      f->name, m->name) {
- 				igt_hang_t hang;
-+				int found = 0;
- 
- 				hang = igt_allow_hang(data->display.drm_fd, 0, 0);
- 				for_each_valid_output_on_pipe(&data->display, data->pipe, data->output) {
-+					if (!is_valid_combo(&data->display, data->pipe, data->output))
-+						continue;
-+
- 					data->flags = m->flags;
- 					run_test(data, f->func);
-+
-+					found++;
- 				}
- 				igt_disallow_hang(data->display.drm_fd, hang);
-+				igt_require_f(found, "No valid pipe/output combo found.\n");
- 			}
- 		}
- 	}
-@@ -482,12 +521,23 @@ static void invalid_subtest(data_t *data, int fd)
- 	unsigned long valid_flags;
- 	igt_display_t* display = &data->display;
- 	enum pipe pipe = 0;
--	igt_output_t* output = igt_get_single_output_for_pipe(display, pipe);
-+	igt_output_t *output;
-+
-+	igt_display_reset(display);
-+	igt_display_require_output_on_pipe(display, pipe);
-+
-+	output = igt_get_single_output_for_pipe(display, pipe);
-+	igt_require(output);
- 
- 	data->pipe = pipe;
- 	data->output = output;
-+
- 	igt_output_set_pipe(output, pipe);
--	igt_display_require_output_on_pipe(display, pipe);
-+	igt_require(igt_test_constraint(display));
-+
-+	igt_info("Using (pipe %s + %s) to run the subtest.\n",
-+		 kmstest_pipe_name(pipe), igt_output_name(output));
-+
- 	prepare_crtc(data, fd, output);
- 
- 	/* First check all is well with a simple query */
+
 -- 
-2.35.1
+Petri Latvala
+
+
+
+> + */
+> +bool igt_test_constraint(igt_display_t *display)
+> +{
+> +	/* TODO: Add all possible test constraints here. */
+> +	return igt_check_bigjoiner_support(display);
+> +}
+> diff --git a/lib/igt_kms.h b/lib/igt_kms.h
+> index a2cf0937..82186cfe 100644
+> --- a/lib/igt_kms.h
+> +++ b/lib/igt_kms.h
+> @@ -975,5 +975,6 @@ bool igt_max_bpc_constraint(igt_display_t *display, enum pipe pipe,
+>  		igt_output_t *output, int bpc);
+>  bool igt_check_bigjoiner_support(igt_display_t *display);
+>  bool igt_parse_mode_string(const char *mode_string, drmModeModeInfo *mode);
+> +bool igt_test_constraint(igt_display_t *display);
+>  
+>  #endif /* __IGT_KMS_H__ */
+> -- 
+> 2.35.1
+> 
