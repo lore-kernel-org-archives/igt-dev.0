@@ -1,15 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============6293163277839078739=="
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id ECC11DB48B
+ for <igt-dev@lists.freedesktop.org>; Tue, 16 Aug 2022 04:07:55 +0000 (UTC)
+Date: Tue, 16 Aug 2022 07:06:45 +0300
+From: Petri Latvala <petri.latvala@intel.com>
+To: Mark Yacoub <markyacoub@chromium.org>
+Message-ID: <YvsX1XjiogXpHSCW@platvala-desk.ger.corp.intel.com>
+References: <20220715164302.1631538-1-markyacoub@chromium.org>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Bhanuprakash Modem" <bhanuprakash.modem@intel.com>
-Date: Wed, 24 Aug 2022 17:12:36 -0000
-Message-ID: <166136115625.9870.10553081895930057731@emeril.freedesktop.org>
-References: <20220814180908.2553394-1-bhanuprakash.modem@intel.com>
-In-Reply-To: <20220814180908.2553394-1-bhanuprakash.modem@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgQWRkIElH?=
- =?utf-8?q?T_support_for_8K_and_Bigjoiner?=
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220715164302.1631538-1-markyacoub@chromium.org>
+Subject: Re: [igt-dev] [PATCH] docs: Update Chamelium doc
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,228 +19,184 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org, anson.jacob@amd.com, seanpaul@chromium.org,
+ ihf@google.com, markyacoub@google.com, khaled.almahallawy@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============6293163277839078739==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+On Fri, Jul 15, 2022 at 12:43:02PM -0400, Mark Yacoub wrote:
+> From: Mark Yacoub <markyacoub@google.com>
+> 
+> 1. Introduce Chamelium V3 hardware
+> 2. Update Chamelium ports map
+> 3. s/ChromiumOS/Chromium OS which the standard way.
+> 
+> Signed-off-by: Mark Yacoub <markyacoub@chromium.org>
+> ---
+>  docs/chamelium.txt | 76 ++++++++++++++++++++++++++++++++++------------
+>  1 file changed, 56 insertions(+), 20 deletions(-)
+> 
+> diff --git a/docs/chamelium.txt b/docs/chamelium.txt
+> index 7484a3f8..c3ae8d57 100644
+> --- a/docs/chamelium.txt
+> +++ b/docs/chamelium.txt
+> @@ -16,7 +16,13 @@ IGT without external hardware.
+>  The platform was developed by Google in order to test display and audio-related
+>  features of ChromeOS devices. It was initially developed internally by Google as
+>  part of the ChromeOS effort under the name Chameleon and was later made external
+> -as part of the ChromiumOS effort, under the name Chamelium.
+> +as part of the Chromium OS effort, under the name Chamelium.
+> +
+> +A new Chamelium V3 (Cv3) was released in 2022, which is built with different
+> +hardware while maintaining software backwards compatibility with v2.
+> +
+> +Chamelium V2
+> +------------
+>  
+>  It consists of a custom-made display emulator board connected to an Arrow SoCKit
+>  via a flexible cable, with two DisplayPort connectors, one HDMI and one VGA.
+> @@ -25,16 +31,28 @@ The SoCKit uses a Cyclone V SoC, with both a FPGA and an ARM CPU. While the FPGA
+>  is used for logic control, the CPU runs daemons that allow the board to be
+>  controlled over the network via a XMLRPC interface.
+>  
+> -Documentation
+> +Chamelium V3
+> +------------
+> +It consists of a custom-made display emulator board that has an Enclustra FPGA
+> +module mounted on it, with two DisplayPort and two HDMI connectors.
+> +
+> +The Enclustra FPGA Module uses a Arria 10 SoC, with both a FPGA and an ARM CPU.
+> +While the FPGA is used for logic control, the CPU runs daemons that allow the
+> +board to be controlled over the network via a XMLRPC interface.
+> +
+> +[Current limitation] Cv3 hardware uses an ITE chip which allows only 1 port to
+> +be plugged in a time. This limitation will be fixed in the upcoming iteration. 
+> +
+> +Chamelium V2 Documentation
+>  -------------
 
-== Series Details ==
+Make the --- the same length as the section title.
 
-Series: Add IGT support for 8K and Bigjoiner
-URL   : https://patchwork.freedesktop.org/series/107254/
-State : success
+>  
+>  Documentation about the Chamelium is made available by Google through the
+> -ChromiumOS projet wiki: https://www.chromium.org/chromium-os/testing/chamelium
+> +Chromium OS projet wiki: https://www.chromium.org/chromium-os/testing/chamelium
+>  
+> -Deploying the Chamelium With IGT
+> +Setting up Chamelium V2
+>  --------------------------------
 
-== Summary ==
+Same here.
 
-CI Bug Log - changes from CI_DRM_12021 -> IGTPW_7682
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7682/index.html
-
-Participating hosts (37 -> 38)
-------------------------------
-
-  Additional (1): fi-kbl-soraka 
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_7682 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@i915_selftest@live@hangcheck:
-    - bat-dg1-6:          [PASS][1] -> [DMESG-FAIL][2] ([i915#4957])
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12021/bat-dg1-6/igt@i915_selftest@live@hangcheck.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7682/bat-dg1-6/igt@i915_selftest@live@hangcheck.html
-
-  * igt@i915_suspend@basic-s3-without-i915:
-    - fi-hsw-4770:        NOTRUN -> [INCOMPLETE][3] ([i915#4817] / [i915#6598])
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7682/fi-hsw-4770/igt@i915_suspend@basic-s3-without-i915.html
-
-  * igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions-varying-size:
-    - fi-bsw-kefka:       [PASS][4] -> [FAIL][5] ([i915#6298])
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12021/fi-bsw-kefka/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions-varying-size.html
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7682/fi-bsw-kefka/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions-varying-size.html
-
-  * igt@runner@aborted:
-    - fi-kbl-soraka:      NOTRUN -> [FAIL][6] ([i915#6219])
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7682/fi-kbl-soraka/igt@runner@aborted.html
-
-  
-#### Possible fixes ####
-
-  * igt@gem_exec_suspend@basic-s3@smem:
-    - {bat-rplp-1}:       [DMESG-WARN][7] ([i915#2867]) -> [PASS][8]
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12021/bat-rplp-1/igt@gem_exec_suspend@basic-s3@smem.html
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7682/bat-rplp-1/igt@gem_exec_suspend@basic-s3@smem.html
-
-  * igt@i915_selftest@live@hangcheck:
-    - fi-hsw-4770:        [INCOMPLETE][9] ([i915#4785]) -> [PASS][10]
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12021/fi-hsw-4770/igt@i915_selftest@live@hangcheck.html
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7682/fi-hsw-4770/igt@i915_selftest@live@hangcheck.html
-
-  * igt@i915_selftest@live@slpc:
-    - {bat-rpls-1}:       [DMESG-FAIL][11] ([i915#6367]) -> [PASS][12]
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12021/bat-rpls-1/igt@i915_selftest@live@slpc.html
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7682/bat-rpls-1/igt@i915_selftest@live@slpc.html
-
-  * igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions:
-    - fi-bsw-kefka:       [FAIL][13] -> [PASS][14]
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12021/fi-bsw-kefka/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions.html
-   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7682/fi-bsw-kefka/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [i915#2867]: https://gitlab.freedesktop.org/drm/intel/issues/2867
-  [i915#4785]: https://gitlab.freedesktop.org/drm/intel/issues/4785
-  [i915#4817]: https://gitlab.freedesktop.org/drm/intel/issues/4817
-  [i915#4957]: https://gitlab.freedesktop.org/drm/intel/issues/4957
-  [i915#6219]: https://gitlab.freedesktop.org/drm/intel/issues/6219
-  [i915#6298]: https://gitlab.freedesktop.org/drm/intel/issues/6298
-  [i915#6367]: https://gitlab.freedesktop.org/drm/intel/issues/6367
-  [i915#6530]: https://gitlab.freedesktop.org/drm/intel/issues/6530
-  [i915#6598]: https://gitlab.freedesktop.org/drm/intel/issues/6598
+With those changed, this is
+Reviewed-by: Petri Latvala <petri.latvala@intel.com>
 
 
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_6636 -> IGTPW_7682
-
-  CI-20190529: 20190529
-  CI_DRM_12021: 078959b4819e4e0ab8cf2965e7bfd98278c0b35d @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_7682: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7682/index.html
-  IGT_6636: 1298b5f0e1b3e010657ffba41d2e775fab028e08 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7682/index.html
-
---===============6293163277839078739==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>Add IGT support for 8K and Bigjoiner</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/107254/">https://patchwork.freedesktop.org/series/107254/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7682/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7682/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from CI_DRM_12021 -&gt; IGTPW_7682</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7682/index.html</p>
-<h2>Participating hosts (37 -&gt; 38)</h2>
-<p>Additional (1): fi-kbl-soraka </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_7682 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@i915_selftest@live@hangcheck:</p>
-<ul>
-<li>bat-dg1-6:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12021/bat-dg1-6/igt@i915_selftest@live@hangcheck.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7682/bat-dg1-6/igt@i915_selftest@live@hangcheck.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4957">i915#4957</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_suspend@basic-s3-without-i915:</p>
-<ul>
-<li>fi-hsw-4770:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7682/fi-hsw-4770/igt@i915_suspend@basic-s3-without-i915.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4817">i915#4817</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/6598">i915#6598</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions-varying-size:</p>
-<ul>
-<li>fi-bsw-kefka:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12021/fi-bsw-kefka/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions-varying-size.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7682/fi-bsw-kefka/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions-varying-size.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6298">i915#6298</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@runner@aborted:</p>
-<ul>
-<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7682/fi-kbl-soraka/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6219">i915#6219</a>)</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@gem_exec_suspend@basic-s3@smem:</p>
-<ul>
-<li>{bat-rplp-1}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12021/bat-rplp-1/igt@gem_exec_suspend@basic-s3@smem.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2867">i915#2867</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7682/bat-rplp-1/igt@gem_exec_suspend@basic-s3@smem.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@hangcheck:</p>
-<ul>
-<li>fi-hsw-4770:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12021/fi-hsw-4770/igt@i915_selftest@live@hangcheck.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4785">i915#4785</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7682/fi-hsw-4770/igt@i915_selftest@live@hangcheck.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@slpc:</p>
-<ul>
-<li>{bat-rpls-1}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12021/bat-rpls-1/igt@i915_selftest@live@slpc.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6367">i915#6367</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7682/bat-rpls-1/igt@i915_selftest@live@slpc.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions:</p>
-<ul>
-<li>fi-bsw-kefka:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12021/fi-bsw-kefka/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions.html">FAIL</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7682/fi-bsw-kefka/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_6636 -&gt; IGTPW_7682</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_12021: 078959b4819e4e0ab8cf2965e7bfd98278c0b35d @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_7682: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7682/index.html<br />
-  IGT_6636: 1298b5f0e1b3e010657ffba41d2e775fab028e08 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-
-</body>
-</html>
-
---===============6293163277839078739==--
+>  
+> -Instructions from the ChromiumOS wiki detail how to setup the Chamelium:
+> +Instructions from the Chromium OS wiki detail how to setup the Chamelium:
+>  https://www.chromium.org/chromium-os/testing/chamelium#TOC-Setting-up-Chamelium
+>  
+>  The should be followed up until the "Setup your Linux host, DUT and the FPGA"
+> @@ -57,6 +75,9 @@ and then configure eth0 like so:
+>  This document supposes that target PC's network IP has "192.168.1.1/24" and
+>  the Chamelium's network IP has "192.168.1.2/24".
+>  
+> +Deploying the Chamelium With IGT
+> +--------------------------------
+> +
+>  Chamelium support requires setting up dedicated IGT configuration, as explained
+>  in the Core and Chamelium parts of the IGT API Reference in the documentation.
+>  
+> @@ -99,16 +120,11 @@ example (only Chamelium.URL is mandatory):
+>  
+>      # The name of the DRM connector
+>      # The DP-1 of [Chamelium:DP-1] and the HDMI-A-1 of [Chamelium:HDMI-A-1] indicate
+> -    # "connector info type" of /sys/kernel/debug/dri/0/i915_display_info.
+> +    # "connector info type" of /sys/kernel/debug/dri/0/i915_display_info on the DUT.
+>      [Chamelium:DP-1]
+>      # The ChameliumPortID indicates physical port (device) id of a Chamelium Board.
+> -    # A Chamelium daemon program defines these port ids as
+> -    # - DP1 (located next to the HDMI port) = 1
+> -    # - DP2 (located next to the VGA connector) = 2
+> -    # - HDMI = 3
+> -    # - VGA = 4
+> -    # The port ids are defined at:
+> -    # https://chromium.googlesource.com/chromiumos/platform/chameleon/+/master/chameleond/utils/ids.py
+> +    # For Chamelium daemon program definition of these port IDs, check the Port IDs sections below.
+> +    # You should only assign the ports that are physically connected to the DUT.
+>      ChameliumPortID=1
+>  
+>      [Chamelium:HDMI-A-1]
+> @@ -125,6 +141,21 @@ example (only Chamelium.URL is mandatory):
+>      [Chamelium:VGA-1]
+>      ChameliumPortID=4
+>  
+> +Chamelium V2 Port IDs
+> +---------------------
+> +defined at: https://chromium.googlesource.com/chromiumos/platform/chameleon/+/master/chameleond/utils/ids.py
+> +DP1 (located next to the HDMI port) = 1
+> +DP2 (located next to the VGA connector) = 2
+> +HDMI = 3
+> +VGA = 4
+> +
+> +Cv3 Port IDs
+> +---------------------
+> +DP1 (top left) = 0
+> +DP2 (top right) = 1
+> +HDMI1 (bottom left) = 2
+> +HDMI2 (bottom right) = 3
+> +
+>  Running the Chamelium With IGT
+>  ------------------------------
+>  
+> @@ -144,12 +175,18 @@ The XML-RPC Chamelium interface is described here:
+>  https://chromium.googlesource.com/chromiumos/platform/chameleon/+/refs/heads/master/chameleond/interface.py
+>  
+>  Logs that may be useful for debugging can be obtained either by connecting to
+> -the board via SSH or serial console and looking at the daemon logs from
+> +the board via SSH or serial console and looking at the daemon logs/
+> +On V2:
+> +------
+>  /var/log, such as:
+>  $ tail -f /var/log/chameleon*
+> +On V3:
+> +------
+> +Chameleon v3 uses systemd to manage the chameleond service. The logs can be
+> +accessed using  `$ journalctl -u chameleond`, or the  .GetChameleonLogs()  XMLRPC call.
+>  
+> -Daemon Source, Build and Deploy
+> --------------------------------
+> +Daemon Source, Build and Deploy [V2 only]
+> +-----------------------------------------
+>  
+>  Source code for the daemon running on the Chamelium is available at:
+>  https://chromium.googlesource.com/chromiumos/platform/chameleon/
+> @@ -185,12 +222,12 @@ file.
+>  Contributing Changes to the Daemon
+>  ----------------------------------
+>  
+> -Contributions to the Chamelium daemon, just like any contribution to ChromiumOS,
+> +Contributions to the Chamelium daemon, just like any contribution to Chromium OS,
+>  are submitted and reviewed at: https://chromium-review.googlesource.com/
+>  
+> -The ChromiumOS project provides an extensive developer guide:
+> +The Chromium OS project provides an extensive developer guide:
+>  https://chromium.googlesource.com/chromiumos/docs/+/master/developer_guide.md
+> -It assumes running within the ChromiumOS build system. Since this is likely not
+> +It assumes running within the Chromium OS build system. Since this is likely not
+>  the case for contributing to the Chamelium daemon, only the part about
+>  uploading changes is relevant:
+>  https://chromium.googlesource.com/chromiumos/docs/+/master/developer_guide.md#Upload-your-changes-and-get-a-code-review
+> @@ -225,7 +262,6 @@ Future Developments
+>  With the current generation of the hardware platform, support for testing a
+>  number of additional display features could be included as future developments,
+>  including:
+> -* Audio capture from HDMI
+>  * Check all channels are independent from each other
+>  * Playback using more than 2 channels, different sampling rates and different
+>    sample sizes
+> -- 
+> 2.37.0.170.g444d1eabd0-goog
+> 
