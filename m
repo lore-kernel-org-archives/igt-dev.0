@@ -1,18 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from madras.collabora.co.uk (madras.collabora.co.uk [46.235.227.172])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C628110E939
- for <igt-dev@lists.freedesktop.org>; Fri, 19 Aug 2022 19:52:32 +0000 (UTC)
-From: Adrian Larumbe <adrian.larumbe@collabora.com>
-To: petri.latvala@intel.com,
+From: Vinay Belgaumkar <vinay.belgaumkar@intel.com>
+To: intel-gfx@lists.freedesktop.org,
 	igt-dev@lists.freedesktop.org
-Date: Fri, 19 Aug 2022 20:52:18 +0100
-Message-Id: <20220819195218.983998-2-adrian.larumbe@collabora.com>
-In-Reply-To: <20220819195218.983998-1-adrian.larumbe@collabora.com>
-References: <20220819195218.983998-1-adrian.larumbe@collabora.com>
+Date: Thu, 18 Aug 2022 17:37:53 -0700
+Message-Id: <20220819003753.27004-1-vinay.belgaumkar@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v3 2/2] i915/gem_ctx_isolation:: change
- semantics of ctx isolation uAPI
+Subject: [igt-dev] [PATCH i-g-t] i915/guc: Disable i915_pm_rps when SLPC is
+ enabled
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,269 +15,130 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: adrian.larumbe@collabora.com
+Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-ioctl I915_PARAM_HAS_CONTEXT_ISOLATION param is meant to report whether all
-the engines in the system support context isolation, but the way the return
-value was being used did not respect the contract on the uAPI.
+These tests were specifically designed for host Turbo. Skip
+them when SLPC is enabled as they fail frequently. We will look
+to keep adding to SLPC test coverage with these scenarios.
 
-Skip all engine tests for which context isolation is not supported. Also skip
-tests that involve an engine reset if both RCS and CCS engines are present in
-the system. This is because they belong to the same reset domain.
+Bug: https://gitlab.freedesktop.org/drm/intel/-/issues/3963
+Bug: https://gitlab.freedesktop.org/drm/intel/issues/4016
+Bug: https://gitlab.freedesktop.org/drm/intel/issues/5468
+Bug: https://gitlab.freedesktop.org/drm/intel/issues/5831
 
-Signed-Off-By: Adrian Larumbe <adrian.larumbe@collabora.com>
+v2: Add \n for the skip message, and close fd in helper
+
+Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Signed-off-by: Vinay Belgaumkar <vinay.belgaumkar@intel.com>
 ---
- include/drm-uapi/i915_drm.h    |   6 +-
- tests/i915/gem_ctx_isolation.c | 100 +++++++++++++++++++++++----------
- 2 files changed, 72 insertions(+), 34 deletions(-)
+ lib/igt_pm.c             | 17 +++++++++++++++++
+ lib/igt_pm.h             |  1 +
+ tests/i915/i915_pm_rps.c | 29 ++++++++++++++++++++++++-----
+ 3 files changed, 42 insertions(+), 5 deletions(-)
 
-diff --git a/include/drm-uapi/i915_drm.h b/include/drm-uapi/i915_drm.h
-index b4efc96c2edc..0b8fa57b52f9 100644
---- a/include/drm-uapi/i915_drm.h
-+++ b/include/drm-uapi/i915_drm.h
-@@ -691,11 +691,7 @@ typedef struct drm_i915_irq_wait {
-  * rather than default HW values. If true, it also ensures (insofar as HW
-  * supports) that all state set by this context will not leak to any other
-  * context.
-- *
-- * As not every engine across every gen support contexts, the returned
-- * value reports the support of context isolation for individual engines by
-- * returning a bitmask of each engine class set to true if that class supports
-- * isolation.
-+ * 
-  */
- #define I915_PARAM_HAS_CONTEXT_ISOLATION 50
- 
-diff --git a/tests/i915/gem_ctx_isolation.c b/tests/i915/gem_ctx_isolation.c
-index 4233ea5784dc..273a0c9708bb 100644
---- a/tests/i915/gem_ctx_isolation.c
-+++ b/tests/i915/gem_ctx_isolation.c
-@@ -45,6 +45,7 @@ enum {
- 	VCS2 = ENGINE(I915_ENGINE_CLASS_VIDEO, 2),
- 	VCS3 = ENGINE(I915_ENGINE_CLASS_VIDEO, 3),
- 	VECS0 = ENGINE(I915_ENGINE_CLASS_VIDEO_ENHANCE, 0),
-+	CCS0 = ENGINE(I915_ENGINE_CLASS_COMPUTE, 0),
- };
- 
- #define ALL ~0u
-@@ -627,9 +628,40 @@ static void compare_regs(int fd, const struct intel_execution_engine2 *e,
- 		     num_errors, who);
+diff --git a/lib/igt_pm.c b/lib/igt_pm.c
+index 6ebbad33..99251b40 100644
+--- a/lib/igt_pm.c
++++ b/lib/igt_pm.c
+@@ -1202,3 +1202,20 @@ void igt_pm_print_pci_card_runtime_status(void)
+ 		igt_pm_print_pci_dev_runtime_status(__pci_dev_pwrattr[i].pci_dev);
+ 	}
  }
- 
-+static bool
-+engine_has_context_isolation(const struct intel_execution_engine2 *e,
-+			     int gen)
++
++bool i915_is_slpc_enabled(int fd)
 +{
-+	if (gen > 8)
-+		return true;
++	int debugfs_fd = igt_debugfs_dir(fd);
++	char buf[4096] = {};
++	int len;
 +
-+	if (gen >= 6 && gen <= 8 && e->class == I915_ENGINE_CLASS_RENDER)
-+		return true;
++	igt_require(debugfs_fd != -1);
 +
-+	return false;
++	len = igt_debugfs_simple_read(debugfs_fd, "gt/uc/guc_slpc_info", buf, sizeof(buf));
++	close(debugfs_fd);
++
++	if (len < 0)
++		return false;
++	else
++		return strstr(buf, "SLPC state: running");
 +}
-+
-+static bool
-+has_engine_class(const intel_ctx_cfg_t *cfg, unsigned int class)
-+{
-+	const struct i915_engine_class_instance *eci;
-+	unsigned int i;
-+
-+	igt_require(class <= I915_ENGINE_CLASS_COMPUTE);
-+
-+	for (i = 0; i < cfg->num_engines; i++) {
-+		eci = &cfg->engines[i];
-+		if (eci->engine_class == class)
-+			return true;
-+	}
-+
-+	return false;
-+}
-+
- static void nonpriv(int fd, const intel_ctx_cfg_t *cfg,
- 		    const struct intel_execution_engine2 *e,
--		    unsigned int flags)
-+		    unsigned int flags,
-+		    int gen)
- {
- 	static const uint32_t values[] = {
- 		0x0,
-@@ -647,6 +679,7 @@ static void nonpriv(int fd, const intel_ctx_cfg_t *cfg,
+diff --git a/lib/igt_pm.h b/lib/igt_pm.h
+index f28b6ebf..cbbde12b 100644
+--- a/lib/igt_pm.h
++++ b/lib/igt_pm.h
+@@ -79,5 +79,6 @@ void igt_pm_enable_pci_card_runtime_pm(struct pci_device *root,
+ void igt_pm_setup_pci_card_runtime_pm(struct pci_device *pci_dev);
+ void igt_pm_restore_pci_card_runtime_pm(void);
+ void igt_pm_print_pci_card_runtime_status(void);
++bool i915_is_slpc_enabled(int fd);
  
- 	/* Sigh -- hsw: we need cmdparser access to our own registers! */
- 	igt_skip_on(intel_gen(intel_get_drm_devid(fd)) < 8);
-+	igt_require(engine_has_context_isolation(e, gen));
+ #endif /* IGT_PM_H */
+diff --git a/tests/i915/i915_pm_rps.c b/tests/i915/i915_pm_rps.c
+index d06ade27..0f92273d 100644
+--- a/tests/i915/i915_pm_rps.c
++++ b/tests/i915/i915_pm_rps.c
+@@ -914,35 +914,54 @@ igt_main
+ 		igt_install_exit_handler(pm_rps_exit_handler);
+ 	}
  
- 	gem_quiescent_gpu(fd);
- 
-@@ -729,7 +762,8 @@ static void nonpriv(int fd, const intel_ctx_cfg_t *cfg,
- 
- static void isolation(int fd, const intel_ctx_cfg_t *cfg,
- 		      const struct intel_execution_engine2 *e,
--		      unsigned int flags)
-+		      unsigned int flags,
-+		      int gen)
- {
- 	static const uint32_t values[] = {
- 		0x0,
-@@ -743,6 +777,8 @@ static void isolation(int fd, const intel_ctx_cfg_t *cfg,
- 	unsigned int num_values =
- 		flags & (DIRTY1 | DIRTY2) ? ARRAY_SIZE(values) : 1;
- 
-+	igt_require(engine_has_context_isolation(e, gen));
-+
- 	gem_quiescent_gpu(fd);
- 
- 	for (int v = 0; v < num_values; v++) {
-@@ -865,7 +901,8 @@ static void inject_reset_context(int fd, const intel_ctx_cfg_t *cfg,
- 
- static void preservation(int fd, const intel_ctx_cfg_t *cfg,
- 			 const struct intel_execution_engine2 *e,
--			 unsigned int flags)
-+			 unsigned int flags,
-+			 int gen)
- {
- 	static const uint32_t values[] = {
- 		0x0,
-@@ -882,6 +919,8 @@ static void preservation(int fd, const intel_ctx_cfg_t *cfg,
- 	uint64_t ahnd[num_values + 1];
- 	igt_spin_t *spin;
- 
-+	igt_require(engine_has_context_isolation(e, gen));
-+
- 	gem_quiescent_gpu(fd);
- 
- 	ctx[num_values] = intel_ctx_create(fd, cfg);
-@@ -902,8 +941,12 @@ static void preservation(int fd, const intel_ctx_cfg_t *cfg,
- 	gem_close(fd, read_regs(fd, ahnd[num_values], ctx[num_values], e, flags));
- 	igt_spin_free(fd, spin);
- 
--	if (flags & RESET)
-+	if (flags & RESET) {
-+		igt_skip_on(has_engine_class(cfg, I915_ENGINE_CLASS_RENDER) &&
-+			    has_engine_class(cfg, I915_ENGINE_CLASS_COMPUTE));
-+
- 		inject_reset_context(fd, cfg, e);
+-	igt_subtest("basic-api")
++	igt_subtest("basic-api") {
++		igt_skip_on_f(i915_is_slpc_enabled(drm_fd),
++			      "This subtest is not supported when SLPC is enabled\n");
+ 		min_max_config(basic_check, false);
 +	}
  
- 	switch (flags & SLEEP_MASK) {
- 	case NOSLEEP:
-@@ -962,7 +1005,7 @@ static unsigned int __has_context_isolation(int fd)
- 	int value = 0;
+ 	/* Verify the constraints, check if we can reach idle */
+-	igt_subtest("min-max-config-idle")
++	igt_subtest("min-max-config-idle") {
++		igt_skip_on_f(i915_is_slpc_enabled(drm_fd),
++			      "This subtest is not supported when SLPC is enabled\n");
+ 		min_max_config(idle_check, true);
++	}
  
- 	memset(&gp, 0, sizeof(gp));
--	gp.param = 50; /* I915_PARAM_HAS_CONTEXT_ISOLATION */
-+	gp.param = I915_PARAM_HAS_CONTEXT_ISOLATION;
- 	gp.value = &value;
- 
- 	igt_ioctl(fd, DRM_IOCTL_I915_GETPARAM, &gp);
-@@ -971,21 +1014,19 @@ static unsigned int __has_context_isolation(int fd)
- 	return value;
- }
- 
--#define test_each_engine(e, i915, cfg, mask) \
-+#define test_each_engine(e, i915, cfg)	  \
- 	for_each_ctx_cfg_engine(i915, cfg, e) \
--		for_each_if(mask & (1 << (e)->class)) \
--			igt_dynamic_f("%s", (e)->name)
-+		igt_dynamic_f("%s", (e)->name)
- 
- igt_main
- {
--	unsigned int has_context_isolation = 0;
-+	bool has_context_isolation = 0;
- 	const struct intel_execution_engine2 *e;
- 	intel_ctx_cfg_t cfg;
- 	int i915 = -1;
-+	int gen;
- 
- 	igt_fixture {
--		int gen;
--
- 		i915 = drm_open_driver(DRIVER_INTEL);
- 		igt_require_gem(i915);
- 		igt_require(gem_has_contexts(i915));
-@@ -995,6 +1036,7 @@ igt_main
- 		igt_require(has_context_isolation);
- 
- 		gen = intel_gen(intel_get_drm_devid(i915));
-+		igt_require(gen >= 2);
- 
- 		igt_warn_on_f(gen > LAST_KNOWN_GEN,
- 			      "GEN not recognized! Test needs to be updated to run.\n");
-@@ -1006,43 +1048,43 @@ igt_main
+ 	/* Verify the constraints with high load, check if we can reach max */
+ 	igt_subtest("min-max-config-loaded") {
++		igt_skip_on_f(i915_is_slpc_enabled(drm_fd),
++			      "This subtest is not supported when SLPC is enabled\n");
+ 		load_helper_run(HIGH);
+ 		min_max_config(loaded_check, false);
+ 		load_helper_stop();
  	}
  
- 	igt_subtest_with_dynamic("nonpriv") {
--		test_each_engine(e, i915, &cfg, has_context_isolation)
--			nonpriv(i915, &cfg, e, 0);
-+		test_each_engine(e, i915, &cfg)
-+			nonpriv(i915, &cfg, e, 0, gen);
- 	}
+ 	/* Checks if we achieve boost using gem_wait */
+-	igt_subtest("waitboost")
++	igt_subtest("waitboost") {
++		igt_skip_on_f(i915_is_slpc_enabled(drm_fd),
++			      "This subtest is not supported when SLPC is enabled\n");
+ 		waitboost(drm_fd, false);
++	}
  
- 	igt_subtest_with_dynamic("nonpriv-switch") {
--		test_each_engine(e, i915, &cfg, has_context_isolation)
--			nonpriv(i915, &cfg, e, DIRTY2);
-+		test_each_engine(e, i915, &cfg)
-+			nonpriv(i915, &cfg, e, DIRTY2, gen);
- 	}
+ 	igt_describe("Check if the order of fences does not affect waitboosting");
+-	igt_subtest("fence-order")
++	igt_subtest("fence-order") {
++		igt_skip_on_f(i915_is_slpc_enabled(drm_fd),
++			      "This subtest is not supported when SLPC is enabled\n");
+ 		fence_order(drm_fd);
++	}
  
- 	igt_subtest_with_dynamic("clean") {
--		test_each_engine(e, i915, &cfg, has_context_isolation)
--			isolation(i915, &cfg, e, 0);
-+		test_each_engine(e, i915, &cfg)
-+			isolation(i915, &cfg, e, 0, gen);
- 	}
+ 	igt_describe("Check if context reuse does not affect waitboosting");
+-	igt_subtest("engine-order")
++	igt_subtest("engine-order") {
++		igt_skip_on_f(i915_is_slpc_enabled(drm_fd),
++			      "This subtest is not supported when SLPC is enabled\n");
+ 		engine_order(drm_fd);
++	}
  
- 	igt_subtest_with_dynamic("dirty-create") {
--		test_each_engine(e, i915, &cfg, has_context_isolation)
--			isolation(i915, &cfg, e, DIRTY1);
-+		test_each_engine(e, i915, &cfg)
-+			isolation(i915, &cfg, e, DIRTY1, gen);
- 	}
- 
- 	igt_subtest_with_dynamic("dirty-switch") {
--		test_each_engine(e, i915, &cfg, has_context_isolation)
--			isolation(i915, &cfg, e, DIRTY2);
-+		test_each_engine(e, i915, &cfg)
-+			isolation(i915, &cfg, e, DIRTY2, gen);
- 	}
- 
- 	igt_subtest_with_dynamic("preservation") {
--		test_each_engine(e, i915, &cfg, has_context_isolation)
--			preservation(i915, &cfg, e, 0);
-+		test_each_engine(e, i915, &cfg)
-+			preservation(i915, &cfg, e, 0, gen);
- 	}
- 
- 	igt_subtest_with_dynamic("preservation-S3") {
--		test_each_engine(e, i915, &cfg, has_context_isolation)
--			preservation(i915, &cfg, e, S3);
-+		test_each_engine(e, i915, &cfg)
-+			preservation(i915, &cfg, e, S3, gen);
- 	}
- 
- 	igt_subtest_with_dynamic("preservation-S4") {
--		test_each_engine(e, i915, &cfg, has_context_isolation)
--			preservation(i915, &cfg, e, S4);
-+		test_each_engine(e, i915, &cfg)
-+			preservation(i915, &cfg, e, S4, gen);
- 	}
- 
- 	igt_fixture {
-@@ -1052,8 +1094,8 @@ igt_main
- 	igt_subtest_with_dynamic("preservation-reset") {
- 		igt_hang_t hang = igt_allow_hang(i915, 0, 0);
- 
--		test_each_engine(e, i915, &cfg, has_context_isolation)
--			preservation(i915, &cfg, e, RESET);
-+		test_each_engine(e, i915, &cfg)
-+			preservation(i915, &cfg, e, RESET, gen);
- 
- 		igt_disallow_hang(i915, hang);
+ 	/* Test boost frequency after GPU reset */
+ 	igt_subtest("reset") {
+ 		igt_hang_t hang = igt_allow_hang(drm_fd, 0, 0);
++		igt_skip_on_f(i915_is_slpc_enabled(drm_fd),
++			      "This subtest is not supported when SLPC is enabled\n");
+ 		waitboost(drm_fd, true);
+ 		igt_disallow_hang(drm_fd, hang);
  	}
 -- 
-2.37.0
+2.35.1
