@@ -1,13 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-From: Vinay Belgaumkar <vinay.belgaumkar@intel.com>
-To: intel-gfx@lists.freedesktop.org,
-	igt-dev@lists.freedesktop.org
-Date: Thu, 18 Aug 2022 17:37:53 -0700
-Message-Id: <20220819003753.27004-1-vinay.belgaumkar@intel.com>
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 592C110E394
+ for <igt-dev@lists.freedesktop.org>; Fri, 19 Aug 2022 09:14:35 +0000 (UTC)
+From: "Hogander, Jouni" <jouni.hogander@intel.com>
+To: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "B,
+ Jeevan" <jeevan.b@intel.com>
+Date: Fri, 19 Aug 2022 09:14:31 +0000
+Message-ID: <cf7809a694a29a62f61f5894d00ff0940ea5ab76.camel@intel.com>
+References: <20220817060536.10553-1-jeevan.b@intel.com>
+In-Reply-To: <20220817060536.10553-1-jeevan.b@intel.com>
+Content-Language: en-US
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <89728900D13E6146A92032ACD9EF06E0@namprd11.prod.outlook.com>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t] i915/guc: Disable i915_pm_rps when SLPC is
- enabled
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/i915/kms_psr2_su: Convert tests
+ to dynamic
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -15,130 +23,87 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Cc: "Gupta, Nidhi1" <nidhi1.gupta@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-These tests were specifically designed for host Turbo. Skip
-them when SLPC is enabled as they fail frequently. We will look
-to keep adding to SLPC test coverage with these scenarios.
-
-Bug: https://gitlab.freedesktop.org/drm/intel/-/issues/3963
-Bug: https://gitlab.freedesktop.org/drm/intel/issues/4016
-Bug: https://gitlab.freedesktop.org/drm/intel/issues/5468
-Bug: https://gitlab.freedesktop.org/drm/intel/issues/5831
-
-v2: Add \n for the skip message, and close fd in helper
-
-Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Signed-off-by: Vinay Belgaumkar <vinay.belgaumkar@intel.com>
----
- lib/igt_pm.c             | 17 +++++++++++++++++
- lib/igt_pm.h             |  1 +
- tests/i915/i915_pm_rps.c | 29 ++++++++++++++++++++++++-----
- 3 files changed, 42 insertions(+), 5 deletions(-)
-
-diff --git a/lib/igt_pm.c b/lib/igt_pm.c
-index 6ebbad33..99251b40 100644
---- a/lib/igt_pm.c
-+++ b/lib/igt_pm.c
-@@ -1202,3 +1202,20 @@ void igt_pm_print_pci_card_runtime_status(void)
- 		igt_pm_print_pci_dev_runtime_status(__pci_dev_pwrattr[i].pci_dev);
- 	}
- }
-+
-+bool i915_is_slpc_enabled(int fd)
-+{
-+	int debugfs_fd = igt_debugfs_dir(fd);
-+	char buf[4096] = {};
-+	int len;
-+
-+	igt_require(debugfs_fd != -1);
-+
-+	len = igt_debugfs_simple_read(debugfs_fd, "gt/uc/guc_slpc_info", buf, sizeof(buf));
-+	close(debugfs_fd);
-+
-+	if (len < 0)
-+		return false;
-+	else
-+		return strstr(buf, "SLPC state: running");
-+}
-diff --git a/lib/igt_pm.h b/lib/igt_pm.h
-index f28b6ebf..cbbde12b 100644
---- a/lib/igt_pm.h
-+++ b/lib/igt_pm.h
-@@ -79,5 +79,6 @@ void igt_pm_enable_pci_card_runtime_pm(struct pci_device *root,
- void igt_pm_setup_pci_card_runtime_pm(struct pci_device *pci_dev);
- void igt_pm_restore_pci_card_runtime_pm(void);
- void igt_pm_print_pci_card_runtime_status(void);
-+bool i915_is_slpc_enabled(int fd);
- 
- #endif /* IGT_PM_H */
-diff --git a/tests/i915/i915_pm_rps.c b/tests/i915/i915_pm_rps.c
-index d06ade27..0f92273d 100644
---- a/tests/i915/i915_pm_rps.c
-+++ b/tests/i915/i915_pm_rps.c
-@@ -914,35 +914,54 @@ igt_main
- 		igt_install_exit_handler(pm_rps_exit_handler);
- 	}
- 
--	igt_subtest("basic-api")
-+	igt_subtest("basic-api") {
-+		igt_skip_on_f(i915_is_slpc_enabled(drm_fd),
-+			      "This subtest is not supported when SLPC is enabled\n");
- 		min_max_config(basic_check, false);
-+	}
- 
- 	/* Verify the constraints, check if we can reach idle */
--	igt_subtest("min-max-config-idle")
-+	igt_subtest("min-max-config-idle") {
-+		igt_skip_on_f(i915_is_slpc_enabled(drm_fd),
-+			      "This subtest is not supported when SLPC is enabled\n");
- 		min_max_config(idle_check, true);
-+	}
- 
- 	/* Verify the constraints with high load, check if we can reach max */
- 	igt_subtest("min-max-config-loaded") {
-+		igt_skip_on_f(i915_is_slpc_enabled(drm_fd),
-+			      "This subtest is not supported when SLPC is enabled\n");
- 		load_helper_run(HIGH);
- 		min_max_config(loaded_check, false);
- 		load_helper_stop();
- 	}
- 
- 	/* Checks if we achieve boost using gem_wait */
--	igt_subtest("waitboost")
-+	igt_subtest("waitboost") {
-+		igt_skip_on_f(i915_is_slpc_enabled(drm_fd),
-+			      "This subtest is not supported when SLPC is enabled\n");
- 		waitboost(drm_fd, false);
-+	}
- 
- 	igt_describe("Check if the order of fences does not affect waitboosting");
--	igt_subtest("fence-order")
-+	igt_subtest("fence-order") {
-+		igt_skip_on_f(i915_is_slpc_enabled(drm_fd),
-+			      "This subtest is not supported when SLPC is enabled\n");
- 		fence_order(drm_fd);
-+	}
- 
- 	igt_describe("Check if context reuse does not affect waitboosting");
--	igt_subtest("engine-order")
-+	igt_subtest("engine-order") {
-+		igt_skip_on_f(i915_is_slpc_enabled(drm_fd),
-+			      "This subtest is not supported when SLPC is enabled\n");
- 		engine_order(drm_fd);
-+	}
- 
- 	/* Test boost frequency after GPU reset */
- 	igt_subtest("reset") {
- 		igt_hang_t hang = igt_allow_hang(drm_fd, 0, 0);
-+		igt_skip_on_f(i915_is_slpc_enabled(drm_fd),
-+			      "This subtest is not supported when SLPC is enabled\n");
- 		waitboost(drm_fd, true);
- 		igt_disallow_hang(drm_fd, hang);
- 	}
--- 
-2.35.1
+T24gV2VkLCAyMDIyLTA4LTE3IGF0IDExOjM1ICswNTMwLCBKZWV2YW4gQiB3cm90ZToNCj4gQ29u
+dmVydGluZyB0aGUgZXhpc3Rpbmcgc3VidGVzdHMgdG8gZHluYW1pYyBzdWJ0ZXN0cy4NCg0KQ2Fu
+IHlvdSBwbGVhc2UgYWRkIGEgYml0IG1vcmUgb24gd2h5IHlvdSBhcmUgZG9pbmcgdGhpcy4gQWxz
+byB5b3UgYXJlDQpub3cgYWRkaW5nIG93biBzdWJ0ZXN0IGZvciBlYWNoIHBpcGU/IE1heWJlIGNv
+dXBsZSBvZiB3b3JkcyBhYm91dCB0aGF0DQphbHNvLg0KIA0KPiANCj4gU2lnbmVkLW9mZi1ieTog
+SmVldmFuIEIgPGplZXZhbi5iQGludGVsLmNvbT4NCj4gLS0tDQo+ICB0ZXN0cy9pOTE1L2ttc19w
+c3IyX3N1LmMgfCA2NCArKysrKysrKysrKysrKysrKysrKysrKysrLS0tLS0tLS0tLS0tLQ0KPiAt
+LQ0KPiAgMSBmaWxlIGNoYW5nZWQsIDQxIGluc2VydGlvbnMoKyksIDIzIGRlbGV0aW9ucygtKQ0K
+PiANCj4gZGlmZiAtLWdpdCBhL3Rlc3RzL2k5MTUva21zX3BzcjJfc3UuYyBiL3Rlc3RzL2k5MTUv
+a21zX3BzcjJfc3UuYw0KPiBpbmRleCBjYWNjZjcxMy4uZmNjMzEwNWIgMTAwNjQ0DQo+IC0tLSBh
+L3Rlc3RzL2k5MTUva21zX3BzcjJfc3UuYw0KPiArKysgYi90ZXN0cy9pOTE1L2ttc19wc3IyX3N1
+LmMNCj4gQEAgLTEyMyw5ICsxMjMsMTUgQEAgc3RhdGljIHZvaWQgZGlzcGxheV9maW5pKGRhdGFf
+dCAqZGF0YSkNCj4gIAlpZ3RfZGlzcGxheV9maW5pKCZkYXRhLT5kaXNwbGF5KTsNCj4gIH0NCj4g
+IA0KPiAtc3RhdGljIHZvaWQgcHJlcGFyZShkYXRhX3QgKmRhdGEpDQo+ICtzdGF0aWMgdm9pZCBw
+cmVwYXJlKGRhdGFfdCAqZGF0YSwgZW51bSBwaXBlIHBpcGUpDQo+ICB7DQo+ICAJaWd0X3BsYW5l
+X3QgKnByaW1hcnk7DQo+ICsJaWd0X291dHB1dF90ICpvdXRwdXQ7DQo+ICsJaWd0X2Rpc3BsYXlf
+dCAqZGlzcGxheSA9ICZkYXRhLT5kaXNwbGF5Ow0KPiArDQo+ICsJaWd0X2Rpc3BsYXlfcmVzZXQo
+ZGlzcGxheSk7DQo+ICsJb3V0cHV0ID0gZGF0YS0+b3V0cHV0Ow0KPiArCWlndF9vdXRwdXRfc2V0
+X3BpcGUob3V0cHV0LCBwaXBlKTsNCj4gIA0KPiAgCS8qIGFsbCBncmVlbiBmcmFtZSAqLw0KPiAg
+CWlndF9jcmVhdGVfY29sb3JfZmIoZGF0YS0+ZHJtX2ZkLA0KPiBAQCAtMjYzLDYgKzI2OSw3IEBA
+IHN0YXRpYyB2b2lkIGNsZWFudXAoZGF0YV90ICpkYXRhKQ0KPiAgaWd0X21haW4NCj4gIHsNCj4g
+IAlkYXRhX3QgZGF0YSA9IHt9Ow0KPiArCWVudW0gcGlwZSBwaXBlOw0KPiAgDQo+ICAJaWd0X2Zp
+eHR1cmUgew0KPiAgCQlzdHJ1Y3QgaXRpbWVyc3BlYyBpbnRlcnZhbDsNCj4gQEAgLTI4NywxMiAr
+Mjk0LDE3IEBAIGlndF9tYWluDQo+ICAJCQkgICAgICAiRXJyb3IgZW5hYmxpbmcgUFNSMlxuIik7
+DQo+ICAJCWRhdGEub3AgPSBGUk9OVEJVRkZFUjsNCj4gIAkJZGF0YS5mb3JtYXQgPSBEUk1fRk9S
+TUFUX1hSR0I4ODg4Ow0KPiAtCQlwcmVwYXJlKCZkYXRhKTsNCj4gLQkJciA9IHBzcl93YWl0X2Vu
+dHJ5KGRhdGEuZGVidWdmc19mZCwgUFNSX01PREVfMik7DQo+IC0JCWNsZWFudXAoJmRhdGEpOw0K
+PiAtCQlpZiAoIXIpDQo+IC0JCQlwc3JfcHJpbnRfZGVidWdmcyhkYXRhLmRlYnVnZnNfZmQpOw0K
+PiAtCQlpZ3RfcmVxdWlyZV9mKHIsICJQU1IyIGNhbiBub3QgYmUgZW5hYmxlZFxuIik7DQo+ICsN
+Cj4gKwkJZm9yX2VhY2hfcGlwZV93aXRoX3ZhbGlkX291dHB1dCgmZGF0YS5kaXNwbGF5LCBwaXBl
+LA0KPiBkYXRhLm91dHB1dCkgew0KPiArCQkJaWYgKHBpcGUgIT0gUElQRV9BKQ0KPiArCQkJCWJy
+ZWFrOw0KDQpJc24ndCAiY29udGludWUiIG1vcmUgY29ycmVjdCBoZXJlPyBXaHkgY2FuJ3QgeW91
+IGp1c3QgZG8NCnByZXBhcmUoJmRhdGEsIFBJUEVfQSkgYXMgYW55d2F5cyB5b3VyIGxvb3AgaXMg
+ZG9pbmcgdGhhdD8gTWF5YmUgYWRkaW5nDQptb3JlIGRlc2NyaXB0aXZlIGNvbW1pdCBtZXNzYWdl
+IHdvdWxkIGhlbHAgbWUgdG8gdW5kZXJzdGFuZCB3aGF0IHlvdQ0KYXJlIGRvaW5nIGhlcmUgYW5k
+IHdoeS4NCg0KPiArCQkJcHJlcGFyZSgmZGF0YSwgcGlwZSk7DQo+ICsJCQlyID0gcHNyX3dhaXRf
+ZW50cnkoZGF0YS5kZWJ1Z2ZzX2ZkLA0KPiBQU1JfTU9ERV8yKTsNCj4gKwkJCWNsZWFudXAoJmRh
+dGEpOw0KPiArCQkJaWYgKCFyKQ0KPiArCQkJCXBzcl9wcmludF9kZWJ1Z2ZzKGRhdGEuZGVidWdm
+c19mZCk7DQo+ICsJCQlpZ3RfcmVxdWlyZV9mKHIsICJQU1IyIGNhbiBub3QgYmUgZW5hYmxlZFxu
+Iik7DQo+ICsJCX0NCj4gIA0KPiAgCQkvKiBibG9ja2luZyB0aW1lcmZkICovDQo+ICAJCWRhdGEu
+Y2hhbmdlX3NjcmVlbl90aW1lcmZkID0NCj4gdGltZXJmZF9jcmVhdGUoQ0xPQ0tfTU9OT1RPTklD
+LCAwKTsNCj4gQEAgLTMxMiwyMyArMzI0LDI5IEBAIGlndF9tYWluDQo+ICAJCXdoaWxlICgqZm9y
+bWF0ICE9IERSTV9GT1JNQVRfSU5WQUxJRCkgew0KPiAgCQkJZGF0YS5mb3JtYXQgPSAqZm9ybWF0
+Kys7DQo+ICAJCQlpZ3RfZGVzY3JpYmUoIlRlc3QgdGhhdCBzZWxlY3RpdmUgdXBkYXRlIHdvcmtz
+DQo+IHdoZW4gc2NyZWVuIGNoYW5nZXMiKTsNCj4gLQkJCWlndF9zdWJ0ZXN0X2YoIiVzLSVzIiwg
+b3Bfc3RyKGRhdGEub3ApLA0KPiBpZ3RfZm9ybWF0X3N0cihkYXRhLmZvcm1hdCkpIHsNCj4gLQkJ
+CQlpZiAoZGF0YS5vcCA9PSBGUk9OVEJVRkZFUiAmJg0KPiAtCQkJCSAgICBpbnRlbF9kaXNwbGF5
+X3ZlcihpbnRlbF9nZXRfZHJtX2Rldg0KPiBpZChkYXRhLmRybV9mZCkpID49IDEyKSB7DQo+IC0J
+CQkJCS8qDQo+IC0JCQkJCSAqIEZJWE1FOiBEaXNwbGF5IDEyKyBwbGF0Zm9ybXMNCj4gbm93IGhh
+dmUgUFNSMg0KPiAtCQkJCQkgKiBzZWxlY3RpdmUgZmV0Y2ggZW5hYmxlZCBieQ0KPiBkZWZhdWx0
+IGJ1dCB3ZQ0KPiAtCQkJCQkgKiBzdGlsbCBjYW4ndCBwcm9wZXJseSBoYW5kbGUNCj4gZnJvbnRi
+dWZmZXINCj4gLQkJCQkJICogcmVuZGVyaW5nLCBzbyByaWdodCBpdCBkb2VzDQo+IGZ1bGwgZnJh
+bWUNCj4gLQkJCQkJICogZmV0Y2hlcyBhdCBldmVyeSBmcm9udGJ1ZmZlcg0KPiByZW5kZXJpbmcu
+DQo+IC0JCQkJCSAqIFNvIGl0IGlzIGV4cGVjdGVkIHRoYXQgdGhpcw0KPiB0ZXN0IHdpbGwgZmFp
+bA0KPiAtCQkJCQkgKiBpbiBkaXNwbGF5IDEyKyBwbGF0Zm9ybSBmb3INCj4gbm93Lg0KPiAtCQkJ
+CQkgKi8NCj4gLQkJCQkJaWd0X3NraXAoIlBTUjIgc2VsZWN0aXZlIGZldGNoDQo+IGlzIGRvaW5n
+IGZ1bGwgZnJhbWUgZmV0Y2hlcyBmb3IgZnJvbnRidWZmZXIgcmVuZGVyaW5nXG4iKTsNCj4gKwkJ
+CWlndF9zdWJ0ZXN0X3dpdGhfZHluYW1pY19mKCIlcy0lcyIsDQo+IG9wX3N0cihkYXRhLm9wKSwg
+aWd0X2Zvcm1hdF9zdHIoZGF0YS5mb3JtYXQpKSB7DQo+ICsJCQkJZm9yX2VhY2hfcGlwZV93aXRo
+X3ZhbGlkX291dHB1dCgmZGF0YS5kDQo+IGlzcGxheSwgcGlwZSwgZGF0YS5vdXRwdXQpIHsNCj4g
+KwkJCQkJaWYgKHBpcGUgIT0gUElQRV9BKQ0KPiArCQkgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgIGJyZWFrOw0KDQpTYW1lIGNvbW1lbnQgaGVyZSBhcyBhYm92ZS4NCg0KPiArCQkJCQlp
+Z3RfZHluYW1pY19mKCJwaXBlLSVzIiwNCj4ga21zdGVzdF9waXBlX25hbWUocGlwZSkpIHsNCj4g
+KwkJCQkJCWlmIChkYXRhLm9wID09DQo+IEZST05UQlVGRkVSICYmDQo+ICsJCQkJCQkgICAgaW50
+ZWxfZGlzcGxheV92ZXIoaQ0KPiBudGVsX2dldF9kcm1fZGV2aWQoZGF0YS5kcm1fZmQpKSA+PSAx
+Mikgew0KPiArCQkJCQkJLyoNCj4gKwkJCQkJCSAqIEZJWE1FOiBEaXNwbGF5IDEyKw0KPiBwbGF0
+Zm9ybXMgbm93IGhhdmUgUFNSMg0KPiArCQkJCQkJICogc2VsZWN0aXZlIGZldGNoDQo+IGVuYWJs
+ZWQgYnkgZGVmYXVsdCBidXQgd2UNCj4gKwkJCQkJCSAqIHN0aWxsIGNhbid0IHByb3Blcmx5DQo+
+IGhhbmRsZSBmcm9udGJ1ZmZlcg0KPiArCQkJCQkJICogcmVuZGVyaW5nLCBzbyByaWdodA0KPiBp
+dCBkb2VzIGZ1bGwgZnJhbWUNCj4gKwkJCQkJCSAqIGZldGNoZXMgYXQgZXZlcnkNCj4gZnJvbnRi
+dWZmZXIgcmVuZGVyaW5nLg0KPiArCQkJCQkJICogU28gaXQgaXMgZXhwZWN0ZWQNCj4gdGhhdCB0
+aGlzIHRlc3Qgd2lsbCBmYWlsDQo+ICsJCQkJCQkgKiBpbiBkaXNwbGF5IDEyKw0KPiBwbGF0Zm9y
+bSBmb3Igbm93Lg0KPiArCQkJCQkJICovDQo+ICsJCQkJCQlpZ3Rfc2tpcCgiUFNSMg0KPiBzZWxl
+Y3RpdmUgZmV0Y2ggaXMgZG9pbmcgZnVsbCBmcmFtZSBmZXRjaGVzIGZvciBmcm9udGJ1ZmZlcg0K
+PiByZW5kZXJpbmdcbiIpOw0KPiArCQkJCQkJfQ0KPiArCQkJCQlwcmVwYXJlKCZkYXRhLCBwaXBl
+KTsNCj4gKwkJCQkJcnVuKCZkYXRhKTsNCj4gKwkJCQkJY2xlYW51cCgmZGF0YSk7DQo+ICsJCQkJ
+CX0NCj4gIAkJCQl9DQo+IC0JCQkJcHJlcGFyZSgmZGF0YSk7DQo+IC0JCQkJcnVuKCZkYXRhKTsN
+Cj4gLQkJCQljbGVhbnVwKCZkYXRhKTsNCj4gIAkJCX0NCj4gIAkJfQ0KPiAgCX0NCg0KQlIsDQoN
+CkpvdW5pIEjDtmdhbmRlcg0K
