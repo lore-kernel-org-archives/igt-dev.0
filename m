@@ -1,16 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DB4B4A726C
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1296AA7259
  for <igt-dev@lists.freedesktop.org>; Mon, 22 Aug 2022 23:57:06 +0000 (UTC)
 From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Mon, 22 Aug 2022 23:56:52 +0000
-Message-Id: <20220822235657.280702-19-umesh.nerlige.ramappa@intel.com>
+Date: Mon, 22 Aug 2022 23:56:46 +0000
+Message-Id: <20220822235657.280702-13-umesh.nerlige.ramappa@intel.com>
 In-Reply-To: <20220822235657.280702-1-umesh.nerlige.ramappa@intel.com>
 References: <20220822235657.280702-1-umesh.nerlige.ramappa@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 18/23] i915/perf: Fix DG2 A0 report header
+Subject: [igt-dev] [PATCH i-g-t 12/23] i915/perf: Skip tests that use
+ rendercopy
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,83 +23,56 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Timestamp is still 32 bits in DG2 A0. Fix that. Specify variants of DG2
-that have the OA format header bug
+Running tests that require rendercopy sometimes leaves the DUT in an
+unsusable state. Further tests fail to run and DUT requires reboot.
+Since it affects CI efficiency, skip tests is rendercopy is missing.
 
 Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 ---
- tests/i915/perf.c | 45 ++++++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 44 insertions(+), 1 deletion(-)
+ tests/i915/perf.c | 17 ++++++++++++++++-
+ 1 file changed, 16 insertions(+), 1 deletion(-)
 
 diff --git a/tests/i915/perf.c b/tests/i915/perf.c
-index 52de5d38..6951735b 100644
+index ba8c3792..85f3c5de 100644
 --- a/tests/i915/perf.c
 +++ b/tests/i915/perf.c
-@@ -40,6 +40,7 @@
- 
+@@ -41,6 +41,7 @@
  #include "i915/gem.h"
  #include "i915/perf.h"
-+#include "i915_pciids.h"
  #include "igt.h"
- #include "igt_perf.h"
++#include "igt_perf.h"
  #include "igt_sysfs.h"
-@@ -503,6 +504,47 @@ cs_timestamp_frequency(int fd)
+ #include "drm.h"
+ 
+@@ -5025,6 +5026,19 @@ static int i915_perf_revision(int fd)
  	return value;
  }
  
-+/*
-+ * Hacky ways until IGT is fully aware of steppings:
-+ *
-+ * WA is permanent for G11. For other DG2s, bug is fixed from B0 onwards.
-+ * Steps A0 and A1 correspond to 0 and 1 revid values.
-+ */
-+struct perf_dev_info {
-+	bool is_dg2_g11;
-+};
-+
-+static const struct perf_dev_info dg2_g11_info = {
-+	.is_dg2_g11 = true,
-+};
-+
-+static const struct pci_id_match perf_dev_match[] = {
-+	INTEL_DG2_G11_IDS(&dg2_g11_info),
-+};
-+
-+static const struct perf_dev_info *__dev_info(uint32_t device_id)
++static bool has_class_instance(int i915, uint16_t class, uint16_t instance)
 +{
-+	static const struct perf_dev_info *cache;
-+	static int _iter;
++	int fd;
 +
-+	if (_iter)
-+		goto out;
++	fd = perf_i915_open(i915, I915_PMU_ENGINE_BUSY(class, instance));
++	if (fd >= 0) {
++		close(fd);
++		return true;
++	}
 +
-+	for (_iter = 0; _iter < ARRAY_SIZE(perf_dev_match); _iter++)
-+		if (device_id == perf_dev_match[_iter].device_id)
-+			cache = (void *) perf_dev_match[_iter].match_data;
-+
-+out:
-+	return cache;
++	return false;
 +}
 +
-+#define IS_DG2_G11(__d) (__dev_info(__d) ? __dev_info(__d)->is_dg2_g11 : false)
-+#define IS_DG2_A0(__d) (IS_DG2(__d) && (intel_perf->devinfo.revision == 0))
-+#define IS_DG2_A1(__d) (IS_DG2(__d) && (intel_perf->devinfo.revision == 1))
-+
-+#define HAS_OA_FORMAT_64BIT_HDR_BUG(__d) \
-+	(IS_DG2_G11(__d) || IS_DG2_A0(__d) || IS_DG2_A1(__d))
-+
- static uint64_t
- cs_timebase_scale(uint32_t u32_delta)
+ igt_main
  {
-@@ -514,7 +556,8 @@ oa_timestamp(const uint32_t *report, enum drm_i915_oa_format format)
- {
- 	struct oa_format fmt = get_oa_format(format);
+ 	igt_fixture {
+@@ -5069,7 +5083,8 @@ igt_main
  
--	return fmt.report_hdr_64bit ? *(uint64_t *)&report[2] : report[1];
-+	return fmt.report_hdr_64bit && !HAS_OA_FORMAT_64BIT_HDR_BUG(devid) ?
-+		*(uint64_t *)&report[2] : report[1];
- }
+ 		gt_max_freq_mhz = sysfs_read(RPS_RP0_FREQ_MHZ);
  
- static uint64_t
+-		render_copy = igt_get_render_copyfunc(devid);
++		if (has_class_instance(drm_fd, I915_ENGINE_CLASS_RENDER, 0))
++			render_copy = igt_get_render_copyfunc(devid);
+ 	}
+ 
+ 	igt_subtest("non-system-wide-paranoid")
 -- 
 2.25.1
