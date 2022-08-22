@@ -1,14 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2A8D9A7259
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D0DAC112641
  for <igt-dev@lists.freedesktop.org>; Mon, 22 Aug 2022 23:57:04 +0000 (UTC)
 From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Mon, 22 Aug 2022 23:56:34 +0000
-Message-Id: <20220822235657.280702-1-umesh.nerlige.ramappa@intel.com>
+Date: Mon, 22 Aug 2022 23:56:38 +0000
+Message-Id: <20220822235657.280702-5-umesh.nerlige.ramappa@intel.com>
+In-Reply-To: <20220822235657.280702-1-umesh.nerlige.ramappa@intel.com>
+References: <20220822235657.280702-1-umesh.nerlige.ramappa@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 00/23] Add DG2 OA test
+Subject: [igt-dev] [PATCH i-g-t 04/23] i915/perf: Limit sseu-config tests
+ for gen11
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,50 +23,34 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add tests for changes in perf OA for DG2.
+From: "Nerlige Ramappa, Umesh" <umesh.nerlige.ramappa@intel.com>
+
+On Gen11, the Media driver will need to limit dispatch to only big
+subslices (usually half the EUs depending on EU fusing). If media,
+render and OA are running in parallel, then OA will lose the NOA config
+because half of the EUs will be turned off by media. To avoid this with
+concurrent use cases, an sseu config to keep all EUs powered on is
+passed to OA in the i915_perf_open_ioctl params. This configuration is
+made part of the render contexts, so that it's applied when 3d contexts
+are running. Since this is an issue on gen11, limit sseu-config tests to
+gen11.
 
 Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+---
+ tests/i915/perf.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-Lionel Landwerlin (4):
-  lib/i915/perf: implement report accumulation for new format
-  lib/i915/perf: fixup conversion script for XEHPSDV
-  lib/i915/perf: make warning message more helpful
-  lib/i915/perf: Add DG2 metrics
-
-Nerlige Ramappa, Umesh (1):
-  i915/perf: Limit sseu-config tests for gen11
-
-Umesh Nerlige Ramappa (18):
-  i915/perf: Check regularly if we are done reading reports
-  i915/perf: Fix OA short_reads test
-  i915/perf: Check return value from getparam
-  i915/perf: Bump timestamp tolerance for DG1
-  i915/perf: Account for OA sampling interval in polling test
-  i915/perf: Add support for 64-bit counters
-  i915/perf: Define OA report types
-  i915/perf: Use ARRAY_SIZE consistently for num_properties
-  i915/perf: Use gt in perf tests and lib
-  i915/perf: Explicitly state rendercopy needs for a test
-  i915/perf: Skip tests that use rendercopy
-  i915/perf: Add OA formats for DG2
-  i915/perf: Add a test for non-power-of-2 oa reports
-  i915/perf: Fix CS timestamp vs OA timstamp mismatch
-  i915/perf: Treat ticks as 64 bit
-  i915/perf: Treat timestamp as 64 bit value
-  i915/perf: Fix DG2 A0 report header
-  i915/perf: Wait longer for rc6 residency in DG2
-
- include/drm-uapi/i915_drm.h                   |   12 +
- lib/i915/perf-configs/guids.xml               |   24 +
- lib/i915/perf-configs/mdapi-xml-convert.py    |   70 +-
- lib/i915/perf-configs/oa-dg2.xml              | 9920 +++++++++++++++++
- .../perf-configs/perf-metricset-codegen.py    |   13 +
- lib/i915/perf-configs/update-guids.py         |    2 +-
- lib/i915/perf.c                               |  104 +-
- lib/meson.build                               |    2 +-
- tests/i915/perf.c                             |  623 +-
- 9 files changed, 10589 insertions(+), 181 deletions(-)
- create mode 100644 lib/i915/perf-configs/oa-dg2.xml
-
+diff --git a/tests/i915/perf.c b/tests/i915/perf.c
+index 0b8f6ac8..ca3ccc17 100644
+--- a/tests/i915/perf.c
++++ b/tests/i915/perf.c
+@@ -5112,6 +5112,7 @@ igt_main
+ 	igt_subtest_group {
+ 		igt_fixture {
+ 			igt_require(i915_perf_revision(drm_fd) >= 4);
++			igt_require(intel_gen(devid) == 11);
+ 		}
+ 
+ 		igt_describe("Verify invalid SSEU opening parameters");
 -- 
 2.25.1
