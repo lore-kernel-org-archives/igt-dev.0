@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0F0789A19F
- for <igt-dev@lists.freedesktop.org>; Mon, 22 Aug 2022 06:34:19 +0000 (UTC)
-From: Stanislav Lisovskiy <stanislav.lisovskiy@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Mon, 22 Aug 2022 09:35:02 +0300
-Message-Id: <20220822063502.9477-1-stanislav.lisovskiy@intel.com>
+Content-Type: multipart/alternative;
+ boundary="===============0974434563499458586=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t] tests/i915/i915_pipe_stress: Add plane
- pipes stress test
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Stanislav Lisovskiy" <stanislav.lisovskiy@intel.com>
+Date: Mon, 22 Aug 2022 07:14:20 -0000
+Message-ID: <166115246077.28450.16702877115651712510@emeril.freedesktop.org>
+References: <20220822063502.9477-1-stanislav.lisovskiy@intel.com>
+In-Reply-To: <20220822063502.9477-1-stanislav.lisovskiy@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
+ =?utf-8?q?i915/i915=5Fpipe=5Fstress=3A_Add_plane_pipes_stress_test_=28rev?=
+ =?utf-8?q?4=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,925 +18,399 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: petri.latvala@intel.com
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-This test attempts to utilize all connected
-outputs at the same time, using maximum possible
-resolution and amount of planes, to check whether
-we are hiting any kind of bandwidth, watermark or
-other limitations.
+--===============0974434563499458586==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-v2: Use igt_skip_on to skip unsupported formats in
-    fixture properly.
+== Series Details ==
 
-v3: - Changed to SPDX license
-    - Removed execution engine usage, which seems to
-      be not needed yet here
-    - Fixed some obvious things found, like missing
-      dot and new line after declarations
-    - Added igt_skip_on to igt_fixture to properly
-      skip formats/modifiers, not supported on
-      current platform.
+Series: tests/i915/i915_pipe_stress: Add plane pipes stress test (rev4)
+URL   : https://patchwork.freedesktop.org/series/107027/
+State : success
 
-v4: - Added mutex, as gpu_fill seems to cause some
-      crashes if run from multiple threads.
-    - Some additional info addedy
+== Summary ==
 
-v5: - Removed igt_require_f as it is being called from
-      non-main thread(Petri Latvala)
+CI Bug Log - changes from IGT_6633 -> IGTPW_7666
+====================================================
 
-Signed-off-by: Stanislav Lisovskiy <stanislav.lisovskiy@intel.com>
----
- tests/i915/i915_pipe_stress.c | 865 ++++++++++++++++++++++++++++++++++
- tests/meson.build             |   1 +
- 2 files changed, 866 insertions(+)
- create mode 100644 tests/i915/i915_pipe_stress.c
+Summary
+-------
 
-diff --git a/tests/i915/i915_pipe_stress.c b/tests/i915/i915_pipe_stress.c
-new file mode 100644
-index 0000000000..d410471307
---- /dev/null
-+++ b/tests/i915/i915_pipe_stress.c
-@@ -0,0 +1,865 @@
-+/* SPDX-License-Identifier: MIT */
-+/*
-+ * Copyright © 2021 Intel Corporation
-+ */
-+
-+#include "igt.h"
-+#include "igt_rand.h"
-+#include "gpgpu_fill.h"
-+#include "drmtest.h"
-+#include "sw_sync.h"
-+#include <errno.h>
-+#include <pthread.h>
-+#include <stdbool.h>
-+#include <stdio.h>
-+#include <string.h>
-+#include <time.h>
-+#include <poll.h>
-+#include <pthread.h>
-+#include <semaphore.h>
-+#include "i915/gem.h"
-+
-+IGT_TEST_DESCRIPTION("Stress test how gpu and cpu behaves if maximum amount of planes, "
-+		     "cpu and gpu utilization is achieved in order to reveal possible "
-+		     "bandwidth/watermark and similar problems.");
-+
-+#ifndef DRM_CAP_CURSOR_WIDTH
-+#define DRM_CAP_CURSOR_WIDTH 0x8
-+#endif
-+#ifndef DRM_CAP_CURSOR_HEIGHT
-+#define DRM_CAP_CURSOR_HEIGHT 0x9
-+#endif
-+
-+#define HAS_XELPD(drm_fd) (intel_display_ver(intel_get_drm_devid(drm_fd)) >= 13)
-+
-+#define N_BLITS_PER_FRAME 10
-+
-+#define N_FORMATS 1
-+static const uint32_t formats[N_FORMATS] = {
-+	DRM_FORMAT_XRGB8888,
-+};
-+
-+#define N_TILING_METHODS 2
-+static const uint64_t tilings[N_TILING_METHODS] = {
-+	DRM_FORMAT_MOD_LINEAR,
-+	I915_FORMAT_MOD_Y_TILED,
-+};
-+
-+static const char *format_str(int format_index)
-+{
-+	switch (formats[format_index]) {
-+	case DRM_FORMAT_RGB565:
-+		return "rgb565";
-+	case DRM_FORMAT_XRGB8888:
-+		return "xrgb8888";
-+	case DRM_FORMAT_XRGB2101010:
-+		return "xrgb2101010";
-+	default:
-+		igt_assert(false);
-+	}
-+}
-+
-+static const char *tiling_str(int tiling_index)
-+{
-+	switch (tilings[tiling_index]) {
-+	case DRM_FORMAT_MOD_LINEAR:
-+		return "untiled";
-+	case I915_FORMAT_MOD_X_TILED:
-+		return "xtiled";
-+	case I915_FORMAT_MOD_Y_TILED:
-+		return "ytiled";
-+	default:
-+		igt_assert(false);
-+	}
-+}
-+
-+
-+#define MAX_CORES 8
-+#define MAX_PLANES 16
-+
-+struct data;
-+
-+struct thread_context {
-+	struct data *data;
-+	int id;
-+	void *buf1;
-+	void *buf2;
-+};
-+
-+struct rect {
-+	int x;
-+	int y;
-+	int w;
-+	int h;
-+};
-+
-+struct gpu_context {
-+	struct data *data;
-+	int pipe;
-+	int color;
-+	int num_rectangles;
-+	struct intel_buf *buf;
-+	struct igt_fb *fb_ptr;
-+	struct rect blt_rect;
-+	struct intel_batchbuffer *batch;
-+};
-+
-+enum {
-+	RUNNING,
-+	STOPPED,
-+	PAUSED,
-+	LAST_STATE = PAUSED
-+} thread_state;
-+
-+struct data {
-+	int drm_fd;
-+	igt_display_t display;
-+	int num_planes[IGT_MAX_PIPES];
-+	uint32_t format;
-+	uint64_t modifier;
-+	uint32_t devid;
-+	struct buf_ops *bops;
-+	drm_intel_bufmgr *bufmgr;
-+	drmModeModeInfo *last_mode[IGT_MAX_PIPES];
-+	struct igt_fb fb[IGT_MAX_PIPES * MAX_PLANES];
-+	struct igt_fb cursor_fb[IGT_MAX_PIPES];
-+	pthread_t cpu_thread[MAX_CORES];
-+	pthread_t gpu_thread[IGT_MAX_PIPES];
-+	bool cpu_thread_stop[MAX_CORES];
-+	int gpu_thread_state[IGT_MAX_PIPES];
-+	sem_t gpu_thread_pause_ack[IGT_MAX_PIPES];
-+	struct thread_context cpu_context[MAX_CORES];
-+	struct gpu_context gpu_context[IGT_MAX_PIPES];
-+	pthread_mutex_t gpu_fill_lock;
-+	drmModeModeInfo *highest_mode[IGT_MAX_PIPES];
-+	drmModeConnectorPtr *connectors;
-+	drmModeRes *mode_resources;
-+	int number_of_cores;
-+	igt_pipe_crc_t *pipe_crc[IGT_MAX_PIPES];
-+};
-+
-+static void stop_gpu_threads(struct data *data);
-+static void start_gpu_threads(struct data *data);
-+
-+struct base_crc {
-+	bool set;
-+	igt_crc_t crc;
-+};
-+
-+#define BUF_SIZE (128 * 1024 * 1024)
-+
-+static void *cpu_load(void *d)
-+{
-+	char *buf1, *buf2;
-+	struct thread_context *context = (struct thread_context *)d;
-+	struct data *data = context->data;
-+
-+	buf1 = context->buf1;
-+	buf2 = context->buf2;
-+
-+	data->cpu_thread_stop[context->id] = false;
-+
-+	igt_info("CPU thread cpu id %d start\n", context->id);
-+
-+	/* Just to make CPU busy... */
-+	while (!data->cpu_thread_stop[context->id]) {
-+		memcpy(buf1, buf2, BUF_SIZE);
-+		memcpy(buf2, buf1, BUF_SIZE);
-+	}
-+
-+	igt_info("CPU thread cpu id %d stop\n", context->id);
-+
-+	return NULL;
-+}
-+
-+static struct intel_buf *
-+create_buf(struct data *data, int width, int height, uint32_t region)
-+{
-+	struct intel_buf *buf;
-+	uint32_t handle;
-+
-+	buf = calloc(1, sizeof(*buf));
-+	igt_assert(buf);
-+
-+	/*
-+	 * Legacy code uses 32 bpp after buffer creation.
-+	 * Let's do the same due to keep shader intact.
-+	 */
-+	handle = gem_create_in_memory_regions(data->drm_fd, width * height, region);
-+	intel_buf_init_using_handle(data->bops, handle, buf,
-+				    width/4, height, 32, 0,
-+				    I915_TILING_NONE, 0);
-+
-+	return buf;
-+}
-+
-+static void fill_gpu(struct gpu_context *context,
-+		     unsigned int x, unsigned int y,
-+		     unsigned int width, unsigned int height,
-+		     uint8_t color)
-+{
-+	struct data *data = context->data;
-+	igt_fillfunc_t fill_fn = NULL;
-+
-+	pthread_mutex_lock(&data->gpu_fill_lock);
-+
-+	fill_fn = igt_get_gpgpu_fillfunc(data->devid);
-+
-+	igt_assert(context->buf);
-+
-+	fill_fn(data->drm_fd, context->buf, x, y, width, height, color);
-+
-+	pthread_mutex_unlock(&data->gpu_fill_lock);
-+}
-+
-+static void *gpu_load(void *ptr)
-+{
-+	struct gpu_context *context = (struct gpu_context *)ptr;
-+	struct data *data = context->data;
-+	int pipe = context->pipe;
-+	int rect_divisor;
-+	int rect_width;
-+	int rect_height;
-+	int frame_width;
-+	int frame_height;
-+	drmModeModeInfo *mode;
-+	int frame = 0;
-+	int x, y;
-+	int rect = 0, total_rects = 0;
-+	int pixels = 0;
-+
-+	mode = data->highest_mode[pipe];
-+	if (!mode)
-+		return NULL;
-+
-+	frame_width = mode->hdisplay;
-+	frame_height = mode->vdisplay;
-+
-+	igt_info("GPU thread pipe %d start\n", pipe);
-+
-+	context->buf = create_buf(data, data->highest_mode[pipe]->hdisplay,
-+				  data->highest_mode[pipe]->vdisplay,
-+				  INTEL_MEMORY_REGION_ID(I915_SYSTEM_MEMORY, 0));
-+
-+	while (data->gpu_thread_state[pipe] != STOPPED) {
-+
-+		rect = 0;
-+		while (rect < context->num_rectangles) {
-+			/* divide at least by 2 and up to 8 */
-+			int x_rand, y_rand;
-+
-+			rect_divisor = 1 << (hars_petruska_f54_1_random_unsafe_max(3) + 1);
-+
-+			rect_width = frame_width / rect_divisor;
-+			rect_height = frame_height / rect_divisor;
-+
-+			x_rand = hars_petruska_f54_1_random_unsafe_max(frame_width - rect_width);
-+			y_rand = hars_petruska_f54_1_random_unsafe_max(frame_height/2 - rect_height);
-+
-+			context->blt_rect.x = x + x_rand;
-+			context->blt_rect.y = y + y_rand;
-+
-+			/* Fill randomly sized and positioned rectangles */
-+			fill_gpu(context, context->blt_rect.x, context->blt_rect.y,
-+				 context->blt_rect.x + rect_width,
-+				 context->blt_rect.y + rect_height,
-+				 context->color);
-+
-+			context->color += 4;
-+
-+			++rect;
-+
-+			pixels += rect_width * rect_height;
-+		}
-+		++frame;
-+		total_rects += rect;
-+	}
-+
-+	intel_buf_close(data->bops, context->buf);
-+
-+	igt_info("GPU thread pipe %d stop. Frames rendered: %d Rectangles: %d Pixels filled: %d\n",
-+		 pipe, frame, total_rects, pixels);
-+
-+	return NULL;
-+}
-+
-+static inline uint32_t pipe_select(enum pipe pipe)
-+{
-+	if (pipe > 1)
-+		return pipe << DRM_VBLANK_HIGH_CRTC_SHIFT;
-+	else if (pipe > 0)
-+		return DRM_VBLANK_SECONDARY;
-+	else
-+		return 0;
-+}
-+
-+static unsigned get_vblank(int fd, enum pipe pipe, unsigned flags)
-+{
-+	union drm_wait_vblank vbl;
-+
-+	memset(&vbl, 0, sizeof(vbl));
-+	vbl.request.type = DRM_VBLANK_RELATIVE | pipe_select(pipe) | flags;
-+	if (drmIoctl(fd, DRM_IOCTL_WAIT_VBLANK, &vbl))
-+		return 0;
-+
-+	return vbl.reply.sequence;
-+}
-+
-+static int commit_mode(struct data *data, igt_output_t *output,
-+		       enum pipe pipe, drmModeModeInfo *mode)
-+{
-+	int ret;
-+
-+	igt_output_override_mode(output, mode);
-+	igt_output_set_pipe(output, pipe);
-+
-+	ret = igt_display_try_commit_atomic(&data->display,
-+					    DRM_MODE_ATOMIC_TEST_ONLY |
-+					    DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
-+	if (ret) {
-+		igt_warn("Could not commit mode: \n");
-+		kmstest_dump_mode(mode);
-+		return ret;
-+	}
-+
-+	igt_display_commit2(&data->display, COMMIT_ATOMIC);
-+
-+	return 0;
-+}
-+
-+static void cursor_plane_set_fb(igt_plane_t *plane, struct igt_fb *fb,
-+				int width, int height)
-+{
-+	igt_plane_set_fb(plane, fb);
-+	igt_fb_set_size(fb, plane, width, height);
-+}
-+
-+static void universal_plane_set_fb(igt_plane_t *plane, struct igt_fb *fb,
-+				int width, int height)
-+{
-+	igt_plane_set_fb(plane, fb);
-+	igt_plane_set_position(plane, 0, 0);
-+	igt_fb_set_size(fb, plane, width, height);
-+}
-+
-+static bool plane_needs_rotation(int drm_fd, uint64_t modifier, igt_plane_t *plane)
-+{
-+	return !HAS_XELPD(drm_fd) && !IS_DG2(intel_get_drm_devid(drm_fd)) &&
-+		modifier == I915_FORMAT_MOD_Y_TILED &&
-+		plane->type != DRM_PLANE_TYPE_CURSOR;
-+}
-+
-+static int try_plane_scaling(struct data *data, igt_plane_t *plane,
-+			     int width, int height)
-+{
-+	int ret;
-+
-+	if (plane_needs_rotation(data->drm_fd, data->modifier, plane)) {
-+		igt_plane_set_rotation(plane, IGT_ROTATION_90);
-+		igt_plane_set_size(plane, height, width);
-+	} else {
-+		igt_plane_set_size(plane, width, height);
-+	}
-+
-+	ret = igt_display_try_commit_atomic(&data->display,
-+					    DRM_MODE_ATOMIC_TEST_ONLY |
-+					    DRM_MODE_ATOMIC_ALLOW_MODESET,
-+					    NULL);
-+
-+	return ret;
-+}
-+
-+static void cleanup_plane_fbs(struct data *data, enum pipe pipe, int start, int end)
-+{
-+	int i = start;
-+
-+	while (i < end) {
-+		igt_remove_fb(data->display.drm_fd,
-+			      &data->fb[pipe * MAX_PLANES + i]);
-+		data->fb[pipe * MAX_PLANES + i].fb_id = 0;
-+		i++;
-+	}
-+}
-+
-+static int pipe_stress(struct data *data, igt_output_t *output,
-+		       enum pipe pipe, drmModeModeInfo *mode)
-+{
-+	igt_plane_t *plane;
-+	int i = 0;
-+	int ret;
-+	bool new_mode = false;
-+	uint64_t cursor_width, cursor_height;
-+
-+	do_or_die(drmGetCap(data->drm_fd, DRM_CAP_CURSOR_WIDTH, &cursor_width));
-+	do_or_die(drmGetCap(data->drm_fd, DRM_CAP_CURSOR_HEIGHT, &cursor_height));
-+
-+	if (!mode)
-+		mode = igt_output_get_mode(output);
-+
-+	if (data->last_mode[pipe] != mode) {
-+		ret = commit_mode(data, output, pipe, mode);
-+
-+		if (!ret)
-+			return ret;
-+
-+		data->last_mode[pipe] = mode;
-+		new_mode = true;
-+	}
-+
-+	/*
-+	 * Looks like we can't have planes on that pipe at all
-+	 * or mode hasn't changed
-+	 */
-+	if (!data->num_planes[pipe] || !new_mode)
-+		return 0;
-+
-+	for_each_plane_on_pipe(&data->display, pipe, plane) {
-+		int plane_width, plane_height;
-+		if (plane->type == DRM_PLANE_TYPE_CURSOR) {
-+			cursor_plane_set_fb(plane, &data->cursor_fb[pipe],
-+					    cursor_width, cursor_height);
-+			plane_width = cursor_width;
-+			plane_height = cursor_height;
-+		} else {
-+			universal_plane_set_fb(plane, &data->fb[pipe * MAX_PLANES + i],
-+					       mode->hdisplay, mode->vdisplay);
-+
-+			plane_width = (mode->hdisplay * 3) / 4;
-+			plane_height = (mode->vdisplay * 3) / 4;
-+
-+			ret = try_plane_scaling(data, plane, plane_width, plane_height);
-+
-+			while (ret) {
-+				if (plane_width <= cursor_width || plane_height <= cursor_height)
-+					break;
-+
-+				plane_width /= 2;
-+				plane_height /= 2;
-+
-+				ret = try_plane_scaling(data, plane, plane_width, plane_height);
-+
-+				igt_info("Reduced plane %d size to %dx%d\n",
-+					 plane->index, plane_width, plane_height);
-+			}
-+			if (ret) {
-+				igt_info("Plane %d pipe %d try commit failed, exiting\n", i, pipe);
-+				data->num_planes[pipe] = i;
-+				igt_info("Max num planes for pipe %d set to %d\n", pipe, i);
-+				/*
-+				 * We have now determined max amount of full sized planes, we will just
-+				 * keep it in mind and be smarter next time. Also lets remove unneeded fbs.
-+				 * Don't destroy cursor_fb as will take care about it at the end.
-+				 */
-+				igt_plane_set_fb(plane, NULL);
-+				cleanup_plane_fbs(data, pipe, i, MAX_PLANES);
-+			}
-+
-+			if (++i >= data->num_planes[pipe])
-+				break;
-+		}
-+	}
-+
-+	igt_display_commit2(&data->display, COMMIT_ATOMIC);
-+
-+	return 0;
-+}
-+
-+static __u64 get_mode_data_rate(drmModeModeInfo *mode)
-+{
-+	__u64 data_rate = (__u64)mode->hdisplay * (__u64)mode->vdisplay * (__u64)mode->vrefresh;
-+
-+	return data_rate;
-+}
-+
-+
-+static drmModeModeInfo *find_highest_mode(drmModeConnector *connector)
-+{
-+	drmModeModeInfo *highest_mode = NULL;
-+	int j;
-+
-+	for (j = 0; j < connector->count_modes; j++) {
-+		if (!highest_mode) {
-+			highest_mode = &connector->modes[j];
-+		} else if (connector->modes[j].vdisplay && connector->modes[j].hdisplay) {
-+			__u64 highest_data_rate = get_mode_data_rate(highest_mode);
-+			__u64 data_rate = get_mode_data_rate(&connector->modes[j]);
-+
-+			if (highest_data_rate < data_rate)
-+				highest_mode = &connector->modes[j];
-+		}
-+	}
-+
-+	return highest_mode;
-+}
-+
-+typedef drmModeConnector *drmModeConnectorPtr;
-+
-+static void fill_connector_to_pipe_array(struct data *data,
-+					 drmModeRes *mode_resources,
-+					 drmModeConnectorPtr *connectors)
-+{
-+	int pipe = 0;
-+	int i;
-+
-+	memset(connectors, 0, sizeof(drmModeConnectorPtr) *
-+	       mode_resources->count_connectors);
-+
-+	igt_info("Got %d connectors\n", mode_resources->count_connectors);
-+
-+	for (i = 0; i < mode_resources->count_connectors; i++) {
-+		drmModeConnector *connector;
-+
-+		connector = drmModeGetConnector(data->drm_fd,
-+						mode_resources->connectors[i]);
-+
-+		if (!connector) {
-+			igt_warn("could not get connector %i: %s\n",
-+				 mode_resources->connectors[i], strerror(errno));
-+			continue;
-+		}
-+
-+		if (connector->connection == DRM_MODE_CONNECTED) {
-+			igt_info("Connector %d connected to pipe %d\n", i, pipe);
-+			connectors[pipe] = (drmModeConnectorPtr)connector;
-+			++pipe;
-+			if (pipe == IGT_MAX_PIPES)
-+				break;
-+		} else {
-+			igt_info("Connector %d connection status %d\n",
-+				 i, connector->connection);
-+			drmModeFreeConnector(connector);
-+		}
-+	}
-+}
-+
-+static void release_connectors(drmModeConnectorPtr *connectors)
-+{
-+	int i;
-+
-+	for (i = 0; i < IGT_MAX_PIPES; i++) {
-+		if (connectors[i])
-+			drmModeFreeConnector(connectors[i]);
-+	}
-+	free(connectors);
-+}
-+
-+static void stress_pipes(struct data *data, struct timespec *start,
-+			 struct timespec *end)
-+{
-+	int pipe = 0;
-+	int ret = 0;
-+	igt_output_t *output;
-+	igt_crc_t crc, crc2;
-+
-+	for_each_connected_output(&data->display, output) {
-+
-+		if (!data->highest_mode[pipe])
-+			continue;
-+
-+		igt_assert_f(data->display.pipes[pipe].n_planes < MAX_PLANES,
-+			    "Currently we don't support more than %d planes!",
-+			     MAX_PLANES);
-+
-+		ret = pipe_stress(data, output, pipe,
-+				 data->highest_mode[pipe]);
-+		if (ret)
-+			break;
-+
-+		igt_pipe_crc_start(data->pipe_crc[pipe]);
-+		igt_pipe_crc_get_current(data->display.drm_fd, data->pipe_crc[pipe], &crc);
-+		get_vblank(data->display.drm_fd, pipe,
-+			   DRM_VBLANK_NEXTONMISS);
-+		igt_pipe_crc_get_current(data->display.drm_fd, data->pipe_crc[pipe], &crc2);
-+		igt_pipe_crc_stop(data->pipe_crc[pipe]);
-+		igt_assert_crc_equal(&crc, &crc2);
-+
-+		++pipe;
-+	}
-+}
-+
-+#define MIN_DURATION_SEC 5.0
-+#define MIN_ITERATIONS 20
-+
-+static void stress(struct data *data)
-+{
-+	struct timespec start, end;
-+	int iterations = 0;
-+	bool need_continue;
-+
-+	igt_gettime(&start);
-+
-+	do {
-+		igt_gettime(&end);
-+		stress_pipes(data, &start, &end);
-+		iterations++;
-+		need_continue =
-+			igt_time_elapsed(&start, &end) < MIN_DURATION_SEC;
-+	} while ((need_continue || iterations < MIN_ITERATIONS));
-+}
-+
-+static void start_gpu_threads(struct data *data)
-+{
-+	int i;
-+
-+	data->bops = buf_ops_create(data->drm_fd);
-+
-+	pthread_mutex_init(&data->gpu_fill_lock, NULL);
-+
-+	for (i = 0; i < IGT_MAX_PIPES; i++) {
-+		if (!data->highest_mode[i])
-+			continue;
-+		data->gpu_context[i].data = data;
-+		data->gpu_context[i].pipe = i;
-+		data->gpu_context[i].fb_ptr = NULL;
-+		data->gpu_context[i].blt_rect.x = 0;
-+		data->gpu_context[i].blt_rect.y = 0;
-+		data->gpu_context[i].blt_rect.w = 0;
-+		data->gpu_context[i].blt_rect.h = 0;
-+		data->gpu_context[i].num_rectangles = N_BLITS_PER_FRAME;
-+		data->gpu_thread_state[i] = RUNNING;
-+		data->gpu_context[i].buf = NULL;
-+		igt_info("Starting GPU thread %d\n", i);
-+
-+		pthread_create(&data->gpu_thread[i], NULL, gpu_load,
-+			       (void *)&data->gpu_context[i]);
-+
-+		igt_info("GPU thread %d started\n", i);
-+	}
-+}
-+
-+static void stop_gpu_threads(struct data *data)
-+{
-+	int i;
-+
-+	for (i = 0; i < IGT_MAX_PIPES; i++) {
-+		if (!data->highest_mode[i])
-+			continue;
-+		igt_info("Stopping GPU thread %d\n", i);
-+		data->gpu_thread_state[i] = STOPPED;
-+		pthread_join(data->gpu_thread[i], NULL);
-+		igt_info("Stopped GPU thread %d\n", i);
-+		data->gpu_context[i].fb_ptr = NULL;\
-+		data->gpu_context[i].buf = NULL;
-+	}
-+
-+	buf_ops_destroy(data->bops);
-+}
-+
-+static void start_cpu_threads(struct data *data)
-+{
-+	int i;
-+
-+	for (i = 0; i < data->number_of_cores; i++) {
-+		data->cpu_context[i].buf1 = malloc(BUF_SIZE);
-+		data->cpu_context[i].buf2 = malloc(BUF_SIZE);
-+		data->cpu_context[i].id = i;
-+		data->cpu_context[i].data = data;
-+		pthread_create(&data->cpu_thread[i], NULL, cpu_load,
-+			       (void *)&data->cpu_context[i]);
-+	}
-+}
-+
-+static void stop_cpu_threads(struct data *data)
-+{
-+	int i;
-+
-+	for (i = 0; i < data->number_of_cores; i++) {
-+		data->cpu_thread_stop[i] = true;
-+		pthread_join(data->cpu_thread[i], NULL);
-+		free(data->cpu_context[i].buf1);
-+		free(data->cpu_context[i].buf2);
-+	}
-+}
-+
-+static void create_framebuffers(struct data *data)
-+{
-+	int i, j;
-+	uint64_t cursor_width, cursor_height;
-+
-+	do_or_die(drmGetCap(data->drm_fd, DRM_CAP_CURSOR_WIDTH, &cursor_width));
-+	do_or_die(drmGetCap(data->drm_fd, DRM_CAP_CURSOR_HEIGHT, &cursor_height));
-+
-+	for (i = 0; i < IGT_MAX_PIPES; i++) {
-+		if (!data->highest_mode[i])
-+			continue;
-+
-+		if (!data->cursor_fb[i].fb_id) {
-+			igt_create_color_fb(data->drm_fd,
-+					    cursor_width, cursor_height,
-+					    data->format,
-+					    data->modifier,
-+					    1.0, 0.0, 0.0,
-+					    &data->cursor_fb[i]);
-+		}
-+
-+		for (j = 0; j < data->num_planes[i]; j++) {
-+			if (!data->fb[i * MAX_PLANES + j].fb_id) {
-+				igt_create_color_pattern_fb(data->drm_fd,
-+							    data->highest_mode[i]->hdisplay,
-+							    data->highest_mode[i]->vdisplay,
-+							    data->format,
-+							    data->modifier,
-+							    0.0, 1.0, 0.0, &data->fb[i * MAX_PLANES + j]);
-+			}
-+		}
-+	}
-+}
-+
-+static void destroy_framebuffers(struct data *data)
-+{
-+	int i, j;
-+
-+	for (i = 0; i < IGT_MAX_PIPES; i++) {
-+
-+		if (!data->highest_mode[i])
-+			continue;
-+
-+		for (j = 0; j < MAX_PLANES; j++) {
-+			if (data->fb[i * MAX_PLANES + j].fb_id) {
-+				igt_plane_set_fb(&data->display.pipes[i].planes[j], NULL);
-+				igt_remove_fb(data->display.drm_fd, &data->fb[i * MAX_PLANES + j]);
-+				data->fb[i * MAX_PLANES + j].fb_id = 0;
-+			}
-+		}
-+		if (data->cursor_fb[i].fb_id) {
-+			igt_remove_fb(data->display.drm_fd, &data->cursor_fb[i]);
-+			data->cursor_fb[i].fb_id = 0;
-+		}
-+	}
-+}
-+
-+static void prepare_test(struct data *data)
-+{
-+	int i, j;
-+	int num_connectors;
-+	int num_cpus = (int) sysconf(_SC_NPROCESSORS_ONLN);
-+
-+	data->number_of_cores = min(num_cpus, MAX_CORES);
-+
-+	for (i = 0; i < IGT_MAX_PIPES; i++) {
-+		for (j = 0; j < MAX_PLANES; j++)
-+			data->fb[i * MAX_PLANES + j].fb_id = 0;
-+		data->cursor_fb[i].fb_id = 0;
-+		data->num_planes[i] = -1;
-+		data->last_mode[i] = NULL;
-+		sem_init(&data->gpu_thread_pause_ack[i], 0, 0);
-+	}
-+
-+	start_cpu_threads(data);
-+	data->mode_resources = drmModeGetResources(data->drm_fd);
-+	if (!data->mode_resources) {
-+		igt_warn("drmModeGetResources failed: %s\n", strerror(errno));
-+		return;
-+	}
-+
-+	num_connectors = data->mode_resources->count_connectors;
-+	num_connectors = max(num_connectors, IGT_MAX_PIPES);
-+	memset(data->highest_mode, 0, sizeof(drmModeModeInfo *) * IGT_MAX_PIPES);
-+	data->connectors =
-+		(drmModeConnectorPtr *)calloc(sizeof(drmModeConnectorPtr) * num_connectors, 1);
-+	fill_connector_to_pipe_array(data, data->mode_resources, data->connectors);
-+
-+	for (i = 0; i < IGT_MAX_PIPES; i++) {
-+		drmModeConnector *connector = (drmModeConnector *)data->connectors[i];
-+
-+		if (!connector)
-+			continue;
-+
-+		if (!data->highest_mode[i]) {
-+			if (connector->count_modes)
-+				data->highest_mode[i] = find_highest_mode(connector);
-+		}
-+		igt_assert(data->highest_mode[i]);
-+
-+		if (data->highest_mode[i]) {
-+			igt_info("Using mode: \n");
-+			kmstest_dump_mode(data->highest_mode[i]);
-+			data->pipe_crc[i] = igt_pipe_crc_new(data->drm_fd, i,
-+							     INTEL_PIPE_CRC_SOURCE_AUTO);
-+		} else
-+			data->pipe_crc[i] = NULL;
-+
-+		if (data->num_planes[i] == -1)
-+			data->num_planes[i] = data->display.pipes[i].n_planes;
-+
-+		igt_info("Max number of planes is %d for pipe %d\n",
-+			 data->num_planes[i], i);
-+	}
-+
-+	create_framebuffers(data);
-+	start_gpu_threads(data);
-+}
-+
-+static void finish_test(struct data *data)
-+{
-+	int i;
-+
-+	stop_gpu_threads(data);
-+
-+	/*
-+	 * As we change tiling/format we need a new FB
-+	 */
-+	destroy_framebuffers(data);
-+
-+	for (i = 0; i < IGT_MAX_PIPES; i++) {
-+		data->num_planes[i] = -1;
-+		data->last_mode[i] = NULL;
-+		if (data->pipe_crc[i])
-+			igt_pipe_crc_free(data->pipe_crc[i]);
-+	}
-+
-+	stop_cpu_threads(data);
-+	release_connectors(data->connectors);
-+	drmModeFreeResources(data->mode_resources);
-+}
-+
-+struct data data = {
-+	.format = DRM_FORMAT_XRGB8888,
-+	.modifier = DRM_FORMAT_MOD_LINEAR,
-+	.devid = 0,
-+	.bops = NULL
-+};
-+
-+
-+igt_main {
-+	uint8_t format_idx = 0, tiling_idx = 0;
-+
-+	igt_fixture {
-+		data.drm_fd = data.display.drm_fd = drm_open_driver_master(DRIVER_INTEL);
-+
-+		kmstest_set_vt_graphics_mode();
-+
-+		igt_display_require(&data.display, data.display.drm_fd);
-+		igt_require(data.display.is_atomic);
-+		igt_display_require_output(&data.display);
-+		data.devid = intel_get_drm_devid(data.drm_fd);
-+		igt_require_gem(data.drm_fd);
-+	}
-+
-+	for (format_idx = 0; format_idx < N_FORMATS; format_idx++) {
-+		for (tiling_idx = 0; tiling_idx < N_TILING_METHODS; tiling_idx++) {
-+			data.format = formats[format_idx];
-+			data.modifier = tilings[tiling_idx];
-+
-+			igt_describe("Start pipe stress test, utilizing cpu and gpu "
-+				     "simultaneously with maximum amount of planes "
-+				     "and resolution.");
-+			igt_subtest_f("stress-%s-%s",
-+				      format_str(format_idx),
-+				      tiling_str(tiling_idx)) {
-+
-+				igt_skip_on(!igt_display_has_format_mod(&data.display,
-+									formats[format_idx],
-+									tilings[tiling_idx]));
-+
-+				prepare_test(&data);
-+				stress(&data);
-+				finish_test(&data);
-+			}
-+		}
-+	}
-+
-+	igt_fixture {
-+		igt_display_fini(&data.display);
-+	}
-+}
-diff --git a/tests/meson.build b/tests/meson.build
-index b548dc3b44..8f217e401c 100644
---- a/tests/meson.build
-+++ b/tests/meson.build
-@@ -215,6 +215,7 @@ i915_progs = [
- 	'i915_hangman',
- 	'i915_module_load',
- 	'i915_pciid',
-+	'i915_pipe_stress',
- 	'i915_pm_backlight',
- 	'i915_pm_lpsp',
- 	'i915_pm_rpm',
--- 
-2.24.1.485.gad05a3d8e5
+  **WARNING**
+
+  Minor unknown changes coming with IGTPW_7666 need to be verified
+  manually.
+  
+  If you think the reported changes have nothing to do with the changes
+  introduced in IGTPW_7666, please notify your bug team to allow them
+  to document this new failure mode, which will reduce false positives in CI.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7666/index.html
+
+Participating hosts (34 -> 35)
+------------------------------
+
+  Additional (1): fi-rkl-11600 
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in IGTPW_7666:
+
+### IGT changes ###
+
+#### Warnings ####
+
+  * igt@i915_suspend@basic-s3-without-i915:
+    - fi-elk-e7500:       [INCOMPLETE][1] ([i915#6598] / [i915#6601]) -> [INCOMPLETE][2]
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6633/fi-elk-e7500/igt@i915_suspend@basic-s3-without-i915.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7666/fi-elk-e7500/igt@i915_suspend@basic-s3-without-i915.html
+
+  
+#### Suppressed ####
+
+  The following results come from untrusted machines, tests, or statuses.
+  They do not affect the overall result.
+
+  * igt@i915_selftest@live@gt_lrc:
+    - {bat-dg2-8}:        [PASS][3] -> [INCOMPLETE][4]
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6633/bat-dg2-8/igt@i915_selftest@live@gt_lrc.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7666/bat-dg2-8/igt@i915_selftest@live@gt_lrc.html
+
+  
+Known issues
+------------
+
+  Here are the changes found in IGTPW_7666 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@gem_huc_copy@huc-copy:
+    - fi-rkl-11600:       NOTRUN -> [SKIP][5] ([i915#2190])
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7666/fi-rkl-11600/igt@gem_huc_copy@huc-copy.html
+
+  * igt@gem_lmem_swapping@basic:
+    - fi-rkl-11600:       NOTRUN -> [SKIP][6] ([i915#4613]) +3 similar issues
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7666/fi-rkl-11600/igt@gem_lmem_swapping@basic.html
+
+  * igt@gem_tiled_pread_basic:
+    - fi-rkl-11600:       NOTRUN -> [SKIP][7] ([i915#3282])
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7666/fi-rkl-11600/igt@gem_tiled_pread_basic.html
+
+  * igt@i915_pm_backlight@basic-brightness:
+    - fi-rkl-11600:       NOTRUN -> [SKIP][8] ([i915#3012])
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7666/fi-rkl-11600/igt@i915_pm_backlight@basic-brightness.html
+
+  * igt@i915_selftest@live@requests:
+    - fi-pnv-d510:        [PASS][9] -> [DMESG-FAIL][10] ([i915#4528])
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6633/fi-pnv-d510/igt@i915_selftest@live@requests.html
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7666/fi-pnv-d510/igt@i915_selftest@live@requests.html
+
+  * igt@i915_suspend@basic-s3-without-i915:
+    - fi-rkl-11600:       NOTRUN -> [INCOMPLETE][11] ([i915#5982])
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7666/fi-rkl-11600/igt@i915_suspend@basic-s3-without-i915.html
+
+  * igt@kms_chamelium@hdmi-edid-read:
+    - fi-rkl-11600:       NOTRUN -> [SKIP][12] ([fdo#111827]) +7 similar issues
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7666/fi-rkl-11600/igt@kms_chamelium@hdmi-edid-read.html
+
+  * igt@kms_cursor_legacy@basic-busy-flip-before-cursor:
+    - fi-rkl-11600:       NOTRUN -> [SKIP][13] ([i915#4103])
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7666/fi-rkl-11600/igt@kms_cursor_legacy@basic-busy-flip-before-cursor.html
+
+  * igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions:
+    - fi-bsw-kefka:       [PASS][14] -> [FAIL][15] ([i915#6298])
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6633/fi-bsw-kefka/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions.html
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7666/fi-bsw-kefka/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions.html
+
+  * igt@kms_force_connector_basic@force-load-detect:
+    - fi-rkl-11600:       NOTRUN -> [SKIP][16] ([fdo#109285] / [i915#4098])
+   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7666/fi-rkl-11600/igt@kms_force_connector_basic@force-load-detect.html
+
+  * igt@kms_psr@primary_page_flip:
+    - fi-rkl-11600:       NOTRUN -> [SKIP][17] ([i915#1072]) +3 similar issues
+   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7666/fi-rkl-11600/igt@kms_psr@primary_page_flip.html
+
+  * igt@kms_setmode@basic-clone-single-crtc:
+    - fi-rkl-11600:       NOTRUN -> [SKIP][18] ([i915#3555] / [i915#4098])
+   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7666/fi-rkl-11600/igt@kms_setmode@basic-clone-single-crtc.html
+
+  * igt@prime_vgem@basic-read:
+    - fi-rkl-11600:       NOTRUN -> [SKIP][19] ([fdo#109295] / [i915#3291] / [i915#3708]) +2 similar issues
+   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7666/fi-rkl-11600/igt@prime_vgem@basic-read.html
+
+  * igt@prime_vgem@basic-userptr:
+    - fi-rkl-11600:       NOTRUN -> [SKIP][20] ([fdo#109295] / [i915#3301] / [i915#3708])
+   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7666/fi-rkl-11600/igt@prime_vgem@basic-userptr.html
+
+  * igt@runner@aborted:
+    - fi-pnv-d510:        NOTRUN -> [FAIL][21] ([fdo#109271] / [i915#2403] / [i915#4312])
+   [21]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7666/fi-pnv-d510/igt@runner@aborted.html
+
+  
+#### Possible fixes ####
+
+  * igt@gem_exec_suspend@basic-s0@smem:
+    - {bat-rplp-1}:       [DMESG-WARN][22] ([i915#2867]) -> [PASS][23]
+   [22]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6633/bat-rplp-1/igt@gem_exec_suspend@basic-s0@smem.html
+   [23]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7666/bat-rplp-1/igt@gem_exec_suspend@basic-s0@smem.html
+
+  
+#### Warnings ####
+
+  * igt@i915_selftest@live@hangcheck:
+    - bat-dg1-6:          [DMESG-FAIL][24] ([i915#4494] / [i915#4957]) -> [DMESG-FAIL][25] ([i915#4957])
+   [24]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6633/bat-dg1-6/igt@i915_selftest@live@hangcheck.html
+   [25]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7666/bat-dg1-6/igt@i915_selftest@live@hangcheck.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [fdo#109285]: https://bugs.freedesktop.org/show_bug.cgi?id=109285
+  [fdo#109295]: https://bugs.freedesktop.org/show_bug.cgi?id=109295
+  [fdo#111827]: https://bugs.freedesktop.org/show_bug.cgi?id=111827
+  [i915#1072]: https://gitlab.freedesktop.org/drm/intel/issues/1072
+  [i915#2190]: https://gitlab.freedesktop.org/drm/intel/issues/2190
+  [i915#2403]: https://gitlab.freedesktop.org/drm/intel/issues/2403
+  [i915#2867]: https://gitlab.freedesktop.org/drm/intel/issues/2867
+  [i915#3012]: https://gitlab.freedesktop.org/drm/intel/issues/3012
+  [i915#3282]: https://gitlab.freedesktop.org/drm/intel/issues/3282
+  [i915#3291]: https://gitlab.freedesktop.org/drm/intel/issues/3291
+  [i915#3301]: https://gitlab.freedesktop.org/drm/intel/issues/3301
+  [i915#3555]: https://gitlab.freedesktop.org/drm/intel/issues/3555
+  [i915#3708]: https://gitlab.freedesktop.org/drm/intel/issues/3708
+  [i915#4098]: https://gitlab.freedesktop.org/drm/intel/issues/4098
+  [i915#4103]: https://gitlab.freedesktop.org/drm/intel/issues/4103
+  [i915#4312]: https://gitlab.freedesktop.org/drm/intel/issues/4312
+  [i915#4494]: https://gitlab.freedesktop.org/drm/intel/issues/4494
+  [i915#4528]: https://gitlab.freedesktop.org/drm/intel/issues/4528
+  [i915#4613]: https://gitlab.freedesktop.org/drm/intel/issues/4613
+  [i915#4957]: https://gitlab.freedesktop.org/drm/intel/issues/4957
+  [i915#4983]: https://gitlab.freedesktop.org/drm/intel/issues/4983
+  [i915#5982]: https://gitlab.freedesktop.org/drm/intel/issues/5982
+  [i915#6298]: https://gitlab.freedesktop.org/drm/intel/issues/6298
+  [i915#6598]: https://gitlab.freedesktop.org/drm/intel/issues/6598
+  [i915#6601]: https://gitlab.freedesktop.org/drm/intel/issues/6601
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_6633 -> IGTPW_7666
+
+  CI-20190529: 20190529
+  CI_DRM_12007: 9ce4758a8508d948c52e2db474b5f62edffab197 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_7666: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7666/index.html
+  IGT_6633: 40ec79634da4dc7e94309fc9c6043aff3fafc801 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+
+Testlist changes
+----------------
+
++igt@i915_pipe_stress@stress-xrgb8888-untiled
++igt@i915_pipe_stress@stress-xrgb8888-ytiled
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7666/index.html
+
+--===============0974434563499458586==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/i915/i915_pipe_stress: Add plane pipes stress test (rev4)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/107027/">https://patchwork.freedesktop.org/series/107027/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7666/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7666/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_6633 -&gt; IGTPW_7666</h1>
+<h2>Summary</h2>
+<p><strong>WARNING</strong></p>
+<p>Minor unknown changes coming with IGTPW_7666 need to be verified<br />
+  manually.</p>
+<p>If you think the reported changes have nothing to do with the changes<br />
+  introduced in IGTPW_7666, please notify your bug team to allow them<br />
+  to document this new failure mode, which will reduce false positives in CI.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7666/index.html</p>
+<h2>Participating hosts (34 -&gt; 35)</h2>
+<p>Additional (1): fi-rkl-11600 </p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in IGTPW_7666:</p>
+<h3>IGT changes</h3>
+<h4>Warnings</h4>
+<ul>
+<li>igt@i915_suspend@basic-s3-without-i915:<ul>
+<li>fi-elk-e7500:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6633/fi-elk-e7500/igt@i915_suspend@basic-s3-without-i915.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6598">i915#6598</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/6601">i915#6601</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7666/fi-elk-e7500/igt@i915_suspend@basic-s3-without-i915.html">INCOMPLETE</a></li>
+</ul>
+</li>
+</ul>
+<h4>Suppressed</h4>
+<p>The following results come from untrusted machines, tests, or statuses.<br />
+  They do not affect the overall result.</p>
+<ul>
+<li>igt@i915_selftest@live@gt_lrc:<ul>
+<li>{bat-dg2-8}:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6633/bat-dg2-8/igt@i915_selftest@live@gt_lrc.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7666/bat-dg2-8/igt@i915_selftest@live@gt_lrc.html">INCOMPLETE</a></li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_7666 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@gem_huc_copy@huc-copy:</p>
+<ul>
+<li>fi-rkl-11600:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7666/fi-rkl-11600/igt@gem_huc_copy@huc-copy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2190">i915#2190</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_lmem_swapping@basic:</p>
+<ul>
+<li>fi-rkl-11600:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7666/fi-rkl-11600/igt@gem_lmem_swapping@basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4613">i915#4613</a>) +3 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_tiled_pread_basic:</p>
+<ul>
+<li>fi-rkl-11600:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7666/fi-rkl-11600/igt@gem_tiled_pread_basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3282">i915#3282</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_pm_backlight@basic-brightness:</p>
+<ul>
+<li>fi-rkl-11600:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7666/fi-rkl-11600/igt@i915_pm_backlight@basic-brightness.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3012">i915#3012</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@requests:</p>
+<ul>
+<li>fi-pnv-d510:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6633/fi-pnv-d510/igt@i915_selftest@live@requests.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7666/fi-pnv-d510/igt@i915_selftest@live@requests.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4528">i915#4528</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_suspend@basic-s3-without-i915:</p>
+<ul>
+<li>fi-rkl-11600:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7666/fi-rkl-11600/igt@i915_suspend@basic-s3-without-i915.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5982">i915#5982</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_chamelium@hdmi-edid-read:</p>
+<ul>
+<li>fi-rkl-11600:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7666/fi-rkl-11600/igt@kms_chamelium@hdmi-edid-read.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=111827">fdo#111827</a>) +7 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_cursor_legacy@basic-busy-flip-before-cursor:</p>
+<ul>
+<li>fi-rkl-11600:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7666/fi-rkl-11600/igt@kms_cursor_legacy@basic-busy-flip-before-cursor.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4103">i915#4103</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions:</p>
+<ul>
+<li>fi-bsw-kefka:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6633/fi-bsw-kefka/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7666/fi-bsw-kefka/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6298">i915#6298</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_force_connector_basic@force-load-detect:</p>
+<ul>
+<li>fi-rkl-11600:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7666/fi-rkl-11600/igt@kms_force_connector_basic@force-load-detect.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109285">fdo#109285</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4098">i915#4098</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_psr@primary_page_flip:</p>
+<ul>
+<li>fi-rkl-11600:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7666/fi-rkl-11600/igt@kms_psr@primary_page_flip.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1072">i915#1072</a>) +3 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_setmode@basic-clone-single-crtc:</p>
+<ul>
+<li>fi-rkl-11600:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7666/fi-rkl-11600/igt@kms_setmode@basic-clone-single-crtc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3555">i915#3555</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4098">i915#4098</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@prime_vgem@basic-read:</p>
+<ul>
+<li>fi-rkl-11600:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7666/fi-rkl-11600/igt@prime_vgem@basic-read.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109295">fdo#109295</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3291">i915#3291</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3708">i915#3708</a>) +2 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@prime_vgem@basic-userptr:</p>
+<ul>
+<li>fi-rkl-11600:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7666/fi-rkl-11600/igt@prime_vgem@basic-userptr.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109295">fdo#109295</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3301">i915#3301</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3708">i915#3708</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@runner@aborted:</p>
+<ul>
+<li>fi-pnv-d510:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7666/fi-pnv-d510/igt@runner@aborted.html">FAIL</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2403">i915#2403</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4312">i915#4312</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@gem_exec_suspend@basic-s0@smem:<ul>
+<li>{bat-rplp-1}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6633/bat-rplp-1/igt@gem_exec_suspend@basic-s0@smem.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2867">i915#2867</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7666/bat-rplp-1/igt@gem_exec_suspend@basic-s0@smem.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<h4>Warnings</h4>
+<ul>
+<li>igt@i915_selftest@live@hangcheck:<ul>
+<li>bat-dg1-6:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6633/bat-dg1-6/igt@i915_selftest@live@hangcheck.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4494">i915#4494</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4957">i915#4957</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7666/bat-dg1-6/igt@i915_selftest@live@hangcheck.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4957">i915#4957</a>)</li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_6633 -&gt; IGTPW_7666</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_12007: 9ce4758a8508d948c52e2db474b5f62edffab197 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_7666: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7666/index.html<br />
+  IGT_6633: 40ec79634da4dc7e94309fc9c6043aff3fafc801 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+<h2>Testlist changes</h2>
+<p>+igt@i915_pipe_stress@stress-xrgb8888-untiled<br />
++igt@i915_pipe_stress@stress-xrgb8888-ytiled</p>
+
+</body>
+</html>
+
+--===============0974434563499458586==--
