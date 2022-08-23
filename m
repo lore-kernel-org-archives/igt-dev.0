@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 37C5811A275
- for <igt-dev@lists.freedesktop.org>; Tue, 23 Aug 2022 18:30:45 +0000 (UTC)
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 10D3911224A
+ for <igt-dev@lists.freedesktop.org>; Tue, 23 Aug 2022 18:30:44 +0000 (UTC)
 From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 23 Aug 2022 18:30:32 +0000
-Message-Id: <20220823183036.5270-20-umesh.nerlige.ramappa@intel.com>
+Date: Tue, 23 Aug 2022 18:30:19 +0000
+Message-Id: <20220823183036.5270-7-umesh.nerlige.ramappa@intel.com>
 In-Reply-To: <20220823183036.5270-1-umesh.nerlige.ramappa@intel.com>
 References: <20220823183036.5270-1-umesh.nerlige.ramappa@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 19/23] i915/perf: Wait longer for rc6
- residency in DG2
+Subject: [igt-dev] [PATCH i-g-t 06/23] i915/perf: Account for OA sampling
+ interval in polling test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,56 +23,47 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-igt@perf@rc6-disable waits for 50ms to check if we entered rc6. One some
-failures this seems to take longer to enter rc6, about 100ms. Tweak the
-test for DG2 to use a longer wait time.
+The polling test reads all the reports and then expects EAGAIN on a
+subsequent read since it has consumed all available data. This
+works well for OA sampling periods in the order of 10s of ms. For
+smaller sampling periods like 500 us, we end up reading valid data and
+the test fails. Fix the check to account for the OA sampling period.
 
 Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 ---
- tests/i915/perf.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ tests/i915/perf.c | 16 ++++++++++++----
+ 1 file changed, 12 insertions(+), 4 deletions(-)
 
 diff --git a/tests/i915/perf.c b/tests/i915/perf.c
-index 6951735b..3ddfe587 100644
+index 95600562..5fd143e9 100644
 --- a/tests/i915/perf.c
 +++ b/tests/i915/perf.c
-@@ -4441,7 +4441,10 @@ test_rc6_disable(void)
- 		.properties_ptr = to_user_pointer(properties),
- 	};
- 	unsigned long rc6_start, rc6_end, rc6_enabled;
-+	uint32_t rc6_duration;
+@@ -2220,14 +2220,22 @@ test_polling(uint64_t requested_oa_period, bool set_kernel_hrtimer, uint64_t ker
+ 			n_extra_iterations++;
  
-+	/* On DG2, we wait longer to enter rc6 */
-+	rc6_duration = IS_DG2(devid) ? 100000 : 50000;
- 	rc6_enabled = 0;
- 	igt_sysfs_rps_scanf(sysfs, RC6_ENABLE, "%lu", &rc6_enabled);
- 	igt_require(rc6_enabled);
-@@ -4449,7 +4452,7 @@ test_rc6_disable(void)
- 	/* Verify rc6 is functional by measuring residency while idle */
- 	gem_quiescent_gpu(drm_fd);
- 	rc6_start = rc6_residency_ms();
--	usleep(50000);
-+	usleep(rc6_duration);
- 	rc6_end = rc6_residency_ms();
- 	igt_require(rc6_end != rc6_start);
+ 		/* At this point, after consuming pending reports (and hoping
+-		 * the scheduler hasn't stopped us for too long we now
+-		 * expect EAGAIN on read.
++		 * the scheduler hasn't stopped us for too long) we now expect
++		 * EAGAIN on read. While this works most of the times, there are
++		 * some rare failures when the OA period passed to this test is
++		 * very small (say 500 us) and that results in some valid
++		 * reports here. To weed out those rare occurences we assert
++		 * only if the OA period is >= 40 ms because 40 ms has withstood
++		 * the test of time on most platforms (ref: subtest: polling).
+ 		 */
+ 		while ((ret = read(stream_fd, buf, sizeof(buf))) < 0 &&
+ 		       errno == EINTR)
+ 			;
+-		igt_assert_eq(ret, -1);
+-		igt_assert_eq(errno, EAGAIN);
++
++		if (requested_oa_period >= 40000000) {
++			igt_assert_eq(ret, -1);
++			igt_assert_eq(errno, EAGAIN);
++		}
  
-@@ -4457,7 +4460,7 @@ test_rc6_disable(void)
- 	stream_fd = __perf_open(drm_fd, &param, false);
- 
- 	rc6_start = rc6_residency_ms();
--	usleep(50000);
-+	usleep(rc6_duration);
- 	rc6_end = rc6_residency_ms();
- 	igt_assert_eq(rc6_end - rc6_start, 0);
- 
-@@ -4466,7 +4469,7 @@ test_rc6_disable(void)
- 
- 	/* But once OA is closed, we expect the device to sleep again */
- 	rc6_start = rc6_residency_ms();
--	usleep(50000);
-+	usleep(rc6_duration);
- 	rc6_end = rc6_residency_ms();
- 	igt_assert_neq(rc6_end - rc6_start, 0);
- }
+ 		n++;
+ 	}
 -- 
 2.25.1
