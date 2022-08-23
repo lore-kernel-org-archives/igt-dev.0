@@ -1,14 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9C4D511224A
- for <igt-dev@lists.freedesktop.org>; Tue, 23 Aug 2022 18:30:41 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 537B911A24A
+ for <igt-dev@lists.freedesktop.org>; Tue, 23 Aug 2022 18:30:45 +0000 (UTC)
 From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 23 Aug 2022 18:30:13 +0000
-Message-Id: <20220823183036.5270-1-umesh.nerlige.ramappa@intel.com>
+Date: Tue, 23 Aug 2022 18:30:35 +0000
+Message-Id: <20220823183036.5270-23-umesh.nerlige.ramappa@intel.com>
+In-Reply-To: <20220823183036.5270-1-umesh.nerlige.ramappa@intel.com>
+References: <20220823183036.5270-1-umesh.nerlige.ramappa@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 00/23] Add DG2 OA test
+Subject: [igt-dev] [PATCH i-g-t 22/23] lib/i915/perf: make warning message
+ more helpful
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,54 +23,38 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add tests for changes in perf OA for DG2.
+From: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
 
-v2:
-- Rebase
-- Reposting since some patches did no land in the ML
+This helped debugging some XEHPSDV stuff but is also more readable.
 
-Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+Signed-off-by: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
+---
+ lib/i915/perf-configs/mdapi-xml-convert.py | 13 +++++++++----
+ 1 file changed, 9 insertions(+), 4 deletions(-)
 
-Lionel Landwerlin (4):
-  lib/i915/perf: implement report accumulation for new format
-  lib/i915/perf: fixup conversion script for XEHPSDV
-  lib/i915/perf: make warning message more helpful
-  lib/i915/perf: Add DG2 metrics
-
-Nerlige Ramappa, Umesh (1):
-  i915/perf: Limit sseu-config tests for gen11
-
-Umesh Nerlige Ramappa (18):
-  i915/perf: Check regularly if we are done reading reports
-  i915/perf: Fix OA short_reads test
-  i915/perf: Check return value from getparam
-  i915/perf: Bump timestamp tolerance for DG1
-  i915/perf: Account for OA sampling interval in polling test
-  i915/perf: Add support for 64-bit counters
-  i915/perf: Define OA report types
-  i915/perf: Use ARRAY_SIZE consistently for num_properties
-  i915/perf: Use gt in perf tests and lib
-  i915/perf: Explicitly state rendercopy needs for a test
-  i915/perf: Skip tests that use rendercopy
-  i915/perf: Add OA formats for DG2
-  i915/perf: Add a test for non-power-of-2 oa reports
-  i915/perf: Fix CS timestamp vs OA timstamp mismatch
-  i915/perf: Treat ticks as 64 bit
-  i915/perf: Treat timestamp as 64 bit value
-  i915/perf: Fix DG2 A0 report header
-  i915/perf: Wait longer for rc6 residency in DG2
-
- include/drm-uapi/i915_drm.h                   |   12 +
- lib/i915/perf-configs/guids.xml               |   24 +
- lib/i915/perf-configs/mdapi-xml-convert.py    |   70 +-
- lib/i915/perf-configs/oa-dg2.xml              | 9920 +++++++++++++++++
- .../perf-configs/perf-metricset-codegen.py    |   13 +
- lib/i915/perf-configs/update-guids.py         |    2 +-
- lib/i915/perf.c                               |  104 +-
- lib/meson.build                               |    2 +-
- tests/i915/perf.c                             |  623 +-
- 9 files changed, 10589 insertions(+), 181 deletions(-)
- create mode 100644 lib/i915/perf-configs/oa-dg2.xml
-
+diff --git a/lib/i915/perf-configs/mdapi-xml-convert.py b/lib/i915/perf-configs/mdapi-xml-convert.py
+index f27d6657..1d161674 100755
+--- a/lib/i915/perf-configs/mdapi-xml-convert.py
++++ b/lib/i915/perf-configs/mdapi-xml-convert.py
+@@ -884,10 +884,15 @@ for arg in args.xml:
+             # delta equations are expected to be identical so warn if that's
+             # not true...
+             if bool(raw_read_eq) ^ bool(delta_read_eq) or raw_read_eq != delta_read_eq:
+-                print_err("WARNING: Inconsistent raw and delta report equations for " + \
+-                          mdapi_set.get('ShortName') + " :: " + mdapi_counter.get('SymbolName') + \
+-                          "(" + mdapi_counter.get('ShortName') + ")" + ": raw=\"" + str(raw_read_eq) + \
+-                          "\" delta=\"" + str(delta_read_eq) + "\" (SKIPPING)")
++                print_err(("WARNING: Inconsistent raw and delta report equations for {0} :: {1} ({2}): " +
++                           "raw=\"{3}\" / \"{4}\" delta=\"{5}\" / \"{6}\" (SKIPPING)")
++                          .format(mdapi_set.get('ShortName'),
++                                  mdapi_counter.get('SymbolName'),
++                                  mdapi_counter.get('ShortName'),
++                                  str(raw_read_eq),
++                                  mdapi_counter.get('SnapshotReportReadEquation'),
++                                  str(delta_read_eq),
++                                  mdapi_counter.get('DeltaReportReadEquation')))
+                 set.remove(counter)
+                 continue
+ 
 -- 
 2.25.1
