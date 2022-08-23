@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 73E0011A1FB
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0550011A23B
  for <igt-dev@lists.freedesktop.org>; Tue, 23 Aug 2022 18:30:44 +0000 (UTC)
 From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 23 Aug 2022 18:30:23 +0000
-Message-Id: <20220823183036.5270-11-umesh.nerlige.ramappa@intel.com>
+Date: Tue, 23 Aug 2022 18:30:27 +0000
+Message-Id: <20220823183036.5270-15-umesh.nerlige.ramappa@intel.com>
 In-Reply-To: <20220823183036.5270-1-umesh.nerlige.ramappa@intel.com>
 References: <20220823183036.5270-1-umesh.nerlige.ramappa@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 10/23] i915/perf: Use gt in perf tests and
- lib
+Subject: [igt-dev] [PATCH i-g-t 14/23] i915/perf: Add a test for
+ non-power-of-2 oa reports
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,149 +23,107 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Enable perf tests to use gt information for sysfs attributes.
+Some OA report sizes are no longer a power of 2. Verify that such
+reports can be correctly read across the OA buffer boundaries.
 
 Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 ---
- lib/i915/perf.c   | 36 ++++++++++++++++++++++++++++++++++--
- tests/i915/perf.c | 27 ++++++++++++++++++++-------
- 2 files changed, 54 insertions(+), 9 deletions(-)
+ tests/i915/perf.c | 34 +++++++++++++++++++++++++---------
+ 1 file changed, 25 insertions(+), 9 deletions(-)
 
-diff --git a/lib/i915/perf.c b/lib/i915/perf.c
-index 7349a460..3f131aaa 100644
---- a/lib/i915/perf.c
-+++ b/lib/i915/perf.c
-@@ -409,6 +409,35 @@ open_master_sysfs_dir(int drm_fd)
- 	return sysfs;
- }
- 
-+typedef enum {
-+	RPS_MIN_FREQ_MHZ,
-+	RPS_MAX_FREQ_MHZ,
-+
-+	RPS_MAX_ATTR,
-+} intel_sysfs_attr_id;
-+
-+static const char *intel_sysfs_attr_name[2][RPS_MAX_ATTR] =
-+{
-+	{
-+		"gt_min_freq_mhz",
-+		"gt_max_freq_mhz",
-+	},
-+	{
-+		"gt/gt0/rps_min_freq_mhz",
-+		"gt/gt0/rps_max_freq_mhz",
-+	},
-+};
-+
-+static const char *
-+intel_sysfs_attr_id_to_name(int sysfs_dirfd, intel_sysfs_attr_id id)
-+{
-+	assert(id < RPS_MAX_ATTR);
-+
-+	return !faccessat(sysfs_dirfd, "gt", O_RDONLY, 0) ?
-+		intel_sysfs_attr_name[1][id] :
-+		intel_sysfs_attr_name[0][id];
-+}
-+
- struct intel_perf *
- intel_perf_for_fd(int drm_fd)
- {
-@@ -424,8 +453,11 @@ intel_perf_for_fd(int drm_fd)
- 	if (sysfs_dir_fd < 0)
- 		return NULL;
- 
--	if (!read_sysfs(sysfs_dir_fd, "gt_min_freq_mhz", &gt_min_freq) ||
--	    !read_sysfs(sysfs_dir_fd, "gt_max_freq_mhz", &gt_max_freq)) {
-+#define read_sysfs_rps(fd, id, value) \
-+	read_sysfs(fd, intel_sysfs_attr_id_to_name(fd, id), value)
-+
-+	if (!read_sysfs_rps(sysfs_dir_fd, RPS_MIN_FREQ_MHZ, &gt_min_freq) ||
-+	    !read_sysfs_rps(sysfs_dir_fd, RPS_MAX_FREQ_MHZ, &gt_max_freq)) {
- 		close(sysfs_dir_fd);
- 		return NULL;
- 	}
 diff --git a/tests/i915/perf.c b/tests/i915/perf.c
-index c120c898..89aa4931 100644
+index d601eb36..3caf7cac 100644
 --- a/tests/i915/perf.c
 +++ b/tests/i915/perf.c
-@@ -347,11 +347,11 @@ try_sysfs_read_u64(const char *path, uint64_t *val)
- }
- 
- static unsigned long
--sysfs_read(const char *path)
-+sysfs_read(enum i915_attr_id id)
- {
- 	unsigned long value;
- 
--	igt_assert(igt_sysfs_scanf(sysfs, path, "%lu", &value) == 1);
-+	igt_assert(igt_sysfs_rps_scanf(sysfs, id, "%lu", &value) == 1);
- 
- 	return value;
- }
-@@ -4234,7 +4234,7 @@ gen12_test_single_ctx_render_target_writes_a_counter(void)
- 
- static unsigned long rc6_residency_ms(void)
- {
--	return sysfs_read("power/rc6_residency_ms");
-+	return sysfs_read(RC6_RESIDENCY_MS);
+@@ -2681,7 +2681,7 @@ test_buffer_fill(void)
  }
  
  static void
-@@ -4257,7 +4257,7 @@ test_rc6_disable(void)
- 	unsigned long rc6_start, rc6_end, rc6_enabled;
+-test_non_zero_reason(void)
++test_multi_buffer_fills(uint64_t format, uint64_t oa_buf_size, bool load)
+ {
+ 	/* ~20 micro second period */
+ 	int oa_exponent = max_oa_exponent_for_period_lte(20000);
+@@ -2691,7 +2691,7 @@ test_non_zero_reason(void)
  
- 	rc6_enabled = 0;
--	igt_sysfs_scanf(sysfs, "power/rc6_enable", "%lu", &rc6_enabled);
-+	igt_sysfs_rps_scanf(sysfs, RC6_ENABLE, "%lu", &rc6_enabled);
- 	igt_require(rc6_enabled);
+ 		/* OA unit configuration */
+ 		DRM_I915_PERF_PROP_OA_METRICS_SET, test_set->perf_oa_metrics_set,
+-		DRM_I915_PERF_PROP_OA_FORMAT, test_set->perf_oa_format,
++		DRM_I915_PERF_PROP_OA_FORMAT, format,
+ 		DRM_I915_PERF_PROP_OA_EXPONENT, oa_exponent,
+ 	};
+ 	struct drm_i915_perf_open_param param = {
+@@ -2700,7 +2700,9 @@ test_non_zero_reason(void)
+ 		.properties_ptr = to_user_pointer(properties),
+ 	};
+ 	struct drm_i915_perf_record_header *header;
+-	uint32_t buf_size = 3 * 65536 * (256 + sizeof(struct drm_i915_perf_record_header));
++	size_t report_size = get_oa_format(format).size;
++	uint32_t buf_size = 3 * (oa_buf_size / report_size) *
++		(report_size + sizeof(struct drm_i915_perf_record_header));
+ 	uint8_t *buf = malloc(buf_size);
+ 	uint32_t total_len = 0, reports_lost;
+ 	const uint32_t *last_report;
+@@ -2710,8 +2712,10 @@ test_non_zero_reason(void)
  
- 	/* Verify rc6 is functional by measuring residency while idle */
-@@ -4894,6 +4894,19 @@ done:
- 	return ref_count;
- }
+ 	igt_debug("Ready to read about %u bytes\n", buf_size);
  
-+static int perf_sysfs_open(int i915)
-+{
-+	int dirfd, gt;
+-	load_helper_init();
+-	load_helper_run(HIGH);
++	if (load) {
++		load_helper_init();
++		load_helper_run(HIGH);
++	}
+ 
+ 	stream_fd = __perf_open(drm_fd, &param, true /* prevent_pm */);
+ 
+@@ -2724,8 +2728,10 @@ test_non_zero_reason(void)
+ 
+ 	__perf_close(stream_fd);
+ 
+-	load_helper_stop();
+-	load_helper_fini();
++	if (load) {
++		load_helper_stop();
++		load_helper_fini();
++	}
+ 
+ 	igt_debug("Got %u bytes\n", total_len);
+ 
+@@ -2747,7 +2753,7 @@ test_non_zero_reason(void)
+ 
+ 			if (last_report) {
+ 				sanity_check_reports(last_report, report,
+-						     test_set->perf_oa_format);
++						     format);
+ 			}
+ 			last_report = report;
+ 			break;
+@@ -5137,6 +5143,14 @@ igt_main
+ 	igt_subtest("oa-formats")
+ 		test_oa_formats();
+ 
++	igt_describe("Test OA buffer for non power of 2 report sizes");
++	igt_subtest("non-power-of-2-oa-formats") {
++		igt_require(IS_DG2(devid));
++		test_multi_buffer_fills(I915_OA_FORMAT_A38u64_R2u64_B8_C8,
++					MAX_OA_BUF_SIZE,
++					false);
++	}
 +
-+	/* use the first available sysfs interface */
-+	for_each_sysfs_gt_dirfd(i915, dirfd, gt)
-+		break;
-+
-+	igt_assert(dirfd != -1);
-+
-+	return dirfd;
-+}
-+
- /* check that an open i915 perf stream holds a reference on the drm i915 module
-  * including in the corner case where the original drm fd has been closed.
-  */
-@@ -4929,7 +4942,7 @@ test_i915_ref_count(void)
- 	drm_fd = __drm_open_driver(DRIVER_INTEL);
- 	igt_require_intel(drm_fd);
- 	devid = intel_get_drm_devid(drm_fd);
--	sysfs = igt_sysfs_open(drm_fd);
-+	sysfs = perf_sysfs_open(drm_fd);
+ 	igt_subtest("invalid-oa-exponent")
+ 		test_invalid_oa_exponent();
+ 	igt_subtest("low-oa-exponent-permissions")
+@@ -5156,7 +5170,9 @@ igt_main
+ 	igt_subtest("non-zero-reason") {
+ 		/* Reason field is only available on Gen8+ */
+ 		igt_require(intel_gen(devid) >= 8);
+-		test_non_zero_reason();
++		test_multi_buffer_fills(test_set->perf_oa_format,
++					MAX_OA_BUF_SIZE,
++					true);
+ 	}
  
- 	/* Note: these global variables are only initialized after calling
- 	 * init_sys_info()...
-@@ -5031,14 +5044,14 @@ igt_main
- 		igt_require_gem(drm_fd);
- 
- 		devid = intel_get_drm_devid(drm_fd);
--		sysfs = igt_sysfs_open(drm_fd);
-+		sysfs = perf_sysfs_open(drm_fd);
- 
- 		igt_require(init_sys_info());
- 
- 		write_u64_file("/proc/sys/dev/i915/perf_stream_paranoid", 1);
- 		write_u64_file("/proc/sys/dev/i915/oa_max_sample_rate", 100000);
- 
--		gt_max_freq_mhz = sysfs_read("gt_boost_freq_mhz");
-+		gt_max_freq_mhz = sysfs_read(RPS_RP0_FREQ_MHZ);
- 
- 		render_copy = igt_get_render_copyfunc(devid);
- 		igt_require_f(render_copy, "no render-copy function\n");
+ 	igt_subtest("disabled-read-error")
 -- 
 2.25.1
