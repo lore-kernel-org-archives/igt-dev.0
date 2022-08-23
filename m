@@ -1,16 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id F2EC710E0F3
- for <igt-dev@lists.freedesktop.org>; Tue, 23 Aug 2022 20:31:05 +0000 (UTC)
-From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 65A5EAEC0E
+ for <igt-dev@lists.freedesktop.org>; Tue, 23 Aug 2022 06:09:38 +0000 (UTC)
+From: Jeevan B <jeevan.b@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 23 Aug 2022 20:30:59 +0000
-Message-Id: <20220823203059.7716-1-umesh.nerlige.ramappa@intel.com>
-In-Reply-To: <20220823183036.5270-1-umesh.nerlige.ramappa@intel.com>
-References: <20220823183036.5270-1-umesh.nerlige.ramappa@intel.com>
+Date: Tue, 23 Aug 2022 11:35:01 +0530
+Message-Id: <20220823060501.11524-1-jeevan.b@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 18/23] i915/perf: Fix DG2 A0 report header
+Subject: [igt-dev] [PATCH i-g-t v2] tests/i915/kms_psr2_su: Convert tests to
+ dynamic
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,83 +21,115 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Timestamp is still 32 bits in DG2 A0. Fix that. Specify variants of DG2
-that have the OA format header bug
+Converting the existing subtests to dynamic subtests.
+Adding support for each_pipe, currently PSR2 is supported on
+PIPE_A so breaking the loop for other pipes currently.
 
-Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+v2: Add commit message and change break to continue. (Jouni)
+
+Signed-off-by: Jeevan B <jeevan.b@intel.com>
 ---
- tests/i915/perf.c | 45 ++++++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 44 insertions(+), 1 deletion(-)
+ tests/i915/kms_psr2_su.c | 64 +++++++++++++++++++++++++---------------
+ 1 file changed, 41 insertions(+), 23 deletions(-)
 
-diff --git a/tests/i915/perf.c b/tests/i915/perf.c
-index 52de5d38..6951735b 100644
---- a/tests/i915/perf.c
-+++ b/tests/i915/perf.c
-@@ -40,6 +40,7 @@
- 
- #include "i915/gem.h"
- #include "i915/perf.h"
-+#include "i915_pciids.h"
- #include "igt.h"
- #include "igt_perf.h"
- #include "igt_sysfs.h"
-@@ -503,6 +504,47 @@ cs_timestamp_frequency(int fd)
- 	return value;
+diff --git a/tests/i915/kms_psr2_su.c b/tests/i915/kms_psr2_su.c
+index caccf713..b3c6e953 100644
+--- a/tests/i915/kms_psr2_su.c
++++ b/tests/i915/kms_psr2_su.c
+@@ -123,9 +123,15 @@ static void display_fini(data_t *data)
+ 	igt_display_fini(&data->display);
  }
  
-+/*
-+ * Hacky ways until IGT is fully aware of steppings:
-+ *
-+ * WA is permanent for G11. For other DG2s, bug is fixed from B0 onwards.
-+ * Steps A0 and A1 correspond to 0 and 1 revid values.
-+ */
-+struct perf_dev_info {
-+	bool is_dg2_g11;
-+};
-+
-+static const struct perf_dev_info dg2_g11_info = {
-+	.is_dg2_g11 = true,
-+};
-+
-+static const struct pci_id_match perf_dev_match[] = {
-+	INTEL_DG2_G11_IDS(&dg2_g11_info),
-+};
-+
-+static const struct perf_dev_info *__dev_info(uint32_t device_id)
-+{
-+	static const struct perf_dev_info *cache;
-+	static int _iter;
-+
-+	if (_iter)
-+		goto out;
-+
-+	for (_iter = 0; _iter < ARRAY_SIZE(perf_dev_match); _iter++)
-+		if (device_id == perf_dev_match[_iter].device_id)
-+			cache = (void *) perf_dev_match[_iter].match_data;
-+
-+out:
-+	return cache;
-+}
-+
-+#define IS_DG2_G11(__d) (__dev_info(__d) ? __dev_info(__d)->is_dg2_g11 : false)
-+#define IS_DG2_A0(__d) (IS_DG2(__d) && (intel_perf->devinfo.revision == 0))
-+#define IS_DG2_A1(__d) (IS_DG2(__d) && (intel_perf->devinfo.revision == 1))
-+
-+#define HAS_OA_FORMAT_64BIT_HDR_BUG(__d) \
-+	(IS_DG2_G11(__d) || IS_DG2_A0(__d) || IS_DG2_A1(__d))
-+
- static uint64_t
- cs_timebase_scale(uint32_t u32_delta)
+-static void prepare(data_t *data)
++static void prepare(data_t *data, enum pipe pipe)
  {
-@@ -514,7 +556,8 @@ oa_timestamp(const uint32_t *report, enum drm_i915_oa_format format)
+ 	igt_plane_t *primary;
++	igt_output_t *output;
++	igt_display_t *display = &data->display;
++
++	igt_display_reset(display);
++	output = data->output;
++	igt_output_set_pipe(output, pipe);
+ 
+ 	/* all green frame */
+ 	igt_create_color_fb(data->drm_fd,
+@@ -263,6 +269,7 @@ static void cleanup(data_t *data)
+ igt_main
  {
- 	struct oa_format fmt = get_oa_format(format);
+ 	data_t data = {};
++	enum pipe pipe;
  
--	return fmt.report_hdr_64bit ? *(uint64_t *)&report[2] : report[1];
-+	return fmt.report_hdr_64bit && !HAS_OA_FORMAT_64BIT_HDR_BUG(devid) ?
-+		*(uint64_t *)&report[2] : report[1];
- }
+ 	igt_fixture {
+ 		struct itimerspec interval;
+@@ -287,12 +294,17 @@ igt_main
+ 			      "Error enabling PSR2\n");
+ 		data.op = FRONTBUFFER;
+ 		data.format = DRM_FORMAT_XRGB8888;
+-		prepare(&data);
+-		r = psr_wait_entry(data.debugfs_fd, PSR_MODE_2);
+-		cleanup(&data);
+-		if (!r)
+-			psr_print_debugfs(data.debugfs_fd);
+-		igt_require_f(r, "PSR2 can not be enabled\n");
++
++		for_each_pipe_with_valid_output(&data.display, pipe, data.output) {
++			if (pipe != PIPE_A)
++				continue;
++			prepare(&data, pipe);
++			r = psr_wait_entry(data.debugfs_fd, PSR_MODE_2);
++			cleanup(&data);
++			if (!r)
++				psr_print_debugfs(data.debugfs_fd);
++			igt_require_f(r, "PSR2 can not be enabled\n");
++		}
  
- static uint64_t
+ 		/* blocking timerfd */
+ 		data.change_screen_timerfd = timerfd_create(CLOCK_MONOTONIC, 0);
+@@ -312,23 +324,29 @@ igt_main
+ 		while (*format != DRM_FORMAT_INVALID) {
+ 			data.format = *format++;
+ 			igt_describe("Test that selective update works when screen changes");
+-			igt_subtest_f("%s-%s", op_str(data.op), igt_format_str(data.format)) {
+-				if (data.op == FRONTBUFFER &&
+-				    intel_display_ver(intel_get_drm_devid(data.drm_fd)) >= 12) {
+-					/*
+-					 * FIXME: Display 12+ platforms now have PSR2
+-					 * selective fetch enabled by default but we
+-					 * still can't properly handle frontbuffer
+-					 * rendering, so right it does full frame
+-					 * fetches at every frontbuffer rendering.
+-					 * So it is expected that this test will fail
+-					 * in display 12+ platform for now.
+-					 */
+-					igt_skip("PSR2 selective fetch is doing full frame fetches for frontbuffer rendering\n");
++			igt_subtest_with_dynamic_f("%s-%s", op_str(data.op), igt_format_str(data.format)) {
++				for_each_pipe_with_valid_output(&data.display, pipe, data.output) {
++					if (pipe != PIPE_A)
++						continue;
++					igt_dynamic_f("pipe-%s", kmstest_pipe_name(pipe)) {
++						if (data.op == FRONTBUFFER &&
++						    intel_display_ver(intel_get_drm_devid(data.drm_fd)) >= 12) {
++						/*
++						 * FIXME: Display 12+ platforms now have PSR2
++						 * selective fetch enabled by default but we
++						 * still can't properly handle frontbuffer
++						 * rendering, so right it does full frame
++						 * fetches at every frontbuffer rendering.
++						 * So it is expected that this test will fail
++						 * in display 12+ platform for now.
++						 */
++						igt_skip("PSR2 selective fetch is doing full frame fetches for frontbuffer rendering\n");
++						}
++					prepare(&data, pipe);
++					run(&data);
++					cleanup(&data);
++					}
+ 				}
+-				prepare(&data);
+-				run(&data);
+-				cleanup(&data);
+ 			}
+ 		}
+ 	}
 -- 
-2.25.1
+2.36.0
