@@ -1,16 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1A50311A24C
- for <igt-dev@lists.freedesktop.org>; Tue, 23 Aug 2022 18:30:45 +0000 (UTC)
-From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A8D079B0EC
+ for <igt-dev@lists.freedesktop.org>; Wed, 24 Aug 2022 09:59:59 +0000 (UTC)
+Date: Wed, 24 Aug 2022 12:58:58 +0300
+From: Petri Latvala <petri.latvala@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 23 Aug 2022 18:30:31 +0000
-Message-Id: <20220823183036.5270-19-umesh.nerlige.ramappa@intel.com>
-In-Reply-To: <20220823183036.5270-1-umesh.nerlige.ramappa@intel.com>
-References: <20220823183036.5270-1-umesh.nerlige.ramappa@intel.com>
+Message-ID: <YwX2Yt2T+LybDRmB@platvala-desk.ger.corp.intel.com>
+References: <20220824043451.21272-1-zbigniew.kempczynski@intel.com>
+ <166133372609.9870.6111621960690803640@emeril.freedesktop.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 18/23] i915/perf: Fix DG2 A0 report header
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <166133372609.9870.6111621960690803640@emeril.freedesktop.org>
+Subject: Re: [igt-dev]
+ =?utf-8?b?4pyXIEZpLkNJLkJVSUxEOiBmYWlsdXJlIGZvciBsaWIv?=
+ =?utf-8?q?igt=5Fdevice=5Fscan=3A__Retry_when_parent_pci_device_lacks_prop?=
+ =?utf-8?q?erties_=28rev2=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,83 +27,24 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Timestamp is still 32 bits in DG2 A0. Fix that. Specify variants of DG2
-that have the OA format header bug
+On Wed, Aug 24, 2022 at 09:35:26AM +0000, Patchwork wrote:
+> == Series Details ==
+> 
+> Series: lib/igt_device_scan: Retry when parent pci device lacks properties (rev2)
+> URL   : https://patchwork.freedesktop.org/series/107646/
+> State : failure
+> 
+> == Summary ==
+> 
+> IGT patchset build failed on latest successful build
+> e01fe99f00692864b709253638c809231d1fb333 i915/guc: Disable i915_pm_rps when SLPC is enabled
+> 
+> 
 
-Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
----
- tests/i915/perf.c | 45 ++++++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 44 insertions(+), 1 deletion(-)
+Sorry for this, libdrm building changed and everything failed to build
+after that. I'll keep poking this and other affected series through
+the pipeline.
 
-diff --git a/tests/i915/perf.c b/tests/i915/perf.c
-index 52de5d38..6951735b 100644
---- a/tests/i915/perf.c
-+++ b/tests/i915/perf.c
-@@ -40,6 +40,7 @@
- 
- #include "i915/gem.h"
- #include "i915/perf.h"
-+#include "i915_pciids.h"
- #include "igt.h"
- #include "igt_perf.h"
- #include "igt_sysfs.h"
-@@ -503,6 +504,47 @@ cs_timestamp_frequency(int fd)
- 	return value;
- }
- 
-+/*
-+ * Hacky ways until IGT is fully aware of steppings:
-+ *
-+ * WA is permanent for G11. For other DG2s, bug is fixed from B0 onwards.
-+ * Steps A0 and A1 correspond to 0 and 1 revid values.
-+ */
-+struct perf_dev_info {
-+	bool is_dg2_g11;
-+};
-+
-+static const struct perf_dev_info dg2_g11_info = {
-+	.is_dg2_g11 = true,
-+};
-+
-+static const struct pci_id_match perf_dev_match[] = {
-+	INTEL_DG2_G11_IDS(&dg2_g11_info),
-+};
-+
-+static const struct perf_dev_info *__dev_info(uint32_t device_id)
-+{
-+	static const struct perf_dev_info *cache;
-+	static int _iter;
-+
-+	if (_iter)
-+		goto out;
-+
-+	for (_iter = 0; _iter < ARRAY_SIZE(perf_dev_match); _iter++)
-+		if (device_id == perf_dev_match[_iter].device_id)
-+			cache = (void *) perf_dev_match[_iter].match_data;
-+
-+out:
-+	return cache;
-+}
-+
-+#define IS_DG2_G11(__d) (__dev_info(__d) ? __dev_info(__d)->is_dg2_g11 : false)
-+#define IS_DG2_A0(__d) (IS_DG2(__d) && (intel_perf->devinfo.revision == 0))
-+#define IS_DG2_A1(__d) (IS_DG2(__d) && (intel_perf->devinfo.revision == 1))
-+
-+#define HAS_OA_FORMAT_64BIT_HDR_BUG(__d) \
-+	(IS_DG2_G11(__d) || IS_DG2_A0(__d) || IS_DG2_A1(__d))
-+
- static uint64_t
- cs_timebase_scale(uint32_t u32_delta)
- {
-@@ -514,7 +556,8 @@ oa_timestamp(const uint32_t *report, enum drm_i915_oa_format format)
- {
- 	struct oa_format fmt = get_oa_format(format);
- 
--	return fmt.report_hdr_64bit ? *(uint64_t *)&report[2] : report[1];
-+	return fmt.report_hdr_64bit && !HAS_OA_FORMAT_64BIT_HDR_BUG(devid) ?
-+		*(uint64_t *)&report[2] : report[1];
- }
- 
- static uint64_t
+
 -- 
-2.25.1
+Petri Latvala
