@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-4321.protonmail.ch (mail-4321.protonmail.ch [185.70.43.21])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2ED3DB6E67
- for <igt-dev@lists.freedesktop.org>; Wed, 24 Aug 2022 14:58:55 +0000 (UTC)
-Date: Wed, 24 Aug 2022 14:58:44 +0000
-To: igt-dev@lists.freedesktop.org
-From: Simon Ser <contact@emersion.fr>
-Message-ID: <20220824145832.426397-1-contact@emersion.fr>
+Content-Type: multipart/alternative;
+ boundary="===============7651423522569763628=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Subject: [igt-dev] [RFC PATCH] tests/kms_async_flips: add atomic test
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Simon Ser" <contact@emersion.fr>
+Date: Wed, 24 Aug 2022 15:38:34 -0000
+Message-ID: <166135551456.9873.8075027068066959743@emeril.freedesktop.org>
+References: <20220824145832.426397-1-contact@emersion.fr>
+In-Reply-To: <20220824145832.426397-1-contact@emersion.fr>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
+ =?utf-8?q?kms=5Fasync=5Fflips=3A_add_atomic_test?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,146 +17,255 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: Simon Ser <contact@emersion.fr>
-Cc: Alex Deucher <alexander.deucher@amd.com>, Harry Wentland <hwentlan@amd.com>,
- Joshua Ashton <joshua@froggi.es>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-This adds a simple test for DRM_MODE_PAGE_FLIP_ASYNC with the
-atomic uAPI.
+--===============7651423522569763628==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Signed-off-by: Simon Ser <contact@emersion.fr>
-Cc: Joshua Ashton <joshua@froggi.es>
-Cc: Melissa Wen <mwen@igalia.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Cc: Harry Wentland <hwentlan@amd.com>
-Cc: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
----
+== Series Details ==
 
-This is sent as an RFC because the kernel patch is not yet merged.
+Series: tests/kms_async_flips: add atomic test
+URL   : https://patchwork.freedesktop.org/series/107681/
+State : success
 
- include/drm-uapi/drm.h  |  7 +++++++
- tests/kms_async_flips.c | 45 +++++++++++++++++++++++++++++++++++++----
- 2 files changed, 48 insertions(+), 4 deletions(-)
+== Summary ==
 
-diff --git a/include/drm-uapi/drm.h b/include/drm-uapi/drm.h
-index 5e54c3aa4c3a..77c258e4cbe7 100644
---- a/include/drm-uapi/drm.h
-+++ b/include/drm-uapi/drm.h
-@@ -761,6 +761,13 @@ struct drm_gem_open {
-  * Documentation/gpu/drm-mm.rst, section "DRM Sync Objects".
-  */
- #define DRM_CAP_SYNCOBJ_TIMELINE=090x14
-+/**
-+ * DRM_CAP_ATOMIC_ASYNC_PAGE_FLIP
-+ *
-+ * If set to 1, the driver supports &DRM_MODE_PAGE_FLIP_ASYNC for atomic
-+ * commits.
-+ */
-+#define DRM_CAP_ATOMIC_ASYNC_PAGE_FLIP=090x15
-=20
- /* DRM_IOCTL_GET_CAP ioctl argument type */
- struct drm_get_cap {
-diff --git a/tests/kms_async_flips.c b/tests/kms_async_flips.c
-index 695aea74d4f3..7173ca65a0b0 100644
---- a/tests/kms_async_flips.c
-+++ b/tests/kms_async_flips.c
-@@ -51,6 +51,7 @@ typedef struct {
- =09struct igt_fb bufs[4];
- =09igt_display_t display;
- =09igt_output_t *output;
-+=09igt_plane_t *plane;
- =09unsigned long flip_timestamp_us;
- =09double flip_interval;
- =09igt_pipe_crc_t *pipe_crc;
-@@ -146,7 +147,6 @@ static void test_init(data_t *data)
- {
- =09int i;
- =09uint32_t width, height;
--=09igt_plane_t *plane;
- =09static uint32_t prev_output_id;
- =09drmModeModeInfo *mode;
-=20
-@@ -161,7 +161,7 @@ static void test_init(data_t *data)
- =09data->refresh_rate =3D mode->vrefresh;
-=20
- =09igt_output_set_pipe(data->output, data->pipe);
--=09plane =3D igt_output_get_plane_type(data->output, DRM_PLANE_TYPE_PRIMAR=
-Y);
-+=09data->plane =3D igt_output_get_plane_type(data->output, DRM_PLANE_TYPE_=
-PRIMARY);
-=20
- =09if (prev_output_id !=3D data->output->id) {
- =09=09prev_output_id =3D data->output->id;
-@@ -175,8 +175,8 @@ static void test_init(data_t *data)
- =09=09=09make_fb(data, &data->bufs[i], width, height, i);
- =09}
-=20
--=09igt_plane_set_fb(plane, &data->bufs[0]);
--=09igt_plane_set_size(plane, width, height);
-+=09igt_plane_set_fb(data->plane, &data->bufs[0]);
-+=09igt_plane_set_size(data->plane, width, height);
-=20
- =09igt_display_commit2(&data->display, data->display.is_atomic ? COMMIT_AT=
-OMIC : COMMIT_LEGACY);
- }
-@@ -258,6 +258,35 @@ static void test_async_flip(data_t *data)
- =09}
- }
-=20
-+static void test_async_flip_atomic(data_t *data)
-+{
-+=09int frame;
-+=09long long int fps;
-+=09struct timeval start, end, diff;
-+
-+=09test_init(data);
-+
-+=09gettimeofday(&start, NULL);
-+=09frame =3D 1;
-+=09do {
-+=09=09uint32_t flags =3D DRM_MODE_PAGE_FLIP_ASYNC | DRM_MODE_PAGE_FLIP_EVE=
-NT;
-+
-+=09=09igt_plane_set_fb(data->plane, &data->bufs[frame % 4]);
-+=09=09igt_display_commit_atomic(&data->display, flags, data);
-+
-+=09=09wait_flip_event(data);
-+
-+=09=09gettimeofday(&end, NULL);
-+=09=09timersub(&end, &start, &diff);
-+
-+=09=09frame++;
-+=09} while (diff.tv_sec < RUN_TIME);
-+
-+=09fps =3D frame * 1000 / RUN_TIME;
-+=09igt_assert_f((fps / 1000) > (data->refresh_rate * MIN_FLIPS_PER_FRAME),
-+=09=09     "FPS should be significantly higher than the refresh rate\n");
-+}
-+
- static void wait_for_vblank(data_t *data, unsigned long *vbl_time, unsigne=
-d int *seq)
- {
- =09drmVBlank wait_vbl;
-@@ -643,6 +672,14 @@ igt_main_args("e", NULL, help_str, opt_handler, &data)
- =09=09run_test(&data, test_crc);
- =09}
-=20
-+=09igt_describe("Verify the async flip functionality and the fps during at=
-omic async flips");
-+=09igt_subtest_with_dynamic("atomic-async-flip") {
-+=09=09require_monotonic_timestamp(data.drm_fd);
-+=09=09igt_require_f(igt_has_drm_cap(data.drm_fd, DRM_CAP_ATOMIC_ASYNC_PAGE=
-_FLIP),
-+=09=09=09      "Atomic async page-flips are not supported\n");
-+=09=09run_test(&data, test_async_flip_atomic);
-+=09}
-+
- =09igt_fixture {
- =09=09for (i =3D 0; i < ARRAY_SIZE(data.bufs); i++)
- =09=09=09igt_remove_fb(data.drm_fd, &data.bufs[i]);
---=20
-2.37.2
+CI Bug Log - changes from CI_DRM_12021 -> IGTPW_7681
+====================================================
 
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7681/index.html
+
+Participating hosts (37 -> 37)
+------------------------------
+
+  Additional (1): fi-kbl-soraka 
+  Missing    (1): bat-jsl-3 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_7681 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@i915_selftest@live@execlists:
+    - fi-bsw-nick:        [PASS][1] -> [INCOMPLETE][2] ([i915#5847])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12021/fi-bsw-nick/igt@i915_selftest@live@execlists.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7681/fi-bsw-nick/igt@i915_selftest@live@execlists.html
+
+  * igt@i915_selftest@live@hangcheck:
+    - bat-dg1-6:          [PASS][3] -> [DMESG-FAIL][4] ([i915#4957])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12021/bat-dg1-6/igt@i915_selftest@live@hangcheck.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7681/bat-dg1-6/igt@i915_selftest@live@hangcheck.html
+
+  * igt@i915_suspend@basic-s3-without-i915:
+    - fi-hsw-4770:        NOTRUN -> [INCOMPLETE][5] ([i915#4817] / [i915#6598])
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7681/fi-hsw-4770/igt@i915_suspend@basic-s3-without-i915.html
+
+  * igt@runner@aborted:
+    - fi-kbl-soraka:      NOTRUN -> [FAIL][6] ([i915#6219])
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7681/fi-kbl-soraka/igt@runner@aborted.html
+    - fi-bsw-nick:        NOTRUN -> [FAIL][7] ([fdo#109271] / [i915#4312])
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7681/fi-bsw-nick/igt@runner@aborted.html
+
+  
+#### Possible fixes ####
+
+  * igt@gem_exec_suspend@basic-s3@smem:
+    - {bat-rplp-1}:       [DMESG-WARN][8] ([i915#2867]) -> [PASS][9]
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12021/bat-rplp-1/igt@gem_exec_suspend@basic-s3@smem.html
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7681/bat-rplp-1/igt@gem_exec_suspend@basic-s3@smem.html
+
+  * igt@i915_selftest@live@hangcheck:
+    - fi-hsw-4770:        [INCOMPLETE][10] ([i915#4785]) -> [PASS][11]
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12021/fi-hsw-4770/igt@i915_selftest@live@hangcheck.html
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7681/fi-hsw-4770/igt@i915_selftest@live@hangcheck.html
+
+  * igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions:
+    - fi-bsw-kefka:       [FAIL][12] -> [PASS][13]
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12021/fi-bsw-kefka/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions.html
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7681/fi-bsw-kefka/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions.html
+
+  
+#### Warnings ####
+
+  * igt@i915_suspend@basic-s3-without-i915:
+    - fi-elk-e7500:       [INCOMPLETE][14] ([i915#6598] / [i915#6601] / [i915#6648]) -> [INCOMPLETE][15] ([i915#6598] / [i915#6648])
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12021/fi-elk-e7500/igt@i915_suspend@basic-s3-without-i915.html
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7681/fi-elk-e7500/igt@i915_suspend@basic-s3-without-i915.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [i915#2867]: https://gitlab.freedesktop.org/drm/intel/issues/2867
+  [i915#4312]: https://gitlab.freedesktop.org/drm/intel/issues/4312
+  [i915#4785]: https://gitlab.freedesktop.org/drm/intel/issues/4785
+  [i915#4817]: https://gitlab.freedesktop.org/drm/intel/issues/4817
+  [i915#4957]: https://gitlab.freedesktop.org/drm/intel/issues/4957
+  [i915#5847]: https://gitlab.freedesktop.org/drm/intel/issues/5847
+  [i915#6106]: https://gitlab.freedesktop.org/drm/intel/issues/6106
+  [i915#6219]: https://gitlab.freedesktop.org/drm/intel/issues/6219
+  [i915#6523]: https://gitlab.freedesktop.org/drm/intel/issues/6523
+  [i915#6530]: https://gitlab.freedesktop.org/drm/intel/issues/6530
+  [i915#6598]: https://gitlab.freedesktop.org/drm/intel/issues/6598
+  [i915#6599]: https://gitlab.freedesktop.org/drm/intel/issues/6599
+  [i915#6601]: https://gitlab.freedesktop.org/drm/intel/issues/6601
+  [i915#6648]: https://gitlab.freedesktop.org/drm/intel/issues/6648
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_6636 -> IGTPW_7681
+
+  CI-20190529: 20190529
+  CI_DRM_12021: 078959b4819e4e0ab8cf2965e7bfd98278c0b35d @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_7681: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7681/index.html
+  IGT_6636: 1298b5f0e1b3e010657ffba41d2e775fab028e08 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+
+Testlist changes
+----------------
+
++igt@kms_async_flips@atomic-async-flip
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7681/index.html
+
+--===============7651423522569763628==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/kms_async_flips: add atomic test</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/107681/">https://patchwork.freedesktop.org/series/107681/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7681/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7681/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_12021 -&gt; IGTPW_7681</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7681/index.html</p>
+<h2>Participating hosts (37 -&gt; 37)</h2>
+<p>Additional (1): fi-kbl-soraka <br />
+  Missing    (1): bat-jsl-3 </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_7681 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live@execlists:</p>
+<ul>
+<li>fi-bsw-nick:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12021/fi-bsw-nick/igt@i915_selftest@live@execlists.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7681/fi-bsw-nick/igt@i915_selftest@live@execlists.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5847">i915#5847</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@hangcheck:</p>
+<ul>
+<li>bat-dg1-6:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12021/bat-dg1-6/igt@i915_selftest@live@hangcheck.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7681/bat-dg1-6/igt@i915_selftest@live@hangcheck.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4957">i915#4957</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_suspend@basic-s3-without-i915:</p>
+<ul>
+<li>fi-hsw-4770:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7681/fi-hsw-4770/igt@i915_suspend@basic-s3-without-i915.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4817">i915#4817</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/6598">i915#6598</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@runner@aborted:</p>
+<ul>
+<li>
+<p>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7681/fi-kbl-soraka/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6219">i915#6219</a>)</p>
+</li>
+<li>
+<p>fi-bsw-nick:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7681/fi-bsw-nick/igt@runner@aborted.html">FAIL</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4312">i915#4312</a>)</p>
+</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@gem_exec_suspend@basic-s3@smem:</p>
+<ul>
+<li>{bat-rplp-1}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12021/bat-rplp-1/igt@gem_exec_suspend@basic-s3@smem.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2867">i915#2867</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7681/bat-rplp-1/igt@gem_exec_suspend@basic-s3@smem.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@hangcheck:</p>
+<ul>
+<li>fi-hsw-4770:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12021/fi-hsw-4770/igt@i915_selftest@live@hangcheck.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4785">i915#4785</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7681/fi-hsw-4770/igt@i915_selftest@live@hangcheck.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions:</p>
+<ul>
+<li>fi-bsw-kefka:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12021/fi-bsw-kefka/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions.html">FAIL</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7681/fi-bsw-kefka/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<h4>Warnings</h4>
+<ul>
+<li>igt@i915_suspend@basic-s3-without-i915:<ul>
+<li>fi-elk-e7500:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12021/fi-elk-e7500/igt@i915_suspend@basic-s3-without-i915.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6598">i915#6598</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/6601">i915#6601</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/6648">i915#6648</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7681/fi-elk-e7500/igt@i915_suspend@basic-s3-without-i915.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6598">i915#6598</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/6648">i915#6648</a>)</li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_6636 -&gt; IGTPW_7681</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_12021: 078959b4819e4e0ab8cf2965e7bfd98278c0b35d @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_7681: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7681/index.html<br />
+  IGT_6636: 1298b5f0e1b3e010657ffba41d2e775fab028e08 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+<h2>Testlist changes</h2>
+<p>+igt@kms_async_flips@atomic-async-flip</p>
+
+</body>
+</html>
+
+--===============7651423522569763628==--
