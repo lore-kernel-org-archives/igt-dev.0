@@ -3,13 +3,14 @@ Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Umesh Nerlige Ramappa" <umesh.nerlige.ramappa@intel.com>
-Date: Wed, 24 Aug 2022 09:33:36 -0000
-Message-ID: <166133361619.9870.4253496162339808490@emeril.freedesktop.org>
-References: <20220823183036.5270-1-umesh.nerlige.ramappa@intel.com>
-In-Reply-To: <20220823183036.5270-1-umesh.nerlige.ramappa@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJVSUxEOiBmYWlsdXJlIGZvciBBZGQg?=
- =?utf-8?q?DG2_OA_test_=28rev2=29?=
+To: =?utf-8?q?Zbigniew_Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Date: Wed, 24 Aug 2022 09:35:26 -0000
+Message-ID: <166133372609.9870.6111621960690803640@emeril.freedesktop.org>
+References: <20220824043451.21272-1-zbigniew.kempczynski@intel.com>
+In-Reply-To: <20220824043451.21272-1-zbigniew.kempczynski@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJVSUxEOiBmYWlsdXJlIGZvciBsaWIv?=
+ =?utf-8?q?igt=5Fdevice=5Fscan=3A_Retry_when_parent_pci_device_lacks_prope?=
+ =?utf-8?q?rties_=28rev2=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,8 +26,8 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 == Series Details ==
 
-Series: Add DG2 OA test (rev2)
-URL   : https://patchwork.freedesktop.org/series/107633/
+Series: lib/igt_device_scan: Retry when parent pci device lacks properties (rev2)
+URL   : https://patchwork.freedesktop.org/series/107646/
 State : failure
 
 == Summary ==
