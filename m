@@ -1,15 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============1900318138804508475=="
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D3C27113C1E
+ for <igt-dev@lists.freedesktop.org>; Thu, 25 Aug 2022 10:39:34 +0000 (UTC)
+From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+To: igt-dev@lists.freedesktop.org,
+	karthik.b.s@intel.com
+Date: Thu, 25 Aug 2022 16:07:31 +0530
+Message-Id: <20220825103731.79332-1-bhanuprakash.modem@intel.com>
+In-Reply-To: <20220810105212.1774656-1-bhanuprakash.modem@intel.com>
+References: <20220810105212.1774656-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Alex Hung" <alex.hung@amd.com>
-Date: Thu, 25 Aug 2022 10:17:28 -0000
-Message-ID: <166142264847.24644.8685933678064510284@emeril.freedesktop.org>
-References: <20220825012447.2757057-1-alex.hung@amd.com>
-In-Reply-To: <20220825012447.2757057-1-alex.hung@amd.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
- =?utf-8?q?kms=5Fplane=5Fmultiple=3A_skip_cursor_plane_on_AMD_HW?=
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [i-g-t V2] tests/kms_atomic_transition: Convert tests to
+ dynamic
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,187 +20,404 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============1900318138804508475==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Convert the existing subtests to dynamic subtests at pipe/output
+level. And create an array of structures to populate subtests to
+avoid code duplication.
 
-== Series Details ==
+This patch will also sanitize the system state before starting the
+subtest with igt_display_reset().
 
-Series: tests/kms_plane_multiple: skip cursor plane on AMD HW
-URL   : https://patchwork.freedesktop.org/series/107736/
-State : success
+V2:
+- Fix cleanup part
 
-== Summary ==
+Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+---
+ tests/kms_atomic_transition.c | 306 ++++++++++++----------------------
+ 1 file changed, 105 insertions(+), 201 deletions(-)
 
-CI Bug Log - changes from CI_DRM_12023 -> IGTPW_7687
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7687/index.html
-
-Participating hosts (37 -> 34)
-------------------------------
-
-  Additional (2): bat-dg2-8 fi-tgl-dsi 
-  Missing    (5): bat-dg1-6 bat-dg2-9 bat-dg2-10 bat-rpls-2 bat-dg2-11 
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_7687 that come from known issues:
-
-### IGT changes ###
-
-#### Possible fixes ####
-
-  * igt@i915_selftest@live@requests:
-    - {bat-rpls-1}:       [INCOMPLETE][1] ([i915#6257] / [i915#6380]) -> [PASS][2]
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12023/bat-rpls-1/igt@i915_selftest@live@requests.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7687/bat-rpls-1/igt@i915_selftest@live@requests.html
-
-  * igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions-varying-size:
-    - fi-bsw-kefka:       [FAIL][3] ([i915#6298]) -> [PASS][4]
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12023/fi-bsw-kefka/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions-varying-size.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7687/fi-bsw-kefka/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions-varying-size.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [fdo#109284]: https://bugs.freedesktop.org/show_bug.cgi?id=109284
-  [fdo#109285]: https://bugs.freedesktop.org/show_bug.cgi?id=109285
-  [fdo#109295]: https://bugs.freedesktop.org/show_bug.cgi?id=109295
-  [fdo#110189]: https://bugs.freedesktop.org/show_bug.cgi?id=110189
-  [fdo#111827]: https://bugs.freedesktop.org/show_bug.cgi?id=111827
-  [i915#1072]: https://gitlab.freedesktop.org/drm/intel/issues/1072
-  [i915#1155]: https://gitlab.freedesktop.org/drm/intel/issues/1155
-  [i915#1759]: https://gitlab.freedesktop.org/drm/intel/issues/1759
-  [i915#2190]: https://gitlab.freedesktop.org/drm/intel/issues/2190
-  [i915#2373]: https://gitlab.freedesktop.org/drm/intel/issues/2373
-  [i915#2582]: https://gitlab.freedesktop.org/drm/intel/issues/2582
-  [i915#3291]: https://gitlab.freedesktop.org/drm/intel/issues/3291
-  [i915#3301]: https://gitlab.freedesktop.org/drm/intel/issues/3301
-  [i915#3555]: https://gitlab.freedesktop.org/drm/intel/issues/3555
-  [i915#3595]: https://gitlab.freedesktop.org/drm/intel/issues/3595
-  [i915#3708]: https://gitlab.freedesktop.org/drm/intel/issues/3708
-  [i915#4077]: https://gitlab.freedesktop.org/drm/intel/issues/4077
-  [i915#4079]: https://gitlab.freedesktop.org/drm/intel/issues/4079
-  [i915#4083]: https://gitlab.freedesktop.org/drm/intel/issues/4083
-  [i915#4103]: https://gitlab.freedesktop.org/drm/intel/issues/4103
-  [i915#4212]: https://gitlab.freedesktop.org/drm/intel/issues/4212
-  [i915#4215]: https://gitlab.freedesktop.org/drm/intel/issues/4215
-  [i915#4312]: https://gitlab.freedesktop.org/drm/intel/issues/4312
-  [i915#4579]: https://gitlab.freedesktop.org/drm/intel/issues/4579
-  [i915#4613]: https://gitlab.freedesktop.org/drm/intel/issues/4613
-  [i915#4873]: https://gitlab.freedesktop.org/drm/intel/issues/4873
-  [i915#4983]: https://gitlab.freedesktop.org/drm/intel/issues/4983
-  [i915#5190]: https://gitlab.freedesktop.org/drm/intel/issues/5190
-  [i915#5274]: https://gitlab.freedesktop.org/drm/intel/issues/5274
-  [i915#5354]: https://gitlab.freedesktop.org/drm/intel/issues/5354
-  [i915#6257]: https://gitlab.freedesktop.org/drm/intel/issues/6257
-  [i915#6298]: https://gitlab.freedesktop.org/drm/intel/issues/6298
-  [i915#6380]: https://gitlab.freedesktop.org/drm/intel/issues/6380
-  [i915#6580]: https://gitlab.freedesktop.org/drm/intel/issues/6580
-  [i915#6621]: https://gitlab.freedesktop.org/drm/intel/issues/6621
-  [i915#6642]: https://gitlab.freedesktop.org/drm/intel/issues/6642
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_6636 -> IGTPW_7687
-
-  CI-20190529: 20190529
-  CI_DRM_12023: 108a64715bc95676fda71b620d448149797743b9 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_7687: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7687/index.html
-  IGT_6636: 1298b5f0e1b3e010657ffba41d2e775fab028e08 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7687/index.html
-
---===============1900318138804508475==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/kms_plane_multiple: skip cursor plane on AMD HW</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/107736/">https://patchwork.freedesktop.org/series/107736/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7687/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7687/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from CI_DRM_12023 -&gt; IGTPW_7687</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7687/index.html</p>
-<h2>Participating hosts (37 -&gt; 34)</h2>
-<p>Additional (2): bat-dg2-8 fi-tgl-dsi <br />
-  Missing    (5): bat-dg1-6 bat-dg2-9 bat-dg2-10 bat-rpls-2 bat-dg2-11 </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_7687 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@i915_selftest@live@requests:</p>
-<ul>
-<li>{bat-rpls-1}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12023/bat-rpls-1/igt@i915_selftest@live@requests.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6257">i915#6257</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/6380">i915#6380</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7687/bat-rpls-1/igt@i915_selftest@live@requests.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions-varying-size:</p>
-<ul>
-<li>fi-bsw-kefka:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12023/fi-bsw-kefka/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions-varying-size.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6298">i915#6298</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7687/fi-bsw-kefka/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions-varying-size.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_6636 -&gt; IGTPW_7687</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_12023: 108a64715bc95676fda71b620d448149797743b9 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_7687: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7687/index.html<br />
-  IGT_6636: 1298b5f0e1b3e010657ffba41d2e775fab028e08 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-
-</body>
-</html>
-
---===============1900318138804508475==--
+diff --git a/tests/kms_atomic_transition.c b/tests/kms_atomic_transition.c
+index 10b21c92..c26c4d56 100644
+--- a/tests/kms_atomic_transition.c
++++ b/tests/kms_atomic_transition.c
+@@ -62,10 +62,11 @@ run_primary_test(data_t *data, enum pipe pipe, igt_output_t *output)
+ {
+ 	drmModeModeInfo *mode;
+ 	igt_plane_t *primary;
+-	igt_fb_t fb;
++	igt_fb_t *fb = &data->fb;
+ 	int i, ret;
+ 	unsigned flags = DRM_MODE_ATOMIC_TEST_ONLY | DRM_MODE_ATOMIC_ALLOW_MODESET;
+ 
++	igt_display_reset(&data->display);
+ 	igt_output_set_pipe(output, pipe);
+ 	primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
+ 
+@@ -76,9 +77,9 @@ run_primary_test(data_t *data, enum pipe pipe, igt_output_t *output)
+ 	igt_skip_on_f(ret == -EINVAL, "Primary plane cannot be disabled separately from output\n");
+ 
+ 	igt_create_fb(data->drm_fd, mode->hdisplay, mode->vdisplay,
+-		      DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR, &fb);
++		      DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR, fb);
+ 
+-	igt_plane_set_fb(primary, &fb);
++	igt_plane_set_fb(primary, fb);
+ 
+ 	for (i = 0; i < 4; i++) {
+ 		igt_display_commit2(&data->display, COMMIT_ATOMIC);
+@@ -87,20 +88,15 @@ run_primary_test(data_t *data, enum pipe pipe, igt_output_t *output)
+ 			igt_wait_for_vblank(data->drm_fd,
+ 					data->display.pipes[pipe].crtc_offset);
+ 
+-		igt_plane_set_fb(primary, (i & 1) ? &fb : NULL);
++		igt_plane_set_fb(primary, (i & 1) ? fb : NULL);
+ 		igt_display_commit2(&data->display, COMMIT_ATOMIC);
+ 
+ 		if (i & 1)
+ 			igt_wait_for_vblank(data->drm_fd,
+ 					data->display.pipes[pipe].crtc_offset);
+ 
+-		igt_plane_set_fb(primary, (i & 1) ? NULL : &fb);
++		igt_plane_set_fb(primary, (i & 1) ? NULL : fb);
+ 	}
+-
+-	igt_plane_set_fb(primary, NULL);
+-	igt_output_set_pipe(output, PIPE_NONE);
+-	igt_remove_fb(data->drm_fd, &fb);
+-	igt_display_commit2(&data->display, COMMIT_ATOMIC);
+ }
+ 
+ static void *fence_inc_thread(void *arg)
+@@ -972,11 +968,18 @@ static void run_modeset_transition(data_t *data, int requested_outputs, bool non
+ 		}
+ 	}
+ 
+-	igt_require_f(num_outputs >= requested_outputs,
+-		      "Should have at least %i outputs, found %i\n",
+-		      requested_outputs, num_outputs);
++	if (num_outputs < requested_outputs) {
++		igt_debug("Should have at least %i outputs, found %i\n",
++			  requested_outputs, num_outputs);
++		return;
++	}
+ 
+-	run_modeset_tests(data, requested_outputs, nonblocking, fencing);
++	igt_dynamic_f("%ix-outputs", requested_outputs)
++		run_modeset_tests(data, requested_outputs, nonblocking, fencing);
++
++	/* Cleanup. */
++	igt_display_reset(&data->display);
++	igt_display_commit2(&data->display, COMMIT_ATOMIC);
+ }
+ 
+ static int opt_handler(int opt, int opt_index, void *_data)
+@@ -1006,7 +1009,54 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
+ {
+ 	igt_output_t *output;
+ 	enum pipe pipe;
+-	int i, count = 0;
++	struct {
++		const char *name;
++		enum transition_type type;
++		bool nonblocking;
++		bool fencing;
++		const char *desc;
++	} transition_tests[] = {
++		{ "plane-all-transition", TRANSITION_PLANES, false, false,
++		  "Transition test for all plane combinations" },
++		{ "plane-all-transition-fencing", TRANSITION_PLANES, false, true,
++		  "Transition test for all plane combinations with fencing commit" },
++		{ "plane-all-transition-nonblocking", TRANSITION_PLANES, true, false,
++		  "Transition test for all plane combinations with nonblocking commit" },
++		{ "plane-all-transition-nonblocking-fencing", TRANSITION_PLANES, true, true,
++		  "Transition test for all plane combinations with nonblocking and fencing commit" },
++		{ "plane-use-after-nonblocking-unbind", TRANSITION_AFTER_FREE, true, false,
++		  "Transition test with non blocking commit and make sure commit of disabled plane has "
++		       "to complete before atomic commit on that plane" },
++		{ "plane-use-after-nonblocking-unbind-fencing", TRANSITION_AFTER_FREE, true, true,
++		  "Transition test with non blocking and fencing commit and make sure commit of "
++		       "disabled plane has to complete before atomic commit on that plane" },
++		{ "plane-all-modeset-transition", TRANSITION_MODESET, false, false,
++		  "Modeset test for all plane combinations" },
++		{ "plane-all-modeset-transition-fencing", TRANSITION_MODESET, false, true,
++		  "Modeset test for all plane combinations with fencing commit" },
++		{ "plane-all-modeset-transition-internal-panels", TRANSITION_MODESET_FAST, false, false,
++		  "Modeset test for all plane combinations on internal panels" },
++		{ "plane-all-modeset-transition-fencing-internal-panels", TRANSITION_MODESET_FAST, false, true,
++		  "Modeset test for all plane combinations on internal panels with fencing commit" },
++		{ "plane-toggle-modeset-transition", TRANSITION_MODESET_DISABLE, false, false,
++		  "Check toggling and modeset transition on plane" },
++	};
++	struct {
++		const char *name;
++		bool nonblocking;
++		bool fencing;
++		const char *desc;
++	} modeset_tests[] = {
++		{ "modeset-transition", false, false,
++		  "Modeset transition tests for combinations of crtc enabled" },
++		{ "modeset-transition-fencing", false, true,
++		  "Modeset transition tests for combinations of crtc enabled with fencing commit" },
++		{ "modeset-transition-nonblocking", true, false,
++		  "Modeset transition tests for combinations of crtc enabled with nonblocking commit" },
++		{ "modeset-transition-nonblocking-fencing", true, true,
++		  "Modeset transition tests for combinations of crtc enabled with nonblocking and fencing commit" },
++	};
++	int i, j, count = 0;
+ 	int pipe_count = 0;
+ 
+ 	igt_fixture {
+@@ -1024,208 +1074,62 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
+ 	}
+ 
+ 	igt_describe("Check toggling of primary plane with vblank");
+-	igt_subtest("plane-primary-toggle-with-vblank-wait") {
+-		for_each_pipe_with_valid_output(&data.display, pipe, output) {
+-			if (pipe_count == 2 * count && !data.extended)
+-				break;
+-			pipe_count++;
+-			run_primary_test(&data, pipe, output);
+-
+-		}
+-		pipe_count = 0;
+-	}
+-
+-	igt_describe("Transition test for all plane combinations");
+-	igt_subtest_with_dynamic("plane-all-transition") {
+-		for_each_pipe_with_valid_output(&data.display, pipe, output) {
+-			if (pipe_count == 2 * count && !data.extended)
+-				break;
+-			pipe_count++;
+-			igt_dynamic_f("%s-pipe-%s", igt_output_name(output), kmstest_pipe_name(pipe))
+-				run_transition_test(&data, pipe, output, TRANSITION_PLANES, false, false);
+-			test_cleanup(&data, pipe, output, false);
+-		}
+-		pipe_count = 0;
+-	}
+-
+-	igt_describe("Transition test for all plane combinations with fencing commit");
+-	igt_subtest_with_dynamic("plane-all-transition-fencing") {
+-		for_each_pipe_with_valid_output(&data.display, pipe, output) {
+-			if (pipe_count == 2 * count && !data.extended)
+-				break;
+-			pipe_count++;
+-			igt_dynamic_f("%s-pipe-%s", igt_output_name(output), kmstest_pipe_name(pipe))
+-				run_transition_test(&data, pipe, output, TRANSITION_PLANES, false, true);
+-			test_cleanup(&data, pipe, output, true);
+-		}
+-		pipe_count = 0;
+-	}
+-
+-	igt_describe("Transition test for all plane combinations with nonblocking commit");
+-	igt_subtest_with_dynamic("plane-all-transition-nonblocking") {
+-		for_each_pipe_with_valid_output(&data.display, pipe, output) {
+-			if (pipe_count == 2 * count && !data.extended)
+-				break;
+-			pipe_count++;
+-			igt_dynamic_f("%s-pipe-%s", igt_output_name(output), kmstest_pipe_name(pipe))
+-				run_transition_test(&data, pipe, output, TRANSITION_PLANES, true, false);
+-			test_cleanup(&data, pipe, output, false);
+-		}
+-		pipe_count = 0;
+-	}
+-
+-	igt_describe("Transition test for all plane combinations with nonblocking and fencing commit");
+-	igt_subtest_with_dynamic("plane-all-transition-nonblocking-fencing") {
+-		for_each_pipe_with_valid_output(&data.display, pipe, output) {
+-			if (pipe_count == 2 * count && !data.extended)
+-				break;
+-			pipe_count++;
+-			igt_dynamic_f("%s-pipe-%s", igt_output_name(output), kmstest_pipe_name(pipe))
+-				run_transition_test(&data, pipe, output, TRANSITION_PLANES, true, true);
+-			test_cleanup(&data, pipe, output, true);
+-		}
+-		pipe_count = 0;
+-	}
+-
+-	igt_describe("Transition test with non blocking commit and make sure commit of disabled plane has "
+-		       "to complete before atomic commit on that plane");
+-	igt_subtest_with_dynamic("plane-use-after-nonblocking-unbind") {
+-		for_each_pipe_with_valid_output(&data.display, pipe, output) {
+-			if (pipe_count == 2 * count && !data.extended)
+-				break;
+-			pipe_count++;
+-			igt_dynamic_f("%s-pipe-%s", igt_output_name(output), kmstest_pipe_name(pipe))
+-				run_transition_test(&data, pipe, output, TRANSITION_AFTER_FREE, true, false);
+-			test_cleanup(&data, pipe, output, false);
+-		}
+-		pipe_count = 0;
+-	}
+-
+-	igt_describe("Transition test with non blocking and fencing commit and make sure commit of "
+-		       "disabled plane has to complete before atomic commit on that plane");
+-	igt_subtest_with_dynamic("plane-use-after-nonblocking-unbind-fencing") {
+-		for_each_pipe_with_valid_output(&data.display, pipe, output) {
+-			if (pipe_count == 2 * count && !data.extended)
+-				break;
+-			pipe_count++;
+-			igt_dynamic_f("%s-pipe-%s", igt_output_name(output), kmstest_pipe_name(pipe))
+-				run_transition_test(&data, pipe, output, TRANSITION_AFTER_FREE, true, true);
+-			test_cleanup(&data, pipe, output, true);
+-		}
+-		pipe_count = 0;
+-	}
+-
+-	/*
+-	 * Test modeset cases on internal panels separately with a reduced
+-	 * number of combinations, to avoid long runtimes due to modesets on
+-	 * panels with long power cycle delays.
+-	 */
+-	igt_describe("Modeset test for all plane combinations");
+-	igt_subtest_with_dynamic("plane-all-modeset-transition") {
+-		for_each_pipe_with_valid_output(&data.display, pipe, output) {
+-			if (pipe_count == 2 * count && !data.extended)
+-				break;
+-			pipe_count++;
+-			if (output_is_internal_panel(output))
+-				continue;
+-
+-			igt_dynamic_f("%s-pipe-%s", igt_output_name(output), kmstest_pipe_name(pipe))
+-				run_transition_test(&data, pipe, output, TRANSITION_MODESET, false, false);
+-			test_cleanup(&data, pipe, output, false);
+-		}
++	igt_subtest_with_dynamic("plane-primary-toggle-with-vblank-wait") {
+ 		pipe_count = 0;
+-	}
+ 
+-	igt_describe("Modeset test for all plane combinations with fencing commit");
+-	igt_subtest_with_dynamic("plane-all-modeset-transition-fencing") {
+ 		for_each_pipe_with_valid_output(&data.display, pipe, output) {
+ 			if (pipe_count == 2 * count && !data.extended)
+ 				break;
+-			pipe_count++;
+-			if (output_is_internal_panel(output))
+-				continue;
+ 
+-			igt_dynamic_f("%s-pipe-%s", igt_output_name(output), kmstest_pipe_name(pipe))
+-				run_transition_test(&data, pipe, output, TRANSITION_MODESET, false, true);
+-			test_cleanup(&data, pipe, output, true);
+-		}
+-		pipe_count = 0;
+-	}
+-
+-	igt_describe("Modeset test for all plane combinations on internal panels");
+-	igt_subtest_with_dynamic("plane-all-modeset-transition-internal-panels") {
+-		for_each_pipe_with_valid_output(&data.display, pipe, output) {
+-			if (pipe_count == 2 * count && !data.extended)
+-				break;
+ 			pipe_count++;
+-			if (!output_is_internal_panel(output))
+-				continue;
+-
+-			igt_dynamic_f("%s-pipe-%s", igt_output_name(output), kmstest_pipe_name(pipe))
+-				run_transition_test(&data, pipe, output, TRANSITION_MODESET_FAST, false, false);
++			igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), igt_output_name(output))
++				run_primary_test(&data, pipe, output);
+ 			test_cleanup(&data, pipe, output, false);
+ 		}
+-		pipe_count = 0;
+ 	}
+ 
+-	igt_describe("Modeset test for all plane combinations on internal panels with fencing commit");
+-	igt_subtest_with_dynamic("plane-all-modeset-transition-fencing-internal-panels") {
+-		for_each_pipe_with_valid_output(&data.display, pipe, output) {
+-			if (pipe_count == 2 * count && !data.extended)
+-				break;
+-			pipe_count++;
+-			if (!output_is_internal_panel(output))
+-				continue;
+-
+-			igt_dynamic_f("%s-pipe-%s", igt_output_name(output), kmstest_pipe_name(pipe))
+-				run_transition_test(&data, pipe, output, TRANSITION_MODESET_FAST, false, true);
+-			test_cleanup(&data, pipe, output, true);
+-		}
+-		pipe_count = 0;
+-	}
+-
+-	igt_describe("Check toggling and modeset transition on plane");
+-	igt_subtest("plane-toggle-modeset-transition") {
+-		for_each_pipe_with_valid_output(&data.display, pipe, output) {
+-			if (pipe_count == 2 * count && !data.extended)
+-				break;
+-			pipe_count++;
+-			run_transition_test(&data, pipe, output, TRANSITION_MODESET_DISABLE, false, false);
+-			test_cleanup(&data, pipe, output, false);
+-		}
+-		pipe_count = 0;
+-	}
+-
+-	igt_describe("Modeset transition tests for combinations of crtc enabled");
+-	igt_subtest_with_dynamic("modeset-transition") {
+-		for (i = 1; i <= count; i++) {
+-			igt_dynamic_f("%ix-outputs", i)
+-				run_modeset_transition(&data, i, false, false);
+-		}
+-	}
++	for (i = 0; i < ARRAY_SIZE(transition_tests); i++) {
++		igt_describe(transition_tests[i].desc);
++		igt_subtest_with_dynamic_f("%s", transition_tests[i].name) {
++			pipe_count = 0;
++
++			for_each_pipe_with_valid_output(&data.display, pipe, output) {
++				/*
++				 * Test modeset cases on internal panels separately with a reduced
++				 * number of combinations, to avoid long runtimes due to modesets on
++				 * panels with long power cycle delays.
++				 */
++				if (((transition_tests[i].type == TRANSITION_MODESET) ||
++				     (transition_tests[i].type == TRANSITION_MODESET_FAST)) &&
++				    output_is_internal_panel(output))
++					continue;
+ 
+-	igt_describe("Modeset transition tests for combinations of crtc enabled with nonblocking commit");
+-	igt_subtest_with_dynamic("modeset-transition-nonblocking") {
+-		for (i = 1; i <= count; i++) {
+-			igt_dynamic_f("%ix-outputs", i)
+-				run_modeset_transition(&data, i, true, false);
+-		}
+-	}
++				if (pipe_count == 2 * count && !data.extended)
++					break;
+ 
+-	igt_describe("Modeset transition tests for combinations of crtc enabled with fencing commit");
+-	igt_subtest_with_dynamic("modeset-transition-fencing") {
+-		for (i = 1; i <= count; i++) {
+-			igt_dynamic_f("%ix-outputs", i)
+-				run_modeset_transition(&data, i, false, true);
++				pipe_count++;
++				igt_dynamic_f("pipe-%s-%s",
++					      kmstest_pipe_name(pipe),
++					      igt_output_name(output))
++					run_transition_test(&data, pipe, output,
++							    transition_tests[i].type,
++							    transition_tests[i].nonblocking,
++							    transition_tests[i].fencing);
++
++				test_cleanup(&data, pipe, output,
++					     transition_tests[i].fencing);
++			}
+ 		}
+ 	}
+ 
+-	igt_describe("Modeset transition tests for combinations of crtc enabled with nonblocking &"
+-		       " fencing commit");
+-	igt_subtest_with_dynamic("modeset-transition-nonblocking-fencing") {
+-		for (i = 1; i <= count; i++) {
+-			igt_dynamic_f("%ix-outputs", i)
+-				run_modeset_transition(&data, i, true, true);
++	for (i = 0; i < ARRAY_SIZE(modeset_tests); i++) {
++		igt_describe_f("%s", modeset_tests[i].desc);
++		igt_subtest_with_dynamic_f("%s", modeset_tests[i].name) {
++			for (j = 1; j <= count; j++) {
++				run_modeset_transition(&data, j,
++						       modeset_tests[i].nonblocking,
++						       modeset_tests[i].fencing);
++			}
+ 		}
+ 	}
+ 
+-- 
+2.35.1
