@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============3944286634551072243=="
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 50BE310EB6D
+ for <igt-dev@lists.freedesktop.org>; Thu, 25 Aug 2022 11:23:18 +0000 (UTC)
+From: Mohammed Thasleem <mohammed.thasleem@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Thu, 25 Aug 2022 16:48:25 +0530
+Message-Id: <20220825111825.74620-1-mohammed.thasleem@intel.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Bhanuprakash Modem" <bhanuprakash.modem@intel.com>
-Date: Thu, 25 Aug 2022 11:22:26 -0000
-Message-ID: <166142654635.24642.3291768876252775514@emeril.freedesktop.org>
-References: <20220809165832.1717990-1-bhanuprakash.modem@intel.com>
-In-Reply-To: <20220809165832.1717990-1-bhanuprakash.modem@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
- =?utf-8?q?kms=5Fcursor=5Fcrc=3A_Add_max-size_test_back_=28rev3=29?=
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t] tests/kms_force_connector_basic: Test
+ Cleanup
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,295 +17,131 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============3944286634551072243==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Sanitize the system state before starting the subtest.
 
-== Series Details ==
+Signed-off-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
+---
+ tests/kms_force_connector_basic.c | 51 ++++++++-----------------------
+ 1 file changed, 13 insertions(+), 38 deletions(-)
 
-Series: tests/kms_cursor_crc: Add max-size test back (rev3)
-URL   : https://patchwork.freedesktop.org/series/107096/
-State : success
-
-== Summary ==
-
-CI Bug Log - changes from CI_DRM_12024 -> IGTPW_7688
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7688/index.html
-
-Participating hosts (35 -> 35)
-------------------------------
-
-  No changes in participating hosts
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_7688 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@i915_selftest@live@hangcheck:
-    - fi-hsw-g3258:       [PASS][1] -> [INCOMPLETE][2] ([i915#3303] / [i915#4785])
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12024/fi-hsw-g3258/igt@i915_selftest@live@hangcheck.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7688/fi-hsw-g3258/igt@i915_selftest@live@hangcheck.html
-
-  * igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions:
-    - fi-bsw-kefka:       [PASS][3] -> [FAIL][4] ([i915#6298])
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12024/fi-bsw-kefka/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7688/fi-bsw-kefka/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions.html
-
-  * igt@runner@aborted:
-    - fi-hsw-g3258:       NOTRUN -> [FAIL][5] ([fdo#109271] / [i915#4312] / [i915#6246])
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7688/fi-hsw-g3258/igt@runner@aborted.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
-  [i915#3303]: https://gitlab.freedesktop.org/drm/intel/issues/3303
-  [i915#4312]: https://gitlab.freedesktop.org/drm/intel/issues/4312
-  [i915#4785]: https://gitlab.freedesktop.org/drm/intel/issues/4785
-  [i915#6246]: https://gitlab.freedesktop.org/drm/intel/issues/6246
-  [i915#6257]: https://gitlab.freedesktop.org/drm/intel/issues/6257
-  [i915#6298]: https://gitlab.freedesktop.org/drm/intel/issues/6298
-  [i915#6380]: https://gitlab.freedesktop.org/drm/intel/issues/6380
-  [i915#6523]: https://gitlab.freedesktop.org/drm/intel/issues/6523
-  [i915#6530]: https://gitlab.freedesktop.org/drm/intel/issues/6530
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_6636 -> IGTPW_7688
-
-  CI-20190529: 20190529
-  CI_DRM_12024: 656b7e74f416705f11953d30cda518a98f18ba2e @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_7688: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7688/index.html
-  IGT_6636: 1298b5f0e1b3e010657ffba41d2e775fab028e08 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-
-Testlist changes
-----------------
-
-+igt@kms_cursor_crc@cursor-offscreen-32x10
-+igt@kms_cursor_crc@cursor-offscreen-32x32
-+igt@kms_cursor_crc@cursor-offscreen-64x21
-+igt@kms_cursor_crc@cursor-offscreen-64x64
-+igt@kms_cursor_crc@cursor-offscreen-128x42
-+igt@kms_cursor_crc@cursor-offscreen-128x128
-+igt@kms_cursor_crc@cursor-offscreen-256x85
-+igt@kms_cursor_crc@cursor-offscreen-256x256
-+igt@kms_cursor_crc@cursor-offscreen-512x170
-+igt@kms_cursor_crc@cursor-offscreen-512x512
-+igt@kms_cursor_crc@cursor-offscreen-max-size
-+igt@kms_cursor_crc@cursor-onscreen-32x10
-+igt@kms_cursor_crc@cursor-onscreen-32x32
-+igt@kms_cursor_crc@cursor-onscreen-64x21
-+igt@kms_cursor_crc@cursor-onscreen-64x64
-+igt@kms_cursor_crc@cursor-onscreen-128x42
-+igt@kms_cursor_crc@cursor-onscreen-128x128
-+igt@kms_cursor_crc@cursor-onscreen-256x85
-+igt@kms_cursor_crc@cursor-onscreen-256x256
-+igt@kms_cursor_crc@cursor-onscreen-512x170
-+igt@kms_cursor_crc@cursor-onscreen-512x512
-+igt@kms_cursor_crc@cursor-onscreen-max-size
-+igt@kms_cursor_crc@cursor-random-32x10
-+igt@kms_cursor_crc@cursor-random-32x32
-+igt@kms_cursor_crc@cursor-random-64x21
-+igt@kms_cursor_crc@cursor-random-64x64
-+igt@kms_cursor_crc@cursor-random-128x42
-+igt@kms_cursor_crc@cursor-random-128x128
-+igt@kms_cursor_crc@cursor-random-256x85
-+igt@kms_cursor_crc@cursor-random-256x256
-+igt@kms_cursor_crc@cursor-random-512x170
-+igt@kms_cursor_crc@cursor-random-512x512
-+igt@kms_cursor_crc@cursor-random-max-size
-+igt@kms_cursor_crc@cursor-rapid-movement-32x10
-+igt@kms_cursor_crc@cursor-rapid-movement-32x32
-+igt@kms_cursor_crc@cursor-rapid-movement-64x21
-+igt@kms_cursor_crc@cursor-rapid-movement-64x64
-+igt@kms_cursor_crc@cursor-rapid-movement-128x42
-+igt@kms_cursor_crc@cursor-rapid-movement-128x128
-+igt@kms_cursor_crc@cursor-rapid-movement-256x85
-+igt@kms_cursor_crc@cursor-rapid-movement-256x256
-+igt@kms_cursor_crc@cursor-rapid-movement-512x170
-+igt@kms_cursor_crc@cursor-rapid-movement-512x512
-+igt@kms_cursor_crc@cursor-rapid-movement-max-size
-+igt@kms_cursor_crc@cursor-sliding-32x10
-+igt@kms_cursor_crc@cursor-sliding-32x32
-+igt@kms_cursor_crc@cursor-sliding-64x21
-+igt@kms_cursor_crc@cursor-sliding-64x64
-+igt@kms_cursor_crc@cursor-sliding-128x42
-+igt@kms_cursor_crc@cursor-sliding-128x128
-+igt@kms_cursor_crc@cursor-sliding-256x85
-+igt@kms_cursor_crc@cursor-sliding-256x256
-+igt@kms_cursor_crc@cursor-sliding-512x170
-+igt@kms_cursor_crc@cursor-sliding-512x512
-+igt@kms_cursor_crc@cursor-sliding-max-size
--igt@kms_cursor_crc@cursor-offscreen
--igt@kms_cursor_crc@cursor-onscreen
--igt@kms_cursor_crc@cursor-random
--igt@kms_cursor_crc@cursor-rapid-movement
--igt@kms_cursor_crc@cursor-sliding
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7688/index.html
-
---===============3944286634551072243==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/kms_cursor_crc: Add max-size test back (rev3)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/107096/">https://patchwork.freedesktop.org/series/107096/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7688/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7688/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from CI_DRM_12024 -&gt; IGTPW_7688</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7688/index.html</p>
-<h2>Participating hosts (35 -&gt; 35)</h2>
-<p>No changes in participating hosts</p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_7688 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@i915_selftest@live@hangcheck:</p>
-<ul>
-<li>fi-hsw-g3258:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12024/fi-hsw-g3258/igt@i915_selftest@live@hangcheck.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7688/fi-hsw-g3258/igt@i915_selftest@live@hangcheck.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3303">i915#3303</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4785">i915#4785</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions:</p>
-<ul>
-<li>fi-bsw-kefka:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12024/fi-bsw-kefka/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7688/fi-bsw-kefka/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6298">i915#6298</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@runner@aborted:</p>
-<ul>
-<li>fi-hsw-g3258:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7688/fi-hsw-g3258/igt@runner@aborted.html">FAIL</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4312">i915#4312</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/6246">i915#6246</a>)</li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_6636 -&gt; IGTPW_7688</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_12024: 656b7e74f416705f11953d30cda518a98f18ba2e @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_7688: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7688/index.html<br />
-  IGT_6636: 1298b5f0e1b3e010657ffba41d2e775fab028e08 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-<h2>Testlist changes</h2>
-<p>+igt@kms_cursor_crc@cursor-offscreen-32x10<br />
-+igt@kms_cursor_crc@cursor-offscreen-32x32<br />
-+igt@kms_cursor_crc@cursor-offscreen-64x21<br />
-+igt@kms_cursor_crc@cursor-offscreen-64x64<br />
-+igt@kms_cursor_crc@cursor-offscreen-128x42<br />
-+igt@kms_cursor_crc@cursor-offscreen-128x128<br />
-+igt@kms_cursor_crc@cursor-offscreen-256x85<br />
-+igt@kms_cursor_crc@cursor-offscreen-256x256<br />
-+igt@kms_cursor_crc@cursor-offscreen-512x170<br />
-+igt@kms_cursor_crc@cursor-offscreen-512x512<br />
-+igt@kms_cursor_crc@cursor-offscreen-max-size<br />
-+igt@kms_cursor_crc@cursor-onscreen-32x10<br />
-+igt@kms_cursor_crc@cursor-onscreen-32x32<br />
-+igt@kms_cursor_crc@cursor-onscreen-64x21<br />
-+igt@kms_cursor_crc@cursor-onscreen-64x64<br />
-+igt@kms_cursor_crc@cursor-onscreen-128x42<br />
-+igt@kms_cursor_crc@cursor-onscreen-128x128<br />
-+igt@kms_cursor_crc@cursor-onscreen-256x85<br />
-+igt@kms_cursor_crc@cursor-onscreen-256x256<br />
-+igt@kms_cursor_crc@cursor-onscreen-512x170<br />
-+igt@kms_cursor_crc@cursor-onscreen-512x512<br />
-+igt@kms_cursor_crc@cursor-onscreen-max-size<br />
-+igt@kms_cursor_crc@cursor-random-32x10<br />
-+igt@kms_cursor_crc@cursor-random-32x32<br />
-+igt@kms_cursor_crc@cursor-random-64x21<br />
-+igt@kms_cursor_crc@cursor-random-64x64<br />
-+igt@kms_cursor_crc@cursor-random-128x42<br />
-+igt@kms_cursor_crc@cursor-random-128x128<br />
-+igt@kms_cursor_crc@cursor-random-256x85<br />
-+igt@kms_cursor_crc@cursor-random-256x256<br />
-+igt@kms_cursor_crc@cursor-random-512x170<br />
-+igt@kms_cursor_crc@cursor-random-512x512<br />
-+igt@kms_cursor_crc@cursor-random-max-size<br />
-+igt@kms_cursor_crc@cursor-rapid-movement-32x10<br />
-+igt@kms_cursor_crc@cursor-rapid-movement-32x32<br />
-+igt@kms_cursor_crc@cursor-rapid-movement-64x21<br />
-+igt@kms_cursor_crc@cursor-rapid-movement-64x64<br />
-+igt@kms_cursor_crc@cursor-rapid-movement-128x42<br />
-+igt@kms_cursor_crc@cursor-rapid-movement-128x128<br />
-+igt@kms_cursor_crc@cursor-rapid-movement-256x85<br />
-+igt@kms_cursor_crc@cursor-rapid-movement-256x256<br />
-+igt@kms_cursor_crc@cursor-rapid-movement-512x170<br />
-+igt@kms_cursor_crc@cursor-rapid-movement-512x512<br />
-+igt@kms_cursor_crc@cursor-rapid-movement-max-size<br />
-+igt@kms_cursor_crc@cursor-sliding-32x10<br />
-+igt@kms_cursor_crc@cursor-sliding-32x32<br />
-+igt@kms_cursor_crc@cursor-sliding-64x21<br />
-+igt@kms_cursor_crc@cursor-sliding-64x64<br />
-+igt@kms_cursor_crc@cursor-sliding-128x42<br />
-+igt@kms_cursor_crc@cursor-sliding-128x128<br />
-+igt@kms_cursor_crc@cursor-sliding-256x85<br />
-+igt@kms_cursor_crc@cursor-sliding-256x256<br />
-+igt@kms_cursor_crc@cursor-sliding-512x170<br />
-+igt@kms_cursor_crc@cursor-sliding-512x512<br />
-+igt@kms_cursor_crc@cursor-sliding-max-size<br />
--igt@kms_cursor_crc@cursor-offscreen<br />
--igt@kms_cursor_crc@cursor-onscreen<br />
--igt@kms_cursor_crc@cursor-random<br />
--igt@kms_cursor_crc@cursor-rapid-movement<br />
--igt@kms_cursor_crc@cursor-sliding</p>
-
-</body>
-</html>
-
---===============3944286634551072243==--
+diff --git a/tests/kms_force_connector_basic.c b/tests/kms_force_connector_basic.c
+index 683d3672..6ae2da09 100644
+--- a/tests/kms_force_connector_basic.c
++++ b/tests/kms_force_connector_basic.c
+@@ -31,36 +31,11 @@ IGT_TEST_DESCRIPTION("Check the debugfs force connector/edid features work"
+ 	igt_assert_eq(m.hdisplay, h); igt_assert_eq(m.vdisplay, w); \
+ 	igt_assert_eq(m.vrefresh, r);
+ 
+-static void reset_connectors(void)
+-{
+-	int drm_fd = 0;
+-	drmModeRes *res;
+-	drmModeConnector *connector = NULL;
+-
+-	drm_fd = drm_open_driver_master(DRIVER_ANY);
+-	res = drmModeGetResources(drm_fd);
+-
+-	for (int i = 0; i < res->count_connectors; i++) {
+-
+-		connector = drmModeGetConnectorCurrent(drm_fd,
+-						       res->connectors[i]);
+-
+-		kmstest_force_connector(drm_fd, connector,
+-					FORCE_CONNECTOR_UNSPECIFIED);
+-
+-		kmstest_force_edid(drm_fd, connector, NULL);
+-
+-		drmModeFreeConnector(connector);
+-	}
+-
+-	igt_set_module_param_int(drm_fd, "load_detect_test", 0);
+-}
+-
+ static int opt_handler(int opt, int opt_index, void *data)
+ {
+ 	switch (opt) {
+ 	case 'r':
+-		reset_connectors();
++		igt_reset_connectors();
+ 		exit(0);
+ 		break;
+ 	}
+@@ -80,6 +55,7 @@ igt_main_args("", long_opts, help_str, opt_handler, NULL)
+ 	/* force the VGA output and test that it worked */
+ 	int drm_fd = 0;
+ 	drmModeRes *res;
++	igt_display_t display;
+ 	drmModeConnector *connector = NULL, *temp;
+ 	int start_n_modes, start_connection;
+ 
+@@ -87,6 +63,8 @@ igt_main_args("", long_opts, help_str, opt_handler, NULL)
+ 		unsigned connector_id = 0;
+ 
+ 		drm_fd = drm_open_driver_master(DRIVER_ANY);
++		igt_display_require(&display, drm_fd);
++		kmstest_set_vt_graphics_mode();
+ 
+ 		res = drmModeGetResources(drm_fd);
+ 		igt_require(res);
+@@ -156,8 +134,8 @@ igt_main_args("", long_opts, help_str, opt_handler, NULL)
+ 		 * disable all outputs to make sure we have a
+ 		 * free crtc available for load detect
+ 		 */
+-		kmstest_set_vt_graphics_mode();
+-		kmstest_unset_all_crtcs(drm_fd, res);
++		igt_display_reset(&display);
++		igt_display_commit(&display);
+ 
+ 		igt_set_module_param_int(drm_fd, "load_detect_test", 1);
+ 
+@@ -228,7 +206,10 @@ igt_main_args("", long_opts, help_str, opt_handler, NULL)
+ 
+ 	igt_describe("Test to check the forced connector state.");
+ 	igt_subtest("force-connector-state") {
+-		igt_display_t display;
++
++		/*reset display before attempt to use it */
++		igt_display_reset(&display);
++		igt_display_commit(&display);
+ 
+ 		/* force the connector on and check the reported values */
+ 		kmstest_force_connector(drm_fd, connector, FORCE_CONNECTOR_ON);
+@@ -238,13 +219,6 @@ igt_main_args("", long_opts, help_str, opt_handler, NULL)
+ 		igt_assert_lt(0, temp->count_modes);
+ 		drmModeFreeConnector(temp);
+ 
+-		/* attempt to use the display */
+-		kmstest_set_vt_graphics_mode();
+-		igt_display_require(&display, drm_fd);
+-		igt_display_commit(&display);
+-		igt_display_fini(&display);
+-
+-
+ 		/* force the connector off */
+ 		kmstest_force_connector(drm_fd, connector,
+ 					FORCE_CONNECTOR_OFF);
+@@ -261,6 +235,8 @@ igt_main_args("", long_opts, help_str, opt_handler, NULL)
+ 						  connector->connector_id);
+ 		igt_assert_eq(temp->connection, start_connection);
+ 		drmModeFreeConnector(temp);
++
++		igt_display_fini(&display);
+ 	}
+ 
+ 	igt_describe("Test to check the values after forcing edid.");
+@@ -341,8 +317,7 @@ igt_main_args("", long_opts, help_str, opt_handler, NULL)
+ 
+ 	igt_fixture {
+ 		drmModeFreeConnector(connector);
++		igt_reset_connectors();
+ 		close(drm_fd);
+-
+-		reset_connectors();
+ 	}
+ }
+-- 
+2.25.1
