@@ -1,22 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-yw1-x112b.google.com (mail-yw1-x112b.google.com
- [IPv6:2607:f8b0:4864:20::112b])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 204B510E2AB
- for <igt-dev@lists.freedesktop.org>; Thu, 25 Aug 2022 14:37:03 +0000 (UTC)
-Received: by mail-yw1-x112b.google.com with SMTP id
- 00721157ae682-33da3a391d8so133457817b3.2
- for <igt-dev@lists.freedesktop.org>; Thu, 25 Aug 2022 07:37:03 -0700 (PDT)
+Received: from mail-yw1-x1136.google.com (mail-yw1-x1136.google.com
+ [IPv6:2607:f8b0:4864:20::1136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2982710E374
+ for <igt-dev@lists.freedesktop.org>; Thu, 25 Aug 2022 14:38:02 +0000 (UTC)
+Received: by mail-yw1-x1136.google.com with SMTP id
+ 00721157ae682-3321c2a8d4cso546754197b3.5
+ for <igt-dev@lists.freedesktop.org>; Thu, 25 Aug 2022 07:38:02 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220825012447.2757057-1-alex.hung@amd.com>
-In-Reply-To: <20220825012447.2757057-1-alex.hung@amd.com>
+References: <20220825012401.2753758-1-alex.hung@amd.com>
+In-Reply-To: <20220825012401.2753758-1-alex.hung@amd.com>
 From: Mark Yacoub <markyacoub@chromium.org>
-Date: Thu, 25 Aug 2022 10:36:51 -0400
-Message-ID: <CAJUqKUp_QtC+AyHBdJTsR+fOsHeMFNAdjHsnCvhgnCFfqyk32Q@mail.gmail.com>
+Date: Thu, 25 Aug 2022 10:37:50 -0400
+Message-ID: <CAJUqKUqcQj-TTR0K_J=D=5PhvkburXJXbaqoFfF93k8_=U7JLA@mail.gmail.com>
 To: Alex Hung <alex.hung@amd.com>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: base64
-Subject: Re: [igt-dev] [PATCH] tests/kms_plane_multiple: skip cursor plane
- on AMD HW
+Subject: Re: [igt-dev] [PATCH] tests/kms_concurrent: remove an AMD device
+ check
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -29,46 +28,29 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-VGhhbmtzIGZvciB0aGUgZGV0YWlsZWQgY29tbWl0IG1lc3NhZ2UuDQoNCk9uIFRodSwgQXVnIDI1
-LCAyMDIyIGF0IDM6NTcgQU0gQWxleCBIdW5nIDxhbGV4Lmh1bmdAYW1kLmNvbT4gd3JvdGU6DQo+
-DQo+IERSTSB0aGlua3Mgb2YgY3Vyc29yIGFuZCBwbGFuZSBibGVuZGluZyBsaWtlIHRoaXM6DQo+
-DQo+IOKUjOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUkA0KPiDilIIgQ3Vyc29yICDilJzi
-lIDilIDilIDilIDilIDilIDilIDilJANCj4g4pSU4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA
-4pSYICAgICAgIOKUgg0KPiAgICAgICAgICAgICAgICAgICDilIINCj4g4pSM4pSA4pSA4pSA4pSA
-4pSA4pSA4pSA4pSA4pSA4pSQICAgICAg4pSM4pa84pSA4pSA4pSA4pSA4pSA4pSA4pSQDQo+IOKU
-giBQbGFuZSAxIOKUnOKUgOKUgOKUgOKUgOKUgOKUgOKWuiBDUlRDICDilIINCj4g4pSU4pSA4pSA
-4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSYICAgICAg4pSU4pay4pSA4pSA4pSA4pSA4pSA4pSA4pSY
-DQo+ICAgICAgICAgICAgICAgICAgIOKUgg0KPiDilIzilIDilIDilIDilIDilIDilIDilIDilIDi
-lIDilJAgICAgICAg4pSCDQo+IOKUgiBQbGFuZSAyIOKUnOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKU
-mA0KPiDilJTilIDilIDilIDilIDilIDilIDilIDilIDilIDilJgNCj4NCj4gQU1EIEhXIGlzIGRl
-c2lnbmVkIGxpa2UgdGhpczoNCj4NCj4g4pSM4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSQ
-ICAg4pSM4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSQICAgICAg4pSM4pSA4pSA4pSA4pSA
-4pSA4pSA4pSA4pSQDQo+IOKUgiBDdXJzb3IgIOKUnOKUgOKUgOKUgOKWuiBQbGFuZSAxIOKUnOKU
-gOKUgOKUgOKUgOKUgOKUgOKWuiBDUlRDICDilIINCj4g4pSU4pSA4pSA4pSA4pSA4pSA4pSA4pSA
-4pSA4pSA4pSYICAg4pSU4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSYICAgICAg4pSU4pay
-4pSA4pSA4pSA4pSA4pSA4pSA4pSYDQo+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-4pSCDQo+ICAgICAgICAgICAgICAg4pSM4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSQICAg
-ICAgIOKUgg0KPiAgICAgICAgICAgICAgIOKUgiBQbGFuZSAyIOKUnOKUgOKUgOKUgOKUgOKUgOKU
-gOKUgOKUmA0KPiAgICAgICAgICAgICAgIOKUlOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKU
-mA0KPg0KPiBUaGUgaW1wbGVtZW50YXRpb24gY2FuIGNhdXNlIENSQyB2YWx1ZXMgdG8gYmUNCj4g
-ZGlmZmVyZW50IGFuZCBub3Qgc3VpdGFibGUgdG8gY29tcGFyZSB0byB2YWx1ZXMNCj4gZnJvbSBv
-dGhlciBwbGFuZXMuDQo+DQo+IFNpZ25lZC1vZmYtYnk6IEFsZXggSHVuZyA8YWxleC5odW5nQGFt
-ZC5jb20+DQpBc3N1bWluZyBpdCdzIGFwcHJvdmVkIGJ5IFNpcXVpZXJhOg0KUmV2aWV3ZWQtYnk6
-IE1hcmsgWWFjb3ViIDxtYXJreWFjb3ViQGNocm9taXVtLm9yZz4NCj4gLS0tDQo+ICB0ZXN0cy9r
-bXNfcGxhbmVfbXVsdGlwbGUuYyB8IDggKysrKysrKysNCj4gIDEgZmlsZSBjaGFuZ2VkLCA4IGlu
-c2VydGlvbnMoKykNCj4NCj4gZGlmZiAtLWdpdCBhL3Rlc3RzL2ttc19wbGFuZV9tdWx0aXBsZS5j
-IGIvdGVzdHMva21zX3BsYW5lX211bHRpcGxlLmMNCj4gaW5kZXggMTY3OWY3Y2UuLmYyOWM4ZjM2
-IDEwMDY0NA0KPiAtLS0gYS90ZXN0cy9rbXNfcGxhbmVfbXVsdGlwbGUuYw0KPiArKysgYi90ZXN0
-cy9rbXNfcGxhbmVfbXVsdGlwbGUuYw0KPiBAQCAtMzY5LDYgKzM2OSwxNCBAQCB0ZXN0X3BsYW5l
-X3Bvc2l0aW9uKGRhdGFfdCAqZGF0YSwgZW51bSBwaXBlIHBpcGUsIHVpbnQ2NF90IG1vZGlmaWVy
-KQ0KPiAgICAgICAgIGludCBuX3BsYW5lcyA9IG9wdC5hbGxfcGxhbmVzID8NCj4gICAgICAgICAg
-ICAgICAgICAgICAgICAgZGF0YS0+ZGlzcGxheS5waXBlc1twaXBlXS5uX3BsYW5lcyA6IERFRkFV
-TFRfTl9QTEFORVM7DQo+DQo+ICsgICAgICAgLyoNCj4gKyAgICAgICAgKiBTa2lwIGN1cnNvciAo
-M3JkKSBwbGFuZSBiZWNhdXNlIEFNRCBoYXMgZGlmZmVyZW50IGltcGxlbWVudGF0aW9uDQo+ICsg
-ICAgICAgICogd2hpY2ggY2Fubm90IGJlIGRyYXduIG91dHNpZGUgaXRzIGFzc29jaWF0ZWQgcGxh
-bmUgYW5kIGNhbiBjYXVzZQ0KPiArICAgICAgICAqIENSQyB2YWx1ZXMgdG8gYmUgZGlmZmVyZW50
-IGZyb20gb3RoZXIgcGxhbmVzLg0KPiArICAgICAgICAqLw0KPiArICAgICAgIGlmIChpc19hbWRn
-cHVfZGV2aWNlKGRhdGEtPmRybV9mZCkpDQo+ICsgICAgICAgICAgICAgICBuX3BsYW5lcyA9IDI7
-DQo+ICsNCj4gICAgICAgICBvdXRwdXQgPSBpZ3RfZ2V0X3NpbmdsZV9vdXRwdXRfZm9yX3BpcGUo
-JmRhdGEtPmRpc3BsYXksIHBpcGUpOw0KPiAgICAgICAgIGlndF9yZXF1aXJlKG91dHB1dCk7DQo+
-DQo+IC0tDQo+IDIuMzcuMg0KPg0K
+On Thu, Aug 25, 2022 at 3:54 AM Alex Hung <alex.hung@amd.com> wrote:
+>
+> This is to be deprecated by a kernel fix.
+Can you link the kernel commit for reference
+>
+> Signed-off-by: Alex Hung <alex.hung@amd.com>
+> ---
+>  tests/kms_concurrent.c | 2 --
+>  1 file changed, 2 deletions(-)
+>
+> diff --git a/tests/kms_concurrent.c b/tests/kms_concurrent.c
+> index 6f8ffd4a..3ad51569 100644
+> --- a/tests/kms_concurrent.c
+> +++ b/tests/kms_concurrent.c
+> @@ -276,8 +276,6 @@ test_resolution_with_output(data_t *data, enum pipe pipe, int max_planes, igt_ou
+>                 /* switch to lower resolution */
+>                 igt_output_override_mode(output, mode_lo);
+>                 free(mode_lo);
+> -               if (is_amdgpu_device(data->drm_fd))
+> -                       igt_output_set_pipe(output, PIPE_NONE);
+>                 igt_display_commit2(&data->display, COMMIT_ATOMIC);
+>
+>                 /* switch back to higher resolution */
+> --
+> 2.37.2
+>
