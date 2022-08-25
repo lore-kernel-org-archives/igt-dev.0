@@ -1,16 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B223B10E210
- for <igt-dev@lists.freedesktop.org>; Thu, 25 Aug 2022 21:10:46 +0000 (UTC)
-From: Nidhi Gupta <nidhi1.gupta@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Fri, 26 Aug 2022 02:36:10 +0530
-Message-Id: <20220825210611.19636-2-nidhi1.gupta@intel.com>
-In-Reply-To: <20220825210611.19636-1-nidhi1.gupta@intel.com>
-References: <20220825210611.19636-1-nidhi1.gupta@intel.com>
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH 1/2] tests/kms_writeback: Convert tests to dynamic
+Content-Transfer-Encoding: quoted-printable
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Nidhi Gupta" <nidhi1.gupta@intel.com>
+Date: Thu, 25 Aug 2022 21:36:13 -0000
+Message-ID: <166146337375.24645.6936051805888762963@emeril.freedesktop.org>
+References: <20220825210611.19636-1-nidhi1.gupta@intel.com>
+In-Reply-To: <20220825210611.19636-1-nidhi1.gupta@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJVSUxEOiBmYWlsdXJlIGZvciB0ZXN0?=
+ =?utf-8?q?s/kms=5Fwriteback=3A_Test_Cleanup?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,138 +17,105 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Nidhi Gupta <nidhi1.gupta@intel.com>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Convert the existing subtests to dynamic subtests.
+=3D=3D Series Details =3D=3D
 
-Signed-off-by: Nidhi Gupta <nidhi1.gupta@intel.com>
----
- tests/kms_writeback.c | 57 +++++++++++++++++++++++++++++++------------
- 1 file changed, 41 insertions(+), 16 deletions(-)
+Series: tests/kms_writeback: Test Cleanup
+URL   : https://patchwork.freedesktop.org/series/107764/
+State : failure
 
-diff --git a/tests/kms_writeback.c b/tests/kms_writeback.c
-index 9d134585..2508b1e1 100644
---- a/tests/kms_writeback.c
-+++ b/tests/kms_writeback.c
-@@ -214,32 +214,38 @@ static void test_invalid_parameters(igt_output_t *output, igt_fb_t *valid_fb, ig
- 		uint32_t fb_id;
- 		bool ptr_valid;
- 		int32_t *out_fence_ptr;
-+		const char *name;
- 	} invalid_tests[] = {
- 		{
- 			/* No output buffer, but the WRITEBACK_OUT_FENCE_PTR set. */
- 			.fb_id = 0,
- 			.ptr_valid = true,
- 			.out_fence_ptr = &out_fence,
-+			.name = "WRITEBACK_OUT_FENCE_PTR-set",
- 		},
- 		{
- 			/* Invalid output buffer. */
- 			.fb_id = invalid_fb->fb_id,
- 			.ptr_valid = true,
- 			.out_fence_ptr = &out_fence,
-+			.name = "Invalid-output-buffer",
- 		},
- 		{
- 			/* Invalid WRITEBACK_OUT_FENCE_PTR. */
- 			.fb_id = valid_fb->fb_id,
- 			.ptr_valid = false,
- 			.out_fence_ptr = (int32_t *)0x8,
-+			.name = "Invalid-WRITEBACK_OUT_FENCE_PTR",
- 		},
- 	};
- 
- 	for (i = 0; i < ARRAY_SIZE(invalid_tests); i++) {
--		ret = do_writeback_test(output, invalid_tests[i].fb_id,
--					invalid_tests[i].out_fence_ptr,
--					invalid_tests[i].ptr_valid);
--		igt_assert(ret != 0);
-+		igt_dynamic_f("%s\n", invalid_tests[i].name) {
-+			ret = do_writeback_test(output, invalid_tests[i].fb_id,
-+						invalid_tests[i].out_fence_ptr,
-+						invalid_tests[i].ptr_valid);
-+			igt_assert(ret != 0);
-+		}
- 	}
- }
- 
-@@ -247,18 +253,37 @@ static void writeback_fb_id(igt_output_t *output, igt_fb_t *valid_fb, igt_fb_t *
- {
- 
- 	int ret;
-+	struct {
-+                const char *name;
-+		uint32_t fb_id;
-+		int i,ret1;
-+        } fb_id_tests[] = {
-+		{
-+			.name = "Invalid-object",
-+			.fb_id = output->id,
-+			.ret1 = -EINVAL,
-+		},
- 
--	/* Invalid object for WRITEBACK_FB_ID */
--	ret = do_writeback_test(output, output->id, NULL, false);
--	igt_assert(ret == -EINVAL);
-+		{
-+			.name = "Zero-WRITEBACK_FB_ID",
-+			.fb_id = 0,
-+			.ret1 = 0,
-+		},
-+
-+		{
-+			.name = "Valid-output-buffer",
-+			.fb_id = valid_fb->fb_id,
-+			.ret1 = 0,
-+		},
-+	}
-+	for (i = 0; i < ARRAY_SIZE(fb_id_tests); i++) {
-+		igt_dynamic_f("%s\n", fb_id_tests[i].name) {
-+			do_writeback_test(output, fb_id_tests[i].fb_id, NULL, false);
-+			igt_assert(ret == fb_id_tests[i].ret1);
-+		}
-+	}
- 
--	/* Zero WRITEBACK_FB_ID */
--	ret = do_writeback_test(output, 0, NULL, false);
--	igt_assert(ret == 0);
- 
--	/* Valid output buffer */
--	ret = do_writeback_test(output, valid_fb->fb_id, NULL, false);
--	igt_assert(ret == 0);
- }
- 
- static void fill_fb(igt_fb_t *fb, uint32_t pixel)
-@@ -553,7 +578,7 @@ igt_main_args("b:c:dl", long_options, help_str, opt_handler, NULL)
- 	igt_describe("Writeback has a couple of parameters linked together"
- 		     "(output framebuffer and fence); this test goes through"
- 		     "the combination of possible bad options");
--	igt_subtest("writeback-invalid-parameters") {
-+	igt_subtest_with_dynamic("writeback-invalid-parameters") {
- 		igt_fb_t invalid_output_fb;
- 
- 		igt_skip_on(data.dump_check || data.list_modes);
-@@ -570,7 +595,7 @@ igt_main_args("b:c:dl", long_options, help_str, opt_handler, NULL)
- 	}
- 
- 	igt_describe("Validate WRITEBACK_FB_ID with valid and invalid options");
--	igt_subtest("writeback-fb-id") {
-+	igt_subtest_with_dynamic("writeback-fb-id") {
- 		igt_fb_t output_fb;
- 
- 		igt_skip_on(data.dump_check || data.list_modes);
-@@ -586,7 +611,7 @@ igt_main_args("b:c:dl", long_options, help_str, opt_handler, NULL)
- 	}
- 
- 	igt_describe("Check writeback output with CRC validation");
--	igt_subtest("writeback-check-output") {
-+	igt_subtest_with_dynamic("writeback-check-output") {
- 		igt_fb_t output_fb;
- 
- 		igt_skip_on(data.dump_check || data.list_modes);
--- 
-2.36.0
+=3D=3D Summary =3D=3D
+
+IGT patchset build failed on latest successful build
+1298b5f0e1b3e010657ffba41d2e775fab028e08 igt: Allow overriding the commit h=
+ash in the version string
+
+[334/663] Linking target tests/kms_plane_alpha_blend
+[335/663] Linking target tests/kms_plane_lowres
+[336/663] Linking target tests/kms_plane_multiple
+[337/663] Linking target tests/kms_plane_scaling
+[338/663] Linking target tests/kms_prop_blob
+[339/663] Linking target tests/kms_prime
+[340/663] Linking target tests/kms_rotation_crc
+[341/663] Linking target tests/kms_properties
+[342/663] Linking target tests/kms_rmfb
+[343/663] Linking target tests/kms_scaling_modes
+[344/663] Linking target tests/kms_selftest
+[345/663] Linking target tests/kms_sequence
+[346/663] Compiling C object tests/kms_writeback.p/kms_writeback.c.o
+FAILED: tests/kms_writeback.p/kms_writeback.c.o=20
+ccache cc -Itests/kms_writeback.p -Itests -I../tests -I../include/drm-uapi =
+-I../include/linux-uapi -Ilib -I../lib -I../lib/stubs/syscalls -I. -I.. -I/=
+usr/include/cairo -I/usr/include/glib-2.0 -I/usr/lib/x86_64-linux-gnu/glib-=
+2.0/include -I/usr/include/pixman-1 -I/usr/include/freetype2 -I/usr/include=
+/libpng16 -I/usr/include/libpng12 -I/usr/include/libdrm -I/usr/include/libd=
+rm/nouveau -I/usr/include/x86_64-linux-gnu -I/usr/include/alsa -I/usr/inclu=
+de -I/home/cidrm/kernel_headers/include -fdiagnostics-color=3Dalways -D_FIL=
+E_OFFSET_BITS=3D64 -Wall -Winvalid-pch -Wextra -std=3Dgnu11 -O2 -g -D_GNU_S=
+OURCE -include config.h -D_FORTIFY_SOURCE=3D2 -Wbad-function-cast -Wdeclara=
+tion-after-statement -Wformat=3D2 -Wimplicit-fallthrough=3D0 -Wlogical-op -=
+Wmissing-declarations -Wmissing-format-attribute -Wmissing-noreturn -Wmissi=
+ng-prototypes -Wnested-externs -Wold-style-definition -Wpointer-arith -Wred=
+undant-decls -Wshadow -Wstrict-prototypes -Wuninitialized -Wunused -Wno-clo=
+bbered -Wno-maybe-uninitialized -Wno-missing-field-initializers -Wno-pointe=
+r-arith -Wno-sign-compare -Wno-type-limits -Wno-unused-parameter -Wno-unuse=
+d-result -Werror=3Daddress -Werror=3Darray-bounds -Werror=3Dimplicit -Werro=
+r=3Dinit-self -Werror=3Dint-to-pointer-cast -Werror=3Dmain -Werror=3Dmissin=
+g-braces -Werror=3Dnonnull -Werror=3Dpointer-to-int-cast -Werror=3Dreturn-t=
+ype -Werror=3Dsequence-point -Werror=3Dtrigraphs -Werror=3Dwrite-strings -f=
+no-builtin-malloc -fno-builtin-calloc -fcommon -pthread -MD -MQ tests/kms_w=
+riteback.p/kms_writeback.c.o -MF tests/kms_writeback.p/kms_writeback.c.o.d =
+-o tests/kms_writeback.p/kms_writeback.c.o -c ../tests/kms_writeback.c
+../tests/kms_writeback.c: In function =E2=80=98detach_crtc=E2=80=99:
+../tests/kms_writeback.c:172:19: warning: passing argument 1 of =E2=80=98ig=
+t_display_fini=E2=80=99 from incompatible pointer type [-Wincompatible-poin=
+ter-types]
+  igt_display_fini(&display);
+                   ^~~~~~~~
+In file included from ../lib/igt.h:38,
+                 from ../tests/kms_writeback.c:31:
+../lib/igt_kms.h:454:38: note: expected =E2=80=98igt_display_t *=E2=80=99 {=
+aka =E2=80=98struct igt_display *=E2=80=99} but argument is of type =E2=80=
+=98igt_display_t **=E2=80=99 {aka =E2=80=98struct igt_display **=E2=80=99}
+ void igt_display_fini(igt_display_t *display);
+                       ~~~~~~~~~~~~~~~^~~~~~~
+../tests/kms_writeback.c: In function =E2=80=98writeback_fb_id=E2=80=99:
+../tests/kms_writeback.c:280:2: error: expected =E2=80=98,=E2=80=99 or =E2=
+=80=98;=E2=80=99 before =E2=80=98for=E2=80=99
+  for (i =3D 0; i < ARRAY_SIZE(fb_id_tests); i++) {
+  ^~~
+../tests/kms_writeback.c:280:14: error: =E2=80=98i=E2=80=99 undeclared (fir=
+st use in this function)
+  for (i =3D 0; i < ARRAY_SIZE(fb_id_tests); i++) {
+              ^
+../tests/kms_writeback.c:280:14: note: each undeclared identifier is report=
+ed only once for each function it appears in
+../tests/kms_writeback.c:280:46: error: expected =E2=80=98;=E2=80=99 before=
+ =E2=80=98)=E2=80=99 token
+  for (i =3D 0; i < ARRAY_SIZE(fb_id_tests); i++) {
+                                              ^
+                                              ;
+../tests/kms_writeback.c:280:46: error: expected statement before =E2=80=98=
+)=E2=80=99 token
+In file included from ../lib/drmtest.h:39,
+                 from ../lib/igt.h:27,
+                 from ../tests/kms_writeback.c:31:
+../lib/igt_core.h:350:16: warning: left-hand operand of comma expression ha=
+s no effect [-Wunused-value]
+         format), \
+                ^
+../lib/igt_core.h:372:2: note: in expansion of macro =E2=80=98__igt_dynamic=
+_f=E2=80=99
+  __igt_dynamic_f(igt_unique(__tmpchar), f)
+  ^~~~~~~~~~~~~~~
+../tests/kms_writeback.c:281:3: note: in expansion of macro =E2=80=98igt_dy=
+namic_f=E2=80=99
+   igt_dynamic_f("%s\n", fb_id_tests[i].name) {
+   ^~~~~~~~~~~~~
+ninja: build stopped: subcommand failed.
+
