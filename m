@@ -1,20 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com
- [205.220.168.131])
- by gabe.freedesktop.org (Postfix) with ESMTPS id F381F10EA2B
- for <igt-dev@lists.freedesktop.org>; Fri, 26 Aug 2022 18:22:35 +0000 (UTC)
-Message-ID: <4db84895-d784-53ae-fa17-f01220688954@quicinc.com>
-Date: Fri, 26 Aug 2022 11:21:15 -0700
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com
+ [205.220.180.131])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E170D10E080
+ for <igt-dev@lists.freedesktop.org>; Fri, 26 Aug 2022 18:54:44 +0000 (UTC)
+Message-ID: <bdcdae01-f001-e4b8-0bec-70046d99b794@quicinc.com>
+Date: Fri, 26 Aug 2022 11:49:12 -0700
 MIME-Version: 1.0
 Content-Language: en-US
-To: Nidhi Gupta <nidhi1.gupta@intel.com>
-References: <20220826034916.30364-1-nidhi1.gupta@intel.com>
+To: Nidhi Gupta <nidhi1.gupta@intel.com>, <igt-dev@lists.freedesktop.org>
+References: <20220825210611.19636-1-nidhi1.gupta@intel.com>
+ <20220825210611.19636-3-nidhi1.gupta@intel.com>
 From: Jessica Zhang <quic_jesszhan@quicinc.com>
-In-Reply-To: <20220826034916.30364-1-nidhi1.gupta@intel.com>
+In-Reply-To: <20220825210611.19636-3-nidhi1.gupta@intel.com>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_atomic_interruptible: Test
- Cleanup
+Subject: Re: [igt-dev] [PATCH 2/2] tests/kms_writeback: Test Cleanup
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,109 +22,104 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
 Hi Nidhi,
 
-On 8/25/2022 8:49 PM, Nidhi Gupta wrote:
+On 8/25/2022 2:06 PM, Nidhi Gupta wrote:
+> Sanitize the system state before starting the subtest.
+> 
 > Signed-off-by: Nidhi Gupta <nidhi1.gupta@intel.com>
 > ---
->   tests/kms_atomic_interruptible.c | 14 ++++++++++++++
->   1 file changed, 14 insertions(+)
+>   tests/kms_writeback.c | 8 ++++++++
+>   1 file changed, 8 insertions(+)
 > 
-> diff --git a/tests/kms_atomic_interruptible.c b/tests/kms_atomic_interruptible.c
-> index 038cb286..7bcb2d32 100644
-> --- a/tests/kms_atomic_interruptible.c
-> +++ b/tests/kms_atomic_interruptible.c
-> @@ -286,6 +286,8 @@ igt_main
->   	igt_describe("Tests the interrupt properties of legacy modeset");
->   	igt_subtest_with_dynamic("legacy-setmode") {
->   		for_each_pipe_with_valid_output(&display, pipe, output) {
-> +			igt_display_require(&display, drm_fd);
+> diff --git a/tests/kms_writeback.c b/tests/kms_writeback.c
+> index 2508b1e1..0c6c64b3 100644
+> --- a/tests/kms_writeback.c
+> +++ b/tests/kms_writeback.c
+> @@ -169,6 +169,7 @@ static void detach_crtc(igt_display_t *display, igt_output_t *output)
+>   	if (get_writeback_fb_id(output) == 0)
+>   		return;
+>   
+> +	igt_display_fini(&display);
 
-I believe `drm_fd` is a member of the display struct and not a local 
-variable.
-
-Also, any reason to add extra calls to igt_display_require? There is 
-already a call to igt_display_require() here [1]. I also don't think it 
-would be necessary to reinitialize all the display resource structs for 
-each subtest.
+igt_display_fini() frees the memory for various members of the 
+igt_display_t struct [1]. Since there's already a call to 
+igt_display_fini() in the same fixture that detach_crtc() is called [2], 
+adding an extra call here will cause a double free.
 
 [1] 
-https://gitlab.freedesktop.org/drm/igt-gpu-tools/-/blob/master/tests/kms_atomic_interruptible.c#L280
-
-> +			igt_display_commit(&display);
-
-Similarly, there is already a commit at the beginning of 
-run_plane_test() [2], so is this call necessary?
+https://gitlab.freedesktop.org/drm/igt-gpu-tools/-/blob/master/lib/igt_kms.c#L2752
 
 [2] 
-https://gitlab.freedesktop.org/drm/igt-gpu-tools/-/blob/master/tests/kms_atomic_interruptible.c#L90
+https://gitlab.freedesktop.org/drm/igt-gpu-tools/-/blob/master/tests/kms_writeback.c#L607
+
+>   	igt_output_set_pipe(output, PIPE_NONE);
+>   	igt_display_commit2(display, COMMIT_ATOMIC);
+>   }
+> @@ -580,6 +581,9 @@ igt_main_args("b:c:dl", long_options, help_str, opt_handler, NULL)
+>   		     "the combination of possible bad options");
+>   	igt_subtest_with_dynamic("writeback-invalid-parameters") {
+>   		igt_fb_t invalid_output_fb;
+> +		igt_display_reset(&display);
+> +		igt_display_commit(&display);
+
+I have a doubt about this:
+
+There's a lot of set up going on in the initial igt_fixture here [3], 
+specifically within kms_writeback_get_output() [4], where the output 
+pipe is set.
+
+If you just reset the display then do a commit, the output->pending pipe 
+will be set to NONE within igt_output_reset() [5]. This will cause the 
+commit to detach the CRTC (in a similar manner to what detach_crtc() 
+does [6]).
+
+If you don't redo the setup from the initial igt_fixture after resetting 
+the display, the commits within do_writeback_test() will fail since 
+there won't be a CRTC attached to the connector.
 
 Thanks,
 
 Jessica Zhang
 
->   			igt_dynamic_f("%s-pipe-%s", igt_output_name(output), kmstest_pipe_name(pipe))
->   				run_plane_test(&display, pipe, output, test_legacy_modeset, DRM_PLANE_TYPE_PRIMARY);
->   			break;
-> @@ -295,6 +297,8 @@ igt_main
->   	igt_describe("Tests the interrupt properties of atomic modeset");
->   	igt_subtest_with_dynamic("atomic-setmode") {
->   		for_each_pipe_with_valid_output(&display, pipe, output) {
-> +			igt_display_require(&display, drm_fd);
-> +			igt_display_commit(&display);
->   			igt_dynamic_f("%s-pipe-%s", igt_output_name(output), kmstest_pipe_name(pipe))
->   				run_plane_test(&display, pipe, output, test_atomic_modeset, DRM_PLANE_TYPE_PRIMARY);
->   			break;
-> @@ -304,6 +308,8 @@ igt_main
->   	igt_describe("Tests the interrupt properties for DPMS");
->   	igt_subtest_with_dynamic("legacy-dpms") {
->   		for_each_pipe_with_valid_output(&display, pipe, output) {
-> +			igt_display_require(&display, drm_fd);
-> +			igt_display_commit(&display);
->   			igt_dynamic_f("%s-pipe-%s", igt_output_name(output), kmstest_pipe_name(pipe))
->   				run_plane_test(&display, pipe, output, test_legacy_dpms, DRM_PLANE_TYPE_PRIMARY);
->   			break;
-> @@ -313,6 +319,8 @@ igt_main
->   	igt_describe("Tests the interrupt properties for pageflip");
->   	igt_subtest_with_dynamic("legacy-pageflip") {
->   		for_each_pipe_with_valid_output(&display, pipe, output) {
-> +			igt_display_require(&display, drm_fd);
-> +			igt_display_commit(&display);
->   			igt_dynamic_f("%s-pipe-%s", igt_output_name(output), kmstest_pipe_name(pipe))
->   				run_plane_test(&display, pipe, output, test_pageflip, DRM_PLANE_TYPE_PRIMARY);
->   			break;
-> @@ -322,6 +330,8 @@ igt_main
->   	igt_describe("Tests the interrupt properties for cursor");
->   	igt_subtest_with_dynamic("legacy-cursor") {
->   		for_each_pipe_with_valid_output(&display, pipe, output) {
-> +			igt_display_require(&display, drm_fd);
-> +			igt_display_commit(&display);
->   			igt_dynamic_f("%s-pipe-%s", igt_output_name(output), kmstest_pipe_name(pipe))
->   				run_plane_test(&display, pipe, output, test_setcursor, DRM_PLANE_TYPE_CURSOR);
->   			break;
-> @@ -331,6 +341,8 @@ igt_main
->   	igt_describe("Tests the interrupt properties for primary plane");
->   	igt_subtest_with_dynamic("universal-setplane-primary") {
->   		for_each_pipe_with_valid_output(&display, pipe, output) {
-> +			igt_display_require(&display, drm_fd);
-> +			igt_display_commit(&display);
->   			igt_dynamic_f("%s-pipe-%s", igt_output_name(output), kmstest_pipe_name(pipe))
->   				run_plane_test(&display, pipe, output, test_setplane, DRM_PLANE_TYPE_PRIMARY);
->   			break;
-> @@ -340,6 +352,8 @@ igt_main
->   	igt_describe("Tests the interrupt properties for cursor plane");
->   	igt_subtest_with_dynamic("universal-setplane-cursor") {
->   		for_each_pipe_with_valid_output(&display, pipe, output) {
-> +			igt_display_require(&display, drm_fd);
-> +			igt_display_commit(&display);
->   			igt_dynamic_f("%s-pipe-%s", igt_output_name(output), kmstest_pipe_name(pipe))
->   				run_plane_test(&display, pipe, output, test_setplane, DRM_PLANE_TYPE_CURSOR);
->   			break;
+[3] 
+https://gitlab.freedesktop.org/drm/igt-gpu-tools/-/blob/master/tests/kms_writeback.c#L491
+
+[4] 
+https://gitlab.freedesktop.org/drm/igt-gpu-tools/-/blob/master/tests/kms_writeback.c#L108
+
+[5] 
+https://gitlab.freedesktop.org/drm/igt-gpu-tools/-/blob/master/lib/igt_kms.c#L2180
+
+[6] 
+https://gitlab.freedesktop.org/drm/igt-gpu-tools/-/blob/master/tests/kms_writeback.c#L167
+
+> +
+>   
+>   		igt_skip_on(data.dump_check || data.list_modes);
+>   		fb_id = igt_create_fb(display.drm_fd, mode.hdisplay / 2,
+> @@ -597,6 +601,8 @@ igt_main_args("b:c:dl", long_options, help_str, opt_handler, NULL)
+>   	igt_describe("Validate WRITEBACK_FB_ID with valid and invalid options");
+>   	igt_subtest_with_dynamic("writeback-fb-id") {
+>   		igt_fb_t output_fb;
+> +		igt_display_reset(&display);
+> +		igt_display_commit(&display);
+>   
+>   		igt_skip_on(data.dump_check || data.list_modes);
+>   		fb_id = igt_create_fb(display.drm_fd, mode.hdisplay, mode.vdisplay,
+> @@ -613,6 +619,8 @@ igt_main_args("b:c:dl", long_options, help_str, opt_handler, NULL)
+>   	igt_describe("Check writeback output with CRC validation");
+>   	igt_subtest_with_dynamic("writeback-check-output") {
+>   		igt_fb_t output_fb;
+> +		igt_display_reset(&display);
+> +		igt_display_commit(&display);
+>   
+>   		igt_skip_on(data.dump_check || data.list_modes);
+>   		fb_id = igt_create_fb(display.drm_fd, mode.hdisplay, mode.vdisplay,
 > -- 
 > 2.36.0
 > 
