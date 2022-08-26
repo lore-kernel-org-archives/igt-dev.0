@@ -1,15 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: text/plain; charset="utf-8"
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 804C510E397
+ for <igt-dev@lists.freedesktop.org>; Fri, 26 Aug 2022 03:45:49 +0000 (UTC)
+From: Nidhi Gupta <nidhi1.gupta@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Fri, 26 Aug 2022 09:11:14 +0530
+Message-Id: <20220826034114.30096-1-nidhi1.gupta@intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Nidhi Gupta" <nidhi1.gupta@intel.com>
-Date: Fri, 26 Aug 2022 03:41:15 -0000
-Message-ID: <166148527552.30042.1653381128226238425@emeril.freedesktop.org>
-References: <20220826033346.29780-1-nidhi1.gupta@intel.com>
-In-Reply-To: <20220826033346.29780-1-nidhi1.gupta@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJVSUxEOiBmYWlsdXJlIGZvciB0ZXN0?=
- =?utf-8?q?s/i915/kms=5Fbusy=3A_Test_Cleanup?=
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t] tests/i915/kms_busy: Test Cleanup
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,96 +16,31 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
+Cc: Nidhi Gupta <nidhi1.gupta@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-=3D=3D Series Details =3D=3D
+Sanitize the display state before starting
+the new subtest.
 
-Series: tests/i915/kms_busy: Test Cleanup
-URL   : https://patchwork.freedesktop.org/series/107774/
-State : failure
+Signed-off-by: Nidhi Gupta <nidhi1.gupta@intel.com>
+---
+ tests/i915/kms_busy.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-=3D=3D Summary =3D=3D
-
-IGT patchset build failed on latest successful build
-1298b5f0e1b3e010657ffba41d2e775fab028e08 igt: Allow overriding the commit h=
-ash in the version string
-
-[407/594] Linking target tests/gem_render_tiled_blits
-[408/594] Linking target tests/gem_ringfill
-[409/594] Linking target tests/gem_reset_stats
-[410/594] Linking target tests/gem_set_tiling_vs_blt
-[411/594] Linking target tests/gem_set_tiling_vs_gtt
-[412/594] Linking target tests/gem_set_tiling_vs_pwrite
-[413/594] Linking target tests/gem_shrink
-[414/594] Linking target tests/gem_softpin
-[415/594] Linking target tests/gem_spin_batch
-[416/594] Linking target tests/gem_streaming_writes
-[417/594] Linking target tests/gem_sync
-[418/594] Linking target tests/gem_tiled_blits
-[419/594] Linking target tests/gem_tiled_fence_blits
-[420/594] Linking target tests/gem_tiled_partial_pwrite_pread
-[421/594] Linking target tests/gem_tiled_pread_basic
-[422/594] Linking target tests/gem_tiled_pread_pwrite
-[423/594] Linking target tests/gem_tiled_swapping
-[424/594] Linking target tests/gem_tiled_wb
-[425/594] Linking target tests/gem_tiled_wc
-[426/594] Linking target tests/gem_tiling_max_stride
-[427/594] Linking target tests/gem_unfence_active_buffers
-[428/594] Linking target tests/gem_unref_active_buffers
-[429/594] Linking target tests/gem_userptr_blits
-[430/594] Linking target tests/gem_vm_create
-[431/594] Linking target tests/gem_wait
-[432/594] Linking target tests/gem_watchdog
-[433/594] Linking target tests/gem_workarounds
-[434/594] Linking target tests/i915_fb_tiling
-[435/594] Linking target tests/i915_getparams_basic
-[436/594] Linking target tests/i915_hangman
-[437/594] Linking target tests/i915_module_load
-[438/594] Linking target tests/i915_pciid
-[439/594] Linking target tests/i915_pm_backlight
-[440/594] Linking target tests/i915_pm_rpm
-[441/594] Linking target tests/i915_pm_lpsp
-[442/594] Linking target tests/i915_pm_dc
-[443/594] Linking target tests/i915_pm_rps
-[444/594] Linking target tests/i915_pm_sseu
-[445/594] Linking target tests/i915_query
-[446/594] Linking target tests/i915_selftest
-[447/594] Compiling C object tests/kms_busy.p/i915_kms_busy.c.o
-FAILED: tests/kms_busy.p/i915_kms_busy.c.o=20
-ccache cc -Itests/kms_busy.p -Itests -I../tests -I../include/drm-uapi -I../=
-include/linux-uapi -Ilib -I../lib -I../lib/stubs/syscalls -I. -I.. -I/usr/i=
-nclude/cairo -I/usr/include/glib-2.0 -I/usr/lib/x86_64-linux-gnu/glib-2.0/i=
-nclude -I/usr/include/pixman-1 -I/usr/include/freetype2 -I/usr/include/libp=
-ng16 -I/usr/include/libpng12 -I/usr/include/libdrm -I/usr/include/libdrm/no=
-uveau -I/usr/include/x86_64-linux-gnu -I/usr/include/alsa -I/usr/include -I=
-/home/cidrm/kernel_headers/include -fdiagnostics-color=3Dalways -D_FILE_OFF=
-SET_BITS=3D64 -Wall -Winvalid-pch -Wextra -std=3Dgnu11 -O2 -g -D_GNU_SOURCE=
- -include config.h -D_FORTIFY_SOURCE=3D2 -Wbad-function-cast -Wdeclaration-=
-after-statement -Wformat=3D2 -Wimplicit-fallthrough=3D0 -Wlogical-op -Wmiss=
-ing-declarations -Wmissing-format-attribute -Wmissing-noreturn -Wmissing-pr=
-ototypes -Wnested-externs -Wold-style-definition -Wpointer-arith -Wredundan=
-t-decls -Wshadow -Wstrict-prototypes -Wuninitialized -Wunused -Wno-clobbere=
-d -Wno-maybe-uninitialized -Wno-missing-field-initializers -Wno-pointer-ari=
-th -Wno-sign-compare -Wno-type-limits -Wno-unused-parameter -Wno-unused-res=
-ult -Werror=3Daddress -Werror=3Darray-bounds -Werror=3Dimplicit -Werror=3Di=
-nit-self -Werror=3Dint-to-pointer-cast -Werror=3Dmain -Werror=3Dmissing-bra=
-ces -Werror=3Dnonnull -Werror=3Dpointer-to-int-cast -Werror=3Dreturn-type -=
-Werror=3Dsequence-point -Werror=3Dtrigraphs -Werror=3Dwrite-strings -fno-bu=
-iltin-malloc -fno-builtin-calloc -fcommon -pthread -MD -MQ tests/kms_busy.p=
-/i915_kms_busy.c.o -MF tests/kms_busy.p/i915_kms_busy.c.o.d -o tests/kms_bu=
-sy.p/i915_kms_busy.c.o -c ../tests/i915/kms_busy.c
-../tests/i915/kms_busy.c: In function =E2=80=98__igt_unique____real_main318=
-=E2=80=99:
-../tests/i915/kms_busy.c:348:22: error: =E2=80=98data=E2=80=99 undeclared (=
-first use in this function); did you mean =E2=80=98atan=E2=80=99?
-   igt_display_reset(&data.master.display);
-                      ^~~~
-                      atan
-../tests/i915/kms_busy.c:348:22: note: each undeclared identifier is report=
-ed only once for each function it appears in
-ninja: build stopped: subcommand failed.
-
+diff --git a/tests/i915/kms_busy.c b/tests/i915/kms_busy.c
+index 99a07c2a..3c3221e9 100644
+--- a/tests/i915/kms_busy.c
++++ b/tests/i915/kms_busy.c
+@@ -345,6 +345,8 @@ igt_main_args("e", NULL, help_str, opt_handler, NULL)
+ 		igt_require(gem_has_ring(fd, I915_EXEC_DEFAULT));
+ 
+ 		kmstest_set_vt_graphics_mode();
++		igt_display_reset(&data.master.display);
++		igt_display_commit(&data.master.display);
+ 		igt_display_require(&display, fd);
+ 		igt_display_require_output(&display);
+ 
+-- 
+2.36.0
