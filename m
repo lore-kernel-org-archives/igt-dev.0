@@ -1,17 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from NAM02-DM3-obe.outbound.protection.outlook.com
- (mail-dm3nam02on2069.outbound.protection.outlook.com [40.107.95.69])
- by gabe.freedesktop.org (Postfix) with ESMTPS id F115810E431
- for <igt-dev@lists.freedesktop.org>; Fri, 26 Aug 2022 21:08:00 +0000 (UTC)
+Received: from NAM10-BN7-obe.outbound.protection.outlook.com
+ (mail-bn7nam10on2044.outbound.protection.outlook.com [40.107.92.44])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DC48710E488
+ for <igt-dev@lists.freedesktop.org>; Fri, 26 Aug 2022 21:08:17 +0000 (UTC)
 From: Alex Hung <alex.hung@amd.com>
 To: <igt-dev@lists.freedesktop.org>
-Date: Fri, 26 Aug 2022 15:07:36 -0600
-Message-ID: <20220826210737.3263786-1-alex.hung@amd.com>
+Date: Fri, 26 Aug 2022 15:07:37 -0600
+Message-ID: <20220826210737.3263786-2-alex.hung@amd.com>
+In-Reply-To: <20220826210737.3263786-1-alex.hung@amd.com>
+References: <20220826210737.3263786-1-alex.hung@amd.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-Subject: [igt-dev] [PATCH 1/2][V2] tests/kms_universal_plane: Enable
- gen9_test_pipe for all devices
+Subject: [igt-dev] [PATCH 2/2][V2] tests/kms_universal_plane: Skip offscreen
+ test for universal API
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,48 +26,61 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-This subtest runs on non-i915 devices, and let's make it generic by
-removing igt_require_intel and renaming it.
+amdgpu driver intentionally rejects plane outside of the screen and thus
+this test is skipped on AMD HW. See more details in kernel commits
+40d916a2602c and 4abdb72bd8576 which are summarized as below:
+
+"Reject this contidion (too small viewport size) at validation time.
+This gives the calling level a chance to handle this gracefully and
+avoid inconsistent behaivor."
 
 Signed-off-by: Alex Hung <alex.hung@amd.com>
 ---
- tests/kms_universal_plane.c | 9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+ tests/kms_universal_plane.c | 25 ++++++++++++++-----------
+ 1 file changed, 14 insertions(+), 11 deletions(-)
 
 diff --git a/tests/kms_universal_plane.c b/tests/kms_universal_plane.c
-index 3cb6d704..9eab1a57 100644
+index 9eab1a57..057a14f4 100644
 --- a/tests/kms_universal_plane.c
 +++ b/tests/kms_universal_plane.c
-@@ -699,15 +699,14 @@ gen9_test_fini(gen9_test_t *test, igt_output_t *output)
-  * windowing)
-  */
- static void
--gen9_test_pipe(data_t *data, enum pipe pipe, igt_output_t *output)
-+pageflip_win_test_pipe(data_t *data, enum pipe pipe, igt_output_t *output)
- {
- 	gen9_test_t test = { .data = data };
- 	igt_plane_t *primary;
+@@ -242,16 +242,18 @@ functional_test_pipe(data_t *data, enum pipe pipe, igt_output_t *output)
+ 	igt_display_commit2(display, COMMIT_LEGACY);
  
- 	int ret = 0;
+ 	/* Step 14: Universal API, set primary completely offscreen (CRC 9) */
+-	igt_assert(drmModeSetPlane(data->drm_fd, primary->drm_plane->plane_id,
+-				   output->config.crtc->crtc_id,
+-				   test.blue_fb.fb_id, 0,
+-				   9000, 9000,
+-				   test.mode->hdisplay,
+-				   test.mode->vdisplay,
+-				   IGT_FIXED(0,0), IGT_FIXED(0,0),
+-				   IGT_FIXED(test.mode->hdisplay,0),
+-				   IGT_FIXED(test.mode->vdisplay,0)) == 0);
+-	igt_pipe_crc_collect_crc(test.pipe_crc, &test.crc_9);
++	if (!is_amdgpu_device(data->drm_fd)) {
++		igt_assert(drmModeSetPlane(data->drm_fd, primary->drm_plane->plane_id,
++					   output->config.crtc->crtc_id,
++					   test.blue_fb.fb_id, 0,
++					   9000, 9000,
++					   test.mode->hdisplay,
++					   test.mode->vdisplay,
++					   IGT_FIXED(0,0), IGT_FIXED(0,0),
++					   IGT_FIXED(test.mode->hdisplay,0),
++					   IGT_FIXED(test.mode->vdisplay,0)) == 0);
++		igt_pipe_crc_collect_crc(test.pipe_crc, &test.crc_9);
++	}
  
--	igt_require_intel(data->drm_fd);
--	igt_skip_on(data->display_ver < 9);
-+	igt_skip_on(is_i915_device(data->drm_fd) && data->display_ver < 9);
- 	igt_require_pipe(&data->display, pipe);
+ 	/*
+ 	 * Step 15: Explicitly disable primary after it's already been
+@@ -291,7 +293,8 @@ functional_test_pipe(data_t *data, enum pipe pipe, igt_output_t *output)
+ 	 * We should be able to move the primary plane completely offscreen
+ 	 * and have it disable successfully.
+ 	 */
+-	igt_assert_crc_equal(&test.crc_5, &test.crc_9);
++	if (!is_amdgpu_device(data->drm_fd))
++		igt_assert_crc_equal(&test.crc_5, &test.crc_9);
  
- 	igt_output_set_pipe(output, pipe);
-@@ -787,10 +786,10 @@ run_tests_for_pipe(data_t *data, enum pipe pipe)
- 			cursor_leak_test_pipe(data, pipe, output);
- 
- 	igt_describe("Check if pageflip succeeds in windowed setting");
--	igt_subtest_f("universal-plane-gen9-features-pipe-%s",
-+	igt_subtest_f("universal-plane-pageflip-windowed-pipe-%s",
- 		      kmstest_pipe_name(pipe))
- 		for_each_valid_output_on_pipe(&data->display, pipe, output)
--			gen9_test_pipe(data, pipe, output);
-+			pageflip_win_test_pipe(data, pipe, output);
- }
- 
- static data_t data;
+ 	/*
+ 	 * We should be able to explicitly disable an already
 -- 
-2.37.2
+2.34.1
