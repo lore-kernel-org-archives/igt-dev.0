@@ -1,24 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-yw1-x112d.google.com (mail-yw1-x112d.google.com
- [IPv6:2607:f8b0:4864:20::112d])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D893610EA18
- for <igt-dev@lists.freedesktop.org>; Fri, 26 Aug 2022 18:18:16 +0000 (UTC)
-Received: by mail-yw1-x112d.google.com with SMTP id
- 00721157ae682-31f445bd486so55632857b3.13
- for <igt-dev@lists.freedesktop.org>; Fri, 26 Aug 2022 11:18:16 -0700 (PDT)
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com
+ [205.220.168.131])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id F381F10EA2B
+ for <igt-dev@lists.freedesktop.org>; Fri, 26 Aug 2022 18:22:35 +0000 (UTC)
+Message-ID: <4db84895-d784-53ae-fa17-f01220688954@quicinc.com>
+Date: Fri, 26 Aug 2022 11:21:15 -0700
 MIME-Version: 1.0
-References: <20220825012206.2747503-1-alex.hung@amd.com>
- <20220825012206.2747503-2-alex.hung@amd.com>
- <CAJUqKUqRADq+jmdRp2Uhps1CMV5G9Kkxhb_bGpaGZvNgpXoAnQ@mail.gmail.com>
- <b4136bfc-ac23-0dee-2735-00e518db43c1@amd.com>
-In-Reply-To: <b4136bfc-ac23-0dee-2735-00e518db43c1@amd.com>
-From: Mark Yacoub <markyacoub@chromium.org>
-Date: Fri, 26 Aug 2022 14:18:05 -0400
-Message-ID: <CAJUqKUpCfXr=FidnJmx3cTcZpBxfCvSyGrFaC9uX2A4VBsf22A@mail.gmail.com>
-To: Alex Hung <alex.hung@amd.com>
-Content-Type: text/plain; charset="UTF-8"
-Subject: Re: [igt-dev] [PATCH 2/2] tests/kms_universal_plane: Skip offscreen
- test for universal API
+Content-Language: en-US
+To: Nidhi Gupta <nidhi1.gupta@intel.com>
+References: <20220826034916.30364-1-nidhi1.gupta@intel.com>
+From: Jessica Zhang <quic_jesszhan@quicinc.com>
+In-Reply-To: <20220826034916.30364-1-nidhi1.gupta@intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_atomic_interruptible: Test
+ Cleanup
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,94 +22,109 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org, markyacoub@google.com
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Thu, Aug 25, 2022 at 2:34 PM Alex Hung <alex.hung@amd.com> wrote:
->
->
->
-> On 2022-08-25 08:42, Mark Yacoub wrote:
-> > On Thu, Aug 25, 2022 at 3:01 AM Alex Hung <alex.hung@amd.com> wrote:
-> >>
-> >> amdgpu driver intentionally rejects plane outside of the screen and thus
-> >> this test is skipped on AMD HW.
-> > Is this an expected DRM behavior? Is this a requirement that user
-> > spaces are aware of? Maybe it needs a kernel fix if not. bit if it's a
-> > req, can you link the documentation for reference.
->
-> Hi Mark,
->
-> The checks were from kernel commits 40d916a2602c and 4abdb72bd8576, and
-> the commit explains the rationale as below.
->
->      [why]
->      Overlay won't move to a new positon if viewport size is smaller than
->      what can be handled. It'd either disappear or stay at the old
->      position. This condition is for example hit if overlay is moved too
->      much outside of left or top edge of the screen, but it applies to
->      any non-cursor plane type.
->
->      [how]
->      Reject this contidion at validation time. This gives the calling
->      level a chance to handle this gracefully and avoid inconsistent
->      behaivor.
->
-sounds good. would you mind adding more details to the commit message then?
->
->
-> >
-> >>
-> >> Signed-off-by: Alex Hung <alex.hung@amd.com>
-> >> ---
-> >>   tests/kms_universal_plane.c | 25 ++++++++++++++-----------
-> >>   1 file changed, 14 insertions(+), 11 deletions(-)
-> >>
-> >> diff --git a/tests/kms_universal_plane.c b/tests/kms_universal_plane.c
-> >> index 9eab1a57..057a14f4 100644
-> >> --- a/tests/kms_universal_plane.c
-> >> +++ b/tests/kms_universal_plane.c
-> >> @@ -242,16 +242,18 @@ functional_test_pipe(data_t *data, enum pipe pipe, igt_output_t *output)
-> >>          igt_display_commit2(display, COMMIT_LEGACY);
-> >>
-> >>          /* Step 14: Universal API, set primary completely offscreen (CRC 9) */
-> >> -       igt_assert(drmModeSetPlane(data->drm_fd, primary->drm_plane->plane_id,
-> >> -                                  output->config.crtc->crtc_id,
-> >> -                                  test.blue_fb.fb_id, 0,
-> >> -                                  9000, 9000,
-> >> -                                  test.mode->hdisplay,
-> >> -                                  test.mode->vdisplay,
-> >> -                                  IGT_FIXED(0,0), IGT_FIXED(0,0),
-> >> -                                  IGT_FIXED(test.mode->hdisplay,0),
-> >> -                                  IGT_FIXED(test.mode->vdisplay,0)) == 0);
-> >> -       igt_pipe_crc_collect_crc(test.pipe_crc, &test.crc_9);
-> >> +       if (!is_amdgpu_device(data->drm_fd)) {
-> >> +               igt_assert(drmModeSetPlane(data->drm_fd, primary->drm_plane->plane_id,
-> >> +                                          output->config.crtc->crtc_id,
-> >> +                                          test.blue_fb.fb_id, 0,
-> >> +                                          9000, 9000,
-> >> +                                          test.mode->hdisplay,
-> >> +                                          test.mode->vdisplay,
-> >> +                                          IGT_FIXED(0,0), IGT_FIXED(0,0),
-> >> +                                          IGT_FIXED(test.mode->hdisplay,0),
-> >> +                                          IGT_FIXED(test.mode->vdisplay,0)) == 0);
-> >> +               igt_pipe_crc_collect_crc(test.pipe_crc, &test.crc_9);
-> >> +       }
-> >>
-> >>          /*
-> >>           * Step 15: Explicitly disable primary after it's already been
-> >> @@ -291,7 +293,8 @@ functional_test_pipe(data_t *data, enum pipe pipe, igt_output_t *output)
-> >>           * We should be able to move the primary plane completely offscreen
-> >>           * and have it disable successfully.
-> >>           */
-> >> -       igt_assert_crc_equal(&test.crc_5, &test.crc_9);
-> >> +       if (!is_amdgpu_device(data->drm_fd))
-> >> +               igt_assert_crc_equal(&test.crc_5, &test.crc_9);
-> >>
-> >>          /*
-> >>           * We should be able to explicitly disable an already
-> >> --
-> >> 2.37.2
-> >>
+Hi Nidhi,
+
+On 8/25/2022 8:49 PM, Nidhi Gupta wrote:
+> Signed-off-by: Nidhi Gupta <nidhi1.gupta@intel.com>
+> ---
+>   tests/kms_atomic_interruptible.c | 14 ++++++++++++++
+>   1 file changed, 14 insertions(+)
+> 
+> diff --git a/tests/kms_atomic_interruptible.c b/tests/kms_atomic_interruptible.c
+> index 038cb286..7bcb2d32 100644
+> --- a/tests/kms_atomic_interruptible.c
+> +++ b/tests/kms_atomic_interruptible.c
+> @@ -286,6 +286,8 @@ igt_main
+>   	igt_describe("Tests the interrupt properties of legacy modeset");
+>   	igt_subtest_with_dynamic("legacy-setmode") {
+>   		for_each_pipe_with_valid_output(&display, pipe, output) {
+> +			igt_display_require(&display, drm_fd);
+
+I believe `drm_fd` is a member of the display struct and not a local 
+variable.
+
+Also, any reason to add extra calls to igt_display_require? There is 
+already a call to igt_display_require() here [1]. I also don't think it 
+would be necessary to reinitialize all the display resource structs for 
+each subtest.
+
+[1] 
+https://gitlab.freedesktop.org/drm/igt-gpu-tools/-/blob/master/tests/kms_atomic_interruptible.c#L280
+
+> +			igt_display_commit(&display);
+
+Similarly, there is already a commit at the beginning of 
+run_plane_test() [2], so is this call necessary?
+
+[2] 
+https://gitlab.freedesktop.org/drm/igt-gpu-tools/-/blob/master/tests/kms_atomic_interruptible.c#L90
+
+Thanks,
+
+Jessica Zhang
+
+>   			igt_dynamic_f("%s-pipe-%s", igt_output_name(output), kmstest_pipe_name(pipe))
+>   				run_plane_test(&display, pipe, output, test_legacy_modeset, DRM_PLANE_TYPE_PRIMARY);
+>   			break;
+> @@ -295,6 +297,8 @@ igt_main
+>   	igt_describe("Tests the interrupt properties of atomic modeset");
+>   	igt_subtest_with_dynamic("atomic-setmode") {
+>   		for_each_pipe_with_valid_output(&display, pipe, output) {
+> +			igt_display_require(&display, drm_fd);
+> +			igt_display_commit(&display);
+>   			igt_dynamic_f("%s-pipe-%s", igt_output_name(output), kmstest_pipe_name(pipe))
+>   				run_plane_test(&display, pipe, output, test_atomic_modeset, DRM_PLANE_TYPE_PRIMARY);
+>   			break;
+> @@ -304,6 +308,8 @@ igt_main
+>   	igt_describe("Tests the interrupt properties for DPMS");
+>   	igt_subtest_with_dynamic("legacy-dpms") {
+>   		for_each_pipe_with_valid_output(&display, pipe, output) {
+> +			igt_display_require(&display, drm_fd);
+> +			igt_display_commit(&display);
+>   			igt_dynamic_f("%s-pipe-%s", igt_output_name(output), kmstest_pipe_name(pipe))
+>   				run_plane_test(&display, pipe, output, test_legacy_dpms, DRM_PLANE_TYPE_PRIMARY);
+>   			break;
+> @@ -313,6 +319,8 @@ igt_main
+>   	igt_describe("Tests the interrupt properties for pageflip");
+>   	igt_subtest_with_dynamic("legacy-pageflip") {
+>   		for_each_pipe_with_valid_output(&display, pipe, output) {
+> +			igt_display_require(&display, drm_fd);
+> +			igt_display_commit(&display);
+>   			igt_dynamic_f("%s-pipe-%s", igt_output_name(output), kmstest_pipe_name(pipe))
+>   				run_plane_test(&display, pipe, output, test_pageflip, DRM_PLANE_TYPE_PRIMARY);
+>   			break;
+> @@ -322,6 +330,8 @@ igt_main
+>   	igt_describe("Tests the interrupt properties for cursor");
+>   	igt_subtest_with_dynamic("legacy-cursor") {
+>   		for_each_pipe_with_valid_output(&display, pipe, output) {
+> +			igt_display_require(&display, drm_fd);
+> +			igt_display_commit(&display);
+>   			igt_dynamic_f("%s-pipe-%s", igt_output_name(output), kmstest_pipe_name(pipe))
+>   				run_plane_test(&display, pipe, output, test_setcursor, DRM_PLANE_TYPE_CURSOR);
+>   			break;
+> @@ -331,6 +341,8 @@ igt_main
+>   	igt_describe("Tests the interrupt properties for primary plane");
+>   	igt_subtest_with_dynamic("universal-setplane-primary") {
+>   		for_each_pipe_with_valid_output(&display, pipe, output) {
+> +			igt_display_require(&display, drm_fd);
+> +			igt_display_commit(&display);
+>   			igt_dynamic_f("%s-pipe-%s", igt_output_name(output), kmstest_pipe_name(pipe))
+>   				run_plane_test(&display, pipe, output, test_setplane, DRM_PLANE_TYPE_PRIMARY);
+>   			break;
+> @@ -340,6 +352,8 @@ igt_main
+>   	igt_describe("Tests the interrupt properties for cursor plane");
+>   	igt_subtest_with_dynamic("universal-setplane-cursor") {
+>   		for_each_pipe_with_valid_output(&display, pipe, output) {
+> +			igt_display_require(&display, drm_fd);
+> +			igt_display_commit(&display);
+>   			igt_dynamic_f("%s-pipe-%s", igt_output_name(output), kmstest_pipe_name(pipe))
+>   				run_plane_test(&display, pipe, output, test_setplane, DRM_PLANE_TYPE_CURSOR);
+>   			break;
+> -- 
+> 2.36.0
+> 
