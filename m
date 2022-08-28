@@ -1,19 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-pj1-x1033.google.com (mail-pj1-x1033.google.com
- [IPv6:2607:f8b0:4864:20::1033])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DA93610E682
- for <igt-dev@lists.freedesktop.org>; Sun, 28 Aug 2022 18:04:41 +0000 (UTC)
-Received: by mail-pj1-x1033.google.com with SMTP id
- t11-20020a17090a510b00b001fac77e9d1fso12528127pjh.5
- for <igt-dev@lists.freedesktop.org>; Sun, 28 Aug 2022 11:04:41 -0700 (PDT)
-From: Rob Clark <robdclark@gmail.com>
-To: igt-dev@lists.freedesktop.org
-Date: Sun, 28 Aug 2022 11:05:25 -0700
-Message-Id: <20220828180525.887070-1-robdclark@gmail.com>
+Content-Type: multipart/alternative;
+ boundary="===============0267725342156383128=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH igt] tests/kms_plane_multiple: Fix assumption
- about single primary plane
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Rob Clark" <robdclark@gmail.com>
+Date: Sun, 28 Aug 2022 18:30:20 -0000
+Message-ID: <166171142009.8264.3753332565520541011@emeril.freedesktop.org>
+References: <20220828180525.887070-1-robdclark@gmail.com>
+In-Reply-To: <20220828180525.887070-1-robdclark@gmail.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
+ =?utf-8?q?kms=5Fplane=5Fmultiple=3A_Fix_assumption_about_single_primary_p?=
+ =?utf-8?q?lane?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,69 +18,181 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Rob Clark <robdclark@chromium.org>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Rob Clark <robdclark@chromium.org>
+--===============0267725342156383128==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-When there are multiple primary planes (ie. a primary plane that can be
-moved to a different CRTC, we end up with a NULL entry in data->planes[]
-leading to a crash:
+== Series Details ==
 
-  #0  create_fb_for_mode_position (data=0x4203e0 <data>, output=0x4340a0, mode=0x4340c8, color=0x7fffffe2f0, rect_x=0x43ac60,
-      rect_y=0x43ab10, rect_w=0x42eca0, rect_h=0x42eca0, modifier=0, max_planes=3) at ../tests/kms_plane_multiple.c:158
-  #1  0x0000000000402790 in prepare_planes (data=0x4203e0 <data>, pipe_id=PIPE_A, color=0x7fffffe2f0, modifier=0, max_planes=3,
-      output=0x4340a0) at ../tests/kms_plane_multiple.c:265
-  #2  0x0000000000402930 in test_plane_position_with_output (data=0x4203e0 <data>, pipe=PIPE_A, output=0x4340a0, n_planes=3, modifier=0)
-      at ../tests/kms_plane_multiple.c:315
-  #3  0x0000000000402e74 in test_plane_position (data=0x4203e0 <data>, pipe=PIPE_A, modifier=0) at ../tests/kms_plane_multiple.c:380
-  #4  0x00000000004031b8 in run_tests_for_pipe (data=0x4203e0 <data>, pipe=PIPE_A) at ../tests/kms_plane_multiple.c:405
-  #5  0x0000000000403528 in __igt_unique____real_main448 () at ../tests/kms_plane_multiple.c:466
-  #6  0x00000000004033c0 in main (argc=1, argv=0x7fffffea68) at ../tests/kms_plane_multiple.c:448
+Series: tests/kms_plane_multiple: Fix assumption about single primary plane
+URL   : https://patchwork.freedesktop.org/series/107854/
+State : success
 
-But create_fb_for_mode_position() already checks and skips primary
-planes.  So just move where we initialize data->primary[i] to before we
-bail on the rest of the loop body.
+== Summary ==
 
-(Plus bonus indentation fix)
+CI Bug Log - changes from CI_DRM_12035 -> IGTPW_7697
+====================================================
 
-Signed-off-by: Rob Clark <robdclark@chromium.org>
----
- tests/kms_plane_multiple.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+Summary
+-------
 
-diff --git a/tests/kms_plane_multiple.c b/tests/kms_plane_multiple.c
-index 1679f7ce..b43a4c27 100644
---- a/tests/kms_plane_multiple.c
-+++ b/tests/kms_plane_multiple.c
-@@ -159,7 +159,7 @@ create_fb_for_mode_position(data_t *data, igt_output_t *output, drmModeModeInfo
- 			continue;
- 		igt_paint_color(cr, rect_x[i], rect_y[i],
- 				rect_w[i], rect_h[i], 0.0, 0.0, 0.0);
--		}
-+	}
- 
- 	igt_put_cairo_ctx(cr);
- }
-@@ -231,6 +231,8 @@ prepare_planes(data_t *data, enum pipe pipe_id, color_t *color,
- 		uint32_t plane_format;
- 		uint64_t plane_modifier;
- 
-+		data->plane[i] = plane;
-+
- 		if (plane->type == DRM_PLANE_TYPE_PRIMARY)
- 			continue;
- 		else if (plane->type == DRM_PLANE_TYPE_CURSOR)
-@@ -241,8 +243,6 @@ prepare_planes(data_t *data, enum pipe pipe_id, color_t *color,
- 		x[i] = rand() % (mode->hdisplay - size[i]);
- 		y[i] = rand() % (mode->vdisplay - size[i]);
- 
--		data->plane[i] = plane;
--
- 		plane_format = data->plane[i]->type == DRM_PLANE_TYPE_CURSOR ? DRM_FORMAT_ARGB8888 : DRM_FORMAT_XRGB8888;
- 		plane_modifier = data->plane[i]->type == DRM_PLANE_TYPE_CURSOR ? DRM_FORMAT_MOD_LINEAR : modifier;
- 
--- 
-2.37.2
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7697/index.html
+
+Participating hosts (42 -> 34)
+------------------------------
+
+  Missing    (8): bat-dg1-5 fi-hsw-4200u bat-adlp-4 fi-ctg-p8600 bat-rplp-1 bat-dg2-10 fi-bsw-nick fi-bdw-samus 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_7697 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@i915_selftest@live@requests:
+    - fi-pnv-d510:        [PASS][1] -> [DMESG-FAIL][2] ([i915#4528])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12035/fi-pnv-d510/igt@i915_selftest@live@requests.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7697/fi-pnv-d510/igt@i915_selftest@live@requests.html
+
+  * igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions:
+    - fi-bsw-kefka:       [PASS][3] -> [FAIL][4] ([i915#6298])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12035/fi-bsw-kefka/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7697/fi-bsw-kefka/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions.html
+
+  * igt@runner@aborted:
+    - fi-pnv-d510:        NOTRUN -> [FAIL][5] ([fdo#109271] / [i915#2403] / [i915#4312])
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7697/fi-pnv-d510/igt@runner@aborted.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_selftest@live@requests:
+    - {bat-rpls-1}:       [INCOMPLETE][6] ([i915#6257] / [i915#6380]) -> [PASS][7]
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12035/bat-rpls-1/igt@i915_selftest@live@requests.html
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7697/bat-rpls-1/igt@i915_selftest@live@requests.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [i915#2403]: https://gitlab.freedesktop.org/drm/intel/issues/2403
+  [i915#4312]: https://gitlab.freedesktop.org/drm/intel/issues/4312
+  [i915#4528]: https://gitlab.freedesktop.org/drm/intel/issues/4528
+  [i915#6257]: https://gitlab.freedesktop.org/drm/intel/issues/6257
+  [i915#6298]: https://gitlab.freedesktop.org/drm/intel/issues/6298
+  [i915#6380]: https://gitlab.freedesktop.org/drm/intel/issues/6380
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_6636 -> IGTPW_7697
+
+  CI-20190529: 20190529
+  CI_DRM_12035: 94f8134b5320a43800ca3ca50d1c387d66f75c6a @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_7697: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7697/index.html
+  IGT_6636: 1298b5f0e1b3e010657ffba41d2e775fab028e08 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7697/index.html
+
+--===============0267725342156383128==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/kms_plane_multiple: Fix assumption about single primary plane</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/107854/">https://patchwork.freedesktop.org/series/107854/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7697/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7697/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_12035 -&gt; IGTPW_7697</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7697/index.html</p>
+<h2>Participating hosts (42 -&gt; 34)</h2>
+<p>Missing    (8): bat-dg1-5 fi-hsw-4200u bat-adlp-4 fi-ctg-p8600 bat-rplp-1 bat-dg2-10 fi-bsw-nick fi-bdw-samus </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_7697 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live@requests:</p>
+<ul>
+<li>fi-pnv-d510:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12035/fi-pnv-d510/igt@i915_selftest@live@requests.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7697/fi-pnv-d510/igt@i915_selftest@live@requests.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4528">i915#4528</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions:</p>
+<ul>
+<li>fi-bsw-kefka:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12035/fi-bsw-kefka/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7697/fi-bsw-kefka/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6298">i915#6298</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@runner@aborted:</p>
+<ul>
+<li>fi-pnv-d510:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7697/fi-pnv-d510/igt@runner@aborted.html">FAIL</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2403">i915#2403</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4312">i915#4312</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@i915_selftest@live@requests:<ul>
+<li>{bat-rpls-1}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12035/bat-rpls-1/igt@i915_selftest@live@requests.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6257">i915#6257</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/6380">i915#6380</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7697/bat-rpls-1/igt@i915_selftest@live@requests.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_6636 -&gt; IGTPW_7697</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_12035: 94f8134b5320a43800ca3ca50d1c387d66f75c6a @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_7697: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7697/index.html<br />
+  IGT_6636: 1298b5f0e1b3e010657ffba41d2e775fab028e08 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============0267725342156383128==--
