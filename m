@@ -1,19 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 198F210E12A
- for <igt-dev@lists.freedesktop.org>; Fri, 29 Jul 2022 13:16:45 +0000 (UTC)
-Date: Fri, 29 Jul 2022 16:15:21 +0300
-From: Petri Latvala <petri.latvala@intel.com>
-To: Alexandru M Stan <amstan@chromium.org>
-Message-ID: <YuPdaT6wKtn2UtnZ@platvala-desk.ger.corp.intel.com>
-References: <20220715192200.1782193-1-markyacoub@chromium.org>
- <CAHNYxRy1txH-VKyt3+ONanP5Dvnznkd-aWERPDHRQKa1oF9J9Q@mail.gmail.com>
+Received: from mail-pj1-x1033.google.com (mail-pj1-x1033.google.com
+ [IPv6:2607:f8b0:4864:20::1033])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DA93610E682
+ for <igt-dev@lists.freedesktop.org>; Sun, 28 Aug 2022 18:04:41 +0000 (UTC)
+Received: by mail-pj1-x1033.google.com with SMTP id
+ t11-20020a17090a510b00b001fac77e9d1fso12528127pjh.5
+ for <igt-dev@lists.freedesktop.org>; Sun, 28 Aug 2022 11:04:41 -0700 (PDT)
+From: Rob Clark <robdclark@gmail.com>
+To: igt-dev@lists.freedesktop.org
+Date: Sun, 28 Aug 2022 11:05:25 -0700
+Message-Id: <20220828180525.887070-1-robdclark@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAHNYxRy1txH-VKyt3+ONanP5Dvnznkd-aWERPDHRQKa1oF9J9Q@mail.gmail.com>
-Subject: Re: [igt-dev] [PATCH] lib/igt_chamelium: Extend check of valid
- ports to port=0
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH igt] tests/kms_plane_multiple: Fix assumption
+ about single primary plane
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,73 +21,69 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: robdclark@chromium.org, Ilja Friedel <ihf@google.com>,
- igt-dev@lists.freedesktop.org, seanpaul@chromium.org,
- Mark Yacoub <markyacoub@google.com>, khaled.almahallawy@intel.com
+Cc: Rob Clark <robdclark@chromium.org>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Fri, Jul 15, 2022 at 03:29:49PM -0400, Alexandru M Stan wrote:
-> On Fri, Jul 15, 2022 at 3:22 PM Mark Yacoub <markyacoub@chromium.org> wrote:
-> >
-> > [Why]
-> > Chamelium V3 has a valid port at 0 so 0 should not be rejected.
-> 
-> Can confirm, nowhere in the API specifications does it say port_id==0
-> is invalid and I have started using 0 on v3 since they're just indexes
-> in my internal chameleond ports array, so they start at 0.
-> 
-> >
-> > [How]
-> > Check for port values between 0 and CHAMELIUM_MAX_PORTS which should
-> > also include the V2 ports range.
-> >
-> > Test: ./kms_chamelium --run-subtest dp-hp
-> > Tested on: Volteer & cv3
-> >
-> > Signed-off-by: Mark Yacoub <markyacoub@chromium.org>
-> > ---
-> >  lib/igt_chamelium.c | 2 +-
-> >  1 file changed, 1 insertion(+), 1 deletion(-)
-> >
-> > diff --git a/lib/igt_chamelium.c b/lib/igt_chamelium.c
-> > index 55cbfa12..5d68372b 100644
-> > --- a/lib/igt_chamelium.c
-> > +++ b/lib/igt_chamelium.c
-> > @@ -2311,7 +2311,7 @@ static bool chamelium_read_port_mappings(struct chamelium *chamelium,
-> >                 port->id = g_key_file_get_integer(igt_key_file, group,
-> >                                                   "ChameliumPortID",
-> >                                                   &error);
-> > -               if (!port->id) {
-> > +               if (port->id < 0 || port->id > CHAMELIUM_MAX_PORTS) {
-> 
-> CHAMELIUM_MAX_PORTS seems to be #defined to 4 in another file. That
-> looks a little wrong.
+From: Rob Clark <robdclark@chromium.org>
 
-It's documented as "the maximum number of ports supported by
-igt_chamelium".
+When there are multiple primary planes (ie. a primary plane that can be
+moved to a different CRTC, we end up with a NULL entry in data->planes[]
+leading to a crash:
 
-IGT's usage of port ids are from
-https://chromium.googlesource.com/chromiumos/platform/chameleon/+/master/chameleond/utils/ids.py,
-for the record.
+  #0  create_fb_for_mode_position (data=0x4203e0 <data>, output=0x4340a0, mode=0x4340c8, color=0x7fffffe2f0, rect_x=0x43ac60,
+      rect_y=0x43ab10, rect_w=0x42eca0, rect_h=0x42eca0, modifier=0, max_planes=3) at ../tests/kms_plane_multiple.c:158
+  #1  0x0000000000402790 in prepare_planes (data=0x4203e0 <data>, pipe_id=PIPE_A, color=0x7fffffe2f0, modifier=0, max_planes=3,
+      output=0x4340a0) at ../tests/kms_plane_multiple.c:265
+  #2  0x0000000000402930 in test_plane_position_with_output (data=0x4203e0 <data>, pipe=PIPE_A, output=0x4340a0, n_planes=3, modifier=0)
+      at ../tests/kms_plane_multiple.c:315
+  #3  0x0000000000402e74 in test_plane_position (data=0x4203e0 <data>, pipe=PIPE_A, modifier=0) at ../tests/kms_plane_multiple.c:380
+  #4  0x00000000004031b8 in run_tests_for_pipe (data=0x4203e0 <data>, pipe=PIPE_A) at ../tests/kms_plane_multiple.c:405
+  #5  0x0000000000403528 in __igt_unique____real_main448 () at ../tests/kms_plane_multiple.c:466
+  #6  0x00000000004033c0 in main (argc=1, argv=0x7fffffea68) at ../tests/kms_plane_multiple.c:448
 
+But create_fb_for_mode_position() already checks and skips primary
+planes.  So just move where we initialize data->primary[i] to before we
+bail on the rest of the loop body.
 
+(Plus bonus indentation fix)
+
+Signed-off-by: Rob Clark <robdclark@chromium.org>
+---
+ tests/kms_plane_multiple.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/tests/kms_plane_multiple.c b/tests/kms_plane_multiple.c
+index 1679f7ce..b43a4c27 100644
+--- a/tests/kms_plane_multiple.c
++++ b/tests/kms_plane_multiple.c
+@@ -159,7 +159,7 @@ create_fb_for_mode_position(data_t *data, igt_output_t *output, drmModeModeInfo
+ 			continue;
+ 		igt_paint_color(cr, rect_x[i], rect_y[i],
+ 				rect_w[i], rect_h[i], 0.0, 0.0, 0.0);
+-		}
++	}
+ 
+ 	igt_put_cairo_ctx(cr);
+ }
+@@ -231,6 +231,8 @@ prepare_planes(data_t *data, enum pipe pipe_id, color_t *color,
+ 		uint32_t plane_format;
+ 		uint64_t plane_modifier;
+ 
++		data->plane[i] = plane;
++
+ 		if (plane->type == DRM_PLANE_TYPE_PRIMARY)
+ 			continue;
+ 		else if (plane->type == DRM_PLANE_TYPE_CURSOR)
+@@ -241,8 +243,6 @@ prepare_planes(data_t *data, enum pipe pipe_id, color_t *color,
+ 		x[i] = rand() % (mode->hdisplay - size[i]);
+ 		y[i] = rand() % (mode->vdisplay - size[i]);
+ 
+-		data->plane[i] = plane;
+-
+ 		plane_format = data->plane[i]->type == DRM_PLANE_TYPE_CURSOR ? DRM_FORMAT_ARGB8888 : DRM_FORMAT_XRGB8888;
+ 		plane_modifier = data->plane[i]->type == DRM_PLANE_TYPE_CURSOR ? DRM_FORMAT_MOD_LINEAR : modifier;
+ 
 -- 
-Petri Latvala
-
-
-> 
-> I would do an RPC call for .GetSupportedPorts() to get the exact valid
-> set of port_ids instead of relying on a range. You might have some
-> invalid ones in there if you do it this way (no plans to do such gaps,
-> but again the API does not really specify).
-> 
-> >                         igt_warn("Failed to read chamelium port ID for %s: %s\n",
-> >                                  map_name, error->message);
-> >                         ret = false;
-> > --
-> > 2.37.0.170.g444d1eabd0-goog
-> >
-> 
-> Alexandru Stan (amstan)
+2.37.2
