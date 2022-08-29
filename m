@@ -1,20 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id ED2E710F200
- for <igt-dev@lists.freedesktop.org>; Mon, 29 Aug 2022 13:11:43 +0000 (UTC)
-Date: Mon, 29 Aug 2022 15:11:39 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Message-ID: <Ywy7Cw8vOZw/JU2q@kamilkon-desk1>
-References: <20220823095645.14580-1-kamil.konieczny@linux.intel.com>
- <Ywx8WEIr6ZuK1bil@zkempczy-mobl2>
+Content-Type: multipart/alternative;
+ boundary="===============6410997180166777209=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <Ywx8WEIr6ZuK1bil@zkempczy-mobl2>
-Subject: Re: [igt-dev] [PATCH i-g-t v3] i915/i915_hangman: fail only after
- freeing spinners
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Arun R Murthy" <arun.r.murthy@intel.com>
+Date: Mon, 29 Aug 2022 13:43:59 -0000
+Message-ID: <166178063994.11952.4430482799067694584@emeril.freedesktop.org>
+References: <20220829093147.3836523-1-arun.r.murthy@intel.com>
+In-Reply-To: <20220829093147.3836523-1-arun.r.murthy@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
+ =?utf-8?q?kms=5Fasync=5Fflips=3A_Enable_async_flip_on_linear_buffer?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,130 +17,146 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Zbigniew,
+--===============6410997180166777209==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-On 2022-08-29 at 10:44:08 +0200, Zbigniew Kempczyński wrote:
-> On Tue, Aug 23, 2022 at 11:56:45AM +0200, Kamil Konieczny wrote:
-> > Failed checks may cause following tests fail, so check for
-> > errors only after all spinners are released.
-> > 
-> > v2: be verbose about what failed (Chris)
-> > v3: simplify declaration, add separate wait var (Zbigniew)
-> > 
-> > Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-> > Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> > ---
-> >  tests/i915/i915_hangman.c | 25 ++++++++++++++++++++-----
-> >  1 file changed, 20 insertions(+), 5 deletions(-)
-> > 
-> > diff --git a/tests/i915/i915_hangman.c b/tests/i915/i915_hangman.c
-> > index c7d69fdd..3b60ff46 100644
-> > --- a/tests/i915/i915_hangman.c
-> > +++ b/tests/i915/i915_hangman.c
-> > @@ -295,6 +295,12 @@ static void context_unban(int fd, unsigned ctx)
-> >  	gem_context_set_param(fd, &param);
-> >  }
-> >  
-> > +#define ERR_HANG_WAIT  0
-> > +#define ERR_HANG_STAT  1
-> > +#define ERR_FENCE_BUSY 2
-> > +#define ERR_FENCE_END  3
-> > +#define ERR_FENCE_STAT 4
-> > +
-> >  static void
-> >  test_engine_hang(const intel_ctx_t *ctx,
-> >  		 const struct intel_execution_engine2 *e, unsigned int flags)
-> > @@ -305,6 +311,7 @@ test_engine_hang(const intel_ctx_t *ctx,
-> >  	IGT_LIST_HEAD(list);
-> >  	uint64_t ahnd = get_reloc_ahnd(device, ctx->id), ahndN;
-> >  	int num_ctx;
-> > +	int err[ERR_FENCE_STAT + 1] = {};
-> 
-> bool err[ERR_FENCE_STAT + 1];
-> 
-> 
-> >  
-> >  	igt_skip_on(flags & IGT_SPIN_INVALID_CS &&
-> >  		    gem_engine_has_cmdparser(device, &ctx->cfg, e->flags));
-> > @@ -340,18 +347,21 @@ test_engine_hang(const intel_ctx_t *ctx,
-> >  				      flags));
-> >  
-> >  	/* Wait for the hangcheck to terminate the hanger */
-> > -	igt_assert(sync_fence_wait(spin->out_fence, 30000) == 0); /* 30s */
-> > -	igt_assert_eq(sync_fence_status(spin->out_fence), -EIO);
-> > +	err[ERR_HANG_WAIT] = sync_fence_wait(spin->out_fence, 30000) << 8; /* 30s */
+== Series Details ==
 
-You are right about that leftover "<< 8" (from your previous
-letter), I will correct this in v4.
+Series: tests/kms_async_flips: Enable async flip on linear buffer
+URL   : https://patchwork.freedesktop.org/series/107871/
+State : success
 
-> 
-> err[ERR_HANG_WAIT] = sync_fence_wait(spin->out_fence, 30000) != 0;
-> 
-> > +	err[ERR_HANG_STAT] = sync_fence_status(spin->out_fence); /* -EIO */
-> 
-> err[ERR_HANG_STAT] = sync_fence_status(spin->out_fence) != EIO;
-> 
-> 
-> 
-> >  	igt_spin_free(device, spin);
-> >  
-> >  	/* But no other engines/clients should be affected */
-> >  	igt_list_for_each_entry_safe(spin, next, &list, link) {
-> >  		ahndN = spin->opts.ahnd;
-> > -		igt_assert(sync_fence_wait(spin->out_fence, 0) == -ETIME);
-> > +		if (sync_fence_wait(spin->out_fence, 0) != -ETIME)
-> > +			err[ERR_FENCE_BUSY]++;
-> 
-> err[ERR_FENCE_BUSY] = sync_fence_wait(spin->out_fence, 0) != -ETIME;
-> 
-> and so on? We could remove all 'if's then.
+== Summary ==
 
-It will help with one-time errors, but will complicate for-loop
-error accumulate, like
-		if(!err[ERR_FENCE_BUSY]) // no error so far
-			err[ERR_FENCE_BUSY] = sync_fence_wait(spin->out_fence, 0) != -ETIME;
+CI Bug Log - changes from CI_DRM_12040 -> IGTPW_7700
+====================================================
 
-or even more strange op like bit or on boolean results:
-	err[ERR_FENCE_BUSY] |= sync_fence_wait(spin->out_fence, 0) != -ETIME;
+Summary
+-------
 
-The downside is that we lost error code when using boolean. Maybe
-good idea would be to remember one unexpected error code in
-for-loop ?
+  **SUCCESS**
 
---
-Kamil
+  No regressions found.
 
-> 
-> --
-> Zbigniew
-> 
-> >  		igt_spin_end(spin);
-> >  
-> > -		igt_assert(sync_fence_wait(spin->out_fence, 500) == 0);
-> > -		igt_assert_eq(sync_fence_status(spin->out_fence), 1);
-> > +		if (sync_fence_wait(spin->out_fence, 500) != 0)
-> > +			err[ERR_FENCE_END]++;
-> > +		if (sync_fence_status(spin->out_fence) != 1)
-> > +			err[ERR_FENCE_STAT]++;
-> >  		igt_spin_free(device, spin);
-> >  		put_ahnd(ahndN);
-> >  	}
-> > @@ -360,6 +370,11 @@ test_engine_hang(const intel_ctx_t *ctx,
-> >  	while (num_ctx)
-> >  		intel_ctx_destroy(device, local_ctx[--num_ctx]);
-> >  
-> > +	igt_assert_f(err[ERR_HANG_WAIT] == 0, "hanged spinner wait failed\n");
-> > +	igt_assert_f(err[ERR_HANG_STAT] == -EIO, "hanged spinner failed\n");
-> > +	igt_assert_f(err[ERR_FENCE_BUSY] == 0, "background spinner not busy\n");
-> > +	igt_assert_f(err[ERR_FENCE_END] == 0, "background spinner not terminated\n");
-> > +	igt_assert_f(err[ERR_FENCE_STAT] == 0, "background fence not signalled\n");
-> >  	check_alive();
-> >  }
-> >  
-> > -- 
-> > 2.34.1
-> > 
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7700/index.html
+
+Participating hosts (40 -> 35)
+------------------------------
+
+  Missing    (5): fi-kbl-soraka fi-hsw-4200u fi-ctg-p8600 fi-hsw-4770 fi-bdw-samus 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_7700 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions-varying-size:
+    - fi-bsw-kefka:       [PASS][1] -> [FAIL][2] ([i915#6298])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12040/fi-bsw-kefka/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions-varying-size.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7700/fi-bsw-kefka/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions-varying-size.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [i915#2867]: https://gitlab.freedesktop.org/drm/intel/issues/2867
+  [i915#6298]: https://gitlab.freedesktop.org/drm/intel/issues/6298
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_6637 -> IGTPW_7700
+
+  CI-20190529: 20190529
+  CI_DRM_12040: 5416290d7f85d04778a4d8f3f954874af998fbec @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_7700: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7700/index.html
+  IGT_6637: a23e8aed0b54018339647d0817267431bd2b7075 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+
+Testlist changes
+----------------
+
++igt@kms_async_flips@async-flip-with-page-flip-events-linear
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7700/index.html
+
+--===============6410997180166777209==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/kms_async_flips: Enable async flip on linear buffer</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/107871/">https://patchwork.freedesktop.org/series/107871/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7700/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7700/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_12040 -&gt; IGTPW_7700</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7700/index.html</p>
+<h2>Participating hosts (40 -&gt; 35)</h2>
+<p>Missing    (5): fi-kbl-soraka fi-hsw-4200u fi-ctg-p8600 fi-hsw-4770 fi-bdw-samus </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_7700 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions-varying-size:<ul>
+<li>fi-bsw-kefka:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12040/fi-bsw-kefka/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions-varying-size.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7700/fi-bsw-kefka/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions-varying-size.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6298">i915#6298</a>)</li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_6637 -&gt; IGTPW_7700</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_12040: 5416290d7f85d04778a4d8f3f954874af998fbec @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_7700: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7700/index.html<br />
+  IGT_6637: a23e8aed0b54018339647d0817267431bd2b7075 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+<h2>Testlist changes</h2>
+<p>+igt@kms_async_flips@async-flip-with-page-flip-events-linear</p>
+
+</body>
+</html>
+
+--===============6410997180166777209==--
