@@ -1,11 +1,11 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 62CCC10F0F1
- for <igt-dev@lists.freedesktop.org>; Mon, 29 Aug 2022 08:34:33 +0000 (UTC)
-Date: Mon, 29 Aug 2022 10:34:29 +0200
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3EACB10F101
+ for <igt-dev@lists.freedesktop.org>; Mon, 29 Aug 2022 08:44:14 +0000 (UTC)
+Date: Mon, 29 Aug 2022 10:44:08 +0200
 From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 To: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Message-ID: <Ywx6FWAurkLjv+VS@zkempczy-mobl2>
+Message-ID: <Ywx8WEIr6ZuK1bil@zkempczy-mobl2>
 References: <20220823095645.14580-1-kamil.konieczny@linux.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
@@ -61,6 +61,10 @@ On Tue, Aug 23, 2022 at 11:56:45AM +0200, Kamil Konieczny wrote:
 >  	uint64_t ahnd = get_reloc_ahnd(device, ctx->id), ahndN;
 >  	int num_ctx;
 > +	int err[ERR_FENCE_STAT + 1] = {};
+
+bool err[ERR_FENCE_STAT + 1];
+
+
 >  
 >  	igt_skip_on(flags & IGT_SPIN_INVALID_CS &&
 >  		    gem_engine_has_cmdparser(device, &ctx->cfg, e->flags));
@@ -72,13 +76,14 @@ On Tue, Aug 23, 2022 at 11:56:45AM +0200, Kamil Konieczny wrote:
 > -	igt_assert_eq(sync_fence_status(spin->out_fence), -EIO);
 > +	err[ERR_HANG_WAIT] = sync_fence_wait(spin->out_fence, 30000) << 8; /* 30s */
 
-What that left bitshift is for? If our expectation is to have 0 it doesn't
-matter but I want to ensure I haven't miss something?
-
---
-Zbigniew
+err[ERR_HANG_WAIT] = sync_fence_wait(spin->out_fence, 30000) != 0;
 
 > +	err[ERR_HANG_STAT] = sync_fence_status(spin->out_fence); /* -EIO */
+
+err[ERR_HANG_STAT] = sync_fence_status(spin->out_fence) != EIO;
+
+
+
 >  	igt_spin_free(device, spin);
 >  
 >  	/* But no other engines/clients should be affected */
@@ -87,6 +92,14 @@ Zbigniew
 > -		igt_assert(sync_fence_wait(spin->out_fence, 0) == -ETIME);
 > +		if (sync_fence_wait(spin->out_fence, 0) != -ETIME)
 > +			err[ERR_FENCE_BUSY]++;
+
+err[ERR_FENCE_BUSY] = sync_fence_wait(spin->out_fence, 0) != -ETIME;
+
+and so on? We could remove all 'if's then.
+
+--
+Zbigniew
+
 >  		igt_spin_end(spin);
 >  
 > -		igt_assert(sync_fence_wait(spin->out_fence, 500) == 0);
