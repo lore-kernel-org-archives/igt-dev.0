@@ -1,19 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3EACB10F101
- for <igt-dev@lists.freedesktop.org>; Mon, 29 Aug 2022 08:44:14 +0000 (UTC)
-Date: Mon, 29 Aug 2022 10:44:08 +0200
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Message-ID: <Ywx8WEIr6ZuK1bil@zkempczy-mobl2>
-References: <20220823095645.14580-1-kamil.konieczny@linux.intel.com>
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CFE6B10F119
+ for <igt-dev@lists.freedesktop.org>; Mon, 29 Aug 2022 09:31:54 +0000 (UTC)
+From: Arun R Murthy <arun.r.murthy@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Mon, 29 Aug 2022 15:01:47 +0530
+Message-Id: <20220829093147.3836523-1-arun.r.murthy@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20220823095645.14580-1-kamil.konieczny@linux.intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t v3] i915/i915_hangman: fail only after
- freeing spinners
+Subject: [igt-dev] [PATCH i-g-t] tests/kms_async_flips: Enable async flip on
+ linear buffer
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,108 +17,68 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org
+Cc: Arun R Murthy <arun.r.murthy@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Tue, Aug 23, 2022 at 11:56:45AM +0200, Kamil Konieczny wrote:
-> Failed checks may cause following tests fail, so check for
-> errors only after all spinners are released.
-> 
-> v2: be verbose about what failed (Chris)
-> v3: simplify declaration, add separate wait var (Zbigniew)
-> 
-> Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-> Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> ---
->  tests/i915/i915_hangman.c | 25 ++++++++++++++++++++-----
->  1 file changed, 20 insertions(+), 5 deletions(-)
-> 
-> diff --git a/tests/i915/i915_hangman.c b/tests/i915/i915_hangman.c
-> index c7d69fdd..3b60ff46 100644
-> --- a/tests/i915/i915_hangman.c
-> +++ b/tests/i915/i915_hangman.c
-> @@ -295,6 +295,12 @@ static void context_unban(int fd, unsigned ctx)
->  	gem_context_set_param(fd, &param);
->  }
->  
-> +#define ERR_HANG_WAIT  0
-> +#define ERR_HANG_STAT  1
-> +#define ERR_FENCE_BUSY 2
-> +#define ERR_FENCE_END  3
-> +#define ERR_FENCE_STAT 4
-> +
->  static void
->  test_engine_hang(const intel_ctx_t *ctx,
->  		 const struct intel_execution_engine2 *e, unsigned int flags)
-> @@ -305,6 +311,7 @@ test_engine_hang(const intel_ctx_t *ctx,
->  	IGT_LIST_HEAD(list);
->  	uint64_t ahnd = get_reloc_ahnd(device, ctx->id), ahndN;
->  	int num_ctx;
-> +	int err[ERR_FENCE_STAT + 1] = {};
+On Intel Gen platforms >= GEN12, Async on linear buffer is supported,
+hence enabling test for the same.
 
-bool err[ERR_FENCE_STAT + 1];
+Signed-off-by: Arun R Murthy <arun.r.murthy@intel.com>
+---
+ tests/kms_async_flips.c | 18 +++++++++++++++++-
+ 1 file changed, 17 insertions(+), 1 deletion(-)
 
-
->  
->  	igt_skip_on(flags & IGT_SPIN_INVALID_CS &&
->  		    gem_engine_has_cmdparser(device, &ctx->cfg, e->flags));
-> @@ -340,18 +347,21 @@ test_engine_hang(const intel_ctx_t *ctx,
->  				      flags));
->  
->  	/* Wait for the hangcheck to terminate the hanger */
-> -	igt_assert(sync_fence_wait(spin->out_fence, 30000) == 0); /* 30s */
-> -	igt_assert_eq(sync_fence_status(spin->out_fence), -EIO);
-> +	err[ERR_HANG_WAIT] = sync_fence_wait(spin->out_fence, 30000) << 8; /* 30s */
-
-err[ERR_HANG_WAIT] = sync_fence_wait(spin->out_fence, 30000) != 0;
-
-> +	err[ERR_HANG_STAT] = sync_fence_status(spin->out_fence); /* -EIO */
-
-err[ERR_HANG_STAT] = sync_fence_status(spin->out_fence) != EIO;
-
-
-
->  	igt_spin_free(device, spin);
->  
->  	/* But no other engines/clients should be affected */
->  	igt_list_for_each_entry_safe(spin, next, &list, link) {
->  		ahndN = spin->opts.ahnd;
-> -		igt_assert(sync_fence_wait(spin->out_fence, 0) == -ETIME);
-> +		if (sync_fence_wait(spin->out_fence, 0) != -ETIME)
-> +			err[ERR_FENCE_BUSY]++;
-
-err[ERR_FENCE_BUSY] = sync_fence_wait(spin->out_fence, 0) != -ETIME;
-
-and so on? We could remove all 'if's then.
-
---
-Zbigniew
-
->  		igt_spin_end(spin);
->  
-> -		igt_assert(sync_fence_wait(spin->out_fence, 500) == 0);
-> -		igt_assert_eq(sync_fence_status(spin->out_fence), 1);
-> +		if (sync_fence_wait(spin->out_fence, 500) != 0)
-> +			err[ERR_FENCE_END]++;
-> +		if (sync_fence_status(spin->out_fence) != 1)
-> +			err[ERR_FENCE_STAT]++;
->  		igt_spin_free(device, spin);
->  		put_ahnd(ahndN);
->  	}
-> @@ -360,6 +370,11 @@ test_engine_hang(const intel_ctx_t *ctx,
->  	while (num_ctx)
->  		intel_ctx_destroy(device, local_ctx[--num_ctx]);
->  
-> +	igt_assert_f(err[ERR_HANG_WAIT] == 0, "hanged spinner wait failed\n");
-> +	igt_assert_f(err[ERR_HANG_STAT] == -EIO, "hanged spinner failed\n");
-> +	igt_assert_f(err[ERR_FENCE_BUSY] == 0, "background spinner not busy\n");
-> +	igt_assert_f(err[ERR_FENCE_END] == 0, "background spinner not terminated\n");
-> +	igt_assert_f(err[ERR_FENCE_STAT] == 0, "background fence not signalled\n");
->  	check_alive();
->  }
->  
-> -- 
-> 2.34.1
-> 
+diff --git a/tests/kms_async_flips.c b/tests/kms_async_flips.c
+index 695aea74..610cad34 100644
+--- a/tests/kms_async_flips.c
++++ b/tests/kms_async_flips.c
+@@ -61,6 +61,7 @@ typedef struct {
+ 	bool extended;
+ 	enum pipe pipe;
+ 	bool alternate_sync_async;
++	bool is_linear_buffer;
+ } data_t;
+ 
+ static void flip_handler(int fd_, unsigned int sequence, unsigned int tv_sec,
+@@ -125,6 +126,7 @@ static void make_fb(data_t *data, struct igt_fb *fb,
+ 
+ 	if (is_i915_device(data->drm_fd)) {
+ 		igt_create_fb(data->drm_fd, width, height, DRM_FORMAT_XRGB8888,
++			      data->is_linear_buffer ? DRM_FORMAT_MOD_LINEAR :
+ 			      I915_FORMAT_MOD_X_TILED, fb);
+ 		igt_draw_fill_fb(data->drm_fd, fb, 0x88);
+ 	} else {
+@@ -594,14 +596,28 @@ igt_main_args("e", NULL, help_str, opt_handler, &data)
+ 		igt_fixture
+ 			require_monotonic_timestamp(data.drm_fd);
+ 
+-		igt_describe("Wait for page flip events in between successive asynchronous flips");
++		igt_describe("Wait for page flip events in between successive asynchronous flips on X Tiled buffer");
+ 		igt_subtest_with_dynamic("async-flip-with-page-flip-events") {
+ 			data.alternate_sync_async = false;
++			data.is_linear_buffer = false;
+ 			run_test(&data, test_async_flip);
+ 		}
+ 
++		igt_describe("Wait for page flip events in between successive asynchronous flips on Linear buffer");
++		igt_subtest_with_dynamic("async-flip-with-page-flip-events-linear") {
++			data.alternate_sync_async = false;
++			data.is_linear_buffer = true;
++			if(is_i915_device(data.drm_fd)) {
++				uint32_t devid = intel_get_drm_devid(data.drm_fd);
++				igt_skip_on_f(!AT_LEAST_GEN(devid, 12),
++						"Async on Linear buffer not supported");
++					run_test(&data, test_async_flip);
++			}
++		}
++
+ 		igt_describe("Alternate between sync and async flips");
+ 		igt_subtest_with_dynamic("alternate-sync-async-flip") {
++			data.is_linear_buffer = false;
+ 			data.alternate_sync_async = true;
+ 			run_test(&data, test_async_flip);
+ 		}
+-- 
+2.25.1
