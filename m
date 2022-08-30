@@ -1,21 +1,22 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-yw1-x1134.google.com (mail-yw1-x1134.google.com
- [IPv6:2607:f8b0:4864:20::1134])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9054610E091
- for <igt-dev@lists.freedesktop.org>; Tue, 30 Aug 2022 14:55:59 +0000 (UTC)
-Received: by mail-yw1-x1134.google.com with SMTP id
- 00721157ae682-32a09b909f6so280318067b3.0
- for <igt-dev@lists.freedesktop.org>; Tue, 30 Aug 2022 07:55:59 -0700 (PDT)
+Received: from mail-yw1-x1129.google.com (mail-yw1-x1129.google.com
+ [IPv6:2607:f8b0:4864:20::1129])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1C7CC10E05D
+ for <igt-dev@lists.freedesktop.org>; Tue, 30 Aug 2022 15:00:38 +0000 (UTC)
+Received: by mail-yw1-x1129.google.com with SMTP id
+ 00721157ae682-32a09b909f6so280662017b3.0
+ for <igt-dev@lists.freedesktop.org>; Tue, 30 Aug 2022 08:00:38 -0700 (PDT)
 MIME-Version: 1.0
 References: <20220826210737.3263786-1-alex.hung@amd.com>
-In-Reply-To: <20220826210737.3263786-1-alex.hung@amd.com>
+ <20220826210737.3263786-2-alex.hung@amd.com>
+In-Reply-To: <20220826210737.3263786-2-alex.hung@amd.com>
 From: Mark Yacoub <markyacoub@chromium.org>
-Date: Tue, 30 Aug 2022 10:55:42 -0400
-Message-ID: <CAJUqKUrZ8rpQyNvZo+jQ4H9XgC+1KvRpcgoR9yqw8Cw2thKNYw@mail.gmail.com>
+Date: Tue, 30 Aug 2022 11:00:26 -0400
+Message-ID: <CAJUqKUq_Uk-vSaP_SiTQWu8v5aOeej94HwebXLMGqJfzfo6V+w@mail.gmail.com>
 To: Alex Hung <alex.hung@amd.com>
 Content-Type: text/plain; charset="UTF-8"
-Subject: Re: [igt-dev] [PATCH 1/2][V2] tests/kms_universal_plane: Enable
- gen9_test_pipe for all devices
+Subject: Re: [igt-dev] [PATCH 2/2][V2] tests/kms_universal_plane: Skip
+ offscreen test for universal API
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -30,50 +31,68 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 On Fri, Aug 26, 2022 at 5:08 PM Alex Hung <alex.hung@amd.com> wrote:
 >
-> This subtest runs on non-i915 devices, and let's make it generic by
-> removing igt_require_intel and renaming it.
+> amdgpu driver intentionally rejects plane outside of the screen and thus
+> this test is skipped on AMD HW. See more details in kernel commits
+> 40d916a2602c and 4abdb72bd8576 which are summarized as below:
+>
+> "Reject this contidion (too small viewport size) at validation time.
+nit: s/contidion/condition.
+> This gives the calling level a chance to handle this gracefully and
+> avoid inconsistent behaivor."
+nit: s/behaivor/behavior.
 >
 > Signed-off-by: Alex Hung <alex.hung@amd.com>
-Reviewed-by: Mark Yacoub <markyacoub@chromium.org>
 > ---
->  tests/kms_universal_plane.c | 9 ++++-----
->  1 file changed, 4 insertions(+), 5 deletions(-)
+>  tests/kms_universal_plane.c | 25 ++++++++++++++-----------
+>  1 file changed, 14 insertions(+), 11 deletions(-)
 >
 > diff --git a/tests/kms_universal_plane.c b/tests/kms_universal_plane.c
-> index 3cb6d704..9eab1a57 100644
+> index 9eab1a57..057a14f4 100644
 > --- a/tests/kms_universal_plane.c
 > +++ b/tests/kms_universal_plane.c
-> @@ -699,15 +699,14 @@ gen9_test_fini(gen9_test_t *test, igt_output_t *output)
->   * windowing)
->   */
->  static void
-> -gen9_test_pipe(data_t *data, enum pipe pipe, igt_output_t *output)
-> +pageflip_win_test_pipe(data_t *data, enum pipe pipe, igt_output_t *output)
->  {
->         gen9_test_t test = { .data = data };
->         igt_plane_t *primary;
+> @@ -242,16 +242,18 @@ functional_test_pipe(data_t *data, enum pipe pipe, igt_output_t *output)
+>         igt_display_commit2(display, COMMIT_LEGACY);
 >
->         int ret = 0;
+>         /* Step 14: Universal API, set primary completely offscreen (CRC 9) */
+> -       igt_assert(drmModeSetPlane(data->drm_fd, primary->drm_plane->plane_id,
+> -                                  output->config.crtc->crtc_id,
+> -                                  test.blue_fb.fb_id, 0,
+> -                                  9000, 9000,
+> -                                  test.mode->hdisplay,
+> -                                  test.mode->vdisplay,
+> -                                  IGT_FIXED(0,0), IGT_FIXED(0,0),
+> -                                  IGT_FIXED(test.mode->hdisplay,0),
+> -                                  IGT_FIXED(test.mode->vdisplay,0)) == 0);
+> -       igt_pipe_crc_collect_crc(test.pipe_crc, &test.crc_9);
+> +       if (!is_amdgpu_device(data->drm_fd)) {
+Please expand the comment above, stating in few words why you're
+skipping on AMD, so we don't have to check the commit to understand
+why this is happening.
+> +               igt_assert(drmModeSetPlane(data->drm_fd, primary->drm_plane->plane_id,
+> +                                          output->config.crtc->crtc_id,
+> +                                          test.blue_fb.fb_id, 0,
+> +                                          9000, 9000,
+> +                                          test.mode->hdisplay,
+> +                                          test.mode->vdisplay,
+> +                                          IGT_FIXED(0,0), IGT_FIXED(0,0),
+> +                                          IGT_FIXED(test.mode->hdisplay,0),
+> +                                          IGT_FIXED(test.mode->vdisplay,0)) == 0);
+> +               igt_pipe_crc_collect_crc(test.pipe_crc, &test.crc_9);
+> +       }
 >
-> -       igt_require_intel(data->drm_fd);
-> -       igt_skip_on(data->display_ver < 9);
-> +       igt_skip_on(is_i915_device(data->drm_fd) && data->display_ver < 9);
->         igt_require_pipe(&data->display, pipe);
+>         /*
+>          * Step 15: Explicitly disable primary after it's already been
+> @@ -291,7 +293,8 @@ functional_test_pipe(data_t *data, enum pipe pipe, igt_output_t *output)
+>          * We should be able to move the primary plane completely offscreen
+>          * and have it disable successfully.
+>          */
+> -       igt_assert_crc_equal(&test.crc_5, &test.crc_9);
+> +       if (!is_amdgpu_device(data->drm_fd))
+ditto. Expand the comment above on a new line why you're skipping AMD
+> +               igt_assert_crc_equal(&test.crc_5, &test.crc_9);
 >
->         igt_output_set_pipe(output, pipe);
-> @@ -787,10 +786,10 @@ run_tests_for_pipe(data_t *data, enum pipe pipe)
->                         cursor_leak_test_pipe(data, pipe, output);
->
->         igt_describe("Check if pageflip succeeds in windowed setting");
-> -       igt_subtest_f("universal-plane-gen9-features-pipe-%s",
-> +       igt_subtest_f("universal-plane-pageflip-windowed-pipe-%s",
->                       kmstest_pipe_name(pipe))
->                 for_each_valid_output_on_pipe(&data->display, pipe, output)
-> -                       gen9_test_pipe(data, pipe, output);
-> +                       pageflip_win_test_pipe(data, pipe, output);
->  }
->
->  static data_t data;
+>         /*
+>          * We should be able to explicitly disable an already
 > --
-> 2.37.2
+> 2.34.1
 >
