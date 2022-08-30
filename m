@@ -1,15 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============4585924179526803481=="
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3C7D110E843
+ for <igt-dev@lists.freedesktop.org>; Tue, 30 Aug 2022 03:31:50 +0000 (UTC)
+From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+To: igt-dev@lists.freedesktop.org,
+	karthik.b.s@intel.com
+Date: Tue, 30 Aug 2022 08:59:33 +0530
+Message-Id: <20220830032933.160428-1-bhanuprakash.modem@intel.com>
+In-Reply-To: <20220818062310.235749-1-bhanuprakash.modem@intel.com>
+References: <20220818062310.235749-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Mohammed Thasleem" <mohammed.thasleem@intel.com>
-Date: Mon, 29 Aug 2022 19:07:01 -0000
-Message-ID: <166180002149.11952.16323622460510248383@emeril.freedesktop.org>
-References: <20220829173333.60263-1-mohammed.thasleem@intel.com>
-In-Reply-To: <20220829173333.60263-1-mohammed.thasleem@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
- =?utf-8?q?kms=5Flease=3A_IGT_test_Cleanup?=
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [i-g-t V3] tests/kms_plane_cursor: Convert tests to
+ dynamic
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,215 +20,328 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============4585924179526803481==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Convert the existing subtests to dynamic subtests at pipe/output
+level. And create an array of structures to populate subtests to
+avoid code duplication.
 
-== Series Details ==
+This patch will also do some clenup to have a single function for
+all subtests.
 
-Series: tests/kms_lease: IGT test Cleanup
-URL   : https://patchwork.freedesktop.org/series/107910/
-State : success
+V2:
+- Populate overlay outside test_init()
+- New function for fb cleanup
+V3:
+- Fix crash in CI
 
-== Summary ==
+Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+---
+ tests/kms_plane_cursor.c | 194 ++++++++++++++++-----------------------
+ 1 file changed, 80 insertions(+), 114 deletions(-)
 
-CI Bug Log - changes from CI_DRM_12044 -> IGTPW_7701
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7701/index.html
-
-Participating hosts (40 -> 33)
-------------------------------
-
-  Missing    (7): fi-rkl-11600 fi-hsw-4200u fi-ctg-p8600 fi-hsw-4770 bat-jsl-3 bat-dg2-10 fi-bdw-samus 
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_7701 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@i915_selftest@live@requests:
-    - fi-pnv-d510:        [PASS][1] -> [DMESG-FAIL][2] ([i915#4528])
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12044/fi-pnv-d510/igt@i915_selftest@live@requests.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7701/fi-pnv-d510/igt@i915_selftest@live@requests.html
-
-  * igt@kms_chamelium@common-hpd-after-suspend:
-    - fi-bdw-5557u:       NOTRUN -> [SKIP][3] ([fdo#109271] / [fdo#111827])
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7701/fi-bdw-5557u/igt@kms_chamelium@common-hpd-after-suspend.html
-
-  
-#### Possible fixes ####
-
-  * igt@gem_exec_suspend@basic-s3@smem:
-    - {bat-rplp-1}:       [DMESG-WARN][4] ([i915#2867]) -> [PASS][5]
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12044/bat-rplp-1/igt@gem_exec_suspend@basic-s3@smem.html
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7701/bat-rplp-1/igt@gem_exec_suspend@basic-s3@smem.html
-
-  * igt@i915_selftest@live@gt_pm:
-    - bat-adlp-4:         [DMESG-FAIL][6] ([i915#3987]) -> [PASS][7]
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12044/bat-adlp-4/igt@i915_selftest@live@gt_pm.html
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7701/bat-adlp-4/igt@i915_selftest@live@gt_pm.html
-
-  * igt@i915_suspend@basic-s3-without-i915:
-    - fi-bdw-5557u:       [INCOMPLETE][8] ([i915#146] / [i915#6598]) -> [PASS][9]
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12044/fi-bdw-5557u/igt@i915_suspend@basic-s3-without-i915.html
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7701/fi-bdw-5557u/igt@i915_suspend@basic-s3-without-i915.html
-
-  
-#### Warnings ####
-
-  * igt@i915_selftest@live@hangcheck:
-    - bat-dg1-5:          [DMESG-FAIL][10] ([i915#4957]) -> [DMESG-FAIL][11] ([i915#4494] / [i915#4957])
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12044/bat-dg1-5/igt@i915_selftest@live@hangcheck.html
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7701/bat-dg1-5/igt@i915_selftest@live@hangcheck.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
-  [fdo#111827]: https://bugs.freedesktop.org/show_bug.cgi?id=111827
-  [i915#146]: https://gitlab.freedesktop.org/drm/intel/issues/146
-  [i915#2867]: https://gitlab.freedesktop.org/drm/intel/issues/2867
-  [i915#3987]: https://gitlab.freedesktop.org/drm/intel/issues/3987
-  [i915#4312]: https://gitlab.freedesktop.org/drm/intel/issues/4312
-  [i915#4494]: https://gitlab.freedesktop.org/drm/intel/issues/4494
-  [i915#4528]: https://gitlab.freedesktop.org/drm/intel/issues/4528
-  [i915#4957]: https://gitlab.freedesktop.org/drm/intel/issues/4957
-  [i915#6257]: https://gitlab.freedesktop.org/drm/intel/issues/6257
-  [i915#6380]: https://gitlab.freedesktop.org/drm/intel/issues/6380
-  [i915#6598]: https://gitlab.freedesktop.org/drm/intel/issues/6598
-  [i915#6670]: https://gitlab.freedesktop.org/drm/intel/issues/6670
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_6637 -> IGTPW_7701
-
-  CI-20190529: 20190529
-  CI_DRM_12044: 287ad23d60ce7aa8befbe8dd1fea6fb705bd08ac @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_7701: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7701/index.html
-  IGT_6637: a23e8aed0b54018339647d0817267431bd2b7075 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7701/index.html
-
---===============4585924179526803481==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/kms_lease: IGT test Cleanup</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/107910/">https://patchwork.freedesktop.org/series/107910/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7701/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7701/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from CI_DRM_12044 -&gt; IGTPW_7701</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7701/index.html</p>
-<h2>Participating hosts (40 -&gt; 33)</h2>
-<p>Missing    (7): fi-rkl-11600 fi-hsw-4200u fi-ctg-p8600 fi-hsw-4770 bat-jsl-3 bat-dg2-10 fi-bdw-samus </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_7701 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@i915_selftest@live@requests:</p>
-<ul>
-<li>fi-pnv-d510:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12044/fi-pnv-d510/igt@i915_selftest@live@requests.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7701/fi-pnv-d510/igt@i915_selftest@live@requests.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4528">i915#4528</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_chamelium@common-hpd-after-suspend:</p>
-<ul>
-<li>fi-bdw-5557u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7701/fi-bdw-5557u/igt@kms_chamelium@common-hpd-after-suspend.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://bugs.freedesktop.org/show_bug.cgi?id=111827">fdo#111827</a>)</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@gem_exec_suspend@basic-s3@smem:</p>
-<ul>
-<li>{bat-rplp-1}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12044/bat-rplp-1/igt@gem_exec_suspend@basic-s3@smem.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2867">i915#2867</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7701/bat-rplp-1/igt@gem_exec_suspend@basic-s3@smem.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@gt_pm:</p>
-<ul>
-<li>bat-adlp-4:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12044/bat-adlp-4/igt@i915_selftest@live@gt_pm.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3987">i915#3987</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7701/bat-adlp-4/igt@i915_selftest@live@gt_pm.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@i915_suspend@basic-s3-without-i915:</p>
-<ul>
-<li>fi-bdw-5557u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12044/fi-bdw-5557u/igt@i915_suspend@basic-s3-without-i915.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/146">i915#146</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/6598">i915#6598</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7701/fi-bdw-5557u/igt@i915_suspend@basic-s3-without-i915.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<h4>Warnings</h4>
-<ul>
-<li>igt@i915_selftest@live@hangcheck:<ul>
-<li>bat-dg1-5:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12044/bat-dg1-5/igt@i915_selftest@live@hangcheck.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4957">i915#4957</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7701/bat-dg1-5/igt@i915_selftest@live@hangcheck.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4494">i915#4494</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4957">i915#4957</a>)</li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_6637 -&gt; IGTPW_7701</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_12044: 287ad23d60ce7aa8befbe8dd1fea6fb705bd08ac @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_7701: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7701/index.html<br />
-  IGT_6637: a23e8aed0b54018339647d0817267431bd2b7075 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-
-</body>
-</html>
-
---===============4585924179526803481==--
+diff --git a/tests/kms_plane_cursor.c b/tests/kms_plane_cursor.c
+index 73085cc8..6b7e5cef 100644
+--- a/tests/kms_plane_cursor.c
++++ b/tests/kms_plane_cursor.c
+@@ -30,6 +30,12 @@
+  * - DRM index indicates z-ordering, higher index = higher z-order
+  */
+ 
++enum {
++	TEST_PRIMARY = 0,
++	TEST_OVERLAY = 1 << 0,
++	TEST_VIEWPORT = 1 << 1,
++};
++
+ typedef struct {
+ 	int x;
+ 	int y;
+@@ -52,24 +58,25 @@ typedef struct data {
+ 	igt_pipe_t *pipe;
+ 	igt_pipe_crc_t *pipe_crc;
+ 	drmModeModeInfo *mode;
++	igt_fb_t pfb;
++	igt_fb_t ofb;
++	igt_fb_t cfb;
+ 	enum pipe pipe_id;
+ 	int drm_fd;
+ 	rect_t or;
+ } data_t;
+ 
+ /* Common test setup. */
+-static void test_init(data_t *data, enum pipe pipe_id)
++static void test_init(data_t *data, enum pipe pipe_id, igt_output_t *output)
+ {
+ 	igt_display_t *display = &data->display;
+ 
+ 	data->pipe_id = pipe_id;
+ 	data->pipe = &data->display.pipes[data->pipe_id];
++	data->output = output;
+ 
+ 	igt_display_reset(display);
+ 
+-	data->output = igt_get_single_output_for_pipe(&data->display, pipe_id);
+-	igt_require(data->output);
+-
+ 	data->mode = igt_output_get_mode(data->output);
+ 
+ 	data->primary = igt_pipe_get_plane_type(data->pipe, DRM_PLANE_TYPE_PRIMARY);
+@@ -119,18 +126,21 @@ static void draw_color(igt_fb_t *fb, double r, double g, double b)
+  * Places the cursor where the magenta square should be with a magenta FB.
+  * Takes this as the test CRC and compares it to the reference.
+  */
+-static void test_cursor_pos(data_t *data, igt_fb_t *pfb, igt_fb_t *ofb,
+-			    igt_fb_t *cfb, const rect_t *or, int x, int y)
++static void test_cursor_pos(data_t *data, int x, int y, unsigned int flags)
+ {
+ 	igt_crc_t ref_crc, test_crc;
+ 	cairo_t *cr;
++	igt_fb_t *pfb = &data->pfb;
++	igt_fb_t *ofb = &data->ofb;
++	igt_fb_t *cfb = &data->cfb;
+ 	int cw = cfb->width;
+ 	int ch = cfb->height;
++	const rect_t *or = &data->or;
+ 
+ 	cr = igt_get_cairo_ctx(pfb->fd, pfb);
+ 	igt_paint_color(cr, 0, 0, pfb->width, pfb->height, 1.0, 1.0, 1.0);
+ 
+-	if (ofb)
++	if (flags & TEST_OVERLAY)
+ 		igt_paint_color(cr, or->x, or->y, or->w, or->h, 0.5, 0.5, 0.5);
+ 
+ 	igt_paint_color(cr, x, y, cw, ch, 1.0, 0.0, 1.0);
+@@ -145,7 +155,7 @@ static void test_cursor_pos(data_t *data, igt_fb_t *pfb, igt_fb_t *ofb,
+ 
+ 	draw_color(pfb, 1.0, 1.0, 1.0);
+ 
+-	if (ofb) {
++	if (flags & TEST_OVERLAY) {
+ 		igt_plane_set_fb(data->overlay, ofb);
+ 		igt_plane_set_position(data->overlay, or->x, or->y);
+ 		igt_plane_set_size(data->overlay, or->w, or->h);
+@@ -170,11 +180,11 @@ static void test_cursor_pos(data_t *data, igt_fb_t *pfb, igt_fb_t *ofb,
+  * Specific edge cases that should be captured here are the negative edges
+  * of each plane and the centers.
+  */
+-static void test_cursor_spots(data_t *data, igt_fb_t *pfb, igt_fb_t *ofb,
+-			      igt_fb_t *cfb, const rect_t *or, int size)
++static void test_cursor_spots(data_t *data, int size, unsigned int flags)
+ {
+ 	int sw = data->mode->hdisplay;
+ 	int sh = data->mode->vdisplay;
++	const rect_t *or = &data->or;
+ 	int i;
+ 	const pos_t pos[] = {
+ 		/* Test diagonally from top left to bottom right. */
+@@ -198,110 +208,45 @@ static void test_cursor_spots(data_t *data, igt_fb_t *pfb, igt_fb_t *ofb,
+ 	};
+ 
+ 	for (i = 0; i < ARRAY_SIZE(pos); ++i) {
+-		test_cursor_pos(data, pfb, ofb, cfb, or, pos[i].x, pos[i].y);
++		test_cursor_pos(data, pos[i].x, pos[i].y, flags);
+ 	}
+ }
+ 
+-/*
+- * Tests atomic cursor positioning on a primary and overlay plane.
+- * Assumes the cursor can be placed on top of the overlay.
+- */
+-static void test_cursor_overlay(data_t *data, int size, enum pipe pipe_id)
++static void test_cleanup(data_t *data)
+ {
+-	igt_fb_t pfb, ofb, cfb;
+-	int sw, sh;
+-
+-	test_init(data, pipe_id);
+-	igt_require(data->overlay);
+-
+-	sw = data->mode->hdisplay;
+-	sh = data->mode->vdisplay;
+-
+-	igt_create_color_fb(data->drm_fd, sw, sh, DRM_FORMAT_XRGB8888, 0,
+-			    1.0, 1.0, 1.0, &pfb);
+-
+-	igt_create_color_fb(data->drm_fd, data->or.w, data->or.h,
+-			    DRM_FORMAT_XRGB8888, 0, 0.5, 0.5, 0.5, &ofb);
+-
+-	igt_create_color_fb(data->drm_fd, size, size, DRM_FORMAT_ARGB8888, 0,
+-			    1.0, 0.0, 1.0, &cfb);
+-
+-	igt_plane_set_fb(data->primary, &pfb);
+-	igt_display_commit2(&data->display, COMMIT_ATOMIC);
+-
+-	test_cursor_spots(data, &pfb, &ofb, &cfb, &data->or, size);
+-
+-	test_fini(data);
+-
+-	igt_remove_fb(data->drm_fd, &cfb);
+-	igt_remove_fb(data->drm_fd, &ofb);
+-	igt_remove_fb(data->drm_fd, &pfb);
++	igt_remove_fb(data->drm_fd, &data->cfb);
++	igt_remove_fb(data->drm_fd, &data->ofb);
++	igt_remove_fb(data->drm_fd, &data->pfb);
+ }
+ 
+-/* Tests atomic cursor positioning on a primary plane. */
+-static void test_cursor_primary(data_t *data, int size, enum pipe pipe_id)
++static void test_cursor(data_t *data, int size, unsigned int flags)
+ {
+-	igt_fb_t pfb, cfb;
+-	int sw, sh;
+-
+-	test_init(data, pipe_id);
+-
+-	sw = data->mode->hdisplay;
+-	sh = data->mode->vdisplay;
+-
+-	igt_create_color_fb(data->drm_fd, sw, sh, DRM_FORMAT_XRGB8888, 0,
+-			    1.0, 1.0, 1.0, &pfb);
+-
+-	igt_create_color_fb(data->drm_fd, size, size, DRM_FORMAT_ARGB8888, 0,
+-			    1.0, 0.0, 1.0, &cfb);
+-
+-	igt_plane_set_fb(data->primary, &pfb);
+-	igt_display_commit2(&data->display, COMMIT_ATOMIC);
+-
+-	test_cursor_spots(data, &pfb, NULL, &cfb, &data->or, size);
+-
+-	test_fini(data);
+-
+-	igt_remove_fb(data->drm_fd, &cfb);
+-	igt_remove_fb(data->drm_fd, &pfb);
+-}
+-
+-/*
+- * Tests atomic cursor positioning on a primary and overlay plane.
+- * The overlay's buffer is larger than the viewport actually used
+- * for display.
+- */
+-static void test_cursor_viewport(data_t *data, int size, enum pipe pipe_id)
+-{
+-	igt_fb_t pfb, ofb, cfb;
+ 	int sw, sh;
+ 	int pad = 128;
+ 
+-	test_init(data, pipe_id);
+-	igt_require(data->overlay);
+-
+ 	sw = data->mode->hdisplay;
+ 	sh = data->mode->vdisplay;
+ 
++	test_cleanup(data);
++
+ 	igt_create_color_fb(data->drm_fd, sw, sh, DRM_FORMAT_XRGB8888, 0,
+-			    1.0, 1.0, 1.0, &pfb);
++			    1.0, 1.0, 1.0, &data->pfb);
+ 
+-	igt_create_color_fb(data->drm_fd, data->or.w + pad, data->or.h + pad,
+-			    DRM_FORMAT_XRGB8888, 0, 0.5, 0.5, 0.5, &ofb);
++	if (flags & TEST_OVERLAY) {
++		int width = (flags & TEST_VIEWPORT) ? data->or.w + pad : data->or.w;
++		int height = (flags & TEST_VIEWPORT) ? data->or.h + pad : data->or.h;
++
++		igt_create_color_fb(data->drm_fd, width, height,
++				    DRM_FORMAT_XRGB8888, 0, 0.5, 0.5, 0.5, &data->ofb);
++	}
+ 
+ 	igt_create_color_fb(data->drm_fd, size, size, DRM_FORMAT_ARGB8888, 0,
+-			    1.0, 0.0, 1.0, &cfb);
++			    1.0, 0.0, 1.0, &data->cfb);
+ 
+-	igt_plane_set_fb(data->primary, &pfb);
++	igt_plane_set_fb(data->primary, &data->pfb);
+ 	igt_display_commit2(&data->display, COMMIT_ATOMIC);
+ 
+-	test_cursor_spots(data, &pfb, &ofb, &cfb, &data->or, size);
+-
+-	test_fini(data);
+-
+-	igt_remove_fb(data->drm_fd, &cfb);
+-	igt_remove_fb(data->drm_fd, &ofb);
+-	igt_remove_fb(data->drm_fd, &pfb);
++	test_cursor_spots(data, size, flags);
+ }
+ 
+ igt_main
+@@ -309,7 +254,21 @@ igt_main
+ 	static const int cursor_sizes[] = { 64, 128, 256 };
+ 	data_t data = {};
+ 	enum pipe pipe;
+-	int i;
++	igt_output_t *output;
++	int i, j;
++	struct {
++		const char *name;
++		unsigned int flags;
++		const char *desc;
++	} tests[] = {
++		{ "primary", TEST_PRIMARY,
++		  "Tests atomic cursor positioning on primary plane" },
++		{ "overlay", TEST_PRIMARY | TEST_OVERLAY,
++		  "Tests atomic cursor positioning on primary plane and overlay plane" },
++		{ "viewport", TEST_PRIMARY | TEST_OVERLAY | TEST_VIEWPORT,
++		  "Tests atomic cursor positioning on primary plane and overlay plane "
++		  "with buffer larger than viewport used for display" },
++	};
+ 
+ 	igt_fixture {
+ 		data.drm_fd = drm_open_driver_master(DRIVER_ANY);
+@@ -321,26 +280,33 @@ igt_main
+ 		igt_display_require_output(&data.display);
+ 	}
+ 
+-	for_each_pipe_static(pipe)
+-		for (i = 0; i < ARRAY_SIZE(cursor_sizes); ++i) {
+-			int size = cursor_sizes[i];
+-
+-			igt_describe("Tests atomic cursor positioning on primary plane and overlay plane");
+-			igt_subtest_f("pipe-%s-overlay-size-%d",
+-				      kmstest_pipe_name(pipe), size)
+-				test_cursor_overlay(&data, size, pipe);
+-
+-			igt_describe("Tests atomic cursor positioning on primary plane");
+-			igt_subtest_f("pipe-%s-primary-size-%d",
+-				      kmstest_pipe_name(pipe), size)
+-				test_cursor_primary(&data, size, pipe);
+-
+-			igt_describe("Tests atomic cursor positioning on primary plane and overlay plane"
+-				"with buffer larger than viewport used for display");
+-			igt_subtest_f("pipe-%s-viewport-size-%d",
+-				      kmstest_pipe_name(pipe), size)
+-				test_cursor_viewport(&data, size, pipe);
++	for (i = 0; i < ARRAY_SIZE(tests); i++) {
++		igt_describe_f("%s", tests[i].desc);
++		igt_subtest_with_dynamic_f("%s", tests[i].name) {
++			for_each_pipe_with_single_output(&data.display, pipe, output) {
++				if ((tests[i].flags & TEST_OVERLAY) &&
++				    !igt_pipe_get_plane_type(&data.display.pipes[pipe],
++							     DRM_PLANE_TYPE_OVERLAY))
++					continue;
++
++				test_init(&data, pipe, output);
++
++				for (j = 0; j < ARRAY_SIZE(cursor_sizes); j++) {
++					int size = cursor_sizes[j];
++
++					igt_dynamic_f("pipe-%s-%s-size-%d",
++						      kmstest_pipe_name(pipe),
++						      igt_output_name(output),
++						      size)
++						test_cursor(&data, size, tests[i].flags);
++
++					test_cleanup(&data);
++				}
++
++				test_fini(&data);
++			}
+ 		}
++	}
+ 
+ 	igt_fixture {
+ 		igt_display_fini(&data.display);
+-- 
+2.35.1
