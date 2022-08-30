@@ -1,19 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from NAM11-CO1-obe.outbound.protection.outlook.com
- (mail-co1nam11on2074.outbound.protection.outlook.com [40.107.220.74])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A5C1310E1E4
- for <igt-dev@lists.freedesktop.org>; Tue, 30 Aug 2022 17:00:01 +0000 (UTC)
-From: Alex Hung <alex.hung@amd.com>
-To: <igt-dev@lists.freedesktop.org>
-Date: Tue, 30 Aug 2022 10:59:28 -0600
-Message-ID: <20220830165928.1597238-2-alex.hung@amd.com>
-In-Reply-To: <20220830165928.1597238-1-alex.hung@amd.com>
-References: <20220830165928.1597238-1-alex.hung@amd.com>
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3F3EB10E22E
+ for <igt-dev@lists.freedesktop.org>; Tue, 30 Aug 2022 17:17:59 +0000 (UTC)
+Date: Tue, 30 Aug 2022 19:17:52 +0200
+From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+To: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Message-ID: <Yw5GQD+ttvd3G3Ky@zkempczy-mobl2>
+References: <20220830084836.12231-1-kamil.konieczny@linux.intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-Subject: [igt-dev] [PATCH 2/2][V3] tests/kms_universal_plane: Skip offscreen
- test for universal API
+In-Reply-To: <20220830084836.12231-1-kamil.konieczny@linux.intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t v4] i915/i915_hangman: fail only after
+ freeing spinners
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,75 +21,106 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: markyacoub@google.com
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-amdgpu driver intentionally rejects plane outside of the screen and thus
-this test is skipped on AMD HW. See more details in kernel commits
-40d916a2602c and 4abdb72bd8576 which are summarized as below:
+On Tue, Aug 30, 2022 at 10:48:36AM +0200, Kamil Konieczny wrote:
+> Failed checks may cause following tests fail, so check for
+> errors only after all spinners are released.
+> 
+> v2: be verbose about what failed (Chris)
+> v3: simplify declaration, add separate wait var (Zbigniew)
+> v4: removed bitshift (Zbigniew), added storing last not
+>     expected error for fence stat
+> 
+> Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+> Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> ---
+>  tests/i915/i915_hangman.c | 34 ++++++++++++++++++++++++++++------
+>  1 file changed, 28 insertions(+), 6 deletions(-)
+> 
+> diff --git a/tests/i915/i915_hangman.c b/tests/i915/i915_hangman.c
+> index c7d69fdd..ddbe1067 100644
+> --- a/tests/i915/i915_hangman.c
+> +++ b/tests/i915/i915_hangman.c
+> @@ -295,6 +295,20 @@ static void context_unban(int fd, unsigned ctx)
+>  	gem_context_set_param(fd, &param);
+>  }
+>  
+> +static void chk_err(int *dst, int err, int expected)
+> +{
+> +	if (err == expected)
+> +		return;
+> +
+> +	*dst = err;
+> +}
 
-"Reject this contidion (too small viewport size) at validation time.
-This gives the calling level a chance to handle this gracefully and
-avoid inconsistent behaivor."
+Looks good for me. Single unexpected value will overwrite the dst status.
 
-Signed-off-by: Alex Hung <alex.hung@amd.com>
----
- tests/kms_universal_plane.c | 33 ++++++++++++++++++++-------------
- 1 file changed, 20 insertions(+), 13 deletions(-)
+Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 
-diff --git a/tests/kms_universal_plane.c b/tests/kms_universal_plane.c
-index 9eab1a57..432f56ba 100644
---- a/tests/kms_universal_plane.c
-+++ b/tests/kms_universal_plane.c
-@@ -241,17 +241,22 @@ functional_test_pipe(data_t *data, enum pipe pipe, igt_output_t *output)
- 	igt_plane_set_fb(sprite, &test.red_fb);
- 	igt_display_commit2(display, COMMIT_LEGACY);
- 
--	/* Step 14: Universal API, set primary completely offscreen (CRC 9) */
--	igt_assert(drmModeSetPlane(data->drm_fd, primary->drm_plane->plane_id,
--				   output->config.crtc->crtc_id,
--				   test.blue_fb.fb_id, 0,
--				   9000, 9000,
--				   test.mode->hdisplay,
--				   test.mode->vdisplay,
--				   IGT_FIXED(0,0), IGT_FIXED(0,0),
--				   IGT_FIXED(test.mode->hdisplay,0),
--				   IGT_FIXED(test.mode->vdisplay,0)) == 0);
--	igt_pipe_crc_collect_crc(test.pipe_crc, &test.crc_9);
-+	/*
-+	 * Step 14: Universal API, set primary completely offscreen (CRC 9).
-+	 * Skip on amdgpu which rejects offscreen planes.
-+	 */
-+	if (!is_amdgpu_device(data->drm_fd)) {
-+		igt_assert(drmModeSetPlane(data->drm_fd, primary->drm_plane->plane_id,
-+					   output->config.crtc->crtc_id,
-+					   test.blue_fb.fb_id, 0,
-+					   9000, 9000,
-+					   test.mode->hdisplay,
-+					   test.mode->vdisplay,
-+					   IGT_FIXED(0,0), IGT_FIXED(0,0),
-+					   IGT_FIXED(test.mode->hdisplay,0),
-+					   IGT_FIXED(test.mode->vdisplay,0)) == 0);
-+		igt_pipe_crc_collect_crc(test.pipe_crc, &test.crc_9);
-+	}
- 
- 	/*
- 	 * Step 15: Explicitly disable primary after it's already been
-@@ -289,9 +294,11 @@ functional_test_pipe(data_t *data, enum pipe pipe, igt_output_t *output)
- 
- 	/*
- 	 * We should be able to move the primary plane completely offscreen
--	 * and have it disable successfully.
-+	 * and have it disable successfully. Skip on amdgpu since crc_9 was
-+	 * skipped with offscreen planes previously.
- 	 */
--	igt_assert_crc_equal(&test.crc_5, &test.crc_9);
-+	if (!is_amdgpu_device(data->drm_fd))
-+		igt_assert_crc_equal(&test.crc_5, &test.crc_9);
- 
- 	/*
- 	 * We should be able to explicitly disable an already
--- 
-2.34.1
+--
+Zbigniew
+
+> +
+> +#define ERR_HANG_WAIT  0
+> +#define ERR_HANG_STAT  1
+> +#define ERR_FENCE_BUSY 2
+> +#define ERR_FENCE_END  3
+> +#define ERR_FENCE_STAT 4
+> +
+>  static void
+>  test_engine_hang(const intel_ctx_t *ctx,
+>  		 const struct intel_execution_engine2 *e, unsigned int flags)
+> @@ -305,6 +319,7 @@ test_engine_hang(const intel_ctx_t *ctx,
+>  	IGT_LIST_HEAD(list);
+>  	uint64_t ahnd = get_reloc_ahnd(device, ctx->id), ahndN;
+>  	int num_ctx;
+> +	int err[ERR_FENCE_STAT + 1];
+>  
+>  	igt_skip_on(flags & IGT_SPIN_INVALID_CS &&
+>  		    gem_engine_has_cmdparser(device, &ctx->cfg, e->flags));
+> @@ -340,18 +355,20 @@ test_engine_hang(const intel_ctx_t *ctx,
+>  				      flags));
+>  
+>  	/* Wait for the hangcheck to terminate the hanger */
+> -	igt_assert(sync_fence_wait(spin->out_fence, 30000) == 0); /* 30s */
+> -	igt_assert_eq(sync_fence_status(spin->out_fence), -EIO);
+> +	err[ERR_HANG_WAIT] = sync_fence_wait(spin->out_fence, 30000); /* 30s */
+> +	err[ERR_HANG_STAT] = sync_fence_status(spin->out_fence); /* -EIO */
+>  	igt_spin_free(device, spin);
+>  
+>  	/* But no other engines/clients should be affected */
+> +	err[ERR_FENCE_BUSY] = -ETIME;
+> +	err[ERR_FENCE_END] = 0;
+> +	err[ERR_FENCE_STAT] = 1;
+>  	igt_list_for_each_entry_safe(spin, next, &list, link) {
+>  		ahndN = spin->opts.ahnd;
+> -		igt_assert(sync_fence_wait(spin->out_fence, 0) == -ETIME);
+> +		chk_err(err+ERR_FENCE_BUSY, sync_fence_wait(spin->out_fence, 0), -ETIME);
+>  		igt_spin_end(spin);
+> -
+> -		igt_assert(sync_fence_wait(spin->out_fence, 500) == 0);
+> -		igt_assert_eq(sync_fence_status(spin->out_fence), 1);
+> +		chk_err(err+ERR_FENCE_END, sync_fence_wait(spin->out_fence, 500), 0);
+> +		chk_err(err+ERR_FENCE_STAT, sync_fence_status(spin->out_fence), 1);
+>  		igt_spin_free(device, spin);
+>  		put_ahnd(ahndN);
+>  	}
+> @@ -360,6 +377,11 @@ test_engine_hang(const intel_ctx_t *ctx,
+>  	while (num_ctx)
+>  		intel_ctx_destroy(device, local_ctx[--num_ctx]);
+>  
+> +	igt_assert_f(err[ERR_HANG_WAIT] == 0, "hanged spinner wait failed\n");
+> +	igt_assert_f(err[ERR_HANG_STAT] == -EIO, "hanged spinner failed\n");
+> +	igt_assert_f(err[ERR_FENCE_BUSY] == -ETIME, "background spinner not busy\n");
+> +	igt_assert_f(err[ERR_FENCE_END] == 0, "background spinner not terminated\n");
+> +	igt_assert_f(err[ERR_FENCE_STAT] == 1, "background fence not signalled\n");
+>  	check_alive();
+>  }
+>  
+> -- 
+> 2.34.1
+> 
