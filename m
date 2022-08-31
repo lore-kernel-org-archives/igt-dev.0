@@ -1,17 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from NAM10-MW2-obe.outbound.protection.outlook.com
- (mail-mw2nam10on2071.outbound.protection.outlook.com [40.107.94.71])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1FA4110E318
- for <igt-dev@lists.freedesktop.org>; Wed, 31 Aug 2022 20:55:47 +0000 (UTC)
-From: <vitaly.prosyak@amd.com>
-To: <igt-dev@lists.freedesktop.org>
-Date: Wed, 31 Aug 2022 16:55:36 -0400
-Message-ID: <20220831205540.3658-1-vitaly.prosyak@amd.com>
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5299710E32D
+ for <igt-dev@lists.freedesktop.org>; Wed, 31 Aug 2022 12:07:38 +0000 (UTC)
+From: Swati Sharma <swati2.sharma@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Wed, 31 Aug 2022 17:38:49 +0530
+Message-Id: <20220831120849.28883-1-swati2.sharma@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH 1/5] lib/amdgpu: improve operations to create
- commands and misc
+Subject: [igt-dev] [PATCH i-g-t] tests/i915/kms_dsc: Modify compressed bpp
+ test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,457 +17,345 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: christian.koenig@amd.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Vitaly Prosyak <vitaly.prosyak@amd.com>
+Modified compressed bpp test to input bpc. Made
+corresponding changes in debugfs entry.
+Max DSC input BPC for ICL is 10 and for TGL+ is 12;
+added check for the same. Also, renamed few functions
+and removed irrelevant checks.
 
- Add and refactor the following methods to amdgpu_cmd_base:
- - emit_aligned
- - emit_repeat
- - emit_at_offset
- - emit_buf (refactor)
-
- Added register declarations and access functions.
- We will use MESA registers declarations in future commits.
-
-Signed-off-by: Vitaly Prosyak <vitaly.prosyak@amd.com>
-Acked-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
 ---
- lib/amdgpu/amd_gfx_v8_0.c  | 53 +++++++++++++++++++++++++++++++++++++
- lib/amdgpu/amd_gfx_v8_0.h  | 31 ++++++++++++++++++++++
- lib/amdgpu/amd_gfx_v9_0.c  | 32 ++++++++++++++++++++++
- lib/amdgpu/amd_gfx_v9_0.h  | 29 ++++++++++++++++++++
- lib/amdgpu/amd_ip_blocks.c | 54 +++++++++++++++++++++++++++-----------
- lib/amdgpu/amd_ip_blocks.h | 12 ++++++---
- lib/amdgpu/amd_registers.h | 44 +++++++++++++++++++++++++++++++
- lib/meson.build            |  2 ++
- tests/amdgpu/amd_basic.c   |  4 +--
- 9 files changed, 240 insertions(+), 21 deletions(-)
- create mode 100644 lib/amdgpu/amd_gfx_v8_0.c
- create mode 100644 lib/amdgpu/amd_gfx_v8_0.h
- create mode 100644 lib/amdgpu/amd_gfx_v9_0.c
- create mode 100644 lib/amdgpu/amd_gfx_v9_0.h
- create mode 100644 lib/amdgpu/amd_registers.h
+ lib/igt_kms.c        |  10 +--
+ lib/igt_kms.h        |   4 +-
+ tests/i915/kms_dsc.c | 146 +++++++++++++++++++------------------------
+ 3 files changed, 71 insertions(+), 89 deletions(-)
 
-diff --git a/lib/amdgpu/amd_gfx_v8_0.c b/lib/amdgpu/amd_gfx_v8_0.c
-new file mode 100644
-index 000000000..987d7053a
---- /dev/null
-+++ b/lib/amdgpu/amd_gfx_v8_0.c
-@@ -0,0 +1,53 @@
-+/*
-+ * Copyright 2022 Advanced Micro Devices, Inc.
-+ *  *
-+ * Permission is hereby granted, free of charge, to any person obtaining a
-+ * copy of this software and associated documentation files (the "Software"),
-+ * to deal in the Software without restriction, including without limitation
-+ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
-+ * and/or sell copies of the Software, and to permit persons to whom the
-+ * Software is furnished to do so, subject to the following conditions:
-+ *
-+ * The above copyright notice and this permission notice shall be included in
-+ * all copies or substantial portions of the Software.
-+ *
-+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
-+ * THE COPYRIGHT HOLDER(S) OR AUTHOR(S) BE LIABLE FOR ANY CLAIM, DAMAGES OR
-+ * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
-+ * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-+ * OTHER DEALINGS IN THE SOFTWARE.
-+ *
-+ *
-+ */
-+#include "amd_registers.h"
-+#include "amd_gfx_v8_0.h"
-+#include "igt_core.h"
-+
-+#define mmCOMPUTE_PGM_LO			0x2e0c
-+#define mmCOMPUTE_PGM_RSRC1			0x2e12
-+#define mmCOMPUTE_TMPRING_SIZE			0x2e18
-+#define mmCOMPUTE_USER_DATA_0			0x2e40
-+#define mmCOMPUTE_USER_DATA_1			0x2e41
-+#define mmCOMPUTE_RESOURCE_LIMITS		0x2e15
-+#define mmCOMPUTE_NUM_THREAD_X			0x2e07
-+
-+#define	PACKET3_SET_SH_REG_START		0x00002c00
-+
-+static const struct amd_reg registers[] = {
-+	{ COMPUTE_PGM_LO,		mmCOMPUTE_PGM_LO },
-+	{ COMPUTE_PGM_RSRC1,		mmCOMPUTE_PGM_RSRC1 },
-+	{ COMPUTE_TMPRING_SIZE,		mmCOMPUTE_TMPRING_SIZE },
-+	{ COMPUTE_USER_DATA_0,		mmCOMPUTE_USER_DATA_0 },
-+	{ COMPUTE_USER_DATA_1,		mmCOMPUTE_USER_DATA_1 },
-+	{ COMPUTE_RESOURCE_LIMITS,	mmCOMPUTE_RESOURCE_LIMITS },
-+	{ COMPUTE_NUM_THREAD_X,		mmCOMPUTE_NUM_THREAD_X },
-+};
-+
-+int gfx_v8_0_get_reg_offset(enum general_reg reg_name)
-+{
-+	/* validate correctness of the offset */
-+	igt_assert_eq(reg_name, registers[reg_name].reg_name);
-+	return registers[reg_name].reg_offset - PACKET3_SET_SH_REG_START;
-+}
-diff --git a/lib/amdgpu/amd_gfx_v8_0.h b/lib/amdgpu/amd_gfx_v8_0.h
-new file mode 100644
-index 000000000..52ed418cb
---- /dev/null
-+++ b/lib/amdgpu/amd_gfx_v8_0.h
-@@ -0,0 +1,31 @@
-+/*
-+ * Copyright 2014 Advanced Micro Devices, Inc.
-+ * Copyright 2022 Advanced Micro Devices, Inc.
-+ *
-+ * Permission is hereby granted, free of charge, to any person obtaining a
-+ * copy of this software and associated documentation files (the "Software"),
-+ * to deal in the Software without restriction, including without limitation
-+ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
-+ * and/or sell copies of the Software, and to permit persons to whom the
-+ * Software is furnished to do so, subject to the following conditions:
-+ *
-+ * The above copyright notice and this permission notice shall be included in
-+ * all copies or substantial portions of the Software.
-+ *
-+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
-+ * THE COPYRIGHT HOLDER(S) OR AUTHOR(S) BE LIABLE FOR ANY CLAIM, DAMAGES OR
-+ * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
-+ * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-+ * OTHER DEALINGS IN THE SOFTWARE.
-+ *
-+ *
-+ */
-+#ifndef __AMD_GFX_V8_0_H__
-+#define __AMD_GFX_V8_0_H__
-+
-+int gfx_v8_0_get_reg_offset(enum general_reg reg_name);
-+
-+#endif
-+
-diff --git a/lib/amdgpu/amd_gfx_v9_0.c b/lib/amdgpu/amd_gfx_v9_0.c
-new file mode 100644
-index 000000000..175411795
---- /dev/null
-+++ b/lib/amdgpu/amd_gfx_v9_0.c
-@@ -0,0 +1,32 @@
-+/*
-+ * Copyright 2022 Advanced Micro Devices, Inc.
-+ *  *
-+ * Permission is hereby granted, free of charge, to any person obtaining a
-+ * copy of this software and associated documentation files (the "Software"),
-+ * to deal in the Software without restriction, including without limitation
-+ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
-+ * and/or sell copies of the Software, and to permit persons to whom the
-+ * Software is furnished to do so, subject to the following conditions:
-+ *
-+ * The above copyright notice and this permission notice shall be included in
-+ * all copies or substantial portions of the Software.
-+ *
-+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
-+ * THE COPYRIGHT HOLDER(S) OR AUTHOR(S) BE LIABLE FOR ANY CLAIM, DAMAGES OR
-+ * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
-+ * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-+ * OTHER DEALINGS IN THE SOFTWARE.
-+ *
-+ *
-+ */
-+#include "amd_registers.h"
-+#include "amd_gfx_v9_0.h"
-+#include "amd_gfx_v8_0.h"
-+
-+int gfx_v9_0_get_reg_offset(enum general_reg reg_name)
-+{
-+	int ret = gfx_v8_0_get_reg_offset(reg_name);
-+	return ret;
-+}
-diff --git a/lib/amdgpu/amd_gfx_v9_0.h b/lib/amdgpu/amd_gfx_v9_0.h
-new file mode 100644
-index 000000000..e44a7d944
---- /dev/null
-+++ b/lib/amdgpu/amd_gfx_v9_0.h
-@@ -0,0 +1,29 @@
-+/*
-+ * Copyright 2022 Advanced Micro Devices, Inc.
-+ *
-+ * Permission is hereby granted, free of charge, to any person obtaining a
-+ * copy of this software and associated documentation files (the "Software"),
-+ * to deal in the Software without restriction, including without limitation
-+ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
-+ * and/or sell copies of the Software, and to permit persons to whom the
-+ * Software is furnished to do so, subject to the following conditions:
-+ *
-+ * The above copyright notice and this permission notice shall be included in
-+ * all copies or substantial portions of the Software.
-+ *
-+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
-+ * THE COPYRIGHT HOLDER(S) OR AUTHOR(S) BE LIABLE FOR ANY CLAIM, DAMAGES OR
-+ * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
-+ * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-+ * OTHER DEALINGS IN THE SOFTWARE.
-+ *
-+ *
-+ */
-+#ifndef __AMD_GFX_V9_0_H__
-+#define __AMD_GFX_V9_0_H__
-+
-+int gfx_v9_0_get_reg_offset(enum general_reg reg_name);
-+
-+#endif
-diff --git a/lib/amdgpu/amd_ip_blocks.c b/lib/amdgpu/amd_ip_blocks.c
-index 795eb1984..3e11b34d3 100644
---- a/lib/amdgpu/amd_ip_blocks.c
-+++ b/lib/amdgpu/amd_ip_blocks.c
-@@ -32,6 +32,7 @@
- #include <amdgpu_drm.h>
- #include "amdgpu_asic_addr.h"
- #include "amd_family.h"
-+#include "amd_gfx_v8_0.h"
+diff --git a/lib/igt_kms.c b/lib/igt_kms.c
+index 1ba3bd2aa..5d348383d 100644
+--- a/lib/igt_kms.c
++++ b/lib/igt_kms.c
+@@ -5525,20 +5525,20 @@ int igt_force_dsc_enable(int drmfd, char *connector_name)
+ }
  
  /*
-  * SDMA functions:
-@@ -328,10 +329,10 @@ static const struct amdgpu_ip_funcs gfx_v8_x_ip_funcs = {
- 	.const_fill = gfx_ring_const_fill,
- 	.copy_linear = gfx_ring_copy_linear,
- 	.compare = x_compare,
--	.compare_pattern = x_compare_pattern
-+	.compare_pattern = x_compare_pattern,
-+	.get_reg_offset = gfx_v8_0_get_reg_offset,
- };
- 
--
- static const struct amdgpu_ip_funcs sdma_v3_x_ip_funcs = {
- 	.family_id = FAMILY_VI,
- 	.align_mask = 0xff,
-@@ -342,10 +343,10 @@ static const struct amdgpu_ip_funcs sdma_v3_x_ip_funcs = {
- 	.const_fill = sdma_ring_const_fill,
- 	.copy_linear = sdma_ring_copy_linear,
- 	.compare = x_compare,
--	.compare_pattern = x_compare_pattern
-+	.compare_pattern = x_compare_pattern,
-+	.get_reg_offset = gfx_v8_0_get_reg_offset,
- };
- 
--
- const struct amdgpu_ip_block_version gfx_v8_x_ip_block = {
- 	.type = AMD_IP_GFX,
- 	.major = 8,
-@@ -452,13 +453,40 @@ cmd_emit(struct amdgpu_cmd_base  *base, uint32_t value)
- 	base->buf[base->cdw++] = value;
- }
- 
-+static void
-+cmd_emit_aligned(struct amdgpu_cmd_base *base, uint32_t mask, uint32_t cmd)
-+{
-+	while(base->cdw & mask)
-+		base->emit(base, cmd);
-+}
- static void
- cmd_emit_buf(struct amdgpu_cmd_base  *base, const void *ptr, uint32_t offset_bytes, uint32_t size_bytes)
+- * igt_force_dsc_enable_bpp:
++ * igt_force_dsc_enable_bpc:
+  * @drmfd: A drm file descriptor
+  * @connector_name: Name of the libdrm connector we're going to use
+- * @bpp: Compressed bpp to be used with DSC
++ * @bpc: Input BPC
+  *
+  * Returns: No. of bytes written or negative error code, in case of failure.
+  */
+-int igt_force_dsc_enable_bpp(int drmfd, char *connector_name, int bpp)
++int igt_force_dsc_enable_bpc(int drmfd, char *connector_name, int bpc)
  {
--	/* we assume that caller knows what is doing and we loose the buffer current index */
--	/* we may do this later abstract the internal index */
--	assert(base->cdw + ((offset_bytes + size_bytes)>>2) <  base->max_dw  );
--	memcpy(base->buf + offset_bytes , ptr, size_bytes);
-+	uint32_t total_offset_dw = (offset_bytes + size_bytes) >> 2;
-+	uint32_t offset_dw = offset_bytes >> 2;
-+	/*TODO read the requirements to fix */
-+	assert(size_bytes % 4 == 0); /* no gaps */
-+	assert(offset_bytes % 4 == 0);
-+	assert(base->cdw + total_offset_dw <  base->max_dw);
-+	memcpy(base->buf + base->cdw + offset_dw , ptr, size_bytes);
-+	base->cdw += total_offset_dw;
-+}
-+
-+static void
-+cmd_emit_repeat(struct amdgpu_cmd_base  *base, uint32_t value, uint32_t number_of_times)
-+{
-+	while (number_of_times > 0) {
-+		assert(base->cdw <  base->max_dw);
-+		base->buf[base->cdw++] = value;
-+		number_of_times--;
-+	}
-+}
-+
-+static void
-+cmd_emit_at_offset(struct amdgpu_cmd_base  *base, uint32_t value, uint32_t offset_dwords)
-+{
-+	assert(base->cdw + offset_dwords <  base->max_dw);
-+	base->buf[base->cdw + offset_dwords] = value;
+ 	char buf[20] = {0};
+ 
+-	sprintf(buf, "%d", bpp);
++	sprintf(buf, "%d", bpc);
+ 
+-	return write_dsc_debugfs(drmfd, connector_name, "i915_dsc_bpp", buf);
++	return write_dsc_debugfs(drmfd, connector_name, "i915_dsc_bpc", buf);
  }
  
- struct amdgpu_cmd_base *
-@@ -474,6 +502,9 @@ get_cmd_base(void)
- 	base->allocate_buf = cmd_allocate_buf;
- 	base->attach_buf = cmd_attach_buf;
- 	base->emit = cmd_emit;
-+	base->emit_aligned= cmd_emit_aligned;
-+	base->emit_repeat = cmd_emit_repeat;
-+	base->emit_at_offset = cmd_emit_at_offset;
- 	base->emit_buf = cmd_emit_buf;
+ /*
+diff --git a/lib/igt_kms.h b/lib/igt_kms.h
+index a2cf0937b..3d78c37f1 100644
+--- a/lib/igt_kms.h
++++ b/lib/igt_kms.h
+@@ -953,8 +953,8 @@ bool igt_is_fec_supported(int drmfd, char *connector_name);
+ bool igt_is_dsc_enabled(int drmfd, char *connector_name);
+ bool igt_is_force_dsc_enabled(int drmfd, char *connector_name);
+ int igt_force_dsc_enable(int drmfd, char *connector_name);
+-int igt_force_dsc_enable_bpp(int drmfd, char *connector_name,
+-			     int bpp);
++int igt_force_dsc_enable_bpc(int drmfd, char *connector_name,
++			     int bpc);
+ int igt_get_dsc_debugfs_fd(int drmfd, char *connector_name);
  
- 	return base;
-@@ -490,13 +521,6 @@ free_cmd_base(struct amdgpu_cmd_base * base)
+ unsigned int igt_get_output_max_bpc(int drmfd, char *connector_name);
+diff --git a/tests/i915/kms_dsc.c b/tests/i915/kms_dsc.c
+index be15238e3..330fc050b 100644
+--- a/tests/i915/kms_dsc.c
++++ b/tests/i915/kms_dsc.c
+@@ -44,14 +44,13 @@
+ #include <fcntl.h>
+ #include <termios.h>
  
+-IGT_TEST_DESCRIPTION("Test to validate display stream compression");
+-
+ #define HDISPLAY_5K	5120
+-#define DSC_MIN_BPP	8
++
++IGT_TEST_DESCRIPTION("Test to validate display stream compression");
+ 
+ enum dsc_test_type {
+-	TEST_BASIC_DSC,
+-	TEST_DSC_BPP
++	TEST_DSC_BASIC,
++	TEST_DSC_BPC
+ };
+ 
+ typedef struct {
+@@ -60,7 +59,7 @@ typedef struct {
+ 	igt_display_t display;
+ 	struct igt_fb fb_test_pattern;
+ 	igt_output_t *output;
+-	int compression_bpp;
++	int input_bpc;
+ 	int n_pipes;
+ 	enum pipe pipe;
+ } data_t;
+@@ -71,13 +70,15 @@ int force_dsc_restore_fd = -1;
+ const struct {
+ 	const int format;
+ 	const char format_str[20];
+-} test_list[] = {
++} format_list[] = {
+ 	{DRM_FORMAT_XYUV8888, "XYUV8888"},
+ 	{DRM_FORMAT_XRGB2101010, "XRGB2101010"},
+ 	{DRM_FORMAT_XRGB16161616F, "XRGB16161616F"},
+ 	{DRM_FORMAT_YUYV, "YUYV"},
+ };
+ 
++uint32_t bpc_list[] = {12, 10, 8};
++
+ static inline void manual(const char *expected)
+ {
+ 	igt_debug_interactive_mode_check("all", expected);
+@@ -93,15 +94,15 @@ static void force_dsc_enable(data_t *data)
+ 	igt_assert_f(ret > 0, "debugfs_write failed");
  }
  
--void
--append_cmd_base(struct amdgpu_cmd_base *base, uint32_t mask, uint32_t cmd)
+-static void force_dsc_enable_bpp(data_t *data)
++static void force_dsc_enable_bpc(data_t *data)
+ {
+ 	int ret;
+ 
+-	igt_debug("Forcing DSC BPP to %d on %s\n",
+-		  data->compression_bpp, data->output->name);
+-	ret = igt_force_dsc_enable_bpp(data->drm_fd,
++	igt_debug("Forcing input DSC BPC to %d on %s\n",
++		  data->input_bpc, data->output->name);
++	ret = igt_force_dsc_enable_bpc(data->drm_fd,
+ 				       data->output->name,
+-				       data->compression_bpp);
++				       data->input_bpc);
+ 	igt_assert_f(ret > 0, "debugfs_write failed");
+ }
+ 
+@@ -165,39 +166,6 @@ static bool check_dsc_on_connector(data_t *data)
+ 	return true;
+ }
+ 
+-/* Force dsc enable supports resolutions above 5K in DP */
+-static bool check_5k_dp_test_constraint(data_t *data)
 -{
--	while(base->cdw & mask)
--		base->emit(base, cmd);
+-	igt_output_t *output = data->output;
+-	drmModeConnector *connector = output->config.connector;
+-	drmModeModeInfo *mode = get_highres_mode(output);
+-
+-	if (connector->connector_type == DRM_MODE_CONNECTOR_DisplayPort &&
+-	    mode->hdisplay < HDISPLAY_5K) {
+-		igt_debug("Force dsc enable does not support res. < 5K in %s\n",
+-			   output->name);
+-		return false;
+-	}
+-
+-	return true;
 -}
 -
- /*
-  * GFX: 8.x
-  * COMPUTE: 8.x
-diff --git a/lib/amdgpu/amd_ip_blocks.h b/lib/amdgpu/amd_ip_blocks.h
-index 83809efee..9c24eba2a 100644
---- a/lib/amdgpu/amd_ip_blocks.h
-+++ b/lib/amdgpu/amd_ip_blocks.h
-@@ -25,6 +25,8 @@
- #ifndef AMD_IP_BLOCKS_H
- #define AMD_IP_BLOCKS_H
+-static bool check_big_joiner_test_constraint(data_t *data,
+-					     enum dsc_test_type test_type)
+-{
+-	igt_output_t *output = data->output;
+-	drmModeModeInfo *mode = get_highres_mode(output);
+-
+-	if (test_type == TEST_DSC_BPP &&
+-	    mode->hdisplay >= HDISPLAY_5K) {
+-		igt_debug("Bigjoiner does not support force bpp on %s\n",
+-			   output->name);
+-		return false;
+-	}
+-
+-	return true;
+-}
+-
+ static bool check_big_joiner_pipe_constraint(data_t *data)
+ {
+ 	igt_output_t *output = data->output;
+@@ -213,7 +181,7 @@ static bool check_big_joiner_pipe_constraint(data_t *data)
+ 	return true;
+ }
  
-+#include "amd_registers.h"
+-static bool check_dp_gen11_constraint(data_t *data)
++static bool check_gen11_dp_constraint(data_t *data)
+ {
+ 	igt_output_t *output = data->output;
+ 	uint32_t devid = intel_get_drm_devid(data->drm_fd);
+@@ -228,6 +196,19 @@ static bool check_dp_gen11_constraint(data_t *data)
+ 	return true;
+ }
+ 
++/* Max DSC Input BPC for ICL is 10 and for TGL+ is 12 */
++static bool check_gen11_bpc_constraint(data_t *data)
++{
++	uint32_t devid = intel_get_drm_devid(data->drm_fd);
 +
- enum amd_ip_block_type {
- 	AMD_IP_GFX,
- 	AMD_IP_COMPUTE,
-@@ -34,7 +36,6 @@ enum amd_ip_block_type {
- 	AMD_IP_MAX,
- };
++	if (IS_GEN11(devid) && data->input_bpc == 12) {
++		igt_debug("Input bpc 12 not supported on gen11 platforms\n");
++		return false;
++	}
++
++	return true;
++}
++
+ static void test_cleanup(data_t *data)
+ {
+ 	igt_output_t *output = data->output;
+@@ -257,9 +238,9 @@ static void update_display(data_t *data, enum dsc_test_type test_type, unsigned
+ 	save_force_dsc_en(data);
+ 	force_dsc_enable(data);
+ 
+-	if (test_type == TEST_DSC_BPP) {
+-		igt_debug("Trying to set BPP to %d\n", data->compression_bpp);
+-		force_dsc_enable_bpp(data);
++	if (test_type == TEST_DSC_BPC) {
++		igt_debug("Trying to set input BPC to %d\n", data->input_bpc);
++		force_dsc_enable_bpc(data);
+ 	}
+ 
+ 	igt_output_set_pipe(output, data->pipe);
+@@ -289,10 +270,16 @@ static void update_display(data_t *data, enum dsc_test_type test_type, unsigned
+ 	manual("RGB test pattern without corruption");
+ 
+ 	enabled = igt_is_dsc_enabled(data->drm_fd, output->name);
++	igt_info("Current mode is: %dx%d @%dHz -- DSC is: %s\n",
++				mode->hdisplay,
++				mode->vdisplay,
++				mode->vrefresh,
++				enabled ? "ON" : "OFF");
++
+ 	restore_force_dsc_en();
+-	igt_debug("Reset compression BPP\n");
+-	data->compression_bpp = 0;
+-	force_dsc_enable_bpp(data);
++	igt_debug("Reset compression BPC\n");
++	data->input_bpc = 0;
++	force_dsc_enable_bpc(data);
+ 
+ 	igt_assert_f(enabled,
+ 		     "Default DSC enable failed on connector: %s pipe: %s\n",
+@@ -302,8 +289,8 @@ static void update_display(data_t *data, enum dsc_test_type test_type, unsigned
+ 	test_cleanup(data);
+ }
  
 -
- /* aux struct to hold misc parameters for convenience to maintain */
- struct amdgpu_ring_context {
+-static void test_dsc(data_t *data, enum dsc_test_type test_type, int bpp, unsigned int plane_format)
++static void test_dsc(data_t *data, enum dsc_test_type test_type, int bpc,
++		     unsigned int plane_format)
+ {
+ 	igt_display_t *display = &data->display;
+ 	igt_output_t *output;
+@@ -311,27 +298,24 @@ static void test_dsc(data_t *data, enum dsc_test_type test_type, int bpp, unsign
+ 	enum pipe pipe;
  
-@@ -72,6 +73,7 @@ struct amdgpu_ring_context {
- 	struct amdgpu_cs_request ibs_request; /* amdgpu_cs_query_fence_status */
- };
+ 	for_each_pipe_with_valid_output(display, pipe, output) {
+-		data->compression_bpp = bpp;
++		data->input_bpc = bpc;
+ 		data->output = output;
+ 		data->pipe = pipe;
  
-+
- struct amdgpu_ip_funcs {
- 	uint32_t	family_id;
- 	uint32_t	align_mask;
-@@ -84,6 +86,8 @@ struct amdgpu_ip_funcs {
- 	int (*copy_linear)(const struct amdgpu_ip_funcs *func, const struct amdgpu_ring_context *context, uint32_t *pm4_dw);
- 	int (*compare)(const struct amdgpu_ip_funcs *func, const struct amdgpu_ring_context *context, int div);
- 	int (*compare_pattern)(const struct amdgpu_ip_funcs *func, const struct amdgpu_ring_context *context, int div);
-+	int (*get_reg_offset)(enum general_reg reg);
-+
- };
+ 		if (!check_dsc_on_connector(data))
+ 			continue;
  
- extern const struct amdgpu_ip_block_version gfx_v6_0_ip_block;
-@@ -122,6 +126,9 @@ struct amdgpu_cmd_base {
- 	int (*allocate_buf)(struct amdgpu_cmd_base  *base, uint32_t size);
- 	int (*attach_buf)(struct amdgpu_cmd_base  *base, void *ptr, uint32_t size_bytes);
- 	void (*emit)(struct amdgpu_cmd_base  *base, uint32_t value);
-+	void (*emit_aligned)(struct amdgpu_cmd_base  *base,uint32_t mask, uint32_t value);
-+	void (*emit_repeat)(struct amdgpu_cmd_base  *base, uint32_t value, uint32_t number_of_times);
-+	void (*emit_at_offset)(struct amdgpu_cmd_base  *base, uint32_t value, uint32_t offset_dwords);
- 	void (*emit_buf)(struct amdgpu_cmd_base  *base, const void *ptr, uint32_t offset_bytes, uint32_t size_bytes);
- };
- 
-@@ -129,7 +136,4 @@ struct amdgpu_cmd_base* get_cmd_base(void);
- 
- void free_cmd_base(struct amdgpu_cmd_base *base);
- 
--void
--append_cmd_base(struct amdgpu_cmd_base *base, uint32_t mask, uint32_t cmd);
+-		if (!check_5k_dp_test_constraint(data))
+-			continue;
 -
- #endif
-diff --git a/lib/amdgpu/amd_registers.h b/lib/amdgpu/amd_registers.h
-new file mode 100644
-index 000000000..a01c9a84f
---- /dev/null
-+++ b/lib/amdgpu/amd_registers.h
-@@ -0,0 +1,44 @@
-+/*
-+ * Copyright 2022 Advanced Micro Devices, Inc.
-+ *
-+ * Permission is hereby granted, free of charge, to any person obtaining a
-+ * copy of this software and associated documentation files (the "Software"),
-+ * to deal in the Software without restriction, including without limitation
-+ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
-+ * and/or sell copies of the Software, and to permit persons to whom the
-+ * Software is furnished to do so, subject to the following conditions:
-+ *
-+ * The above copyright notice and this permission notice shall be included in
-+ * all copies or substantial portions of the Software.
-+ *
-+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
-+ * THE COPYRIGHT HOLDER(S) OR AUTHOR(S) BE LIABLE FOR ANY CLAIM, DAMAGES OR
-+ * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
-+ * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-+ * OTHER DEALINGS IN THE SOFTWARE.
-+ *
-+ *
-+ */
-+#ifndef __AMD_REGISTERS_H
-+#define __AMD_REGISTERS_H
-+
-+enum general_reg {
-+	COMPUTE_PGM_LO,
-+	COMPUTE_PGM_RSRC1,
-+	COMPUTE_TMPRING_SIZE,
-+	COMPUTE_USER_DATA_0,
-+	COMPUTE_USER_DATA_1,
-+	COMPUTE_RESOURCE_LIMITS,
-+	COMPUTE_NUM_THREAD_X,
-+};
-+
-+struct amd_reg {
-+	enum general_reg reg_name;
-+	int 	 reg_offset;
-+};
-+
-+
-+
-+#endif
-diff --git a/lib/meson.build b/lib/meson.build
-index 98c2803b9..7339bf98b 100644
---- a/lib/meson.build
-+++ b/lib/meson.build
-@@ -133,6 +133,8 @@ if libdrm_amdgpu.found()
- 		'amdgpu/amd_gfx.c',
- 		'amdgpu/amd_ip_blocks.c',
- 		'amdgpu/amd_shaders.c',
-+		'amdgpu/amd_gfx_v8_0.c',
-+		'amdgpu/amd_gfx_v9_0.c',
- 	]
- endif
+-		if (!check_big_joiner_test_constraint(data, test_type))
++		if (!check_gen11_dp_constraint(data))
+ 			continue;
  
-diff --git a/tests/amdgpu/amd_basic.c b/tests/amdgpu/amd_basic.c
-index ae424e819..82964016a 100644
---- a/tests/amdgpu/amd_basic.c
-+++ b/tests/amdgpu/amd_basic.c
-@@ -544,7 +544,7 @@ amdgpu_sync_dependency_test(amdgpu_device_handle device_handle)
- 	base->emit(base, 1);
- 	base->emit(base, 1);
- 	base->emit(base, 0x00000045);
--	append_cmd_base(base, 7, GFX_COMPUTE_NOP);
-+	base->emit_aligned(base, 7, GFX_COMPUTE_NOP);
+-		if (!check_dp_gen11_constraint(data))
++		if (!check_gen11_bpc_constraint(data))
+ 			continue;
  
- 	base->emit_buf(base, shader, code_offset,size_bytes);
+ 		if (!check_big_joiner_pipe_constraint(data))
+ 			continue;
  
-@@ -571,7 +571,7 @@ amdgpu_sync_dependency_test(amdgpu_device_handle device_handle)
- 	base->emit(base,  0xfffffffc & (ib_result_mc_address + data_offset * 4));
- 	base->emit(base,  (0xffffffff00000000 & (ib_result_mc_address + data_offset * 4)) >> 32);
- 	base->emit(base,  99);
--	append_cmd_base(base, 7, GFX_COMPUTE_NOP);
-+	base->emit_aligned(base, 7, GFX_COMPUTE_NOP);
+-		if (test_type == TEST_DSC_BPP)
+-			snprintf(name, sizeof(name), "-%dbpp", data->compression_bpp);
++		if (test_type == TEST_DSC_BPC)
++			snprintf(name, sizeof(name), "-%dbpc-%s", data->input_bpc, igt_format_str(plane_format));
+ 		else
+ 			snprintf(name, sizeof(name), "-%s", igt_format_str(plane_format));
  
- 	memset(&ib_info, 0, sizeof(struct amdgpu_cs_ib_info));
- 	ib_info.ib_mc_address = ib_result_mc_address + cdw_old * 4;
+@@ -352,6 +336,7 @@ igt_main
+ 		igt_install_exit_handler(kms_dsc_exit_handler);
+ 		igt_display_require(&data.display, data.drm_fd);
+ 		igt_display_require_output(&data.display);
++		igt_require(intel_display_ver(data.devid) >= 11);
+ 		data.n_pipes = 0;
+ 		for_each_pipe(&data.display, i)
+ 			data.n_pipes++;
+@@ -361,36 +346,33 @@ igt_main
+ 		     "by a connector by forcing DSC on all connectors that support it "
+ 		     "with default parameters");
+ 	igt_subtest_with_dynamic("basic-dsc")
+-			test_dsc(&data, TEST_BASIC_DSC, 0, DRM_FORMAT_XRGB8888);
++			test_dsc(&data, TEST_DSC_BASIC, 0, DRM_FORMAT_XRGB8888);
+ 
+ 	igt_describe("Tests basic display stream compression functionality if supported "
+ 		     "by a connector by forcing DSC on all connectors that support it "
+ 		     "with default parameters and creating fb with diff formats");
+ 	igt_subtest_with_dynamic("dsc-with-formats") {
+-		for (int k = 0; k < ARRAY_SIZE(test_list); k++)
+-			test_dsc(&data, TEST_BASIC_DSC, 0, test_list[k].format);
++		for (int k = 0; k < ARRAY_SIZE(format_list); k++)
++			test_dsc(&data, TEST_DSC_BASIC, 0, format_list[k].format);
+ 	}
+ 
+-	igt_fixture
+-		igt_require(intel_display_ver(data.devid) >= 13);
++	igt_describe("Tests basic display stream compression functionality if supported "
++		     "by a connector by forcing DSC on all connectors that support it "
++		     "with certain input BPC for the connector");
++	igt_subtest_with_dynamic("dsc-with-bpc") {
++		for (int j = 0; j < ARRAY_SIZE(bpc_list); j++)
++			test_dsc(&data, TEST_DSC_BPC, bpc_list[j], DRM_FORMAT_XRGB8888);
++	}
+ 
+-	/*
+-	 * Output bpp/compressed bpp supported is 8 to 23 (pipe_bpp - 1)
+-	 * i.e. 8 to 23. So, here we are considering compressed bpp as min(8), mean (8+23/2)
+-	 * and max(23).
+-	 */
+ 	igt_describe("Tests basic display stream compression functionality if supported "
+ 		     "by a connector by forcing DSC on all connectors that support it "
+-		     "with certain BPP as the output BPP for the connector");
+-	igt_subtest_with_dynamic("dsc-with-bpp") {
+-		uint32_t bpp_list[] = {
+-			DSC_MIN_BPP,
+-			(DSC_MIN_BPP  + (DSC_MIN_BPP * 3) - 1) / 2,
+-			(DSC_MIN_BPP * 3) - 1
+-		};
+-
+-		for (int j = 0; j < ARRAY_SIZE(bpp_list); j++)
+-			test_dsc(&data, TEST_DSC_BPP, bpp_list[j], DRM_FORMAT_XRGB8888);
++		     "with certain input BPC for the connector with diff formats");
++	igt_subtest_with_dynamic("dsc-with-bpc-formats") {
++		for (int j = 0; j < ARRAY_SIZE(bpc_list); j++) {
++			for (int k = 0; k < ARRAY_SIZE(format_list); k++) {
++				test_dsc(&data, TEST_DSC_BPC, bpc_list[j], format_list[k].format);
++			}
++		}
+ 	}
+ 
+ 	igt_fixture {
 -- 
 2.25.1
