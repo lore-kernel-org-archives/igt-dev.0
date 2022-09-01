@@ -1,19 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BBFE810E62D
- for <igt-dev@lists.freedesktop.org>; Thu,  1 Sep 2022 06:37:36 +0000 (UTC)
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D712110E615
+ for <igt-dev@lists.freedesktop.org>; Thu,  1 Sep 2022 06:37:33 +0000 (UTC)
 Received: from maurocar by linux.intel.com with local (Exim 4.95)
- (envelope-from <mauro.chehab@linux.intel.com>) id 1oTdpR-0016V7-Lm
- for igt-dev@lists.freedesktop.org; Thu, 01 Sep 2022 08:37:29 +0200
+ (envelope-from <mauro.chehab@linux.intel.com>) id 1oTdpS-0016Vj-0F
+ for igt-dev@lists.freedesktop.org; Thu, 01 Sep 2022 08:37:30 +0200
 From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Thu,  1 Sep 2022 08:37:02 +0200
-Message-Id: <20220901063722.261828-55-mauro.chehab@linux.intel.com>
+Date: Thu,  1 Sep 2022 08:37:11 +0200
+Message-Id: <20220901063722.261828-64-mauro.chehab@linux.intel.com>
 In-Reply-To: <20220901063722.261828-1-mauro.chehab@linux.intel.com>
 References: <20220901063722.261828-1-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 54/74] kms_plane_scaling: Close device
+Subject: [igt-dev] [PATCH i-g-t 63/74] drm_import_export: Close device
  before exit
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -35,21 +35,21 @@ Signed-off-by: Chris Wilson <chris.p.wilson@intel.com>
 Acked-by: Andrzej Hajda <andrzej.hajda@intel.com>
 Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 ---
- tests/kms_plane_scaling.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ tests/drm_import_export.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/tests/kms_plane_scaling.c b/tests/kms_plane_scaling.c
-index fc8250b5053c..4c621cce8425 100644
---- a/tests/kms_plane_scaling.c
-+++ b/tests/kms_plane_scaling.c
-@@ -983,6 +983,8 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
- 	igt_subtest_f("2x-scaler-multi-pipe")
- 		test_scaler_with_multi_pipe_plane(&data);
- 
--	igt_fixture
+diff --git a/tests/drm_import_export.c b/tests/drm_import_export.c
+index 06245e8bac9f..2dd2f3cb9fff 100644
+--- a/tests/drm_import_export.c
++++ b/tests/drm_import_export.c
+@@ -296,4 +296,9 @@ igt_main {
+ 		pthread_join(test_thread_id3, NULL);
+ 		pthread_join(test_thread_id4, NULL);
+ 	}
++
 +	igt_fixture {
- 		igt_display_fini(&data.display);
-+		close(data.drm_fd);
++		close(fd);
++		close(fd1);
 +	}
  }
 -- 
