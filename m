@@ -1,21 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1EBB910E571
- for <igt-dev@lists.freedesktop.org>; Thu,  1 Sep 2022 04:22:45 +0000 (UTC)
-Message-ID: <df351d84-05d0-9af0-5360-ac8c26b9bb3d@intel.com>
-Date: Thu, 1 Sep 2022 09:52:33 +0530
-To: Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
- <igt-dev@lists.freedesktop.org>
-References: <20220818062310.235749-1-bhanuprakash.modem@intel.com>
- <20220830032933.160428-1-bhanuprakash.modem@intel.com>
-Content-Language: en-US
-From: Karthik B S <karthik.b.s@intel.com>
-In-Reply-To: <20220830032933.160428-1-bhanuprakash.modem@intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8995C10E5CC
+ for <igt-dev@lists.freedesktop.org>; Thu,  1 Sep 2022 06:30:15 +0000 (UTC)
+From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Thu,  1 Sep 2022 08:29:48 +0200
+Message-Id: <20220901063000.25640-2-zbigniew.kempczynski@intel.com>
+In-Reply-To: <20220901063000.25640-1-zbigniew.kempczynski@intel.com>
+References: <20220901063000.25640-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [i-g-t V3] tests/kms_plane_cursor: Convert tests to
- dynamic
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t 01/13] lib: Fix off-by-one-page in 48b
+ obj.flags
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,329 +23,216 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On 8/30/2022 8:59 AM, Bhanuprakash Modem wrote:
-> Convert the existing subtests to dynamic subtests at pipe/output
-> level. And create an array of structures to populate subtests to
-> avoid code duplication.
->
-> This patch will also do some clenup to have a single function for
-> all subtests.
->
-> V2:
-> - Populate overlay outside test_init()
-> - New function for fb cleanup
-> V3:
-> - Fix crash in CI
->
-> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+From: Chris Wilson <chris.p.wilson@linux.intel.com>
 
-LGTM.
+The kernel checks that the last byte of the object will fit inside the
+32b GTT window unless the object is marked as being suitable for use
+with 48b addressing. However, the spinner only checked the start of the
+object which depending on the mix of size/alignment, could allow the
+object to straddle the 32b boundary and not be marked as 48b capable.
 
-Reviewed-by: Karthik B S <karthik.b.s@intel.com>
+Always set 48b for all the objects where ppGTT merites.
 
-> ---
->   tests/kms_plane_cursor.c | 194 ++++++++++++++++-----------------------
->   1 file changed, 80 insertions(+), 114 deletions(-)
->
-> diff --git a/tests/kms_plane_cursor.c b/tests/kms_plane_cursor.c
-> index 73085cc8..6b7e5cef 100644
-> --- a/tests/kms_plane_cursor.c
-> +++ b/tests/kms_plane_cursor.c
-> @@ -30,6 +30,12 @@
->    * - DRM index indicates z-ordering, higher index = higher z-order
->    */
->   
-> +enum {
-> +	TEST_PRIMARY = 0,
-> +	TEST_OVERLAY = 1 << 0,
-> +	TEST_VIEWPORT = 1 << 1,
-> +};
-> +
->   typedef struct {
->   	int x;
->   	int y;
-> @@ -52,24 +58,25 @@ typedef struct data {
->   	igt_pipe_t *pipe;
->   	igt_pipe_crc_t *pipe_crc;
->   	drmModeModeInfo *mode;
-> +	igt_fb_t pfb;
-> +	igt_fb_t ofb;
-> +	igt_fb_t cfb;
->   	enum pipe pipe_id;
->   	int drm_fd;
->   	rect_t or;
->   } data_t;
->   
->   /* Common test setup. */
-> -static void test_init(data_t *data, enum pipe pipe_id)
-> +static void test_init(data_t *data, enum pipe pipe_id, igt_output_t *output)
->   {
->   	igt_display_t *display = &data->display;
->   
->   	data->pipe_id = pipe_id;
->   	data->pipe = &data->display.pipes[data->pipe_id];
-> +	data->output = output;
->   
->   	igt_display_reset(display);
->   
-> -	data->output = igt_get_single_output_for_pipe(&data->display, pipe_id);
-> -	igt_require(data->output);
-> -
->   	data->mode = igt_output_get_mode(data->output);
->   
->   	data->primary = igt_pipe_get_plane_type(data->pipe, DRM_PLANE_TYPE_PRIMARY);
-> @@ -119,18 +126,21 @@ static void draw_color(igt_fb_t *fb, double r, double g, double b)
->    * Places the cursor where the magenta square should be with a magenta FB.
->    * Takes this as the test CRC and compares it to the reference.
->    */
-> -static void test_cursor_pos(data_t *data, igt_fb_t *pfb, igt_fb_t *ofb,
-> -			    igt_fb_t *cfb, const rect_t *or, int x, int y)
-> +static void test_cursor_pos(data_t *data, int x, int y, unsigned int flags)
->   {
->   	igt_crc_t ref_crc, test_crc;
->   	cairo_t *cr;
-> +	igt_fb_t *pfb = &data->pfb;
-> +	igt_fb_t *ofb = &data->ofb;
-> +	igt_fb_t *cfb = &data->cfb;
->   	int cw = cfb->width;
->   	int ch = cfb->height;
-> +	const rect_t *or = &data->or;
->   
->   	cr = igt_get_cairo_ctx(pfb->fd, pfb);
->   	igt_paint_color(cr, 0, 0, pfb->width, pfb->height, 1.0, 1.0, 1.0);
->   
-> -	if (ofb)
-> +	if (flags & TEST_OVERLAY)
->   		igt_paint_color(cr, or->x, or->y, or->w, or->h, 0.5, 0.5, 0.5);
->   
->   	igt_paint_color(cr, x, y, cw, ch, 1.0, 0.0, 1.0);
-> @@ -145,7 +155,7 @@ static void test_cursor_pos(data_t *data, igt_fb_t *pfb, igt_fb_t *ofb,
->   
->   	draw_color(pfb, 1.0, 1.0, 1.0);
->   
-> -	if (ofb) {
-> +	if (flags & TEST_OVERLAY) {
->   		igt_plane_set_fb(data->overlay, ofb);
->   		igt_plane_set_position(data->overlay, or->x, or->y);
->   		igt_plane_set_size(data->overlay, or->w, or->h);
-> @@ -170,11 +180,11 @@ static void test_cursor_pos(data_t *data, igt_fb_t *pfb, igt_fb_t *ofb,
->    * Specific edge cases that should be captured here are the negative edges
->    * of each plane and the centers.
->    */
-> -static void test_cursor_spots(data_t *data, igt_fb_t *pfb, igt_fb_t *ofb,
-> -			      igt_fb_t *cfb, const rect_t *or, int size)
-> +static void test_cursor_spots(data_t *data, int size, unsigned int flags)
->   {
->   	int sw = data->mode->hdisplay;
->   	int sh = data->mode->vdisplay;
-> +	const rect_t *or = &data->or;
->   	int i;
->   	const pos_t pos[] = {
->   		/* Test diagonally from top left to bottom right. */
-> @@ -198,110 +208,45 @@ static void test_cursor_spots(data_t *data, igt_fb_t *pfb, igt_fb_t *ofb,
->   	};
->   
->   	for (i = 0; i < ARRAY_SIZE(pos); ++i) {
-> -		test_cursor_pos(data, pfb, ofb, cfb, or, pos[i].x, pos[i].y);
-> +		test_cursor_pos(data, pos[i].x, pos[i].y, flags);
->   	}
->   }
->   
-> -/*
-> - * Tests atomic cursor positioning on a primary and overlay plane.
-> - * Assumes the cursor can be placed on top of the overlay.
-> - */
-> -static void test_cursor_overlay(data_t *data, int size, enum pipe pipe_id)
-> +static void test_cleanup(data_t *data)
->   {
-> -	igt_fb_t pfb, ofb, cfb;
-> -	int sw, sh;
-> -
-> -	test_init(data, pipe_id);
-> -	igt_require(data->overlay);
-> -
-> -	sw = data->mode->hdisplay;
-> -	sh = data->mode->vdisplay;
-> -
-> -	igt_create_color_fb(data->drm_fd, sw, sh, DRM_FORMAT_XRGB8888, 0,
-> -			    1.0, 1.0, 1.0, &pfb);
-> -
-> -	igt_create_color_fb(data->drm_fd, data->or.w, data->or.h,
-> -			    DRM_FORMAT_XRGB8888, 0, 0.5, 0.5, 0.5, &ofb);
-> -
-> -	igt_create_color_fb(data->drm_fd, size, size, DRM_FORMAT_ARGB8888, 0,
-> -			    1.0, 0.0, 1.0, &cfb);
-> -
-> -	igt_plane_set_fb(data->primary, &pfb);
-> -	igt_display_commit2(&data->display, COMMIT_ATOMIC);
-> -
-> -	test_cursor_spots(data, &pfb, &ofb, &cfb, &data->or, size);
-> -
-> -	test_fini(data);
-> -
-> -	igt_remove_fb(data->drm_fd, &cfb);
-> -	igt_remove_fb(data->drm_fd, &ofb);
-> -	igt_remove_fb(data->drm_fd, &pfb);
-> +	igt_remove_fb(data->drm_fd, &data->cfb);
-> +	igt_remove_fb(data->drm_fd, &data->ofb);
-> +	igt_remove_fb(data->drm_fd, &data->pfb);
->   }
->   
-> -/* Tests atomic cursor positioning on a primary plane. */
-> -static void test_cursor_primary(data_t *data, int size, enum pipe pipe_id)
-> +static void test_cursor(data_t *data, int size, unsigned int flags)
->   {
-> -	igt_fb_t pfb, cfb;
-> -	int sw, sh;
-> -
-> -	test_init(data, pipe_id);
-> -
-> -	sw = data->mode->hdisplay;
-> -	sh = data->mode->vdisplay;
-> -
-> -	igt_create_color_fb(data->drm_fd, sw, sh, DRM_FORMAT_XRGB8888, 0,
-> -			    1.0, 1.0, 1.0, &pfb);
-> -
-> -	igt_create_color_fb(data->drm_fd, size, size, DRM_FORMAT_ARGB8888, 0,
-> -			    1.0, 0.0, 1.0, &cfb);
-> -
-> -	igt_plane_set_fb(data->primary, &pfb);
-> -	igt_display_commit2(&data->display, COMMIT_ATOMIC);
-> -
-> -	test_cursor_spots(data, &pfb, NULL, &cfb, &data->or, size);
-> -
-> -	test_fini(data);
-> -
-> -	igt_remove_fb(data->drm_fd, &cfb);
-> -	igt_remove_fb(data->drm_fd, &pfb);
-> -}
-> -
-> -/*
-> - * Tests atomic cursor positioning on a primary and overlay plane.
-> - * The overlay's buffer is larger than the viewport actually used
-> - * for display.
-> - */
-> -static void test_cursor_viewport(data_t *data, int size, enum pipe pipe_id)
-> -{
-> -	igt_fb_t pfb, ofb, cfb;
->   	int sw, sh;
->   	int pad = 128;
->   
-> -	test_init(data, pipe_id);
-> -	igt_require(data->overlay);
-> -
->   	sw = data->mode->hdisplay;
->   	sh = data->mode->vdisplay;
->   
-> +	test_cleanup(data);
-> +
->   	igt_create_color_fb(data->drm_fd, sw, sh, DRM_FORMAT_XRGB8888, 0,
-> -			    1.0, 1.0, 1.0, &pfb);
-> +			    1.0, 1.0, 1.0, &data->pfb);
->   
-> -	igt_create_color_fb(data->drm_fd, data->or.w + pad, data->or.h + pad,
-> -			    DRM_FORMAT_XRGB8888, 0, 0.5, 0.5, 0.5, &ofb);
-> +	if (flags & TEST_OVERLAY) {
-> +		int width = (flags & TEST_VIEWPORT) ? data->or.w + pad : data->or.w;
-> +		int height = (flags & TEST_VIEWPORT) ? data->or.h + pad : data->or.h;
-> +
-> +		igt_create_color_fb(data->drm_fd, width, height,
-> +				    DRM_FORMAT_XRGB8888, 0, 0.5, 0.5, 0.5, &data->ofb);
-> +	}
->   
->   	igt_create_color_fb(data->drm_fd, size, size, DRM_FORMAT_ARGB8888, 0,
-> -			    1.0, 0.0, 1.0, &cfb);
-> +			    1.0, 0.0, 1.0, &data->cfb);
->   
-> -	igt_plane_set_fb(data->primary, &pfb);
-> +	igt_plane_set_fb(data->primary, &data->pfb);
->   	igt_display_commit2(&data->display, COMMIT_ATOMIC);
->   
-> -	test_cursor_spots(data, &pfb, &ofb, &cfb, &data->or, size);
-> -
-> -	test_fini(data);
-> -
-> -	igt_remove_fb(data->drm_fd, &cfb);
-> -	igt_remove_fb(data->drm_fd, &ofb);
-> -	igt_remove_fb(data->drm_fd, &pfb);
-> +	test_cursor_spots(data, size, flags);
->   }
->   
->   igt_main
-> @@ -309,7 +254,21 @@ igt_main
->   	static const int cursor_sizes[] = { 64, 128, 256 };
->   	data_t data = {};
->   	enum pipe pipe;
-> -	int i;
-> +	igt_output_t *output;
-> +	int i, j;
-> +	struct {
-> +		const char *name;
-> +		unsigned int flags;
-> +		const char *desc;
-> +	} tests[] = {
-> +		{ "primary", TEST_PRIMARY,
-> +		  "Tests atomic cursor positioning on primary plane" },
-> +		{ "overlay", TEST_PRIMARY | TEST_OVERLAY,
-> +		  "Tests atomic cursor positioning on primary plane and overlay plane" },
-> +		{ "viewport", TEST_PRIMARY | TEST_OVERLAY | TEST_VIEWPORT,
-> +		  "Tests atomic cursor positioning on primary plane and overlay plane "
-> +		  "with buffer larger than viewport used for display" },
-> +	};
->   
->   	igt_fixture {
->   		data.drm_fd = drm_open_driver_master(DRIVER_ANY);
-> @@ -321,26 +280,33 @@ igt_main
->   		igt_display_require_output(&data.display);
->   	}
->   
-> -	for_each_pipe_static(pipe)
-> -		for (i = 0; i < ARRAY_SIZE(cursor_sizes); ++i) {
-> -			int size = cursor_sizes[i];
-> -
-> -			igt_describe("Tests atomic cursor positioning on primary plane and overlay plane");
-> -			igt_subtest_f("pipe-%s-overlay-size-%d",
-> -				      kmstest_pipe_name(pipe), size)
-> -				test_cursor_overlay(&data, size, pipe);
-> -
-> -			igt_describe("Tests atomic cursor positioning on primary plane");
-> -			igt_subtest_f("pipe-%s-primary-size-%d",
-> -				      kmstest_pipe_name(pipe), size)
-> -				test_cursor_primary(&data, size, pipe);
-> -
-> -			igt_describe("Tests atomic cursor positioning on primary plane and overlay plane"
-> -				"with buffer larger than viewport used for display");
-> -			igt_subtest_f("pipe-%s-viewport-size-%d",
-> -				      kmstest_pipe_name(pipe), size)
-> -				test_cursor_viewport(&data, size, pipe);
-> +	for (i = 0; i < ARRAY_SIZE(tests); i++) {
-> +		igt_describe_f("%s", tests[i].desc);
-> +		igt_subtest_with_dynamic_f("%s", tests[i].name) {
-> +			for_each_pipe_with_single_output(&data.display, pipe, output) {
-> +				if ((tests[i].flags & TEST_OVERLAY) &&
-> +				    !igt_pipe_get_plane_type(&data.display.pipes[pipe],
-> +							     DRM_PLANE_TYPE_OVERLAY))
-> +					continue;
-> +
-> +				test_init(&data, pipe, output);
-> +
-> +				for (j = 0; j < ARRAY_SIZE(cursor_sizes); j++) {
-> +					int size = cursor_sizes[j];
-> +
-> +					igt_dynamic_f("pipe-%s-%s-size-%d",
-> +						      kmstest_pipe_name(pipe),
-> +						      igt_output_name(output),
-> +						      size)
-> +						test_cursor(&data, size, tests[i].flags);
-> +
-> +					test_cleanup(&data);
-> +				}
-> +
-> +				test_fini(&data);
-> +			}
->   		}
-> +	}
->   
->   	igt_fixture {
->   		igt_display_fini(&data.display);
+In the process, there was one location where we failed to write the
+upper 32b of the address into the instruction.
 
+Signed-off-by: Chris Wilson <chris.p.wilson@linux.intel.com>
+---
+ lib/igt_dummyload.c | 63 ++++++++++++++++++++++-----------------------
+ 1 file changed, 31 insertions(+), 32 deletions(-)
+
+diff --git a/lib/igt_dummyload.c b/lib/igt_dummyload.c
+index dc1bd51e08..17ae21f567 100644
+--- a/lib/igt_dummyload.c
++++ b/lib/igt_dummyload.c
+@@ -100,12 +100,21 @@ emit_recursive_batch(igt_spin_t *spin,
+ 	struct drm_i915_gem_execbuffer2 *execbuf;
+ 	struct drm_i915_gem_exec_object2 *obj;
+ 	unsigned int flags[GEM_MAX_ENGINES];
++	unsigned int objflags = 0;
+ 	unsigned int nengine;
+ 	int fence_fd = -1;
+-	uint64_t addr, addr_scratch, ahnd = opts->ahnd, objflags = 0;
++	uint64_t addr, addr_scratch, ahnd = opts->ahnd;
+ 	uint32_t *cs;
+ 	int i;
+ 
++	igt_assert(!(opts->ctx && opts->ctx_id));
++
++	r = memset(relocs, 0, sizeof(relocs));
++	execbuf = memset(&spin->execbuf, 0, sizeof(spin->execbuf));
++	execbuf->rsvd1 = opts->ctx ? opts->ctx->id : opts->ctx_id;
++	execbuf->flags = I915_EXEC_NO_RELOC;
++	obj = memset(spin->obj, 0, sizeof(spin->obj));
++
+ 	/*
+ 	 * Pick a random location for our spinner et al.
+ 	 *
+@@ -121,8 +130,12 @@ emit_recursive_batch(igt_spin_t *spin,
+ 	 * that wrap.
+ 	 */
+ 
++	addr = gem_aperture_size(fd) / 2;
++	if (addr >> 32)
++		objflags |= EXEC_OBJECT_SUPPORTS_48B_ADDRESS;
++
+ 	if (!ahnd) {
+-		addr = gem_aperture_size(fd) / 2;
++		addr /= 2;
+ 		if (addr >> 31)
+ 			addr = 1u << 31;
+ 		addr += random() % addr / 2;
+@@ -131,8 +144,6 @@ emit_recursive_batch(igt_spin_t *spin,
+ 		objflags |= EXEC_OBJECT_PINNED;
+ 	}
+ 
+-	igt_assert(!(opts->ctx && opts->ctx_id));
+-
+ 	nengine = 0;
+ 	if (opts->engine == ALL_ENGINES) {
+ 		struct intel_execution_engine2 *engine;
+@@ -150,11 +161,6 @@ emit_recursive_batch(igt_spin_t *spin,
+ 	}
+ 	igt_require(nengine);
+ 
+-	memset(relocs, 0, sizeof(relocs));
+-	execbuf = memset(&spin->execbuf, 0, sizeof(spin->execbuf));
+-	execbuf->flags = I915_EXEC_NO_RELOC;
+-	obj = memset(spin->obj, 0, sizeof(spin->obj));
+-
+ 	obj[BATCH].handle =
+ 		handle_create(fd, BATCH_SIZE, opts->flags, &spin->batch);
+ 	if (!spin->batch) {
+@@ -175,9 +181,7 @@ emit_recursive_batch(igt_spin_t *spin,
+ 							   BATCH_SIZE, 0,
+ 							   ALLOC_STRATEGY_LOW_TO_HIGH);
+ 	obj[BATCH].offset = CANONICAL(addr);
+-	obj[BATCH].flags |= objflags;
+-	if (obj[BATCH].offset >= (1ull << 32))
+-		obj[BATCH].flags |= EXEC_OBJECT_SUPPORTS_48B_ADDRESS;
++	obj[BATCH].flags = objflags;
+ 
+ 	addr += BATCH_SIZE;
+ 
+@@ -192,27 +196,23 @@ emit_recursive_batch(igt_spin_t *spin,
+ 
+ 		obj[SCRATCH].handle = opts->dependency;
+ 		obj[SCRATCH].offset = CANONICAL(addr_scratch);
+-		obj[SCRATCH].flags |= objflags;
+-		if (obj[SCRATCH].offset >= (1ull << 32))
+-			obj[SCRATCH].flags |= EXEC_OBJECT_SUPPORTS_48B_ADDRESS;
++		obj[SCRATCH].flags = objflags;
+ 
+ 		if (!(opts->flags & IGT_SPIN_SOFTDEP)) {
+ 			obj[SCRATCH].flags |= EXEC_OBJECT_WRITE;
+ 
+ 			/* dummy write to dependency */
+-			r = &relocs[obj[BATCH].relocation_count++];
+ 			r->presumed_offset = obj[SCRATCH].offset;
+ 			r->target_handle = obj[SCRATCH].handle;
+ 			r->offset = sizeof(uint32_t) * 1020;
+ 			r->delta = 0;
+ 			r->read_domains = I915_GEM_DOMAIN_RENDER;
+ 			r->write_domain = I915_GEM_DOMAIN_RENDER;
++			r++;
+ 		}
+ 
+ 		execbuf->buffer_count++;
+ 	} else if (opts->flags & IGT_SPIN_POLL_RUN) {
+-		r = &relocs[obj[BATCH].relocation_count++];
+-
+ 		igt_assert(!opts->dependency);
+ 
+ 		if (gen == 4 || gen == 5) {
+@@ -244,6 +244,7 @@ emit_recursive_batch(igt_spin_t *spin,
+ 								   ALLOC_STRATEGY_LOW_TO_HIGH);
+ 		addr += 4096; /* guard page */
+ 		obj[SCRATCH].offset = CANONICAL(addr);
++		obj[SCRATCH].flags = objflags;
+ 		addr += 4096;
+ 
+ 		igt_assert_eq(spin->poll[SPIN_POLL_START_IDX], 0);
+@@ -253,10 +254,6 @@ emit_recursive_batch(igt_spin_t *spin,
+ 		r->offset = sizeof(uint32_t) * 1;
+ 		r->delta = sizeof(uint32_t) * SPIN_POLL_START_IDX;
+ 
+-		obj[SCRATCH].flags |= objflags;
+-		if (obj[SCRATCH].offset >= (1ull << 32))
+-			obj[SCRATCH].flags |= EXEC_OBJECT_SUPPORTS_48B_ADDRESS;
+-
+ 		*cs++ = MI_STORE_DWORD_IMM | (gen < 6 ? 1 << 22 : 0);
+ 
+ 		if (gen >= 8) {
+@@ -274,6 +271,7 @@ emit_recursive_batch(igt_spin_t *spin,
+ 		*cs++ = 1;
+ 
+ 		execbuf->buffer_count++;
++		r++;
+ 	}
+ 
+ 	spin->handle = obj[BATCH].handle;
+@@ -314,8 +312,6 @@ emit_recursive_batch(igt_spin_t *spin,
+ 	 * no matter how they modify it (from either the GPU or CPU).
+ 	 */
+ 	if (gen >= 8) { /* arbitrary cutoff between ring/execlists submission */
+-		r = &relocs[obj[BATCH].relocation_count++];
+-
+ 		/*
+ 		 * On Sandybridge+ the comparison is a strict greater-than:
+ 		 * if the value at spin->condition is greater than BB_END,
+@@ -334,15 +330,17 @@ emit_recursive_batch(igt_spin_t *spin,
+ 		r->offset = (cs + 2 - spin->batch) * sizeof(*cs);
+ 		r->read_domains = I915_GEM_DOMAIN_COMMAND;
+ 		r->delta = (spin->condition - spin->batch) * sizeof(*cs);
++		igt_assert(r->delta < 4096);
+ 
+ 		*cs++ = MI_COND_BATCH_BUFFER_END | MI_DO_COMPARE | 2;
+ 		*cs++ = MI_BATCH_BUFFER_END;
+ 		*cs++ = r->presumed_offset + r->delta;
+-		*cs++ = 0;
++		*cs++ = r->presumed_offset >> 32;
++
++		r++;
+ 	}
+ 
+ 	/* recurse */
+-	r = &relocs[obj[BATCH].relocation_count++];
+ 	r->target_handle = obj[BATCH].handle;
+ 	r->presumed_offset = obj[BATCH].offset;
+ 	r->offset = (cs + 1 - spin->batch) * sizeof(*cs);
+@@ -363,11 +361,10 @@ emit_recursive_batch(igt_spin_t *spin,
+ 		*cs = r->presumed_offset + r->delta;
+ 		cs++;
+ 	}
+-	obj[BATCH].relocs_ptr = to_user_pointer(relocs);
++	r++;
+ 
+ 	execbuf->buffers_ptr =
+ 	       	to_user_pointer(obj + (2 - execbuf->buffer_count));
+-	execbuf->rsvd1 = opts->ctx ? opts->ctx->id : opts->ctx_id;
+ 
+ 	if (opts->flags & IGT_SPIN_FENCE_OUT)
+ 		execbuf->flags |= I915_EXEC_FENCE_OUT;
+@@ -382,14 +379,16 @@ emit_recursive_batch(igt_spin_t *spin,
+ 		execbuf->rsvd2 = opts->fence;
+ 	}
+ 
++	/* For allocator we have to rid of relocation_count */
++	if (!ahnd) {
++		obj[BATCH].relocs_ptr = to_user_pointer(relocs);
++		obj[BATCH].relocation_count = r - relocs;
++	}
++
+ 	for (i = 0; i < nengine; i++) {
+ 		execbuf->flags &= ~ENGINE_MASK;
+ 		execbuf->flags |= flags[i];
+ 
+-		/* For allocator we have to rid of relocation_count */
+-		for (int j = 0; j < ARRAY_SIZE(spin->obj) && ahnd; j++)
+-			spin->obj[j].relocation_count = 0;
+-
+ 		gem_execbuf_wr(fd, execbuf);
+ 
+ 		if (opts->flags & IGT_SPIN_FENCE_OUT) {
+-- 
+2.34.1
