@@ -1,21 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3BAE810E73F
- for <igt-dev@lists.freedesktop.org>; Thu,  1 Sep 2022 14:49:57 +0000 (UTC)
-From: "Hogander, Jouni" <jouni.hogander@intel.com>
-To: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "B,
- Jeevan" <jeevan.b@intel.com>
-Date: Thu, 1 Sep 2022 14:49:48 +0000
-Message-ID: <940cdb8eb1fadcec516e44cff9b2c5012d9809d0.camel@intel.com>
-References: <20220823060501.11524-1-jeevan.b@intel.com>
-In-Reply-To: <20220823060501.11524-1-jeevan.b@intel.com>
-Content-Language: en-US
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <C32D0000D05CBD41BB2EF77943C00CAE@namprd11.prod.outlook.com>
-Content-Transfer-Encoding: base64
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2BF8510E05B
+ for <igt-dev@lists.freedesktop.org>; Thu,  1 Sep 2022 15:55:41 +0000 (UTC)
+Date: Thu, 1 Sep 2022 18:54:46 +0300
+From: Petri Latvala <petri.latvala@intel.com>
+To: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Message-ID: <YxDVxjJFomVkWChz@platvala-desk.ger.corp.intel.com>
+References: <20220901092748.224317-1-bhanuprakash.modem@intel.com>
+ <20220901153118.262000-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t v2] tests/i915/kms_psr2_su: Convert
- tests to dynamic
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220901153118.262000-1-bhanuprakash.modem@intel.com>
+Subject: Re: [igt-dev] [i-g-t V2] lib/igt_kms: Choose default mode based on
+ --environment flag from igt_runner
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,155 +21,89 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gVHVlLCAyMDIyLTA4LTIzIGF0IDExOjM1ICswNTMwLCBKZWV2YW4gQiB3cm90ZToKPiBDb252
-ZXJ0aW5nIHRoZSBleGlzdGluZyBzdWJ0ZXN0cyB0byBkeW5hbWljIHN1YnRlc3RzLgo+IEFkZGlu
-ZyBzdXBwb3J0IGZvciBlYWNoX3BpcGUsIGN1cnJlbnRseSBQU1IyIGlzIHN1cHBvcnRlZCBvbgo+
-IFBJUEVfQSBzbyBicmVha2luZyB0aGUgbG9vcCBmb3Igb3RoZXIgcGlwZXMgY3VycmVudGx5LgoK
-SSB0aGluayB5b3Ugc2hvdWxkIGltcGxlbWVudCBjaGVjayBmb3IgcGlwZSBzdXBwb3J0aW5nIFBT
-UjIgb3Igbm90IGFuZAp0aGVuIGFkZGluZyBkeW5hbWljIHN1YnRlc3QgYmFzZWQgb24gdGhhdC4K
-Cj4gCgo+IHYyOiBBZGQgY29tbWl0IG1lc3NhZ2UgYW5kIGNoYW5nZSBicmVhayB0byBjb250aW51
-ZS4gKEpvdW5pKQo+IAo+IFNpZ25lZC1vZmYtYnk6IEplZXZhbiBCIDxqZWV2YW4uYkBpbnRlbC5j
-b20+Cj4gLS0tCj4gwqB0ZXN0cy9pOTE1L2ttc19wc3IyX3N1LmMgfCA2NCArKysrKysrKysrKysr
-KysrKysrKysrKysrLS0tLS0tLS0tLS0tLQo+IC0tCj4gwqAxIGZpbGUgY2hhbmdlZCwgNDEgaW5z
-ZXJ0aW9ucygrKSwgMjMgZGVsZXRpb25zKC0pCj4gCj4gZGlmZiAtLWdpdCBhL3Rlc3RzL2k5MTUv
-a21zX3BzcjJfc3UuYyBiL3Rlc3RzL2k5MTUva21zX3BzcjJfc3UuYwo+IGluZGV4IGNhY2NmNzEz
-Li5iM2M2ZTk1MyAxMDA2NDQKPiAtLS0gYS90ZXN0cy9pOTE1L2ttc19wc3IyX3N1LmMKPiArKysg
-Yi90ZXN0cy9pOTE1L2ttc19wc3IyX3N1LmMKPiBAQCAtMTIzLDkgKzEyMywxNSBAQCBzdGF0aWMg
-dm9pZCBkaXNwbGF5X2ZpbmkoZGF0YV90ICpkYXRhKQo+IMKgwqDCoMKgwqDCoMKgwqBpZ3RfZGlz
-cGxheV9maW5pKCZkYXRhLT5kaXNwbGF5KTsKPiDCoH0KPiDCoAo+IC1zdGF0aWMgdm9pZCBwcmVw
-YXJlKGRhdGFfdCAqZGF0YSkKPiArc3RhdGljIHZvaWQgcHJlcGFyZShkYXRhX3QgKmRhdGEsIGVu
-dW0gcGlwZSBwaXBlKQo+IMKgewo+IMKgwqDCoMKgwqDCoMKgwqBpZ3RfcGxhbmVfdCAqcHJpbWFy
-eTsKPiArwqDCoMKgwqDCoMKgwqBpZ3Rfb3V0cHV0X3QgKm91dHB1dDsKPiArwqDCoMKgwqDCoMKg
-wqBpZ3RfZGlzcGxheV90ICpkaXNwbGF5ID0gJmRhdGEtPmRpc3BsYXk7Cj4gKwo+ICvCoMKgwqDC
-oMKgwqDCoGlndF9kaXNwbGF5X3Jlc2V0KGRpc3BsYXkpOwo+ICvCoMKgwqDCoMKgwqDCoG91dHB1
-dCA9IGRhdGEtPm91dHB1dDsKPiArwqDCoMKgwqDCoMKgwqBpZ3Rfb3V0cHV0X3NldF9waXBlKG91
-dHB1dCwgcGlwZSk7Cj4gwqAKPiDCoMKgwqDCoMKgwqDCoMKgLyogYWxsIGdyZWVuIGZyYW1lICov
-Cj4gwqDCoMKgwqDCoMKgwqDCoGlndF9jcmVhdGVfY29sb3JfZmIoZGF0YS0+ZHJtX2ZkLAo+IEBA
-IC0yNjMsNiArMjY5LDcgQEAgc3RhdGljIHZvaWQgY2xlYW51cChkYXRhX3QgKmRhdGEpCj4gwqBp
-Z3RfbWFpbgo+IMKgewo+IMKgwqDCoMKgwqDCoMKgwqBkYXRhX3QgZGF0YSA9IHt9Owo+ICvCoMKg
-wqDCoMKgwqDCoGVudW0gcGlwZSBwaXBlOwo+IMKgCj4gwqDCoMKgwqDCoMKgwqDCoGlndF9maXh0
-dXJlIHsKPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoHN0cnVjdCBpdGltZXJzcGVj
-IGludGVydmFsOwo+IEBAIC0yODcsMTIgKzI5NCwxNyBAQCBpZ3RfbWFpbgo+IMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgIkVycm9yIGVu
-YWJsaW5nIFBTUjJcbiIpOwo+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgZGF0YS5v
-cCA9IEZST05UQlVGRkVSOwo+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgZGF0YS5m
-b3JtYXQgPSBEUk1fRk9STUFUX1hSR0I4ODg4Owo+IC3CoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqBwcmVwYXJlKCZkYXRhKTsKPiAtwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgciA9
-IHBzcl93YWl0X2VudHJ5KGRhdGEuZGVidWdmc19mZCwgUFNSX01PREVfMik7Cj4gLcKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoGNsZWFudXAoJmRhdGEpOwo+IC3CoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqBpZiAoIXIpCj4gLcKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqBwc3JfcHJpbnRfZGVidWdmcyhkYXRhLmRlYnVnZnNfZmQpOwo+IC3CoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBpZ3RfcmVxdWlyZV9mKHIsICJQU1IyIGNhbiBub3Qg
-YmUgZW5hYmxlZFxuIik7Cj4gKwo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBmb3Jf
-ZWFjaF9waXBlX3dpdGhfdmFsaWRfb3V0cHV0KCZkYXRhLmRpc3BsYXksIHBpcGUsCj4gZGF0YS5v
-dXRwdXQpIHsKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oGlmIChwaXBlICE9IFBJUEVfQSkKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBjb250aW51ZTsKPiArwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoHByZXBhcmUoJmRhdGEsIHBpcGUpOwo+ICvC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgciA9IHBzcl93YWl0
-X2VudHJ5KGRhdGEuZGVidWdmc19mZCwKPiBQU1JfTU9ERV8yKTsKPiArwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGNsZWFudXAoJmRhdGEpOwo+ICvCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgaWYgKCFyKQo+ICvCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoHBz
-cl9wcmludF9kZWJ1Z2ZzKGRhdGEuZGVidWdmc19mZCk7Cj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBpZ3RfcmVxdWlyZV9mKHIsICJQU1IyIGNhbiBub3Qg
-YmUKPiBlbmFibGVkXG4iKTsKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgfQoKSSB0
-aGluayB5b3Ugc2hvdWxkIHJlbW92ZSB0aGVzZSBjaGVja3MgZnJvbSBoZXJlIGFuZCBoYXZlIHRo
-YXQgY2hlY2sKZm9yIHBpcGUgc3VwcG9ydGluZyBQU1IyIG9yIG5vdC4gVGhlbiBhZGQgZHluYW1p
-YyB0ZXN0cyBiYXNlZCBvbiB0aGF0CmNoZWNrLgoKPiDCoAo+IMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgLyogYmxvY2tpbmcgdGltZXJmZCAqLwo+IMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgZGF0YS5jaGFuZ2Vfc2NyZWVuX3RpbWVyZmQgPQo+IHRpbWVyZmRfY3JlYXRl
-KENMT0NLX01PTk9UT05JQywgMCk7Cj4gQEAgLTMxMiwyMyArMzI0LDI5IEBAIGlndF9tYWluCj4g
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqB3aGlsZSAoKmZvcm1hdCAhPSBEUk1fRk9S
-TUFUX0lOVkFMSUQpIHsKPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqBkYXRhLmZvcm1hdCA9ICpmb3JtYXQrKzsKPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBpZ3RfZGVzY3JpYmUoIlRlc3QgdGhhdCBzZWxlY3Rp
-dmUgdXBkYXRlCj4gd29ya3Mgd2hlbiBzY3JlZW4gY2hhbmdlcyIpOwo+IC3CoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgaWd0X3N1YnRlc3RfZigiJXMtJXMiLCBv
-cF9zdHIoZGF0YS5vcCksCj4gaWd0X2Zvcm1hdF9zdHIoZGF0YS5mb3JtYXQpKSB7Cj4gLcKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-aWYgKGRhdGEub3AgPT0gRlJPTlRCVUZGRVIgJiYKPiAtwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAKPiBpbnRlbF9kaXNw
-bGF5X3ZlcihpbnRlbF9nZXRfZHJtX2RldmlkKGRhdGEuZHJtX2ZkKSkgPj0gMTIpIHsKPiAtwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgLyoKPiAtwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgICogRklYTUU6IERp
-c3BsYXkgMTIrCj4gcGxhdGZvcm1zIG5vdyBoYXZlIFBTUjIKPiAtwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgICogc2VsZWN0aXZlIGZldGNoIGVuYWJsZWQgYnkKPiBkZWZhdWx0IGJ1dCB3ZQo+IC3CoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqAgKiBzdGlsbCBjYW4ndCBwcm9wZXJseQo+IGhhbmRsZSBmcm9udGJ1
-ZmZlcgo+IC3CoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgKiByZW5kZXJpbmcsIHNvIHJpZ2h0IGl0Cj4g
-ZG9lcyBmdWxsIGZyYW1lCj4gLcKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCAqIGZldGNoZXMgYXQgZXZl
-cnkKPiBmcm9udGJ1ZmZlciByZW5kZXJpbmcuCj4gLcKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCAqIFNv
-IGl0IGlzIGV4cGVjdGVkIHRoYXQKPiB0aGlzIHRlc3Qgd2lsbCBmYWlsCj4gLcKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoCAqIGluIGRpc3BsYXkgMTIrIHBsYXRmb3JtCj4gZm9yIG5vdy4KPiAtwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgICovCj4gLcKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGlndF9za2lwKCJQU1Iy
-IHNlbGVjdGl2ZQo+IGZldGNoIGlzIGRvaW5nIGZ1bGwgZnJhbWUgZmV0Y2hlcyBmb3IgZnJvbnRi
-dWZmZXIgcmVuZGVyaW5nXG4iKTsKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoGlndF9zdWJ0ZXN0X3dpdGhfZHluYW1pY19mKCIlcy0lcyIsCj4gb3Bfc3Ry
-KGRhdGEub3ApLCBpZ3RfZm9ybWF0X3N0cihkYXRhLmZvcm1hdCkpIHsKPiArwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBmb3JfZWFj
-aF9waXBlX3dpdGhfdmFsaWRfb3V0cHV0KCZkYXRhCj4gLmRpc3BsYXksIHBpcGUsIGRhdGEub3V0
-cHV0KSB7Cj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGlmIChwaXBlICE9IFBJUEVfQSkKPiArwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGNvbnRpbnVlOwo+ICvCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqBpZ3RfZHluYW1pY19mKCJwaXBlLSVzIiwKPiBrbXN0ZXN0X3BpcGVfbmFtZShw
-aXBlKSkgewo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgaWYgKGRhdGEu
-b3AgPT0KPiBGUk9OVEJVRkZFUiAmJgo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgCj4gaW50ZWxfZGlzcGxheV92ZXIoaW50ZWxfZ2V0X2RybV9kZXZpZChkYXRh
-LmRybV9mZCkpID49IDEyKSB7Cj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqAvKgo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgICogRklYTUU6IERp
-c3BsYXkgMTIrCj4gcGxhdGZvcm1zIG5vdyBoYXZlIFBTUjIKPiArwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoCAqIHNlbGVjdGl2ZSBmZXRjaAo+IGVuYWJsZWQgYnkgZGVmYXVs
-dCBidXQgd2UKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCAqIHN0aWxs
-IGNhbid0Cj4gcHJvcGVybHkgaGFuZGxlIGZyb250YnVmZmVyCj4gK8KgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqAgKiByZW5kZXJpbmcsIHNvCj4gcmlnaHQgaXQgZG9lcyBmdWxs
-IGZyYW1lCj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgKiBmZXRjaGVz
-IGF0IGV2ZXJ5Cj4gZnJvbnRidWZmZXIgcmVuZGVyaW5nLgo+ICvCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgICogU28gaXQgaXMgZXhwZWN0ZWQKPiB0aGF0IHRoaXMgdGVzdCB3
-aWxsIGZhaWwKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCAqIGluIGRp
-c3BsYXkgMTIrCj4gcGxhdGZvcm0gZm9yIG5vdy4KPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoCAqLwo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-aWd0X3NraXAoIlBTUjIKPiBzZWxlY3RpdmUgZmV0Y2ggaXMgZG9pbmcgZnVsbCBmcmFtZSBmZXRj
-aGVzIGZvciBmcm9udGJ1ZmZlcgo+IHJlbmRlcmluZ1xuIik7Cj4gK8KgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqB9Cj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoHByZXBhcmUoJmRh
-dGEsIHBpcGUpOwo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBydW4oJmRhdGEpOwo+ICvCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqBjbGVhbnVwKCZkYXRhKTsKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgfQo+
-IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqB9Cj4gLcKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgcHJlcGFyZSgmZGF0YSk7Cj4gLcKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgcnVuKCZkYXRhKTsKPiAt
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqBjbGVhbnVwKCZkYXRhKTsKPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqB9Cj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqB9Cj4gwqDC
-oMKgwqDCoMKgwqDCoH0KCg==
+On Thu, Sep 01, 2022 at 09:01:18PM +0530, Bhanuprakash Modem wrote:
+> igt_runner provides --environment flag KEY=VALUE pair as the environment
+> variable to execute test processes. Upon user request igt_runner will set
+> an environment variable to choose default DRM display mode for subtests
+> instead of taking the preferred mode.
+> 
+> Example:
+> Eventhough we have an 8K panel, Kernel may expose 4K or lesser mode
+> as a preferred mode. So all subtests will take this mode as a default
+> may cause losing the coverage.
+> 
+> This patch will parse the environment variable exposed by igt_runner
+> and take the decision to choose the mode from the available list.
+> 
+> Possible options are:
+>   0/lowest: Choose the mode with lowest possible resolution.
+>   1/highest: Choose the mode with highest possible resolution.
+> 
+> By default (without this flag) fallback to take the preferred mode exposed
+> by the Kernel.
+> 
+> Usage:
+> ./igt_runner --environment "IGT_KMS_RESOLUTION=1" ...
+> ./igt_runner --environment "IGT_KMS_RESOLUTION=lowest" ...
+> 
+> V2:
+> - Allow "lowest" & "highest" options too
+> 
+> Cc: Petri Latvala <petri.latvala@intel.com>
+> Cc: Swati Sharma <swati2.sharma@intel.com>
+> Cc: Karthik B S <karthik.b.s@intel.com>
+> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+
+Reviewed-by: Petri Latvala <petri.latvala@intel.com>
+
+> ---
+>  lib/igt_kms.c | 21 +++++++++++++++++++++
+>  1 file changed, 21 insertions(+)
+> 
+> diff --git a/lib/igt_kms.c b/lib/igt_kms.c
+> index 1ba3bd2a..7d4916a7 100644
+> --- a/lib/igt_kms.c
+> +++ b/lib/igt_kms.c
+> @@ -1586,6 +1586,7 @@ void igt_sort_connector_modes(drmModeConnector *connector,
+>  bool kmstest_get_connector_default_mode(int drm_fd, drmModeConnector *connector,
+>  					drmModeModeInfo *mode)
+>  {
+> +	char *env;
+>  	int i;
+>  
+>  	if (!connector->count_modes) {
+> @@ -1594,6 +1595,26 @@ bool kmstest_get_connector_default_mode(int drm_fd, drmModeConnector *connector,
+>  		return false;
+>  	}
+>  
+> +	env = getenv("IGT_KMS_RESOLUTION");
+> +	if (env) {
+> +		/*
+> +		 * Only (0 or 1) and (lowest or highest) are allowed.
+> +		 *
+> +		 * 0/lowest: Choose connector mode with lowest possible resolution.
+> +		 * 1/highest: Choose connector mode with highest possible resolution.
+> +		 */
+> +		if (!strcmp(env, "highest") || !strcmp(env, "1"))
+> +			igt_sort_connector_modes(connector, sort_drm_modes_by_res_dsc);
+> +		else if (!strcmp(env, "lowest") || !strcmp(env, "0"))
+> +			igt_sort_connector_modes(connector, sort_drm_modes_by_res_asc);
+> +		else
+> +			goto default_mode;
+> +
+> +		*mode = connector->modes[0];
+> +		return true;
+> +	}
+> +
+> +default_mode:
+>  	for (i = 0; i < connector->count_modes; i++) {
+>  		if (i == 0 ||
+>  		    connector->modes[i].type & DRM_MODE_TYPE_PREFERRED) {
+> -- 
+> 2.35.1
+> 
