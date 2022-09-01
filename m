@@ -1,20 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id F109010E5F3
- for <igt-dev@lists.freedesktop.org>; Thu,  1 Sep 2022 06:37:32 +0000 (UTC)
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 328DC10E5D3
+ for <igt-dev@lists.freedesktop.org>; Thu,  1 Sep 2022 06:37:33 +0000 (UTC)
 Received: from maurocar by linux.intel.com with local (Exim 4.95)
- (envelope-from <mauro.chehab@linux.intel.com>) id 1oTdpQ-0016Rl-R8
- for igt-dev@lists.freedesktop.org; Thu, 01 Sep 2022 08:37:28 +0200
+ (envelope-from <mauro.chehab@linux.intel.com>) id 1oTdpR-0016Ti-AL
+ for igt-dev@lists.freedesktop.org; Thu, 01 Sep 2022 08:37:29 +0200
 From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Thu,  1 Sep 2022 08:36:10 +0200
-Message-Id: <20220901063722.261828-3-mauro.chehab@linux.intel.com>
+Date: Thu,  1 Sep 2022 08:36:41 +0200
+Message-Id: <20220901063722.261828-34-mauro.chehab@linux.intel.com>
 In-Reply-To: <20220901063722.261828-1-mauro.chehab@linux.intel.com>
 References: <20220901063722.261828-1-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 02/74] i915/gem_basic: Close device before
- exit
+Subject: [igt-dev] [PATCH i-g-t 33/74] kms_color: Close device before exit
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -32,47 +31,22 @@ Close the device fd before we check for leaks during the atexit
 handlers.
 
 Signed-off-by: Chris Wilson <chris.p.wilson@intel.com>
-Reviewed-by: Andrzej Hajda <andrzej.hajda@intel.com>
+Acked-by: Andrzej Hajda <andrzej.hajda@intel.com>
 Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 ---
- tests/i915/gem_basic.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ tests/kms_color.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/tests/i915/gem_basic.c b/tests/i915/gem_basic.c
-index 17ae190cb2cb..2aa5d850cc10 100644
---- a/tests/i915/gem_basic.c
-+++ b/tests/i915/gem_basic.c
-@@ -25,7 +25,6 @@
-  *
-  */
+diff --git a/tests/kms_color.c b/tests/kms_color.c
+index c202547e59ea..69c180c119df 100644
+--- a/tests/kms_color.c
++++ b/tests/kms_color.c
+@@ -1058,5 +1058,6 @@ igt_main
  
--#include "igt.h"
- #include <unistd.h>
- #include <stdlib.h>
- #include <stdio.h>
-@@ -37,7 +36,10 @@
- #include <sys/ioctl.h>
- 
- #include "drm.h"
-+
- #include "i915/gem_create.h"
-+#include "igt.h"
-+#include "igt_types.h"
- 
- IGT_TEST_DESCRIPTION("Tests basic gem_create and gem_close IOCTLs");
- 
-@@ -78,10 +80,10 @@ test_create_fd_close(int fd)
- 	close(fd);
+ 	igt_fixture {
+ 		igt_display_fini(&data.display);
++		close(data.drm_fd);
+ 	}
  }
- 
--int fd;
--
- igt_main
- {
-+	igt_fd_t(fd);
-+
- 	igt_fixture
- 		fd = drm_open_driver(DRIVER_INTEL);
- 
 -- 
 2.37.2
