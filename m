@@ -1,19 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 63FC910E5D9
- for <igt-dev@lists.freedesktop.org>; Thu,  1 Sep 2022 06:37:34 +0000 (UTC)
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7852310E604
+ for <igt-dev@lists.freedesktop.org>; Thu,  1 Sep 2022 06:37:33 +0000 (UTC)
 Received: from maurocar by linux.intel.com with local (Exim 4.95)
- (envelope-from <mauro.chehab@linux.intel.com>) id 1oTdpR-0016Ub-HH
- for igt-dev@lists.freedesktop.org; Thu, 01 Sep 2022 08:37:29 +0200
+ (envelope-from <mauro.chehab@linux.intel.com>) id 1oTdpQ-0016SI-VN
+ for igt-dev@lists.freedesktop.org; Thu, 01 Sep 2022 08:37:28 +0200
 From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Thu,  1 Sep 2022 08:36:54 +0200
-Message-Id: <20220901063722.261828-47-mauro.chehab@linux.intel.com>
+Date: Thu,  1 Sep 2022 08:36:19 +0200
+Message-Id: <20220901063722.261828-12-mauro.chehab@linux.intel.com>
 In-Reply-To: <20220901063722.261828-1-mauro.chehab@linux.intel.com>
 References: <20220901063722.261828-1-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 46/74] kms_hdr: Close device before exit
+Subject: [igt-dev] [PATCH i-g-t 11/74] i915/gem_render_copy: Close device
+ before exit
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -34,18 +35,18 @@ Signed-off-by: Chris Wilson <chris.p.wilson@intel.com>
 Acked-by: Andrzej Hajda <andrzej.hajda@intel.com>
 Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 ---
- tests/kms_hdr.c | 1 +
+ tests/i915/gem_render_copy.c | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/tests/kms_hdr.c b/tests/kms_hdr.c
-index e2650f51331f..c18acb60f99e 100644
---- a/tests/kms_hdr.c
-+++ b/tests/kms_hdr.c
-@@ -615,5 +615,6 @@ igt_main
- 
- 	igt_fixture {
- 		igt_display_fini(&data.display);
-+		close(data.fd);
+diff --git a/tests/i915/gem_render_copy.c b/tests/i915/gem_render_copy.c
+index 3da29ec4e316..70b96c8f42ad 100644
+--- a/tests/i915/gem_render_copy.c
++++ b/tests/i915/gem_render_copy.c
+@@ -879,5 +879,6 @@ igt_main_args("dac", NULL, help_str, opt_handler, NULL)
+ 		igt_stop_hang_detector();
+ 		buf_ops_destroy(data.bops);
+ 		igt_collection_destroy(set);
++		close(data.drm_fd);
  	}
  }
 -- 
