@@ -1,19 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D712110E615
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A322D10E60C
  for <igt-dev@lists.freedesktop.org>; Thu,  1 Sep 2022 06:37:33 +0000 (UTC)
 Received: from maurocar by linux.intel.com with local (Exim 4.95)
- (envelope-from <mauro.chehab@linux.intel.com>) id 1oTdpS-0016Vj-0F
- for igt-dev@lists.freedesktop.org; Thu, 01 Sep 2022 08:37:30 +0200
+ (envelope-from <mauro.chehab@linux.intel.com>) id 1oTdpR-0016UT-GB
+ for igt-dev@lists.freedesktop.org; Thu, 01 Sep 2022 08:37:29 +0200
 From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Thu,  1 Sep 2022 08:37:11 +0200
-Message-Id: <20220901063722.261828-64-mauro.chehab@linux.intel.com>
+Date: Thu,  1 Sep 2022 08:36:52 +0200
+Message-Id: <20220901063722.261828-45-mauro.chehab@linux.intel.com>
 In-Reply-To: <20220901063722.261828-1-mauro.chehab@linux.intel.com>
 References: <20220901063722.261828-1-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 63/74] drm_import_export: Close device
+Subject: [igt-dev] [PATCH i-g-t 44/74] i915/kms_pwrite_crc: Close device
  before exit
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -35,22 +35,18 @@ Signed-off-by: Chris Wilson <chris.p.wilson@intel.com>
 Acked-by: Andrzej Hajda <andrzej.hajda@intel.com>
 Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 ---
- tests/drm_import_export.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ tests/i915/kms_pwrite_crc.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/tests/drm_import_export.c b/tests/drm_import_export.c
-index 06245e8bac9f..2dd2f3cb9fff 100644
---- a/tests/drm_import_export.c
-+++ b/tests/drm_import_export.c
-@@ -296,4 +296,9 @@ igt_main {
- 		pthread_join(test_thread_id3, NULL);
- 		pthread_join(test_thread_id4, NULL);
- 	}
-+
-+	igt_fixture {
-+		close(fd);
-+		close(fd1);
-+	}
+diff --git a/tests/i915/kms_pwrite_crc.c b/tests/i915/kms_pwrite_crc.c
+index 584e6a19ce9d..7df4b36924fa 100644
+--- a/tests/i915/kms_pwrite_crc.c
++++ b/tests/i915/kms_pwrite_crc.c
+@@ -191,4 +191,5 @@ igt_simple_main
+ 	run_test(&data);
+ 
+ 	igt_display_fini(&data.display);
++	close(data.drm_fd);
  }
 -- 
 2.37.2
