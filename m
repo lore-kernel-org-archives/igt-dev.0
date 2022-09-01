@@ -1,16 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============2053875696535982023=="
+Received: from madras.collabora.co.uk (madras.collabora.co.uk [46.235.227.172])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 089B610E0A3
+ for <igt-dev@lists.freedesktop.org>; Thu,  1 Sep 2022 16:46:49 +0000 (UTC)
+Date: Thu, 1 Sep 2022 17:46:45 +0100
+From: Adrian Larumbe <adrian.larumbe@collabora.com>
+To: Petri Latvala <petri.latvala@intel.com>
+Message-ID: <20220901164645.vs34jwo6itgyxz5p@sobremesa>
+References: <20220819195218.983998-1-adrian.larumbe@collabora.com>
+ <20220819195218.983998-2-adrian.larumbe@collabora.com>
+ <YxCmin1/Cd9nSfks@platvala-desk.ger.corp.intel.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Bhanuprakash Modem" <bhanuprakash.modem@intel.com>
-Date: Thu, 01 Sep 2022 16:18:16 -0000
-Message-ID: <166204909683.11919.1613668464269539343@emeril.freedesktop.org>
-References: <20220901092748.224317-1-bhanuprakash.modem@intel.com>
-In-Reply-To: <20220901092748.224317-1-bhanuprakash.modem@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgbGliL2ln?=
- =?utf-8?q?t=5Fkms=3A_Choose_default_mode_based_on_--environment_flag_from?=
- =?utf-8?q?_igt=5Frunner_=28rev2=29?=
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <YxCmin1/Cd9nSfks@platvala-desk.ger.corp.intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t v3 2/2] i915/gem_ctx_isolation:: change
+ semantics of ctx isolation uAPI
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,217 +22,285 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============2053875696535982023==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+On 01.09.2022 15:33, Petri Latvala wrote:
+>>>On Fri, Aug 19, 2022 at 08:52:18PM +0100, Adrian Larumbe wrote:
+>>>> ioctl I915_PARAM_HAS_CONTEXT_ISOLATION param is meant to report whether all
+>>>> the engines in the system support context isolation, but the way the return
+>>>> value was being used did not respect the contract on the uAPI.
+>>>> 
+>>>> Skip all engine tests for which context isolation is not supported. Also skip
+>>>> tests that involve an engine reset if both RCS and CCS engines are present in
+>>>> the system. This is because they belong to the same reset domain.
+>>>> 
+>>>> Signed-Off-By: Adrian Larumbe <adrian.larumbe@collabora.com>
+>>>> ---
+>>>>  include/drm-uapi/i915_drm.h    |   6 +-
+>>>>  tests/i915/gem_ctx_isolation.c | 100 +++++++++++++++++++++++----------
+>>>>  2 files changed, 72 insertions(+), 34 deletions(-)
+>>>> 
+>>>> diff --git a/include/drm-uapi/i915_drm.h b/include/drm-uapi/i915_drm.h
+>>>> index b4efc96c2edc..0b8fa57b52f9 100644
+>>>> --- a/include/drm-uapi/i915_drm.h
+>>>> +++ b/include/drm-uapi/i915_drm.h
+>>>> @@ -691,11 +691,7 @@ typedef struct drm_i915_irq_wait {
+>>>>   * rather than default HW values. If true, it also ensures (insofar as HW
+>>>>   * supports) that all state set by this context will not leak to any other
+>>>>   * context.
+>>>> - *
+>>>> - * As not every engine across every gen support contexts, the returned
+>>>> - * value reports the support of context isolation for individual engines by
+>>>> - * returning a bitmask of each engine class set to true if that class supports
+>>>> - * isolation.
+>>>> + * 
+>>>
+>>>Don't make edits to the drm-uapi files. They need to be direct copies from the kernel.
 
-== Series Details ==
+The issue here is the parallel kernel patch also makes this change. I guess I'll
+wait until the relevant kernel patch is accepted and then copy it verbatim from
+the kernel sources instead.
 
-Series: lib/igt_kms: Choose default mode based on --environment flag from igt_runner (rev2)
-URL   : https://patchwork.freedesktop.org/series/108013/
-State : success
+>>-- 
+>>Petri Latvala
+>>
+>>
+>>
+>>>   */
+>>>  #define I915_PARAM_HAS_CONTEXT_ISOLATION 50
+>>>  
+>>> diff --git a/tests/i915/gem_ctx_isolation.c b/tests/i915/gem_ctx_isolation.c
+>>> index 4233ea5784dc..273a0c9708bb 100644
+>>> --- a/tests/i915/gem_ctx_isolation.c
+>>> +++ b/tests/i915/gem_ctx_isolation.c
+>>> @@ -45,6 +45,7 @@ enum {
+>>>  	VCS2 = ENGINE(I915_ENGINE_CLASS_VIDEO, 2),
+>>>  	VCS3 = ENGINE(I915_ENGINE_CLASS_VIDEO, 3),
+>>>  	VECS0 = ENGINE(I915_ENGINE_CLASS_VIDEO_ENHANCE, 0),
+>>> +	CCS0 = ENGINE(I915_ENGINE_CLASS_COMPUTE, 0),
+>>>  };
+>>>  
+>>>  #define ALL ~0u
+>>> @@ -627,9 +628,40 @@ static void compare_regs(int fd, const struct intel_execution_engine2 *e,
+>>>  		     num_errors, who);
+>>>  }
+>>>  
+>>> +static bool
+>>> +engine_has_context_isolation(const struct intel_execution_engine2 *e,
+>>> +			     int gen)
+>>> +{
+>>> +	if (gen > 8)
+>>> +		return true;
+>>> +
+>>> +	if (gen >= 6 && gen <= 8 && e->class == I915_ENGINE_CLASS_RENDER)
+>>> +		return true;
+>>> +
+>>> +	return false;
+>>> +}
+>>> +
+>>> +static bool
+>>> +has_engine_class(const intel_ctx_cfg_t *cfg, unsigned int class)
+>>> +{
+>>> +	const struct i915_engine_class_instance *eci;
+>>> +	unsigned int i;
+>>> +
+>>> +	igt_require(class <= I915_ENGINE_CLASS_COMPUTE);
+>>> +
+>>> +	for (i = 0; i < cfg->num_engines; i++) {
+>>> +		eci = &cfg->engines[i];
+>>> +		if (eci->engine_class == class)
+>>> +			return true;
+>>> +	}
+>>> +
+>>> +	return false;
+>>> +}
+>>> +
+>>>  static void nonpriv(int fd, const intel_ctx_cfg_t *cfg,
+>>>  		    const struct intel_execution_engine2 *e,
+>>> -		    unsigned int flags)
+>>> +		    unsigned int flags,
+>>> +		    int gen)
+>>>  {
+>>>  	static const uint32_t values[] = {
+>>>  		0x0,
+>>> @@ -647,6 +679,7 @@ static void nonpriv(int fd, const intel_ctx_cfg_t *cfg,
+>>>  
+>>>  	/* Sigh -- hsw: we need cmdparser access to our own registers! */
+>>>  	igt_skip_on(intel_gen(intel_get_drm_devid(fd)) < 8);
+>>> +	igt_require(engine_has_context_isolation(e, gen));
+>>>  
+>>>  	gem_quiescent_gpu(fd);
+>>>  
+>>> @@ -729,7 +762,8 @@ static void nonpriv(int fd, const intel_ctx_cfg_t *cfg,
+>>>  
+>>>  static void isolation(int fd, const intel_ctx_cfg_t *cfg,
+>>>  		      const struct intel_execution_engine2 *e,
+>>> -		      unsigned int flags)
+>>> +		      unsigned int flags,
+>>> +		      int gen)
+>>>  {
+>>>  	static const uint32_t values[] = {
+>>>  		0x0,
+>>> @@ -743,6 +777,8 @@ static void isolation(int fd, const intel_ctx_cfg_t *cfg,
+>>>  	unsigned int num_values =
+>>>  		flags & (DIRTY1 | DIRTY2) ? ARRAY_SIZE(values) : 1;
+>>>  
+>>> +	igt_require(engine_has_context_isolation(e, gen));
+>>> +
+>>>  	gem_quiescent_gpu(fd);
+>>>  
+>>>  	for (int v = 0; v < num_values; v++) {
+>>> @@ -865,7 +901,8 @@ static void inject_reset_context(int fd, const intel_ctx_cfg_t *cfg,
+>>>  
+>>>  static void preservation(int fd, const intel_ctx_cfg_t *cfg,
+>>>  			 const struct intel_execution_engine2 *e,
+>>> -			 unsigned int flags)
+>>> +			 unsigned int flags,
+>>> +			 int gen)
+>>>  {
+>>>  	static const uint32_t values[] = {
+>>>  		0x0,
+>>> @@ -882,6 +919,8 @@ static void preservation(int fd, const intel_ctx_cfg_t *cfg,
+>>>  	uint64_t ahnd[num_values + 1];
+>>>  	igt_spin_t *spin;
+>>>  
+>>> +	igt_require(engine_has_context_isolation(e, gen));
+>>> +
+>>>  	gem_quiescent_gpu(fd);
+>>>  
+>>>  	ctx[num_values] = intel_ctx_create(fd, cfg);
+>>> @@ -902,8 +941,12 @@ static void preservation(int fd, const intel_ctx_cfg_t *cfg,
+>>>  	gem_close(fd, read_regs(fd, ahnd[num_values], ctx[num_values], e, flags));
+>>>  	igt_spin_free(fd, spin);
+>>>  
+>>> -	if (flags & RESET)
+>>> +	if (flags & RESET) {
+>>> +		igt_skip_on(has_engine_class(cfg, I915_ENGINE_CLASS_RENDER) &&
+>>> +			    has_engine_class(cfg, I915_ENGINE_CLASS_COMPUTE));
+>>> +
+>>>  		inject_reset_context(fd, cfg, e);
+>>> +	}
+>>>  
+>>>  	switch (flags & SLEEP_MASK) {
+>>>  	case NOSLEEP:
+>>> @@ -962,7 +1005,7 @@ static unsigned int __has_context_isolation(int fd)
+>>>  	int value = 0;
+>>>  
+>>>  	memset(&gp, 0, sizeof(gp));
+>>> -	gp.param = 50; /* I915_PARAM_HAS_CONTEXT_ISOLATION */
+>>> +	gp.param = I915_PARAM_HAS_CONTEXT_ISOLATION;
+>>>  	gp.value = &value;
+>>>  
+>>>  	igt_ioctl(fd, DRM_IOCTL_I915_GETPARAM, &gp);
+>>> @@ -971,21 +1014,19 @@ static unsigned int __has_context_isolation(int fd)
+>>>  	return value;
+>>>  }
+>>>  
+>>> -#define test_each_engine(e, i915, cfg, mask) \
+>>> +#define test_each_engine(e, i915, cfg)	  \
+>>>  	for_each_ctx_cfg_engine(i915, cfg, e) \
+>>> -		for_each_if(mask & (1 << (e)->class)) \
+>>> -			igt_dynamic_f("%s", (e)->name)
+>>> +		igt_dynamic_f("%s", (e)->name)
+>>>  
+>>>  igt_main
+>>>  {
+>>> -	unsigned int has_context_isolation = 0;
+>>> +	bool has_context_isolation = 0;
+>>>  	const struct intel_execution_engine2 *e;
+>>>  	intel_ctx_cfg_t cfg;
+>>>  	int i915 = -1;
+>>> +	int gen;
+>>>  
+>>>  	igt_fixture {
+>>> -		int gen;
+>>> -
+>>>  		i915 = drm_open_driver(DRIVER_INTEL);
+>>>  		igt_require_gem(i915);
+>>>  		igt_require(gem_has_contexts(i915));
+>>> @@ -995,6 +1036,7 @@ igt_main
+>>>  		igt_require(has_context_isolation);
+>>>  
+>>>  		gen = intel_gen(intel_get_drm_devid(i915));
+>>> +		igt_require(gen >= 2);
+>>>  
+>>>  		igt_warn_on_f(gen > LAST_KNOWN_GEN,
+>>>  			      "GEN not recognized! Test needs to be updated to run.\n");
+>>> @@ -1006,43 +1048,43 @@ igt_main
+>>>  	}
+>>>  
+>>>  	igt_subtest_with_dynamic("nonpriv") {
+>>> -		test_each_engine(e, i915, &cfg, has_context_isolation)
+>>> -			nonpriv(i915, &cfg, e, 0);
+>>> +		test_each_engine(e, i915, &cfg)
+>>> +			nonpriv(i915, &cfg, e, 0, gen);
+>>>  	}
+>>>  
+>>>  	igt_subtest_with_dynamic("nonpriv-switch") {
+>>> -		test_each_engine(e, i915, &cfg, has_context_isolation)
+>>> -			nonpriv(i915, &cfg, e, DIRTY2);
+>>> +		test_each_engine(e, i915, &cfg)
+>>> +			nonpriv(i915, &cfg, e, DIRTY2, gen);
+>>>  	}
+>>>  
+>>>  	igt_subtest_with_dynamic("clean") {
+>>> -		test_each_engine(e, i915, &cfg, has_context_isolation)
+>>> -			isolation(i915, &cfg, e, 0);
+>>> +		test_each_engine(e, i915, &cfg)
+>>> +			isolation(i915, &cfg, e, 0, gen);
+>>>  	}
+>>>  
+>>>  	igt_subtest_with_dynamic("dirty-create") {
+>>> -		test_each_engine(e, i915, &cfg, has_context_isolation)
+>>> -			isolation(i915, &cfg, e, DIRTY1);
+>>> +		test_each_engine(e, i915, &cfg)
+>>> +			isolation(i915, &cfg, e, DIRTY1, gen);
+>>>  	}
+>>>  
+>>>  	igt_subtest_with_dynamic("dirty-switch") {
+>>> -		test_each_engine(e, i915, &cfg, has_context_isolation)
+>>> -			isolation(i915, &cfg, e, DIRTY2);
+>>> +		test_each_engine(e, i915, &cfg)
+>>> +			isolation(i915, &cfg, e, DIRTY2, gen);
+>>>  	}
+>>>  
+>>>  	igt_subtest_with_dynamic("preservation") {
+>>> -		test_each_engine(e, i915, &cfg, has_context_isolation)
+>>> -			preservation(i915, &cfg, e, 0);
+>>> +		test_each_engine(e, i915, &cfg)
+>>> +			preservation(i915, &cfg, e, 0, gen);
+>>>  	}
+>>>  
+>>>  	igt_subtest_with_dynamic("preservation-S3") {
+>>> -		test_each_engine(e, i915, &cfg, has_context_isolation)
+>>> -			preservation(i915, &cfg, e, S3);
+>>> +		test_each_engine(e, i915, &cfg)
+>>> +			preservation(i915, &cfg, e, S3, gen);
+>>>  	}
+>>>  
+>>>  	igt_subtest_with_dynamic("preservation-S4") {
+>>> -		test_each_engine(e, i915, &cfg, has_context_isolation)
+>>> -			preservation(i915, &cfg, e, S4);
+>>> +		test_each_engine(e, i915, &cfg)
+>>> +			preservation(i915, &cfg, e, S4, gen);
+>>>  	}
+>>>  
+>>>  	igt_fixture {
+>>> @@ -1052,8 +1094,8 @@ igt_main
+>>>  	igt_subtest_with_dynamic("preservation-reset") {
+>>>  		igt_hang_t hang = igt_allow_hang(i915, 0, 0);
+>>>  
+>>> -		test_each_engine(e, i915, &cfg, has_context_isolation)
+>>> -			preservation(i915, &cfg, e, RESET);
+>>> +		test_each_engine(e, i915, &cfg)
+>>> +			preservation(i915, &cfg, e, RESET, gen);
+>>>  
+>>>  		igt_disallow_hang(i915, hang);
+>>>  	}
+>>> -- 
+>>> 2.37.0
+>>> 
 
-== Summary ==
-
-CI Bug Log - changes from IGT_6640 -> IGTPW_7721
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7721/index.html
-
-Participating hosts (34 -> 34)
-------------------------------
-
-  Additional (1): bat-dg2-8 
-  Missing    (1): fi-bdw-samus 
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_7721 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@i915_selftest@live@hangcheck:
-    - bat-dg1-5:          NOTRUN -> [DMESG-FAIL][1] ([i915#4494] / [i915#4957])
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7721/bat-dg1-5/igt@i915_selftest@live@hangcheck.html
-
-  * igt@i915_suspend@basic-s2idle-without-i915:
-    - bat-dg1-5:          NOTRUN -> [INCOMPLETE][2] ([i915#6011])
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7721/bat-dg1-5/igt@i915_suspend@basic-s2idle-without-i915.html
-
-  * igt@kms_chamelium@common-hpd-after-suspend:
-    - fi-bdw-5557u:       NOTRUN -> [SKIP][3] ([fdo#109271] / [fdo#111827])
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7721/fi-bdw-5557u/igt@kms_chamelium@common-hpd-after-suspend.html
-
-  
-#### Possible fixes ####
-
-  * igt@i915_selftest@live@gt_engines:
-    - bat-dg1-5:          [INCOMPLETE][4] ([i915#4418]) -> [PASS][5]
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6640/bat-dg1-5/igt@i915_selftest@live@gt_engines.html
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7721/bat-dg1-5/igt@i915_selftest@live@gt_engines.html
-
-  * igt@i915_selftest@live@gt_lrc:
-    - {bat-dg2-9}:        [INCOMPLETE][6] -> [PASS][7]
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6640/bat-dg2-9/igt@i915_selftest@live@gt_lrc.html
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7721/bat-dg2-9/igt@i915_selftest@live@gt_lrc.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
-  [fdo#109285]: https://bugs.freedesktop.org/show_bug.cgi?id=109285
-  [fdo#111827]: https://bugs.freedesktop.org/show_bug.cgi?id=111827
-  [i915#1072]: https://gitlab.freedesktop.org/drm/intel/issues/1072
-  [i915#1155]: https://gitlab.freedesktop.org/drm/intel/issues/1155
-  [i915#2582]: https://gitlab.freedesktop.org/drm/intel/issues/2582
-  [i915#2867]: https://gitlab.freedesktop.org/drm/intel/issues/2867
-  [i915#3291]: https://gitlab.freedesktop.org/drm/intel/issues/3291
-  [i915#3555]: https://gitlab.freedesktop.org/drm/intel/issues/3555
-  [i915#3595]: https://gitlab.freedesktop.org/drm/intel/issues/3595
-  [i915#3708]: https://gitlab.freedesktop.org/drm/intel/issues/3708
-  [i915#4077]: https://gitlab.freedesktop.org/drm/intel/issues/4077
-  [i915#4079]: https://gitlab.freedesktop.org/drm/intel/issues/4079
-  [i915#4083]: https://gitlab.freedesktop.org/drm/intel/issues/4083
-  [i915#4212]: https://gitlab.freedesktop.org/drm/intel/issues/4212
-  [i915#4215]: https://gitlab.freedesktop.org/drm/intel/issues/4215
-  [i915#4258]: https://gitlab.freedesktop.org/drm/intel/issues/4258
-  [i915#4418]: https://gitlab.freedesktop.org/drm/intel/issues/4418
-  [i915#4494]: https://gitlab.freedesktop.org/drm/intel/issues/4494
-  [i915#4579]: https://gitlab.freedesktop.org/drm/intel/issues/4579
-  [i915#4873]: https://gitlab.freedesktop.org/drm/intel/issues/4873
-  [i915#4957]: https://gitlab.freedesktop.org/drm/intel/issues/4957
-  [i915#5190]: https://gitlab.freedesktop.org/drm/intel/issues/5190
-  [i915#5274]: https://gitlab.freedesktop.org/drm/intel/issues/5274
-  [i915#5354]: https://gitlab.freedesktop.org/drm/intel/issues/5354
-  [i915#6011]: https://gitlab.freedesktop.org/drm/intel/issues/6011
-  [i915#6257]: https://gitlab.freedesktop.org/drm/intel/issues/6257
-  [i915#6380]: https://gitlab.freedesktop.org/drm/intel/issues/6380
-  [i915#6621]: https://gitlab.freedesktop.org/drm/intel/issues/6621
-  [i915#6645]: https://gitlab.freedesktop.org/drm/intel/issues/6645
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_6640 -> IGTPW_7721
-
-  CI-20190529: 20190529
-  CI_DRM_12061: d25f068998ce803ef0a05883616344c0afcbc55a @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_7721: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7721/index.html
-  IGT_6640: 0e7eb0bf7b427345a78b4cc2bb4250d4d604f2ae @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7721/index.html
-
---===============2053875696535982023==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>lib/igt_kms: Choose default mode based on --environment flag from igt_runner (rev2)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/108013/">https://patchwork.freedesktop.org/series/108013/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7721/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7721/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from IGT_6640 -&gt; IGTPW_7721</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7721/index.html</p>
-<h2>Participating hosts (34 -&gt; 34)</h2>
-<p>Additional (1): bat-dg2-8 <br />
-  Missing    (1): fi-bdw-samus </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_7721 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@i915_selftest@live@hangcheck:</p>
-<ul>
-<li>bat-dg1-5:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7721/bat-dg1-5/igt@i915_selftest@live@hangcheck.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4494">i915#4494</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4957">i915#4957</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_suspend@basic-s2idle-without-i915:</p>
-<ul>
-<li>bat-dg1-5:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7721/bat-dg1-5/igt@i915_suspend@basic-s2idle-without-i915.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6011">i915#6011</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_chamelium@common-hpd-after-suspend:</p>
-<ul>
-<li>fi-bdw-5557u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7721/fi-bdw-5557u/igt@kms_chamelium@common-hpd-after-suspend.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://bugs.freedesktop.org/show_bug.cgi?id=111827">fdo#111827</a>)</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@i915_selftest@live@gt_engines:</p>
-<ul>
-<li>bat-dg1-5:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6640/bat-dg1-5/igt@i915_selftest@live@gt_engines.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4418">i915#4418</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7721/bat-dg1-5/igt@i915_selftest@live@gt_engines.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@gt_lrc:</p>
-<ul>
-<li>{bat-dg2-9}:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6640/bat-dg2-9/igt@i915_selftest@live@gt_lrc.html">INCOMPLETE</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7721/bat-dg2-9/igt@i915_selftest@live@gt_lrc.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_6640 -&gt; IGTPW_7721</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_12061: d25f068998ce803ef0a05883616344c0afcbc55a @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_7721: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7721/index.html<br />
-  IGT_6640: 0e7eb0bf7b427345a78b4cc2bb4250d4d604f2ae @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-
-</body>
-</html>
-
---===============2053875696535982023==--
