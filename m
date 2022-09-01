@@ -1,20 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2434610E5F8
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 162E010E5F6
  for <igt-dev@lists.freedesktop.org>; Thu,  1 Sep 2022 06:37:33 +0000 (UTC)
 Received: from maurocar by linux.intel.com with local (Exim 4.95)
- (envelope-from <mauro.chehab@linux.intel.com>) id 1oTdpR-0016Sg-26
- for igt-dev@lists.freedesktop.org; Thu, 01 Sep 2022 08:37:29 +0200
+ (envelope-from <mauro.chehab@linux.intel.com>) id 1oTdpS-0016Vw-4o
+ for igt-dev@lists.freedesktop.org; Thu, 01 Sep 2022 08:37:30 +0200
 From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Thu,  1 Sep 2022 08:36:25 +0200
-Message-Id: <20220901063722.261828-18-mauro.chehab@linux.intel.com>
+Date: Thu,  1 Sep 2022 08:37:14 +0200
+Message-Id: <20220901063722.261828-67-mauro.chehab@linux.intel.com>
 In-Reply-To: <20220901063722.261828-1-mauro.chehab@linux.intel.com>
 References: <20220901063722.261828-1-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 17/74] i915/gem_exec_endless: Close device
- before exit
+Subject: [igt-dev] [PATCH i-g-t 66/74] kms_3d: Close device before exit
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -34,29 +33,18 @@ handlers.
 Signed-off-by: Chris Wilson <chris.p.wilson@intel.com>
 Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 ---
- tests/i915/gem_exec_endless.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ tests/kms_3d.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/tests/i915/gem_exec_endless.c b/tests/i915/gem_exec_endless.c
-index b83d5a2c1480..2c56cc212036 100644
---- a/tests/i915/gem_exec_endless.c
-+++ b/tests/i915/gem_exec_endless.c
-@@ -28,6 +28,7 @@
- #include "igt.h"
- #include "igt_device.h"
- #include "igt_sysfs.h"
-+#include "igt_types.h"
- #include "sw_sync.h"
+diff --git a/tests/kms_3d.c b/tests/kms_3d.c
+index 1488cc146728..c6bef67c1c0f 100644
+--- a/tests/kms_3d.c
++++ b/tests/kms_3d.c
+@@ -111,4 +111,5 @@ igt_simple_main
+ 	kmstest_force_edid(drm_fd, connector, NULL);
  
- #define MAX_ENGINES 64
-@@ -341,7 +342,7 @@ static void unpin_rps(int sysfs)
- igt_main
- {
- 	const struct intel_execution_engine2 *e;
--	int i915 = -1;
-+	igt_fd_t(i915);
- 
- 	igt_skip_on_simulation();
- 
+ 	drmModeFreeConnector(connector);
++	close(drm_fd);
+ }
 -- 
 2.37.2
