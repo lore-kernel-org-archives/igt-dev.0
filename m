@@ -1,20 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 64C4310E0ED
- for <igt-dev@lists.freedesktop.org>; Thu,  1 Sep 2022 18:36:52 +0000 (UTC)
-Date: Thu, 1 Sep 2022 20:36:48 +0200
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: igt-dev@lists.freedesktop.org
-Message-ID: <YxD7wHUUvxCSa569@zkempczy-mobl2>
-References: <20220901114442.55071-1-zbigniew.kempczynski@intel.com>
- <20220901114442.55071-5-zbigniew.kempczynski@intel.com>
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3BAE810E73F
+ for <igt-dev@lists.freedesktop.org>; Thu,  1 Sep 2022 14:49:57 +0000 (UTC)
+From: "Hogander, Jouni" <jouni.hogander@intel.com>
+To: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "B,
+ Jeevan" <jeevan.b@intel.com>
+Date: Thu, 1 Sep 2022 14:49:48 +0000
+Message-ID: <940cdb8eb1fadcec516e44cff9b2c5012d9809d0.camel@intel.com>
+References: <20220823060501.11524-1-jeevan.b@intel.com>
+In-Reply-To: <20220823060501.11524-1-jeevan.b@intel.com>
+Content-Language: en-US
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <C32D0000D05CBD41BB2EF77943C00CAE@namprd11.prod.outlook.com>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20220901114442.55071-5-zbigniew.kempczynski@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 04/12] i915/gem_create: Verify all
- regions return cleared objects
+Subject: Re: [igt-dev] [PATCH i-g-t v2] tests/i915/kms_psr2_su: Convert
+ tests to dynamic
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,229 +27,151 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Thu, Sep 01, 2022 at 01:44:34PM +0200, Zbigniew Kempczyński wrote:
-> From: Chris Wilson <chris.p.wilson@intel.com>
-> 
-> We do not tolerate leaking stale information in newly created objects, so
-> make sure the test covers all memory regions.
-> 
-> Signed-off-by: Chris Wilson <chris.p.wilson@intel.com>
-> ---
->  tests/i915/gem_create.c | 100 +++++++++++++++++++++++++++++++---------
->  1 file changed, 77 insertions(+), 23 deletions(-)
-> 
-> diff --git a/tests/i915/gem_create.c b/tests/i915/gem_create.c
-> index d7d2a01722..06a9498e0d 100644
-> --- a/tests/i915/gem_create.c
-> +++ b/tests/i915/gem_create.c
-> @@ -59,6 +59,7 @@
->  #include "i915/gem_create.h"
->  #include "i915/gem_engine_topology.h"
->  #include "i915/gem_mman.h"
-> +#include "i915/intel_memory_region.h"
->  #include "i915_drm.h"
->  
->  IGT_TEST_DESCRIPTION("Ensure that basic gem_create and gem_create_ext works"
-> @@ -145,45 +146,88 @@ static uint64_t get_npages(_Atomic(uint64_t) *global, uint64_t npages)
->  
->  struct thread_clear {
->  	_Atomic(uint64_t) max;
-> +	struct drm_i915_gem_memory_class_instance region;
->  	int timeout;
->  	int i915;
->  };
->  
-> +static uint32_t batch_create(int i915)
-> +{
-> +	const uint32_t bbe = MI_BATCH_BUFFER_END;
-> +	uint32_t handle = gem_create(i915, sizeof(bbe));
-> +
-> +	gem_write(i915, handle, 0, &bbe, sizeof(bbe));
-> +	return handle;
-> +}
-> +
-> +static void make_resident(int i915, uint32_t batch, uint32_t handle)
-> +{
-> +	struct drm_i915_gem_exec_object2 obj[2] = {
-> +		[0] = {
-> +			.handle = handle,
-> +			.flags = EXEC_OBJECT_SUPPORTS_48B_ADDRESS,
-> +
-
-Extra line.
-
-> +		},
-> +		[1] = {
-> +			.handle = batch ?: batch_create(i915),
-> +			.flags = EXEC_OBJECT_SUPPORTS_48B_ADDRESS,
-> +		},
-> +	};
-> +	struct drm_i915_gem_execbuffer2 eb = {
-> +		.buffers_ptr = to_user_pointer(obj),
-> +		.buffer_count = ARRAY_SIZE(obj),
-> +	};
-> +	int err;
-> +
-> +	err = __gem_execbuf(i915, &eb);
-> +	if (obj[1].handle != batch)
-> +		gem_close(i915, obj[1].handle);
-> +
-> +	igt_assert(err == 0 || err == -E2BIG || err == -ENOSPC);
-> +}
-> +
->  static void *thread_clear(void *data)
->  {
->  	struct thread_clear *arg = data;
->  	unsigned long checked = 0, total = 0;
-> -	enum { PRW, GTT, WC, WB, __LAST__ } mode = PRW;
-> +	enum { PRW, GTT, WC, WB, __LAST__, FIXED } mode = PRW;
->  	int i915 = arg->i915;
-> +	uint32_t batch = batch_create(i915);
-> +
-> +	if (__gem_write(i915, 0, 0, 0, 0) == -EOPNOTSUPP)
-> +		mode = FIXED;
->  
->  	igt_until_timeout(arg->timeout) {
-> -		struct drm_i915_gem_create create = {};
-> -		uint64_t npages;
-> +		uint64_t npages, size;
-> +		uint32_t handle;
->  		void *ptr;
->  
->  		npages = random();
->  		npages <<= 32;
->  		npages |= random();
->  		npages = get_npages(&arg->max, npages);
-> -		create.size = npages << 12;
-> +		size = npages << 12;
-> +
-> +		igt_assert_eq(__gem_create_in_memory_region_list(i915, &handle, &size, 0, &arg->region, 1), 0);
-> +		if (random() & 1)
-> +			make_resident(i915, batch, handle);
->  
-> -		create_ioctl(i915, &create);
->  		switch (mode) {
-> +		case FIXED:
-> +			ptr = __gem_mmap_offset__fixed(i915, handle, 0, size, PROT_READ);
-> +			break;
->  		case __LAST__:
->  		case PRW:
->  			ptr = NULL;
->  			break;
->  		case WB:
-> -			ptr = __gem_mmap__cpu(i915, create.handle,
-> -					      0, create.size, PROT_READ);
-> +			ptr = __gem_mmap__cpu(i915, handle, 0, size, PROT_READ);
->  			break;
->  		case WC:
-> -			ptr = __gem_mmap__wc(i915, create.handle,
-> -					     0, create.size, PROT_READ);
-> +			ptr = __gem_mmap__wc(i915, handle, 0, size, PROT_READ);
->  			break;
->  		case GTT:
-> -			ptr = __gem_mmap__gtt(i915, create.handle,
-> -					      create.size, PROT_READ);
-> +			ptr = __gem_mmap__gtt(i915, handle, size, PROT_READ);
->  			break;
->  		}
->  		/* No set-domains as we are being as naughty as possible */
-> @@ -195,7 +239,7 @@ static void *thread_clear(void *data)
->  			};
->  
->  			if (!ptr)
-> -				gem_read(i915, create.handle, x[0], x, sizeof(x));
-> +				gem_read(i915, handle, x[0], x, sizeof(x));
->  			else if (page & 1)
->  				igt_memcpy_from_wc(x, ptr + x[0], sizeof(x));
->  			else
-> @@ -207,26 +251,28 @@ static void *thread_clear(void *data)
->  			checked++;
->  		}
->  		if (ptr)
-> -			munmap(ptr, create.size);
-> -		gem_close(i915, create.handle);
-> +			munmap(ptr, size);
-> +		gem_close(i915, handle);
->  
->  		total += npages;
->  		atomic_fetch_add(&arg->max, npages);
->  
-> -		if (++mode == __LAST__)
-> +		if (mode < __LAST__ && ++mode == __LAST__)
->  			mode = PRW;
->  	}
-> +	gem_close(i915, batch);
->  
->  	igt_info("Checked %'lu / %'lu pages\n", checked, total);
->  	return (void *)(uintptr_t)checked;
->  }
->  
-> -static void always_clear(int i915, int timeout)
-> +static void always_clear(int i915, const struct gem_memory_region *r, int timeout)
->  {
->  	struct thread_clear arg = {
->  		.i915 = i915,
-> +		.region = r->ci,
-> +		.max = r->size / 2 >> 12, /* in pages */
->  		.timeout = timeout,
-> -		.max = igt_get_avail_ram_mb() << (20 - 12), /* in pages */
->  	};
->  	const int ncpus = sysconf(_SC_NPROCESSORS_ONLN);
->  	unsigned long checked;
-> @@ -244,7 +290,7 @@ static void always_clear(int i915, int timeout)
->  	igt_info("Checked %'lu page allocations\n", checked);
->  }
->  
-> -static void busy_create(int i915, int timeout)
-> +static void busy_create(int i915, const struct gem_memory_region *r, int timeout)
->  {
->  	struct intel_execution_engine2 *e;
->  	const intel_ctx_t *ctx;
-> @@ -267,7 +313,7 @@ static void busy_create(int i915, int timeout)
->  			uint32_t handle;
->  			igt_spin_t *next;
->  
-> -			handle = gem_create(i915, 4096);
-> +			handle = gem_create_in_memory_region_list(i915, 4096, 0, &r->ci, 1);
->  			next = igt_spin_new(i915,
->  					    .ahnd = ahnd,
->  					    .ctx = ctx,
-> @@ -808,12 +854,20 @@ igt_main
->  		size_update(fd);
->  
->  	igt_describe("Verify that all new objects are clear.");
-> -	igt_subtest("create-clear")
-> -		always_clear(fd, 30);
-> +	igt_subtest_with_dynamic("create-clear") {
-> +		for_each_memory_region(r, fd) {
-> +			igt_dynamic_f("%s", r->name)
-> +				always_clear(fd, r, 30);
-> +		}
-> +	}
-
-Currently with smem / lmem0 we won't hit igt_runner timeout, but we need to 
-address this in the future for gpus with more regions.
-
-With above nit fixed:
-
-Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-
---
-Zbigniew
-
->  
->  	igt_describe("Create buffer objects while GPU is busy.");
-> -	igt_subtest("busy-create")
-> -		busy_create(fd, 30);
-> +	igt_subtest_with_dynamic("busy-create") {
-> +		for_each_memory_region(r, fd) {
-> +			igt_dynamic_f("%s", r->name)
-> +				busy_create(fd, r, 30);
-> +		}
-> +	}
->  
->  	igt_describe("Exercise create_ext placements extension.");
->  	igt_subtest("create-ext-placement-sanity-check")
-> -- 
-> 2.34.1
-> 
+T24gVHVlLCAyMDIyLTA4LTIzIGF0IDExOjM1ICswNTMwLCBKZWV2YW4gQiB3cm90ZToKPiBDb252
+ZXJ0aW5nIHRoZSBleGlzdGluZyBzdWJ0ZXN0cyB0byBkeW5hbWljIHN1YnRlc3RzLgo+IEFkZGlu
+ZyBzdXBwb3J0IGZvciBlYWNoX3BpcGUsIGN1cnJlbnRseSBQU1IyIGlzIHN1cHBvcnRlZCBvbgo+
+IFBJUEVfQSBzbyBicmVha2luZyB0aGUgbG9vcCBmb3Igb3RoZXIgcGlwZXMgY3VycmVudGx5LgoK
+SSB0aGluayB5b3Ugc2hvdWxkIGltcGxlbWVudCBjaGVjayBmb3IgcGlwZSBzdXBwb3J0aW5nIFBT
+UjIgb3Igbm90IGFuZAp0aGVuIGFkZGluZyBkeW5hbWljIHN1YnRlc3QgYmFzZWQgb24gdGhhdC4K
+Cj4gCgo+IHYyOiBBZGQgY29tbWl0IG1lc3NhZ2UgYW5kIGNoYW5nZSBicmVhayB0byBjb250aW51
+ZS4gKEpvdW5pKQo+IAo+IFNpZ25lZC1vZmYtYnk6IEplZXZhbiBCIDxqZWV2YW4uYkBpbnRlbC5j
+b20+Cj4gLS0tCj4gwqB0ZXN0cy9pOTE1L2ttc19wc3IyX3N1LmMgfCA2NCArKysrKysrKysrKysr
+KysrKysrKysrKysrLS0tLS0tLS0tLS0tLQo+IC0tCj4gwqAxIGZpbGUgY2hhbmdlZCwgNDEgaW5z
+ZXJ0aW9ucygrKSwgMjMgZGVsZXRpb25zKC0pCj4gCj4gZGlmZiAtLWdpdCBhL3Rlc3RzL2k5MTUv
+a21zX3BzcjJfc3UuYyBiL3Rlc3RzL2k5MTUva21zX3BzcjJfc3UuYwo+IGluZGV4IGNhY2NmNzEz
+Li5iM2M2ZTk1MyAxMDA2NDQKPiAtLS0gYS90ZXN0cy9pOTE1L2ttc19wc3IyX3N1LmMKPiArKysg
+Yi90ZXN0cy9pOTE1L2ttc19wc3IyX3N1LmMKPiBAQCAtMTIzLDkgKzEyMywxNSBAQCBzdGF0aWMg
+dm9pZCBkaXNwbGF5X2ZpbmkoZGF0YV90ICpkYXRhKQo+IMKgwqDCoMKgwqDCoMKgwqBpZ3RfZGlz
+cGxheV9maW5pKCZkYXRhLT5kaXNwbGF5KTsKPiDCoH0KPiDCoAo+IC1zdGF0aWMgdm9pZCBwcmVw
+YXJlKGRhdGFfdCAqZGF0YSkKPiArc3RhdGljIHZvaWQgcHJlcGFyZShkYXRhX3QgKmRhdGEsIGVu
+dW0gcGlwZSBwaXBlKQo+IMKgewo+IMKgwqDCoMKgwqDCoMKgwqBpZ3RfcGxhbmVfdCAqcHJpbWFy
+eTsKPiArwqDCoMKgwqDCoMKgwqBpZ3Rfb3V0cHV0X3QgKm91dHB1dDsKPiArwqDCoMKgwqDCoMKg
+wqBpZ3RfZGlzcGxheV90ICpkaXNwbGF5ID0gJmRhdGEtPmRpc3BsYXk7Cj4gKwo+ICvCoMKgwqDC
+oMKgwqDCoGlndF9kaXNwbGF5X3Jlc2V0KGRpc3BsYXkpOwo+ICvCoMKgwqDCoMKgwqDCoG91dHB1
+dCA9IGRhdGEtPm91dHB1dDsKPiArwqDCoMKgwqDCoMKgwqBpZ3Rfb3V0cHV0X3NldF9waXBlKG91
+dHB1dCwgcGlwZSk7Cj4gwqAKPiDCoMKgwqDCoMKgwqDCoMKgLyogYWxsIGdyZWVuIGZyYW1lICov
+Cj4gwqDCoMKgwqDCoMKgwqDCoGlndF9jcmVhdGVfY29sb3JfZmIoZGF0YS0+ZHJtX2ZkLAo+IEBA
+IC0yNjMsNiArMjY5LDcgQEAgc3RhdGljIHZvaWQgY2xlYW51cChkYXRhX3QgKmRhdGEpCj4gwqBp
+Z3RfbWFpbgo+IMKgewo+IMKgwqDCoMKgwqDCoMKgwqBkYXRhX3QgZGF0YSA9IHt9Owo+ICvCoMKg
+wqDCoMKgwqDCoGVudW0gcGlwZSBwaXBlOwo+IMKgCj4gwqDCoMKgwqDCoMKgwqDCoGlndF9maXh0
+dXJlIHsKPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoHN0cnVjdCBpdGltZXJzcGVj
+IGludGVydmFsOwo+IEBAIC0yODcsMTIgKzI5NCwxNyBAQCBpZ3RfbWFpbgo+IMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgIkVycm9yIGVu
+YWJsaW5nIFBTUjJcbiIpOwo+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgZGF0YS5v
+cCA9IEZST05UQlVGRkVSOwo+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgZGF0YS5m
+b3JtYXQgPSBEUk1fRk9STUFUX1hSR0I4ODg4Owo+IC3CoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqBwcmVwYXJlKCZkYXRhKTsKPiAtwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgciA9
+IHBzcl93YWl0X2VudHJ5KGRhdGEuZGVidWdmc19mZCwgUFNSX01PREVfMik7Cj4gLcKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoGNsZWFudXAoJmRhdGEpOwo+IC3CoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqBpZiAoIXIpCj4gLcKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqBwc3JfcHJpbnRfZGVidWdmcyhkYXRhLmRlYnVnZnNfZmQpOwo+IC3CoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBpZ3RfcmVxdWlyZV9mKHIsICJQU1IyIGNhbiBub3Qg
+YmUgZW5hYmxlZFxuIik7Cj4gKwo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBmb3Jf
+ZWFjaF9waXBlX3dpdGhfdmFsaWRfb3V0cHV0KCZkYXRhLmRpc3BsYXksIHBpcGUsCj4gZGF0YS5v
+dXRwdXQpIHsKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oGlmIChwaXBlICE9IFBJUEVfQSkKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBjb250aW51ZTsKPiArwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoHByZXBhcmUoJmRhdGEsIHBpcGUpOwo+ICvC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgciA9IHBzcl93YWl0
+X2VudHJ5KGRhdGEuZGVidWdmc19mZCwKPiBQU1JfTU9ERV8yKTsKPiArwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGNsZWFudXAoJmRhdGEpOwo+ICvCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgaWYgKCFyKQo+ICvCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoHBz
+cl9wcmludF9kZWJ1Z2ZzKGRhdGEuZGVidWdmc19mZCk7Cj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBpZ3RfcmVxdWlyZV9mKHIsICJQU1IyIGNhbiBub3Qg
+YmUKPiBlbmFibGVkXG4iKTsKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgfQoKSSB0
+aGluayB5b3Ugc2hvdWxkIHJlbW92ZSB0aGVzZSBjaGVja3MgZnJvbSBoZXJlIGFuZCBoYXZlIHRo
+YXQgY2hlY2sKZm9yIHBpcGUgc3VwcG9ydGluZyBQU1IyIG9yIG5vdC4gVGhlbiBhZGQgZHluYW1p
+YyB0ZXN0cyBiYXNlZCBvbiB0aGF0CmNoZWNrLgoKPiDCoAo+IMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgLyogYmxvY2tpbmcgdGltZXJmZCAqLwo+IMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgZGF0YS5jaGFuZ2Vfc2NyZWVuX3RpbWVyZmQgPQo+IHRpbWVyZmRfY3JlYXRl
+KENMT0NLX01PTk9UT05JQywgMCk7Cj4gQEAgLTMxMiwyMyArMzI0LDI5IEBAIGlndF9tYWluCj4g
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqB3aGlsZSAoKmZvcm1hdCAhPSBEUk1fRk9S
+TUFUX0lOVkFMSUQpIHsKPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqBkYXRhLmZvcm1hdCA9ICpmb3JtYXQrKzsKPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBpZ3RfZGVzY3JpYmUoIlRlc3QgdGhhdCBzZWxlY3Rp
+dmUgdXBkYXRlCj4gd29ya3Mgd2hlbiBzY3JlZW4gY2hhbmdlcyIpOwo+IC3CoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgaWd0X3N1YnRlc3RfZigiJXMtJXMiLCBv
+cF9zdHIoZGF0YS5vcCksCj4gaWd0X2Zvcm1hdF9zdHIoZGF0YS5mb3JtYXQpKSB7Cj4gLcKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+aWYgKGRhdGEub3AgPT0gRlJPTlRCVUZGRVIgJiYKPiAtwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAKPiBpbnRlbF9kaXNw
+bGF5X3ZlcihpbnRlbF9nZXRfZHJtX2RldmlkKGRhdGEuZHJtX2ZkKSkgPj0gMTIpIHsKPiAtwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgLyoKPiAtwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgICogRklYTUU6IERp
+c3BsYXkgMTIrCj4gcGxhdGZvcm1zIG5vdyBoYXZlIFBTUjIKPiAtwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgICogc2VsZWN0aXZlIGZldGNoIGVuYWJsZWQgYnkKPiBkZWZhdWx0IGJ1dCB3ZQo+IC3CoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqAgKiBzdGlsbCBjYW4ndCBwcm9wZXJseQo+IGhhbmRsZSBmcm9udGJ1
+ZmZlcgo+IC3CoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgKiByZW5kZXJpbmcsIHNvIHJpZ2h0IGl0Cj4g
+ZG9lcyBmdWxsIGZyYW1lCj4gLcKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCAqIGZldGNoZXMgYXQgZXZl
+cnkKPiBmcm9udGJ1ZmZlciByZW5kZXJpbmcuCj4gLcKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCAqIFNv
+IGl0IGlzIGV4cGVjdGVkIHRoYXQKPiB0aGlzIHRlc3Qgd2lsbCBmYWlsCj4gLcKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoCAqIGluIGRpc3BsYXkgMTIrIHBsYXRmb3JtCj4gZm9yIG5vdy4KPiAtwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgICovCj4gLcKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGlndF9za2lwKCJQU1Iy
+IHNlbGVjdGl2ZQo+IGZldGNoIGlzIGRvaW5nIGZ1bGwgZnJhbWUgZmV0Y2hlcyBmb3IgZnJvbnRi
+dWZmZXIgcmVuZGVyaW5nXG4iKTsKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoGlndF9zdWJ0ZXN0X3dpdGhfZHluYW1pY19mKCIlcy0lcyIsCj4gb3Bfc3Ry
+KGRhdGEub3ApLCBpZ3RfZm9ybWF0X3N0cihkYXRhLmZvcm1hdCkpIHsKPiArwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBmb3JfZWFj
+aF9waXBlX3dpdGhfdmFsaWRfb3V0cHV0KCZkYXRhCj4gLmRpc3BsYXksIHBpcGUsIGRhdGEub3V0
+cHV0KSB7Cj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGlmIChwaXBlICE9IFBJUEVfQSkKPiArwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGNvbnRpbnVlOwo+ICvCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqBpZ3RfZHluYW1pY19mKCJwaXBlLSVzIiwKPiBrbXN0ZXN0X3BpcGVfbmFtZShw
+aXBlKSkgewo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgaWYgKGRhdGEu
+b3AgPT0KPiBGUk9OVEJVRkZFUiAmJgo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgCj4gaW50ZWxfZGlzcGxheV92ZXIoaW50ZWxfZ2V0X2RybV9kZXZpZChkYXRh
+LmRybV9mZCkpID49IDEyKSB7Cj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqAvKgo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgICogRklYTUU6IERp
+c3BsYXkgMTIrCj4gcGxhdGZvcm1zIG5vdyBoYXZlIFBTUjIKPiArwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoCAqIHNlbGVjdGl2ZSBmZXRjaAo+IGVuYWJsZWQgYnkgZGVmYXVs
+dCBidXQgd2UKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCAqIHN0aWxs
+IGNhbid0Cj4gcHJvcGVybHkgaGFuZGxlIGZyb250YnVmZmVyCj4gK8KgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqAgKiByZW5kZXJpbmcsIHNvCj4gcmlnaHQgaXQgZG9lcyBmdWxs
+IGZyYW1lCj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgKiBmZXRjaGVz
+IGF0IGV2ZXJ5Cj4gZnJvbnRidWZmZXIgcmVuZGVyaW5nLgo+ICvCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgICogU28gaXQgaXMgZXhwZWN0ZWQKPiB0aGF0IHRoaXMgdGVzdCB3
+aWxsIGZhaWwKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCAqIGluIGRp
+c3BsYXkgMTIrCj4gcGxhdGZvcm0gZm9yIG5vdy4KPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoCAqLwo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+aWd0X3NraXAoIlBTUjIKPiBzZWxlY3RpdmUgZmV0Y2ggaXMgZG9pbmcgZnVsbCBmcmFtZSBmZXRj
+aGVzIGZvciBmcm9udGJ1ZmZlcgo+IHJlbmRlcmluZ1xuIik7Cj4gK8KgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqB9Cj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoHByZXBhcmUoJmRh
+dGEsIHBpcGUpOwo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBydW4oJmRhdGEpOwo+ICvCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqBjbGVhbnVwKCZkYXRhKTsKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgfQo+
+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqB9Cj4gLcKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgcHJlcGFyZSgmZGF0YSk7Cj4gLcKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgcnVuKCZkYXRhKTsKPiAt
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqBjbGVhbnVwKCZkYXRhKTsKPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqB9Cj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqB9Cj4gwqDC
+oMKgwqDCoMKgwqDCoH0KCg==
