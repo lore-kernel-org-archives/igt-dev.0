@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2DC6C10E694
- for <igt-dev@lists.freedesktop.org>; Thu,  1 Sep 2022 11:44:59 +0000 (UTC)
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C9E4A10E6D1
+ for <igt-dev@lists.freedesktop.org>; Thu,  1 Sep 2022 11:45:16 +0000 (UTC)
 From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Thu,  1 Sep 2022 13:44:33 +0200
-Message-Id: <20220901114442.55071-4-zbigniew.kempczynski@intel.com>
+Date: Thu,  1 Sep 2022 13:44:38 +0200
+Message-Id: <20220901114442.55071-9-zbigniew.kempczynski@intel.com>
 In-Reply-To: <20220901114442.55071-1-zbigniew.kempczynski@intel.com>
 References: <20220901114442.55071-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 03/12] lib/i915: Distinguish
- I915_MMAP_OFFSET_FIXED with an invalid domain
+Subject: [igt-dev] [PATCH i-g-t 08/12] i915/gem_mmap_offset: Verify all
+ regions remain in isolation
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,65 +23,138 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Chris Wilson <chris.p.wilson@linux.intel.com>
+From: Chris Wilson <chris.p.wilson@intel.com>
 
-Don't treat OFFSET_FIXED as using DOMAIN_CPU [0], but give it an invalid
-domain so we can avoid using in tests.
+Check that we don't leak mmap pointers to different regions.
 
-Signed-off-by: Chris Wilson <chris.p.wilson@linux.intel.com>
+Signed-off-by: Chris Wilson <chris.p.wilson@intel.com>
 ---
- lib/i915/gem_mman.c          |  2 +-
- tests/i915/gem_mmap_offset.c | 12 ++++++++----
- 2 files changed, 9 insertions(+), 5 deletions(-)
+ tests/i915/gem_mmap_offset.c | 99 +++++++++++++++++++-----------------
+ 1 file changed, 51 insertions(+), 48 deletions(-)
 
-diff --git a/lib/i915/gem_mman.c b/lib/i915/gem_mman.c
-index aa9ac6f3d7..48e3f8c991 100644
---- a/lib/i915/gem_mman.c
-+++ b/lib/i915/gem_mman.c
-@@ -678,7 +678,7 @@ const struct mmap_offset mmap_offset_types[] = {
- 	{ "wb", I915_MMAP_OFFSET_WB, I915_GEM_DOMAIN_CPU },
- 	{ "wc", I915_MMAP_OFFSET_WC, I915_GEM_DOMAIN_WC },
- 	{ "uc", I915_MMAP_OFFSET_UC, I915_GEM_DOMAIN_WC },
--	{ "fixed", I915_MMAP_OFFSET_FIXED, 0},
-+	{ "fixed", I915_MMAP_OFFSET_FIXED, -1 },
- 	{},
- };
- 
 diff --git a/tests/i915/gem_mmap_offset.c b/tests/i915/gem_mmap_offset.c
-index 5e6b19eb34..d1075c32eb 100644
+index 806a9d68f4..c392dc2092 100644
 --- a/tests/i915/gem_mmap_offset.c
 +++ b/tests/i915/gem_mmap_offset.c
-@@ -148,7 +148,8 @@ static void basic_uaf(int i915)
- 		}
+@@ -219,68 +219,71 @@ static void basic_uaf(int i915)
  
- 		expected = calloc(obj_size, sizeof(*expected));
--		gem_set_domain(i915, handle, t->domain, 0);
-+		if (t->domain != -1)
-+			gem_set_domain(i915, handle, t->domain, 0);
- 		igt_assert_f(memcmp(addr, expected, obj_size) == 0,
- 			     "mmap(%s) not clear on gem_create()\n",
- 			     t->name);
-@@ -157,15 +158,18 @@ static void basic_uaf(int i915)
- 		buf = calloc(obj_size, sizeof(*buf));
- 		memset(buf + 1024, 0x01, 1024);
- 		gem_write(i915, handle, 0, buf, obj_size);
--		gem_set_domain(i915, handle, t->domain, 0);
-+		if (t->domain != -1)
-+			gem_set_domain(i915, handle, t->domain, 0);
- 		igt_assert_f(memcmp(buf, addr, obj_size) == 0,
- 			     "mmap(%s) not coherent with gem_write()\n",
- 			     t->name);
+ static void isolation(int i915)
+ {
+-	for_each_mmap_offset_type(i915, t) {
+-		struct drm_i915_gem_mmap_offset mmap_arg = {
+-			.flags = t->type
+-		};
+-		int A = gem_reopen_driver(i915);
+-		int B = gem_reopen_driver(i915);
+-		uint64_t offset_a, offset_b;
+-		uint32_t a, b;
+-		void *ptr;
+-
+-		a = gem_create(A, 4096);
+-		b = gem_open(B, gem_flink(A, a));
+-
+-		mmap_arg.handle = a;
+-		if (mmap_offset_ioctl(A, &mmap_arg)) {
+-			close(A);
+-			close(B);
+-			continue;
+-		}
+-		offset_a = mmap_arg.offset;
+-
+-		mmap_arg.handle = b;
+-		igt_assert_eq(mmap_offset_ioctl(B, &mmap_arg), 0);
+-		offset_b = mmap_arg.offset;
+-
+-		igt_info("A[%s]: {fd:%d, handle:%d, offset:%"PRIx64"}\n",
+-			 t->name, A, a, offset_a);
+-		igt_info("B[%s]: {fd:%d, handle:%d, offset:%"PRIx64"}\n",
+-			 t->name, B, b, offset_b);
++	for_each_memory_region(r, i915) {
++		igt_info("%s\n", r->name);
++		for_each_mmap_offset_type(i915, t) {
++			struct drm_i915_gem_mmap_offset mmap_arg = {
++				.flags = t->type
++			};
++			int A = gem_reopen_driver(i915);
++			int B = gem_reopen_driver(i915);
++			uint64_t offset_a, offset_b;
++			uint32_t a, b;
++			void *ptr;
++
++			a = gem_create_in_memory_region_list(A, 4096, 0, &r->ci, 1);
++			b = gem_open(B, gem_flink(A, a));
++
++			mmap_arg.handle = a;
++			if (mmap_offset_ioctl(A, &mmap_arg)) {
++				close(A);
++				close(B);
++				continue;
++			}
++			offset_a = mmap_arg.offset;
  
--		gem_set_domain(i915, handle, t->domain, t->domain);
-+		if (t->domain != -1)
-+			gem_set_domain(i915, handle, t->domain, t->domain);
- 		memset(addr + 2048, 0xff, 1024);
- 		gem_read(i915, handle, 0, buf, obj_size);
--		gem_set_domain(i915, handle, t->domain, 0);
-+		if (t->domain != -1)
-+			gem_set_domain(i915, handle, t->domain, 0);
- 		igt_assert_f(memcmp(buf, addr, obj_size) == 0,
- 			     "mmap(%s) not coherent with gem_read()\n",
- 			     t->name);
+-		errno = 0;
+-		ptr = mmap64(0, 4096, PROT_READ, MAP_SHARED, i915, offset_a);
+-		igt_assert(ptr == MAP_FAILED);
+-		igt_assert_eq(errno, EACCES);
++			mmap_arg.handle = b;
++			igt_assert_eq(mmap_offset_ioctl(B, &mmap_arg), 0);
++			offset_b = mmap_arg.offset;
+ 
+-		errno = 0;
+-		ptr = mmap64(0, 4096, PROT_READ, MAP_SHARED, i915, offset_b);
+-		igt_assert(ptr == MAP_FAILED);
+-		igt_assert_eq(errno, EACCES);
++			igt_info("\tA[%s]: {fd:%d, handle:%d, offset:%"PRIx64"}\n",
++				 t->name, A, a, offset_a);
++			igt_info("\tB[%s]: {fd:%d, handle:%d, offset:%"PRIx64"}\n",
++				 t->name, B, b, offset_b);
+ 
+-		if (offset_a != offset_b) {
+ 			errno = 0;
+-			ptr = mmap(0, 4096, PROT_READ, MAP_SHARED, B, offset_a);
++			ptr = mmap64(0, 4096, PROT_READ, MAP_SHARED, i915, offset_a);
+ 			igt_assert(ptr == MAP_FAILED);
+ 			igt_assert_eq(errno, EACCES);
+ 
+ 			errno = 0;
+-			ptr = mmap(0, 4096, PROT_READ, MAP_SHARED, A, offset_b);
++			ptr = mmap64(0, 4096, PROT_READ, MAP_SHARED, i915, offset_b);
+ 			igt_assert(ptr == MAP_FAILED);
+ 			igt_assert_eq(errno, EACCES);
+-		}
+ 
+-		close(B);
++			if (offset_a != offset_b) {
++				errno = 0;
++				ptr = mmap(0, 4096, PROT_READ, MAP_SHARED, B, offset_a);
++				igt_assert(ptr == MAP_FAILED);
++				igt_assert_eq(errno, EACCES);
+ 
+-		ptr = mmap64(0, 4096, PROT_READ, MAP_SHARED, A, offset_a);
+-		igt_assert(ptr != MAP_FAILED);
+-		munmap(ptr, 4096);
++				errno = 0;
++				ptr = mmap(0, 4096, PROT_READ, MAP_SHARED, A, offset_b);
++				igt_assert(ptr == MAP_FAILED);
++				igt_assert_eq(errno, EACCES);
++			}
+ 
+-		close(A);
++			close(B);
++
++			ptr = mmap64(0, 4096, PROT_READ, MAP_SHARED, A, offset_a);
++			igt_assert(ptr != MAP_FAILED);
++			munmap(ptr, 4096);
++
++			close(A);
+ 
+-		ptr = mmap64(0, 4096, PROT_READ, MAP_SHARED, A, offset_a);
+-		igt_assert(ptr == MAP_FAILED);
++			ptr = mmap64(0, 4096, PROT_READ, MAP_SHARED, A, offset_a);
++			igt_assert(ptr == MAP_FAILED);
++		}
+ 	}
+ }
+ 
 -- 
 2.34.1
