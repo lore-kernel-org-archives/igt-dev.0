@@ -1,15 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Ryszard Knop" <ryszard.knop@intel.com>
-Date: Thu, 01 Sep 2022 09:20:31 -0000
-Message-ID: <166202403123.11919.13110375839061395665@emeril.freedesktop.org>
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9242110E669
+ for <igt-dev@lists.freedesktop.org>; Thu,  1 Sep 2022 09:21:04 +0000 (UTC)
+Date: Thu, 1 Sep 2022 12:20:10 +0300
+From: Petri Latvala <petri.latvala@intel.com>
+To: Ryszard Knop <ryszard.knop@intel.com>
+Message-ID: <YxB5Sk49s92QIic9@platvala-desk.ger.corp.intel.com>
 References: <20220901090431.110527-1-ryszard.knop@intel.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 In-Reply-To: <20220901090431.110527-1-ryszard.knop@intel.com>
-Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_r?=
- =?utf-8?q?unner=3A_Don=27t_free_uninitialized_pointers_in_add=5Fenv=5Fvar?=
+Subject: Re: [igt-dev] [PATCH i-g-t] runner: Don't free uninitialized
+ pointers in add_env_var
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,45 +20,36 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
+Cc: Development mailing list for IGT GPU Tools <igt-dev@lists.freedesktop.org>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-== Series Details ==
+On Thu, Sep 01, 2022 at 11:04:31AM +0200, Ryszard Knop wrote:
+> If we goto error before assigning env_kv, it's left uninitialized, which
+> we later attempt to free(). Initialize both variables to NULL.
+> 
+> Signed-off-by: Ryszard Knop <ryszard.knop@intel.com>
 
-Series: runner: Don't free uninitialized pointers in add_env_var
-URL   : https://patchwork.freedesktop.org/series/108009/
-State : warning
+Reviewed-by: Petri Latvala <petri.latvala@intel.com>
 
-== Summary ==
-
-Pipeline status: FAILED.
-
-see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/678285 for the overview.
-
-test:ninja-test-mips has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/27712456):
-  Ok:                   22
-  Expected Fail:         3
-  Fail:                291
-  Unexpected Pass:       0
-  Skipped:               0
-  Timeout:               0
-  
-  Full log written to /builds/gfx-ci/igt-ci-tags/build/meson-logs/testlog.txt
-  section_end:1662023818:step_script
-  section_start:1662023818:upload_artifacts_on_failure
-  Uploading artifacts for failed job
-  Uploading artifacts...
-  build: found 1758 matching files and directories   
-  Uploading artifacts as "archive" to coordinator... 201 Created  id=27712456 responseStatus=201 Created token=kWYLQ57H
-  section_end:1662023827:upload_artifacts_on_failure
-  section_start:1662023827:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1662023828:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-
-== Logs ==
-
-For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/678285
+> ---
+>  runner/settings.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/runner/settings.c b/runner/settings.c
+> index 23aa8296..e8e1f50e 100644
+> --- a/runner/settings.c
+> +++ b/runner/settings.c
+> @@ -440,7 +440,7 @@ static char *string_trim_and_duplicate(const char *string) {
+>   * an empty variable for the runner process, then providing just the "KEY".
+>   */
+>  static bool add_env_var(struct igt_list_head *env_vars, const char *key_value) {
+> -	char *env_kv, *value_str;
+> +	char *env_kv = NULL, *value_str = NULL;
+>  	struct environment_variable *var = NULL;
+>  
+>  	if (env_vars == NULL || key_value == NULL || strlen(key_value) == 0)
+> -- 
+> 2.37.3
+> 
