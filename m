@@ -1,23 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id EF3BA10E806
- for <igt-dev@lists.freedesktop.org>; Fri,  2 Sep 2022 11:49:14 +0000 (UTC)
-Date: Fri, 2 Sep 2022 14:46:12 +0300
-From: Petri Latvala <petri.latvala@intel.com>
-To: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Message-ID: <YxHtBNVMggYr7c4J@platvala-desk.ger.corp.intel.com>
-References: <20220901114442.55071-1-zbigniew.kempczynski@intel.com>
- <20220901114442.55071-4-zbigniew.kempczynski@intel.com>
- <YxDytZsI8b0H9lgI@zkempczy-mobl2>
- <YxHB0lbSO8GGoSM7@platvala-desk.ger.corp.intel.com>
- <YxHWEAyKdNHg9uBq@zkempczy-mobl2>
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B527910E806
+ for <igt-dev@lists.freedesktop.org>; Fri,  2 Sep 2022 11:58:09 +0000 (UTC)
+Date: Fri, 2 Sep 2022 13:58:05 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Message-ID: <YxHvza9VUEoE4zMv@kamilkon-desk1>
+References: <20220902075227.50690-1-zbigniew.kempczynski@intel.com>
+ <20220902075227.50690-12-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <YxHWEAyKdNHg9uBq@zkempczy-mobl2>
-Subject: Re: [igt-dev] [PATCH i-g-t 03/12] lib/i915: Distinguish
- I915_MMAP_OFFSET_FIXED with an invalid domain
+In-Reply-To: <20220902075227.50690-12-zbigniew.kempczynski@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t v2 11/12] i915/gem_mmap_offset: Exercise
+ close race against all types/regions
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,117 +22,85 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org
+Cc: Chris Wilson <chris.p.wilson@linux.intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Fri, Sep 02, 2022 at 12:08:16PM +0200, Zbigniew Kempczyński wrote:
-> On Fri, Sep 02, 2022 at 11:41:54AM +0300, Petri Latvala wrote:
-> > On Thu, Sep 01, 2022 at 07:58:13PM +0200, Zbigniew Kempczyński wrote:
-> > > On Thu, Sep 01, 2022 at 01:44:33PM +0200, Zbigniew Kempczyński wrote:
-> > > > From: Chris Wilson <chris.p.wilson@linux.intel.com>
-> > > > 
-> > > > Don't treat OFFSET_FIXED as using DOMAIN_CPU [0], but give it an invalid
-> > > > domain so we can avoid using in tests.
-> > > 
-> > > I915_GEM_DOMAIN_CPU == 1, so 
-> > > > 
-> > > > Signed-off-by: Chris Wilson <chris.p.wilson@linux.intel.com>
-> > > > ---
-> > > >  lib/i915/gem_mman.c          |  2 +-
-> > > >  tests/i915/gem_mmap_offset.c | 12 ++++++++----
-> > > >  2 files changed, 9 insertions(+), 5 deletions(-)
-> > > > 
-> > > > diff --git a/lib/i915/gem_mman.c b/lib/i915/gem_mman.c
-> > > > index aa9ac6f3d7..48e3f8c991 100644
-> > > > --- a/lib/i915/gem_mman.c
-> > > > +++ b/lib/i915/gem_mman.c
-> > > > @@ -678,7 +678,7 @@ const struct mmap_offset mmap_offset_types[] = {
-> > > >  	{ "wb", I915_MMAP_OFFSET_WB, I915_GEM_DOMAIN_CPU },
-> > > >  	{ "wc", I915_MMAP_OFFSET_WC, I915_GEM_DOMAIN_WC },
-> > > >  	{ "uc", I915_MMAP_OFFSET_UC, I915_GEM_DOMAIN_WC },
-> > > > -	{ "fixed", I915_MMAP_OFFSET_FIXED, 0},
-> > > > +	{ "fixed", I915_MMAP_OFFSET_FIXED, -1 },
-> > > 
-> > > this is not needed.
-> > > 
-> > > >  	{},
-> > > >  };
-> > > >  
-> > > > diff --git a/tests/i915/gem_mmap_offset.c b/tests/i915/gem_mmap_offset.c
-> > > > index 5e6b19eb34..d1075c32eb 100644
-> > > > --- a/tests/i915/gem_mmap_offset.c
-> > > > +++ b/tests/i915/gem_mmap_offset.c
-> > > > @@ -148,7 +148,8 @@ static void basic_uaf(int i915)
-> > > >  		}
-> > > >  
-> > > >  		expected = calloc(obj_size, sizeof(*expected));
-> > > > -		gem_set_domain(i915, handle, t->domain, 0);
-> > > > +		if (t->domain != -1)
-> > > 
-> > > Just if (t->domain) is enough here.
-> > 
-> > But that does different things, doesn't it?
+Hi,
+
+On 2022-09-02 at 09:52:26 +0200, Zbigniew Kempczyński wrote:
+> From: Chris Wilson <chris.p.wilson@linux.intel.com>
 > 
-> Each I915_GEM_DOMAIN_* > 0 so change to put -1 is not necessary
-> and zero is enough for 'fixed'.
-
-Ah, so t->domain can never be -1?
-
-
--- 
-Petri Latvala
-
-
-
-
-
+> Iterate over all mmmap types and memory regions looking for races
+> against closing the object.
 > 
-> I've dropped change in gem_mman.c adding conditional to gem_mmap_offset
-> only:
+> Signed-off-by: Chris Wilson <chris.p.wilson@linux.intel.com>
+> Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> ---
+>  tests/i915/gem_mmap_offset.c | 41 ++++++++++++++++++------------------
+>  1 file changed, 21 insertions(+), 20 deletions(-)
 > 
-> https://patchwork.freedesktop.org/patch/500885/?series=108022&rev=2
+> diff --git a/tests/i915/gem_mmap_offset.c b/tests/i915/gem_mmap_offset.c
+> index 281ab2303c..ce911255dd 100644
+> --- a/tests/i915/gem_mmap_offset.c
+> +++ b/tests/i915/gem_mmap_offset.c
+> @@ -491,29 +491,30 @@ static void close_race(int i915, int timeout)
+>  
+>  	igt_fork(child, ncpus + 1) {
+>  		do {
+> -			struct drm_i915_gem_mmap_offset mmap_arg = {};
+> -			const int i = 1 + random() % ncpus;
+> -			uint32_t old;
+> -
+> -			mmap_arg.handle = gem_create(i915, 4096);
+> -			mmap_arg.flags = I915_MMAP_OFFSET_WB;
+> -			old = atomic_exchange(&handles[i], mmap_arg.handle);
+> -			ioctl(i915, DRM_IOCTL_GEM_CLOSE, &old);
+> -
+> -			if (ioctl(i915,
+> -				  DRM_IOCTL_I915_GEM_MMAP_OFFSET,
+> -				  &mmap_arg) != -1) {
+> -				void *ptr;
+> -
+> -				ptr = mmap64(0, 4096,
+> -					     PROT_WRITE, MAP_SHARED, i915,
+> -					     mmap_arg.offset);
+> -				if (ptr != MAP_FAILED) {
+> +			for_each_memory_region(r, i915) {
+> +				const int i = 1 + random() % ncpus;
+> +				uint64_t size = 4096;
+> +				uint32_t bo, old;
+> +
+> +				igt_assert_eq(__gem_create_in_memory_region_list(i915, &bo, &size, 0, &r->ci, 1), 0);
+> +				make_resident(i915, 0, bo);
+> +
+> +				old = atomic_exchange(&handles[i], bo);
+> +				ioctl(i915, DRM_IOCTL_GEM_CLOSE, &old);
+> +
+> +				for_each_mmap_offset_type(i915, t) {
+> +					void *ptr;
+> +
+> +					ptr = __mmap_offset(i915, bo, 0, size,
+> +							    PROT_READ | PROT_WRITE,
+> +							    t->type);
+> +					if (!ptr)
+> +						continue;
+> +
+>  					*(volatile uint32_t *)ptr = 0;
+> -					munmap(ptr, 4096);
+> +					munmap(ptr, size);
+>  				}
+>  			}
+> -
+>  		} while (!READ_ONCE(handles[0]));
+>  	}
+>  
+> -- 
+> 2.34.1
 > 
-> --
-> Zbigniew
-> 
-> > 
-> > 
-> > -- 
-> > Petri Latvala
-> > 
-> > 
-> > > 
-> > > --
-> > > Zbigniew
-> > > 
-> > > > +			gem_set_domain(i915, handle, t->domain, 0);
-> > > >  		igt_assert_f(memcmp(addr, expected, obj_size) == 0,
-> > > >  			     "mmap(%s) not clear on gem_create()\n",
-> > > >  			     t->name);
-> > > > @@ -157,15 +158,18 @@ static void basic_uaf(int i915)
-> > > >  		buf = calloc(obj_size, sizeof(*buf));
-> > > >  		memset(buf + 1024, 0x01, 1024);
-> > > >  		gem_write(i915, handle, 0, buf, obj_size);
-> > > > -		gem_set_domain(i915, handle, t->domain, 0);
-> > > > +		if (t->domain != -1)
-> > > > +			gem_set_domain(i915, handle, t->domain, 0);
-> > > >  		igt_assert_f(memcmp(buf, addr, obj_size) == 0,
-> > > >  			     "mmap(%s) not coherent with gem_write()\n",
-> > > >  			     t->name);
-> > > >  
-> > > > -		gem_set_domain(i915, handle, t->domain, t->domain);
-> > > > +		if (t->domain != -1)
-> > > > +			gem_set_domain(i915, handle, t->domain, t->domain);
-> > > >  		memset(addr + 2048, 0xff, 1024);
-> > > >  		gem_read(i915, handle, 0, buf, obj_size);
-> > > > -		gem_set_domain(i915, handle, t->domain, 0);
-> > > > +		if (t->domain != -1)
-> > > > +			gem_set_domain(i915, handle, t->domain, 0);
-> > > >  		igt_assert_f(memcmp(buf, addr, obj_size) == 0,
-> > > >  			     "mmap(%s) not coherent with gem_read()\n",
-> > > >  			     t->name);
-> > > > -- 
-> > > > 2.34.1
-> > > > 
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+
+--
+Kamil
