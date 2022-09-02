@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1448910E7A1
- for <igt-dev@lists.freedesktop.org>; Fri,  2 Sep 2022 07:53:12 +0000 (UTC)
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1E6E410E7A3
+ for <igt-dev@lists.freedesktop.org>; Fri,  2 Sep 2022 07:53:15 +0000 (UTC)
 From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Fri,  2 Sep 2022 09:52:26 +0200
-Message-Id: <20220902075227.50690-12-zbigniew.kempczynski@intel.com>
+Date: Fri,  2 Sep 2022 09:52:25 +0200
+Message-Id: <20220902075227.50690-11-zbigniew.kempczynski@intel.com>
 In-Reply-To: <20220902075227.50690-1-zbigniew.kempczynski@intel.com>
 References: <20220902075227.50690-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v2 11/12] i915/gem_mmap_offset: Exercise
- close race against all types/regions
+Subject: [igt-dev] [PATCH i-g-t v2 10/12] i915/gem_mmap_offset: Check all
+ mmap types reject invalid objects
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,70 +26,43 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Chris Wilson <chris.p.wilson@linux.intel.com>
 
-Iterate over all mmmap types and memory regions looking for races
-against closing the object.
+Extend the bad_object negative subtest to cover all mmap types.
 
 Signed-off-by: Chris Wilson <chris.p.wilson@linux.intel.com>
-Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 ---
- tests/i915/gem_mmap_offset.c | 41 ++++++++++++++++++------------------
- 1 file changed, 21 insertions(+), 20 deletions(-)
+ tests/i915/gem_mmap_offset.c | 18 ++++++++++--------
+ 1 file changed, 10 insertions(+), 8 deletions(-)
 
 diff --git a/tests/i915/gem_mmap_offset.c b/tests/i915/gem_mmap_offset.c
-index 281ab2303c..ce911255dd 100644
+index 3b779afb63..281ab2303c 100644
 --- a/tests/i915/gem_mmap_offset.c
 +++ b/tests/i915/gem_mmap_offset.c
-@@ -491,29 +491,30 @@ static void close_race(int i915, int timeout)
+@@ -121,15 +121,17 @@ static void bad_object(int i915)
+ 	handles[i] = real_handle + 1;
  
- 	igt_fork(child, ncpus + 1) {
- 		do {
--			struct drm_i915_gem_mmap_offset mmap_arg = {};
--			const int i = 1 + random() % ncpus;
--			uint32_t old;
--
--			mmap_arg.handle = gem_create(i915, 4096);
--			mmap_arg.flags = I915_MMAP_OFFSET_WB;
--			old = atomic_exchange(&handles[i], mmap_arg.handle);
--			ioctl(i915, DRM_IOCTL_GEM_CLOSE, &old);
--
--			if (ioctl(i915,
--				  DRM_IOCTL_I915_GEM_MMAP_OFFSET,
--				  &mmap_arg) != -1) {
--				void *ptr;
--
--				ptr = mmap64(0, 4096,
--					     PROT_WRITE, MAP_SHARED, i915,
--					     mmap_arg.offset);
--				if (ptr != MAP_FAILED) {
-+			for_each_memory_region(r, i915) {
-+				const int i = 1 + random() % ncpus;
-+				uint64_t size = 4096;
-+				uint32_t bo, old;
-+
-+				igt_assert_eq(__gem_create_in_memory_region_list(i915, &bo, &size, 0, &r->ci, 1), 0);
-+				make_resident(i915, 0, bo);
-+
-+				old = atomic_exchange(&handles[i], bo);
-+				ioctl(i915, DRM_IOCTL_GEM_CLOSE, &old);
-+
-+				for_each_mmap_offset_type(i915, t) {
-+					void *ptr;
-+
-+					ptr = __mmap_offset(i915, bo, 0, size,
-+							    PROT_READ | PROT_WRITE,
-+							    t->type);
-+					if (!ptr)
-+						continue;
-+
- 					*(volatile uint32_t *)ptr = 0;
--					munmap(ptr, 4096);
-+					munmap(ptr, size);
- 				}
- 			}
--
- 		} while (!READ_ONCE(handles[0]));
+ 	for (; i >= 0; i--) {
+-		struct drm_i915_gem_mmap_offset arg = {
+-			.handle = handles[i],
+-			.flags = I915_MMAP_OFFSET_WB,
+-		};
++		for_each_mmap_offset_type(i915, t) {
++			struct drm_i915_gem_mmap_offset arg = {
++				.handle = handles[i],
++				.flags = t->type,
++			};
+ 
+-		igt_debug("Trying MMAP IOCTL with handle %x\n",
+-			  handles[i]);
+-		igt_assert_eq(mmap_offset_ioctl(i915, &arg),
+-			      -ENOENT);
++			igt_debug("Trying MMAP IOCTL[%s] with handle %x\n",
++				  t->name, handles[i]);
++			igt_assert_eq(mmap_offset_ioctl(i915, &arg),
++				      -ENOENT);
++		}
  	}
  
+ 	gem_close(i915, real_handle);
 -- 
 2.34.1
