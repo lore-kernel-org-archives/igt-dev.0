@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0BE0D10E7A1
- for <igt-dev@lists.freedesktop.org>; Fri,  2 Sep 2022 07:52:55 +0000 (UTC)
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4EB2710E78A
+ for <igt-dev@lists.freedesktop.org>; Fri,  2 Sep 2022 07:52:39 +0000 (UTC)
 From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Fri,  2 Sep 2022 09:52:22 +0200
-Message-Id: <20220902075227.50690-8-zbigniew.kempczynski@intel.com>
+Date: Fri,  2 Sep 2022 09:52:17 +0200
+Message-Id: <20220902075227.50690-3-zbigniew.kempczynski@intel.com>
 In-Reply-To: <20220902075227.50690-1-zbigniew.kempczynski@intel.com>
 References: <20220902075227.50690-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v2 07/12] i915/gem_mmap_offset: Verify all
- regions with ptrace
+Subject: [igt-dev] [PATCH i-g-t v2 02/12] lib/i915: Mark gem_create as
+ handling const memory regions
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,130 +24,57 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Chris Wilson <chris.p.wilson@intel.com>
+From: Chris Wilson <chris.p.wilson@linux.intel.com>
 
-Check we can use ptrace to query *ptr of each mmap for each region.
+Make the memory regions passed to gem_crate_in_memory_region_list() as
+being const.
 
-Signed-off-by: Chris Wilson <chris.p.wilson@intel.com>
+Signed-off-by: Chris Wilson <chris.p.wilson@linux.intel.com>
 Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 ---
- tests/i915/gem_mmap_offset.c | 84 ++++++++++++++++++++----------------
- 1 file changed, 46 insertions(+), 38 deletions(-)
+ lib/i915/intel_memory_region.c | 4 ++--
+ lib/i915/intel_memory_region.h | 4 ++--
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/tests/i915/gem_mmap_offset.c b/tests/i915/gem_mmap_offset.c
-index 67ca17d744..3c6c05ab32 100644
---- a/tests/i915/gem_mmap_offset.c
-+++ b/tests/i915/gem_mmap_offset.c
-@@ -370,64 +370,72 @@ static void test_ptrace(int i915)
- 	const unsigned int SZ = 3 * 4096;
- 	unsigned long *ptr, *cpy;
- 	unsigned long AA, CC;
--	uint32_t bo;
+diff --git a/lib/i915/intel_memory_region.c b/lib/i915/intel_memory_region.c
+index 93a18982c1..568bace949 100644
+--- a/lib/i915/intel_memory_region.c
++++ b/lib/i915/intel_memory_region.c
+@@ -198,7 +198,7 @@ bool gem_has_lmem(int fd)
+ /* A version of gem_create_in_memory_region_list which can be allowed to
+    fail so that the object creation can be retried */
+ int __gem_create_in_memory_region_list(int fd, uint32_t *handle, uint64_t *size, uint32_t flags,
+-				       struct drm_i915_gem_memory_class_instance *mem_regions,
++				       const struct drm_i915_gem_memory_class_instance *mem_regions,
+ 				       int num_regions)
+ {
+ 	struct drm_i915_gem_create_ext_memory_regions ext_regions = {
+@@ -234,7 +234,7 @@ int __gem_create_in_memory_region_list(int fd, uint32_t *handle, uint64_t *size,
+  * @num_regions: @mem_regions length
+  */
+ uint32_t gem_create_in_memory_region_list(int fd, uint64_t size, uint32_t flags,
+-					  struct drm_i915_gem_memory_class_instance *mem_regions,
++					  const struct drm_i915_gem_memory_class_instance *mem_regions,
+ 					  int num_regions)
+ {
+ 	uint32_t handle;
+diff --git a/lib/i915/intel_memory_region.h b/lib/i915/intel_memory_region.h
+index e1bfe0ca65..fd04df83b5 100644
+--- a/lib/i915/intel_memory_region.h
++++ b/lib/i915/intel_memory_region.h
+@@ -65,11 +65,11 @@ unsigned int gem_get_lmem_region_count(int fd);
+ bool gem_has_lmem(int fd);
  
- 	memset(&AA, 0xaa, sizeof(AA));
- 	memset(&CC, 0x55, sizeof(CC));
+ int __gem_create_in_memory_region_list(int fd, uint32_t *handle, uint64_t *size, uint32_t flags,
+-				       struct drm_i915_gem_memory_class_instance *mem_regions,
++				       const struct drm_i915_gem_memory_class_instance *mem_regions,
+ 				       int num_regions);
  
- 	cpy = malloc(SZ);
--	bo = gem_create(i915, SZ);
-+	igt_assert(cpy);
+ uint32_t gem_create_in_memory_region_list(int fd, uint64_t size, uint32_t flags,
+-					  struct drm_i915_gem_memory_class_instance *mem_regions,
++					  const struct drm_i915_gem_memory_class_instance *mem_regions,
+ 					  int num_regions);
  
--	for_each_mmap_offset_type(i915, t) {
--		ptr = __mmap_offset(i915, bo, 0, SZ,
--				    PROT_READ | PROT_WRITE,
--				    t->type);
--		if (!ptr)
--			continue;
-+	for_each_memory_region(r, i915) {
-+		uint64_t size = SZ;
-+		uint32_t bo;
- 
--		igt_dynamic_f("%s", t->name) {
--			pid_t pid;
-+		igt_assert_eq(__gem_create_in_memory_region_list(i915, &bo, &size, 0, &r->ci, 1), 0);
-+		make_resident(i915, 0, bo);
- 
--			memset(cpy, AA, SZ);
--			memset(ptr, CC, SZ);
-+		for_each_mmap_offset_type(i915, t) {
-+			ptr = __mmap_offset(i915, bo, 0, size,
-+					    PROT_READ | PROT_WRITE,
-+					    t->type);
-+			if (!ptr)
-+				continue;
- 
--			igt_assert(!memchr_inv(ptr, CC, SZ));
--			igt_assert(!memchr_inv(cpy, AA, SZ));
-+			igt_dynamic_f("%s-%s", r->name, t->name) {
-+				pid_t pid;
- 
--			igt_fork(child, 1) {
--				ptrace(PTRACE_TRACEME, 0, NULL, NULL);
--				raise(SIGSTOP);
--			}
-+				memset(cpy, AA, SZ);
-+				memset(ptr, CC, SZ);
- 
--			/* Wait for the child to ready themselves [SIGSTOP] */
--			pid = wait(NULL);
-+				igt_assert(!memchr_inv(ptr, CC, SZ));
-+				igt_assert(!memchr_inv(cpy, AA, SZ));
- 
--			ptrace(PTRACE_ATTACH, pid, NULL, NULL);
--			for (int i = 0; i < SZ / sizeof(long); i++) {
--				long ret;
-+				igt_fork(child, 1) {
-+					ptrace(PTRACE_TRACEME, 0, NULL, NULL);
-+					raise(SIGSTOP);
-+				}
- 
--				ret = ptrace(PTRACE_PEEKDATA, pid, ptr + i);
--				igt_assert_eq_u64(ret, CC);
--				cpy[i] = ret;
-+				/* Wait for the child to ready themselves [SIGSTOP] */
-+				pid = wait(NULL);
- 
--				ret = ptrace(PTRACE_POKEDATA, pid, ptr + i, AA);
--				igt_assert_eq(ret, 0l);
--			}
--			ptrace(PTRACE_DETACH, pid, NULL, NULL);
-+				ptrace(PTRACE_ATTACH, pid, NULL, NULL);
-+				for (int i = 0; i < SZ / sizeof(long); i++) {
-+					long ret;
-+
-+					ret = ptrace(PTRACE_PEEKDATA, pid, ptr + i);
-+					igt_assert_eq_u64(ret, CC);
-+					cpy[i] = ret;
-+
-+					ret = ptrace(PTRACE_POKEDATA, pid, ptr + i, AA);
-+					igt_assert_eq(ret, 0l);
-+				}
-+				ptrace(PTRACE_DETACH, pid, NULL, NULL);
- 
--			/* Wakeup the child for it to exit */
--			kill(SIGCONT, pid);
--			igt_waitchildren();
-+				/* Wakeup the child for it to exit */
-+				kill(SIGCONT, pid);
-+				igt_waitchildren();
- 
--			/* The two buffers should now be swapped */
--			igt_assert(!memchr_inv(ptr, AA, SZ));
--			igt_assert(!memchr_inv(cpy, CC, SZ));
-+				/* The two buffers should now be swapped */
-+				igt_assert(!memchr_inv(ptr, AA, SZ));
-+				igt_assert(!memchr_inv(cpy, CC, SZ));
-+			}
-+
-+			munmap(ptr, size);
- 		}
- 
--		munmap(ptr, SZ);
-+		gem_close(i915, bo);
- 	}
- 
--	gem_close(i915, bo);
- 	free(cpy);
- }
- 
+ /*
 -- 
 2.34.1
