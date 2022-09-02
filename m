@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id F314110E830
- for <igt-dev@lists.freedesktop.org>; Fri,  2 Sep 2022 13:00:29 +0000 (UTC)
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 14A8A10E832
+ for <igt-dev@lists.freedesktop.org>; Fri,  2 Sep 2022 13:00:43 +0000 (UTC)
 From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Fri,  2 Sep 2022 14:59:59 +0200
-Message-Id: <20220902130007.137214-5-zbigniew.kempczynski@intel.com>
+Date: Fri,  2 Sep 2022 15:00:03 +0200
+Message-Id: <20220902130007.137214-9-zbigniew.kempczynski@intel.com>
 In-Reply-To: <20220902130007.137214-1-zbigniew.kempczynski@intel.com>
 References: <20220902130007.137214-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v3 04/12] i915/gem_create: Stress creation
- with busy engines
+Subject: [igt-dev] [PATCH i-g-t v3 08/12] i915/gem_mmap_offset: Verify all
+ regions remain in isolation
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,108 +26,137 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Chris Wilson <chris.p.wilson@intel.com>
 
-Use shortlived non-preemptible batches to demonstrate an issue with
-waiting on user controlled resources.
+Check that we don't leak mmap pointers to different regions.
 
 Signed-off-by: Chris Wilson <chris.p.wilson@intel.com>
 Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 ---
- tests/i915/gem_create.c | 54 +++++++++++++++++++++++++++--------------
- 1 file changed, 36 insertions(+), 18 deletions(-)
+ tests/i915/gem_mmap_offset.c | 99 +++++++++++++++++++-----------------
+ 1 file changed, 51 insertions(+), 48 deletions(-)
 
-diff --git a/tests/i915/gem_create.c b/tests/i915/gem_create.c
-index 114c1c7c9b..c39390f326 100644
---- a/tests/i915/gem_create.c
-+++ b/tests/i915/gem_create.c
-@@ -289,7 +289,8 @@ static void always_clear(int i915, const struct gem_memory_region *r, int timeou
- 	igt_info("Checked %'lu page allocations\n", checked);
- }
+diff --git a/tests/i915/gem_mmap_offset.c b/tests/i915/gem_mmap_offset.c
+index 608080c717..c9a3eb5b94 100644
+--- a/tests/i915/gem_mmap_offset.c
++++ b/tests/i915/gem_mmap_offset.c
+@@ -219,68 +219,71 @@ static void basic_uaf(int i915)
  
--static void busy_create(int i915, const struct gem_memory_region *r, int timeout)
-+static void busy_create(int i915, const struct gem_memory_region *r, int timeout, unsigned int flags)
-+#define BUSY_HOG 0x1
+ static void isolation(int i915)
  {
- 	struct intel_execution_engine2 *e;
- 	const intel_ctx_t *ctx;
-@@ -300,12 +301,14 @@ static void busy_create(int i915, const struct gem_memory_region *r, int timeout
- 	ctx = intel_ctx_create_all_physical(i915);
- 	ahnd = get_reloc_ahnd(i915, ctx->id);
+-	for_each_mmap_offset_type(i915, t) {
+-		struct drm_i915_gem_mmap_offset mmap_arg = {
+-			.flags = t->type
+-		};
+-		int A = gem_reopen_driver(i915);
+-		int B = gem_reopen_driver(i915);
+-		uint64_t offset_a, offset_b;
+-		uint32_t a, b;
+-		void *ptr;
+-
+-		a = gem_create(A, 4096);
+-		b = gem_open(B, gem_flink(A, a));
+-
+-		mmap_arg.handle = a;
+-		if (mmap_offset_ioctl(A, &mmap_arg)) {
+-			close(A);
+-			close(B);
+-			continue;
+-		}
+-		offset_a = mmap_arg.offset;
+-
+-		mmap_arg.handle = b;
+-		igt_assert_eq(mmap_offset_ioctl(B, &mmap_arg), 0);
+-		offset_b = mmap_arg.offset;
+-
+-		igt_info("A[%s]: {fd:%d, handle:%d, offset:%"PRIx64"}\n",
+-			 t->name, A, a, offset_a);
+-		igt_info("B[%s]: {fd:%d, handle:%d, offset:%"PRIx64"}\n",
+-			 t->name, B, b, offset_b);
++	for_each_memory_region(r, i915) {
++		igt_info("%s\n", r->name);
++		for_each_mmap_offset_type(i915, t) {
++			struct drm_i915_gem_mmap_offset mmap_arg = {
++				.flags = t->type
++			};
++			int A = gem_reopen_driver(i915);
++			int B = gem_reopen_driver(i915);
++			uint64_t offset_a, offset_b;
++			uint32_t a, b;
++			void *ptr;
++
++			a = gem_create_in_memory_region_list(A, 4096, 0, &r->ci, 1);
++			b = gem_open(B, gem_flink(A, a));
++
++			mmap_arg.handle = a;
++			if (mmap_offset_ioctl(A, &mmap_arg)) {
++				close(A);
++				close(B);
++				continue;
++			}
++			offset_a = mmap_arg.offset;
  
--	igt_fork_hang_detector(i915);
--	for_each_ctx_engine(i915, ctx, e)
--		spin[e->flags] = igt_spin_new(i915,
--					      .ahnd = ahnd,
--					      .ctx = ctx,
--					      .engine = e->flags);
-+	for_each_ctx_engine(i915, ctx, e) {
-+		spin[e->flags] =
-+			igt_spin_new(i915,
-+				     .ahnd = ahnd,
-+				     .ctx = ctx,
-+				     .engine = e->flags,
-+				     .flags = flags & BUSY_HOG ? IGT_SPIN_NO_PREEMPTION : 0);
-+	}
+-		errno = 0;
+-		ptr = mmap64(0, 4096, PROT_READ, MAP_SHARED, i915, offset_a);
+-		igt_assert(ptr == MAP_FAILED);
+-		igt_assert_eq(errno, EACCES);
++			mmap_arg.handle = b;
++			igt_assert_eq(mmap_offset_ioctl(B, &mmap_arg), 0);
++			offset_b = mmap_arg.offset;
  
- 	igt_until_timeout(timeout) {
- 		for_each_ctx_engine(i915, ctx, e) {
-@@ -313,12 +316,13 @@ static void busy_create(int i915, const struct gem_memory_region *r, int timeout
- 			igt_spin_t *next;
+-		errno = 0;
+-		ptr = mmap64(0, 4096, PROT_READ, MAP_SHARED, i915, offset_b);
+-		igt_assert(ptr == MAP_FAILED);
+-		igt_assert_eq(errno, EACCES);
++			igt_info("\tA[%s]: {fd:%d, handle:%d, offset:%"PRIx64"}\n",
++				 t->name, A, a, offset_a);
++			igt_info("\tB[%s]: {fd:%d, handle:%d, offset:%"PRIx64"}\n",
++				 t->name, B, b, offset_b);
  
- 			handle = gem_create_in_memory_region_list(i915, 4096, 0, &r->ci, 1);
--			next = igt_spin_new(i915,
--					    .ahnd = ahnd,
--					    .ctx = ctx,
--					    .engine = e->flags,
--					    .dependency = handle,
--					    .flags = IGT_SPIN_SOFTDEP);
-+			next = __igt_spin_new(i915,
-+					      .ahnd = ahnd,
-+					      .ctx = ctx,
-+					      .engine = e->flags,
-+					      .dependency = handle,
-+					      .flags = ((flags & BUSY_HOG ? IGT_SPIN_NO_PREEMPTION : 0) |
-+							IGT_SPIN_SOFTDEP));
- 			gem_close(i915, handle);
+-		if (offset_a != offset_b) {
+ 			errno = 0;
+-			ptr = mmap(0, 4096, PROT_READ, MAP_SHARED, B, offset_a);
++			ptr = mmap64(0, 4096, PROT_READ, MAP_SHARED, i915, offset_a);
+ 			igt_assert(ptr == MAP_FAILED);
+ 			igt_assert_eq(errno, EACCES);
  
- 			igt_spin_free(i915, spin[e->flags]);
-@@ -334,7 +338,6 @@ static void busy_create(int i915, const struct gem_memory_region *r, int timeout
- 	igt_info("Created %ld objects while busy\n", count);
+ 			errno = 0;
+-			ptr = mmap(0, 4096, PROT_READ, MAP_SHARED, A, offset_b);
++			ptr = mmap64(0, 4096, PROT_READ, MAP_SHARED, i915, offset_b);
+ 			igt_assert(ptr == MAP_FAILED);
+ 			igt_assert_eq(errno, EACCES);
+-		}
  
- 	gem_quiescent_gpu(i915);
--	igt_stop_hang_detector();
+-		close(B);
++			if (offset_a != offset_b) {
++				errno = 0;
++				ptr = mmap(0, 4096, PROT_READ, MAP_SHARED, B, offset_a);
++				igt_assert(ptr == MAP_FAILED);
++				igt_assert_eq(errno, EACCES);
+ 
+-		ptr = mmap64(0, 4096, PROT_READ, MAP_SHARED, A, offset_a);
+-		igt_assert(ptr != MAP_FAILED);
+-		munmap(ptr, 4096);
++				errno = 0;
++				ptr = mmap(0, 4096, PROT_READ, MAP_SHARED, A, offset_b);
++				igt_assert(ptr == MAP_FAILED);
++				igt_assert_eq(errno, EACCES);
++			}
+ 
+-		close(A);
++			close(B);
++
++			ptr = mmap64(0, 4096, PROT_READ, MAP_SHARED, A, offset_a);
++			igt_assert(ptr != MAP_FAILED);
++			munmap(ptr, 4096);
++
++			close(A);
+ 
+-		ptr = mmap64(0, 4096, PROT_READ, MAP_SHARED, A, offset_a);
+-		igt_assert(ptr == MAP_FAILED);
++			ptr = mmap64(0, 4096, PROT_READ, MAP_SHARED, A, offset_a);
++			igt_assert(ptr == MAP_FAILED);
++		}
+ 	}
  }
  
- static void size_update(int fd)
-@@ -861,11 +864,26 @@ igt_main
- 	}
- 
- 	igt_describe("Create buffer objects while GPU is busy.");
--	igt_subtest_with_dynamic("busy-create") {
--		for_each_memory_region(r, fd) {
--			igt_dynamic_f("%s", r->name)
--				busy_create(fd, r, 30);
-+	igt_subtest_group {
-+		igt_fixture
-+			igt_fork_hang_detector(fd);
-+
-+		igt_subtest_with_dynamic("busy-create") {
-+			for_each_memory_region(r, fd) {
-+				igt_dynamic_f("%s", r->name)
-+					busy_create(fd, r, 30, 0);
-+			}
- 		}
-+
-+		igt_subtest_with_dynamic("hog-create") {
-+			for_each_memory_region(r, fd) {
-+				igt_dynamic_f("%s", r->name)
-+					busy_create(fd, r, 30, BUSY_HOG);
-+			}
-+		}
-+
-+		igt_fixture
-+			igt_stop_hang_detector();
- 	}
- 
- 	igt_describe("Exercise create_ext placements extension.");
 -- 
 2.34.1
