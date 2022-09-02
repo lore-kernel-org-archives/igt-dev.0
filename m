@@ -1,20 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 36F0689101
- for <igt-dev@lists.freedesktop.org>; Fri,  2 Sep 2022 13:03:35 +0000 (UTC)
-Date: Fri, 2 Sep 2022 15:03:31 +0200
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A1C0410E82F
+ for <igt-dev@lists.freedesktop.org>; Fri,  2 Sep 2022 13:10:39 +0000 (UTC)
+From: Swati Sharma <swati2.sharma@intel.com>
 To: igt-dev@lists.freedesktop.org
-Message-ID: <YxH/IweltTbd07GS@zkempczy-mobl2>
-References: <20220902130007.137214-1-zbigniew.kempczynski@intel.com>
- <20220902130007.137214-10-zbigniew.kempczynski@intel.com>
+Date: Fri,  2 Sep 2022 18:41:53 +0530
+Message-Id: <20220902131156.29798-1-swati2.sharma@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20220902130007.137214-10-zbigniew.kempczynski@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t v3 09/12] i915/gem_mmap_offset: Verify
- all regions have nonblocking pagefaults
+Subject: [igt-dev] [v2 0/3] Modify dc9 validation
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,80 +20,18 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Fri, Sep 02, 2022 at 03:00:04PM +0200, Zbigniew Kempczyński wrote:
-> From: Chris Wilson <chris.p.wilson@intel.com>
-> 
-> Check that if we fault in a page that is active on the gpu, it doesn't
-> wait for completion.
-> 
-> Signed-off-by: Chris Wilson <chris.p.wilson@intel.com>
-> ---
->  tests/i915/gem_mmap_offset.c | 38 +++++++++++++++++++++++++++++++++++-
->  1 file changed, 37 insertions(+), 1 deletion(-)
-> 
-> diff --git a/tests/i915/gem_mmap_offset.c b/tests/i915/gem_mmap_offset.c
-> index c9a3eb5b94..8d47fdb735 100644
-> --- a/tests/i915/gem_mmap_offset.c
-> +++ b/tests/i915/gem_mmap_offset.c
-> @@ -287,7 +287,7 @@ static void isolation(int i915)
->  	}
->  }
->  
-> -static void pf_nonblock(int i915)
-> +static void pf_nonblock_batch(int i915)
->  {
->  	uint64_t ahnd = get_reloc_ahnd(i915, 0);
->  	igt_spin_t *spin = igt_spin_new(i915, .ahnd = ahnd);
-> @@ -313,6 +313,42 @@ static void pf_nonblock(int i915)
->  	put_ahnd(ahnd);
->  }
->  
-> +static void pf_nonblock(int i915)
-> +{
-> +	uint64_t ahnd = get_reloc_ahnd(i915, 0);
-> +
-> +	pf_nonblock_batch(i915);
-> +
-> +	for_each_memory_region(r, i915) {
-> +		igt_spin_t *spin;
-> +		uint32_t handle;
-> +
-> +		handle = gem_create_in_memory_region_list(i915, 4096, 0, &r->ci, 1);
-> +		spin = igt_spin_new(i915, .ahnd = ahnd, .dependency = handle);
-> +
-> +		for_each_mmap_offset_type(i915, t) {
-> +			uint32_t *ptr;
-> +
-> +			ptr = __mmap_offset(i915, handle, 0, 4096,
-> +					    PROT_READ | PROT_WRITE,
-> +					    t->type);
-> +			if (!ptr)
-> +				continue;
-> +
-> +			igt_set_timeout(1, t->name);
-> +			/* no set-domain as we want to verify the pagefault is async */
-> +			ptr[256] = 0;
-> +			igt_reset_timeout();
-> +
-> +			munmap(ptr, 4096);
-> +		}
-> +
-> +		igt_spin_free(i915, spin);
-> +		gem_close(i915, handle);
-> +	}
-> +	put_ahnd(ahnd);
-> +}
-> +
->  static void *memchr_inv(const void *s, int c, size_t n)
->  {
->  	const uint8_t *us = s;
-> -- 
-> 2.34.1
->
+Modify dc9 validation.
+Add new constraint to check runtime_suspended_time.
 
-Looks good for me.
+Swati Sharma (3):
+  tests/i915/i915_pm_dc: Change debugfs for reading platform info
+  lib/pm: Add helper functions to get runtime suspended time
+  tests/i915/i915_pm_dc: Modify dc9 test
 
-Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+ lib/igt_pm.c            | 36 +++++++++++++++++++++++++--
+ lib/igt_pm.h            |  1 +
+ tests/i915/i915_pm_dc.c | 54 ++++++++++++++++++++++++++++++-----------
+ 3 files changed, 75 insertions(+), 16 deletions(-)
 
---
-Zbigniew 
+-- 
+2.25.1
