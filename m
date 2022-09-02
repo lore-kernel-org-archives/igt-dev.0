@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2C84710E79D
- for <igt-dev@lists.freedesktop.org>; Fri,  2 Sep 2022 07:52:45 +0000 (UTC)
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0BE0D10E7A1
+ for <igt-dev@lists.freedesktop.org>; Fri,  2 Sep 2022 07:52:55 +0000 (UTC)
 From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Fri,  2 Sep 2022 09:52:19 +0200
-Message-Id: <20220902075227.50690-5-zbigniew.kempczynski@intel.com>
+Date: Fri,  2 Sep 2022 09:52:22 +0200
+Message-Id: <20220902075227.50690-8-zbigniew.kempczynski@intel.com>
 In-Reply-To: <20220902075227.50690-1-zbigniew.kempczynski@intel.com>
 References: <20220902075227.50690-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v2 04/12] i915/gem_create: Stress creation
- with busy engines
+Subject: [igt-dev] [PATCH i-g-t v2 07/12] i915/gem_mmap_offset: Verify all
+ regions with ptrace
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,108 +26,128 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Chris Wilson <chris.p.wilson@intel.com>
 
-Use shortlived non-preemptible batches to demonstrate an issue with
-waiting on user controlled resources.
+Check we can use ptrace to query *ptr of each mmap for each region.
 
 Signed-off-by: Chris Wilson <chris.p.wilson@intel.com>
 Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 ---
- tests/i915/gem_create.c | 54 +++++++++++++++++++++++++++--------------
- 1 file changed, 36 insertions(+), 18 deletions(-)
+ tests/i915/gem_mmap_offset.c | 84 ++++++++++++++++++++----------------
+ 1 file changed, 46 insertions(+), 38 deletions(-)
 
-diff --git a/tests/i915/gem_create.c b/tests/i915/gem_create.c
-index 114c1c7c9b..c39390f326 100644
---- a/tests/i915/gem_create.c
-+++ b/tests/i915/gem_create.c
-@@ -289,7 +289,8 @@ static void always_clear(int i915, const struct gem_memory_region *r, int timeou
- 	igt_info("Checked %'lu page allocations\n", checked);
- }
+diff --git a/tests/i915/gem_mmap_offset.c b/tests/i915/gem_mmap_offset.c
+index 67ca17d744..3c6c05ab32 100644
+--- a/tests/i915/gem_mmap_offset.c
++++ b/tests/i915/gem_mmap_offset.c
+@@ -370,64 +370,72 @@ static void test_ptrace(int i915)
+ 	const unsigned int SZ = 3 * 4096;
+ 	unsigned long *ptr, *cpy;
+ 	unsigned long AA, CC;
+-	uint32_t bo;
  
--static void busy_create(int i915, const struct gem_memory_region *r, int timeout)
-+static void busy_create(int i915, const struct gem_memory_region *r, int timeout, unsigned int flags)
-+#define BUSY_HOG 0x1
- {
- 	struct intel_execution_engine2 *e;
- 	const intel_ctx_t *ctx;
-@@ -300,12 +301,14 @@ static void busy_create(int i915, const struct gem_memory_region *r, int timeout
- 	ctx = intel_ctx_create_all_physical(i915);
- 	ahnd = get_reloc_ahnd(i915, ctx->id);
+ 	memset(&AA, 0xaa, sizeof(AA));
+ 	memset(&CC, 0x55, sizeof(CC));
  
--	igt_fork_hang_detector(i915);
--	for_each_ctx_engine(i915, ctx, e)
--		spin[e->flags] = igt_spin_new(i915,
--					      .ahnd = ahnd,
--					      .ctx = ctx,
--					      .engine = e->flags);
-+	for_each_ctx_engine(i915, ctx, e) {
-+		spin[e->flags] =
-+			igt_spin_new(i915,
-+				     .ahnd = ahnd,
-+				     .ctx = ctx,
-+				     .engine = e->flags,
-+				     .flags = flags & BUSY_HOG ? IGT_SPIN_NO_PREEMPTION : 0);
-+	}
+ 	cpy = malloc(SZ);
+-	bo = gem_create(i915, SZ);
++	igt_assert(cpy);
  
- 	igt_until_timeout(timeout) {
- 		for_each_ctx_engine(i915, ctx, e) {
-@@ -313,12 +316,13 @@ static void busy_create(int i915, const struct gem_memory_region *r, int timeout
- 			igt_spin_t *next;
+-	for_each_mmap_offset_type(i915, t) {
+-		ptr = __mmap_offset(i915, bo, 0, SZ,
+-				    PROT_READ | PROT_WRITE,
+-				    t->type);
+-		if (!ptr)
+-			continue;
++	for_each_memory_region(r, i915) {
++		uint64_t size = SZ;
++		uint32_t bo;
  
- 			handle = gem_create_in_memory_region_list(i915, 4096, 0, &r->ci, 1);
--			next = igt_spin_new(i915,
--					    .ahnd = ahnd,
--					    .ctx = ctx,
--					    .engine = e->flags,
--					    .dependency = handle,
--					    .flags = IGT_SPIN_SOFTDEP);
-+			next = __igt_spin_new(i915,
-+					      .ahnd = ahnd,
-+					      .ctx = ctx,
-+					      .engine = e->flags,
-+					      .dependency = handle,
-+					      .flags = ((flags & BUSY_HOG ? IGT_SPIN_NO_PREEMPTION : 0) |
-+							IGT_SPIN_SOFTDEP));
- 			gem_close(i915, handle);
+-		igt_dynamic_f("%s", t->name) {
+-			pid_t pid;
++		igt_assert_eq(__gem_create_in_memory_region_list(i915, &bo, &size, 0, &r->ci, 1), 0);
++		make_resident(i915, 0, bo);
  
- 			igt_spin_free(i915, spin[e->flags]);
-@@ -334,7 +338,6 @@ static void busy_create(int i915, const struct gem_memory_region *r, int timeout
- 	igt_info("Created %ld objects while busy\n", count);
+-			memset(cpy, AA, SZ);
+-			memset(ptr, CC, SZ);
++		for_each_mmap_offset_type(i915, t) {
++			ptr = __mmap_offset(i915, bo, 0, size,
++					    PROT_READ | PROT_WRITE,
++					    t->type);
++			if (!ptr)
++				continue;
  
- 	gem_quiescent_gpu(i915);
--	igt_stop_hang_detector();
- }
+-			igt_assert(!memchr_inv(ptr, CC, SZ));
+-			igt_assert(!memchr_inv(cpy, AA, SZ));
++			igt_dynamic_f("%s-%s", r->name, t->name) {
++				pid_t pid;
  
- static void size_update(int fd)
-@@ -861,11 +864,26 @@ igt_main
- 	}
+-			igt_fork(child, 1) {
+-				ptrace(PTRACE_TRACEME, 0, NULL, NULL);
+-				raise(SIGSTOP);
+-			}
++				memset(cpy, AA, SZ);
++				memset(ptr, CC, SZ);
  
- 	igt_describe("Create buffer objects while GPU is busy.");
--	igt_subtest_with_dynamic("busy-create") {
--		for_each_memory_region(r, fd) {
--			igt_dynamic_f("%s", r->name)
--				busy_create(fd, r, 30);
-+	igt_subtest_group {
-+		igt_fixture
-+			igt_fork_hang_detector(fd);
+-			/* Wait for the child to ready themselves [SIGSTOP] */
+-			pid = wait(NULL);
++				igt_assert(!memchr_inv(ptr, CC, SZ));
++				igt_assert(!memchr_inv(cpy, AA, SZ));
+ 
+-			ptrace(PTRACE_ATTACH, pid, NULL, NULL);
+-			for (int i = 0; i < SZ / sizeof(long); i++) {
+-				long ret;
++				igt_fork(child, 1) {
++					ptrace(PTRACE_TRACEME, 0, NULL, NULL);
++					raise(SIGSTOP);
++				}
+ 
+-				ret = ptrace(PTRACE_PEEKDATA, pid, ptr + i);
+-				igt_assert_eq_u64(ret, CC);
+-				cpy[i] = ret;
++				/* Wait for the child to ready themselves [SIGSTOP] */
++				pid = wait(NULL);
+ 
+-				ret = ptrace(PTRACE_POKEDATA, pid, ptr + i, AA);
+-				igt_assert_eq(ret, 0l);
+-			}
+-			ptrace(PTRACE_DETACH, pid, NULL, NULL);
++				ptrace(PTRACE_ATTACH, pid, NULL, NULL);
++				for (int i = 0; i < SZ / sizeof(long); i++) {
++					long ret;
 +
-+		igt_subtest_with_dynamic("busy-create") {
-+			for_each_memory_region(r, fd) {
-+				igt_dynamic_f("%s", r->name)
-+					busy_create(fd, r, 30, 0);
++					ret = ptrace(PTRACE_PEEKDATA, pid, ptr + i);
++					igt_assert_eq_u64(ret, CC);
++					cpy[i] = ret;
++
++					ret = ptrace(PTRACE_POKEDATA, pid, ptr + i, AA);
++					igt_assert_eq(ret, 0l);
++				}
++				ptrace(PTRACE_DETACH, pid, NULL, NULL);
+ 
+-			/* Wakeup the child for it to exit */
+-			kill(SIGCONT, pid);
+-			igt_waitchildren();
++				/* Wakeup the child for it to exit */
++				kill(SIGCONT, pid);
++				igt_waitchildren();
+ 
+-			/* The two buffers should now be swapped */
+-			igt_assert(!memchr_inv(ptr, AA, SZ));
+-			igt_assert(!memchr_inv(cpy, CC, SZ));
++				/* The two buffers should now be swapped */
++				igt_assert(!memchr_inv(ptr, AA, SZ));
++				igt_assert(!memchr_inv(cpy, CC, SZ));
 +			}
++
++			munmap(ptr, size);
  		}
-+
-+		igt_subtest_with_dynamic("hog-create") {
-+			for_each_memory_region(r, fd) {
-+				igt_dynamic_f("%s", r->name)
-+					busy_create(fd, r, 30, BUSY_HOG);
-+			}
-+		}
-+
-+		igt_fixture
-+			igt_stop_hang_detector();
+ 
+-		munmap(ptr, SZ);
++		gem_close(i915, bo);
  	}
  
- 	igt_describe("Exercise create_ext placements extension.");
+-	gem_close(i915, bo);
+ 	free(cpy);
+ }
+ 
 -- 
 2.34.1
