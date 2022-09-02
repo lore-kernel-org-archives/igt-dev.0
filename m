@@ -1,17 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6689910E8AB
- for <igt-dev@lists.freedesktop.org>; Fri,  2 Sep 2022 17:24:35 +0000 (UTC)
-From: Swati Sharma <swati2.sharma@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Fri,  2 Sep 2022 22:55:47 +0530
-Message-Id: <20220902172549.3784-2-swati2.sharma@intel.com>
-In-Reply-To: <20220902172549.3784-1-swati2.sharma@intel.com>
-References: <20220902172549.3784-1-swati2.sharma@intel.com>
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [v2 1/3] tests/i915/i915_pm_dc: Change debugfs for
- reading platform info
+Content-Transfer-Encoding: 7bit
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Swati Sharma" <swati2.sharma@intel.com>
+Date: Fri, 02 Sep 2022 17:42:51 -0000
+Message-ID: <166214057126.22601.2334595079226738776@emeril.freedesktop.org>
+References: <20220902172549.3784-1-swati2.sharma@intel.com>
+In-Reply-To: <20220902172549.3784-1-swati2.sharma@intel.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_M?=
+ =?utf-8?q?odify_dc9_validation_=28rev2=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,64 +17,45 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-With error capture being part of i915_gpu_info, with 4024 buffer size
-we will never be able to parse "is_dgfx" string. Instead use
-i915_capabilities which is meant for platform info only.
+== Series Details ==
 
-Also, changed func name from check_is_dgfx() to is_dgfx().
+Series: Modify dc9 validation (rev2)
+URL   : https://patchwork.freedesktop.org/series/108079/
+State : warning
 
-Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
----
- tests/i915/i915_pm_dc.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+== Summary ==
 
-diff --git a/tests/i915/i915_pm_dc.c b/tests/i915/i915_pm_dc.c
-index f664a2a2c..d90d64cca 100644
---- a/tests/i915/i915_pm_dc.c
-+++ b/tests/i915/i915_pm_dc.c
-@@ -44,6 +44,8 @@
- #define KMS_HELPER "/sys/module/drm_kms_helper/parameters/"
- #define KMS_POLL_DISABLE 0
- 
-+IGT_TEST_DESCRIPTION("These tests validate Display Power DC states");
-+
- bool kms_poll_saved_state;
- 
- typedef struct {
-@@ -422,11 +424,11 @@ static void check_dc9(data_t *data, int dc_target, int prev_dc)
- 			data->debugfs_dump = igt_sysfs_get(data->debugfs_fd, RPM_STATUS));
- }
- 
--static bool check_is_dgfx(data_t *data)
-+static bool is_dgfx(data_t *data)
- {
- 	char buf[4096];
- 
--	igt_debugfs_simple_read(data->debugfs_fd, "i915_gpu_info",
-+	igt_debugfs_simple_read(data->debugfs_fd, "i915_capabilities",
- 				buf, sizeof(buf));
- 	return strstr(buf, "is_dgfx: yes");
- }
-@@ -473,7 +475,6 @@ static void kms_poll_state_restore(int sig)
- 	}
- }
- 
--IGT_TEST_DESCRIPTION("These tests validate Display Power DC states");
- int main(int argc, char *argv[])
- {
- 	data_t data = {};
-@@ -541,7 +542,7 @@ int main(int argc, char *argv[])
- 
- 	igt_describe("This test validates display engine entry to DC9 state");
- 	igt_subtest("dc9-dpms") {
--		if (!(check_is_dgfx(&data)))
-+		if (!(is_dgfx(&data)))
- 			igt_require_f(igt_pm_pc8_plus_residencies_enabled(data.msr_fd),
- 				      "PC8+ residencies not supported\n");
- 		test_dc9_dpms(&data);
--- 
-2.25.1
+Pipeline status: FAILED.
+
+see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/679731 for the overview.
+
+test:ninja-test-mips has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/27818261):
+  Ok:                   22
+  Expected Fail:         3
+  Fail:                292
+  Unexpected Pass:       0
+  Skipped:               0
+  Timeout:               0
+  
+  Full log written to /builds/gfx-ci/igt-ci-tags/build/meson-logs/testlog.txt
+  section_end:1662140434:step_script
+  section_start:1662140434:upload_artifacts_on_failure
+  Uploading artifacts for failed job
+  Uploading artifacts...
+  build: found 1773 matching files and directories   
+  Uploading artifacts as "archive" to coordinator... 201 Created  id=27818261 responseStatus=201 Created token=-2YeDs7-
+  section_end:1662140444:upload_artifacts_on_failure
+  section_start:1662140444:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1662140445:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+
+== Logs ==
+
+For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/679731
