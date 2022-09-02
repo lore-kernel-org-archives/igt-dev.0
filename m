@@ -1,17 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6160810E82F
+ by gabe.freedesktop.org (Postfix) with ESMTPS id F12A910E834
  for <igt-dev@lists.freedesktop.org>; Fri,  2 Sep 2022 13:10:42 +0000 (UTC)
 From: Swati Sharma <swati2.sharma@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Fri,  2 Sep 2022 18:41:55 +0530
-Message-Id: <20220902131156.29798-3-swati2.sharma@intel.com>
+Date: Fri,  2 Sep 2022 18:41:56 +0530
+Message-Id: <20220902131156.29798-4-swati2.sharma@intel.com>
 In-Reply-To: <20220902131156.29798-1-swati2.sharma@intel.com>
 References: <20220902131156.29798-1-swati2.sharma@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [v2 2/3] lib/pm: Add helper functions to get runtime
- suspended time
+Subject: [igt-dev] [v2 3/3] tests/i915/i915_pm_dc: Modify dc9 test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,84 +22,111 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Added helper function to get runtime suspended time.
-This will be used to extend dc9 validation.
+Existing dc9 test is modified. Added new condition,
+runtime_suspended_time value should increases when system
+enters dc9. This condition will be checked for both igfx
+and dgfx whereas existing condition where we wait for
+dc counter to reset is limited only to igfx.
 
-v2: -created separate helper igt_pm_get_power_attr_fd_rdonly() (imre)
-    -fixed igt_pm_get_runtime_suspended_time() (imre)
+v2: modified existing test. no need of new subtest (imre)
 
 Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
 ---
- lib/igt_pm.c | 36 ++++++++++++++++++++++++++++++++++--
- lib/igt_pm.h |  1 +
- 2 files changed, 35 insertions(+), 2 deletions(-)
+ tests/i915/i915_pm_dc.c | 45 ++++++++++++++++++++++++++++++++---------
+ 1 file changed, 35 insertions(+), 10 deletions(-)
 
-diff --git a/lib/igt_pm.c b/lib/igt_pm.c
-index 99251b40b..65f1fc866 100644
---- a/lib/igt_pm.c
-+++ b/lib/igt_pm.c
-@@ -953,13 +953,27 @@ static int igt_pm_get_power_attr_fd(struct pci_device *pci_dev, const char *attr
- 	return fd;
- }
+diff --git a/tests/i915/i915_pm_dc.c b/tests/i915/i915_pm_dc.c
+index d90d64cca..f1f650256 100644
+--- a/tests/i915/i915_pm_dc.c
++++ b/tests/i915/i915_pm_dc.c
+@@ -31,8 +31,11 @@
+ #include "igt_kmod.h"
+ #include "igt_psr.h"
+ #include "igt_sysfs.h"
++#include "igt_device.h"
++#include "igt_device_scan.h"
+ #include "limits.h"
+ #include "time.h"
++#include "igt_pm.h"
  
--static bool igt_pm_read_power_attr(int fd, char *attr, int len, bool autosuspend_delay)
-+static int igt_pm_get_power_attr_fd_rdonly(struct pci_device *pci_dev, const char *attr)
-+{
-+	char name[PATH_MAX];
-+	int fd;
-+
-+	snprintf(name, PATH_MAX, "/sys/bus/pci/devices/%04x:%02x:%02x.%01x/power/%s",
-+		 pci_dev->domain, pci_dev->bus, pci_dev->dev, pci_dev->func, attr);
-+
-+	fd = open(name, O_RDONLY);
-+	igt_assert_f(fd >= 0, "Can't open %s\n", attr);
-+
-+	return fd;
-+}
-+
-+static bool igt_pm_read_power_attr(int fd, char *attr, int len, bool power_attr)
+ /* DC State Flags */
+ #define CHECK_DC5	(1 << 0)
+@@ -411,19 +414,13 @@ static bool dc9_wait_entry(uint32_t debugfs_fd, int dc_target, int prev_dc, int
  {
- 	int size;
- 
- 	size = read(fd, attr, len - 1);
- 
--	if (autosuspend_delay) {
-+	if (power_attr) {
- 		if (size < 0 && errno == EIO)
- 			return false;
- 	} else {
-@@ -1219,3 +1233,21 @@ bool i915_is_slpc_enabled(int fd)
- 	else
- 		return strstr(buf, "SLPC state: running");
+ 	/*
+ 	 * since we do not have DC9 counter,
+-	 * so we rely on dc5/dc6 counter reset to check if display engine was in DC9.
++	 * so we rely on dc5/dc6 counter reset
++	 * to check if display engine was in DC9.
+ 	 */
+ 	return igt_wait(read_dc_counter(debugfs_fd, dc_target) <
+ 			prev_dc, seconds, 100);
  }
-+
-+int igt_pm_get_runtime_suspended_time(struct pci_device *pci_dev)
-+{
-+	char time_str[64];
-+	int time, time_fd;
-+
-+	time_fd = igt_pm_get_power_attr_fd_rdonly(pci_dev, "runtime_suspended_time");
-+	if (igt_pm_read_power_attr(time_fd, time_str, 64, false)){
-+		igt_assert(sscanf(time_str, "%d", &time) > 0);
-+
-+		igt_info("runtime suspend time for PCI '%04x:%02x:%02x.%01x' = %d\n",
-+			  pci_dev->domain, pci_dev->bus, pci_dev->dev, pci_dev->func, time);
-+
-+		return time;
-+	}
-+
-+	return -1;
-+}
-diff --git a/lib/igt_pm.h b/lib/igt_pm.h
-index cbbde12b5..a7d621366 100644
---- a/lib/igt_pm.h
-+++ b/lib/igt_pm.h
-@@ -80,5 +80,6 @@ void igt_pm_setup_pci_card_runtime_pm(struct pci_device *pci_dev);
- void igt_pm_restore_pci_card_runtime_pm(void);
- void igt_pm_print_pci_card_runtime_status(void);
- bool i915_is_slpc_enabled(int fd);
-+int igt_pm_get_runtime_suspended_time(struct pci_device *pci_dev);
  
- #endif /* IGT_PM_H */
+-static void check_dc9(data_t *data, int dc_target, int prev_dc)
+-{
+-	igt_assert_f(dc9_wait_entry(data->debugfs_fd, dc_target, prev_dc, 3000),
+-			"DC9 state is not achieved\n%s:\n%s\n", RPM_STATUS,
+-			data->debugfs_dump = igt_sysfs_get(data->debugfs_fd, RPM_STATUS));
+-}
+-
+ static bool is_dgfx(data_t *data)
+ {
+ 	char buf[4096];
+@@ -433,9 +430,32 @@ static bool is_dgfx(data_t *data)
+ 	return strstr(buf, "is_dgfx: yes");
+ }
+ 
++static bool dc9_runtime_suspend_time(int before, int after)
++{
++	return (before < after) ? 1 : 0;
++}
++
++static void check_dc9(data_t *data, int dc_target, int prev_dc,
++		      int before, int after)
++{
++	if(!(is_dgfx(data))) {
++		igt_assert_f(dc9_wait_entry(data->debugfs_fd, dc_target, prev_dc, 3000),
++			     "DC9 state is not achieved\n%s:\n%s\n", RPM_STATUS,
++			     data->debugfs_dump = igt_sysfs_get(data->debugfs_fd, RPM_STATUS));
++		igt_assert_f(dc9_runtime_suspend_time(before, after), "Runtime suspended time didn't "
++			     "increase\n before:%d  after:%d\n", before, after);
++	} else
++		igt_assert_f(dc9_runtime_suspend_time(before, after), "Runtime suspended time didn't "
++			    "increase\n before:%d  after:%d\n", before, after);
++}
++
+ static void setup_dc9_dpms(data_t *data, int dc_target)
+ {
+ 	int prev_dc, sysfs_fd;
++	struct pci_device *i915;
++	int before, after;
++
++	i915 = igt_device_get_pci_device(data->drm_fd);
+ 
+ 	igt_require((sysfs_fd = open(KMS_HELPER, O_RDONLY)) >= 0);
+ 	kms_poll_saved_state = igt_sysfs_get_boolean(sysfs_fd, "poll");
+@@ -444,14 +464,19 @@ static void setup_dc9_dpms(data_t *data, int dc_target)
+ 	prev_dc = read_dc_counter(data->debugfs_fd, dc_target);
+ 	setup_dc_dpms(data);
+ 	dpms_off(data);
+-	igt_skip_on_f(!(igt_wait(read_dc_counter(data->debugfs_fd, dc_target) >
++	if(!(is_dgfx(data)))
++		igt_skip_on_f(!(igt_wait(read_dc_counter(data->debugfs_fd, dc_target) >
+ 				prev_dc, 3000, 100)), "Unable to enters shallow DC states\n");
+ 	prev_dc = read_dc_counter(data->debugfs_fd, dc_target);
++	before = igt_pm_get_runtime_suspended_time(i915);
++	igt_assert_lte(0, before);
+ 	dpms_on(data);
+ 	cleanup_dc_dpms(data);
+ 	dpms_off(data);
+ 	sleep(1); /* wait for counters reset*/
+-	check_dc9(data, dc_target, prev_dc);
++	after = igt_pm_get_runtime_suspended_time(i915);
++	igt_assert_lte(0, after);
++	check_dc9(data, dc_target, prev_dc, before, after);
+ 	dpms_on(data);
+ }
+ 
 -- 
 2.25.1
