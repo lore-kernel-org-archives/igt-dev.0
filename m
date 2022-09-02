@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4EB2710E78A
- for <igt-dev@lists.freedesktop.org>; Fri,  2 Sep 2022 07:52:39 +0000 (UTC)
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0691710E7A1
+ for <igt-dev@lists.freedesktop.org>; Fri,  2 Sep 2022 07:52:57 +0000 (UTC)
 From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Fri,  2 Sep 2022 09:52:17 +0200
-Message-Id: <20220902075227.50690-3-zbigniew.kempczynski@intel.com>
+Date: Fri,  2 Sep 2022 09:52:23 +0200
+Message-Id: <20220902075227.50690-9-zbigniew.kempczynski@intel.com>
 In-Reply-To: <20220902075227.50690-1-zbigniew.kempczynski@intel.com>
 References: <20220902075227.50690-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v2 02/12] lib/i915: Mark gem_create as
- handling const memory regions
+Subject: [igt-dev] [PATCH i-g-t v2 08/12] i915/gem_mmap_offset: Verify all
+ regions remain in isolation
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,57 +24,139 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Chris Wilson <chris.p.wilson@linux.intel.com>
+From: Chris Wilson <chris.p.wilson@intel.com>
 
-Make the memory regions passed to gem_crate_in_memory_region_list() as
-being const.
+Check that we don't leak mmap pointers to different regions.
 
-Signed-off-by: Chris Wilson <chris.p.wilson@linux.intel.com>
+Signed-off-by: Chris Wilson <chris.p.wilson@intel.com>
 Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 ---
- lib/i915/intel_memory_region.c | 4 ++--
- lib/i915/intel_memory_region.h | 4 ++--
- 2 files changed, 4 insertions(+), 4 deletions(-)
+ tests/i915/gem_mmap_offset.c | 99 +++++++++++++++++++-----------------
+ 1 file changed, 51 insertions(+), 48 deletions(-)
 
-diff --git a/lib/i915/intel_memory_region.c b/lib/i915/intel_memory_region.c
-index 93a18982c1..568bace949 100644
---- a/lib/i915/intel_memory_region.c
-+++ b/lib/i915/intel_memory_region.c
-@@ -198,7 +198,7 @@ bool gem_has_lmem(int fd)
- /* A version of gem_create_in_memory_region_list which can be allowed to
-    fail so that the object creation can be retried */
- int __gem_create_in_memory_region_list(int fd, uint32_t *handle, uint64_t *size, uint32_t flags,
--				       struct drm_i915_gem_memory_class_instance *mem_regions,
-+				       const struct drm_i915_gem_memory_class_instance *mem_regions,
- 				       int num_regions)
+diff --git a/tests/i915/gem_mmap_offset.c b/tests/i915/gem_mmap_offset.c
+index 3c6c05ab32..1ec3adb12d 100644
+--- a/tests/i915/gem_mmap_offset.c
++++ b/tests/i915/gem_mmap_offset.c
+@@ -219,68 +219,71 @@ static void basic_uaf(int i915)
+ 
+ static void isolation(int i915)
  {
- 	struct drm_i915_gem_create_ext_memory_regions ext_regions = {
-@@ -234,7 +234,7 @@ int __gem_create_in_memory_region_list(int fd, uint32_t *handle, uint64_t *size,
-  * @num_regions: @mem_regions length
-  */
- uint32_t gem_create_in_memory_region_list(int fd, uint64_t size, uint32_t flags,
--					  struct drm_i915_gem_memory_class_instance *mem_regions,
-+					  const struct drm_i915_gem_memory_class_instance *mem_regions,
- 					  int num_regions)
- {
- 	uint32_t handle;
-diff --git a/lib/i915/intel_memory_region.h b/lib/i915/intel_memory_region.h
-index e1bfe0ca65..fd04df83b5 100644
---- a/lib/i915/intel_memory_region.h
-+++ b/lib/i915/intel_memory_region.h
-@@ -65,11 +65,11 @@ unsigned int gem_get_lmem_region_count(int fd);
- bool gem_has_lmem(int fd);
+-	for_each_mmap_offset_type(i915, t) {
+-		struct drm_i915_gem_mmap_offset mmap_arg = {
+-			.flags = t->type
+-		};
+-		int A = gem_reopen_driver(i915);
+-		int B = gem_reopen_driver(i915);
+-		uint64_t offset_a, offset_b;
+-		uint32_t a, b;
+-		void *ptr;
+-
+-		a = gem_create(A, 4096);
+-		b = gem_open(B, gem_flink(A, a));
+-
+-		mmap_arg.handle = a;
+-		if (mmap_offset_ioctl(A, &mmap_arg)) {
+-			close(A);
+-			close(B);
+-			continue;
+-		}
+-		offset_a = mmap_arg.offset;
+-
+-		mmap_arg.handle = b;
+-		igt_assert_eq(mmap_offset_ioctl(B, &mmap_arg), 0);
+-		offset_b = mmap_arg.offset;
+-
+-		igt_info("A[%s]: {fd:%d, handle:%d, offset:%"PRIx64"}\n",
+-			 t->name, A, a, offset_a);
+-		igt_info("B[%s]: {fd:%d, handle:%d, offset:%"PRIx64"}\n",
+-			 t->name, B, b, offset_b);
++	for_each_memory_region(r, i915) {
++		igt_info("%s\n", r->name);
++		for_each_mmap_offset_type(i915, t) {
++			struct drm_i915_gem_mmap_offset mmap_arg = {
++				.flags = t->type
++			};
++			int A = gem_reopen_driver(i915);
++			int B = gem_reopen_driver(i915);
++			uint64_t offset_a, offset_b;
++			uint32_t a, b;
++			void *ptr;
++
++			a = gem_create_in_memory_region_list(A, 4096, 0, &r->ci, 1);
++			b = gem_open(B, gem_flink(A, a));
++
++			mmap_arg.handle = a;
++			if (mmap_offset_ioctl(A, &mmap_arg)) {
++				close(A);
++				close(B);
++				continue;
++			}
++			offset_a = mmap_arg.offset;
  
- int __gem_create_in_memory_region_list(int fd, uint32_t *handle, uint64_t *size, uint32_t flags,
--				       struct drm_i915_gem_memory_class_instance *mem_regions,
-+				       const struct drm_i915_gem_memory_class_instance *mem_regions,
- 				       int num_regions);
+-		errno = 0;
+-		ptr = mmap64(0, 4096, PROT_READ, MAP_SHARED, i915, offset_a);
+-		igt_assert(ptr == MAP_FAILED);
+-		igt_assert_eq(errno, EACCES);
++			mmap_arg.handle = b;
++			igt_assert_eq(mmap_offset_ioctl(B, &mmap_arg), 0);
++			offset_b = mmap_arg.offset;
  
- uint32_t gem_create_in_memory_region_list(int fd, uint64_t size, uint32_t flags,
--					  struct drm_i915_gem_memory_class_instance *mem_regions,
-+					  const struct drm_i915_gem_memory_class_instance *mem_regions,
- 					  int num_regions);
+-		errno = 0;
+-		ptr = mmap64(0, 4096, PROT_READ, MAP_SHARED, i915, offset_b);
+-		igt_assert(ptr == MAP_FAILED);
+-		igt_assert_eq(errno, EACCES);
++			igt_info("\tA[%s]: {fd:%d, handle:%d, offset:%"PRIx64"}\n",
++				 t->name, A, a, offset_a);
++			igt_info("\tB[%s]: {fd:%d, handle:%d, offset:%"PRIx64"}\n",
++				 t->name, B, b, offset_b);
  
- /*
+-		if (offset_a != offset_b) {
+ 			errno = 0;
+-			ptr = mmap(0, 4096, PROT_READ, MAP_SHARED, B, offset_a);
++			ptr = mmap64(0, 4096, PROT_READ, MAP_SHARED, i915, offset_a);
+ 			igt_assert(ptr == MAP_FAILED);
+ 			igt_assert_eq(errno, EACCES);
+ 
+ 			errno = 0;
+-			ptr = mmap(0, 4096, PROT_READ, MAP_SHARED, A, offset_b);
++			ptr = mmap64(0, 4096, PROT_READ, MAP_SHARED, i915, offset_b);
+ 			igt_assert(ptr == MAP_FAILED);
+ 			igt_assert_eq(errno, EACCES);
+-		}
+ 
+-		close(B);
++			if (offset_a != offset_b) {
++				errno = 0;
++				ptr = mmap(0, 4096, PROT_READ, MAP_SHARED, B, offset_a);
++				igt_assert(ptr == MAP_FAILED);
++				igt_assert_eq(errno, EACCES);
+ 
+-		ptr = mmap64(0, 4096, PROT_READ, MAP_SHARED, A, offset_a);
+-		igt_assert(ptr != MAP_FAILED);
+-		munmap(ptr, 4096);
++				errno = 0;
++				ptr = mmap(0, 4096, PROT_READ, MAP_SHARED, A, offset_b);
++				igt_assert(ptr == MAP_FAILED);
++				igt_assert_eq(errno, EACCES);
++			}
+ 
+-		close(A);
++			close(B);
++
++			ptr = mmap64(0, 4096, PROT_READ, MAP_SHARED, A, offset_a);
++			igt_assert(ptr != MAP_FAILED);
++			munmap(ptr, 4096);
++
++			close(A);
+ 
+-		ptr = mmap64(0, 4096, PROT_READ, MAP_SHARED, A, offset_a);
+-		igt_assert(ptr == MAP_FAILED);
++			ptr = mmap64(0, 4096, PROT_READ, MAP_SHARED, A, offset_a);
++			igt_assert(ptr == MAP_FAILED);
++		}
+ 	}
+ }
+ 
 -- 
 2.34.1
