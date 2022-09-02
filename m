@@ -1,17 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7857910E78A
- for <igt-dev@lists.freedesktop.org>; Fri,  2 Sep 2022 07:52:35 +0000 (UTC)
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1843C10E78A
+ for <igt-dev@lists.freedesktop.org>; Fri,  2 Sep 2022 07:52:42 +0000 (UTC)
 From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Fri,  2 Sep 2022 09:52:16 +0200
-Message-Id: <20220902075227.50690-2-zbigniew.kempczynski@intel.com>
+Date: Fri,  2 Sep 2022 09:52:18 +0200
+Message-Id: <20220902075227.50690-4-zbigniew.kempczynski@intel.com>
 In-Reply-To: <20220902075227.50690-1-zbigniew.kempczynski@intel.com>
 References: <20220902075227.50690-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v2 01/12] lib: Fix off-by-one-page in 48b
- obj.flags
+Subject: [igt-dev] [PATCH i-g-t v2 03/12] i915/gem_create: Verify all
+ regions return cleared objects
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,216 +24,213 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Chris Wilson <chris.p.wilson@linux.intel.com>
+From: Chris Wilson <chris.p.wilson@intel.com>
 
-The kernel checks that the last byte of the object will fit inside the
-32b GTT window unless the object is marked as being suitable for use
-with 48b addressing. However, the spinner only checked the start of the
-object which depending on the mix of size/alignment, could allow the
-object to straddle the 32b boundary and not be marked as 48b capable.
+We do not tolerate leaking stale information in newly created objects, so
+make sure the test covers all memory regions.
 
-Always set 48b for all the objects where ppGTT merites.
-
-In the process, there was one location where we failed to write the
-upper 32b of the address into the instruction.
-
-Signed-off-by: Chris Wilson <chris.p.wilson@linux.intel.com>
+Signed-off-by: Chris Wilson <chris.p.wilson@intel.com>
+Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 ---
- lib/igt_dummyload.c | 63 ++++++++++++++++++++++-----------------------
- 1 file changed, 31 insertions(+), 32 deletions(-)
+ tests/i915/gem_create.c | 99 +++++++++++++++++++++++++++++++----------
+ 1 file changed, 76 insertions(+), 23 deletions(-)
 
-diff --git a/lib/igt_dummyload.c b/lib/igt_dummyload.c
-index dc1bd51e08..17ae21f567 100644
---- a/lib/igt_dummyload.c
-+++ b/lib/igt_dummyload.c
-@@ -100,12 +100,21 @@ emit_recursive_batch(igt_spin_t *spin,
- 	struct drm_i915_gem_execbuffer2 *execbuf;
- 	struct drm_i915_gem_exec_object2 *obj;
- 	unsigned int flags[GEM_MAX_ENGINES];
-+	unsigned int objflags = 0;
- 	unsigned int nengine;
- 	int fence_fd = -1;
--	uint64_t addr, addr_scratch, ahnd = opts->ahnd, objflags = 0;
-+	uint64_t addr, addr_scratch, ahnd = opts->ahnd;
- 	uint32_t *cs;
- 	int i;
+diff --git a/tests/i915/gem_create.c b/tests/i915/gem_create.c
+index d7d2a01722..114c1c7c9b 100644
+--- a/tests/i915/gem_create.c
++++ b/tests/i915/gem_create.c
+@@ -59,6 +59,7 @@
+ #include "i915/gem_create.h"
+ #include "i915/gem_engine_topology.h"
+ #include "i915/gem_mman.h"
++#include "i915/intel_memory_region.h"
+ #include "i915_drm.h"
  
-+	igt_assert(!(opts->ctx && opts->ctx_id));
+ IGT_TEST_DESCRIPTION("Ensure that basic gem_create and gem_create_ext works"
+@@ -145,45 +146,87 @@ static uint64_t get_npages(_Atomic(uint64_t) *global, uint64_t npages)
+ 
+ struct thread_clear {
+ 	_Atomic(uint64_t) max;
++	struct drm_i915_gem_memory_class_instance region;
+ 	int timeout;
+ 	int i915;
+ };
+ 
++static uint32_t batch_create(int i915)
++{
++	const uint32_t bbe = MI_BATCH_BUFFER_END;
++	uint32_t handle = gem_create(i915, sizeof(bbe));
 +
-+	r = memset(relocs, 0, sizeof(relocs));
-+	execbuf = memset(&spin->execbuf, 0, sizeof(spin->execbuf));
-+	execbuf->rsvd1 = opts->ctx ? opts->ctx->id : opts->ctx_id;
-+	execbuf->flags = I915_EXEC_NO_RELOC;
-+	obj = memset(spin->obj, 0, sizeof(spin->obj));
++	gem_write(i915, handle, 0, &bbe, sizeof(bbe));
++	return handle;
++}
 +
- 	/*
- 	 * Pick a random location for our spinner et al.
- 	 *
-@@ -121,8 +130,12 @@ emit_recursive_batch(igt_spin_t *spin,
- 	 * that wrap.
- 	 */
- 
-+	addr = gem_aperture_size(fd) / 2;
-+	if (addr >> 32)
-+		objflags |= EXEC_OBJECT_SUPPORTS_48B_ADDRESS;
++static void make_resident(int i915, uint32_t batch, uint32_t handle)
++{
++	struct drm_i915_gem_exec_object2 obj[2] = {
++		[0] = {
++			.handle = handle,
++			.flags = EXEC_OBJECT_SUPPORTS_48B_ADDRESS,
++		},
++		[1] = {
++			.handle = batch ?: batch_create(i915),
++			.flags = EXEC_OBJECT_SUPPORTS_48B_ADDRESS,
++		},
++	};
++	struct drm_i915_gem_execbuffer2 eb = {
++		.buffers_ptr = to_user_pointer(obj),
++		.buffer_count = ARRAY_SIZE(obj),
++	};
++	int err;
 +
- 	if (!ahnd) {
--		addr = gem_aperture_size(fd) / 2;
-+		addr /= 2;
- 		if (addr >> 31)
- 			addr = 1u << 31;
- 		addr += random() % addr / 2;
-@@ -131,8 +144,6 @@ emit_recursive_batch(igt_spin_t *spin,
- 		objflags |= EXEC_OBJECT_PINNED;
- 	}
++	err = __gem_execbuf(i915, &eb);
++	if (obj[1].handle != batch)
++		gem_close(i915, obj[1].handle);
++
++	igt_assert(err == 0 || err == -E2BIG || err == -ENOSPC);
++}
++
+ static void *thread_clear(void *data)
+ {
+ 	struct thread_clear *arg = data;
+ 	unsigned long checked = 0, total = 0;
+-	enum { PRW, GTT, WC, WB, __LAST__ } mode = PRW;
++	enum { PRW, GTT, WC, WB, __LAST__, FIXED } mode = PRW;
+ 	int i915 = arg->i915;
++	uint32_t batch = batch_create(i915);
++
++	if (__gem_write(i915, 0, 0, 0, 0) == -EOPNOTSUPP)
++		mode = FIXED;
  
--	igt_assert(!(opts->ctx && opts->ctx_id));
--
- 	nengine = 0;
- 	if (opts->engine == ALL_ENGINES) {
- 		struct intel_execution_engine2 *engine;
-@@ -150,11 +161,6 @@ emit_recursive_batch(igt_spin_t *spin,
- 	}
- 	igt_require(nengine);
+ 	igt_until_timeout(arg->timeout) {
+-		struct drm_i915_gem_create create = {};
+-		uint64_t npages;
++		uint64_t npages, size;
++		uint32_t handle;
+ 		void *ptr;
  
--	memset(relocs, 0, sizeof(relocs));
--	execbuf = memset(&spin->execbuf, 0, sizeof(spin->execbuf));
--	execbuf->flags = I915_EXEC_NO_RELOC;
--	obj = memset(spin->obj, 0, sizeof(spin->obj));
--
- 	obj[BATCH].handle =
- 		handle_create(fd, BATCH_SIZE, opts->flags, &spin->batch);
- 	if (!spin->batch) {
-@@ -175,9 +181,7 @@ emit_recursive_batch(igt_spin_t *spin,
- 							   BATCH_SIZE, 0,
- 							   ALLOC_STRATEGY_LOW_TO_HIGH);
- 	obj[BATCH].offset = CANONICAL(addr);
--	obj[BATCH].flags |= objflags;
--	if (obj[BATCH].offset >= (1ull << 32))
--		obj[BATCH].flags |= EXEC_OBJECT_SUPPORTS_48B_ADDRESS;
-+	obj[BATCH].flags = objflags;
+ 		npages = random();
+ 		npages <<= 32;
+ 		npages |= random();
+ 		npages = get_npages(&arg->max, npages);
+-		create.size = npages << 12;
++		size = npages << 12;
++
++		igt_assert_eq(__gem_create_in_memory_region_list(i915, &handle, &size, 0, &arg->region, 1), 0);
++		if (random() & 1)
++			make_resident(i915, batch, handle);
  
- 	addr += BATCH_SIZE;
- 
-@@ -192,27 +196,23 @@ emit_recursive_batch(igt_spin_t *spin,
- 
- 		obj[SCRATCH].handle = opts->dependency;
- 		obj[SCRATCH].offset = CANONICAL(addr_scratch);
--		obj[SCRATCH].flags |= objflags;
--		if (obj[SCRATCH].offset >= (1ull << 32))
--			obj[SCRATCH].flags |= EXEC_OBJECT_SUPPORTS_48B_ADDRESS;
-+		obj[SCRATCH].flags = objflags;
- 
- 		if (!(opts->flags & IGT_SPIN_SOFTDEP)) {
- 			obj[SCRATCH].flags |= EXEC_OBJECT_WRITE;
- 
- 			/* dummy write to dependency */
--			r = &relocs[obj[BATCH].relocation_count++];
- 			r->presumed_offset = obj[SCRATCH].offset;
- 			r->target_handle = obj[SCRATCH].handle;
- 			r->offset = sizeof(uint32_t) * 1020;
- 			r->delta = 0;
- 			r->read_domains = I915_GEM_DOMAIN_RENDER;
- 			r->write_domain = I915_GEM_DOMAIN_RENDER;
-+			r++;
+-		create_ioctl(i915, &create);
+ 		switch (mode) {
++		case FIXED:
++			ptr = __gem_mmap_offset__fixed(i915, handle, 0, size, PROT_READ);
++			break;
+ 		case __LAST__:
+ 		case PRW:
+ 			ptr = NULL;
+ 			break;
+ 		case WB:
+-			ptr = __gem_mmap__cpu(i915, create.handle,
+-					      0, create.size, PROT_READ);
++			ptr = __gem_mmap__cpu(i915, handle, 0, size, PROT_READ);
+ 			break;
+ 		case WC:
+-			ptr = __gem_mmap__wc(i915, create.handle,
+-					     0, create.size, PROT_READ);
++			ptr = __gem_mmap__wc(i915, handle, 0, size, PROT_READ);
+ 			break;
+ 		case GTT:
+-			ptr = __gem_mmap__gtt(i915, create.handle,
+-					      create.size, PROT_READ);
++			ptr = __gem_mmap__gtt(i915, handle, size, PROT_READ);
+ 			break;
  		}
+ 		/* No set-domains as we are being as naughty as possible */
+@@ -195,7 +238,7 @@ static void *thread_clear(void *data)
+ 			};
  
- 		execbuf->buffer_count++;
- 	} else if (opts->flags & IGT_SPIN_POLL_RUN) {
--		r = &relocs[obj[BATCH].relocation_count++];
--
- 		igt_assert(!opts->dependency);
+ 			if (!ptr)
+-				gem_read(i915, create.handle, x[0], x, sizeof(x));
++				gem_read(i915, handle, x[0], x, sizeof(x));
+ 			else if (page & 1)
+ 				igt_memcpy_from_wc(x, ptr + x[0], sizeof(x));
+ 			else
+@@ -207,26 +250,28 @@ static void *thread_clear(void *data)
+ 			checked++;
+ 		}
+ 		if (ptr)
+-			munmap(ptr, create.size);
+-		gem_close(i915, create.handle);
++			munmap(ptr, size);
++		gem_close(i915, handle);
  
- 		if (gen == 4 || gen == 5) {
-@@ -244,6 +244,7 @@ emit_recursive_batch(igt_spin_t *spin,
- 								   ALLOC_STRATEGY_LOW_TO_HIGH);
- 		addr += 4096; /* guard page */
- 		obj[SCRATCH].offset = CANONICAL(addr);
-+		obj[SCRATCH].flags = objflags;
- 		addr += 4096;
+ 		total += npages;
+ 		atomic_fetch_add(&arg->max, npages);
  
- 		igt_assert_eq(spin->poll[SPIN_POLL_START_IDX], 0);
-@@ -253,10 +254,6 @@ emit_recursive_batch(igt_spin_t *spin,
- 		r->offset = sizeof(uint32_t) * 1;
- 		r->delta = sizeof(uint32_t) * SPIN_POLL_START_IDX;
- 
--		obj[SCRATCH].flags |= objflags;
--		if (obj[SCRATCH].offset >= (1ull << 32))
--			obj[SCRATCH].flags |= EXEC_OBJECT_SUPPORTS_48B_ADDRESS;
--
- 		*cs++ = MI_STORE_DWORD_IMM | (gen < 6 ? 1 << 22 : 0);
- 
- 		if (gen >= 8) {
-@@ -274,6 +271,7 @@ emit_recursive_batch(igt_spin_t *spin,
- 		*cs++ = 1;
- 
- 		execbuf->buffer_count++;
-+		r++;
+-		if (++mode == __LAST__)
++		if (mode < __LAST__ && ++mode == __LAST__)
+ 			mode = PRW;
  	}
++	gem_close(i915, batch);
  
- 	spin->handle = obj[BATCH].handle;
-@@ -314,8 +312,6 @@ emit_recursive_batch(igt_spin_t *spin,
- 	 * no matter how they modify it (from either the GPU or CPU).
- 	 */
- 	if (gen >= 8) { /* arbitrary cutoff between ring/execlists submission */
--		r = &relocs[obj[BATCH].relocation_count++];
--
- 		/*
- 		 * On Sandybridge+ the comparison is a strict greater-than:
- 		 * if the value at spin->condition is greater than BB_END,
-@@ -334,15 +330,17 @@ emit_recursive_batch(igt_spin_t *spin,
- 		r->offset = (cs + 2 - spin->batch) * sizeof(*cs);
- 		r->read_domains = I915_GEM_DOMAIN_COMMAND;
- 		r->delta = (spin->condition - spin->batch) * sizeof(*cs);
-+		igt_assert(r->delta < 4096);
+ 	igt_info("Checked %'lu / %'lu pages\n", checked, total);
+ 	return (void *)(uintptr_t)checked;
+ }
  
- 		*cs++ = MI_COND_BATCH_BUFFER_END | MI_DO_COMPARE | 2;
- 		*cs++ = MI_BATCH_BUFFER_END;
- 		*cs++ = r->presumed_offset + r->delta;
--		*cs++ = 0;
-+		*cs++ = r->presumed_offset >> 32;
-+
-+		r++;
- 	}
+-static void always_clear(int i915, int timeout)
++static void always_clear(int i915, const struct gem_memory_region *r, int timeout)
+ {
+ 	struct thread_clear arg = {
+ 		.i915 = i915,
++		.region = r->ci,
++		.max = r->size / 2 >> 12, /* in pages */
+ 		.timeout = timeout,
+-		.max = igt_get_avail_ram_mb() << (20 - 12), /* in pages */
+ 	};
+ 	const int ncpus = sysconf(_SC_NPROCESSORS_ONLN);
+ 	unsigned long checked;
+@@ -244,7 +289,7 @@ static void always_clear(int i915, int timeout)
+ 	igt_info("Checked %'lu page allocations\n", checked);
+ }
  
- 	/* recurse */
--	r = &relocs[obj[BATCH].relocation_count++];
- 	r->target_handle = obj[BATCH].handle;
- 	r->presumed_offset = obj[BATCH].offset;
- 	r->offset = (cs + 1 - spin->batch) * sizeof(*cs);
-@@ -363,11 +361,10 @@ emit_recursive_batch(igt_spin_t *spin,
- 		*cs = r->presumed_offset + r->delta;
- 		cs++;
- 	}
--	obj[BATCH].relocs_ptr = to_user_pointer(relocs);
-+	r++;
+-static void busy_create(int i915, int timeout)
++static void busy_create(int i915, const struct gem_memory_region *r, int timeout)
+ {
+ 	struct intel_execution_engine2 *e;
+ 	const intel_ctx_t *ctx;
+@@ -267,7 +312,7 @@ static void busy_create(int i915, int timeout)
+ 			uint32_t handle;
+ 			igt_spin_t *next;
  
- 	execbuf->buffers_ptr =
- 	       	to_user_pointer(obj + (2 - execbuf->buffer_count));
--	execbuf->rsvd1 = opts->ctx ? opts->ctx->id : opts->ctx_id;
+-			handle = gem_create(i915, 4096);
++			handle = gem_create_in_memory_region_list(i915, 4096, 0, &r->ci, 1);
+ 			next = igt_spin_new(i915,
+ 					    .ahnd = ahnd,
+ 					    .ctx = ctx,
+@@ -808,12 +853,20 @@ igt_main
+ 		size_update(fd);
  
- 	if (opts->flags & IGT_SPIN_FENCE_OUT)
- 		execbuf->flags |= I915_EXEC_FENCE_OUT;
-@@ -382,14 +379,16 @@ emit_recursive_batch(igt_spin_t *spin,
- 		execbuf->rsvd2 = opts->fence;
- 	}
- 
-+	/* For allocator we have to rid of relocation_count */
-+	if (!ahnd) {
-+		obj[BATCH].relocs_ptr = to_user_pointer(relocs);
-+		obj[BATCH].relocation_count = r - relocs;
+ 	igt_describe("Verify that all new objects are clear.");
+-	igt_subtest("create-clear")
+-		always_clear(fd, 30);
++	igt_subtest_with_dynamic("create-clear") {
++		for_each_memory_region(r, fd) {
++			igt_dynamic_f("%s", r->name)
++				always_clear(fd, r, 30);
++		}
 +	}
-+
- 	for (i = 0; i < nengine; i++) {
- 		execbuf->flags &= ~ENGINE_MASK;
- 		execbuf->flags |= flags[i];
  
--		/* For allocator we have to rid of relocation_count */
--		for (int j = 0; j < ARRAY_SIZE(spin->obj) && ahnd; j++)
--			spin->obj[j].relocation_count = 0;
--
- 		gem_execbuf_wr(fd, execbuf);
+ 	igt_describe("Create buffer objects while GPU is busy.");
+-	igt_subtest("busy-create")
+-		busy_create(fd, 30);
++	igt_subtest_with_dynamic("busy-create") {
++		for_each_memory_region(r, fd) {
++			igt_dynamic_f("%s", r->name)
++				busy_create(fd, r, 30);
++		}
++	}
  
- 		if (opts->flags & IGT_SPIN_FENCE_OUT) {
+ 	igt_describe("Exercise create_ext placements extension.");
+ 	igt_subtest("create-ext-placement-sanity-check")
 -- 
 2.34.1
