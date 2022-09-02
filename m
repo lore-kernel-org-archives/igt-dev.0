@@ -1,20 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B280C10E54D
- for <igt-dev@lists.freedesktop.org>; Fri,  2 Sep 2022 03:46:29 +0000 (UTC)
-Date: Fri, 2 Sep 2022 05:46:26 +0200
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7C8CB10E54D
+ for <igt-dev@lists.freedesktop.org>; Fri,  2 Sep 2022 03:50:30 +0000 (UTC)
+Date: Fri, 2 Sep 2022 05:50:26 +0200
 From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 To: igt-dev@lists.freedesktop.org
-Message-ID: <YxF8kmrYWNvaa6a4@zkempczy-mobl2>
+Message-ID: <YxF9ggkteSDj3l7l@zkempczy-mobl2>
 References: <20220901114442.55071-1-zbigniew.kempczynski@intel.com>
- <20220901114442.55071-8-zbigniew.kempczynski@intel.com>
+ <20220901114442.55071-11-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20220901114442.55071-8-zbigniew.kempczynski@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 07/12] i915/gem_mmap_offset: Verify all
- regions with ptrace
+In-Reply-To: <20220901114442.55071-11-zbigniew.kempczynski@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 10/12] i915/gem_mmap_offset: Check all
+ mmap types reject invalid objects
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,139 +26,51 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Thu, Sep 01, 2022 at 01:44:37PM +0200, Zbigniew Kempczyński wrote:
-> From: Chris Wilson <chris.p.wilson@intel.com>
+On Thu, Sep 01, 2022 at 01:44:40PM +0200, Zbigniew Kempczyński wrote:
+> From: Chris Wilson <chris.p.wilson@linux.intel.com>
 > 
-> Check we can use ptrace to query *ptr of each mmap for each region.
-
-Looks we haven't checked local memory before, so:
+> Extend the bad_object negative subtest to cover all mmap types.
+> 
+> Signed-off-by: Chris Wilson <chris.p.wilson@linux.intel.com>
+> ---
+>  tests/i915/gem_mmap_offset.c | 18 ++++++++++--------
+>  1 file changed, 10 insertions(+), 8 deletions(-)
+> 
+> diff --git a/tests/i915/gem_mmap_offset.c b/tests/i915/gem_mmap_offset.c
+> index 40daa53061..7c663f1074 100644
+> --- a/tests/i915/gem_mmap_offset.c
+> +++ b/tests/i915/gem_mmap_offset.c
+> @@ -121,15 +121,17 @@ static void bad_object(int i915)
+>  	handles[i] = real_handle + 1;
+>  
+>  	for (; i >= 0; i--) {
+> -		struct drm_i915_gem_mmap_offset arg = {
+> -			.handle = handles[i],
+> -			.flags = I915_MMAP_OFFSET_WB,
+> -		};
+> +		for_each_mmap_offset_type(i915, t) {
+> +			struct drm_i915_gem_mmap_offset arg = {
+> +				.handle = handles[i],
+> +				.flags = t->type,
+> +			};
+>  
+> -		igt_debug("Trying MMAP IOCTL with handle %x\n",
+> -			  handles[i]);
+> -		igt_assert_eq(mmap_offset_ioctl(i915, &arg),
+> -			      -ENOENT);
+> +			igt_debug("Trying MMAP IOCTL[%s] with handle %x\n",
+> +				  t->name, handles[i]);
+> +			igt_assert_eq(mmap_offset_ioctl(i915, &arg),
+> +				      -ENOENT);
+> +		}
+>  	}
+>  
+>  	gem_close(i915, real_handle);
+> -- 
+> 2.34.1
+>
 
 Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 
 --
-Zbigniew
-
-> 
-> Signed-off-by: Chris Wilson <chris.p.wilson@intel.com>
-> ---
->  tests/i915/gem_mmap_offset.c | 84 ++++++++++++++++++++----------------
->  1 file changed, 46 insertions(+), 38 deletions(-)
-> 
-> diff --git a/tests/i915/gem_mmap_offset.c b/tests/i915/gem_mmap_offset.c
-> index faadbd4ee6..806a9d68f4 100644
-> --- a/tests/i915/gem_mmap_offset.c
-> +++ b/tests/i915/gem_mmap_offset.c
-> @@ -370,64 +370,72 @@ static void test_ptrace(int i915)
->  	const unsigned int SZ = 3 * 4096;
->  	unsigned long *ptr, *cpy;
->  	unsigned long AA, CC;
-> -	uint32_t bo;
->  
->  	memset(&AA, 0xaa, sizeof(AA));
->  	memset(&CC, 0x55, sizeof(CC));
->  
->  	cpy = malloc(SZ);
-> -	bo = gem_create(i915, SZ);
-> +	igt_assert(cpy);
->  
-> -	for_each_mmap_offset_type(i915, t) {
-> -		ptr = __mmap_offset(i915, bo, 0, SZ,
-> -				    PROT_READ | PROT_WRITE,
-> -				    t->type);
-> -		if (!ptr)
-> -			continue;
-> +	for_each_memory_region(r, i915) {
-> +		uint64_t size = SZ;
-> +		uint32_t bo;
->  
-> -		igt_dynamic_f("%s", t->name) {
-> -			pid_t pid;
-> +		igt_assert_eq(__gem_create_in_memory_region_list(i915, &bo, &size, 0, &r->ci, 1), 0);
-> +		make_resident(i915, 0, bo);
->  
-> -			memset(cpy, AA, SZ);
-> -			memset(ptr, CC, SZ);
-> +		for_each_mmap_offset_type(i915, t) {
-> +			ptr = __mmap_offset(i915, bo, 0, size,
-> +					    PROT_READ | PROT_WRITE,
-> +					    t->type);
-> +			if (!ptr)
-> +				continue;
->  
-> -			igt_assert(!memchr_inv(ptr, CC, SZ));
-> -			igt_assert(!memchr_inv(cpy, AA, SZ));
-> +			igt_dynamic_f("%s-%s", r->name, t->name) {
-> +				pid_t pid;
->  
-> -			igt_fork(child, 1) {
-> -				ptrace(PTRACE_TRACEME, 0, NULL, NULL);
-> -				raise(SIGSTOP);
-> -			}
-> +				memset(cpy, AA, SZ);
-> +				memset(ptr, CC, SZ);
->  
-> -			/* Wait for the child to ready themselves [SIGSTOP] */
-> -			pid = wait(NULL);
-> +				igt_assert(!memchr_inv(ptr, CC, SZ));
-> +				igt_assert(!memchr_inv(cpy, AA, SZ));
->  
-> -			ptrace(PTRACE_ATTACH, pid, NULL, NULL);
-> -			for (int i = 0; i < SZ / sizeof(long); i++) {
-> -				long ret;
-> +				igt_fork(child, 1) {
-> +					ptrace(PTRACE_TRACEME, 0, NULL, NULL);
-> +					raise(SIGSTOP);
-> +				}
->  
-> -				ret = ptrace(PTRACE_PEEKDATA, pid, ptr + i);
-> -				igt_assert_eq_u64(ret, CC);
-> -				cpy[i] = ret;
-> +				/* Wait for the child to ready themselves [SIGSTOP] */
-> +				pid = wait(NULL);
->  
-> -				ret = ptrace(PTRACE_POKEDATA, pid, ptr + i, AA);
-> -				igt_assert_eq(ret, 0l);
-> -			}
-> -			ptrace(PTRACE_DETACH, pid, NULL, NULL);
-> +				ptrace(PTRACE_ATTACH, pid, NULL, NULL);
-> +				for (int i = 0; i < SZ / sizeof(long); i++) {
-> +					long ret;
-> +
-> +					ret = ptrace(PTRACE_PEEKDATA, pid, ptr + i);
-> +					igt_assert_eq_u64(ret, CC);
-> +					cpy[i] = ret;
-> +
-> +					ret = ptrace(PTRACE_POKEDATA, pid, ptr + i, AA);
-> +					igt_assert_eq(ret, 0l);
-> +				}
-> +				ptrace(PTRACE_DETACH, pid, NULL, NULL);
->  
-> -			/* Wakeup the child for it to exit */
-> -			kill(SIGCONT, pid);
-> -			igt_waitchildren();
-> +				/* Wakeup the child for it to exit */
-> +				kill(SIGCONT, pid);
-> +				igt_waitchildren();
->  
-> -			/* The two buffers should now be swapped */
-> -			igt_assert(!memchr_inv(ptr, AA, SZ));
-> -			igt_assert(!memchr_inv(cpy, CC, SZ));
-> +				/* The two buffers should now be swapped */
-> +				igt_assert(!memchr_inv(ptr, AA, SZ));
-> +				igt_assert(!memchr_inv(cpy, CC, SZ));
-> +			}
-> +
-> +			munmap(ptr, size);
->  		}
->  
-> -		munmap(ptr, SZ);
-> +		gem_close(i915, bo);
->  	}
->  
-> -	gem_close(i915, bo);
->  	free(cpy);
->  }
->  
-> -- 
-> 2.34.1
-> 
+Zbigniew 
