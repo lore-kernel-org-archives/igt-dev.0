@@ -1,20 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 48F6310E198
+Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 877ED10E1CB
  for <igt-dev@lists.freedesktop.org>; Mon,  5 Sep 2022 05:54:01 +0000 (UTC)
 Received: from maurocar by linux.intel.com with local (Exim 4.95)
- (envelope-from <mauro.chehab@linux.intel.com>) id 1oV53V-007p8U-79
+ (envelope-from <mauro.chehab@linux.intel.com>) id 1oV53V-007p8E-5A
  for igt-dev@lists.freedesktop.org; Mon, 05 Sep 2022 07:53:57 +0200
 From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Mon,  5 Sep 2022 07:52:45 +0200
-Message-Id: <6d9a4f32dcf8c9fe9567bff28d577d0972e994a4.1662357022.git.mchehab@kernel.org>
+Date: Mon,  5 Sep 2022 07:52:41 +0200
+Message-Id: <da0f52e411f443a021728c2f73f8981599367853.1662357022.git.mchehab@kernel.org>
 In-Reply-To: <cover.1662357022.git.mchehab@kernel.org>
 References: <cover.1662357022.git.mchehab@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH v2 11/77] i915/gem_render_copy: Close device
- before exit
+Subject: [igt-dev] [PATCH v2 07/77] i915/gem_create: Close device before exit
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -39,19 +38,29 @@ Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 To avoid mailbombing on a large number of people, only mailing lists were C/C on the cover.
 See [PATCH v2 00/77] at: https://lore.kernel.org/all/cover.1662357022.git.mchehab@kernel.org/
 
- tests/i915/gem_render_copy.c | 1 +
- 1 file changed, 1 insertion(+)
+ tests/i915/gem_create.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/tests/i915/gem_render_copy.c b/tests/i915/gem_render_copy.c
-index 3da29ec4e316..70b96c8f42ad 100644
---- a/tests/i915/gem_render_copy.c
-+++ b/tests/i915/gem_render_copy.c
-@@ -879,5 +879,6 @@ igt_main_args("dac", NULL, help_str, opt_handler, NULL)
- 		igt_stop_hang_detector();
- 		buf_ops_destroy(data.bops);
- 		igt_collection_destroy(set);
-+		close(data.drm_fd);
- 	}
- }
+diff --git a/tests/i915/gem_create.c b/tests/i915/gem_create.c
+index d7d2a017223d..f3e5f15408fe 100644
+--- a/tests/i915/gem_create.c
++++ b/tests/i915/gem_create.c
+@@ -54,6 +54,7 @@
+ #include "intel_chipset.h"
+ #include "igt_aux.h"
+ #include "igt_dummyload.h"
++#include "igt_types.h"
+ #include "igt_x86.h"
+ #include "i915/gem.h"
+ #include "i915/gem_create.h"
+@@ -780,7 +781,7 @@ static void create_ext_cpu_access_big(int fd)
+ 
+ igt_main
+ {
+-	int fd = -1;
++	igt_fd_t(fd);
+ 
+ 	igt_fixture {
+ 		fd = drm_open_driver(DRIVER_INTEL);
 -- 
 2.37.2
