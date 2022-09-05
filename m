@@ -1,19 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E490D10E314
- for <igt-dev@lists.freedesktop.org>; Mon,  5 Sep 2022 05:54:02 +0000 (UTC)
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 198BD10E328
+ for <igt-dev@lists.freedesktop.org>; Mon,  5 Sep 2022 05:54:03 +0000 (UTC)
 Received: from maurocar by linux.intel.com with local (Exim 4.95)
- (envelope-from <mauro.chehab@linux.intel.com>) id 1oV53V-007p9b-FS
+ (envelope-from <mauro.chehab@linux.intel.com>) id 1oV53V-007pBf-Vf
  for igt-dev@lists.freedesktop.org; Mon, 05 Sep 2022 07:53:57 +0200
 From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Mon,  5 Sep 2022 07:53:02 +0200
-Message-Id: <26ce912981e7520ea2891ee143e992690dd29709.1662357022.git.mchehab@kernel.org>
+Date: Mon,  5 Sep 2022 07:53:34 +0200
+Message-Id: <59eaeeb14f8b4d31386d2ba05906b87f55a881c1.1662357022.git.mchehab@kernel.org>
 In-Reply-To: <cover.1662357022.git.mchehab@kernel.org>
 References: <cover.1662357022.git.mchehab@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH v2 28/77] kms_atomic: Close device before exit
+Subject: [igt-dev] [PATCH v2 60/77] syncobj_wait: Close device before exit
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -38,19 +38,21 @@ Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 To avoid mailbombing on a large number of people, only mailing lists were C/C on the cover.
 See [PATCH v2 00/77] at: https://lore.kernel.org/all/cover.1662357022.git.mchehab@kernel.org/
 
- tests/kms_atomic.c | 1 +
- 1 file changed, 1 insertion(+)
+ tests/syncobj_wait.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/tests/kms_atomic.c b/tests/kms_atomic.c
-index 253829f2bd14..831ba2587292 100644
---- a/tests/kms_atomic.c
-+++ b/tests/kms_atomic.c
-@@ -1436,5 +1436,6 @@ igt_main
- 		igt_remove_fb(display.drm_fd, &fb);
+diff --git a/tests/syncobj_wait.c b/tests/syncobj_wait.c
+index 669d0adfc10d..427b6b1192ad 100644
+--- a/tests/syncobj_wait.c
++++ b/tests/syncobj_wait.c
+@@ -912,4 +912,8 @@ igt_main
  
- 		igt_display_fini(&display);
-+		close(display.drm_fd);
- 	}
+ 	igt_subtest("wait-all-interrupted")
+ 		test_wait_interrupted(fd, WAIT_ALL);
++
++	igt_fixture {
++		close(fd);
++	}
  }
 -- 
 2.37.2
