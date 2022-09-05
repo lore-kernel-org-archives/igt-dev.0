@@ -1,18 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6121410E30F
- for <igt-dev@lists.freedesktop.org>; Mon,  5 Sep 2022 11:33:54 +0000 (UTC)
-From: Jani Nikula <jani.nikula@linux.intel.com>
-To: Arun R Murthy <arun.r.murthy@intel.com>, igt-dev@lists.freedesktop.org
-In-Reply-To: <20220905111630.4071189-1-arun.r.murthy@intel.com>
-References: <20220829093147.3836523-1-arun.r.murthy@intel.com>
- <20220905111630.4071189-1-arun.r.murthy@intel.com>
-Date: Mon, 05 Sep 2022 14:33:35 +0300
-Message-ID: <871qsqawds.fsf@intel.com>
+Content-Type: multipart/alternative;
+ boundary="===============1837069816700800125=="
 MIME-Version: 1.0
-Content-Type: text/plain
-Subject: Re: [igt-dev] [PATCHv2 i-g-t] tests/kms_async_flips: Enable async
- flip on linear buffer
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Lisovskiy, Stanislav" <stanislav.lisovskiy@intel.com>
+Date: Mon, 05 Sep 2022 06:48:27 -0000
+Message-ID: <166236050719.1948.4401344765198642143@emeril.freedesktop.org>
+References: <20220901104417.4774-1-stanislav.lisovskiy@intel.com>
+In-Reply-To: <20220901104417.4774-1-stanislav.lisovskiy@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
+ =?utf-8?q?i915/i915=5Fpipe=5Fstress=3A_Add_plane_pipes_stress_test_=28rev?=
+ =?utf-8?q?7=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,129 +18,197 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: petri.latvala@intel.com, Arun R Murthy <arun.r.murthy@intel.com>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Mon, 05 Sep 2022, Arun R Murthy <arun.r.murthy@intel.com> wrote:
-> On Intel Gen platforms >= GEN12, Async on linear buffer is supported,
-> hence enabling test for the same.
->
-> v2: Added new line character for igt_skip_on_f (Petri)
->     Added new element modifier in data struct (JP)
->
-> Signed-off-by: Arun R Murthy <arun.r.murthy@intel.com>
-> ---
->  lib/intel_chipset.h     |  1 +
->  tests/kms_async_flips.c | 26 +++++++++++++++++++++++---
->  2 files changed, 24 insertions(+), 3 deletions(-)
->
-> diff --git a/lib/intel_chipset.h b/lib/intel_chipset.h
-> index d7a6ff19..ff587924 100644
-> --- a/lib/intel_chipset.h
-> +++ b/lib/intel_chipset.h
-> @@ -197,6 +197,7 @@ void intel_check_pch(void);
->  
->  #define IS_GEN(devid, x)	(intel_get_device_info(devid)->graphics_ver == x)
->  #define AT_LEAST_GEN(devid, x)	(intel_get_device_info(devid)->graphics_ver >= x)
-> +#define DISPLAY_ID(devid)	(intel_get_device_info(devid)->graphics_ver)
+--===============1837069816700800125==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-That's a misleading macro name.
+== Series Details ==
 
-Display ID is a thing, and that has nothing to do with our display
-ver. And display ver may be different from graphics ver.
+Series: tests/i915/i915_pipe_stress: Add plane pipes stress test (rev7)
+URL   : https://patchwork.freedesktop.org/series/107027/
+State : success
 
-BR,
-Jani.
+== Summary ==
 
->  
->  #define IS_GEN2(devid)		IS_GEN(devid, 2)
->  #define IS_GEN3(devid)		IS_GEN(devid, 3)
-> diff --git a/tests/kms_async_flips.c b/tests/kms_async_flips.c
-> index 695aea74..cfd5d65a 100644
-> --- a/tests/kms_async_flips.c
-> +++ b/tests/kms_async_flips.c
-> @@ -61,6 +61,7 @@ typedef struct {
->  	bool extended;
->  	enum pipe pipe;
->  	bool alternate_sync_async;
-> +	uint64_t modifier;
->  } data_t;
->  
->  static void flip_handler(int fd_, unsigned int sequence, unsigned int tv_sec,
-> @@ -125,7 +126,7 @@ static void make_fb(data_t *data, struct igt_fb *fb,
->  
->  	if (is_i915_device(data->drm_fd)) {
->  		igt_create_fb(data->drm_fd, width, height, DRM_FORMAT_XRGB8888,
-> -			      I915_FORMAT_MOD_X_TILED, fb);
-> +			      data->modifier, fb);
->  		igt_draw_fill_fb(data->drm_fd, fb, 0x88);
->  	} else {
->  		igt_create_color_fb(data->drm_fd, width, height, DRM_FORMAT_XRGB8888,
-> @@ -594,21 +595,37 @@ igt_main_args("e", NULL, help_str, opt_handler, &data)
->  		igt_fixture
->  			require_monotonic_timestamp(data.drm_fd);
->  
-> -		igt_describe("Wait for page flip events in between successive asynchronous flips");
-> +		igt_describe("Wait for page flip events in between successive asynchronous flips on X Tiled buffer");
->  		igt_subtest_with_dynamic("async-flip-with-page-flip-events") {
->  			data.alternate_sync_async = false;
-> +			data.modifier = I915_FORMAT_MOD_X_TILED;
->  			run_test(&data, test_async_flip);
->  		}
->  
-> +		igt_describe("Wait for page flip events in between successive asynchronous flips on Linear buffer");
-> +		igt_subtest_with_dynamic("async-flip-with-page-flip-events-linear") {
-> +			data.alternate_sync_async = false;
-> +			data.modifier = DRM_FORMAT_MOD_LINEAR;
-> +			if(is_i915_device(data.drm_fd)) {
-> +				uint32_t devid = intel_get_drm_devid(data.drm_fd);
-> +				igt_skip_on_f(DISPLAY_ID(devid) < 12,
-> +						"Async on Linear buffer not supported\n");
-> +				run_test(&data, test_async_flip);
-> +			}
-> +		}
-> +
->  		igt_describe("Alternate between sync and async flips");
->  		igt_subtest_with_dynamic("alternate-sync-async-flip") {
-> +			data.modifier = I915_FORMAT_MOD_X_TILED;
->  			data.alternate_sync_async = true;
->  			run_test(&data, test_async_flip);
->  		}
->  
->  		igt_describe("Verify that the async flip timestamp does not coincide with either previous or next vblank");
-> -		igt_subtest_with_dynamic("test-time-stamp")
-> +		igt_subtest_with_dynamic("test-time-stamp") {
-> +			data.modifier = I915_FORMAT_MOD_X_TILED;
->  			run_test(&data, test_timestamp);
-> +		}
->  	}
->  
->  	igt_describe("Verify that the DRM_IOCTL_MODE_CURSOR passes after async flip");
-> @@ -622,6 +639,7 @@ igt_main_args("e", NULL, help_str, opt_handler, &data)
->  			      "PSR2 sel fetch causes cursor to be added to primary plane " \
->  			      "pages flips and async flip is not supported in cursor\n");
->  
-> +		data.modifier = I915_FORMAT_MOD_X_TILED;
->  		run_test(&data, test_cursor);
->  	}
->  
-> @@ -632,6 +650,7 @@ igt_main_args("e", NULL, help_str, opt_handler, &data)
->  		igt_require(igt_display_has_format_mod(&data.display, DRM_FORMAT_XRGB8888,
->  						       I915_FORMAT_MOD_Y_TILED));
->  
-> +		data.modifier = I915_FORMAT_MOD_X_TILED;
->  		run_test(&data, test_invalid);
->  	}
->  
-> @@ -640,6 +659,7 @@ igt_main_args("e", NULL, help_str, opt_handler, &data)
->  		/* Devices without CRC can't run this test */
->  		igt_require_pipe_crc(data.drm_fd);
->  
-> +		data.modifier = I915_FORMAT_MOD_X_TILED;
->  		run_test(&data, test_crc);
->  	}
+CI Bug Log - changes from CI_DRM_12069 -> IGTPW_7735
+====================================================
 
--- 
-Jani Nikula, Intel Open Source Graphics Center
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7735/index.html
+
+Participating hosts (32 -> 30)
+------------------------------
+
+  Missing    (2): fi-rkl-11600 fi-bdw-samus 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_7735 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@kms_chamelium@common-hpd-after-suspend:
+    - fi-hsw-g3258:       NOTRUN -> [SKIP][1] ([fdo#109271] / [fdo#111827])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7735/fi-hsw-g3258/igt@kms_chamelium@common-hpd-after-suspend.html
+    - fi-hsw-4770:        NOTRUN -> [SKIP][2] ([fdo#109271] / [fdo#111827])
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7735/fi-hsw-4770/igt@kms_chamelium@common-hpd-after-suspend.html
+
+  * igt@runner@aborted:
+    - fi-bdw-5557u:       NOTRUN -> [FAIL][3] ([i915#4312])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7735/fi-bdw-5557u/igt@runner@aborted.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_selftest@live@hangcheck:
+    - fi-hsw-4770:        [INCOMPLETE][4] ([i915#4785]) -> [PASS][5]
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12069/fi-hsw-4770/igt@i915_selftest@live@hangcheck.html
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7735/fi-hsw-4770/igt@i915_selftest@live@hangcheck.html
+    - fi-hsw-g3258:       [INCOMPLETE][6] ([i915#3303] / [i915#4785]) -> [PASS][7]
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12069/fi-hsw-g3258/igt@i915_selftest@live@hangcheck.html
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7735/fi-hsw-g3258/igt@i915_selftest@live@hangcheck.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [fdo#111827]: https://bugs.freedesktop.org/show_bug.cgi?id=111827
+  [i915#3303]: https://gitlab.freedesktop.org/drm/intel/issues/3303
+  [i915#3555]: https://gitlab.freedesktop.org/drm/intel/issues/3555
+  [i915#4312]: https://gitlab.freedesktop.org/drm/intel/issues/4312
+  [i915#4579]: https://gitlab.freedesktop.org/drm/intel/issues/4579
+  [i915#4785]: https://gitlab.freedesktop.org/drm/intel/issues/4785
+  [i915#6670]: https://gitlab.freedesktop.org/drm/intel/issues/6670
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_6643 -> IGTPW_7735
+
+  CI-20190529: 20190529
+  CI_DRM_12069: 68ce7185e29465ddc7a2f1a2b28e9c4fa20be904 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_7735: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7735/index.html
+  IGT_6643: 9b2970a6d495ddd9ceb2487fc289105bf05812df @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+
+Testlist changes
+----------------
+
++igt@i915_pipe_stress@stress-xrgb8888-untiled
++igt@i915_pipe_stress@stress-xrgb8888-ytiled
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7735/index.html
+
+--===============1837069816700800125==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/i915/i915_pipe_stress: Add plane pipes stress test (rev7)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/107027/">https://patchwork.freedesktop.org/series/107027/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7735/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7735/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_12069 -&gt; IGTPW_7735</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7735/index.html</p>
+<h2>Participating hosts (32 -&gt; 30)</h2>
+<p>Missing    (2): fi-rkl-11600 fi-bdw-samus </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_7735 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@kms_chamelium@common-hpd-after-suspend:</p>
+<ul>
+<li>
+<p>fi-hsw-g3258:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7735/fi-hsw-g3258/igt@kms_chamelium@common-hpd-after-suspend.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://bugs.freedesktop.org/show_bug.cgi?id=111827">fdo#111827</a>)</p>
+</li>
+<li>
+<p>fi-hsw-4770:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7735/fi-hsw-4770/igt@kms_chamelium@common-hpd-after-suspend.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://bugs.freedesktop.org/show_bug.cgi?id=111827">fdo#111827</a>)</p>
+</li>
+</ul>
+</li>
+<li>
+<p>igt@runner@aborted:</p>
+<ul>
+<li>fi-bdw-5557u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7735/fi-bdw-5557u/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4312">i915#4312</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live@hangcheck:</p>
+<ul>
+<li>
+<p>fi-hsw-4770:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12069/fi-hsw-4770/igt@i915_selftest@live@hangcheck.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4785">i915#4785</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7735/fi-hsw-4770/igt@i915_selftest@live@hangcheck.html">PASS</a></p>
+</li>
+<li>
+<p>fi-hsw-g3258:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12069/fi-hsw-g3258/igt@i915_selftest@live@hangcheck.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3303">i915#3303</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4785">i915#4785</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7735/fi-hsw-g3258/igt@i915_selftest@live@hangcheck.html">PASS</a></p>
+</li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_6643 -&gt; IGTPW_7735</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_12069: 68ce7185e29465ddc7a2f1a2b28e9c4fa20be904 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_7735: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7735/index.html<br />
+  IGT_6643: 9b2970a6d495ddd9ceb2487fc289105bf05812df @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+<h2>Testlist changes</h2>
+<p>+igt@i915_pipe_stress@stress-xrgb8888-untiled<br />
++igt@i915_pipe_stress@stress-xrgb8888-ytiled</p>
+
+</body>
+</html>
+
+--===============1837069816700800125==--
