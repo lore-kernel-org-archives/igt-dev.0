@@ -1,20 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1804010E16C
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8E43810E1CD
  for <igt-dev@lists.freedesktop.org>; Mon,  5 Sep 2022 05:54:01 +0000 (UTC)
 Received: from maurocar by linux.intel.com with local (Exim 4.95)
- (envelope-from <mauro.chehab@linux.intel.com>) id 1oV53V-007p8s-9z
+ (envelope-from <mauro.chehab@linux.intel.com>) id 1oV53V-007pBi-WC
  for igt-dev@lists.freedesktop.org; Mon, 05 Sep 2022 07:53:57 +0200
 From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Mon,  5 Sep 2022 07:52:51 +0200
-Message-Id: <19529fdef5cf90708869a6025595a3dccb587b1b.1662357022.git.mchehab@kernel.org>
+Date: Mon,  5 Sep 2022 07:53:35 +0200
+Message-Id: <e0a5c6a3a54c8860eef052cf5202eb6ea720f196.1662357022.git.mchehab@kernel.org>
 In-Reply-To: <cover.1662357022.git.mchehab@kernel.org>
 References: <cover.1662357022.git.mchehab@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH v2 17/77] i915/gem_exec_endless: Close device
- before exit
+Subject: [igt-dev] [PATCH v2 61/77] syncobj_basic: Close device before exit
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -32,35 +31,28 @@ Close the device fd before we check for leaks during the atexit
 handlers.
 
 Signed-off-by: Chris Wilson <chris.p.wilson@intel.com>
+Acked-by: Andrzej Hajda <andrzej.hajda@intel.com>
 Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 ---
 
 To avoid mailbombing on a large number of people, only mailing lists were C/C on the cover.
 See [PATCH v2 00/77] at: https://lore.kernel.org/all/cover.1662357022.git.mchehab@kernel.org/
 
- tests/i915/gem_exec_endless.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ tests/syncobj_basic.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/tests/i915/gem_exec_endless.c b/tests/i915/gem_exec_endless.c
-index b83d5a2c1480..2c56cc212036 100644
---- a/tests/i915/gem_exec_endless.c
-+++ b/tests/i915/gem_exec_endless.c
-@@ -28,6 +28,7 @@
- #include "igt.h"
- #include "igt_device.h"
- #include "igt_sysfs.h"
-+#include "igt_types.h"
- #include "sw_sync.h"
+diff --git a/tests/syncobj_basic.c b/tests/syncobj_basic.c
+index 1dce45c918ac..6e20c3411a87 100644
+--- a/tests/syncobj_basic.c
++++ b/tests/syncobj_basic.c
+@@ -231,4 +231,8 @@ igt_main
+ 	igt_subtest("test-valid-cycle")
+ 		test_valid_cycle(fd);
  
- #define MAX_ENGINES 64
-@@ -341,7 +342,7 @@ static void unpin_rps(int sysfs)
- igt_main
- {
- 	const struct intel_execution_engine2 *e;
--	int i915 = -1;
-+	igt_fd_t(i915);
- 
- 	igt_skip_on_simulation();
- 
++	igt_fixture {
++		close(fd);
++	}
++
+ }
 -- 
 2.37.2
