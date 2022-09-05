@@ -1,18 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3124D10E65B
- for <igt-dev@lists.freedesktop.org>; Tue,  6 Sep 2022 12:31:09 +0000 (UTC)
-From: Ville Syrjala <ville.syrjala@linux.intel.com>
+Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1A47110E332
+ for <igt-dev@lists.freedesktop.org>; Mon,  5 Sep 2022 05:54:03 +0000 (UTC)
+Received: from maurocar by linux.intel.com with local (Exim 4.95)
+ (envelope-from <mauro.chehab@linux.intel.com>) id 1oV53V-007pBK-Sw
+ for igt-dev@lists.freedesktop.org; Mon, 05 Sep 2022 07:53:57 +0200
+From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue,  6 Sep 2022 15:29:41 +0300
-Message-Id: <20220906122944.8838-15-ville.syrjala@linux.intel.com>
-In-Reply-To: <20220906122944.8838-1-ville.syrjala@linux.intel.com>
-References: <20220906122944.8838-1-ville.syrjala@linux.intel.com>
+Date: Mon,  5 Sep 2022 07:53:29 +0200
+Message-Id: <74286a7f4b62640df31f5da995a7540334fa9153.1662357022.git.mchehab@kernel.org>
+In-Reply-To: <cover.1662357022.git.mchehab@kernel.org>
+References: <cover.1662357022.git.mchehab@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v2 14/17] tools/intel_vbt_decode: Adjust DVO
- port printing
+Subject: [igt-dev] [PATCH v2 55/77] kms_properties: Close device before exit
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,29 +25,32 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Ville Syrjälä <ville.syrjala@linux.intel.com>
+From: Chris Wilson <chris.p.wilson@intel.com>
 
-Dump the DVO port using the more standard form:
-"DVO Port: <decoded name> (<raw value>)".
+Close the device fd before we check for leaks during the atexit
+handlers.
 
-Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Signed-off-by: Chris Wilson <chris.p.wilson@intel.com>
+Acked-by: Andrzej Hajda <andrzej.hajda@intel.com>
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 ---
- tools/intel_vbt_decode.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/tools/intel_vbt_decode.c b/tools/intel_vbt_decode.c
-index f9b2bf0af272..9e14d5a570a7 100644
---- a/tools/intel_vbt_decode.c
-+++ b/tools/intel_vbt_decode.c
-@@ -972,7 +972,8 @@ static void dump_child_device(struct context *context,
+To avoid mailbombing on a large number of people, only mailing lists were C/C on the cover.
+See [PATCH v2 00/77] at: https://lore.kernel.org/all/cover.1662357022.git.mchehab@kernel.org/
+
+ tests/kms_properties.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/tests/kms_properties.c b/tests/kms_properties.c
+index dd5a93aa7a77..2958efaca7ab 100644
+--- a/tests/kms_properties.c
++++ b/tests/kms_properties.c
+@@ -792,5 +792,6 @@ igt_main
+ 
+ 	igt_fixture {
+ 		igt_display_fini(&display);
++		close(display.drm_fd);
  	}
- 
- 	printf("\t\tAIM offset: %d\n", child->addin_offset);
--	printf("\t\tDVO Port: 0x%02x (%s)\n", child->dvo_port, dvo_port(child->dvo_port));
-+	printf("\t\tDVO Port: %s (0x%02x)\n",
-+	       dvo_port(child->dvo_port), child->dvo_port);
- 
- 	printf("\t\tAIM I2C pin: 0x%02x\n", child->i2c_pin);
- 	printf("\t\tAIM Slave address: 0x%02x\n", child->slave_addr);
+ }
 -- 
-2.35.1
+2.37.2
