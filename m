@@ -1,19 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BA9B910E2BF
+Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5FDAB10E19F
  for <igt-dev@lists.freedesktop.org>; Mon,  5 Sep 2022 05:54:01 +0000 (UTC)
 Received: from maurocar by linux.intel.com with local (Exim 4.95)
- (envelope-from <mauro.chehab@linux.intel.com>) id 1oV53V-007p8A-4g
+ (envelope-from <mauro.chehab@linux.intel.com>) id 1oV53V-007p7x-2n
  for igt-dev@lists.freedesktop.org; Mon, 05 Sep 2022 07:53:57 +0200
 From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Mon,  5 Sep 2022 07:52:40 +0200
-Message-Id: <e86f970af730470e1e7a6408a486209edaf4d550.1662357022.git.mchehab@kernel.org>
+Date: Mon,  5 Sep 2022 07:52:36 +0200
+Message-Id: <69634ee9d093bed87c5658631069cfc2fb446d65.1662357022.git.mchehab@kernel.org>
 In-Reply-To: <cover.1662357022.git.mchehab@kernel.org>
 References: <cover.1662357022.git.mchehab@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH v2 06/77] i915/gem_close: Close device before exit
+Subject: [igt-dev] [PATCH v2 02/77] i915/gem_basic: Close device before exit
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -31,36 +31,51 @@ Close the device fd before we check for leaks during the atexit
 handlers.
 
 Signed-off-by: Chris Wilson <chris.p.wilson@intel.com>
-Acked-by: Andrzej Hajda <andrzej.hajda@intel.com>
+Reviewed-by: Andrzej Hajda <andrzej.hajda@intel.com>
 Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 ---
 
 To avoid mailbombing on a large number of people, only mailing lists were C/C on the cover.
 See [PATCH v2 00/77] at: https://lore.kernel.org/all/cover.1662357022.git.mchehab@kernel.org/
 
- tests/i915/gem_close.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ tests/i915/gem_basic.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/tests/i915/gem_close.c b/tests/i915/gem_close.c
-index ee2d690bfb54..e1ae701c17a1 100644
---- a/tests/i915/gem_close.c
-+++ b/tests/i915/gem_close.c
-@@ -24,6 +24,7 @@
- #include "i915/gem.h"
+diff --git a/tests/i915/gem_basic.c b/tests/i915/gem_basic.c
+index 17ae190cb2cb..2aa5d850cc10 100644
+--- a/tests/i915/gem_basic.c
++++ b/tests/i915/gem_basic.c
+@@ -25,7 +25,6 @@
+  *
+  */
+ 
+-#include "igt.h"
+ #include <unistd.h>
+ #include <stdlib.h>
+ #include <stdio.h>
+@@ -37,7 +36,10 @@
+ #include <sys/ioctl.h>
+ 
+ #include "drm.h"
++
  #include "i915/gem_create.h"
- #include "igt.h"
++#include "igt.h"
 +#include "igt_types.h"
  
- static int batch_create(int fd)
- {
-@@ -125,7 +126,7 @@ static void test_many_handles(int fd)
+ IGT_TEST_DESCRIPTION("Tests basic gem_create and gem_close IOCTLs");
  
+@@ -78,10 +80,10 @@ test_create_fd_close(int fd)
+ 	close(fd);
+ }
+ 
+-int fd;
+-
  igt_main
  {
--	int fd = -1;
 +	igt_fd_t(fd);
++
+ 	igt_fixture
+ 		fd = drm_open_driver(DRIVER_INTEL);
  
- 	igt_fixture {
- 		/* Create an flink requires DRM_AUTH */
 -- 
 2.37.2
