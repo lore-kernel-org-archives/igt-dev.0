@@ -1,20 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 21FEE10E33C
- for <igt-dev@lists.freedesktop.org>; Mon,  5 Sep 2022 05:54:03 +0000 (UTC)
-Received: from maurocar by linux.intel.com with local (Exim 4.95)
- (envelope-from <mauro.chehab@linux.intel.com>) id 1oV53V-007pBW-Ub
- for igt-dev@lists.freedesktop.org; Mon, 05 Sep 2022 07:53:57 +0200
-From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Mon,  5 Sep 2022 07:53:32 +0200
-Message-Id: <fe5bd17d1a71a7beb002128de3615de24e5f63fc.1662357022.git.mchehab@kernel.org>
-In-Reply-To: <cover.1662357022.git.mchehab@kernel.org>
-References: <cover.1662357022.git.mchehab@kernel.org>
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E1C0D10E150
+ for <igt-dev@lists.freedesktop.org>; Mon,  5 Sep 2022 06:02:42 +0000 (UTC)
+From: "Kahola, Mika" <mika.kahola@intel.com>
+To: "B S, Karthik" <karthik.b.s@intel.com>, "igt-dev@lists.freedesktop.org"
+ <igt-dev@lists.freedesktop.org>
+Date: Mon, 5 Sep 2022 06:02:35 +0000
+Message-ID: <MWHPR1101MB2157F28D1EFF6B435DE9E99EEF7F9@MWHPR1101MB2157.namprd11.prod.outlook.com>
+References: <20220905044221.30116-1-karthik.b.s@intel.com>
+In-Reply-To: <20220905044221.30116-1-karthik.b.s@intel.com>
+Content-Language: en-US
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH v2 58/77] kms_universal_plane: Close device before
- exit
+Subject: Re: [igt-dev] [PATCH i-g-t] lib/mtl: Use same path for MTL as DG2
+ for draw_rect_blt()
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,36 +22,29 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: "Heikkila, Juha-pekka" <juha-pekka.heikkila@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Chris Wilson <chris.p.wilson@intel.com>
-
-Close the device fd before we check for leaks during the atexit
-handlers.
-
-Signed-off-by: Chris Wilson <chris.p.wilson@intel.com>
-Acked-by: Andrzej Hajda <andrzej.hajda@intel.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
----
-
-To avoid mailbombing on a large number of people, only mailing lists were C/C on the cover.
-See [PATCH v2 00/77] at: https://lore.kernel.org/all/cover.1662357022.git.mchehab@kernel.org/
-
- tests/kms_universal_plane.c | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/tests/kms_universal_plane.c b/tests/kms_universal_plane.c
-index 3cb6d704a6ef..e23f0f718cd2 100644
---- a/tests/kms_universal_plane.c
-+++ b/tests/kms_universal_plane.c
-@@ -817,5 +817,6 @@ igt_main
- 
- 	igt_fixture {
- 		igt_display_fini(&data.display);
-+		close(data.drm_fd);
- 	}
- }
--- 
-2.37.2
+PiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPiBGcm9tOiBCIFMsIEthcnRoaWsgPGthcnRo
+aWsuYi5zQGludGVsLmNvbT4NCj4gU2VudDogTW9uZGF5LCBTZXB0ZW1iZXIgNSwgMjAyMiA3OjQy
+IEFNDQo+IFRvOiBpZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZw0KPiBDYzogSGVpa2tpbGEs
+IEp1aGEtcGVra2EgPGp1aGEtcGVra2EuaGVpa2tpbGFAaW50ZWwuY29tPjsgS2Fob2xhLCBNaWth
+DQo+IDxtaWthLmthaG9sYUBpbnRlbC5jb20+DQo+IFN1YmplY3Q6IFtQQVRDSCBpLWctdF0gbGli
+L210bDogVXNlIHNhbWUgcGF0aCBmb3IgTVRMIGFzIERHMiBmb3IgZHJhd19yZWN0X2JsdCgpDQo+
+IA0KPiBGcm9tOiBKdWhhLVBla2thIEhlaWtraWzDpCA8anVoYS1wZWtrYS5oZWlra2lsYUBpbnRl
+bC5jb20+DQo+IA0KPiBUaGlzIGlzIGR1ZSB0byBsZWdhY3kgY29tbWFuZHMgYXJlIG5vIGxvbmdl
+ciBTdXBwb3J0ZWQgaW4gTVRMKw0KPiANCg0KUmV2aWV3ZWQtYnk6IE1pa2EgS2Fob2xhIDxtaWth
+LmthaG9sYUBpbnRlbC5jb20+DQoNCj4gU2lnbmVkLW9mZi1ieTogSnVoYS1QZWtrYSBIZWlra2ls
+w6QgPGp1aGEtcGVra2EuaGVpa2tpbGFAaW50ZWwuY29tPg0KPiAtLS0NCj4gIGxpYi9pZ3RfZHJh
+dy5jIHwgMiArLQ0KPiAgMSBmaWxlIGNoYW5nZWQsIDEgaW5zZXJ0aW9uKCspLCAxIGRlbGV0aW9u
+KC0pDQo+IA0KPiBkaWZmIC0tZ2l0IGEvbGliL2lndF9kcmF3LmMgYi9saWIvaWd0X2RyYXcuYyBp
+bmRleCAwNTYxMDFiOS4uMTEyNGNhZGMgMTAwNjQ0DQo+IC0tLSBhL2xpYi9pZ3RfZHJhdy5jDQo+
+ICsrKyBiL2xpYi9pZ3RfZHJhdy5jDQo+IEBAIC02NjYsNyArNjY2LDcgQEAgc3RhdGljIHZvaWQg
+ZHJhd19yZWN0X2JsdChpbnQgZmQsIHN0cnVjdCBjbWRfZGF0YQ0KPiAqY21kX2RhdGEsDQo+ICAJ
+aWJiID0gaW50ZWxfYmJfY3JlYXRlKGZkLCBQQUdFX1NJWkUpOw0KPiAgCWludGVsX2JiX2FkZF9p
+bnRlbF9idWYoaWJiLCBkc3QsIHRydWUpOw0KPiANCj4gLQlpZiAoSVNfREcyKGludGVsX2dldF9k
+cm1fZGV2aWQoZmQpKSkgew0KPiArCWlmIChIQVNfNFRJTEUoaW50ZWxfZ2V0X2RybV9kZXZpZChm
+ZCkpKSB7DQo+ICAJCWludCBidWZfaGVpZ2h0ID0gYnVmLT5zaXplIC8gYnVmLT5zdHJpZGU7DQo+
+IA0KPiAgCQlzd2l0Y2ggKGJ1Zi0+YnBwKSB7DQo+IC0tDQo+IDIuMjIuMA0KDQo=
