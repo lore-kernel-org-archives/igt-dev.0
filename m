@@ -1,20 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E1C0D10E150
- for <igt-dev@lists.freedesktop.org>; Mon,  5 Sep 2022 06:02:42 +0000 (UTC)
-From: "Kahola, Mika" <mika.kahola@intel.com>
-To: "B S, Karthik" <karthik.b.s@intel.com>, "igt-dev@lists.freedesktop.org"
- <igt-dev@lists.freedesktop.org>
-Date: Mon, 5 Sep 2022 06:02:35 +0000
-Message-ID: <MWHPR1101MB2157F28D1EFF6B435DE9E99EEF7F9@MWHPR1101MB2157.namprd11.prod.outlook.com>
-References: <20220905044221.30116-1-karthik.b.s@intel.com>
-In-Reply-To: <20220905044221.30116-1-karthik.b.s@intel.com>
-Content-Language: en-US
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8E20210E2FF
+ for <igt-dev@lists.freedesktop.org>; Mon,  5 Sep 2022 05:54:02 +0000 (UTC)
+Received: from maurocar by linux.intel.com with local (Exim 4.95)
+ (envelope-from <mauro.chehab@linux.intel.com>) id 1oV53W-007pCh-AA
+ for igt-dev@lists.freedesktop.org; Mon, 05 Sep 2022 07:53:58 +0200
+From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Mon,  5 Sep 2022 07:53:50 +0200
+Message-Id: <b1d4756a6cab5e8f5a4953d605e711838ce29b13.1662357022.git.mchehab@kernel.org>
+In-Reply-To: <cover.1662357022.git.mchehab@kernel.org>
+References: <cover.1662357022.git.mchehab@kernel.org>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t] lib/mtl: Use same path for MTL as DG2
- for draw_rect_blt()
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH v2 76/77] i915/gem_exec_balancer: Close device
+ before exit
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,29 +22,46 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: "Heikkila, Juha-pekka" <juha-pekka.heikkila@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-PiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPiBGcm9tOiBCIFMsIEthcnRoaWsgPGthcnRo
-aWsuYi5zQGludGVsLmNvbT4NCj4gU2VudDogTW9uZGF5LCBTZXB0ZW1iZXIgNSwgMjAyMiA3OjQy
-IEFNDQo+IFRvOiBpZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZw0KPiBDYzogSGVpa2tpbGEs
-IEp1aGEtcGVra2EgPGp1aGEtcGVra2EuaGVpa2tpbGFAaW50ZWwuY29tPjsgS2Fob2xhLCBNaWth
-DQo+IDxtaWthLmthaG9sYUBpbnRlbC5jb20+DQo+IFN1YmplY3Q6IFtQQVRDSCBpLWctdF0gbGli
-L210bDogVXNlIHNhbWUgcGF0aCBmb3IgTVRMIGFzIERHMiBmb3IgZHJhd19yZWN0X2JsdCgpDQo+
-IA0KPiBGcm9tOiBKdWhhLVBla2thIEhlaWtraWzDpCA8anVoYS1wZWtrYS5oZWlra2lsYUBpbnRl
-bC5jb20+DQo+IA0KPiBUaGlzIGlzIGR1ZSB0byBsZWdhY3kgY29tbWFuZHMgYXJlIG5vIGxvbmdl
-ciBTdXBwb3J0ZWQgaW4gTVRMKw0KPiANCg0KUmV2aWV3ZWQtYnk6IE1pa2EgS2Fob2xhIDxtaWth
-LmthaG9sYUBpbnRlbC5jb20+DQoNCj4gU2lnbmVkLW9mZi1ieTogSnVoYS1QZWtrYSBIZWlra2ls
-w6QgPGp1aGEtcGVra2EuaGVpa2tpbGFAaW50ZWwuY29tPg0KPiAtLS0NCj4gIGxpYi9pZ3RfZHJh
-dy5jIHwgMiArLQ0KPiAgMSBmaWxlIGNoYW5nZWQsIDEgaW5zZXJ0aW9uKCspLCAxIGRlbGV0aW9u
-KC0pDQo+IA0KPiBkaWZmIC0tZ2l0IGEvbGliL2lndF9kcmF3LmMgYi9saWIvaWd0X2RyYXcuYyBp
-bmRleCAwNTYxMDFiOS4uMTEyNGNhZGMgMTAwNjQ0DQo+IC0tLSBhL2xpYi9pZ3RfZHJhdy5jDQo+
-ICsrKyBiL2xpYi9pZ3RfZHJhdy5jDQo+IEBAIC02NjYsNyArNjY2LDcgQEAgc3RhdGljIHZvaWQg
-ZHJhd19yZWN0X2JsdChpbnQgZmQsIHN0cnVjdCBjbWRfZGF0YQ0KPiAqY21kX2RhdGEsDQo+ICAJ
-aWJiID0gaW50ZWxfYmJfY3JlYXRlKGZkLCBQQUdFX1NJWkUpOw0KPiAgCWludGVsX2JiX2FkZF9p
-bnRlbF9idWYoaWJiLCBkc3QsIHRydWUpOw0KPiANCj4gLQlpZiAoSVNfREcyKGludGVsX2dldF9k
-cm1fZGV2aWQoZmQpKSkgew0KPiArCWlmIChIQVNfNFRJTEUoaW50ZWxfZ2V0X2RybV9kZXZpZChm
-ZCkpKSB7DQo+ICAJCWludCBidWZfaGVpZ2h0ID0gYnVmLT5zaXplIC8gYnVmLT5zdHJpZGU7DQo+
-IA0KPiAgCQlzd2l0Y2ggKGJ1Zi0+YnBwKSB7DQo+IC0tDQo+IDIuMjIuMA0KDQo=
+From: Chris Wilson <chris.p.wilson@intel.com>
+
+Close the device fd before we check for leaks during the atexit
+handlers.
+
+Signed-off-by: Chris Wilson <chris.p.wilson@intel.com>
+Reviewed-by: Andrzej Hajda <andrzej.hajda@intel.com>
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+---
+
+To avoid mailbombing on a large number of people, only mailing lists were C/C on the cover.
+See [PATCH v2 00/77] at: https://lore.kernel.org/all/cover.1662357022.git.mchehab@kernel.org/
+
+ tests/i915/gem_exec_balancer.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/tests/i915/gem_exec_balancer.c b/tests/i915/gem_exec_balancer.c
+index 6e6bf47043d5..4300dbd12f37 100644
+--- a/tests/i915/gem_exec_balancer.c
++++ b/tests/i915/gem_exec_balancer.c
+@@ -35,6 +35,7 @@
+ #include "igt_gt.h"
+ #include "igt_perf.h"
+ #include "igt_sysfs.h"
++#include "igt_types.h"
+ #include "sw_sync.h"
+ 
+ IGT_TEST_DESCRIPTION("Exercise in-kernel load-balancing");
+@@ -3302,7 +3303,7 @@ static bool has_parallel_execbuf(int i915)
+ 
+ igt_main
+ {
+-	int i915 = -1;
++	igt_fd_t(i915);
+ 
+ 	igt_fixture {
+ 		i915 = drm_open_driver(DRIVER_INTEL);
+-- 
+2.37.2
