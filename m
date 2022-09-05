@@ -1,19 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4B3D810E2F5
- for <igt-dev@lists.freedesktop.org>; Mon,  5 Sep 2022 05:54:02 +0000 (UTC)
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EB4E510E2D2
+ for <igt-dev@lists.freedesktop.org>; Mon,  5 Sep 2022 05:54:01 +0000 (UTC)
 Received: from maurocar by linux.intel.com with local (Exim 4.95)
- (envelope-from <mauro.chehab@linux.intel.com>) id 1oV53V-007pAc-Nc
+ (envelope-from <mauro.chehab@linux.intel.com>) id 1oV53V-007pAg-O6
  for igt-dev@lists.freedesktop.org; Mon, 05 Sep 2022 07:53:57 +0200
 From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Mon,  5 Sep 2022 07:53:18 +0200
-Message-Id: <caf47f871b0b3ba0f51fe2b4b93e850cec09e75d.1662357022.git.mchehab@kernel.org>
+Date: Mon,  5 Sep 2022 07:53:19 +0200
+Message-Id: <5f24d029244c9e0d2e6759cf3778e07167776a80.1662357022.git.mchehab@kernel.org>
 In-Reply-To: <cover.1662357022.git.mchehab@kernel.org>
 References: <cover.1662357022.git.mchehab@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH v2 44/77] i915/kms_pwrite_crc: Close device before
+Subject: [igt-dev] [PATCH v2 45/77] kms_flip_event_leak: Close device before
  exit
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -39,15 +39,15 @@ Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 To avoid mailbombing on a large number of people, only mailing lists were C/C on the cover.
 See [PATCH v2 00/77] at: https://lore.kernel.org/all/cover.1662357022.git.mchehab@kernel.org/
 
- tests/i915/kms_pwrite_crc.c | 1 +
+ tests/kms_flip_event_leak.c | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/tests/i915/kms_pwrite_crc.c b/tests/i915/kms_pwrite_crc.c
-index 584e6a19ce9d..7df4b36924fa 100644
---- a/tests/i915/kms_pwrite_crc.c
-+++ b/tests/i915/kms_pwrite_crc.c
-@@ -191,4 +191,5 @@ igt_simple_main
- 	run_test(&data);
+diff --git a/tests/kms_flip_event_leak.c b/tests/kms_flip_event_leak.c
+index ac201293b334..b3d01aeb24e1 100644
+--- a/tests/kms_flip_event_leak.c
++++ b/tests/kms_flip_event_leak.c
+@@ -109,4 +109,5 @@ igt_simple_main
+ 	igt_require_f(valid_tests, "no valid crtc/connector combinations found\n");
  
  	igt_display_fini(&data.display);
 +	close(data.drm_fd);
