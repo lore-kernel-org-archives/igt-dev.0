@@ -1,19 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3ACA110E22C
- for <igt-dev@lists.freedesktop.org>; Mon,  5 Sep 2022 09:43:41 +0000 (UTC)
-Message-ID: <cff5e872-8cab-acc8-3f91-14908e20a2fb@intel.com>
-Date: Mon, 5 Sep 2022 15:13:23 +0530
-Content-Language: en-US
-To: Karthik B S <karthik.b.s@intel.com>, <igt-dev@lists.freedesktop.org>
-References: <20220901063705.12600-1-karthik.b.s@intel.com>
-From: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
-In-Reply-To: <20220901063705.12600-1-karthik.b.s@intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9545B10E303
+ for <igt-dev@lists.freedesktop.org>; Mon,  5 Sep 2022 11:16:35 +0000 (UTC)
+From: Arun R Murthy <arun.r.murthy@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Mon,  5 Sep 2022 16:46:30 +0530
+Message-Id: <20220905111630.4071189-1-arun.r.murthy@intel.com>
+In-Reply-To: <20220829093147.3836523-1-arun.r.murthy@intel.com>
+References: <20220829093147.3836523-1-arun.r.murthy@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_content_protection: Convert
- tests to Dynamic
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCHv2 i-g-t] tests/kms_async_flips: Enable async flip
+ on linear buffer
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,503 +19,119 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: petri.latvala@intel.com, Arun R Murthy <arun.r.murthy@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Thu-01-09-2022 12:07 pm, Karthik B S wrote:
-> Covert the existing subtests to dynamic subtests at pipe/output level.
-> Also move the cleanup part outside the subtest so that it is run even if
-> a failure is seen in the subtest.
-> 
-> Signed-off-by: Karthik B S <karthik.b.s@intel.com>
-> ---
->   tests/kms_content_protection.c | 366 ++++++++++++++++++---------------
->   1 file changed, 196 insertions(+), 170 deletions(-)
-> 
-> diff --git a/tests/kms_content_protection.c b/tests/kms_content_protection.c
-> index 3041f1cd..dde6345c 100644
-> --- a/tests/kms_content_protection.c
-> +++ b/tests/kms_content_protection.c
-> @@ -273,17 +273,6 @@ static void test_cp_enable_with_retry(igt_output_t *output,
->   
->   }
->   
-> -static bool igt_pipe_is_free(igt_display_t *display, enum pipe pipe)
-> -{
-> -	int i;
-> -
-> -	for (i = 0; i < display->n_outputs; i++)
-> -		if (display->outputs[i].pending_pipe == pipe)
-> -			return false;
-> -
-> -	return true;
-> -}
-> -
->   static void test_cp_lic(igt_output_t *output)
->   {
->   	bool ret;
-> @@ -317,90 +306,62 @@ static bool write_srm_as_fw(const __u8 *srm, int len)
->   }
->   
->   static void test_content_protection_on_output(igt_output_t *output,
-> +					      enum pipe pipe,
->   					      enum igt_commit_style s,
->   					      int content_type)
->   {
->   	igt_display_t *display = &data.display;
-> -	igt_plane_t *primary;
-> -	enum pipe pipe;
->   	bool ret;
->   
-> -	for_each_pipe(display, pipe) {
-> -		if (!igt_pipe_connector_valid(pipe, output))
-> -			continue;
-> -
-> -		/*
-> -		 * If previous subtest of connector failed, pipe
-> -		 * attached to that connector is not released.
-> -		 * Because of that we have to choose the non
-> -		 * attached pipe for this subtest.
-> -		 */
-> -		if (!igt_pipe_is_free(display, pipe))
-> -			continue;
-> -
-> -		modeset_with_fb(pipe, output, s);
-> -		test_cp_enable_with_retry(output, s, 3, content_type, false,
-> -					  false);
-> -
-> -		if (data.cp_tests & CP_TYPE_CHANGE) {
-> -			/* Type 1 -> Type 0 */
-> -			test_cp_enable_with_retry(output, s, 3,
-> -						  HDCP_CONTENT_TYPE_0, false,
-> -						  true);
-> -			/* Type 0 -> Type 1 */
-> -			test_cp_enable_with_retry(output, s, 3,
-> -						  content_type, false,
-> -						  true);
-> -		}
-> -
-> -		if (data.cp_tests & CP_MEI_RELOAD) {
-> -			igt_assert_f(!igt_kmod_unload("mei_hdcp", 0),
-> -				     "mei_hdcp unload failed");
-> +	modeset_with_fb(pipe, output, s);
+On Intel Gen platforms >= GEN12, Async on linear buffer is supported,
+hence enabling test for the same.
 
-https://cgit.freedesktop.org/drm/igt-gpu-tools/tree/tests/kms_content_protection.c#n169 
+v2: Added new line character for igt_skip_on_f (Petri)
+    Added new element modifier in data struct (JP)
 
+Signed-off-by: Arun R Murthy <arun.r.murthy@intel.com>
+---
+ lib/intel_chipset.h     |  1 +
+ tests/kms_async_flips.c | 26 +++++++++++++++++++++++---
+ 2 files changed, 24 insertions(+), 3 deletions(-)
 
-Overiding with default mode: Does it really required?
-
-> +	test_cp_enable_with_retry(output, s, 3, content_type, false,
-> +				  false);
-> +
-> +	if (data.cp_tests & CP_TYPE_CHANGE) {
-> +		/* Type 1 -> Type 0 */
-> +		test_cp_enable_with_retry(output, s, 3,
-> +					  HDCP_CONTENT_TYPE_0, false,
-> +					  true);
-> +		/* Type 0 -> Type 1 */
-> +		test_cp_enable_with_retry(output, s, 3,
-> +					  content_type, false,
-> +					  true);
-> +	}
->   
-> -			/* Expected to fail */
-> -			test_cp_enable_with_retry(output, s, 3,
-> -						  content_type, true, false);
-> +	if (data.cp_tests & CP_MEI_RELOAD) {
-> +		igt_assert_f(!igt_kmod_unload("mei_hdcp", 0),
-> +			     "mei_hdcp unload failed");
->   
-> -			igt_assert_f(!igt_kmod_load("mei_hdcp", NULL),
-> -				     "mei_hdcp load failed");
-> +		/* Expected to fail */
-> +		test_cp_enable_with_retry(output, s, 3,
-> +					  content_type, true, false);
->   
-> -			/* Expected to pass */
-> -			test_cp_enable_with_retry(output, s, 3,
-> -						  content_type, false, false);
-> -		}
-> +		igt_assert_f(!igt_kmod_load("mei_hdcp", NULL),
-> +			     "mei_hdcp load failed");
->   
-> -		if (data.cp_tests & CP_LIC)
-> -			test_cp_lic(output);
-> +		/* Expected to pass */
-> +		test_cp_enable_with_retry(output, s, 3,
-> +					  content_type, false, false);
-> +	}
->   
-> -		if (data.cp_tests & CP_DPMS) {
-> -			igt_pipe_set_prop_value(display, pipe,
-> -						IGT_CRTC_ACTIVE, 0);
-> -			igt_display_commit2(display, s);
-> +	if (data.cp_tests & CP_LIC)
-> +		test_cp_lic(output);
->   
-> -			igt_pipe_set_prop_value(display, pipe,
-> -						IGT_CRTC_ACTIVE, 1);
-> -			igt_display_commit2(display, s);
-> +	if (data.cp_tests & CP_DPMS) {
-> +		igt_pipe_set_prop_value(display, pipe,
-> +					IGT_CRTC_ACTIVE, 0);
-> +		igt_display_commit2(display, s);
->   
-> -			ret = wait_for_prop_value(output, CP_ENABLED,
-> -						  KERNEL_AUTH_TIME_ALLOWED_MSEC);
-> -			if (!ret)
-> -				test_cp_enable_with_retry(output, s, 2,
-> -							  content_type, false,
-> -							  false);
-> -		}
-> +		igt_pipe_set_prop_value(display, pipe,
-> +					IGT_CRTC_ACTIVE, 1);
-> +		igt_display_commit2(display, s);
->   
-> -		test_cp_disable(output, s);
-> -		primary = igt_output_get_plane_type(output,
-> -						    DRM_PLANE_TYPE_PRIMARY);
-> -		igt_plane_set_fb(primary, NULL);
-> -		igt_output_set_pipe(output, PIPE_NONE);
-> -
-> -		/*
-> -		 * Testing a output with a pipe is enough for HDCP
-> -		 * testing. No ROI in testing the connector with other
-> -		 * pipes. So Break the loop on pipe.
-> -		 */
-> -		break;
-> +		ret = wait_for_prop_value(output, CP_ENABLED,
-> +					  KERNEL_AUTH_TIME_ALLOWED_MSEC);
-> +		if (!ret)
-> +			test_cp_enable_with_retry(output, s, 2,
-> +						  content_type, false,
-> +						  false);
->   	}
->   }
->   
-> @@ -499,26 +460,64 @@ static bool output_hdcp_capable(igt_output_t *output, int content_type)
-
-Please fix the indentation in output_hdcp_capable()
-https://cgit.freedesktop.org/drm/igt-gpu-tools/tree/tests/kms_content_protection.c#n480 
-
-
->   		return true;
->   }
->   
-> +static void
-> +test_fini(igt_output_t *output, enum igt_commit_style s)
-> +{
-> +	igt_plane_t *primary;
-> +
-> +	test_cp_disable(output, s);
-> +	primary = igt_output_get_plane_type(output,
-> +					    DRM_PLANE_TYPE_PRIMARY);
-> +	igt_plane_set_fb(primary, NULL);
-> +	igt_output_set_pipe(output, PIPE_NONE);
-
-Need a commit here.
-
-> +}
-> +
->   static void
->   test_content_protection(enum igt_commit_style s, int content_type)
->   {
->   	igt_display_t *display = &data.display;
->   	igt_output_t *output;
-> +	enum pipe pipe;
->   	int valid_tests = 0;
->   
->   	if (data.cp_tests & CP_MEI_RELOAD)
->   		igt_require_f(igt_kmod_is_loaded("mei_hdcp"),
->   			      "mei_hdcp module is not loaded\n");
->   
-> +	if (data.cp_tests & CP_UEVENT) {
-> +		data.uevent_monitor = igt_watch_uevents();
-> +		igt_flush_uevents(data.uevent_monitor);
-> +	}
-> +
-> +	igt_display_reset(display);
-
-Reset could be inside igt_dynamic()?
-
-> +
->   	for_each_connected_output(display, output) {
->   		if (!output_hdcp_capable(output, content_type))
->   			continue;
->   
-> -		test_content_protection_on_output(output, s, content_type);
-> +		for_each_pipe(display, pipe) {
-> +			if (!igt_pipe_connector_valid(pipe, output))
-> +				continue;
-> +
-> +			igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), output->name)
-> +				test_content_protection_on_output(output, pipe, s, content_type);
-> +
-> +			test_fini(output, s);
-> +			/*
-> +			 * Testing a output with a pipe is enough for HDCP
-> +			 * testing. No ROI in testing the connector with other
-> +			 * pipes. So Break the loop on pipe.
-> +			 */
-> +			break;
-> +		}
-> +
->   		valid_tests++;
->   	}
->   
->   	igt_require_f(valid_tests, "No connector found with HDCP capability\n");
-
-This check is not required, igt_subtest_with_dynamic() will throw a SKIP 
-if igt_dynamic() is not executed.
-
-> +
-> +	if (data.cp_tests & CP_UEVENT)
-> +		igt_cleanup_uevents(data.uevent_monitor);
->   }
->   
->   static int parse_path_blob(char *blob_data)
-> @@ -723,6 +722,94 @@ static void create_fbs(void)
->   			    0.f, 1.f, 0.f, &data.green);
->   }
->   
-> +static const struct {
-> +	const char *desc;
-> +	const char *name;
-> +	unsigned int cp_tests;
-> +	bool content_type;
-> +} subtests[] = {
-> +	{ .desc = "Test content protection with atomic modesetting",
-> +	  .name = "atomic",
-> +	  .cp_tests = 0,
-> +	  .content_type = HDCP_CONTENT_TYPE_0
-> +	},
-> +	{ .desc = "Test content protection with DPMS ON/OFF during atomic modesetting.",
-> +	  .name = "atomic-dpms",
-> +	  .cp_tests = CP_DPMS,
-> +	  .content_type = HDCP_CONTENT_TYPE_0
-> +	},
-> +	{ .desc = "Test for the integrity of link.",
-> +	  .name = "LIC",
-> +	  .cp_tests = CP_LIC,
-> +	  .content_type = HDCP_CONTENT_TYPE_0,
-> +	},
-> +	{ .desc = "Test content protection with content type 1 "
-> +		  "that can be handled only through HDCP2.2.",
-> +	  .name = "type1",
-> +	  .cp_tests = 0,
-> +	  .content_type = HDCP_CONTENT_TYPE_1,
-> +	},
-> +	{ .desc = "Test the teardown and rebuild of the interface between "
-> +		  "I915 and mei hdcp.",
-> +	  .name = "mei_interface",
-> +	  .cp_tests = CP_MEI_RELOAD,
-> +	  .content_type = HDCP_CONTENT_TYPE_1,
-> +	},
-> +	{ .desc = "Test the content type change when the content protection already enabled",
-> +	  .name = "content_type_change",
-> +	  .cp_tests = CP_TYPE_CHANGE,
-> +	  .content_type = HDCP_CONTENT_TYPE_1,
-> +	},
-> +	{ .desc = "Test to detect the HDCP status change when we are reading the uevent "
-> +		  "sent with the corresponding connector id and property id.",
-> +	  .name = "uevent",
-> +	  .cp_tests = CP_UEVENT,
-> +	  .content_type = HDCP_CONTENT_TYPE_0,
-> +	},
-> +	/*
-> +	 *  Testing the revocation check through SRM needs a HDCP sink with
-> +	 *  programmable Ksvs or we need a uAPI from kernel to read the
-> +	 *  connected HDCP sink's Ksv. With that we would be able to add that
-> +	 *  Ksv into a SRM and send in for revocation check. Since we dont have
-> +	 *  either of these options, we test SRM writing from userspace and
-> +	 *  validation of the same at kernel. Something is better than nothing.
-> +	 */
-> +	{ .desc = "This test writes the facsimile SRM into the /lib/firmware/"
-> +		  "and check the kernel parsing of it by invoking the hdcp authentication.",
-> +	  .name = "srm",
-> +	  .cp_tests = 0,
-> +	  .content_type = HDCP_CONTENT_TYPE_0,
-> +	},
-> +};
-> +
-> +static const struct {
-> +	const char *desc;
-> +	const char *name;
-> +	unsigned int cp_tests;
-> +	bool content_type;
-> +} mst_subtests[] = {
-> +	{ .desc = "Test Content protection(Type 0) over DP MST.",
-> +	  .name = "dp-mst-type-0",
-> +	  .cp_tests = 0,
-> +	  .content_type = HDCP_CONTENT_TYPE_0
-> +	},
-> +	{ .desc = "Test Content protection(Type 0) over DP MST with LIC.",
-> +	  .name = "dp-mst-lic-type-0",
-> +	  .cp_tests = CP_LIC,
-> +	  .content_type = HDCP_CONTENT_TYPE_0
-> +	},
-> +	{ .desc = "Test Content protection(Type 1) over DP MST.",
-> +	  .name = "dp-mst-type-1",
-> +	  .cp_tests = 0,
-> +	  .content_type = HDCP_CONTENT_TYPE_1,
-> +	},
-> +	{ .desc = "Test Content protection(Type 1) over DP MST with LIC.",
-> +	  .name = "dp-mst-lic-type-1",
-> +	  .cp_tests = CP_LIC,
-> +	  .content_type = HDCP_CONTENT_TYPE_1,
-> +	},
-> +};
-> +
->   igt_main
->   {
->   	igt_fixture {
-> @@ -733,107 +820,46 @@ igt_main
->   	}
->   
->   	igt_describe("Test content protection with legacy style commit.");
-> -	igt_subtest("legacy") {
-> +	igt_subtest_with_dynamic("legacy") {
->   		data.cp_tests = 0;
->   		test_content_protection(COMMIT_LEGACY, HDCP_CONTENT_TYPE_0);
->   	}
->   
-> -	igt_describe("Test content protection with atomic modesetting");
-> -	igt_subtest("atomic") {
-> -		igt_require(data.display.is_atomic);
-> -		data.cp_tests = 0;
-> -		test_content_protection(COMMIT_ATOMIC, HDCP_CONTENT_TYPE_0);
-> -	}
-> +	igt_subtest_group {
-> +		igt_fixture
-> +			igt_require(data.display.is_atomic);
->   
-> -	igt_describe("Test content protection with DPMS ON/OFF during atomic modesetting.");
-> -	igt_subtest("atomic-dpms") {
-> -		igt_require(data.display.is_atomic);
-> -		data.cp_tests = CP_DPMS;
-> -		test_content_protection(COMMIT_ATOMIC, HDCP_CONTENT_TYPE_0);
-> -	}
-> +		for (int i = 0; i < ARRAY_SIZE(subtests); i++) {
-> +			igt_describe_f("%s", subtests[i].desc);
->   
-> -	igt_describe("Test for the integrity of link.");
-> -	igt_subtest("LIC") {
-> -		igt_require(data.display.is_atomic);
-> -		data.cp_tests = CP_LIC;
-> -		test_content_protection(COMMIT_ATOMIC, HDCP_CONTENT_TYPE_0);
-> -	}
-> +			igt_subtest_with_dynamic(subtests[i].name) {
-> +				data.cp_tests = subtests[i].cp_tests;
->   
-> -	igt_describe("Test content protection with content type 1 that "
-> -		     "can be handled only through HDCP2.2.");
-> -	igt_subtest("type1") {
-> -		igt_require(data.display.is_atomic);
-> -		test_content_protection(COMMIT_ATOMIC, HDCP_CONTENT_TYPE_1);
-> -	}
-> +				if (!strcmp(subtests[i].name, "srm")) {
-> +					bool ret;
->   
-> -	igt_describe("Test the teardown and rebuild of the interface between "
-> -		     "I915 and mei hdcp.");
-> -	igt_subtest("mei_interface") {
-> -		igt_require(data.display.is_atomic);
-> -		data.cp_tests = CP_MEI_RELOAD;
-> -		test_content_protection(COMMIT_ATOMIC, HDCP_CONTENT_TYPE_1);
-> -	}
-> -
-> -	igt_describe("Test the content type change when the content protection already "
-> -		     "enabled.");
-> -	igt_subtest("content_type_change") {
-> -		igt_require(data.display.is_atomic);
-> -		data.cp_tests = CP_TYPE_CHANGE;
-> -		test_content_protection(COMMIT_ATOMIC, HDCP_CONTENT_TYPE_1);
-> -	}
-> +					ret = write_srm_as_fw((const __u8 *)facsimile_srm,
-> +							     sizeof(facsimile_srm));
-> +					igt_assert_f(ret, "SRM update failed");
-> +				}
->   
-> -	igt_describe("Test to detect the HDCP status change when we are reading the uevent "
-> -		     "sent with the corresponding connector id and property id.");
-> -	igt_subtest("uevent") {
-> -		igt_require(data.display.is_atomic);
-> -		data.cp_tests = CP_UEVENT;
-> -		data.uevent_monitor = igt_watch_uevents();
-> -		igt_flush_uevents(data.uevent_monitor);
-> -		test_content_protection(COMMIT_ATOMIC, HDCP_CONTENT_TYPE_0);
-> -		igt_cleanup_uevents(data.uevent_monitor);
-> -	}
-> -
-> -	/*
-> -	 *  Testing the revocation check through SRM needs a HDCP sink with
-> -	 *  programmable Ksvs or we need a uAPI from kernel to read the
-> -	 *  connected HDCP sink's Ksv. With that we would be able to add that
-> -	 *  Ksv into a SRM and send in for revocation check. Since we dont have
-> -	 *  either of these options, we test SRM writing from userspace and
-> -	 *  validation of the same at kernel. Something is better than nothing.
-> -	 */
-> -	igt_describe("This test writes the facsimile SRM into the /lib/firmware/ "
-> -		     "and check the kernel parsing of it by invoking the hdcp authentication.");
-> -	igt_subtest("srm") {
-> -		bool ret;
-> -
-> -		igt_require(data.display.is_atomic);
-> -		data.cp_tests = 0;
-> -		ret = write_srm_as_fw((const __u8 *)facsimile_srm,
-> -				      sizeof(facsimile_srm));
-> -		igt_assert_f(ret, "SRM update failed");
-> -		test_content_protection(COMMIT_ATOMIC, HDCP_CONTENT_TYPE_0);
-> -	}
-> -
-> -	igt_describe("Test Content protection over DP MST");
-> -	igt_subtest("dp-mst-type-0") {
-> -		test_content_protection_mst(HDCP_CONTENT_TYPE_0);
-> +				test_content_protection(COMMIT_ATOMIC, subtests[i].content_type);
-> +			}
-> +		}
->   	}
->   
-> -	igt_describe("Test Content protection over DP MST with LIC");
-> -	igt_subtest("dp-mst-lic-type-0") {
-> -		data.cp_tests = CP_LIC;
-> -		test_content_protection_mst(HDCP_CONTENT_TYPE_0);
-> -	}
-> +	igt_subtest_group {
-> +		igt_fixture
-> +			igt_require(data.display.is_atomic);
->   
-> -	igt_describe("Test Content protection over DP MST");
-> -	igt_subtest("dp-mst-type-1") {
-> -		test_content_protection_mst(HDCP_CONTENT_TYPE_1);
-> -	}
-> +		for (int i = 0; i < ARRAY_SIZE(mst_subtests); i++) {
-> +			igt_describe_f("%s", mst_subtests[i].desc);
->   
-> -	igt_describe("Test Content protection over DP MST with LIC");
-> -	igt_subtest("dp-mst-lic-type-1") {
-> -		data.cp_tests = CP_LIC;
-> -		test_content_protection_mst(HDCP_CONTENT_TYPE_1);
-> +			igt_subtest(mst_subtests[i].name) {
-> +				data.cp_tests = mst_subtests[i].cp_tests;
-> +				test_content_protection_mst(mst_subtests[i].content_type);
-
-https://cgit.freedesktop.org/drm/igt-gpu-tools/tree/tests/kms_content_protection.c#n610
-
-if pipe/output combo is invalid, we must try with another combo.
-
-Also, do we need 2 or more outputs in case of MST?
-
-> +			}
-> +		}
->   	}
->   
->   	igt_fixture {
-
-https://cgit.freedesktop.org/drm/igt-gpu-tools/tree/tests/kms_content_protection.c#n840
-
-Can we move test_content_protection_cleanup() to test_fini()?
-
-- Bhanu
-
+diff --git a/lib/intel_chipset.h b/lib/intel_chipset.h
+index d7a6ff19..ff587924 100644
+--- a/lib/intel_chipset.h
++++ b/lib/intel_chipset.h
+@@ -197,6 +197,7 @@ void intel_check_pch(void);
+ 
+ #define IS_GEN(devid, x)	(intel_get_device_info(devid)->graphics_ver == x)
+ #define AT_LEAST_GEN(devid, x)	(intel_get_device_info(devid)->graphics_ver >= x)
++#define DISPLAY_ID(devid)	(intel_get_device_info(devid)->graphics_ver)
+ 
+ #define IS_GEN2(devid)		IS_GEN(devid, 2)
+ #define IS_GEN3(devid)		IS_GEN(devid, 3)
+diff --git a/tests/kms_async_flips.c b/tests/kms_async_flips.c
+index 695aea74..cfd5d65a 100644
+--- a/tests/kms_async_flips.c
++++ b/tests/kms_async_flips.c
+@@ -61,6 +61,7 @@ typedef struct {
+ 	bool extended;
+ 	enum pipe pipe;
+ 	bool alternate_sync_async;
++	uint64_t modifier;
+ } data_t;
+ 
+ static void flip_handler(int fd_, unsigned int sequence, unsigned int tv_sec,
+@@ -125,7 +126,7 @@ static void make_fb(data_t *data, struct igt_fb *fb,
+ 
+ 	if (is_i915_device(data->drm_fd)) {
+ 		igt_create_fb(data->drm_fd, width, height, DRM_FORMAT_XRGB8888,
+-			      I915_FORMAT_MOD_X_TILED, fb);
++			      data->modifier, fb);
+ 		igt_draw_fill_fb(data->drm_fd, fb, 0x88);
+ 	} else {
+ 		igt_create_color_fb(data->drm_fd, width, height, DRM_FORMAT_XRGB8888,
+@@ -594,21 +595,37 @@ igt_main_args("e", NULL, help_str, opt_handler, &data)
+ 		igt_fixture
+ 			require_monotonic_timestamp(data.drm_fd);
+ 
+-		igt_describe("Wait for page flip events in between successive asynchronous flips");
++		igt_describe("Wait for page flip events in between successive asynchronous flips on X Tiled buffer");
+ 		igt_subtest_with_dynamic("async-flip-with-page-flip-events") {
+ 			data.alternate_sync_async = false;
++			data.modifier = I915_FORMAT_MOD_X_TILED;
+ 			run_test(&data, test_async_flip);
+ 		}
+ 
++		igt_describe("Wait for page flip events in between successive asynchronous flips on Linear buffer");
++		igt_subtest_with_dynamic("async-flip-with-page-flip-events-linear") {
++			data.alternate_sync_async = false;
++			data.modifier = DRM_FORMAT_MOD_LINEAR;
++			if(is_i915_device(data.drm_fd)) {
++				uint32_t devid = intel_get_drm_devid(data.drm_fd);
++				igt_skip_on_f(DISPLAY_ID(devid) < 12,
++						"Async on Linear buffer not supported\n");
++				run_test(&data, test_async_flip);
++			}
++		}
++
+ 		igt_describe("Alternate between sync and async flips");
+ 		igt_subtest_with_dynamic("alternate-sync-async-flip") {
++			data.modifier = I915_FORMAT_MOD_X_TILED;
+ 			data.alternate_sync_async = true;
+ 			run_test(&data, test_async_flip);
+ 		}
+ 
+ 		igt_describe("Verify that the async flip timestamp does not coincide with either previous or next vblank");
+-		igt_subtest_with_dynamic("test-time-stamp")
++		igt_subtest_with_dynamic("test-time-stamp") {
++			data.modifier = I915_FORMAT_MOD_X_TILED;
+ 			run_test(&data, test_timestamp);
++		}
+ 	}
+ 
+ 	igt_describe("Verify that the DRM_IOCTL_MODE_CURSOR passes after async flip");
+@@ -622,6 +639,7 @@ igt_main_args("e", NULL, help_str, opt_handler, &data)
+ 			      "PSR2 sel fetch causes cursor to be added to primary plane " \
+ 			      "pages flips and async flip is not supported in cursor\n");
+ 
++		data.modifier = I915_FORMAT_MOD_X_TILED;
+ 		run_test(&data, test_cursor);
+ 	}
+ 
+@@ -632,6 +650,7 @@ igt_main_args("e", NULL, help_str, opt_handler, &data)
+ 		igt_require(igt_display_has_format_mod(&data.display, DRM_FORMAT_XRGB8888,
+ 						       I915_FORMAT_MOD_Y_TILED));
+ 
++		data.modifier = I915_FORMAT_MOD_X_TILED;
+ 		run_test(&data, test_invalid);
+ 	}
+ 
+@@ -640,6 +659,7 @@ igt_main_args("e", NULL, help_str, opt_handler, &data)
+ 		/* Devices without CRC can't run this test */
+ 		igt_require_pipe_crc(data.drm_fd);
+ 
++		data.modifier = I915_FORMAT_MOD_X_TILED;
+ 		run_test(&data, test_crc);
+ 	}
+ 
+-- 
+2.25.1
