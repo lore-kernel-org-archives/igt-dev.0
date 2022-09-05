@@ -1,19 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5FDAB10E19F
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9DB0010E288
  for <igt-dev@lists.freedesktop.org>; Mon,  5 Sep 2022 05:54:01 +0000 (UTC)
 Received: from maurocar by linux.intel.com with local (Exim 4.95)
- (envelope-from <mauro.chehab@linux.intel.com>) id 1oV53V-007p7x-2n
+ (envelope-from <mauro.chehab@linux.intel.com>) id 1oV53V-007p86-4E
  for igt-dev@lists.freedesktop.org; Mon, 05 Sep 2022 07:53:57 +0200
 From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Mon,  5 Sep 2022 07:52:36 +0200
-Message-Id: <69634ee9d093bed87c5658631069cfc2fb446d65.1662357022.git.mchehab@kernel.org>
+Date: Mon,  5 Sep 2022 07:52:39 +0200
+Message-Id: <639bb8e53747bb1eeedffb0f4840d78d5cdf9ef0.1662357022.git.mchehab@kernel.org>
 In-Reply-To: <cover.1662357022.git.mchehab@kernel.org>
 References: <cover.1662357022.git.mchehab@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH v2 02/77] i915/gem_basic: Close device before exit
+Subject: [igt-dev] [PATCH v2 05/77] i915/gem_blits: Close device before exit
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -31,51 +31,26 @@ Close the device fd before we check for leaks during the atexit
 handlers.
 
 Signed-off-by: Chris Wilson <chris.p.wilson@intel.com>
-Reviewed-by: Andrzej Hajda <andrzej.hajda@intel.com>
+Acked-by: Andrzej Hajda <andrzej.hajda@intel.com>
 Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 ---
 
 To avoid mailbombing on a large number of people, only mailing lists were C/C on the cover.
 See [PATCH v2 00/77] at: https://lore.kernel.org/all/cover.1662357022.git.mchehab@kernel.org/
 
- tests/i915/gem_basic.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ tests/i915/gem_blits.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/tests/i915/gem_basic.c b/tests/i915/gem_basic.c
-index 17ae190cb2cb..2aa5d850cc10 100644
---- a/tests/i915/gem_basic.c
-+++ b/tests/i915/gem_basic.c
-@@ -25,7 +25,6 @@
-  *
-  */
+diff --git a/tests/i915/gem_blits.c b/tests/i915/gem_blits.c
+index 46f157b9367a..24e83b9f512d 100644
+--- a/tests/i915/gem_blits.c
++++ b/tests/i915/gem_blits.c
+@@ -852,5 +852,6 @@ igt_main
  
--#include "igt.h"
- #include <unistd.h>
- #include <stdlib.h>
- #include <stdio.h>
-@@ -37,7 +36,10 @@
- #include <sys/ioctl.h>
- 
- #include "drm.h"
-+
- #include "i915/gem_create.h"
-+#include "igt.h"
-+#include "igt_types.h"
- 
- IGT_TEST_DESCRIPTION("Tests basic gem_create and gem_close IOCTLs");
- 
-@@ -78,10 +80,10 @@ test_create_fd_close(int fd)
- 	close(fd);
+ 	igt_fixture {
+ 		put_ahnd(device.ahnd);
++		close(device.fd);
+ 	}
  }
- 
--int fd;
--
- igt_main
- {
-+	igt_fd_t(fd);
-+
- 	igt_fixture
- 		fd = drm_open_driver(DRIVER_INTEL);
- 
 -- 
 2.37.2
