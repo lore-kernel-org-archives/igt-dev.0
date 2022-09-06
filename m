@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B7FB110E65D
- for <igt-dev@lists.freedesktop.org>; Tue,  6 Sep 2022 12:30:06 +0000 (UTC)
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D98AB10E660
+ for <igt-dev@lists.freedesktop.org>; Tue,  6 Sep 2022 12:30:23 +0000 (UTC)
 From: Ville Syrjala <ville.syrjala@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue,  6 Sep 2022 15:29:33 +0300
-Message-Id: <20220906122944.8838-7-ville.syrjala@linux.intel.com>
+Date: Tue,  6 Sep 2022 15:29:39 +0300
+Message-Id: <20220906122944.8838-13-ville.syrjala@linux.intel.com>
 In-Reply-To: <20220906122944.8838-1-ville.syrjala@linux.intel.com>
 References: <20220906122944.8838-1-ville.syrjala@linux.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v2 06/17] tools/intel_vbt_decode: Remove
- pointless variables
+Subject: [igt-dev] [PATCH i-g-t v2 12/17] tools/intel_vbt_decode: Clean up
+ driver features block decoding
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,112 +26,171 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-A bunch of places assign some random variable just to
-print out its value with YESNO(). Skip the pointless
-intermediate step.
+Print all the stuff from the driver features block, and print
+it in the same order as the spec lists it to make it a bit
+easier to compare the two.
+
+Also use consistent naming for a bunch of the fields that
+exist in both the driver features block and the power conservation
+block.
 
 Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
 ---
- tools/intel_vbt_decode.c | 50 +++++++++++++++++-----------------------
- 1 file changed, 21 insertions(+), 29 deletions(-)
+ tools/intel_vbt_decode.c | 93 ++++++++++++++++++++++++++++++----------
+ 1 file changed, 70 insertions(+), 23 deletions(-)
 
 diff --git a/tools/intel_vbt_decode.c b/tools/intel_vbt_decode.c
-index 28894fb263d8..35a56011199b 100644
+index f82be17b17f5..ecdccd2b9166 100644
 --- a/tools/intel_vbt_decode.c
 +++ b/tools/intel_vbt_decode.c
-@@ -1116,17 +1116,15 @@ static void dump_lvds_options(struct context *context,
- 		printf("\t\tChannel type: %s (0x%x)\n",
- 		       channel_type[val], val);
+@@ -1368,23 +1368,28 @@ static void dump_driver_feature(struct context *context,
+ {
+ 	const struct bdb_driver_features *feature = block_data(block);
  
--		val = panel_bool(options->ssc_bits, i);
--		printf("\t\tSSC: %s (0x%x)\n",
--		       YESNO(val), val);
-+		printf("\t\tSSC: %s\n",
-+		       YESNO(panel_bool(options->ssc_bits, i)));
+-	printf("\tBoot Device Algorithm: %s\n", feature->boot_dev_algorithm ?
+-	       "driver default" : "os default");
+-	printf("\tBlock display switching when DVD active: %s\n",
+-	       YESNO(feature->allow_display_switch_dvd));
+-	printf("\tAllow display switching when in Full Screen DOS: %s\n",
+-	       YESNO(feature->allow_display_switch_dos));
+-	printf("\tHot Plug DVO: %s\n", YESNO(feature->hotplug_dvo));
+-	printf("\tDual View Zoom: %s\n", YESNO(feature->dual_view_zoom));
+-	printf("\tDriver INT 15h hook: %s\n", YESNO(feature->int15h_hook));
+-	printf("\tEnable Sprite in Clone Mode: %s\n",
+-	       YESNO(feature->sprite_in_clone));
+ 	printf("\tUse 00000110h ID for Primary LFP: %s\n",
+ 	       YESNO(feature->primary_lfp_id));
++	printf("\tEnable Sprite in Clone Mode: %s\n",
++	       YESNO(feature->sprite_in_clone));
++	printf("\tDriver INT 15h hook: %s\n",
++	       YESNO(feature->int15h_hook));
++	printf("\tDual View Zoom: %s\n",
++	       YESNO(feature->dual_view_zoom));
++	printf("\tHot Plug DVO: %s\n",
++	       YESNO(feature->hotplug_dvo));
++	printf("\tAllow display switching when in Full Screen DOS: %s\n",
++	       YESNO(feature->allow_display_switch_dos));
++	printf("\tAllow display switching when DVD active: %s\n",
++	       YESNO(feature->allow_display_switch_dvd));
++	printf("\tBoot Device Algorithm: %s\n",
++	       feature->boot_dev_algorithm ? "driver default" : "os default");
++
+ 	printf("\tBoot Mode X: %u\n", feature->boot_mode_x);
+ 	printf("\tBoot Mode Y: %u\n", feature->boot_mode_y);
+ 	printf("\tBoot Mode Bpp: %u\n", feature->boot_mode_bpp);
+ 	printf("\tBoot Mode Refresh: %u\n", feature->boot_mode_refresh);
++
+ 	printf("\tEnable LFP as primary: %s\n",
+ 	       YESNO(feature->enable_lfp_primary));
+ 	printf("\tSelective Mode Pruning: %s\n",
+@@ -1397,9 +1402,8 @@ static void dump_driver_feature(struct context *context,
+ 	       YESNO(feature->nt_clone_support));
+ 	printf("\tDefault Power Scheme user interface: %s\n",
+ 	       feature->power_scheme_ui ? "3rd party" : "CUI");
+-	printf
+-	    ("\tSprite Display Assignment when Overlay is Active in Clone Mode: %s\n",
+-	     feature->sprite_display_assign ? "primary" : "secondary");
++	printf("\tSprite Display Assignment when Overlay is Active in Clone Mode: %s\n",
++	       feature->sprite_display_assign ? "primary" : "secondary");
+ 	printf("\tDisplay Maintain Aspect Scaling via CUI: %s\n",
+ 	       YESNO(feature->cui_aspect_scaling));
+ 	printf("\tPreserve Aspect Ratio: %s\n",
+@@ -1407,16 +1411,59 @@ static void dump_driver_feature(struct context *context,
+ 	printf("\tEnable SDVO device power down: %s\n",
+ 	       YESNO(feature->sdvo_device_power_down));
+ 	printf("\tCRT hotplug: %s\n", YESNO(feature->crt_hotplug));
++
+ 	printf("\tLVDS config: %s (0x%x)\n",
+ 	       lvds_config[feature->lvds_config], feature->lvds_config);
++	printf("\tTV hotplug: %s\n",
++	       YESNO(feature->tv_hotplug));
++
++	printf("\tDisplay subsystem enable: %s\n",
++	       YESNO(feature->display_subsystem_enable));
++	printf("\tEmbedded platform: %s\n",
++	       YESNO(feature->embedded_platform));
+ 	printf("\tDefine Display statically: %s\n",
+ 	       YESNO(feature->static_display));
++
+ 	printf("\tLegacy CRT max X: %d\n", feature->legacy_crt_max_x);
+ 	printf("\tLegacy CRT max Y: %d\n", feature->legacy_crt_max_y);
+ 	printf("\tLegacy CRT max refresh: %d\n",
+ 	       feature->legacy_crt_max_refresh);
+-	printf("\tEnable DRRS: %s\n", YESNO(feature->drrs_enabled));
+-	printf("\tEnable PSR: %s\n", YESNO(feature->psr_enabled));
++
++	printf("\tInternal source termination for HDMI: %s\n",
++	       YESNO(feature->hdmi_termination));
++	printf("\tCEA 861-D HDMI support: %s\n",
++	       YESNO(feature->cea861d_hdmi_support));
++	printf("\tSelf refresh enable: %s\n",
++	       YESNO(feature->self_refresh_enable));
++
++	printf("\tCustom VBT number: 0x%x\n", feature->custom_vbt_version);
++
++	printf("\tPC Features field validity: %s\n",
++	       YESNO(feature->pc_feature_valid));
++	printf("\tDynamic Media Refresh Rate Switching (DMRRS): %s\n",
++	       YESNO(feature->dmrrs_enabled));
++	printf("\tIntermediate Pixel Storage (IPS): %s\n",
++	       YESNO(feature->ips_enabled));
++	printf("\tPanel Self Refresh (PSR): %s\n",
++	       YESNO(feature->psr_enabled));
++	printf("\tTurbo Boost Technology: %s\n",
++	       YESNO(feature->tbt_enabled));
++	printf("\tGraphics Power Management (GPMT): %s\n",
++	       YESNO(feature->gpmt_enabled));
++	printf("\tGraphics Render Standby (RS): %s\n",
++	       YESNO(feature->grs_enabled));
++	printf("\tDynamic Refresh Rate Switching (DRRS): %s\n",
++	       YESNO(feature->drrs_enabled));
++	printf("\tAutomatic Display Brightness (ADB): %s\n",
++	       YESNO(feature->adb_enabled));
++	printf("\tDxgkDDI Backlight Control (DxgkDdiBLC): %s\n",
++	       YESNO(feature->bltclt_enabled));
++	printf("\tDisplay Power Saving Technology (DPST): %s\n",
++	       YESNO(feature->dpst_enabled));
++	printf("\tSmart 2D Display Technology (S2DDT): %s\n",
++	       YESNO(feature->s2ddt_enabled));
++	printf("\tRapid Memory Power Management (RMPM): %s\n",
++	       YESNO(feature->rmpm_enabled));
+ }
  
- 		val = panel_bool(options->ssc_freq, i);
- 		printf("\t\tSSC frequency: %d MHz (0x%x)\n",
- 		       decode_ssc_freq(context, val), val);
+ static void dump_edp(struct context *context,
+@@ -1652,19 +1699,19 @@ static void dump_lfp_power(struct context *context,
  
--		val = panel_bool(options->ssc_ddt, i);
--		printf("\t\tDisable SSC in dual display twin: %s (0x%x)\n",
--		       YESNO(val), val);
-+		printf("\t\tDisable SSC in dual display twin: %s\n",
-+		       YESNO(panel_bool(options->ssc_ddt, i)));
+ 		printf("\tPanel %d%s\n", i, context->panel_type == i ? " *" : "");
  
- 		if (block->size < 16)
+-		printf("\t\tDPST: %s\n",
++		printf("\t\tDisplay Power Saving Technology (DPST): %s\n",
+ 		       YESNO(panel_bool(lfp_block->dpst, i)));
+-		printf("\t\tPSR: %s\n",
++		printf("\t\tPanel Self Refresh (PSR): %s\n",
+ 		       YESNO(panel_bool(lfp_block->psr, i)));
+-		printf("\t\tDRRS: %s\n",
++		printf("\t\tDynamic Refresh Rate Switching (DRRS): %s\n",
+ 		       YESNO(panel_bool(lfp_block->drrs, i)));
+ 		printf("\t\tDisplay LACE support: %s\n",
+ 		       YESNO(panel_bool(lfp_block->lace_support, i)));
+-		printf("\t\tADT: %s\n",
++		printf("\t\tAssertive Display Technology (ADT): %s\n",
+ 		       YESNO(panel_bool(lfp_block->adt, i)));
+-		printf("\t\tDMRRS: %s\n",
++		printf("\t\tDynamic Media Refresh Rate Switching (DMRRS): %s\n",
+ 		       YESNO(panel_bool(lfp_block->dmrrs, i)));
+-		printf("\t\tADB: %s\n",
++		printf("\t\tAutomatic Display Brightness (ADB): %s\n",
+ 		       YESNO(panel_bool(lfp_block->adb, i)));
+ 		printf("\t\tDefault Display LACE enabled: %s\n",
+ 		       YESNO(panel_bool(lfp_block->lace_enabled_status, i)));
+@@ -1682,7 +1729,7 @@ static void dump_lfp_power(struct context *context,
+ 		if (context->bdb->version < 233)
  			continue;
-@@ -1149,9 +1147,8 @@ static void dump_lvds_options(struct context *context,
- 		if (context->bdb->version < 200)
- 			continue;
  
--		val = panel_bool(options->lcdvcc_s0_enable, i);
--		printf("\t\tLCDVCC on during S0 state: %s (0x%x)\n",
--		       YESNO(val), val);
-+		printf("\t\tLCDVCC on during S0 state: %s\n",
-+		       YESNO(panel_bool(options->lcdvcc_s0_enable, i)));
+-		printf("\t\tVRR feature: %s\n",
++		printf("\t\tVariable Refresh Rate (VRR): %s\n",
+ 		       YESNO(panel_bool(lfp_block->vrr_feature_enabled, i)));
  
- 		if (context->bdb->version < 228)
- 			continue;
-@@ -1477,15 +1474,13 @@ static void dump_edp(struct context *context,
- 		       dp_vswing(edp->fast_link_params[i].vswing),
- 		       edp->fast_link_params[i].vswing);
- 
--		if (context->bdb->version >= 162) {
--			bool val = panel_bool(edp->edp_s3d_feature, i);
--			printf("\t\tStereo 3D feature: %s\n", YESNO(val));
--		}
-+		if (context->bdb->version >= 162)
-+			printf("\t\tStereo 3D feature: %s\n",
-+			       YESNO(panel_bool(edp->edp_s3d_feature, i)));
- 
--		if (context->bdb->version >= 165) {
--			bool val = panel_bool(edp->edp_t3_optimization, i);
--			printf("\t\tT3 optimization: %s\n", YESNO(val));
--		}
-+		if (context->bdb->version >= 165)
-+			printf("\t\tT3 optimization: %s\n",
-+			       YESNO(panel_bool(edp->edp_t3_optimization, i)));
- 
- 		if (context->bdb->version >= 173) {
- 			int val = (edp->edp_vswing_preemph >> (i * 4)) & 0xf;
-@@ -1504,28 +1499,25 @@ static void dump_edp(struct context *context,
- 			}
- 		}
- 
--		if (context->bdb->version >= 182) {
--			bool val = panel_bool(edp->fast_link_training, i);
--			printf("\t\tFast link training: %s\n", YESNO(val));
--		}
-+		if (context->bdb->version >= 182)
-+			printf("\t\tFast link training: %s\n",
-+			       YESNO(panel_bool(edp->fast_link_training, i)));
- 
--		if (context->bdb->version >= 185) {
--			bool val = panel_bool(edp->dpcd_600h_write_required, i);
--			printf("\t\tDPCD 600h write required: %s\n", YESNO(val));
--		}
-+		if (context->bdb->version >= 185)
-+			printf("\t\tDPCD 600h write required: %s\n",
-+			       YESNO(panel_bool(edp->dpcd_600h_write_required, i)));
- 
--		if (context->bdb->version >= 186) {
-+		if (context->bdb->version >= 186)
- 			printf("\t\tPWM delays:\n"
- 			       "\t\t\tPWM on to backlight enable: %d\n"
- 			       "\t\t\tBacklight disable to PWM off: %d\n",
- 			       edp->pwm_delays[i].pwm_on_to_backlight_enable,
- 			       edp->pwm_delays[i].backlight_disable_to_pwm_off);
--		}
- 
- 		if (context->bdb->version >= 199) {
--			bool val = panel_bool(edp->full_link_params_provided, i);
-+			printf("\t\tFull link params provided: %s\n",
-+			       YESNO(panel_bool(edp->full_link_params_provided, i)));
- 
--			printf("\t\tFull link params provided: %s\n", YESNO(val));
- 			printf("\t\tFull link params:\n");
- 			printf("\t\t\tpre-emphasis: %s (0x%x)\n",
- 			       dp_preemph(edp->full_link_params[i].preemphasis),
+ 		if (context->bdb->version < 247)
 -- 
 2.35.1
