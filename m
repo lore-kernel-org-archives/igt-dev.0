@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CF92610E617
- for <igt-dev@lists.freedesktop.org>; Tue,  6 Sep 2022 09:53:33 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A64AE10E614
+ for <igt-dev@lists.freedesktop.org>; Tue,  6 Sep 2022 09:53:05 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue,  6 Sep 2022 15:20:07 +0530
-Message-Id: <20220906095030.486152-30-bhanuprakash.modem@intel.com>
+Date: Tue,  6 Sep 2022 15:19:47 +0530
+Message-Id: <20220906095030.486152-10-bhanuprakash.modem@intel.com>
 In-Reply-To: <20220906095030.486152-1-bhanuprakash.modem@intel.com>
 References: <20220906095030.486152-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V2 29/52] tests/kms_properties: Add support for
- Bigjoiner
+Subject: [igt-dev] [i-g-t V2 09/52] tests/chamelium/kms_color_chamelium: Add
+ support for Bigjoiner
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -32,51 +32,42 @@ Example:
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/kms_properties.c | 18 ++++++++++++++++++
- 1 file changed, 18 insertions(+)
+ tests/chamelium/kms_color_chamelium.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/tests/kms_properties.c b/tests/kms_properties.c
-index dd5a93aa..a9c2b7df 100644
---- a/tests/kms_properties.c
-+++ b/tests/kms_properties.c
-@@ -241,6 +241,12 @@ static void plane_properties(igt_display_t *display, bool atomic)
- 		found = false;
+diff --git a/tests/chamelium/kms_color_chamelium.c b/tests/chamelium/kms_color_chamelium.c
+index 678931aa..42289e91 100644
+--- a/tests/chamelium/kms_color_chamelium.c
++++ b/tests/chamelium/kms_color_chamelium.c
+@@ -458,6 +458,9 @@ run_gamma_degamma_tests_for_pipe(data_t *data, enum pipe p,
+ 	data->drm_format = DRM_FORMAT_XRGB8888;
+ 	data->mode = igt_output_get_mode(data->output);
  
- 		for_each_valid_output_on_pipe(display, pipe, output) {
-+			igt_display_reset(display);
++	if (!test_constraint(data, p))
++		return;
 +
-+			igt_output_set_pipe(output, pipe);
-+			if (!igt_test_constraint(display))
-+				continue;
-+
- 			found_any = found = true;
+ 	igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(p), data->output->name)
+ 		igt_assert(test_t(data, data->primary, data->ports[port_idx]));
+ }
+@@ -493,6 +496,9 @@ run_ctm_tests_for_pipe(data_t *data, enum pipe p,
+ 	data->drm_format = DRM_FORMAT_XRGB8888;
+ 	data->mode = igt_output_get_mode(data->output);
  
- 			run_plane_property_tests(display, pipe, output, atomic);
-@@ -264,6 +270,12 @@ static void crtc_properties(igt_display_t *display, bool atomic)
- 		found = false;
++	if (!test_constraint(data, p))
++		return;
++
+ 	igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(p), data->output->name) {
+ 		bool success = false;
+ 		int i;
+@@ -538,6 +544,9 @@ run_limited_range_ctm_test_for_pipe(data_t *data, enum pipe p,
+ 	data->drm_format = DRM_FORMAT_XRGB8888;
+ 	data->mode = igt_output_get_mode(data->output);
  
- 		for_each_valid_output_on_pipe(display, pipe, output) {
-+			igt_display_reset(display);
++	if (!test_constraint(data, p))
++		return;
 +
-+			igt_output_set_pipe(output, pipe);
-+			if (!igt_test_constraint(display))
-+				continue;
-+
- 			found_any_valid_pipe = found = true;
- 
- 			run_crtc_property_tests(display, pipe, output, atomic);
-@@ -290,6 +302,12 @@ static void connector_properties(igt_display_t *display, bool atomic)
- 			if (!igt_pipe_connector_valid(pipe, output))
- 				continue;
- 
-+			igt_display_reset(display);
-+
-+			igt_output_set_pipe(output, pipe);
-+			if (!igt_test_constraint(display))
-+				continue;
-+
- 			found = true;
- 			run_connector_property_tests(display, pipe, output, atomic);
- 			break;
+ 	igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(p), data->output->name)
+ 		igt_assert(test_t(data, data->primary, data->ports[port_idx]));
+ }
 -- 
 2.35.1
