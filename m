@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A575F10E610
- for <igt-dev@lists.freedesktop.org>; Tue,  6 Sep 2022 09:54:02 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A079B10E61D
+ for <igt-dev@lists.freedesktop.org>; Tue,  6 Sep 2022 09:53:56 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue,  6 Sep 2022 15:20:24 +0530
-Message-Id: <20220906095030.486152-47-bhanuprakash.modem@intel.com>
+Date: Tue,  6 Sep 2022 15:20:21 +0530
+Message-Id: <20220906095030.486152-44-bhanuprakash.modem@intel.com>
 In-Reply-To: <20220906095030.486152-1-bhanuprakash.modem@intel.com>
 References: <20220906095030.486152-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V2 46/52] tests/i915/kms_frontbuffer_tracking: Add
+Subject: [igt-dev] [i-g-t V2 43/52] tests/i915/kms_fence_pin_leak: Add
  support for Bigjoiner
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -23,48 +23,44 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-As many 2x tests are currently running on Pipe-A & B only, those
-tests will always SKIP if there is any 8K supported panel in the
-config. Instead of Skipping the test, add some intelligence to
-the subtest to identify the valid pipe/output combo to execute
-the subtest.
+This patch will add a check to Skip the subtest if a selected pipe/output
+combo won't support Bigjoiner or 8K mode.
+
+Example:
+* Pipe-D wont support a mode > 5K
+* To use 8K mode on a pipe then consecutive pipe must be available & free.
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/i915/kms_frontbuffer_tracking.c | 16 ++++++++++++----
- 1 file changed, 12 insertions(+), 4 deletions(-)
+ tests/i915/kms_fence_pin_leak.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/tests/i915/kms_frontbuffer_tracking.c b/tests/i915/kms_frontbuffer_tracking.c
-index 9518c706..ff5fb90d 100644
---- a/tests/i915/kms_frontbuffer_tracking.c
-+++ b/tests/i915/kms_frontbuffer_tracking.c
-@@ -403,15 +403,23 @@ static bool find_connector(bool edp_only, bool pipe_a,
- 		if (pipe_a && pipe != PIPE_A)
- 			continue;
+diff --git a/tests/i915/kms_fence_pin_leak.c b/tests/i915/kms_fence_pin_leak.c
+index 16eb595f..461ddfbc 100644
+--- a/tests/i915/kms_fence_pin_leak.c
++++ b/tests/i915/kms_fence_pin_leak.c
+@@ -124,6 +124,9 @@ static void run_single_test(data_t *data, enum pipe pipe, igt_output_t *output)
+ 	struct igt_fb fb[2];
+ 	int i;
  
--		if (output == forbidden_output || pipe == forbidden_pipe)
-+		if (output == forbidden_output || pipe == forbidden_pipe) {
-+			igt_output_set_pipe(output, pipe);
-+			igt_output_override_mode(output, connector_get_mode(output));
++	igt_info("Using (pipe %s + %s) to run the subtest.\n",
++		 kmstest_pipe_name(pipe), igt_output_name(output));
 +
- 			continue;
-+		}
+ 	igt_output_set_pipe(output, pipe);
  
- 		if (c->connector_type == DRM_MODE_CONNECTOR_eDP && opt.no_edp)
- 			continue;
+ 	mode = igt_output_get_mode(output);
+@@ -196,6 +199,12 @@ static void run_test(data_t *data)
+ 	enum pipe p;
  
--		*ret_output = output;
--		*ret_pipe = pipe;
--		return true;
-+		igt_output_set_pipe(output, pipe);
-+		igt_output_override_mode(output, connector_get_mode(output));
-+		if (igt_test_constraint(&drm.display)) {
-+			*ret_output = output;
-+			*ret_pipe = pipe;
-+			return true;
-+		}
- 	}
+ 	for_each_pipe_with_valid_output(display, p, output) {
++		igt_display_reset(display);
++
++		igt_output_set_pipe(output, p);
++		if (!igt_test_constraint(display))
++			continue;
++
+ 		run_single_test(data, p, output);
  
- 	return false;
+ 		return; /* one time ought to be enough */
 -- 
 2.35.1
