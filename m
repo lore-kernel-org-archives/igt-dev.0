@@ -1,21 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C3C5510E555
- for <igt-dev@lists.freedesktop.org>; Tue,  6 Sep 2022 13:28:57 +0000 (UTC)
-Message-ID: <9e5acb70-0986-d00e-2cb9-b4c07facde6c@intel.com>
-Date: Tue, 6 Sep 2022 16:28:50 +0300
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 86F2010E5B3
+ for <igt-dev@lists.freedesktop.org>; Tue,  6 Sep 2022 13:31:24 +0000 (UTC)
+Message-ID: <68bc5289-45c2-6a11-2171-c9973b7a5b09@intel.com>
+Date: Tue, 6 Sep 2022 16:30:58 +0300
 Content-Language: en-US
 To: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>,
  <igt-dev@lists.freedesktop.org>
 References: <20220823183036.5270-1-umesh.nerlige.ramappa@intel.com>
- <20220823183036.5270-13-umesh.nerlige.ramappa@intel.com>
+ <20220823183036.5270-14-umesh.nerlige.ramappa@intel.com>
 From: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
-In-Reply-To: <20220823183036.5270-13-umesh.nerlige.ramappa@intel.com>
+In-Reply-To: <20220823183036.5270-14-umesh.nerlige.ramappa@intel.com>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t 12/23] i915/perf: Skip tests that use
- rendercopy
+Subject: Re: [igt-dev] [PATCH i-g-t 13/23] i915/perf: Add OA formats for DG2
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,62 +27,100 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
 On 23/08/2022 21:30, Umesh Nerlige Ramappa wrote:
-> Running tests that require rendercopy sometimes leaves the DUT in an
-> unsusable state. Further tests fail to run and DUT requires reboot.
-> Since it affects CI efficiency, skip tests is rendercopy is missing.
+> Add OA formats for DG2.
 >
 > Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
-
-Kind of awkward that igt_get_render_copyfunc() returns something when it 
-doesn't seem to be have an engine able to run the copy function...
-
-
 Reviewed-by: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
-
 > ---
->   tests/i915/perf.c | 17 ++++++++++++++++-
->   1 file changed, 16 insertions(+), 1 deletion(-)
+>   include/drm-uapi/i915_drm.h |  6 ++++++
+>   tests/i915/perf.c           | 38 ++++++++++++++++++++++++++++++++++---
+>   2 files changed, 41 insertions(+), 3 deletions(-)
 >
+> diff --git a/include/drm-uapi/i915_drm.h b/include/drm-uapi/i915_drm.h
+> index b4efc96c..c7587a0f 100644
+> --- a/include/drm-uapi/i915_drm.h
+> +++ b/include/drm-uapi/i915_drm.h
+> @@ -2535,6 +2535,12 @@ enum drm_i915_oa_format {
+>   	I915_OA_FORMAT_A12_B8_C8,
+>   	I915_OA_FORMAT_A32u40_A4u32_B8_C8,
+>   
+> +	/* DG2 */
+> +	I915_OAR_FORMAT_A32u40_A4u32_B8_C8,
+> +	I915_OA_FORMAT_A24u40_A14u32_B8_C8,
+> +	I915_OAR_FORMAT_A36u64_B8_C8,
+> +	I915_OA_FORMAT_A38u64_R2u64_B8_C8,
+> +
+>   	I915_OA_FORMAT_MAX	    /* non-ABI */
+>   };
+>   
 > diff --git a/tests/i915/perf.c b/tests/i915/perf.c
-> index ba8c3792..85f3c5de 100644
+> index 85f3c5de..d601eb36 100644
 > --- a/tests/i915/perf.c
 > +++ b/tests/i915/perf.c
-> @@ -41,6 +41,7 @@
->   #include "i915/gem.h"
->   #include "i915/perf.h"
->   #include "igt.h"
-> +#include "igt_perf.h"
->   #include "igt_sysfs.h"
->   #include "drm.h"
+> @@ -181,6 +181,36 @@ static struct oa_format gen12_oa_formats[I915_OA_FORMAT_MAX] = {
+>   		.c_off = 224, .n_c = 8, },
+>   };
 >   
-> @@ -5025,6 +5026,19 @@ static int i915_perf_revision(int fd)
->   	return value;
->   }
->   
-> +static bool has_class_instance(int i915, uint16_t class, uint16_t instance)
-> +{
-> +	int fd;
+> +static struct oa_format dg2_oa_formats[I915_OA_FORMAT_MAX] = {
+> +	[I915_OAR_FORMAT_A32u40_A4u32_B8_C8] = {
+> +		"A32u40_A4u32_B8_C8", .size = 256,
+> +		.a40_high_off = 160, .a40_low_off = 16, .n_a40 = 32,
+> +		.a_off = 144, .n_a = 4, .first_a = 32,
+> +		.b_off = 192, .n_b = 8,
+> +		.c_off = 224, .n_c = 8, .oa_type = OAR, },
+> +	/* This format has A36 and A37 interleaved with high bytes of some A
+> +	 * counters, so we will accumulate only subset of counters.
+> +	 */
+> +	[I915_OA_FORMAT_A24u40_A14u32_B8_C8] = {
+> +		"A24u40_A14u32_B8_C8", .size = 256,
+> +		/* u40: A4 - A23 */
+> +		.a40_high_off = 164, .a40_low_off = 32, .n_a40 = 20,
+> +		/* u32: A24 - A27 */
+> +		.a_off = 144, .n_a = 4, .first_a = 24,
+> +		.b_off = 192, .n_b = 8,
+> +		.c_off = 224, .n_c = 8, .oa_type = OAG, },
+> +	[I915_OA_FORMAT_A38u64_R2u64_B8_C8] = {
+> +		"A38u64_R2u64_B8_C8", .size = 448,
+> +		.a64_off = 32, .n_a64 = 38,
+> +		.b_off = 352, .n_b = 8,
+> +		.c_off = 384, .n_c = 8, .oa_type = OAG, },
+> +	[I915_OAR_FORMAT_A36u64_B8_C8] = {
+> +		"A36u64_B8_C8", .size = 384,
+> +		.a64_off = 32, .n_a64 = 36,
+> +		.b_off = 320, .n_b = 8,
+> +		.c_off = 352, .n_c = 8, .oa_type = OAR, },
+> +};
 > +
-> +	fd = perf_i915_open(i915, I915_PMU_ENGINE_BUSY(class, instance));
-> +	if (fd >= 0) {
-> +		close(fd);
-> +		return true;
-> +	}
-> +
-> +	return false;
-> +}
-> +
->   igt_main
+>   static bool hsw_undefined_a_counters[45] = {
+>   	[4] = true,
+>   	[6] = true,
+> @@ -239,6 +269,8 @@ get_oa_format(enum drm_i915_oa_format format)
 >   {
->   	igt_fixture {
-> @@ -5069,7 +5083,8 @@ igt_main
+>   	if (IS_HASWELL(devid))
+>   		return hsw_oa_formats[format];
+> +	else if (IS_DG2(devid))
+> +		return dg2_oa_formats[format];
+>   	else if (IS_GEN12(devid))
+>   		return gen12_oa_formats[format];
+>   	else
+> @@ -1304,7 +1336,7 @@ read_2_oa_reports(int format_id,
+>   			igt_assert_eq(header->size, sample_size);
 >   
->   		gt_max_freq_mhz = sysfs_read(RPS_RP0_FREQ_MHZ);
+>   			report = (const void *)(header + 1);
+> -			dump_report(report, 64, "oa-formats");
+> +			dump_report(report, format_size / 4, "oa-formats");
 >   
-> -		render_copy = igt_get_render_copyfunc(devid);
-> +		if (has_class_instance(drm_fd, I915_ENGINE_CLASS_RENDER, 0))
-> +			render_copy = igt_get_render_copyfunc(devid);
->   	}
+>   			igt_debug("read report: reason = %x, timestamp = %x, exponent mask=%x\n",
+>   				  report[0], report[1], exponent_mask);
+> @@ -1540,8 +1572,8 @@ test_oa_formats(void)
+>   {
+>   	for (int i = 0; i < I915_OA_FORMAT_MAX; i++) {
+>   		struct oa_format format = get_oa_format(i);
+> -		uint32_t oa_report0[64];
+> -		uint32_t oa_report1[64];
+> +		uint32_t oa_report0[format.size / 4];
+> +		uint32_t oa_report1[format.size / 4];
 >   
->   	igt_subtest("non-system-wide-paranoid")
+>   		if (!format.name) /* sparse, indexed by ID */
+>   			continue;
 
