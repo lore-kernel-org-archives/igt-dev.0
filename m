@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A64AE10E614
- for <igt-dev@lists.freedesktop.org>; Tue,  6 Sep 2022 09:53:05 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C940E10E61B
+ for <igt-dev@lists.freedesktop.org>; Tue,  6 Sep 2022 09:53:09 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue,  6 Sep 2022 15:19:47 +0530
-Message-Id: <20220906095030.486152-10-bhanuprakash.modem@intel.com>
+Date: Tue,  6 Sep 2022 15:19:50 +0530
+Message-Id: <20220906095030.486152-13-bhanuprakash.modem@intel.com>
 In-Reply-To: <20220906095030.486152-1-bhanuprakash.modem@intel.com>
 References: <20220906095030.486152-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V2 09/52] tests/chamelium/kms_color_chamelium: Add
- support for Bigjoiner
+Subject: [igt-dev] [i-g-t V2 12/52] tests/kms_cursor_crc: Add support for
+ Bigjoiner
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -32,42 +32,110 @@ Example:
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/chamelium/kms_color_chamelium.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ tests/kms_cursor_crc.c | 47 +++++++++++++++++++++++++++++++++++-------
+ 1 file changed, 40 insertions(+), 7 deletions(-)
 
-diff --git a/tests/chamelium/kms_color_chamelium.c b/tests/chamelium/kms_color_chamelium.c
-index 678931aa..42289e91 100644
---- a/tests/chamelium/kms_color_chamelium.c
-+++ b/tests/chamelium/kms_color_chamelium.c
-@@ -458,6 +458,9 @@ run_gamma_degamma_tests_for_pipe(data_t *data, enum pipe p,
- 	data->drm_format = DRM_FORMAT_XRGB8888;
- 	data->mode = igt_output_get_mode(data->output);
- 
-+	if (!test_constraint(data, p))
-+		return;
-+
- 	igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(p), data->output->name)
- 		igt_assert(test_t(data, data->primary, data->ports[port_idx]));
+diff --git a/tests/kms_cursor_crc.c b/tests/kms_cursor_crc.c
+index 53f18f4f..8338a372 100644
+--- a/tests/kms_cursor_crc.c
++++ b/tests/kms_cursor_crc.c
+@@ -687,6 +687,21 @@ static void test_rapid_movement(data_t *data)
+ 	igt_assert_lt(usec, 0.9 * 400 * 1000000 / data->refresh);
  }
-@@ -493,6 +496,9 @@ run_ctm_tests_for_pipe(data_t *data, enum pipe p,
- 	data->drm_format = DRM_FORMAT_XRGB8888;
- 	data->mode = igt_output_get_mode(data->output);
  
-+	if (!test_constraint(data, p))
-+		return;
++static bool is_valid_combo(data_t *data, enum pipe pipe)
++{
++	bool ret = true;
++	igt_display_t *display = &data->display;
 +
- 	igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(p), data->output->name) {
- 		bool success = false;
- 		int i;
-@@ -538,6 +544,9 @@ run_limited_range_ctm_test_for_pipe(data_t *data, enum pipe p,
- 	data->drm_format = DRM_FORMAT_XRGB8888;
- 	data->mode = igt_output_get_mode(data->output);
++	igt_display_reset(display);
++
++	igt_output_set_pipe(data->output, pipe);
++	if (!igt_test_constraint(display))
++		ret = false;
++	igt_output_set_pipe(data->output, PIPE_NONE);
++
++	return ret;
++}
++
+ static void run_size_tests(data_t *data, void (*testfunc)(data_t *),
+ 			   int w, int h)
+ {
+@@ -708,15 +723,18 @@ static void run_size_tests(data_t *data, void (*testfunc)(data_t *),
+ 	}
  
-+	if (!test_constraint(data, p))
-+		return;
+ 	create_cursor_fb(data, w, h);
+-	if (require_cursor_size(data, w, h)) {
+-		igt_info("Cursor size %dx%d not supported by driver\n", w, h);
+-
+-		igt_remove_fb(data->drm_fd, &data->fb);
+-		return;
+-	}
+-
+ 	for_each_pipe(&data->display, pipe) {
+ 		data->pipe = pipe;
 +
- 	igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(p), data->output->name)
- 		igt_assert(test_t(data, data->primary, data->ports[port_idx]));
- }
++		if (!is_valid_combo(data, pipe))
++			continue;
++
++		if (require_cursor_size(data, w, h)) {
++			igt_info("Cursor size %dx%d not supported by driver\n", w, h);
++
++			continue;
++		}
++
+ 		igt_dynamic_f("pipe-%s-%s",
+ 			      kmstest_pipe_name(pipe), igt_output_name(data->output))
+ 			run_test(data, testfunc, w, h);
+@@ -761,6 +779,9 @@ static void run_tests_on_pipe(data_t *data)
+ 		for_each_pipe(&data->display, pipe) {
+ 			data->pipe = pipe;
+ 
++			if (!is_valid_combo(data, pipe))
++				continue;
++
+ 			igt_dynamic_f("pipe-%s-%s",
+ 				      kmstest_pipe_name(pipe),
+ 				      data->output->name)
+@@ -775,6 +796,9 @@ static void run_tests_on_pipe(data_t *data)
+ 		for_each_pipe(&data->display, pipe) {
+ 			data->pipe = pipe;
+ 
++			if (!is_valid_combo(data, pipe))
++				continue;
++
+ 			igt_dynamic_f("pipe-%s-%s",
+ 				      kmstest_pipe_name(pipe),
+ 				      data->output->name)
+@@ -789,6 +813,9 @@ static void run_tests_on_pipe(data_t *data)
+ 		for_each_pipe(&data->display, pipe) {
+ 			data->pipe = pipe;
+ 
++			if (!is_valid_combo(data, pipe))
++				continue;
++
+ 			igt_dynamic_f("pipe-%s-%s",
+ 				      kmstest_pipe_name(pipe),
+ 				      data->output->name)
+@@ -807,6 +834,9 @@ static void run_tests_on_pipe(data_t *data)
+ 			data->pipe = pipe;
+ 			data->flags = TEST_DPMS;
+ 
++			if (!is_valid_combo(data, pipe))
++				continue;
++
+ 			if (require_cursor_size(data, data->cursor_max_w, data->cursor_max_h)) {
+ 				igt_debug("Cursor size %dx%d not supported by driver\n",
+ 					  data->cursor_max_w, data->cursor_max_h);
+@@ -828,6 +858,9 @@ static void run_tests_on_pipe(data_t *data)
+ 			data->pipe = pipe;
+ 			data->flags = TEST_SUSPEND;
+ 
++			if (!is_valid_combo(data, pipe))
++				continue;
++
+ 			if (require_cursor_size(data, data->cursor_max_w, data->cursor_max_h)) {
+ 				igt_debug("Cursor size %dx%d not supported by driver\n",
+ 					  data->cursor_max_w, data->cursor_max_h);
 -- 
 2.35.1
