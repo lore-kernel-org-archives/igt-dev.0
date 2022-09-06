@@ -1,25 +1,23 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1DE3710EAC6
- for <igt-dev@lists.freedesktop.org>; Tue,  6 Sep 2022 20:37:26 +0000 (UTC)
-From: "Vudum, Lakshminarayana" <lakshminarayana.vudum@intel.com>
-To: "Kempczynski, Zbigniew" <zbigniew.kempczynski@intel.com>, "Latvala, Petri"
- <petri.latvala@intel.com>
-Date: Tue, 6 Sep 2022 20:37:22 +0000
-Message-ID: <DM4PR11MB6213EFD9FBA6C7FF2087BC59EC7E9@DM4PR11MB6213.namprd11.prod.outlook.com>
-References: <20220824043451.21272-1-zbigniew.kempczynski@intel.com>
- <166133372609.9870.6111621960690803640@emeril.freedesktop.org>
- <YwX2Yt2T+LybDRmB@platvala-desk.ger.corp.intel.com>
- <YwxsK80D5oEeXbf5@zkempczy-mobl2>
-In-Reply-To: <YwxsK80D5oEeXbf5@zkempczy-mobl2>
-Content-Language: en-US
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4027910E291
+ for <igt-dev@lists.freedesktop.org>; Tue,  6 Sep 2022 20:58:59 +0000 (UTC)
+Date: Tue, 6 Sep 2022 13:58:48 -0700
+From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+To: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
+Message-ID: <Yxe0iJldVKo+3NyO@unerlige-ril>
+References: <20220823183036.5270-1-umesh.nerlige.ramappa@intel.com>
+ <20220823183036.5270-8-umesh.nerlige.ramappa@intel.com>
+ <9c7b1b2f-308f-8a35-c60a-db99c2facfd0@intel.com>
+ <YxehfuwjkpHx7UlA@unerlige-ril>
+ <6831f7b6-dc54-9239-4cf0-9924ff15cc57@intel.com>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <6831f7b6-dc54-9239-4cf0-9924ff15cc57@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev]
- =?utf-8?b?4pyXIEZpLkNJLkJVSUxEOiBmYWlsdXJlIGZvciBsaWIv?=
- =?utf-8?q?igt=5Fdevice=5Fscan=3A_Retry_when_parent_pci_device_lacks_prope?=
- =?utf-8?q?rties_=28rev2=29?=
+Subject: Re: [igt-dev] [PATCH i-g-t 07/23] i915/perf: Add support for 64-bit
+ counters
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,36 +25,217 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-UmUtcmVwb3J0ZWQuDQoNCi0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQpGcm9tOiBLZW1wY3p5
-bnNraSwgWmJpZ25pZXcgPHpiaWduaWV3LmtlbXBjenluc2tpQGludGVsLmNvbT4gDQpTZW50OiBN
-b25kYXksIEF1Z3VzdCAyOSwgMjAyMiAxMjozNSBBTQ0KVG86IExhdHZhbGEsIFBldHJpIDxwZXRy
-aS5sYXR2YWxhQGludGVsLmNvbT4NCkNjOiBpZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZzsg
-VnVkdW0sIExha3NobWluYXJheWFuYSA8bGFrc2htaW5hcmF5YW5hLnZ1ZHVtQGludGVsLmNvbT4N
-ClN1YmplY3Q6IFJlOiBbaWd0LWRldl0g4pyXIEZpLkNJLkJVSUxEOiBmYWlsdXJlIGZvciBsaWIv
-aWd0X2RldmljZV9zY2FuOiBSZXRyeSB3aGVuIHBhcmVudCBwY2kgZGV2aWNlIGxhY2tzIHByb3Bl
-cnRpZXMgKHJldjIpDQoNCk9uIFdlZCwgQXVnIDI0LCAyMDIyIGF0IDEyOjU4OjU4UE0gKzAzMDAs
-IFBldHJpIExhdHZhbGEgd3JvdGU6DQo+IE9uIFdlZCwgQXVnIDI0LCAyMDIyIGF0IDA5OjM1OjI2
-QU0gKzAwMDAsIFBhdGNod29yayB3cm90ZToNCj4gPiA9PSBTZXJpZXMgRGV0YWlscyA9PQ0KPiA+
-IA0KPiA+IFNlcmllczogbGliL2lndF9kZXZpY2Vfc2NhbjogUmV0cnkgd2hlbiBwYXJlbnQgcGNp
-IGRldmljZSBsYWNrcyBwcm9wZXJ0aWVzIChyZXYyKQ0KPiA+IFVSTCAgIDogaHR0cHM6Ly9wYXRj
-aHdvcmsuZnJlZWRlc2t0b3Aub3JnL3Nlcmllcy8xMDc2NDYvDQo+ID4gU3RhdGUgOiBmYWlsdXJl
-DQo+ID4gDQo+ID4gPT0gU3VtbWFyeSA9PQ0KPiA+IA0KPiA+IElHVCBwYXRjaHNldCBidWlsZCBm
-YWlsZWQgb24gbGF0ZXN0IHN1Y2Nlc3NmdWwgYnVpbGQNCj4gPiBlMDFmZTk5ZjAwNjkyODY0Yjcw
-OTI1MzYzOGM4MDkyMzFkMWZiMzMzIGk5MTUvZ3VjOiBEaXNhYmxlIA0KPiA+IGk5MTVfcG1fcnBz
-IHdoZW4gU0xQQyBpcyBlbmFibGVkDQo+ID4gDQo+ID4gDQo+IA0KPiBTb3JyeSBmb3IgdGhpcywg
-bGliZHJtIGJ1aWxkaW5nIGNoYW5nZWQgYW5kIGV2ZXJ5dGhpbmcgZmFpbGVkIHRvIGJ1aWxkIA0K
-PiBhZnRlciB0aGF0LiBJJ2xsIGtlZXAgcG9raW5nIHRoaXMgYW5kIG90aGVyIGFmZmVjdGVkIHNl
-cmllcyB0aHJvdWdoIA0KPiB0aGUgcGlwZWxpbmUuDQoNCk9rLCBub3QgYSBwcm9ibGVtIGF0IGFs
-bC4gSSdsbCByZXNlbmQgaWYgbmVjZXNzYXJ5Lg0KDQpDSS5CQVQgYW5kIENJLklHVCBlbWFpbHMg
-ZnJvbSBwYXRjaHdvcmsgZGlkbid0IGNvbWUuIEknbSBwYXN0aW5nIGZyb20gdGhlIHBhZ2U6DQoN
-ClBvc3NpYmxlIHJlZ3Jlc3Npb25zDQoNCiAgICBpZ3RAZ2VtX2V4ZWNfcGFyYWxsZWxAY29udGV4
-dHNAcmNzMDoNCiAgICAgICAgc2hhcmQtaWNsYjogUEFTUyAtPiBJTkNPTVBMRVRFDQoNCiAgICBp
-Z3RAa21zX2N1cnNvcl9sZWdhY3lAdG9ydHVyZS1ib0BwaXBlLWI6DQogICAgICAgIHNoYXJkLXNu
-YjogUEFTUyAtPiBJTkNPTVBMRVRFDQoNCkFib3ZlIGFyZSBub3QgcmVsYXRlZCB0byB0aGUgY2hh
-bmdlLiANCg0KTWF5IEkgYXNrIGZvciB0aGUgcmV2aWV3Pw0KDQotLQ0KWmJpZ25pZXcNCg0KPiAN
-Cj4gDQo+IC0tDQo+IFBldHJpIExhdHZhbGENCg==
+On Tue, Sep 06, 2022 at 11:02:49PM +0300, Lionel Landwerlin wrote:
+>On 06/09/2022 22:37, Umesh Nerlige Ramappa wrote:
+>>On Tue, Sep 06, 2022 at 04:05:59PM +0300, Lionel Landwerlin wrote:
+>>>On 23/08/2022 21:30, Umesh Nerlige Ramappa wrote:
+>>>>Add support for 64-bit counters.
+>>>>
+>>>>Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+>>>
+>>>With the unnecessary changes removed :
+>>
+>>The noise is from minor checkpatch corrections - spaces to tabs in 
+>>the beginning of the line. I agree, it's not relevant to this patch.
+>>
+>>Do you still want me to remove them? I am okay either ways.
+>>
+>>Thanks,
+>>Umesh
+>
+>
+>I'm not familiar with checkpatch but I'm struggling to see why it 
+>would insert random changes like that.
+>
+>If you ran it on previous patches it would have produced the same 
+>isolated changes no?
+>
+>It would be best to have single commit doing coding style changes at 
+>the beginning or end of the series.
+
+I am going to drop the coding style changes here and follow that up as a 
+separate series since it's not relevant here.
+
+Thanks,
+Umesh
+>
+>
+>Thanks,
+>
+>
+>-Lionel
+>
+>
+>>
+>>>
+>>>Reviewed-by: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
+>>>
+>>>>---
+>>>> tests/i915/perf.c | 70 ++++++++++++++++++++++++++++++++++++++++++-----
+>>>> 1 file changed, 63 insertions(+), 7 deletions(-)
+>>>>
+>>>>diff --git a/tests/i915/perf.c b/tests/i915/perf.c
+>>>>index 5fd143e9..19c33324 100644
+>>>>--- a/tests/i915/perf.c
+>>>>+++ b/tests/i915/perf.c
+>>>>@@ -101,6 +101,8 @@ struct oa_format {
+>>>>     int a40_high_off; /* bytes */
+>>>>     int a40_low_off;
+>>>>     int n_a40;
+>>>>+    int a64_off;
+>>>>+    int n_a64;
+>>>>     int a_off;
+>>>>     int n_a;
+>>>>     int first_a;
+>>>>@@ -455,7 +457,7 @@ max_oa_exponent_for_freq_gt(uint64_t frequency)
+>>>> static uint64_t
+>>>> oa_exponent_to_ns(int exponent)
+>>>> {
+>>>>-       return 1000000000ULL * (2ULL << exponent) / 
+>>>>intel_perf->devinfo.timestamp_frequency;
+>>>>+    return 1000000000ULL * (2ULL << exponent) / 
+>>>>intel_perf->devinfo.timestamp_frequency;
+>>>Can't see any change on the line above.
+>>>> }
+>>>> static bool
+>>>>@@ -658,6 +660,15 @@ gen8_read_40bit_a_counter(const uint32_t *report,
+>>>>     return a40_low[a_id] | high;
+>>>> }
+>>>>+static uint64_t
+>>>>+gen12_read_64bit_a_counter(const uint32_t *report, enum 
+>>>>drm_i915_oa_format fmt, int a_id)
+>>>>+{
+>>>>+    struct oa_format format = get_oa_format(fmt);
+>>>>+    uint64_t *a64 = (uint64_t *)(((uint8_t *)report) + 
+>>>>format.a64_off);
+>>>>+
+>>>>+    return a64[a_id];
+>>>>+}
+>>>>+
+>>>> static uint64_t
+>>>> gen8_40bit_a_delta(uint64_t value0, uint64_t value1)
+>>>> {
+>>>>@@ -670,8 +681,8 @@ gen8_40bit_a_delta(uint64_t value0, uint64_t 
+>>>>value1)
+>>>> static void
+>>>> accumulate_uint32(size_t offset,
+>>>>           uint32_t *report0,
+>>>>-                  uint32_t *report1,
+>>>>-                  uint64_t *delta)
+>>>>+          uint32_t *report1,
+>>>>+          uint64_t *delta)
+>>>This hunk appears to just be noise.
+>>>> {
+>>>>     uint32_t value0 = *(uint32_t *)(((uint8_t *)report0) + offset);
+>>>>     uint32_t value1 = *(uint32_t *)(((uint8_t *)report1) + offset);
+>>>>@@ -681,10 +692,10 @@ accumulate_uint32(size_t offset,
+>>>> static void
+>>>> accumulate_uint40(int a_index,
+>>>>-                  uint32_t *report0,
+>>>>-                  uint32_t *report1,
+>>>>+          uint32_t *report0,
+>>>>+          uint32_t *report1,
+>>>>           enum drm_i915_oa_format format,
+>>>>-                  uint64_t *delta)
+>>>>+          uint64_t *delta)
+>>>
+>>>Here too
+>>>
+>>>> {
+>>>>     uint64_t value0 = gen8_read_40bit_a_counter(report0, 
+>>>>format, a_index),
+>>>>          value1 = gen8_read_40bit_a_counter(report1, format, a_index);
+>>>>@@ -692,6 +703,19 @@ accumulate_uint40(int a_index,
+>>>>     *delta += gen8_40bit_a_delta(value0, value1);
+>>>> }
+>>>>+static void
+>>>>+accumulate_uint64(int a_index,
+>>>>+          const uint32_t *report0,
+>>>>+          const uint32_t *report1,
+>>>>+          enum drm_i915_oa_format format,
+>>>>+          uint64_t *delta)
+>>>>+{
+>>>>+    uint64_t value0 = gen12_read_64bit_a_counter(report0, 
+>>>>format, a_index),
+>>>>+         value1 = gen12_read_64bit_a_counter(report1, format, 
+>>>>a_index);
+>>>>+
+>>>>+    *delta += (value1 - value0);
+>>>>+}
+>>>>+
+>>>> static void
+>>>> accumulate_reports(struct accumulator *accumulator,
+>>>>            uint32_t *start,
+>>>>@@ -717,6 +741,11 @@ accumulate_reports(struct accumulator 
+>>>>*accumulator,
+>>>>                   deltas + idx++);
+>>>>     }
+>>>>+    for (int i = 0; i < format.n_a64; i++) {
+>>>>+        accumulate_uint64(i, start, end, accumulator->format,
+>>>>+                  deltas + idx++);
+>>>>+    }
+>>>>+
+>>>>     for (int i = 0; i < format.n_a; i++) {
+>>>>         accumulate_uint32(format.a_off + 4 * i,
+>>>>                   start, end, deltas + idx++);
+>>>>@@ -747,6 +776,9 @@ accumulator_print(struct accumulator 
+>>>>*accumulator, const char *title)
+>>>>         for (int i = 0; i < format.n_a40; i++)
+>>>>             igt_debug("\tA%u = %"PRIu64"\n", i, deltas[idx++]);
+>>>>+
+>>>>+        for (int i = 0; i < format.n_a64; i++)
+>>>>+            igt_debug("\tA64_%u = %"PRIu64"\n", i, deltas[idx++]);
+>>>>     } else {
+>>>>         igt_debug("\ttime delta = %"PRIu64"\n", deltas[idx++]);
+>>>>     }
+>>>>@@ -803,7 +835,19 @@ gen8_sanity_check_test_oa_reports(const 
+>>>>uint32_t *oa_report0,
+>>>>         if (undefined_a_counters[j])
+>>>>             continue;
+>>>>-        igt_debug("A%d: delta = %"PRIu64"\n", j, delta);
+>>>>+        igt_debug("A40_%d: delta = %"PRIu64"\n", j, delta);
+>>>>+        igt_assert(delta <= max_delta);
+>>>>+    }
+>>>>+
+>>>>+    for (int j = 0; j < format.n_a64; j++) {
+>>>>+        uint64_t delta = 0;
+>>>>+
+>>>>+        accumulate_uint64(j, oa_report0, oa_report1, fmt, &delta);
+>>>>+
+>>>>+        if (undefined_a_counters[j])
+>>>>+            continue;
+>>>>+
+>>>>+        igt_debug("A64_%d: delta = %"PRIu64"\n", format.first_a 
+>>>>+ j, delta);
+>>>>         igt_assert(delta <= max_delta);
+>>>>     }
+>>>>@@ -1368,6 +1412,18 @@ print_reports(uint32_t *oa_report0, 
+>>>>uint32_t *oa_report1, int fmt)
+>>>>               j, value0, value1, delta);
+>>>>     }
+>>>>+    for (int j = 0; j < format.n_a64; j++) {
+>>>>+        uint64_t value0 = 
+>>>>gen12_read_64bit_a_counter(oa_report0, fmt, j);
+>>>>+        uint64_t value1 = 
+>>>>gen12_read_64bit_a_counter(oa_report1, fmt, j);
+>>>>+        uint64_t delta = value1 - value0;
+>>>>+
+>>>>+        if (undefined_a_counters[j])
+>>>>+            continue;
+>>>>+
+>>>>+        igt_debug("A_64%d: 1st = %"PRIu64", 2nd = %"PRIu64", 
+>>>>delta = %"PRIu64"\n",
+>>>>+              format.first_a + j, value0, value1, delta);
+>>>>+    }
+>>>>+
+>>>>     for (int j = 0; j < format.n_a; j++) {
+>>>>         uint32_t *a0 = (uint32_t *)(((uint8_t *)oa_report0) +
+>>>>                         format.a_off);
+>>>
+>>>
+>
