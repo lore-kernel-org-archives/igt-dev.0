@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A844310E61B
- for <igt-dev@lists.freedesktop.org>; Tue,  6 Sep 2022 09:53:15 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1025910E61B
+ for <igt-dev@lists.freedesktop.org>; Tue,  6 Sep 2022 09:53:17 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue,  6 Sep 2022 15:19:54 +0530
-Message-Id: <20220906095030.486152-17-bhanuprakash.modem@intel.com>
+Date: Tue,  6 Sep 2022 15:19:55 +0530
+Message-Id: <20220906095030.486152-18-bhanuprakash.modem@intel.com>
 In-Reply-To: <20220906095030.486152-1-bhanuprakash.modem@intel.com>
 References: <20220906095030.486152-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V2 16/52] tests/kms_dp_tiled_display: Add support
+Subject: [igt-dev] [i-g-t V2 17/52] tests/kms_flip_event_leak: Add support
  for Bigjoiner
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -32,20 +32,36 @@ Example:
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/kms_dp_tiled_display.c | 1 +
- 1 file changed, 1 insertion(+)
+ tests/kms_flip_event_leak.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/tests/kms_dp_tiled_display.c b/tests/kms_dp_tiled_display.c
-index 8f503e40..1ef815a0 100644
---- a/tests/kms_dp_tiled_display.c
-+++ b/tests/kms_dp_tiled_display.c
-@@ -271,6 +271,7 @@ static void setup_mode(data_t *data)
- 		igt_require(found);
- 		igt_output_override_mode(output, mode);
+diff --git a/tests/kms_flip_event_leak.c b/tests/kms_flip_event_leak.c
+index ac201293..1df2474c 100644
+--- a/tests/kms_flip_event_leak.c
++++ b/tests/kms_flip_event_leak.c
+@@ -48,6 +48,9 @@ static void test(data_t *data, enum pipe pipe, igt_output_t *output)
+ 	struct igt_fb fb[2];
+ 	int fd, ret;
+ 
++	igt_info("Using (pipe %s + %s) to run the subtest.\n",
++		 kmstest_pipe_name(pipe), igt_output_name(output));
++
+ 	/* select the pipe we want to use */
+ 	igt_output_set_pipe(output, pipe);
+ 
+@@ -102,6 +105,13 @@ igt_simple_main
+ 	igt_display_require(&data.display, data.drm_fd);
+ 
+ 	for_each_pipe_with_valid_output(&data.display, pipe, output) {
++		igt_display_reset(&data.display);
++
++		igt_output_set_pipe(output, pipe);
++		if (!igt_test_constraint(&data.display))
++			continue;
++
++		igt_output_set_pipe(output, PIPE_NONE);
+ 		test(&data, pipe, output);
+ 		valid_tests++;
  	}
-+	igt_require(igt_test_constraint(data->display));
- 	igt_display_commit_atomic(data->display, DRM_MODE_ATOMIC_ALLOW_MODESET,
- 				  NULL);
- }
 -- 
 2.35.1
