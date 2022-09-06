@@ -1,17 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2A52410E143
- for <igt-dev@lists.freedesktop.org>; Tue,  6 Sep 2022 19:37:55 +0000 (UTC)
-Date: Tue, 6 Sep 2022 12:37:34 -0700
-From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
-To: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
-Message-ID: <YxehfuwjkpHx7UlA@unerlige-ril>
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 47B4910EA76
+ for <igt-dev@lists.freedesktop.org>; Tue,  6 Sep 2022 20:02:58 +0000 (UTC)
+Message-ID: <6831f7b6-dc54-9239-4cf0-9924ff15cc57@intel.com>
+Date: Tue, 6 Sep 2022 23:02:49 +0300
+Content-Language: en-US
+To: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 References: <20220823183036.5270-1-umesh.nerlige.ramappa@intel.com>
  <20220823183036.5270-8-umesh.nerlige.ramappa@intel.com>
  <9c7b1b2f-308f-8a35-c60a-db99c2facfd0@intel.com>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Disposition: inline
-In-Reply-To: <9c7b1b2f-308f-8a35-c60a-db99c2facfd0@intel.com>
+ <YxehfuwjkpHx7UlA@unerlige-ril>
+From: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
+In-Reply-To: <YxehfuwjkpHx7UlA@unerlige-ril>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
 MIME-Version: 1.0
 Subject: Re: [igt-dev] [PATCH i-g-t 07/23] i915/perf: Add support for 64-bit
  counters
@@ -27,169 +29,204 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Tue, Sep 06, 2022 at 04:05:59PM +0300, Lionel Landwerlin wrote:
->On 23/08/2022 21:30, Umesh Nerlige Ramappa wrote:
->>Add support for 64-bit counters.
+On 06/09/2022 22:37, Umesh Nerlige Ramappa wrote:
+> On Tue, Sep 06, 2022 at 04:05:59PM +0300, Lionel Landwerlin wrote:
+>> On 23/08/2022 21:30, Umesh Nerlige Ramappa wrote:
+>>> Add support for 64-bit counters.
+>>>
+>>> Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 >>
->>Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+>> With the unnecessary changes removed :
 >
->With the unnecessary changes removed :
+> The noise is from minor checkpatch corrections - spaces to tabs in the 
+> beginning of the line. I agree, it's not relevant to this patch.
+>
+> Do you still want me to remove them? I am okay either ways.
+>
+> Thanks,
+> Umesh
 
-The noise is from minor checkpatch corrections - spaces to tabs in the 
-beginning of the line. I agree, it's not relevant to this patch.
 
-Do you still want me to remove them? I am okay either ways.
+I'm not familiar with checkpatch but I'm struggling to see why it would 
+insert random changes like that.
+
+If you ran it on previous patches it would have produced the same 
+isolated changes no?
+
+It would be best to have single commit doing coding style changes at the 
+beginning or end of the series.
+
 
 Thanks,
-Umesh
+
+
+-Lionel
+
 
 >
->Reviewed-by: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
->
->>---
->>  tests/i915/perf.c | 70 ++++++++++++++++++++++++++++++++++++++++++-----
->>  1 file changed, 63 insertions(+), 7 deletions(-)
 >>
->>diff --git a/tests/i915/perf.c b/tests/i915/perf.c
->>index 5fd143e9..19c33324 100644
->>--- a/tests/i915/perf.c
->>+++ b/tests/i915/perf.c
->>@@ -101,6 +101,8 @@ struct oa_format {
->>  	int a40_high_off; /* bytes */
->>  	int a40_low_off;
->>  	int n_a40;
->>+	int a64_off;
->>+	int n_a64;
->>  	int a_off;
->>  	int n_a;
->>  	int first_a;
->>@@ -455,7 +457,7 @@ max_oa_exponent_for_freq_gt(uint64_t frequency)
->>  static uint64_t
->>  oa_exponent_to_ns(int exponent)
->>  {
->>-       return 1000000000ULL * (2ULL << exponent) / intel_perf->devinfo.timestamp_frequency;
->>+	return 1000000000ULL * (2ULL << exponent) / intel_perf->devinfo.timestamp_frequency;
->Can't see any change on the line above.
->>  }
->>  static bool
->>@@ -658,6 +660,15 @@ gen8_read_40bit_a_counter(const uint32_t *report,
->>  	return a40_low[a_id] | high;
->>  }
->>+static uint64_t
->>+gen12_read_64bit_a_counter(const uint32_t *report, enum drm_i915_oa_format fmt, int a_id)
->>+{
->>+	struct oa_format format = get_oa_format(fmt);
->>+	uint64_t *a64 = (uint64_t *)(((uint8_t *)report) + format.a64_off);
->>+
->>+	return a64[a_id];
->>+}
->>+
->>  static uint64_t
->>  gen8_40bit_a_delta(uint64_t value0, uint64_t value1)
->>  {
->>@@ -670,8 +681,8 @@ gen8_40bit_a_delta(uint64_t value0, uint64_t value1)
->>  static void
->>  accumulate_uint32(size_t offset,
->>  		  uint32_t *report0,
->>-                  uint32_t *report1,
->>-                  uint64_t *delta)
->>+		  uint32_t *report1,
->>+		  uint64_t *delta)
->This hunk appears to just be noise.
->>  {
->>  	uint32_t value0 = *(uint32_t *)(((uint8_t *)report0) + offset);
->>  	uint32_t value1 = *(uint32_t *)(((uint8_t *)report1) + offset);
->>@@ -681,10 +692,10 @@ accumulate_uint32(size_t offset,
->>  static void
->>  accumulate_uint40(int a_index,
->>-                  uint32_t *report0,
->>-                  uint32_t *report1,
->>+		  uint32_t *report0,
->>+		  uint32_t *report1,
->>  		  enum drm_i915_oa_format format,
->>-                  uint64_t *delta)
->>+		  uint64_t *delta)
->
->Here too
->
->>  {
->>  	uint64_t value0 = gen8_read_40bit_a_counter(report0, format, a_index),
->>  		 value1 = gen8_read_40bit_a_counter(report1, format, a_index);
->>@@ -692,6 +703,19 @@ accumulate_uint40(int a_index,
->>  	*delta += gen8_40bit_a_delta(value0, value1);
->>  }
->>+static void
->>+accumulate_uint64(int a_index,
->>+		  const uint32_t *report0,
->>+		  const uint32_t *report1,
->>+		  enum drm_i915_oa_format format,
->>+		  uint64_t *delta)
->>+{
->>+	uint64_t value0 = gen12_read_64bit_a_counter(report0, format, a_index),
->>+		 value1 = gen12_read_64bit_a_counter(report1, format, a_index);
->>+
->>+	*delta += (value1 - value0);
->>+}
->>+
->>  static void
->>  accumulate_reports(struct accumulator *accumulator,
->>  		   uint32_t *start,
->>@@ -717,6 +741,11 @@ accumulate_reports(struct accumulator *accumulator,
->>  				  deltas + idx++);
->>  	}
->>+	for (int i = 0; i < format.n_a64; i++) {
->>+		accumulate_uint64(i, start, end, accumulator->format,
->>+				  deltas + idx++);
->>+	}
->>+
->>  	for (int i = 0; i < format.n_a; i++) {
->>  		accumulate_uint32(format.a_off + 4 * i,
->>  				  start, end, deltas + idx++);
->>@@ -747,6 +776,9 @@ accumulator_print(struct accumulator *accumulator, const char *title)
->>  		for (int i = 0; i < format.n_a40; i++)
->>  			igt_debug("\tA%u = %"PRIu64"\n", i, deltas[idx++]);
->>+
->>+		for (int i = 0; i < format.n_a64; i++)
->>+			igt_debug("\tA64_%u = %"PRIu64"\n", i, deltas[idx++]);
->>  	} else {
->>  		igt_debug("\ttime delta = %"PRIu64"\n", deltas[idx++]);
->>  	}
->>@@ -803,7 +835,19 @@ gen8_sanity_check_test_oa_reports(const uint32_t *oa_report0,
->>  		if (undefined_a_counters[j])
->>  			continue;
->>-		igt_debug("A%d: delta = %"PRIu64"\n", j, delta);
->>+		igt_debug("A40_%d: delta = %"PRIu64"\n", j, delta);
->>+		igt_assert(delta <= max_delta);
->>+	}
->>+
->>+	for (int j = 0; j < format.n_a64; j++) {
->>+		uint64_t delta = 0;
->>+
->>+		accumulate_uint64(j, oa_report0, oa_report1, fmt, &delta);
->>+
->>+		if (undefined_a_counters[j])
->>+			continue;
->>+
->>+		igt_debug("A64_%d: delta = %"PRIu64"\n", format.first_a + j, delta);
->>  		igt_assert(delta <= max_delta);
->>  	}
->>@@ -1368,6 +1412,18 @@ print_reports(uint32_t *oa_report0, uint32_t *oa_report1, int fmt)
->>  			  j, value0, value1, delta);
->>  	}
->>+	for (int j = 0; j < format.n_a64; j++) {
->>+		uint64_t value0 = gen12_read_64bit_a_counter(oa_report0, fmt, j);
->>+		uint64_t value1 = gen12_read_64bit_a_counter(oa_report1, fmt, j);
->>+		uint64_t delta = value1 - value0;
->>+
->>+		if (undefined_a_counters[j])
->>+			continue;
->>+
->>+		igt_debug("A_64%d: 1st = %"PRIu64", 2nd = %"PRIu64", delta = %"PRIu64"\n",
->>+			  format.first_a + j, value0, value1, delta);
->>+	}
->>+
->>  	for (int j = 0; j < format.n_a; j++) {
->>  		uint32_t *a0 = (uint32_t *)(((uint8_t *)oa_report0) +
->>  					    format.a_off);
->
->
+>> Reviewed-by: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
+>>
+>>> ---
+>>>  tests/i915/perf.c | 70 ++++++++++++++++++++++++++++++++++++++++++-----
+>>>  1 file changed, 63 insertions(+), 7 deletions(-)
+>>>
+>>> diff --git a/tests/i915/perf.c b/tests/i915/perf.c
+>>> index 5fd143e9..19c33324 100644
+>>> --- a/tests/i915/perf.c
+>>> +++ b/tests/i915/perf.c
+>>> @@ -101,6 +101,8 @@ struct oa_format {
+>>>      int a40_high_off; /* bytes */
+>>>      int a40_low_off;
+>>>      int n_a40;
+>>> +    int a64_off;
+>>> +    int n_a64;
+>>>      int a_off;
+>>>      int n_a;
+>>>      int first_a;
+>>> @@ -455,7 +457,7 @@ max_oa_exponent_for_freq_gt(uint64_t frequency)
+>>>  static uint64_t
+>>>  oa_exponent_to_ns(int exponent)
+>>>  {
+>>> -       return 1000000000ULL * (2ULL << exponent) / 
+>>> intel_perf->devinfo.timestamp_frequency;
+>>> +    return 1000000000ULL * (2ULL << exponent) / 
+>>> intel_perf->devinfo.timestamp_frequency;
+>> Can't see any change on the line above.
+>>>  }
+>>>  static bool
+>>> @@ -658,6 +660,15 @@ gen8_read_40bit_a_counter(const uint32_t *report,
+>>>      return a40_low[a_id] | high;
+>>>  }
+>>> +static uint64_t
+>>> +gen12_read_64bit_a_counter(const uint32_t *report, enum 
+>>> drm_i915_oa_format fmt, int a_id)
+>>> +{
+>>> +    struct oa_format format = get_oa_format(fmt);
+>>> +    uint64_t *a64 = (uint64_t *)(((uint8_t *)report) + 
+>>> format.a64_off);
+>>> +
+>>> +    return a64[a_id];
+>>> +}
+>>> +
+>>>  static uint64_t
+>>>  gen8_40bit_a_delta(uint64_t value0, uint64_t value1)
+>>>  {
+>>> @@ -670,8 +681,8 @@ gen8_40bit_a_delta(uint64_t value0, uint64_t 
+>>> value1)
+>>>  static void
+>>>  accumulate_uint32(size_t offset,
+>>>            uint32_t *report0,
+>>> -                  uint32_t *report1,
+>>> -                  uint64_t *delta)
+>>> +          uint32_t *report1,
+>>> +          uint64_t *delta)
+>> This hunk appears to just be noise.
+>>>  {
+>>>      uint32_t value0 = *(uint32_t *)(((uint8_t *)report0) + offset);
+>>>      uint32_t value1 = *(uint32_t *)(((uint8_t *)report1) + offset);
+>>> @@ -681,10 +692,10 @@ accumulate_uint32(size_t offset,
+>>>  static void
+>>>  accumulate_uint40(int a_index,
+>>> -                  uint32_t *report0,
+>>> -                  uint32_t *report1,
+>>> +          uint32_t *report0,
+>>> +          uint32_t *report1,
+>>>            enum drm_i915_oa_format format,
+>>> -                  uint64_t *delta)
+>>> +          uint64_t *delta)
+>>
+>> Here too
+>>
+>>>  {
+>>>      uint64_t value0 = gen8_read_40bit_a_counter(report0, format, 
+>>> a_index),
+>>>           value1 = gen8_read_40bit_a_counter(report1, format, a_index);
+>>> @@ -692,6 +703,19 @@ accumulate_uint40(int a_index,
+>>>      *delta += gen8_40bit_a_delta(value0, value1);
+>>>  }
+>>> +static void
+>>> +accumulate_uint64(int a_index,
+>>> +          const uint32_t *report0,
+>>> +          const uint32_t *report1,
+>>> +          enum drm_i915_oa_format format,
+>>> +          uint64_t *delta)
+>>> +{
+>>> +    uint64_t value0 = gen12_read_64bit_a_counter(report0, format, 
+>>> a_index),
+>>> +         value1 = gen12_read_64bit_a_counter(report1, format, 
+>>> a_index);
+>>> +
+>>> +    *delta += (value1 - value0);
+>>> +}
+>>> +
+>>>  static void
+>>>  accumulate_reports(struct accumulator *accumulator,
+>>>             uint32_t *start,
+>>> @@ -717,6 +741,11 @@ accumulate_reports(struct accumulator 
+>>> *accumulator,
+>>>                    deltas + idx++);
+>>>      }
+>>> +    for (int i = 0; i < format.n_a64; i++) {
+>>> +        accumulate_uint64(i, start, end, accumulator->format,
+>>> +                  deltas + idx++);
+>>> +    }
+>>> +
+>>>      for (int i = 0; i < format.n_a; i++) {
+>>>          accumulate_uint32(format.a_off + 4 * i,
+>>>                    start, end, deltas + idx++);
+>>> @@ -747,6 +776,9 @@ accumulator_print(struct accumulator 
+>>> *accumulator, const char *title)
+>>>          for (int i = 0; i < format.n_a40; i++)
+>>>              igt_debug("\tA%u = %"PRIu64"\n", i, deltas[idx++]);
+>>> +
+>>> +        for (int i = 0; i < format.n_a64; i++)
+>>> +            igt_debug("\tA64_%u = %"PRIu64"\n", i, deltas[idx++]);
+>>>      } else {
+>>>          igt_debug("\ttime delta = %"PRIu64"\n", deltas[idx++]);
+>>>      }
+>>> @@ -803,7 +835,19 @@ gen8_sanity_check_test_oa_reports(const 
+>>> uint32_t *oa_report0,
+>>>          if (undefined_a_counters[j])
+>>>              continue;
+>>> -        igt_debug("A%d: delta = %"PRIu64"\n", j, delta);
+>>> +        igt_debug("A40_%d: delta = %"PRIu64"\n", j, delta);
+>>> +        igt_assert(delta <= max_delta);
+>>> +    }
+>>> +
+>>> +    for (int j = 0; j < format.n_a64; j++) {
+>>> +        uint64_t delta = 0;
+>>> +
+>>> +        accumulate_uint64(j, oa_report0, oa_report1, fmt, &delta);
+>>> +
+>>> +        if (undefined_a_counters[j])
+>>> +            continue;
+>>> +
+>>> +        igt_debug("A64_%d: delta = %"PRIu64"\n", format.first_a + 
+>>> j, delta);
+>>>          igt_assert(delta <= max_delta);
+>>>      }
+>>> @@ -1368,6 +1412,18 @@ print_reports(uint32_t *oa_report0, uint32_t 
+>>> *oa_report1, int fmt)
+>>>                j, value0, value1, delta);
+>>>      }
+>>> +    for (int j = 0; j < format.n_a64; j++) {
+>>> +        uint64_t value0 = gen12_read_64bit_a_counter(oa_report0, 
+>>> fmt, j);
+>>> +        uint64_t value1 = gen12_read_64bit_a_counter(oa_report1, 
+>>> fmt, j);
+>>> +        uint64_t delta = value1 - value0;
+>>> +
+>>> +        if (undefined_a_counters[j])
+>>> +            continue;
+>>> +
+>>> +        igt_debug("A_64%d: 1st = %"PRIu64", 2nd = %"PRIu64", delta 
+>>> = %"PRIu64"\n",
+>>> +              format.first_a + j, value0, value1, delta);
+>>> +    }
+>>> +
+>>>      for (int j = 0; j < format.n_a; j++) {
+>>>          uint32_t *a0 = (uint32_t *)(((uint8_t *)oa_report0) +
+>>>                          format.a_off);
+>>
+>>
