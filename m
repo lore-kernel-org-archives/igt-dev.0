@@ -1,21 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D4D5C10E660
- for <igt-dev@lists.freedesktop.org>; Tue,  6 Sep 2022 13:13:22 +0000 (UTC)
-Message-ID: <c2ab886c-3f4b-d532-02da-5d80fc700661@intel.com>
-Date: Tue, 6 Sep 2022 16:13:11 +0300
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id F1F7010E699
+ for <igt-dev@lists.freedesktop.org>; Tue,  6 Sep 2022 14:18:10 +0000 (UTC)
+Message-ID: <764ca94c-1be9-71a1-bf2d-f494c1da1382@intel.com>
+Date: Tue, 6 Sep 2022 17:18:03 +0300
 Content-Language: en-US
 To: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>,
  <igt-dev@lists.freedesktop.org>
 References: <20220823183036.5270-1-umesh.nerlige.ramappa@intel.com>
- <20220823183036.5270-11-umesh.nerlige.ramappa@intel.com>
+ <20220823183036.5270-20-umesh.nerlige.ramappa@intel.com>
 From: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
-In-Reply-To: <20220823183036.5270-11-umesh.nerlige.ramappa@intel.com>
+In-Reply-To: <20220823183036.5270-20-umesh.nerlige.ramappa@intel.com>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t 10/23] i915/perf: Use gt in perf tests
- and lib
+Subject: Re: [igt-dev] [PATCH i-g-t 19/23] i915/perf: Wait longer for rc6
+ residency in DG2
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,149 +28,58 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
 On 23/08/2022 21:30, Umesh Nerlige Ramappa wrote:
-> Enable perf tests to use gt information for sysfs attributes.
+> igt@perf@rc6-disable waits for 50ms to check if we entered rc6. One some
+> failures this seems to take longer to enter rc6, about 100ms. Tweak the
+> test for DG2 to use a longer wait time.
 >
 > Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
-Reviewed-by: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
+
+Acked-by: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
+
 > ---
->   lib/i915/perf.c   | 36 ++++++++++++++++++++++++++++++++++--
->   tests/i915/perf.c | 27 ++++++++++++++++++++-------
->   2 files changed, 54 insertions(+), 9 deletions(-)
+>   tests/i915/perf.c | 9 ++++++---
+>   1 file changed, 6 insertions(+), 3 deletions(-)
 >
-> diff --git a/lib/i915/perf.c b/lib/i915/perf.c
-> index 7349a460..3f131aaa 100644
-> --- a/lib/i915/perf.c
-> +++ b/lib/i915/perf.c
-> @@ -409,6 +409,35 @@ open_master_sysfs_dir(int drm_fd)
->   	return sysfs;
->   }
->   
-> +typedef enum {
-> +	RPS_MIN_FREQ_MHZ,
-> +	RPS_MAX_FREQ_MHZ,
-> +
-> +	RPS_MAX_ATTR,
-> +} intel_sysfs_attr_id;
-> +
-> +static const char *intel_sysfs_attr_name[2][RPS_MAX_ATTR] =
-> +{
-> +	{
-> +		"gt_min_freq_mhz",
-> +		"gt_max_freq_mhz",
-> +	},
-> +	{
-> +		"gt/gt0/rps_min_freq_mhz",
-> +		"gt/gt0/rps_max_freq_mhz",
-> +	},
-> +};
-> +
-> +static const char *
-> +intel_sysfs_attr_id_to_name(int sysfs_dirfd, intel_sysfs_attr_id id)
-> +{
-> +	assert(id < RPS_MAX_ATTR);
-> +
-> +	return !faccessat(sysfs_dirfd, "gt", O_RDONLY, 0) ?
-> +		intel_sysfs_attr_name[1][id] :
-> +		intel_sysfs_attr_name[0][id];
-> +}
-> +
->   struct intel_perf *
->   intel_perf_for_fd(int drm_fd)
->   {
-> @@ -424,8 +453,11 @@ intel_perf_for_fd(int drm_fd)
->   	if (sysfs_dir_fd < 0)
->   		return NULL;
->   
-> -	if (!read_sysfs(sysfs_dir_fd, "gt_min_freq_mhz", &gt_min_freq) ||
-> -	    !read_sysfs(sysfs_dir_fd, "gt_max_freq_mhz", &gt_max_freq)) {
-> +#define read_sysfs_rps(fd, id, value) \
-> +	read_sysfs(fd, intel_sysfs_attr_id_to_name(fd, id), value)
-> +
-> +	if (!read_sysfs_rps(sysfs_dir_fd, RPS_MIN_FREQ_MHZ, &gt_min_freq) ||
-> +	    !read_sysfs_rps(sysfs_dir_fd, RPS_MAX_FREQ_MHZ, &gt_max_freq)) {
->   		close(sysfs_dir_fd);
->   		return NULL;
->   	}
 > diff --git a/tests/i915/perf.c b/tests/i915/perf.c
-> index c120c898..89aa4931 100644
+> index 6951735b..3ddfe587 100644
 > --- a/tests/i915/perf.c
 > +++ b/tests/i915/perf.c
-> @@ -347,11 +347,11 @@ try_sysfs_read_u64(const char *path, uint64_t *val)
->   }
->   
->   static unsigned long
-> -sysfs_read(const char *path)
-> +sysfs_read(enum i915_attr_id id)
->   {
->   	unsigned long value;
->   
-> -	igt_assert(igt_sysfs_scanf(sysfs, path, "%lu", &value) == 1);
-> +	igt_assert(igt_sysfs_rps_scanf(sysfs, id, "%lu", &value) == 1);
->   
->   	return value;
->   }
-> @@ -4234,7 +4234,7 @@ gen12_test_single_ctx_render_target_writes_a_counter(void)
->   
->   static unsigned long rc6_residency_ms(void)
->   {
-> -	return sysfs_read("power/rc6_residency_ms");
-> +	return sysfs_read(RC6_RESIDENCY_MS);
->   }
->   
->   static void
-> @@ -4257,7 +4257,7 @@ test_rc6_disable(void)
+> @@ -4441,7 +4441,10 @@ test_rc6_disable(void)
+>   		.properties_ptr = to_user_pointer(properties),
+>   	};
 >   	unsigned long rc6_start, rc6_end, rc6_enabled;
+> +	uint32_t rc6_duration;
 >   
+> +	/* On DG2, we wait longer to enter rc6 */
+> +	rc6_duration = IS_DG2(devid) ? 100000 : 50000;
 >   	rc6_enabled = 0;
-> -	igt_sysfs_scanf(sysfs, "power/rc6_enable", "%lu", &rc6_enabled);
-> +	igt_sysfs_rps_scanf(sysfs, RC6_ENABLE, "%lu", &rc6_enabled);
+>   	igt_sysfs_rps_scanf(sysfs, RC6_ENABLE, "%lu", &rc6_enabled);
 >   	igt_require(rc6_enabled);
->   
+> @@ -4449,7 +4452,7 @@ test_rc6_disable(void)
 >   	/* Verify rc6 is functional by measuring residency while idle */
-> @@ -4894,6 +4894,19 @@ done:
->   	return ref_count;
+>   	gem_quiescent_gpu(drm_fd);
+>   	rc6_start = rc6_residency_ms();
+> -	usleep(50000);
+> +	usleep(rc6_duration);
+>   	rc6_end = rc6_residency_ms();
+>   	igt_require(rc6_end != rc6_start);
+>   
+> @@ -4457,7 +4460,7 @@ test_rc6_disable(void)
+>   	stream_fd = __perf_open(drm_fd, &param, false);
+>   
+>   	rc6_start = rc6_residency_ms();
+> -	usleep(50000);
+> +	usleep(rc6_duration);
+>   	rc6_end = rc6_residency_ms();
+>   	igt_assert_eq(rc6_end - rc6_start, 0);
+>   
+> @@ -4466,7 +4469,7 @@ test_rc6_disable(void)
+>   
+>   	/* But once OA is closed, we expect the device to sleep again */
+>   	rc6_start = rc6_residency_ms();
+> -	usleep(50000);
+> +	usleep(rc6_duration);
+>   	rc6_end = rc6_residency_ms();
+>   	igt_assert_neq(rc6_end - rc6_start, 0);
 >   }
->   
-> +static int perf_sysfs_open(int i915)
-> +{
-> +	int dirfd, gt;
-> +
-> +	/* use the first available sysfs interface */
-> +	for_each_sysfs_gt_dirfd(i915, dirfd, gt)
-> +		break;
-> +
-> +	igt_assert(dirfd != -1);
-> +
-> +	return dirfd;
-> +}
-> +
->   /* check that an open i915 perf stream holds a reference on the drm i915 module
->    * including in the corner case where the original drm fd has been closed.
->    */
-> @@ -4929,7 +4942,7 @@ test_i915_ref_count(void)
->   	drm_fd = __drm_open_driver(DRIVER_INTEL);
->   	igt_require_intel(drm_fd);
->   	devid = intel_get_drm_devid(drm_fd);
-> -	sysfs = igt_sysfs_open(drm_fd);
-> +	sysfs = perf_sysfs_open(drm_fd);
->   
->   	/* Note: these global variables are only initialized after calling
->   	 * init_sys_info()...
-> @@ -5031,14 +5044,14 @@ igt_main
->   		igt_require_gem(drm_fd);
->   
->   		devid = intel_get_drm_devid(drm_fd);
-> -		sysfs = igt_sysfs_open(drm_fd);
-> +		sysfs = perf_sysfs_open(drm_fd);
->   
->   		igt_require(init_sys_info());
->   
->   		write_u64_file("/proc/sys/dev/i915/perf_stream_paranoid", 1);
->   		write_u64_file("/proc/sys/dev/i915/oa_max_sample_rate", 100000);
->   
-> -		gt_max_freq_mhz = sysfs_read("gt_boost_freq_mhz");
-> +		gt_max_freq_mhz = sysfs_read(RPS_RP0_FREQ_MHZ);
->   
->   		render_copy = igt_get_render_copyfunc(devid);
->   		igt_require_f(render_copy, "no render-copy function\n");
 
