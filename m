@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1BA4110E614
- for <igt-dev@lists.freedesktop.org>; Tue,  6 Sep 2022 09:53:42 +0000 (UTC)
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 70D7E10E617
+ for <igt-dev@lists.freedesktop.org>; Tue,  6 Sep 2022 09:53:32 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue,  6 Sep 2022 15:20:11 +0530
-Message-Id: <20220906095030.486152-34-bhanuprakash.modem@intel.com>
+Date: Tue,  6 Sep 2022 15:20:06 +0530
+Message-Id: <20220906095030.486152-29-bhanuprakash.modem@intel.com>
 In-Reply-To: <20220906095030.486152-1-bhanuprakash.modem@intel.com>
 References: <20220906095030.486152-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V2 33/52] tests/kms_sequence: Add support for
+Subject: [igt-dev] [i-g-t V2 28/52] tests/kms_prime: Add support for
  Bigjoiner
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -32,25 +32,34 @@ Example:
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/kms_sequence.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ tests/kms_prime.c | 11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
-diff --git a/tests/kms_sequence.c b/tests/kms_sequence.c
-index 1655d7d1..e6442e8e 100644
---- a/tests/kms_sequence.c
-+++ b/tests/kms_sequence.c
-@@ -285,6 +285,12 @@ igt_main
- 				     "drmCrtcQueueSequence");
- 			igt_subtest_with_dynamic_f("%s-%s", f->name, m->name) {
- 				for_each_pipe_with_valid_output(&data.display, p, output) {
-+					igt_display_reset(&data.display);
+diff --git a/tests/kms_prime.c b/tests/kms_prime.c
+index 3df690e0..a2a7ce1f 100644
+--- a/tests/kms_prime.c
++++ b/tests/kms_prime.c
+@@ -89,14 +89,17 @@ static igt_output_t *setup_display(int importer_fd, igt_display_t *display,
+ 	bool found = false;
+ 
+ 	for_each_pipe_with_valid_output(display, *pipe, output) {
+-		found = true;
+-		break;
++		igt_display_reset(display);
 +
-+					igt_output_set_pipe(output, p);
-+					if (!igt_test_constraint(&data.display))
-+						continue;
-+
- 					igt_dynamic_f("%s-pipe-%s", igt_output_name(output), kmstest_pipe_name(p)) {
- 						data.pipe = p;
- 						data.output = output;
++		igt_output_set_pipe(output, *pipe);
++		if (igt_test_constraint(display)) {
++			found = true;
++			break;
++		}
+ 	}
+ 
+ 	igt_require_f(found, "No valid connector/pipe found\n");
+ 
+-	igt_display_reset(display);
+-	igt_output_set_pipe(output, *pipe);
+ 	return output;
+ }
+ 
 -- 
 2.35.1
