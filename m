@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1206810E614
- for <igt-dev@lists.freedesktop.org>; Tue,  6 Sep 2022 09:53:07 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A844310E61B
+ for <igt-dev@lists.freedesktop.org>; Tue,  6 Sep 2022 09:53:15 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue,  6 Sep 2022 15:19:48 +0530
-Message-Id: <20220906095030.486152-11-bhanuprakash.modem@intel.com>
+Date: Tue,  6 Sep 2022 15:19:54 +0530
+Message-Id: <20220906095030.486152-17-bhanuprakash.modem@intel.com>
 In-Reply-To: <20220906095030.486152-1-bhanuprakash.modem@intel.com>
 References: <20220906095030.486152-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V2 10/52] tests/kms_concurrent: Add support for
- Bigjoiner
+Subject: [igt-dev] [i-g-t V2 16/52] tests/kms_dp_tiled_display: Add support
+ for Bigjoiner
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -32,31 +32,20 @@ Example:
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/kms_concurrent.c | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ tests/kms_dp_tiled_display.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/tests/kms_concurrent.c b/tests/kms_concurrent.c
-index 6f8ffd4a..a6b9189e 100644
---- a/tests/kms_concurrent.c
-+++ b/tests/kms_concurrent.c
-@@ -330,9 +330,17 @@ run_tests_for_pipe(data_t *data, enum pipe pipe)
- 	igt_describe("Test atomic mode setting concurrently with multiple planes and screen "
- 		     "resolution.");
- 	igt_subtest_with_dynamic_f("pipe-%s", kmstest_pipe_name(pipe)) {
--		for_each_valid_output_on_pipe(&data->display, pipe, output)
-+		for_each_valid_output_on_pipe(&data->display, pipe, output) {
-+			igt_display_reset(&data->display);
-+
-+			igt_output_set_pipe(output, pipe);
-+			if (!igt_test_constraint(&data->display))
-+				continue;
-+
-+			igt_output_set_pipe(output, PIPE_NONE);
- 			igt_dynamic_f("%s", igt_output_name(output))
- 				run_test(data, pipe, output);
-+		}
+diff --git a/tests/kms_dp_tiled_display.c b/tests/kms_dp_tiled_display.c
+index 8f503e40..1ef815a0 100644
+--- a/tests/kms_dp_tiled_display.c
++++ b/tests/kms_dp_tiled_display.c
+@@ -271,6 +271,7 @@ static void setup_mode(data_t *data)
+ 		igt_require(found);
+ 		igt_output_override_mode(output, mode);
  	}
++	igt_require(igt_test_constraint(data->display));
+ 	igt_display_commit_atomic(data->display, DRM_MODE_ATOMIC_ALLOW_MODESET,
+ 				  NULL);
  }
- 
 -- 
 2.35.1
