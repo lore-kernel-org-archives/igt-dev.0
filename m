@@ -1,21 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7907110E5A8
- for <igt-dev@lists.freedesktop.org>; Tue,  6 Sep 2022 14:17:24 +0000 (UTC)
-Message-ID: <06cb1b04-cbc0-c109-788e-7f2bf2e3ce21@intel.com>
-Date: Tue, 6 Sep 2022 17:17:14 +0300
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D9F3110E68E
+ for <igt-dev@lists.freedesktop.org>; Tue,  6 Sep 2022 14:22:04 +0000 (UTC)
+Message-ID: <56546b30-c922-380f-7b07-b4039785bffb@intel.com>
+Date: Tue, 6 Sep 2022 17:21:55 +0300
 Content-Language: en-US
 To: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>,
  <igt-dev@lists.freedesktop.org>
 References: <20220823183036.5270-1-umesh.nerlige.ramappa@intel.com>
- <20220823183036.5270-19-umesh.nerlige.ramappa@intel.com>
+ <20220823183036.5270-21-umesh.nerlige.ramappa@intel.com>
 From: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
-In-Reply-To: <20220823183036.5270-19-umesh.nerlige.ramappa@intel.com>
+In-Reply-To: <20220823183036.5270-21-umesh.nerlige.ramappa@intel.com>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t 18/23] i915/perf: Fix DG2 A0 report
- header
+Subject: Re: [igt-dev] [PATCH i-g-t 20/23] lib/i915/perf: implement report
+ accumulation for new format
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,87 +28,58 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
 On 23/08/2022 21:30, Umesh Nerlige Ramappa wrote:
-> Timestamp is still 32 bits in DG2 A0. Fix that. Specify variants of DG2
-> that have the OA format header bug
+> From: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
 >
-> Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+> Available on XEHPSDV+.
+>
+> Signed-off-by: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
+Reviewed-by: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
 > ---
->   tests/i915/perf.c | 45 ++++++++++++++++++++++++++++++++++++++++++++-
->   1 file changed, 44 insertions(+), 1 deletion(-)
+>   lib/i915/perf.c | 33 +++++++++++++++++++++++++++++++++
+>   1 file changed, 33 insertions(+)
 >
-> diff --git a/tests/i915/perf.c b/tests/i915/perf.c
-> index 52de5d38..6951735b 100644
-> --- a/tests/i915/perf.c
-> +++ b/tests/i915/perf.c
-> @@ -40,6 +40,7 @@
+> diff --git a/lib/i915/perf.c b/lib/i915/perf.c
+> index 2f24cbd8..d004313f 100644
+> --- a/lib/i915/perf.c
+> +++ b/lib/i915/perf.c
+> @@ -676,6 +676,39 @@ void intel_perf_accumulate_reports(struct intel_perf_accumulator *acc,
+>   	memset(acc, 0, sizeof(*acc));
 >   
->   #include "i915/gem.h"
->   #include "i915/perf.h"
-> +#include "i915_pciids.h"
->   #include "igt.h"
->   #include "igt_perf.h"
->   #include "igt_sysfs.h"
-> @@ -503,6 +504,47 @@ cs_timestamp_frequency(int fd)
->   	return value;
->   }
->   
-> +/*
-> + * Hacky ways until IGT is fully aware of steppings:
-> + *
-> + * WA is permanent for G11. For other DG2s, bug is fixed from B0 onwards.
-> + * Steps A0 and A1 correspond to 0 and 1 revid values.
-
-
-Do you have the Wa number for reference?
-
-
-> + */
-> +struct perf_dev_info {
-> +	bool is_dg2_g11;
-> +};
+>   	switch (oa_format) {
+> +	case I915_OA_FORMAT_A24u40_A14u32_B8_C8:
+> +		accumulate_uint32(start + 1, end + 1, deltas + idx++); /* timestamp */
+> +		accumulate_uint32(start + 3, end + 3, deltas + idx++); /* clock */
 > +
-> +static const struct perf_dev_info dg2_g11_info = {
-> +	.is_dg2_g11 = true,
-> +};
+> +		/* 4x 32bit A0-3 counters... */
+> +		for (i = 0; i < 4; i++)
+> +			accumulate_uint32(start + 4 + i, end + 4 + i, deltas + idx++);
 > +
-> +static const struct pci_id_match perf_dev_match[] = {
-> +	INTEL_DG2_G11_IDS(&dg2_g11_info),
-> +};
+> +		/* 20x 40bit A4-23 counters... */
+> +		for (i = 0; i < 20; i++)
+> +			accumulate_uint40(i + 4, start, end, deltas + idx++);
 > +
-> +static const struct perf_dev_info *__dev_info(uint32_t device_id)
-> +{
-> +	static const struct perf_dev_info *cache;
-> +	static int _iter;
+> +		/* 4x 32bit A24-27 counters... */
+> +		for (i = 0; i < 4; i++)
+> +			accumulate_uint32(start + 28 + i, end + 28 + i, deltas + idx++);
 > +
-> +	if (_iter)
-> +		goto out;
+> +		/* 4x 40bit A28-31 counters... */
+> +		for (i = 0; i < 4; i++)
+> +			accumulate_uint40(i + 28, start, end, deltas + idx++);
 > +
-> +	for (_iter = 0; _iter < ARRAY_SIZE(perf_dev_match); _iter++)
-> +		if (device_id == perf_dev_match[_iter].device_id)
-> +			cache = (void *) perf_dev_match[_iter].match_data;
+> +		/* 5x 32bit A32-36 counters... */
+> +		for (i = 0; i < 5; i++)
+> +			accumulate_uint32(start + 36 + i, end + 36 + i, deltas + idx++);
 > +
-> +out:
-> +	return cache;
-> +}
+> +		/* 1x 32bit A37 counter... */
+> +		accumulate_uint32(start + 46, end + 46, deltas + idx++);
 > +
-> +#define IS_DG2_G11(__d) (__dev_info(__d) ? __dev_info(__d)->is_dg2_g11 : false)
-> +#define IS_DG2_A0(__d) (IS_DG2(__d) && (intel_perf->devinfo.revision == 0))
-> +#define IS_DG2_A1(__d) (IS_DG2(__d) && (intel_perf->devinfo.revision == 1))
+> +		/* 8x 32bit B counters + 8x 32bit C counters... */
+> +		for (i = 0; i < 16; i++)
+> +			accumulate_uint32(start + 48 + i, end + 48 + i, deltas + idx++);
+> +		break;
 > +
-> +#define HAS_OA_FORMAT_64BIT_HDR_BUG(__d) \
-> +	(IS_DG2_G11(__d) || IS_DG2_A0(__d) || IS_DG2_A1(__d))
-> +
->   static uint64_t
->   cs_timebase_scale(uint32_t u32_delta)
->   {
-> @@ -514,7 +556,8 @@ oa_timestamp(const uint32_t *report, enum drm_i915_oa_format format)
->   {
->   	struct oa_format fmt = get_oa_format(format);
->   
-> -	return fmt.report_hdr_64bit ? *(uint64_t *)&report[2] : report[1];
-> +	return fmt.report_hdr_64bit && !HAS_OA_FORMAT_64BIT_HDR_BUG(devid) ?
-> +		*(uint64_t *)&report[2] : report[1];
->   }
->   
->   static uint64_t
+> +	case I915_OAR_FORMAT_A32u40_A4u32_B8_C8:
+>   	case I915_OA_FORMAT_A32u40_A4u32_B8_C8:
+>   		accumulate_uint32(start + 1, end + 1, deltas + idx++); /* timestamp */
+>   		accumulate_uint32(start + 3, end + 3, deltas + idx++); /* clock */
 
