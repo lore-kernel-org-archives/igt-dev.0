@@ -1,17 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AD6CC10E614
- for <igt-dev@lists.freedesktop.org>; Tue,  6 Sep 2022 09:53:40 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7437710E614
+ for <igt-dev@lists.freedesktop.org>; Tue,  6 Sep 2022 09:53:46 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue,  6 Sep 2022 15:20:09 +0530
-Message-Id: <20220906095030.486152-32-bhanuprakash.modem@intel.com>
+Date: Tue,  6 Sep 2022 15:20:14 +0530
+Message-Id: <20220906095030.486152-37-bhanuprakash.modem@intel.com>
 In-Reply-To: <20220906095030.486152-1-bhanuprakash.modem@intel.com>
 References: <20220906095030.486152-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V2 31/52] tests/kms_rotation_crc: Add support for
- Bigjoiner
+Subject: [igt-dev] [i-g-t V2 36/52] tests/kms_vrr: Add support for Bigjoiner
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -32,90 +31,25 @@ Example:
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/kms_rotation_crc.c | 25 ++++++++++++++++++++++++-
- 1 file changed, 24 insertions(+), 1 deletion(-)
+ tests/kms_vrr.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/tests/kms_rotation_crc.c b/tests/kms_rotation_crc.c
-index 50869a08..52551c06 100644
---- a/tests/kms_rotation_crc.c
-+++ b/tests/kms_rotation_crc.c
-@@ -198,6 +198,8 @@ static void prepare_crtc(data_t *data, igt_output_t *output, enum pipe pipe,
- 	cleanup_crtc(data);
+diff --git a/tests/kms_vrr.c b/tests/kms_vrr.c
+index 8976d4a6..4d7c771d 100644
+--- a/tests/kms_vrr.c
++++ b/tests/kms_vrr.c
+@@ -444,6 +444,12 @@ run_vrr_test(data_t *data, test_t test, uint32_t flags)
  
- 	igt_output_set_pipe(output, pipe);
-+	igt_require(igt_test_constraint(display));
+ 		for_each_pipe(&data->display, pipe) {
+ 			if (igt_pipe_connector_valid(pipe, output)) {
++				igt_display_reset(&data->display);
 +
- 	igt_plane_set_rotation(plane, IGT_ROTATION_0);
- 
- 	/* create the pipe_crc object for this pipe */
-@@ -461,6 +463,7 @@ static void test_plane_rotation(data_t *data, int plane_type, bool test_bad_form
- 	igt_output_t *output;
- 	enum pipe pipe;
- 	int pipe_count = 0, connected_outputs = 0;
-+	bool found = false;
- 
- 	if (is_amdgpu_device(data->gfx_fd))
- 		igt_require(plane_type != DRM_PLANE_TYPE_OVERLAY &&
-@@ -478,6 +481,13 @@ static void test_plane_rotation(data_t *data, int plane_type, bool test_bad_form
- 		igt_plane_t *plane;
- 		int i, j, c;
- 
-+		igt_display_reset(display);
++				igt_output_set_pipe(output, pipe);
++				if (!igt_test_constraint(&data->display))
++					continue;
 +
-+		igt_output_set_pipe(output, pipe);
-+		if (!igt_test_constraint(display))
-+			continue;
-+
-+		found = true;
- 		mode = igt_output_get_mode(output);
- 
- 		/*
-@@ -568,6 +578,7 @@ static void test_plane_rotation(data_t *data, int plane_type, bool test_bad_form
- 			igt_pipe_crc_stop(data->pipe_crc);
- 		}
- 	}
-+	igt_require_f(found, "No valid pipe/output combo found.\n");
- }
- 
- typedef struct {
-@@ -677,6 +688,7 @@ static void test_multi_plane_rotation(data_t *data, enum pipe pipe)
- 	bool have_crc; // flag if can use previously logged crc for comparison
- 	igt_crc_t crclog[16] = {}; //4 * 4 rotation crc storage for packed formats
- 	char *str1, *str2; // for debug printouts
-+	bool found = false;
- 
- 	/*
- 	 * These are those modes which are tested. For testing feel interesting
-@@ -706,11 +718,20 @@ static void test_multi_plane_rotation(data_t *data, enum pipe pipe)
- 	{IGT_ROTATION_270, .2f, .4f, I915_FORMAT_MOD_Yf_TILED },
- 	};
- 
-+	igt_display_require_output(display);
-+
- 	for_each_valid_output_on_pipe(display, pipe, output) {
- 		int i, j, k, l, flipsw, fliphw;
-+
-+		igt_display_reset(display);
-+
- 		igt_output_set_pipe(output, pipe);
-+		if (!igt_test_constraint(display))
-+			continue;
-+
-+		found = true;
-+
- 		mode = igt_output_get_mode(output);
--		igt_display_require_output(display);
- 		igt_display_commit2(display, COMMIT_ATOMIC);
- 
- 		used_w = TEST_WIDTH(mode);
-@@ -890,6 +911,8 @@ static void test_multi_plane_rotation(data_t *data, enum pipe pipe)
- 			igt_remove_fb(data->gfx_fd, &planeconfigs[c].fbs[d][MULTIPLANE_ROTATED]);
- 		}
- 	}
-+
-+	igt_require_f(found, "No valid pipe/output combo found.\n");
- }
- 
- static void test_plane_rotation_exhaust_fences(data_t *data,
+ 				igt_dynamic_f("pipe-%s-%s",
+ 					      kmstest_pipe_name(pipe), output->name)
+ 					test(data, pipe, output, flags);
 -- 
 2.35.1
