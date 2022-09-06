@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 094E410E60E
- for <igt-dev@lists.freedesktop.org>; Tue,  6 Sep 2022 09:53:58 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 83B7C10E625
+ for <igt-dev@lists.freedesktop.org>; Tue,  6 Sep 2022 09:54:10 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue,  6 Sep 2022 15:20:22 +0530
-Message-Id: <20220906095030.486152-45-bhanuprakash.modem@intel.com>
+Date: Tue,  6 Sep 2022 15:20:30 +0530
+Message-Id: <20220906095030.486152-53-bhanuprakash.modem@intel.com>
 In-Reply-To: <20220906095030.486152-1-bhanuprakash.modem@intel.com>
 References: <20220906095030.486152-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V2 44/52] tests/i915/kms_flip_scaled_crc: Add
- support for Bigjoiner
+Subject: [igt-dev] [i-g-t V2 52/52] tests/i915/kms_pwrite_crc: Add support
+ for Bigjoiner
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -32,40 +32,33 @@ Example:
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/i915/kms_flip_scaled_crc.c | 13 ++++++++++++-
- 1 file changed, 12 insertions(+), 1 deletion(-)
+ tests/i915/kms_pwrite_crc.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/tests/i915/kms_flip_scaled_crc.c b/tests/i915/kms_flip_scaled_crc.c
-index 764eb70f..bc9d8cb4 100644
---- a/tests/i915/kms_flip_scaled_crc.c
-+++ b/tests/i915/kms_flip_scaled_crc.c
-@@ -648,8 +648,13 @@ igt_main
- 			for_each_pipe(&data.display, pipe) {
- 				bool found = false;
- 				for_each_valid_output_on_pipe(&data.display, pipe, output) {
-+					igt_display_reset(&data.display);
+diff --git a/tests/i915/kms_pwrite_crc.c b/tests/i915/kms_pwrite_crc.c
+index 584e6a19..cc24efbf 100644
+--- a/tests/i915/kms_pwrite_crc.c
++++ b/tests/i915/kms_pwrite_crc.c
+@@ -110,6 +110,7 @@ static void prepare_crtc(data_t *data)
+ 	igt_output_t *output = data->output;
+ 	drmModeModeInfo *mode;
+ 
++	igt_display_reset(display);
+ 	/* select the pipe we want to use */
+ 	igt_output_set_pipe(output, data->pipe);
+ 
+@@ -160,6 +161,12 @@ static void run_test(data_t *data)
+ 	enum pipe pipe;
+ 
+ 	for_each_pipe_with_valid_output(display, pipe, output) {
++		igt_display_reset(display);
 +
- 					modetoset = find_mode(&data, output);
--					if (modetoset) {
-+					igt_output_set_pipe(output, pipe);
-+					igt_output_override_mode(output, modetoset);
++		igt_output_set_pipe(output, data->pipe);
++		if (!igt_test_constraint(display))
++			continue;
 +
-+					if (modetoset && igt_test_constraint(&data.display)) {
- 						found = true;
- 						igt_dynamic_f("pipe-%s-valid-mode", kmstest_pipe_name(pipe))
- 							run_tests(&data, index, pipe, output, modetoset);
-@@ -658,6 +663,12 @@ igt_main
- 				}
- 				if (!found) {
- 					for_each_valid_output_on_pipe(&data.display, pipe, output) {
-+						igt_display_reset(&data.display);
-+
-+						igt_output_set_pipe(output, pipe);
-+						if (!igt_test_constraint(&data.display))
-+							continue;
-+
- 						igt_dynamic_f("pipe-%s-default-mode", kmstest_pipe_name(pipe))
- 							run_tests(&data, index, pipe, output, modetoset);
- 					}
+ 		data->output = output;
+ 		data->pipe = pipe;
+ 
 -- 
 2.35.1
