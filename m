@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id F307F10E61D
- for <igt-dev@lists.freedesktop.org>; Tue,  6 Sep 2022 09:53:59 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 094E410E60E
+ for <igt-dev@lists.freedesktop.org>; Tue,  6 Sep 2022 09:53:58 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue,  6 Sep 2022 15:20:23 +0530
-Message-Id: <20220906095030.486152-46-bhanuprakash.modem@intel.com>
+Date: Tue,  6 Sep 2022 15:20:22 +0530
+Message-Id: <20220906095030.486152-45-bhanuprakash.modem@intel.com>
 In-Reply-To: <20220906095030.486152-1-bhanuprakash.modem@intel.com>
 References: <20220906095030.486152-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V2 45/52] tests/i915/kms_flip_tiling: Add support
- for Bigjoiner
+Subject: [igt-dev] [i-g-t V2 44/52] tests/i915/kms_flip_scaled_crc: Add
+ support for Bigjoiner
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -32,35 +32,40 @@ Example:
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/i915/kms_flip_tiling.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ tests/i915/kms_flip_scaled_crc.c | 13 ++++++++++++-
+ 1 file changed, 12 insertions(+), 1 deletion(-)
 
-diff --git a/tests/i915/kms_flip_tiling.c b/tests/i915/kms_flip_tiling.c
-index ba9ff46e..8831245f 100644
---- a/tests/i915/kms_flip_tiling.c
-+++ b/tests/i915/kms_flip_tiling.c
-@@ -78,6 +78,9 @@ test_flip_tiling(data_t *data, enum pipe pipe, igt_output_t *output, uint64_t mo
- 	igt_crc_t reference_crc, crc;
- 	int fb_id, ret;
- 
-+	igt_info("Using (pipe %s + %s) to run the subtest.\n",
-+		 kmstest_pipe_name(pipe), igt_output_name(output));
+diff --git a/tests/i915/kms_flip_scaled_crc.c b/tests/i915/kms_flip_scaled_crc.c
+index 764eb70f..bc9d8cb4 100644
+--- a/tests/i915/kms_flip_scaled_crc.c
++++ b/tests/i915/kms_flip_scaled_crc.c
+@@ -648,8 +648,13 @@ igt_main
+ 			for_each_pipe(&data.display, pipe) {
+ 				bool found = false;
+ 				for_each_valid_output_on_pipe(&data.display, pipe, output) {
++					igt_display_reset(&data.display);
 +
- 	memcpy(&data->old_fb, &data->fb, sizeof(data->fb));
- 
- 	mode = igt_output_get_mode(output);
-@@ -194,8 +197,12 @@ igt_main
- 		for_each_pipe_with_valid_output(&data.display, pipe, output) {
- 			igt_plane_t *plane;
- 
-+			igt_display_reset(&data.display);
- 			pipe_crc_free(&data);
+ 					modetoset = find_mode(&data, output);
+-					if (modetoset) {
++					igt_output_set_pipe(output, pipe);
++					igt_output_override_mode(output, modetoset);
 +
- 			igt_output_set_pipe(output, pipe);
-+			if (!igt_test_constraint(&data.display))
-+				continue;
- 
- 			plane = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
- 
++					if (modetoset && igt_test_constraint(&data.display)) {
+ 						found = true;
+ 						igt_dynamic_f("pipe-%s-valid-mode", kmstest_pipe_name(pipe))
+ 							run_tests(&data, index, pipe, output, modetoset);
+@@ -658,6 +663,12 @@ igt_main
+ 				}
+ 				if (!found) {
+ 					for_each_valid_output_on_pipe(&data.display, pipe, output) {
++						igt_display_reset(&data.display);
++
++						igt_output_set_pipe(output, pipe);
++						if (!igt_test_constraint(&data.display))
++							continue;
++
+ 						igt_dynamic_f("pipe-%s-default-mode", kmstest_pipe_name(pipe))
+ 							run_tests(&data, index, pipe, output, modetoset);
+ 					}
 -- 
 2.35.1
