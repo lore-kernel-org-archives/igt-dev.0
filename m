@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DDE7E10E620
- for <igt-dev@lists.freedesktop.org>; Tue,  6 Sep 2022 09:53:40 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0F97A10E61D
+ for <igt-dev@lists.freedesktop.org>; Tue,  6 Sep 2022 09:54:06 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue,  6 Sep 2022 15:20:10 +0530
-Message-Id: <20220906095030.486152-33-bhanuprakash.modem@intel.com>
+Date: Tue,  6 Sep 2022 15:20:27 +0530
+Message-Id: <20220906095030.486152-50-bhanuprakash.modem@intel.com>
 In-Reply-To: <20220906095030.486152-1-bhanuprakash.modem@intel.com>
 References: <20220906095030.486152-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V2 32/52] tests/kms_scaling_modes: Add support for
+Subject: [igt-dev] [i-g-t V2 49/52] tests/i915/kms_psr2_su: Add support for
  Bigjoiner
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -32,32 +32,34 @@ Example:
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/kms_scaling_modes.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ tests/i915/kms_psr2_su.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/tests/kms_scaling_modes.c b/tests/kms_scaling_modes.c
-index 8e80189a..a0b268ae 100644
---- a/tests/kms_scaling_modes.c
-+++ b/tests/kms_scaling_modes.c
-@@ -93,13 +93,17 @@ static void test_scaling_mode(data_t *data, uint32_t flags)
- 	enum pipe pipe;
- 
- 	for_each_pipe_with_valid_output(display, pipe, output) {
-+		igt_display_reset(display);
-+
- 		if (!has_scaling_mode(output))
+diff --git a/tests/i915/kms_psr2_su.c b/tests/i915/kms_psr2_su.c
+index caccf713..b8247e25 100644
+--- a/tests/i915/kms_psr2_su.c
++++ b/tests/i915/kms_psr2_su.c
+@@ -104,7 +104,11 @@ static void setup_output(data_t *data)
+ 		if (c->connector_type != DRM_MODE_CONNECTOR_eDP)
  			continue;
  
-+		igt_output_set_pipe(output, pipe);
++		igt_display_reset(display);
+ 		igt_output_set_pipe(output, pipe);
 +		if (!igt_test_constraint(display))
 +			continue;
 +
- 		igt_dynamic_f("%s-pipe-%s", output->name, kmstest_pipe_name(pipe))
- 			test_scaling_mode_on_output(display, pipe, output, flags);
--
--		igt_display_reset(display);
- 	}
+ 		data->output = output;
+ 		data->mode = igt_output_get_mode(output);
+ 
+@@ -116,6 +120,9 @@ static void display_init(data_t *data)
+ {
+ 	igt_display_require(&data->display, data->drm_fd);
+ 	setup_output(data);
++
++	igt_require_f(data->output, "No available output found\n");
++	igt_require_f(data->mode, "No available mode found on %s\n", data->output->name);
  }
  
+ static void display_fini(data_t *data)
 -- 
 2.35.1
