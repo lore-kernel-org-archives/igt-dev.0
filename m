@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6DCE610E0E8
- for <igt-dev@lists.freedesktop.org>; Tue,  6 Sep 2022 18:33:44 +0000 (UTC)
-Date: Tue, 6 Sep 2022 11:33:38 -0700
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E9A6210E0E6
+ for <igt-dev@lists.freedesktop.org>; Tue,  6 Sep 2022 18:37:11 +0000 (UTC)
+Date: Tue, 6 Sep 2022 11:37:07 -0700
 From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 To: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
-Message-ID: <YxeSgtBTpA8ywENo@unerlige-ril>
+Message-ID: <YxeTUxaGl/iV+Dlw@unerlige-ril>
 References: <20220823183036.5270-1-umesh.nerlige.ramappa@intel.com>
- <20220823203059.7716-1-umesh.nerlige.ramappa@intel.com>
- <dd2b7501-0106-66c2-b91f-62749d457505@intel.com>
+ <20220823183036.5270-19-umesh.nerlige.ramappa@intel.com>
+ <06cb1b04-cbc0-c109-788e-7f2bf2e3ce21@intel.com>
 Content-Type: text/plain; charset="utf-8"; format=flowed
 Content-Disposition: inline
-In-Reply-To: <dd2b7501-0106-66c2-b91f-62749d457505@intel.com>
+In-Reply-To: <06cb1b04-cbc0-c109-788e-7f2bf2e3ce21@intel.com>
 MIME-Version: 1.0
 Subject: Re: [igt-dev] [PATCH i-g-t 18/23] i915/perf: Fix DG2 A0 report
  header
@@ -27,30 +27,12 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Tue, Sep 06, 2022 at 05:23:54PM +0300, Lionel Landwerlin wrote:
->On 23/08/2022 23:30, Umesh Nerlige Ramappa wrote:
+On Tue, Sep 06, 2022 at 05:17:14PM +0300, Lionel Landwerlin wrote:
+>On 23/08/2022 21:30, Umesh Nerlige Ramappa wrote:
 >>Timestamp is still 32 bits in DG2 A0. Fix that. Specify variants of DG2
 >>that have the OA format header bug
 >>
 >>Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
->
->
->Are A0 chipsets available outside of Intel?
-
-No. I plan to remove A0 specific WAs in the follow up revisions.
-
-Thanks,
-Umesh
->
->Maybe it's not worth bothering with this workaround?
->
->
->Either way :
->
->
->Reviewed-by: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
->
->
 >>---
 >>  tests/i915/perf.c | 45 ++++++++++++++++++++++++++++++++++++++++++++-
 >>  1 file changed, 44 insertions(+), 1 deletion(-)
@@ -74,6 +56,18 @@ Umesh
 >>+ *
 >>+ * WA is permanent for G11. For other DG2s, bug is fixed from B0 onwards.
 >>+ * Steps A0 and A1 correspond to 0 and 1 revid values.
+>
+>
+>Do you have the Wa number for reference?
+
+Should be - 1608133521, the corresponding kernel patch is 
+
+https://patchwork.freedesktop.org/patch/498940/?series=107584&rev=2
+
+Thanks,
+Umesh
+>
+>
 >>+ */
 >>+struct perf_dev_info {
 >>+	bool is_dg2_g11;
