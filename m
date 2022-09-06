@@ -1,17 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E903810E616
- for <igt-dev@lists.freedesktop.org>; Tue,  6 Sep 2022 09:54:08 +0000 (UTC)
-From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 76D3110E5BE
+ for <igt-dev@lists.freedesktop.org>; Tue,  6 Sep 2022 10:38:54 +0000 (UTC)
+From: Riana Tauro <riana.tauro@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue,  6 Sep 2022 15:20:29 +0530
-Message-Id: <20220906095030.486152-52-bhanuprakash.modem@intel.com>
-In-Reply-To: <20220906095030.486152-1-bhanuprakash.modem@intel.com>
-References: <20220906095030.486152-1-bhanuprakash.modem@intel.com>
+Date: Tue,  6 Sep 2022 16:08:12 +0530
+Message-Id: <20220906103818.2736508-1-riana.tauro@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V2 51/52] tests/i915/kms_psr_stress_test: Add
- support for Bigjoiner
+Subject: [igt-dev] [PATCH i-g-t 0/6] Add hwmon energy support for dgfx
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,46 +16,40 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: badal.nilawar@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-This patch will add a check to Skip the subtest if a selected pipe/output
-combo won't support Bigjoiner or 8K mode.
+Introduce igt_power library that reads energy from hwmon & rapl
+interfaces. Replace igt_rapl with igt_power.
 
-Example:
-* Pipe-D wont support a mode > 5K
-* To use 8K mode on a pipe then consecutive pipe must be available & free.
+Modify the existing tests that use igt_rapl to igt_power.
 
-Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
----
- tests/i915/kms_psr_stress_test.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+Riana Tauro (6):
+  lib/igt_hwmon: Introduce library igt_hwmon
+  lib/igt_power: Rename lib igt_rapl with igt_power
+  lib/igt_power: Add hwmon interface to igt_power
+  i915/i915_pm_rc6_residency: Add energy support for dgfx
+  i915/gem_exec_schedule: Add energy support for dgfx
+  i915/gem_exec_whisper: Add energy support for dgfx
 
-diff --git a/tests/i915/kms_psr_stress_test.c b/tests/i915/kms_psr_stress_test.c
-index daac41d4..c2ebaac5 100644
---- a/tests/i915/kms_psr_stress_test.c
-+++ b/tests/i915/kms_psr_stress_test.c
-@@ -72,7 +72,13 @@ static void setup_output(data_t *data)
- 		if (c->connector_type != DRM_MODE_CONNECTOR_eDP)
- 			continue;
- 
-+		igt_display_reset(display);
- 		igt_output_set_pipe(output, pipe);
-+		if (!igt_test_constraint(display)) {
-+			igt_output_set_pipe(output, PIPE_NONE);
-+			continue;
-+		}
-+
- 		data->output = output;
- 		data->mode = igt_output_get_mode(output);
- 
-@@ -374,4 +380,4 @@ igt_main
- 		close(data.debugfs_fd);
- 		close(data.drm_fd);
- 	}
--}
-\ No newline at end of file
-+}
+ lib/igt_hwmon.c                    |  73 ++++++++++
+ lib/igt_hwmon.h                    |  12 ++
+ lib/igt_power.c                    | 211 +++++++++++++++++++++++++++++
+ lib/{igt_rapl.h => igt_power.h}    |  78 +++--------
+ lib/igt_rapl.c                     |  69 ----------
+ lib/meson.build                    |   3 +-
+ tests/i915/gem_exec_fair.c         |   1 -
+ tests/i915/gem_exec_schedule.c     |  51 ++++---
+ tests/i915/gem_exec_whisper.c      |  16 ++-
+ tests/i915/i915_pm_rc6_residency.c |  65 +++++----
+ 10 files changed, 390 insertions(+), 189 deletions(-)
+ create mode 100644 lib/igt_hwmon.c
+ create mode 100644 lib/igt_hwmon.h
+ create mode 100644 lib/igt_power.c
+ rename lib/{igt_rapl.h => igt_power.h} (51%)
+ delete mode 100644 lib/igt_rapl.c
+
 -- 
-2.35.1
+2.25.1
