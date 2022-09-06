@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1025910E61B
- for <igt-dev@lists.freedesktop.org>; Tue,  6 Sep 2022 09:53:17 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CF92610E617
+ for <igt-dev@lists.freedesktop.org>; Tue,  6 Sep 2022 09:53:33 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue,  6 Sep 2022 15:19:55 +0530
-Message-Id: <20220906095030.486152-18-bhanuprakash.modem@intel.com>
+Date: Tue,  6 Sep 2022 15:20:07 +0530
+Message-Id: <20220906095030.486152-30-bhanuprakash.modem@intel.com>
 In-Reply-To: <20220906095030.486152-1-bhanuprakash.modem@intel.com>
 References: <20220906095030.486152-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V2 17/52] tests/kms_flip_event_leak: Add support
- for Bigjoiner
+Subject: [igt-dev] [i-g-t V2 29/52] tests/kms_properties: Add support for
+ Bigjoiner
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -32,36 +32,51 @@ Example:
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/kms_flip_event_leak.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ tests/kms_properties.c | 18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
 
-diff --git a/tests/kms_flip_event_leak.c b/tests/kms_flip_event_leak.c
-index ac201293..1df2474c 100644
---- a/tests/kms_flip_event_leak.c
-+++ b/tests/kms_flip_event_leak.c
-@@ -48,6 +48,9 @@ static void test(data_t *data, enum pipe pipe, igt_output_t *output)
- 	struct igt_fb fb[2];
- 	int fd, ret;
+diff --git a/tests/kms_properties.c b/tests/kms_properties.c
+index dd5a93aa..a9c2b7df 100644
+--- a/tests/kms_properties.c
++++ b/tests/kms_properties.c
+@@ -241,6 +241,12 @@ static void plane_properties(igt_display_t *display, bool atomic)
+ 		found = false;
  
-+	igt_info("Using (pipe %s + %s) to run the subtest.\n",
-+		 kmstest_pipe_name(pipe), igt_output_name(output));
+ 		for_each_valid_output_on_pipe(display, pipe, output) {
++			igt_display_reset(display);
 +
- 	/* select the pipe we want to use */
- 	igt_output_set_pipe(output, pipe);
++			igt_output_set_pipe(output, pipe);
++			if (!igt_test_constraint(display))
++				continue;
++
+ 			found_any = found = true;
  
-@@ -102,6 +105,13 @@ igt_simple_main
- 	igt_display_require(&data.display, data.drm_fd);
+ 			run_plane_property_tests(display, pipe, output, atomic);
+@@ -264,6 +270,12 @@ static void crtc_properties(igt_display_t *display, bool atomic)
+ 		found = false;
  
- 	for_each_pipe_with_valid_output(&data.display, pipe, output) {
-+		igt_display_reset(&data.display);
+ 		for_each_valid_output_on_pipe(display, pipe, output) {
++			igt_display_reset(display);
 +
-+		igt_output_set_pipe(output, pipe);
-+		if (!igt_test_constraint(&data.display))
-+			continue;
++			igt_output_set_pipe(output, pipe);
++			if (!igt_test_constraint(display))
++				continue;
 +
-+		igt_output_set_pipe(output, PIPE_NONE);
- 		test(&data, pipe, output);
- 		valid_tests++;
- 	}
+ 			found_any_valid_pipe = found = true;
+ 
+ 			run_crtc_property_tests(display, pipe, output, atomic);
+@@ -290,6 +302,12 @@ static void connector_properties(igt_display_t *display, bool atomic)
+ 			if (!igt_pipe_connector_valid(pipe, output))
+ 				continue;
+ 
++			igt_display_reset(display);
++
++			igt_output_set_pipe(output, pipe);
++			if (!igt_test_constraint(display))
++				continue;
++
+ 			found = true;
+ 			run_connector_property_tests(display, pipe, output, atomic);
+ 			break;
 -- 
 2.35.1
