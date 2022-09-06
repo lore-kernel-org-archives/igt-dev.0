@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9AFCE10E662
- for <igt-dev@lists.freedesktop.org>; Tue,  6 Sep 2022 13:11:30 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B7BBE89F38
+ for <igt-dev@lists.freedesktop.org>; Tue,  6 Sep 2022 13:11:32 +0000 (UTC)
 From: Swati Sharma <swati2.sharma@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue,  6 Sep 2022 18:42:43 +0530
-Message-Id: <20220906131245.4757-2-swati2.sharma@intel.com>
+Date: Tue,  6 Sep 2022 18:42:44 +0530
+Message-Id: <20220906131245.4757-3-swati2.sharma@intel.com>
 In-Reply-To: <20220906131245.4757-1-swati2.sharma@intel.com>
 References: <20220906131245.4757-1-swati2.sharma@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v2 1/3] tests/i915/i915_pm_dc: Change
- debugfs for reading platform info
+Subject: [igt-dev] [PATCH i-g-t v2 2/3] lib/pm: Add helper functions to get
+ runtime suspended time
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,62 +23,84 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-With error capture being part of i915_gpu_info, with 4024 buffer size
-we will never be able to parse "is_dgfx" string. Instead use
-i915_capabilities which is meant for platform info only.
+Added helper function to get runtime suspended time.
+This will be used to extend dc9 validation.
 
-Also, changed func name from check_is_dgfx() to is_dgfx().
-
-v2: create separate patch for this change (imre)
+v2: -created separate helper igt_pm_get_power_attr_fd_rdonly() (imre)
+    -fixed igt_pm_get_runtime_suspended_time() (imre)
 
 Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
 ---
- tests/i915/i915_pm_dc.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ lib/igt_pm.c | 36 ++++++++++++++++++++++++++++++++++--
+ lib/igt_pm.h |  1 +
+ 2 files changed, 35 insertions(+), 2 deletions(-)
 
-diff --git a/tests/i915/i915_pm_dc.c b/tests/i915/i915_pm_dc.c
-index f664a2a2c..d90d64cca 100644
---- a/tests/i915/i915_pm_dc.c
-+++ b/tests/i915/i915_pm_dc.c
-@@ -44,6 +44,8 @@
- #define KMS_HELPER "/sys/module/drm_kms_helper/parameters/"
- #define KMS_POLL_DISABLE 0
+diff --git a/lib/igt_pm.c b/lib/igt_pm.c
+index 99251b40b..65f1fc866 100644
+--- a/lib/igt_pm.c
++++ b/lib/igt_pm.c
+@@ -953,13 +953,27 @@ static int igt_pm_get_power_attr_fd(struct pci_device *pci_dev, const char *attr
+ 	return fd;
+ }
  
-+IGT_TEST_DESCRIPTION("These tests validate Display Power DC states");
+-static bool igt_pm_read_power_attr(int fd, char *attr, int len, bool autosuspend_delay)
++static int igt_pm_get_power_attr_fd_rdonly(struct pci_device *pci_dev, const char *attr)
++{
++	char name[PATH_MAX];
++	int fd;
 +
- bool kms_poll_saved_state;
- 
- typedef struct {
-@@ -422,11 +424,11 @@ static void check_dc9(data_t *data, int dc_target, int prev_dc)
- 			data->debugfs_dump = igt_sysfs_get(data->debugfs_fd, RPM_STATUS));
- }
- 
--static bool check_is_dgfx(data_t *data)
-+static bool is_dgfx(data_t *data)
++	snprintf(name, PATH_MAX, "/sys/bus/pci/devices/%04x:%02x:%02x.%01x/power/%s",
++		 pci_dev->domain, pci_dev->bus, pci_dev->dev, pci_dev->func, attr);
++
++	fd = open(name, O_RDONLY);
++	igt_assert_f(fd >= 0, "Can't open %s\n", attr);
++
++	return fd;
++}
++
++static bool igt_pm_read_power_attr(int fd, char *attr, int len, bool power_attr)
  {
- 	char buf[4096];
+ 	int size;
  
--	igt_debugfs_simple_read(data->debugfs_fd, "i915_gpu_info",
-+	igt_debugfs_simple_read(data->debugfs_fd, "i915_capabilities",
- 				buf, sizeof(buf));
- 	return strstr(buf, "is_dgfx: yes");
+ 	size = read(fd, attr, len - 1);
+ 
+-	if (autosuspend_delay) {
++	if (power_attr) {
+ 		if (size < 0 && errno == EIO)
+ 			return false;
+ 	} else {
+@@ -1219,3 +1233,21 @@ bool i915_is_slpc_enabled(int fd)
+ 	else
+ 		return strstr(buf, "SLPC state: running");
  }
-@@ -473,7 +475,6 @@ static void kms_poll_state_restore(int sig)
- 	}
- }
++
++int igt_pm_get_runtime_suspended_time(struct pci_device *pci_dev)
++{
++	char time_str[64];
++	int time, time_fd;
++
++	time_fd = igt_pm_get_power_attr_fd_rdonly(pci_dev, "runtime_suspended_time");
++	if (igt_pm_read_power_attr(time_fd, time_str, 64, false)){
++		igt_assert(sscanf(time_str, "%d", &time) > 0);
++
++		igt_info("runtime suspend time for PCI '%04x:%02x:%02x.%01x' = %d\n",
++			  pci_dev->domain, pci_dev->bus, pci_dev->dev, pci_dev->func, time);
++
++		return time;
++	}
++
++	return -1;
++}
+diff --git a/lib/igt_pm.h b/lib/igt_pm.h
+index cbbde12b5..a7d621366 100644
+--- a/lib/igt_pm.h
++++ b/lib/igt_pm.h
+@@ -80,5 +80,6 @@ void igt_pm_setup_pci_card_runtime_pm(struct pci_device *pci_dev);
+ void igt_pm_restore_pci_card_runtime_pm(void);
+ void igt_pm_print_pci_card_runtime_status(void);
+ bool i915_is_slpc_enabled(int fd);
++int igt_pm_get_runtime_suspended_time(struct pci_device *pci_dev);
  
--IGT_TEST_DESCRIPTION("These tests validate Display Power DC states");
- int main(int argc, char *argv[])
- {
- 	data_t data = {};
-@@ -541,7 +542,7 @@ int main(int argc, char *argv[])
- 
- 	igt_describe("This test validates display engine entry to DC9 state");
- 	igt_subtest("dc9-dpms") {
--		if (!(check_is_dgfx(&data)))
-+		if (!(is_dgfx(&data)))
- 			igt_require_f(igt_pm_pc8_plus_residencies_enabled(data.msr_fd),
- 				      "PC8+ residencies not supported\n");
- 		test_dc9_dpms(&data);
+ #endif /* IGT_PM_H */
 -- 
 2.25.1
