@@ -1,15 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: =?utf-8?b?VmlsbGUgU3lyasOkbMOk?= <ville.syrjala@linux.intel.com>
-Date: Tue, 06 Sep 2022 12:47:19 -0000
-Message-ID: <166246843988.8882.14412577231274951444@emeril.freedesktop.org>
-References: <20220906122944.8838-1-ville.syrjala@linux.intel.com>
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 777A610E64E
+ for <igt-dev@lists.freedesktop.org>; Tue,  6 Sep 2022 12:31:00 +0000 (UTC)
+From: Ville Syrjala <ville.syrjala@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Tue,  6 Sep 2022 15:29:40 +0300
+Message-Id: <20220906122944.8838-14-ville.syrjala@linux.intel.com>
 In-Reply-To: <20220906122944.8838-1-ville.syrjala@linux.intel.com>
-Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_t?=
- =?utf-8?q?ools/intel=5Fvbt=5Fdecode=3A_Improve_VBT_decoder_=28rev2=29?=
+References: <20220906122944.8838-1-ville.syrjala@linux.intel.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t v2 13/17] tools/intel_vbt_decode: Decode AUX
+ CH
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,45 +20,62 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-== Series Details ==
+From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-Series: tools/intel_vbt_decode: Improve VBT decoder (rev2)
-URL   : https://patchwork.freedesktop.org/series/106398/
-State : warning
+Decode the AUX CH to a human readable name.
 
-== Summary ==
+Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+---
+ tools/intel_vbt_decode.c | 26 +++++++++++++++++++++++++-
+ 1 file changed, 25 insertions(+), 1 deletion(-)
 
-Pipeline status: FAILED.
-
-see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/681946 for the overview.
-
-test:ninja-test-mips has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/27943052):
-  Ok:                   22
-  Expected Fail:         3
-  Fail:                292
-  Unexpected Pass:       0
-  Skipped:               0
-  Timeout:               0
-  
-  Full log written to /builds/gfx-ci/igt-ci-tags/build/meson-logs/testlog.txt
-  section_end:1662468216:step_script
-  section_start:1662468216:upload_artifacts_on_failure
-  Uploading artifacts for failed job
-  Uploading artifacts...
-  build: found 1773 matching files and directories   
-  Uploading artifacts as "archive" to coordinator... 201 Created  id=27943052 responseStatus=201 Created token=th5NsgJJ
-  section_end:1662468227:upload_artifacts_on_failure
-  section_start:1662468227:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1662468228:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-
-== Logs ==
-
-For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/681946
+diff --git a/tools/intel_vbt_decode.c b/tools/intel_vbt_decode.c
+index ecdccd2b9166..f9b2bf0af272 100644
+--- a/tools/intel_vbt_decode.c
++++ b/tools/intel_vbt_decode.c
+@@ -778,6 +778,29 @@ static const char *dvo_port(uint8_t type)
+ 		return "unknown";
+ }
+ 
++static const char *aux_ch_names[] = {
++	[0] = "none",
++	[DP_AUX_A >> 4] = "AUX-A",
++	[DP_AUX_B >> 4] = "AUX-B",
++	[DP_AUX_C >> 4] = "AUX-C",
++	[DP_AUX_D >> 4] = "AUX-D",
++	[DP_AUX_E >> 4] = "AUX-E",
++	[DP_AUX_F >> 4] = "AUX-F",
++	[DP_AUX_G >> 4] = "AUX-G",
++	[DP_AUX_H >> 4] = "AUX-H",
++	[DP_AUX_I >> 4] = "AUX-I",
++};
++
++static const char *aux_ch(uint8_t aux_ch)
++{
++	aux_ch >>= 4;
++
++	if (aux_ch < ARRAY_SIZE(aux_ch_names) && aux_ch_names[aux_ch])
++		return aux_ch_names[aux_ch];
++	else
++		return "unknown";
++}
++
+ static const char *mipi_bridge_type(uint8_t type)
+ {
+ 	switch (type) {
+@@ -974,7 +997,8 @@ static void dump_child_device(struct context *context,
+ 		printf("\t\tHDMI compatible? %s\n", YESNO(child->hdmi_support));
+ 		printf("\t\tDP compatible? %s\n", YESNO(child->dp_support));
+ 		printf("\t\tTMDS compatible? %s\n", YESNO(child->tmds_support));
+-		printf("\t\tAux channel: 0x%02x\n", child->aux_channel);
++		printf("\t\tAux channel: %s (0x%02x)\n",
++		       aux_ch(child->aux_channel), child->aux_channel);
+ 		printf("\t\tDongle detect: 0x%02x\n", child->dongle_detect);
+ 	}
+ 
+-- 
+2.35.1
