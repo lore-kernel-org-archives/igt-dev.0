@@ -1,15 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============8449890262185228229=="
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7AB1010E68E
+ for <igt-dev@lists.freedesktop.org>; Tue,  6 Sep 2022 14:14:57 +0000 (UTC)
+From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+To: igt-dev@lists.freedesktop.org,
+	karthik.b.s@intel.com
+Date: Tue,  6 Sep 2022 19:42:38 +0530
+Message-Id: <20220906141238.508502-1-bhanuprakash.modem@intel.com>
+In-Reply-To: <20220905040618.302991-3-bhanuprakash.modem@intel.com>
+References: <20220905040618.302991-3-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Swati Sharma" <swati2.sharma@intel.com>
-Date: Tue, 06 Sep 2022 14:14:03 -0000
-Message-ID: <166247364367.8879.8959003450100343778@emeril.freedesktop.org>
-References: <20220906131245.4757-1-swati2.sharma@intel.com>
-In-Reply-To: <20220906131245.4757-1-swati2.sharma@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgTW9kaWZ5?=
- =?utf-8?q?_dc9_validation_=28rev3=29?=
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [i-g-t V2 2/2] tests/kms_atomic_transition: Test Cleanup
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,301 +19,245 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============8449890262185228229==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Sanitize the system state before starting the subtest.
 
-== Series Details ==
+V2: - Cleanup the state before exiting the subtest
 
-Series: Modify dc9 validation (rev3)
-URL   : https://patchwork.freedesktop.org/series/108079/
-State : success
+Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+---
+ tests/kms_atomic_transition.c | 73 ++++++++++++++++++-----------------
+ 1 file changed, 38 insertions(+), 35 deletions(-)
 
-== Summary ==
-
-CI Bug Log - changes from IGT_6646 -> IGTPW_7743
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7743/index.html
-
-Participating hosts (42 -> 43)
-------------------------------
-
-  Additional (2): bat-rpls-2 fi-icl-u2 
-  Missing    (1): fi-bdw-samus 
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_7743 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@gem_huc_copy@huc-copy:
-    - fi-icl-u2:          NOTRUN -> [SKIP][1] ([i915#2190])
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7743/fi-icl-u2/igt@gem_huc_copy@huc-copy.html
-
-  * igt@gem_lmem_swapping@random-engines:
-    - fi-icl-u2:          NOTRUN -> [SKIP][2] ([i915#4613]) +3 similar issues
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7743/fi-icl-u2/igt@gem_lmem_swapping@random-engines.html
-
-  * igt@kms_chamelium@common-hpd-after-suspend:
-    - fi-pnv-d510:        NOTRUN -> [SKIP][3] ([fdo#109271])
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7743/fi-pnv-d510/igt@kms_chamelium@common-hpd-after-suspend.html
-
-  * igt@kms_chamelium@hdmi-hpd-fast:
-    - fi-icl-u2:          NOTRUN -> [SKIP][4] ([fdo#111827]) +8 similar issues
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7743/fi-icl-u2/igt@kms_chamelium@hdmi-hpd-fast.html
-
-  * igt@kms_cursor_legacy@basic-busy-flip-before-cursor:
-    - fi-icl-u2:          NOTRUN -> [SKIP][5] ([i915#4103])
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7743/fi-icl-u2/igt@kms_cursor_legacy@basic-busy-flip-before-cursor.html
-
-  * igt@kms_force_connector_basic@force-connector-state:
-    - fi-icl-u2:          NOTRUN -> [WARN][6] ([i915#6008])
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7743/fi-icl-u2/igt@kms_force_connector_basic@force-connector-state.html
-
-  * igt@kms_force_connector_basic@force-load-detect:
-    - fi-icl-u2:          NOTRUN -> [SKIP][7] ([fdo#109285])
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7743/fi-icl-u2/igt@kms_force_connector_basic@force-load-detect.html
-
-  * igt@kms_setmode@basic-clone-single-crtc:
-    - fi-icl-u2:          NOTRUN -> [SKIP][8] ([i915#3555])
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7743/fi-icl-u2/igt@kms_setmode@basic-clone-single-crtc.html
-
-  * igt@prime_vgem@basic-userptr:
-    - fi-icl-u2:          NOTRUN -> [SKIP][9] ([fdo#109295] / [i915#3301])
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7743/fi-icl-u2/igt@prime_vgem@basic-userptr.html
-
-  
-#### Possible fixes ####
-
-  * igt@gem_exec_suspend@basic-s0@smem:
-    - {bat-rplp-1}:       [DMESG-WARN][10] ([i915#2867]) -> [PASS][11]
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6646/bat-rplp-1/igt@gem_exec_suspend@basic-s0@smem.html
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7743/bat-rplp-1/igt@gem_exec_suspend@basic-s0@smem.html
-
-  * igt@i915_module_load@load:
-    - {bat-adln-1}:       [DMESG-WARN][12] ([i915#2867]) -> [PASS][13] +1 similar issue
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6646/bat-adln-1/igt@i915_module_load@load.html
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7743/bat-adln-1/igt@i915_module_load@load.html
-
-  * igt@i915_selftest@live@gem:
-    - fi-pnv-d510:        [DMESG-FAIL][14] ([i915#4528]) -> [PASS][15]
-   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6646/fi-pnv-d510/igt@i915_selftest@live@gem.html
-   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7743/fi-pnv-d510/igt@i915_selftest@live@gem.html
-
-  * igt@i915_selftest@live@reset:
-    - {bat-rpls-1}:       [DMESG-FAIL][16] ([i915#4983] / [i915#5828]) -> [PASS][17]
-   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6646/bat-rpls-1/igt@i915_selftest@live@reset.html
-   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7743/bat-rpls-1/igt@i915_selftest@live@reset.html
-
-  * igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions:
-    - fi-bsw-kefka:       [FAIL][18] ([i915#6298]) -> [PASS][19]
-   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6646/fi-bsw-kefka/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions.html
-   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7743/fi-bsw-kefka/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
-  [fdo#109285]: https://bugs.freedesktop.org/show_bug.cgi?id=109285
-  [fdo#109295]: https://bugs.freedesktop.org/show_bug.cgi?id=109295
-  [fdo#111827]: https://bugs.freedesktop.org/show_bug.cgi?id=111827
-  [i915#2190]: https://gitlab.freedesktop.org/drm/intel/issues/2190
-  [i915#2867]: https://gitlab.freedesktop.org/drm/intel/issues/2867
-  [i915#3282]: https://gitlab.freedesktop.org/drm/intel/issues/3282
-  [i915#3301]: https://gitlab.freedesktop.org/drm/intel/issues/3301
-  [i915#3555]: https://gitlab.freedesktop.org/drm/intel/issues/3555
-  [i915#4103]: https://gitlab.freedesktop.org/drm/intel/issues/4103
-  [i915#4312]: https://gitlab.freedesktop.org/drm/intel/issues/4312
-  [i915#4528]: https://gitlab.freedesktop.org/drm/intel/issues/4528
-  [i915#4613]: https://gitlab.freedesktop.org/drm/intel/issues/4613
-  [i915#4983]: https://gitlab.freedesktop.org/drm/intel/issues/4983
-  [i915#5153]: https://gitlab.freedesktop.org/drm/intel/issues/5153
-  [i915#5828]: https://gitlab.freedesktop.org/drm/intel/issues/5828
-  [i915#6008]: https://gitlab.freedesktop.org/drm/intel/issues/6008
-  [i915#6298]: https://gitlab.freedesktop.org/drm/intel/issues/6298
-  [i915#6599]: https://gitlab.freedesktop.org/drm/intel/issues/6599
-  [i915#6670]: https://gitlab.freedesktop.org/drm/intel/issues/6670
-  [i915#6730]: https://gitlab.freedesktop.org/drm/intel/issues/6730
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_6646 -> IGTPW_7743
-
-  CI-20190529: 20190529
-  CI_DRM_12074: c16b937da799ddbebf0d940aff159b96ce9fec0f @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_7743: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7743/index.html
-  IGT_6646: c1f420ae84b76079cd32ac014cfdf95b5f2922f7 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7743/index.html
-
---===============8449890262185228229==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>Modify dc9 validation (rev3)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/108079/">https://patchwork.freedesktop.org/series/108079/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7743/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7743/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from IGT_6646 -&gt; IGTPW_7743</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7743/index.html</p>
-<h2>Participating hosts (42 -&gt; 43)</h2>
-<p>Additional (2): bat-rpls-2 fi-icl-u2 <br />
-  Missing    (1): fi-bdw-samus </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_7743 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@gem_huc_copy@huc-copy:</p>
-<ul>
-<li>fi-icl-u2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7743/fi-icl-u2/igt@gem_huc_copy@huc-copy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2190">i915#2190</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_lmem_swapping@random-engines:</p>
-<ul>
-<li>fi-icl-u2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7743/fi-icl-u2/igt@gem_lmem_swapping@random-engines.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4613">i915#4613</a>) +3 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_chamelium@common-hpd-after-suspend:</p>
-<ul>
-<li>fi-pnv-d510:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7743/fi-pnv-d510/igt@kms_chamelium@common-hpd-after-suspend.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_chamelium@hdmi-hpd-fast:</p>
-<ul>
-<li>fi-icl-u2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7743/fi-icl-u2/igt@kms_chamelium@hdmi-hpd-fast.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=111827">fdo#111827</a>) +8 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_cursor_legacy@basic-busy-flip-before-cursor:</p>
-<ul>
-<li>fi-icl-u2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7743/fi-icl-u2/igt@kms_cursor_legacy@basic-busy-flip-before-cursor.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4103">i915#4103</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_force_connector_basic@force-connector-state:</p>
-<ul>
-<li>fi-icl-u2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7743/fi-icl-u2/igt@kms_force_connector_basic@force-connector-state.html">WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6008">i915#6008</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_force_connector_basic@force-load-detect:</p>
-<ul>
-<li>fi-icl-u2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7743/fi-icl-u2/igt@kms_force_connector_basic@force-load-detect.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109285">fdo#109285</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_setmode@basic-clone-single-crtc:</p>
-<ul>
-<li>fi-icl-u2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7743/fi-icl-u2/igt@kms_setmode@basic-clone-single-crtc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3555">i915#3555</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@prime_vgem@basic-userptr:</p>
-<ul>
-<li>fi-icl-u2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7743/fi-icl-u2/igt@prime_vgem@basic-userptr.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109295">fdo#109295</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3301">i915#3301</a>)</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@gem_exec_suspend@basic-s0@smem:</p>
-<ul>
-<li>{bat-rplp-1}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6646/bat-rplp-1/igt@gem_exec_suspend@basic-s0@smem.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2867">i915#2867</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7743/bat-rplp-1/igt@gem_exec_suspend@basic-s0@smem.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@i915_module_load@load:</p>
-<ul>
-<li>{bat-adln-1}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6646/bat-adln-1/igt@i915_module_load@load.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2867">i915#2867</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7743/bat-adln-1/igt@i915_module_load@load.html">PASS</a> +1 similar issue</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@gem:</p>
-<ul>
-<li>fi-pnv-d510:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6646/fi-pnv-d510/igt@i915_selftest@live@gem.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4528">i915#4528</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7743/fi-pnv-d510/igt@i915_selftest@live@gem.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@reset:</p>
-<ul>
-<li>{bat-rpls-1}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6646/bat-rpls-1/igt@i915_selftest@live@reset.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4983">i915#4983</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/5828">i915#5828</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7743/bat-rpls-1/igt@i915_selftest@live@reset.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions:</p>
-<ul>
-<li>fi-bsw-kefka:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6646/fi-bsw-kefka/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6298">i915#6298</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7743/fi-bsw-kefka/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_6646 -&gt; IGTPW_7743</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_12074: c16b937da799ddbebf0d940aff159b96ce9fec0f @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_7743: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7743/index.html<br />
-  IGT_6646: c1f420ae84b76079cd32ac014cfdf95b5f2922f7 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-
-</body>
-</html>
-
---===============8449890262185228229==--
+diff --git a/tests/kms_atomic_transition.c b/tests/kms_atomic_transition.c
+index 3f0ceb3d..31a0f3a4 100644
+--- a/tests/kms_atomic_transition.c
++++ b/tests/kms_atomic_transition.c
+@@ -47,9 +47,10 @@ struct plane_parms {
+ 
+ typedef struct {
+ 	int drm_fd;
+-	struct igt_fb fb, argb_fb, sprite_fb;
++	struct igt_fb fbs[2], argb_fb, sprite_fb;
+ 	igt_display_t display;
+ 	bool extended;
++	igt_pipe_crc_t *pipe_crcs[IGT_MAX_PIPES];
+ } data_t;
+ 
+ /* globals for fence support */
+@@ -62,10 +63,11 @@ run_primary_test(data_t *data, enum pipe pipe, igt_output_t *output)
+ {
+ 	drmModeModeInfo *mode;
+ 	igt_plane_t *primary;
+-	igt_fb_t fb;
++	igt_fb_t *fb = &data->fbs[0];
+ 	int i, ret;
+ 	unsigned flags = DRM_MODE_ATOMIC_TEST_ONLY | DRM_MODE_ATOMIC_ALLOW_MODESET;
+ 
++	igt_display_reset(&data->display);
+ 	igt_output_set_pipe(output, pipe);
+ 	primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
+ 
+@@ -76,9 +78,9 @@ run_primary_test(data_t *data, enum pipe pipe, igt_output_t *output)
+ 	igt_skip_on_f(ret == -EINVAL, "Primary plane cannot be disabled separately from output\n");
+ 
+ 	igt_create_fb(data->drm_fd, mode->hdisplay, mode->vdisplay,
+-		      DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR, &fb);
++		      DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR, fb);
+ 
+-	igt_plane_set_fb(primary, &fb);
++	igt_plane_set_fb(primary, fb);
+ 
+ 	for (i = 0; i < 4; i++) {
+ 		igt_display_commit2(&data->display, COMMIT_ATOMIC);
+@@ -87,20 +89,15 @@ run_primary_test(data_t *data, enum pipe pipe, igt_output_t *output)
+ 			igt_wait_for_vblank(data->drm_fd,
+ 					data->display.pipes[pipe].crtc_offset);
+ 
+-		igt_plane_set_fb(primary, (i & 1) ? &fb : NULL);
++		igt_plane_set_fb(primary, (i & 1) ? fb : NULL);
+ 		igt_display_commit2(&data->display, COMMIT_ATOMIC);
+ 
+ 		if (i & 1)
+ 			igt_wait_for_vblank(data->drm_fd,
+ 					data->display.pipes[pipe].crtc_offset);
+ 
+-		igt_plane_set_fb(primary, (i & 1) ? NULL : &fb);
++		igt_plane_set_fb(primary, (i & 1) ? NULL : fb);
+ 	}
+-
+-	igt_plane_set_fb(primary, NULL);
+-	igt_output_set_pipe(output, PIPE_NONE);
+-	igt_remove_fb(data->drm_fd, &fb);
+-	igt_display_commit2(&data->display, COMMIT_ATOMIC);
+ }
+ 
+ static void *fence_inc_thread(void *arg)
+@@ -507,7 +504,7 @@ run_transition_test(data_t *data, enum pipe pipe, igt_output_t *output,
+ 	override_mode.flags ^= DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_NHSYNC;
+ 
+ 	igt_create_fb(data->drm_fd, mode->hdisplay, mode->vdisplay,
+-		      DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR, &data->fb);
++		      DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR, &data->fbs[0]);
+ 
+ 	igt_output_set_pipe(output, pipe);
+ 
+@@ -521,7 +518,7 @@ run_transition_test(data_t *data, enum pipe pipe, igt_output_t *output,
+ 		igt_output_set_pipe(output, pipe);
+ 	}
+ 
+-	setup_parms(data, pipe, mode, &data->fb, &data->argb_fb, &data->sprite_fb, parms, &iter_max);
++	setup_parms(data, pipe, mode, &data->fbs[0], &data->argb_fb, &data->sprite_fb, parms, &iter_max);
+ 
+ 	igt_display_commit2(&data->display, COMMIT_ATOMIC);
+ 
+@@ -663,7 +660,8 @@ static void test_cleanup(data_t *data, enum pipe pipe, igt_output_t *output, boo
+ 
+ 	igt_display_commit2(&data->display, COMMIT_ATOMIC);
+ 
+-	igt_remove_fb(data->drm_fd, &data->fb);
++	igt_remove_fb(data->drm_fd, &data->fbs[0]);
++	igt_remove_fb(data->drm_fd, &data->fbs[1]);
+ 	igt_remove_fb(data->drm_fd, &data->argb_fb);
+ 	igt_remove_fb(data->drm_fd, &data->sprite_fb);
+ }
+@@ -803,12 +801,11 @@ static void collect_crcs_mask(igt_pipe_crc_t **pipe_crcs, unsigned mask, igt_crc
+ 
+ static void run_modeset_tests(data_t *data, int howmany, bool nonblocking, bool fencing)
+ {
+-	struct igt_fb fbs[2];
+ 	int i, j;
+ 	unsigned iter_max;
+-	igt_pipe_crc_t *pipe_crcs[IGT_MAX_PIPES] = { 0 };
+ 	igt_output_t *output;
+ 	uint16_t width = 0, height = 0;
++	bool ret = true;
+ 
+ 	for (i = 0; i < data->display.n_outputs; i++)
+ 		igt_output_set_pipe(&data->display.outputs[i], PIPE_NONE);
+@@ -823,9 +820,9 @@ retry:
+ 	}
+ 
+ 	igt_create_pattern_fb(data->drm_fd, width, height,
+-				   DRM_FORMAT_XRGB8888, 0, &fbs[0]);
++				   DRM_FORMAT_XRGB8888, 0, &data->fbs[0]);
+ 	igt_create_color_pattern_fb(data->drm_fd, width, height,
+-				    DRM_FORMAT_XRGB8888, 0, .5, .5, .5, &fbs[1]);
++				    DRM_FORMAT_XRGB8888, 0, .5, .5, .5, &data->fbs[1]);
+ 
+ 	for_each_pipe(&data->display, i) {
+ 		igt_pipe_t *pipe = &data->display.pipes[i];
+@@ -836,7 +833,7 @@ retry:
+ 		j += 1;
+ 
+ 		if (is_i915_device(data->drm_fd))
+-			pipe_crcs[i] = igt_pipe_crc_new(data->drm_fd, i, INTEL_PIPE_CRC_SOURCE_AUTO);
++			data->pipe_crcs[i] = igt_pipe_crc_new(data->drm_fd, i, INTEL_PIPE_CRC_SOURCE_AUTO);
+ 
+ 		for_each_valid_output_on_pipe(&data->display, i, output) {
+ 			if (output->pending_pipe != PIPE_NONE)
+@@ -848,8 +845,8 @@ retry:
+ 		}
+ 
+ 		if (mode) {
+-			igt_plane_set_fb(plane, &fbs[1]);
+-			igt_fb_set_size(&fbs[1], plane, mode->hdisplay, mode->vdisplay);
++			igt_plane_set_fb(plane, &data->fbs[1]);
++			igt_fb_set_size(&data->fbs[1], plane, mode->hdisplay, mode->vdisplay);
+ 			igt_plane_set_size(plane, mode->hdisplay, mode->vdisplay);
+ 
+ 			if (fencing)
+@@ -883,13 +880,13 @@ retry:
+ 		if (igt_hweight(i) > howmany)
+ 			continue;
+ 
+-		event_mask = set_combinations(data, i, &fbs[0]);
++		event_mask = set_combinations(data, i, &data->fbs[0]);
+ 		if (!event_mask && i)
+ 			continue;
+ 
+ 		commit_display(data, event_mask, nonblocking);
+ 
+-		collect_crcs_mask(pipe_crcs, i, crcs[0]);
++		collect_crcs_mask(data->pipe_crcs, i, crcs[0]);
+ 
+ 		for (j = iter_max - 1; j > i + 1; j--) {
+ 			if (igt_hweight(j) > howmany)
+@@ -898,54 +895,60 @@ retry:
+ 			if (igt_hweight(i) < howmany && igt_hweight(j) < howmany)
+ 				continue;
+ 
+-			event_mask = set_combinations(data, j, &fbs[1]);
++			event_mask = set_combinations(data, j, &data->fbs[1]);
+ 			if (!event_mask)
+ 				continue;
+ 
+ 			commit_display(data, event_mask, nonblocking);
+ 
+-			collect_crcs_mask(pipe_crcs, j, crcs[1]);
++			collect_crcs_mask(data->pipe_crcs, j, crcs[1]);
+ 
+ 			refresh_primaries(data, j);
+ 			commit_display(data, j, nonblocking);
+-			collect_crcs_mask(pipe_crcs, j, crcs[2]);
++			collect_crcs_mask(data->pipe_crcs, j, crcs[2]);
+ 
+-			event_mask = set_combinations(data, i, &fbs[0]);
++			event_mask = set_combinations(data, i, &data->fbs[0]);
+ 			if (!event_mask)
+ 				continue;
+ 
+ 			commit_display(data, event_mask, nonblocking);
+-			collect_crcs_mask(pipe_crcs, i, crcs[3]);
++			collect_crcs_mask(data->pipe_crcs, i, crcs[3]);
+ 
+ 			refresh_primaries(data, i);
+ 			commit_display(data, i, nonblocking);
+-			collect_crcs_mask(pipe_crcs, i, crcs[4]);
++			collect_crcs_mask(data->pipe_crcs, i, crcs[4]);
+ 
+ 			if (!is_i915_device(data->drm_fd))
+ 				continue;
+ 
+ 			for (int k = 0; k < IGT_MAX_PIPES; k++) {
+ 				if (i & (1 << k)) {
+-					igt_assert_crc_equal(&crcs[0][k], &crcs[3][k]);
+-					igt_assert_crc_equal(&crcs[0][k], &crcs[4][k]);
++					ret &= igt_check_crc_equal(&crcs[0][k], &crcs[3][k]);
++					ret &= igt_check_crc_equal(&crcs[0][k], &crcs[4][k]);
+ 				}
+ 
+ 				if (j & (1 << k))
+-					igt_assert_crc_equal(&crcs[1][k], &crcs[2][k]);
++					ret &= igt_check_crc_equal(&crcs[1][k], &crcs[2][k]);
++
++				if (!ret)
++					goto cleanup;
+ 			}
+ 		}
+ 	}
+ 
++cleanup:
+ 	set_combinations(data, 0, NULL);
+ 	igt_display_commit2(&data->display, COMMIT_ATOMIC);
+ 
+ 	if (is_i915_device(data->drm_fd)) {
+ 		for_each_pipe(&data->display, i)
+-			igt_pipe_crc_free(pipe_crcs[i]);
++			igt_pipe_crc_free(data->pipe_crcs[i]);
+ 	}
+ 
+-	igt_remove_fb(data->drm_fd, &fbs[1]);
+-	igt_remove_fb(data->drm_fd, &fbs[0]);
++	igt_remove_fb(data->drm_fd, &data->fbs[0]);
++	igt_remove_fb(data->drm_fd, &data->fbs[1]);
++
++	igt_assert(ret || igt_skip_crc_compare);
+ }
+ 
+ static void run_modeset_transition(data_t *data, int requested_outputs, bool nonblocking, bool fencing)
+-- 
+2.35.1
