@@ -1,21 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5E30B10E65E
- for <igt-dev@lists.freedesktop.org>; Tue,  6 Sep 2022 12:52:51 +0000 (UTC)
-Message-ID: <3492f081-3501-0cd0-9591-c543852f6194@intel.com>
-Date: Tue, 6 Sep 2022 15:52:43 +0300
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EAB7A10E660
+ for <igt-dev@lists.freedesktop.org>; Tue,  6 Sep 2022 12:53:23 +0000 (UTC)
+Message-ID: <852bd666-0890-0e12-7a91-4326962046f5@intel.com>
+Date: Tue, 6 Sep 2022 15:53:16 +0300
 Content-Language: en-US
 To: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>,
  <igt-dev@lists.freedesktop.org>
 References: <20220823183036.5270-1-umesh.nerlige.ramappa@intel.com>
- <20220823183036.5270-4-umesh.nerlige.ramappa@intel.com>
+ <20220823183036.5270-5-umesh.nerlige.ramappa@intel.com>
 From: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
-In-Reply-To: <20220823183036.5270-4-umesh.nerlige.ramappa@intel.com>
+In-Reply-To: <20220823183036.5270-5-umesh.nerlige.ramappa@intel.com>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t 03/23] i915/perf: Check return value
- from getparam
+Subject: Re: [igt-dev] [PATCH i-g-t 04/23] i915/perf: Limit sseu-config
+ tests for gen11
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,76 +28,34 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
 On 23/08/2022 21:30, Umesh Nerlige Ramappa wrote:
-> In some cases getparam could fail. Check return from getparam and fail
-> early on.
+> From: "Nerlige Ramappa, Umesh" <umesh.nerlige.ramappa@intel.com>
+>
+> On Gen11, the Media driver will need to limit dispatch to only big
+> subslices (usually half the EUs depending on EU fusing). If media,
+> render and OA are running in parallel, then OA will lose the NOA config
+> because half of the EUs will be turned off by media. To avoid this with
+> concurrent use cases, an sseu config to keep all EUs powered on is
+> passed to OA in the i915_perf_open_ioctl params. This configuration is
+> made part of the render contexts, so that it's applied when 3d contexts
+> are running. Since this is an issue on gen11, limit sseu-config tests to
+> gen11.
 >
 > Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
-
-
-Something is odd with the indentation but otherwise :
-
-
 Reviewed-by: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
-
-
 > ---
->   lib/i915/perf.c | 28 +++++++++++++++-------------
->   1 file changed, 15 insertions(+), 13 deletions(-)
+>   tests/i915/perf.c | 1 +
+>   1 file changed, 1 insertion(+)
 >
-> diff --git a/lib/i915/perf.c b/lib/i915/perf.c
-> index d88835ff..7349a460 100644
-> --- a/lib/i915/perf.c
-> +++ b/lib/i915/perf.c
-> @@ -287,19 +287,16 @@ intel_perf_for_devinfo(uint32_t device_id,
->   	return perf;
->   }
+> diff --git a/tests/i915/perf.c b/tests/i915/perf.c
+> index 0b8f6ac8..ca3ccc17 100644
+> --- a/tests/i915/perf.c
+> +++ b/tests/i915/perf.c
+> @@ -5112,6 +5112,7 @@ igt_main
+>   	igt_subtest_group {
+>   		igt_fixture {
+>   			igt_require(i915_perf_revision(drm_fd) >= 4);
+> +			igt_require(intel_gen(devid) == 11);
+>   		}
 >   
-> -static uint32_t
-> -getparam(int drm_fd, uint32_t param)
-> +static int
-> +getparam(int drm_fd, uint32_t param, uint32_t *val)
->   {
-> -        struct drm_i915_getparam gp;
-> -        int val = -1;
-> -
-> -        memset(&gp, 0, sizeof(gp));
-> -        gp.param = param;
-> -        gp.value = &val;
-> +	struct drm_i915_getparam gp;
->   
-> -	perf_ioctl(drm_fd, DRM_IOCTL_I915_GETPARAM, &gp);
-> +	memset(&gp, 0, sizeof(gp));
-> +	gp.param = param;
-> +	gp.value = (int *)val;
->   
-> -        return val;
-> +	return perf_ioctl(drm_fd, DRM_IOCTL_I915_GETPARAM, &gp);
->   }
->   
->   static bool
-> @@ -415,9 +412,9 @@ open_master_sysfs_dir(int drm_fd)
->   struct intel_perf *
->   intel_perf_for_fd(int drm_fd)
->   {
-> -	uint32_t device_id = getparam(drm_fd, I915_PARAM_CHIPSET_ID);
-> -	uint32_t device_revision = getparam(drm_fd, I915_PARAM_REVISION);
-> -	uint32_t timestamp_frequency = getparam(drm_fd, I915_PARAM_CS_TIMESTAMP_FREQUENCY);
-> +	uint32_t device_id;
-> +	uint32_t device_revision;
-> +	uint32_t timestamp_frequency;
->   	uint64_t gt_min_freq;
->   	uint64_t gt_max_freq;
->   	struct drm_i915_query_topology_info *topology;
-> @@ -434,6 +431,11 @@ intel_perf_for_fd(int drm_fd)
->   	}
->   	close(sysfs_dir_fd);
->   
-> +	if (getparam(drm_fd, I915_PARAM_CHIPSET_ID, &device_id) ||
-> +	    getparam(drm_fd, I915_PARAM_REVISION, &device_revision) ||
-> +	    getparam(drm_fd, I915_PARAM_CS_TIMESTAMP_FREQUENCY, &timestamp_frequency))
-> +		return NULL;
-> +
->   	topology = query_topology(drm_fd);
->   	if (!topology)
->   		return NULL;
+>   		igt_describe("Verify invalid SSEU opening parameters");
 
