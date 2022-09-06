@@ -1,21 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2621510E655
- for <igt-dev@lists.freedesktop.org>; Tue,  6 Sep 2022 12:49:18 +0000 (UTC)
-Message-ID: <f4c86479-de36-3a7a-80c2-8485ea7955d3@intel.com>
-Date: Tue, 6 Sep 2022 15:49:08 +0300
-Content-Language: en-US
-To: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>,
- <igt-dev@lists.freedesktop.org>
-References: <20220823183036.5270-1-umesh.nerlige.ramappa@intel.com>
- <20220823183036.5270-2-umesh.nerlige.ramappa@intel.com>
-From: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
-In-Reply-To: <20220823183036.5270-2-umesh.nerlige.ramappa@intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CE76C89F38
+ for <igt-dev@lists.freedesktop.org>; Tue,  6 Sep 2022 13:11:33 +0000 (UTC)
+From: Swati Sharma <swati2.sharma@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Tue,  6 Sep 2022 18:42:45 +0530
+Message-Id: <20220906131245.4757-4-swati2.sharma@intel.com>
+In-Reply-To: <20220906131245.4757-1-swati2.sharma@intel.com>
+References: <20220906131245.4757-1-swati2.sharma@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t 01/23] i915/perf: Check regularly if we
- are done reading reports
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t v4 3/3] tests/i915/i915_pm_dc: Modify dc9
+ test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,60 +23,134 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On 23/08/2022 21:30, Umesh Nerlige Ramappa wrote:
-> If we pass a user buffer as large as the OA buffer, the OA unit will
-> return all available reports. In the second part of the
-> buffer-fill/enable-disable tests, we are collecting all reports within a
-> time window, but we only check the time window in the outer while loop.
-> We may have read well past that window if OA returns more reports. Fix
-> this rare failure by checking for the window within the inner for loop.
->
-> Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
-Reviewed-by: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
-> ---
->   tests/i915/perf.c | 10 ++++++++++
->   1 file changed, 10 insertions(+)
->
-> diff --git a/tests/i915/perf.c b/tests/i915/perf.c
-> index 5502a3fb..51e2dc87 100644
-> --- a/tests/i915/perf.c
-> +++ b/tests/i915/perf.c
-> @@ -2522,6 +2522,9 @@ test_buffer_fill(void)
->   						first_timestamp = report[1];
->   					last_timestamp = report[1];
->   
-> +					if (((last_timestamp - first_timestamp) * oa_period) < (fill_duration / 2))
-> +						break;
-> +
->   					if (oa_report_is_periodic(oa_exponent, report)) {
->   						memcpy(last_periodic_report, report,
->   						       sizeof(last_periodic_report));
-> @@ -2537,6 +2540,8 @@ test_buffer_fill(void)
->   
->   		do_ioctl(stream_fd, I915_PERF_IOCTL_DISABLE, 0);
->   
-> +		igt_debug("first ts = %u, last ts = %u\n", first_timestamp, last_timestamp);
-> +
->   		igt_debug("%f < %zu < %f\n",
->   			  report_size * n_full_oa_reports * 0.45,
->   			  n_periodic_reports * report_size,
-> @@ -2732,6 +2737,9 @@ test_enable_disable(void)
->   						  oa_report_is_periodic(oa_exponent, report),
->   						  oa_report_get_ctx_id(report));
->   
-> +					if (((last_timestamp - first_timestamp) * oa_period) < (fill_duration / 2))
-> +						break;
-> +
->   					if (oa_report_is_periodic(oa_exponent, report)) {
->   						memcpy(last_periodic_report, report,
->   						       sizeof(last_periodic_report));
-> @@ -2755,6 +2763,8 @@ test_enable_disable(void)
->   
->   		do_ioctl(stream_fd, I915_PERF_IOCTL_DISABLE, 0);
->   
-> +		igt_debug("first ts = %u, last ts = %u\n", first_timestamp, last_timestamp);
-> +
->   		igt_debug("%f < %zu < %f\n",
->   			  report_size * n_full_oa_reports * 0.45,
->   			  n_periodic_reports * report_size,
+Existing dc9 test is modified. Added new condition,
+runtime_suspended_time value should increases when system
+enters dc9. This condition will be checked for both igfx
+and dgfx whereas existing condition where we wait for
+dc counter to reset is limited only to igfx.
 
+v3: -changed test design (imre)
+v4: -var name changed (imre)
+    -restricted counter reset condition to dg1 and dg2
+     platforms only (anshuman)
+    -swapped rpm vs dc9 wait order condition (imre)
+
+Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
+---
+ tests/i915/i915_pm_dc.c | 67 +++++++++++++++++++++++++++++------------
+ 1 file changed, 48 insertions(+), 19 deletions(-)
+
+diff --git a/tests/i915/i915_pm_dc.c b/tests/i915/i915_pm_dc.c
+index d90d64cca..040cc747c 100644
+--- a/tests/i915/i915_pm_dc.c
++++ b/tests/i915/i915_pm_dc.c
+@@ -31,8 +31,11 @@
+ #include "igt_kmod.h"
+ #include "igt_psr.h"
+ #include "igt_sysfs.h"
++#include "igt_device.h"
++#include "igt_device_scan.h"
+ #include "limits.h"
+ #include "time.h"
++#include "igt_pm.h"
+ 
+ /* DC State Flags */
+ #define CHECK_DC5	(1 << 0)
+@@ -407,35 +410,59 @@ static bool support_dc6(int debugfs_fd)
+ 	return strstr(buf, "DC5 -> DC6 count");
+ }
+ 
+-static bool dc9_wait_entry(uint32_t debugfs_fd, int dc_target, int prev_dc, int seconds)
++static bool is_dgfx(data_t *data)
+ {
+-	/*
+-	 * since we do not have DC9 counter,
+-	 * so we rely on dc5/dc6 counter reset to check if display engine was in DC9.
+-	 */
+-	return igt_wait(read_dc_counter(debugfs_fd, dc_target) <
+-			prev_dc, seconds, 100);
++	char buf[4096];
++
++	igt_debugfs_simple_read(data->debugfs_fd, "i915_capabilities",
++				buf, sizeof(buf));
++	return strstr(buf, "is_dgfx: yes");
+ }
+ 
+-static void check_dc9(data_t *data, int dc_target, int prev_dc)
++static int read_runtime_suspended_time(int drm_fd)
+ {
+-	igt_assert_f(dc9_wait_entry(data->debugfs_fd, dc_target, prev_dc, 3000),
+-			"DC9 state is not achieved\n%s:\n%s\n", RPM_STATUS,
+-			data->debugfs_dump = igt_sysfs_get(data->debugfs_fd, RPM_STATUS));
++	struct pci_device *i915;
++	int ret;
++
++	i915 = igt_device_get_pci_device(drm_fd);
++	ret = igt_pm_get_runtime_suspended_time(i915);
++	igt_assert_lte(0, ret);
++
++	return ret;
+ }
+ 
+-static bool is_dgfx(data_t *data)
++static bool dc9_wait_entry(data_t *data, int dc_target, int prev_dc,
++			   int prev_rpm, int seconds)
+ {
+-	char buf[4096];
++	bool ret1 = false, ret2 = true;
+ 
+-	igt_debugfs_simple_read(data->debugfs_fd, "i915_capabilities",
+-				buf, sizeof(buf));
+-	return strstr(buf, "is_dgfx: yes");
++	/* runtime suspended residency should increment once DC9 is achieved */
++	ret1 = igt_wait(read_runtime_suspended_time(data->drm_fd) >
++			prev_rpm, seconds, 100);
++	/*
++	 * since we do not have DC9 counter,
++	 * so we rely on dc5/dc6 counter reset
++	 * to check if display engine was in DC9.
++	 * skip this condition for DG1 and DG2
++	 * platforms.
++	 */
++	if(!(IS_DG1(data->devid) || IS_DG2(data->devid)))
++		ret2 = igt_wait(read_dc_counter(data->debugfs_fd, dc_target) <
++				prev_dc, seconds, 100);
++
++	return ret1 && ret2;
++}
++
++static void check_dc9(data_t *data, int dc_target, int prev_dc, int prev_rpm)
++{
++	igt_assert_f(dc9_wait_entry(data, dc_target, prev_dc, prev_rpm, 3000),
++		     "DC9 state is not achieved\n%s:\n%s\n", RPM_STATUS,
++		     data->debugfs_dump = igt_sysfs_get(data->debugfs_fd, RPM_STATUS));
+ }
+ 
+ static void setup_dc9_dpms(data_t *data, int dc_target)
+ {
+-	int prev_dc, sysfs_fd;
++	int prev_dc, prev_rpm, sysfs_fd;
+ 
+ 	igt_require((sysfs_fd = open(KMS_HELPER, O_RDONLY)) >= 0);
+ 	kms_poll_saved_state = igt_sysfs_get_boolean(sysfs_fd, "poll");
+@@ -444,14 +471,16 @@ static void setup_dc9_dpms(data_t *data, int dc_target)
+ 	prev_dc = read_dc_counter(data->debugfs_fd, dc_target);
+ 	setup_dc_dpms(data);
+ 	dpms_off(data);
+-	igt_skip_on_f(!(igt_wait(read_dc_counter(data->debugfs_fd, dc_target) >
++	if(!(IS_DG1(data->devid) || IS_DG2(data->devid)))
++		igt_skip_on_f(!(igt_wait(read_dc_counter(data->debugfs_fd, dc_target) >
+ 				prev_dc, 3000, 100)), "Unable to enters shallow DC states\n");
+ 	prev_dc = read_dc_counter(data->debugfs_fd, dc_target);
++	prev_rpm = read_runtime_suspended_time(data->drm_fd);
+ 	dpms_on(data);
+ 	cleanup_dc_dpms(data);
+ 	dpms_off(data);
+ 	sleep(1); /* wait for counters reset*/
+-	check_dc9(data, dc_target, prev_dc);
++	check_dc9(data, dc_target, prev_dc, prev_rpm);
+ 	dpms_on(data);
+ }
+ 
+-- 
+2.25.1
