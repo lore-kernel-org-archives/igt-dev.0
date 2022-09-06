@@ -1,19 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5B74B10E0DA
- for <igt-dev@lists.freedesktop.org>; Tue,  6 Sep 2022 18:56:27 +0000 (UTC)
-Date: Tue, 6 Sep 2022 11:56:12 -0700
-From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
-To: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
-Message-ID: <YxeXzC2JjhqApkPY@unerlige-ril>
-References: <20220823183036.5270-1-umesh.nerlige.ramappa@intel.com>
- <20220823183036.5270-17-umesh.nerlige.ramappa@intel.com>
- <db5a5463-18c7-3a2a-9ecb-b07279b408c7@intel.com>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Disposition: inline
-In-Reply-To: <db5a5463-18c7-3a2a-9ecb-b07279b408c7@intel.com>
+Content-Type: multipart/alternative;
+ boundary="===============4292747314332511994=="
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t 16/23] i915/perf: Treat ticks as 64 bit
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Nidhi Gupta" <nidhi1.gupta@intel.com>
+Date: Tue, 06 Sep 2022 15:02:10 -0000
+Message-ID: <166247653025.8882.17977200400822965949@emeril.freedesktop.org>
+References: <20220906140601.23551-1-nidhi1.gupta@intel.com>
+In-Reply-To: <20220906140601.23551-1-nidhi1.gupta@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
+ =?utf-8?q?i915/kms=5Fbusy=3A_Test_Cleanup_=28rev3=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,205 +17,300 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Tue, Sep 06, 2022 at 05:08:50PM +0300, Lionel Landwerlin wrote:
->On 23/08/2022 21:30, Umesh Nerlige Ramappa wrote:
->>DG2 A0 has a buggy header in the 64 bit OAG format. Except the ticks,
->>all other fields are 32 bit. To resolve this, we will store ticks in 64
->>bit type.
->>
->>Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
->>---
->>  tests/i915/perf.c | 82 ++++++++++++++++++++++++++++++++---------------
->>  1 file changed, 56 insertions(+), 26 deletions(-)
->>
->>diff --git a/tests/i915/perf.c b/tests/i915/perf.c
->>index 3eb31f3b..8836da66 100644
->>--- a/tests/i915/perf.c
->>+++ b/tests/i915/perf.c
->>@@ -117,6 +117,7 @@ struct oa_format {
->>  	int c_off;
->>  	int n_c;
->>  	int oa_type;
->>+	bool report_hdr_64bit;
->>  };
->>  static struct oa_format hsw_oa_formats[I915_OA_FORMAT_MAX] = {
->>@@ -203,7 +204,8 @@ static struct oa_format dg2_oa_formats[I915_OA_FORMAT_MAX] = {
->>  		"A38u64_R2u64_B8_C8", .size = 448,
->>  		.a64_off = 32, .n_a64 = 38,
->>  		.b_off = 352, .n_b = 8,
->>-		.c_off = 384, .n_c = 8, .oa_type = OAG, },
->>+		.c_off = 384, .n_c = 8, .oa_type = OAG,
->>+		.report_hdr_64bit = true, },
->>  	[I915_OAR_FORMAT_A36u64_B8_C8] = {
->>  		"A36u64_B8_C8", .size = 384,
->>  		.a64_off = 32, .n_a64 = 36,
->>@@ -245,7 +247,7 @@ static bool *undefined_a_counters;
->>  static uint64_t oa_exp_1_millisec;
->>  static igt_render_copyfunc_t render_copy = NULL;
->>-static uint32_t (*read_report_ticks)(const uint32_t *report,
->>+static uint64_t (*read_report_ticks)(const uint32_t *report,
->>  				     enum drm_i915_oa_format format);
->>  static void (*sanity_check_reports)(const uint32_t *oa_report0,
->>  				    const uint32_t *oa_report1,
->>@@ -395,7 +397,7 @@ sysfs_read(enum i915_attr_id id)
->>   * C2 corresponds to a clock counter for the Haswell render basic metric set
->>   * but it's not included in all of the formats.
->>   */
->>-static uint32_t
->>+static uint64_t
->>  hsw_read_report_ticks(const uint32_t *report, enum drm_i915_oa_format format)
->>  {
->>  	uint32_t *c = (uint32_t *)(((uint8_t *)report) + get_oa_format(format).c_off);
->>@@ -405,10 +407,41 @@ hsw_read_report_ticks(const uint32_t *report, enum drm_i915_oa_format format)
->>  	return c[2];
->>  }
->>-static uint32_t
->>+static uint64_t
->>  gen8_read_report_ticks(const uint32_t *report, enum drm_i915_oa_format format)
->>  {
->>-	return report[3];
->>+
->>+	struct oa_format fmt = get_oa_format(format);
->>+
->>+	return fmt.report_hdr_64bit ? *(uint64_t *)&report[6] : report[3];
->>+}
->>+
->>+/*
->>+ * t0 is a value sampled before t1. width is number of bits used to represent
->>+ * t0/t1. Normally t1 is greater than t0. In cases where t1 < t0 use this
->>+ * helper. Since the size of t1/t0 is already 64 bits, no special handling is
->>+ * needed for width = 64.
->>+ */
->>+static uint64_t
->>+__elapsed_delta(uint64_t t1, uint64_t t0, uint32_t width)
->>+{
->>+	uint32_t max_bits = sizeof(t1) * 8;
->>+
->>+	igt_assert(width <= max_bits);
->>+
->>+	if (t1 < t0 && width != max_bits)
->>+		return ((1ULL << width) - t0) + t1;
->
->
->Should this be : ((1ULL << width) + t1) - t0 ?
->
+--===============4292747314332511994==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Both ways should yield the same result.
+== Series Details ==
 
->
->Since we know the t1 wrapped around the counter's max bit size, the 
->actual difference is the max value + whatever is in the counter minus 
->t0.
->
->
->>+
->>+	return t1 - t0;
->>+}
->>+
->>+static uint64_t
->>+oa_tick_delta(const uint32_t *report1,
->>+	      const uint32_t *report0,
->>+	      enum drm_i915_oa_format format)
->>+{
->>+	return __elapsed_delta(read_report_ticks(report1, format),
->>+			       read_report_ticks(report0, format), 32);
->>  }
->>  static void
->>@@ -638,8 +671,8 @@ hsw_sanity_check_render_basic_reports(const uint32_t *oa_report0,
->>  				      enum drm_i915_oa_format fmt)
->>  {
->>  	uint32_t time_delta = timebase_scale(oa_report1[1] - oa_report0[1]);
->>-	uint32_t clock_delta;
->>-	uint32_t max_delta;
->>+	uint64_t clock_delta;
->>+	uint64_t max_delta;
->>  	struct oa_format format = get_oa_format(fmt);
->>  	igt_assert_neq(time_delta, 0);
->>@@ -654,21 +687,19 @@ hsw_sanity_check_render_basic_reports(const uint32_t *oa_report0,
->>  		clock_delta = (gt_max_freq_mhz *
->>  			       (uint64_t)time_delta) / 1000;
->>  	} else {
->>-		uint32_t ticks0 = read_report_ticks(oa_report0, fmt);
->>-		uint32_t ticks1 = read_report_ticks(oa_report1, fmt);
->>  		uint64_t freq;
->>-		clock_delta = ticks1 - ticks0;
->>+		clock_delta = oa_tick_delta(oa_report1, oa_report0, fmt);
->>-		igt_assert_neq(clock_delta, 0);
->>+		igt_assert_neq_u64(clock_delta, 0);
->>-		freq = ((uint64_t)clock_delta * 1000) / time_delta;
->>+		freq = (clock_delta * 1000) / time_delta;
->>  		igt_debug("freq = %"PRIu64"\n", freq);
->>  		igt_assert(freq <= gt_max_freq_mhz);
->>  	}
->>-	igt_debug("clock delta = %"PRIu32"\n", clock_delta);
->>+	igt_debug("clock delta = %"PRIu64"\n", clock_delta);
->>  	/* The maximum rate for any HSW counter =
->>  	 *   clock_delta * N EUs
->>@@ -801,7 +832,8 @@ accumulate_reports(struct accumulator *accumulator,
->>  		accumulate_uint32(4, start, end, deltas + idx++);
->>  		/* clock cycles */
->>-		accumulate_uint32(12, start, end, deltas + idx++);
->>+		deltas[idx] += oa_tick_delta(end, start, accumulator->format);
->>+		idx++;
->>  	} else {
->>  		/* timestamp */
->>  		accumulate_uint32(4, start, end, deltas + idx++);
->>@@ -874,10 +906,8 @@ gen8_sanity_check_test_oa_reports(const uint32_t *oa_report0,
->>  {
->>  	struct oa_format format = get_oa_format(fmt);
->>  	uint32_t time_delta = timebase_scale(oa_report1[1] - oa_report0[1]);
->>-	uint32_t ticks0 = read_report_ticks(oa_report0, fmt);
->>-	uint32_t ticks1 = read_report_ticks(oa_report1, fmt);
->>-	uint32_t clock_delta = ticks1 - ticks0;
->>-	uint32_t max_delta;
->>+	uint64_t clock_delta = oa_tick_delta(oa_report1, oa_report0, fmt);
->>+	uint64_t max_delta;
->>  	uint64_t freq;
->>  	uint32_t *rpt0_b = (uint32_t *)(((uint8_t *)oa_report0) +
->>  					format.b_off);
->>@@ -890,10 +920,10 @@ gen8_sanity_check_test_oa_reports(const uint32_t *oa_report0,
->>  		  gen8_read_report_reason(oa_report0),
->>  		  gen8_read_report_reason(oa_report1));
->>-	freq = time_delta ? ((uint64_t)clock_delta * 1000) / time_delta : 0;
->>+	freq = time_delta ? (clock_delta * 1000) / time_delta : 0;
->>  	igt_debug("freq = %"PRIu64"\n", freq);
->>-	igt_debug("clock delta = %"PRIu32"\n", clock_delta);
->>+	igt_debug("clock delta = %"PRIu64"\n", clock_delta);
->>  	max_delta = clock_delta * intel_perf->devinfo.n_eus;
->>@@ -994,7 +1024,7 @@ gen8_sanity_check_test_oa_reports(const uint32_t *oa_report0,
->>  					    format.c_off);
->>  		uint32_t delta = c1[j] - c0[j];
->>-		igt_debug("C%d: delta = %"PRIu32", max_delta=%"PRIu32"\n",
->>+		igt_debug("C%d: delta = %"PRIu32", max_delta=%"PRIu64"\n",
->>  			  j, delta, max_delta);
->>  		igt_assert(delta <= max_delta);
->>  	}
->>@@ -1440,10 +1470,10 @@ print_reports(uint32_t *oa_report0, uint32_t *oa_report1, int fmt)
->>  	if (IS_HASWELL(devid) && format.n_c == 0) {
->>  		igt_debug("CLOCK = N/A\n");
->>  	} else {
->>-		uint32_t clock0 = read_report_ticks(oa_report0, fmt);
->>-		uint32_t clock1 = read_report_ticks(oa_report1, fmt);
->>+		uint64_t clock0 = read_report_ticks(oa_report0, fmt);
->>+		uint64_t clock1 = read_report_ticks(oa_report1, fmt);
->>-		igt_debug("CLOCK: 1st = %"PRIu32", 2nd = %"PRIu32", delta = %"PRIu32"\n",
->>+		igt_debug("CLOCK: 1st = %"PRIu64", 2nd = %"PRIu64", delta = %"PRIu64"\n",
->>  			  clock0, clock1, clock1 - clock0);
->>  	}
->>@@ -1545,9 +1575,9 @@ print_report(uint32_t *report, int fmt)
->>  	if (IS_HASWELL(devid) && format.n_c == 0) {
->>  		igt_debug("CLOCK = N/A\n");
->>  	} else {
->>-		uint32_t clock = read_report_ticks(report, fmt);
->>+		uint64_t clock = read_report_ticks(report, fmt);
->>-		igt_debug("CLOCK: %"PRIu32"\n", clock);
->>+		igt_debug("CLOCK: %"PRIu64"\n", clock);
->>  	}
->>  	if (intel_gen(devid) >= 8) {
->
->
+Series: tests/i915/kms_busy: Test Cleanup (rev3)
+URL   : https://patchwork.freedesktop.org/series/107774/
+State : success
+
+== Summary ==
+
+CI Bug Log - changes from IGT_6646 -> IGTPW_7744
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7744/index.html
+
+Participating hosts (42 -> 43)
+------------------------------
+
+  Additional (2): bat-rpls-2 fi-icl-u2 
+  Missing    (1): fi-bdw-samus 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_7744 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@gem_huc_copy@huc-copy:
+    - fi-icl-u2:          NOTRUN -> [SKIP][1] ([i915#2190])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7744/fi-icl-u2/igt@gem_huc_copy@huc-copy.html
+
+  * igt@i915_selftest@live@gem:
+    - fi-blb-e6850:       NOTRUN -> [DMESG-FAIL][2] ([i915#4528])
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7744/fi-blb-e6850/igt@i915_selftest@live@gem.html
+
+  * igt@i915_selftest@live@hangcheck:
+    - fi-hsw-4770:        [PASS][3] -> [INCOMPLETE][4] ([i915#4785])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6646/fi-hsw-4770/igt@i915_selftest@live@hangcheck.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7744/fi-hsw-4770/igt@i915_selftest@live@hangcheck.html
+
+  * igt@i915_suspend@basic-s3-without-i915:
+    - fi-bdw-5557u:       [PASS][5] -> [INCOMPLETE][6] ([i915#146] / [i915#6598] / [i915#6712])
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6646/fi-bdw-5557u/igt@i915_suspend@basic-s3-without-i915.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7744/fi-bdw-5557u/igt@i915_suspend@basic-s3-without-i915.html
+
+  * igt@kms_chamelium@hdmi-hpd-fast:
+    - fi-icl-u2:          NOTRUN -> [SKIP][7] ([fdo#111827]) +7 similar issues
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7744/fi-icl-u2/igt@kms_chamelium@hdmi-hpd-fast.html
+
+  * igt@kms_cursor_legacy@basic-busy-flip-before-cursor:
+    - fi-icl-u2:          NOTRUN -> [SKIP][8] ([i915#4103])
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7744/fi-icl-u2/igt@kms_cursor_legacy@basic-busy-flip-before-cursor.html
+
+  * igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions-varying-size:
+    - fi-bsw-kefka:       [PASS][9] -> [FAIL][10] ([i915#6298])
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6646/fi-bsw-kefka/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions-varying-size.html
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7744/fi-bsw-kefka/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions-varying-size.html
+
+  * igt@kms_cursor_legacy@basic-flip-after-cursor@atomic-transitions:
+    - fi-icl-u2:          NOTRUN -> [DMESG-WARN][11] ([i915#4890])
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7744/fi-icl-u2/igt@kms_cursor_legacy@basic-flip-after-cursor@atomic-transitions.html
+
+  * igt@runner@aborted:
+    - fi-icl-u2:          NOTRUN -> [FAIL][12] ([i915#4312] / [i915#6599])
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7744/fi-icl-u2/igt@runner@aborted.html
+
+  
+#### Possible fixes ####
+
+  * igt@gem_exec_suspend@basic-s0@smem:
+    - {bat-rplp-1}:       [DMESG-WARN][13] ([i915#2867]) -> [PASS][14]
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6646/bat-rplp-1/igt@gem_exec_suspend@basic-s0@smem.html
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7744/bat-rplp-1/igt@gem_exec_suspend@basic-s0@smem.html
+
+  * igt@i915_module_load@load:
+    - {bat-adln-1}:       [DMESG-WARN][15] ([i915#2867]) -> [PASS][16] +1 similar issue
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6646/bat-adln-1/igt@i915_module_load@load.html
+   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7744/bat-adln-1/igt@i915_module_load@load.html
+
+  * igt@i915_selftest@live@requests:
+    - fi-blb-e6850:       [DMESG-FAIL][17] ([i915#4528]) -> [PASS][18]
+   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6646/fi-blb-e6850/igt@i915_selftest@live@requests.html
+   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7744/fi-blb-e6850/igt@i915_selftest@live@requests.html
+
+  * igt@i915_selftest@live@reset:
+    - {bat-rpls-1}:       [DMESG-FAIL][19] ([i915#4983] / [i915#5828]) -> [PASS][20]
+   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6646/bat-rpls-1/igt@i915_selftest@live@reset.html
+   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7744/bat-rpls-1/igt@i915_selftest@live@reset.html
+
+  * igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions:
+    - fi-bsw-kefka:       [FAIL][21] ([i915#6298]) -> [PASS][22]
+   [21]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6646/fi-bsw-kefka/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions.html
+   [22]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7744/fi-bsw-kefka/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [fdo#111827]: https://bugs.freedesktop.org/show_bug.cgi?id=111827
+  [i915#146]: https://gitlab.freedesktop.org/drm/intel/issues/146
+  [i915#2190]: https://gitlab.freedesktop.org/drm/intel/issues/2190
+  [i915#2867]: https://gitlab.freedesktop.org/drm/intel/issues/2867
+  [i915#3282]: https://gitlab.freedesktop.org/drm/intel/issues/3282
+  [i915#4103]: https://gitlab.freedesktop.org/drm/intel/issues/4103
+  [i915#4312]: https://gitlab.freedesktop.org/drm/intel/issues/4312
+  [i915#4528]: https://gitlab.freedesktop.org/drm/intel/issues/4528
+  [i915#4785]: https://gitlab.freedesktop.org/drm/intel/issues/4785
+  [i915#4890]: https://gitlab.freedesktop.org/drm/intel/issues/4890
+  [i915#4983]: https://gitlab.freedesktop.org/drm/intel/issues/4983
+  [i915#5828]: https://gitlab.freedesktop.org/drm/intel/issues/5828
+  [i915#6298]: https://gitlab.freedesktop.org/drm/intel/issues/6298
+  [i915#6598]: https://gitlab.freedesktop.org/drm/intel/issues/6598
+  [i915#6599]: https://gitlab.freedesktop.org/drm/intel/issues/6599
+  [i915#6712]: https://gitlab.freedesktop.org/drm/intel/issues/6712
+  [i915#6730]: https://gitlab.freedesktop.org/drm/intel/issues/6730
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_6646 -> IGTPW_7744
+
+  CI-20190529: 20190529
+  CI_DRM_12074: c16b937da799ddbebf0d940aff159b96ce9fec0f @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_7744: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7744/index.html
+  IGT_6646: c1f420ae84b76079cd32ac014cfdf95b5f2922f7 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7744/index.html
+
+--===============4292747314332511994==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/i915/kms_busy: Test Cleanup (rev3)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/107774/">https://patchwork.freedesktop.org/series/107774/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7744/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7744/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_6646 -&gt; IGTPW_7744</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7744/index.html</p>
+<h2>Participating hosts (42 -&gt; 43)</h2>
+<p>Additional (2): bat-rpls-2 fi-icl-u2 <br />
+  Missing    (1): fi-bdw-samus </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_7744 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@gem_huc_copy@huc-copy:</p>
+<ul>
+<li>fi-icl-u2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7744/fi-icl-u2/igt@gem_huc_copy@huc-copy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2190">i915#2190</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@gem:</p>
+<ul>
+<li>fi-blb-e6850:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7744/fi-blb-e6850/igt@i915_selftest@live@gem.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4528">i915#4528</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@hangcheck:</p>
+<ul>
+<li>fi-hsw-4770:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6646/fi-hsw-4770/igt@i915_selftest@live@hangcheck.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7744/fi-hsw-4770/igt@i915_selftest@live@hangcheck.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4785">i915#4785</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_suspend@basic-s3-without-i915:</p>
+<ul>
+<li>fi-bdw-5557u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6646/fi-bdw-5557u/igt@i915_suspend@basic-s3-without-i915.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7744/fi-bdw-5557u/igt@i915_suspend@basic-s3-without-i915.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/146">i915#146</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/6598">i915#6598</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/6712">i915#6712</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_chamelium@hdmi-hpd-fast:</p>
+<ul>
+<li>fi-icl-u2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7744/fi-icl-u2/igt@kms_chamelium@hdmi-hpd-fast.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=111827">fdo#111827</a>) +7 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_cursor_legacy@basic-busy-flip-before-cursor:</p>
+<ul>
+<li>fi-icl-u2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7744/fi-icl-u2/igt@kms_cursor_legacy@basic-busy-flip-before-cursor.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4103">i915#4103</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions-varying-size:</p>
+<ul>
+<li>fi-bsw-kefka:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6646/fi-bsw-kefka/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions-varying-size.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7744/fi-bsw-kefka/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions-varying-size.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6298">i915#6298</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_cursor_legacy@basic-flip-after-cursor@atomic-transitions:</p>
+<ul>
+<li>fi-icl-u2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7744/fi-icl-u2/igt@kms_cursor_legacy@basic-flip-after-cursor@atomic-transitions.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4890">i915#4890</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@runner@aborted:</p>
+<ul>
+<li>fi-icl-u2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7744/fi-icl-u2/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4312">i915#4312</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/6599">i915#6599</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@gem_exec_suspend@basic-s0@smem:</p>
+<ul>
+<li>{bat-rplp-1}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6646/bat-rplp-1/igt@gem_exec_suspend@basic-s0@smem.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2867">i915#2867</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7744/bat-rplp-1/igt@gem_exec_suspend@basic-s0@smem.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_module_load@load:</p>
+<ul>
+<li>{bat-adln-1}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6646/bat-adln-1/igt@i915_module_load@load.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2867">i915#2867</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7744/bat-adln-1/igt@i915_module_load@load.html">PASS</a> +1 similar issue</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@requests:</p>
+<ul>
+<li>fi-blb-e6850:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6646/fi-blb-e6850/igt@i915_selftest@live@requests.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4528">i915#4528</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7744/fi-blb-e6850/igt@i915_selftest@live@requests.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@reset:</p>
+<ul>
+<li>{bat-rpls-1}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6646/bat-rpls-1/igt@i915_selftest@live@reset.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4983">i915#4983</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/5828">i915#5828</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7744/bat-rpls-1/igt@i915_selftest@live@reset.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions:</p>
+<ul>
+<li>fi-bsw-kefka:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6646/fi-bsw-kefka/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6298">i915#6298</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7744/fi-bsw-kefka/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_6646 -&gt; IGTPW_7744</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_12074: c16b937da799ddbebf0d940aff159b96ce9fec0f @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_7744: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7744/index.html<br />
+  IGT_6646: c1f420ae84b76079cd32ac014cfdf95b5f2922f7 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============4292747314332511994==--
