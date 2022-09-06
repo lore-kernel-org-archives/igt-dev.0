@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5716310E616
- for <igt-dev@lists.freedesktop.org>; Tue,  6 Sep 2022 10:39:01 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6F5A710E617
+ for <igt-dev@lists.freedesktop.org>; Tue,  6 Sep 2022 10:38:59 +0000 (UTC)
 From: Riana Tauro <riana.tauro@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue,  6 Sep 2022 16:08:16 +0530
-Message-Id: <20220906103818.2736508-5-riana.tauro@intel.com>
+Date: Tue,  6 Sep 2022 16:08:15 +0530
+Message-Id: <20220906103818.2736508-4-riana.tauro@intel.com>
 In-Reply-To: <20220906103818.2736508-1-riana.tauro@intel.com>
 References: <20220906103818.2736508-1-riana.tauro@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 4/6] i915/i915_pm_rc6_residency: Add energy
- support for dgfx
+Subject: [igt-dev] [PATCH i-g-t 3/6] lib/igt_power: Add hwmon interface to
+ igt_power
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,168 +24,270 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-igt_power library reads energy using hwmon interface for dgfx and
-rapl otherwise. Modify rc6-idle and rc6-fence to use igt_power interface.
+Modify igt_power to expose functions to read energy, power
+using hwmon and rapl interface
 
 Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
 Signed-off-by: Riana Tauro <riana.tauro@intel.com>
 ---
- tests/i915/i915_pm_rc6_residency.c | 63 +++++++++++++++++-------------
- 1 file changed, 36 insertions(+), 27 deletions(-)
+ lib/igt_power.c | 144 +++++++++++++++++++++++++++++++++++++++++++++++-
+ lib/igt_power.h |  70 ++++++-----------------
+ 2 files changed, 160 insertions(+), 54 deletions(-)
 
-diff --git a/tests/i915/i915_pm_rc6_residency.c b/tests/i915/i915_pm_rc6_residency.c
-index 670461c8..3554f5d7 100644
---- a/tests/i915/i915_pm_rc6_residency.c
-+++ b/tests/i915/i915_pm_rc6_residency.c
-@@ -378,26 +378,29 @@ static void rc6_idle(int i915, uint32_t ctx_id, uint64_t flags)
- 	unsigned long slept, cycles;
- 	unsigned long *done;
- 	uint64_t rc6, ts[2];
--	struct rapl rapl;
-+	struct igt_power gpu;
- 	int fd;
+diff --git a/lib/igt_power.c b/lib/igt_power.c
+index 814ad556..3b34be40 100644
+--- a/lib/igt_power.c
++++ b/lib/igt_power.c
+@@ -6,10 +6,14 @@
+ #include <unistd.h>
+ #include <inttypes.h>
  
- 	fd = open_pmu(i915, I915_PMU_RC6_RESIDENCY);
- 	igt_drop_caches_set(i915, DROP_IDLE);
- 	igt_require(__pmu_wait_for_rc6(fd));
--	gpu_power_open(&rapl);
-+	igt_power_open(i915, &gpu, "gpu");
++#include "igt.h"
++#include "igt_hwmon.h"
+ #include "igt_perf.h"
+ #include "igt_power.h"
+ #include "igt_sysfs.h"
  
- 	/* While idle check full RC6. */
--	rapl_read(&rapl, &sample[0]);
-+	igt_power_get_energy(&gpu, &sample[0]);
- 	rc6 = -__pmu_read_single(fd, &ts[0]);
- 	slept = measured_usleep(duration_ns / 1000);
- 	rc6 += __pmu_read_single(fd, &ts[1]);
- 	igt_debug("slept=%lu perf=%"PRIu64", rc6=%"PRIu64"\n",
- 		  slept, ts[1] - ts[0], rc6);
--	if (rapl_read(&rapl, &sample[1]))  {
--		double idle = power_J(&rapl, &sample[0], &sample[1]);
-+	igt_power_get_energy(&gpu, &sample[1]);
-+	if (sample[1].energy) {
-+		double idle = igt_power_get_mJ(&gpu, &sample[0], &sample[1]);
++static const char *rapl_domains[] = { "cpu", "gpu", "pkg", "ram" };
 +
- 		igt_log(IGT_LOG_DOMAIN,
--                        idle > 1e-3 && gen > 6 ? IGT_LOG_WARN : IGT_LOG_INFO,
--                        "Total energy used while idle: %.1fmJ\n", idle * 1e3);
-+			!gem_has_lmem(i915) && idle > 1e-3 && gen > 6 ? IGT_LOG_WARN : IGT_LOG_INFO,
-+			"Total energy used while idle: %.1fmJ (%.1fmW)\n",
-+			idle, (idle * 1e9) / slept);
- 	}
- 	assert_within_epsilon(rc6, ts[1] - ts[0], 5);
- 
-@@ -408,7 +411,7 @@ static void rc6_idle(int i915, uint32_t ctx_id, uint64_t flags)
- 		igt_fork(child, 1) /* Setup up a very light load */
- 			bg_load(i915, ctx_id, flags, phases[p].flags, done);
- 
--		rapl_read(&rapl, &sample[0]);
-+		igt_power_get_energy(&gpu, &sample[0]);
- 		cycles = -READ_ONCE(done[1]);
- 		rc6 = -__pmu_read_single(fd, &ts[0]);
- 		slept = measured_usleep(duration_ns / 1000);
-@@ -416,14 +419,15 @@ static void rc6_idle(int i915, uint32_t ctx_id, uint64_t flags)
- 		cycles += READ_ONCE(done[1]);
- 		igt_debug("%s: slept=%lu perf=%"PRIu64", cycles=%lu, rc6=%"PRIu64"\n",
- 			  phases[p].name, slept, ts[1] - ts[0], cycles, rc6);
--		if (rapl_read(&rapl, &sample[1]))  {
--			phases[p].power = power_J(&rapl, &sample[0], &sample[1]);
-+		igt_power_get_energy(&gpu, &sample[1]);
-+		if (sample[1].energy) {
-+			phases[p].power = igt_power_get_mJ(&gpu, &sample[0], &sample[1]);
- 			igt_info("Total energy used for %s: %.1fmJ (%.1fmW)\n",
- 				 phases[p].name,
--				 phases[p].power * 1e3,
--				 phases[p].power * 1e12 / slept);
-+				 phases[p].power,
-+				 phases[p].power * 1e9 / slept);
- 			phases[p].power /= slept; /* normalize */
--			phases[p].power *= 1e12; /* => mW */
-+			phases[p].power *= 1e9; /* => mW */
- 		}
- 
- 		*done = 1;
-@@ -440,7 +444,7 @@ static void rc6_idle(int i915, uint32_t ctx_id, uint64_t flags)
- 	munmap(done, 4096);
- 	close(fd);
- 
--	rapl_close(&rapl);
-+	igt_power_close(&gpu);
- 
- 	if (phases[1].power - phases[0].power > 10) {
- 		igt_assert_f(2 * phases[2].power - phases[0].power <= phases[1].power,
-@@ -460,7 +464,7 @@ static void rc6_fence(int i915, const intel_ctx_t *ctx)
- 	struct power_sample sample[2];
- 	unsigned long slept;
- 	uint64_t rc6, ts[2], ahnd;
--	struct rapl rapl;
-+	struct igt_power gpu;
- 	int fd;
- 
- 	igt_require_sw_sync();
-@@ -468,20 +472,23 @@ static void rc6_fence(int i915, const intel_ctx_t *ctx)
- 	fd = open_pmu(i915, I915_PMU_RC6_RESIDENCY);
- 	igt_drop_caches_set(i915, DROP_IDLE);
- 	igt_require(__pmu_wait_for_rc6(fd));
--	gpu_power_open(&rapl);
-+	igt_power_open(i915, &gpu, "gpu");
- 
- 	/* While idle check full RC6. */
--	rapl_read(&rapl, &sample[0]);
-+	igt_power_get_energy(&gpu, &sample[0]);
- 	rc6 = -__pmu_read_single(fd, &ts[0]);
- 	slept = measured_usleep(duration_ns / 1000);
- 	rc6 += __pmu_read_single(fd, &ts[1]);
- 	igt_debug("slept=%lu perf=%"PRIu64", rc6=%"PRIu64"\n",
- 		  slept, ts[1] - ts[0], rc6);
--	if (rapl_read(&rapl, &sample[1]))  {
--		double idle = power_J(&rapl, &sample[0], &sample[1]);
-+
-+	igt_power_get_energy(&gpu, &sample[1]);
-+	if (sample[1].energy) {
-+		double idle = igt_power_get_mJ(&gpu, &sample[0], &sample[1]);
- 		igt_log(IGT_LOG_DOMAIN,
--			idle > 1e-3 && gen > 6 ? IGT_LOG_WARN : IGT_LOG_INFO,
--			"Total energy used while idle: %.1fmJ\n", idle * 1e3);
-+			!gem_has_lmem(i915) && idle > 1e-3 && gen > 6 ? IGT_LOG_WARN : IGT_LOG_INFO,
-+			"Total energy used while idle: %.1fmJ (%.1fmW)\n",
-+			idle, (idle * 1e9) / slept);
- 	}
- 	assert_within_epsilon(rc6, ts[1] - ts[0], 5);
- 
-@@ -502,18 +509,20 @@ static void rc6_fence(int i915, const intel_ctx_t *ctx)
- 				    .flags = IGT_SPIN_FENCE_IN);
- 		close(fence);
- 
--		rapl_read(&rapl, &sample[0]);
-+		igt_power_get_energy(&gpu, &sample[0]);
- 		rc6 = -__pmu_read_single(fd, &ts[0]);
- 		slept = measured_usleep(duration_ns / 1000);
- 		rc6 += __pmu_read_single(fd, &ts[1]);
- 		igt_debug("%s: slept=%lu perf=%"PRIu64", rc6=%"PRIu64"\n",
- 			  e->name, slept, ts[1] - ts[0], rc6);
--		if (rapl_read(&rapl, &sample[1]))  {
--			double power = power_J(&rapl, &sample[0], &sample[1]);
-+
-+		igt_power_get_energy(&gpu, &sample[1]);
-+		if (sample[1].energy) {
-+			double power = igt_power_get_mJ(&gpu, &sample[0], &sample[1]);
- 			igt_info("Total energy used for %s: %.1fmJ (%.1fmW)\n",
- 				 e->name,
--				 power * 1e3,
--				 power * 1e12 / slept);
-+				 power,
-+				 power * 1e9 / slept);
- 		}
- 
- 		igt_assert(gem_bo_busy(i915, spin->handle));
-@@ -526,7 +535,7 @@ static void rc6_fence(int i915, const intel_ctx_t *ctx)
- 	}
- 	put_ahnd(ahnd);
- 
--	rapl_close(&rapl);
-+	igt_power_close(&gpu);
- 	close(fd);
+ static int rapl_parse(struct rapl *r, const char *str)
+ {
+ 	locale_t locale, oldlocale;
+@@ -49,7 +53,7 @@ static int rapl_parse(struct rapl *r, const char *str)
+ 	return 0;
  }
  
+-int rapl_open(struct rapl *r, const char *domain)
++static int rapl_open(struct rapl *r, const char *domain)
+ {
+ 	r->fd = rapl_parse(r, domain);
+ 	if (r->fd < 0)
+@@ -67,3 +71,141 @@ err:
+ 	errno = 0;
+ 	return r->fd;
+ }
++
++static inline bool rapl_read(struct rapl *r, struct power_sample *s)
++{
++	return read(r->fd, s, sizeof(*s)) == sizeof(*s);
++}
++
++static inline void rapl_close(struct rapl *r)
++{
++	close(r->fd);
++	r->fd = -1;
++}
++
++/**
++ * igt_power_open:
++ * @fd : device fd
++ * @igt_power : power struct
++ * @domain: rapl domain
++ *
++ * opens the hwmon/rapl fd based on domain
++ * hwmon fd - domain gpu -dgfx
++ * rapl fd - all domains - igfx
++ *
++ * Returns
++ * 0 on success, errno otherwise
++ */
++int igt_power_open(int fd, struct igt_power *p, const char *domain)
++{
++	int i;
++
++	p->hwmon_fd = -1;
++	p->rapl.fd = -1;
++
++	if (gem_has_lmem(fd)) {
++		if (strncmp(domain, "gpu", strlen("gpu")) == 0) {
++			p->hwmon_fd = igt_hwmon_open(fd);
++			if (p->hwmon_fd >= 0)
++				return 0;
++		}
++	} else {
++		for (i = 0; i < ARRAY_SIZE(rapl_domains); i++)
++			if (strncmp(domain, rapl_domains[i], strlen(rapl_domains[i])) == 0)
++				return rapl_open(&p->rapl, domain);
++	}
++
++	return -EINVAL;
++}
++
++/**
++ * igt_power_get_energy:
++ * @igt_power : power struct
++ * @power_sample: sample of energy and time
++ *
++ * Reads energy from hwmon if energy1_input file is present, else read
++ * from rapl interface
++ *
++ */
++void igt_power_get_energy(struct igt_power *power, struct power_sample *s)
++{
++	struct timespec ts;
++
++	s->energy = 0;
++	igt_assert(!clock_gettime(CLOCK_MONOTONIC, &ts));
++	s->time =  ts.tv_sec * NSEC_PER_SEC + ts.tv_nsec;
++
++	if (power->hwmon_fd >= 0) {
++		if (igt_sysfs_has_attr(power->hwmon_fd, "energy1_input"))
++			s->energy = igt_sysfs_get_u64(power->hwmon_fd, "energy1_input");
++	} else if (power->rapl.fd >= 0) {
++		rapl_read(&power->rapl, s);
++	}
++}
++
++/**
++ * igt_power_get_mJ:
++ * @igt_power : power struct
++ * @power_sample: sample of energy and time
++ *
++ * Calculates energy difference between two power samples
++ *
++ * Returns
++ * energy in mJ from hwmon/rapl
++ */
++double igt_power_get_mJ(const struct igt_power *power,
++			const struct power_sample *p0, const struct power_sample *p1)
++{
++	if (power->hwmon_fd >= 0)
++		return (p1->energy - p0->energy) * 1e-3;
++	else if (power->rapl.fd >= 0)
++		return ((p1->energy - p0->energy) *  power->rapl.scale) * 1e3;
++
++	return 0;
++}
++
++/**
++ * igt_power_get_mW:
++ * @igt_power : power struct
++ * @power_sample: sample of energy and time
++ *
++ * Calculates power
++ *
++ * Returns
++ * power in milliWatts
++ */
++double igt_power_get_mW(const struct igt_power *power,
++			const struct power_sample *p0, const struct power_sample *p1)
++{
++	return igt_power_get_mJ(power, p0, p1) / igt_power_get_s(p0, p1);
++}
++
++/**
++ * igt_power_get_s:
++ * @power_sample: sample of energy and time
++ *
++ * Returns
++ * time differnce in seconds
++ */
++double igt_power_get_s(const struct power_sample *p0,
++		       const struct power_sample *p1)
++{
++	return (p1->time - p0->time) * 1e-9;
++}
++
++/**
++ * igt_power_close:
++ * @igt_power : power struct
++ *
++ * closes hwmon/rapl fd
++ *
++ */
++void igt_power_close(struct igt_power *power)
++{
++	if (power->hwmon_fd >= 0) {
++		close(power->hwmon_fd);
++		power->hwmon_fd = -1;
++	} else if (power->rapl.fd >= 0) {
++		rapl_close(&power->rapl);
++	}
++}
+diff --git a/lib/igt_power.h b/lib/igt_power.h
+index 11ddcdee..68a05300 100644
+--- a/lib/igt_power.h
++++ b/lib/igt_power.h
+@@ -39,63 +39,27 @@ struct power_sample {
+ 	uint64_t time;
+ };
+ 
+-int rapl_open(struct rapl *r, const char *domain);
+-
+-static inline int cpu_power_open(struct rapl *r)
+-{
+-	return rapl_open(r, "cpu");
+-}
+-
+-static inline int gpu_power_open(struct rapl *r)
+-{
+-	return rapl_open(r, "gpu");
+-}
+-
+-static inline int pkg_power_open(struct rapl *r)
+-{
+-	return rapl_open(r, "pkg");
+-}
+-
+-static inline bool rapl_valid(struct rapl *r)
+-{
+-	return r->fd >= 0;
+-}
+-
+-static inline int ram_power_open(struct rapl *r)
+-{
+-	return rapl_open(r, "ram");
+-}
+-
+-static inline bool rapl_read(struct rapl *r, struct power_sample *s)
+-{
+-	return read(r->fd, s, sizeof(*s)) == sizeof(*s);
+-}
+-
+-static inline void rapl_close(struct rapl *r)
+-{
+-	close(r->fd);
+-	r->fd = -1;
+-}
++struct igt_power {
++	struct rapl rapl;
++	int hwmon_fd;
++};
+ 
+-static inline double power_J(const struct rapl *r,
+-			     const struct power_sample *p0,
+-			     const struct power_sample *p1)
+-{
+-	return (p1->energy - p0->energy) * r->scale;
+-}
++int igt_power_open(int i915, struct igt_power *p, const char *domain);
++void igt_power_close(struct igt_power *p);
+ 
+-static inline double power_s(const struct rapl *r,
+-			     const struct power_sample *p0,
+-			     const struct power_sample *p1)
++static inline bool igt_power_valid(struct igt_power *p)
+ {
+-	return (p1->time - p0->time) * 1e-9;
++	return (p->rapl.fd >= 0) || (p->hwmon_fd >= 0);
+ }
+ 
+-static inline double power_W(const struct rapl *r,
+-			     const struct power_sample *p0,
+-			     const struct power_sample *p1)
+-{
+-	return power_J(r, p0, p1) / power_s(r, p0, p1);
+-}
++void igt_power_get_energy(struct igt_power *p, struct power_sample *s);
+ 
++double igt_power_get_mJ(const struct igt_power *power,
++			const struct power_sample *p0,
++			const struct power_sample *p1);
++double igt_power_get_mW(const struct igt_power *power,
++			const struct power_sample *p0,
++			const struct power_sample *p1);
++double igt_power_get_s(const struct power_sample *p0,
++		       const struct power_sample *p1);
+ #endif /* IGT_POWER_H */
 -- 
 2.25.1
