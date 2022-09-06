@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D2EB510E614
- for <igt-dev@lists.freedesktop.org>; Tue,  6 Sep 2022 09:53:44 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2FFF410E614
+ for <igt-dev@lists.freedesktop.org>; Tue,  6 Sep 2022 09:53:51 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue,  6 Sep 2022 15:20:13 +0530
-Message-Id: <20220906095030.486152-36-bhanuprakash.modem@intel.com>
+Date: Tue,  6 Sep 2022 15:20:17 +0530
+Message-Id: <20220906095030.486152-40-bhanuprakash.modem@intel.com>
 In-Reply-To: <20220906095030.486152-1-bhanuprakash.modem@intel.com>
 References: <20220906095030.486152-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V2 35/52] tests/kms_vblank: Add support for
+Subject: [igt-dev] [i-g-t V2 39/52] tests/i915/kms_busy: Add support for
  Bigjoiner
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -32,115 +32,252 @@ Example:
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/kms_vblank.c | 53 ++++++++++++++++++++++++++++++++++++++++++++--
- 1 file changed, 51 insertions(+), 2 deletions(-)
+ tests/i915/kms_busy.c | 104 ++++++++++++++++++++++++++++--------------
+ 1 file changed, 70 insertions(+), 34 deletions(-)
 
-diff --git a/tests/kms_vblank.c b/tests/kms_vblank.c
-index e65e8522..1d7cd135 100644
---- a/tests/kms_vblank.c
-+++ b/tests/kms_vblank.c
-@@ -175,6 +175,21 @@ static void run_test(data_t *data, void (*testfunc)(data_t *, int, int))
- 	cleanup_crtc(data, fd, output);
+diff --git a/tests/i915/kms_busy.c b/tests/i915/kms_busy.c
+index 99a07c2a..15642b99 100644
+--- a/tests/i915/kms_busy.c
++++ b/tests/i915/kms_busy.c
+@@ -32,15 +32,12 @@ IGT_TEST_DESCRIPTION("Basic check of KMS ABI with busy framebuffers.");
+ 
+ static bool all_pipes = false;
+ 
+-static igt_output_t *
+-set_fb_on_crtc(igt_display_t *dpy, int pipe, struct igt_fb *fb)
++static void
++set_fb_on_crtc(igt_display_t *dpy, int pipe,
++	       igt_output_t *output, struct igt_fb *fb)
+ {
+ 	drmModeModeInfoPtr mode;
+ 	igt_plane_t *primary;
+-	igt_output_t *output;
+-
+-	output = igt_get_single_output_for_pipe(dpy, pipe);
+-	igt_require(output);
+ 
+ 	igt_output_set_pipe(output, pipe);
+ 	mode = igt_output_get_mode(output);
+@@ -51,8 +48,6 @@ set_fb_on_crtc(igt_display_t *dpy, int pipe, struct igt_fb *fb)
+ 
+ 	primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
+ 	igt_plane_set_fb(primary, fb);
+-
+-	return output;
+ }
+ 
+ static void do_cleanup_display(igt_display_t *dpy)
+@@ -136,18 +131,23 @@ static void flip_to_fb(igt_display_t *dpy, int pipe,
+ 	put_ahnd(ahnd);
+ }
+ 
+-static void test_flip(igt_display_t *dpy, int pipe, bool modeset)
++static void test_flip(igt_display_t *dpy, int pipe,
++		      igt_output_t *output, bool modeset)
+ {
+ 	struct igt_fb fb[2];
+ 	int warmup[] = { 0, 1, 0, -1 };
+ 	struct timespec tv = {};
+-	igt_output_t *output;
+ 	int timeout;
+ 
+ 	if (modeset)
+ 		igt_require(dpy->is_atomic);
+ 
+-	output = set_fb_on_crtc(dpy, pipe, &fb[0]);
++	igt_info("Using (pipe %s + %s) to run the subtest.\n",
++		 kmstest_pipe_name(pipe), igt_output_name(output));
++
++	igt_display_reset(dpy);
++
++	set_fb_on_crtc(dpy, pipe, output, &fb[0]);
+ 	igt_display_commit2(dpy, COMMIT_LEGACY);
+ 
+ 	igt_create_pattern_fb(dpy->drm_fd,
+@@ -224,13 +224,18 @@ static void test_atomic_commit_hang(igt_display_t *dpy, igt_plane_t *primary,
+ }
+ 
+ static void test_hang(igt_display_t *dpy,
+-		      enum pipe pipe, bool modeset, bool hang_newfb)
++		      enum pipe pipe, igt_output_t *output,
++		      bool modeset, bool hang_newfb)
+ {
+ 	struct igt_fb fb[2];
+-	igt_output_t *output;
+ 	igt_plane_t *primary;
+ 
+-	output = set_fb_on_crtc(dpy, pipe, &fb[0]);
++	igt_info("Using (pipe %s + %s) to run the subtest.\n",
++		 kmstest_pipe_name(pipe), igt_output_name(output));
++
++	igt_display_reset(dpy);
++
++	set_fb_on_crtc(dpy, pipe, output, &fb[0]);
+ 	igt_display_commit2(dpy, COMMIT_ATOMIC);
+ 	primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
+ 
+@@ -265,16 +270,22 @@ static void test_hang(igt_display_t *dpy,
+ 	igt_remove_fb(dpy->drm_fd, &fb[0]);
+ }
+ 
+-static void test_pageflip_modeset_hang(igt_display_t *dpy, enum pipe pipe)
++static void
++test_pageflip_modeset_hang(igt_display_t *dpy,
++			   igt_output_t *output, enum pipe pipe)
+ {
+ 	struct igt_fb fb;
+ 	struct drm_event_vblank ev;
+-	igt_output_t *output;
+ 	igt_plane_t *primary;
+ 	igt_spin_t *t;
+ 	uint64_t ahnd = get_reloc_ahnd(dpy->drm_fd, 0);
+ 
+-	output = set_fb_on_crtc(dpy, pipe, &fb);
++	igt_info("Using (pipe %s + %s) to run the subtest.\n",
++		 kmstest_pipe_name(pipe), igt_output_name(output));
++
++	igt_display_reset(dpy);
++
++	set_fb_on_crtc(dpy, pipe, output, &fb);
+ 	primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
+ 
+ 	igt_display_commit2(dpy, dpy->is_atomic ? COMMIT_ATOMIC : COMMIT_LEGACY);
+@@ -299,6 +310,21 @@ static void test_pageflip_modeset_hang(igt_display_t *dpy, enum pipe pipe)
+ 	igt_remove_fb(dpy->drm_fd, &fb);
  }
  
 +static bool
-+is_valid_combo(igt_display_t *display, enum pipe pipe, igt_output_t *output)
++is_valid_combo(igt_display_t *dpy, igt_output_t *output, enum pipe pipe)
 +{
 +	bool ret = true;
 +
-+	igt_display_reset(display);
++	igt_display_reset(dpy);
 +
 +	igt_output_set_pipe(output, pipe);
-+	if (!igt_test_constraint(display))
++	if (!igt_test_constraint(dpy))
 +		ret = false;
 +	igt_output_set_pipe(output, PIPE_NONE);
 +
 +	return ret;
 +}
 +
- static void crtc_id_subtest(data_t *data, int fd)
+ static int opt_handler(int opt, int opt_index, void *data)
  {
- 	igt_display_t *display = &data->display;
-@@ -188,6 +203,15 @@ static void crtc_id_subtest(data_t *data, int fd)
- 		uint64_t val;
- 		union drm_wait_vblank vbl;
+ 	switch (opt) {
+@@ -319,7 +345,8 @@ igt_main_args("e", NULL, help_str, opt_handler, NULL)
+ {
+ 	igt_display_t display = { .drm_fd = -1, .n_pipes = IGT_MAX_PIPES };
  
-+		igt_display_reset(display);
-+
-+		igt_output_set_pipe(output, p);
-+		if (!igt_test_constraint(display))
-+			continue;
-+
-+		igt_info("Using (pipe %s + %s) to run the subtest.\n",
-+			 kmstest_pipe_name(p), igt_output_name(output));
-+
- 		crtc_id = display->pipes[p].crtc_id;
- 		if (drmGetCap(display->drm_fd, DRM_CAP_CRTC_IN_VBLANK_EVENT, &val) == 0)
- 			expected_crtc_id = crtc_id;
-@@ -449,10 +473,18 @@ static void run_subtests_for_pipe(data_t *data)
- 			igt_subtest_f("pipe-%s-%s-%s",
- 				      kmstest_pipe_name(data->pipe),
- 				      f->name, m->name) {
-+				int found = 0;
-+
- 				for_each_valid_output_on_pipe(&data->display, data->pipe, data->output) {
-+					if (!is_valid_combo(&data->display, data->pipe, data->output))
-+						continue;
-+
- 					data->flags = m->flags | NOHANG;
- 					run_test(data, f->func);
-+
-+					found++;
- 				}
-+				igt_require_f(found, "No valid pipe/output combo found.\n");
- 			}
+-	enum pipe active_pipes[IGT_MAX_PIPES];
++	enum pipe pipe, active_pipes[IGT_MAX_PIPES];
++	igt_output_t *output;
+ 	uint32_t last_pipe = 0;
+ 	int i;
+ 	struct {
+@@ -338,7 +365,6 @@ igt_main_args("e", NULL, help_str, opt_handler, NULL)
  
- 			/* Skip the -hang version if NOHANG flag is set */
-@@ -464,13 +496,20 @@ static void run_subtests_for_pipe(data_t *data)
- 				      kmstest_pipe_name(data->pipe),
- 				      f->name, m->name) {
- 				igt_hang_t hang;
-+				int found = 0;
+ 	igt_fixture {
+ 		int fd = drm_open_driver_master(DRIVER_INTEL);
+-		enum pipe pipe;
  
- 				hang = igt_allow_hang(data->display.drm_fd, 0, 0);
- 				for_each_valid_output_on_pipe(&data->display, data->pipe, data->output) {
-+					if (!is_valid_combo(&data->display, data->pipe, data->output))
-+						continue;
-+
- 					data->flags = m->flags;
- 					run_test(data, f->func);
-+
-+					found++;
- 				}
- 				igt_disallow_hang(data->display.drm_fd, hang);
-+				igt_require_f(found, "No valid pipe/output combo found.\n");
- 			}
+ 		igt_require_gem(fd);
+ 		gem_require_mmap_device_coherent(fd);
+@@ -358,63 +384,72 @@ igt_main_args("e", NULL, help_str, opt_handler, NULL)
+ 
+ 	igt_describe("Test for basic check of KMS ABI with busy framebuffers.");
+ 	igt_subtest_with_dynamic("basic") { /* just run on the first pipe */
+-		enum pipe pipe;
++		for_each_pipe_with_single_output(&display, pipe, output) {
++			if (!is_valid_combo(&display, output, pipe))
++				continue;
+ 
+-		for_each_pipe(&display, pipe) {
+ 			igt_dynamic("flip")
+-				test_flip(&display, pipe, false);
++				test_flip(&display, pipe, output, false);
+ 			igt_dynamic("modeset")
+-				test_flip(&display, pipe, true);
++				test_flip(&display, pipe, output, true);
+ 			break;
  		}
  	}
-@@ -482,12 +521,22 @@ static void invalid_subtest(data_t *data, int fd)
- 	unsigned long valid_flags;
- 	igt_display_t* display = &data->display;
- 	enum pipe pipe = 0;
--	igt_output_t* output = igt_get_single_output_for_pipe(display, pipe);
-+	igt_output_t *output;
-+
-+	igt_display_reset(display);
-+
-+	output = igt_get_single_output_for_pipe(display, pipe);
-+	igt_require(output);
  
- 	data->pipe = pipe;
- 	data->output = output;
-+
- 	igt_output_set_pipe(output, pipe);
--	igt_display_require_output_on_pipe(display, pipe);
-+	igt_require(igt_test_constraint(display));
-+
-+	igt_info("Using (pipe %s + %s) to run the subtest.\n",
-+		 kmstest_pipe_name(pipe), igt_output_name(output));
-+
- 	prepare_crtc(data, fd, output);
+ 	igt_subtest_with_dynamic("basic-hang") {
+-		enum pipe pipe;
+ 		igt_hang_t hang = igt_allow_hang(display.drm_fd, 0, 0);
+ 		errno = 0;
  
- 	/* First check all is well with a simple query */
+-		for_each_pipe(&display, pipe) {
++		for_each_pipe_with_single_output(&display, pipe, output) {
++			if (!is_valid_combo(&display, output, pipe))
++				continue;
++
+ 			if (!all_pipes && pipe != active_pipes[0] &&
+ 					  pipe != active_pipes[last_pipe])
+ 				continue;
+ 
+ 			igt_dynamic_f("flip-pipe-%s", kmstest_pipe_name(pipe))
+-				test_flip(&display, pipe, false);
++				test_flip(&display, pipe, output, false);
+ 			igt_dynamic_f("modeset-pipe-%s", kmstest_pipe_name(pipe))
+-				test_flip(&display, pipe, true);
++				test_flip(&display, pipe, output, true);
+ 		}
+ 
+ 		igt_disallow_hang(display.drm_fd, hang);
+ 	}
+ 
+ 	igt_subtest_with_dynamic("extended-pageflip-modeset-hang-oldfb") {
+-		enum pipe pipe;
+ 		igt_hang_t hang = igt_allow_hang(display.drm_fd, 0, 0);
+ 		errno = 0;
+ 
+-		for_each_pipe(&display, pipe) {
++		for_each_pipe_with_single_output(&display, pipe, output) {
++			if (!is_valid_combo(&display, output, pipe))
++				continue;
++
+ 			if (!all_pipes && pipe != active_pipes[0] &&
+ 					  pipe != active_pipes[last_pipe])
+ 				continue;
+ 
+ 			igt_dynamic_f("pipe-%s", kmstest_pipe_name(pipe))
+-				test_pageflip_modeset_hang(&display, pipe);
++				test_pageflip_modeset_hang(&display, output, pipe);
+ 		}
+ 
+ 		igt_disallow_hang(display.drm_fd, hang);
+ 	}
+ 
+ 	for (i = 0; i < sizeof(tests) / sizeof (tests[0]); i++) {
++		igt_fixture
++			igt_require(display.is_atomic);
++
+ 		igt_subtest_with_dynamic(tests[i].name) {
+-			enum pipe pipe;
+ 			igt_hang_t hang;
+ 			errno = 0;
+ 
+-			igt_require(display.is_atomic);
+ 			hang = igt_allow_hang(display.drm_fd, 0, 0);
+ 
+-			for_each_pipe(&display, pipe) {
++			for_each_pipe_with_single_output(&display, pipe, output) {
++				if (!is_valid_combo(&display, output, pipe))
++					continue;
++
+ 				if (!all_pipes && pipe != active_pipes[0] &&
+ 						  pipe != active_pipes[last_pipe])
+ 					continue;
+@@ -423,7 +458,8 @@ igt_main_args("e", NULL, help_str, opt_handler, NULL)
+ 					if (tests[i].reset)
+ 						igt_set_module_param_int(display.drm_fd, "force_reset_modeset_test", 1);
+ 
+-					test_hang(&display, pipe, tests[i].modeset, tests[i].hang_newfb);
++					test_hang(&display, pipe, output,
++						  tests[i].modeset, tests[i].hang_newfb);
+ 
+ 					if (tests[i].reset)
+ 						igt_set_module_param_int(display.drm_fd, "force_reset_modeset_test", 0);
 -- 
 2.35.1
