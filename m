@@ -1,17 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B7BBE89F38
- for <igt-dev@lists.freedesktop.org>; Tue,  6 Sep 2022 13:11:32 +0000 (UTC)
-From: Swati Sharma <swati2.sharma@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Tue,  6 Sep 2022 18:42:44 +0530
-Message-Id: <20220906131245.4757-3-swati2.sharma@intel.com>
-In-Reply-To: <20220906131245.4757-1-swati2.sharma@intel.com>
-References: <20220906131245.4757-1-swati2.sharma@intel.com>
+Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D4D5C10E660
+ for <igt-dev@lists.freedesktop.org>; Tue,  6 Sep 2022 13:13:22 +0000 (UTC)
+Message-ID: <c2ab886c-3f4b-d532-02da-5d80fc700661@intel.com>
+Date: Tue, 6 Sep 2022 16:13:11 +0300
+Content-Language: en-US
+To: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>,
+ <igt-dev@lists.freedesktop.org>
+References: <20220823183036.5270-1-umesh.nerlige.ramappa@intel.com>
+ <20220823183036.5270-11-umesh.nerlige.ramappa@intel.com>
+From: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
+In-Reply-To: <20220823183036.5270-11-umesh.nerlige.ramappa@intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v2 2/3] lib/pm: Add helper functions to get
- runtime suspended time
+Subject: Re: [igt-dev] [PATCH i-g-t 10/23] i915/perf: Use gt in perf tests
+ and lib
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,84 +27,150 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Added helper function to get runtime suspended time.
-This will be used to extend dc9 validation.
+On 23/08/2022 21:30, Umesh Nerlige Ramappa wrote:
+> Enable perf tests to use gt information for sysfs attributes.
+>
+> Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+Reviewed-by: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
+> ---
+>   lib/i915/perf.c   | 36 ++++++++++++++++++++++++++++++++++--
+>   tests/i915/perf.c | 27 ++++++++++++++++++++-------
+>   2 files changed, 54 insertions(+), 9 deletions(-)
+>
+> diff --git a/lib/i915/perf.c b/lib/i915/perf.c
+> index 7349a460..3f131aaa 100644
+> --- a/lib/i915/perf.c
+> +++ b/lib/i915/perf.c
+> @@ -409,6 +409,35 @@ open_master_sysfs_dir(int drm_fd)
+>   	return sysfs;
+>   }
+>   
+> +typedef enum {
+> +	RPS_MIN_FREQ_MHZ,
+> +	RPS_MAX_FREQ_MHZ,
+> +
+> +	RPS_MAX_ATTR,
+> +} intel_sysfs_attr_id;
+> +
+> +static const char *intel_sysfs_attr_name[2][RPS_MAX_ATTR] =
+> +{
+> +	{
+> +		"gt_min_freq_mhz",
+> +		"gt_max_freq_mhz",
+> +	},
+> +	{
+> +		"gt/gt0/rps_min_freq_mhz",
+> +		"gt/gt0/rps_max_freq_mhz",
+> +	},
+> +};
+> +
+> +static const char *
+> +intel_sysfs_attr_id_to_name(int sysfs_dirfd, intel_sysfs_attr_id id)
+> +{
+> +	assert(id < RPS_MAX_ATTR);
+> +
+> +	return !faccessat(sysfs_dirfd, "gt", O_RDONLY, 0) ?
+> +		intel_sysfs_attr_name[1][id] :
+> +		intel_sysfs_attr_name[0][id];
+> +}
+> +
+>   struct intel_perf *
+>   intel_perf_for_fd(int drm_fd)
+>   {
+> @@ -424,8 +453,11 @@ intel_perf_for_fd(int drm_fd)
+>   	if (sysfs_dir_fd < 0)
+>   		return NULL;
+>   
+> -	if (!read_sysfs(sysfs_dir_fd, "gt_min_freq_mhz", &gt_min_freq) ||
+> -	    !read_sysfs(sysfs_dir_fd, "gt_max_freq_mhz", &gt_max_freq)) {
+> +#define read_sysfs_rps(fd, id, value) \
+> +	read_sysfs(fd, intel_sysfs_attr_id_to_name(fd, id), value)
+> +
+> +	if (!read_sysfs_rps(sysfs_dir_fd, RPS_MIN_FREQ_MHZ, &gt_min_freq) ||
+> +	    !read_sysfs_rps(sysfs_dir_fd, RPS_MAX_FREQ_MHZ, &gt_max_freq)) {
+>   		close(sysfs_dir_fd);
+>   		return NULL;
+>   	}
+> diff --git a/tests/i915/perf.c b/tests/i915/perf.c
+> index c120c898..89aa4931 100644
+> --- a/tests/i915/perf.c
+> +++ b/tests/i915/perf.c
+> @@ -347,11 +347,11 @@ try_sysfs_read_u64(const char *path, uint64_t *val)
+>   }
+>   
+>   static unsigned long
+> -sysfs_read(const char *path)
+> +sysfs_read(enum i915_attr_id id)
+>   {
+>   	unsigned long value;
+>   
+> -	igt_assert(igt_sysfs_scanf(sysfs, path, "%lu", &value) == 1);
+> +	igt_assert(igt_sysfs_rps_scanf(sysfs, id, "%lu", &value) == 1);
+>   
+>   	return value;
+>   }
+> @@ -4234,7 +4234,7 @@ gen12_test_single_ctx_render_target_writes_a_counter(void)
+>   
+>   static unsigned long rc6_residency_ms(void)
+>   {
+> -	return sysfs_read("power/rc6_residency_ms");
+> +	return sysfs_read(RC6_RESIDENCY_MS);
+>   }
+>   
+>   static void
+> @@ -4257,7 +4257,7 @@ test_rc6_disable(void)
+>   	unsigned long rc6_start, rc6_end, rc6_enabled;
+>   
+>   	rc6_enabled = 0;
+> -	igt_sysfs_scanf(sysfs, "power/rc6_enable", "%lu", &rc6_enabled);
+> +	igt_sysfs_rps_scanf(sysfs, RC6_ENABLE, "%lu", &rc6_enabled);
+>   	igt_require(rc6_enabled);
+>   
+>   	/* Verify rc6 is functional by measuring residency while idle */
+> @@ -4894,6 +4894,19 @@ done:
+>   	return ref_count;
+>   }
+>   
+> +static int perf_sysfs_open(int i915)
+> +{
+> +	int dirfd, gt;
+> +
+> +	/* use the first available sysfs interface */
+> +	for_each_sysfs_gt_dirfd(i915, dirfd, gt)
+> +		break;
+> +
+> +	igt_assert(dirfd != -1);
+> +
+> +	return dirfd;
+> +}
+> +
+>   /* check that an open i915 perf stream holds a reference on the drm i915 module
+>    * including in the corner case where the original drm fd has been closed.
+>    */
+> @@ -4929,7 +4942,7 @@ test_i915_ref_count(void)
+>   	drm_fd = __drm_open_driver(DRIVER_INTEL);
+>   	igt_require_intel(drm_fd);
+>   	devid = intel_get_drm_devid(drm_fd);
+> -	sysfs = igt_sysfs_open(drm_fd);
+> +	sysfs = perf_sysfs_open(drm_fd);
+>   
+>   	/* Note: these global variables are only initialized after calling
+>   	 * init_sys_info()...
+> @@ -5031,14 +5044,14 @@ igt_main
+>   		igt_require_gem(drm_fd);
+>   
+>   		devid = intel_get_drm_devid(drm_fd);
+> -		sysfs = igt_sysfs_open(drm_fd);
+> +		sysfs = perf_sysfs_open(drm_fd);
+>   
+>   		igt_require(init_sys_info());
+>   
+>   		write_u64_file("/proc/sys/dev/i915/perf_stream_paranoid", 1);
+>   		write_u64_file("/proc/sys/dev/i915/oa_max_sample_rate", 100000);
+>   
+> -		gt_max_freq_mhz = sysfs_read("gt_boost_freq_mhz");
+> +		gt_max_freq_mhz = sysfs_read(RPS_RP0_FREQ_MHZ);
+>   
+>   		render_copy = igt_get_render_copyfunc(devid);
+>   		igt_require_f(render_copy, "no render-copy function\n");
 
-v2: -created separate helper igt_pm_get_power_attr_fd_rdonly() (imre)
-    -fixed igt_pm_get_runtime_suspended_time() (imre)
-
-Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
----
- lib/igt_pm.c | 36 ++++++++++++++++++++++++++++++++++--
- lib/igt_pm.h |  1 +
- 2 files changed, 35 insertions(+), 2 deletions(-)
-
-diff --git a/lib/igt_pm.c b/lib/igt_pm.c
-index 99251b40b..65f1fc866 100644
---- a/lib/igt_pm.c
-+++ b/lib/igt_pm.c
-@@ -953,13 +953,27 @@ static int igt_pm_get_power_attr_fd(struct pci_device *pci_dev, const char *attr
- 	return fd;
- }
- 
--static bool igt_pm_read_power_attr(int fd, char *attr, int len, bool autosuspend_delay)
-+static int igt_pm_get_power_attr_fd_rdonly(struct pci_device *pci_dev, const char *attr)
-+{
-+	char name[PATH_MAX];
-+	int fd;
-+
-+	snprintf(name, PATH_MAX, "/sys/bus/pci/devices/%04x:%02x:%02x.%01x/power/%s",
-+		 pci_dev->domain, pci_dev->bus, pci_dev->dev, pci_dev->func, attr);
-+
-+	fd = open(name, O_RDONLY);
-+	igt_assert_f(fd >= 0, "Can't open %s\n", attr);
-+
-+	return fd;
-+}
-+
-+static bool igt_pm_read_power_attr(int fd, char *attr, int len, bool power_attr)
- {
- 	int size;
- 
- 	size = read(fd, attr, len - 1);
- 
--	if (autosuspend_delay) {
-+	if (power_attr) {
- 		if (size < 0 && errno == EIO)
- 			return false;
- 	} else {
-@@ -1219,3 +1233,21 @@ bool i915_is_slpc_enabled(int fd)
- 	else
- 		return strstr(buf, "SLPC state: running");
- }
-+
-+int igt_pm_get_runtime_suspended_time(struct pci_device *pci_dev)
-+{
-+	char time_str[64];
-+	int time, time_fd;
-+
-+	time_fd = igt_pm_get_power_attr_fd_rdonly(pci_dev, "runtime_suspended_time");
-+	if (igt_pm_read_power_attr(time_fd, time_str, 64, false)){
-+		igt_assert(sscanf(time_str, "%d", &time) > 0);
-+
-+		igt_info("runtime suspend time for PCI '%04x:%02x:%02x.%01x' = %d\n",
-+			  pci_dev->domain, pci_dev->bus, pci_dev->dev, pci_dev->func, time);
-+
-+		return time;
-+	}
-+
-+	return -1;
-+}
-diff --git a/lib/igt_pm.h b/lib/igt_pm.h
-index cbbde12b5..a7d621366 100644
---- a/lib/igt_pm.h
-+++ b/lib/igt_pm.h
-@@ -80,5 +80,6 @@ void igt_pm_setup_pci_card_runtime_pm(struct pci_device *pci_dev);
- void igt_pm_restore_pci_card_runtime_pm(void);
- void igt_pm_print_pci_card_runtime_status(void);
- bool i915_is_slpc_enabled(int fd);
-+int igt_pm_get_runtime_suspended_time(struct pci_device *pci_dev);
- 
- #endif /* IGT_PM_H */
--- 
-2.25.1
