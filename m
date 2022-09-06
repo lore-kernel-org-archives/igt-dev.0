@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 43C1310E65F
- for <igt-dev@lists.freedesktop.org>; Tue,  6 Sep 2022 12:30:12 +0000 (UTC)
+Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 45B3910E661
+ for <igt-dev@lists.freedesktop.org>; Tue,  6 Sep 2022 12:30:19 +0000 (UTC)
 From: Ville Syrjala <ville.syrjala@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue,  6 Sep 2022 15:29:35 +0300
-Message-Id: <20220906122944.8838-9-ville.syrjala@linux.intel.com>
+Date: Tue,  6 Sep 2022 15:29:37 +0300
+Message-Id: <20220906122944.8838-11-ville.syrjala@linux.intel.com>
 In-Reply-To: <20220906122944.8838-1-ville.syrjala@linux.intel.com>
 References: <20220906122944.8838-1-ville.syrjala@linux.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v2 08/17] tools/intel_vbt_decode: Extract
- panel_fitting[]
+Subject: [igt-dev] [PATCH i-g-t v2 10/17] tools/intel_vbt_decode: Decode the
+ "use VBT vswing tables" flag
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,53 +26,25 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-Extract the panel_fitting string representation into an array.
-Less clutter in the code this way.
+Decode the "Use VBT swging tables" bit. Note that we don't decode
+the actual tables so far.
 
 Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
 ---
- tools/intel_vbt_decode.c | 24 +++++++++---------------
- 1 file changed, 9 insertions(+), 15 deletions(-)
+ tools/intel_vbt_decode.c | 1 +
+ 1 file changed, 1 insertion(+)
 
 diff --git a/tools/intel_vbt_decode.c b/tools/intel_vbt_decode.c
-index 7babd8b6a1a0..74e6fcd6b833 100644
+index dc8d0c4fc57a..d01d89f9aa27 100644
 --- a/tools/intel_vbt_decode.c
 +++ b/tools/intel_vbt_decode.c
-@@ -531,26 +531,20 @@ static int decode_ssc_freq(struct context *context, bool alternate)
- 	}
- }
- 
-+static const char * const panel_fitting[] = {
-+	[0] = "disabled",
-+	[1] = "text only",
-+	[2] = "graphics only",
-+	[3] = "text & graphics",
-+};
-+
- static void dump_general_features(struct context *context,
- 				  const struct bdb_block *block)
- {
- 	const struct bdb_general_features *features = block_data(block);
- 
--	printf("\tPanel fitting: ");
--	switch (features->panel_fitting) {
--	case 0:
--		printf("disabled\n");
--		break;
--	case 1:
--		printf("text only\n");
--		break;
--	case 2:
--		printf("graphics only\n");
--		break;
--	case 3:
--		printf("text & graphics\n");
--		break;
--	}
-+	printf("\tPanel fitting: %s (0x%x)\n",
-+	       panel_fitting[features->panel_fitting], features->panel_fitting);
- 	printf("\tFlexaim: %s\n", YESNO(features->flexaim));
- 	printf("\tMessage: %s\n", YESNO(features->msg_enable));
- 	printf("\tClear screen: %d\n", features->clear_screen);
+@@ -968,6 +968,7 @@ static void dump_child_device(struct context *context,
+ 		printf("\t\tOnboard LSPCON: %s\n", YESNO(child->lspcon));
+ 		printf("\t\tIboost enable: %s\n", YESNO(child->iboost));
+ 		printf("\t\tHPD sense invert: %s\n", YESNO(child->hpd_invert));
++		printf("\t\tUse VBT vswing/premph table: %s\n", YESNO(child->use_vbt_vswing));
+ 		printf("\t\tHDMI compatible? %s\n", YESNO(child->hdmi_support));
+ 		printf("\t\tDP compatible? %s\n", YESNO(child->dp_support));
+ 		printf("\t\tTMDS compatible? %s\n", YESNO(child->tmds_support));
 -- 
 2.35.1
