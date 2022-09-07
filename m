@@ -1,14 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id EDBAD10E761
- for <igt-dev@lists.freedesktop.org>; Wed,  7 Sep 2022 13:20:48 +0000 (UTC)
-From: Nidhi Gupta <nidhi1.gupta@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Wed,  7 Sep 2022 18:45:45 +0530
-Message-Id: <20220907131545.31598-1-nidhi1.gupta@intel.com>
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BA93E10E767
+ for <igt-dev@lists.freedesktop.org>; Wed,  7 Sep 2022 13:57:14 +0000 (UTC)
+From: "Hogander, Jouni" <jouni.hogander@intel.com>
+To: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Gupta,
+ Nidhi1" <nidhi1.gupta@intel.com>
+Date: Wed, 7 Sep 2022 13:57:11 +0000
+Message-ID: <efbccbc9ef00691039616bfe0014205815233eab.camel@intel.com>
+References: <20220907131545.31598-1-nidhi1.gupta@intel.com>
+In-Reply-To: <20220907131545.31598-1-nidhi1.gupta@intel.com>
+Content-Language: en-US
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <B2153F09E56D4A41BB84A9320A3E0127@namprd11.prod.outlook.com>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [RFC,
+Subject: Re: [igt-dev] [RFC,
  i-g-t] tests/i915/i915_pm_backlight: Add new subtest to validate
  dual panel backlight
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
@@ -18,132 +24,107 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Nidhi Gupta <nidhi1.gupta@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Added a new subtest as a part of i915_pm_backlight to validate
-dual panel support.
-
-Signed-off-by: Nidhi Gupta <nidhi1.gupta@intel.com>
----
- tests/i915/i915_pm_backlight.c | 74 +++++++++++++++++++++++++++++++++-
- 1 file changed, 73 insertions(+), 1 deletion(-)
-
-diff --git a/tests/i915/i915_pm_backlight.c b/tests/i915/i915_pm_backlight.c
-index cafae7f7..d4b25f3f 100644
---- a/tests/i915/i915_pm_backlight.c
-+++ b/tests/i915/i915_pm_backlight.c
-@@ -42,6 +42,7 @@ struct context {
- 
- #define TOLERANCE 5 /* percent */
- #define BACKLIGHT_PATH "/sys/class/backlight/intel_backlight"
-+#define BACKLIGHT_PATH_DUAL "/sys/class/backlight/card0-eDP-2-backlight"
- 
- #define FADESTEPS 10
- #define FADESPEED 100 /* milliseconds between steps */
-@@ -94,7 +95,52 @@ static int backlight_write(int value, const char *fname)
- 
- 	return 0;
- }
-+static int backlight_read_dual(int *result, const char *fname)
-+{
-+        int fd;
-+        char full[PATH_MAX];
-+        char dst[64];
-+        int r, e;
-+
-+        igt_assert(snprintf(full, PATH_MAX, "%s/%s", BACKLIGHT_PATH_DUAL, fname) < PATH_MAX);
-+
-+        fd = open(full, O_RDONLY);
-+        if (fd == -1)
-+                return -errno;
-+
-+        r = read(fd, dst, sizeof(dst));
-+        e = errno;
-+        close(fd);
-+
-+        if (r < 0)
-+                return -e;
-+
-+        errno = 0;
-+        *result = strtol(dst, NULL, 10);
-+        return errno;
-+}
-+
-+static int backlight_write_dual(int value, const char *fname)
-+{
-+        int fd;
-+        char full[PATH_MAX];
-+        char src[64];
-+        int len;
-+
-+        igt_assert(snprintf(full, PATH_MAX, "%s/%s", BACKLIGHT_PATH_DUAL, fname) < PATH_MAX);
-+        fd = open(full, O_WRONLY);
-+        if (fd == -1)
-+                return -errno;
- 
-+        len = snprintf(src, sizeof(src), "%i", value);
-+        len = write(fd, src, len);
-+        close(fd);
-+
-+        if (len < 0)
-+                return len;
-+
-+        return 0;
-+}
- static void test_and_verify(struct context *context, int val)
- {
- 	const int tolerance = val * TOLERANCE / 100;
-@@ -112,7 +158,6 @@ static void test_and_verify(struct context *context, int val)
- 		     "actual_brightness [%d] did not match expected brightness [%d +- %d]\n",
- 		     result, val, tolerance);
- }
--
- static void test_brightness(struct context *context)
- {
- 	test_and_verify(context, 0);
-@@ -120,6 +165,31 @@ static void test_brightness(struct context *context)
- 	test_and_verify(context, context->max / 2);
- }
- 
-+static void test_and_verify_dual(struct context *context, int val)
-+{
-+        const int tolerance = val * TOLERANCE / 100;
-+        int result;
-+
-+        igt_assert_eq(backlight_write_dual(val, "brightness"), 0);
-+        igt_assert_eq(backlight_read_dual(&result, "brightness"), 0);
-+        /* Check that the exact value sticks */
-+        igt_assert_eq(result, val);
-+
-+        igt_assert_eq(backlight_read_dual(&result, "actual_brightness"), 0);
-+        /* Some rounding may happen depending on hw */
-+        igt_assert_f(result >= max(0, val - tolerance) &&
-+                     result <= min(context->max, val + tolerance),
-+                     "actual_brightness [%d] did not match expected brightness [%d +- %d]\n",
-+                     result, val, tolerance);
-+}
-+
-+static void test_brightness_dual(struct context *context)
-+{
-+        test_and_verify_dual(context, 0);
-+        test_and_verify_dual(context, context->max);
-+        test_and_verify_dual(context, context->max / 2);
-+}
-+
- static void test_bad_brightness(struct context *context)
- {
- 	int val;
-@@ -237,6 +307,8 @@ igt_main
- 
- 	igt_subtest("basic-brightness")
- 		test_brightness(&context);
-+	igt_subtest("basic-brightness-dual")
-+		test_brightness_dual(&context);
- 	igt_subtest("bad-brightness")
- 		test_bad_brightness(&context);
- 	igt_subtest("fade")
--- 
-2.36.0
+T24gV2VkLCAyMDIyLTA5LTA3IGF0IDE4OjQ1ICswNTMwLCBOaWRoaSBHdXB0YSB3cm90ZToKPiBB
+ZGRlZCBhIG5ldyBzdWJ0ZXN0IGFzIGEgcGFydCBvZiBpOTE1X3BtX2JhY2tsaWdodCB0byB2YWxp
+ZGF0ZQo+IGR1YWwgcGFuZWwgc3VwcG9ydC4KPiAKPiBTaWduZWQtb2ZmLWJ5OiBOaWRoaSBHdXB0
+YSA8bmlkaGkxLmd1cHRhQGludGVsLmNvbT4KPiAtLS0KPiDCoHRlc3RzL2k5MTUvaTkxNV9wbV9i
+YWNrbGlnaHQuYyB8IDc0Cj4gKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrLQo+IMKg
+MSBmaWxlIGNoYW5nZWQsIDczIGluc2VydGlvbnMoKyksIDEgZGVsZXRpb24oLSkKPiAKPiBkaWZm
+IC0tZ2l0IGEvdGVzdHMvaTkxNS9pOTE1X3BtX2JhY2tsaWdodC5jCj4gYi90ZXN0cy9pOTE1L2k5
+MTVfcG1fYmFja2xpZ2h0LmMKPiBpbmRleCBjYWZhZTdmNy4uZDRiMjVmM2YgMTAwNjQ0Cj4gLS0t
+IGEvdGVzdHMvaTkxNS9pOTE1X3BtX2JhY2tsaWdodC5jCj4gKysrIGIvdGVzdHMvaTkxNS9pOTE1
+X3BtX2JhY2tsaWdodC5jCj4gQEAgLTQyLDYgKzQyLDcgQEAgc3RydWN0IGNvbnRleHQgewo+IMKg
+Cj4gwqAjZGVmaW5lIFRPTEVSQU5DRSA1IC8qIHBlcmNlbnQgKi8KPiDCoCNkZWZpbmUgQkFDS0xJ
+R0hUX1BBVEggIi9zeXMvY2xhc3MvYmFja2xpZ2h0L2ludGVsX2JhY2tsaWdodCIKPiArI2RlZmlu
+ZSBCQUNLTElHSFRfUEFUSF9EVUFMICIvc3lzL2NsYXNzL2JhY2tsaWdodC9jYXJkMC1lRFAtMi0K
+PiBiYWNrbGlnaHQiCj4gwqAKPiDCoCNkZWZpbmUgRkFERVNURVBTIDEwCj4gwqAjZGVmaW5lIEZB
+REVTUEVFRCAxMDAgLyogbWlsbGlzZWNvbmRzIGJldHdlZW4gc3RlcHMgKi8KPiBAQCAtOTQsNyAr
+OTUsNTIgQEAgc3RhdGljIGludCBiYWNrbGlnaHRfd3JpdGUoaW50IHZhbHVlLCBjb25zdCBjaGFy
+Cj4gKmZuYW1lKQo+IMKgCj4gwqDCoMKgwqDCoMKgwqDCoHJldHVybiAwOwo+IMKgfQo+ICtzdGF0
+aWMgaW50IGJhY2tsaWdodF9yZWFkX2R1YWwoaW50ICpyZXN1bHQsIGNvbnN0IGNoYXIgKmZuYW1l
+KQo+ICt7Cj4gK8KgwqDCoMKgwqDCoMKgIGludCBmZDsKPiArwqDCoMKgwqDCoMKgwqAgY2hhciBm
+dWxsW1BBVEhfTUFYXTsKPiArwqDCoMKgwqDCoMKgwqAgY2hhciBkc3RbNjRdOwo+ICvCoMKgwqDC
+oMKgwqDCoCBpbnQgciwgZTsKPiArCj4gK8KgwqDCoMKgwqDCoMKgIGlndF9hc3NlcnQoc25wcmlu
+dGYoZnVsbCwgUEFUSF9NQVgsICIlcy8lcyIsCj4gQkFDS0xJR0hUX1BBVEhfRFVBTCwgZm5hbWUp
+IDwgUEFUSF9NQVgpOwo+ICsKPiArwqDCoMKgwqDCoMKgwqAgZmQgPSBvcGVuKGZ1bGwsIE9fUkRP
+TkxZKTsKPiArwqDCoMKgwqDCoMKgwqAgaWYgKGZkID09IC0xKQo+ICvCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqAgcmV0dXJuIC1lcnJubzsKPiArCj4gK8KgwqDCoMKgwqDCoMKgIHIgPSBy
+ZWFkKGZkLCBkc3QsIHNpemVvZihkc3QpKTsKPiArwqDCoMKgwqDCoMKgwqAgZSA9IGVycm5vOwo+
+ICvCoMKgwqDCoMKgwqDCoCBjbG9zZShmZCk7Cj4gKwo+ICvCoMKgwqDCoMKgwqDCoCBpZiAociA8
+IDApCj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCByZXR1cm4gLWU7Cj4gKwo+ICvC
+oMKgwqDCoMKgwqDCoCBlcnJubyA9IDA7Cj4gK8KgwqDCoMKgwqDCoMKgICpyZXN1bHQgPSBzdHJ0
+b2woZHN0LCBOVUxMLCAxMCk7Cj4gK8KgwqDCoMKgwqDCoMKgIHJldHVybiBlcnJubzsKPiArfQo+
+ICsKPiArc3RhdGljIGludCBiYWNrbGlnaHRfd3JpdGVfZHVhbChpbnQgdmFsdWUsIGNvbnN0IGNo
+YXIgKmZuYW1lKQo+ICt7Cj4gK8KgwqDCoMKgwqDCoMKgIGludCBmZDsKPiArwqDCoMKgwqDCoMKg
+wqAgY2hhciBmdWxsW1BBVEhfTUFYXTsKPiArwqDCoMKgwqDCoMKgwqAgY2hhciBzcmNbNjRdOwo+
+ICvCoMKgwqDCoMKgwqDCoCBpbnQgbGVuOwo+ICsKPiArwqDCoMKgwqDCoMKgwqAgaWd0X2Fzc2Vy
+dChzbnByaW50ZihmdWxsLCBQQVRIX01BWCwgIiVzLyVzIiwKPiBCQUNLTElHSFRfUEFUSF9EVUFM
+LCBmbmFtZSkgPCBQQVRIX01BWCk7L3N5cy9jbGFzcy9iYWNrbGlnaHQvY2FyZDAtCj4gZURQLTIt
+YmFja2xpZ2h0Cj4gK8KgwqDCoMKgwqDCoMKgIGZkID0gb3BlbihmdWxsLCBPX1dST05MWSk7Cj4g
+K8KgwqDCoMKgwqDCoMKgIGlmIChmZCA9PSAtMSkKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgIHJldHVybiAtZXJybm87Cj4gwqAKPiArwqDCoMKgwqDCoMKgwqAgbGVuID0gc25wcmlu
+dGYoc3JjLCBzaXplb2Yoc3JjKSwgIiVpIiwgdmFsdWUpOwo+ICvCoMKgwqDCoMKgwqDCoCBsZW4g
+PSB3cml0ZShmZCwgc3JjLCBsZW4pOwo+ICvCoMKgwqDCoMKgwqDCoCBjbG9zZShmZCk7Cj4gKwo+
+ICvCoMKgwqDCoMKgwqDCoCBpZiAobGVuIDwgMCkKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgIHJldHVybiBsZW47Cj4gKwo+ICvCoMKgwqDCoMKgwqDCoCByZXR1cm4gMDsKPiArfQoK
+SW5zdGVhZCBvZiBkdXBsaWNhdGluZyB0aGVzZSBmdW5jdGlvbnMgbWF5YmUgeW91IGNvdWxkIGhh
+dmUgcGF0aCBhcyBhCnBhcmFtZXRlciBpLmUuIGludCBiYWNrbGlnaHRfd3JpdGUvcmVhZF9kdWFs
+KGludCB2YWx1ZSwgY29uc3QgY2hhcgoqcGF0aCwgY29uc3QgY2hhciAqZm5hbWUpCgo+IMKgc3Rh
+dGljIHZvaWQgdGVzdF9hbmRfdmVyaWZ5KHN0cnVjdCBjb250ZXh0ICpjb250ZXh0LCBpbnQgdmFs
+KQo+IMKgewo+IMKgwqDCoMKgwqDCoMKgwqBjb25zdCBpbnQgdG9sZXJhbmNlID0gdmFsICogVE9M
+RVJBTkNFIC8gMTAwOwo+IEBAIC0xMTIsNyArMTU4LDYgQEAgc3RhdGljIHZvaWQgdGVzdF9hbmRf
+dmVyaWZ5KHN0cnVjdCBjb250ZXh0Cj4gKmNvbnRleHQsIGludCB2YWwpCj4gwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCAiYWN0dWFsX2JyaWdodG5lc3MgWyVkXSBkaWQg
+bm90IG1hdGNoIGV4cGVjdGVkCj4gYnJpZ2h0bmVzcyBbJWQgKy0gJWRdXG4iLAo+IMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgcmVzdWx0LCB2YWwsIHRvbGVyYW5jZSk7
+Cj4gwqB9Cj4gLQo+IMKgc3RhdGljIHZvaWQgdGVzdF9icmlnaHRuZXNzKHN0cnVjdCBjb250ZXh0
+ICpjb250ZXh0KQo+IMKgewo+IMKgwqDCoMKgwqDCoMKgwqB0ZXN0X2FuZF92ZXJpZnkoY29udGV4
+dCwgMCk7Cj4gQEAgLTEyMCw2ICsxNjUsMzEgQEAgc3RhdGljIHZvaWQgdGVzdF9icmlnaHRuZXNz
+KHN0cnVjdCBjb250ZXh0Cj4gKmNvbnRleHQpCj4gwqDCoMKgwqDCoMKgwqDCoHRlc3RfYW5kX3Zl
+cmlmeShjb250ZXh0LCBjb250ZXh0LT5tYXggLyAyKTsKPiDCoH0KPiDCoAo+ICtzdGF0aWMgdm9p
+ZCB0ZXN0X2FuZF92ZXJpZnlfZHVhbChzdHJ1Y3QgY29udGV4dCAqY29udGV4dCwgaW50IHZhbCkK
+PiArewo+ICvCoMKgwqDCoMKgwqDCoCBjb25zdCBpbnQgdG9sZXJhbmNlID0gdmFsICogVE9MRVJB
+TkNFIC8gMTAwOwo+ICvCoMKgwqDCoMKgwqDCoCBpbnQgcmVzdWx0Owo+ICsKPiArwqDCoMKgwqDC
+oMKgwqAgaWd0X2Fzc2VydF9lcShiYWNrbGlnaHRfd3JpdGVfZHVhbCh2YWwsICJicmlnaHRuZXNz
+IiksIDApOwo+ICvCoMKgwqDCoMKgwqDCoCBpZ3RfYXNzZXJ0X2VxKGJhY2tsaWdodF9yZWFkX2R1
+YWwoJnJlc3VsdCwgImJyaWdodG5lc3MiKSwKPiAwKTsKPiArwqDCoMKgwqDCoMKgwqAgLyogQ2hl
+Y2sgdGhhdCB0aGUgZXhhY3QgdmFsdWUgc3RpY2tzICovCj4gK8KgwqDCoMKgwqDCoMKgIGlndF9h
+c3NlcnRfZXEocmVzdWx0LCB2YWwpOwo+ICsKPiArwqDCoMKgwqDCoMKgwqAgaWd0X2Fzc2VydF9l
+cShiYWNrbGlnaHRfcmVhZF9kdWFsKCZyZXN1bHQsCj4gImFjdHVhbF9icmlnaHRuZXNzIiksIDAp
+Owo+ICvCoMKgwqDCoMKgwqDCoCAvKiBTb21lIHJvdW5kaW5nIG1heSBoYXBwZW4gZGVwZW5kaW5n
+IG9uIGh3ICovCj4gK8KgwqDCoMKgwqDCoMKgIGlndF9hc3NlcnRfZihyZXN1bHQgPj0gbWF4KDAs
+IHZhbCAtIHRvbGVyYW5jZSkgJiYKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoCByZXN1bHQgPD0gbWluKGNvbnRleHQtPm1heCwgdmFsICsgdG9sZXJhbmNlKSwKPiAr
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCAiYWN0dWFsX2JyaWdodG5l
+c3MgWyVkXSBkaWQgbm90IG1hdGNoIGV4cGVjdGVkCj4gYnJpZ2h0bmVzcyBbJWQgKy0gJWRdXG4i
+LAo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIHJlc3VsdCwgdmFs
+LCB0b2xlcmFuY2UpOwo+ICt9CgpZb3UgY291bGQgY29uc2lkZXIgYWRkaW5nIHBhdGggKC9zeXMv
+Y2xhc3MvYmFja2xpZ2h0L2ludGVsX2JhY2tsaWdodAphbmQgL3N5cy9jbGFzcy9iYWNrbGlnaHQv
+Y2FyZDAtZURQLTItYmFja2xpZ2h0KSBpbnRvIGNvbnRleHQuIFRoYXQgd2F5CnlvdSBjYW4gZHJv
+cCB0aGlzIGZ1bmN0aW9uIGNvbXBsZXRlbHkgYW5kIGp1c3Qgc2xpZ2h0bHkgbW9kaWZ5IGV4aXN0
+aW5nCnRlc3RfYW5kX3ZlcmlmeS4KCj4gKwo+ICtzdGF0aWMgdm9pZCB0ZXN0X2JyaWdodG5lc3Nf
+ZHVhbChzdHJ1Y3QgY29udGV4dCAqY29udGV4dCkKPiArewo+ICvCoMKgwqDCoMKgwqDCoCB0ZXN0
+X2FuZF92ZXJpZnlfZHVhbChjb250ZXh0LCAwKTsKPiArwqDCoMKgwqDCoMKgwqAgdGVzdF9hbmRf
+dmVyaWZ5X2R1YWwoY29udGV4dCwgY29udGV4dC0+bWF4KTsKPiArwqDCoMKgwqDCoMKgwqAgdGVz
+dF9hbmRfdmVyaWZ5X2R1YWwoY29udGV4dCwgY29udGV4dC0+bWF4IC8gMik7Cj4gK30KPiArCj4g
+wqBzdGF0aWMgdm9pZCB0ZXN0X2JhZF9icmlnaHRuZXNzKHN0cnVjdCBjb250ZXh0ICpjb250ZXh0
+KQo+IMKgewo+IMKgwqDCoMKgwqDCoMKgwqBpbnQgdmFsOwo+IEBAIC0yMzcsNiArMzA3LDggQEAg
+aWd0X21haW4KPiDCoAo+IMKgwqDCoMKgwqDCoMKgwqBpZ3Rfc3VidGVzdCgiYmFzaWMtYnJpZ2h0
+bmVzcyIpCj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqB0ZXN0X2JyaWdodG5lc3Mo
+JmNvbnRleHQpOwo+ICvCoMKgwqDCoMKgwqDCoGlndF9zdWJ0ZXN0KCJiYXNpYy1icmlnaHRuZXNz
+LWR1YWwiKQo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqB0ZXN0X2JyaWdodG5lc3Nf
+ZHVhbCgmY29udGV4dCk7Cj4gwqDCoMKgwqDCoMKgwqDCoGlndF9zdWJ0ZXN0KCJiYWQtYnJpZ2h0
+bmVzcyIpCj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqB0ZXN0X2JhZF9icmlnaHRu
+ZXNzKCZjb250ZXh0KTsKPiDCoMKgwqDCoMKgwqDCoMKgaWd0X3N1YnRlc3QoImZhZGUiKQoKWW91
+IGNvdWxkIGNvbnNpZGVyIGFkZGluZyBsaWtlOgoKc3RhdGljIGNvbnN0IGNoYXIgKnBhdGhzW10g
+PSB7CgkiL3N5cy9jbGFzcy9iYWNrbGlnaHQvaW50ZWxfYmFja2xpZ2h0IiwKCSIvc3lzL2NsYXNz
+L2JhY2tsaWdodC9jYXJkMC1lRFAtMi1iYWNrbGlnaHQiCn07CgpUaGVuIGl0ZXJhdGUgdGhhdCBh
+cnJheSBhbmQgYWRkIHN1YnRlc3RzOgoKIGNvbnRleHQucGF0aCA9IHBhdGg7CiBpZ3Rfc3VidGVz
+dF9mKCJiYXNpYy1icmlnaHRuZXNzJXMiLCBlZHBfbmFtZShwYXRoKSkKCXRlc3RfYnJpZ2h0bmVz
+cygmY29udGV4dCk7Cgp3aGVyZSBlZHAgaXMgcmV0dXJuaW5nIGVpdGhlciAiLWVkcDEiIG9yICIt
+ZWRwMiIgb3IgYWx0ZXJuYXRpdmVseQo8ZW1wdHk+IGZvciBlZHAxIGFuZCAiLWR1YWwiIGZvciBl
+ZHAyIGlmIHlvdSBwcmVmZXIgdGhhdCBvbmUuCgpCUiwKCkpvdW5pIEjDtmdhbmRlcgo=
