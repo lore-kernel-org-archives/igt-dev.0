@@ -1,17 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1521010EAEC
- for <igt-dev@lists.freedesktop.org>; Thu,  8 Sep 2022 13:18:43 +0000 (UTC)
-From: Jeevan B <jeevan.b@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Thu,  8 Sep 2022 18:44:16 +0530
-Message-Id: <20220908131417.17308-2-jeevan.b@intel.com>
-In-Reply-To: <20220908131417.17308-1-jeevan.b@intel.com>
-References: <20220908131417.17308-1-jeevan.b@intel.com>
+Received: from mx1.riseup.net (mx1.riseup.net [198.252.153.129])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0FB7F10EAEF
+ for <igt-dev@lists.freedesktop.org>; Thu,  8 Sep 2022 13:29:41 +0000 (UTC)
+Message-ID: <0cbe68c9-22fe-8f49-b87f-6cd563aa3e28@riseup.net>
+Date: Thu, 8 Sep 2022 10:29:33 -0300
 MIME-Version: 1.0
+To: igt-dev@lists.freedesktop.org
+References: <20220815203357.93287-1-mairacanal@riseup.net>
+Content-Language: en-US
+From: =?UTF-8?Q?Ma=c3=adra_Canal?= <mairacanal@riseup.net>
+In-Reply-To: <20220815203357.93287-1-mairacanal@riseup.net>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 1/2] tests/i915/kms_psr2_su: Convert tests
- to dynamic
+Subject: Re: [igt-dev] [PATCH i-g-t v2] tests/amdgpu/amd_bypass: skip if
+ connector is not DisplayPort
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,116 +21,51 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: Petri Latvala <petri.latvala@intel.com>, magalilemes00@gmail.com,
+ tales.aparecida@gmail.com, Alexander Deucher <alexander.deucher@amd.com>,
+ Isabella Basso <isabbasso@riseup.net>, andrealmeid@riseup.net,
+ Christian Koenig <christian.koenig@amd.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Converting the existing subtests to dynamic subtests.
-Adding support for each_pipe, currently PSR2 is supported on
-PIPE_A so breaking the loop for other pipes currently.
+Hi,
 
-v2: Add commit message and change break to continue. (Jouni)
-v3: Check for pipe supporting PSR2 or not and then add to dynamic subtest. (Jouni)
+Gentle ping.
 
-Signed-off-by: Jeevan B <jeevan.b@intel.com>
----
- tests/i915/kms_psr2_su.c | 63 +++++++++++++++++++++++++---------------
- 1 file changed, 40 insertions(+), 23 deletions(-)
+Best Regards,
+- Maíra Canal
 
-diff --git a/tests/i915/kms_psr2_su.c b/tests/i915/kms_psr2_su.c
-index caccf713..f63f1483 100644
---- a/tests/i915/kms_psr2_su.c
-+++ b/tests/i915/kms_psr2_su.c
-@@ -260,13 +260,30 @@ static void cleanup(data_t *data)
- 	igt_remove_fb(data->drm_fd, &data->fb[0]);
- }
- 
-+static int check_psr2_support(data_t *data, enum pipe pipe, int x)
-+{
-+	igt_output_t *output;
-+	igt_display_t *display = &data->display;
-+
-+	igt_display_reset(display);
-+	output = data->output;
-+	igt_output_set_pipe(output, pipe);
-+
-+	prepare(data);
-+	x = psr_wait_entry(data->debugfs_fd, PSR_MODE_2);
-+	cleanup(data);
-+
-+	return x;
-+}
-+
- igt_main
- {
- 	data_t data = {};
-+	enum pipe pipe;
-+	int r;
- 
- 	igt_fixture {
- 		struct itimerspec interval;
--		int r;
- 
- 		data.drm_fd = drm_open_driver_master(DRIVER_INTEL);
- 		data.debugfs_fd = igt_debugfs_dir(data.drm_fd);
-@@ -287,12 +304,6 @@ igt_main
- 			      "Error enabling PSR2\n");
- 		data.op = FRONTBUFFER;
- 		data.format = DRM_FORMAT_XRGB8888;
--		prepare(&data);
--		r = psr_wait_entry(data.debugfs_fd, PSR_MODE_2);
--		cleanup(&data);
--		if (!r)
--			psr_print_debugfs(data.debugfs_fd);
--		igt_require_f(r, "PSR2 can not be enabled\n");
- 
- 		/* blocking timerfd */
- 		data.change_screen_timerfd = timerfd_create(CLOCK_MONOTONIC, 0);
-@@ -312,23 +323,29 @@ igt_main
- 		while (*format != DRM_FORMAT_INVALID) {
- 			data.format = *format++;
- 			igt_describe("Test that selective update works when screen changes");
--			igt_subtest_f("%s-%s", op_str(data.op), igt_format_str(data.format)) {
--				if (data.op == FRONTBUFFER &&
--				    intel_display_ver(intel_get_drm_devid(data.drm_fd)) >= 12) {
--					/*
--					 * FIXME: Display 12+ platforms now have PSR2
--					 * selective fetch enabled by default but we
--					 * still can't properly handle frontbuffer
--					 * rendering, so right it does full frame
--					 * fetches at every frontbuffer rendering.
--					 * So it is expected that this test will fail
--					 * in display 12+ platform for now.
--					 */
--					igt_skip("PSR2 selective fetch is doing full frame fetches for frontbuffer rendering\n");
-+			igt_subtest_with_dynamic_f("%s-%s", op_str(data.op), igt_format_str(data.format)) {
-+				for_each_pipe_with_valid_output(&data.display, pipe, data.output) {
-+					if (check_psr2_support(&data, pipe, r)) {
-+						igt_dynamic_f("pipe-%s", kmstest_pipe_name(pipe)) {
-+							if (data.op == FRONTBUFFER &&
-+							    intel_display_ver(intel_get_drm_devid(data.drm_fd)) >= 12) {
-+								/*
-+								 * FIXME: Display 12+ platforms now have PSR2
-+								 * selective fetch enabled by default but we
-+								 * still can't properly handle frontbuffer
-+								 * rendering, so right it does full frame
-+								 * fetches at every frontbuffer rendering.
-+								 * So it is expected that this test will fail
-+								 * in display 12+ platform for now.
-+								 */
-+								igt_skip("PSR2 selective fetch is doing full frame fetches for frontbuffer rendering\n");
-+							}
-+							prepare(&data);
-+							run(&data);
-+							cleanup(&data);
-+						}
-+					}
- 				}
--				prepare(&data);
--				run(&data);
--				cleanup(&data);
- 			}
- 		}
- 	}
--- 
-2.36.0
+On 8/15/22 17:33, Maíra Canal wrote:
+> [why & how]
+> It is not possible to access the DSC_CLOCK_EN for non-DP connectors.
+> Moreover, the kernel fails when asked to set the CRC source to DPRX on
+> non-DP connectors. Therefore, skip the test if the connector is not
+> a DisplayPort or eDP connector.
+> 
+> Signed-off-by: Maíra Canal <mairacanal@riseup.net>
+> ---
+> v1 -> v2: https://patchwork.freedesktop.org/patch/497387/
+> - Change || to && (Petri Latvala).
+> ---
+>  tests/amdgpu/amd_bypass.c | 7 +++++++
+>  1 file changed, 7 insertions(+)
+> 
+> diff --git a/tests/amdgpu/amd_bypass.c b/tests/amdgpu/amd_bypass.c
+> index 5ec90884..d191779b 100644
+> --- a/tests/amdgpu/amd_bypass.c
+> +++ b/tests/amdgpu/amd_bypass.c
+> @@ -316,6 +316,13 @@ static void bypass_8bpc_test(data_t *data)
+>  
+>  	test_init(data);
+>  
+> +	/*
+> +	 * CRC source cannot be select without an DP/eDP connector
+> +	 */
+> +	igt_skip_on_f(data->output->config.connector->connector_type != DRM_MODE_CONNECTOR_DisplayPort &&
+> +			data->output->config.connector->connector_type != DRM_MODE_CONNECTOR_eDP,
+> +			"no DisplayPort connector found\n");
+> +
+>  	/**
+>  	 * 8bpc bypass only makes sense without DSC.
+>  	 * DSC is visually lossless but actually still loss exists and any bypass mode
