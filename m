@@ -1,21 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9B9B110E502
- for <igt-dev@lists.freedesktop.org>; Thu,  8 Sep 2022 15:09:13 +0000 (UTC)
-From: "Gupta, Anshuman" <anshuman.gupta@intel.com>
-To: "Tauro, Riana" <riana.tauro@intel.com>, "igt-dev@lists.freedesktop.org"
- <igt-dev@lists.freedesktop.org>
-Date: Thu, 8 Sep 2022 15:09:05 +0000
-Message-ID: <CY5PR11MB6211553D4B4BD71BF84D967C95409@CY5PR11MB6211.namprd11.prod.outlook.com>
-References: <20220908144609.2878575-1-riana.tauro@intel.com>
- <20220908144609.2878575-2-riana.tauro@intel.com>
-In-Reply-To: <20220908144609.2878575-2-riana.tauro@intel.com>
-Content-Language: en-US
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: multipart/alternative;
+ boundary="===============1635526416282382436=="
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t 1/2] lib/igt_pm : Add pm functions for
- d3cold_allowed
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Riana Tauro" <riana.tauro@intel.com>
+Date: Thu, 08 Sep 2022 15:19:15 -0000
+Message-ID: <166265035547.27231.7197651758487925250@emeril.freedesktop.org>
+References: <20220908144609.2878575-1-riana.tauro@intel.com>
+In-Reply-To: <20220908144609.2878575-1-riana.tauro@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3IgRGlzYWJs?=
+ =?utf-8?q?e_d3cold=5Fallowed_for_basic-s2idle-without-i915?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,111 +17,320 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: "Vivi, Rodrigo" <rodrigo.vivi@intel.com>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
+--===============1635526416282382436==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+== Series Details ==
+
+Series: Disable d3cold_allowed for basic-s2idle-without-i915
+URL   : https://patchwork.freedesktop.org/series/108305/
+State : failure
+
+== Summary ==
+
+CI Bug Log - changes from CI_DRM_12097 -> IGTPW_7757
+====================================================
+
+Summary
+-------
+
+  **FAILURE**
+
+  Serious unknown changes coming with IGTPW_7757 absolutely need to be
+  verified manually.
+  
+  If you think the reported changes have nothing to do with the changes
+  introduced in IGTPW_7757, please notify your bug team to allow them
+  to document this new failure mode, which will reduce false positives in CI.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7757/index.html
+
+Participating hosts (41 -> 39)
+------------------------------
+
+  Missing    (2): fi-bdw-samus fi-pnv-d510 
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in IGTPW_7757:
+
+### IGT changes ###
+
+#### Possible regressions ####
+
+  * igt@kms_pipe_crc_basic@suspend-read-crc:
+    - bat-dg1-5:          NOTRUN -> [SKIP][1]
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7757/bat-dg1-5/igt@kms_pipe_crc_basic@suspend-read-crc.html
+
+  
+#### Suppressed ####
+
+  The following results come from untrusted machines, tests, or statuses.
+  They do not affect the overall result.
+
+  * igt@gem_exec_suspend@basic-s0@lmem0:
+    - {bat-dg2-11}:       NOTRUN -> [DMESG-WARN][2] +1 similar issue
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7757/bat-dg2-11/igt@gem_exec_suspend@basic-s0@lmem0.html
+
+  
+Known issues
+------------
+
+  Here are the changes found in IGTPW_7757 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@i915_selftest@live:
+    - fi-cfl-8109u:       NOTRUN -> [INCOMPLETE][3] ([i915#6114])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7757/fi-cfl-8109u/igt@i915_selftest@live.html
+
+  * igt@i915_selftest@live@execlists:
+    - fi-bdw-gvtdvm:      [PASS][4] -> [INCOMPLETE][5] ([i915#2940])
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12097/fi-bdw-gvtdvm/igt@i915_selftest@live@execlists.html
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7757/fi-bdw-gvtdvm/igt@i915_selftest@live@execlists.html
+
+  * igt@i915_selftest@live@gem:
+    - fi-blb-e6850:       [PASS][6] -> [DMESG-FAIL][7] ([i915#4528])
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12097/fi-blb-e6850/igt@i915_selftest@live@gem.html
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7757/fi-blb-e6850/igt@i915_selftest@live@gem.html
+
+  * igt@kms_chamelium@common-hpd-after-suspend:
+    - fi-bdw-5557u:       NOTRUN -> [SKIP][8] ([fdo#109271] / [fdo#111827])
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7757/fi-bdw-5557u/igt@kms_chamelium@common-hpd-after-suspend.html
+    - bat-dg1-5:          NOTRUN -> [SKIP][9] ([fdo#111827])
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7757/bat-dg1-5/igt@kms_chamelium@common-hpd-after-suspend.html
+
+  * igt@kms_frontbuffer_tracking@basic:
+    - fi-cfl-8109u:       [PASS][10] -> [DMESG-FAIL][11] ([i915#62]) +1 similar issue
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12097/fi-cfl-8109u/igt@kms_frontbuffer_tracking@basic.html
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7757/fi-cfl-8109u/igt@kms_frontbuffer_tracking@basic.html
+
+  * igt@prime_vgem@basic-fence-flip:
+    - fi-cfl-8109u:       [PASS][12] -> [DMESG-WARN][13] ([i915#62]) +10 similar issues
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12097/fi-cfl-8109u/igt@prime_vgem@basic-fence-flip.html
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7757/fi-cfl-8109u/igt@prime_vgem@basic-fence-flip.html
+
+  * igt@runner@aborted:
+    - fi-cfl-8109u:       NOTRUN -> [FAIL][14] ([i915#4312] / [i915#6599])
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7757/fi-cfl-8109u/igt@runner@aborted.html
+    - fi-blb-e6850:       NOTRUN -> [FAIL][15] ([fdo#109271] / [i915#2403] / [i915#4312])
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7757/fi-blb-e6850/igt@runner@aborted.html
+    - fi-bdw-gvtdvm:      NOTRUN -> [FAIL][16] ([i915#4312])
+   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7757/fi-bdw-gvtdvm/igt@runner@aborted.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_suspend@basic-s2idle-without-i915:
+    - bat-dg1-5:          [INCOMPLETE][17] ([i915#6011]) -> [PASS][18]
+   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12097/bat-dg1-5/igt@i915_suspend@basic-s2idle-without-i915.html
+   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7757/bat-dg1-5/igt@i915_suspend@basic-s2idle-without-i915.html
+    - {bat-dg2-11}:       [INCOMPLETE][19] ([i915#4817] / [i915#6011]) -> [PASS][20]
+   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12097/bat-dg2-11/igt@i915_suspend@basic-s2idle-without-i915.html
+   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7757/bat-dg2-11/igt@i915_suspend@basic-s2idle-without-i915.html
+
+  * igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions:
+    - fi-bsw-kefka:       [FAIL][21] ([i915#6298]) -> [PASS][22]
+   [21]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12097/fi-bsw-kefka/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions.html
+   [22]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7757/fi-bsw-kefka/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [fdo#111827]: https://bugs.freedesktop.org/show_bug.cgi?id=111827
+  [i915#2403]: https://gitlab.freedesktop.org/drm/intel/issues/2403
+  [i915#2940]: https://gitlab.freedesktop.org/drm/intel/issues/2940
+  [i915#4312]: https://gitlab.freedesktop.org/drm/intel/issues/4312
+  [i915#4528]: https://gitlab.freedesktop.org/drm/intel/issues/4528
+  [i915#4817]: https://gitlab.freedesktop.org/drm/intel/issues/4817
+  [i915#6011]: https://gitlab.freedesktop.org/drm/intel/issues/6011
+  [i915#6114]: https://gitlab.freedesktop.org/drm/intel/issues/6114
+  [i915#62]: https://gitlab.freedesktop.org/drm/intel/issues/62
+  [i915#6298]: https://gitlab.freedesktop.org/drm/intel/issues/6298
+  [i915#6599]: https://gitlab.freedesktop.org/drm/intel/issues/6599
 
 
-> -----Original Message-----
-> From: Tauro, Riana <riana.tauro@intel.com>
-> Sent: Thursday, September 8, 2022 8:16 PM
-> To: igt-dev@lists.freedesktop.org
-> Cc: Tauro, Riana <riana.tauro@intel.com>; Gupta, Anshuman
-> <anshuman.gupta@intel.com>; Vivi, Rodrigo <rodrigo.vivi@intel.com>
-> Subject: [PATCH i-g-t 1/2] lib/igt_pm : Add pm functions for d3cold_allow=
-ed
->=20
-> Add functions to set/get d3cold_allowed attribute of the pci_device
->=20
-> Signed-off-by: Riana Tauro <riana.tauro@intel.com>
-> ---
->  lib/igt_pm.c | 46 ++++++++++++++++++++++++++++++++++++++++++++++
->  lib/igt_pm.h |  4 ++++
->  2 files changed, 50 insertions(+)
->=20
-> diff --git a/lib/igt_pm.c b/lib/igt_pm.c index 99251b40..ce34a0a4 100644
-> --- a/lib/igt_pm.c
-> +++ b/lib/igt_pm.c
-> @@ -1122,6 +1122,52 @@ void igt_pm_setup_pci_card_runtime_pm(struct
-> pci_device *pci_dev)
->  	igt_pm_setup_pci_card_power_attrs(pci_dev, true, 0);  }
->=20
-> +/**
-> + * igt_pm_get_d3cold_allowed:
-> + * @igt_device_card: device card
-> + * @val: value to be read into
-> + *
-> + * Reads the value of d3cold_allowed attribute
-> + * of the pci device
-> + */
-> +void igt_pm_get_d3cold_allowed(struct igt_device_card *card, char *val)
-> +{
-> +	char name[PATH_MAX];
-> +	int fd;
-> +
-> +	snprintf(name, PATH_MAX, "/sys/bus/pci/devices/%s",
-> +		 card->pci_slot_name);
-> +
-> +	fd =3D open(name, O_RDONLY);
-> +	igt_assert_f(fd >=3D 0, "Can't open %s\n", name);
-> +
-> +	igt_sysfs_read(fd, "d3cold_allowed", val, sizeof(val));
-> +
-> +	close(fd);
-> +}
-> +
-> +/**
-> + * igt_pm_get_d3cold_allowed:
-> + * @igt_device_card: device card
-> + * @val: value to be written
-> + *
-> + * writes the value to d3cold_allowed attribute of pci device  */ void
-> +igt_pm_set_d3cold_allowed(struct igt_device_card *card, const char
-> +*val) {
-> +	char name[PATH_MAX];
-> +	int fd;
-> +
-> +	snprintf(name, PATH_MAX, "/sys/bus/pci/devices/%s",
-> +		 card->pci_slot_name);
-> +
-> +	fd =3D open(name, O_RDONLY);
-> +	igt_assert_f(fd >=3D 0, "Can't open %s\n", name);
-> +
-> +	igt_sysfs_write(fd, "d3cold_allowed", val, sizeof(val));
-> +	close(fd);
-> +}
-> +
->  static void
->  igt_pm_restore_power_attr(struct pci_device *pci_dev, const char *attr, =
-char
-> *val, int len)  { diff --git a/lib/igt_pm.h b/lib/igt_pm.h index cbbde12b=
-..d9db8100
-> 100644
-> --- a/lib/igt_pm.h
-> +++ b/lib/igt_pm.h
-> @@ -24,6 +24,8 @@
->  #ifndef IGT_PM_H
->  #define IGT_PM_H
->=20
-> +#include "igt_device_scan.h"
-Please include this from c file, where it is needed.
-Thanks,
-Anshuman.
-> +
->  void igt_pm_enable_audio_runtime_pm(void);
->  void igt_pm_enable_sata_link_power_management(void);
->  void igt_pm_restore_sata_link_power_management(void);
-> @@ -76,6 +78,8 @@ enum igt_acpi_d_state
->  igt_pm_get_acpi_real_d_state(struct pci_device *pci_dev);  void
-> igt_pm_enable_pci_card_runtime_pm(struct pci_device *root,
->  				       struct pci_device *i915);
-> +void igt_pm_get_d3cold_allowed(struct igt_device_card *card, char
-> +*val); void igt_pm_set_d3cold_allowed(struct igt_device_card *card,
-> +const char *val);
->  void igt_pm_setup_pci_card_runtime_pm(struct pci_device *pci_dev);  void
-> igt_pm_restore_pci_card_runtime_pm(void);
->  void igt_pm_print_pci_card_runtime_status(void);
-> --
-> 2.25.1
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_6648 -> IGTPW_7757
+
+  CI-20190529: 20190529
+  CI_DRM_12097: 1fb88df487169c0b6d8682967b497ab6006a728f @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_7757: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7757/index.html
+  IGT_6648: 3c9079c0b97445fbfc903b9c5a1d69707b80af80 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7757/index.html
+
+--===============1635526416282382436==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Disable d3cold_allowed for basic-s2idle-without-i915</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/108305/">https://patchwork.freedesktop.org/series/108305/</a></td></tr>
+<tr><td><b>State:</b></td><td>failure</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7757/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7757/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_12097 -&gt; IGTPW_7757</h1>
+<h2>Summary</h2>
+<p><strong>FAILURE</strong></p>
+<p>Serious unknown changes coming with IGTPW_7757 absolutely need to be<br />
+  verified manually.</p>
+<p>If you think the reported changes have nothing to do with the changes<br />
+  introduced in IGTPW_7757, please notify your bug team to allow them<br />
+  to document this new failure mode, which will reduce false positives in CI.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7757/index.html</p>
+<h2>Participating hosts (41 -&gt; 39)</h2>
+<p>Missing    (2): fi-bdw-samus fi-pnv-d510 </p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in IGTPW_7757:</p>
+<h3>IGT changes</h3>
+<h4>Possible regressions</h4>
+<ul>
+<li>igt@kms_pipe_crc_basic@suspend-read-crc:<ul>
+<li>bat-dg1-5:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7757/bat-dg1-5/igt@kms_pipe_crc_basic@suspend-read-crc.html">SKIP</a></li>
+</ul>
+</li>
+</ul>
+<h4>Suppressed</h4>
+<p>The following results come from untrusted machines, tests, or statuses.<br />
+  They do not affect the overall result.</p>
+<ul>
+<li>igt@gem_exec_suspend@basic-s0@lmem0:<ul>
+<li>{bat-dg2-11}:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7757/bat-dg2-11/igt@gem_exec_suspend@basic-s0@lmem0.html">DMESG-WARN</a> +1 similar issue</li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_7757 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live:</p>
+<ul>
+<li>fi-cfl-8109u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7757/fi-cfl-8109u/igt@i915_selftest@live.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6114">i915#6114</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@execlists:</p>
+<ul>
+<li>fi-bdw-gvtdvm:      <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12097/fi-bdw-gvtdvm/igt@i915_selftest@live@execlists.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7757/fi-bdw-gvtdvm/igt@i915_selftest@live@execlists.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2940">i915#2940</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@gem:</p>
+<ul>
+<li>fi-blb-e6850:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12097/fi-blb-e6850/igt@i915_selftest@live@gem.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7757/fi-blb-e6850/igt@i915_selftest@live@gem.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4528">i915#4528</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_chamelium@common-hpd-after-suspend:</p>
+<ul>
+<li>
+<p>fi-bdw-5557u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7757/fi-bdw-5557u/igt@kms_chamelium@common-hpd-after-suspend.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://bugs.freedesktop.org/show_bug.cgi?id=111827">fdo#111827</a>)</p>
+</li>
+<li>
+<p>bat-dg1-5:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7757/bat-dg1-5/igt@kms_chamelium@common-hpd-after-suspend.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=111827">fdo#111827</a>)</p>
+</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@basic:</p>
+<ul>
+<li>fi-cfl-8109u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12097/fi-cfl-8109u/igt@kms_frontbuffer_tracking@basic.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7757/fi-cfl-8109u/igt@kms_frontbuffer_tracking@basic.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/62">i915#62</a>) +1 similar issue</li>
+</ul>
+</li>
+<li>
+<p>igt@prime_vgem@basic-fence-flip:</p>
+<ul>
+<li>fi-cfl-8109u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12097/fi-cfl-8109u/igt@prime_vgem@basic-fence-flip.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7757/fi-cfl-8109u/igt@prime_vgem@basic-fence-flip.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/62">i915#62</a>) +10 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@runner@aborted:</p>
+<ul>
+<li>
+<p>fi-cfl-8109u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7757/fi-cfl-8109u/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4312">i915#4312</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/6599">i915#6599</a>)</p>
+</li>
+<li>
+<p>fi-blb-e6850:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7757/fi-blb-e6850/igt@runner@aborted.html">FAIL</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2403">i915#2403</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4312">i915#4312</a>)</p>
+</li>
+<li>
+<p>fi-bdw-gvtdvm:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7757/fi-bdw-gvtdvm/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4312">i915#4312</a>)</p>
+</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@i915_suspend@basic-s2idle-without-i915:</p>
+<ul>
+<li>
+<p>bat-dg1-5:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12097/bat-dg1-5/igt@i915_suspend@basic-s2idle-without-i915.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6011">i915#6011</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7757/bat-dg1-5/igt@i915_suspend@basic-s2idle-without-i915.html">PASS</a></p>
+</li>
+<li>
+<p>{bat-dg2-11}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12097/bat-dg2-11/igt@i915_suspend@basic-s2idle-without-i915.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4817">i915#4817</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/6011">i915#6011</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7757/bat-dg2-11/igt@i915_suspend@basic-s2idle-without-i915.html">PASS</a></p>
+</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions:</p>
+<ul>
+<li>fi-bsw-kefka:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12097/fi-bsw-kefka/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6298">i915#6298</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7757/fi-bsw-kefka/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_6648 -&gt; IGTPW_7757</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_12097: 1fb88df487169c0b6d8682967b497ab6006a728f @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_7757: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7757/index.html<br />
+  IGT_6648: 3c9079c0b97445fbfc903b9c5a1d69707b80af80 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============1635526416282382436==--
