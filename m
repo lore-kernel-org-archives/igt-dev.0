@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B85C510EDA8
- for <igt-dev@lists.freedesktop.org>; Fri,  9 Sep 2022 14:07:17 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3A28910EDA8
+ for <igt-dev@lists.freedesktop.org>; Fri,  9 Sep 2022 14:07:16 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Fri,  9 Sep 2022 19:33:28 +0530
-Message-Id: <20220909140331.1041095-50-bhanuprakash.modem@intel.com>
+Date: Fri,  9 Sep 2022 19:33:27 +0530
+Message-Id: <20220909140331.1041095-49-bhanuprakash.modem@intel.com>
 In-Reply-To: <20220909140331.1041095-1-bhanuprakash.modem@intel.com>
 References: <20220909140331.1041095-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V3 49/52] tests/i915/kms_psr2_su: Add support for
+Subject: [igt-dev] [i-g-t V3 48/52] tests/i915/kms_psr2_sf: Add support for
  Bigjoiner
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -34,14 +34,14 @@ V2: - Use updated helper name
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/i915/kms_psr2_su.c | 7 +++++++
+ tests/i915/kms_psr2_sf.c | 7 +++++++
  1 file changed, 7 insertions(+)
 
-diff --git a/tests/i915/kms_psr2_su.c b/tests/i915/kms_psr2_su.c
-index caccf713..550b1d67 100644
---- a/tests/i915/kms_psr2_su.c
-+++ b/tests/i915/kms_psr2_su.c
-@@ -104,7 +104,11 @@ static void setup_output(data_t *data)
+diff --git a/tests/i915/kms_psr2_sf.c b/tests/i915/kms_psr2_sf.c
+index 6612587c..7f63b19f 100644
+--- a/tests/i915/kms_psr2_sf.c
++++ b/tests/i915/kms_psr2_sf.c
+@@ -115,7 +115,11 @@ static void setup_output(data_t *data)
  		if (c->connector_type != DRM_MODE_CONNECTOR_eDP)
  			continue;
  
@@ -53,7 +53,7 @@ index caccf713..550b1d67 100644
  		data->output = output;
  		data->mode = igt_output_get_mode(output);
  
-@@ -116,6 +120,9 @@ static void display_init(data_t *data)
+@@ -127,6 +131,9 @@ static void display_init(data_t *data)
  {
  	igt_display_require(&data->display, data->drm_fd);
  	setup_output(data);
