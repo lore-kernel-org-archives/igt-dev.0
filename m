@@ -1,17 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1B86A10EDA8
- for <igt-dev@lists.freedesktop.org>; Fri,  9 Sep 2022 14:07:01 +0000 (UTC)
-From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Fri,  9 Sep 2022 19:33:17 +0530
-Message-Id: <20220909140331.1041095-39-bhanuprakash.modem@intel.com>
-In-Reply-To: <20220909140331.1041095-1-bhanuprakash.modem@intel.com>
-References: <20220909140331.1041095-1-bhanuprakash.modem@intel.com>
+Date: Fri, 09 Sep 2022 17:05:54 +0200
+Message-ID: <3054638.CbtlEUcBR6@jkrzyszt-mobl1.ger.corp.intel.com>
+In-Reply-To: <20220829000920.38185-2-isabbasso@riseup.net>
+References: <20220829000920.38185-1-isabbasso@riseup.net>
+ <20220829000920.38185-2-isabbasso@riseup.net>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V3 38/52] tests/i915/kms_big_joiner: Negative
- tests for Bigjoiner
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
+Subject: Re: [igt-dev] [PATCH i-g-t v2 1/4] lib/igt_kmod: rename kselftest
+ functions to ktest
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,165 +18,152 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: twoerner@gmail.com, linux-kselftest@vger.kernel.org,
+ magalilemes00@gmail.com, maira.canal@usp.br, dlatypov@google.com,
+ tales.aparecida@gmail.com, brendanhiggins@google.com,
+ linux-kernel@vger.kernel.org, leandro.ribeiro@collabora.com,
+ dri-devel@lists.freedesktop.org, daniel@ffwll.ch, n@nfraprado.net,
+ davidgow@google.com, skhan@linuxfoundation.org, andrealmeid@riseup.net,
+ Isabella Basso <isabbasso@riseup.net>, kunit-dev@googlegroups.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add negative tests to validate Bigjoiner or 8K mode.
+On Monday, 29 August 2022 02:09:17 CEST Isabella Basso wrote:
+> This aims at making IGT's structure more general to different kernel
+> testing frameworks such as KUnit, as they use a lot of the same
+> functionality.
+> 
+> Signed-off-by: Isabella Basso <isabbasso@riseup.net>
 
-Example:
-* Pipe-D wont support a mode > 5K
-* To use 8K mode on a pipe then consecutive pipe must be available & free.
+LGTM
 
-Kernel should reject the commit/modeset if above conditions won't met.
+Reviewed-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
 
-Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
----
- tests/i915/kms_big_joiner.c | 118 ++++++++++++++++++++++++++++++------
- 1 file changed, 98 insertions(+), 20 deletions(-)
+> ---
+>  lib/igt_kmod.c | 22 +++++++++++-----------
+>  lib/igt_kmod.h | 12 ++++++------
+>  2 files changed, 17 insertions(+), 17 deletions(-)
+> 
+> diff --git a/lib/igt_kmod.c b/lib/igt_kmod.c
+> index bcf7dfeb..bb6cb7bb 100644
+> --- a/lib/igt_kmod.c
+> +++ b/lib/igt_kmod.c
+> @@ -718,8 +718,8 @@ static int open_parameters(const char *module_name)
+>  	return open(path, O_RDONLY);
+>  }
+>  
+> -int igt_kselftest_init(struct igt_kselftest *tst,
+> -		       const char *module_name)
+> +int igt_ktest_init(struct igt_ktest *tst,
+> +		   const char *module_name)
+>  {
+>  	int err;
+>  
+> @@ -738,7 +738,7 @@ int igt_kselftest_init(struct igt_kselftest *tst,
+>  	return 0;
+>  }
+>  
+> -int igt_kselftest_begin(struct igt_kselftest *tst)
+> +int igt_ktest_begin(struct igt_ktest *tst)
+>  {
+>  	int err;
+>  
+> @@ -753,7 +753,7 @@ int igt_kselftest_begin(struct igt_kselftest *tst)
+>  	return 0;
+>  }
+>  
+> -int igt_kselftest_execute(struct igt_kselftest *tst,
+> +int igt_kselftest_execute(struct igt_ktest *tst,
+>  			  struct igt_kselftest_list *tl,
+>  			  const char *options,
+>  			  const char *result)
+> @@ -791,13 +791,13 @@ int igt_kselftest_execute(struct igt_kselftest *tst,
+>  	return err;
+>  }
+>  
+> -void igt_kselftest_end(struct igt_kselftest *tst)
+> +void igt_ktest_end(struct igt_ktest *tst)
+>  {
+>  	kmod_module_remove_module(tst->kmod, KMOD_REMOVE_FORCE);
+>  	close(tst->kmsg);
+>  }
+>  
+> -void igt_kselftest_fini(struct igt_kselftest *tst)
+> +void igt_ktest_fini(struct igt_ktest *tst)
+>  {
+>  	free(tst->module_name);
+>  	kmod_module_unref(tst->kmod);
+> @@ -820,15 +820,15 @@ void igt_kselftests(const char *module_name,
+>  		    const char *result,
+>  		    const char *filter)
+>  {
+> -	struct igt_kselftest tst;
+> +	struct igt_ktest tst;
+>  	IGT_LIST_HEAD(tests);
+>  	struct igt_kselftest_list *tl, *tn;
+>  
+> -	if (igt_kselftest_init(&tst, module_name) != 0)
+> +	if (igt_ktest_init(&tst, module_name) != 0)
+>  		return;
+>  
+>  	igt_fixture
+> -		igt_require(igt_kselftest_begin(&tst) == 0);
+> +		igt_require(igt_ktest_begin(&tst) == 0);
+>  
+>  	igt_kselftest_get_tests(tst.kmod, filter, &tests);
+>  	igt_subtest_with_dynamic(filter ?: "all") {
+> @@ -847,9 +847,9 @@ void igt_kselftests(const char *module_name,
+>  	}
+>  
+>  	igt_fixture {
+> -		igt_kselftest_end(&tst);
+> +		igt_ktest_end(&tst);
+>  		igt_require(!igt_list_empty(&tests));
+>  	}
+>  
+> -	igt_kselftest_fini(&tst);
+> +	igt_ktest_fini(&tst);
+>  }
+> diff --git a/lib/igt_kmod.h b/lib/igt_kmod.h
+> index f98dd29f..ceb10cd0 100644
+> --- a/lib/igt_kmod.h
+> +++ b/lib/igt_kmod.h
+> @@ -50,7 +50,7 @@ void igt_kselftests(const char *module_name,
+>  		    const char *result_option,
+>  		    const char *filter);
+>  
+> -struct igt_kselftest {
+> +struct igt_ktest {
+>  	struct kmod_module *kmod;
+>  	char *module_name;
+>  	int kmsg;
+> @@ -63,19 +63,19 @@ struct igt_kselftest_list {
+>  	char param[];
+>  };
+>  
+> -int igt_kselftest_init(struct igt_kselftest *tst,
+> +int igt_ktest_init(struct igt_ktest *tst,
+>  		       const char *module_name);
+> -int igt_kselftest_begin(struct igt_kselftest *tst);
+> +int igt_ktest_begin(struct igt_ktest *tst);
+>  
+>  void igt_kselftest_get_tests(struct kmod_module *kmod,
+>  			     const char *filter,
+>  			     struct igt_list_head *tests);
+> -int igt_kselftest_execute(struct igt_kselftest *tst,
+> +int igt_kselftest_execute(struct igt_ktest *tst,
+>  			  struct igt_kselftest_list *tl,
+>  			  const char *module_options,
+>  			  const char *result);
+>  
+> -void igt_kselftest_end(struct igt_kselftest *tst);
+> -void igt_kselftest_fini(struct igt_kselftest *tst);
+> +void igt_ktest_end(struct igt_ktest *tst);
+> +void igt_ktest_fini(struct igt_ktest *tst);
+>  
+>  #endif /* IGT_KMOD_H */
+> 
 
-diff --git a/tests/i915/kms_big_joiner.c b/tests/i915/kms_big_joiner.c
-index 7d400616..2e189fc8 100644
---- a/tests/i915/kms_big_joiner.c
-+++ b/tests/i915/kms_big_joiner.c
-@@ -43,6 +43,44 @@ typedef struct {
- 	} big_joiner_output[2];
- } data_t;
- 
-+static void test_invalid(data_t *data)
-+{
-+	igt_output_t *output;
-+	igt_display_t *display = &data->display;
-+	int ret;
-+
-+	igt_info("Bigjoiner test on ");
-+	for_each_connected_output(display, output){
-+		enum pipe p = output->pending_pipe;
-+		drmModeModeInfo *mode;
-+		igt_pipe_t *pipe;
-+		igt_plane_t *plane;
-+
-+		if (p == PIPE_NONE)
-+			continue;
-+
-+		mode = igt_output_get_mode(output);
-+		igt_info("pipe:%s, output:%s, mode:", kmstest_pipe_name(p), igt_output_name(output));
-+		kmstest_dump_mode(mode);
-+
-+		pipe = &display->pipes[p];
-+		plane = igt_pipe_get_plane_type(pipe, DRM_PLANE_TYPE_PRIMARY);
-+
-+		igt_plane_set_fb(plane, &data->fb);
-+		igt_fb_set_size(&data->fb, plane, mode->hdisplay, mode->vdisplay);
-+		igt_plane_set_size(plane, mode->hdisplay, mode->vdisplay);
-+	}
-+
-+	/* This commit is expectd to fail as this pipe is being used for big joiner */
-+	ret = igt_display_try_commit_atomic(display, DRM_MODE_ATOMIC_TEST_ONLY |
-+					    DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
-+
-+	igt_display_reset(&data->display);
-+	igt_display_commit2(display, COMMIT_ATOMIC);
-+
-+	igt_assert_lt(ret, 0);
-+}
-+
- static void test_invalid_modeset(data_t *data)
- {
- 	drmModeModeInfo *mode;
-@@ -261,19 +299,17 @@ igt_main
- 		igt_require(data.display.is_atomic);
- 
- 		for_each_connected_output(&data.display, output) {
--			if (count < 2) {
--				for (i = 0; i < output->config.connector->count_modes; i++) {
--					mode = &output->config.connector->modes[i];
--					if (mode->hdisplay > MAX_HDISPLAY_PER_PIPE) {
--						data.big_joiner_output[count].mode_number = i;
--						data.big_joiner_output[count].id = output->id;
--						count++;
--
--						width = max(width, mode->hdisplay);
--						height = max(height, mode->vdisplay);
--						break;
--					}
--				}
-+			igt_sort_connector_modes(output->config.connector,
-+						 sort_drm_modes_by_res_dsc);
-+
-+			mode = &output->config.connector->modes[0];
-+			if (mode->hdisplay > MAX_HDISPLAY_PER_PIPE) {
-+				data.big_joiner_output[count].mode_number = i;
-+				data.big_joiner_output[count].id = output->id;
-+				count++;
-+
-+				width = max(width, mode->hdisplay);
-+				height = max(height, mode->vdisplay);
- 			}
- 			valid_output++;
- 		}
-@@ -303,13 +339,55 @@ igt_main
- 	igt_describe("Verify if the modeset on the adjoining pipe is rejected "
- 		     "when the pipe is active with a big joiner modeset");
- 	igt_subtest_with_dynamic("invalid-modeset") {
--		igt_require_f(valid_output > 1, "No valid Second output found\n");
--		for (i = 0; i < data.n_pipes - 1; i++) {
--			data.pipe1 = pipe_seq[i];
--			data.pipe2 = pipe_seq[i + 1];
--			igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe_seq[i]),
--						    kmstest_pipe_name(pipe_seq[i + 1]))
--				test_invalid_modeset(&data);
-+		enum pipe pipe;
-+
-+		for_each_pipe_with_valid_output(&data.display, pipe, output) {
-+			igt_display_reset(&data.display);
-+
-+			igt_sort_connector_modes(output->config.connector,
-+						 sort_drm_modes_by_res_dsc);
-+
-+			igt_output_set_pipe(output, pipe);
-+			igt_output_override_mode(output,
-+						 &output->config.connector->modes[0]);
-+			if (!igt_check_bigjoiner_support(&data.display)) {
-+				igt_dynamic("single-connector") {
-+					test_invalid(&data);
-+				}
-+			}
-+		}
-+
-+		igt_display_reset(&data.display);
-+		for_each_pipe(&data.display, pipe) {
-+			for_each_valid_output_on_pipe(&data.display, pipe, output) {
-+				if (output->pending_pipe != PIPE_NONE)
-+					continue;
-+
-+				igt_sort_connector_modes(output->config.connector,
-+							 sort_drm_modes_by_res_dsc);
-+
-+				igt_output_set_pipe(output, pipe);
-+				igt_output_override_mode(output,
-+							 &output->config.connector->modes[0]);
-+
-+				break;
-+			}
-+		}
-+		if (valid_output > 1 &&
-+		    !igt_check_bigjoiner_support(&data.display)) {
-+			igt_dynamic("multi-connector") {
-+				test_invalid(&data);
-+			}
-+		}
-+
-+		if(valid_output > 1) {
-+			for (i = 0; i < data.n_pipes - 1; i++) {
-+				data.pipe1 = pipe_seq[i];
-+				data.pipe2 = pipe_seq[i + 1];
-+				igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe_seq[i]),
-+							    kmstest_pipe_name(pipe_seq[i + 1]))
-+					test_invalid_modeset(&data);
-+			}
- 		}
- 	}
- 
--- 
-2.35.1
+
+
