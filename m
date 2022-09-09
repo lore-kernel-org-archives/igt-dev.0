@@ -1,19 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DDFD910E179
- for <igt-dev@lists.freedesktop.org>; Fri,  9 Sep 2022 10:44:30 +0000 (UTC)
-From: "Joshi, Kunal1" <kunal1.joshi@intel.com>
-To: "Latvala, Petri" <petri.latvala@intel.com>
-Date: Fri, 9 Sep 2022 10:44:26 +0000
-Message-ID: <MWHPR11MB142313161D75EEEB8BAA6806DA439@MWHPR11MB1423.namprd11.prod.outlook.com>
-References: <20220909074254.2032191-1-kunal1.joshi@intel.com>
- <Yxr9hjWf4LVsO034@platvala-desk.ger.corp.intel.com>
-In-Reply-To: <Yxr9hjWf4LVsO034@platvala-desk.ger.corp.intel.com>
-Content-Language: en-US
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C799410E2A2
+ for <igt-dev@lists.freedesktop.org>; Fri,  9 Sep 2022 10:44:50 +0000 (UTC)
+From: Kunal Joshi <kunal1.joshi@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Fri,  9 Sep 2022 16:16:35 +0530
+Message-Id: <20220909104635.2041605-1-kunal1.joshi@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t v1] tests/kms_chamelium: Fix common
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t v2] tests/kms_chamelium: Fix common
  suspend/hibernate
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -22,49 +17,37 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+Cc: petri.latvala@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
->> @@ -577,19 +577,19 @@ test_suspend_resume_hpd_common(data_t *data, enum =
-igt_suspend_state state,
->>  	for (p =3D 0; p < data->port_count; p++) {
->>  		port =3D data->ports[p];
->>  		igt_debug("Testing port %s\n", chamelium_port_get_name(port));
->> -	}
->> =20
->> -	igt_modeset_disable_all_outputs(&data->display);
->> -	chamelium_reset_state(&data->display, data->chamelium, NULL,
->> -			      data->ports, data->port_count);
->> +		igt_modeset_disable_all_outputs(&data->display);
->> +		chamelium_reset_state(&data->display, data->chamelium, NULL,
->> +				      data->ports, data->port_count);
->> =20
->> -	/* Make sure we notice new connectors after resuming */
->> -	try_suspend_resume_hpd(data, NULL, state, test, mon, false);
->> +		/* Make sure we notice new connectors after resuming */
->> +		try_suspend_resume_hpd(data, NULL, state, test, mon, false);
->> =20
->> -	/* Now make sure we notice disconnected connectors after resuming */
->> -	try_suspend_resume_hpd(data, NULL, state, test, mon, true);
->> +		/* Now make sure we notice disconnected connectors after resuming */
->> +		try_suspend_resume_hpd(data, NULL, state, test, mon, true);
->> =20
->> -	igt_cleanup_uevents(mon);
->> +		igt_cleanup_uevents(mon);
->> +	}
+Currently test executes and fails even if no ports are connected to
+chamelium, Added a igt_fixture to prevent that from happening.
 
->What are these changes here? Did you (accidentally?) make the suspend-resu=
-mes repeated > for every port?
+v2 : try_suspend_resume_hpd already loops through every port (Petri)
 
-> --
-> Petri Latvala
+Cc: Petri Latvala <petri.latvala@intel.com>
+Signed-off-by: Kunal Joshi <kunal1.joshi@intel.com>
+---
+ tests/chamelium/kms_chamelium.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-Got you,
-try_suspend_resume_hpd already schedules hotplug if NULL passed as port,
-will remove these changes in v2.
-
-Thanks, Petri.
-
-
+diff --git a/tests/chamelium/kms_chamelium.c b/tests/chamelium/kms_chamelium.c
+index d97b439a..1be1c41a 100644
+--- a/tests/chamelium/kms_chamelium.c
++++ b/tests/chamelium/kms_chamelium.c
+@@ -2945,6 +2945,11 @@ igt_main
+ 
+ 	igt_describe("Tests that operate on all connectors");
+ 	igt_subtest_group {
++
++		igt_fixture {
++			igt_require(data.port_count);
++		}
++
+ 		igt_describe(test_suspend_resume_hpd_common_desc);
+ 		igt_subtest("common-hpd-after-suspend")
+ 			test_suspend_resume_hpd_common(&data,
+-- 
+2.25.1
