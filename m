@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 349B610EDA8
- for <igt-dev@lists.freedesktop.org>; Fri,  9 Sep 2022 14:07:19 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8CF2010EDAB
+ for <igt-dev@lists.freedesktop.org>; Fri,  9 Sep 2022 14:06:53 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Fri,  9 Sep 2022 19:33:29 +0530
-Message-Id: <20220909140331.1041095-51-bhanuprakash.modem@intel.com>
+Date: Fri,  9 Sep 2022 19:33:12 +0530
+Message-Id: <20220909140331.1041095-34-bhanuprakash.modem@intel.com>
 In-Reply-To: <20220909140331.1041095-1-bhanuprakash.modem@intel.com>
 References: <20220909140331.1041095-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V3 50/52] tests/i915/kms_psr: Add support for
+Subject: [igt-dev] [i-g-t V3 33/52] tests/kms_sequence: Add support for
  Bigjoiner
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -34,24 +34,25 @@ V2: - Use updated helper name
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/i915/kms_psr.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ tests/kms_sequence.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/tests/i915/kms_psr.c b/tests/i915/kms_psr.c
-index 480e2cc7..97b4f0f3 100644
---- a/tests/i915/kms_psr.c
-+++ b/tests/i915/kms_psr.c
-@@ -102,7 +102,11 @@ static void setup_output(data_t *data)
- 		if (c->connector_type != DRM_MODE_CONNECTOR_eDP)
- 			continue;
- 
-+		igt_display_reset(display);
- 		igt_output_set_pipe(output, pipe);
-+		if (!i915_pipe_output_combo_valid(display))
-+			continue;
+diff --git a/tests/kms_sequence.c b/tests/kms_sequence.c
+index 1655d7d1..0c41c6d1 100644
+--- a/tests/kms_sequence.c
++++ b/tests/kms_sequence.c
+@@ -285,6 +285,12 @@ igt_main
+ 				     "drmCrtcQueueSequence");
+ 			igt_subtest_with_dynamic_f("%s-%s", f->name, m->name) {
+ 				for_each_pipe_with_valid_output(&data.display, p, output) {
++					igt_display_reset(&data.display);
 +
- 		data->crtc_id = output->config.crtc->crtc_id;
- 		data->output = output;
- 		data->mode = igt_output_get_mode(output);
++					igt_output_set_pipe(output, p);
++					if (!i915_pipe_output_combo_valid(&data.display))
++						continue;
++
+ 					igt_dynamic_f("%s-pipe-%s", igt_output_name(output), kmstest_pipe_name(p)) {
+ 						data.pipe = p;
+ 						data.output = output;
 -- 
 2.35.1
