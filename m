@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3E13910ECB0
- for <igt-dev@lists.freedesktop.org>; Fri,  9 Sep 2022 11:48:00 +0000 (UTC)
-From: Swati Sharma <swati2.sharma@intel.com>
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 38CDB10EDA8
+ for <igt-dev@lists.freedesktop.org>; Fri,  9 Sep 2022 14:07:10 +0000 (UTC)
+From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Fri,  9 Sep 2022 17:19:11 +0530
-Message-Id: <20220909114911.1852-6-swati2.sharma@intel.com>
-In-Reply-To: <20220909114911.1852-1-swati2.sharma@intel.com>
-References: <20220909114911.1852-1-swati2.sharma@intel.com>
+Date: Fri,  9 Sep 2022 19:33:23 +0530
+Message-Id: <20220909140331.1041095-45-bhanuprakash.modem@intel.com>
+In-Reply-To: <20220909140331.1041095-1-bhanuprakash.modem@intel.com>
+References: <20220909140331.1041095-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 5/5] tests/i915/i915_pm_dc: Sleep not reqd.
- to reset counter
+Subject: [igt-dev] [i-g-t V3 44/52] tests/i915/kms_flip_scaled_crc: Add
+ support for Bigjoiner
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,24 +23,51 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Sleep is not required since we are polling for the same condition.
+This patch will add a check to Skip the subtest if a selected pipe/output
+combo won't support Bigjoiner or 8K mode.
 
-Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
+Example:
+* Pipe-D wont support a mode > 5K
+* To use 8K mode on a pipe then consecutive pipe must be available & free.
+
+V2: - Use updated helper name
+
+Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/i915/i915_pm_dc.c | 1 -
- 1 file changed, 1 deletion(-)
+ tests/i915/kms_flip_scaled_crc.c | 13 ++++++++++++-
+ 1 file changed, 12 insertions(+), 1 deletion(-)
 
-diff --git a/tests/i915/i915_pm_dc.c b/tests/i915/i915_pm_dc.c
-index 142975e6c..fd5e2c089 100644
---- a/tests/i915/i915_pm_dc.c
-+++ b/tests/i915/i915_pm_dc.c
-@@ -470,7 +470,6 @@ static void setup_dc9_dpms(data_t *data, int dc_target)
- 	}
- 	prev_rpm = read_runtime_suspended_time(data->drm_fd);
- 	dpms_off(data);
--	sleep(1); /* wait for counters reset*/
- 	check_dc9(data, dc_target, prev_dc, prev_rpm);
- 	dpms_on(data);
- }
+diff --git a/tests/i915/kms_flip_scaled_crc.c b/tests/i915/kms_flip_scaled_crc.c
+index 764eb70f..ea25cf09 100644
+--- a/tests/i915/kms_flip_scaled_crc.c
++++ b/tests/i915/kms_flip_scaled_crc.c
+@@ -648,8 +648,13 @@ igt_main
+ 			for_each_pipe(&data.display, pipe) {
+ 				bool found = false;
+ 				for_each_valid_output_on_pipe(&data.display, pipe, output) {
++					igt_display_reset(&data.display);
++
+ 					modetoset = find_mode(&data, output);
+-					if (modetoset) {
++					igt_output_set_pipe(output, pipe);
++					igt_output_override_mode(output, modetoset);
++
++					if (modetoset && i915_pipe_output_combo_valid(&data.display)) {
+ 						found = true;
+ 						igt_dynamic_f("pipe-%s-valid-mode", kmstest_pipe_name(pipe))
+ 							run_tests(&data, index, pipe, output, modetoset);
+@@ -658,6 +663,12 @@ igt_main
+ 				}
+ 				if (!found) {
+ 					for_each_valid_output_on_pipe(&data.display, pipe, output) {
++						igt_display_reset(&data.display);
++
++						igt_output_set_pipe(output, pipe);
++						if (!i915_pipe_output_combo_valid(&data.display))
++							continue;
++
+ 						igt_dynamic_f("pipe-%s-default-mode", kmstest_pipe_name(pipe))
+ 							run_tests(&data, index, pipe, output, modetoset);
+ 					}
 -- 
-2.25.1
+2.35.1
