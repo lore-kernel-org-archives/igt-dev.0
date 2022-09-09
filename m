@@ -1,21 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CC6FA10EC2C
- for <igt-dev@lists.freedesktop.org>; Fri,  9 Sep 2022 07:36:37 +0000 (UTC)
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3409710EC1B
+ for <igt-dev@lists.freedesktop.org>; Fri,  9 Sep 2022 07:35:36 +0000 (UTC)
 From: "Gupta, Anshuman" <anshuman.gupta@intel.com>
 To: "Tauro, Riana" <riana.tauro@intel.com>, "igt-dev@lists.freedesktop.org"
  <igt-dev@lists.freedesktop.org>
-Date: Fri, 9 Sep 2022 07:36:07 +0000
-Message-ID: <CY5PR11MB6211E87A29A1F08B9ED0D6CE95439@CY5PR11MB6211.namprd11.prod.outlook.com>
+Date: Fri, 9 Sep 2022 07:35:27 +0000
+Message-ID: <CY5PR11MB621141E114E6C2FEFE55691F95439@CY5PR11MB6211.namprd11.prod.outlook.com>
 References: <20220909072744.2919983-1-riana.tauro@intel.com>
- <20220909072744.2919983-2-riana.tauro@intel.com>
-In-Reply-To: <20220909072744.2919983-2-riana.tauro@intel.com>
+ <20220909072744.2919983-3-riana.tauro@intel.com>
+In-Reply-To: <20220909072744.2919983-3-riana.tauro@intel.com>
 Content-Language: en-US
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t v2 1/2] lib/igt_pm : Add pm functions
- for d3cold_allowed
+Subject: Re: [igt-dev] [PATCH i-g-t v2 2/2] tests/i915/i915_suspend: Disable
+ d3cold_allowed for basic-s2idle-without-i915
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -36,106 +36,78 @@ List-ID: <igt-dev@lists.freedesktop.org>
 > To: igt-dev@lists.freedesktop.org
 > Cc: Tauro, Riana <riana.tauro@intel.com>; Gupta, Anshuman
 > <anshuman.gupta@intel.com>; Vivi, Rodrigo <rodrigo.vivi@intel.com>
-> Subject: [PATCH i-g-t v2 1/2] lib/igt_pm : Add pm functions for d3cold_al=
-lowed
+> Subject: [PATCH i-g-t v2 2/2] tests/i915/i915_suspend: Disable d3cold_all=
+owed
+> for basic-s2idle-without-i915
 >=20
-> Add functions to set/get d3cold_allowed attribute of the pci_device
+> When module is unloaded and s2idle is triggered, PCI core leaves the endp=
+oint in
+> D0 and the bridge in D3 state causing PCIE spec violation. The config spa=
+ce is
+> read as 0xFF
 >=20
-> v2 :  Add forward declaration in header (Anshuman)
+> Keep the bridge in D0 before module unload to prevent this issue
+>=20
+> v2: Addressed cosmetic review comments (Anshuman)
 >=20
 > Signed-off-by: Riana Tauro <riana.tauro@intel.com>
 Reviewed-by: Anshuman Gupta <anshuman.gupta@intel.com>
 > ---
->  lib/igt_pm.c | 47 +++++++++++++++++++++++++++++++++++++++++++++++
->  lib/igt_pm.h |  4 ++++
->  2 files changed, 51 insertions(+)
+>  tests/i915/i915_suspend.c | 26 ++++++++++++++++++++++++++
+>  1 file changed, 26 insertions(+)
 >=20
-> diff --git a/lib/igt_pm.c b/lib/igt_pm.c index 99251b40..edebfdec 100644
-> --- a/lib/igt_pm.c
-> +++ b/lib/igt_pm.c
-> @@ -38,6 +38,7 @@
->  #include <dirent.h>
->=20
->  #include "drmtest.h"
+> diff --git a/tests/i915/i915_suspend.c b/tests/i915/i915_suspend.c index
+> 94935595..815f1c8a 100644
+> --- a/tests/i915/i915_suspend.c
+> +++ b/tests/i915/i915_suspend.c
+> @@ -43,6 +43,7 @@
+>  #include "igt.h"
+>  #include "igt_kmod.h"
+>  #include "igt_device.h"
 > +#include "igt_device_scan.h"
->  #include "igt_kms.h"
->  #include "igt_pm.h"
->  #include "igt_aux.h"
-> @@ -1122,6 +1123,52 @@ void igt_pm_setup_pci_card_runtime_pm(struct
-> pci_device *pci_dev)
->  	igt_pm_setup_pci_card_power_attrs(pci_dev, true, 0);  }
 >=20
-> +/**
-> + * igt_pm_get_d3cold_allowed:
-> + * @igt_device_card: device card
-> + * @val: value to be read into
-> + *
-> + * Reads the value of d3cold_allowed attribute
-> + * of the pci device
-> + */
-> +void igt_pm_get_d3cold_allowed(struct igt_device_card *card, char *val)
-> +{
-> +	char name[PATH_MAX];
+>  #define OBJECT_SIZE (16*1024*1024)
+>=20
+> @@ -206,13 +207,38 @@ test_forcewake(int fd, bool hibernate)  static void
+> test_suspend_without_i915(int state)  {
+> +	struct igt_device_card card;
+> +	char d3cold_allowed[2];
 > +	int fd;
 > +
-> +	snprintf(name, PATH_MAX, "/sys/bus/pci/devices/%s",
-> +		 card->pci_slot_name);
+> +	fd =3D __drm_open_driver(DRIVER_INTEL);
+> +	igt_devices_scan(false);
 > +
-> +	fd =3D open(name, O_RDONLY);
-> +	igt_assert_f(fd >=3D 0, "Can't open %s\n", name);
-> +
-> +	igt_sysfs_read(fd, "d3cold_allowed", val, sizeof(val));
-> +
+> +	/*
+> +	 * When module is unloaded and s2idle is triggered, PCI core leaves the
+> endpoint
+> +	 * in D0 and the bridge in D3 state causing PCIE spec violation and con=
+fig
+> space
+> +	 * is read as 0xFF. Keep the bridge in D0 before module unload to
+> prevent
+> +	 * this issue
+> +	 */
+> +	if (state =3D=3D SUSPEND_STATE_FREEZE &&
+> +	    igt_device_find_first_i915_discrete_card(&card)) {
+> +		igt_pm_get_d3cold_allowed(&card, d3cold_allowed);
+> +		igt_pm_set_d3cold_allowed(&card, "0\n");
+> +	}
 > +	close(fd);
-> +}
 > +
-> +/**
-> + * igt_pm_get_d3cold_allowed:
-> + * @igt_device_card: device card
-> + * @val: value to be written
-> + *
-> + * writes the value to d3cold_allowed attribute of pci device  */ void
-> +igt_pm_set_d3cold_allowed(struct igt_device_card *card, const char
-> +*val) {
-> +	char name[PATH_MAX];
-> +	int fd;
-> +
-> +	snprintf(name, PATH_MAX, "/sys/bus/pci/devices/%s",
-> +		 card->pci_slot_name);
-> +
-> +	fd =3D open(name, O_RDONLY);
-> +	igt_assert_f(fd >=3D 0, "Can't open %s\n", name);
-> +
-> +	igt_sysfs_write(fd, "d3cold_allowed", val, sizeof(val));
-> +	close(fd);
-> +}
-> +
->  static void
->  igt_pm_restore_power_attr(struct pci_device *pci_dev, const char *attr, =
-char
-> *val, int len)  { diff --git a/lib/igt_pm.h b/lib/igt_pm.h index cbbde12b=
-..52c03cc5
-> 100644
-> --- a/lib/igt_pm.h
-> +++ b/lib/igt_pm.h
-> @@ -63,6 +63,8 @@ struct	igt_pm_pci_dev_pwrattr {
->  	char autosuspend_delay[64];
->  };
+>  	igt_kmsg(KMSG_INFO "Unloading i915\n");
+>  	igt_assert_eq(igt_i915_driver_unload(),0);
 >=20
-> +struct igt_device_card;
+>  	igt_system_suspend_autoresume(state, SUSPEND_TEST_NONE);
+>=20
+> +	if (state =3D=3D SUSPEND_STATE_FREEZE && strlen(card.card))
+> +		igt_pm_set_d3cold_allowed(&card, d3cold_allowed);
 > +
->  bool igt_setup_runtime_pm(int device);
->  void igt_disable_runtime_pm(void);
->  void igt_restore_runtime_pm(void);
-> @@ -76,6 +78,8 @@ enum igt_acpi_d_state
->  igt_pm_get_acpi_real_d_state(struct pci_device *pci_dev);  void
-> igt_pm_enable_pci_card_runtime_pm(struct pci_device *root,
->  				       struct pci_device *i915);
-> +void igt_pm_get_d3cold_allowed(struct igt_device_card *card, char
-> +*val); void igt_pm_set_d3cold_allowed(struct igt_device_card *card,
-> +const char *val);
->  void igt_pm_setup_pci_card_runtime_pm(struct pci_device *pci_dev);  void
-> igt_pm_restore_pci_card_runtime_pm(void);
->  void igt_pm_print_pci_card_runtime_status(void);
+>  	igt_kmsg(KMSG_INFO "Re-loading i915 \n");
+>  	igt_assert_eq(igt_i915_driver_load(NULL), 0);
+> +
+> +	igt_devices_free();
+>  }
+>=20
+>  int fd;
 > --
 > 2.25.1
