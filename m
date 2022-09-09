@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 66D0010ED98
- for <igt-dev@lists.freedesktop.org>; Fri,  9 Sep 2022 14:06:32 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7C4D810ED95
+ for <igt-dev@lists.freedesktop.org>; Fri,  9 Sep 2022 14:06:41 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Fri,  9 Sep 2022 19:32:58 +0530
-Message-Id: <20220909140331.1041095-20-bhanuprakash.modem@intel.com>
+Date: Fri,  9 Sep 2022 19:33:04 +0530
+Message-Id: <20220909140331.1041095-26-bhanuprakash.modem@intel.com>
 In-Reply-To: <20220909140331.1041095-1-bhanuprakash.modem@intel.com>
 References: <20220909140331.1041095-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V3 19/52] tests/kms_lease: Add support for
+Subject: [igt-dev] [i-g-t V3 25/52] tests/kms_plane_lowres: Add support for
  Bigjoiner
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -34,25 +34,22 @@ V2: - Use updated helper name
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/kms_lease.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ tests/kms_plane_lowres.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/tests/kms_lease.c b/tests/kms_lease.c
-index 0bf102a6..dfdb1e39 100644
---- a/tests/kms_lease.c
-+++ b/tests/kms_lease.c
-@@ -823,6 +823,12 @@ static void run_test(data_t *data, void (*testfunc)(data_t *))
- 			 kmstest_pipe_name(p),
- 			 igt_output_name(output));
+diff --git a/tests/kms_plane_lowres.c b/tests/kms_plane_lowres.c
+index f37dbd16..9d60a196 100644
+--- a/tests/kms_plane_lowres.c
++++ b/tests/kms_plane_lowres.c
+@@ -277,6 +277,9 @@ static void run_test(data_t *data, uint64_t modifier)
+ 			igt_display_reset(&data->display);
+ 			igt_output_set_pipe(data->output, data->pipe);
  
-+		igt_display_reset(display);
++			if (!i915_pipe_output_combo_valid(&data->display))
++				continue;
 +
-+		igt_output_set_pipe(output, p);
-+		if (!i915_pipe_output_combo_valid(display))
-+			continue;
-+
- 		data->pipe = p;
- 		data->crtc_id = pipe_to_crtc_id(display, p);
- 		data->connector_id = output->id;
+ 			data->pipe_crc = igt_pipe_crc_new(data->drm_fd, data->pipe,
+ 							  INTEL_PIPE_CRC_SOURCE_AUTO);
+ 
 -- 
 2.35.1
