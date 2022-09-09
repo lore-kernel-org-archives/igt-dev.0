@@ -1,16 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1AF0410EDA8
- for <igt-dev@lists.freedesktop.org>; Fri,  9 Sep 2022 14:06:58 +0000 (UTC)
-From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Fri,  9 Sep 2022 19:33:15 +0530
-Message-Id: <20220909140331.1041095-37-bhanuprakash.modem@intel.com>
-In-Reply-To: <20220909140331.1041095-1-bhanuprakash.modem@intel.com>
-References: <20220909140331.1041095-1-bhanuprakash.modem@intel.com>
+Date: Fri, 09 Sep 2022 16:49:24 +0200
+Message-ID: <5354052.Sb9uPGUboI@jkrzyszt-mobl1.ger.corp.intel.com>
+In-Reply-To: <20220829000920.38185-1-isabbasso@riseup.net>
+References: <20220829000920.38185-1-isabbasso@riseup.net>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V3 36/52] tests/kms_vrr: Add support for Bigjoiner
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
+Subject: Re: [igt-dev] [PATCH i-g-t v2 0/4] Add support for KUnit tests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,40 +16,78 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: twoerner@gmail.com, linux-kselftest@vger.kernel.org,
+ magalilemes00@gmail.com, maira.canal@usp.br, dlatypov@google.com,
+ tales.aparecida@gmail.com, brendanhiggins@google.com,
+ linux-kernel@vger.kernel.org, leandro.ribeiro@collabora.com,
+ dri-devel@lists.freedesktop.org, daniel@ffwll.ch, n@nfraprado.net,
+ davidgow@google.com, skhan@linuxfoundation.org, andrealmeid@riseup.net,
+ Isabella Basso <isabbasso@riseup.net>, kunit-dev@googlegroups.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-This patch will add a check to Skip the subtest if a selected pipe/output
-combo won't support Bigjoiner or 8K mode.
+Hi Isabella,
 
-Example:
-* Pipe-D wont support a mode > 5K
-* To use 8K mode on a pipe then consecutive pipe must be available & free.
+On Monday, 29 August 2022 02:09:16 CEST Isabella Basso wrote:
+> This patch series was first developed as part of the LKCamp hackathon
+> that happened last year[1], mainly focusing on refactoring DRM tests to
+> use KUnit.
+> 
+> KUnit[2][3] is a unified test framework that provides helper tools,
+> simplifying their development and execution. Using an x86-64 machine
+> it's possible to run tests in the host's kernel natively using user-mode
+> Linux[4] (aka UML), which simplifies usage in a wide variety of
+> scenarios, including integration to CI.
+> 
+> As the tool's adoption widens into graphics testing territory, I and
+> LKCamp members figured it would be important to support it in IGT, as
+> it's a core tool for GPU drivers maintainers.
+> 
+> I have then added KUnit support into IGT mainly following the KTAP
+> specs, and it can be tested using patch 4/4 in this series together with
+> a DRM selftests patch series available at [5].
 
-V2: - Use updated helper name
+CI pre-merge results indicate that your new versions of tests were not able to 
+load kunit module, then didn't actually execute any kunit tests, but returned 
+SUCCESS.  That's probably not what we expect from IGT tests.
 
-Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
----
- tests/kms_vrr.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7698/shard-rkl-4/igt@drm_buddy.html
+https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7698/shard-rkl-1/igt@drm_mm.html
+https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7698/shard-rkl-5/igt@kms_selftest.html
 
-diff --git a/tests/kms_vrr.c b/tests/kms_vrr.c
-index 8976d4a6..619b3789 100644
---- a/tests/kms_vrr.c
-+++ b/tests/kms_vrr.c
-@@ -444,6 +444,12 @@ run_vrr_test(data_t *data, test_t test, uint32_t flags)
- 
- 		for_each_pipe(&data->display, pipe) {
- 			if (igt_pipe_connector_valid(pipe, output)) {
-+				igt_display_reset(&data->display);
-+
-+				igt_output_set_pipe(output, pipe);
-+				if (!i915_pipe_output_combo_valid(&data->display))
-+					continue;
-+
- 				igt_dynamic_f("pipe-%s-%s",
- 					      kmstest_pipe_name(pipe), output->name)
- 					test(data, pipe, output, flags);
--- 
-2.35.1
+Thanks,
+Janusz
+
+> 
+> Changes since v1:
+> - Major rework of parsing function structure:
+>   - It is not longer recursive
+>   - Adapt kselftests functions and structs to be used with KUnit
+> - Switch DRM selftests to KUnit parsing as they're updated in the kernel
+> - Replace AMD KUnit tests by DRM selftests
+> 
+> [1]: https://groups.google.com/g/kunit-dev/c/YqFR1q2uZvk/m/IbvItSfHBAAJ
+> [2]: https://kunit.dev
+> [3]: https://docs.kernel.org/dev-tools/kunit/index.html
+> [4]: http://user-mode-linux.sourceforge.net
+> [5]: https://lore.kernel.org/all/20220708203052.236290-1-maira.canal@usp.br/
+> 
+> Isabella Basso (4):
+>   lib/igt_kmod: rename kselftest functions to ktest
+>   lib/igt_kmod.c: check if module is builtin before attempting to unload
+>     it
+>   lib/igt_kmod: add compatibility for KUnit
+>   tests: DRM selftests: switch to KUnit
+> 
+>  lib/igt_kmod.c       | 315 +++++++++++++++++++++++++++++++++++++++++--
+>  lib/igt_kmod.h       |  14 +-
+>  tests/drm_buddy.c    |   7 +-
+>  tests/drm_mm.c       |   7 +-
+>  tests/kms_selftest.c |  12 +-
+>  5 files changed, 329 insertions(+), 26 deletions(-)
+> 
+> 
+
+
+
