@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7C4D810ED95
- for <igt-dev@lists.freedesktop.org>; Fri,  9 Sep 2022 14:06:41 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EA40510ED95
+ for <igt-dev@lists.freedesktop.org>; Fri,  9 Sep 2022 14:06:30 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Fri,  9 Sep 2022 19:33:04 +0530
-Message-Id: <20220909140331.1041095-26-bhanuprakash.modem@intel.com>
+Date: Fri,  9 Sep 2022 19:32:57 +0530
+Message-Id: <20220909140331.1041095-19-bhanuprakash.modem@intel.com>
 In-Reply-To: <20220909140331.1041095-1-bhanuprakash.modem@intel.com>
 References: <20220909140331.1041095-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V3 25/52] tests/kms_plane_lowres: Add support for
+Subject: [igt-dev] [i-g-t V3 18/52] tests/kms_invalid_mode: Add support for
  Bigjoiner
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -34,22 +34,25 @@ V2: - Use updated helper name
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/kms_plane_lowres.c | 3 +++
- 1 file changed, 3 insertions(+)
+ tests/kms_invalid_mode.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/tests/kms_plane_lowres.c b/tests/kms_plane_lowres.c
-index f37dbd16..9d60a196 100644
---- a/tests/kms_plane_lowres.c
-+++ b/tests/kms_plane_lowres.c
-@@ -277,6 +277,9 @@ static void run_test(data_t *data, uint64_t modifier)
- 			igt_display_reset(&data->display);
- 			igt_output_set_pipe(data->output, data->pipe);
- 
-+			if (!i915_pipe_output_combo_valid(&data->display))
-+				continue;
+diff --git a/tests/kms_invalid_mode.c b/tests/kms_invalid_mode.c
+index 0ae98a31..56470cf7 100644
+--- a/tests/kms_invalid_mode.c
++++ b/tests/kms_invalid_mode.c
+@@ -293,6 +293,12 @@ igt_main
+ 	for (int i = 0; i < ARRAY_SIZE(subtests); i++) {
+ 		igt_subtest_with_dynamic(subtests[i].name) {
+ 			for_each_pipe_with_valid_output(&data.display, pipe, output) {
++				igt_display_reset(&data.display);
 +
- 			data->pipe_crc = igt_pipe_crc_new(data->drm_fd, data->pipe,
- 							  INTEL_PIPE_CRC_SOURCE_AUTO);
- 
++				igt_output_set_pipe(output, pipe);
++				if (!i915_pipe_output_combo_valid(&data.display))
++					continue;
++
+ 				igt_dynamic_f("%s-pipe-%s", igt_output_name(output), kmstest_pipe_name(pipe)) {
+ 					data.output = output;
+ 					data.pipe = pipe;
 -- 
 2.35.1
