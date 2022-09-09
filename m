@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 647FE10ED8F
- for <igt-dev@lists.freedesktop.org>; Fri,  9 Sep 2022 14:06:22 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6B8B210ED92
+ for <igt-dev@lists.freedesktop.org>; Fri,  9 Sep 2022 14:06:29 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Fri,  9 Sep 2022 19:32:49 +0530
-Message-Id: <20220909140331.1041095-11-bhanuprakash.modem@intel.com>
+Date: Fri,  9 Sep 2022 19:32:56 +0530
+Message-Id: <20220909140331.1041095-18-bhanuprakash.modem@intel.com>
 In-Reply-To: <20220909140331.1041095-1-bhanuprakash.modem@intel.com>
 References: <20220909140331.1041095-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V3 10/52] tests/kms_concurrent: Add support for
- Bigjoiner
+Subject: [igt-dev] [i-g-t V3 17/52] tests/kms_flip_event_leak: Add support
+ for Bigjoiner
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -34,31 +34,36 @@ V2: - Use updated helper name
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/kms_concurrent.c | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ tests/kms_flip_event_leak.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/tests/kms_concurrent.c b/tests/kms_concurrent.c
-index 6f8ffd4a..e6d61a84 100644
---- a/tests/kms_concurrent.c
-+++ b/tests/kms_concurrent.c
-@@ -330,9 +330,17 @@ run_tests_for_pipe(data_t *data, enum pipe pipe)
- 	igt_describe("Test atomic mode setting concurrently with multiple planes and screen "
- 		     "resolution.");
- 	igt_subtest_with_dynamic_f("pipe-%s", kmstest_pipe_name(pipe)) {
--		for_each_valid_output_on_pipe(&data->display, pipe, output)
-+		for_each_valid_output_on_pipe(&data->display, pipe, output) {
-+			igt_display_reset(&data->display);
-+
-+			igt_output_set_pipe(output, pipe);
-+			if (!i915_pipe_output_combo_valid(&data->display))
-+				continue;
-+
-+			igt_output_set_pipe(output, PIPE_NONE);
- 			igt_dynamic_f("%s", igt_output_name(output))
- 				run_test(data, pipe, output);
-+		}
- 	}
- }
+diff --git a/tests/kms_flip_event_leak.c b/tests/kms_flip_event_leak.c
+index ac201293..87f05052 100644
+--- a/tests/kms_flip_event_leak.c
++++ b/tests/kms_flip_event_leak.c
+@@ -48,6 +48,9 @@ static void test(data_t *data, enum pipe pipe, igt_output_t *output)
+ 	struct igt_fb fb[2];
+ 	int fd, ret;
  
++	igt_info("Using (pipe %s + %s) to run the subtest.\n",
++		 kmstest_pipe_name(pipe), igt_output_name(output));
++
+ 	/* select the pipe we want to use */
+ 	igt_output_set_pipe(output, pipe);
+ 
+@@ -102,6 +105,13 @@ igt_simple_main
+ 	igt_display_require(&data.display, data.drm_fd);
+ 
+ 	for_each_pipe_with_valid_output(&data.display, pipe, output) {
++		igt_display_reset(&data.display);
++
++		igt_output_set_pipe(output, pipe);
++		if (!i915_pipe_output_combo_valid(&data.display))
++			continue;
++
++		igt_output_set_pipe(output, PIPE_NONE);
+ 		test(&data, pipe, output);
+ 		valid_tests++;
+ 	}
 -- 
 2.35.1
