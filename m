@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3A28910EDA8
- for <igt-dev@lists.freedesktop.org>; Fri,  9 Sep 2022 14:07:16 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0A5DF10ED95
+ for <igt-dev@lists.freedesktop.org>; Fri,  9 Sep 2022 14:06:46 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Fri,  9 Sep 2022 19:33:27 +0530
-Message-Id: <20220909140331.1041095-49-bhanuprakash.modem@intel.com>
+Date: Fri,  9 Sep 2022 19:33:07 +0530
+Message-Id: <20220909140331.1041095-29-bhanuprakash.modem@intel.com>
 In-Reply-To: <20220909140331.1041095-1-bhanuprakash.modem@intel.com>
 References: <20220909140331.1041095-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V3 48/52] tests/i915/kms_psr2_sf: Add support for
+Subject: [igt-dev] [i-g-t V3 28/52] tests/kms_prime: Add support for
  Bigjoiner
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -34,34 +34,34 @@ V2: - Use updated helper name
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/i915/kms_psr2_sf.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ tests/kms_prime.c | 11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
-diff --git a/tests/i915/kms_psr2_sf.c b/tests/i915/kms_psr2_sf.c
-index 6612587c..7f63b19f 100644
---- a/tests/i915/kms_psr2_sf.c
-+++ b/tests/i915/kms_psr2_sf.c
-@@ -115,7 +115,11 @@ static void setup_output(data_t *data)
- 		if (c->connector_type != DRM_MODE_CONNECTOR_eDP)
- 			continue;
+diff --git a/tests/kms_prime.c b/tests/kms_prime.c
+index 3df690e0..98aa8212 100644
+--- a/tests/kms_prime.c
++++ b/tests/kms_prime.c
+@@ -89,14 +89,17 @@ static igt_output_t *setup_display(int importer_fd, igt_display_t *display,
+ 	bool found = false;
  
+ 	for_each_pipe_with_valid_output(display, *pipe, output) {
+-		found = true;
+-		break;
 +		igt_display_reset(display);
- 		igt_output_set_pipe(output, pipe);
-+		if (!i915_pipe_output_combo_valid(display))
-+			continue;
 +
- 		data->output = output;
- 		data->mode = igt_output_get_mode(output);
++		igt_output_set_pipe(output, *pipe);
++		if (i915_pipe_output_combo_valid(display)) {
++			found = true;
++			break;
++		}
+ 	}
  
-@@ -127,6 +131,9 @@ static void display_init(data_t *data)
- {
- 	igt_display_require(&data->display, data->drm_fd);
- 	setup_output(data);
-+
-+	igt_require_f(data->output, "No available output found\n");
-+	igt_require_f(data->mode, "No available mode found on %s\n", data->output->name);
+ 	igt_require_f(found, "No valid connector/pipe found\n");
+ 
+-	igt_display_reset(display);
+-	igt_output_set_pipe(output, *pipe);
+ 	return output;
  }
  
- static void display_fini(data_t *data)
 -- 
 2.35.1
