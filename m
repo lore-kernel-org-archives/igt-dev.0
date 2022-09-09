@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 16EA110EDA8
- for <igt-dev@lists.freedesktop.org>; Fri,  9 Sep 2022 14:06:55 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8990710ED9C
+ for <igt-dev@lists.freedesktop.org>; Fri,  9 Sep 2022 14:06:50 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Fri,  9 Sep 2022 19:33:13 +0530
-Message-Id: <20220909140331.1041095-35-bhanuprakash.modem@intel.com>
+Date: Fri,  9 Sep 2022 19:33:10 +0530
+Message-Id: <20220909140331.1041095-32-bhanuprakash.modem@intel.com>
 In-Reply-To: <20220909140331.1041095-1-bhanuprakash.modem@intel.com>
 References: <20220909140331.1041095-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V3 34/52] tests/kms_universal_plane: Add support
- for Bigjoiner
+Subject: [igt-dev] [i-g-t V3 31/52] tests/kms_rotation_crc: Add support for
+ Bigjoiner
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -34,173 +34,90 @@ V2: - Use updated helper name
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/kms_universal_plane.c | 94 +++++++++++++++++++++++++++++++++----
- 1 file changed, 84 insertions(+), 10 deletions(-)
+ tests/kms_rotation_crc.c | 25 ++++++++++++++++++++++++-
+ 1 file changed, 24 insertions(+), 1 deletion(-)
 
-diff --git a/tests/kms_universal_plane.c b/tests/kms_universal_plane.c
-index 3cb6d704..92749df8 100644
---- a/tests/kms_universal_plane.c
-+++ b/tests/kms_universal_plane.c
-@@ -366,6 +366,9 @@ sanity_test_pipe(data_t *data, enum pipe pipe, igt_output_t *output)
+diff --git a/tests/kms_rotation_crc.c b/tests/kms_rotation_crc.c
+index 50869a08..f0930301 100644
+--- a/tests/kms_rotation_crc.c
++++ b/tests/kms_rotation_crc.c
+@@ -198,6 +198,8 @@ static void prepare_crtc(data_t *data, igt_output_t *output, enum pipe pipe,
+ 	cleanup_crtc(data);
  
- 	igt_require_pipe(&data->display, pipe);
- 
-+	igt_info("Using (pipe %s + %s) to run the subtest.\n",
-+		 kmstest_pipe_name(pipe), igt_output_name(output));
-+
  	igt_output_set_pipe(output, pipe);
- 	mode = igt_output_get_mode(output);
++	igt_require(i915_pipe_output_combo_valid(display));
++
+ 	igt_plane_set_rotation(plane, IGT_ROTATION_0);
  
-@@ -479,6 +482,9 @@ pageflip_test_pipe(data_t *data, enum pipe pipe, igt_output_t *output)
+ 	/* create the pipe_crc object for this pipe */
+@@ -461,6 +463,7 @@ static void test_plane_rotation(data_t *data, int plane_type, bool test_bad_form
+ 	igt_output_t *output;
+ 	enum pipe pipe;
+ 	int pipe_count = 0, connected_outputs = 0;
++	bool found = false;
  
- 	igt_require_pipe(&data->display, pipe);
+ 	if (is_amdgpu_device(data->gfx_fd))
+ 		igt_require(plane_type != DRM_PLANE_TYPE_OVERLAY &&
+@@ -478,6 +481,13 @@ static void test_plane_rotation(data_t *data, int plane_type, bool test_bad_form
+ 		igt_plane_t *plane;
+ 		int i, j, c;
  
-+	igt_info("Using (pipe %s + %s) to run the subtest.\n",
-+		 kmstest_pipe_name(pipe), igt_output_name(output));
++		igt_display_reset(display);
 +
- 	igt_output_set_pipe(output, pipe);
++		igt_output_set_pipe(output, pipe);
++		if (!i915_pipe_output_combo_valid(display))
++			continue;
++
++		found = true;
+ 		mode = igt_output_get_mode(output);
  
- 	pageflip_test_init(&test, output, pipe);
-@@ -582,6 +588,9 @@ cursor_leak_test_pipe(data_t *data, enum pipe pipe, igt_output_t *output)
- 	igt_require(display->has_cursor_plane);
- 	igt_require_intel(data->drm_fd);
- 
-+	igt_info("Using (pipe %s + %s) to run the subtest.\n",
-+		 kmstest_pipe_name(pipe), igt_output_name(output));
-+
- 	igt_output_set_pipe(output, pipe);
- 	mode = igt_output_get_mode(output);
- 
-@@ -710,6 +719,9 @@ gen9_test_pipe(data_t *data, enum pipe pipe, igt_output_t *output)
- 	igt_skip_on(data->display_ver < 9);
- 	igt_require_pipe(&data->display, pipe);
- 
-+	igt_info("Using (pipe %s + %s) to run the subtest.\n",
-+		 kmstest_pipe_name(pipe), igt_output_name(output));
-+
- 	igt_output_set_pipe(output, pipe);
- 
- 	gen9_test_init(&test, output, pipe);
-@@ -745,6 +757,22 @@ gen9_test_pipe(data_t *data, enum pipe pipe, igt_output_t *output)
- 	gen9_test_fini(&test, output);
- }
- 
-+static bool
-+pipe_output_combo_valid(igt_display_t *display,
-+			enum pipe pipe, igt_output_t *output)
-+{
-+	bool ret = true;
-+
-+	igt_display_reset(display);
-+
-+	igt_output_set_pipe(output, pipe);
-+	if (!i915_pipe_output_combo_valid(display))
-+		ret = false;
-+	igt_output_set_pipe(output, PIPE_NONE);
-+
-+	return ret;
-+}
-+
- static void
- run_tests_for_pipe(data_t *data, enum pipe pipe)
- {
-@@ -763,34 +791,79 @@ run_tests_for_pipe(data_t *data, enum pipe pipe)
- 
- 	igt_describe("Check the switching between different primary plane fbs with CRTC off");
- 	igt_subtest_f("universal-plane-pipe-%s-functional",
--		      kmstest_pipe_name(pipe))
--		for_each_valid_output_on_pipe(&data->display, pipe, output)
-+		      kmstest_pipe_name(pipe)) {
-+		bool found = false;
-+
-+		for_each_valid_output_on_pipe(&data->display, pipe, output) {
-+			if (!pipe_output_combo_valid(&data->display, pipe, output))
-+				continue;
-+
-+			found = true;
- 			functional_test_pipe(data, pipe, output);
-+		}
-+		igt_require_f(found, "No valid pipe/output combo found.\n");
-+	}
- 
- 	igt_describe("Test for scale-up or scale-down using universal plane API without covering CRTC");
- 	igt_subtest_f("universal-plane-pipe-%s-sanity",
--		      kmstest_pipe_name(pipe))
--		for_each_valid_output_on_pipe(&data->display, pipe, output)
-+		      kmstest_pipe_name(pipe)) {
-+		bool found = false;
-+
-+		for_each_valid_output_on_pipe(&data->display, pipe, output) {
-+			if (!pipe_output_combo_valid(&data->display, pipe, output))
-+				continue;
-+
-+			found = true;
- 			sanity_test_pipe(data, pipe, output);
-+		}
-+		igt_require_f(found, "No valid pipe/output combo found.\n");
-+	}
- 
- 	igt_describe("Check pageflips while primary plane is disabled before IOCTL or between IOCTL"
- 			" and pageflip execution");
- 	igt_subtest_f("disable-primary-vs-flip-pipe-%s",
--		      kmstest_pipe_name(pipe))
--		for_each_valid_output_on_pipe(&data->display, pipe, output)
-+		      kmstest_pipe_name(pipe)) {
-+		bool found = false;
-+
-+		for_each_valid_output_on_pipe(&data->display, pipe, output) {
-+			if (!pipe_output_combo_valid(&data->display, pipe, output))
-+				continue;
-+
-+			found = true;
- 			pageflip_test_pipe(data, pipe, output);
-+		}
-+		igt_require_f(found, "No valid pipe/output combo found.\n");
-+	}
- 
- 	igt_describe("Check for cursor leaks after performing cursor operations");
- 	igt_subtest_f("cursor-fb-leak-pipe-%s",
--		      kmstest_pipe_name(pipe))
--		for_each_valid_output_on_pipe(&data->display, pipe, output)
-+		      kmstest_pipe_name(pipe)) {
-+		bool found = false;
-+
-+		for_each_valid_output_on_pipe(&data->display, pipe, output) {
-+			if (!pipe_output_combo_valid(&data->display, pipe, output))
-+				continue;
-+
-+			found = true;
- 			cursor_leak_test_pipe(data, pipe, output);
-+		}
-+		igt_require_f(found, "No valid pipe/output combo found.\n");
-+	}
- 
- 	igt_describe("Check if pageflip succeeds in windowed setting");
- 	igt_subtest_f("universal-plane-gen9-features-pipe-%s",
--		      kmstest_pipe_name(pipe))
--		for_each_valid_output_on_pipe(&data->display, pipe, output)
-+		      kmstest_pipe_name(pipe)) {
-+		bool found = false;
-+
-+		for_each_valid_output_on_pipe(&data->display, pipe, output) {
-+			if (!pipe_output_combo_valid(&data->display, pipe, output))
-+				continue;
-+
-+			found = true;
- 			gen9_test_pipe(data, pipe, output);
-+		}
-+		igt_require_f(found, "No valid pipe/output combo found.\n");
-+	}
- }
- 
- static data_t data;
-@@ -808,6 +881,7 @@ igt_main
- 
- 		igt_require_pipe_crc(data.drm_fd);
- 		igt_display_require(&data.display, data.drm_fd);
-+		igt_display_require_output(&data.display);
+ 		/*
+@@ -568,6 +578,7 @@ static void test_plane_rotation(data_t *data, int plane_type, bool test_bad_form
+ 			igt_pipe_crc_stop(data->pipe_crc);
+ 		}
  	}
++	igt_require_f(found, "No valid pipe/output combo found.\n");
+ }
  
- 	for_each_pipe_static(pipe) {
+ typedef struct {
+@@ -677,6 +688,7 @@ static void test_multi_plane_rotation(data_t *data, enum pipe pipe)
+ 	bool have_crc; // flag if can use previously logged crc for comparison
+ 	igt_crc_t crclog[16] = {}; //4 * 4 rotation crc storage for packed formats
+ 	char *str1, *str2; // for debug printouts
++	bool found = false;
+ 
+ 	/*
+ 	 * These are those modes which are tested. For testing feel interesting
+@@ -706,11 +718,20 @@ static void test_multi_plane_rotation(data_t *data, enum pipe pipe)
+ 	{IGT_ROTATION_270, .2f, .4f, I915_FORMAT_MOD_Yf_TILED },
+ 	};
+ 
++	igt_display_require_output(display);
++
+ 	for_each_valid_output_on_pipe(display, pipe, output) {
+ 		int i, j, k, l, flipsw, fliphw;
++
++		igt_display_reset(display);
++
+ 		igt_output_set_pipe(output, pipe);
++		if (!i915_pipe_output_combo_valid(display))
++			continue;
++
++		found = true;
++
+ 		mode = igt_output_get_mode(output);
+-		igt_display_require_output(display);
+ 		igt_display_commit2(display, COMMIT_ATOMIC);
+ 
+ 		used_w = TEST_WIDTH(mode);
+@@ -890,6 +911,8 @@ static void test_multi_plane_rotation(data_t *data, enum pipe pipe)
+ 			igt_remove_fb(data->gfx_fd, &planeconfigs[c].fbs[d][MULTIPLANE_ROTATED]);
+ 		}
+ 	}
++
++	igt_require_f(found, "No valid pipe/output combo found.\n");
+ }
+ 
+ static void test_plane_rotation_exhaust_fences(data_t *data,
 -- 
 2.35.1
