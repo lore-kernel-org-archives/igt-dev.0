@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9CBC310EDA8
- for <igt-dev@lists.freedesktop.org>; Fri,  9 Sep 2022 14:06:59 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B85C510EDA8
+ for <igt-dev@lists.freedesktop.org>; Fri,  9 Sep 2022 14:07:17 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Fri,  9 Sep 2022 19:33:16 +0530
-Message-Id: <20220909140331.1041095-38-bhanuprakash.modem@intel.com>
+Date: Fri,  9 Sep 2022 19:33:28 +0530
+Message-Id: <20220909140331.1041095-50-bhanuprakash.modem@intel.com>
 In-Reply-To: <20220909140331.1041095-1-bhanuprakash.modem@intel.com>
 References: <20220909140331.1041095-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V3 37/52] tests/i915/kms_big_fb: Add support for
+Subject: [igt-dev] [i-g-t V3 49/52] tests/i915/kms_psr2_su: Add support for
  Bigjoiner
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -34,46 +34,34 @@ V2: - Use updated helper name
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/i915/kms_big_fb.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ tests/i915/kms_psr2_su.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/tests/i915/kms_big_fb.c b/tests/i915/kms_big_fb.c
-index 0c4cd95e..fa523558 100644
---- a/tests/i915/kms_big_fb.c
-+++ b/tests/i915/kms_big_fb.c
-@@ -397,6 +397,9 @@ static bool test_pipe(data_t *data)
- 	igt_plane_t *primary;
- 	bool ret = false;
+diff --git a/tests/i915/kms_psr2_su.c b/tests/i915/kms_psr2_su.c
+index caccf713..550b1d67 100644
+--- a/tests/i915/kms_psr2_su.c
++++ b/tests/i915/kms_psr2_su.c
+@@ -104,7 +104,11 @@ static void setup_output(data_t *data)
+ 		if (c->connector_type != DRM_MODE_CONNECTOR_eDP)
+ 			continue;
  
-+	igt_info("Using (pipe %s + %s) to run the subtest.\n",
-+		 kmstest_pipe_name(data->pipe), igt_output_name(data->output));
-+
- 	if (data->format == DRM_FORMAT_C8 &&
- 	    !igt_pipe_obj_has_prop(&data->display.pipes[data->pipe],
- 				   IGT_CRTC_GAMMA_LUT))
-@@ -472,6 +475,10 @@ max_hw_stride_async_flip_test(data_t *data)
- 	igt_crc_t compare_crc, async_crc;
- 
- 	igt_require(data->display.is_atomic);
-+
-+	igt_info("Using (pipe %s + %s) to run the subtest.\n",
-+		 kmstest_pipe_name(data->pipe), igt_output_name(data->output));
-+
- 	igt_output_set_pipe(data->output, data->pipe);
- 
- 	primary = igt_output_get_plane_type(data->output, DRM_PLANE_TYPE_PRIMARY);
-@@ -592,6 +599,12 @@ static void test_scanout(data_t *data)
- 		    data->format, data->modifier);
- 
- 	for_each_pipe_with_valid_output(&data->display, data->pipe, data->output) {
-+		igt_display_reset(&data->display);
-+
-+		igt_output_set_pipe(data->output, data->pipe);
-+		if (!i915_pipe_output_combo_valid(&data->display))
++		igt_display_reset(display);
+ 		igt_output_set_pipe(output, pipe);
++		if (!i915_pipe_output_combo_valid(display))
 +			continue;
 +
- 		if (data->async_flip_test) {
- 			if (max_hw_stride_async_flip_test(data))
- 				return;
+ 		data->output = output;
+ 		data->mode = igt_output_get_mode(output);
+ 
+@@ -116,6 +120,9 @@ static void display_init(data_t *data)
+ {
+ 	igt_display_require(&data->display, data->drm_fd);
+ 	setup_output(data);
++
++	igt_require_f(data->output, "No available output found\n");
++	igt_require_f(data->mode, "No available mode found on %s\n", data->output->name);
+ }
+ 
+ static void display_fini(data_t *data)
 -- 
 2.35.1
