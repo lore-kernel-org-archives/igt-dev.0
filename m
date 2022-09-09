@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8801810ED95
- for <igt-dev@lists.freedesktop.org>; Fri,  9 Sep 2022 14:06:47 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9004C10EDA7
+ for <igt-dev@lists.freedesktop.org>; Fri,  9 Sep 2022 14:06:52 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Fri,  9 Sep 2022 19:33:08 +0530
-Message-Id: <20220909140331.1041095-30-bhanuprakash.modem@intel.com>
+Date: Fri,  9 Sep 2022 19:33:11 +0530
+Message-Id: <20220909140331.1041095-33-bhanuprakash.modem@intel.com>
 In-Reply-To: <20220909140331.1041095-1-bhanuprakash.modem@intel.com>
 References: <20220909140331.1041095-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V3 29/52] tests/kms_properties: Add support for
+Subject: [igt-dev] [i-g-t V3 32/52] tests/kms_scaling_modes: Add support for
  Bigjoiner
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -34,51 +34,32 @@ V2: - Use updated helper name
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/kms_properties.c | 18 ++++++++++++++++++
- 1 file changed, 18 insertions(+)
+ tests/kms_scaling_modes.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/tests/kms_properties.c b/tests/kms_properties.c
-index dd5a93aa..953fb3fb 100644
---- a/tests/kms_properties.c
-+++ b/tests/kms_properties.c
-@@ -241,6 +241,12 @@ static void plane_properties(igt_display_t *display, bool atomic)
- 		found = false;
+diff --git a/tests/kms_scaling_modes.c b/tests/kms_scaling_modes.c
+index 8e80189a..c3fd2e04 100644
+--- a/tests/kms_scaling_modes.c
++++ b/tests/kms_scaling_modes.c
+@@ -93,13 +93,17 @@ static void test_scaling_mode(data_t *data, uint32_t flags)
+ 	enum pipe pipe;
  
- 		for_each_valid_output_on_pipe(display, pipe, output) {
-+			igt_display_reset(display);
+ 	for_each_pipe_with_valid_output(display, pipe, output) {
++		igt_display_reset(display);
 +
-+			igt_output_set_pipe(output, pipe);
-+			if (!i915_pipe_output_combo_valid(display))
-+				continue;
-+
- 			found_any = found = true;
+ 		if (!has_scaling_mode(output))
+ 			continue;
  
- 			run_plane_property_tests(display, pipe, output, atomic);
-@@ -264,6 +270,12 @@ static void crtc_properties(igt_display_t *display, bool atomic)
- 		found = false;
++		igt_output_set_pipe(output, pipe);
++		if (!i915_pipe_output_combo_valid(display))
++			continue;
++
+ 		igt_dynamic_f("%s-pipe-%s", output->name, kmstest_pipe_name(pipe))
+ 			test_scaling_mode_on_output(display, pipe, output, flags);
+-
+-		igt_display_reset(display);
+ 	}
+ }
  
- 		for_each_valid_output_on_pipe(display, pipe, output) {
-+			igt_display_reset(display);
-+
-+			igt_output_set_pipe(output, pipe);
-+			if (!i915_pipe_output_combo_valid(display))
-+				continue;
-+
- 			found_any_valid_pipe = found = true;
- 
- 			run_crtc_property_tests(display, pipe, output, atomic);
-@@ -290,6 +302,12 @@ static void connector_properties(igt_display_t *display, bool atomic)
- 			if (!igt_pipe_connector_valid(pipe, output))
- 				continue;
- 
-+			igt_display_reset(display);
-+
-+			igt_output_set_pipe(output, pipe);
-+			if (!i915_pipe_output_combo_valid(display))
-+				continue;
-+
- 			found = true;
- 			run_connector_property_tests(display, pipe, output, atomic);
- 			break;
 -- 
 2.35.1
