@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0793E10ED91
- for <igt-dev@lists.freedesktop.org>; Fri,  9 Sep 2022 14:06:22 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C307610ED95
+ for <igt-dev@lists.freedesktop.org>; Fri,  9 Sep 2022 14:06:35 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Fri,  9 Sep 2022 19:32:50 +0530
-Message-Id: <20220909140331.1041095-12-bhanuprakash.modem@intel.com>
+Date: Fri,  9 Sep 2022 19:33:00 +0530
+Message-Id: <20220909140331.1041095-22-bhanuprakash.modem@intel.com>
 In-Reply-To: <20220909140331.1041095-1-bhanuprakash.modem@intel.com>
 References: <20220909140331.1041095-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V3 11/52] tests/kms_content_protection: Add
- support for Bigjoiner
+Subject: [igt-dev] [i-g-t V3 21/52] tests/kms_pipe_crc_basic: Add support
+ for Bigjoiner
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -34,43 +34,64 @@ V2: - Use updated helper name
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/kms_content_protection.c | 17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
+ tests/kms_pipe_crc_basic.c | 24 ++++++++++++++++++++++++
+ 1 file changed, 24 insertions(+)
 
-diff --git a/tests/kms_content_protection.c b/tests/kms_content_protection.c
-index 3041f1cd..31389001 100644
---- a/tests/kms_content_protection.c
-+++ b/tests/kms_content_protection.c
-@@ -338,6 +338,15 @@ static void test_content_protection_on_output(igt_output_t *output,
- 		if (!igt_pipe_is_free(display, pipe))
- 			continue;
+diff --git a/tests/kms_pipe_crc_basic.c b/tests/kms_pipe_crc_basic.c
+index 2ff40f72..76588010 100644
+--- a/tests/kms_pipe_crc_basic.c
++++ b/tests/kms_pipe_crc_basic.c
+@@ -271,6 +271,21 @@ static void test_disable_crc_after_crtc(data_t *data, enum pipe pipe,
+ 	igt_remove_fb(data->drm_fd, &data->fb);
+ }
  
-+		igt_output_set_pipe(output, pipe);
-+		if (!i915_pipe_output_combo_valid(display)) {
-+			igt_output_set_pipe(output, PIPE_NONE);
-+			continue;
-+		}
++static bool pipe_output_combo_valid(igt_display_t *display,
++				    enum pipe pipe, igt_output_t *output)
++{
++	bool ret = true;
 +
-+		igt_info("Using (pipe %s + %s) to run the subtest.\n",
-+			 kmstest_pipe_name(pipe), igt_output_name(output));
++	igt_display_reset(display);
 +
- 		modeset_with_fb(pipe, output, s);
- 		test_cp_enable_with_retry(output, s, 3, content_type, false,
- 					  false);
-@@ -610,6 +619,14 @@ test_content_protection_mst(int content_type)
- 		igt_assert_f(igt_pipe_connector_valid(pipe, output), "Output-pipe combination invalid\n");
++	igt_output_set_pipe(output, pipe);
++	if (!i915_pipe_output_combo_valid(display))
++		ret = false;
++	igt_output_set_pipe(output, PIPE_NONE);
++
++	return ret;
++}
++
+ data_t data = {0, };
  
- 		igt_output_set_pipe(output, pipe);
-+		if (!i915_pipe_output_combo_valid(display)){
-+			igt_output_set_pipe(output, PIPE_NONE);
-+			continue;
-+		}
+ igt_main
+@@ -319,6 +334,9 @@ igt_main
+ 		igt_describe(tests[i].desc);
+ 		igt_subtest_with_dynamic(tests[i].name) {
+ 			for_each_pipe_with_single_output(&data.display, pipe, output) {
++				if(!pipe_output_combo_valid(&data.display, pipe, output))
++					continue;
 +
-+		igt_info("Using (pipe %s + %s) to run the subtest.\n",
-+			 kmstest_pipe_name(pipe), igt_output_name(output));
+ 				igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), output->name) {
+ 					if (tests[i].flags & TEST_SUSPEND) {
+ 						test_read_crc(&data, pipe, output, 0);
+@@ -347,6 +365,9 @@ igt_main
+ 		     "does not cause issues.");
+ 	igt_subtest_with_dynamic("disable-crc-after-crtc") {
+ 		for_each_pipe_with_single_output(&data.display, pipe, output) {
++			if(!pipe_output_combo_valid(&data.display, pipe, output))
++				continue;
 +
- 		prepare_modeset_on_mst_output(output);
- 		mst_output[dp_mst_outputs++] = output;
- 
+ 			igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), output->name)
+ 				test_disable_crc_after_crtc(&data, pipe, output);
+ 		}
+@@ -355,6 +376,9 @@ igt_main
+ 	igt_describe("Basic sanity check for CRC mismatches");
+ 	igt_subtest_with_dynamic("compare-crc-sanitycheck") {
+ 		for_each_pipe_with_single_output(&data.display, pipe, output) {
++			if(!pipe_output_combo_valid(&data.display, pipe, output))
++				continue;
++
+ 			igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), output->name)
+ 				test_compare_crc(&data, pipe, output);
+ 		}
 -- 
 2.35.1
