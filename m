@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1324610ED89
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7655210ED87
  for <igt-dev@lists.freedesktop.org>; Fri,  9 Sep 2022 14:06:15 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Fri,  9 Sep 2022 19:32:40 +0530
-Message-Id: <20220909140331.1041095-2-bhanuprakash.modem@intel.com>
+Date: Fri,  9 Sep 2022 19:32:42 +0530
+Message-Id: <20220909140331.1041095-4-bhanuprakash.modem@intel.com>
 In-Reply-To: <20220909140331.1041095-1-bhanuprakash.modem@intel.com>
 References: <20220909140331.1041095-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V3 01/52] lib/igt_kms: Add a helper for valid
- pipe/output constraint
+Subject: [igt-dev] [i-g-t V3 03/52] tests/kms_async_flips: Add support for
+ Bigjoiner
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,117 +19,77 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Petri Latvala <petri.latvala@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add an IGT helper to check the given pipe/output combo is valid to decide
-whether to run/skip the subtest.
+This patch will add a check to Skip the subtest if a selected pipe/output
+combo won't support Bigjoiner or 8K mode.
 
 Example:
-* Pipe-D can't support mode > 5K
+* Pipe-D wont support a mode > 5K
 * To use 8K mode on a pipe then consecutive pipe must be available & free.
-* MSO is supported only on PIPE_A/PIPE_B.
 
-This helper is supposed to be a superset of all constraints of pipe/output
-combo. But as of now, this helper supports only Bigjoiner.
+V2: - Use updated helper name
 
-V2:
-- Rename the helper
-- Add is_i915 constraint
-- Add pre-condition check (igt_output_set_pipe called)
-- Update documentaion
-- Minor cleanup in Bigjoiner helper
-
-Cc: Petri Latvala <petri.latvala@intel.com>
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- lib/igt_kms.c | 49 ++++++++++++++++++++++++++++++++++++++++++++++---
- lib/igt_kms.h |  1 +
- 2 files changed, 47 insertions(+), 3 deletions(-)
+ tests/kms_async_flips.c | 24 +++++++++++-------------
+ 1 file changed, 11 insertions(+), 13 deletions(-)
 
-diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-index 7d4916a7..724ef11b 100644
---- a/lib/igt_kms.c
-+++ b/lib/igt_kms.c
-@@ -5743,6 +5743,7 @@ bool igt_check_bigjoiner_support(igt_display_t *display)
- {
- 	uint8_t i, total_pipes = 0, pipes_in_use = 0;
- 	enum pipe p;
-+	igt_output_t *output;
- 	struct {
- 		enum pipe idx;
- 		drmModeModeInfo *mode;
-@@ -5756,9 +5757,7 @@ bool igt_check_bigjoiner_support(igt_display_t *display)
- 	 * Get list of pipes in use those were set by igt_output_set_pipe()
- 	 * just before calling this function.
- 	 */
--	for (i = 0 ; i < display->n_outputs; i++) {
--		igt_output_t *output = &display->outputs[i];
+diff --git a/tests/kms_async_flips.c b/tests/kms_async_flips.c
+index 695aea74..b0f1c530 100644
+--- a/tests/kms_async_flips.c
++++ b/tests/kms_async_flips.c
+@@ -330,15 +330,6 @@ static void test_cursor(data_t *data)
+ 	struct igt_fb cursor_fb;
+ 	struct drm_mode_cursor cur;
+ 
+-	/*
+-	 * Intel's PSR2 selective fetch adds other planes to state when
+-	 * necessary, causing the async flip to fail because async flip is not
+-	 * supported in cursor plane.
+-	 */
+-	igt_skip_on_f(i915_psr2_selective_fetch_check(data->drm_fd),
+-		      "PSR2 sel fetch causes cursor to be added to primary plane " \
+-		      "pages flips and async flip is not supported in cursor\n");
 -
-+	for_each_connected_output(display, output) {
- 		if (output->pending_pipe == PIPE_NONE)
- 			continue;
-
-@@ -5824,3 +5823,47 @@ bool igt_parse_mode_string(const char *mode_string, drmModeModeInfo *mode)
-
- 	return true;
- }
+ 	do_or_die(drmGetCap(data->drm_fd, DRM_CAP_CURSOR_WIDTH, &width));
+ 	do_or_die(drmGetCap(data->drm_fd, DRM_CAP_CURSOR_WIDTH, &height));
+ 
+@@ -380,12 +371,12 @@ static void test_invalid(data_t *data)
+ 	struct igt_fb fb;
+ 	drmModeModeInfo *mode;
+ 
++	test_init(data);
 +
-+/*
-+ * i915_pipe_output_combo_valid:
-+ * @display: a pointer to an #igt_display_t structure
-+ *
-+ * Every individual test must use igt_output_set_pipe() before calling this
-+ * helper, so that this function will get all active pipes from connected
-+ * outputs (i.e. pending_pipe != PIPE_NONE) and check the selected combo is
-+ * valid or not.
-+ *
-+ * This helper is supposed to be a superset of all constraints of pipe/output
-+ * combo.
-+ *
-+ * Example:
-+ *  * Pipe-D can't support mode > 5K
-+ *  * To use 8K mode on a pipe then consecutive pipe must be free.
-+ *  * MSO is supported only on PIPE_A/PIPE_B.
-+ *
-+ * Returns: true if a valid pipe/output mode combo found, else false
-+ */
-+bool i915_pipe_output_combo_valid(igt_display_t *display)
-+{
-+	int combo = 0;
-+	igt_output_t *output;
+ 	mode = igt_output_get_mode(data->output);
+ 	width = mode->hdisplay;
+ 	height = mode->vdisplay;
+ 
+-	test_init(data);
+-
+ 	igt_create_fb(data->drm_fd, width, height, DRM_FORMAT_XRGB8888,
+ 		      I915_FORMAT_MOD_Y_TILED, &fb);
+ 
+@@ -542,9 +533,16 @@ static void run_test(data_t *data, void (*test)(data_t *))
+ {
+ 	igt_output_t *output;
+ 	enum pipe pipe;
++	igt_display_t *display = &data->display;
 +
-+	if (!is_i915_device(display->drm_fd))
-+		return true;
++	for_each_pipe(display, pipe) {
++		for_each_valid_output_on_pipe(display, pipe, output) {
++			igt_display_reset(display);
 +
-+	for_each_connected_output(display, output) {
-+		if (output->pending_pipe == PIPE_NONE)
-+			continue;
-+
-+		combo++;
-+	}
-+
-+	igt_assert_f(combo, "At least one pipe/output combo needed.\n");
-+
-+	/*
-+	 * Check the given pipe/output combo is valid for Bigjoiner.
-+	 *
-+	 * TODO: Update this helper to support other features like MSO.
-+	 */
-+	return igt_check_bigjoiner_support(display);
-+}
-diff --git a/lib/igt_kms.h b/lib/igt_kms.h
-index a2cf0937..4db33979 100644
---- a/lib/igt_kms.h
-+++ b/lib/igt_kms.h
-@@ -975,5 +975,6 @@ bool igt_max_bpc_constraint(igt_display_t *display, enum pipe pipe,
- 		igt_output_t *output, int bpc);
- bool igt_check_bigjoiner_support(igt_display_t *display);
- bool igt_parse_mode_string(const char *mode_string, drmModeModeInfo *mode);
-+bool i915_pipe_output_combo_valid(igt_display_t *display);
-
- #endif /* __IGT_KMS_H__ */
---
++			igt_output_set_pipe(output, pipe);
++			if (!i915_pipe_output_combo_valid(display))
++				continue;
+ 
+-	for_each_pipe(&data->display, pipe) {
+-		for_each_valid_output_on_pipe(&data->display, pipe, output) {
+ 			igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), output->name) {
+ 				data->output = output;
+ 				data->pipe = pipe;
+-- 
 2.35.1
