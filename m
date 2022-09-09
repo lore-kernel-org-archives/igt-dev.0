@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4F7DE10ED89
- for <igt-dev@lists.freedesktop.org>; Fri,  9 Sep 2022 14:06:17 +0000 (UTC)
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0793E10ED91
+ for <igt-dev@lists.freedesktop.org>; Fri,  9 Sep 2022 14:06:22 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Fri,  9 Sep 2022 19:32:46 +0530
-Message-Id: <20220909140331.1041095-8-bhanuprakash.modem@intel.com>
+Date: Fri,  9 Sep 2022 19:32:50 +0530
+Message-Id: <20220909140331.1041095-12-bhanuprakash.modem@intel.com>
 In-Reply-To: <20220909140331.1041095-1-bhanuprakash.modem@intel.com>
 References: <20220909140331.1041095-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V3 07/52] tests/kms_color_helper: Helper to check
- Bigjoiner constraint
+Subject: [igt-dev] [i-g-t V3 11/52] tests/kms_content_protection: Add
+ support for Bigjoiner
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,8 +23,8 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add a helper to Skip the subtest if a selected pipe/output combo
-won't support Bigjoiner or 8K mode.
+This patch will add a check to Skip the subtest if a selected pipe/output
+combo won't support Bigjoiner or 8K mode.
 
 Example:
 * Pipe-D wont support a mode > 5K
@@ -34,44 +34,43 @@ V2: - Use updated helper name
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/kms_color_helper.c | 12 ++++++++++++
- tests/kms_color_helper.h |  1 +
- 2 files changed, 13 insertions(+)
+ tests/kms_content_protection.c | 17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
 
-diff --git a/tests/kms_color_helper.c b/tests/kms_color_helper.c
-index 55f3e409..2f9950f8 100644
---- a/tests/kms_color_helper.c
-+++ b/tests/kms_color_helper.c
-@@ -24,6 +24,18 @@
+diff --git a/tests/kms_content_protection.c b/tests/kms_content_protection.c
+index 3041f1cd..31389001 100644
+--- a/tests/kms_content_protection.c
++++ b/tests/kms_content_protection.c
+@@ -338,6 +338,15 @@ static void test_content_protection_on_output(igt_output_t *output,
+ 		if (!igt_pipe_is_free(display, pipe))
+ 			continue;
  
- #include "kms_color_helper.h"
++		igt_output_set_pipe(output, pipe);
++		if (!i915_pipe_output_combo_valid(display)) {
++			igt_output_set_pipe(output, PIPE_NONE);
++			continue;
++		}
++
++		igt_info("Using (pipe %s + %s) to run the subtest.\n",
++			 kmstest_pipe_name(pipe), igt_output_name(output));
++
+ 		modeset_with_fb(pipe, output, s);
+ 		test_cp_enable_with_retry(output, s, 3, content_type, false,
+ 					  false);
+@@ -610,6 +619,14 @@ test_content_protection_mst(int content_type)
+ 		igt_assert_f(igt_pipe_connector_valid(pipe, output), "Output-pipe combination invalid\n");
  
-+bool pipe_output_combo_valid(data_t *data, enum pipe pipe)
-+{
-+	bool ret = true;
+ 		igt_output_set_pipe(output, pipe);
++		if (!i915_pipe_output_combo_valid(display)){
++			igt_output_set_pipe(output, PIPE_NONE);
++			continue;
++		}
 +
-+	igt_output_set_pipe(data->output, pipe);
-+	if (!i915_pipe_output_combo_valid(&data->display))
-+		ret = false;
-+	igt_output_set_pipe(data->output, PIPE_NONE);
++		igt_info("Using (pipe %s + %s) to run the subtest.\n",
++			 kmstest_pipe_name(pipe), igt_output_name(output));
 +
-+	return ret;
-+}
-+
- bool
- panel_supports_deep_color(int drm_fd, char *output_name)
- {
-diff --git a/tests/kms_color_helper.h b/tests/kms_color_helper.h
-index f0ae30e3..bfed2fb8 100644
---- a/tests/kms_color_helper.h
-+++ b/tests/kms_color_helper.h
-@@ -69,6 +69,7 @@ typedef struct {
- 	color_t coeffs[];
- } gamma_lut_t;
+ 		prepare_modeset_on_mst_output(output);
+ 		mst_output[dp_mst_outputs++] = output;
  
-+bool pipe_output_combo_valid(data_t *data, enum pipe pipe);
- bool panel_supports_deep_color(int fd, char *output_name);
- uint64_t get_max_bpc(igt_output_t *output);
- void paint_gradient_rectangles(data_t *data,
 -- 
 2.35.1
