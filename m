@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8990710ED9C
- for <igt-dev@lists.freedesktop.org>; Fri,  9 Sep 2022 14:06:50 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0613210EDA8
+ for <igt-dev@lists.freedesktop.org>; Fri,  9 Sep 2022 14:07:05 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Fri,  9 Sep 2022 19:33:10 +0530
-Message-Id: <20220909140331.1041095-32-bhanuprakash.modem@intel.com>
+Date: Fri,  9 Sep 2022 19:33:20 +0530
+Message-Id: <20220909140331.1041095-42-bhanuprakash.modem@intel.com>
 In-Reply-To: <20220909140331.1041095-1-bhanuprakash.modem@intel.com>
 References: <20220909140331.1041095-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V3 31/52] tests/kms_rotation_crc: Add support for
+Subject: [igt-dev] [i-g-t V3 41/52] tests/i915/kms_cdclk: Add support for
  Bigjoiner
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -23,101 +23,161 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-This patch will add a check to Skip the subtest if a selected pipe/output
-combo won't support Bigjoiner or 8K mode.
-
-Example:
-* Pipe-D wont support a mode > 5K
-* To use 8K mode on a pipe then consecutive pipe must be available & free.
+As many 2x tests are currently running on Pipe-A & B only, those
+tests will always SKIP if there is any 8K supported panel in the
+config. Instead of Skipping the test, add some intelligence to
+the subtest to identify the valid pipe/output combo to execute
+the subtest.
 
 V2: - Use updated helper name
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/kms_rotation_crc.c | 25 ++++++++++++++++++++++++-
- 1 file changed, 24 insertions(+), 1 deletion(-)
+ tests/i915/kms_cdclk.c | 93 +++++++++++++++++++++++-------------------
+ 1 file changed, 51 insertions(+), 42 deletions(-)
 
-diff --git a/tests/kms_rotation_crc.c b/tests/kms_rotation_crc.c
-index 50869a08..f0930301 100644
---- a/tests/kms_rotation_crc.c
-+++ b/tests/kms_rotation_crc.c
-@@ -198,6 +198,8 @@ static void prepare_crtc(data_t *data, igt_output_t *output, enum pipe pipe,
- 	cleanup_crtc(data);
- 
- 	igt_output_set_pipe(output, pipe);
-+	igt_require(i915_pipe_output_combo_valid(display));
-+
- 	igt_plane_set_rotation(plane, IGT_ROTATION_0);
- 
- 	/* create the pipe_crc object for this pipe */
-@@ -461,6 +463,7 @@ static void test_plane_rotation(data_t *data, int plane_type, bool test_bad_form
+diff --git a/tests/i915/kms_cdclk.c b/tests/i915/kms_cdclk.c
+index 002b631c..a2f7071f 100644
+--- a/tests/i915/kms_cdclk.c
++++ b/tests/i915/kms_cdclk.c
+@@ -243,20 +243,17 @@ static void test_mode_transition_on_all_outputs(data_t *data)
+ 	int debugfs_fd = data->debugfs_fd;
+ 	drmModeModeInfo *mode, *mode_hi, *mode_lo;
  	igt_output_t *output;
+-	int valid_outputs = 0;
+ 	int cdclk_ref, cdclk_new;
+ 	uint16_t width = 0, height = 0;
+ 	struct igt_fb fb;
+ 	igt_pipe_t *pipe;
+ 	igt_plane_t *plane;
+-	int i = 0, j = 0;
++	enum pipe p, active_pipes[IGT_MAX_PIPES];
++	int i = 0, active_pipe_count = 0;
+ 
+ 	do_cleanup_display(display);
+ 	igt_display_reset(display);
+ 
+-	for_each_connected_output(&data->display, output)
+-		valid_outputs++;
+-
+ 	for_each_connected_output(display, output) {
+ 		mode = igt_output_get_mode(output);
+ 		igt_assert(mode);
+@@ -269,52 +266,59 @@ static void test_mode_transition_on_all_outputs(data_t *data)
+ 
+ 	igt_create_pattern_fb(data->drm_fd, width, height, DRM_FORMAT_XRGB8888,
+ 			      DRM_FORMAT_MOD_LINEAR, &fb);
+-	i = 0;
++
+ 	for_each_connected_output(display, output) {
+-		pipe = &display->pipes[i];
+-		plane = igt_pipe_get_plane_type(pipe, DRM_PLANE_TYPE_PRIMARY);
++		for_each_pipe(display, p) {
++			mode = NULL;
+ 
+-		mode = NULL;
++			igt_output_set_pipe(output, p);
++			mode = igt_output_get_mode(output);
++			igt_assert(mode);
+ 
+-		igt_output_set_pipe(output, i);
+-		mode = igt_output_get_mode(output);
+-		igt_assert(mode);
++			mode_hi = get_highres_mode(output);
++			igt_require(mode_hi != NULL);
++
++			igt_output_override_mode(output, mode_hi);
++			if (!i915_pipe_output_combo_valid(display)) {
++				igt_output_set_pipe(output, PIPE_NONE);
++				continue;
++			}
+ 
+-		mode_lo = get_lowres_mode(output);
++			active_pipes[active_pipe_count++] = p;
++			pipe = &display->pipes[p];
++			plane = igt_pipe_get_plane_type(pipe, DRM_PLANE_TYPE_PRIMARY);
++			igt_plane_set_fb(plane, &fb);
++			igt_fb_set_size(&fb, plane, mode_hi->hdisplay, mode_hi->vdisplay);
++			igt_plane_set_size(plane, mode_hi->hdisplay, mode_hi->vdisplay);
+ 
+-		igt_output_override_mode(output, mode_lo);
+-		igt_plane_set_fb(plane, &fb);
+-		igt_fb_set_size(&fb, plane, mode_lo->hdisplay, mode_lo->vdisplay);
+-		igt_plane_set_size(plane, mode_lo->hdisplay, mode_lo->vdisplay);
+-		i++;
++			break;
++		}
+ 	}
+ 
+ 	igt_display_commit2(display, COMMIT_ATOMIC);
+-	cdclk_ref = get_current_cdclk_freq(debugfs_fd);
++	cdclk_new = get_current_cdclk_freq(debugfs_fd);
+ 
+-	j = 0;
+ 	for_each_connected_output(display, output) {
+-		pipe = &display->pipes[j];
+-		plane = igt_pipe_get_plane_type(pipe, DRM_PLANE_TYPE_PRIMARY);
++		for (i = 0; i < active_pipe_count; i++) {
++			pipe = &display->pipes[active_pipes[i]];
++			plane = igt_pipe_get_plane_type(pipe, DRM_PLANE_TYPE_PRIMARY);
+ 
+-		mode = NULL;
++			mode = NULL;
++			igt_output_set_pipe(output, i);
++			mode = igt_output_get_mode(output);
++			igt_assert(mode);
+ 
+-		igt_output_set_pipe(output, j);
+-		mode = igt_output_get_mode(output);
+-		igt_assert(mode);
+-
+-		mode_hi = get_highres_mode(output);
+-		igt_require(mode_hi != NULL);
++			mode_lo = get_lowres_mode(output);
+ 
+-		igt_output_override_mode(output, mode_hi);
+-		igt_plane_set_fb(plane, &fb);
+-		igt_fb_set_size(&fb, plane, mode_hi->hdisplay, mode_hi->vdisplay);
+-		igt_plane_set_size(plane, mode_hi->hdisplay, mode_hi->vdisplay);
+-		j++;
++			igt_output_override_mode(output, mode_lo);
++			igt_plane_set_fb(plane, &fb);
++			igt_fb_set_size(&fb, plane, mode_lo->hdisplay, mode_lo->vdisplay);
++			igt_plane_set_size(plane, mode_lo->hdisplay, mode_lo->vdisplay);
++		}
+ 	}
+ 
+ 	igt_display_commit2(display, COMMIT_ATOMIC);
+-	cdclk_new = get_current_cdclk_freq(debugfs_fd);
++	cdclk_ref = get_current_cdclk_freq(debugfs_fd);
+ 	igt_info("CD clock frequency %d -> %d\n", cdclk_ref, cdclk_new);
+ 
+ 	/* cdclk should bump */
+@@ -332,13 +336,18 @@ static void run_cdclk_test(data_t *data, uint32_t flags)
  	enum pipe pipe;
- 	int pipe_count = 0, connected_outputs = 0;
-+	bool found = false;
  
- 	if (is_amdgpu_device(data->gfx_fd))
- 		igt_require(plane_type != DRM_PLANE_TYPE_OVERLAY &&
-@@ -478,6 +481,13 @@ static void test_plane_rotation(data_t *data, int plane_type, bool test_bad_form
- 		igt_plane_t *plane;
- 		int i, j, c;
- 
-+		igt_display_reset(display);
-+
+ 	for_each_pipe_with_valid_output(display, pipe, output) {
+-		igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), output->name)
+-			if (igt_pipe_connector_valid(pipe, output)) {
+-				if (flags & TEST_PLANESCALING)
+-					test_plane_scaling(data, pipe, output);
+-				if (flags & TEST_MODETRANSITION)
+-					test_mode_transition(data, pipe, output);
+-			}
 +		igt_output_set_pipe(output, pipe);
-+		if (!i915_pipe_output_combo_valid(display))
++		if (!i915_pipe_output_combo_valid(display)) {
++			igt_output_set_pipe(output, PIPE_NONE);
 +			continue;
++		}
 +
-+		found = true;
- 		mode = igt_output_get_mode(output);
- 
- 		/*
-@@ -568,6 +578,7 @@ static void test_plane_rotation(data_t *data, int plane_type, bool test_bad_form
- 			igt_pipe_crc_stop(data->pipe_crc);
- 		}
++		igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), output->name) {
++			if (flags & TEST_PLANESCALING)
++				test_plane_scaling(data, pipe, output);
++			if (flags & TEST_MODETRANSITION)
++				test_mode_transition(data, pipe, output);
++		}
  	}
-+	igt_require_f(found, "No valid pipe/output combo found.\n");
  }
  
- typedef struct {
-@@ -677,6 +688,7 @@ static void test_multi_plane_rotation(data_t *data, enum pipe pipe)
- 	bool have_crc; // flag if can use previously logged crc for comparison
- 	igt_crc_t crclog[16] = {}; //4 * 4 rotation crc storage for packed formats
- 	char *str1, *str2; // for debug printouts
-+	bool found = false;
- 
- 	/*
- 	 * These are those modes which are tested. For testing feel interesting
-@@ -706,11 +718,20 @@ static void test_multi_plane_rotation(data_t *data, enum pipe pipe)
- 	{IGT_ROTATION_270, .2f, .4f, I915_FORMAT_MOD_Yf_TILED },
- 	};
- 
-+	igt_display_require_output(display);
-+
- 	for_each_valid_output_on_pipe(display, pipe, output) {
- 		int i, j, k, l, flipsw, fliphw;
-+
-+		igt_display_reset(display);
-+
- 		igt_output_set_pipe(output, pipe);
-+		if (!i915_pipe_output_combo_valid(display))
-+			continue;
-+
-+		found = true;
-+
- 		mode = igt_output_get_mode(output);
--		igt_display_require_output(display);
- 		igt_display_commit2(display, COMMIT_ATOMIC);
- 
- 		used_w = TEST_WIDTH(mode);
-@@ -890,6 +911,8 @@ static void test_multi_plane_rotation(data_t *data, enum pipe pipe)
- 			igt_remove_fb(data->gfx_fd, &planeconfigs[c].fbs[d][MULTIPLANE_ROTATED]);
- 		}
- 	}
-+
-+	igt_require_f(found, "No valid pipe/output combo found.\n");
- }
- 
- static void test_plane_rotation_exhaust_fences(data_t *data,
 -- 
 2.35.1
