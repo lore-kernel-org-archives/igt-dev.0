@@ -1,15 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============0430678468705799362=="
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 36AF510E3F1
+ for <igt-dev@lists.freedesktop.org>; Mon, 12 Sep 2022 12:11:20 +0000 (UTC)
+From: Ananya Sharma <ananya.sharma@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Mon, 12 Sep 2022 17:35:57 +0530
+Message-Id: <20220912120557.163445-1-ananya.sharma@intel.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Hamza Mahfooz" <hamza.mahfooz@amd.com>
-Date: Mon, 12 Sep 2022 20:54:01 -0000
-Message-ID: <166301604164.11335.14523824208830551422@emeril.freedesktop.org>
-References: <20220912194847.124414-1-hamza.mahfooz@amd.com>
-In-Reply-To: <20220912194847.124414-1-hamza.mahfooz@amd.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
- =?utf-8?q?kms=5Fsetmode=3A_degrade_assert_to_debug?=
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t v4] tests/kms_color: MPO + pipe color test.
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,283 +16,575 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============0430678468705799362==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+MPO + pipe color test for gamma, degamma, ctm transformation.
 
-== Series Details ==
+Signed-off-by: Ananya Sharma <ananya.sharma@intel.com>
+---
+ tests/kms_color.c | 468 ++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 468 insertions(+)
 
-Series: tests/kms_setmode: degrade assert to debug
-URL   : https://patchwork.freedesktop.org/series/108459/
-State : success
-
-== Summary ==
-
-CI Bug Log - changes from CI_DRM_12123 -> IGTPW_7772
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7772/index.html
-
-Participating hosts (42 -> 39)
-------------------------------
-
-  Missing    (3): fi-ctg-p8600 bat-dg2-8 fi-bdw-samus 
-
-Possible new issues
--------------------
-
-  Here are the unknown changes that may have been introduced in IGTPW_7772:
-
-### IGT changes ###
-
-#### Suppressed ####
-
-  The following results come from untrusted machines, tests, or statuses.
-  They do not affect the overall result.
-
-  * igt@i915_pm_rpm@module-reload:
-    - {bat-rpls-2}:       [PASS][1] -> [FAIL][2]
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12123/bat-rpls-2/igt@i915_pm_rpm@module-reload.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7772/bat-rpls-2/igt@i915_pm_rpm@module-reload.html
-
-  * igt@i915_suspend@basic-s2idle-without-i915:
-    - {bat-rpls-2}:       [FAIL][3] ([i915#6559]) -> [DMESG-WARN][4]
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12123/bat-rpls-2/igt@i915_suspend@basic-s2idle-without-i915.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7772/bat-rpls-2/igt@i915_suspend@basic-s2idle-without-i915.html
-
-  
-Known issues
-------------
-
-  Here are the changes found in IGTPW_7772 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@i915_selftest@live@hangcheck:
-    - fi-hsw-4770:        [PASS][5] -> [INCOMPLETE][6] ([i915#4785])
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12123/fi-hsw-4770/igt@i915_selftest@live@hangcheck.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7772/fi-hsw-4770/igt@i915_selftest@live@hangcheck.html
-    - fi-hsw-g3258:       [PASS][7] -> [INCOMPLETE][8] ([i915#3303] / [i915#4785])
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12123/fi-hsw-g3258/igt@i915_selftest@live@hangcheck.html
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7772/fi-hsw-g3258/igt@i915_selftest@live@hangcheck.html
-
-  * igt@i915_selftest@live@requests:
-    - fi-blb-e6850:       [PASS][9] -> [DMESG-FAIL][10] ([i915#4528])
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12123/fi-blb-e6850/igt@i915_selftest@live@requests.html
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7772/fi-blb-e6850/igt@i915_selftest@live@requests.html
-
-  * igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions-varying-size:
-    - fi-bsw-kefka:       [PASS][11] -> [FAIL][12] ([i915#6298])
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12123/fi-bsw-kefka/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions-varying-size.html
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7772/fi-bsw-kefka/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions-varying-size.html
-
-  * igt@runner@aborted:
-    - fi-hsw-4770:        NOTRUN -> [FAIL][13] ([fdo#109271] / [i915#4312] / [i915#5594] / [i915#6246])
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7772/fi-hsw-4770/igt@runner@aborted.html
-    - fi-hsw-g3258:       NOTRUN -> [FAIL][14] ([fdo#109271] / [i915#4312] / [i915#6246])
-   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7772/fi-hsw-g3258/igt@runner@aborted.html
-
-  
-#### Possible fixes ####
-
-  * igt@fbdev@read:
-    - {bat-rpls-2}:       [SKIP][15] ([i915#2582]) -> [PASS][16] +4 similar issues
-   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12123/bat-rpls-2/igt@fbdev@read.html
-   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7772/bat-rpls-2/igt@fbdev@read.html
-
-  * igt@gem_exec_gttfill@basic:
-    - {bat-rpls-2}:       [DMESG-WARN][17] -> [PASS][18]
-   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12123/bat-rpls-2/igt@gem_exec_gttfill@basic.html
-   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7772/bat-rpls-2/igt@gem_exec_gttfill@basic.html
-
-  
-#### Warnings ####
-
-  * igt@i915_selftest@live@hangcheck:
-    - bat-dg1-5:          [DMESG-FAIL][19] ([i915#4494] / [i915#4957]) -> [DMESG-FAIL][20] ([i915#4957])
-   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12123/bat-dg1-5/igt@i915_selftest@live@hangcheck.html
-   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7772/bat-dg1-5/igt@i915_selftest@live@hangcheck.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
-  [i915#2582]: https://gitlab.freedesktop.org/drm/intel/issues/2582
-  [i915#3303]: https://gitlab.freedesktop.org/drm/intel/issues/3303
-  [i915#4312]: https://gitlab.freedesktop.org/drm/intel/issues/4312
-  [i915#4494]: https://gitlab.freedesktop.org/drm/intel/issues/4494
-  [i915#4528]: https://gitlab.freedesktop.org/drm/intel/issues/4528
-  [i915#4785]: https://gitlab.freedesktop.org/drm/intel/issues/4785
-  [i915#4957]: https://gitlab.freedesktop.org/drm/intel/issues/4957
-  [i915#5594]: https://gitlab.freedesktop.org/drm/intel/issues/5594
-  [i915#6246]: https://gitlab.freedesktop.org/drm/intel/issues/6246
-  [i915#6298]: https://gitlab.freedesktop.org/drm/intel/issues/6298
-  [i915#6559]: https://gitlab.freedesktop.org/drm/intel/issues/6559
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_6650 -> IGTPW_7772
-
-  CI-20190529: 20190529
-  CI_DRM_12123: 5dd153b15e2e3198fca3d84db9e155f454645f91 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_7772: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7772/index.html
-  IGT_6650: f7aff600ab16d6405f0704b1743d2b7909715752 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7772/index.html
-
---===============0430678468705799362==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/kms_setmode: degrade assert to debug</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/108459/">https://patchwork.freedesktop.org/series/108459/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7772/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7772/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from CI_DRM_12123 -&gt; IGTPW_7772</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7772/index.html</p>
-<h2>Participating hosts (42 -&gt; 39)</h2>
-<p>Missing    (3): fi-ctg-p8600 bat-dg2-8 fi-bdw-samus </p>
-<h2>Possible new issues</h2>
-<p>Here are the unknown changes that may have been introduced in IGTPW_7772:</p>
-<h3>IGT changes</h3>
-<h4>Suppressed</h4>
-<p>The following results come from untrusted machines, tests, or statuses.<br />
-  They do not affect the overall result.</p>
-<ul>
-<li>
-<p>igt@i915_pm_rpm@module-reload:</p>
-<ul>
-<li>{bat-rpls-2}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12123/bat-rpls-2/igt@i915_pm_rpm@module-reload.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7772/bat-rpls-2/igt@i915_pm_rpm@module-reload.html">FAIL</a></li>
-</ul>
-</li>
-<li>
-<p>igt@i915_suspend@basic-s2idle-without-i915:</p>
-<ul>
-<li>{bat-rpls-2}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12123/bat-rpls-2/igt@i915_suspend@basic-s2idle-without-i915.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6559">i915#6559</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7772/bat-rpls-2/igt@i915_suspend@basic-s2idle-without-i915.html">DMESG-WARN</a></li>
-</ul>
-</li>
-</ul>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_7772 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@i915_selftest@live@hangcheck:</p>
-<ul>
-<li>
-<p>fi-hsw-4770:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12123/fi-hsw-4770/igt@i915_selftest@live@hangcheck.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7772/fi-hsw-4770/igt@i915_selftest@live@hangcheck.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4785">i915#4785</a>)</p>
-</li>
-<li>
-<p>fi-hsw-g3258:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12123/fi-hsw-g3258/igt@i915_selftest@live@hangcheck.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7772/fi-hsw-g3258/igt@i915_selftest@live@hangcheck.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3303">i915#3303</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4785">i915#4785</a>)</p>
-</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@requests:</p>
-<ul>
-<li>fi-blb-e6850:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12123/fi-blb-e6850/igt@i915_selftest@live@requests.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7772/fi-blb-e6850/igt@i915_selftest@live@requests.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4528">i915#4528</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions-varying-size:</p>
-<ul>
-<li>fi-bsw-kefka:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12123/fi-bsw-kefka/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions-varying-size.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7772/fi-bsw-kefka/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions-varying-size.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6298">i915#6298</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@runner@aborted:</p>
-<ul>
-<li>
-<p>fi-hsw-4770:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7772/fi-hsw-4770/igt@runner@aborted.html">FAIL</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4312">i915#4312</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/5594">i915#5594</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/6246">i915#6246</a>)</p>
-</li>
-<li>
-<p>fi-hsw-g3258:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7772/fi-hsw-g3258/igt@runner@aborted.html">FAIL</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4312">i915#4312</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/6246">i915#6246</a>)</p>
-</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@fbdev@read:</p>
-<ul>
-<li>{bat-rpls-2}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12123/bat-rpls-2/igt@fbdev@read.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2582">i915#2582</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7772/bat-rpls-2/igt@fbdev@read.html">PASS</a> +4 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_exec_gttfill@basic:</p>
-<ul>
-<li>{bat-rpls-2}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12123/bat-rpls-2/igt@gem_exec_gttfill@basic.html">DMESG-WARN</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7772/bat-rpls-2/igt@gem_exec_gttfill@basic.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<h4>Warnings</h4>
-<ul>
-<li>igt@i915_selftest@live@hangcheck:<ul>
-<li>bat-dg1-5:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12123/bat-dg1-5/igt@i915_selftest@live@hangcheck.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4494">i915#4494</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4957">i915#4957</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7772/bat-dg1-5/igt@i915_selftest@live@hangcheck.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4957">i915#4957</a>)</li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_6650 -&gt; IGTPW_7772</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_12123: 5dd153b15e2e3198fca3d84db9e155f454645f91 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_7772: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7772/index.html<br />
-  IGT_6650: f7aff600ab16d6405f0704b1743d2b7909715752 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-
-</body>
-</html>
-
---===============0430678468705799362==--
+diff --git a/tests/kms_color.c b/tests/kms_color.c
+index c202547e..d4492d70 100644
+--- a/tests/kms_color.c
++++ b/tests/kms_color.c
+@@ -114,6 +114,134 @@ static bool test_pipe_degamma(data_t *data,
+ 	return ret;
+ }
+ 
++static bool test_pipe_degamma_multiplane(data_t *data,
++					 igt_plane_t *primary)
++{
++	igt_output_t *output = data->output;
++	igt_plane_t *overlay;
++	igt_display_t *display = &data->display;
++	gamma_lut_t *degamma_full;
++	color_t red_green_blue[] = {
++		{ 1.0, 0.0, 0.0 },
++		{ 0.0, 1.0, 0.0 },
++		{ 0.0, 0.0, 1.0 }
++	};
++
++	color_t blue_red_green[] = {
++		{ 0.0, 1.0, 0.0 },
++		{ 0.0, 0.0, 1.0 },
++		{ 1.0, 0.0, 0.0 }
++	};
++
++	drmModeModeInfo *mode = data->mode;
++	struct igt_fb fb0, fb1;
++	igt_crc_t crc_fullgamma, crc_fullcolors;
++	int fb_id0, fb_id1;
++	int primary_x, primary_y, primary_h, primary_w;
++	int overlay_x, overlay_y, overlay_h, overlay_w;
++	bool ret;
++
++	overlay = igt_pipe_get_plane_type(primary->pipe, DRM_PLANE_TYPE_OVERLAY);
++
++	igt_require(igt_pipe_obj_has_prop(primary->pipe, IGT_CRTC_DEGAMMA_LUT));
++	igt_require(igt_pipe_obj_has_prop(primary->pipe, IGT_CRTC_GAMMA_LUT));
++
++	degamma_full = generate_table_max(data->degamma_lut_size);
++
++	igt_output_set_pipe(output, primary->pipe->pipe);
++	igt_output_override_mode(output, mode);
++
++	primary_w = mode->hdisplay;
++	primary_h = mode->vdisplay / 2;
++	overlay_w = mode->hdisplay;
++	overlay_h = primary_h + (mode->vdisplay % 2);
++
++	primary_x = 0;
++	primary_y = 0;
++	overlay_x = 0;
++	overlay_y = primary_h + 1;
++
++	/* Create a framebuffer at the size of the output. */
++	fb_id0 = igt_create_fb(data->drm_fd,
++			       primary_w,
++			       primary_h,
++			       data->drm_format,
++			       DRM_FORMAT_MOD_LINEAR,
++			       &fb0);
++	igt_assert(fb_id0);
++
++	igt_plane_set_fb(primary, &fb0);
++	igt_plane_set_position(primary, primary_x, primary_y);
++
++	fb_id1 = igt_create_fb(data->drm_fd,
++			       overlay_w,
++			       overlay_h,
++			       data->drm_format,
++			       DRM_FORMAT_MOD_LINEAR,
++			       &fb1);
++	igt_assert(fb_id1);
++
++	igt_plane_set_fb(overlay, &fb1);
++	igt_plane_set_position(overlay, overlay_x, overlay_y);
++
++	disable_ctm(primary->pipe);
++	disable_gamma(primary->pipe);
++	disable_degamma(primary->pipe);
++	igt_display_commit_atomic(&data->display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
++
++	/* Draw solid colors with no degamma transformation. */
++	paint_rectangles(data, mode, red_green_blue, &fb0);
++	paint_rectangles(data, mode, blue_red_green, &fb1);
++
++	igt_plane_set_fb(primary, &fb0);
++	igt_plane_set_position(primary, primary_x, primary_y);
++
++	igt_plane_set_fb(overlay, &fb1);
++	igt_plane_set_position(overlay, overlay_x, overlay_y);
++
++	igt_display_commit_atomic(&data->display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
++	igt_wait_for_vblank(data->drm_fd,
++			    display->pipes[primary->pipe->pipe].crtc_offset);
++	igt_pipe_crc_collect_crc(data->pipe_crc, &crc_fullcolors);
++
++	/*
++	 * Draw a gradient with degamma LUT to remap all
++	 * values to max red/green/blue.
++	 */
++	paint_gradient_rectangles(data, mode, red_green_blue, &fb0);
++	paint_gradient_rectangles(data, mode, blue_red_green, &fb1);
++
++	igt_plane_set_fb(primary, &fb0);
++	igt_plane_set_position(primary, primary_x, primary_y);
++
++	igt_plane_set_fb(overlay, &fb1);
++	igt_plane_set_position(overlay, overlay_x, overlay_y);
++
++	set_degamma(data, primary->pipe, degamma_full);
++	igt_display_commit_atomic(&data->display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
++	igt_wait_for_vblank(data->drm_fd,
++			    display->pipes[primary->pipe->pipe].crtc_offset);
++	igt_pipe_crc_collect_crc(data->pipe_crc, &crc_fullgamma);
++
++	/*
++	 * Verify that the CRC of the software computed output is
++	 * equal to the CRC of the degamma LUT transformation output.
++	 */
++	ret = !igt_skip_crc_compare || igt_check_crc_equal(&crc_fullgamma, &crc_fullcolors);
++
++	disable_degamma(primary->pipe);
++	igt_plane_set_fb(primary, NULL);
++	igt_plane_set_fb(overlay, NULL);
++	igt_output_set_pipe(output, PIPE_NONE);
++	igt_display_commit_atomic(&data->display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
++	igt_remove_fb(data->drm_fd, &fb0);
++	igt_remove_fb(data->drm_fd, &fb1);
++
++	free_lut(degamma_full);
++
++	return ret;
++}
++
+ /*
+  * Draw 3 gradient rectangles in red, green and blue, with a maxed out gamma
+  * LUT and verify we have the same CRC as drawing solid color rectangles.
+@@ -202,6 +330,134 @@ static bool test_pipe_gamma(data_t *data,
+ 	return ret;
+ }
+ 
++static bool test_pipe_gamma_multiplane(data_t *data,
++				       igt_plane_t *primary)
++{
++	igt_output_t *output = data->output;
++	igt_plane_t *overlay;
++	igt_display_t *display = &data->display;
++	gamma_lut_t *gamma_full;
++	color_t red_green_blue[] = {
++		{ 1.0, 0.0, 0.0 },
++		{ 0.0, 1.0, 0.0 },
++		{ 0.0, 0.0, 1.0 }
++	};
++
++	color_t blue_red_green[] = {
++		{ 0.0, 1.0, 0.0 },
++		{ 0.0, 0.0, 1.0 },
++		{ 1.0, 0.0, 0.0 }
++	};
++
++	drmModeModeInfo *mode = data->mode;
++	struct igt_fb fb0, fb1;
++	igt_crc_t crc_fullgamma, crc_fullcolors;
++	int fb_id0, fb_id1;
++	int primary_x, primary_y, primary_h, primary_w;
++	int overlay_x, overlay_y, overlay_h, overlay_w;
++	bool ret;
++
++	overlay = igt_pipe_get_plane_type(primary->pipe, DRM_PLANE_TYPE_OVERLAY);
++
++	igt_require(igt_pipe_obj_has_prop(primary->pipe, IGT_CRTC_GAMMA_LUT));
++
++	gamma_full = generate_table_max(data->gamma_lut_size);
++
++	igt_output_set_pipe(output, primary->pipe->pipe);
++	igt_output_override_mode(output, mode);
++
++	primary_w = mode->hdisplay;
++	primary_h = mode->vdisplay / 2;
++	overlay_w = mode->hdisplay;
++	overlay_h = primary_h + (mode->vdisplay % 2);
++
++	primary_x = 0;
++	primary_y = 0;
++	overlay_x = 0;
++	overlay_y = primary_h + 1;
++
++	/* Create a framebuffer at the size of the output. */
++	fb_id0 = igt_create_fb(data->drm_fd,
++			       primary_w,
++			       primary_h,
++			       data->drm_format,
++			       DRM_FORMAT_MOD_LINEAR,
++			       &fb0);
++	igt_assert(fb_id0);
++
++	igt_plane_set_fb(primary, &fb0);
++	igt_plane_set_position(primary, primary_x, primary_y);
++
++	fb_id1 = igt_create_fb(data->drm_fd,
++			       overlay_w,
++			       overlay_h,
++			       data->drm_format,
++			       DRM_FORMAT_MOD_LINEAR,
++			       &fb1);
++	igt_assert(fb_id1);
++
++	igt_plane_set_fb(overlay, &fb1);
++	igt_plane_set_position(overlay, overlay_x, overlay_y);
++
++	disable_ctm(primary->pipe);
++	disable_degamma(primary->pipe);
++	disable_gamma(primary->pipe);
++	igt_display_commit_atomic(&data->display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
++
++	/* Draw solid colors with no gamma transformation. */
++	paint_rectangles(data, mode, red_green_blue, &fb0);
++	paint_rectangles(data, mode, blue_red_green, &fb1);
++
++	igt_plane_set_fb(primary, &fb0);
++	igt_plane_set_position(primary, primary_x, primary_y);
++
++	igt_plane_set_fb(overlay, &fb0);
++	igt_plane_set_position(overlay, overlay_x, overlay_y);
++
++	igt_display_commit_atomic(&data->display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
++	igt_wait_for_vblank(data->drm_fd,
++			    display->pipes[primary->pipe->pipe].crtc_offset);
++	igt_pipe_crc_collect_crc(data->pipe_crc, &crc_fullcolors);
++
++	/*
++	 * Draw a gradient with gamma LUT to remap all values
++	 * to max red/green/blue.
++	 */
++	paint_gradient_rectangles(data, mode, red_green_blue, &fb0);
++	paint_gradient_rectangles(data, mode, blue_red_green, &fb1);
++
++	igt_plane_set_fb(primary, &fb0);
++	igt_plane_set_position(primary, primary_x, primary_y);
++
++	igt_plane_set_fb(overlay, &fb1);
++	igt_plane_set_position(overlay, overlay_x, overlay_y);
++
++	set_gamma(data, primary->pipe, gamma_full);
++	igt_display_commit_atomic(&data->display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
++	igt_wait_for_vblank(data->drm_fd,
++			    display->pipes[primary->pipe->pipe].crtc_offset);
++	igt_pipe_crc_collect_crc(data->pipe_crc, &crc_fullgamma);
++
++	/*
++	 * Verify that the CRC of the software computed output is
++	 * equal to the CRC of the gamma LUT transformation output.
++	 */
++	ret = !igt_skip_crc_compare || igt_check_crc_equal(&crc_fullgamma, &crc_fullcolors);
++
++	disable_gamma(primary->pipe);
++	igt_plane_set_fb(primary, NULL);
++	igt_plane_set_fb(overlay, NULL);
++	igt_output_set_pipe(output, PIPE_NONE);
++	igt_display_commit_atomic(&data->display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
++
++	igt_remove_fb(data->drm_fd, &fb0);
++	igt_remove_fb(data->drm_fd, &fb1);
++
++	free_lut(gamma_full);
++
++	return ret;
++}
++
+ /*
+  * Draw 3 gradient rectangles in red, green and blue, with a maxed out legacy
+  * gamma LUT and verify we have the same CRC as drawing solid color rectangles
+@@ -548,6 +804,139 @@ static bool test_pipe_ctm(data_t *data,
+ 	return ret;
+ }
+ 
++static bool test_pipe_ctm_multiplane(data_t *data,
++				     igt_plane_t *primary,
++				     color_t *before,
++				     color_t *after,
++				     double *ctm_matrix)
++{
++	const double ctm_identity[] = {
++		1.0, 0.0, 0.0,
++		0.0, 1.0, 0.0,
++		0.0, 0.0, 1.0,
++	};
++
++	igt_plane_t *overlay;
++	gamma_lut_t *degamma_linear, *gamma_linear;
++	igt_output_t *output = data->output;
++	bool ret = true;
++	igt_display_t *display = &data->display;
++	drmModeModeInfo *mode = data->mode;
++	struct igt_fb fb0, fb1;
++	igt_crc_t crc_software, crc_hardware;
++	int fb_id0, fb_id1;
++	int primary_x, primary_y, primary_h, primary_w;
++	int overlay_x, overlay_y, overlay_h, overlay_w;
++
++	overlay = igt_pipe_get_plane_type(primary->pipe, DRM_PLANE_TYPE_OVERLAY);
++
++	igt_require(igt_pipe_obj_has_prop(primary->pipe, IGT_CRTC_CTM));
++
++	degamma_linear = generate_table(data->degamma_lut_size, 1.0);
++	gamma_linear = generate_table(data->gamma_lut_size, 1.0);
++
++	igt_output_set_pipe(output, primary->pipe->pipe);
++	igt_output_override_mode(output, mode);
++
++	primary_w = mode->hdisplay;
++	primary_h = mode->vdisplay / 2;
++	overlay_w = mode->hdisplay;
++	overlay_h = primary_h + (mode->vdisplay % 2);
++
++	primary_x = 0;
++	primary_y = 0;
++	overlay_x = 0;
++	overlay_y = primary_h + 1;
++
++	/* Create a framebuffer at the size of the output. */
++	fb_id0 = igt_create_fb(data->drm_fd,
++			       primary_w,
++			       primary_h,
++			       data->drm_format,
++			       DRM_FORMAT_MOD_LINEAR,
++			       &fb0);
++	igt_assert(fb_id0);
++
++	igt_plane_set_fb(primary, &fb0);
++	igt_plane_set_position(primary, primary_x, primary_y);
++
++	fb_id1 = igt_create_fb(data->drm_fd,
++			       overlay_w,
++			       overlay_h,
++			       data->drm_format,
++			       DRM_FORMAT_MOD_LINEAR,
++			       &fb1);
++	igt_assert(fb_id1);
++
++	igt_plane_set_fb(primary, &fb1);
++	igt_plane_set_position(overlay, overlay_x, overlay_y);
++
++	/*
++	 * Don't program LUT's for max CTM cases, as limitation of
++	 * representing intermediate values between 0 and 1.0 causes
++	 * rounding issues and inaccuracies leading to crc mismatch.
++	 */
++	if (memcmp(before, after, sizeof(color_t))) {
++		set_degamma(data, primary->pipe, degamma_linear);
++		set_gamma(data, primary->pipe, gamma_linear);
++	} else {
++		/* Disable Degamma and Gamma for ctm max test */
++		disable_degamma(primary->pipe);
++		disable_gamma(primary->pipe);
++	}
++
++	disable_ctm(primary->pipe);
++	igt_display_commit_atomic(&data->display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
++
++	paint_rectangles(data, mode, after, &fb0);
++	paint_rectangles(data, mode, before, &fb1);
++
++	igt_plane_set_fb(primary, &fb0);
++	igt_plane_set_position(primary, primary_x, primary_y);
++
++	igt_plane_set_fb(overlay, &fb1);
++	igt_plane_set_position(overlay, overlay_x, overlay_y);
++
++	set_ctm(primary->pipe, ctm_identity);
++	igt_display_commit_atomic(&data->display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
++	igt_wait_for_vblank(data->drm_fd,
++			    display->pipes[primary->pipe->pipe].crtc_offset);
++	igt_pipe_crc_collect_crc(data->pipe_crc, &crc_software);
++
++	/* With CTM transformation. */
++	paint_rectangles(data, mode, after, &fb0);
++	paint_rectangles(data, mode, before, &fb1);
++
++	igt_plane_set_fb(primary, &fb0);
++	igt_plane_set_position(primary, primary_x, primary_y);
++
++	igt_plane_set_fb(overlay, &fb1);
++	igt_plane_set_position(overlay, overlay_x, overlay_y);
++
++	set_ctm(primary->pipe, ctm_matrix);
++	igt_display_commit_atomic(&data->display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
++	igt_wait_for_vblank(data->drm_fd,
++			    display->pipes[primary->pipe->pipe].crtc_offset);
++	igt_pipe_crc_collect_crc(data->pipe_crc, &crc_hardware);
++
++	/*
++	 * Verify that the CRC of the software computed output is
++	 * equal to the CRC of the CTM matrix transformation output.
++	 */
++	ret &= !igt_skip_crc_compare || igt_check_crc_equal(&crc_software, &crc_hardware);
++
++	igt_plane_set_fb(primary, NULL);
++	igt_plane_set_fb(overlay, NULL);
++	igt_output_set_pipe(output, PIPE_NONE);
++	igt_display_commit_atomic(&data->display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
++	igt_remove_fb(data->drm_fd, &fb0);
++	igt_remove_fb(data->drm_fd, &fb1);
++
++	free_lut(degamma_linear);
++	free_lut(gamma_linear);
++
++	return ret;
++}
+ /*
+  * Hardware computes CRC based on the number of bits it is working with (8,
+  * 10, 12, 16 bits), meaning with a framebuffer of 8bits per color will
+@@ -777,6 +1166,22 @@ run_ctm_tests_for_pipe(data_t *data, enum pipe p,
+ 				break;
+ 			}
+ 		}
++
++		if (!iter)
++			success = test_pipe_ctm_multiplane(data, data->primary, red_green_blue,
++							   expected_colors, ctm);
++
++		for (i = 0; i < iter; i++) {
++			expected_colors[0].r =
++				expected_colors[1].g =
++				expected_colors[2].b =
++				0.5 + delta * (i - 2);
++			if (test_pipe_ctm_multiplane(data, data->primary, red_green_blue,
++						     expected_colors, ctm)) {
++				success = true;
++				break;
++			}
++		}
+ 		igt_assert(success);
+ 	}
+ 
+@@ -919,9 +1324,15 @@ run_tests_for_pipe(data_t *data)
+ 		{ "degamma", test_pipe_degamma,
+ 		  "Verify that degamma LUT transformation works correctly" },
+ 
++		{ "degamma_multiplane", test_pipe_degamma_multiplane,
++		  "Verify that degamma LUT transformation works correctly with multiplane" },
++
+ 		{ "gamma", test_pipe_gamma,
+ 		  "Verify that gamma LUT transformation works correctly" },
+ 
++		{ "gamma_multiplane", test_pipe_gamma_multiplane,
++		  "Verify that gamma LUT transformation works correctly with multiplane" },
++
+ 		{ "legacy-gamma", test_pipe_legacy_gamma,
+ 		  "Verify that legacy gamma LUT transformation works correctly" },
+ 
+@@ -944,6 +1355,15 @@ run_tests_for_pipe(data_t *data)
+ 		    1.0, 0.0, 1.0 },
+ 		  "Check the color transformation from red to blue"
+ 		},
++		{ "ctm-red-to-blue-multiplane", 0,
++			{{ 0.0, 0.0, 1.0 },
++			 { 0.0, 1.0, 0.0 },
++			 { 0.0, 0.0, 1.0 }},
++		  { 0.0, 0.0, 0.0,
++		    0.0, 1.0, 0.0,
++		    1.0, 0.0, 1.0 },
++		  "Check the color transformation from red to blue"
++		},
+ 		{ "ctm-green-to-red", 0,
+ 			{{ 1.0, 0.0, 0.0 },
+ 			 { 1.0, 0.0, 0.0 },
+@@ -953,6 +1373,15 @@ run_tests_for_pipe(data_t *data)
+ 		    0.0, 0.0, 1.0 },
+ 		  "Check the color transformation from green to red"
+ 		},
++		{ "ctm-green-to-red-multiplane", 0,
++			{{ 1.0, 0.0, 0.0 },
++			 { 1.0, 0.0, 0.0 },
++			 { 0.0, 0.0, 1.0 }},
++		  { 1.0, 1.0, 0.0,
++		    0.0, 0.0, 0.0,
++		    0.0, 0.0, 1.0 },
++		 "Check the color transformation from green to red"
++		},
+ 		{ "ctm-blue-to-red", 0,
+ 			{{ 1.0, 0.0, 0.0 },
+ 			 { 0.0, 1.0, 0.0 },
+@@ -962,6 +1391,15 @@ run_tests_for_pipe(data_t *data)
+ 		    0.0, 0.0, 0.0 },
+ 		  "Check the color transformation from blue to red"
+ 		},
++		{ "ctm-blue-to-red-multiplane", 0,
++			{{ 1.0, 0.0, 0.0 },
++			 { 0.0, 1.0, 0.0 },
++			 { 1.0, 0.0, 0.0 }},
++		  { 1.0, 0.0, 1.0,
++		    0.0, 1.0, 0.0,
++		    0.0, 0.0, 0.0 },
++		  "Check the color transformation from blue to red"
++		},
+ 		{ "ctm-max", 0,
+ 			{{ 1.0, 0.0, 0.0 },
+ 			 { 0.0, 1.0, 0.0 },
+@@ -971,6 +1409,15 @@ run_tests_for_pipe(data_t *data)
+ 		    0.0, 0.0, 100.0 },
+ 		  "Check the color transformation for maximum transparency"
+ 		},
++		{ "ctm-max-multiplane", 0,
++			{{ 1.0, 0.0, 0.0 },
++			 { 0.0, 1.0, 0.0 },
++			 { 0.0, 0.0, 1.0 }},
++		  { 100.0, 0.0, 0.0,
++		    0.0, 100.0, 0.0,
++		    0.0, 0.0, 100.0 },
++		  "Check the color transformation for maximum transparency"
++		},
+ 		{ "ctm-negative", 0,
+ 			{{ 0.0, 0.0, 0.0 },
+ 			 { 0.0, 0.0, 0.0 },
+@@ -987,6 +1434,13 @@ run_tests_for_pipe(data_t *data)
+ 		    0.0,  0.0,  0.25 },
+ 		  "Check the color transformation for 0.25 transparency"
+ 		},
++		{ "ctm-0-25-multiplane", 5,
++			{{ 0.0, }, { 0.0, }, { 0.0, }},
++		  { 0.25, 0.0,  0.0,
++		    0.0,  0.25, 0.0,
++		    0.0,  0.0,  0.25 },
++		  "Check the color transformation for 0.25 transparency"
++		},
+ 		{ "ctm-0-50", 5,
+ 			{{ 0.0, }, { 0.0, }, { 0.0, }},
+ 		  { 0.5,  0.0,  0.0,
+@@ -994,6 +1448,13 @@ run_tests_for_pipe(data_t *data)
+ 		    0.0,  0.0,  0.5 },
+ 		  "Check the color transformation for 0.5 transparency"
+ 		},
++		{ "ctm-0-50-multiplane", 5,
++			{{ 0.0, }, { 0.0, }, { 0.0, }},
++		  { 0.5,  0.0,  0.0,
++		    0.0,  0.5,  0.0,
++		    0.0,  0.0,  0.5 },
++		  "Check the color transformation for 0.5 transparency"
++		},
+ 		{ "ctm-0-75", 7,
+ 			{{ 0.0, }, { 0.0, }, { 0.0, }},
+ 		  { 0.75, 0.0,  0.0,
+@@ -1001,6 +1462,13 @@ run_tests_for_pipe(data_t *data)
+ 		    0.0,  0.0,  0.75 },
+ 		  "Check the color transformation for 0.75 transparency"
+ 		},
++		{ "ctm-0-75-multiplane", 7,
++			{{ 0.0, }, { 0.0, }, { 0.0, }},
++		  { 0.75, 0.0,  0.0,
++		    0.0,  0.75, 0.0,
++		    0.0,  0.0,  0.75 },
++		  "Check the color transformation for 0.75 transparency"
++		},
+ 	};
+ 	int i;
+ 
+-- 
+2.25.1
