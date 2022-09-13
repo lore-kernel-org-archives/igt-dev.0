@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3384910E42E
- for <igt-dev@lists.freedesktop.org>; Tue, 13 Sep 2022 16:01:13 +0000 (UTC)
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0674210E42E
+ for <igt-dev@lists.freedesktop.org>; Tue, 13 Sep 2022 16:01:09 +0000 (UTC)
 From: Ville Syrjala <ville.syrjala@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 13 Sep 2022 19:00:58 +0300
-Message-Id: <20220913160101.6569-4-ville.syrjala@linux.intel.com>
+Date: Tue, 13 Sep 2022 19:00:57 +0300
+Message-Id: <20220913160101.6569-3-ville.syrjala@linux.intel.com>
 In-Reply-To: <20220913160101.6569-1-ville.syrjala@linux.intel.com>
 References: <20220913160101.6569-1-ville.syrjala@linux.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 4/7] tools/intel_watermark: Read LP usage
- from FPGA_DBG on ivb
+Subject: [igt-dev] [PATCH i-g-t 3/7] tools/intel_watermark: Add missing
+ newline
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,40 +26,24 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-On ivb FPGA_DBG contains the similar LP level sticky bits that
-are present in WM_DBG on hsw+. Let's dump these out.
+The hsw/bdw WM_DBG output is missing a newline at the end, add one.
 
 Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
 ---
- tools/intel_watermark.c | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+ tools/intel_watermark.c | 1 +
+ 1 file changed, 1 insertion(+)
 
 diff --git a/tools/intel_watermark.c b/tools/intel_watermark.c
-index 863261e823a5..eac40e4a5d17 100644
+index d61379c6dc7f..863261e823a5 100644
 --- a/tools/intel_watermark.c
 +++ b/tools/intel_watermark.c
-@@ -763,6 +763,22 @@ static void ilk_wm_dump(void)
- 		printf("\n");
+@@ -760,6 +760,7 @@ static void ilk_wm_dump(void)
+ 			if (wm_dbg & (1 << (23+i)))
+ 				printf(" LP%d", i);
+ 		}
++		printf("\n");
  		/* clear the sticky bits */
  		write_reg(0x45280, wm_dbg);
-+	} else if (IS_IVYBRIDGE(devid)) {
-+		uint32_t fpga_dbg;
-+
-+		fpga_dbg = read_reg(0x42300);
-+		printf("FPGA_DBG: 0x%08x\n", fpga_dbg);
-+		printf(" LP used:");
-+		if (fpga_dbg & (1 << 18))
-+			printf(" LP0.5");
-+		for (i = 1; i < 4; i++) {
-+			if (fpga_dbg & (1 << (18+i)))
-+				printf(" LP%d", i);
-+		}
-+		printf("\n");
-+		/* clear the sticky LP bits */
-+		fpga_dbg &= 1 << 21 | 1 << 20 | 1 << 19 | 1 << 18;
-+		write_reg(0x42300, fpga_dbg);
  	}
- 
- 	intel_register_access_fini(&mmio_data);
 -- 
 2.35.1
