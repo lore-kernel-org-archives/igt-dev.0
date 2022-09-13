@@ -1,18 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2E62210E786
- for <igt-dev@lists.freedesktop.org>; Tue, 13 Sep 2022 16:01:35 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8F73F10E786
+ for <igt-dev@lists.freedesktop.org>; Tue, 13 Sep 2022 16:01:33 +0000 (UTC)
 From: Ville Syrjala <ville.syrjala@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 13 Sep 2022 19:00:56 +0300
-Message-Id: <20220913160101.6569-2-ville.syrjala@linux.intel.com>
-In-Reply-To: <20220913160101.6569-1-ville.syrjala@linux.intel.com>
-References: <20220913160101.6569-1-ville.syrjala@linux.intel.com>
+Date: Tue, 13 Sep 2022 19:00:55 +0300
+Message-Id: <20220913160101.6569-1-ville.syrjala@linux.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 2/7] tools/intel_watermark: Don't do
- intel_register_access_fini() too early on hsw/bdw
+Subject: [igt-dev] [PATCH i-g-t 1/7] tools/intel_watermark: Add missing
+ intel_register_access_fini() for skl+
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,36 +24,26 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-The tool will segfault if we try to the WM_DBG read/write after
-intel_register_access_fini(). So move intel_register_access_fini()
-to the very end.
+The skl+ code forgot to call intel_register_access_fini(). Make
+it do so.
 
 Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
 ---
- tools/intel_watermark.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ tools/intel_watermark.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
 diff --git a/tools/intel_watermark.c b/tools/intel_watermark.c
-index 1818d79d0bee..d61379c6dc7f 100644
+index 1e235ed30a63..1818d79d0bee 100644
 --- a/tools/intel_watermark.c
 +++ b/tools/intel_watermark.c
-@@ -644,8 +644,6 @@ static void ilk_wm_dump(void)
- 	if (IS_BROADWELL(devid) || IS_HASWELL(devid))
- 		wm_misc = read_reg(0x45260);
- 
--	intel_register_access_fini(&mmio_data);
--
- 	for (i = 0; i < num_pipes; i++)
- 		printf("    WM_PIPE_%c = 0x%08x\n", pipe_name(i), wm_pipe[i]);
- 	if (IS_BROADWELL(devid) || IS_HASWELL(devid)) {
-@@ -765,6 +763,8 @@ static void ilk_wm_dump(void)
- 		/* clear the sticky bits */
- 		write_reg(0x45280, wm_dbg);
- 	}
+@@ -590,6 +590,8 @@ static void skl_wm_dump(void)
+ 	printf("\n");
+ 	/* clear the sticky bits */
+ 	write_reg(0x45280, wm_dbg);
 +
 +	intel_register_access_fini(&mmio_data);
  }
  
- static void vlv_wm_dump(void)
+ static void ilk_wm_dump(void)
 -- 
 2.35.1
