@@ -1,16 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8F73F10E786
- for <igt-dev@lists.freedesktop.org>; Tue, 13 Sep 2022 16:01:33 +0000 (UTC)
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5BD3810E781
+ for <igt-dev@lists.freedesktop.org>; Tue, 13 Sep 2022 16:01:16 +0000 (UTC)
 From: Ville Syrjala <ville.syrjala@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 13 Sep 2022 19:00:55 +0300
-Message-Id: <20220913160101.6569-1-ville.syrjala@linux.intel.com>
+Date: Tue, 13 Sep 2022 19:00:59 +0300
+Message-Id: <20220913160101.6569-5-ville.syrjala@linux.intel.com>
+In-Reply-To: <20220913160101.6569-1-ville.syrjala@linux.intel.com>
+References: <20220913160101.6569-1-ville.syrjala@linux.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 1/7] tools/intel_watermark: Add missing
- intel_register_access_fini() for skl+
+Subject: [igt-dev] [PATCH i-g-t 5/7] tools/intel_watermark: Extract
+ is_cursor()
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,26 +26,110 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-The skl+ code forgot to call intel_register_access_fini(). Make
-it do so.
+Make the code a bit less magical by pulling the
+"is this plane cursor?" check into helper.
 
 Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
 ---
- tools/intel_watermark.c | 2 ++
- 1 file changed, 2 insertions(+)
+ tools/intel_watermark.c | 23 ++++++++++++++---------
+ 1 file changed, 14 insertions(+), 9 deletions(-)
 
 diff --git a/tools/intel_watermark.c b/tools/intel_watermark.c
-index 1e235ed30a63..1818d79d0bee 100644
+index eac40e4a5d17..32c27855d44e 100644
 --- a/tools/intel_watermark.c
 +++ b/tools/intel_watermark.c
-@@ -590,6 +590,8 @@ static void skl_wm_dump(void)
- 	printf("\n");
- 	/* clear the sticky bits */
- 	write_reg(0x45280, wm_dbg);
-+
-+	intel_register_access_fini(&mmio_data);
+@@ -131,6 +131,11 @@ static char endis_ast(bool enabled)
+ 	return enabled ? '*' : ' ';
  }
  
- static void ilk_wm_dump(void)
++static bool is_cursor(int plane)
++{
++	return plane == 0;
++}
++
+ static int skl_num_pipes(uint32_t d)
+ {
+ 	return intel_gen(d) >= 12 ? 4 : 3;
+@@ -183,7 +188,7 @@ static const char *skl_plane_name(int plane)
+ {
+ 	static char name[32];
+ 
+-	if (plane == 0)
++	if (is_cursor(plane))
+ 		snprintf(name, sizeof(name), "CURSOR");
+ 	else
+ 		snprintf(name, sizeof(name), "PLANE_%1d", plane);
+@@ -204,7 +209,7 @@ static const char *skl_plane_ctl_reg_name(int plane)
+ {
+ 	static char reg_name[32];
+ 
+-	if (plane == 0)
++	if (is_cursor(plane))
+ 		snprintf(reg_name, sizeof(reg_name), "CUR_CTL");
+ 	else
+ 		snprintf(reg_name, sizeof(reg_name), "PLANE_CTL_%1d", plane);
+@@ -216,7 +221,7 @@ static const char *skl_wm_reg_name(int plane, int level)
+ {
+ 	static char reg_name[32];
+ 
+-	if (plane == 0)
++	if (is_cursor(plane))
+ 		snprintf(reg_name, sizeof(reg_name), "CUR_WM_%1d", level);
+ 	else
+ 		snprintf(reg_name, sizeof(reg_name), "PLANE_WM_%1d_%1d", plane, level);
+@@ -228,7 +233,7 @@ static const char *skl_wm_trans_reg_name(int plane)
+ {
+ 	static char reg_name[32];
+ 
+-	if (plane == 0)
++	if (is_cursor(plane))
+ 		snprintf(reg_name, sizeof(reg_name), "CUR_WM_TRANS");
+ 	else
+ 		snprintf(reg_name, sizeof(reg_name), "PLANE_WM_TRANS_%1d", plane);
+@@ -240,7 +245,7 @@ static const char *skl_wm_sagv_reg_name(int plane)
+ {
+ 	static char reg_name[32];
+ 
+-	if (plane == 0)
++	if (is_cursor(plane))
+ 		snprintf(reg_name, sizeof(reg_name), "CUR_WM_SAGV");
+ 	else
+ 		snprintf(reg_name, sizeof(reg_name), "PLANE_WM_SAGV_%1d", plane);
+@@ -252,7 +257,7 @@ static const char *skl_wm_sagv_trans_reg_name(int plane)
+ {
+ 	static char reg_name[32];
+ 
+-	if (plane == 0)
++	if (is_cursor(plane))
+ 		snprintf(reg_name, sizeof(reg_name), "CUR_WM_SAGV_TRANS");
+ 	else
+ 		snprintf(reg_name, sizeof(reg_name), "PLANE_WM_SAGV_TRANS_%1d", plane);
+@@ -264,7 +269,7 @@ static const char *skl_buf_cfg_reg_name(int plane)
+ {
+ 	static char reg_name[32];
+ 
+-	if (plane == 0)
++	if (is_cursor(plane))
+ 		snprintf(reg_name, sizeof(reg_name), "CUR_BUF_CFG");
+ 	else
+ 		snprintf(reg_name, sizeof(reg_name), "PLANE_BUF_CFG_%1d", plane);
+@@ -431,7 +436,7 @@ static void skl_wm_dump(void)
+ 		if (intel_gen(devid) >= 11)
+ 			continue;
+ 
+-		if (plane == 0)
++		if (is_cursor(plane))
+ 			continue;
+ 
+ 		printf("%21s\t", skl_nv12_buf_cfg_reg_name(plane));
+@@ -458,7 +463,7 @@ static void skl_wm_dump(void)
+ 
+ 		printf("     LEVEL");
+ 		for (plane = 0; plane < num_planes; plane++) {
+-			if (plane == 0)
++			if (is_cursor(plane))
+ 				enable = REG_DECODE1(plane_ctl[pipe][plane], 0, 3) ||
+ 					REG_DECODE1(plane_ctl[pipe][plane], 5, 1);
+ 			else
 -- 
 2.35.1
