@@ -1,15 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6B09A10E2F4
- for <igt-dev@lists.freedesktop.org>; Sun, 18 Sep 2022 17:34:36 +0000 (UTC)
-From: Mohammed Thasleem <mohammed.thasleem@intel.com>
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 491E510E787
+ for <igt-dev@lists.freedesktop.org>; Tue, 13 Sep 2022 16:01:35 +0000 (UTC)
+From: Ville Syrjala <ville.syrjala@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Sun, 18 Sep 2022 22:59:06 +0530
-Message-Id: <20220918172906.1567759-1-mohammed.thasleem@intel.com>
+Date: Tue, 13 Sep 2022 19:01:00 +0300
+Message-Id: <20220913160101.6569-6-ville.syrjala@linux.intel.com>
+In-Reply-To: <20220913160101.6569-1-ville.syrjala@linux.intel.com>
+References: <20220913160101.6569-1-ville.syrjala@linux.intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t] tests/kms_properties: Create dynamic
- subtests
+Subject: [igt-dev] [PATCH i-g-t 6/7] tools/intel_watermark: Decode plane
+ enable bits for ilk-bdw
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,181 +24,138 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Modified kms_properties to include dynamic test cases.
+From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-Signed-off-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
+Knowing which planes are actually enabled is somewhat relevant
+when debugging watermarks. Dump that information.
+
+Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
 ---
- tests/kms_properties.c | 77 ++++++++++++++++++------------------------
- 1 file changed, 33 insertions(+), 44 deletions(-)
+ tools/intel_watermark.c | 60 ++++++++++++++++++++++++++++++-----------
+ 1 file changed, 45 insertions(+), 15 deletions(-)
 
-diff --git a/tests/kms_properties.c b/tests/kms_properties.c
-index dd5a93aa..46637f01 100644
---- a/tests/kms_properties.c
-+++ b/tests/kms_properties.c
-@@ -230,48 +230,36 @@ static void run_connector_property_tests(igt_display_t *display, enum pipe pipe,
+diff --git a/tools/intel_watermark.c b/tools/intel_watermark.c
+index 32c27855d44e..9192d59b086e 100644
+--- a/tools/intel_watermark.c
++++ b/tools/intel_watermark.c
+@@ -93,10 +93,13 @@ static const char * const plane_name[] = {
+ 	NAME(SPR_F),
+ };
  
- static void plane_properties(igt_display_t *display, bool atomic)
- {
--	bool found_any = false, found;
- 	igt_output_t *output;
- 	enum pipe pipe;
- 
- 	if (atomic)
- 		igt_skip_on(!display->is_atomic);
- 
--	for_each_pipe(display, pipe) {
--		found = false;
--
--		for_each_valid_output_on_pipe(display, pipe, output) {
--			found_any = found = true;
--
-+	for_each_pipe_with_valid_output(display, pipe, output) {
-+		igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe),
-+			      igt_output_name(output)) {
- 			run_plane_property_tests(display, pipe, output, atomic);
--			break;
- 		}
-+		break;
- 	}
--
--	igt_skip_on(!found_any);
- }
- 
- static void crtc_properties(igt_display_t *display, bool atomic)
- {
--	bool found_any_valid_pipe = false, found;
- 	enum pipe pipe;
- 	igt_output_t *output;
- 
- 	if (atomic)
- 		igt_skip_on(!display->is_atomic);
- 
--	for_each_pipe(display, pipe) {
--		found = false;
--
--		for_each_valid_output_on_pipe(display, pipe, output) {
--			found_any_valid_pipe = found = true;
--
-+	for_each_pipe_with_valid_output(display, pipe, output) {
-+		igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe),
-+			      igt_output_name(output)) {
- 			run_crtc_property_tests(display, pipe, output, atomic);
--			break;
- 		}
-+	break;
- 	}
--
--	igt_skip_on(!found_any_valid_pipe);
- }
- 
- static void connector_properties(igt_display_t *display, bool atomic)
-@@ -283,19 +271,12 @@ static void connector_properties(igt_display_t *display, bool atomic)
- 	if (atomic)
- 		igt_skip_on(!display->is_atomic);
- 
--	for_each_connected_output(display, output) {
--		bool found = false;
--
--		for_each_pipe(display, pipe) {
--			if (!igt_pipe_connector_valid(pipe, output))
--				continue;
--
--			found = true;
--			run_connector_property_tests(display, pipe, output, atomic);
--			break;
-+	for_each_pipe_with_valid_output(display, pipe, output) {
-+		igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe),
-+				igt_output_name(output)) {
-+		run_connector_property_tests(display, pipe, output, atomic);
- 		}
--
--		igt_assert_f(found, "Connected output should have at least 1 valid crtc\n");
-+		break;
- 	}
- 
- 	for (i = 0; i < display->n_outputs; i++)
-@@ -713,14 +694,21 @@ static void invalid_properties(igt_display_t *display, bool atomic)
- 		igt_skip_on(!display->is_atomic);
- 
- 	for_each_pipe(display, pipe)
--		test_object_invalid_properties(display, display->pipes[pipe].crtc_id, DRM_MODE_OBJECT_CRTC, atomic);
-+		igt_dynamic_f("pipe-%s", kmstest_pipe_name(pipe))
-+			test_object_invalid_properties(display, display->pipes[pipe].crtc_id,
-+						       DRM_MODE_OBJECT_CRTC, atomic);
- 
- 	for_each_pipe(display, pipe)
--		for_each_plane_on_pipe(display, pipe, plane)
--			test_object_invalid_properties(display, plane->drm_plane->plane_id, DRM_MODE_OBJECT_PLANE, atomic);
-+		igt_dynamic_f("pipe-%s", kmstest_pipe_name(pipe))
-+			for_each_plane_on_pipe(display, pipe, plane)
-+				test_object_invalid_properties(display, plane->drm_plane->plane_id,
-+							       DRM_MODE_OBJECT_PLANE, atomic);
- 
- 	for (i = 0, output = &display->outputs[0]; i < display->n_outputs; output = &display->outputs[++i])
--		test_object_invalid_properties(display, output->id, DRM_MODE_OBJECT_CONNECTOR, atomic);
-+		igt_dynamic_f("%s", igt_output_name(output))
-+			test_object_invalid_properties(display, output->id,
-+						       DRM_MODE_OBJECT_CONNECTOR, atomic);
++struct ilk_plane {
++	bool enabled, trickle_feed_dis;
++};
 +
- }
+ struct ilk_wm_level {
+ 	int primary, sprite, cursor, latency, fbc;
+ 	bool enabled, sprite_enabled;
+-	bool primary_trickle_feed_dis, sprite_trickle_feed_dis;
+ };
  
- igt_main
-@@ -736,41 +724,41 @@ igt_main
+ struct ilk_wm {
+@@ -604,13 +607,15 @@ static void ilk_wm_dump(void)
+ 	struct intel_mmio_data mmio_data;
+ 	int i;
+ 	uint32_t dspcntr[3];
+-	uint32_t spcntr[3];
++	uint32_t sprcntr[3];
++	uint32_t curcntr[3];
+ 	uint32_t wm_pipe[3];
+ 	uint32_t wm_linetime[3];
+ 	uint32_t wm_lp[3];
+ 	uint32_t wm_lp_spr[3];
+ 	uint32_t arb_ctl, arb_ctl2, wm_misc = 0;
+ 	int num_pipes = intel_gen(devid) >= 7 ? 3 : 2;
++	struct ilk_plane primary[3] = {}, sprite[3] = {}, cursor[3] = {};
+ 	struct ilk_wm wm = {};
+ 
+ 	intel_register_access_init(&mmio_data, intel_get_pci_device(), 0, -1);
+@@ -618,9 +623,13 @@ static void ilk_wm_dump(void)
+ 	for (i = 0; i < num_pipes; i++) {
+ 		dspcntr[i] = read_reg(0x70180 + i * 0x1000);
+ 		if (intel_gen(devid) >= 7)
+-			spcntr[i] = read_reg(0x70280 + i * 0x1000);
++			sprcntr[i] = read_reg(0x70280 + i * 0x1000);
+ 		else
+-			spcntr[i] = read_reg(0x72180 + i * 0x1000);
++			sprcntr[i] = read_reg(0x72180 + i * 0x1000);
++		if (intel_gen(devid) >= 7)
++			curcntr[i] = read_reg(0x70080 + i * 0x1000);
++		else
++			curcntr[i] = read_reg(0x70080 + i * 0x40);
  	}
  
- 	igt_describe("Tests plane properties with legacy commit");
--	igt_subtest("plane-properties-legacy")
-+	igt_subtest_with_dynamic("plane-properties-legacy")
- 		plane_properties(&display, false);
+ 	wm_pipe[0] = read_reg(0x45100);
+@@ -649,6 +658,12 @@ static void ilk_wm_dump(void)
+ 	if (IS_BROADWELL(devid) || IS_HASWELL(devid))
+ 		wm_misc = read_reg(0x45260);
  
- 	igt_describe("Tests plane properties with atomic commit");
--	igt_subtest("plane-properties-atomic")
-+	igt_subtest_with_dynamic("plane-properties-atomic")
- 		plane_properties(&display, true);
++	for (i = 0; i < num_pipes; i++) {
++		printf("    DSPCNTR_%c = 0x%08x\n", pipe_name(i), dspcntr[i]);
++		printf("    SPRCNTR_%c = 0x%08x\n", pipe_name(i), sprcntr[i]);
++		printf("    CURCNTR_%c = 0x%08x\n", pipe_name(i), curcntr[i]);
++	}
++
+ 	for (i = 0; i < num_pipes; i++)
+ 		printf("    WM_PIPE_%c = 0x%08x\n", pipe_name(i), wm_pipe[i]);
+ 	if (IS_BROADWELL(devid) || IS_HASWELL(devid)) {
+@@ -668,6 +683,21 @@ static void ilk_wm_dump(void)
+ 	if (IS_BROADWELL(devid) || IS_HASWELL(devid))
+ 		printf("      WM_MISC = 0x%08x\n", wm_misc);
  
- 	igt_describe("Tests crtc properties with legacy commit");
--	igt_subtest("crtc-properties-legacy")
-+	igt_subtest_with_dynamic("crtc-properties-legacy")
- 		crtc_properties(&display, false);
- 
- 	igt_describe("Tests crtc properties with atomic commit");
--	igt_subtest("crtc-properties-atomic")
-+	igt_subtest_with_dynamic("crtc-properties-atomic")
- 		crtc_properties(&display, true);
- 
- 	igt_describe("Tests connector properties with legacy commit");
--	igt_subtest("connector-properties-legacy")
-+	igt_subtest_with_dynamic("connector-properties-legacy")
- 		connector_properties(&display, false);
- 
- 	igt_describe("Tests connector properties with atomic commit");
--	igt_subtest("connector-properties-atomic")
-+	igt_subtest_with_dynamic("connector-properties-atomic")
- 		connector_properties(&display, true);
- 
- 	igt_describe("Checks each property of any type with combination of mode object with legacy "
- 		     "commit and make sure only valid properties are set to mode object else "
- 		     "return with relevant error");
- 
--	igt_subtest("invalid-properties-legacy")
-+	igt_subtest_with_dynamic("invalid-properties-legacy")
- 		invalid_properties(&display, false);
- 
- 	igt_describe("Checks each property of any type with combination of mode object with atomic "
- 		     "commit and make sure only valid properties are set to mode object else "
- 		     "return with relevant error");
- 
--	igt_subtest("invalid-properties-atomic")
-+	igt_subtest_with_dynamic("invalid-properties-atomic")
- 		invalid_properties(&display, true);
- 
- 	igt_describe("Test validates the properties of all planes, crtc and connectors with atomic commit");
-@@ -792,5 +780,6 @@ igt_main
- 
- 	igt_fixture {
- 		igt_display_fini(&display);
-+		close(display.drm_fd);
++	for (i = 0 ; i < num_pipes; i++) {
++		primary[i].enabled = REG_DECODE1(dspcntr[i], 31, 1);
++		sprite[i].enabled = REG_DECODE1(sprcntr[i], 31, 1);
++		cursor[i].enabled = REG_DECODE1(curcntr[i], 0, 3) ||
++			REG_DECODE1(curcntr[i], 5, 1);
++
++		primary[i].trickle_feed_dis = REG_DECODE1(dspcntr[i], 14, 1);
++
++		if (IS_GEN5(devid))
++			continue;
++
++		sprite[i].trickle_feed_dis = REG_DECODE1(sprcntr[i], 14, 1);
++		cursor[i].trickle_feed_dis = REG_DECODE1(curcntr[i], 14, 1);
++	}
++
+ 	for (i = 0 ; i < num_pipes; i++) {
+ 		wm.pipe[i].primary = REG_DECODE1(wm_pipe[i], 16, 8);
+ 		wm.pipe[i].sprite = REG_DECODE1(wm_pipe[i], 8, 8);
+@@ -677,12 +707,6 @@ static void ilk_wm_dump(void)
+ 			wm.linetime[i].linetime = REG_DECODE1(wm_linetime[i], 0, 9);
+ 			wm.linetime[i].ips = REG_DECODE1(wm_linetime[i], 16, 9);
+ 		}
+-
+-		wm.pipe[i].primary_trickle_feed_dis =
+-			REG_DECODE1(dspcntr[i], 14, 1);
+-		if (!IS_GEN5(devid))
+-			wm.pipe[i].sprite_trickle_feed_dis =
+-				REG_DECODE1(spcntr[i], 14, 1);
  	}
- }
+ 
+ 	for (i = 0; i < 3; i++) {
+@@ -733,11 +757,17 @@ static void ilk_wm_dump(void)
+ 		}
+ 	}
+ 	for (i = 0; i < num_pipes; i++) {
+-		printf("Primary %c trickle feed = %s\n",
+-		       pipe_name(i), endis(!wm.pipe[i].primary_trickle_feed_dis));
+-		if (!IS_GEN5(devid))
+-			printf("Sprite %c trickle feed = %s\n",
+-			       pipe_name(i), endis(!wm.pipe[i].sprite_trickle_feed_dis));
++		printf("Primary %c: %s, trickle feed = %s\n",
++		       pipe_name(i), endis(primary[i].enabled),
++		       endis(!primary[i].trickle_feed_dis));
++		printf("Sprite %c: %s, trickle feed = %s\n",
++		       pipe_name(i), endis(sprite[i].enabled),
++		       IS_GEN5(devid) ? "n/a" :
++		       endis(!sprite[i].trickle_feed_dis));
++		printf("Cursor %c: %s, trickle feed = %s\n",
++		       pipe_name(i), endis(cursor[i].enabled),
++		       IS_GEN5(devid) ? "n/a" :
++		       endis(!cursor[i].trickle_feed_dis));
+ 	}
+ 	if (IS_BROADWELL(devid) || IS_HASWELL(devid)) {
+ 		printf("DDB partitioning = %s\n",
 -- 
-2.25.1
+2.35.1
