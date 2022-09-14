@@ -1,20 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 95A6710E3B2
- for <igt-dev@lists.freedesktop.org>; Wed, 14 Sep 2022 04:54:14 +0000 (UTC)
-Message-ID: <e9589218-9fd7-0cf6-ad6f-5fe8c93959c3@intel.com>
-Date: Wed, 14 Sep 2022 10:23:57 +0530
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6853A10E3B2
+ for <igt-dev@lists.freedesktop.org>; Wed, 14 Sep 2022 04:55:14 +0000 (UTC)
+Message-ID: <a9e602e0-4357-b996-6761-1f56c253f2c4@intel.com>
+Date: Wed, 14 Sep 2022 10:24:58 +0530
 Content-Language: en-US
 To: Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
  <igt-dev@lists.freedesktop.org>
 References: <20220909140331.1041095-1-bhanuprakash.modem@intel.com>
- <20220909140331.1041095-27-bhanuprakash.modem@intel.com>
+ <20220909140331.1041095-17-bhanuprakash.modem@intel.com>
 From: Karthik B S <karthik.b.s@intel.com>
-In-Reply-To: <20220909140331.1041095-27-bhanuprakash.modem@intel.com>
+In-Reply-To: <20220909140331.1041095-17-bhanuprakash.modem@intel.com>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [i-g-t V3 26/52] tests/kms_plane_multiple: Add
+Subject: Re: [igt-dev] [i-g-t V3 16/52] tests/kms_dp_tiled_display: Add
  support for Bigjoiner
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -27,7 +27,7 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On 9/9/2022 7:33 PM, Bhanuprakash Modem wrote:
+On 9/9/2022 7:32 PM, Bhanuprakash Modem wrote:
 > This patch will add a check to Skip the subtest if a selected pipe/output
 > combo won't support Bigjoiner or 8K mode.
 >
@@ -40,50 +40,19 @@ On 9/9/2022 7:33 PM, Bhanuprakash Modem wrote:
 > Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 Reviewed-by: Karthik B S <karthik.b.s@intel.com>
 > ---
->   tests/kms_plane_multiple.c | 15 ++++++++++++---
->   1 file changed, 12 insertions(+), 3 deletions(-)
+>   tests/kms_dp_tiled_display.c | 1 +
+>   1 file changed, 1 insertion(+)
 >
-> diff --git a/tests/kms_plane_multiple.c b/tests/kms_plane_multiple.c
-> index cbe8c189..4ab49624 100644
-> --- a/tests/kms_plane_multiple.c
-> +++ b/tests/kms_plane_multiple.c
-> @@ -102,6 +102,7 @@ get_reference_crc(data_t *data, igt_output_t *output, enum pipe pipe,
->   	igt_plane_t *primary;
->   	int ret;
->   
-> +	igt_display_reset(&data->display);
->   	igt_output_set_pipe(output, pipe);
->   
->   	primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
-> @@ -289,6 +290,9 @@ test_plane_position_with_output(data_t *data, enum pipe pipe,
->   	bool loop_forever;
->   	char info[256];
->   
-> +	igt_info("Using (pipe %s + %s) to run the subtest.\n",
-> +		 kmstest_pipe_name(pipe), igt_output_name(output));
-> +
->   	if (opt.iterations == LOOP_FOREVER) {
->   		loop_forever = true;
->   		sprintf(info, "forever");
-> @@ -374,12 +378,17 @@ static void run_test(data_t *data, uint64_t modifier)
->   {
->   	enum pipe pipe;
->   	igt_output_t *output;
-> +	igt_display_t *display = &data->display;
->   
-> -	if (!igt_display_has_format_mod(&data->display, DRM_FORMAT_XRGB8888, modifier))
-> +	if (!igt_display_has_format_mod(display, DRM_FORMAT_XRGB8888, modifier))
->   		return;
->   
-> -	for_each_pipe_with_valid_output(&data->display, pipe, output) {
-> -		igt_display_reset(&data->display);
-> +	for_each_pipe_with_valid_output(display, pipe, output) {
-> +		igt_display_reset(display);
-> +
-> +		igt_output_set_pipe(output, pipe);
-> +		if (!i915_pipe_output_combo_valid(display))
-> +			continue;
->   
->   		igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), output->name)
->   			test_plane_position(data, pipe, output, modifier);
+> diff --git a/tests/kms_dp_tiled_display.c b/tests/kms_dp_tiled_display.c
+> index 8f503e40..341cbab5 100644
+> --- a/tests/kms_dp_tiled_display.c
+> +++ b/tests/kms_dp_tiled_display.c
+> @@ -271,6 +271,7 @@ static void setup_mode(data_t *data)
+>   		igt_require(found);
+>   		igt_output_override_mode(output, mode);
+>   	}
+> +	igt_require(i915_pipe_output_combo_valid(data->display));
+>   	igt_display_commit_atomic(data->display, DRM_MODE_ATOMIC_ALLOW_MODESET,
+>   				  NULL);
+>   }
 
