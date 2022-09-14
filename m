@@ -1,17 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7DDC010E927
- for <igt-dev@lists.freedesktop.org>; Wed, 14 Sep 2022 14:07:45 +0000 (UTC)
-From: Riana Tauro <riana.tauro@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Wed, 14 Sep 2022 19:37:17 +0530
-Message-Id: <20220914140721.3500129-4-riana.tauro@intel.com>
-In-Reply-To: <20220914140721.3500129-1-riana.tauro@intel.com>
-References: <20220914140721.3500129-1-riana.tauro@intel.com>
+Content-Type: multipart/alternative;
+ boundary="===============0952366497509240447=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v2 3/7] lib/igt_power: Add hwmon interface
- to igt_power
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Riana Tauro" <riana.tauro@intel.com>
+Date: Wed, 14 Sep 2022 15:14:06 -0000
+Message-ID: <166316844635.30166.2531911598192663352@emeril.freedesktop.org>
+References: <20220914140721.3500129-1-riana.tauro@intel.com>
+In-Reply-To: <20220914140721.3500129-1-riana.tauro@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3IgQWRkIGh3?=
+ =?utf-8?q?mon_energy_support_for_dgfx_=28rev2=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,216 +17,264 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: badal.nilawar@intel.com
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Modify igt_power to expose functions to read energy, power
-using hwmon and rapl interface
+--===============0952366497509240447==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
-Signed-off-by: Riana Tauro <riana.tauro@intel.com>
----
- lib/igt_power.c | 131 ++++++++++++++++++++++++++++++++++++++++++++++++
- lib/igt_power.h |  22 ++++++++
- 2 files changed, 153 insertions(+)
+== Series Details ==
 
-diff --git a/lib/igt_power.c b/lib/igt_power.c
-index 814ad556..3f3633eb 100644
---- a/lib/igt_power.c
-+++ b/lib/igt_power.c
-@@ -6,10 +6,14 @@
- #include <unistd.h>
- #include <inttypes.h>
- 
-+#include "igt.h"
-+#include "igt_hwmon.h"
- #include "igt_perf.h"
- #include "igt_power.h"
- #include "igt_sysfs.h"
- 
-+static const char *rapl_domains[] = { "cpu", "gpu", "pkg", "ram" };
-+
- static int rapl_parse(struct rapl *r, const char *str)
- {
- 	locale_t locale, oldlocale;
-@@ -67,3 +71,130 @@ err:
- 	errno = 0;
- 	return r->fd;
- }
-+
-+/**
-+ * igt_power_open:
-+ * @fd : device fd
-+ * @igt_power : power struct
-+ * @domain: rapl domain
-+ *
-+ * opens the hwmon/rapl fd based on domain
-+ * hwmon fd - domain gpu -dgfx
-+ * rapl fd - all domains - igfx
-+ *
-+ * Returns
-+ * 0 on success, errno otherwise
-+ */
-+int igt_power_open(int fd, struct igt_power *p, const char *domain)
-+{
-+	int i;
-+
-+	p->hwmon_fd = -1;
-+	p->rapl.fd = -1;
-+
-+	if (gem_has_lmem(fd)) {
-+		if (strncmp(domain, "gpu", strlen("gpu")) == 0) {
-+			p->hwmon_fd = igt_hwmon_open(fd);
-+			if (p->hwmon_fd >= 0)
-+				return 0;
-+		}
-+	} else {
-+		for (i = 0; i < ARRAY_SIZE(rapl_domains); i++)
-+			if (strncmp(domain, rapl_domains[i], strlen(rapl_domains[i])) == 0)
-+				return rapl_open(&p->rapl, domain);
-+	}
-+
-+	return -EINVAL;
-+}
-+
-+/**
-+ * igt_power_get_energy:
-+ * @igt_power : power struct
-+ * @power_sample: sample of energy and time
-+ *
-+ * Reads energy from hwmon if energy1_input file is present, else read
-+ * from rapl interface
-+ *
-+ */
-+void igt_power_get_energy(struct igt_power *power, struct power_sample *s)
-+{
-+	struct timespec ts;
-+
-+	s->energy = 0;
-+	igt_assert(!clock_gettime(CLOCK_MONOTONIC, &ts));
-+	s->time =  ts.tv_sec * NSEC_PER_SEC + ts.tv_nsec;
-+
-+	if (power->hwmon_fd >= 0) {
-+		if (igt_sysfs_has_attr(power->hwmon_fd, "energy1_input"))
-+			s->energy = igt_sysfs_get_u64(power->hwmon_fd, "energy1_input");
-+	} else if (power->rapl.fd >= 0) {
-+		rapl_read(&power->rapl, s);
-+	}
-+}
-+
-+/**
-+ * igt_power_get_mJ:
-+ * @igt_power : power struct
-+ * @power_sample: sample of energy and time
-+ *
-+ * Calculates energy difference between two power samples
-+ *
-+ * Returns
-+ * energy in mJ from hwmon/rapl
-+ */
-+double igt_power_get_mJ(const struct igt_power *power,
-+			const struct power_sample *p0, const struct power_sample *p1)
-+{
-+	if (power->hwmon_fd >= 0)
-+		return (p1->energy - p0->energy) * 1e-3;
-+	else if (power->rapl.fd >= 0)
-+		return ((p1->energy - p0->energy) *  power->rapl.scale) * 1e3;
-+
-+	return 0;
-+}
-+
-+/**
-+ * igt_power_get_mW:
-+ * @igt_power : power struct
-+ * @power_sample: sample of energy and time
-+ *
-+ * Calculates power
-+ *
-+ * Returns
-+ * power in milliWatts
-+ */
-+double igt_power_get_mW(const struct igt_power *power,
-+			const struct power_sample *p0, const struct power_sample *p1)
-+{
-+	return igt_power_get_mJ(power, p0, p1) / igt_power_get_s(p0, p1);
-+}
-+
-+/**
-+ * igt_power_get_s:
-+ * @power_sample: sample of energy and time
-+ *
-+ * Returns
-+ * time differnce in seconds
-+ */
-+double igt_power_get_s(const struct power_sample *p0,
-+		       const struct power_sample *p1)
-+{
-+	return (p1->time - p0->time) * 1e-9;
-+}
-+
-+/**
-+ * igt_power_close:
-+ * @igt_power : power struct
-+ *
-+ * closes hwmon/rapl fd
-+ *
-+ */
-+void igt_power_close(struct igt_power *power)
-+{
-+	if (power->hwmon_fd >= 0) {
-+		close(power->hwmon_fd);
-+		power->hwmon_fd = -1;
-+	} else if (power->rapl.fd >= 0) {
-+		rapl_close(&power->rapl);
-+	}
-+}
-diff --git a/lib/igt_power.h b/lib/igt_power.h
-index 11ddcdee..0984c2df 100644
---- a/lib/igt_power.h
-+++ b/lib/igt_power.h
-@@ -39,7 +39,14 @@ struct power_sample {
- 	uint64_t time;
- };
- 
-+struct igt_power {
-+	struct rapl rapl;
-+	int hwmon_fd;
-+};
-+
- int rapl_open(struct rapl *r, const char *domain);
-+int igt_power_open(int i915, struct igt_power *p, const char *domain);
-+void igt_power_close(struct igt_power *p);
- 
- static inline int cpu_power_open(struct rapl *r)
- {
-@@ -77,6 +84,11 @@ static inline void rapl_close(struct rapl *r)
- 	r->fd = -1;
- }
- 
-+static inline bool igt_power_valid(struct igt_power *p)
-+{
-+	return (p->rapl.fd >= 0) || (p->hwmon_fd >= 0);
-+}
-+
- static inline double power_J(const struct rapl *r,
- 			     const struct power_sample *p0,
- 			     const struct power_sample *p1)
-@@ -98,4 +110,14 @@ static inline double power_W(const struct rapl *r,
- 	return power_J(r, p0, p1) / power_s(r, p0, p1);
- }
- 
-+void igt_power_get_energy(struct igt_power *p, struct power_sample *s);
-+
-+double igt_power_get_mJ(const struct igt_power *power,
-+			const struct power_sample *p0,
-+			const struct power_sample *p1);
-+double igt_power_get_mW(const struct igt_power *power,
-+			const struct power_sample *p0,
-+			const struct power_sample *p1);
-+double igt_power_get_s(const struct power_sample *p0,
-+		       const struct power_sample *p1);
- #endif /* IGT_POWER_H */
--- 
-2.25.1
+Series: Add hwmon energy support for dgfx (rev2)
+URL   : https://patchwork.freedesktop.org/series/108185/
+State : failure
+
+== Summary ==
+
+CI Bug Log - changes from IGT_6656 -> IGTPW_7782
+====================================================
+
+Summary
+-------
+
+  **FAILURE**
+
+  Serious unknown changes coming with IGTPW_7782 absolutely need to be
+  verified manually.
+  
+  If you think the reported changes have nothing to do with the changes
+  introduced in IGTPW_7782, please notify your bug team to allow them
+  to document this new failure mode, which will reduce false positives in CI.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7782/index.html
+
+Participating hosts (42 -> 42)
+------------------------------
+
+  Additional (2): bat-rplp-1 fi-tgl-dsi 
+  Missing    (2): fi-ctg-p8600 fi-icl-u2 
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in IGTPW_7782:
+
+### IGT changes ###
+
+#### Possible regressions ####
+
+  * igt@i915_selftest@live@mman:
+    - fi-rkl-guc:         [PASS][1] -> [INCOMPLETE][2]
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6656/fi-rkl-guc/igt@i915_selftest@live@mman.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7782/fi-rkl-guc/igt@i915_selftest@live@mman.html
+
+  
+#### Suppressed ####
+
+  The following results come from untrusted machines, tests, or statuses.
+  They do not affect the overall result.
+
+  * igt@i915_selftest@live@gt_lrc:
+    - {fi-tgl-dsi}:       NOTRUN -> [INCOMPLETE][3]
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7782/fi-tgl-dsi/igt@i915_selftest@live@gt_lrc.html
+
+  
+Known issues
+------------
+
+  Here are the changes found in IGTPW_7782 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@i915_selftest@live@gt_engines:
+    - bat-dg1-5:          [PASS][4] -> [INCOMPLETE][5] ([i915#4418])
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6656/bat-dg1-5/igt@i915_selftest@live@gt_engines.html
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7782/bat-dg1-5/igt@i915_selftest@live@gt_engines.html
+
+  * igt@i915_selftest@live@hangcheck:
+    - fi-hsw-4770:        [PASS][6] -> [INCOMPLETE][7] ([i915#4785])
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6656/fi-hsw-4770/igt@i915_selftest@live@hangcheck.html
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7782/fi-hsw-4770/igt@i915_selftest@live@hangcheck.html
+
+  * igt@runner@aborted:
+    - fi-hsw-4770:        NOTRUN -> [FAIL][8] ([fdo#109271] / [i915#4312] / [i915#5594] / [i915#6246])
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7782/fi-hsw-4770/igt@runner@aborted.html
+    - bat-dg1-5:          NOTRUN -> [FAIL][9] ([i915#4312] / [i915#5257])
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7782/bat-dg1-5/igt@runner@aborted.html
+
+  
+#### Possible fixes ####
+
+  * igt@gem_ringfill@basic-all:
+    - {bat-dg2-9}:        [FAIL][10] ([i915#5886]) -> [PASS][11]
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6656/bat-dg2-9/igt@gem_ringfill@basic-all.html
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7782/bat-dg2-9/igt@gem_ringfill@basic-all.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [fdo#109284]: https://bugs.freedesktop.org/show_bug.cgi?id=109284
+  [fdo#109285]: https://bugs.freedesktop.org/show_bug.cgi?id=109285
+  [fdo#109295]: https://bugs.freedesktop.org/show_bug.cgi?id=109295
+  [fdo#110189]: https://bugs.freedesktop.org/show_bug.cgi?id=110189
+  [fdo#111827]: https://bugs.freedesktop.org/show_bug.cgi?id=111827
+  [i915#1072]: https://gitlab.freedesktop.org/drm/intel/issues/1072
+  [i915#1845]: https://gitlab.freedesktop.org/drm/intel/issues/1845
+  [i915#2190]: https://gitlab.freedesktop.org/drm/intel/issues/2190
+  [i915#3282]: https://gitlab.freedesktop.org/drm/intel/issues/3282
+  [i915#3301]: https://gitlab.freedesktop.org/drm/intel/issues/3301
+  [i915#3555]: https://gitlab.freedesktop.org/drm/intel/issues/3555
+  [i915#3708]: https://gitlab.freedesktop.org/drm/intel/issues/3708
+  [i915#4093]: https://gitlab.freedesktop.org/drm/intel/issues/4093
+  [i915#4103]: https://gitlab.freedesktop.org/drm/intel/issues/4103
+  [i915#4213]: https://gitlab.freedesktop.org/drm/intel/issues/4213
+  [i915#4312]: https://gitlab.freedesktop.org/drm/intel/issues/4312
+  [i915#4418]: https://gitlab.freedesktop.org/drm/intel/issues/4418
+  [i915#4579]: https://gitlab.freedesktop.org/drm/intel/issues/4579
+  [i915#4613]: https://gitlab.freedesktop.org/drm/intel/issues/4613
+  [i915#4785]: https://gitlab.freedesktop.org/drm/intel/issues/4785
+  [i915#5257]: https://gitlab.freedesktop.org/drm/intel/issues/5257
+  [i915#5594]: https://gitlab.freedesktop.org/drm/intel/issues/5594
+  [i915#5886]: https://gitlab.freedesktop.org/drm/intel/issues/5886
+  [i915#6246]: https://gitlab.freedesktop.org/drm/intel/issues/6246
+  [i915#6367]: https://gitlab.freedesktop.org/drm/intel/issues/6367
+  [i915#6599]: https://gitlab.freedesktop.org/drm/intel/issues/6599
+  [i915#6621]: https://gitlab.freedesktop.org/drm/intel/issues/6621
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_6656 -> IGTPW_7782
+
+  CI-20190529: 20190529
+  CI_DRM_12134: a84a8c8d23dac90008acab56508b4dab70d6148d @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_7782: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7782/index.html
+  IGT_6656: 24100c4e181c50e3678aeca9c641b8a43555ad73 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7782/index.html
+
+--===============0952366497509240447==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Add hwmon energy support for dgfx (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/108185/">https://patchwork.freedesktop.org/series/108185/</a></td></tr>
+<tr><td><b>State:</b></td><td>failure</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7782/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7782/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_6656 -&gt; IGTPW_7782</h1>
+<h2>Summary</h2>
+<p><strong>FAILURE</strong></p>
+<p>Serious unknown changes coming with IGTPW_7782 absolutely need to be<br />
+  verified manually.</p>
+<p>If you think the reported changes have nothing to do with the changes<br />
+  introduced in IGTPW_7782, please notify your bug team to allow them<br />
+  to document this new failure mode, which will reduce false positives in CI.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7782/index.html</p>
+<h2>Participating hosts (42 -&gt; 42)</h2>
+<p>Additional (2): bat-rplp-1 fi-tgl-dsi <br />
+  Missing    (2): fi-ctg-p8600 fi-icl-u2 </p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in IGTPW_7782:</p>
+<h3>IGT changes</h3>
+<h4>Possible regressions</h4>
+<ul>
+<li>igt@i915_selftest@live@mman:<ul>
+<li>fi-rkl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6656/fi-rkl-guc/igt@i915_selftest@live@mman.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7782/fi-rkl-guc/igt@i915_selftest@live@mman.html">INCOMPLETE</a></li>
+</ul>
+</li>
+</ul>
+<h4>Suppressed</h4>
+<p>The following results come from untrusted machines, tests, or statuses.<br />
+  They do not affect the overall result.</p>
+<ul>
+<li>igt@i915_selftest@live@gt_lrc:<ul>
+<li>{fi-tgl-dsi}:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7782/fi-tgl-dsi/igt@i915_selftest@live@gt_lrc.html">INCOMPLETE</a></li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_7782 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live@gt_engines:</p>
+<ul>
+<li>bat-dg1-5:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6656/bat-dg1-5/igt@i915_selftest@live@gt_engines.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7782/bat-dg1-5/igt@i915_selftest@live@gt_engines.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4418">i915#4418</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@hangcheck:</p>
+<ul>
+<li>fi-hsw-4770:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6656/fi-hsw-4770/igt@i915_selftest@live@hangcheck.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7782/fi-hsw-4770/igt@i915_selftest@live@hangcheck.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4785">i915#4785</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@runner@aborted:</p>
+<ul>
+<li>
+<p>fi-hsw-4770:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7782/fi-hsw-4770/igt@runner@aborted.html">FAIL</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4312">i915#4312</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/5594">i915#5594</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/6246">i915#6246</a>)</p>
+</li>
+<li>
+<p>bat-dg1-5:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7782/bat-dg1-5/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4312">i915#4312</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/5257">i915#5257</a>)</p>
+</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@gem_ringfill@basic-all:<ul>
+<li>{bat-dg2-9}:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6656/bat-dg2-9/igt@gem_ringfill@basic-all.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5886">i915#5886</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7782/bat-dg2-9/igt@gem_ringfill@basic-all.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_6656 -&gt; IGTPW_7782</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_12134: a84a8c8d23dac90008acab56508b4dab70d6148d @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_7782: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7782/index.html<br />
+  IGT_6656: 24100c4e181c50e3678aeca9c641b8a43555ad73 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============0952366497509240447==--
