@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3821D10E10F
- for <igt-dev@lists.freedesktop.org>; Thu, 15 Sep 2022 13:58:07 +0000 (UTC)
-From: Riana Tauro <riana.tauro@intel.com>
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A74F810E883
+ for <igt-dev@lists.freedesktop.org>; Wed, 14 Sep 2022 06:46:31 +0000 (UTC)
+From: Jeevan B <jeevan.b@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Thu, 15 Sep 2022 19:27:38 +0530
-Message-Id: <20220915135739.3542117-1-riana.tauro@intel.com>
+Date: Wed, 14 Sep 2022 12:12:11 +0530
+Message-Id: <20220914064211.27625-1-jeevan.b@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 0/1] clear igt_devs.devs_scanned in
- igt_devices_free
+Subject: [igt-dev] [PATCH i-g-t v2] kms_flip_event_leak: Create dynamic
+ subtests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,21 +17,73 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: petri.latvala@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-igt_devices_scan returns with empty list if devs_scanned
-is true and function is called after igt_devices_free
+Converting the existing subtests to dynamic subtests.
 
-clear igt_devs.devs_scanned in igt_devices_free.
+v2: Add igt_dispaly_require_output and igt_display_reset and update the
+test name. (Bhanu)
 
-Riana Tauro (1):
-  lib/igt_device_scan: clear igt_devs.devs_scanned in igt_devices_free
+Signed-off-by: Jeevan B <jeevan.b@intel.com>
+---
+ tests/kms_flip_event_leak.c | 29 ++++++++++++++++++-----------
+ 1 file changed, 18 insertions(+), 11 deletions(-)
 
- lib/igt_device_scan.c | 1 +
- 1 file changed, 1 insertion(+)
-
+diff --git a/tests/kms_flip_event_leak.c b/tests/kms_flip_event_leak.c
+index ac201293..d5a40c24 100644
+--- a/tests/kms_flip_event_leak.c
++++ b/tests/kms_flip_event_leak.c
+@@ -48,6 +48,7 @@ static void test(data_t *data, enum pipe pipe, igt_output_t *output)
+ 	struct igt_fb fb[2];
+ 	int fd, ret;
+ 
++	igt_display_reset(&data->display);
+ 	/* select the pipe we want to use */
+ 	igt_output_set_pipe(output, pipe);
+ 
+@@ -89,24 +90,30 @@ static void test(data_t *data, enum pipe pipe, igt_output_t *output)
+ 	igt_remove_fb(data->drm_fd, &fb[0]);
+ }
+ 
+-igt_simple_main
++igt_main
+ {
+ 	data_t data = {};
+ 	igt_output_t *output;
+-	int valid_tests = 0;
+ 	enum pipe pipe;
+ 
+-	data.drm_fd = drm_open_driver_master(DRIVER_ANY);
+-	kmstest_set_vt_graphics_mode();
++	igt_fixture {
++		data.drm_fd = drm_open_driver_master(DRIVER_ANY);
++		kmstest_set_vt_graphics_mode();
+ 
+-	igt_display_require(&data.display, data.drm_fd);
+-
+-	for_each_pipe_with_valid_output(&data.display, pipe, output) {
+-		test(&data, pipe, output);
+-		valid_tests++;
++		igt_display_require(&data.display, data.drm_fd);
++		igt_display_require_output(&data.display);
+ 	}
+ 
+-	igt_require_f(valid_tests, "no valid crtc/connector combinations found\n");
+ 
+-	igt_display_fini(&data.display);
++	igt_subtest_with_dynamic("kms_flip_event_leak_basic") {
++		for_each_pipe_with_valid_output(&data.display, pipe, output) {
++			igt_dynamic_f("%s-pipe-%s", igt_output_name(output), kmstest_pipe_name(pipe)) {
++				test(&data, pipe, output);
++			}
++		}
++	}
++
++	igt_fixture {
++		igt_display_fini(&data.display);
++	}
+ }
 -- 
-2.25.1
+2.36.0
