@@ -1,17 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 92F7A10E928
- for <igt-dev@lists.freedesktop.org>; Wed, 14 Sep 2022 14:07:49 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D35C010E927
+ for <igt-dev@lists.freedesktop.org>; Wed, 14 Sep 2022 14:07:44 +0000 (UTC)
 From: Riana Tauro <riana.tauro@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Wed, 14 Sep 2022 19:37:21 +0530
-Message-Id: <20220914140721.3500129-8-riana.tauro@intel.com>
+Date: Wed, 14 Sep 2022 19:37:15 +0530
+Message-Id: <20220914140721.3500129-2-riana.tauro@intel.com>
 In-Reply-To: <20220914140721.3500129-1-riana.tauro@intel.com>
 References: <20220914140721.3500129-1-riana.tauro@intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v2 7/7] lib/igt_power: clean-up igt_power
- library
+Subject: [igt-dev] [PATCH i-g-t v2 1/7] lib/igt_hwmon: Introduce library
+ igt_hwmon
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,122 +25,126 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Remove unused rapl functions from igt_power.
-No functional changes
+igt_hwmon exposes methods to open hwmon directories identified by name
 
+Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
 Signed-off-by: Riana Tauro <riana.tauro@intel.com>
 ---
- lib/igt_power.c | 13 ++++++++++-
- lib/igt_power.h | 58 -------------------------------------------------
- 2 files changed, 12 insertions(+), 59 deletions(-)
+ lib/igt_hwmon.c | 73 +++++++++++++++++++++++++++++++++++++++++++++++++
+ lib/igt_hwmon.h | 12 ++++++++
+ lib/meson.build |  1 +
+ 3 files changed, 86 insertions(+)
+ create mode 100644 lib/igt_hwmon.c
+ create mode 100644 lib/igt_hwmon.h
 
-diff --git a/lib/igt_power.c b/lib/igt_power.c
-index 3f3633eb..3b34be40 100644
---- a/lib/igt_power.c
-+++ b/lib/igt_power.c
-@@ -53,7 +53,7 @@ static int rapl_parse(struct rapl *r, const char *str)
- 	return 0;
- }
- 
--int rapl_open(struct rapl *r, const char *domain)
-+static int rapl_open(struct rapl *r, const char *domain)
- {
- 	r->fd = rapl_parse(r, domain);
- 	if (r->fd < 0)
-@@ -72,6 +72,17 @@ err:
- 	return r->fd;
- }
- 
-+static inline bool rapl_read(struct rapl *r, struct power_sample *s)
+diff --git a/lib/igt_hwmon.c b/lib/igt_hwmon.c
+new file mode 100644
+index 00000000..1e4dab1b
+--- /dev/null
++++ b/lib/igt_hwmon.c
+@@ -0,0 +1,73 @@
++/*
++ * Copyright © 2022 Intel Corporation
++ */
++#include <sys/stat.h>
++#include <sys/sysmacros.h>
++#include <dirent.h>
++#include <fcntl.h>
++#include <inttypes.h>
++#include <unistd.h>
++
++#include "drmtest.h"
++#include "igt_core.h"
++#include "igt_hwmon.h"
++#include "igt_sysfs.h"
++
++static char *igt_hwmon_path(int device, char *path, const char *name)
 +{
-+	return read(r->fd, s, sizeof(*s)) == sizeof(*s);
++	char buf[80];
++	int path_offset;
++	struct dirent *entry;
++	struct stat st;
++	DIR *dir;
++
++	if (igt_debug_on(device < 0))
++		return NULL;
++
++	if (igt_debug_on(fstat(device, &st)) || igt_debug_on(!S_ISCHR(st.st_mode)))
++		return NULL;
++
++	path_offset = snprintf(path, PATH_MAX, "/sys/dev/char/%d:%d/device/hwmon",
++			       major(st.st_rdev), minor(st.st_rdev));
++
++	dir = opendir(path);
++	if (!dir)
++		return NULL;
++
++	while ((entry = readdir(dir))) {
++		if (entry->d_name[0] == '.')
++			continue;
++
++		snprintf(path + path_offset, PATH_MAX - path_offset, "/%s/name", entry->d_name);
++		igt_sysfs_scanf(dirfd(dir), path, "%s", buf);
++
++		if (strncmp(buf, name, strlen(name)) == 0) {
++			snprintf(path + path_offset, PATH_MAX - path_offset, "/%s", entry->d_name);
++			closedir(dir);
++			return path;
++		}
++	}
++
++	closedir(dir);
++	return NULL;
 +}
 +
-+static inline void rapl_close(struct rapl *r)
++/**
++ * igt_hwmon_open:
++ * @device: fd of the device
++ *
++ * Opens the hwmon directory corresponding to device
++ *
++ * Returns:
++ * The directory fd, or -1 on failure.
++ */
++int igt_hwmon_open(int device)
 +{
-+	close(r->fd);
-+	r->fd = -1;
++	char path[PATH_MAX];
++
++	if (!is_i915_device(device) || !igt_hwmon_path(device, path, "i915"))
++		return -1;
++
++	return open(path, O_RDONLY);
 +}
 +
- /**
-  * igt_power_open:
-  * @fd : device fd
-diff --git a/lib/igt_power.h b/lib/igt_power.h
-index 0984c2df..68a05300 100644
---- a/lib/igt_power.h
-+++ b/lib/igt_power.h
-@@ -44,72 +44,14 @@ struct igt_power {
- 	int hwmon_fd;
- };
- 
--int rapl_open(struct rapl *r, const char *domain);
- int igt_power_open(int i915, struct igt_power *p, const char *domain);
- void igt_power_close(struct igt_power *p);
- 
--static inline int cpu_power_open(struct rapl *r)
--{
--	return rapl_open(r, "cpu");
--}
--
--static inline int gpu_power_open(struct rapl *r)
--{
--	return rapl_open(r, "gpu");
--}
--
--static inline int pkg_power_open(struct rapl *r)
--{
--	return rapl_open(r, "pkg");
--}
--
--static inline bool rapl_valid(struct rapl *r)
--{
--	return r->fd >= 0;
--}
--
--static inline int ram_power_open(struct rapl *r)
--{
--	return rapl_open(r, "ram");
--}
--
--static inline bool rapl_read(struct rapl *r, struct power_sample *s)
--{
--	return read(r->fd, s, sizeof(*s)) == sizeof(*s);
--}
--
--static inline void rapl_close(struct rapl *r)
--{
--	close(r->fd);
--	r->fd = -1;
--}
--
- static inline bool igt_power_valid(struct igt_power *p)
- {
- 	return (p->rapl.fd >= 0) || (p->hwmon_fd >= 0);
- }
- 
--static inline double power_J(const struct rapl *r,
--			     const struct power_sample *p0,
--			     const struct power_sample *p1)
--{
--	return (p1->energy - p0->energy) * r->scale;
--}
--
--static inline double power_s(const struct rapl *r,
--			     const struct power_sample *p0,
--			     const struct power_sample *p1)
--{
--	return (p1->time - p0->time) * 1e-9;
--}
--
--static inline double power_W(const struct rapl *r,
--			     const struct power_sample *p0,
--			     const struct power_sample *p1)
--{
--	return power_J(r, p0, p1) / power_s(r, p0, p1);
--}
--
- void igt_power_get_energy(struct igt_power *p, struct power_sample *s);
- 
- double igt_power_get_mJ(const struct igt_power *power,
+diff --git a/lib/igt_hwmon.h b/lib/igt_hwmon.h
+new file mode 100644
+index 00000000..aa418fdc
+--- /dev/null
++++ b/lib/igt_hwmon.h
+@@ -0,0 +1,12 @@
++/*
++ * Copyright © 2022 Intel Corporation
++ */
++
++#ifndef IGT_HWMON_H
++#define IGT_HWMON_H
++
++#include <stdbool.h>
++
++int igt_hwmon_open(int device);
++
++#endif /* IGT_HWMON_H */
+diff --git a/lib/meson.build b/lib/meson.build
+index 548835b5..31894c7e 100644
+--- a/lib/meson.build
++++ b/lib/meson.build
+@@ -24,6 +24,7 @@ lib_sources = [
+ 	'igt_aux.c',
+ 	'igt_gt.c',
+ 	'igt_halffloat.c',
++	'igt_hwmon.c',
+ 	'igt_io.c',
+ 	'igt_matrix.c',
+ 	'igt_os.c',
 -- 
 2.25.1
