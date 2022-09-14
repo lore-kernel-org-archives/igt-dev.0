@@ -1,18 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8032A10E9E8
- for <igt-dev@lists.freedesktop.org>; Wed, 14 Sep 2022 19:29:53 +0000 (UTC)
-Date: Wed, 14 Sep 2022 21:29:53 +0200
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B32A110E9E0
+ for <igt-dev@lists.freedesktop.org>; Wed, 14 Sep 2022 19:54:03 +0000 (UTC)
+Date: Wed, 14 Sep 2022 21:54:04 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Message-ID: <YyIrsf/SuQWfL/NH@kamilkon-desk1>
+Message-ID: <YyIxXMm22n7QQa1X@kamilkon-desk1>
 References: <20220912181552.2224231-1-adrian.larumbe@collabora.com>
+ <20220912181552.2224231-2-adrian.larumbe@collabora.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20220912181552.2224231-1-adrian.larumbe@collabora.com>
-Subject: Re: [igt-dev] [PATCH i-g-t v6 1/2] lib/i915/i915_drm_local: Remove
- COMPUTE class engine
+In-Reply-To: <20220912181552.2224231-2-adrian.larumbe@collabora.com>
+Subject: Re: [igt-dev] [PATCH i-g-t v6 2/2] i915/gem_ctx_isolation:: change
+ semantics of ctx isolation uAPI
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,41 +21,303 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: adrian.larumbe@collabora.com, petri.latvala@intel.com
+Cc: Adrian Larumbe <adrian.larumbe@collabora.com>,
+ Petri Latvala <petri.latvala@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi,
+Hi Adrian,
 
-On 2022-09-12 at 19:15:51 +0100, Adrian Larumbe wrote:
-> Remove local compute engine definition as it was already synchronised into
-> include/drm-uapi/i915_drm.h from the kernel sources in a past commit.
+On 2022-09-12 at 19:15:52 +0100, Adrian Larumbe wrote:
+> ioctl I915_PARAM_HAS_CONTEXT_ISOLATION param is meant to report whether all
+> the engines in the system support context isolation, but the way the return
+> value was being used did not respect the contract on the uAPI.
+
+May you point (maybe in cover letter ?) to discussion on this
+topic ? From I t found, the uAPI description was long, started
+with boolean meaning, but then added that this is a bitflag.
+It is a little confusing, so the question is: is it really
+all users take it as boolean ?
+
+> 
+> Skip all engine tests for which context isolation is not supported. Also
+> skip tests that involve an engine reset if both RCS and CCS engines are
+> present in the system. This is because they belong to the same reset
+> domain.
+
+This should be another patch itself as it is only for DG2, or
+am I missing something ?
+
 > 
 > Signed-off-by: Adrian Larumbe <adrian.larumbe@collabora.com>
+> ---
+>  tests/i915/gem_ctx_isolation.c | 109 ++++++++++++++++++++++++---------
+>  1 file changed, 80 insertions(+), 29 deletions(-)
+> 
+> diff --git a/tests/i915/gem_ctx_isolation.c b/tests/i915/gem_ctx_isolation.c
+> index 95d13969fa61..36afbaf74b64 100644
+> --- a/tests/i915/gem_ctx_isolation.c
+> +++ b/tests/i915/gem_ctx_isolation.c
+> @@ -45,6 +45,7 @@ enum {
+>  	VCS2 = ENGINE(I915_ENGINE_CLASS_VIDEO, 2),
+>  	VCS3 = ENGINE(I915_ENGINE_CLASS_VIDEO, 3),
+>  	VECS0 = ENGINE(I915_ENGINE_CLASS_VIDEO_ENHANCE, 0),
+> +	CCS0 = ENGINE(I915_ENGINE_CLASS_COMPUTE, 0),
+>  };
+>  
+>  #define ALL ~0u
+> @@ -164,6 +165,8 @@ static const struct named_register {
+>  
+>  	{ "xCS_GPR", GEN9, ALL, 0x600, 32, .relative = true },
+>  
+> +	/* TODO: add CCS0 registers */
+> +
+>  	{}
+>  }, ignore_registers[] = {
+>  	{ "RCS timestamp", GEN6, ~0u, 0x2358 },
+> @@ -625,9 +628,40 @@ static void compare_regs(int fd, const struct intel_execution_engine2 *e,
+>  		     num_errors, who);
+>  }
+>  
+> +static bool
+> +engine_has_context_isolation(const struct intel_execution_engine2 *e,
+> +			     int gen)
+> +{
+> +	if (gen > 8)
+> +		return true;
+> +
+> +	if (gen >= 6 && gen <= 8 && e->class == I915_ENGINE_CLASS_RENDER)
+> +		return true;
+> +
+> +	return false;
+> +}
+> +
+> +static bool
+> +has_engine_class(const intel_ctx_cfg_t *cfg, unsigned int class)
+> +{
+> +	const struct i915_engine_class_instance *eci;
+> +	unsigned int i;
+> +
+> +	igt_require(class <= I915_ENGINE_CLASS_COMPUTE);
+> +
+> +	for (i = 0; i < cfg->num_engines; i++) {
+> +		eci = &cfg->engines[i];
+> +		if (eci->engine_class == class)
+> +			return true;
+> +	}
+> +
+> +	return false;
+> +}
+> +
+>  static void nonpriv(int fd, const intel_ctx_cfg_t *cfg,
+>  		    const struct intel_execution_engine2 *e,
+> -		    unsigned int flags)
+> +		    unsigned int flags,
+> +		    int gen)
 
-imho you can still add r-b from Petri.
+Please drop this change, use fd for obtaining gen.
+
+>  {
+>  	static const uint32_t values[] = {
+>  		0x0,
+> @@ -645,6 +679,7 @@ static void nonpriv(int fd, const intel_ctx_cfg_t *cfg,
+>  
+>  	/* Sigh -- hsw: we need cmdparser access to our own registers! */
+>  	igt_skip_on(intel_gen(intel_get_drm_devid(fd)) < 8);
+> +	igt_require(engine_has_context_isolation(e, gen));
+--------------------------------------------------- ^
+Use fd here for getting gen.
+
+>  
+>  	gem_quiescent_gpu(fd);
+>  
+> @@ -727,7 +762,8 @@ static void nonpriv(int fd, const intel_ctx_cfg_t *cfg,
+>  
+>  static void isolation(int fd, const intel_ctx_cfg_t *cfg,
+>  		      const struct intel_execution_engine2 *e,
+> -		      unsigned int flags)
+> +		      unsigned int flags,
+> +		      int gen)
+>  {
+>  	static const uint32_t values[] = {
+>  		0x0,
+> @@ -741,6 +777,8 @@ static void isolation(int fd, const intel_ctx_cfg_t *cfg,
+>  	unsigned int num_values =
+>  		flags & (DIRTY1 | DIRTY2) ? ARRAY_SIZE(values) : 1;
+>  
+> +	igt_require(engine_has_context_isolation(e, gen));
+> +
+>  	gem_quiescent_gpu(fd);
+>  
+>  	for (int v = 0; v < num_values; v++) {
+> @@ -863,7 +901,8 @@ static void inject_reset_context(int fd, const intel_ctx_cfg_t *cfg,
+>  
+>  static void preservation(int fd, const intel_ctx_cfg_t *cfg,
+>  			 const struct intel_execution_engine2 *e,
+> -			 unsigned int flags)
+> +			 unsigned int flags,
+> +			 int gen)
+>  {
+>  	static const uint32_t values[] = {
+>  		0x0,
+> @@ -880,6 +919,8 @@ static void preservation(int fd, const intel_ctx_cfg_t *cfg,
+>  	uint64_t ahnd[num_values + 1];
+>  	igt_spin_t *spin;
+>  
+> +	igt_require(engine_has_context_isolation(e, gen));
+> +
+>  	gem_quiescent_gpu(fd);
+>  
+>  	ctx[num_values] = intel_ctx_create(fd, cfg);
+> @@ -900,8 +941,19 @@ static void preservation(int fd, const intel_ctx_cfg_t *cfg,
+>  	gem_close(fd, read_regs(fd, ahnd[num_values], ctx[num_values], e, flags));
+>  	igt_spin_free(fd, spin);
+>  
+> -	if (flags & RESET)
+> +	if (flags & RESET) {
+> +		/*
+> +		 * TODO: handle this differently if CSS and RCS ever became
+> +		 * part of different reset domains
+> +		 */
+> +		igt_skip_on_f(has_engine_class(cfg, I915_ENGINE_CLASS_RENDER) &&
+> +			      has_engine_class(cfg, I915_ENGINE_CLASS_COMPUTE),
+> +			      "Both render and compute types of engines are present on the HW. \
+> +			      Skipping test because architecturally we don't make cross engine \
+> +			      isolation guarantees on those.\n");
+> +
+
+In comment you write about reset domain, yet in skip comment
+you added that there is no ctx isolation between these engine
+classes, so maybe we should skip this test also for non-reset ?
+If you want to keep it for reset as is, change message
+accordingly.
+
+>  		inject_reset_context(fd, cfg, e);
+> +	}
+>  
+>  	switch (flags & SLEEP_MASK) {
+>  	case NOSLEEP:
+> @@ -960,7 +1012,7 @@ static unsigned int __has_context_isolation(int fd)
+>  	int value = 0;
+>  
+>  	memset(&gp, 0, sizeof(gp));
+> -	gp.param = 50; /* I915_PARAM_HAS_CONTEXT_ISOLATION */
+> +	gp.param = I915_PARAM_HAS_CONTEXT_ISOLATION;
+>  	gp.value = &value;
+>  
+>  	igt_ioctl(fd, DRM_IOCTL_I915_GETPARAM, &gp);
+> @@ -969,21 +1021,19 @@ static unsigned int __has_context_isolation(int fd)
+>  	return value;
+>  }
+>  
+> -#define test_each_engine(e, i915, cfg, mask) \
+> +#define test_each_engine(e, i915, cfg) \
+>  	for_each_ctx_cfg_engine(i915, cfg, e) \
+> -		for_each_if(mask & (1 << (e)->class)) \
+> -			igt_dynamic_f("%s", (e)->name)
+> +	     igt_dynamic_f("%s", (e)->name)
+>  
+>  igt_main
+>  {
+> -	unsigned int has_context_isolation = 0;
+> +	bool has_context_isolation = 0;
+>  	const struct intel_execution_engine2 *e;
+>  	intel_ctx_cfg_t cfg;
+>  	int i915 = -1;
+> +	int gen;
+------- ^
+This should be unsigned.
 
 Regards,
 Kamil
 
-> ---
->  lib/i915/i915_drm_local.h | 2 --
->  1 file changed, 2 deletions(-)
-> 
-> diff --git a/lib/i915/i915_drm_local.h b/lib/i915/i915_drm_local.h
-> index ac35abf6af76..696e5aa05048 100644
-> --- a/lib/i915/i915_drm_local.h
-> +++ b/lib/i915/i915_drm_local.h
-> @@ -19,8 +19,6 @@ extern "C" {
->   * or local_ prefix and without any #ifndef's. Attempt should be made to
->   * clean these up when kernel uapi headers are sync'd.
->   */
-> -#define I915_ENGINE_CLASS_COMPUTE 4
-> -
->  #define DRM_I915_QUERY_GEOMETRY_SUBSLICES      6
 >  
->  /*
+>  	igt_fixture {
+> -		int gen;
+> -
+>  		i915 = drm_open_driver(DRIVER_INTEL);
+>  		igt_require_gem(i915);
+>  		igt_require(gem_has_contexts(i915));
+> @@ -993,6 +1043,7 @@ igt_main
+>  		igt_require(has_context_isolation);
+>  
+>  		gen = intel_gen(intel_get_drm_devid(i915));
+> +		igt_require(gen >= 2);
+>  
+>  		igt_warn_on_f(gen > LAST_KNOWN_GEN,
+>  			      "GEN not recognized! Test needs to be updated to run.\n");
+> @@ -1004,43 +1055,43 @@ igt_main
+>  	}
+>  
+>  	igt_subtest_with_dynamic("nonpriv") {
+> -		test_each_engine(e, i915, &cfg, has_context_isolation)
+> -			nonpriv(i915, &cfg, e, 0);
+> +		test_each_engine(e, i915, &cfg)
+> +			nonpriv(i915, &cfg, e, 0, gen);
+>  	}
+>  
+>  	igt_subtest_with_dynamic("nonpriv-switch") {
+> -		test_each_engine(e, i915, &cfg, has_context_isolation)
+> -			nonpriv(i915, &cfg, e, DIRTY2);
+> +		test_each_engine(e, i915, &cfg)
+> +			nonpriv(i915, &cfg, e, DIRTY2, gen);
+>  	}
+>  
+>  	igt_subtest_with_dynamic("clean") {
+> -		test_each_engine(e, i915, &cfg, has_context_isolation)
+> -			isolation(i915, &cfg, e, 0);
+> +		test_each_engine(e, i915, &cfg)
+> +			isolation(i915, &cfg, e, 0, gen);
+>  	}
+>  
+>  	igt_subtest_with_dynamic("dirty-create") {
+> -		test_each_engine(e, i915, &cfg, has_context_isolation)
+> -			isolation(i915, &cfg, e, DIRTY1);
+> +		test_each_engine(e, i915, &cfg)
+> +			isolation(i915, &cfg, e, DIRTY1, gen);
+>  	}
+>  
+>  	igt_subtest_with_dynamic("dirty-switch") {
+> -		test_each_engine(e, i915, &cfg, has_context_isolation)
+> -			isolation(i915, &cfg, e, DIRTY2);
+> +		test_each_engine(e, i915, &cfg)
+> +			isolation(i915, &cfg, e, DIRTY2, gen);
+>  	}
+>  
+>  	igt_subtest_with_dynamic("preservation") {
+> -		test_each_engine(e, i915, &cfg, has_context_isolation)
+> -			preservation(i915, &cfg, e, 0);
+> +		test_each_engine(e, i915, &cfg)
+> +			preservation(i915, &cfg, e, 0, gen);
+>  	}
+>  
+>  	igt_subtest_with_dynamic("preservation-S3") {
+> -		test_each_engine(e, i915, &cfg, has_context_isolation)
+> -			preservation(i915, &cfg, e, S3);
+> +		test_each_engine(e, i915, &cfg)
+> +			preservation(i915, &cfg, e, S3, gen);
+>  	}
+>  
+>  	igt_subtest_with_dynamic("preservation-S4") {
+> -		test_each_engine(e, i915, &cfg, has_context_isolation)
+> -			preservation(i915, &cfg, e, S4);
+> +		test_each_engine(e, i915, &cfg)
+> +			preservation(i915, &cfg, e, S4, gen);
+>  	}
+>  
+>  	igt_fixture {
+> @@ -1050,8 +1101,8 @@ igt_main
+>  	igt_subtest_with_dynamic("preservation-reset") {
+>  		igt_hang_t hang = igt_allow_hang(i915, 0, 0);
+>  
+> -		test_each_engine(e, i915, &cfg, has_context_isolation)
+> -			preservation(i915, &cfg, e, RESET);
+> +		test_each_engine(e, i915, &cfg)
+> +			preservation(i915, &cfg, e, RESET, gen);
+>  
+>  		igt_disallow_hang(i915, hang);
+>  	}
 > -- 
 > 2.37.0
 > 
