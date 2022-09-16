@@ -1,18 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 98CA910E48A
- for <igt-dev@lists.freedesktop.org>; Fri, 16 Sep 2022 15:00:57 +0000 (UTC)
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B977010ED60
+ for <igt-dev@lists.freedesktop.org>; Fri, 16 Sep 2022 15:01:01 +0000 (UTC)
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Fri, 16 Sep 2022 17:00:28 +0200
-Message-Id: <20220916150028.123582-5-kamil.konieczny@linux.intel.com>
-In-Reply-To: <20220916150028.123582-1-kamil.konieczny@linux.intel.com>
-References: <20220916150028.123582-1-kamil.konieczny@linux.intel.com>
+Date: Fri, 16 Sep 2022 17:00:24 +0200
+Message-Id: <20220916150028.123582-1-kamil.konieczny@linux.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 4/4] i915/gem_create: Stress creation with
- busy engines
+Subject: [igt-dev] [PATCH i-g-t 0/4] Fix spinner 48b and extend gem_create
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,115 +17,26 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Chris Wilson <chris.p.wilson@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Chris Wilson <chris.p.wilson@intel.com>
+This is patchset "Fix spinner 48b + add I915_MMAP_OFFSET_FIXED tests"
+https://patchwork.freedesktop.org/series/108022/ splitted into
+first part: changes in libs and gem_create.
+The rest will follow after this is merged.
 
-Use shortlived non-preemptible batches to demonstrate an issue with
-waiting on user controlled resources.
+Chris Wilson (4):
+  lib: Fix off-by-one-page in 48b obj.flags
+  lib/i915: Mark gem_create as handling const memory regions
+  i915/gem_create: Verify all regions return cleared objects
+  i915/gem_create: Stress creation with busy engines
 
-Signed-off-by: Chris Wilson <chris.p.wilson@intel.com>
-Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
----
- tests/i915/gem_create.c | 54 +++++++++++++++++++++++++++--------------
- 1 file changed, 36 insertions(+), 18 deletions(-)
+ lib/i915/intel_memory_region.c |   4 +-
+ lib/i915/intel_memory_region.h |   4 +-
+ lib/igt_dummyload.c            |  63 +++++++--------
+ tests/i915/gem_create.c        | 143 ++++++++++++++++++++++++---------
+ 4 files changed, 142 insertions(+), 72 deletions(-)
 
-diff --git a/tests/i915/gem_create.c b/tests/i915/gem_create.c
-index 114c1c7c..c39390f3 100644
---- a/tests/i915/gem_create.c
-+++ b/tests/i915/gem_create.c
-@@ -289,7 +289,8 @@ static void always_clear(int i915, const struct gem_memory_region *r, int timeou
- 	igt_info("Checked %'lu page allocations\n", checked);
- }
- 
--static void busy_create(int i915, const struct gem_memory_region *r, int timeout)
-+static void busy_create(int i915, const struct gem_memory_region *r, int timeout, unsigned int flags)
-+#define BUSY_HOG 0x1
- {
- 	struct intel_execution_engine2 *e;
- 	const intel_ctx_t *ctx;
-@@ -300,12 +301,14 @@ static void busy_create(int i915, const struct gem_memory_region *r, int timeout
- 	ctx = intel_ctx_create_all_physical(i915);
- 	ahnd = get_reloc_ahnd(i915, ctx->id);
- 
--	igt_fork_hang_detector(i915);
--	for_each_ctx_engine(i915, ctx, e)
--		spin[e->flags] = igt_spin_new(i915,
--					      .ahnd = ahnd,
--					      .ctx = ctx,
--					      .engine = e->flags);
-+	for_each_ctx_engine(i915, ctx, e) {
-+		spin[e->flags] =
-+			igt_spin_new(i915,
-+				     .ahnd = ahnd,
-+				     .ctx = ctx,
-+				     .engine = e->flags,
-+				     .flags = flags & BUSY_HOG ? IGT_SPIN_NO_PREEMPTION : 0);
-+	}
- 
- 	igt_until_timeout(timeout) {
- 		for_each_ctx_engine(i915, ctx, e) {
-@@ -313,12 +316,13 @@ static void busy_create(int i915, const struct gem_memory_region *r, int timeout
- 			igt_spin_t *next;
- 
- 			handle = gem_create_in_memory_region_list(i915, 4096, 0, &r->ci, 1);
--			next = igt_spin_new(i915,
--					    .ahnd = ahnd,
--					    .ctx = ctx,
--					    .engine = e->flags,
--					    .dependency = handle,
--					    .flags = IGT_SPIN_SOFTDEP);
-+			next = __igt_spin_new(i915,
-+					      .ahnd = ahnd,
-+					      .ctx = ctx,
-+					      .engine = e->flags,
-+					      .dependency = handle,
-+					      .flags = ((flags & BUSY_HOG ? IGT_SPIN_NO_PREEMPTION : 0) |
-+							IGT_SPIN_SOFTDEP));
- 			gem_close(i915, handle);
- 
- 			igt_spin_free(i915, spin[e->flags]);
-@@ -334,7 +338,6 @@ static void busy_create(int i915, const struct gem_memory_region *r, int timeout
- 	igt_info("Created %ld objects while busy\n", count);
- 
- 	gem_quiescent_gpu(i915);
--	igt_stop_hang_detector();
- }
- 
- static void size_update(int fd)
-@@ -861,11 +864,26 @@ igt_main
- 	}
- 
- 	igt_describe("Create buffer objects while GPU is busy.");
--	igt_subtest_with_dynamic("busy-create") {
--		for_each_memory_region(r, fd) {
--			igt_dynamic_f("%s", r->name)
--				busy_create(fd, r, 30);
-+	igt_subtest_group {
-+		igt_fixture
-+			igt_fork_hang_detector(fd);
-+
-+		igt_subtest_with_dynamic("busy-create") {
-+			for_each_memory_region(r, fd) {
-+				igt_dynamic_f("%s", r->name)
-+					busy_create(fd, r, 30, 0);
-+			}
- 		}
-+
-+		igt_subtest_with_dynamic("hog-create") {
-+			for_each_memory_region(r, fd) {
-+				igt_dynamic_f("%s", r->name)
-+					busy_create(fd, r, 30, BUSY_HOG);
-+			}
-+		}
-+
-+		igt_fixture
-+			igt_stop_hang_detector();
- 	}
- 
- 	igt_describe("Exercise create_ext placements extension.");
 -- 
 2.34.1
