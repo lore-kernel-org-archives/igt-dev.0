@@ -1,19 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-oa1-x2e.google.com (mail-oa1-x2e.google.com
- [IPv6:2001:4860:4864:20::2e])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 62CCD10E30E
- for <igt-dev@lists.freedesktop.org>; Sun, 18 Sep 2022 22:29:09 +0000 (UTC)
-Received: by mail-oa1-x2e.google.com with SMTP id
- 586e51a60fabf-12b542cb1d3so49815781fac.13
- for <igt-dev@lists.freedesktop.org>; Sun, 18 Sep 2022 15:29:09 -0700 (PDT)
+Received: from mail-oi1-x233.google.com (mail-oi1-x233.google.com
+ [IPv6:2607:f8b0:4864:20::233])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0D9B110E28C
+ for <igt-dev@lists.freedesktop.org>; Sun, 18 Sep 2022 22:40:40 +0000 (UTC)
+Received: by mail-oi1-x233.google.com with SMTP id u131so12615164oie.5
+ for <igt-dev@lists.freedesktop.org>; Sun, 18 Sep 2022 15:40:40 -0700 (PDT)
 From: Jake Freeland <jake@technologyfriends.net>
 To: igt-dev@lists.freedesktop.org
-Date: Sun, 18 Sep 2022 17:28:22 -0500
-Message-Id: <20220918222822.3280234-1-jfree@freebsd.org>
+Date: Sun, 18 Sep 2022 17:39:55 -0500
+Message-Id: <20220918223955.3283220-1-jfree@freebsd.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t] Replaced setpgrp() with setpgid() for
- standardization in BSD systems
+Subject: [igt-dev] [PATCH i-g-t] Replaced get_current_dir_name() with
+ getcwd() for BSD compatibility
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,25 +27,53 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 Signed-off-by: Jake Freeland <jfree@freebsd.org>
 ---
- lib/igt_aux.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ tests/tools_test.c                  | 6 +++---
+ tools/i915-perf/i915_perf_control.c | 2 +-
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/lib/igt_aux.c b/lib/igt_aux.c
-index d7e2714f..ba2d52e8 100644
---- a/lib/igt_aux.c
-+++ b/lib/igt_aux.c
-@@ -325,10 +325,10 @@ void igt_fork_signal_helper(void)
- 	 * and we send the signal at exactly the wrong time).
- 	 */
- 	signal(SIGCONT, sig_handler);
--	setpgrp(); /* define a new process group for the tests */
-+	setpgid(0, 0); /* define a new process group for the tests */
+diff --git a/tests/tools_test.c b/tests/tools_test.c
+index 89a19d11..d0684d57 100644
+--- a/tests/tools_test.c
++++ b/tests/tools_test.c
+@@ -69,7 +69,7 @@ static bool chdir_to_tools_dir(void)
+ 	char path[PATH_MAX];
+ 	char *cwd;
  
- 	igt_fork_helper(&signal_helper) {
--		setpgrp(); /* Escape from the test process group */
-+		setpgid(0, 0); /* Escape from the test process group */
+-	cwd = get_current_dir_name();
++	cwd = getcwd(NULL, 0);
+ 	igt_info("Current working directory: %s\n", cwd);
+ 	free(cwd);
  
- 		/* Pass along the test process group identifier,
- 		 * negative pid => send signal to everyone in the group.
+@@ -87,7 +87,7 @@ static bool chdir_to_tools_dir(void)
+ 		chdir(dirname(path));
+ 	}
+ 
+-	cwd = get_current_dir_name();
++	cwd = getcwd(NULL, 0);
+ 	igt_info("Current working directory: %s\n", cwd);
+ 	free(cwd);
+ 
+@@ -103,7 +103,7 @@ igt_main
+ 
+ 		igt_require_f(chdir_to_tools_dir(),
+ 			      "Unable to determine the tools directory, expecting them in $cwd/" TOOLS " or $path/" TOOLS "\n");
+-		path = get_current_dir_name();
++		path = getcwd(NULL, 0);
+ 		igt_info("Using tools from %s\n", path);
+ 		free(path);
+ 	}
+diff --git a/tools/i915-perf/i915_perf_control.c b/tools/i915-perf/i915_perf_control.c
+index be5996c0..f7db2f5c 100644
+--- a/tools/i915-perf/i915_perf_control.c
++++ b/tools/i915-perf/i915_perf_control.c
+@@ -102,7 +102,7 @@ main(int argc, char *argv[])
+ 
+ 			fwrite(data, total_len, 1, command_fifo_file);
+ 		} else {
+-			char *cwd = get_current_dir_name();
++			char *cwd = getcwd(NULL, 0);
+ 			uint32_t path_len = strlen(cwd) + 1 + strlen(dump_file) + 1;
+ 			uint32_t total_len = sizeof(struct recorder_command_base) + path_len;
+ 			struct {
 -- 
 2.37.3
