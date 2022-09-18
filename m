@@ -1,17 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-oi1-x234.google.com (mail-oi1-x234.google.com
- [IPv6:2607:f8b0:4864:20::234])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 505F310E30E
- for <igt-dev@lists.freedesktop.org>; Sun, 18 Sep 2022 22:27:38 +0000 (UTC)
-Received: by mail-oi1-x234.google.com with SMTP id r125so12583611oia.8
- for <igt-dev@lists.freedesktop.org>; Sun, 18 Sep 2022 15:27:38 -0700 (PDT)
+Received: from mail-oa1-x2e.google.com (mail-oa1-x2e.google.com
+ [IPv6:2001:4860:4864:20::2e])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 62CCD10E30E
+ for <igt-dev@lists.freedesktop.org>; Sun, 18 Sep 2022 22:29:09 +0000 (UTC)
+Received: by mail-oa1-x2e.google.com with SMTP id
+ 586e51a60fabf-12b542cb1d3so49815781fac.13
+ for <igt-dev@lists.freedesktop.org>; Sun, 18 Sep 2022 15:29:09 -0700 (PDT)
 From: Jake Freeland <jake@technologyfriends.net>
 To: igt-dev@lists.freedesktop.org
-Date: Sun, 18 Sep 2022 17:26:51 -0500
-Message-Id: <20220918222651.3279816-1-jfree@freebsd.org>
+Date: Sun, 18 Sep 2022 17:28:22 -0500
+Message-Id: <20220918222822.3280234-1-jfree@freebsd.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH] Replaced setpgrp() with setpgid() for
+Subject: [igt-dev] [PATCH i-g-t] Replaced setpgrp() with setpgid() for
  standardization in BSD systems
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
