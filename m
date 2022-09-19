@@ -1,18 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C9B7E10EABB
- for <igt-dev@lists.freedesktop.org>; Thu, 22 Sep 2022 11:09:51 +0000 (UTC)
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CD3F410E661
+ for <igt-dev@lists.freedesktop.org>; Mon, 19 Sep 2022 14:44:53 +0000 (UTC)
+From: Riana Tauro <riana.tauro@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Thu, 22 Sep 2022 13:09:18 +0200
-Message-Id: <20220922110918.16510-8-kamil.konieczny@linux.intel.com>
-In-Reply-To: <20220922110918.16510-1-kamil.konieczny@linux.intel.com>
-References: <20220922110918.16510-1-kamil.konieczny@linux.intel.com>
+Date: Mon, 19 Sep 2022 20:14:07 +0530
+Message-Id: <20220919144408.251981-8-riana.tauro@intel.com>
+In-Reply-To: <20220919144408.251981-1-riana.tauro@intel.com>
+References: <20220919144408.251981-1-riana.tauro@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 7/7] i915/gem_mmap_offset: Crudely measure
- read/write to different mmaps
+Subject: [igt-dev] [PATCH i-g-t v2 7/8] lib/igt_power: clean-up igt_power
+ library
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,115 +19,127 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Petri Latvala <petri.latvala@intel.com>,
- Chris Wilson <chris.p.wilson@intel.com>
+Cc: badal.nilawar@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Chris Wilson <chris.p.wilson@intel.com>
+Remove unused rapl functions from igt_power.
+No functional changes
 
-Compare the read/write performance of different mmap types to different
-memory regions.
-
-Signed-off-by: Chris Wilson <chris.p.wilson@intel.com>
-Acked-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-Acked-by: Petri Latvala <petri.latvala@intel.com>
+Signed-off-by: Riana Tauro <riana.tauro@intel.com>
 ---
- tests/i915/gem_mmap_offset.c | 74 ++++++++++++++++++++++++++++++++++++
- 1 file changed, 74 insertions(+)
+ lib/igt_power.c | 13 ++++++++++-
+ lib/igt_power.h | 58 -------------------------------------------------
+ 2 files changed, 12 insertions(+), 59 deletions(-)
 
-diff --git a/tests/i915/gem_mmap_offset.c b/tests/i915/gem_mmap_offset.c
-index 762eab18..7e8c02d1 100644
---- a/tests/i915/gem_mmap_offset.c
-+++ b/tests/i915/gem_mmap_offset.c
-@@ -107,6 +107,73 @@ static void make_resident(int i915, uint32_t batch, uint32_t handle)
- 		gem_close(i915, obj[1].handle);
+diff --git a/lib/igt_power.c b/lib/igt_power.c
+index 3f3633eb..3b34be40 100644
+--- a/lib/igt_power.c
++++ b/lib/igt_power.c
+@@ -53,7 +53,7 @@ static int rapl_parse(struct rapl *r, const char *str)
+ 	return 0;
  }
  
-+static void perf(int i915, const struct gem_memory_region *r)
+-int rapl_open(struct rapl *r, const char *domain)
++static int rapl_open(struct rapl *r, const char *domain)
+ {
+ 	r->fd = rapl_parse(r, domain);
+ 	if (r->fd < 0)
+@@ -72,6 +72,17 @@ err:
+ 	return r->fd;
+ }
+ 
++static inline bool rapl_read(struct rapl *r, struct power_sample *s)
 +{
-+#define MiB (1024 * 1024)
-+	const unsigned int rep = 1024;
-+	const uint64_t sz = 4096;
-+	struct timespec tv;
-+	uint32_t handle;
-+	char buf[4096];
-+
-+	/*
-+	 * Time reading/writing through each mmap type into each
-+	 * memory region to have a rough estimate of the memory
-+	 * bandwidth exposed to userspace across each link.
-+	 *
-+	 * For example, we would expect that reading and writing to
-+	 * lmem would utilise the full PCIe bandwidth (>3.2GiB/s),
-+	 * and notably be symmetric, the same in both directions.
-+	 */
-+
-+	handle = gem_create_in_memory_region_list(i915, 4096, 0, &r->ci, 1);
-+	make_resident(i915, 0, handle);
-+
-+	for_each_mmap_offset_type(i915, t) {
-+		double ns;
-+		void *ptr;
-+
-+		ptr = __mmap_offset(i915, handle, 0, sz,
-+				    PROT_READ | PROT_WRITE,
-+				    t->type);
-+		if (!ptr)
-+			continue;
-+
-+		igt_nsec_elapsed(memset(&tv, 0, sizeof(tv)));
-+		for (int i = 0; i < rep; i++)
-+			memset(ptr, 0, sz);
-+		ns = igt_nsec_elapsed(&tv);
-+		igt_info("%s: Clear    %12.2fMiB/s\n",
-+			 t->name, sz * rep * NSEC_PER_SEC / ns / MiB);
-+
-+		igt_nsec_elapsed(memset(&tv, 0, sizeof(tv)));
-+		for (int i = 0; i < rep; i++)
-+			memcpy(ptr, buf, sz);
-+		ns = igt_nsec_elapsed(&tv);
-+		igt_info("%s: Write    %12.2fMiB/s\n",
-+			 t->name, sz * rep * NSEC_PER_SEC / ns / MiB);
-+
-+		igt_nsec_elapsed(memset(&tv, 0, sizeof(tv)));
-+		for (int i = 0; i < rep; i++)
-+			memcpy(buf, ptr, sz);
-+		ns = igt_nsec_elapsed(&tv);
-+		igt_info("%s: Read     %12.2fMiB/s\n",
-+			 t->name, sz * rep * NSEC_PER_SEC / ns / MiB);
-+
-+		igt_nsec_elapsed(memset(&tv, 0, sizeof(tv)));
-+		for (int i = 0; i < rep; i++)
-+			igt_memcpy_from_wc(buf, ptr, sz);
-+		ns = igt_nsec_elapsed(&tv);
-+		igt_info("%s: movntqda %12.2fMiB/s\n",
-+			 t->name, sz * rep * NSEC_PER_SEC / ns / MiB);
-+
-+		munmap(ptr, sz);
-+	}
-+
-+	gem_close(i915, handle);
-+#undef MiB
++	return read(r->fd, s, sizeof(*s)) == sizeof(*s);
 +}
 +
- static void bad_object(int i915)
- {
- 	uint32_t real_handle;
-@@ -835,6 +902,13 @@ igt_main
- 		}
- 	}
- 
-+	igt_subtest_with_dynamic("perf") {
-+		for_each_memory_region(r, i915) {
-+			igt_dynamic_f("%s", r->name)
-+				perf(i915, r);
-+		}
-+	}
++static inline void rapl_close(struct rapl *r)
++{
++	close(r->fd);
++	r->fd = -1;
++}
 +
- 	igt_subtest_f("blt-coherency")
- 		blt_coherency(i915);
+ /**
+  * igt_power_open:
+  * @fd : device fd
+diff --git a/lib/igt_power.h b/lib/igt_power.h
+index 0984c2df..68a05300 100644
+--- a/lib/igt_power.h
++++ b/lib/igt_power.h
+@@ -44,72 +44,14 @@ struct igt_power {
+ 	int hwmon_fd;
+ };
  
+-int rapl_open(struct rapl *r, const char *domain);
+ int igt_power_open(int i915, struct igt_power *p, const char *domain);
+ void igt_power_close(struct igt_power *p);
+ 
+-static inline int cpu_power_open(struct rapl *r)
+-{
+-	return rapl_open(r, "cpu");
+-}
+-
+-static inline int gpu_power_open(struct rapl *r)
+-{
+-	return rapl_open(r, "gpu");
+-}
+-
+-static inline int pkg_power_open(struct rapl *r)
+-{
+-	return rapl_open(r, "pkg");
+-}
+-
+-static inline bool rapl_valid(struct rapl *r)
+-{
+-	return r->fd >= 0;
+-}
+-
+-static inline int ram_power_open(struct rapl *r)
+-{
+-	return rapl_open(r, "ram");
+-}
+-
+-static inline bool rapl_read(struct rapl *r, struct power_sample *s)
+-{
+-	return read(r->fd, s, sizeof(*s)) == sizeof(*s);
+-}
+-
+-static inline void rapl_close(struct rapl *r)
+-{
+-	close(r->fd);
+-	r->fd = -1;
+-}
+-
+ static inline bool igt_power_valid(struct igt_power *p)
+ {
+ 	return (p->rapl.fd >= 0) || (p->hwmon_fd >= 0);
+ }
+ 
+-static inline double power_J(const struct rapl *r,
+-			     const struct power_sample *p0,
+-			     const struct power_sample *p1)
+-{
+-	return (p1->energy - p0->energy) * r->scale;
+-}
+-
+-static inline double power_s(const struct rapl *r,
+-			     const struct power_sample *p0,
+-			     const struct power_sample *p1)
+-{
+-	return (p1->time - p0->time) * 1e-9;
+-}
+-
+-static inline double power_W(const struct rapl *r,
+-			     const struct power_sample *p0,
+-			     const struct power_sample *p1)
+-{
+-	return power_J(r, p0, p1) / power_s(r, p0, p1);
+-}
+-
+ void igt_power_get_energy(struct igt_power *p, struct power_sample *s);
+ 
+ double igt_power_get_mJ(const struct igt_power *power,
 -- 
-2.34.1
+2.25.1
