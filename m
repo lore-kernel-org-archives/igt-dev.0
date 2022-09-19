@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B3CD010E58A
- for <igt-dev@lists.freedesktop.org>; Mon, 19 Sep 2022 10:00:33 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6DAA710E58A
+ for <igt-dev@lists.freedesktop.org>; Mon, 19 Sep 2022 10:00:35 +0000 (UTC)
 From: Ananya Sharma <ananya.sharma@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Mon, 19 Sep 2022 15:24:41 +0530
-Message-Id: <20220919095442.666253-2-ananya.sharma@intel.com>
+Date: Mon, 19 Sep 2022 15:24:42 +0530
+Message-Id: <20220919095442.666253-3-ananya.sharma@intel.com>
 In-Reply-To: <20220919095442.666253-1-ananya.sharma@intel.com>
 References: <20220919095442.666253-1-ananya.sharma@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v5 1/2] tests/kms_universal_plane: Convert
- test to dynamic
+Subject: [igt-dev] [PATCH i-g-t v5 2/2] tests/kms_universal_plane: Test
+ Cleanup
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,120 +23,113 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Modified kms_universal_plane to include dynamic test cases.
+Before running the subtest we need to sanitize the system
+state to default,used igt_display_reset() to sanitize the state.
 
 Signed-off-by: Ananya Sharma <ananya.sharma@intel.com>
 ---
- tests/kms_universal_plane.c | 77 ++++++++++++++++---------------------
- 1 file changed, 33 insertions(+), 44 deletions(-)
+ tests/kms_universal_plane.c | 19 ++++++-------------
+ 1 file changed, 6 insertions(+), 13 deletions(-)
 
 diff --git a/tests/kms_universal_plane.c b/tests/kms_universal_plane.c
-index 432f56ba..104323e7 100644
+index 104323e7..a421c499 100644
 --- a/tests/kms_universal_plane.c
 +++ b/tests/kms_universal_plane.c
-@@ -752,59 +752,50 @@ pageflip_win_test_pipe(data_t *data, enum pipe pipe, igt_output_t *output)
+@@ -107,7 +107,7 @@ functional_test_fini(functional_test_t *test, igt_output_t *output)
+ 	igt_remove_fb(test->data->drm_fd, &test->red_fb);
+ 	igt_remove_fb(test->data->drm_fd, &test->yellow_fb);
+ 
+-	igt_output_set_pipe(output, PIPE_ANY);
++	igt_output_set_pipe(output, PIPE_NONE);
+ 	igt_display_commit2(&test->data->display, COMMIT_LEGACY);
  }
  
- static void
--run_tests_for_pipe(data_t *data, enum pipe pipe)
-+run_tests_for_pipe(data_t *data)
- {
- 	igt_output_t *output;
+@@ -135,8 +135,6 @@ functional_test_pipe(data_t *data, enum pipe pipe, igt_output_t *output)
+ 	int num_primary = 0, num_cursor = 0;
+ 	int i;
  
--	igt_fixture {
--		int valid_tests = 0;
-+	struct {
-+		const char *name;
-+		void (*test_t)(data_t*, enum pipe, igt_output_t*);
-+		const char *desc;
-+	} tests[] = {
-+		{ "universal-plane-functional", functional_test_pipe,
-+		  "Check the switching between different primary plane fbs with CRTC off" },
- 
--		igt_require_pipe(&data->display, pipe);
-+		{ "universal-plane-sanity", sanity_test_pipe,
-+		  "Test for scale-up or scale-down using universal plane API without CRTC" },
- 
--		for_each_valid_output_on_pipe(&data->display, pipe, output)
--			valid_tests++;
-+		{ "disable-primary-vs-flip", pageflip_test_pipe,
-+		  "Check pageflips while primary plane is disabled before IOCTL or between IOCTL"
-+		  "and pageflip execution" },
- 
--		igt_require_f(valid_tests, "no valid crtc/connector combinations found\n");
--	}
-+		{ "cursor-fb-leak", cursor_leak_test_pipe,
-+		  "Check for cursor leaks after performing cursor operations" },
- 
--	igt_describe("Check the switching between different primary plane fbs with CRTC off");
--	igt_subtest_f("universal-plane-pipe-%s-functional",
--		      kmstest_pipe_name(pipe))
--		for_each_valid_output_on_pipe(&data->display, pipe, output)
--			functional_test_pipe(data, pipe, output);
+-	igt_require_pipe(display, pipe);
 -
--	igt_describe("Test for scale-up or scale-down using universal plane API without covering CRTC");
--	igt_subtest_f("universal-plane-pipe-%s-sanity",
--		      kmstest_pipe_name(pipe))
--		for_each_valid_output_on_pipe(&data->display, pipe, output)
--			sanity_test_pipe(data, pipe, output);
--
--	igt_describe("Check pageflips while primary plane is disabled before IOCTL or between IOCTL"
--			" and pageflip execution");
--	igt_subtest_f("disable-primary-vs-flip-pipe-%s",
--		      kmstest_pipe_name(pipe))
--		for_each_valid_output_on_pipe(&data->display, pipe, output)
--			pageflip_test_pipe(data, pipe, output);
--
--	igt_describe("Check for cursor leaks after performing cursor operations");
--	igt_subtest_f("cursor-fb-leak-pipe-%s",
--		      kmstest_pipe_name(pipe))
--		for_each_valid_output_on_pipe(&data->display, pipe, output)
--			cursor_leak_test_pipe(data, pipe, output);
--
--	igt_describe("Check if pageflip succeeds in windowed setting");
--	igt_subtest_f("universal-plane-pageflip-windowed-pipe-%s",
--		      kmstest_pipe_name(pipe))
--		for_each_valid_output_on_pipe(&data->display, pipe, output)
--			pageflip_win_test_pipe(data, pipe, output);
-+		{ "universal-plane-pageflip-windowed", pageflip_win_test_pipe,
-+		  "Check if pageflip succeeds in windowed setting"},
-+	};
-+	int i;
-+	enum pipe pipe;
-+		for (i = 0; i < ARRAY_SIZE(tests); i++) {
-+			igt_describe_f("%s", tests[i].desc);
-+			igt_subtest_with_dynamic(tests[i].name) {
-+				for_each_pipe_with_single_output(&data->display, pipe, output) {
-+					igt_display_reset(&data->display);
-+					igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe),
-+						      igt_output_name(output))
-+					tests[i].test_t(data, pipe, output);
-+				}
-+			}
-+		}
+ 	igt_info("Testing connector %s using pipe %s\n", igt_output_name(output),
+ 		 kmstest_pipe_name(pipe));
+ 
+@@ -352,7 +350,7 @@ sanity_test_fini(sanity_test_t *test, igt_output_t *output)
+ 	igt_remove_fb(test->data->drm_fd, &test->undersized_fb);
+ 	igt_remove_fb(test->data->drm_fd, &test->blue_fb);
+ 
+-	igt_output_set_pipe(output, PIPE_ANY);
++	igt_output_set_pipe(output, PIPE_NONE);
+ 	igt_display_commit2(&test->data->display, COMMIT_LEGACY);
  }
  
- static data_t data;
+@@ -371,8 +369,6 @@ sanity_test_pipe(data_t *data, enum pipe pipe, igt_output_t *output)
+ 	int i;
+ 	int expect;
  
- igt_main
- {
--	enum pipe pipe;
+-	igt_require_pipe(&data->display, pipe);
 -
- 	igt_fixture {
- 		data.drm_fd = drm_open_driver_master(DRIVER_ANY);
- 		if (is_i915_device(data.drm_fd))
-@@ -816,10 +807,8 @@ igt_main
+ 	igt_output_set_pipe(output, pipe);
+ 	mode = igt_output_get_mode(output);
+ 
+@@ -469,7 +465,7 @@ pageflip_test_fini(pageflip_test_t *test, igt_output_t *output)
+ 	igt_remove_fb(test->data->drm_fd, &test->red_fb);
+ 	igt_remove_fb(test->data->drm_fd, &test->blue_fb);
+ 
+-	igt_output_set_pipe(output, PIPE_ANY);
++	igt_output_set_pipe(output, PIPE_NONE);
+ 	igt_display_commit2(&test->data->display, COMMIT_LEGACY);
+ }
+ 
+@@ -484,8 +480,6 @@ pageflip_test_pipe(data_t *data, enum pipe pipe, igt_output_t *output)
+ 	fd_set fds;
+ 	int ret = 0;
+ 
+-	igt_require_pipe(&data->display, pipe);
+-
+ 	igt_output_set_pipe(output, pipe);
+ 
+ 	pageflip_test_init(&test, output, pipe);
+@@ -551,7 +545,7 @@ cursor_leak_test_fini(data_t *data,
+ 	for (i = 0; i < 10; i++)
+ 		igt_remove_fb(data->drm_fd, &curs[i]);
+ 
+-	igt_output_set_pipe(output, PIPE_ANY);
++	igt_output_set_pipe(output, PIPE_NONE);
+ }
+ 
+ static int
+@@ -585,7 +579,6 @@ cursor_leak_test_pipe(data_t *data, enum pipe pipe, igt_output_t *output)
+ 	int r, g, b;
+ 	int count1, count2;
+ 
+-	igt_require_pipe(display, pipe);
+ 	igt_require(display->has_cursor_plane);
+ 	igt_require_intel(data->drm_fd);
+ 
+@@ -697,7 +690,7 @@ gen9_test_fini(gen9_test_t *test, igt_output_t *output)
+ 	igt_remove_fb(test->data->drm_fd, &test->smallred_fb);
+ 	igt_remove_fb(test->data->drm_fd, &test->smallblue_fb);
+ 
+-	igt_output_set_pipe(output, PIPE_ANY);
++	igt_output_set_pipe(output, PIPE_NONE);
+ 	igt_display_commit2(&test->data->display, COMMIT_LEGACY);
+ }
+ 
+@@ -714,7 +707,6 @@ pageflip_win_test_pipe(data_t *data, enum pipe pipe, igt_output_t *output)
+ 	int ret = 0;
+ 
+ 	igt_skip_on(is_i915_device(data->drm_fd) && data->display_ver < 9);
+-	igt_require_pipe(&data->display, pipe);
+ 
+ 	igt_output_set_pipe(output, pipe);
+ 
+@@ -805,6 +797,7 @@ igt_main
+ 
+ 		igt_require_pipe_crc(data.drm_fd);
  		igt_display_require(&data.display, data.drm_fd);
++		igt_display_require_output(&data.display);
  	}
  
--	for_each_pipe_static(pipe) {
--		igt_subtest_group
--			run_tests_for_pipe(&data, pipe);
--	}
-+	igt_subtest_group
-+			run_tests_for_pipe(&data);
- 
- 	igt_fixture {
- 		igt_display_fini(&data.display);
+ 	igt_subtest_group
 -- 
 2.25.1
