@@ -1,11 +1,11 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7C9F210E58A
- for <igt-dev@lists.freedesktop.org>; Mon, 19 Sep 2022 10:12:19 +0000 (UTC)
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 58B1C10E5F9
+ for <igt-dev@lists.freedesktop.org>; Mon, 19 Sep 2022 10:32:45 +0000 (UTC)
 From: Ananya Sharma <ananya.sharma@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Mon, 19 Sep 2022 15:36:23 +0530
-Message-Id: <20220919100623.667060-1-ananya.sharma@intel.com>
+Date: Mon, 19 Sep 2022 15:56:54 +0530
+Message-Id: <20220919102654.667916-1-ananya.sharma@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Subject: [igt-dev] [PATCH i-g-t] tests/kms_dp_aux_dev: Convert test to
@@ -21,7 +21,7 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Modified kms_universal_plane to include dynamic test cases.
+Modified kms_dp_aux_dev to include dynamic test cases.
 
 Signed-off-by: Ananya Sharma <ananya.sharma@intel.com>
 ---
