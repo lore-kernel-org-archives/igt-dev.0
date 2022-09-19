@@ -1,18 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B4F8610E066
- for <igt-dev@lists.freedesktop.org>; Mon, 19 Sep 2022 14:44:28 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 79A9D10E663
+ for <igt-dev@lists.freedesktop.org>; Mon, 19 Sep 2022 14:44:51 +0000 (UTC)
 From: Riana Tauro <riana.tauro@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Mon, 19 Sep 2022 20:14:01 +0530
-Message-Id: <20220919144408.251981-2-riana.tauro@intel.com>
+Date: Mon, 19 Sep 2022 20:14:05 +0530
+Message-Id: <20220919144408.251981-6-riana.tauro@intel.com>
 In-Reply-To: <20220919144408.251981-1-riana.tauro@intel.com>
 References: <20220919144408.251981-1-riana.tauro@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v2 1/8] lib/igt_hwmon: Introduce library
- igt_hwmon
+Subject: [igt-dev] [PATCH i-g-t v2 5/8] i915/gem_exec_schedule: Add energy
+ support for dgfx
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,126 +24,101 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-igt_hwmon exposes methods to open hwmon directories identified by name
+igt_power library reads energy using hwmon interface for dgfx and
+rapl otherwise. Modify semaphore-power test to use igt_power interface.
 
 Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
 Signed-off-by: Riana Tauro <riana.tauro@intel.com>
 ---
- lib/igt_hwmon.c | 73 +++++++++++++++++++++++++++++++++++++++++++++++++
- lib/igt_hwmon.h | 12 ++++++++
- lib/meson.build |  1 +
- 3 files changed, 86 insertions(+)
- create mode 100644 lib/igt_hwmon.c
- create mode 100644 lib/igt_hwmon.h
+ tests/i915/gem_exec_schedule.c | 49 +++++++++++++++++-----------------
+ 1 file changed, 24 insertions(+), 25 deletions(-)
 
-diff --git a/lib/igt_hwmon.c b/lib/igt_hwmon.c
-new file mode 100644
-index 00000000..1e4dab1b
---- /dev/null
-+++ b/lib/igt_hwmon.c
-@@ -0,0 +1,73 @@
-+/*
-+ * Copyright © 2022 Intel Corporation
-+ */
-+#include <sys/stat.h>
-+#include <sys/sysmacros.h>
-+#include <dirent.h>
-+#include <fcntl.h>
-+#include <inttypes.h>
-+#include <unistd.h>
-+
-+#include "drmtest.h"
-+#include "igt_core.h"
-+#include "igt_hwmon.h"
-+#include "igt_sysfs.h"
-+
-+static char *igt_hwmon_path(int device, char *path, const char *name)
-+{
-+	char buf[80];
-+	int path_offset;
-+	struct dirent *entry;
-+	struct stat st;
-+	DIR *dir;
-+
-+	if (igt_debug_on(device < 0))
-+		return NULL;
-+
-+	if (igt_debug_on(fstat(device, &st)) || igt_debug_on(!S_ISCHR(st.st_mode)))
-+		return NULL;
-+
-+	path_offset = snprintf(path, PATH_MAX, "/sys/dev/char/%d:%d/device/hwmon",
-+			       major(st.st_rdev), minor(st.st_rdev));
-+
-+	dir = opendir(path);
-+	if (!dir)
-+		return NULL;
-+
-+	while ((entry = readdir(dir))) {
-+		if (entry->d_name[0] == '.')
-+			continue;
-+
-+		snprintf(path + path_offset, PATH_MAX - path_offset, "/%s/name", entry->d_name);
-+		igt_sysfs_scanf(dirfd(dir), path, "%s", buf);
-+
-+		if (strncmp(buf, name, strlen(name)) == 0) {
-+			snprintf(path + path_offset, PATH_MAX - path_offset, "/%s", entry->d_name);
-+			closedir(dir);
-+			return path;
-+		}
-+	}
-+
-+	closedir(dir);
-+	return NULL;
-+}
-+
-+/**
-+ * igt_hwmon_open:
-+ * @device: fd of the device
-+ *
-+ * Opens the hwmon directory corresponding to device
-+ *
-+ * Returns:
-+ * The directory fd, or -1 on failure.
-+ */
-+int igt_hwmon_open(int device)
-+{
-+	char path[PATH_MAX];
-+
-+	if (!is_i915_device(device) || !igt_hwmon_path(device, path, "i915"))
-+		return -1;
-+
-+	return open(path, O_RDONLY);
-+}
-+
-diff --git a/lib/igt_hwmon.h b/lib/igt_hwmon.h
-new file mode 100644
-index 00000000..aa418fdc
---- /dev/null
-+++ b/lib/igt_hwmon.h
-@@ -0,0 +1,12 @@
-+/*
-+ * Copyright © 2022 Intel Corporation
-+ */
-+
-+#ifndef IGT_HWMON_H
-+#define IGT_HWMON_H
-+
-+#include <stdbool.h>
-+
-+int igt_hwmon_open(int device);
-+
-+#endif /* IGT_HWMON_H */
-diff --git a/lib/meson.build b/lib/meson.build
-index 548835b5..31894c7e 100644
---- a/lib/meson.build
-+++ b/lib/meson.build
-@@ -24,6 +24,7 @@ lib_sources = [
- 	'igt_aux.c',
- 	'igt_gt.c',
- 	'igt_halffloat.c',
-+	'igt_hwmon.c',
- 	'igt_io.c',
- 	'igt_matrix.c',
- 	'igt_os.c',
+diff --git a/tests/i915/gem_exec_schedule.c b/tests/i915/gem_exec_schedule.c
+index 4693894f..58b118c7 100644
+--- a/tests/i915/gem_exec_schedule.c
++++ b/tests/i915/gem_exec_schedule.c
+@@ -2844,11 +2844,11 @@ static void test_pi_iova(int i915, const intel_ctx_cfg_t *cfg,
+ static void measure_semaphore_power(int i915, const intel_ctx_t *ctx)
+ {
+ 	const struct intel_execution_engine2 *signaler, *e;
+-	struct rapl gpu, pkg;
++	struct igt_power gpu, pkg;
+ 	uint64_t ahnd = get_simple_l2h_ahnd(i915, ctx->id);
+ 
+-	igt_require(gpu_power_open(&gpu) == 0);
+-	pkg_power_open(&pkg);
++	igt_require(igt_power_open(i915, &gpu, "gpu") == 0);
++	igt_power_open(i915, &pkg, "pkg");
+ 
+ 	for_each_ctx_engine(i915, ctx, signaler) {
+ 		struct {
+@@ -2870,11 +2870,11 @@ static void measure_semaphore_power(int i915, const intel_ctx_t *ctx)
+ 		gem_wait(i915, spin->handle, &jiffie); /* waitboost */
+ 		igt_spin_busywait_until_started(spin);
+ 
+-		rapl_read(&pkg, &s_spin[0].pkg);
+-		rapl_read(&gpu, &s_spin[0].gpu);
++		igt_power_get_energy(&pkg, &s_spin[0].pkg);
++		igt_power_get_energy(&gpu, &s_spin[0].gpu);
+ 		usleep(100*1000);
+-		rapl_read(&gpu, &s_spin[1].gpu);
+-		rapl_read(&pkg, &s_spin[1].pkg);
++		igt_power_get_energy(&gpu, &s_spin[1].gpu);
++		igt_power_get_energy(&pkg, &s_spin[1].pkg);
+ 
+ 		/* Add a waiter to each engine */
+ 		i = 0;
+@@ -2905,34 +2905,33 @@ static void measure_semaphore_power(int i915, const intel_ctx_t *ctx)
+ 				igt_spin_free(i915, sema[i]);
+ 		usleep(10); /* just give the tasklets a chance to run */
+ 
+-		rapl_read(&pkg, &s_sema[0].pkg);
+-		rapl_read(&gpu, &s_sema[0].gpu);
++		igt_power_get_energy(&pkg, &s_sema[0].pkg);
++		igt_power_get_energy(&gpu, &s_sema[0].gpu);
+ 		usleep(100*1000);
+-		rapl_read(&gpu, &s_sema[1].gpu);
+-		rapl_read(&pkg, &s_sema[1].pkg);
++		igt_power_get_energy(&gpu, &s_sema[1].gpu);
++		igt_power_get_energy(&pkg, &s_sema[1].pkg);
+ 
+ 		igt_spin_free(i915, spin);
+ 
+-		baseline = power_W(&gpu, &s_spin[0].gpu, &s_spin[1].gpu);
+-		total = power_W(&gpu, &s_sema[0].gpu, &s_sema[1].gpu);
++		baseline = igt_power_get_mW(&gpu, &s_spin[0].gpu, &s_spin[1].gpu);
++		total = igt_power_get_mW(&gpu, &s_sema[0].gpu, &s_sema[1].gpu);
+ 		igt_info("%s: %.1fmW + %.1fmW (total %1.fmW)\n",
+ 			 signaler->name,
+-			 1e3 * baseline,
+-			 1e3 * (total - baseline),
+-			 1e3 * total);
++			 baseline,
++			 (total - baseline),
++			 total);
+ 
+-		if (rapl_valid(&pkg)) {
+-			baseline = power_W(&pkg, &s_spin[0].pkg, &s_spin[1].pkg);
+-			total = power_W(&pkg, &s_sema[0].pkg, &s_sema[1].pkg);
++		if (igt_power_valid(&pkg)) {
++			baseline = igt_power_get_mW(&pkg, &s_spin[0].pkg, &s_spin[1].pkg);
++			total = igt_power_get_mW(&pkg, &s_sema[0].pkg, &s_sema[1].pkg);
+ 			igt_info("pkg: %.1fmW + %.1fmW (total %1.fmW)\n",
+-				 1e3 * baseline,
+-				 1e3 * (total - baseline),
+-				 1e3 * total);
++				 baseline,
++				 (total - baseline),
++				 total);
+ 		}
+ 	}
+-
+-	rapl_close(&gpu);
+-	rapl_close(&pkg);
++	igt_power_close(&gpu);
++	igt_power_close(&pkg);
+ 	put_ahnd(ahnd);
+ }
+ 
 -- 
 2.25.1
