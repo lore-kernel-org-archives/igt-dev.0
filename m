@@ -1,16 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Date: Tue, 20 Sep 2022 11:18:25 +0300
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6584510E3DD
+ for <igt-dev@lists.freedesktop.org>; Tue, 20 Sep 2022 08:22:28 +0000 (UTC)
+Date: Tue, 20 Sep 2022 11:21:47 +0300
 From: Petri Latvala <petri.latvala@intel.com>
-To: Isabella Basso <isabbasso@riseup.net>
-Message-ID: <Yyl3UXvLd3Jyr9uP@platvala-desk.ger.corp.intel.com>
-References: <20220829000920.38185-1-isabbasso@riseup.net>
- <20220829000920.38185-5-isabbasso@riseup.net>
+To: Jeevan B <jeevan.b@intel.com>
+Message-ID: <Yyl4G2AaYmIW3Y6/@platvala-desk.ger.corp.intel.com>
+References: <20220920075737.7187-1-jeevan.b@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20220829000920.38185-5-isabbasso@riseup.net>
-Subject: Re: [igt-dev] [PATCH i-g-t v2 4/4] tests: DRM selftests: switch to
- KUnit
+In-Reply-To: <20220920075737.7187-1-jeevan.b@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t v3] kms_flip_event_leak: Create dynamic
+ subtests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,104 +20,87 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: twoerner@gmail.com, linux-kselftest@vger.kernel.org,
- magalilemes00@gmail.com, maira.canal@usp.br, dlatypov@google.com,
- tales.aparecida@gmail.com, brendanhiggins@google.com,
- linux-kernel@vger.kernel.org, leandro.ribeiro@collabora.com,
- igt-dev@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
- daniel@ffwll.ch, n@nfraprado.net, davidgow@google.com,
- skhan@linuxfoundation.org, andrealmeid@riseup.net, kunit-dev@googlegroups.com
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Sun, Aug 28, 2022 at 09:09:20PM -0300, Isabella Basso wrote:
-> As the DRM selftests are now using KUnit [1], update IGT tests as well.
+On Tue, Sep 20, 2022 at 01:27:37PM +0530, Jeevan B wrote:
+> Converting the existing subtests to dynamic subtests.
 > 
-> [1] - https://lore.kernel.org/all/20220708203052.236290-1-maira.canal@usp.br/
+> v2: Add igt_dispaly_require_output and igt_display_reset and update the
+> test name. (Bhanu)
 > 
-> Signed-off-by: Isabella Basso <isabbasso@riseup.net>
+> Signed-off-by: Jeevan B <jeevan.b@intel.com>
+> Reviewed-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 > ---
->  tests/drm_buddy.c    |  7 ++++---
->  tests/drm_mm.c       |  7 ++++---
->  tests/kms_selftest.c | 12 +++++++++---
->  3 files changed, 17 insertions(+), 9 deletions(-)
+>  tests/kms_flip_event_leak.c | 29 ++++++++++++++++++-----------
+>  1 file changed, 18 insertions(+), 11 deletions(-)
 > 
-> diff --git a/tests/drm_buddy.c b/tests/drm_buddy.c
-> index 06876e0c..74c06dce 100644
-> --- a/tests/drm_buddy.c
-> +++ b/tests/drm_buddy.c
-> @@ -6,9 +6,10 @@
->  #include "igt.h"
->  #include "igt_kmod.h"
+> diff --git a/tests/kms_flip_event_leak.c b/tests/kms_flip_event_leak.c
+> index ac201293..99b1e345 100644
+> --- a/tests/kms_flip_event_leak.c
+> +++ b/tests/kms_flip_event_leak.c
+> @@ -48,6 +48,7 @@ static void test(data_t *data, enum pipe pipe, igt_output_t *output)
+>  	struct igt_fb fb[2];
+>  	int fd, ret;
 >  
-> -IGT_TEST_DESCRIPTION("Basic sanity check of DRM's buddy allocator (struct drm_buddy)");
-> +IGT_TEST_DESCRIPTION("Basic sanity check of DRM's buddy allocator (struct \
-> +		      drm_buddy) using KUnit");
+> +	igt_display_reset(&data->display);
+>  	/* select the pipe we want to use */
+>  	igt_output_set_pipe(output, pipe);
 >  
-> -igt_main
-> +igt_simple_main
->  {
-> -	igt_kselftests("test-drm_buddy", NULL, NULL, NULL);
-> +	igt_kunit("drm_buddy_test", NULL);
+> @@ -89,24 +90,30 @@ static void test(data_t *data, enum pipe pipe, igt_output_t *output)
+>  	igt_remove_fb(data->drm_fd, &fb[0]);
 >  }
+>  
+> -igt_simple_main
+> +igt_main
+>  {
+>  	data_t data = {};
+>  	igt_output_t *output;
+> -	int valid_tests = 0;
+>  	enum pipe pipe;
+>  
+> -	data.drm_fd = drm_open_driver_master(DRIVER_ANY);
+> -	kmstest_set_vt_graphics_mode();
+> +	igt_fixture {
+> +		data.drm_fd = drm_open_driver_master(DRIVER_ANY);
+> +		kmstest_set_vt_graphics_mode();
+>  
+> -	igt_display_require(&data.display, data.drm_fd);
+> -
+> -	for_each_pipe_with_valid_output(&data.display, pipe, output) {
+> -		test(&data, pipe, output);
+> -		valid_tests++;
+> +		igt_display_require(&data.display, data.drm_fd);
+> +		igt_display_require_output(&data.display);
+>  	}
+>  
+> -	igt_require_f(valid_tests, "no valid crtc/connector combinations found\n");
+>  
+> -	igt_display_fini(&data.display);
+> +	igt_subtest_with_dynamic("kms_flip_event_leak_basic") {
 
-With kselftests we had the ability to only run a specified set of
-tests, and with or without selection, we had sub-results for each
-through dynamic subtests. Does kunit have that possibility? I mean I
-know kunit itself does but what about igt_kunit()?
-
-Orthogonal to that question, drm_mm and test-drm_modeset are _now_
-using kunit but in LTS kernels they're not, and we'd like to be able
-to keep testing those. That means having both launchers here and just
-letting the "incorrect" one produce a 'skip'.
+This ends up being
+igt@kms_flip_event_leak@kms_flip_event_leak_basic. Just call this
+subtest "basic", don't repeat.
 
 
 -- 
 Petri Latvala
 
 
-> diff --git a/tests/drm_mm.c b/tests/drm_mm.c
-> index 2052b115..75fc6682 100644
-> --- a/tests/drm_mm.c
-> +++ b/tests/drm_mm.c
-> @@ -24,9 +24,10 @@
->  #include "igt.h"
->  #include "igt_kmod.h"
->  
-> -IGT_TEST_DESCRIPTION("Basic sanity check of DRM's range manager (struct drm_mm)");
-> +IGT_TEST_DESCRIPTION("Basic sanity check of DRM's range manager (struct drm_mm)\
-> +		     using KUnit");
->  
-> -igt_main
-> +igt_simple_main
->  {
-> -	igt_kselftests("test-drm_mm", NULL, NULL, NULL);
-> +	igt_kunit("drm_mm_test", NULL);
->  }
-> diff --git a/tests/kms_selftest.c b/tests/kms_selftest.c
-> index abc4bfe9..bbf24c2b 100644
-> --- a/tests/kms_selftest.c
-> +++ b/tests/kms_selftest.c
-> @@ -24,9 +24,15 @@
->  #include "igt.h"
->  #include "igt_kmod.h"
->  
-> -IGT_TEST_DESCRIPTION("Basic sanity check of KMS selftests.");
-> +IGT_TEST_DESCRIPTION("Basic sanity check of KMS selftests using KUnit");
->  
-> -igt_main
-> +igt_simple_main
->  {
-> -	igt_kselftests("test-drm_modeset", NULL, NULL, NULL);
-> +	igt_kunit("drm_cmdline_parser_test", NULL);
-> +	igt_kunit("drm_damage_helper_test", NULL);
-> +	igt_kunit("drm_dp_mst_helper_test", NULL);
-> +	igt_kunit("drm_format_helper_test", NULL);
-> +	igt_kunit("drm_format_test", NULL);
-> +	igt_kunit("drm_framebuffer_test", NULL);
-> +	igt_kunit("drm_plane_helper_test", NULL);
+> +		for_each_pipe_with_valid_output(&data.display, pipe, output) {
+> +			igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), igt_output_name(output)) {
+> +				test(&data, pipe, output);
+> +			}
+> +		}
+> +	}
+> +
+> +	igt_fixture {
+> +		igt_display_fini(&data.display);
+> +	}
 >  }
 > -- 
-> 2.37.2
+> 2.36.0
 > 
