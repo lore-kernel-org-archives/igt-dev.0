@@ -1,15 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B458F10E6BA
- for <igt-dev@lists.freedesktop.org>; Tue, 20 Sep 2022 13:15:51 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B624510E6BB
+ for <igt-dev@lists.freedesktop.org>; Tue, 20 Sep 2022 13:15:54 +0000 (UTC)
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 20 Sep 2022 15:15:38 +0200
-Message-Id: <20220920131546.34879-1-kamil.konieczny@linux.intel.com>
+Date: Tue, 20 Sep 2022 15:15:39 +0200
+Message-Id: <20220920131546.34879-2-kamil.konieczny@linux.intel.com>
+In-Reply-To: <20220920131546.34879-1-kamil.konieczny@linux.intel.com>
+References: <20220920131546.34879-1-kamil.konieczny@linux.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 0/8] add I915_MMAP_OFFSET_FIXED tests
+Subject: [igt-dev] [PATCH i-g-t 1/8] i915/gem_mmap_offset: Avoid set_domain
+ when I915_MMAP_OFFSET_FIXED is used
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,30 +20,58 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: Chris Wilson <chris.p.wilson@linux.intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-This is second and last part of patchset
-"Fix spinner 48b + add I915_MMAP_OFFSET_FIXED tests"
-https://patchwork.freedesktop.org/series/108022/
+From: Chris Wilson <chris.p.wilson@linux.intel.com>
 
-changes in gem_mmap_offset (patches 005-012).
+When OFFSET_FIXED mapping is in use avoid to set domain at all.
 
-Chris Wilson (8):
-  i915/gem_mmap_offset: Avoid set_domain when I915_MMAP_OFFSET_FIXED is
-    used
-  i915/gem_mmap_offset: Verify all regions return clear mmaps on
-    creation
-  i915/gem_mmap_offset: Verify all regions with ptrace
-  i915/gem_mmap_offset: Verify all regions remain in isolation
-  i915/gem_mmap_offset: Verify all regions have nonblocking pagefaults
-  i915/gem_mmap_offset: Check all mmap types reject invalid objects
-  i915/gem_mmap_offset: Exercise close race against all types/regions
-  i915/gem_mmap_offset: Crudely measure read/write to different mmaps
+Signed-off-by: Chris Wilson <chris.p.wilson@linux.intel.com>
+Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+---
+ tests/i915/gem_mmap_offset.c | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
- tests/i915/gem_mmap_offset.c | 453 ++++++++++++++++++++++++-----------
- 1 file changed, 307 insertions(+), 146 deletions(-)
-
+diff --git a/tests/i915/gem_mmap_offset.c b/tests/i915/gem_mmap_offset.c
+index 5e6b19eb..edbc637a 100644
+--- a/tests/i915/gem_mmap_offset.c
++++ b/tests/i915/gem_mmap_offset.c
+@@ -148,7 +148,8 @@ static void basic_uaf(int i915)
+ 		}
+ 
+ 		expected = calloc(obj_size, sizeof(*expected));
+-		gem_set_domain(i915, handle, t->domain, 0);
++		if (t->domain)
++			gem_set_domain(i915, handle, t->domain, 0);
+ 		igt_assert_f(memcmp(addr, expected, obj_size) == 0,
+ 			     "mmap(%s) not clear on gem_create()\n",
+ 			     t->name);
+@@ -157,15 +158,18 @@ static void basic_uaf(int i915)
+ 		buf = calloc(obj_size, sizeof(*buf));
+ 		memset(buf + 1024, 0x01, 1024);
+ 		gem_write(i915, handle, 0, buf, obj_size);
+-		gem_set_domain(i915, handle, t->domain, 0);
++		if (t->domain)
++			gem_set_domain(i915, handle, t->domain, 0);
+ 		igt_assert_f(memcmp(buf, addr, obj_size) == 0,
+ 			     "mmap(%s) not coherent with gem_write()\n",
+ 			     t->name);
+ 
+-		gem_set_domain(i915, handle, t->domain, t->domain);
++		if (t->domain)
++			gem_set_domain(i915, handle, t->domain, t->domain);
+ 		memset(addr + 2048, 0xff, 1024);
+ 		gem_read(i915, handle, 0, buf, obj_size);
+-		gem_set_domain(i915, handle, t->domain, 0);
++		if (t->domain)
++			gem_set_domain(i915, handle, t->domain, 0);
+ 		igt_assert_f(memcmp(buf, addr, obj_size) == 0,
+ 			     "mmap(%s) not coherent with gem_read()\n",
+ 			     t->name);
 -- 
 2.34.1
