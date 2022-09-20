@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Date: Tue, 20 Sep 2022 07:06:30 +0200
+Date: Tue, 20 Sep 2022 07:10:21 +0200
 From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
 To: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-Message-ID: <20220920070630.1f34dd9c@maurocar-mobl2>
-In-Reply-To: <20220913120441.146757-3-janusz.krzysztofik@linux.intel.com>
+Message-ID: <20220920071021.5e60f9ea@maurocar-mobl2>
+In-Reply-To: <20220913120441.146757-5-janusz.krzysztofik@linux.intel.com>
 References: <20220913120441.146757-1-janusz.krzysztofik@linux.intel.com>
- <20220913120441.146757-3-janusz.krzysztofik@linux.intel.com>
+ <20220913120441.146757-5-janusz.krzysztofik@linux.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-Subject: Re: [igt-dev] [PATCH i-g-t 2/4] tests/core_hotunplug: Also unload
- audio before device unplug
+Subject: Re: [igt-dev] [PATCH i-g-t 4/4] tests/core_hotunplug: Select health
+ checks for initially detected chipset
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,65 +24,44 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Tue, 13 Sep 2022 14:04:39 +0200
+On Tue, 13 Sep 2022 14:04:41 +0200
 Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com> wrote:
 
-> Starting from commit e9c69e02b2f7 ("tests/core_hotunplug: Unload snd
-> driver before i915 unbind") that replaced a former conservative workaround
-> with a more liberal one but also moved it out of initial igt_fixture
-> section to driver_unbind(), *plug* subtests (still blockisted in CI) can
-> suffer from issues related to an audio driver using i915 hardware.  Fix it
-> by adding a copy of the workaround in its current shape also to
-> device_unplug() / bus_rescan() pair of functions.
+> As soon as we first time open a drm device to be exercised, we identify
+> its chipset, store that information, and perform some basic device
+> specific checks.  We also store a filter that matches the device bus
+> address to make sure we will exercise still one and the same device after
+> each driver unbind-rebind / device unplug-rediscover operation.
+> 
+> However, each time before we select device specific health checks, whether
+> before or after a driver unbind-rebind / device unplug-rediscover
+> operation, we identify the device chipset again.  Besides being more
+> expensive, that approach could also result in using different set of
+> health checks should device filters not work as expected.
+> 
+> Always use the stored chipset type instead of identifying it now and
+> again.
 > 
 > Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
 
-LGTM.
+Makes sense to me, once we have patch 3/4 applied. So,
 
 Reviewed-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 
-
 > ---
->  tests/core_hotunplug.c | 22 ++++++++++++++++++++++
->  1 file changed, 22 insertions(+)
+>  tests/core_hotunplug.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
 > diff --git a/tests/core_hotunplug.c b/tests/core_hotunplug.c
-> index 733ea8efb0..c3756889c2 100644
+> index 29cb26ab12..7c7ed09e63 100644
 > --- a/tests/core_hotunplug.c
 > +++ b/tests/core_hotunplug.c
-> @@ -198,6 +198,21 @@ static void device_unplug(struct hotunplug *priv, const char *prefix,
->  {
->  	igt_require(priv->fd.sysfs_dev == -1);
+> @@ -400,7 +400,7 @@ static void node_healthcheck(struct hotunplug *priv, unsigned flags)
+>  	if (closed)	/* store fd for cleanup if not dirty */
+>  		priv->fd.drm_hc = fd_drm;
 >  
-> +	/*
-> +	 * FIXME: on some devices, the audio driver (snd_hda_intel)
-> +	 * binds into the i915 driver. On such hardware, kernel warnings
-> +	 * and errors may happen if i915 is unbind/removed before removing
-> +	 * first the audio driver.
-> +	 * So, add a logic that unloads the audio driver before trying to
-> +	 * unbind i915 driver, reloading it when binding again.
-> +	 */
-> +	if (igt_audio_driver_unload(&priv->snd_driver)) {
-> +		igt_skip("Audio driver %s in use, skipping test\n",
-> +			 priv->snd_driver);
-> +	} else if (priv->snd_driver) {
-> +		igt_info("Unloaded audio driver %s\n", priv->snd_driver);
-> +	}
-> +
->  	priv->fd.sysfs_dev = openat(priv->fd.sysfs_bus, priv->dev_bus_addr,
->  				    O_DIRECTORY);
->  	igt_assert_fd(priv->fd.sysfs_dev);
-> @@ -231,6 +246,13 @@ static void bus_rescan(struct hotunplug *priv, int timeout)
->  	igt_fail_on_f(faccessat(priv->fd.sysfs_bus, priv->dev_bus_addr,
->  				F_OK, 0),
->  		      "Fakely unplugged device not rediscovered (%s)!\n", priv->dev_bus_addr);
-> +
-> +	if (priv->snd_driver) {
-> +		igt_info("Realoading %s\n", priv->snd_driver);
-> +		igt_kmod_load(priv->snd_driver, NULL);
-> +		free(priv->snd_driver);
-> +		priv->snd_driver = NULL;
-> +	}
->  }
->  
->  static void cleanup(struct hotunplug *priv)
+> -	if (is_i915_device(fd_drm)) {
+> +	if (priv->chipset == DRIVER_INTEL) {
+>  		/* don't report library failed asserts as healthcheck failure */
+>  		priv->failure = "Unrecoverable test failure";
+>  		if (local_i915_healthcheck(fd_drm, "") &&
