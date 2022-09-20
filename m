@@ -1,18 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 302AA891C0
- for <igt-dev@lists.freedesktop.org>; Tue, 20 Sep 2022 13:06:08 +0000 (UTC)
-Date: Tue, 20 Sep 2022 16:04:35 +0300
-From: Petri Latvala <petri.latvala@intel.com>
-To: Stanislav Lisovskiy <stanislav.lisovskiy@intel.com>
-Message-ID: <Yym6YxVf671RyKr3@platvala-desk.ger.corp.intel.com>
-References: <20220912054131.18482-1-stanislav.lisovskiy@intel.com>
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B458F10E6BA
+ for <igt-dev@lists.freedesktop.org>; Tue, 20 Sep 2022 13:15:51 +0000 (UTC)
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Tue, 20 Sep 2022 15:15:38 +0200
+Message-Id: <20220920131546.34879-1-kamil.konieczny@linux.intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220912054131.18482-1-stanislav.lisovskiy@intel.com>
-Subject: Re: [igt-dev] [PATCH] tests/i915/i915_pipe_stress: Add plane pipes
- stress test
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t 0/8] add I915_MMAP_OFFSET_FIXED tests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,51 +17,30 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Mon, Sep 12, 2022 at 08:41:31AM +0300, Stanislav Lisovskiy wrote:
-> This test attempts to utilize all connected
-> outputs at the same time, using maximum possible
-> resolution and amount of planes, to check whether
-> we are hiting any kind of bandwidth, watermark or
-> other limitations.
-> 
-> v2: Use igt_skip_on to skip unsupported formats in
->     fixture properly.
-> 
-> v3: - Changed to SPDX license
->     - Removed execution engine usage, which seems to
->       be not needed yet here
->     - Fixed some obvious things found, like missing
->       dot and new line after declarations
->     - Added igt_skip_on to igt_fixture to properly
->       skip formats/modifiers, not supported on
->       current platform.
-> 
-> v4: - Added mutex, as gpu_fill seems to cause some
->       crashes if run from multiple threads.
->     - Some additional info addedy
-> 
-> v5: - Removed igt_require_f as it is being called from
->       non-main thread(Petri Latvala)
-> 
-> v6: - Added igt_assert for fill_fn
->     - Don't do gpu fill for gens < 8, as there are seem
->       to be some issues, when it is done from multiple
->       threads.
-> 
-> v7: - Apparently need to exclude ApolloLake as well.
->       Anyways we are not much interested in stress-testing
->       those.
-> 
-> Signed-off-by: Stanislav Lisovskiy <stanislav.lisovskiy@intel.com>
+This is second and last part of patchset
+"Fix spinner 48b + add I915_MMAP_OFFSET_FIXED tests"
+https://patchwork.freedesktop.org/series/108022/
 
+changes in gem_mmap_offset (patches 005-012).
 
-Recap of what we discussed about this offline is:
-Acked-by: Petri Latvala <petri.latvala@intel.com>
+Chris Wilson (8):
+  i915/gem_mmap_offset: Avoid set_domain when I915_MMAP_OFFSET_FIXED is
+    used
+  i915/gem_mmap_offset: Verify all regions return clear mmaps on
+    creation
+  i915/gem_mmap_offset: Verify all regions with ptrace
+  i915/gem_mmap_offset: Verify all regions remain in isolation
+  i915/gem_mmap_offset: Verify all regions have nonblocking pagefaults
+  i915/gem_mmap_offset: Check all mmap types reject invalid objects
+  i915/gem_mmap_offset: Exercise close race against all types/regions
+  i915/gem_mmap_offset: Crudely measure read/write to different mmaps
 
-But someone with more kms experience could be useful for having a
-sanity checking look over this.
+ tests/i915/gem_mmap_offset.c | 453 ++++++++++++++++++++++++-----------
+ 1 file changed, 307 insertions(+), 146 deletions(-)
+
+-- 
+2.34.1
