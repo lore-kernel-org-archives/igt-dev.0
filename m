@@ -1,18 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0D18A10E6BB
- for <igt-dev@lists.freedesktop.org>; Tue, 20 Sep 2022 13:15:58 +0000 (UTC)
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Tue, 20 Sep 2022 15:15:40 +0200
-Message-Id: <20220920131546.34879-3-kamil.konieczny@linux.intel.com>
-In-Reply-To: <20220920131546.34879-1-kamil.konieczny@linux.intel.com>
-References: <20220920131546.34879-1-kamil.konieczny@linux.intel.com>
+Date: Tue, 20 Sep 2022 07:23:41 +0200
+From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
+To: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+Message-ID: <20220920072341.57c0433b@maurocar-mobl2>
+In-Reply-To: <20220913120441.146757-4-janusz.krzysztofik@linux.intel.com>
+References: <20220913120441.146757-1-janusz.krzysztofik@linux.intel.com>
+ <20220913120441.146757-4-janusz.krzysztofik@linux.intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 2/8] i915/gem_mmap_offset: Verify all
- regions return clear mmaps on creation
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Subject: Re: [igt-dev] [PATCH i-g-t 3/4] tests/core_hotunplug: Don't apply
+ i915 workarounds on other platforms
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,180 +18,141 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Chris Wilson <chris.p.wilson@intel.com>
+Cc: igt-dev@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
+ Petri Latvala <petri.latvala@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Chris Wilson <chris.p.wilson@intel.com>
+On Tue, 13 Sep 2022 14:04:40 +0200
+Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com> wrote:
 
-We do not tolerate leaking stale information in newly created objects, so
-make sure the test covers all memory regions.
+> Starting from commit 0edabd8a4a08 ("core_hotunplug: fix audio unbind
+> logic") audio modules are unloaded unconditionally before graphics driver
+> unbind.  This is required for i915 to be unbound cleanly from a graphics
+> device.  However, we have no indications that non-Intel platforms require
+> the same.
 
-Signed-off-by: Chris Wilson <chris.p.wilson@intel.com>
-Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
----
- tests/i915/gem_mmap_offset.c | 87 +++++++++++++++++++++++++-----------
- 1 file changed, 60 insertions(+), 27 deletions(-)
+Actually, there was a much more generic solution merged, but that depends
+on a patch upstream to lib/module not applied. See:
 
-diff --git a/tests/i915/gem_mmap_offset.c b/tests/i915/gem_mmap_offset.c
-index edbc637a..8d237f22 100644
---- a/tests/i915/gem_mmap_offset.c
-+++ b/tests/i915/gem_mmap_offset.c
-@@ -35,6 +35,7 @@
- 
- #include "i915/gem.h"
- #include "i915/gem_create.h"
-+#include "i915/intel_memory_region.h"
- #include "igt.h"
- #include "igt_x86.h"
- 
-@@ -75,6 +76,37 @@ __mmap_offset(int i915, uint32_t handle, uint64_t offset, uint64_t size,
- 	return ptr;
- }
- 
-+static uint32_t batch_create(int i915)
-+{
-+	const uint32_t bbe = MI_BATCH_BUFFER_END;
-+	uint32_t handle = gem_create(i915, sizeof(bbe));
-+
-+	gem_write(i915, handle, 0, &bbe, sizeof(bbe));
-+	return handle;
-+}
-+
-+static void make_resident(int i915, uint32_t batch, uint32_t handle)
-+{
-+	struct drm_i915_gem_exec_object2 obj[2] = {
-+		[0] = {
-+			.handle = handle,
-+			.flags = EXEC_OBJECT_SUPPORTS_48B_ADDRESS,
-+		},
-+		[1] = {
-+			.handle = batch ?: batch_create(i915),
-+			.flags = EXEC_OBJECT_SUPPORTS_48B_ADDRESS,
-+		},
-+	};
-+	struct drm_i915_gem_execbuffer2 eb = {
-+		.buffers_ptr = to_user_pointer(obj),
-+		.buffer_count = ARRAY_SIZE(obj),
-+	};
-+
-+	gem_execbuf(i915, &eb);
-+	if (obj[1].handle != batch)
-+		gem_close(i915, obj[1].handle);
-+}
-+
- static void bad_object(int i915)
- {
- 	uint32_t real_handle;
-@@ -529,44 +561,35 @@ static uint64_t get_npages(_Atomic(uint64_t) *global, uint64_t npages)
- 
- struct thread_clear {
- 	_Atomic(uint64_t) max;
-+	struct drm_i915_gem_memory_class_instance region;
- 	int timeout;
- 	int i915;
- };
- 
--static int create_ioctl(int i915, struct drm_i915_gem_create *create)
--{
--	int err = 0;
--
--	if (igt_ioctl(i915, DRM_IOCTL_I915_GEM_CREATE, create)) {
--		err = -errno;
--		igt_assume(err != 0);
--	}
--
--	errno = 0;
--	return err;
--}
--
- static void *thread_clear(void *data)
- {
- 	struct thread_clear *arg = data;
- 	const struct mmap_offset *t;
--	unsigned long checked = 0;
-+	unsigned long checked = 0, total = 0;
- 	int i915 = arg->i915;
-+	uint32_t batch = batch_create(i915);
- 
- 	t = mmap_offset_types;
- 	igt_until_timeout(arg->timeout) {
--		struct drm_i915_gem_create create = {};
--		uint64_t npages;
-+		uint64_t npages, size;
-+		uint32_t handle;
- 		void *ptr;
- 
- 		npages = random();
- 		npages <<= 32;
- 		npages |= random();
- 		npages = get_npages(&arg->max, npages);
--		create.size = npages << 12;
-+		size = npages << 12;
- 
--		create_ioctl(i915, &create);
--		ptr = __mmap_offset(i915, create.handle, 0, create.size,
-+		igt_assert_eq(__gem_create_in_memory_region_list(i915, &handle, &size, 0, &arg->region, 1), 0);
-+		make_resident(i915, batch, handle);
-+
-+		ptr = __mmap_offset(i915, handle, 0, size,
- 				    PROT_READ | PROT_WRITE,
- 				    t->type);
- 		/* No set-domains as we are being as naughty as possible */
-@@ -584,26 +607,32 @@ static void *thread_clear(void *data)
- 			for (int i = 0; i < ARRAY_SIZE(x); i++)
- 				igt_assert_eq_u64(x[i], 0);
- 		}
--		if (ptr)
--			munmap(ptr, create.size);
--		gem_close(i915, create.handle);
--		checked += npages;
-+		if (ptr) {
-+			munmap(ptr, size);
-+			checked += npages;
-+		}
-+		gem_close(i915, handle);
- 
-+		total += npages;
- 		atomic_fetch_add(&arg->max, npages);
- 
- 		if (!(++t)->name)
- 			t = mmap_offset_types;
- 	}
- 
-+	gem_close(i915, batch);
-+
-+	igt_info("Checked %'lu / %'lu pages\n", checked, total);
- 	return (void *)(uintptr_t)checked;
- }
- 
--static void always_clear(int i915, int timeout)
-+static void always_clear(int i915, const struct gem_memory_region *r, int timeout)
- {
- 	struct thread_clear arg = {
- 		.i915 = i915,
-+		.region = r->ci,
-+		.max = r->size / 2 >> 12, /* in pages */
- 		.timeout = timeout,
--		.max = igt_get_avail_ram_mb() << (20 - 12), /* in pages */
- 	};
- 	const int ncpus = sysconf(_SC_NPROCESSORS_ONLN);
- 	unsigned long checked;
-@@ -750,8 +779,12 @@ igt_main
- 	igt_subtest_f("open-flood")
- 		open_flood(i915, 20);
- 
--	igt_subtest_f("clear")
--		always_clear(i915, 20);
-+	igt_subtest_with_dynamic("clear") {
-+		for_each_memory_region(r, i915) {
-+			igt_dynamic_f("%s", r->name)
-+				always_clear(i915, r, 20);
-+		}
-+	}
- 
- 	igt_subtest_f("blt-coherency")
- 		blt_coherency(i915);
--- 
-2.34.1
+	https://lore.kernel.org/all/cover.1651348913.git.mchehab@kernel.org/
+
+So, we ended reverting the changes on this changeset:
+
+	03706cd84099 ("lib/igt_kmod: remove the conditional audio removal code")
+
+In any case, other drivers may have similar issues, if the audio driver
+binds into the video driver. So, I would place any chipset-specific logic
+for the current logic inside igt_audio_driver_unload(), as this will make it
+more generic, as any other audio driver unbind needs will be self-contained
+inside the library, and, if some day Kernel lib/modules.c gets fixed to
+properly report bind (as proposed on my patchset), the library will get
+the hack to have the snd-hda-intel name hardcoded on it, and the code
+will work with any GPU/snd audio driver combination.
+
+> Since we care for other platforms using this test and contributing to it,
+> not developing their own, keep i915 workarounds limited to i915 devices.
+> 
+> Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+> ---
+>  tests/core_hotunplug.c | 58 +++++++++++++++++++++++-------------------
+>  1 file changed, 32 insertions(+), 26 deletions(-)
+> 
+> diff --git a/tests/core_hotunplug.c b/tests/core_hotunplug.c
+> index c3756889c2..29cb26ab12 100644
+> --- a/tests/core_hotunplug.c
+> +++ b/tests/core_hotunplug.c
+> @@ -55,6 +55,7 @@ struct hotunplug {
+>  	bool need_healthcheck;
+>  	bool has_intel_perf;
+>   	char *snd_driver;
+> +	int chipset;
+>  };
+>  
+>  /* Helpers */
+> @@ -140,19 +141,20 @@ static void prepare(struct hotunplug *priv)
+>  static void driver_unbind(struct hotunplug *priv, const char *prefix,
+>  			  int timeout)
+>  {
+> -	/*
+> -	 * FIXME: on some devices, the audio driver (snd_hda_intel)
+> -	 * binds into the i915 driver. On such hardware, kernel warnings
+> -	 * and errors may happen if i915 is unbind/removed before removing
+> -	 * first the audio driver.
+> -	 * So, add a logic that unloads the audio driver before trying to
+> -	 * unbind i915 driver, reloading it when binding again.
+> -	 */
+> -	if (igt_audio_driver_unload(&priv->snd_driver)) {
+> -		igt_skip("Audio driver %s in use, skipping test\n",
+> -			 priv->snd_driver);
+> -	} else if (priv->snd_driver) {
+> -		igt_info("Unloaded audio driver %s\n", priv->snd_driver);
+> +	if (priv->chipset == DRIVER_INTEL) {
+> +		/*
+> +		 * FIXME: on some devices, the audio driver (snd_hda_intel)
+> +		 * binds into the i915 driver. On such hardware, kernel warnings
+> +		 * and errors may happen if i915 is unbind/removed before removing
+> +		 * first the audio driver.
+> +		 * So, add a logic that unloads the audio driver before trying to
+> +		 * unbind i915 driver, reloading it when binding again.
+> +		 */
+> +		if (igt_audio_driver_unload(&priv->snd_driver))
+> +			igt_skip("Audio driver %s in use, skipping test\n",
+> +				 priv->snd_driver);
+> +		else if (priv->snd_driver)
+> +			igt_info("Unloaded audio driver %s\n", priv->snd_driver);
+>  	}
+>  
+>  	local_debug("%sunbinding the driver from the device\n", prefix);
+> @@ -198,19 +200,20 @@ static void device_unplug(struct hotunplug *priv, const char *prefix,
+>  {
+>  	igt_require(priv->fd.sysfs_dev == -1);
+>  
+> -	/*
+> -	 * FIXME: on some devices, the audio driver (snd_hda_intel)
+> -	 * binds into the i915 driver. On such hardware, kernel warnings
+> -	 * and errors may happen if i915 is unbind/removed before removing
+> -	 * first the audio driver.
+> -	 * So, add a logic that unloads the audio driver before trying to
+> -	 * unbind i915 driver, reloading it when binding again.
+> -	 */
+> -	if (igt_audio_driver_unload(&priv->snd_driver)) {
+> -		igt_skip("Audio driver %s in use, skipping test\n",
+> -			 priv->snd_driver);
+> -	} else if (priv->snd_driver) {
+> -		igt_info("Unloaded audio driver %s\n", priv->snd_driver);
+> +	if (priv->chipset == DRIVER_INTEL) {
+> +		/*
+> +		 * FIXME: on some devices, the audio driver (snd_hda_intel)
+> +		 * binds into the i915 driver. On such hardware, kernel warnings
+> +		 * and errors may happen if i915 is unbind/removed before removing
+> +		 * first the audio driver.
+> +		 * So, add a logic that unloads the audio driver before trying to
+> +		 * unbind i915 driver, reloading it when binding again.
+> +		 */
+> +		if (igt_audio_driver_unload(&priv->snd_driver))
+> +			igt_skip("Audio driver %s in use, skipping test\n",
+> +				 priv->snd_driver);
+> +		else if (priv->snd_driver)
+> +			igt_info("Unloaded audio driver %s\n", priv->snd_driver);
+>  	}
+>  
+>  	priv->fd.sysfs_dev = openat(priv->fd.sysfs_bus, priv->dev_bus_addr,
+> @@ -625,6 +628,7 @@ igt_main
+>  		.need_healthcheck = true,
+>  		.has_intel_perf = false,
+>  		.snd_driver	= NULL,
+> +		.chipset	= DRIVER_ANY,
+>  	};
+>  
+>  	igt_fixture {
+> @@ -634,6 +638,8 @@ igt_main
+>  		igt_skip_on_f(fd_drm < 0, "No known DRM device found\n");
+>  
+>  		if (is_i915_device(fd_drm)) {
+> +			priv.chipset = DRIVER_INTEL;
+> +
+>  			gem_quiescent_gpu(fd_drm);
+>  			igt_require_gem(fd_drm);
+>  
