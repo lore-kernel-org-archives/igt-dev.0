@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D326D10E6BD
- for <igt-dev@lists.freedesktop.org>; Tue, 20 Sep 2022 13:16:04 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7047310E6BC
+ for <igt-dev@lists.freedesktop.org>; Tue, 20 Sep 2022 13:16:01 +0000 (UTC)
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 20 Sep 2022 15:15:42 +0200
-Message-Id: <20220920131546.34879-5-kamil.konieczny@linux.intel.com>
+Date: Tue, 20 Sep 2022 15:15:41 +0200
+Message-Id: <20220920131546.34879-4-kamil.konieczny@linux.intel.com>
 In-Reply-To: <20220920131546.34879-1-kamil.konieczny@linux.intel.com>
 References: <20220920131546.34879-1-kamil.konieczny@linux.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 4/8] i915/gem_mmap_offset: Verify all
- regions remain in isolation
+Subject: [igt-dev] [PATCH i-g-t 3/8] i915/gem_mmap_offset: Verify all
+ regions with ptrace
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,136 +27,127 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Chris Wilson <chris.p.wilson@intel.com>
 
-Check that we don't leak mmap pointers to different regions.
+Check we can use ptrace to query *ptr of each mmap for each region.
 
 Signed-off-by: Chris Wilson <chris.p.wilson@intel.com>
 Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 ---
- tests/i915/gem_mmap_offset.c | 99 +++++++++++++++++++-----------------
- 1 file changed, 51 insertions(+), 48 deletions(-)
+ tests/i915/gem_mmap_offset.c | 84 ++++++++++++++++++++----------------
+ 1 file changed, 46 insertions(+), 38 deletions(-)
 
 diff --git a/tests/i915/gem_mmap_offset.c b/tests/i915/gem_mmap_offset.c
-index 608080c7..c9a3eb5b 100644
+index 8d237f22..608080c7 100644
 --- a/tests/i915/gem_mmap_offset.c
 +++ b/tests/i915/gem_mmap_offset.c
-@@ -219,68 +219,71 @@ static void basic_uaf(int i915)
+@@ -370,64 +370,72 @@ static void test_ptrace(int i915)
+ 	const unsigned int SZ = 3 * 4096;
+ 	unsigned long *ptr, *cpy;
+ 	unsigned long AA, CC;
+-	uint32_t bo;
  
- static void isolation(int i915)
- {
+ 	memset(&AA, 0xaa, sizeof(AA));
+ 	memset(&CC, 0x55, sizeof(CC));
+ 
+ 	cpy = malloc(SZ);
+-	bo = gem_create(i915, SZ);
++	igt_assert(cpy);
+ 
 -	for_each_mmap_offset_type(i915, t) {
--		struct drm_i915_gem_mmap_offset mmap_arg = {
--			.flags = t->type
--		};
--		int A = gem_reopen_driver(i915);
--		int B = gem_reopen_driver(i915);
--		uint64_t offset_a, offset_b;
--		uint32_t a, b;
--		void *ptr;
--
--		a = gem_create(A, 4096);
--		b = gem_open(B, gem_flink(A, a));
--
--		mmap_arg.handle = a;
--		if (mmap_offset_ioctl(A, &mmap_arg)) {
--			close(A);
--			close(B);
+-		ptr = __mmap_offset(i915, bo, 0, SZ,
+-				    PROT_READ | PROT_WRITE,
+-				    t->type);
+-		if (!ptr)
 -			continue;
--		}
--		offset_a = mmap_arg.offset;
--
--		mmap_arg.handle = b;
--		igt_assert_eq(mmap_offset_ioctl(B, &mmap_arg), 0);
--		offset_b = mmap_arg.offset;
--
--		igt_info("A[%s]: {fd:%d, handle:%d, offset:%"PRIx64"}\n",
--			 t->name, A, a, offset_a);
--		igt_info("B[%s]: {fd:%d, handle:%d, offset:%"PRIx64"}\n",
--			 t->name, B, b, offset_b);
 +	for_each_memory_region(r, i915) {
-+		igt_info("%s\n", r->name);
++		uint64_t size = SZ;
++		uint32_t bo;
+ 
+-		igt_dynamic_f("%s", t->name) {
+-			pid_t pid;
++		igt_assert_eq(__gem_create_in_memory_region_list(i915, &bo, &size, 0, &r->ci, 1), 0);
++		make_resident(i915, 0, bo);
+ 
+-			memset(cpy, AA, SZ);
+-			memset(ptr, CC, SZ);
 +		for_each_mmap_offset_type(i915, t) {
-+			struct drm_i915_gem_mmap_offset mmap_arg = {
-+				.flags = t->type
-+			};
-+			int A = gem_reopen_driver(i915);
-+			int B = gem_reopen_driver(i915);
-+			uint64_t offset_a, offset_b;
-+			uint32_t a, b;
-+			void *ptr;
-+
-+			a = gem_create_in_memory_region_list(A, 4096, 0, &r->ci, 1);
-+			b = gem_open(B, gem_flink(A, a));
-+
-+			mmap_arg.handle = a;
-+			if (mmap_offset_ioctl(A, &mmap_arg)) {
-+				close(A);
-+				close(B);
++			ptr = __mmap_offset(i915, bo, 0, size,
++					    PROT_READ | PROT_WRITE,
++					    t->type);
++			if (!ptr)
 +				continue;
-+			}
-+			offset_a = mmap_arg.offset;
  
--		errno = 0;
--		ptr = mmap64(0, 4096, PROT_READ, MAP_SHARED, i915, offset_a);
--		igt_assert(ptr == MAP_FAILED);
--		igt_assert_eq(errno, EACCES);
-+			mmap_arg.handle = b;
-+			igt_assert_eq(mmap_offset_ioctl(B, &mmap_arg), 0);
-+			offset_b = mmap_arg.offset;
+-			igt_assert(!memchr_inv(ptr, CC, SZ));
+-			igt_assert(!memchr_inv(cpy, AA, SZ));
++			igt_dynamic_f("%s-%s", r->name, t->name) {
++				pid_t pid;
  
--		errno = 0;
--		ptr = mmap64(0, 4096, PROT_READ, MAP_SHARED, i915, offset_b);
--		igt_assert(ptr == MAP_FAILED);
--		igt_assert_eq(errno, EACCES);
-+			igt_info("\tA[%s]: {fd:%d, handle:%d, offset:%"PRIx64"}\n",
-+				 t->name, A, a, offset_a);
-+			igt_info("\tB[%s]: {fd:%d, handle:%d, offset:%"PRIx64"}\n",
-+				 t->name, B, b, offset_b);
+-			igt_fork(child, 1) {
+-				ptrace(PTRACE_TRACEME, 0, NULL, NULL);
+-				raise(SIGSTOP);
+-			}
++				memset(cpy, AA, SZ);
++				memset(ptr, CC, SZ);
  
--		if (offset_a != offset_b) {
- 			errno = 0;
--			ptr = mmap(0, 4096, PROT_READ, MAP_SHARED, B, offset_a);
-+			ptr = mmap64(0, 4096, PROT_READ, MAP_SHARED, i915, offset_a);
- 			igt_assert(ptr == MAP_FAILED);
- 			igt_assert_eq(errno, EACCES);
+-			/* Wait for the child to ready themselves [SIGSTOP] */
+-			pid = wait(NULL);
++				igt_assert(!memchr_inv(ptr, CC, SZ));
++				igt_assert(!memchr_inv(cpy, AA, SZ));
  
- 			errno = 0;
--			ptr = mmap(0, 4096, PROT_READ, MAP_SHARED, A, offset_b);
-+			ptr = mmap64(0, 4096, PROT_READ, MAP_SHARED, i915, offset_b);
- 			igt_assert(ptr == MAP_FAILED);
- 			igt_assert_eq(errno, EACCES);
--		}
+-			ptrace(PTRACE_ATTACH, pid, NULL, NULL);
+-			for (int i = 0; i < SZ / sizeof(long); i++) {
+-				long ret;
++				igt_fork(child, 1) {
++					ptrace(PTRACE_TRACEME, 0, NULL, NULL);
++					raise(SIGSTOP);
++				}
  
--		close(B);
-+			if (offset_a != offset_b) {
-+				errno = 0;
-+				ptr = mmap(0, 4096, PROT_READ, MAP_SHARED, B, offset_a);
-+				igt_assert(ptr == MAP_FAILED);
-+				igt_assert_eq(errno, EACCES);
+-				ret = ptrace(PTRACE_PEEKDATA, pid, ptr + i);
+-				igt_assert_eq_u64(ret, CC);
+-				cpy[i] = ret;
++				/* Wait for the child to ready themselves [SIGSTOP] */
++				pid = wait(NULL);
  
--		ptr = mmap64(0, 4096, PROT_READ, MAP_SHARED, A, offset_a);
--		igt_assert(ptr != MAP_FAILED);
--		munmap(ptr, 4096);
-+				errno = 0;
-+				ptr = mmap(0, 4096, PROT_READ, MAP_SHARED, A, offset_b);
-+				igt_assert(ptr == MAP_FAILED);
-+				igt_assert_eq(errno, EACCES);
-+			}
- 
--		close(A);
-+			close(B);
+-				ret = ptrace(PTRACE_POKEDATA, pid, ptr + i, AA);
+-				igt_assert_eq(ret, 0l);
+-			}
+-			ptrace(PTRACE_DETACH, pid, NULL, NULL);
++				ptrace(PTRACE_ATTACH, pid, NULL, NULL);
++				for (int i = 0; i < SZ / sizeof(long); i++) {
++					long ret;
 +
-+			ptr = mmap64(0, 4096, PROT_READ, MAP_SHARED, A, offset_a);
-+			igt_assert(ptr != MAP_FAILED);
-+			munmap(ptr, 4096);
++					ret = ptrace(PTRACE_PEEKDATA, pid, ptr + i);
++					igt_assert_eq_u64(ret, CC);
++					cpy[i] = ret;
 +
-+			close(A);
++					ret = ptrace(PTRACE_POKEDATA, pid, ptr + i, AA);
++					igt_assert_eq(ret, 0l);
++				}
++				ptrace(PTRACE_DETACH, pid, NULL, NULL);
  
--		ptr = mmap64(0, 4096, PROT_READ, MAP_SHARED, A, offset_a);
--		igt_assert(ptr == MAP_FAILED);
-+			ptr = mmap64(0, 4096, PROT_READ, MAP_SHARED, A, offset_a);
-+			igt_assert(ptr == MAP_FAILED);
-+		}
+-			/* Wakeup the child for it to exit */
+-			kill(SIGCONT, pid);
+-			igt_waitchildren();
++				/* Wakeup the child for it to exit */
++				kill(SIGCONT, pid);
++				igt_waitchildren();
+ 
+-			/* The two buffers should now be swapped */
+-			igt_assert(!memchr_inv(ptr, AA, SZ));
+-			igt_assert(!memchr_inv(cpy, CC, SZ));
++				/* The two buffers should now be swapped */
++				igt_assert(!memchr_inv(ptr, AA, SZ));
++				igt_assert(!memchr_inv(cpy, CC, SZ));
++			}
++
++			munmap(ptr, size);
+ 		}
+ 
+-		munmap(ptr, SZ);
++		gem_close(i915, bo);
  	}
+ 
+-	gem_close(i915, bo);
+ 	free(cpy);
  }
  
 -- 
