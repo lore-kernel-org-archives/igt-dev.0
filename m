@@ -1,16 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Date: Tue, 20 Sep 2022 07:10:21 +0200
-From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
-To: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-Message-ID: <20220920071021.5e60f9ea@maurocar-mobl2>
-In-Reply-To: <20220913120441.146757-5-janusz.krzysztofik@linux.intel.com>
-References: <20220913120441.146757-1-janusz.krzysztofik@linux.intel.com>
- <20220913120441.146757-5-janusz.krzysztofik@linux.intel.com>
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0D18A10E6BB
+ for <igt-dev@lists.freedesktop.org>; Tue, 20 Sep 2022 13:15:58 +0000 (UTC)
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Tue, 20 Sep 2022 15:15:40 +0200
+Message-Id: <20220920131546.34879-3-kamil.konieczny@linux.intel.com>
+In-Reply-To: <20220920131546.34879-1-kamil.konieczny@linux.intel.com>
+References: <20220920131546.34879-1-kamil.konieczny@linux.intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Subject: Re: [igt-dev] [PATCH i-g-t 4/4] tests/core_hotunplug: Select health
- checks for initially detected chipset
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t 2/8] i915/gem_mmap_offset: Verify all
+ regions return clear mmaps on creation
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,50 +20,180 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
- Petri Latvala <petri.latvala@intel.com>
+Cc: Chris Wilson <chris.p.wilson@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Tue, 13 Sep 2022 14:04:41 +0200
-Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com> wrote:
+From: Chris Wilson <chris.p.wilson@intel.com>
 
-> As soon as we first time open a drm device to be exercised, we identify
-> its chipset, store that information, and perform some basic device
-> specific checks.  We also store a filter that matches the device bus
-> address to make sure we will exercise still one and the same device after
-> each driver unbind-rebind / device unplug-rediscover operation.
-> 
-> However, each time before we select device specific health checks, whether
-> before or after a driver unbind-rebind / device unplug-rediscover
-> operation, we identify the device chipset again.  Besides being more
-> expensive, that approach could also result in using different set of
-> health checks should device filters not work as expected.
-> 
-> Always use the stored chipset type instead of identifying it now and
-> again.
-> 
-> Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+We do not tolerate leaking stale information in newly created objects, so
+make sure the test covers all memory regions.
 
-Makes sense to me, once we have patch 3/4 applied. So,
+Signed-off-by: Chris Wilson <chris.p.wilson@intel.com>
+Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+---
+ tests/i915/gem_mmap_offset.c | 87 +++++++++++++++++++++++++-----------
+ 1 file changed, 60 insertions(+), 27 deletions(-)
 
-Reviewed-by: Mauro Carvalho Chehab <mchehab@kernel.org>
-
-> ---
->  tests/core_hotunplug.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/tests/core_hotunplug.c b/tests/core_hotunplug.c
-> index 29cb26ab12..7c7ed09e63 100644
-> --- a/tests/core_hotunplug.c
-> +++ b/tests/core_hotunplug.c
-> @@ -400,7 +400,7 @@ static void node_healthcheck(struct hotunplug *priv, unsigned flags)
->  	if (closed)	/* store fd for cleanup if not dirty */
->  		priv->fd.drm_hc = fd_drm;
->  
-> -	if (is_i915_device(fd_drm)) {
-> +	if (priv->chipset == DRIVER_INTEL) {
->  		/* don't report library failed asserts as healthcheck failure */
->  		priv->failure = "Unrecoverable test failure";
->  		if (local_i915_healthcheck(fd_drm, "") &&
+diff --git a/tests/i915/gem_mmap_offset.c b/tests/i915/gem_mmap_offset.c
+index edbc637a..8d237f22 100644
+--- a/tests/i915/gem_mmap_offset.c
++++ b/tests/i915/gem_mmap_offset.c
+@@ -35,6 +35,7 @@
+ 
+ #include "i915/gem.h"
+ #include "i915/gem_create.h"
++#include "i915/intel_memory_region.h"
+ #include "igt.h"
+ #include "igt_x86.h"
+ 
+@@ -75,6 +76,37 @@ __mmap_offset(int i915, uint32_t handle, uint64_t offset, uint64_t size,
+ 	return ptr;
+ }
+ 
++static uint32_t batch_create(int i915)
++{
++	const uint32_t bbe = MI_BATCH_BUFFER_END;
++	uint32_t handle = gem_create(i915, sizeof(bbe));
++
++	gem_write(i915, handle, 0, &bbe, sizeof(bbe));
++	return handle;
++}
++
++static void make_resident(int i915, uint32_t batch, uint32_t handle)
++{
++	struct drm_i915_gem_exec_object2 obj[2] = {
++		[0] = {
++			.handle = handle,
++			.flags = EXEC_OBJECT_SUPPORTS_48B_ADDRESS,
++		},
++		[1] = {
++			.handle = batch ?: batch_create(i915),
++			.flags = EXEC_OBJECT_SUPPORTS_48B_ADDRESS,
++		},
++	};
++	struct drm_i915_gem_execbuffer2 eb = {
++		.buffers_ptr = to_user_pointer(obj),
++		.buffer_count = ARRAY_SIZE(obj),
++	};
++
++	gem_execbuf(i915, &eb);
++	if (obj[1].handle != batch)
++		gem_close(i915, obj[1].handle);
++}
++
+ static void bad_object(int i915)
+ {
+ 	uint32_t real_handle;
+@@ -529,44 +561,35 @@ static uint64_t get_npages(_Atomic(uint64_t) *global, uint64_t npages)
+ 
+ struct thread_clear {
+ 	_Atomic(uint64_t) max;
++	struct drm_i915_gem_memory_class_instance region;
+ 	int timeout;
+ 	int i915;
+ };
+ 
+-static int create_ioctl(int i915, struct drm_i915_gem_create *create)
+-{
+-	int err = 0;
+-
+-	if (igt_ioctl(i915, DRM_IOCTL_I915_GEM_CREATE, create)) {
+-		err = -errno;
+-		igt_assume(err != 0);
+-	}
+-
+-	errno = 0;
+-	return err;
+-}
+-
+ static void *thread_clear(void *data)
+ {
+ 	struct thread_clear *arg = data;
+ 	const struct mmap_offset *t;
+-	unsigned long checked = 0;
++	unsigned long checked = 0, total = 0;
+ 	int i915 = arg->i915;
++	uint32_t batch = batch_create(i915);
+ 
+ 	t = mmap_offset_types;
+ 	igt_until_timeout(arg->timeout) {
+-		struct drm_i915_gem_create create = {};
+-		uint64_t npages;
++		uint64_t npages, size;
++		uint32_t handle;
+ 		void *ptr;
+ 
+ 		npages = random();
+ 		npages <<= 32;
+ 		npages |= random();
+ 		npages = get_npages(&arg->max, npages);
+-		create.size = npages << 12;
++		size = npages << 12;
+ 
+-		create_ioctl(i915, &create);
+-		ptr = __mmap_offset(i915, create.handle, 0, create.size,
++		igt_assert_eq(__gem_create_in_memory_region_list(i915, &handle, &size, 0, &arg->region, 1), 0);
++		make_resident(i915, batch, handle);
++
++		ptr = __mmap_offset(i915, handle, 0, size,
+ 				    PROT_READ | PROT_WRITE,
+ 				    t->type);
+ 		/* No set-domains as we are being as naughty as possible */
+@@ -584,26 +607,32 @@ static void *thread_clear(void *data)
+ 			for (int i = 0; i < ARRAY_SIZE(x); i++)
+ 				igt_assert_eq_u64(x[i], 0);
+ 		}
+-		if (ptr)
+-			munmap(ptr, create.size);
+-		gem_close(i915, create.handle);
+-		checked += npages;
++		if (ptr) {
++			munmap(ptr, size);
++			checked += npages;
++		}
++		gem_close(i915, handle);
+ 
++		total += npages;
+ 		atomic_fetch_add(&arg->max, npages);
+ 
+ 		if (!(++t)->name)
+ 			t = mmap_offset_types;
+ 	}
+ 
++	gem_close(i915, batch);
++
++	igt_info("Checked %'lu / %'lu pages\n", checked, total);
+ 	return (void *)(uintptr_t)checked;
+ }
+ 
+-static void always_clear(int i915, int timeout)
++static void always_clear(int i915, const struct gem_memory_region *r, int timeout)
+ {
+ 	struct thread_clear arg = {
+ 		.i915 = i915,
++		.region = r->ci,
++		.max = r->size / 2 >> 12, /* in pages */
+ 		.timeout = timeout,
+-		.max = igt_get_avail_ram_mb() << (20 - 12), /* in pages */
+ 	};
+ 	const int ncpus = sysconf(_SC_NPROCESSORS_ONLN);
+ 	unsigned long checked;
+@@ -750,8 +779,12 @@ igt_main
+ 	igt_subtest_f("open-flood")
+ 		open_flood(i915, 20);
+ 
+-	igt_subtest_f("clear")
+-		always_clear(i915, 20);
++	igt_subtest_with_dynamic("clear") {
++		for_each_memory_region(r, i915) {
++			igt_dynamic_f("%s", r->name)
++				always_clear(i915, r, 20);
++		}
++	}
+ 
+ 	igt_subtest_f("blt-coherency")
+ 		blt_coherency(i915);
+-- 
+2.34.1
