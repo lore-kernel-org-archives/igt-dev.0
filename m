@@ -1,19 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 913E910E7A5
- for <igt-dev@lists.freedesktop.org>; Tue, 20 Sep 2022 20:03:08 +0000 (UTC)
-Date: Tue, 20 Sep 2022 13:02:54 -0700
-From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
-To: <igt-dev@lists.freedesktop.org>
-Message-ID: <YyocbkpwzTuf/7ep@unerlige-ril>
-References: <20220823183036.5270-1-umesh.nerlige.ramappa@intel.com>
- <20220823183036.5270-21-umesh.nerlige.ramappa@intel.com>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Disposition: inline
-In-Reply-To: <20220823183036.5270-21-umesh.nerlige.ramappa@intel.com>
+Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 180A010E3B0
+ for <igt-dev@lists.freedesktop.org>; Wed, 21 Sep 2022 05:36:59 +0000 (UTC)
+From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Wed, 21 Sep 2022 11:04:12 +0530
+Message-Id: <20220921053415.1893828-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t 20/23] lib/i915/perf: implement report
- accumulation for new format
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [i-g-t 0/3] Add Negative tests to VRR
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,64 +20,20 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Tue, Aug 23, 2022 at 06:30:33PM +0000, Umesh Nerlige Ramappa wrote:
->From: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
->
->Available on XEHPSDV+.
->
->Signed-off-by: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
-Reviewed-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+* VRR on Non-VRR panel:
+	VRR should not be enabled on the Non-VRR panel.
+* Monitor Refresh Rate range:
+	Read VRR range capability from EDID and check if
+	the Kernel is parsing it correctly.
 
-Thanks,
-Umesh
->---
-> lib/i915/perf.c | 33 +++++++++++++++++++++++++++++++++
-> 1 file changed, 33 insertions(+)
->
->diff --git a/lib/i915/perf.c b/lib/i915/perf.c
->index 2f24cbd8..d004313f 100644
->--- a/lib/i915/perf.c
->+++ b/lib/i915/perf.c
->@@ -676,6 +676,39 @@ void intel_perf_accumulate_reports(struct intel_perf_accumulator *acc,
-> 	memset(acc, 0, sizeof(*acc));
->
-> 	switch (oa_format) {
->+	case I915_OA_FORMAT_A24u40_A14u32_B8_C8:
->+		accumulate_uint32(start + 1, end + 1, deltas + idx++); /* timestamp */
->+		accumulate_uint32(start + 3, end + 3, deltas + idx++); /* clock */
->+
->+		/* 4x 32bit A0-3 counters... */
->+		for (i = 0; i < 4; i++)
->+			accumulate_uint32(start + 4 + i, end + 4 + i, deltas + idx++);
->+
->+		/* 20x 40bit A4-23 counters... */
->+		for (i = 0; i < 20; i++)
->+			accumulate_uint40(i + 4, start, end, deltas + idx++);
->+
->+		/* 4x 32bit A24-27 counters... */
->+		for (i = 0; i < 4; i++)
->+			accumulate_uint32(start + 28 + i, end + 28 + i, deltas + idx++);
->+
->+		/* 4x 40bit A28-31 counters... */
->+		for (i = 0; i < 4; i++)
->+			accumulate_uint40(i + 28, start, end, deltas + idx++);
->+
->+		/* 5x 32bit A32-36 counters... */
->+		for (i = 0; i < 5; i++)
->+			accumulate_uint32(start + 36 + i, end + 36 + i, deltas + idx++);
->+
->+		/* 1x 32bit A37 counter... */
->+		accumulate_uint32(start + 46, end + 46, deltas + idx++);
->+
->+		/* 8x 32bit B counters + 8x 32bit C counters... */
->+		for (i = 0; i < 16; i++)
->+			accumulate_uint32(start + 48 + i, end + 48 + i, deltas + idx++);
->+		break;
->+
->+	case I915_OAR_FORMAT_A32u40_A4u32_B8_C8:
-> 	case I915_OA_FORMAT_A32u40_A4u32_B8_C8:
-> 		accumulate_uint32(start + 1, end + 1, deltas + idx++); /* timestamp */
-> 		accumulate_uint32(start + 3, end + 3, deltas + idx++); /* clock */
->-- 
->2.25.1
->
+Bhanuprakash Modem (3):
+  tests/kms_vrr: Add Negative tests to validate VRR
+  tests/kms_vrr: Add a test for VRR range capability
+  HAX: Add VRR negative tests to BAT
+
+ tests/intel-ci/fast-feedback.testlist |   3 +
+ tests/kms_vrr.c                       | 171 +++++++++++++++++++++++++-
+ 2 files changed, 171 insertions(+), 3 deletions(-)
+
+--
+2.37.3
