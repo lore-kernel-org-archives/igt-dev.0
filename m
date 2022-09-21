@@ -1,23 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from fanzine2.igalia.com (fanzine.igalia.com [178.60.130.6])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BC43D10E293
- for <igt-dev@lists.freedesktop.org>; Wed, 21 Sep 2022 10:36:47 +0000 (UTC)
-Date: Wed, 21 Sep 2022 09:36:13 -0100
-From: Melissa Wen <mwen@igalia.com>
-To: Ville =?utf-8?B?U3lyasOkbMOk?= <ville.syrjala@linux.intel.com>
-Message-ID: <20220921103613.jizg5rumtcrgvhy5@mail.igalia.com>
-References: <20220831101100.1242315-1-mwen@igalia.com>
- <c97e81d2-3aaa-db11-ebb1-b6df5bf0b1ce@intel.com>
- <20220919155421.nauj7e4dp2dwmqza@mail.igalia.com>
- <9c8f18bc-a815-84a0-93eb-698a4083bbe0@intel.com>
- <YyrBrDSeogdOq4zs@intel.com>
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 88AD710E8F2
+ for <igt-dev@lists.freedesktop.org>; Wed, 21 Sep 2022 10:56:22 +0000 (UTC)
+Message-ID: <dbbcb0ea-cf41-556e-6dd4-b17e0209c4b1@intel.com>
+Date: Wed, 21 Sep 2022 16:26:03 +0530
+To: Karthik B S <karthik.b.s@intel.com>, <igt-dev@lists.freedesktop.org>
+References: <20220921061943.23329-1-karthik.b.s@intel.com>
+Content-Language: en-US
+From: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
+In-Reply-To: <20220921061943.23329-1-karthik.b.s@intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
- protocol="application/pgp-signature"; boundary="g2rb35otyynmp2mh"
-Content-Disposition: inline
-In-Reply-To: <YyrBrDSeogdOq4zs@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_color: fix crc assert
- condition
+Subject: Re: [igt-dev] [PATCH i-g-t v2] tests/kms_plane_alpha_blend: Convert
+ test to dynamic
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,96 +21,271 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org, petri.latvala@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
+On Wed-21-09-2022 11:49 am, Karthik B S wrote:
+> Covert the existing subtests to dynamic subtests at pipe/output level.
+> 
+> v2: -Don't skip the test in pipe_check() function.
+>      -Use for_each_pipe_with_single_output() instead of getting output
+>       separately.
+>      -Move igt_require before dynamic subtests.
+>      -Call prepare_crtc once per pipe.
+> 
+> Signed-off-by: Karthik B S <karthik.b.s@intel.com>
+> ---
+>   tests/kms_plane_alpha_blend.c | 180 ++++++++++++++++++++++------------
+>   1 file changed, 118 insertions(+), 62 deletions(-)
+> 
+> diff --git a/tests/kms_plane_alpha_blend.c b/tests/kms_plane_alpha_blend.c
+> index bd064d1e..4daf08a4 100644
+> --- a/tests/kms_plane_alpha_blend.c
+> +++ b/tests/kms_plane_alpha_blend.c
+> @@ -466,15 +466,12 @@ static void coverage_premult_constant(data_t *data, enum pipe pipe, igt_plane_t
+>   	igt_pipe_crc_stop(data->pipe_crc);
+>   }
+>   
+> -static void run_test_on_pipe_planes(data_t *data, enum pipe pipe, bool blend,
+> -				    bool must_multiply,
+> +static void run_test_on_pipe_planes(data_t *data, enum pipe pipe, igt_output_t *output,
+> +				    bool blend, bool must_multiply,
+>   				    void(*test)(data_t *, enum pipe, igt_plane_t *))
+>   {
+>   	igt_display_t *display = &data->display;
+> -	igt_output_t *output = igt_get_single_output_for_pipe(display, pipe);
+>   	igt_plane_t *plane;
+> -	bool found = false;
+> -	bool multiply = false;
+>   
+>   	for_each_plane_on_pipe(display, pipe, plane) {
+>   		if (!igt_plane_has_prop(plane, IGT_PLANE_ALPHA))
+> @@ -483,15 +480,11 @@ static void run_test_on_pipe_planes(data_t *data, enum pipe pipe, bool blend,
+>   		if (blend && !igt_plane_has_prop(plane, IGT_PLANE_PIXEL_BLEND_MODE))
+>   			continue;
+>   
+> -		prepare_crtc(data, output, pipe);
+> -
+>   		/* reset plane alpha properties between each plane */
+>   		reset_alpha(display, pipe);
+>   
+> -		found = true;
+>   		if (must_multiply && !has_multiplied_alpha(data, plane))
+>   			continue;
+> -		multiply = true;
+>   
+>   		igt_info("Testing plane %u\n", plane->index);
+>   		test(data, pipe, plane);
+> @@ -500,74 +493,139 @@ static void run_test_on_pipe_planes(data_t *data, enum pipe pipe, bool blend,
+>   
+>   	igt_output_set_pipe(output, PIPE_NONE);
+>   	igt_display_commit2(display, COMMIT_ATOMIC);
+> -
+> -	igt_require_f(found, "No planes with %s property found\n",
+> -		      blend ? "pixel blending mode" : "alpha");
+> -	igt_require_f(multiply, "Multiplied (plane x pixel) alpha not available\n");
+>   }
+>   
+> -static void run_subtests(data_t *data, enum pipe pipe)
+> +static const struct {
+> +	const char *name;
+> +	void (*test)(data_t *, enum pipe, igt_plane_t *);
+> +	bool blend;
+> +	bool must_multiply;
+> +	const char *desc;
+> +} subtests[] = {
+> +	{ .name = "alpha-basic",
+> +	  .test = basic_alpha,
+> +	  .blend = false,
+> +	  .must_multiply = true,
+> +	  .desc = "Tests basic plane alpha properties.",
+> +	},
+> +	{ .name = "alpha-7efc",
+> +	  .test = alpha_7efc,
+> +	  .blend = false,
+> +	  .must_multiply = true,
+> +	  .desc = "Uses alpha values 0x7e and 0xfc to validate fg.alpha and "
+> +		  "plane_alpha are swappable on pre-multiplied blend mode.",
+> +	},
+> +	{ .name = "coverage-7efc",
+> +	  .test = coverage_7efc,
+> +	  .blend = true,
+> +	  .must_multiply = true,
+> +	  .desc = "Uses alpha values 0x7e and 0xfc to validate fg.alpha and "
+> +		  "plane_alpha are swappable on coverage blend mode.",
+> +	},
+> +	{ .name = "coverage-vs-premult-vs-constant",
+> +	  .test = coverage_premult_constant,
+> +	  .blend = true,
+> +	  .must_multiply = false,
+> +	  .desc = "Tests pipe coverage blending properties.",
+> +	},
+> +	{ .name = "alpha-transparent-fb",
+> +	  .test = argb_transparent,
+> +	  .blend = false,
+> +	  .must_multiply = false,
+> +	  .desc = "Tests the alpha property with transparent fb.",
+> +	},
+> +	{ .name = "alpha-opaque-fb",
+> +	  .test = argb_opaque,
+> +	  .blend = false,
+> +	  .must_multiply = false,
+> +	  .desc = "Tests alpha properties with opaque fb.",
+> +	},
+> +	{ .name = "constant-alpha-min",
+> +	  .test = constant_alpha_min,
+> +	  .blend = true,
+> +	  .must_multiply = false,
+> +	  .desc = "Tests plane alpha and blending properties with minimum alpha value.",
+> +	},
+> +	{ .name = "constant-alpha-mid",
+> +	  .test = constant_alpha_mid,
+> +	  .blend = true,
+> +	  .must_multiply = false,
+> +	  .desc = "Tests plane alpha and blending properties with medium alpha value.",
+> +	},
+> +	{ .name = "constant-alpha-max",
+> +	  .test = constant_alpha_max,
+> +	  .blend = true,
+> +	  .must_multiply = false,
+> +	  .desc = "Tests plane alpha and blending properties with maximum alpha value.",
+> +	},
+> +};
+> +
+> +static bool pipe_check(data_t *data, enum pipe pipe,
+> +		       bool blend, bool must_multiply)
+>   {
+> -	igt_fixture {
+> -		bool found = false;
+> -		igt_plane_t *plane;
+> -
+> -		igt_display_require_output_on_pipe(&data->display, pipe);
+> -		for_each_plane_on_pipe(&data->display, pipe, plane) {
+> -			if (!igt_plane_has_prop(plane, IGT_PLANE_ALPHA))
+> -				continue;
+> -
+> -			found = true;
+> -			break;
+> -		}
+> +	igt_display_t *display = &data->display;
+> +	igt_plane_t *plane;
+> +	bool plane_alpha = false, plane_blend = false, multiply = false;
+>   
+> -		igt_require_f(found, "Found no plane on pipe %s with alpha blending supported\n",
+> -			      kmstest_pipe_name(pipe));
+> -	}
+> +	igt_display_require_output_on_pipe(display, pipe);
+> +	for_each_plane_on_pipe(display, pipe, plane) {
+> +		if (!igt_plane_has_prop(plane, IGT_PLANE_ALPHA))
+> +			continue;
+> +		plane_alpha = true;
+>   
+> -	igt_describe("Tests basic plane alpha properties.");
+> -	igt_subtest_f("pipe-%s-alpha-basic", kmstest_pipe_name(pipe))
+> -		run_test_on_pipe_planes(data, pipe, false, true, basic_alpha);
+> +		if (blend && !igt_plane_has_prop(plane, IGT_PLANE_PIXEL_BLEND_MODE))
+> +			continue;
+> +		plane_blend = true;
+>   
+> -	igt_describe("Uses alpha values 0x7e and 0xfc to validate fg.alpha and "
+> -		     "plane_alpha are swappable on pre-multiplied blend mode.");
+> -	igt_subtest_f("pipe-%s-alpha-7efc", kmstest_pipe_name(pipe))
+> -		run_test_on_pipe_planes(data, pipe, false, true, alpha_7efc);
+> +		/* reset plane alpha properties between each plane */
+> +		reset_alpha(display, pipe);
+>   
+> -	igt_describe("Uses alpha values 0x7e and 0xfc to validate fg.alpha and "
+> -		     "plane_alpha are swappable on coverage blend mode.");
+> -	igt_subtest_f("pipe-%s-coverage-7efc", kmstest_pipe_name(pipe))
+> -		run_test_on_pipe_planes(data, pipe, true, true, coverage_7efc);
+> +		if (must_multiply && !has_multiplied_alpha(data, plane))
+> +			continue;
+> +		multiply = true;
+>   
+> -	igt_describe("Tests pipe coverage blending properties.");
+> -	igt_subtest_f("pipe-%s-coverage-vs-premult-vs-constant", kmstest_pipe_name(pipe))
+> -		run_test_on_pipe_planes(data, pipe, true, false, coverage_premult_constant);
+> +		break;
+> +	}
+>   
+> -	igt_describe("Tests the alpha property with transparent fb.");
+> -	igt_subtest_f("pipe-%s-alpha-transparent-fb", kmstest_pipe_name(pipe))
+> -		run_test_on_pipe_planes(data, pipe, false, false, argb_transparent);
+> +	if (!plane_alpha || !plane_blend || !multiply) {
+> +		if (!plane_alpha)
+> +			igt_debug("No planes with alpha property found\n");
+> +		if (!plane_blend)
+> +			igt_debug("No planes with plane blending mode property found\n");
+--------------------------------------------------^
+pixel blending mode?
 
---g2rb35otyynmp2mh
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+> +		if (!multiply)
+> +			igt_debug("Multiplied (plane x pixel) alpha not available\n");
+> +
+> +		return false;
+> +	} else {
+> +		return true;
+> +	}
+> +}
+>   
+> -	igt_describe("Tests alpha properties with opaque fb.");
+> -	igt_subtest_f("pipe-%s-alpha-opaque-fb", kmstest_pipe_name(pipe))
+> -		run_test_on_pipe_planes(data, pipe, false, false, argb_opaque);
+> +static void run_subtests(data_t *data)
+> +{
+> +	igt_output_t *output;
+> +	enum pipe pipe;
+>   
+> -	igt_describe("Tests plane alpha and blending properties with minimum alpha value.");
+> -	igt_subtest_f("pipe-%s-constant-alpha-min", kmstest_pipe_name(pipe))
+> -		run_test_on_pipe_planes(data, pipe, true, false, constant_alpha_min);
+> +	for (int i = 0; i < ARRAY_SIZE(subtests); i++) {
+> +		igt_describe_f("%s\n", subtests[i].desc);
+>   
+> -	igt_describe("Tests plane alpha and blending properties with medium alpha value");
+> -	igt_subtest_f("pipe-%s-constant-alpha-mid", kmstest_pipe_name(pipe))
+> -		run_test_on_pipe_planes(data, pipe, true, false, constant_alpha_mid);
+> +		igt_subtest_with_dynamic(subtests[i].name) {
+> +			for_each_pipe_with_single_output(&data->display, pipe, output) {
+> +				prepare_crtc(data, output, pipe);
 
-On 09/21, Ville Syrj=E4l=E4 wrote:
-> On Tue, Sep 20, 2022 at 03:32:39PM +0530, Modem, Bhanuprakash wrote:
-> > On Mon-19-09-2022 09:24 pm, Melissa Wen wrote:
-> > > On 09/01, Modem, Bhanuprakash wrote:
-> > >> On Wed-31-08-2022 03:41 pm, Melissa Wen wrote:
-> > >>> In test_pipe_degamma/gamma/ctm, igt_assert_crc_equal() was replaced=
- by
-> > >>>
-> > >>> ret =3D !igt_skip_crc_compare || igt_check_crc_equal()
-> > >>> and then igt_assert(ret)
-> > >>>
-> > >>> where igt_check_crc_equal returns !mismatch, and therefore we can
-> > >>> translate as:
-> > >>>
-> > >>> ret =3D !igt_skip_crc_compare || !mismatch
-> > >>>
-> > >>> However, the original igt_assert_crc_equal() assertion does:
-> > >>>
-> > >>> igt_assert(!mismatch || igt_skip_crc_compare)
-> > >>>
-> > >>> That means, the replacement changes the original assertion. Moreove=
-r,
-> > >>> negating `igt_skip_crc_compare` makes the test assertion to be alwa=
-ys
-> > >>> true (sucessful) by default and reverses the logic of
-> > >>> --skip-crc-compare.
-> > >>>
-> > >>> Fixes: d61e4598142 ("tests/kms_color: Convert tests to dynamic")
-> > >>> Signed-off-by: Melissa Wen <mwen@igalia.com>
-> > >>
-> > >> LGTM
-> > >> Reviewed-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-> > >>
-> > >> - Bhanu
-> > >=20
-> > > Thanks for reviewing, Bhanu.
-> > >=20
-> > > Siqueira,
-> > >=20
-> > > Is it okay from AMD side? If so, can you apply it?
-> >=20
-> > Applied.
->=20
-> It did _not_ pass CI and so should not have been pushed!
+After completion of the test, we need to remove all fbs created by 
+prepare_crtc(), right?
 
-Hi Ville,
+Apart from this, this patch LGTM.
 
-So, this change "not passed" because the test was not actually assessing
-the CRC results (i.e. !igt_skip_crc_compare makes the assertion always
-successful - a false PASS). In this context, I think CI testlist should be
-updated, instead of not applying this change, right?
+- Bhanu
 
-BR,
-
-Melissa
-
->=20
-> --=20
-> Ville Syrj=E4l=E4
-> Intel
-
---g2rb35otyynmp2mh
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEEd8WOo/JViG+Tu+XIwqF3j0dLehwFAmMq6RUACgkQwqF3j0dL
-ehw5hxAApaWqFzzE9bSl10wGwTt6Z+bR3VRMreNpFN65BkdoYA/GnRh/HEIKuzbZ
-/BoJ+IEueQswPPgoqM0X/AYRZuK7s03pjhRKe32bWWC2irg7iwpyUlgtpvQH7CFr
-k5TxxASRfgHMhe25aWiceYruH+M/+I0H1luToPVW9bFVWDKkzNrzL674tM6IXUYZ
-D0WgKcSY2IOWbIAyxawUDNClqc2IWUauuYEorXv1V3jdWprpboJAY9GiOLQzolyj
-agNqM4YJ8U7MH7xN3BYIpYbh7D4HP3S/WosAcNlUvA7R/0pThO0hLxA6PjhbIIfx
-YTDZd5KOVmcdUM4/cPMILQ8ry3O9/LsxpEPuYyAnjOBRtQdoqgbau4b7FrzX2GO5
-gTkiGi6vTg/RYlSXWG+hEXyL2nP1STOei2spDlhgqB7Sjv2mA56DMN2BG7/a8RZO
-y0IdtoVL7kLuTe4tUzZnc4gdjLbZU7DmW4DsYK51QK4oU/tQziSEcp3st5UaNxG4
-CcShlKECvqjkLrI2YUcegLtTZPcaLZtgEIzpr6i/+lQo3qrUKflaDdNg6PCLdEWN
-DQvN1fwG55SpzQMe/YJaqZ8xTp3yFDLQP6lsSzNV1ubQF2VMA6nDf3OuQTS0r+DM
-71JDyyPX9u+KiEkcGtIL0v7AHhog359TLEe9zeJQkaK62ddUx0Q=
-=6GWB
------END PGP SIGNATURE-----
-
---g2rb35otyynmp2mh--
+> +				if (!pipe_check(data, pipe, subtests[i].blend, subtests[i].must_multiply))
+> +					continue;
+>   
+> -	igt_describe("Tests plane alpha and blending properties with maximum alpha value");
+> -	igt_subtest_f("pipe-%s-constant-alpha-max", kmstest_pipe_name(pipe))
+> -		run_test_on_pipe_planes(data, pipe, true, false, constant_alpha_max);
+> +				igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), output->name)
+> +					run_test_on_pipe_planes(data, pipe, output, subtests[i].blend,
+> +								subtests[i].must_multiply, subtests[i].test);
+> +			}
+> +		}
+> +	}
+>   }
+>   
+>   igt_main
+>   {
+>   	data_t data = {};
+> -	enum pipe pipe;
+>   
+>   	igt_fixture {
+>   		data.gfx_fd = drm_open_driver_master(DRIVER_ANY);
+> @@ -576,9 +634,7 @@ igt_main
+>   		igt_require(data.display.is_atomic);
+>   	}
+>   
+> -	for_each_pipe_static(pipe)
+> -		igt_subtest_group
+> -			run_subtests(&data, pipe);
+> +	run_subtests(&data);
+>   
+>   	igt_fixture {
+>   		igt_display_reset(&data.display);
