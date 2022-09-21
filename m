@@ -1,18 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3073810E999
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E4F4C10E993
  for <igt-dev@lists.freedesktop.org>; Wed, 21 Sep 2022 14:21:07 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Wed, 21 Sep 2022 19:48:15 +0530
-Message-Id: <20220921141816.1917715-3-bhanuprakash.modem@intel.com>
+Date: Wed, 21 Sep 2022 19:48:16 +0530
+Message-Id: <20220921141816.1917715-4-bhanuprakash.modem@intel.com>
 In-Reply-To: <20220921141816.1917715-1-bhanuprakash.modem@intel.com>
 References: <20220921141816.1917715-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V2 2/3] tests/kms_vrr: Add a test for VRR range
- capability
+Subject: [igt-dev] [i-g-t V2 3/3] HAX: Add VRR negative tests to BAT
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,145 +22,24 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-VRR range capability is parsed from EDID and reported to debugfs.
-The new tests check if the parsing is correct by reading it from
-EDID.
-
-Cc: Manasi Navare <manasi.d.navare@intel.com>
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/kms_vrr.c | 91 ++++++++++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 90 insertions(+), 1 deletion(-)
+ tests/intel-ci/fast-feedback.testlist | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/tests/kms_vrr.c b/tests/kms_vrr.c
-index 259ba7c7..daacbb62 100644
---- a/tests/kms_vrr.c
-+++ b/tests/kms_vrr.c
-@@ -24,6 +24,7 @@
- #include "sw_sync.h"
- #include <fcntl.h>
- #include <signal.h>
-+#include "igt_edid.h"
- 
- #define NSECS_PER_SEC (1000000000ull)
- 
-@@ -46,6 +47,7 @@ enum {
- 	TEST_SUSPEND = 1 << 2,
- 	TEST_FLIPLINE = 1 << 3,
- 	TEST_NEGATIVE = 1 << 4,
-+	TEST_RANGE = 1 << 5,
- };
- 
- typedef struct range {
-@@ -495,6 +497,87 @@ test_negative_basic(data_t *data, enum pipe pipe,
- 	igt_remove_fb(data->drm_fd, &data->fb0);
- }
- 
-+static struct detailed_data_monitor_range
-+detailed_timing_get_monitor_range(const struct edid *edid)
-+{
-+       uint8_t i;
-+       struct detailed_data_monitor_range mr = {0, 0};
-+
-+       for (i = 0; i < DETAILED_TIMINGS_LEN; i++) {
-+               struct detailed_non_pixel *other_data;
-+               struct detailed_timing timings = edid->detailed_timings[i];
-+
-+               /*
-+                * From EDID Display Range Limits Descriptor specs:
-+                *
-+                * Bytes        Description
-+                *  0–1         00 00 = Display Descriptor
-+                *   2          00 = reserved
-+                *   3          FD = Display Range Limits Descriptor
-+                *   10         01 = No timing information.
-+                *
-+                */
-+               if (timings.pixel_clock[0] != 0x00 ||
-+                   timings.pixel_clock[1] != 0x00)
-+                       continue;
-+
-+               other_data = &timings.data.other_data;
-+               if (other_data->pad1 != 0x00 ||
-+                   other_data->type != EDID_DETAIL_MONITOR_RANGE)
-+                       continue;
-+
-+               /* Check for flag range limits only. */
-+               if (other_data->data.range.flags != 0x01)
-+                       continue;
-+
-+               mr = other_data->data.range;
-+               break;
-+       }
-+
-+       return mr;
-+}
-+
-+static void
-+test_vrr_range(data_t *data, enum pipe pipe,
-+		igt_output_t *output, uint32_t flags)
-+{
-+	uint64_t edid_blob_id;
-+	const struct edid *edid;
-+	struct detailed_data_monitor_range expected_range;
-+	drmModePropertyBlobPtr edid_blob = NULL;
-+	drmModeConnector *connector = output->config.connector;
-+
-+	igt_assert(kmstest_get_property(data->drm_fd, connector->connector_id,
-+					DRM_MODE_OBJECT_CONNECTOR, "EDID", NULL,
-+					&edid_blob_id, NULL));
-+	edid_blob = drmModeGetPropertyBlob(data->drm_fd, edid_blob_id);
-+	igt_require_f(edid_blob, "EDID blob is NULL\n");
-+
-+	edid = (const struct edid *) edid_blob->data;
-+	igt_assert(edid);
-+
-+	prepare_negative_test(data, output, pipe);
-+	expected_range = detailed_timing_get_monitor_range(edid);
-+	drmModeFreePropertyBlob(edid_blob);
-+
-+	igt_assert_f(data->range.min == expected_range.min_vfreq &&
-+		     data->range.max == expected_range.max_vfreq,
-+		     "Expecting VRR range %d-%d, got %d-%d\n",
-+		     expected_range.min_vfreq, expected_range.max_vfreq,
-+		     data->range.min, data->range.max);
-+
-+	igt_info("Monitor range from EDID: %d-%d, Kernel parsed VRR range as: %d-%d\n",
-+			expected_range.min_vfreq, expected_range.max_vfreq,
-+			data->range.min, data->range.max);
-+
-+	/* Clean-up */
-+	igt_plane_set_fb(data->primary, NULL);
-+	igt_output_set_pipe(output, PIPE_NONE);
-+	set_vrr_on_pipe(data, pipe, false);
-+
-+	igt_remove_fb(data->drm_fd, &data->fb0);
-+}
-+
- /* Runs tests on outputs that are VRR capable. */
- static void
- run_vrr_test(data_t *data, test_t test, uint32_t flags)
-@@ -511,7 +594,8 @@ run_vrr_test(data_t *data, test_t test, uint32_t flags)
- 		if ((flags & TEST_NEGATIVE) && vrr_capable(output))
- 			continue;
- 
--		if ((flags & ~TEST_NEGATIVE) && !vrr_capable(output))
-+		/* Range test doesn't care about VRR capability. */
-+		if ((flags & ~(TEST_RANGE | TEST_NEGATIVE)) && !vrr_capable(output))
- 			continue;
- 
- 		for_each_pipe(&data->display, pipe) {
-@@ -562,6 +646,11 @@ igt_main
- 	igt_subtest_with_dynamic("negative-basic")
- 		run_vrr_test(&data, test_negative_basic, TEST_NEGATIVE);
- 
-+	igt_describe("Read the monitor RR range from monitor and make sure that "
-+		     "Kernel is parsing it properly.");
-+	igt_subtest_with_dynamic("parse-vrr-range")
-+		run_vrr_test(&data, test_vrr_range, TEST_RANGE);
-+
- 	igt_fixture {
- 		igt_display_fini(&data.display);
- 	}
+diff --git a/tests/intel-ci/fast-feedback.testlist b/tests/intel-ci/fast-feedback.testlist
+index bd5538a0..19ab2f43 100644
+--- a/tests/intel-ci/fast-feedback.testlist
++++ b/tests/intel-ci/fast-feedback.testlist
+@@ -123,6 +123,9 @@ igt@kms_psr@cursor_plane_move
+ igt@kms_psr@sprite_plane_onoff
+ igt@kms_psr@primary_mmap_gtt
+ igt@kms_setmode@basic-clone-single-crtc
++igt@kms_vrr@flip-basic
++igt@kms_vrr@negative-basic
++igt@kms_vrr@parse-vrr-range
+ igt@i915_pm_backlight@basic-brightness
+ igt@i915_pm_rpm@basic-pci-d3-state
+ igt@i915_pm_rpm@basic-rte
 -- 
 2.37.3
