@@ -1,21 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C229F10E09D
- for <igt-dev@lists.freedesktop.org>; Thu, 22 Sep 2022 06:18:10 +0000 (UTC)
-Date: Thu, 22 Sep 2022 09:18:06 +0300
-From: Ville =?iso-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
-To: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Message-ID: <Yyv+HrGb0NlF0Sdz@intel.com>
-References: <20220922051142.2003118-1-bhanuprakash.modem@intel.com>
- <20220922051142.2003118-9-bhanuprakash.modem@intel.com>
- <Yyv3fowHUEsbY9cN@intel.com>
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 44A5E10E92D
+ for <igt-dev@lists.freedesktop.org>; Wed, 21 Sep 2022 15:49:47 +0000 (UTC)
+From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+To: igt-dev@lists.freedesktop.org, ville.syrjala@linux.intel.com,
+ mwen@igalia.com
+Date: Wed, 21 Sep 2022 21:16:57 +0530
+Message-Id: <20220921154657.1947293-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <Yyv3fowHUEsbY9cN@intel.com>
-Subject: Re: [igt-dev] [i-g-t V2 8/8] tests/kms_color: Fix crc compare check
- in CTM tests
+Subject: [igt-dev] [i-g-t] Revert "tests/kms_color: fix crc assert condition"
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,55 +17,56 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org, "Sarvela, Tomi P" <tomi.p.sarvela@intel.com>,
- Petri Latvala <petri.latvala@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Thu, Sep 22, 2022 at 08:49:50AM +0300, Ville Syrjälä wrote:
-> On Thu, Sep 22, 2022 at 10:41:42AM +0530, Bhanuprakash Modem wrote:
-> > !igt_skip_crc_compare || igt_check_crc_equal() is always true
-> > which is not correct.
-> > 
-> > Fixes: 1a42910d
-> 
-> Hang on. Now you're saying the regression in detecting actual failures
-> was introduced in commit 1a42910d4f8b ("tests/kms_color: Don't opencode
-> igt_check_crc_equal()") rather than the dynamic subtest conversion
-> commit (which is what the previous Fixes line claimed)?
-> 
-> So apparently the test may have been broken for 1.5 years now and
-> no one realize it.
+This reverts commit c27dcb9e0baca05abce8527c245b513f7a8f1059.
 
-Looks like the tests were in fact failing (at least on some hw)
-before and CI did notice the change in the behaviour:
-https://patchwork.freedesktop.org/series/88075/#rev2
+Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+---
+ tests/kms_color.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-But it did not raise any kind of stink about that, and still
-flagged the whole thing as an overall success. I presume
-Lyude neglected to look at the individual results in any detail
-once the overall succees was indicated (kinda dangerous thing
-to do with our CI it seems).
-
-So why did CI not present that change in behaviour more
-prominently?
-
-Is it because we went from FAIL to apparent SUCCESS
-and that's always considered sort of fine. I suppose flagging
-the thing a failure because something seems to have gotten
-fixed would be weird, but maybe it should at least present
-such changes in behaviour at the top of the list.
-
-Or is it because it attributed that change to these bugs
-https://gitlab.freedesktop.org/drm/intel/-/issues/1149
-https://gitlab.freedesktop.org/drm/intel/-/issues/315
-Does CI consider everything with an associated bug a potential
-ping pong and just basically hides any change it the result
-in that big list of CI noise in the report (which this series 
-hit a lot)? If so we need to get that fixed. Expected fail
-should be handled differently from a known ping pong.
-
+diff --git a/tests/kms_color.c b/tests/kms_color.c
+index ab285af8..c202547e 100644
+--- a/tests/kms_color.c
++++ b/tests/kms_color.c
+@@ -99,7 +99,7 @@ static bool test_pipe_degamma(data_t *data,
+ 	 * Verify that the CRC of the software computed output is
+ 	 * equal to the CRC of the degamma LUT transformation output.
+ 	 */
+-	ret = igt_skip_crc_compare || igt_check_crc_equal(&crc_fullgamma, &crc_fullcolors);
++	ret = !igt_skip_crc_compare || igt_check_crc_equal(&crc_fullgamma, &crc_fullcolors);
+ 
+ 	disable_degamma(primary->pipe);
+ 	igt_plane_set_fb(primary, NULL);
+@@ -188,7 +188,7 @@ static bool test_pipe_gamma(data_t *data,
+ 	 * Verify that the CRC of the software computed output is
+ 	 * equal to the CRC of the gamma LUT transformation output.
+ 	 */
+-	ret = igt_skip_crc_compare || igt_check_crc_equal(&crc_fullgamma, &crc_fullcolors);
++	ret = !igt_skip_crc_compare || igt_check_crc_equal(&crc_fullgamma, &crc_fullcolors);
+ 
+ 	disable_gamma(primary->pipe);
+ 	igt_plane_set_fb(primary, NULL);
+@@ -289,7 +289,7 @@ static bool test_pipe_legacy_gamma(data_t *data,
+ 	 * Verify that the CRC of the software computed output is
+ 	 * equal to the CRC of the gamma LUT transformation output.
+ 	 */
+-	ret = igt_skip_crc_compare || igt_check_crc_equal(&crc_fullgamma, &crc_fullcolors);
++	ret = !igt_skip_crc_compare || igt_check_crc_equal(&crc_fullgamma, &crc_fullcolors);
+ 
+ 	/* Reset output. */
+ 	for (i = 1; i < legacy_lut_size; i++)
+@@ -534,7 +534,7 @@ static bool test_pipe_ctm(data_t *data,
+ 	 * Verify that the CRC of the software computed output is
+ 	 * equal to the CRC of the CTM matrix transformation output.
+ 	 */
+-	ret &= igt_skip_crc_compare || igt_check_crc_equal(&crc_software, &crc_hardware);
++	ret &= !igt_skip_crc_compare || igt_check_crc_equal(&crc_software, &crc_hardware);
+ 
+ 	igt_plane_set_fb(primary, NULL);
+ 	igt_output_set_pipe(output, PIPE_NONE);
 -- 
-Ville Syrjälä
-Intel
+2.37.3
