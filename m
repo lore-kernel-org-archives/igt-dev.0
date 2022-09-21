@@ -1,16 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D9B8710E3B9
- for <igt-dev@lists.freedesktop.org>; Wed, 21 Sep 2022 07:12:45 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 367EF10E891
+ for <igt-dev@lists.freedesktop.org>; Wed, 21 Sep 2022 07:12:46 +0000 (UTC)
 From: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Wed, 21 Sep 2022 00:12:15 -0700
-Message-Id: <20220921071220.27837-4-niranjana.vishwanathapura@intel.com>
+Date: Wed, 21 Sep 2022 00:12:17 -0700
+Message-Id: <20220921071220.27837-6-niranjana.vishwanathapura@intel.com>
 In-Reply-To: <20220921071220.27837-1-niranjana.vishwanathapura@intel.com>
 References: <20220921071220.27837-1-niranjana.vishwanathapura@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [RFC v2 3/8] lib/vm_bind: Add vm_bind mode support for VM
+Subject: [igt-dev] [RFC v2 5/8] lib/vm_bind: Add
+ prime_handle_to_fd_no_assert()
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,138 +27,152 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: "Vishwanathapura, Niranjana" <niranjana.vishwanathapura@intel.com>
 
-Add required library interfaces to create VM in
-vm_bind mode and assign the VM to a context.
+Make prime_handle_to_fd_no_assert() as a library interface
+as VM_BIND functionality will also be using it.
 
 Signed-off-by: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
 ---
- lib/i915/gem_context.c | 24 ++++++++++++++++++++++++
- lib/i915/gem_context.h |  3 +++
- lib/i915/gem_vm.c      | 31 ++++++++++++++++++++++++++-----
- lib/i915/gem_vm.h      |  3 ++-
- 4 files changed, 55 insertions(+), 6 deletions(-)
+ lib/ioctl_wrappers.c | 39 +++++++++++++++++++++++++++++++++------
+ lib/ioctl_wrappers.h |  1 +
+ tests/prime_mmap.c   | 26 ++++----------------------
+ 3 files changed, 38 insertions(+), 28 deletions(-)
 
-diff --git a/lib/i915/gem_context.c b/lib/i915/gem_context.c
-index fe989a8d1c..2d06b41980 100644
---- a/lib/i915/gem_context.c
-+++ b/lib/i915/gem_context.c
-@@ -517,3 +517,27 @@ uint32_t gem_context_create_for_class(int i915,
- 	*count = i;
- 	return p.ctx_id;
- }
-+
-+uint32_t gem_context_get_vm(int fd, uint32_t ctx_id)
-+{
-+	struct drm_i915_gem_context_param p = {
-+		.param = I915_CONTEXT_PARAM_VM,
-+		.ctx_id = ctx_id,
-+	};
-+
-+	gem_context_get_param(fd, &p);
-+	igt_assert(p.value);
-+
-+	return p.value;
-+}
-+
-+void gem_context_set_vm(int fd, uint32_t ctx_id, uint32_t vm_id)
-+{
-+	struct drm_i915_gem_context_param p = {
-+		.param = I915_CONTEXT_PARAM_VM,
-+		.ctx_id = ctx_id,
-+		.value = vm_id,
-+	};
-+
-+	gem_context_set_param(fd, &p);
-+}
-diff --git a/lib/i915/gem_context.h b/lib/i915/gem_context.h
-index 505d55724e..2a2247fe10 100644
---- a/lib/i915/gem_context.h
-+++ b/lib/i915/gem_context.h
-@@ -63,4 +63,7 @@ void gem_context_set_persistence(int i915, uint32_t ctx, bool state);
+diff --git a/lib/ioctl_wrappers.c b/lib/ioctl_wrappers.c
+index ac37b6bb43..bf7f5f430c 100644
+--- a/lib/ioctl_wrappers.c
++++ b/lib/ioctl_wrappers.c
+@@ -1153,28 +1153,55 @@ void gem_require_mocs_registers(int fd)
+ /* prime */
  
- bool gem_context_has_engine(int fd, uint32_t ctx, uint64_t engine);
- 
-+uint32_t gem_context_get_vm(int fd, uint32_t ctx_id);
-+void gem_context_set_vm(int fd, uint32_t ctx_id, uint32_t vm_id);
-+
- #endif /* GEM_CONTEXT_H */
-diff --git a/lib/i915/gem_vm.c b/lib/i915/gem_vm.c
-index 9a022a56c7..ee3c65d06e 100644
---- a/lib/i915/gem_vm.c
-+++ b/lib/i915/gem_vm.c
-@@ -48,7 +48,7 @@ bool gem_has_vm(int i915)
- {
- 	uint32_t vm_id = 0;
- 
--	__gem_vm_create(i915, &vm_id);
-+	__gem_vm_create(i915, 0, &vm_id);
- 	if (vm_id)
- 		gem_vm_destroy(i915, vm_id);
- 
-@@ -67,9 +67,9 @@ void gem_require_vm(int i915)
- 	igt_require(gem_has_vm(i915));
- }
- 
--int __gem_vm_create(int i915, uint32_t *vm_id)
-+int __gem_vm_create(int i915, uint32_t flags, uint32_t *vm_id)
- {
--       struct drm_i915_gem_vm_control ctl = {};
-+       struct drm_i915_gem_vm_control ctl = { .flags = flags };
-        int err = 0;
- 
-        if (igt_ioctl(i915, DRM_IOCTL_I915_GEM_VM_CREATE, &ctl) == 0) {
-@@ -88,7 +88,8 @@ int __gem_vm_create(int i915, uint32_t *vm_id)
-  * @i915: open i915 drm file descriptor
+ /**
+- * prime_handle_to_fd:
++ * prime_handle_to_fd_no_assert:
+  * @fd: open i915 drm file descriptor
+  * @handle: file-private gem buffer object handle
++ * @flags: DRM_IOCTL_PRIME_HANDLE_TO_FD ioctl flags
++ * @fd_out: place holder for output file handle
   *
-  * This wraps the VM_CREATE ioctl, which is used to allocate a new
-- * address space for use with GEM contexts.
-+ * address space for use with GEM contexts, with legacy execbuff
-+ * method of binding.
+  * This wraps the PRIME_HANDLE_TO_FD ioctl, which is used to export a gem buffer
+  * object into a global (i.e. potentially cross-device) dma-buf file-descriptor
+  * handle.
   *
-  * Returns: The id of the allocated address space.
+- * Returns: The created dma-buf fd handle.
++ * Returns: 0 on sucess, error otherwise. Upon success, it returns
++ *          the created dma-buf fd handle in fd_out.
   */
-@@ -96,7 +97,27 @@ uint32_t gem_vm_create(int i915)
+-int prime_handle_to_fd(int fd, uint32_t handle)
++int prime_handle_to_fd_no_assert(int fd, uint32_t handle, int flags, int *fd_out)
  {
- 	uint32_t vm_id;
+ 	struct drm_prime_handle args;
++	int ret;
  
--	igt_assert_eq(__gem_vm_create(i915, &vm_id), 0);
-+	igt_assert_eq(__gem_vm_create(i915, 0, &vm_id), 0);
-+	igt_assert(vm_id != 0);
-+
-+	return vm_id;
+ 	memset(&args, 0, sizeof(args));
+ 	args.handle = handle;
+-	args.flags = DRM_CLOEXEC;
++	args.flags = flags;
+ 	args.fd = -1;
+ 
+-	do_ioctl(fd, DRM_IOCTL_PRIME_HANDLE_TO_FD, &args);
++	ret = drmIoctl(fd, DRM_IOCTL_PRIME_HANDLE_TO_FD, &args);
++	if (ret)
++		ret = -errno;
++	*fd_out = args.fd;
+ 
+-	return args.fd;
++	return ret;
 +}
 +
 +/**
-+ * gem_vm_create_in_vm_bind_mode:
-+ * @i915: open i915 drm file descriptor
++ * prime_handle_to_fd:
++ * @fd: open i915 drm file descriptor
++ * @handle: file-private gem buffer object handle
 + *
-+ * This wraps the VM_CREATE ioctl with I915_VM_CREATE_FLAGS_USE_VM_BIND,
-+ * flag which is used to allocate a new address space for use with GEM contexts
-+ * with vm_bind mode of binding.
++ * This wraps the PRIME_HANDLE_TO_FD ioctl, which is used to export a gem buffer
++ * object into a global (i.e. potentially cross-device) dma-buf file-descriptor
++ * handle. It asserts that ioctl succeeds.
 + *
-+ * Returns: The id of the allocated address space.
++ * Returns: The created dma-buf fd handle.
 + */
-+uint32_t gem_vm_create_in_vm_bind_mode(int i915)
++int prime_handle_to_fd(int fd, uint32_t handle)
 +{
-+	uint32_t vm_id;
++	int dmabuf;
 +
-+	igt_assert_eq(__gem_vm_create(i915, I915_VM_CREATE_FLAGS_USE_VM_BIND, &vm_id), 0);
- 	igt_assert(vm_id != 0);
++	igt_assert_eq(prime_handle_to_fd_no_assert(fd, handle, DRM_CLOEXEC, &dmabuf), 0);
++
++	return dmabuf;
+ }
  
- 	return vm_id;
-diff --git a/lib/i915/gem_vm.h b/lib/i915/gem_vm.h
-index acbb663e65..6cf46d8876 100644
---- a/lib/i915/gem_vm.h
-+++ b/lib/i915/gem_vm.h
-@@ -31,7 +31,8 @@ bool gem_has_vm(int i915);
- void gem_require_vm(int i915);
+ /**
+diff --git a/lib/ioctl_wrappers.h b/lib/ioctl_wrappers.h
+index 223cd9160c..9f50a24153 100644
+--- a/lib/ioctl_wrappers.h
++++ b/lib/ioctl_wrappers.h
+@@ -143,6 +143,7 @@ struct local_dma_buf_sync {
+ #define LOCAL_DMA_BUF_BASE 'b'
+ #define LOCAL_DMA_BUF_IOCTL_SYNC _IOW(LOCAL_DMA_BUF_BASE, 0, struct local_dma_buf_sync)
  
- uint32_t gem_vm_create(int i915);
--int __gem_vm_create(int i915, uint32_t *vm_id);
-+uint32_t gem_vm_create_in_vm_bind_mode(int i915);
-+int __gem_vm_create(int i915, uint32_t flags, uint32_t *vm_id);
++int prime_handle_to_fd_no_assert(int fd, uint32_t handle, int flags, int *fd_out);
+ int prime_handle_to_fd(int fd, uint32_t handle);
+ #ifndef DRM_RDWR
+ #define DRM_RDWR O_RDWR
+diff --git a/tests/prime_mmap.c b/tests/prime_mmap.c
+index d53185ff10..4c76564907 100644
+--- a/tests/prime_mmap.c
++++ b/tests/prime_mmap.c
+@@ -298,24 +298,6 @@ test_dup(uint32_t region, int size)
+ 	close (dma_buf_fd);
+ }
  
- void gem_vm_destroy(int i915, uint32_t vm_id);
- int __gem_vm_destroy(int i915, uint32_t vm_id);
+-/* Used for error case testing to avoid wrapper */
+-static int prime_handle_to_fd_no_assert(uint32_t handle, int flags, int *fd_out)
+-{
+-	struct drm_prime_handle args;
+-	int ret;
+-
+-	args.handle = handle;
+-	args.flags = flags;
+-	args.fd = -1;
+-
+-	ret = drmIoctl(fd, DRM_IOCTL_PRIME_HANDLE_TO_FD, &args);
+-	if (ret)
+-		ret = errno;
+-	*fd_out = args.fd;
+-
+-	return ret;
+-}
+-
+ static bool has_userptr(void)
+ {
+ 	uint32_t handle = 0;
+@@ -346,9 +328,9 @@ test_userptr(uint32_t region, int size)
+ 	gem_userptr(fd, (uint32_t *)ptr, size, 0, 0, &handle);
+ 
+ 	/* export userptr */
+-	ret = prime_handle_to_fd_no_assert(handle, DRM_CLOEXEC, &dma_buf_fd);
++	ret = prime_handle_to_fd_no_assert(fd, handle, DRM_CLOEXEC, &dma_buf_fd);
+ 	if (ret) {
+-		igt_assert(ret == EINVAL || ret == ENODEV);
++		igt_assert(ret == -EINVAL || ret == -ENODEV);
+ 		goto free_userptr;
+ 	} else {
+ 		igt_assert_eq(ret, 0);
+@@ -376,7 +358,7 @@ test_errors(uint32_t region, int size)
+ 	/* Test for invalid flags */
+ 	handle = gem_create_in_memory_regions(fd, size, region);
+ 	for (i = 0; i < ARRAY_SIZE(invalid_flags); i++) {
+-		prime_handle_to_fd_no_assert(handle, invalid_flags[i], &dma_buf_fd);
++		prime_handle_to_fd_no_assert(fd, handle, invalid_flags[i], &dma_buf_fd);
+ 		igt_assert_eq(errno, EINVAL);
+ 		errno = 0;
+ 	}
+@@ -386,7 +368,7 @@ test_errors(uint32_t region, int size)
+ 	handle = gem_create_in_memory_regions(fd, size, region);
+ 	fill_bo(handle, size);
+ 	gem_close(fd, handle);
+-	prime_handle_to_fd_no_assert(handle, DRM_CLOEXEC, &dma_buf_fd);
++	prime_handle_to_fd_no_assert(fd, handle, DRM_CLOEXEC, &dma_buf_fd);
+ 	igt_assert(dma_buf_fd == -1 && errno == ENOENT);
+ 	errno = 0;
+ 
 -- 
 2.21.0.rc0.32.g243a4c7e27
