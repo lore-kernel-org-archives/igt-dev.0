@@ -1,20 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 124A710E938
- for <igt-dev@lists.freedesktop.org>; Wed, 21 Sep 2022 11:55:05 +0000 (UTC)
-Message-ID: <02c7428b-5234-6692-ad8e-24aad96d2ece@intel.com>
-Date: Wed, 21 Sep 2022 17:24:46 +0530
-Content-Language: en-US
-To: Karthik B S <karthik.b.s@intel.com>, <igt-dev@lists.freedesktop.org>
-References: <20220913090409.14006-1-karthik.b.s@intel.com>
- <20220913090409.14006-3-karthik.b.s@intel.com>
-From: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
-In-Reply-To: <20220913090409.14006-3-karthik.b.s@intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A821210E95C
+ for <igt-dev@lists.freedesktop.org>; Wed, 21 Sep 2022 13:58:06 +0000 (UTC)
+Date: Wed, 21 Sep 2022 15:58:01 +0200
+From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
+To: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Message-ID: <20220921155801.13c2de96@maurocar-mobl2>
+In-Reply-To: <20220921102940.15121-2-kamil.konieczny@linux.intel.com>
+References: <20220921102940.15121-1-kamil.konieczny@linux.intel.com>
+ <20220921102940.15121-2-kamil.konieczny@linux.intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t v3 2/2] tests/kms_content_protectin:
- Convert test to dynamic
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [igt-dev] [PATCH RFC i-g-t v1 1/2] tests/i915/gem_basic:
+ convert to multithreaded multi-GPUs
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,296 +21,184 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: Petri Latvala <petri.latvala@intel.com>, igt-dev@lists.freedesktop.org,
+ Andi Shyti <andi.shyti@linux.intel.com>,
+ Chris Wilson <chris.p.wilson@linux.intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Tue-13-09-2022 02:34 pm, Karthik B S wrote:
-> Covert the existing subtests to dynamic subtests at pipe/output level.
-> 
-> Signed-off-by: Karthik B S <karthik.b.s@intel.com>
-Reviewed-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Hi Kamil,
+
+On Wed, 21 Sep 2022 12:29:39 +0200
+Kamil Konieczny <kamil.konieczny@linux.intel.com> wrote:
+
+> This will convert basic tests to run on multi-GPU hardware
+> configuration. It will take effect when --device option will be
+> used and at least two devices will be found with a filter. When
+> there are no filtered ones or there is only one, tests will
+> fall through to old run.
+>=20
+> One method for use will be to extend filtered devices with '*'
+> or regex:
+>=20
+> sudo ./gem_basic --device=3Dpci:vendor=3Dintel,device=3Ddiscrete,card=3D*
+>=20
+> Pros: no change in tests names, no new tests added. Use restricted
+> to runs with suitable hw config.
+>=20
+> Cons: it can be hard to replicate failed tests or it can break
+> igt-framework in compliated use cases. It is also not clear how
+> to change this solution into clean macro for reuse.
+>=20
+> Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> Cc: Andi Shyti <andi.shyti@linux.intel.com>
+> Cc: Anna Karas <anna.karas@intel.com>
+> Cc: Chris Wilson <chris.p.wilson@linux.intel.com>
+> Cc: Dominik Grzegorzek <dominik.grzegorzek@intel.com>
+> Cc: Petri Latvala <petri.latvala@intel.com>
+> Cc: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
+> Cc: Zbigniew Kempczy=C5=84ski <zbigniew.kempczynski@intel.com>
 > ---
->   tests/kms_content_protection.c | 220 +++++++++++++++++++--------------
->   1 file changed, 126 insertions(+), 94 deletions(-)
-> 
-> diff --git a/tests/kms_content_protection.c b/tests/kms_content_protection.c
-> index eb59f3fe..aadc10af 100644
-> --- a/tests/kms_content_protection.c
-> +++ b/tests/kms_content_protection.c
-> @@ -487,12 +487,17 @@ test_content_protection(enum igt_commit_style s, int content_type)
->   {
->   	igt_display_t *display = &data.display;
->   	igt_output_t *output;
-> -	int valid_tests = 0;
-> +	enum pipe pipe;
->   
->   	if (data.cp_tests & CP_MEI_RELOAD)
->   		igt_require_f(igt_kmod_is_loaded("mei_hdcp"),
->   			      "mei_hdcp module is not loaded\n");
->   
-> +	if (data.cp_tests & CP_UEVENT) {
-> +		data.uevent_monitor = igt_watch_uevents();
-> +		igt_flush_uevents(data.uevent_monitor);
+>  tests/i915/gem_basic.c | 71 ++++++++++++++++++++++++++++++++++++++----
+>  1 file changed, 65 insertions(+), 6 deletions(-)
+>=20
+> diff --git a/tests/i915/gem_basic.c b/tests/i915/gem_basic.c
+> index 17ae190c..66413e60 100644
+> --- a/tests/i915/gem_basic.c
+> +++ b/tests/i915/gem_basic.c
+> @@ -38,6 +38,7 @@
+> =20
+>  #include "drm.h"
+>  #include "i915/gem_create.h"
+> +#include "igt_device_scan.h"
+> =20
+>  IGT_TEST_DESCRIPTION("Tests basic gem_create and gem_close IOCTLs");
+> =20
+> @@ -48,6 +49,7 @@ test_bad_close(int fd)
+>  	int ret;
+> =20
+>  	igt_info("Testing error return on bad close ioctl.\n");
+> +	igt_info("%s: pid: %d, tid: %lu, CPU: %d\n", __func__, getpid(), pthrea=
+d_self(), sched_getcpu());
+
+Hmm... perhaps we should add pid at igt_info(), for multi-GPU scenarios, e.=
+ g.
+when IGT was asked to run with more than one GPUs.
+
+Not sure if it makes sense to display tid/CPU here.
+
+> =20
+>  	close_bo.handle =3D 0x10101010;
+>  	ret =3D ioctl(fd, DRM_IOCTL_GEM_CLOSE, &close_bo);
+> @@ -61,6 +63,7 @@ test_create_close(int fd)
+>  	uint32_t handle;
+> =20
+>  	igt_info("Testing creating and closing an object.\n");
+> +	igt_info("%s: pid: %d, tid: %lu, CPU: %d\n", __func__, getpid(), pthrea=
+d_self(), sched_getcpu());
+> =20
+>  	handle =3D gem_create(fd, 16*1024);
+> =20
+> @@ -71,6 +74,7 @@ static void
+>  test_create_fd_close(int fd)
+>  {
+>  	igt_info("Testing closing with an object allocated.\n");
+> +	igt_info("%s: pid: %d, tid: %lu, CPU: %d\n", __func__, getpid(), pthrea=
+d_self(), sched_getcpu());
+> =20
+>  	gem_create(fd, 16*1024);
+>  	/* leak it */
+> @@ -78,6 +82,49 @@ test_create_fd_close(int fd)
+>  	close(fd);
+>  }
+> =20
+> +struct multi_gpu_data {
+> +	int in_fd;
+> +	void (*fn)(int fd);
+> +};
+> +
+> +static void *run_on_one_gpu(void *pdata)
+> +{
+> +	struct multi_gpu_data *pgpu =3D pdata;
+> +
+> +	(pgpu->fn)(pgpu->in_fd);
+> +
+> +	return NULL;
+> +}
+> +
+> +static void run_on_gpus(void (*fn)(int))
+> +{
+> +	struct multi_gpu_data *in_arr;
+> +	pthread_t *pth;
+> +	int size =3D igt_device_filter_count();
+> +
+> +	in_arr =3D calloc(size, sizeof(struct multi_gpu_data));
+> +	igt_assert(!in_arr);
+> +
+> +	pth =3D calloc(size, sizeof(pthread_t));
+> +	igt_assert(!pth);
+> +
+> +	igt_info("pid: %d, running on %d GPUs\n", getpid(), size);
+> +
+> +	for (int i =3D 0; i < size; ++i) {
+> +		in_arr[i].in_fd =3D __drm_open_driver_another(i, DRIVER_ANY);
+> +		in_arr[i].fn =3D fn;
 > +	}
 > +
->   	for_each_connected_output(display, output) {
->   		for_each_pipe(display, pipe) {
->   			if (!igt_pipe_connector_valid(pipe, output))
-> @@ -504,9 +509,10 @@ test_content_protection(enum igt_commit_style s, int content_type)
->   			if (!output_hdcp_capable(output, content_type))
->   				continue;
->   
-> -			test_content_protection_on_output(output, pipe, s, content_type);
-> -			test_fini(output, s);
-> +			igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), output->name)
-> +				test_content_protection_on_output(output, pipe, s, content_type);
->   
-> +			test_fini(output, s);
->   			/*
->   			 * Testing a output with a pipe is enough for HDCP
->   			 * testing. No ROI in testing the connector with other
-> @@ -514,11 +520,10 @@ test_content_protection(enum igt_commit_style s, int content_type)
->   			 */
->   			break;
->   		}
-> -
-> -		valid_tests++;
->   	}
->   
-> -	igt_require_f(valid_tests, "No connector found with HDCP capability\n");
-> +	if (data.cp_tests & CP_UEVENT)
-> +		igt_cleanup_uevents(data.uevent_monitor);
->   }
->   
->   static int parse_path_blob(char *blob_data)
-> @@ -728,6 +733,94 @@ static void create_fbs(void)
->   			    0.f, 1.f, 0.f, &data.green);
->   }
->   
-> +static const struct {
-> +	const char *desc;
-> +	const char *name;
-> +	unsigned int cp_tests;
-> +	bool content_type;
-> +} subtests[] = {
-> +	{ .desc = "Test content protection with atomic modesetting",
-> +	  .name = "atomic",
-> +	  .cp_tests = 0,
-> +	  .content_type = HDCP_CONTENT_TYPE_0
-> +	},
-> +	{ .desc = "Test content protection with DPMS ON/OFF during atomic modesetting.",
-> +	  .name = "atomic-dpms",
-> +	  .cp_tests = CP_DPMS,
-> +	  .content_type = HDCP_CONTENT_TYPE_0
-> +	},
-> +	{ .desc = "Test for the integrity of link.",
-> +	  .name = "LIC",
-> +	  .cp_tests = CP_LIC,
-> +	  .content_type = HDCP_CONTENT_TYPE_0,
-> +	},
-> +	{ .desc = "Test content protection with content type 1 "
-> +		  "that can be handled only through HDCP2.2.",
-> +	  .name = "type1",
-> +	  .cp_tests = 0,
-> +	  .content_type = HDCP_CONTENT_TYPE_1,
-> +	},
-> +	{ .desc = "Test the teardown and rebuild of the interface between "
-> +		  "I915 and mei hdcp.",
-> +	  .name = "mei_interface",
-> +	  .cp_tests = CP_MEI_RELOAD,
-> +	  .content_type = HDCP_CONTENT_TYPE_1,
-> +	},
-> +	{ .desc = "Test the content type change when the content protection already enabled",
-> +	  .name = "content_type_change",
-> +	  .cp_tests = CP_TYPE_CHANGE,
-> +	  .content_type = HDCP_CONTENT_TYPE_1,
-> +	},
-> +	{ .desc = "Test to detect the HDCP status change when we are reading the uevent "
-> +		  "sent with the corresponding connector id and property id.",
-> +	  .name = "uevent",
-> +	  .cp_tests = CP_UEVENT,
-> +	  .content_type = HDCP_CONTENT_TYPE_0,
-> +	},
-> +	/*
-> +	 *  Testing the revocation check through SRM needs a HDCP sink with
-> +	 *  programmable Ksvs or we need a uAPI from kernel to read the
-> +	 *  connected HDCP sink's Ksv. With that we would be able to add that
-> +	 *  Ksv into a SRM and send in for revocation check. Since we dont have
-> +	 *  either of these options, we test SRM writing from userspace and
-> +	 *  validation of the same at kernel. Something is better than nothing.
-> +	 */
-> +	{ .desc = "This test writes the facsimile SRM into the /lib/firmware/ "
-> +		  "and check the kernel parsing of it by invoking the hdcp authentication.",
-> +	  .name = "srm",
-> +	  .cp_tests = 0,
-> +	  .content_type = HDCP_CONTENT_TYPE_0,
-> +	},
-> +};
+> +	for (int i =3D 0; i < size; ++i)
+> +		pthread_create(pth + i, 0, run_on_one_gpu, in_arr + i);
 > +
-> +static const struct {
-> +	const char *desc;
-> +	const char *name;
-> +	unsigned int cp_tests;
-> +	bool content_type;
-> +} mst_subtests[] = {
-> +	{ .desc = "Test Content protection(Type 0) over DP MST.",
-> +	  .name = "dp-mst-type-0",
-> +	  .cp_tests = 0,
-> +	  .content_type = HDCP_CONTENT_TYPE_0
-> +	},
-> +	{ .desc = "Test Content protection(Type 0) over DP MST with LIC.",
-> +	  .name = "dp-mst-lic-type-0",
-> +	  .cp_tests = CP_LIC,
-> +	  .content_type = HDCP_CONTENT_TYPE_0
-> +	},
-> +	{ .desc = "Test Content protection(Type 1) over DP MST.",
-> +	  .name = "dp-mst-type-1",
-> +	  .cp_tests = 0,
-> +	  .content_type = HDCP_CONTENT_TYPE_1,
-> +	},
-> +	{ .desc = "Test Content protection(Type 1) over DP MST with LIC.",
-> +	  .name = "dp-mst-lic-type-1",
-> +	  .cp_tests = CP_LIC,
-> +	  .content_type = HDCP_CONTENT_TYPE_1,
-> +	},
-> +};
+> +	for (int i =3D 0; i < size; ++i)
+> +		pthread_join(pth[i], NULL);
 > +
->   igt_main
->   {
->   	igt_fixture {
-> @@ -738,107 +831,46 @@ igt_main
->   	}
->   
->   	igt_describe("Test content protection with legacy style commit.");
-> -	igt_subtest("legacy") {
-> +	igt_subtest_with_dynamic("legacy") {
->   		data.cp_tests = 0;
->   		test_content_protection(COMMIT_LEGACY, HDCP_CONTENT_TYPE_0);
->   	}
->   
-> -	igt_describe("Test content protection with atomic modesetting");
-> -	igt_subtest("atomic") {
-> -		igt_require(data.display.is_atomic);
-> -		data.cp_tests = 0;
-> -		test_content_protection(COMMIT_ATOMIC, HDCP_CONTENT_TYPE_0);
-> -	}
-> +	igt_subtest_group {
-> +		igt_fixture
-> +			igt_require(data.display.is_atomic);
->   
-> -	igt_describe("Test content protection with DPMS ON/OFF during atomic modesetting.");
-> -	igt_subtest("atomic-dpms") {
-> -		igt_require(data.display.is_atomic);
-> -		data.cp_tests = CP_DPMS;
-> -		test_content_protection(COMMIT_ATOMIC, HDCP_CONTENT_TYPE_0);
-> -	}
-> +		for (int i = 0; i < ARRAY_SIZE(subtests); i++) {
-> +			igt_describe_f("%s", subtests[i].desc);
->   
-> -	igt_describe("Test for the integrity of link.");
-> -	igt_subtest("LIC") {
-> -		igt_require(data.display.is_atomic);
-> -		data.cp_tests = CP_LIC;
-> -		test_content_protection(COMMIT_ATOMIC, HDCP_CONTENT_TYPE_0);
-> -	}
-> +			igt_subtest_with_dynamic(subtests[i].name) {
-> +				data.cp_tests = subtests[i].cp_tests;
->   
-> -	igt_describe("Test content protection with content type 1 that "
-> -		     "can be handled only through HDCP2.2.");
-> -	igt_subtest("type1") {
-> -		igt_require(data.display.is_atomic);
-> -		test_content_protection(COMMIT_ATOMIC, HDCP_CONTENT_TYPE_1);
-> -	}
-> +				if (!strcmp(subtests[i].name, "srm")) {
-> +					bool ret;
->   
-> -	igt_describe("Test the teardown and rebuild of the interface between "
-> -		     "I915 and mei hdcp.");
-> -	igt_subtest("mei_interface") {
-> -		igt_require(data.display.is_atomic);
-> -		data.cp_tests = CP_MEI_RELOAD;
-> -		test_content_protection(COMMIT_ATOMIC, HDCP_CONTENT_TYPE_1);
-> -	}
-> +					ret = write_srm_as_fw((const __u8 *)facsimile_srm,
-> +							     sizeof(facsimile_srm));
-> +					igt_assert_f(ret, "SRM update failed");
-> +				}
->   
-> -	igt_describe("Test the content type change when the content protection already "
-> -		     "enabled.");
-> -	igt_subtest("content_type_change") {
-> -		igt_require(data.display.is_atomic);
-> -		data.cp_tests = CP_TYPE_CHANGE;
-> -		test_content_protection(COMMIT_ATOMIC, HDCP_CONTENT_TYPE_1);
-> -	}
-> -
-> -	igt_describe("Test to detect the HDCP status change when we are reading the uevent "
-> -		     "sent with the corresponding connector id and property id.");
-> -	igt_subtest("uevent") {
-> -		igt_require(data.display.is_atomic);
-> -		data.cp_tests = CP_UEVENT;
-> -		data.uevent_monitor = igt_watch_uevents();
-> -		igt_flush_uevents(data.uevent_monitor);
-> -		test_content_protection(COMMIT_ATOMIC, HDCP_CONTENT_TYPE_0);
-> -		igt_cleanup_uevents(data.uevent_monitor);
-> -	}
-> -
-> -	/*
-> -	 *  Testing the revocation check through SRM needs a HDCP sink with
-> -	 *  programmable Ksvs or we need a uAPI from kernel to read the
-> -	 *  connected HDCP sink's Ksv. With that we would be able to add that
-> -	 *  Ksv into a SRM and send in for revocation check. Since we dont have
-> -	 *  either of these options, we test SRM writing from userspace and
-> -	 *  validation of the same at kernel. Something is better than nothing.
-> -	 */
-> -	igt_describe("This test writes the facsimile SRM into the /lib/firmware/ "
-> -		     "and check the kernel parsing of it by invoking the hdcp authentication.");
-> -	igt_subtest("srm") {
-> -		bool ret;
-> -
-> -		igt_require(data.display.is_atomic);
-> -		data.cp_tests = 0;
-> -		ret = write_srm_as_fw((const __u8 *)facsimile_srm,
-> -				      sizeof(facsimile_srm));
-> -		igt_assert_f(ret, "SRM update failed");
-> -		test_content_protection(COMMIT_ATOMIC, HDCP_CONTENT_TYPE_0);
-> -	}
-> -
-> -	igt_describe("Test Content protection over DP MST");
-> -	igt_subtest("dp-mst-type-0") {
-> -		test_content_protection_mst(HDCP_CONTENT_TYPE_0);
-> +				test_content_protection(COMMIT_ATOMIC, subtests[i].content_type);
-> +			}
-> +		}
->   	}
->   
-> -	igt_describe("Test Content protection over DP MST with LIC");
-> -	igt_subtest("dp-mst-lic-type-0") {
-> -		data.cp_tests = CP_LIC;
-> -		test_content_protection_mst(HDCP_CONTENT_TYPE_0);
-> -	}
-> +	igt_subtest_group {
-> +		igt_fixture
-> +			igt_require(data.display.is_atomic);
->   
-> -	igt_describe("Test Content protection over DP MST");
-> -	igt_subtest("dp-mst-type-1") {
-> -		test_content_protection_mst(HDCP_CONTENT_TYPE_1);
-> -	}
-> +		for (int i = 0; i < ARRAY_SIZE(mst_subtests); i++) {
-> +			igt_describe_f("%s", mst_subtests[i].desc);
->   
-> -	igt_describe("Test Content protection over DP MST with LIC");
-> -	igt_subtest("dp-mst-lic-type-1") {
-> -		data.cp_tests = CP_LIC;
-> -		test_content_protection_mst(HDCP_CONTENT_TYPE_1);
-> +			igt_subtest(mst_subtests[i].name) {
-> +				data.cp_tests = mst_subtests[i].cp_tests;
-> +				test_content_protection_mst(mst_subtests[i].content_type);
-> +			}
-> +		}
->   	}
->   
->   	igt_fixture {
+> +	free(in_arr);
+> +	free(pth);
+> +}
+> +
+
+Interesting approach, but having to add the same function on all tests that
+will run with multi-GPU seems too much work. We need to add the logic at
+the library, if possible using some macro/inline based solution, as Anna
+proposed.
+
+>  int fd;
+> =20
+>  igt_main
+> @@ -86,14 +133,26 @@ igt_main
+>  		fd =3D drm_open_driver(DRIVER_INTEL);
+> =20
+>  	igt_describe("Verify that gem_close fails with bad params.");
+> -	igt_subtest("bad-close")
+> -		test_bad_close(fd);
+> +	igt_subtest("bad-close") {
+> +		if (igt_device_filter_count() < 2)
+> +			test_bad_close(fd);
+> +		else
+> +			run_on_gpus(test_bad_close);
+> +	}
+> =20
+>  	igt_describe("Verify basic functionality of gem_create and gem_close.");
+> -	igt_subtest("create-close")
+> -		test_create_close(fd);
+> +	igt_subtest("create-close") {
+> +		if (igt_device_filter_count() < 2)
+> +			test_create_close(fd);
+> +		else
+> +			run_on_gpus(test_create_close);
+> +	}
+> =20
+>  	igt_describe("Verify that closing drm driver is possible with opened ge=
+m object.");
+> -	igt_subtest("create-fd-close")
+> -		test_create_fd_close(fd);
+> +	igt_subtest("create-fd-close") {
+> +		if (igt_device_filter_count() < 2)
+> +			test_create_fd_close(fd);
+> +		else
+> +			run_on_gpus(test_create_fd_close);
+> +	}
+>  }
+
+Regards,
+Mauro
