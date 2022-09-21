@@ -1,19 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 88AD710E8F2
- for <igt-dev@lists.freedesktop.org>; Wed, 21 Sep 2022 10:56:22 +0000 (UTC)
-Message-ID: <dbbcb0ea-cf41-556e-6dd4-b17e0209c4b1@intel.com>
-Date: Wed, 21 Sep 2022 16:26:03 +0530
-To: Karthik B S <karthik.b.s@intel.com>, <igt-dev@lists.freedesktop.org>
-References: <20220921061943.23329-1-karthik.b.s@intel.com>
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 75B1210E3B4
+ for <igt-dev@lists.freedesktop.org>; Wed, 21 Sep 2022 11:23:51 +0000 (UTC)
+Message-ID: <cf003247-0cdf-71cf-3bea-bbe64ecc662d@intel.com>
+Date: Wed, 21 Sep 2022 16:53:30 +0530
 Content-Language: en-US
+To: Karthik B S <karthik.b.s@intel.com>, <igt-dev@lists.freedesktop.org>
+References: <20220913090409.14006-1-karthik.b.s@intel.com>
+ <20220913090409.14006-2-karthik.b.s@intel.com>
 From: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
-In-Reply-To: <20220921061943.23329-1-karthik.b.s@intel.com>
+In-Reply-To: <20220913090409.14006-2-karthik.b.s@intel.com>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t v2] tests/kms_plane_alpha_blend: Convert
- test to dynamic
+Subject: Re: [igt-dev] [PATCH i-g-t v3 1/2] tests/kms_content_protection:
+ Test Cleanup
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,267 +26,291 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Wed-21-09-2022 11:49 am, Karthik B S wrote:
-> Covert the existing subtests to dynamic subtests at pipe/output level.
-> 
-> v2: -Don't skip the test in pipe_check() function.
->      -Use for_each_pipe_with_single_output() instead of getting output
->       separately.
->      -Move igt_require before dynamic subtests.
->      -Call prepare_crtc once per pipe.
+On Tue-13-09-2022 02:34 pm, Karthik B S wrote:
+> This patch includes:
+>      1.Add a modeset before checking output is HDCP capable.
+>        Test currently skips on multidisplay MST because we're checking
+>        if output is HDCP capable before doing a modeset on the output.
+>      2.Call igt_display_reset before starting the subtest.
+>      3.test_fini function added to prepare test for converting to dynamic.
+>      4.Remove redundant mode override.
+>      5.Try other pipe/output combo for MST if failure is seen on one.
 > 
 > Signed-off-by: Karthik B S <karthik.b.s@intel.com>
 > ---
->   tests/kms_plane_alpha_blend.c | 180 ++++++++++++++++++++++------------
->   1 file changed, 118 insertions(+), 62 deletions(-)
+>   tests/kms_content_protection.c | 179 +++++++++++++++++----------------
+>   1 file changed, 92 insertions(+), 87 deletions(-)
 > 
-> diff --git a/tests/kms_plane_alpha_blend.c b/tests/kms_plane_alpha_blend.c
-> index bd064d1e..4daf08a4 100644
-> --- a/tests/kms_plane_alpha_blend.c
-> +++ b/tests/kms_plane_alpha_blend.c
-> @@ -466,15 +466,12 @@ static void coverage_premult_constant(data_t *data, enum pipe pipe, igt_plane_t
->   	igt_pipe_crc_stop(data->pipe_crc);
->   }
->   
-> -static void run_test_on_pipe_planes(data_t *data, enum pipe pipe, bool blend,
-> -				    bool must_multiply,
-> +static void run_test_on_pipe_planes(data_t *data, enum pipe pipe, igt_output_t *output,
-> +				    bool blend, bool must_multiply,
->   				    void(*test)(data_t *, enum pipe, igt_plane_t *))
->   {
->   	igt_display_t *display = &data->display;
-> -	igt_output_t *output = igt_get_single_output_for_pipe(display, pipe);
->   	igt_plane_t *plane;
-> -	bool found = false;
-> -	bool multiply = false;
->   
->   	for_each_plane_on_pipe(display, pipe, plane) {
->   		if (!igt_plane_has_prop(plane, IGT_PLANE_ALPHA))
-> @@ -483,15 +480,11 @@ static void run_test_on_pipe_planes(data_t *data, enum pipe pipe, bool blend,
->   		if (blend && !igt_plane_has_prop(plane, IGT_PLANE_PIXEL_BLEND_MODE))
->   			continue;
->   
-> -		prepare_crtc(data, output, pipe);
-> -
->   		/* reset plane alpha properties between each plane */
->   		reset_alpha(display, pipe);
->   
-> -		found = true;
->   		if (must_multiply && !has_multiplied_alpha(data, plane))
->   			continue;
-> -		multiply = true;
->   
->   		igt_info("Testing plane %u\n", plane->index);
->   		test(data, pipe, plane);
-> @@ -500,74 +493,139 @@ static void run_test_on_pipe_planes(data_t *data, enum pipe pipe, bool blend,
->   
->   	igt_output_set_pipe(output, PIPE_NONE);
->   	igt_display_commit2(display, COMMIT_ATOMIC);
-> -
-> -	igt_require_f(found, "No planes with %s property found\n",
-> -		      blend ? "pixel blending mode" : "alpha");
-> -	igt_require_f(multiply, "Multiplied (plane x pixel) alpha not available\n");
->   }
->   
-> -static void run_subtests(data_t *data, enum pipe pipe)
-> +static const struct {
-> +	const char *name;
-> +	void (*test)(data_t *, enum pipe, igt_plane_t *);
-> +	bool blend;
-> +	bool must_multiply;
-> +	const char *desc;
-> +} subtests[] = {
-> +	{ .name = "alpha-basic",
-> +	  .test = basic_alpha,
-> +	  .blend = false,
-> +	  .must_multiply = true,
-> +	  .desc = "Tests basic plane alpha properties.",
-> +	},
-> +	{ .name = "alpha-7efc",
-> +	  .test = alpha_7efc,
-> +	  .blend = false,
-> +	  .must_multiply = true,
-> +	  .desc = "Uses alpha values 0x7e and 0xfc to validate fg.alpha and "
-> +		  "plane_alpha are swappable on pre-multiplied blend mode.",
-> +	},
-> +	{ .name = "coverage-7efc",
-> +	  .test = coverage_7efc,
-> +	  .blend = true,
-> +	  .must_multiply = true,
-> +	  .desc = "Uses alpha values 0x7e and 0xfc to validate fg.alpha and "
-> +		  "plane_alpha are swappable on coverage blend mode.",
-> +	},
-> +	{ .name = "coverage-vs-premult-vs-constant",
-> +	  .test = coverage_premult_constant,
-> +	  .blend = true,
-> +	  .must_multiply = false,
-> +	  .desc = "Tests pipe coverage blending properties.",
-> +	},
-> +	{ .name = "alpha-transparent-fb",
-> +	  .test = argb_transparent,
-> +	  .blend = false,
-> +	  .must_multiply = false,
-> +	  .desc = "Tests the alpha property with transparent fb.",
-> +	},
-> +	{ .name = "alpha-opaque-fb",
-> +	  .test = argb_opaque,
-> +	  .blend = false,
-> +	  .must_multiply = false,
-> +	  .desc = "Tests alpha properties with opaque fb.",
-> +	},
-> +	{ .name = "constant-alpha-min",
-> +	  .test = constant_alpha_min,
-> +	  .blend = true,
-> +	  .must_multiply = false,
-> +	  .desc = "Tests plane alpha and blending properties with minimum alpha value.",
-> +	},
-> +	{ .name = "constant-alpha-mid",
-> +	  .test = constant_alpha_mid,
-> +	  .blend = true,
-> +	  .must_multiply = false,
-> +	  .desc = "Tests plane alpha and blending properties with medium alpha value.",
-> +	},
-> +	{ .name = "constant-alpha-max",
-> +	  .test = constant_alpha_max,
-> +	  .blend = true,
-> +	  .must_multiply = false,
-> +	  .desc = "Tests plane alpha and blending properties with maximum alpha value.",
-> +	},
-> +};
-> +
-> +static bool pipe_check(data_t *data, enum pipe pipe,
-> +		       bool blend, bool must_multiply)
->   {
-> -	igt_fixture {
-> -		bool found = false;
-> -		igt_plane_t *plane;
-> -
-> -		igt_display_require_output_on_pipe(&data->display, pipe);
-> -		for_each_plane_on_pipe(&data->display, pipe, plane) {
-> -			if (!igt_plane_has_prop(plane, IGT_PLANE_ALPHA))
-> -				continue;
-> -
-> -			found = true;
-> -			break;
-> -		}
-> +	igt_display_t *display = &data->display;
-> +	igt_plane_t *plane;
-> +	bool plane_alpha = false, plane_blend = false, multiply = false;
->   
-> -		igt_require_f(found, "Found no plane on pipe %s with alpha blending supported\n",
-> -			      kmstest_pipe_name(pipe));
-> -	}
-> +	igt_display_require_output_on_pipe(display, pipe);
-> +	for_each_plane_on_pipe(display, pipe, plane) {
-> +		if (!igt_plane_has_prop(plane, IGT_PLANE_ALPHA))
-> +			continue;
-> +		plane_alpha = true;
->   
-> -	igt_describe("Tests basic plane alpha properties.");
-> -	igt_subtest_f("pipe-%s-alpha-basic", kmstest_pipe_name(pipe))
-> -		run_test_on_pipe_planes(data, pipe, false, true, basic_alpha);
-> +		if (blend && !igt_plane_has_prop(plane, IGT_PLANE_PIXEL_BLEND_MODE))
-> +			continue;
-> +		plane_blend = true;
->   
-> -	igt_describe("Uses alpha values 0x7e and 0xfc to validate fg.alpha and "
-> -		     "plane_alpha are swappable on pre-multiplied blend mode.");
-> -	igt_subtest_f("pipe-%s-alpha-7efc", kmstest_pipe_name(pipe))
-> -		run_test_on_pipe_planes(data, pipe, false, true, alpha_7efc);
-> +		/* reset plane alpha properties between each plane */
-> +		reset_alpha(display, pipe);
->   
-> -	igt_describe("Uses alpha values 0x7e and 0xfc to validate fg.alpha and "
-> -		     "plane_alpha are swappable on coverage blend mode.");
-> -	igt_subtest_f("pipe-%s-coverage-7efc", kmstest_pipe_name(pipe))
-> -		run_test_on_pipe_planes(data, pipe, true, true, coverage_7efc);
-> +		if (must_multiply && !has_multiplied_alpha(data, plane))
-> +			continue;
-> +		multiply = true;
->   
-> -	igt_describe("Tests pipe coverage blending properties.");
-> -	igt_subtest_f("pipe-%s-coverage-vs-premult-vs-constant", kmstest_pipe_name(pipe))
-> -		run_test_on_pipe_planes(data, pipe, true, false, coverage_premult_constant);
-> +		break;
-> +	}
->   
-> -	igt_describe("Tests the alpha property with transparent fb.");
-> -	igt_subtest_f("pipe-%s-alpha-transparent-fb", kmstest_pipe_name(pipe))
-> -		run_test_on_pipe_planes(data, pipe, false, false, argb_transparent);
-> +	if (!plane_alpha || !plane_blend || !multiply) {
-> +		if (!plane_alpha)
-> +			igt_debug("No planes with alpha property found\n");
-> +		if (!plane_blend)
-> +			igt_debug("No planes with plane blending mode property found\n");
---------------------------------------------------^
-pixel blending mode?
+> diff --git a/tests/kms_content_protection.c b/tests/kms_content_protection.c
+> index 3041f1cd..eb59f3fe 100644
+> --- a/tests/kms_content_protection.c
+> +++ b/tests/kms_content_protection.c
 
-> +		if (!multiply)
-> +			igt_debug("Multiplied (plane x pixel) alpha not available\n");
-> +
-> +		return false;
-> +	} else {
-> +		return true;
-> +	}
-> +}
->   
-> -	igt_describe("Tests alpha properties with opaque fb.");
-> -	igt_subtest_f("pipe-%s-alpha-opaque-fb", kmstest_pipe_name(pipe))
-> -		run_test_on_pipe_planes(data, pipe, false, false, argb_opaque);
-> +static void run_subtests(data_t *data)
-> +{
-> +	igt_output_t *output;
-> +	enum pipe pipe;
->   
-> -	igt_describe("Tests plane alpha and blending properties with minimum alpha value.");
-> -	igt_subtest_f("pipe-%s-constant-alpha-min", kmstest_pipe_name(pipe))
-> -		run_test_on_pipe_planes(data, pipe, true, false, constant_alpha_min);
-> +	for (int i = 0; i < ARRAY_SIZE(subtests); i++) {
-> +		igt_describe_f("%s\n", subtests[i].desc);
->   
-> -	igt_describe("Tests plane alpha and blending properties with medium alpha value");
-> -	igt_subtest_f("pipe-%s-constant-alpha-mid", kmstest_pipe_name(pipe))
-> -		run_test_on_pipe_planes(data, pipe, true, false, constant_alpha_mid);
-> +		igt_subtest_with_dynamic(subtests[i].name) {
-> +			for_each_pipe_with_single_output(&data->display, pipe, output) {
-> +				prepare_crtc(data, output, pipe);
+Do we need test_cp_disable() inside the test_content_protection_cleanup()?
 
-After completion of the test, we need to remove all fbs created by 
-prepare_crtc(), right?
+If Yes, then you need to update the commit style arg based on the system.
 
-Apart from this, this patch LGTM.
+Else please drop it.
 
 - Bhanu
 
-> +				if (!pipe_check(data, pipe, subtests[i].blend, subtests[i].must_multiply))
-> +					continue;
+> @@ -170,18 +170,15 @@ static void modeset_with_fb(const enum pipe pipe, igt_output_t *output,
+>   			    enum igt_commit_style s)
+>   {
+>   	igt_display_t *display = &data.display;
+> -	drmModeModeInfo mode;
+> +	drmModeModeInfo *mode;
+>   	igt_plane_t *primary;
 >   
-> -	igt_describe("Tests plane alpha and blending properties with maximum alpha value");
-> -	igt_subtest_f("pipe-%s-constant-alpha-max", kmstest_pipe_name(pipe))
-> -		run_test_on_pipe_planes(data, pipe, true, false, constant_alpha_max);
-> +				igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), output->name)
-> +					run_test_on_pipe_planes(data, pipe, output, subtests[i].blend,
-> +								subtests[i].must_multiply, subtests[i].test);
-> +			}
-> +		}
-> +	}
+> -	igt_assert(kmstest_get_connector_default_mode(
+> -			display->drm_fd, output->config.connector, &mode));
+> -
+> -	igt_output_override_mode(output, &mode);
+> +	mode = igt_output_get_mode(output);
+>   	igt_output_set_pipe(output, pipe);
+>   
+>   	primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
+>   	igt_plane_set_fb(primary, &data.red);
+> -	igt_fb_set_size(&data.red, primary, mode.hdisplay, mode.vdisplay);
+> +	igt_fb_set_size(&data.red, primary, mode->hdisplay, mode->vdisplay);
+>   
+>   	igt_display_commit2(display, s);
+>   
+> @@ -317,90 +314,61 @@ static bool write_srm_as_fw(const __u8 *srm, int len)
 >   }
 >   
->   igt_main
+>   static void test_content_protection_on_output(igt_output_t *output,
+> +					      enum pipe pipe,
+>   					      enum igt_commit_style s,
+>   					      int content_type)
 >   {
->   	data_t data = {};
+>   	igt_display_t *display = &data.display;
+> -	igt_plane_t *primary;
 > -	enum pipe pipe;
+>   	bool ret;
 >   
->   	igt_fixture {
->   		data.gfx_fd = drm_open_driver_master(DRIVER_ANY);
-> @@ -576,9 +634,7 @@ igt_main
->   		igt_require(data.display.is_atomic);
+> -	for_each_pipe(display, pipe) {
+> -		if (!igt_pipe_connector_valid(pipe, output))
+> -			continue;
+> -
+> -		/*
+> -		 * If previous subtest of connector failed, pipe
+> -		 * attached to that connector is not released.
+> -		 * Because of that we have to choose the non
+> -		 * attached pipe for this subtest.
+> -		 */
+> -		if (!igt_pipe_is_free(display, pipe))
+> -			continue;
+> -
+> -		modeset_with_fb(pipe, output, s);
+> -		test_cp_enable_with_retry(output, s, 3, content_type, false,
+> -					  false);
+> -
+> -		if (data.cp_tests & CP_TYPE_CHANGE) {
+> -			/* Type 1 -> Type 0 */
+> -			test_cp_enable_with_retry(output, s, 3,
+> -						  HDCP_CONTENT_TYPE_0, false,
+> -						  true);
+> -			/* Type 0 -> Type 1 */
+> -			test_cp_enable_with_retry(output, s, 3,
+> -						  content_type, false,
+> -						  true);
+> -		}
+> -
+> -		if (data.cp_tests & CP_MEI_RELOAD) {
+> -			igt_assert_f(!igt_kmod_unload("mei_hdcp", 0),
+> -				     "mei_hdcp unload failed");
+> +	test_cp_enable_with_retry(output, s, 3, content_type, false,
+> +				  false);
+> +
+> +	if (data.cp_tests & CP_TYPE_CHANGE) {
+> +		/* Type 1 -> Type 0 */
+> +		test_cp_enable_with_retry(output, s, 3,
+> +					  HDCP_CONTENT_TYPE_0, false,
+> +					  true);
+> +		/* Type 0 -> Type 1 */
+> +		test_cp_enable_with_retry(output, s, 3,
+> +					  content_type, false,
+> +					  true);
+> +	}
+>   
+> -			/* Expected to fail */
+> -			test_cp_enable_with_retry(output, s, 3,
+> -						  content_type, true, false);
+> +	if (data.cp_tests & CP_MEI_RELOAD) {
+> +		igt_assert_f(!igt_kmod_unload("mei_hdcp", 0),
+> +			     "mei_hdcp unload failed");
+>   
+> -			igt_assert_f(!igt_kmod_load("mei_hdcp", NULL),
+> -				     "mei_hdcp load failed");
+> +		/* Expected to fail */
+> +		test_cp_enable_with_retry(output, s, 3,
+> +					  content_type, true, false);
+>   
+> -			/* Expected to pass */
+> -			test_cp_enable_with_retry(output, s, 3,
+> -						  content_type, false, false);
+> -		}
+> +		igt_assert_f(!igt_kmod_load("mei_hdcp", NULL),
+> +			     "mei_hdcp load failed");
+>   
+> -		if (data.cp_tests & CP_LIC)
+> -			test_cp_lic(output);
+> +		/* Expected to pass */
+> +		test_cp_enable_with_retry(output, s, 3,
+> +					  content_type, false, false);
+> +	}
+>   
+> -		if (data.cp_tests & CP_DPMS) {
+> -			igt_pipe_set_prop_value(display, pipe,
+> -						IGT_CRTC_ACTIVE, 0);
+> -			igt_display_commit2(display, s);
+> +	if (data.cp_tests & CP_LIC)
+> +		test_cp_lic(output);
+>   
+> -			igt_pipe_set_prop_value(display, pipe,
+> -						IGT_CRTC_ACTIVE, 1);
+> -			igt_display_commit2(display, s);
+> +	if (data.cp_tests & CP_DPMS) {
+> +		igt_pipe_set_prop_value(display, pipe,
+> +					IGT_CRTC_ACTIVE, 0);
+> +		igt_display_commit2(display, s);
+>   
+> -			ret = wait_for_prop_value(output, CP_ENABLED,
+> -						  KERNEL_AUTH_TIME_ALLOWED_MSEC);
+> -			if (!ret)
+> -				test_cp_enable_with_retry(output, s, 2,
+> -							  content_type, false,
+> -							  false);
+> -		}
+> +		igt_pipe_set_prop_value(display, pipe,
+> +					IGT_CRTC_ACTIVE, 1);
+> +		igt_display_commit2(display, s);
+>   
+> -		test_cp_disable(output, s);
+> -		primary = igt_output_get_plane_type(output,
+> -						    DRM_PLANE_TYPE_PRIMARY);
+> -		igt_plane_set_fb(primary, NULL);
+> -		igt_output_set_pipe(output, PIPE_NONE);
+> -
+> -		/*
+> -		 * Testing a output with a pipe is enough for HDCP
+> -		 * testing. No ROI in testing the connector with other
+> -		 * pipes. So Break the loop on pipe.
+> -		 */
+> -		break;
+> +		ret = wait_for_prop_value(output, CP_ENABLED,
+> +					  KERNEL_AUTH_TIME_ALLOWED_MSEC);
+> +		if (!ret)
+> +			test_cp_enable_with_retry(output, s, 2,
+> +						  content_type, false,
+> +						  false);
+>   	}
+>   }
+>   
+> @@ -458,7 +426,8 @@ static bool sink_hdcp2_capable(igt_output_t *output)
+>   	return strstr(buf, "HDCP2.2");
+>   }
+>   
+> -static void prepare_modeset_on_mst_output(igt_output_t *output)
+> +static void
+> +prepare_modeset_on_mst_output(igt_output_t *output)
+>   {
+>   	drmModeModeInfo *mode;
+>   	igt_plane_t *primary;
+> @@ -477,7 +446,8 @@ static void prepare_modeset_on_mst_output(igt_output_t *output)
+>   	igt_plane_set_size(primary, width, height);
+>   }
+>   
+> -static bool output_hdcp_capable(igt_output_t *output, int content_type)
+> +static bool
+> +output_hdcp_capable(igt_output_t *output, int content_type)
+>   {
+>   		if (!output->props[IGT_CONNECTOR_CONTENT_PROTECTION])
+>   			return false;
+> @@ -499,6 +469,19 @@ static bool output_hdcp_capable(igt_output_t *output, int content_type)
+>   		return true;
+>   }
+>   
+> +static void
+> +test_fini(igt_output_t *output, enum igt_commit_style s)
+> +{
+> +	igt_plane_t *primary;
+> +
+> +	test_cp_disable(output, s);
+> +	primary = igt_output_get_plane_type(output,
+> +					    DRM_PLANE_TYPE_PRIMARY);
+> +	igt_plane_set_fb(primary, NULL);
+> +	igt_output_set_pipe(output, PIPE_NONE);
+> +	igt_display_commit2(&data.display, s);
+> +}
+> +
+>   static void
+>   test_content_protection(enum igt_commit_style s, int content_type)
+>   {
+> @@ -511,10 +494,27 @@ test_content_protection(enum igt_commit_style s, int content_type)
+>   			      "mei_hdcp module is not loaded\n");
+>   
+>   	for_each_connected_output(display, output) {
+> -		if (!output_hdcp_capable(output, content_type))
+> -			continue;
+> +		for_each_pipe(display, pipe) {
+> +			if (!igt_pipe_connector_valid(pipe, output))
+> +				continue;
+> +
+> +			igt_display_reset(display);
+> +			modeset_with_fb(pipe, output, s);
+> +
+> +			if (!output_hdcp_capable(output, content_type))
+> +				continue;
+> +
+> +			test_content_protection_on_output(output, pipe, s, content_type);
+> +			test_fini(output, s);
+> +
+> +			/*
+> +			 * Testing a output with a pipe is enough for HDCP
+> +			 * testing. No ROI in testing the connector with other
+> +			 * pipes. So Break the loop on pipe.
+> +			 */
+> +			break;
+> +		}
+>   
+> -		test_content_protection_on_output(output, s, content_type);
+>   		valid_tests++;
 >   	}
 >   
-> -	for_each_pipe_static(pipe)
-> -		igt_subtest_group
-> -			run_subtests(&data, pipe);
-> +	run_subtests(&data);
+> @@ -596,6 +596,7 @@ test_content_protection_mst(int content_type)
+>   	igt_output_t *output;
+>   	int valid_outputs = 0, dp_mst_outputs = 0, ret, count, max_pipe = 0, i;
+>   	enum pipe pipe;
+> +	bool pipe_found;
+>   	igt_output_t *mst_output[IGT_MAX_PIPES], *hdcp_mst_output[IGT_MAX_PIPES];
 >   
->   	igt_fixture {
->   		igt_display_reset(&data.display);
+>   	for_each_pipe(display, pipe)
+> @@ -607,16 +608,20 @@ test_content_protection_mst(int content_type)
+>   		if (!output_is_dp_mst(output, dp_mst_outputs))
+>   			continue;
+>   
+> -		igt_assert_f(igt_pipe_connector_valid(pipe, output), "Output-pipe combination invalid\n");
+> +		pipe_found = false;
+> +		for_each_pipe(display, pipe) {
+> +			if (igt_pipe_is_free(display, pipe) &&
+> +			    igt_pipe_connector_valid(pipe, output)) {
+> +				pipe_found = true;
+> +				break;
+> +			}
+> +		}
+> +
+> +		igt_assert_f(pipe_found, "No valid pipe found for %s\n", output->name);
+>   
+>   		igt_output_set_pipe(output, pipe);
+>   		prepare_modeset_on_mst_output(output);
+>   		mst_output[dp_mst_outputs++] = output;
+> -
+> -		pipe++;
+> -
+> -		if (pipe > max_pipe)
+> -			break;
+>   	}
+>   
+>   	igt_require_f(dp_mst_outputs > 1, "No DP MST set up with >= 2 outputs found in a single topology\n");
