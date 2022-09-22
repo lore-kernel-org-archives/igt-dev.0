@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2652C10EC83
- for <igt-dev@lists.freedesktop.org>; Thu, 22 Sep 2022 16:04:16 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id AA9FA10EC6B
+ for <igt-dev@lists.freedesktop.org>; Thu, 22 Sep 2022 16:04:08 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Thu, 22 Sep 2022 21:29:55 +0530
-Message-Id: <20220922160004.2041598-44-bhanuprakash.modem@intel.com>
+Date: Thu, 22 Sep 2022 21:29:44 +0530
+Message-Id: <20220922160004.2041598-33-bhanuprakash.modem@intel.com>
 In-Reply-To: <20220922160004.2041598-1-bhanuprakash.modem@intel.com>
 References: <20220922160004.2041598-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V4 43/52] tests/i915/kms_fence_pin_leak: Add
- support for Bigjoiner
+Subject: [igt-dev] [i-g-t V4 32/52] tests/kms_scaling_modes: Add support for
+ Bigjoiner
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -34,35 +34,32 @@ V2: - Use updated helper name
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/i915/kms_fence_pin_leak.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ tests/kms_scaling_modes.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/tests/i915/kms_fence_pin_leak.c b/tests/i915/kms_fence_pin_leak.c
-index 16eb595f..dc1bb227 100644
---- a/tests/i915/kms_fence_pin_leak.c
-+++ b/tests/i915/kms_fence_pin_leak.c
-@@ -124,6 +124,9 @@ static void run_single_test(data_t *data, enum pipe pipe, igt_output_t *output)
- 	struct igt_fb fb[2];
- 	int i;
+diff --git a/tests/kms_scaling_modes.c b/tests/kms_scaling_modes.c
+index 8e80189a..c3fd2e04 100644
+--- a/tests/kms_scaling_modes.c
++++ b/tests/kms_scaling_modes.c
+@@ -93,13 +93,17 @@ static void test_scaling_mode(data_t *data, uint32_t flags)
+ 	enum pipe pipe;
  
-+	igt_info("Using (pipe %s + %s) to run the subtest.\n",
-+		 kmstest_pipe_name(pipe), igt_output_name(output));
-+
- 	igt_output_set_pipe(output, pipe);
- 
- 	mode = igt_output_get_mode(output);
-@@ -196,6 +199,12 @@ static void run_test(data_t *data)
- 	enum pipe p;
- 
- 	for_each_pipe_with_valid_output(display, p, output) {
+ 	for_each_pipe_with_valid_output(display, pipe, output) {
 +		igt_display_reset(display);
 +
-+		igt_output_set_pipe(output, p);
+ 		if (!has_scaling_mode(output))
+ 			continue;
+ 
++		igt_output_set_pipe(output, pipe);
 +		if (!i915_pipe_output_combo_valid(display))
 +			continue;
 +
- 		run_single_test(data, p, output);
+ 		igt_dynamic_f("%s-pipe-%s", output->name, kmstest_pipe_name(pipe))
+ 			test_scaling_mode_on_output(display, pipe, output, flags);
+-
+-		igt_display_reset(display);
+ 	}
+ }
  
- 		return; /* one time ought to be enough */
 -- 
 2.37.3
