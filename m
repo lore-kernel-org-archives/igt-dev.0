@@ -1,17 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6342110E0BF
- for <igt-dev@lists.freedesktop.org>; Thu, 22 Sep 2022 06:54:10 +0000 (UTC)
-From: Karthik B S <karthik.b.s@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Thu, 22 Sep 2022 11:56:40 +0530
-Message-Id: <20220922062640.29863-3-karthik.b.s@intel.com>
-In-Reply-To: <20220922062640.29863-1-karthik.b.s@intel.com>
-References: <20220922062640.29863-1-karthik.b.s@intel.com>
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A30AB10EA79
+ for <igt-dev@lists.freedesktop.org>; Thu, 22 Sep 2022 08:11:43 +0000 (UTC)
+Message-ID: <502604c3-271d-47df-1886-45e47ee8f82c@intel.com>
+Date: Thu, 22 Sep 2022 13:41:21 +0530
+Content-Language: en-US
+To: Karthik B S <karthik.b.s@intel.com>, <igt-dev@lists.freedesktop.org>
+References: <20220921152044.26196-1-karthik.b.s@intel.com>
+From: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
+In-Reply-To: <20220921152044.26196-1-karthik.b.s@intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v4 2/2] tests/kms_content_protection:
- Convert test to dynamic
+Subject: Re: [igt-dev] [PATCH i-g-t v3] tests/kms_plane_alpha_blend: Convert
+ test to dynamic
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,293 +25,314 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Covert the existing subtests to dynamic subtests at pipe/output level.
+On Wed-21-09-2022 08:50 pm, Karthik B S wrote:
+> Covert the existing subtests to dynamic subtests at pipe/output level.
+> 
+> v2: -Don't skip the test in pipe_check() function.
+>      -Use for_each_pipe_with_single_output() instead of getting output
+>       separately.
+>      -Move igt_require before dynamic subtests.
+>      -Call prepare_crtc once per pipe.
+> 
+> v3: -Fix typo.
+>      -Remove the fbs after the test is completed.
+> 
+> Signed-off-by: Karthik B S <karthik.b.s@intel.com>
+> ---
+>   tests/kms_plane_alpha_blend.c | 206 ++++++++++++++++++++++------------
+>   1 file changed, 134 insertions(+), 72 deletions(-)
+> 
+> diff --git a/tests/kms_plane_alpha_blend.c b/tests/kms_plane_alpha_blend.c
+> index bd064d1e..f122066d 100644
+> --- a/tests/kms_plane_alpha_blend.c
+> +++ b/tests/kms_plane_alpha_blend.c
+> @@ -150,6 +150,20 @@ static bool has_multiplied_alpha(data_t *data, igt_plane_t *plane)
+>   	return ret == 0;
+>   }
+>   
+> +static void remove_fbs(data_t *data)
+> +{
+> +	igt_remove_fb(data->gfx_fd, &data->xrgb_fb);
+> +	igt_remove_fb(data->gfx_fd, &data->argb_fb_0);
+> +	igt_remove_fb(data->gfx_fd, &data->argb_fb_cov_0);
+> +	igt_remove_fb(data->gfx_fd, &data->argb_fb_7e);
+> +	igt_remove_fb(data->gfx_fd, &data->argb_fb_fc);
+> +	igt_remove_fb(data->gfx_fd, &data->argb_fb_cov_7e);
+> +	igt_remove_fb(data->gfx_fd, &data->argb_fb_cov_fc);
+> +	igt_remove_fb(data->gfx_fd, &data->argb_fb_100);
+> +	igt_remove_fb(data->gfx_fd, &data->black_fb);
+> +	igt_remove_fb(data->gfx_fd, &data->gray_fb);
+> +}
+> +
+>   static void prepare_crtc(data_t *data, igt_output_t *output, enum pipe pipe)
+>   {
+>   	drmModeModeInfo *mode;
+> @@ -172,16 +186,7 @@ static void prepare_crtc(data_t *data, igt_output_t *output, enum pipe pipe)
+>   	if (data->xrgb_fb.width != w || data->xrgb_fb.height != h) {
+>   		cairo_t *cr;
+>   
+> -		igt_remove_fb(data->gfx_fd, &data->xrgb_fb);
+> -		igt_remove_fb(data->gfx_fd, &data->argb_fb_0);
+> -		igt_remove_fb(data->gfx_fd, &data->argb_fb_cov_0);
+> -		igt_remove_fb(data->gfx_fd, &data->argb_fb_7e);
+> -		igt_remove_fb(data->gfx_fd, &data->argb_fb_fc);
+> -		igt_remove_fb(data->gfx_fd, &data->argb_fb_cov_7e);
+> -		igt_remove_fb(data->gfx_fd, &data->argb_fb_cov_fc);
+> -		igt_remove_fb(data->gfx_fd, &data->argb_fb_100);
+> -		igt_remove_fb(data->gfx_fd, &data->black_fb);
+> -		igt_remove_fb(data->gfx_fd, &data->gray_fb);
+> +		remove_fbs(data);
+>   
+>   		igt_create_fb(data->gfx_fd, w, h,
+>   			      DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR,
+> @@ -466,15 +471,12 @@ static void coverage_premult_constant(data_t *data, enum pipe pipe, igt_plane_t
+>   	igt_pipe_crc_stop(data->pipe_crc);
+>   }
+>   
+> -static void run_test_on_pipe_planes(data_t *data, enum pipe pipe, bool blend,
+> -				    bool must_multiply,
+> +static void run_test_on_pipe_planes(data_t *data, enum pipe pipe, igt_output_t *output,
+> +				    bool blend, bool must_multiply,
+>   				    void(*test)(data_t *, enum pipe, igt_plane_t *))
+>   {
+>   	igt_display_t *display = &data->display;
+> -	igt_output_t *output = igt_get_single_output_for_pipe(display, pipe);
+>   	igt_plane_t *plane;
+> -	bool found = false;
+> -	bool multiply = false;
+>   
+>   	for_each_plane_on_pipe(display, pipe, plane) {
+>   		if (!igt_plane_has_prop(plane, IGT_PLANE_ALPHA))
+> @@ -483,15 +485,11 @@ static void run_test_on_pipe_planes(data_t *data, enum pipe pipe, bool blend,
+>   		if (blend && !igt_plane_has_prop(plane, IGT_PLANE_PIXEL_BLEND_MODE))
+>   			continue;
+>   
+> -		prepare_crtc(data, output, pipe);
+> -
+>   		/* reset plane alpha properties between each plane */
+>   		reset_alpha(display, pipe);
+>   
+> -		found = true;
+>   		if (must_multiply && !has_multiplied_alpha(data, plane))
+>   			continue;
+> -		multiply = true;
+>   
+>   		igt_info("Testing plane %u\n", plane->index);
+>   		test(data, pipe, plane);
+> @@ -500,74 +498,139 @@ static void run_test_on_pipe_planes(data_t *data, enum pipe pipe, bool blend,
+>   
+>   	igt_output_set_pipe(output, PIPE_NONE);
+>   	igt_display_commit2(display, COMMIT_ATOMIC);
+> -
+> -	igt_require_f(found, "No planes with %s property found\n",
+> -		      blend ? "pixel blending mode" : "alpha");
+> -	igt_require_f(multiply, "Multiplied (plane x pixel) alpha not available\n");
+>   }
+>   
+> -static void run_subtests(data_t *data, enum pipe pipe)
+> +static const struct {
+> +	const char *name;
+> +	void (*test)(data_t *, enum pipe, igt_plane_t *);
+> +	bool blend;
+> +	bool must_multiply;
+> +	const char *desc;
+> +} subtests[] = {
+> +	{ .name = "alpha-basic",
+> +	  .test = basic_alpha,
+> +	  .blend = false,
+> +	  .must_multiply = true,
+> +	  .desc = "Tests basic plane alpha properties.",
+> +	},
+> +	{ .name = "alpha-7efc",
+> +	  .test = alpha_7efc,
+> +	  .blend = false,
+> +	  .must_multiply = true,
+> +	  .desc = "Uses alpha values 0x7e and 0xfc to validate fg.alpha and "
+> +		  "plane_alpha are swappable on pre-multiplied blend mode.",
+> +	},
+> +	{ .name = "coverage-7efc",
+> +	  .test = coverage_7efc,
+> +	  .blend = true,
+> +	  .must_multiply = true,
+> +	  .desc = "Uses alpha values 0x7e and 0xfc to validate fg.alpha and "
+> +		  "plane_alpha are swappable on coverage blend mode.",
+> +	},
+> +	{ .name = "coverage-vs-premult-vs-constant",
+> +	  .test = coverage_premult_constant,
+> +	  .blend = true,
+> +	  .must_multiply = false,
+> +	  .desc = "Tests pipe coverage blending properties.",
+> +	},
+> +	{ .name = "alpha-transparent-fb",
+> +	  .test = argb_transparent,
+> +	  .blend = false,
+> +	  .must_multiply = false,
+> +	  .desc = "Tests the alpha property with transparent fb.",
+> +	},
+> +	{ .name = "alpha-opaque-fb",
+> +	  .test = argb_opaque,
+> +	  .blend = false,
+> +	  .must_multiply = false,
+> +	  .desc = "Tests alpha properties with opaque fb.",
+> +	},
+> +	{ .name = "constant-alpha-min",
+> +	  .test = constant_alpha_min,
+> +	  .blend = true,
+> +	  .must_multiply = false,
+> +	  .desc = "Tests plane alpha and blending properties with minimum alpha value.",
+> +	},
+> +	{ .name = "constant-alpha-mid",
+> +	  .test = constant_alpha_mid,
+> +	  .blend = true,
+> +	  .must_multiply = false,
+> +	  .desc = "Tests plane alpha and blending properties with medium alpha value.",
+> +	},
+> +	{ .name = "constant-alpha-max",
+> +	  .test = constant_alpha_max,
+> +	  .blend = true,
+> +	  .must_multiply = false,
+> +	  .desc = "Tests plane alpha and blending properties with maximum alpha value.",
+> +	},
+> +};
+> +
+> +static bool pipe_check(data_t *data, enum pipe pipe,
+> +		       bool blend, bool must_multiply)
+>   {
+> -	igt_fixture {
+> -		bool found = false;
+> -		igt_plane_t *plane;
+> -
+> -		igt_display_require_output_on_pipe(&data->display, pipe);
+> -		for_each_plane_on_pipe(&data->display, pipe, plane) {
+> -			if (!igt_plane_has_prop(plane, IGT_PLANE_ALPHA))
+> -				continue;
+> -
+> -			found = true;
+> -			break;
+> -		}
+> +	igt_display_t *display = &data->display;
+> +	igt_plane_t *plane;
+> +	bool plane_alpha = false, plane_blend = false, multiply = false;
+>   
+> -		igt_require_f(found, "Found no plane on pipe %s with alpha blending supported\n",
+> -			      kmstest_pipe_name(pipe));
+> -	}
+> +	igt_display_require_output_on_pipe(display, pipe);
+> +	for_each_plane_on_pipe(display, pipe, plane) {
+> +		if (!igt_plane_has_prop(plane, IGT_PLANE_ALPHA))
+> +			continue;
+> +		plane_alpha = true;
+>   
+> -	igt_describe("Tests basic plane alpha properties.");
+> -	igt_subtest_f("pipe-%s-alpha-basic", kmstest_pipe_name(pipe))
+> -		run_test_on_pipe_planes(data, pipe, false, true, basic_alpha);
+> +		if (blend && !igt_plane_has_prop(plane, IGT_PLANE_PIXEL_BLEND_MODE))
+> +			continue;
+> +		plane_blend = true;
+>   
+> -	igt_describe("Uses alpha values 0x7e and 0xfc to validate fg.alpha and "
+> -		     "plane_alpha are swappable on pre-multiplied blend mode.");
+> -	igt_subtest_f("pipe-%s-alpha-7efc", kmstest_pipe_name(pipe))
+> -		run_test_on_pipe_planes(data, pipe, false, true, alpha_7efc);
+> +		/* reset plane alpha properties between each plane */
+> +		reset_alpha(display, pipe);
+>   
+> -	igt_describe("Uses alpha values 0x7e and 0xfc to validate fg.alpha and "
+> -		     "plane_alpha are swappable on coverage blend mode.");
+> -	igt_subtest_f("pipe-%s-coverage-7efc", kmstest_pipe_name(pipe))
+> -		run_test_on_pipe_planes(data, pipe, true, true, coverage_7efc);
+> +		if (must_multiply && !has_multiplied_alpha(data, plane))
+> +			continue;
+> +		multiply = true;
+>   
+> -	igt_describe("Tests pipe coverage blending properties.");
+> -	igt_subtest_f("pipe-%s-coverage-vs-premult-vs-constant", kmstest_pipe_name(pipe))
+> -		run_test_on_pipe_planes(data, pipe, true, false, coverage_premult_constant);
+> +		break;
+> +	}
+>   
+> -	igt_describe("Tests the alpha property with transparent fb.");
+> -	igt_subtest_f("pipe-%s-alpha-transparent-fb", kmstest_pipe_name(pipe))
+> -		run_test_on_pipe_planes(data, pipe, false, false, argb_transparent);
+> +	if (!plane_alpha || !plane_blend || !multiply) {
+> +		if (!plane_alpha)
+> +			igt_debug("No planes with alpha property found\n");
+> +		if (!plane_blend)
+> +			igt_debug("No planes with pixel blending mode property found\n");
+> +		if (!multiply)
+> +			igt_debug("Multiplied (plane x pixel) alpha not available\n");
+> +
+> +		return false;
+> +	} else {
+> +		return true;
+> +	}
+> +}
+>   
+> -	igt_describe("Tests alpha properties with opaque fb.");
+> -	igt_subtest_f("pipe-%s-alpha-opaque-fb", kmstest_pipe_name(pipe))
+> -		run_test_on_pipe_planes(data, pipe, false, false, argb_opaque);
+> +static void run_subtests(data_t *data)
+> +{
+> +	igt_output_t *output;
+> +	enum pipe pipe;
+>   
+> -	igt_describe("Tests plane alpha and blending properties with minimum alpha value.");
+> -	igt_subtest_f("pipe-%s-constant-alpha-min", kmstest_pipe_name(pipe))
+> -		run_test_on_pipe_planes(data, pipe, true, false, constant_alpha_min);
+> +	for (int i = 0; i < ARRAY_SIZE(subtests); i++) {
+> +		igt_describe_f("%s\n", subtests[i].desc);
+>   
+> -	igt_describe("Tests plane alpha and blending properties with medium alpha value");
+> -	igt_subtest_f("pipe-%s-constant-alpha-mid", kmstest_pipe_name(pipe))
+> -		run_test_on_pipe_planes(data, pipe, true, false, constant_alpha_mid);
+> +		igt_subtest_with_dynamic(subtests[i].name) {
+> +			for_each_pipe_with_single_output(&data->display, pipe, output) {
+> +				prepare_crtc(data, output, pipe);
+> +				if (!pipe_check(data, pipe, subtests[i].blend, subtests[i].must_multiply))
+> +					continue;
+>   
+> -	igt_describe("Tests plane alpha and blending properties with maximum alpha value");
+> -	igt_subtest_f("pipe-%s-constant-alpha-max", kmstest_pipe_name(pipe))
+> -		run_test_on_pipe_planes(data, pipe, true, false, constant_alpha_max);
+> +				igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), output->name)
+> +					run_test_on_pipe_planes(data, pipe, output, subtests[i].blend,
+> +								subtests[i].must_multiply, subtests[i].test);
 
-Signed-off-by: Karthik B S <karthik.b.s@intel.com>
-Reviewed-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
----
- tests/kms_content_protection.c | 220 +++++++++++++++++++--------------
- 1 file changed, 126 insertions(+), 94 deletions(-)
+I think, we need a cleanup after completion of subtest,
+Whatever the things done by prepare_crtc() should be cleaned.
+Ex:
+- remove_fbs()
+- igt_output_set_pipe(output, PIPE_NONE);
 
-diff --git a/tests/kms_content_protection.c b/tests/kms_content_protection.c
-index 54288701..1bfa5ada 100644
---- a/tests/kms_content_protection.c
-+++ b/tests/kms_content_protection.c
-@@ -487,12 +487,17 @@ test_content_protection(enum igt_commit_style s, int content_type)
- {
- 	igt_display_t *display = &data.display;
- 	igt_output_t *output;
--	int valid_tests = 0;
-+	enum pipe pipe;
- 
- 	if (data.cp_tests & CP_MEI_RELOAD)
- 		igt_require_f(igt_kmod_is_loaded("mei_hdcp"),
- 			      "mei_hdcp module is not loaded\n");
- 
-+	if (data.cp_tests & CP_UEVENT) {
-+		data.uevent_monitor = igt_watch_uevents();
-+		igt_flush_uevents(data.uevent_monitor);
-+	}
-+
- 	for_each_connected_output(display, output) {
- 		for_each_pipe(display, pipe) {
- 			if (!igt_pipe_connector_valid(pipe, output))
-@@ -504,9 +509,10 @@ test_content_protection(enum igt_commit_style s, int content_type)
- 			if (!output_hdcp_capable(output, content_type))
- 				continue;
- 
--			test_content_protection_on_output(output, pipe, s, content_type);
--			test_fini(output, s);
-+			igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), output->name)
-+				test_content_protection_on_output(output, pipe, s, content_type);
- 
-+			test_fini(output, s);
- 			/*
- 			 * Testing a output with a pipe is enough for HDCP
- 			 * testing. No ROI in testing the connector with other
-@@ -514,11 +520,10 @@ test_content_protection(enum igt_commit_style s, int content_type)
- 			 */
- 			break;
- 		}
--
--		valid_tests++;
- 	}
- 
--	igt_require_f(valid_tests, "No connector found with HDCP capability\n");
-+	if (data.cp_tests & CP_UEVENT)
-+		igt_cleanup_uevents(data.uevent_monitor);
- }
- 
- static int parse_path_blob(char *blob_data)
-@@ -728,6 +733,94 @@ static void create_fbs(void)
- 			    0.f, 1.f, 0.f, &data.green);
- }
- 
-+static const struct {
-+	const char *desc;
-+	const char *name;
-+	unsigned int cp_tests;
-+	bool content_type;
-+} subtests[] = {
-+	{ .desc = "Test content protection with atomic modesetting",
-+	  .name = "atomic",
-+	  .cp_tests = 0,
-+	  .content_type = HDCP_CONTENT_TYPE_0
-+	},
-+	{ .desc = "Test content protection with DPMS ON/OFF during atomic modesetting.",
-+	  .name = "atomic-dpms",
-+	  .cp_tests = CP_DPMS,
-+	  .content_type = HDCP_CONTENT_TYPE_0
-+	},
-+	{ .desc = "Test for the integrity of link.",
-+	  .name = "LIC",
-+	  .cp_tests = CP_LIC,
-+	  .content_type = HDCP_CONTENT_TYPE_0,
-+	},
-+	{ .desc = "Test content protection with content type 1 "
-+		  "that can be handled only through HDCP2.2.",
-+	  .name = "type1",
-+	  .cp_tests = 0,
-+	  .content_type = HDCP_CONTENT_TYPE_1,
-+	},
-+	{ .desc = "Test the teardown and rebuild of the interface between "
-+		  "I915 and mei hdcp.",
-+	  .name = "mei_interface",
-+	  .cp_tests = CP_MEI_RELOAD,
-+	  .content_type = HDCP_CONTENT_TYPE_1,
-+	},
-+	{ .desc = "Test the content type change when the content protection already enabled",
-+	  .name = "content_type_change",
-+	  .cp_tests = CP_TYPE_CHANGE,
-+	  .content_type = HDCP_CONTENT_TYPE_1,
-+	},
-+	{ .desc = "Test to detect the HDCP status change when we are reading the uevent "
-+		  "sent with the corresponding connector id and property id.",
-+	  .name = "uevent",
-+	  .cp_tests = CP_UEVENT,
-+	  .content_type = HDCP_CONTENT_TYPE_0,
-+	},
-+	/*
-+	 *  Testing the revocation check through SRM needs a HDCP sink with
-+	 *  programmable Ksvs or we need a uAPI from kernel to read the
-+	 *  connected HDCP sink's Ksv. With that we would be able to add that
-+	 *  Ksv into a SRM and send in for revocation check. Since we dont have
-+	 *  either of these options, we test SRM writing from userspace and
-+	 *  validation of the same at kernel. Something is better than nothing.
-+	 */
-+	{ .desc = "This test writes the facsimile SRM into the /lib/firmware/ "
-+		  "and check the kernel parsing of it by invoking the hdcp authentication.",
-+	  .name = "srm",
-+	  .cp_tests = 0,
-+	  .content_type = HDCP_CONTENT_TYPE_0,
-+	},
-+};
-+
-+static const struct {
-+	const char *desc;
-+	const char *name;
-+	unsigned int cp_tests;
-+	bool content_type;
-+} mst_subtests[] = {
-+	{ .desc = "Test Content protection(Type 0) over DP MST.",
-+	  .name = "dp-mst-type-0",
-+	  .cp_tests = 0,
-+	  .content_type = HDCP_CONTENT_TYPE_0
-+	},
-+	{ .desc = "Test Content protection(Type 0) over DP MST with LIC.",
-+	  .name = "dp-mst-lic-type-0",
-+	  .cp_tests = CP_LIC,
-+	  .content_type = HDCP_CONTENT_TYPE_0
-+	},
-+	{ .desc = "Test Content protection(Type 1) over DP MST.",
-+	  .name = "dp-mst-type-1",
-+	  .cp_tests = 0,
-+	  .content_type = HDCP_CONTENT_TYPE_1,
-+	},
-+	{ .desc = "Test Content protection(Type 1) over DP MST with LIC.",
-+	  .name = "dp-mst-lic-type-1",
-+	  .cp_tests = CP_LIC,
-+	  .content_type = HDCP_CONTENT_TYPE_1,
-+	},
-+};
-+
- igt_main
- {
- 	igt_fixture {
-@@ -738,107 +831,46 @@ igt_main
- 	}
- 
- 	igt_describe("Test content protection with legacy style commit.");
--	igt_subtest("legacy") {
-+	igt_subtest_with_dynamic("legacy") {
- 		data.cp_tests = 0;
- 		test_content_protection(COMMIT_LEGACY, HDCP_CONTENT_TYPE_0);
- 	}
- 
--	igt_describe("Test content protection with atomic modesetting");
--	igt_subtest("atomic") {
--		igt_require(data.display.is_atomic);
--		data.cp_tests = 0;
--		test_content_protection(COMMIT_ATOMIC, HDCP_CONTENT_TYPE_0);
--	}
-+	igt_subtest_group {
-+		igt_fixture
-+			igt_require(data.display.is_atomic);
- 
--	igt_describe("Test content protection with DPMS ON/OFF during atomic modesetting.");
--	igt_subtest("atomic-dpms") {
--		igt_require(data.display.is_atomic);
--		data.cp_tests = CP_DPMS;
--		test_content_protection(COMMIT_ATOMIC, HDCP_CONTENT_TYPE_0);
--	}
-+		for (int i = 0; i < ARRAY_SIZE(subtests); i++) {
-+			igt_describe_f("%s", subtests[i].desc);
- 
--	igt_describe("Test for the integrity of link.");
--	igt_subtest("LIC") {
--		igt_require(data.display.is_atomic);
--		data.cp_tests = CP_LIC;
--		test_content_protection(COMMIT_ATOMIC, HDCP_CONTENT_TYPE_0);
--	}
-+			igt_subtest_with_dynamic(subtests[i].name) {
-+				data.cp_tests = subtests[i].cp_tests;
- 
--	igt_describe("Test content protection with content type 1 that "
--		     "can be handled only through HDCP2.2.");
--	igt_subtest("type1") {
--		igt_require(data.display.is_atomic);
--		test_content_protection(COMMIT_ATOMIC, HDCP_CONTENT_TYPE_1);
--	}
-+				if (!strcmp(subtests[i].name, "srm")) {
-+					bool ret;
- 
--	igt_describe("Test the teardown and rebuild of the interface between "
--		     "I915 and mei hdcp.");
--	igt_subtest("mei_interface") {
--		igt_require(data.display.is_atomic);
--		data.cp_tests = CP_MEI_RELOAD;
--		test_content_protection(COMMIT_ATOMIC, HDCP_CONTENT_TYPE_1);
--	}
-+					ret = write_srm_as_fw((const __u8 *)facsimile_srm,
-+							     sizeof(facsimile_srm));
-+					igt_assert_f(ret, "SRM update failed");
-+				}
- 
--	igt_describe("Test the content type change when the content protection already "
--		     "enabled.");
--	igt_subtest("content_type_change") {
--		igt_require(data.display.is_atomic);
--		data.cp_tests = CP_TYPE_CHANGE;
--		test_content_protection(COMMIT_ATOMIC, HDCP_CONTENT_TYPE_1);
--	}
--
--	igt_describe("Test to detect the HDCP status change when we are reading the uevent "
--		     "sent with the corresponding connector id and property id.");
--	igt_subtest("uevent") {
--		igt_require(data.display.is_atomic);
--		data.cp_tests = CP_UEVENT;
--		data.uevent_monitor = igt_watch_uevents();
--		igt_flush_uevents(data.uevent_monitor);
--		test_content_protection(COMMIT_ATOMIC, HDCP_CONTENT_TYPE_0);
--		igt_cleanup_uevents(data.uevent_monitor);
--	}
--
--	/*
--	 *  Testing the revocation check through SRM needs a HDCP sink with
--	 *  programmable Ksvs or we need a uAPI from kernel to read the
--	 *  connected HDCP sink's Ksv. With that we would be able to add that
--	 *  Ksv into a SRM and send in for revocation check. Since we dont have
--	 *  either of these options, we test SRM writing from userspace and
--	 *  validation of the same at kernel. Something is better than nothing.
--	 */
--	igt_describe("This test writes the facsimile SRM into the /lib/firmware/ "
--		     "and check the kernel parsing of it by invoking the hdcp authentication.");
--	igt_subtest("srm") {
--		bool ret;
--
--		igt_require(data.display.is_atomic);
--		data.cp_tests = 0;
--		ret = write_srm_as_fw((const __u8 *)facsimile_srm,
--				      sizeof(facsimile_srm));
--		igt_assert_f(ret, "SRM update failed");
--		test_content_protection(COMMIT_ATOMIC, HDCP_CONTENT_TYPE_0);
--	}
--
--	igt_describe("Test Content protection over DP MST");
--	igt_subtest("dp-mst-type-0") {
--		test_content_protection_mst(HDCP_CONTENT_TYPE_0);
-+				test_content_protection(COMMIT_ATOMIC, subtests[i].content_type);
-+			}
-+		}
- 	}
- 
--	igt_describe("Test Content protection over DP MST with LIC");
--	igt_subtest("dp-mst-lic-type-0") {
--		data.cp_tests = CP_LIC;
--		test_content_protection_mst(HDCP_CONTENT_TYPE_0);
--	}
-+	igt_subtest_group {
-+		igt_fixture
-+			igt_require(data.display.is_atomic);
- 
--	igt_describe("Test Content protection over DP MST");
--	igt_subtest("dp-mst-type-1") {
--		test_content_protection_mst(HDCP_CONTENT_TYPE_1);
--	}
-+		for (int i = 0; i < ARRAY_SIZE(mst_subtests); i++) {
-+			igt_describe_f("%s", mst_subtests[i].desc);
- 
--	igt_describe("Test Content protection over DP MST with LIC");
--	igt_subtest("dp-mst-lic-type-1") {
--		data.cp_tests = CP_LIC;
--		test_content_protection_mst(HDCP_CONTENT_TYPE_1);
-+			igt_subtest(mst_subtests[i].name) {
-+				data.cp_tests = mst_subtests[i].cp_tests;
-+				test_content_protection_mst(mst_subtests[i].content_type);
-+			}
-+		}
- 	}
- 
- 	igt_fixture {
--- 
-2.22.0
+> +			}
+> +		}
+> +	}
+>   }
+>   
+>   igt_main
+>   {
+>   	data_t data = {};
+> -	enum pipe pipe;
+>   
+>   	igt_fixture {
+>   		data.gfx_fd = drm_open_driver_master(DRIVER_ANY);
+> @@ -576,11 +639,10 @@ igt_main
+>   		igt_require(data.display.is_atomic);
+>   	}
+>   
+> -	for_each_pipe_static(pipe)
+> -		igt_subtest_group
+> -			run_subtests(&data, pipe);
+> +	run_subtests(&data);
+>   
+>   	igt_fixture {
+> +		remove_fbs(&data);
+
+This is not required if we do this at subtest level.
+Please check the above comment.
+
+- Bhanu
+
+>   		igt_display_reset(&data.display);
+>   		igt_display_commit2(&data.display, data.display.is_atomic ?
+>   				    COMMIT_ATOMIC : COMMIT_LEGACY);
