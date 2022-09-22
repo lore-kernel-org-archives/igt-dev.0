@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4645610EA7E
- for <igt-dev@lists.freedesktop.org>; Thu, 22 Sep 2022 16:03:59 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 62BB010EB24
+ for <igt-dev@lists.freedesktop.org>; Thu, 22 Sep 2022 16:04:00 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Thu, 22 Sep 2022 21:29:31 +0530
-Message-Id: <20220922160004.2041598-20-bhanuprakash.modem@intel.com>
+Date: Thu, 22 Sep 2022 21:29:32 +0530
+Message-Id: <20220922160004.2041598-21-bhanuprakash.modem@intel.com>
 In-Reply-To: <20220922160004.2041598-1-bhanuprakash.modem@intel.com>
 References: <20220922160004.2041598-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V4 19/52] tests/kms_lease: Add support for
- Bigjoiner
+Subject: [igt-dev] [i-g-t V4 20/52] tests/kms_multipipe_modeset: Find the
+ suitable mode instead of using default
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -30,33 +30,30 @@ Example:
 * Pipe-D wont support a mode > 5K
 * To use 8K mode on a pipe then consecutive pipe must be available & free.
 
-V2: - Use updated helper name
-
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/kms_lease.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ tests/kms_multipipe_modeset.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/tests/kms_lease.c b/tests/kms_lease.c
-index 67e8d3be..a52d8bfc 100644
---- a/tests/kms_lease.c
-+++ b/tests/kms_lease.c
-@@ -1213,10 +1213,14 @@ igt_main
- 			igt_describe(f->desc);
- 			igt_subtest_with_dynamic_f("%s", f->name) {
- 				for_each_pipe_with_valid_output(display, data.pipe, output) {
-+					igt_display_reset(display);
+diff --git a/tests/kms_multipipe_modeset.c b/tests/kms_multipipe_modeset.c
+index 6358d930..6ba6943e 100644
+--- a/tests/kms_multipipe_modeset.c
++++ b/tests/kms_multipipe_modeset.c
+@@ -46,6 +46,15 @@ static void run_test(data_t *data, int valid_outputs)
+ 	drmModeModeInfo *mode;
+ 	int i = 0;
+ 
++	/* Find suitable mode/resolution combo */
++	for_each_connected_output(display, output) {
++		pipe = &display->pipes[i];
++		igt_output_set_pipe(output, i);
 +
-+					igt_output_set_pipe(output, data.pipe);
-+					if (!i915_pipe_output_combo_valid(display))
-+						continue;
++		i++;
++	}
++	igt_require(igt_override_all_active_output_modes_to_fit_bw(display));
 +
- 					igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(data.pipe),
- 						      igt_output_name(output)) {
--						igt_display_reset(display);
--						igt_display_commit(display);
- 						data.crtc_id = display->pipes[data.pipe].crtc_id;
- 						data.connector_id = output->id;
- 						data.plane_id =
+ 	for_each_connected_output(display, output) {
+ 		mode = igt_output_get_mode(output);
+ 		igt_assert(mode);
 -- 
 2.37.3
