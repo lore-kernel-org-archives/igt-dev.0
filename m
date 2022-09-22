@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8108110E14F
- for <igt-dev@lists.freedesktop.org>; Thu, 22 Sep 2022 05:14:34 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 26EAB10E061
+ for <igt-dev@lists.freedesktop.org>; Thu, 22 Sep 2022 05:14:31 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Thu, 22 Sep 2022 10:41:37 +0530
-Message-Id: <20220922051142.2003118-4-bhanuprakash.modem@intel.com>
+Date: Thu, 22 Sep 2022 10:41:35 +0530
+Message-Id: <20220922051142.2003118-2-bhanuprakash.modem@intel.com>
 In-Reply-To: <20220922051142.2003118-1-bhanuprakash.modem@intel.com>
 References: <20220922051142.2003118-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V2 3/8] Revert "tests/kms_color: Fix multiple
- failures in deep-color tests"
+Subject: [igt-dev] [i-g-t V2 1/8] Revert "tests/kms_color: fix crc assert
+ condition"
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,43 +23,50 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-This reverts commit 333ca8f6be43044d71ecf15d37a3e88e7a3ce821.
+This reverts commit c27dcb9e0baca05abce8527c245b513f7a8f1059.
 ---
- tests/kms_color.c | 8 +-------
- 1 file changed, 1 insertion(+), 7 deletions(-)
+ tests/kms_color.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
 diff --git a/tests/kms_color.c b/tests/kms_color.c
-index 8c15c7be..6ea721f1 100644
+index ab285af8..c202547e 100644
 --- a/tests/kms_color.c
 +++ b/tests/kms_color.c
-@@ -839,7 +839,6 @@ run_deep_color_tests_for_pipe(data_t *data, enum pipe p)
- 		if (!panel_supports_deep_color(data->drm_fd, output->name))
- 			continue;
+@@ -99,7 +99,7 @@ static bool test_pipe_degamma(data_t *data,
+ 	 * Verify that the CRC of the software computed output is
+ 	 * equal to the CRC of the degamma LUT transformation output.
+ 	 */
+-	ret = igt_skip_crc_compare || igt_check_crc_equal(&crc_fullgamma, &crc_fullcolors);
++	ret = !igt_skip_crc_compare || igt_check_crc_equal(&crc_fullgamma, &crc_fullcolors);
  
--		igt_display_reset(&data->display);
- 		igt_output_set_prop_value(output, IGT_CONNECTOR_MAX_BPC, 10);
- 		igt_output_set_pipe(output, p);
- 		igt_display_commit_atomic(&data->display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
-@@ -851,10 +850,7 @@ run_deep_color_tests_for_pipe(data_t *data, enum pipe p)
- 		data->color_depth = 10;
- 		data->drm_format = DRM_FORMAT_XRGB2101010;
- 		data->output = output;
--
--		data->mode = malloc(sizeof(drmModeModeInfo));
--		igt_assert(data->mode);
--		memcpy(data->mode, igt_output_get_mode(data->output), sizeof(drmModeModeInfo));
-+		data->mode = igt_output_get_mode(data->output);
+ 	disable_degamma(primary->pipe);
+ 	igt_plane_set_fb(primary, NULL);
+@@ -188,7 +188,7 @@ static bool test_pipe_gamma(data_t *data,
+ 	 * Verify that the CRC of the software computed output is
+ 	 * equal to the CRC of the gamma LUT transformation output.
+ 	 */
+-	ret = igt_skip_crc_compare || igt_check_crc_equal(&crc_fullgamma, &crc_fullcolors);
++	ret = !igt_skip_crc_compare || igt_check_crc_equal(&crc_fullgamma, &crc_fullcolors);
  
- 		igt_dynamic_f("pipe-%s-%s-gamma", kmstest_pipe_name(p), output->name) {
- 			igt_display_reset(&data->display);
-@@ -888,8 +884,6 @@ run_deep_color_tests_for_pipe(data_t *data, enum pipe p)
- 			igt_assert(ret);
- 		}
+ 	disable_gamma(primary->pipe);
+ 	igt_plane_set_fb(primary, NULL);
+@@ -289,7 +289,7 @@ static bool test_pipe_legacy_gamma(data_t *data,
+ 	 * Verify that the CRC of the software computed output is
+ 	 * equal to the CRC of the gamma LUT transformation output.
+ 	 */
+-	ret = igt_skip_crc_compare || igt_check_crc_equal(&crc_fullgamma, &crc_fullcolors);
++	ret = !igt_skip_crc_compare || igt_check_crc_equal(&crc_fullgamma, &crc_fullcolors);
  
--		free(data->mode);
--
- 		break;
- 	}
+ 	/* Reset output. */
+ 	for (i = 1; i < legacy_lut_size; i++)
+@@ -534,7 +534,7 @@ static bool test_pipe_ctm(data_t *data,
+ 	 * Verify that the CRC of the software computed output is
+ 	 * equal to the CRC of the CTM matrix transformation output.
+ 	 */
+-	ret &= igt_skip_crc_compare || igt_check_crc_equal(&crc_software, &crc_hardware);
++	ret &= !igt_skip_crc_compare || igt_check_crc_equal(&crc_software, &crc_hardware);
  
+ 	igt_plane_set_fb(primary, NULL);
+ 	igt_output_set_pipe(output, PIPE_NONE);
 -- 
 2.37.3
