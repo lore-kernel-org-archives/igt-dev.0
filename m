@@ -1,17 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 28B7610E64B
- for <igt-dev@lists.freedesktop.org>; Mon, 19 Sep 2022 14:44:53 +0000 (UTC)
-From: Riana Tauro <riana.tauro@intel.com>
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C9B7E10EABB
+ for <igt-dev@lists.freedesktop.org>; Thu, 22 Sep 2022 11:09:51 +0000 (UTC)
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Mon, 19 Sep 2022 20:14:06 +0530
-Message-Id: <20220919144408.251981-7-riana.tauro@intel.com>
-In-Reply-To: <20220919144408.251981-1-riana.tauro@intel.com>
-References: <20220919144408.251981-1-riana.tauro@intel.com>
+Date: Thu, 22 Sep 2022 13:09:18 +0200
+Message-Id: <20220922110918.16510-8-kamil.konieczny@linux.intel.com>
+In-Reply-To: <20220922110918.16510-1-kamil.konieczny@linux.intel.com>
+References: <20220922110918.16510-1-kamil.konieczny@linux.intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v2 6/8] i915/gem_exec_whisper: Add energy
- support for dgfx
+Subject: [igt-dev] [PATCH i-g-t 7/7] i915/gem_mmap_offset: Crudely measure
+ read/write to different mmaps
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,68 +20,115 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: badal.nilawar@intel.com
+Cc: Petri Latvala <petri.latvala@intel.com>,
+ Chris Wilson <chris.p.wilson@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-igt_power library reads energy using hwmon interface for dgfx and
-rapl otherwise. Modify gem_exec_whisper test to use igt_power interface.
+From: Chris Wilson <chris.p.wilson@intel.com>
 
-Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
-Signed-off-by: Riana Tauro <riana.tauro@intel.com>
+Compare the read/write performance of different mmap types to different
+memory regions.
+
+Signed-off-by: Chris Wilson <chris.p.wilson@intel.com>
+Acked-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+Acked-by: Petri Latvala <petri.latvala@intel.com>
 ---
- tests/i915/gem_exec_whisper.c | 14 ++++++++------
- 1 file changed, 8 insertions(+), 6 deletions(-)
+ tests/i915/gem_mmap_offset.c | 74 ++++++++++++++++++++++++++++++++++++
+ 1 file changed, 74 insertions(+)
 
-diff --git a/tests/i915/gem_exec_whisper.c b/tests/i915/gem_exec_whisper.c
-index c763cc8e..c3fc5ba8 100644
---- a/tests/i915/gem_exec_whisper.c
-+++ b/tests/i915/gem_exec_whisper.c
-@@ -210,7 +210,7 @@ static void whisper(int fd, const intel_ctx_t *ctx,
- 	unsigned int reloc_interruptions = 0;
- 	unsigned int eb_migrations = 0;
- 	struct power_sample sample[2];
--	struct rapl rapl;
-+	struct igt_power gpu;
- 	uint64_t old_offset;
- 	int i, n, loc;
- 	int debugfs;
-@@ -223,7 +223,7 @@ static void whisper(int fd, const intel_ctx_t *ctx,
- 	}
- 
- 	debugfs = igt_debugfs_dir(fd);
--	gpu_power_open(&rapl);
-+	igt_power_open(fd, &gpu, "gpu");
- 
- 	nengine = 0;
- 	if (engine == ALL_ENGINES) {
-@@ -258,7 +258,7 @@ static void whisper(int fd, const intel_ctx_t *ctx,
- 		nchild *= nengine;
- 
- 	intel_detect_and_clear_missed_interrupts(fd);
--	rapl_read(&rapl, &sample[0]);
-+	igt_power_get_energy(&gpu, &sample[0]);
- 	igt_fork(child, nchild) {
- 		unsigned int pass;
- 
-@@ -559,12 +559,14 @@ static void whisper(int fd, const intel_ctx_t *ctx,
- 		fini_hang(&hang);
- 	else
- 		igt_assert_eq(intel_detect_and_clear_missed_interrupts(fd), 0);
--	if (rapl_read(&rapl, &sample[1]))  {
-+
-+	igt_power_get_energy(&gpu, &sample[1]);
-+	if (sample[1].energy) {
- 		igt_info("Total energy used: %.1fmJ\n",
--			 power_J(&rapl, &sample[0], &sample[1]) * 1e3);
-+			 igt_power_get_mJ(&gpu, &sample[0], &sample[1]));
- 	}
- 
--	rapl_close(&rapl);
-+	igt_power_close(&gpu);
- 	close(debugfs);
+diff --git a/tests/i915/gem_mmap_offset.c b/tests/i915/gem_mmap_offset.c
+index 762eab18..7e8c02d1 100644
+--- a/tests/i915/gem_mmap_offset.c
++++ b/tests/i915/gem_mmap_offset.c
+@@ -107,6 +107,73 @@ static void make_resident(int i915, uint32_t batch, uint32_t handle)
+ 		gem_close(i915, obj[1].handle);
  }
  
++static void perf(int i915, const struct gem_memory_region *r)
++{
++#define MiB (1024 * 1024)
++	const unsigned int rep = 1024;
++	const uint64_t sz = 4096;
++	struct timespec tv;
++	uint32_t handle;
++	char buf[4096];
++
++	/*
++	 * Time reading/writing through each mmap type into each
++	 * memory region to have a rough estimate of the memory
++	 * bandwidth exposed to userspace across each link.
++	 *
++	 * For example, we would expect that reading and writing to
++	 * lmem would utilise the full PCIe bandwidth (>3.2GiB/s),
++	 * and notably be symmetric, the same in both directions.
++	 */
++
++	handle = gem_create_in_memory_region_list(i915, 4096, 0, &r->ci, 1);
++	make_resident(i915, 0, handle);
++
++	for_each_mmap_offset_type(i915, t) {
++		double ns;
++		void *ptr;
++
++		ptr = __mmap_offset(i915, handle, 0, sz,
++				    PROT_READ | PROT_WRITE,
++				    t->type);
++		if (!ptr)
++			continue;
++
++		igt_nsec_elapsed(memset(&tv, 0, sizeof(tv)));
++		for (int i = 0; i < rep; i++)
++			memset(ptr, 0, sz);
++		ns = igt_nsec_elapsed(&tv);
++		igt_info("%s: Clear    %12.2fMiB/s\n",
++			 t->name, sz * rep * NSEC_PER_SEC / ns / MiB);
++
++		igt_nsec_elapsed(memset(&tv, 0, sizeof(tv)));
++		for (int i = 0; i < rep; i++)
++			memcpy(ptr, buf, sz);
++		ns = igt_nsec_elapsed(&tv);
++		igt_info("%s: Write    %12.2fMiB/s\n",
++			 t->name, sz * rep * NSEC_PER_SEC / ns / MiB);
++
++		igt_nsec_elapsed(memset(&tv, 0, sizeof(tv)));
++		for (int i = 0; i < rep; i++)
++			memcpy(buf, ptr, sz);
++		ns = igt_nsec_elapsed(&tv);
++		igt_info("%s: Read     %12.2fMiB/s\n",
++			 t->name, sz * rep * NSEC_PER_SEC / ns / MiB);
++
++		igt_nsec_elapsed(memset(&tv, 0, sizeof(tv)));
++		for (int i = 0; i < rep; i++)
++			igt_memcpy_from_wc(buf, ptr, sz);
++		ns = igt_nsec_elapsed(&tv);
++		igt_info("%s: movntqda %12.2fMiB/s\n",
++			 t->name, sz * rep * NSEC_PER_SEC / ns / MiB);
++
++		munmap(ptr, sz);
++	}
++
++	gem_close(i915, handle);
++#undef MiB
++}
++
+ static void bad_object(int i915)
+ {
+ 	uint32_t real_handle;
+@@ -835,6 +902,13 @@ igt_main
+ 		}
+ 	}
+ 
++	igt_subtest_with_dynamic("perf") {
++		for_each_memory_region(r, i915) {
++			igt_dynamic_f("%s", r->name)
++				perf(i915, r);
++		}
++	}
++
+ 	igt_subtest_f("blt-coherency")
+ 		blt_coherency(i915);
+ 
 -- 
-2.25.1
+2.34.1
