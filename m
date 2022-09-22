@@ -1,20 +1,22 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 93F0610E419
- for <igt-dev@lists.freedesktop.org>; Thu, 22 Sep 2022 09:26:33 +0000 (UTC)
-Message-ID: <382ad0cb-d6a0-13d5-0fd1-925d6fc92048@intel.com>
-Date: Thu, 22 Sep 2022 14:56:14 +0530
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0D08B10EA85
+ for <igt-dev@lists.freedesktop.org>; Thu, 22 Sep 2022 09:32:16 +0000 (UTC)
+From: "Hogander, Jouni" <jouni.hogander@intel.com>
+To: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Gupta,
+ Nidhi1" <nidhi1.gupta@intel.com>
+Date: Thu, 22 Sep 2022 09:31:53 +0000
+Message-ID: <92f2aa356cae064393e531ff29520cb97daf7f30.camel@intel.com>
+References: <20220921085806.7223-1-nidhi1.gupta@intel.com>
+In-Reply-To: <20220921085806.7223-1-nidhi1.gupta@intel.com>
 Content-Language: en-US
-To: Karthik B S <karthik.b.s@intel.com>, <igt-dev@lists.freedesktop.org>
-References: <20220921152044.26196-1-karthik.b.s@intel.com>
- <502604c3-271d-47df-1886-45e47ee8f82c@intel.com>
-From: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
-In-Reply-To: <502604c3-271d-47df-1886-45e47ee8f82c@intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <C99D3AFADE29E64CAC69BBC4E76E47F1@namprd11.prod.outlook.com>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t v3] tests/kms_plane_alpha_blend: Convert
- test to dynamic
+Subject: Re: [igt-dev] [RFC,
+ i-g-t] tests/i915/i915_pm_backlight: Add new subtest to validate
+ dual panel backlight
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,338 +28,275 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Thu-22-09-2022 01:41 pm, Modem, Bhanuprakash wrote:
-> On Wed-21-09-2022 08:50 pm, Karthik B S wrote:
->> Covert the existing subtests to dynamic subtests at pipe/output level.
->>
->> v2: -Don't skip the test in pipe_check() function.
->>      -Use for_each_pipe_with_single_output() instead of getting output
->>       separately.
->>      -Move igt_require before dynamic subtests.
->>      -Call prepare_crtc once per pipe.
->>
->> v3: -Fix typo.
->>      -Remove the fbs after the test is completed.
->>
->> Signed-off-by: Karthik B S <karthik.b.s@intel.com>
->> ---
->>   tests/kms_plane_alpha_blend.c | 206 ++++++++++++++++++++++------------
->>   1 file changed, 134 insertions(+), 72 deletions(-)
->>
->> diff --git a/tests/kms_plane_alpha_blend.c 
->> b/tests/kms_plane_alpha_blend.c
->> index bd064d1e..f122066d 100644
->> --- a/tests/kms_plane_alpha_blend.c
->> +++ b/tests/kms_plane_alpha_blend.c
->> @@ -150,6 +150,20 @@ static bool has_multiplied_alpha(data_t *data, 
->> igt_plane_t *plane)
->>       return ret == 0;
->>   }
->> +static void remove_fbs(data_t *data)
->> +{
->> +    igt_remove_fb(data->gfx_fd, &data->xrgb_fb);
->> +    igt_remove_fb(data->gfx_fd, &data->argb_fb_0);
->> +    igt_remove_fb(data->gfx_fd, &data->argb_fb_cov_0);
->> +    igt_remove_fb(data->gfx_fd, &data->argb_fb_7e);
->> +    igt_remove_fb(data->gfx_fd, &data->argb_fb_fc);
->> +    igt_remove_fb(data->gfx_fd, &data->argb_fb_cov_7e);
->> +    igt_remove_fb(data->gfx_fd, &data->argb_fb_cov_fc);
->> +    igt_remove_fb(data->gfx_fd, &data->argb_fb_100);
->> +    igt_remove_fb(data->gfx_fd, &data->black_fb);
->> +    igt_remove_fb(data->gfx_fd, &data->gray_fb);
->> +}
->> +
->>   static void prepare_crtc(data_t *data, igt_output_t *output, enum 
->> pipe pipe)
->>   {
->>       drmModeModeInfo *mode;
->> @@ -172,16 +186,7 @@ static void prepare_crtc(data_t *data, 
->> igt_output_t *output, enum pipe pipe)
->>       if (data->xrgb_fb.width != w || data->xrgb_fb.height != h) {
->>           cairo_t *cr;
->> -        igt_remove_fb(data->gfx_fd, &data->xrgb_fb);
->> -        igt_remove_fb(data->gfx_fd, &data->argb_fb_0);
->> -        igt_remove_fb(data->gfx_fd, &data->argb_fb_cov_0);
->> -        igt_remove_fb(data->gfx_fd, &data->argb_fb_7e);
->> -        igt_remove_fb(data->gfx_fd, &data->argb_fb_fc);
->> -        igt_remove_fb(data->gfx_fd, &data->argb_fb_cov_7e);
->> -        igt_remove_fb(data->gfx_fd, &data->argb_fb_cov_fc);
->> -        igt_remove_fb(data->gfx_fd, &data->argb_fb_100);
->> -        igt_remove_fb(data->gfx_fd, &data->black_fb);
->> -        igt_remove_fb(data->gfx_fd, &data->gray_fb);
->> +        remove_fbs(data);
->>           igt_create_fb(data->gfx_fd, w, h,
->>                     DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR,
->> @@ -466,15 +471,12 @@ static void coverage_premult_constant(data_t 
->> *data, enum pipe pipe, igt_plane_t
->>       igt_pipe_crc_stop(data->pipe_crc);
->>   }
->> -static void run_test_on_pipe_planes(data_t *data, enum pipe pipe, 
->> bool blend,
->> -                    bool must_multiply,
->> +static void run_test_on_pipe_planes(data_t *data, enum pipe pipe, 
->> igt_output_t *output,
->> +                    bool blend, bool must_multiply,
->>                       void(*test)(data_t *, enum pipe, igt_plane_t *))
->>   {
->>       igt_display_t *display = &data->display;
->> -    igt_output_t *output = igt_get_single_output_for_pipe(display, 
->> pipe);
->>       igt_plane_t *plane;
->> -    bool found = false;
->> -    bool multiply = false;
->>       for_each_plane_on_pipe(display, pipe, plane) {
->>           if (!igt_plane_has_prop(plane, IGT_PLANE_ALPHA))
->> @@ -483,15 +485,11 @@ static void run_test_on_pipe_planes(data_t 
->> *data, enum pipe pipe, bool blend,
->>           if (blend && !igt_plane_has_prop(plane, 
->> IGT_PLANE_PIXEL_BLEND_MODE))
->>               continue;
->> -        prepare_crtc(data, output, pipe);
->> -
->>           /* reset plane alpha properties between each plane */
->>           reset_alpha(display, pipe);
->> -        found = true;
->>           if (must_multiply && !has_multiplied_alpha(data, plane))
->>               continue;
->> -        multiply = true;
->>           igt_info("Testing plane %u\n", plane->index);
->>           test(data, pipe, plane);
->> @@ -500,74 +498,139 @@ static void run_test_on_pipe_planes(data_t 
->> *data, enum pipe pipe, bool blend,
->>       igt_output_set_pipe(output, PIPE_NONE);
->>       igt_display_commit2(display, COMMIT_ATOMIC);
->> -
->> -    igt_require_f(found, "No planes with %s property found\n",
->> -              blend ? "pixel blending mode" : "alpha");
->> -    igt_require_f(multiply, "Multiplied (plane x pixel) alpha not 
->> available\n");
->>   }
->> -static void run_subtests(data_t *data, enum pipe pipe)
->> +static const struct {
->> +    const char *name;
->> +    void (*test)(data_t *, enum pipe, igt_plane_t *);
->> +    bool blend;
->> +    bool must_multiply;
->> +    const char *desc;
->> +} subtests[] = {
->> +    { .name = "alpha-basic",
->> +      .test = basic_alpha,
->> +      .blend = false,
->> +      .must_multiply = true,
->> +      .desc = "Tests basic plane alpha properties.",
->> +    },
->> +    { .name = "alpha-7efc",
->> +      .test = alpha_7efc,
->> +      .blend = false,
->> +      .must_multiply = true,
->> +      .desc = "Uses alpha values 0x7e and 0xfc to validate fg.alpha 
->> and "
->> +          "plane_alpha are swappable on pre-multiplied blend mode.",
->> +    },
->> +    { .name = "coverage-7efc",
->> +      .test = coverage_7efc,
->> +      .blend = true,
->> +      .must_multiply = true,
->> +      .desc = "Uses alpha values 0x7e and 0xfc to validate fg.alpha 
->> and "
->> +          "plane_alpha are swappable on coverage blend mode.",
->> +    },
->> +    { .name = "coverage-vs-premult-vs-constant",
->> +      .test = coverage_premult_constant,
->> +      .blend = true,
->> +      .must_multiply = false,
->> +      .desc = "Tests pipe coverage blending properties.",
->> +    },
->> +    { .name = "alpha-transparent-fb",
->> +      .test = argb_transparent,
->> +      .blend = false,
->> +      .must_multiply = false,
->> +      .desc = "Tests the alpha property with transparent fb.",
->> +    },
->> +    { .name = "alpha-opaque-fb",
->> +      .test = argb_opaque,
->> +      .blend = false,
->> +      .must_multiply = false,
->> +      .desc = "Tests alpha properties with opaque fb.",
->> +    },
->> +    { .name = "constant-alpha-min",
->> +      .test = constant_alpha_min,
->> +      .blend = true,
->> +      .must_multiply = false,
->> +      .desc = "Tests plane alpha and blending properties with minimum 
->> alpha value.",
->> +    },
->> +    { .name = "constant-alpha-mid",
->> +      .test = constant_alpha_mid,
->> +      .blend = true,
->> +      .must_multiply = false,
->> +      .desc = "Tests plane alpha and blending properties with medium 
->> alpha value.",
->> +    },
->> +    { .name = "constant-alpha-max",
->> +      .test = constant_alpha_max,
->> +      .blend = true,
->> +      .must_multiply = false,
->> +      .desc = "Tests plane alpha and blending properties with maximum 
->> alpha value.",
->> +    },
->> +};
->> +
->> +static bool pipe_check(data_t *data, enum pipe pipe,
->> +               bool blend, bool must_multiply)
->>   {
->> -    igt_fixture {
->> -        bool found = false;
->> -        igt_plane_t *plane;
->> -
->> -        igt_display_require_output_on_pipe(&data->display, pipe);
->> -        for_each_plane_on_pipe(&data->display, pipe, plane) {
->> -            if (!igt_plane_has_prop(plane, IGT_PLANE_ALPHA))
->> -                continue;
->> -
->> -            found = true;
->> -            break;
->> -        }
->> +    igt_display_t *display = &data->display;
->> +    igt_plane_t *plane;
->> +    bool plane_alpha = false, plane_blend = false, multiply = false;
->> -        igt_require_f(found, "Found no plane on pipe %s with alpha 
->> blending supported\n",
->> -                  kmstest_pipe_name(pipe));
->> -    }
->> +    igt_display_require_output_on_pipe(display, pipe);
->> +    for_each_plane_on_pipe(display, pipe, plane) {
->> +        if (!igt_plane_has_prop(plane, IGT_PLANE_ALPHA))
->> +            continue;
->> +        plane_alpha = true;
->> -    igt_describe("Tests basic plane alpha properties.");
->> -    igt_subtest_f("pipe-%s-alpha-basic", kmstest_pipe_name(pipe))
->> -        run_test_on_pipe_planes(data, pipe, false, true, basic_alpha);
->> +        if (blend && !igt_plane_has_prop(plane, 
->> IGT_PLANE_PIXEL_BLEND_MODE))
->> +            continue;
->> +        plane_blend = true;
->> -    igt_describe("Uses alpha values 0x7e and 0xfc to validate 
->> fg.alpha and "
->> -             "plane_alpha are swappable on pre-multiplied blend mode.");
->> -    igt_subtest_f("pipe-%s-alpha-7efc", kmstest_pipe_name(pipe))
->> -        run_test_on_pipe_planes(data, pipe, false, true, alpha_7efc);
->> +        /* reset plane alpha properties between each plane */
->> +        reset_alpha(display, pipe);
->> -    igt_describe("Uses alpha values 0x7e and 0xfc to validate 
->> fg.alpha and "
->> -             "plane_alpha are swappable on coverage blend mode.");
->> -    igt_subtest_f("pipe-%s-coverage-7efc", kmstest_pipe_name(pipe))
->> -        run_test_on_pipe_planes(data, pipe, true, true, coverage_7efc);
->> +        if (must_multiply && !has_multiplied_alpha(data, plane))
->> +            continue;
->> +        multiply = true;
->> -    igt_describe("Tests pipe coverage blending properties.");
->> -    igt_subtest_f("pipe-%s-coverage-vs-premult-vs-constant", 
->> kmstest_pipe_name(pipe))
->> -        run_test_on_pipe_planes(data, pipe, true, false, 
->> coverage_premult_constant);
->> +        break;
->> +    }
->> -    igt_describe("Tests the alpha property with transparent fb.");
->> -    igt_subtest_f("pipe-%s-alpha-transparent-fb", 
->> kmstest_pipe_name(pipe))
->> -        run_test_on_pipe_planes(data, pipe, false, false, 
->> argb_transparent);
->> +    if (!plane_alpha || !plane_blend || !multiply) {
->> +        if (!plane_alpha)
->> +            igt_debug("No planes with alpha property found\n");
->> +        if (!plane_blend)
->> +            igt_debug("No planes with pixel blending mode property 
->> found\n");
->> +        if (!multiply)
->> +            igt_debug("Multiplied (plane x pixel) alpha not 
->> available\n");
->> +
->> +        return false;
->> +    } else {
->> +        return true;
->> +    }
->> +}
->> -    igt_describe("Tests alpha properties with opaque fb.");
->> -    igt_subtest_f("pipe-%s-alpha-opaque-fb", kmstest_pipe_name(pipe))
->> -        run_test_on_pipe_planes(data, pipe, false, false, argb_opaque);
->> +static void run_subtests(data_t *data)
->> +{
->> +    igt_output_t *output;
->> +    enum pipe pipe;
->> -    igt_describe("Tests plane alpha and blending properties with 
->> minimum alpha value.");
->> -    igt_subtest_f("pipe-%s-constant-alpha-min", kmstest_pipe_name(pipe))
->> -        run_test_on_pipe_planes(data, pipe, true, false, 
->> constant_alpha_min);
->> +    for (int i = 0; i < ARRAY_SIZE(subtests); i++) {
->> +        igt_describe_f("%s\n", subtests[i].desc);
->> -    igt_describe("Tests plane alpha and blending properties with 
->> medium alpha value");
->> -    igt_subtest_f("pipe-%s-constant-alpha-mid", kmstest_pipe_name(pipe))
->> -        run_test_on_pipe_planes(data, pipe, true, false, 
->> constant_alpha_mid);
->> +        igt_subtest_with_dynamic(subtests[i].name) {
->> +            for_each_pipe_with_single_output(&data->display, pipe, 
->> output) {
->> +                prepare_crtc(data, output, pipe);
->> +                if (!pipe_check(data, pipe, subtests[i].blend, 
->> subtests[i].must_multiply))
->> +                    continue;
->> -    igt_describe("Tests plane alpha and blending properties with 
->> maximum alpha value");
->> -    igt_subtest_f("pipe-%s-constant-alpha-max", kmstest_pipe_name(pipe))
->> -        run_test_on_pipe_planes(data, pipe, true, false, 
->> constant_alpha_max);
->> +                igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), 
->> output->name)
->> +                    run_test_on_pipe_planes(data, pipe, output, 
->> subtests[i].blend,
->> +                                subtests[i].must_multiply, 
->> subtests[i].test);
-> 
-> I think, we need a cleanup after completion of subtest,
-> Whatever the things done by prepare_crtc() should be cleaned.
-> Ex:
-> - remove_fbs()
-> - igt_output_set_pipe(output, PIPE_NONE);
-
-I think, the fbs need not be recreated if output is same. So cleaup is 
-not required.
-
-Reviewed-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-
-- Bhanu
-
-> 
->> +            }
->> +        }
->> +    }
->>   }
->>   igt_main
->>   {
->>       data_t data = {};
->> -    enum pipe pipe;
->>       igt_fixture {
->>           data.gfx_fd = drm_open_driver_master(DRIVER_ANY);
->> @@ -576,11 +639,10 @@ igt_main
->>           igt_require(data.display.is_atomic);
->>       }
->> -    for_each_pipe_static(pipe)
->> -        igt_subtest_group
->> -            run_subtests(&data, pipe);
->> +    run_subtests(&data);
->>       igt_fixture {
->> +        remove_fbs(&data);
-> 
-> This is not required if we do this at subtest level.
-> Please check the above comment.
-> 
-> - Bhanu
-> 
->>           igt_display_reset(&data.display);
->>           igt_display_commit2(&data.display, data.display.is_atomic ?
->>                       COMMIT_ATOMIC : COMMIT_LEGACY);
-> 
+T24gV2VkLCAyMDIyLTA5LTIxIGF0IDE0OjI4ICswNTMwLCBOaWRoaSBHdXB0YSB3cm90ZToKPiAt
+U2luY2UgZHJpdmVyIGNhbiBub3cgc3VwcG9ydCBtdWx0aXBsZSBlRFBzIGFuZCBEZWJ1Z2ZzIHN0
+cnVjdHVyZSBmb3IKPiBiYWNrbGlnaHQgY2hhbmdlZCBwZXIgY29ubmVjdG9yIHRoZSB0ZXN0IHNo
+b3VsZCB0aGVuIGl0ZXJhdGUgdGhyb3VnaAo+IGFsbCBlRFAgY29ubmVjdG9ycy4KPiAtYmFja2xp
+Z2h0IHdpdGggZHBtcyBjeWNsZSBvZiBvbiBhbmQgb2ZmIHdpdGggYWxsIHRoZSBlRFAgY29ubmVj
+dGVkLgoKVGhlc2UgYXJlIGNsZWFybHkgdHdvIHNlcGFyYXRlIHBhdGNoZXMuIEkgd291bGQgc3Vn
+Z2VzdCBzcGxpdHRpbmcuCgoKPiBTaWduZWQtb2ZmLWJ5OiBOaWRoaSBHdXB0YSA8bmlkaGkxLmd1
+cHRhQGludGVsLmNvbT4KPiAtLS0KPiDCoHRlc3RzL2k5MTUvaTkxNV9wbV9iYWNrbGlnaHQuYyB8
+IDIwNCArKysrKysrKysrKysrKysrKysrKysrKysrLS0tLS0tCj4gLS0KPiDCoDEgZmlsZSBjaGFu
+Z2VkLCAxNTYgaW5zZXJ0aW9ucygrKSwgNDggZGVsZXRpb25zKC0pCj4gCj4gZGlmZiAtLWdpdCBh
+L3Rlc3RzL2k5MTUvaTkxNV9wbV9iYWNrbGlnaHQuYwo+IGIvdGVzdHMvaTkxNS9pOTE1X3BtX2Jh
+Y2tsaWdodC5jCj4gaW5kZXggY2FmYWU3ZjcuLjk1MWVlMDQ4IDEwMDY0NAo+IC0tLSBhL3Rlc3Rz
+L2k5MTUvaTkxNV9wbV9iYWNrbGlnaHQuYwo+ICsrKyBiL3Rlc3RzL2k5MTUvaTkxNV9wbV9iYWNr
+bGlnaHQuYwo+IEBAIC0zNiwxOSArMzYsNzcgQEAKPiDCoCNpbmNsdWRlIDx0aW1lLmg+Cj4gwqAK
+PiDCoHN0cnVjdCBjb250ZXh0IHsKPiArwqDCoMKgwqDCoMKgwqBpbnQgZHJtX2ZkOwo+ICvCoMKg
+wqDCoMKgwqDCoGlndF9kaXNwbGF5X3QgZGlzcGxheTsKPiDCoMKgwqDCoMKgwqDCoMKgaW50IG1h
+eDsKPiDCoH07Cj4gwqAKPiArLy90eXBlZGVmIHN0cnVjdCBkYXRhIHsKPiArLy/CoMKgwqDCoMKg
+aWd0X2Rpc3BsYXlfdCBkaXNwbGF5Owo+ICsvL8KgwqDCoMKgwqBpbnQgZHJtX2ZkOwo+ICsvL30g
+ZGF0YV90Owo+ICsKPiDCoAoKSnVzdCByZW1vdmUgaWYgbm90IHVzZWQuCgo+IMKgI2RlZmluZSBU
+T0xFUkFOQ0UgNSAvKiBwZXJjZW50ICovCj4gwqAjZGVmaW5lIEJBQ0tMSUdIVF9QQVRIICIvc3lz
+L2NsYXNzL2JhY2tsaWdodC9pbnRlbF9iYWNrbGlnaHQiCj4gLQo+ICsjZGVmaW5lIEJBQ0tMSUdI
+VF9CUklHSFRORVNTICJicmlnaHRuZXNzIgo+ICsjZGVmaW5lIEJBQ0tMSUdIVF9BQ1RVQUxfQlJJ
+R0hUTkVTUyAiYWN0dWFsX2JyaWdodG5lc3MiCj4gwqAjZGVmaW5lIEZBREVTVEVQUyAxMAo+IMKg
+I2RlZmluZSBGQURFU1BFRUQgMTAwIC8qIG1pbGxpc2Vjb25kcyBiZXR3ZWVuIHN0ZXBzICovCj4g
+wqAKPiDCoElHVF9URVNUX0RFU0NSSVBUSU9OKCJCYXNpYyBiYWNrbGlnaHQgc3lzZnMgdGVzdCIp
+Owo+IMKgCj4gLXN0YXRpYyBpbnQgYmFja2xpZ2h0X3JlYWQoaW50ICpyZXN1bHQsIGNvbnN0IGNo
+YXIgKmZuYW1lKQo+ICtzdGF0aWMgaW50IGJhY2tsaWdodF9yZWFkKGludCAqcmVzdWx0LCBpbnQg
+ZHJtX2ZkLCBjaGFyCj4gKmNvbm5lY3Rvcl9uYW1lKQo+ICt7Cj4gK8KgwqDCoMKgwqDCoMKgY2hh
+ciBidWZbMjBdOwo+ICvCoMKgwqDCoMKgwqDCoGludCBmZCwgZSwgcjsKPiArCj4gK8KgwqDCoMKg
+wqDCoMKgZmQgPSBpZ3RfZGVidWdmc19jb25uZWN0b3JfZGlyKGRybV9mZCwgY29ubmVjdG9yX25h
+bWUsCj4gT19SRE9OTFkpOwoKV2h5IHlvdSBhcmUgdXNpbmcgZGVidWdmcz8gSXNuJ3QgaXQgc3lz
+ZnMgaW50ZXJmYWNlIHlvdSB3YW50IHRvIHVzZT8KCj4gKwo+ICvCoMKgwqDCoMKgwqDCoGlmIChm
+ZCA8IDApIHsKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgaWd0X2luZm8oIkNvdWxk
+bid0IG9wZW4gY29ubmVjdG9yICVzIGRlYnVnZnMKPiBkaXJlY3RvcnlcbiIsCj4gK8KgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgY29ubmVjdG9yX25hbWUpOwo+
+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqByZXR1cm4gZmFsc2U7CgpPbiBlcnJvciB5
+b3UgcmV0dXJuICI8IDAiLiBNYXliZSBmZCBhcyBpdCBpcz8KIAo+ICvCoMKgwqDCoMKgwqDCoH0K
+PiArCj4gK8KgwqDCoMKgwqDCoMKgciA9IGlndF9kZWJ1Z2ZzX3NpbXBsZV9yZWFkKGZkLCBCQUNL
+TElHSFRfQlJJR0hUTkVTUywgYnVmLAo+IHNpemVvZihidWYpKTsKPiArwqDCoMKgwqDCoMKgwqBl
+ID0gZXJybm87Cj4gK8KgwqDCoMKgwqDCoMKgY2xvc2UoZmQpOwo+ICsKPiArwqDCoMKgwqDCoMKg
+wqBpZiAociA8IDApCj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoHJldHVybiAtZTsK
+PiArCj4gK8KgwqDCoMKgwqDCoMKgZXJybm8gPSAwOwoKSSBkb24ndCBzZWUgYSByZWFzb24gdG8g
+c2V0IGVycm5vIGhlcmUgYXMgeW91IGFyZSBhbHJlYWR5IHNldHRpbmcgaXQKYmVsb3c/IEhvbmVz
+dGx5OiBJIGRvIG5vdCB1bmRlcnN0YW5kIHdoeSBlcnJubyBpcyB1c2VkIGluIHRoaXMgdGVzdGNh
+c2UKYXQgYWxsIGFzIGl0J3MgdmFsdWUgaXMgbm90IHJlYWxseSB1c2VkLiBNYXliZSBpZ3QgaXMg
+dXNpbmcgaXQgZm9yIHNvbWUKcmVwb3J0aW5nPyBJJ20gZmluZSBpZiB5b3Ugd2FudCB0byBrZWVw
+IGl0IHRob3VnaC4KCj4gK8KgwqDCoMKgwqDCoMKgKnJlc3VsdCA9IHN0cnRvbChidWYsIE5VTEws
+IDApOwo+ICvCoMKgwqDCoMKgwqDCoHJldHVybiBlcnJubyA9IDA7Cj4gK30KPiArCj4gK3N0YXRp
+YyBpbnQgcmVhZF9hY3R1YWxfYmFja2xpZ2h0KGludCAqcmVzdWx0LCBpbnQgZHJtX2ZkLCBjaGFy
+Cj4gKmNvbm5lY3Rvcl9uYW1lKQoKWW91IHNob3VsZCBjb21iaW5lIHJlYWRfYWN0dWFsX2JhY2ts
+aWdodCwgYmFja2xpZ2h0X3JlYWQgYW5kCj4gK3sKPiArwqDCoMKgwqDCoMKgwqBjaGFyIGJ1Zlsy
+MF07Cj4gK8KgwqDCoMKgwqDCoMKgaW50IGZkLCBlLCByOwo+ICsKPiArwqDCoMKgwqDCoMKgwqBm
+ZCA9IGlndF9kZWJ1Z2ZzX2Nvbm5lY3Rvcl9kaXIoZHJtX2ZkLCBjb25uZWN0b3JfbmFtZSwKPiBP
+X1JET05MWSk7Cj4gKwo+ICvCoMKgwqDCoMKgwqDCoGlmIChmZCA8IDApIHsKPiArwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgaWd0X2luZm8oIkNvdWxkbid0IG9wZW4gY29ubmVjdG9yICVz
+IGRlYnVnZnMKPiBkaXJlY3RvcnlcbiIsCj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqAgY29ubmVjdG9yX25hbWUpOwo+ICvCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqByZXR1cm4gZmFsc2U7Cj4gK8KgwqDCoMKgwqDCoMKgfQo+ICsKPiArwqDCoMKg
+wqDCoMKgwqByID0gaWd0X2RlYnVnZnNfc2ltcGxlX3JlYWQoZmQsIEJBQ0tMSUdIVF9BQ1RVQUxf
+QlJJR0hUTkVTUywKPiBidWYsIHNpemVvZihidWYpKTsKPiArwqDCoMKgwqDCoMKgwqBlID0gZXJy
+bm87Cj4gK8KgwqDCoMKgwqDCoMKgY2xvc2UoZmQpOwo+ICsKPiArwqDCoMKgwqDCoMKgwqBpZiAo
+ciA8IDApCj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoHJldHVybiAtZTsKPiArCj4g
+K8KgwqDCoMKgwqDCoMKgZXJybm8gPSAwOwo+ICvCoMKgwqDCoMKgwqDCoCpyZXN1bHQgPSBzdHJ0
+b2woYnVmLCBOVUxMLCAwKTsKPiArwqDCoMKgwqDCoMKgwqByZXR1cm4gZXJybm87Cj4gK30KPiAr
+Cj4gKy8qc3RhdGljIGludCBiYWNrbGlnaHRfcmVhZChpbnQgKnJlc3VsdCwgY29uc3QgY2hhciAq
+Zm5hbWUpCj4gwqB7Cj4gwqDCoMKgwqDCoMKgwqDCoGludCBmZDsKPiDCoMKgwqDCoMKgwqDCoMKg
+Y2hhciBmdWxsW1BBVEhfTUFYXTsKPiBAQCAtNzIsNiArMTMwLDcgQEAgc3RhdGljIGludCBiYWNr
+bGlnaHRfcmVhZChpbnQgKnJlc3VsdCwgY29uc3QgY2hhcgo+ICpmbmFtZSkKPiDCoMKgwqDCoMKg
+wqDCoMKgKnJlc3VsdCA9IHN0cnRvbChkc3QsIE5VTEwsIDEwKTsKPiDCoMKgwqDCoMKgwqDCoMKg
+cmV0dXJuIGVycm5vOwo+IMKgfQo+ICsqLwoKQWdhaW4ganVzdCByZW1vdmUuCgo+IMKgCj4gwqBz
+dGF0aWMgaW50IGJhY2tsaWdodF93cml0ZShpbnQgdmFsdWUsIGNvbnN0IGNoYXIgKmZuYW1lKQo+
+IMKgewo+IEBAIC05OSwxOCArMTU4LDI1IEBAIHN0YXRpYyB2b2lkIHRlc3RfYW5kX3ZlcmlmeShz
+dHJ1Y3QgY29udGV4dAo+ICpjb250ZXh0LCBpbnQgdmFsKQo+IMKgewo+IMKgwqDCoMKgwqDCoMKg
+wqBjb25zdCBpbnQgdG9sZXJhbmNlID0gdmFsICogVE9MRVJBTkNFIC8gMTAwOwo+IMKgwqDCoMKg
+wqDCoMKgwqBpbnQgcmVzdWx0Owo+IC0KPiAtwqDCoMKgwqDCoMKgwqBpZ3RfYXNzZXJ0X2VxKGJh
+Y2tsaWdodF93cml0ZSh2YWwsICJicmlnaHRuZXNzIiksIDApOwo+IC3CoMKgwqDCoMKgwqDCoGln
+dF9hc3NlcnRfZXEoYmFja2xpZ2h0X3JlYWQoJnJlc3VsdCwgImJyaWdodG5lc3MiKSwgMCk7Cj4g
+LcKgwqDCoMKgwqDCoMKgLyogQ2hlY2sgdGhhdCB0aGUgZXhhY3QgdmFsdWUgc3RpY2tzICovCj4g
+LcKgwqDCoMKgwqDCoMKgaWd0X2Fzc2VydF9lcShyZXN1bHQsIHZhbCk7Cj4gLQo+IC3CoMKgwqDC
+oMKgwqDCoGlndF9hc3NlcnRfZXEoYmFja2xpZ2h0X3JlYWQoJnJlc3VsdCwgImFjdHVhbF9icmln
+aHRuZXNzIiksCj4gMCk7Cj4gLcKgwqDCoMKgwqDCoMKgLyogU29tZSByb3VuZGluZyBtYXkgaGFw
+cGVuIGRlcGVuZGluZyBvbiBodyAqLwo+IC3CoMKgwqDCoMKgwqDCoGlndF9hc3NlcnRfZihyZXN1
+bHQgPj0gbWF4KDAsIHZhbCAtIHRvbGVyYW5jZSkgJiYKPiAtwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqAgcmVzdWx0IDw9IG1pbihjb250ZXh0LT5tYXgsIHZhbCArIHRvbGVy
+YW5jZSksCj4gLcKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgICJhY3R1YWxf
+YnJpZ2h0bmVzcyBbJWRdIGRpZCBub3QgbWF0Y2ggZXhwZWN0ZWQKPiBicmlnaHRuZXNzIFslZCAr
+LSAlZF1cbiIsCj4gLcKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIHJlc3Vs
+dCwgdmFsLCB0b2xlcmFuY2UpOwo+ICvCoMKgwqDCoMKgwqDCoGlndF9vdXRwdXRfdCAqb3V0cHV0
+Owo+ICvCoMKgwqDCoMKgwqDCoGVudW0gcGlwZSBwaXBlOwo+ICsKPiArwqDCoMKgwqDCoMKgwqBm
+b3JfZWFjaF9waXBlX3dpdGhfdmFsaWRfb3V0cHV0KCZjb250ZXh0LT5kaXNwbGF5LCBwaXBlLAo+
+IG91dHB1dCkgewoKIGZvcl9lYWNoX3BpcGVfd2l0aF9zaW5nbGVfb3V0cHV0Cgo+ICvCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBpZiAob3V0cHV0LT5jb25maWcuY29ubmVjdG9yLT5jb25u
+ZWN0b3JfdHlwZSAhPQo+IERSTV9NT0RFX0NPTk5FQ1RPUl9lRFApCj4gK8KgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBjb250aW51ZTsKPiArCj4gK8KgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoGlndF9hc3NlcnRfZXEoYmFja2xpZ2h0X3dyaXRlKHZhbCwg
+ImJyaWdodG5lc3MiKSwgMCk7CgpTaG91bGRuJ3QgeW91IHdyaXRlIGJvdGggcGFuZWxzIHNlcGFy
+YXRlbHk/Cgo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBpZ3RfYXNzZXJ0X2VxKGJh
+Y2tsaWdodF9yZWFkKCZyZXN1bHQsIGNvbnRleHQtCj4gPmRybV9mZCwgb3V0cHV0LT5uYW1lKSwg
+MCk7Cj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoC8qIENoZWNrIHRoYXQgdGhlIGV4
+YWN0IHZhbHVlIHN0aWNrcyAqLwo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBpZ3Rf
+YXNzZXJ0X2VxKHJlc3VsdCwgdmFsKTsKPiArCj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoGlndF9hc3NlcnRfZXEocmVhZF9hY3R1YWxfYmFja2xpZ2h0KCZyZXN1bHQsIGNvbnRleHQt
+Cj4gPmRybV9mZCwgb3V0cHV0LT5uYW1lKSwgMCk7Cj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoC8qIFNvbWUgcm91bmRpbmcgbWF5IGhhcHBlbiBkZXBlbmRpbmcgb24gaHcgKi8KPiAr
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgaWd0X2Fzc2VydF9mKHJlc3VsdCA+PSBtYXgo
+MCwgdmFsIC0gdG9sZXJhbmNlKSAmJgo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgcmVzdWx0IDw9IG1pbihjb250ZXh0LT5tYXgsIHZhbCAr
+Cj4gdG9sZXJhbmNlKSwKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgICJhY3R1YWxfYnJpZ2h0bmVzcyBbJWRdIGRpZCBub3QgbWF0Y2gKPiBl
+eHBlY3RlZCBicmlnaHRuZXNzIFslZCArLSAlZF1cbiIsCj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIHJlc3VsdCwgdmFsLCB0b2xlcmFu
+Y2UpOwo+ICvCoMKgwqDCoMKgwqDCoH0KPiDCoH0KPiDCoAo+IMKgc3RhdGljIHZvaWQgdGVzdF9i
+cmlnaHRuZXNzKHN0cnVjdCBjb250ZXh0ICpjb250ZXh0KQo+IEBAIC0xMjMsNTIgKzE4OSw2OCBA
+QCBzdGF0aWMgdm9pZCB0ZXN0X2JyaWdodG5lc3Moc3RydWN0IGNvbnRleHQKPiAqY29udGV4dCkK
+PiDCoHN0YXRpYyB2b2lkIHRlc3RfYmFkX2JyaWdodG5lc3Moc3RydWN0IGNvbnRleHQgKmNvbnRl
+eHQpCj4gwqB7Cj4gwqDCoMKgwqDCoMKgwqDCoGludCB2YWw7Cj4gLcKgwqDCoMKgwqDCoMKgLyog
+Rmlyc3Qgd3JpdGUgc29tZSBzYW5lIHZhbHVlICovCj4gLcKgwqDCoMKgwqDCoMKgYmFja2xpZ2h0
+X3dyaXRlKGNvbnRleHQtPm1heCAvIDIsICJicmlnaHRuZXNzIik7Cj4gLcKgwqDCoMKgwqDCoMKg
+LyogV3JpdGluZyBpbnZhbGlkIHZhbHVlcyBzaG91bGQgZmFpbCBhbmQgbm90IGNoYW5nZSB0aGUK
+PiB2YWx1ZSAqLwo+IC3CoMKgwqDCoMKgwqDCoGlndF9hc3NlcnRfbHQoYmFja2xpZ2h0X3dyaXRl
+KC0xLCAiYnJpZ2h0bmVzcyIpLCAwKTsKPiAtwqDCoMKgwqDCoMKgwqBiYWNrbGlnaHRfcmVhZCgm
+dmFsLCAiYnJpZ2h0bmVzcyIpOwo+IC3CoMKgwqDCoMKgwqDCoGlndF9hc3NlcnRfZXEodmFsLCBj
+b250ZXh0LT5tYXggLyAyKTsKPiAtwqDCoMKgwqDCoMKgwqBpZ3RfYXNzZXJ0X2x0KGJhY2tsaWdo
+dF93cml0ZShjb250ZXh0LT5tYXggKyAxLAo+ICJicmlnaHRuZXNzIiksIDApOwo+IC3CoMKgwqDC
+oMKgwqDCoGJhY2tsaWdodF9yZWFkKCZ2YWwsICJicmlnaHRuZXNzIik7Cj4gLcKgwqDCoMKgwqDC
+oMKgaWd0X2Fzc2VydF9lcSh2YWwsIGNvbnRleHQtPm1heCAvIDIpOwo+IC3CoMKgwqDCoMKgwqDC
+oGlndF9hc3NlcnRfbHQoYmFja2xpZ2h0X3dyaXRlKElOVF9NQVgsICJicmlnaHRuZXNzIiksIDAp
+Owo+IC3CoMKgwqDCoMKgwqDCoGJhY2tsaWdodF9yZWFkKCZ2YWwsICJicmlnaHRuZXNzIik7Cj4g
+LcKgwqDCoMKgwqDCoMKgaWd0X2Fzc2VydF9lcSh2YWwsIGNvbnRleHQtPm1heCAvIDIpOwo+ICvC
+oMKgwqDCoMKgwqDCoGlndF9vdXRwdXRfdCAqb3V0cHV0Owo+ICvCoMKgwqDCoMKgwqDCoGVudW0g
+cGlwZSBwaXBlOwo+ICsKPiArwqDCoMKgwqDCoMKgwqBmb3JfZWFjaF9waXBlX3dpdGhfdmFsaWRf
+b3V0cHV0KCZjb250ZXh0LT5kaXNwbGF5LCBwaXBlLAo+IG91dHB1dCkgewoKZm9yX2VhY2hfcGlw
+ZV93aXRoX3NpbmdsZV9vdXRwdXQKCj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGlm
+IChvdXRwdXQtPmNvbmZpZy5jb25uZWN0b3ItPmNvbm5lY3Rvcl90eXBlICE9Cj4gRFJNX01PREVf
+Q09OTkVDVE9SX2VEUCkKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoGNvbnRpbnVlOwo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAvKiBGaXJz
+dCB3cml0ZSBzb21lIHNhbmUgdmFsdWUgKi8KPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgYmFja2xpZ2h0X3dyaXRlKGNvbnRleHQtPm1heCAvIDIsICJicmlnaHRuZXNzIik7Cj4gK8Kg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoC8qIFdyaXRpbmcgaW52YWxpZCB2YWx1ZXMgc2hv
+dWxkIGZhaWwgYW5kIG5vdCBjaGFuZ2UKPiB0aGUgdmFsdWUgKi8KPiArwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgaWd0X2Fzc2VydF9sdChiYWNrbGlnaHRfd3JpdGUoLTEsICJicmlnaHRu
+ZXNzIiksIDApOwo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBiYWNrbGlnaHRfcmVh
+ZCgmdmFsLCBjb250ZXh0LT5kcm1fZmQsIG91dHB1dC0+bmFtZSk7Cj4gK8KgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoGlndF9hc3NlcnRfZXEodmFsLCBjb250ZXh0LT5tYXggLyAyKTsKPiAr
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgaWd0X2Fzc2VydF9sdChiYWNrbGlnaHRfd3Jp
+dGUoY29udGV4dC0+bWF4ICsgMSwKPiAiYnJpZ2h0bmVzcyIpLCAwKTsKPiArwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgYmFja2xpZ2h0X3JlYWQoJnZhbCwgY29udGV4dC0+ZHJtX2ZkLCBv
+dXRwdXQtPm5hbWUpOwo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBpZ3RfYXNzZXJ0
+X2VxKHZhbCwgY29udGV4dC0+bWF4IC8gMik7Cj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoGlndF9hc3NlcnRfbHQoYmFja2xpZ2h0X3dyaXRlKElOVF9NQVgsICJicmlnaHRuZXNzIiks
+Cj4gMCk7Cj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGJhY2tsaWdodF9yZWFkKCZ2
+YWwsIGNvbnRleHQtPmRybV9mZCwgb3V0cHV0LT5uYW1lKTsKPiArwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgaWd0X2Fzc2VydF9lcSh2YWwsIGNvbnRleHQtPm1heCAvIDIpOwo+ICvCoMKg
+wqDCoMKgwqDCoH0KPiDCoH0KPiDCoAo+IMKgc3RhdGljIHZvaWQgdGVzdF9mYWRlKHN0cnVjdCBj
+b250ZXh0ICpjb250ZXh0KQo+IMKgewo+IMKgwqDCoMKgwqDCoMKgwqBpbnQgaTsKPiDCoMKgwqDC
+oMKgwqDCoMKgc3RhdGljIGNvbnN0IHN0cnVjdCB0aW1lc3BlYyB0cyA9IHsgLnR2X3NlYyA9IDAs
+IC50dl9uc2VjID0KPiBGQURFU1BFRUQqMTAwMDAwMCB9Owo+ICvCoMKgwqDCoMKgwqDCoGlndF9v
+dXRwdXRfdCAqb3V0cHV0Owo+ICvCoMKgwqDCoMKgwqDCoGVudW0gcGlwZSBwaXBlOwo+IMKgCj4g
+LcKgwqDCoMKgwqDCoMKgLyogRmFkZSBvdXQsIHRoZW4gaW4gKi8KPiAtwqDCoMKgwqDCoMKgwqBm
+b3IgKGkgPSBjb250ZXh0LT5tYXg7IGkgPiAwOyBpIC09IGNvbnRleHQtPm1heCAvIEZBREVTVEVQ
+UykKPiB7Cj4gLcKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoHRlc3RfYW5kX3ZlcmlmeShj
+b250ZXh0LCBpKTsKPiAtwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgbmFub3NsZWVwKCZ0
+cywgTlVMTCk7Cj4gLcKgwqDCoMKgwqDCoMKgfQo+IC3CoMKgwqDCoMKgwqDCoGZvciAoaSA9IDA7
+IGkgPD0gY29udGV4dC0+bWF4OyBpICs9IGNvbnRleHQtPm1heCAvIEZBREVTVEVQUykKPiB7Cj4g
+LcKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoHRlc3RfYW5kX3ZlcmlmeShjb250ZXh0LCBp
+KTsKPiAtwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgbmFub3NsZWVwKCZ0cywgTlVMTCk7
+Cj4gK8KgwqDCoMKgwqDCoMKgZm9yX2VhY2hfcGlwZV93aXRoX3ZhbGlkX291dHB1dCgmY29udGV4
+dC0+ZGlzcGxheSwgcGlwZSwKPiBvdXRwdXQpIHsKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgaWYgKG91dHB1dC0+Y29uZmlnLmNvbm5lY3Rvci0+Y29ubmVjdG9yX3R5cGUgIT0KPiBE
+Uk1fTU9ERV9DT05ORUNUT1JfZURQKQo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgY29udGludWU7Cj4gKwo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqAvKiBGYWRlIG91dCwgdGhlbiBpbiAqLwo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqBmb3IgKGkgPSBjb250ZXh0LT5tYXg7IGkgPiAwOyBpIC09IGNvbnRleHQtPm1heCAvCj4g
+RkFERVNURVBTKSB7Cj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqB0ZXN0X2FuZF92ZXJpZnkoY29udGV4dCwgaSk7Cj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBuYW5vc2xlZXAoJnRzLCBOVUxMKTsKPiArwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgfQo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqBmb3IgKGkgPSAwOyBpIDw9IGNvbnRleHQtPm1heDsgaSArPSBjb250ZXh0LT5tYXggLwo+IEZB
+REVTVEVQUykgewo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgdGVzdF9hbmRfdmVyaWZ5KGNvbnRleHQsIGkpOwo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgbmFub3NsZWVwKCZ0cywgTlVMTCk7Cj4gK8KgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoH0KPiDCoMKgwqDCoMKgwqDCoMKgfQo+IMKgfQo+IMKgCj4g
+wqBzdGF0aWMgdm9pZAo+IMKgdGVzdF9mYWRlX3dpdGhfZHBtcyhzdHJ1Y3QgY29udGV4dCAqY29u
+dGV4dCwgaWd0X291dHB1dF90ICpvdXRwdXQpCj4gwqB7Cj4gLcKgwqDCoMKgwqDCoMKgaWd0X3Jl
+cXVpcmUoaWd0X3NldHVwX3J1bnRpbWVfcG0ob3V0cHV0LT5kaXNwbGF5LT5kcm1fZmQpKTsKPiDC
+oAo+IC3CoMKgwqDCoMKgwqDCoGttc3Rlc3Rfc2V0X2Nvbm5lY3Rvcl9kcG1zKG91dHB1dC0+ZGlz
+cGxheS0+ZHJtX2ZkLAo+IC3CoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgb3V0cHV0LT5jb25maWcuY29ubmVjdG9yLAo+IC3C
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqAgRFJNX01PREVfRFBNU19PRkYpOwo+IC0KPiDCoMKgwqDCoMKgwqDCoGlndF9yZXF1
+aXJlKGlndF93YWl0X2Zvcl9wbV9zdGF0dXMoSUdUX1JVTlRJTUVfUE1fU1RBVFVTX1NVU1BFTgo+
+IERFRCkpOwo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBpZ3RfcmVxdWlyZShpZ3Rf
+c2V0dXBfcnVudGltZV9wbShvdXRwdXQtPmRpc3BsYXktCj4gPmRybV9mZCkpOwo+IMKgCj4gLcKg
+wqDCoMKgwqDCoMKga21zdGVzdF9zZXRfY29ubmVjdG9yX2RwbXMob3V0cHV0LT5kaXNwbGF5LT5k
+cm1fZmQsCj4gLcKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoCBvdXRwdXQtPmNvbmZpZy5jb25uZWN0b3IsCj4gLcKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oCBEUk1fTU9ERV9EUE1TX09OKTsKPiAtCj4gwqDCoMKgwqDCoMKgwqBpZ3RfYXNzZXJ0KGlndF93
+YWl0X2Zvcl9wbV9zdGF0dXMoSUdUX1JVTlRJTUVfUE1fU1RBVFVTX0FDVElWRSkKPiApOwo+ICvC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBrbXN0ZXN0X3NldF9jb25uZWN0b3JfZHBtcyhv
+dXRwdXQtPmRpc3BsYXktPmRybV9mZCwKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBvdXRw
+dXQtPmNvbmZpZy5jb25uZWN0b3IsCj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgRFJNX01P
+REVfRFBNU19PRkYpOwo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBpZ3RfcmVxdWly
+ZShpZ3Rfd2FpdF9mb3JfcG1fc3RhdHVzKElHVF9SVU5USU1FX1BNX1NUQQo+IFRVU19TVVNQRU5E
+RUQpKTsKPiArCj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGttc3Rlc3Rfc2V0X2Nv
+bm5lY3Rvcl9kcG1zKG91dHB1dC0+ZGlzcGxheS0+ZHJtX2ZkLAo+ICvCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgIG91dHB1dC0+Y29uZmlnLmNvbm5lY3RvciwKPiArwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoCBEUk1fTU9ERV9EUE1TX09OKTsKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgaWd0X2Fzc2VydChpZ3Rfd2FpdF9mb3JfcG1fc3RhdHVzKElHVF9SVU5USU1FX1BNX1NUQVQK
+PiBVU19BQ1RJVkUpKTsKPiArCj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoHRlc3Rf
+ZmFkZShjb250ZXh0KTsKPiDCoAo+IC3CoMKgwqDCoMKgwqDCoHRlc3RfZmFkZShjb250ZXh0KTsK
+PiDCoH0KPiDCoAo+IMKgc3RhdGljIHZvaWQKPiBAQCAtMTc5LDkgKzI2MSwzMiBAQCB0ZXN0X2Zh
+ZGVfd2l0aF9zdXNwZW5kKHN0cnVjdCBjb250ZXh0ICpjb250ZXh0LAo+IGlndF9vdXRwdXRfdCAq
+b3V0cHV0KQo+IMKgwqDCoMKgwqDCoMKgwqB0ZXN0X2ZhZGUoY29udGV4dCk7Cj4gwqB9Cj4gwqAK
+PiArc3RhdGljIHZvaWQgdGVzdF9iYWNrbGlnaHRfZHBtc19jeWNsZShzdHJ1Y3QgY29udGV4dCAq
+Y29udGV4dCwKPiBpZ3Rfb3V0cHV0X3QgKm91dHB1dCkKPiArewo+ICvCoMKgwqDCoMKgwqDCoGlu
+dCByZXN1bHQ7Cj4gK8KgwqDCoMKgwqDCoMKgZW51bSBwaXBlIHBpcGU7Cj4gKwo+ICvCoMKgwqDC
+oMKgwqDCoGZvcl9lYWNoX3BpcGVfd2l0aF92YWxpZF9vdXRwdXQob3V0cHV0LT5kaXNwbGF5LCBw
+aXBlLAo+IG91dHB1dCkgewo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBpZiAob3V0
+cHV0LT5jb25maWcuY29ubmVjdG9yLT5jb25uZWN0b3JfdHlwZSAhPQo+IERSTV9NT0RFX0NPTk5F
+Q1RPUl9lRFApCj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqBjb250aW51ZTsKPiArCj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGlndF9pbmZv
+KCJUZXN0aW5nIGJhY2tsaWdodCBkcG1zIG9uICVzXG4iLCBvdXRwdXQtCj4gPm5hbWUpOwo+ICsK
+PiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgYmFja2xpZ2h0X3dyaXRlKGNvbnRleHQt
+Pm1heCAvIDIsICJicmlnaHRuZXNzIik7Cj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oHVzbGVlcCgxMDAwMDApOwo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBiYWNrbGln
+aHRfcmVhZCgmcmVzdWx0LCBjb250ZXh0LT5kcm1fZmQsIG91dHB1dC0KPiA+bmFtZSk7Cj4gKwo+
+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBrbXN0ZXN0X3NldF9jb25uZWN0b3JfZHBt
+cyhvdXRwdXQtPmRpc3BsYXktPmRybV9mZCwKPiBvdXRwdXQtPmNvbmZpZy5jb25uZWN0b3IsIERS
+TV9NT0RFX0RQTVNfT0ZGKTsKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKga21zdGVz
+dF9zZXRfY29ubmVjdG9yX2RwbXMob3V0cHV0LT5kaXNwbGF5LT5kcm1fZmQsCj4gb3V0cHV0LT5j
+b25maWcuY29ubmVjdG9yLCBEUk1fTU9ERV9EUE1TX09OKTsKPiArwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgdXNsZWVwKDEwMDAwMCk7Cj4gKwo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqBpZ3RfYXNzZXJ0X2VxKHJlYWRfYWN0dWFsX2JhY2tsaWdodCgmcmVzdWx0LCBjb250
+ZXh0LQo+ID5kcm1fZmQsIG91dHB1dC0+bmFtZSksIDApOwo+ICvCoMKgwqDCoMKgwqDCoH0KPiAr
+fQo+ICsKPiDCoGlndF9tYWluCj4gwqB7Cj4gLcKgwqDCoMKgwqDCoMKgc3RydWN0IGNvbnRleHQg
+Y29udGV4dCA9IHswfTsKPiArwqDCoMKgwqDCoMKgwqBzdHJ1Y3QgY29udGV4dCBjb250ZXh0Owo+
+IMKgwqDCoMKgwqDCoMKgwqBpbnQgb2xkOwo+IMKgwqDCoMKgwqDCoMKgwqBpZ3RfZGlzcGxheV90
+IGRpc3BsYXk7Cj4gwqDCoMKgwqDCoMKgwqDCoGlndF9vdXRwdXRfdCAqb3V0cHV0Owo+IEBAIC0y
+MDAsMTEgKzMwNSwxMiBAQCBpZ3RfbWFpbgo+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgICogdHJ5IHRvIGVuYWJsZSBhbGwuCj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqAgKi8KPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGttc3Rlc3Rfc2V0X3Z0X2dy
+YXBoaWNzX21vZGUoKTsKPiAtwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgaWd0X2Rpc3Bs
+YXlfcmVxdWlyZSgmZGlzcGxheSwKPiBkcm1fb3Blbl9kcml2ZXIoRFJJVkVSX0lOVEVMKSk7Cj4g
+K8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoC8vaWd0X2Rpc3BsYXlfcmVxdWlyZSgmZGlz
+cGxheSwKPiBkcm1fb3Blbl9kcml2ZXIoRFJJVkVSX0lOVEVMKSk7Cj4gK8KgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoGlndF9kaXNwbGF5X3JlcXVpcmUoJmNvbnRleHQuZGlzcGxheSwKPiBj
+b250ZXh0LmRybV9mZCk7Cj4gwqAKPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoC8q
+IEdldCB0aGUgbWF4IHZhbHVlIGFuZCBza2lwIHRoZSB3aG9sZSB0ZXN0IGlmIHN5c2ZzCj4gaW50
+ZXJmYWNlIG5vdCBhdmFpbGFibGUgKi8KPiAtwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+aWd0X3NraXBfb24oYmFja2xpZ2h0X3JlYWQoJm9sZCwgImJyaWdodG5lc3MiKSk7Cj4gLcKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGlndF9hc3NlcnQoYmFja2xpZ2h0X3JlYWQoJmNvbnRl
+eHQubWF4LAo+ICJtYXhfYnJpZ2h0bmVzcyIpID4gLTEpOwo+ICvCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqBpZ3Rfc2tpcF9vbihiYWNrbGlnaHRfcmVhZCgmb2xkLCBjb250ZXh0LmRybV9m
+ZCwKPiBvdXRwdXQtPm5hbWUpKTsKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgaWd0
+X2Fzc2VydChiYWNrbGlnaHRfcmVhZCgmY29udGV4dC5tYXgsCj4gY29udGV4dC5kcm1fZmQsIG91
+dHB1dC0+bmFtZSkgPiAtMSk7Cj4gwqAKPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oC8qIHNob3VsZCBiZSAuLi8uLi9jYXJkWC0kb3V0cHV0ICovCj4gwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqBpZ3RfYXNzZXJ0X2x0KDEyLCByZWFkbGluayhCQUNLTElHSFRfUEFUSCAi
+L2RldmljZSIsCj4gZnVsbF9uYW1lLCBzaXplb2YoZnVsbF9uYW1lKSAtIDEpKTsKPiBAQCAtMjQ1
+LDYgKzM1MSw4IEBAIGlndF9tYWluCj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqB0
+ZXN0X2ZhZGVfd2l0aF9kcG1zKCZjb250ZXh0LCBvdXRwdXQpOwo+IMKgwqDCoMKgwqDCoMKgwqBp
+Z3Rfc3VidGVzdCgiZmFkZV93aXRoX3N1c3BlbmQiKQo+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgdGVzdF9mYWRlX3dpdGhfc3VzcGVuZCgmY29udGV4dCwgb3V0cHV0KTsKPiArwqDC
+oMKgwqDCoMKgwqBpZ3Rfc3VidGVzdCgiYmFja2xpZ2h0X2RwbXNfY3ljbGUiKQo+ICvCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqB0ZXN0X2JhY2tsaWdodF9kcG1zX2N5Y2xlKCZjb250ZXh0
+LCBvdXRwdXQpOwo+IMKgCj4gwqDCoMKgwqDCoMKgwqDCoGlndF9maXh0dXJlIHsKPiDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoC8qIFJlc3RvcmUgb2xkIGJyaWdodG5lc3MgKi8KCg==
