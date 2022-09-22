@@ -1,15 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============6255145830115954571=="
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id AD1DB10EAB9
+ for <igt-dev@lists.freedesktop.org>; Thu, 22 Sep 2022 11:09:33 +0000 (UTC)
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Thu, 22 Sep 2022 13:09:13 +0200
+Message-Id: <20220922110918.16510-3-kamil.konieczny@linux.intel.com>
+In-Reply-To: <20220922110918.16510-1-kamil.konieczny@linux.intel.com>
+References: <20220922110918.16510-1-kamil.konieczny@linux.intel.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Ryszard Knop" <ryszard.knop@intel.com>
-Date: Thu, 01 Sep 2022 09:30:20 -0000
-Message-ID: <166202462025.11919.15318835354665562382@emeril.freedesktop.org>
-References: <20220901090431.110527-1-ryszard.knop@intel.com>
-In-Reply-To: <20220901090431.110527-1-ryszard.knop@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgcnVubmVy?=
- =?utf-8?q?=3A_Don=27t_free_uninitialized_pointers_in_add=5Fenv=5Fvar?=
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t 2/7] i915/gem_mmap_offset: Verify all
+ regions return clear mmaps on creation
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,201 +20,180 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
+Cc: Chris Wilson <chris.p.wilson@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============6255145830115954571==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+From: Chris Wilson <chris.p.wilson@intel.com>
 
-== Series Details ==
+We do not tolerate leaking stale information in newly created objects, so
+make sure the test covers all memory regions.
 
-Series: runner: Don't free uninitialized pointers in add_env_var
-URL   : https://patchwork.freedesktop.org/series/108009/
-State : success
+Signed-off-by: Chris Wilson <chris.p.wilson@intel.com>
+Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+---
+ tests/i915/gem_mmap_offset.c | 87 +++++++++++++++++++++++++-----------
+ 1 file changed, 60 insertions(+), 27 deletions(-)
 
-== Summary ==
-
-CI Bug Log - changes from CI_DRM_12058 -> IGTPW_7717
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7717/index.html
-
-Participating hosts (37 -> 34)
-------------------------------
-
-  Missing    (3): fi-adl-ddr5 fi-rkl-11600 fi-bdw-samus 
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_7717 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@i915_selftest@live@hangcheck:
-    - fi-hsw-4770:        [PASS][1] -> [INCOMPLETE][2] ([i915#4785])
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12058/fi-hsw-4770/igt@i915_selftest@live@hangcheck.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7717/fi-hsw-4770/igt@i915_selftest@live@hangcheck.html
-
-  * igt@i915_selftest@live@requests:
-    - fi-pnv-d510:        [PASS][3] -> [DMESG-FAIL][4] ([i915#4528])
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12058/fi-pnv-d510/igt@i915_selftest@live@requests.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7717/fi-pnv-d510/igt@i915_selftest@live@requests.html
-
-  * igt@kms_chamelium@common-hpd-after-suspend:
-    - fi-hsw-g3258:       NOTRUN -> [SKIP][5] ([fdo#109271] / [fdo#111827])
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7717/fi-hsw-g3258/igt@kms_chamelium@common-hpd-after-suspend.html
-
-  * igt@runner@aborted:
-    - fi-hsw-4770:        NOTRUN -> [FAIL][6] ([i915#5594] / [i915#6246])
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7717/fi-hsw-4770/igt@runner@aborted.html
-    - fi-pnv-d510:        NOTRUN -> [FAIL][7] ([fdo#109271] / [i915#2403] / [i915#4312])
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7717/fi-pnv-d510/igt@runner@aborted.html
-
-  
-#### Possible fixes ####
-
-  * igt@i915_selftest@live@hangcheck:
-    - fi-hsw-g3258:       [INCOMPLETE][8] ([i915#3303] / [i915#4785]) -> [PASS][9]
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12058/fi-hsw-g3258/igt@i915_selftest@live@hangcheck.html
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7717/fi-hsw-g3258/igt@i915_selftest@live@hangcheck.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
-  [fdo#111827]: https://bugs.freedesktop.org/show_bug.cgi?id=111827
-  [i915#2403]: https://gitlab.freedesktop.org/drm/intel/issues/2403
-  [i915#2867]: https://gitlab.freedesktop.org/drm/intel/issues/2867
-  [i915#3303]: https://gitlab.freedesktop.org/drm/intel/issues/3303
-  [i915#4312]: https://gitlab.freedesktop.org/drm/intel/issues/4312
-  [i915#4528]: https://gitlab.freedesktop.org/drm/intel/issues/4528
-  [i915#4785]: https://gitlab.freedesktop.org/drm/intel/issues/4785
-  [i915#5594]: https://gitlab.freedesktop.org/drm/intel/issues/5594
-  [i915#6246]: https://gitlab.freedesktop.org/drm/intel/issues/6246
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_6639 -> IGTPW_7717
-
-  CI-20190529: 20190529
-  CI_DRM_12058: 2ef8278465adc6572e0d22dffbaa332d56b4b40c @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_7717: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7717/index.html
-  IGT_6639: ba61c48dba71d5597d7297a07dc3e307665f961b @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7717/index.html
-
---===============6255145830115954571==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>runner: Don&#39;t free uninitialized pointers in add_env_var</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/108009/">https://patchwork.freedesktop.org/series/108009/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7717/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7717/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from CI_DRM_12058 -&gt; IGTPW_7717</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7717/index.html</p>
-<h2>Participating hosts (37 -&gt; 34)</h2>
-<p>Missing    (3): fi-adl-ddr5 fi-rkl-11600 fi-bdw-samus </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_7717 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@i915_selftest@live@hangcheck:</p>
-<ul>
-<li>fi-hsw-4770:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12058/fi-hsw-4770/igt@i915_selftest@live@hangcheck.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7717/fi-hsw-4770/igt@i915_selftest@live@hangcheck.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4785">i915#4785</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@requests:</p>
-<ul>
-<li>fi-pnv-d510:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12058/fi-pnv-d510/igt@i915_selftest@live@requests.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7717/fi-pnv-d510/igt@i915_selftest@live@requests.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4528">i915#4528</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_chamelium@common-hpd-after-suspend:</p>
-<ul>
-<li>fi-hsw-g3258:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7717/fi-hsw-g3258/igt@kms_chamelium@common-hpd-after-suspend.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://bugs.freedesktop.org/show_bug.cgi?id=111827">fdo#111827</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@runner@aborted:</p>
-<ul>
-<li>
-<p>fi-hsw-4770:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7717/fi-hsw-4770/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5594">i915#5594</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/6246">i915#6246</a>)</p>
-</li>
-<li>
-<p>fi-pnv-d510:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7717/fi-pnv-d510/igt@runner@aborted.html">FAIL</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2403">i915#2403</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4312">i915#4312</a>)</p>
-</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>igt@i915_selftest@live@hangcheck:<ul>
-<li>fi-hsw-g3258:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12058/fi-hsw-g3258/igt@i915_selftest@live@hangcheck.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3303">i915#3303</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4785">i915#4785</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7717/fi-hsw-g3258/igt@i915_selftest@live@hangcheck.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_6639 -&gt; IGTPW_7717</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_12058: 2ef8278465adc6572e0d22dffbaa332d56b4b40c @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_7717: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7717/index.html<br />
-  IGT_6639: ba61c48dba71d5597d7297a07dc3e307665f961b @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-
-</body>
-</html>
-
---===============6255145830115954571==--
+diff --git a/tests/i915/gem_mmap_offset.c b/tests/i915/gem_mmap_offset.c
+index edbc637a..8d237f22 100644
+--- a/tests/i915/gem_mmap_offset.c
++++ b/tests/i915/gem_mmap_offset.c
+@@ -35,6 +35,7 @@
+ 
+ #include "i915/gem.h"
+ #include "i915/gem_create.h"
++#include "i915/intel_memory_region.h"
+ #include "igt.h"
+ #include "igt_x86.h"
+ 
+@@ -75,6 +76,37 @@ __mmap_offset(int i915, uint32_t handle, uint64_t offset, uint64_t size,
+ 	return ptr;
+ }
+ 
++static uint32_t batch_create(int i915)
++{
++	const uint32_t bbe = MI_BATCH_BUFFER_END;
++	uint32_t handle = gem_create(i915, sizeof(bbe));
++
++	gem_write(i915, handle, 0, &bbe, sizeof(bbe));
++	return handle;
++}
++
++static void make_resident(int i915, uint32_t batch, uint32_t handle)
++{
++	struct drm_i915_gem_exec_object2 obj[2] = {
++		[0] = {
++			.handle = handle,
++			.flags = EXEC_OBJECT_SUPPORTS_48B_ADDRESS,
++		},
++		[1] = {
++			.handle = batch ?: batch_create(i915),
++			.flags = EXEC_OBJECT_SUPPORTS_48B_ADDRESS,
++		},
++	};
++	struct drm_i915_gem_execbuffer2 eb = {
++		.buffers_ptr = to_user_pointer(obj),
++		.buffer_count = ARRAY_SIZE(obj),
++	};
++
++	gem_execbuf(i915, &eb);
++	if (obj[1].handle != batch)
++		gem_close(i915, obj[1].handle);
++}
++
+ static void bad_object(int i915)
+ {
+ 	uint32_t real_handle;
+@@ -529,44 +561,35 @@ static uint64_t get_npages(_Atomic(uint64_t) *global, uint64_t npages)
+ 
+ struct thread_clear {
+ 	_Atomic(uint64_t) max;
++	struct drm_i915_gem_memory_class_instance region;
+ 	int timeout;
+ 	int i915;
+ };
+ 
+-static int create_ioctl(int i915, struct drm_i915_gem_create *create)
+-{
+-	int err = 0;
+-
+-	if (igt_ioctl(i915, DRM_IOCTL_I915_GEM_CREATE, create)) {
+-		err = -errno;
+-		igt_assume(err != 0);
+-	}
+-
+-	errno = 0;
+-	return err;
+-}
+-
+ static void *thread_clear(void *data)
+ {
+ 	struct thread_clear *arg = data;
+ 	const struct mmap_offset *t;
+-	unsigned long checked = 0;
++	unsigned long checked = 0, total = 0;
+ 	int i915 = arg->i915;
++	uint32_t batch = batch_create(i915);
+ 
+ 	t = mmap_offset_types;
+ 	igt_until_timeout(arg->timeout) {
+-		struct drm_i915_gem_create create = {};
+-		uint64_t npages;
++		uint64_t npages, size;
++		uint32_t handle;
+ 		void *ptr;
+ 
+ 		npages = random();
+ 		npages <<= 32;
+ 		npages |= random();
+ 		npages = get_npages(&arg->max, npages);
+-		create.size = npages << 12;
++		size = npages << 12;
+ 
+-		create_ioctl(i915, &create);
+-		ptr = __mmap_offset(i915, create.handle, 0, create.size,
++		igt_assert_eq(__gem_create_in_memory_region_list(i915, &handle, &size, 0, &arg->region, 1), 0);
++		make_resident(i915, batch, handle);
++
++		ptr = __mmap_offset(i915, handle, 0, size,
+ 				    PROT_READ | PROT_WRITE,
+ 				    t->type);
+ 		/* No set-domains as we are being as naughty as possible */
+@@ -584,26 +607,32 @@ static void *thread_clear(void *data)
+ 			for (int i = 0; i < ARRAY_SIZE(x); i++)
+ 				igt_assert_eq_u64(x[i], 0);
+ 		}
+-		if (ptr)
+-			munmap(ptr, create.size);
+-		gem_close(i915, create.handle);
+-		checked += npages;
++		if (ptr) {
++			munmap(ptr, size);
++			checked += npages;
++		}
++		gem_close(i915, handle);
+ 
++		total += npages;
+ 		atomic_fetch_add(&arg->max, npages);
+ 
+ 		if (!(++t)->name)
+ 			t = mmap_offset_types;
+ 	}
+ 
++	gem_close(i915, batch);
++
++	igt_info("Checked %'lu / %'lu pages\n", checked, total);
+ 	return (void *)(uintptr_t)checked;
+ }
+ 
+-static void always_clear(int i915, int timeout)
++static void always_clear(int i915, const struct gem_memory_region *r, int timeout)
+ {
+ 	struct thread_clear arg = {
+ 		.i915 = i915,
++		.region = r->ci,
++		.max = r->size / 2 >> 12, /* in pages */
+ 		.timeout = timeout,
+-		.max = igt_get_avail_ram_mb() << (20 - 12), /* in pages */
+ 	};
+ 	const int ncpus = sysconf(_SC_NPROCESSORS_ONLN);
+ 	unsigned long checked;
+@@ -750,8 +779,12 @@ igt_main
+ 	igt_subtest_f("open-flood")
+ 		open_flood(i915, 20);
+ 
+-	igt_subtest_f("clear")
+-		always_clear(i915, 20);
++	igt_subtest_with_dynamic("clear") {
++		for_each_memory_region(r, i915) {
++			igt_dynamic_f("%s", r->name)
++				always_clear(i915, r, 20);
++		}
++	}
+ 
+ 	igt_subtest_f("blt-coherency")
+ 		blt_coherency(i915);
+-- 
+2.34.1
