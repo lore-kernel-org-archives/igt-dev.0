@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D360410EC82
- for <igt-dev@lists.freedesktop.org>; Thu, 22 Sep 2022 16:04:15 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7DB1210EC6D
+ for <igt-dev@lists.freedesktop.org>; Thu, 22 Sep 2022 16:04:17 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Thu, 22 Sep 2022 21:29:54 +0530
-Message-Id: <20220922160004.2041598-43-bhanuprakash.modem@intel.com>
+Date: Thu, 22 Sep 2022 21:29:57 +0530
+Message-Id: <20220922160004.2041598-46-bhanuprakash.modem@intel.com>
 In-Reply-To: <20220922160004.2041598-1-bhanuprakash.modem@intel.com>
 References: <20220922160004.2041598-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V4 42/52] tests/i915/kms_draw_crc: Add support for
- Bigjoiner
+Subject: [igt-dev] [i-g-t V4 45/52] tests/i915/kms_flip_tiling: Add support
+ for Bigjoiner
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -34,35 +34,35 @@ V2: - Use updated helper name
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/i915/kms_draw_crc.c | 11 +++++------
- 1 file changed, 5 insertions(+), 6 deletions(-)
+ tests/i915/kms_flip_tiling.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/tests/i915/kms_draw_crc.c b/tests/i915/kms_draw_crc.c
-index b99f348d..09ec190d 100644
---- a/tests/i915/kms_draw_crc.c
-+++ b/tests/i915/kms_draw_crc.c
-@@ -59,17 +59,16 @@ static void find_modeset_params(void)
- {
- 	enum pipe pipe;
+diff --git a/tests/i915/kms_flip_tiling.c b/tests/i915/kms_flip_tiling.c
+index ba9ff46e..1f961f0b 100644
+--- a/tests/i915/kms_flip_tiling.c
++++ b/tests/i915/kms_flip_tiling.c
+@@ -78,6 +78,9 @@ test_flip_tiling(data_t *data, enum pipe pipe, igt_output_t *output, uint64_t mo
+ 	igt_crc_t reference_crc, crc;
+ 	int fb_id, ret;
  
--	igt_display_reset(&display);
--	igt_display_commit(&display);
--
- 	for_each_pipe_with_valid_output(&display, pipe, output) {
--		igt_output_set_pipe(output, pipe);
-+		igt_display_reset(&display);
- 
--		mode = igt_output_get_mode(output);
--		if (!mode)
-+		igt_output_set_pipe(output, pipe);
-+		if (!i915_pipe_output_combo_valid(&display))
- 			continue;
- 
-+		mode = igt_output_get_mode(output);
- 		pipe_crc = igt_pipe_crc_new(drm_fd, pipe, INTEL_PIPE_CRC_SOURCE_AUTO);
++	igt_info("Using (pipe %s + %s) to run the subtest.\n",
++		 kmstest_pipe_name(pipe), igt_output_name(output));
 +
- 		/*Only one pipe/output is enough*/
- 		break;
- 	}
+ 	memcpy(&data->old_fb, &data->fb, sizeof(data->fb));
+ 
+ 	mode = igt_output_get_mode(output);
+@@ -194,8 +197,12 @@ igt_main
+ 		for_each_pipe_with_valid_output(&data.display, pipe, output) {
+ 			igt_plane_t *plane;
+ 
++			igt_display_reset(&data.display);
+ 			pipe_crc_free(&data);
++
+ 			igt_output_set_pipe(output, pipe);
++			if (!i915_pipe_output_combo_valid(&data.display))
++				continue;
+ 
+ 			plane = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
+ 
 -- 
 2.37.3
