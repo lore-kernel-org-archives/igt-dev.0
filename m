@@ -1,20 +1,22 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B95EA10E06D
- for <igt-dev@lists.freedesktop.org>; Thu, 22 Sep 2022 05:49:53 +0000 (UTC)
-Date: Thu, 22 Sep 2022 08:49:50 +0300
-From: Ville =?iso-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
-To: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Message-ID: <Yyv3fowHUEsbY9cN@intel.com>
-References: <20220922051142.2003118-1-bhanuprakash.modem@intel.com>
- <20220922051142.2003118-9-bhanuprakash.modem@intel.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0AE4710E2CD
+ for <igt-dev@lists.freedesktop.org>; Thu, 22 Sep 2022 06:47:17 +0000 (UTC)
+Message-ID: <4e897d64-baa3-9b96-5eeb-eaab128e73f1@intel.com>
+Date: Thu, 22 Sep 2022 12:16:59 +0530
+Content-Language: en-US
+To: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>,
+ <igt-dev@lists.freedesktop.org>
+References: <20220913090409.14006-1-karthik.b.s@intel.com>
+ <20220913090409.14006-2-karthik.b.s@intel.com>
+ <cf003247-0cdf-71cf-3bea-bbe64ecc662d@intel.com>
+From: Karthik B S <karthik.b.s@intel.com>
+In-Reply-To: <cf003247-0cdf-71cf-3bea-bbe64ecc662d@intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20220922051142.2003118-9-bhanuprakash.modem@intel.com>
-Subject: Re: [igt-dev] [i-g-t V2 8/8] tests/kms_color: Fix crc compare check
- in CTM tests
+MIME-Version: 1.0
+Subject: Re: [igt-dev] [PATCH i-g-t v3 1/2] tests/kms_content_protection:
+ Test Cleanup
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,58 +24,299 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Thu, Sep 22, 2022 at 10:41:42AM +0530, Bhanuprakash Modem wrote:
-> !igt_skip_crc_compare || igt_check_crc_equal() is always true
-> which is not correct.
-> 
-> Fixes: 1a42910d
+On 9/21/2022 4:53 PM, Modem, Bhanuprakash wrote:
+> On Tue-13-09-2022 02:34 pm, Karthik B S wrote:
+>> This patch includes:
+>>      1.Add a modeset before checking output is HDCP capable.
+>>        Test currently skips on multidisplay MST because we're checking
+>>        if output is HDCP capable before doing a modeset on the output.
+>>      2.Call igt_display_reset before starting the subtest.
+>>      3.test_fini function added to prepare test for converting to 
+>> dynamic.
+>>      4.Remove redundant mode override.
+>>      5.Try other pipe/output combo for MST if failure is seen on one.
+>>
+>> Signed-off-by: Karthik B S <karthik.b.s@intel.com>
+>> ---
+>>   tests/kms_content_protection.c | 179 +++++++++++++++++----------------
+>>   1 file changed, 92 insertions(+), 87 deletions(-)
+>>
+>> diff --git a/tests/kms_content_protection.c 
+>> b/tests/kms_content_protection.c
+>> index 3041f1cd..eb59f3fe 100644
+>> --- a/tests/kms_content_protection.c
+>> +++ b/tests/kms_content_protection.c
+>
+> Do we need test_cp_disable() inside the 
+> test_content_protection_cleanup()?
+>
+> If Yes, then you need to update the commit style arg based on the system.
+>
+> Else please drop it.
 
-Hang on. Now you're saying the regression in detecting actual failures
-was introduced in commit 1a42910d4f8b ("tests/kms_color: Don't opencode
-igt_check_crc_equal()") rather than the dynamic subtest conversion
-commit (which is what the previous Fixes line claimed)?
+Thank you for the review.
 
-So apparently the test may have been broken for 1.5 years now and
-no one realize it.
+test_cp_disable() is required to ensure all displays have CP disabled, 
+especially on multidisplay and MST setups. Will add the is_atomic check 
+while passing the commit style arg.
 
-Hmm. And idea just came to me. Could we introduce some kind of fairly
-generic (say, igt_fb level) knob that would attempt to introduce a real
-crc mismatch into all (or at least most) tests? Eg. maybe igt_fb could
-frob around with the pixels a bit or something? This would at least
-allow one to easily verify that the test *may* start to fail when
-turning that knob on. Whether it actually starts to fail for a given
-pixel frobbry isn't 100% guaraneed though since we could just end up
-with a crc collision by dumb luck. Ideally we would have some way to
-guarantee the failure, and then we would just make CI run every test
-a second time with knob turned on to validate that the test can
-actually detect the failure. But maybe this is a pipe dream.
-
-> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-> ---
->  tests/kms_color.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/tests/kms_color.c b/tests/kms_color.c
-> index ba06947b..e2462aa3 100644
-> --- a/tests/kms_color.c
-> +++ b/tests/kms_color.c
-> @@ -510,7 +510,7 @@ static bool test_pipe_ctm(data_t *data,
->  	/* Verify that the CRC of the software computed output is
->  	 * equal to the CRC of the CTM matrix transformation output.
->  	 */
-> -	ret &= !igt_skip_crc_compare || igt_check_crc_equal(&crc_software, &crc_hardware);
-> +	ret = igt_skip_crc_compare || igt_check_crc_equal(&crc_software, &crc_hardware);
-> 
->  	igt_plane_set_fb(primary, NULL);
->  	igt_output_set_pipe(output, PIPE_NONE);
-> --
-> 2.37.3
-
--- 
-Ville Syrj�l�
-Intel
+Thanks,
+Karthik.B.S
+>
+> - Bhanu
+>
+>> @@ -170,18 +170,15 @@ static void modeset_with_fb(const enum pipe 
+>> pipe, igt_output_t *output,
+>>                   enum igt_commit_style s)
+>>   {
+>>       igt_display_t *display = &data.display;
+>> -    drmModeModeInfo mode;
+>> +    drmModeModeInfo *mode;
+>>       igt_plane_t *primary;
+>>   -    igt_assert(kmstest_get_connector_default_mode(
+>> -            display->drm_fd, output->config.connector, &mode));
+>> -
+>> -    igt_output_override_mode(output, &mode);
+>> +    mode = igt_output_get_mode(output);
+>>       igt_output_set_pipe(output, pipe);
+>>         primary = igt_output_get_plane_type(output, 
+>> DRM_PLANE_TYPE_PRIMARY);
+>>       igt_plane_set_fb(primary, &data.red);
+>> -    igt_fb_set_size(&data.red, primary, mode.hdisplay, mode.vdisplay);
+>> +    igt_fb_set_size(&data.red, primary, mode->hdisplay, 
+>> mode->vdisplay);
+>>         igt_display_commit2(display, s);
+>>   @@ -317,90 +314,61 @@ static bool write_srm_as_fw(const __u8 *srm, 
+>> int len)
+>>   }
+>>     static void test_content_protection_on_output(igt_output_t *output,
+>> +                          enum pipe pipe,
+>>                             enum igt_commit_style s,
+>>                             int content_type)
+>>   {
+>>       igt_display_t *display = &data.display;
+>> -    igt_plane_t *primary;
+>> -    enum pipe pipe;
+>>       bool ret;
+>>   -    for_each_pipe(display, pipe) {
+>> -        if (!igt_pipe_connector_valid(pipe, output))
+>> -            continue;
+>> -
+>> -        /*
+>> -         * If previous subtest of connector failed, pipe
+>> -         * attached to that connector is not released.
+>> -         * Because of that we have to choose the non
+>> -         * attached pipe for this subtest.
+>> -         */
+>> -        if (!igt_pipe_is_free(display, pipe))
+>> -            continue;
+>> -
+>> -        modeset_with_fb(pipe, output, s);
+>> -        test_cp_enable_with_retry(output, s, 3, content_type, false,
+>> -                      false);
+>> -
+>> -        if (data.cp_tests & CP_TYPE_CHANGE) {
+>> -            /* Type 1 -> Type 0 */
+>> -            test_cp_enable_with_retry(output, s, 3,
+>> -                          HDCP_CONTENT_TYPE_0, false,
+>> -                          true);
+>> -            /* Type 0 -> Type 1 */
+>> -            test_cp_enable_with_retry(output, s, 3,
+>> -                          content_type, false,
+>> -                          true);
+>> -        }
+>> -
+>> -        if (data.cp_tests & CP_MEI_RELOAD) {
+>> -            igt_assert_f(!igt_kmod_unload("mei_hdcp", 0),
+>> -                     "mei_hdcp unload failed");
+>> +    test_cp_enable_with_retry(output, s, 3, content_type, false,
+>> +                  false);
+>> +
+>> +    if (data.cp_tests & CP_TYPE_CHANGE) {
+>> +        /* Type 1 -> Type 0 */
+>> +        test_cp_enable_with_retry(output, s, 3,
+>> +                      HDCP_CONTENT_TYPE_0, false,
+>> +                      true);
+>> +        /* Type 0 -> Type 1 */
+>> +        test_cp_enable_with_retry(output, s, 3,
+>> +                      content_type, false,
+>> +                      true);
+>> +    }
+>>   -            /* Expected to fail */
+>> -            test_cp_enable_with_retry(output, s, 3,
+>> -                          content_type, true, false);
+>> +    if (data.cp_tests & CP_MEI_RELOAD) {
+>> +        igt_assert_f(!igt_kmod_unload("mei_hdcp", 0),
+>> +                 "mei_hdcp unload failed");
+>>   -            igt_assert_f(!igt_kmod_load("mei_hdcp", NULL),
+>> -                     "mei_hdcp load failed");
+>> +        /* Expected to fail */
+>> +        test_cp_enable_with_retry(output, s, 3,
+>> +                      content_type, true, false);
+>>   -            /* Expected to pass */
+>> -            test_cp_enable_with_retry(output, s, 3,
+>> -                          content_type, false, false);
+>> -        }
+>> +        igt_assert_f(!igt_kmod_load("mei_hdcp", NULL),
+>> +                 "mei_hdcp load failed");
+>>   -        if (data.cp_tests & CP_LIC)
+>> -            test_cp_lic(output);
+>> +        /* Expected to pass */
+>> +        test_cp_enable_with_retry(output, s, 3,
+>> +                      content_type, false, false);
+>> +    }
+>>   -        if (data.cp_tests & CP_DPMS) {
+>> -            igt_pipe_set_prop_value(display, pipe,
+>> -                        IGT_CRTC_ACTIVE, 0);
+>> -            igt_display_commit2(display, s);
+>> +    if (data.cp_tests & CP_LIC)
+>> +        test_cp_lic(output);
+>>   -            igt_pipe_set_prop_value(display, pipe,
+>> -                        IGT_CRTC_ACTIVE, 1);
+>> -            igt_display_commit2(display, s);
+>> +    if (data.cp_tests & CP_DPMS) {
+>> +        igt_pipe_set_prop_value(display, pipe,
+>> +                    IGT_CRTC_ACTIVE, 0);
+>> +        igt_display_commit2(display, s);
+>>   -            ret = wait_for_prop_value(output, CP_ENABLED,
+>> -                          KERNEL_AUTH_TIME_ALLOWED_MSEC);
+>> -            if (!ret)
+>> -                test_cp_enable_with_retry(output, s, 2,
+>> -                              content_type, false,
+>> -                              false);
+>> -        }
+>> +        igt_pipe_set_prop_value(display, pipe,
+>> +                    IGT_CRTC_ACTIVE, 1);
+>> +        igt_display_commit2(display, s);
+>>   -        test_cp_disable(output, s);
+>> -        primary = igt_output_get_plane_type(output,
+>> -                            DRM_PLANE_TYPE_PRIMARY);
+>> -        igt_plane_set_fb(primary, NULL);
+>> -        igt_output_set_pipe(output, PIPE_NONE);
+>> -
+>> -        /*
+>> -         * Testing a output with a pipe is enough for HDCP
+>> -         * testing. No ROI in testing the connector with other
+>> -         * pipes. So Break the loop on pipe.
+>> -         */
+>> -        break;
+>> +        ret = wait_for_prop_value(output, CP_ENABLED,
+>> +                      KERNEL_AUTH_TIME_ALLOWED_MSEC);
+>> +        if (!ret)
+>> +            test_cp_enable_with_retry(output, s, 2,
+>> +                          content_type, false,
+>> +                          false);
+>>       }
+>>   }
+>>   @@ -458,7 +426,8 @@ static bool sink_hdcp2_capable(igt_output_t 
+>> *output)
+>>       return strstr(buf, "HDCP2.2");
+>>   }
+>>   -static void prepare_modeset_on_mst_output(igt_output_t *output)
+>> +static void
+>> +prepare_modeset_on_mst_output(igt_output_t *output)
+>>   {
+>>       drmModeModeInfo *mode;
+>>       igt_plane_t *primary;
+>> @@ -477,7 +446,8 @@ static void 
+>> prepare_modeset_on_mst_output(igt_output_t *output)
+>>       igt_plane_set_size(primary, width, height);
+>>   }
+>>   -static bool output_hdcp_capable(igt_output_t *output, int 
+>> content_type)
+>> +static bool
+>> +output_hdcp_capable(igt_output_t *output, int content_type)
+>>   {
+>>           if (!output->props[IGT_CONNECTOR_CONTENT_PROTECTION])
+>>               return false;
+>> @@ -499,6 +469,19 @@ static bool output_hdcp_capable(igt_output_t 
+>> *output, int content_type)
+>>           return true;
+>>   }
+>>   +static void
+>> +test_fini(igt_output_t *output, enum igt_commit_style s)
+>> +{
+>> +    igt_plane_t *primary;
+>> +
+>> +    test_cp_disable(output, s);
+>> +    primary = igt_output_get_plane_type(output,
+>> +                        DRM_PLANE_TYPE_PRIMARY);
+>> +    igt_plane_set_fb(primary, NULL);
+>> +    igt_output_set_pipe(output, PIPE_NONE);
+>> +    igt_display_commit2(&data.display, s);
+>> +}
+>> +
+>>   static void
+>>   test_content_protection(enum igt_commit_style s, int content_type)
+>>   {
+>> @@ -511,10 +494,27 @@ test_content_protection(enum igt_commit_style 
+>> s, int content_type)
+>>                     "mei_hdcp module is not loaded\n");
+>>         for_each_connected_output(display, output) {
+>> -        if (!output_hdcp_capable(output, content_type))
+>> -            continue;
+>> +        for_each_pipe(display, pipe) {
+>> +            if (!igt_pipe_connector_valid(pipe, output))
+>> +                continue;
+>> +
+>> +            igt_display_reset(display);
+>> +            modeset_with_fb(pipe, output, s);
+>> +
+>> +            if (!output_hdcp_capable(output, content_type))
+>> +                continue;
+>> +
+>> +            test_content_protection_on_output(output, pipe, s, 
+>> content_type);
+>> +            test_fini(output, s);
+>> +
+>> +            /*
+>> +             * Testing a output with a pipe is enough for HDCP
+>> +             * testing. No ROI in testing the connector with other
+>> +             * pipes. So Break the loop on pipe.
+>> +             */
+>> +            break;
+>> +        }
+>>   -        test_content_protection_on_output(output, s, content_type);
+>>           valid_tests++;
+>>       }
+>>   @@ -596,6 +596,7 @@ test_content_protection_mst(int content_type)
+>>       igt_output_t *output;
+>>       int valid_outputs = 0, dp_mst_outputs = 0, ret, count, max_pipe 
+>> = 0, i;
+>>       enum pipe pipe;
+>> +    bool pipe_found;
+>>       igt_output_t *mst_output[IGT_MAX_PIPES], 
+>> *hdcp_mst_output[IGT_MAX_PIPES];
+>>         for_each_pipe(display, pipe)
+>> @@ -607,16 +608,20 @@ test_content_protection_mst(int content_type)
+>>           if (!output_is_dp_mst(output, dp_mst_outputs))
+>>               continue;
+>>   -        igt_assert_f(igt_pipe_connector_valid(pipe, output), 
+>> "Output-pipe combination invalid\n");
+>> +        pipe_found = false;
+>> +        for_each_pipe(display, pipe) {
+>> +            if (igt_pipe_is_free(display, pipe) &&
+>> +                igt_pipe_connector_valid(pipe, output)) {
+>> +                pipe_found = true;
+>> +                break;
+>> +            }
+>> +        }
+>> +
+>> +        igt_assert_f(pipe_found, "No valid pipe found for %s\n", 
+>> output->name);
+>>             igt_output_set_pipe(output, pipe);
+>>           prepare_modeset_on_mst_output(output);
+>>           mst_output[dp_mst_outputs++] = output;
+>> -
+>> -        pipe++;
+>> -
+>> -        if (pipe > max_pipe)
+>> -            break;
+>>       }
+>>         igt_require_f(dp_mst_outputs > 1, "No DP MST set up with >= 2 
+>> outputs found in a single topology\n");
+>
