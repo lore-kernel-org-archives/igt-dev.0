@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5417410EA7E
- for <igt-dev@lists.freedesktop.org>; Thu, 22 Sep 2022 16:03:53 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5D05110EA7E
+ for <igt-dev@lists.freedesktop.org>; Thu, 22 Sep 2022 16:03:55 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Thu, 22 Sep 2022 21:29:20 +0530
-Message-Id: <20220922160004.2041598-9-bhanuprakash.modem@intel.com>
+Date: Thu, 22 Sep 2022 21:29:23 +0530
+Message-Id: <20220922160004.2041598-12-bhanuprakash.modem@intel.com>
 In-Reply-To: <20220922160004.2041598-1-bhanuprakash.modem@intel.com>
 References: <20220922160004.2041598-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V4 08/52] tests/kms_color: Add support for
- Bigjoiner
+Subject: [igt-dev] [i-g-t V4 11/52] tests/kms_content_protection: Add
+ support for Bigjoiner
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -34,52 +34,43 @@ V2: - Use updated helper name
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/kms_color.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ tests/kms_content_protection.c | 17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
 
-diff --git a/tests/kms_color.c b/tests/kms_color.c
-index ab285af8..6a571d76 100644
---- a/tests/kms_color.c
-+++ b/tests/kms_color.c
-@@ -722,9 +722,13 @@ run_gamma_degamma_tests_for_pipe(data_t *data, enum pipe p,
- 	data->drm_format = DRM_FORMAT_XRGB8888;
- 	data->mode = igt_output_get_mode(data->output);
+diff --git a/tests/kms_content_protection.c b/tests/kms_content_protection.c
+index 3041f1cd..31389001 100644
+--- a/tests/kms_content_protection.c
++++ b/tests/kms_content_protection.c
+@@ -338,6 +338,15 @@ static void test_content_protection_on_output(igt_output_t *output,
+ 		if (!igt_pipe_is_free(display, pipe))
+ 			continue;
  
-+	if (!pipe_output_combo_valid(data, p))
-+		goto out;
++		igt_output_set_pipe(output, pipe);
++		if (!i915_pipe_output_combo_valid(display)) {
++			igt_output_set_pipe(output, PIPE_NONE);
++			continue;
++		}
 +
- 	igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(p), data->output->name)
- 		igt_assert(test_t(data, data->primary));
- 
-+out:
- 	test_cleanup(data);
- }
- 
-@@ -752,6 +756,9 @@ run_ctm_tests_for_pipe(data_t *data, enum pipe p,
- 	data->drm_format = DRM_FORMAT_XRGB8888;
- 	data->mode = igt_output_get_mode(data->output);
- 
-+	if (!pipe_output_combo_valid(data, p))
-+		goto out;
++		igt_info("Using (pipe %s + %s) to run the subtest.\n",
++			 kmstest_pipe_name(pipe), igt_output_name(output));
 +
- 	igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(p), data->output->name) {
- 		bool success = false;
- 		int i;
-@@ -780,6 +787,7 @@ run_ctm_tests_for_pipe(data_t *data, enum pipe p,
- 		igt_assert(success);
- 	}
+ 		modeset_with_fb(pipe, output, s);
+ 		test_cp_enable_with_retry(output, s, 3, content_type, false,
+ 					  false);
+@@ -610,6 +619,14 @@ test_content_protection_mst(int content_type)
+ 		igt_assert_f(igt_pipe_connector_valid(pipe, output), "Output-pipe combination invalid\n");
  
-+out:
- 	test_cleanup(data);
- }
+ 		igt_output_set_pipe(output, pipe);
++		if (!i915_pipe_output_combo_valid(display)){
++			igt_output_set_pipe(output, PIPE_NONE);
++			continue;
++		}
++
++		igt_info("Using (pipe %s + %s) to run the subtest.\n",
++			 kmstest_pipe_name(pipe), igt_output_name(output));
++
+ 		prepare_modeset_on_mst_output(output);
+ 		mst_output[dp_mst_outputs++] = output;
  
-@@ -820,7 +828,6 @@ run_deep_color_tests_for_pipe(data_t *data, enum pipe p)
- 		igt_display_reset(&data->display);
- 		igt_output_set_prop_value(output, IGT_CONNECTOR_MAX_BPC, 10);
- 		igt_output_set_pipe(output, p);
--		igt_display_commit_atomic(&data->display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
- 
- 		if (is_i915_device(data->drm_fd) &&
- 		    !igt_max_bpc_constraint(&data->display, p, output, 10))
 -- 
 2.37.3
