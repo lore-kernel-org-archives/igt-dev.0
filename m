@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0CA3C10EC6E
- for <igt-dev@lists.freedesktop.org>; Thu, 22 Sep 2022 16:04:08 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D360410EC82
+ for <igt-dev@lists.freedesktop.org>; Thu, 22 Sep 2022 16:04:15 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Thu, 22 Sep 2022 21:29:45 +0530
-Message-Id: <20220922160004.2041598-34-bhanuprakash.modem@intel.com>
+Date: Thu, 22 Sep 2022 21:29:54 +0530
+Message-Id: <20220922160004.2041598-43-bhanuprakash.modem@intel.com>
 In-Reply-To: <20220922160004.2041598-1-bhanuprakash.modem@intel.com>
 References: <20220922160004.2041598-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V4 33/52] tests/kms_sequence: Add support for
+Subject: [igt-dev] [i-g-t V4 42/52] tests/i915/kms_draw_crc: Add support for
  Bigjoiner
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -34,25 +34,35 @@ V2: - Use updated helper name
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/kms_sequence.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ tests/i915/kms_draw_crc.c | 11 +++++------
+ 1 file changed, 5 insertions(+), 6 deletions(-)
 
-diff --git a/tests/kms_sequence.c b/tests/kms_sequence.c
-index 1655d7d1..0c41c6d1 100644
---- a/tests/kms_sequence.c
-+++ b/tests/kms_sequence.c
-@@ -285,6 +285,12 @@ igt_main
- 				     "drmCrtcQueueSequence");
- 			igt_subtest_with_dynamic_f("%s-%s", f->name, m->name) {
- 				for_each_pipe_with_valid_output(&data.display, p, output) {
-+					igt_display_reset(&data.display);
+diff --git a/tests/i915/kms_draw_crc.c b/tests/i915/kms_draw_crc.c
+index b99f348d..09ec190d 100644
+--- a/tests/i915/kms_draw_crc.c
++++ b/tests/i915/kms_draw_crc.c
+@@ -59,17 +59,16 @@ static void find_modeset_params(void)
+ {
+ 	enum pipe pipe;
+ 
+-	igt_display_reset(&display);
+-	igt_display_commit(&display);
+-
+ 	for_each_pipe_with_valid_output(&display, pipe, output) {
+-		igt_output_set_pipe(output, pipe);
++		igt_display_reset(&display);
+ 
+-		mode = igt_output_get_mode(output);
+-		if (!mode)
++		igt_output_set_pipe(output, pipe);
++		if (!i915_pipe_output_combo_valid(&display))
+ 			continue;
+ 
++		mode = igt_output_get_mode(output);
+ 		pipe_crc = igt_pipe_crc_new(drm_fd, pipe, INTEL_PIPE_CRC_SOURCE_AUTO);
 +
-+					igt_output_set_pipe(output, p);
-+					if (!i915_pipe_output_combo_valid(&data.display))
-+						continue;
-+
- 					igt_dynamic_f("%s-pipe-%s", igt_output_name(output), kmstest_pipe_name(p)) {
- 						data.pipe = p;
- 						data.output = output;
+ 		/*Only one pipe/output is enough*/
+ 		break;
+ 	}
 -- 
 2.37.3
