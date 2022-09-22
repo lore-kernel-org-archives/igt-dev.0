@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C142810EC67
- for <igt-dev@lists.freedesktop.org>; Thu, 22 Sep 2022 16:04:05 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 689F110EC62
+ for <igt-dev@lists.freedesktop.org>; Thu, 22 Sep 2022 16:04:01 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Thu, 22 Sep 2022 21:29:40 +0530
-Message-Id: <20220922160004.2041598-29-bhanuprakash.modem@intel.com>
+Date: Thu, 22 Sep 2022 21:29:34 +0530
+Message-Id: <20220922160004.2041598-23-bhanuprakash.modem@intel.com>
 In-Reply-To: <20220922160004.2041598-1-bhanuprakash.modem@intel.com>
 References: <20220922160004.2041598-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V4 28/52] tests/kms_prime: Add support for
+Subject: [igt-dev] [i-g-t V4 22/52] tests/kms_plane: Add support for
  Bigjoiner
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -34,34 +34,89 @@ V2: - Use updated helper name
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/kms_prime.c | 11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ tests/kms_plane.c | 30 +++++++++++++++++++-----------
+ 1 file changed, 19 insertions(+), 11 deletions(-)
 
-diff --git a/tests/kms_prime.c b/tests/kms_prime.c
-index 3df690e0..98aa8212 100644
---- a/tests/kms_prime.c
-+++ b/tests/kms_prime.c
-@@ -89,14 +89,17 @@ static igt_output_t *setup_display(int importer_fd, igt_display_t *display,
- 	bool found = false;
+diff --git a/tests/kms_plane.c b/tests/kms_plane.c
+index 3cf3cfd3..22cb4614 100644
+--- a/tests/kms_plane.c
++++ b/tests/kms_plane.c
+@@ -56,6 +56,7 @@ typedef struct {
+ typedef struct {
+ 	int drm_fd;
+ 	igt_display_t display;
++	igt_output_t *output;
+ 	igt_pipe_crc_t *pipe_crc;
+ 	const color_t *colors;
+ 	int num_colors;
+@@ -273,11 +274,11 @@ static void
+ test_plane_position(data_t *data, enum pipe pipe)
+ {
+ 	int n_planes = data->display.pipes[pipe].n_planes;
+-	igt_output_t *output;
++	igt_output_t *output = data->output;
+ 	igt_crc_t reference_crc;
  
- 	for_each_pipe_with_valid_output(display, *pipe, output) {
--		found = true;
--		break;
-+		igt_display_reset(display);
-+
-+		igt_output_set_pipe(output, *pipe);
-+		if (i915_pipe_output_combo_valid(display)) {
-+			found = true;
-+			break;
-+		}
+-	output = igt_get_single_output_for_pipe(&data->display, pipe);
+-	igt_require(output);
++	igt_info("Using (pipe %s + %s) to run the subtest.\n",
++		 kmstest_pipe_name(pipe), igt_output_name(output));
+ 
+ 	test_init(data, pipe);
+ 	test_grab_crc(data, output, pipe, &green, data->flags, &reference_crc);
+@@ -380,11 +381,11 @@ test_plane_panning_with_output(data_t *data,
+ static void
+ test_plane_panning(data_t *data, enum pipe pipe)
+ {
+-	igt_output_t *output;
++	igt_output_t *output = data->output;
+ 	igt_crc_t ref_crc;
+ 
+-	output = igt_get_single_output_for_pipe(&data->display, pipe);
+-	igt_require(output);
++	igt_info("Using (pipe %s + %s) to run the subtest.\n",
++		 kmstest_pipe_name(pipe), igt_output_name(output));
+ 
+ 	test_init(data, pipe);
+ 
+@@ -1050,7 +1051,7 @@ test_pixel_formats(data_t *data, enum pipe pipe)
+ 	igt_plane_t *primary;
+ 	drmModeModeInfo *mode;
+ 	bool result;
+-	igt_output_t *output;
++	igt_output_t *output = data->output;
+ 	igt_plane_t *plane;
+ 
+ 	if (data->extended) {
+@@ -1061,10 +1062,10 @@ test_pixel_formats(data_t *data, enum pipe pipe)
+ 		data->num_colors = ARRAY_SIZE(colors_reduced);
  	}
  
- 	igt_require_f(found, "No valid connector/pipe found\n");
+-	test_init(data, pipe);
++	igt_info("Using (pipe %s + %s) to run the subtest.\n",
++		 kmstest_pipe_name(pipe), igt_output_name(output));
  
--	igt_display_reset(display);
--	igt_output_set_pipe(output, *pipe);
- 	return output;
- }
+-	output = igt_get_single_output_for_pipe(&data->display, pipe);
+-	igt_require(output);
++	test_init(data, pipe);
+ 
+ 	mode = igt_output_get_mode(output);
+ 
+@@ -1108,7 +1109,14 @@ static void run_test(data_t *data, void (*test)(data_t *, enum pipe))
+ 	enum pipe pipe;
+ 	int count = 0;
+ 
+-	for_each_pipe(&data->display, pipe) {
++	for_each_pipe_with_single_output(&data->display, pipe, data->output) {
++		igt_display_reset(&data->display);
++
++		igt_output_set_pipe(data->output, pipe);
++		if (!i915_pipe_output_combo_valid(&data->display))
++			continue;
++
++		igt_output_set_pipe(data->output, PIPE_NONE);
+ 		igt_dynamic_f("pipe-%s-planes", kmstest_pipe_name(pipe))
+ 			test(data, pipe);
  
 -- 
 2.37.3
