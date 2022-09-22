@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9242110E669
- for <igt-dev@lists.freedesktop.org>; Thu,  1 Sep 2022 09:21:04 +0000 (UTC)
-Date: Thu, 1 Sep 2022 12:20:10 +0300
-From: Petri Latvala <petri.latvala@intel.com>
-To: Ryszard Knop <ryszard.knop@intel.com>
-Message-ID: <YxB5Sk49s92QIic9@platvala-desk.ger.corp.intel.com>
-References: <20220901090431.110527-1-ryszard.knop@intel.com>
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 66F2110EAB9
+ for <igt-dev@lists.freedesktop.org>; Thu, 22 Sep 2022 11:09:30 +0000 (UTC)
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Thu, 22 Sep 2022 13:09:12 +0200
+Message-Id: <20220922110918.16510-2-kamil.konieczny@linux.intel.com>
+In-Reply-To: <20220922110918.16510-1-kamil.konieczny@linux.intel.com>
+References: <20220922110918.16510-1-kamil.konieczny@linux.intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220901090431.110527-1-ryszard.knop@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t] runner: Don't free uninitialized
- pointers in add_env_var
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t 1/7] i915/gem_mmap_offset: Avoid set_domain
+ when I915_MMAP_OFFSET_FIXED is used
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,36 +20,58 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Development mailing list for IGT GPU Tools <igt-dev@lists.freedesktop.org>
+Cc: Chris Wilson <chris.p.wilson@linux.intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Thu, Sep 01, 2022 at 11:04:31AM +0200, Ryszard Knop wrote:
-> If we goto error before assigning env_kv, it's left uninitialized, which
-> we later attempt to free(). Initialize both variables to NULL.
-> 
-> Signed-off-by: Ryszard Knop <ryszard.knop@intel.com>
+From: Chris Wilson <chris.p.wilson@linux.intel.com>
 
-Reviewed-by: Petri Latvala <petri.latvala@intel.com>
+When OFFSET_FIXED mapping is in use avoid to set domain at all.
 
-> ---
->  runner/settings.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/runner/settings.c b/runner/settings.c
-> index 23aa8296..e8e1f50e 100644
-> --- a/runner/settings.c
-> +++ b/runner/settings.c
-> @@ -440,7 +440,7 @@ static char *string_trim_and_duplicate(const char *string) {
->   * an empty variable for the runner process, then providing just the "KEY".
->   */
->  static bool add_env_var(struct igt_list_head *env_vars, const char *key_value) {
-> -	char *env_kv, *value_str;
-> +	char *env_kv = NULL, *value_str = NULL;
->  	struct environment_variable *var = NULL;
->  
->  	if (env_vars == NULL || key_value == NULL || strlen(key_value) == 0)
-> -- 
-> 2.37.3
-> 
+Signed-off-by: Chris Wilson <chris.p.wilson@linux.intel.com>
+Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+---
+ tests/i915/gem_mmap_offset.c | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
+
+diff --git a/tests/i915/gem_mmap_offset.c b/tests/i915/gem_mmap_offset.c
+index 5e6b19eb..edbc637a 100644
+--- a/tests/i915/gem_mmap_offset.c
++++ b/tests/i915/gem_mmap_offset.c
+@@ -148,7 +148,8 @@ static void basic_uaf(int i915)
+ 		}
+ 
+ 		expected = calloc(obj_size, sizeof(*expected));
+-		gem_set_domain(i915, handle, t->domain, 0);
++		if (t->domain)
++			gem_set_domain(i915, handle, t->domain, 0);
+ 		igt_assert_f(memcmp(addr, expected, obj_size) == 0,
+ 			     "mmap(%s) not clear on gem_create()\n",
+ 			     t->name);
+@@ -157,15 +158,18 @@ static void basic_uaf(int i915)
+ 		buf = calloc(obj_size, sizeof(*buf));
+ 		memset(buf + 1024, 0x01, 1024);
+ 		gem_write(i915, handle, 0, buf, obj_size);
+-		gem_set_domain(i915, handle, t->domain, 0);
++		if (t->domain)
++			gem_set_domain(i915, handle, t->domain, 0);
+ 		igt_assert_f(memcmp(buf, addr, obj_size) == 0,
+ 			     "mmap(%s) not coherent with gem_write()\n",
+ 			     t->name);
+ 
+-		gem_set_domain(i915, handle, t->domain, t->domain);
++		if (t->domain)
++			gem_set_domain(i915, handle, t->domain, t->domain);
+ 		memset(addr + 2048, 0xff, 1024);
+ 		gem_read(i915, handle, 0, buf, obj_size);
+-		gem_set_domain(i915, handle, t->domain, 0);
++		if (t->domain)
++			gem_set_domain(i915, handle, t->domain, 0);
+ 		igt_assert_f(memcmp(buf, addr, obj_size) == 0,
+ 			     "mmap(%s) not coherent with gem_read()\n",
+ 			     t->name);
+-- 
+2.34.1
