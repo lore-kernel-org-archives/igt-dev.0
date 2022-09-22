@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 689F110EC62
- for <igt-dev@lists.freedesktop.org>; Thu, 22 Sep 2022 16:04:01 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9C0E810EC5A
+ for <igt-dev@lists.freedesktop.org>; Thu, 22 Sep 2022 16:04:00 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Thu, 22 Sep 2022 21:29:34 +0530
-Message-Id: <20220922160004.2041598-23-bhanuprakash.modem@intel.com>
+Date: Thu, 22 Sep 2022 21:29:33 +0530
+Message-Id: <20220922160004.2041598-22-bhanuprakash.modem@intel.com>
 In-Reply-To: <20220922160004.2041598-1-bhanuprakash.modem@intel.com>
 References: <20220922160004.2041598-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V4 22/52] tests/kms_plane: Add support for
- Bigjoiner
+Subject: [igt-dev] [i-g-t V4 21/52] tests/kms_pipe_crc_basic: Add support
+ for Bigjoiner
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -34,89 +34,64 @@ V2: - Use updated helper name
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/kms_plane.c | 30 +++++++++++++++++++-----------
- 1 file changed, 19 insertions(+), 11 deletions(-)
+ tests/kms_pipe_crc_basic.c | 24 ++++++++++++++++++++++++
+ 1 file changed, 24 insertions(+)
 
-diff --git a/tests/kms_plane.c b/tests/kms_plane.c
-index 3cf3cfd3..22cb4614 100644
---- a/tests/kms_plane.c
-+++ b/tests/kms_plane.c
-@@ -56,6 +56,7 @@ typedef struct {
- typedef struct {
- 	int drm_fd;
- 	igt_display_t display;
-+	igt_output_t *output;
- 	igt_pipe_crc_t *pipe_crc;
- 	const color_t *colors;
- 	int num_colors;
-@@ -273,11 +274,11 @@ static void
- test_plane_position(data_t *data, enum pipe pipe)
- {
- 	int n_planes = data->display.pipes[pipe].n_planes;
--	igt_output_t *output;
-+	igt_output_t *output = data->output;
- 	igt_crc_t reference_crc;
+diff --git a/tests/kms_pipe_crc_basic.c b/tests/kms_pipe_crc_basic.c
+index 2ff40f72..76588010 100644
+--- a/tests/kms_pipe_crc_basic.c
++++ b/tests/kms_pipe_crc_basic.c
+@@ -271,6 +271,21 @@ static void test_disable_crc_after_crtc(data_t *data, enum pipe pipe,
+ 	igt_remove_fb(data->drm_fd, &data->fb);
+ }
  
--	output = igt_get_single_output_for_pipe(&data->display, pipe);
--	igt_require(output);
-+	igt_info("Using (pipe %s + %s) to run the subtest.\n",
-+		 kmstest_pipe_name(pipe), igt_output_name(output));
- 
- 	test_init(data, pipe);
- 	test_grab_crc(data, output, pipe, &green, data->flags, &reference_crc);
-@@ -380,11 +381,11 @@ test_plane_panning_with_output(data_t *data,
- static void
- test_plane_panning(data_t *data, enum pipe pipe)
- {
--	igt_output_t *output;
-+	igt_output_t *output = data->output;
- 	igt_crc_t ref_crc;
- 
--	output = igt_get_single_output_for_pipe(&data->display, pipe);
--	igt_require(output);
-+	igt_info("Using (pipe %s + %s) to run the subtest.\n",
-+		 kmstest_pipe_name(pipe), igt_output_name(output));
- 
- 	test_init(data, pipe);
- 
-@@ -1050,7 +1051,7 @@ test_pixel_formats(data_t *data, enum pipe pipe)
- 	igt_plane_t *primary;
- 	drmModeModeInfo *mode;
- 	bool result;
--	igt_output_t *output;
-+	igt_output_t *output = data->output;
- 	igt_plane_t *plane;
- 
- 	if (data->extended) {
-@@ -1061,10 +1062,10 @@ test_pixel_formats(data_t *data, enum pipe pipe)
- 		data->num_colors = ARRAY_SIZE(colors_reduced);
- 	}
- 
--	test_init(data, pipe);
-+	igt_info("Using (pipe %s + %s) to run the subtest.\n",
-+		 kmstest_pipe_name(pipe), igt_output_name(output));
- 
--	output = igt_get_single_output_for_pipe(&data->display, pipe);
--	igt_require(output);
-+	test_init(data, pipe);
- 
- 	mode = igt_output_get_mode(output);
- 
-@@ -1108,7 +1109,14 @@ static void run_test(data_t *data, void (*test)(data_t *, enum pipe))
- 	enum pipe pipe;
- 	int count = 0;
- 
--	for_each_pipe(&data->display, pipe) {
-+	for_each_pipe_with_single_output(&data->display, pipe, data->output) {
-+		igt_display_reset(&data->display);
++static bool pipe_output_combo_valid(igt_display_t *display,
++				    enum pipe pipe, igt_output_t *output)
++{
++	bool ret = true;
 +
-+		igt_output_set_pipe(data->output, pipe);
-+		if (!i915_pipe_output_combo_valid(&data->display))
-+			continue;
++	igt_display_reset(display);
 +
-+		igt_output_set_pipe(data->output, PIPE_NONE);
- 		igt_dynamic_f("pipe-%s-planes", kmstest_pipe_name(pipe))
- 			test(data, pipe);
++	igt_output_set_pipe(output, pipe);
++	if (!i915_pipe_output_combo_valid(display))
++		ret = false;
++	igt_output_set_pipe(output, PIPE_NONE);
++
++	return ret;
++}
++
+ data_t data = {0, };
  
+ igt_main
+@@ -319,6 +334,9 @@ igt_main
+ 		igt_describe(tests[i].desc);
+ 		igt_subtest_with_dynamic(tests[i].name) {
+ 			for_each_pipe_with_single_output(&data.display, pipe, output) {
++				if(!pipe_output_combo_valid(&data.display, pipe, output))
++					continue;
++
+ 				igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), output->name) {
+ 					if (tests[i].flags & TEST_SUSPEND) {
+ 						test_read_crc(&data, pipe, output, 0);
+@@ -347,6 +365,9 @@ igt_main
+ 		     "does not cause issues.");
+ 	igt_subtest_with_dynamic("disable-crc-after-crtc") {
+ 		for_each_pipe_with_single_output(&data.display, pipe, output) {
++			if(!pipe_output_combo_valid(&data.display, pipe, output))
++				continue;
++
+ 			igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), output->name)
+ 				test_disable_crc_after_crtc(&data, pipe, output);
+ 		}
+@@ -355,6 +376,9 @@ igt_main
+ 	igt_describe("Basic sanity check for CRC mismatches");
+ 	igt_subtest_with_dynamic("compare-crc-sanitycheck") {
+ 		for_each_pipe_with_single_output(&data.display, pipe, output) {
++			if(!pipe_output_combo_valid(&data.display, pipe, output))
++				continue;
++
+ 			igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), output->name)
+ 				test_compare_crc(&data, pipe, output);
+ 		}
 -- 
 2.37.3
