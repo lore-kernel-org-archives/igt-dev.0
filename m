@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4259D10EC6D
- for <igt-dev@lists.freedesktop.org>; Thu, 22 Sep 2022 16:04:10 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0308210EC62
+ for <igt-dev@lists.freedesktop.org>; Thu, 22 Sep 2022 16:04:05 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Thu, 22 Sep 2022 21:29:47 +0530
-Message-Id: <20220922160004.2041598-36-bhanuprakash.modem@intel.com>
+Date: Thu, 22 Sep 2022 21:29:41 +0530
+Message-Id: <20220922160004.2041598-30-bhanuprakash.modem@intel.com>
 In-Reply-To: <20220922160004.2041598-1-bhanuprakash.modem@intel.com>
 References: <20220922160004.2041598-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V4 35/52] tests/kms_vblank: Add support for
+Subject: [igt-dev] [i-g-t V4 29/52] tests/kms_properties: Add support for
  Bigjoiner
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -34,116 +34,51 @@ V2: - Use updated helper name
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/kms_vblank.c | 54 ++++++++++++++++++++++++++++++++++++++++++++--
- 1 file changed, 52 insertions(+), 2 deletions(-)
+ tests/kms_properties.c | 18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
 
-diff --git a/tests/kms_vblank.c b/tests/kms_vblank.c
-index e65e8522..fc555322 100644
---- a/tests/kms_vblank.c
-+++ b/tests/kms_vblank.c
-@@ -175,6 +175,22 @@ static void run_test(data_t *data, void (*testfunc)(data_t *, int, int))
- 	cleanup_crtc(data, fd, output);
- }
+diff --git a/tests/kms_properties.c b/tests/kms_properties.c
+index dd5a93aa..953fb3fb 100644
+--- a/tests/kms_properties.c
++++ b/tests/kms_properties.c
+@@ -241,6 +241,12 @@ static void plane_properties(igt_display_t *display, bool atomic)
+ 		found = false;
  
-+static bool
-+pipe_output_combo_valid(igt_display_t *display,
-+			enum pipe pipe, igt_output_t *output)
-+{
-+	bool ret = true;
+ 		for_each_valid_output_on_pipe(display, pipe, output) {
++			igt_display_reset(display);
 +
-+	igt_display_reset(display);
++			igt_output_set_pipe(output, pipe);
++			if (!i915_pipe_output_combo_valid(display))
++				continue;
 +
-+	igt_output_set_pipe(output, pipe);
-+	if (!i915_pipe_output_combo_valid(display))
-+		ret = false;
-+	igt_output_set_pipe(output, PIPE_NONE);
-+
-+	return ret;
-+}
-+
- static void crtc_id_subtest(data_t *data, int fd)
- {
- 	igt_display_t *display = &data->display;
-@@ -188,6 +204,15 @@ static void crtc_id_subtest(data_t *data, int fd)
- 		uint64_t val;
- 		union drm_wait_vblank vbl;
+ 			found_any = found = true;
  
-+		igt_display_reset(display);
-+
-+		igt_output_set_pipe(output, p);
-+		if (!i915_pipe_output_combo_valid(display))
-+			continue;
-+
-+		igt_info("Using (pipe %s + %s) to run the subtest.\n",
-+			 kmstest_pipe_name(p), igt_output_name(output));
-+
- 		crtc_id = display->pipes[p].crtc_id;
- 		if (drmGetCap(display->drm_fd, DRM_CAP_CRTC_IN_VBLANK_EVENT, &val) == 0)
- 			expected_crtc_id = crtc_id;
-@@ -449,10 +474,18 @@ static void run_subtests_for_pipe(data_t *data)
- 			igt_subtest_f("pipe-%s-%s-%s",
- 				      kmstest_pipe_name(data->pipe),
- 				      f->name, m->name) {
-+				int found = 0;
-+
- 				for_each_valid_output_on_pipe(&data->display, data->pipe, data->output) {
-+					if (!pipe_output_combo_valid(&data->display, data->pipe, data->output))
-+						continue;
-+
- 					data->flags = m->flags | NOHANG;
- 					run_test(data, f->func);
-+
-+					found++;
- 				}
-+				igt_require_f(found, "No valid pipe/output combo found.\n");
- 			}
+ 			run_plane_property_tests(display, pipe, output, atomic);
+@@ -264,6 +270,12 @@ static void crtc_properties(igt_display_t *display, bool atomic)
+ 		found = false;
  
- 			/* Skip the -hang version if NOHANG flag is set */
-@@ -464,13 +497,20 @@ static void run_subtests_for_pipe(data_t *data)
- 				      kmstest_pipe_name(data->pipe),
- 				      f->name, m->name) {
- 				igt_hang_t hang;
-+				int found = 0;
+ 		for_each_valid_output_on_pipe(display, pipe, output) {
++			igt_display_reset(display);
++
++			igt_output_set_pipe(output, pipe);
++			if (!i915_pipe_output_combo_valid(display))
++				continue;
++
+ 			found_any_valid_pipe = found = true;
  
- 				hang = igt_allow_hang(data->display.drm_fd, 0, 0);
- 				for_each_valid_output_on_pipe(&data->display, data->pipe, data->output) {
-+					if (!pipe_output_combo_valid(&data->display, data->pipe, data->output))
-+						continue;
-+
- 					data->flags = m->flags;
- 					run_test(data, f->func);
-+
-+					found++;
- 				}
- 				igt_disallow_hang(data->display.drm_fd, hang);
-+				igt_require_f(found, "No valid pipe/output combo found.\n");
- 			}
- 		}
- 	}
-@@ -482,12 +522,22 @@ static void invalid_subtest(data_t *data, int fd)
- 	unsigned long valid_flags;
- 	igt_display_t* display = &data->display;
- 	enum pipe pipe = 0;
--	igt_output_t* output = igt_get_single_output_for_pipe(display, pipe);
-+	igt_output_t *output;
-+
-+	igt_display_reset(display);
-+
-+	output = igt_get_single_output_for_pipe(display, pipe);
-+	igt_require(output);
+ 			run_crtc_property_tests(display, pipe, output, atomic);
+@@ -290,6 +302,12 @@ static void connector_properties(igt_display_t *display, bool atomic)
+ 			if (!igt_pipe_connector_valid(pipe, output))
+ 				continue;
  
- 	data->pipe = pipe;
- 	data->output = output;
++			igt_display_reset(display);
 +
- 	igt_output_set_pipe(output, pipe);
--	igt_display_require_output_on_pipe(display, pipe);
-+	igt_require(i915_pipe_output_combo_valid(display));
++			igt_output_set_pipe(output, pipe);
++			if (!i915_pipe_output_combo_valid(display))
++				continue;
 +
-+	igt_info("Using (pipe %s + %s) to run the subtest.\n",
-+		 kmstest_pipe_name(pipe), igt_output_name(output));
-+
- 	prepare_crtc(data, fd, output);
- 
- 	/* First check all is well with a simple query */
+ 			found = true;
+ 			run_connector_property_tests(display, pipe, output, atomic);
+ 			break;
 -- 
 2.37.3
