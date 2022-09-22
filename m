@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 289C110EC7E
- for <igt-dev@lists.freedesktop.org>; Thu, 22 Sep 2022 16:04:19 +0000 (UTC)
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8D0DE10EC72
+ for <igt-dev@lists.freedesktop.org>; Thu, 22 Sep 2022 16:04:10 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Thu, 22 Sep 2022 21:29:59 +0530
-Message-Id: <20220922160004.2041598-48-bhanuprakash.modem@intel.com>
+Date: Thu, 22 Sep 2022 21:30:02 +0530
+Message-Id: <20220922160004.2041598-51-bhanuprakash.modem@intel.com>
 In-Reply-To: <20220922160004.2041598-1-bhanuprakash.modem@intel.com>
 References: <20220922160004.2041598-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V4 47/52] tests/i915/kms_mmap_write_crc: Add
- support for Bigjoiner
+Subject: [igt-dev] [i-g-t V4 50/52] tests/i915/kms_psr: Add support for
+ Bigjoiner
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -34,25 +34,24 @@ V2: - Use updated helper name
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/i915/kms_mmap_write_crc.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ tests/i915/kms_psr.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/tests/i915/kms_mmap_write_crc.c b/tests/i915/kms_mmap_write_crc.c
-index a57938b5..2153ee8a 100644
---- a/tests/i915/kms_mmap_write_crc.c
-+++ b/tests/i915/kms_mmap_write_crc.c
-@@ -276,6 +276,12 @@ igt_main_args("n", NULL, NULL, opt_handler, NULL)
+diff --git a/tests/i915/kms_psr.c b/tests/i915/kms_psr.c
+index 480e2cc7..97b4f0f3 100644
+--- a/tests/i915/kms_psr.c
++++ b/tests/i915/kms_psr.c
+@@ -102,7 +102,11 @@ static void setup_output(data_t *data)
+ 		if (c->connector_type != DRM_MODE_CONNECTOR_eDP)
+ 			continue;
  
- 	igt_subtest_with_dynamic("main") {
- 		for_each_pipe_with_valid_output(&data.display, pipe, output) {
-+			igt_display_reset(&data.display);
++		igt_display_reset(display);
+ 		igt_output_set_pipe(output, pipe);
++		if (!i915_pipe_output_combo_valid(display))
++			continue;
 +
-+			igt_output_set_pipe(output, pipe);
-+			if (!i915_pipe_output_combo_valid(&data.display))
-+				continue;
-+
- 			igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe),
- 				      igt_output_name(output)) {
- 				data.output = output;
+ 		data->crtc_id = output->config.crtc->crtc_id;
+ 		data->output = output;
+ 		data->mode = igt_output_get_mode(output);
 -- 
 2.37.3
