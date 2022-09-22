@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3A58010EA7E
- for <igt-dev@lists.freedesktop.org>; Thu, 22 Sep 2022 16:03:56 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6256810EA7C
+ for <igt-dev@lists.freedesktop.org>; Thu, 22 Sep 2022 16:03:43 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Thu, 22 Sep 2022 21:29:24 +0530
-Message-Id: <20220922160004.2041598-13-bhanuprakash.modem@intel.com>
+Date: Thu, 22 Sep 2022 21:29:13 +0530
+Message-Id: <20220922160004.2041598-2-bhanuprakash.modem@intel.com>
 In-Reply-To: <20220922160004.2041598-1-bhanuprakash.modem@intel.com>
 References: <20220922160004.2041598-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V4 12/52] tests/kms_cursor_crc: Add support for
- Bigjoiner
+Subject: [igt-dev] [i-g-t V4 01/52] lib/igt_kms: Add a helper for valid
+ pipe/output constraint
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,121 +23,113 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-This patch will add a check to Skip the subtest if a selected pipe/output
-combo won't support Bigjoiner or 8K mode.
+Add an IGT helper to check the given pipe/output combo is valid to decide
+whether to run/skip the subtest.
 
 Example:
-* Pipe-D wont support a mode > 5K
+* Pipe-D can't support mode > 5K
 * To use 8K mode on a pipe then consecutive pipe must be available & free.
+* MSO is supported only on PIPE_A/PIPE_B.
 
-V2: - Use updated helper name
+This helper is supposed to be a superset of all constraints of pipe/output
+combo. But as of now, this helper supports only Bigjoiner.
 
+V2:
+- Rename the helper
+- Add is_i915 constraint
+- Add pre-condition check (igt_output_set_pipe called)
+- Update documentaion
+- Minor cleanup in Bigjoiner helper
+
+Cc: Petri Latvala <petri.latvala@intel.com>
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Reviewed-by: Petri Latvala <petri.latvala@intel.com>
 ---
- tests/kms_cursor_crc.c | 47 +++++++++++++++++++++++++++++++++++-------
- 1 file changed, 40 insertions(+), 7 deletions(-)
+ lib/igt_kms.c | 49 ++++++++++++++++++++++++++++++++++++++++++++++---
+ lib/igt_kms.h |  1 +
+ 2 files changed, 47 insertions(+), 3 deletions(-)
 
-diff --git a/tests/kms_cursor_crc.c b/tests/kms_cursor_crc.c
-index 53f18f4f..45088d15 100644
---- a/tests/kms_cursor_crc.c
-+++ b/tests/kms_cursor_crc.c
-@@ -687,6 +687,21 @@ static void test_rapid_movement(data_t *data)
- 	igt_assert_lt(usec, 0.9 * 400 * 1000000 / data->refresh);
- }
- 
-+static bool pipe_output_combo_valid(data_t *data, enum pipe pipe)
-+{
-+	bool ret = true;
-+	igt_display_t *display = &data->display;
-+
-+	igt_display_reset(display);
-+
-+	igt_output_set_pipe(data->output, pipe);
-+	if (!i915_pipe_output_combo_valid(display))
-+		ret = false;
-+	igt_output_set_pipe(data->output, PIPE_NONE);
-+
-+	return ret;
-+}
-+
- static void run_size_tests(data_t *data, void (*testfunc)(data_t *),
- 			   int w, int h)
+diff --git a/lib/igt_kms.c b/lib/igt_kms.c
+index 665594aa..5fdb67fc 100644
+--- a/lib/igt_kms.c
++++ b/lib/igt_kms.c
+@@ -5743,6 +5743,7 @@ bool igt_check_bigjoiner_support(igt_display_t *display)
  {
-@@ -708,15 +723,18 @@ static void run_size_tests(data_t *data, void (*testfunc)(data_t *),
- 	}
+ 	uint8_t i, total_pipes = 0, pipes_in_use = 0;
+ 	enum pipe p;
++	igt_output_t *output;
+ 	struct {
+ 		enum pipe idx;
+ 		drmModeModeInfo *mode;
+@@ -5756,9 +5757,7 @@ bool igt_check_bigjoiner_support(igt_display_t *display)
+ 	 * Get list of pipes in use those were set by igt_output_set_pipe()
+ 	 * just before calling this function.
+ 	 */
+-	for (i = 0 ; i < display->n_outputs; i++) {
+-		igt_output_t *output = &display->outputs[i];
+-
++	for_each_connected_output(display, output) {
+ 		if (output->pending_pipe == PIPE_NONE)
+ 			continue;
  
- 	create_cursor_fb(data, w, h);
--	if (require_cursor_size(data, w, h)) {
--		igt_info("Cursor size %dx%d not supported by driver\n", w, h);
--
--		igt_remove_fb(data->drm_fd, &data->fb);
--		return;
--	}
--
- 	for_each_pipe(&data->display, pipe) {
- 		data->pipe = pipe;
+@@ -5824,3 +5823,47 @@ bool igt_parse_mode_string(const char *mode_string, drmModeModeInfo *mode)
+ 
+ 	return true;
+ }
 +
-+		if (!pipe_output_combo_valid(data, pipe))
++/*
++ * i915_pipe_output_combo_valid:
++ * @display: a pointer to an #igt_display_t structure
++ *
++ * Every individual test must use igt_output_set_pipe() before calling this
++ * helper, so that this function will get all active pipes from connected
++ * outputs (i.e. pending_pipe != PIPE_NONE) and check the selected combo is
++ * valid or not.
++ *
++ * This helper is supposed to be a superset of all constraints of pipe/output
++ * combo.
++ *
++ * Example:
++ *  * Pipe-D can't support mode > 5K
++ *  * To use 8K mode on a pipe then consecutive pipe must be free.
++ *  * MSO is supported only on PIPE_A/PIPE_B.
++ *
++ * Returns: true if a valid pipe/output mode combo found, else false
++ */
++bool i915_pipe_output_combo_valid(igt_display_t *display)
++{
++	int combo = 0;
++	igt_output_t *output;
++
++	if (!is_i915_device(display->drm_fd))
++		return true;
++
++	for_each_connected_output(display, output) {
++		if (output->pending_pipe == PIPE_NONE)
 +			continue;
 +
-+		if (require_cursor_size(data, w, h)) {
-+			igt_info("Cursor size %dx%d not supported by driver\n", w, h);
++		combo++;
++	}
 +
-+			continue;
-+		}
++	igt_assert_f(combo, "At least one pipe/output combo needed.\n");
 +
- 		igt_dynamic_f("pipe-%s-%s",
- 			      kmstest_pipe_name(pipe), igt_output_name(data->output))
- 			run_test(data, testfunc, w, h);
-@@ -761,6 +779,9 @@ static void run_tests_on_pipe(data_t *data)
- 		for_each_pipe(&data->display, pipe) {
- 			data->pipe = pipe;
++	/*
++	 * Check the given pipe/output combo is valid for Bigjoiner.
++	 *
++	 * TODO: Update this helper to support other features like MSO.
++	 */
++	return igt_check_bigjoiner_support(display);
++}
+diff --git a/lib/igt_kms.h b/lib/igt_kms.h
+index 3d78c37f..1c424984 100644
+--- a/lib/igt_kms.h
++++ b/lib/igt_kms.h
+@@ -975,5 +975,6 @@ bool igt_max_bpc_constraint(igt_display_t *display, enum pipe pipe,
+ 		igt_output_t *output, int bpc);
+ bool igt_check_bigjoiner_support(igt_display_t *display);
+ bool igt_parse_mode_string(const char *mode_string, drmModeModeInfo *mode);
++bool i915_pipe_output_combo_valid(igt_display_t *display);
  
-+			if (!pipe_output_combo_valid(data, pipe))
-+				continue;
-+
- 			igt_dynamic_f("pipe-%s-%s",
- 				      kmstest_pipe_name(pipe),
- 				      data->output->name)
-@@ -775,6 +796,9 @@ static void run_tests_on_pipe(data_t *data)
- 		for_each_pipe(&data->display, pipe) {
- 			data->pipe = pipe;
- 
-+			if (!pipe_output_combo_valid(data, pipe))
-+				continue;
-+
- 			igt_dynamic_f("pipe-%s-%s",
- 				      kmstest_pipe_name(pipe),
- 				      data->output->name)
-@@ -789,6 +813,9 @@ static void run_tests_on_pipe(data_t *data)
- 		for_each_pipe(&data->display, pipe) {
- 			data->pipe = pipe;
- 
-+			if (!pipe_output_combo_valid(data, pipe))
-+				continue;
-+
- 			igt_dynamic_f("pipe-%s-%s",
- 				      kmstest_pipe_name(pipe),
- 				      data->output->name)
-@@ -807,6 +834,9 @@ static void run_tests_on_pipe(data_t *data)
- 			data->pipe = pipe;
- 			data->flags = TEST_DPMS;
- 
-+			if (!pipe_output_combo_valid(data, pipe))
-+				continue;
-+
- 			if (require_cursor_size(data, data->cursor_max_w, data->cursor_max_h)) {
- 				igt_debug("Cursor size %dx%d not supported by driver\n",
- 					  data->cursor_max_w, data->cursor_max_h);
-@@ -828,6 +858,9 @@ static void run_tests_on_pipe(data_t *data)
- 			data->pipe = pipe;
- 			data->flags = TEST_SUSPEND;
- 
-+			if (!pipe_output_combo_valid(data, pipe))
-+				continue;
-+
- 			if (require_cursor_size(data, data->cursor_max_w, data->cursor_max_h)) {
- 				igt_debug("Cursor size %dx%d not supported by driver\n",
- 					  data->cursor_max_w, data->cursor_max_h);
+ #endif /* __IGT_KMS_H__ */
 -- 
 2.37.3
