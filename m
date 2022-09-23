@@ -1,19 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DD69210E050
- for <igt-dev@lists.freedesktop.org>; Fri, 23 Sep 2022 19:52:30 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0519B10E8AA
+ for <igt-dev@lists.freedesktop.org>; Fri, 23 Sep 2022 19:52:31 +0000 (UTC)
 From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 To: igt-dev@lists.freedesktop.org,
  Lionel G Landwerlin <lionel.g.landwerlin@intel.com>,
  Ashutosh Dixit <ashutosh.dixit@intel.com>
-Date: Fri, 23 Sep 2022 19:52:13 +0000
-Message-Id: <20220923195224.283045-7-umesh.nerlige.ramappa@intel.com>
+Date: Fri, 23 Sep 2022 19:52:16 +0000
+Message-Id: <20220923195224.283045-10-umesh.nerlige.ramappa@intel.com>
 In-Reply-To: <20220923195224.283045-1-umesh.nerlige.ramappa@intel.com>
 References: <20220923195224.283045-1-umesh.nerlige.ramappa@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v4 06/17] i915/perf: Define OA report types
- and fix oa-formats test
+Subject: [igt-dev] [PATCH i-g-t v4 09/17] i915/perf: Explicitly state
+ rendercopy needs for a test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,56 +25,100 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-With newer gen12 platforms, formats used for OAG buffer and
-MI_REPORT_PERF_FORMAT differ slightly. This causes issues when the
-oa-formats test does a sanity check. Run oa-formats for OAG reports
-only.
-
-OAR formats must be tested with the gen12-mi-rpc and
-gen12-unprivileged-single-ctx-counters.
-
-v2: Clarify commit message
+Let tests explicitly require rendercopy before running. This helps in
+temporarily blocking these tests until rendercopy is available on new
+platforms.
 
 Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+Reviewed-by: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
 ---
- tests/i915/perf.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ tests/i915/perf.c | 25 ++++++++++++++++++++++---
+ 1 file changed, 22 insertions(+), 3 deletions(-)
 
 diff --git a/tests/i915/perf.c b/tests/i915/perf.c
-index 5fe874c1..65434055 100644
+index 0543a79e..989f1fce 100644
 --- a/tests/i915/perf.c
 +++ b/tests/i915/perf.c
-@@ -95,6 +95,13 @@ struct accumulator {
- 	uint64_t deltas[MAX_RAW_OA_COUNTERS];
- };
+@@ -1545,6 +1545,9 @@ static void load_helper_set_load(enum load load)
  
-+enum {
-+	OAG,
-+	OAR,
+ static void load_helper_run(enum load load)
+ {
++	if (!render_copy)
++		return;
 +
-+	MAX_OA_TYPE,
-+};
+ 	/*
+ 	 * FIXME fork helpers won't get cleaned up when started from within a
+ 	 * subtest, so handle the case where it sticks around a bit too long.
+@@ -1577,12 +1580,20 @@ static void load_helper_run(enum load load)
+ 
+ static void load_helper_stop(void)
+ {
++	if (!render_copy)
++		return;
 +
- struct oa_format {
- 	const char *name;
- 	size_t size;
-@@ -108,6 +115,7 @@ struct oa_format {
- 	int n_b;
- 	int c_off;
- 	int n_c;
-+	int oa_type;
- };
+ 	kill(lh.igt_proc.pid, SIGUSR1);
+ 	igt_assert(igt_wait_helper(&lh.igt_proc) == 0);
+ }
  
- static struct oa_format hsw_oa_formats[I915_OA_FORMAT_MAX] = {
-@@ -1483,6 +1491,9 @@ test_oa_formats(void)
- 		if (!format.name) /* sparse, indexed by ID */
- 			continue;
- 
-+		if (format.oa_type != OAG) /* sparse, indexed by ID */
-+			continue;
+ static void load_helper_init(void)
+ {
++	if (!render_copy) {
++		igt_info("Running test without render_copy\n");
++		return;
++	}
 +
- 		igt_debug("Checking OA format %s\n", format.name);
+ 	lh.devid = intel_get_drm_devid(drm_fd);
  
- 		open_and_read_2_oa_reports(i,
+ 	/* MI_STORE_DATA can only use GTT address on gen4+/g33 and needs
+@@ -1603,7 +1614,12 @@ static void load_helper_init(void)
+ 
+ static void load_helper_fini(void)
+ {
+-	int i915 = buf_ops_get_fd(lh.bops);
++	int i915;
++
++	if (!render_copy)
++		return;
++
++	i915 = buf_ops_get_fd(lh.bops);
+ 
+ 	if (lh.igt_proc.running)
+ 		load_helper_stop();
+@@ -4997,7 +5013,6 @@ igt_main
+ 		gt_max_freq_mhz = sysfs_read(RPS_RP0_FREQ_MHZ);
+ 
+ 		render_copy = igt_get_render_copyfunc(devid);
+-		igt_require_f(render_copy, "no render-copy function\n");
+ 	}
+ 
+ 	igt_subtest("non-system-wide-paranoid")
+@@ -5100,6 +5115,7 @@ igt_main
+ 
+ 	igt_subtest("unprivileged-single-ctx-counters") {
+ 		igt_require(IS_HASWELL(devid));
++		igt_require_f(render_copy, "no render-copy function\n");
+ 		hsw_test_single_ctx_counters();
+ 	}
+ 
+@@ -5113,6 +5129,7 @@ igt_main
+ 		 * For gen12 implement a separate test that uses only OAR
+ 		 */
+ 		igt_require(intel_gen(devid) >= 8 && intel_gen(devid) < 12);
++		igt_require_f(render_copy, "no render-copy function\n");
+ 		gen8_test_single_ctx_render_target_writes_a_counter();
+ 	}
+ 
+@@ -5128,8 +5145,10 @@ igt_main
+ 			gen12_test_oa_tlb_invalidate();
+ 
+ 		igt_describe("Measure performance for a specific context using OAR in Gen 12");
+-		igt_subtest("gen12-unprivileged-single-ctx-counters")
++		igt_subtest("gen12-unprivileged-single-ctx-counters") {
++			igt_require_f(render_copy, "no render-copy function\n");
+ 			gen12_test_single_ctx_render_target_writes_a_counter();
++		}
+ 	}
+ 
+ 	igt_subtest("rc6-disable")
 -- 
 2.25.1
