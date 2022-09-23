@@ -1,19 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0519B10E8AA
- for <igt-dev@lists.freedesktop.org>; Fri, 23 Sep 2022 19:52:31 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4B7F210E8D2
+ for <igt-dev@lists.freedesktop.org>; Fri, 23 Sep 2022 19:52:32 +0000 (UTC)
 From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 To: igt-dev@lists.freedesktop.org,
  Lionel G Landwerlin <lionel.g.landwerlin@intel.com>,
  Ashutosh Dixit <ashutosh.dixit@intel.com>
-Date: Fri, 23 Sep 2022 19:52:16 +0000
-Message-Id: <20220923195224.283045-10-umesh.nerlige.ramappa@intel.com>
+Date: Fri, 23 Sep 2022 19:52:22 +0000
+Message-Id: <20220923195224.283045-16-umesh.nerlige.ramappa@intel.com>
 In-Reply-To: <20220923195224.283045-1-umesh.nerlige.ramappa@intel.com>
 References: <20220923195224.283045-1-umesh.nerlige.ramappa@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v4 09/17] i915/perf: Explicitly state
- rendercopy needs for a test
+Subject: [igt-dev] [PATCH i-g-t v4 15/17] lib/i915/perf: fixup conversion
+ script for XEHPSDV
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,100 +25,116 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Let tests explicitly require rendercopy before running. This helps in
-temporarily blocking these tests until rendercopy is available on new
-platforms.
+From: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
 
-Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
-Reviewed-by: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
+Signed-off-by: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
+Reviewed-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 ---
- tests/i915/perf.c | 25 ++++++++++++++++++++++---
- 1 file changed, 22 insertions(+), 3 deletions(-)
+ lib/i915/perf-configs/mdapi-xml-convert.py | 56 ++++++++++++++++++----
+ 1 file changed, 48 insertions(+), 8 deletions(-)
 
-diff --git a/tests/i915/perf.c b/tests/i915/perf.c
-index 0543a79e..989f1fce 100644
---- a/tests/i915/perf.c
-+++ b/tests/i915/perf.c
-@@ -1545,6 +1545,9 @@ static void load_helper_set_load(enum load load)
- 
- static void load_helper_run(enum load load)
- {
-+	if (!render_copy)
-+		return;
+diff --git a/lib/i915/perf-configs/mdapi-xml-convert.py b/lib/i915/perf-configs/mdapi-xml-convert.py
+index d26ff623..f27d6657 100755
+--- a/lib/i915/perf-configs/mdapi-xml-convert.py
++++ b/lib/i915/perf-configs/mdapi-xml-convert.py
+@@ -62,6 +62,24 @@ gen8_11_chipset_params = {
+     'config_reg_blacklist': {
+         0x2364, # OACTXID
+     },
++    'register_offsets': {
++        0x1f0: 'PERFCNT 0',
++        0x1f8: 'PERFCNT 1',
++    }
++}
 +
- 	/*
- 	 * FIXME fork helpers won't get cleaned up when started from within a
- 	 * subtest, so handle the case where it sticks around a bit too long.
-@@ -1577,12 +1580,20 @@ static void load_helper_run(enum load load)
- 
- static void load_helper_stop(void)
- {
-+	if (!render_copy)
-+		return;
-+
- 	kill(lh.igt_proc.pid, SIGUSR1);
- 	igt_assert(igt_wait_helper(&lh.igt_proc) == 0);
++xehpsdv_chipset_params = {
++    'a_offset': 16,
++    'b_offset': 192,
++    'c_offset': 224,
++    'oa_report_size': 256,
++    'config_reg_blacklist': {
++        0x2364, # OACTXID
++    },
++    'register_offsets': {
++        0x1b0: 'PERFCNT 0',
++        0x1b8: 'PERFCNT 1',
++    }
  }
  
- static void load_helper_init(void)
- {
-+	if (!render_copy) {
-+		igt_info("Running test without render_copy\n");
-+		return;
-+	}
-+
- 	lh.devid = intel_get_drm_devid(drm_fd);
+ chipsets = {
+@@ -161,14 +179,9 @@ def underscore(name):
+ def print_err(*args):
+     sys.stderr.write(' '.join(map(str,args)) + '\n')
  
- 	/* MI_STORE_DATA can only use GTT address on gen4+/g33 and needs
-@@ -1603,7 +1614,12 @@ static void load_helper_init(void)
+-read_register_offsets = {
+-    0x1f0: 'PERFCNT 0',
+-    0x1f8: 'PERFCNT 1',
+-}
+-
+ def read_value(chipset, offset):
+-    if offset in read_register_offsets:
+-        return read_register_offsets[offset]
++    if offset in chipsets[chipset]['register_offsets']:
++        return chipsets[chipset]['register_offsets'][offset]
+     print_err("Unknown offset register at offset {0}".format(offset))
+     assert 0
  
- static void load_helper_fini(void)
- {
--	int i915 = buf_ops_get_fd(lh.bops);
-+	int i915;
-+
-+	if (!render_copy)
-+		return;
-+
-+	i915 = buf_ops_get_fd(lh.bops);
+@@ -185,6 +198,7 @@ def read_token_to_rpn_read(chipset, token, raw_offsets):
+     offset = int(offset_str, 16)
  
- 	if (lh.igt_proc.running)
- 		load_helper_stop();
-@@ -4997,7 +5013,6 @@ igt_main
- 		gt_max_freq_mhz = sysfs_read(RPS_RP0_FREQ_MHZ);
- 
- 		render_copy = igt_get_render_copyfunc(devid);
--		igt_require_f(render_copy, "no render-copy function\n");
- 	}
- 
- 	igt_subtest("non-system-wide-paranoid")
-@@ -5100,6 +5115,7 @@ igt_main
- 
- 	igt_subtest("unprivileged-single-ctx-counters") {
- 		igt_require(IS_HASWELL(devid));
-+		igt_require_f(render_copy, "no render-copy function\n");
- 		hsw_test_single_ctx_counters();
- 	}
- 
-@@ -5113,6 +5129,7 @@ igt_main
- 		 * For gen12 implement a separate test that uses only OAR
- 		 */
- 		igt_require(intel_gen(devid) >= 8 && intel_gen(devid) < 12);
-+		igt_require_f(render_copy, "no render-copy function\n");
- 		gen8_test_single_ctx_render_target_writes_a_counter();
- 	}
- 
-@@ -5128,8 +5145,10 @@ igt_main
- 			gen12_test_oa_tlb_invalidate();
- 
- 		igt_describe("Measure performance for a specific context using OAR in Gen 12");
--		igt_subtest("gen12-unprivileged-single-ctx-counters")
-+		igt_subtest("gen12-unprivileged-single-ctx-counters") {
-+			igt_require_f(render_copy, "no render-copy function\n");
- 			gen12_test_single_ctx_render_target_writes_a_counter();
-+		}
- 	}
- 
- 	igt_subtest("rc6-disable")
+     if raw_offsets:
++        # Location in the HW reports
+         a_offset = chipsets[chipset]['a_offset']
+         b_offset = chipsets[chipset]['b_offset']
+         c_offset = chipsets[chipset]['c_offset']
+@@ -199,7 +213,15 @@ def read_token_to_rpn_read(chipset, token, raw_offsets):
+             else:
+                 assert 0
+         elif offset < b_offset:
+-            return "A " + str(int((offset - a_offset) / 4)) + " READ"
++            a_cnt_offset = int((offset - a_offset) / 4)
++            if chipset == "XEHPSDV":
++                # Most A counters are in a contiguous array, except
++                # this A37.
++                if a_cnt_offset == 42:
++                    return "A 37 READ"
++                return "A " + str(a_cnt_offset) + " READ"
++            else:
++                return "A " + str(a_cnt_offset) + " READ"
+         elif offset < c_offset:
+             return "B " + str(int((offset - b_offset) / 4)) + " READ"
+         elif offset < report_size:
+@@ -207,6 +229,7 @@ def read_token_to_rpn_read(chipset, token, raw_offsets):
+         else:
+             return "{0} READ".format(read_value(chipset, offset))
+     else:
++        # Location in the accumulated deltas
+         idx = int(offset / 8)
+         if chipset == "HSW":
+             # On Haswell accumulated counters are assumed to start
+@@ -222,6 +245,23 @@ def read_token_to_rpn_read(chipset, token, raw_offsets):
+                 return "C " + str(idx - 54) + " READ"
+             else:
+                 return "{0} READ".format(read_value(chipset, offset))
++        elif chipset == "XEHPSDV":
++            # For XEHPSDV the array of accumulated counters is
++            # assumed to start with a GPU_TIME then GPU_CLOCK,
++            # then 38 A counters, then 8 B counters and finally
++            # 8 C counters.
++            if idx == 0:
++                return "GPU_TIME 0 READ"
++            elif idx == 1:
++                return "GPU_CLOCK 0 READ"
++            elif idx < 40:
++                return "A " + str(idx - 2) + " READ"
++            elif idx < 48:
++                return "B " + str(idx - 40) + " READ"
++            elif idx < 56:
++                return "C " + str(idx - 48) + " READ"
++            else:
++                return "{0} READ".format(read_value(chipset, offset))
+         else:
+             # For Gen8+ the array of accumulated counters is
+             # assumed to start with a GPU_TIME then GPU_CLOCK,
 -- 
 2.25.1
