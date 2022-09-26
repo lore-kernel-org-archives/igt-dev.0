@@ -1,14 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D789110E6C5
- for <igt-dev@lists.freedesktop.org>; Mon, 26 Sep 2022 13:32:41 +0000 (UTC)
-From: Nirmoy Das <nirmoy.das@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Mon, 26 Sep 2022 15:32:33 +0200
-Message-Id: <20220926133233.32592-1-nirmoy.das@intel.com>
-MIME-Version: 1.0
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7EFE910E6B9
+ for <igt-dev@lists.freedesktop.org>; Mon, 26 Sep 2022 14:19:59 +0000 (UTC)
+Message-ID: <1e91d755-3b98-c7ff-1ade-4fc348a5a5df@intel.com>
+Date: Mon, 26 Sep 2022 19:49:41 +0530
+Content-Language: en-US
+To: =?UTF-8?B?VmlsbGUgU3lyasOkbMOk?= <ville.syrjala@linux.intel.com>
+References: <20220925160050.2149579-1-bhanuprakash.modem@intel.com>
+ <YzFxsBVY80ntHxHz@intel.com>
+From: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
+In-Reply-To: <YzFxsBVY80ntHxHz@intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t] i915/gem_ringfill: Create dynamic subtest
+MIME-Version: 1.0
+Subject: Re: [igt-dev] [i-g-t] tests/kms_color: Fix ctm-0.* tests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -16,47 +21,55 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-This will print engine name for each subtest which
-might be useful for debugging a failure.
+On Mon-26-09-2022 03:02 pm, Ville Syrjälä wrote:
+> On Sun, Sep 25, 2022 at 09:30:50PM +0530, Bhanuprakash Modem wrote:
+>> As we are testing with a few values around the expected result
+>> because of the hardware rounded values, fix the logic to generate
+>> the expected values to deal with those hardware rounding issues.
+>>
+>> Cc: Ville Syrjälä <ville.syrjala@linux.intel.com>
+>> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+> 
+> Reviewed-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+> 
+>> ---
+>>   tests/kms_color.c | 2 +-
+>>   1 file changed, 1 insertion(+), 1 deletion(-)
+>>
+>> diff --git a/tests/kms_color.c b/tests/kms_color.c
+>> index ab285af8..2804bde8 100644
+>> --- a/tests/kms_color.c
+>> +++ b/tests/kms_color.c
+>> @@ -770,7 +770,7 @@ run_ctm_tests_for_pipe(data_t *data, enum pipe p,
+>>   			expected_colors[0].r =
+>>   				expected_colors[1].g =
+>>   				expected_colors[2].b =
+>> -				0.5 + delta * (i - 2);
+>> +				ctm[0] + delta * (i - (iter / 2));
+> 
+> The name 'iter' is not a particularly great choice here.
+> Based on that name I would expect it to be an iterator
+> of some sort.
+> 
+> Another thing I don't really like here is that this guy is
+> mutating expected_colors, which was passed all the way from
+> the top and really should be const (since the whole ctm_tests[]
+> should be const). would be much better to have a local thing
+> to mutate here.
 
-Signed-off-by: Nirmoy Das <nirmoy.das@intel.com>
----
- tests/i915/gem_ringfill.c | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+Sure, I'll float a new patch to include this.
 
-diff --git a/tests/i915/gem_ringfill.c b/tests/i915/gem_ringfill.c
-index b68c5ae615..1e98ac8bb7 100644
---- a/tests/i915/gem_ringfill.c
-+++ b/tests/i915/gem_ringfill.c
-@@ -383,19 +383,20 @@ igt_main
- 	}
- 
- 	igt_describe("Basic check to fill the ring upto maximum on all engines simultaneously.");
--	igt_subtest("basic-all") {
-+	igt_subtest_with_dynamic("basic-all") {
- 		const struct intel_execution_engine2 *e;
- 		intel_allocator_multiprocess_start();
- 
- 		for_each_ctx_engine(fd, ctx, e) {
- 			if (!gem_class_can_store_dword(fd, e->class))
- 				continue;
--
--			igt_fork(child, 1)
--				run_test(fd, ctx, e->flags, 0, 1);
-+			igt_dynamic_f("%s", e->name) {
-+				igt_fork(child, 1)
-+					run_test(fd, ctx, e->flags, 0, 1);
-+				igt_waitchildren();
-+			}
- 		}
- 
--		igt_waitchildren();
- 		intel_allocator_multiprocess_stop();
- 	}
- 
--- 
-2.37.3
+- Bhanu
+
+> 
+>>   			if (test_pipe_ctm(data, data->primary, red_green_blue,
+>>   					  expected_colors, ctm)) {
+>>   				success = true;
+>> -- 
+>> 2.37.3
+> 
