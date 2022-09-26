@@ -1,19 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 68D9D10E3CE
- for <igt-dev@lists.freedesktop.org>; Mon, 26 Sep 2022 10:04:30 +0000 (UTC)
-From: "Hogander, Jouni" <jouni.hogander@intel.com>
-To: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Gupta,
- Nidhi1" <nidhi1.gupta@intel.com>
-Date: Mon, 26 Sep 2022 10:04:25 +0000
-Message-ID: <1bcfd5924d678818d6c8336198f9adf370f13fed.camel@intel.com>
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C3D9F10E3DA
+ for <igt-dev@lists.freedesktop.org>; Mon, 26 Sep 2022 10:06:11 +0000 (UTC)
+Date: Mon, 26 Sep 2022 13:05:38 +0300
+From: Petri Latvala <petri.latvala@intel.com>
+To: Nidhi Gupta <nidhi1.gupta@intel.com>
+Message-ID: <YzF5cga2b9655bdK@platvala-desk.ger.corp.intel.com>
 References: <20220926031318.17284-1-nidhi1.gupta@intel.com>
-In-Reply-To: <20220926031318.17284-1-nidhi1.gupta@intel.com>
-Content-Language: en-US
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <20F42D896DA00E4BAEE82E25DCAAA3BC@namprd11.prod.outlook.com>
-Content-Transfer-Encoding: base64
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220926031318.17284-1-nidhi1.gupta@intel.com>
 Subject: Re: [igt-dev] [PATCH i-g-t] tests/i915/i915_pm_backlight: Add new
  subtest to validate dual panel backlight
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
@@ -23,166 +20,191 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gTW9uLCAyMDIyLTA5LTI2IGF0IDA4OjQzICswNTMwLCBOaWRoaSBHdXB0YSB3cm90ZToKPiBT
-aW5jZSBkcml2ZXIgY2FuIG5vdyBzdXBwb3J0IG11bHRpcGxlIGVEUHMgYW5kIERlYnVnZnMgc3Ry
-dWN0dXJlIGZvcgo+IGJhY2tsaWdodCBjaGFuZ2VkIHBlciBjb25uZWN0b3IgdGhlIHRlc3Qgc2hv
-dWxkIHRoZW4gaXRlcmF0ZSB0aHJvdWdoCj4gYWxsIGVEUCBjb25uZWN0b3JzLgo+IAo+IFNpZ25l
-ZC1vZmYtYnk6IE5pZGhpIEd1cHRhIDxuaWRoaTEuZ3VwdGFAaW50ZWwuY29tPgo+IC0tLQo+IMKg
-dGVzdHMvaTkxNS9pOTE1X3BtX2JhY2tsaWdodC5jIHwgNzAgKysrKysrKysrKysrKysrKysrKy0t
-LS0tLS0tLS0tLS0KPiAtLQo+IMKgMSBmaWxlIGNoYW5nZWQsIDM5IGluc2VydGlvbnMoKyksIDMx
-IGRlbGV0aW9ucygtKQo+IAo+IGRpZmYgLS1naXQgYS90ZXN0cy9pOTE1L2k5MTVfcG1fYmFja2xp
-Z2h0LmMKPiBiL3Rlc3RzL2k5MTUvaTkxNV9wbV9iYWNrbGlnaHQuYwo+IGluZGV4IGNhZmFlN2Y3
-Li4xNTMyMTkzYiAxMDA2NDQKPiAtLS0gYS90ZXN0cy9pOTE1L2k5MTVfcG1fYmFja2xpZ2h0LmMK
-PiArKysgYi90ZXN0cy9pOTE1L2k5MTVfcG1fYmFja2xpZ2h0LmMKPiBAQCAtMzcsMjUgKzM3LDI2
-IEBACj4gwqAKPiDCoHN0cnVjdCBjb250ZXh0IHsKPiDCoMKgwqDCoMKgwqDCoMKgaW50IG1heDsK
-PiArwqDCoMKgwqDCoMKgwqBjb25zdCBjaGFyICpwYXRoOwo+IMKgfTsKPiDCoAo+IMKgCj4gwqAj
-ZGVmaW5lIFRPTEVSQU5DRSA1IC8qIHBlcmNlbnQgKi8KPiAtI2RlZmluZSBCQUNLTElHSFRfUEFU
-SCAiL3N5cy9jbGFzcy9iYWNrbGlnaHQvaW50ZWxfYmFja2xpZ2h0Igo+ICsjZGVmaW5lIEJBQ0tM
-SUdIVF9QQVRIICIvc3lzL2NsYXNzL2JhY2tsaWdodCIKPiDCoAo+IMKgI2RlZmluZSBGQURFU1RF
-UFMgMTAKPiDCoCNkZWZpbmUgRkFERVNQRUVEIDEwMCAvKiBtaWxsaXNlY29uZHMgYmV0d2VlbiBz
-dGVwcyAqLwo+IMKgCj4gwqBJR1RfVEVTVF9ERVNDUklQVElPTigiQmFzaWMgYmFja2xpZ2h0IHN5
-c2ZzIHRlc3QiKTsKPiDCoAo+IC1zdGF0aWMgaW50IGJhY2tsaWdodF9yZWFkKGludCAqcmVzdWx0
-LCBjb25zdCBjaGFyICpmbmFtZSkKPiArc3RhdGljIGludCBiYWNrbGlnaHRfcmVhZChpbnQgKnJl
-c3VsdCwgY29uc3QgY2hhciAqZm5hbWUsIHN0cnVjdAo+IGNvbnRleHQgKmNvbnRleHQpCj4gwqB7
-Cj4gwqDCoMKgwqDCoMKgwqDCoGludCBmZDsKPiDCoMKgwqDCoMKgwqDCoMKgY2hhciBmdWxsW1BB
-VEhfTUFYXTsKPiDCoMKgwqDCoMKgwqDCoMKgY2hhciBkc3RbNjRdOwo+IMKgwqDCoMKgwqDCoMKg
-wqBpbnQgciwgZTsKPiDCoAo+IC3CoMKgwqDCoMKgwqDCoGlndF9hc3NlcnQoc25wcmludGYoZnVs
-bCwgUEFUSF9NQVgsICIlcy8lcyIsIEJBQ0tMSUdIVF9QQVRILAo+IGZuYW1lKSA8IFBBVEhfTUFY
-KTsKPiArwqDCoMKgwqDCoMKgwqBpZ3RfYXNzZXJ0KHNucHJpbnRmKGZ1bGwsIFBBVEhfTUFYLCAi
-JXMvJXMvJXMiLAo+IEJBQ0tMSUdIVF9QQVRILCBjb250ZXh0LT5wYXRoLCBmbmFtZSkgPCBQQVRI
-X01BWCk7Cj4gwqAKPiDCoMKgwqDCoMKgwqDCoMKgZmQgPSBvcGVuKGZ1bGwsIE9fUkRPTkxZKTsK
-PiDCoMKgwqDCoMKgwqDCoMKgaWYgKGZkID09IC0xKQo+IEBAIC03MywxNCArNzQsMTQgQEAgc3Rh
-dGljIGludCBiYWNrbGlnaHRfcmVhZChpbnQgKnJlc3VsdCwgY29uc3QgY2hhcgo+ICpmbmFtZSkK
-PiDCoMKgwqDCoMKgwqDCoMKgcmV0dXJuIGVycm5vOwo+IMKgfQo+IMKgCj4gLXN0YXRpYyBpbnQg
-YmFja2xpZ2h0X3dyaXRlKGludCB2YWx1ZSwgY29uc3QgY2hhciAqZm5hbWUpCj4gK3N0YXRpYyBp
-bnQgYmFja2xpZ2h0X3dyaXRlKGludCB2YWx1ZSwgY29uc3QgY2hhciAqZm5hbWUsIHN0cnVjdAo+
-IGNvbnRleHQgKmNvbnRleHQpCj4gwqB7Cj4gwqDCoMKgwqDCoMKgwqDCoGludCBmZDsKPiDCoMKg
-wqDCoMKgwqDCoMKgY2hhciBmdWxsW1BBVEhfTUFYXTsKPiDCoMKgwqDCoMKgwqDCoMKgY2hhciBz
-cmNbNjRdOwo+IMKgwqDCoMKgwqDCoMKgwqBpbnQgbGVuOwo+IMKgCj4gLcKgwqDCoMKgwqDCoMKg
-aWd0X2Fzc2VydChzbnByaW50ZihmdWxsLCBQQVRIX01BWCwgIiVzLyVzIiwgQkFDS0xJR0hUX1BB
-VEgsCj4gZm5hbWUpIDwgUEFUSF9NQVgpOwo+ICvCoMKgwqDCoMKgwqDCoGlndF9hc3NlcnQoc25w
-cmludGYoZnVsbCwgUEFUSF9NQVgsICIlcy8lcy8lcyIsCj4gQkFDS0xJR0hUX1BBVEgsIGNvbnRl
-eHQtPnBhdGgsIGZuYW1lKSA8IFBBVEhfTUFYKTsKPiDCoMKgwqDCoMKgwqDCoMKgZmQgPSBvcGVu
-KGZ1bGwsIE9fV1JPTkxZKTsKPiDCoMKgwqDCoMKgwqDCoMKgaWYgKGZkID09IC0xKQo+IMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgcmV0dXJuIC1lcnJubzsKPiBAQCAtMTAwLDEyICsx
-MDEsMTIgQEAgc3RhdGljIHZvaWQgdGVzdF9hbmRfdmVyaWZ5KHN0cnVjdCBjb250ZXh0Cj4gKmNv
-bnRleHQsIGludCB2YWwpCj4gwqDCoMKgwqDCoMKgwqDCoGNvbnN0IGludCB0b2xlcmFuY2UgPSB2
-YWwgKiBUT0xFUkFOQ0UgLyAxMDA7Cj4gwqDCoMKgwqDCoMKgwqDCoGludCByZXN1bHQ7Cj4gwqAK
-PiAtwqDCoMKgwqDCoMKgwqBpZ3RfYXNzZXJ0X2VxKGJhY2tsaWdodF93cml0ZSh2YWwsICJicmln
-aHRuZXNzIiksIDApOwo+IC3CoMKgwqDCoMKgwqDCoGlndF9hc3NlcnRfZXEoYmFja2xpZ2h0X3Jl
-YWQoJnJlc3VsdCwgImJyaWdodG5lc3MiKSwgMCk7Cj4gK8KgwqDCoMKgwqDCoMKgaWd0X2Fzc2Vy
-dF9lcShiYWNrbGlnaHRfd3JpdGUodmFsLCAiYnJpZ2h0bmVzcyIsIGNvbnRleHQpLAo+IDApOwo+
-ICvCoMKgwqDCoMKgwqDCoGlndF9hc3NlcnRfZXEoYmFja2xpZ2h0X3JlYWQoJnJlc3VsdCwgImJy
-aWdodG5lc3MiLCBjb250ZXh0KSwKPiAwKTsKPiDCoMKgwqDCoMKgwqDCoMKgLyogQ2hlY2sgdGhh
-dCB0aGUgZXhhY3QgdmFsdWUgc3RpY2tzICovCj4gwqDCoMKgwqDCoMKgwqDCoGlndF9hc3NlcnRf
-ZXEocmVzdWx0LCB2YWwpOwo+IMKgCj4gLcKgwqDCoMKgwqDCoMKgaWd0X2Fzc2VydF9lcShiYWNr
-bGlnaHRfcmVhZCgmcmVzdWx0LCAiYWN0dWFsX2JyaWdodG5lc3MiKSwKPiAwKTsKPiArwqDCoMKg
-wqDCoMKgwqBpZ3RfYXNzZXJ0X2VxKGJhY2tsaWdodF9yZWFkKCZyZXN1bHQsICJhY3R1YWxfYnJp
-Z2h0bmVzcyIsCj4gY29udGV4dCksIDApOwo+IMKgwqDCoMKgwqDCoMKgwqAvKiBTb21lIHJvdW5k
-aW5nIG1heSBoYXBwZW4gZGVwZW5kaW5nIG9uIGh3ICovCj4gwqDCoMKgwqDCoMKgwqDCoGlndF9h
-c3NlcnRfZihyZXN1bHQgPj0gbWF4KDAsIHZhbCAtIHRvbGVyYW5jZSkgJiYKPiDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIHJlc3VsdCA8PSBtaW4oY29udGV4dC0+bWF4
-LCB2YWwgKyB0b2xlcmFuY2UpLAo+IEBAIC0xMjQsMTYgKzEyNSwxNiBAQCBzdGF0aWMgdm9pZCB0
-ZXN0X2JhZF9icmlnaHRuZXNzKHN0cnVjdCBjb250ZXh0Cj4gKmNvbnRleHQpCj4gwqB7Cj4gwqDC
-oMKgwqDCoMKgwqDCoGludCB2YWw7Cj4gwqDCoMKgwqDCoMKgwqDCoC8qIEZpcnN0IHdyaXRlIHNv
-bWUgc2FuZSB2YWx1ZSAqLwo+IC3CoMKgwqDCoMKgwqDCoGJhY2tsaWdodF93cml0ZShjb250ZXh0
-LT5tYXggLyAyLCAiYnJpZ2h0bmVzcyIpOwo+ICvCoMKgwqDCoMKgwqDCoGJhY2tsaWdodF93cml0
-ZShjb250ZXh0LT5tYXggLyAyLCAiYnJpZ2h0bmVzcyIsIGNvbnRleHQpOwo+IMKgwqDCoMKgwqDC
-oMKgwqAvKiBXcml0aW5nIGludmFsaWQgdmFsdWVzIHNob3VsZCBmYWlsIGFuZCBub3QgY2hhbmdl
-IHRoZQo+IHZhbHVlICovCj4gLcKgwqDCoMKgwqDCoMKgaWd0X2Fzc2VydF9sdChiYWNrbGlnaHRf
-d3JpdGUoLTEsICJicmlnaHRuZXNzIiksIDApOwo+IC3CoMKgwqDCoMKgwqDCoGJhY2tsaWdodF9y
-ZWFkKCZ2YWwsICJicmlnaHRuZXNzIik7Cj4gK8KgwqDCoMKgwqDCoMKgaWd0X2Fzc2VydF9sdChi
-YWNrbGlnaHRfd3JpdGUoLTEsICJicmlnaHRuZXNzIiwgY29udGV4dCksIDApOwo+ICvCoMKgwqDC
-oMKgwqDCoGJhY2tsaWdodF9yZWFkKCZ2YWwsICJicmlnaHRuZXNzIiwgY29udGV4dCk7Cj4gwqDC
-oMKgwqDCoMKgwqDCoGlndF9hc3NlcnRfZXEodmFsLCBjb250ZXh0LT5tYXggLyAyKTsKPiAtwqDC
-oMKgwqDCoMKgwqBpZ3RfYXNzZXJ0X2x0KGJhY2tsaWdodF93cml0ZShjb250ZXh0LT5tYXggKyAx
-LAo+ICJicmlnaHRuZXNzIiksIDApOwo+IC3CoMKgwqDCoMKgwqDCoGJhY2tsaWdodF9yZWFkKCZ2
-YWwsICJicmlnaHRuZXNzIik7Cj4gK8KgwqDCoMKgwqDCoMKgaWd0X2Fzc2VydF9sdChiYWNrbGln
-aHRfd3JpdGUoY29udGV4dC0+bWF4ICsgMSwgImJyaWdodG5lc3MiLAo+IGNvbnRleHQpLCAwKTsK
-PiArwqDCoMKgwqDCoMKgwqBiYWNrbGlnaHRfcmVhZCgmdmFsLCAiYnJpZ2h0bmVzcyIsIGNvbnRl
-eHQpOwo+IMKgwqDCoMKgwqDCoMKgwqBpZ3RfYXNzZXJ0X2VxKHZhbCwgY29udGV4dC0+bWF4IC8g
-Mik7Cj4gLcKgwqDCoMKgwqDCoMKgaWd0X2Fzc2VydF9sdChiYWNrbGlnaHRfd3JpdGUoSU5UX01B
-WCwgImJyaWdodG5lc3MiKSwgMCk7Cj4gLcKgwqDCoMKgwqDCoMKgYmFja2xpZ2h0X3JlYWQoJnZh
-bCwgImJyaWdodG5lc3MiKTsKPiArwqDCoMKgwqDCoMKgwqBpZ3RfYXNzZXJ0X2x0KGJhY2tsaWdo
-dF93cml0ZShJTlRfTUFYLCAiYnJpZ2h0bmVzcyIsCj4gY29udGV4dCksIDApOwo+ICvCoMKgwqDC
-oMKgwqDCoGJhY2tsaWdodF9yZWFkKCZ2YWwsICJicmlnaHRuZXNzIiwgY29udGV4dCk7Cj4gwqDC
-oMKgwqDCoMKgwqDCoGlndF9hc3NlcnRfZXEodmFsLCBjb250ZXh0LT5tYXggLyAyKTsKPiDCoH0K
-PiDCoAo+IEBAIC0xODYsNiArMTg3LDcgQEAgaWd0X21haW4KPiDCoMKgwqDCoMKgwqDCoMKgaWd0
-X2Rpc3BsYXlfdCBkaXNwbGF5Owo+IMKgwqDCoMKgwqDCoMKgwqBpZ3Rfb3V0cHV0X3QgKm91dHB1
-dDsKPiDCoMKgwqDCoMKgwqDCoMKgc3RydWN0IGlndF9mYiBmYjsKPiArwqDCoMKgwqDCoMKgwqBj
-aGFyIHBhdGhzW11bNTBdID0geyAiaW50ZWxfYmFja2xpZ2h0IiwgImNhcmQwLWVEUC0yLQo+IGJh
-Y2tsaWdodCIgfTsKCmNvbnN0IGNoYXIgKnBhdGhzW10gPSB7ImludGVsX2JhY2tsaWdodCIsImNh
-cmQwLWVEUC0yLWJhY2tsaWdodCJ9OwoKPiDCoAo+IMKgwqDCoMKgwqDCoMKgwqBpZ3RfZml4dHVy
-ZSB7Cj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBlbnVtIHBpcGUgcGlwZTsKPiBA
-QCAtMjAzLDExICsyMDUsMTQgQEAgaWd0X21haW4KPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoGlndF9kaXNwbGF5X3JlcXVpcmUoJmRpc3BsYXksCj4gZHJtX29wZW5fZHJpdmVyKERS
-SVZFUl9JTlRFTCkpOwo+IMKgCj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAvKiBH
-ZXQgdGhlIG1heCB2YWx1ZSBhbmQgc2tpcCB0aGUgd2hvbGUgdGVzdCBpZiBzeXNmcwo+IGludGVy
-ZmFjZSBub3QgYXZhaWxhYmxlICovCj4gLcKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGln
-dF9za2lwX29uKGJhY2tsaWdodF9yZWFkKCZvbGQsICJicmlnaHRuZXNzIikpOwo+IC3CoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBpZ3RfYXNzZXJ0KGJhY2tsaWdodF9yZWFkKCZjb250ZXh0
-Lm1heCwKPiAibWF4X2JyaWdodG5lc3MiKSA+IC0xKTsKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgZm9yIChzaXplX3QgaSA9IDA7IGkgPCBzaXplb2YocGF0aHMpIC8KPiBzaXplb2Yo
-cGF0aHNbMF0pOyBpKyspIHsKCkFSUkFZX1NJWkUKCj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBjb250ZXh0LnBhdGggPSBwYXRoc1tpXTsKPiArwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGlndF9za2lwX29uKGJhY2ts
-aWdodF9yZWFkKCZvbGQsCj4gImJyaWdodG5lc3MiLCAmY29udGV4dCkpOwo+ICvCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgaWd0X2Fzc2VydChiYWNrbGlnaHRf
-cmVhZCgmY29udGV4dC5tYXgsCj4gIm1heF9icmlnaHRuZXNzIiwgJmNvbnRleHQpID4gLTEpOwo+
-ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqB9CgpJIGRvbid0IHRoaW5rIHdlIHdhbnQg
-dG8gc2tpcCBjb21wbGV0ZWx5IGlmIHNlY29uZCBwYW5lbCBpcyBtaXNzaW5nLgoKSG93IGFib3V0
-IHVzaW5nIGR5bmFtaWMgYXBwcm9hY2g/IEFkZCBjaGVjayBpZiBjb250ZXh0LnBhdGggZXhpc3Rz
-IGFuZAphZGQgZHluYW1pYyBzdWJ0ZXN0IGJhc2VkIG9uIHRoYXQuIFNlZSBwYXRjaCBzZXQgZnJv
-bSBKZWV2YW4gaGVyZSBhcyBhbgpleGFtcGxlOgoKaHR0cHM6Ly9wYXRjaHdvcmsuZnJlZWRlc2t0
-b3Aub3JnL3Nlcmllcy8xMDgyOTkvCgo+IMKgCj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqAvKiBzaG91bGQgYmUgLi4vLi4vY2FyZFgtJG91dHB1dCAqLwo+IC3CoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqBpZ3RfYXNzZXJ0X2x0KDEyLCByZWFkbGluayhCQUNLTElHSFRfUEFU
-SCAiL2RldmljZSIsCj4gZnVsbF9uYW1lLCBzaXplb2YoZnVsbF9uYW1lKSAtIDEpKTsKPiArwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgaWd0X2Fzc2VydF9sdCgxMiwgcmVhZGxpbmsoQkFD
-S0xJR0hUX1BBVEgKPiAiL2ludGVsX2JhY2tsaWdodC9kZXZpY2UiLCBmdWxsX25hbWUsIHNpemVv
-ZihmdWxsX25hbWUpIC0gMSkpOwo+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgbmFt
-ZSA9IGJhc2VuYW1lKGZ1bGxfbmFtZSk7Cj4gwqAKPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoGZvcl9lYWNoX3BpcGVfd2l0aF92YWxpZF9vdXRwdXQoJmRpc3BsYXksIHBpcGUsCj4g
-b3V0cHV0KSB7Cj4gQEAgLTIzNCwyMiArMjM5LDI1IEBAIGlndF9tYWluCj4gwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqBpZ3RfZGlzcGxheV9jb21taXQyKCZkaXNwbGF5LCBkaXNwbGF5
-LmlzX2F0b21pYyA/Cj4gQ09NTUlUX0FUT01JQyA6IENPTU1JVF9MRUdBQ1kpOwo+IMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgaWd0X3BtX2VuYWJsZV9zYXRhX2xpbmtfcG93ZXJfbWFu
-YWdlbWVudCgpOwo+IMKgwqDCoMKgwqDCoMKgwqB9Cj4gK8KgwqDCoMKgwqDCoMKgZm9yIChzaXpl
-X3QgaiA9IDA7IGogPCBzaXplb2YocGF0aHMpIC8gc2l6ZW9mKHBhdGhzWzBdKTsgaisrKQo+IHsK
-PiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgY29udGV4dC5wYXRoID0gcGF0aHNbal07
-Cj4gKwo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBpZ3Rfc3VidGVzdCgiYmFzaWMt
-YnJpZ2h0bmVzcyIpCj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqB0ZXN0X2JyaWdodG5lc3MoJmNvbnRleHQpOwo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqBpZ3Rfc3VidGVzdCgiYmFkLWJyaWdodG5lc3MiKQo+ICvCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgdGVzdF9iYWRfYnJpZ2h0bmVzcygmY29udGV4
-dCk7Cj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGlndF9zdWJ0ZXN0KCJmYWRlIikK
-PiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoHRlc3RfZmFk
-ZSgmY29udGV4dCk7Cj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGlndF9zdWJ0ZXN0
-KCJmYWRlX3dpdGhfZHBtcyIpCj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqB0ZXN0X2ZhZGVfd2l0aF9kcG1zKCZjb250ZXh0LCBvdXRwdXQpOwo+ICvCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBpZ3Rfc3VidGVzdCgiZmFkZV93aXRoX3N1c3BlbmQi
-KQo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgdGVzdF9m
-YWRlX3dpdGhfc3VzcGVuZCgmY29udGV4dCwgb3V0cHV0KTsKPiDCoAo+IC3CoMKgwqDCoMKgwqDC
-oGlndF9zdWJ0ZXN0KCJiYXNpYy1icmlnaHRuZXNzIikKPiAtwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgdGVzdF9icmlnaHRuZXNzKCZjb250ZXh0KTsKPiAtwqDCoMKgwqDCoMKgwqBpZ3Rf
-c3VidGVzdCgiYmFkLWJyaWdodG5lc3MiKQo+IC3CoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqB0ZXN0X2JhZF9icmlnaHRuZXNzKCZjb250ZXh0KTsKPiAtwqDCoMKgwqDCoMKgwqBpZ3Rfc3Vi
-dGVzdCgiZmFkZSIpCj4gLcKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoHRlc3RfZmFkZSgm
-Y29udGV4dCk7Cj4gLcKgwqDCoMKgwqDCoMKgaWd0X3N1YnRlc3QoImZhZGVfd2l0aF9kcG1zIikK
-PiAtwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgdGVzdF9mYWRlX3dpdGhfZHBtcygmY29u
-dGV4dCwgb3V0cHV0KTsKPiAtwqDCoMKgwqDCoMKgwqBpZ3Rfc3VidGVzdCgiZmFkZV93aXRoX3N1
-c3BlbmQiKQo+IC3CoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqB0ZXN0X2ZhZGVfd2l0aF9z
-dXNwZW5kKCZjb250ZXh0LCBvdXRwdXQpOwo+IC0KPiAtwqDCoMKgwqDCoMKgwqBpZ3RfZml4dHVy
-ZSB7Cj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAvKiBSZXN0b3JlIG9sZCBicmln
-aHRuZXNzICovCj4gLcKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGJhY2tsaWdodF93cml0
-ZShvbGQsICJicmlnaHRuZXNzIik7Cj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBi
-YWNrbGlnaHRfd3JpdGUob2xkLCAiYnJpZ2h0bmVzcyIsICZjb250ZXh0KTsKPiArwqDCoMKgwqDC
-oMKgwqB9Cj4gwqAKPiArwqDCoMKgwqDCoMKgwqBpZ3RfZml4dHVyZSB7Cj4gwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqBpZ3RfZGlzcGxheV9maW5pKCZkaXNwbGF5KTsKPiDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGlndF9yZW1vdmVfZmIoZGlzcGxheS5kcm1fZmQsICZm
-Yik7Cj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBpZ3RfcG1fcmVzdG9yZV9zYXRh
-X2xpbmtfcG93ZXJfbWFuYWdlbWVudCgpOwoK
+On Mon, Sep 26, 2022 at 08:43:18AM +0530, Nidhi Gupta wrote:
+> Since driver can now support multiple eDPs and Debugfs structure for
+> backlight changed per connector the test should then iterate through
+> all eDP connectors.
+> 
+> Signed-off-by: Nidhi Gupta <nidhi1.gupta@intel.com>
+> ---
+>  tests/i915/i915_pm_backlight.c | 70 +++++++++++++++++++---------------
+>  1 file changed, 39 insertions(+), 31 deletions(-)
+> 
+> diff --git a/tests/i915/i915_pm_backlight.c b/tests/i915/i915_pm_backlight.c
+> index cafae7f7..1532193b 100644
+> --- a/tests/i915/i915_pm_backlight.c
+> +++ b/tests/i915/i915_pm_backlight.c
+> @@ -37,25 +37,26 @@
+>  
+>  struct context {
+>  	int max;
+> +	const char *path;
+>  };
+>  
+>  
+>  #define TOLERANCE 5 /* percent */
+> -#define BACKLIGHT_PATH "/sys/class/backlight/intel_backlight"
+> +#define BACKLIGHT_PATH "/sys/class/backlight"
+>  
+>  #define FADESTEPS 10
+>  #define FADESPEED 100 /* milliseconds between steps */
+>  
+>  IGT_TEST_DESCRIPTION("Basic backlight sysfs test");
+>  
+> -static int backlight_read(int *result, const char *fname)
+> +static int backlight_read(int *result, const char *fname, struct context *context)
+>  {
+>  	int fd;
+>  	char full[PATH_MAX];
+>  	char dst[64];
+>  	int r, e;
+>  
+> -	igt_assert(snprintf(full, PATH_MAX, "%s/%s", BACKLIGHT_PATH, fname) < PATH_MAX);
+> +	igt_assert(snprintf(full, PATH_MAX, "%s/%s/%s", BACKLIGHT_PATH, context->path, fname) < PATH_MAX);
+>  
+>  	fd = open(full, O_RDONLY);
+>  	if (fd == -1)
+> @@ -73,14 +74,14 @@ static int backlight_read(int *result, const char *fname)
+>  	return errno;
+>  }
+>  
+> -static int backlight_write(int value, const char *fname)
+> +static int backlight_write(int value, const char *fname, struct context *context)
+>  {
+>  	int fd;
+>  	char full[PATH_MAX];
+>  	char src[64];
+>  	int len;
+>  
+> -	igt_assert(snprintf(full, PATH_MAX, "%s/%s", BACKLIGHT_PATH, fname) < PATH_MAX);
+> +	igt_assert(snprintf(full, PATH_MAX, "%s/%s/%s", BACKLIGHT_PATH, context->path, fname) < PATH_MAX);
+>  	fd = open(full, O_WRONLY);
+>  	if (fd == -1)
+>  		return -errno;
+> @@ -100,12 +101,12 @@ static void test_and_verify(struct context *context, int val)
+>  	const int tolerance = val * TOLERANCE / 100;
+>  	int result;
+>  
+> -	igt_assert_eq(backlight_write(val, "brightness"), 0);
+> -	igt_assert_eq(backlight_read(&result, "brightness"), 0);
+> +	igt_assert_eq(backlight_write(val, "brightness", context), 0);
+> +	igt_assert_eq(backlight_read(&result, "brightness", context), 0);
+>  	/* Check that the exact value sticks */
+>  	igt_assert_eq(result, val);
+>  
+> -	igt_assert_eq(backlight_read(&result, "actual_brightness"), 0);
+> +	igt_assert_eq(backlight_read(&result, "actual_brightness", context), 0);
+>  	/* Some rounding may happen depending on hw */
+>  	igt_assert_f(result >= max(0, val - tolerance) &&
+>  		     result <= min(context->max, val + tolerance),
+> @@ -124,16 +125,16 @@ static void test_bad_brightness(struct context *context)
+>  {
+>  	int val;
+>  	/* First write some sane value */
+> -	backlight_write(context->max / 2, "brightness");
+> +	backlight_write(context->max / 2, "brightness", context);
+>  	/* Writing invalid values should fail and not change the value */
+> -	igt_assert_lt(backlight_write(-1, "brightness"), 0);
+> -	backlight_read(&val, "brightness");
+> +	igt_assert_lt(backlight_write(-1, "brightness", context), 0);
+> +	backlight_read(&val, "brightness", context);
+>  	igt_assert_eq(val, context->max / 2);
+> -	igt_assert_lt(backlight_write(context->max + 1, "brightness"), 0);
+> -	backlight_read(&val, "brightness");
+> +	igt_assert_lt(backlight_write(context->max + 1, "brightness", context), 0);
+> +	backlight_read(&val, "brightness", context);
+>  	igt_assert_eq(val, context->max / 2);
+> -	igt_assert_lt(backlight_write(INT_MAX, "brightness"), 0);
+> -	backlight_read(&val, "brightness");
+> +	igt_assert_lt(backlight_write(INT_MAX, "brightness", context), 0);
+> +	backlight_read(&val, "brightness", context);
+>  	igt_assert_eq(val, context->max / 2);
+>  }
+>  
+> @@ -186,6 +187,7 @@ igt_main
+>  	igt_display_t display;
+>  	igt_output_t *output;
+>  	struct igt_fb fb;
+> +	char paths[][50] = { "intel_backlight", "card0-eDP-2-backlight" };
+
+Hardcoding "intel_backlight" is ok but is it possible to construct
+that other name from the used device? "eDP-2" is easy with
+igt_output_name, but I'm not sure how to elegantly get "card0" out of
+an fd...
+
+Also consider having dynamic subtests instead for each output that has
+backlight controls available.
+
+
+-- 
+Petri Latvala
+
+
+>  
+>  	igt_fixture {
+>  		enum pipe pipe;
+> @@ -203,11 +205,14 @@ igt_main
+>  		igt_display_require(&display, drm_open_driver(DRIVER_INTEL));
+>  
+>  		/* Get the max value and skip the whole test if sysfs interface not available */
+> -		igt_skip_on(backlight_read(&old, "brightness"));
+> -		igt_assert(backlight_read(&context.max, "max_brightness") > -1);
+> +		for (size_t i = 0; i < sizeof(paths) / sizeof(paths[0]); i++) {
+> +			context.path = paths[i];
+> +			igt_skip_on(backlight_read(&old, "brightness", &context));
+> +			igt_assert(backlight_read(&context.max, "max_brightness", &context) > -1);
+> +		}
+>  
+>  		/* should be ../../cardX-$output */
+> -		igt_assert_lt(12, readlink(BACKLIGHT_PATH "/device", full_name, sizeof(full_name) - 1));
+> +		igt_assert_lt(12, readlink(BACKLIGHT_PATH "/intel_backlight/device", full_name, sizeof(full_name) - 1));
+>  		name = basename(full_name);
+>  
+>  		for_each_pipe_with_valid_output(&display, pipe, output) {
+> @@ -234,22 +239,25 @@ igt_main
+>  		igt_display_commit2(&display, display.is_atomic ? COMMIT_ATOMIC : COMMIT_LEGACY);
+>  		igt_pm_enable_sata_link_power_management();
+>  	}
+> +	for (size_t j = 0; j < sizeof(paths) / sizeof(paths[0]); j++) {
+> +		context.path = paths[j];
+> +
+> +		igt_subtest("basic-brightness")
+> +			test_brightness(&context);
+> +		igt_subtest("bad-brightness")
+> +			test_bad_brightness(&context);
+> +		igt_subtest("fade")
+> +			test_fade(&context);
+> +		igt_subtest("fade_with_dpms")
+> +			test_fade_with_dpms(&context, output);
+> +		igt_subtest("fade_with_suspend")
+> +			test_fade_with_suspend(&context, output);
+>  
+> -	igt_subtest("basic-brightness")
+> -		test_brightness(&context);
+> -	igt_subtest("bad-brightness")
+> -		test_bad_brightness(&context);
+> -	igt_subtest("fade")
+> -		test_fade(&context);
+> -	igt_subtest("fade_with_dpms")
+> -		test_fade_with_dpms(&context, output);
+> -	igt_subtest("fade_with_suspend")
+> -		test_fade_with_suspend(&context, output);
+> -
+> -	igt_fixture {
+>  		/* Restore old brightness */
+> -		backlight_write(old, "brightness");
+> +                backlight_write(old, "brightness", &context);
+> +	}
+>  
+> +	igt_fixture {
+>  		igt_display_fini(&display);
+>  		igt_remove_fb(display.drm_fd, &fb);
+>  		igt_pm_restore_sata_link_power_management();
+> -- 
+> 2.36.0
+> 
