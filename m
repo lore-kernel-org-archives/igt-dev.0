@@ -1,11 +1,11 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C3D9F10E3DA
- for <igt-dev@lists.freedesktop.org>; Mon, 26 Sep 2022 10:06:11 +0000 (UTC)
-Date: Mon, 26 Sep 2022 13:05:38 +0300
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 229B210E3DA
+ for <igt-dev@lists.freedesktop.org>; Mon, 26 Sep 2022 10:06:50 +0000 (UTC)
+Date: Mon, 26 Sep 2022 13:06:17 +0300
 From: Petri Latvala <petri.latvala@intel.com>
 To: Nidhi Gupta <nidhi1.gupta@intel.com>
-Message-ID: <YzF5cga2b9655bdK@platvala-desk.ger.corp.intel.com>
+Message-ID: <YzF5mcyuHSral1WE@platvala-desk.ger.corp.intel.com>
 References: <20220926031318.17284-1-nidhi1.gupta@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -131,20 +131,6 @@ On Mon, Sep 26, 2022 at 08:43:18AM +0530, Nidhi Gupta wrote:
 >  	igt_output_t *output;
 >  	struct igt_fb fb;
 > +	char paths[][50] = { "intel_backlight", "card0-eDP-2-backlight" };
-
-Hardcoding "intel_backlight" is ok but is it possible to construct
-that other name from the used device? "eDP-2" is easy with
-igt_output_name, but I'm not sure how to elegantly get "card0" out of
-an fd...
-
-Also consider having dynamic subtests instead for each output that has
-backlight controls available.
-
-
--- 
-Petri Latvala
-
-
 >  
 >  	igt_fixture {
 >  		enum pipe pipe;
@@ -199,6 +185,16 @@ Petri Latvala
 >  		/* Restore old brightness */
 > -		backlight_write(old, "brightness");
 > +                backlight_write(old, "brightness", &context);
+
+Also, this backlight_write is outside of a fixture or subtest, you
+can't do that.
+
+
+-- 
+Petri Latvala
+
+
+
 > +	}
 >  
 > +	igt_fixture {
