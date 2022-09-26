@@ -1,26 +1,25 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2560F10E64A
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6159F10E655
  for <igt-dev@lists.freedesktop.org>; Mon, 26 Sep 2022 06:18:33 +0000 (UTC)
 Received: from linux.intel.com (maurocar-mobl2.ger.corp.intel.com
  [10.252.59.65])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by linux.intel.com (Postfix) with ESMTPS id 99C6E580DC8
+ by linux.intel.com (Postfix) with ESMTPS id C613D580C95
  for <igt-dev@lists.freedesktop.org>; Sun, 25 Sep 2022 23:18:30 -0700 (PDT)
 Received: from maurocar by linux.intel.com with local (Exim 4.96)
- (envelope-from <mauro.chehab@linux.intel.com>) id 1ochRk-000Rgq-2O
+ (envelope-from <mauro.chehab@linux.intel.com>) id 1ochRk-000RhV-2v
  for igt-dev@lists.freedesktop.org; Mon, 26 Sep 2022 08:18:28 +0200
 From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Mon, 26 Sep 2022 08:18:02 +0200
-Message-Id: <ea60db78c6b116ef8ae4e8405272bdc4fe40961b.1664173031.git.mchehab@kernel.org>
+Date: Mon, 26 Sep 2022 08:18:12 +0200
+Message-Id: <281ea206f9ead7f2190c12908e56f34b538b8586.1664173031.git.mchehab@kernel.org>
 In-Reply-To: <cover.1664173031.git.mchehab@kernel.org>
 References: <cover.1664173031.git.mchehab@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH 57/76] kms_universal_plane: Close device before
- exit
+Subject: [igt-dev] [PATCH 67/76] kms_dither: Close device before exit
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -38,21 +37,20 @@ Close the device fd before we check for leaks during the atexit
 handlers.
 
 Signed-off-by: Chris Wilson <chris.p.wilson@intel.com>
-Acked-by: Andrzej Hajda <andrzej.hajda@intel.com>
 Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 ---
 
 To avoid mailbombing on a large number of people, only mailing lists were C/C on the cover.
 See [PATCH 00/76] at: https://lore.kernel.org/all/cover.1664173031.git.mchehab@kernel.org/
 
- tests/kms_universal_plane.c | 1 +
+ tests/kms_dither.c | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/tests/kms_universal_plane.c b/tests/kms_universal_plane.c
-index 432f56ba2442..64416afd3920 100644
---- a/tests/kms_universal_plane.c
-+++ b/tests/kms_universal_plane.c
-@@ -823,5 +823,6 @@ igt_main
+diff --git a/tests/kms_dither.c b/tests/kms_dither.c
+index 43a25e203ef4..95be6e136c61 100644
+--- a/tests/kms_dither.c
++++ b/tests/kms_dither.c
+@@ -247,5 +247,6 @@ igt_main
  
  	igt_fixture {
  		igt_display_fini(&data.display);
