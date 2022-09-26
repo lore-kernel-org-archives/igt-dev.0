@@ -1,19 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C818410E447
- for <igt-dev@lists.freedesktop.org>; Mon, 26 Sep 2022 14:46:55 +0000 (UTC)
-Message-ID: <2f0acb4f-1462-c7e6-fb4f-0032a6a0c71c@intel.com>
-Date: Mon, 26 Sep 2022 16:46:05 +0200
-Content-Language: en-US
-From: "Das, Nirmoy" <nirmoy.das@intel.com>
-To: <igt-dev@lists.freedesktop.org>
-References: <20220926133233.32592-1-nirmoy.das@intel.com>
-In-Reply-To: <20220926133233.32592-1-nirmoy.das@intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
+Received: from mail-yb1-xb2d.google.com (mail-yb1-xb2d.google.com
+ [IPv6:2607:f8b0:4864:20::b2d])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2881E10E4F8
+ for <igt-dev@lists.freedesktop.org>; Mon, 26 Sep 2022 15:28:22 +0000 (UTC)
+Received: by mail-yb1-xb2d.google.com with SMTP id 65so1343310ybp.6
+ for <igt-dev@lists.freedesktop.org>; Mon, 26 Sep 2022 08:28:22 -0700 (PDT)
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t] i915/gem_ringfill: Create dynamic
- subtest
+References: <20220923012819.4174059-1-alex.hung@amd.com>
+In-Reply-To: <20220923012819.4174059-1-alex.hung@amd.com>
+From: Mark Yacoub <markyacoub@chromium.org>
+Date: Mon, 26 Sep 2022 11:28:10 -0400
+Message-ID: <CAJUqKUpLfY4oQS-zSSCF=_LPSBj97m+uUH-pOqgXyJM33S0JXg@mail.gmail.com>
+To: Alex Hung <alex.hung@amd.com>
+Content-Type: text/plain; charset="UTF-8"
+Subject: Re: [igt-dev] [PATCH] tests/kms_plane_cursor: update pipe to output
+ for each test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,52 +22,49 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Chris Wilson <chris.p.wilson@intel.com>
+Cc: igt-dev@lists.freedesktop.org, markyacoub@google.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Chris pointed out that this is incorrect as dynamic subtest will 
-serialize it.
-
-Please ignore this patch.
-
-On 9/26/2022 3:32 PM, Nirmoy Das wrote:
-> This will print engine name for each subtest which
-> might be useful for debugging a failure.
+On Thu, Sep 22, 2022 at 9:28 PM Alex Hung <alex.hung@amd.com> wrote:
 >
-> Signed-off-by: Nirmoy Das <nirmoy.das@intel.com>
+> Pipe/pipe_id changes during test executions, and it
+> needs updating in test_cursor.
+>
+> Resolved input/output error when reading CRC:
+>
+> Test assertion failure function igt_pipe_crc_start ...
+> Failed assertion: pipe_crc->crc_fd != -1
+> Last errno: 5, Input/output error
+>
+> Signed-off-by: Alex Hung <alex.hung@amd.com>
+Reviewed-by: Mark Yacoub <markyacoub@chromium.org>
 > ---
->   tests/i915/gem_ringfill.c | 11 ++++++-----
->   1 file changed, 6 insertions(+), 5 deletions(-)
+>  tests/kms_plane_cursor.c | 3 +--
+>  1 file changed, 1 insertion(+), 2 deletions(-)
 >
-> diff --git a/tests/i915/gem_ringfill.c b/tests/i915/gem_ringfill.c
-> index b68c5ae615..1e98ac8bb7 100644
-> --- a/tests/i915/gem_ringfill.c
-> +++ b/tests/i915/gem_ringfill.c
-> @@ -383,19 +383,20 @@ igt_main
->   	}
->   
->   	igt_describe("Basic check to fill the ring upto maximum on all engines simultaneously.");
-> -	igt_subtest("basic-all") {
-> +	igt_subtest_with_dynamic("basic-all") {
->   		const struct intel_execution_engine2 *e;
->   		intel_allocator_multiprocess_start();
->   
->   		for_each_ctx_engine(fd, ctx, e) {
->   			if (!gem_class_can_store_dword(fd, e->class))
->   				continue;
+> diff --git a/tests/kms_plane_cursor.c b/tests/kms_plane_cursor.c
+> index 6b7e5cef..d29dc327 100644
+> --- a/tests/kms_plane_cursor.c
+> +++ b/tests/kms_plane_cursor.c
+> @@ -87,8 +87,6 @@ static void test_init(data_t *data, enum pipe pipe_id, igt_output_t *output)
+>         data->pipe_crc = igt_pipe_crc_new(data->drm_fd, data->pipe_id,
+>                                           INTEL_PIPE_CRC_SOURCE_AUTO);
+>
+> -       igt_output_set_pipe(data->output, data->pipe_id);
 > -
-> -			igt_fork(child, 1)
-> -				run_test(fd, ctx, e->flags, 0, 1);
-> +			igt_dynamic_f("%s", e->name) {
-> +				igt_fork(child, 1)
-> +					run_test(fd, ctx, e->flags, 0, 1);
-> +				igt_waitchildren();
-> +			}
->   		}
->   
-> -		igt_waitchildren();
->   		intel_allocator_multiprocess_stop();
->   	}
->   
+>         /* Overlay rectangle for a rect in the center of the screen */
+>         data->or.x = data->mode->hdisplay / 4;
+>         data->or.y = data->mode->vdisplay / 4;
+> @@ -244,6 +242,7 @@ static void test_cursor(data_t *data, int size, unsigned int flags)
+>                             1.0, 0.0, 1.0, &data->cfb);
+>
+>         igt_plane_set_fb(data->primary, &data->pfb);
+> +       igt_output_set_pipe(data->output, data->pipe_id);
+>         igt_display_commit2(&data->display, COMMIT_ATOMIC);
+>
+>         test_cursor_spots(data, size, flags);
+> --
+> 2.34.1
+>
