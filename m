@@ -1,21 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6BD9D10E1B4
- for <igt-dev@lists.freedesktop.org>; Tue, 27 Sep 2022 08:56:42 +0000 (UTC)
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B64FA10E3C1
+ for <igt-dev@lists.freedesktop.org>; Tue, 27 Sep 2022 08:58:29 +0000 (UTC)
 From: "B, Jeevan" <jeevan.b@intel.com>
 To: "Joshi, Kunal1" <kunal1.joshi@intel.com>, "igt-dev@lists.freedesktop.org"
  <igt-dev@lists.freedesktop.org>
-Date: Tue, 27 Sep 2022 08:56:38 +0000
-Message-ID: <DM4PR11MB63126058DEAAF699C1907D0E90559@DM4PR11MB6312.namprd11.prod.outlook.com>
+Date: Tue, 27 Sep 2022 08:58:26 +0000
+Message-ID: <DM4PR11MB63129FFE564F5ABACA3F677890559@DM4PR11MB6312.namprd11.prod.outlook.com>
 References: <20220926185321.2897136-1-kunal1.joshi@intel.com>
- <20220926185321.2897136-4-kunal1.joshi@intel.com>
-In-Reply-To: <20220926185321.2897136-4-kunal1.joshi@intel.com>
+ <20220926185321.2897136-2-kunal1.joshi@intel.com>
+In-Reply-To: <20220926185321.2897136-2-kunal1.joshi@intel.com>
 Content-Language: en-US
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t v1 3/5] tests/i915/kms_pwrite_crc.c:
- cleanup
+Subject: Re: [igt-dev] [PATCH i-g-t v1 1/5] tests/chamelium/kms_chamelium.c:
+ test cleanup
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,97 +23,148 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: "Gupta, Nidhi1" <nidhi1.gupta@intel.com>, "Joshi,
- Kunal1" <kunal1.joshi@intel.com>
+Cc: "Joshi, Kunal1" <kunal1.joshi@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-This test is failing please check.=20
+LGTM
 
-Possible regressions
-igt@kms_pwrite_crc:
-
-shard-apl: PASS -> FAIL
-
-shard-snb: PASS -> FAIL
-
-shard-tglb: PASS -> FAIL
-
-shard-glk: PASS -> FAIL
-
-shard-iclb: PASS -> FAIL
-
-Thanks=20
-Jeevan B
+Reviewed-by: Jeevan B <jeevan.b@intel.com>
 
 > -----Original Message-----
 > From: igt-dev <igt-dev-bounces@lists.freedesktop.org> On Behalf Of Kunal
 > Joshi
 > Sent: Tuesday, September 27, 2022 12:23 AM
 > To: igt-dev@lists.freedesktop.org
-> Cc: Gupta, Nidhi1 <nidhi1.gupta@intel.com>; Joshi, Kunal1
-> <kunal1.joshi@intel.com>
-> Subject: [igt-dev] [PATCH i-g-t v1 3/5] tests/i915/kms_pwrite_crc.c: clea=
-nup
+> Cc: Joshi, Kunal1 <kunal1.joshi@intel.com>
+> Subject: [igt-dev] [PATCH i-g-t v1 1/5] tests/chamelium/kms_chamelium.c:
+> test cleanup
 >=20
-> -> Sanitize the state before starting the subtest Kept all the test
-> -> requirements in igt_fixture clean state with igt_display_fini before
-> -> exit close drm_fd
+> -> Sanitize the state before starting the subtest
 >=20
-> Cc: Nidhi Gupta <nidhi1.gupta@intel.com>
+> Cc: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 > Signed-off-by: Kunal Joshi <kunal1.joshi@intel.com>
 > ---
->  tests/i915/kms_pwrite_crc.c | 28 ++++++++++++++++++----------
->  1 file changed, 18 insertions(+), 10 deletions(-)
+>  tests/chamelium/kms_chamelium.c | 48
+> +++++++++++++++++++++++++++++++++
+>  1 file changed, 48 insertions(+)
 >=20
-> diff --git a/tests/i915/kms_pwrite_crc.c b/tests/i915/kms_pwrite_crc.c in=
-dex
-> 584e6a19..b116bd62 100644
-> --- a/tests/i915/kms_pwrite_crc.c
-> +++ b/tests/i915/kms_pwrite_crc.c
-> @@ -160,6 +160,13 @@ static void run_test(data_t *data)
->  	enum pipe pipe;
+> diff --git a/tests/chamelium/kms_chamelium.c
+> b/tests/chamelium/kms_chamelium.c index 1be1c41a..985a906c 100644
+> --- a/tests/chamelium/kms_chamelium.c
+> +++ b/tests/chamelium/kms_chamelium.c
+> @@ -756,6 +756,13 @@ static void test_display_one_mode(data_t *data,
+> struct chamelium_port *port,
+>  	igt_output_t *output;
+>  	igt_plane_t *primary;
 >=20
->  	for_each_pipe_with_valid_output(display, pipe, output) {
+> +	/*
+> +	 * Reset basic pipes, connectors and planes on
+> +	 * @display back to default values.
+> +	 */
+> +	igt_display_reset(&data->display);
 > +
-> +		/*
-> +		 * Reset basic pipes, connectors and planes on
-> +		 * @display back to default values.
-> +		 */
-> +		igt_display_reset(&data->display);
 > +
->  		data->output =3D output;
->  		data->pipe =3D pipe;
+>  	igt_modeset_disable_all_outputs(&data->display);
+>  	chamelium_reset_state(&data->display, data->chamelium,
+>  			      port, data->ports, data->port_count); @@ -792,6
+> +799,12 @@ static void test_display_all_modes(data_t *data, struct
+> chamelium_port *port,
+>  	if (check =3D=3D CHAMELIUM_CHECK_ANALOG)
+>  		bridge =3D check_analog_bridge(data, port);
 >=20
-> @@ -178,17 +185,18 @@ static data_t data;
+> +	/*
+> +	 * Reset basic pipes, connectors and planes on
+> +	 * @display back to default values.
+> +	 */
+> +	igt_display_reset(&data->display);
+> +
+>  	i =3D 0;
+>  	do {
+>  		igt_output_t *output;
+> @@ -847,6 +860,12 @@ test_display_frame_dump(data_t *data, struct
+> chamelium_port *port)
 >=20
->  igt_simple_main
->  {
-> -	data.drm_fd =3D drm_open_driver_master(DRIVER_INTEL);
-> -
-> -	data.devid =3D intel_get_drm_devid(data.drm_fd);
-> -
-> -	kmstest_set_vt_graphics_mode();
-> -
-> -	igt_require_pipe_crc(data.drm_fd);
-> -
-> -	igt_display_require(&data.display, data.drm_fd);
-> +	igt_fixture {
-> +		data.drm_fd =3D drm_open_driver_master(DRIVER_INTEL);
-> +		data.devid =3D intel_get_drm_devid(data.drm_fd);
-> +		kmstest_set_vt_graphics_mode();
-> +		igt_require_pipe_crc(data.drm_fd);
-> +		igt_display_require(&data.display, data.drm_fd);
-> +	}
+>  	int i, count_modes;
 >=20
->  	run_test(&data);
+> +	/*
+> +	 * Reset basic pipes, connectors and planes on
+> +	 * @display back to default values.
+> +	 */
+> +	igt_display_reset(&data->display);
+> +
+>  	i =3D 0;
+>  	do {
+>  		igt_output_t *output;
+> @@ -986,6 +1005,12 @@ static void test_mode_timings(data_t *data, struct
+> chamelium_port *port)  {
+>  	int i, count_modes;
 >=20
-> -	igt_display_fini(&data.display);
-> +	igt_fixture {
-> +		igt_display_fini(&data.display);
-> +		close(data.drm_fd);
-> +	}
->  }
+> +	/*
+> +	 * Reset basic pipes, connectors and planes on
+> +	 * @display back to default values.
+> +	 */
+> +	igt_display_reset(&data->display);
+> +
+>  	i =3D 0;
+>  	igt_require(chamelium_supports_get_video_params(data-
+> >chamelium));
+>  	do {
+> @@ -1104,6 +1129,11 @@ static void test_display_aspect_ratio(data_t
+> *data, struct chamelium_port *port)
+>  	uint32_t aspect_ratio;
+>  	enum infoframe_avi_picture_aspect_ratio frame_ar;
+>=20
+> +	/*
+> +	 * Reset basic pipes, connectors and planes on
+> +	 * @display back to default values.
+> +	 */
+> +	igt_display_reset(&data->display);
+>  	igt_require(chamelium_supports_get_last_infoframe(data-
+> >chamelium));
+>=20
+>  	igt_modeset_disable_all_outputs(&data->display);
+> @@ -1835,6 +1865,12 @@ test_display_audio(data_t *data, struct
+> chamelium_port *port,
+>  	 * chamelium_get_audio_format support. */
+>  	igt_require(chamelium_has_audio_support(data->chamelium, port));
+>=20
+> +	/*
+> +	 * Reset basic pipes, connectors and planes on
+> +	 * @display back to default values.
+> +	 */
+> +	igt_display_reset(&data->display);
+> +
+>  	alsa =3D alsa_init();
+>  	igt_assert(alsa);
+>=20
+> @@ -1921,6 +1957,12 @@ test_display_audio_edid(data_t *data, struct
+> chamelium_port *port,
+>=20
+>  	igt_require(eld_is_supported());
+>=20
+> +	/*
+> +	 * Reset basic pipes, connectors and planes on
+> +	 * @display back to default values.
+> +	 */
+> +	igt_display_reset(&data->display);
+> +
+>  	igt_modeset_disable_all_outputs(&data->display);
+>  	chamelium_reset_state(&data->display, data->chamelium,
+>  			      port, data->ports, data->port_count); @@ -
+> 2348,6 +2390,12 @@ static void test_display_planes_random(data_t *data,
+>  	unsigned int i;
+>  	unsigned int fb_id;
+>=20
+> +	/*
+> +	 * Reset basic pipes, connectors and planes on
+> +	 * @display back to default values.
+> +	 */
+> +	igt_display_reset(&data->display);
+> +
+>  	switch (check) {
+>  	case CHAMELIUM_CHECK_CRC:
+>  		allow_scaling =3D false;
 > --
 > 2.25.1
