@@ -1,20 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0FD1710E38F
- for <igt-dev@lists.freedesktop.org>; Tue, 27 Sep 2022 15:11:14 +0000 (UTC)
-Date: Tue, 27 Sep 2022 17:11:08 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Message-ID: <YzMSjM9wuHNlXPDX@kamilkon-desk1>
-References: <20220927091727.36470-1-zbigniew.kempczynski@intel.com>
- <20220927091727.36470-2-zbigniew.kempczynski@intel.com>
+Received: from NAM12-MW2-obe.outbound.protection.outlook.com
+ (mail-mw2nam12on2082.outbound.protection.outlook.com [40.107.244.82])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B127210E979
+ for <igt-dev@lists.freedesktop.org>; Tue, 27 Sep 2022 15:44:32 +0000 (UTC)
+Message-ID: <e7032221-a412-c8e5-a9c6-2b985d4dbcaa@amd.com>
+Date: Tue, 27 Sep 2022 09:44:28 -0600
+Content-Language: en-US
+To: Mark Yacoub <markyacoub@chromium.org>
+References: <20220926214933.4077592-1-alex.hung@amd.com>
+ <CAJUqKUr+oP3ROrXE+xcY4ZQ5er6eZMp1uSBHmWdd-43CteZHoQ@mail.gmail.com>
+From: Alex Hung <alex.hung@amd.com>
+In-Reply-To: <CAJUqKUr+oP3ROrXE+xcY4ZQ5er6eZMp1uSBHmWdd-43CteZHoQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20220927091727.36470-2-zbigniew.kempczynski@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 1/3] tests/prime_mmap: Use batch sizes
- appropriate for regions
+Subject: Re: [igt-dev] [PATCH] tests/kms_plane_multiple: turn off pipe if
+ all planes are off
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,286 +23,58 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: igt-dev@lists.freedesktop.org, markyacoub@google.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Zbigniew,
 
-On 2022-09-27 at 11:17:25 +0200, Zbigniew Kempczyński wrote:
-> Stop using gem_get_batch_size() as it returns hardcoded values which
-> makes confusion regarding minimum object size in different regions.
-> 
-> Use real object size instead which is more suitable.
-> 
-> Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> ---
->  tests/prime_mmap.c | 59 ++++++++++++++++++++++------------------------
->  1 file changed, 28 insertions(+), 31 deletions(-)
-> 
-> diff --git a/tests/prime_mmap.c b/tests/prime_mmap.c
-> index d53185ff10..bc19f68c98 100644
-> --- a/tests/prime_mmap.c
-> +++ b/tests/prime_mmap.c
-> @@ -81,13 +81,13 @@ fill_bo_cpu(char *ptr, size_t size)
->  }
->  
->  static void
-> -test_correct(uint32_t region, int size)
-> +test_correct(uint32_t region, uint64_t size)
->  {
->  	int dma_buf_fd;
->  	char *ptr1, *ptr2;
->  	uint32_t handle;
->  
-> -	handle = gem_create_in_memory_regions(fd, size, region);
-> +	igt_assert(__gem_create_in_memory_regions(fd, &handle, &size, region) == 0);
 
-What about changing this function and moving assert there ?
-So it will look like:
-	handle = gem_create_in_memory_regions(fd, &size, region);
+On 2022-09-27 08:56, Mark Yacoub wrote:
+> On Mon, Sep 26, 2022 at 5:50 PM Alex Hung <alex.hung@amd.com> wrote:
+>>
+>> amdgpu rejects when crtc is on + all planes are off, and it
+>> is necessary to turn off crtc when all planes are off.
+>>
+>> This is revised from https://nam11.safelinks.protection.outlook.com/?url=https%3A%2F%2Fpatchwork.freedesktop.org%2Fseries%2F80904%2F&amp;data=05%7C01%7Calex.hung%40amd.com%7C42618d56e1f7423320c108daa0988584%7C3dd8961fe4884e608e11a82d994e183d%7C0%7C0%7C637998874185935073%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C3000%7C%7C%7C&amp;sdata=nrAwP%2BwX5rS9u6BgNPp5jCKcpIrii63j6qap06QU8gU%3D&amp;reserved=0
+>>
+>> Signed-off-by: Alex Hung <alex.hung@amd.com>
+>> ---
+>>   tests/kms_plane_multiple.c | 4 ++++
+>>   1 file changed, 4 insertions(+)
+>>
+>> diff --git a/tests/kms_plane_multiple.c b/tests/kms_plane_multiple.c
+>> index cbe8c189..6ebde8b0 100644
+>> --- a/tests/kms_plane_multiple.c
+>> +++ b/tests/kms_plane_multiple.c
+>> @@ -311,6 +311,8 @@ test_plane_position_with_output(data_t *data, enum pipe pipe,
+>>                  for_each_plane_on_pipe(&data->display, pipe, plane)
+>>                          igt_plane_set_fb(plane, NULL);
+>>
+>> +               if (is_amdgpu_device(data->drm_fd))
+> what if we apply it for everyone else?
 
-Regards,
-Kamil
+It causes the kms_plane_multiple to fail on an i915 system. I don't have 
+other non-AMD devices to test.
 
->  	fill_bo(handle, size);
->  
->  	dma_buf_fd = prime_handle_to_fd(fd, handle);
-> @@ -110,13 +110,13 @@ test_correct(uint32_t region, int size)
->  }
->  
->  static void
-> -test_map_unmap(uint32_t region, int size)
-> +test_map_unmap(uint32_t region, uint64_t size)
->  {
->  	int dma_buf_fd;
->  	char *ptr;
->  	uint32_t handle;
->  
-> -	handle = gem_create_in_memory_regions(fd, size, region);
-> +	igt_assert(__gem_create_in_memory_regions(fd, &handle, &size, region) == 0);
->  	fill_bo(handle, size);
->  
->  	dma_buf_fd = prime_handle_to_fd(fd, handle);
-> @@ -139,13 +139,13 @@ test_map_unmap(uint32_t region, int size)
->  
->  /* prime and then unprime and then prime again the same handle */
->  static void
-> -test_reprime(uint32_t region, int size)
-> +test_reprime(uint32_t region, uint64_t size)
->  {
->  	int dma_buf_fd;
->  	char *ptr;
->  	uint32_t handle;
->  
-> -	handle = gem_create_in_memory_regions(fd, size, region);
-> +	igt_assert(__gem_create_in_memory_regions(fd, &handle, &size, region) == 0);
->  	fill_bo(handle, size);
->  
->  	dma_buf_fd = prime_handle_to_fd(fd, handle);
-> @@ -171,13 +171,13 @@ test_reprime(uint32_t region, int size)
->  
->  /* map from another process */
->  static void
-> -test_forked(uint32_t region, int size)
-> +test_forked(uint32_t region, uint64_t size)
->  {
->  	int dma_buf_fd;
->  	char *ptr;
->  	uint32_t handle;
->  
-> -	handle = gem_create_in_memory_regions(fd, size, region);
-> +	igt_assert(__gem_create_in_memory_regions(fd, &handle, &size, region) == 0);
->  	fill_bo(handle, size);
->  
->  	dma_buf_fd = prime_handle_to_fd(fd, handle);
-> @@ -197,13 +197,13 @@ test_forked(uint32_t region, int size)
->  
->  /* test simple CPU write */
->  static void
-> -test_correct_cpu_write(uint32_t region, int size)
-> +test_correct_cpu_write(uint32_t region, uint64_t size)
->  {
->  	int dma_buf_fd;
->  	char *ptr;
->  	uint32_t handle;
->  
-> -	handle = gem_create_in_memory_regions(fd, size, region);
-> +	igt_assert(__gem_create_in_memory_regions(fd, &handle, &size, region) == 0);
->  
->  	dma_buf_fd = prime_handle_to_fd_for_mmap(fd, handle);
->  
-> @@ -227,13 +227,13 @@ test_correct_cpu_write(uint32_t region, int size)
->  
->  /* map from another process and then write using CPU */
->  static void
-> -test_forked_cpu_write(uint32_t region, int size)
-> +test_forked_cpu_write(uint32_t region, uint64_t size)
->  {
->  	int dma_buf_fd;
->  	char *ptr;
->  	uint32_t handle;
->  
-> -	handle = gem_create_in_memory_regions(fd, size, region);
-> +	igt_assert(__gem_create_in_memory_regions(fd, &handle, &size, region) == 0);
->  
->  	dma_buf_fd = prime_handle_to_fd_for_mmap(fd, handle);
->  
-> @@ -255,13 +255,13 @@ test_forked_cpu_write(uint32_t region, int size)
->  }
->  
->  static void
-> -test_refcounting(uint32_t region, int size)
-> +test_refcounting(uint32_t region, uint64_t size)
->  {
->  	int dma_buf_fd;
->  	char *ptr;
->  	uint32_t handle;
->  
-> -	handle = gem_create_in_memory_regions(fd, size, region);
-> +	igt_assert(__gem_create_in_memory_regions(fd, &handle, &size, region) == 0);
->  	fill_bo(handle, size);
->  
->  	dma_buf_fd = prime_handle_to_fd(fd, handle);
-> @@ -278,13 +278,13 @@ test_refcounting(uint32_t region, int size)
->  
->  /* dup before mmap */
->  static void
-> -test_dup(uint32_t region, int size)
-> +test_dup(uint32_t region, uint64_t size)
->  {
->  	int dma_buf_fd;
->  	char *ptr;
->  	uint32_t handle;
->  
-> -	handle = gem_create_in_memory_regions(fd, size, region);
-> +	igt_assert(__gem_create_in_memory_regions(fd, &handle, &size, region) == 0);
->  	fill_bo(handle, size);
->  
->  	dma_buf_fd = dup(prime_handle_to_fd(fd, handle));
-> @@ -331,7 +331,7 @@ static bool has_userptr(void)
->  
->  /* test for mmap(dma_buf_export(userptr)) */
->  static void
-> -test_userptr(uint32_t region, int size)
-> +test_userptr(uint32_t region, uint64_t size)
->  {
->  	int ret, dma_buf_fd;
->  	void *ptr;
-> @@ -365,7 +365,7 @@ free_userptr:
->  }
->  
->  static void
-> -test_errors(uint32_t region, int size)
-> +test_errors(uint32_t region, uint64_t size)
->  {
->  	int i, dma_buf_fd;
->  	char *ptr;
-> @@ -374,7 +374,7 @@ test_errors(uint32_t region, int size)
->  	                       DRM_RDWR - 1, DRM_RDWR + 1};
->  
->  	/* Test for invalid flags */
-> -	handle = gem_create_in_memory_regions(fd, size, region);
-> +	igt_assert(__gem_create_in_memory_regions(fd, &handle, &size, region) == 0);
->  	for (i = 0; i < ARRAY_SIZE(invalid_flags); i++) {
->  		prime_handle_to_fd_no_assert(handle, invalid_flags[i], &dma_buf_fd);
->  		igt_assert_eq(errno, EINVAL);
-> @@ -383,7 +383,7 @@ test_errors(uint32_t region, int size)
->  	gem_close(fd, handle);
->  
->  	/* Close gem object before priming */
-> -	handle = gem_create_in_memory_regions(fd, size, region);
-> +	igt_assert(__gem_create_in_memory_regions(fd, &handle, &size, region) == 0);
->  	fill_bo(handle, size);
->  	gem_close(fd, handle);
->  	prime_handle_to_fd_no_assert(handle, DRM_CLOEXEC, &dma_buf_fd);
-> @@ -391,7 +391,7 @@ test_errors(uint32_t region, int size)
->  	errno = 0;
->  
->  	/* close fd before mapping */
-> -	handle = gem_create_in_memory_regions(fd, size, region);
-> +	igt_assert(__gem_create_in_memory_regions(fd, &handle, &size, region) == 0);
->  	fill_bo(handle, size);
->  	dma_buf_fd = prime_handle_to_fd(fd, handle);
->  	igt_assert(errno == 0);
-> @@ -402,7 +402,7 @@ test_errors(uint32_t region, int size)
->  	gem_close(fd, handle);
->  
->  	/* Map too big */
-> -	handle = gem_create_in_memory_regions(fd, size, region);
-> +	igt_assert(__gem_create_in_memory_regions(fd, &handle, &size, region) == 0);
->  	fill_bo(handle, size);
->  	dma_buf_fd = prime_handle_to_fd(fd, handle);
->  	igt_assert(errno == 0);
-> @@ -413,7 +413,7 @@ test_errors(uint32_t region, int size)
->  	gem_close(fd, handle);
->  
->  	/* Overlapping the end of the buffer */
-> -	handle = gem_create_in_memory_regions(fd, size, region);
-> +	igt_assert(__gem_create_in_memory_regions(fd, &handle, &size, region) == 0);
->  	dma_buf_fd = prime_handle_to_fd(fd, handle);
->  	igt_assert(errno == 0);
->  	ptr = mmap(NULL, size, PROT_READ, MAP_SHARED, dma_buf_fd, size / 2);
-> @@ -425,7 +425,7 @@ test_errors(uint32_t region, int size)
->  
->  /* Test for invalid flags on sync ioctl */
->  static void
-> -test_invalid_sync_flags(uint32_t region, int size)
-> +test_invalid_sync_flags(uint32_t region, uint64_t size)
->  {
->  	int i, dma_buf_fd;
->  	uint32_t handle;
-> @@ -435,7 +435,7 @@ test_invalid_sync_flags(uint32_t region, int size)
->  	                       LOCAL_DMA_BUF_SYNC_RW + 1,
->  	                       LOCAL_DMA_BUF_SYNC_VALID_FLAGS_MASK + 1};
->  
-> -	handle = gem_create_in_memory_regions(fd, size, region);
-> +	igt_assert(__gem_create_in_memory_regions(fd, &handle, &size, region) == 0);
->  	dma_buf_fd = prime_handle_to_fd(fd, handle);
->  	for (i = 0; i < sizeof(invalid_flags) / sizeof(invalid_flags[0]); i++) {
->  		memset(&sync, 0, sizeof(sync));
-> @@ -448,7 +448,7 @@ test_invalid_sync_flags(uint32_t region, int size)
->  }
->  
->  static void
-> -test_aperture_limit(uint32_t region, int size)
-> +test_aperture_limit(uint32_t region, uint64_t size)
->  {
->  	int dma_buf_fd1, dma_buf_fd2;
->  	char *ptr1, *ptr2;
-> @@ -506,7 +506,7 @@ igt_main
->  	struct drm_i915_query_memory_regions *query_info;
->  	struct {
->  		const char *name;
-> -		void (*fn)(uint32_t, int);
-> +		void (*fn)(uint32_t, uint64_t);
->  		uint32_t skip;
->  	} tests[] = {
->  		{ "test_correct", test_correct },
-> @@ -524,7 +524,6 @@ igt_main
->  	};
->  	uint32_t region;
->  	char *ext;
-> -	int size;
->  	int i;
->  
->  	igt_fixture {
-> @@ -545,13 +544,11 @@ igt_main
->  		igt_subtest_with_dynamic(tests[i].name) {
->  			for_each_combination(regions, 1, dma_buf_set) {
->  				region = igt_collection_get_value(regions, 0);
-> -				size = gem_get_batch_size(fd, MEMORY_TYPE_FROM_REGION(region));
-> -				size = max(size, BO_SIZE);
->  				if (check_skip(tests[i].skip, region))
->  					continue;
->  				ext = memregion_dynamic_subtest_name(regions);
->  				igt_dynamic_f("%s-%s", tests[i].name, ext)
-> -					tests[i].fn(region, size);
-> +					tests[i].fn(region, BO_SIZE);
->  				free(ext);
->  			}
->  		}
-> -- 
-> 2.34.1
-> 
+>> +                       igt_output_set_pipe(output, PIPE_NONE);
+>>                  igt_display_commit2(&data->display, COMMIT_ATOMIC);
+>>
+>>                  for (int x = 0; x < c; x++)
+>> @@ -344,6 +346,8 @@ test_plane_position_with_output(data_t *data, enum pipe pipe,
+>>                  for_each_plane_on_pipe(&data->display, pipe, plane)
+>>                          igt_plane_set_fb(plane, NULL);
+>>
+>> +               if (is_amdgpu_device(data->drm_fd))
+> ditto - would it hurt?
+
+This seems to be okay to be removed on the i915 system I have. I can 
+send a V2 later today to be verified on CI.
+
+>> +                       igt_output_set_pipe(output, PIPE_NONE);
+>>                  igt_display_commit2(&data->display, COMMIT_ATOMIC);
+>>
+>>                  for (int x = 0; x < c; x++)
+>> --
+>> 2.34.1
+>>
