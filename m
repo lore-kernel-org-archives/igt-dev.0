@@ -1,18 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 57F9010E3C1
- for <igt-dev@lists.freedesktop.org>; Tue, 27 Sep 2022 09:17:49 +0000 (UTC)
-From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Tue, 27 Sep 2022 11:17:27 +0200
-Message-Id: <20220927091727.36470-4-zbigniew.kempczynski@intel.com>
-In-Reply-To: <20220927091727.36470-1-zbigniew.kempczynski@intel.com>
-References: <20220927091727.36470-1-zbigniew.kempczynski@intel.com>
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0322F10E3E8
+ for <igt-dev@lists.freedesktop.org>; Tue, 27 Sep 2022 10:23:26 +0000 (UTC)
+From: "B, Jeevan" <jeevan.b@intel.com>
+To: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>,
+ "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+Date: Tue, 27 Sep 2022 10:23:19 +0000
+Message-ID: <DM4PR11MB6312CE27AE2B5628FC65FD7F90559@DM4PR11MB6312.namprd11.prod.outlook.com>
+References: <20220922160004.2041598-1-bhanuprakash.modem@intel.com>
+ <20220922160004.2041598-51-bhanuprakash.modem@intel.com>
+In-Reply-To: <20220922160004.2041598-51-bhanuprakash.modem@intel.com>
+Content-Language: en-US
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 3/3] lib/intel_memory_region: Remove
- function which returns batch size in regions
+Subject: Re: [igt-dev] [i-g-t V4 50/52] tests/i915/kms_psr: Add support for
+ Bigjoiner
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,56 +27,45 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Function gem_get_batch_size() is confusing as it might return different
-size thus deceiving reader of object real size created in different
-memory regions.
-
-Let's remove it and enforce igt user to be aware altered by kernel size
-where it is necessary.
-
-Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
----
- lib/i915/intel_memory_region.c | 14 --------------
- lib/i915/intel_memory_region.h |  1 -
- 2 files changed, 15 deletions(-)
-
-diff --git a/lib/i915/intel_memory_region.c b/lib/i915/intel_memory_region.c
-index 568bace949..d80cb3a061 100644
---- a/lib/i915/intel_memory_region.c
-+++ b/lib/i915/intel_memory_region.c
-@@ -92,20 +92,6 @@ const char *get_memory_region_name(uint32_t region)
- 	igt_assert_f(false, "Unknown memory region");
- }
- 
--/**
-- *  gem_get_batch_size:
-- *  @fd: open i915 drm file descriptor
-- *  @mem_region_type: used memory_region type
-- *
-- *  With introduction of LMEM we observe different page sizes for those two
-- *  memory regions. Without this helper funtion we may be prone to forget
-- *  about setting proper page size.
-- */
--uint32_t gem_get_batch_size(int fd, uint8_t mem_region_type)
--{
--	return (mem_region_type == I915_MEMORY_CLASS_DEVICE) ? 65536 : 4096;
--}
--
- /**
-  * gem_get_query_memory_regions:
-  * @fd: open i915 drm file descriptor
-diff --git a/lib/i915/intel_memory_region.h b/lib/i915/intel_memory_region.h
-index fd04df83b5..425bda0ec7 100644
---- a/lib/i915/intel_memory_region.h
-+++ b/lib/i915/intel_memory_region.h
-@@ -56,7 +56,6 @@
- bool gem_has_query_support(int fd);
- 
- const char *get_memory_region_name(uint32_t region);
--uint32_t gem_get_batch_size(int fd, uint8_t mem_region_type);
- 
- struct drm_i915_query_memory_regions *gem_get_query_memory_regions(int fd);
- 
--- 
-2.34.1
+> -----Original Message-----
+> From: igt-dev <igt-dev-bounces@lists.freedesktop.org> On Behalf Of
+> Bhanuprakash Modem
+> Sent: Thursday, September 22, 2022 9:30 PM
+> To: igt-dev@lists.freedesktop.org
+> Subject: [igt-dev] [i-g-t V4 50/52] tests/i915/kms_psr: Add support for
+> Bigjoiner
+>=20
+> This patch will add a check to Skip the subtest if a selected pipe/output
+> combo won't support Bigjoiner or 8K mode.
+>=20
+> Example:
+> * Pipe-D wont support a mode > 5K
+> * To use 8K mode on a pipe then consecutive pipe must be available & free=
+.
+>=20
+> V2: - Use updated helper name
+>=20
+> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Reviewed-by: Jeevan B <jeevan.b@intel.com>
+> ---
+>  tests/i915/kms_psr.c | 4 ++++
+>  1 file changed, 4 insertions(+)
+>=20
+> diff --git a/tests/i915/kms_psr.c b/tests/i915/kms_psr.c index
+> 480e2cc7..97b4f0f3 100644
+> --- a/tests/i915/kms_psr.c
+> +++ b/tests/i915/kms_psr.c
+> @@ -102,7 +102,11 @@ static void setup_output(data_t *data)
+>  		if (c->connector_type !=3D DRM_MODE_CONNECTOR_eDP)
+>  			continue;
+>=20
+> +		igt_display_reset(display);
+>  		igt_output_set_pipe(output, pipe);
+> +		if (!i915_pipe_output_combo_valid(display))
+> +			continue;
+> +
+>  		data->crtc_id =3D output->config.crtc->crtc_id;
+>  		data->output =3D output;
+>  		data->mode =3D igt_output_get_mode(output);
+> --
+> 2.37.3
