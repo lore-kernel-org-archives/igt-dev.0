@@ -1,20 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mail-lf1-x136.google.com (mail-lf1-x136.google.com
  [IPv6:2a00:1450:4864:20::136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 775B710E0FA
- for <igt-dev@lists.freedesktop.org>; Tue, 27 Sep 2022 19:12:28 +0000 (UTC)
-Received: by mail-lf1-x136.google.com with SMTP id 10so17149507lfy.5
- for <igt-dev@lists.freedesktop.org>; Tue, 27 Sep 2022 12:12:28 -0700 (PDT)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7A3A210E0FA
+ for <igt-dev@lists.freedesktop.org>; Tue, 27 Sep 2022 19:12:24 +0000 (UTC)
+Received: by mail-lf1-x136.google.com with SMTP id a2so17117933lfb.6
+ for <igt-dev@lists.freedesktop.org>; Tue, 27 Sep 2022 12:12:24 -0700 (PDT)
 From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 27 Sep 2022 22:11:42 +0300
-Message-Id: <20220927191143.22040-4-juhapekka.heikkila@gmail.com>
+Date: Tue, 27 Sep 2022 22:11:40 +0300
+Message-Id: <20220927191143.22040-2-juhapekka.heikkila@gmail.com>
 In-Reply-To: <20220927191143.22040-1-juhapekka.heikkila@gmail.com>
 References: <20220927191143.22040-1-juhapekka.heikkila@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 3/4] lib/rendercopy: separate intel clear
- color functions
+Subject: [igt-dev] [PATCH i-g-t 1/4] tests/kms_cursor_crc: wait for cursor
+ only when needed
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,103 +26,88 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-separate dg2 style ccs clear color from generic gen12 clear color
-same way as how they're separate on rendercopy.
+moved cursor vblank waits out from sw tests and wait only when
+disabling cursor. With this need to wait few frames less than
+currently, this seems to shave off around 1s per subtest.
 
 Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
 ---
- lib/intel_batchbuffer.c |  8 +++++++-
- lib/rendercopy.h        |  4 ++++
- lib/rendercopy_gen9.c   | 45 +++++++++++++++++++++++------------------
- 3 files changed, 36 insertions(+), 21 deletions(-)
+ tests/kms_cursor_crc.c | 19 +++++++++++--------
+ 1 file changed, 11 insertions(+), 8 deletions(-)
 
-diff --git a/lib/intel_batchbuffer.c b/lib/intel_batchbuffer.c
-index ef1b59477..bb2503bbd 100644
---- a/lib/intel_batchbuffer.c
-+++ b/lib/intel_batchbuffer.c
-@@ -1166,7 +1166,13 @@ igt_vebox_copyfunc_t igt_get_vebox_copyfunc(int devid)
+diff --git a/tests/kms_cursor_crc.c b/tests/kms_cursor_crc.c
+index 7c1f74be5..f9a1f8689 100644
+--- a/tests/kms_cursor_crc.c
++++ b/tests/kms_cursor_crc.c
+@@ -72,6 +72,7 @@ typedef struct {
+ 	cairo_surface_t *surface;
+ 	uint32_t devid;
+ 	double alpha;
++	int vblank_wait_count; /* because of msm */
+ } data_t;
  
- igt_render_clearfunc_t igt_get_render_clearfunc(int devid)
+ #define TEST_DPMS (1<<0)
+@@ -124,6 +125,12 @@ static void cursor_disable(data_t *data)
  {
--	return IS_GEN12(devid) ? gen12_render_clearfunc : NULL;
-+	if (IS_DG2(devid)) {
-+		return gen12p71_render_clearfunc;
-+	} else if (IS_GEN12(devid)) {
-+		return gen12_render_clearfunc;
-+	} else {
-+		return NULL;
-+	}
+ 	igt_plane_set_fb(data->cursor, NULL);
+ 	igt_plane_set_position(data->cursor, 0, 0);
++	igt_display_commit(&data->display);
++
++	/* do this wait here so it will not need to be added everywhere */
++	igt_wait_for_vblank_count(data->drm_fd,
++				  data->display.pipes[data->pipe].crtc_offset,
++				  data->vblank_wait_count);
  }
  
- /**
-diff --git a/lib/rendercopy.h b/lib/rendercopy.h
-index 3e984a141..480fdee8d 100644
---- a/lib/rendercopy.h
-+++ b/lib/rendercopy.h
-@@ -23,6 +23,10 @@ static inline void emit_vertex_normalized(struct intel_bb *ibb,
- 	intel_bb_out(ibb, u.ui);
- }
+ static bool chv_cursor_broken(data_t *data, int x)
+@@ -185,7 +192,6 @@ static void do_single_test(data_t *data, int x, int y, bool hw_test,
+ 	igt_pipe_crc_t *pipe_crc = data->pipe_crc;
+ 	igt_crc_t crc;
+ 	int ret = 0, swbufidx;
+-	int vblank_wait_count = is_msm_device(data->drm_fd) ? 2 : 1;
  
-+void gen12p71_render_clearfunc(struct intel_bb *ibb,
-+			       struct intel_buf *dst, unsigned int dst_x, unsigned int dst_y,
-+			       unsigned int width, unsigned int height,
-+			       const float clear_color[4]);
- void gen12_render_clearfunc(struct intel_bb *ibb,
- 			    struct intel_buf *dst, unsigned int dst_x, unsigned int dst_y,
- 			    unsigned int width, unsigned int height,
-diff --git a/lib/rendercopy_gen9.c b/lib/rendercopy_gen9.c
-index ae0f775ac..d74f1c999 100644
---- a/lib/rendercopy_gen9.c
-+++ b/lib/rendercopy_gen9.c
-@@ -1254,24 +1254,29 @@ void gen12_render_clearfunc(struct intel_bb *ibb,
- 			    unsigned int width, unsigned int height,
- 			    const float clear_color[4])
- {
--	if (!HAS_4TILE(ibb->devid)) {
--		struct aux_pgtable_info pgtable_info = { };
+ 	igt_print_activity();
+ 
+@@ -204,7 +210,8 @@ static void do_single_test(data_t *data, int x, int y, bool hw_test,
+ 
+ 		/* Extra vblank wait is because nonblocking cursor ioctl */
+ 		igt_wait_for_vblank_count(data->drm_fd,
+-				display->pipes[data->pipe].crtc_offset, vblank_wait_count);
++					  display->pipes[data->pipe].crtc_offset,
++					  data->vblank_wait_count);
+ 
+ 		igt_pipe_crc_get_current(data->drm_fd, pipe_crc, hwcrc);
+ 
+@@ -242,11 +249,7 @@ static void do_single_test(data_t *data, int x, int y, bool hw_test,
+ 
+ 		restore_image(data, swbufidx, &((cursorarea){x, y, data->curw, data->curh}));
+ 		igt_plane_set_fb(data->primary, &data->primary_fb[swbufidx]);
 -
--		gen12_aux_pgtable_init(&pgtable_info, ibb, NULL, dst);
+ 		igt_display_commit(display);
+-		igt_wait_for_vblank_count(data->drm_fd,
+-				display->pipes[data->pipe].crtc_offset, vblank_wait_count);
 -
--		_gen9_render_op(ibb, NULL, 0, 0,
--				width, height, dst, dst_x, dst_y,
--				pgtable_info.pgtable_buf,
--				clear_color,
--				gen12_render_copy,
--				sizeof(gen12_render_copy));
--		gen12_aux_pgtable_cleanup(ibb, &pgtable_info);
--	} else {
--			_gen9_render_op(ibb, NULL, 0, 0,
--					width, height, dst, dst_x, dst_y,
--					NULL,
--					clear_color,
--					gen12p71_render_copy,
--					sizeof(gen12p71_render_copy));
--	}
-+	struct aux_pgtable_info pgtable_info = { };
-+
-+	gen12_aux_pgtable_init(&pgtable_info, ibb, NULL, dst);
-+
-+	_gen9_render_op(ibb, NULL, 0, 0,
-+			width, height, dst, dst_x, dst_y,
-+			pgtable_info.pgtable_buf,
-+			clear_color,
-+			gen12_render_copy,
-+			sizeof(gen12_render_copy));
-+	gen12_aux_pgtable_cleanup(ibb, &pgtable_info);
-+}
-+
-+void gen12p71_render_clearfunc(struct intel_bb *ibb,
-+			       struct intel_buf *dst,
-+			       unsigned int dst_x, unsigned int dst_y,
-+			       unsigned int width, unsigned int height,
-+			       const float clear_color[4])
-+{
-+	_gen9_render_op(ibb, NULL, 0, 0,
-+			width, height, dst, dst_x, dst_y,
-+			NULL,
-+			clear_color,
-+			gen12p71_render_copy,
-+			sizeof(gen12p71_render_copy));
+ 		igt_pipe_crc_get_current(data->drm_fd, pipe_crc, &crc);
+ 		igt_assert_crc_equal(&crc, hwcrc);
+ 	}
+@@ -264,9 +267,7 @@ static void do_fail_test(data_t *data, int x, int y, int expect)
+ 	igt_plane_set_position(data->cursor, x, y);
+ 	ret = igt_display_try_commit2(display, COMMIT_LEGACY);
+ 
+-	igt_plane_set_position(data->cursor, 0, 0);
+ 	cursor_disable(data);
+-	igt_display_commit(display);
+ 
+ 	igt_assert_eq(ret, expect);
  }
+@@ -895,6 +896,8 @@ igt_main
+ 		kmstest_set_vt_graphics_mode();
+ 
+ 		igt_require_pipe_crc(data.drm_fd);
++
++		data.vblank_wait_count = is_msm_device(data.drm_fd) ? 2 : 1;
+ 	}
+ 
+ 	data.cursor_max_w = cursor_width;
 -- 
 2.37.3
