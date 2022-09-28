@@ -1,22 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-vk1-xa29.google.com (mail-vk1-xa29.google.com
- [IPv6:2607:f8b0:4864:20::a29])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C550E10E8EB
- for <igt-dev@lists.freedesktop.org>; Wed, 28 Sep 2022 14:30:38 +0000 (UTC)
-Received: by mail-vk1-xa29.google.com with SMTP id v192so6515478vkv.7
- for <igt-dev@lists.freedesktop.org>; Wed, 28 Sep 2022 07:30:38 -0700 (PDT)
+Content-Type: multipart/alternative;
+ boundary="===============7782533123871630069=="
 MIME-Version: 1.0
-References: <20220918223955.3283220-1-jfree@freebsd.org>
- <YzRAoHGblx/JjInQ@kamilkon-desk1>
-In-Reply-To: <YzRAoHGblx/JjInQ@kamilkon-desk1>
-From: Jake Freeland <jake@technologyfriends.net>
-Date: Wed, 28 Sep 2022 09:30:26 -0500
-Message-ID: <CAOgZAGZAb5Ng7CfNr9Ty7-AugyKYA7NUOJVZR5iqRh-5WBmt+Q@mail.gmail.com>
-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org, Jake Freeland <jfree@freebsd.org>
-Content-Type: multipart/alternative; boundary="000000000000be22a305e9bd9a39"
-Subject: Re: [igt-dev] [PATCH i-g-t] Replaced get_current_dir_name() with
- getcwd() for BSD compatibility
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Mohammed Thasleem" <mohammed.thasleem@intel.com>
+Date: Wed, 28 Sep 2022 14:32:10 -0000
+Message-ID: <166437553049.593.674354387972958777@emeril.freedesktop.org>
+References: <20220918172906.1567759-1-mohammed.thasleem@intel.com>
+In-Reply-To: <20220918172906.1567759-1-mohammed.thasleem@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3IgdGVzdHMv?=
+ =?utf-8?q?kms=5Fproperties=3A_Create_dynamic_subtests_=28rev4=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,184 +17,315 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---000000000000be22a305e9bd9a39
-Content-Type: text/plain; charset="UTF-8"
+--===============7782533123871630069==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-The get_current_dir_name() function is a GNU C extension that copies
-the current directory's absolute path into a memory allocated buffer.
-This patch replaces get_current_dir_name() with a POSIX compliant
-getcwd() that performs the same action.
+== Series Details ==
 
-On Wed, Sep 28, 2022 at 7:40 AM Kamil Konieczny <
-kamil.konieczny@linux.intel.com> wrote:
+Series: tests/kms_properties: Create dynamic subtests (rev4)
+URL   : https://patchwork.freedesktop.org/series/108695/
+State : failure
 
-> Hi Jake,
->
-> please put here shot commit description, the patch itself
-> looks good.
->
-> Regrads,
-> Kamil
->
-> On 2022-09-18 at 17:39:55 -0500, Jake Freeland wrote:
-> > Signed-off-by: Jake Freeland <jfree@freebsd.org>
-> > ---
-> >  tests/tools_test.c                  | 6 +++---
-> >  tools/i915-perf/i915_perf_control.c | 2 +-
-> >  2 files changed, 4 insertions(+), 4 deletions(-)
-> >
-> > diff --git a/tests/tools_test.c b/tests/tools_test.c
-> > index 89a19d11..d0684d57 100644
-> > --- a/tests/tools_test.c
-> > +++ b/tests/tools_test.c
-> > @@ -69,7 +69,7 @@ static bool chdir_to_tools_dir(void)
-> >       char path[PATH_MAX];
-> >       char *cwd;
-> >
-> > -     cwd = get_current_dir_name();
-> > +     cwd = getcwd(NULL, 0);
-> >       igt_info("Current working directory: %s\n", cwd);
-> >       free(cwd);
-> >
-> > @@ -87,7 +87,7 @@ static bool chdir_to_tools_dir(void)
-> >               chdir(dirname(path));
-> >       }
-> >
-> > -     cwd = get_current_dir_name();
-> > +     cwd = getcwd(NULL, 0);
-> >       igt_info("Current working directory: %s\n", cwd);
-> >       free(cwd);
-> >
-> > @@ -103,7 +103,7 @@ igt_main
-> >
-> >               igt_require_f(chdir_to_tools_dir(),
-> >                             "Unable to determine the tools directory,
-> expecting them in $cwd/" TOOLS " or $path/" TOOLS "\n");
-> > -             path = get_current_dir_name();
-> > +             path = getcwd(NULL, 0);
-> >               igt_info("Using tools from %s\n", path);
-> >               free(path);
-> >       }
-> > diff --git a/tools/i915-perf/i915_perf_control.c
-> b/tools/i915-perf/i915_perf_control.c
-> > index be5996c0..f7db2f5c 100644
-> > --- a/tools/i915-perf/i915_perf_control.c
-> > +++ b/tools/i915-perf/i915_perf_control.c
-> > @@ -102,7 +102,7 @@ main(int argc, char *argv[])
-> >
-> >                       fwrite(data, total_len, 1, command_fifo_file);
-> >               } else {
-> > -                     char *cwd = get_current_dir_name();
-> > +                     char *cwd = getcwd(NULL, 0);
-> >                       uint32_t path_len = strlen(cwd) + 1 +
-> strlen(dump_file) + 1;
-> >                       uint32_t total_len = sizeof(struct
-> recorder_command_base) + path_len;
-> >                       struct {
-> > --
-> > 2.37.3
-> >
->
+== Summary ==
 
---000000000000be22a305e9bd9a39
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+CI Bug Log - changes from IGT_6668 -> IGTPW_7870
+====================================================
 
-<div dir=3D"ltr">The=C2=A0get_current_dir_name() function is a GNU C extens=
-ion that copies<div>the current directory&#39;s absolute path into a memory=
- allocated buffer.</div><div>This patch replaces get_current_dir_name() wit=
-h a POSIX compliant</div><div>getcwd() that performs the same action.</div>=
-</div><br><div class=3D"gmail_quote"><div dir=3D"ltr" class=3D"gmail_attr">=
-On Wed, Sep 28, 2022 at 7:40 AM Kamil Konieczny &lt;<a href=3D"mailto:kamil=
-.konieczny@linux.intel.com">kamil.konieczny@linux.intel.com</a>&gt; wrote:<=
-br></div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8e=
-x;border-left:1px solid rgb(204,204,204);padding-left:1ex">Hi Jake,<br>
-<br>
-please put here shot commit description, the patch itself<br>
-looks good.<br>
-<br>
-Regrads,<br>
-Kamil<br>
-<br>
-On 2022-09-18 at 17:39:55 -0500, Jake Freeland wrote:<br>
-&gt; Signed-off-by: Jake Freeland &lt;<a href=3D"mailto:jfree@freebsd.org" =
-target=3D"_blank">jfree@freebsd.org</a>&gt;<br>
-&gt; ---<br>
-&gt;=C2=A0 tests/tools_test.c=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 =C2=A0 | 6 +++---<br>
-&gt;=C2=A0 tools/i915-perf/i915_perf_control.c | 2 +-<br>
-&gt;=C2=A0 2 files changed, 4 insertions(+), 4 deletions(-)<br>
-&gt; <br>
-&gt; diff --git a/tests/tools_test.c b/tests/tools_test.c<br>
-&gt; index 89a19d11..d0684d57 100644<br>
-&gt; --- a/tests/tools_test.c<br>
-&gt; +++ b/tests/tools_test.c<br>
-&gt; @@ -69,7 +69,7 @@ static bool chdir_to_tools_dir(void)<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0char path[PATH_MAX];<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0char *cwd;<br>
-&gt;=C2=A0 <br>
-&gt; -=C2=A0 =C2=A0 =C2=A0cwd =3D get_current_dir_name();<br>
-&gt; +=C2=A0 =C2=A0 =C2=A0cwd =3D getcwd(NULL, 0);<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0igt_info(&quot;Current working directory: %s=
-\n&quot;, cwd);<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0free(cwd);<br>
-&gt;=C2=A0 <br>
-&gt; @@ -87,7 +87,7 @@ static bool chdir_to_tools_dir(void)<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0chdir(dirname(pa=
-th));<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0}<br>
-&gt;=C2=A0 <br>
-&gt; -=C2=A0 =C2=A0 =C2=A0cwd =3D get_current_dir_name();<br>
-&gt; +=C2=A0 =C2=A0 =C2=A0cwd =3D getcwd(NULL, 0);<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0igt_info(&quot;Current working directory: %s=
-\n&quot;, cwd);<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0free(cwd);<br>
-&gt;=C2=A0 <br>
-&gt; @@ -103,7 +103,7 @@ igt_main<br>
-&gt;=C2=A0 <br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0igt_require_f(ch=
-dir_to_tools_dir(),<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0&quot;Unable to determine the tools direc=
-tory, expecting them in $cwd/&quot; TOOLS &quot; or $path/&quot; TOOLS &quo=
-t;\n&quot;);<br>
-&gt; -=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0path =3D get_current_=
-dir_name();<br>
-&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0path =3D getcwd(NULL,=
- 0);<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0igt_info(&quot;U=
-sing tools from %s\n&quot;, path);<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0free(path);<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0}<br>
-&gt; diff --git a/tools/i915-perf/i915_perf_control.c b/tools/i915-perf/i91=
-5_perf_control.c<br>
-&gt; index be5996c0..f7db2f5c 100644<br>
-&gt; --- a/tools/i915-perf/i915_perf_control.c<br>
-&gt; +++ b/tools/i915-perf/i915_perf_control.c<br>
-&gt; @@ -102,7 +102,7 @@ main(int argc, char *argv[])<br>
-&gt;=C2=A0 <br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 =C2=A0fwrite(data, total_len, 1, command_fifo_file);<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0} else {<br>
-&gt; -=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
- =C2=A0char *cwd =3D get_current_dir_name();<br>
-&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
- =C2=A0char *cwd =3D getcwd(NULL, 0);<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 =C2=A0uint32_t path_len =3D strlen(cwd) + 1 + strlen(dump_file) + 1;=
-<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 =C2=A0uint32_t total_len =3D sizeof(struct recorder_command_base) + =
-path_len;<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 =C2=A0struct {<br>
-&gt; -- <br>
-&gt; 2.37.3<br>
-&gt; <br>
-</blockquote></div>
+Summary
+-------
 
---000000000000be22a305e9bd9a39--
+  **FAILURE**
+
+  Serious unknown changes coming with IGTPW_7870 absolutely need to be
+  verified manually.
+  
+  If you think the reported changes have nothing to do with the changes
+  introduced in IGTPW_7870, please notify your bug team to allow them
+  to document this new failure mode, which will reduce false positives in CI.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7870/index.html
+
+Participating hosts (45 -> 43)
+------------------------------
+
+  Missing    (2): fi-bdw-gvtdvm bat-jsl-3 
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in IGTPW_7870:
+
+### IGT changes ###
+
+#### Possible regressions ####
+
+  * igt@i915_selftest@live@execlists:
+    - fi-bsw-nick:        [PASS][1] -> [INCOMPLETE][2]
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6668/fi-bsw-nick/igt@i915_selftest@live@execlists.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7870/fi-bsw-nick/igt@i915_selftest@live@execlists.html
+
+  
+#### Suppressed ####
+
+  The following results come from untrusted machines, tests, or statuses.
+  They do not affect the overall result.
+
+  * igt@i915_pm_rpm@basic-rte:
+    - {bat-rplp-1}:       [PASS][3] -> [DMESG-WARN][4]
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6668/bat-rplp-1/igt@i915_pm_rpm@basic-rte.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7870/bat-rplp-1/igt@i915_pm_rpm@basic-rte.html
+
+  
+Known issues
+------------
+
+  Here are the changes found in IGTPW_7870 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@i915_selftest@live@gt_engines:
+    - fi-rkl-guc:         [PASS][5] -> [INCOMPLETE][6] ([i915#4418])
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6668/fi-rkl-guc/igt@i915_selftest@live@gt_engines.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7870/fi-rkl-guc/igt@i915_selftest@live@gt_engines.html
+
+  * igt@i915_selftest@live@hangcheck:
+    - fi-hsw-4770:        [PASS][7] -> [INCOMPLETE][8] ([i915#4785])
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6668/fi-hsw-4770/igt@i915_selftest@live@hangcheck.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7870/fi-hsw-4770/igt@i915_selftest@live@hangcheck.html
+
+  * igt@i915_selftest@live@mman:
+    - fi-icl-u2:          [PASS][9] -> [INCOMPLETE][10] ([i915#4890])
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6668/fi-icl-u2/igt@i915_selftest@live@mman.html
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7870/fi-icl-u2/igt@i915_selftest@live@mman.html
+
+  * igt@runner@aborted:
+    - fi-hsw-4770:        NOTRUN -> [FAIL][11] ([fdo#109271] / [i915#4312] / [i915#5594])
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7870/fi-hsw-4770/igt@runner@aborted.html
+    - fi-icl-u2:          NOTRUN -> [FAIL][12] ([i915#4312])
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7870/fi-icl-u2/igt@runner@aborted.html
+    - fi-rkl-guc:         NOTRUN -> [FAIL][13] ([i915#4312])
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7870/fi-rkl-guc/igt@runner@aborted.html
+    - fi-bsw-nick:        NOTRUN -> [FAIL][14] ([fdo#109271] / [i915#4312])
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7870/fi-bsw-nick/igt@runner@aborted.html
+
+  
+#### Possible fixes ####
+
+  * igt@gem_exec_suspend@basic-s0@smem:
+    - {bat-adlm-1}:       [DMESG-WARN][15] ([i915#2867]) -> [PASS][16] +1 similar issue
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6668/bat-adlm-1/igt@gem_exec_suspend@basic-s0@smem.html
+   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7870/bat-adlm-1/igt@gem_exec_suspend@basic-s0@smem.html
+
+  * igt@i915_pm_rpm@module-reload:
+    - fi-cfl-8109u:       [DMESG-FAIL][17] ([i915#62]) -> [PASS][18]
+   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6668/fi-cfl-8109u/igt@i915_pm_rpm@module-reload.html
+   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7870/fi-cfl-8109u/igt@i915_pm_rpm@module-reload.html
+
+  * igt@i915_selftest@live@late_gt_pm:
+    - fi-cfl-8109u:       [DMESG-WARN][19] ([i915#5904]) -> [PASS][20] +30 similar issues
+   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6668/fi-cfl-8109u/igt@i915_selftest@live@late_gt_pm.html
+   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7870/fi-cfl-8109u/igt@i915_selftest@live@late_gt_pm.html
+
+  * igt@i915_suspend@basic-s2idle-without-i915:
+    - fi-cfl-8109u:       [DMESG-WARN][21] ([i915#5904] / [i915#62]) -> [PASS][22]
+   [21]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6668/fi-cfl-8109u/igt@i915_suspend@basic-s2idle-without-i915.html
+   [22]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7870/fi-cfl-8109u/igt@i915_suspend@basic-s2idle-without-i915.html
+
+  * igt@kms_frontbuffer_tracking@basic:
+    - fi-cfl-8109u:       [DMESG-WARN][23] ([i915#62]) -> [PASS][24] +11 similar issues
+   [23]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6668/fi-cfl-8109u/igt@kms_frontbuffer_tracking@basic.html
+   [24]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7870/fi-cfl-8109u/igt@kms_frontbuffer_tracking@basic.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [i915#2867]: https://gitlab.freedesktop.org/drm/intel/issues/2867
+  [i915#4312]: https://gitlab.freedesktop.org/drm/intel/issues/4312
+  [i915#4418]: https://gitlab.freedesktop.org/drm/intel/issues/4418
+  [i915#4785]: https://gitlab.freedesktop.org/drm/intel/issues/4785
+  [i915#4890]: https://gitlab.freedesktop.org/drm/intel/issues/4890
+  [i915#5153]: https://gitlab.freedesktop.org/drm/intel/issues/5153
+  [i915#5334]: https://gitlab.freedesktop.org/drm/intel/issues/5334
+  [i915#5594]: https://gitlab.freedesktop.org/drm/intel/issues/5594
+  [i915#5904]: https://gitlab.freedesktop.org/drm/intel/issues/5904
+  [i915#62]: https://gitlab.freedesktop.org/drm/intel/issues/62
+  [i915#6257]: https://gitlab.freedesktop.org/drm/intel/issues/6257
+  [i915#6816]: https://gitlab.freedesktop.org/drm/intel/issues/6816
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_6668 -> IGTPW_7870
+
+  CI-20190529: 20190529
+  CI_DRM_12193: 0f0716dcfd8446cde4391475c9c3656ca670b55f @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_7870: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7870/index.html
+  IGT_6668: 5f29c9369550164b35b65baaaeba4b370f434cf1 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7870/index.html
+
+--===============7782533123871630069==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/kms_properties: Create dynamic subtests (rev4)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/108695/">https://patchwork.freedesktop.org/series/108695/</a></td></tr>
+<tr><td><b>State:</b></td><td>failure</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7870/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7870/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_6668 -&gt; IGTPW_7870</h1>
+<h2>Summary</h2>
+<p><strong>FAILURE</strong></p>
+<p>Serious unknown changes coming with IGTPW_7870 absolutely need to be<br />
+  verified manually.</p>
+<p>If you think the reported changes have nothing to do with the changes<br />
+  introduced in IGTPW_7870, please notify your bug team to allow them<br />
+  to document this new failure mode, which will reduce false positives in CI.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7870/index.html</p>
+<h2>Participating hosts (45 -&gt; 43)</h2>
+<p>Missing    (2): fi-bdw-gvtdvm bat-jsl-3 </p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in IGTPW_7870:</p>
+<h3>IGT changes</h3>
+<h4>Possible regressions</h4>
+<ul>
+<li>igt@i915_selftest@live@execlists:<ul>
+<li>fi-bsw-nick:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6668/fi-bsw-nick/igt@i915_selftest@live@execlists.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7870/fi-bsw-nick/igt@i915_selftest@live@execlists.html">INCOMPLETE</a></li>
+</ul>
+</li>
+</ul>
+<h4>Suppressed</h4>
+<p>The following results come from untrusted machines, tests, or statuses.<br />
+  They do not affect the overall result.</p>
+<ul>
+<li>igt@i915_pm_rpm@basic-rte:<ul>
+<li>{bat-rplp-1}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6668/bat-rplp-1/igt@i915_pm_rpm@basic-rte.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7870/bat-rplp-1/igt@i915_pm_rpm@basic-rte.html">DMESG-WARN</a></li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_7870 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live@gt_engines:</p>
+<ul>
+<li>fi-rkl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6668/fi-rkl-guc/igt@i915_selftest@live@gt_engines.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7870/fi-rkl-guc/igt@i915_selftest@live@gt_engines.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4418">i915#4418</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@hangcheck:</p>
+<ul>
+<li>fi-hsw-4770:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6668/fi-hsw-4770/igt@i915_selftest@live@hangcheck.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7870/fi-hsw-4770/igt@i915_selftest@live@hangcheck.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4785">i915#4785</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@mman:</p>
+<ul>
+<li>fi-icl-u2:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6668/fi-icl-u2/igt@i915_selftest@live@mman.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7870/fi-icl-u2/igt@i915_selftest@live@mman.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4890">i915#4890</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@runner@aborted:</p>
+<ul>
+<li>
+<p>fi-hsw-4770:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7870/fi-hsw-4770/igt@runner@aborted.html">FAIL</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4312">i915#4312</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/5594">i915#5594</a>)</p>
+</li>
+<li>
+<p>fi-icl-u2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7870/fi-icl-u2/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4312">i915#4312</a>)</p>
+</li>
+<li>
+<p>fi-rkl-guc:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7870/fi-rkl-guc/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4312">i915#4312</a>)</p>
+</li>
+<li>
+<p>fi-bsw-nick:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7870/fi-bsw-nick/igt@runner@aborted.html">FAIL</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4312">i915#4312</a>)</p>
+</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@gem_exec_suspend@basic-s0@smem:</p>
+<ul>
+<li>{bat-adlm-1}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6668/bat-adlm-1/igt@gem_exec_suspend@basic-s0@smem.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2867">i915#2867</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7870/bat-adlm-1/igt@gem_exec_suspend@basic-s0@smem.html">PASS</a> +1 similar issue</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_pm_rpm@module-reload:</p>
+<ul>
+<li>fi-cfl-8109u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6668/fi-cfl-8109u/igt@i915_pm_rpm@module-reload.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/62">i915#62</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7870/fi-cfl-8109u/igt@i915_pm_rpm@module-reload.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@late_gt_pm:</p>
+<ul>
+<li>fi-cfl-8109u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6668/fi-cfl-8109u/igt@i915_selftest@live@late_gt_pm.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5904">i915#5904</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7870/fi-cfl-8109u/igt@i915_selftest@live@late_gt_pm.html">PASS</a> +30 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_suspend@basic-s2idle-without-i915:</p>
+<ul>
+<li>fi-cfl-8109u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6668/fi-cfl-8109u/igt@i915_suspend@basic-s2idle-without-i915.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5904">i915#5904</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/62">i915#62</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7870/fi-cfl-8109u/igt@i915_suspend@basic-s2idle-without-i915.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@basic:</p>
+<ul>
+<li>fi-cfl-8109u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6668/fi-cfl-8109u/igt@kms_frontbuffer_tracking@basic.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/62">i915#62</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7870/fi-cfl-8109u/igt@kms_frontbuffer_tracking@basic.html">PASS</a> +11 similar issues</li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_6668 -&gt; IGTPW_7870</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_12193: 0f0716dcfd8446cde4391475c9c3656ca670b55f @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_7870: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7870/index.html<br />
+  IGT_6668: 5f29c9369550164b35b65baaaeba4b370f434cf1 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============7782533123871630069==--
