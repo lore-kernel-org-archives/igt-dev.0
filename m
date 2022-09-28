@@ -3,13 +3,13 @@ Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Niranjana Vishwanathapura" <niranjana.vishwanathapura@intel.com>
-Date: Wed, 28 Sep 2022 11:21:30 -0000
-Message-ID: <166436409087.594.1527030973431180563@emeril.freedesktop.org>
-References: <20220928062115.6412-1-niranjana.vishwanathapura@intel.com>
-In-Reply-To: <20220928062115.6412-1-niranjana.vishwanathapura@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJVSUxEOiBmYWlsdXJlIGZvciB2bV9i?=
- =?utf-8?q?ind=3A_Add_VM=5FBIND_validation_support_=28rev4=29?=
+To: "Nidhi Gupta" <nidhi1.gupta@intel.com>
+Date: Wed, 28 Sep 2022 11:22:46 -0000
+Message-ID: <166436416679.596.15348308259257285365@emeril.freedesktop.org>
+References: <20220927011747.18882-1-nidhi1.gupta@intel.com>
+In-Reply-To: <20220927011747.18882-1-nidhi1.gupta@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJVSUxEOiBmYWlsdXJlIGZvciB0ZXN0?=
+ =?utf-8?q?s/kms=5Fwriteback=3A_Test_Cleanup_=28rev5=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,8 +25,8 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 == Series Details ==
 
-Series: vm_bind: Add VM_BIND validation support (rev4)
-URL   : https://patchwork.freedesktop.org/series/105881/
+Series: tests/kms_writeback: Test Cleanup (rev5)
+URL   : https://patchwork.freedesktop.org/series/107764/
 State : failure
 
 == Summary ==
