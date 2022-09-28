@@ -1,18 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-io1-xd2c.google.com (mail-io1-xd2c.google.com
- [IPv6:2607:f8b0:4864:20::d2c])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 553BE10E973
- for <igt-dev@lists.freedesktop.org>; Wed, 28 Sep 2022 19:35:46 +0000 (UTC)
-Received: by mail-io1-xd2c.google.com with SMTP id h194so10997927iof.4
- for <igt-dev@lists.freedesktop.org>; Wed, 28 Sep 2022 12:35:46 -0700 (PDT)
+Received: from mail-io1-xd31.google.com (mail-io1-xd31.google.com
+ [IPv6:2607:f8b0:4864:20::d31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E28F010E9A0
+ for <igt-dev@lists.freedesktop.org>; Wed, 28 Sep 2022 19:35:57 +0000 (UTC)
+Received: by mail-io1-xd31.google.com with SMTP id y141so10995944iof.5
+ for <igt-dev@lists.freedesktop.org>; Wed, 28 Sep 2022 12:35:57 -0700 (PDT)
 From: Jake Freeland <jake@technologyfriends.net>
 To: igt-dev@lists.freedesktop.org, kamil.konieczny@linux.intel.com,
  petri.latvala@intel.com
-Date: Wed, 28 Sep 2022 14:35:40 -0500
-Message-Id: <20220928193540.523293-1-jfree@freebsd.org>
+Date: Wed, 28 Sep 2022 14:35:52 -0500
+Message-Id: <20220928193552.523357-1-jfree@freebsd.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t] Replaced instances of mmap64() with mmap()
+Subject: [igt-dev] [PATCH i-g-t] Replaced setpgrp() with setpgid() for
+ standardization in BSD systems
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,210 +26,32 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-The mmap64() function exists to point 32-bit architectures to an mmap
-interface with the capability to address a 64-bit memory address space.
-As 32-bit machines are replaced by 64-bit, there is no longer a need to
-keep mmap64() around. This is especially apparent in operating systems
-like FreeBSD that exclude the mmap64() function altogether. This patch
-replaces all instances of mmap64() with mmap().
+The BSD and GNU versions of setpgrp() differ in their parameter
+conventions. To avoid this convolution, setpgrp() can be safely
+replaced with setpgid() which is standard in both BSD and GNU
+libc.
 
 Signed-off-by: Jake Freeland <jfree@freebsd.org>
 ---
- lib/i915/gem_mman.c          |  4 ++--
- lib/igt_vgem.c               |  2 +-
- tests/i915/gem_mmap_gtt.c    | 22 +++++++++++-----------
- tests/i915/gem_mmap_offset.c | 14 +++++++-------
- 4 files changed, 21 insertions(+), 21 deletions(-)
+ lib/igt_aux.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/lib/i915/gem_mman.c b/lib/i915/gem_mman.c
-index aa9ac6f3..0b41ba70 100644
---- a/lib/i915/gem_mman.c
-+++ b/lib/i915/gem_mman.c
-@@ -118,7 +118,7 @@ void *__gem_mmap__gtt(int fd, uint32_t handle, uint64_t size, unsigned prot)
- 	if (igt_ioctl(fd, DRM_IOCTL_I915_GEM_MMAP_GTT, &mmap_arg))
- 		return NULL;
+diff --git a/lib/igt_aux.c b/lib/igt_aux.c
+index d7e2714f..ba2d52e8 100644
+--- a/lib/igt_aux.c
++++ b/lib/igt_aux.c
+@@ -325,10 +325,10 @@ void igt_fork_signal_helper(void)
+ 	 * and we send the signal at exactly the wrong time).
+ 	 */
+ 	signal(SIGCONT, sig_handler);
+-	setpgrp(); /* define a new process group for the tests */
++	setpgid(0, 0); /* define a new process group for the tests */
  
--	ptr = mmap64(0, size, prot, MAP_SHARED, fd, mmap_arg.offset);
-+	ptr = mmap(0, size, prot, MAP_SHARED, fd, mmap_arg.offset);
- 	if (ptr == MAP_FAILED)
- 		ptr = NULL;
- 	else
-@@ -331,7 +331,7 @@ void *__gem_mmap_offset(int fd, uint32_t handle, uint64_t offset, uint64_t size,
- 	if (igt_ioctl(fd, DRM_IOCTL_I915_GEM_MMAP_OFFSET, &arg))
- 		return NULL;
+ 	igt_fork_helper(&signal_helper) {
+-		setpgrp(); /* Escape from the test process group */
++		setpgid(0, 0); /* Escape from the test process group */
  
--	ptr = mmap64(0, size, prot, MAP_SHARED, fd, arg.offset + offset);
-+	ptr = mmap(0, size, prot, MAP_SHARED, fd, arg.offset + offset);
- 
- 	if (ptr == MAP_FAILED)
- 		ptr = NULL;
-diff --git a/lib/igt_vgem.c b/lib/igt_vgem.c
-index 7f933b23..468383c7 100644
---- a/lib/igt_vgem.c
-+++ b/lib/igt_vgem.c
-@@ -76,7 +76,7 @@ void *__vgem_mmap(int fd, struct vgem_bo *bo, unsigned prot)
- 	if (drmIoctl(fd, DRM_IOCTL_MODE_MAP_DUMB, &arg))
- 		return NULL;
- 
--	ptr = mmap64(0, bo->size, prot, MAP_SHARED, fd, arg.offset);
-+	ptr = mmap(0, bo->size, prot, MAP_SHARED, fd, arg.offset);
- 	if (ptr == MAP_FAILED)
- 		return NULL;
- 
-diff --git a/tests/i915/gem_mmap_gtt.c b/tests/i915/gem_mmap_gtt.c
-index 4f05eb18..683eaf16 100644
---- a/tests/i915/gem_mmap_gtt.c
-+++ b/tests/i915/gem_mmap_gtt.c
-@@ -113,11 +113,11 @@ test_access(int fd)
- 	mmap_arg.handle = handle;
- 	do_ioctl(fd, DRM_IOCTL_I915_GEM_MMAP_GTT, &mmap_arg);
- 
--	igt_assert(mmap64(0, OBJECT_SIZE, PROT_READ | PROT_WRITE,
-+	igt_assert(mmap(0, OBJECT_SIZE, PROT_READ | PROT_WRITE,
- 			  MAP_SHARED, fd, mmap_arg.offset));
- 
- 	/* Check that the same offset on the other fd doesn't work. */
--	igt_assert(mmap64(0, OBJECT_SIZE, PROT_READ | PROT_WRITE,
-+	igt_assert(mmap(0, OBJECT_SIZE, PROT_READ | PROT_WRITE,
- 			  MAP_SHARED, fd2, mmap_arg.offset) == MAP_FAILED);
- 	igt_assert(errno == EACCES);
- 
-@@ -128,7 +128,7 @@ test_access(int fd)
- 
- 	/* Recheck that it works after flink. */
- 	/* Check that the same offset on the other fd doesn't work. */
--	igt_assert(mmap64(0, OBJECT_SIZE, PROT_READ | PROT_WRITE,
-+	igt_assert(mmap(0, OBJECT_SIZE, PROT_READ | PROT_WRITE,
- 			  MAP_SHARED, fd2, mmap_arg.offset));
- }
- 
-@@ -159,11 +159,11 @@ test_short(int fd)
- 	for (pages = 1; pages <= OBJECT_SIZE / PAGE_SIZE; pages <<= 1) {
- 		uint8_t *r, *w;
- 
--		w = mmap64(0, pages * PAGE_SIZE, PROT_READ | PROT_WRITE,
-+		w = mmap(0, pages * PAGE_SIZE, PROT_READ | PROT_WRITE,
- 			   MAP_SHARED, fd, mmap_arg.offset);
- 		igt_assert(w != MAP_FAILED);
- 
--		r = mmap64(0, pages * PAGE_SIZE, PROT_READ,
-+		r = mmap(0, pages * PAGE_SIZE, PROT_READ,
- 			   MAP_SHARED, fd, mmap_arg.offset);
- 		igt_assert(r != MAP_FAILED);
- 
-@@ -384,13 +384,13 @@ test_isolation(int i915)
- 
- 	close(B);
- 
--	ptr = mmap64(0, 4096, PROT_READ, MAP_SHARED, A, offset_a);
-+	ptr = mmap(0, 4096, PROT_READ, MAP_SHARED, A, offset_a);
- 	igt_assert(ptr != MAP_FAILED);
- 	munmap(ptr, 4096);
- 
- 	close(A);
- 
--	ptr = mmap64(0, 4096, PROT_READ, MAP_SHARED, A, offset_a);
-+	ptr = mmap(0, 4096, PROT_READ, MAP_SHARED, A, offset_a);
- 	igt_assert(ptr == MAP_FAILED);
- }
- 
-@@ -400,7 +400,7 @@ test_close_race(int i915)
- 	const int ncpus = sysconf(_SC_NPROCESSORS_ONLN);
- 	_Atomic uint32_t *handles;
- 
--	handles = mmap64(0, 4096, PROT_WRITE, MAP_SHARED | MAP_ANON, -1, 0);
-+	handles = mmap(0, 4096, PROT_WRITE, MAP_SHARED | MAP_ANON, -1, 0);
- 	igt_assert(handles != MAP_FAILED);
- 
- 	igt_fork(child, ncpus + 1) {
-@@ -418,7 +418,7 @@ test_close_race(int i915)
- 				  &mmap_arg) != -1) {
- 				void *ptr;
- 
--				ptr = mmap64(0, 4096,
-+				ptr = mmap(0, 4096,
- 					     PROT_WRITE, MAP_SHARED, i915,
- 					     mmap_arg.offset);
- 				if (ptr != MAP_FAILED) {
-@@ -444,7 +444,7 @@ test_flink_race(int i915)
- 	const int ncpus = sysconf(_SC_NPROCESSORS_ONLN);
- 	_Atomic uint32_t *handles;
- 
--	handles = mmap64(0, 4096, PROT_WRITE, MAP_SHARED | MAP_ANON, -1, 0);
-+	handles = mmap(0, 4096, PROT_WRITE, MAP_SHARED | MAP_ANON, -1, 0);
- 	igt_assert(handles != MAP_FAILED);
- 
- 	igt_fork(child, ncpus + 1) {
-@@ -469,7 +469,7 @@ test_flink_race(int i915)
- 				  &mmap_arg) != -1) {
- 				void *ptr;
- 
--				ptr = mmap64(0, 4096,
-+				ptr = mmap(0, 4096,
- 					     PROT_WRITE, MAP_SHARED, fd,
- 					     mmap_arg.offset);
- 				if (ptr != MAP_FAILED) {
-diff --git a/tests/i915/gem_mmap_offset.c b/tests/i915/gem_mmap_offset.c
-index 5781b2fb..0933ed94 100644
---- a/tests/i915/gem_mmap_offset.c
-+++ b/tests/i915/gem_mmap_offset.c
-@@ -66,7 +66,7 @@ __mmap_offset(int i915, uint32_t handle, uint64_t offset, uint64_t size,
- 	if (mmap_offset_ioctl(i915, &arg))
- 		return NULL;
- 
--	ptr = mmap64(0, size, prot, MAP_SHARED, i915, arg.offset + offset);
-+	ptr = mmap(0, size, prot, MAP_SHARED, i915, arg.offset + offset);
- 	if (ptr == MAP_FAILED)
- 		ptr = NULL;
- 	else
-@@ -214,12 +214,12 @@ static void isolation(int i915)
- 			 t->name, B, b, offset_b);
- 
- 		errno = 0;
--		ptr = mmap64(0, 4096, PROT_READ, MAP_SHARED, i915, offset_a);
-+		ptr = mmap(0, 4096, PROT_READ, MAP_SHARED, i915, offset_a);
- 		igt_assert(ptr == MAP_FAILED);
- 		igt_assert_eq(errno, EACCES);
- 
- 		errno = 0;
--		ptr = mmap64(0, 4096, PROT_READ, MAP_SHARED, i915, offset_b);
-+		ptr = mmap(0, 4096, PROT_READ, MAP_SHARED, i915, offset_b);
- 		igt_assert(ptr == MAP_FAILED);
- 		igt_assert_eq(errno, EACCES);
- 
-@@ -237,13 +237,13 @@ static void isolation(int i915)
- 
- 		close(B);
- 
--		ptr = mmap64(0, 4096, PROT_READ, MAP_SHARED, A, offset_a);
-+		ptr = mmap(0, 4096, PROT_READ, MAP_SHARED, A, offset_a);
- 		igt_assert(ptr != MAP_FAILED);
- 		munmap(ptr, 4096);
- 
- 		close(A);
- 
--		ptr = mmap64(0, 4096, PROT_READ, MAP_SHARED, A, offset_a);
-+		ptr = mmap(0, 4096, PROT_READ, MAP_SHARED, A, offset_a);
- 		igt_assert(ptr == MAP_FAILED);
- 	}
- }
-@@ -401,7 +401,7 @@ static void close_race(int i915, int timeout)
- 	_Atomic uint32_t *handles;
- 	size_t len = ALIGN((ncpus + 1) * sizeof(uint32_t), 4096);
- 
--	handles = mmap64(0, len, PROT_WRITE, MAP_SHARED | MAP_ANON, -1, 0);
-+	handles = mmap(0, len, PROT_WRITE, MAP_SHARED | MAP_ANON, -1, 0);
- 	igt_assert(handles != MAP_FAILED);
- 
- 	igt_fork(child, ncpus + 1) {
-@@ -420,7 +420,7 @@ static void close_race(int i915, int timeout)
- 				  &mmap_arg) != -1) {
- 				void *ptr;
- 
--				ptr = mmap64(0, 4096,
-+				ptr = mmap(0, 4096,
- 					     PROT_WRITE, MAP_SHARED, i915,
- 					     mmap_arg.offset);
- 				if (ptr != MAP_FAILED) {
+ 		/* Pass along the test process group identifier,
+ 		 * negative pid => send signal to everyone in the group.
 -- 
 2.37.3
