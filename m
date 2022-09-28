@@ -1,18 +1,23 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C0FEA10E517
- for <igt-dev@lists.freedesktop.org>; Wed, 28 Sep 2022 12:33:18 +0000 (UTC)
-Date: Wed, 28 Sep 2022 14:33:14 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Message-ID: <YzQ/CnZyoBpgIfYM@kamilkon-desk1>
-References: <20220918221535.3276922-1-jfree@freebsd.org>
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0B2E610E52A
+ for <igt-dev@lists.freedesktop.org>; Wed, 28 Sep 2022 12:36:19 +0000 (UTC)
+Message-ID: <02f51793-1519-1c52-c493-b40e3e0b9569@intel.com>
+Date: Wed, 28 Sep 2022 18:06:02 +0530
+To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ <igt-dev@lists.freedesktop.org>, Bhanuprakash Modem
+ <bhanuprakash.modem@intel.com>
+References: <20220928043441.29961-1-karthik.b.s@intel.com>
+ <20220928043441.29961-2-karthik.b.s@intel.com>
+ <YzQZBdpA25p1M9zd@kamilkon-desk1>
+Content-Language: en-US
+From: Karthik B S <karthik.b.s@intel.com>
+In-Reply-To: <YzQZBdpA25p1M9zd@kamilkon-desk1>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20220918221535.3276922-1-jfree@freebsd.org>
-Subject: Re: [igt-dev] [PATCH i-g-t] Replaced instances of mmap64() with
- mmap()
+Subject: Re: [igt-dev] [PATCH i-g-t v5 1/2] tests/kms_content_protection:
+ Test Cleanup
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,223 +25,346 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Jake Freeland <jfree@freebsd.org>, Petri Latvala <petri.latvala@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Jake,
+On 9/28/2022 3:21 PM, Kamil Konieczny wrote:
+> Hi Karthik,
+Hi Kamil,
+>
+> On 2022-09-28 at 10:04:40 +0530, Karthik B S wrote:
+>> This patch includes:
+>>      1.Add a modeset before checking output is HDCP capable.
+>>        Test currently skips on multidisplay MST because we're checking
+>>        if output is HDCP capable before doing a modeset on the output.
+>>      2.Call igt_display_reset before starting the subtest.
+>>      3.test_fini function added to prepare test for converting to dynamic.
+>>      4.Remove redundant mode override.
+>>      5.Try other pipe/output combo for MST if failure is seen on one.
+> These looks like fix and cleanup, please split out part 1. and 5.
+> into separate patch.
+Thank you for the review. Sure, will split this patch.
+> I will not comment on kms parts, only some things spotted, see
+> below.
+>
+>> v2: -Update commit style in test_content_protection_cleanup.
+>>
+>> v3: -Declare 'pipe' variable in this patch which otherwise causes
+>>       failure when patch is compiled individually.
+>>
+>> Signed-off-by: Karthik B S <karthik.b.s@intel.com>
+>> Reviewed-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+>> ---
+>>   tests/kms_content_protection.c | 182 +++++++++++++++++----------------
+>>   1 file changed, 94 insertions(+), 88 deletions(-)
+>>
+>> diff --git a/tests/kms_content_protection.c b/tests/kms_content_protection.c
+>> index 3041f1cd..c32767c8 100644
+>> --- a/tests/kms_content_protection.c
+>> +++ b/tests/kms_content_protection.c
+>> @@ -170,18 +170,15 @@ static void modeset_with_fb(const enum pipe pipe, igt_output_t *output,
+>>   			    enum igt_commit_style s)
+>>   {
+>>   	igt_display_t *display = &data.display;
+>> -	drmModeModeInfo mode;
+>> +	drmModeModeInfo *mode;
+>>   	igt_plane_t *primary;
+>>   
+>> -	igt_assert(kmstest_get_connector_default_mode(
+>> -			display->drm_fd, output->config.connector, &mode));
+>> -
+>> -	igt_output_override_mode(output, &mode);
+>> +	mode = igt_output_get_mode(output);
+>>   	igt_output_set_pipe(output, pipe);
+>>   
+>>   	primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
+>>   	igt_plane_set_fb(primary, &data.red);
+>> -	igt_fb_set_size(&data.red, primary, mode.hdisplay, mode.vdisplay);
+>> +	igt_fb_set_size(&data.red, primary, mode->hdisplay, mode->vdisplay);
+>>   
+>>   	igt_display_commit2(display, s);
+>>   
+>> @@ -317,90 +314,61 @@ static bool write_srm_as_fw(const __u8 *srm, int len)
+>>   }
+>>   
+>>   static void test_content_protection_on_output(igt_output_t *output,
+>> +					      enum pipe pipe,
+>>   					      enum igt_commit_style s,
+>>   					      int content_type)
+>>   {
+>>   	igt_display_t *display = &data.display;
+>> -	igt_plane_t *primary;
+>> -	enum pipe pipe;
+>>   	bool ret;
+>>   
+>> -	for_each_pipe(display, pipe) {
+>> -		if (!igt_pipe_connector_valid(pipe, output))
+>> -			continue;
+>> -
+>> -		/*
+>> -		 * If previous subtest of connector failed, pipe
+>> -		 * attached to that connector is not released.
+>> -		 * Because of that we have to choose the non
+>> -		 * attached pipe for this subtest.
+>> -		 */
+>> -		if (!igt_pipe_is_free(display, pipe))
+>> -			continue;
+>> -
+>> -		modeset_with_fb(pipe, output, s);
+>> -		test_cp_enable_with_retry(output, s, 3, content_type, false,
+>> -					  false);
+>> -
+>> -		if (data.cp_tests & CP_TYPE_CHANGE) {
+>> -			/* Type 1 -> Type 0 */
+>> -			test_cp_enable_with_retry(output, s, 3,
+>> -						  HDCP_CONTENT_TYPE_0, false,
+>> -						  true);
+>> -			/* Type 0 -> Type 1 */
+>> -			test_cp_enable_with_retry(output, s, 3,
+>> -						  content_type, false,
+>> -						  true);
+>> -		}
+>> -
+>> -		if (data.cp_tests & CP_MEI_RELOAD) {
+>> -			igt_assert_f(!igt_kmod_unload("mei_hdcp", 0),
+>> -				     "mei_hdcp unload failed");
+>> +	test_cp_enable_with_retry(output, s, 3, content_type, false,
+>> +				  false);
+>> +
+>> +	if (data.cp_tests & CP_TYPE_CHANGE) {
+>> +		/* Type 1 -> Type 0 */
+>> +		test_cp_enable_with_retry(output, s, 3,
+>> +					  HDCP_CONTENT_TYPE_0, false,
+>> +					  true);
+>> +		/* Type 0 -> Type 1 */
+>> +		test_cp_enable_with_retry(output, s, 3,
+>> +					  content_type, false,
+>> +					  true);
+>> +	}
+>>   
+>> -			/* Expected to fail */
+>> -			test_cp_enable_with_retry(output, s, 3,
+>> -						  content_type, true, false);
+>> +	if (data.cp_tests & CP_MEI_RELOAD) {
+>> +		igt_assert_f(!igt_kmod_unload("mei_hdcp", 0),
+>> +			     "mei_hdcp unload failed");
+>>   
+>> -			igt_assert_f(!igt_kmod_load("mei_hdcp", NULL),
+>> -				     "mei_hdcp load failed");
+>> +		/* Expected to fail */
+>> +		test_cp_enable_with_retry(output, s, 3,
+>> +					  content_type, true, false);
+>>   
+>> -			/* Expected to pass */
+>> -			test_cp_enable_with_retry(output, s, 3,
+>> -						  content_type, false, false);
+>> -		}
+>> +		igt_assert_f(!igt_kmod_load("mei_hdcp", NULL),
+>> +			     "mei_hdcp load failed");
+>>   
+>> -		if (data.cp_tests & CP_LIC)
+>> -			test_cp_lic(output);
+>> +		/* Expected to pass */
+>> +		test_cp_enable_with_retry(output, s, 3,
+>> +					  content_type, false, false);
+>> +	}
+>>   
+>> -		if (data.cp_tests & CP_DPMS) {
+>> -			igt_pipe_set_prop_value(display, pipe,
+>> -						IGT_CRTC_ACTIVE, 0);
+>> -			igt_display_commit2(display, s);
+>> +	if (data.cp_tests & CP_LIC)
+>> +		test_cp_lic(output);
+>>   
+>> -			igt_pipe_set_prop_value(display, pipe,
+>> -						IGT_CRTC_ACTIVE, 1);
+>> -			igt_display_commit2(display, s);
+>> +	if (data.cp_tests & CP_DPMS) {
+>> +		igt_pipe_set_prop_value(display, pipe,
+>> +					IGT_CRTC_ACTIVE, 0);
+>> +		igt_display_commit2(display, s);
+>>   
+>> -			ret = wait_for_prop_value(output, CP_ENABLED,
+>> -						  KERNEL_AUTH_TIME_ALLOWED_MSEC);
+>> -			if (!ret)
+>> -				test_cp_enable_with_retry(output, s, 2,
+>> -							  content_type, false,
+>> -							  false);
+>> -		}
+>> +		igt_pipe_set_prop_value(display, pipe,
+>> +					IGT_CRTC_ACTIVE, 1);
+>> +		igt_display_commit2(display, s);
+>>   
+>> -		test_cp_disable(output, s);
+>> -		primary = igt_output_get_plane_type(output,
+>> -						    DRM_PLANE_TYPE_PRIMARY);
+>> -		igt_plane_set_fb(primary, NULL);
+>> -		igt_output_set_pipe(output, PIPE_NONE);
+>> -
+>> -		/*
+>> -		 * Testing a output with a pipe is enough for HDCP
+>> -		 * testing. No ROI in testing the connector with other
+>> -		 * pipes. So Break the loop on pipe.
+>> -		 */
+>> -		break;
+>> +		ret = wait_for_prop_value(output, CP_ENABLED,
+>> +					  KERNEL_AUTH_TIME_ALLOWED_MSEC);
+>> +		if (!ret)
+>> +			test_cp_enable_with_retry(output, s, 2,
+>> +						  content_type, false,
+>> +						  false);
+>>   	}
+>>   }
+>>   
+>> @@ -458,7 +426,8 @@ static bool sink_hdcp2_capable(igt_output_t *output)
+>>   	return strstr(buf, "HDCP2.2");
+>>   }
+>>   
+>> -static void prepare_modeset_on_mst_output(igt_output_t *output)
+>> +static void
+>> +prepare_modeset_on_mst_output(igt_output_t *output)
+> Please drop this and keep old line here. Do not mix cosmetic
+> changes with functional cleanup. Smaller patches are easier
+> to review.
+Sure, will update this.
+>
+>>   {
+>>   	drmModeModeInfo *mode;
+>>   	igt_plane_t *primary;
+>> @@ -477,7 +446,8 @@ static void prepare_modeset_on_mst_output(igt_output_t *output)
+>>   	igt_plane_set_size(primary, width, height);
+>>   }
+>>   
+>> -static bool output_hdcp_capable(igt_output_t *output, int content_type)
+>> +static bool
+>> +output_hdcp_capable(igt_output_t *output, int content_type)
+> Same here.
+Sure.
+>
+>>   {
+>>   		if (!output->props[IGT_CONNECTOR_CONTENT_PROTECTION])
+>>   			return false;
+>> @@ -499,22 +469,53 @@ static bool output_hdcp_capable(igt_output_t *output, int content_type)
+>>   		return true;
+>>   }
+>>   
+>> +static void
+>> +test_fini(igt_output_t *output, enum igt_commit_style s)
+> I would prefere to have it in one line but I see that below
+> is used other convention so it may stay.
+Okay.
+>
+>> +{
+>> +	igt_plane_t *primary;
+>> +
+>> +	test_cp_disable(output, s);
+>> +	primary = igt_output_get_plane_type(output,
+>> +					    DRM_PLANE_TYPE_PRIMARY);
+>> +	igt_plane_set_fb(primary, NULL);
+>> +	igt_output_set_pipe(output, PIPE_NONE);
+>> +	igt_display_commit2(&data.display, s);
+>> +}
+>> +
+>>   static void
+>>   test_content_protection(enum igt_commit_style s, int content_type)
+>>   {
+>>   	igt_display_t *display = &data.display;
+>>   	igt_output_t *output;
+>>   	int valid_tests = 0;
+>> +	enum pipe pipe;
+>>   
+>>   	if (data.cp_tests & CP_MEI_RELOAD)
+>>   		igt_require_f(igt_kmod_is_loaded("mei_hdcp"),
+>>   			      "mei_hdcp module is not loaded\n");
+>>   
+>>   	for_each_connected_output(display, output) {
+>> -		if (!output_hdcp_capable(output, content_type))
+>> -			continue;
+>> +		for_each_pipe(display, pipe) {
+>> +			if (!igt_pipe_connector_valid(pipe, output))
+>> +				continue;
+>> +
+>> +			igt_display_reset(display);
+>> +			modeset_with_fb(pipe, output, s);
+>> +
+>> +			if (!output_hdcp_capable(output, content_type))
+>> +				continue;
+>> +
+>> +			test_content_protection_on_output(output, pipe, s, content_type);
+> Here should be increasing valid_tests var, see below.
+>
+>> +			test_fini(output, s);
+>> +
+>> +			/*
+>> +			 * Testing a output with a pipe is enough for HDCP
+>> +			 * testing. No ROI in testing the connector with other
+>> +			 * pipes. So Break the loop on pipe.
+>> +			 */
+>> +			break;
+>> +		}
+>>   
+>> -		test_content_protection_on_output(output, s, content_type);
+>>   		valid_tests++;
+> --------------- ^
+>
+> imho this one also should be moved after call to
+> test_content_protection_on_output()
 
-this patch is missing commit message. Please put here short
-description of change and why you do it. Change looks resonable
-as on 64-bit systems both functions are the same.
+Sure will move this.
 
-On 2022-09-18 at 17:15:35 -0500, Jake Freeland wrote:
-> Signed-off-by: Jake Freeland <jfree@freebsd.org>
-
-Adding Petri on cc as I do not know if anyone compiles this on
-32-bit platforms.
-
-Regards,
-Kamil
-
-> ---
->  lib/i915/gem_mman.c          |  4 ++--
->  lib/igt_vgem.c               |  2 +-
->  tests/i915/gem_mmap_gtt.c    | 22 +++++++++++-----------
->  tests/i915/gem_mmap_offset.c | 14 +++++++-------
->  4 files changed, 21 insertions(+), 21 deletions(-)
-> 
-> diff --git a/lib/i915/gem_mman.c b/lib/i915/gem_mman.c
-> index aa9ac6f3..0b41ba70 100644
-> --- a/lib/i915/gem_mman.c
-> +++ b/lib/i915/gem_mman.c
-> @@ -118,7 +118,7 @@ void *__gem_mmap__gtt(int fd, uint32_t handle, uint64_t size, unsigned prot)
->  	if (igt_ioctl(fd, DRM_IOCTL_I915_GEM_MMAP_GTT, &mmap_arg))
->  		return NULL;
->  
-> -	ptr = mmap64(0, size, prot, MAP_SHARED, fd, mmap_arg.offset);
-> +	ptr = mmap(0, size, prot, MAP_SHARED, fd, mmap_arg.offset);
->  	if (ptr == MAP_FAILED)
->  		ptr = NULL;
->  	else
-> @@ -331,7 +331,7 @@ void *__gem_mmap_offset(int fd, uint32_t handle, uint64_t offset, uint64_t size,
->  	if (igt_ioctl(fd, DRM_IOCTL_I915_GEM_MMAP_OFFSET, &arg))
->  		return NULL;
->  
-> -	ptr = mmap64(0, size, prot, MAP_SHARED, fd, arg.offset + offset);
-> +	ptr = mmap(0, size, prot, MAP_SHARED, fd, arg.offset + offset);
->  
->  	if (ptr == MAP_FAILED)
->  		ptr = NULL;
-> diff --git a/lib/igt_vgem.c b/lib/igt_vgem.c
-> index 7f933b23..468383c7 100644
-> --- a/lib/igt_vgem.c
-> +++ b/lib/igt_vgem.c
-> @@ -76,7 +76,7 @@ void *__vgem_mmap(int fd, struct vgem_bo *bo, unsigned prot)
->  	if (drmIoctl(fd, DRM_IOCTL_MODE_MAP_DUMB, &arg))
->  		return NULL;
->  
-> -	ptr = mmap64(0, bo->size, prot, MAP_SHARED, fd, arg.offset);
-> +	ptr = mmap(0, bo->size, prot, MAP_SHARED, fd, arg.offset);
->  	if (ptr == MAP_FAILED)
->  		return NULL;
->  
-> diff --git a/tests/i915/gem_mmap_gtt.c b/tests/i915/gem_mmap_gtt.c
-> index 4f05eb18..683eaf16 100644
-> --- a/tests/i915/gem_mmap_gtt.c
-> +++ b/tests/i915/gem_mmap_gtt.c
-> @@ -113,11 +113,11 @@ test_access(int fd)
->  	mmap_arg.handle = handle;
->  	do_ioctl(fd, DRM_IOCTL_I915_GEM_MMAP_GTT, &mmap_arg);
->  
-> -	igt_assert(mmap64(0, OBJECT_SIZE, PROT_READ | PROT_WRITE,
-> +	igt_assert(mmap(0, OBJECT_SIZE, PROT_READ | PROT_WRITE,
->  			  MAP_SHARED, fd, mmap_arg.offset));
->  
->  	/* Check that the same offset on the other fd doesn't work. */
-> -	igt_assert(mmap64(0, OBJECT_SIZE, PROT_READ | PROT_WRITE,
-> +	igt_assert(mmap(0, OBJECT_SIZE, PROT_READ | PROT_WRITE,
->  			  MAP_SHARED, fd2, mmap_arg.offset) == MAP_FAILED);
->  	igt_assert(errno == EACCES);
->  
-> @@ -128,7 +128,7 @@ test_access(int fd)
->  
->  	/* Recheck that it works after flink. */
->  	/* Check that the same offset on the other fd doesn't work. */
-> -	igt_assert(mmap64(0, OBJECT_SIZE, PROT_READ | PROT_WRITE,
-> +	igt_assert(mmap(0, OBJECT_SIZE, PROT_READ | PROT_WRITE,
->  			  MAP_SHARED, fd2, mmap_arg.offset));
->  }
->  
-> @@ -159,11 +159,11 @@ test_short(int fd)
->  	for (pages = 1; pages <= OBJECT_SIZE / PAGE_SIZE; pages <<= 1) {
->  		uint8_t *r, *w;
->  
-> -		w = mmap64(0, pages * PAGE_SIZE, PROT_READ | PROT_WRITE,
-> +		w = mmap(0, pages * PAGE_SIZE, PROT_READ | PROT_WRITE,
->  			   MAP_SHARED, fd, mmap_arg.offset);
->  		igt_assert(w != MAP_FAILED);
->  
-> -		r = mmap64(0, pages * PAGE_SIZE, PROT_READ,
-> +		r = mmap(0, pages * PAGE_SIZE, PROT_READ,
->  			   MAP_SHARED, fd, mmap_arg.offset);
->  		igt_assert(r != MAP_FAILED);
->  
-> @@ -384,13 +384,13 @@ test_isolation(int i915)
->  
->  	close(B);
->  
-> -	ptr = mmap64(0, 4096, PROT_READ, MAP_SHARED, A, offset_a);
-> +	ptr = mmap(0, 4096, PROT_READ, MAP_SHARED, A, offset_a);
->  	igt_assert(ptr != MAP_FAILED);
->  	munmap(ptr, 4096);
->  
->  	close(A);
->  
-> -	ptr = mmap64(0, 4096, PROT_READ, MAP_SHARED, A, offset_a);
-> +	ptr = mmap(0, 4096, PROT_READ, MAP_SHARED, A, offset_a);
->  	igt_assert(ptr == MAP_FAILED);
->  }
->  
-> @@ -400,7 +400,7 @@ test_close_race(int i915)
->  	const int ncpus = sysconf(_SC_NPROCESSORS_ONLN);
->  	_Atomic uint32_t *handles;
->  
-> -	handles = mmap64(0, 4096, PROT_WRITE, MAP_SHARED | MAP_ANON, -1, 0);
-> +	handles = mmap(0, 4096, PROT_WRITE, MAP_SHARED | MAP_ANON, -1, 0);
->  	igt_assert(handles != MAP_FAILED);
->  
->  	igt_fork(child, ncpus + 1) {
-> @@ -418,7 +418,7 @@ test_close_race(int i915)
->  				  &mmap_arg) != -1) {
->  				void *ptr;
->  
-> -				ptr = mmap64(0, 4096,
-> +				ptr = mmap(0, 4096,
->  					     PROT_WRITE, MAP_SHARED, i915,
->  					     mmap_arg.offset);
->  				if (ptr != MAP_FAILED) {
-> @@ -444,7 +444,7 @@ test_flink_race(int i915)
->  	const int ncpus = sysconf(_SC_NPROCESSORS_ONLN);
->  	_Atomic uint32_t *handles;
->  
-> -	handles = mmap64(0, 4096, PROT_WRITE, MAP_SHARED | MAP_ANON, -1, 0);
-> +	handles = mmap(0, 4096, PROT_WRITE, MAP_SHARED | MAP_ANON, -1, 0);
->  	igt_assert(handles != MAP_FAILED);
->  
->  	igt_fork(child, ncpus + 1) {
-> @@ -469,7 +469,7 @@ test_flink_race(int i915)
->  				  &mmap_arg) != -1) {
->  				void *ptr;
->  
-> -				ptr = mmap64(0, 4096,
-> +				ptr = mmap(0, 4096,
->  					     PROT_WRITE, MAP_SHARED, fd,
->  					     mmap_arg.offset);
->  				if (ptr != MAP_FAILED) {
-> diff --git a/tests/i915/gem_mmap_offset.c b/tests/i915/gem_mmap_offset.c
-> index 5781b2fb..0933ed94 100644
-> --- a/tests/i915/gem_mmap_offset.c
-> +++ b/tests/i915/gem_mmap_offset.c
-> @@ -66,7 +66,7 @@ __mmap_offset(int i915, uint32_t handle, uint64_t offset, uint64_t size,
->  	if (mmap_offset_ioctl(i915, &arg))
->  		return NULL;
->  
-> -	ptr = mmap64(0, size, prot, MAP_SHARED, i915, arg.offset + offset);
-> +	ptr = mmap(0, size, prot, MAP_SHARED, i915, arg.offset + offset);
->  	if (ptr == MAP_FAILED)
->  		ptr = NULL;
->  	else
-> @@ -214,12 +214,12 @@ static void isolation(int i915)
->  			 t->name, B, b, offset_b);
->  
->  		errno = 0;
-> -		ptr = mmap64(0, 4096, PROT_READ, MAP_SHARED, i915, offset_a);
-> +		ptr = mmap(0, 4096, PROT_READ, MAP_SHARED, i915, offset_a);
->  		igt_assert(ptr == MAP_FAILED);
->  		igt_assert_eq(errno, EACCES);
->  
->  		errno = 0;
-> -		ptr = mmap64(0, 4096, PROT_READ, MAP_SHARED, i915, offset_b);
-> +		ptr = mmap(0, 4096, PROT_READ, MAP_SHARED, i915, offset_b);
->  		igt_assert(ptr == MAP_FAILED);
->  		igt_assert_eq(errno, EACCES);
->  
-> @@ -237,13 +237,13 @@ static void isolation(int i915)
->  
->  		close(B);
->  
-> -		ptr = mmap64(0, 4096, PROT_READ, MAP_SHARED, A, offset_a);
-> +		ptr = mmap(0, 4096, PROT_READ, MAP_SHARED, A, offset_a);
->  		igt_assert(ptr != MAP_FAILED);
->  		munmap(ptr, 4096);
->  
->  		close(A);
->  
-> -		ptr = mmap64(0, 4096, PROT_READ, MAP_SHARED, A, offset_a);
-> +		ptr = mmap(0, 4096, PROT_READ, MAP_SHARED, A, offset_a);
->  		igt_assert(ptr == MAP_FAILED);
->  	}
->  }
-> @@ -401,7 +401,7 @@ static void close_race(int i915, int timeout)
->  	_Atomic uint32_t *handles;
->  	size_t len = ALIGN((ncpus + 1) * sizeof(uint32_t), 4096);
->  
-> -	handles = mmap64(0, len, PROT_WRITE, MAP_SHARED | MAP_ANON, -1, 0);
-> +	handles = mmap(0, len, PROT_WRITE, MAP_SHARED | MAP_ANON, -1, 0);
->  	igt_assert(handles != MAP_FAILED);
->  
->  	igt_fork(child, ncpus + 1) {
-> @@ -420,7 +420,7 @@ static void close_race(int i915, int timeout)
->  				  &mmap_arg) != -1) {
->  				void *ptr;
->  
-> -				ptr = mmap64(0, 4096,
-> +				ptr = mmap(0, 4096,
->  					     PROT_WRITE, MAP_SHARED, i915,
->  					     mmap_arg.offset);
->  				if (ptr != MAP_FAILED) {
-> -- 
-> 2.37.3
-> 
+Thanks,
+Karthik.B.S
+>
+> Regards,
+> Kamil
+>
+>>   	}
+>>   
+>> @@ -596,6 +597,7 @@ test_content_protection_mst(int content_type)
+>>   	igt_output_t *output;
+>>   	int valid_outputs = 0, dp_mst_outputs = 0, ret, count, max_pipe = 0, i;
+>>   	enum pipe pipe;
+>> +	bool pipe_found;
+>>   	igt_output_t *mst_output[IGT_MAX_PIPES], *hdcp_mst_output[IGT_MAX_PIPES];
+>>   
+>>   	for_each_pipe(display, pipe)
+>> @@ -607,16 +609,20 @@ test_content_protection_mst(int content_type)
+>>   		if (!output_is_dp_mst(output, dp_mst_outputs))
+>>   			continue;
+>>   
+>> -		igt_assert_f(igt_pipe_connector_valid(pipe, output), "Output-pipe combination invalid\n");
+>> +		pipe_found = false;
+>> +		for_each_pipe(display, pipe) {
+>> +			if (igt_pipe_is_free(display, pipe) &&
+>> +			    igt_pipe_connector_valid(pipe, output)) {
+>> +				pipe_found = true;
+>> +				break;
+>> +			}
+>> +		}
+>> +
+>> +		igt_assert_f(pipe_found, "No valid pipe found for %s\n", output->name);
+>>   
+>>   		igt_output_set_pipe(output, pipe);
+>>   		prepare_modeset_on_mst_output(output);
+>>   		mst_output[dp_mst_outputs++] = output;
+>> -
+>> -		pipe++;
+>> -
+>> -		if (pipe > max_pipe)
+>> -			break;
+>>   	}
+>>   
+>>   	igt_require_f(dp_mst_outputs > 1, "No DP MST set up with >= 2 outputs found in a single topology\n");
+>> @@ -694,7 +700,7 @@ static void test_content_protection_cleanup(void)
+>>   			continue;
+>>   
+>>   		igt_info("CP Prop being UNDESIRED on %s\n", output->name);
+>> -		test_cp_disable(output, COMMIT_ATOMIC);
+>> +		test_cp_disable(output, display->is_atomic ? COMMIT_ATOMIC : COMMIT_LEGACY);
+>>   	}
+>>   
+>>   	igt_remove_fb(data.drm_fd, &data.red);
+>> -- 
+>> 2.22.0
+>>
