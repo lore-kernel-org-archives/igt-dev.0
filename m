@@ -1,17 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7834110E50E
- for <igt-dev@lists.freedesktop.org>; Wed, 28 Sep 2022 12:40:32 +0000 (UTC)
-From: Karthik B S <karthik.b.s@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Wed, 28 Sep 2022 17:43:02 +0530
-Message-Id: <20220928121304.2590-2-karthik.b.s@intel.com>
-In-Reply-To: <20220928121304.2590-1-karthik.b.s@intel.com>
-References: <20220928121304.2590-1-karthik.b.s@intel.com>
+Content-Type: multipart/alternative;
+ boundary="===============0449470703513389846=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v6 1/3] tests/kms_content_protection: Fix
- MST subtests
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Nidhi Gupta" <nidhi1.gupta@intel.com>
+Date: Wed, 28 Sep 2022 12:53:26 -0000
+Message-ID: <166436960692.593.17016728328244653067@emeril.freedesktop.org>
+References: <20220928114720.29527-1-nidhi1.gupta@intel.com>
+In-Reply-To: <20220928114720.29527-1-nidhi1.gupta@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
+ =?utf-8?q?kms=5Fwriteback=3A_Test_Cleanup_=28rev6=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,238 +17,237 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add a modeset before checking output is HDCP capable.
-Test currently skips on multidisplay MST config telling no HDCP capable
-output is found because we're checking if output is HDCP capable
-before doing a modeset on that output.
+--===============0449470703513389846==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Try other pipe/output combo for MST if failure is seen on one, as the
-test is not dependent on the combination as long as each output has a
-valid pipe.
+== Series Details ==
 
-Signed-off-by: Karthik B S <karthik.b.s@intel.com>
-Reviewed-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
----
- tests/kms_content_protection.c | 154 ++++++++++++++++-----------------
- 1 file changed, 77 insertions(+), 77 deletions(-)
+Series: tests/kms_writeback: Test Cleanup (rev6)
+URL   : https://patchwork.freedesktop.org/series/107764/
+State : success
 
-diff --git a/tests/kms_content_protection.c b/tests/kms_content_protection.c
-index 3041f1cd..b284365d 100644
---- a/tests/kms_content_protection.c
-+++ b/tests/kms_content_protection.c
-@@ -317,91 +317,70 @@ static bool write_srm_as_fw(const __u8 *srm, int len)
- }
- 
- static void test_content_protection_on_output(igt_output_t *output,
-+					      enum pipe pipe,
- 					      enum igt_commit_style s,
- 					      int content_type)
- {
- 	igt_display_t *display = &data.display;
- 	igt_plane_t *primary;
--	enum pipe pipe;
- 	bool ret;
- 
--	for_each_pipe(display, pipe) {
--		if (!igt_pipe_connector_valid(pipe, output))
--			continue;
--
--		/*
--		 * If previous subtest of connector failed, pipe
--		 * attached to that connector is not released.
--		 * Because of that we have to choose the non
--		 * attached pipe for this subtest.
--		 */
--		if (!igt_pipe_is_free(display, pipe))
--			continue;
-+	test_cp_enable_with_retry(output, s, 3, content_type, false,
-+				  false);
-+
-+	if (data.cp_tests & CP_TYPE_CHANGE) {
-+		/* Type 1 -> Type 0 */
-+		test_cp_enable_with_retry(output, s, 3,
-+					  HDCP_CONTENT_TYPE_0, false,
-+					  true);
-+		/* Type 0 -> Type 1 */
-+		test_cp_enable_with_retry(output, s, 3,
-+					  content_type, false,
-+					  true);
-+	}
- 
--		modeset_with_fb(pipe, output, s);
--		test_cp_enable_with_retry(output, s, 3, content_type, false,
--					  false);
--
--		if (data.cp_tests & CP_TYPE_CHANGE) {
--			/* Type 1 -> Type 0 */
--			test_cp_enable_with_retry(output, s, 3,
--						  HDCP_CONTENT_TYPE_0, false,
--						  true);
--			/* Type 0 -> Type 1 */
--			test_cp_enable_with_retry(output, s, 3,
--						  content_type, false,
--						  true);
--		}
-+	if (data.cp_tests & CP_MEI_RELOAD) {
-+		igt_assert_f(!igt_kmod_unload("mei_hdcp", 0),
-+			     "mei_hdcp unload failed");
- 
--		if (data.cp_tests & CP_MEI_RELOAD) {
--			igt_assert_f(!igt_kmod_unload("mei_hdcp", 0),
--				     "mei_hdcp unload failed");
-+		/* Expected to fail */
-+		test_cp_enable_with_retry(output, s, 3,
-+					  content_type, true, false);
- 
--			/* Expected to fail */
--			test_cp_enable_with_retry(output, s, 3,
--						  content_type, true, false);
-+		igt_assert_f(!igt_kmod_load("mei_hdcp", NULL),
-+			     "mei_hdcp load failed");
- 
--			igt_assert_f(!igt_kmod_load("mei_hdcp", NULL),
--				     "mei_hdcp load failed");
-+		/* Expected to pass */
-+		test_cp_enable_with_retry(output, s, 3,
-+					  content_type, false, false);
-+	}
- 
--			/* Expected to pass */
--			test_cp_enable_with_retry(output, s, 3,
--						  content_type, false, false);
--		}
-+	if (data.cp_tests & CP_LIC)
-+		test_cp_lic(output);
- 
--		if (data.cp_tests & CP_LIC)
--			test_cp_lic(output);
-+	if (data.cp_tests & CP_DPMS) {
-+		igt_pipe_set_prop_value(display, pipe,
-+					IGT_CRTC_ACTIVE, 0);
-+		igt_display_commit2(display, s);
- 
--		if (data.cp_tests & CP_DPMS) {
--			igt_pipe_set_prop_value(display, pipe,
--						IGT_CRTC_ACTIVE, 0);
--			igt_display_commit2(display, s);
-+		igt_pipe_set_prop_value(display, pipe,
-+					IGT_CRTC_ACTIVE, 1);
-+		igt_display_commit2(display, s);
- 
--			igt_pipe_set_prop_value(display, pipe,
--						IGT_CRTC_ACTIVE, 1);
--			igt_display_commit2(display, s);
-+		ret = wait_for_prop_value(output, CP_ENABLED,
-+					  KERNEL_AUTH_TIME_ALLOWED_MSEC);
-+		if (!ret)
-+			test_cp_enable_with_retry(output, s, 2,
-+						  content_type, false,
-+						  false);
-+	}
- 
--			ret = wait_for_prop_value(output, CP_ENABLED,
--						  KERNEL_AUTH_TIME_ALLOWED_MSEC);
--			if (!ret)
--				test_cp_enable_with_retry(output, s, 2,
--							  content_type, false,
--							  false);
--		}
-+	test_cp_disable(output, s);
-+	primary = igt_output_get_plane_type(output,
-+					    DRM_PLANE_TYPE_PRIMARY);
-+	igt_plane_set_fb(primary, NULL);
-+	igt_output_set_pipe(output, PIPE_NONE);
- 
--		test_cp_disable(output, s);
--		primary = igt_output_get_plane_type(output,
--						    DRM_PLANE_TYPE_PRIMARY);
--		igt_plane_set_fb(primary, NULL);
--		igt_output_set_pipe(output, PIPE_NONE);
--
--		/*
--		 * Testing a output with a pipe is enough for HDCP
--		 * testing. No ROI in testing the connector with other
--		 * pipes. So Break the loop on pipe.
--		 */
--		break;
--	}
- }
- 
- static void __debugfs_read(int fd, const char *param, char *buf, int len)
-@@ -505,16 +484,32 @@ test_content_protection(enum igt_commit_style s, int content_type)
- 	igt_display_t *display = &data.display;
- 	igt_output_t *output;
- 	int valid_tests = 0;
-+	enum pipe pipe;
- 
- 	if (data.cp_tests & CP_MEI_RELOAD)
- 		igt_require_f(igt_kmod_is_loaded("mei_hdcp"),
- 			      "mei_hdcp module is not loaded\n");
- 
- 	for_each_connected_output(display, output) {
--		if (!output_hdcp_capable(output, content_type))
--			continue;
-+		for_each_pipe(display, pipe) {
-+			if (!igt_pipe_connector_valid(pipe, output))
-+				continue;
-+
-+			modeset_with_fb(pipe, output, s);
-+
-+			if (!output_hdcp_capable(output, content_type))
-+				continue;
-+
-+			test_content_protection_on_output(output, pipe, s, content_type);
-+
-+			/*
-+			 * Testing a output with a pipe is enough for HDCP
-+			 * testing. No ROI in testing the connector with other
-+			 * pipes. So Break the loop on pipe.
-+			 */
-+			break;
-+		}
- 
--		test_content_protection_on_output(output, s, content_type);
- 		valid_tests++;
- 	}
- 
-@@ -596,6 +591,7 @@ test_content_protection_mst(int content_type)
- 	igt_output_t *output;
- 	int valid_outputs = 0, dp_mst_outputs = 0, ret, count, max_pipe = 0, i;
- 	enum pipe pipe;
-+	bool pipe_found;
- 	igt_output_t *mst_output[IGT_MAX_PIPES], *hdcp_mst_output[IGT_MAX_PIPES];
- 
- 	for_each_pipe(display, pipe)
-@@ -607,16 +603,20 @@ test_content_protection_mst(int content_type)
- 		if (!output_is_dp_mst(output, dp_mst_outputs))
- 			continue;
- 
--		igt_assert_f(igt_pipe_connector_valid(pipe, output), "Output-pipe combination invalid\n");
-+		pipe_found = false;
-+		for_each_pipe(display, pipe) {
-+			if (igt_pipe_is_free(display, pipe) &&
-+			    igt_pipe_connector_valid(pipe, output)) {
-+				pipe_found = true;
-+				break;
-+			}
-+		}
-+
-+		igt_assert_f(pipe_found, "No valid pipe found for %s\n", output->name);
- 
- 		igt_output_set_pipe(output, pipe);
- 		prepare_modeset_on_mst_output(output);
- 		mst_output[dp_mst_outputs++] = output;
--
--		pipe++;
--
--		if (pipe > max_pipe)
--			break;
- 	}
- 
- 	igt_require_f(dp_mst_outputs > 1, "No DP MST set up with >= 2 outputs found in a single topology\n");
--- 
-2.22.0
+== Summary ==
+
+CI Bug Log - changes from IGT_6668 -> IGTPW_7868
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7868/index.html
+
+Participating hosts (45 -> 44)
+------------------------------
+
+  Missing    (1): bat-adlp-6 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_7868 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@i915_selftest@live@hangcheck:
+    - fi-hsw-g3258:       [PASS][1] -> [INCOMPLETE][2] ([i915#3303] / [i915#4785])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6668/fi-hsw-g3258/igt@i915_selftest@live@hangcheck.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7868/fi-hsw-g3258/igt@i915_selftest@live@hangcheck.html
+
+  * igt@runner@aborted:
+    - fi-hsw-g3258:       NOTRUN -> [FAIL][3] ([fdo#109271] / [i915#4312])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7868/fi-hsw-g3258/igt@runner@aborted.html
+
+  
+#### Possible fixes ####
+
+  * igt@gem_exec_suspend@basic-s0@smem:
+    - {bat-rplp-1}:       [DMESG-WARN][4] ([i915#2867]) -> [PASS][5]
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6668/bat-rplp-1/igt@gem_exec_suspend@basic-s0@smem.html
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7868/bat-rplp-1/igt@gem_exec_suspend@basic-s0@smem.html
+    - {bat-adlm-1}:       [DMESG-WARN][6] ([i915#2867]) -> [PASS][7]
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6668/bat-adlm-1/igt@gem_exec_suspend@basic-s0@smem.html
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7868/bat-adlm-1/igt@gem_exec_suspend@basic-s0@smem.html
+
+  * igt@i915_pm_rpm@module-reload:
+    - fi-cfl-8109u:       [DMESG-FAIL][8] ([i915#62]) -> [PASS][9]
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6668/fi-cfl-8109u/igt@i915_pm_rpm@module-reload.html
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7868/fi-cfl-8109u/igt@i915_pm_rpm@module-reload.html
+
+  * igt@i915_selftest@live@late_gt_pm:
+    - fi-cfl-8109u:       [DMESG-WARN][10] ([i915#5904]) -> [PASS][11] +30 similar issues
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6668/fi-cfl-8109u/igt@i915_selftest@live@late_gt_pm.html
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7868/fi-cfl-8109u/igt@i915_selftest@live@late_gt_pm.html
+
+  * igt@i915_selftest@live@slpc:
+    - {bat-rpls-1}:       [DMESG-FAIL][12] ([i915#6367]) -> [PASS][13]
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6668/bat-rpls-1/igt@i915_selftest@live@slpc.html
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7868/bat-rpls-1/igt@i915_selftest@live@slpc.html
+
+  * igt@i915_suspend@basic-s2idle-without-i915:
+    - fi-cfl-8109u:       [DMESG-WARN][14] ([i915#5904] / [i915#62]) -> [PASS][15]
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6668/fi-cfl-8109u/igt@i915_suspend@basic-s2idle-without-i915.html
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7868/fi-cfl-8109u/igt@i915_suspend@basic-s2idle-without-i915.html
+
+  * igt@kms_frontbuffer_tracking@basic:
+    - fi-cfl-8109u:       [DMESG-WARN][16] ([i915#62]) -> [PASS][17] +11 similar issues
+   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6668/fi-cfl-8109u/igt@kms_frontbuffer_tracking@basic.html
+   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7868/fi-cfl-8109u/igt@kms_frontbuffer_tracking@basic.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [i915#2867]: https://gitlab.freedesktop.org/drm/intel/issues/2867
+  [i915#3303]: https://gitlab.freedesktop.org/drm/intel/issues/3303
+  [i915#4312]: https://gitlab.freedesktop.org/drm/intel/issues/4312
+  [i915#4785]: https://gitlab.freedesktop.org/drm/intel/issues/4785
+  [i915#5904]: https://gitlab.freedesktop.org/drm/intel/issues/5904
+  [i915#62]: https://gitlab.freedesktop.org/drm/intel/issues/62
+  [i915#6367]: https://gitlab.freedesktop.org/drm/intel/issues/6367
+  [i915#6816]: https://gitlab.freedesktop.org/drm/intel/issues/6816
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_6668 -> IGTPW_7868
+
+  CI-20190529: 20190529
+  CI_DRM_12193: 0f0716dcfd8446cde4391475c9c3656ca670b55f @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_7868: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7868/index.html
+  IGT_6668: 5f29c9369550164b35b65baaaeba4b370f434cf1 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7868/index.html
+
+--===============0449470703513389846==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/kms_writeback: Test Cleanup (rev6)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/107764/">https://patchwork.freedesktop.org/series/107764/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7868/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7868/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_6668 -&gt; IGTPW_7868</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7868/index.html</p>
+<h2>Participating hosts (45 -&gt; 44)</h2>
+<p>Missing    (1): bat-adlp-6 </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_7868 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live@hangcheck:</p>
+<ul>
+<li>fi-hsw-g3258:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6668/fi-hsw-g3258/igt@i915_selftest@live@hangcheck.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7868/fi-hsw-g3258/igt@i915_selftest@live@hangcheck.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3303">i915#3303</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4785">i915#4785</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@runner@aborted:</p>
+<ul>
+<li>fi-hsw-g3258:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7868/fi-hsw-g3258/igt@runner@aborted.html">FAIL</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4312">i915#4312</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@gem_exec_suspend@basic-s0@smem:</p>
+<ul>
+<li>
+<p>{bat-rplp-1}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6668/bat-rplp-1/igt@gem_exec_suspend@basic-s0@smem.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2867">i915#2867</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7868/bat-rplp-1/igt@gem_exec_suspend@basic-s0@smem.html">PASS</a></p>
+</li>
+<li>
+<p>{bat-adlm-1}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6668/bat-adlm-1/igt@gem_exec_suspend@basic-s0@smem.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2867">i915#2867</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7868/bat-adlm-1/igt@gem_exec_suspend@basic-s0@smem.html">PASS</a></p>
+</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_pm_rpm@module-reload:</p>
+<ul>
+<li>fi-cfl-8109u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6668/fi-cfl-8109u/igt@i915_pm_rpm@module-reload.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/62">i915#62</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7868/fi-cfl-8109u/igt@i915_pm_rpm@module-reload.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@late_gt_pm:</p>
+<ul>
+<li>fi-cfl-8109u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6668/fi-cfl-8109u/igt@i915_selftest@live@late_gt_pm.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5904">i915#5904</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7868/fi-cfl-8109u/igt@i915_selftest@live@late_gt_pm.html">PASS</a> +30 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@slpc:</p>
+<ul>
+<li>{bat-rpls-1}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6668/bat-rpls-1/igt@i915_selftest@live@slpc.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6367">i915#6367</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7868/bat-rpls-1/igt@i915_selftest@live@slpc.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_suspend@basic-s2idle-without-i915:</p>
+<ul>
+<li>fi-cfl-8109u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6668/fi-cfl-8109u/igt@i915_suspend@basic-s2idle-without-i915.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5904">i915#5904</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/62">i915#62</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7868/fi-cfl-8109u/igt@i915_suspend@basic-s2idle-without-i915.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@basic:</p>
+<ul>
+<li>fi-cfl-8109u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6668/fi-cfl-8109u/igt@kms_frontbuffer_tracking@basic.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/62">i915#62</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7868/fi-cfl-8109u/igt@kms_frontbuffer_tracking@basic.html">PASS</a> +11 similar issues</li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_6668 -&gt; IGTPW_7868</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_12193: 0f0716dcfd8446cde4391475c9c3656ca670b55f @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_7868: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7868/index.html<br />
+  IGT_6668: 5f29c9369550164b35b65baaaeba4b370f434cf1 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============0449470703513389846==--
