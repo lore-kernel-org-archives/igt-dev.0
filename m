@@ -1,20 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-yb1-xb2a.google.com (mail-yb1-xb2a.google.com
- [IPv6:2607:f8b0:4864:20::b2a])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E889C10E525
- for <igt-dev@lists.freedesktop.org>; Wed, 28 Sep 2022 14:17:52 +0000 (UTC)
-Received: by mail-yb1-xb2a.google.com with SMTP id 63so16136072ybq.4
- for <igt-dev@lists.freedesktop.org>; Wed, 28 Sep 2022 07:17:52 -0700 (PDT)
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8440F10E566
+ for <igt-dev@lists.freedesktop.org>; Wed, 28 Sep 2022 18:06:48 +0000 (UTC)
+From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Wed, 28 Sep 2022 20:06:37 +0200
+Message-Id: <20220928180638.52913-3-zbigniew.kempczynski@intel.com>
+In-Reply-To: <20220928180638.52913-1-zbigniew.kempczynski@intel.com>
+References: <20220928180638.52913-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
-References: <20220927193512.447146-1-alex.hung@amd.com>
-In-Reply-To: <20220927193512.447146-1-alex.hung@amd.com>
-From: Mark Yacoub <markyacoub@chromium.org>
-Date: Wed, 28 Sep 2022 10:17:41 -0400
-Message-ID: <CAJUqKUqvSE=3TUZaoxmKiZBbw7r9cbSp_2GFQ+i8M4oih4BUJA@mail.gmail.com>
-To: Alex Hung <alex.hung@amd.com>
-Content-Type: text/plain; charset="UTF-8"
-Subject: Re: [igt-dev] [PATCH][V2] tests/kms_plane_multiple: turn off pipe
- if all planes are off
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t v2 2/3] tests/gem_exec_basic: Don't use
+ hardcoded batch size
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,52 +20,59 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org, markyacoub@google.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-is the second fix not necessary anymore?
+Instead of using hardcoded batch size use kernel altered object size.
+Change allows removing confusing gem_get_batch_size() function.
 
-On Tue, Sep 27, 2022 at 3:36 PM Alex Hung <alex.hung@amd.com> wrote:
->
-> amdgpu rejects when crtc is on + all planes are off, and it
-> is necessary to turn off crtc when all planes are off.
->
-> This is revised from https://patchwork.freedesktop.org/series/80904/
->
-> Signed-off-by: Alex Hung <alex.hung@amd.com>
-> ---
->  tests/kms_plane_multiple.c | 3 +++
->  1 file changed, 3 insertions(+)
->
-> diff --git a/tests/kms_plane_multiple.c b/tests/kms_plane_multiple.c
-> index cbe8c189..e900dc7f 100644
-> --- a/tests/kms_plane_multiple.c
-> +++ b/tests/kms_plane_multiple.c
-> @@ -311,6 +311,8 @@ test_plane_position_with_output(data_t *data, enum pipe pipe,
->                 for_each_plane_on_pipe(&data->display, pipe, plane)
->                         igt_plane_set_fb(plane, NULL);
->
-> +               if (is_amdgpu_device(data->drm_fd))
-> +                       igt_output_set_pipe(output, PIPE_NONE);
-I'm still confused why do you need this just for AMD. If AMD has some
-requirements, I think it's gonna work for everyone else. If it breaks
-in the CI (testing on intel devices), then I think something is off
-here, and maybe it's a kernel thing.
-If it's the crtc/plan workaround that's in amdgpu, an IGT fix has
-always worked for everyone and didn't need an (is amd only) check.
->                 igt_display_commit2(&data->display, COMMIT_ATOMIC);
->
->                 for (int x = 0; x < c; x++)
-> @@ -344,6 +346,7 @@ test_plane_position_with_output(data_t *data, enum pipe pipe,
->                 for_each_plane_on_pipe(&data->display, pipe, plane)
->                         igt_plane_set_fb(plane, NULL);
->
-> +               igt_output_set_pipe(output, PIPE_NONE);
->                 igt_display_commit2(&data->display, COMMIT_ATOMIC);
->
->                 for (int x = 0; x < c; x++)
-> --
-> 2.34.1
->
+Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+---
+ tests/i915/gem_exec_basic.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
+
+diff --git a/tests/i915/gem_exec_basic.c b/tests/i915/gem_exec_basic.c
+index ab4c159764..ca4fc7b961 100644
+--- a/tests/i915/gem_exec_basic.c
++++ b/tests/i915/gem_exec_basic.c
+@@ -28,12 +28,12 @@
+ 
+ IGT_TEST_DESCRIPTION("Basic sanity check of execbuf-ioctl rings.");
+ 
+-static uint32_t batch_create(int fd, uint32_t batch_size, uint32_t region)
++static uint32_t batch_create(int fd, uint64_t *batch_size, uint32_t region)
+ {
+ 	const uint32_t bbe = MI_BATCH_BUFFER_END;
+ 	uint32_t handle;
+ 
+-	handle = gem_create_in_memory_regions(fd, batch_size, region);
++	igt_assert(__gem_create_in_memory_regions(fd, &handle, batch_size, region) == 0);
+ 	gem_write(fd, handle, 0, &bbe, sizeof(bbe));
+ 
+ 	return handle;
+@@ -44,7 +44,7 @@ igt_main
+ 	const struct intel_execution_engine2 *e;
+ 	struct drm_i915_query_memory_regions *query_info;
+ 	struct igt_collection *regions, *set;
+-	uint32_t batch_size;
++	uint64_t batch_size;
+ 	const intel_ctx_t *ctx;
+ 	int fd = -1;
+ 
+@@ -71,9 +71,9 @@ igt_main
+ 			struct drm_i915_gem_exec_object2 exec;
+ 			uint32_t region = igt_collection_get_value(regions, 0);
+ 
+-			batch_size = gem_get_batch_size(fd, MEMORY_TYPE_FROM_REGION(region));
++			batch_size = 4096;
+ 			memset(&exec, 0, sizeof(exec));
+-			exec.handle = batch_create(fd, batch_size, region);
++			exec.handle = batch_create(fd, &batch_size, region);
+ 
+ 			for_each_ctx_engine(fd, ctx, e) {
+ 				igt_dynamic_f("%s-%s", e->name, sub_name) {
+-- 
+2.34.1
