@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6179510EA12
- for <igt-dev@lists.freedesktop.org>; Wed, 28 Sep 2022 15:36:28 +0000 (UTC)
-Date: Wed, 28 Sep 2022 18:35:56 +0300
-From: Petri Latvala <petri.latvala@intel.com>
-To: Jake Freeland <jake@technologyfriends.net>
-Message-ID: <YzRp3PJjSE+aBVgY@platvala-desk.ger.corp.intel.com>
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 62D1B10E46C
+ for <igt-dev@lists.freedesktop.org>; Wed, 28 Sep 2022 15:42:56 +0000 (UTC)
+Date: Wed, 28 Sep 2022 17:42:52 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Message-ID: <YzRrfIGlAgT307MC@kamilkon-desk1>
 References: <20220918221535.3276922-1-jfree@freebsd.org>
  <YzQ/CnZyoBpgIfYM@kamilkon-desk1>
  <YzRBxjWDvvfTq3Yd@platvala-desk.ger.corp.intel.com>
  <CAOgZAGZjV=Eg+DJSpes2PpMKEZPFKF6CbuDZ5-9=tY5gmuQv+A@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 In-Reply-To: <CAOgZAGZjV=Eg+DJSpes2PpMKEZPFKF6CbuDZ5-9=tY5gmuQv+A@mail.gmail.com>
 Subject: Re: [igt-dev] [PATCH i-g-t] Replaced instances of mmap64() with
@@ -23,21 +23,17 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org, Jake Freeland <jfree@freebsd.org>
+Cc: Jake Freeland <jfree@freebsd.org>, Petri Latvala <petri.latvala@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Wed, Sep 28, 2022 at 10:19:04AM -0500, Jake Freeland wrote:
+Hi Jake,
+
+On 2022-09-28 at 10:19:04 -0500, Jake Freeland wrote:
 > I cannot find any relevant documentation for both Linux and FreeBSD
 > that mentions an mmap flag that supports large file allocation on
 > 32-bit architectures.
-
-Me neither, apart from old posts on SO. I suppose everything these
-days has 64bit off_t.
-
-Acked-by: Petri Latvala <petri.latvala@intel.com>
-
 > 
 > Commit message:
 > The mmap64() function exists to point 32-bit architectures to an mmap
@@ -48,6 +44,20 @@ Acked-by: Petri Latvala <petri.latvala@intel.com>
 > replaces all instances of mmap64() with mmap().
 > 
 > Jake Freeland
+
+Commit message looks ok, please repost patch with this.
+
+For the _LARGEFILE64_SOURCE, it looks like it is enough to define
+_FILE_OFFSET_BITS on 32-bit platform during compile, see:
+
+https://stackoverflow.com/questions/59453555/is-there-any-difference-between-mmap-vs-mmap64
+
+The question is: are there any igt users of 32-bit platform with
+GPU memory size bigger then 2GB ?
+
+Regards,
+Kamil
+
 > 
 > On Wed, Sep 28, 2022 at 7:45 AM Petri Latvala <petri.latvala@intel.com>
 > wrote:
