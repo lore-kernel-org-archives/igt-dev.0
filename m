@@ -1,18 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A2E6A10E44D
- for <igt-dev@lists.freedesktop.org>; Wed, 28 Sep 2022 11:20:28 +0000 (UTC)
-From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-To: igt-dev@lists.freedesktop.org,
-	karthik.b.s@intel.com
-Date: Wed, 28 Sep 2022 16:50:15 +0530
-Message-Id: <20220928112015.2374165-1-bhanuprakash.modem@intel.com>
-In-Reply-To: <20220922160004.2041598-24-bhanuprakash.modem@intel.com>
-References: <20220922160004.2041598-24-bhanuprakash.modem@intel.com>
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 75BAD10E452
+ for <igt-dev@lists.freedesktop.org>; Wed, 28 Sep 2022 11:20:15 +0000 (UTC)
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Wed, 28 Sep 2022 13:19:54 +0200
+Message-Id: <20220928111954.19569-2-kamil.konieczny@linux.intel.com>
+In-Reply-To: <20220928111954.19569-1-kamil.konieczny@linux.intel.com>
+References: <20220928111954.19569-1-kamil.konieczny@linux.intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V5 23/52] tests/kms_plane_alpha_blend: Add support
- for Bigjoiner
+Subject: [igt-dev] [PATCH i-g-t 1/1] i915/hangman: Fix gt hang/error tests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,47 +23,186 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-This patch will add a check to Skip the subtest if a selected pipe/output
-combo won't support Bigjoiner or 8K mode.
+From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 
-Example:
-* Pipe-D wont support a mode > 5K
-* To use 8K mode on a pipe then consecutive pipe must be available & free.
+gt-engine-hang and gt-engine-error tests were still using reset=2
+setting so that ended up just doing an engine reset. Fix the tests so
+that they actually do the gt specific reset and set the expectations
+correctly.
 
-V2: - Use updated helper name
-V3: - Rebase
+In some rare failures, some of the background spinners show up as
+innocent and keep spinning after the hang recovery. This can only happen
+if the spinners did not start for some reason. Check that the spinners
+actually started before submitting a hanging batch.
 
-Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+For engine specific hang, only one context is marked guilty, but for a
+gt hang all contexts are marked guilty. Check for different expected
+behavior for engine vs. gt reset.
+
+v2:
+- gt-reset resets all contexts on all engines. The execlist implementation
+  of gt-engine-* tests expected that a preemptible background spinner
+  running on the target engine should be marked innocent. While i915 can
+  mark such a context for execlist mode, GuC scheduling does not guarantee
+  that the background spinner can be marked as innocent. Since the state
+  of the background spinner depends on the scheduling backend, do no
+  validate the state of the background spinner for the target engine.
+
+v3:
+- omit checking background spinner state only for gt-reset case
+
+v4: (Kamil)
+- check has_gpu_reset and gem_scheduler_has_preemption for the
+  gt-engine-hang and gt-engine-error tests.
+
+v5:
+- fixed two whitespace errors [Kamil]
+
+Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+
+Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 ---
- tests/kms_plane_alpha_blend.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ tests/i915/i915_hangman.c | 75 +++++++++++++++++++++++++++++++--------
+ 1 file changed, 60 insertions(+), 15 deletions(-)
 
-diff --git a/tests/kms_plane_alpha_blend.c b/tests/kms_plane_alpha_blend.c
-index f122066d..156005d5 100644
---- a/tests/kms_plane_alpha_blend.c
-+++ b/tests/kms_plane_alpha_blend.c
-@@ -171,9 +171,6 @@ static void prepare_crtc(data_t *data, igt_output_t *output, enum pipe pipe)
- 	int w, h;
- 	igt_plane_t *primary = igt_pipe_get_plane_type(&display->pipes[pipe], DRM_PLANE_TYPE_PRIMARY);
+diff --git a/tests/i915/i915_hangman.c b/tests/i915/i915_hangman.c
+index c7d69fdd..951a431a 100644
+--- a/tests/i915/i915_hangman.c
++++ b/tests/i915/i915_hangman.c
+@@ -295,9 +295,15 @@ static void context_unban(int fd, unsigned ctx)
+ 	gem_context_set_param(fd, &param);
+ }
  
--	igt_display_reset(display);
--	igt_output_set_pipe(output, pipe);
--
- 	/* create the pipe_crc object for this pipe */
- 	igt_pipe_crc_free(data->pipe_crc);
- 	data->pipe_crc = igt_pipe_crc_new(data->gfx_fd, pipe, INTEL_PIPE_CRC_SOURCE_AUTO);
-@@ -616,6 +613,12 @@ static void run_subtests(data_t *data)
++enum reset_type {
++	GT_RESET = 1,
++	ENGINE_RESET = 2,
++};
++
+ static void
+ test_engine_hang(const intel_ctx_t *ctx,
+-		 const struct intel_execution_engine2 *e, unsigned int flags)
++		 const struct intel_execution_engine2 *e, unsigned int flags,
++		 enum reset_type reset)
+ {
+ 	const struct intel_execution_engine2 *other;
+ 	const intel_ctx_t *local_ctx[GEM_MAX_ENGINES];
+@@ -309,6 +315,7 @@ test_engine_hang(const intel_ctx_t *ctx,
+ 	igt_skip_on(flags & IGT_SPIN_INVALID_CS &&
+ 		    gem_engine_has_cmdparser(device, &ctx->cfg, e->flags));
  
- 		igt_subtest_with_dynamic(subtests[i].name) {
- 			for_each_pipe_with_single_output(&data->display, pipe, output) {
-+				igt_display_reset(&data->display);
++	igt_assert(reset == GT_RESET || reset == ENGINE_RESET);
+ 	/*
+ 	 * Fill all engines with background load.
+ 	 * This verifies that independent engines are unaffected and gives
+@@ -324,7 +331,10 @@ test_engine_hang(const intel_ctx_t *ctx,
+ 				      .ahnd = ahndN,
+ 				      .ctx = local_ctx[num_ctx],
+ 				      .engine = other->flags,
+-				      .flags = IGT_SPIN_FENCE_OUT);
++				      .flags = IGT_SPIN_FENCE_OUT |
++					       IGT_SPIN_POLL_RUN);
++		igt_spin_busywait_until_started(spin);
 +
-+				igt_output_set_pipe(output, pipe);
-+				if (!i915_pipe_output_combo_valid(&data->display))
-+					continue;
+ 		num_ctx++;
+ 
+ 		igt_list_move(&spin->link, &list);
+@@ -344,14 +354,44 @@ test_engine_hang(const intel_ctx_t *ctx,
+ 	igt_assert_eq(sync_fence_status(spin->out_fence), -EIO);
+ 	igt_spin_free(device, spin);
+ 
+-	/* But no other engines/clients should be affected */
+-	igt_list_for_each_entry_safe(spin, next, &list, link) {
++	/*
++	 * engine-engine-hang: Other engines/clients should not be affected for
++	 * engine reset, so innocent contexts complete successfully once the
++	 * spinner is ended.
++	 *
++	 * gt-engine-hang: All engines/clients are guilty and complete with a
++	 * -EIO fence status, however the background task that was submitted to
++	 * the target engine is innocent and is expected to complete
++	 * successfully.
++	 */
++	igt_list_for_each_entry_safe_reverse(spin, next, &list, link) {
++		bool innocent = reset == ENGINE_RESET;
++		int expect = innocent ? 1 : -EIO;
 +
- 				prepare_crtc(data, output, pipe);
- 				if (!pipe_check(data, pipe, subtests[i].blend, subtests[i].must_multiply))
- 					continue;
+ 		ahndN = spin->opts.ahnd;
+-		igt_assert(sync_fence_wait(spin->out_fence, 0) == -ETIME);
+-		igt_spin_end(spin);
++		if (innocent) {
++			igt_assert_eq(sync_fence_wait(spin->out_fence, 0), -ETIME);
++			igt_spin_end(spin);
++		}
+ 
+-		igt_assert(sync_fence_wait(spin->out_fence, 500) == 0);
+-		igt_assert_eq(sync_fence_status(spin->out_fence), 1);
++		if (reset == GT_RESET && spin->opts.engine == e->flags) {
++			/*
++			 * gt-reset resets everything. The execlist
++			 * implementation of gt-engine-* tests expect that a
++			 * preemptible background spinner running on the target
++			 * engine should be marked innocent. While i915 can mark
++			 * such a context innocent for execlist mode, GuC
++			 * scheduling does not guarantee that the background
++			 * spinner can be marked as innocent. Since the state of
++			 * the background spinner depends on the scheduling
++			 * backend, do no validate the state of the background
++			 * spinner for the target engine when doing a gt-reset.
++			 */
++			igt_spin_end(spin);
++		} else {
++			igt_assert_eq(sync_fence_wait(spin->out_fence, 500), 0);
++			igt_assert_eq(sync_fence_status(spin->out_fence), expect);
++		}
+ 		igt_spin_free(device, spin);
+ 		put_ahnd(ahndN);
+ 	}
+@@ -439,6 +479,10 @@ static void do_tests(const char *name, const char *prefix,
+ {
+ 	const struct intel_execution_engine2 *e;
+ 	char buff[256];
++	enum reset_type reset = ENGINE_RESET;
++
++	if (!strncmp(prefix, "gt", 2))
++		reset = GT_RESET;
+ 
+ 	snprintf(buff, sizeof(buff), "Per engine error capture (%s reset)", name);
+ 	igt_describe(buff);
+@@ -461,13 +505,13 @@ static void do_tests(const char *name, const char *prefix,
+ 		};
+ 
+ 		igt_require(gem_scheduler_has_preemption(device));
+-		igt_params_set(device, "reset", "%u", -1);
+-                ioctl(device, DRM_IOCTL_I915_GETPARAM, &gp);
+-		igt_require(has_gpu_reset > 1);
++		ioctl(device, DRM_IOCTL_I915_GETPARAM, &gp);
++		igt_require((reset == GT_RESET && has_gpu_reset == 1) ||
++			    (reset == ENGINE_RESET && has_gpu_reset > 1));
+ 
+ 		for_each_ctx_engine(device, ctx, e) {
+ 			igt_dynamic_f("%s", e->name)
+-				test_engine_hang(ctx, e, 0);
++				test_engine_hang(ctx, e, 0, reset);
+ 		}
+ 	}
+ 
+@@ -481,13 +525,14 @@ static void do_tests(const char *name, const char *prefix,
+ 			.value = &has_gpu_reset,
+ 		};
+ 
+-		igt_params_set(device, "reset", "%u", -1);
++		igt_require(gem_scheduler_has_preemption(device));
+ 		ioctl(device, DRM_IOCTL_I915_GETPARAM, &gp);
+-		igt_require(has_gpu_reset > 1);
++		igt_require((reset == GT_RESET && has_gpu_reset == 1) ||
++			    (reset == ENGINE_RESET && has_gpu_reset > 1));
+ 
+ 		for_each_ctx_engine(device, ctx, e) {
+ 			igt_dynamic_f("%s", e->name)
+-				test_engine_hang(ctx, e, IGT_SPIN_INVALID_CS);
++				test_engine_hang(ctx, e, IGT_SPIN_INVALID_CS, reset);
+ 		}
+ 	}
+ }
 -- 
-2.37.3
+2.34.1
