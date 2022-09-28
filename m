@@ -1,17 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5575A10E0CB
- for <igt-dev@lists.freedesktop.org>; Wed, 28 Sep 2022 08:45:43 +0000 (UTC)
-Date: Wed, 28 Sep 2022 10:45:39 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Message-ID: <YzQJs6BuVQFTjT51@kamilkon-desk1>
-References: <20220928080227.5615-1-dominik.karol.piatkowski@intel.com>
+Content-Type: multipart/alternative;
+ boundary="===============1465821642008457113=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Dominik Karol Piatkowski" <dominik.karol.piatkowski@intel.com>
+Date: Wed, 28 Sep 2022 08:57:20 -0000
+Message-ID: <166435544060.596.12768910501524856971@emeril.freedesktop.org>
+References: <20220928080227.5615-1-dominik.karol.piatkowski@intel.com>
 In-Reply-To: <20220928080227.5615-1-dominik.karol.piatkowski@intel.com>
-Subject: Re: [igt-dev] [i-g-t] i915/gem_spin_batch: Typo fix
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgaTkxNS9n?=
+ =?utf-8?q?em=5Fspin=5Fbatch=3A_Typo_fix?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,38 +17,169 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On 2022-09-28 at 10:02:27 +0200, Dominik Karol Piatkowski wrote:
-> Fixed undef typo in i915/gem_spin_batch.
-> 
-> Signed-off-by: Dominik Karol Piatkowski <dominik.karol.piatkowski@intel.com>
-> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+--===============1465821642008457113==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-When sending new patches in future please put PATCH before i-g-t
-in subject line. Patch itself is ok, so
+== Series Details ==
 
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Series: i915/gem_spin_batch: Typo fix
+URL   : https://patchwork.freedesktop.org/series/109167/
+State : success
 
-> ---
->  tests/i915/gem_spin_batch.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/tests/i915/gem_spin_batch.c b/tests/i915/gem_spin_batch.c
-> index 9b39bfc7..7dc68ebc 100644
-> --- a/tests/i915/gem_spin_batch.c
-> +++ b/tests/i915/gem_spin_batch.c
-> @@ -225,7 +225,7 @@ igt_main
->  	test_each_legacy_ring("legacy-resubmit-new")
->  		spin_resubmit(fd, intel_ctx_0(fd), eb_ring(e), RESUBMIT_NEW_CTX);
->  
-> -#undef test_each_legcy_ring
-> +#undef test_each_legacy_ring
->  
->  	igt_subtest("spin-all")
->  		spin_all(fd, ctx, 0);
-> -- 
-> 2.34.1
-> 
+== Summary ==
+
+CI Bug Log - changes from IGT_6667 -> IGTPW_7859
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7859/index.html
+
+Participating hosts (45 -> 41)
+------------------------------
+
+  Missing    (4): fi-bdw-gvtdvm fi-rkl-11600 bat-adln-1 fi-bdw-samus 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_7859 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@runner@aborted:
+    - fi-bdw-5557u:       NOTRUN -> [FAIL][1] ([i915#4312])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7859/fi-bdw-5557u/igt@runner@aborted.html
+
+  
+#### Possible fixes ####
+
+  * igt@gem_exec_suspend@basic-s3@smem:
+    - {bat-adlm-1}:       [DMESG-WARN][2] ([i915#2867]) -> [PASS][3]
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6667/bat-adlm-1/igt@gem_exec_suspend@basic-s3@smem.html
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7859/bat-adlm-1/igt@gem_exec_suspend@basic-s3@smem.html
+
+  * igt@kms_pipe_crc_basic@suspend-read-crc@pipe-d-dp-2:
+    - {bat-dg2-11}:       [FAIL][4] ([i915#6818]) -> [PASS][5] +1 similar issue
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6667/bat-dg2-11/igt@kms_pipe_crc_basic@suspend-read-crc@pipe-d-dp-2.html
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7859/bat-dg2-11/igt@kms_pipe_crc_basic@suspend-read-crc@pipe-d-dp-2.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [i915#2867]: https://gitlab.freedesktop.org/drm/intel/issues/2867
+  [i915#4312]: https://gitlab.freedesktop.org/drm/intel/issues/4312
+  [i915#4983]: https://gitlab.freedesktop.org/drm/intel/issues/4983
+  [i915#5122]: https://gitlab.freedesktop.org/drm/intel/issues/5122
+  [i915#6668]: https://gitlab.freedesktop.org/drm/intel/issues/6668
+  [i915#6818]: https://gitlab.freedesktop.org/drm/intel/issues/6818
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_6667 -> IGTPW_7859
+
+  CI-20190529: 20190529
+  CI_DRM_12193: 0f0716dcfd8446cde4391475c9c3656ca670b55f @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_7859: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7859/index.html
+  IGT_6667: 97ec0c0a3c6b9d02a4f63cf4ac699cee3dc6ac53 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7859/index.html
+
+--===============1465821642008457113==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>i915/gem_spin_batch: Typo fix</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/109167/">https://patchwork.freedesktop.org/series/109167/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7859/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7859/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_6667 -&gt; IGTPW_7859</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7859/index.html</p>
+<h2>Participating hosts (45 -&gt; 41)</h2>
+<p>Missing    (4): fi-bdw-gvtdvm fi-rkl-11600 bat-adln-1 fi-bdw-samus </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_7859 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>igt@runner@aborted:<ul>
+<li>fi-bdw-5557u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7859/fi-bdw-5557u/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4312">i915#4312</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@gem_exec_suspend@basic-s3@smem:</p>
+<ul>
+<li>{bat-adlm-1}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6667/bat-adlm-1/igt@gem_exec_suspend@basic-s3@smem.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2867">i915#2867</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7859/bat-adlm-1/igt@gem_exec_suspend@basic-s3@smem.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@suspend-read-crc@pipe-d-dp-2:</p>
+<ul>
+<li>{bat-dg2-11}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_6667/bat-dg2-11/igt@kms_pipe_crc_basic@suspend-read-crc@pipe-d-dp-2.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6818">i915#6818</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7859/bat-dg2-11/igt@kms_pipe_crc_basic@suspend-read-crc@pipe-d-dp-2.html">PASS</a> +1 similar issue</li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_6667 -&gt; IGTPW_7859</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_12193: 0f0716dcfd8446cde4391475c9c3656ca670b55f @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_7859: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7859/index.html<br />
+  IGT_6667: 97ec0c0a3c6b9d02a4f63cf4ac699cee3dc6ac53 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============1465821642008457113==--
