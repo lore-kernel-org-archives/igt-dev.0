@@ -1,17 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1EB3510E50F
- for <igt-dev@lists.freedesktop.org>; Wed, 28 Sep 2022 12:40:36 +0000 (UTC)
-From: Karthik B S <karthik.b.s@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Wed, 28 Sep 2022 17:43:04 +0530
-Message-Id: <20220928121304.2590-4-karthik.b.s@intel.com>
-In-Reply-To: <20220928121304.2590-1-karthik.b.s@intel.com>
-References: <20220928121304.2590-1-karthik.b.s@intel.com>
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A4BF910E5EB
+ for <igt-dev@lists.freedesktop.org>; Wed, 28 Sep 2022 12:45:29 +0000 (UTC)
+Date: Wed, 28 Sep 2022 15:44:54 +0300
+From: Petri Latvala <petri.latvala@intel.com>
+To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ igt-dev@lists.freedesktop.org, Jake Freeland <jfree@freebsd.org>
+Message-ID: <YzRBxjWDvvfTq3Yd@platvala-desk.ger.corp.intel.com>
+References: <20220918221535.3276922-1-jfree@freebsd.org>
+ <YzQ/CnZyoBpgIfYM@kamilkon-desk1>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v6 3/3] tests/kms_content_protection:
- Convert test to dynamic
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <YzQ/CnZyoBpgIfYM@kamilkon-desk1>
+Subject: Re: [igt-dev] [PATCH i-g-t] Replaced instances of mmap64() with
+ mmap()
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,290 +26,229 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Covert the existing subtests to dynamic subtests at pipe/output level.
+On Wed, Sep 28, 2022 at 02:33:14PM +0200, Kamil Konieczny wrote:
+> Hi Jake,
+> 
+> this patch is missing commit message. Please put here short
+> description of change and why you do it. Change looks resonable
+> as on 64-bit systems both functions are the same.
+> 
+> On 2022-09-18 at 17:15:35 -0500, Jake Freeland wrote:
+> > Signed-off-by: Jake Freeland <jfree@freebsd.org>
+> 
+> Adding Petri on cc as I do not know if anyone compiles this on
+> 32-bit platforms.
 
-Signed-off-by: Karthik B S <karthik.b.s@intel.com>
-Reviewed-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
----
- tests/kms_content_protection.c | 218 +++++++++++++++++++--------------
- 1 file changed, 125 insertions(+), 93 deletions(-)
+Aren't you supposed to use mmap() with _LARGEFILE_something even on
+32-bit builds, instead of mmap64?
 
-diff --git a/tests/kms_content_protection.c b/tests/kms_content_protection.c
-index d8892286..6ac83eca 100644
---- a/tests/kms_content_protection.c
-+++ b/tests/kms_content_protection.c
-@@ -485,13 +485,17 @@ test_content_protection(enum igt_commit_style s, int content_type)
- {
- 	igt_display_t *display = &data.display;
- 	igt_output_t *output;
--	int valid_tests = 0;
- 	enum pipe pipe;
- 
- 	if (data.cp_tests & CP_MEI_RELOAD)
- 		igt_require_f(igt_kmod_is_loaded("mei_hdcp"),
- 			      "mei_hdcp module is not loaded\n");
- 
-+	if (data.cp_tests & CP_UEVENT) {
-+		data.uevent_monitor = igt_watch_uevents();
-+		igt_flush_uevents(data.uevent_monitor);
-+	}
-+
- 	for_each_connected_output(display, output) {
- 		for_each_pipe(display, pipe) {
- 			if (!igt_pipe_connector_valid(pipe, output))
-@@ -503,10 +507,10 @@ test_content_protection(enum igt_commit_style s, int content_type)
- 			if (!output_hdcp_capable(output, content_type))
- 				continue;
- 
--			test_content_protection_on_output(output, pipe, s, content_type);
--			test_fini(output, s);
-+			igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), output->name)
-+				test_content_protection_on_output(output, pipe, s, content_type);
- 
--			valid_tests++;
-+			test_fini(output, s);
- 
- 			/*
- 			 * Testing a output with a pipe is enough for HDCP
-@@ -517,7 +521,8 @@ test_content_protection(enum igt_commit_style s, int content_type)
- 		}
- 	}
- 
--	igt_require_f(valid_tests, "No connector found with HDCP capability\n");
-+	if (data.cp_tests & CP_UEVENT)
-+		igt_cleanup_uevents(data.uevent_monitor);
- }
- 
- static int parse_path_blob(char *blob_data)
-@@ -727,6 +732,94 @@ static void create_fbs(void)
- 			    0.f, 1.f, 0.f, &data.green);
- }
- 
-+static const struct {
-+	const char *desc;
-+	const char *name;
-+	unsigned int cp_tests;
-+	bool content_type;
-+} subtests[] = {
-+	{ .desc = "Test content protection with atomic modesetting",
-+	  .name = "atomic",
-+	  .cp_tests = 0,
-+	  .content_type = HDCP_CONTENT_TYPE_0
-+	},
-+	{ .desc = "Test content protection with DPMS ON/OFF during atomic modesetting.",
-+	  .name = "atomic-dpms",
-+	  .cp_tests = CP_DPMS,
-+	  .content_type = HDCP_CONTENT_TYPE_0
-+	},
-+	{ .desc = "Test for the integrity of link.",
-+	  .name = "LIC",
-+	  .cp_tests = CP_LIC,
-+	  .content_type = HDCP_CONTENT_TYPE_0,
-+	},
-+	{ .desc = "Test content protection with content type 1 "
-+		  "that can be handled only through HDCP2.2.",
-+	  .name = "type1",
-+	  .cp_tests = 0,
-+	  .content_type = HDCP_CONTENT_TYPE_1,
-+	},
-+	{ .desc = "Test the teardown and rebuild of the interface between "
-+		  "I915 and mei hdcp.",
-+	  .name = "mei_interface",
-+	  .cp_tests = CP_MEI_RELOAD,
-+	  .content_type = HDCP_CONTENT_TYPE_1,
-+	},
-+	{ .desc = "Test the content type change when the content protection already enabled",
-+	  .name = "content_type_change",
-+	  .cp_tests = CP_TYPE_CHANGE,
-+	  .content_type = HDCP_CONTENT_TYPE_1,
-+	},
-+	{ .desc = "Test to detect the HDCP status change when we are reading the uevent "
-+		  "sent with the corresponding connector id and property id.",
-+	  .name = "uevent",
-+	  .cp_tests = CP_UEVENT,
-+	  .content_type = HDCP_CONTENT_TYPE_0,
-+	},
-+	/*
-+	 *  Testing the revocation check through SRM needs a HDCP sink with
-+	 *  programmable Ksvs or we need a uAPI from kernel to read the
-+	 *  connected HDCP sink's Ksv. With that we would be able to add that
-+	 *  Ksv into a SRM and send in for revocation check. Since we dont have
-+	 *  either of these options, we test SRM writing from userspace and
-+	 *  validation of the same at kernel. Something is better than nothing.
-+	 */
-+	{ .desc = "This test writes the facsimile SRM into the /lib/firmware/ "
-+		  "and check the kernel parsing of it by invoking the hdcp authentication.",
-+	  .name = "srm",
-+	  .cp_tests = 0,
-+	  .content_type = HDCP_CONTENT_TYPE_0,
-+	},
-+};
-+
-+static const struct {
-+	const char *desc;
-+	const char *name;
-+	unsigned int cp_tests;
-+	bool content_type;
-+} mst_subtests[] = {
-+	{ .desc = "Test Content protection(Type 0) over DP MST.",
-+	  .name = "dp-mst-type-0",
-+	  .cp_tests = 0,
-+	  .content_type = HDCP_CONTENT_TYPE_0
-+	},
-+	{ .desc = "Test Content protection(Type 0) over DP MST with LIC.",
-+	  .name = "dp-mst-lic-type-0",
-+	  .cp_tests = CP_LIC,
-+	  .content_type = HDCP_CONTENT_TYPE_0
-+	},
-+	{ .desc = "Test Content protection(Type 1) over DP MST.",
-+	  .name = "dp-mst-type-1",
-+	  .cp_tests = 0,
-+	  .content_type = HDCP_CONTENT_TYPE_1,
-+	},
-+	{ .desc = "Test Content protection(Type 1) over DP MST with LIC.",
-+	  .name = "dp-mst-lic-type-1",
-+	  .cp_tests = CP_LIC,
-+	  .content_type = HDCP_CONTENT_TYPE_1,
-+	},
-+};
-+
- igt_main
- {
- 	igt_fixture {
-@@ -737,107 +830,46 @@ igt_main
- 	}
- 
- 	igt_describe("Test content protection with legacy style commit.");
--	igt_subtest("legacy") {
-+	igt_subtest_with_dynamic("legacy") {
- 		data.cp_tests = 0;
- 		test_content_protection(COMMIT_LEGACY, HDCP_CONTENT_TYPE_0);
- 	}
- 
--	igt_describe("Test content protection with atomic modesetting");
--	igt_subtest("atomic") {
--		igt_require(data.display.is_atomic);
--		data.cp_tests = 0;
--		test_content_protection(COMMIT_ATOMIC, HDCP_CONTENT_TYPE_0);
--	}
-+	igt_subtest_group {
-+		igt_fixture
-+			igt_require(data.display.is_atomic);
- 
--	igt_describe("Test content protection with DPMS ON/OFF during atomic modesetting.");
--	igt_subtest("atomic-dpms") {
--		igt_require(data.display.is_atomic);
--		data.cp_tests = CP_DPMS;
--		test_content_protection(COMMIT_ATOMIC, HDCP_CONTENT_TYPE_0);
--	}
-+		for (int i = 0; i < ARRAY_SIZE(subtests); i++) {
-+			igt_describe_f("%s", subtests[i].desc);
- 
--	igt_describe("Test for the integrity of link.");
--	igt_subtest("LIC") {
--		igt_require(data.display.is_atomic);
--		data.cp_tests = CP_LIC;
--		test_content_protection(COMMIT_ATOMIC, HDCP_CONTENT_TYPE_0);
--	}
-+			igt_subtest_with_dynamic(subtests[i].name) {
-+				data.cp_tests = subtests[i].cp_tests;
- 
--	igt_describe("Test content protection with content type 1 that "
--		     "can be handled only through HDCP2.2.");
--	igt_subtest("type1") {
--		igt_require(data.display.is_atomic);
--		test_content_protection(COMMIT_ATOMIC, HDCP_CONTENT_TYPE_1);
--	}
-+				if (!strcmp(subtests[i].name, "srm")) {
-+					bool ret;
- 
--	igt_describe("Test the teardown and rebuild of the interface between "
--		     "I915 and mei hdcp.");
--	igt_subtest("mei_interface") {
--		igt_require(data.display.is_atomic);
--		data.cp_tests = CP_MEI_RELOAD;
--		test_content_protection(COMMIT_ATOMIC, HDCP_CONTENT_TYPE_1);
--	}
-+					ret = write_srm_as_fw((const __u8 *)facsimile_srm,
-+							     sizeof(facsimile_srm));
-+					igt_assert_f(ret, "SRM update failed");
-+				}
- 
--	igt_describe("Test the content type change when the content protection already "
--		     "enabled.");
--	igt_subtest("content_type_change") {
--		igt_require(data.display.is_atomic);
--		data.cp_tests = CP_TYPE_CHANGE;
--		test_content_protection(COMMIT_ATOMIC, HDCP_CONTENT_TYPE_1);
--	}
--
--	igt_describe("Test to detect the HDCP status change when we are reading the uevent "
--		     "sent with the corresponding connector id and property id.");
--	igt_subtest("uevent") {
--		igt_require(data.display.is_atomic);
--		data.cp_tests = CP_UEVENT;
--		data.uevent_monitor = igt_watch_uevents();
--		igt_flush_uevents(data.uevent_monitor);
--		test_content_protection(COMMIT_ATOMIC, HDCP_CONTENT_TYPE_0);
--		igt_cleanup_uevents(data.uevent_monitor);
--	}
--
--	/*
--	 *  Testing the revocation check through SRM needs a HDCP sink with
--	 *  programmable Ksvs or we need a uAPI from kernel to read the
--	 *  connected HDCP sink's Ksv. With that we would be able to add that
--	 *  Ksv into a SRM and send in for revocation check. Since we dont have
--	 *  either of these options, we test SRM writing from userspace and
--	 *  validation of the same at kernel. Something is better than nothing.
--	 */
--	igt_describe("This test writes the facsimile SRM into the /lib/firmware/ "
--		     "and check the kernel parsing of it by invoking the hdcp authentication.");
--	igt_subtest("srm") {
--		bool ret;
--
--		igt_require(data.display.is_atomic);
--		data.cp_tests = 0;
--		ret = write_srm_as_fw((const __u8 *)facsimile_srm,
--				      sizeof(facsimile_srm));
--		igt_assert_f(ret, "SRM update failed");
--		test_content_protection(COMMIT_ATOMIC, HDCP_CONTENT_TYPE_0);
--	}
--
--	igt_describe("Test Content protection over DP MST");
--	igt_subtest("dp-mst-type-0") {
--		test_content_protection_mst(HDCP_CONTENT_TYPE_0);
-+				test_content_protection(COMMIT_ATOMIC, subtests[i].content_type);
-+			}
-+		}
- 	}
- 
--	igt_describe("Test Content protection over DP MST with LIC");
--	igt_subtest("dp-mst-lic-type-0") {
--		data.cp_tests = CP_LIC;
--		test_content_protection_mst(HDCP_CONTENT_TYPE_0);
--	}
-+	igt_subtest_group {
-+		igt_fixture
-+			igt_require(data.display.is_atomic);
- 
--	igt_describe("Test Content protection over DP MST");
--	igt_subtest("dp-mst-type-1") {
--		test_content_protection_mst(HDCP_CONTENT_TYPE_1);
--	}
-+		for (int i = 0; i < ARRAY_SIZE(mst_subtests); i++) {
-+			igt_describe_f("%s", mst_subtests[i].desc);
- 
--	igt_describe("Test Content protection over DP MST with LIC");
--	igt_subtest("dp-mst-lic-type-1") {
--		data.cp_tests = CP_LIC;
--		test_content_protection_mst(HDCP_CONTENT_TYPE_1);
-+			igt_subtest(mst_subtests[i].name) {
-+				data.cp_tests = mst_subtests[i].cp_tests;
-+				test_content_protection_mst(mst_subtests[i].content_type);
-+			}
-+		}
- 	}
- 
- 	igt_fixture {
+
 -- 
-2.22.0
+Petri Latvala
+
+
+
+> 
+> Regards,
+> Kamil
+> 
+> > ---
+> >  lib/i915/gem_mman.c          |  4 ++--
+> >  lib/igt_vgem.c               |  2 +-
+> >  tests/i915/gem_mmap_gtt.c    | 22 +++++++++++-----------
+> >  tests/i915/gem_mmap_offset.c | 14 +++++++-------
+> >  4 files changed, 21 insertions(+), 21 deletions(-)
+> > 
+> > diff --git a/lib/i915/gem_mman.c b/lib/i915/gem_mman.c
+> > index aa9ac6f3..0b41ba70 100644
+> > --- a/lib/i915/gem_mman.c
+> > +++ b/lib/i915/gem_mman.c
+> > @@ -118,7 +118,7 @@ void *__gem_mmap__gtt(int fd, uint32_t handle, uint64_t size, unsigned prot)
+> >  	if (igt_ioctl(fd, DRM_IOCTL_I915_GEM_MMAP_GTT, &mmap_arg))
+> >  		return NULL;
+> >  
+> > -	ptr = mmap64(0, size, prot, MAP_SHARED, fd, mmap_arg.offset);
+> > +	ptr = mmap(0, size, prot, MAP_SHARED, fd, mmap_arg.offset);
+> >  	if (ptr == MAP_FAILED)
+> >  		ptr = NULL;
+> >  	else
+> > @@ -331,7 +331,7 @@ void *__gem_mmap_offset(int fd, uint32_t handle, uint64_t offset, uint64_t size,
+> >  	if (igt_ioctl(fd, DRM_IOCTL_I915_GEM_MMAP_OFFSET, &arg))
+> >  		return NULL;
+> >  
+> > -	ptr = mmap64(0, size, prot, MAP_SHARED, fd, arg.offset + offset);
+> > +	ptr = mmap(0, size, prot, MAP_SHARED, fd, arg.offset + offset);
+> >  
+> >  	if (ptr == MAP_FAILED)
+> >  		ptr = NULL;
+> > diff --git a/lib/igt_vgem.c b/lib/igt_vgem.c
+> > index 7f933b23..468383c7 100644
+> > --- a/lib/igt_vgem.c
+> > +++ b/lib/igt_vgem.c
+> > @@ -76,7 +76,7 @@ void *__vgem_mmap(int fd, struct vgem_bo *bo, unsigned prot)
+> >  	if (drmIoctl(fd, DRM_IOCTL_MODE_MAP_DUMB, &arg))
+> >  		return NULL;
+> >  
+> > -	ptr = mmap64(0, bo->size, prot, MAP_SHARED, fd, arg.offset);
+> > +	ptr = mmap(0, bo->size, prot, MAP_SHARED, fd, arg.offset);
+> >  	if (ptr == MAP_FAILED)
+> >  		return NULL;
+> >  
+> > diff --git a/tests/i915/gem_mmap_gtt.c b/tests/i915/gem_mmap_gtt.c
+> > index 4f05eb18..683eaf16 100644
+> > --- a/tests/i915/gem_mmap_gtt.c
+> > +++ b/tests/i915/gem_mmap_gtt.c
+> > @@ -113,11 +113,11 @@ test_access(int fd)
+> >  	mmap_arg.handle = handle;
+> >  	do_ioctl(fd, DRM_IOCTL_I915_GEM_MMAP_GTT, &mmap_arg);
+> >  
+> > -	igt_assert(mmap64(0, OBJECT_SIZE, PROT_READ | PROT_WRITE,
+> > +	igt_assert(mmap(0, OBJECT_SIZE, PROT_READ | PROT_WRITE,
+> >  			  MAP_SHARED, fd, mmap_arg.offset));
+> >  
+> >  	/* Check that the same offset on the other fd doesn't work. */
+> > -	igt_assert(mmap64(0, OBJECT_SIZE, PROT_READ | PROT_WRITE,
+> > +	igt_assert(mmap(0, OBJECT_SIZE, PROT_READ | PROT_WRITE,
+> >  			  MAP_SHARED, fd2, mmap_arg.offset) == MAP_FAILED);
+> >  	igt_assert(errno == EACCES);
+> >  
+> > @@ -128,7 +128,7 @@ test_access(int fd)
+> >  
+> >  	/* Recheck that it works after flink. */
+> >  	/* Check that the same offset on the other fd doesn't work. */
+> > -	igt_assert(mmap64(0, OBJECT_SIZE, PROT_READ | PROT_WRITE,
+> > +	igt_assert(mmap(0, OBJECT_SIZE, PROT_READ | PROT_WRITE,
+> >  			  MAP_SHARED, fd2, mmap_arg.offset));
+> >  }
+> >  
+> > @@ -159,11 +159,11 @@ test_short(int fd)
+> >  	for (pages = 1; pages <= OBJECT_SIZE / PAGE_SIZE; pages <<= 1) {
+> >  		uint8_t *r, *w;
+> >  
+> > -		w = mmap64(0, pages * PAGE_SIZE, PROT_READ | PROT_WRITE,
+> > +		w = mmap(0, pages * PAGE_SIZE, PROT_READ | PROT_WRITE,
+> >  			   MAP_SHARED, fd, mmap_arg.offset);
+> >  		igt_assert(w != MAP_FAILED);
+> >  
+> > -		r = mmap64(0, pages * PAGE_SIZE, PROT_READ,
+> > +		r = mmap(0, pages * PAGE_SIZE, PROT_READ,
+> >  			   MAP_SHARED, fd, mmap_arg.offset);
+> >  		igt_assert(r != MAP_FAILED);
+> >  
+> > @@ -384,13 +384,13 @@ test_isolation(int i915)
+> >  
+> >  	close(B);
+> >  
+> > -	ptr = mmap64(0, 4096, PROT_READ, MAP_SHARED, A, offset_a);
+> > +	ptr = mmap(0, 4096, PROT_READ, MAP_SHARED, A, offset_a);
+> >  	igt_assert(ptr != MAP_FAILED);
+> >  	munmap(ptr, 4096);
+> >  
+> >  	close(A);
+> >  
+> > -	ptr = mmap64(0, 4096, PROT_READ, MAP_SHARED, A, offset_a);
+> > +	ptr = mmap(0, 4096, PROT_READ, MAP_SHARED, A, offset_a);
+> >  	igt_assert(ptr == MAP_FAILED);
+> >  }
+> >  
+> > @@ -400,7 +400,7 @@ test_close_race(int i915)
+> >  	const int ncpus = sysconf(_SC_NPROCESSORS_ONLN);
+> >  	_Atomic uint32_t *handles;
+> >  
+> > -	handles = mmap64(0, 4096, PROT_WRITE, MAP_SHARED | MAP_ANON, -1, 0);
+> > +	handles = mmap(0, 4096, PROT_WRITE, MAP_SHARED | MAP_ANON, -1, 0);
+> >  	igt_assert(handles != MAP_FAILED);
+> >  
+> >  	igt_fork(child, ncpus + 1) {
+> > @@ -418,7 +418,7 @@ test_close_race(int i915)
+> >  				  &mmap_arg) != -1) {
+> >  				void *ptr;
+> >  
+> > -				ptr = mmap64(0, 4096,
+> > +				ptr = mmap(0, 4096,
+> >  					     PROT_WRITE, MAP_SHARED, i915,
+> >  					     mmap_arg.offset);
+> >  				if (ptr != MAP_FAILED) {
+> > @@ -444,7 +444,7 @@ test_flink_race(int i915)
+> >  	const int ncpus = sysconf(_SC_NPROCESSORS_ONLN);
+> >  	_Atomic uint32_t *handles;
+> >  
+> > -	handles = mmap64(0, 4096, PROT_WRITE, MAP_SHARED | MAP_ANON, -1, 0);
+> > +	handles = mmap(0, 4096, PROT_WRITE, MAP_SHARED | MAP_ANON, -1, 0);
+> >  	igt_assert(handles != MAP_FAILED);
+> >  
+> >  	igt_fork(child, ncpus + 1) {
+> > @@ -469,7 +469,7 @@ test_flink_race(int i915)
+> >  				  &mmap_arg) != -1) {
+> >  				void *ptr;
+> >  
+> > -				ptr = mmap64(0, 4096,
+> > +				ptr = mmap(0, 4096,
+> >  					     PROT_WRITE, MAP_SHARED, fd,
+> >  					     mmap_arg.offset);
+> >  				if (ptr != MAP_FAILED) {
+> > diff --git a/tests/i915/gem_mmap_offset.c b/tests/i915/gem_mmap_offset.c
+> > index 5781b2fb..0933ed94 100644
+> > --- a/tests/i915/gem_mmap_offset.c
+> > +++ b/tests/i915/gem_mmap_offset.c
+> > @@ -66,7 +66,7 @@ __mmap_offset(int i915, uint32_t handle, uint64_t offset, uint64_t size,
+> >  	if (mmap_offset_ioctl(i915, &arg))
+> >  		return NULL;
+> >  
+> > -	ptr = mmap64(0, size, prot, MAP_SHARED, i915, arg.offset + offset);
+> > +	ptr = mmap(0, size, prot, MAP_SHARED, i915, arg.offset + offset);
+> >  	if (ptr == MAP_FAILED)
+> >  		ptr = NULL;
+> >  	else
+> > @@ -214,12 +214,12 @@ static void isolation(int i915)
+> >  			 t->name, B, b, offset_b);
+> >  
+> >  		errno = 0;
+> > -		ptr = mmap64(0, 4096, PROT_READ, MAP_SHARED, i915, offset_a);
+> > +		ptr = mmap(0, 4096, PROT_READ, MAP_SHARED, i915, offset_a);
+> >  		igt_assert(ptr == MAP_FAILED);
+> >  		igt_assert_eq(errno, EACCES);
+> >  
+> >  		errno = 0;
+> > -		ptr = mmap64(0, 4096, PROT_READ, MAP_SHARED, i915, offset_b);
+> > +		ptr = mmap(0, 4096, PROT_READ, MAP_SHARED, i915, offset_b);
+> >  		igt_assert(ptr == MAP_FAILED);
+> >  		igt_assert_eq(errno, EACCES);
+> >  
+> > @@ -237,13 +237,13 @@ static void isolation(int i915)
+> >  
+> >  		close(B);
+> >  
+> > -		ptr = mmap64(0, 4096, PROT_READ, MAP_SHARED, A, offset_a);
+> > +		ptr = mmap(0, 4096, PROT_READ, MAP_SHARED, A, offset_a);
+> >  		igt_assert(ptr != MAP_FAILED);
+> >  		munmap(ptr, 4096);
+> >  
+> >  		close(A);
+> >  
+> > -		ptr = mmap64(0, 4096, PROT_READ, MAP_SHARED, A, offset_a);
+> > +		ptr = mmap(0, 4096, PROT_READ, MAP_SHARED, A, offset_a);
+> >  		igt_assert(ptr == MAP_FAILED);
+> >  	}
+> >  }
+> > @@ -401,7 +401,7 @@ static void close_race(int i915, int timeout)
+> >  	_Atomic uint32_t *handles;
+> >  	size_t len = ALIGN((ncpus + 1) * sizeof(uint32_t), 4096);
+> >  
+> > -	handles = mmap64(0, len, PROT_WRITE, MAP_SHARED | MAP_ANON, -1, 0);
+> > +	handles = mmap(0, len, PROT_WRITE, MAP_SHARED | MAP_ANON, -1, 0);
+> >  	igt_assert(handles != MAP_FAILED);
+> >  
+> >  	igt_fork(child, ncpus + 1) {
+> > @@ -420,7 +420,7 @@ static void close_race(int i915, int timeout)
+> >  				  &mmap_arg) != -1) {
+> >  				void *ptr;
+> >  
+> > -				ptr = mmap64(0, 4096,
+> > +				ptr = mmap(0, 4096,
+> >  					     PROT_WRITE, MAP_SHARED, i915,
+> >  					     mmap_arg.offset);
+> >  				if (ptr != MAP_FAILED) {
+> > -- 
+> > 2.37.3
+> > 
