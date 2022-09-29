@@ -1,20 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4F8D710E57C
- for <igt-dev@lists.freedesktop.org>; Thu, 29 Sep 2022 10:23:22 +0000 (UTC)
-From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-To: igt-dev@lists.freedesktop.org, "Tauro, Riana" <riana.tauro@intel.com>
-Date: Thu, 29 Sep 2022 12:23:16 +0200
-Message-ID: <2282434.n0HT0TaD9V@jkrzyszt-mobl1.ger.corp.intel.com>
-In-Reply-To: <fd4ff405-4e43-b367-96e0-df7ba72c0b81@intel.com>
-References: <20220929045058.1163003-1-riana.tauro@intel.com>
- <1716522.X513TT2pbd@jkrzyszt-mobl1.ger.corp.intel.com>
- <fd4ff405-4e43-b367-96e0-df7ba72c0b81@intel.com>
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6468010E5C7
+ for <igt-dev@lists.freedesktop.org>; Thu, 29 Sep 2022 11:12:31 +0000 (UTC)
+From: Nirmoy Das <nirmoy.das@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Thu, 29 Sep 2022 13:12:23 +0200
+Message-Id: <20220929111223.11925-1-nirmoy.das@intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
-Subject: Re: [igt-dev] [PATCH i-g-t v2 1/1] lib/igt_device_scan: clear
- igt_devs.devs_scanned in igt_devices_free
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t] i915/gem_ringfill: Create dynamic subtest
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,97 +16,47 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: petri.latvala@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Thursday, 29 September 2022 11:47:53 CEST Tauro, Riana wrote:
-> 
-> On 9/29/2022 2:31 PM, Janusz Krzysztofik wrote:
-> > On Thursday, 29 September 2022 06:50:58 CEST Riana Tauro wrote:
-> >> igt_devices_scan returns with empty list if devs_scanned
-> >> is true and function is called after igt_devices_free
-> >>
-> >> clear igt_devs.devs_scanned in igt_devices_free.
-> >>
-> >> v2: optimize code in igt_devices_scan (Zbigniew)
-> >>
-> >> Signed-off-by: Riana Tauro <riana.tauro@intel.com>
-> >> ---
-> >>   lib/igt_device_scan.c | 20 ++++----------------
-> >>   1 file changed, 4 insertions(+), 16 deletions(-)
-> >>
-> >> diff --git a/lib/igt_device_scan.c b/lib/igt_device_scan.c
-> >> index eb6b45b8..8b70e375 100644
-> >> --- a/lib/igt_device_scan.c
-> >> +++ b/lib/igt_device_scan.c
-> >> @@ -1027,9 +1027,11 @@ void igt_devices_free(void)
-> >>   	}
-> >>   
-> >>   	igt_list_for_each_entry_safe(dev, tmp, &igt_devs.all, link) {
-> >> +		igt_list_del(&dev->link);
-> >>   		igt_device_free(dev);
-> >>   		free(dev);
-> >>   	}
-> >> +	igt_devs.devs_scanned = false;
-> >>   }
-> >>   
-> >>   /**
-> >> @@ -1043,22 +1045,8 @@ void igt_devices_free(void)
-> >>    */
-> >>   void igt_devices_scan(bool force)
-> >>   {
-> >> -	if (force && igt_devs.devs_scanned) {
-> >> -		struct igt_device *dev, *tmp;
-> >> -
-> >> -		igt_list_for_each_entry_safe(dev, tmp, &igt_devs.filtered,
-> >> -					     link) {
-> >> -			igt_list_del(&dev->link);
-> >> -			free(dev);
-> >> -		}
-> > 
-> > Why don't we need to clean the igt_devs.filtered list up any longer?
-> > 
-> > Thanks,
-> > Janusz
+This will print engine name for each subtest which
+might be useful for debugging a failure.
 
-> This patch is removing redundant code
-> 
-> igt_devices_free() has the clean up of igt_devs.filtered list and 
-> igt_devs.all. Using igt_devices_free() to remove redundancy
+Signed-off-by: Nirmoy Das <nirmoy.das@intel.com>
+---
+ tests/i915/gem_ringfill.c | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
-I see, but then, it would be more clear for everyone if you didn't mix that 
-optimisation with the fix of broken igt_devices_free() in one patch, unless 
-you mention explicitly (not only via v2 update) in commit description that the 
-patch covers two topics: the fix, and the optimisation.
-
-Thanks,
-Janusz
-
-> 
-> Thanks
-> Riana
-> > 
-> >> -		igt_list_for_each_entry_safe(dev, tmp, &igt_devs.all, link) {
-> >> -			igt_list_del(&dev->link);
-> >> -			igt_device_free(dev);
-> >> -			free(dev);
-> >> -		}
-> >> -
-> >> -		igt_devs.devs_scanned = false;
-> >> -	}
-> >> +	if (force && igt_devs.devs_scanned)
-> >> +		igt_devices_free();
-> >>   
-> >>   	if (igt_devs.devs_scanned)
-> >>   		return;
-> >>
-> > 
-> > 
-> > 
-> > 
-> 
-
-
-
+diff --git a/tests/i915/gem_ringfill.c b/tests/i915/gem_ringfill.c
+index b68c5ae615..1e98ac8bb7 100644
+--- a/tests/i915/gem_ringfill.c
++++ b/tests/i915/gem_ringfill.c
+@@ -383,19 +383,20 @@ igt_main
+ 	}
+ 
+ 	igt_describe("Basic check to fill the ring upto maximum on all engines simultaneously.");
+-	igt_subtest("basic-all") {
++	igt_subtest_with_dynamic("basic-all") {
+ 		const struct intel_execution_engine2 *e;
+ 		intel_allocator_multiprocess_start();
+ 
+ 		for_each_ctx_engine(fd, ctx, e) {
+ 			if (!gem_class_can_store_dword(fd, e->class))
+ 				continue;
+-
+-			igt_fork(child, 1)
+-				run_test(fd, ctx, e->flags, 0, 1);
++			igt_dynamic_f("%s", e->name) {
++				igt_fork(child, 1)
++					run_test(fd, ctx, e->flags, 0, 1);
++				igt_waitchildren();
++			}
+ 		}
+ 
+-		igt_waitchildren();
+ 		intel_allocator_multiprocess_stop();
+ 	}
+ 
+-- 
+2.37.3
