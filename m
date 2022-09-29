@@ -1,18 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from NAM11-BN8-obe.outbound.protection.outlook.com
- (mail-bn8nam11on2040.outbound.protection.outlook.com [40.107.236.40])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6916C10E90C
- for <igt-dev@lists.freedesktop.org>; Thu, 29 Sep 2022 01:46:54 +0000 (UTC)
+Received: from NAM12-BN8-obe.outbound.protection.outlook.com
+ (mail-bn8nam12on2045.outbound.protection.outlook.com [40.107.237.45])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C349D10E90C
+ for <igt-dev@lists.freedesktop.org>; Thu, 29 Sep 2022 01:46:52 +0000 (UTC)
 From: <vitaly.prosyak@amd.com>
 To: <igt-dev@lists.freedesktop.org>
-Date: Wed, 28 Sep 2022 21:46:34 -0400
-Message-ID: <20220929014635.89500-3-vitaly.prosyak@amd.com>
+Date: Wed, 28 Sep 2022 21:46:33 -0400
+Message-ID: <20220929014635.89500-2-vitaly.prosyak@amd.com>
 In-Reply-To: <20220929014635.89500-1-vitaly.prosyak@amd.com>
 References: <20220929014635.89500-1-vitaly.prosyak@amd.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-Subject: [igt-dev] [PATCH 3/4] lib/amdgpu: add deadlock helpers
+Subject: [igt-dev] [PATCH 2/4] lib/amdgpu: add amdgpu_bo_alloc_and_map_raw
+ helper
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,336 +28,97 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Vitaly Prosyak <vitaly.prosyak@amd.com>
 
-To validate amdgpu reset functionality.
-
 Signed-off-by: Vitaly Prosyak <vitaly.prosyak@amd.com>
 ---
- lib/amdgpu/amd_deadlock_helpers.c | 260 ++++++++++++++++++++++++++++++
- lib/amdgpu/amd_deadlock_helpers.h |  34 ++++
- lib/meson.build                   |   3 +-
- 3 files changed, 296 insertions(+), 1 deletion(-)
- create mode 100644 lib/amdgpu/amd_deadlock_helpers.c
- create mode 100644 lib/amdgpu/amd_deadlock_helpers.h
+ lib/amdgpu/amd_memory.c | 58 +++++++++++++++++++++++++++++++++++++++++
+ lib/amdgpu/amd_memory.h |  6 +++++
+ 2 files changed, 64 insertions(+)
 
-diff --git a/lib/amdgpu/amd_deadlock_helpers.c b/lib/amdgpu/amd_deadlock_helpers.c
-new file mode 100644
-index 000000000..c6528c6ad
---- /dev/null
-+++ b/lib/amdgpu/amd_deadlock_helpers.c
-@@ -0,0 +1,260 @@
-+/*
-+ * Copyright 2022 Advanced Micro Devices, Inc.
-+ *  *
-+ * Permission is hereby granted, free of charge, to any person obtaining a
-+ * copy of this software and associated documentation files (the "Software"),
-+ * to deal in the Software without restriction, including without limitation
-+ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
-+ * and/or sell copies of the Software, and to permit persons to whom the
-+ * Software is furnished to do so, subject to the following conditions:
-+ *
-+ * The above copyright notice and this permission notice shall be included in
-+ * all copies or substantial portions of the Software.
-+ *
-+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
-+ * THE COPYRIGHT HOLDER(S) OR AUTHOR(S) BE LIABLE FOR ANY CLAIM, DAMAGES OR
-+ * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
-+ * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-+ * OTHER DEALINGS IN THE SOFTWARE.
-+ *
-+ *
-+ */
-+#include <amdgpu.h>
-+#include "amdgpu_drm.h"
-+#include "amd_PM4.h"
-+#include "amd_sdma.h"
-+#include <unistd.h>
-+#include <pthread.h>
-+#include "amd_memory.h"
-+#include "amd_deadlock_helpers.h"
-+#include "amd_ip_blocks.h"
-+
-+static int use_uc_mtype = 0;
-+
-+static void *write_mem_address(void *data)
+diff --git a/lib/amdgpu/amd_memory.c b/lib/amdgpu/amd_memory.c
+index 344551fcc..93e72583b 100644
+--- a/lib/amdgpu/amd_memory.c
++++ b/lib/amdgpu/amd_memory.c
+@@ -193,6 +193,64 @@ error_va_alloc:
+ 	return r;
+ }
+ 
++int
++amdgpu_bo_alloc_and_map_raw(amdgpu_device_handle dev, unsigned size,
++			unsigned alignment, unsigned heap, uint64_t alloc_flags,
++			uint64_t mapping_flags, amdgpu_bo_handle *bo, void **cpu,
++			uint64_t *mc_address, amdgpu_va_handle *va_handle)
 +{
-+#define WRITE_MEM_ADDRESS_DELAY_MS 100
++	struct amdgpu_bo_alloc_request request = {};
++	amdgpu_bo_handle buf_handle;
++	amdgpu_va_handle handle;
++	uint64_t vmc_addr;
++	int r;
 +
-+	int i;
-+	uint32_t * ib_result_cpu = data;
++	request.alloc_size = size;
++	request.phys_alignment = alignment;
++	request.preferred_heap = heap;
++	request.flags = alloc_flags;
 +
-+	/* useconds_t range is [0, 1,000,000] so use loop for waits > 1s */
-+	for (i = 0; i < WRITE_MEM_ADDRESS_DELAY_MS; i++)
-+		usleep(1000);
++	r = amdgpu_bo_alloc(dev, &request, &buf_handle);
++	if (r)
++		return r;
 +
-+	ib_result_cpu[256] = 0x1;
-+	/* printf("ib_result_cpu[256] = 0x1;\n"); */
++	r = amdgpu_va_range_alloc(dev,
++				  amdgpu_gpu_va_range_general,
++				  size, alignment, 0, &vmc_addr,
++				  &handle, 0);
++	if (r)
++		goto error_va_alloc;
++
++	r = amdgpu_bo_va_op_raw(dev, buf_handle, 0,  ALIGN(size, getpagesize()), vmc_addr,
++				   AMDGPU_VM_PAGE_READABLE |
++				   AMDGPU_VM_PAGE_WRITEABLE |
++				   AMDGPU_VM_PAGE_EXECUTABLE |
++				   mapping_flags,
++				   AMDGPU_VA_OP_MAP);
++	if (r)
++		goto error_va_map;
++
++	r = amdgpu_bo_cpu_map(buf_handle, cpu);
++	if (r)
++		goto error_cpu_map;
++
++	*bo = buf_handle;
++	*mc_address = vmc_addr;
++	*va_handle = handle;
 +
 +	return 0;
++
++ error_cpu_map:
++	amdgpu_bo_cpu_unmap(buf_handle);
++
++ error_va_map:
++	amdgpu_bo_va_op(buf_handle, 0, size, vmc_addr, 0, AMDGPU_VA_OP_UNMAP);
++
++ error_va_alloc:
++	amdgpu_bo_free(buf_handle);
++	return r;
 +}
 +
-+void
-+amdgpu_deadlock_helper(amdgpu_device_handle device_handle, unsigned ip_type, bool with_thread)
-+{
-+	amdgpu_context_handle context_handle;
-+	amdgpu_bo_handle ib_result_handle;
-+	void *ib_result_cpu;
-+	uint32_t *ib_result_cpu2;
-+	uint64_t ib_result_mc_address;
-+	struct amdgpu_cs_request ibs_request;
-+	struct amdgpu_cs_ib_info ib_info;
-+	struct amdgpu_cs_fence fence_status;
-+	uint32_t expired;
-+	int i, r;
-+	amdgpu_bo_list_handle bo_list;
-+	amdgpu_va_handle va_handle;
-+	int bo_cmd_size = 4096;
-+	pthread_t stress_thread = {0};
-+	struct amdgpu_cmd_base * base_cmd = get_cmd_base();
-+
-+	r = amdgpu_cs_ctx_create(device_handle, &context_handle);
-+	igt_assert_eq(r, 0);
-+
-+	r = amdgpu_bo_alloc_and_map_raw(device_handle, bo_cmd_size, bo_cmd_size,
-+			AMDGPU_GEM_DOMAIN_GTT, 0, use_uc_mtype ? AMDGPU_VM_MTYPE_UC : 0,
-+						    &ib_result_handle, &ib_result_cpu,
-+						    &ib_result_mc_address, &va_handle);
-+	igt_assert_eq(r, 0);
-+
-+	r = amdgpu_get_bo_list(device_handle, ib_result_handle, NULL,
-+			       &bo_list);
-+	igt_assert_eq(r, 0);
-+
-+	base_cmd->attach_buf(base_cmd, ib_result_cpu, bo_cmd_size);
-+
-+	if (with_thread) {
-+			r = pthread_create(&stress_thread, NULL, &write_mem_address, ib_result_cpu);
-+			igt_assert_eq(r, 0);
-+	}
-+
-+	base_cmd->emit(base_cmd, PACKET3(PACKET3_WAIT_REG_MEM, 5));
-+
-+	base_cmd->emit(base_cmd, (WAIT_REG_MEM_MEM_SPACE(1)  /* memory */|
-+							  WAIT_REG_MEM_FUNCTION(4) /* != */|
-+							  WAIT_REG_MEM_ENGINE(0)/* me */));
-+
-+	base_cmd->emit(base_cmd, (ib_result_mc_address + 256*4) & 0xfffffffc);
-+	base_cmd->emit(base_cmd, ((ib_result_mc_address + 256*4) >> 32) & 0xffffffff);
-+
-+	base_cmd->emit(base_cmd, 0);/* reference value */
-+	base_cmd->emit(base_cmd, 0xffffffff); /* and mask */
-+	base_cmd->emit(base_cmd, 0x00000004);/* poll interval */
-+	base_cmd->emit_repeat(base_cmd, 0xffff1000, 16 - base_cmd->cdw);
-+
-+
-+	ib_result_cpu2 = ib_result_cpu;
-+	ib_result_cpu2[256] = 0x0; /* the memory we wait on to change */
-+
-+
-+
-+	memset(&ib_info, 0, sizeof(struct amdgpu_cs_ib_info));
-+	ib_info.ib_mc_address = ib_result_mc_address;
-+	ib_info.size = base_cmd->cdw;
-+
-+	memset(&ibs_request, 0, sizeof(struct amdgpu_cs_request));
-+	ibs_request.ip_type = ip_type;
-+	ibs_request.ring = 0;
-+	ibs_request.number_of_ibs = 1;
-+	ibs_request.ibs = &ib_info;
-+	ibs_request.resources = bo_list;
-+	ibs_request.fence_info.handle = NULL;
-+	for (i = 0; i < 200; i++) {
-+		r = amdgpu_cs_submit(context_handle, 0,&ibs_request, 1);
-+		if (r != 0 && r != -ECANCELED)
-+			igt_assert(0);
-+	}
-+
-+	memset(&fence_status, 0, sizeof(struct amdgpu_cs_fence));
-+	fence_status.context = context_handle;
-+	fence_status.ip_type = ip_type;
-+	fence_status.ip_instance = 0;
-+	fence_status.ring = 0;
-+	fence_status.fence = ibs_request.seq_no;
-+
-+	r = amdgpu_cs_query_fence_status(&fence_status,
-+			AMDGPU_TIMEOUT_INFINITE,0, &expired);
-+	if (r != 0 && r != -ECANCELED)
-+		igt_assert(0);
-+
-+	if (with_thread)
-+		pthread_join(stress_thread, NULL);
-+
-+	amdgpu_bo_list_destroy(bo_list);
-+
-+	amdgpu_bo_unmap_and_free(ib_result_handle, va_handle,
-+				     ib_result_mc_address, 4096);
-+
-+	amdgpu_cs_ctx_free(context_handle);
-+
-+	free_cmd_base(base_cmd);
-+}
-+
-+void
-+amdgpu_deadlock_sdma(amdgpu_device_handle device_handle, bool with_thread)
-+{
-+	amdgpu_context_handle context_handle;
-+	amdgpu_bo_handle ib_result_handle;
-+	void *ib_result_cpu;
-+	uint32_t *ib_result_cpu2;
-+	uint64_t ib_result_mc_address;
-+	struct amdgpu_cs_request ibs_request;
-+	struct amdgpu_cs_ib_info ib_info;
-+	struct amdgpu_cs_fence fence_status;
-+	uint32_t expired;
-+	int i, r;
-+	amdgpu_bo_list_handle bo_list;
-+	amdgpu_va_handle va_handle;
-+	struct drm_amdgpu_info_hw_ip info;
-+	uint32_t ring_id;
-+	pthread_t stress_thread = {0};
-+	int bo_cmd_size = 4096;
-+	struct amdgpu_cmd_base * base_cmd;
-+
-+	r = amdgpu_query_hw_ip_info(device_handle, AMDGPU_HW_IP_DMA, 0, &info);
-+	igt_assert_eq(r, 0);
-+
-+	r = amdgpu_cs_ctx_create(device_handle, &context_handle);
-+	igt_assert_eq(r, 0);
-+
-+	for (ring_id = 0; (1 << ring_id) & info.available_rings; ring_id++) {
-+
-+		r = amdgpu_bo_alloc_and_map_raw(device_handle, 4096, 4096,
-+				AMDGPU_GEM_DOMAIN_GTT, 0, use_uc_mtype ? AMDGPU_VM_MTYPE_UC : 0,
-+							    &ib_result_handle, &ib_result_cpu,
-+							    &ib_result_mc_address, &va_handle);
-+		igt_assert_eq(r, 0);
-+
-+		if (with_thread) {
-+			r = pthread_create(&stress_thread, NULL, &write_mem_address, ib_result_cpu);
-+			igt_assert_eq(r, 0);
-+		}
-+
-+		r = amdgpu_get_bo_list(device_handle, ib_result_handle, NULL,
-+				       &bo_list);
-+		igt_assert_eq(r, 0);
-+
-+		base_cmd = get_cmd_base();
-+		base_cmd->attach_buf(base_cmd, ib_result_cpu, bo_cmd_size);
-+
-+		base_cmd->emit(base_cmd, SDMA_PKT_HEADER_OP(SDMA_OP_POLL_REGMEM) |
-+					(0 << 26) | /* WAIT_REG_MEM */(4 << 28) | /* != */(1 << 31)
-+					/* memory */);
-+
-+		base_cmd->emit(base_cmd, (ib_result_mc_address + 256*4) & 0xfffffffc);
-+
-+		base_cmd->emit(base_cmd, ((ib_result_mc_address + 256*4) >> 32) & 0xffffffff);
-+
-+		base_cmd->emit(base_cmd, 0); /* reference value */
-+		base_cmd->emit(base_cmd, 0xffffffff); /* and mask */
-+
-+		base_cmd->emit(base_cmd,  4 | /* poll interval */(0xfff << 16)/* retry count */);
-+
-+		base_cmd->emit_repeat(base_cmd, 0, 16 - base_cmd->cdw);
-+
-+		ib_result_cpu2 = ib_result_cpu;
-+		ib_result_cpu2[256] = 0x0; /* the memory we wait on to change */
-+
-+		memset(&ib_info, 0, sizeof(struct amdgpu_cs_ib_info));
-+		ib_info.ib_mc_address = ib_result_mc_address;
-+		ib_info.size = base_cmd->cdw;
-+
-+		memset(&ibs_request, 0, sizeof(struct amdgpu_cs_request));
-+		ibs_request.ip_type = AMDGPU_HW_IP_DMA;
-+		ibs_request.ring = ring_id;
-+		ibs_request.number_of_ibs = 1;
-+		ibs_request.ibs = &ib_info;
-+		ibs_request.resources = bo_list;
-+		ibs_request.fence_info.handle = NULL;
-+
-+		for (i = 0; i < 200; i++) {
-+			r = amdgpu_cs_submit(context_handle, 0,&ibs_request, 1);
-+			if (r != 0 && r != -ECANCELED)
-+				igt_assert(0);
-+		}
-+
-+		memset(&fence_status, 0, sizeof(struct amdgpu_cs_fence));
-+		fence_status.context = context_handle;
-+		fence_status.ip_type = AMDGPU_HW_IP_DMA;
-+		fence_status.ip_instance = 0;
-+		fence_status.ring = ring_id;
-+		fence_status.fence = ibs_request.seq_no;
-+
-+		r = amdgpu_cs_query_fence_status(&fence_status,
-+				AMDGPU_TIMEOUT_INFINITE,0, &expired);
-+		if (r != 0 && r != -ECANCELED)
-+			igt_assert(0);
-+
-+		if (with_thread)
-+			pthread_join(stress_thread, NULL);
-+
-+		r = amdgpu_bo_list_destroy(bo_list);
-+		igt_assert_eq(r, 0);
-+
-+		amdgpu_bo_unmap_and_free(ib_result_handle, va_handle,
-+					     ib_result_mc_address, 4096);
-+		free_cmd_base(base_cmd);
-+	}
-+	amdgpu_cs_ctx_free(context_handle);
-+}
-diff --git a/lib/amdgpu/amd_deadlock_helpers.h b/lib/amdgpu/amd_deadlock_helpers.h
-new file mode 100644
-index 000000000..91dcf8bb2
---- /dev/null
-+++ b/lib/amdgpu/amd_deadlock_helpers.h
-@@ -0,0 +1,34 @@
-+/*
-+ * Copyright 2022 Advanced Micro Devices, Inc.
-+ *
-+ * Permission is hereby granted, free of charge, to any person obtaining a
-+ * copy of this software and associated documentation files (the "Software"),
-+ * to deal in the Software without restriction, including without limitation
-+ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
-+ * and/or sell copies of the Software, and to permit persons to whom the
-+ * Software is furnished to do so, subject to the following conditions:
-+ *
-+ * The above copyright notice and this permission notice shall be included in
-+ * all copies or substantial portions of the Software.
-+ *
-+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
-+ * THE COPYRIGHT HOLDER(S) OR AUTHOR(S) BE LIABLE FOR ANY CLAIM, DAMAGES OR
-+ * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
-+ * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-+ * OTHER DEALINGS IN THE SOFTWARE.
-+ *
-+ *
-+ */
-+#ifndef __AMD_DEADLOCK_HELPERS_H__
-+#define __AMD_DEADLOCK_HELPERS_H__
-+
-+void
-+amdgpu_deadlock_helper(amdgpu_device_handle device_handle, unsigned ip_type, bool with_thread);
-+
-+void
-+amdgpu_deadlock_sdma(amdgpu_device_handle device_handle, bool with_thread);
-+
-+#endif
-+
-diff --git a/lib/meson.build b/lib/meson.build
-index 548835b58..983ddcb70 100644
---- a/lib/meson.build
-+++ b/lib/meson.build
-@@ -136,7 +136,8 @@ if libdrm_amdgpu.found()
- 		'amdgpu/amd_gfx_v8_0.c',
- 		'amdgpu/amd_gfx_v9_0.c',
- 		'amdgpu/amd_dispatch_helpers.c',
--		'amdgpu/amd_dispatch.c'
-+		'amdgpu/amd_dispatch.c',
-+		'amdgpu/amd_deadlock_helpers.c'
- 	]
- endif
+ /**
+  *
+  * @param bo
+diff --git a/lib/amdgpu/amd_memory.h b/lib/amdgpu/amd_memory.h
+index 80bf979f4..c84365933 100644
+--- a/lib/amdgpu/amd_memory.h
++++ b/lib/amdgpu/amd_memory.h
+@@ -55,6 +55,12 @@ amdgpu_bo_alloc_and_map(amdgpu_device_handle dev, unsigned size,
+ 			amdgpu_bo_handle *bo, void **cpu, uint64_t *mc_address,
+ 			amdgpu_va_handle *va_handle);
  
++int
++amdgpu_bo_alloc_and_map_raw(amdgpu_device_handle dev, unsigned size,
++			unsigned alignment, unsigned heap, uint64_t alloc_flags,
++			uint64_t mapping_flags, amdgpu_bo_handle *bo, void **cpu,
++			uint64_t *mc_address, amdgpu_va_handle *va_handle);
++
+ void
+ amdgpu_bo_unmap_and_free(amdgpu_bo_handle bo, amdgpu_va_handle va_handle,
+ 			 uint64_t mc_addr, uint64_t size);
 -- 
 2.25.1
