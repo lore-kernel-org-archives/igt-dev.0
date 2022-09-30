@@ -1,21 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D991F10EB9A
- for <igt-dev@lists.freedesktop.org>; Fri, 30 Sep 2022 06:56:18 +0000 (UTC)
-Message-ID: <fe1c164b-8adc-4e02-814e-cff16222bd36@intel.com>
-Date: Fri, 30 Sep 2022 12:25:52 +0530
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id AAEAD10EB9A
+ for <igt-dev@lists.freedesktop.org>; Fri, 30 Sep 2022 06:57:30 +0000 (UTC)
+Message-ID: <ffbbb164-18de-f64d-9302-6734bad5d335@intel.com>
+Date: Fri, 30 Sep 2022 12:26:53 +0530
 Content-Language: en-US
 To: Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
  <igt-dev@lists.freedesktop.org>
 References: <20220922160004.2041598-1-bhanuprakash.modem@intel.com>
- <20220922160004.2041598-30-bhanuprakash.modem@intel.com>
+ <20220922160004.2041598-37-bhanuprakash.modem@intel.com>
 From: "Thasleem, Mohammed" <mohammed.thasleem@intel.com>
-In-Reply-To: <20220922160004.2041598-30-bhanuprakash.modem@intel.com>
+In-Reply-To: <20220922160004.2041598-37-bhanuprakash.modem@intel.com>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [i-g-t V4 29/52] tests/kms_properties: Add support
- for Bigjoiner
+Subject: Re: [igt-dev] [i-g-t V4 36/52] tests/kms_vrr: Add support for
+ Bigjoiner
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -39,50 +39,24 @@ On 9/22/2022 9:29 PM, Bhanuprakash Modem wrote:
 > 
 > Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 > ---
->   tests/kms_properties.c | 18 ++++++++++++++++++
->   1 file changed, 18 insertions(+)
+>   tests/kms_vrr.c | 6 ++++++
+>   1 file changed, 6 insertions(+)
 > 
-> diff --git a/tests/kms_properties.c b/tests/kms_properties.c
-> index dd5a93aa..953fb3fb 100644
-> --- a/tests/kms_properties.c
-> +++ b/tests/kms_properties.c
-> @@ -241,6 +241,12 @@ static void plane_properties(igt_display_t *display, bool atomic)
->   		found = false;
+> diff --git a/tests/kms_vrr.c b/tests/kms_vrr.c
+> index 8976d4a6..619b3789 100644
+> --- a/tests/kms_vrr.c
+> +++ b/tests/kms_vrr.c
+> @@ -444,6 +444,12 @@ run_vrr_test(data_t *data, test_t test, uint32_t flags)
 >   
->   		for_each_valid_output_on_pipe(display, pipe, output) {
-> +			igt_display_reset(display);
+>   		for_each_pipe(&data->display, pipe) {
+>   			if (igt_pipe_connector_valid(pipe, output)) {
+> +				igt_display_reset(&data->display);
 > +
-> +			igt_output_set_pipe(output, pipe);
-> +			if (!i915_pipe_output_combo_valid(display))
-> +				continue;
+> +				igt_output_set_pipe(output, pipe);
+> +				if (!i915_pipe_output_combo_valid(&data->display))
+> +					continue;
 > +
->   			found_any = found = true;
->   
->   			run_plane_property_tests(display, pipe, output, atomic);
-> @@ -264,6 +270,12 @@ static void crtc_properties(igt_display_t *display, bool atomic)
->   		found = false;
->   
->   		for_each_valid_output_on_pipe(display, pipe, output) {
-> +			igt_display_reset(display);
-> +
-> +			igt_output_set_pipe(output, pipe);
-> +			if (!i915_pipe_output_combo_valid(display))
-> +				continue;
-> +
->   			found_any_valid_pipe = found = true;
->   
->   			run_crtc_property_tests(display, pipe, output, atomic);
-> @@ -290,6 +302,12 @@ static void connector_properties(igt_display_t *display, bool atomic)
->   			if (!igt_pipe_connector_valid(pipe, output))
->   				continue;
->   
-> +			igt_display_reset(display);
-> +
-> +			igt_output_set_pipe(output, pipe);
-> +			if (!i915_pipe_output_combo_valid(display))
-> +				continue;
-> +
->   			found = true;
->   			run_connector_property_tests(display, pipe, output, atomic);
->   			break;
+>   				igt_dynamic_f("pipe-%s-%s",
+>   					      kmstest_pipe_name(pipe), output->name)
+>   					test(data, pipe, output, flags);
 Reviewed-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
