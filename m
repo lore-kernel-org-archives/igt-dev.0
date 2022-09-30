@@ -1,21 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A7C4810EBFF
- for <igt-dev@lists.freedesktop.org>; Fri, 30 Sep 2022 09:16:41 +0000 (UTC)
-Message-ID: <51123160-0826-bf87-85dd-7e7a2abc7988@intel.com>
-Date: Fri, 30 Sep 2022 10:16:36 +0100
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B290610EC0B
+ for <igt-dev@lists.freedesktop.org>; Fri, 30 Sep 2022 09:30:57 +0000 (UTC)
+From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Fri, 30 Sep 2022 15:00:35 +0530
+Message-Id: <20220930093035.2630071-1-bhanuprakash.modem@intel.com>
+In-Reply-To: <20220922160004.2041598-53-bhanuprakash.modem@intel.com>
+References: <20220922160004.2041598-53-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
-Content-Language: en-GB
-To: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>,
- igt-dev@lists.freedesktop.org
-References: <20220928062115.6412-1-niranjana.vishwanathapura@intel.com>
- <20220928062115.6412-4-niranjana.vishwanathapura@intel.com>
-From: Matthew Auld <matthew.auld@intel.com>
-In-Reply-To: <20220928062115.6412-4-niranjana.vishwanathapura@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Subject: Re: [igt-dev] [PATCH i-g-t 3/8] lib/vm_bind: Add vm_bind mode
- support for VM
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [i-g-t V5 52/52] tests/i915/kms_pwrite_crc: Add support
+ for Bigjoiner
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,148 +19,56 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: tvrtko.ursulin@intel.com, thomas.hellstrom@intel.com,
- daniel.vetter@intel.com, petri.latvala@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On 28/09/2022 07:21, Niranjana Vishwanathapura wrote:
-> From: "Vishwanathapura, Niranjana" <niranjana.vishwanathapura@intel.com>
-> 
-> Add required library interfaces to create VM in
-> vm_bind mode and assign the VM to a context.
-> 
-> Signed-off-by: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
+This patch will add a check to Skip the subtest if a selected pipe/output
+combo won't support Bigjoiner or 8K mode.
 
-Acked-by: Matthew Auld <matthew.auld@intel.com>
+Example:
+* Pipe-D wont support a mode > 5K
+* To use 8K mode on a pipe then consecutive pipe must be available & free.
 
-> ---
->   lib/i915/gem_context.c | 24 ++++++++++++++++++++++++
->   lib/i915/gem_context.h |  3 +++
->   lib/i915/gem_vm.c      | 31 ++++++++++++++++++++++++++-----
->   lib/i915/gem_vm.h      |  3 ++-
->   4 files changed, 55 insertions(+), 6 deletions(-)
-> 
-> diff --git a/lib/i915/gem_context.c b/lib/i915/gem_context.c
-> index fe989a8d1c..2d06b41980 100644
-> --- a/lib/i915/gem_context.c
-> +++ b/lib/i915/gem_context.c
-> @@ -517,3 +517,27 @@ uint32_t gem_context_create_for_class(int i915,
->   	*count = i;
->   	return p.ctx_id;
->   }
-> +
-> +uint32_t gem_context_get_vm(int fd, uint32_t ctx_id)
-> +{
-> +	struct drm_i915_gem_context_param p = {
-> +		.param = I915_CONTEXT_PARAM_VM,
-> +		.ctx_id = ctx_id,
-> +	};
-> +
-> +	gem_context_get_param(fd, &p);
-> +	igt_assert(p.value);
-> +
-> +	return p.value;
-> +}
-> +
-> +void gem_context_set_vm(int fd, uint32_t ctx_id, uint32_t vm_id)
-> +{
-> +	struct drm_i915_gem_context_param p = {
-> +		.param = I915_CONTEXT_PARAM_VM,
-> +		.ctx_id = ctx_id,
-> +		.value = vm_id,
-> +	};
-> +
-> +	gem_context_set_param(fd, &p);
-> +}
-> diff --git a/lib/i915/gem_context.h b/lib/i915/gem_context.h
-> index 505d55724e..2a2247fe10 100644
-> --- a/lib/i915/gem_context.h
-> +++ b/lib/i915/gem_context.h
-> @@ -63,4 +63,7 @@ void gem_context_set_persistence(int i915, uint32_t ctx, bool state);
->   
->   bool gem_context_has_engine(int fd, uint32_t ctx, uint64_t engine);
->   
-> +uint32_t gem_context_get_vm(int fd, uint32_t ctx_id);
-> +void gem_context_set_vm(int fd, uint32_t ctx_id, uint32_t vm_id);
-> +
->   #endif /* GEM_CONTEXT_H */
-> diff --git a/lib/i915/gem_vm.c b/lib/i915/gem_vm.c
-> index 9a022a56c7..ee3c65d06e 100644
-> --- a/lib/i915/gem_vm.c
-> +++ b/lib/i915/gem_vm.c
-> @@ -48,7 +48,7 @@ bool gem_has_vm(int i915)
->   {
->   	uint32_t vm_id = 0;
->   
-> -	__gem_vm_create(i915, &vm_id);
-> +	__gem_vm_create(i915, 0, &vm_id);
->   	if (vm_id)
->   		gem_vm_destroy(i915, vm_id);
->   
-> @@ -67,9 +67,9 @@ void gem_require_vm(int i915)
->   	igt_require(gem_has_vm(i915));
->   }
->   
-> -int __gem_vm_create(int i915, uint32_t *vm_id)
-> +int __gem_vm_create(int i915, uint32_t flags, uint32_t *vm_id)
->   {
-> -       struct drm_i915_gem_vm_control ctl = {};
-> +       struct drm_i915_gem_vm_control ctl = { .flags = flags };
->          int err = 0;
->   
->          if (igt_ioctl(i915, DRM_IOCTL_I915_GEM_VM_CREATE, &ctl) == 0) {
-> @@ -88,7 +88,8 @@ int __gem_vm_create(int i915, uint32_t *vm_id)
->    * @i915: open i915 drm file descriptor
->    *
->    * This wraps the VM_CREATE ioctl, which is used to allocate a new
-> - * address space for use with GEM contexts.
-> + * address space for use with GEM contexts, with legacy execbuff
-> + * method of binding.
->    *
->    * Returns: The id of the allocated address space.
->    */
-> @@ -96,7 +97,27 @@ uint32_t gem_vm_create(int i915)
->   {
->   	uint32_t vm_id;
->   
-> -	igt_assert_eq(__gem_vm_create(i915, &vm_id), 0);
-> +	igt_assert_eq(__gem_vm_create(i915, 0, &vm_id), 0);
-> +	igt_assert(vm_id != 0);
-> +
-> +	return vm_id;
-> +}
-> +
-> +/**
-> + * gem_vm_create_in_vm_bind_mode:
-> + * @i915: open i915 drm file descriptor
-> + *
-> + * This wraps the VM_CREATE ioctl with I915_VM_CREATE_FLAGS_USE_VM_BIND,
-> + * flag which is used to allocate a new address space for use with GEM contexts
-> + * with vm_bind mode of binding.
-> + *
-> + * Returns: The id of the allocated address space.
-> + */
-> +uint32_t gem_vm_create_in_vm_bind_mode(int i915)
-> +{
-> +	uint32_t vm_id;
-> +
-> +	igt_assert_eq(__gem_vm_create(i915, I915_VM_CREATE_FLAGS_USE_VM_BIND, &vm_id), 0);
->   	igt_assert(vm_id != 0);
->   
->   	return vm_id;
-> diff --git a/lib/i915/gem_vm.h b/lib/i915/gem_vm.h
-> index acbb663e65..6cf46d8876 100644
-> --- a/lib/i915/gem_vm.h
-> +++ b/lib/i915/gem_vm.h
-> @@ -31,7 +31,8 @@ bool gem_has_vm(int i915);
->   void gem_require_vm(int i915);
->   
->   uint32_t gem_vm_create(int i915);
-> -int __gem_vm_create(int i915, uint32_t *vm_id);
-> +uint32_t gem_vm_create_in_vm_bind_mode(int i915);
-> +int __gem_vm_create(int i915, uint32_t flags, uint32_t *vm_id);
->   
->   void gem_vm_destroy(int i915, uint32_t vm_id);
->   int __gem_vm_destroy(int i915, uint32_t vm_id);
+V2: - Use updated helper name
+V3: - Fix the usage of pipe & output
+
+Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Reviewed-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
+---
+ tests/i915/kms_pwrite_crc.c | 12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
+
+diff --git a/tests/i915/kms_pwrite_crc.c b/tests/i915/kms_pwrite_crc.c
+index 584e6a19..af3dbc0c 100644
+--- a/tests/i915/kms_pwrite_crc.c
++++ b/tests/i915/kms_pwrite_crc.c
+@@ -110,6 +110,7 @@ static void prepare_crtc(data_t *data)
+ 	igt_output_t *output = data->output;
+ 	drmModeModeInfo *mode;
+
++	igt_display_reset(display);
+ 	/* select the pipe we want to use */
+ 	igt_output_set_pipe(output, data->pipe);
+
+@@ -156,12 +157,13 @@ static void cleanup_crtc(data_t *data)
+ static void run_test(data_t *data)
+ {
+ 	igt_display_t *display = &data->display;
+-	igt_output_t *output;
+-	enum pipe pipe;
+
+-	for_each_pipe_with_valid_output(display, pipe, output) {
+-		data->output = output;
+-		data->pipe = pipe;
++	for_each_pipe_with_valid_output(display, data->pipe, data->output) {
++		igt_display_reset(display);
++
++		igt_output_set_pipe(data->output, data->pipe);
++		if (!i915_pipe_output_combo_valid(display))
++			continue;
+
+ 		prepare_crtc(data);
+ 		test(data);
+--
+2.37.3
