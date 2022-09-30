@@ -1,14 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C7D5210E169
- for <igt-dev@lists.freedesktop.org>; Fri, 30 Sep 2022 11:59:34 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9A42810E222
+ for <igt-dev@lists.freedesktop.org>; Fri, 30 Sep 2022 11:59:39 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Fri, 30 Sep 2022 17:29:10 +0530
-Message-Id: <20220930115913.2640024-1-bhanuprakash.modem@intel.com>
+Date: Fri, 30 Sep 2022 17:29:13 +0530
+Message-Id: <20220930115913.2640024-4-bhanuprakash.modem@intel.com>
+In-Reply-To: <20220930115913.2640024-1-bhanuprakash.modem@intel.com>
+References: <20220930115913.2640024-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V4 0/3] Add Negative tests to VRR
+Subject: [igt-dev] [i-g-t V4 3/3] HAX: Add VRR negative tests to BAT
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,22 +22,25 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-This Series includes:
+Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+---
+ tests/intel-ci/fast-feedback.testlist | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-* VRR on Non-VRR panel:
-	VRR should not be enabled on the Non-VRR panel.
-* Monitor Refresh Rate range:
-	Read VRR range capability from EDID and check if
-	the Kernel is parsing it correctly.
-
-Bhanuprakash Modem (3):
-  tests/kms_vrr: Add Negative tests to validate VRR
-  tests/kms_vrr: Add a test for VRR range capability
-  HAX: Add VRR negative tests to BAT
-
- tests/intel-ci/fast-feedback.testlist |   4 +
- tests/kms_vrr.c                       | 152 +++++++++++++++++++++++---
- 2 files changed, 138 insertions(+), 18 deletions(-)
-
---
+diff --git a/tests/intel-ci/fast-feedback.testlist b/tests/intel-ci/fast-feedback.testlist
+index bd5538a0..f31e9a24 100644
+--- a/tests/intel-ci/fast-feedback.testlist
++++ b/tests/intel-ci/fast-feedback.testlist
+@@ -123,6 +123,10 @@ igt@kms_psr@cursor_plane_move
+ igt@kms_psr@sprite_plane_onoff
+ igt@kms_psr@primary_mmap_gtt
+ igt@kms_setmode@basic-clone-single-crtc
++igt@kms_vrr@flip-basic
++igt@kms_vrr@flipline
++igt@kms_vrr@negative-basic
++igt@kms_vrr@parse-vrr-range
+ igt@i915_pm_backlight@basic-brightness
+ igt@i915_pm_rpm@basic-pci-d3-state
+ igt@i915_pm_rpm@basic-rte
+-- 
 2.37.3
