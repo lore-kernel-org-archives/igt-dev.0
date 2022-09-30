@@ -1,21 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4C3F510E1BD
- for <igt-dev@lists.freedesktop.org>; Fri, 30 Sep 2022 08:42:48 +0000 (UTC)
-From: "B, Jeevan" <jeevan.b@intel.com>
-To: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-Date: Fri, 30 Sep 2022 08:42:38 +0000
-Message-ID: <DM4PR11MB6312ACE23076AB4BEB4710B990569@DM4PR11MB6312.namprd11.prod.outlook.com>
-References: <20220922160004.2041598-1-bhanuprakash.modem@intel.com>
- <20220922160004.2041598-18-bhanuprakash.modem@intel.com>
-In-Reply-To: <20220922160004.2041598-18-bhanuprakash.modem@intel.com>
-Content-Language: en-US
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 17F6610EBC7
+ for <igt-dev@lists.freedesktop.org>; Fri, 30 Sep 2022 08:45:05 +0000 (UTC)
+Date: Fri, 30 Sep 2022 11:44:34 +0300
+From: Petri Latvala <petri.latvala@intel.com>
+To: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Message-ID: <YzasUOR/CISPcl4x@platvala-desk.ger.corp.intel.com>
+References: <20220929143018.2502653-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [i-g-t V4 17/52] tests/kms_flip_event_leak: Add
- support for Bigjoiner
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220929143018.2502653-1-bhanuprakash.modem@intel.com>
+Subject: Re: [igt-dev] [i-g-t] lib/igt_kms: New api to iterate over all
+ outputs
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,72 +20,72 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
+On Thu, Sep 29, 2022 at 08:00:18PM +0530, Bhanuprakash Modem wrote:
+> Few KMS tests are trying to run on all outputs irrespective of
+
+Make this "A few" instead. English is funky.
+
+(A few = some, whereas few = not many, emphasis on the amount being
+really small)
 
 
-> -----Original Message-----
-> From: igt-dev <igt-dev-bounces@lists.freedesktop.org> On Behalf Of
-> Bhanuprakash Modem
-> Sent: Thursday, September 22, 2022 9:29 PM
-> To: igt-dev@lists.freedesktop.org
-> Subject: [igt-dev] [i-g-t V4 17/52] tests/kms_flip_event_leak: Add suppor=
-t for
-> Bigjoiner
->=20
-> This patch will add a check to Skip the subtest if a selected pipe/output
-> combo won't support Bigjoiner or 8K mode.
->=20
-> Example:
-> * Pipe-D wont support a mode > 5K
-> * To use 8K mode on a pipe then consecutive pipe must be available & free=
-.
->=20
-> V2: - Use updated helper name
->=20
+
+> their connection status. So add a new helper to iterate over all
+> outputs.
+> 
+> Cc: Petri Latvala <petri.latvala@intel.com>
 > Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Reviewed-by: Jeevan B <jeevan.b@intel.com>
 > ---
->  tests/kms_flip_event_leak.c | 11 ++++++-----
->  1 file changed, 6 insertions(+), 5 deletions(-)
->=20
-> diff --git a/tests/kms_flip_event_leak.c b/tests/kms_flip_event_leak.c in=
-dex
-> 9815f1e2..d3ddec72 100644
-> --- a/tests/kms_flip_event_leak.c
-> +++ b/tests/kms_flip_event_leak.c
-> @@ -48,10 +48,6 @@ static void test(data_t *data, enum pipe pipe,
-> igt_output_t *output)
->  	struct igt_fb fb[2];
->  	int fd, ret;
->=20
-> -	igt_display_reset(&data->display);
-> -	/* select the pipe we want to use */
-> -	igt_output_set_pipe(output, pipe);
-> -
->  	primary =3D igt_output_get_plane_type(output,
-> DRM_PLANE_TYPE_PRIMARY);
->  	mode =3D igt_output_get_mode(output);
->=20
-> @@ -104,9 +100,14 @@ igt_main
->  		igt_display_require_output(&data.display);
->  	}
->=20
-> -
->  	igt_subtest_with_dynamic("basic") {
->  		for_each_pipe_with_valid_output(&data.display, pipe,
-> output) {
-> +			igt_display_reset(&data.display);
+>  lib/igt_kms.h | 18 ++++++++++++++----
+>  1 file changed, 14 insertions(+), 4 deletions(-)
+> 
+> diff --git a/lib/igt_kms.h b/lib/igt_kms.h
+> index 3d78c37f..e0786aad 100644
+> --- a/lib/igt_kms.h
+> +++ b/lib/igt_kms.h
+> @@ -544,16 +544,26 @@ static inline bool igt_output_is_connected(igt_output_t *output)
+>  #define for_each_if(condition) if (!(condition)) {} else
+>  
+>  /**
+> - * for_each_connected_output:
+> + * for_each_output:
+>   * @display: a pointer to an #igt_display_t structure
+>   * @output: The output to iterate.
+>   *
+>   * This for loop iterates over all outputs.
+>   */
+> -#define for_each_connected_output(display, output)		\
+> +#define for_each_output(display, output)		\
+>  	for (int i__ = 0;  assert(igt_can_fail()), i__ < (display)->n_outputs; i__++)	\
+> -		for_each_if ((((output) = &(display)->outputs[i__]), \
+> -			      igt_output_is_connected((output))))
+> +		for_each_if (((output) = (&(display)->outputs[i__])))
 > +
-> +			igt_output_set_pipe(output, pipe);
-> +			if (!i915_pipe_output_combo_valid(&data.display))
-> +				continue;
-> +
->  			igt_dynamic_f("pipe-%s-%s",
-> kmstest_pipe_name(pipe), igt_output_name(output)) {
->  				test(&data, pipe, output);
->  			}
-> --
+> +/**
+> + * for_each_connected_output:
+> + * @display: a pointer to an #igt_display_t structure
+> + * @output: The output to iterate.
+> + *
+> + * This for loop iterates over all connected outputs.
+> + */
+> +#define for_each_connected_output(display, output)		\
+> +	for_each_output((display), (output))	\
+> +		for_each_if ((igt_output_is_connected((output))))
+>  
+
+Ah, misunderstood the purpose on that other patch. Fair enough.
+
+With the commit message change from above,
+Reviewed-by: Petri Latvala <petri.latvala@intel.com>
+
+
+>  /**
+>   * for_each_pipe_static:
+> -- 
 > 2.37.3
+> 
