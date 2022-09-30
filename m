@@ -1,21 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 02E7410EBB9
- for <igt-dev@lists.freedesktop.org>; Fri, 30 Sep 2022 08:27:36 +0000 (UTC)
-Message-ID: <c8d43c4d-e054-14a5-97ca-8d00a65ccd72@intel.com>
-Date: Fri, 30 Sep 2022 13:57:30 +0530
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 842DC10EBB9
+ for <igt-dev@lists.freedesktop.org>; Fri, 30 Sep 2022 08:31:01 +0000 (UTC)
+Message-ID: <cffcca93-1ad1-7408-199f-65b8735edbe5@intel.com>
+Date: Fri, 30 Sep 2022 14:00:56 +0530
 MIME-Version: 1.0
-To: Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
- igt-dev@lists.freedesktop.org, karthik.b.s@intel.com
-References: <20220922160004.2041598-24-bhanuprakash.modem@intel.com>
- <20220928112015.2374165-1-bhanuprakash.modem@intel.com>
 Content-Language: en-US
+To: Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
+ igt-dev@lists.freedesktop.org
+References: <20220922160004.2041598-1-bhanuprakash.modem@intel.com>
+ <20220922160004.2041598-3-bhanuprakash.modem@intel.com>
 From: Swati Sharma <swati2.sharma@intel.com>
-In-Reply-To: <20220928112015.2374165-1-bhanuprakash.modem@intel.com>
+In-Reply-To: <20220922160004.2041598-3-bhanuprakash.modem@intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Subject: Re: [igt-dev] [i-g-t V5 23/52] tests/kms_plane_alpha_blend: Add
- support for Bigjoiner
+Subject: Re: [igt-dev] [i-g-t V4 02/52] lib/igt_kms: Bigjoiner check in
+ max_bpc constraint
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -30,49 +30,31 @@ List-ID: <igt-dev@lists.freedesktop.org>
 LGTM
 Reviewed-by:  Swati Sharma <swati2.sharma@intel.com>
 
-On 28-Sep-22 4:50 PM, Bhanuprakash Modem wrote:
-> This patch will add a check to Skip the subtest if a selected pipe/output
-> combo won't support Bigjoiner or 8K mode.
-> 
-> Example:
-> * Pipe-D wont support a mode > 5K
-> * To use 8K mode on a pipe then consecutive pipe must be available & free.
-> 
-> V2: - Use updated helper name
-> V3: - Rebase
+On 22-Sep-22 9:29 PM, Bhanuprakash Modem wrote:
+> There is a possibility of commit failure if the selected pipe/output
+> won't support Bigjoiner or 8K. So we need to handle this case.
 > 
 > Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 > ---
->   tests/kms_plane_alpha_blend.c | 9 ++++++---
->   1 file changed, 6 insertions(+), 3 deletions(-)
+>   lib/igt_kms.c | 5 +++++
+>   1 file changed, 5 insertions(+)
 > 
-> diff --git a/tests/kms_plane_alpha_blend.c b/tests/kms_plane_alpha_blend.c
-> index f122066d..156005d5 100644
-> --- a/tests/kms_plane_alpha_blend.c
-> +++ b/tests/kms_plane_alpha_blend.c
-> @@ -171,9 +171,6 @@ static void prepare_crtc(data_t *data, igt_output_t *output, enum pipe pipe)
->   	int w, h;
->   	igt_plane_t *primary = igt_pipe_get_plane_type(&display->pipes[pipe], DRM_PLANE_TYPE_PRIMARY);
+> diff --git a/lib/igt_kms.c b/lib/igt_kms.c
+> index 5fdb67fc..a3ed5ec9 100644
+> --- a/lib/igt_kms.c
+> +++ b/lib/igt_kms.c
+> @@ -5713,6 +5713,11 @@ bool igt_max_bpc_constraint(igt_display_t *display, enum pipe pipe,
 >   
-> -	igt_display_reset(display);
-> -	igt_output_set_pipe(output, pipe);
-> -
->   	/* create the pipe_crc object for this pipe */
->   	igt_pipe_crc_free(data->pipe_crc);
->   	data->pipe_crc = igt_pipe_crc_new(data->gfx_fd, pipe, INTEL_PIPE_CRC_SOURCE_AUTO);
-> @@ -616,6 +613,12 @@ static void run_subtests(data_t *data)
+>   	for_each_connector_mode(output) {
+>   		igt_output_override_mode(output, &connector->modes[j__]);
+> +
+> +		if (is_i915_device(display->drm_fd) &&
+> +		    !igt_check_bigjoiner_support(display))
+> +			continue;
+> +
+>   		igt_display_commit2(display, display->is_atomic ? COMMIT_ATOMIC : COMMIT_LEGACY);
 >   
->   		igt_subtest_with_dynamic(subtests[i].name) {
->   			for_each_pipe_with_single_output(&data->display, pipe, output) {
-> +				igt_display_reset(&data->display);
-> +
-> +				igt_output_set_pipe(output, pipe);
-> +				if (!i915_pipe_output_combo_valid(&data->display))
-> +					continue;
-> +
->   				prepare_crtc(data, output, pipe);
->   				if (!pipe_check(data, pipe, subtests[i].blend, subtests[i].must_multiply))
->   					continue;
+>   		if (!igt_check_output_bpc_equal(display->drm_fd, pipe,
 
 -- 
 ~Swati Sharma
