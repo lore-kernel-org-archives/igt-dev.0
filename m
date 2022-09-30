@@ -1,21 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 68FB710EB99
- for <igt-dev@lists.freedesktop.org>; Fri, 30 Sep 2022 06:44:24 +0000 (UTC)
-Date: Thu, 29 Sep 2022 23:44:01 -0700
-From: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
-To: Matthew Auld <matthew.auld@intel.com>
-Message-ID: <20220930064401.GG22224@nvishwa1-DESK>
-References: <20220928062115.6412-1-niranjana.vishwanathapura@intel.com>
- <20220928062115.6412-7-niranjana.vishwanathapura@intel.com>
- <80930efb-b4d5-a92f-81fe-3b0533f88ba4@intel.com>
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BE55D10E1D7
+ for <igt-dev@lists.freedesktop.org>; Fri, 30 Sep 2022 08:38:04 +0000 (UTC)
+Date: Fri, 30 Sep 2022 11:37:34 +0300
+From: Petri Latvala <petri.latvala@intel.com>
+To: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
+Message-ID: <YzaqzkBOfA6GqsKm@platvala-desk.ger.corp.intel.com>
+References: <20220922141157.159926-1-mohammed.thasleem@intel.com>
+ <20220928133703.55196-1-mohammed.thasleem@intel.com>
+ <7afd23ab-e89d-5341-b43f-cbc24c5a680b@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1; format=flowed
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <80930efb-b4d5-a92f-81fe-3b0533f88ba4@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 6/8] tests/i915/vm_bind: Add vm_bind
- sanity test
+In-Reply-To: <7afd23ab-e89d-5341-b43f-cbc24c5a680b@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_properties: Create dynamic
+ subtests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,298 +22,280 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: tvrtko.ursulin@intel.com, igt-dev@lists.freedesktop.org,
- thomas.hellstrom@intel.com, daniel.vetter@intel.com, petri.latvala@intel.com
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Thu, Sep 29, 2022 at 04:36:45PM +0100, Matthew Auld wrote:
->On 28/09/2022 07:21, Niranjana Vishwanathapura wrote:
->>Add sanity test to exercise vm_bind uapi.
->>Test for various cases with vm_bind and vm_unbind ioctls.
->>
->>Signed-off-by: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
->
->It would be good to also add checks for all the rsvd and any unused 
->extensions we have here.
+On Thu, Sep 29, 2022 at 07:56:58PM +0530, Modem, Bhanuprakash wrote:
+> On Wed-28-09-2022 07:07 pm, Mohammed Thasleem wrote:
+> > Modified kms_properties to include dynamic test cases.
+> > 
+> > v2: Fixed compilation issue.
+> > v3: Removed redundant code.
+> > v4: Moved get_prop_sanity calls to igt_subtest_group.
+> > 
+> > Signed-off-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
+> > ---
+> >   tests/kms_properties.c | 172 ++++++++++++++++++-----------------------
+> >   1 file changed, 75 insertions(+), 97 deletions(-)
+> > 
+> > diff --git a/tests/kms_properties.c b/tests/kms_properties.c
+> > index dd5a93aa..476769e0 100644
+> > --- a/tests/kms_properties.c
+> > +++ b/tests/kms_properties.c
+> > @@ -230,48 +230,30 @@ static void run_connector_property_tests(igt_display_t *display, enum pipe pipe,
+> >   static void plane_properties(igt_display_t *display, bool atomic)
+> >   {
+> > -	bool found_any = false, found;
+> >   	igt_output_t *output;
+> >   	enum pipe pipe;
+> > -	if (atomic)
+> > -		igt_skip_on(!display->is_atomic);
+> > -
+> > -	for_each_pipe(display, pipe) {
+> > -		found = false;
+> > -
+> > -		for_each_valid_output_on_pipe(display, pipe, output) {
+> > -			found_any = found = true;
+> > -
+> > +	for_each_pipe_with_valid_output(display, pipe, output) {
+> > +		igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe),
+> > +			      igt_output_name(output)) {
+> >   			run_plane_property_tests(display, pipe, output, atomic);
+> > -			break;
+> >   		}
+> > +		break;
+> >   	}
+> > -
+> > -	igt_skip_on(!found_any);
+> >   }
+> >   static void crtc_properties(igt_display_t *display, bool atomic)
+> >   {
+> > -	bool found_any_valid_pipe = false, found;
+> >   	enum pipe pipe;
+> >   	igt_output_t *output;
+> > -	if (atomic)
+> > -		igt_skip_on(!display->is_atomic);
+> > -
+> > -	for_each_pipe(display, pipe) {
+> > -		found = false;
+> > -
+> > -		for_each_valid_output_on_pipe(display, pipe, output) {
+> > -			found_any_valid_pipe = found = true;
+> > -
+> > +	for_each_pipe_with_valid_output(display, pipe, output) {
+> > +		igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe),
+> > +			      igt_output_name(output)) {
+> >   			run_crtc_property_tests(display, pipe, output, atomic);
+> > -			break;
+> >   		}
+> > +		break;
+> >   	}
+> > -
+> > -	igt_skip_on(!found_any_valid_pipe);
+> >   }
+> >   static void connector_properties(igt_display_t *display, bool atomic)
+> > @@ -280,22 +262,12 @@ static void connector_properties(igt_display_t *display, bool atomic)
+> >   	enum pipe pipe;
+> >   	igt_output_t *output;
+> > -	if (atomic)
+> > -		igt_skip_on(!display->is_atomic);
+> > -
+> > -	for_each_connected_output(display, output) {
+> > -		bool found = false;
+> > -
+> > -		for_each_pipe(display, pipe) {
+> > -			if (!igt_pipe_connector_valid(pipe, output))
+> > -				continue;
+> > -
+> > -			found = true;
+> > +	for_each_pipe_with_valid_output(display, pipe, output) {
+> > +		igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe),
+> > +				igt_output_name(output)) {
+> >   			run_connector_property_tests(display, pipe, output, atomic);
+> > -			break;
+> >   		}
+> > -
+> > -		igt_assert_f(found, "Connected output should have at least 1 valid crtc\n");
+> > +		break;
+> >   	}
+> >   	for (i = 0; i < display->n_outputs; i++)
+> > @@ -707,26 +679,58 @@ static void invalid_properties(igt_display_t *display, bool atomic)
+> >   	igt_output_t *output;
+> >   	igt_plane_t *plane;
+> >   	enum pipe pipe;
+> > -	int i;
+> > -
+> > -	if (atomic)
+> > -		igt_skip_on(!display->is_atomic);
+> >   	for_each_pipe(display, pipe)
+> > -		test_object_invalid_properties(display, display->pipes[pipe].crtc_id, DRM_MODE_OBJECT_CRTC, atomic);
+> > +		igt_dynamic_f("pipe-%s", kmstest_pipe_name(pipe))
+> > +			test_object_invalid_properties(display, display->pipes[pipe].crtc_id,
+> > +						       DRM_MODE_OBJECT_CRTC, atomic);
+> >   	for_each_pipe(display, pipe)
+> > -		for_each_plane_on_pipe(display, pipe, plane)
+> > -			test_object_invalid_properties(display, plane->drm_plane->plane_id, DRM_MODE_OBJECT_PLANE, atomic);
+> > +		igt_dynamic_f("pipe-%s-plane", kmstest_pipe_name(pipe))
+> > +			for_each_plane_on_pipe(display, pipe, plane)
+> > +				test_object_invalid_properties(display, plane->drm_plane->plane_id,
+> > +							       DRM_MODE_OBJECT_PLANE, atomic);
+> > +
+> > +	for_each_connected_output(display, output)
+> > +		igt_dynamic_f("%s", igt_output_name(output))
+> > +			test_object_invalid_properties(display, output->id,
+> > +						       DRM_MODE_OBJECT_CONNECTOR, atomic);
+> > -	for (i = 0, output = &display->outputs[0]; i < display->n_outputs; output = &display->outputs[++i])
+> > -		test_object_invalid_properties(display, output->id, DRM_MODE_OBJECT_CONNECTOR, atomic);
+> 
+> Please fix the same inside test_object_invalid_properties()
+> use for_each_connected_output()
+> 
+> >   }
+> >   igt_main
+> >   {
+> >   	igt_display_t display;
+> > +	static const struct {
+> > +		const char *name;
+> > +		void (*func)(igt_display_t *, bool);
+> > +		const bool atomic;
+> > +		const char *desc;
+> > +	} funcs[] = {
+> > +		{ "plane-properties-legacy", plane_properties, false,
+> > +		  "Tests plane properties with legacy commit" },
+> > +		{ "plane-properties-atomic", plane_properties, true,
+> > +		  "Tests plane properties with atomic commit" },
+> > +		{ "crtc-properties-legacy", crtc_properties, false,
+> > +		  "Tests crtc properties with legacy commit" },
+> > +		{ "crtc-properties-atomic", crtc_properties, true,
+> > +		  "Tests crtc properties with atomic commit" },
+> > +		{ "connector-properties-legacy", connector_properties, false,
+> > +		  "Tests connector properties with legacy commit" },
+> 
+> https://cgit.freedesktop.org/drm/igt-gpu-tools/tree/tests/kms_properties.c#n301
+> 
+> for (i = 0; i < display->n_outputs; i++)
+>   if (!igt_output_is_connected(&display->outputs[i]))
+>     run_connector_property_tests(display, PIPE_NONE, &display->outputs[i],
+> atomic);
+> 
+> I can recommend to create a new api for_each_output() to iterate all
+> outputs.
 
-Sure, will add those.
+There's for_each_connected_output already.
 
-Regards,
-Niranjana
 
->
->>---
->>  tests/i915/i915_vm_bind_sanity.c | 250 +++++++++++++++++++++++++++++++
->>  tests/meson.build                |   1 +
->>  2 files changed, 251 insertions(+)
->>  create mode 100644 tests/i915/i915_vm_bind_sanity.c
->>
->>diff --git a/tests/i915/i915_vm_bind_sanity.c b/tests/i915/i915_vm_bind_sanity.c
->>new file mode 100644
->>index 0000000000..c0e7bd0633
->>--- /dev/null
->>+++ b/tests/i915/i915_vm_bind_sanity.c
->>@@ -0,0 +1,250 @@
->>+// SPDX-License-Identifier: MIT
->>+/*
->>+ * Copyright © 2022 Intel Corporation
->>+ */
->>+
->>+/** @file i915_vm_bind_sanity.c
->>+ *
->>+ * This is the sanity test for VM_BIND UAPI.
->>+ *
->>+ * The goal is to test the UAPI interface.
->>+ */
->>+
->>+#include <fcntl.h>
->>+#include <sys/ioctl.h>
->>+#include <sys/poll.h>
->>+
->>+#include "igt_syncobj.h"
->>+#include "i915/gem.h"
->>+#include "i915/gem_create.h"
->>+#include "igt.h"
->>+
->>+#include "i915/gem_vm.h"
->>+
->>+#define EOPNOTSUPP    95
->>+
->>+#define PAGE_SIZE   4096
->>+#define SZ_64K      (16 * PAGE_SIZE)
->>+#define SZ_2M       (512 * PAGE_SIZE)
->>+
->>+IGT_TEST_DESCRIPTION("Sanity test vm_bind related interfaces");
->>+
->>+#define VA 0xa0000000
->>+
->>+static uint64_t
->>+gettime_ns(void)
->>+{
->>+	struct timespec current;
->>+	clock_gettime(CLOCK_MONOTONIC, &current);
->>+	return (uint64_t)current.tv_sec * NSEC_PER_SEC + current.tv_nsec;
->>+}
->>+
->>+static bool syncobj_busy(int fd, uint32_t handle)
->>+{
->>+	bool result;
->>+	int sf;
->>+
->>+	sf = syncobj_handle_to_fd(fd, handle,
->>+				  DRM_SYNCOBJ_HANDLE_TO_FD_FLAGS_EXPORT_SYNC_FILE);
->>+	result = poll(&(struct pollfd){sf, POLLIN}, 1, 0) == 0;
->>+	close(sf);
->>+
->>+	return result;
->>+}
->>+
->>+static inline int
->>+__i915_vm_bind(int fd, uint32_t vm_id, uint32_t handle, uint64_t start,
->>+	       uint64_t offset, uint64_t length, uint64_t flags,
->>+	       struct drm_i915_gem_timeline_fence *fence)
->>+{
->>+	struct drm_i915_gem_vm_bind bind;
->>+
->>+	memset(&bind, 0, sizeof(bind));
->>+	bind.vm_id = vm_id;
->>+	bind.handle = handle;
->>+	bind.start = start;
->>+	bind.offset = offset;
->>+	bind.length = length;
->>+	bind.flags = flags;
->>+	if (fence)
->>+		bind.fence = *fence;
->>+
->>+	return __gem_vm_bind(fd, &bind);
->>+}
->>+
->>+static inline void
->>+i915_vm_bind(int fd, uint32_t vm_id, uint32_t handle, uint64_t start,
->>+	     uint64_t offset, uint64_t length, uint64_t flags,
->>+	     struct drm_i915_gem_timeline_fence *fence)
->>+{
->>+	igt_assert_eq(__i915_vm_bind(fd, vm_id, handle, start,
->>+				     offset, length, flags, fence), 0);
->>+	if (fence) {
->>+		igt_assert(syncobj_timeline_wait(fd, &fence->handle, (uint64_t *)&fence->value,
->>+						 1, gettime_ns() + (2 * NSEC_PER_SEC),
->>+						 DRM_SYNCOBJ_WAIT_FLAGS_WAIT_FOR_SUBMIT, NULL));
->>+		igt_assert(!syncobj_busy(fd, fence->handle));
->>+	}
->>+}
->>+
->>+static inline int
->>+__i915_vm_unbind(int fd, uint32_t vm_id, uint64_t start, uint64_t length, uint64_t flags)
->>+{
->>+	struct drm_i915_gem_vm_unbind unbind;
->>+
->>+	memset(&unbind, 0, sizeof(unbind));
->>+	unbind.vm_id = vm_id;
->>+	unbind.start = start;
->>+	unbind.length = length;
->>+	unbind.flags = flags;
->>+
->>+	return __gem_vm_unbind(fd, &unbind);
->>+}
->>+
->>+static inline void
->>+i915_vm_unbind(int fd, uint32_t vm_id, uint64_t start, uint64_t length, uint64_t flags)
->>+{
->>+	igt_assert_eq(__i915_vm_unbind(fd, vm_id, start, length, flags), 0);
->>+}
->>+
->>+static void basic(int fd, bool test_lmem)
->>+{
->>+	uint32_t vm_id, vm_id2, vm_id_exec_mode, handle, pg_size, size;
->>+	unsigned int region = test_lmem ? REGION_LMEM(0) : REGION_SMEM;
->>+	struct drm_i915_gem_timeline_fence fence = {
->>+		.handle = syncobj_create(fd, 0),
->>+		.flags = I915_TIMELINE_FENCE_SIGNAL,
->>+		.value = 0,
->>+	};
->>+	struct drm_i915_gem_execbuffer2 execbuf;
->>+	struct drm_i915_gem_exec_object2 obj;
->>+	const intel_ctx_t *ctx;
->>+	int dmabuf;
->>+
->>+	pg_size = (test_lmem && HAS_64K_PAGES(intel_get_drm_devid(fd))) ? SZ_64K : PAGE_SIZE;
->>+	size = pg_size * 4;
->>+
->>+	vm_id = gem_vm_create_in_vm_bind_mode(fd);
->>+	handle = gem_create_in_memory_regions(fd, size, region);
->>+
->>+	/* Bind and unbind */
->>+	i915_vm_bind(fd, vm_id, handle, VA, 0, size, 0, NULL);
->>+	i915_vm_unbind(fd, vm_id, VA, size, 0);
->>+
->>+	/* Bind with out fence */
->>+	i915_vm_bind(fd, vm_id, handle, VA, 0, size, 0, &fence);
->>+	i915_vm_unbind(fd, vm_id, VA, size, 0);
->>+
->>+	/* Aliasing bind and unbind */
->>+	i915_vm_bind(fd, vm_id, handle, VA, 0, size, 0, NULL);
->>+	i915_vm_bind(fd, vm_id, handle, VA + SZ_2M, 0, size, 0, NULL);
->>+	i915_vm_unbind(fd, vm_id, VA, size, 0);
->>+	i915_vm_unbind(fd, vm_id, VA + SZ_2M, size, 0);
->>+
->>+	/* Invalid handle */
->>+	igt_assert_eq(__i915_vm_bind(fd, vm_id, handle + 10, VA, 0, size, 0, NULL), -ENOENT);
->>+
->>+	/* Invalid mapping range */
->>+	igt_assert_eq(__i915_vm_bind(fd, vm_id, handle, VA, 0, 0, 0, NULL), -EINVAL);
->>+	igt_assert_eq(__i915_vm_bind(fd, vm_id, handle, VA, pg_size, size, 0, NULL), -EINVAL);
->>+
->>+	/* Unaligned binds */
->>+	igt_assert_eq(__i915_vm_bind(fd, vm_id, handle, VA, pg_size / 2, pg_size, 0, NULL), -EINVAL);
->>+	igt_assert_eq(__i915_vm_bind(fd, vm_id, handle, VA, 0, pg_size / 2, 0, NULL), -EINVAL);
->>+
->>+	/* range overflow binds */
->>+	igt_assert_eq(__i915_vm_bind(fd, vm_id, handle, VA, pg_size, -pg_size, 0, NULL), -EINVAL);
->>+	igt_assert_eq(__i915_vm_bind(fd, vm_id, handle, VA, pg_size * 2, -pg_size, 0, NULL), -EINVAL);
->>+
->>+	/* re-bind VA range without unbinding */
->>+	i915_vm_bind(fd, vm_id, handle, VA, 0, size, 0, NULL);
->>+	igt_assert_eq(__i915_vm_bind(fd, vm_id, handle, VA, 0, size, 0, NULL), -EEXIST);
->>+	i915_vm_unbind(fd, vm_id, VA, size, 0);
->>+
->>+	/* unbind a non-existing mapping */
->>+	igt_assert_eq(__i915_vm_bind(fd, vm_id, 0, VA + SZ_2M, 0, size, 0, NULL), -ENOENT);
->>+
->>+	/* unbind with length mismatch */
->>+	i915_vm_bind(fd, vm_id, handle, VA, 0, size, 0, NULL);
->>+	igt_assert_eq(__i915_vm_bind(fd, vm_id, handle, VA, 0, size * 2, 0, NULL), -EINVAL);
->>+	i915_vm_unbind(fd, vm_id, VA, size, 0);
->>+
->>+	/* validate exclusivity of vm_bind & exec modes of binding */
->>+	vm_id_exec_mode = gem_vm_create(fd);
->>+	igt_assert_eq(__i915_vm_bind(fd, vm_id_exec_mode, handle, VA, 0, size, 0, NULL), -EOPNOTSUPP);
->>+
->>+	ctx = intel_ctx_create_all_physical(fd);
->>+	gem_context_set_vm(fd, ctx->id, vm_id);
->>+	(void)gem_context_get_vm(fd, ctx->id);
->>+
->>+	memset(&obj, 0, sizeof(obj));
->>+	memset(&execbuf, 0, sizeof(execbuf));
->>+	execbuf.buffers_ptr = to_user_pointer(&obj);
->>+	execbuf.buffer_count = 1;
->>+	obj.handle = handle;
->>+	i915_execbuffer2_set_context_id(execbuf, ctx->id);
->>+	igt_assert_eq(__gem_execbuf(fd, &execbuf), -EOPNOTSUPP);
->>+
->>+	intel_ctx_destroy(fd, ctx);
->>+	gem_vm_destroy(fd, vm_id_exec_mode);
->>+	gem_close(fd, handle);
->>+
->>+	/* validate VM private objects */
->>+	vm_id2 = gem_vm_create_in_vm_bind_mode(fd);
->>+	handle = gem_create_vm_private_in_memory_regions(fd, size, vm_id2, region);
->>+
->>+	igt_assert_eq(prime_handle_to_fd_no_assert(fd, handle, DRM_CLOEXEC, &dmabuf), -EINVAL);
->>+	igt_assert_eq(__i915_vm_bind(fd, vm_id, handle, VA, 0, size, 0, NULL), -EINVAL);
->>+	i915_vm_bind(fd, vm_id2, handle, VA, 0, size, 0, NULL);
->>+	i915_vm_unbind(fd, vm_id2, VA, size, 0);
->>+
->>+	gem_close(fd, handle);
->>+	gem_vm_destroy(fd, vm_id2);
->>+	gem_vm_destroy(fd, vm_id);
->>+	syncobj_destroy(fd, fence.handle);
->>+}
->>+
->>+static int vm_bind_version(int fd)
->>+{
->>+	struct drm_i915_getparam gp;
->>+	int value = 0;
->>+
->>+	memset(&gp, 0, sizeof(gp));
->>+	gp.param = I915_PARAM_VM_BIND_VERSION;
->>+	gp.value = &value;
->>+
->>+	ioctl(fd, DRM_IOCTL_I915_GETPARAM, &gp, sizeof(gp));
->>+	errno = 0;
->>+
->>+	return value;
->>+}
->>+
->>+igt_main
->>+{
->>+	int fd;
->>+	bool has_lmem;
->>+
->>+	igt_fixture {
->>+		fd = drm_open_driver(DRIVER_INTEL);
->>+		igt_require_gem(fd);
->>+		igt_require(vm_bind_version(fd) == 1);
->>+		has_lmem = gem_has_lmem(fd);
->>+	}
->>+
->>+	igt_describe("Basic vm_bind sanity test with SMEM");
->>+	igt_subtest_f("basic-smem") {
->>+		basic(fd, false);
->>+	}
->>+
->>+	if (has_lmem) {
->>+		igt_describe("Basic vm_bind sanity test with LMEM");
->>+		igt_subtest_f("basic-lmem")
->>+			basic(fd, true);
->>+	}
->>+
->>+	igt_fixture {
->>+		close(fd);
->>+	}
->>+
->>+	igt_exit();
->>+}
->>diff --git a/tests/meson.build b/tests/meson.build
->>index eb38c17fe8..3ee2230543 100644
->>--- a/tests/meson.build
->>+++ b/tests/meson.build
->>@@ -249,6 +249,7 @@ i915_progs = [
->>  	'sysfs_heartbeat_interval',
->>  	'sysfs_preempt_timeout',
->>  	'sysfs_timeslice_duration',
->>+	'i915_vm_bind_sanity',
->>  ]
->>  msm_progs = [
+-- 
+Petri Latvala
+
+
+> 
+> > +		{ "connector-properties-atomic", connector_properties, true,
+> > +		  "Tests connector properties with atomic commit" },
+> 
+> As these tests are trying to use igt_output_set_pipe(), we must sanitize the
+> state before using it.
+> 
+> > +		{ "invalid-properties-legacy", invalid_properties, false,
+> > +		  "Checks each property of any type with combination of mode "
+> > +		  "object with legacy commit and make sure only valid properties "
+> > +		  "are set to mode object else return with relevant error" },
+> > +		{ "invalid-properties-atomic", invalid_properties, true,
+> > +		  "Checks each property of any type with combination of mode object "
+> > +		  "with atomic commit and make sure only valid properties are set to "
+> > +		  "mode object else return with relevant error" },
+> > +		{ }
+> 
+> Please drop this extra element.
+> 
+> > +	}, *f;
+> > +
+> >   	igt_fixture {
+> >   		display.drm_fd = drm_open_driver_master(DRIVER_ANY);
+> > @@ -735,62 +739,36 @@ igt_main
+> >   		igt_display_require(&display, display.drm_fd);
+> >   	}
+> > -	igt_describe("Tests plane properties with legacy commit");
+> > -	igt_subtest("plane-properties-legacy")
+> > -		plane_properties(&display, false);
+> > -
+> > -	igt_describe("Tests plane properties with atomic commit");
+> > -	igt_subtest("plane-properties-atomic")
+> > -		plane_properties(&display, true);
+> > -
+> > -	igt_describe("Tests crtc properties with legacy commit");
+> > -	igt_subtest("crtc-properties-legacy")
+> > -		crtc_properties(&display, false);
+> > -
+> > -	igt_describe("Tests crtc properties with atomic commit");
+> > -	igt_subtest("crtc-properties-atomic")
+> > -		crtc_properties(&display, true);
+> > -
+> > -	igt_describe("Tests connector properties with legacy commit");
+> > -	igt_subtest("connector-properties-legacy")
+> > -		connector_properties(&display, false);
+> > -
+> > -	igt_describe("Tests connector properties with atomic commit");
+> > -	igt_subtest("connector-properties-atomic")
+> > -		connector_properties(&display, true);
+> > -
+> > -	igt_describe("Checks each property of any type with combination of mode object with legacy "
+> > -		     "commit and make sure only valid properties are set to mode object else "
+> > -		     "return with relevant error");
+> > -
+> > -	igt_subtest("invalid-properties-legacy")
+> > -		invalid_properties(&display, false);
+> > -
+> > -	igt_describe("Checks each property of any type with combination of mode object with atomic "
+> > -		     "commit and make sure only valid properties are set to mode object else "
+> > -		     "return with relevant error");
+> > -
+> > -	igt_subtest("invalid-properties-atomic")
+> > -		invalid_properties(&display, true);
+> > +	for (f = funcs; f->name; f++) {
+> > +		igt_describe_f("%s\n", f->desc);
+> > +		igt_subtest_with_dynamic_f("%s", f->name) {
+> > +			if (f->atomic && !display.is_atomic)
+> > +				continue;
+> > -	igt_describe("Test validates the properties of all planes, crtc and connectors with atomic commit");
+> > -	igt_subtest("get_properties-sanity-atomic") {
+> > -		igt_skip_on(!display.is_atomic);
+> > -		get_prop_sanity(&display, true);
+> > +			f->func(&display, f->atomic);
+> > +		}
+> >   	}
+> > -	igt_describe("Test validates the properties of all planes, crtc and connectors with legacy commit");
+> > -	igt_subtest("get_properties-sanity-non-atomic") {
+> > -		if (display.is_atomic)
+> > -			igt_assert_eq(drmSetClientCap(display.drm_fd, DRM_CLIENT_CAP_ATOMIC, 0), 0);
+> > +	igt_subtest_group {
+> > +		igt_describe("Test validates the properties of all planes, crtc and connectors with legacy commit");
+> > +		igt_subtest("get_properties-sanity-non-atomic") {
+> > +			if (display.is_atomic)
+> > +				igt_assert_eq(drmSetClientCap(display.drm_fd, DRM_CLIENT_CAP_ATOMIC, 0), 0);
+> > +			get_prop_sanity(&display, false);
+> 
+> It seems, get_prop_sanity() is just using display->drm_fd only, so no need
+> to send full display structure.
+> 
+> - Bhanu
+> 
+> > +			if (display.is_atomic)
+> > +				igt_assert_eq(drmSetClientCap(display.drm_fd, DRM_CLIENT_CAP_ATOMIC, 1), 0);
+> > +		}
+> > -		get_prop_sanity(&display, false);
+> > +		igt_fixture
+> > +			igt_require(display.is_atomic);
+> > -		if (display.is_atomic)
+> > -			igt_assert_eq(drmSetClientCap(display.drm_fd, DRM_CLIENT_CAP_ATOMIC, 1), 0);
+> > +		igt_describe("Test validates the properties of all planes, crtc and connectors with atomic commit");
+> > +		igt_subtest("get_properties-sanity-atomic")
+> > +			get_prop_sanity(&display, true);
+> >   	}
+> >   	igt_fixture {
+> >   		igt_display_fini(&display);
+> > +		close(display.drm_fd);
+> >   	}
+> >   }
+> 
