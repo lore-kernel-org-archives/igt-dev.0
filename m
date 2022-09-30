@@ -1,15 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D1DE610EBFE
- for <igt-dev@lists.freedesktop.org>; Fri, 30 Sep 2022 09:12:46 +0000 (UTC)
-From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Fri, 30 Sep 2022 14:42:26 +0530
-Message-Id: <20220930091226.2614556-1-bhanuprakash.modem@intel.com>
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A7C4810EBFF
+ for <igt-dev@lists.freedesktop.org>; Fri, 30 Sep 2022 09:16:41 +0000 (UTC)
+Message-ID: <51123160-0826-bf87-85dd-7e7a2abc7988@intel.com>
+Date: Fri, 30 Sep 2022 10:16:36 +0100
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V2] lib/igt_kms: New api to iterate over all
- outputs
+Content-Language: en-GB
+To: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>,
+ igt-dev@lists.freedesktop.org
+References: <20220928062115.6412-1-niranjana.vishwanathapura@intel.com>
+ <20220928062115.6412-4-niranjana.vishwanathapura@intel.com>
+From: Matthew Auld <matthew.auld@intel.com>
+In-Reply-To: <20220928062115.6412-4-niranjana.vishwanathapura@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Subject: Re: [igt-dev] [PATCH i-g-t 3/8] lib/vm_bind: Add vm_bind mode
+ support for VM
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,71 +23,148 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Petri Latvala <petri.latvala@intel.com>
+Cc: tvrtko.ursulin@intel.com, thomas.hellstrom@intel.com,
+ daniel.vetter@intel.com, petri.latvala@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-A few KMS tests are trying to run on all outputs irrespective of
-their connection status. So add a new helper to iterate over all
-outputs.
+On 28/09/2022 07:21, Niranjana Vishwanathapura wrote:
+> From: "Vishwanathapura, Niranjana" <niranjana.vishwanathapura@intel.com>
+> 
+> Add required library interfaces to create VM in
+> vm_bind mode and assign the VM to a context.
+> 
+> Signed-off-by: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
 
-V2:
-- Fix the commit message
-- New helper to iterate over all disconnected outputs
+Acked-by: Matthew Auld <matthew.auld@intel.com>
 
-Cc: Petri Latvala <petri.latvala@intel.com>
-Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Reviewed-by: Petri Latvala <petri.latvala@intel.com>
----
- lib/igt_kms.h | 29 +++++++++++++++++++++++++----
- 1 file changed, 25 insertions(+), 4 deletions(-)
-
-diff --git a/lib/igt_kms.h b/lib/igt_kms.h
-index 3d78c37f..ca2765e9 100644
---- a/lib/igt_kms.h
-+++ b/lib/igt_kms.h
-@@ -544,16 +544,37 @@ static inline bool igt_output_is_connected(igt_output_t *output)
- #define for_each_if(condition) if (!(condition)) {} else
- 
- /**
-- * for_each_connected_output:
-+ * for_each_output:
-  * @display: a pointer to an #igt_display_t structure
-  * @output: The output to iterate.
-  *
-  * This for loop iterates over all outputs.
-  */
--#define for_each_connected_output(display, output)		\
-+#define for_each_output(display, output)		\
- 	for (int i__ = 0;  assert(igt_can_fail()), i__ < (display)->n_outputs; i__++)	\
--		for_each_if ((((output) = &(display)->outputs[i__]), \
--			      igt_output_is_connected((output))))
-+		for_each_if (((output) = (&(display)->outputs[i__])))
-+
-+/**
-+ * for_each_connected_output:
-+ * @display: a pointer to an #igt_display_t structure
-+ * @output: The output to iterate.
-+ *
-+ * This for loop iterates over all connected outputs.
-+ */
-+#define for_each_connected_output(display, output)		\
-+	for_each_output((display), (output))	\
-+		for_each_if ((igt_output_is_connected((output))))
-+
-+/**
-+ * for_each_disconnected_output:
-+ * @display: a pointer to an #igt_display_t structure
-+ * @output: The output to iterate.
-+ *
-+ * This for loop iterates over all disconnected outputs.
-+ */
-+#define for_each_disconnected_output(display, output)		\
-+	for_each_output((display), (output))	\
-+		for_each_if ((!(igt_output_is_connected((output)))))
- 
- /**
-  * for_each_pipe_static:
--- 
-2.37.3
+> ---
+>   lib/i915/gem_context.c | 24 ++++++++++++++++++++++++
+>   lib/i915/gem_context.h |  3 +++
+>   lib/i915/gem_vm.c      | 31 ++++++++++++++++++++++++++-----
+>   lib/i915/gem_vm.h      |  3 ++-
+>   4 files changed, 55 insertions(+), 6 deletions(-)
+> 
+> diff --git a/lib/i915/gem_context.c b/lib/i915/gem_context.c
+> index fe989a8d1c..2d06b41980 100644
+> --- a/lib/i915/gem_context.c
+> +++ b/lib/i915/gem_context.c
+> @@ -517,3 +517,27 @@ uint32_t gem_context_create_for_class(int i915,
+>   	*count = i;
+>   	return p.ctx_id;
+>   }
+> +
+> +uint32_t gem_context_get_vm(int fd, uint32_t ctx_id)
+> +{
+> +	struct drm_i915_gem_context_param p = {
+> +		.param = I915_CONTEXT_PARAM_VM,
+> +		.ctx_id = ctx_id,
+> +	};
+> +
+> +	gem_context_get_param(fd, &p);
+> +	igt_assert(p.value);
+> +
+> +	return p.value;
+> +}
+> +
+> +void gem_context_set_vm(int fd, uint32_t ctx_id, uint32_t vm_id)
+> +{
+> +	struct drm_i915_gem_context_param p = {
+> +		.param = I915_CONTEXT_PARAM_VM,
+> +		.ctx_id = ctx_id,
+> +		.value = vm_id,
+> +	};
+> +
+> +	gem_context_set_param(fd, &p);
+> +}
+> diff --git a/lib/i915/gem_context.h b/lib/i915/gem_context.h
+> index 505d55724e..2a2247fe10 100644
+> --- a/lib/i915/gem_context.h
+> +++ b/lib/i915/gem_context.h
+> @@ -63,4 +63,7 @@ void gem_context_set_persistence(int i915, uint32_t ctx, bool state);
+>   
+>   bool gem_context_has_engine(int fd, uint32_t ctx, uint64_t engine);
+>   
+> +uint32_t gem_context_get_vm(int fd, uint32_t ctx_id);
+> +void gem_context_set_vm(int fd, uint32_t ctx_id, uint32_t vm_id);
+> +
+>   #endif /* GEM_CONTEXT_H */
+> diff --git a/lib/i915/gem_vm.c b/lib/i915/gem_vm.c
+> index 9a022a56c7..ee3c65d06e 100644
+> --- a/lib/i915/gem_vm.c
+> +++ b/lib/i915/gem_vm.c
+> @@ -48,7 +48,7 @@ bool gem_has_vm(int i915)
+>   {
+>   	uint32_t vm_id = 0;
+>   
+> -	__gem_vm_create(i915, &vm_id);
+> +	__gem_vm_create(i915, 0, &vm_id);
+>   	if (vm_id)
+>   		gem_vm_destroy(i915, vm_id);
+>   
+> @@ -67,9 +67,9 @@ void gem_require_vm(int i915)
+>   	igt_require(gem_has_vm(i915));
+>   }
+>   
+> -int __gem_vm_create(int i915, uint32_t *vm_id)
+> +int __gem_vm_create(int i915, uint32_t flags, uint32_t *vm_id)
+>   {
+> -       struct drm_i915_gem_vm_control ctl = {};
+> +       struct drm_i915_gem_vm_control ctl = { .flags = flags };
+>          int err = 0;
+>   
+>          if (igt_ioctl(i915, DRM_IOCTL_I915_GEM_VM_CREATE, &ctl) == 0) {
+> @@ -88,7 +88,8 @@ int __gem_vm_create(int i915, uint32_t *vm_id)
+>    * @i915: open i915 drm file descriptor
+>    *
+>    * This wraps the VM_CREATE ioctl, which is used to allocate a new
+> - * address space for use with GEM contexts.
+> + * address space for use with GEM contexts, with legacy execbuff
+> + * method of binding.
+>    *
+>    * Returns: The id of the allocated address space.
+>    */
+> @@ -96,7 +97,27 @@ uint32_t gem_vm_create(int i915)
+>   {
+>   	uint32_t vm_id;
+>   
+> -	igt_assert_eq(__gem_vm_create(i915, &vm_id), 0);
+> +	igt_assert_eq(__gem_vm_create(i915, 0, &vm_id), 0);
+> +	igt_assert(vm_id != 0);
+> +
+> +	return vm_id;
+> +}
+> +
+> +/**
+> + * gem_vm_create_in_vm_bind_mode:
+> + * @i915: open i915 drm file descriptor
+> + *
+> + * This wraps the VM_CREATE ioctl with I915_VM_CREATE_FLAGS_USE_VM_BIND,
+> + * flag which is used to allocate a new address space for use with GEM contexts
+> + * with vm_bind mode of binding.
+> + *
+> + * Returns: The id of the allocated address space.
+> + */
+> +uint32_t gem_vm_create_in_vm_bind_mode(int i915)
+> +{
+> +	uint32_t vm_id;
+> +
+> +	igt_assert_eq(__gem_vm_create(i915, I915_VM_CREATE_FLAGS_USE_VM_BIND, &vm_id), 0);
+>   	igt_assert(vm_id != 0);
+>   
+>   	return vm_id;
+> diff --git a/lib/i915/gem_vm.h b/lib/i915/gem_vm.h
+> index acbb663e65..6cf46d8876 100644
+> --- a/lib/i915/gem_vm.h
+> +++ b/lib/i915/gem_vm.h
+> @@ -31,7 +31,8 @@ bool gem_has_vm(int i915);
+>   void gem_require_vm(int i915);
+>   
+>   uint32_t gem_vm_create(int i915);
+> -int __gem_vm_create(int i915, uint32_t *vm_id);
+> +uint32_t gem_vm_create_in_vm_bind_mode(int i915);
+> +int __gem_vm_create(int i915, uint32_t flags, uint32_t *vm_id);
+>   
+>   void gem_vm_destroy(int i915, uint32_t vm_id);
+>   int __gem_vm_destroy(int i915, uint32_t vm_id);
