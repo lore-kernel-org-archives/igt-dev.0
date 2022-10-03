@@ -1,18 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A6C9210E366
- for <igt-dev@lists.freedesktop.org>; Mon,  3 Oct 2022 14:02:32 +0000 (UTC)
-Date: Mon, 3 Oct 2022 16:02:26 +0200
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B984710E3CA
+ for <igt-dev@lists.freedesktop.org>; Mon,  3 Oct 2022 14:24:43 +0000 (UTC)
+Date: Mon, 3 Oct 2022 16:24:39 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Message-ID: <YzrrcuZ51otbhVB7@kamilkon-desk1>
-References: <20221003061320.12782-1-niranjana.vishwanathapura@intel.com>
+Message-ID: <Yzrwp82oZWckDIbe@kamilkon-desk1>
+References: <20221003112926.33388-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20221003061320.12782-1-niranjana.vishwanathapura@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t v2 0/8] vm_bind: Add VM_BIND validation
- support
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20221003112926.33388-1-zbigniew.kempczynski@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t] i915/gem_mmap_offset: Ignore ENOSPC
+ error for making residency execbuf
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,90 +21,60 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: tvrtko.ursulin@intel.com, thomas.hellstrom@intel.com,
- matthew.auld@intel.com, daniel.vetter@intel.com, petri.latvala@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Niranjana,
+Hi Zbigniew,
 
-On 2022-10-02 at 23:13:12 -0700, Niranjana Vishwanathapura wrote:
-> DRM_I915_GEM_VM_BIND/UNBIND ioctls allows UMD to bind/unbind GEM
-> buffer objects (BOs) or sections of a BOs at specified GPU virtual
-> addresses on a specified address space (VM). Multiple mappings can map
-> to the same physical pages of an object (aliasing). These mappings (also
-> referred to as persistent mappings) will be persistent across multiple
-> GPU submissions (execbuf calls) issued by the UMD, without user having
-> to provide a list of all required mappings during each submission (as
-> required by older execbuf mode).
+On 2022-10-03 at 13:29:26 +0200, Zbigniew Kempczyński wrote:
+> Platforms without ppgtt may be affected by ENOSPC when object is too big
+> to fit in gtt. Still we expect object will be cleared in pagefault path
+> so we can move forward even if execbuf is failing. To verify object
+> is cleared in both paths (execbuf/pagefault handler) we select them
+> randomly.
 > 
-> The new execbuf3 ioctl (I915_GEM_EXECBUFFER3) will only work in vm_bind
-> mode. The vm_bind mode only works with this new execbuf3 ioctl.
+> Fixes: https://gitlab.freedesktop.org/drm/intel/-/issues/6973
+> 
+> Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> ---
+>  tests/i915/gem_mmap_offset.c | 5 +++--
+>  1 file changed, 3 insertions(+), 2 deletions(-)
+> 
+> diff --git a/tests/i915/gem_mmap_offset.c b/tests/i915/gem_mmap_offset.c
+> index f51d7e38f5..13da26c784 100644
+> --- a/tests/i915/gem_mmap_offset.c
+> +++ b/tests/i915/gem_mmap_offset.c
+> @@ -102,7 +102,7 @@ static void make_resident(int i915, uint32_t batch, uint32_t handle)
+>  		.buffer_count = ARRAY_SIZE(obj),
+>  	};
+>  
+> -	gem_execbuf(i915, &eb);
 
-Please put above two paragraphs into your 1/8 patch so it would
-stay in git history.
+imho it would help to put here short comment why we ignore
+error.
 
-> 
-> Add sanity tests to validate the VM_BIND, VM_UNBIND and execbuf3 ioctls.
-> 
-> Add basic test to create and VM_BIND the objects and issue execbuf3 for
-> GPU to copy the data from a source to destination buffer.
-> 
-> TODOs:
-> * More validation support.
-> * Port some relevant gem_exec_* tests for execbuf3.
-> 
-> NOTEs:
-> * It is based on below VM_BIND design+uapi rfc.
->   Documentation/gpu/rfc/i915_vm_bind.rst
-> 
-> * The i915 VM_BIND support is posted as,
->   [PATCH v2 00/17] drm/i915/vm_bind: Add VM_BIND functionality
-> 
-> v2: Address various review comments
-> 
-> Signed-off-by: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
-> 
-> Niranjana Vishwanathapura (4):
->   lib/vm_bind: Add vm_bind/unbind and execbuf3 ioctls
->   tests/i915/vm_bind: Add vm_bind sanity test
->   tests/i915/vm_bind: Add basic VM_BIND test support
->   tests/i915/vm_bind: Add userptr subtest
-> 
-> Vishwanathapura, Niranjana (4):
-- ^ -------------- ^
-You should switch this, please correct "From:"
-in below patches:
+> +	__gem_execbuf(i915, &eb);
+>  	if (obj[1].handle != batch)
+>  		gem_close(i915, obj[1].handle);
+>  }
+> @@ -704,7 +704,8 @@ static void *thread_clear(void *data)
+>  		size = npages << 12;
+>  
+>  		igt_assert_eq(__gem_create_in_memory_region_list(i915, &handle, &size, 0, &arg->region, 1), 0);
+> -		make_resident(i915, batch, handle);
 
->   lib/vm_bind: import uapi definitions
->   lib/vm_bind: Add vm_bind mode support for VM
->   lib/vm_bind: Add support for VM private objects
->   lib/vm_bind: Add prime_handle_to_fd_no_assert()
+Same here, put short comment why we make it random.
 
-Regards,
-Kamil
+With that fixed
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
-> 
->  lib/i915/gem_context.c                |  24 ++
->  lib/i915/gem_context.h                |   3 +
->  lib/i915/gem_vm.c                     |  31 +-
->  lib/i915/gem_vm.h                     |   3 +-
->  lib/i915/i915_drm_local.h             | 287 +++++++++++++
->  lib/i915/intel_memory_region.c        |  48 ++-
->  lib/i915/intel_memory_region.h        |  25 ++
->  lib/intel_chipset.h                   |   2 +
->  lib/ioctl_wrappers.c                  | 117 ++++-
->  lib/ioctl_wrappers.h                  |   7 +
->  tests/i915/i915_vm_bind_basic.c       | 593 ++++++++++++++++++++++++++
->  tests/i915/i915_vm_bind_sanity.c      | 275 ++++++++++++
->  tests/intel-ci/fast-feedback.testlist |   2 +
->  tests/meson.build                     |   2 +
->  tests/prime_mmap.c                    |  26 +-
->  15 files changed, 1406 insertions(+), 39 deletions(-)
->  create mode 100644 tests/i915/i915_vm_bind_basic.c
->  create mode 100644 tests/i915/i915_vm_bind_sanity.c
-> 
+> +		if (random() & 1)
+> +			make_resident(i915, batch, handle);
+>  
+>  		ptr = __mmap_offset(i915, handle, 0, size,
+>  				    PROT_READ | PROT_WRITE,
 > -- 
-> 2.21.0.rc0.32.g243a4c7e27
+> 2.34.1
 > 
