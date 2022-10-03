@@ -1,22 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E680E10E387
- for <igt-dev@lists.freedesktop.org>; Mon,  3 Oct 2022 13:17:20 +0000 (UTC)
-Date: Mon, 3 Oct 2022 16:16:53 +0300
-From: Petri Latvala <petri.latvala@intel.com>
-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org, Jake Freeland <jfree@freebsd.org>
-Message-ID: <Yzrgxco0NHHKLpzn@platvala-desk.ger.corp.intel.com>
-References: <20220918221535.3276922-1-jfree@freebsd.org>
- <YzQ/CnZyoBpgIfYM@kamilkon-desk1>
- <YzRBxjWDvvfTq3Yd@platvala-desk.ger.corp.intel.com>
- <YzRqBDptI8v/c8AG@kamilkon-desk1>
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 70EFA10E3A1
+ for <igt-dev@lists.freedesktop.org>; Mon,  3 Oct 2022 13:31:50 +0000 (UTC)
+Date: Mon, 3 Oct 2022 15:31:45 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Message-ID: <YzrkQcukTfhqIbRD@kamilkon-desk1>
+References: <20220929092845.6684-1-nidhi1.gupta@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <YzRqBDptI8v/c8AG@kamilkon-desk1>
-Subject: Re: [igt-dev] [PATCH i-g-t] Replaced instances of mmap64() with
- mmap()
+In-Reply-To: <20220929092845.6684-1-nidhi1.gupta@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/i915/i915_pm_backlight: Add new
+ subtest to validate dual panel backlight
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,262 +20,243 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: Nidhi Gupta <nidhi1.gupta@intel.com>,
+ Arun R Murthy <arun.r.murthy@intel.com>,
+ Petri Latvala <petri.latvala@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Wed, Sep 28, 2022 at 05:36:36PM +0200, Kamil Konieczny wrote:
-> On 2022-09-28 at 15:44:54 +0300, Petri Latvala wrote:
-> > On Wed, Sep 28, 2022 at 02:33:14PM +0200, Kamil Konieczny wrote:
-> > > Hi Jake,
-> > > 
-> > > this patch is missing commit message. Please put here short
-> > > description of change and why you do it. Change looks resonable
-> > > as on 64-bit systems both functions are the same.
-> > > 
-> > > On 2022-09-18 at 17:15:35 -0500, Jake Freeland wrote:
-> > > > Signed-off-by: Jake Freeland <jfree@freebsd.org>
-> > > 
-> > > Adding Petri on cc as I do not know if anyone compiles this on
-> > > 32-bit platforms.
-> > 
-> > Aren't you supposed to use mmap() with _LARGEFILE_something even on
-> > 32-bit builds, instead of mmap64?
-> > 
-> > 
-> > -- 
-> > Petri Latvala
-> > 
-> 
-> imho _LARGEFILE_... is indeed needed on 32-bit builds, no need
-> for this on our current builds as Linux runs now on 64-bit
-> machines.
-> 
-> I was asking if you know of anyone compiling and using igt i915
-> code for 32-bit platform.
-> 
-> I see that this patch touches also igt_vgem lib so maybe we
-> should also ask arm igt users ?
+Hi Nidhi,
 
-Rob Clark suggested just using drm_mmap() and letting it figure out
-whether to call mmap or mmap64. Although it just seems to call mmap()
-anyway and assumes largefile always, except on android, except when
-__LP64__ is set.
-
-For IGT we could either use drm_mmap or just make the same documented
-assumption.
-
--- 
-Petri Latvala
-
-
+On 2022-09-29 at 14:58:45 +0530, Nidhi Gupta wrote:
+> Since driver can now support multiple eDPs and Debugfs structure for
+> backlight changed per connector the test should then iterate through
+> all eDP connectors.
 > 
-> --
-> Kamil
+> Signed-off-by: Nidhi Gupta <nidhi1.gupta@intel.com>
+
+I will not review kms parts, only some notes about descriptions,
+see below.
+
+> ---
+>  tests/i915/i915_pm_backlight.c | 110 ++++++++++++++++++++++++---------
+>  1 file changed, 80 insertions(+), 30 deletions(-)
 > 
-> > 
-> > 
-> > > 
-> > > Regards,
-> > > Kamil
-> > > 
-> > > > ---
-> > > >  lib/i915/gem_mman.c          |  4 ++--
-> > > >  lib/igt_vgem.c               |  2 +-
-> > > >  tests/i915/gem_mmap_gtt.c    | 22 +++++++++++-----------
-> > > >  tests/i915/gem_mmap_offset.c | 14 +++++++-------
-> > > >  4 files changed, 21 insertions(+), 21 deletions(-)
-> > > > 
-> > > > diff --git a/lib/i915/gem_mman.c b/lib/i915/gem_mman.c
-> > > > index aa9ac6f3..0b41ba70 100644
-> > > > --- a/lib/i915/gem_mman.c
-> > > > +++ b/lib/i915/gem_mman.c
-> > > > @@ -118,7 +118,7 @@ void *__gem_mmap__gtt(int fd, uint32_t handle, uint64_t size, unsigned prot)
-> > > >  	if (igt_ioctl(fd, DRM_IOCTL_I915_GEM_MMAP_GTT, &mmap_arg))
-> > > >  		return NULL;
-> > > >  
-> > > > -	ptr = mmap64(0, size, prot, MAP_SHARED, fd, mmap_arg.offset);
-> > > > +	ptr = mmap(0, size, prot, MAP_SHARED, fd, mmap_arg.offset);
-> > > >  	if (ptr == MAP_FAILED)
-> > > >  		ptr = NULL;
-> > > >  	else
-> > > > @@ -331,7 +331,7 @@ void *__gem_mmap_offset(int fd, uint32_t handle, uint64_t offset, uint64_t size,
-> > > >  	if (igt_ioctl(fd, DRM_IOCTL_I915_GEM_MMAP_OFFSET, &arg))
-> > > >  		return NULL;
-> > > >  
-> > > > -	ptr = mmap64(0, size, prot, MAP_SHARED, fd, arg.offset + offset);
-> > > > +	ptr = mmap(0, size, prot, MAP_SHARED, fd, arg.offset + offset);
-> > > >  
-> > > >  	if (ptr == MAP_FAILED)
-> > > >  		ptr = NULL;
-> > > > diff --git a/lib/igt_vgem.c b/lib/igt_vgem.c
-> > > > index 7f933b23..468383c7 100644
-> > > > --- a/lib/igt_vgem.c
-> > > > +++ b/lib/igt_vgem.c
-> > > > @@ -76,7 +76,7 @@ void *__vgem_mmap(int fd, struct vgem_bo *bo, unsigned prot)
-> > > >  	if (drmIoctl(fd, DRM_IOCTL_MODE_MAP_DUMB, &arg))
-> > > >  		return NULL;
-> > > >  
-> > > > -	ptr = mmap64(0, bo->size, prot, MAP_SHARED, fd, arg.offset);
-> > > > +	ptr = mmap(0, bo->size, prot, MAP_SHARED, fd, arg.offset);
-> > > >  	if (ptr == MAP_FAILED)
-> > > >  		return NULL;
-> > > >  
-> > > > diff --git a/tests/i915/gem_mmap_gtt.c b/tests/i915/gem_mmap_gtt.c
-> > > > index 4f05eb18..683eaf16 100644
-> > > > --- a/tests/i915/gem_mmap_gtt.c
-> > > > +++ b/tests/i915/gem_mmap_gtt.c
-> > > > @@ -113,11 +113,11 @@ test_access(int fd)
-> > > >  	mmap_arg.handle = handle;
-> > > >  	do_ioctl(fd, DRM_IOCTL_I915_GEM_MMAP_GTT, &mmap_arg);
-> > > >  
-> > > > -	igt_assert(mmap64(0, OBJECT_SIZE, PROT_READ | PROT_WRITE,
-> > > > +	igt_assert(mmap(0, OBJECT_SIZE, PROT_READ | PROT_WRITE,
-> > > >  			  MAP_SHARED, fd, mmap_arg.offset));
-> > > >  
-> > > >  	/* Check that the same offset on the other fd doesn't work. */
-> > > > -	igt_assert(mmap64(0, OBJECT_SIZE, PROT_READ | PROT_WRITE,
-> > > > +	igt_assert(mmap(0, OBJECT_SIZE, PROT_READ | PROT_WRITE,
-> > > >  			  MAP_SHARED, fd2, mmap_arg.offset) == MAP_FAILED);
-> > > >  	igt_assert(errno == EACCES);
-> > > >  
-> > > > @@ -128,7 +128,7 @@ test_access(int fd)
-> > > >  
-> > > >  	/* Recheck that it works after flink. */
-> > > >  	/* Check that the same offset on the other fd doesn't work. */
-> > > > -	igt_assert(mmap64(0, OBJECT_SIZE, PROT_READ | PROT_WRITE,
-> > > > +	igt_assert(mmap(0, OBJECT_SIZE, PROT_READ | PROT_WRITE,
-> > > >  			  MAP_SHARED, fd2, mmap_arg.offset));
-> > > >  }
-> > > >  
-> > > > @@ -159,11 +159,11 @@ test_short(int fd)
-> > > >  	for (pages = 1; pages <= OBJECT_SIZE / PAGE_SIZE; pages <<= 1) {
-> > > >  		uint8_t *r, *w;
-> > > >  
-> > > > -		w = mmap64(0, pages * PAGE_SIZE, PROT_READ | PROT_WRITE,
-> > > > +		w = mmap(0, pages * PAGE_SIZE, PROT_READ | PROT_WRITE,
-> > > >  			   MAP_SHARED, fd, mmap_arg.offset);
-> > > >  		igt_assert(w != MAP_FAILED);
-> > > >  
-> > > > -		r = mmap64(0, pages * PAGE_SIZE, PROT_READ,
-> > > > +		r = mmap(0, pages * PAGE_SIZE, PROT_READ,
-> > > >  			   MAP_SHARED, fd, mmap_arg.offset);
-> > > >  		igt_assert(r != MAP_FAILED);
-> > > >  
-> > > > @@ -384,13 +384,13 @@ test_isolation(int i915)
-> > > >  
-> > > >  	close(B);
-> > > >  
-> > > > -	ptr = mmap64(0, 4096, PROT_READ, MAP_SHARED, A, offset_a);
-> > > > +	ptr = mmap(0, 4096, PROT_READ, MAP_SHARED, A, offset_a);
-> > > >  	igt_assert(ptr != MAP_FAILED);
-> > > >  	munmap(ptr, 4096);
-> > > >  
-> > > >  	close(A);
-> > > >  
-> > > > -	ptr = mmap64(0, 4096, PROT_READ, MAP_SHARED, A, offset_a);
-> > > > +	ptr = mmap(0, 4096, PROT_READ, MAP_SHARED, A, offset_a);
-> > > >  	igt_assert(ptr == MAP_FAILED);
-> > > >  }
-> > > >  
-> > > > @@ -400,7 +400,7 @@ test_close_race(int i915)
-> > > >  	const int ncpus = sysconf(_SC_NPROCESSORS_ONLN);
-> > > >  	_Atomic uint32_t *handles;
-> > > >  
-> > > > -	handles = mmap64(0, 4096, PROT_WRITE, MAP_SHARED | MAP_ANON, -1, 0);
-> > > > +	handles = mmap(0, 4096, PROT_WRITE, MAP_SHARED | MAP_ANON, -1, 0);
-> > > >  	igt_assert(handles != MAP_FAILED);
-> > > >  
-> > > >  	igt_fork(child, ncpus + 1) {
-> > > > @@ -418,7 +418,7 @@ test_close_race(int i915)
-> > > >  				  &mmap_arg) != -1) {
-> > > >  				void *ptr;
-> > > >  
-> > > > -				ptr = mmap64(0, 4096,
-> > > > +				ptr = mmap(0, 4096,
-> > > >  					     PROT_WRITE, MAP_SHARED, i915,
-> > > >  					     mmap_arg.offset);
-> > > >  				if (ptr != MAP_FAILED) {
-> > > > @@ -444,7 +444,7 @@ test_flink_race(int i915)
-> > > >  	const int ncpus = sysconf(_SC_NPROCESSORS_ONLN);
-> > > >  	_Atomic uint32_t *handles;
-> > > >  
-> > > > -	handles = mmap64(0, 4096, PROT_WRITE, MAP_SHARED | MAP_ANON, -1, 0);
-> > > > +	handles = mmap(0, 4096, PROT_WRITE, MAP_SHARED | MAP_ANON, -1, 0);
-> > > >  	igt_assert(handles != MAP_FAILED);
-> > > >  
-> > > >  	igt_fork(child, ncpus + 1) {
-> > > > @@ -469,7 +469,7 @@ test_flink_race(int i915)
-> > > >  				  &mmap_arg) != -1) {
-> > > >  				void *ptr;
-> > > >  
-> > > > -				ptr = mmap64(0, 4096,
-> > > > +				ptr = mmap(0, 4096,
-> > > >  					     PROT_WRITE, MAP_SHARED, fd,
-> > > >  					     mmap_arg.offset);
-> > > >  				if (ptr != MAP_FAILED) {
-> > > > diff --git a/tests/i915/gem_mmap_offset.c b/tests/i915/gem_mmap_offset.c
-> > > > index 5781b2fb..0933ed94 100644
-> > > > --- a/tests/i915/gem_mmap_offset.c
-> > > > +++ b/tests/i915/gem_mmap_offset.c
-> > > > @@ -66,7 +66,7 @@ __mmap_offset(int i915, uint32_t handle, uint64_t offset, uint64_t size,
-> > > >  	if (mmap_offset_ioctl(i915, &arg))
-> > > >  		return NULL;
-> > > >  
-> > > > -	ptr = mmap64(0, size, prot, MAP_SHARED, i915, arg.offset + offset);
-> > > > +	ptr = mmap(0, size, prot, MAP_SHARED, i915, arg.offset + offset);
-> > > >  	if (ptr == MAP_FAILED)
-> > > >  		ptr = NULL;
-> > > >  	else
-> > > > @@ -214,12 +214,12 @@ static void isolation(int i915)
-> > > >  			 t->name, B, b, offset_b);
-> > > >  
-> > > >  		errno = 0;
-> > > > -		ptr = mmap64(0, 4096, PROT_READ, MAP_SHARED, i915, offset_a);
-> > > > +		ptr = mmap(0, 4096, PROT_READ, MAP_SHARED, i915, offset_a);
-> > > >  		igt_assert(ptr == MAP_FAILED);
-> > > >  		igt_assert_eq(errno, EACCES);
-> > > >  
-> > > >  		errno = 0;
-> > > > -		ptr = mmap64(0, 4096, PROT_READ, MAP_SHARED, i915, offset_b);
-> > > > +		ptr = mmap(0, 4096, PROT_READ, MAP_SHARED, i915, offset_b);
-> > > >  		igt_assert(ptr == MAP_FAILED);
-> > > >  		igt_assert_eq(errno, EACCES);
-> > > >  
-> > > > @@ -237,13 +237,13 @@ static void isolation(int i915)
-> > > >  
-> > > >  		close(B);
-> > > >  
-> > > > -		ptr = mmap64(0, 4096, PROT_READ, MAP_SHARED, A, offset_a);
-> > > > +		ptr = mmap(0, 4096, PROT_READ, MAP_SHARED, A, offset_a);
-> > > >  		igt_assert(ptr != MAP_FAILED);
-> > > >  		munmap(ptr, 4096);
-> > > >  
-> > > >  		close(A);
-> > > >  
-> > > > -		ptr = mmap64(0, 4096, PROT_READ, MAP_SHARED, A, offset_a);
-> > > > +		ptr = mmap(0, 4096, PROT_READ, MAP_SHARED, A, offset_a);
-> > > >  		igt_assert(ptr == MAP_FAILED);
-> > > >  	}
-> > > >  }
-> > > > @@ -401,7 +401,7 @@ static void close_race(int i915, int timeout)
-> > > >  	_Atomic uint32_t *handles;
-> > > >  	size_t len = ALIGN((ncpus + 1) * sizeof(uint32_t), 4096);
-> > > >  
-> > > > -	handles = mmap64(0, len, PROT_WRITE, MAP_SHARED | MAP_ANON, -1, 0);
-> > > > +	handles = mmap(0, len, PROT_WRITE, MAP_SHARED | MAP_ANON, -1, 0);
-> > > >  	igt_assert(handles != MAP_FAILED);
-> > > >  
-> > > >  	igt_fork(child, ncpus + 1) {
-> > > > @@ -420,7 +420,7 @@ static void close_race(int i915, int timeout)
-> > > >  				  &mmap_arg) != -1) {
-> > > >  				void *ptr;
-> > > >  
-> > > > -				ptr = mmap64(0, 4096,
-> > > > +				ptr = mmap(0, 4096,
-> > > >  					     PROT_WRITE, MAP_SHARED, i915,
-> > > >  					     mmap_arg.offset);
-> > > >  				if (ptr != MAP_FAILED) {
-> > > > -- 
-> > > > 2.37.3
-> > > > 
+> diff --git a/tests/i915/i915_pm_backlight.c b/tests/i915/i915_pm_backlight.c
+> index cafae7f7..bf67b50c 100644
+> --- a/tests/i915/i915_pm_backlight.c
+> +++ b/tests/i915/i915_pm_backlight.c
+> @@ -34,9 +34,12 @@
+>  #include <errno.h>
+>  #include <unistd.h>
+>  #include <time.h>
+> +#include "igt_device.h"
+> +#include "igt_device_scan.h"
+>  
+>  struct context {
+>  	int max;
+> +	const char *path;
+>  };
+>  
+>  
+> @@ -48,14 +51,14 @@ struct context {
+>  
+>  IGT_TEST_DESCRIPTION("Basic backlight sysfs test");
+>  
+> -static int backlight_read(int *result, const char *fname)
+> +static int backlight_read(int *result, const char *fname, struct context *context)
+>  {
+>  	int fd;
+>  	char full[PATH_MAX];
+>  	char dst[64];
+>  	int r, e;
+>  
+> -	igt_assert(snprintf(full, PATH_MAX, "%s/%s", BACKLIGHT_PATH, fname) < PATH_MAX);
+> +	igt_assert(snprintf(full, PATH_MAX, "%s/%s/%s", BACKLIGHT_PATH, context->path, fname) < PATH_MAX);
+>  
+>  	fd = open(full, O_RDONLY);
+>  	if (fd == -1)
+> @@ -73,14 +76,14 @@ static int backlight_read(int *result, const char *fname)
+>  	return errno;
+>  }
+>  
+> -static int backlight_write(int value, const char *fname)
+> +static int backlight_write(int value, const char *fname, struct context *context)
+>  {
+>  	int fd;
+>  	char full[PATH_MAX];
+>  	char src[64];
+>  	int len;
+>  
+> -	igt_assert(snprintf(full, PATH_MAX, "%s/%s", BACKLIGHT_PATH, fname) < PATH_MAX);
+> +	igt_assert(snprintf(full, PATH_MAX, "%s/%s/%s", BACKLIGHT_PATH, context->path, fname) < PATH_MAX);
+>  	fd = open(full, O_WRONLY);
+>  	if (fd == -1)
+>  		return -errno;
+> @@ -100,12 +103,12 @@ static void test_and_verify(struct context *context, int val)
+>  	const int tolerance = val * TOLERANCE / 100;
+>  	int result;
+>  
+> -	igt_assert_eq(backlight_write(val, "brightness"), 0);
+> -	igt_assert_eq(backlight_read(&result, "brightness"), 0);
+> +	igt_assert_eq(backlight_write(val, "brightness", context), 0);
+> +	igt_assert_eq(backlight_read(&result, "brightness", context), 0);
+>  	/* Check that the exact value sticks */
+>  	igt_assert_eq(result, val);
+>  
+> -	igt_assert_eq(backlight_read(&result, "actual_brightness"), 0);
+> +	igt_assert_eq(backlight_read(&result, "actual_brightness", context), 0);
+>  	/* Some rounding may happen depending on hw */
+>  	igt_assert_f(result >= max(0, val - tolerance) &&
+>  		     result <= min(context->max, val + tolerance),
+> @@ -124,16 +127,16 @@ static void test_bad_brightness(struct context *context)
+>  {
+>  	int val;
+>  	/* First write some sane value */
+> -	backlight_write(context->max / 2, "brightness");
+> +	backlight_write(context->max / 2, "brightness", context);
+>  	/* Writing invalid values should fail and not change the value */
+> -	igt_assert_lt(backlight_write(-1, "brightness"), 0);
+> -	backlight_read(&val, "brightness");
+> +	igt_assert_lt(backlight_write(-1, "brightness", context), 0);
+> +	backlight_read(&val, "brightness", context);
+>  	igt_assert_eq(val, context->max / 2);
+> -	igt_assert_lt(backlight_write(context->max + 1, "brightness"), 0);
+> -	backlight_read(&val, "brightness");
+> +	igt_assert_lt(backlight_write(context->max + 1, "brightness", context), 0);
+> +	backlight_read(&val, "brightness", context);
+>  	igt_assert_eq(val, context->max / 2);
+> -	igt_assert_lt(backlight_write(INT_MAX, "brightness"), 0);
+> -	backlight_read(&val, "brightness");
+> +	igt_assert_lt(backlight_write(INT_MAX, "brightness", context), 0);
+> +	backlight_read(&val, "brightness", context);
+>  	igt_assert_eq(val, context->max / 2);
+>  }
+>  
+> @@ -186,6 +189,8 @@ igt_main
+>  	igt_display_t display;
+>  	igt_output_t *output;
+>  	struct igt_fb fb;
+> +	const char *paths[2][50];
+> +	char path1[PATH_MAX];
+>  
+>  	igt_fixture {
+>  		enum pipe pipe;
+> @@ -202,10 +207,6 @@ igt_main
+>  		kmstest_set_vt_graphics_mode();
+>  		igt_display_require(&display, drm_open_driver(DRIVER_INTEL));
+>  
+> -		/* Get the max value and skip the whole test if sysfs interface not available */
+> -		igt_skip_on(backlight_read(&old, "brightness"));
+> -		igt_assert(backlight_read(&context.max, "max_brightness") > -1);
+> -
+>  		/* should be ../../cardX-$output */
+>  		igt_assert_lt(12, readlink(BACKLIGHT_PATH "/device", full_name, sizeof(full_name) - 1));
+>  		name = basename(full_name);
+> @@ -233,22 +234,71 @@ igt_main
+>  
+>  		igt_display_commit2(&display, display.is_atomic ? COMMIT_ATOMIC : COMMIT_LEGACY);
+>  		igt_pm_enable_sata_link_power_management();
+> +
+> +		memcpy(paths[0], "intel_backlight", 8);
+> +		for (int i = 0; (i = display.n_outputs); i++) {
+> +			output = &display.outputs[i];
+> +			igt_output_set_pipe(output, PIPE_ANY);
+> +			snprintf(path1, 100 , "card%i-%s-backlight", igt_device_get_card_index(display.drm_fd), igt_output_name(output));
+> +			int fd = open(path1, O_WRONLY);
+> +			if (fd == -1)
+> +				continue;
+> +			memcpy(paths[1], name, 30);
+> +			break;
+> +		}
+> +		/* Get the max value and skip the whole test if sysfs interface not available */
+> +		for (size_t i = 0; i < sizeof(paths) / sizeof(paths[0]); i++) {
+> +			memcpy(&context.path, paths[i], 8);
+> +			igt_skip_on(backlight_read(&old, "brightness", &context));
+> +			igt_assert(backlight_read(&context.max, "max_brightness", &context) > -1);
+> +		}
+> +	}
+> +	
+
+Please add here description to new test with igt_describe().
+
+> +	igt_subtest_with_dynamic("basic-brightness") {
+> +		for (size_t j = 0; j < sizeof(paths) / sizeof(paths[0]); j++) {
+> +			igt_dynamic_f("connector-%zu", j) {
+> +				memcpy(&context.path, paths[j], 8);
+> +				test_brightness(&context);
+> +			}
+> +		}
+> +	}
+
+Same here plus add newline.
+
+> +	igt_subtest_with_dynamic("bad-brightness") {
+> +		for (size_t j = 0; j < sizeof(paths) / sizeof(paths[0]); j++) {
+> +			igt_dynamic_f("connector-%zu", j) {
+> +				memcpy(&context.path, paths[j], 8);
+> +				test_bad_brightness(&context);
+> +			}
+> +		}
+> +	}
+> +
+
+Same here.
+
+> +	igt_subtest_with_dynamic("fade") {
+> +		for (size_t j = 0; j < sizeof(paths) / sizeof(paths[0]); j++) {
+> +			igt_dynamic_f("connector-%zu", j) {
+> +				memcpy(&context.path, paths[j], 8);
+> +				test_fade(&context);
+> +			}
+> +		}
+>  	}
+>  
+> -	igt_subtest("basic-brightness")
+> -		test_brightness(&context);
+> -	igt_subtest("bad-brightness")
+> -		test_bad_brightness(&context);
+> -	igt_subtest("fade")
+> -		test_fade(&context);
+> -	igt_subtest("fade_with_dpms")
+> -		test_fade_with_dpms(&context, output);
+> -	igt_subtest("fade_with_suspend")
+> -		test_fade_with_suspend(&context, output);
+
+btw if you do not mind, please also prepare patch which add
+descriptions here.
+
+> +	igt_subtest_with_dynamic("fade_with_dpms") {
+> +		for (size_t j = 0; j < sizeof(paths) / sizeof(paths[0]); j++) {
+> +			igt_dynamic_f("connector-%zu", j) {
+> +				memcpy(&context.path, paths[j], 8);
+> +				test_fade_with_dpms(&context, output);
+> +			}
+> +		}
+> +	}
+> +
+
+Same here.
+
+Regards,
+Kamil
+
+> +	igt_subtest_with_dynamic("fade_with_suspend") {
+> +		for (size_t j = 0; j < sizeof(paths) / sizeof(paths[0]); j++) {
+> +			igt_dynamic_f("connector-%zu", j) {
+> +				memcpy(&context.path, paths[j], 8);
+> +				test_fade_with_suspend(&context, output);
+> +			}
+> +		}
+> +	}
+>  
+>  	igt_fixture {
+> -		/* Restore old brightness */
+> -		backlight_write(old, "brightness");
+>  
+>  		igt_display_fini(&display);
+>  		igt_remove_fb(display.drm_fd, &fb);
+> -- 
+> 2.17.1
+> 
