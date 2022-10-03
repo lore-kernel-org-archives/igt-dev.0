@@ -1,20 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from NAM12-BN8-obe.outbound.protection.outlook.com
- (mail-bn8nam12on2066.outbound.protection.outlook.com [40.107.237.66])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 690A210E420
- for <igt-dev@lists.freedesktop.org>; Mon,  3 Oct 2022 16:25:49 +0000 (UTC)
-Message-ID: <ae9f24ee-6982-4ef8-ba52-835184c03a25@amd.com>
-Date: Mon, 3 Oct 2022 10:25:40 -0600
-Content-Language: en-US
-To: igt-dev@lists.freedesktop.org, markyacoub@google.com
-References: <20220929200644.4160588-1-alex.hung@amd.com>
-From: Alex Hung <alex.hung@amd.com>
-In-Reply-To: <20220929200644.4160588-1-alex.hung@amd.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+From: Matthew Auld <matthew.auld@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Mon,  3 Oct 2022 18:24:54 +0100
+Message-Id: <20221003172456.97522-2-matthew.auld@intel.com>
+In-Reply-To: <20221003172456.97522-1-matthew.auld@intel.com>
+References: <20221003172456.97522-1-matthew.auld@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH][V3] tests/kms_plane_multiple: turn off pipe
- if all planes are off
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t 2/4] tests/i915/query: fix igt_assert_eq_u32
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,63 +15,32 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: michel.daenzer@mailbox.org
+Cc: intel-gfx@lists.freedesktop.org, Nirmoy Das <nirmoy.das@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Mark,
+rsvd1 is u64 here.
 
-As expected, the rev 3 has kms_plane_multiple failures on CI.IGT unlike 
-rev 2 which has "is_amdgpu_device()" on the first set_pipe, and the 
-failures are as below. The first set_pipe required by amdgpu is not 
-needed on all devices.
+Signed-off-by: Matthew Auld <matthew.auld@intel.com>
+Cc: Andrzej Hajda <andrzej.hajda@intel.com>
+Cc: Nirmoy Das <nirmoy.das@intel.com>
+---
+ tests/i915/i915_query.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-(kms_plane_multiple:1581) igt_debugfs-CRITICAL: Test assertion failure 
-function igt_pipe_crc_start, file 
-../../../usr/src/igt-gpu-tools/lib/igt_debugfs.c:884:
-(kms_plane_multiple:1581) igt_debugfs-CRITICAL: Failed assertion: 
-pipe_crc->crc_fd != -1
-(kms_plane_multiple:1581) igt_debugfs-CRITICAL: Last errno: 5, 
-Input/output error
-
-The Fi.CI.IGT results are available on 
-https://patchwork.freedesktop.org/series/109086/
-
-
-On 2022-09-29 14:06, Alex Hung wrote:
-> amdgpu rejects when crtc is on + all planes are off, and it
-> is necessary to turn off crtc when all planes are off in the
-> subtest "tiling-none".
-> 
-> This is revised from https://patchwork.freedesktop.org/series/80904/
-> 
-> Signed-off-by: Alex Hung <alex.hung@amd.com>
-> ---
-> V2 - remove second is_amdgpu_device() before setting PIPE_NONE
-> 
-> V3 - remove both is_amdgpu_device() before setting PIPE_NONE
-> 
->   tests/kms_plane_multiple.c | 2 ++
->   1 file changed, 2 insertions(+)
-> 
-> diff --git a/tests/kms_plane_multiple.c b/tests/kms_plane_multiple.c
-> index cbe8c189..6c0bc36d 100644
-> --- a/tests/kms_plane_multiple.c
-> +++ b/tests/kms_plane_multiple.c
-> @@ -311,6 +311,7 @@ test_plane_position_with_output(data_t *data, enum pipe pipe,
->   		for_each_plane_on_pipe(&data->display, pipe, plane)
->   			igt_plane_set_fb(plane, NULL);
->   
-> +		igt_output_set_pipe(output, PIPE_NONE);
->   		igt_display_commit2(&data->display, COMMIT_ATOMIC);
->   
->   		for (int x = 0; x < c; x++)
-> @@ -344,6 +345,7 @@ test_plane_position_with_output(data_t *data, enum pipe pipe,
->   		for_each_plane_on_pipe(&data->display, pipe, plane)
->   			igt_plane_set_fb(plane, NULL);
->   
-> +		igt_output_set_pipe(output, PIPE_NONE);
->   		igt_display_commit2(&data->display, COMMIT_ATOMIC);
->   
->   		for (int x = 0; x < c; x++)
+diff --git a/tests/i915/i915_query.c b/tests/i915/i915_query.c
+index 2744421c..b92d7593 100644
+--- a/tests/i915/i915_query.c
++++ b/tests/i915/i915_query.c
+@@ -588,7 +588,7 @@ static void test_query_regions_garbage_items(int fd)
+ 		 * rsvd1[1] : unallocated_cpu_visible_size
+ 		 */
+ 		for (j = 2; j < ARRAY_SIZE(info.rsvd1); j++)
+-			igt_assert_eq_u32(info.rsvd1[j], 0);
++			igt_assert_eq_u64(info.rsvd1[j], 0);
+ 	}
+ 
+ 	/* Bogus; kernel is meant to set this */
+-- 
+2.37.3
