@@ -1,23 +1,24 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-ed1-x529.google.com (mail-ed1-x529.google.com
- [IPv6:2a00:1450:4864:20::529])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7C32310E011
- for <igt-dev@lists.freedesktop.org>; Mon,  3 Oct 2022 19:28:56 +0000 (UTC)
-Received: by mail-ed1-x529.google.com with SMTP id s2so5379979edd.2
- for <igt-dev@lists.freedesktop.org>; Mon, 03 Oct 2022 12:28:56 -0700 (PDT)
-Message-ID: <bd6be964-d281-8ffd-8425-96c1c70772cf@gmail.com>
-Date: Mon, 3 Oct 2022 22:28:49 +0300
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5335210E406
+ for <igt-dev@lists.freedesktop.org>; Mon,  3 Oct 2022 20:49:06 +0000 (UTC)
+Date: Mon, 3 Oct 2022 13:48:43 -0700
+From: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
+To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ igt-dev@lists.freedesktop.org, daniel.vetter@intel.com,
+ lionel.g.landwerlin@intel.com, matthew.auld@intel.com,
+ matthew.brost@intel.com, paulo.r.zanoni@intel.com,
+ petri.latvala@intel.com, thomas.hellstrom@intel.com,
+ tvrtko.ursulin@intel.com
+Message-ID: <20221003204842.GS22224@nvishwa1-DESK>
+References: <20221003061320.12782-1-niranjana.vishwanathapura@intel.com>
+ <YzrrcuZ51otbhVB7@kamilkon-desk1>
 MIME-Version: 1.0
-Content-Language: en-US
-To: Karthik B S <karthik.b.s@intel.com>, igt-dev@lists.freedesktop.org
-References: <20220929134017.5274-1-juhapekka.heikkila@gmail.com>
- <63d82d08-acd9-7fd0-0057-5c445d051c86@intel.com>
-From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-In-Reply-To: <63d82d08-acd9-7fd0-0057-5c445d051c86@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/i915/kms_big_fb: fix max stride
- async flip tests
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <YzrrcuZ51otbhVB7@kamilkon-desk1>
+Subject: Re: [igt-dev] [PATCH i-g-t v2 0/8] vm_bind: Add VM_BIND validation
+ support
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,88 +26,99 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: juhapekka.heikkila@gmail.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On 3.10.2022 7.31, Karthik B S wrote:
-> On 9/29/2022 7:10 PM, Juha-Pekka Heikkila wrote:
->> Change handling of inner loop so test will not fail on unrelated issues.
+On Mon, Oct 03, 2022 at 04:02:26PM +0200, Kamil Konieczny wrote:
+>Hi Niranjana,
+>
+>On 2022-10-02 at 23:13:12 -0700, Niranjana Vishwanathapura wrote:
+>> DRM_I915_GEM_VM_BIND/UNBIND ioctls allows UMD to bind/unbind GEM
+>> buffer objects (BOs) or sections of a BOs at specified GPU virtual
+>> addresses on a specified address space (VM). Multiple mappings can map
+>> to the same physical pages of an object (aliasing). These mappings (also
+>> referred to as persistent mappings) will be persistent across multiple
+>> GPU submissions (execbuf calls) issued by the UMD, without user having
+>> to provide a list of all required mappings during each submission (as
+>> required by older execbuf mode).
 >>
->> Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-> Reviewed-by: Karthik B S <karthik.b.s@intel.com>
+>> The new execbuf3 ioctl (I915_GEM_EXECBUFFER3) will only work in vm_bind
+>> mode. The vm_bind mode only works with this new execbuf3 ioctl.
+>
+>Please put above two paragraphs into your 1/8 patch so it would
+>stay in git history.
+>
 
-Thanks. Pushed.
+Thanks Kamil,
+Sure, will do.
 
-/Juha-Pekka
-
->> ---
->>   tests/i915/kms_big_fb.c | 25 ++++++++-----------------
->>   1 file changed, 8 insertions(+), 17 deletions(-)
 >>
->> diff --git a/tests/i915/kms_big_fb.c b/tests/i915/kms_big_fb.c
->> index 0c4cd95e7..0b5e955de 100644
->> --- a/tests/i915/kms_big_fb.c
->> +++ b/tests/i915/kms_big_fb.c
->> @@ -465,7 +465,7 @@ static bool test_pipe(data_t *data)
->>   static bool
->>   max_hw_stride_async_flip_test(data_t *data)
->>   {
->> -    uint32_t ret, startframe;
->> +    uint32_t ret;
->>       const uint32_t w = data->output->config.default_mode.hdisplay,
->>                  h = data->output->config.default_mode.vdisplay;
->>       igt_plane_t *primary;
->> @@ -510,14 +510,14 @@ max_hw_stride_async_flip_test(data_t *data)
->>                         INTEL_PIPE_CRC_SOURCE_AUTO);
->>       igt_pipe_crc_start(data->pipe_crc);
->> +    igt_plane_set_fb(primary, &data->big_fb);
->> +    igt_fb_set_size(&data->big_fb, primary, w, h);
->> +    igt_plane_set_size(primary, w, h);
->> +    igt_display_commit_atomic(&data->display, 
->> DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
->> +    igt_pipe_crc_get_current(data->drm_fd, data->pipe_crc, 
->> &compare_crc);
->> +
->>       igt_set_timeout(5, "Async pageflipping loop got stuck!\n");
->>       for (int i = 0; i < 2; i++) {
->> -        igt_plane_set_fb(primary, &data->big_fb);
->> -        igt_fb_set_size(&data->big_fb, primary, w, h);
->> -        igt_plane_set_size(primary, w, h);
->> -        igt_display_commit_atomic(&data->display,
->> -                      DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
->> -
->>           /* First async flip on Gen13+ will be treated as a sync flip*/
->>           if (intel_display_ver(data->devid) >= 13) {
->>               do {
->> @@ -528,9 +528,6 @@ max_hw_stride_async_flip_test(data_t *data)
->>               igt_assert(ret == 0);
->>           }
->> -        igt_wait_for_vblank(data->drm_fd, 
->> data->display.pipes[primary->pipe->pipe].crtc_offset);
->> -        startframe = kmstest_get_vblank(data->drm_fd, data->pipe, 0) 
->> + 1;
->> -
->>           for (int j = 0; j < 2; j++) {
->>               do {
->>                   ret = drmModePageFlip(data->drm_fd, 
->> data->output->config.crtc->crtc_id,
->> @@ -547,13 +544,7 @@ max_hw_stride_async_flip_test(data_t *data)
->>               igt_assert(ret == 0);
->>           }
->> -        igt_pipe_crc_get_for_frame(data->drm_fd, data->pipe_crc,
->> -                       startframe, &compare_crc);
->> -        igt_pipe_crc_get_for_frame(data->drm_fd, data->pipe_crc,
->> -                       startframe + 1, &async_crc);
->> -
->> -        igt_assert_f(kmstest_get_vblank(data->drm_fd, data->pipe, 0) -
->> -                 startframe == 1, "lost frames\n");
->> +        igt_pipe_crc_get_current(data->drm_fd, data->pipe_crc, 
->> &async_crc);
->>           igt_assert_f(igt_check_crc_equal(&compare_crc, 
->> &async_crc)^(i^1),
->>                    "CRC failure with async flip, crc %s match for 
->> checked round\n",
-> 
-> 
+>> Add sanity tests to validate the VM_BIND, VM_UNBIND and execbuf3 ioctls.
+>>
+>> Add basic test to create and VM_BIND the objects and issue execbuf3 for
+>> GPU to copy the data from a source to destination buffer.
+>>
+>> TODOs:
+>> * More validation support.
+>> * Port some relevant gem_exec_* tests for execbuf3.
+>>
+>> NOTEs:
+>> * It is based on below VM_BIND design+uapi rfc.
+>>   Documentation/gpu/rfc/i915_vm_bind.rst
+>>
+>> * The i915 VM_BIND support is posted as,
+>>   [PATCH v2 00/17] drm/i915/vm_bind: Add VM_BIND functionality
+>>
+>> v2: Address various review comments
+>>
+>> Signed-off-by: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
+>>
+>> Niranjana Vishwanathapura (4):
+>>   lib/vm_bind: Add vm_bind/unbind and execbuf3 ioctls
+>>   tests/i915/vm_bind: Add vm_bind sanity test
+>>   tests/i915/vm_bind: Add basic VM_BIND test support
+>>   tests/i915/vm_bind: Add userptr subtest
+>>
+>> Vishwanathapura, Niranjana (4):
+>- ^ -------------- ^
+>You should switch this, please correct "From:"
+>in below patches:
+
+Oops, will fix.
+
+Regards,
+Niranjana
+
+>
+>>   lib/vm_bind: import uapi definitions
+>>   lib/vm_bind: Add vm_bind mode support for VM
+>>   lib/vm_bind: Add support for VM private objects
+>>   lib/vm_bind: Add prime_handle_to_fd_no_assert()
+>
+>Regards,
+>Kamil
+>
+>>
+>>  lib/i915/gem_context.c                |  24 ++
+>>  lib/i915/gem_context.h                |   3 +
+>>  lib/i915/gem_vm.c                     |  31 +-
+>>  lib/i915/gem_vm.h                     |   3 +-
+>>  lib/i915/i915_drm_local.h             | 287 +++++++++++++
+>>  lib/i915/intel_memory_region.c        |  48 ++-
+>>  lib/i915/intel_memory_region.h        |  25 ++
+>>  lib/intel_chipset.h                   |   2 +
+>>  lib/ioctl_wrappers.c                  | 117 ++++-
+>>  lib/ioctl_wrappers.h                  |   7 +
+>>  tests/i915/i915_vm_bind_basic.c       | 593 ++++++++++++++++++++++++++
+>>  tests/i915/i915_vm_bind_sanity.c      | 275 ++++++++++++
+>>  tests/intel-ci/fast-feedback.testlist |   2 +
+>>  tests/meson.build                     |   2 +
+>>  tests/prime_mmap.c                    |  26 +-
+>>  15 files changed, 1406 insertions(+), 39 deletions(-)
+>>  create mode 100644 tests/i915/i915_vm_bind_basic.c
+>>  create mode 100644 tests/i915/i915_vm_bind_sanity.c
+>>
+>> --
+>> 2.21.0.rc0.32.g243a4c7e27
+>>
