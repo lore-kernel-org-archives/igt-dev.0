@@ -1,18 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8C0F210E40F
- for <igt-dev@lists.freedesktop.org>; Tue,  4 Oct 2022 09:44:03 +0000 (UTC)
-Date: Tue, 4 Oct 2022 12:43:37 +0300
-From: Petri Latvala <petri.latvala@intel.com>
-To: Jake Freeland <jake@technologyfriends.net>
-Message-ID: <YzwASSZibew5s55I@platvala-desk.ger.corp.intel.com>
-References: <20220928193552.523357-1-jfree@freebsd.org>
+Message-ID: <1bb6c4f7-002a-2c5b-f32e-4cd8e6baa907@linux.intel.com>
+Date: Tue, 4 Oct 2022 12:51:14 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220928193552.523357-1-jfree@freebsd.org>
-Subject: Re: [igt-dev] [PATCH i-g-t] Replaced setpgrp() with setpgid() for
- standardization in BSD systems
+Content-Language: en-US
+To: Matthew Auld <matthew.auld@intel.com>, igt-dev@lists.freedesktop.org
+References: <20221003172456.97522-1-matthew.auld@intel.com>
+ <20221003172456.97522-3-matthew.auld@intel.com>
+From: "Das, Nirmoy" <nirmoy.das@linux.intel.com>
+In-Reply-To: <20221003172456.97522-3-matthew.auld@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Subject: Re: [igt-dev] [Intel-gfx] [PATCH i-g-t 3/4] tests/i915/query:
+ sanity check reported GTT alignment
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,42 +19,70 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org, Jake Freeland <jfree@freebsd.org>
+Cc: intel-gfx@lists.freedesktop.org, Nirmoy Das <nirmoy.das@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Wed, Sep 28, 2022 at 02:35:52PM -0500, Jake Freeland wrote:
-> The BSD and GNU versions of setpgrp() differ in their parameter
-> conventions. To avoid this convolution, setpgrp() can be safely
-> replaced with setpgid() which is standard in both BSD and GNU
-> libc.
-> 
-> Signed-off-by: Jake Freeland <jfree@freebsd.org>
+Hi Matt,
 
-Reviewed-by: Petri Latvala <petri.latvala@intel.com>
-
+On 10/3/2022 7:24 PM, Matthew Auld wrote:
+> Ensure the kernel is reporting "normal" values here, based on our
+> current expectations.
+>
+> Signed-off-by: Matthew Auld <matthew.auld@intel.com>
+> Cc: Andrzej Hajda <andrzej.hajda@intel.com>
+> Cc: Nirmoy Das <nirmoy.das@intel.com>
 > ---
->  lib/igt_aux.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/lib/igt_aux.c b/lib/igt_aux.c
-> index d7e2714f..ba2d52e8 100644
-> --- a/lib/igt_aux.c
-> +++ b/lib/igt_aux.c
-> @@ -325,10 +325,10 @@ void igt_fork_signal_helper(void)
->  	 * and we send the signal at exactly the wrong time).
->  	 */
->  	signal(SIGCONT, sig_handler);
-> -	setpgrp(); /* define a new process group for the tests */
-> +	setpgid(0, 0); /* define a new process group for the tests */
->  
->  	igt_fork_helper(&signal_helper) {
-> -		setpgrp(); /* Escape from the test process group */
-> +		setpgid(0, 0); /* Escape from the test process group */
->  
->  		/* Pass along the test process group identifier,
->  		 * negative pid => send signal to everyone in the group.
-> -- 
-> 2.37.3
-> 
+>   tests/i915/i915_query.c | 12 ++++++++++--
+>   1 file changed, 10 insertions(+), 2 deletions(-)
+>
+> diff --git a/tests/i915/i915_query.c b/tests/i915/i915_query.c
+> index b92d7593..bff073d2 100644
+> --- a/tests/i915/i915_query.c
+> +++ b/tests/i915/i915_query.c
+> @@ -581,8 +581,6 @@ static void test_query_regions_garbage_items(int fd)
+>   		struct drm_i915_memory_region_info info = regions->regions[i];
+>   		int j;
+>   
+> -		igt_assert_eq_u32(info.rsvd0, 0);
+> -
+>   		/*
+>   		 * rsvd1[0] : probed_cpu_visible_size
+>   		 * rsvd1[1] : unallocated_cpu_visible_size
+> @@ -640,6 +638,8 @@ static void upload(int fd, struct igt_list_head *handles, uint32_t num_handles)
+>   	free(exec);
+>   }
+>   
+> +/** XXX: remove once we sync the uapi header */
+> +#define gtt_alignment rsvd0
+
+Nit: use page PAGE_SIZE instead of 4096 in below
+
+Otherwise the series is Reviewed-by: Nirmoy Das <nirmoy.das@intel.com>
+
+>   static void test_query_regions_sanity_check(int fd)
+>   {
+>   	struct drm_i915_query_memory_regions *regions;
+> @@ -666,6 +666,11 @@ static void test_query_regions_sanity_check(int fd)
+>   		struct drm_i915_gem_memory_class_instance r1 = info.region;
+>   		int j;
+>   
+> +		if (info.gtt_alignment) {
+> +			igt_assert_lte_u64(4096, info.gtt_alignment);
+> +			igt_assert(is_power_of_two(info.gtt_alignment));
+> +		}
+> +
+>   		if (r1.memory_class == I915_MEMORY_CLASS_SYSTEM) {
+>   			igt_assert_eq(r1.memory_instance, 0);
+>   			found_system = true;
+> @@ -676,6 +681,9 @@ static void test_query_regions_sanity_check(int fd)
+>   			igt_assert(info.unallocated_cpu_visible_size == 0 ||
+>   				   info.unallocated_cpu_visible_size ==
+>   				   info.unallocated_size);
+> +
+> +			igt_assert(info.gtt_alignment == 0 ||
+> +				   info.gtt_alignment == 4096);
+>   		} else {
+>   			igt_assert(info.probed_cpu_visible_size <= info.probed_size);
+>   			igt_assert(info.unallocated_size <= info.probed_size);
