@@ -1,26 +1,26 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 51BC510E48E
- for <igt-dev@lists.freedesktop.org>; Wed,  5 Oct 2022 07:45:55 +0000 (UTC)
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A165D10E4D5
+ for <igt-dev@lists.freedesktop.org>; Wed,  5 Oct 2022 07:46:03 +0000 (UTC)
 Received: from linux.intel.com (maurocar-mobl2.ger.corp.intel.com
  [10.252.61.48])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by linux.intel.com (Postfix) with ESMTPS id AC639580E01
+ by linux.intel.com (Postfix) with ESMTPS id B3E27580E09
  for <igt-dev@lists.freedesktop.org>; Wed,  5 Oct 2022 00:45:53 -0700 (PDT)
 Received: from maurocar by linux.intel.com with local (Exim 4.96)
- (envelope-from <mauro.chehab@linux.intel.com>) id 1ofz6F-000Edl-12
+ (envelope-from <mauro.chehab@linux.intel.com>) id 1ofz6F-000Edc-0x
  for igt-dev@lists.freedesktop.org; Wed, 05 Oct 2022 09:45:51 +0200
 From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Wed,  5 Oct 2022 09:44:57 +0200
-Message-Id: <20221005074546.55955-29-mauro.chehab@linux.intel.com>
+Date: Wed,  5 Oct 2022 09:44:55 +0200
+Message-Id: <20221005074546.55955-27-mauro.chehab@linux.intel.com>
 In-Reply-To: <20221005074546.55955-1-mauro.chehab@linux.intel.com>
 References: <20221005074546.55955-1-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v4 28/77] kms_atomic: Close device before
- exit
+Subject: [igt-dev] [PATCH i-g-t v4 26/77] kms_force_connector_basic: Close
+ device before exit
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -38,22 +38,45 @@ Close the device fd before we check for leaks during the atexit
 handlers.
 
 Signed-off-by: Chris Wilson <chris.p.wilson@intel.com>
-Acked-by: Andrzej Hajda <andrzej.hajda@intel.com>
+Reviewed-by: Andrzej Hajda <andrzej.hajda@intel.com>
 Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 ---
- tests/kms_atomic.c | 1 +
- 1 file changed, 1 insertion(+)
+ tests/kms_force_connector_basic.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/tests/kms_atomic.c b/tests/kms_atomic.c
-index 253829f2bd14..831ba2587292 100644
---- a/tests/kms_atomic.c
-+++ b/tests/kms_atomic.c
-@@ -1436,5 +1436,6 @@ igt_main
- 		igt_remove_fb(display.drm_fd, &fb);
+diff --git a/tests/kms_force_connector_basic.c b/tests/kms_force_connector_basic.c
+index 683d3672056d..6259cec538de 100644
+--- a/tests/kms_force_connector_basic.c
++++ b/tests/kms_force_connector_basic.c
+@@ -33,9 +33,9 @@ IGT_TEST_DESCRIPTION("Check the debugfs force connector/edid features work"
  
- 		igt_display_fini(&display);
-+		close(display.drm_fd);
+ static void reset_connectors(void)
+ {
+-	int drm_fd = 0;
+ 	drmModeRes *res;
+ 	drmModeConnector *connector = NULL;
++	int drm_fd;
+ 
+ 	drm_fd = drm_open_driver_master(DRIVER_ANY);
+ 	res = drmModeGetResources(drm_fd);
+@@ -54,6 +54,8 @@ static void reset_connectors(void)
  	}
+ 
+ 	igt_set_module_param_int(drm_fd, "load_detect_test", 0);
++
++	close(drm_fd);
  }
+ 
+ static int opt_handler(int opt, int opt_index, void *data)
+@@ -224,6 +226,9 @@ igt_main_args("", long_opts, help_str, opt_handler, NULL)
+ 
+ 			drmModeFreePlane(drm_plane);
+ 		}
++
++		igt_remove_fb(drm_fd, &xrgb_fb);
++		igt_remove_fb(drm_fd, &argb_fb);
+ 	}
+ 
+ 	igt_describe("Test to check the forced connector state.");
 -- 
 2.37.3
