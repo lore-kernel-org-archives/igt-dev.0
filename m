@@ -1,25 +1,25 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3A63B10E49B
- for <igt-dev@lists.freedesktop.org>; Wed,  5 Oct 2022 07:46:05 +0000 (UTC)
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7A11E10E4D1
+ for <igt-dev@lists.freedesktop.org>; Wed,  5 Oct 2022 07:46:03 +0000 (UTC)
 Received: from linux.intel.com (maurocar-mobl2.ger.corp.intel.com
  [10.252.61.48])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by linux.intel.com (Postfix) with ESMTPS id 8657E580E02
- for <igt-dev@lists.freedesktop.org>; Wed,  5 Oct 2022 00:45:53 -0700 (PDT)
+ by linux.intel.com (Postfix) with ESMTPS id 24590580DEB
+ for <igt-dev@lists.freedesktop.org>; Wed,  5 Oct 2022 00:45:54 -0700 (PDT)
 Received: from maurocar by linux.intel.com with local (Exim 4.96)
- (envelope-from <mauro.chehab@linux.intel.com>) id 1ofz6F-000Ecw-0T
+ (envelope-from <mauro.chehab@linux.intel.com>) id 1ofz6F-000EfF-23
  for igt-dev@lists.freedesktop.org; Wed, 05 Oct 2022 09:45:51 +0200
 From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Wed,  5 Oct 2022 09:44:44 +0200
-Message-Id: <20221005074546.55955-16-mauro.chehab@linux.intel.com>
+Date: Wed,  5 Oct 2022 09:45:20 +0200
+Message-Id: <20221005074546.55955-52-mauro.chehab@linux.intel.com>
 In-Reply-To: <20221005074546.55955-1-mauro.chehab@linux.intel.com>
 References: <20221005074546.55955-1-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v4 15/77] i915/gem_workarounds: Close device
+Subject: [igt-dev] [PATCH i-g-t v4 51/77] kms_plane_cursor: Close device
  before exit
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -38,40 +38,22 @@ Close the device fd before we check for leaks during the atexit
 handlers.
 
 Signed-off-by: Chris Wilson <chris.p.wilson@intel.com>
-Reviewed-by: Nirmoy Das<nirmoy.das@intel.com>
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Acked-by: Andrzej Hajda <andrzej.hajda@intel.com>
 Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 ---
- tests/i915/gem_workarounds.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ tests/kms_plane_cursor.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/tests/i915/gem_workarounds.c b/tests/i915/gem_workarounds.c
-index fc5184925a88..5fb2d73fdd30 100644
---- a/tests/i915/gem_workarounds.c
-+++ b/tests/i915/gem_workarounds.c
-@@ -31,6 +31,7 @@
- #include "i915/gem_create.h"
- #include "igt.h"
- #include "igt_device.h"
-+#include "igt_types.h"
- 
- #define PAGE_SIZE 4096
- #define PAGE_ALIGN(x) ALIGN(x, PAGE_SIZE)
-@@ -238,7 +239,6 @@ static void check_workarounds(int fd, enum operation op, unsigned int flags)
- igt_main
- {
- 	struct intel_mmio_data mmio_data;
--	int device = -1;
- 	const struct {
- 		const char *name;
- 		enum operation op;
-@@ -258,6 +258,7 @@ igt_main
- 		{ "-fd", FD },
- 		{ }
- 	}, *m;
-+	igt_fd_t(device);
+diff --git a/tests/kms_plane_cursor.c b/tests/kms_plane_cursor.c
+index d29dc327bbb1..43bcaaa42859 100644
+--- a/tests/kms_plane_cursor.c
++++ b/tests/kms_plane_cursor.c
+@@ -309,5 +309,6 @@ igt_main
  
  	igt_fixture {
- 		FILE *file;
+ 		igt_display_fini(&data.display);
++		close(data.drm_fd);
+ 	}
+ }
 -- 
 2.37.3
