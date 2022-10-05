@@ -1,26 +1,26 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4788210E49C
- for <igt-dev@lists.freedesktop.org>; Wed,  5 Oct 2022 07:46:04 +0000 (UTC)
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3A63B10E49B
+ for <igt-dev@lists.freedesktop.org>; Wed,  5 Oct 2022 07:46:05 +0000 (UTC)
 Received: from linux.intel.com (maurocar-mobl2.ger.corp.intel.com
  [10.252.61.48])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by linux.intel.com (Postfix) with ESMTPS id 13A6D580C23
- for <igt-dev@lists.freedesktop.org>; Wed,  5 Oct 2022 00:45:55 -0700 (PDT)
+ by linux.intel.com (Postfix) with ESMTPS id 8657E580E02
+ for <igt-dev@lists.freedesktop.org>; Wed,  5 Oct 2022 00:45:53 -0700 (PDT)
 Received: from maurocar by linux.intel.com with local (Exim 4.96)
- (envelope-from <mauro.chehab@linux.intel.com>) id 1ofz6F-000Egp-38
+ (envelope-from <mauro.chehab@linux.intel.com>) id 1ofz6F-000Ecw-0T
  for igt-dev@lists.freedesktop.org; Wed, 05 Oct 2022 09:45:51 +0200
 From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Wed,  5 Oct 2022 09:45:45 +0200
-Message-Id: <20221005074546.55955-77-mauro.chehab@linux.intel.com>
+Date: Wed,  5 Oct 2022 09:44:44 +0200
+Message-Id: <20221005074546.55955-16-mauro.chehab@linux.intel.com>
 In-Reply-To: <20221005074546.55955-1-mauro.chehab@linux.intel.com>
 References: <20221005074546.55955-1-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v4 76/77] i915/gem_ctx_isolation: Close
- device before exit
+Subject: [igt-dev] [PATCH i-g-t v4 15/77] i915/gem_workarounds: Close device
+ before exit
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -39,31 +39,39 @@ handlers.
 
 Signed-off-by: Chris Wilson <chris.p.wilson@intel.com>
 Reviewed-by: Nirmoy Das<nirmoy.das@intel.com>
-Acked-by: Andrzej Hajda <andrzej.hajda@intel.com>
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 ---
- tests/i915/gem_ctx_isolation.c | 3 ++-
+ tests/i915/gem_workarounds.c | 3 ++-
  1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/tests/i915/gem_ctx_isolation.c b/tests/i915/gem_ctx_isolation.c
-index 95d13969fa61..dc52a9a03130 100644
---- a/tests/i915/gem_ctx_isolation.c
-+++ b/tests/i915/gem_ctx_isolation.c
-@@ -25,6 +25,7 @@
+diff --git a/tests/i915/gem_workarounds.c b/tests/i915/gem_workarounds.c
+index fc5184925a88..5fb2d73fdd30 100644
+--- a/tests/i915/gem_workarounds.c
++++ b/tests/i915/gem_workarounds.c
+@@ -31,6 +31,7 @@
  #include "i915/gem_create.h"
  #include "igt.h"
- #include "igt_dummyload.h"
+ #include "igt_device.h"
 +#include "igt_types.h"
  
- #define MAX_REG 0x200000
- #define NUM_REGS (MAX_REG / sizeof(uint32_t))
-@@ -979,7 +980,7 @@ igt_main
- 	unsigned int has_context_isolation = 0;
- 	const struct intel_execution_engine2 *e;
- 	intel_ctx_cfg_t cfg;
--	int i915 = -1;
-+	igt_fd_t(i915);
+ #define PAGE_SIZE 4096
+ #define PAGE_ALIGN(x) ALIGN(x, PAGE_SIZE)
+@@ -238,7 +239,6 @@ static void check_workarounds(int fd, enum operation op, unsigned int flags)
+ igt_main
+ {
+ 	struct intel_mmio_data mmio_data;
+-	int device = -1;
+ 	const struct {
+ 		const char *name;
+ 		enum operation op;
+@@ -258,6 +258,7 @@ igt_main
+ 		{ "-fd", FD },
+ 		{ }
+ 	}, *m;
++	igt_fd_t(device);
  
  	igt_fixture {
- 		int gen;
+ 		FILE *file;
 -- 
 2.37.3
