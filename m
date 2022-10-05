@@ -1,25 +1,25 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 05E6D10E4EE
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9BFD510E48F
  for <igt-dev@lists.freedesktop.org>; Wed,  5 Oct 2022 07:46:03 +0000 (UTC)
 Received: from linux.intel.com (maurocar-mobl2.ger.corp.intel.com
  [10.252.61.48])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by linux.intel.com (Postfix) with ESMTPS id 5EBBF580C21
+ by linux.intel.com (Postfix) with ESMTPS id 2FF00580E07
  for <igt-dev@lists.freedesktop.org>; Wed,  5 Oct 2022 00:45:54 -0700 (PDT)
 Received: from maurocar by linux.intel.com with local (Exim 4.96)
- (envelope-from <mauro.chehab@linux.intel.com>) id 1ofz6F-000Efx-2X
+ (envelope-from <mauro.chehab@linux.intel.com>) id 1ofz6F-000Efd-2K
  for igt-dev@lists.freedesktop.org; Wed, 05 Oct 2022 09:45:51 +0200
 From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Wed,  5 Oct 2022 09:45:31 +0200
-Message-Id: <20221005074546.55955-63-mauro.chehab@linux.intel.com>
+Date: Wed,  5 Oct 2022 09:45:26 +0200
+Message-Id: <20221005074546.55955-58-mauro.chehab@linux.intel.com>
 In-Reply-To: <20221005074546.55955-1-mauro.chehab@linux.intel.com>
 References: <20221005074546.55955-1-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v4 62/77] drm_import_export: Close device
+Subject: [igt-dev] [PATCH i-g-t v4 57/77] kms_universal_plane: Close device
  before exit
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -41,22 +41,19 @@ Signed-off-by: Chris Wilson <chris.p.wilson@intel.com>
 Acked-by: Andrzej Hajda <andrzej.hajda@intel.com>
 Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 ---
- tests/drm_import_export.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ tests/kms_universal_plane.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/tests/drm_import_export.c b/tests/drm_import_export.c
-index 06245e8bac9f..2dd2f3cb9fff 100644
---- a/tests/drm_import_export.c
-+++ b/tests/drm_import_export.c
-@@ -296,4 +296,9 @@ igt_main {
- 		pthread_join(test_thread_id3, NULL);
- 		pthread_join(test_thread_id4, NULL);
+diff --git a/tests/kms_universal_plane.c b/tests/kms_universal_plane.c
+index 432f56ba2442..64416afd3920 100644
+--- a/tests/kms_universal_plane.c
++++ b/tests/kms_universal_plane.c
+@@ -823,5 +823,6 @@ igt_main
+ 
+ 	igt_fixture {
+ 		igt_display_fini(&data.display);
++		close(data.drm_fd);
  	}
-+
-+	igt_fixture {
-+		close(fd);
-+		close(fd1);
-+	}
  }
 -- 
 2.37.3
