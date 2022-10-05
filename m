@@ -1,26 +1,26 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 15DED10E477
- for <igt-dev@lists.freedesktop.org>; Wed,  5 Oct 2022 07:45:55 +0000 (UTC)
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B263110E46E
+ for <igt-dev@lists.freedesktop.org>; Wed,  5 Oct 2022 07:45:54 +0000 (UTC)
 Received: from linux.intel.com (maurocar-mobl2.ger.corp.intel.com
  [10.252.61.48])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by linux.intel.com (Postfix) with ESMTPS id 72D2C580DCB
+ by linux.intel.com (Postfix) with ESMTPS id 5FECB580DCD
  for <igt-dev@lists.freedesktop.org>; Wed,  5 Oct 2022 00:45:53 -0700 (PDT)
 Received: from maurocar by linux.intel.com with local (Exim 4.96)
- (envelope-from <mauro.chehab@linux.intel.com>) id 1ofz6F-000Ecr-0Q
+ (envelope-from <mauro.chehab@linux.intel.com>) id 1ofz6F-000EcW-09
  for igt-dev@lists.freedesktop.org; Wed, 05 Oct 2022 09:45:51 +0200
 From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Wed,  5 Oct 2022 09:44:43 +0200
-Message-Id: <20221005074546.55955-15-mauro.chehab@linux.intel.com>
+Date: Wed,  5 Oct 2022 09:44:37 +0200
+Message-Id: <20221005074546.55955-9-mauro.chehab@linux.intel.com>
 In-Reply-To: <20221005074546.55955-1-mauro.chehab@linux.intel.com>
 References: <20221005074546.55955-1-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v4 14/77] i915/gem_userptr_blits: Close
- device before exit
+Subject: [igt-dev] [PATCH i-g-t v4 08/77] i915/gem_ctx_engines: Close device
+ before exit
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -42,37 +42,29 @@ Acked-by: Andrzej Hajda <andrzej.hajda@intel.com>
 Reviewed-by: Nirmoy Das<nirmoy.das@intel.com>
 Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 ---
- tests/i915/gem_userptr_blits.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ tests/i915/gem_ctx_engines.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/tests/i915/gem_userptr_blits.c b/tests/i915/gem_userptr_blits.c
-index 1343b1097aef..6985086694c4 100644
---- a/tests/i915/gem_userptr_blits.c
-+++ b/tests/i915/gem_userptr_blits.c
-@@ -62,6 +62,7 @@
+diff --git a/tests/i915/gem_ctx_engines.c b/tests/i915/gem_ctx_engines.c
+index 4b8e51457a8f..b0646516fa6f 100644
+--- a/tests/i915/gem_ctx_engines.c
++++ b/tests/i915/gem_ctx_engines.c
+@@ -41,6 +41,7 @@
+ #include "i915/gem_context.h"
  #include "i915/gem_create.h"
  #include "igt.h"
- #include "igt_sysfs.h"
 +#include "igt_types.h"
  #include "sw_sync.h"
  
- #include "eviction_common.c"
-@@ -2299,7 +2300,7 @@ static void test_userfault(int i915)
- 
- uint64_t total_ram;
- uint64_t aperture_size;
--int fd, count;
-+int count;
- 
- static int opt_handler(int opt, int opt_index, void *data)
+ #define engine_class(e, n) ((e)->engines[(n)].engine_class)
+@@ -593,7 +594,7 @@ static void independent_all(int i915, const intel_ctx_t *ctx)
+ igt_main
  {
-@@ -2319,6 +2320,7 @@ const char *help_str = "  -c\tBuffer count\n";
- igt_main_args("c:", NULL, help_str, opt_handler, NULL)
- {
- 	int size = sizeof(linear);
-+	igt_fd_t(fd);
+ 	const struct intel_execution_engine2 *e;
+-	int i915 = -1;
++	igt_fd_t(i915);
  
  	igt_fixture {
- 		unsigned int mmo_max = 0;
+ 		i915 = drm_open_driver(DRIVER_INTEL);
 -- 
 2.37.3
