@@ -1,19 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 269B810E4A3
- for <igt-dev@lists.freedesktop.org>; Wed,  5 Oct 2022 10:23:00 +0000 (UTC)
-Date: Wed, 5 Oct 2022 12:22:52 +0200
+Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EA20B10E607
+ for <igt-dev@lists.freedesktop.org>; Wed,  5 Oct 2022 13:14:17 +0000 (UTC)
+Date: Wed, 5 Oct 2022 15:13:43 +0200
 From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Message-ID: <20221005122252.256d00a8@maurocar-mobl2>
-In-Reply-To: <Yz1WCjOSxGBbtEyt@kamilkon-desk1>
+To: Jani Nikula <jani.nikula@linux.intel.com>
+Message-ID: <20221005151343.7f125712@maurocar-mobl2>
+In-Reply-To: <8735c2sf1d.fsf@intel.com>
 References: <20221005074546.55955-1-mauro.chehab@linux.intel.com>
- <20221005074546.55955-2-mauro.chehab@linux.intel.com>
- <Yz1WCjOSxGBbtEyt@kamilkon-desk1>
+ <20221005074546.55955-5-mauro.chehab@linux.intel.com>
+ <8735c2sf1d.fsf@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-Subject: Re: [igt-dev] [PATCH i-g-t v4 01/77] lib: Introduce typed cleanups
+Subject: Re: [igt-dev] [PATCH i-g-t v4 04/77] i915/gem_linear_blits: Close
+ device before exit
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,65 +22,84 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Petri Latvala <petri.latvala@intel.com>,
- Chris Wilson <chris.p.wilson@intel.com>,
- Chris Wilson <chris@chris-wilson.co.uk>, igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org, Petri Latvala <petri.latvala@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Wed, 5 Oct 2022 12:01:46 +0200
-Kamil Konieczny <kamil.konieczny@linux.intel.com> wrote:
+On Wed, 05 Oct 2022 14:09:18 +0300
+Jani Nikula <jani.nikula@linux.intel.com> wrote:
 
-> Hi Mauro,
+> On Wed, 05 Oct 2022, Mauro Carvalho Chehab <mauro.chehab@linux.intel.com> wrote:
+> > From: Chris Wilson <chris.p.wilson@intel.com>
+> >
+> > Close the device fd before we check for leaks during the atexit
+> > handlers.
+> >
+> > Signed-off-by: Chris Wilson <chris.p.wilson@intel.com>
+> > Reviewed-by: Andrzej Hajda <andrzej.hajda@intel.com>
+> > Reviewed-by: Nirmoy Das<nirmoy.das@intel.com>
+> > Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+> > ---
+> >  tests/i915/gem_linear_blits.c | 3 ++-
+> >  1 file changed, 2 insertions(+), 1 deletion(-)
+> >
+> > diff --git a/tests/i915/gem_linear_blits.c b/tests/i915/gem_linear_blits.c
+> > index 1fd5b733c3ce..d02751be9232 100644
+> > --- a/tests/i915/gem_linear_blits.c
+> > +++ b/tests/i915/gem_linear_blits.c
+> > @@ -47,6 +47,7 @@
+> >  #include "i915/gem.h"
+> >  #include "i915/gem_create.h"
+> >  #include "igt.h"
+> > +#include "igt_types.h"
+> >  
+> >  IGT_TEST_DESCRIPTION("Test doing many blits with a working set larger than the"
+> >  		     " aperture size.");
+> > @@ -236,7 +237,7 @@ igt_main
+> >  	const int ncpus = sysconf(_SC_NPROCESSORS_ONLN);
+> >  	uint64_t count = 0;
+> >  	bool do_relocs;
+> > -	int fd = -1;
+> > +	igt_fd_t(fd);  
 > 
-> On 2022-10-05 at 09:44:30 +0200, Mauro Carvalho Chehab wrote:
-> > From: Chris Wilson <chris@chris-wilson.co.uk>  
+> I guess igt has long since stopped being written in C, and started being
+> written in an "igt dialect" of its own... but the constructs still kind
+> of resemble C.
 > 
-> imho here should be added "why" part, consider adding
-> something like following (re-worded from cover letter):
-> 
-> We close devices on exit but that doesn't work when inside
-> igt_subtest_group is used igt_skip(), as it uses longjmp,
-> causing the code to go out of scope and miss close(). 
-> 
-> > 
-> > Start introducing standard types with automatic cleanup courtesy of
-> > gcc's __attribute__((cleanup)). As an example, we start with an fd
-> > that will automatically call close() on going out of scope, and
-> > crucially before atexit where we will want to check for resource leaks.
-> > 
-> > [mchehab: add test descriptions]
-> > Suggested-by: Andrzej Hajda <andrzej.hajda@intel.com>
-> > Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
-> > Cc: Andrzej Hajda <andrzej.hajda@intel.com>
-> > Reviewed-by: Petri Latvala <petri.latvala@intel.com>
-> > Acked-by: Nirmoy Das <nirmoy.das@linux.intel.com>
-> > Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>  
+> This doesn't. It looks like a function call but isn't. Looks odd that
+> it's among the declarations... but it is a declaration.
 
-Makes sense. Changing it to:
+True, but this is not different than what we have already at the Linux
+Kernel with things like DECLARE_BITMAP():
 
-    lib: Introduce typed cleanups
-    
-    We close devices on exit but that doesn't work when inside
-    igt_subtest_group is used igt_skip(), as it uses longjmp,
-    causing the code to go out of scope and miss close().
-    
-    Start introducing standard types with automatic cleanup courtesy of
-    gcc's __attribute__((cleanup)). This also works with clang, when
-    using volatile integers.
-    
-    As an example, we start with an fd that will automatically call
-    close() on going out of scope, and crucially before atexit where
-    we will want to check for resource leaks.
-    
-    [mchehab: add test descriptions]
-    Suggested-by: Andrzej Hajda <andrzej.hajda@intel.com>
-    Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
-    Cc: Andrzej Hajda <andrzej.hajda@intel.com>
-    Reviewed-by: Petri Latvala <petri.latvala@intel.com>
-    Acked-by: Nirmoy Das <nirmoy.das@linux.intel.com>
-    Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+   struct fsubdev {
+        struct work_struct fw_work;
+        struct work_struct pm_work;
+        struct delayed_work ue_work;
+        struct work_struct rescan_work;
+        struct fdev *fdev;
+        char __iomem *csr_base;
+        int irq;
+        bool fw_running;
+        DECLARE_BITMAP(errors, NUM_SD_ERRORS);
+        struct mbdb *mbdb;
+...
+
+
+and other similar variable declaration macros.
+
+Maybe we could name it at patch 01/77 to:
+
+
+	#define DECLARE_IGT_FD(x__) \
+	       volatile int x__ cleanup_with(igt_cleanup_fd) = IGT_OUTER_SCOPE_INIT(-1)
+
+in order to be more like the Kernel.
+
+In a matter of fact, C is just a nicer and more portable way to work
+macro-assembler... :-p
+
 
 Regards,
 Mauro
