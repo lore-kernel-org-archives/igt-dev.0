@@ -1,25 +1,25 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9BFD510E48F
- for <igt-dev@lists.freedesktop.org>; Wed,  5 Oct 2022 07:46:03 +0000 (UTC)
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id F0CB710E47B
+ for <igt-dev@lists.freedesktop.org>; Wed,  5 Oct 2022 07:46:40 +0000 (UTC)
 Received: from linux.intel.com (maurocar-mobl2.ger.corp.intel.com
  [10.252.61.48])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by linux.intel.com (Postfix) with ESMTPS id 2FF00580E07
+ by linux.intel.com (Postfix) with ESMTPS id 05D74580E04
  for <igt-dev@lists.freedesktop.org>; Wed,  5 Oct 2022 00:45:54 -0700 (PDT)
 Received: from maurocar by linux.intel.com with local (Exim 4.96)
- (envelope-from <mauro.chehab@linux.intel.com>) id 1ofz6F-000Efd-2K
+ (envelope-from <mauro.chehab@linux.intel.com>) id 1ofz6F-000Ee9-1J
  for igt-dev@lists.freedesktop.org; Wed, 05 Oct 2022 09:45:51 +0200
 From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Wed,  5 Oct 2022 09:45:26 +0200
-Message-Id: <20221005074546.55955-58-mauro.chehab@linux.intel.com>
+Date: Wed,  5 Oct 2022 09:45:03 +0200
+Message-Id: <20221005074546.55955-35-mauro.chehab@linux.intel.com>
 In-Reply-To: <20221005074546.55955-1-mauro.chehab@linux.intel.com>
 References: <20221005074546.55955-1-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v4 57/77] kms_universal_plane: Close device
+Subject: [igt-dev] [PATCH i-g-t v4 34/77] kms_cursor_crc: Close device
  before exit
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -41,16 +41,16 @@ Signed-off-by: Chris Wilson <chris.p.wilson@intel.com>
 Acked-by: Andrzej Hajda <andrzej.hajda@intel.com>
 Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 ---
- tests/kms_universal_plane.c | 1 +
+ tests/kms_cursor_crc.c | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/tests/kms_universal_plane.c b/tests/kms_universal_plane.c
-index 432f56ba2442..64416afd3920 100644
---- a/tests/kms_universal_plane.c
-+++ b/tests/kms_universal_plane.c
-@@ -823,5 +823,6 @@ igt_main
+diff --git a/tests/kms_cursor_crc.c b/tests/kms_cursor_crc.c
+index f9a1f8689625..8d3426dda100 100644
+--- a/tests/kms_cursor_crc.c
++++ b/tests/kms_cursor_crc.c
+@@ -913,5 +913,6 @@ igt_main
+ 		}
  
- 	igt_fixture {
  		igt_display_fini(&data.display);
 +		close(data.drm_fd);
  	}
