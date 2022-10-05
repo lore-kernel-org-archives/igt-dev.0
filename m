@@ -4,12 +4,12 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 From: Patchwork <patchwork@emeril.freedesktop.org>
 To: "Jake Freeland" <jake@technologyfriends.net>
-Date: Wed, 05 Oct 2022 21:00:28 -0000
-Message-ID: <166500362891.20198.16324497393255590622@emeril.freedesktop.org>
-References: <20221005201831.37623-1-jfree@freebsd.org>
-In-Reply-To: <20221005201831.37623-1-jfree@freebsd.org>
+Date: Wed, 05 Oct 2022 21:01:37 -0000
+Message-ID: <166500369779.20199.9376630409236792435@emeril.freedesktop.org>
+References: <20221005203535.37704-1-jfree@freebsd.org>
+In-Reply-To: <20221005203535.37704-1-jfree@freebsd.org>
 Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJVSUxEOiBmYWlsdXJlIGZvciBSZXBs?=
- =?utf-8?q?aced_instances_of_mmap64=28=29_with_mmap=28=29_=28rev4=29?=
+ =?utf-8?q?aced_instances_of_mmap64=28=29_with_drm=5Fmmap=28=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,8 +25,8 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 =3D=3D Series Details =3D=3D
 
-Series: Replaced instances of mmap64() with mmap() (rev4)
-URL   : https://patchwork.freedesktop.org/series/108698/
+Series: Replaced instances of mmap64() with drm_mmap()
+URL   : https://patchwork.freedesktop.org/series/109431/
 State : failure
 
 =3D=3D Summary =3D=3D
@@ -36,8 +36,8 @@ IGT patchset build failed on latest successful build
 end of some internal_assert
 
 ninja: Entering directory `/opt/igt/build'
-[1/935] Generating version.h with a custom command.
-[2/933] Compiling C object 'lib/76b5a35@@igt-i915_gem_mman_c@sta/i915_gem_m=
+[1/940] Generating version.h with a custom command.
+[2/938] Compiling C object 'lib/76b5a35@@igt-i915_gem_mman_c@sta/i915_gem_m=
 man.c.o'.
 FAILED: lib/76b5a35@@igt-i915_gem_mman_c@sta/i915_gem_mman.c.o=20
 cc -Ilib/76b5a35@@igt-i915_gem_mman_c@sta -Ilib -I../../../usr/src/igt-gpu-=
