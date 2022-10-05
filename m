@@ -1,18 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-io1-xd2c.google.com (mail-io1-xd2c.google.com
- [IPv6:2607:f8b0:4864:20::d2c])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 76BAF10E772
- for <igt-dev@lists.freedesktop.org>; Wed,  5 Oct 2022 20:19:17 +0000 (UTC)
-Received: by mail-io1-xd2c.google.com with SMTP id s16so2703434ioa.6
- for <igt-dev@lists.freedesktop.org>; Wed, 05 Oct 2022 13:19:17 -0700 (PDT)
+Received: from mail-il1-x12f.google.com (mail-il1-x12f.google.com
+ [IPv6:2607:f8b0:4864:20::12f])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3794310E778
+ for <igt-dev@lists.freedesktop.org>; Wed,  5 Oct 2022 20:35:45 +0000 (UTC)
+Received: by mail-il1-x12f.google.com with SMTP id a17so68995ilq.1
+ for <igt-dev@lists.freedesktop.org>; Wed, 05 Oct 2022 13:35:45 -0700 (PDT)
 From: Jake Freeland <jake@technologyfriends.net>
 To: igt-dev@lists.freedesktop.org, kamil.konieczny@linux.intel.com,
  petri.latvala@intel.com
-Date: Wed,  5 Oct 2022 15:18:31 -0500
-Message-Id: <20221005201831.37623-1-jfree@freebsd.org>
+Date: Wed,  5 Oct 2022 15:35:35 -0500
+Message-Id: <20221005203535.37704-1-jfree@freebsd.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t] Replaced instances of mmap64() with mmap()
+Subject: [igt-dev] [PATCH i-g-t] Replaced instances of mmap64() with
+ drm_mmap()
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,10 +28,9 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 The mmap64() function exists to point 32-bit architectures to an mmap
 interface with the capability to address a 64-bit memory address space.
-As 32-bit machines are replaced by 64-bit, there is no longer a need to
-keep mmap64() around. This is especially apparent in operating systems
-like FreeBSD that exclude the mmap64() function altogether. This patch
-replaces all instances of mmap64() with mmap().
+This patch replaces all instances of mmap64() with drm_mmap() to
+ensure that the correct mmap interface is used on varying architectures
+and operating systems.
 
 Signed-off-by: Jake Freeland <jfree@freebsd.org>
 ---
