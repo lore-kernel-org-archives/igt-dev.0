@@ -1,26 +1,26 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9E31F10E49C
- for <igt-dev@lists.freedesktop.org>; Wed,  5 Oct 2022 07:45:55 +0000 (UTC)
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E59D310E4B5
+ for <igt-dev@lists.freedesktop.org>; Wed,  5 Oct 2022 07:46:01 +0000 (UTC)
 Received: from linux.intel.com (maurocar-mobl2.ger.corp.intel.com
  [10.252.61.48])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by linux.intel.com (Postfix) with ESMTPS id 2F10C580DFF
- for <igt-dev@lists.freedesktop.org>; Wed,  5 Oct 2022 00:45:54 -0700 (PDT)
+ by linux.intel.com (Postfix) with ESMTPS id CE1AB5804E8
+ for <igt-dev@lists.freedesktop.org>; Wed,  5 Oct 2022 00:45:53 -0700 (PDT)
 Received: from maurocar by linux.intel.com with local (Exim 4.96)
- (envelope-from <mauro.chehab@linux.intel.com>) id 1ofz6F-000Efi-2N
+ (envelope-from <mauro.chehab@linux.intel.com>) id 1ofz6F-000Edw-1B
  for igt-dev@lists.freedesktop.org; Wed, 05 Oct 2022 09:45:51 +0200
 From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Wed,  5 Oct 2022 09:45:27 +0200
-Message-Id: <20221005074546.55955-59-mauro.chehab@linux.intel.com>
+Date: Wed,  5 Oct 2022 09:45:00 +0200
+Message-Id: <20221005074546.55955-32-mauro.chehab@linux.intel.com>
 In-Reply-To: <20221005074546.55955-1-mauro.chehab@linux.intel.com>
 References: <20221005074546.55955-1-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v4 58/77] kms_vblank: Close device before
- exit
+Subject: [igt-dev] [PATCH i-g-t v4 31/77] i915/kms_big_fb: Close device
+ before exit
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -39,23 +39,22 @@ handlers.
 
 Signed-off-by: Chris Wilson <chris.p.wilson@intel.com>
 Acked-by: Andrzej Hajda <andrzej.hajda@intel.com>
+Reviewed-by: Nirmoy Das<nirmoy.das@intel.com>
 Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 ---
- tests/kms_vblank.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ tests/i915/kms_big_fb.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/tests/kms_vblank.c b/tests/kms_vblank.c
-index e65e8522a861..5bd3fefe1440 100644
---- a/tests/kms_vblank.c
-+++ b/tests/kms_vblank.c
-@@ -550,4 +550,8 @@ igt_main
- 	for_each_pipe_static(data.pipe)
- 		igt_subtest_group
- 			run_subtests_for_pipe(&data);
-+
-+	igt_fixture {
-+		close(fd);
-+	}
+diff --git a/tests/i915/kms_big_fb.c b/tests/i915/kms_big_fb.c
+index 0b5e955de088..e91bea4f3646 100644
+--- a/tests/i915/kms_big_fb.c
++++ b/tests/i915/kms_big_fb.c
+@@ -982,5 +982,6 @@ igt_main
+ 	igt_fixture {
+ 		igt_display_fini(&data.display);
+ 		buf_ops_destroy(data.bops);
++		close(data.drm_fd);
+ 	}
  }
 -- 
 2.37.3
