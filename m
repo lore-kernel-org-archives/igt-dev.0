@@ -1,25 +1,25 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id EF9B510E4EC
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C888910E4E6
  for <igt-dev@lists.freedesktop.org>; Wed,  5 Oct 2022 07:46:03 +0000 (UTC)
 Received: from linux.intel.com (maurocar-mobl2.ger.corp.intel.com
  [10.252.61.48])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by linux.intel.com (Postfix) with ESMTPS id 660C6580E01
+ by linux.intel.com (Postfix) with ESMTPS id 5F687580DC8
  for <igt-dev@lists.freedesktop.org>; Wed,  5 Oct 2022 00:45:54 -0700 (PDT)
 Received: from maurocar by linux.intel.com with local (Exim 4.96)
- (envelope-from <mauro.chehab@linux.intel.com>) id 1ofz6F-000Egj-33
+ (envelope-from <mauro.chehab@linux.intel.com>) id 1ofz6F-000EgI-2k
  for igt-dev@lists.freedesktop.org; Wed, 05 Oct 2022 09:45:51 +0200
 From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Wed,  5 Oct 2022 09:45:43 +0200
-Message-Id: <20221005074546.55955-75-mauro.chehab@linux.intel.com>
+Date: Wed,  5 Oct 2022 09:45:36 +0200
+Message-Id: <20221005074546.55955-68-mauro.chehab@linux.intel.com>
 In-Reply-To: <20221005074546.55955-1-mauro.chehab@linux.intel.com>
 References: <20221005074546.55955-1-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v4 74/77] core_auth: Close(master) before
+Subject: [igt-dev] [PATCH i-g-t v4 67/77] kms_dither: Close device before
  exit
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -34,55 +34,25 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Chris Wilson <chris.p.wilson@intel.com>
 
-Add a missing close(master) to the subtest group fixture to prevent a
-leak during later tests.
+Close the device fd before we check for leaks during the atexit
+handlers.
 
 Signed-off-by: Chris Wilson <chris.p.wilson@intel.com>
-Reviewed-by: Andrzej Hajda <andrzej.hajda@intel.com>
 Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 ---
- tests/core_auth.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ tests/kms_dither.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/tests/core_auth.c b/tests/core_auth.c
-index c9ad3fb9c875..257f124820a4 100644
---- a/tests/core_auth.c
-+++ b/tests/core_auth.c
-@@ -25,7 +25,6 @@
-  * Testcase: drmGetMagic() and drmAuthMagic()
-  */
+diff --git a/tests/kms_dither.c b/tests/kms_dither.c
+index 43a25e203ef4..95be6e136c61 100644
+--- a/tests/kms_dither.c
++++ b/tests/kms_dither.c
+@@ -247,5 +247,6 @@ igt_main
  
--#include "igt.h"
- #include <unistd.h>
- #include <stdlib.h>
- #include <stdint.h>
-@@ -48,6 +47,9 @@
- # include <pthread.h>
- #endif
- 
-+#include "igt.h"
-+#include "igt_types.h"
-+
- IGT_TEST_DESCRIPTION("Call drmGetMagic() and drmAuthMagic() and see if it behaves.");
- 
- static bool
-@@ -192,8 +194,6 @@ static void test_basic_auth(int master)
- 
- igt_main
- {
--	int master;
--
- 	/* root (which we run igt as) should always be authenticated */
- 	igt_describe("Check drm client is always authenticated.");
- 	igt_subtest("getclient-simple") {
-@@ -220,6 +220,8 @@ igt_main
- 
- 	/* above tests require that no drm fd is open */
- 	igt_subtest_group {
-+		igt_fd_t(master);
-+
- 		igt_fixture
- 			master = drm_open_driver_master(DRIVER_ANY);
- 	
+ 	igt_fixture {
+ 		igt_display_fini(&data.display);
++		close(data.drm_fd);
+ 	}
+ }
 -- 
 2.37.3
