@@ -1,26 +1,26 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id EA37710E4EA
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EF9B510E4EC
  for <igt-dev@lists.freedesktop.org>; Wed,  5 Oct 2022 07:46:03 +0000 (UTC)
 Received: from linux.intel.com (maurocar-mobl2.ger.corp.intel.com
  [10.252.61.48])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by linux.intel.com (Postfix) with ESMTPS id 5A4E8580CBB
+ by linux.intel.com (Postfix) with ESMTPS id 660C6580E01
  for <igt-dev@lists.freedesktop.org>; Wed,  5 Oct 2022 00:45:54 -0700 (PDT)
 Received: from maurocar by linux.intel.com with local (Exim 4.96)
- (envelope-from <mauro.chehab@linux.intel.com>) id 1ofz6F-000EgP-2q
+ (envelope-from <mauro.chehab@linux.intel.com>) id 1ofz6F-000Egj-33
  for igt-dev@lists.freedesktop.org; Wed, 05 Oct 2022 09:45:51 +0200
 From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Wed,  5 Oct 2022 09:45:38 +0200
-Message-Id: <20221005074546.55955-70-mauro.chehab@linux.intel.com>
+Date: Wed,  5 Oct 2022 09:45:43 +0200
+Message-Id: <20221005074546.55955-75-mauro.chehab@linux.intel.com>
 In-Reply-To: <20221005074546.55955-1-mauro.chehab@linux.intel.com>
 References: <20221005074546.55955-1-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v4 69/77] kms_cursor_edge_walk: Close device
- before exit
+Subject: [igt-dev] [PATCH i-g-t v4 74/77] core_auth: Close(master) before
+ exit
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -34,29 +34,55 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Chris Wilson <chris.p.wilson@intel.com>
 
-Close the device fd before we check for leaks during the atexit
-handlers.
+Add a missing close(master) to the subtest group fixture to prevent a
+leak during later tests.
 
 Signed-off-by: Chris Wilson <chris.p.wilson@intel.com>
-Reviewed-by: Michael J. Ruhl <michael.j.ruhl@intel.com>
+Reviewed-by: Andrzej Hajda <andrzej.hajda@intel.com>
 Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 ---
- tests/kms_cursor_edge_walk.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ tests/core_auth.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/tests/kms_cursor_edge_walk.c b/tests/kms_cursor_edge_walk.c
-index b75fc216f9f2..74187613276e 100644
---- a/tests/kms_cursor_edge_walk.c
-+++ b/tests/kms_cursor_edge_walk.c
-@@ -362,6 +362,8 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
- 		}
- 	}
+diff --git a/tests/core_auth.c b/tests/core_auth.c
+index c9ad3fb9c875..257f124820a4 100644
+--- a/tests/core_auth.c
++++ b/tests/core_auth.c
+@@ -25,7 +25,6 @@
+  * Testcase: drmGetMagic() and drmAuthMagic()
+  */
  
--	igt_fixture
-+	igt_fixture {
- 		igt_display_fini(&data.display);
-+		close(data.drm_fd);
-+	}
- }
+-#include "igt.h"
+ #include <unistd.h>
+ #include <stdlib.h>
+ #include <stdint.h>
+@@ -48,6 +47,9 @@
+ # include <pthread.h>
+ #endif
+ 
++#include "igt.h"
++#include "igt_types.h"
++
+ IGT_TEST_DESCRIPTION("Call drmGetMagic() and drmAuthMagic() and see if it behaves.");
+ 
+ static bool
+@@ -192,8 +194,6 @@ static void test_basic_auth(int master)
+ 
+ igt_main
+ {
+-	int master;
+-
+ 	/* root (which we run igt as) should always be authenticated */
+ 	igt_describe("Check drm client is always authenticated.");
+ 	igt_subtest("getclient-simple") {
+@@ -220,6 +220,8 @@ igt_main
+ 
+ 	/* above tests require that no drm fd is open */
+ 	igt_subtest_group {
++		igt_fd_t(master);
++
+ 		igt_fixture
+ 			master = drm_open_driver_master(DRIVER_ANY);
+ 	
 -- 
 2.37.3
