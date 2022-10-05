@@ -1,24 +1,26 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-ej1-x62e.google.com (mail-ej1-x62e.google.com
- [IPv6:2a00:1450:4864:20::62e])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 24AF210E501
- for <igt-dev@lists.freedesktop.org>; Mon, 10 Oct 2022 18:52:40 +0000 (UTC)
-Received: by mail-ej1-x62e.google.com with SMTP id a26so26757104ejc.4
- for <igt-dev@lists.freedesktop.org>; Mon, 10 Oct 2022 11:52:40 -0700 (PDT)
-Message-ID: <464abb16-5fd7-8e32-f743-64bb582dfdaa@gmail.com>
-Date: Mon, 10 Oct 2022 21:52:31 +0300
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A437810E4A2
+ for <igt-dev@lists.freedesktop.org>; Wed,  5 Oct 2022 07:45:55 +0000 (UTC)
+Received: from linux.intel.com (maurocar-mobl2.ger.corp.intel.com
+ [10.252.61.48])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by linux.intel.com (Postfix) with ESMTPS id 42E46580E05
+ for <igt-dev@lists.freedesktop.org>; Wed,  5 Oct 2022 00:45:54 -0700 (PDT)
+Received: from maurocar by linux.intel.com with local (Exim 4.96)
+ (envelope-from <mauro.chehab@linux.intel.com>) id 1ofz6F-000EfO-29
+ for igt-dev@lists.freedesktop.org; Wed, 05 Oct 2022 09:45:51 +0200
+From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Wed,  5 Oct 2022 09:45:22 +0200
+Message-Id: <20221005074546.55955-54-mauro.chehab@linux.intel.com>
+In-Reply-To: <20221005074546.55955-1-mauro.chehab@linux.intel.com>
+References: <20221005074546.55955-1-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
-Content-Language: en-US
-To: aemad <aemad@igalia.com>
-References: <20221009151844.3456-1-aemad@igalia.com>
- <aa261d04-81b3-48ac-603b-c75fcb3c8909@gmail.com>
- <3b7df5498d9c2d5e5d1541de3da3f4f1@igalia.com>
-From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-In-Reply-To: <3b7df5498d9c2d5e5d1541de3da3f4f1@igalia.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_cursor_crc: prevent the
- entire test from being aborted when a subtest fails
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t v4 53/77] kms_plane_scaling: Close device
+ before exit
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,288 +28,35 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: juhapekka.heikkila@gmail.com
-Cc: igt-dev@lists.freedesktop.org, petri.latvala@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On 10.10.2022 17.26, aemad wrote:
-> Hi Juha,
-> 
-> On 2022-10-10 13:16, Juha-Pekka Heikkila wrote:
->> Hi Alaa,
->>
->> what's that invalid argument you're getting on addfb? I never tried
-> 
-> I am not sure what is the invalid argument, but the failure of this test
-> with a cursor size 32x10 is that VKMS does not support this size yet so
-> the test unable to create a cursor FB.
+From: Chris Wilson <chris.p.wilson@intel.com>
 
-At that moment when addfb gives failure it doesn't yet relate to cursor 
-testing, it is like any other framebuffer. As other kms tests work for 
-you there maybe limitation on vkms not supporting so small framebuffer 
-or it could be on libigt there's something missing for handling vkms 
-framebuffers.
+Close the device fd before we check for leaks during the atexit
+handlers.
 
-I'm looking at kernel sources and I suspect you'd see in dmesg message 
-saying  "GEM object size (%zu) smaller than minimum size (%u) for plane 
-%d\n" when that addfb failed? If it is that message then probably into 
-libigt for vkms there would be needed some minimum size alignment with 
-framebuffers.
+Signed-off-by: Chris Wilson <chris.p.wilson@intel.com>
+Acked-by: Andrzej Hajda <andrzej.hajda@intel.com>
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+---
+ tests/kms_plane_scaling.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-> 
-> 
->> this with vkms, normally just on i915. With i915 I cannot reproduce
->> that abort you're seeing. Other kms tests run on your setup?
-> 
-> I think the abortion related to VKMS driver only, but I didn't try to
-> run it on i915.
-> yes, I ran other kms test but with VKMS driver.
-> 
->>
->> Anyway, that revert you're suggesting would remove support for msm
->> driver on this test. Let's first summon those who made these changes
->> to comment. (cc'ing Modem and Swati)
-> 
-> I see, so I can check that after Modem and Swati reply.
-> 
->>
->> /Juha-Pekka
-> 
-> BR,
-> Alaa
->>
->> On 9.10.2022 18.18, Alaa Emad wrote:
->>> Any test failure prevents the other tests to be run, aborting the entire test loop. This behavior was introduced by commit
->>> 9494d53d ("tests/kms_cursor_crc: Convert tests to dynamic").
->>> For instance, when running the cursor-offscreen-32x10 subtest using VKMS,
->>> the execution is aborted instead of SKIP/FAIL, as in the following output:
->>>
->>> $ ./tests/kms_cursor_crc --run-subtest cursor-offscreen-32x10
->>> (kms_cursor_crc:7447) igt_fb-CRITICAL: Test assertion failure function igt_create_fb_with_bo_size, file ../lib/igt_fb.c:2078:
->>> (kms_cursor_crc:7447) igt_fb-CRITICAL: Failed assertion: (__kms_addfb(fb->fd, fb->gem_handle, fb->width, fb->height, fb->drm_format, fb->modifier, fb->strides, fb->offsets, fb->num_planes, flags, &fb->fb_id)) == 0
->>> (kms_cursor_crc:7447) igt_fb-CRITICAL: Last errno: 22, Invalid argument
->>> Stack trace:
->>> kms_cursor_crc: ../lib/igt_core.c:1667: igt_fail: Assertion `_igt_dynamic_tests_executed < 0 || dynamic_failed_one' failed.
->>> Received signal SIGABRT.
->>>
->>> The test was aborted after convertig tests to dynamic with cursor size 32*10 that because of the assertion in the `igt_create_fb_with_bo_size` when creating cursor in `create_cursor_fb`.
->>>
->>> This happened because Within a igt_subtest_with_dynamic block, explicit failure (e.g. igt_assert) is not allowed,
->>> only dynamic subsubtests themselves will produce test results.
->>>
->>> The previous approach was running each test for all cursor sizes then move to the next test  so fix this issue
->>> by running all tests for one cursor size one by one, and check if cursor size is
->>> supported or not before running the test.
->>>
->>> Fixes: 9494d53d ("tests/kms_cursor_crc: Convert tests to dynamic")
->>>
->>> Signed-off-by: Alaa Emad <aemad@igalia.com>
->>> ---
->>>    tests/kms_cursor_crc.c | 136 +++++++++++++++++++++--------------------
->>>    1 file changed, 69 insertions(+), 67 deletions(-)
->>>
->>> diff --git a/tests/kms_cursor_crc.c b/tests/kms_cursor_crc.c
->>> index 8d3426dd..9b620389 100644
->>> --- a/tests/kms_cursor_crc.c
->>> +++ b/tests/kms_cursor_crc.c
->>> @@ -72,7 +72,6 @@ typedef struct {
->>>    	cairo_surface_t *surface;
->>>    	uint32_t devid;
->>>    	double alpha;
->>> -	int vblank_wait_count; /* because of msm */
->>>    } data_t;
->>>      #define TEST_DPMS (1<<0)
->>> @@ -125,12 +124,6 @@ static void cursor_disable(data_t *data)
->>>    {
->>>    	igt_plane_set_fb(data->cursor, NULL);
->>>    	igt_plane_set_position(data->cursor, 0, 0);
->>> -	igt_display_commit(&data->display);
->>> -
->>> -	/* do this wait here so it will not need to be added everywhere */
->>> -	igt_wait_for_vblank_count(data->drm_fd,
->>> -				  data->display.pipes[data->pipe].crtc_offset,
->>> -				  data->vblank_wait_count);
->>>    }
->>>      static bool chv_cursor_broken(data_t *data, int x)
->>> @@ -209,9 +202,8 @@ static void do_single_test(data_t *data, int x, int y, bool hw_test,
->>>    		igt_display_commit(display);
->>>      		/* Extra vblank wait is because nonblocking cursor ioctl */
->>> -		igt_wait_for_vblank_count(data->drm_fd,
->>> -					  display->pipes[data->pipe].crtc_offset,
->>> -					  data->vblank_wait_count);
->>> +		igt_wait_for_vblank(data->drm_fd,
->>> +				display->pipes[data->pipe].crtc_offset);
->>>      		igt_pipe_crc_get_current(data->drm_fd, pipe_crc, hwcrc);
->>>    @@ -249,7 +241,11 @@ static void do_single_test(data_t *data, int x, int y, bool hw_test,
->>>      		restore_image(data, swbufidx, &((cursorarea){x, y, data->curw, data->curh}));
->>>    		igt_plane_set_fb(data->primary, &data->primary_fb[swbufidx]);
->>> +
->>>    		igt_display_commit(display);
->>> +		igt_wait_for_vblank(data->drm_fd,
->>> +				display->pipes[data->pipe].crtc_offset);
->>> +
->>>    		igt_pipe_crc_get_current(data->drm_fd, pipe_crc, &crc);
->>>    		igt_assert_crc_equal(&crc, hwcrc);
->>>    	}
->>> @@ -267,7 +263,9 @@ static void do_fail_test(data_t *data, int x, int y, int expect)
->>>    	igt_plane_set_position(data->cursor, x, y);
->>>    	ret = igt_display_try_commit2(display, COMMIT_LEGACY);
->>>    +	igt_plane_set_position(data->cursor, 0, 0);
->>>    	cursor_disable(data);
->>> +	igt_display_commit(display);
->>>      	igt_assert_eq(ret, expect);
->>>    }
->>> @@ -689,10 +687,28 @@ static void test_rapid_movement(data_t *data)
->>>    	igt_assert_lt(usec, 0.9 * 400 * 1000000 / data->refresh);
->>>    }
->>>    -static void run_size_tests(data_t *data, void (*testfunc)(data_t *),
->>> -			   int w, int h)
->>> +static void run_size_tests(data_t *data, int w, int h)
->>>    {
->>>    	enum pipe pipe;
->>> +	int i;
->>> +
->>> +	struct
->>> +	{
->>> +		const char *name;
->>> +		void (*testfunc)(data_t *);
->>> +		const char *desc;
->>> +	} size_tests[] = {
->>> +		{"cursor-onscreen", test_crc_onscreen,
->>> +		 "Check if a given-size cursor is well-positioned inside the screen."},
->>> +		{"cursor-offscreen", test_crc_offscreen,
->>> +		 "Check if a given-size cursor is well-positioned outside the screen."},
->>> +		{"cursor-sliding", test_crc_sliding,
->>> +		 "Check the smooth and pixel-by-pixel given-size cursor movements on horizontal, vertical and diagonal."},
->>> +		{"cursor-random", test_crc_random,
->>> +		 "Check random placement of a cursor with given size."},
->>> +		{"cursor-rapid-movement", test_rapid_movement,
->>> +		 "Check the rapid update of given-size cursor movements."},
->>> +	};
->>>      	if (w == 0 && h == 0) {
->>>    		w = data->cursor_max_w;
->>> @@ -709,45 +725,38 @@ static void run_size_tests(data_t *data, void (*testfunc)(data_t *),
->>>    		}
->>>    	}
->>>    -	create_cursor_fb(data, w, h);
->>> -	if (require_cursor_size(data, w, h)) {
->>> -		igt_info("Cursor size %dx%d not supported by driver\n", w, h);
->>> -
->>> -		igt_remove_fb(data->drm_fd, &data->fb);
->>> -		return;
->>> -	}
->>> +	igt_fixture
->>> +		create_cursor_fb(data, w, h);
->>>    -	for_each_pipe(&data->display, pipe) {
->>> -		data->pipe = pipe;
->>> -		igt_dynamic_f("pipe-%s-%s",
->>> -			      kmstest_pipe_name(pipe), igt_output_name(data->output))
->>> -			run_test(data, testfunc, w, h);
->>> +	for (i = 0; i < ARRAY_SIZE(size_tests); i++)
->>> +	{
->>> +		igt_describe(size_tests[i].desc);
->>> +		igt_subtest_with_dynamic_f("%s-%dx%d", size_tests[i].name, w, h)
->>> +		{
->>> +			for_each_pipe(&data->display, pipe)
->>> +			{
->>> +				data->pipe = pipe;
->>> +				if (require_cursor_size(data, w, h))
->>> +				{
->>> +					igt_info("Cursor size %dx%d not supported by driver\n", w, h);
->>> +					continue;
->>> +				}
->>> +
->>> +				igt_dynamic_f("pipe-%s-%s",
->>> +							  kmstest_pipe_name(pipe), igt_output_name(data->output))
->>> +					run_test(data, size_tests[i].testfunc, w, h);
->>> +			}
->>> +		}
->>>    	}
->>>    -	igt_remove_fb(data->drm_fd, &data->fb);
->>> +	igt_fixture
->>> +		igt_remove_fb(data->drm_fd, &data->fb);
->>>    }
->>>      static void run_tests_on_pipe(data_t *data)
->>>    {
->>>    	enum pipe pipe;
->>>    	int cursor_size;
->>> -	int i;
->>> -	struct {
->>> -		const char *name;
->>> -		void (*testfunc)(data_t *);
->>> -		const char *desc;
->>> -	} size_tests[] = {
->>> -		{ "cursor-onscreen", test_crc_onscreen,
->>> -			"Check if a given-size cursor is well-positioned inside the screen." },
->>> -		{ "cursor-offscreen", test_crc_offscreen,
->>> -			"Check if a given-size cursor is well-positioned outside the screen." },
->>> -		{ "cursor-sliding", test_crc_sliding,
->>> -			"Check the smooth and pixel-by-pixel given-size cursor movements on horizontal, vertical and diagonal." },
->>> -		{ "cursor-random", test_crc_random,
->>> -			"Check random placement of a cursor with given size." },
->>> -		{ "cursor-rapid-movement", test_rapid_movement,
->>> -			"Check the rapid update of given-size cursor movements." },
->>> -	};
->>>      	igt_fixture {
->>>    		data->output = igt_get_single_output_for_pipe(&data->display, pipe);
->>> @@ -848,30 +857,26 @@ static void run_tests_on_pipe(data_t *data)
->>>    	igt_fixture
->>>    		igt_remove_fb(data->drm_fd, &data->fb);
->>>    -	for (i = 0; i < ARRAY_SIZE(size_tests); i++) {
->>> -		igt_describe(size_tests[i].desc);
->>> -		igt_subtest_group {
->>> -			for (cursor_size = 32; cursor_size <= 512; cursor_size *= 2) {
->>> -				int w = cursor_size;
->>> -				int h = cursor_size;
->>> -
->>> -				igt_subtest_with_dynamic_f("%s-%dx%d", size_tests[i].name, w, h)
->>> -					run_size_tests(data, size_tests[i].testfunc, w, h);
->>> -
->>> -				/*
->>> -				 * Test non-square cursors a bit on the platforms
->>> -				 * that support such things. And make it a bit more
->>> -				 * interesting by using a non-pot height.
->>> -				 */
->>> -				h /= 3;
->>> -				igt_subtest_with_dynamic_f("%s-%dx%d", size_tests[i].name, w, h)
->>> -					run_size_tests(data, size_tests[i].testfunc, w, h);
->>> -			}
->>> +	for (cursor_size = 32; cursor_size <= 512; cursor_size *= 2)
->>> +	{
->>> +		int w = cursor_size;
->>> +		int h = cursor_size;
->>>    -			igt_subtest_with_dynamic_f("%s-max-size", size_tests[i].name)
->>> -				run_size_tests(data, size_tests[i].testfunc, 0, 0);
->>> -		}
->>> +		igt_subtest_group
->>> +			run_size_tests(data, w, h);
->>> +
->>> +		/*
->>> +		 * Test non-square cursors a bit on the platforms
->>> +		 * that support such things. And make it a bit more
->>> +		 * interesting by using a non-pot height.
->>> +		 */
->>> +		h /= 3;
->>> +
->>> +		igt_subtest_group
->>> +			run_size_tests(data, w, h);
->>>    	}
->>> +
->>> +	run_size_tests(data, 0, 0);
->>>    }
->>>      static data_t data;
->>> @@ -896,8 +901,6 @@ igt_main
->>>    		kmstest_set_vt_graphics_mode();
->>>      		igt_require_pipe_crc(data.drm_fd);
->>> -
->>> -		data.vblank_wait_count = is_msm_device(data.drm_fd) ? 2 : 1;
->>>    	}
->>>      	data.cursor_max_w = cursor_width;
->>> @@ -913,6 +916,5 @@ igt_main
->>>    		}
->>>      		igt_display_fini(&data.display);
->>> -		close(data.drm_fd);
->>>    	}
->>>    }
+diff --git a/tests/kms_plane_scaling.c b/tests/kms_plane_scaling.c
+index fc8250b5053c..4c621cce8425 100644
+--- a/tests/kms_plane_scaling.c
++++ b/tests/kms_plane_scaling.c
+@@ -983,6 +983,8 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
+ 	igt_subtest_f("2x-scaler-multi-pipe")
+ 		test_scaler_with_multi_pipe_plane(&data);
+ 
+-	igt_fixture
++	igt_fixture {
+ 		igt_display_fini(&data.display);
++		close(data.drm_fd);
++	}
+ }
+-- 
+2.37.3
