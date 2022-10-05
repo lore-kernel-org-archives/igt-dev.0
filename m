@@ -1,26 +1,26 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BFF2B10E4A6
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 15DED10E477
  for <igt-dev@lists.freedesktop.org>; Wed,  5 Oct 2022 07:45:55 +0000 (UTC)
 Received: from linux.intel.com (maurocar-mobl2.ger.corp.intel.com
  [10.252.61.48])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by linux.intel.com (Postfix) with ESMTPS id 5F67B580C23
- for <igt-dev@lists.freedesktop.org>; Wed,  5 Oct 2022 00:45:54 -0700 (PDT)
+ by linux.intel.com (Postfix) with ESMTPS id 72D2C580DCB
+ for <igt-dev@lists.freedesktop.org>; Wed,  5 Oct 2022 00:45:53 -0700 (PDT)
 Received: from maurocar by linux.intel.com with local (Exim 4.96)
- (envelope-from <mauro.chehab@linux.intel.com>) id 1ofz6F-000Eg2-2a
+ (envelope-from <mauro.chehab@linux.intel.com>) id 1ofz6F-000Ecr-0Q
  for igt-dev@lists.freedesktop.org; Wed, 05 Oct 2022 09:45:51 +0200
 From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Wed,  5 Oct 2022 09:45:32 +0200
-Message-Id: <20221005074546.55955-64-mauro.chehab@linux.intel.com>
+Date: Wed,  5 Oct 2022 09:44:43 +0200
+Message-Id: <20221005074546.55955-15-mauro.chehab@linux.intel.com>
 In-Reply-To: <20221005074546.55955-1-mauro.chehab@linux.intel.com>
 References: <20221005074546.55955-1-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v4 63/77] kms_dp_aux_dev: Close device
- before exit
+Subject: [igt-dev] [PATCH i-g-t v4 14/77] i915/gem_userptr_blits: Close
+ device before exit
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -38,21 +38,41 @@ Close the device fd before we check for leaks during the atexit
 handlers.
 
 Signed-off-by: Chris Wilson <chris.p.wilson@intel.com>
-Reviewed-by: Andrzej Hajda <andrzej.hajda@intel.com>
+Acked-by: Andrzej Hajda <andrzej.hajda@intel.com>
+Reviewed-by: Nirmoy Das<nirmoy.das@intel.com>
 Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 ---
- tests/kms_dp_aux_dev.c | 1 +
- 1 file changed, 1 insertion(+)
+ tests/i915/gem_userptr_blits.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/tests/kms_dp_aux_dev.c b/tests/kms_dp_aux_dev.c
-index d3249fa3d68d..ed9dd510cea6 100644
---- a/tests/kms_dp_aux_dev.c
-+++ b/tests/kms_dp_aux_dev.c
-@@ -134,4 +134,5 @@ igt_simple_main
- 	igt_require(valid_connectors);
+diff --git a/tests/i915/gem_userptr_blits.c b/tests/i915/gem_userptr_blits.c
+index 1343b1097aef..6985086694c4 100644
+--- a/tests/i915/gem_userptr_blits.c
++++ b/tests/i915/gem_userptr_blits.c
+@@ -62,6 +62,7 @@
+ #include "i915/gem_create.h"
+ #include "igt.h"
+ #include "igt_sysfs.h"
++#include "igt_types.h"
+ #include "sw_sync.h"
  
- 	drmModeFreeResources(res);
-+	close(drm_fd);
- }
+ #include "eviction_common.c"
+@@ -2299,7 +2300,7 @@ static void test_userfault(int i915)
+ 
+ uint64_t total_ram;
+ uint64_t aperture_size;
+-int fd, count;
++int count;
+ 
+ static int opt_handler(int opt, int opt_index, void *data)
+ {
+@@ -2319,6 +2320,7 @@ const char *help_str = "  -c\tBuffer count\n";
+ igt_main_args("c:", NULL, help_str, opt_handler, NULL)
+ {
+ 	int size = sizeof(linear);
++	igt_fd_t(fd);
+ 
+ 	igt_fixture {
+ 		unsigned int mmo_max = 0;
 -- 
 2.37.3
