@@ -1,14 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-il1-x12a.google.com (mail-il1-x12a.google.com
- [IPv6:2607:f8b0:4864:20::12a])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6396210E2EF
- for <igt-dev@lists.freedesktop.org>; Thu,  6 Oct 2022 01:10:22 +0000 (UTC)
-Received: by mail-il1-x12a.google.com with SMTP id a17so329052ilq.1
- for <igt-dev@lists.freedesktop.org>; Wed, 05 Oct 2022 18:10:22 -0700 (PDT)
+Received: from mail-io1-xd36.google.com (mail-io1-xd36.google.com
+ [IPv6:2607:f8b0:4864:20::d36])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 334F710E49D
+ for <igt-dev@lists.freedesktop.org>; Thu,  6 Oct 2022 02:23:33 +0000 (UTC)
+Received: by mail-io1-xd36.google.com with SMTP id d196so299446iof.11
+ for <igt-dev@lists.freedesktop.org>; Wed, 05 Oct 2022 19:23:33 -0700 (PDT)
 From: Jake Freeland <jake@technologyfriends.net>
 To: igt-dev@lists.freedesktop.org
-Date: Wed,  5 Oct 2022 20:09:57 -0500
-Message-Id: <20221006010957.39891-1-jfree@freebsd.org>
+Date: Wed,  5 Oct 2022 21:23:29 -0500
+Message-Id: <20221006022329.40358-1-jfree@freebsd.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Subject: [igt-dev] [PATCH i-g-t] Introduced partial FreeBSD compatibility
@@ -46,10 +46,10 @@ Signed-off-by: Jake Freeland <jfree@freebsd.org>
  lib/igt_device_scan.c          |   4 ++
  lib/igt_eld.c                  |   4 ++
  lib/igt_frame.c                |   4 ++
- lib/igt_freebsd.h              | 121 +++++++++++++++++++++++++++++++++
+ lib/igt_freebsd.h              | 123 +++++++++++++++++++++++++++++++++
  lib/igt_kmod.h                 |   2 +
  lib/igt_kms.c                  |   4 ++
- lib/igt_os.c                   |  19 ++++++
+ lib/igt_os.c                   |  19 +++++
  lib/igt_perf.c                 |   2 +
  lib/igt_perf.h                 |   4 ++
  lib/igt_pm.c                   |   2 +
@@ -70,7 +70,7 @@ Signed-off-by: Jake Freeland <jfree@freebsd.org>
  tests/kms_sysfs_edid_timing.c  |   4 ++
  tests/tools_test.c             |   4 ++
  tools/intel_gvtg_test.c        |   4 ++
- 39 files changed, 278 insertions(+), 10 deletions(-)
+ 39 files changed, 280 insertions(+), 10 deletions(-)
  create mode 100644 lib/igt_freebsd.h
 
 diff --git a/benchmarks/gem_exec_tracer.c b/benchmarks/gem_exec_tracer.c
@@ -353,10 +353,10 @@ index 45523a79..ab74e678 100644
  #include <fcntl.h>
 diff --git a/lib/igt_freebsd.h b/lib/igt_freebsd.h
 new file mode 100644
-index 00000000..81ba5c01
+index 00000000..de349148
 --- /dev/null
 +++ b/lib/igt_freebsd.h
-@@ -0,0 +1,121 @@
+@@ -0,0 +1,123 @@
 +/*
 + * SPDX-License-Identifier: MIT
 + *
@@ -422,6 +422,8 @@ index 00000000..81ba5c01
 +#define	I2C_M_RD		IIC_M_RD
 +#define	i2c_msg			iic_msg
 +#define	i2c_rdwr_ioctl_data	iic_rdwr_data
++
++#define	bswap_32(x)	bswap32(x)
 +
 +#define	_IOC_TYPE(nr)	(((nr) >> 8) & 255)
 +
