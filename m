@@ -1,18 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-io1-xd33.google.com (mail-io1-xd33.google.com
- [IPv6:2607:f8b0:4864:20::d33])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C809310E2EF
- for <igt-dev@lists.freedesktop.org>; Fri,  7 Oct 2022 21:31:15 +0000 (UTC)
-Received: by mail-io1-xd33.google.com with SMTP id e205so4622910iof.1
- for <igt-dev@lists.freedesktop.org>; Fri, 07 Oct 2022 14:31:15 -0700 (PDT)
-From: Jake Freeland <jake@technologyfriends.net>
-To: igt-dev@lists.freedesktop.org
-Date: Fri,  7 Oct 2022 16:30:56 -0500
-Message-Id: <20221007213056.3160561-1-jfree@freebsd.org>
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t] Restrict sigev_notify_thread_id macro
- definition to Linux
+Content-Transfer-Encoding: 7bit
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Jake Freeland" <jake@technologyfriends.net>
+Date: Fri, 07 Oct 2022 21:31:53 -0000
+Message-ID: <166517831337.15727.7739265535950593643@emeril.freedesktop.org>
+References: <20221007210112.3153308-1-jfree@freebsd.org>
+In-Reply-To: <20221007210112.3153308-1-jfree@freebsd.org>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_t?=
+ =?utf-8?q?ests/i915/gem=5Fmmap=5F*=3A_Add_NULL_to_ptrace=28=29_calls?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,70 +17,45 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Jake Freeland <jfree@freebsd.org>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-The `#define sigev_notify_thread_id _sigev_un._tid` macro differs on
-FreeBSD. This patch uses ifdefs to stop the compiler from overriding
-FreeBSD's existing definition.
+== Series Details ==
 
-Signed-off-by: Jake Freeland <jfree@freebsd.org>
----
- benchmarks/gem_syslatency.c | 3 +--
- lib/igt_aux.h               | 2 +-
- tests/i915/gem_close_race.c | 3 +--
- 3 files changed, 3 insertions(+), 5 deletions(-)
+Series: tests/i915/gem_mmap_*: Add NULL to ptrace() calls
+URL   : https://patchwork.freedesktop.org/series/109495/
+State : warning
 
-diff --git a/benchmarks/gem_syslatency.c b/benchmarks/gem_syslatency.c
-index c67b23cf..e98bb2a7 100644
---- a/benchmarks/gem_syslatency.c
-+++ b/benchmarks/gem_syslatency.c
-@@ -48,8 +48,7 @@
- 
- #include "i915/gem_create.h"
- #include "i915/gem_ring.h"
--
--#define sigev_notify_thread_id _sigev_un._tid
-+#include "igt_aux.h"
- 
- static volatile int done;
- 
-diff --git a/lib/igt_aux.h b/lib/igt_aux.h
-index c98cf28f..e734c87b 100644
---- a/lib/igt_aux.h
-+++ b/lib/igt_aux.h
-@@ -48,8 +48,8 @@
- # ifndef HAVE_GETTID
- #  define gettid() (pid_t)(syscall(__NR_gettid))
- # endif
-+# define sigev_notify_thread_id _sigev_un._tid
- #endif
--#define sigev_notify_thread_id _sigev_un._tid
- 
- /* auxialiary igt helpers from igt_aux.c */
- /* generally useful helpers */
-diff --git a/tests/i915/gem_close_race.c b/tests/i915/gem_close_race.c
-index 938fde8f..e37a8882 100644
---- a/tests/i915/gem_close_race.c
-+++ b/tests/i915/gem_close_race.c
-@@ -46,6 +46,7 @@
- #include "i915/gem_create.h"
- #include "i915/gem_mman.h"
- #include "igt.h"
-+#include "igt_aux.h"
- 
- #define OBJECT_SIZE (256 * 1024)
- 
-@@ -61,8 +62,6 @@ static bool has_softpin;
- static uint64_t exec_addr;
- static uint64_t data_addr;
- 
--#define sigev_notify_thread_id _sigev_un._tid
--
- static void selfcopy(int fd, uint32_t ctx, uint32_t handle, int loops)
- {
- 	struct drm_i915_gem_relocation_entry reloc[2];
--- 
-2.37.3
+== Summary ==
+
+Pipeline status: FAILED.
+
+see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/706519 for the overview.
+
+test:ninja-test-mips has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/29510856):
+  Ok:                   23
+  Expected Fail:         4
+  Fail:                293
+  Unexpected Pass:       0
+  Skipped:               0
+  Timeout:               0
+  
+  Full log written to /builds/gfx-ci/igt-ci-tags/build/meson-logs/testlog.txt
+  section_end:1665178234:step_script
+  section_start:1665178234:upload_artifacts_on_failure
+  Uploading artifacts for failed job
+  Uploading artifacts...
+  build: found 1786 matching files and directories   
+  Uploading artifacts as "archive" to coordinator... 201 Created  id=29510856 responseStatus=201 Created token=MPyjLcf1
+  section_end:1665178243:upload_artifacts_on_failure
+  section_start:1665178243:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1665178244:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+
+== Logs ==
+
+For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/706519
