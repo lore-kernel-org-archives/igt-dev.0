@@ -1,17 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8F52D10E3CE
- for <igt-dev@lists.freedesktop.org>; Thu,  6 Oct 2022 12:22:39 +0000 (UTC)
-From: janga.rahul.kumar@intel.com
-To: igt-dev@lists.freedesktop.org, ramadevi.gandi@intel.com,
- janga.rahul.kumar@intel.com
-Date: Thu,  6 Oct 2022 17:50:04 +0530
-Message-Id: <20221006122004.1704091-3-janga.rahul.kumar@intel.com>
-In-Reply-To: <20221006122004.1704091-1-janga.rahul.kumar@intel.com>
-References: <20221006122004.1704091-1-janga.rahul.kumar@intel.com>
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 34CBF10E025
+ for <igt-dev@lists.freedesktop.org>; Fri,  7 Oct 2022 10:16:51 +0000 (UTC)
+Date: Fri, 7 Oct 2022 13:16:27 +0300
+From: Petri Latvala <petri.latvala@intel.com>
+To: Jake Freeland <jake@technologyfriends.net>
+Message-ID: <Yz/8e4uI8X7lq3d+@platvala-desk.ger.corp.intel.com>
+References: <20221007040717.2924978-1-jfree@freebsd.org>
+ <20221007040717.2924978-2-jfree@freebsd.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH 2/2] HAX: don't do full run
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20221007040717.2924978-2-jfree@freebsd.org>
+Subject: Re: [igt-dev] [PATCH i-g-t 02/10] include/freebsd-uapi/sync_file.h:
+ Create FreeBSD sync_file header
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,199 +21,150 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: igt-dev@lists.freedesktop.org, Jake Freeland <jfree@freebsd.org>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
+On Thu, Oct 06, 2022 at 11:07:10PM -0500, Jake Freeland wrote:
+> Instead of modifying the Linux uapi sync_file.h, create FreeBSD
+> uapi sync_file.h. The correct uapi will be determined at compile
+> time in the root meson.build.
+> 
+> Signed-off-by: Jake Freeland <jfree@freebsd.org>
+> ---
+>  include/freebsd-uapi/sync_file.h | 102 +++++++++++++++++++++++++++++++
+>  meson.build                      |   5 ++
+>  2 files changed, 107 insertions(+)
+>  create mode 100644 include/freebsd-uapi/sync_file.h
+> 
+> diff --git a/include/freebsd-uapi/sync_file.h b/include/freebsd-uapi/sync_file.h
+> new file mode 100644
+> index 00000000..3b5c5544
+> --- /dev/null
+> +++ b/include/freebsd-uapi/sync_file.h
+> @@ -0,0 +1,102 @@
+> +/* SPDX-License-Identifier: GPL-1.0+ WITH Linux-syscall-note */
+> +/*
+> + * Copyright (C) 2012 Google, Inc.
+> + *
+> + * This program is distributed in the hope that it will be useful,
+> + * but WITHOUT ANY WARRANTY; without even the implied warranty of
+> + * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+> + * GNU General Public License for more details.
+> + *
+> + */
+> +
+> +#ifndef _FREEBSD_SYNC_H
+> +#define _FREEBSD_SYNC_H
+> +
+> +#include <sys/ioctl.h>
+> +#include <sys/types.h>
+> +
+> +typedef	int32_t		__s32;
+> +typedef	uint32_t	__u32;
+> +typedef	uint64_t	__u64;
+> +
+> +/**
+> + * struct sync_merge_data - data passed to merge ioctl
+> + * @name:	name of new fence
+> + * @fd2:	file descriptor of second fence
+> + * @fence:	returns the fd of the new fence to userspace
+> + * @flags:	merge_data flags
+> + * @pad:	padding for 64-bit alignment, should always be zero
+> + */
+> +struct sync_merge_data {
+> +	char	name[32];
+> +	__s32	fd2;
+> +	__s32	fence;
+> +	__u32	flags;
+> +	__u32	pad;
+> +};
+> +
+> +/**
+> + * struct sync_fence_info - detailed fence information
+> + * @obj_name:		name of parent sync_timeline
+> +* @driver_name:	name of driver implementing the parent
+> +* @status:		status of the fence 0:active 1:signaled <0:error
+> + * @flags:		fence_info flags
+> + * @timestamp_ns:	timestamp of status change in nanoseconds
+> + */
+> +struct sync_fence_info {
+> +	char	obj_name[32];
+> +	char	driver_name[32];
+> +	__s32	status;
+> +	__u32	flags;
+> +	__u64	timestamp_ns;
+> +};
+> +
+> +/**
+> + * struct sync_file_info - data returned from fence info ioctl
+> + * @name:	name of fence
+> + * @status:	status of fence. 1: signaled 0:active <0:error
+> + * @flags:	sync_file_info flags
+> + * @num_fences	number of fences in the sync_file
+> + * @pad:	padding for 64-bit alignment, should always be zero
+> + * @sync_fence_info: pointer to array of structs sync_fence_info with all
+> + *		 fences in the sync_file
+> + */
+> +struct sync_file_info {
+> +	char	name[32];
+> +	__s32	status;
+> +	__u32	flags;
+> +	__u32	num_fences;
+> +	__u32	pad;
+> +
+> +	__u64	sync_fence_info;
+> +};
+> +
+> +#define SYNC_IOC_MAGIC		'>'
+> +
+> +/**
+> + * Opcodes  0, 1 and 2 were burned during a API change to avoid users of the
+> + * old API to get weird errors when trying to handling sync_files. The API
+> + * change happened during the de-stage of the Sync Framework when there was
+> + * no upstream users available.
+> + */
+> +
+> +/**
+> + * DOC: SYNC_IOC_MERGE - merge two fences
+> + *
+> + * Takes a struct sync_merge_data.  Creates a new fence containing copies of
+> + * the sync_pts in both the calling fd and sync_merge_data.fd2.  Returns the
+> + * new fence's fd in sync_merge_data.fence
+> + */
+> +#define SYNC_IOC_MERGE		_IOWR(SYNC_IOC_MAGIC, 3, struct sync_merge_data)
+> +
+> +/**
+> + * DOC: SYNC_IOC_FILE_INFO - get detailed information on a sync_file
+> + *
+> + * Takes a struct sync_file_info. If num_fences is 0, the field is updated
+> + * with the actual number of fences. If num_fences is > 0, the system will
+> + * use the pointer provided on sync_fence_info to return up to num_fences of
+> + * struct sync_fence_info, with detailed fence information.
+> + */
+> +#define SYNC_IOC_FILE_INFO	_IOWR(SYNC_IOC_MAGIC, 4, struct sync_file_info)
+> +
+> +#endif /* _FREEBSD_SYNC_H */
+> diff --git a/meson.build b/meson.build
+> index 3e937f5a..4ceb85dd 100644
+> --- a/meson.build
+> +++ b/meson.build
+> @@ -86,7 +86,12 @@ with_libdrm = get_option('libdrm_drivers')
+>  
+>  build_info = ['Build type: ' + get_option('buildtype')]
+>  
+> +system = build_machine.system()
+> +if system == 'linux'
+>  inc = include_directories('include/drm-uapi', 'include/linux-uapi', 'lib', 'lib/stubs/syscalls', '.')
+> +elif system == 'freebsd'
+> +inc = include_directories('include/drm-uapi', 'include/freebsd-uapi', 'lib', 'lib/stubs/syscalls', '.', '/usr/local/include')
+> +endif
 
-Just for test description, no full run is neccessary.
----
- tests/intel-ci/fast-feedback.testlist | 178 +-------------------------
- 1 file changed, 1 insertion(+), 177 deletions(-)
+build_machine is the host that is building, whereas host_machine is
+the host that is going to execute the binaries. You want host_machine
+here instead.
 
-diff --git a/tests/intel-ci/fast-feedback.testlist b/tests/intel-ci/fast-feedback.testlist
-index bd5538a0..9f8e18ce 100644
---- a/tests/intel-ci/fast-feedback.testlist
-+++ b/tests/intel-ci/fast-feedback.testlist
-@@ -1,177 +1 @@
--# Try to load the driver if it's not available yet.
--igt@i915_module_load@load
--
--# Keep alphabetically sorted by default
--igt@core_auth@basic-auth
--igt@debugfs_test@read_all_entries
--igt@fbdev@eof
--igt@fbdev@info
--igt@fbdev@nullptr
--igt@fbdev@read
--igt@fbdev@write
--igt@gem_basic@bad-close
--igt@gem_basic@create-close
--igt@gem_basic@create-fd-close
--igt@gem_busy@busy@all
--igt@gem_close_race@basic-process
--igt@gem_close_race@basic-threads
--igt@gem_ctx_create@basic
--igt@gem_ctx_create@basic-files
--igt@gem_ctx_exec@basic
--igt@gem_exec_basic@basic
--igt@gem_exec_create@basic
--igt@gem_exec_fence@basic-busy
--igt@gem_exec_fence@basic-wait
--igt@gem_exec_fence@basic-await
--igt@gem_exec_fence@nb-await
--igt@gem_exec_gttfill@basic
--igt@gem_exec_parallel@engines
--igt@gem_exec_store@basic
--igt@gem_flink_basic@bad-flink
--igt@gem_flink_basic@bad-open
--igt@gem_flink_basic@basic
--igt@gem_flink_basic@double-flink
--igt@gem_flink_basic@flink-lifetime
--igt@gem_huc_copy@huc-copy
--igt@gem_linear_blits@basic
--igt@gem_mmap@basic
--igt@gem_mmap_gtt@basic
--igt@gem_render_linear_blits@basic
--igt@gem_render_tiled_blits@basic
--igt@gem_ringfill@basic-all
--igt@gem_softpin@allocator-basic
--igt@gem_softpin@allocator-basic-reserve
--igt@gem_softpin@safe-alignment
--igt@gem_sync@basic-all
--igt@gem_sync@basic-each
--igt@gem_tiled_blits@basic
--igt@gem_tiled_fence_blits@basic
--igt@gem_tiled_pread_basic
--igt@gem_wait@busy@all
--igt@gem_wait@wait@all
--igt@i915_getparams_basic@basic-eu-total
--igt@i915_getparams_basic@basic-subslice-total
--igt@i915_hangman@error-state-basic
--igt@i915_pciid
--igt@kms_addfb_basic@addfb25-bad-modifier
--igt@kms_addfb_basic@addfb25-framebuffer-vs-set-tiling
--igt@kms_addfb_basic@addfb25-modifier-no-flag
--igt@kms_addfb_basic@addfb25-x-tiled-legacy
--igt@kms_addfb_basic@addfb25-x-tiled-mismatch-legacy
--igt@kms_addfb_basic@addfb25-yf-tiled-legacy
--igt@kms_addfb_basic@addfb25-y-tiled-legacy
--igt@kms_addfb_basic@addfb25-y-tiled-small-legacy
--igt@kms_addfb_basic@bad-pitch-0
--igt@kms_addfb_basic@bad-pitch-1024
--igt@kms_addfb_basic@bad-pitch-128
--igt@kms_addfb_basic@bad-pitch-256
--igt@kms_addfb_basic@bad-pitch-32
--igt@kms_addfb_basic@bad-pitch-63
--igt@kms_addfb_basic@bad-pitch-65536
--igt@kms_addfb_basic@bad-pitch-999
--igt@kms_addfb_basic@basic
--igt@kms_addfb_basic@basic-x-tiled-legacy
--igt@kms_addfb_basic@basic-y-tiled-legacy
--igt@kms_addfb_basic@bo-too-small
--igt@kms_addfb_basic@bo-too-small-due-to-tiling
--igt@kms_addfb_basic@clobberred-modifier
--igt@kms_addfb_basic@framebuffer-vs-set-tiling
--igt@kms_addfb_basic@invalid-get-prop
--igt@kms_addfb_basic@invalid-get-prop-any
--igt@kms_addfb_basic@invalid-set-prop
--igt@kms_addfb_basic@invalid-set-prop-any
--igt@kms_addfb_basic@no-handle
--igt@kms_addfb_basic@size-max
--igt@kms_addfb_basic@small-bo
--igt@kms_addfb_basic@tile-pitch-mismatch
--igt@kms_addfb_basic@too-high
--igt@kms_addfb_basic@too-wide
--igt@kms_addfb_basic@unused-handle
--igt@kms_addfb_basic@unused-modifier
--igt@kms_addfb_basic@unused-offsets
--igt@kms_addfb_basic@unused-pitches
--igt@kms_busy@basic
--igt@kms_chamelium@dp-hpd-fast
--igt@kms_chamelium@dp-edid-read
--igt@kms_chamelium@dp-crc-fast
--igt@kms_chamelium@hdmi-hpd-fast
--igt@kms_chamelium@hdmi-edid-read
--igt@kms_chamelium@hdmi-crc-fast
--igt@kms_chamelium@vga-hpd-fast
--igt@kms_chamelium@vga-edid-read
--igt@kms_prop_blob@basic
--igt@kms_cursor_legacy@basic-busy-flip-before-cursor
--igt@kms_cursor_legacy@basic-flip-after-cursor
--igt@kms_cursor_legacy@basic-flip-before-cursor
--igt@kms_flip@basic-flip-vs-dpms
--igt@kms_flip@basic-flip-vs-modeset
--igt@kms_flip@basic-flip-vs-wf_vblank
--igt@kms_flip@basic-plain-flip
--igt@kms_force_connector_basic@force-connector-state
--igt@kms_force_connector_basic@force-edid
--igt@kms_force_connector_basic@force-load-detect
--igt@kms_force_connector_basic@prune-stale-modes
--igt@kms_frontbuffer_tracking@basic
--igt@kms_pipe_crc_basic@compare-crc-sanitycheck
--igt@kms_pipe_crc_basic@hang-read-crc
--igt@kms_pipe_crc_basic@nonblocking-crc
--igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence
--igt@kms_pipe_crc_basic@read-crc
--igt@kms_pipe_crc_basic@read-crc-frame-sequence
--igt@kms_psr@primary_page_flip
--igt@kms_psr@cursor_plane_move
--igt@kms_psr@sprite_plane_onoff
--igt@kms_psr@primary_mmap_gtt
--igt@kms_setmode@basic-clone-single-crtc
--igt@i915_pm_backlight@basic-brightness
--igt@i915_pm_rpm@basic-pci-d3-state
--igt@i915_pm_rpm@basic-rte
--igt@i915_pm_rps@basic-api
--igt@prime_self_import@basic-llseek-bad
--igt@prime_self_import@basic-llseek-size
--igt@prime_self_import@basic-with_fd_dup
--igt@prime_self_import@basic-with_one_bo
--igt@prime_self_import@basic-with_one_bo_two_files
--igt@prime_self_import@basic-with_two_bos
--igt@prime_vgem@basic-fence-flip
--igt@prime_vgem@basic-fence-mmap
--igt@prime_vgem@basic-fence-read
--igt@prime_vgem@basic-gtt
--igt@prime_vgem@basic-read
--igt@prime_vgem@basic-write
--igt@prime_vgem@basic-userptr
--igt@vgem_basic@setversion
--igt@vgem_basic@create
--igt@vgem_basic@debugfs
--igt@vgem_basic@dmabuf-export
--igt@vgem_basic@dmabuf-fence
--igt@vgem_basic@dmabuf-fence-before
--igt@vgem_basic@dmabuf-mmap
--igt@vgem_basic@mmap
--igt@vgem_basic@second-client
--igt@vgem_basic@sysfs
--
--# All tests that do module unloading and reloading are executed last.
--# They will sometimes reveal issues of earlier tests leaving the
--# driver in a broken state that is not otherwise noticed in that test.
--
--igt@core_hotunplug@unbind-rebind
--igt@vgem_basic@unload
--igt@i915_module_load@reload
--igt@gem_lmem_swapping@basic
--igt@gem_lmem_swapping@parallel-random-engines
--igt@gem_lmem_swapping@random-engines
--igt@gem_lmem_swapping@verify-random
--igt@i915_pm_rpm@module-reload
--
--# Kernel selftests
--igt@i915_selftest@live
--igt@dmabuf@all
--
--# System wide suspend tests
--igt@i915_suspend@basic-s2idle-without-i915
--igt@i915_suspend@basic-s3-without-i915
--igt@gem_exec_suspend@basic-s0
--igt@gem_exec_suspend@basic-s3
--igt@kms_chamelium@common-hpd-after-suspend
--igt@kms_pipe_crc_basic@suspend-read-crc
-+igt@meta_test@fail-result
+
 -- 
-2.25.1
+Petri Latvala
