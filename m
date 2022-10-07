@@ -1,20 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-lj1-x236.google.com (mail-lj1-x236.google.com
- [IPv6:2a00:1450:4864:20::236])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7C92710E2AB
- for <igt-dev@lists.freedesktop.org>; Fri,  7 Oct 2022 13:18:22 +0000 (UTC)
-Received: by mail-lj1-x236.google.com with SMTP id p5so5640095ljc.13
- for <igt-dev@lists.freedesktop.org>; Fri, 07 Oct 2022 06:18:22 -0700 (PDT)
-From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3818710E95D
+ for <igt-dev@lists.freedesktop.org>; Fri,  7 Oct 2022 13:40:32 +0000 (UTC)
+From: Ville Syrjala <ville.syrjala@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Fri,  7 Oct 2022 16:18:11 +0300
-Message-Id: <20221007131811.19262-2-juhapekka.heikkila@gmail.com>
-In-Reply-To: <20221007131811.19262-1-juhapekka.heikkila@gmail.com>
-References: <20221007131811.19262-1-juhapekka.heikkila@gmail.com>
+Date: Fri,  7 Oct 2022 16:40:27 +0300
+Message-Id: <20221007134029.3188-1-ville.syrjala@linux.intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 2/2] tests/kms_cursor_crc: reduce cpu work
- on restoring image
+Subject: [igt-dev] [PATCH i-g-t 1/3] Revert "kms_invalid_mode: Close device
+ before exit"
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,93 +22,27 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-on creating reference images for crcs re-render only parts
-which have changed.
+From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+This reverts commit 544fe3ab351e26b39c2db4a8bc9ac2b5032566c4.
+
+Collateral damage.
+
+Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
 ---
- tests/kms_cursor_crc.c | 31 +++++++++++++++++++++----------
- 1 file changed, 21 insertions(+), 10 deletions(-)
+ tests/kms_invalid_mode.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/tests/kms_cursor_crc.c b/tests/kms_cursor_crc.c
-index f9a1f868..a9f47640 100644
---- a/tests/kms_cursor_crc.c
-+++ b/tests/kms_cursor_crc.c
-@@ -53,6 +53,13 @@ enum cursor_buffers {
- 	MAXCURSORBUFFER
- };
- 
-+typedef struct {
-+	int x;
-+	int y;
-+	int width;
-+	int height;
-+} cursorarea;
-+
- typedef struct {
- 	int drm_fd;
- 	igt_display_t display;
-@@ -73,6 +80,7 @@ typedef struct {
- 	uint32_t devid;
- 	double alpha;
- 	int vblank_wait_count; /* because of msm */
-+	cursorarea oldcursorarea[MAXCURSORBUFFER];
- } data_t;
- 
- #define TEST_DPMS (1<<0)
-@@ -83,13 +91,6 @@ typedef struct {
- #define BLUE 0.0, 0.0, 1.0
- #define WHITE 1.0, 1.0, 1.0
- 
--typedef struct {
--	int x;
--	int y;
--	int width;
--	int height;
--} cursorarea;
--
- static void draw_cursor(cairo_t *cr, cursorarea *cursor, double alpha)
- {
- 	int wl, wr, ht, hb;
-@@ -176,11 +177,16 @@ static void restore_image(data_t *data, uint32_t buffer, cursorarea *cursor)
- 	cr = igt_get_cairo_ctx(data->drm_fd, &data->primary_fb[buffer]);
- 	cairo_set_operator(cr, CAIRO_OPERATOR_SOURCE);
- 	cairo_set_source_surface(cr, data->surface, 0, 0);
--	cairo_rectangle(cr, 0, 0, data->screenw, data->screenh);
-+	cairo_rectangle(cr, data->oldcursorarea[buffer].x,
-+			data->oldcursorarea[buffer].y,
-+			data->oldcursorarea[buffer].width,
-+			data->oldcursorarea[buffer].height);
- 	cairo_fill(cr);
- 
--	if (cursor)
-+	if (cursor) {
- 		draw_cursor(cr, cursor, data->alpha);
-+		data->oldcursorarea[buffer] = *cursor;
-+	}
- 
- 	igt_put_cairo_ctx(cr);
+diff --git a/tests/kms_invalid_mode.c b/tests/kms_invalid_mode.c
+index f1c38669860d..0ae98a31fcc2 100644
+--- a/tests/kms_invalid_mode.c
++++ b/tests/kms_invalid_mode.c
+@@ -306,6 +306,5 @@ igt_main
+ 	igt_fixture {
+ 		igt_display_fini(&data.display);
+ 		igt_reset_connectors();
+-		close(data.drm_fd);
+ 	}
  }
-@@ -235,7 +241,7 @@ static void do_single_test(data_t *data, int x, int y, bool hw_test,
- 
- 			if (data->flags & TEST_SUSPEND)
- 				igt_system_suspend_autoresume(SUSPEND_STATE_MEM,
--							SUSPEND_TEST_NONE);
-+							      SUSPEND_TEST_NONE);
- 
- 			igt_pipe_crc_start(pipe_crc);
- 			igt_pipe_crc_get_current(data->drm_fd, pipe_crc, &crc_after);
-@@ -509,6 +515,11 @@ static void prepare_crtc(data_t *data, int cursor_w, int cursor_h)
- 	data->curh = cursor_h;
- 	data->refresh = mode->vrefresh;
- 
-+	/* initialize old cursor area to full screen so first run will copy image in place */
-+	data->oldcursorarea[HWCURSORBUFFER]      = (cursorarea){0, 0, data->screenw, data->screenh};
-+	data->oldcursorarea[SWCOMPARISONBUFFER1] = (cursorarea){0, 0, data->screenw, data->screenh};
-+	data->oldcursorarea[SWCOMPARISONBUFFER2] = (cursorarea){0, 0, data->screenw, data->screenh};
-+
- 	data->surface = cairo_image_surface_create(CAIRO_FORMAT_RGB24,
- 						   data->screenw,
- 						   data->screenh);
 -- 
-2.25.1
+2.35.1
