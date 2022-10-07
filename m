@@ -1,19 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7BDFB8926F
- for <igt-dev@lists.freedesktop.org>; Fri,  7 Oct 2022 11:19:52 +0000 (UTC)
-Date: Fri, 7 Oct 2022 13:19:48 +0200
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 20F1C10E3ED
+ for <igt-dev@lists.freedesktop.org>; Fri,  7 Oct 2022 11:25:25 +0000 (UTC)
+Date: Fri, 7 Oct 2022 13:25:21 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Message-ID: <Y0ALVBgE8thb8iwz@kamilkon-desk1>
+Message-ID: <Y0AMoWWxwFGqTQj+@kamilkon-desk1>
 References: <20221007040717.2924978-1-jfree@freebsd.org>
- <20221007040717.2924978-7-jfree@freebsd.org>
+ <20221007040717.2924978-9-jfree@freebsd.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20221007040717.2924978-7-jfree@freebsd.org>
-Subject: Re: [igt-dev] [PATCH i-g-t 07/10] tests/i915/gem_mmap_*: Add NULL
- to ptrace() calls
+In-Reply-To: <20221007040717.2924978-9-jfree@freebsd.org>
+Subject: Re: [igt-dev] [PATCH i-g-t 09/10] Restrict sigev_notify_thread_id
+ macro definition to Linux
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -29,51 +29,76 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 Hi Jake,
 
-On 2022-10-06 at 23:07:15 -0500, Jake Freeland wrote:
-> In FreeBSD, the ptrace() function cannot take a variable
-> length list of arguments. This patch adds NULL in the @data
-> parameter to allow for compilation on FreeBSD systems.
+On 2022-10-06 at 23:07:17 -0500, Jake Freeland wrote:
+> The `#define sigev_notify_thread_id _sigev_un._tid` macro differs on
+> FreeBSD. This patch uses ifdefs to stop the compiler from overriding
+> FreeBSD's existing definition.
 > 
 > Signed-off-by: Jake Freeland <jfree@freebsd.org>
 
-Please send this outside of your series, it can be merged as is.
+Please send this outside of your series, it can be merged as
+separate patch. See also some notes below.
 
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> ---
+>  benchmarks/gem_syslatency.c | 2 ++
+>  lib/igt_aux.h               | 2 +-
+>  tests/i915/gem_close_race.c | 2 ++
+>  3 files changed, 5 insertions(+), 1 deletion(-)
+> 
+> diff --git a/benchmarks/gem_syslatency.c b/benchmarks/gem_syslatency.c
+> index 395d2e71..366c8af6 100644
+> --- a/benchmarks/gem_syslatency.c
+> +++ b/benchmarks/gem_syslatency.c
+> @@ -53,7 +53,9 @@
+>  #include "igt_freebsd.h"
+>  #endif
+>  
+> +#ifdef __linux__
+>  #define sigev_notify_thread_id _sigev_un._tid
+> +#endif
+
+Instead of this please just include igt_aux.h header.
+
+>  
+>  static volatile int done;
+>  
+> diff --git a/lib/igt_aux.h b/lib/igt_aux.h
+> index c98cf28f..569b92d7 100644
+> --- a/lib/igt_aux.h
+> +++ b/lib/igt_aux.h
+> @@ -48,8 +48,8 @@
+>  # ifndef HAVE_GETTID
+>  #  define gettid() (pid_t)(syscall(__NR_gettid))
+>  # endif
+> -#endif
+>  #define sigev_notify_thread_id _sigev_un._tid
+--- ^
+Put space before define to keep style.
+
+> +#endif
+>  
+>  /* auxialiary igt helpers from igt_aux.c */
+>  /* generally useful helpers */
+> diff --git a/tests/i915/gem_close_race.c b/tests/i915/gem_close_race.c
+> index 938fde8f..42fe1657 100644
+> --- a/tests/i915/gem_close_race.c
+> +++ b/tests/i915/gem_close_race.c
+> @@ -61,7 +61,9 @@ static bool has_softpin;
+>  static uint64_t exec_addr;
+>  static uint64_t data_addr;
+>  
+> +#ifdef __linux__
+>  #define sigev_notify_thread_id _sigev_un._tid
+> +#endif
+
+Same here, include igt_aux.h
 
 Regards,
 Kamil
 
-> ---
->  tests/i915/gem_mmap_gtt.c    | 2 +-
->  tests/i915/gem_mmap_offset.c | 2 +-
->  2 files changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/tests/i915/gem_mmap_gtt.c b/tests/i915/gem_mmap_gtt.c
-> index e39b9047..4f05eb18 100644
-> --- a/tests/i915/gem_mmap_gtt.c
-> +++ b/tests/i915/gem_mmap_gtt.c
-> @@ -566,7 +566,7 @@ test_ptrace(int fd)
->  	for (int i = 0; i < sz / sizeof(long); i++) {
->  		long ret;
 >  
-> -		ret = ptrace(PTRACE_PEEKDATA, pid, gtt + i);
-> +		ret = ptrace(PTRACE_PEEKDATA, pid, gtt + i, NULL);
->  		igt_assert_eq_u64(ret, CC);
->  		cpy[i] = ret;
->  
-> diff --git a/tests/i915/gem_mmap_offset.c b/tests/i915/gem_mmap_offset.c
-> index 2b416edd..d1a67f45 100644
-> --- a/tests/i915/gem_mmap_offset.c
-> +++ b/tests/i915/gem_mmap_offset.c
-> @@ -520,7 +520,7 @@ static void test_ptrace(int i915)
->  				for (int i = 0; i < SZ / sizeof(long); i++) {
->  					long ret;
->  
-> -					ret = ptrace(PTRACE_PEEKDATA, pid, ptr + i);
-> +					ret = ptrace(PTRACE_PEEKDATA, pid, ptr + i, NULL);
->  					igt_assert_eq_u64(ret, CC);
->  					cpy[i] = ret;
->  
+>  static void selfcopy(int fd, uint32_t ctx, uint32_t handle, int loops)
+>  {
 > -- 
 > 2.37.3
 > 
