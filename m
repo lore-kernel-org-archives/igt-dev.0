@@ -1,18 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CE41210E2EC
- for <igt-dev@lists.freedesktop.org>; Fri,  7 Oct 2022 13:40:38 +0000 (UTC)
-From: Ville Syrjala <ville.syrjala@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Fri,  7 Oct 2022 16:40:29 +0300
-Message-Id: <20221007134029.3188-3-ville.syrjala@linux.intel.com>
-In-Reply-To: <20221007134029.3188-1-ville.syrjala@linux.intel.com>
-References: <20221007134029.3188-1-ville.syrjala@linux.intel.com>
+Content-Type: multipart/alternative;
+ boundary="===============2439223289698162813=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 3/3] Revert "tests/kms_invalid_mode: Test
- Cleanup"
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Juha-Pekka Heikkila" <juhapekka.heikkila@gmail.com>
+Date: Fri, 07 Oct 2022 14:03:29 -0000
+Message-ID: <166515140989.15724.527085052433176617@emeril.freedesktop.org>
+References: <20221007131811.19262-1-juhapekka.heikkila@gmail.com>
+In-Reply-To: <20221007131811.19262-1-juhapekka.heikkila@gmail.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3Igc2VyaWVz?=
+ =?utf-8?q?_starting_with_=5Bi-g-t=2C1/2=5D_tests/i915/kms=5Fbig=5Ffb=3A_o?=
+ =?utf-8?q?ptimize_async_flip_tests?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,107 +18,201 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Nidhi Gupta <nidhi1.gupta@intel.com>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Ville Syrjälä <ville.syrjala@linux.intel.com>
+--===============2439223289698162813==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-This reverts commit 6725767a84109e934ca138d94df0482386c44532.
+== Series Details ==
 
-This was no cleanup. It does fifteen different things and
-in the process flat out breaks the test at least on all
-non-atomic drivers/platforms.
+Series: series starting with [i-g-t,1/2] tests/i915/kms_big_fb: optimize async flip tests
+URL   : https://patchwork.freedesktop.org/series/109479/
+State : success
 
-Cc: Nidhi Gupta <nidhi1.gupta@intel.com>
-Cc: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
----
- tests/kms_invalid_mode.c | 39 ++++++++++++++++++++++++---------------
- 1 file changed, 24 insertions(+), 15 deletions(-)
+== Summary ==
 
-diff --git a/tests/kms_invalid_mode.c b/tests/kms_invalid_mode.c
-index 21ee91abf54b..0287ee02c1c4 100644
---- a/tests/kms_invalid_mode.c
-+++ b/tests/kms_invalid_mode.c
-@@ -35,6 +35,7 @@ struct _data {
- 	enum pipe pipe;
- 	igt_display_t display;
- 	igt_output_t *output;
-+	drmModeResPtr res;
- 	int max_dotclock;
- 	bool (*adjust_mode)(data_t *data, drmModeModeInfoPtr mode);
- };
-@@ -181,29 +182,35 @@ static void
- test_output(data_t *data)
- {
- 	igt_output_t *output = data->output;
-+	drmModeModeInfo mode;
- 	struct igt_fb fb;
- 	int ret;
--	drmModeModeInfo *mode;
-+	uint32_t crtc_id;
- 
--	igt_output_set_pipe(output, data->pipe);
-+	/*
-+	 * FIXME test every mode we have to be more
-+	 * sure everything is really getting rejected?
-+	 */
-+	mode = *igt_output_get_mode(output);
-+	igt_require(data->adjust_mode(data, &mode));
- 
--	igt_create_fb(data->drm_fd, 512, 512, DRM_FORMAT_XRGB8888,
-+	igt_create_fb(data->drm_fd,
-+		      max_t(uint16_t, mode.hdisplay, 64),
-+		      max_t(uint16_t, mode.vdisplay, 64),
-+		      DRM_FORMAT_XRGB8888,
- 		      DRM_FORMAT_MOD_LINEAR,
- 		      &fb);
- 
--	for_each_connector_mode(output) {
--		mode = &output->config.connector->modes[j__];
--		igt_require(data->adjust_mode(data, mode));
--		igt_output_override_mode(output, mode);
--		ret = igt_display_try_commit2(&data->display, data->display.is_atomic ? COMMIT_ATOMIC : COMMIT_LEGACY);
--		igt_assert(ret == -EINVAL);
--	}
-+	kmstest_unset_all_crtcs(data->drm_fd, data->res);
-+
-+	crtc_id = data->display.pipes[data->pipe].crtc_id;
-+
-+	ret = drmModeSetCrtc(data->drm_fd, crtc_id,
-+			     fb.fb_id, 0, 0,
-+			     &output->id, 1, &mode);
-+	igt_assert_lt(ret, 0);
- 
- 	igt_remove_fb(data->drm_fd, &fb);
--	igt_output_override_mode(output, NULL);
--	/*unset_all_crtcs*/
--	igt_display_reset(&data->display);
--	igt_display_commit(&data->display);
- }
- 
- static int i915_max_dotclock(data_t *data)
-@@ -283,10 +290,11 @@ igt_main
- 		kmstest_set_vt_graphics_mode();
- 
- 		igt_display_require(&data.display, data.drm_fd);
-+		data.res = drmModeGetResources(data.drm_fd);
-+		igt_assert(data.res);
- 
- 		data.max_dotclock = i915_max_dotclock(&data);
- 		igt_info("Max dotclock: %d kHz\n", data.max_dotclock);
--		igt_display_require_output(&data.display);
- 	}
- 
- 	igt_describe("Make sure all modesets are rejected when the requested mode is invalid");
-@@ -306,5 +314,6 @@ igt_main
- 	igt_fixture {
- 		igt_display_fini(&data.display);
- 		igt_reset_connectors();
-+		drmModeFreeResources(data.res);
- 	}
- }
--- 
-2.35.1
+CI Bug Log - changes from CI_DRM_12225 -> IGTPW_7921
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7921/index.html
+
+Participating hosts (46 -> 39)
+------------------------------
+
+  Missing    (7): fi-rkl-11600 fi-hsw-4200u fi-ctg-p8600 bat-atsm-1 bat-jsl-3 bat-rplp-1 bat-rpls-2 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_7921 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@kms_chamelium@common-hpd-after-suspend:
+    - fi-hsw-4770:        NOTRUN -> [SKIP][1] ([fdo#109271] / [fdo#111827])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7921/fi-hsw-4770/igt@kms_chamelium@common-hpd-after-suspend.html
+    - bat-dg1-5:          NOTRUN -> [SKIP][2] ([fdo#111827])
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7921/bat-dg1-5/igt@kms_chamelium@common-hpd-after-suspend.html
+
+  * igt@kms_pipe_crc_basic@suspend-read-crc:
+    - bat-dg1-5:          NOTRUN -> [SKIP][3] ([i915#4078])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7921/bat-dg1-5/igt@kms_pipe_crc_basic@suspend-read-crc.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_selftest@live@gt_engines:
+    - bat-dg1-5:          [INCOMPLETE][4] ([i915#4418]) -> [PASS][5]
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12225/bat-dg1-5/igt@i915_selftest@live@gt_engines.html
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7921/bat-dg1-5/igt@i915_selftest@live@gt_engines.html
+
+  * igt@i915_selftest@live@gt_heartbeat:
+    - fi-bxt-dsi:         [DMESG-FAIL][6] ([i915#5334]) -> [PASS][7]
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12225/fi-bxt-dsi/igt@i915_selftest@live@gt_heartbeat.html
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7921/fi-bxt-dsi/igt@i915_selftest@live@gt_heartbeat.html
+
+  * igt@i915_selftest@live@hangcheck:
+    - fi-hsw-4770:        [INCOMPLETE][8] ([i915#4785]) -> [PASS][9]
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12225/fi-hsw-4770/igt@i915_selftest@live@hangcheck.html
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7921/fi-hsw-4770/igt@i915_selftest@live@hangcheck.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [fdo#111827]: https://bugs.freedesktop.org/show_bug.cgi?id=111827
+  [i915#4078]: https://gitlab.freedesktop.org/drm/intel/issues/4078
+  [i915#4418]: https://gitlab.freedesktop.org/drm/intel/issues/4418
+  [i915#4785]: https://gitlab.freedesktop.org/drm/intel/issues/4785
+  [i915#4983]: https://gitlab.freedesktop.org/drm/intel/issues/4983
+  [i915#5278]: https://gitlab.freedesktop.org/drm/intel/issues/5278
+  [i915#5334]: https://gitlab.freedesktop.org/drm/intel/issues/5334
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_7003 -> IGTPW_7921
+
+  CI-20190529: 20190529
+  CI_DRM_12225: 31426dd8e9677d64141dcf5546927c6c23e994bd @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_7921: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7921/index.html
+  IGT_7003: 1ea9ec5e7295fbc1cb784be4692971fd342bea53 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7921/index.html
+
+--===============2439223289698162813==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>series starting with [i-g-t,1/2] tests/i915/kms_big_fb: optimize async flip tests</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/109479/">https://patchwork.freedesktop.org/series/109479/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7921/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7921/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_12225 -&gt; IGTPW_7921</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7921/index.html</p>
+<h2>Participating hosts (46 -&gt; 39)</h2>
+<p>Missing    (7): fi-rkl-11600 fi-hsw-4200u fi-ctg-p8600 bat-atsm-1 bat-jsl-3 bat-rplp-1 bat-rpls-2 </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_7921 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@kms_chamelium@common-hpd-after-suspend:</p>
+<ul>
+<li>
+<p>fi-hsw-4770:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7921/fi-hsw-4770/igt@kms_chamelium@common-hpd-after-suspend.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://bugs.freedesktop.org/show_bug.cgi?id=111827">fdo#111827</a>)</p>
+</li>
+<li>
+<p>bat-dg1-5:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7921/bat-dg1-5/igt@kms_chamelium@common-hpd-after-suspend.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=111827">fdo#111827</a>)</p>
+</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@suspend-read-crc:</p>
+<ul>
+<li>bat-dg1-5:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7921/bat-dg1-5/igt@kms_pipe_crc_basic@suspend-read-crc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4078">i915#4078</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live@gt_engines:</p>
+<ul>
+<li>bat-dg1-5:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12225/bat-dg1-5/igt@i915_selftest@live@gt_engines.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4418">i915#4418</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7921/bat-dg1-5/igt@i915_selftest@live@gt_engines.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@gt_heartbeat:</p>
+<ul>
+<li>fi-bxt-dsi:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12225/fi-bxt-dsi/igt@i915_selftest@live@gt_heartbeat.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5334">i915#5334</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7921/fi-bxt-dsi/igt@i915_selftest@live@gt_heartbeat.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@hangcheck:</p>
+<ul>
+<li>fi-hsw-4770:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12225/fi-hsw-4770/igt@i915_selftest@live@hangcheck.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4785">i915#4785</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7921/fi-hsw-4770/igt@i915_selftest@live@hangcheck.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_7003 -&gt; IGTPW_7921</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_12225: 31426dd8e9677d64141dcf5546927c6c23e994bd @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_7921: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7921/index.html<br />
+  IGT_7003: 1ea9ec5e7295fbc1cb784be4692971fd342bea53 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============2439223289698162813==--
