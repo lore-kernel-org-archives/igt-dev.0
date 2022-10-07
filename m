@@ -1,25 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-ua1-x92a.google.com (mail-ua1-x92a.google.com
- [IPv6:2607:f8b0:4864:20::92a])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5FEEC10E0FB
- for <igt-dev@lists.freedesktop.org>; Fri,  7 Oct 2022 22:25:51 +0000 (UTC)
-Received: by mail-ua1-x92a.google.com with SMTP id d3so2145748uav.7
- for <igt-dev@lists.freedesktop.org>; Fri, 07 Oct 2022 15:25:51 -0700 (PDT)
+Received: from NAM04-DM6-obe.outbound.protection.outlook.com
+ (mail-dm6nam04on2047.outbound.protection.outlook.com [40.107.102.47])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6C2E889496
+ for <igt-dev@lists.freedesktop.org>; Fri,  7 Oct 2022 23:12:32 +0000 (UTC)
+From: Alex Hung <alex.hung@amd.com>
+To: <igt-dev@lists.freedesktop.org>
+Date: Fri, 7 Oct 2022 17:09:37 -0600
+Message-ID: <20221007230937.2532541-1-alex.hung@amd.com>
 MIME-Version: 1.0
-References: <20221007040717.2924978-1-jfree@freebsd.org>
- <20221007040717.2924978-9-jfree@freebsd.org>
- <Y0AMoWWxwFGqTQj+@kamilkon-desk1>
- <CAOgZAGaSosm9ehgzoJG=12Vdxp8LUWF41_fCqZmV3ce7VzOkCw@mail.gmail.com>
-In-Reply-To: <CAOgZAGaSosm9ehgzoJG=12Vdxp8LUWF41_fCqZmV3ce7VzOkCw@mail.gmail.com>
-From: Jake Freeland <jake@technologyfriends.net>
-Date: Fri, 7 Oct 2022 17:25:39 -0500
-Message-ID: <CAOgZAGbkObmTc5mvQZDBSwY5dk+F94j=YnGuKq4mikn4vF_Xmw@mail.gmail.com>
-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org,
- Jake Freeland <jake@technologyfriends.net>, Jake Freeland <jfree@freebsd.org>
-Content-Type: multipart/alternative; boundary="000000000000cce98a05ea794a6b"
-Subject: Re: [igt-dev] [PATCH i-g-t 09/10] Restrict sigev_notify_thread_id
- macro definition to Linux
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+Subject: [igt-dev] [PATCH] tests/kms_cursor_legacy: allow an extra vblank in
+ atomic-transitions tests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,203 +19,42 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: markyacoub@google.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---000000000000cce98a05ea794a6b
-Content-Type: text/plain; charset="UTF-8"
+On i915 devices:
+kmstest_get_vblank() calls a drm_ioctl(DRM_IOCTL_WAIT_VBLANK), but
+vblanks are not updated until a following read() op triggers kernel to
+update vblank, ex. "[drm:drm_handle_vblank [drm]] vblank event on xxx".
 
-There was a minor mistake in this revision.
-See rev 2 instead: https://patchwork.freedesktop.org/series/109496/#rev2
+However, this is not the case for all devices:
+kmstest_get_vblank() triggers a drm_ioctl(DRM_IOCTL_WAIT_VBLANK),
+and then drm_wait_vblank_ioctl() in drm_vblank.c is called and
+returns vblank, ex. "[drm]] crtc 0 returning xxx to client" right away.
+In this scenario, the read() op does nothing related to vblank.
 
-On Fri, Oct 7, 2022 at 4:10 PM Jake Freeland <jake@technologyfriends.net>
-wrote:
+Since the vblank can be updated before the read(), the extra vblank
+in commit da0b6abeshould also be allowed before the read().
 
-> https://patchwork.freedesktop.org/patch/506303/
->
-> On Fri, Oct 7, 2022 at 6:25 AM Kamil Konieczny <
-> kamil.konieczny@linux.intel.com> wrote:
->
->> Hi Jake,
->>
->> On 2022-10-06 at 23:07:17 -0500, Jake Freeland wrote:
->> > The `#define sigev_notify_thread_id _sigev_un._tid` macro differs on
->> > FreeBSD. This patch uses ifdefs to stop the compiler from overriding
->> > FreeBSD's existing definition.
->> >
->> > Signed-off-by: Jake Freeland <jfree@freebsd.org>
->>
->> Please send this outside of your series, it can be merged as
->> separate patch. See also some notes below.
->>
->> > ---
->> >  benchmarks/gem_syslatency.c | 2 ++
->> >  lib/igt_aux.h               | 2 +-
->> >  tests/i915/gem_close_race.c | 2 ++
->> >  3 files changed, 5 insertions(+), 1 deletion(-)
->> >
->> > diff --git a/benchmarks/gem_syslatency.c b/benchmarks/gem_syslatency.c
->> > index 395d2e71..366c8af6 100644
->> > --- a/benchmarks/gem_syslatency.c
->> > +++ b/benchmarks/gem_syslatency.c
->> > @@ -53,7 +53,9 @@
->> >  #include "igt_freebsd.h"
->> >  #endif
->> >
->> > +#ifdef __linux__
->> >  #define sigev_notify_thread_id _sigev_un._tid
->> > +#endif
->>
->> Instead of this please just include igt_aux.h header.
->>
->> >
->> >  static volatile int done;
->> >
->> > diff --git a/lib/igt_aux.h b/lib/igt_aux.h
->> > index c98cf28f..569b92d7 100644
->> > --- a/lib/igt_aux.h
->> > +++ b/lib/igt_aux.h
->> > @@ -48,8 +48,8 @@
->> >  # ifndef HAVE_GETTID
->> >  #  define gettid() (pid_t)(syscall(__NR_gettid))
->> >  # endif
->> > -#endif
->> >  #define sigev_notify_thread_id _sigev_un._tid
->> --- ^
->> Put space before define to keep style.
->>
->> > +#endif
->> >
->> >  /* auxialiary igt helpers from igt_aux.c */
->> >  /* generally useful helpers */
->> > diff --git a/tests/i915/gem_close_race.c b/tests/i915/gem_close_race.c
->> > index 938fde8f..42fe1657 100644
->> > --- a/tests/i915/gem_close_race.c
->> > +++ b/tests/i915/gem_close_race.c
->> > @@ -61,7 +61,9 @@ static bool has_softpin;
->> >  static uint64_t exec_addr;
->> >  static uint64_t data_addr;
->> >
->> > +#ifdef __linux__
->> >  #define sigev_notify_thread_id _sigev_un._tid
->> > +#endif
->>
->> Same here, include igt_aux.h
->>
->> Regards,
->> Kamil
->>
->> >
->> >  static void selfcopy(int fd, uint32_t ctx, uint32_t handle, int loops)
->> >  {
->> > --
->> > 2.37.3
->> >
->>
->
+Signed-off-by: Alex Hung <alex.hung@amd.com>
+---
+ tests/kms_cursor_legacy.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---000000000000cce98a05ea794a6b
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"ltr">There was a minor mistake in this revision.<div>See rev 2 =
-instead:=C2=A0<a href=3D"https://patchwork.freedesktop.org/series/109496/#r=
-ev2">https://patchwork.freedesktop.org/series/109496/#rev2</a></div></div><=
-br><div class=3D"gmail_quote"><div dir=3D"ltr" class=3D"gmail_attr">On Fri,=
- Oct 7, 2022 at 4:10 PM Jake Freeland &lt;<a href=3D"mailto:jake@technology=
-friends.net">jake@technologyfriends.net</a>&gt; wrote:<br></div><blockquote=
- class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px so=
-lid rgb(204,204,204);padding-left:1ex"><div dir=3D"ltr"><a href=3D"https://=
-patchwork.freedesktop.org/patch/506303/" target=3D"_blank">https://patchwor=
-k.freedesktop.org/patch/506303/</a></div><br><div class=3D"gmail_quote"><di=
-v dir=3D"ltr" class=3D"gmail_attr">On Fri, Oct 7, 2022 at 6:25 AM Kamil Kon=
-ieczny &lt;<a href=3D"mailto:kamil.konieczny@linux.intel.com" target=3D"_bl=
-ank">kamil.konieczny@linux.intel.com</a>&gt; wrote:<br></div><blockquote cl=
-ass=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid=
- rgb(204,204,204);padding-left:1ex">Hi Jake,<br>
-<br>
-On 2022-10-06 at 23:07:17 -0500, Jake Freeland wrote:<br>
-&gt; The `#define sigev_notify_thread_id _sigev_un._tid` macro differs on<b=
-r>
-&gt; FreeBSD. This patch uses ifdefs to stop the compiler from overriding<b=
-r>
-&gt; FreeBSD&#39;s existing definition.<br>
-&gt; <br>
-&gt; Signed-off-by: Jake Freeland &lt;<a href=3D"mailto:jfree@freebsd.org" =
-target=3D"_blank">jfree@freebsd.org</a>&gt;<br>
-<br>
-Please send this outside of your series, it can be merged as<br>
-separate patch. See also some notes below.<br>
-<br>
-&gt; ---<br>
-&gt;=C2=A0 benchmarks/gem_syslatency.c | 2 ++<br>
-&gt;=C2=A0 lib/igt_aux.h=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0| 2 +-<br>
-&gt;=C2=A0 tests/i915/gem_close_race.c | 2 ++<br>
-&gt;=C2=A0 3 files changed, 5 insertions(+), 1 deletion(-)<br>
-&gt; <br>
-&gt; diff --git a/benchmarks/gem_syslatency.c b/benchmarks/gem_syslatency.c=
-<br>
-&gt; index 395d2e71..366c8af6 100644<br>
-&gt; --- a/benchmarks/gem_syslatency.c<br>
-&gt; +++ b/benchmarks/gem_syslatency.c<br>
-&gt; @@ -53,7 +53,9 @@<br>
-&gt;=C2=A0 #include &quot;igt_freebsd.h&quot;<br>
-&gt;=C2=A0 #endif<br>
-&gt;=C2=A0 <br>
-&gt; +#ifdef __linux__<br>
-&gt;=C2=A0 #define sigev_notify_thread_id _sigev_un._tid<br>
-&gt; +#endif<br>
-<br>
-Instead of this please just include igt_aux.h header.<br>
-<br>
-&gt;=C2=A0 <br>
-&gt;=C2=A0 static volatile int done;<br>
-&gt;=C2=A0 <br>
-&gt; diff --git a/lib/igt_aux.h b/lib/igt_aux.h<br>
-&gt; index c98cf28f..569b92d7 100644<br>
-&gt; --- a/lib/igt_aux.h<br>
-&gt; +++ b/lib/igt_aux.h<br>
-&gt; @@ -48,8 +48,8 @@<br>
-&gt;=C2=A0 # ifndef HAVE_GETTID<br>
-&gt;=C2=A0 #=C2=A0 define gettid() (pid_t)(syscall(__NR_gettid))<br>
-&gt;=C2=A0 # endif<br>
-&gt; -#endif<br>
-&gt;=C2=A0 #define sigev_notify_thread_id _sigev_un._tid<br>
---- ^<br>
-Put space before define to keep style.<br>
-<br>
-&gt; +#endif<br>
-&gt;=C2=A0 <br>
-&gt;=C2=A0 /* auxialiary igt helpers from igt_aux.c */<br>
-&gt;=C2=A0 /* generally useful helpers */<br>
-&gt; diff --git a/tests/i915/gem_close_race.c b/tests/i915/gem_close_race.c=
-<br>
-&gt; index 938fde8f..42fe1657 100644<br>
-&gt; --- a/tests/i915/gem_close_race.c<br>
-&gt; +++ b/tests/i915/gem_close_race.c<br>
-&gt; @@ -61,7 +61,9 @@ static bool has_softpin;<br>
-&gt;=C2=A0 static uint64_t exec_addr;<br>
-&gt;=C2=A0 static uint64_t data_addr;<br>
-&gt;=C2=A0 <br>
-&gt; +#ifdef __linux__<br>
-&gt;=C2=A0 #define sigev_notify_thread_id _sigev_un._tid<br>
-&gt; +#endif<br>
-<br>
-Same here, include igt_aux.h<br>
-<br>
-Regards,<br>
-Kamil<br>
-<br>
-&gt;=C2=A0 <br>
-&gt;=C2=A0 static void selfcopy(int fd, uint32_t ctx, uint32_t handle, int =
-loops)<br>
-&gt;=C2=A0 {<br>
-&gt; -- <br>
-&gt; 2.37.3<br>
-&gt; <br>
-</blockquote></div>
-</blockquote></div>
-
---000000000000cce98a05ea794a6b--
+diff --git a/tests/kms_cursor_legacy.c b/tests/kms_cursor_legacy.c
+index 1ad92eaa..868cfb97 100644
+--- a/tests/kms_cursor_legacy.c
++++ b/tests/kms_cursor_legacy.c
+@@ -802,6 +802,8 @@ static void flip_vs_cursor(igt_display_t *display, enum flip_test mode, int nloo
+ 		/* Nor should it have delayed the following cursor update */
+ 		if (!cursor_slowpath(display, mode))
+ 			igt_assert_eq(kmstest_get_vblank(display->drm_fd, pipe, 0), vblank_start);
++		else if (mode_requires_extra_vblank(mode))
++			igt_assert_lte(kmstest_get_vblank(display->drm_fd, pipe, 0), vblank_start + 2);
+ 		else
+ 			igt_assert_lte(kmstest_get_vblank(display->drm_fd, pipe, 0), vblank_start + 1);
+ 
+-- 
+2.34.1
