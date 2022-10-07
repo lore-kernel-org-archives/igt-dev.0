@@ -1,21 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2267310E33C
- for <igt-dev@lists.freedesktop.org>; Fri,  7 Oct 2022 15:50:18 +0000 (UTC)
-Message-ID: <ef492bfc-a476-0772-5333-cfc06d324533@intel.com>
-Date: Fri, 7 Oct 2022 21:19:58 +0530
-Content-Language: en-US
-To: Ville Syrjala <ville.syrjala@linux.intel.com>,
- <igt-dev@lists.freedesktop.org>
-References: <20221007134029.3188-1-ville.syrjala@linux.intel.com>
- <20221007134029.3188-3-ville.syrjala@linux.intel.com>
-From: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
-In-Reply-To: <20221007134029.3188-3-ville.syrjala@linux.intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id ED7AB10E008
+ for <igt-dev@lists.freedesktop.org>; Fri,  7 Oct 2022 16:02:12 +0000 (UTC)
+From: Nirmoy Das <nirmoy.das@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Fri,  7 Oct 2022 18:02:03 +0200
+Message-Id: <20221007160203.8079-1-nirmoy.das@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t 3/3] Revert "tests/kms_invalid_mode:
- Test Cleanup"
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t] i915/i915_hangman: Idle the gpu for next
+ test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,113 +17,32 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Nidhi Gupta <nidhi1.gupta@intel.com>
+Cc: chris.p.wilson@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Fri-07-10-2022 07:10 pm, Ville Syrjala wrote:
-> From: Ville Syrjälä <ville.syrjala@linux.intel.com>
-> 
-> This reverts commit 6725767a84109e934ca138d94df0482386c44532.
-> 
-> This was no cleanup. It does fifteen different things and
-> in the process flat out breaks the test at least on all
-> non-atomic drivers/platforms.
+After each subtest gpu should be idle or else busy
+engine leaks into next subtest.
 
-will it be useful [1]?
+References: https://gitlab.freedesktop.org/drm/intel/-/issues/5888
+Suggested-by: Chris Wilson <chris.p.wilson@intel.com>
+Signed-off-by: Nirmoy Das <nirmoy.das@intel.com>
+---
+ tests/i915/i915_hangman.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-[1]: https://patchwork.freedesktop.org/series/109484/
-
-- Bhanu
-
-> 
-> Cc: Nidhi Gupta <nidhi1.gupta@intel.com>
-> Cc: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-> Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
-> ---
->   tests/kms_invalid_mode.c | 39 ++++++++++++++++++++++++---------------
->   1 file changed, 24 insertions(+), 15 deletions(-)
-> 
-> diff --git a/tests/kms_invalid_mode.c b/tests/kms_invalid_mode.c
-> index 21ee91abf54b..0287ee02c1c4 100644
-> --- a/tests/kms_invalid_mode.c
-> +++ b/tests/kms_invalid_mode.c
-> @@ -35,6 +35,7 @@ struct _data {
->   	enum pipe pipe;
->   	igt_display_t display;
->   	igt_output_t *output;
-> +	drmModeResPtr res;
->   	int max_dotclock;
->   	bool (*adjust_mode)(data_t *data, drmModeModeInfoPtr mode);
->   };
-> @@ -181,29 +182,35 @@ static void
->   test_output(data_t *data)
->   {
->   	igt_output_t *output = data->output;
-> +	drmModeModeInfo mode;
->   	struct igt_fb fb;
->   	int ret;
-> -	drmModeModeInfo *mode;
-> +	uint32_t crtc_id;
->   
-> -	igt_output_set_pipe(output, data->pipe);
-> +	/*
-> +	 * FIXME test every mode we have to be more
-> +	 * sure everything is really getting rejected?
-> +	 */
-> +	mode = *igt_output_get_mode(output);
-> +	igt_require(data->adjust_mode(data, &mode));
->   
-> -	igt_create_fb(data->drm_fd, 512, 512, DRM_FORMAT_XRGB8888,
-> +	igt_create_fb(data->drm_fd,
-> +		      max_t(uint16_t, mode.hdisplay, 64),
-> +		      max_t(uint16_t, mode.vdisplay, 64),
-> +		      DRM_FORMAT_XRGB8888,
->   		      DRM_FORMAT_MOD_LINEAR,
->   		      &fb);
->   
-> -	for_each_connector_mode(output) {
-> -		mode = &output->config.connector->modes[j__];
-> -		igt_require(data->adjust_mode(data, mode));
-> -		igt_output_override_mode(output, mode);
-> -		ret = igt_display_try_commit2(&data->display, data->display.is_atomic ? COMMIT_ATOMIC : COMMIT_LEGACY);
-> -		igt_assert(ret == -EINVAL);
-> -	}
-> +	kmstest_unset_all_crtcs(data->drm_fd, data->res);
-> +
-> +	crtc_id = data->display.pipes[data->pipe].crtc_id;
-> +
-> +	ret = drmModeSetCrtc(data->drm_fd, crtc_id,
-> +			     fb.fb_id, 0, 0,
-> +			     &output->id, 1, &mode);
-> +	igt_assert_lt(ret, 0);
->   
->   	igt_remove_fb(data->drm_fd, &fb);
-> -	igt_output_override_mode(output, NULL);
-> -	/*unset_all_crtcs*/
-> -	igt_display_reset(&data->display);
-> -	igt_display_commit(&data->display);
->   }
->   
->   static int i915_max_dotclock(data_t *data)
-> @@ -283,10 +290,11 @@ igt_main
->   		kmstest_set_vt_graphics_mode();
->   
->   		igt_display_require(&data.display, data.drm_fd);
-> +		data.res = drmModeGetResources(data.drm_fd);
-> +		igt_assert(data.res);
->   
->   		data.max_dotclock = i915_max_dotclock(&data);
->   		igt_info("Max dotclock: %d kHz\n", data.max_dotclock);
-> -		igt_display_require_output(&data.display);
->   	}
->   
->   	igt_describe("Make sure all modesets are rejected when the requested mode is invalid");
-> @@ -306,5 +314,6 @@ igt_main
->   	igt_fixture {
->   		igt_display_fini(&data.display);
->   		igt_reset_connectors();
-> +		drmModeFreeResources(data.res);
->   	}
->   }
+diff --git a/tests/i915/i915_hangman.c b/tests/i915/i915_hangman.c
+index ddbe10675a..8acce8f1a4 100644
+--- a/tests/i915/i915_hangman.c
++++ b/tests/i915/i915_hangman.c
+@@ -96,6 +96,7 @@ static void check_alive(void)
+ 	gem_close(fd, scratch);
+ 	put_ahnd(ahnd);
+ 	intel_ctx_destroy(fd, ctx);
++	gem_quiescent_gpu(fd);
+ 	close(fd);
+ }
+ 
+-- 
+2.37.3
