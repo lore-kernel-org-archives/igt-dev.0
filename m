@@ -1,16 +1,25 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============1383318245734624940=="
+Received: from mail-ua1-x92a.google.com (mail-ua1-x92a.google.com
+ [IPv6:2607:f8b0:4864:20::92a])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5FEEC10E0FB
+ for <igt-dev@lists.freedesktop.org>; Fri,  7 Oct 2022 22:25:51 +0000 (UTC)
+Received: by mail-ua1-x92a.google.com with SMTP id d3so2145748uav.7
+ for <igt-dev@lists.freedesktop.org>; Fri, 07 Oct 2022 15:25:51 -0700 (PDT)
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Jake Freeland" <jake@technologyfriends.net>
-Date: Fri, 07 Oct 2022 22:23:05 -0000
-Message-ID: <166518138534.15724.13532571119737663382@emeril.freedesktop.org>
-References: <20221007213056.3160561-1-jfree@freebsd.org>
-In-Reply-To: <20221007213056.3160561-1-jfree@freebsd.org>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgUmVzdHJp?=
- =?utf-8?q?ct_sigev=5Fnotify=5Fthread=5Fid_macro_definition_to_Linux_=28re?=
- =?utf-8?b?djIp?=
+References: <20221007040717.2924978-1-jfree@freebsd.org>
+ <20221007040717.2924978-9-jfree@freebsd.org>
+ <Y0AMoWWxwFGqTQj+@kamilkon-desk1>
+ <CAOgZAGaSosm9ehgzoJG=12Vdxp8LUWF41_fCqZmV3ce7VzOkCw@mail.gmail.com>
+In-Reply-To: <CAOgZAGaSosm9ehgzoJG=12Vdxp8LUWF41_fCqZmV3ce7VzOkCw@mail.gmail.com>
+From: Jake Freeland <jake@technologyfriends.net>
+Date: Fri, 7 Oct 2022 17:25:39 -0500
+Message-ID: <CAOgZAGbkObmTc5mvQZDBSwY5dk+F94j=YnGuKq4mikn4vF_Xmw@mail.gmail.com>
+To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ igt-dev@lists.freedesktop.org,
+ Jake Freeland <jake@technologyfriends.net>, Jake Freeland <jfree@freebsd.org>
+Content-Type: multipart/alternative; boundary="000000000000cce98a05ea794a6b"
+Subject: Re: [igt-dev] [PATCH i-g-t 09/10] Restrict sigev_notify_thread_id
+ macro definition to Linux
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,275 +27,203 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============1383318245734624940==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+--000000000000cce98a05ea794a6b
+Content-Type: text/plain; charset="UTF-8"
 
-== Series Details ==
+There was a minor mistake in this revision.
+See rev 2 instead: https://patchwork.freedesktop.org/series/109496/#rev2
 
-Series: Restrict sigev_notify_thread_id macro definition to Linux (rev2)
-URL   : https://patchwork.freedesktop.org/series/109496/
-State : success
+On Fri, Oct 7, 2022 at 4:10 PM Jake Freeland <jake@technologyfriends.net>
+wrote:
 
-== Summary ==
+> https://patchwork.freedesktop.org/patch/506303/
+>
+> On Fri, Oct 7, 2022 at 6:25 AM Kamil Konieczny <
+> kamil.konieczny@linux.intel.com> wrote:
+>
+>> Hi Jake,
+>>
+>> On 2022-10-06 at 23:07:17 -0500, Jake Freeland wrote:
+>> > The `#define sigev_notify_thread_id _sigev_un._tid` macro differs on
+>> > FreeBSD. This patch uses ifdefs to stop the compiler from overriding
+>> > FreeBSD's existing definition.
+>> >
+>> > Signed-off-by: Jake Freeland <jfree@freebsd.org>
+>>
+>> Please send this outside of your series, it can be merged as
+>> separate patch. See also some notes below.
+>>
+>> > ---
+>> >  benchmarks/gem_syslatency.c | 2 ++
+>> >  lib/igt_aux.h               | 2 +-
+>> >  tests/i915/gem_close_race.c | 2 ++
+>> >  3 files changed, 5 insertions(+), 1 deletion(-)
+>> >
+>> > diff --git a/benchmarks/gem_syslatency.c b/benchmarks/gem_syslatency.c
+>> > index 395d2e71..366c8af6 100644
+>> > --- a/benchmarks/gem_syslatency.c
+>> > +++ b/benchmarks/gem_syslatency.c
+>> > @@ -53,7 +53,9 @@
+>> >  #include "igt_freebsd.h"
+>> >  #endif
+>> >
+>> > +#ifdef __linux__
+>> >  #define sigev_notify_thread_id _sigev_un._tid
+>> > +#endif
+>>
+>> Instead of this please just include igt_aux.h header.
+>>
+>> >
+>> >  static volatile int done;
+>> >
+>> > diff --git a/lib/igt_aux.h b/lib/igt_aux.h
+>> > index c98cf28f..569b92d7 100644
+>> > --- a/lib/igt_aux.h
+>> > +++ b/lib/igt_aux.h
+>> > @@ -48,8 +48,8 @@
+>> >  # ifndef HAVE_GETTID
+>> >  #  define gettid() (pid_t)(syscall(__NR_gettid))
+>> >  # endif
+>> > -#endif
+>> >  #define sigev_notify_thread_id _sigev_un._tid
+>> --- ^
+>> Put space before define to keep style.
+>>
+>> > +#endif
+>> >
+>> >  /* auxialiary igt helpers from igt_aux.c */
+>> >  /* generally useful helpers */
+>> > diff --git a/tests/i915/gem_close_race.c b/tests/i915/gem_close_race.c
+>> > index 938fde8f..42fe1657 100644
+>> > --- a/tests/i915/gem_close_race.c
+>> > +++ b/tests/i915/gem_close_race.c
+>> > @@ -61,7 +61,9 @@ static bool has_softpin;
+>> >  static uint64_t exec_addr;
+>> >  static uint64_t data_addr;
+>> >
+>> > +#ifdef __linux__
+>> >  #define sigev_notify_thread_id _sigev_un._tid
+>> > +#endif
+>>
+>> Same here, include igt_aux.h
+>>
+>> Regards,
+>> Kamil
+>>
+>> >
+>> >  static void selfcopy(int fd, uint32_t ctx, uint32_t handle, int loops)
+>> >  {
+>> > --
+>> > 2.37.3
+>> >
+>>
+>
 
-CI Bug Log - changes from CI_DRM_12226 -> IGTPW_7929
-====================================================
+--000000000000cce98a05ea794a6b
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Summary
--------
+<div dir=3D"ltr">There was a minor mistake in this revision.<div>See rev 2 =
+instead:=C2=A0<a href=3D"https://patchwork.freedesktop.org/series/109496/#r=
+ev2">https://patchwork.freedesktop.org/series/109496/#rev2</a></div></div><=
+br><div class=3D"gmail_quote"><div dir=3D"ltr" class=3D"gmail_attr">On Fri,=
+ Oct 7, 2022 at 4:10 PM Jake Freeland &lt;<a href=3D"mailto:jake@technology=
+friends.net">jake@technologyfriends.net</a>&gt; wrote:<br></div><blockquote=
+ class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px so=
+lid rgb(204,204,204);padding-left:1ex"><div dir=3D"ltr"><a href=3D"https://=
+patchwork.freedesktop.org/patch/506303/" target=3D"_blank">https://patchwor=
+k.freedesktop.org/patch/506303/</a></div><br><div class=3D"gmail_quote"><di=
+v dir=3D"ltr" class=3D"gmail_attr">On Fri, Oct 7, 2022 at 6:25 AM Kamil Kon=
+ieczny &lt;<a href=3D"mailto:kamil.konieczny@linux.intel.com" target=3D"_bl=
+ank">kamil.konieczny@linux.intel.com</a>&gt; wrote:<br></div><blockquote cl=
+ass=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid=
+ rgb(204,204,204);padding-left:1ex">Hi Jake,<br>
+<br>
+On 2022-10-06 at 23:07:17 -0500, Jake Freeland wrote:<br>
+&gt; The `#define sigev_notify_thread_id _sigev_un._tid` macro differs on<b=
+r>
+&gt; FreeBSD. This patch uses ifdefs to stop the compiler from overriding<b=
+r>
+&gt; FreeBSD&#39;s existing definition.<br>
+&gt; <br>
+&gt; Signed-off-by: Jake Freeland &lt;<a href=3D"mailto:jfree@freebsd.org" =
+target=3D"_blank">jfree@freebsd.org</a>&gt;<br>
+<br>
+Please send this outside of your series, it can be merged as<br>
+separate patch. See also some notes below.<br>
+<br>
+&gt; ---<br>
+&gt;=C2=A0 benchmarks/gem_syslatency.c | 2 ++<br>
+&gt;=C2=A0 lib/igt_aux.h=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0| 2 +-<br>
+&gt;=C2=A0 tests/i915/gem_close_race.c | 2 ++<br>
+&gt;=C2=A0 3 files changed, 5 insertions(+), 1 deletion(-)<br>
+&gt; <br>
+&gt; diff --git a/benchmarks/gem_syslatency.c b/benchmarks/gem_syslatency.c=
+<br>
+&gt; index 395d2e71..366c8af6 100644<br>
+&gt; --- a/benchmarks/gem_syslatency.c<br>
+&gt; +++ b/benchmarks/gem_syslatency.c<br>
+&gt; @@ -53,7 +53,9 @@<br>
+&gt;=C2=A0 #include &quot;igt_freebsd.h&quot;<br>
+&gt;=C2=A0 #endif<br>
+&gt;=C2=A0 <br>
+&gt; +#ifdef __linux__<br>
+&gt;=C2=A0 #define sigev_notify_thread_id _sigev_un._tid<br>
+&gt; +#endif<br>
+<br>
+Instead of this please just include igt_aux.h header.<br>
+<br>
+&gt;=C2=A0 <br>
+&gt;=C2=A0 static volatile int done;<br>
+&gt;=C2=A0 <br>
+&gt; diff --git a/lib/igt_aux.h b/lib/igt_aux.h<br>
+&gt; index c98cf28f..569b92d7 100644<br>
+&gt; --- a/lib/igt_aux.h<br>
+&gt; +++ b/lib/igt_aux.h<br>
+&gt; @@ -48,8 +48,8 @@<br>
+&gt;=C2=A0 # ifndef HAVE_GETTID<br>
+&gt;=C2=A0 #=C2=A0 define gettid() (pid_t)(syscall(__NR_gettid))<br>
+&gt;=C2=A0 # endif<br>
+&gt; -#endif<br>
+&gt;=C2=A0 #define sigev_notify_thread_id _sigev_un._tid<br>
+--- ^<br>
+Put space before define to keep style.<br>
+<br>
+&gt; +#endif<br>
+&gt;=C2=A0 <br>
+&gt;=C2=A0 /* auxialiary igt helpers from igt_aux.c */<br>
+&gt;=C2=A0 /* generally useful helpers */<br>
+&gt; diff --git a/tests/i915/gem_close_race.c b/tests/i915/gem_close_race.c=
+<br>
+&gt; index 938fde8f..42fe1657 100644<br>
+&gt; --- a/tests/i915/gem_close_race.c<br>
+&gt; +++ b/tests/i915/gem_close_race.c<br>
+&gt; @@ -61,7 +61,9 @@ static bool has_softpin;<br>
+&gt;=C2=A0 static uint64_t exec_addr;<br>
+&gt;=C2=A0 static uint64_t data_addr;<br>
+&gt;=C2=A0 <br>
+&gt; +#ifdef __linux__<br>
+&gt;=C2=A0 #define sigev_notify_thread_id _sigev_un._tid<br>
+&gt; +#endif<br>
+<br>
+Same here, include igt_aux.h<br>
+<br>
+Regards,<br>
+Kamil<br>
+<br>
+&gt;=C2=A0 <br>
+&gt;=C2=A0 static void selfcopy(int fd, uint32_t ctx, uint32_t handle, int =
+loops)<br>
+&gt;=C2=A0 {<br>
+&gt; -- <br>
+&gt; 2.37.3<br>
+&gt; <br>
+</blockquote></div>
+</blockquote></div>
 
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7929/index.html
-
-Participating hosts (44 -> 44)
-------------------------------
-
-  Additional (2): fi-hsw-4770 bat-atsm-1 
-  Missing    (2): fi-ctg-p8600 fi-hsw-4200u 
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_7929 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@gem_softpin@allocator-basic-reserve:
-    - fi-hsw-4770:        NOTRUN -> [SKIP][1] ([fdo#109271]) +9 similar issues
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7929/fi-hsw-4770/igt@gem_softpin@allocator-basic-reserve.html
-
-  * igt@i915_pm_backlight@basic-brightness:
-    - fi-hsw-4770:        NOTRUN -> [SKIP][2] ([fdo#109271] / [i915#3012])
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7929/fi-hsw-4770/igt@i915_pm_backlight@basic-brightness.html
-
-  * igt@kms_chamelium@common-hpd-after-suspend:
-    - fi-hsw-g3258:       NOTRUN -> [SKIP][3] ([fdo#109271] / [fdo#111827])
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7929/fi-hsw-g3258/igt@kms_chamelium@common-hpd-after-suspend.html
-    - fi-bdw-5557u:       NOTRUN -> [SKIP][4] ([fdo#109271] / [fdo#111827])
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7929/fi-bdw-5557u/igt@kms_chamelium@common-hpd-after-suspend.html
-
-  * igt@kms_chamelium@dp-crc-fast:
-    - fi-hsw-4770:        NOTRUN -> [SKIP][5] ([fdo#109271] / [fdo#111827]) +8 similar issues
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7929/fi-hsw-4770/igt@kms_chamelium@dp-crc-fast.html
-
-  * igt@kms_psr@sprite_plane_onoff:
-    - fi-hsw-4770:        NOTRUN -> [SKIP][6] ([fdo#109271] / [i915#1072]) +3 similar issues
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7929/fi-hsw-4770/igt@kms_psr@sprite_plane_onoff.html
-
-  
-#### Possible fixes ####
-
-  * igt@gem_exec_suspend@basic-s0@smem:
-    - {bat-rplp-1}:       [DMESG-WARN][7] ([i915#2867]) -> [PASS][8]
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12226/bat-rplp-1/igt@gem_exec_suspend@basic-s0@smem.html
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7929/bat-rplp-1/igt@gem_exec_suspend@basic-s0@smem.html
-    - {bat-adlm-1}:       [DMESG-WARN][9] ([i915#2867]) -> [PASS][10]
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12226/bat-adlm-1/igt@gem_exec_suspend@basic-s0@smem.html
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7929/bat-adlm-1/igt@gem_exec_suspend@basic-s0@smem.html
-
-  * igt@gem_exec_suspend@basic-s3@lmem0:
-    - {bat-dg2-11}:       [DMESG-WARN][11] ([i915#6816]) -> [PASS][12]
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12226/bat-dg2-11/igt@gem_exec_suspend@basic-s3@lmem0.html
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7929/bat-dg2-11/igt@gem_exec_suspend@basic-s3@lmem0.html
-
-  * igt@i915_selftest@live@gt_timelines:
-    - fi-hsw-g3258:       [INCOMPLETE][13] -> [PASS][14]
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12226/fi-hsw-g3258/igt@i915_selftest@live@gt_timelines.html
-   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7929/fi-hsw-g3258/igt@i915_selftest@live@gt_timelines.html
-
-  * igt@i915_selftest@live@hangcheck:
-    - {fi-ehl-2}:         [INCOMPLETE][15] ([i915#5153]) -> [PASS][16]
-   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12226/fi-ehl-2/igt@i915_selftest@live@hangcheck.html
-   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7929/fi-ehl-2/igt@i915_selftest@live@hangcheck.html
-
-  * igt@i915_suspend@basic-s3-without-i915:
-    - fi-bdw-5557u:       [INCOMPLETE][17] ([i915#146] / [i915#6712]) -> [PASS][18]
-   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12226/fi-bdw-5557u/igt@i915_suspend@basic-s3-without-i915.html
-   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7929/fi-bdw-5557u/igt@i915_suspend@basic-s3-without-i915.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
-  [fdo#111827]: https://bugs.freedesktop.org/show_bug.cgi?id=111827
-  [i915#1072]: https://gitlab.freedesktop.org/drm/intel/issues/1072
-  [i915#146]: https://gitlab.freedesktop.org/drm/intel/issues/146
-  [i915#2411]: https://gitlab.freedesktop.org/drm/intel/issues/2411
-  [i915#2582]: https://gitlab.freedesktop.org/drm/intel/issues/2582
-  [i915#2867]: https://gitlab.freedesktop.org/drm/intel/issues/2867
-  [i915#3012]: https://gitlab.freedesktop.org/drm/intel/issues/3012
-  [i915#4077]: https://gitlab.freedesktop.org/drm/intel/issues/4077
-  [i915#4079]: https://gitlab.freedesktop.org/drm/intel/issues/4079
-  [i915#4083]: https://gitlab.freedesktop.org/drm/intel/issues/4083
-  [i915#4312]: https://gitlab.freedesktop.org/drm/intel/issues/4312
-  [i915#5153]: https://gitlab.freedesktop.org/drm/intel/issues/5153
-  [i915#5537]: https://gitlab.freedesktop.org/drm/intel/issues/5537
-  [i915#6712]: https://gitlab.freedesktop.org/drm/intel/issues/6712
-  [i915#6816]: https://gitlab.freedesktop.org/drm/intel/issues/6816
-  [i915#6856]: https://gitlab.freedesktop.org/drm/intel/issues/6856
-  [i915#7029]: https://gitlab.freedesktop.org/drm/intel/issues/7029
-  [i915#7030]: https://gitlab.freedesktop.org/drm/intel/issues/7030
-  [i915#7031]: https://gitlab.freedesktop.org/drm/intel/issues/7031
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_7003 -> IGTPW_7929
-
-  CI-20190529: 20190529
-  CI_DRM_12226: bcc9e3eb1e7ba32651eae68b842df07db01e63be @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_7929: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7929/index.html
-  IGT_7003: 1ea9ec5e7295fbc1cb784be4692971fd342bea53 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7929/index.html
-
---===============1383318245734624940==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>Restrict sigev_notify_thread_id macro definition to Linux (rev2)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/109496/">https://patchwork.freedesktop.org/series/109496/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7929/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7929/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from CI_DRM_12226 -&gt; IGTPW_7929</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7929/index.html</p>
-<h2>Participating hosts (44 -&gt; 44)</h2>
-<p>Additional (2): fi-hsw-4770 bat-atsm-1 <br />
-  Missing    (2): fi-ctg-p8600 fi-hsw-4200u </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_7929 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@gem_softpin@allocator-basic-reserve:</p>
-<ul>
-<li>fi-hsw-4770:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7929/fi-hsw-4770/igt@gem_softpin@allocator-basic-reserve.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +9 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_pm_backlight@basic-brightness:</p>
-<ul>
-<li>fi-hsw-4770:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7929/fi-hsw-4770/igt@i915_pm_backlight@basic-brightness.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3012">i915#3012</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_chamelium@common-hpd-after-suspend:</p>
-<ul>
-<li>
-<p>fi-hsw-g3258:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7929/fi-hsw-g3258/igt@kms_chamelium@common-hpd-after-suspend.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://bugs.freedesktop.org/show_bug.cgi?id=111827">fdo#111827</a>)</p>
-</li>
-<li>
-<p>fi-bdw-5557u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7929/fi-bdw-5557u/igt@kms_chamelium@common-hpd-after-suspend.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://bugs.freedesktop.org/show_bug.cgi?id=111827">fdo#111827</a>)</p>
-</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_chamelium@dp-crc-fast:</p>
-<ul>
-<li>fi-hsw-4770:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7929/fi-hsw-4770/igt@kms_chamelium@dp-crc-fast.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://bugs.freedesktop.org/show_bug.cgi?id=111827">fdo#111827</a>) +8 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr@sprite_plane_onoff:</p>
-<ul>
-<li>fi-hsw-4770:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7929/fi-hsw-4770/igt@kms_psr@sprite_plane_onoff.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/1072">i915#1072</a>) +3 similar issues</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@gem_exec_suspend@basic-s0@smem:</p>
-<ul>
-<li>
-<p>{bat-rplp-1}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12226/bat-rplp-1/igt@gem_exec_suspend@basic-s0@smem.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2867">i915#2867</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7929/bat-rplp-1/igt@gem_exec_suspend@basic-s0@smem.html">PASS</a></p>
-</li>
-<li>
-<p>{bat-adlm-1}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12226/bat-adlm-1/igt@gem_exec_suspend@basic-s0@smem.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2867">i915#2867</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7929/bat-adlm-1/igt@gem_exec_suspend@basic-s0@smem.html">PASS</a></p>
-</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_exec_suspend@basic-s3@lmem0:</p>
-<ul>
-<li>{bat-dg2-11}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12226/bat-dg2-11/igt@gem_exec_suspend@basic-s3@lmem0.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6816">i915#6816</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7929/bat-dg2-11/igt@gem_exec_suspend@basic-s3@lmem0.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@gt_timelines:</p>
-<ul>
-<li>fi-hsw-g3258:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12226/fi-hsw-g3258/igt@i915_selftest@live@gt_timelines.html">INCOMPLETE</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7929/fi-hsw-g3258/igt@i915_selftest@live@gt_timelines.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@hangcheck:</p>
-<ul>
-<li>{fi-ehl-2}:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12226/fi-ehl-2/igt@i915_selftest@live@hangcheck.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5153">i915#5153</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7929/fi-ehl-2/igt@i915_selftest@live@hangcheck.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@i915_suspend@basic-s3-without-i915:</p>
-<ul>
-<li>fi-bdw-5557u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12226/fi-bdw-5557u/igt@i915_suspend@basic-s3-without-i915.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/146">i915#146</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/6712">i915#6712</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7929/fi-bdw-5557u/igt@i915_suspend@basic-s3-without-i915.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_7003 -&gt; IGTPW_7929</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_12226: bcc9e3eb1e7ba32651eae68b842df07db01e63be @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_7929: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7929/index.html<br />
-  IGT_7003: 1ea9ec5e7295fbc1cb784be4692971fd342bea53 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-
-</body>
-</html>
-
---===============1383318245734624940==--
+--000000000000cce98a05ea794a6b--
