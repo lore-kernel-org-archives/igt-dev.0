@@ -1,20 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-io1-xd34.google.com (mail-io1-xd34.google.com
- [IPv6:2607:f8b0:4864:20::d34])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5326610E138
- for <igt-dev@lists.freedesktop.org>; Fri,  7 Oct 2022 23:28:12 +0000 (UTC)
-Received: by mail-io1-xd34.google.com with SMTP id p186so4771065iof.5
- for <igt-dev@lists.freedesktop.org>; Fri, 07 Oct 2022 16:28:12 -0700 (PDT)
+Received: from mail-io1-xd29.google.com (mail-io1-xd29.google.com
+ [IPv6:2607:f8b0:4864:20::d29])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EA69810E151
+ for <igt-dev@lists.freedesktop.org>; Fri,  7 Oct 2022 23:28:13 +0000 (UTC)
+Received: by mail-io1-xd29.google.com with SMTP id 187so4761123iov.10
+ for <igt-dev@lists.freedesktop.org>; Fri, 07 Oct 2022 16:28:13 -0700 (PDT)
 From: Jake Freeland <jake@technologyfriends.net>
 To: igt-dev@lists.freedesktop.org
-Date: Fri,  7 Oct 2022 18:27:54 -0500
-Message-Id: <20221007232757.3210308-4-jfree@freebsd.org>
+Date: Fri,  7 Oct 2022 18:27:56 -0500
+Message-Id: <20221007232757.3210308-6-jfree@freebsd.org>
 In-Reply-To: <20221007232757.3210308-1-jfree@freebsd.org>
 References: <20221007232757.3210308-1-jfree@freebsd.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v1 3/6] Include <sys/syscall.h> for FreeBSD
- systems
+Subject: [igt-dev] [PATCH i-g-t v1 5/6] tests/i915/i915_pm_rpm.c: Add
+ FreeBSD I/O iic header
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,41 +27,33 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Both Linux and FreeBSD have a <sys/syscall.h>, but some
-operating systems do not. This patch opens up syscall.h
-access to FreeBSD through using #ifdef __FreeBSD__
+FreeBSD uses iic instead of i2c for I/O management.
+This patch includes the FreeBSD iic header and uses
+a macro substitution to convert the i2c addr member
+into the iic slave member.
 
 Signed-off-by: Jake Freeland <jfree@freebsd.org>
 ---
- lib/igt_aux.h  | 2 +-
- lib/igt_core.c | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ tests/i915/i915_pm_rpm.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/lib/igt_aux.h b/lib/igt_aux.h
-index c8d487b6..c98cf28f 100644
---- a/lib/igt_aux.h
-+++ b/lib/igt_aux.h
-@@ -34,7 +34,7 @@
- #include <sys/time.h>
+diff --git a/tests/i915/i915_pm_rpm.c b/tests/i915/i915_pm_rpm.c
+index e95875dc..1ff69a06 100644
+--- a/tests/i915/i915_pm_rpm.c
++++ b/tests/i915/i915_pm_rpm.c
+@@ -40,8 +40,13 @@
+ #include <sys/mman.h>
  #include <sys/types.h>
- #include <unistd.h>
--#ifdef __linux__
-+#if defined(__linux__) || defined(__FreeBSD__)
- # include <sys/syscall.h>
- #endif
+ #include <sys/stat.h>
++#if defined(__linux__)
+ #include <linux/i2c.h>
+ #include <linux/i2c-dev.h>
++#elif defined(__FreeBSD__)
++#include <dev/iicbus/iic.h>
++#define	addr	slave
++#endif
  
-diff --git a/lib/igt_core.c b/lib/igt_core.c
-index 2aee0d08..aad7b6d8 100644
---- a/lib/igt_core.c
-+++ b/lib/igt_core.c
-@@ -43,7 +43,7 @@
- #include <unistd.h>
- #include <sys/wait.h>
- #include <sys/types.h>
--#ifdef __linux__
-+#if defined(__linux__) || defined(__FreeBSD__)
- #include <sys/syscall.h>
- #endif
- #include <pthread.h>
+ #include <drm.h>
+ 
 -- 
 2.37.3
