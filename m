@@ -1,19 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8328310E6B7
- for <igt-dev@lists.freedesktop.org>; Mon, 10 Oct 2022 18:13:08 +0000 (UTC)
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B53BD10E73A
+ for <igt-dev@lists.freedesktop.org>; Mon, 10 Oct 2022 23:04:47 +0000 (UTC)
+Date: Mon, 10 Oct 2022 16:04:42 -0700
 From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
-To: igt-dev@lists.freedesktop.org,
- Lionel G Landwerlin <lionel.g.landwerlin@intel.com>,
- Ashutosh Dixit <ashutosh.dixit@intel.com>
-Date: Mon, 10 Oct 2022 18:12:41 +0000
-Message-Id: <20221010181300.513297-16-umesh.nerlige.ramappa@intel.com>
-In-Reply-To: <20221010181300.513297-1-umesh.nerlige.ramappa@intel.com>
-References: <20221010181300.513297-1-umesh.nerlige.ramappa@intel.com>
+To: <igt-dev@lists.freedesktop.org>, Lionel G Landwerlin
+ <lionel.g.landwerlin@intel.com>, Ashutosh Dixit <ashutosh.dixit@intel.com>
+Message-ID: <Y0SlCpP00TC4NMJc@unerlige-ril>
+References: <20221010214215.5378-1-umesh.nerlige.ramappa@intel.com>
+ <20221010214215.5378-34-umesh.nerlige.ramappa@intel.com>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Disposition: inline
+In-Reply-To: <20221010214215.5378-34-umesh.nerlige.ramappa@intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v5 15/34] lib/i915/perf: fixup conversion
- script for XEHPSDV
+Subject: Re: [igt-dev] [PATCH i-g-t v6 33/36] lib/i915: prepare codegen for
+ new ACM/DG2 variables
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,116 +26,162 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
+On Mon, Oct 10, 2022 at 09:42:12PM +0000, Umesh Nerlige Ramappa wrote:
+>From: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
+>
+>Signed-off-by: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
 
-Signed-off-by: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
+lgtm,
 Reviewed-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
----
- lib/i915/perf-configs/mdapi-xml-convert.py | 56 ++++++++++++++++++----
- 1 file changed, 48 insertions(+), 8 deletions(-)
 
-diff --git a/lib/i915/perf-configs/mdapi-xml-convert.py b/lib/i915/perf-configs/mdapi-xml-convert.py
-index d26ff623..f27d6657 100755
---- a/lib/i915/perf-configs/mdapi-xml-convert.py
-+++ b/lib/i915/perf-configs/mdapi-xml-convert.py
-@@ -62,6 +62,24 @@ gen8_11_chipset_params = {
-     'config_reg_blacklist': {
-         0x2364, # OACTXID
-     },
-+    'register_offsets': {
-+        0x1f0: 'PERFCNT 0',
-+        0x1f8: 'PERFCNT 1',
-+    }
-+}
-+
-+xehpsdv_chipset_params = {
-+    'a_offset': 16,
-+    'b_offset': 192,
-+    'c_offset': 224,
-+    'oa_report_size': 256,
-+    'config_reg_blacklist': {
-+        0x2364, # OACTXID
-+    },
-+    'register_offsets': {
-+        0x1b0: 'PERFCNT 0',
-+        0x1b8: 'PERFCNT 1',
-+    }
- }
- 
- chipsets = {
-@@ -161,14 +179,9 @@ def underscore(name):
- def print_err(*args):
-     sys.stderr.write(' '.join(map(str,args)) + '\n')
- 
--read_register_offsets = {
--    0x1f0: 'PERFCNT 0',
--    0x1f8: 'PERFCNT 1',
--}
--
- def read_value(chipset, offset):
--    if offset in read_register_offsets:
--        return read_register_offsets[offset]
-+    if offset in chipsets[chipset]['register_offsets']:
-+        return chipsets[chipset]['register_offsets'][offset]
-     print_err("Unknown offset register at offset {0}".format(offset))
-     assert 0
- 
-@@ -185,6 +198,7 @@ def read_token_to_rpn_read(chipset, token, raw_offsets):
-     offset = int(offset_str, 16)
- 
-     if raw_offsets:
-+        # Location in the HW reports
-         a_offset = chipsets[chipset]['a_offset']
-         b_offset = chipsets[chipset]['b_offset']
-         c_offset = chipsets[chipset]['c_offset']
-@@ -199,7 +213,15 @@ def read_token_to_rpn_read(chipset, token, raw_offsets):
-             else:
-                 assert 0
-         elif offset < b_offset:
--            return "A " + str(int((offset - a_offset) / 4)) + " READ"
-+            a_cnt_offset = int((offset - a_offset) / 4)
-+            if chipset == "XEHPSDV":
-+                # Most A counters are in a contiguous array, except
-+                # this A37.
-+                if a_cnt_offset == 42:
-+                    return "A 37 READ"
-+                return "A " + str(a_cnt_offset) + " READ"
-+            else:
-+                return "A " + str(a_cnt_offset) + " READ"
-         elif offset < c_offset:
-             return "B " + str(int((offset - b_offset) / 4)) + " READ"
-         elif offset < report_size:
-@@ -207,6 +229,7 @@ def read_token_to_rpn_read(chipset, token, raw_offsets):
-         else:
-             return "{0} READ".format(read_value(chipset, offset))
-     else:
-+        # Location in the accumulated deltas
-         idx = int(offset / 8)
-         if chipset == "HSW":
-             # On Haswell accumulated counters are assumed to start
-@@ -222,6 +245,23 @@ def read_token_to_rpn_read(chipset, token, raw_offsets):
-                 return "C " + str(idx - 54) + " READ"
-             else:
-                 return "{0} READ".format(read_value(chipset, offset))
-+        elif chipset == "XEHPSDV":
-+            # For XEHPSDV the array of accumulated counters is
-+            # assumed to start with a GPU_TIME then GPU_CLOCK,
-+            # then 38 A counters, then 8 B counters and finally
-+            # 8 C counters.
-+            if idx == 0:
-+                return "GPU_TIME 0 READ"
-+            elif idx == 1:
-+                return "GPU_CLOCK 0 READ"
-+            elif idx < 40:
-+                return "A " + str(idx - 2) + " READ"
-+            elif idx < 48:
-+                return "B " + str(idx - 40) + " READ"
-+            elif idx < 56:
-+                return "C " + str(idx - 48) + " READ"
-+            else:
-+                return "{0} READ".format(read_value(chipset, offset))
-         else:
-             # For Gen8+ the array of accumulated counters is
-             # assumed to start with a GPU_TIME then GPU_CLOCK,
--- 
-2.25.1
+>---
+> lib/i915/perf-configs/codegen.py              | 84 +++++++++++++++----
+> .../perf-configs/perf-metricset-codegen.py    | 13 +++
+> 2 files changed, 81 insertions(+), 16 deletions(-)
+>
+>diff --git a/lib/i915/perf-configs/codegen.py b/lib/i915/perf-configs/codegen.py
+>index 93a2df4a..755142cc 100644
+>--- a/lib/i915/perf-configs/codegen.py
+>+++ b/lib/i915/perf-configs/codegen.py
+>@@ -1,3 +1,4 @@
+>+import re
+> import xml.etree.ElementTree as et
+>
+> class Codegen:
+>@@ -123,6 +124,51 @@ class Set:
+>         return self.xml.find(path)
+>
+>
+>+hw_vars_mapping = {
+>+    "$EuCoresTotalCount": { 'c': "perf->devinfo.n_eus", 'desc': "The total number of execution units" },
+>+    "$EuSlicesTotalCount": { 'c': "perf->devinfo.n_eu_slices" },
+>+    "$EuSubslicesTotalCount": { 'c': "perf->devinfo.n_eu_sub_slices" },
+>+    "$EuDualSubslicesTotalCount": { 'c': "perf->devinfo.n_eu_sub_slices" },
+>+    "$EuDualSubslicesSlice0123Count": { 'c': "perf->devinfo.n_eu_sub_slices_half_slices" },
+>+    "$EuThreadsCount": { 'c': "perf->devinfo.eu_threads_count" },
+>+
+>+    "$VectorEngineTotalCount": { 'c': "perf->devinfo.n_eus", 'desc': "The total number of execution units" },
+>+    "$VectorEnginePerXeCoreCount": { 'c': "perf->devinfo.n_eu_sub_slices" },
+>+    "$VectorEngineThreadsCount": { 'c': "perf->devinfo.eu_threads_count" },
+>+
+>+    "$SliceMask": { 'c': "perf->devinfo.slice_mask" },
+>+    "$SliceTotalCount": { 'c': "perf->devinfo.n_eu_slices" },
+>+
+>+    "$SubsliceMask": { 'c': "perf->devinfo.subslice_mask" },
+>+    "$DualSubsliceMask": { 'c': "perf->devinfo.subslice_mask" },
+>+
+>+    "$GtSliceMask": { 'c': "perf->devinfo.slice_mask" },
+>+    "$GtSubsliceMask": { 'c': "perf->devinfo.subslice_mask" },
+>+    "$GtDualSubsliceMask": { 'c': "perf->devinfo.subslice_mask" },
+>+
+>+    "$GtXeCoreMask": { 'c': "perf->devinfo.slice_mask" },
+>+    "$XeCoreMask": { 'c': "perf->devinfo.slice_mask" },
+>+    "$XeCoreTotalCount": { 'c': 'perf->devinfo.n_eu_sub_slices' },
+>+
+>+    "$GpuTimestampFrequency": { 'c': "perf->devinfo.timestamp_frequency" },
+>+    "$GpuMinFrequency": { 'c': "perf->devinfo.gt_min_freq" },
+>+    "$GpuMaxFrequency": { 'c': "perf->devinfo.gt_max_freq" },
+>+    "$SkuRevisionId": { 'c': "perf->devinfo.revision" },
+>+    "$QueryMode": { 'c': "perf->devinfo.query_mode" },
+>+}
+>+
+>+def is_hw_var(name):
+>+    m = re.search('\$GtSlice([0-9]+)XeCore([0-9]+)$', name)
+>+    if m:
+>+        return True
+>+    m = re.search('\$GtSlice([0-9]+)$', name)
+>+    if m:
+>+        return True
+>+    m = re.search('\$GtSlice([0-9]+)DualSubslice([0-9]+)$', name)
+>+    if m:
+>+        return True
+>+    return name in hw_vars_mapping
+>+
+> class Gen:
+>     def __init__(self, filename, c):
+>         self.filename = filename
+>@@ -163,23 +209,11 @@ class Gen:
+>         self.exp_ops["ULTE"] = (2, self.splice_ulte)
+>         self.exp_ops["ULT"]  = (2, self.splice_ult)
+>         self.exp_ops["&&"]   = (2, self.splice_logical_and)
+>+        self.exp_ops["<<"]   = (2, self.splice_lshft)
+>+        self.exp_ops[">>"]   = (2, self.splice_rshft)
+>+        self.exp_ops["UMUL"] = (2, self.splice_uml)
+>
+>-        self.hw_vars = {
+>-            "$EuCoresTotalCount": { 'c': "perf->devinfo.n_eus", 'desc': "The total number of execution units" },
+>-            "$EuSlicesTotalCount": { 'c': "perf->devinfo.n_eu_slices" },
+>-            "$EuSubslicesTotalCount": { 'c': "perf->devinfo.n_eu_sub_slices" },
+>-            "$EuDualSubslicesTotalCount": { 'c': "perf->devinfo.n_eu_sub_slices" },
+>-            "$EuDualSubslicesSlice0123Count": { 'c': "perf->devinfo.n_eu_sub_slices_half_slices" },
+>-            "$EuThreadsCount": { 'c': "perf->devinfo.eu_threads_count" },
+>-            "$SliceMask": { 'c': "perf->devinfo.slice_mask" },
+>-            "$DualSubsliceMask": { 'c': "perf->devinfo.subslice_mask" },
+>-            "$SubsliceMask": { 'c': "perf->devinfo.subslice_mask" },
+>-            "$GpuTimestampFrequency": { 'c': "perf->devinfo.timestamp_frequency" },
+>-            "$GpuMinFrequency": { 'c': "perf->devinfo.gt_min_freq" },
+>-            "$GpuMaxFrequency": { 'c': "perf->devinfo.gt_max_freq" },
+>-            "$SkuRevisionId": { 'c': "perf->devinfo.revision" },
+>-            "$QueryMode": { 'c': "perf->devinfo.query_mode" },
+>-        }
+>+        self.hw_vars = hw_vars_mapping
+>
+>     def emit_fadd(self, tmp_id, args):
+>         self.c("double tmp{0} = {1} + {2};".format(tmp_id, args[1], args[0]))
+>@@ -286,11 +320,29 @@ class Gen:
+>     def splice_ugt(self, args):
+>         return self.brkt(args[1]) + " > " + self.brkt(args[0])
+>
+>+    def splice_lshft(self, args):
+>+        return '(' + self.brkt(args[1]) + " << " + self.brkt(args[0]) + ')'
+>+
+>+    def splice_rshft(self, args):
+>+        return '(' + self.brkt(args[1]) + " >> " + self.brkt(args[0]) + ')'
+>+
+>+    def splice_uml(self, args):
+>+        return self.brkt(args[1]) + " * " + self.brkt(args[0])
+>+
+>     def resolve_variable(self, name, set):
+>         if name in self.hw_vars:
+>             return self.hw_vars[name]['c']
+>         if name in set.counter_vars:
+>             return set.read_funcs[name] + "(perf, metric_set, accumulator)"
+>+        m = re.search('\$GtSlice([0-9]+)$', name)
+>+        if m:
+>+            return 'intel_perf_devinfo_slice_available(&perf->devinfo, {0})'.format(m.group(1))
+>+        m = re.search('\$GtSlice([0-9]+)DualSubslice([0-9]+)$', name)
+>+        if m:
+>+            return 'intel_perf_devinfo_subslice_available(&perf->devinfo, {0}, {1})'.format(m.group(1), m.group(2))
+>+        m = re.search('\$GtSlice([0-9]+)XeCore([0-9]+)$', name)
+>+        if m:
+>+            return 'intel_perf_devinfo_subslice_available(&perf->devinfo, {0}, {1})'.format(m.group(1), m.group(2))
+>         return None
+>
+>     def output_rpn_equation_code(self, set, counter, equation):
+>diff --git a/lib/i915/perf-configs/perf-metricset-codegen.py b/lib/i915/perf-configs/perf-metricset-codegen.py
+>index 00528c31..80b01be5 100644
+>--- a/lib/i915/perf-configs/perf-metricset-codegen.py
+>+++ b/lib/i915/perf-configs/perf-metricset-codegen.py
+>@@ -126,6 +126,19 @@ def generate_metric_sets(args, gen):
+>                 metric_set->c_offset = metric_set->b_offset + 8;
+>                 metric_set->perfcnt_offset = metric_set->c_offset + 8;
+>
+>+            """))
+>+        elif gen.chipset.startswith("acm"):
+>+            c(textwrap.dedent("""\
+>+                metric_set->perf_oa_format = I915_OA_FORMAT_A24u40_A14u32_B8_C8;
+>+
+>+                metric_set->perf_raw_size = 256;
+>+                metric_set->gpu_time_offset = 0;
+>+                metric_set->gpu_clock_offset = 1;
+>+                metric_set->a_offset = 2;
+>+                metric_set->b_offset = metric_set->a_offset + 38;
+>+                metric_set->c_offset = metric_set->b_offset + 8;
+>+                metric_set->perfcnt_offset = metric_set->c_offset + 8;
+>+
+>             """))
+>         else:
+>             c(textwrap.dedent("""\
+>-- 
+>2.25.1
+>
