@@ -1,18 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3930510E72C
- for <igt-dev@lists.freedesktop.org>; Mon, 10 Oct 2022 21:42:17 +0000 (UTC)
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E6E8110E72C
+ for <igt-dev@lists.freedesktop.org>; Mon, 10 Oct 2022 21:42:21 +0000 (UTC)
 From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 To: igt-dev@lists.freedesktop.org,
  Lionel G Landwerlin <lionel.g.landwerlin@intel.com>,
  Ashutosh Dixit <ashutosh.dixit@intel.com>
-Date: Mon, 10 Oct 2022 21:41:41 +0000
-Message-Id: <20221010214215.5378-3-umesh.nerlige.ramappa@intel.com>
+Date: Mon, 10 Oct 2022 21:42:05 +0000
+Message-Id: <20221010214215.5378-27-umesh.nerlige.ramappa@intel.com>
 In-Reply-To: <20221010214215.5378-1-umesh.nerlige.ramappa@intel.com>
 References: <20221010214215.5378-1-umesh.nerlige.ramappa@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v6 02/36] i915/perf: Fix OA short_reads test
+Subject: [igt-dev] [PATCH i-g-t v6 26/36] tools/i915-perf: record remaining
+ perf data on exit
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,37 +25,28 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-With 5000 ns oa exponent, report lost errors can occur. A report lost
-header can be read by the user even when there are no valid OA report
-samples, so we get an 8 byte read. This defeats the EFAULT check.
+From: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
 
-When checking for EFAULT on a sampled report, discard any report lost
-errors.
-
-Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
-Reviewed-by: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
+Signed-off-by: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
 ---
- tests/i915/perf.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ tools/i915-perf/i915_perf_recorder.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/tests/i915/perf.c b/tests/i915/perf.c
-index 51e2dc87..0b8f6ac8 100644
---- a/tests/i915/perf.c
-+++ b/tests/i915/perf.c
-@@ -2853,8 +2853,13 @@ test_short_reads(void)
+diff --git a/tools/i915-perf/i915_perf_recorder.c b/tools/i915-perf/i915_perf_recorder.c
+index f8f9b737..0c164ef7 100644
+--- a/tools/i915-perf/i915_perf_recorder.c
++++ b/tools/i915-perf/i915_perf_recorder.c
+@@ -1144,6 +1144,11 @@ main(int argc, char *argv[])
  
- 	/* A read that can't return a single record because it would result
- 	 * in a fault on buffer overrun should result in an EFAULT error...
-+	 *
-+	 * Make sure to weed out all report lost errors before verifying EFAULT.
- 	 */
--	ret = read(stream_fd, pages + page_size - 16, page_size);
-+	header = (void *)(pages + page_size - 16);
-+	do {
-+		ret = read(stream_fd, header, page_size);
-+	} while (ret > 0 && header->type == DRM_I915_PERF_RECORD_OA_REPORT_LOST);
- 	igt_assert_eq(ret, -1);
- 	igt_assert_eq(errno, EFAULT);
+ 	fprintf(stdout, "Exiting...\n");
  
++	if (!write_i915_perf_data(ctx.output_stream, ctx.perf_fd)) {
++		fprintf(stderr, "Failed to write i915-perf data: %s\n",
++			strerror(errno));
++	}
++	
+ 	if (!write_correlation_timestamps(ctx.output_stream, ctx.drm_fd)) {
+ 		fprintf(stderr,
+ 			"Failed to write final i915 timestamp correlation data: %s\n",
 -- 
 2.25.1
