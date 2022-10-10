@@ -1,19 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C96AF10E6C1
- for <igt-dev@lists.freedesktop.org>; Mon, 10 Oct 2022 18:13:07 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9677B10E6BC
+ for <igt-dev@lists.freedesktop.org>; Mon, 10 Oct 2022 18:13:06 +0000 (UTC)
 From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 To: igt-dev@lists.freedesktop.org,
  Lionel G Landwerlin <lionel.g.landwerlin@intel.com>,
  Ashutosh Dixit <ashutosh.dixit@intel.com>
-Date: Mon, 10 Oct 2022 18:12:36 +0000
-Message-Id: <20221010181300.513297-11-umesh.nerlige.ramappa@intel.com>
+Date: Mon, 10 Oct 2022 18:12:30 +0000
+Message-Id: <20221010181300.513297-5-umesh.nerlige.ramappa@intel.com>
 In-Reply-To: <20221010181300.513297-1-umesh.nerlige.ramappa@intel.com>
 References: <20221010181300.513297-1-umesh.nerlige.ramappa@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v5 10/34] i915/perf: Skip tests that use
- rendercopy
+Subject: [igt-dev] [PATCH i-g-t v5 04/34] i915/perf: Limit sseu-config tests
+ for gen11
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,57 +25,33 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Running tests that require rendercopy sometimes leaves the DUT in an
-unsusable state. Further tests fail to run and DUT requires reboot.
-Since it affects CI efficiency, skip tests is rendercopy is missing.
+On Gen11, the Media driver will need to limit dispatch to only big
+subslices (usually half the EUs depending on EU fusing). If media,
+render and OA are running in parallel, then OA will lose the NOA config
+because half of the EUs will be turned off by media. To avoid this with
+concurrent use cases, an sseu config to keep all EUs powered on is
+passed to OA in the i915_perf_open_ioctl params. This configuration is
+made part of the render contexts, so that it's applied when 3d contexts
+are running. Since this is an issue on gen11, limit sseu-config tests to
+gen11.
 
 Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 Reviewed-by: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
 ---
- tests/i915/perf.c | 17 ++++++++++++++++-
- 1 file changed, 16 insertions(+), 1 deletion(-)
+ tests/i915/perf.c | 1 +
+ 1 file changed, 1 insertion(+)
 
 diff --git a/tests/i915/perf.c b/tests/i915/perf.c
-index 989f1fce..6079d1b1 100644
+index 0b8f6ac8..ca3ccc17 100644
 --- a/tests/i915/perf.c
 +++ b/tests/i915/perf.c
-@@ -41,6 +41,7 @@
- #include "i915/gem.h"
- #include "i915/perf.h"
- #include "igt.h"
-+#include "igt_perf.h"
- #include "igt_sysfs.h"
- #include "drm.h"
+@@ -5112,6 +5112,7 @@ igt_main
+ 	igt_subtest_group {
+ 		igt_fixture {
+ 			igt_require(i915_perf_revision(drm_fd) >= 4);
++			igt_require(intel_gen(devid) == 11);
+ 		}
  
-@@ -4968,6 +4969,19 @@ static int i915_perf_revision(int fd)
- 	return value;
- }
- 
-+static bool has_class_instance(int i915, uint16_t class, uint16_t instance)
-+{
-+	int fd;
-+
-+	fd = perf_i915_open(i915, I915_PMU_ENGINE_BUSY(class, instance));
-+	if (fd >= 0) {
-+		close(fd);
-+		return true;
-+	}
-+
-+	return false;
-+}
-+
- igt_main
- {
- 	igt_fixture {
-@@ -5012,7 +5026,8 @@ igt_main
- 
- 		gt_max_freq_mhz = sysfs_read(RPS_RP0_FREQ_MHZ);
- 
--		render_copy = igt_get_render_copyfunc(devid);
-+		if (has_class_instance(drm_fd, I915_ENGINE_CLASS_RENDER, 0))
-+			render_copy = igt_get_render_copyfunc(devid);
- 	}
- 
- 	igt_subtest("non-system-wide-paranoid")
+ 		igt_describe("Verify invalid SSEU opening parameters");
 -- 
 2.25.1
