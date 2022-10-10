@@ -1,18 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 601D210E6B6
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7C29E10E6B7
  for <igt-dev@lists.freedesktop.org>; Mon, 10 Oct 2022 18:13:06 +0000 (UTC)
 From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 To: igt-dev@lists.freedesktop.org,
  Lionel G Landwerlin <lionel.g.landwerlin@intel.com>,
  Ashutosh Dixit <ashutosh.dixit@intel.com>
-Date: Mon, 10 Oct 2022 18:12:28 +0000
-Message-Id: <20221010181300.513297-3-umesh.nerlige.ramappa@intel.com>
+Date: Mon, 10 Oct 2022 18:12:29 +0000
+Message-Id: <20221010181300.513297-4-umesh.nerlige.ramappa@intel.com>
 In-Reply-To: <20221010181300.513297-1-umesh.nerlige.ramappa@intel.com>
 References: <20221010181300.513297-1-umesh.nerlige.ramappa@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v5 02/34] i915/perf: Fix OA short_reads test
+Subject: [igt-dev] [PATCH i-g-t v5 03/34] i915/perf: Check return value from
+ getparam
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,37 +25,70 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-With 5000 ns oa exponent, report lost errors can occur. A report lost
-header can be read by the user even when there are no valid OA report
-samples, so we get an 8 byte read. This defeats the EFAULT check.
-
-When checking for EFAULT on a sampled report, discard any report lost
-errors.
+In some cases getparam could fail. Check return from getparam and fail
+early on.
 
 Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 Reviewed-by: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
 ---
- tests/i915/perf.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ lib/i915/perf.c | 28 +++++++++++++++-------------
+ 1 file changed, 15 insertions(+), 13 deletions(-)
 
-diff --git a/tests/i915/perf.c b/tests/i915/perf.c
-index 51e2dc87..0b8f6ac8 100644
---- a/tests/i915/perf.c
-+++ b/tests/i915/perf.c
-@@ -2853,8 +2853,13 @@ test_short_reads(void)
+diff --git a/lib/i915/perf.c b/lib/i915/perf.c
+index d88835ff..7349a460 100644
+--- a/lib/i915/perf.c
++++ b/lib/i915/perf.c
+@@ -287,19 +287,16 @@ intel_perf_for_devinfo(uint32_t device_id,
+ 	return perf;
+ }
  
- 	/* A read that can't return a single record because it would result
- 	 * in a fault on buffer overrun should result in an EFAULT error...
-+	 *
-+	 * Make sure to weed out all report lost errors before verifying EFAULT.
- 	 */
--	ret = read(stream_fd, pages + page_size - 16, page_size);
-+	header = (void *)(pages + page_size - 16);
-+	do {
-+		ret = read(stream_fd, header, page_size);
-+	} while (ret > 0 && header->type == DRM_I915_PERF_RECORD_OA_REPORT_LOST);
- 	igt_assert_eq(ret, -1);
- 	igt_assert_eq(errno, EFAULT);
+-static uint32_t
+-getparam(int drm_fd, uint32_t param)
++static int
++getparam(int drm_fd, uint32_t param, uint32_t *val)
+ {
+-        struct drm_i915_getparam gp;
+-        int val = -1;
+-
+-        memset(&gp, 0, sizeof(gp));
+-        gp.param = param;
+-        gp.value = &val;
++	struct drm_i915_getparam gp;
  
+-	perf_ioctl(drm_fd, DRM_IOCTL_I915_GETPARAM, &gp);
++	memset(&gp, 0, sizeof(gp));
++	gp.param = param;
++	gp.value = (int *)val;
+ 
+-        return val;
++	return perf_ioctl(drm_fd, DRM_IOCTL_I915_GETPARAM, &gp);
+ }
+ 
+ static bool
+@@ -415,9 +412,9 @@ open_master_sysfs_dir(int drm_fd)
+ struct intel_perf *
+ intel_perf_for_fd(int drm_fd)
+ {
+-	uint32_t device_id = getparam(drm_fd, I915_PARAM_CHIPSET_ID);
+-	uint32_t device_revision = getparam(drm_fd, I915_PARAM_REVISION);
+-	uint32_t timestamp_frequency = getparam(drm_fd, I915_PARAM_CS_TIMESTAMP_FREQUENCY);
++	uint32_t device_id;
++	uint32_t device_revision;
++	uint32_t timestamp_frequency;
+ 	uint64_t gt_min_freq;
+ 	uint64_t gt_max_freq;
+ 	struct drm_i915_query_topology_info *topology;
+@@ -434,6 +431,11 @@ intel_perf_for_fd(int drm_fd)
+ 	}
+ 	close(sysfs_dir_fd);
+ 
++	if (getparam(drm_fd, I915_PARAM_CHIPSET_ID, &device_id) ||
++	    getparam(drm_fd, I915_PARAM_REVISION, &device_revision) ||
++	    getparam(drm_fd, I915_PARAM_CS_TIMESTAMP_FREQUENCY, &timestamp_frequency))
++		return NULL;
++
+ 	topology = query_topology(drm_fd);
+ 	if (!topology)
+ 		return NULL;
 -- 
 2.25.1
