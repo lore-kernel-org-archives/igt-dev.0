@@ -1,19 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id F397110E6C0
- for <igt-dev@lists.freedesktop.org>; Mon, 10 Oct 2022 18:13:06 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8706810E6BD
+ for <igt-dev@lists.freedesktop.org>; Mon, 10 Oct 2022 18:13:09 +0000 (UTC)
 From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 To: igt-dev@lists.freedesktop.org,
  Lionel G Landwerlin <lionel.g.landwerlin@intel.com>,
  Ashutosh Dixit <ashutosh.dixit@intel.com>
-Date: Mon, 10 Oct 2022 18:12:33 +0000
-Message-Id: <20221010181300.513297-8-umesh.nerlige.ramappa@intel.com>
+Date: Mon, 10 Oct 2022 18:12:46 +0000
+Message-Id: <20221010181300.513297-21-umesh.nerlige.ramappa@intel.com>
 In-Reply-To: <20221010181300.513297-1-umesh.nerlige.ramappa@intel.com>
 References: <20221010181300.513297-1-umesh.nerlige.ramappa@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v5 07/34] i915/perf: Use ARRAY_SIZE
- consistently for num_properties
+Subject: [igt-dev] [PATCH i-g-t v5 20/34] lib/i915/perf: add a helper to
+ read timestamps
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,269 +25,139 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Replace all variations of calculating the num_properties with
-ARRAY_SIZE.
+From: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
 
-Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
-Reviewed-by: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
+We expect location/size of the timestamp might move around in the
+report.
+
+Signed-off-by: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
 ---
- tests/i915/perf.c | 62 +++++++++++++++++++++++------------------------
- 1 file changed, 30 insertions(+), 32 deletions(-)
+ lib/i915/perf.c                    | 21 +++++++++++++++++++++
+ lib/i915/perf.h                    |  4 ++++
+ lib/i915/perf_data_reader.c        | 14 ++++++--------
+ lib/meson.build                    |  2 +-
+ tools/i915-perf/i915_perf_reader.c | 20 ++++++++++++++++++++
+ 5 files changed, 52 insertions(+), 9 deletions(-)
 
-diff --git a/tests/i915/perf.c b/tests/i915/perf.c
-index 65434055..75594f04 100644
---- a/tests/i915/perf.c
-+++ b/tests/i915/perf.c
-@@ -86,8 +86,6 @@ IGT_TEST_DESCRIPTION("Test the i915 perf metrics streaming interface");
+diff --git a/lib/i915/perf.c b/lib/i915/perf.c
+index d004313f..82f08b36 100644
+--- a/lib/i915/perf.c
++++ b/lib/i915/perf.c
+@@ -737,3 +737,24 @@ void intel_perf_accumulate_reports(struct intel_perf_accumulator *acc,
+ 	}
  
- #define MAX_OA_BUF_SIZE (16 * 1024 * 1024)
+ }
++
++uint64_t intel_perf_read_record_timestamp(const struct intel_perf *perf,
++					  const struct intel_perf_metric_set *metric_set,
++					  const struct drm_i915_perf_record_header *record)
++{
++       const uint32_t *report32 = (const uint32_t *)(record + 1);
++       uint64_t ts;
++
++       switch (metric_set->perf_oa_format) {
++       case I915_OA_FORMAT_A24u40_A14u32_B8_C8:
++       case I915_OA_FORMAT_A32u40_A4u32_B8_C8:
++       case I915_OA_FORMAT_A45_B8_C8:
++               ts = report32[1];
++               break;
++
++       default:
++               assert(0);
++       }
++
++       return ts;
++}
+diff --git a/lib/i915/perf.h b/lib/i915/perf.h
+index d2429c47..e3848b7e 100644
+--- a/lib/i915/perf.h
++++ b/lib/i915/perf.h
+@@ -240,6 +240,10 @@ void intel_perf_accumulate_reports(struct intel_perf_accumulator *acc,
+ 				   const struct drm_i915_perf_record_header *record0,
+ 				   const struct drm_i915_perf_record_header *record1);
  
--#define NUM_PROPERTIES(p) (sizeof(p) / (2 * sizeof(uint64_t)))
++uint64_t intel_perf_read_record_timestamp(const struct intel_perf *perf,
++					  const struct intel_perf_metric_set *metric_set,
++					  const struct drm_i915_perf_record_header *record);
++
+ #ifdef __cplusplus
+ };
+ #endif
+diff --git a/lib/i915/perf_data_reader.c b/lib/i915/perf_data_reader.c
+index 857bcd3a..4d1efe92 100644
+--- a/lib/i915/perf_data_reader.c
++++ b/lib/i915/perf_data_reader.c
+@@ -65,12 +65,6 @@ oa_report_ctx_id(const struct intel_perf_devinfo *devinfo, const uint8_t *report
+ 	return ((const uint32_t *) report)[2];
+ }
+ 
+-static inline uint64_t
+-oa_report_timestamp(const uint8_t *report)
+-{
+-	return ((const uint32_t *)report)[1];
+-}
 -
- struct accumulator {
- #define MAX_RAW_OA_COUNTERS 62
- 	enum drm_i915_oa_format format;
-@@ -1025,7 +1023,7 @@ test_system_wide_paranoid(void)
- 		struct drm_i915_perf_open_param param = {
- 			.flags = I915_PERF_FLAG_FD_CLOEXEC |
- 				I915_PERF_FLAG_FD_NONBLOCK,
--			.num_properties = sizeof(properties) / 16,
-+			.num_properties = ARRAY_SIZE(properties) / 2,
- 			.properties_ptr = to_user_pointer(properties),
- 		};
+ static void
+ append_record(struct intel_perf_data_reader *reader,
+ 	      const struct drm_i915_perf_record_header *header)
+@@ -298,8 +292,12 @@ generate_cpu_events(struct intel_perf_data_reader *reader)
+ 		last_ctx_id = oa_report_ctx_id(&reader->devinfo, start_report);
+ 		current_ctx_id = oa_report_ctx_id(&reader->devinfo, end_report);
  
-@@ -1051,7 +1049,7 @@ test_system_wide_paranoid(void)
- 		struct drm_i915_perf_open_param param = {
- 			.flags = I915_PERF_FLAG_FD_CLOEXEC |
- 				I915_PERF_FLAG_FD_NONBLOCK,
--			.num_properties = sizeof(properties) / 16,
-+			.num_properties = ARRAY_SIZE(properties) / 2,
- 			.properties_ptr = to_user_pointer(properties),
- 		};
- 		write_u64_file("/proc/sys/dev/i915/perf_stream_paranoid", 0);
-@@ -1082,7 +1080,7 @@ test_invalid_open_flags(void)
- 	};
- 	struct drm_i915_perf_open_param param = {
- 		.flags = ~0, /* Undefined flag bits set! */
--		.num_properties = sizeof(properties) / 16,
-+		.num_properties = ARRAY_SIZE(properties) / 2,
- 		.properties_ptr = to_user_pointer(properties),
- 	};
+-		gpu_ts_start = oa_report_timestamp(start_report);
+-		gpu_ts_end = oa_report_timestamp(end_report);
++		gpu_ts_start = intel_perf_read_record_timestamp(reader->perf,
++								reader->metric_set,
++								last_header);
++		gpu_ts_end = intel_perf_read_record_timestamp(reader->perf,
++							      reader->metric_set,
++							      current_header);
  
-@@ -1104,7 +1102,7 @@ test_invalid_oa_metric_set_id(void)
- 	struct drm_i915_perf_open_param param = {
- 		.flags = I915_PERF_FLAG_FD_CLOEXEC |
- 			I915_PERF_FLAG_FD_NONBLOCK,
--		.num_properties = sizeof(properties) / 16,
-+		.num_properties = ARRAY_SIZE(properties) / 2,
- 		.properties_ptr = to_user_pointer(properties),
- 	};
+ 		if (last_ctx_id == current_ctx_id)
+ 			continue;
+diff --git a/lib/meson.build b/lib/meson.build
+index 98c2803b..2e5adbae 100644
+--- a/lib/meson.build
++++ b/lib/meson.build
+@@ -329,7 +329,7 @@ pkgconf.set('prefix', get_option('prefix'))
+ pkgconf.set('exec_prefix', '${prefix}')
+ pkgconf.set('libdir', '${prefix}/@0@'.format(get_option('libdir')))
+ pkgconf.set('includedir', '${prefix}/@0@'.format(get_option('includedir')))
+-pkgconf.set('i915_perf_version', '1.2.0')
++pkgconf.set('i915_perf_version', '1.3.0')
  
-@@ -1138,7 +1136,7 @@ test_invalid_oa_format_id(void)
- 	struct drm_i915_perf_open_param param = {
- 		.flags = I915_PERF_FLAG_FD_CLOEXEC |
- 			I915_PERF_FLAG_FD_NONBLOCK,
--		.num_properties = sizeof(properties) / 16,
-+		.num_properties = ARRAY_SIZE(properties) / 2,
- 		.properties_ptr = to_user_pointer(properties),
- 	};
+ configure_file(
+   input : 'i915-perf.pc.in',
+diff --git a/tools/i915-perf/i915_perf_reader.c b/tools/i915-perf/i915_perf_reader.c
+index e51f5a5d..afd8c39c 100644
+--- a/tools/i915-perf/i915_perf_reader.c
++++ b/tools/i915-perf/i915_perf_reader.c
+@@ -230,6 +230,26 @@ main(int argc, char *argv[])
+ 	fprintf(stdout, "Context switches: %u\n", reader.n_timelines);
+ 	fprintf(stdout, "Timestamp correlation points: %u\n", reader.n_correlations);
  
-@@ -1170,7 +1168,7 @@ test_missing_sample_flags(void)
- 	};
- 	struct drm_i915_perf_open_param param = {
- 		.flags = I915_PERF_FLAG_FD_CLOEXEC,
--		.num_properties = sizeof(properties) / 16,
-+		.num_properties = ARRAY_SIZE(properties) / 2,
- 		.properties_ptr = to_user_pointer(properties),
- 	};
- 
-@@ -1310,7 +1308,7 @@ open_and_read_2_oa_reports(int format_id,
- 	};
- 	struct drm_i915_perf_open_param param = {
- 		.flags = I915_PERF_FLAG_FD_CLOEXEC,
--		.num_properties = sizeof(properties) / 16,
-+		.num_properties = ARRAY_SIZE(properties) / 2,
- 		.properties_ptr = to_user_pointer(properties),
- 	};
- 
-@@ -1777,7 +1775,7 @@ test_invalid_oa_exponent(void)
- 	};
- 	struct drm_i915_perf_open_param param = {
- 		.flags = I915_PERF_FLAG_FD_CLOEXEC,
--		.num_properties = sizeof(properties) / 16,
-+		.num_properties = ARRAY_SIZE(properties) / 2,
- 		.properties_ptr = to_user_pointer(properties),
- 	};
- 
-@@ -1812,7 +1810,7 @@ test_low_oa_exponent_permissions(void)
- 	};
- 	struct drm_i915_perf_open_param param = {
- 		.flags = I915_PERF_FLAG_FD_CLOEXEC,
--		.num_properties = sizeof(properties) / 16,
-+		.num_properties = ARRAY_SIZE(properties) / 2,
- 		.properties_ptr = to_user_pointer(properties),
- 	};
- 	uint64_t oa_period, oa_freq;
-@@ -1875,7 +1873,7 @@ test_per_context_mode_unprivileged(void)
- 	};
- 	struct drm_i915_perf_open_param param = {
- 		.flags = I915_PERF_FLAG_FD_CLOEXEC,
--		.num_properties = sizeof(properties) / 16,
-+		.num_properties = ARRAY_SIZE(properties) / 2,
- 		.properties_ptr = to_user_pointer(properties),
- 	};
- 
-@@ -1951,8 +1949,8 @@ test_blocking(uint64_t requested_oa_period, bool set_kernel_hrtimer, uint64_t ke
- 		.flags = I915_PERF_FLAG_FD_CLOEXEC |
- 			I915_PERF_FLAG_DISABLED,
- 		.num_properties = set_kernel_hrtimer ?
--				  NUM_PROPERTIES(properties) :
--				  NUM_PROPERTIES(properties) - 1,
-+				  ARRAY_SIZE(properties) / 2 :
-+				  (ARRAY_SIZE(properties) / 2) - 1,
- 		.properties_ptr = to_user_pointer(properties),
- 	};
- 	uint8_t buf[1024 * 1024];
-@@ -2111,8 +2109,8 @@ test_polling(uint64_t requested_oa_period, bool set_kernel_hrtimer, uint64_t ker
- 			I915_PERF_FLAG_DISABLED |
- 			I915_PERF_FLAG_FD_NONBLOCK,
- 		.num_properties = set_kernel_hrtimer ?
--				  NUM_PROPERTIES(properties) :
--				  NUM_PROPERTIES(properties) - 1,
-+				  ARRAY_SIZE(properties) / 2 :
-+				  (ARRAY_SIZE(properties) / 2) - 1,
- 		.properties_ptr = to_user_pointer(properties),
- 	};
- 	uint8_t buf[1024 * 1024];
-@@ -2302,7 +2300,7 @@ static void test_polling_small_buf(void)
- 		.flags = I915_PERF_FLAG_FD_CLOEXEC |
- 			I915_PERF_FLAG_DISABLED |
- 			I915_PERF_FLAG_FD_NONBLOCK,
--		.num_properties = NUM_PROPERTIES(properties),
-+		.num_properties = ARRAY_SIZE(properties) / 2,
- 		.properties_ptr = to_user_pointer(properties),
- 	};
- 	uint32_t test_duration = 80 * 1000 * 1000;
-@@ -2402,7 +2400,7 @@ gen12_test_oa_tlb_invalidate(void)
- 	struct drm_i915_perf_open_param param = {
- 		.flags = I915_PERF_FLAG_FD_CLOEXEC |
- 			I915_PERF_FLAG_DISABLED,
--		.num_properties = sizeof(properties) / 16,
-+		.num_properties = ARRAY_SIZE(properties) / 2,
- 		.properties_ptr = to_user_pointer(properties),
- 	};
- 	int num_reports1, num_reports2, num_expected_reports;
-@@ -2593,7 +2591,7 @@ test_non_zero_reason(void)
- 	};
- 	struct drm_i915_perf_open_param param = {
- 		.flags = I915_PERF_FLAG_FD_CLOEXEC,
--		.num_properties = sizeof(properties) / 16,
-+		.num_properties = ARRAY_SIZE(properties) / 2,
- 		.properties_ptr = to_user_pointer(properties),
- 	};
- 	struct drm_i915_perf_record_header *header;
-@@ -2678,7 +2676,7 @@ test_enable_disable(void)
- 	struct drm_i915_perf_open_param param = {
- 		.flags = I915_PERF_FLAG_FD_CLOEXEC |
- 			 I915_PERF_FLAG_DISABLED, /* Verify we start disabled */
--		.num_properties = sizeof(properties) / 16,
-+		.num_properties = ARRAY_SIZE(properties) / 2,
- 		.properties_ptr = to_user_pointer(properties),
- 	};
- 	int buf_size = 65536 * (256 + sizeof(struct drm_i915_perf_record_header));
-@@ -2827,7 +2825,7 @@ test_short_reads(void)
- 	};
- 	struct drm_i915_perf_open_param param = {
- 		.flags = I915_PERF_FLAG_FD_CLOEXEC,
--		.num_properties = sizeof(properties) / 16,
-+		.num_properties = ARRAY_SIZE(properties) / 2,
- 		.properties_ptr = to_user_pointer(properties),
- 	};
- 	size_t record_size = 256 + sizeof(struct drm_i915_perf_record_header);
-@@ -2919,7 +2917,7 @@ test_non_sampling_read_error(void)
- 	};
- 	struct drm_i915_perf_open_param param = {
- 		.flags = I915_PERF_FLAG_FD_CLOEXEC,
--		.num_properties = sizeof(properties) / 16,
-+		.num_properties = ARRAY_SIZE(properties) / 2,
- 		.properties_ptr = to_user_pointer(properties),
- 	};
- 	int ret;
-@@ -2955,7 +2953,7 @@ test_disabled_read_error(void)
- 	struct drm_i915_perf_open_param param = {
- 		.flags = I915_PERF_FLAG_FD_CLOEXEC |
- 			 I915_PERF_FLAG_DISABLED, /* XXX: open disabled */
--		.num_properties = sizeof(properties) / 16,
-+		.num_properties = ARRAY_SIZE(properties) / 2,
- 		.properties_ptr = to_user_pointer(properties),
- 	};
- 	uint32_t oa_report0[64];
-@@ -3112,7 +3110,7 @@ test_mi_rpc(void)
- 	};
- 	struct drm_i915_perf_open_param param = {
- 		.flags = I915_PERF_FLAG_FD_CLOEXEC,
--		.num_properties = sizeof(properties) / 16,
-+		.num_properties = ARRAY_SIZE(properties) / 2,
- 		.properties_ptr = to_user_pointer(properties),
- 	};
- 	struct buf_ops *bops = buf_ops_create(drm_fd);
-@@ -3215,7 +3213,7 @@ hsw_test_single_ctx_counters(void)
- 	};
- 	struct drm_i915_perf_open_param param = {
- 		.flags = I915_PERF_FLAG_FD_CLOEXEC,
--		.num_properties = sizeof(properties) / 16,
-+		.num_properties = ARRAY_SIZE(properties) / 2,
- 		.properties_ptr = to_user_pointer(properties),
- 	};
- 
-@@ -4196,7 +4194,7 @@ test_rc6_disable(void)
- 	};
- 	struct drm_i915_perf_open_param param = {
- 		.flags = I915_PERF_FLAG_FD_CLOEXEC,
--		.num_properties = sizeof(properties) / 16,
-+		.num_properties = ARRAY_SIZE(properties) / 2,
- 		.properties_ptr = to_user_pointer(properties),
- 	};
- 	unsigned long rc6_start, rc6_end, rc6_enabled;
-@@ -4252,7 +4250,7 @@ test_stress_open_close(void)
- 		struct drm_i915_perf_open_param param = {
- 			.flags = I915_PERF_FLAG_FD_CLOEXEC |
- 			         I915_PERF_FLAG_DISABLED, /* XXX: open disabled */
--			.num_properties = NUM_PROPERTIES(properties),
-+			.num_properties = ARRAY_SIZE(properties) / 2,
- 			.properties_ptr = to_user_pointer(properties),
- 		};
- 
-@@ -4348,8 +4346,8 @@ test_global_sseu_config_invalid(void)
- 	struct drm_i915_perf_open_param param = {
- 		.flags = I915_PERF_FLAG_FD_CLOEXEC |
- 		I915_PERF_FLAG_DISABLED, /* XXX: open disabled */
--		.num_properties = NUM_PROPERTIES(properties),
--			.properties_ptr = to_user_pointer(properties),
-+		.num_properties = ARRAY_SIZE(properties) / 2,
-+		.properties_ptr = to_user_pointer(properties),
- 	};
- 
- 	memset(&default_sseu, 0, sizeof(default_sseu));
-@@ -4423,8 +4421,8 @@ test_global_sseu_config(void)
- 	struct drm_i915_perf_open_param param = {
- 		.flags = I915_PERF_FLAG_FD_CLOEXEC |
- 		I915_PERF_FLAG_DISABLED, /* XXX: open disabled */
--		.num_properties = NUM_PROPERTIES(properties),
--			.properties_ptr = to_user_pointer(properties),
-+		.num_properties = ARRAY_SIZE(properties) / 2,
-+		.properties_ptr = to_user_pointer(properties),
- 	};
- 
- 	memset(&default_sseu, 0, sizeof(default_sseu));
-@@ -4856,7 +4854,7 @@ test_i915_ref_count(void)
- 	};
- 	struct drm_i915_perf_open_param param = {
- 		.flags = I915_PERF_FLAG_FD_CLOEXEC,
--		.num_properties = sizeof(properties) / 16,
-+		.num_properties = ARRAY_SIZE(properties) / 2,
- 		.properties_ptr = to_user_pointer(properties),
- 	};
- 	unsigned baseline, ref_count0, ref_count1;
++	if (reader.n_correlations < 2) {
++		fprintf(stderr, "Less than 2 CPU/GPU timestamp correlation points.\n");
++		return EXIT_FAILURE;
++	}
++
++	fprintf(stdout, "Timestamp correlation CPU range: 0x%016"PRIx64"-0x%016"PRIx64"\n",
++		reader.correlations[0]->cpu_timestamp,
++		reader.correlations[reader.n_correlations - 1]->cpu_timestamp);
++	fprintf(stdout, "Timestamp correlation GPU range: 0x%016"PRIx64"-0x%016"PRIx64"\n",
++		reader.correlations[0]->gpu_timestamp,
++		reader.correlations[reader.n_correlations - 1]->gpu_timestamp);
++
++	fprintf(stdout, "OA data timestamp range: 0x%016"PRIx64"-0x%016"PRIx64"\n",
++		intel_perf_read_record_timestamp(reader.perf,
++						 reader.metric_set,
++						 reader.records[0]),
++		intel_perf_read_record_timestamp(reader.perf,
++						 reader.metric_set,
++						 reader.records[reader.n_records - 1]));
++
+ 	if (strcmp(reader.metric_set_uuid, reader.metric_set->hw_config_guid)) {
+ 		fprintf(stdout,
+ 			"WARNING: Recording used a different HW configuration.\n"
 -- 
 2.25.1
