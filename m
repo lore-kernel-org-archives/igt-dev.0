@@ -1,21 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B48E210E23A
- for <igt-dev@lists.freedesktop.org>; Mon, 10 Oct 2022 13:48:36 +0000 (UTC)
-Message-ID: <bc64f116-431a-0d95-fc87-7a73605e3c4c@intel.com>
-Date: Mon, 10 Oct 2022 19:18:15 +0530
-Content-Language: en-US
-To: Mohammed Thasleem <mohammed.thasleem@intel.com>,
- <igt-dev@lists.freedesktop.org>
-References: <20220929185139.31587-1-mohammed.thasleem@intel.com>
- <20221005201207.194079-1-mohammed.thasleem@intel.com>
-From: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
-In-Reply-To: <20221005201207.194079-1-mohammed.thasleem@intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
+Received: from fanzine2.igalia.com (fanzine.igalia.com [178.60.130.6])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BCEB810E615
+ for <igt-dev@lists.freedesktop.org>; Mon, 10 Oct 2022 14:26:24 +0000 (UTC)
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_force_connector_basic: Test
- Cleanup
+Date: Mon, 10 Oct 2022 16:26:19 +0200
+From: aemad <aemad@igalia.com>
+To: juhapekka.heikkila@gmail.com
+In-Reply-To: <aa261d04-81b3-48ac-603b-c75fcb3c8909@gmail.com>
+References: <20221009151844.3456-1-aemad@igalia.com>
+ <aa261d04-81b3-48ac-603b-c75fcb3c8909@gmail.com>
+Message-ID: <3b7df5498d9c2d5e5d1541de3da3f4f1@igalia.com>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_cursor_crc: prevent the
+ entire test from being aborted when a subtest fails
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,526 +21,273 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: igt-dev@lists.freedesktop.org, petri.latvala@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Thu-06-10-2022 01:42 am, Mohammed Thasleem wrote:
-> Sanitize the system state before starting the subtest.
-> 
-> v2: Created a new functions for each subtest instead
->      of managing the full logic within the igt_subtest().
-> v3: Minor changes.
-> v4: Replaced igt_assert_f with igt_require_f in prune-stale-modes.
-> v5: Added goto statement if connector_id found true.
-> v6: Minor changes.
-> v7: Added func pointer to subtests.
-> 
-> Signed-off-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
+Hi Juha,
 
-Reviewed-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-> ---
->   tests/kms_force_connector_basic.c | 454 ++++++++++++++++--------------
->   1 file changed, 243 insertions(+), 211 deletions(-)
+On 2022-10-10 13:16, Juha-Pekka Heikkila wrote:
+> Hi Alaa,
 > 
-> diff --git a/tests/kms_force_connector_basic.c b/tests/kms_force_connector_basic.c
-> index 6259cec5..cde47e92 100644
-> --- a/tests/kms_force_connector_basic.c
-> +++ b/tests/kms_force_connector_basic.c
-> @@ -58,6 +58,215 @@ static void reset_connectors(void)
->   	close(drm_fd);
->   }
->   
-> +static void force_load_detect(int drm_fd, drmModeConnectorPtr connector, drmModeRes *res)
-> +{
-> +	int i, j, w = 64, h = 64;
-> +	drmModePlaneRes *plane_resources;
-> +	drmModeConnector *temp;
-> +	struct igt_fb xrgb_fb, argb_fb;
-> +
-> +	/* No load detect on HDMI. */
-> +	igt_require(connector->connector_type == DRM_MODE_CONNECTOR_VGA);
-> +
-> +	igt_create_fb(drm_fd, w, h, DRM_FORMAT_XRGB8888, 0, &xrgb_fb);
-> +	igt_create_fb(drm_fd, w, h, DRM_FORMAT_ARGB8888, 0, &argb_fb);
-> +	igt_assert(drmSetClientCap(drm_fd, DRM_CLIENT_CAP_UNIVERSAL_PLANES, 1) == 0);
-> +
-> +	/*
-> +	 * Disable all outputs to make sure we have a
-> +	 * free crtc available for load detect.
-> +	 */
-> +	kmstest_unset_all_crtcs(drm_fd, res);
-> +
-> +	igt_set_module_param_int(drm_fd, "load_detect_test", 1);
-> +
-> +	plane_resources = drmModeGetPlaneResources(drm_fd);
-> +	igt_assert(plane_resources);
-> +
-> +	for (i = 0; i < plane_resources->count_planes; i++) {
-> +		drmModePlane *drm_plane;
-> +		bool found = false;
-> +		uint32_t plane_id = plane_resources->planes[i];
-> +
-> +		drm_plane = drmModeGetPlane(drm_fd, plane_id);
-> +		igt_assert(drm_plane);
-> +
-> +		for (j = 0; j < drm_plane->count_formats; j++) {
-> +			uint32_t format = drm_plane->formats[j];
-> +			uint32_t crtc = ffs(drm_plane->possible_crtcs) - 1;
-> +			uint32_t crtc_id = res->crtcs[crtc];
-> +
-> +			if (format == DRM_FORMAT_XRGB8888)
-> +				do_or_die(drmModeSetPlane(drm_fd, plane_id, crtc_id,
-> +						xrgb_fb.fb_id,
-> +						0, 0, 0, w, h,
-> +						0, 0, IGT_FIXED(w, 0), IGT_FIXED(h, 0)));
-> +			else if (format == DRM_FORMAT_ARGB8888)
-> +				do_or_die(drmModeSetPlane(drm_fd, plane_id, crtc_id,
-> +						argb_fb.fb_id,
-> +						0, 0, 0, w, h,
-> +						0, 0, IGT_FIXED(w, 0), IGT_FIXED(h, 0)));
-> +			else
-> +				continue;
-> +
-> +			found = true;
-> +			break;
-> +		}
-> +		drmModeFreePlane(drm_plane);
-> +		igt_assert(found);
-> +	}
-> +
-> +	/*
-> +	 * This can't use drmModeGetConnectorCurrent
-> +	 * because connector probing is the point of this test.
-> +	 */
-> +	temp = drmModeGetConnector(drm_fd, connector->connector_id);
-> +
-> +	igt_set_module_param_int(drm_fd, "load_detect_test", 0);
-> +
-> +	igt_assert(temp->connection != DRM_MODE_UNKNOWNCONNECTION);
-> +
-> +	drmModeFreeConnector(temp);
-> +
-> +	/* Look if planes are unmodified. */
-> +	for (i = 0; i < plane_resources->count_planes; i++) {
-> +		drmModePlane *drm_plane;
-> +
-> +		drm_plane = drmModeGetPlane(drm_fd,
-> +					    plane_resources->planes[i]);
-> +		igt_assert(drm_plane);
-> +
-> +		igt_assert(drm_plane->crtc_id);
-> +		igt_assert(drm_plane->fb_id);
-> +
-> +		if (drm_plane->fb_id != xrgb_fb.fb_id)
-> +			igt_assert_eq(drm_plane->fb_id, argb_fb.fb_id);
-> +
-> +		drmModeFreePlane(drm_plane);
-> +	}
-> +}
-> +
-> +static void force_connector_state(int drm_fd, drmModeConnectorPtr connector)
-> +{
-> +	igt_display_t display;
-> +	drmModeConnector *temp;
-> +
-> +	igt_display_require(&display, drm_fd);
-> +
-> +	/* Reset display before attempt to use it. */
-> +	igt_display_reset(&display);
-> +	igt_display_commit(&display);
-> +
-> +	/* Force the connector on and check the reported values. */
-> +	kmstest_force_connector(drm_fd, connector, FORCE_CONNECTOR_ON);
-> +	temp = drmModeGetConnectorCurrent(drm_fd,
-> +					  connector->connector_id);
-> +	igt_assert_eq(temp->connection, DRM_MODE_CONNECTED);
-> +	igt_assert_lt(0, temp->count_modes);
-> +	drmModeFreeConnector(temp);
-> +
-> +	/* Force the connector off. */
-> +	kmstest_force_connector(drm_fd, connector,
-> +				FORCE_CONNECTOR_OFF);
-> +	temp = drmModeGetConnectorCurrent(drm_fd,
-> +					  connector->connector_id);
-> +	igt_assert_eq(temp->connection, DRM_MODE_DISCONNECTED);
-> +	igt_assert_eq(0, temp->count_modes);
-> +	drmModeFreeConnector(temp);
-> +
-> +	/* Check that the previous state is restored. */
-> +	kmstest_force_connector(drm_fd, connector,
-> +				FORCE_CONNECTOR_UNSPECIFIED);
-> +	temp = drmModeGetConnectorCurrent(drm_fd,
-> +					  connector->connector_id);
-> +	igt_assert_eq(temp->connection, connector->connection);
-> +	drmModeFreeConnector(temp);
-> +
-> +	igt_display_fini(&display);
-> +}
-> +
-> +static void force_edid(int drm_fd, drmModeConnectorPtr connector)
-> +{
-> +	drmModeConnector *temp;
-> +
-> +	kmstest_force_connector(drm_fd, connector,
-> +				FORCE_CONNECTOR_ON);
-> +	temp = drmModeGetConnectorCurrent(drm_fd,
-> +					  connector->connector_id);
-> +	drmModeFreeConnector(temp);
-> +
-> +	/* Test edid forcing. */
-> +	kmstest_force_edid(drm_fd, connector,
-> +			   igt_kms_get_base_edid());
-> +	temp = drmModeGetConnectorCurrent(drm_fd,
-> +					  connector->connector_id);
-> +
-> +	igt_debug("num_conn %i\n", temp->count_modes);
-> +
-> +	CHECK_MODE(temp->modes[0], 1920, 1080, 60);
-> +	/*
-> +	 * Don't check non-preferred modes to avoid to tight coupling
-> +	 * with the in-kernel EDID parser.
-> +	 */
-> +
-> +	drmModeFreeConnector(temp);
-> +
-> +	/* Remove edid. */
-> +	kmstest_force_edid(drm_fd, connector, NULL);
-> +	kmstest_force_connector(drm_fd, connector,
-> +				FORCE_CONNECTOR_UNSPECIFIED);
-> +	temp = drmModeGetConnectorCurrent(drm_fd,
-> +					  connector->connector_id);
-> +	/*
-> +	 * The connector should now have the same number of modes that
-> +	 * it started with.
-> +	 */
-> +	igt_assert_eq(temp->count_modes, connector->count_modes);
-> +	drmModeFreeConnector(temp);
-> +
-> +}
-> +
-> +static void prune_stale_modes(int drm_fd, drmModeConnectorPtr connector)
-> +{
-> +	int i;
-> +	drmModeConnector *temp;
-> +
-> +	kmstest_force_connector(drm_fd, connector,
-> +				FORCE_CONNECTOR_ON);
-> +
-> +	/* Test pruning of stale modes. */
-> +	kmstest_force_edid(drm_fd, connector,
-> +			   igt_kms_get_alt_edid());
-> +	temp = drmModeGetConnectorCurrent(drm_fd,
-> +					  connector->connector_id);
-> +
-> +	for (i = 0; i < temp->count_modes; i++) {
-> +		if (temp->modes[i].hdisplay == 1400 &&
-> +		    temp->modes[i].vdisplay == 1050)
-> +			break;
-> +	}
-> +	igt_require_f(i != temp->count_modes, "1400x1050 not on mode list\n");
-> +	drmModeFreeConnector(temp);
-> +
-> +	kmstest_force_edid(drm_fd, connector,
-> +			   igt_kms_get_base_edid());
-> +	temp = drmModeGetConnectorCurrent(drm_fd,
-> +					  connector->connector_id);
-> +
-> +	for (i = 0; i < temp->count_modes; i++) {
-> +		if (temp->modes[i].hdisplay == 1400 &&
-> +		    temp->modes[i].vdisplay == 1050)
-> +			break;
-> +	}
-> +	igt_assert_f(i == temp->count_modes, "1400x1050 not pruned from mode list\n");
-> +
-> +	drmModeFreeConnector(temp);
-> +
-> +	kmstest_force_edid(drm_fd, connector, NULL);
-> +	kmstest_force_connector(drm_fd, connector,
-> +				FORCE_CONNECTOR_UNSPECIFIED);
-> +}
-> +
->   static int opt_handler(int opt, int opt_index, void *data)
->   {
->   	switch (opt) {
-> @@ -79,22 +288,37 @@ const char *help_str =
->   
->   igt_main_args("", long_opts, help_str, opt_handler, NULL)
->   {
-> -	/* force the VGA output and test that it worked */
-> -	int drm_fd = 0;
-> +	/* Force the VGA output and test that it worked. */
-> +	int i, drm_fd = 0;
->   	drmModeRes *res;
-> -	drmModeConnector *connector = NULL, *temp;
-> -	int start_n_modes, start_connection;
-> +	drmModeConnector *connector = NULL;
-> +	struct {
-> +		const char *name;
-> +		const char *desc;
-> +		void (*func)(int, drmModeConnector *);
-> +	} tests[] = {
-> +		{ "force-connector-state",
-> +		  "Test to check the forced connector state.",
-> +		  force_connector_state },
-> +		{ "force-edid",
-> +		  "Test to check the values after forcing edid.",
-> +		  force_edid },
-> +		{ "prune-stale-modes",
-> +		  "Tests pruning of stale modes.",
-> +		  prune_stale_modes }
-> +	};
->   
->   	igt_fixture {
->   		unsigned connector_id = 0;
->   
->   		drm_fd = drm_open_driver_master(DRIVER_ANY);
-> +		kmstest_set_vt_graphics_mode();
->   
->   		res = drmModeGetResources(drm_fd);
->   		igt_require(res);
->   
-> -		/* find a vga connector */
-> -		for (int i = 0; i < res->count_connectors; i++) {
-> +		/* Find a vga connector. */
-> +		for (i = 0; i < res->count_connectors; i++) {
->   			connector = drmModeGetConnectorCurrent(drm_fd,
->   							       res->connectors[i]);
->   
-> @@ -112,8 +336,11 @@ igt_main_args("", long_opts, help_str, opt_handler, NULL)
->   			drmModeFreeConnector(connector);
->   		}
->   
-> -		/* find a hdmi connector if we didn't find vga */
-> -		for (int i = 0; i < res->count_connectors; i++) {
-> +		if (connector_id)
-> +			goto end;
-> +
-> +		/* Find a hdmi connector if we didn't find vga. */
-> +		for (i = 0; i < res->count_connectors; i++) {
->   			connector = drmModeGetConnectorCurrent(drm_fd,
->   							       res->connectors[i]);
->   
-> @@ -134,214 +361,19 @@ igt_main_args("", long_opts, help_str, opt_handler, NULL)
->   
->   		igt_require(connector_id);
->   
-> -		/* Reacquire status after clearing any previous overrides */
-> +end:
-> +		/* Reacquire status after clearing any previous overrides. */
->   		connector = drmModeGetConnector(drm_fd, connector_id);
-> -
-> -		start_n_modes = connector->count_modes;
-> -		start_connection = connector->connection;
->   	}
->   
->   	igt_describe("Test to detect forced load.");
-> -	igt_subtest("force-load-detect") {
-> -		int i, j, w = 64, h = 64;
-> -		drmModePlaneRes *plane_resources;
-> -		struct igt_fb xrgb_fb, argb_fb;
-> -
-> -		/* no load detect on HDMI */
-> -		igt_require(connector->connector_type == DRM_MODE_CONNECTOR_VGA);
-> -
-> -		igt_create_fb(drm_fd, w, h, DRM_FORMAT_XRGB8888, 0, &xrgb_fb);
-> -		igt_create_fb(drm_fd, w, h, DRM_FORMAT_ARGB8888, 0, &argb_fb);
-> -		igt_assert(drmSetClientCap(drm_fd, DRM_CLIENT_CAP_UNIVERSAL_PLANES, 1) == 0);
-> -
-> -		/*
-> -		 * disable all outputs to make sure we have a
-> -		 * free crtc available for load detect
-> -		 */
-> -		kmstest_set_vt_graphics_mode();
-> -		kmstest_unset_all_crtcs(drm_fd, res);
-> -
-> -		igt_set_module_param_int(drm_fd, "load_detect_test", 1);
-> -
-> -		plane_resources = drmModeGetPlaneResources(drm_fd);
-> -		igt_assert(plane_resources);
-> -
-> -		for (i = 0; i < plane_resources->count_planes; i++) {
-> -			drmModePlane *drm_plane;
-> -			bool found = false;
-> -			uint32_t plane_id = plane_resources->planes[i];
-> -
-> -			drm_plane = drmModeGetPlane(drm_fd, plane_id);
-> -			igt_assert(drm_plane);
-> -
-> -			for (j = 0; j < drm_plane->count_formats; j++) {
-> -				uint32_t format = drm_plane->formats[j];
-> -				uint32_t crtc = ffs(drm_plane->possible_crtcs) - 1;
-> -				uint32_t crtc_id = res->crtcs[crtc];
-> -
-> -				if (format == DRM_FORMAT_XRGB8888)
-> -					do_or_die(drmModeSetPlane(drm_fd, plane_id, crtc_id,
-> -							xrgb_fb.fb_id,
-> -							0, 0, 0, w, h,
-> -							0, 0, IGT_FIXED(w, 0), IGT_FIXED(h, 0)));
-> -				else if (format == DRM_FORMAT_ARGB8888)
-> -					do_or_die(drmModeSetPlane(drm_fd, plane_id, crtc_id,
-> -							argb_fb.fb_id,
-> -							0, 0, 0, w, h,
-> -							0, 0, IGT_FIXED(w, 0), IGT_FIXED(h, 0)));
-> -				else
-> -					continue;
-> -
-> -				found = true;
-> -				break;
-> -			}
-> -			drmModeFreePlane(drm_plane);
-> -			igt_assert(found);
-> -		}
-> -
-> -		/* This can't use drmModeGetConnectorCurrent
-> -		 * because connector probing is the point of this test.
-> -		 */
-> -		temp = drmModeGetConnector(drm_fd, connector->connector_id);
-> -
-> -		igt_set_module_param_int(drm_fd, "load_detect_test", 0);
-> -
-> -		igt_assert(temp->connection != DRM_MODE_UNKNOWNCONNECTION);
-> -
-> -		drmModeFreeConnector(temp);
-> -
-> -		/* Look if planes are unmodified. */
-> -		for (i = 0; i < plane_resources->count_planes; i++) {
-> -			drmModePlane *drm_plane;
-> +	igt_subtest("force-load-detect")
-> +		force_load_detect(drm_fd, connector, res);
->   
-> -			drm_plane = drmModeGetPlane(drm_fd,
-> -						    plane_resources->planes[i]);
-> -			igt_assert(drm_plane);
-> -
-> -			igt_assert(drm_plane->crtc_id);
-> -			igt_assert(drm_plane->fb_id);
-> -
-> -			if (drm_plane->fb_id != xrgb_fb.fb_id)
-> -				igt_assert_eq(drm_plane->fb_id, argb_fb.fb_id);
-> -
-> -			drmModeFreePlane(drm_plane);
-> -		}
-> -
-> -		igt_remove_fb(drm_fd, &xrgb_fb);
-> -		igt_remove_fb(drm_fd, &argb_fb);
-> -	}
-> -
-> -	igt_describe("Test to check the forced connector state.");
-> -	igt_subtest("force-connector-state") {
-> -		igt_display_t display;
-> -
-> -		/* force the connector on and check the reported values */
-> -		kmstest_force_connector(drm_fd, connector, FORCE_CONNECTOR_ON);
-> -		temp = drmModeGetConnectorCurrent(drm_fd,
-> -						  connector->connector_id);
-> -		igt_assert_eq(temp->connection, DRM_MODE_CONNECTED);
-> -		igt_assert_lt(0, temp->count_modes);
-> -		drmModeFreeConnector(temp);
-> -
-> -		/* attempt to use the display */
-> -		kmstest_set_vt_graphics_mode();
-> -		igt_display_require(&display, drm_fd);
-> -		igt_display_commit(&display);
-> -		igt_display_fini(&display);
-> -
-> -
-> -		/* force the connector off */
-> -		kmstest_force_connector(drm_fd, connector,
-> -					FORCE_CONNECTOR_OFF);
-> -		temp = drmModeGetConnectorCurrent(drm_fd,
-> -						  connector->connector_id);
-> -		igt_assert_eq(temp->connection, DRM_MODE_DISCONNECTED);
-> -		igt_assert_eq(0, temp->count_modes);
-> -		drmModeFreeConnector(temp);
-> -
-> -		/* check that the previous state is restored */
-> -		kmstest_force_connector(drm_fd, connector,
-> -					FORCE_CONNECTOR_UNSPECIFIED);
-> -		temp = drmModeGetConnectorCurrent(drm_fd,
-> -						  connector->connector_id);
-> -		igt_assert_eq(temp->connection, start_connection);
-> -		drmModeFreeConnector(temp);
-> -	}
-> -
-> -	igt_describe("Test to check the values after forcing edid.");
-> -	igt_subtest("force-edid") {
-> -		kmstest_force_connector(drm_fd, connector,
-> -					FORCE_CONNECTOR_ON);
-> -		temp = drmModeGetConnectorCurrent(drm_fd,
-> -						  connector->connector_id);
-> -		drmModeFreeConnector(temp);
-> -
-> -		/* test edid forcing */
-> -		kmstest_force_edid(drm_fd, connector,
-> -				   igt_kms_get_base_edid());
-> -		temp = drmModeGetConnectorCurrent(drm_fd,
-> -						  connector->connector_id);
-> -
-> -		igt_debug("num_conn %i\n", temp->count_modes);
-> -
-> -		CHECK_MODE(temp->modes[0], 1920, 1080, 60);
-> -		/* Don't check non-preferred modes to avoid to tight coupling
-> -		 * with the in-kernel EDID parser. */
-> -
-> -		drmModeFreeConnector(temp);
-> -
-> -		/* remove edid */
-> -		kmstest_force_edid(drm_fd, connector, NULL);
-> -		kmstest_force_connector(drm_fd, connector,
-> -					FORCE_CONNECTOR_UNSPECIFIED);
-> -		temp = drmModeGetConnectorCurrent(drm_fd,
-> -						  connector->connector_id);
-> -		/* the connector should now have the same number of modes that
-> -		 * it started with */
-> -		igt_assert_eq(temp->count_modes, start_n_modes);
-> -		drmModeFreeConnector(temp);
-> -
-> -	}
-> -
-> -	igt_describe("Tests pruning of stale modes.");
-> -	igt_subtest("prune-stale-modes") {
-> -		int i;
-> -
-> -		kmstest_force_connector(drm_fd, connector,
-> -					FORCE_CONNECTOR_ON);
-> -
-> -		/* test pruning of stale modes */
-> -		kmstest_force_edid(drm_fd, connector,
-> -				   igt_kms_get_alt_edid());
-> -		temp = drmModeGetConnectorCurrent(drm_fd,
-> -						  connector->connector_id);
-> -
-> -		for (i = 0; i < temp->count_modes; i++) {
-> -			if (temp->modes[i].hdisplay == 1400 &&
-> -			    temp->modes[i].vdisplay == 1050)
-> -				break;
-> -		}
-> -		igt_require_f(i != temp->count_modes, "1400x1050 not on mode list\n");
-> -
-> -		drmModeFreeConnector(temp);
-> -
-> -		kmstest_force_edid(drm_fd, connector,
-> -				   igt_kms_get_base_edid());
-> -		temp = drmModeGetConnectorCurrent(drm_fd,
-> -						  connector->connector_id);
-> -
-> -		for (i = 0; i < temp->count_modes; i++) {
-> -			if (temp->modes[i].hdisplay == 1400 &&
-> -			    temp->modes[i].vdisplay == 1050)
-> -				break;
-> -		}
-> -		igt_assert_f(i == temp->count_modes, "1400x1050 not pruned from mode list\n");
-> -
-> -		drmModeFreeConnector(temp);
-> -
-> -		kmstest_force_edid(drm_fd, connector, NULL);
-> -		kmstest_force_connector(drm_fd, connector,
-> -					FORCE_CONNECTOR_UNSPECIFIED);
-> +	for (i = 0; i < ARRAY_SIZE(tests); i++) {
-> +		igt_describe_f("%s", tests[i].desc);
-> +		igt_subtest_f("%s", tests[i].name)
-> +			tests[i].func(drm_fd, connector);
->   	}
->   
->   	igt_fixture {
+> what's that invalid argument you're getting on addfb? I never tried
+
+I am not sure what is the invalid argument, but the failure of this test
+with a cursor size 32x10 is that VKMS does not support this size yet so
+the test unable to create a cursor FB.
+
+
+> this with vkms, normally just on i915. With i915 I cannot reproduce
+> that abort you're seeing. Other kms tests run on your setup?
+
+I think the abortion related to VKMS driver only, but I didn't try to
+run it on i915.
+yes, I ran other kms test but with VKMS driver.
+
+> 
+> Anyway, that revert you're suggesting would remove support for msm
+> driver on this test. Let's first summon those who made these changes
+> to comment. (cc'ing Modem and Swati)
+
+I see, so I can check that after Modem and Swati reply.
+
+> 
+> /Juha-Pekka
+
+BR,
+Alaa
+> 
+> On 9.10.2022 18.18, Alaa Emad wrote:
+>> Any test failure prevents the other tests to be run, aborting the entire test loop. This behavior was introduced by commit
+>> 9494d53d ("tests/kms_cursor_crc: Convert tests to dynamic").
+>> For instance, when running the cursor-offscreen-32x10 subtest using VKMS,
+>> the execution is aborted instead of SKIP/FAIL, as in the following output:
+>>
+>> $ ./tests/kms_cursor_crc --run-subtest cursor-offscreen-32x10
+>> (kms_cursor_crc:7447) igt_fb-CRITICAL: Test assertion failure function igt_create_fb_with_bo_size, file ../lib/igt_fb.c:2078:
+>> (kms_cursor_crc:7447) igt_fb-CRITICAL: Failed assertion: (__kms_addfb(fb->fd, fb->gem_handle, fb->width, fb->height, fb->drm_format, fb->modifier, fb->strides, fb->offsets, fb->num_planes, flags, &fb->fb_id)) == 0
+>> (kms_cursor_crc:7447) igt_fb-CRITICAL: Last errno: 22, Invalid argument
+>> Stack trace:
+>> kms_cursor_crc: ../lib/igt_core.c:1667: igt_fail: Assertion `_igt_dynamic_tests_executed < 0 || dynamic_failed_one' failed.
+>> Received signal SIGABRT.
+>>
+>> The test was aborted after convertig tests to dynamic with cursor size 32*10 that because of the assertion in the `igt_create_fb_with_bo_size` when creating cursor in `create_cursor_fb`.
+>>
+>> This happened because Within a igt_subtest_with_dynamic block, explicit failure (e.g. igt_assert) is not allowed,
+>> only dynamic subsubtests themselves will produce test results.
+>>
+>> The previous approach was running each test for all cursor sizes then move to the next test  so fix this issue
+>> by running all tests for one cursor size one by one, and check if cursor size is
+>> supported or not before running the test.
+>>
+>> Fixes: 9494d53d ("tests/kms_cursor_crc: Convert tests to dynamic")
+>>
+>> Signed-off-by: Alaa Emad <aemad@igalia.com>
+>> ---
+>>   tests/kms_cursor_crc.c | 136 +++++++++++++++++++++--------------------
+>>   1 file changed, 69 insertions(+), 67 deletions(-)
+>>
+>> diff --git a/tests/kms_cursor_crc.c b/tests/kms_cursor_crc.c
+>> index 8d3426dd..9b620389 100644
+>> --- a/tests/kms_cursor_crc.c
+>> +++ b/tests/kms_cursor_crc.c
+>> @@ -72,7 +72,6 @@ typedef struct {
+>>   	cairo_surface_t *surface;
+>>   	uint32_t devid;
+>>   	double alpha;
+>> -	int vblank_wait_count; /* because of msm */
+>>   } data_t;
+>>     #define TEST_DPMS (1<<0)
+>> @@ -125,12 +124,6 @@ static void cursor_disable(data_t *data)
+>>   {
+>>   	igt_plane_set_fb(data->cursor, NULL);
+>>   	igt_plane_set_position(data->cursor, 0, 0);
+>> -	igt_display_commit(&data->display);
+>> -
+>> -	/* do this wait here so it will not need to be added everywhere */
+>> -	igt_wait_for_vblank_count(data->drm_fd,
+>> -				  data->display.pipes[data->pipe].crtc_offset,
+>> -				  data->vblank_wait_count);
+>>   }
+>>     static bool chv_cursor_broken(data_t *data, int x)
+>> @@ -209,9 +202,8 @@ static void do_single_test(data_t *data, int x, int y, bool hw_test,
+>>   		igt_display_commit(display);
+>>     		/* Extra vblank wait is because nonblocking cursor ioctl */
+>> -		igt_wait_for_vblank_count(data->drm_fd,
+>> -					  display->pipes[data->pipe].crtc_offset,
+>> -					  data->vblank_wait_count);
+>> +		igt_wait_for_vblank(data->drm_fd,
+>> +				display->pipes[data->pipe].crtc_offset);
+>>     		igt_pipe_crc_get_current(data->drm_fd, pipe_crc, hwcrc);
+>>   @@ -249,7 +241,11 @@ static void do_single_test(data_t *data, int x, int y, bool hw_test,
+>>     		restore_image(data, swbufidx, &((cursorarea){x, y, data->curw, data->curh}));
+>>   		igt_plane_set_fb(data->primary, &data->primary_fb[swbufidx]);
+>> +
+>>   		igt_display_commit(display);
+>> +		igt_wait_for_vblank(data->drm_fd,
+>> +				display->pipes[data->pipe].crtc_offset);
+>> +
+>>   		igt_pipe_crc_get_current(data->drm_fd, pipe_crc, &crc);
+>>   		igt_assert_crc_equal(&crc, hwcrc);
+>>   	}
+>> @@ -267,7 +263,9 @@ static void do_fail_test(data_t *data, int x, int y, int expect)
+>>   	igt_plane_set_position(data->cursor, x, y);
+>>   	ret = igt_display_try_commit2(display, COMMIT_LEGACY);
+>>   +	igt_plane_set_position(data->cursor, 0, 0);
+>>   	cursor_disable(data);
+>> +	igt_display_commit(display);
+>>     	igt_assert_eq(ret, expect);
+>>   }
+>> @@ -689,10 +687,28 @@ static void test_rapid_movement(data_t *data)
+>>   	igt_assert_lt(usec, 0.9 * 400 * 1000000 / data->refresh);
+>>   }
+>>   -static void run_size_tests(data_t *data, void (*testfunc)(data_t *),
+>> -			   int w, int h)
+>> +static void run_size_tests(data_t *data, int w, int h)
+>>   {
+>>   	enum pipe pipe;
+>> +	int i;
+>> +
+>> +	struct
+>> +	{
+>> +		const char *name;
+>> +		void (*testfunc)(data_t *);
+>> +		const char *desc;
+>> +	} size_tests[] = {
+>> +		{"cursor-onscreen", test_crc_onscreen,
+>> +		 "Check if a given-size cursor is well-positioned inside the screen."},
+>> +		{"cursor-offscreen", test_crc_offscreen,
+>> +		 "Check if a given-size cursor is well-positioned outside the screen."},
+>> +		{"cursor-sliding", test_crc_sliding,
+>> +		 "Check the smooth and pixel-by-pixel given-size cursor movements on horizontal, vertical and diagonal."},
+>> +		{"cursor-random", test_crc_random,
+>> +		 "Check random placement of a cursor with given size."},
+>> +		{"cursor-rapid-movement", test_rapid_movement,
+>> +		 "Check the rapid update of given-size cursor movements."},
+>> +	};
+>>     	if (w == 0 && h == 0) {
+>>   		w = data->cursor_max_w;
+>> @@ -709,45 +725,38 @@ static void run_size_tests(data_t *data, void (*testfunc)(data_t *),
+>>   		}
+>>   	}
+>>   -	create_cursor_fb(data, w, h);
+>> -	if (require_cursor_size(data, w, h)) {
+>> -		igt_info("Cursor size %dx%d not supported by driver\n", w, h);
+>> -
+>> -		igt_remove_fb(data->drm_fd, &data->fb);
+>> -		return;
+>> -	}
+>> +	igt_fixture
+>> +		create_cursor_fb(data, w, h);
+>>   -	for_each_pipe(&data->display, pipe) {
+>> -		data->pipe = pipe;
+>> -		igt_dynamic_f("pipe-%s-%s",
+>> -			      kmstest_pipe_name(pipe), igt_output_name(data->output))
+>> -			run_test(data, testfunc, w, h);
+>> +	for (i = 0; i < ARRAY_SIZE(size_tests); i++)
+>> +	{
+>> +		igt_describe(size_tests[i].desc);
+>> +		igt_subtest_with_dynamic_f("%s-%dx%d", size_tests[i].name, w, h)
+>> +		{
+>> +			for_each_pipe(&data->display, pipe)
+>> +			{
+>> +				data->pipe = pipe;
+>> +				if (require_cursor_size(data, w, h))
+>> +				{
+>> +					igt_info("Cursor size %dx%d not supported by driver\n", w, h);
+>> +					continue;
+>> +				}
+>> +
+>> +				igt_dynamic_f("pipe-%s-%s",
+>> +							  kmstest_pipe_name(pipe), igt_output_name(data->output))
+>> +					run_test(data, size_tests[i].testfunc, w, h);
+>> +			}
+>> +		}
+>>   	}
+>>   -	igt_remove_fb(data->drm_fd, &data->fb);
+>> +	igt_fixture
+>> +		igt_remove_fb(data->drm_fd, &data->fb);
+>>   }
+>>     static void run_tests_on_pipe(data_t *data)
+>>   {
+>>   	enum pipe pipe;
+>>   	int cursor_size;
+>> -	int i;
+>> -	struct {
+>> -		const char *name;
+>> -		void (*testfunc)(data_t *);
+>> -		const char *desc;
+>> -	} size_tests[] = {
+>> -		{ "cursor-onscreen", test_crc_onscreen,
+>> -			"Check if a given-size cursor is well-positioned inside the screen." },
+>> -		{ "cursor-offscreen", test_crc_offscreen,
+>> -			"Check if a given-size cursor is well-positioned outside the screen." },
+>> -		{ "cursor-sliding", test_crc_sliding,
+>> -			"Check the smooth and pixel-by-pixel given-size cursor movements on horizontal, vertical and diagonal." },
+>> -		{ "cursor-random", test_crc_random,
+>> -			"Check random placement of a cursor with given size." },
+>> -		{ "cursor-rapid-movement", test_rapid_movement,
+>> -			"Check the rapid update of given-size cursor movements." },
+>> -	};
+>>     	igt_fixture {
+>>   		data->output = igt_get_single_output_for_pipe(&data->display, pipe);
+>> @@ -848,30 +857,26 @@ static void run_tests_on_pipe(data_t *data)
+>>   	igt_fixture
+>>   		igt_remove_fb(data->drm_fd, &data->fb);
+>>   -	for (i = 0; i < ARRAY_SIZE(size_tests); i++) {
+>> -		igt_describe(size_tests[i].desc);
+>> -		igt_subtest_group {
+>> -			for (cursor_size = 32; cursor_size <= 512; cursor_size *= 2) {
+>> -				int w = cursor_size;
+>> -				int h = cursor_size;
+>> -
+>> -				igt_subtest_with_dynamic_f("%s-%dx%d", size_tests[i].name, w, h)
+>> -					run_size_tests(data, size_tests[i].testfunc, w, h);
+>> -
+>> -				/*
+>> -				 * Test non-square cursors a bit on the platforms
+>> -				 * that support such things. And make it a bit more
+>> -				 * interesting by using a non-pot height.
+>> -				 */
+>> -				h /= 3;
+>> -				igt_subtest_with_dynamic_f("%s-%dx%d", size_tests[i].name, w, h)
+>> -					run_size_tests(data, size_tests[i].testfunc, w, h);
+>> -			}
+>> +	for (cursor_size = 32; cursor_size <= 512; cursor_size *= 2)
+>> +	{
+>> +		int w = cursor_size;
+>> +		int h = cursor_size;
+>>   -			igt_subtest_with_dynamic_f("%s-max-size", size_tests[i].name)
+>> -				run_size_tests(data, size_tests[i].testfunc, 0, 0);
+>> -		}
+>> +		igt_subtest_group
+>> +			run_size_tests(data, w, h);
+>> +
+>> +		/*
+>> +		 * Test non-square cursors a bit on the platforms
+>> +		 * that support such things. And make it a bit more
+>> +		 * interesting by using a non-pot height.
+>> +		 */
+>> +		h /= 3;
+>> +
+>> +		igt_subtest_group
+>> +			run_size_tests(data, w, h);
+>>   	}
+>> +
+>> +	run_size_tests(data, 0, 0);
+>>   }
+>>     static data_t data;
+>> @@ -896,8 +901,6 @@ igt_main
+>>   		kmstest_set_vt_graphics_mode();
+>>     		igt_require_pipe_crc(data.drm_fd);
+>> -
+>> -		data.vblank_wait_count = is_msm_device(data.drm_fd) ? 2 : 1;
+>>   	}
+>>     	data.cursor_max_w = cursor_width;
+>> @@ -913,6 +916,5 @@ igt_main
+>>   		}
+>>     		igt_display_fini(&data.display);
+>> -		close(data.drm_fd);
+>>   	}
+>>   }
