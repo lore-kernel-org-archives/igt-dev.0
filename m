@@ -1,19 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 59BB610E72D
- for <igt-dev@lists.freedesktop.org>; Mon, 10 Oct 2022 21:42:17 +0000 (UTC)
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6459B10E731
+ for <igt-dev@lists.freedesktop.org>; Mon, 10 Oct 2022 21:42:23 +0000 (UTC)
 From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 To: igt-dev@lists.freedesktop.org,
  Lionel G Landwerlin <lionel.g.landwerlin@intel.com>,
  Ashutosh Dixit <ashutosh.dixit@intel.com>
-Date: Mon, 10 Oct 2022 21:41:42 +0000
-Message-Id: <20221010214215.5378-4-umesh.nerlige.ramappa@intel.com>
+Date: Mon, 10 Oct 2022 21:42:11 +0000
+Message-Id: <20221010214215.5378-33-umesh.nerlige.ramappa@intel.com>
 In-Reply-To: <20221010214215.5378-1-umesh.nerlige.ramappa@intel.com>
 References: <20221010214215.5378-1-umesh.nerlige.ramappa@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v6 03/36] i915/perf: Check return value from
- getparam
+Subject: [igt-dev] [PATCH i-g-t v6 32/36] tools/i915-perf: add option to
+ printout reports data
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,70 +25,156 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-In some cases getparam could fail. Check return from getparam and fail
-early on.
+From: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
 
-Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
-Reviewed-by: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
+This is helpful to get an idea of how timelines of reports should be
+built.
+
+Signed-off-by: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
 ---
- lib/i915/perf.c | 28 +++++++++++++++-------------
- 1 file changed, 15 insertions(+), 13 deletions(-)
+ tools/i915-perf/i915_perf_reader.c | 88 ++++++++++++++++++++----------
+ 1 file changed, 58 insertions(+), 30 deletions(-)
 
-diff --git a/lib/i915/perf.c b/lib/i915/perf.c
-index d88835ff..7349a460 100644
---- a/lib/i915/perf.c
-+++ b/lib/i915/perf.c
-@@ -287,19 +287,16 @@ intel_perf_for_devinfo(uint32_t device_id,
- 	return perf;
+diff --git a/tools/i915-perf/i915_perf_reader.c b/tools/i915-perf/i915_perf_reader.c
+index 9be1a9fc..bcd40624 100644
+--- a/tools/i915-perf/i915_perf_reader.c
++++ b/tools/i915-perf/i915_perf_reader.c
+@@ -53,7 +53,8 @@ usage(void)
+ 	       "     --help,    -h             Print this screen\n"
+ 	       "     --counters, -c c1,c2,...  List of counters to display values for.\n"
+ 	       "                               Use 'all' to display all counters.\n"
+-	       "                               Use 'list' to list available counters.\n");
++	       "                               Use 'list' to list available counters.\n"
++	       "     --reports, -r             Print out data per report.\n");
  }
  
--static uint32_t
--getparam(int drm_fd, uint32_t param)
-+static int
-+getparam(int drm_fd, uint32_t param, uint32_t *val)
- {
--        struct drm_i915_getparam gp;
--        int val = -1;
--
--        memset(&gp, 0, sizeof(gp));
--        gp.param = param;
--        gp.value = &val;
-+	struct drm_i915_getparam gp;
- 
--	perf_ioctl(drm_fd, DRM_IOCTL_I915_GETPARAM, &gp);
-+	memset(&gp, 0, sizeof(gp));
-+	gp.param = param;
-+	gp.value = (int *)val;
- 
--        return val;
-+	return perf_ioctl(drm_fd, DRM_IOCTL_I915_GETPARAM, &gp);
+ static struct intel_perf_logical_counter *
+@@ -165,12 +166,49 @@ get_logical_counters(struct intel_perf_metric_set *metric_set,
+ 	return counters;
  }
  
- static bool
-@@ -415,9 +412,9 @@ open_master_sysfs_dir(int drm_fd)
- struct intel_perf *
- intel_perf_for_fd(int drm_fd)
- {
--	uint32_t device_id = getparam(drm_fd, I915_PARAM_CHIPSET_ID);
--	uint32_t device_revision = getparam(drm_fd, I915_PARAM_REVISION);
--	uint32_t timestamp_frequency = getparam(drm_fd, I915_PARAM_CS_TIMESTAMP_FREQUENCY);
-+	uint32_t device_id;
-+	uint32_t device_revision;
-+	uint32_t timestamp_frequency;
- 	uint64_t gt_min_freq;
- 	uint64_t gt_max_freq;
- 	struct drm_i915_query_topology_info *topology;
-@@ -434,6 +431,11 @@ intel_perf_for_fd(int drm_fd)
- 	}
- 	close(sysfs_dir_fd);
- 
-+	if (getparam(drm_fd, I915_PARAM_CHIPSET_ID, &device_id) ||
-+	    getparam(drm_fd, I915_PARAM_REVISION, &device_revision) ||
-+	    getparam(drm_fd, I915_PARAM_CS_TIMESTAMP_FREQUENCY, &timestamp_frequency))
-+		return NULL;
++static void
++print_report_deltas(const struct intel_perf_data_reader *reader,
++		    const struct drm_i915_perf_record_header *i915_report0,
++		    const struct drm_i915_perf_record_header *i915_report1,
++		    struct intel_perf_logical_counter **counters,
++		    uint32_t n_counters)
++{
++	struct intel_perf_accumulator accu;
 +
- 	topology = query_topology(drm_fd);
- 	if (!topology)
- 		return NULL;
++	intel_perf_accumulate_reports(&accu,
++				      reader->perf, reader->metric_set,
++				      i915_report0, i915_report1);
++
++	for (uint32_t c = 0; c < n_counters; c++) {
++		struct intel_perf_logical_counter *counter = counters[c];
++
++		switch (counter->storage) {
++		case INTEL_PERF_LOGICAL_COUNTER_STORAGE_UINT64:
++		case INTEL_PERF_LOGICAL_COUNTER_STORAGE_UINT32:
++		case INTEL_PERF_LOGICAL_COUNTER_STORAGE_BOOL32:
++			fprintf(stdout, "   %s: %" PRIu64 "\n",
++				counter->symbol_name, counter->read_uint64(reader->perf,
++									   reader->metric_set,
++									   accu.deltas));
++			break;
++		case INTEL_PERF_LOGICAL_COUNTER_STORAGE_DOUBLE:
++		case INTEL_PERF_LOGICAL_COUNTER_STORAGE_FLOAT:
++			fprintf(stdout, "   %s: %f\n",
++				counter->symbol_name, counter->read_float(reader->perf,
++									  reader->metric_set,
++									  accu.deltas));
++			break;
++		}
++	}
++}
++
+ int
+ main(int argc, char *argv[])
+ {
+ 	const struct option long_options[] = {
+ 		{"help",             no_argument, 0, 'h'},
+ 		{"counters",   required_argument, 0, 'c'},
++		{"reports",          no_argument, 0, 'r'},
+ 		{0, 0, 0, 0}
+ 	};
+ 	struct intel_perf_data_reader reader;
+@@ -179,8 +217,9 @@ main(int argc, char *argv[])
+ 	const char *counter_names = NULL;
+ 	int32_t n_counters;
+ 	int fd, opt;
++	bool print_reports = false;
+ 
+-	while ((opt = getopt_long(argc, argv, "hc:", long_options, NULL)) != -1) {
++	while ((opt = getopt_long(argc, argv, "hc:r", long_options, NULL)) != -1) {
+ 		switch (opt) {
+ 		case 'h':
+ 			usage();
+@@ -188,6 +227,9 @@ main(int argc, char *argv[])
+ 		case 'c':
+ 			counter_names = optarg;
+ 			break;
++		case 'r':
++			print_reports = true;
++			break;
+ 		default:
+ 			fprintf(stderr, "Internal error: "
+ 				"unexpected getopt value: %d\n", opt);
+@@ -268,11 +310,6 @@ main(int argc, char *argv[])
+ 
+ 	for (uint32_t i = 0; i < reader.n_timelines; i++) {
+ 		const struct intel_perf_timeline_item *item = &reader.timelines[i];
+-		const struct drm_i915_perf_record_header *i915_report0 =
+-			reader.records[item->record_start];
+-		const struct drm_i915_perf_record_header *i915_report1 =
+-			reader.records[item->record_end];
+-		struct intel_perf_accumulator accu;
+ 
+ 		fprintf(stdout, "Time: CPU=0x%016" PRIx64 "-0x%016" PRIx64
+ 			" GPU=0x%016" PRIx64 "-0x%016" PRIx64"\n",
+@@ -281,29 +318,20 @@ main(int argc, char *argv[])
+ 		fprintf(stdout, "hw_id=0x%x %s\n",
+ 			item->hw_id, item->hw_id == 0xffffffff ? "(idle)" : "");
+ 
+-		intel_perf_accumulate_reports(&accu,
+-					      reader.perf, reader.metric_set,
+-					      i915_report0, i915_report1);
+-
+-		for (uint32_t c = 0; c < n_counters; c++) {
+-			struct intel_perf_logical_counter *counter = counters[c];
+-
+-			switch (counter->storage) {
+-			case INTEL_PERF_LOGICAL_COUNTER_STORAGE_UINT64:
+-			case INTEL_PERF_LOGICAL_COUNTER_STORAGE_UINT32:
+-			case INTEL_PERF_LOGICAL_COUNTER_STORAGE_BOOL32:
+-				fprintf(stdout, "   %s: %" PRIu64 "\n",
+-					counter->symbol_name, counter->read_uint64(reader.perf,
+-										   reader.metric_set,
+-										   accu.deltas));
+-				break;
+-			case INTEL_PERF_LOGICAL_COUNTER_STORAGE_DOUBLE:
+-			case INTEL_PERF_LOGICAL_COUNTER_STORAGE_FLOAT:
+-				fprintf(stdout, "   %s: %f\n",
+-					counter->symbol_name, counter->read_float(reader.perf,
+-										  reader.metric_set,
+-										  accu.deltas));
+-				break;
++		print_report_deltas(&reader,
++				    reader.records[item->record_start],
++				    reader.records[item->record_end],
++				    counters, n_counters);
++
++		if (print_reports) {
++			for (uint32_t r = item->record_start; r < item->record_end; r++) {
++				fprintf(stdout, " report%i = %s\n",
++					r - item->record_start,
++					intel_perf_read_report_reason(reader.perf, reader.records[r]));
++				print_report_deltas(&reader,
++						    reader.records[r],
++						    reader.records[r + 1],
++						    counters, n_counters);
+ 			}
+ 		}
+ 	}
 -- 
 2.25.1
