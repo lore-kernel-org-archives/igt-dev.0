@@ -1,24 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-ej1-x62f.google.com (mail-ej1-x62f.google.com
- [IPv6:2a00:1450:4864:20::62f])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CAA4F10E099
- for <igt-dev@lists.freedesktop.org>; Mon, 10 Oct 2022 11:16:19 +0000 (UTC)
-Received: by mail-ej1-x62f.google.com with SMTP id ot12so24193502ejb.1
- for <igt-dev@lists.freedesktop.org>; Mon, 10 Oct 2022 04:16:19 -0700 (PDT)
-Message-ID: <aa261d04-81b3-48ac-603b-c75fcb3c8909@gmail.com>
-Date: Mon, 10 Oct 2022 14:16:11 +0300
+Content-Type: multipart/alternative;
+ boundary="===============5736464591968632989=="
 MIME-Version: 1.0
-Content-Language: en-US
-To: Alaa Emad <aemad@igalia.com>, igt-dev@lists.freedesktop.org,
- "Sharma, Swati2" <swati2.sharma@intel.com>,
- "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
-References: <20221009151844.3456-1-aemad@igalia.com>
-From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-In-Reply-To: <20221009151844.3456-1-aemad@igalia.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_cursor_crc: prevent the
- entire test from being aborted when a subtest fails
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Juha-Pekka Heikkila" <juhapekka.heikkila@gmail.com>
+Date: Mon, 10 Oct 2022 11:44:42 -0000
+Message-ID: <166540228215.29671.425598708950712705@emeril.freedesktop.org>
+References: <20221010093507.13817-1-juhapekka.heikkila@gmail.com>
+In-Reply-To: <20221010093507.13817-1-juhapekka.heikkila@gmail.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3Igc2VyaWVz?=
+ =?utf-8?q?_starting_with_=5Bi-g-t=2C1/2=5D_tests/i915/kms=5Fbig=5Ffb=3A_o?=
+ =?utf-8?q?ptimize_async_flip_tests?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,275 +18,212 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: juhapekka.heikkila@gmail.com
-Cc: petri.latvala@intel.com
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Alaa,
+--===============5736464591968632989==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-what's that invalid argument you're getting on addfb? I never tried this 
-with vkms, normally just on i915. With i915 I cannot reproduce that 
-abort you're seeing. Other kms tests run on your setup?
+== Series Details ==
 
-Anyway, that revert you're suggesting would remove support for msm 
-driver on this test. Let's first summon those who made these changes to 
-comment. (cc'ing Modem and Swati)
+Series: series starting with [i-g-t,1/2] tests/i915/kms_big_fb: optimize async flip tests
+URL   : https://patchwork.freedesktop.org/series/109532/
+State : success
 
-/Juha-Pekka
+== Summary ==
 
-On 9.10.2022 18.18, Alaa Emad wrote:
-> Any test failure prevents the other tests to be run, aborting the entire test loop. This behavior was introduced by commit
-> 9494d53d ("tests/kms_cursor_crc: Convert tests to dynamic").
-> For instance, when running the cursor-offscreen-32x10 subtest using VKMS,
-> the execution is aborted instead of SKIP/FAIL, as in the following output:
-> 
-> $ ./tests/kms_cursor_crc --run-subtest cursor-offscreen-32x10
-> (kms_cursor_crc:7447) igt_fb-CRITICAL: Test assertion failure function igt_create_fb_with_bo_size, file ../lib/igt_fb.c:2078:
-> (kms_cursor_crc:7447) igt_fb-CRITICAL: Failed assertion: (__kms_addfb(fb->fd, fb->gem_handle, fb->width, fb->height, fb->drm_format, fb->modifier, fb->strides, fb->offsets, fb->num_planes, flags, &fb->fb_id)) == 0
-> (kms_cursor_crc:7447) igt_fb-CRITICAL: Last errno: 22, Invalid argument
-> Stack trace:
-> kms_cursor_crc: ../lib/igt_core.c:1667: igt_fail: Assertion `_igt_dynamic_tests_executed < 0 || dynamic_failed_one' failed.
-> Received signal SIGABRT.
-> 
-> The test was aborted after convertig tests to dynamic with cursor size 32*10 that because of the assertion in the `igt_create_fb_with_bo_size` when creating cursor in `create_cursor_fb`.
-> 
-> This happened because Within a igt_subtest_with_dynamic block, explicit failure (e.g. igt_assert) is not allowed,
-> only dynamic subsubtests themselves will produce test results.
-> 
-> The previous approach was running each test for all cursor sizes then move to the next test  so fix this issue
-> by running all tests for one cursor size one by one, and check if cursor size is
-> supported or not before running the test.
-> 
-> Fixes: 9494d53d ("tests/kms_cursor_crc: Convert tests to dynamic")
-> 
-> Signed-off-by: Alaa Emad <aemad@igalia.com>
-> ---
->   tests/kms_cursor_crc.c | 136 +++++++++++++++++++++--------------------
->   1 file changed, 69 insertions(+), 67 deletions(-)
-> 
-> diff --git a/tests/kms_cursor_crc.c b/tests/kms_cursor_crc.c
-> index 8d3426dd..9b620389 100644
-> --- a/tests/kms_cursor_crc.c
-> +++ b/tests/kms_cursor_crc.c
-> @@ -72,7 +72,6 @@ typedef struct {
->   	cairo_surface_t *surface;
->   	uint32_t devid;
->   	double alpha;
-> -	int vblank_wait_count; /* because of msm */
->   } data_t;
->   
->   #define TEST_DPMS (1<<0)
-> @@ -125,12 +124,6 @@ static void cursor_disable(data_t *data)
->   {
->   	igt_plane_set_fb(data->cursor, NULL);
->   	igt_plane_set_position(data->cursor, 0, 0);
-> -	igt_display_commit(&data->display);
-> -
-> -	/* do this wait here so it will not need to be added everywhere */
-> -	igt_wait_for_vblank_count(data->drm_fd,
-> -				  data->display.pipes[data->pipe].crtc_offset,
-> -				  data->vblank_wait_count);
->   }
->   
->   static bool chv_cursor_broken(data_t *data, int x)
-> @@ -209,9 +202,8 @@ static void do_single_test(data_t *data, int x, int y, bool hw_test,
->   		igt_display_commit(display);
->   
->   		/* Extra vblank wait is because nonblocking cursor ioctl */
-> -		igt_wait_for_vblank_count(data->drm_fd,
-> -					  display->pipes[data->pipe].crtc_offset,
-> -					  data->vblank_wait_count);
-> +		igt_wait_for_vblank(data->drm_fd,
-> +				display->pipes[data->pipe].crtc_offset);
->   
->   		igt_pipe_crc_get_current(data->drm_fd, pipe_crc, hwcrc);
->   
-> @@ -249,7 +241,11 @@ static void do_single_test(data_t *data, int x, int y, bool hw_test,
->   
->   		restore_image(data, swbufidx, &((cursorarea){x, y, data->curw, data->curh}));
->   		igt_plane_set_fb(data->primary, &data->primary_fb[swbufidx]);
-> +
->   		igt_display_commit(display);
-> +		igt_wait_for_vblank(data->drm_fd,
-> +				display->pipes[data->pipe].crtc_offset);
-> +
->   		igt_pipe_crc_get_current(data->drm_fd, pipe_crc, &crc);
->   		igt_assert_crc_equal(&crc, hwcrc);
->   	}
-> @@ -267,7 +263,9 @@ static void do_fail_test(data_t *data, int x, int y, int expect)
->   	igt_plane_set_position(data->cursor, x, y);
->   	ret = igt_display_try_commit2(display, COMMIT_LEGACY);
->   
-> +	igt_plane_set_position(data->cursor, 0, 0);
->   	cursor_disable(data);
-> +	igt_display_commit(display);
->   
->   	igt_assert_eq(ret, expect);
->   }
-> @@ -689,10 +687,28 @@ static void test_rapid_movement(data_t *data)
->   	igt_assert_lt(usec, 0.9 * 400 * 1000000 / data->refresh);
->   }
->   
-> -static void run_size_tests(data_t *data, void (*testfunc)(data_t *),
-> -			   int w, int h)
-> +static void run_size_tests(data_t *data, int w, int h)
->   {
->   	enum pipe pipe;
-> +	int i;
-> +
-> +	struct
-> +	{
-> +		const char *name;
-> +		void (*testfunc)(data_t *);
-> +		const char *desc;
-> +	} size_tests[] = {
-> +		{"cursor-onscreen", test_crc_onscreen,
-> +		 "Check if a given-size cursor is well-positioned inside the screen."},
-> +		{"cursor-offscreen", test_crc_offscreen,
-> +		 "Check if a given-size cursor is well-positioned outside the screen."},
-> +		{"cursor-sliding", test_crc_sliding,
-> +		 "Check the smooth and pixel-by-pixel given-size cursor movements on horizontal, vertical and diagonal."},
-> +		{"cursor-random", test_crc_random,
-> +		 "Check random placement of a cursor with given size."},
-> +		{"cursor-rapid-movement", test_rapid_movement,
-> +		 "Check the rapid update of given-size cursor movements."},
-> +	};
->   
->   	if (w == 0 && h == 0) {
->   		w = data->cursor_max_w;
-> @@ -709,45 +725,38 @@ static void run_size_tests(data_t *data, void (*testfunc)(data_t *),
->   		}
->   	}
->   
-> -	create_cursor_fb(data, w, h);
-> -	if (require_cursor_size(data, w, h)) {
-> -		igt_info("Cursor size %dx%d not supported by driver\n", w, h);
-> -
-> -		igt_remove_fb(data->drm_fd, &data->fb);
-> -		return;
-> -	}
-> +	igt_fixture
-> +		create_cursor_fb(data, w, h);
->   
-> -	for_each_pipe(&data->display, pipe) {
-> -		data->pipe = pipe;
-> -		igt_dynamic_f("pipe-%s-%s",
-> -			      kmstest_pipe_name(pipe), igt_output_name(data->output))
-> -			run_test(data, testfunc, w, h);
-> +	for (i = 0; i < ARRAY_SIZE(size_tests); i++)
-> +	{
-> +		igt_describe(size_tests[i].desc);
-> +		igt_subtest_with_dynamic_f("%s-%dx%d", size_tests[i].name, w, h)
-> +		{
-> +			for_each_pipe(&data->display, pipe)
-> +			{
-> +				data->pipe = pipe;
-> +				if (require_cursor_size(data, w, h))
-> +				{
-> +					igt_info("Cursor size %dx%d not supported by driver\n", w, h);
-> +					continue;
-> +				}
-> +
-> +				igt_dynamic_f("pipe-%s-%s",
-> +							  kmstest_pipe_name(pipe), igt_output_name(data->output))
-> +					run_test(data, size_tests[i].testfunc, w, h);
-> +			}
-> +		}
->   	}
->   
-> -	igt_remove_fb(data->drm_fd, &data->fb);
-> +	igt_fixture
-> +		igt_remove_fb(data->drm_fd, &data->fb);
->   }
->   
->   static void run_tests_on_pipe(data_t *data)
->   {
->   	enum pipe pipe;
->   	int cursor_size;
-> -	int i;
-> -	struct {
-> -		const char *name;
-> -		void (*testfunc)(data_t *);
-> -		const char *desc;
-> -	} size_tests[] = {
-> -		{ "cursor-onscreen", test_crc_onscreen,
-> -			"Check if a given-size cursor is well-positioned inside the screen." },
-> -		{ "cursor-offscreen", test_crc_offscreen,
-> -			"Check if a given-size cursor is well-positioned outside the screen." },
-> -		{ "cursor-sliding", test_crc_sliding,
-> -			"Check the smooth and pixel-by-pixel given-size cursor movements on horizontal, vertical and diagonal." },
-> -		{ "cursor-random", test_crc_random,
-> -			"Check random placement of a cursor with given size." },
-> -		{ "cursor-rapid-movement", test_rapid_movement,
-> -			"Check the rapid update of given-size cursor movements." },
-> -	};
->   
->   	igt_fixture {
->   		data->output = igt_get_single_output_for_pipe(&data->display, pipe);
-> @@ -848,30 +857,26 @@ static void run_tests_on_pipe(data_t *data)
->   	igt_fixture
->   		igt_remove_fb(data->drm_fd, &data->fb);
->   
-> -	for (i = 0; i < ARRAY_SIZE(size_tests); i++) {
-> -		igt_describe(size_tests[i].desc);
-> -		igt_subtest_group {
-> -			for (cursor_size = 32; cursor_size <= 512; cursor_size *= 2) {
-> -				int w = cursor_size;
-> -				int h = cursor_size;
-> -
-> -				igt_subtest_with_dynamic_f("%s-%dx%d", size_tests[i].name, w, h)
-> -					run_size_tests(data, size_tests[i].testfunc, w, h);
-> -
-> -				/*
-> -				 * Test non-square cursors a bit on the platforms
-> -				 * that support such things. And make it a bit more
-> -				 * interesting by using a non-pot height.
-> -				 */
-> -				h /= 3;
-> -				igt_subtest_with_dynamic_f("%s-%dx%d", size_tests[i].name, w, h)
-> -					run_size_tests(data, size_tests[i].testfunc, w, h);
-> -			}
-> +	for (cursor_size = 32; cursor_size <= 512; cursor_size *= 2)
-> +	{
-> +		int w = cursor_size;
-> +		int h = cursor_size;
->   
-> -			igt_subtest_with_dynamic_f("%s-max-size", size_tests[i].name)
-> -				run_size_tests(data, size_tests[i].testfunc, 0, 0);
-> -		}
-> +		igt_subtest_group
-> +			run_size_tests(data, w, h);
-> +
-> +		/*
-> +		 * Test non-square cursors a bit on the platforms
-> +		 * that support such things. And make it a bit more
-> +		 * interesting by using a non-pot height.
-> +		 */
-> +		h /= 3;
-> +
-> +		igt_subtest_group
-> +			run_size_tests(data, w, h);
->   	}
-> +	
-> +	run_size_tests(data, 0, 0);
->   }
->   
->   static data_t data;
-> @@ -896,8 +901,6 @@ igt_main
->   		kmstest_set_vt_graphics_mode();
->   
->   		igt_require_pipe_crc(data.drm_fd);
-> -
-> -		data.vblank_wait_count = is_msm_device(data.drm_fd) ? 2 : 1;
->   	}
->   
->   	data.cursor_max_w = cursor_width;
-> @@ -913,6 +916,5 @@ igt_main
->   		}
->   
->   		igt_display_fini(&data.display);
-> -		close(data.drm_fd);
->   	}
->   }
+CI Bug Log - changes from CI_DRM_12228 -> IGTPW_7937
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7937/index.html
+
+Participating hosts (44 -> 43)
+------------------------------
+
+  Additional (1): fi-tgl-dsi 
+  Missing    (2): fi-ctg-p8600 fi-hsw-4770 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_7937 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@i915_selftest@live@hangcheck:
+    - fi-hsw-g3258:       [PASS][1] -> [INCOMPLETE][2] ([i915#3303] / [i915#4785])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12228/fi-hsw-g3258/igt@i915_selftest@live@hangcheck.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7937/fi-hsw-g3258/igt@i915_selftest@live@hangcheck.html
+
+  * igt@runner@aborted:
+    - fi-hsw-g3258:       NOTRUN -> [FAIL][3] ([fdo#109271] / [i915#4312])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7937/fi-hsw-g3258/igt@runner@aborted.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_selftest@live@requests:
+    - {bat-rpls-1}:       [INCOMPLETE][4] ([i915#6257]) -> [PASS][5]
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12228/bat-rpls-1/igt@i915_selftest@live@requests.html
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7937/bat-rpls-1/igt@i915_selftest@live@requests.html
+
+  * igt@i915_selftest@live@workarounds:
+    - {bat-rpls-2}:       [DMESG-FAIL][6] -> [PASS][7]
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12228/bat-rpls-2/igt@i915_selftest@live@workarounds.html
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7937/bat-rpls-2/igt@i915_selftest@live@workarounds.html
+
+  * igt@kms_pipe_crc_basic@suspend-read-crc@pipe-d-dp-2:
+    - {bat-dg2-11}:       [FAIL][8] ([i915#6818]) -> [PASS][9]
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12228/bat-dg2-11/igt@kms_pipe_crc_basic@suspend-read-crc@pipe-d-dp-2.html
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7937/bat-dg2-11/igt@kms_pipe_crc_basic@suspend-read-crc@pipe-d-dp-2.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [fdo#109284]: https://bugs.freedesktop.org/show_bug.cgi?id=109284
+  [fdo#109285]: https://bugs.freedesktop.org/show_bug.cgi?id=109285
+  [fdo#109295]: https://bugs.freedesktop.org/show_bug.cgi?id=109295
+  [fdo#110189]: https://bugs.freedesktop.org/show_bug.cgi?id=110189
+  [fdo#111827]: https://bugs.freedesktop.org/show_bug.cgi?id=111827
+  [i915#2190]: https://gitlab.freedesktop.org/drm/intel/issues/2190
+  [i915#2411]: https://gitlab.freedesktop.org/drm/intel/issues/2411
+  [i915#2582]: https://gitlab.freedesktop.org/drm/intel/issues/2582
+  [i915#2867]: https://gitlab.freedesktop.org/drm/intel/issues/2867
+  [i915#3301]: https://gitlab.freedesktop.org/drm/intel/issues/3301
+  [i915#3303]: https://gitlab.freedesktop.org/drm/intel/issues/3303
+  [i915#3555]: https://gitlab.freedesktop.org/drm/intel/issues/3555
+  [i915#3987]: https://gitlab.freedesktop.org/drm/intel/issues/3987
+  [i915#4103]: https://gitlab.freedesktop.org/drm/intel/issues/4103
+  [i915#4258]: https://gitlab.freedesktop.org/drm/intel/issues/4258
+  [i915#4312]: https://gitlab.freedesktop.org/drm/intel/issues/4312
+  [i915#4613]: https://gitlab.freedesktop.org/drm/intel/issues/4613
+  [i915#4785]: https://gitlab.freedesktop.org/drm/intel/issues/4785
+  [i915#4983]: https://gitlab.freedesktop.org/drm/intel/issues/4983
+  [i915#6257]: https://gitlab.freedesktop.org/drm/intel/issues/6257
+  [i915#6818]: https://gitlab.freedesktop.org/drm/intel/issues/6818
+  [i915#6856]: https://gitlab.freedesktop.org/drm/intel/issues/6856
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_7006 -> IGTPW_7937
+
+  CI-20190529: 20190529
+  CI_DRM_12228: ec49ae119a3998563198b95b64a48fd4561f3ddd @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_7937: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7937/index.html
+  IGT_7006: ea6d73b73b88de85d921cbc2680ae8979a2c3ce9 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7937/index.html
+
+--===============5736464591968632989==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>series starting with [i-g-t,1/2] tests/i915/kms_big_fb: optimize async flip tests</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/109532/">https://patchwork.freedesktop.org/series/109532/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7937/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7937/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_12228 -&gt; IGTPW_7937</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7937/index.html</p>
+<h2>Participating hosts (44 -&gt; 43)</h2>
+<p>Additional (1): fi-tgl-dsi <br />
+  Missing    (2): fi-ctg-p8600 fi-hsw-4770 </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_7937 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live@hangcheck:</p>
+<ul>
+<li>fi-hsw-g3258:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12228/fi-hsw-g3258/igt@i915_selftest@live@hangcheck.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7937/fi-hsw-g3258/igt@i915_selftest@live@hangcheck.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3303">i915#3303</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4785">i915#4785</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@runner@aborted:</p>
+<ul>
+<li>fi-hsw-g3258:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7937/fi-hsw-g3258/igt@runner@aborted.html">FAIL</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4312">i915#4312</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live@requests:</p>
+<ul>
+<li>{bat-rpls-1}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12228/bat-rpls-1/igt@i915_selftest@live@requests.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6257">i915#6257</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7937/bat-rpls-1/igt@i915_selftest@live@requests.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@workarounds:</p>
+<ul>
+<li>{bat-rpls-2}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12228/bat-rpls-2/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7937/bat-rpls-2/igt@i915_selftest@live@workarounds.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@suspend-read-crc@pipe-d-dp-2:</p>
+<ul>
+<li>{bat-dg2-11}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12228/bat-dg2-11/igt@kms_pipe_crc_basic@suspend-read-crc@pipe-d-dp-2.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6818">i915#6818</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7937/bat-dg2-11/igt@kms_pipe_crc_basic@suspend-read-crc@pipe-d-dp-2.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_7006 -&gt; IGTPW_7937</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_12228: ec49ae119a3998563198b95b64a48fd4561f3ddd @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_7937: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7937/index.html<br />
+  IGT_7006: ea6d73b73b88de85d921cbc2680ae8979a2c3ce9 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============5736464591968632989==--
