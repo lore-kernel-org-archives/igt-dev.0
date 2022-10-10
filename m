@@ -1,20 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-lj1-x229.google.com (mail-lj1-x229.google.com
- [IPv6:2a00:1450:4864:20::229])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4C0AB10E202
- for <igt-dev@lists.freedesktop.org>; Mon, 10 Oct 2022 09:35:16 +0000 (UTC)
-Received: by mail-lj1-x229.google.com with SMTP id bn8so12586501ljb.6
- for <igt-dev@lists.freedesktop.org>; Mon, 10 Oct 2022 02:35:16 -0700 (PDT)
-From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9C00410E1AB
+ for <igt-dev@lists.freedesktop.org>; Mon, 10 Oct 2022 09:41:11 +0000 (UTC)
+From: Jeevan B <jeevan.b@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Mon, 10 Oct 2022 12:35:07 +0300
-Message-Id: <20221010093507.13817-2-juhapekka.heikkila@gmail.com>
-In-Reply-To: <20221010093507.13817-1-juhapekka.heikkila@gmail.com>
-References: <20221010093507.13817-1-juhapekka.heikkila@gmail.com>
+Date: Mon, 10 Oct 2022 15:05:47 +0530
+Message-Id: <20221010093547.14296-1-jeevan.b@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 2/2] tests/kms_cursor_crc: reduce cpu work
- on restoring image
+Subject: [igt-dev] [PATCH i-g-t] RFC: kms_content_protection: Add a test for
+ HDCP-MST with suspend resume
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,97 +17,142 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: suraj.kandpal@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-on creating reference images for crcs re-render only parts
-which have changed.
+adding new test to validate HDCP-MST with suspend resume
+test check for valid output which supports MST and HDCP
+then commits and check if the content protection is enabled
+before and after suspend-resume.
 
-Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+Signed-off-by: Jeevan B <jeevan.b@intel.com>
 ---
- tests/kms_cursor_crc.c | 31 +++++++++++++++++++++----------
- 1 file changed, 21 insertions(+), 10 deletions(-)
+ tests/kms_content_protection.c | 90 +++++++++++++++++++++++++++++++++-
+ 1 file changed, 89 insertions(+), 1 deletion(-)
 
-diff --git a/tests/kms_cursor_crc.c b/tests/kms_cursor_crc.c
-index 8d3426dda..2d6b43f76 100644
---- a/tests/kms_cursor_crc.c
-+++ b/tests/kms_cursor_crc.c
-@@ -53,6 +53,13 @@ enum cursor_buffers {
- 	MAXCURSORBUFFER
+diff --git a/tests/kms_content_protection.c b/tests/kms_content_protection.c
+index aa28b7bf..701c65fc 100644
+--- a/tests/kms_content_protection.c
++++ b/tests/kms_content_protection.c
+@@ -48,6 +48,7 @@ struct data {
+ #define CP_MEI_RELOAD				(1 << 2)
+ #define CP_TYPE_CHANGE				(1 << 3)
+ #define CP_UEVENT				(1 << 4)
++#define SUSPEND_RESUME				(1 << 5)
+ 
+ #define CP_UNDESIRED				0
+ #define CP_DESIRED				1
+@@ -686,6 +687,85 @@ test_content_protection_mst(int content_type)
+ 		test_cp_lic_on_mst(hdcp_mst_output, valid_outputs, 1);
+ }
+ 
++static void
++test_content_protection_mst_suspend_resume(int content_type)
++{
++	igt_display_t *display = &data.display;
++	igt_output_t *output;
++	int valid_outputs = 0, dp_mst_outputs = 0, ret, count, max_pipe = 0;
++	enum pipe pipe;
++	igt_output_t *mst_output[IGT_MAX_PIPES], *hdcp_mst_output[IGT_MAX_PIPES];
++
++	for_each_pipe(display, pipe)
++		max_pipe++;
++
++	pipe = PIPE_A;
++
++	for_each_connected_output(display, output) {
++		if (!output_is_dp_mst(output, dp_mst_outputs))
++			continue;
++
++		igt_assert_f(igt_pipe_connector_valid(pipe, output), "Output-pipe combination invalid\n");
++
++		igt_output_set_pipe(output, pipe);
++		prepare_modeset_on_mst_output(output);
++		mst_output[dp_mst_outputs++] = output;
++
++		pipe++;
++
++		if (pipe > max_pipe)
++			break;
++	}
++
++	igt_require_f(dp_mst_outputs > 1, "No DP MST set up with >= 2 outputs found in a single topology\n");
++
++	if (igt_display_try_commit_atomic(display,
++				DRM_MODE_ATOMIC_TEST_ONLY |
++				DRM_MODE_ATOMIC_ALLOW_MODESET,
++				NULL) != 0) {
++		bool found = igt_override_all_active_output_modes_to_fit_bw(display);
++		igt_require_f(found, "No valid mode combo found for MST modeset\n");
++
++		for (count = 0; count < dp_mst_outputs; count++)
++			prepare_modeset_on_mst_output(mst_output[count]);
++	}
++
++	ret = igt_display_try_commit2(display, COMMIT_ATOMIC);
++	igt_require_f(ret == 0, "Commit failure during MST modeset\n");
++
++	for (count = 0; count < dp_mst_outputs; count++) {
++		if (!output_hdcp_capable(mst_output[count], content_type))
++			continue;
++
++		hdcp_mst_output[valid_outputs++] = mst_output[count];
++	}
++
++	igt_require_f(valid_outputs > 1, "DP MST outputs do not have the required HDCP support\n");
++
++	for (count = 0; count < valid_outputs; count++) {
++		igt_output_set_prop_value(hdcp_mst_output[count], IGT_CONNECTOR_CONTENT_PROTECTION, CP_DESIRED);
++
++		if (output->props[IGT_CONNECTOR_HDCP_CONTENT_TYPE])
++			igt_output_set_prop_value(hdcp_mst_output[count], IGT_CONNECTOR_HDCP_CONTENT_TYPE, content_type);
++	}
++
++	igt_display_commit2(display, COMMIT_ATOMIC);
++
++	for (count = 0; count < valid_outputs; count++) {
++		ret = wait_for_prop_value(hdcp_mst_output[count], CP_ENABLED, KERNEL_AUTH_TIME_ALLOWED_MSEC);
++		igt_assert_f(ret, "Content Protection not enabled on %s\n", hdcp_mst_output[count]->name);
++	}
++
++	igt_system_suspend_autoresume(SUSPEND_STATE_MEM, SUSPEND_TEST_NONE);
++
++	igt_display_commit2(display, COMMIT_ATOMIC);
++
++	for (count = 0; count < valid_outputs; count++) {
++		ret = wait_for_prop_value(hdcp_mst_output[count], CP_ENABLED, KERNEL_AUTH_TIME_ALLOWED_MSEC);
++		igt_assert_f(ret, "Content Protection not enabled on %s\n", hdcp_mst_output[count]->name);
++	}
++}
++
+ static void test_content_protection_cleanup(void)
+ {
+ 	igt_display_t *display = &data.display;
+@@ -817,6 +897,11 @@ static const struct {
+ 	  .cp_tests = CP_LIC,
+ 	  .content_type = HDCP_CONTENT_TYPE_1,
+ 	},
++	{ .desc = "Test Content protection(Type 1) over DP MST with LIC.",
++          .name = "dp-mst-suspend_resume",
++          .cp_tests = SUSPEND_RESUME,
++          .content_type = HDCP_CONTENT_TYPE_0,
++        },
  };
  
-+typedef struct {
-+	int x;
-+	int y;
-+	int width;
-+	int height;
-+} cursorarea;
-+
- typedef struct {
- 	int drm_fd;
- 	igt_display_t display;
-@@ -73,6 +80,7 @@ typedef struct {
- 	uint32_t devid;
- 	double alpha;
- 	int vblank_wait_count; /* because of msm */
-+	cursorarea oldcursorarea[MAXCURSORBUFFER];
- } data_t;
+ igt_main
+@@ -866,7 +951,10 @@ igt_main
  
- #define TEST_DPMS (1<<0)
-@@ -83,13 +91,6 @@ typedef struct {
- #define BLUE 0.0, 0.0, 1.0
- #define WHITE 1.0, 1.0, 1.0
- 
--typedef struct {
--	int x;
--	int y;
--	int width;
--	int height;
--} cursorarea;
--
- static void draw_cursor(cairo_t *cr, cursorarea *cursor, double alpha)
- {
- 	int wl, wr, ht, hb;
-@@ -176,11 +177,16 @@ static void restore_image(data_t *data, uint32_t buffer, cursorarea *cursor)
- 	cr = igt_get_cairo_ctx(data->drm_fd, &data->primary_fb[buffer]);
- 	cairo_set_operator(cr, CAIRO_OPERATOR_SOURCE);
- 	cairo_set_source_surface(cr, data->surface, 0, 0);
--	cairo_rectangle(cr, 0, 0, data->screenw, data->screenh);
-+	cairo_rectangle(cr, data->oldcursorarea[buffer].x,
-+			data->oldcursorarea[buffer].y,
-+			data->oldcursorarea[buffer].width,
-+			data->oldcursorarea[buffer].height);
- 	cairo_fill(cr);
- 
--	if (cursor)
-+	if (cursor) {
- 		draw_cursor(cr, cursor, data->alpha);
-+		data->oldcursorarea[buffer] = *cursor;
-+	}
- 
- 	igt_put_cairo_ctx(cr);
- }
-@@ -235,7 +241,7 @@ static void do_single_test(data_t *data, int x, int y, bool hw_test,
- 
- 			if (data->flags & TEST_SUSPEND)
- 				igt_system_suspend_autoresume(SUSPEND_STATE_MEM,
--							SUSPEND_TEST_NONE);
-+							      SUSPEND_TEST_NONE);
- 
- 			igt_pipe_crc_start(pipe_crc);
- 			igt_pipe_crc_get_current(data->drm_fd, pipe_crc, &crc_after);
-@@ -509,6 +515,11 @@ static void prepare_crtc(data_t *data, int cursor_w, int cursor_h)
- 	data->curh = cursor_h;
- 	data->refresh = mode->vrefresh;
- 
-+	/* initialize old cursor area to full screen so first run will copy image in place */
-+	data->oldcursorarea[HWCURSORBUFFER]      = (cursorarea){0, 0, data->screenw, data->screenh};
-+	data->oldcursorarea[SWCOMPARISONBUFFER1] = (cursorarea){0, 0, data->screenw, data->screenh};
-+	data->oldcursorarea[SWCOMPARISONBUFFER2] = (cursorarea){0, 0, data->screenw, data->screenh};
-+
- 	data->surface = cairo_image_surface_create(CAIRO_FORMAT_RGB24,
- 						   data->screenw,
- 						   data->screenh);
+ 			igt_subtest(mst_subtests[i].name) {
+ 				data.cp_tests = mst_subtests[i].cp_tests;
+-				test_content_protection_mst(mst_subtests[i].content_type);
++				if (data.cp_tests == SUSPEND_RESUME)
++				       test_content_protection_mst_suspend_resume(mst_subtests[i].content_type);
++				else
++					test_content_protection_mst(mst_subtests[i].content_type);
+ 			}
+ 		}
+ 	}
 -- 
-2.37.3
+2.36.0
