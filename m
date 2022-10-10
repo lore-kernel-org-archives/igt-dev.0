@@ -1,19 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D0E3310E730
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9EAC210E72B
  for <igt-dev@lists.freedesktop.org>; Mon, 10 Oct 2022 21:42:22 +0000 (UTC)
 From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 To: igt-dev@lists.freedesktop.org,
  Lionel G Landwerlin <lionel.g.landwerlin@intel.com>,
  Ashutosh Dixit <ashutosh.dixit@intel.com>
-Date: Mon, 10 Oct 2022 21:42:10 +0000
-Message-Id: <20221010214215.5378-32-umesh.nerlige.ramappa@intel.com>
+Date: Mon, 10 Oct 2022 21:42:09 +0000
+Message-Id: <20221010214215.5378-31-umesh.nerlige.ramappa@intel.com>
 In-Reply-To: <20221010214215.5378-1-umesh.nerlige.ramappa@intel.com>
 References: <20221010214215.5378-1-umesh.nerlige.ramappa@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v6 31/36] lib/i915/perf: add helper function
- to get report reason
+Subject: [igt-dev] [PATCH i-g-t v6 30/36] lib/i915/perf: add a raw timestamp
+ utility
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,103 +27,76 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
 
-Useful to inspect reports.
+Helpful to figure out the bitshifting needed in OA timestamp.
 
 Signed-off-by: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
 ---
- lib/i915/perf.c | 54 +++++++++++++++++++++++++++++++++++++++++++++++++
- lib/i915/perf.h |  3 +++
- lib/meson.build |  2 +-
- 3 files changed, 58 insertions(+), 1 deletion(-)
+ lib/i915/perf.c                    | 21 +++++++++++++++++++++
+ lib/i915/perf.h                    |  4 ++++
+ tools/i915-perf/i915_perf_reader.c |  7 +++++++
+ 3 files changed, 32 insertions(+)
 
 diff --git a/lib/i915/perf.c b/lib/i915/perf.c
-index b5c69d95..cac129ea 100644
+index 298e4d0e..b5c69d95 100644
 --- a/lib/i915/perf.c
 +++ b/lib/i915/perf.c
-@@ -831,3 +831,57 @@ uint64_t intel_perf_read_record_timestamp_raw(const struct intel_perf *perf,
+@@ -810,3 +810,24 @@ uint64_t intel_perf_read_record_timestamp(const struct intel_perf *perf,
  
         return ts;
  }
 +
-+const char *intel_perf_read_report_reason(const struct intel_perf *perf,
++uint64_t intel_perf_read_record_timestamp_raw(const struct intel_perf *perf,
++					  const struct intel_perf_metric_set *metric_set,
 +					  const struct drm_i915_perf_record_header *record)
 +{
-+	const uint32_t *report = (const uint32_t *) (record + 1);
++       const uint32_t *report32 = (const uint32_t *)(record + 1);
++       uint64_t ts;
 +
-+	/* Not really documented on Gfx7/7.5*/
-+	if (perf->devinfo.graphics_ver < 8)
-+		return "timer";
++       switch (metric_set->perf_oa_format) {
++       case I915_OA_FORMAT_A24u40_A14u32_B8_C8:
++       case I915_OA_FORMAT_A32u40_A4u32_B8_C8:
++       case I915_OA_FORMAT_A45_B8_C8:
++               ts = report32[1];
++               break;
 +
-+	/* Gfx8-11 */
-+	if (perf->devinfo.graphics_ver < 12) {
-+		uint32_t reason = report[0] >> 19;
-+		if (reason & (1u << 0))
-+			return "timer";
-+		if (reason & (1u << 1))
-+			return "trigger1";
-+		if (reason & (1u << 2))
-+			return "trigger2";
-+		if (reason & (1u << 3))
-+			return "context-switch";
-+		if (reason & (1u << 4))
-+			return "go-transition";
++       default:
++               assert(0);
++       }
 +
-+		if (perf->devinfo.graphics_ver >= 9 &&
-+		    reason & (1u << 5))
-+			return "clock-ratio-change";
-+
-+		return "unknown";
-+	}
-+
-+	/* Gfx12 */
-+	if (perf->devinfo.graphics_ver <= 12) {
-+		uint32_t reason = report[0] >> 19;
-+		if (reason & (1u << 0))
-+			return "timer";
-+		if (reason & (1u << 1))
-+			return "trigger1";
-+		if (reason & (1u << 2))
-+			return "trigger2";
-+		if (reason & (1u << 3))
-+			return "context-switch";
-+		if (reason & (1u << 4))
-+			return "go-transition";
-+		if (reason & (1u << 5))
-+			return "clock-ratio-change";
-+		if (reason & (1u << 6))
-+			return "mmio-trigger";
-+
-+		return "unknown";
-+	}
-+
-+	return "unknown";
++       return ts;
 +}
 diff --git a/lib/i915/perf.h b/lib/i915/perf.h
-index bd6b96f5..b73a8d91 100644
+index ef2a3029..bd6b96f5 100644
 --- a/lib/i915/perf.h
 +++ b/lib/i915/perf.h
-@@ -348,6 +348,9 @@ uint64_t intel_perf_read_record_timestamp_raw(const struct intel_perf *perf,
- 					      const struct intel_perf_metric_set *metric_set,
- 					      const struct drm_i915_perf_record_header *record);
+@@ -344,6 +344,10 @@ uint64_t intel_perf_read_record_timestamp(const struct intel_perf *perf,
+ 					  const struct intel_perf_metric_set *metric_set,
+ 					  const struct drm_i915_perf_record_header *record);
  
-+const char *intel_perf_read_report_reason(const struct intel_perf *perf,
-+					  const struct drm_i915_perf_record_header *record);
++uint64_t intel_perf_read_record_timestamp_raw(const struct intel_perf *perf,
++					      const struct intel_perf_metric_set *metric_set,
++					      const struct drm_i915_perf_record_header *record);
 +
  #ifdef __cplusplus
  };
  #endif
-diff --git a/lib/meson.build b/lib/meson.build
-index b319a3c8..b029f09e 100644
---- a/lib/meson.build
-+++ b/lib/meson.build
-@@ -329,7 +329,7 @@ pkgconf.set('prefix', get_option('prefix'))
- pkgconf.set('exec_prefix', '${prefix}')
- pkgconf.set('libdir', '${prefix}/@0@'.format(get_option('libdir')))
- pkgconf.set('includedir', '${prefix}/@0@'.format(get_option('includedir')))
--pkgconf.set('i915_perf_version', '1.5.0')
-+pkgconf.set('i915_perf_version', '1.5.1')
+diff --git a/tools/i915-perf/i915_perf_reader.c b/tools/i915-perf/i915_perf_reader.c
+index 92e43c19..9be1a9fc 100644
+--- a/tools/i915-perf/i915_perf_reader.c
++++ b/tools/i915-perf/i915_perf_reader.c
+@@ -252,6 +252,13 @@ main(int argc, char *argv[])
+ 		intel_perf_read_record_timestamp(reader.perf,
+ 						 reader.metric_set,
+ 						 reader.records[reader.n_records - 1]));
++	fprintf(stdout, "OA raw data timestamp range:           0x%016"PRIx64"-0x%016"PRIx64"\n",
++		intel_perf_read_record_timestamp_raw(reader.perf,
++						     reader.metric_set,
++						     reader.records[0]),
++		intel_perf_read_record_timestamp_raw(reader.perf,
++						     reader.metric_set,
++						     reader.records[reader.n_records - 1]));
  
- configure_file(
-   input : 'i915-perf.pc.in',
+ 	if (strcmp(reader.metric_set_uuid, reader.metric_set->hw_config_guid)) {
+ 		fprintf(stdout,
 -- 
 2.25.1
