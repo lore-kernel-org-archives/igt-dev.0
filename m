@@ -1,19 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A2C7510E72F
- for <igt-dev@lists.freedesktop.org>; Mon, 10 Oct 2022 21:42:20 +0000 (UTC)
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 92B4110E729
+ for <igt-dev@lists.freedesktop.org>; Mon, 10 Oct 2022 21:42:17 +0000 (UTC)
 From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 To: igt-dev@lists.freedesktop.org,
  Lionel G Landwerlin <lionel.g.landwerlin@intel.com>,
  Ashutosh Dixit <ashutosh.dixit@intel.com>
-Date: Mon, 10 Oct 2022 21:41:56 +0000
-Message-Id: <20221010214215.5378-18-umesh.nerlige.ramappa@intel.com>
+Date: Mon, 10 Oct 2022 21:41:44 +0000
+Message-Id: <20221010214215.5378-6-umesh.nerlige.ramappa@intel.com>
 In-Reply-To: <20221010214215.5378-1-umesh.nerlige.ramappa@intel.com>
 References: <20221010214215.5378-1-umesh.nerlige.ramappa@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v6 17/36] lib/i915/perf: expose new
- operators for codegen
+Subject: [igt-dev] [PATCH i-g-t v6 05/36] i915/perf: Account for OA sampling
+ interval in polling test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,79 +25,48 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
+The polling test reads all the reports and then expects EAGAIN on a
+subsequent read since it has consumed all available data. This
+works well for OA sampling periods in the order of 10s of ms. For
+smaller sampling periods like 500 us, we end up reading valid data and
+the test fails. Fix the check to account for the OA sampling period.
 
-Newer platform started to use operators we didn't implement.
-
-Signed-off-by: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
-Reviewed-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+Reviewed-by: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
 ---
- lib/i915/perf-configs/codegen.py | 28 ++++++++++++++++++++++++++++
- 1 file changed, 28 insertions(+)
+ tests/i915/perf.c | 16 ++++++++++++----
+ 1 file changed, 12 insertions(+), 4 deletions(-)
 
-diff --git a/lib/i915/perf-configs/codegen.py b/lib/i915/perf-configs/codegen.py
-index c0b22977..b53d0358 100644
---- a/lib/i915/perf-configs/codegen.py
-+++ b/lib/i915/perf-configs/codegen.py
-@@ -150,11 +150,17 @@ class Gen:
-         self.ops["<<"]       = (2, self.emit_lshft)
-         self.ops[">>"]       = (2, self.emit_rshft)
-         self.ops["AND"]      = (2, self.emit_and)
-+        self.ops["UGTE"]     = (2, self.emit_ugte)
-+        self.ops["UGT"]      = (2, self.emit_ugt)
-+        self.ops["ULTE"]     = (2, self.emit_ulte)
-+        self.ops["ULT"]      = (2, self.emit_ult)
+diff --git a/tests/i915/perf.c b/tests/i915/perf.c
+index ca3ccc17..5fe874c1 100644
+--- a/tests/i915/perf.c
++++ b/tests/i915/perf.c
+@@ -2220,14 +2220,22 @@ test_polling(uint64_t requested_oa_period, bool set_kernel_hrtimer, uint64_t ker
+ 			n_extra_iterations++;
  
-         self.exp_ops = {}
-         #                 (n operands, splicer)
-         self.exp_ops["AND"]  = (2, self.splice_bitwise_and)
-         self.exp_ops["UGTE"] = (2, self.splice_ugte)
-+        self.exp_ops["UGT"]  = (2, self.splice_ugt)
-+        self.exp_ops["ULTE"] = (2, self.splice_ulte)
-         self.exp_ops["ULT"]  = (2, self.splice_ult)
-         self.exp_ops["&&"]   = (2, self.splice_logical_and)
+ 		/* At this point, after consuming pending reports (and hoping
+-		 * the scheduler hasn't stopped us for too long we now
+-		 * expect EAGAIN on read.
++		 * the scheduler hasn't stopped us for too long) we now expect
++		 * EAGAIN on read. While this works most of the times, there are
++		 * some rare failures when the OA period passed to this test is
++		 * very small (say 500 us) and that results in some valid
++		 * reports here. To weed out those rare occurences we assert
++		 * only if the OA period is >= 40 ms because 40 ms has withstood
++		 * the test of time on most platforms (ref: subtest: polling).
+ 		 */
+ 		while ((ret = read(stream_fd, buf, sizeof(buf))) < 0 &&
+ 		       errno == EINTR)
+ 			;
+-		igt_assert_eq(ret, -1);
+-		igt_assert_eq(errno, EAGAIN);
++
++		if (requested_oa_period >= 40000000) {
++			igt_assert_eq(ret, -1);
++			igt_assert_eq(errno, EAGAIN);
++		}
  
-@@ -238,6 +244,22 @@ class Gen:
-         self.c("uint64_t tmp{0} = {1} & {2};".format(tmp_id, args[1], args[0]))
-         return tmp_id + 1
- 
-+    def emit_ulte(self, tmp_id, args):
-+        self.c("uint64_t tmp{0} = {1} <= {2};".format(tmp_id, args[1], args[0]))
-+        return tmp_id + 1
-+
-+    def emit_ult(self, tmp_id, args):
-+        self.c("uint64_t tmp{0} = {1} < {2};".format(tmp_id, args[1], args[0]))
-+        return tmp_id + 1
-+
-+    def emit_ugte(self, tmp_id, args):
-+        self.c("uint64_t tmp{0} = {1} >= {2};".format(tmp_id, args[1], args[0]))
-+        return tmp_id + 1
-+
-+    def emit_ugt(self, tmp_id, args):
-+        self.c("uint64_t tmp{0} = {1} > {2};".format(tmp_id, args[1], args[0]))
-+        return tmp_id + 1
-+
-     def brkt(self, subexp):
-         if " " in subexp:
-             return "(" + subexp + ")"
-@@ -250,12 +272,18 @@ class Gen:
-     def splice_logical_and(self, args):
-         return self.brkt(args[1]) + " && " + self.brkt(args[0])
- 
-+    def splice_ulte(self, args):
-+        return self.brkt(args[1]) + " <= " + self.brkt(args[0])
-+
-     def splice_ult(self, args):
-         return self.brkt(args[1]) + " < " + self.brkt(args[0])
- 
-     def splice_ugte(self, args):
-         return self.brkt(args[1]) + " >= " + self.brkt(args[0])
- 
-+    def splice_ugt(self, args):
-+        return self.brkt(args[1]) + " > " + self.brkt(args[0])
-+
-     def resolve_variable(self, name, set):
-         if name in self.hw_vars:
-             return self.hw_vars[name]['c']
+ 		n++;
+ 	}
 -- 
 2.25.1
