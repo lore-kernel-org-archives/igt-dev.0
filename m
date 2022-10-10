@@ -1,19 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9EAC210E72B
- for <igt-dev@lists.freedesktop.org>; Mon, 10 Oct 2022 21:42:22 +0000 (UTC)
+Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 942E510E730
+ for <igt-dev@lists.freedesktop.org>; Mon, 10 Oct 2022 22:02:08 +0000 (UTC)
+Date: Mon, 10 Oct 2022 15:01:25 -0700
 From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
-To: igt-dev@lists.freedesktop.org,
- Lionel G Landwerlin <lionel.g.landwerlin@intel.com>,
- Ashutosh Dixit <ashutosh.dixit@intel.com>
-Date: Mon, 10 Oct 2022 21:42:09 +0000
-Message-Id: <20221010214215.5378-31-umesh.nerlige.ramappa@intel.com>
-In-Reply-To: <20221010214215.5378-1-umesh.nerlige.ramappa@intel.com>
+To: <igt-dev@lists.freedesktop.org>, Lionel G Landwerlin
+ <lionel.g.landwerlin@intel.com>, Ashutosh Dixit <ashutosh.dixit@intel.com>
+Message-ID: <Y0SWNWCnEvvwYpKS@unerlige-ril>
 References: <20221010214215.5378-1-umesh.nerlige.ramappa@intel.com>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Disposition: inline
+In-Reply-To: <20221010214215.5378-1-umesh.nerlige.ramappa@intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v6 30/36] lib/i915/perf: add a raw timestamp
- utility
+Subject: Re: [igt-dev] [PATCH i-g-t v6 00/36] Add DG2 OA test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,78 +24,116 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
+https://gitlab.freedesktop.org/llandwerlin/igt-gpu-tools/-/commit/57875ca29a9aa86e1f8939f61fc0e440c93a5f5c
 
-Helpful to figure out the bitshifting needed in OA timestamp.
+I broke the above patch into 3 pieces - one per gt. ACMGT1 and ACMGT2 
+are waiting on moderator approval, but ACMGT3 is still rejected by the 
+server, so I am going to just review what's in the link above since the 
+patch was applied as is.
 
-Signed-off-by: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
----
- lib/i915/perf.c                    | 21 +++++++++++++++++++++
- lib/i915/perf.h                    |  4 ++++
- tools/i915-perf/i915_perf_reader.c |  7 +++++++
- 3 files changed, 32 insertions(+)
+The patch in the link is:
 
-diff --git a/lib/i915/perf.c b/lib/i915/perf.c
-index 298e4d0e..b5c69d95 100644
---- a/lib/i915/perf.c
-+++ b/lib/i915/perf.c
-@@ -810,3 +810,24 @@ uint64_t intel_perf_read_record_timestamp(const struct intel_perf *perf,
- 
-        return ts;
- }
-+
-+uint64_t intel_perf_read_record_timestamp_raw(const struct intel_perf *perf,
-+					  const struct intel_perf_metric_set *metric_set,
-+					  const struct drm_i915_perf_record_header *record)
-+{
-+       const uint32_t *report32 = (const uint32_t *)(record + 1);
-+       uint64_t ts;
-+
-+       switch (metric_set->perf_oa_format) {
-+       case I915_OA_FORMAT_A24u40_A14u32_B8_C8:
-+       case I915_OA_FORMAT_A32u40_A4u32_B8_C8:
-+       case I915_OA_FORMAT_A45_B8_C8:
-+               ts = report32[1];
-+               break;
-+
-+       default:
-+               assert(0);
-+       }
-+
-+       return ts;
-+}
-diff --git a/lib/i915/perf.h b/lib/i915/perf.h
-index ef2a3029..bd6b96f5 100644
---- a/lib/i915/perf.h
-+++ b/lib/i915/perf.h
-@@ -344,6 +344,10 @@ uint64_t intel_perf_read_record_timestamp(const struct intel_perf *perf,
- 					  const struct intel_perf_metric_set *metric_set,
- 					  const struct drm_i915_perf_record_header *record);
- 
-+uint64_t intel_perf_read_record_timestamp_raw(const struct intel_perf *perf,
-+					      const struct intel_perf_metric_set *metric_set,
-+					      const struct drm_i915_perf_record_header *record);
-+
- #ifdef __cplusplus
- };
- #endif
-diff --git a/tools/i915-perf/i915_perf_reader.c b/tools/i915-perf/i915_perf_reader.c
-index 92e43c19..9be1a9fc 100644
---- a/tools/i915-perf/i915_perf_reader.c
-+++ b/tools/i915-perf/i915_perf_reader.c
-@@ -252,6 +252,13 @@ main(int argc, char *argv[])
- 		intel_perf_read_record_timestamp(reader.perf,
- 						 reader.metric_set,
- 						 reader.records[reader.n_records - 1]));
-+	fprintf(stdout, "OA raw data timestamp range:           0x%016"PRIx64"-0x%016"PRIx64"\n",
-+		intel_perf_read_record_timestamp_raw(reader.perf,
-+						     reader.metric_set,
-+						     reader.records[0]),
-+		intel_perf_read_record_timestamp_raw(reader.perf,
-+						     reader.metric_set,
-+						     reader.records[reader.n_records - 1]));
- 
- 	if (strcmp(reader.metric_set_uuid, reader.metric_set->hw_config_guid)) {
- 		fprintf(stdout,
--- 
-2.25.1
+Reviewed-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+
+Regards,
+Umesh
+
+On Mon, Oct 10, 2022 at 09:41:39PM +0000, Umesh Nerlige Ramappa wrote:
+>Add tests for changes in perf OA for DG2.
+>
+>v2:
+>- Rebase
+>- Reposting since some patches did no land in the ML
+>
+>v3:
+>- Fix author/sign-off name mismatch in one patch
+>
+>v4:
+>- Add review comments
+>- Drop below patches
+>
+>"i915/perf: Bump timestamp tolerance for DG1"
+>(Not able to reproduce it with latest drm-tip)
+>
+>"i915/perf: Add support for 64-bit counters"
+>"i915/perf: Add a test for non-power-of-2 oa reports"
+>"i915/perf: Treat ticks as 64 bit"
+>"i915/perf: Treat timestamp as 64 bit value"
+>"i915/perf: Fix DG2 A0 report header"
+>(Separate out 64-bit OA formats from this series)
+>
+>v5:
+>- Add patches from lionel for updated metric sets
+>
+>v6:
+>- ACM metrics patch message size is large and gets dropped by the email
+>  server. Break the patch into smaller chunks.
+>
+>Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+>
+>Lionel Landwerlin (21):
+>  lib/i915/perf: implement report accumulation for new format
+>  lib/i915/perf: fixup conversion script for XEHPSDV
+>  lib/i915/perf: make warning message more helpful
+>  lib/i915/perf: expose new operators for codegen
+>  tools/i915-perf-recorder: add ability to select device
+>  lib/i915/perf: fixup report validity
+>  lib/i915/perf: add a helper to read timestamps
+>  lib/i915/perf: store bit shifting required for OA timestamps
+>  lib/i915/perf: indentation fix
+>  tools/i915-perf-recorder: capture OA & CS frequencies
+>  tools/i915-perf: make timestamp range easier to compare
+>  tools/i915-perf: printout CPU clock used
+>  tools/i915-perf: record remaining perf data on exit
+>  lib/i915/perf: add support for new EuDualSubslicesTotalCount var
+>  lib/i915/perf-config: extend the device info
+>  i915/perf: update import script
+>  lib/i915/perf: add a raw timestamp utility
+>  lib/i915/perf: add helper function to get report reason
+>  tools/i915-perf: add option to printout reports data
+>  lib/i915: prepare codegen for new ACM/DG2 variables
+>  lib/i915/perf: Add ACM GT3 metrics
+>
+>Umesh Nerlige Ramappa (15):
+>  i915/perf: Check regularly if we are done reading reports
+>  i915/perf: Fix OA short_reads test
+>  i915/perf: Check return value from getparam
+>  i915/perf: Limit sseu-config tests for gen11
+>  i915/perf: Account for OA sampling interval in polling test
+>  i915/perf: Define OA report types and fix oa-formats test
+>  i915/perf: Use ARRAY_SIZE consistently for num_properties
+>  i915/perf: Use gt in perf tests and lib
+>  i915/perf: Explicitly state rendercopy needs for a test
+>  i915/perf: Skip tests that use rendercopy
+>  i915/perf: Add OA formats for DG2
+>  i915/perf: Fix CS timestamp vs OA timstamp mismatch
+>  i915/perf: Wait longer for rc6 residency in DG2
+>  lib/i915/perf: Add ACM GT1 metrics
+>  lib/i915/perf: Add ACM GT2 metrics
+>
+> include/drm-uapi/i915_drm.h                   |     10 +
+> lib/i915/perf-configs/codegen.py              |    110 +-
+> lib/i915/perf-configs/guids.xml               |   1909 +
+> lib/i915/perf-configs/mdapi-xml-convert.py    |    244 +-
+> lib/i915/perf-configs/oa-acmgt1.xml           |  76252 +++++
+> lib/i915/perf-configs/oa-acmgt2.xml           | 118222 +++++++
+> lib/i915/perf-configs/oa-acmgt3.xml           | 250108 +++++++++++++++
+> lib/i915/perf-configs/oa-bdw.xml              |      2 +-
+> lib/i915/perf-configs/oa_guid_registry.py     |     15 +-
+> .../perf-configs/perf-metricset-codegen.py    |     13 +
+> lib/i915/perf-configs/update-guids.py         |     23 +-
+> lib/i915/perf.c                               |    332 +-
+> lib/i915/perf.h                               |    115 +-
+> lib/i915/perf_data_reader.c                   |     29 +-
+> lib/meson.build                               |      5 +-
+> tests/i915/perf.c                             |    260 +-
+> tools/i915-perf/i915_perf_reader.c            |    117 +-
+> tools/i915-perf/i915_perf_recorder.c          |    112 +-
+> 18 files changed, 447626 insertions(+), 252 deletions(-)
+> create mode 100644 lib/i915/perf-configs/oa-acmgt1.xml
+> create mode 100644 lib/i915/perf-configs/oa-acmgt2.xml
+> create mode 100644 lib/i915/perf-configs/oa-acmgt3.xml
+>
+>-- 
+>2.25.1
+>
