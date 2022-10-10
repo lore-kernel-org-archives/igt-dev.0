@@ -1,19 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0C3BC10E736
- for <igt-dev@lists.freedesktop.org>; Mon, 10 Oct 2022 21:42:22 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C4F9A10E735
+ for <igt-dev@lists.freedesktop.org>; Mon, 10 Oct 2022 21:42:21 +0000 (UTC)
 From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 To: igt-dev@lists.freedesktop.org,
  Lionel G Landwerlin <lionel.g.landwerlin@intel.com>,
  Ashutosh Dixit <ashutosh.dixit@intel.com>
-Date: Mon, 10 Oct 2022 21:42:06 +0000
-Message-Id: <20221010214215.5378-28-umesh.nerlige.ramappa@intel.com>
+Date: Mon, 10 Oct 2022 21:42:04 +0000
+Message-Id: <20221010214215.5378-26-umesh.nerlige.ramappa@intel.com>
 In-Reply-To: <20221010214215.5378-1-umesh.nerlige.ramappa@intel.com>
 References: <20221010214215.5378-1-umesh.nerlige.ramappa@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v6 27/36] lib/i915/perf: add support for new
- EuDualSubslicesTotalCount var
+Subject: [igt-dev] [PATCH i-g-t v6 25/36] tools/i915-perf: printout CPU
+ clock used
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,40 +27,42 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
 
-We already assume that the number of subslices is the same as the
-number of dualsubslices.
-
 Signed-off-by: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
 ---
- lib/i915/perf-configs/codegen.py           | 1 +
- lib/i915/perf-configs/mdapi-xml-convert.py | 3 ++-
- 2 files changed, 3 insertions(+), 1 deletion(-)
+ tools/i915-perf/i915_perf_recorder.c | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
-diff --git a/lib/i915/perf-configs/codegen.py b/lib/i915/perf-configs/codegen.py
-index b53d0358..8268c606 100644
---- a/lib/i915/perf-configs/codegen.py
-+++ b/lib/i915/perf-configs/codegen.py
-@@ -168,6 +168,7 @@ class Gen:
-             "$EuCoresTotalCount": { 'c': "perf->devinfo.n_eus", 'desc': "The total number of execution units" },
-             "$EuSlicesTotalCount": { 'c': "perf->devinfo.n_eu_slices" },
-             "$EuSubslicesTotalCount": { 'c': "perf->devinfo.n_eu_sub_slices" },
-+            "$EuDualSubslicesTotalCount": { 'c': "perf->devinfo.n_eu_sub_slices" },
-             "$EuThreadsCount": { 'c': "perf->devinfo.eu_threads_count" },
-             "$SliceMask": { 'c': "perf->devinfo.slice_mask" },
-             "$DualSubsliceMask": { 'c': "perf->devinfo.subslice_mask" },
-diff --git a/lib/i915/perf-configs/mdapi-xml-convert.py b/lib/i915/perf-configs/mdapi-xml-convert.py
-index 1d161674..7b5be901 100755
---- a/lib/i915/perf-configs/mdapi-xml-convert.py
-+++ b/lib/i915/perf-configs/mdapi-xml-convert.py
-@@ -167,7 +167,8 @@ sys_vars = { "EuCoresTotalCount",
-              "GpuTimestampFrequency",
-              "SliceMask",
-              "SubsliceMask",
--             "EuSubslicesTotalCount"
-+             "EuSubslicesTotalCount",
-+             "EuDualSubslicesTotalCount",
-            }
+diff --git a/tools/i915-perf/i915_perf_recorder.c b/tools/i915-perf/i915_perf_recorder.c
+index 72011c87..f8f9b737 100644
+--- a/tools/i915-perf/i915_perf_recorder.c
++++ b/tools/i915-perf/i915_perf_recorder.c
+@@ -588,6 +588,17 @@ static uint64_t timespec_diff(struct timespec *begin,
  
- def underscore(name):
+ static clock_t correlation_clock_id = CLOCK_MONOTONIC;
+ 
++static const char *
++get_correlation_clock_name(clock_t clock_id)
++{
++  switch (clock_id) {
++  case CLOCK_BOOTTIME:      return "bootime";
++  case CLOCK_MONOTONIC:     return "monotonic";
++  case CLOCK_MONOTONIC_RAW: return "monotonic_raw";
++  default:                  return "*unknown*";
++  }
++}
++
+ static bool
+ get_correlation_timestamps(struct intel_perf_record_timestamp_correlation *corr, int drm_fd)
+ {
+@@ -1069,6 +1080,9 @@ main(int argc, char *argv[])
+ 		goto fail;
+ 	}
+ 
++	fprintf(stdout, "Using correlation clock: %s\n",
++		get_correlation_clock_name(correlation_clock_id));
++
+ 	ctx.oa_exponent = oa_exponent_for_period(ctx.oa_timestamp_frequency, perf_period);
+ 	fprintf(stdout, "Opening perf stream with metric_id=%"PRIu64" oa_exponent=%u oa_format=%u\n",
+ 		ctx.metric_set->perf_oa_metrics_set, ctx.oa_exponent,
 -- 
 2.25.1
