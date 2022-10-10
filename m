@@ -1,19 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4ADB310E6D5
- for <igt-dev@lists.freedesktop.org>; Mon, 10 Oct 2022 18:13:09 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4F31310E6C5
+ for <igt-dev@lists.freedesktop.org>; Mon, 10 Oct 2022 18:13:08 +0000 (UTC)
 From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 To: igt-dev@lists.freedesktop.org,
  Lionel G Landwerlin <lionel.g.landwerlin@intel.com>,
  Ashutosh Dixit <ashutosh.dixit@intel.com>
-Date: Mon, 10 Oct 2022 18:12:45 +0000
-Message-Id: <20221010181300.513297-20-umesh.nerlige.ramappa@intel.com>
+Date: Mon, 10 Oct 2022 18:12:40 +0000
+Message-Id: <20221010181300.513297-15-umesh.nerlige.ramappa@intel.com>
 In-Reply-To: <20221010181300.513297-1-umesh.nerlige.ramappa@intel.com>
 References: <20221010181300.513297-1-umesh.nerlige.ramappa@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v5 19/34] lib/i915/perf: fixup report
- validity
+Subject: [igt-dev] [PATCH i-g-t v5 14/34] lib/i915/perf: implement report
+ accumulation for new format
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,36 +27,57 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
 
-It appears that on Gfx12+ there is no more validity bit in the
-reports.
+Available on XEHPSDV+.
 
 Signed-off-by: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
+Reviewed-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 ---
- lib/i915/perf_data_reader.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ lib/i915/perf.c | 33 +++++++++++++++++++++++++++++++++
+ 1 file changed, 33 insertions(+)
 
-diff --git a/lib/i915/perf_data_reader.c b/lib/i915/perf_data_reader.c
-index e69189ac..857bcd3a 100644
---- a/lib/i915/perf_data_reader.c
-+++ b/lib/i915/perf_data_reader.c
-@@ -45,13 +45,14 @@ oa_report_ctx_is_valid(const struct intel_perf_devinfo *devinfo,
- {
- 	const uint32_t *report = (const uint32_t *) _report;
+diff --git a/lib/i915/perf.c b/lib/i915/perf.c
+index 2f24cbd8..d004313f 100644
+--- a/lib/i915/perf.c
++++ b/lib/i915/perf.c
+@@ -676,6 +676,39 @@ void intel_perf_accumulate_reports(struct intel_perf_accumulator *acc,
+ 	memset(acc, 0, sizeof(*acc));
  
--	if (devinfo->graphics_ver < 8) {
-+	if (devinfo->graphics_ver < 8)
- 		return false; /* TODO */
--	} else if (devinfo->graphics_ver == 8) {
-+	if (devinfo->graphics_ver >= 12)
-+		return true; /* Always valid */
-+	if (devinfo->graphics_ver == 8)
- 		return report[0] & (1ul << 25);
--	} else if (devinfo->graphics_ver > 8) {
-+	if (devinfo->graphics_ver > 8)
- 		return report[0] & (1ul << 16);
--	}
- 
- 	return false;
- }
+ 	switch (oa_format) {
++	case I915_OA_FORMAT_A24u40_A14u32_B8_C8:
++		accumulate_uint32(start + 1, end + 1, deltas + idx++); /* timestamp */
++		accumulate_uint32(start + 3, end + 3, deltas + idx++); /* clock */
++
++		/* 4x 32bit A0-3 counters... */
++		for (i = 0; i < 4; i++)
++			accumulate_uint32(start + 4 + i, end + 4 + i, deltas + idx++);
++
++		/* 20x 40bit A4-23 counters... */
++		for (i = 0; i < 20; i++)
++			accumulate_uint40(i + 4, start, end, deltas + idx++);
++
++		/* 4x 32bit A24-27 counters... */
++		for (i = 0; i < 4; i++)
++			accumulate_uint32(start + 28 + i, end + 28 + i, deltas + idx++);
++
++		/* 4x 40bit A28-31 counters... */
++		for (i = 0; i < 4; i++)
++			accumulate_uint40(i + 28, start, end, deltas + idx++);
++
++		/* 5x 32bit A32-36 counters... */
++		for (i = 0; i < 5; i++)
++			accumulate_uint32(start + 36 + i, end + 36 + i, deltas + idx++);
++
++		/* 1x 32bit A37 counter... */
++		accumulate_uint32(start + 46, end + 46, deltas + idx++);
++
++		/* 8x 32bit B counters + 8x 32bit C counters... */
++		for (i = 0; i < 16; i++)
++			accumulate_uint32(start + 48 + i, end + 48 + i, deltas + idx++);
++		break;
++
++	case I915_OAR_FORMAT_A32u40_A4u32_B8_C8:
+ 	case I915_OA_FORMAT_A32u40_A4u32_B8_C8:
+ 		accumulate_uint32(start + 1, end + 1, deltas + idx++); /* timestamp */
+ 		accumulate_uint32(start + 3, end + 3, deltas + idx++); /* clock */
 -- 
 2.25.1
