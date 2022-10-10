@@ -1,19 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7820910E72D
- for <igt-dev@lists.freedesktop.org>; Mon, 10 Oct 2022 21:42:18 +0000 (UTC)
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9631510E72C
+ for <igt-dev@lists.freedesktop.org>; Mon, 10 Oct 2022 21:42:19 +0000 (UTC)
 From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 To: igt-dev@lists.freedesktop.org,
  Lionel G Landwerlin <lionel.g.landwerlin@intel.com>,
  Ashutosh Dixit <ashutosh.dixit@intel.com>
-Date: Mon, 10 Oct 2022 21:41:48 +0000
-Message-Id: <20221010214215.5378-10-umesh.nerlige.ramappa@intel.com>
+Date: Mon, 10 Oct 2022 21:41:52 +0000
+Message-Id: <20221010214215.5378-14-umesh.nerlige.ramappa@intel.com>
 In-Reply-To: <20221010214215.5378-1-umesh.nerlige.ramappa@intel.com>
 References: <20221010214215.5378-1-umesh.nerlige.ramappa@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v6 09/36] i915/perf: Explicitly state
- rendercopy needs for a test
+Subject: [igt-dev] [PATCH i-g-t v6 13/36] i915/perf: Wait longer for rc6
+ residency in DG2
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,100 +25,57 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Let tests explicitly require rendercopy before running. This helps in
-temporarily blocking these tests until rendercopy is available on new
-platforms.
+igt@perf@rc6-disable waits for 50ms to check if we entered rc6. One some
+failures this seems to take longer to enter rc6, about 100ms. Tweak the
+test for DG2 to use a longer wait time.
 
 Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
-Reviewed-by: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
+Acked-by: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
 ---
- tests/i915/perf.c | 25 ++++++++++++++++++++++---
- 1 file changed, 22 insertions(+), 3 deletions(-)
+ tests/i915/perf.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
 diff --git a/tests/i915/perf.c b/tests/i915/perf.c
-index 0543a79e..989f1fce 100644
+index befae0da..7045c214 100644
 --- a/tests/i915/perf.c
 +++ b/tests/i915/perf.c
-@@ -1545,6 +1545,9 @@ static void load_helper_set_load(enum load load)
+@@ -4272,7 +4272,10 @@ test_rc6_disable(void)
+ 		.properties_ptr = to_user_pointer(properties),
+ 	};
+ 	unsigned long rc6_start, rc6_end, rc6_enabled;
++	uint32_t rc6_duration;
  
- static void load_helper_run(enum load load)
- {
-+	if (!render_copy)
-+		return;
-+
- 	/*
- 	 * FIXME fork helpers won't get cleaned up when started from within a
- 	 * subtest, so handle the case where it sticks around a bit too long.
-@@ -1577,12 +1580,20 @@ static void load_helper_run(enum load load)
++	/* On DG2, we wait longer to enter rc6 */
++	rc6_duration = IS_DG2(devid) ? 100000 : 50000;
+ 	rc6_enabled = 0;
+ 	igt_sysfs_rps_scanf(sysfs, RC6_ENABLE, "%lu", &rc6_enabled);
+ 	igt_require(rc6_enabled);
+@@ -4280,7 +4283,7 @@ test_rc6_disable(void)
+ 	/* Verify rc6 is functional by measuring residency while idle */
+ 	gem_quiescent_gpu(drm_fd);
+ 	rc6_start = rc6_residency_ms();
+-	usleep(50000);
++	usleep(rc6_duration);
+ 	rc6_end = rc6_residency_ms();
+ 	igt_require(rc6_end != rc6_start);
  
- static void load_helper_stop(void)
- {
-+	if (!render_copy)
-+		return;
-+
- 	kill(lh.igt_proc.pid, SIGUSR1);
- 	igt_assert(igt_wait_helper(&lh.igt_proc) == 0);
+@@ -4288,7 +4291,7 @@ test_rc6_disable(void)
+ 	stream_fd = __perf_open(drm_fd, &param, false);
+ 
+ 	rc6_start = rc6_residency_ms();
+-	usleep(50000);
++	usleep(rc6_duration);
+ 	rc6_end = rc6_residency_ms();
+ 	igt_assert_eq(rc6_end - rc6_start, 0);
+ 
+@@ -4297,7 +4300,7 @@ test_rc6_disable(void)
+ 
+ 	/* But once OA is closed, we expect the device to sleep again */
+ 	rc6_start = rc6_residency_ms();
+-	usleep(50000);
++	usleep(rc6_duration);
+ 	rc6_end = rc6_residency_ms();
+ 	igt_assert_neq(rc6_end - rc6_start, 0);
  }
- 
- static void load_helper_init(void)
- {
-+	if (!render_copy) {
-+		igt_info("Running test without render_copy\n");
-+		return;
-+	}
-+
- 	lh.devid = intel_get_drm_devid(drm_fd);
- 
- 	/* MI_STORE_DATA can only use GTT address on gen4+/g33 and needs
-@@ -1603,7 +1614,12 @@ static void load_helper_init(void)
- 
- static void load_helper_fini(void)
- {
--	int i915 = buf_ops_get_fd(lh.bops);
-+	int i915;
-+
-+	if (!render_copy)
-+		return;
-+
-+	i915 = buf_ops_get_fd(lh.bops);
- 
- 	if (lh.igt_proc.running)
- 		load_helper_stop();
-@@ -4997,7 +5013,6 @@ igt_main
- 		gt_max_freq_mhz = sysfs_read(RPS_RP0_FREQ_MHZ);
- 
- 		render_copy = igt_get_render_copyfunc(devid);
--		igt_require_f(render_copy, "no render-copy function\n");
- 	}
- 
- 	igt_subtest("non-system-wide-paranoid")
-@@ -5100,6 +5115,7 @@ igt_main
- 
- 	igt_subtest("unprivileged-single-ctx-counters") {
- 		igt_require(IS_HASWELL(devid));
-+		igt_require_f(render_copy, "no render-copy function\n");
- 		hsw_test_single_ctx_counters();
- 	}
- 
-@@ -5113,6 +5129,7 @@ igt_main
- 		 * For gen12 implement a separate test that uses only OAR
- 		 */
- 		igt_require(intel_gen(devid) >= 8 && intel_gen(devid) < 12);
-+		igt_require_f(render_copy, "no render-copy function\n");
- 		gen8_test_single_ctx_render_target_writes_a_counter();
- 	}
- 
-@@ -5128,8 +5145,10 @@ igt_main
- 			gen12_test_oa_tlb_invalidate();
- 
- 		igt_describe("Measure performance for a specific context using OAR in Gen 12");
--		igt_subtest("gen12-unprivileged-single-ctx-counters")
-+		igt_subtest("gen12-unprivileged-single-ctx-counters") {
-+			igt_require_f(render_copy, "no render-copy function\n");
- 			gen12_test_single_ctx_render_target_writes_a_counter();
-+		}
- 	}
- 
- 	igt_subtest("rc6-disable")
 -- 
 2.25.1
