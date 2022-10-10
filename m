@@ -1,19 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from fanzine2.igalia.com (fanzine.igalia.com [178.60.130.6])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BCEB810E615
- for <igt-dev@lists.freedesktop.org>; Mon, 10 Oct 2022 14:26:24 +0000 (UTC)
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 780A810E62C
+ for <igt-dev@lists.freedesktop.org>; Mon, 10 Oct 2022 14:57:54 +0000 (UTC)
+From: Petri Latvala <petri.latvala@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Mon, 10 Oct 2022 17:57:02 +0300
+Message-Id: <20221010145708.1986912-1-petri.latvala@intel.com>
 MIME-Version: 1.0
-Date: Mon, 10 Oct 2022 16:26:19 +0200
-From: aemad <aemad@igalia.com>
-To: juhapekka.heikkila@gmail.com
-In-Reply-To: <aa261d04-81b3-48ac-603b-c75fcb3c8909@gmail.com>
-References: <20221009151844.3456-1-aemad@igalia.com>
- <aa261d04-81b3-48ac-603b-c75fcb3c8909@gmail.com>
-Message-ID: <3b7df5498d9c2d5e5d1541de3da3f4f1@igalia.com>
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_cursor_crc: prevent the
- entire test from being aborted when a subtest fails
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t 1/7] lib/runnercomms: Structured
+ communication from tests to igt_runner
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,273 +18,960 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org, petri.latvala@intel.com
+Cc: Petri Latvala <petri.latvala@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Juha,
+Instead of letting the tests output their logs as text and parsing
+that in the runner during and after test execution, introduce a
+structured log format that is passed through a UNIX datagram socket.
 
-On 2022-10-10 13:16, Juha-Pekka Heikkila wrote:
-> Hi Alaa,
-> 
-> what's that invalid argument you're getting on addfb? I never tried
+This patch only introduces the datagram format and helpers for
+creating/reading them. Key points about the format:
 
-I am not sure what is the invalid argument, but the failure of this test
-with a cursor size 32x10 is that VKMS does not support this size yet so
-the test unable to create a cursor FB.
+It's binary, and has some amount of forwards and backwards
+compatibility. Passing through UNIX datagram sockets makes the
+communication atomic which avoids message interleaving between child
+process logging. (Threaded logging already gets correct serialization
+through the use of a mutex, no change there.)
 
+Having atomic logging also gives the possibility of igt_runner
+injecting messages into test logs without having to worry whether the
+stdout pipe is still in the middle of printing a subtest completion
+message for example.
 
-> this with vkms, normally just on i915. With i915 I cannot reproduce
-> that abort you're seeing. Other kms tests run on your setup?
+On-disk storage of datagrams will use a canary chunk to verify
+correctly sized reads of datagrams, and to ensure that the endianness
+of the reader and the dump match.
 
-I think the abortion related to VKMS driver only, but I didn't try to
-run it on i915.
-yes, I ran other kms test but with VKMS driver.
+Signed-off-by: Petri Latvala <petri.latvala@intel.com>
+Cc: Arkadiusz Hiler <arek@hiler.eu>
+---
+ lib/meson.build   |   1 +
+ lib/runnercomms.c | 635 ++++++++++++++++++++++++++++++++++++++++++++++
+ lib/runnercomms.h | 259 +++++++++++++++++++
+ 3 files changed, 895 insertions(+)
+ create mode 100644 lib/runnercomms.c
+ create mode 100644 lib/runnercomms.h
 
-> 
-> Anyway, that revert you're suggesting would remove support for msm
-> driver on this test. Let's first summon those who made these changes
-> to comment. (cc'ing Modem and Swati)
-
-I see, so I can check that after Modem and Swati reply.
-
-> 
-> /Juha-Pekka
-
-BR,
-Alaa
-> 
-> On 9.10.2022 18.18, Alaa Emad wrote:
->> Any test failure prevents the other tests to be run, aborting the entire test loop. This behavior was introduced by commit
->> 9494d53d ("tests/kms_cursor_crc: Convert tests to dynamic").
->> For instance, when running the cursor-offscreen-32x10 subtest using VKMS,
->> the execution is aborted instead of SKIP/FAIL, as in the following output:
->>
->> $ ./tests/kms_cursor_crc --run-subtest cursor-offscreen-32x10
->> (kms_cursor_crc:7447) igt_fb-CRITICAL: Test assertion failure function igt_create_fb_with_bo_size, file ../lib/igt_fb.c:2078:
->> (kms_cursor_crc:7447) igt_fb-CRITICAL: Failed assertion: (__kms_addfb(fb->fd, fb->gem_handle, fb->width, fb->height, fb->drm_format, fb->modifier, fb->strides, fb->offsets, fb->num_planes, flags, &fb->fb_id)) == 0
->> (kms_cursor_crc:7447) igt_fb-CRITICAL: Last errno: 22, Invalid argument
->> Stack trace:
->> kms_cursor_crc: ../lib/igt_core.c:1667: igt_fail: Assertion `_igt_dynamic_tests_executed < 0 || dynamic_failed_one' failed.
->> Received signal SIGABRT.
->>
->> The test was aborted after convertig tests to dynamic with cursor size 32*10 that because of the assertion in the `igt_create_fb_with_bo_size` when creating cursor in `create_cursor_fb`.
->>
->> This happened because Within a igt_subtest_with_dynamic block, explicit failure (e.g. igt_assert) is not allowed,
->> only dynamic subsubtests themselves will produce test results.
->>
->> The previous approach was running each test for all cursor sizes then move to the next test  so fix this issue
->> by running all tests for one cursor size one by one, and check if cursor size is
->> supported or not before running the test.
->>
->> Fixes: 9494d53d ("tests/kms_cursor_crc: Convert tests to dynamic")
->>
->> Signed-off-by: Alaa Emad <aemad@igalia.com>
->> ---
->>   tests/kms_cursor_crc.c | 136 +++++++++++++++++++++--------------------
->>   1 file changed, 69 insertions(+), 67 deletions(-)
->>
->> diff --git a/tests/kms_cursor_crc.c b/tests/kms_cursor_crc.c
->> index 8d3426dd..9b620389 100644
->> --- a/tests/kms_cursor_crc.c
->> +++ b/tests/kms_cursor_crc.c
->> @@ -72,7 +72,6 @@ typedef struct {
->>   	cairo_surface_t *surface;
->>   	uint32_t devid;
->>   	double alpha;
->> -	int vblank_wait_count; /* because of msm */
->>   } data_t;
->>     #define TEST_DPMS (1<<0)
->> @@ -125,12 +124,6 @@ static void cursor_disable(data_t *data)
->>   {
->>   	igt_plane_set_fb(data->cursor, NULL);
->>   	igt_plane_set_position(data->cursor, 0, 0);
->> -	igt_display_commit(&data->display);
->> -
->> -	/* do this wait here so it will not need to be added everywhere */
->> -	igt_wait_for_vblank_count(data->drm_fd,
->> -				  data->display.pipes[data->pipe].crtc_offset,
->> -				  data->vblank_wait_count);
->>   }
->>     static bool chv_cursor_broken(data_t *data, int x)
->> @@ -209,9 +202,8 @@ static void do_single_test(data_t *data, int x, int y, bool hw_test,
->>   		igt_display_commit(display);
->>     		/* Extra vblank wait is because nonblocking cursor ioctl */
->> -		igt_wait_for_vblank_count(data->drm_fd,
->> -					  display->pipes[data->pipe].crtc_offset,
->> -					  data->vblank_wait_count);
->> +		igt_wait_for_vblank(data->drm_fd,
->> +				display->pipes[data->pipe].crtc_offset);
->>     		igt_pipe_crc_get_current(data->drm_fd, pipe_crc, hwcrc);
->>   @@ -249,7 +241,11 @@ static void do_single_test(data_t *data, int x, int y, bool hw_test,
->>     		restore_image(data, swbufidx, &((cursorarea){x, y, data->curw, data->curh}));
->>   		igt_plane_set_fb(data->primary, &data->primary_fb[swbufidx]);
->> +
->>   		igt_display_commit(display);
->> +		igt_wait_for_vblank(data->drm_fd,
->> +				display->pipes[data->pipe].crtc_offset);
->> +
->>   		igt_pipe_crc_get_current(data->drm_fd, pipe_crc, &crc);
->>   		igt_assert_crc_equal(&crc, hwcrc);
->>   	}
->> @@ -267,7 +263,9 @@ static void do_fail_test(data_t *data, int x, int y, int expect)
->>   	igt_plane_set_position(data->cursor, x, y);
->>   	ret = igt_display_try_commit2(display, COMMIT_LEGACY);
->>   +	igt_plane_set_position(data->cursor, 0, 0);
->>   	cursor_disable(data);
->> +	igt_display_commit(display);
->>     	igt_assert_eq(ret, expect);
->>   }
->> @@ -689,10 +687,28 @@ static void test_rapid_movement(data_t *data)
->>   	igt_assert_lt(usec, 0.9 * 400 * 1000000 / data->refresh);
->>   }
->>   -static void run_size_tests(data_t *data, void (*testfunc)(data_t *),
->> -			   int w, int h)
->> +static void run_size_tests(data_t *data, int w, int h)
->>   {
->>   	enum pipe pipe;
->> +	int i;
->> +
->> +	struct
->> +	{
->> +		const char *name;
->> +		void (*testfunc)(data_t *);
->> +		const char *desc;
->> +	} size_tests[] = {
->> +		{"cursor-onscreen", test_crc_onscreen,
->> +		 "Check if a given-size cursor is well-positioned inside the screen."},
->> +		{"cursor-offscreen", test_crc_offscreen,
->> +		 "Check if a given-size cursor is well-positioned outside the screen."},
->> +		{"cursor-sliding", test_crc_sliding,
->> +		 "Check the smooth and pixel-by-pixel given-size cursor movements on horizontal, vertical and diagonal."},
->> +		{"cursor-random", test_crc_random,
->> +		 "Check random placement of a cursor with given size."},
->> +		{"cursor-rapid-movement", test_rapid_movement,
->> +		 "Check the rapid update of given-size cursor movements."},
->> +	};
->>     	if (w == 0 && h == 0) {
->>   		w = data->cursor_max_w;
->> @@ -709,45 +725,38 @@ static void run_size_tests(data_t *data, void (*testfunc)(data_t *),
->>   		}
->>   	}
->>   -	create_cursor_fb(data, w, h);
->> -	if (require_cursor_size(data, w, h)) {
->> -		igt_info("Cursor size %dx%d not supported by driver\n", w, h);
->> -
->> -		igt_remove_fb(data->drm_fd, &data->fb);
->> -		return;
->> -	}
->> +	igt_fixture
->> +		create_cursor_fb(data, w, h);
->>   -	for_each_pipe(&data->display, pipe) {
->> -		data->pipe = pipe;
->> -		igt_dynamic_f("pipe-%s-%s",
->> -			      kmstest_pipe_name(pipe), igt_output_name(data->output))
->> -			run_test(data, testfunc, w, h);
->> +	for (i = 0; i < ARRAY_SIZE(size_tests); i++)
->> +	{
->> +		igt_describe(size_tests[i].desc);
->> +		igt_subtest_with_dynamic_f("%s-%dx%d", size_tests[i].name, w, h)
->> +		{
->> +			for_each_pipe(&data->display, pipe)
->> +			{
->> +				data->pipe = pipe;
->> +				if (require_cursor_size(data, w, h))
->> +				{
->> +					igt_info("Cursor size %dx%d not supported by driver\n", w, h);
->> +					continue;
->> +				}
->> +
->> +				igt_dynamic_f("pipe-%s-%s",
->> +							  kmstest_pipe_name(pipe), igt_output_name(data->output))
->> +					run_test(data, size_tests[i].testfunc, w, h);
->> +			}
->> +		}
->>   	}
->>   -	igt_remove_fb(data->drm_fd, &data->fb);
->> +	igt_fixture
->> +		igt_remove_fb(data->drm_fd, &data->fb);
->>   }
->>     static void run_tests_on_pipe(data_t *data)
->>   {
->>   	enum pipe pipe;
->>   	int cursor_size;
->> -	int i;
->> -	struct {
->> -		const char *name;
->> -		void (*testfunc)(data_t *);
->> -		const char *desc;
->> -	} size_tests[] = {
->> -		{ "cursor-onscreen", test_crc_onscreen,
->> -			"Check if a given-size cursor is well-positioned inside the screen." },
->> -		{ "cursor-offscreen", test_crc_offscreen,
->> -			"Check if a given-size cursor is well-positioned outside the screen." },
->> -		{ "cursor-sliding", test_crc_sliding,
->> -			"Check the smooth and pixel-by-pixel given-size cursor movements on horizontal, vertical and diagonal." },
->> -		{ "cursor-random", test_crc_random,
->> -			"Check random placement of a cursor with given size." },
->> -		{ "cursor-rapid-movement", test_rapid_movement,
->> -			"Check the rapid update of given-size cursor movements." },
->> -	};
->>     	igt_fixture {
->>   		data->output = igt_get_single_output_for_pipe(&data->display, pipe);
->> @@ -848,30 +857,26 @@ static void run_tests_on_pipe(data_t *data)
->>   	igt_fixture
->>   		igt_remove_fb(data->drm_fd, &data->fb);
->>   -	for (i = 0; i < ARRAY_SIZE(size_tests); i++) {
->> -		igt_describe(size_tests[i].desc);
->> -		igt_subtest_group {
->> -			for (cursor_size = 32; cursor_size <= 512; cursor_size *= 2) {
->> -				int w = cursor_size;
->> -				int h = cursor_size;
->> -
->> -				igt_subtest_with_dynamic_f("%s-%dx%d", size_tests[i].name, w, h)
->> -					run_size_tests(data, size_tests[i].testfunc, w, h);
->> -
->> -				/*
->> -				 * Test non-square cursors a bit on the platforms
->> -				 * that support such things. And make it a bit more
->> -				 * interesting by using a non-pot height.
->> -				 */
->> -				h /= 3;
->> -				igt_subtest_with_dynamic_f("%s-%dx%d", size_tests[i].name, w, h)
->> -					run_size_tests(data, size_tests[i].testfunc, w, h);
->> -			}
->> +	for (cursor_size = 32; cursor_size <= 512; cursor_size *= 2)
->> +	{
->> +		int w = cursor_size;
->> +		int h = cursor_size;
->>   -			igt_subtest_with_dynamic_f("%s-max-size", size_tests[i].name)
->> -				run_size_tests(data, size_tests[i].testfunc, 0, 0);
->> -		}
->> +		igt_subtest_group
->> +			run_size_tests(data, w, h);
->> +
->> +		/*
->> +		 * Test non-square cursors a bit on the platforms
->> +		 * that support such things. And make it a bit more
->> +		 * interesting by using a non-pot height.
->> +		 */
->> +		h /= 3;
->> +
->> +		igt_subtest_group
->> +			run_size_tests(data, w, h);
->>   	}
->> +
->> +	run_size_tests(data, 0, 0);
->>   }
->>     static data_t data;
->> @@ -896,8 +901,6 @@ igt_main
->>   		kmstest_set_vt_graphics_mode();
->>     		igt_require_pipe_crc(data.drm_fd);
->> -
->> -		data.vblank_wait_count = is_msm_device(data.drm_fd) ? 2 : 1;
->>   	}
->>     	data.cursor_max_w = cursor_width;
->> @@ -913,6 +916,5 @@ igt_main
->>   		}
->>     		igt_display_fini(&data.display);
->> -		close(data.drm_fd);
->>   	}
->>   }
+diff --git a/lib/meson.build b/lib/meson.build
+index c665bd25..0f8e862f 100644
+--- a/lib/meson.build
++++ b/lib/meson.build
+@@ -66,6 +66,7 @@ lib_sources = [
+ 	'rendercopy_gen7.c',
+ 	'rendercopy_gen8.c',
+ 	'rendercopy_gen9.c',
++	'runnercomms.c',
+ 	'sw_sync.c',
+ 	'intel_aux_pgtable.c',
+ 	'intel_reg_map.c',
+diff --git a/lib/runnercomms.c b/lib/runnercomms.c
+new file mode 100644
+index 00000000..344312bd
+--- /dev/null
++++ b/lib/runnercomms.c
+@@ -0,0 +1,635 @@
++/* SPDX-License-Identifier: MIT */
++/*
++ * Copyright © 2022 Intel Corporation
++ */
++
++#include <assert.h>
++#include <signal.h>
++#include <stdlib.h>
++#include <string.h>
++#include <sys/mman.h>
++#include <sys/stat.h>
++#include <sys/types.h>
++#include <unistd.h>
++
++#include "igt_aux.h"
++#include "runnercomms.h"
++
++/**
++ * SECTION:runnercomms
++ * @short_description: Structured communication to igt_runner
++ * @title: runnercomms
++ * @include: runnercomms.h
++ *
++ * This library provides means for the tests to communicate to
++ * igt_runner with a formally specified protocol, avoiding
++ * shortcomings and pain points of text-based communication.
++ */
++
++static sig_atomic_t runner_socket_fd = -1;
++
++/**
++ * set_runner_socket:
++ * @fd: socket connected to runner
++ *
++ * If the passed fd is a valid socket, globally sets it to be the fd
++ * to use to talk to igt_runner.
++ */
++void set_runner_socket(int fd)
++{
++	struct stat sb;
++
++	if (fstat(fd, &sb))
++		return;
++
++	if (!S_ISSOCK(sb.st_mode))
++		return;
++
++	/*
++	 * We only sanity-check that the fd is a socket. We don't
++	 * check that it's a datagram socket etc.
++	 */
++
++	runner_socket_fd = fd;
++}
++
++/**
++ * runner_connected:
++ *
++ * Returns whether set_runner_socket has been called with a valid
++ * socket fd. Note: Will be true forever after that point. This
++ * function is used to mainly determine whether log strings will be
++ * output to the socket or to stdout/stderr and that cannot be changed
++ * even if the socket is lost midway.
++ */
++bool runner_connected(void)
++{
++	return runner_socket_fd >= 0;
++}
++
++/**
++ * send_to_runner:
++ * @packet: packet to send
++ *
++ * Sends the given communications packet to igt_runner. Calls free()
++ * on the packet, don't reuse it.
++ */
++void send_to_runner(struct runnerpacket *packet)
++{
++	if (runner_connected())
++		write(runner_socket_fd, packet, packet->size);
++	free(packet);
++}
++
++/* If enough data left, copy the data to dst, advance p, reduce size */
++static void read_integer(void* dst, size_t bytes, const char **p, uint32_t *size)
++{
++	if (*size < bytes) {
++		*size = 0;
++		return;
++	}
++
++	memcpy(dst, *p, bytes);
++	*p += bytes;
++	*size -= bytes;
++}
++
++/* If nul-termination can be found, set dststr to point to the cstring, advance p, reduce size */
++static void read_cstring(const char **dststr, const char **p, uint32_t *size)
++{
++	const char *end;
++
++	end = memchr(*p, '\0', *size);
++	if (end == NULL) {
++		*size = 0;
++		return;
++	}
++
++	*dststr = *p;
++	*size -= end - *p + 1;
++	*p = end + 1;
++}
++
++/**
++ * read_runnerpacket:
++ * @packet: runner communications packet to read
++ *
++ * Checks that the internal data of the communications packet is valid
++ * and the contents can safely be inspected without further checking
++ * for out-of-bounds etc. Constructs a runnerpacket_read_helper which
++ * will, for c-style strings, point to various sub-values directly in
++ * the #data field within @packet. Those are valid only as long as
++ * @packet is valid.
++ *
++ * Returns: An appropriately constructed runnerpacket_read_helper. On
++ * data validation errors, the #type of the returned value will be
++ * #PACKETTYPE_INVALID.
++ */
++runnerpacket_read_helper read_runnerpacket(const struct runnerpacket *packet)
++{
++	runnerpacket_read_helper ret = {};
++	uint32_t sizeleft;
++	const char *p;
++
++	if (packet->size < sizeof(*packet)) {
++		ret.type = PACKETTYPE_INVALID;
++		return ret;
++	}
++
++	ret.type = packet->type;
++	sizeleft = packet->size - sizeof(*packet);
++	p = packet->data;
++
++	switch (packet->type) {
++	case PACKETTYPE_LOG:
++		read_integer(&ret.log.stream, sizeof(ret.log.stream), &p, &sizeleft);
++		read_cstring(&ret.log.text, &p, &sizeleft);
++
++		if (ret.log.text == NULL)
++			ret.type = PACKETTYPE_INVALID;
++
++		break;
++	case PACKETTYPE_EXEC:
++		read_cstring(&ret.exec.cmdline, &p, &sizeleft);
++
++		if (ret.exec.cmdline == NULL)
++			ret.type = PACKETTYPE_INVALID;
++
++		break;
++	case PACKETTYPE_EXIT:
++		read_integer(&ret.exit.exitcode, sizeof(ret.exit.exitcode), &p, &sizeleft);
++		read_cstring(&ret.exit.timeused, &p, &sizeleft);
++
++		break;
++	case PACKETTYPE_SUBTEST_START:
++		read_cstring(&ret.subteststart.name, &p, &sizeleft);
++
++		if (ret.subteststart.name == NULL)
++			ret.type = PACKETTYPE_INVALID;
++
++		break;
++	case PACKETTYPE_SUBTEST_RESULT:
++		read_cstring(&ret.subtestresult.name, &p, &sizeleft);
++		read_cstring(&ret.subtestresult.result, &p, &sizeleft);
++		read_cstring(&ret.subtestresult.timeused, &p, &sizeleft);
++		read_cstring(&ret.subtestresult.reason, &p, &sizeleft);
++
++		if (ret.subtestresult.name == NULL ||
++		    ret.subtestresult.result == NULL)
++			ret.type = PACKETTYPE_INVALID;
++
++		break;
++	case PACKETTYPE_DYNAMIC_SUBTEST_START:
++		read_cstring(&ret.dynamicsubteststart.name, &p, &sizeleft);
++
++		if (ret.dynamicsubteststart.name == NULL)
++			ret.type = PACKETTYPE_INVALID;
++
++		break;
++	case PACKETTYPE_DYNAMIC_SUBTEST_RESULT:
++		read_cstring(&ret.dynamicsubtestresult.name, &p, &sizeleft);
++		read_cstring(&ret.dynamicsubtestresult.result, &p, &sizeleft);
++		read_cstring(&ret.dynamicsubtestresult.timeused, &p, &sizeleft);
++		read_cstring(&ret.dynamicsubtestresult.reason, &p, &sizeleft);
++
++		if (ret.dynamicsubtestresult.name == NULL ||
++		    ret.dynamicsubtestresult.result == NULL)
++			ret.type = PACKETTYPE_INVALID;
++
++		break;
++	case PACKETTYPE_VERSIONSTRING:
++		read_cstring(&ret.versionstring.text, &p, &sizeleft);
++
++		if (ret.versionstring.text == NULL)
++			ret.type = PACKETTYPE_INVALID;
++
++		break;
++	case PACKETTYPE_RESULT_OVERRIDE:
++		read_cstring(&ret.resultoverride.result, &p, &sizeleft);
++
++		if (ret.resultoverride.result == NULL)
++			ret.type = PACKETTYPE_INVALID;
++
++		break;
++	default:
++		ret.type = PACKETTYPE_INVALID;
++		break;
++	}
++
++	return ret;
++}
++
++struct runnerpacket *runnerpacket_log(uint8_t stream, const char *text)
++{
++	struct runnerpacket *packet;
++	uint32_t size;
++	char *p;
++
++	size = sizeof(struct runnerpacket) + sizeof(stream) + strlen(text) + 1;
++	packet = malloc(size);
++
++	packet->size = size;
++	packet->type = PACKETTYPE_LOG;
++	packet->senderpid = getpid();
++	packet->sendertid = gettid();
++
++	p = packet->data;
++
++	memcpy(p, &stream, sizeof(stream));
++	p += sizeof(stream);
++
++	strcpy(p, text);
++	p += strlen(text) + 1;
++
++	return packet;
++}
++
++struct runnerpacket *runnerpacket_exec(char **argv)
++{
++	struct runnerpacket *packet;
++	uint32_t size;
++	char *p;
++	int i;
++
++	size = sizeof(struct runnerpacket);
++
++	for (i = 0; argv[i] != NULL; i++)
++		size += strlen(argv[i]) + 1; // followed by a space of \0 so +1 either way for each
++
++	packet = malloc(size);
++
++	packet->size = size;
++	packet->type = PACKETTYPE_EXEC;
++	packet->senderpid = getpid();
++	packet->sendertid = gettid();
++
++	p = packet->data;
++
++	for (i = 0; argv[i] != NULL; i++) {
++		if (i != 0)
++			*p++ = ' ';
++
++		strcpy(p, argv[i]);
++		p += strlen(argv[i]);
++	}
++	p[0] = '\0';
++
++	return packet;
++}
++
++struct runnerpacket *runnerpacket_exit(int32_t exitcode, const char *timeused)
++{
++	struct runnerpacket *packet;
++	uint32_t size;
++	char *p;
++
++	size = sizeof(struct runnerpacket) + sizeof(exitcode) + strlen(timeused) + 1;
++	packet = malloc(size);
++
++	packet->size = size;
++	packet->type = PACKETTYPE_EXIT;
++	packet->senderpid = getpid();
++	packet->sendertid = gettid();
++
++	p = packet->data;
++
++	memcpy(p, &exitcode, sizeof(exitcode));
++	p += sizeof(exitcode);
++
++	strcpy(p, timeused);
++	p += strlen(timeused) + 1;
++
++	return packet;
++}
++
++struct runnerpacket *runnerpacket_subtest_start(const char *name)
++{
++	struct runnerpacket *packet;
++	uint32_t size;
++	char *p;
++
++	size = sizeof(struct runnerpacket) + strlen(name) + 1;
++	packet = malloc(size);
++
++	packet->size = size;
++	packet->type = PACKETTYPE_SUBTEST_START;
++	packet->senderpid = getpid();
++	packet->sendertid = gettid();
++
++	p = packet->data;
++
++	strcpy(p, name);
++	p += strlen(name) + 1;
++
++	return packet;
++}
++
++struct runnerpacket *runnerpacket_subtest_result(const char *name, const char *result,
++						 const char *timeused, const char *reason)
++{
++	struct runnerpacket *packet;
++	uint32_t size;
++	char *p;
++
++	if (reason == NULL)
++		reason = "";
++
++	size = sizeof(struct runnerpacket) + strlen(name) + strlen(result) + strlen(timeused) + strlen(reason) + 4;
++	packet = malloc(size);
++
++	packet->size = size;
++	packet->type = PACKETTYPE_SUBTEST_RESULT;
++	packet->senderpid = getpid();
++	packet->sendertid = gettid();
++
++	p = packet->data;
++
++	strcpy(p, name);
++	p += strlen(name) + 1;
++
++	strcpy(p, result);
++	p += strlen(result) + 1;
++
++	strcpy(p, timeused);
++	p += strlen(timeused) + 1;
++
++	strcpy(p, reason);
++	p += strlen(reason) + 1;
++
++	return packet;
++}
++
++struct runnerpacket *runnerpacket_dynamic_subtest_start(const char *name)
++{
++	struct runnerpacket *packet;
++	uint32_t size;
++	char *p;
++
++	size = sizeof(struct runnerpacket) + strlen(name) + 1;
++	packet = malloc(size);
++
++	packet->size = size;
++	packet->type = PACKETTYPE_DYNAMIC_SUBTEST_START;
++	packet->senderpid = getpid();
++	packet->sendertid = gettid();
++
++	p = packet->data;
++
++	strcpy(p, name);
++	p += strlen(name) + 1;
++
++	return packet;
++}
++
++struct runnerpacket *runnerpacket_dynamic_subtest_result(const char *name, const char *result,
++							 const char *timeused, const char *reason)
++{
++	struct runnerpacket *packet;
++	uint32_t size;
++	char *p;
++
++	if (reason == NULL)
++		reason = "";
++
++	size = sizeof(struct runnerpacket) + strlen(name) + strlen(result) + strlen(timeused) + strlen(reason) + 4;
++	packet = malloc(size);
++
++	packet->size = size;
++	packet->type = PACKETTYPE_DYNAMIC_SUBTEST_RESULT;
++	packet->senderpid = getpid();
++	packet->sendertid = gettid();
++
++	p = packet->data;
++
++	strcpy(p, name);
++	p += strlen(name) + 1;
++
++	strcpy(p, result);
++	p += strlen(result) + 1;
++
++	strcpy(p, timeused);
++	p += strlen(timeused) + 1;
++
++	strcpy(p, reason);
++	p += strlen(reason) + 1;
++
++	return packet;
++}
++
++struct runnerpacket *runnerpacket_versionstring(const char *text)
++{
++	struct runnerpacket *packet;
++	uint32_t size;
++	char *p;
++
++	size = sizeof(struct runnerpacket) + strlen(text) + 1;
++	packet = malloc(size);
++
++	packet->size = size;
++	packet->type = PACKETTYPE_VERSIONSTRING;
++	packet->senderpid = getpid();
++	packet->sendertid = gettid();
++
++	p = packet->data;
++
++	strcpy(p, text);
++	p += strlen(text) + 1;
++
++	return packet;
++}
++
++struct runnerpacket *runnerpacket_resultoverride(const char *result)
++{
++	struct runnerpacket *packet;
++	uint32_t size;
++	char *p;
++
++	size = sizeof(struct runnerpacket) + strlen(result) + 1;
++	packet = malloc(size);
++
++	packet->size = size;
++	packet->type = PACKETTYPE_RESULT_OVERRIDE;
++	packet->senderpid = getpid();
++	packet->sendertid = gettid();
++
++	p = packet->data;
++
++	strcpy(p, result);
++	p += strlen(result) + 1;
++
++	return packet;
++}
++
++uint32_t socket_dump_canary(void)
++{
++	return 'I' << 24 | 'G' << 16 | 'T' << 8 | '1';
++}
++
++void log_to_runner_sig_safe(const char *str, size_t len)
++{
++	size_t prlen = len;
++
++	struct runnerpacket_log_sig_safe p = {
++					      .size = sizeof(struct runnerpacket) + sizeof(uint8_t),
++					      .type = PACKETTYPE_LOG,
++					      .senderpid = getpid(),
++					      .sendertid = 0, /* gettid() not signal safe */
++					      .stream = STDERR_FILENO,
++	};
++
++	if (len > sizeof(p.data) - 1)
++		prlen = sizeof(p.data) - 1;
++	memcpy(p.data, str, prlen);
++	p.size += prlen + 1;
++
++	write(runner_socket_fd, &p, p.size);
++
++	len -= prlen;
++	if (len)
++		log_to_runner_sig_safe(str + prlen, len);
++}
++
++/**
++ * comms_read_dump:
++ * @fd: Open fd to a comms dump file
++ * @visitor: Collection of packet handlers
++ *
++ * Reads a comms dump file, calling specified handler functions for
++ * individual packets.
++ *
++ * Returns: #COMMSPARSE_ERROR for failures reading or parsing the
++ * dump, #COMMSPARSE_EMPTY for empty dumps (no comms used),
++ * #COMMSPARSE_SUCCESS for successful read.
++ */
++int comms_read_dump(int fd, struct comms_visitor *visitor)
++{
++	struct stat statbuf;
++	char *buf, *bufend, *p;
++	int ret = COMMSPARSE_EMPTY;
++	bool cont = true;
++
++	if (fd < 0)
++		return COMMSPARSE_EMPTY;
++
++	if (fstat(fd, &statbuf))
++		return COMMSPARSE_ERROR;
++
++	if (statbuf.st_size == 0)
++		return COMMSPARSE_ERROR;
++
++	buf = mmap(NULL, statbuf.st_size, PROT_READ, MAP_SHARED, fd, 0);
++	if (buf == MAP_FAILED)
++		return COMMSPARSE_ERROR;
++
++	bufend = buf + statbuf.st_size;
++	p = buf;
++
++	while (p != NULL && p != bufend && cont) {
++		const struct runnerpacket *packet;
++		runnerpacket_read_helper helper;
++
++		if (bufend - p >= sizeof(uint32_t)) {
++			uint32_t canary;
++
++			memcpy(&canary, p, sizeof(canary));
++			if (canary != socket_dump_canary()) {
++				fprintf(stderr,
++					"Invalid canary while parsing comms: %"PRIu32", expected %"PRIu32"\n",
++					canary, socket_dump_canary());
++				munmap(buf, statbuf.st_size);
++				return COMMSPARSE_ERROR;
++			}
++		}
++		p += sizeof(uint32_t);
++
++		if (bufend -p < sizeof(struct runnerpacket)) {
++			fprintf(stderr,
++				"Error parsing comms: Expected runnerpacket after canary, truncated file?\n");
++			munmap(buf, statbuf.st_size);
++			return COMMSPARSE_ERROR;
++		}
++
++		packet = (struct runnerpacket *)p;
++		if (bufend -p < packet->size) {
++			fprintf(stderr,
++				"Error parsing comms: Unexpected end of file, truncated file?\n");
++			munmap(buf, statbuf.st_size);
++			return COMMSPARSE_ERROR;
++		}
++		p += packet->size;
++
++		/*
++		 * Runner sends EXEC itself before executing the test.
++		 * If we get other types, it indicates the test really
++		 * uses socket comms.
++		 */
++		if (packet->type != PACKETTYPE_EXEC)
++			ret = COMMSPARSE_SUCCESS;
++
++		switch (packet->type) {
++		case PACKETTYPE_INVALID:
++			printf("Warning: Unknown packet type %"PRIu32", skipping\n", packet->type);
++			break;
++		case PACKETTYPE_LOG:
++			if (visitor->log) {
++				helper = read_runnerpacket(packet);
++				cont = visitor->log(packet, helper, visitor->userdata);
++			}
++			break;
++		case PACKETTYPE_EXEC:
++			if (visitor->exec) {
++				helper = read_runnerpacket(packet);
++				cont = visitor->exec(packet, helper, visitor->userdata);
++			}
++			break;
++		case PACKETTYPE_EXIT:
++			if (visitor->exit) {
++				helper = read_runnerpacket(packet);
++				cont = visitor->exit(packet, helper, visitor->userdata);
++			}
++			break;
++		case PACKETTYPE_SUBTEST_START:
++			if (visitor->subtest_start) {
++				helper = read_runnerpacket(packet);
++				cont = visitor->subtest_start(packet, helper, visitor->userdata);
++			}
++			break;
++		case PACKETTYPE_SUBTEST_RESULT:
++			if (visitor->subtest_result) {
++				helper = read_runnerpacket(packet);
++				cont = visitor->subtest_result(packet, helper, visitor->userdata);
++			}
++			break;
++		case PACKETTYPE_DYNAMIC_SUBTEST_START:
++			if (visitor->dynamic_subtest_start) {
++				helper = read_runnerpacket(packet);
++				cont = visitor->dynamic_subtest_start(packet, helper, visitor->userdata);
++			}
++			break;
++		case PACKETTYPE_DYNAMIC_SUBTEST_RESULT:
++			if (visitor->dynamic_subtest_result) {
++				helper = read_runnerpacket(packet);
++				cont = visitor->dynamic_subtest_result(packet, helper, visitor->userdata);
++			}
++			break;
++		case PACKETTYPE_VERSIONSTRING:
++			if (visitor->versionstring) {
++				helper = read_runnerpacket(packet);
++				cont = visitor->versionstring(packet, helper, visitor->userdata);
++			}
++			break;
++		case PACKETTYPE_RESULT_OVERRIDE:
++			if (visitor->result_override) {
++				helper = read_runnerpacket(packet);
++				cont = visitor->result_override(packet, helper, visitor->userdata);
++			}
++			break;
++		default:
++			printf("Warning: Unknown packet type %"PRIu32"\n", helper.type);
++			break;
++		}
++	}
++
++	munmap(buf, statbuf.st_size);
++	return cont ? ret : COMMSPARSE_ERROR;
++}
+diff --git a/lib/runnercomms.h b/lib/runnercomms.h
+new file mode 100644
+index 00000000..0bc30818
+--- /dev/null
++++ b/lib/runnercomms.h
+@@ -0,0 +1,259 @@
++/* SPDX-License-Identifier: MIT */
++/*
++ * Copyright © 2022 Intel Corporation
++ */
++
++#ifndef IGT_RUNNERCOMMS_H
++#define IGT_RUNNERCOMMS_H
++
++#include <stdbool.h>
++#include <stddef.h>
++#include <stdint.h>
++
++/*
++ * A flat struct that can and will be directly dumped to
++ * disk. Constructed with runnerpacket_<type>() helper functions.
++ */
++struct runnerpacket {
++	uint32_t size; /* Full size of the packet in octets */
++	uint32_t type; /* runnerpacket_type, but fixed width */
++	int32_t senderpid;
++	int32_t sendertid;
++
++	char data[];
++} __attribute__((packed));
++
++_Static_assert(sizeof(struct runnerpacket) == 4 * 4, "runnerpacket structure must not change");
++_Static_assert(offsetof(struct runnerpacket, data) == 4 * 4, "runnerpacket structure must not change");
++
++/*
++ * A helper for reading and parsing runnerpacket structs. Fields will
++ * point directly into the data field of an existing runnerpacket
++ * object. Constructed with read_runnerpacket().
++ *
++ * Some fields can be left as 0 / NULL / some other applicable invalid
++ * value in the case of having older dumps read with binaries that
++ * have extended the data formats.
++ */
++typedef union runnerpacket_read_helper {
++	/*
++	 * All other fields must begin with "uint32_t type" so it's a
++	 * common initial sequence, safe to read no matter what union
++	 * field is active.
++	 */
++	uint32_t type;
++
++	struct {
++		uint32_t type;
++
++		uint8_t stream;
++		const char *text;
++	} log;
++
++	struct {
++		uint32_t type;
++
++		const char *cmdline;
++	} exec;
++
++	struct {
++		uint32_t type;
++
++		int32_t exitcode;
++		const char *timeused;
++	} exit;
++
++	struct {
++		uint32_t type;
++
++		const char *name;
++	} subteststart;
++
++	struct {
++		uint32_t type;
++
++		const char *name;
++		const char *result;
++		const char *timeused;
++		const char *reason;
++	} subtestresult;
++
++	struct {
++		uint32_t type;
++
++		const char *name;
++	} dynamicsubteststart;
++
++	struct {
++		uint32_t type;
++
++		const char *name;
++		const char *result;
++		const char *timeused;
++		const char *reason;
++	} dynamicsubtestresult;
++
++	struct {
++		uint32_t type;
++
++		const char *text;
++	} versionstring;
++
++	struct {
++		uint32_t type;
++
++		const char *result;
++	} resultoverride;
++} runnerpacket_read_helper;
++
++void set_runner_socket(int fd);
++bool runner_connected(void);
++void send_to_runner(struct runnerpacket *packet);
++
++runnerpacket_read_helper read_runnerpacket(const struct runnerpacket *packet);
++
++/*
++ * All packet types must document the format of the data[] array. The
++ * notation used is
++ *
++ * Explanation of the packet
++ * type: explanation of values
++ * type2: explanation of values
++ * (etc)
++ *
++ * The type "cstring" can be used to denote that the content is a
++ * nul-terminated string.
++ */
++enum runnerpacket_type {
++      PACKETTYPE_INVALID,
++      /* No data. This type is only used on parse failures and such. */
++
++      PACKETTYPE_LOG,
++      /*
++       * Normal log message.
++       * uint8_t: 1 = stdout, 2 = stderr
++       * cstring: Log text
++       */
++
++      PACKETTYPE_EXEC,
++      /*
++       * Command line executed. Sent by runner before calling exec().
++       * cstring: command line as one string, argv[0] included, space separated
++       */
++
++      PACKETTYPE_EXIT,
++      /*
++       * Process exit. Written by runner.
++       * int32_t: exitcode
++       * cstring: Time taken by the process from exec to exit, as a floating point value in seconds, as text
++       */
++
++      PACKETTYPE_SUBTEST_START,
++      /*
++       * Subtest begins.
++       * cstring: Name of the subtest
++       */
++
++      PACKETTYPE_SUBTEST_RESULT,
++      /*
++       * Subtest ends. Can appear without a corresponding SUBTEST_START packet.
++       * cstring: Name of the subtest
++       * cstring: Result of the subtest
++       * cstring: Time taken by the subtest, as a floating point value in seconds, as text
++       * cstring: If len > 0, the reason for the subtest result (fail/skip)
++       */
++
++      PACKETTYPE_DYNAMIC_SUBTEST_START,
++      /*
++       * Dynamic subtest begins.
++       * cstring: Name of the dynamic subtest
++       */
++
++      PACKETTYPE_DYNAMIC_SUBTEST_RESULT,
++      /*
++       * Dynamic subtest ends.
++       * cstring: Name of the dynamic subtest
++       * cstring: Result of the dynamic subtest
++       * cstring: Time taken by the dynamic subtest, as a floating point value in seconds, as text
++       * cstring: If len > 0, the reason for the dynamic subtest result (fail/skip)
++       */
++
++      PACKETTYPE_VERSIONSTRING,
++      /*
++       * Version of the running test
++       * cstring: Version string
++       */
++
++      PACKETTYPE_RESULT_OVERRIDE,
++      /*
++       * Override the result of the most recently started test/subtest/dynamic subtest. Used for timeout and abort etc.
++       * cstring: The result to use, as text. All lowercase.
++       */
++
++
++      PACKETTYPE_NUM_TYPES /* must be last */
++};
++
++struct runnerpacket *runnerpacket_log(uint8_t stream, const char *text);
++struct runnerpacket *runnerpacket_exec(char **argv);
++struct runnerpacket *runnerpacket_exit(int32_t exitcode, const char *timeused);
++struct runnerpacket *runnerpacket_subtest_start(const char *name);
++struct runnerpacket *runnerpacket_subtest_result(const char *name, const char *result,
++						 const char *timeused, const char *reason);
++struct runnerpacket *runnerpacket_dynamic_subtest_start(const char *name);
++struct runnerpacket *runnerpacket_dynamic_subtest_result(const char *name, const char *result,
++							 const char *timeused, const char *reason);
++struct runnerpacket *runnerpacket_versionstring(const char *text);
++struct runnerpacket *runnerpacket_resultoverride(const char *result);
++
++uint32_t socket_dump_canary(void);
++
++struct runnerpacket_log_sig_safe {
++	uint32_t size;
++	uint32_t type;
++	int32_t senderpid;
++	int32_t sendertid;
++
++	uint8_t stream;
++	char data[128];
++} __attribute__((packed));
++
++_Static_assert(offsetof(struct runnerpacket_log_sig_safe, stream) == 4 * 4, "signal-safe log runnerpacket must be compatible");
++_Static_assert(offsetof(struct runnerpacket_log_sig_safe, data) == 4 * 4 + 1, "signal-safe log runnerpacket must be compatible");
++
++void log_to_runner_sig_safe(const char *str, size_t len);
++
++/*
++ * Comms dump reader
++ *
++ * A visitor for reading comms dump files. Calls handlers if
++ * corresponding handler is set. Reading stops if a handler returns
++ * false.
++ *
++ * The passed arguments are the packet itself, the already-constructed
++ * read helper, and the userdata pointer from the visitor.
++ */
++typedef bool (*handler_t)(const struct runnerpacket *, runnerpacket_read_helper, void *userdata);
++
++struct comms_visitor {
++	handler_t log;
++	handler_t exec;
++	handler_t exit;
++	handler_t subtest_start;
++	handler_t subtest_result;
++	handler_t dynamic_subtest_start;
++	handler_t dynamic_subtest_result;
++	handler_t versionstring;
++	handler_t result_override;
++
++	void* userdata;
++};
++
++enum {
++	COMMSPARSE_ERROR,
++	COMMSPARSE_EMPTY,
++	COMMSPARSE_SUCCESS
++};
++int comms_read_dump(int fd, struct comms_visitor *visitor);
++
++#endif
+-- 
+2.30.2
