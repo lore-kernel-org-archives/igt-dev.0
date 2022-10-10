@@ -1,19 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3D8B210E737
- for <igt-dev@lists.freedesktop.org>; Mon, 10 Oct 2022 21:42:22 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1639D10E731
+ for <igt-dev@lists.freedesktop.org>; Mon, 10 Oct 2022 21:42:21 +0000 (UTC)
 From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 To: igt-dev@lists.freedesktop.org,
  Lionel G Landwerlin <lionel.g.landwerlin@intel.com>,
  Ashutosh Dixit <ashutosh.dixit@intel.com>
-Date: Mon, 10 Oct 2022 21:42:07 +0000
-Message-Id: <20221010214215.5378-29-umesh.nerlige.ramappa@intel.com>
+Date: Mon, 10 Oct 2022 21:42:00 +0000
+Message-Id: <20221010214215.5378-22-umesh.nerlige.ramappa@intel.com>
 In-Reply-To: <20221010214215.5378-1-umesh.nerlige.ramappa@intel.com>
 References: <20221010214215.5378-1-umesh.nerlige.ramappa@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v6 28/36] lib/i915/perf-config: extend the
- device info
+Subject: [igt-dev] [PATCH i-g-t v6 21/36] lib/i915/perf: store bit shifting
+ required for OA timestamps
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,211 +27,155 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
 
-This will allow equations to check for finer information on the
-topology. Also add EuDualSubslicesSlice0123Count.
+Some new platforms have the OA timestamps shifted to the right by a
+number of bits. This is configurable but since i915 appears to leave
+the default values, let's just hardcode this in the device info.
 
 Signed-off-by: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
 ---
- lib/i915/perf-configs/codegen.py |  1 +
- lib/i915/perf.c                  | 31 ++++++++++++
- lib/i915/perf.h                  | 85 +++++++++++++++++++++++++++++++-
- lib/meson.build                  |  4 +-
- 4 files changed, 118 insertions(+), 3 deletions(-)
+ lib/i915/perf.c                    | 31 +++++++++++++++++++++++++-----
+ lib/i915/perf.h                    | 18 ++++++++++++++++-
+ lib/i915/perf_data_reader.c        |  2 +-
+ lib/meson.build                    |  4 ++--
+ tools/i915-perf/i915_perf_reader.c |  3 ++-
+ 5 files changed, 48 insertions(+), 10 deletions(-)
 
-diff --git a/lib/i915/perf-configs/codegen.py b/lib/i915/perf-configs/codegen.py
-index 8268c606..93a2df4a 100644
---- a/lib/i915/perf-configs/codegen.py
-+++ b/lib/i915/perf-configs/codegen.py
-@@ -169,6 +169,7 @@ class Gen:
-             "$EuSlicesTotalCount": { 'c': "perf->devinfo.n_eu_slices" },
-             "$EuSubslicesTotalCount": { 'c': "perf->devinfo.n_eu_sub_slices" },
-             "$EuDualSubslicesTotalCount": { 'c': "perf->devinfo.n_eu_sub_slices" },
-+            "$EuDualSubslicesSlice0123Count": { 'c': "perf->devinfo.n_eu_sub_slices_half_slices" },
-             "$EuThreadsCount": { 'c': "perf->devinfo.eu_threads_count" },
-             "$SliceMask": { 'c': "perf->devinfo.slice_mask" },
-             "$DualSubsliceMask": { 'c': "perf->devinfo.subslice_mask" },
 diff --git a/lib/i915/perf.c b/lib/i915/perf.c
-index 05730d64..298e4d0e 100644
+index 82f08b36..05730d64 100644
 --- a/lib/i915/perf.c
 +++ b/lib/i915/perf.c
-@@ -153,6 +153,10 @@ intel_perf_for_devinfo(uint32_t device_id,
- {
- 	const struct intel_device_info *devinfo = intel_get_device_info(device_id);
- 	struct intel_perf *perf;
-+	uint32_t subslice_mask_len;
-+	uint32_t eu_mask_len;
-+	uint32_t half_max_subslices;
-+	uint64_t half_subslices_mask;
- 	int bits_per_subslice;
- 
- 	if (!devinfo)
-@@ -180,6 +184,25 @@ intel_perf_for_devinfo(uint32_t device_id,
- 			 "%s", devinfo->codename);
- 	}
- 
-+	/* Store i915 topology. */
-+	perf->devinfo.max_slices = topology->max_slices;
-+	perf->devinfo.max_subslices_per_slice = topology->max_subslices;
-+	perf->devinfo.max_eu_per_subslice = topology->max_eus_per_subslice;
-+
-+	subslice_mask_len =
-+		topology->max_slices * topology->subslice_stride;
-+	assert(sizeof(perf->devinfo.subslice_masks) >= subslice_mask_len);
-+	memcpy(perf->devinfo.subslice_masks,
-+	       &topology->data[topology->subslice_offset],
-+	       subslice_mask_len);
-+
-+	eu_mask_len = topology->eu_stride *
-+		topology->max_subslices * topology->max_slices;
-+	assert(sizeof(perf->devinfo.eu_masks) >= eu_mask_len);
-+	memcpy(perf->devinfo.eu_masks,
-+	       &topology->data[topology->eu_offset],
-+	       eu_mask_len);
-+
- 	/* On Gen11+ the equations from the xml files expect an 8bits
- 	 * mask per subslice, versus only 3bits on prior Gens.
- 	 */
-@@ -205,6 +228,14 @@ intel_perf_for_devinfo(uint32_t device_id,
- 	perf->devinfo.n_eu_slices = __builtin_popcount(perf->devinfo.slice_mask);
- 	perf->devinfo.n_eu_sub_slices = __builtin_popcount(perf->devinfo.subslice_mask);
- 
-+	/* Compute number of subslices/dualsubslices in first half of
-+	 * the GPU.
-+	 */
-+	half_max_subslices = topology->max_subslices / 2;
-+	half_subslices_mask = perf->devinfo.subslice_mask &
-+		((1 << half_max_subslices) - 1);
-+	perf->devinfo.n_eu_sub_slices_half_slices = __builtin_popcount(half_subslices_mask);
-+
+@@ -208,6 +208,10 @@ intel_perf_for_devinfo(uint32_t device_id,
  	/* Valid on most generations except Gen9LP. */
  	perf->devinfo.eu_threads_count = 7;
  
++	/* Most platforms have full 32bit timestamps. */
++	perf->devinfo.oa_timestamp_mask = 0xffffffff;
++	perf->devinfo.oa_timestamp_shift = 0;
++
+ 	if (devinfo->is_haswell) {
+ 		intel_perf_load_metrics_hsw(perf);
+ 	} else if (devinfo->is_broadwell) {
+@@ -663,7 +667,8 @@ accumulate_uint40(int a_index,
+ }
+ 
+ void intel_perf_accumulate_reports(struct intel_perf_accumulator *acc,
+-				   int oa_format,
++				   const struct intel_perf *perf,
++				   const struct intel_perf_metric_set *metric_set,
+ 				   const struct drm_i915_perf_record_header *record0,
+ 				   const struct drm_i915_perf_record_header *record1)
+ {
+@@ -675,9 +680,13 @@ void intel_perf_accumulate_reports(struct intel_perf_accumulator *acc,
+ 
+ 	memset(acc, 0, sizeof(*acc));
+ 
+-	switch (oa_format) {
++	switch (metric_set->perf_oa_format) {
+ 	case I915_OA_FORMAT_A24u40_A14u32_B8_C8:
+-		accumulate_uint32(start + 1, end + 1, deltas + idx++); /* timestamp */
++		/* timestamp */
++		if (perf->devinfo.oa_timestamp_shift >= 0)
++			deltas[idx++] += (end[1] - start[1]) << perf->devinfo.oa_timestamp_shift;
++		else
++			deltas[idx++] += (end[1] - start[1]) >> (-perf->devinfo.oa_timestamp_shift);
+ 		accumulate_uint32(start + 3, end + 3, deltas + idx++); /* clock */
+ 
+ 		/* 4x 32bit A0-3 counters... */
+@@ -710,7 +719,10 @@ void intel_perf_accumulate_reports(struct intel_perf_accumulator *acc,
+ 
+ 	case I915_OAR_FORMAT_A32u40_A4u32_B8_C8:
+ 	case I915_OA_FORMAT_A32u40_A4u32_B8_C8:
+-		accumulate_uint32(start + 1, end + 1, deltas + idx++); /* timestamp */
++		if (perf->devinfo.oa_timestamp_shift >= 0)
++			deltas[idx++] += (end[1] - start[1]) << perf->devinfo.oa_timestamp_shift;
++		else
++			deltas[idx++] += (end[1] - start[1]) >> (-perf->devinfo.oa_timestamp_shift);
+ 		accumulate_uint32(start + 3, end + 3, deltas + idx++); /* clock */
+ 
+ 		/* 32x 40bit A counters... */
+@@ -727,7 +739,11 @@ void intel_perf_accumulate_reports(struct intel_perf_accumulator *acc,
+ 		break;
+ 
+ 	case I915_OA_FORMAT_A45_B8_C8:
+-		accumulate_uint32(start + 1, end + 1, deltas); /* timestamp */
++		/* timestamp */
++		if (perf->devinfo.oa_timestamp_shift >= 0)
++			deltas[0] += (end[1] - start[1]) << perf->devinfo.oa_timestamp_shift;
++		else
++			deltas[0] += (end[1] - start[1]) >> (-perf->devinfo.oa_timestamp_shift);
+ 
+ 		for (i = 0; i < 61; i++)
+ 			accumulate_uint32(start + 3 + i, end + 3 + i, deltas + 1 + i);
+@@ -756,5 +772,10 @@ uint64_t intel_perf_read_record_timestamp(const struct intel_perf *perf,
+                assert(0);
+        }
+ 
++       if (perf->devinfo.oa_timestamp_shift >= 0)
++	       ts <<= perf->devinfo.oa_timestamp_shift;
++       else
++	       ts >>= -perf->devinfo.oa_timestamp_shift;
++
+        return ts;
+ }
 diff --git a/lib/i915/perf.h b/lib/i915/perf.h
-index 6803c149..1493da47 100644
+index e3848b7e..6803c149 100644
 --- a/lib/i915/perf.h
 +++ b/lib/i915/perf.h
-@@ -32,7 +32,11 @@ extern "C" {
+@@ -52,6 +52,21 @@ struct intel_perf_devinfo {
+ 	uint32_t devid;
+ 	uint32_t graphics_ver;
+ 	uint32_t revision;
++	/**
++	 * Bit shifting required to put OA report timestamps into
++	 * timestamp_frequency (some HW generations can shift
++	 * timestamp values to the right by a number of bits).
++	 */
++	int32_t  oa_timestamp_shift;
++	/**
++	 * On some platforms only part of the timestamp bits are valid
++	 * (on previous platforms we would get full 32bits, newer
++	 * platforms can have fewer). It's important to know when
++	 * correlating the full 36bits timestamps to the OA report
++	 * timestamps.
++	 */
++	uint64_t  oa_timestamp_mask;
++	/* Frequency of the timestamps in Hz */
+ 	uint64_t timestamp_frequency;
+ 	uint64_t gt_min_freq;
+ 	uint64_t gt_max_freq;
+@@ -236,7 +251,8 @@ void intel_perf_add_metric_set(struct intel_perf *perf,
+ void intel_perf_load_perf_configs(struct intel_perf *perf, int drm_fd);
  
- #include "igt_list.h"
+ void intel_perf_accumulate_reports(struct intel_perf_accumulator *acc,
+-				   int oa_format,
++				   const struct intel_perf *perf,
++				   const struct intel_perf_metric_set *metric_set,
+ 				   const struct drm_i915_perf_record_header *record0,
+ 				   const struct drm_i915_perf_record_header *record1);
  
--struct intel_device_info;
-+#define DIV_ROUND_UP(a, b)  (((a) + (b) - 1) / (b))
-+
-+#define INTEL_DEVICE_MAX_SLICES           (6)  /* Maximum on gfx10 */
-+#define INTEL_DEVICE_MAX_SUBSLICES        (8)  /* Maximum on gfx11 */
-+#define INTEL_DEVICE_MAX_EUS_PER_SUBSLICE (16) /* Maximum on gfx12 */
+diff --git a/lib/i915/perf_data_reader.c b/lib/i915/perf_data_reader.c
+index 4d1efe92..fcdd5ed1 100644
+--- a/lib/i915/perf_data_reader.c
++++ b/lib/i915/perf_data_reader.c
+@@ -209,7 +209,7 @@ correlate_gpu_timestamp(struct intel_perf_data_reader *reader,
+ 	 * Try to figure what portion of the correlation data the
+ 	 * 32bit timestamp belongs to.
+ 	 */
+-	uint64_t mask = 0xffffffff;
++	uint64_t mask = reader->perf->devinfo.oa_timestamp_mask;
+ 	int corr_idx = -1;
  
- struct intel_perf_devinfo {
- 	char devname[20];
-@@ -77,12 +81,66 @@ struct intel_perf_devinfo {
- 	uint64_t n_eu_slices;
- 	/* Total number of subslices/dualsubslices */
- 	uint64_t n_eu_sub_slices;
-+	/* Number of subslices/dualsubslices in the first half of the
-+	 * slices.
-+	 */
-+	uint64_t n_eu_sub_slices_half_slices;
- 	/* Mask of available subslices/dualsubslices */
- 	uint64_t subslice_mask;
- 	/* Mask of available slices */
- 	uint64_t slice_mask;
- 	/* Number of threads in one EU */
- 	uint64_t eu_threads_count;
-+
-+	/**
-+	 * Maximu number of slices present on this device (can be more than
-+	 * num_slices if some slices are fused).
-+	 */
-+	uint16_t max_slices;
-+
-+	/**
-+	 * Maximu number of subslices per slice present on this device (can be more
-+	 * than the maximum value in the num_subslices[] array if some subslices are
-+	 * fused).
-+	 */
-+	uint16_t max_subslices_per_slice;
-+
-+	/**
-+	 * Stride to access subslice_masks[].
-+	 */
-+	uint16_t subslice_slice_stride;
-+
-+	/**
-+	 * Maximum number of EUs per subslice (can be more than
-+	 * num_eu_per_subslice if some EUs are fused off).
-+	 */
-+	uint16_t max_eu_per_subslice;
-+
-+	/**
-+	 * Strides to access eu_masks[].
-+	 */
-+	uint16_t eu_slice_stride;
-+	uint16_t eu_subslice_stride;
-+
-+	/**
-+	 * A bit mask of the slices available.
-+	 */
-+	uint8_t slice_masks[DIV_ROUND_UP(INTEL_DEVICE_MAX_SLICES, 8)];
-+
-+	/**
-+	 * An array of bit mask of the subslices available, use subslice_slice_stride
-+	 * to access this array.
-+	 */
-+	uint8_t subslice_masks[INTEL_DEVICE_MAX_SLICES *
-+			       DIV_ROUND_UP(INTEL_DEVICE_MAX_SUBSLICES, 8)];
-+
-+	/**
-+	 * An array of bit mask of EUs available, use eu_slice_stride &
-+	 * eu_subslice_stride to access this array.
-+	 */
-+	uint8_t eu_masks[INTEL_DEVICE_MAX_SLICES *
-+			 INTEL_DEVICE_MAX_SUBSLICES *
-+			 DIV_ROUND_UP(INTEL_DEVICE_MAX_EUS_PER_SUBSLICE, 8)];
- };
- 
- typedef enum {
-@@ -232,6 +290,31 @@ struct intel_perf {
- struct drm_i915_perf_record_header;
- struct drm_i915_query_topology_info;
- 
-+static inline bool
-+intel_perf_devinfo_slice_available(const struct intel_perf_devinfo *devinfo,
-+				   int slice)
-+{
-+	return (devinfo->slice_masks[slice / 8] & (1U << (slice % 8))) != 0;
-+}
-+
-+static inline bool
-+intel_perf_devinfo_subslice_available(const struct intel_perf_devinfo *devinfo,
-+				      int slice, int subslice)
-+{
-+	return (devinfo->subslice_masks[slice * devinfo->subslice_slice_stride +
-+					subslice / 8] & (1U << (subslice % 8))) != 0;
-+}
-+
-+static inline bool
-+intel_perf_devinfo_eu_available(const struct intel_perf_devinfo *devinfo,
-+				int slice, int subslice, int eu)
-+{
-+	unsigned subslice_offset = slice * devinfo->eu_slice_stride +
-+		subslice * devinfo->eu_subslice_stride;
-+
-+	return (devinfo->eu_masks[subslice_offset + eu / 8] & (1U << eu % 8)) != 0;
-+}
-+
- struct intel_perf *intel_perf_for_fd(int drm_fd);
- struct intel_perf *intel_perf_for_devinfo(uint32_t device_id,
- 					  uint32_t revision,
+ 	for (uint32_t i = 0; i < reader->n_correlation_chunks; i++) {
 diff --git a/lib/meson.build b/lib/meson.build
-index b51cf23c..b319a3c8 100644
+index 2e5adbae..b51cf23c 100644
 --- a/lib/meson.build
 +++ b/lib/meson.build
 @@ -308,7 +308,7 @@ lib_igt_i915_perf_build = shared_library(
    dependencies: lib_igt_chipset,
    include_directories : inc,
    install: true,
--  soversion: '1.4')
-+  soversion: '1.5')
+-  soversion: '1')
++  soversion: '1.4')
  
  lib_igt_i915_perf = declare_dependency(
    link_with : lib_igt_i915_perf_build,
@@ -239,10 +183,24 @@ index b51cf23c..b319a3c8 100644
  pkgconf.set('exec_prefix', '${prefix}')
  pkgconf.set('libdir', '${prefix}/@0@'.format(get_option('libdir')))
  pkgconf.set('includedir', '${prefix}/@0@'.format(get_option('includedir')))
--pkgconf.set('i915_perf_version', '1.4.0')
-+pkgconf.set('i915_perf_version', '1.5.0')
+-pkgconf.set('i915_perf_version', '1.3.0')
++pkgconf.set('i915_perf_version', '1.4.0')
  
  configure_file(
    input : 'i915-perf.pc.in',
+diff --git a/tools/i915-perf/i915_perf_reader.c b/tools/i915-perf/i915_perf_reader.c
+index afd8c39c..4a2e3df4 100644
+--- a/tools/i915-perf/i915_perf_reader.c
++++ b/tools/i915-perf/i915_perf_reader.c
+@@ -271,7 +271,8 @@ main(int argc, char *argv[])
+ 		fprintf(stdout, "hw_id=0x%x %s\n",
+ 			item->hw_id, item->hw_id == 0xffffffff ? "(idle)" : "");
+ 
+-		intel_perf_accumulate_reports(&accu, reader.metric_set->perf_oa_format,
++		intel_perf_accumulate_reports(&accu,
++					      reader.perf, reader.metric_set,
+ 					      i915_report0, i915_report1);
+ 
+ 		for (uint32_t c = 0; c < n_counters; c++) {
 -- 
 2.25.1
