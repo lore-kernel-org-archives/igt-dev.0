@@ -1,19 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AF59E10E6B5
- for <igt-dev@lists.freedesktop.org>; Mon, 10 Oct 2022 18:13:07 +0000 (UTC)
+Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5D08310E700
+ for <igt-dev@lists.freedesktop.org>; Mon, 10 Oct 2022 18:13:13 +0000 (UTC)
 From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 To: igt-dev@lists.freedesktop.org,
  Lionel G Landwerlin <lionel.g.landwerlin@intel.com>,
  Ashutosh Dixit <ashutosh.dixit@intel.com>
-Date: Mon, 10 Oct 2022 18:12:35 +0000
-Message-Id: <20221010181300.513297-10-umesh.nerlige.ramappa@intel.com>
+Date: Mon, 10 Oct 2022 18:12:59 +0000
+Message-Id: <20221010181300.513297-34-umesh.nerlige.ramappa@intel.com>
 In-Reply-To: <20221010181300.513297-1-umesh.nerlige.ramappa@intel.com>
 References: <20221010181300.513297-1-umesh.nerlige.ramappa@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v5 09/34] i915/perf: Explicitly state
- rendercopy needs for a test
+Subject: [igt-dev] [PATCH i-g-t v5 33/34] lib/i915: prepare codegen for new
+ ACM/DG2 variables
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,100 +25,156 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Let tests explicitly require rendercopy before running. This helps in
-temporarily blocking these tests until rendercopy is available on new
-platforms.
+From: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
 
-Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
-Reviewed-by: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
+Signed-off-by: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
 ---
- tests/i915/perf.c | 25 ++++++++++++++++++++++---
- 1 file changed, 22 insertions(+), 3 deletions(-)
+ lib/i915/perf-configs/codegen.py              | 84 +++++++++++++++----
+ .../perf-configs/perf-metricset-codegen.py    | 13 +++
+ 2 files changed, 81 insertions(+), 16 deletions(-)
 
-diff --git a/tests/i915/perf.c b/tests/i915/perf.c
-index 0543a79e..989f1fce 100644
---- a/tests/i915/perf.c
-+++ b/tests/i915/perf.c
-@@ -1545,6 +1545,9 @@ static void load_helper_set_load(enum load load)
+diff --git a/lib/i915/perf-configs/codegen.py b/lib/i915/perf-configs/codegen.py
+index 93a2df4a..755142cc 100644
+--- a/lib/i915/perf-configs/codegen.py
++++ b/lib/i915/perf-configs/codegen.py
+@@ -1,3 +1,4 @@
++import re
+ import xml.etree.ElementTree as et
  
- static void load_helper_run(enum load load)
- {
-+	if (!render_copy)
-+		return;
+ class Codegen:
+@@ -123,6 +124,51 @@ class Set:
+         return self.xml.find(path)
+ 
+ 
++hw_vars_mapping = {
++    "$EuCoresTotalCount": { 'c': "perf->devinfo.n_eus", 'desc': "The total number of execution units" },
++    "$EuSlicesTotalCount": { 'c': "perf->devinfo.n_eu_slices" },
++    "$EuSubslicesTotalCount": { 'c': "perf->devinfo.n_eu_sub_slices" },
++    "$EuDualSubslicesTotalCount": { 'c': "perf->devinfo.n_eu_sub_slices" },
++    "$EuDualSubslicesSlice0123Count": { 'c': "perf->devinfo.n_eu_sub_slices_half_slices" },
++    "$EuThreadsCount": { 'c': "perf->devinfo.eu_threads_count" },
 +
- 	/*
- 	 * FIXME fork helpers won't get cleaned up when started from within a
- 	 * subtest, so handle the case where it sticks around a bit too long.
-@@ -1577,12 +1580,20 @@ static void load_helper_run(enum load load)
- 
- static void load_helper_stop(void)
- {
-+	if (!render_copy)
-+		return;
++    "$VectorEngineTotalCount": { 'c': "perf->devinfo.n_eus", 'desc': "The total number of execution units" },
++    "$VectorEnginePerXeCoreCount": { 'c': "perf->devinfo.n_eu_sub_slices" },
++    "$VectorEngineThreadsCount": { 'c': "perf->devinfo.eu_threads_count" },
 +
- 	kill(lh.igt_proc.pid, SIGUSR1);
- 	igt_assert(igt_wait_helper(&lh.igt_proc) == 0);
- }
- 
- static void load_helper_init(void)
- {
-+	if (!render_copy) {
-+		igt_info("Running test without render_copy\n");
-+		return;
-+	}
++    "$SliceMask": { 'c': "perf->devinfo.slice_mask" },
++    "$SliceTotalCount": { 'c': "perf->devinfo.n_eu_slices" },
 +
- 	lh.devid = intel_get_drm_devid(drm_fd);
- 
- 	/* MI_STORE_DATA can only use GTT address on gen4+/g33 and needs
-@@ -1603,7 +1614,12 @@ static void load_helper_init(void)
- 
- static void load_helper_fini(void)
- {
--	int i915 = buf_ops_get_fd(lh.bops);
-+	int i915;
++    "$SubsliceMask": { 'c': "perf->devinfo.subslice_mask" },
++    "$DualSubsliceMask": { 'c': "perf->devinfo.subslice_mask" },
 +
-+	if (!render_copy)
-+		return;
++    "$GtSliceMask": { 'c': "perf->devinfo.slice_mask" },
++    "$GtSubsliceMask": { 'c': "perf->devinfo.subslice_mask" },
++    "$GtDualSubsliceMask": { 'c': "perf->devinfo.subslice_mask" },
 +
-+	i915 = buf_ops_get_fd(lh.bops);
++    "$GtXeCoreMask": { 'c': "perf->devinfo.slice_mask" },
++    "$XeCoreMask": { 'c': "perf->devinfo.slice_mask" },
++    "$XeCoreTotalCount": { 'c': 'perf->devinfo.n_eu_sub_slices' },
++
++    "$GpuTimestampFrequency": { 'c': "perf->devinfo.timestamp_frequency" },
++    "$GpuMinFrequency": { 'c': "perf->devinfo.gt_min_freq" },
++    "$GpuMaxFrequency": { 'c': "perf->devinfo.gt_max_freq" },
++    "$SkuRevisionId": { 'c': "perf->devinfo.revision" },
++    "$QueryMode": { 'c': "perf->devinfo.query_mode" },
++}
++
++def is_hw_var(name):
++    m = re.search('\$GtSlice([0-9]+)XeCore([0-9]+)$', name)
++    if m:
++        return True
++    m = re.search('\$GtSlice([0-9]+)$', name)
++    if m:
++        return True
++    m = re.search('\$GtSlice([0-9]+)DualSubslice([0-9]+)$', name)
++    if m:
++        return True
++    return name in hw_vars_mapping
++
+ class Gen:
+     def __init__(self, filename, c):
+         self.filename = filename
+@@ -163,23 +209,11 @@ class Gen:
+         self.exp_ops["ULTE"] = (2, self.splice_ulte)
+         self.exp_ops["ULT"]  = (2, self.splice_ult)
+         self.exp_ops["&&"]   = (2, self.splice_logical_and)
++        self.exp_ops["<<"]   = (2, self.splice_lshft)
++        self.exp_ops[">>"]   = (2, self.splice_rshft)
++        self.exp_ops["UMUL"] = (2, self.splice_uml)
  
- 	if (lh.igt_proc.running)
- 		load_helper_stop();
-@@ -4997,7 +5013,6 @@ igt_main
- 		gt_max_freq_mhz = sysfs_read(RPS_RP0_FREQ_MHZ);
+-        self.hw_vars = {
+-            "$EuCoresTotalCount": { 'c': "perf->devinfo.n_eus", 'desc': "The total number of execution units" },
+-            "$EuSlicesTotalCount": { 'c': "perf->devinfo.n_eu_slices" },
+-            "$EuSubslicesTotalCount": { 'c': "perf->devinfo.n_eu_sub_slices" },
+-            "$EuDualSubslicesTotalCount": { 'c': "perf->devinfo.n_eu_sub_slices" },
+-            "$EuDualSubslicesSlice0123Count": { 'c': "perf->devinfo.n_eu_sub_slices_half_slices" },
+-            "$EuThreadsCount": { 'c': "perf->devinfo.eu_threads_count" },
+-            "$SliceMask": { 'c': "perf->devinfo.slice_mask" },
+-            "$DualSubsliceMask": { 'c': "perf->devinfo.subslice_mask" },
+-            "$SubsliceMask": { 'c': "perf->devinfo.subslice_mask" },
+-            "$GpuTimestampFrequency": { 'c': "perf->devinfo.timestamp_frequency" },
+-            "$GpuMinFrequency": { 'c': "perf->devinfo.gt_min_freq" },
+-            "$GpuMaxFrequency": { 'c': "perf->devinfo.gt_max_freq" },
+-            "$SkuRevisionId": { 'c': "perf->devinfo.revision" },
+-            "$QueryMode": { 'c': "perf->devinfo.query_mode" },
+-        }
++        self.hw_vars = hw_vars_mapping
  
- 		render_copy = igt_get_render_copyfunc(devid);
--		igt_require_f(render_copy, "no render-copy function\n");
- 	}
+     def emit_fadd(self, tmp_id, args):
+         self.c("double tmp{0} = {1} + {2};".format(tmp_id, args[1], args[0]))
+@@ -286,11 +320,29 @@ class Gen:
+     def splice_ugt(self, args):
+         return self.brkt(args[1]) + " > " + self.brkt(args[0])
  
- 	igt_subtest("non-system-wide-paranoid")
-@@ -5100,6 +5115,7 @@ igt_main
++    def splice_lshft(self, args):
++        return '(' + self.brkt(args[1]) + " << " + self.brkt(args[0]) + ')'
++
++    def splice_rshft(self, args):
++        return '(' + self.brkt(args[1]) + " >> " + self.brkt(args[0]) + ')'
++
++    def splice_uml(self, args):
++        return self.brkt(args[1]) + " * " + self.brkt(args[0])
++
+     def resolve_variable(self, name, set):
+         if name in self.hw_vars:
+             return self.hw_vars[name]['c']
+         if name in set.counter_vars:
+             return set.read_funcs[name] + "(perf, metric_set, accumulator)"
++        m = re.search('\$GtSlice([0-9]+)$', name)
++        if m:
++            return 'intel_perf_devinfo_slice_available(&perf->devinfo, {0})'.format(m.group(1))
++        m = re.search('\$GtSlice([0-9]+)DualSubslice([0-9]+)$', name)
++        if m:
++            return 'intel_perf_devinfo_subslice_available(&perf->devinfo, {0}, {1})'.format(m.group(1), m.group(2))
++        m = re.search('\$GtSlice([0-9]+)XeCore([0-9]+)$', name)
++        if m:
++            return 'intel_perf_devinfo_subslice_available(&perf->devinfo, {0}, {1})'.format(m.group(1), m.group(2))
+         return None
  
- 	igt_subtest("unprivileged-single-ctx-counters") {
- 		igt_require(IS_HASWELL(devid));
-+		igt_require_f(render_copy, "no render-copy function\n");
- 		hsw_test_single_ctx_counters();
- 	}
+     def output_rpn_equation_code(self, set, counter, equation):
+diff --git a/lib/i915/perf-configs/perf-metricset-codegen.py b/lib/i915/perf-configs/perf-metricset-codegen.py
+index 00528c31..80b01be5 100644
+--- a/lib/i915/perf-configs/perf-metricset-codegen.py
++++ b/lib/i915/perf-configs/perf-metricset-codegen.py
+@@ -126,6 +126,19 @@ def generate_metric_sets(args, gen):
+                 metric_set->c_offset = metric_set->b_offset + 8;
+                 metric_set->perfcnt_offset = metric_set->c_offset + 8;
  
-@@ -5113,6 +5129,7 @@ igt_main
- 		 * For gen12 implement a separate test that uses only OAR
- 		 */
- 		igt_require(intel_gen(devid) >= 8 && intel_gen(devid) < 12);
-+		igt_require_f(render_copy, "no render-copy function\n");
- 		gen8_test_single_ctx_render_target_writes_a_counter();
- 	}
- 
-@@ -5128,8 +5145,10 @@ igt_main
- 			gen12_test_oa_tlb_invalidate();
- 
- 		igt_describe("Measure performance for a specific context using OAR in Gen 12");
--		igt_subtest("gen12-unprivileged-single-ctx-counters")
-+		igt_subtest("gen12-unprivileged-single-ctx-counters") {
-+			igt_require_f(render_copy, "no render-copy function\n");
- 			gen12_test_single_ctx_render_target_writes_a_counter();
-+		}
- 	}
- 
- 	igt_subtest("rc6-disable")
++            """))
++        elif gen.chipset.startswith("acm"):
++            c(textwrap.dedent("""\
++                metric_set->perf_oa_format = I915_OA_FORMAT_A24u40_A14u32_B8_C8;
++
++                metric_set->perf_raw_size = 256;
++                metric_set->gpu_time_offset = 0;
++                metric_set->gpu_clock_offset = 1;
++                metric_set->a_offset = 2;
++                metric_set->b_offset = metric_set->a_offset + 38;
++                metric_set->c_offset = metric_set->b_offset + 8;
++                metric_set->perfcnt_offset = metric_set->c_offset + 8;
++
+             """))
+         else:
+             c(textwrap.dedent("""\
 -- 
 2.25.1
