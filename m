@@ -1,19 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 987C510E72F
- for <igt-dev@lists.freedesktop.org>; Mon, 10 Oct 2022 21:42:18 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id AF25210E730
+ for <igt-dev@lists.freedesktop.org>; Mon, 10 Oct 2022 21:42:17 +0000 (UTC)
 From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 To: igt-dev@lists.freedesktop.org,
  Lionel G Landwerlin <lionel.g.landwerlin@intel.com>,
  Ashutosh Dixit <ashutosh.dixit@intel.com>
-Date: Mon, 10 Oct 2022 21:41:49 +0000
-Message-Id: <20221010214215.5378-11-umesh.nerlige.ramappa@intel.com>
+Date: Mon, 10 Oct 2022 21:41:45 +0000
+Message-Id: <20221010214215.5378-7-umesh.nerlige.ramappa@intel.com>
 In-Reply-To: <20221010214215.5378-1-umesh.nerlige.ramappa@intel.com>
 References: <20221010214215.5378-1-umesh.nerlige.ramappa@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v6 10/36] i915/perf: Skip tests that use
- rendercopy
+Subject: [igt-dev] [PATCH i-g-t v6 06/36] i915/perf: Define OA report types
+ and fix oa-formats test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,57 +25,57 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Running tests that require rendercopy sometimes leaves the DUT in an
-unsusable state. Further tests fail to run and DUT requires reboot.
-Since it affects CI efficiency, skip tests is rendercopy is missing.
+With newer gen12 platforms, formats used for OAG buffer and
+MI_REPORT_PERF_FORMAT differ slightly. This causes issues when the
+oa-formats test does a sanity check. Run oa-formats for OAG reports
+only.
+
+OAR formats must be tested with the gen12-mi-rpc and
+gen12-unprivileged-single-ctx-counters.
+
+v2: Clarify commit message
 
 Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 Reviewed-by: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
 ---
- tests/i915/perf.c | 17 ++++++++++++++++-
- 1 file changed, 16 insertions(+), 1 deletion(-)
+ tests/i915/perf.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
 diff --git a/tests/i915/perf.c b/tests/i915/perf.c
-index 989f1fce..6079d1b1 100644
+index 5fe874c1..65434055 100644
 --- a/tests/i915/perf.c
 +++ b/tests/i915/perf.c
-@@ -41,6 +41,7 @@
- #include "i915/gem.h"
- #include "i915/perf.h"
- #include "igt.h"
-+#include "igt_perf.h"
- #include "igt_sysfs.h"
- #include "drm.h"
+@@ -95,6 +95,13 @@ struct accumulator {
+ 	uint64_t deltas[MAX_RAW_OA_COUNTERS];
+ };
  
-@@ -4968,6 +4969,19 @@ static int i915_perf_revision(int fd)
- 	return value;
- }
- 
-+static bool has_class_instance(int i915, uint16_t class, uint16_t instance)
-+{
-+	int fd;
++enum {
++	OAG,
++	OAR,
 +
-+	fd = perf_i915_open(i915, I915_PMU_ENGINE_BUSY(class, instance));
-+	if (fd >= 0) {
-+		close(fd);
-+		return true;
-+	}
++	MAX_OA_TYPE,
++};
 +
-+	return false;
-+}
+ struct oa_format {
+ 	const char *name;
+ 	size_t size;
+@@ -108,6 +115,7 @@ struct oa_format {
+ 	int n_b;
+ 	int c_off;
+ 	int n_c;
++	int oa_type;
+ };
+ 
+ static struct oa_format hsw_oa_formats[I915_OA_FORMAT_MAX] = {
+@@ -1483,6 +1491,9 @@ test_oa_formats(void)
+ 		if (!format.name) /* sparse, indexed by ID */
+ 			continue;
+ 
++		if (format.oa_type != OAG) /* sparse, indexed by ID */
++			continue;
 +
- igt_main
- {
- 	igt_fixture {
-@@ -5012,7 +5026,8 @@ igt_main
+ 		igt_debug("Checking OA format %s\n", format.name);
  
- 		gt_max_freq_mhz = sysfs_read(RPS_RP0_FREQ_MHZ);
- 
--		render_copy = igt_get_render_copyfunc(devid);
-+		if (has_class_instance(drm_fd, I915_ENGINE_CLASS_RENDER, 0))
-+			render_copy = igt_get_render_copyfunc(devid);
- 	}
- 
- 	igt_subtest("non-system-wide-paranoid")
+ 		open_and_read_2_oa_reports(i,
 -- 
 2.25.1
