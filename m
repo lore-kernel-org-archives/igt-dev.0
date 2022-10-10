@@ -1,17 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id ECEFB10E631
- for <igt-dev@lists.freedesktop.org>; Mon, 10 Oct 2022 14:57:54 +0000 (UTC)
-From: Petri Latvala <petri.latvala@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Mon, 10 Oct 2022 17:57:03 +0300
-Message-Id: <20221010145708.1986912-2-petri.latvala@intel.com>
-In-Reply-To: <20221010145708.1986912-1-petri.latvala@intel.com>
-References: <20221010145708.1986912-1-petri.latvala@intel.com>
+Content-Type: multipart/alternative;
+ boundary="===============1627513105198170586=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 2/7] lib/igt_core: Send logs to runner with
- comms
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Jake Freeland" <jake@technologyfriends.net>
+Date: Mon, 10 Oct 2022 15:43:14 -0000
+Message-ID: <166541659414.29670.1821520045597787658@emeril.freedesktop.org>
+References: <20221007232757.3210308-1-jfree@freebsd.org>
+In-Reply-To: <20221007232757.3210308-1-jfree@freebsd.org>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgSW50cm9k?=
+ =?utf-8?q?uce_FreeBSD_support?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,314 +17,278 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Petri Latvala <petri.latvala@intel.com>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-If the runner has opened a socket to talk to it, use it for sending
-logs and other messages.
+--===============1627513105198170586==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Signed-off-by: Petri Latvala <petri.latvala@intel.com>
-Cc: Arkadiusz Hiler <arek@hiler.eu>
----
- lib/igt_core.c | 177 ++++++++++++++++++++++++++++++++++++-------------
- 1 file changed, 132 insertions(+), 45 deletions(-)
+== Series Details ==
 
-diff --git a/lib/igt_core.c b/lib/igt_core.c
-index 2aee0d08..db0fee2a 100644
---- a/lib/igt_core.c
-+++ b/lib/igt_core.c
-@@ -76,6 +76,7 @@
- #include "igt_list.h"
- #include "igt_device_scan.h"
- #include "igt_thread.h"
-+#include "runnercomms.h"
- 
- #define UNW_LOCAL_ONLY
- #include <libunwind.h>
-@@ -456,6 +457,84 @@ static void _igt_log_buffer_reset(void)
- 	pthread_mutex_unlock(&log_buffer_mutex);
- }
- 
-+__attribute__((format(printf, 2, 3)))
-+static void _log_line_fprintf(FILE* stream, const char *format, ...)
-+{
-+	va_list ap;
-+	char *str;
-+
-+	va_start(ap, format);
-+
-+	if (runner_connected()) {
-+		vasprintf(&str, format, ap);
-+		send_to_runner(runnerpacket_log(fileno(stream), str));
-+		free(str);
-+	} else {
-+		vfprintf(stream, format, ap);
-+	}
-+}
-+
-+enum _subtest_type {
-+      _SUBTEST_TYPE_NORMAL,
-+      _SUBTEST_TYPE_DYNAMIC,
-+};
-+
-+static void _subtest_result_message(enum _subtest_type subtest_type,
-+				    const char *name,
-+				    const char *result,
-+				    double timeelapsed)
-+{
-+	char timestr[32];
-+
-+	snprintf(timestr, sizeof(timestr), "%.3f", timeelapsed);
-+
-+	if (runner_connected()) {
-+		if (subtest_type == _SUBTEST_TYPE_NORMAL)
-+			send_to_runner(runnerpacket_subtest_result(name, result, timestr, NULL));
-+		else
-+			send_to_runner(runnerpacket_dynamic_subtest_result(name, result, timestr, NULL));
-+
-+		return;
-+	}
-+
-+	printf("%s%s %s: %s (%ss)%s\n",
-+	       (!__igt_plain_output) ? "\x1b[1m" : "",
-+	       subtest_type == _SUBTEST_TYPE_NORMAL ? "Subtest" : "Dynamic subtest",
-+	       name,
-+	       result,
-+	       timestr,
-+	       (!__igt_plain_output) ? "\x1b[0m" : "");
-+	fflush(stdout);
-+	if (stderr_needs_sentinel)
-+		fprintf(stderr, "%s %s: %s (%ss)\n",
-+			subtest_type == _SUBTEST_TYPE_NORMAL ? "Subtest" : "Dynamic subtest",
-+			name,
-+			result,
-+			timestr);
-+}
-+
-+static void _subtest_starting_message(enum _subtest_type subtest_type,
-+				      const char *name)
-+{
-+	if (runner_connected()) {
-+		if (subtest_type == _SUBTEST_TYPE_NORMAL)
-+			send_to_runner(runnerpacket_subtest_start(name));
-+		else
-+			send_to_runner(runnerpacket_dynamic_subtest_start(name));
-+
-+		return;
-+	}
-+
-+	igt_info("Starting %s: %s\n",
-+		 subtest_type == _SUBTEST_TYPE_NORMAL ? "subtest" : "dynamic subtest",
-+		 name);
-+	fflush(stdout);
-+	if (stderr_needs_sentinel)
-+		fprintf(stderr, "Starting %s: %s\n",
-+			subtest_type == _SUBTEST_TYPE_NORMAL ? "subtest" : "dynamic subtest",
-+			name);
-+}
-+
- static void _igt_log_buffer_dump(void)
- {
- 	uint8_t i;
-@@ -478,31 +557,31 @@ static void _igt_log_buffer_dump(void)
- 	}
- 
- 	if (in_dynamic_subtest)
--		fprintf(stderr, "Dynamic subtest %s failed.\n", in_dynamic_subtest);
-+		_log_line_fprintf(stderr, "Dynamic subtest %s failed.\n", in_dynamic_subtest);
- 	else if (in_subtest)
--		fprintf(stderr, "Subtest %s failed.\n", in_subtest);
-+		_log_line_fprintf(stderr, "Subtest %s failed.\n", in_subtest);
- 	else
--		fprintf(stderr, "Test %s failed.\n", command_str);
-+		_log_line_fprintf(stderr, "Test %s failed.\n", command_str);
- 
- 	if (log_buffer.start == log_buffer.end) {
--		fprintf(stderr, "No log.\n");
-+		_log_line_fprintf(stderr, "No log.\n");
- 		return;
- 	}
- 
- 	pthread_mutex_lock(&log_buffer_mutex);
--	fprintf(stderr, "**** DEBUG ****\n");
-+	_log_line_fprintf(stderr, "**** DEBUG ****\n");
- 
- 	i = log_buffer.start;
- 	do {
- 		char *last_line = log_buffer.entries[i];
--		fprintf(stderr, "%s", last_line);
-+		_log_line_fprintf(stderr, "%s", last_line);
- 		i++;
- 	} while (i != log_buffer.start && i != log_buffer.end);
- 
- 	/* reset the buffer */
- 	log_buffer.start = log_buffer.end = 0;
- 
--	fprintf(stderr, "****  END  ****\n");
-+	_log_line_fprintf(stderr, "****  END  ****\n");
- 	pthread_mutex_unlock(&log_buffer_mutex);
- }
- 
-@@ -763,9 +842,19 @@ static void print_version(void)
- 
- 	uname(&uts);
- 
--	igt_info("IGT-Version: %s-%s (%s) (%s: %s %s)\n", PACKAGE_VERSION,
--		 IGT_GIT_SHA1, TARGET_CPU_PLATFORM,
--		 uts.sysname, uts.release, uts.machine);
-+	if (runner_connected()) {
-+		char versionstr[256];
-+
-+		snprintf(versionstr, sizeof(versionstr),
-+			 "IGT-Version: %s-%s (%s) (%s: %s %s)\n", PACKAGE_VERSION,
-+			 IGT_GIT_SHA1, TARGET_CPU_PLATFORM,
-+			 uts.sysname, uts.release, uts.machine);
-+		send_to_runner(runnerpacket_versionstring(versionstr));
-+	} else {
-+		igt_info("IGT-Version: %s-%s (%s) (%s: %s %s)\n", PACKAGE_VERSION,
-+			 IGT_GIT_SHA1, TARGET_CPU_PLATFORM,
-+			 uts.sysname, uts.release, uts.machine);
-+	}
- }
- 
- static void print_usage(const char *help_str, bool output_on_stderr)
-@@ -937,6 +1026,11 @@ static void common_init_env(void)
- 	if (env) {
- 		igt_rc_device = strdup(env);
- 	}
-+
-+	env = getenv("IGT_RUNNER_SOCKET_FD");
-+	if (env) {
-+		set_runner_socket(atoi(env));
-+	}
- }
- 
- static int common_init(int *argc, char **argv,
-@@ -1329,24 +1423,15 @@ bool __igt_run_subtest(const char *subtest_name, const char *file, const int lin
- 
- 
- 	if (skip_subtests_henceforth) {
--		printf("%sSubtest %s: %s%s\n",
--		       (!__igt_plain_output) ? "\x1b[1m" : "", subtest_name,
--		       skip_subtests_henceforth == SKIP ?
--		       "SKIP" : "FAIL", (!__igt_plain_output) ? "\x1b[0m" : "");
--		fflush(stdout);
--		if (stderr_needs_sentinel)
--			fprintf(stderr, "Subtest %s: %s\n", subtest_name,
--				skip_subtests_henceforth == SKIP ?
--				"SKIP" : "FAIL");
-+		_subtest_result_message(_SUBTEST_TYPE_NORMAL, subtest_name,
-+					skip_subtests_henceforth == SKIP ? "SKIP" : "FAIL",
-+					0.0);
- 		return false;
- 	}
- 
- 	igt_kmsg(KMSG_INFO "%s: starting subtest %s\n",
- 		 command_str, subtest_name);
--	igt_info("Starting subtest: %s\n", subtest_name);
--	fflush(stdout);
--	if (stderr_needs_sentinel)
--		fprintf(stderr, "Starting subtest: %s\n", subtest_name);
-+	_subtest_starting_message(_SUBTEST_TYPE_NORMAL, subtest_name);
- 
- 	_igt_log_buffer_reset();
- 	igt_thread_clear_fail_state();
-@@ -1374,10 +1459,7 @@ bool __igt_run_dynamic_subtest(const char *dynamic_subtest_name)
- 
- 	igt_kmsg(KMSG_INFO "%s: starting dynamic subtest %s\n",
- 		 command_str, dynamic_subtest_name);
--	igt_info("Starting dynamic subtest: %s\n", dynamic_subtest_name);
--	fflush(stdout);
--	if (stderr_needs_sentinel)
--		fprintf(stderr, "Starting dynamic subtest: %s\n", dynamic_subtest_name);
-+	_subtest_starting_message(_SUBTEST_TYPE_DYNAMIC, dynamic_subtest_name);
- 
- 	_igt_log_buffer_reset();
- 	igt_thread_clear_fail_state();
-@@ -1456,23 +1538,16 @@ bool __igt_enter_dynamic_container(void)
- __noreturn static void exit_subtest(const char *result)
- {
- 	struct timespec now;
--	const char *subtest_text = in_dynamic_subtest ? "Dynamic subtest" : "Subtest";
- 	const char **subtest_name = in_dynamic_subtest ? &in_dynamic_subtest : &in_subtest;
- 	struct timespec *thentime = in_dynamic_subtest ? &dynamic_subtest_time : &subtest_time;
- 	jmp_buf *jmptarget = in_dynamic_subtest ? &igt_dynamic_jmpbuf : &igt_subtest_jmpbuf;
- 
- 	igt_gettime(&now);
- 
--	igt_info("%s%s %s: %s (%.3fs)%s\n",
--		 (!__igt_plain_output) ? "\x1b[1m" : "",
--		 subtest_text, *subtest_name, result,
--		 igt_time_elapsed(thentime, &now),
--		 (!__igt_plain_output) ? "\x1b[0m" : "");
--	fflush(stdout);
--	if (stderr_needs_sentinel)
--		fprintf(stderr, "%s %s: %s (%.3fs)\n",
--			subtest_text, *subtest_name,
--			result, igt_time_elapsed(thentime, &now));
-+	_subtest_result_message(in_dynamic_subtest ? _SUBTEST_TYPE_DYNAMIC : _SUBTEST_TYPE_NORMAL,
-+				*subtest_name,
-+				result,
-+				igt_time_elapsed(thentime, &now));
- 
- 	igt_terminate_spins();
- 
-@@ -1539,7 +1614,15 @@ void igt_skip(const char *f, ...)
- 
- 	if (!igt_only_list_subtests()) {
- 		va_start(args, f);
--		vprintf(f, args);
-+		if (runner_connected()) {
-+			char *str;
-+
-+			vasprintf(&str, f, args);
-+			send_to_runner(runnerpacket_log(STDOUT_FILENO, str));
-+			free(str);
-+		} else {
-+			vprintf(f, args);
-+		}
- 		va_end(args);
- 	}
- 
-@@ -1827,7 +1910,10 @@ static bool running_under_gdb(void)
- 
- static void __write_stderr(const char *str, size_t len)
- {
--	igt_ignore_warn(write(STDERR_FILENO, str, len));
-+	if (runner_connected())
-+		log_to_runner_sig_safe(str, len);
-+	else
-+		igt_ignore_warn(write(STDERR_FILENO, str, len));
- }
- 
- static void write_stderr(const char *str)
-@@ -1840,7 +1926,10 @@ static const char hex[] = "0123456789abcdef";
- static void
- xputch(int c)
- {
--	igt_ignore_warn(write(STDERR_FILENO, (const void *) &c, 1));
-+	if (runner_connected())
-+		log_to_runner_sig_safe((const void *) &c, 1);
-+	else
-+		igt_ignore_warn(write(STDERR_FILENO, (const void *) &c, 1));
- }
- 
- static int
-@@ -2849,11 +2938,9 @@ void igt_vlog(const char *domain, enum igt_log_level level, const char *format,
- 	/* prepend all except information messages with process, domain and log
- 	 * level information */
- 	if (level != IGT_LOG_INFO) {
--		fwrite(formatted_line, sizeof(char), strlen(formatted_line),
--		       file);
-+		_log_line_fprintf(file, "%s", formatted_line);
- 	} else {
--		fwrite(thread_id, sizeof(char), strlen(thread_id), file);
--		fwrite(line, sizeof(char), strlen(line), file);
-+		_log_line_fprintf(file, "%s%s", thread_id, line);
- 	}
- 
- 	pthread_mutex_unlock(&print_mutex);
--- 
-2.30.2
+Series: Introduce FreeBSD support
+URL   : https://patchwork.freedesktop.org/series/109501/
+State : success
+
+== Summary ==
+
+CI Bug Log - changes from CI_DRM_12226 -> IGTPW_7932
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7932/index.html
+
+Participating hosts (44 -> 42)
+------------------------------
+
+  Additional (1): bat-atsm-1 
+  Missing    (3): fi-ctg-p8600 fi-tgl-dsi fi-hsw-4200u 
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in IGTPW_7932:
+
+### IGT changes ###
+
+#### Suppressed ####
+
+  The following results come from untrusted machines, tests, or statuses.
+  They do not affect the overall result.
+
+  * igt@i915_selftest@live@slpc:
+    - {bat-adlm-1}:       [PASS][1] -> [DMESG-FAIL][2]
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12226/bat-adlm-1/igt@i915_selftest@live@slpc.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7932/bat-adlm-1/igt@i915_selftest@live@slpc.html
+
+  
+Known issues
+------------
+
+  Here are the changes found in IGTPW_7932 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@i915_selftest@live@execlists:
+    - fi-bsw-nick:        [PASS][3] -> [INCOMPLETE][4] ([i915#7120])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12226/fi-bsw-nick/igt@i915_selftest@live@execlists.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7932/fi-bsw-nick/igt@i915_selftest@live@execlists.html
+
+  * igt@i915_selftest@live@hangcheck:
+    - fi-snb-2600:        [PASS][5] -> [INCOMPLETE][6] ([i915#6992])
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12226/fi-snb-2600/igt@i915_selftest@live@hangcheck.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7932/fi-snb-2600/igt@i915_selftest@live@hangcheck.html
+
+  * igt@kms_chamelium@common-hpd-after-suspend:
+    - fi-hsw-g3258:       NOTRUN -> [SKIP][7] ([fdo#109271] / [fdo#111827])
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7932/fi-hsw-g3258/igt@kms_chamelium@common-hpd-after-suspend.html
+    - fi-bdw-5557u:       NOTRUN -> [SKIP][8] ([fdo#109271] / [fdo#111827])
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7932/fi-bdw-5557u/igt@kms_chamelium@common-hpd-after-suspend.html
+
+  * igt@runner@aborted:
+    - fi-bsw-nick:        NOTRUN -> [FAIL][9] ([fdo#109271] / [i915#4312])
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7932/fi-bsw-nick/igt@runner@aborted.html
+
+  
+#### Possible fixes ####
+
+  * igt@gem_exec_suspend@basic-s0@smem:
+    - {bat-rplp-1}:       [DMESG-WARN][10] ([i915#2867]) -> [PASS][11]
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12226/bat-rplp-1/igt@gem_exec_suspend@basic-s0@smem.html
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7932/bat-rplp-1/igt@gem_exec_suspend@basic-s0@smem.html
+
+  * igt@gem_exec_suspend@basic-s3@lmem0:
+    - {bat-dg2-11}:       [DMESG-WARN][12] ([i915#6816]) -> [PASS][13]
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12226/bat-dg2-11/igt@gem_exec_suspend@basic-s3@lmem0.html
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7932/bat-dg2-11/igt@gem_exec_suspend@basic-s3@lmem0.html
+
+  * igt@i915_selftest@live@gt_timelines:
+    - fi-hsw-g3258:       [INCOMPLETE][14] ([i915#7080]) -> [PASS][15]
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12226/fi-hsw-g3258/igt@i915_selftest@live@gt_timelines.html
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7932/fi-hsw-g3258/igt@i915_selftest@live@gt_timelines.html
+
+  * igt@i915_suspend@basic-s3-without-i915:
+    - fi-bdw-5557u:       [INCOMPLETE][16] ([i915#146] / [i915#6712]) -> [PASS][17]
+   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12226/fi-bdw-5557u/igt@i915_suspend@basic-s3-without-i915.html
+   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7932/fi-bdw-5557u/igt@i915_suspend@basic-s3-without-i915.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [fdo#111827]: https://bugs.freedesktop.org/show_bug.cgi?id=111827
+  [i915#146]: https://gitlab.freedesktop.org/drm/intel/issues/146
+  [i915#2582]: https://gitlab.freedesktop.org/drm/intel/issues/2582
+  [i915#2867]: https://gitlab.freedesktop.org/drm/intel/issues/2867
+  [i915#4077]: https://gitlab.freedesktop.org/drm/intel/issues/4077
+  [i915#4079]: https://gitlab.freedesktop.org/drm/intel/issues/4079
+  [i915#4083]: https://gitlab.freedesktop.org/drm/intel/issues/4083
+  [i915#4312]: https://gitlab.freedesktop.org/drm/intel/issues/4312
+  [i915#4983]: https://gitlab.freedesktop.org/drm/intel/issues/4983
+  [i915#5537]: https://gitlab.freedesktop.org/drm/intel/issues/5537
+  [i915#6712]: https://gitlab.freedesktop.org/drm/intel/issues/6712
+  [i915#6816]: https://gitlab.freedesktop.org/drm/intel/issues/6816
+  [i915#6818]: https://gitlab.freedesktop.org/drm/intel/issues/6818
+  [i915#6992]: https://gitlab.freedesktop.org/drm/intel/issues/6992
+  [i915#7029]: https://gitlab.freedesktop.org/drm/intel/issues/7029
+  [i915#7030]: https://gitlab.freedesktop.org/drm/intel/issues/7030
+  [i915#7031]: https://gitlab.freedesktop.org/drm/intel/issues/7031
+  [i915#7080]: https://gitlab.freedesktop.org/drm/intel/issues/7080
+  [i915#7120]: https://gitlab.freedesktop.org/drm/intel/issues/7120
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_7003 -> IGTPW_7932
+
+  CI-20190529: 20190529
+  CI_DRM_12226: bcc9e3eb1e7ba32651eae68b842df07db01e63be @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_7932: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7932/index.html
+  IGT_7003: 1ea9ec5e7295fbc1cb784be4692971fd342bea53 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7932/index.html
+
+--===============1627513105198170586==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Introduce FreeBSD support</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/109501/">https://patchwork.freedesktop.org/series/109501/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7932/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7932/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_12226 -&gt; IGTPW_7932</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7932/index.html</p>
+<h2>Participating hosts (44 -&gt; 42)</h2>
+<p>Additional (1): bat-atsm-1 <br />
+  Missing    (3): fi-ctg-p8600 fi-tgl-dsi fi-hsw-4200u </p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in IGTPW_7932:</p>
+<h3>IGT changes</h3>
+<h4>Suppressed</h4>
+<p>The following results come from untrusted machines, tests, or statuses.<br />
+  They do not affect the overall result.</p>
+<ul>
+<li>igt@i915_selftest@live@slpc:<ul>
+<li>{bat-adlm-1}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12226/bat-adlm-1/igt@i915_selftest@live@slpc.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7932/bat-adlm-1/igt@i915_selftest@live@slpc.html">DMESG-FAIL</a></li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_7932 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live@execlists:</p>
+<ul>
+<li>fi-bsw-nick:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12226/fi-bsw-nick/igt@i915_selftest@live@execlists.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7932/fi-bsw-nick/igt@i915_selftest@live@execlists.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7120">i915#7120</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@hangcheck:</p>
+<ul>
+<li>fi-snb-2600:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12226/fi-snb-2600/igt@i915_selftest@live@hangcheck.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7932/fi-snb-2600/igt@i915_selftest@live@hangcheck.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6992">i915#6992</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_chamelium@common-hpd-after-suspend:</p>
+<ul>
+<li>
+<p>fi-hsw-g3258:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7932/fi-hsw-g3258/igt@kms_chamelium@common-hpd-after-suspend.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://bugs.freedesktop.org/show_bug.cgi?id=111827">fdo#111827</a>)</p>
+</li>
+<li>
+<p>fi-bdw-5557u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7932/fi-bdw-5557u/igt@kms_chamelium@common-hpd-after-suspend.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://bugs.freedesktop.org/show_bug.cgi?id=111827">fdo#111827</a>)</p>
+</li>
+</ul>
+</li>
+<li>
+<p>igt@runner@aborted:</p>
+<ul>
+<li>fi-bsw-nick:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7932/fi-bsw-nick/igt@runner@aborted.html">FAIL</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4312">i915#4312</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@gem_exec_suspend@basic-s0@smem:</p>
+<ul>
+<li>{bat-rplp-1}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12226/bat-rplp-1/igt@gem_exec_suspend@basic-s0@smem.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2867">i915#2867</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7932/bat-rplp-1/igt@gem_exec_suspend@basic-s0@smem.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@gem_exec_suspend@basic-s3@lmem0:</p>
+<ul>
+<li>{bat-dg2-11}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12226/bat-dg2-11/igt@gem_exec_suspend@basic-s3@lmem0.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6816">i915#6816</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7932/bat-dg2-11/igt@gem_exec_suspend@basic-s3@lmem0.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@gt_timelines:</p>
+<ul>
+<li>fi-hsw-g3258:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12226/fi-hsw-g3258/igt@i915_selftest@live@gt_timelines.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7080">i915#7080</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7932/fi-hsw-g3258/igt@i915_selftest@live@gt_timelines.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_suspend@basic-s3-without-i915:</p>
+<ul>
+<li>fi-bdw-5557u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12226/fi-bdw-5557u/igt@i915_suspend@basic-s3-without-i915.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/146">i915#146</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/6712">i915#6712</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7932/fi-bdw-5557u/igt@i915_suspend@basic-s3-without-i915.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_7003 -&gt; IGTPW_7932</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_12226: bcc9e3eb1e7ba32651eae68b842df07db01e63be @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_7932: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7932/index.html<br />
+  IGT_7003: 1ea9ec5e7295fbc1cb784be4692971fd342bea53 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============1627513105198170586==--
