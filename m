@@ -1,19 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6459B10E731
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7F42110E738
  for <igt-dev@lists.freedesktop.org>; Mon, 10 Oct 2022 21:42:23 +0000 (UTC)
 From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 To: igt-dev@lists.freedesktop.org,
  Lionel G Landwerlin <lionel.g.landwerlin@intel.com>,
  Ashutosh Dixit <ashutosh.dixit@intel.com>
-Date: Mon, 10 Oct 2022 21:42:11 +0000
-Message-Id: <20221010214215.5378-33-umesh.nerlige.ramappa@intel.com>
+Date: Mon, 10 Oct 2022 21:42:12 +0000
+Message-Id: <20221010214215.5378-34-umesh.nerlige.ramappa@intel.com>
 In-Reply-To: <20221010214215.5378-1-umesh.nerlige.ramappa@intel.com>
 References: <20221010214215.5378-1-umesh.nerlige.ramappa@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v6 32/36] tools/i915-perf: add option to
- printout reports data
+Subject: [igt-dev] [PATCH i-g-t v6 33/36] lib/i915: prepare codegen for new
+ ACM/DG2 variables
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,154 +27,154 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
 
-This is helpful to get an idea of how timelines of reports should be
-built.
-
 Signed-off-by: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
 ---
- tools/i915-perf/i915_perf_reader.c | 88 ++++++++++++++++++++----------
- 1 file changed, 58 insertions(+), 30 deletions(-)
+ lib/i915/perf-configs/codegen.py              | 84 +++++++++++++++----
+ .../perf-configs/perf-metricset-codegen.py    | 13 +++
+ 2 files changed, 81 insertions(+), 16 deletions(-)
 
-diff --git a/tools/i915-perf/i915_perf_reader.c b/tools/i915-perf/i915_perf_reader.c
-index 9be1a9fc..bcd40624 100644
---- a/tools/i915-perf/i915_perf_reader.c
-+++ b/tools/i915-perf/i915_perf_reader.c
-@@ -53,7 +53,8 @@ usage(void)
- 	       "     --help,    -h             Print this screen\n"
- 	       "     --counters, -c c1,c2,...  List of counters to display values for.\n"
- 	       "                               Use 'all' to display all counters.\n"
--	       "                               Use 'list' to list available counters.\n");
-+	       "                               Use 'list' to list available counters.\n"
-+	       "     --reports, -r             Print out data per report.\n");
- }
+diff --git a/lib/i915/perf-configs/codegen.py b/lib/i915/perf-configs/codegen.py
+index 93a2df4a..755142cc 100644
+--- a/lib/i915/perf-configs/codegen.py
++++ b/lib/i915/perf-configs/codegen.py
+@@ -1,3 +1,4 @@
++import re
+ import xml.etree.ElementTree as et
  
- static struct intel_perf_logical_counter *
-@@ -165,12 +166,49 @@ get_logical_counters(struct intel_perf_metric_set *metric_set,
- 	return counters;
- }
+ class Codegen:
+@@ -123,6 +124,51 @@ class Set:
+         return self.xml.find(path)
  
-+static void
-+print_report_deltas(const struct intel_perf_data_reader *reader,
-+		    const struct drm_i915_perf_record_header *i915_report0,
-+		    const struct drm_i915_perf_record_header *i915_report1,
-+		    struct intel_perf_logical_counter **counters,
-+		    uint32_t n_counters)
-+{
-+	struct intel_perf_accumulator accu;
+ 
++hw_vars_mapping = {
++    "$EuCoresTotalCount": { 'c': "perf->devinfo.n_eus", 'desc': "The total number of execution units" },
++    "$EuSlicesTotalCount": { 'c': "perf->devinfo.n_eu_slices" },
++    "$EuSubslicesTotalCount": { 'c': "perf->devinfo.n_eu_sub_slices" },
++    "$EuDualSubslicesTotalCount": { 'c': "perf->devinfo.n_eu_sub_slices" },
++    "$EuDualSubslicesSlice0123Count": { 'c': "perf->devinfo.n_eu_sub_slices_half_slices" },
++    "$EuThreadsCount": { 'c': "perf->devinfo.eu_threads_count" },
 +
-+	intel_perf_accumulate_reports(&accu,
-+				      reader->perf, reader->metric_set,
-+				      i915_report0, i915_report1);
++    "$VectorEngineTotalCount": { 'c': "perf->devinfo.n_eus", 'desc': "The total number of execution units" },
++    "$VectorEnginePerXeCoreCount": { 'c': "perf->devinfo.n_eu_sub_slices" },
++    "$VectorEngineThreadsCount": { 'c': "perf->devinfo.eu_threads_count" },
 +
-+	for (uint32_t c = 0; c < n_counters; c++) {
-+		struct intel_perf_logical_counter *counter = counters[c];
++    "$SliceMask": { 'c': "perf->devinfo.slice_mask" },
++    "$SliceTotalCount": { 'c': "perf->devinfo.n_eu_slices" },
 +
-+		switch (counter->storage) {
-+		case INTEL_PERF_LOGICAL_COUNTER_STORAGE_UINT64:
-+		case INTEL_PERF_LOGICAL_COUNTER_STORAGE_UINT32:
-+		case INTEL_PERF_LOGICAL_COUNTER_STORAGE_BOOL32:
-+			fprintf(stdout, "   %s: %" PRIu64 "\n",
-+				counter->symbol_name, counter->read_uint64(reader->perf,
-+									   reader->metric_set,
-+									   accu.deltas));
-+			break;
-+		case INTEL_PERF_LOGICAL_COUNTER_STORAGE_DOUBLE:
-+		case INTEL_PERF_LOGICAL_COUNTER_STORAGE_FLOAT:
-+			fprintf(stdout, "   %s: %f\n",
-+				counter->symbol_name, counter->read_float(reader->perf,
-+									  reader->metric_set,
-+									  accu.deltas));
-+			break;
-+		}
-+	}
++    "$SubsliceMask": { 'c': "perf->devinfo.subslice_mask" },
++    "$DualSubsliceMask": { 'c': "perf->devinfo.subslice_mask" },
++
++    "$GtSliceMask": { 'c': "perf->devinfo.slice_mask" },
++    "$GtSubsliceMask": { 'c': "perf->devinfo.subslice_mask" },
++    "$GtDualSubsliceMask": { 'c': "perf->devinfo.subslice_mask" },
++
++    "$GtXeCoreMask": { 'c': "perf->devinfo.slice_mask" },
++    "$XeCoreMask": { 'c': "perf->devinfo.slice_mask" },
++    "$XeCoreTotalCount": { 'c': 'perf->devinfo.n_eu_sub_slices' },
++
++    "$GpuTimestampFrequency": { 'c': "perf->devinfo.timestamp_frequency" },
++    "$GpuMinFrequency": { 'c': "perf->devinfo.gt_min_freq" },
++    "$GpuMaxFrequency": { 'c': "perf->devinfo.gt_max_freq" },
++    "$SkuRevisionId": { 'c': "perf->devinfo.revision" },
++    "$QueryMode": { 'c': "perf->devinfo.query_mode" },
 +}
 +
- int
- main(int argc, char *argv[])
- {
- 	const struct option long_options[] = {
- 		{"help",             no_argument, 0, 'h'},
- 		{"counters",   required_argument, 0, 'c'},
-+		{"reports",          no_argument, 0, 'r'},
- 		{0, 0, 0, 0}
- 	};
- 	struct intel_perf_data_reader reader;
-@@ -179,8 +217,9 @@ main(int argc, char *argv[])
- 	const char *counter_names = NULL;
- 	int32_t n_counters;
- 	int fd, opt;
-+	bool print_reports = false;
- 
--	while ((opt = getopt_long(argc, argv, "hc:", long_options, NULL)) != -1) {
-+	while ((opt = getopt_long(argc, argv, "hc:r", long_options, NULL)) != -1) {
- 		switch (opt) {
- 		case 'h':
- 			usage();
-@@ -188,6 +227,9 @@ main(int argc, char *argv[])
- 		case 'c':
- 			counter_names = optarg;
- 			break;
-+		case 'r':
-+			print_reports = true;
-+			break;
- 		default:
- 			fprintf(stderr, "Internal error: "
- 				"unexpected getopt value: %d\n", opt);
-@@ -268,11 +310,6 @@ main(int argc, char *argv[])
- 
- 	for (uint32_t i = 0; i < reader.n_timelines; i++) {
- 		const struct intel_perf_timeline_item *item = &reader.timelines[i];
--		const struct drm_i915_perf_record_header *i915_report0 =
--			reader.records[item->record_start];
--		const struct drm_i915_perf_record_header *i915_report1 =
--			reader.records[item->record_end];
--		struct intel_perf_accumulator accu;
- 
- 		fprintf(stdout, "Time: CPU=0x%016" PRIx64 "-0x%016" PRIx64
- 			" GPU=0x%016" PRIx64 "-0x%016" PRIx64"\n",
-@@ -281,29 +318,20 @@ main(int argc, char *argv[])
- 		fprintf(stdout, "hw_id=0x%x %s\n",
- 			item->hw_id, item->hw_id == 0xffffffff ? "(idle)" : "");
- 
--		intel_perf_accumulate_reports(&accu,
--					      reader.perf, reader.metric_set,
--					      i915_report0, i915_report1);
--
--		for (uint32_t c = 0; c < n_counters; c++) {
--			struct intel_perf_logical_counter *counter = counters[c];
--
--			switch (counter->storage) {
--			case INTEL_PERF_LOGICAL_COUNTER_STORAGE_UINT64:
--			case INTEL_PERF_LOGICAL_COUNTER_STORAGE_UINT32:
--			case INTEL_PERF_LOGICAL_COUNTER_STORAGE_BOOL32:
--				fprintf(stdout, "   %s: %" PRIu64 "\n",
--					counter->symbol_name, counter->read_uint64(reader.perf,
--										   reader.metric_set,
--										   accu.deltas));
--				break;
--			case INTEL_PERF_LOGICAL_COUNTER_STORAGE_DOUBLE:
--			case INTEL_PERF_LOGICAL_COUNTER_STORAGE_FLOAT:
--				fprintf(stdout, "   %s: %f\n",
--					counter->symbol_name, counter->read_float(reader.perf,
--										  reader.metric_set,
--										  accu.deltas));
--				break;
-+		print_report_deltas(&reader,
-+				    reader.records[item->record_start],
-+				    reader.records[item->record_end],
-+				    counters, n_counters);
++def is_hw_var(name):
++    m = re.search('\$GtSlice([0-9]+)XeCore([0-9]+)$', name)
++    if m:
++        return True
++    m = re.search('\$GtSlice([0-9]+)$', name)
++    if m:
++        return True
++    m = re.search('\$GtSlice([0-9]+)DualSubslice([0-9]+)$', name)
++    if m:
++        return True
++    return name in hw_vars_mapping
 +
-+		if (print_reports) {
-+			for (uint32_t r = item->record_start; r < item->record_end; r++) {
-+				fprintf(stdout, " report%i = %s\n",
-+					r - item->record_start,
-+					intel_perf_read_report_reason(reader.perf, reader.records[r]));
-+				print_report_deltas(&reader,
-+						    reader.records[r],
-+						    reader.records[r + 1],
-+						    counters, n_counters);
- 			}
- 		}
- 	}
+ class Gen:
+     def __init__(self, filename, c):
+         self.filename = filename
+@@ -163,23 +209,11 @@ class Gen:
+         self.exp_ops["ULTE"] = (2, self.splice_ulte)
+         self.exp_ops["ULT"]  = (2, self.splice_ult)
+         self.exp_ops["&&"]   = (2, self.splice_logical_and)
++        self.exp_ops["<<"]   = (2, self.splice_lshft)
++        self.exp_ops[">>"]   = (2, self.splice_rshft)
++        self.exp_ops["UMUL"] = (2, self.splice_uml)
+ 
+-        self.hw_vars = {
+-            "$EuCoresTotalCount": { 'c': "perf->devinfo.n_eus", 'desc': "The total number of execution units" },
+-            "$EuSlicesTotalCount": { 'c': "perf->devinfo.n_eu_slices" },
+-            "$EuSubslicesTotalCount": { 'c': "perf->devinfo.n_eu_sub_slices" },
+-            "$EuDualSubslicesTotalCount": { 'c': "perf->devinfo.n_eu_sub_slices" },
+-            "$EuDualSubslicesSlice0123Count": { 'c': "perf->devinfo.n_eu_sub_slices_half_slices" },
+-            "$EuThreadsCount": { 'c': "perf->devinfo.eu_threads_count" },
+-            "$SliceMask": { 'c': "perf->devinfo.slice_mask" },
+-            "$DualSubsliceMask": { 'c': "perf->devinfo.subslice_mask" },
+-            "$SubsliceMask": { 'c': "perf->devinfo.subslice_mask" },
+-            "$GpuTimestampFrequency": { 'c': "perf->devinfo.timestamp_frequency" },
+-            "$GpuMinFrequency": { 'c': "perf->devinfo.gt_min_freq" },
+-            "$GpuMaxFrequency": { 'c': "perf->devinfo.gt_max_freq" },
+-            "$SkuRevisionId": { 'c': "perf->devinfo.revision" },
+-            "$QueryMode": { 'c': "perf->devinfo.query_mode" },
+-        }
++        self.hw_vars = hw_vars_mapping
+ 
+     def emit_fadd(self, tmp_id, args):
+         self.c("double tmp{0} = {1} + {2};".format(tmp_id, args[1], args[0]))
+@@ -286,11 +320,29 @@ class Gen:
+     def splice_ugt(self, args):
+         return self.brkt(args[1]) + " > " + self.brkt(args[0])
+ 
++    def splice_lshft(self, args):
++        return '(' + self.brkt(args[1]) + " << " + self.brkt(args[0]) + ')'
++
++    def splice_rshft(self, args):
++        return '(' + self.brkt(args[1]) + " >> " + self.brkt(args[0]) + ')'
++
++    def splice_uml(self, args):
++        return self.brkt(args[1]) + " * " + self.brkt(args[0])
++
+     def resolve_variable(self, name, set):
+         if name in self.hw_vars:
+             return self.hw_vars[name]['c']
+         if name in set.counter_vars:
+             return set.read_funcs[name] + "(perf, metric_set, accumulator)"
++        m = re.search('\$GtSlice([0-9]+)$', name)
++        if m:
++            return 'intel_perf_devinfo_slice_available(&perf->devinfo, {0})'.format(m.group(1))
++        m = re.search('\$GtSlice([0-9]+)DualSubslice([0-9]+)$', name)
++        if m:
++            return 'intel_perf_devinfo_subslice_available(&perf->devinfo, {0}, {1})'.format(m.group(1), m.group(2))
++        m = re.search('\$GtSlice([0-9]+)XeCore([0-9]+)$', name)
++        if m:
++            return 'intel_perf_devinfo_subslice_available(&perf->devinfo, {0}, {1})'.format(m.group(1), m.group(2))
+         return None
+ 
+     def output_rpn_equation_code(self, set, counter, equation):
+diff --git a/lib/i915/perf-configs/perf-metricset-codegen.py b/lib/i915/perf-configs/perf-metricset-codegen.py
+index 00528c31..80b01be5 100644
+--- a/lib/i915/perf-configs/perf-metricset-codegen.py
++++ b/lib/i915/perf-configs/perf-metricset-codegen.py
+@@ -126,6 +126,19 @@ def generate_metric_sets(args, gen):
+                 metric_set->c_offset = metric_set->b_offset + 8;
+                 metric_set->perfcnt_offset = metric_set->c_offset + 8;
+ 
++            """))
++        elif gen.chipset.startswith("acm"):
++            c(textwrap.dedent("""\
++                metric_set->perf_oa_format = I915_OA_FORMAT_A24u40_A14u32_B8_C8;
++
++                metric_set->perf_raw_size = 256;
++                metric_set->gpu_time_offset = 0;
++                metric_set->gpu_clock_offset = 1;
++                metric_set->a_offset = 2;
++                metric_set->b_offset = metric_set->a_offset + 38;
++                metric_set->c_offset = metric_set->b_offset + 8;
++                metric_set->perfcnt_offset = metric_set->c_offset + 8;
++
+             """))
+         else:
+             c(textwrap.dedent("""\
 -- 
 2.25.1
