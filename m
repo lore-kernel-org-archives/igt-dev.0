@@ -1,19 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3517710E6E9
- for <igt-dev@lists.freedesktop.org>; Mon, 10 Oct 2022 18:13:13 +0000 (UTC)
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 77CD010E6C0
+ for <igt-dev@lists.freedesktop.org>; Mon, 10 Oct 2022 18:13:10 +0000 (UTC)
 From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 To: igt-dev@lists.freedesktop.org,
  Lionel G Landwerlin <lionel.g.landwerlin@intel.com>,
  Ashutosh Dixit <ashutosh.dixit@intel.com>
-Date: Mon, 10 Oct 2022 18:12:58 +0000
-Message-Id: <20221010181300.513297-33-umesh.nerlige.ramappa@intel.com>
+Date: Mon, 10 Oct 2022 18:12:51 +0000
+Message-Id: <20221010181300.513297-26-umesh.nerlige.ramappa@intel.com>
 In-Reply-To: <20221010181300.513297-1-umesh.nerlige.ramappa@intel.com>
 References: <20221010181300.513297-1-umesh.nerlige.ramappa@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v5 32/34] tools/i915-perf: add option to
- printout reports data
+Subject: [igt-dev] [PATCH i-g-t v5 25/34] tools/i915-perf: printout CPU
+ clock used
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,154 +27,42 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
 
-This is helpful to get an idea of how timelines of reports should be
-built.
-
 Signed-off-by: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
 ---
- tools/i915-perf/i915_perf_reader.c | 88 ++++++++++++++++++++----------
- 1 file changed, 58 insertions(+), 30 deletions(-)
+ tools/i915-perf/i915_perf_recorder.c | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
-diff --git a/tools/i915-perf/i915_perf_reader.c b/tools/i915-perf/i915_perf_reader.c
-index 9be1a9fc..bcd40624 100644
---- a/tools/i915-perf/i915_perf_reader.c
-+++ b/tools/i915-perf/i915_perf_reader.c
-@@ -53,7 +53,8 @@ usage(void)
- 	       "     --help,    -h             Print this screen\n"
- 	       "     --counters, -c c1,c2,...  List of counters to display values for.\n"
- 	       "                               Use 'all' to display all counters.\n"
--	       "                               Use 'list' to list available counters.\n");
-+	       "                               Use 'list' to list available counters.\n"
-+	       "     --reports, -r             Print out data per report.\n");
- }
+diff --git a/tools/i915-perf/i915_perf_recorder.c b/tools/i915-perf/i915_perf_recorder.c
+index 72011c87..f8f9b737 100644
+--- a/tools/i915-perf/i915_perf_recorder.c
++++ b/tools/i915-perf/i915_perf_recorder.c
+@@ -588,6 +588,17 @@ static uint64_t timespec_diff(struct timespec *begin,
  
- static struct intel_perf_logical_counter *
-@@ -165,12 +166,49 @@ get_logical_counters(struct intel_perf_metric_set *metric_set,
- 	return counters;
- }
+ static clock_t correlation_clock_id = CLOCK_MONOTONIC;
  
-+static void
-+print_report_deltas(const struct intel_perf_data_reader *reader,
-+		    const struct drm_i915_perf_record_header *i915_report0,
-+		    const struct drm_i915_perf_record_header *i915_report1,
-+		    struct intel_perf_logical_counter **counters,
-+		    uint32_t n_counters)
++static const char *
++get_correlation_clock_name(clock_t clock_id)
 +{
-+	struct intel_perf_accumulator accu;
-+
-+	intel_perf_accumulate_reports(&accu,
-+				      reader->perf, reader->metric_set,
-+				      i915_report0, i915_report1);
-+
-+	for (uint32_t c = 0; c < n_counters; c++) {
-+		struct intel_perf_logical_counter *counter = counters[c];
-+
-+		switch (counter->storage) {
-+		case INTEL_PERF_LOGICAL_COUNTER_STORAGE_UINT64:
-+		case INTEL_PERF_LOGICAL_COUNTER_STORAGE_UINT32:
-+		case INTEL_PERF_LOGICAL_COUNTER_STORAGE_BOOL32:
-+			fprintf(stdout, "   %s: %" PRIu64 "\n",
-+				counter->symbol_name, counter->read_uint64(reader->perf,
-+									   reader->metric_set,
-+									   accu.deltas));
-+			break;
-+		case INTEL_PERF_LOGICAL_COUNTER_STORAGE_DOUBLE:
-+		case INTEL_PERF_LOGICAL_COUNTER_STORAGE_FLOAT:
-+			fprintf(stdout, "   %s: %f\n",
-+				counter->symbol_name, counter->read_float(reader->perf,
-+									  reader->metric_set,
-+									  accu.deltas));
-+			break;
-+		}
-+	}
++  switch (clock_id) {
++  case CLOCK_BOOTTIME:      return "bootime";
++  case CLOCK_MONOTONIC:     return "monotonic";
++  case CLOCK_MONOTONIC_RAW: return "monotonic_raw";
++  default:                  return "*unknown*";
++  }
 +}
 +
- int
- main(int argc, char *argv[])
+ static bool
+ get_correlation_timestamps(struct intel_perf_record_timestamp_correlation *corr, int drm_fd)
  {
- 	const struct option long_options[] = {
- 		{"help",             no_argument, 0, 'h'},
- 		{"counters",   required_argument, 0, 'c'},
-+		{"reports",          no_argument, 0, 'r'},
- 		{0, 0, 0, 0}
- 	};
- 	struct intel_perf_data_reader reader;
-@@ -179,8 +217,9 @@ main(int argc, char *argv[])
- 	const char *counter_names = NULL;
- 	int32_t n_counters;
- 	int fd, opt;
-+	bool print_reports = false;
- 
--	while ((opt = getopt_long(argc, argv, "hc:", long_options, NULL)) != -1) {
-+	while ((opt = getopt_long(argc, argv, "hc:r", long_options, NULL)) != -1) {
- 		switch (opt) {
- 		case 'h':
- 			usage();
-@@ -188,6 +227,9 @@ main(int argc, char *argv[])
- 		case 'c':
- 			counter_names = optarg;
- 			break;
-+		case 'r':
-+			print_reports = true;
-+			break;
- 		default:
- 			fprintf(stderr, "Internal error: "
- 				"unexpected getopt value: %d\n", opt);
-@@ -268,11 +310,6 @@ main(int argc, char *argv[])
- 
- 	for (uint32_t i = 0; i < reader.n_timelines; i++) {
- 		const struct intel_perf_timeline_item *item = &reader.timelines[i];
--		const struct drm_i915_perf_record_header *i915_report0 =
--			reader.records[item->record_start];
--		const struct drm_i915_perf_record_header *i915_report1 =
--			reader.records[item->record_end];
--		struct intel_perf_accumulator accu;
- 
- 		fprintf(stdout, "Time: CPU=0x%016" PRIx64 "-0x%016" PRIx64
- 			" GPU=0x%016" PRIx64 "-0x%016" PRIx64"\n",
-@@ -281,29 +318,20 @@ main(int argc, char *argv[])
- 		fprintf(stdout, "hw_id=0x%x %s\n",
- 			item->hw_id, item->hw_id == 0xffffffff ? "(idle)" : "");
- 
--		intel_perf_accumulate_reports(&accu,
--					      reader.perf, reader.metric_set,
--					      i915_report0, i915_report1);
--
--		for (uint32_t c = 0; c < n_counters; c++) {
--			struct intel_perf_logical_counter *counter = counters[c];
--
--			switch (counter->storage) {
--			case INTEL_PERF_LOGICAL_COUNTER_STORAGE_UINT64:
--			case INTEL_PERF_LOGICAL_COUNTER_STORAGE_UINT32:
--			case INTEL_PERF_LOGICAL_COUNTER_STORAGE_BOOL32:
--				fprintf(stdout, "   %s: %" PRIu64 "\n",
--					counter->symbol_name, counter->read_uint64(reader.perf,
--										   reader.metric_set,
--										   accu.deltas));
--				break;
--			case INTEL_PERF_LOGICAL_COUNTER_STORAGE_DOUBLE:
--			case INTEL_PERF_LOGICAL_COUNTER_STORAGE_FLOAT:
--				fprintf(stdout, "   %s: %f\n",
--					counter->symbol_name, counter->read_float(reader.perf,
--										  reader.metric_set,
--										  accu.deltas));
--				break;
-+		print_report_deltas(&reader,
-+				    reader.records[item->record_start],
-+				    reader.records[item->record_end],
-+				    counters, n_counters);
-+
-+		if (print_reports) {
-+			for (uint32_t r = item->record_start; r < item->record_end; r++) {
-+				fprintf(stdout, " report%i = %s\n",
-+					r - item->record_start,
-+					intel_perf_read_report_reason(reader.perf, reader.records[r]));
-+				print_report_deltas(&reader,
-+						    reader.records[r],
-+						    reader.records[r + 1],
-+						    counters, n_counters);
- 			}
- 		}
+@@ -1069,6 +1080,9 @@ main(int argc, char *argv[])
+ 		goto fail;
  	}
+ 
++	fprintf(stdout, "Using correlation clock: %s\n",
++		get_correlation_clock_name(correlation_clock_id));
++
+ 	ctx.oa_exponent = oa_exponent_for_period(ctx.oa_timestamp_frequency, perf_period);
+ 	fprintf(stdout, "Opening perf stream with metric_id=%"PRIu64" oa_exponent=%u oa_format=%u\n",
+ 		ctx.metric_set->perf_oa_metrics_set, ctx.oa_exponent,
 -- 
 2.25.1
