@@ -1,17 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 97ACC10E363
- for <igt-dev@lists.freedesktop.org>; Tue, 11 Oct 2022 07:35:45 +0000 (UTC)
-Date: Tue, 11 Oct 2022 10:35:25 +0300
-From: Petri Latvala <petri.latvala@intel.com>
-To: Jake Freeland <jake@technologyfriends.net>
-Message-ID: <Y0UcvT9AfBX5Axdh@platvala-desk.ger.corp.intel.com>
-References: <20221007232757.3210308-1-jfree@freebsd.org>
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4B2A110E363
+ for <igt-dev@lists.freedesktop.org>; Tue, 11 Oct 2022 07:45:12 +0000 (UTC)
+Date: Tue, 11 Oct 2022 09:45:05 +0200
+From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
+To: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Message-ID: <20221011094505.516b20cd@maurocar-mobl2>
+In-Reply-To: <20221007184902.54695-1-kamil.konieczny@linux.intel.com>
+References: <20221007184902.54695-1-kamil.konieczny@linux.intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20221007232757.3210308-1-jfree@freebsd.org>
-Subject: Re: [igt-dev] [PATCH i-g-t v1 0/6] Introduce FreeBSD support
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [igt-dev] [RFC i-g-t v2 0/3] Add multi-process subtests for
+ multi-GPUs
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,56 +20,85 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org, Jake Freeland <jfree@freebsd.org>
+Cc: igt-dev@lists.freedesktop.org, Anna Karas <anna.karas@intel.com>,
+ Petri Latvala <petri.latvala@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Fri, Oct 07, 2022 at 06:27:51PM -0500, Jake Freeland wrote:
-> FreeBSD's LinuxKPI compatibility layer allows for Linux drm
-> drivers to function on FreeBSD systems. Unfortunately,
-> LinuxKPI comes with its own set of issues that need testing.
-> This patch includes an igt_freebsd header and many small
-> modifications to get igt-gpu-tools compiling on FreeBSD.
-> 
-> Jake Freeland (6):
->   lib/igt_freebsd.h: Create FreeBSD compatibility header
->   Ifdef out linux-specific headers
->   Include <sys/syscall.h> for FreeBSD systems
->   lib/igt_os.c: Add FreeBSD system info collection
->   tests/i915/i915_pm_rpm.c: Add FreeBSD I/O iic header
->   Include igt_freebsd.h in gem benchmarks
-> 
->  benchmarks/gem_exec_tracer.c   |   4 ++
->  benchmarks/gem_syslatency.c    |   6 ++
->  lib/i915/intel_memory_region.c |   2 +
->  lib/i915/perf.c                |   2 +
->  lib/igt_aux.h                  |   2 +-
->  lib/igt_core.c                 |   2 +-
->  lib/igt_core.h                 |   6 ++
->  lib/igt_debugfs.c              |   2 +
->  lib/igt_device.c               |   2 +
->  lib/igt_device_scan.c          |   2 +
->  lib/igt_freebsd.h              | 118 +++++++++++++++++++++++++++++++++
->  lib/igt_os.c                   |  18 +++++
->  lib/igt_perf.c                 |   2 +
->  lib/igt_perf.h                 |   2 +
->  lib/igt_pm.c                   |   2 +
->  lib/igt_sysfs.c                |   2 +
->  runner/executor.c              |   2 +
->  runner/job_list.c              |   2 +
->  tests/i915/i915_module_load.c  |   2 +
->  tests/i915/i915_pm_rpm.c       |   5 ++
->  tests/tools_test.c             |   2 +
->  21 files changed, 185 insertions(+), 2 deletions(-)
->  create mode 100644 lib/igt_freebsd.h
-> 
-> -- 
-> 2.37.3
-> 
+On Fri,  7 Oct 2022 20:48:58 +0200
+Kamil Konieczny <kamil.konieczny@linux.intel.com> wrote:
 
+> Add one simple macro igt_fork_dyn() and two new helpers in
+> igt_core to enable running dynamic tests on two or more GPUs in
+> parallel.
+> To test this idea I modified two subtests gem_basic@create-close
+> and gem_exec_gttfill@basic.
+> It is open-coded for ease of debug but can be converted
+> into macro if this idea will get acceptance.
+>=20
+> Todo: add some log extension to igt_core from Mauro:
+>   https://patchwork.freedesktop.org/series/109171/
+>   "add sysfs node at subtest results when available"
+>=20
+> See some logs below.
+>=20
+> Cc: Anna Karas <anna.karas@intel.com>
+> Cc: Zbigniew Kempczy=C5=84ski <zbigniew.kempczynski@intel.com>
+> Cc: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
+> Cc: Petri Latvala <petri.latvala@intel.com>
+>=20
+> This is log from gem_exec_gttfill run on one GPU machine:
+>=20
+> IGT-Version: 1.26-NO-GIT (x86_64) (Linux: 6.0.0-rc5-CI_DRM_12145-g2dc9ea0=
+3abff x86_64)
+> Starting subtest: basic
+> Starting dynamic subtest: basic-gpu-0
+> Starting dynamic subtest: basic-gpu-1
+> Test requirement not met in function start_helpers, file ../tests/i915/ge=
+m_exec_gttfill.c:229:
+> Test requirement: i915 > 0
+> Last errno: 2, No such file or directory
+> Dynamic subtest basic-gpu-1: SKIP (0.025s)
+> Setup 1025 batches in 1051.24ms
+> engine[2]: 2 cycles
+> engine[1]: 1 cycles
+> engine[0]: 3 cycles
+> engine[3]: 2 cycles
+> engine[4]: 2 cycles
+> Total: 10 cycles
+> Dynamic subtest basic-gpu-0: SUCCESS (2.960s)
+> Subtest basic: SUCCESS (2.967s)
+>=20
+> Result from machine with two discrete GPUs:
+>=20
+> Starting subtest: basic
+> Starting dynamic subtest: basic-gpu-0
+> Starting dynamic subtest: basic-gpu-1
+> Setup 1025 batches in 3518.56ms
+> Setup 1025 batches in 3494.03ms
+> ...
+> Dynamic subtest basic-gpu-0: SUCCESS (35.349s)
+> Dynamic subtest basic-gpu-1: SUCCESS (35.374s)
+> Subtest basic: SUCCESS (35.401s)
 
-I'm unable to assess whether the modifications are correct on FreeBSD,
-but this looks correct and doesn't affect anything on Linux. Series is
+Yeah, it sounded a good idea to use dynamic subtests here.
 
-Acked-by: Petri Latvala <petri.latvala@intel.com>
+The all-success case is the less complex one. I'd love to see
+if skip and fail will be properly handled.
+
+IMO, you could add an unit test, similar to lib/tests/igt_fork.c, that=20
+would pretend that there would be (at least) 3 GPUs, in order to test
+if the error would work whith a mix of different subtest results
+(fail, skip, success).
+
+Also, instead of using:
+
+	igt_dynamic_f("%s-gpu-%d", myname, child)
+
+it probably makes sense to name them after the PCI ID and
+PCI BUS - e. g. something captured from the sysfs node, as I proposed
+on my RFC patch https://patchwork.freedesktop.org/series/109171/.
+
+Regards,
+Mauro
