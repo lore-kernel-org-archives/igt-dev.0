@@ -1,19 +1,26 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BAFD810E34F
- for <igt-dev@lists.freedesktop.org>; Wed, 12 Oct 2022 09:13:58 +0000 (UTC)
-Date: Wed, 12 Oct 2022 12:13:37 +0300
-From: Petri Latvala <petri.latvala@intel.com>
-To: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
-Message-ID: <Y0aFQeg7PexyQpyS@platvala-desk.ger.corp.intel.com>
-References: <20221010065929.32110-1-niranjana.vishwanathapura@intel.com>
- <20221010065929.32110-6-niranjana.vishwanathapura@intel.com>
+Received: from mail-ed1-x534.google.com (mail-ed1-x534.google.com
+ [IPv6:2a00:1450:4864:20::534])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 609ED10E657
+ for <igt-dev@lists.freedesktop.org>; Tue, 11 Oct 2022 17:35:39 +0000 (UTC)
+Received: by mail-ed1-x534.google.com with SMTP id v12so2876728edc.6
+ for <igt-dev@lists.freedesktop.org>; Tue, 11 Oct 2022 10:35:39 -0700 (PDT)
+Message-ID: <c1b145f2-826e-9bed-7482-05f862a2a40c@gmail.com>
+Date: Tue, 11 Oct 2022 20:35:29 +0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20221010065929.32110-6-niranjana.vishwanathapura@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t v3 05/11] lib/vm_bind: Add
- prime_handle_to_fd_no_assert()
+To: aemad <aemad@igalia.com>
+References: <20221009151844.3456-1-aemad@igalia.com>
+ <aa261d04-81b3-48ac-603b-c75fcb3c8909@gmail.com>
+ <3b7df5498d9c2d5e5d1541de3da3f4f1@igalia.com>
+ <464abb16-5fd7-8e32-f743-64bb582dfdaa@gmail.com>
+ <696545bda7927a48462d6b982069d25f@igalia.com>
+Content-Language: en-US
+From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+In-Reply-To: <696545bda7927a48462d6b982069d25f@igalia.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_cursor_crc: prevent the
+ entire test from being aborted when a subtest fails
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,172 +28,303 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: tvrtko.ursulin@intel.com, igt-dev@lists.freedesktop.org,
- thomas.hellstrom@intel.com, matthew.auld@intel.com, daniel.vetter@intel.com
+Reply-To: juhapekka.heikkila@gmail.com
+Cc: igt-dev@lists.freedesktop.org, petri.latvala@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Sun, Oct 09, 2022 at 11:59:23PM -0700, Niranjana Vishwanathapura wrote:
-> Make prime_handle_to_fd_no_assert() as a library interface
-> as VM_BIND functionality will also be using it.
+On 11.10.2022 20.08, aemad wrote:
+> On 2022-10-10 20:52, Juha-Pekka Heikkila wrote:
+>> On 10.10.2022 17.26, aemad wrote:
+>>> Hi Juha,
+>>>
+>>> On 2022-10-10 13:16, Juha-Pekka Heikkila wrote:
+>>>> Hi Alaa,
+>>>>
+>>>> what's that invalid argument you're getting on addfb? I never tried
+>>>
+>>> I am not sure what is the invalid argument, but the failure of this test
+>>> with a cursor size 32x10 is that VKMS does not support this size yet so
+>>> the test unable to create a cursor FB.
+>>
+>> At that moment when addfb gives failure it doesn't yet relate to
+>> cursor testing, it is like any other framebuffer. As other kms tests
+>> work for you there maybe limitation on vkms not supporting so small
+>> framebuffer or it could be on libigt there's something missing for
+>> handling vkms framebuffers.
 > 
-> Signed-off-by: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
-> ---
->  lib/ioctl_wrappers.c | 39 +++++++++++++++++++++++++++++++++------
->  lib/ioctl_wrappers.h |  1 +
->  tests/prime_mmap.c   | 26 ++++----------------------
->  3 files changed, 38 insertions(+), 28 deletions(-)
+> yes, understood.
+>>
+>> I'm looking at kernel sources and I suspect you'd see in dmesg message
+>> saying  "GEM object size (%zu) smaller than minimum size (%u) for
+>> plane %d\n" when that addfb failed? If it is that message then
+>> probably into libigt for vkms there would be needed some minimum size
+>> alignment with framebuffers.
 > 
-> diff --git a/lib/ioctl_wrappers.c b/lib/ioctl_wrappers.c
-> index ac37b6bb43..bf7f5f430c 100644
-> --- a/lib/ioctl_wrappers.c
-> +++ b/lib/ioctl_wrappers.c
-> @@ -1153,28 +1153,55 @@ void gem_require_mocs_registers(int fd)
->  /* prime */
->  
->  /**
-> - * prime_handle_to_fd:
-> + * prime_handle_to_fd_no_assert:
->   * @fd: open i915 drm file descriptor
->   * @handle: file-private gem buffer object handle
-> + * @flags: DRM_IOCTL_PRIME_HANDLE_TO_FD ioctl flags
-> + * @fd_out: place holder for output file handle
->   *
->   * This wraps the PRIME_HANDLE_TO_FD ioctl, which is used to export a gem buffer
->   * object into a global (i.e. potentially cross-device) dma-buf file-descriptor
->   * handle.
->   *
-> - * Returns: The created dma-buf fd handle.
-> + * Returns: 0 on sucess, error otherwise. Upon success, it returns
-> + *          the created dma-buf fd handle in fd_out.
->   */
-> -int prime_handle_to_fd(int fd, uint32_t handle)
-> +int prime_handle_to_fd_no_assert(int fd, uint32_t handle, int flags, int *fd_out)
->  {
->  	struct drm_prime_handle args;
-> +	int ret;
->  
->  	memset(&args, 0, sizeof(args));
->  	args.handle = handle;
-> -	args.flags = DRM_CLOEXEC;
-> +	args.flags = flags;
->  	args.fd = -1;
->  
-> -	do_ioctl(fd, DRM_IOCTL_PRIME_HANDLE_TO_FD, &args);
-> +	ret = drmIoctl(fd, DRM_IOCTL_PRIME_HANDLE_TO_FD, &args);
-> +	if (ret)
-> +		ret = -errno;
-> +	*fd_out = args.fd;
->  
-> -	return args.fd;
-> +	return ret;
-> +}
-> +
-> +/**
-> + * prime_handle_to_fd:
-> + * @fd: open i915 drm file descriptor
-> + * @handle: file-private gem buffer object handle
-> + *
-> + * This wraps the PRIME_HANDLE_TO_FD ioctl, which is used to export a gem buffer
-> + * object into a global (i.e. potentially cross-device) dma-buf file-descriptor
-> + * handle. It asserts that ioctl succeeds.
-> + *
-> + * Returns: The created dma-buf fd handle.
-> + */
-> +int prime_handle_to_fd(int fd, uint32_t handle)
-> +{
-> +	int dmabuf;
-> +
-> +	igt_assert_eq(prime_handle_to_fd_no_assert(fd, handle, DRM_CLOEXEC, &dmabuf), 0);
-> +
-> +	return dmabuf;
->  }
+> I didn't check dmesg message, but I will check it. I got your point,
+> Thank you.
 
+After sending that mail I did notice minimum framebuffer height for vkms 
+is 20 pixels, that's where that addfb failure likely is coming from. It 
+mean is this 32x10 subtest would never work on vkms and this test will 
+need to be fixed to skip correctly again.
 
-The convention for naming these kinds of functions is
+/Juha-Pekka
 
-__do_thing() - returns error code
-do_thing()   - asserts success
-
-
--- 
-Petri Latvala
-
-
->  
->  /**
-> diff --git a/lib/ioctl_wrappers.h b/lib/ioctl_wrappers.h
-> index 223cd9160c..9f50a24153 100644
-> --- a/lib/ioctl_wrappers.h
-> +++ b/lib/ioctl_wrappers.h
-> @@ -143,6 +143,7 @@ struct local_dma_buf_sync {
->  #define LOCAL_DMA_BUF_BASE 'b'
->  #define LOCAL_DMA_BUF_IOCTL_SYNC _IOW(LOCAL_DMA_BUF_BASE, 0, struct local_dma_buf_sync)
->  
-> +int prime_handle_to_fd_no_assert(int fd, uint32_t handle, int flags, int *fd_out);
->  int prime_handle_to_fd(int fd, uint32_t handle);
->  #ifndef DRM_RDWR
->  #define DRM_RDWR O_RDWR
-> diff --git a/tests/prime_mmap.c b/tests/prime_mmap.c
-> index bc19f68c98..815921e762 100644
-> --- a/tests/prime_mmap.c
-> +++ b/tests/prime_mmap.c
-> @@ -298,24 +298,6 @@ test_dup(uint32_t region, uint64_t size)
->  	close (dma_buf_fd);
->  }
->  
-> -/* Used for error case testing to avoid wrapper */
-> -static int prime_handle_to_fd_no_assert(uint32_t handle, int flags, int *fd_out)
-> -{
-> -	struct drm_prime_handle args;
-> -	int ret;
-> -
-> -	args.handle = handle;
-> -	args.flags = flags;
-> -	args.fd = -1;
-> -
-> -	ret = drmIoctl(fd, DRM_IOCTL_PRIME_HANDLE_TO_FD, &args);
-> -	if (ret)
-> -		ret = errno;
-> -	*fd_out = args.fd;
-> -
-> -	return ret;
-> -}
-> -
->  static bool has_userptr(void)
->  {
->  	uint32_t handle = 0;
-> @@ -346,9 +328,9 @@ test_userptr(uint32_t region, uint64_t size)
->  	gem_userptr(fd, (uint32_t *)ptr, size, 0, 0, &handle);
->  
->  	/* export userptr */
-> -	ret = prime_handle_to_fd_no_assert(handle, DRM_CLOEXEC, &dma_buf_fd);
-> +	ret = prime_handle_to_fd_no_assert(fd, handle, DRM_CLOEXEC, &dma_buf_fd);
->  	if (ret) {
-> -		igt_assert(ret == EINVAL || ret == ENODEV);
-> +		igt_assert(ret == -EINVAL || ret == -ENODEV);
->  		goto free_userptr;
->  	} else {
->  		igt_assert_eq(ret, 0);
-> @@ -376,7 +358,7 @@ test_errors(uint32_t region, uint64_t size)
->  	/* Test for invalid flags */
->  	igt_assert(__gem_create_in_memory_regions(fd, &handle, &size, region) == 0);
->  	for (i = 0; i < ARRAY_SIZE(invalid_flags); i++) {
-> -		prime_handle_to_fd_no_assert(handle, invalid_flags[i], &dma_buf_fd);
-> +		prime_handle_to_fd_no_assert(fd, handle, invalid_flags[i], &dma_buf_fd);
->  		igt_assert_eq(errno, EINVAL);
->  		errno = 0;
->  	}
-> @@ -386,7 +368,7 @@ test_errors(uint32_t region, uint64_t size)
->  	igt_assert(__gem_create_in_memory_regions(fd, &handle, &size, region) == 0);
->  	fill_bo(handle, size);
->  	gem_close(fd, handle);
-> -	prime_handle_to_fd_no_assert(handle, DRM_CLOEXEC, &dma_buf_fd);
-> +	prime_handle_to_fd_no_assert(fd, handle, DRM_CLOEXEC, &dma_buf_fd);
->  	igt_assert(dma_buf_fd == -1 && errno == ENOENT);
->  	errno = 0;
->  
-> -- 
-> 2.21.0.rc0.32.g243a4c7e27
-> 
+>>
+>>>
+>>>
+>>>> this with vkms, normally just on i915. With i915 I cannot reproduce
+>>>> that abort you're seeing. Other kms tests run on your setup?
+>>>
+>>> I think the abortion related to VKMS driver only, but I didn't try to
+>>> run it on i915.
+>>> yes, I ran other kms test but with VKMS driver.
+>>>
+>>>>
+>>>> Anyway, that revert you're suggesting would remove support for msm
+>>>> driver on this test. Let's first summon those who made these changes
+>>>> to comment. (cc'ing Modem and Swati)
+>>>
+>>> I see, so I can check that after Modem and Swati reply.
+>>>
+>>>>
+>>>> /Juha-Pekka
+>>>
+>>> BR,
+>>> Alaa
+>>>>
+>>>> On 9.10.2022 18.18, Alaa Emad wrote:
+>>>>> Any test failure prevents the other tests to be run, aborting the entire test loop. This behavior was introduced by commit
+>>>>> 9494d53d ("tests/kms_cursor_crc: Convert tests to dynamic").
+>>>>> For instance, when running the cursor-offscreen-32x10 subtest using VKMS,
+>>>>> the execution is aborted instead of SKIP/FAIL, as in the following output:
+>>>>>
+>>>>> $ ./tests/kms_cursor_crc --run-subtest cursor-offscreen-32x10
+>>>>> (kms_cursor_crc:7447) igt_fb-CRITICAL: Test assertion failure function igt_create_fb_with_bo_size, file ../lib/igt_fb.c:2078:
+>>>>> (kms_cursor_crc:7447) igt_fb-CRITICAL: Failed assertion: (__kms_addfb(fb->fd, fb->gem_handle, fb->width, fb->height, fb->drm_format, fb->modifier, fb->strides, fb->offsets, fb->num_planes, flags, &fb->fb_id)) == 0
+>>>>> (kms_cursor_crc:7447) igt_fb-CRITICAL: Last errno: 22, Invalid argument
+>>>>> Stack trace:
+>>>>> kms_cursor_crc: ../lib/igt_core.c:1667: igt_fail: Assertion `_igt_dynamic_tests_executed < 0 || dynamic_failed_one' failed.
+>>>>> Received signal SIGABRT.
+>>>>>
+>>>>> The test was aborted after convertig tests to dynamic with cursor size 32*10 that because of the assertion in the `igt_create_fb_with_bo_size` when creating cursor in `create_cursor_fb`.
+>>>>>
+>>>>> This happened because Within a igt_subtest_with_dynamic block, explicit failure (e.g. igt_assert) is not allowed,
+>>>>> only dynamic subsubtests themselves will produce test results.
+>>>>>
+>>>>> The previous approach was running each test for all cursor sizes then move to the next test  so fix this issue
+>>>>> by running all tests for one cursor size one by one, and check if cursor size is
+>>>>> supported or not before running the test.
+>>>>>
+>>>>> Fixes: 9494d53d ("tests/kms_cursor_crc: Convert tests to dynamic")
+>>>>>
+>>>>> Signed-off-by: Alaa Emad <aemad@igalia.com>
+>>>>> ---
+>>>>>     tests/kms_cursor_crc.c | 136 +++++++++++++++++++++--------------------
+>>>>>     1 file changed, 69 insertions(+), 67 deletions(-)
+>>>>>
+>>>>> diff --git a/tests/kms_cursor_crc.c b/tests/kms_cursor_crc.c
+>>>>> index 8d3426dd..9b620389 100644
+>>>>> --- a/tests/kms_cursor_crc.c
+>>>>> +++ b/tests/kms_cursor_crc.c
+>>>>> @@ -72,7 +72,6 @@ typedef struct {
+>>>>>     	cairo_surface_t *surface;
+>>>>>     	uint32_t devid;
+>>>>>     	double alpha;
+>>>>> -	int vblank_wait_count; /* because of msm */
+>>>>>     } data_t;
+>>>>>       #define TEST_DPMS (1<<0)
+>>>>> @@ -125,12 +124,6 @@ static void cursor_disable(data_t *data)
+>>>>>     {
+>>>>>     	igt_plane_set_fb(data->cursor, NULL);
+>>>>>     	igt_plane_set_position(data->cursor, 0, 0);
+>>>>> -	igt_display_commit(&data->display);
+>>>>> -
+>>>>> -	/* do this wait here so it will not need to be added everywhere */
+>>>>> -	igt_wait_for_vblank_count(data->drm_fd,
+>>>>> -				  data->display.pipes[data->pipe].crtc_offset,
+>>>>> -				  data->vblank_wait_count);
+>>>>>     }
+>>>>>       static bool chv_cursor_broken(data_t *data, int x)
+>>>>> @@ -209,9 +202,8 @@ static void do_single_test(data_t *data, int x, int y, bool hw_test,
+>>>>>     		igt_display_commit(display);
+>>>>>       		/* Extra vblank wait is because nonblocking cursor ioctl */
+>>>>> -		igt_wait_for_vblank_count(data->drm_fd,
+>>>>> -					  display->pipes[data->pipe].crtc_offset,
+>>>>> -					  data->vblank_wait_count);
+>>>>> +		igt_wait_for_vblank(data->drm_fd,
+>>>>> +				display->pipes[data->pipe].crtc_offset);
+>>>>>       		igt_pipe_crc_get_current(data->drm_fd, pipe_crc, hwcrc);
+>>>>>     @@ -249,7 +241,11 @@ static void do_single_test(data_t *data, int x, int y, bool hw_test,
+>>>>>       		restore_image(data, swbufidx, &((cursorarea){x, y, data->curw, data->curh}));
+>>>>>     		igt_plane_set_fb(data->primary, &data->primary_fb[swbufidx]);
+>>>>> +
+>>>>>     		igt_display_commit(display);
+>>>>> +		igt_wait_for_vblank(data->drm_fd,
+>>>>> +				display->pipes[data->pipe].crtc_offset);
+>>>>> +
+>>>>>     		igt_pipe_crc_get_current(data->drm_fd, pipe_crc, &crc);
+>>>>>     		igt_assert_crc_equal(&crc, hwcrc);
+>>>>>     	}
+>>>>> @@ -267,7 +263,9 @@ static void do_fail_test(data_t *data, int x, int y, int expect)
+>>>>>     	igt_plane_set_position(data->cursor, x, y);
+>>>>>     	ret = igt_display_try_commit2(display, COMMIT_LEGACY);
+>>>>>     +	igt_plane_set_position(data->cursor, 0, 0);
+>>>>>     	cursor_disable(data);
+>>>>> +	igt_display_commit(display);
+>>>>>       	igt_assert_eq(ret, expect);
+>>>>>     }
+>>>>> @@ -689,10 +687,28 @@ static void test_rapid_movement(data_t *data)
+>>>>>     	igt_assert_lt(usec, 0.9 * 400 * 1000000 / data->refresh);
+>>>>>     }
+>>>>>     -static void run_size_tests(data_t *data, void (*testfunc)(data_t *),
+>>>>> -			   int w, int h)
+>>>>> +static void run_size_tests(data_t *data, int w, int h)
+>>>>>     {
+>>>>>     	enum pipe pipe;
+>>>>> +	int i;
+>>>>> +
+>>>>> +	struct
+>>>>> +	{
+>>>>> +		const char *name;
+>>>>> +		void (*testfunc)(data_t *);
+>>>>> +		const char *desc;
+>>>>> +	} size_tests[] = {
+>>>>> +		{"cursor-onscreen", test_crc_onscreen,
+>>>>> +		 "Check if a given-size cursor is well-positioned inside the screen."},
+>>>>> +		{"cursor-offscreen", test_crc_offscreen,
+>>>>> +		 "Check if a given-size cursor is well-positioned outside the screen."},
+>>>>> +		{"cursor-sliding", test_crc_sliding,
+>>>>> +		 "Check the smooth and pixel-by-pixel given-size cursor movements on horizontal, vertical and diagonal."},
+>>>>> +		{"cursor-random", test_crc_random,
+>>>>> +		 "Check random placement of a cursor with given size."},
+>>>>> +		{"cursor-rapid-movement", test_rapid_movement,
+>>>>> +		 "Check the rapid update of given-size cursor movements."},
+>>>>> +	};
+>>>>>       	if (w == 0 && h == 0) {
+>>>>>     		w = data->cursor_max_w;
+>>>>> @@ -709,45 +725,38 @@ static void run_size_tests(data_t *data, void (*testfunc)(data_t *),
+>>>>>     		}
+>>>>>     	}
+>>>>>     -	create_cursor_fb(data, w, h);
+>>>>> -	if (require_cursor_size(data, w, h)) {
+>>>>> -		igt_info("Cursor size %dx%d not supported by driver\n", w, h);
+>>>>> -
+>>>>> -		igt_remove_fb(data->drm_fd, &data->fb);
+>>>>> -		return;
+>>>>> -	}
+>>>>> +	igt_fixture
+>>>>> +		create_cursor_fb(data, w, h);
+>>>>>     -	for_each_pipe(&data->display, pipe) {
+>>>>> -		data->pipe = pipe;
+>>>>> -		igt_dynamic_f("pipe-%s-%s",
+>>>>> -			      kmstest_pipe_name(pipe), igt_output_name(data->output))
+>>>>> -			run_test(data, testfunc, w, h);
+>>>>> +	for (i = 0; i < ARRAY_SIZE(size_tests); i++)
+>>>>> +	{
+>>>>> +		igt_describe(size_tests[i].desc);
+>>>>> +		igt_subtest_with_dynamic_f("%s-%dx%d", size_tests[i].name, w, h)
+>>>>> +		{
+>>>>> +			for_each_pipe(&data->display, pipe)
+>>>>> +			{
+>>>>> +				data->pipe = pipe;
+>>>>> +				if (require_cursor_size(data, w, h))
+>>>>> +				{
+>>>>> +					igt_info("Cursor size %dx%d not supported by driver\n", w, h);
+>>>>> +					continue;
+>>>>> +				}
+>>>>> +
+>>>>> +				igt_dynamic_f("pipe-%s-%s",
+>>>>> +							  kmstest_pipe_name(pipe), igt_output_name(data->output))
+>>>>> +					run_test(data, size_tests[i].testfunc, w, h);
+>>>>> +			}
+>>>>> +		}
+>>>>>     	}
+>>>>>     -	igt_remove_fb(data->drm_fd, &data->fb);
+>>>>> +	igt_fixture
+>>>>> +		igt_remove_fb(data->drm_fd, &data->fb);
+>>>>>     }
+>>>>>       static void run_tests_on_pipe(data_t *data)
+>>>>>     {
+>>>>>     	enum pipe pipe;
+>>>>>     	int cursor_size;
+>>>>> -	int i;
+>>>>> -	struct {
+>>>>> -		const char *name;
+>>>>> -		void (*testfunc)(data_t *);
+>>>>> -		const char *desc;
+>>>>> -	} size_tests[] = {
+>>>>> -		{ "cursor-onscreen", test_crc_onscreen,
+>>>>> -			"Check if a given-size cursor is well-positioned inside the screen." },
+>>>>> -		{ "cursor-offscreen", test_crc_offscreen,
+>>>>> -			"Check if a given-size cursor is well-positioned outside the screen." },
+>>>>> -		{ "cursor-sliding", test_crc_sliding,
+>>>>> -			"Check the smooth and pixel-by-pixel given-size cursor movements on horizontal, vertical and diagonal." },
+>>>>> -		{ "cursor-random", test_crc_random,
+>>>>> -			"Check random placement of a cursor with given size." },
+>>>>> -		{ "cursor-rapid-movement", test_rapid_movement,
+>>>>> -			"Check the rapid update of given-size cursor movements." },
+>>>>> -	};
+>>>>>       	igt_fixture {
+>>>>>     		data->output = igt_get_single_output_for_pipe(&data->display, pipe);
+>>>>> @@ -848,30 +857,26 @@ static void run_tests_on_pipe(data_t *data)
+>>>>>     	igt_fixture
+>>>>>     		igt_remove_fb(data->drm_fd, &data->fb);
+>>>>>     -	for (i = 0; i < ARRAY_SIZE(size_tests); i++) {
+>>>>> -		igt_describe(size_tests[i].desc);
+>>>>> -		igt_subtest_group {
+>>>>> -			for (cursor_size = 32; cursor_size <= 512; cursor_size *= 2) {
+>>>>> -				int w = cursor_size;
+>>>>> -				int h = cursor_size;
+>>>>> -
+>>>>> -				igt_subtest_with_dynamic_f("%s-%dx%d", size_tests[i].name, w, h)
+>>>>> -					run_size_tests(data, size_tests[i].testfunc, w, h);
+>>>>> -
+>>>>> -				/*
+>>>>> -				 * Test non-square cursors a bit on the platforms
+>>>>> -				 * that support such things. And make it a bit more
+>>>>> -				 * interesting by using a non-pot height.
+>>>>> -				 */
+>>>>> -				h /= 3;
+>>>>> -				igt_subtest_with_dynamic_f("%s-%dx%d", size_tests[i].name, w, h)
+>>>>> -					run_size_tests(data, size_tests[i].testfunc, w, h);
+>>>>> -			}
+>>>>> +	for (cursor_size = 32; cursor_size <= 512; cursor_size *= 2)
+>>>>> +	{
+>>>>> +		int w = cursor_size;
+>>>>> +		int h = cursor_size;
+>>>>>     -			igt_subtest_with_dynamic_f("%s-max-size", size_tests[i].name)
+>>>>> -				run_size_tests(data, size_tests[i].testfunc, 0, 0);
+>>>>> -		}
+>>>>> +		igt_subtest_group
+>>>>> +			run_size_tests(data, w, h);
+>>>>> +
+>>>>> +		/*
+>>>>> +		 * Test non-square cursors a bit on the platforms
+>>>>> +		 * that support such things. And make it a bit more
+>>>>> +		 * interesting by using a non-pot height.
+>>>>> +		 */
+>>>>> +		h /= 3;
+>>>>> +
+>>>>> +		igt_subtest_group
+>>>>> +			run_size_tests(data, w, h);
+>>>>>     	}
+>>>>> +
+>>>>> +	run_size_tests(data, 0, 0);
+>>>>>     }
+>>>>>       static data_t data;
+>>>>> @@ -896,8 +901,6 @@ igt_main
+>>>>>     		kmstest_set_vt_graphics_mode();
+>>>>>       		igt_require_pipe_crc(data.drm_fd);
+>>>>> -
+>>>>> -		data.vblank_wait_count = is_msm_device(data.drm_fd) ? 2 : 1;
+>>>>>     	}
+>>>>>       	data.cursor_max_w = cursor_width;
+>>>>> @@ -913,6 +916,5 @@ igt_main
+>>>>>     		}
+>>>>>       		igt_display_fini(&data.display);
+>>>>> -		close(data.drm_fd);
+>>>>>     	}
+>>>>>     }
