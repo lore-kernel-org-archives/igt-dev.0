@@ -1,21 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id ABEF710E3BA
- for <igt-dev@lists.freedesktop.org>; Tue, 11 Oct 2022 13:43:16 +0000 (UTC)
-Date: Tue, 11 Oct 2022 15:43:10 +0200
-From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
-To: Petri Latvala <petri.latvala@intel.com>
-Message-ID: <20221011154310.3866a686@maurocar-mobl2>
-In-Reply-To: <Y0VI4FbcwCCWgHtE@platvala-desk.ger.corp.intel.com>
-References: <20221007184902.54695-1-kamil.konieczny@linux.intel.com>
- <Y0Umf+g+oHJ0nXCk@platvala-desk.ger.corp.intel.com>
- <20221011113111.6eb2e396@maurocar-mobl2>
- <Y0VI4FbcwCCWgHtE@platvala-desk.ger.corp.intel.com>
+Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 204DD10E1AA
+ for <igt-dev@lists.freedesktop.org>; Tue, 11 Oct 2022 12:56:51 +0000 (UTC)
+Message-ID: <aa0e935b-5073-8116-c6d4-2a33810f0a16@intel.com>
+Date: Tue, 11 Oct 2022 18:26:10 +0530
+Content-Language: en-US
+To: Alaa Emad <aemad@igalia.com>, <igt-dev@lists.freedesktop.org>
+References: <20221009151844.3456-1-aemad@igalia.com>
+From: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
+In-Reply-To: <20221009151844.3456-1-aemad@igalia.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [igt-dev] [RFC i-g-t v2 0/3] Add multi-process subtests for
- multi-GPUs
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_cursor_crc: prevent the
+ entire test from being aborted when a subtest fails
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,152 +21,285 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org, Anna Karas <anna.karas@intel.com>
+Cc: petri.latvala@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Tue, 11 Oct 2022 13:46:32 +0300
-Petri Latvala <petri.latvala@intel.com> wrote:
+On Sun-09-10-2022 08:48 pm, Alaa Emad wrote:
+> Any test failure prevents the other tests to be run, aborting the entire test loop. This behavior was introduced by commit
+> 9494d53d ("tests/kms_cursor_crc: Convert tests to dynamic").
+> For instance, when running the cursor-offscreen-32x10 subtest using VKMS,
+> the execution is aborted instead of SKIP/FAIL, as in the following output:
+> 
+> $ ./tests/kms_cursor_crc --run-subtest cursor-offscreen-32x10
+> (kms_cursor_crc:7447) igt_fb-CRITICAL: Test assertion failure function igt_create_fb_with_bo_size, file ../lib/igt_fb.c:2078:
+> (kms_cursor_crc:7447) igt_fb-CRITICAL: Failed assertion: (__kms_addfb(fb->fd, fb->gem_handle, fb->width, fb->height, fb->drm_format, fb->modifier, fb->strides, fb->offsets, fb->num_planes, flags, &fb->fb_id)) == 0
+> (kms_cursor_crc:7447) igt_fb-CRITICAL: Last errno: 22, Invalid argument
+> Stack trace:
+> kms_cursor_crc: ../lib/igt_core.c:1667: igt_fail: Assertion `_igt_dynamic_tests_executed < 0 || dynamic_failed_one' failed.
+> Received signal SIGABRT.
+> 
+> The test was aborted after convertig tests to dynamic with cursor size 32*10 that because of the assertion in the `igt_create_fb_with_bo_size` when creating cursor in `create_cursor_fb`.
 
-> On Tue, Oct 11, 2022 at 11:31:11AM +0200, Mauro Carvalho Chehab wrote:
-> > On Tue, 11 Oct 2022 11:17:03 +0300
-> > Petri Latvala <petri.latvala@intel.com> wrote:
-> >=20
-> > > On Fri, Oct 07, 2022 at 08:48:58PM +0200, Kamil Konieczny wrote:
-> > > > Add one simple macro igt_fork_dyn() and two new helpers in
-> > > > igt_core to enable running dynamic tests on two or more GPUs in
-> > > > parallel.
-> > > > To test this idea I modified two subtests gem_basic@create-close
-> > > > and gem_exec_gttfill@basic.
-> > > > It is open-coded for ease of debug but can be converted
-> > > > into macro if this idea will get acceptance.
-> > > >=20
-> > > > Todo: add some log extension to igt_core from Mauro:
-> > > >   https://patchwork.freedesktop.org/series/109171/
-> > > >   "add sysfs node at subtest results when available"
-> > > >=20
-> > > > See some logs below.
-> > > >=20
-> > > > Cc: Anna Karas <anna.karas@intel.com>
-> > > > Cc: Zbigniew Kempczy=C5=84ski <zbigniew.kempczynski@intel.com>
-> > > > Cc: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
-> > > > Cc: Petri Latvala <petri.latvala@intel.com>
-> > > >=20
-> > > > This is log from gem_exec_gttfill run on one GPU machine:
-> > > >=20
-> > > > IGT-Version: 1.26-NO-GIT (x86_64) (Linux: 6.0.0-rc5-CI_DRM_12145-g2=
-dc9ea03abff x86_64)
-> > > > Starting subtest: basic
-> > > > Starting dynamic subtest: basic-gpu-0
-> > > > Starting dynamic subtest: basic-gpu-1
-> > > > Test requirement not met in function start_helpers, file ../tests/i=
-915/gem_exec_gttfill.c:229:
-> > > > Test requirement: i915 > 0
-> > > > Last errno: 2, No such file or directory
-> > > > Dynamic subtest basic-gpu-1: SKIP (0.025s)
-> > > > Setup 1025 batches in 1051.24ms
-> > > > engine[2]: 2 cycles
-> > > > engine[1]: 1 cycles
-> > > > engine[0]: 3 cycles
-> > > > engine[3]: 2 cycles
-> > > > engine[4]: 2 cycles
-> > > > Total: 10 cycles
-> > > > Dynamic subtest basic-gpu-0: SUCCESS (2.960s)
-> > > > Subtest basic: SUCCESS (2.967s)
-> > > >=20
-> > > > Result from machine with two discrete GPUs:
-> > > >=20
-> > > > Starting subtest: basic
-> > > > Starting dynamic subtest: basic-gpu-0
-> > > > Starting dynamic subtest: basic-gpu-1
-> > > > Setup 1025 batches in 3518.56ms
-> > > > Setup 1025 batches in 3494.03ms
-> > > > ...
-> > > > Dynamic subtest basic-gpu-0: SUCCESS (35.349s)
-> > > > Dynamic subtest basic-gpu-1: SUCCESS (35.374s)
-> > > > Subtest basic: SUCCESS (35.401s) =20
-> > >=20
-> > > Having child processes report results breaks a surprising amount of
-> > > things. Only the main process should enter/exit subtests or dynamic
-> > > subtests.
-> >=20
-> > Ok, but still it makes sense to have per-subtest results somehow.
-> > Perhaps we'll need a new igt macro to report multiGPU child test=20
-> > results.
-> >=20
-> > > There isn't much value here having the separate gpus in separate
-> > > dynamic subtests. Conceptually dynamic subtests are entry points that
-> > > are not enumerable at compile-time, and this change conceptually
-> > > always wants to run all of them really.
-> >=20
-> > The usage of one or multiple GPUs is a runtime decision, based on IGT_D=
-EVICE=20
-> > handling logic. That should not decided at compile-time.
->=20
->=20
-> The point was them being entry points. There's never a need to do
-> --dynamic-subtest basic-gpu-0, when you execute these, you want all of
-> them.
+I think you just need to put this fb creation part to igt_fixture
 
-Yes.
+igt_fixture {
+	create_cursor_fb(data, w, h);
+}
 
-> > > Instead this should just have everything in the subtest and manually
-> > > print which gpu is doing what.
-> >=20
-> > This exercise actually rises an interesting point: on a multi-GPU run,
-> > what should be the "global" test result when the same test has different
-> > results depending on the GPU?
->=20
-> Depends on the test.
+> 
+> This happened because Within a igt_subtest_with_dynamic block, explicit failure (e.g. igt_assert) is not allowed,
+> only dynamic subsubtests themselves will produce test results.
+> 
+> The previous approach was running each test for all cursor sizes then move to the next test  so fix this issue
+> by running all tests for one cursor size one by one, and check if cursor size is
+> supported or not before running the test.
 
-For some tests, yes, but I guess for most of the stuff what we want is to
-ensure that multiple GPUs will be exercised at the same time, in order
-to identify potential contentions and lack of serialization when using
-multiple GPUs. For those, if an specific subtest is skipped from a
-subtest list, it should be OK to return success if the non-skipped
-GPUs return success.
+With this change, maximum cursor size test will not show up in list of 
+tests. Ie. max size test and what happened with them are not seen here:
 
-> The thumb rule is:
->=20
-> FAIL - Kernel has a bug.
-> SKIP - Cannot test, the HW configuration is not what we need.
->=20
-> For example,
->=20
-> 1) There's only one GPU.
->=20
-> SKIP.
->=20
-> 2) The test wants multiple identical GPUs. There's multiple GPUs but they=
-'re different.
->=20
-> SKIP.
->=20
-> 3) The test wants different GPUs. There's multiple GPUs but they're ident=
-ical.
->=20
-> SKIP.
->=20
-> Such conditions should be of course done before launching stuff.
+https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7933/shards-all.html?testfilter=kms_cursor_crc
 
-Yeah, things like the above are clear and should be done before the
-actual test.
+ From previous conversations [1]:
+And I think it is needed here to know what happen with maximum cursor 
+size tests. Maximum cursor size is special case that is wanted to be 
+known what happen with it, will driver reported largest possible cursor 
+work.
 
-Yet, there are some cases where some subtests are conditionally
-skipped, like the ones which use igt_skip_on*(), depending if the
-GPU supports or not some specific subtest.
+[1]: https://patchwork.freedesktop.org/patch/496899/
 
-On such cases, we'll have some subtests returning SKIP on some GPUs
-of the GPU set, and (hopefully) returning SUCCESS for the others.
+- Bhanu
 
-IMO, it makes sense to have a "default" propagation rule for such
-cases (while allowing the default to be redefined if needed).
-
-> For failures, any failures on one gpu should make the "global" result
-> a fail too.
-
-Yes, agreed.
-
-Regards,
-Mauro
+> 
+> Fixes: 9494d53d ("tests/kms_cursor_crc: Convert tests to dynamic")
+> 
+> Signed-off-by: Alaa Emad <aemad@igalia.com>
+> ---
+>   tests/kms_cursor_crc.c | 136 +++++++++++++++++++++--------------------
+>   1 file changed, 69 insertions(+), 67 deletions(-)
+> 
+> diff --git a/tests/kms_cursor_crc.c b/tests/kms_cursor_crc.c
+> index 8d3426dd..9b620389 100644
+> --- a/tests/kms_cursor_crc.c
+> +++ b/tests/kms_cursor_crc.c
+> @@ -72,7 +72,6 @@ typedef struct {
+>   	cairo_surface_t *surface;
+>   	uint32_t devid;
+>   	double alpha;
+> -	int vblank_wait_count; /* because of msm */
+>   } data_t;
+>   
+>   #define TEST_DPMS (1<<0)
+> @@ -125,12 +124,6 @@ static void cursor_disable(data_t *data)
+>   {
+>   	igt_plane_set_fb(data->cursor, NULL);
+>   	igt_plane_set_position(data->cursor, 0, 0);
+> -	igt_display_commit(&data->display);
+> -
+> -	/* do this wait here so it will not need to be added everywhere */
+> -	igt_wait_for_vblank_count(data->drm_fd,
+> -				  data->display.pipes[data->pipe].crtc_offset,
+> -				  data->vblank_wait_count);
+>   }
+>   
+>   static bool chv_cursor_broken(data_t *data, int x)
+> @@ -209,9 +202,8 @@ static void do_single_test(data_t *data, int x, int y, bool hw_test,
+>   		igt_display_commit(display);
+>   
+>   		/* Extra vblank wait is because nonblocking cursor ioctl */
+> -		igt_wait_for_vblank_count(data->drm_fd,
+> -					  display->pipes[data->pipe].crtc_offset,
+> -					  data->vblank_wait_count);
+> +		igt_wait_for_vblank(data->drm_fd,
+> +				display->pipes[data->pipe].crtc_offset);
+>   
+>   		igt_pipe_crc_get_current(data->drm_fd, pipe_crc, hwcrc);
+>   
+> @@ -249,7 +241,11 @@ static void do_single_test(data_t *data, int x, int y, bool hw_test,
+>   
+>   		restore_image(data, swbufidx, &((cursorarea){x, y, data->curw, data->curh}));
+>   		igt_plane_set_fb(data->primary, &data->primary_fb[swbufidx]);
+> +
+>   		igt_display_commit(display);
+> +		igt_wait_for_vblank(data->drm_fd,
+> +				display->pipes[data->pipe].crtc_offset);
+> +
+>   		igt_pipe_crc_get_current(data->drm_fd, pipe_crc, &crc);
+>   		igt_assert_crc_equal(&crc, hwcrc);
+>   	}
+> @@ -267,7 +263,9 @@ static void do_fail_test(data_t *data, int x, int y, int expect)
+>   	igt_plane_set_position(data->cursor, x, y);
+>   	ret = igt_display_try_commit2(display, COMMIT_LEGACY);
+>   
+> +	igt_plane_set_position(data->cursor, 0, 0);
+>   	cursor_disable(data);
+> +	igt_display_commit(display);
+>   
+>   	igt_assert_eq(ret, expect);
+>   }
+> @@ -689,10 +687,28 @@ static void test_rapid_movement(data_t *data)
+>   	igt_assert_lt(usec, 0.9 * 400 * 1000000 / data->refresh);
+>   }
+>   
+> -static void run_size_tests(data_t *data, void (*testfunc)(data_t *),
+> -			   int w, int h)
+> +static void run_size_tests(data_t *data, int w, int h)
+>   {
+>   	enum pipe pipe;
+> +	int i;
+> +
+> +	struct
+> +	{
+> +		const char *name;
+> +		void (*testfunc)(data_t *);
+> +		const char *desc;
+> +	} size_tests[] = {
+> +		{"cursor-onscreen", test_crc_onscreen,
+> +		 "Check if a given-size cursor is well-positioned inside the screen."},
+> +		{"cursor-offscreen", test_crc_offscreen,
+> +		 "Check if a given-size cursor is well-positioned outside the screen."},
+> +		{"cursor-sliding", test_crc_sliding,
+> +		 "Check the smooth and pixel-by-pixel given-size cursor movements on horizontal, vertical and diagonal."},
+> +		{"cursor-random", test_crc_random,
+> +		 "Check random placement of a cursor with given size."},
+> +		{"cursor-rapid-movement", test_rapid_movement,
+> +		 "Check the rapid update of given-size cursor movements."},
+> +	};
+>   
+>   	if (w == 0 && h == 0) {
+>   		w = data->cursor_max_w;
+> @@ -709,45 +725,38 @@ static void run_size_tests(data_t *data, void (*testfunc)(data_t *),
+>   		}
+>   	}
+>   
+> -	create_cursor_fb(data, w, h);
+> -	if (require_cursor_size(data, w, h)) {
+> -		igt_info("Cursor size %dx%d not supported by driver\n", w, h);
+> -
+> -		igt_remove_fb(data->drm_fd, &data->fb);
+> -		return;
+> -	}
+> +	igt_fixture
+> +		create_cursor_fb(data, w, h);
+>   
+> -	for_each_pipe(&data->display, pipe) {
+> -		data->pipe = pipe;
+> -		igt_dynamic_f("pipe-%s-%s",
+> -			      kmstest_pipe_name(pipe), igt_output_name(data->output))
+> -			run_test(data, testfunc, w, h);
+> +	for (i = 0; i < ARRAY_SIZE(size_tests); i++)
+> +	{
+> +		igt_describe(size_tests[i].desc);
+> +		igt_subtest_with_dynamic_f("%s-%dx%d", size_tests[i].name, w, h)
+> +		{
+> +			for_each_pipe(&data->display, pipe)
+> +			{
+> +				data->pipe = pipe;
+> +				if (require_cursor_size(data, w, h))
+> +				{
+> +					igt_info("Cursor size %dx%d not supported by driver\n", w, h);
+> +					continue;
+> +				}
+> +
+> +				igt_dynamic_f("pipe-%s-%s",
+> +							  kmstest_pipe_name(pipe), igt_output_name(data->output))
+> +					run_test(data, size_tests[i].testfunc, w, h);
+> +			}
+> +		}
+>   	}
+>   
+> -	igt_remove_fb(data->drm_fd, &data->fb);
+> +	igt_fixture
+> +		igt_remove_fb(data->drm_fd, &data->fb);
+>   }
+>   
+>   static void run_tests_on_pipe(data_t *data)
+>   {
+>   	enum pipe pipe;
+>   	int cursor_size;
+> -	int i;
+> -	struct {
+> -		const char *name;
+> -		void (*testfunc)(data_t *);
+> -		const char *desc;
+> -	} size_tests[] = {
+> -		{ "cursor-onscreen", test_crc_onscreen,
+> -			"Check if a given-size cursor is well-positioned inside the screen." },
+> -		{ "cursor-offscreen", test_crc_offscreen,
+> -			"Check if a given-size cursor is well-positioned outside the screen." },
+> -		{ "cursor-sliding", test_crc_sliding,
+> -			"Check the smooth and pixel-by-pixel given-size cursor movements on horizontal, vertical and diagonal." },
+> -		{ "cursor-random", test_crc_random,
+> -			"Check random placement of a cursor with given size." },
+> -		{ "cursor-rapid-movement", test_rapid_movement,
+> -			"Check the rapid update of given-size cursor movements." },
+> -	};
+>   
+>   	igt_fixture {
+>   		data->output = igt_get_single_output_for_pipe(&data->display, pipe);
+> @@ -848,30 +857,26 @@ static void run_tests_on_pipe(data_t *data)
+>   	igt_fixture
+>   		igt_remove_fb(data->drm_fd, &data->fb);
+>   
+> -	for (i = 0; i < ARRAY_SIZE(size_tests); i++) {
+> -		igt_describe(size_tests[i].desc);
+> -		igt_subtest_group {
+> -			for (cursor_size = 32; cursor_size <= 512; cursor_size *= 2) {
+> -				int w = cursor_size;
+> -				int h = cursor_size;
+> -
+> -				igt_subtest_with_dynamic_f("%s-%dx%d", size_tests[i].name, w, h)
+> -					run_size_tests(data, size_tests[i].testfunc, w, h);
+> -
+> -				/*
+> -				 * Test non-square cursors a bit on the platforms
+> -				 * that support such things. And make it a bit more
+> -				 * interesting by using a non-pot height.
+> -				 */
+> -				h /= 3;
+> -				igt_subtest_with_dynamic_f("%s-%dx%d", size_tests[i].name, w, h)
+> -					run_size_tests(data, size_tests[i].testfunc, w, h);
+> -			}
+> +	for (cursor_size = 32; cursor_size <= 512; cursor_size *= 2)
+> +	{
+> +		int w = cursor_size;
+> +		int h = cursor_size;
+>   
+> -			igt_subtest_with_dynamic_f("%s-max-size", size_tests[i].name)
+> -				run_size_tests(data, size_tests[i].testfunc, 0, 0);
+> -		}
+> +		igt_subtest_group
+> +			run_size_tests(data, w, h);
+> +
+> +		/*
+> +		 * Test non-square cursors a bit on the platforms
+> +		 * that support such things. And make it a bit more
+> +		 * interesting by using a non-pot height.
+> +		 */
+> +		h /= 3;
+> +
+> +		igt_subtest_group
+> +			run_size_tests(data, w, h);
+>   	}
+> +	
+> +	run_size_tests(data, 0, 0);
+>   }
+>   
+>   static data_t data;
+> @@ -896,8 +901,6 @@ igt_main
+>   		kmstest_set_vt_graphics_mode();
+>   
+>   		igt_require_pipe_crc(data.drm_fd);
+> -
+> -		data.vblank_wait_count = is_msm_device(data.drm_fd) ? 2 : 1;
+>   	}
+>   
+>   	data.cursor_max_w = cursor_width;
+> @@ -913,6 +916,5 @@ igt_main
+>   		}
+>   
+>   		igt_display_fini(&data.display);
+> -		close(data.drm_fd);
+>   	}
+>   }
