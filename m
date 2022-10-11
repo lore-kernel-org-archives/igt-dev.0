@@ -1,16 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: text/plain; charset="utf-8"
+Received: from mail-lj1-x235.google.com (mail-lj1-x235.google.com
+ [IPv6:2a00:1450:4864:20::235])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DF61D10E66E
+ for <igt-dev@lists.freedesktop.org>; Tue, 11 Oct 2022 19:15:39 +0000 (UTC)
+Received: by mail-lj1-x235.google.com with SMTP id s10so18075484ljp.5
+ for <igt-dev@lists.freedesktop.org>; Tue, 11 Oct 2022 12:15:39 -0700 (PDT)
+From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+To: igt-dev@lists.freedesktop.org
+Date: Tue, 11 Oct 2022 22:15:25 +0300
+Message-Id: <20221011191525.20756-1-juhapekka.heikkila@gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Alex Hung" <alex.hung@amd.com>
-Date: Tue, 11 Oct 2022 19:04:55 -0000
-Message-ID: <166551509523.5540.9968503182663565273@emeril.freedesktop.org>
-References: <20221011185354.2268148-1-alex.hung@amd.com>
-In-Reply-To: <20221011185354.2268148-1-alex.hung@amd.com>
-Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_t?=
- =?utf-8?q?ests/kms=5Fplane=5Fmultiple=3A_turn_off_pipe_if_all_planes_are_?=
- =?utf-8?q?off_=28rev5=29?=
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t] tests/kms_addfb_basic: avoid excessive
+ logging on legacy format test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,45 +20,36 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-== Series Details ==
+legacy format addfb test try to fuzz kernel with random parameters,
+these random parameters cause logging into dmesg. Limit fuzzing
+rounds to maximum of 10k (or 1 second) to limit size of created log.
 
-Series: tests/kms_plane_multiple: turn off pipe if all planes are off (rev5)
-URL   : https://patchwork.freedesktop.org/series/109086/
-State : warning
+Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+---
+ tests/kms_addfb_basic.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-== Summary ==
-
-Pipeline status: FAILED.
-
-see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/709012 for the overview.
-
-test:ninja-test-mips has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/29623736):
-  Ok:                   23
-  Expected Fail:         4
-  Fail:                293
-  Unexpected Pass:       0
-  Skipped:               0
-  Timeout:               0
-  
-  Full log written to /builds/gfx-ci/igt-ci-tags/build/meson-logs/testlog.txt
-  section_end:1665515071:step_script
-  section_start:1665515071:upload_artifacts_on_failure
-  Uploading artifacts for failed job
-  Uploading artifacts...
-  build: found 1786 matching files and directories   
-  Uploading artifacts as "archive" to coordinator... 201 Created  id=29623736 responseStatus=201 Created token=1ik_BsvV
-  section_end:1665515082:upload_artifacts_on_failure
-  section_start:1665515082:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1665515082:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-
-== Logs ==
-
-For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/709012
+diff --git a/tests/kms_addfb_basic.c b/tests/kms_addfb_basic.c
+index afb4bdf6f..f91153b5b 100644
+--- a/tests/kms_addfb_basic.c
++++ b/tests/kms_addfb_basic.c
+@@ -241,6 +241,13 @@ static void invalid_tests(int fd)
+ 			}
+ 
+ 			count++;
++
++			/*
++			 * to avoid exessive logging stop after 10k loops
++			 */
++			if (count >= 10000) {
++				break;
++			}
+ 		}
+ 
+ 		/* After all the abuse, confirm the known_formats */
+-- 
+2.37.3
