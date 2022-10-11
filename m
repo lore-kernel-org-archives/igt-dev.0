@@ -1,19 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7F77510E7D7
- for <igt-dev@lists.freedesktop.org>; Tue, 11 Oct 2022 09:37:15 +0000 (UTC)
-Date: Tue, 11 Oct 2022 11:37:10 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Message-ID: <Y0U5RumOStuAmibz@kamilkon-desk1>
-References: <20221007232757.3210308-1-jfree@freebsd.org>
- <20221007232757.3210308-2-jfree@freebsd.org>
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id ABEF710E3BA
+ for <igt-dev@lists.freedesktop.org>; Tue, 11 Oct 2022 13:43:16 +0000 (UTC)
+Date: Tue, 11 Oct 2022 15:43:10 +0200
+From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
+To: Petri Latvala <petri.latvala@intel.com>
+Message-ID: <20221011154310.3866a686@maurocar-mobl2>
+In-Reply-To: <Y0VI4FbcwCCWgHtE@platvala-desk.ger.corp.intel.com>
+References: <20221007184902.54695-1-kamil.konieczny@linux.intel.com>
+ <Y0Umf+g+oHJ0nXCk@platvala-desk.ger.corp.intel.com>
+ <20221011113111.6eb2e396@maurocar-mobl2>
+ <Y0VI4FbcwCCWgHtE@platvala-desk.ger.corp.intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20221007232757.3210308-2-jfree@freebsd.org>
-Subject: Re: [igt-dev] [PATCH i-g-t v1 1/6] lib/igt_freebsd.h: Create
- FreeBSD compatibility header
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [igt-dev] [RFC i-g-t v2 0/3] Add multi-process subtests for
+ multi-GPUs
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,180 +23,152 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Jake Freeland <jfree@freebsd.org>, Petri Latvala <petri.latvala@intel.com>,
- Jake Freeland <jake@technologyfriends.net>
+Cc: igt-dev@lists.freedesktop.org, Anna Karas <anna.karas@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Jake,
+On Tue, 11 Oct 2022 13:46:32 +0300
+Petri Latvala <petri.latvala@intel.com> wrote:
 
-On 2022-10-07 at 18:27:52 -0500, Jake Freeland wrote:
-> This header attempts to be a simple drop-in to enable FreeBSD
-> support in a given source file. It includes macro substitutions
-> that replace Linux-specific phrases with their FreeBSD equivalents.
-> 
-> Signed-off-by: Jake Freeland <jfree@freebsd.org>
+> On Tue, Oct 11, 2022 at 11:31:11AM +0200, Mauro Carvalho Chehab wrote:
+> > On Tue, 11 Oct 2022 11:17:03 +0300
+> > Petri Latvala <petri.latvala@intel.com> wrote:
+> >=20
+> > > On Fri, Oct 07, 2022 at 08:48:58PM +0200, Kamil Konieczny wrote:
+> > > > Add one simple macro igt_fork_dyn() and two new helpers in
+> > > > igt_core to enable running dynamic tests on two or more GPUs in
+> > > > parallel.
+> > > > To test this idea I modified two subtests gem_basic@create-close
+> > > > and gem_exec_gttfill@basic.
+> > > > It is open-coded for ease of debug but can be converted
+> > > > into macro if this idea will get acceptance.
+> > > >=20
+> > > > Todo: add some log extension to igt_core from Mauro:
+> > > >   https://patchwork.freedesktop.org/series/109171/
+> > > >   "add sysfs node at subtest results when available"
+> > > >=20
+> > > > See some logs below.
+> > > >=20
+> > > > Cc: Anna Karas <anna.karas@intel.com>
+> > > > Cc: Zbigniew Kempczy=C5=84ski <zbigniew.kempczynski@intel.com>
+> > > > Cc: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
+> > > > Cc: Petri Latvala <petri.latvala@intel.com>
+> > > >=20
+> > > > This is log from gem_exec_gttfill run on one GPU machine:
+> > > >=20
+> > > > IGT-Version: 1.26-NO-GIT (x86_64) (Linux: 6.0.0-rc5-CI_DRM_12145-g2=
+dc9ea03abff x86_64)
+> > > > Starting subtest: basic
+> > > > Starting dynamic subtest: basic-gpu-0
+> > > > Starting dynamic subtest: basic-gpu-1
+> > > > Test requirement not met in function start_helpers, file ../tests/i=
+915/gem_exec_gttfill.c:229:
+> > > > Test requirement: i915 > 0
+> > > > Last errno: 2, No such file or directory
+> > > > Dynamic subtest basic-gpu-1: SKIP (0.025s)
+> > > > Setup 1025 batches in 1051.24ms
+> > > > engine[2]: 2 cycles
+> > > > engine[1]: 1 cycles
+> > > > engine[0]: 3 cycles
+> > > > engine[3]: 2 cycles
+> > > > engine[4]: 2 cycles
+> > > > Total: 10 cycles
+> > > > Dynamic subtest basic-gpu-0: SUCCESS (2.960s)
+> > > > Subtest basic: SUCCESS (2.967s)
+> > > >=20
+> > > > Result from machine with two discrete GPUs:
+> > > >=20
+> > > > Starting subtest: basic
+> > > > Starting dynamic subtest: basic-gpu-0
+> > > > Starting dynamic subtest: basic-gpu-1
+> > > > Setup 1025 batches in 3518.56ms
+> > > > Setup 1025 batches in 3494.03ms
+> > > > ...
+> > > > Dynamic subtest basic-gpu-0: SUCCESS (35.349s)
+> > > > Dynamic subtest basic-gpu-1: SUCCESS (35.374s)
+> > > > Subtest basic: SUCCESS (35.401s) =20
+> > >=20
+> > > Having child processes report results breaks a surprising amount of
+> > > things. Only the main process should enter/exit subtests or dynamic
+> > > subtests.
+> >=20
+> > Ok, but still it makes sense to have per-subtest results somehow.
+> > Perhaps we'll need a new igt macro to report multiGPU child test=20
+> > results.
+> >=20
+> > > There isn't much value here having the separate gpus in separate
+> > > dynamic subtests. Conceptually dynamic subtests are entry points that
+> > > are not enumerable at compile-time, and this change conceptually
+> > > always wants to run all of them really.
+> >=20
+> > The usage of one or multiple GPUs is a runtime decision, based on IGT_D=
+EVICE=20
+> > handling logic. That should not decided at compile-time.
+>=20
+>=20
+> The point was them being entry points. There's never a need to do
+> --dynamic-subtest basic-gpu-0, when you execute these, you want all of
+> them.
 
-Your patchset got merged but please in future ask someone from
-FreeBSD community for review of changes related to FreeBSD.
+Yes.
 
-Ideally, if you know who might review it, put that person on Cc
-just before your s-b, so it will look like
+> > > Instead this should just have everything in the subtest and manually
+> > > print which gpu is doing what.
+> >=20
+> > This exercise actually rises an interesting point: on a multi-GPU run,
+> > what should be the "global" test result when the same test has different
+> > results depending on the GPU?
+>=20
+> Depends on the test.
 
-Cc: Name Here <e-mail-address_from_freebsd.org>
-Signed-off-by: Jake Freeland <jfree@freebsd.org>
+For some tests, yes, but I guess for most of the stuff what we want is to
+ensure that multiple GPUs will be exercised at the same time, in order
+to identify potential contentions and lack of serialization when using
+multiple GPUs. For those, if an specific subtest is skipped from a
+subtest list, it should be OK to return success if the non-skipped
+GPUs return success.
 
-btw this is only example, it may outside from freebsd.org
+> The thumb rule is:
+>=20
+> FAIL - Kernel has a bug.
+> SKIP - Cannot test, the HW configuration is not what we need.
+>=20
+> For example,
+>=20
+> 1) There's only one GPU.
+>=20
+> SKIP.
+>=20
+> 2) The test wants multiple identical GPUs. There's multiple GPUs but they=
+'re different.
+>=20
+> SKIP.
+>=20
+> 3) The test wants different GPUs. There's multiple GPUs but they're ident=
+ical.
+>=20
+> SKIP.
+>=20
+> Such conditions should be of course done before launching stuff.
+
+Yeah, things like the above are clear and should be done before the
+actual test.
+
+Yet, there are some cases where some subtests are conditionally
+skipped, like the ones which use igt_skip_on*(), depending if the
+GPU supports or not some specific subtest.
+
+On such cases, we'll have some subtests returning SKIP on some GPUs
+of the GPU set, and (hopefully) returning SUCCESS for the others.
+
+IMO, it makes sense to have a "default" propagation rule for such
+cases (while allowing the default to be redefined if needed).
+
+> For failures, any failures on one gpu should make the "global" result
+> a fail too.
+
+Yes, agreed.
 
 Regards,
-Kamil
-
-> ---
->  lib/igt_core.h    |   4 ++
->  lib/igt_freebsd.h | 118 ++++++++++++++++++++++++++++++++++++++++++++++
->  2 files changed, 122 insertions(+)
->  create mode 100644 lib/igt_freebsd.h
-> 
-> diff --git a/lib/igt_core.h b/lib/igt_core.h
-> index f21723de..a6b4b5ae 100644
-> --- a/lib/igt_core.h
-> +++ b/lib/igt_core.h
-> @@ -43,6 +43,10 @@
->  #include <getopt.h>
->  #include <unistd.h>
->  
-> +#ifdef __FreeBSD__
-> +#include "igt_freebsd.h"
-> +#endif
-> +
->  #ifndef IGT_LOG_DOMAIN
->  #define IGT_LOG_DOMAIN (NULL)
->  #endif
-> diff --git a/lib/igt_freebsd.h b/lib/igt_freebsd.h
-> new file mode 100644
-> index 00000000..53fa8fb6
-> --- /dev/null
-> +++ b/lib/igt_freebsd.h
-> @@ -0,0 +1,118 @@
-> +/*
-> + * SPDX-License-Identifier: MIT
-> + *
-> + * Copyright (c) 2022, Jake Freeland <jfree@FreeBSD.org>
-> + */
-> +
-> +#if !defined(IGT_FREEBSD_H)
-> +
-> +#if !defined(__FreeBSD__)
-> +#error "This header is only for FreeBSD platform."
-> +#endif
-> +
-> +#define IGT_FREEBSD_H
-> +
-> +#include <sys/consio.h>
-> +#include <sys/endian.h>
-> +#include <sys/errno.h>
-> +#include <sys/mman.h>
-> +#include <sys/mount.h>
-> +#include <sys/sched.h>
-> +#include <sys/types.h>
-> +#include <sys/wait.h>
-> +#include <sys/watchdog.h>
-> +
-> +#include <libgen.h>
-> +#include <limits.h>
-> +#include <pthread.h>
-> +#include <setjmp.h>
-> +#include <signal.h>
-> +#include <unistd.h>
-> +
-> +/*
-> + * Proper substitutions:
-> + * The following macros replace Linux-specific functions
-> + * and macros with their FreeBSD equivalents.
-> + */
-> +
-> +typedef	int32_t		__s32;
-> +typedef	uint32_t	__u32;
-> +typedef	uint64_t	__u64;
-> +
-> +typedef	ino_t		ino64_t;
-> +typedef	sig_t		sighandler_t;
-> +
-> +#define	jmp_buf	sigjmp_buf
-> +
-> +#define	PTRACE_TRACEME  PT_TRACE_ME
-> +#define	PTRACE_ATTACH   PT_ATTACH
-> +#define	PTRACE_PEEKDATA PT_READ_D
-> +#define	PTRACE_POKEDATA PT_WRITE_D
-> +#define	PTRACE_DETACH   PT_DETACH
-> +
-> +#define	I2C_RDWR		I2CRDWR
-> +#define	I2C_M_RD		IIC_M_RD
-> +#define	i2c_msg			iic_msg
-> +#define	i2c_rdwr_ioctl_data	iic_rdwr_data
-> +
-> +#define	bswap_32(x)	bswap32(x)
-> +
-> +#define	_IOC_TYPE(nr)	(((nr) >> 8) & 255)
-> +
-> +#define	SYS_getdents64	SYS_freebsd11_getdents
-> +
-> +#define	mount(src, dest, fstype, flags, data)	\
-> +	mount(fstype, dest, flags, data)
-> +
-> +/*
-> + * Improper substitutions:
-> + * The following macros are temporary replacements for functions
-> + * and macros that exist on Linux and do not exist on FreeBSD.
-> + */
-> +
-> +#define	ETIME	ETIMEDOUT
-> +
-> +#define	MAP_POPULATE	MAP_PREFAULT_READ
-> +
-> +#define	MADV_HUGEPAGE	MADV_SEQUENTIAL
-> +#define	MADV_DONTFORK	MADV_NOSYNC
-> +
-> +#define	WDIOC_KEEPALIVE	WDIOCPATPAT
-> +
-> +#define	SCHED_RESET_ON_FORK	0
-> +#define	SCHED_IDLE	SCHED_OTHER
-> +
-> +#define	gettid()	getpid()
-> +
-> +#define	pthread_sigqueue(pid, signo, value)	\
-> +	sigqueue(pid, signo, value)
-> +
-> +#define	signalfd(fd, mask, flags)	-ENOSYS
-> +#define	timerfd_create(c, f)		-ENOSYS
-> +#define	timerfd_settime(fd, f, n, o)	-ENOSYS
-> +
-> +/*
-> + * Macro conflict resolution.
-> + */
-> +
-> +#undef	ALIGN
-> +#undef	PAGE_SIZE
-> +
-> +/*
-> + * Missing Linux structures.
-> + */
-> +
-> +struct signalfd_siginfo {
-> +	uint32_t ssi_signo;
-> +	uint32_t ssi_pid;
-> +};
-> +
-> +struct kmod_module {
-> +	size_t size;
-> +};
-> +
-> +typedef struct {
-> +	char state;
-> +} proc_t;
-> +
-> +#endif /* IGT_FREEBSD_H */
-> -- 
-> 2.37.3
-> 
+Mauro
