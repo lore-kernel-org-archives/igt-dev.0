@@ -1,16 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4B2A110E363
- for <igt-dev@lists.freedesktop.org>; Tue, 11 Oct 2022 07:45:12 +0000 (UTC)
-Date: Tue, 11 Oct 2022 09:45:05 +0200
-From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6D00810E7D7
+ for <igt-dev@lists.freedesktop.org>; Tue, 11 Oct 2022 08:17:24 +0000 (UTC)
+Date: Tue, 11 Oct 2022 11:17:03 +0300
+From: Petri Latvala <petri.latvala@intel.com>
 To: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Message-ID: <20221011094505.516b20cd@maurocar-mobl2>
-In-Reply-To: <20221007184902.54695-1-kamil.konieczny@linux.intel.com>
+Message-ID: <Y0Umf+g+oHJ0nXCk@platvala-desk.ger.corp.intel.com>
 References: <20221007184902.54695-1-kamil.konieczny@linux.intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20221007184902.54695-1-kamil.konieczny@linux.intel.com>
 Subject: Re: [igt-dev] [RFC i-g-t v2 0/3] Add multi-process subtests for
  multi-GPUs
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
@@ -20,15 +21,12 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org, Anna Karas <anna.karas@intel.com>,
- Petri Latvala <petri.latvala@intel.com>
+Cc: igt-dev@lists.freedesktop.org, Anna Karas <anna.karas@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Fri,  7 Oct 2022 20:48:58 +0200
-Kamil Konieczny <kamil.konieczny@linux.intel.com> wrote:
-
+On Fri, Oct 07, 2022 at 08:48:58PM +0200, Kamil Konieczny wrote:
 > Add one simple macro igt_fork_dyn() and two new helpers in
 > igt_core to enable running dynamic tests on two or more GPUs in
 > parallel.
@@ -36,27 +34,25 @@ Kamil Konieczny <kamil.konieczny@linux.intel.com> wrote:
 > and gem_exec_gttfill@basic.
 > It is open-coded for ease of debug but can be converted
 > into macro if this idea will get acceptance.
->=20
+> 
 > Todo: add some log extension to igt_core from Mauro:
 >   https://patchwork.freedesktop.org/series/109171/
 >   "add sysfs node at subtest results when available"
->=20
+> 
 > See some logs below.
->=20
+> 
 > Cc: Anna Karas <anna.karas@intel.com>
-> Cc: Zbigniew Kempczy=C5=84ski <zbigniew.kempczynski@intel.com>
+> Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 > Cc: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
 > Cc: Petri Latvala <petri.latvala@intel.com>
->=20
+> 
 > This is log from gem_exec_gttfill run on one GPU machine:
->=20
-> IGT-Version: 1.26-NO-GIT (x86_64) (Linux: 6.0.0-rc5-CI_DRM_12145-g2dc9ea0=
-3abff x86_64)
+> 
+> IGT-Version: 1.26-NO-GIT (x86_64) (Linux: 6.0.0-rc5-CI_DRM_12145-g2dc9ea03abff x86_64)
 > Starting subtest: basic
 > Starting dynamic subtest: basic-gpu-0
 > Starting dynamic subtest: basic-gpu-1
-> Test requirement not met in function start_helpers, file ../tests/i915/ge=
-m_exec_gttfill.c:229:
+> Test requirement not met in function start_helpers, file ../tests/i915/gem_exec_gttfill.c:229:
 > Test requirement: i915 > 0
 > Last errno: 2, No such file or directory
 > Dynamic subtest basic-gpu-1: SKIP (0.025s)
@@ -69,9 +65,9 @@ m_exec_gttfill.c:229:
 > Total: 10 cycles
 > Dynamic subtest basic-gpu-0: SUCCESS (2.960s)
 > Subtest basic: SUCCESS (2.967s)
->=20
+> 
 > Result from machine with two discrete GPUs:
->=20
+> 
 > Starting subtest: basic
 > Starting dynamic subtest: basic-gpu-0
 > Starting dynamic subtest: basic-gpu-1
@@ -82,23 +78,47 @@ m_exec_gttfill.c:229:
 > Dynamic subtest basic-gpu-1: SUCCESS (35.374s)
 > Subtest basic: SUCCESS (35.401s)
 
-Yeah, it sounded a good idea to use dynamic subtests here.
+Having child processes report results breaks a surprising amount of
+things. Only the main process should enter/exit subtests or dynamic
+subtests.
 
-The all-success case is the less complex one. I'd love to see
-if skip and fail will be properly handled.
+There isn't much value here having the separate gpus in separate
+dynamic subtests. Conceptually dynamic subtests are entry points that
+are not enumerable at compile-time, and this change conceptually
+always wants to run all of them really.
 
-IMO, you could add an unit test, similar to lib/tests/igt_fork.c, that=20
-would pretend that there would be (at least) 3 GPUs, in order to test
-if the error would work whith a mix of different subtest results
-(fail, skip, success).
+Instead this should just have everything in the subtest and manually
+print which gpu is doing what.
 
-Also, instead of using:
+In addition, some kind of synchronization is needed so the work is
+submitted as close to "same time" as possible.
 
-	igt_dynamic_f("%s-gpu-%d", myname, child)
+-- 
+Petri Latvala
 
-it probably makes sense to name them after the PCI ID and
-PCI BUS - e. g. something captured from the sysfs node, as I proposed
-on my RFC patch https://patchwork.freedesktop.org/series/109171/.
 
-Regards,
-Mauro
+
+> 
+> Log from similar machine with old version of gem_exec_gttfill:
+> 
+> Opened device: /dev/dri/card0
+> Starting subtest: basic
+> Setup 1025 batches in 2845.22ms
+> Subtest basic: SUCCESS (32.341s)
+> 
+> Kamil Konieczny (4):
+>   lib/igt_core: add fork for dynamic tests
+>   tests/i915/gem_basic: add multi-gpu tests
+>   tests/i915/gem_exec_gttfill: extend basic subtest for multigpu
+>   HAX test only gem_basic subtests
+> 
+>  lib/igt_core.c                        | 141 +++++++++++++++++++++
+>  lib/igt_core.h                        |  22 ++++
+>  tests/i915/gem_basic.c                |  28 ++++-
+>  tests/i915/gem_exec_gttfill.c         |  48 +++++++-
+>  tests/intel-ci/fast-feedback.testlist | 171 +-------------------------
+>  5 files changed, 234 insertions(+), 176 deletions(-)
+> 
+> -- 
+> 2.34.1
+> 
