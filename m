@@ -1,19 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8406410E518
- for <igt-dev@lists.freedesktop.org>; Wed, 12 Oct 2022 14:53:06 +0000 (UTC)
-Date: Wed, 12 Oct 2022 16:53:01 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Message-ID: <Y0bUzT+5wrI+RjW4@kamilkon-desk1>
-References: <20220915081704.3039599-1-karthikeya.sunkesula@intel.com>
- <20220915081704.3039599-2-karthikeya.sunkesula@intel.com>
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8869310E2AC
+ for <igt-dev@lists.freedesktop.org>; Wed, 12 Oct 2022 15:44:56 +0000 (UTC)
+From: "Thasleem, Mohammed" <mohammed.thasleem@intel.com>
+To: =?iso-8859-1?Q?Ville_Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
+Date: Wed, 12 Oct 2022 15:44:50 +0000
+Message-ID: <PH0PR11MB480615E07C4838FC18EA67FCE4229@PH0PR11MB4806.namprd11.prod.outlook.com>
+References: <20220928133703.55196-1-mohammed.thasleem@intel.com>
+ <20221006193319.230261-1-mohammed.thasleem@intel.com>
+ <Yz8y/zn5q05WeOsR@intel.com>
+In-Reply-To: <Yz8y/zn5q05WeOsR@intel.com>
+Content-Language: en-US
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20220915081704.3039599-2-karthikeya.sunkesula@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 1/2] Add descriptions to pm rc6
- residency tests
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_properties: Create dynamic
+ subtests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,78 +23,173 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Badal Nilawar <badal.nilawar@intel.com>,
- Karthikeya Sunkesula <karthikeya.sunkesula@intel.com>
+Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Karthikeya,
+Hi Ville,
 
-On 2022-09-15 at 13:47:03 +0530, Karthikeya Sunkesula wrote:
+Thanks for the reviews.
+Addressed your comments at below series.
+https://patchwork.freedesktop.org/series/109555/=20
+Could you please provide inputs?
 
-Put commit description here.
+Thanks,
+Mohammed Thasleem
+-----Original Message-----
+From: Ville Syrj=E4l=E4 <ville.syrjala@linux.intel.com>=20
+Sent: Friday, October 7, 2022 1:27 AM
+To: Thasleem, Mohammed <mohammed.thasleem@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_properties: Create dynamic s=
+ubtests
 
-> Signed-off-by: Karthikeya Sunkesula <karthikeya.sunkesula@intel.com>
+On Fri, Oct 07, 2022 at 01:03:19AM +0530, Mohammed Thasleem wrote:
+> Modified kms_properties to include dynamic test cases.
+>=20
+> v2: Fixed compilation issue.
+> v3: Removed redundant code.
+> v4: Moved get_prop_sanity calls to igt_subtest_group.
+> v5: Replace for loop with for_each_disconnected_output.
+>=20
+> Signed-off-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
 > ---
->  tests/i915/i915_pm_rc6_residency.c | 8 ++++++++
->  1 file changed, 8 insertions(+)
-> 
-> diff --git a/tests/i915/i915_pm_rc6_residency.c b/tests/i915/i915_pm_rc6_residency.c
-> index cf7a92b9..f8cf4325 100644
-> --- a/tests/i915/i915_pm_rc6_residency.c
-> +++ b/tests/i915/i915_pm_rc6_residency.c
-> @@ -57,6 +57,8 @@ struct residencies {
->  	int duration;
->  };
->  
-> +IGT_TEST_DESCRIPTION("Tests to verify rc6 in different cases");
-> +
-What about:
-Verify power management rc6 residency.
-
-See igt_core.h for how to describe.
-
-Regards,
-Kamil
-
->  static unsigned long get_rc6_enabled_mask(void)
->  {
->  	unsigned long enabled;
-> @@ -541,6 +543,8 @@ igt_main
->  		ctx = intel_ctx_create_all_physical(i915);
->  	}
->  
-> +	igt_describe("Measure rc6 residency and energy, when GPU is idle, "
-> +			"with light workload and with waitboost.");
->  	igt_subtest_with_dynamic("rc6-idle") {
->  		const struct intel_execution_engine2 *e;
->  
-> @@ -555,6 +559,8 @@ igt_main
+>  tests/kms_properties.c | 176=20
+> ++++++++++++++++++-----------------------
+>  1 file changed, 77 insertions(+), 99 deletions(-)
+>=20
+> diff --git a/tests/kms_properties.c b/tests/kms_properties.c index=20
+> 2958efac..76ef64ab 100644
+> --- a/tests/kms_properties.c
+> +++ b/tests/kms_properties.c
+> @@ -43,6 +43,7 @@ static void prepare_pipe(igt_display_t *display, enum p=
+ipe pipe, igt_output_t *o
+>  	igt_create_pattern_fb(display->drm_fd, mode->hdisplay, mode->vdisplay,
+>  			      DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR, fb);
+> =20
+> +	igt_display_reset(display);
+>  	igt_output_set_pipe(output, pipe);
+> =20
+>  	igt_plane_set_fb(igt_output_get_plane_type(output,=20
+> DRM_PLANE_TYPE_PRIMARY), fb); @@ -230,77 +231,52 @@ static void=20
+> run_connector_property_tests(igt_display_t *display, enum pipe pipe,
+> =20
+>  static void plane_properties(igt_display_t *display, bool atomic)  {
+> -	bool found_any =3D false, found;
+>  	igt_output_t *output;
+>  	enum pipe pipe;
+> =20
+> -	if (atomic)
+> -		igt_skip_on(!display->is_atomic);
+> -
+> -	for_each_pipe(display, pipe) {
+> -		found =3D false;
+> -
+> -		for_each_valid_output_on_pipe(display, pipe, output) {
+> -			found_any =3D found =3D true;
+> -
+> +	for_each_pipe_with_single_output(display, pipe, output) {
+> +		igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe),
+> +			      igt_output_name(output)) {
+>  			run_plane_property_tests(display, pipe, output, atomic);
+> -			break;
 >  		}
 >  	}
->  
-> +	igt_describe("Measure rc6 residency for a request held-up by external "
-> +			"fence and verify power conservation while waiting.");
->  	igt_subtest("rc6-fence") {
->  		igt_require_gem(i915);
->  		gem_quiescent_gpu(i915);
-> @@ -580,6 +586,7 @@ igt_main
->  			igt_require(rc6_enabled & RC6_ENABLED);
+> -
+> -	igt_skip_on(!found_any);
+>  }
+> =20
+>  static void crtc_properties(igt_display_t *display, bool atomic)  {
+> -	bool found_any_valid_pipe =3D false, found;
+>  	enum pipe pipe;
+>  	igt_output_t *output;
+> =20
+> -	if (atomic)
+> -		igt_skip_on(!display->is_atomic);
+> -
+> -	for_each_pipe(display, pipe) {
+> -		found =3D false;
+> -
+> -		for_each_valid_output_on_pipe(display, pipe, output) {
+> -			found_any_valid_pipe =3D found =3D true;
+> -
+> +	for_each_pipe_with_single_output(display, pipe, output) {
+> +		igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe),
+> +			      igt_output_name(output)) {
+>  			run_crtc_property_tests(display, pipe, output, atomic);
+> -			break;
 >  		}
->  
-> +		igt_describe("Measure rc6 residency per gt  when it is idle.");
->  		igt_subtest("rc6-accuracy") {
->  			struct residencies res;
->  
-> @@ -587,6 +594,7 @@ igt_main
->  			residency_accuracy(res.rc6, res.duration, "rc6");
+>  	}
+> -
+> -	igt_skip_on(!found_any_valid_pipe);
+>  }
+> =20
+>  static void connector_properties(igt_display_t *display, bool atomic) =20
+> {
+> -	int i;
+>  	enum pipe pipe;
+>  	igt_output_t *output;
+> =20
+> -	if (atomic)
+> -		igt_skip_on(!display->is_atomic);
+> -
+>  	for_each_connected_output(display, output) {
+> -		bool found =3D false;
+> =20
+>  		for_each_pipe(display, pipe) {
+>  			if (!igt_pipe_connector_valid(pipe, output))
+>  				continue;
+> =20
+> -			found =3D true;
+> -			run_connector_property_tests(display, pipe, output, atomic);
+> -			break;
+> +			igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe),
+> +				      igt_output_name(output)) {
+> +				run_connector_property_tests(display, pipe, output, atomic);
+> +			}
 >  		}
->  
-> +		igt_describe("Measure media rc6 residency per gt when it is idle.");
->  		igt_subtest("media-rc6-accuracy") {
->  			struct residencies res;
->  
-> -- 
-> 2.25.1
-> 
+> +		break;
+> =20
+> -		igt_assert_f(found, "Connected output should have at least 1 valid crt=
+c\n");
+>  	}
+> =20
+> -	for (i =3D 0; i < display->n_outputs; i++)
+> -		if (!igt_output_is_connected(&display->outputs[i]))
+> -			run_connector_property_tests(display, PIPE_NONE, &display->outputs[i]=
+, atomic);
+> +	for_each_disconnected_output(display, output)
+
+Nothing to do with the subject of this patch.
+
+> +		run_connector_property_tests(display, PIPE_NONE, output, atomic);
+>  }
+> =20
+>  static void test_invalid_properties(int fd, @@ -368,7 +344,6 @@=20
+> static void test_object_invalid_properties(igt_display_t *display,
+>  	igt_output_t *output;
+>  	igt_plane_t *plane;
+>  	enum pipe pipe;
+> -	int i;
+> =20
+>  	for_each_pipe(display, pipe)
+>  		test_invalid_properties(display->drm_fd, id, type,=20
+> display->pipes[pipe].crtc_id, DRM_MODE_OBJECT_CRTC, atomic); @@ -377,7 +3=
+52,7 @@ static void test_object_invalid_properties(igt_display_t *display,
+>  		for_each_plane_on_pipe(display, pipe, plane)
+>  			test_invalid_properties(display->drm_fd, id, type,=20
+> plane->drm_plane->plane_id, DRM_MODE_OBJECT_PLANE, atomic);
+> =20
+> -	for (i =3D 0, output =3D &display->outputs[0]; i < display->n_outputs; =
+output =3D &display->outputs[++i])
+> +	for_each_connected_output(display, output)
+
+Those two things are not at all the same.
+
+There are clearly multiple patches hiding inside this single mega patch of =
+yours. Please split it up properly.
+
+--
+Ville Syrj=E4l=E4
+Intel
