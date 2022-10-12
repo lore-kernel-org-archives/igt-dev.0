@@ -1,21 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 27B8B10E3B0
- for <igt-dev@lists.freedesktop.org>; Wed, 12 Oct 2022 08:26:41 +0000 (UTC)
-Message-ID: <94e671e1-f342-e095-6c3c-4fc7aafec069@intel.com>
-Date: Wed, 12 Oct 2022 09:26:36 +0100
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DFAE810E3C7
+ for <igt-dev@lists.freedesktop.org>; Wed, 12 Oct 2022 08:39:45 +0000 (UTC)
+Message-ID: <56f8b37f-1c63-d6e9-0d31-d9ef99edc1d4@intel.com>
+Date: Wed, 12 Oct 2022 09:39:40 +0100
 MIME-Version: 1.0
 Content-Language: en-GB
 To: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>,
  igt-dev@lists.freedesktop.org
 References: <20221010065929.32110-1-niranjana.vishwanathapura@intel.com>
- <20221010065929.32110-5-niranjana.vishwanathapura@intel.com>
+ <20221010065929.32110-6-niranjana.vishwanathapura@intel.com>
 From: Matthew Auld <matthew.auld@intel.com>
-In-Reply-To: <20221010065929.32110-5-niranjana.vishwanathapura@intel.com>
+In-Reply-To: <20221010065929.32110-6-niranjana.vishwanathapura@intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Subject: Re: [igt-dev] [PATCH i-g-t v3 04/11] lib/vm_bind: Add support for
- VM private objects
+Subject: Re: [igt-dev] [PATCH i-g-t v3 05/11] lib/vm_bind: Add
+ prime_handle_to_fd_no_assert()
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -30,170 +30,155 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
 On 10/10/2022 07:59, Niranjana Vishwanathapura wrote:
-> Update library interfaces to support creation of VM private
-> objects.
-> 
-> v2: Instead of updating existing functions/macros, add separate
->      functions/macros to append vm_private extension to gem_create_ext.
+> Make prime_handle_to_fd_no_assert() as a library interface
+> as VM_BIND functionality will also be using it.
 > 
 > Signed-off-by: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
 > ---
->   lib/i915/intel_memory_region.c | 48 ++++++++++++++++++++++++++++++----
->   lib/i915/intel_memory_region.h | 25 ++++++++++++++++++
->   2 files changed, 68 insertions(+), 5 deletions(-)
+>   lib/ioctl_wrappers.c | 39 +++++++++++++++++++++++++++++++++------
+>   lib/ioctl_wrappers.h |  1 +
+>   tests/prime_mmap.c   | 26 ++++----------------------
+>   3 files changed, 38 insertions(+), 28 deletions(-)
 > 
-> diff --git a/lib/i915/intel_memory_region.c b/lib/i915/intel_memory_region.c
-> index 075ba0ce32..4a16bd782e 100644
-> --- a/lib/i915/intel_memory_region.c
-> +++ b/lib/i915/intel_memory_region.c
-> @@ -181,11 +181,11 @@ bool gem_has_lmem(int fd)
->   	return gem_get_lmem_region_count(fd) > 0;
->   }
+> diff --git a/lib/ioctl_wrappers.c b/lib/ioctl_wrappers.c
+> index ac37b6bb43..bf7f5f430c 100644
+> --- a/lib/ioctl_wrappers.c
+> +++ b/lib/ioctl_wrappers.c
+> @@ -1153,28 +1153,55 @@ void gem_require_mocs_registers(int fd)
+>   /* prime */
 >   
-> -/* A version of gem_create_in_memory_region_list which can be allowed to
-> -   fail so that the object creation can be retried */
-> -int __gem_create_in_memory_region_list(int fd, uint32_t *handle, uint64_t *size, uint32_t flags,
-> -				       const struct drm_i915_gem_memory_class_instance *mem_regions,
-> -				       int num_regions)
-> +/* A version of __gem_create_in_memory_region_list where additional extensions
-> +   can be appended. */
-> +int __gem_create_in_memory_region_list_ext(int fd, uint32_t *handle, uint64_t *size, uint32_t flags,
-> +					   const struct drm_i915_gem_memory_class_instance *mem_regions,
-> +					   int num_regions, uint64_t ext)
->   {
->   	struct drm_i915_gem_create_ext_memory_regions ext_regions = {
->   		.base = { .name = I915_GEM_CREATE_EXT_MEMORY_REGIONS },
-> @@ -194,6 +194,9 @@ int __gem_create_in_memory_region_list(int fd, uint32_t *handle, uint64_t *size,
->   	};
->   	int ret;
->   
-> +	if (ext)
-> +		ext_regions.base.next_extension = ext;
-> +
->   	ret = __gem_create_ext(fd, size, flags, handle, &ext_regions.base);
->   	if (flags && ret == -EINVAL)
->   		ret = __gem_create_ext(fd, size, 0, handle, &ext_regions.base);
-> @@ -213,6 +216,16 @@ int __gem_create_in_memory_region_list(int fd, uint32_t *handle, uint64_t *size,
->   	return ret;
->   }
->   
-> +/* A version of gem_create_in_memory_region_list which can be allowed to
-> +   fail so that the object creation can be retried */
-> +int __gem_create_in_memory_region_list(int fd, uint32_t *handle, uint64_t *size, uint32_t flags,
-> +				       const struct drm_i915_gem_memory_class_instance *mem_regions,
-> +				       int num_regions)
-> +{
-> +	return __gem_create_in_memory_region_list_ext(fd, handle, size, flags,
-> +						      mem_regions, num_regions, 0);
-> +}
-> +
->   /* gem_create_in_memory_region_list:
->    * @fd: opened i915 drm file descriptor
->    * @size: requested size of the buffer
-> @@ -230,6 +243,31 @@ uint32_t gem_create_in_memory_region_list(int fd, uint64_t size, uint32_t flags,
->   	return handle;
->   }
->   
-> +/* gem_create_vm_private_in_memory_region_list:
-> + * @fd: opened i915 drm file descriptor
-> + * @size: requested size of the buffer
-> + * @flags: associated flags
-> + * @vm_id: vm_id for VM private Objects.
-> + * @mem_regions: memory regions array (priority list)
-> + * @num_regions: @mem_regions length
-> + */
-> +uint32_t gem_create_vm_private_in_memory_region_list(int fd, uint64_t size, uint32_t flags, uint32_t vm_id,
-> +						     const struct drm_i915_gem_memory_class_instance *mem_regions,
-> +						     int num_regions)
-> +{
-> +	struct drm_i915_gem_create_ext_vm_private vm_priv = {
-> +		.base = { .name = I915_GEM_CREATE_EXT_VM_PRIVATE },
-> +		.vm_id = vm_id,
-> +	};
-> +	uint32_t handle;
-> +
-> +	int ret = __gem_create_in_memory_region_list_ext(fd, &handle, &size, flags,
-> +							 mem_regions, num_regions,
-> +							 to_user_pointer(&vm_priv));
-> +	igt_assert_eq(ret, 0);
-> +	return handle;
-> +}
-> +
->   static bool __region_belongs_to_regions_type(struct drm_i915_gem_memory_class_instance region,
->   					     uint32_t *mem_regions_type,
->   					     int num_regions)
-> diff --git a/lib/i915/intel_memory_region.h b/lib/i915/intel_memory_region.h
-> index 425bda0ec7..38a4a08aca 100644
-> --- a/lib/i915/intel_memory_region.h
-> +++ b/lib/i915/intel_memory_region.h
-> @@ -63,6 +63,9 @@ unsigned int gem_get_lmem_region_count(int fd);
->   
->   bool gem_has_lmem(int fd);
->   
-> +int __gem_create_in_memory_region_list_ext(int fd, uint32_t *handle, uint64_t *size, uint32_t flags,
-> +					   const struct drm_i915_gem_memory_class_instance *mem_regions,
-> +					   int num_regions, uint64_t ext);
->   int __gem_create_in_memory_region_list(int fd, uint32_t *handle, uint64_t *size, uint32_t flags,
->   				       const struct drm_i915_gem_memory_class_instance *mem_regions,
->   				       int num_regions);
-> @@ -70,6 +73,9 @@ int __gem_create_in_memory_region_list(int fd, uint32_t *handle, uint64_t *size,
->   uint32_t gem_create_in_memory_region_list(int fd, uint64_t size, uint32_t flags,
->   					  const struct drm_i915_gem_memory_class_instance *mem_regions,
->   					  int num_regions);
-> +uint32_t gem_create_vm_private_in_memory_region_list(int fd, uint64_t size, uint32_t flags, uint32_t vm_id,
-> +						     const struct drm_i915_gem_memory_class_instance *mem_regions,
-> +						     int num_regions);
->   
->   /*
->    * XXX: the whole converting to class_instance thing is meant as a temporary
-> @@ -95,6 +101,16 @@ uint32_t gem_create_in_memory_region_list(int fd, uint64_t size, uint32_t flags,
->   	gem_create_in_memory_region_list(fd, size, 0, arr_query__, ARRAY_SIZE(arr_query__)); \
->   })
->   
-> +#define __gem_create_in_memory_regions_ext(fd, handle, size, ext, regions...) ({ \
-> +	unsigned int arr__[] = { regions }; \
-> +	struct drm_i915_gem_memory_class_instance arr_query__[ARRAY_SIZE(arr__)]; \
-> +	for (int i__  = 0; i__ < ARRAY_SIZE(arr_query__); ++i__) { \
-> +		arr_query__[i__].memory_class = MEMORY_TYPE_FROM_REGION(arr__[i__]);  \
-> +		arr_query__[i__].memory_instance = MEMORY_INSTANCE_FROM_REGION(arr__[i__]);  \
-> +	} \
-> +	__gem_create_in_memory_region_list_ext(fd, handle, size, 0, arr_query__, ARRAY_SIZE(arr_query__), ext); \
-> +})
-> +
->   /*
->    * Create an object that requires CPU access. This only becomes interesting on
->    * platforms that have a small BAR for LMEM CPU access. Without this the object
-> @@ -153,6 +169,15 @@ uint32_t gem_create_in_memory_region_list(int fd, uint64_t size, uint32_t flags,
->   	} \
->   	gem_create_in_memory_region_list(fd, size, ext_flags__, arr_query__, arr_query_size__); \
->   })
-> +#define gem_create_vm_private_in_memory_regions(fd, size, vm_id, regions...) ({ \
-> +	unsigned int arr__[] = { regions };				\
-> +	struct drm_i915_gem_memory_class_instance arr_query__[ARRAY_SIZE(arr__)]; \
-> +	for (int i__  = 0; i__ < ARRAY_SIZE(arr_query__); ++i__) {	\
-> +		arr_query__[i__].memory_class = MEMORY_TYPE_FROM_REGION(arr__[i__]); \
-> +		arr_query__[i__].memory_instance = MEMORY_INSTANCE_FROM_REGION(arr__[i__]); \
-> +	} \
-> +	gem_create_vm_private_in_memory_region_list(fd, size, 0, vm_id, arr_query__, ARRAY_SIZE(arr_query__)); \
-> +})
+>   /**
+> - * prime_handle_to_fd:
+> + * prime_handle_to_fd_no_assert:
+>    * @fd: open i915 drm file descriptor
+>    * @handle: file-private gem buffer object handle
+> + * @flags: DRM_IOCTL_PRIME_HANDLE_TO_FD ioctl flags
+> + * @fd_out: place holder for output file handle
+>    *
+>    * This wraps the PRIME_HANDLE_TO_FD ioctl, which is used to export a gem buffer
+>    * object into a global (i.e. potentially cross-device) dma-buf file-descriptor
+>    * handle.
+>    *
+> - * Returns: The created dma-buf fd handle.
+> + * Returns: 0 on sucess, error otherwise. Upon success, it returns
 
-Do we need these? Can we not just use 
-gem_create_vm_private_in_memory_region_list() directly? IIRC the above 
-was more to convert existing IGTs that were using some old uAPI which we 
-abandoned. If possible, I think for new tests consider just using the 
-pattern:
+success
 
-for_each_memory_region(r, fd) {
-
-}
-
-The region it gives you will then also have the class_instance struct 
-which you can pass directly to gem_create_ext. In the future it can also 
-have stuff like gtt_alignment, which might be useful for you.
-
-Anyway, just something to consider,
 Reviewed-by: Matthew Auld <matthew.auld@intel.com>
 
+> + *          the created dma-buf fd handle in fd_out.
+>    */
+> -int prime_handle_to_fd(int fd, uint32_t handle)
+> +int prime_handle_to_fd_no_assert(int fd, uint32_t handle, int flags, int *fd_out)
+>   {
+>   	struct drm_prime_handle args;
+> +	int ret;
 >   
->   struct igt_collection *
->   __get_memory_region_set(struct drm_i915_query_memory_regions *regions,
+>   	memset(&args, 0, sizeof(args));
+>   	args.handle = handle;
+> -	args.flags = DRM_CLOEXEC;
+> +	args.flags = flags;
+>   	args.fd = -1;
+>   
+> -	do_ioctl(fd, DRM_IOCTL_PRIME_HANDLE_TO_FD, &args);
+> +	ret = drmIoctl(fd, DRM_IOCTL_PRIME_HANDLE_TO_FD, &args);
+> +	if (ret)
+> +		ret = -errno;
+> +	*fd_out = args.fd;
+>   
+> -	return args.fd;
+> +	return ret;
+> +}
+> +
+> +/**
+> + * prime_handle_to_fd:
+> + * @fd: open i915 drm file descriptor
+> + * @handle: file-private gem buffer object handle
+> + *
+> + * This wraps the PRIME_HANDLE_TO_FD ioctl, which is used to export a gem buffer
+> + * object into a global (i.e. potentially cross-device) dma-buf file-descriptor
+> + * handle. It asserts that ioctl succeeds.
+> + *
+> + * Returns: The created dma-buf fd handle.
+> + */
+> +int prime_handle_to_fd(int fd, uint32_t handle)
+> +{
+> +	int dmabuf;
+> +
+> +	igt_assert_eq(prime_handle_to_fd_no_assert(fd, handle, DRM_CLOEXEC, &dmabuf), 0);
+> +
+> +	return dmabuf;
+>   }
+>   
+>   /**
+> diff --git a/lib/ioctl_wrappers.h b/lib/ioctl_wrappers.h
+> index 223cd9160c..9f50a24153 100644
+> --- a/lib/ioctl_wrappers.h
+> +++ b/lib/ioctl_wrappers.h
+> @@ -143,6 +143,7 @@ struct local_dma_buf_sync {
+>   #define LOCAL_DMA_BUF_BASE 'b'
+>   #define LOCAL_DMA_BUF_IOCTL_SYNC _IOW(LOCAL_DMA_BUF_BASE, 0, struct local_dma_buf_sync)
+>   
+> +int prime_handle_to_fd_no_assert(int fd, uint32_t handle, int flags, int *fd_out);
+>   int prime_handle_to_fd(int fd, uint32_t handle);
+>   #ifndef DRM_RDWR
+>   #define DRM_RDWR O_RDWR
+> diff --git a/tests/prime_mmap.c b/tests/prime_mmap.c
+> index bc19f68c98..815921e762 100644
+> --- a/tests/prime_mmap.c
+> +++ b/tests/prime_mmap.c
+> @@ -298,24 +298,6 @@ test_dup(uint32_t region, uint64_t size)
+>   	close (dma_buf_fd);
+>   }
+>   
+> -/* Used for error case testing to avoid wrapper */
+> -static int prime_handle_to_fd_no_assert(uint32_t handle, int flags, int *fd_out)
+> -{
+> -	struct drm_prime_handle args;
+> -	int ret;
+> -
+> -	args.handle = handle;
+> -	args.flags = flags;
+> -	args.fd = -1;
+> -
+> -	ret = drmIoctl(fd, DRM_IOCTL_PRIME_HANDLE_TO_FD, &args);
+> -	if (ret)
+> -		ret = errno;
+> -	*fd_out = args.fd;
+> -
+> -	return ret;
+> -}
+> -
+>   static bool has_userptr(void)
+>   {
+>   	uint32_t handle = 0;
+> @@ -346,9 +328,9 @@ test_userptr(uint32_t region, uint64_t size)
+>   	gem_userptr(fd, (uint32_t *)ptr, size, 0, 0, &handle);
+>   
+>   	/* export userptr */
+> -	ret = prime_handle_to_fd_no_assert(handle, DRM_CLOEXEC, &dma_buf_fd);
+> +	ret = prime_handle_to_fd_no_assert(fd, handle, DRM_CLOEXEC, &dma_buf_fd);
+>   	if (ret) {
+> -		igt_assert(ret == EINVAL || ret == ENODEV);
+> +		igt_assert(ret == -EINVAL || ret == -ENODEV);
+>   		goto free_userptr;
+>   	} else {
+>   		igt_assert_eq(ret, 0);
+> @@ -376,7 +358,7 @@ test_errors(uint32_t region, uint64_t size)
+>   	/* Test for invalid flags */
+>   	igt_assert(__gem_create_in_memory_regions(fd, &handle, &size, region) == 0);
+>   	for (i = 0; i < ARRAY_SIZE(invalid_flags); i++) {
+> -		prime_handle_to_fd_no_assert(handle, invalid_flags[i], &dma_buf_fd);
+> +		prime_handle_to_fd_no_assert(fd, handle, invalid_flags[i], &dma_buf_fd);
+>   		igt_assert_eq(errno, EINVAL);
+>   		errno = 0;
+>   	}
+> @@ -386,7 +368,7 @@ test_errors(uint32_t region, uint64_t size)
+>   	igt_assert(__gem_create_in_memory_regions(fd, &handle, &size, region) == 0);
+>   	fill_bo(handle, size);
+>   	gem_close(fd, handle);
+> -	prime_handle_to_fd_no_assert(handle, DRM_CLOEXEC, &dma_buf_fd);
+> +	prime_handle_to_fd_no_assert(fd, handle, DRM_CLOEXEC, &dma_buf_fd);
+>   	igt_assert(dma_buf_fd == -1 && errno == ENOENT);
+>   	errno = 0;
+>   
