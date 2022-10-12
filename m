@@ -1,22 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-ej1-x629.google.com (mail-ej1-x629.google.com
- [IPv6:2a00:1450:4864:20::629])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9C1A810E010
- for <igt-dev@lists.freedesktop.org>; Wed, 12 Oct 2022 18:55:48 +0000 (UTC)
-Received: by mail-ej1-x629.google.com with SMTP id sc25so33793430ejc.12
- for <igt-dev@lists.freedesktop.org>; Wed, 12 Oct 2022 11:55:48 -0700 (PDT)
-Message-ID: <1e2a5931-3f32-2f2d-6ca1-ad7e064b469e@gmail.com>
-Date: Wed, 12 Oct 2022 21:55:40 +0300
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5820210E04D
+ for <igt-dev@lists.freedesktop.org>; Wed, 12 Oct 2022 18:56:23 +0000 (UTC)
+From: Swati Sharma <swati2.sharma@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Thu, 13 Oct 2022 00:27:56 +0530
+Message-Id: <20221012185756.9088-1-swati2.sharma@intel.com>
 MIME-Version: 1.0
-Content-Language: en-US
-To: Imre Deak <imre.deak@intel.com>, igt-dev@lists.freedesktop.org
-References: <20221011165250.4124304-1-imre.deak@intel.com>
-From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-In-Reply-To: <20221011165250.4124304-1-imre.deak@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Subject: Re: [igt-dev] [PATCH] tests/kms_busy: Ensure GPU reset when waiting
- for a new FB during modeset
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t v2] tests/kms_vblank: Convert test to dynamic
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,115 +16,287 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: juhapekka.heikkila@gmail.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Look ok to me.
+Convert existing subtests to dynamic subtests at pipe/output level.
 
-Reviewed-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+v2: -Remove redundant debug prints
+    -Convert all subtests into dynamic
 
-On 11.10.2022 19.52, Imre Deak wrote:
-> When waiting for a modeset's new framebuffer the timeout for this FB's
-> fence to signal is determined by the kernel's
-> CONFIG_DRM_I915_FENCE_TIMEOUT which is 10 sec by default (and in the
-> current CI kconfig). The GPU reset timeout in turn is determined by
-> CONFIG_DRM_I915_HEARTBEAT_INTERVAL which is 2.5 sec by default (and in
-> the current CI kconfig). By default a spinner batch - like the one
-> created by test_atomic_commit_hang() - will cause a GPU reset that is 5
-> times the above heartbeat interval (the interval rounded to seconds
-> first, that is 15 seconds atm).
-> 
-> Based on the above during extended-modeset-hang-newfb-with-reset the
-> enabling modeset part for instance will cause a fence timeout before the
-> presumed GPU hang would be detected, so the corresponding commit will
-> complete without the expected GPU reset.
-> 
-> Note that extended-modeset-hang-oldfb-with-reset for instance is not
-> affected by this problem, since waiting for the old framebuffer's fence
-> to signal happens without a fence timeout (timing out instead at the
-> GPU hang detect/reset).
-> 
-> Fix the above by reducing the heartbeat interval to 250 msec,
-> corresponding to a ~1.3 sec GPU hang detection timeout. This also speeds
-> up the GPU hang subtests.
-> 
-> Testcase: igt@kms_busy@extended-modeset-hang-newfb-with-reset
-> Signed-off-by: Imre Deak <imre.deak@intel.com>
-> ---
->   tests/i915/kms_busy.c | 36 +++++++++++++++++++++++++++++++++++-
->   1 file changed, 35 insertions(+), 1 deletion(-)
-> 
-> diff --git a/tests/i915/kms_busy.c b/tests/i915/kms_busy.c
-> index 99a07c2ae..9ef53f594 100644
-> --- a/tests/i915/kms_busy.c
-> +++ b/tests/i915/kms_busy.c
-> @@ -312,6 +312,33 @@ static int opt_handler(int opt, int opt_index, void *data)
->   	return IGT_OPT_HANDLER_SUCCESS;
->   }
->   
-> +static void gpu_engines_init_timeouts(int fd, int max_engines,
-> +				      int *num_engines, struct gem_engine_properties *props)
-> +{
-> +	const struct intel_execution_engine2 *e;
-> +
-> +	*num_engines = 0;
-> +	for_each_physical_engine(fd, e) {
-> +		igt_assert(*num_engines < max_engines);
-> +
-> +		props[*num_engines].engine = e;
-> +		props[*num_engines].preempt_timeout = 0;
-> +		props[*num_engines].heartbeat_interval = 250;
-> +
-> +		gem_engine_properties_configure(fd, &props[*num_engines]);
-> +
-> +		(*num_engines)++;
-> +	}
-> +}
-> +
-> +static void gpu_engines_restore_timeouts(int fd, int num_engines, const struct gem_engine_properties *props)
-> +{
-> +	int i;
-> +
-> +	for (i = 0; i < num_engines; i++)
-> +		gem_engine_properties_restore(fd, &props[i]);
-> +}
-> +
->   const char *help_str =
->   	"  -e \tRun on all pipes. (By default subtests will run on two pipes)\n";
->   
-> @@ -335,11 +362,15 @@ igt_main_args("e", NULL, help_str, opt_handler, NULL)
->   		{ "extended-modeset-hang-oldfb-with-reset", true, false, true },
->   		{ "extended-modeset-hang-newfb-with-reset", true, true, true },
->   	};
-> +	struct gem_engine_properties saved_gpu_timeouts[GEM_MAX_ENGINES];
-> +	int num_engines;
-> +	int fd;
->   
->   	igt_fixture {
-> -		int fd = drm_open_driver_master(DRIVER_INTEL);
->   		enum pipe pipe;
->   
-> +		fd = drm_open_driver_master(DRIVER_INTEL);
-> +
->   		igt_require_gem(fd);
->   		gem_require_mmap_device_coherent(fd);
->   		igt_require(gem_has_ring(fd, I915_EXEC_DEFAULT));
-> @@ -352,6 +383,8 @@ igt_main_args("e", NULL, help_str, opt_handler, NULL)
->   		for_each_pipe(&display, pipe)
->   			active_pipes[last_pipe++] = pipe;
->   		last_pipe--;
-> +
-> +		gpu_engines_init_timeouts(fd, ARRAY_SIZE(saved_gpu_timeouts), &num_engines, saved_gpu_timeouts);
->   	}
->   
->   	/* XXX Extend to cover atomic rendering tests to all planes + legacy */
-> @@ -435,6 +468,7 @@ igt_main_args("e", NULL, help_str, opt_handler, NULL)
->   	}
->   
->   	igt_fixture {
-> +		gpu_engines_restore_timeouts(fd, num_engines, saved_gpu_timeouts);
->   		igt_display_fini(&display);
->   	}
->   }
+Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
+---
+ tests/kms_vblank.c | 159 +++++++++++++++++++++------------------------
+ 1 file changed, 73 insertions(+), 86 deletions(-)
+
+diff --git a/tests/kms_vblank.c b/tests/kms_vblank.c
+index 5bd3fefe1..1ca4c147d 100644
+--- a/tests/kms_vblank.c
++++ b/tests/kms_vblank.c
+@@ -21,11 +21,6 @@
+  * IN THE SOFTWARE.
+  */
+ 
+-/** @file kms_vblank.c
+- *
+- * This is a test of performance of drmWaitVblank.
+- */
+-
+ #include "igt.h"
+ #include <stdlib.h>
+ #include <stdio.h>
+@@ -41,7 +36,7 @@
+ 
+ #include <drm.h>
+ 
+-IGT_TEST_DESCRIPTION("Test speed of WaitVblank.");
++IGT_TEST_DESCRIPTION("This is a test of performance of drmWaitVblank.");
+ 
+ typedef struct {
+ 	igt_display_t display;
+@@ -125,10 +120,6 @@ static void run_test(data_t *data, void (*testfunc)(data_t *, int, int))
+ 	if (data->flags & RPM)
+ 		igt_require(igt_setup_runtime_pm(fd));
+ 
+-	igt_info("Beginning %s on pipe %s, connector %s\n",
+-		 igt_subtest_name(), kmstest_pipe_name(data->pipe),
+-		 igt_output_name(output));
+-
+ 	if (!(data->flags & NOHANG)) {
+ 		ahnd = get_reloc_ahnd(fd, 0);
+ 		hang = igt_hang_ring_with_ahnd(fd, I915_EXEC_DEFAULT, ahnd);
+@@ -166,66 +157,58 @@ static void run_test(data_t *data, void (*testfunc)(data_t *, int, int))
+ 	if (!(data->flags & NOHANG))
+ 		igt_post_hang_ring(fd, hang);
+ 
+-	igt_info("\n%s on pipe %s, connector %s: PASSED\n\n",
+-		 igt_subtest_name(), kmstest_pipe_name(data->pipe), igt_output_name(output));
+-
+ 	put_ahnd(ahnd);
+ 
+ 	/* cleanup what prepare_crtc() has done */
+ 	cleanup_crtc(data, fd, output);
+ }
+ 
+-static void crtc_id_subtest(data_t *data, int fd)
++static void crtc_id_subtest(data_t *data, int fd, enum pipe p, igt_output_t *output)
+ {
+ 	igt_display_t *display = &data->display;
+-	igt_output_t *output;
+-	enum pipe p;
+-
+-	for_each_pipe_with_valid_output(display, p, output) {
+-		struct drm_event_vblank buf;
+-		const uint32_t pipe_id_flag = kmstest_get_vbl_flag(p);
+-		unsigned crtc_id, expected_crtc_id;
+-		uint64_t val;
+-		union drm_wait_vblank vbl;
+-
+-		crtc_id = display->pipes[p].crtc_id;
+-		if (drmGetCap(display->drm_fd, DRM_CAP_CRTC_IN_VBLANK_EVENT, &val) == 0)
+-			expected_crtc_id = crtc_id;
+-		else
+-			expected_crtc_id = 0;
++	struct drm_event_vblank buf;
++	const uint32_t pipe_id_flag = kmstest_get_vbl_flag(p);
++	unsigned crtc_id, expected_crtc_id;
++	uint64_t val;
++	union drm_wait_vblank vbl;
+ 
+-		data->pipe = p;
+-		prepare_crtc(data, fd, output);
++	crtc_id = display->pipes[p].crtc_id;
++	if (drmGetCap(display->drm_fd, DRM_CAP_CRTC_IN_VBLANK_EVENT, &val) == 0)
++		expected_crtc_id = crtc_id;
++	else
++		expected_crtc_id = 0;
+ 
+-		memset(&vbl, 0, sizeof(vbl));
+-		vbl.request.type = DRM_VBLANK_RELATIVE | DRM_VBLANK_EVENT;
+-		vbl.request.type |= pipe_id_flag;
+-		vbl.request.sequence = 1;
+-		igt_assert_eq(wait_vblank(fd, &vbl), 0);
++	data->pipe = p;
++	prepare_crtc(data, fd, output);
+ 
+-		igt_assert_eq(read(fd, &buf, sizeof(buf)), sizeof(buf));
+-		igt_assert_eq(buf.crtc_id, expected_crtc_id);
++	memset(&vbl, 0, sizeof(vbl));
++	vbl.request.type = DRM_VBLANK_RELATIVE | DRM_VBLANK_EVENT;
++	vbl.request.type |= pipe_id_flag;
++	vbl.request.sequence = 1;
++	igt_assert_eq(wait_vblank(fd, &vbl), 0);
+ 
+-		do_or_die(drmModePageFlip(fd, crtc_id,
+-					  data->primary_fb.fb_id,
+-					  DRM_MODE_PAGE_FLIP_EVENT, NULL));
++	igt_assert_eq(read(fd, &buf, sizeof(buf)), sizeof(buf));
++	igt_assert_eq(buf.crtc_id, expected_crtc_id);
+ 
+-		igt_assert_eq(read(fd, &buf, sizeof(buf)), sizeof(buf));
+-		igt_assert_eq(buf.crtc_id, expected_crtc_id);
++	do_or_die(drmModePageFlip(fd, crtc_id,
++				  data->primary_fb.fb_id,
++				  DRM_MODE_PAGE_FLIP_EVENT, NULL));
+ 
+-		if (display->is_atomic) {
+-			igt_plane_t *primary = igt_output_get_plane(output, 0);
++	igt_assert_eq(read(fd, &buf, sizeof(buf)), sizeof(buf));
++	igt_assert_eq(buf.crtc_id, expected_crtc_id);
+ 
+-			igt_plane_set_fb(primary, &data->primary_fb);
+-			igt_display_commit_atomic(display, DRM_MODE_PAGE_FLIP_EVENT, NULL);
++	if (display->is_atomic) {
++		igt_plane_t *primary = igt_output_get_plane(output, 0);
+ 
+-			igt_assert_eq(read(fd, &buf, sizeof(buf)), sizeof(buf));
+-			igt_assert_eq(buf.crtc_id, expected_crtc_id);
+-		}
++		igt_plane_set_fb(primary, &data->primary_fb);
++		igt_display_commit_atomic(display, DRM_MODE_PAGE_FLIP_EVENT, NULL);
+ 
+-		cleanup_crtc(data, fd, output);
+-		return;
++		igt_assert_eq(read(fd, &buf, sizeof(buf)), sizeof(buf));
++		igt_assert_eq(buf.crtc_id, expected_crtc_id);
+ 	}
++
++	cleanup_crtc(data, fd, output);
++	return;
+ }
+ 
+ static void accuracy(data_t *data, int fd, int nchildren)
+@@ -403,8 +386,10 @@ static void vblank_ts_cont(data_t *data, int fd, int nchildren)
+ 			estimated_vblanks, seq2, seq1 + estimated_vblanks);
+ }
+ 
+-static void run_subtests_for_pipe(data_t *data)
++static void run_subtests(data_t *data)
+ {
++	enum pipe p;
++
+ 	const struct {
+ 		const char *name;
+ 		void (*func)(data_t *, int, int);
+@@ -437,21 +422,19 @@ static void run_subtests_for_pipe(data_t *data)
+ 		{ }
+ 	}, *m;
+ 
+-	igt_fixture
+-		igt_display_require_output_on_pipe(&data->display, data->pipe);
+-
+ 	for (f = funcs; f->name; f++) {
+ 		for (m = modes; m->name; m++) {
+ 			if (m->flags & ~(f->valid | NOHANG))
+ 				continue;
+ 
+-			igt_describe("Check if test run while hanging by introducing NOHANG flag");
+-			igt_subtest_f("pipe-%s-%s-%s",
+-				      kmstest_pipe_name(data->pipe),
+-				      f->name, m->name) {
+-				for_each_valid_output_on_pipe(&data->display, data->pipe, data->output) {
+-					data->flags = m->flags | NOHANG;
+-					run_test(data, f->func);
++			igt_describe("Check if test run while hanging by introducing NOHANG flag.");
++			igt_subtest_with_dynamic_f("%s-%s", f->name, m->name) {
++				for_each_pipe_with_valid_output(&data->display, p, data->output) {
++					igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(p), data->output->name) {
++						data->pipe = p;
++						data->flags = m->flags | NOHANG;
++						run_test(data, f->func);
++					}
+ 				}
+ 			}
+ 
+@@ -459,16 +442,16 @@ static void run_subtests_for_pipe(data_t *data)
+ 			if (f->valid & NOHANG || m->flags & NOHANG)
+ 				continue;
+ 
+-			igt_describe("check if injected hang is working properly");
+-			igt_subtest_f("pipe-%s-%s-%s-hang",
+-				      kmstest_pipe_name(data->pipe),
+-				      f->name, m->name) {
++			igt_describe("Check if injected hang is working properly.");
++			igt_subtest_with_dynamic_f("%s-%s-hang", f->name, m->name) {
+ 				igt_hang_t hang;
+-
+ 				hang = igt_allow_hang(data->display.drm_fd, 0, 0);
+-				for_each_valid_output_on_pipe(&data->display, data->pipe, data->output) {
+-					data->flags = m->flags;
+-					run_test(data, f->func);
++				for_each_pipe_with_valid_output(&data->display, p, data->output) {
++					igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(p), data->output->name) {
++						data->pipe = p;
++						data->flags = m->flags;
++						run_test(data, f->func);
++					}
+ 				}
+ 				igt_disallow_hang(data->display.drm_fd, hang);
+ 			}
+@@ -476,18 +459,13 @@ static void run_subtests_for_pipe(data_t *data)
+ 	}
+ }
+ 
+-static void invalid_subtest(data_t *data, int fd)
++static void invalid_subtest(data_t *data, int fd, enum pipe pipe, igt_output_t *output)
+ {
+ 	union drm_wait_vblank vbl;
+ 	unsigned long valid_flags;
+-	igt_display_t* display = &data->display;
+-	enum pipe pipe = 0;
+-	igt_output_t* output = igt_get_single_output_for_pipe(display, pipe);
+-
+ 	data->pipe = pipe;
+ 	data->output = output;
+-	igt_output_set_pipe(output, pipe);
+-	igt_display_require_output_on_pipe(display, pipe);
++
+ 	prepare_crtc(data, fd, output);
+ 
+ 	/* First check all is well with a simple query */
+@@ -530,6 +508,7 @@ static void invalid_subtest(data_t *data, int fd)
+ igt_main
+ {
+ 	int fd;
++	enum pipe p;
+ 	data_t data;
+ 
+ 	igt_fixture {
+@@ -540,18 +519,26 @@ igt_main
+ 	}
+ 
+ 	igt_describe("Negative test for vblank request");
+-	igt_subtest("invalid")
+-		invalid_subtest(&data, fd);
++	igt_subtest_with_dynamic("invalid") {
++		for_each_pipe_with_valid_output(&data.display, p, data.output) {
++			igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(p), data.output->name)
++				invalid_subtest(&data, fd, p, data.output);
++			break;
++		}
++	}
+ 
+-	igt_describe("check the Vblank and flip events works with given crtc id");
+-	igt_subtest("crtc-id")
+-		crtc_id_subtest(&data, fd);
++	igt_describe("Test to check if vblank and flip events works with given crtc id");
++	igt_subtest_with_dynamic("crtc-id") {
++		for_each_pipe_with_valid_output(&data.display, p, data.output) {
++			igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(p), data.output->name)
++				crtc_id_subtest(&data, fd, p, data.output);
++		}
++	}
+ 
+-	for_each_pipe_static(data.pipe)
+-		igt_subtest_group
+-			run_subtests_for_pipe(&data);
++	run_subtests(&data);
+ 
+ 	igt_fixture {
++		igt_display_fini(&data.display);
+ 		close(fd);
+ 	}
+ }
+-- 
+2.25.1
