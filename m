@@ -1,14 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5820210E04D
- for <igt-dev@lists.freedesktop.org>; Wed, 12 Oct 2022 18:56:23 +0000 (UTC)
-From: Swati Sharma <swati2.sharma@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Thu, 13 Oct 2022 00:27:56 +0530
-Message-Id: <20221012185756.9088-1-swati2.sharma@intel.com>
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6379C10E0C1
+ for <igt-dev@lists.freedesktop.org>; Wed, 12 Oct 2022 19:19:08 +0000 (UTC)
+Date: Wed, 12 Oct 2022 12:18:44 -0700
+From: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
+To: Matthew Auld <matthew.auld@intel.com>
+Message-ID: <20221012191843.GC26976@nvishwa1-DESK>
+References: <20221010065929.32110-1-niranjana.vishwanathapura@intel.com>
+ <20221010065929.32110-5-niranjana.vishwanathapura@intel.com>
+ <94e671e1-f342-e095-6c3c-4fc7aafec069@intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v2] tests/kms_vblank: Convert test to dynamic
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <94e671e1-f342-e095-6c3c-4fc7aafec069@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t v3 04/11] lib/vm_bind: Add support for
+ VM private objects
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -16,287 +22,176 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: tvrtko.ursulin@intel.com, igt-dev@lists.freedesktop.org,
+ thomas.hellstrom@intel.com, daniel.vetter@intel.com, petri.latvala@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Convert existing subtests to dynamic subtests at pipe/output level.
+On Wed, Oct 12, 2022 at 09:26:36AM +0100, Matthew Auld wrote:
+>On 10/10/2022 07:59, Niranjana Vishwanathapura wrote:
+>>Update library interfaces to support creation of VM private
+>>objects.
+>>
+>>v2: Instead of updating existing functions/macros, add separate
+>>     functions/macros to append vm_private extension to gem_create_ext.
+>>
+>>Signed-off-by: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
+>>---
+>>  lib/i915/intel_memory_region.c | 48 ++++++++++++++++++++++++++++++----
+>>  lib/i915/intel_memory_region.h | 25 ++++++++++++++++++
+>>  2 files changed, 68 insertions(+), 5 deletions(-)
+>>
+>>diff --git a/lib/i915/intel_memory_region.c b/lib/i915/intel_memory_region.c
+>>index 075ba0ce32..4a16bd782e 100644
+>>--- a/lib/i915/intel_memory_region.c
+>>+++ b/lib/i915/intel_memory_region.c
+>>@@ -181,11 +181,11 @@ bool gem_has_lmem(int fd)
+>>  	return gem_get_lmem_region_count(fd) > 0;
+>>  }
+>>-/* A version of gem_create_in_memory_region_list which can be allowed to
+>>-   fail so that the object creation can be retried */
+>>-int __gem_create_in_memory_region_list(int fd, uint32_t *handle, uint64_t *size, uint32_t flags,
+>>-				       const struct drm_i915_gem_memory_class_instance *mem_regions,
+>>-				       int num_regions)
+>>+/* A version of __gem_create_in_memory_region_list where additional extensions
+>>+   can be appended. */
+>>+int __gem_create_in_memory_region_list_ext(int fd, uint32_t *handle, uint64_t *size, uint32_t flags,
+>>+					   const struct drm_i915_gem_memory_class_instance *mem_regions,
+>>+					   int num_regions, uint64_t ext)
+>>  {
+>>  	struct drm_i915_gem_create_ext_memory_regions ext_regions = {
+>>  		.base = { .name = I915_GEM_CREATE_EXT_MEMORY_REGIONS },
+>>@@ -194,6 +194,9 @@ int __gem_create_in_memory_region_list(int fd, uint32_t *handle, uint64_t *size,
+>>  	};
+>>  	int ret;
+>>+	if (ext)
+>>+		ext_regions.base.next_extension = ext;
+>>+
+>>  	ret = __gem_create_ext(fd, size, flags, handle, &ext_regions.base);
+>>  	if (flags && ret == -EINVAL)
+>>  		ret = __gem_create_ext(fd, size, 0, handle, &ext_regions.base);
+>>@@ -213,6 +216,16 @@ int __gem_create_in_memory_region_list(int fd, uint32_t *handle, uint64_t *size,
+>>  	return ret;
+>>  }
+>>+/* A version of gem_create_in_memory_region_list which can be allowed to
+>>+   fail so that the object creation can be retried */
+>>+int __gem_create_in_memory_region_list(int fd, uint32_t *handle, uint64_t *size, uint32_t flags,
+>>+				       const struct drm_i915_gem_memory_class_instance *mem_regions,
+>>+				       int num_regions)
+>>+{
+>>+	return __gem_create_in_memory_region_list_ext(fd, handle, size, flags,
+>>+						      mem_regions, num_regions, 0);
+>>+}
+>>+
+>>  /* gem_create_in_memory_region_list:
+>>   * @fd: opened i915 drm file descriptor
+>>   * @size: requested size of the buffer
+>>@@ -230,6 +243,31 @@ uint32_t gem_create_in_memory_region_list(int fd, uint64_t size, uint32_t flags,
+>>  	return handle;
+>>  }
+>>+/* gem_create_vm_private_in_memory_region_list:
+>>+ * @fd: opened i915 drm file descriptor
+>>+ * @size: requested size of the buffer
+>>+ * @flags: associated flags
+>>+ * @vm_id: vm_id for VM private Objects.
+>>+ * @mem_regions: memory regions array (priority list)
+>>+ * @num_regions: @mem_regions length
+>>+ */
+>>+uint32_t gem_create_vm_private_in_memory_region_list(int fd, uint64_t size, uint32_t flags, uint32_t vm_id,
+>>+						     const struct drm_i915_gem_memory_class_instance *mem_regions,
+>>+						     int num_regions)
+>>+{
+>>+	struct drm_i915_gem_create_ext_vm_private vm_priv = {
+>>+		.base = { .name = I915_GEM_CREATE_EXT_VM_PRIVATE },
+>>+		.vm_id = vm_id,
+>>+	};
+>>+	uint32_t handle;
+>>+
+>>+	int ret = __gem_create_in_memory_region_list_ext(fd, &handle, &size, flags,
+>>+							 mem_regions, num_regions,
+>>+							 to_user_pointer(&vm_priv));
+>>+	igt_assert_eq(ret, 0);
+>>+	return handle;
+>>+}
+>>+
+>>  static bool __region_belongs_to_regions_type(struct drm_i915_gem_memory_class_instance region,
+>>  					     uint32_t *mem_regions_type,
+>>  					     int num_regions)
+>>diff --git a/lib/i915/intel_memory_region.h b/lib/i915/intel_memory_region.h
+>>index 425bda0ec7..38a4a08aca 100644
+>>--- a/lib/i915/intel_memory_region.h
+>>+++ b/lib/i915/intel_memory_region.h
+>>@@ -63,6 +63,9 @@ unsigned int gem_get_lmem_region_count(int fd);
+>>  bool gem_has_lmem(int fd);
+>>+int __gem_create_in_memory_region_list_ext(int fd, uint32_t *handle, uint64_t *size, uint32_t flags,
+>>+					   const struct drm_i915_gem_memory_class_instance *mem_regions,
+>>+					   int num_regions, uint64_t ext);
+>>  int __gem_create_in_memory_region_list(int fd, uint32_t *handle, uint64_t *size, uint32_t flags,
+>>  				       const struct drm_i915_gem_memory_class_instance *mem_regions,
+>>  				       int num_regions);
+>>@@ -70,6 +73,9 @@ int __gem_create_in_memory_region_list(int fd, uint32_t *handle, uint64_t *size,
+>>  uint32_t gem_create_in_memory_region_list(int fd, uint64_t size, uint32_t flags,
+>>  					  const struct drm_i915_gem_memory_class_instance *mem_regions,
+>>  					  int num_regions);
+>>+uint32_t gem_create_vm_private_in_memory_region_list(int fd, uint64_t size, uint32_t flags, uint32_t vm_id,
+>>+						     const struct drm_i915_gem_memory_class_instance *mem_regions,
+>>+						     int num_regions);
+>>  /*
+>>   * XXX: the whole converting to class_instance thing is meant as a temporary
+>>@@ -95,6 +101,16 @@ uint32_t gem_create_in_memory_region_list(int fd, uint64_t size, uint32_t flags,
+>>  	gem_create_in_memory_region_list(fd, size, 0, arr_query__, ARRAY_SIZE(arr_query__)); \
+>>  })
+>>+#define __gem_create_in_memory_regions_ext(fd, handle, size, ext, regions...) ({ \
+>>+	unsigned int arr__[] = { regions }; \
+>>+	struct drm_i915_gem_memory_class_instance arr_query__[ARRAY_SIZE(arr__)]; \
+>>+	for (int i__  = 0; i__ < ARRAY_SIZE(arr_query__); ++i__) { \
+>>+		arr_query__[i__].memory_class = MEMORY_TYPE_FROM_REGION(arr__[i__]);  \
+>>+		arr_query__[i__].memory_instance = MEMORY_INSTANCE_FROM_REGION(arr__[i__]);  \
+>>+	} \
+>>+	__gem_create_in_memory_region_list_ext(fd, handle, size, 0, arr_query__, ARRAY_SIZE(arr_query__), ext); \
+>>+})
+>>+
+>>  /*
+>>   * Create an object that requires CPU access. This only becomes interesting on
+>>   * platforms that have a small BAR for LMEM CPU access. Without this the object
+>>@@ -153,6 +169,15 @@ uint32_t gem_create_in_memory_region_list(int fd, uint64_t size, uint32_t flags,
+>>  	} \
+>>  	gem_create_in_memory_region_list(fd, size, ext_flags__, arr_query__, arr_query_size__); \
+>>  })
+>>+#define gem_create_vm_private_in_memory_regions(fd, size, vm_id, regions...) ({ \
+>>+	unsigned int arr__[] = { regions };				\
+>>+	struct drm_i915_gem_memory_class_instance arr_query__[ARRAY_SIZE(arr__)]; \
+>>+	for (int i__  = 0; i__ < ARRAY_SIZE(arr_query__); ++i__) {	\
+>>+		arr_query__[i__].memory_class = MEMORY_TYPE_FROM_REGION(arr__[i__]); \
+>>+		arr_query__[i__].memory_instance = MEMORY_INSTANCE_FROM_REGION(arr__[i__]); \
+>>+	} \
+>>+	gem_create_vm_private_in_memory_region_list(fd, size, 0, vm_id, arr_query__, ARRAY_SIZE(arr_query__)); \
+>>+})
+>
+>Do we need these? Can we not just use 
+>gem_create_vm_private_in_memory_region_list() directly? IIRC the above 
+>was more to convert existing IGTs that were using some old uAPI which 
+>we abandoned. If possible, I think for new tests consider just using 
+>the pattern:
+>
+>for_each_memory_region(r, fd) {
+>
+>}
+>
+>The region it gives you will then also have the class_instance struct 
+>which you can pass directly to gem_create_ext. In the future it can 
+>also have stuff like gtt_alignment, which might be useful for you.
+>
 
-v2: -Remove redundant debug prints
-    -Convert all subtests into dynamic
+Ok, will remove this patch entirely.
+Instead will use gem_create_ext() to create vm private objects.
 
-Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
----
- tests/kms_vblank.c | 159 +++++++++++++++++++++------------------------
- 1 file changed, 73 insertions(+), 86 deletions(-)
+Regards,
+Niranjana
 
-diff --git a/tests/kms_vblank.c b/tests/kms_vblank.c
-index 5bd3fefe1..1ca4c147d 100644
---- a/tests/kms_vblank.c
-+++ b/tests/kms_vblank.c
-@@ -21,11 +21,6 @@
-  * IN THE SOFTWARE.
-  */
- 
--/** @file kms_vblank.c
-- *
-- * This is a test of performance of drmWaitVblank.
-- */
--
- #include "igt.h"
- #include <stdlib.h>
- #include <stdio.h>
-@@ -41,7 +36,7 @@
- 
- #include <drm.h>
- 
--IGT_TEST_DESCRIPTION("Test speed of WaitVblank.");
-+IGT_TEST_DESCRIPTION("This is a test of performance of drmWaitVblank.");
- 
- typedef struct {
- 	igt_display_t display;
-@@ -125,10 +120,6 @@ static void run_test(data_t *data, void (*testfunc)(data_t *, int, int))
- 	if (data->flags & RPM)
- 		igt_require(igt_setup_runtime_pm(fd));
- 
--	igt_info("Beginning %s on pipe %s, connector %s\n",
--		 igt_subtest_name(), kmstest_pipe_name(data->pipe),
--		 igt_output_name(output));
--
- 	if (!(data->flags & NOHANG)) {
- 		ahnd = get_reloc_ahnd(fd, 0);
- 		hang = igt_hang_ring_with_ahnd(fd, I915_EXEC_DEFAULT, ahnd);
-@@ -166,66 +157,58 @@ static void run_test(data_t *data, void (*testfunc)(data_t *, int, int))
- 	if (!(data->flags & NOHANG))
- 		igt_post_hang_ring(fd, hang);
- 
--	igt_info("\n%s on pipe %s, connector %s: PASSED\n\n",
--		 igt_subtest_name(), kmstest_pipe_name(data->pipe), igt_output_name(output));
--
- 	put_ahnd(ahnd);
- 
- 	/* cleanup what prepare_crtc() has done */
- 	cleanup_crtc(data, fd, output);
- }
- 
--static void crtc_id_subtest(data_t *data, int fd)
-+static void crtc_id_subtest(data_t *data, int fd, enum pipe p, igt_output_t *output)
- {
- 	igt_display_t *display = &data->display;
--	igt_output_t *output;
--	enum pipe p;
--
--	for_each_pipe_with_valid_output(display, p, output) {
--		struct drm_event_vblank buf;
--		const uint32_t pipe_id_flag = kmstest_get_vbl_flag(p);
--		unsigned crtc_id, expected_crtc_id;
--		uint64_t val;
--		union drm_wait_vblank vbl;
--
--		crtc_id = display->pipes[p].crtc_id;
--		if (drmGetCap(display->drm_fd, DRM_CAP_CRTC_IN_VBLANK_EVENT, &val) == 0)
--			expected_crtc_id = crtc_id;
--		else
--			expected_crtc_id = 0;
-+	struct drm_event_vblank buf;
-+	const uint32_t pipe_id_flag = kmstest_get_vbl_flag(p);
-+	unsigned crtc_id, expected_crtc_id;
-+	uint64_t val;
-+	union drm_wait_vblank vbl;
- 
--		data->pipe = p;
--		prepare_crtc(data, fd, output);
-+	crtc_id = display->pipes[p].crtc_id;
-+	if (drmGetCap(display->drm_fd, DRM_CAP_CRTC_IN_VBLANK_EVENT, &val) == 0)
-+		expected_crtc_id = crtc_id;
-+	else
-+		expected_crtc_id = 0;
- 
--		memset(&vbl, 0, sizeof(vbl));
--		vbl.request.type = DRM_VBLANK_RELATIVE | DRM_VBLANK_EVENT;
--		vbl.request.type |= pipe_id_flag;
--		vbl.request.sequence = 1;
--		igt_assert_eq(wait_vblank(fd, &vbl), 0);
-+	data->pipe = p;
-+	prepare_crtc(data, fd, output);
- 
--		igt_assert_eq(read(fd, &buf, sizeof(buf)), sizeof(buf));
--		igt_assert_eq(buf.crtc_id, expected_crtc_id);
-+	memset(&vbl, 0, sizeof(vbl));
-+	vbl.request.type = DRM_VBLANK_RELATIVE | DRM_VBLANK_EVENT;
-+	vbl.request.type |= pipe_id_flag;
-+	vbl.request.sequence = 1;
-+	igt_assert_eq(wait_vblank(fd, &vbl), 0);
- 
--		do_or_die(drmModePageFlip(fd, crtc_id,
--					  data->primary_fb.fb_id,
--					  DRM_MODE_PAGE_FLIP_EVENT, NULL));
-+	igt_assert_eq(read(fd, &buf, sizeof(buf)), sizeof(buf));
-+	igt_assert_eq(buf.crtc_id, expected_crtc_id);
- 
--		igt_assert_eq(read(fd, &buf, sizeof(buf)), sizeof(buf));
--		igt_assert_eq(buf.crtc_id, expected_crtc_id);
-+	do_or_die(drmModePageFlip(fd, crtc_id,
-+				  data->primary_fb.fb_id,
-+				  DRM_MODE_PAGE_FLIP_EVENT, NULL));
- 
--		if (display->is_atomic) {
--			igt_plane_t *primary = igt_output_get_plane(output, 0);
-+	igt_assert_eq(read(fd, &buf, sizeof(buf)), sizeof(buf));
-+	igt_assert_eq(buf.crtc_id, expected_crtc_id);
- 
--			igt_plane_set_fb(primary, &data->primary_fb);
--			igt_display_commit_atomic(display, DRM_MODE_PAGE_FLIP_EVENT, NULL);
-+	if (display->is_atomic) {
-+		igt_plane_t *primary = igt_output_get_plane(output, 0);
- 
--			igt_assert_eq(read(fd, &buf, sizeof(buf)), sizeof(buf));
--			igt_assert_eq(buf.crtc_id, expected_crtc_id);
--		}
-+		igt_plane_set_fb(primary, &data->primary_fb);
-+		igt_display_commit_atomic(display, DRM_MODE_PAGE_FLIP_EVENT, NULL);
- 
--		cleanup_crtc(data, fd, output);
--		return;
-+		igt_assert_eq(read(fd, &buf, sizeof(buf)), sizeof(buf));
-+		igt_assert_eq(buf.crtc_id, expected_crtc_id);
- 	}
-+
-+	cleanup_crtc(data, fd, output);
-+	return;
- }
- 
- static void accuracy(data_t *data, int fd, int nchildren)
-@@ -403,8 +386,10 @@ static void vblank_ts_cont(data_t *data, int fd, int nchildren)
- 			estimated_vblanks, seq2, seq1 + estimated_vblanks);
- }
- 
--static void run_subtests_for_pipe(data_t *data)
-+static void run_subtests(data_t *data)
- {
-+	enum pipe p;
-+
- 	const struct {
- 		const char *name;
- 		void (*func)(data_t *, int, int);
-@@ -437,21 +422,19 @@ static void run_subtests_for_pipe(data_t *data)
- 		{ }
- 	}, *m;
- 
--	igt_fixture
--		igt_display_require_output_on_pipe(&data->display, data->pipe);
--
- 	for (f = funcs; f->name; f++) {
- 		for (m = modes; m->name; m++) {
- 			if (m->flags & ~(f->valid | NOHANG))
- 				continue;
- 
--			igt_describe("Check if test run while hanging by introducing NOHANG flag");
--			igt_subtest_f("pipe-%s-%s-%s",
--				      kmstest_pipe_name(data->pipe),
--				      f->name, m->name) {
--				for_each_valid_output_on_pipe(&data->display, data->pipe, data->output) {
--					data->flags = m->flags | NOHANG;
--					run_test(data, f->func);
-+			igt_describe("Check if test run while hanging by introducing NOHANG flag.");
-+			igt_subtest_with_dynamic_f("%s-%s", f->name, m->name) {
-+				for_each_pipe_with_valid_output(&data->display, p, data->output) {
-+					igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(p), data->output->name) {
-+						data->pipe = p;
-+						data->flags = m->flags | NOHANG;
-+						run_test(data, f->func);
-+					}
- 				}
- 			}
- 
-@@ -459,16 +442,16 @@ static void run_subtests_for_pipe(data_t *data)
- 			if (f->valid & NOHANG || m->flags & NOHANG)
- 				continue;
- 
--			igt_describe("check if injected hang is working properly");
--			igt_subtest_f("pipe-%s-%s-%s-hang",
--				      kmstest_pipe_name(data->pipe),
--				      f->name, m->name) {
-+			igt_describe("Check if injected hang is working properly.");
-+			igt_subtest_with_dynamic_f("%s-%s-hang", f->name, m->name) {
- 				igt_hang_t hang;
--
- 				hang = igt_allow_hang(data->display.drm_fd, 0, 0);
--				for_each_valid_output_on_pipe(&data->display, data->pipe, data->output) {
--					data->flags = m->flags;
--					run_test(data, f->func);
-+				for_each_pipe_with_valid_output(&data->display, p, data->output) {
-+					igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(p), data->output->name) {
-+						data->pipe = p;
-+						data->flags = m->flags;
-+						run_test(data, f->func);
-+					}
- 				}
- 				igt_disallow_hang(data->display.drm_fd, hang);
- 			}
-@@ -476,18 +459,13 @@ static void run_subtests_for_pipe(data_t *data)
- 	}
- }
- 
--static void invalid_subtest(data_t *data, int fd)
-+static void invalid_subtest(data_t *data, int fd, enum pipe pipe, igt_output_t *output)
- {
- 	union drm_wait_vblank vbl;
- 	unsigned long valid_flags;
--	igt_display_t* display = &data->display;
--	enum pipe pipe = 0;
--	igt_output_t* output = igt_get_single_output_for_pipe(display, pipe);
--
- 	data->pipe = pipe;
- 	data->output = output;
--	igt_output_set_pipe(output, pipe);
--	igt_display_require_output_on_pipe(display, pipe);
-+
- 	prepare_crtc(data, fd, output);
- 
- 	/* First check all is well with a simple query */
-@@ -530,6 +508,7 @@ static void invalid_subtest(data_t *data, int fd)
- igt_main
- {
- 	int fd;
-+	enum pipe p;
- 	data_t data;
- 
- 	igt_fixture {
-@@ -540,18 +519,26 @@ igt_main
- 	}
- 
- 	igt_describe("Negative test for vblank request");
--	igt_subtest("invalid")
--		invalid_subtest(&data, fd);
-+	igt_subtest_with_dynamic("invalid") {
-+		for_each_pipe_with_valid_output(&data.display, p, data.output) {
-+			igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(p), data.output->name)
-+				invalid_subtest(&data, fd, p, data.output);
-+			break;
-+		}
-+	}
- 
--	igt_describe("check the Vblank and flip events works with given crtc id");
--	igt_subtest("crtc-id")
--		crtc_id_subtest(&data, fd);
-+	igt_describe("Test to check if vblank and flip events works with given crtc id");
-+	igt_subtest_with_dynamic("crtc-id") {
-+		for_each_pipe_with_valid_output(&data.display, p, data.output) {
-+			igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(p), data.output->name)
-+				crtc_id_subtest(&data, fd, p, data.output);
-+		}
-+	}
- 
--	for_each_pipe_static(data.pipe)
--		igt_subtest_group
--			run_subtests_for_pipe(&data);
-+	run_subtests(&data);
- 
- 	igt_fixture {
-+		igt_display_fini(&data.display);
- 		close(fd);
- 	}
- }
--- 
-2.25.1
+>Anyway, just something to consider,
+>Reviewed-by: Matthew Auld <matthew.auld@intel.com>
+>
+>>  struct igt_collection *
+>>  __get_memory_region_set(struct drm_i915_query_memory_regions *regions,
