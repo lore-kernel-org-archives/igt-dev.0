@@ -1,16 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id ED0C610E471
- for <igt-dev@lists.freedesktop.org>; Wed, 12 Oct 2022 12:34:57 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id F055A10E4A8
+ for <igt-dev@lists.freedesktop.org>; Wed, 12 Oct 2022 12:35:08 +0000 (UTC)
 From: Ananya Sharma <ananya.sharma@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Wed, 12 Oct 2022 18:04:40 +0530
-Message-Id: <20221012123446.30393-2-ananya.sharma@intel.com>
+Date: Wed, 12 Oct 2022 18:04:46 +0530
+Message-Id: <20221012123446.30393-8-ananya.sharma@intel.com>
 In-Reply-To: <20221012123446.30393-1-ananya.sharma@intel.com>
 References: <20221012123446.30393-1-ananya.sharma@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 1/7] tests/kms_color_helper.c
+Subject: [igt-dev] [PATCH i-g-t 7/7] tests/chamelium/kms_color_chamelium:
+ ctm for MPO + pipe color test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,121 +23,305 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-In this we are modifying the functions paint_rectangle()
-paint_gradient_rectangle() by including x and y plane
-coordinates to support multiplanes.
+MPO + pipe color test for ctm transformation.
 
 Signed-off-by: Ananya Sharma <ananya.sharma@intel.com>
 ---
- tests/kms_color_helper.c | 26 +++++++++++++++-----------
- tests/kms_color_helper.h | 10 ++++++++--
- 2 files changed, 23 insertions(+), 13 deletions(-)
+ tests/chamelium/kms_color_chamelium.c | 138 +++++++++++++++++++-------
+ 1 file changed, 103 insertions(+), 35 deletions(-)
 
-diff --git a/tests/kms_color_helper.c b/tests/kms_color_helper.c
-index 55f3e409..dbcb3f34 100644
---- a/tests/kms_color_helper.c
-+++ b/tests/kms_color_helper.c
-@@ -41,20 +41,22 @@ uint64_t get_max_bpc(igt_output_t *output)
- }
- 
- void paint_gradient_rectangles(data_t *data,
--			       drmModeModeInfo *mode,
-+			       uint16_t vdisplay,
-+			       uint16_t hdisplay,
-+			       int x, int y,
- 			       color_t *colors,
- 			       struct igt_fb *fb)
+diff --git a/tests/chamelium/kms_color_chamelium.c b/tests/chamelium/kms_color_chamelium.c
+index ad7a6b9c..323b5131 100644
+--- a/tests/chamelium/kms_color_chamelium.c
++++ b/tests/chamelium/kms_color_chamelium.c
+@@ -287,6 +287,7 @@ static bool test_pipe_gamma(data_t *data,
+  */
+ static bool test_pipe_ctm(data_t *data,
+ 			  igt_plane_t *primary,
++			  bool multiplane,
+ 			  color_t *before,
+ 			  color_t *after,
+ 			  double *ctm_matrix,
+@@ -294,10 +295,13 @@ static bool test_pipe_ctm(data_t *data,
  {
- 	cairo_t *cr = igt_get_cairo_ctx(data->drm_fd, fb);
--	int i, l = mode->hdisplay / 3;
--	int rows_remaining = mode->hdisplay % 3;
-+	int i, l = hdisplay / 3;
-+	int rows_remaining = hdisplay % 3;
+ 	gamma_lut_t *degamma_linear, *gamma_linear;
+ 	igt_output_t *output = data->output;
++	igt_plane_t *overlay = data->overlay;
+ 	drmModeModeInfo *mode = data->mode;
+-	struct igt_fb fb_modeset, fb, fbref;
++	struct igt_fb fb0, fb1, fbref;
+ 	struct chamelium_frame_dump *frame_hardware;
+-	int fb_id, fb_modeset_id, fbref_id;
++	int fb_id0, fb_id1, fbref_id;
++	int primary_x, primary_y, primary_h, primary_w;
++	int overlay_x, overlay_y, overlay_h, overlay_w;
+ 	bool ret = true;
  
- 	/* Paint 3 gradient rectangles with red/green/blue between 1.0 and
- 	 * 0.5. We want to avoid 0 so each max LUTs only affect their own
- 	 * rectangle.
- 	 */
- 	for (i = 0 ; i < 3; i++) {
--		igt_paint_color_gradient_range(cr, i * l, 0, l, mode->vdisplay,
-+		igt_paint_color_gradient_range(cr, (x + (i * l)), y, l, vdisplay,
- 					       colors[i].r != 0 ? 0.2 : 0,
- 					       colors[i].g != 0 ? 0.2 : 0,
- 					       colors[i].b != 0 ? 0.2 : 0,
-@@ -64,8 +66,8 @@ void paint_gradient_rectangles(data_t *data,
+ 	igt_require(igt_pipe_obj_has_prop(primary->pipe, IGT_CRTC_CTM));
+@@ -307,22 +311,39 @@ static bool test_pipe_ctm(data_t *data,
+ 
+ 	igt_output_set_pipe(output, primary->pipe->pipe);
+ 
++	primary_w = mode->hdisplay;
++	primary_h = mode->vdisplay / 2;
++	overlay_w = mode->hdisplay;
++	overlay_h = primary_h + (mode->vdisplay % 2);
++	primary_x = 0;
++	primary_y = 0;
++	overlay_x = 0;
++	overlay_y = primary_h;
++
+ 	/* Create a framebuffer at the size of the output. */
+-	fb_id = igt_create_fb(data->drm_fd,
+-			      mode->hdisplay,
+-			      mode->vdisplay,
+-			      DRM_FORMAT_XRGB8888,
+-			      DRM_FORMAT_MOD_LINEAR,
+-			      &fb);
+-	igt_assert(fb_id);
++	fb_id0 = igt_create_fb(data->drm_fd,
++			       primary_w,
++			       primary_h,
++			       data->drm_format,
++			       DRM_FORMAT_MOD_LINEAR,
++			       &fb0);
++	igt_assert(fb_id0);
+ 
+-	fb_modeset_id = igt_create_fb(data->drm_fd,
+-				      mode->hdisplay,
+-				      mode->vdisplay,
+-				      DRM_FORMAT_XRGB8888,
+-				      DRM_FORMAT_MOD_LINEAR,
+-				      &fb_modeset);
+-	igt_assert(fb_modeset_id);
++	igt_plane_set_fb(primary, &fb0);
++	igt_plane_set_position(primary, primary_x, primary_y);
++
++	if (multiplane) {
++		fb_id1 = igt_create_fb(data->drm_fd,
++				       overlay_w,
++				       overlay_h,
++				       data->drm_format_overlay,
++				       DRM_FORMAT_MOD_LINEAR,
++				       &fb1);
++		igt_assert(fb_id1);
++
++		igt_plane_set_fb(overlay, &fb1);
++		igt_plane_set_position(overlay, overlay_x, overlay_y);
++	}
+ 
+ 	fbref_id = igt_create_fb(data->drm_fd,
+ 				 mode->hdisplay,
+@@ -332,8 +353,6 @@ static bool test_pipe_ctm(data_t *data,
+ 				 &fbref);
+ 	igt_assert(fbref_id);
+ 
+-	igt_plane_set_fb(primary, &fb_modeset);
+-
+ 	if (memcmp(before, after, sizeof(color_t))) {
+ 		set_degamma(data, primary->pipe, degamma_linear);
+ 		set_gamma(data, primary->pipe, gamma_linear);
+@@ -344,17 +363,24 @@ static bool test_pipe_ctm(data_t *data,
  	}
  
- 	if (rows_remaining > 0)
--		igt_paint_color_gradient_range(cr, i * l, 0, rows_remaining,
--					       mode->vdisplay,
-+		igt_paint_color_gradient_range(cr, (x + (i * l)), y, rows_remaining,
-+					       vdisplay,
- 					       colors[i-1].r != 0 ? 0.2 : 0,
- 					       colors[i-1].g != 0 ? 0.2 : 0,
- 					       colors[i-1].b != 0 ? 0.2 : 0,
-@@ -77,22 +79,24 @@ void paint_gradient_rectangles(data_t *data,
- }
+ 	disable_ctm(primary->pipe);
+-	igt_display_commit(&data->display);
++	igt_display_commit2(&data->display, multiplane ? COMMIT_ATOMIC : COMMIT_LEGACY);
  
- void paint_rectangles(data_t *data,
--		      drmModeModeInfo *mode,
-+		      uint16_t vdisplay,
-+		      uint16_t hdisplay,
-+		      int x, int y,
- 		      color_t *colors,
- 		      struct igt_fb *fb)
+-	paint_rectangles(data, mode->vdisplay, mode->hdisplay, 0, 0,
+-			 after, &fbref);
++	paint_rectangles(data, primary_h, primary_w, 0, 0, after, &fbref);
++	paint_rectangles(data, overlay_h, overlay_w, 0, 0, after, &fbref);
+ 
+ 	/* With CTM transformation. */
+-	paint_rectangles(data, mode->vdisplay, mode->hdisplay, 0, 0,
+-			 before, &fb);
+-	igt_plane_set_fb(primary, &fb);
++	paint_rectangles(data, primary_h, primary_w, primary_x, primary_y, before, &fb0);
++	igt_plane_set_fb(primary, &fb0);
++	igt_plane_set_position(primary, primary_x, primary_y);
++
++	if (multiplane) {
++		paint_rectangles(data, overlay_h, overlay_w, 0, 0, before, &fb1);
++		igt_plane_set_fb(overlay, &fb1);
++		igt_plane_set_position(overlay, overlay_x, overlay_y);
++	}
++
+ 	set_ctm(primary->pipe, ctm_matrix);
+-	igt_display_commit(&data->display);
++	igt_display_commit2(&data->display, multiplane ? COMMIT_ATOMIC : COMMIT_LEGACY);
+ 	chamelium_capture(data->chamelium, port, 0, 0, 0, 0, 1);
+ 	frame_hardware =
+ 		chamelium_read_captured_frame(data->chamelium, 0);
+@@ -369,10 +395,13 @@ static bool test_pipe_ctm(data_t *data,
+ 					     CHAMELIUM_CHECK_ANALOG);
+ 
+ 	igt_plane_set_fb(primary, NULL);
++	if (multiplane)
++		igt_plane_set_fb(overlay, NULL);
+ 	disable_degamma(primary->pipe);
+ 	disable_gamma(primary->pipe);
++	disable_ctm(primary->pipe);
+ 	igt_output_set_pipe(output, PIPE_NONE);
+-	igt_display_commit(&data->display);
++	igt_display_commit2(&data->display, multiplane ? COMMIT_ATOMIC : COMMIT_LEGACY);
+ 	free_lut(degamma_linear);
+ 	free_lut(gamma_linear);
+ 
+@@ -566,10 +595,13 @@ run_gamma_degamma_tests_for_pipe(data_t *data, enum pipe p, bool multiplane,
+ 
+ static void
+ run_ctm_tests_for_pipe(data_t *data, enum pipe p,
++		       bool multiplane,
+ 		       color_t *expected_colors,
+ 		       double *ctm,
+ 		       int iter)
  {
- 	cairo_t *cr = igt_get_cairo_ctx(data->drm_fd, fb);
--	int i, l = mode->hdisplay / 3;
--	int rows_remaining = mode->hdisplay % 3;
-+	int i, l = hdisplay / 3;
-+	int rows_remaining = hdisplay % 3;
- 
- 	/* Paint 3 solid rectangles. */
- 	for (i = 0 ; i < 3; i++) {
--		igt_paint_color(cr, i * l, 0, l, mode->vdisplay,
-+		igt_paint_color(cr, (x + (i * l)), y, l, vdisplay,
- 				colors[i].r, colors[i].g, colors[i].b);
- 	}
- 
- 	if (rows_remaining > 0)
--		igt_paint_color(cr, i * l, 0, rows_remaining, mode->vdisplay,
-+		igt_paint_color(cr, (x + (i * l)), y, rows_remaining, vdisplay,
- 				colors[i-1].r, colors[i-1].g, colors[i-1].b);
- 
- 	igt_put_cairo_ctx(cr);
-diff --git a/tests/kms_color_helper.h b/tests/kms_color_helper.h
-index f0ae30e3..199d449c 100644
---- a/tests/kms_color_helper.h
-+++ b/tests/kms_color_helper.h
-@@ -51,9 +51,11 @@ typedef struct {
- 	igt_pipe_crc_t *pipe_crc;
- 	igt_output_t *output;
- 	igt_plane_t *primary;
 +	igt_plane_t *overlay;
- 	drmModeModeInfo *mode;
++	int count;
+ 	double delta;
+ 	color_t red_green_blue[] = {
+ 		{ 1.0, 0.0, 0.0 },
+@@ -595,12 +627,31 @@ run_ctm_tests_for_pipe(data_t *data, enum pipe p,
+ 	data->drm_format = DRM_FORMAT_XRGB8888;
+ 	data->mode = igt_output_get_mode(data->output);
  
- 	uint32_t drm_format;
-+	uint32_t drm_format_overlay;
- 	uint32_t color_depth;
- 	uint64_t degamma_lut_size;
- 	uint64_t gamma_lut_size;
-@@ -72,11 +74,15 @@ typedef struct {
- bool panel_supports_deep_color(int fd, char *output_name);
- uint64_t get_max_bpc(igt_output_t *output);
- void paint_gradient_rectangles(data_t *data,
--			       drmModeModeInfo *mode,
-+			       uint16_t vdisplay,
-+			       uint16_t hdisplay,
-+			       int x, int y,
- 			       color_t *colors,
- 			       struct igt_fb *fb);
- void paint_rectangles(data_t *data,
--		      drmModeModeInfo *mode,
-+		      uint16_t vdisplay,
-+		      uint16_t hdisplay,
-+		      int x, int y,
- 		      color_t *colors,
- 		      struct igt_fb *fb);
- gamma_lut_t *alloc_lut(int lut_size);
++	if (multiplane) {
++		for_each_plane_on_pipe(&data->display, p, overlay) {
++			if (overlay->type == DRM_PLANE_TYPE_PRIMARY ||
++			    overlay->type == DRM_PLANE_TYPE_CURSOR)
++				continue;
++
++			if (igt_plane_has_format_mod(overlay, DRM_FORMAT_NV12,
++						     DRM_FORMAT_MOD_LINEAR)) {
++				count++;
++				break;
++			}
++		}
++	}
++	igt_require_f(count, "No valid planes found.\n");
++
++	data->overlay = overlay;
++	data->drm_format_overlay = DRM_FORMAT_NV12;
++
+ 	igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(p), data->output->name) {
+ 		bool success = false;
+ 		int i;
+ 
+ 		if (!iter)
+ 			success = test_pipe_ctm(data, data->primary,
++						multiplane,
+ 						red_green_blue,
+ 						expected_colors, ctm,
+ 						data->ports[port_idx]);
+@@ -616,7 +667,7 @@ run_ctm_tests_for_pipe(data_t *data, enum pipe p,
+ 				expected_colors[1].g =
+ 				expected_colors[2].b =
+ 				ctm[0] + delta * (i - (iter / 2));
+-			if (test_pipe_ctm(data, data->primary,
++			if (test_pipe_ctm(data, data->primary, multiplane,
+ 					  red_green_blue, expected_colors,
+ 					  ctm, data->ports[port_idx])) {
+ 				success = true;
+@@ -669,11 +720,12 @@ run_tests_for_pipe(data_t *data)
+ 	struct {
+ 		const char *name;
+ 		int iter;
++		bool multiplane;
+ 		color_t colors[3];
+ 		double ctm[9];
+ 		const char *desc;
+ 	} ctm_tests[] = {
+-		{ "ctm-red-to-blue", 0,
++		{ "ctm-multiplane", 0, true,
+ 			{{ 0.0, 0.0, 1.0 },
+ 			 { 0.0, 1.0, 0.0 },
+ 			 { 0.0, 0.0, 1.0 }},
+@@ -682,7 +734,16 @@ run_tests_for_pipe(data_t *data)
+ 		    1.0, 0.0, 1.0 },
+ 		  "Check the color transformation from red to blue"
+ 		},
+-		{ "ctm-green-to-red", 0,
++		{ "ctm-red-to-blue", 0, false,
++			{{ 0.0, 0.0, 1.0 },
++			 { 0.0, 1.0, 0.0 },
++			 { 0.0, 0.0, 1.0 }},
++		  { 0.0, 0.0, 0.0,
++		    0.0, 1.0, 0.0,
++		    1.0, 0.0, 1.0 },
++		  "Check the color transformation from red to blue"
++		},
++		{ "ctm-green-to-red", 0, false,
+ 			{{ 1.0, 0.0, 0.0 },
+ 			 { 1.0, 0.0, 0.0 },
+ 			 { 0.0, 0.0, 1.0 }},
+@@ -691,7 +752,7 @@ run_tests_for_pipe(data_t *data)
+ 		    0.0, 0.0, 1.0 },
+ 		  "Check the color transformation from green to red"
+ 		},
+-		{ "ctm-blue-to-red", 0,
++		{ "ctm-blue-to-red", 0, false,
+ 			{{ 1.0, 0.0, 0.0 },
+ 			 { 0.0, 1.0, 0.0 },
+ 			 { 1.0, 0.0, 0.0 }},
+@@ -700,7 +761,7 @@ run_tests_for_pipe(data_t *data)
+ 		    0.0, 0.0, 0.0 },
+ 		  "Check the color transformation from blue to red"
+ 		},
+-		{ "ctm-max", 0,
++		{ "ctm-max", 0, false,
+ 			{{ 1.0, 0.0, 0.0 },
+ 			 { 0.0, 1.0, 0.0 },
+ 			 { 0.0, 0.0, 1.0 }},
+@@ -709,7 +770,7 @@ run_tests_for_pipe(data_t *data)
+ 		    0.0, 0.0, 100.0 },
+ 		  "Check the color transformation for maximum transparency"
+ 		},
+-		{ "ctm-negative", 0,
++		{ "ctm-negative", 0, false,
+ 			{{ 0.0, 0.0, 0.0 },
+ 			 { 0.0, 0.0, 0.0 },
+ 			 { 0.0, 0.0, 0.0 }},
+@@ -718,21 +779,21 @@ run_tests_for_pipe(data_t *data)
+ 		    0.0, 0.0, -1.0 },
+ 		  "Check the color transformation for negative transparency"
+ 		},
+-		{ "ctm-0-25", 5,
++		{ "ctm-0-25", 5, false,
+ 			{{ 0.0, }, { 0.0, }, { 0.0, }},
+ 		  { 0.25, 0.0,  0.0,
+ 		    0.0,  0.25, 0.0,
+ 		    0.0,  0.0,  0.25 },
+ 		  "Check the color transformation for 0.25 transparency"
+ 		},
+-		{ "ctm-0-50", 5,
++		{ "ctm-0-50", 5, false,
+ 			{{ 0.0, }, { 0.0, }, { 0.0, }},
+ 		  { 0.5,  0.0,  0.0,
+ 		    0.0,  0.5,  0.0,
+ 		    0.0,  0.0,  0.5 },
+ 		  "Check the color transformation for 0.5 transparency"
+ 		},
+-		{ "ctm-0-75", 7,
++		{ "ctm-0-75", 7, false,
+ 			{{ 0.0, }, { 0.0, }, { 0.0, }},
+ 		  { 0.75, 0.0,  0.0,
+ 		    0.0,  0.75, 0.0,
+@@ -762,8 +823,15 @@ run_tests_for_pipe(data_t *data)
+ 	for (i = 0; i < ARRAY_SIZE(ctm_tests); i++) {
+ 		igt_describe_f("%s", ctm_tests[i].desc);
+ 		igt_subtest_with_dynamic_f("%s", ctm_tests[i].name) {
++			if (ctm_tests[i].multiplane &&
++			   (!data->display.is_atomic ||
++			    !igt_display_has_format_mod(&data->display, DRM_FORMAT_NV12,
++							DRM_FORMAT_MOD_LINEAR)))
++				continue;
++
+ 			for_each_pipe(&data->display, pipe) {
+ 				run_ctm_tests_for_pipe(data, pipe,
++						       ctm_tests[i].multiplane,
+ 						       ctm_tests[i].colors,
+ 						       ctm_tests[i].ctm,
+ 						       ctm_tests[i].iter);
 -- 
 2.25.1
