@@ -1,21 +1,23 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 334AF10E0C2
- for <igt-dev@lists.freedesktop.org>; Wed, 12 Oct 2022 09:30:43 +0000 (UTC)
-Message-ID: <e1e536e5-00d8-97db-4a34-d0fb7e82ffb5@intel.com>
-Date: Wed, 12 Oct 2022 10:30:38 +0100
+Received: from mail-vs1-xe32.google.com (mail-vs1-xe32.google.com
+ [IPv6:2607:f8b0:4864:20::e32])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8C6FE10E4E3
+ for <igt-dev@lists.freedesktop.org>; Wed, 12 Oct 2022 13:27:38 +0000 (UTC)
+Received: by mail-vs1-xe32.google.com with SMTP id k6so15283487vsp.0
+ for <igt-dev@lists.freedesktop.org>; Wed, 12 Oct 2022 06:27:38 -0700 (PDT)
 MIME-Version: 1.0
-Content-Language: en-GB
-To: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>,
- igt-dev@lists.freedesktop.org
-References: <20221010065929.32110-1-niranjana.vishwanathapura@intel.com>
- <20221010065929.32110-7-niranjana.vishwanathapura@intel.com>
-From: Matthew Auld <matthew.auld@intel.com>
-In-Reply-To: <20221010065929.32110-7-niranjana.vishwanathapura@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Subject: Re: [igt-dev] [PATCH i-g-t v3 06/11] tests/i915/vm_bind: Add
- vm_bind sanity test
+References: <20221007210112.3153308-1-jfree@freebsd.org>
+ <Y0Uu5fp40unW+8KO@kamilkon-desk1>
+In-Reply-To: <Y0Uu5fp40unW+8KO@kamilkon-desk1>
+From: Jake Freeland <jake@technologyfriends.net>
+Date: Wed, 12 Oct 2022 08:27:26 -0500
+Message-ID: <CAOgZAGaLKf=W0AMAsDHBUiQDRqU1zocAp4REQVoYaeE=jZgJcA@mail.gmail.com>
+To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ igt-dev@lists.freedesktop.org,
+ Jake Freeland <jake@technologyfriends.net>, Jake Freeland <jfree@freebsd.org>
+Content-Type: multipart/alternative; boundary="0000000000003458dc05ead65b39"
+Subject: Re: [igt-dev] [PATCH i-g-t] [r-b] tests/i915/gem_mmap_*: Add NULL
+ to ptrace() calls
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,375 +25,168 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: tvrtko.ursulin@intel.com, thomas.hellstrom@intel.com,
- daniel.vetter@intel.com, petri.latvala@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On 10/10/2022 07:59, Niranjana Vishwanathapura wrote:
-> Add sanity test to exercise vm_bind uapi.
-> Test for various cases with vm_bind and vm_unbind ioctls.
-> 
-> v2: Add more input validity tests
->      Add sanity test to fast-feedback.testlist
-> v3: Add only basic-smem subtest to fast-feedback.testlist
-> 
-> Signed-off-by: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
+--0000000000003458dc05ead65b39
+Content-Type: text/plain; charset="UTF-8"
 
-Could also just make this a subtest in i915_vm_bind.c, so that we have 
-most of our vm_bind related tests all in one place, like basic, 
-sanity-check etc.
+Kamil,
 
-> ---
->   tests/i915/i915_vm_bind_sanity.c      | 275 ++++++++++++++++++++++++++
->   tests/intel-ci/fast-feedback.testlist |   1 +
->   tests/meson.build                     |   1 +
->   3 files changed, 277 insertions(+)
->   create mode 100644 tests/i915/i915_vm_bind_sanity.c
-> 
-> diff --git a/tests/i915/i915_vm_bind_sanity.c b/tests/i915/i915_vm_bind_sanity.c
-> new file mode 100644
-> index 0000000000..b0f435f5f6
-> --- /dev/null
-> +++ b/tests/i915/i915_vm_bind_sanity.c
-> @@ -0,0 +1,275 @@
-> +// SPDX-License-Identifier: MIT
-> +/*
-> + * Copyright © 2022 Intel Corporation
-> + */
-> +
-> +/** @file i915_vm_bind_sanity.c
-> + *
-> + * This is the sanity test for VM_BIND UAPI.
-> + *
-> + * The goal is to test the UAPI interface.
-> + */
-> +
-> +#include <fcntl.h>
-> +#include <sys/ioctl.h>
-> +#include <sys/poll.h>
-> +
-> +#include "igt_syncobj.h"
-> +#include "i915/gem.h"
-> +#include "i915/gem_create.h"
-> +#include "igt.h"
-> +
-> +#include "i915/gem_vm.h"
-> +
-> +#define EOPNOTSUPP    95
+Understood. Thank you for clarifying that.
 
-That should be a standard error code. Do we need this?
+Jake Freeland
 
-> +
-> +#define PAGE_SIZE   4096
-> +#define SZ_64K      (16 * PAGE_SIZE)
-> +#define SZ_2M       (512 * PAGE_SIZE)
-> +
-> +IGT_TEST_DESCRIPTION("Sanity test vm_bind related interfaces");
-> +
-> +#define VA 0xa0000000
+On Tue, Oct 11, 2022 at 3:52 AM Kamil Konieczny <
+kamil.konieczny@linux.intel.com> wrote:
 
-Could also consider picking random offsets instead of hardcoding this, 
-using something like:
+> Hi Jake,
+>
+> On 2022-10-07 at 16:01:12 -0500, Jake Freeland wrote:
+> > In FreeBSD, the ptrace() function cannot take a variable
+> > length list of arguments. This patch adds NULL in the @data
+> > parameter to allow for compilation on FreeBSD systems.
+> >
+> > Signed-off-by: Jake Freeland <jfree@freebsd.org>
+>
+> When I wrote about "adding r-b" that means you can add:
+>
+> Reviewed-by: Name of Reviewer <reviewer@address>
+>
+> after your s-b (signed-off-by) line, so it will look like:
+>
+> Signed-off-by: Jake Freeland <jfree@freebsd.org>
+> Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+>
+> Regards,
+> Kamil
+>
+> > ---
+> >  tests/i915/gem_mmap_gtt.c    | 2 +-
+> >  tests/i915/gem_mmap_offset.c | 2 +-
+> >  2 files changed, 2 insertions(+), 2 deletions(-)
+> >
+> > diff --git a/tests/i915/gem_mmap_gtt.c b/tests/i915/gem_mmap_gtt.c
+> > index e39b9047..4f05eb18 100644
+> > --- a/tests/i915/gem_mmap_gtt.c
+> > +++ b/tests/i915/gem_mmap_gtt.c
+> > @@ -566,7 +566,7 @@ test_ptrace(int fd)
+> >       for (int i = 0; i < sz / sizeof(long); i++) {
+> >               long ret;
+> >
+> > -             ret = ptrace(PTRACE_PEEKDATA, pid, gtt + i);
+> > +             ret = ptrace(PTRACE_PEEKDATA, pid, gtt + i, NULL);
+> >               igt_assert_eq_u64(ret, CC);
+> >               cpy[i] = ret;
+> >
+> > diff --git a/tests/i915/gem_mmap_offset.c b/tests/i915/gem_mmap_offset.c
+> > index 2b416edd..d1a67f45 100644
+> > --- a/tests/i915/gem_mmap_offset.c
+> > +++ b/tests/i915/gem_mmap_offset.c
+> > @@ -520,7 +520,7 @@ static void test_ptrace(int i915)
+> >                               for (int i = 0; i < SZ / sizeof(long);
+> i++) {
+> >                                       long ret;
+> >
+> > -                                     ret = ptrace(PTRACE_PEEKDATA, pid,
+> ptr + i);
+> > +                                     ret = ptrace(PTRACE_PEEKDATA, pid,
+> ptr + i, NULL);
+> >                                       igt_assert_eq_u64(ret, CC);
+> >                                       cpy[i] = ret;
+> >
+> > --
+> > 2.37.3
+> >
+>
 
-ahnd = intel_allocator_open_full(fd, ctx, 0, 0,
-				INTEL_ALLOCATOR_RANDOM,
-				ALLOC_STRATEGY_HIGH_TO_LOW,
-				gtt_alignment); /* XXX: 2M for now? */
+--0000000000003458dc05ead65b39
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-va = CANONICAL(get_offset(ahnd, handle, size, 0));
+<div dir=3D"ltr">Kamil,<div><br></div><div>Understood. Thank you for clarif=
+ying that.</div><div><br></div><div>Jake Freeland</div></div><br><div class=
+=3D"gmail_quote"><div dir=3D"ltr" class=3D"gmail_attr">On Tue, Oct 11, 2022=
+ at 3:52 AM Kamil Konieczny &lt;<a href=3D"mailto:kamil.konieczny@linux.int=
+el.com">kamil.konieczny@linux.intel.com</a>&gt; wrote:<br></div><blockquote=
+ class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px so=
+lid rgb(204,204,204);padding-left:1ex">Hi Jake,<br>
+<br>
+On 2022-10-07 at 16:01:12 -0500, Jake Freeland wrote:<br>
+&gt; In FreeBSD, the ptrace() function cannot take a variable<br>
+&gt; length list of arguments. This patch adds NULL in the @data<br>
+&gt; parameter to allow for compilation on FreeBSD systems.<br>
+&gt; <br>
+&gt; Signed-off-by: Jake Freeland &lt;<a href=3D"mailto:jfree@freebsd.org" =
+target=3D"_blank">jfree@freebsd.org</a>&gt;<br>
+<br>
+When I wrote about &quot;adding r-b&quot; that means you can add:<br>
+<br>
+Reviewed-by: Name of Reviewer &lt;reviewer@address&gt;<br>
+<br>
+after your s-b (signed-off-by) line, so it will look like:<br>
+<br>
+Signed-off-by: Jake Freeland &lt;<a href=3D"mailto:jfree@freebsd.org" targe=
+t=3D"_blank">jfree@freebsd.org</a>&gt;<br>
+Reviewed-by: Kamil Konieczny &lt;<a href=3D"mailto:kamil.konieczny@linux.in=
+tel.com" target=3D"_blank">kamil.konieczny@linux.intel.com</a>&gt;<br>
+<br>
+Regards,<br>
+Kamil<br>
+<br>
+&gt; ---<br>
+&gt;=C2=A0 tests/i915/gem_mmap_gtt.c=C2=A0 =C2=A0 | 2 +-<br>
+&gt;=C2=A0 tests/i915/gem_mmap_offset.c | 2 +-<br>
+&gt;=C2=A0 2 files changed, 2 insertions(+), 2 deletions(-)<br>
+&gt; <br>
+&gt; diff --git a/tests/i915/gem_mmap_gtt.c b/tests/i915/gem_mmap_gtt.c<br>
+&gt; index e39b9047..4f05eb18 100644<br>
+&gt; --- a/tests/i915/gem_mmap_gtt.c<br>
+&gt; +++ b/tests/i915/gem_mmap_gtt.c<br>
+&gt; @@ -566,7 +566,7 @@ test_ptrace(int fd)<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0for (int i =3D 0; i &lt; sz / sizeof(long); =
+i++) {<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0long ret;<br>
+&gt;=C2=A0 <br>
+&gt; -=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0ret =3D ptrace(PTRACE=
+_PEEKDATA, pid, gtt + i);<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0ret =3D ptrace(PTRACE=
+_PEEKDATA, pid, gtt + i, NULL);<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0igt_assert_eq_u6=
+4(ret, CC);<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0cpy[i] =3D ret;<=
+br>
+&gt;=C2=A0 <br>
+&gt; diff --git a/tests/i915/gem_mmap_offset.c b/tests/i915/gem_mmap_offset=
+.c<br>
+&gt; index 2b416edd..d1a67f45 100644<br>
+&gt; --- a/tests/i915/gem_mmap_offset.c<br>
+&gt; +++ b/tests/i915/gem_mmap_offset.c<br>
+&gt; @@ -520,7 +520,7 @@ static void test_ptrace(int i915)<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0for (int i =3D 0; i &lt; SZ / size=
+of(long); i++) {<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0long r=
+et;<br>
+&gt;=C2=A0 <br>
+&gt; -=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
+ =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0ret =3D ptra=
+ce(PTRACE_PEEKDATA, pid, ptr + i);<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
+ =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0ret =3D ptra=
+ce(PTRACE_PEEKDATA, pid, ptr + i, NULL);<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0igt_as=
+sert_eq_u64(ret, CC);<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0cpy[i]=
+ =3D ret;<br>
+&gt;=C2=A0 <br>
+&gt; -- <br>
+&gt; 2.37.3<br>
+&gt; <br>
+</blockquote></div>
 
-Just in case using the same address is hiding some issue...
-
-> +
-> +static uint64_t
-> +gettime_ns(void)
-> +{
-> +	struct timespec current;
-> +	clock_gettime(CLOCK_MONOTONIC, &current);
-> +	return (uint64_t)current.tv_sec * NSEC_PER_SEC + current.tv_nsec;
-> +}
-> +
-> +static bool syncobj_busy(int fd, uint32_t handle)
-> +{
-> +	bool result;
-> +	int sf;
-> +
-> +	sf = syncobj_handle_to_fd(fd, handle,
-> +				  DRM_SYNCOBJ_HANDLE_TO_FD_FLAGS_EXPORT_SYNC_FILE);
-> +	result = poll(&(struct pollfd){sf, POLLIN}, 1, 0) == 0;
-> +	close(sf);
-> +
-> +	return result;
-> +}
-> +
-> +static inline int
-> +__i915_vm_bind(int fd, uint32_t vm_id, uint32_t handle, uint64_t start,
-> +	       uint64_t offset, uint64_t length, uint64_t flags,
-> +	       struct drm_i915_gem_timeline_fence *fence, uint64_t extensions)
-> +{
-> +	struct drm_i915_gem_vm_bind bind;
-> +
-> +	memset(&bind, 0, sizeof(bind));
-> +	bind.vm_id = vm_id;
-> +	bind.handle = handle;
-> +	bind.start = start;
-> +	bind.offset = offset;
-> +	bind.length = length;
-> +	bind.flags = flags;
-> +	bind.extensions = extensions;
-> +	if (fence)
-> +		bind.fence = *fence;
-> +
-> +	return __gem_vm_bind(fd, &bind);
-> +}
-> +
-> +static inline void
-> +i915_vm_bind(int fd, uint32_t vm_id, uint32_t handle, uint64_t start,
-> +	     uint64_t offset, uint64_t length, uint64_t flags,
-> +	     struct drm_i915_gem_timeline_fence *fence)
-> +{
-> +	igt_assert_eq(__i915_vm_bind(fd, vm_id, handle, start, offset,
-> +				     length, flags, fence, 0), 0);
-> +	if (fence) {
-> +		igt_assert(syncobj_timeline_wait(fd, &fence->handle, (uint64_t *)&fence->value,
-> +						 1, gettime_ns() + (2 * NSEC_PER_SEC),
-> +						 DRM_SYNCOBJ_WAIT_FLAGS_WAIT_FOR_SUBMIT, NULL));
-> +		igt_assert(!syncobj_busy(fd, fence->handle));
-> +	}
-> +}
-> +
-> +static inline int
-> +__i915_vm_unbind(int fd, uint32_t vm_id, uint64_t start, uint64_t length, uint64_t flags,
-> +		 uint32_t rsvd, uint64_t extensions)
-> +{
-> +	struct drm_i915_gem_vm_unbind unbind;
-> +
-> +	memset(&unbind, 0, sizeof(unbind));
-> +	unbind.vm_id = vm_id;
-> +	unbind.rsvd = rsvd;
-> +	unbind.start = start;
-> +	unbind.length = length;
-> +	unbind.flags = flags;
-> +	unbind.extensions = extensions;
-> +
-> +	return __gem_vm_unbind(fd, &unbind);
-> +}
-> +
-> +static inline void
-> +i915_vm_unbind(int fd, uint32_t vm_id, uint64_t start, uint64_t length, uint64_t flags)
-> +{
-> +	igt_assert_eq(__i915_vm_unbind(fd, vm_id, start, length, flags, 0, 0), 0);
-> +}
-> +
-> +static void basic(int fd, bool test_lmem)
-> +{
-
-This might be a bit nicer if we just pass in struct gem_memory_region *mr...
-
-> +	uint32_t vm_id, vm_id2, vm_id_exec_mode, handle;
-> +	unsigned int region = test_lmem ? REGION_LMEM(0) : REGION_SMEM;
-> +	struct drm_i915_gem_timeline_fence fence = {
-> +		.handle = syncobj_create(fd, 0),
-> +		.flags = I915_TIMELINE_FENCE_SIGNAL,
-> +		.value = 0,
-> +	};
-> +	struct drm_i915_gem_create_ext_vm_private vm_priv = {
-> +		.base = { .name = I915_GEM_CREATE_EXT_VM_PRIVATE },
-> +	};
-> +	struct drm_i915_gem_execbuffer2 execbuf;
-> +	struct drm_i915_gem_exec_object2 obj;
-> +	uint64_t pg_size, size;
-> +	const intel_ctx_t *ctx;
-> +	int dmabuf;
-> +
-> +	pg_size = (test_lmem && HAS_64K_PAGES(intel_get_drm_devid(fd))) ? SZ_64K : PAGE_SIZE;
-
-...and then this could be mr->gtt_alignment in the future.
-
-> +	size = pg_size * 4;
-> +
-> +	vm_id = gem_vm_create_in_vm_bind_mode(fd);
-> +	handle = gem_create_in_memory_regions(fd, size, region);
-> +
-> +	/* Bind and unbind */
-> +	i915_vm_bind(fd, vm_id, handle, VA, 0, size, 0, NULL);
-> +	i915_vm_unbind(fd, vm_id, VA, size, 0);
-> +
-> +	/* Bind with out fence */
-> +	i915_vm_bind(fd, vm_id, handle, VA, 0, size, 0, &fence);
-> +	i915_vm_unbind(fd, vm_id, VA, size, 0);
-> +
-> +	/* Aliasing bind and unbind */
-> +	i915_vm_bind(fd, vm_id, handle, VA, 0, size, 0, NULL);
-> +	i915_vm_bind(fd, vm_id, handle, VA + SZ_2M, 0, size, 0, NULL);
-> +	i915_vm_unbind(fd, vm_id, VA, size, 0);
-> +	i915_vm_unbind(fd, vm_id, VA + SZ_2M, size, 0);
-> +
-> +	/* MBZ fields are not 0 */
-> +	igt_assert_eq(__i915_vm_bind(fd, vm_id, handle, VA, 0, size, 0x10, NULL, 0), -EINVAL);
-> +	igt_assert_eq(__i915_vm_bind(fd, vm_id, handle, VA, 0, size, 0, NULL, to_user_pointer(&obj)), -EINVAL);
-> +	i915_vm_bind(fd, vm_id, handle, VA, 0, size, 0, NULL);
-> +	igt_assert_eq(__i915_vm_unbind(fd, vm_id, VA, size, 0x10, 0, 0), -EINVAL);
-> +	igt_assert_eq(__i915_vm_unbind(fd, vm_id, VA, size, 0, 0x10, 0), -EINVAL);
-> +	igt_assert_eq(__i915_vm_unbind(fd, vm_id, VA, size, 0, 0, to_user_pointer(&obj)), -EINVAL);
-> +	i915_vm_unbind(fd, vm_id, VA, size, 0);
-> +
-> +	/* Invalid handle */
-> +	igt_assert_eq(__i915_vm_bind(fd, vm_id, handle + 10, VA, 0, size, 0, NULL, 0), -ENOENT);
-> +
-> +	/* Invalid mapping range */
-> +	igt_assert_eq(__i915_vm_bind(fd, vm_id, handle, VA, 0, 0, 0, NULL, 0), -EINVAL);
-> +	igt_assert_eq(__i915_vm_bind(fd, vm_id, handle, VA + 0x10, 0, size, 0, NULL, 0), -EINVAL);
-> +	igt_assert_eq(__i915_vm_bind(fd, vm_id, handle, VA, pg_size, size, 0, NULL, 0), -EINVAL);
-> +
-> +	/* Unaligned binds */
-> +	igt_assert_eq(__i915_vm_bind(fd, vm_id, handle, VA, pg_size / 2, pg_size, 0, NULL, 0), -EINVAL);
-> +	igt_assert_eq(__i915_vm_bind(fd, vm_id, handle, VA, 0, pg_size / 2, 0, NULL, 0), -EINVAL);
-
-Maybe also unaligned VA, where we try to use bits 0-11?
-
-> +
-> +	/* range overflow binds */
-> +	igt_assert_eq(__i915_vm_bind(fd, vm_id, handle, VA, pg_size, -pg_size, 0, NULL, 0), -EINVAL);
-> +	igt_assert_eq(__i915_vm_bind(fd, vm_id, handle, VA, pg_size * 2, -pg_size, 0, NULL, 0), -EINVAL);
-> +
-> +	/* re-bind VA range without unbinding */
-> +	i915_vm_bind(fd, vm_id, handle, VA, 0, size, 0, NULL);
-> +	igt_assert_eq(__i915_vm_bind(fd, vm_id, handle, VA, 0, size, 0, NULL, 0), -EEXIST);
-> +	i915_vm_unbind(fd, vm_id, VA, size, 0);
-> +
-> +	/* unbind a non-existing mapping */
-> +	igt_assert_eq(__i915_vm_bind(fd, vm_id, 0, VA + SZ_2M, 0, size, 0, NULL, 0), -ENOENT);
-> +
-> +	/* unbind with length mismatch */
-> +	i915_vm_bind(fd, vm_id, handle, VA, 0, size, 0, NULL);
-> +	igt_assert_eq(__i915_vm_bind(fd, vm_id, handle, VA, 0, size * 2, 0, NULL, 0), -EINVAL);
-> +	i915_vm_unbind(fd, vm_id, VA, size, 0);
-> +
-> +	/* validate exclusivity of vm_bind & exec modes of binding */
-> +	vm_id_exec_mode = gem_vm_create(fd);
-> +	igt_assert_eq(__i915_vm_bind(fd, vm_id_exec_mode, handle, VA, 0, size, 0, NULL, 0), -EOPNOTSUPP);
-> +
-> +	ctx = intel_ctx_create_all_physical(fd);
-> +	gem_context_set_vm(fd, ctx->id, vm_id);
-> +	(void)gem_context_get_vm(fd, ctx->id);
-> +
-> +	memset(&obj, 0, sizeof(obj));
-> +	memset(&execbuf, 0, sizeof(execbuf));
-> +	execbuf.buffers_ptr = to_user_pointer(&obj);
-> +	execbuf.buffer_count = 1;
-> +	obj.handle = handle;
-> +	i915_execbuffer2_set_context_id(execbuf, ctx->id);
-> +	igt_assert_eq(__gem_execbuf(fd, &execbuf), -EOPNOTSUPP);
-> +
-> +	intel_ctx_destroy(fd, ctx);
-> +	gem_vm_destroy(fd, vm_id_exec_mode);
-> +	gem_close(fd, handle);
-> +
-> +	/* validate VM private objects */
-> +	vm_id2 = gem_vm_create_in_vm_bind_mode(fd);
-> +	igt_assert_eq(__gem_create_in_memory_regions_ext(fd, &handle, &size,
-> +							 to_user_pointer(&vm_priv),
-> +							 region), -ENOENT);
-> +	vm_priv.rsvd = 0x10;
-> +	igt_assert_eq(__gem_create_in_memory_regions_ext(fd, &handle, &size,
-> +							 to_user_pointer(&vm_priv),
-> +							 region), -EINVAL);
-> +	handle = gem_create_vm_private_in_memory_regions(fd, size, vm_id2, region);
-
-Could maybe make this:
-
-vm_priv.rsvd = 0;
-vm_priv.vm_id = vm_id2;
-igt_assert_eq(__gem_create_in_memory_regions_ext(vm_priv,..), 0)
-
-Just to be paranoid and make sure the previously bogus 
-__gem_create_in_memory_regions_ext() are indeed failing for the correct 
-reason, and not just because we are using slightly different api or 
-something.
-
-Otherwise all looks pretty reasonable to me,
-Reviewed-by: Matthew Auld <matthew.auld@intel.com>
-
-> +
-> +	igt_assert_eq(prime_handle_to_fd_no_assert(fd, handle, DRM_CLOEXEC, &dmabuf), -EINVAL);
-> +	igt_assert_eq(__i915_vm_bind(fd, vm_id, handle, VA, 0, size, 0, NULL, 0), -EINVAL);
-> +	i915_vm_bind(fd, vm_id2, handle, VA, 0, size, 0, NULL);
-> +	i915_vm_unbind(fd, vm_id2, VA, size, 0);
-> +
-> +	gem_close(fd, handle);
-> +	gem_vm_destroy(fd, vm_id2);
-> +	gem_vm_destroy(fd, vm_id);
-> +	syncobj_destroy(fd, fence.handle);
-> +}
-> +
-> +static int vm_bind_version(int fd)
-> +{
-> +	struct drm_i915_getparam gp;
-> +	int value = 0;
-> +
-> +	memset(&gp, 0, sizeof(gp));
-> +	gp.param = I915_PARAM_VM_BIND_VERSION;
-> +	gp.value = &value;
-> +
-> +	ioctl(fd, DRM_IOCTL_I915_GETPARAM, &gp, sizeof(gp));
-> +	errno = 0;
-> +
-> +	return value;
-> +}
-> +
-> +igt_main
-> +{
-> +	int fd;
-> +	bool has_lmem;
-> +
-> +	igt_fixture {
-> +		fd = drm_open_driver(DRIVER_INTEL);
-> +		igt_require_gem(fd);
-> +		igt_require(vm_bind_version(fd) == 1);
-> +		has_lmem = gem_has_lmem(fd);
-> +	}
-> +
-> +	igt_describe("Basic vm_bind sanity test with SMEM");
-> +	igt_subtest_f("basic-smem") {
-> +		basic(fd, false);
-> +	}
-> +
-> +	igt_describe("Basic vm_bind sanity test with LMEM");
-> +	igt_subtest_f("basic-lmem") {
-> +		igt_skip_on(!has_lmem);
-> +		basic(fd, true);
-> +	}
-> +
-> +	igt_fixture {
-> +		close(fd);
-> +	}
-> +
-> +	igt_exit();
-> +}
-> diff --git a/tests/intel-ci/fast-feedback.testlist b/tests/intel-ci/fast-feedback.testlist
-> index bd5538a035..9da6c809e4 100644
-> --- a/tests/intel-ci/fast-feedback.testlist
-> +++ b/tests/intel-ci/fast-feedback.testlist
-> @@ -53,6 +53,7 @@ igt@i915_getparams_basic@basic-eu-total
->   igt@i915_getparams_basic@basic-subslice-total
->   igt@i915_hangman@error-state-basic
->   igt@i915_pciid
-> +igt@i915_vm_bind_sanity@basic-smem
->   igt@kms_addfb_basic@addfb25-bad-modifier
->   igt@kms_addfb_basic@addfb25-framebuffer-vs-set-tiling
->   igt@kms_addfb_basic@addfb25-modifier-no-flag
-> diff --git a/tests/meson.build b/tests/meson.build
-> index 12e53e0bd2..d81c6c28c2 100644
-> --- a/tests/meson.build
-> +++ b/tests/meson.build
-> @@ -250,6 +250,7 @@ i915_progs = [
->   	'sysfs_heartbeat_interval',
->   	'sysfs_preempt_timeout',
->   	'sysfs_timeslice_duration',
-> +	'i915_vm_bind_sanity',
->   ]
->   
->   msm_progs = [
+--0000000000003458dc05ead65b39--
