@@ -1,18 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 188FA10E0B4
- for <igt-dev@lists.freedesktop.org>; Wed, 12 Oct 2022 13:58:08 +0000 (UTC)
-Date: Wed, 12 Oct 2022 15:58:02 +0200
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8406410E518
+ for <igt-dev@lists.freedesktop.org>; Wed, 12 Oct 2022 14:53:06 +0000 (UTC)
+Date: Wed, 12 Oct 2022 16:53:01 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Message-ID: <Y0bH6vz3iUaW8mbx@kamilkon-desk1>
+Message-ID: <Y0bUzT+5wrI+RjW4@kamilkon-desk1>
 References: <20220915081704.3039599-1-karthikeya.sunkesula@intel.com>
- <20220915081704.3039599-3-karthikeya.sunkesula@intel.com>
+ <20220915081704.3039599-2-karthikeya.sunkesula@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20220915081704.3039599-3-karthikeya.sunkesula@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 2/2] Add descriptions to pm rps tests
+In-Reply-To: <20220915081704.3039599-2-karthikeya.sunkesula@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 1/2] Add descriptions to pm rc6
+ residency tests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,76 +21,78 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: badal.nilawar@intel.com,
+Cc: Badal Nilawar <badal.nilawar@intel.com>,
  Karthikeya Sunkesula <karthikeya.sunkesula@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi,
+Hi Karthikeya,
 
-please put commit description here.
+On 2022-09-15 at 13:47:03 +0530, Karthikeya Sunkesula wrote:
 
-On 2022-09-15 at 13:47:04 +0530, Karthikeya Sunkesula wrote:
+Put commit description here.
+
 > Signed-off-by: Karthikeya Sunkesula <karthikeya.sunkesula@intel.com>
 > ---
->  tests/i915/i915_pm_rps.c | 9 +++++++++
->  1 file changed, 9 insertions(+)
+>  tests/i915/i915_pm_rc6_residency.c | 8 ++++++++
+>  1 file changed, 8 insertions(+)
 > 
-> diff --git a/tests/i915/i915_pm_rps.c b/tests/i915/i915_pm_rps.c
-> index db39ec69..44228b44 100644
-> --- a/tests/i915/i915_pm_rps.c
-> +++ b/tests/i915/i915_pm_rps.c
-> @@ -914,12 +914,16 @@ igt_main
->  		igt_install_exit_handler(pm_rps_exit_handler);
->  	}
+> diff --git a/tests/i915/i915_pm_rc6_residency.c b/tests/i915/i915_pm_rc6_residency.c
+> index cf7a92b9..f8cf4325 100644
+> --- a/tests/i915/i915_pm_rc6_residency.c
+> +++ b/tests/i915/i915_pm_rc6_residency.c
+> @@ -57,6 +57,8 @@ struct residencies {
+>  	int duration;
+>  };
 >  
-> +	igt_describe("Verify the rps sysfs constraints, by varying min, max gt frequencies "
-> +			"with RPn, RP0 and mid values with valid and invalid cases.");
->  	igt_subtest("basic-api") {
->  		igt_skip_on_f(i915_is_slpc_enabled(drm_fd),
->  			      "This subtest is not supported when SLPC is enabled\n");
->  		min_max_config(basic_check, false);
->  	}
->  
-> +	igt_describe("Verify the constraints and verify current frequency settles down to "
-> +			"RPn or min within the allotted time after a low workload is run.");
->  	/* Verify the constraints, check if we can reach idle */
->  	igt_subtest("min-max-config-idle") {
->  		igt_skip_on_f(i915_is_slpc_enabled(drm_fd),
-> @@ -927,6 +931,8 @@ igt_main
->  		min_max_config(idle_check, true);
->  	}
->  
-> +	igt_describe("Verify the constraints and with a high workload, verify current "
-> +			"frequency scales upto RP0 or max within the allotted time.");
->  	/* Verify the constraints with high load, check if we can reach max */
->  	igt_subtest("min-max-config-loaded") {
->  		igt_skip_on_f(i915_is_slpc_enabled(drm_fd),
-> @@ -937,6 +943,8 @@ igt_main
->  	}
->  
->  	/* Checks if we achieve boost using gem_wait */
-> +	igt_describe("Verify actual frequency bumps to boost frequency with workload "
----------------------------------------------------------------------- ^
-> +			"with waitboost scenario.");
+> +IGT_TEST_DESCRIPTION("Tests to verify rc6 in different cases");
+> +
+What about:
+Verify power management rc6 residency.
 
-It is not clear, maybe just cut it from there to end of line ?
+See igt_core.h for how to describe.
 
 Regards,
 Kamil
 
->  	igt_subtest("waitboost") {
->  		igt_skip_on_f(i915_is_slpc_enabled(drm_fd),
->  			      "This subtest is not supported when SLPC is enabled\n");
-> @@ -958,6 +966,7 @@ igt_main
+>  static unsigned long get_rc6_enabled_mask(void)
+>  {
+>  	unsigned long enabled;
+> @@ -541,6 +543,8 @@ igt_main
+>  		ctx = intel_ctx_create_all_physical(i915);
 >  	}
 >  
->  	/* Test boost frequency after GPU reset */
-> +	igt_describe("Verify waitboost after GPU reset");
->  	igt_subtest("reset") {
->  		igt_hang_t hang;
->  		igt_skip_on_f(i915_is_slpc_enabled(drm_fd),
+> +	igt_describe("Measure rc6 residency and energy, when GPU is idle, "
+> +			"with light workload and with waitboost.");
+>  	igt_subtest_with_dynamic("rc6-idle") {
+>  		const struct intel_execution_engine2 *e;
+>  
+> @@ -555,6 +559,8 @@ igt_main
+>  		}
+>  	}
+>  
+> +	igt_describe("Measure rc6 residency for a request held-up by external "
+> +			"fence and verify power conservation while waiting.");
+>  	igt_subtest("rc6-fence") {
+>  		igt_require_gem(i915);
+>  		gem_quiescent_gpu(i915);
+> @@ -580,6 +586,7 @@ igt_main
+>  			igt_require(rc6_enabled & RC6_ENABLED);
+>  		}
+>  
+> +		igt_describe("Measure rc6 residency per gt  when it is idle.");
+>  		igt_subtest("rc6-accuracy") {
+>  			struct residencies res;
+>  
+> @@ -587,6 +594,7 @@ igt_main
+>  			residency_accuracy(res.rc6, res.duration, "rc6");
+>  		}
+>  
+> +		igt_describe("Measure media rc6 residency per gt when it is idle.");
+>  		igt_subtest("media-rc6-accuracy") {
+>  			struct residencies res;
+>  
 > -- 
 > 2.25.1
 > 
