@@ -1,21 +1,22 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8C41810E0B0
- for <igt-dev@lists.freedesktop.org>; Thu, 13 Oct 2022 04:24:11 +0000 (UTC)
-Message-ID: <271f03b1-ab88-c408-4a9b-1499413cceed@intel.com>
-Date: Thu, 13 Oct 2022 09:53:51 +0530
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 19FF110E05D
+ for <igt-dev@lists.freedesktop.org>; Thu, 13 Oct 2022 04:48:27 +0000 (UTC)
+Message-ID: <2d2e0707-ceea-79a9-0b30-ee9dd9390f67@intel.com>
+Date: Thu, 13 Oct 2022 10:18:08 +0530
 Content-Language: en-US
-To: Ananya Sharma <ananya.sharma@intel.com>, <igt-dev@lists.freedesktop.org>,
- "Shankar, Uma" <uma.shankar@intel.com>
-References: <20221012123446.30393-1-ananya.sharma@intel.com>
- <20221012123446.30393-3-ananya.sharma@intel.com>
-From: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
-In-Reply-To: <20221012123446.30393-3-ananya.sharma@intel.com>
+To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ <igt-dev@lists.freedesktop.org>
+References: <20221011053418.1684877-1-riana.tauro@intel.com>
+ <20221011053418.1684877-2-riana.tauro@intel.com>
+ <Y0a47MXOrAfo0oyf@kamilkon-desk1>
+From: "Tauro, Riana" <riana.tauro@intel.com>
+In-Reply-To: <Y0a47MXOrAfo0oyf@kamilkon-desk1>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t 2/7] tests/kms_color: Degamma MPO + pipe
- color test
+Subject: Re: [igt-dev] [PATCH i-g-t v3 1/1] lib/igt_device_scan: clear
+ igt_devs.devs_scanned in igt_devices_free
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,373 +28,116 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Wed-12-10-2022 06:04 pm, Ananya Sharma wrote:
-> MPO + pipe color test for degamma transformation.
+
+
+On 10/12/2022 6:24 PM, Kamil Konieczny wrote:
+> Hi Riana,
 > 
-> Signed-off-by: Ananya Sharma <ananya.sharma@intel.com>
-> ---
->   tests/kms_color.c | 175 ++++++++++++++++++++++++++++++++--------------
->   1 file changed, 122 insertions(+), 53 deletions(-)
+> I have few nits for this patch. First is subject, it should be
+> avoided to write your code in C, so better title for patch is:
 > 
-> diff --git a/tests/kms_color.c b/tests/kms_color.c
-> index d5df9840..168951c8 100644
-> --- a/tests/kms_color.c
-> +++ b/tests/kms_color.c
-> @@ -27,58 +27,88 @@
->   IGT_TEST_DESCRIPTION("Test Color Features at Pipe level");
->   
->   static bool test_pipe_degamma(data_t *data,
-> -			      igt_plane_t *primary)
-> +			      igt_plane_t *primary, bool multiplane)
+> lib/igt_device_scan: fix igt_devices_free
+> 
+> On 2022-10-11 at 11:04:18 +0530, Riana Tauro wrote:
+>> 1) igt_devices_scan returns with empty list if devs_scanned
+> - ^
+> No need for numbering your changes, it is better to send two
+> patches.
+> 
+>>     is true and function is called after igt_devices_free
+>>     clear igt_devs.devs_scanned in igt_devices_free.
+> 
+> This is hard to read at first, maybe some re-wording like:
+> 
+> igt_devices_scan returns with empty list if it is called after
+> anyone calls igt_devices_free. Fixed this with clearing
+> igt_devs.devs_scanned inside igt_devices_free.
+> 
+> btw you did second fix inside that function, e.g. free list
+> so imho it should be described:
+> 
+> Also while at this, fix memory leak in it.
+> 
+>>
+>> 2) remove redudant code from igt_devices_scan and replace it with
+>>     igt_devices_free
+>>
+> 
+> As Janusz pointed out, it will be better to send second patch
+> with refactoring so please in future split fixes and other
+> changes.
+> 
+> I will merge this patch with these fixups to subject and commit
+> message.
+> 
+> Please also read CONTRIBUTING.md from igt project and see
+> some other helpfull notes:
+> 
+> https://www.ozlabs.org/~akpm/stuff/tpp.txt
+> 
+> https://kernelnewbies.org/PatchPhilosophy
+> 
+> https://elixir.bootlin.com/linux/latest/source/Documentation/process/submitting-patches.rst
+> 
+> Regards,
+> Kamil
 
-+ Uma to Ack the approach
 
->   {
->   	igt_output_t *output = data->output;
-> +	igt_plane_t *overlay = data->overlay;
->   	igt_display_t *display = &data->display;
-> -	gamma_lut_t *degamma_linear, *degamma_full;
-> +	gamma_lut_t *degamma_full;
->   	color_t red_green_blue[] = {
->   		{ 1.0, 0.0, 0.0 },
->   		{ 0.0, 1.0, 0.0 },
->   		{ 0.0, 0.0, 1.0 }
->   	};
-> +	color_t blue_red_green[] = {
-> +		{ 0.0, 1.0, 0.0 },
-> +		{ 0.0, 0.0, 1.0 },
-> +		{ 1.0, 0.0, 0.0 }
-> +	};
->   	drmModeModeInfo *mode = data->mode;
-> -	struct igt_fb fb_modeset, fb;
-> +	struct igt_fb fb0, fb1;
->   	igt_crc_t crc_fullgamma, crc_fullcolors;
-> -	int fb_id, fb_modeset_id;
-> +	int fb_id0, fb_id1;
-> +	int primary_x, primary_y, primary_h, primary_w;
-> +	int overlay_x, overlay_y, overlay_h, overlay_w;
->   	bool ret;
->   
->   	igt_require(igt_pipe_obj_has_prop(primary->pipe, IGT_CRTC_DEGAMMA_LUT));
->   	igt_require(igt_pipe_obj_has_prop(primary->pipe, IGT_CRTC_GAMMA_LUT));
->   
-> -	degamma_linear = generate_table(data->degamma_lut_size, 1.0);
->   	degamma_full = generate_table_max(data->degamma_lut_size);
->   
->   	igt_output_set_pipe(output, primary->pipe->pipe);
->   	igt_output_override_mode(output, mode);
->   
-> -	/* Create a framebuffer at the size of the output. */
-> -	fb_id = igt_create_fb(data->drm_fd,
-> -			      mode->hdisplay,
-> -			      mode->vdisplay,
-> -			      data->drm_format,
-> -			      DRM_FORMAT_MOD_LINEAR,
-> -			      &fb);
-> -	igt_assert(fb_id);
-> +	primary_w = mode->hdisplay;
-> +	primary_h = multiplane ? (mode->vdisplay / 2) : mode->vdisplay;
-> +	overlay_w = mode->hdisplay;
-> +	overlay_h = primary_h + (mode->vdisplay % 2);
-> +	primary_x = 0;
-> +	primary_y = 0;
-> +	overlay_x = 0;
-> +	overlay_y = primary_h;
->   
-> -	fb_modeset_id = igt_create_fb(data->drm_fd,
-> -				      mode->hdisplay,
-> -				      mode->vdisplay,
-> -				      data->drm_format,
-> -				      DRM_FORMAT_MOD_LINEAR,
-> -				      &fb_modeset);
-> -	igt_assert(fb_modeset_id);
-> +	/* Create a framebuffer at the size of the output. */
-> +	fb_id0 = igt_create_fb(data->drm_fd,
-> +			       primary_w,
-> +			       primary_h,
-> +			       data->drm_format,
-> +			       DRM_FORMAT_MOD_LINEAR,
-> +			       &fb0);
-> +	igt_assert(fb_id0);
-> +	igt_plane_set_fb(primary, &fb0);
-> +	igt_plane_set_position(primary, primary_x, primary_y);
-> +
-> +	if (multiplane) {
-> +		fb_id1 = igt_create_fb(data->drm_fd,
-> +				       overlay_w,
-> +				       overlay_h,
-> +				       data->drm_format_overlay,
-> +				       DRM_FORMAT_MOD_LINEAR,
-> +				       &fb1);
-> +		igt_assert(fb_id1);
-> +
-> +		igt_plane_set_fb(overlay, &fb1);
-> +		igt_plane_set_position(overlay, overlay_x, overlay_y);
-> +	}
->   
-> -	igt_plane_set_fb(primary, &fb_modeset);
->   	disable_ctm(primary->pipe);
->   	disable_gamma(primary->pipe);
-> -	set_degamma(data, primary->pipe, degamma_linear);
-> -	igt_display_commit(&data->display);
-> +	disable_degamma(primary->pipe);
-> +	igt_display_commit2(&data->display, multiplane ? COMMIT_ATOMIC : COMMIT_LEGACY);
->   
-> -	/* Draw solid colors with linear degamma transformation. */
-> -	paint_rectangles(data, mode, red_green_blue, &fb);
-> -	igt_plane_set_fb(primary, &fb);
-> -	igt_display_commit(&data->display);
-> +	/* Draw solid colors with no degamma transformation. */
-> +	paint_rectangles(data, primary_h, primary_w, primary_x, primary_y, red_green_blue, &fb0);
-> +	igt_plane_set_fb(primary, &fb0);
-> +	igt_plane_set_position(primary, primary_x, primary_y);
-> +
-> +	if (multiplane) {
-> +		paint_rectangles(data, overlay_h, overlay_w, 0, 0, blue_red_green, &fb1);
-> +		igt_plane_set_fb(overlay, &fb1);
-> +		igt_plane_set_position(overlay, overlay_x, overlay_y);
-> +	}
-> +
-> +	igt_display_commit2(&data->display, multiplane ? COMMIT_ATOMIC : COMMIT_LEGACY);
->   	igt_wait_for_vblank(data->drm_fd,
->   			    display->pipes[primary->pipe->pipe].crtc_offset);
->   	igt_pipe_crc_collect_crc(data->pipe_crc, &crc_fullcolors);
-> @@ -87,10 +117,17 @@ static bool test_pipe_degamma(data_t *data,
->   	 * Draw a gradient with degamma LUT to remap all
->   	 * values to max red/green/blue.
->   	 */
-> -	paint_gradient_rectangles(data, mode, red_green_blue, &fb);
-> -	igt_plane_set_fb(primary, &fb);
-> +	paint_gradient_rectangles(data, primary_h, primary_w, primary_x, primary_y, red_green_blue, &fb0);
-> +	igt_plane_set_fb(primary, &fb0);
-> +	igt_plane_set_position(primary, primary_x, primary_y);
-> +
-> +	if (multiplane) {
-> +		paint_gradient_rectangles(data, overlay_h, overlay_w, 0, 0, blue_red_green, &fb1);
-> +		igt_plane_set_fb(overlay, &fb1);
-> +		igt_plane_set_position(overlay, overlay_x, overlay_y);
-> +	}
->   	set_degamma(data, primary->pipe, degamma_full);
-> -	igt_display_commit(&data->display);
-> +	igt_display_commit2(&data->display, multiplane ? COMMIT_ATOMIC : COMMIT_LEGACY);
->   	igt_wait_for_vblank(data->drm_fd,
->   			    display->pipes[primary->pipe->pipe].crtc_offset);
->   	igt_pipe_crc_collect_crc(data->pipe_crc, &crc_fullgamma);
-> @@ -103,12 +140,14 @@ static bool test_pipe_degamma(data_t *data,
->   
->   	disable_degamma(primary->pipe);
->   	igt_plane_set_fb(primary, NULL);
-> +	if (multiplane)
-> +		igt_plane_set_fb(overlay, NULL);
->   	igt_output_set_pipe(output, PIPE_NONE);
-> -	igt_display_commit(&data->display);
-> -	igt_remove_fb(data->drm_fd, &fb);
-> -	igt_remove_fb(data->drm_fd, &fb_modeset);
-> +	igt_display_commit2(&data->display, multiplane ? COMMIT_ATOMIC : COMMIT_LEGACY);
-> +	igt_remove_fb(data->drm_fd, &fb0);
-> +	if (multiplane)
-> +		igt_remove_fb(data->drm_fd, &fb1);
->   
-> -	free_lut(degamma_linear);
->   	free_lut(degamma_full);
->   
->   	return ret;
-> @@ -119,7 +158,7 @@ static bool test_pipe_degamma(data_t *data,
->    * LUT and verify we have the same CRC as drawing solid color rectangles.
->    */
->   static bool test_pipe_gamma(data_t *data,
-> -			    igt_plane_t *primary)
-> +			    igt_plane_t *primary, bool multiplane)
->   {
->   	igt_output_t *output = data->output;
->   	igt_display_t *display = &data->display;
-> @@ -166,7 +205,7 @@ static bool test_pipe_gamma(data_t *data,
->   	igt_display_commit(&data->display);
->   
->   	/* Draw solid colors with no gamma transformation. */
-> -	paint_rectangles(data, mode, red_green_blue, &fb);
-> +	paint_rectangles(data, mode->vdisplay, mode->hdisplay, 0, 0, red_green_blue, &fb);
->   	igt_plane_set_fb(primary, &fb);
->   	igt_display_commit(&data->display);
->   	igt_wait_for_vblank(data->drm_fd,
-> @@ -177,7 +216,7 @@ static bool test_pipe_gamma(data_t *data,
->   	 * Draw a gradient with gamma LUT to remap all values
->   	 * to max red/green/blue.
->   	 */
-> -	paint_gradient_rectangles(data, mode, red_green_blue, &fb);
-> +	paint_gradient_rectangles(data, mode->vdisplay, mode->hdisplay, 0, 0, red_green_blue, &fb);
->   	igt_plane_set_fb(primary, &fb);
->   	igt_display_commit(&data->display);
->   	igt_wait_for_vblank(data->drm_fd,
-> @@ -208,7 +247,7 @@ static bool test_pipe_gamma(data_t *data,
->    * with linear legacy gamma LUT.
->    */
->   static bool test_pipe_legacy_gamma(data_t *data,
-> -				   igt_plane_t *primary)
-> +				   igt_plane_t *primary, bool multiplane)
->   {
->   	igt_output_t *output = data->output;
->   	igt_display_t *display = &data->display;
-> @@ -261,7 +300,7 @@ static bool test_pipe_legacy_gamma(data_t *data,
->   	igt_display_commit(&data->display);
->   
->   	/* Draw solid colors with no gamma transformation. */
-> -	paint_rectangles(data, mode, red_green_blue, &fb);
-> +	paint_rectangles(data, mode->vdisplay, mode->hdisplay, 0, 0, red_green_blue, &fb);
->   	igt_plane_set_fb(primary, &fb);
->   	igt_display_commit(&data->display);
->   	igt_wait_for_vblank(data->drm_fd,
-> @@ -272,7 +311,7 @@ static bool test_pipe_legacy_gamma(data_t *data,
->   	 * Draw a gradient with gamma LUT to remap all values
->   	 * to max red/green/blue.
->   	 */
-> -	paint_gradient_rectangles(data, mode, red_green_blue, &fb);
-> +	paint_rectangles(data, mode->vdisplay, mode->hdisplay, 0, 0, red_green_blue, &fb);
->   	igt_plane_set_fb(primary, &fb);
->   
->   	red_lut[0] = green_lut[0] = blue_lut[0] = 0;
-> @@ -317,7 +356,7 @@ static bool test_pipe_legacy_gamma(data_t *data,
->    * through the GAMMA_LUT property.
->    */
->   static bool test_pipe_legacy_gamma_reset(data_t *data,
-> -					 igt_plane_t *primary)
-> +					 igt_plane_t *primary, bool multiplane)
->   {
->   	const double ctm_identity[] = {
->   		1.0, 0.0, 0.0,
-> @@ -513,7 +552,7 @@ static bool test_pipe_ctm(data_t *data,
->   	disable_ctm(primary->pipe);
->   	igt_display_commit(&data->display);
->   
-> -	paint_rectangles(data, mode, after, &fb);
-> +	paint_rectangles(data, mode->vdisplay, mode->hdisplay, 0, 0, after, &fb);
->   	igt_plane_set_fb(primary, &fb);
->   	set_ctm(primary->pipe, ctm_identity);
->   	igt_display_commit(&data->display);
-> @@ -522,7 +561,7 @@ static bool test_pipe_ctm(data_t *data,
->   	igt_pipe_crc_collect_crc(data->pipe_crc, &crc_software);
->   
->   	/* With CTM transformation. */
-> -	paint_rectangles(data, mode, before, &fb);
-> +	paint_rectangles(data, mode->vdisplay, mode->hdisplay, 0, 0, before, &fb);
->   	igt_plane_set_fb(primary, &fb);
->   	set_ctm(primary->pipe, ctm_matrix);
->   	igt_display_commit(&data->display);
-> @@ -709,9 +748,12 @@ static void test_cleanup(data_t *data)
->   }
->   
->   static void
-> -run_gamma_degamma_tests_for_pipe(data_t *data, enum pipe p,
-> -				 bool (*test_t)(data_t*, igt_plane_t*))
-> +run_gamma_degamma_tests_for_pipe(data_t *data, enum pipe p, bool multiplane,
-> +				 bool (*test_t)(data_t*, igt_plane_t*, bool))
->   {
-> +	igt_plane_t *overlay;
-> +	int count;
+Thank you Kamil for the helpful notes and links.Will follow these links 
+Thank you for merging the patch.
 
-Please initialize to 0.
-
-> +
->   	test_setup(data, p);
->   
->   	/*
-> @@ -722,8 +764,25 @@ run_gamma_degamma_tests_for_pipe(data_t *data, enum pipe p,
->   	data->drm_format = DRM_FORMAT_XRGB8888;
->   	data->mode = igt_output_get_mode(data->output);
->   
-> +	if (multiplane) {
-> +		for_each_plane_on_pipe(&data->display, p, overlay) {
-> +			if (overlay->type == DRM_PLANE_TYPE_PRIMARY ||
-> +			    overlay->type == DRM_PLANE_TYPE_CURSOR)
-
-As you are looking for overlay plane, continue if it is not found.
-So update the logic as:
-
-if (overlay->type != DRM_PLANE_TYPE_OVERLAY)
-	continue;
-
-> +				continue;
-> +
-> +			if (igt_plane_has_format_mod(overlay, DRM_FORMAT_NV12, DRM_FORMAT_MOD_LINEAR)) {
-> +				count++;
-> +				break;
-> +			}
-> +		}
-> +	}
-> +	igt_require_f(count, "No valid planes found.\n");
-
-This check is required for multiplane only, so please move this check to 
-inside the "if (multiplane) {}"
-
-> +
-> +	data->overlay = overlay;
-> +	data->drm_format_overlay = DRM_FORMAT_NV12;
-> +
->   	igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(p), data->output->name)
-> -		igt_assert(test_t(data, data->primary));
-> +		igt_assert(test_t(data, data->primary, multiplane));
->   
->   	test_cleanup(data);
->   }
-> @@ -838,7 +897,7 @@ run_deep_color_tests_for_pipe(data_t *data, enum pipe p)
->   			igt_display_reset(&data->display);
->   			igt_output_set_prop_value(output, IGT_CONNECTOR_MAX_BPC, 10);
->   
-> -			ret = test_pipe_gamma(data, data->primary);
-> +			ret = test_pipe_gamma(data, data->primary, false);
->   
->   			igt_output_set_prop_value(output, IGT_CONNECTOR_MAX_BPC, max_bpc);
->   			igt_assert(ret);
-> @@ -848,7 +907,7 @@ run_deep_color_tests_for_pipe(data_t *data, enum pipe p)
->   			igt_display_reset(&data->display);
->   			igt_output_set_prop_value(output, IGT_CONNECTOR_MAX_BPC, 10);
->   
-> -			ret = test_pipe_degamma(data, data->primary);
-> +			ret = test_pipe_degamma(data, data->primary, false);
->   
->   			igt_output_set_prop_value(output, IGT_CONNECTOR_MAX_BPC, max_bpc);
->   			igt_assert(ret);
-> @@ -913,19 +972,23 @@ run_tests_for_pipe(data_t *data)
->   	enum pipe pipe;
->   	struct {
->   		const char *name;
-> -		bool (*test_t)(data_t*, igt_plane_t*);
-> +		bool (*test_t)(data_t*, igt_plane_t*, bool);
-> +		bool multiplane;
->   		const char *desc;
->   	} gamma_degamma_tests[] = {
-> -		{ "degamma", test_pipe_degamma,
-> +		{ "degamma", test_pipe_degamma, false,
->   		  "Verify that degamma LUT transformation works correctly" },
->   
-> -		{ "gamma", test_pipe_gamma,
-> +		{ "degamma-multiplane", test_pipe_degamma, true,
-> +		  "Verify that degamma LUT transformation works correctly for multiplane" },
-> +
-> +		{ "gamma", test_pipe_gamma, false,
->   		  "Verify that gamma LUT transformation works correctly" },
->   
-> -		{ "legacy-gamma", test_pipe_legacy_gamma,
-> +		{ "legacy-gamma", test_pipe_legacy_gamma, false,
->   		  "Verify that legacy gamma LUT transformation works correctly" },
->   
-> -		{ "legacy-gamma-reset", test_pipe_legacy_gamma_reset,
-> +		{ "legacy-gamma-reset", test_pipe_legacy_gamma_reset, false,
->   		  "Verify that setting the legacy gamma LUT resets the gamma LUT set through GAMMA_LUT property" },
->   	};
->   	struct {
-> @@ -1007,8 +1070,14 @@ run_tests_for_pipe(data_t *data)
->   	for (i = 0; i < ARRAY_SIZE(gamma_degamma_tests); i++) {
->   		igt_describe_f("%s", gamma_degamma_tests[i].desc);
->   		igt_subtest_with_dynamic_f("%s", gamma_degamma_tests[i].name) {
-> +			if (gamma_degamma_tests[i].multiplane &&
-> +			    (!data->display.is_atomic ||
-> +			     !igt_display_has_format_mod(&data->display, DRM_FORMAT_NV12, DRM_FORMAT_MOD_LINEAR)))
-> +			    continue;
-> +
->   			for_each_pipe(&data->display, pipe) {
->   				run_gamma_degamma_tests_for_pipe(data, pipe,
-> +								 gamma_degamma_tests[i].multiplane,
->   								 gamma_degamma_tests[i].test_t);
->   			}
->   		}
+Thanks,
+Riana
+>> v2: optimize code in igt_devices_scan (Zbigniew)
+>> v3: update commit message (Janusz)
+>>
+>> Signed-off-by: Riana Tauro <riana.tauro@intel.com>
+>> Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+>> ---
+>>   lib/igt_device_scan.c | 20 ++++----------------
+>>   1 file changed, 4 insertions(+), 16 deletions(-)
+>>
+>> diff --git a/lib/igt_device_scan.c b/lib/igt_device_scan.c
+>> index eb6b45b8..8b70e375 100644
+>> --- a/lib/igt_device_scan.c
+>> +++ b/lib/igt_device_scan.c
+>> @@ -1027,9 +1027,11 @@ void igt_devices_free(void)
+>>   	}
+>>   
+>>   	igt_list_for_each_entry_safe(dev, tmp, &igt_devs.all, link) {
+>> +		igt_list_del(&dev->link);
+>>   		igt_device_free(dev);
+>>   		free(dev);
+>>   	}
+>> +	igt_devs.devs_scanned = false;
+>>   }
+>>   
+>>   /**
+>> @@ -1043,22 +1045,8 @@ void igt_devices_free(void)
+>>    */
+>>   void igt_devices_scan(bool force)
+>>   {
+>> -	if (force && igt_devs.devs_scanned) {
+>> -		struct igt_device *dev, *tmp;
+>> -
+>> -		igt_list_for_each_entry_safe(dev, tmp, &igt_devs.filtered,
+>> -					     link) {
+>> -			igt_list_del(&dev->link);
+>> -			free(dev);
+>> -		}
+>> -		igt_list_for_each_entry_safe(dev, tmp, &igt_devs.all, link) {
+>> -			igt_list_del(&dev->link);
+>> -			igt_device_free(dev);
+>> -			free(dev);
+>> -		}
+>> -
+>> -		igt_devs.devs_scanned = false;
+>> -	}
+>> +	if (force && igt_devs.devs_scanned)
+>> +		igt_devices_free();
+>>   
+>>   	if (igt_devs.devs_scanned)
+>>   		return;
+>> -- 
+>> 2.25.1
+>>
