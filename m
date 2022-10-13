@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0099F10E284
- for <igt-dev@lists.freedesktop.org>; Thu, 13 Oct 2022 15:14:06 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EB61A10E275
+ for <igt-dev@lists.freedesktop.org>; Thu, 13 Oct 2022 15:14:05 +0000 (UTC)
 From: Ashutosh Dixit <ashutosh.dixit@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Thu, 13 Oct 2022 08:14:00 -0700
-Message-Id: <20221013151400.2086268-9-ashutosh.dixit@intel.com>
+Date: Thu, 13 Oct 2022 08:13:54 -0700
+Message-Id: <20221013151400.2086268-3-ashutosh.dixit@intel.com>
 In-Reply-To: <20221013151400.2086268-1-ashutosh.dixit@intel.com>
 References: <20221013151400.2086268-1-ashutosh.dixit@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 8/8] HAX: run i915_pm_rc6_residency tests in
- BAT
+Subject: [igt-dev] [PATCH i-g-t 2/8] lib/igt_power: Rename lib igt_rapl with
+ igt_power
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,26 +25,131 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Riana Tauro <riana.tauro@intel.com>
 
-Add i915_pm_rc6_residency tests to test hwmon
-interface
+Rename igt_rapl library to igt_power.
+No functional changes
 
+Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
 Signed-off-by: Riana Tauro <riana.tauro@intel.com>
+Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
 ---
- tests/intel-ci/fast-feedback.testlist | 2 ++
- 1 file changed, 2 insertions(+)
+ lib/{igt_rapl.c => igt_power.c}    | 2 +-
+ lib/{igt_rapl.h => igt_power.h}    | 6 +++---
+ lib/meson.build                    | 2 +-
+ tests/i915/gem_exec_fair.c         | 1 -
+ tests/i915/gem_exec_schedule.c     | 2 +-
+ tests/i915/gem_exec_whisper.c      | 2 +-
+ tests/i915/i915_pm_rc6_residency.c | 2 +-
+ 7 files changed, 8 insertions(+), 9 deletions(-)
+ rename lib/{igt_rapl.c => igt_power.c} (98%)
+ rename lib/{igt_rapl.h => igt_power.h} (97%)
 
-diff --git a/tests/intel-ci/fast-feedback.testlist b/tests/intel-ci/fast-feedback.testlist
-index bd5538a035..57c6e61846 100644
---- a/tests/intel-ci/fast-feedback.testlist
-+++ b/tests/intel-ci/fast-feedback.testlist
-@@ -124,6 +124,8 @@ igt@kms_psr@sprite_plane_onoff
- igt@kms_psr@primary_mmap_gtt
- igt@kms_setmode@basic-clone-single-crtc
- igt@i915_pm_backlight@basic-brightness
-+igt@i915_pm_rc6_residency@rc6-fence
-+igt@i915_pm_rc6_residency@rc6-idle
- igt@i915_pm_rpm@basic-pci-d3-state
- igt@i915_pm_rpm@basic-rte
- igt@i915_pm_rps@basic-api
+diff --git a/lib/igt_rapl.c b/lib/igt_power.c
+similarity index 98%
+rename from lib/igt_rapl.c
+rename to lib/igt_power.c
+index 03e4922602..814ad5561b 100644
+--- a/lib/igt_rapl.c
++++ b/lib/igt_power.c
+@@ -7,7 +7,7 @@
+ #include <inttypes.h>
+ 
+ #include "igt_perf.h"
+-#include "igt_rapl.h"
++#include "igt_power.h"
+ #include "igt_sysfs.h"
+ 
+ static int rapl_parse(struct rapl *r, const char *str)
+diff --git a/lib/igt_rapl.h b/lib/igt_power.h
+similarity index 97%
+rename from lib/igt_rapl.h
+rename to lib/igt_power.h
+index 13f4f88a73..11ddcdeee8 100644
+--- a/lib/igt_rapl.h
++++ b/lib/igt_power.h
+@@ -22,8 +22,8 @@
+  *
+  */
+ 
+-#ifndef IGT_RAPL_H
+-#define IGT_RAPL_H
++#ifndef IGT_POWER_H
++#define IGT_POWER_H
+ 
+ #include <stdbool.h>
+ #include <stdint.h>
+@@ -98,4 +98,4 @@ static inline double power_W(const struct rapl *r,
+ 	return power_J(r, p0, p1) / power_s(r, p0, p1);
+ }
+ 
+-#endif /* IGT_RAPL_H */
++#endif /* IGT_POWER_H */
+diff --git a/lib/meson.build b/lib/meson.build
+index b1b8e80cbf..8d6c8a244a 100644
+--- a/lib/meson.build
++++ b/lib/meson.build
+@@ -30,9 +30,9 @@ lib_sources = [
+ 	'igt_os.c',
+ 	'igt_params.c',
+ 	'igt_perf.c',
++	'igt_power.c',
+ 	'igt_primes.c',
+ 	'igt_rand.c',
+-	'igt_rapl.c',
+ 	'igt_stats.c',
+ 	'igt_syncobj.c',
+ 	'igt_sysfs.c',
+diff --git a/tests/i915/gem_exec_fair.c b/tests/i915/gem_exec_fair.c
+index 89921697f7..93a138ba47 100644
+--- a/tests/i915/gem_exec_fair.c
++++ b/tests/i915/gem_exec_fair.c
+@@ -21,7 +21,6 @@
+ #include "i915/gem_create.h"
+ #include "igt.h"
+ #include "igt_rand.h"
+-#include "igt_rapl.h"
+ #include "igt_sysfs.h"
+ #include "igt_syncobj.h"
+ #include "igt_vgem.h"
+diff --git a/tests/i915/gem_exec_schedule.c b/tests/i915/gem_exec_schedule.c
+index 5ddf39bfe2..4693894f82 100644
+--- a/tests/i915/gem_exec_schedule.c
++++ b/tests/i915/gem_exec_schedule.c
+@@ -38,8 +38,8 @@
+ #include "i915/gem_create.h"
+ #include "i915/gem_vm.h"
+ #include "igt.h"
++#include "igt_power.h"
+ #include "igt_rand.h"
+-#include "igt_rapl.h"
+ #include "igt_sysfs.h"
+ #include "igt_vgem.h"
+ #include "intel_ctx.h"
+diff --git a/tests/i915/gem_exec_whisper.c b/tests/i915/gem_exec_whisper.c
+index c93134db4f..c763cc8e8d 100644
+--- a/tests/i915/gem_exec_whisper.c
++++ b/tests/i915/gem_exec_whisper.c
+@@ -32,8 +32,8 @@
+ #include "i915/gem_vm.h"
+ #include "igt.h"
+ #include "igt_debugfs.h"
+-#include "igt_rapl.h"
+ #include "igt_gt.h"
++#include "igt_power.h"
+ #include "igt_rand.h"
+ #include "igt_sysfs.h"
+ #include "intel_ctx.h"
+diff --git a/tests/i915/i915_pm_rc6_residency.c b/tests/i915/i915_pm_rc6_residency.c
+index cf7a92b988..670461c867 100644
+--- a/tests/i915/i915_pm_rc6_residency.c
++++ b/tests/i915/i915_pm_rc6_residency.c
+@@ -37,7 +37,7 @@
+ #include "i915/gem_create.h"
+ #include "igt.h"
+ #include "igt_perf.h"
+-#include "igt_rapl.h"
++#include "igt_power.h"
+ #include "igt_sysfs.h"
+ #include "sw_sync.h"
+ 
 -- 
 2.38.0
