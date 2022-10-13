@@ -1,10 +1,10 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from NAM02-BN1-obe.outbound.protection.outlook.com
- (mail-bn1nam07on2077.outbound.protection.outlook.com [40.107.212.77])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E672310E15C
- for <igt-dev@lists.freedesktop.org>; Thu, 13 Oct 2022 15:45:45 +0000 (UTC)
-Message-ID: <32f531ea-ed93-c8de-985f-67390e8bfd0d@amd.com>
-Date: Thu, 13 Oct 2022 11:45:41 -0400
+Received: from NAM11-BN8-obe.outbound.protection.outlook.com
+ (mail-bn8nam11on2041.outbound.protection.outlook.com [40.107.236.41])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E86F910E291
+ for <igt-dev@lists.freedesktop.org>; Thu, 13 Oct 2022 15:46:31 +0000 (UTC)
+Message-ID: <aca1cd0f-fd02-0057-bb91-83f8c1ef7e1b@amd.com>
+Date: Thu, 13 Oct 2022 11:46:27 -0400
 Content-Language: en-US
 To: juhapekka.heikkila@gmail.com, igt-dev@lists.freedesktop.org
 References: <20221012200133.3161321-1-aurabindo.pillai@amd.com>
@@ -58,32 +58,4 @@ On 2022-10-13 11:37, Juha-Pekka Heikkila wrote:
 > I think these would look better as part of data_t structure since all 
 > other 'globals' are there.
 > 
->> +
->>   enum {
->>       TEST_PRIMARY = 0,
->>       TEST_OVERLAY = 1 << 0,
->> @@ -222,6 +224,8 @@ static void test_cursor(data_t *data, int size, 
->> unsigned int flags)
->>       int sw, sh;
->>       int pad = 128;
->> +    igt_skip_on((size > max_curw) || (size > max_curh));
->> +
->>       sw = data->mode->hdisplay;
->>       sh = data->mode->vdisplay;
->> @@ -270,8 +274,16 @@ igt_main
->>       };
->>       igt_fixture {
->> +        int ret;
->> +
->>           data.drm_fd = drm_open_driver_master(DRIVER_ANY);
->> +        ret = drmGetCap(data.drm_fd, DRM_CAP_CURSOR_WIDTH, &max_curw);
->> +        igt_assert(ret == 0 || errno == EINVAL);
->> +        /* Not making use of cursor_height since it is same as width, 
->> still reading */
-> What does this comment mean? I see you using cursor height in 
-> test_cursor function.
-> 
-Hi Juha-Pekka
-
-Sorry, that was a leftover comment from v1. If there isnt any other 
-concerns, I can merge it with the comment removed.
+Sure, will make a v3. Thanks for the review
