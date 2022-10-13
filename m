@@ -1,23 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 70BA610E4C8
- for <igt-dev@lists.freedesktop.org>; Thu, 13 Oct 2022 07:52:46 +0000 (UTC)
-From: "Govindapillai, Vinod" <vinod.govindapillai@intel.com>
-To: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>,
- "Heikkila, Juha-pekka" <juha-pekka.heikkila@intel.com>, "Sharma, Swati2"
- <swati2.sharma@intel.com>, "Hajda, Andrzej" <andrzej.hajda@intel.com>
-Date: Thu, 13 Oct 2022 07:52:41 +0000
-Message-ID: <72d82e6e968a488f2432b3f71408efc13df04a2c.camel@intel.com>
-References: <20221010084448.140541-1-vinod.govindapillai@intel.com>
- <cc8942ff-7e69-9d8d-23a3-e0c220947f10@intel.com>
-In-Reply-To: <cc8942ff-7e69-9d8d-23a3-e0c220947f10@intel.com>
-Content-Language: en-US
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <9BE6967B4E039441B6F42C67A568A0D9@namprd11.prod.outlook.com>
-Content-Transfer-Encoding: base64
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 202E810E270
+ for <igt-dev@lists.freedesktop.org>; Thu, 13 Oct 2022 15:14:06 +0000 (UTC)
+From: Ashutosh Dixit <ashutosh.dixit@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Thu, 13 Oct 2022 08:13:55 -0700
+Message-Id: <20221013151400.2086268-4-ashutosh.dixit@intel.com>
+In-Reply-To: <20221013151400.2086268-1-ashutosh.dixit@intel.com>
+References: <20221013151400.2086268-1-ashutosh.dixit@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t] lib/igt_debugfs: set provision to
- ignore long HPDs
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t 3/8] lib/igt_power: Add hwmon interface to
+ igt_power
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,70 +19,218 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: "Nikula, Jani" <jani.nikula@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gVHVlLCAyMDIyLTEwLTExIGF0IDExOjI3ICswMjAwLCBBbmRyemVqIEhhamRhIHdyb3RlOg0K
-PiANCj4gDQo+IE9uIDEwLjEwLjIwMjIgMTA6NDQsIFZpbm9kIEdvdmluZGFwaWxsYWkgd3JvdGU6
-DQo+ID4gQWRkIHByb3Zpc2lvbiB0byBpZ25vcmUgbG9uZyBIUERzIGFzIHNvbWUgZGlzcGxheXMg
-Z2VuZXJhdGUNCj4gPiBsb25nIEhQRHMgZXZlbiB3aGlsZSBjb25uZWN0ZWQuIFNldHRpbmcgdG8g
-aWdub3JlIHRoZSBsb25nDQo+ID4gSFBEcyB0byBhdm9pZCB1bmV4cGVjdGVkIENJIGV4ZWN1dGlv
-biBpc3N1ZXMNCj4gPiANCj4gPiBTaWduZWQtb2ZmLWJ5OiBWaW5vZCBHb3ZpbmRhcGlsbGFpIDx2
-aW5vZC5nb3ZpbmRhcGlsbGFpQGludGVsLmNvbT4NCj4gPiAtLS0NCj4gPiDCoCBsaWIvaWd0X2Rl
-YnVnZnMuYyB8IDIyICsrKysrKysrKysrKysrKysrKysrKysNCj4gPiDCoCBsaWIvaWd0X2RlYnVn
-ZnMuaCB8wqAgMSArDQo+ID4gwqAgbGliL2lndF9rbXMuY8KgwqDCoMKgIHzCoCAzICsrKw0KPiA+
-IMKgIDMgZmlsZXMgY2hhbmdlZCwgMjYgaW5zZXJ0aW9ucygrKQ0KPiA+IA0KPiA+IGRpZmYgLS1n
-aXQgYS9saWIvaWd0X2RlYnVnZnMuYyBiL2xpYi9pZ3RfZGVidWdmcy5jDQo+ID4gaW5kZXggYTU2
-Njg4YTUuLjkyY2U1MmRkIDEwMDY0NA0KPiA+IC0tLSBhL2xpYi9pZ3RfZGVidWdmcy5jDQo+ID4g
-KysrIGIvbGliL2lndF9kZWJ1Z2ZzLmMNCj4gPiBAQCAtNzEzLDYgKzcxMywyOCBAQCB2b2lkIGln
-dF9yZXF1aXJlX2hwZF9zdG9ybV9jdGwoaW50IGRybV9mZCkNCj4gPiDCoMKgwqDCoMKgwqDCoMKg
-Y2xvc2UoZmQpOw0KPiA+IMKgIH0NCj4gPiDCoCANCj4gPiArLyoqDQo+ID4gKyAqIGlndF9pZ25v
-cmVfbG9uZ19ocGQ6DQo+ID4gKyAqDQo+ID4gKyAqIFNldCAvIHVuc2V0IGlnbm9yZSBsb25nIEhQ
-RCBldmVudHMgZnJvbSB0aGUgcGFuZWxzLiBTb21lIHBhbmVscw0KPiA+ICsgKiBnZW5lcmF0ZSBs
-b25nIEhQRHMgZXZlbiB3aGlsZSBjb25uZWN0ZWQgdG8gdGhlIHBvcnRzIGNhdXNpbmcNCj4gPiAr
-ICogdW5leHBlY3RlZCBDSSBleGVjdXRpb24gaXNzdWVzLiBTZXQgdGhpcyB0byBpZ25vcmUgc3Vj
-aCB1bmV4cGVjdGVkDQo+ID4gKyAqIGxvbmcgSFBEcyB3aGVyZSB3ZSBkb250IGV4cGVjdCB0byBk
-aXNjb25uZWN0IHRoZSBkaXNwbGF5cy4NCj4gPiArICovDQo+ID4gK3ZvaWQgaWd0X2lnbm9yZV9s
-b25nX2hwZChpbnQgZHJtX2ZkLCBib29sIGVuYWJsZSkNCj4gPiArew0KPiA+ICvCoMKgwqDCoMKg
-wqDCoGludCBmZCA9IGlndF9kZWJ1Z2ZzX29wZW4oZHJtX2ZkLCAiaTkxNV9pZ25vcmVfbG9uZ19o
-cGQiLCBPX1dST05MWSk7DQo+ID4gKw0KPiA+ICvCoMKgwqDCoMKgwqDCoGlmIChmZCA8IDApIHsN
-Cj4gPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgaWd0X2RlYnVnKCJjb3VsZG4ndCBv
-cGVuIGlnbm9yZSBsb25nIGhwZCBmaWxlXG4iKTsNCj4gPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgcmV0dXJuOw0KPiA+ICvCoMKgwqDCoMKgwqDCoH0NCj4gPiArDQo+ID4gK8KgwqDC
-oMKgwqDCoMKgaWd0X2Fzc2VydF9lcSh3cml0ZShmZCwgZW5hYmxlID8gIjEiIDogIjAiLCAxKSwg
-MSk7DQo+ID4gKw0KPiA+ICvCoMKgwqDCoMKgwqDCoGNsb3NlKGZkKTsNCj4gPiArfQ0KPiA+ICsN
-Cj4gPiDCoCBzdGF0aWMgaWd0X3BpcGVfY3JjX3QgKg0KPiA+IMKgIHBpcGVfY3JjX25ldyhpbnQg
-ZmQsIGVudW0gcGlwZSBwaXBlLCBjb25zdCBjaGFyICpzb3VyY2UsIGludCBmbGFncykNCj4gPiDC
-oCB7DQo+ID4gZGlmZiAtLWdpdCBhL2xpYi9pZ3RfZGVidWdmcy5oIGIvbGliL2lndF9kZWJ1Z2Zz
-LmgNCj4gPiBpbmRleCAzN2U4NTA2Ny4uNTBmNWUwMGYgMTAwNjQ0DQo+ID4gLS0tIGEvbGliL2ln
-dF9kZWJ1Z2ZzLmgNCj4gPiArKysgYi9saWIvaWd0X2RlYnVnZnMuaA0KPiA+IEBAIC0xMjksNiAr
-MTI5LDcgQEAgdm9pZCBpZ3RfaHBkX3N0b3JtX3NldF90aHJlc2hvbGQoaW50IGZkLCB1bnNpZ25l
-ZCBpbnQgdGhyZXNob2xkKTsNCj4gPiDCoCB2b2lkIGlndF9ocGRfc3Rvcm1fcmVzZXQoaW50IGZk
-KTsNCj4gPiDCoCBib29sIGlndF9ocGRfc3Rvcm1fZGV0ZWN0ZWQoaW50IGZkKTsNCj4gPiDCoCB2
-b2lkIGlndF9yZXF1aXJlX2hwZF9zdG9ybV9jdGwoaW50IGZkKTsNCj4gPiArdm9pZCBpZ3RfaWdu
-b3JlX2xvbmdfaHBkKGludCBmZCwgYm9vbCBlbmFibGUpOw0KPiA+IMKgIA0KPiA+IMKgIC8qDQo+
-ID4gwqDCoCAqIERyb3AgY2FjaGVzDQo+ID4gZGlmZiAtLWdpdCBhL2xpYi9pZ3Rfa21zLmMgYi9s
-aWIvaWd0X2ttcy5jDQo+ID4gaW5kZXggNjY1NTk0YWEuLjJkYjRlNWZhIDEwMDY0NA0KPiA+IC0t
-LSBhL2xpYi9pZ3Rfa21zLmMNCj4gPiArKysgYi9saWIvaWd0X2ttcy5jDQo+ID4gQEAgLTIzNTYs
-NiArMjM1Niw5IEBAIHZvaWQgaWd0X2Rpc3BsYXlfcmVxdWlyZShpZ3RfZGlzcGxheV90ICpkaXNw
-bGF5LCBpbnQgZHJtX2ZkKQ0KPiA+IMKgwqDCoMKgwqDCoMKgwqBkaXNwbGF5LT5kcm1fZmQgPSBk
-cm1fZmQ7DQo+ID4gwqDCoMKgwqDCoMKgwqDCoGlzX2k5MTVfZGV2ID0gaXNfaTkxNV9kZXZpY2Uo
-ZHJtX2ZkKTsNCj4gPiDCoCANCj4gPiArwqDCoMKgwqDCoMKgwqAvKiBJZ25vcmUgdGhlIGxvbmcg
-SFBEcyAqLw0KPiA+ICvCoMKgwqDCoMKgwqDCoGlndF9pZ25vcmVfbG9uZ19ocGQoZGlzcGxheS0+
-ZHJtX2ZkLCB0cnVlKTsNCj4gPiArDQo+IA0KPiBMb25nIEhQRCwgZXZlbiBpZiBpdCBjb21lcyBm
-cm9tIGJhZCBodywgaXMgdXNlZnVsIGZvciB0ZXN0aW5nIA0KPiB1bnBsdWcvcmVwbHVnIG9mIHRo
-ZSBtb25pdG9yIGluIHVuZXhwZWN0ZWQgbW9tZW50cy4NCj4gV2l0aCB0aGlzIHNldHRpbmcgd2Ug
-bG9vc2UgdGhlIG9wcG9ydHVuaXR5LCBidXQgYXQgbGVhc3Qgd2UgY2FuIGZvY3VzIG9uIA0KPiB0
-aGUgcmVhbCBwdXJwb3NlIG9mIHRoZSB0ZXN0cy4NCj4gTWF5YmUgaXQgd291bGQgYmUgdXNlZnVs
-IHRvIHJ1biBzb21ldGltZXMgdGVzdHMgd2l0aG91dCBpZ25vcmVfbG9uZ19ocGQ/DQo+IA0KPiBS
-ZXZpZXdlZC1ieTogQW5kcnplaiBIYWpkYSA8YW5kcnplai5oYWpkYUBpbnRlbC5jb20+DQo+IA0K
-PiBSZWdhcmRzDQo+IEFuZHJ6ZWoNCg0KVGhhbmtzIGZvciB0aGUgcmV2aWV3IGFuZCBjb21tZW50
-cy4gDQpJIGhhZCBhbHNvIHNpbWlsYXIgY29uY2VybnMuIFRoaXMgd2FzIGhvdyB0aGUgaW50ZXJu
-YWwgdmVyc2lvbiBoYWQgYmVlbiB1c2luZy4NCg0KKyBKUCBhbmQgU3dhdGksIA0KDQpKUCBhbmQg
-U3dhdGksIGRvIHlvdSBoYXZlIGFueSBjb21tZW50cyBvbiB0aGlzPyBDYW4gdGhlIENJIHNldCB0
-aGlzIGZsYWcgc2VwYXJhdGVseT8NCg0KQlINCnZpbm9kDQoNCg0KDQoNCj4gDQo+ID4gwqDCoMKg
-wqDCoMKgwqDCoGRybVNldENsaWVudENhcChkcm1fZmQsIERSTV9DTElFTlRfQ0FQX1dSSVRFQkFD
-S19DT05ORUNUT1JTLCAxKTsNCj4gPiDCoCANCj4gPiDCoMKgwqDCoMKgwqDCoMKgcmVzb3VyY2Vz
-ID0gZHJtTW9kZUdldFJlc291cmNlcyhkaXNwbGF5LT5kcm1fZmQpOw0KPiANCg0K
+From: Riana Tauro <riana.tauro@intel.com>
+
+Modify igt_power to expose functions to read energy, power
+using hwmon and rapl interface
+
+Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
+Signed-off-by: Riana Tauro <riana.tauro@intel.com>
+Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
+---
+ lib/igt_power.c | 131 ++++++++++++++++++++++++++++++++++++++++++++++++
+ lib/igt_power.h |  22 ++++++++
+ 2 files changed, 153 insertions(+)
+
+diff --git a/lib/igt_power.c b/lib/igt_power.c
+index 814ad5561b..3f3633eb96 100644
+--- a/lib/igt_power.c
++++ b/lib/igt_power.c
+@@ -6,10 +6,14 @@
+ #include <unistd.h>
+ #include <inttypes.h>
+ 
++#include "igt.h"
++#include "igt_hwmon.h"
+ #include "igt_perf.h"
+ #include "igt_power.h"
+ #include "igt_sysfs.h"
+ 
++static const char *rapl_domains[] = { "cpu", "gpu", "pkg", "ram" };
++
+ static int rapl_parse(struct rapl *r, const char *str)
+ {
+ 	locale_t locale, oldlocale;
+@@ -67,3 +71,130 @@ err:
+ 	errno = 0;
+ 	return r->fd;
+ }
++
++/**
++ * igt_power_open:
++ * @fd : device fd
++ * @igt_power : power struct
++ * @domain: rapl domain
++ *
++ * opens the hwmon/rapl fd based on domain
++ * hwmon fd - domain gpu -dgfx
++ * rapl fd - all domains - igfx
++ *
++ * Returns
++ * 0 on success, errno otherwise
++ */
++int igt_power_open(int fd, struct igt_power *p, const char *domain)
++{
++	int i;
++
++	p->hwmon_fd = -1;
++	p->rapl.fd = -1;
++
++	if (gem_has_lmem(fd)) {
++		if (strncmp(domain, "gpu", strlen("gpu")) == 0) {
++			p->hwmon_fd = igt_hwmon_open(fd);
++			if (p->hwmon_fd >= 0)
++				return 0;
++		}
++	} else {
++		for (i = 0; i < ARRAY_SIZE(rapl_domains); i++)
++			if (strncmp(domain, rapl_domains[i], strlen(rapl_domains[i])) == 0)
++				return rapl_open(&p->rapl, domain);
++	}
++
++	return -EINVAL;
++}
++
++/**
++ * igt_power_get_energy:
++ * @igt_power : power struct
++ * @power_sample: sample of energy and time
++ *
++ * Reads energy from hwmon if energy1_input file is present, else read
++ * from rapl interface
++ *
++ */
++void igt_power_get_energy(struct igt_power *power, struct power_sample *s)
++{
++	struct timespec ts;
++
++	s->energy = 0;
++	igt_assert(!clock_gettime(CLOCK_MONOTONIC, &ts));
++	s->time =  ts.tv_sec * NSEC_PER_SEC + ts.tv_nsec;
++
++	if (power->hwmon_fd >= 0) {
++		if (igt_sysfs_has_attr(power->hwmon_fd, "energy1_input"))
++			s->energy = igt_sysfs_get_u64(power->hwmon_fd, "energy1_input");
++	} else if (power->rapl.fd >= 0) {
++		rapl_read(&power->rapl, s);
++	}
++}
++
++/**
++ * igt_power_get_mJ:
++ * @igt_power : power struct
++ * @power_sample: sample of energy and time
++ *
++ * Calculates energy difference between two power samples
++ *
++ * Returns
++ * energy in mJ from hwmon/rapl
++ */
++double igt_power_get_mJ(const struct igt_power *power,
++			const struct power_sample *p0, const struct power_sample *p1)
++{
++	if (power->hwmon_fd >= 0)
++		return (p1->energy - p0->energy) * 1e-3;
++	else if (power->rapl.fd >= 0)
++		return ((p1->energy - p0->energy) *  power->rapl.scale) * 1e3;
++
++	return 0;
++}
++
++/**
++ * igt_power_get_mW:
++ * @igt_power : power struct
++ * @power_sample: sample of energy and time
++ *
++ * Calculates power
++ *
++ * Returns
++ * power in milliWatts
++ */
++double igt_power_get_mW(const struct igt_power *power,
++			const struct power_sample *p0, const struct power_sample *p1)
++{
++	return igt_power_get_mJ(power, p0, p1) / igt_power_get_s(p0, p1);
++}
++
++/**
++ * igt_power_get_s:
++ * @power_sample: sample of energy and time
++ *
++ * Returns
++ * time differnce in seconds
++ */
++double igt_power_get_s(const struct power_sample *p0,
++		       const struct power_sample *p1)
++{
++	return (p1->time - p0->time) * 1e-9;
++}
++
++/**
++ * igt_power_close:
++ * @igt_power : power struct
++ *
++ * closes hwmon/rapl fd
++ *
++ */
++void igt_power_close(struct igt_power *power)
++{
++	if (power->hwmon_fd >= 0) {
++		close(power->hwmon_fd);
++		power->hwmon_fd = -1;
++	} else if (power->rapl.fd >= 0) {
++		rapl_close(&power->rapl);
++	}
++}
+diff --git a/lib/igt_power.h b/lib/igt_power.h
+index 11ddcdeee8..0984c2df6b 100644
+--- a/lib/igt_power.h
++++ b/lib/igt_power.h
+@@ -39,7 +39,14 @@ struct power_sample {
+ 	uint64_t time;
+ };
+ 
++struct igt_power {
++	struct rapl rapl;
++	int hwmon_fd;
++};
++
+ int rapl_open(struct rapl *r, const char *domain);
++int igt_power_open(int i915, struct igt_power *p, const char *domain);
++void igt_power_close(struct igt_power *p);
+ 
+ static inline int cpu_power_open(struct rapl *r)
+ {
+@@ -77,6 +84,11 @@ static inline void rapl_close(struct rapl *r)
+ 	r->fd = -1;
+ }
+ 
++static inline bool igt_power_valid(struct igt_power *p)
++{
++	return (p->rapl.fd >= 0) || (p->hwmon_fd >= 0);
++}
++
+ static inline double power_J(const struct rapl *r,
+ 			     const struct power_sample *p0,
+ 			     const struct power_sample *p1)
+@@ -98,4 +110,14 @@ static inline double power_W(const struct rapl *r,
+ 	return power_J(r, p0, p1) / power_s(r, p0, p1);
+ }
+ 
++void igt_power_get_energy(struct igt_power *p, struct power_sample *s);
++
++double igt_power_get_mJ(const struct igt_power *power,
++			const struct power_sample *p0,
++			const struct power_sample *p1);
++double igt_power_get_mW(const struct igt_power *power,
++			const struct power_sample *p0,
++			const struct power_sample *p1);
++double igt_power_get_s(const struct power_sample *p0,
++		       const struct power_sample *p1);
+ #endif /* IGT_POWER_H */
+-- 
+2.38.0
