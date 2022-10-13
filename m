@@ -1,20 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from NAM04-DM6-obe.outbound.protection.outlook.com
- (mail-dm6nam04on2061.outbound.protection.outlook.com [40.107.102.61])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5E32810E225
- for <igt-dev@lists.freedesktop.org>; Thu, 13 Oct 2022 18:18:18 +0000 (UTC)
-Message-ID: <ac3ce594-2c9e-7a50-d676-d20e0c1f7b0d@amd.com>
-Date: Thu, 13 Oct 2022 14:18:14 -0400
-To: Alex Hung <alex.hung@amd.com>, igt-dev@lists.freedesktop.org
-References: <20221011185354.2268148-1-alex.hung@amd.com>
+Received: from NAM10-DM6-obe.outbound.protection.outlook.com
+ (mail-dm6nam10on2068.outbound.protection.outlook.com [40.107.93.68])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2ECF110E32C
+ for <igt-dev@lists.freedesktop.org>; Thu, 13 Oct 2022 19:05:29 +0000 (UTC)
+Message-ID: <96ffa57b-8277-9194-039e-a814caac68bd@amd.com>
+Date: Thu, 13 Oct 2022 13:05:24 -0600
+To: Mark Yacoub <markyacoub@chromium.org>
+References: <20221012235706.75569-1-alex.hung@amd.com>
+ <CAJUqKUr1QyvaRZ-gAfRt5Cz2xU+Nkxf_cQ5GCwVyBPTc6hEB8w@mail.gmail.com>
 Content-Language: en-US
-From: Rodrigo Siqueira Jordao <Rodrigo.Siqueira@amd.com>
-In-Reply-To: <20221011185354.2268148-1-alex.hung@amd.com>
+From: Alex Hung <alex.hung@amd.com>
+In-Reply-To: <CAJUqKUr1QyvaRZ-gAfRt5Cz2xU+Nkxf_cQ5GCwVyBPTc6hEB8w@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH][V4] tests/kms_plane_multiple: turn off pipe
- if all planes are off
+Subject: Re: [igt-dev] [PATCH 1/2] tests/kms_universal_plane: turn off pipe
+ when primary plane is off
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,63 +23,85 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: michel.daenzer@mailbox.org, lakshminarayana.vudum@intel.com,
- markyacoub@google.com
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
 
 
-On 2022-10-11 14:53, Alex Hung wrote:
-> amdgpu rejects when crtc is on + all planes are off, and it
-> is necessary to turn off crtc when all planes are off in the
-> subtest "tiling-none".
-> 
-> This is revised from https://patchwork.freedesktop.org/series/80904/
-> 
-> Signed-off-by: Alex Hung <alex.hung@amd.com>
-> ---
->   tests/kms_plane_multiple.c | 8 +++-----
->   1 file changed, 3 insertions(+), 5 deletions(-)
-> 
-> diff --git a/tests/kms_plane_multiple.c b/tests/kms_plane_multiple.c
-> index e958fc78..637d63f0 100644
-> --- a/tests/kms_plane_multiple.c
-> +++ b/tests/kms_plane_multiple.c
-> @@ -311,6 +311,7 @@ test_plane_position_with_output(data_t *data, enum pipe pipe,
->   		for_each_plane_on_pipe(&data->display, pipe, plane)
->   			igt_plane_set_fb(plane, NULL);
->   
-> +		igt_output_set_pipe(output, PIPE_NONE);
->   		igt_display_commit2(&data->display, COMMIT_ATOMIC);
->   
->   		for (int x = 0; x < c; x++)
-> @@ -326,16 +327,12 @@ test_plane_position_with_output(data_t *data, enum pipe pipe,
->   
->   	i = 0;
->   	while (i < iterations || loop_forever) {
-> -		/* Intel devices need it here, timing sensitive on few devices */
-> -		if (is_i915_device(data->drm_fd))
-> -			igt_pipe_crc_start(data->pipe_crc);
->   
->   		/* randomize planes and set up the holes */
->   		prepare_planes(data, pipe, &blue, modifier, c, output);
->   
->   		igt_display_commit2(&data->display, COMMIT_ATOMIC);
-> -		if (!is_i915_device(data->drm_fd))
-> -			igt_pipe_crc_start(data->pipe_crc);
-> +		igt_pipe_crc_start(data->pipe_crc);
->   
->   		igt_pipe_crc_get_current(data->display.drm_fd, data->pipe_crc, &crc);
->   		igt_assert_crc_equal(&data->ref_crc, &crc);
-> @@ -344,6 +341,7 @@ test_plane_position_with_output(data_t *data, enum pipe pipe,
->   		for_each_plane_on_pipe(&data->display, pipe, plane)
->   			igt_plane_set_fb(plane, NULL);
->   
-> +		igt_output_set_pipe(output, PIPE_NONE);
->   		igt_display_commit2(&data->display, COMMIT_ATOMIC);
->   
->   		for (int x = 0; x < c; x++)
+On 2022-10-13 08:19, Mark Yacoub wrote:
+> On Wed, Oct 12, 2022 at 7:57 PM Alex Hung <alex.hung@amd.com> wrote:
+>>
+>> GPU drivers can reject when crtc is on and primary plane is off,
+>> so turn crtc off with primary plane and turn it on afterwards.
+>>
+>> Signed-off-by: Alex Hung <alex.hung@amd.com>
+>> ---
+>>   tests/kms_universal_plane.c | 13 +++++++++++++
+>>   1 file changed, 13 insertions(+)
+>>
+>> diff --git a/tests/kms_universal_plane.c b/tests/kms_universal_plane.c
+>> index 64416afd..468f7a4e 100644
+>> --- a/tests/kms_universal_plane.c
+>> +++ b/tests/kms_universal_plane.c
+>> @@ -62,6 +62,13 @@ typedef struct {
+>>          struct igt_fb biggreen_fb, smallred_fb, smallblue_fb;
+>>   } gen9_test_t;
+>>
+>> +static void
+>> +set_pipe_on_off(igt_display_t *display, igt_output_t *output, enum pipe pipe)
+>> +{
+>> +       igt_output_set_pipe(output, pipe);
+>> +       igt_display_commit2(display, COMMIT_LEGACY);
+> Why did you choose legacy commit?
 
-Reviewed-by: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
+This seems to be most stable. I observed failures / regressions if using 
+atomic and universal on both intel and amd devices, but not with legacy.
+
+>> +}
+>> +
+>>   static void
+>>   functional_test_init(functional_test_t *test, igt_output_t *output, enum pipe pipe)
+>>   {
+>> @@ -228,12 +235,14 @@ functional_test_pipe(data_t *data, enum pipe pipe, igt_output_t *output)
+>>          igt_pipe_crc_collect_crc(test.pipe_crc, &test.crc_7);
+>>
+>>          /* Step 11: Disable primary plane */
+>> +       set_pipe_on_off(&data->display, output, PIPE_NONE);
+>>          igt_plane_set_fb(primary, NULL);
+>>          igt_display_commit2(display, COMMIT_UNIVERSAL);
+>>
+>>          /* Step 12: Legacy modeset to yellow FB (CRC 8) */
+>>          igt_plane_set_fb(primary, &test.yellow_fb);
+>>          igt_display_commit2(display, COMMIT_LEGACY);
+>> +       set_pipe_on_off(&data->display, output, pipe);
+>>          igt_pipe_crc_collect_crc(test.pipe_crc, &test.crc_8);
+>>
+>>          /* Step 13: Legacy API', blue primary, red sprite */
+>> @@ -497,8 +506,10 @@ pageflip_test_pipe(data_t *data, enum pipe pipe, igt_output_t *output)
+>>          igt_display_commit2(&data->display, COMMIT_LEGACY);
+>>
+>>          /* Disable the primary plane */
+>> +       set_pipe_on_off(&data->display, output, PIPE_NONE);
+>>          igt_plane_set_fb(primary, NULL);
+>>          igt_display_commit2(&data->display, COMMIT_UNIVERSAL);
+>> +       set_pipe_on_off(&data->display, output, pipe);
+>>
+>>          /*
+>>           * Issue a pageflip to red FB
+>> @@ -520,9 +531,11 @@ pageflip_test_pipe(data_t *data, enum pipe pipe, igt_output_t *output)
+>>           * completes, which we don't have a good way to specifically test for,
+>>           * but at least we can make sure that nothing blows up.
+>>           */
+>> +       set_pipe_on_off(&data->display, output, pipe);
+>>          igt_assert(drmModePageFlip(data->drm_fd, output->config.crtc->crtc_id,
+>>                                     test.red_fb.fb_id, DRM_MODE_PAGE_FLIP_EVENT,
+>>                                     &test) == 0);
+>> +       set_pipe_on_off(&data->display, output, PIPE_NONE);
+>>          igt_plane_set_fb(primary, NULL);
+>>          igt_display_commit2(&data->display, COMMIT_UNIVERSAL);
+>>
+>> --
+>> 2.38.0
+>>
