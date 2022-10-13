@@ -1,21 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from NAM02-DM3-obe.outbound.protection.outlook.com
- (mail-dm3nam02on2064.outbound.protection.outlook.com [40.107.95.64])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B963710E225
- for <igt-dev@lists.freedesktop.org>; Thu, 13 Oct 2022 18:09:53 +0000 (UTC)
-Message-ID: <67960be3-e3af-b82e-8804-c582e169abb2@amd.com>
-Date: Thu, 13 Oct 2022 14:09:49 -0400
-Content-Language: en-US
-To: juhapekka.heikkila@gmail.com, igt-dev@lists.freedesktop.org
-References: <20221013155620.3640321-1-aurabindo.pillai@amd.com>
- <57b85628-4f10-2df8-0c3d-b81166265b2a@gmail.com>
+Received: from NAM04-DM6-obe.outbound.protection.outlook.com
+ (mail-dm6nam04on2042.outbound.protection.outlook.com [40.107.102.42])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C399210E225
+ for <igt-dev@lists.freedesktop.org>; Thu, 13 Oct 2022 18:16:14 +0000 (UTC)
 From: Aurabindo Pillai <aurabindo.pillai@amd.com>
-In-Reply-To: <57b85628-4f10-2df8-0c3d-b81166265b2a@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+To: <igt-dev@lists.freedesktop.org>
+Date: Thu, 13 Oct 2022 14:16:10 -0400
+Message-ID: <20221013181610.3703163-1-aurabindo.pillai@amd.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t v3] test/kms_plane_cursor: Honour max
- cursor size
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+Subject: [igt-dev] [PATCH i-g-t v4] test/kms_plane_cursor: Honour max cursor
+ size
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,89 +23,80 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
+Skip the tests for cursor sizes that are not supported by the hardware
 
+Signed-off-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
+Reviewed-by: Alex Hung <alex.hung@amd.com>
 
-On 2022-10-13 13:44, Juha-Pekka Heikkila wrote:
-> On 13.10.2022 18.56, Aurabindo Pillai wrote:
->> Skip the tests for cursor sizes that are not supported by the hardware
->>
->> Changes in v2
->> =============
->>
->> * Remove the duplicate definitions for DRM cursor width capability
->> * Check for both cursor width and height when verifying the test 
->> cursor size
->>
->> Changes in v3
->> =============
->>
->> * Add variables to hold max cursor size to the global data_t struct
->> * Remove stale comment from v1
->>
->> Signed-off-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
->> ---
->>   tests/kms_plane_cursor.c | 12 ++++++++++++
->>   1 file changed, 12 insertions(+)
->>
->> diff --git a/tests/kms_plane_cursor.c b/tests/kms_plane_cursor.c
->> index 43bcaaa4..96036213 100644
->> --- a/tests/kms_plane_cursor.c
->> +++ b/tests/kms_plane_cursor.c
->> @@ -30,6 +30,7 @@
->>    * - DRM index indicates z-ordering, higher index = higher z-order
->>    */
->> +
-> ^^
-> stray newline
-> 
->>   enum {
->>       TEST_PRIMARY = 0,
->>       TEST_OVERLAY = 1 << 0,
->> @@ -64,6 +65,8 @@ typedef struct data {
->>       enum pipe pipe_id;
->>       int drm_fd;
->>       rect_t or;
->> +    uint64_t max_curw;
->> +    uint64_t max_curh;
->>   } data_t;
->>   /* Common test setup. */
->> @@ -222,6 +225,8 @@ static void test_cursor(data_t *data, int size, 
->> unsigned int flags)
->>       int sw, sh;
->>       int pad = 128;
->> +    igt_skip_on((size > data->max_curw) || (size > data->max_curh));
-> you could also remove unnecessary brackets.
-> 
->> +
->>       sw = data->mode->hdisplay;
->>       sh = data->mode->vdisplay;
->> @@ -270,8 +275,15 @@ igt_main
->>       };
->>       igt_fixture {
->> +        int ret;
->> +
->>           data.drm_fd = drm_open_driver_master(DRIVER_ANY);
->> +        ret = drmGetCap(data.drm_fd, DRM_CAP_CURSOR_WIDTH, 
->> &data.max_curw);
->> +        igt_assert(ret == 0 || errno == EINVAL);
->> +        ret = drmGetCap(data.drm_fd, DRM_CAP_CURSOR_HEIGHT, 
->> &data.max_curh);
->> +        igt_assert(ret == 0 || errno == EINVAL);
->> +
-> 
-> You'll still need to initialize those max_curw, max_curh to 64 like you 
-> were doing in previous version of your patch, now need something like 
-> this when setting up data
-> 
->         data_t data = { .max_curw = 64, .max_curh = 64 };
-> 
-> otherwise maximum cursor width/height will be zero if get EINVAL when 
-> this is ran on driver where these cursor drm capabilities are not defined.
+--
 
-Good point! Thanks for catching this. Will fix it.
-> 
-> /Juha-Pekka
-> 
->>           kmstest_set_vt_graphics_mode();
->>           igt_display_require(&data.display, data.drm_fd);
-> 
+Changes in v2
+=============
+
+* Remove the duplicate definitions for DRM cursor width capability
+* Check for both cursor width and height when verifying the test cursor size
+
+Changes in v3
+=============
+
+* Add variables to hold max cursor size to the global data_t struct
+* Remove stale comment from v1
+
+Changes in v4
+=============
+
+* Initialize max cursor parameters with default values
+* Remove extra newline and unnecessary brackets
+---
+ tests/kms_plane_cursor.c | 13 ++++++++++++-
+ 1 file changed, 12 insertions(+), 1 deletion(-)
+
+diff --git a/tests/kms_plane_cursor.c b/tests/kms_plane_cursor.c
+index 43bcaaa4..e9abfd78 100644
+--- a/tests/kms_plane_cursor.c
++++ b/tests/kms_plane_cursor.c
+@@ -64,6 +64,8 @@ typedef struct data {
+ 	enum pipe pipe_id;
+ 	int drm_fd;
+ 	rect_t or;
++	uint64_t max_curw;
++	uint64_t max_curh;
+ } data_t;
+ 
+ /* Common test setup. */
+@@ -222,6 +224,8 @@ static void test_cursor(data_t *data, int size, unsigned int flags)
+ 	int sw, sh;
+ 	int pad = 128;
+ 
++	igt_skip_on(size > data->max_curw || size > data->max_curh);
++
+ 	sw = data->mode->hdisplay;
+ 	sh = data->mode->vdisplay;
+ 
+@@ -251,7 +255,7 @@ static void test_cursor(data_t *data, int size, unsigned int flags)
+ igt_main
+ {
+ 	static const int cursor_sizes[] = { 64, 128, 256 };
+-	data_t data = {};
++	data_t data = { .max_curw = 64, .max_curh = 64 };
+ 	enum pipe pipe;
+ 	igt_output_t *output;
+ 	int i, j;
+@@ -270,8 +274,15 @@ igt_main
+ 	};
+ 
+ 	igt_fixture {
++		int ret;
++
+ 		data.drm_fd = drm_open_driver_master(DRIVER_ANY);
+ 
++		ret = drmGetCap(data.drm_fd, DRM_CAP_CURSOR_WIDTH, &data.max_curw);
++		igt_assert(ret == 0 || errno == EINVAL);
++		ret = drmGetCap(data.drm_fd, DRM_CAP_CURSOR_HEIGHT, &data.max_curh);
++		igt_assert(ret == 0 || errno == EINVAL);
++
+ 		kmstest_set_vt_graphics_mode();
+ 
+ 		igt_display_require(&data.display, data.drm_fd);
+-- 
+2.38.0
