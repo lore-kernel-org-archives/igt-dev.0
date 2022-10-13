@@ -1,15 +1,22 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5118010E303
- for <igt-dev@lists.freedesktop.org>; Thu, 13 Oct 2022 17:33:30 +0000 (UTC)
-From: Jonathan Cavitt <jonathan.cavitt@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Thu, 13 Oct 2022 10:30:38 -0700
-Message-Id: <20221013173038.1763245-1-jonathan.cavitt@intel.com>
+Received: from mail-ej1-x62d.google.com (mail-ej1-x62d.google.com
+ [IPv6:2a00:1450:4864:20::62d])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0A94D10E303
+ for <igt-dev@lists.freedesktop.org>; Thu, 13 Oct 2022 17:44:17 +0000 (UTC)
+Received: by mail-ej1-x62d.google.com with SMTP id q9so5630076ejd.0
+ for <igt-dev@lists.freedesktop.org>; Thu, 13 Oct 2022 10:44:16 -0700 (PDT)
+Message-ID: <57b85628-4f10-2df8-0c3d-b81166265b2a@gmail.com>
+Date: Thu, 13 Oct 2022 20:44:08 +0300
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH] drm/i915/ttm: Fix access_memory null pointer
- exception
+Content-Language: en-US
+To: Aurabindo Pillai <aurabindo.pillai@amd.com>, igt-dev@lists.freedesktop.org
+References: <20221013155620.3640321-1-aurabindo.pillai@amd.com>
+From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+In-Reply-To: <20221013155620.3640321-1-aurabindo.pillai@amd.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Subject: Re: [igt-dev] [PATCH i-g-t v3] test/kms_plane_cursor: Honour max
+ cursor size
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,50 +24,91 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: jonathan.cavitt@intel.com, matthew.auld@intel.com, nirmoy.das@intel.com
+Reply-To: juhapekka.heikkila@gmail.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-i915_ttm_to_gem can return a NULL pointer, which is
-dereferenced in i915_ttm_access_memory without first
-checking if it is NULL.  Inspecting
-i915_ttm_io_mem_reserve, it appears the correct
-behavior in this case is to return -EINVAL.
+On 13.10.2022 18.56, Aurabindo Pillai wrote:
+> Skip the tests for cursor sizes that are not supported by the hardware
+> 
+> Changes in v2
+> =============
+> 
+> * Remove the duplicate definitions for DRM cursor width capability
+> * Check for both cursor width and height when verifying the test cursor size
+> 
+> Changes in v3
+> =============
+> 
+> * Add variables to hold max cursor size to the global data_t struct
+> * Remove stale comment from v1
+> 
+> Signed-off-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
+> ---
+>   tests/kms_plane_cursor.c | 12 ++++++++++++
+>   1 file changed, 12 insertions(+)
+> 
+> diff --git a/tests/kms_plane_cursor.c b/tests/kms_plane_cursor.c
+> index 43bcaaa4..96036213 100644
+> --- a/tests/kms_plane_cursor.c
+> +++ b/tests/kms_plane_cursor.c
+> @@ -30,6 +30,7 @@
+>    * - DRM index indicates z-ordering, higher index = higher z-order
+>    */
+>   
+> +
+^^
+stray newline
 
-Fixes: 26b15eb0 ("drm/i915/ttm: implement access_memory")
-Signed-off-by: Jonathan Cavitt <jonathan.cavitt@intel.com>
-Suggested-by: John C Harrison <John.C.Harrison@intel.com>
-CC: Matthew Auld <matthew.auld@intel.com>
-CC: Andrzej Hajda <andrzej.hajda@intel.com>
-CC: Nirmoy Das <nirmoy.das@intel.com>
-CC: Andi Shyti <andi.shyti@linux.intel.com>
----
- drivers/gpu/drm/i915/gem/i915_gem_ttm.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+>   enum {
+>   	TEST_PRIMARY = 0,
+>   	TEST_OVERLAY = 1 << 0,
+> @@ -64,6 +65,8 @@ typedef struct data {
+>   	enum pipe pipe_id;
+>   	int drm_fd;
+>   	rect_t or;
+> +	uint64_t max_curw;
+> +	uint64_t max_curh;
+>   } data_t;
+>   
+>   /* Common test setup. */
+> @@ -222,6 +225,8 @@ static void test_cursor(data_t *data, int size, unsigned int flags)
+>   	int sw, sh;
+>   	int pad = 128;
+>   
+> +	igt_skip_on((size > data->max_curw) || (size > data->max_curh));
+you could also remove unnecessary brackets.
 
-diff --git a/drivers/gpu/drm/i915/gem/i915_gem_ttm.c b/drivers/gpu/drm/i915/gem/i915_gem_ttm.c
-index d63f30efd631..b569624f2ed9 100644
---- a/drivers/gpu/drm/i915/gem/i915_gem_ttm.c
-+++ b/drivers/gpu/drm/i915/gem/i915_gem_ttm.c
-@@ -704,11 +704,16 @@ static int i915_ttm_access_memory(struct ttm_buffer_object *bo,
- 				  int len, int write)
- {
- 	struct drm_i915_gem_object *obj = i915_ttm_to_gem(bo);
--	resource_size_t iomap = obj->mm.region->iomap.base -
--		obj->mm.region->region.start;
-+	resource_size_t iomap;
- 	unsigned long page = offset >> PAGE_SHIFT;
- 	unsigned long bytes_left = len;
- 
-+	if (!obj)
-+		return -EINVAL;
-+
-+	iomap = obj->mm.region->iomap.base -
-+		obj->mm.region->region.start;
-+
- 	/*
- 	 * TODO: For now just let it fail if the resource is non-mappable,
- 	 * otherwise we need to perform the memcpy from the gpu here, without
--- 
-2.25.1
+> +
+>   	sw = data->mode->hdisplay;
+>   	sh = data->mode->vdisplay;
+>   
+> @@ -270,8 +275,15 @@ igt_main
+>   	};
+>   
+>   	igt_fixture {
+> +		int ret;
+> +
+>   		data.drm_fd = drm_open_driver_master(DRIVER_ANY);
+>   
+> +		ret = drmGetCap(data.drm_fd, DRM_CAP_CURSOR_WIDTH, &data.max_curw);
+> +		igt_assert(ret == 0 || errno == EINVAL);
+> +		ret = drmGetCap(data.drm_fd, DRM_CAP_CURSOR_HEIGHT, &data.max_curh);
+> +		igt_assert(ret == 0 || errno == EINVAL);
+> +
+
+You'll still need to initialize those max_curw, max_curh to 64 like you 
+were doing in previous version of your patch, now need something like 
+this when setting up data
+
+        data_t data = { .max_curw = 64, .max_curh = 64 };
+
+otherwise maximum cursor width/height will be zero if get EINVAL when 
+this is ran on driver where these cursor drm capabilities are not defined.
+
+/Juha-Pekka
+
+>   		kmstest_set_vt_graphics_mode();
+>   
+>   		igt_display_require(&data.display, data.drm_fd);
