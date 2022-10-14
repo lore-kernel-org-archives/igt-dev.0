@@ -1,18 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4947010EB4A
- for <igt-dev@lists.freedesktop.org>; Fri, 14 Oct 2022 17:16:34 +0000 (UTC)
-Date: Fri, 14 Oct 2022 19:16:28 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Message-ID: <Y0mZbBQ98CT8Jtxf@kamilkon-desk1>
-References: <20220915081704.3039599-1-karthikeya.sunkesula@intel.com>
- <20220915081704.3039599-3-karthikeya.sunkesula@intel.com>
+Received: from NAM11-DM6-obe.outbound.protection.outlook.com
+ (mail-dm6nam11on2045.outbound.protection.outlook.com [40.107.223.45])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4FB0E10E011
+ for <igt-dev@lists.freedesktop.org>; Fri, 14 Oct 2022 18:49:48 +0000 (UTC)
+From: Aurabindo Pillai <aurabindo.pillai@amd.com>
+To: <igt-dev@lists.freedesktop.org>
+Date: Fri, 14 Oct 2022 14:49:42 -0400
+Message-ID: <20221014184942.205868-1-aurabindo.pillai@amd.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20220915081704.3039599-3-karthikeya.sunkesula@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 2/2] Add descriptions to pm rps tests
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+Subject: [igt-dev] [PATCH i-g-t] tests/kms_plane_cursor: Change API for
+ collecting the CRC
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,90 +19,63 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: badal.nilawar@intel.com,
- Karthikeya Sunkesula <karthikeya.sunkesula@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Karthikeya,
+On AMD hw, igt_pipe_crc_get_current() does not work correctly, but
+igt_pipe_crc_collect_crc() does. The latter is more robust and reports
+the expected crc. This is due to a delay of 2 frames in the hardware for
+crc capture.
 
-few more nits, see below.
+The following diff is an alternate fix instead of changing the API:
 
-On 2022-09-15 at 13:47:04 +0530, Karthikeya Sunkesula wrote:
-> Signed-off-by: Karthikeya Sunkesula <karthikeya.sunkesula@intel.com>
-> ---
->  tests/i915/i915_pm_rps.c | 9 +++++++++
->  1 file changed, 9 insertions(+)
-> 
-> diff --git a/tests/i915/i915_pm_rps.c b/tests/i915/i915_pm_rps.c
-> index db39ec69..44228b44 100644
-> --- a/tests/i915/i915_pm_rps.c
-> +++ b/tests/i915/i915_pm_rps.c
-> @@ -914,12 +914,16 @@ igt_main
->  		igt_install_exit_handler(pm_rps_exit_handler);
->  	}
->  
-> +	igt_describe("Verify the rps sysfs constraints, by varying min, max gt frequencies "
---------------------- ^
-> +			"with RPn, RP0 and mid values with valid and invalid cases.");
-------------------------^
-Align to previous line, it should look like:
-	igt_describe("Verify the rps sysfs constraints, by varying min, max gt frequencies "
-		     "with RPn, RP0 and mid values with valid and invalid cases.");
+diff --git a/lib/igt_debugfs.c b/lib/igt_debugfs.c
+index fa1e3b69..dfcb2638 100644
+--- a/lib/igt_debugfs.c
++++ b/lib/igt_debugfs.c
+@@ -1061,6 +1061,10 @@ igt_pipe_crc_get_current(int drm_fd, igt_pipe_crc_t *pipe_crc, igt_crc_t *crc)
+ {
+        unsigned vblank = kmstest_get_vblank(drm_fd, pipe_crc->pipe, 0) + 1;
 
->  	igt_subtest("basic-api") {
->  		igt_skip_on_f(i915_is_slpc_enabled(drm_fd),
->  			      "This subtest is not supported when SLPC is enabled\n");
->  		min_max_config(basic_check, false);
->  	}
->  
-> +	igt_describe("Verify the constraints and verify current frequency settles down to "
-> +			"RPn or min within the allotted time after a low workload is run.");
++       /* AMD hw has an additional frame delay */
++       if (is_amdgpu_device(drm_fd))
++               vblank += 1;
++
+        return igt_pipe_crc_get_for_frame(drm_fd, pipe_crc, vblank, crc);
+ }
 
-Same here, align.
+Since the above solution adds device specific code into core IGT lib,
+changing the API is a preferable solution.
 
->  	/* Verify the constraints, check if we can reach idle */
->  	igt_subtest("min-max-config-idle") {
->  		igt_skip_on_f(i915_is_slpc_enabled(drm_fd),
-> @@ -927,6 +931,8 @@ igt_main
->  		min_max_config(idle_check, true);
->  	}
->  
-> +	igt_describe("Verify the constraints and with a high workload, verify current "
-> +			"frequency scales upto RP0 or max within the allotted time.");
+Signed-off-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
+---
+ tests/kms_plane_cursor.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-Same here.
-
->  	/* Verify the constraints with high load, check if we can reach max */
->  	igt_subtest("min-max-config-loaded") {
->  		igt_skip_on_f(i915_is_slpc_enabled(drm_fd),
-> @@ -937,6 +943,8 @@ igt_main
->  	}
->  
->  	/* Checks if we achieve boost using gem_wait */
-> +	igt_describe("Verify actual frequency bumps to boost frequency with workload "
-> +			"with waitboost scenario.");
-
-Please make it shorter (look at previous replay).
-
->  	igt_subtest("waitboost") {
->  		igt_skip_on_f(i915_is_slpc_enabled(drm_fd),
->  			      "This subtest is not supported when SLPC is enabled\n");
-> @@ -958,6 +966,7 @@ igt_main
->  	}
->  
->  	/* Test boost frequency after GPU reset */
-> +	igt_describe("Verify waitboost after GPU reset");
------------------------------------------------------ ^
-Keep it consistent, put dot at end of description.
-
-Regards,
-Kamil
-
->  	igt_subtest("reset") {
->  		igt_hang_t hang;
->  		igt_skip_on_f(i915_is_slpc_enabled(drm_fd),
-> -- 
-> 2.25.1
-> 
+diff --git a/tests/kms_plane_cursor.c b/tests/kms_plane_cursor.c
+index e9abfd78..e2a9e97b 100644
+--- a/tests/kms_plane_cursor.c
++++ b/tests/kms_plane_cursor.c
+@@ -150,8 +150,7 @@ static void test_cursor_pos(data_t *data, int x, int y, unsigned int flags)
+ 	igt_plane_set_fb(data->cursor, NULL);
+ 	igt_display_commit_atomic(&data->display, 0, NULL);
+ 
+-	igt_pipe_crc_start(data->pipe_crc);
+-	igt_pipe_crc_get_current(data->drm_fd, data->pipe_crc, &ref_crc);
++	igt_pipe_crc_collect_crc(data->pipe_crc, &ref_crc);
+ 
+ 	draw_color(pfb, 1.0, 1.0, 1.0);
+ 
+@@ -169,8 +168,7 @@ static void test_cursor_pos(data_t *data, int x, int y, unsigned int flags)
+ 	igt_plane_set_position(data->cursor, x, y);
+ 	igt_display_commit_atomic(&data->display, 0, NULL);
+ 
+-	igt_pipe_crc_get_current(data->drm_fd, data->pipe_crc, &test_crc);
+-	igt_pipe_crc_stop(data->pipe_crc);
++	igt_pipe_crc_collect_crc(data->pipe_crc, &test_crc);
+ 
+ 	igt_assert_crc_equal(&ref_crc, &test_crc);
+ }
+-- 
+2.38.0
