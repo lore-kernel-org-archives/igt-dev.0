@@ -1,23 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-yw1-x1129.google.com (mail-yw1-x1129.google.com
- [IPv6:2607:f8b0:4864:20::1129])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 20E2910E4C9
- for <igt-dev@lists.freedesktop.org>; Fri, 14 Oct 2022 14:13:47 +0000 (UTC)
-Received: by mail-yw1-x1129.google.com with SMTP id
- 00721157ae682-358bf076f1fso47222727b3.9
- for <igt-dev@lists.freedesktop.org>; Fri, 14 Oct 2022 07:13:47 -0700 (PDT)
+Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4947010EB4A
+ for <igt-dev@lists.freedesktop.org>; Fri, 14 Oct 2022 17:16:34 +0000 (UTC)
+Date: Fri, 14 Oct 2022 19:16:28 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Message-ID: <Y0mZbBQ98CT8Jtxf@kamilkon-desk1>
+References: <20220915081704.3039599-1-karthikeya.sunkesula@intel.com>
+ <20220915081704.3039599-3-karthikeya.sunkesula@intel.com>
 MIME-Version: 1.0
-References: <20221012235706.75569-1-alex.hung@amd.com>
- <CAJUqKUr1QyvaRZ-gAfRt5Cz2xU+Nkxf_cQ5GCwVyBPTc6hEB8w@mail.gmail.com>
- <96ffa57b-8277-9194-039e-a814caac68bd@amd.com>
-In-Reply-To: <96ffa57b-8277-9194-039e-a814caac68bd@amd.com>
-From: Mark Yacoub <markyacoub@chromium.org>
-Date: Fri, 14 Oct 2022 10:13:35 -0400
-Message-ID: <CAJUqKUo0a7TTM+YyamU2=tuQQXmC9O7x+QK_pacbds5OZii=sA@mail.gmail.com>
-To: Alex Hung <alex.hung@amd.com>
-Content-Type: text/plain; charset="UTF-8"
-Subject: Re: [igt-dev] [PATCH 1/2] tests/kms_universal_plane: turn off pipe
- when primary plane is off
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20220915081704.3039599-3-karthikeya.sunkesula@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 2/2] Add descriptions to pm rps tests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,89 +20,90 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org
+Cc: badal.nilawar@intel.com,
+ Karthikeya Sunkesula <karthikeya.sunkesula@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Thu, Oct 13, 2022 at 3:05 PM Alex Hung <alex.hung@amd.com> wrote:
->
->
->
-> On 2022-10-13 08:19, Mark Yacoub wrote:
-> > On Wed, Oct 12, 2022 at 7:57 PM Alex Hung <alex.hung@amd.com> wrote:
-> >>
-> >> GPU drivers can reject when crtc is on and primary plane is off,
-> >> so turn crtc off with primary plane and turn it on afterwards.
-> >>
-> >> Signed-off-by: Alex Hung <alex.hung@amd.com>
-> >> ---
-> >>   tests/kms_universal_plane.c | 13 +++++++++++++
-> >>   1 file changed, 13 insertions(+)
-> >>
-> >> diff --git a/tests/kms_universal_plane.c b/tests/kms_universal_plane.c
-> >> index 64416afd..468f7a4e 100644
-> >> --- a/tests/kms_universal_plane.c
-> >> +++ b/tests/kms_universal_plane.c
-> >> @@ -62,6 +62,13 @@ typedef struct {
-> >>          struct igt_fb biggreen_fb, smallred_fb, smallblue_fb;
-> >>   } gen9_test_t;
-> >>
-> >> +static void
-> >> +set_pipe_on_off(igt_display_t *display, igt_output_t *output, enum pipe pipe)
-> >> +{
-> >> +       igt_output_set_pipe(output, pipe);
-> >> +       igt_display_commit2(display, COMMIT_LEGACY);
-> > Why did you choose legacy commit?
->
-> This seems to be most stable. I observed failures / regressions if using
-> atomic and universal on both intel and amd devices, but not with legacy.
-I'm not an expert but this doesn't sit too well with me.
-Do you know it's failing on AMD?
->
-> >> +}
-> >> +
-> >>   static void
-> >>   functional_test_init(functional_test_t *test, igt_output_t *output, enum pipe pipe)
-> >>   {
-> >> @@ -228,12 +235,14 @@ functional_test_pipe(data_t *data, enum pipe pipe, igt_output_t *output)
-> >>          igt_pipe_crc_collect_crc(test.pipe_crc, &test.crc_7);
-> >>
-> >>          /* Step 11: Disable primary plane */
-> >> +       set_pipe_on_off(&data->display, output, PIPE_NONE);
-> >>          igt_plane_set_fb(primary, NULL);
-> >>          igt_display_commit2(display, COMMIT_UNIVERSAL);
-> >>
-> >>          /* Step 12: Legacy modeset to yellow FB (CRC 8) */
-> >>          igt_plane_set_fb(primary, &test.yellow_fb);
-> >>          igt_display_commit2(display, COMMIT_LEGACY);
-> >> +       set_pipe_on_off(&data->display, output, pipe);
-> >>          igt_pipe_crc_collect_crc(test.pipe_crc, &test.crc_8);
-> >>
-> >>          /* Step 13: Legacy API', blue primary, red sprite */
-> >> @@ -497,8 +506,10 @@ pageflip_test_pipe(data_t *data, enum pipe pipe, igt_output_t *output)
-> >>          igt_display_commit2(&data->display, COMMIT_LEGACY);
-> >>
-> >>          /* Disable the primary plane */
-> >> +       set_pipe_on_off(&data->display, output, PIPE_NONE);
-> >>          igt_plane_set_fb(primary, NULL);
-> >>          igt_display_commit2(&data->display, COMMIT_UNIVERSAL);
-> >> +       set_pipe_on_off(&data->display, output, pipe);
-> >>
-> >>          /*
-> >>           * Issue a pageflip to red FB
-> >> @@ -520,9 +531,11 @@ pageflip_test_pipe(data_t *data, enum pipe pipe, igt_output_t *output)
-> >>           * completes, which we don't have a good way to specifically test for,
-> >>           * but at least we can make sure that nothing blows up.
-> >>           */
-> >> +       set_pipe_on_off(&data->display, output, pipe);
-> >>          igt_assert(drmModePageFlip(data->drm_fd, output->config.crtc->crtc_id,
-> >>                                     test.red_fb.fb_id, DRM_MODE_PAGE_FLIP_EVENT,
-> >>                                     &test) == 0);
-> >> +       set_pipe_on_off(&data->display, output, PIPE_NONE);
-> >>          igt_plane_set_fb(primary, NULL);
-> >>          igt_display_commit2(&data->display, COMMIT_UNIVERSAL);
-> >>
-> >> --
-> >> 2.38.0
-> >>
+Hi Karthikeya,
+
+few more nits, see below.
+
+On 2022-09-15 at 13:47:04 +0530, Karthikeya Sunkesula wrote:
+> Signed-off-by: Karthikeya Sunkesula <karthikeya.sunkesula@intel.com>
+> ---
+>  tests/i915/i915_pm_rps.c | 9 +++++++++
+>  1 file changed, 9 insertions(+)
+> 
+> diff --git a/tests/i915/i915_pm_rps.c b/tests/i915/i915_pm_rps.c
+> index db39ec69..44228b44 100644
+> --- a/tests/i915/i915_pm_rps.c
+> +++ b/tests/i915/i915_pm_rps.c
+> @@ -914,12 +914,16 @@ igt_main
+>  		igt_install_exit_handler(pm_rps_exit_handler);
+>  	}
+>  
+> +	igt_describe("Verify the rps sysfs constraints, by varying min, max gt frequencies "
+--------------------- ^
+> +			"with RPn, RP0 and mid values with valid and invalid cases.");
+------------------------^
+Align to previous line, it should look like:
+	igt_describe("Verify the rps sysfs constraints, by varying min, max gt frequencies "
+		     "with RPn, RP0 and mid values with valid and invalid cases.");
+
+>  	igt_subtest("basic-api") {
+>  		igt_skip_on_f(i915_is_slpc_enabled(drm_fd),
+>  			      "This subtest is not supported when SLPC is enabled\n");
+>  		min_max_config(basic_check, false);
+>  	}
+>  
+> +	igt_describe("Verify the constraints and verify current frequency settles down to "
+> +			"RPn or min within the allotted time after a low workload is run.");
+
+Same here, align.
+
+>  	/* Verify the constraints, check if we can reach idle */
+>  	igt_subtest("min-max-config-idle") {
+>  		igt_skip_on_f(i915_is_slpc_enabled(drm_fd),
+> @@ -927,6 +931,8 @@ igt_main
+>  		min_max_config(idle_check, true);
+>  	}
+>  
+> +	igt_describe("Verify the constraints and with a high workload, verify current "
+> +			"frequency scales upto RP0 or max within the allotted time.");
+
+Same here.
+
+>  	/* Verify the constraints with high load, check if we can reach max */
+>  	igt_subtest("min-max-config-loaded") {
+>  		igt_skip_on_f(i915_is_slpc_enabled(drm_fd),
+> @@ -937,6 +943,8 @@ igt_main
+>  	}
+>  
+>  	/* Checks if we achieve boost using gem_wait */
+> +	igt_describe("Verify actual frequency bumps to boost frequency with workload "
+> +			"with waitboost scenario.");
+
+Please make it shorter (look at previous replay).
+
+>  	igt_subtest("waitboost") {
+>  		igt_skip_on_f(i915_is_slpc_enabled(drm_fd),
+>  			      "This subtest is not supported when SLPC is enabled\n");
+> @@ -958,6 +966,7 @@ igt_main
+>  	}
+>  
+>  	/* Test boost frequency after GPU reset */
+> +	igt_describe("Verify waitboost after GPU reset");
+----------------------------------------------------- ^
+Keep it consistent, put dot at end of description.
+
+Regards,
+Kamil
+
+>  	igt_subtest("reset") {
+>  		igt_hang_t hang;
+>  		igt_skip_on_f(i915_is_slpc_enabled(drm_fd),
+> -- 
+> 2.25.1
+> 
