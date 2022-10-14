@@ -1,14 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8242210EA96
- for <igt-dev@lists.freedesktop.org>; Fri, 14 Oct 2022 08:06:29 +0000 (UTC)
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1DAF510EA96
+ for <igt-dev@lists.freedesktop.org>; Fri, 14 Oct 2022 08:08:16 +0000 (UTC)
 From: Jeevan B <jeevan.b@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Fri, 14 Oct 2022 13:31:08 +0530
-Message-Id: <20221014080108.18956-1-jeevan.b@intel.com>
+Date: Fri, 14 Oct 2022 13:32:55 +0530
+Message-Id: <20221014080255.19062-1-jeevan.b@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t] tests/kms_display_modes: Clean up
+Subject: [igt-dev] [PATCH i-g-t v2] tests/kms_display_modes: Test cleanup
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
