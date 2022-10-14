@@ -1,21 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 73E0A10E9C3
- for <igt-dev@lists.freedesktop.org>; Thu, 13 Oct 2022 23:10:43 +0000 (UTC)
-Date: Thu, 13 Oct 2022 16:10:25 -0700
-From: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
-To: Matthew Auld <matthew.auld@intel.com>
-Message-ID: <Y0ia4S0L1XHfndOM@nvishwa1-DESK>
-References: <20221010065929.32110-1-niranjana.vishwanathapura@intel.com>
- <20221010065929.32110-7-niranjana.vishwanathapura@intel.com>
- <e1e536e5-00d8-97db-4a34-d0fb7e82ffb5@intel.com>
-Content-Type: text/plain; charset="iso-8859-1"; format=flowed
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <e1e536e5-00d8-97db-4a34-d0fb7e82ffb5@intel.com>
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A384F10EA68
+ for <igt-dev@lists.freedesktop.org>; Fri, 14 Oct 2022 04:38:20 +0000 (UTC)
+From: "Kandpal, Suraj" <suraj.kandpal@intel.com>
+To: "B, Jeevan" <jeevan.b@intel.com>, "igt-dev@lists.freedesktop.org"
+ <igt-dev@lists.freedesktop.org>
+Date: Fri, 14 Oct 2022 04:37:22 +0000
+Message-ID: <MWHPR11MB1741BD7E3BE558E2830359C2E3249@MWHPR11MB1741.namprd11.prod.outlook.com>
+References: <20221010093547.14296-1-jeevan.b@intel.com>
+In-Reply-To: <20221010093547.14296-1-jeevan.b@intel.com>
+Content-Language: en-US
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t v3 06/11] tests/i915/vm_bind: Add
- vm_bind sanity test
+Subject: Re: [igt-dev] [PATCH i-g-t] RFC: kms_content_protection: Add a test
+ for HDCP-MST with suspend resume
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,401 +22,131 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: tvrtko.ursulin@intel.com, igt-dev@lists.freedesktop.org,
- thomas.hellstrom@intel.com, daniel.vetter@intel.com, petri.latvala@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Wed, Oct 12, 2022 at 10:30:38AM +0100, Matthew Auld wrote:
->On 10/10/2022 07:59, Niranjana Vishwanathapura wrote:
->>Add sanity test to exercise vm_bind uapi.
->>Test for various cases with vm_bind and vm_unbind ioctls.
->>
->>v2: Add more input validity tests
->>     Add sanity test to fast-feedback.testlist
->>v3: Add only basic-smem subtest to fast-feedback.testlist
->>
->>Signed-off-by: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
->
->Could also just make this a subtest in i915_vm_bind.c, so that we have 
->most of our vm_bind related tests all in one place, like basic, 
->sanity-check etc.
+Hi Jeevan
+>=20
+> +static void
+> +test_content_protection_mst_suspend_resume(int content_type) {
+> +	igt_display_t *display =3D &data.display;
+> +	igt_output_t *output;
+> +	int valid_outputs =3D 0, dp_mst_outputs =3D 0, ret, count, max_pipe =3D=
+ 0;
+> +	enum pipe pipe;
+> +	igt_output_t *mst_output[IGT_MAX_PIPES],
+> +*hdcp_mst_output[IGT_MAX_PIPES];
+> +
+> +	for_each_pipe(display, pipe)
+> +		max_pipe++;
+> +
+> +	pipe =3D PIPE_A;
+> +
+> +	for_each_connected_output(display, output) {
+> +		if (!output_is_dp_mst(output, dp_mst_outputs))
+> +			continue;
+> +
+> +		igt_assert_f(igt_pipe_connector_valid(pipe, output), "Output-
+> pipe
+> +combination invalid\n");
+> +
+> +		igt_output_set_pipe(output, pipe);
+> +		prepare_modeset_on_mst_output(output);
+> +		mst_output[dp_mst_outputs++] =3D output;
+> +
+> +		pipe++;
+> +
+> +		if (pipe > max_pipe)
+> +			break;
 
-There will be more vm_bind related tests and I think this sanity test
-will also expand. So, I think it is better to keep them separate.
+Also in addition to what Petri Latvala said the condition should be >=3D
 
->
->>---
->>  tests/i915/i915_vm_bind_sanity.c      | 275 ++++++++++++++++++++++++++
->>  tests/intel-ci/fast-feedback.testlist |   1 +
->>  tests/meson.build                     |   1 +
->>  3 files changed, 277 insertions(+)
->>  create mode 100644 tests/i915/i915_vm_bind_sanity.c
->>
->>diff --git a/tests/i915/i915_vm_bind_sanity.c b/tests/i915/i915_vm_bind_sanity.c
->>new file mode 100644
->>index 0000000000..b0f435f5f6
->>--- /dev/null
->>+++ b/tests/i915/i915_vm_bind_sanity.c
->>@@ -0,0 +1,275 @@
->>+// SPDX-License-Identifier: MIT
->>+/*
->>+ * Copyright © 2022 Intel Corporation
->>+ */
->>+
->>+/** @file i915_vm_bind_sanity.c
->>+ *
->>+ * This is the sanity test for VM_BIND UAPI.
->>+ *
->>+ * The goal is to test the UAPI interface.
->>+ */
->>+
->>+#include <fcntl.h>
->>+#include <sys/ioctl.h>
->>+#include <sys/poll.h>
->>+
->>+#include "igt_syncobj.h"
->>+#include "i915/gem.h"
->>+#include "i915/gem_create.h"
->>+#include "igt.h"
->>+
->>+#include "i915/gem_vm.h"
->>+
->>+#define EOPNOTSUPP    95
->
->That should be a standard error code. Do we need this?
->
+> +	}
+> +
+> +	igt_require_f(dp_mst_outputs > 1, "No DP MST set up with >=3D 2
+> outputs
+> +found in a single topology\n");
+> +
+> +	if (igt_display_try_commit_atomic(display,
+> +				DRM_MODE_ATOMIC_TEST_ONLY |
+> +				DRM_MODE_ATOMIC_ALLOW_MODESET,
+> +				NULL) !=3D 0) {
+> +		bool found =3D
+> igt_override_all_active_output_modes_to_fit_bw(display);
+> +		igt_require_f(found, "No valid mode combo found for MST
+> modeset\n");
+> +
+> +		for (count =3D 0; count < dp_mst_outputs; count++)
+> +
+> 	prepare_modeset_on_mst_output(mst_output[count]);
+> +	}
+> +
+> +	ret =3D igt_display_try_commit2(display, COMMIT_ATOMIC);
+> +	igt_require_f(ret =3D=3D 0, "Commit failure during MST modeset\n");
+> +
+> +	for (count =3D 0; count < dp_mst_outputs; count++) {
+> +		if (!output_hdcp_capable(mst_output[count], content_type))
+> +			continue;
+> +
+> +		hdcp_mst_output[valid_outputs++] =3D mst_output[count];
+> +	}
+> +
+> +	igt_require_f(valid_outputs > 1, "DP MST outputs do not have the
+> +required HDCP support\n");
+> +
+> +	for (count =3D 0; count < valid_outputs; count++) {
+> +		igt_output_set_prop_value(hdcp_mst_output[count],
+> +IGT_CONNECTOR_CONTENT_PROTECTION, CP_DESIRED);
+> +
+> +		if (output->props[IGT_CONNECTOR_HDCP_CONTENT_TYPE])
+> +			igt_output_set_prop_value(hdcp_mst_output[count],
+> IGT_CONNECTOR_HDCP_CONTENT_TYPE, content_type);
+> +	}
+> +
+> +	igt_display_commit2(display, COMMIT_ATOMIC);
+> +
+> +	for (count =3D 0; count < valid_outputs; count++) {
+> +		ret =3D wait_for_prop_value(hdcp_mst_output[count],
+> CP_ENABLED, KERNEL_AUTH_TIME_ALLOWED_MSEC);
+> +		igt_assert_f(ret, "Content Protection not enabled on %s\n",
+> hdcp_mst_output[count]->name);
+> +	}
 
-Ok, will remove.
+IGT should try to authenticate hdcp two more time incase it does not get HD=
+CP
+CP Enabled property as userspace need to try HDCP authentication thrice
+before failing the authentication
 
->>+
->>+#define PAGE_SIZE   4096
->>+#define SZ_64K      (16 * PAGE_SIZE)
->>+#define SZ_2M       (512 * PAGE_SIZE)
->>+
->>+IGT_TEST_DESCRIPTION("Sanity test vm_bind related interfaces");
->>+
->>+#define VA 0xa0000000
->
->Could also consider picking random offsets instead of hardcoding this, 
->using something like:
->
->ahnd = intel_allocator_open_full(fd, ctx, 0, 0,
->				INTEL_ALLOCATOR_RANDOM,
->				ALLOC_STRATEGY_HIGH_TO_LOW,
->				gtt_alignment); /* XXX: 2M for now? */
->
->va = CANONICAL(get_offset(ahnd, handle, size, 0));
->
->Just in case using the same address is hiding some issue...
->
+> +
+> +	igt_system_suspend_autoresume(SUSPEND_STATE_MEM,
+> SUSPEND_TEST_NONE);
+> +
+> +	igt_display_commit2(display, COMMIT_ATOMIC);
+> +
+> +	for (count =3D 0; count < valid_outputs; count++) {
+> +		ret =3D wait_for_prop_value(hdcp_mst_output[count],
+> CP_ENABLED, KERNEL_AUTH_TIME_ALLOWED_MSEC);
+> +		igt_assert_f(ret, "Content Protection not enabled on %s\n",
+> hdcp_mst_output[count]->name);
+> +	}
+> +}
+> +
+>  static void test_content_protection_cleanup(void)
+>  {
+>  	igt_display_t *display =3D &data.display; @@ -817,6 +897,11 @@ static
+> const struct {
+>  	  .cp_tests =3D CP_LIC,
+>  	  .content_type =3D HDCP_CONTENT_TYPE_1,
+>  	},
+> +	{ .desc =3D "Test Content protection(Type 1) over DP MST with LIC.",
+> +          .name =3D "dp-mst-suspend_resume",
+> +          .cp_tests =3D SUSPEND_RESUME,
+> +          .content_type =3D HDCP_CONTENT_TYPE_0,
+> +        },
+Can we have this as HDCP_CONTENT_TYPE_1
+>  };
 
-Ok, will do. Thanks for the code.
-
->>+
->>+static uint64_t
->>+gettime_ns(void)
->>+{
->>+	struct timespec current;
->>+	clock_gettime(CLOCK_MONOTONIC, &current);
->>+	return (uint64_t)current.tv_sec * NSEC_PER_SEC + current.tv_nsec;
->>+}
->>+
->>+static bool syncobj_busy(int fd, uint32_t handle)
->>+{
->>+	bool result;
->>+	int sf;
->>+
->>+	sf = syncobj_handle_to_fd(fd, handle,
->>+				  DRM_SYNCOBJ_HANDLE_TO_FD_FLAGS_EXPORT_SYNC_FILE);
->>+	result = poll(&(struct pollfd){sf, POLLIN}, 1, 0) == 0;
->>+	close(sf);
->>+
->>+	return result;
->>+}
->>+
->>+static inline int
->>+__i915_vm_bind(int fd, uint32_t vm_id, uint32_t handle, uint64_t start,
->>+	       uint64_t offset, uint64_t length, uint64_t flags,
->>+	       struct drm_i915_gem_timeline_fence *fence, uint64_t extensions)
->>+{
->>+	struct drm_i915_gem_vm_bind bind;
->>+
->>+	memset(&bind, 0, sizeof(bind));
->>+	bind.vm_id = vm_id;
->>+	bind.handle = handle;
->>+	bind.start = start;
->>+	bind.offset = offset;
->>+	bind.length = length;
->>+	bind.flags = flags;
->>+	bind.extensions = extensions;
->>+	if (fence)
->>+		bind.fence = *fence;
->>+
->>+	return __gem_vm_bind(fd, &bind);
->>+}
->>+
->>+static inline void
->>+i915_vm_bind(int fd, uint32_t vm_id, uint32_t handle, uint64_t start,
->>+	     uint64_t offset, uint64_t length, uint64_t flags,
->>+	     struct drm_i915_gem_timeline_fence *fence)
->>+{
->>+	igt_assert_eq(__i915_vm_bind(fd, vm_id, handle, start, offset,
->>+				     length, flags, fence, 0), 0);
->>+	if (fence) {
->>+		igt_assert(syncobj_timeline_wait(fd, &fence->handle, (uint64_t *)&fence->value,
->>+						 1, gettime_ns() + (2 * NSEC_PER_SEC),
->>+						 DRM_SYNCOBJ_WAIT_FLAGS_WAIT_FOR_SUBMIT, NULL));
->>+		igt_assert(!syncobj_busy(fd, fence->handle));
->>+	}
->>+}
->>+
->>+static inline int
->>+__i915_vm_unbind(int fd, uint32_t vm_id, uint64_t start, uint64_t length, uint64_t flags,
->>+		 uint32_t rsvd, uint64_t extensions)
->>+{
->>+	struct drm_i915_gem_vm_unbind unbind;
->>+
->>+	memset(&unbind, 0, sizeof(unbind));
->>+	unbind.vm_id = vm_id;
->>+	unbind.rsvd = rsvd;
->>+	unbind.start = start;
->>+	unbind.length = length;
->>+	unbind.flags = flags;
->>+	unbind.extensions = extensions;
->>+
->>+	return __gem_vm_unbind(fd, &unbind);
->>+}
->>+
->>+static inline void
->>+i915_vm_unbind(int fd, uint32_t vm_id, uint64_t start, uint64_t length, uint64_t flags)
->>+{
->>+	igt_assert_eq(__i915_vm_unbind(fd, vm_id, start, length, flags, 0, 0), 0);
->>+}
->>+
->>+static void basic(int fd, bool test_lmem)
->>+{
->
->This might be a bit nicer if we just pass in struct gem_memory_region *mr...
->
-
-Ok, will do.
-
->>+	uint32_t vm_id, vm_id2, vm_id_exec_mode, handle;
->>+	unsigned int region = test_lmem ? REGION_LMEM(0) : REGION_SMEM;
->>+	struct drm_i915_gem_timeline_fence fence = {
->>+		.handle = syncobj_create(fd, 0),
->>+		.flags = I915_TIMELINE_FENCE_SIGNAL,
->>+		.value = 0,
->>+	};
->>+	struct drm_i915_gem_create_ext_vm_private vm_priv = {
->>+		.base = { .name = I915_GEM_CREATE_EXT_VM_PRIVATE },
->>+	};
->>+	struct drm_i915_gem_execbuffer2 execbuf;
->>+	struct drm_i915_gem_exec_object2 obj;
->>+	uint64_t pg_size, size;
->>+	const intel_ctx_t *ctx;
->>+	int dmabuf;
->>+
->>+	pg_size = (test_lmem && HAS_64K_PAGES(intel_get_drm_devid(fd))) ? SZ_64K : PAGE_SIZE;
->
->...and then this could be mr->gtt_alignment in the future.
->
-
-got it.
-
->>+	size = pg_size * 4;
->>+
->>+	vm_id = gem_vm_create_in_vm_bind_mode(fd);
->>+	handle = gem_create_in_memory_regions(fd, size, region);
->>+
->>+	/* Bind and unbind */
->>+	i915_vm_bind(fd, vm_id, handle, VA, 0, size, 0, NULL);
->>+	i915_vm_unbind(fd, vm_id, VA, size, 0);
->>+
->>+	/* Bind with out fence */
->>+	i915_vm_bind(fd, vm_id, handle, VA, 0, size, 0, &fence);
->>+	i915_vm_unbind(fd, vm_id, VA, size, 0);
->>+
->>+	/* Aliasing bind and unbind */
->>+	i915_vm_bind(fd, vm_id, handle, VA, 0, size, 0, NULL);
->>+	i915_vm_bind(fd, vm_id, handle, VA + SZ_2M, 0, size, 0, NULL);
->>+	i915_vm_unbind(fd, vm_id, VA, size, 0);
->>+	i915_vm_unbind(fd, vm_id, VA + SZ_2M, size, 0);
->>+
->>+	/* MBZ fields are not 0 */
->>+	igt_assert_eq(__i915_vm_bind(fd, vm_id, handle, VA, 0, size, 0x10, NULL, 0), -EINVAL);
->>+	igt_assert_eq(__i915_vm_bind(fd, vm_id, handle, VA, 0, size, 0, NULL, to_user_pointer(&obj)), -EINVAL);
->>+	i915_vm_bind(fd, vm_id, handle, VA, 0, size, 0, NULL);
->>+	igt_assert_eq(__i915_vm_unbind(fd, vm_id, VA, size, 0x10, 0, 0), -EINVAL);
->>+	igt_assert_eq(__i915_vm_unbind(fd, vm_id, VA, size, 0, 0x10, 0), -EINVAL);
->>+	igt_assert_eq(__i915_vm_unbind(fd, vm_id, VA, size, 0, 0, to_user_pointer(&obj)), -EINVAL);
->>+	i915_vm_unbind(fd, vm_id, VA, size, 0);
->>+
->>+	/* Invalid handle */
->>+	igt_assert_eq(__i915_vm_bind(fd, vm_id, handle + 10, VA, 0, size, 0, NULL, 0), -ENOENT);
->>+
->>+	/* Invalid mapping range */
->>+	igt_assert_eq(__i915_vm_bind(fd, vm_id, handle, VA, 0, 0, 0, NULL, 0), -EINVAL);
->>+	igt_assert_eq(__i915_vm_bind(fd, vm_id, handle, VA + 0x10, 0, size, 0, NULL, 0), -EINVAL);
->>+	igt_assert_eq(__i915_vm_bind(fd, vm_id, handle, VA, pg_size, size, 0, NULL, 0), -EINVAL);
->>+
->>+	/* Unaligned binds */
->>+	igt_assert_eq(__i915_vm_bind(fd, vm_id, handle, VA, pg_size / 2, pg_size, 0, NULL, 0), -EINVAL);
->>+	igt_assert_eq(__i915_vm_bind(fd, vm_id, handle, VA, 0, pg_size / 2, 0, NULL, 0), -EINVAL);
->
->Maybe also unaligned VA, where we try to use bits 0-11?
->
-
-It is there couple lines above (VA + 0x10 case), will move it here.
-
->>+
->>+	/* range overflow binds */
->>+	igt_assert_eq(__i915_vm_bind(fd, vm_id, handle, VA, pg_size, -pg_size, 0, NULL, 0), -EINVAL);
->>+	igt_assert_eq(__i915_vm_bind(fd, vm_id, handle, VA, pg_size * 2, -pg_size, 0, NULL, 0), -EINVAL);
->>+
->>+	/* re-bind VA range without unbinding */
->>+	i915_vm_bind(fd, vm_id, handle, VA, 0, size, 0, NULL);
->>+	igt_assert_eq(__i915_vm_bind(fd, vm_id, handle, VA, 0, size, 0, NULL, 0), -EEXIST);
->>+	i915_vm_unbind(fd, vm_id, VA, size, 0);
->>+
->>+	/* unbind a non-existing mapping */
->>+	igt_assert_eq(__i915_vm_bind(fd, vm_id, 0, VA + SZ_2M, 0, size, 0, NULL, 0), -ENOENT);
->>+
->>+	/* unbind with length mismatch */
->>+	i915_vm_bind(fd, vm_id, handle, VA, 0, size, 0, NULL);
->>+	igt_assert_eq(__i915_vm_bind(fd, vm_id, handle, VA, 0, size * 2, 0, NULL, 0), -EINVAL);
->>+	i915_vm_unbind(fd, vm_id, VA, size, 0);
->>+
->>+	/* validate exclusivity of vm_bind & exec modes of binding */
->>+	vm_id_exec_mode = gem_vm_create(fd);
->>+	igt_assert_eq(__i915_vm_bind(fd, vm_id_exec_mode, handle, VA, 0, size, 0, NULL, 0), -EOPNOTSUPP);
->>+
->>+	ctx = intel_ctx_create_all_physical(fd);
->>+	gem_context_set_vm(fd, ctx->id, vm_id);
->>+	(void)gem_context_get_vm(fd, ctx->id);
->>+
->>+	memset(&obj, 0, sizeof(obj));
->>+	memset(&execbuf, 0, sizeof(execbuf));
->>+	execbuf.buffers_ptr = to_user_pointer(&obj);
->>+	execbuf.buffer_count = 1;
->>+	obj.handle = handle;
->>+	i915_execbuffer2_set_context_id(execbuf, ctx->id);
->>+	igt_assert_eq(__gem_execbuf(fd, &execbuf), -EOPNOTSUPP);
->>+
->>+	intel_ctx_destroy(fd, ctx);
->>+	gem_vm_destroy(fd, vm_id_exec_mode);
->>+	gem_close(fd, handle);
->>+
->>+	/* validate VM private objects */
->>+	vm_id2 = gem_vm_create_in_vm_bind_mode(fd);
->>+	igt_assert_eq(__gem_create_in_memory_regions_ext(fd, &handle, &size,
->>+							 to_user_pointer(&vm_priv),
->>+							 region), -ENOENT);
->>+	vm_priv.rsvd = 0x10;
->>+	igt_assert_eq(__gem_create_in_memory_regions_ext(fd, &handle, &size,
->>+							 to_user_pointer(&vm_priv),
->>+							 region), -EINVAL);
->>+	handle = gem_create_vm_private_in_memory_regions(fd, size, vm_id2, region);
->
->Could maybe make this:
->
->vm_priv.rsvd = 0;
->vm_priv.vm_id = vm_id2;
->igt_assert_eq(__gem_create_in_memory_regions_ext(vm_priv,..), 0)
->
->Just to be paranoid and make sure the previously bogus 
->__gem_create_in_memory_regions_ext() are indeed failing for the 
->correct reason, and not just because we are using slightly different 
->api or something.
->
-
-Ok, will use __gem_create_ext() here.
-
->Otherwise all looks pretty reasonable to me,
->Reviewed-by: Matthew Auld <matthew.auld@intel.com>
->
-
-Thanks,
-Niranjana
-
->>+
->>+	igt_assert_eq(prime_handle_to_fd_no_assert(fd, handle, DRM_CLOEXEC, &dmabuf), -EINVAL);
->>+	igt_assert_eq(__i915_vm_bind(fd, vm_id, handle, VA, 0, size, 0, NULL, 0), -EINVAL);
->>+	i915_vm_bind(fd, vm_id2, handle, VA, 0, size, 0, NULL);
->>+	i915_vm_unbind(fd, vm_id2, VA, size, 0);
->>+
->>+	gem_close(fd, handle);
->>+	gem_vm_destroy(fd, vm_id2);
->>+	gem_vm_destroy(fd, vm_id);
->>+	syncobj_destroy(fd, fence.handle);
->>+}
->>+
->>+static int vm_bind_version(int fd)
->>+{
->>+	struct drm_i915_getparam gp;
->>+	int value = 0;
->>+
->>+	memset(&gp, 0, sizeof(gp));
->>+	gp.param = I915_PARAM_VM_BIND_VERSION;
->>+	gp.value = &value;
->>+
->>+	ioctl(fd, DRM_IOCTL_I915_GETPARAM, &gp, sizeof(gp));
->>+	errno = 0;
->>+
->>+	return value;
->>+}
->>+
->>+igt_main
->>+{
->>+	int fd;
->>+	bool has_lmem;
->>+
->>+	igt_fixture {
->>+		fd = drm_open_driver(DRIVER_INTEL);
->>+		igt_require_gem(fd);
->>+		igt_require(vm_bind_version(fd) == 1);
->>+		has_lmem = gem_has_lmem(fd);
->>+	}
->>+
->>+	igt_describe("Basic vm_bind sanity test with SMEM");
->>+	igt_subtest_f("basic-smem") {
->>+		basic(fd, false);
->>+	}
->>+
->>+	igt_describe("Basic vm_bind sanity test with LMEM");
->>+	igt_subtest_f("basic-lmem") {
->>+		igt_skip_on(!has_lmem);
->>+		basic(fd, true);
->>+	}
->>+
->>+	igt_fixture {
->>+		close(fd);
->>+	}
->>+
->>+	igt_exit();
->>+}
->>diff --git a/tests/intel-ci/fast-feedback.testlist b/tests/intel-ci/fast-feedback.testlist
->>index bd5538a035..9da6c809e4 100644
->>--- a/tests/intel-ci/fast-feedback.testlist
->>+++ b/tests/intel-ci/fast-feedback.testlist
->>@@ -53,6 +53,7 @@ igt@i915_getparams_basic@basic-eu-total
->>  igt@i915_getparams_basic@basic-subslice-total
->>  igt@i915_hangman@error-state-basic
->>  igt@i915_pciid
->>+igt@i915_vm_bind_sanity@basic-smem
->>  igt@kms_addfb_basic@addfb25-bad-modifier
->>  igt@kms_addfb_basic@addfb25-framebuffer-vs-set-tiling
->>  igt@kms_addfb_basic@addfb25-modifier-no-flag
->>diff --git a/tests/meson.build b/tests/meson.build
->>index 12e53e0bd2..d81c6c28c2 100644
->>--- a/tests/meson.build
->>+++ b/tests/meson.build
->>@@ -250,6 +250,7 @@ i915_progs = [
->>  	'sysfs_heartbeat_interval',
->>  	'sysfs_preempt_timeout',
->>  	'sysfs_timeslice_duration',
->>+	'i915_vm_bind_sanity',
->>  ]
->>  msm_progs = [
+Best Regards,
+Suraj Kandpal
+> 2.36.0
