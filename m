@@ -1,20 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DFF7C10E11D
- for <igt-dev@lists.freedesktop.org>; Fri, 14 Oct 2022 07:44:08 +0000 (UTC)
-Message-ID: <f6d6e009-65e1-8e63-d2fe-d586f57b171b@intel.com>
-Date: Fri, 14 Oct 2022 09:44:00 +0200
-Content-Language: en-US
-To: Jonathan Cavitt <jonathan.cavitt@intel.com>,
- <igt-dev@lists.freedesktop.org>
-References: <20221013173038.1763245-1-jonathan.cavitt@intel.com>
-From: "Das, Nirmoy" <nirmoy.das@intel.com>
-In-Reply-To: <20221013173038.1763245-1-jonathan.cavitt@intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5967F10E9C5
+ for <igt-dev@lists.freedesktop.org>; Fri, 14 Oct 2022 07:24:09 +0000 (UTC)
+Date: Fri, 14 Oct 2022 10:23:51 +0300
+From: Petri Latvala <petri.latvala@intel.com>
+To: Ashutosh Dixit <ashutosh.dixit@intel.com>
+Message-ID: <Y0kOh7vp6NZcCEYC@platvala-desk.ger.corp.intel.com>
+References: <20221013151400.2086268-1-ashutosh.dixit@intel.com>
+ <20221013151400.2086268-2-ashutosh.dixit@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH] drm/i915/ttm: Fix access_memory null pointer
- exception
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20221013151400.2086268-2-ashutosh.dixit@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 1/8] lib/igt_hwmon: Introduce library
+ igt_hwmon
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,64 +22,145 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: matthew.auld@intel.com
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-
-On 10/13/2022 7:30 PM, Jonathan Cavitt wrote:
-> i915_ttm_to_gem can return a NULL pointer,
-
-ttm can pass non-i915 BOs but I keep forgetting where all ttm might
-
-do that.
-
-
-Reviewed-by: Nirmoy Das <nirmoy.das@intel.com>
-
-
-Thanks,
-
-Nirmoy
-
->   which is
-> dereferenced in i915_ttm_access_memory without first
-> checking if it is NULL.  Inspecting
-> i915_ttm_io_mem_reserve, it appears the correct
-> behavior in this case is to return -EINVAL.
->
-> Fixes: 26b15eb0 ("drm/i915/ttm: implement access_memory")
-> Signed-off-by: Jonathan Cavitt <jonathan.cavitt@intel.com>
-> Suggested-by: John C Harrison <John.C.Harrison@intel.com>
-> CC: Matthew Auld <matthew.auld@intel.com>
-> CC: Andrzej Hajda <andrzej.hajda@intel.com>
-> CC: Nirmoy Das <nirmoy.das@intel.com>
-> CC: Andi Shyti <andi.shyti@linux.intel.com>
+On Thu, Oct 13, 2022 at 08:13:53AM -0700, Ashutosh Dixit wrote:
+> From: Riana Tauro <riana.tauro@intel.com>
+> 
+> igt_hwmon exposes methods to open hwmon directories identified by name
+> 
+> Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
+> Signed-off-by: Riana Tauro <riana.tauro@intel.com>
+> Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
 > ---
->   drivers/gpu/drm/i915/gem/i915_gem_ttm.c | 9 +++++++--
->   1 file changed, 7 insertions(+), 2 deletions(-)
->
-> diff --git a/drivers/gpu/drm/i915/gem/i915_gem_ttm.c b/drivers/gpu/drm/i915/gem/i915_gem_ttm.c
-> index d63f30efd631..b569624f2ed9 100644
-> --- a/drivers/gpu/drm/i915/gem/i915_gem_ttm.c
-> +++ b/drivers/gpu/drm/i915/gem/i915_gem_ttm.c
-> @@ -704,11 +704,16 @@ static int i915_ttm_access_memory(struct ttm_buffer_object *bo,
->   				  int len, int write)
->   {
->   	struct drm_i915_gem_object *obj = i915_ttm_to_gem(bo);
-> -	resource_size_t iomap = obj->mm.region->iomap.base -
-> -		obj->mm.region->region.start;
-> +	resource_size_t iomap;
->   	unsigned long page = offset >> PAGE_SHIFT;
->   	unsigned long bytes_left = len;
->   
-> +	if (!obj)
-> +		return -EINVAL;
+>  lib/igt_hwmon.c | 73 +++++++++++++++++++++++++++++++++++++++++++++++++
+>  lib/igt_hwmon.h | 12 ++++++++
+>  lib/meson.build |  1 +
+>  3 files changed, 86 insertions(+)
+>  create mode 100644 lib/igt_hwmon.c
+>  create mode 100644 lib/igt_hwmon.h
+> 
+> diff --git a/lib/igt_hwmon.c b/lib/igt_hwmon.c
+> new file mode 100644
+> index 0000000000..1e4dab1bb2
+> --- /dev/null
+> +++ b/lib/igt_hwmon.c
+> @@ -0,0 +1,73 @@
+> +/*
+> + * Copyright © 2022 Intel Corporation
+> + */
+
+License is missing.
+
+
+-- 
+Petri Latvala
+
+
+
+> +#include <sys/stat.h>
+> +#include <sys/sysmacros.h>
+> +#include <dirent.h>
+> +#include <fcntl.h>
+> +#include <inttypes.h>
+> +#include <unistd.h>
 > +
-> +	iomap = obj->mm.region->iomap.base -
-> +		obj->mm.region->region.start;
+> +#include "drmtest.h"
+> +#include "igt_core.h"
+> +#include "igt_hwmon.h"
+> +#include "igt_sysfs.h"
 > +
->   	/*
->   	 * TODO: For now just let it fail if the resource is non-mappable,
->   	 * otherwise we need to perform the memcpy from the gpu here, without
+> +static char *igt_hwmon_path(int device, char *path, const char *name)
+> +{
+> +	char buf[80];
+> +	int path_offset;
+> +	struct dirent *entry;
+> +	struct stat st;
+> +	DIR *dir;
+> +
+> +	if (igt_debug_on(device < 0))
+> +		return NULL;
+> +
+> +	if (igt_debug_on(fstat(device, &st)) || igt_debug_on(!S_ISCHR(st.st_mode)))
+> +		return NULL;
+> +
+> +	path_offset = snprintf(path, PATH_MAX, "/sys/dev/char/%d:%d/device/hwmon",
+> +			       major(st.st_rdev), minor(st.st_rdev));
+> +
+> +	dir = opendir(path);
+> +	if (!dir)
+> +		return NULL;
+> +
+> +	while ((entry = readdir(dir))) {
+> +		if (entry->d_name[0] == '.')
+> +			continue;
+> +
+> +		snprintf(path + path_offset, PATH_MAX - path_offset, "/%s/name", entry->d_name);
+> +		igt_sysfs_scanf(dirfd(dir), path, "%s", buf);
+> +
+> +		if (strncmp(buf, name, strlen(name)) == 0) {
+> +			snprintf(path + path_offset, PATH_MAX - path_offset, "/%s", entry->d_name);
+> +			closedir(dir);
+> +			return path;
+> +		}
+> +	}
+> +
+> +	closedir(dir);
+> +	return NULL;
+> +}
+> +
+> +/**
+> + * igt_hwmon_open:
+> + * @device: fd of the device
+> + *
+> + * Opens the hwmon directory corresponding to device
+> + *
+> + * Returns:
+> + * The directory fd, or -1 on failure.
+> + */
+> +int igt_hwmon_open(int device)
+> +{
+> +	char path[PATH_MAX];
+> +
+> +	if (!is_i915_device(device) || !igt_hwmon_path(device, path, "i915"))
+> +		return -1;
+> +
+> +	return open(path, O_RDONLY);
+> +}
+> +
+> diff --git a/lib/igt_hwmon.h b/lib/igt_hwmon.h
+> new file mode 100644
+> index 0000000000..aa418fdcb0
+> --- /dev/null
+> +++ b/lib/igt_hwmon.h
+> @@ -0,0 +1,12 @@
+> +/*
+> + * Copyright © 2022 Intel Corporation
+> + */
+> +
+> +#ifndef IGT_HWMON_H
+> +#define IGT_HWMON_H
+> +
+> +#include <stdbool.h>
+> +
+> +int igt_hwmon_open(int device);
+> +
+> +#endif /* IGT_HWMON_H */
+> diff --git a/lib/meson.build b/lib/meson.build
+> index c665bd2507..b1b8e80cbf 100644
+> --- a/lib/meson.build
+> +++ b/lib/meson.build
+> @@ -24,6 +24,7 @@ lib_sources = [
+>  	'igt_aux.c',
+>  	'igt_gt.c',
+>  	'igt_halffloat.c',
+> +	'igt_hwmon.c',
+>  	'igt_io.c',
+>  	'igt_matrix.c',
+>  	'igt_os.c',
+> -- 
+> 2.38.0
+> 
