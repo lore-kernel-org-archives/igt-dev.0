@@ -1,15 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6F68810ED03
- for <igt-dev@lists.freedesktop.org>; Mon, 17 Oct 2022 09:01:32 +0000 (UTC)
-From: Matthew Auld <matthew.auld@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Mon, 17 Oct 2022 10:01:10 +0100
-Message-Id: <20221017090111.18429-1-matthew.auld@intel.com>
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [CI 1/2] tests/i915/query: sanity check reported GTT
- alignment
+Content-Transfer-Encoding: 7bit
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Matthew Auld" <matthew.auld@intel.com>
+Date: Mon, 17 Oct 2022 09:51:22 -0000
+Message-ID: <166600028278.13570.5273304894219281805@emeril.freedesktop.org>
+References: <20221017090111.18429-1-matthew.auld@intel.com>
+In-Reply-To: <20221017090111.18429-1-matthew.auld@intel.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_s?=
+ =?utf-8?q?eries_starting_with_=5BCI=2C1/2=5D_tests/i915/query=3A_sanity_c?=
+ =?utf-8?q?heck_reported_GTT_alignment?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,55 +18,45 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Ensure the kernel is reporting "normal" values here, based on our
-current expectations.
+== Series Details ==
 
-Signed-off-by: Matthew Auld <matthew.auld@intel.com>
-Cc: Andrzej Hajda <andrzej.hajda@intel.com>
-Cc: Nirmoy Das <nirmoy.das@intel.com>
-Reviewed-by: Nirmoy Das <nirmoy.das@intel.com>
----
- tests/i915/i915_query.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+Series: series starting with [CI,1/2] tests/i915/query: sanity check reported GTT alignment
+URL   : https://patchwork.freedesktop.org/series/109758/
+State : warning
 
-diff --git a/tests/i915/i915_query.c b/tests/i915/i915_query.c
-index 4e43c7cd..bff073d2 100644
---- a/tests/i915/i915_query.c
-+++ b/tests/i915/i915_query.c
-@@ -638,6 +638,8 @@ static void upload(int fd, struct igt_list_head *handles, uint32_t num_handles)
- 	free(exec);
- }
- 
-+/** XXX: remove once we sync the uapi header */
-+#define gtt_alignment rsvd0
- static void test_query_regions_sanity_check(int fd)
- {
- 	struct drm_i915_query_memory_regions *regions;
-@@ -664,6 +666,11 @@ static void test_query_regions_sanity_check(int fd)
- 		struct drm_i915_gem_memory_class_instance r1 = info.region;
- 		int j;
- 
-+		if (info.gtt_alignment) {
-+			igt_assert_lte_u64(4096, info.gtt_alignment);
-+			igt_assert(is_power_of_two(info.gtt_alignment));
-+		}
-+
- 		if (r1.memory_class == I915_MEMORY_CLASS_SYSTEM) {
- 			igt_assert_eq(r1.memory_instance, 0);
- 			found_system = true;
-@@ -674,6 +681,9 @@ static void test_query_regions_sanity_check(int fd)
- 			igt_assert(info.unallocated_cpu_visible_size == 0 ||
- 				   info.unallocated_cpu_visible_size ==
- 				   info.unallocated_size);
-+
-+			igt_assert(info.gtt_alignment == 0 ||
-+				   info.gtt_alignment == 4096);
- 		} else {
- 			igt_assert(info.probed_cpu_visible_size <= info.probed_size);
- 			igt_assert(info.unallocated_size <= info.probed_size);
--- 
-2.37.3
+== Summary ==
+
+Pipeline status: FAILED.
+
+see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/713098 for the overview.
+
+test:ninja-test-mips has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/29846071):
+  Ok:                   23
+  Expected Fail:         4
+  Fail:                293
+  Unexpected Pass:       0
+  Skipped:               0
+  Timeout:               0
+  
+  Full log written to /builds/gfx-ci/igt-ci-tags/build/meson-logs/testlog.txt
+  section_end:1665999968:step_script
+  section_start:1665999968:upload_artifacts_on_failure
+  Uploading artifacts for failed job
+  Uploading artifacts...
+  build: found 1786 matching files and directories   
+  Uploading artifacts as "archive" to coordinator... 201 Created  id=29846071 responseStatus=201 Created token=qoMjnczh
+  section_end:1665999979:upload_artifacts_on_failure
+  section_start:1665999979:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1665999979:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+
+== Logs ==
+
+For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/713098
