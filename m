@@ -1,21 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-vk1-xa30.google.com (mail-vk1-xa30.google.com
- [IPv6:2607:f8b0:4864:20::a30])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5DE7810E0A2
- for <igt-dev@lists.freedesktop.org>; Mon, 17 Oct 2022 14:26:54 +0000 (UTC)
-Received: by mail-vk1-xa30.google.com with SMTP id s185so5447625vkb.0
- for <igt-dev@lists.freedesktop.org>; Mon, 17 Oct 2022 07:26:54 -0700 (PDT)
+Content-Type: multipart/alternative;
+ boundary="===============8424435291029543773=="
 MIME-Version: 1.0
-References: <20221016172725.1556355-1-jfree@freebsd.org>
- <Y00Ln6XbwnADY1B9@kamilkon-desk1>
-In-Reply-To: <Y00Ln6XbwnADY1B9@kamilkon-desk1>
-From: Jake Freeland <jake@technologyfriends.net>
-Date: Mon, 17 Oct 2022 09:26:42 -0500
-Message-ID: <CAOgZAGYQNRC4Ym_JEWz+oaz+KPS+WSxE2HJf9LRoyxz9mbxRzw@mail.gmail.com>
-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org, Jake Freeland <jfree@freebsd.org>
-Content-Type: multipart/alternative; boundary="000000000000580fd905eb3bc41d"
-Subject: Re: [igt-dev] [PATCH i-g-t] meson.build: Add FreeBSD OS detection
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Riana Tauro" <riana.tauro@intel.com>
+Date: Mon, 17 Oct 2022 15:36:15 -0000
+Message-ID: <166602097527.13570.8522575631372261680@emeril.freedesktop.org>
+References: <20221017053524.2538178-1-riana.tauro@intel.com>
+In-Reply-To: <20221017053524.2538178-1-riana.tauro@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgQWRkIGh3?=
+ =?utf-8?q?mon_energy_support_for_dgfx_=28rev5=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,146 +17,198 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---000000000000580fd905eb3bc41d
-Content-Type: text/plain; charset="UTF-8"
+--===============8424435291029543773==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Hi there Kamil,
+== Series Details ==
 
-After some coordination with the FreeBSD graphics team, I decided
-to remove the freebsd-uapi sync_file.h include. The file that I submitted
-in a previous patch is simply a copy of the linux-uapi sync_file.h with
-minor modifications to compile successfully. It turns out that FreeBSD
-does not have a comparable fencing uapi making the freebsd-uapi
-sync_file.h technically improper.
+Series: Add hwmon energy support for dgfx (rev5)
+URL   : https://patchwork.freedesktop.org/series/108185/
+State : success
 
-This patch introduces the '/usr/local/include' include dir on FreeBSD
-systems.
-I will return back to the freebsd-uapi sync file when I have a proper
-solution.
+== Summary ==
 
-Thank you,
-Jake Freeland
+CI Bug Log - changes from CI_DRM_12250 -> IGTPW_7968
+====================================================
 
-On Mon, Oct 17, 2022 at 3:00 AM Kamil Konieczny <
-kamil.konieczny@linux.intel.com> wrote:
+Summary
+-------
 
-> Hi Jake,
->
-> On 2022-10-16 at 12:27:25 -0500, Jake Freeland wrote:
-> > Use meson's host_machine.system() to detect the target operating
-> > system. If the target is FreeBSD, add /usr/local/include to the
-> > include dirs.
->
-> Put here also note about change from linux-uapi to freebsd-uapi.
->
-> >
-> > Signed-off-by: Jake Freeland <jfree@freebsd.org>
-> > ---
-> >  meson.build | 5 +++++
-> >  1 file changed, 5 insertions(+)
-> >
-> > diff --git a/meson.build b/meson.build
-> > index 3e937f5a..896efbf8 100644
-> > --- a/meson.build
-> > +++ b/meson.build
-> > @@ -86,7 +86,12 @@ with_libdrm = get_option('libdrm_drivers')
-> >
-> >  build_info = ['Build type: ' + get_option('buildtype')]
-> >
-> > +system = host_machine.system()
-> > +if system == 'linux'
-> >  inc = include_directories('include/drm-uapi', 'include/linux-uapi',
-> 'lib', 'lib/stubs/syscalls', '.')
-> > +elif system == 'freebsd'
-> > +inc = include_directories('include/drm-uapi', 'include/linux-uapi',
-> 'lib', 'lib/stubs/syscalls', '.', '/usr/local/include')
-> --------------------------------------------------------- ^
-> freebsd-uapi
->
-> Regards,
-> Kamil
->
-> > +endif
-> >
-> >  inc_for_gtkdoc = include_directories('lib')
-> >
-> > --
-> > 2.37.3
-> >
->
+  **SUCCESS**
 
---000000000000580fd905eb3bc41d
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+  No regressions found.
 
-<div dir=3D"ltr">Hi there Kamil,<div><br></div><div>After some coordination=
- with the FreeBSD graphics team, I decided</div><div>to remove the freebsd-=
-uapi sync_file.h include. The file that I submitted</div><div>in a previous=
- patch is simply a copy of the linux-uapi sync_file.h with</div><div>minor =
-modifications to compile successfully. It turns out that FreeBSD</div><div>=
-does not have=C2=A0a comparable=C2=A0fencing uapi making the freebsd-uapi</=
-div><div>sync_file.h technically improper.</div><div><br></div><div>This pa=
-tch introduces the &#39;/usr/local/include&#39; include=C2=A0dir on FreeBSD=
- systems.</div><div>I will return back to the freebsd-uapi sync file when I=
- have a proper solution.</div><div><br></div><div>Thank you,</div><div>Jake=
- Freeland</div></div><br><div class=3D"gmail_quote"><div dir=3D"ltr" class=
-=3D"gmail_attr">On Mon, Oct 17, 2022 at 3:00 AM Kamil Konieczny &lt;<a href=
-=3D"mailto:kamil.konieczny@linux.intel.com">kamil.konieczny@linux.intel.com=
-</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" style=3D"margin:=
-0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex">=
-Hi Jake,<br>
-<br>
-On 2022-10-16 at 12:27:25 -0500, Jake Freeland wrote:<br>
-&gt; Use meson&#39;s host_machine.system() to detect the target operating<b=
-r>
-&gt; system. If the target is FreeBSD, add /usr/local/include to the<br>
-&gt; include dirs.<br>
-<br>
-Put here also note about change from linux-uapi to freebsd-uapi.<br>
-<br>
-&gt; <br>
-&gt; Signed-off-by: Jake Freeland &lt;<a href=3D"mailto:jfree@freebsd.org" =
-target=3D"_blank">jfree@freebsd.org</a>&gt;<br>
-&gt; ---<br>
-&gt;=C2=A0 meson.build | 5 +++++<br>
-&gt;=C2=A0 1 file changed, 5 insertions(+)<br>
-&gt; <br>
-&gt; diff --git a/meson.build b/meson.build<br>
-&gt; index 3e937f5a..896efbf8 100644<br>
-&gt; --- a/meson.build<br>
-&gt; +++ b/meson.build<br>
-&gt; @@ -86,7 +86,12 @@ with_libdrm =3D get_option(&#39;libdrm_drivers&#39;=
-)<br>
-&gt;=C2=A0 <br>
-&gt;=C2=A0 build_info =3D [&#39;Build type: &#39; + get_option(&#39;buildty=
-pe&#39;)]<br>
-&gt;=C2=A0 <br>
-&gt; +system =3D host_machine.system()<br>
-&gt; +if system =3D=3D &#39;linux&#39;<br>
-&gt;=C2=A0 inc =3D include_directories(&#39;include/drm-uapi&#39;, &#39;inc=
-lude/linux-uapi&#39;, &#39;lib&#39;, &#39;lib/stubs/syscalls&#39;, &#39;.&#=
-39;)<br>
-&gt; +elif system =3D=3D &#39;freebsd&#39;<br>
-&gt; +inc =3D include_directories(&#39;include/drm-uapi&#39;, &#39;include/=
-linux-uapi&#39;, &#39;lib&#39;, &#39;lib/stubs/syscalls&#39;, &#39;.&#39;, =
-&#39;/usr/local/include&#39;)<br>
---------------------------------------------------------- ^<br>
-freebsd-uapi<br>
-<br>
-Regards,<br>
-Kamil<br>
-<br>
-&gt; +endif<br>
-&gt;=C2=A0 <br>
-&gt;=C2=A0 inc_for_gtkdoc =3D include_directories(&#39;lib&#39;)<br>
-&gt;=C2=A0 <br>
-&gt; -- <br>
-&gt; 2.37.3<br>
-&gt; <br>
-</blockquote></div>
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7968/index.html
 
---000000000000580fd905eb3bc41d--
+Participating hosts (45 -> 42)
+------------------------------
+
+  Additional (1): fi-rkl-guc 
+  Missing    (4): fi-bdw-samus fi-icl-u2 fi-skl-6700k2 fi-pnv-d510 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_7968 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@i915_pm_rc6_residency@rc6-idle@rcs0:
+    - fi-elk-e7500:       NOTRUN -> [SKIP][1] ([fdo#109271]) +2 similar issues
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7968/fi-elk-e7500/igt@i915_pm_rc6_residency@rc6-idle@rcs0.html
+    - fi-blb-e6850:       NOTRUN -> [SKIP][2] ([fdo#109271]) +1 similar issue
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7968/fi-blb-e6850/igt@i915_pm_rc6_residency@rc6-idle@rcs0.html
+
+  * igt@i915_pm_rc6_residency@rc6-idle@vcs0:
+    - fi-ilk-650:         NOTRUN -> [SKIP][3] ([fdo#109271]) +2 similar issues
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7968/fi-ilk-650/igt@i915_pm_rc6_residency@rc6-idle@vcs0.html
+
+  * igt@kms_pipe_crc_basic@suspend-read-crc@pipe-a-hdmi-a-1:
+    - fi-snb-2600:        NOTRUN -> [FAIL][4] ([fdo#103375])
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7968/fi-snb-2600/igt@kms_pipe_crc_basic@suspend-read-crc@pipe-a-hdmi-a-1.html
+
+  * igt@runner@aborted:
+    - fi-rkl-guc:         NOTRUN -> [FAIL][5] ([i915#7220])
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7968/fi-rkl-guc/igt@runner@aborted.html
+
+  
+#### Warnings ####
+
+  * igt@i915_suspend@basic-s3-without-i915:
+    - fi-bdw-gvtdvm:      [FAIL][6] ([fdo#103375]) -> [INCOMPLETE][7] ([i915#146])
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12250/fi-bdw-gvtdvm/igt@i915_suspend@basic-s3-without-i915.html
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7968/fi-bdw-gvtdvm/igt@i915_suspend@basic-s3-without-i915.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [fdo#103375]: https://bugs.freedesktop.org/show_bug.cgi?id=103375
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [i915#146]: https://gitlab.freedesktop.org/drm/intel/issues/146
+  [i915#2681]: https://gitlab.freedesktop.org/drm/intel/issues/2681
+  [i915#7190]: https://gitlab.freedesktop.org/drm/intel/issues/7190
+  [i915#7220]: https://gitlab.freedesktop.org/drm/intel/issues/7220
+  [i915#7221]: https://gitlab.freedesktop.org/drm/intel/issues/7221
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_7016 -> IGTPW_7968
+
+  CI-20190529: 20190529
+  CI_DRM_12250: 9b84132c9b266a89e2865cbe8b586dd0b14cc2a4 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_7968: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7968/index.html
+  IGT_7016: 642f4bf44e2b42791b4d1684936a1bfbe2d099ee @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7968/index.html
+
+--===============8424435291029543773==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Add hwmon energy support for dgfx (rev5)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/108185/">https://patchwork.freedesktop.org/series/108185/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7968/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7968/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_12250 -&gt; IGTPW_7968</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7968/index.html</p>
+<h2>Participating hosts (45 -&gt; 42)</h2>
+<p>Additional (1): fi-rkl-guc <br />
+  Missing    (4): fi-bdw-samus fi-icl-u2 fi-skl-6700k2 fi-pnv-d510 </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_7968 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@i915_pm_rc6_residency@rc6-idle@rcs0:</p>
+<ul>
+<li>
+<p>fi-elk-e7500:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7968/fi-elk-e7500/igt@i915_pm_rc6_residency@rc6-idle@rcs0.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +2 similar issues</p>
+</li>
+<li>
+<p>fi-blb-e6850:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7968/fi-blb-e6850/igt@i915_pm_rc6_residency@rc6-idle@rcs0.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +1 similar issue</p>
+</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_pm_rc6_residency@rc6-idle@vcs0:</p>
+<ul>
+<li>fi-ilk-650:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7968/fi-ilk-650/igt@i915_pm_rc6_residency@rc6-idle@vcs0.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +2 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@suspend-read-crc@pipe-a-hdmi-a-1:</p>
+<ul>
+<li>fi-snb-2600:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7968/fi-snb-2600/igt@kms_pipe_crc_basic@suspend-read-crc@pipe-a-hdmi-a-1.html">FAIL</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=103375">fdo#103375</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@runner@aborted:</p>
+<ul>
+<li>fi-rkl-guc:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7968/fi-rkl-guc/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7220">i915#7220</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Warnings</h4>
+<ul>
+<li>igt@i915_suspend@basic-s3-without-i915:<ul>
+<li>fi-bdw-gvtdvm:      <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12250/fi-bdw-gvtdvm/igt@i915_suspend@basic-s3-without-i915.html">FAIL</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=103375">fdo#103375</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7968/fi-bdw-gvtdvm/igt@i915_suspend@basic-s3-without-i915.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/146">i915#146</a>)</li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_7016 -&gt; IGTPW_7968</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_12250: 9b84132c9b266a89e2865cbe8b586dd0b14cc2a4 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_7968: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7968/index.html<br />
+  IGT_7016: 642f4bf44e2b42791b4d1684936a1bfbe2d099ee @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============8424435291029543773==--
