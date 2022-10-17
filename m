@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B1DFF10EC76
- for <igt-dev@lists.freedesktop.org>; Mon, 17 Oct 2022 05:35:52 +0000 (UTC)
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DBAAD10EC7B
+ for <igt-dev@lists.freedesktop.org>; Mon, 17 Oct 2022 05:36:01 +0000 (UTC)
 From: Riana Tauro <riana.tauro@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Mon, 17 Oct 2022 11:05:21 +0530
-Message-Id: <20221017053524.2538178-6-riana.tauro@intel.com>
+Date: Mon, 17 Oct 2022 11:05:23 +0530
+Message-Id: <20221017053524.2538178-8-riana.tauro@intel.com>
 In-Reply-To: <20221017053524.2538178-1-riana.tauro@intel.com>
 References: <20221017053524.2538178-1-riana.tauro@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v3 5/8] i915/gem_exec_schedule: Add energy
- support for dgfx
+Subject: [igt-dev] [PATCH i-g-t v3 7/8] lib/igt_power: clean-up igt_power
+ library
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,102 +24,123 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-igt_power library reads energy using hwmon interface for dgfx and
-rapl otherwise. Modify semaphore-power test to use igt_power interface.
+Remove unused rapl functions from igt_power.
+No functional changes
 
-Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
 Signed-off-by: Riana Tauro <riana.tauro@intel.com>
 Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
 ---
- tests/i915/gem_exec_schedule.c | 49 +++++++++++++++++-----------------
- 1 file changed, 24 insertions(+), 25 deletions(-)
+ lib/igt_power.c | 13 ++++++++++-
+ lib/igt_power.h | 58 -------------------------------------------------
+ 2 files changed, 12 insertions(+), 59 deletions(-)
 
-diff --git a/tests/i915/gem_exec_schedule.c b/tests/i915/gem_exec_schedule.c
-index 4693894f..58b118c7 100644
---- a/tests/i915/gem_exec_schedule.c
-+++ b/tests/i915/gem_exec_schedule.c
-@@ -2844,11 +2844,11 @@ static void test_pi_iova(int i915, const intel_ctx_cfg_t *cfg,
- static void measure_semaphore_power(int i915, const intel_ctx_t *ctx)
- {
- 	const struct intel_execution_engine2 *signaler, *e;
--	struct rapl gpu, pkg;
-+	struct igt_power gpu, pkg;
- 	uint64_t ahnd = get_simple_l2h_ahnd(i915, ctx->id);
- 
--	igt_require(gpu_power_open(&gpu) == 0);
--	pkg_power_open(&pkg);
-+	igt_require(igt_power_open(i915, &gpu, "gpu") == 0);
-+	igt_power_open(i915, &pkg, "pkg");
- 
- 	for_each_ctx_engine(i915, ctx, signaler) {
- 		struct {
-@@ -2870,11 +2870,11 @@ static void measure_semaphore_power(int i915, const intel_ctx_t *ctx)
- 		gem_wait(i915, spin->handle, &jiffie); /* waitboost */
- 		igt_spin_busywait_until_started(spin);
- 
--		rapl_read(&pkg, &s_spin[0].pkg);
--		rapl_read(&gpu, &s_spin[0].gpu);
-+		igt_power_get_energy(&pkg, &s_spin[0].pkg);
-+		igt_power_get_energy(&gpu, &s_spin[0].gpu);
- 		usleep(100*1000);
--		rapl_read(&gpu, &s_spin[1].gpu);
--		rapl_read(&pkg, &s_spin[1].pkg);
-+		igt_power_get_energy(&gpu, &s_spin[1].gpu);
-+		igt_power_get_energy(&pkg, &s_spin[1].pkg);
- 
- 		/* Add a waiter to each engine */
- 		i = 0;
-@@ -2905,34 +2905,33 @@ static void measure_semaphore_power(int i915, const intel_ctx_t *ctx)
- 				igt_spin_free(i915, sema[i]);
- 		usleep(10); /* just give the tasklets a chance to run */
- 
--		rapl_read(&pkg, &s_sema[0].pkg);
--		rapl_read(&gpu, &s_sema[0].gpu);
-+		igt_power_get_energy(&pkg, &s_sema[0].pkg);
-+		igt_power_get_energy(&gpu, &s_sema[0].gpu);
- 		usleep(100*1000);
--		rapl_read(&gpu, &s_sema[1].gpu);
--		rapl_read(&pkg, &s_sema[1].pkg);
-+		igt_power_get_energy(&gpu, &s_sema[1].gpu);
-+		igt_power_get_energy(&pkg, &s_sema[1].pkg);
- 
- 		igt_spin_free(i915, spin);
- 
--		baseline = power_W(&gpu, &s_spin[0].gpu, &s_spin[1].gpu);
--		total = power_W(&gpu, &s_sema[0].gpu, &s_sema[1].gpu);
-+		baseline = igt_power_get_mW(&gpu, &s_spin[0].gpu, &s_spin[1].gpu);
-+		total = igt_power_get_mW(&gpu, &s_sema[0].gpu, &s_sema[1].gpu);
- 		igt_info("%s: %.1fmW + %.1fmW (total %1.fmW)\n",
- 			 signaler->name,
--			 1e3 * baseline,
--			 1e3 * (total - baseline),
--			 1e3 * total);
-+			 baseline,
-+			 (total - baseline),
-+			 total);
- 
--		if (rapl_valid(&pkg)) {
--			baseline = power_W(&pkg, &s_spin[0].pkg, &s_spin[1].pkg);
--			total = power_W(&pkg, &s_sema[0].pkg, &s_sema[1].pkg);
-+		if (igt_power_valid(&pkg)) {
-+			baseline = igt_power_get_mW(&pkg, &s_spin[0].pkg, &s_spin[1].pkg);
-+			total = igt_power_get_mW(&pkg, &s_sema[0].pkg, &s_sema[1].pkg);
- 			igt_info("pkg: %.1fmW + %.1fmW (total %1.fmW)\n",
--				 1e3 * baseline,
--				 1e3 * (total - baseline),
--				 1e3 * total);
-+				 baseline,
-+				 (total - baseline),
-+				 total);
- 		}
- 	}
--
--	rapl_close(&gpu);
--	rapl_close(&pkg);
-+	igt_power_close(&gpu);
-+	igt_power_close(&pkg);
- 	put_ahnd(ahnd);
+diff --git a/lib/igt_power.c b/lib/igt_power.c
+index 3f3633eb..3b34be40 100644
+--- a/lib/igt_power.c
++++ b/lib/igt_power.c
+@@ -53,7 +53,7 @@ static int rapl_parse(struct rapl *r, const char *str)
+ 	return 0;
  }
  
+-int rapl_open(struct rapl *r, const char *domain)
++static int rapl_open(struct rapl *r, const char *domain)
+ {
+ 	r->fd = rapl_parse(r, domain);
+ 	if (r->fd < 0)
+@@ -72,6 +72,17 @@ err:
+ 	return r->fd;
+ }
+ 
++static inline bool rapl_read(struct rapl *r, struct power_sample *s)
++{
++	return read(r->fd, s, sizeof(*s)) == sizeof(*s);
++}
++
++static inline void rapl_close(struct rapl *r)
++{
++	close(r->fd);
++	r->fd = -1;
++}
++
+ /**
+  * igt_power_open:
+  * @fd : device fd
+diff --git a/lib/igt_power.h b/lib/igt_power.h
+index 0984c2df..68a05300 100644
+--- a/lib/igt_power.h
++++ b/lib/igt_power.h
+@@ -44,72 +44,14 @@ struct igt_power {
+ 	int hwmon_fd;
+ };
+ 
+-int rapl_open(struct rapl *r, const char *domain);
+ int igt_power_open(int i915, struct igt_power *p, const char *domain);
+ void igt_power_close(struct igt_power *p);
+ 
+-static inline int cpu_power_open(struct rapl *r)
+-{
+-	return rapl_open(r, "cpu");
+-}
+-
+-static inline int gpu_power_open(struct rapl *r)
+-{
+-	return rapl_open(r, "gpu");
+-}
+-
+-static inline int pkg_power_open(struct rapl *r)
+-{
+-	return rapl_open(r, "pkg");
+-}
+-
+-static inline bool rapl_valid(struct rapl *r)
+-{
+-	return r->fd >= 0;
+-}
+-
+-static inline int ram_power_open(struct rapl *r)
+-{
+-	return rapl_open(r, "ram");
+-}
+-
+-static inline bool rapl_read(struct rapl *r, struct power_sample *s)
+-{
+-	return read(r->fd, s, sizeof(*s)) == sizeof(*s);
+-}
+-
+-static inline void rapl_close(struct rapl *r)
+-{
+-	close(r->fd);
+-	r->fd = -1;
+-}
+-
+ static inline bool igt_power_valid(struct igt_power *p)
+ {
+ 	return (p->rapl.fd >= 0) || (p->hwmon_fd >= 0);
+ }
+ 
+-static inline double power_J(const struct rapl *r,
+-			     const struct power_sample *p0,
+-			     const struct power_sample *p1)
+-{
+-	return (p1->energy - p0->energy) * r->scale;
+-}
+-
+-static inline double power_s(const struct rapl *r,
+-			     const struct power_sample *p0,
+-			     const struct power_sample *p1)
+-{
+-	return (p1->time - p0->time) * 1e-9;
+-}
+-
+-static inline double power_W(const struct rapl *r,
+-			     const struct power_sample *p0,
+-			     const struct power_sample *p1)
+-{
+-	return power_J(r, p0, p1) / power_s(r, p0, p1);
+-}
+-
+ void igt_power_get_energy(struct igt_power *p, struct power_sample *s);
+ 
+ double igt_power_get_mJ(const struct igt_power *power,
 -- 
 2.25.1
