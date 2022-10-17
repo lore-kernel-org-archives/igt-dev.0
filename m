@@ -1,15 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============5385454222458159722=="
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 528B210ED02
+ for <igt-dev@lists.freedesktop.org>; Mon, 17 Oct 2022 09:01:32 +0000 (UTC)
+From: Matthew Auld <matthew.auld@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Mon, 17 Oct 2022 10:01:11 +0100
+Message-Id: <20221017090111.18429-2-matthew.auld@intel.com>
+In-Reply-To: <20221017090111.18429-1-matthew.auld@intel.com>
+References: <20221017090111.18429-1-matthew.auld@intel.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "vikassri07" <vikas.srivastava@intel.com>
-Date: Mon, 17 Oct 2022 08:56:31 -0000
-Message-ID: <166599699171.13570.3192201469725622794@emeril.freedesktop.org>
-References: <20221017075822.2655487-1-vikas.srivastava@intel.com>
-In-Reply-To: <20221017075822.2655487-1-vikas.srivastava@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgQXZvaWQg?=
- =?utf-8?q?caching_ioctl_during_fork?=
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [CI 2/2] tests/i915/gem_create: add some basic testing
+ for GTT alignment
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,214 +19,153 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============5385454222458159722==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Make sure we can always place an object at some GTT address, so
+long as we adhere to the min GTT alignment for the given region.
 
-== Series Details ==
+Signed-off-by: Matthew Auld <matthew.auld@intel.com>
+Cc: Andrzej Hajda <andrzej.hajda@intel.com>
+Cc: Nirmoy Das <nirmoy.das@intel.com>
+Reviewed-by: Nirmoy Das <nirmoy.das@intel.com>
+---
+ tests/i915/gem_create.c | 117 ++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 117 insertions(+)
 
-Series: Avoid caching ioctl during fork
-URL   : https://patchwork.freedesktop.org/series/109753/
-State : success
-
-== Summary ==
-
-CI Bug Log - changes from CI_DRM_12250 -> IGTPW_7970
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7970/index.html
-
-Participating hosts (45 -> 44)
-------------------------------
-
-  Additional (1): fi-rkl-guc 
-  Missing    (2): fi-bdw-samus fi-skl-6700k2 
-
-Possible new issues
--------------------
-
-  Here are the unknown changes that may have been introduced in IGTPW_7970:
-
-### IGT changes ###
-
-#### Suppressed ####
-
-  The following results come from untrusted machines, tests, or statuses.
-  They do not affect the overall result.
-
-  * igt@i915_pm_rpm@module-reload:
-    - {fi-tgl-dsi}:       [INCOMPLETE][1] ([i915#7190]) -> [INCOMPLETE][2]
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12250/fi-tgl-dsi/igt@i915_pm_rpm@module-reload.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7970/fi-tgl-dsi/igt@i915_pm_rpm@module-reload.html
-
-  
-Known issues
-------------
-
-  Here are the changes found in IGTPW_7970 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@gem_tiled_blits@basic:
-    - fi-pnv-d510:        [PASS][3] -> [SKIP][4] ([fdo#109271]) +2 similar issues
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12250/fi-pnv-d510/igt@gem_tiled_blits@basic.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7970/fi-pnv-d510/igt@gem_tiled_blits@basic.html
-
-  * igt@runner@aborted:
-    - fi-rkl-guc:         NOTRUN -> [FAIL][5] ([i915#7220])
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7970/fi-rkl-guc/igt@runner@aborted.html
-
-  
-#### Warnings ####
-
-  * igt@i915_suspend@basic-s3-without-i915:
-    - fi-bdw-gvtdvm:      [FAIL][6] ([fdo#103375]) -> [INCOMPLETE][7] ([i915#146])
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12250/fi-bdw-gvtdvm/igt@i915_suspend@basic-s3-without-i915.html
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7970/fi-bdw-gvtdvm/igt@i915_suspend@basic-s3-without-i915.html
-
-  * igt@runner@aborted:
-    - fi-kbl-soraka:      [FAIL][8] ([i915#4991]) -> [FAIL][9] ([i915#4991] / [i915#7220])
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12250/fi-kbl-soraka/igt@runner@aborted.html
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7970/fi-kbl-soraka/igt@runner@aborted.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [fdo#103375]: https://bugs.freedesktop.org/show_bug.cgi?id=103375
-  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
-  [i915#146]: https://gitlab.freedesktop.org/drm/intel/issues/146
-  [i915#4991]: https://gitlab.freedesktop.org/drm/intel/issues/4991
-  [i915#7190]: https://gitlab.freedesktop.org/drm/intel/issues/7190
-  [i915#7220]: https://gitlab.freedesktop.org/drm/intel/issues/7220
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_7016 -> IGTPW_7970
-
-  CI-20190529: 20190529
-  CI_DRM_12250: 9b84132c9b266a89e2865cbe8b586dd0b14cc2a4 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_7970: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7970/index.html
-  IGT_7016: 642f4bf44e2b42791b4d1684936a1bfbe2d099ee @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7970/index.html
-
---===============5385454222458159722==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>Avoid caching ioctl during fork</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/109753/">https://patchwork.freedesktop.org/series/109753/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7970/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7970/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from CI_DRM_12250 -&gt; IGTPW_7970</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7970/index.html</p>
-<h2>Participating hosts (45 -&gt; 44)</h2>
-<p>Additional (1): fi-rkl-guc <br />
-  Missing    (2): fi-bdw-samus fi-skl-6700k2 </p>
-<h2>Possible new issues</h2>
-<p>Here are the unknown changes that may have been introduced in IGTPW_7970:</p>
-<h3>IGT changes</h3>
-<h4>Suppressed</h4>
-<p>The following results come from untrusted machines, tests, or statuses.<br />
-  They do not affect the overall result.</p>
-<ul>
-<li>igt@i915_pm_rpm@module-reload:<ul>
-<li>{fi-tgl-dsi}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12250/fi-tgl-dsi/igt@i915_pm_rpm@module-reload.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7190">i915#7190</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7970/fi-tgl-dsi/igt@i915_pm_rpm@module-reload.html">INCOMPLETE</a></li>
-</ul>
-</li>
-</ul>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_7970 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@gem_tiled_blits@basic:</p>
-<ul>
-<li>fi-pnv-d510:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12250/fi-pnv-d510/igt@gem_tiled_blits@basic.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7970/fi-pnv-d510/igt@gem_tiled_blits@basic.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +2 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@runner@aborted:</p>
-<ul>
-<li>fi-rkl-guc:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7970/fi-rkl-guc/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7220">i915#7220</a>)</li>
-</ul>
-</li>
-</ul>
-<h4>Warnings</h4>
-<ul>
-<li>
-<p>igt@i915_suspend@basic-s3-without-i915:</p>
-<ul>
-<li>fi-bdw-gvtdvm:      <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12250/fi-bdw-gvtdvm/igt@i915_suspend@basic-s3-without-i915.html">FAIL</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=103375">fdo#103375</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7970/fi-bdw-gvtdvm/igt@i915_suspend@basic-s3-without-i915.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/146">i915#146</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@runner@aborted:</p>
-<ul>
-<li>fi-kbl-soraka:      <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12250/fi-kbl-soraka/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4991">i915#4991</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7970/fi-kbl-soraka/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4991">i915#4991</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7220">i915#7220</a>)</li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_7016 -&gt; IGTPW_7970</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_12250: 9b84132c9b266a89e2865cbe8b586dd0b14cc2a4 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_7970: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7970/index.html<br />
-  IGT_7016: 642f4bf44e2b42791b4d1684936a1bfbe2d099ee @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-
-</body>
-</html>
-
---===============5385454222458159722==--
+diff --git a/tests/i915/gem_create.c b/tests/i915/gem_create.c
+index 9c695fa4..046b934d 100644
+--- a/tests/i915/gem_create.c
++++ b/tests/i915/gem_create.c
+@@ -822,6 +822,115 @@ static void create_ext_cpu_access_big(int fd)
+ 	free(regions);
+ }
+ 
++/** XXX: remove once we sync the uapi header */
++#define gtt_alignment rsvd0
++static bool supports_gtt_alignment(int fd)
++{
++	struct drm_i915_query_memory_regions *regions;
++	uint32_t gtt_alignment;
++
++	regions = gem_get_query_memory_regions(fd);
++	igt_assert(regions);
++	igt_assert(regions->num_regions);
++
++	gtt_alignment = regions->regions[0].gtt_alignment;
++	free(regions);
++
++	return gtt_alignment;
++}
++
++static void create_ext_placement_alignment(int fd)
++{
++	struct drm_i915_gem_create_ext_memory_regions setparam_region = {
++		.base = { .name = I915_GEM_CREATE_EXT_MEMORY_REGIONS },
++	};
++	struct drm_i915_gem_memory_class_instance *uregions;
++	struct drm_i915_query_memory_regions *regions;
++	const uint32_t bbe = MI_BATCH_BUFFER_END;
++	struct drm_i915_gem_execbuffer2 execbuf = {};
++	struct drm_i915_gem_exec_object2 obj = {};
++	uint32_t max_gtt_alignment;
++	uint32_t handle;
++	uint32_t ctx;
++	uint64_t ahnd;
++	uint64_t size;
++	int i;
++
++	regions = gem_get_query_memory_regions(fd);
++	igt_assert(regions);
++	igt_assert(regions->num_regions);
++
++	uregions = calloc(regions->num_regions, sizeof(*uregions));
++
++	ctx = gem_context_create(fd);
++
++	max_gtt_alignment = 0;
++	for (i = 0; i < regions->num_regions; i++) {
++		struct drm_i915_memory_region_info qmr = regions->regions[i];
++		struct drm_i915_gem_memory_class_instance ci = qmr.region;
++		uint32_t gtt_alignment;
++
++		gtt_alignment = qmr.gtt_alignment;
++
++		setparam_region.regions = to_user_pointer(&ci);
++		setparam_region.num_regions = 1;
++
++		size = PAGE_SIZE;
++		igt_assert_eq(__gem_create_ext(fd, &size, 0, &handle,
++					       &setparam_region.base), 0);
++		gem_write(fd, handle, 0, &bbe, sizeof(bbe));
++
++		ahnd = intel_allocator_open_full(fd, ctx, 0, 0,
++						 INTEL_ALLOCATOR_RANDOM,
++						 ALLOC_STRATEGY_HIGH_TO_LOW,
++						 gtt_alignment);
++
++		obj.handle = handle;
++		obj.offset = CANONICAL(get_offset(ahnd, handle, size, 0));
++		obj.flags = EXEC_OBJECT_SUPPORTS_48B_ADDRESS | EXEC_OBJECT_PINNED;
++
++		execbuf.buffers_ptr = to_user_pointer(&obj);
++		execbuf.buffer_count = 1;
++
++		gem_execbuf(fd, &execbuf);
++
++		put_ahnd(ahnd);
++
++		max_gtt_alignment = max(max_gtt_alignment, gtt_alignment);
++		uregions[i] = regions->regions[i].region;
++	}
++
++	setparam_region.regions = to_user_pointer(uregions);
++	setparam_region.num_regions = regions->num_regions;
++
++	size = PAGE_SIZE;
++	igt_assert_eq(__gem_create_ext(fd, &size, 0, &handle,
++				       &setparam_region.base), 0);
++	gem_write(fd, handle, 0, &bbe, sizeof(bbe));
++
++	ahnd = intel_allocator_open_full(fd, ctx, 0, 0,
++					 INTEL_ALLOCATOR_RANDOM,
++					 ALLOC_STRATEGY_HIGH_TO_LOW,
++					 max_gtt_alignment);
++
++	obj.handle = handle;
++	obj.offset = CANONICAL(get_offset(ahnd, handle, size, 0));
++	obj.flags = EXEC_OBJECT_SUPPORTS_48B_ADDRESS | EXEC_OBJECT_PINNED;
++
++	execbuf.buffers_ptr = to_user_pointer(&obj);
++	execbuf.buffer_count = 1;
++
++	gem_execbuf(fd, &execbuf);
++
++	put_ahnd(ahnd);
++
++	gem_context_destroy(fd, ctx);
++
++	gem_close(fd, handle);
++	free(uregions);
++	free(regions);
++}
++
+ igt_main
+ {
+ 	igt_fd_t(fd);
+@@ -907,4 +1016,12 @@ igt_main
+ 		igt_require(supports_needs_cpu_access(fd));
+ 		create_ext_cpu_access_big(fd);
+ 	}
++
++	igt_describe("Check reported GTT alignment gives usable GTT address, for each region.");
++	igt_subtest("create-ext-placement-alignment") {
++		igt_require(supports_gtt_alignment(fd));
++		igt_require(gem_uses_full_ppgtt(fd));
++		create_ext_placement_alignment(fd);
++	}
++
+ }
+-- 
+2.37.3
