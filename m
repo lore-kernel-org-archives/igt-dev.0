@@ -1,21 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 52B3D10E64F
- for <igt-dev@lists.freedesktop.org>; Tue, 18 Oct 2022 09:34:17 +0000 (UTC)
-Message-ID: <956a1367-ca0d-a26d-5f82-30d01e71a106@intel.com>
-Date: Tue, 18 Oct 2022 10:34:06 +0100
+Content-Type: multipart/alternative;
+ boundary="===============3406085341361794783=="
 MIME-Version: 1.0
-Content-Language: en-GB
-To: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>,
- igt-dev@lists.freedesktop.org
-References: <20221018071705.3906-1-niranjana.vishwanathapura@intel.com>
- <20221018071705.3906-10-niranjana.vishwanathapura@intel.com>
-From: Matthew Auld <matthew.auld@intel.com>
-In-Reply-To: <20221018071705.3906-10-niranjana.vishwanathapura@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Subject: Re: [igt-dev] [PATCH i-g-t v4 09/11] tests/i915/vm_bind: Add
- gem_exec3_basic test
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Kamil Konieczny" <kamil.konieczny@linux.intel.com>
+Date: Tue, 18 Oct 2022 09:38:20 -0000
+Message-ID: <166608590071.20426.16143105761124149229@emeril.freedesktop.org>
+References: <20221018091001.18552-1-kamil.konieczny@linux.intel.com>
+In-Reply-To: <20221018091001.18552-1-kamil.konieczny@linux.intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgbGliL2ln?=
+ =?utf-8?q?t=5Fdevice=5Fscan=3A_add_filer_card=3Dall?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,192 +17,277 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: tvrtko.ursulin@intel.com, thomas.hellstrom@intel.com,
- daniel.vetter@intel.com, petri.latvala@intel.com
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On 18/10/2022 08:17, Niranjana Vishwanathapura wrote:
-> Port gem_exec_basic to a new gem_exec3_basic test which
-> uses the newer execbuf3 ioctl.
-> 
-> v2: use i915_vm_bind library functions
-> 
-> Signed-off-by: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
-> ---
->   tests/i915/gem_exec3_basic.c          | 133 ++++++++++++++++++++++++++
->   tests/intel-ci/fast-feedback.testlist |   1 +
->   tests/meson.build                     |   1 +
->   3 files changed, 135 insertions(+)
->   create mode 100644 tests/i915/gem_exec3_basic.c
-> 
-> diff --git a/tests/i915/gem_exec3_basic.c b/tests/i915/gem_exec3_basic.c
-> new file mode 100644
-> index 0000000000..3994381748
-> --- /dev/null
-> +++ b/tests/i915/gem_exec3_basic.c
-> @@ -0,0 +1,133 @@
-> +// SPDX-License-Identifier: MIT
-> +/*
-> + * Copyright © 2022 Intel Corporation
-> + */
-> +
-> +/** @file gem_exec3_basic.c
-> + *
-> + * Basic execbuf3 test.
-> + * Ported from gem_exec_basic and made to work with
-> + * vm_bind and execbuf3.
-> + *
-> + */
-> +
-> +#include "i915/gem.h"
-> +#include "i915/i915_vm_bind.h"
-> +#include "igt.h"
-> +#include "igt_collection.h"
-> +#include "igt_syncobj.h"
-> +
-> +#include "i915/gem_create.h"
-> +#include "i915/gem_vm.h"
-> +
-> +IGT_TEST_DESCRIPTION("Basic sanity check of execbuf3-ioctl rings.");
-> +
-> +#define BATCH_VA	0xa0000000
-> +#define PAGE_SIZE	4096
-> +
-> +static uint64_t gettime_ns(void)
-> +{
-> +	struct timespec current;
-> +	clock_gettime(CLOCK_MONOTONIC, &current);
-> +	return (uint64_t)current.tv_sec * NSEC_PER_SEC + current.tv_nsec;
-> +}
-> +
-> +static uint32_t batch_create(int fd, uint64_t *batch_size, uint32_t region)
-> +{
-> +	const uint32_t bbe = MI_BATCH_BUFFER_END;
-> +	uint32_t handle;
-> +
-> +	igt_assert(__gem_create_in_memory_regions(fd, &handle, batch_size, region) == 0);
-> +	gem_write(fd, handle, 0, &bbe, sizeof(bbe));
-> +
-> +	return handle;
-> +}
-> +
-> +igt_main
-> +{
-> +	const struct intel_execution_engine2 *e;
-> +	struct drm_i915_query_memory_regions *query_info;
-> +	struct igt_collection *regions, *set;
-> +	const intel_ctx_t *base_ctx, *ctx;
-> +	uint32_t vm_id;
-> +	int fd = -1;
-> +
-> +	igt_fixture {
-> +		fd = drm_open_driver(DRIVER_INTEL);
-> +		base_ctx = intel_ctx_create_all_physical(fd);
-> +
-> +		igt_require_gem(fd);
-> +		igt_require(i915_vm_bind_version(fd) == 1);
+--===============3406085341361794783==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Here and elsewhere, should that rather be >= 1?
+== Series Details ==
 
-Reviewed-by: Matthew Auld <matthew.auld@intel.com>
+Series: lib/igt_device_scan: add filer card=all
+URL   : https://patchwork.freedesktop.org/series/109824/
+State : success
+
+== Summary ==
+
+CI Bug Log - changes from CI_DRM_12254 -> IGTPW_7976
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7976/index.html
+
+Participating hosts (45 -> 44)
+------------------------------
+
+  Additional (2): fi-hsw-4770 bat-atsm-1 
+  Missing    (3): fi-bdw-samus fi-icl-u2 fi-kbl-guc 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_7976 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@gem_exec_gttfill@basic:
+    - fi-pnv-d510:        [PASS][1] -> [FAIL][2] ([i915#7229])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12254/fi-pnv-d510/igt@gem_exec_gttfill@basic.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7976/fi-pnv-d510/igt@gem_exec_gttfill@basic.html
+
+  * igt@gem_exec_suspend@basic-s3@smem:
+    - fi-bdw-gvtdvm:      NOTRUN -> [INCOMPLETE][3] ([i915#146])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7976/fi-bdw-gvtdvm/igt@gem_exec_suspend@basic-s3@smem.html
+
+  * igt@gem_tiled_blits@basic:
+    - fi-pnv-d510:        [PASS][4] -> [SKIP][5] ([fdo#109271])
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12254/fi-pnv-d510/igt@gem_tiled_blits@basic.html
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7976/fi-pnv-d510/igt@gem_tiled_blits@basic.html
+
+  * igt@i915_pm_backlight@basic-brightness:
+    - fi-hsw-4770:        NOTRUN -> [SKIP][6] ([fdo#109271] / [i915#3012])
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7976/fi-hsw-4770/igt@i915_pm_backlight@basic-brightness.html
+
+  * igt@i915_pm_rpm@module-reload:
+    - fi-hsw-4770:        NOTRUN -> [INCOMPLETE][7] ([i915#7221])
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7976/fi-hsw-4770/igt@i915_pm_rpm@module-reload.html
+
+  * igt@kms_addfb_basic@addfb25-y-tiled-small-legacy:
+    - fi-hsw-4770:        NOTRUN -> [SKIP][8] ([fdo#109271]) +9 similar issues
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7976/fi-hsw-4770/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html
+
+  * igt@kms_chamelium@dp-crc-fast:
+    - fi-hsw-4770:        NOTRUN -> [SKIP][9] ([fdo#109271] / [fdo#111827]) +7 similar issues
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7976/fi-hsw-4770/igt@kms_chamelium@dp-crc-fast.html
+
+  * igt@kms_psr@sprite_plane_onoff:
+    - fi-hsw-4770:        NOTRUN -> [SKIP][10] ([fdo#109271] / [i915#1072]) +3 similar issues
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7976/fi-hsw-4770/igt@kms_psr@sprite_plane_onoff.html
+
+  * igt@runner@aborted:
+    - fi-hsw-4770:        NOTRUN -> [FAIL][11] ([fdo#109271] / [i915#4312] / [i915#5594])
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7976/fi-hsw-4770/igt@runner@aborted.html
+
+  
+#### Warnings ####
+
+  * igt@i915_suspend@basic-s3-without-i915:
+    - fi-bdw-gvtdvm:      [INCOMPLETE][12] ([i915#146]) -> [FAIL][13] ([fdo#103375])
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12254/fi-bdw-gvtdvm/igt@i915_suspend@basic-s3-without-i915.html
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7976/fi-bdw-gvtdvm/igt@i915_suspend@basic-s3-without-i915.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [fdo#103375]: https://bugs.freedesktop.org/show_bug.cgi?id=103375
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [fdo#111827]: https://bugs.freedesktop.org/show_bug.cgi?id=111827
+  [i915#1072]: https://gitlab.freedesktop.org/drm/intel/issues/1072
+  [i915#146]: https://gitlab.freedesktop.org/drm/intel/issues/146
+  [i915#3012]: https://gitlab.freedesktop.org/drm/intel/issues/3012
+  [i915#4312]: https://gitlab.freedesktop.org/drm/intel/issues/4312
+  [i915#5594]: https://gitlab.freedesktop.org/drm/intel/issues/5594
+  [i915#7220]: https://gitlab.freedesktop.org/drm/intel/issues/7220
+  [i915#7221]: https://gitlab.freedesktop.org/drm/intel/issues/7221
+  [i915#7229]: https://gitlab.freedesktop.org/drm/intel/issues/7229
 
 
-> +		igt_fork_hang_detector(fd);
-> +
-> +		vm_id = gem_vm_create_in_vm_bind_mode(fd);
-> +		ctx  = intel_ctx_create(fd, &base_ctx->cfg);
-> +		gem_context_set_vm(fd, ctx->id, vm_id);
-> +
-> +		query_info = gem_get_query_memory_regions(fd);
-> +		igt_assert(query_info);
-> +
-> +		set = get_memory_region_set(query_info,
-> +					    I915_SYSTEM_MEMORY,
-> +					    I915_DEVICE_MEMORY);
-> +	}
-> +
-> +	igt_describe("Check basic functionality of GEM_EXECBUFFER3 ioctl on every"
-> +		     " ring and iterating over memory regions.");
-> +	igt_subtest_with_dynamic("basic") {
-> +		for_each_combination(regions, 1, set) {
-> +			struct drm_i915_gem_timeline_fence exec_fence[GEM_MAX_ENGINES][2] = { };
-> +			char *sub_name = memregion_dynamic_subtest_name(regions);
-> +			uint32_t region = igt_collection_get_value(regions, 0);
-> +			uint32_t bind_syncobj, exec_syncobj[GEM_MAX_ENGINES];
-> +			uint64_t fence_value[GEM_MAX_ENGINES] = { };
-> +			uint64_t batch_size = PAGE_SIZE;
-> +			uint32_t handle, idx = 0;
-> +
-> +			handle = batch_create(fd, &batch_size, region);
-> +			bind_syncobj = syncobj_create(fd, 0);
-> +			i915_vm_bind(fd, vm_id, BATCH_VA, handle, 0, batch_size, bind_syncobj, 0);
-> +
-> +			for_each_ctx_engine(fd, ctx, e) {
-> +				igt_dynamic_f("%s-%s", e->name, sub_name) {
-> +					struct drm_i915_gem_execbuffer3 execbuf = {
-> +						.ctx_id = ctx->id,
-> +						.batch_address = BATCH_VA,
-> +						.engine_idx = e->flags,
-> +						.fence_count = 2,
-> +						.timeline_fences = to_user_pointer(&exec_fence[idx]),
-> +					};
-> +
-> +					exec_syncobj[idx] = syncobj_create(fd, 0);
-> +					exec_fence[idx][0].handle = bind_syncobj;
-> +					exec_fence[idx][0].flags = I915_TIMELINE_FENCE_WAIT;
-> +					exec_fence[idx][1].handle = exec_syncobj[idx];
-> +					exec_fence[idx][1].flags = I915_TIMELINE_FENCE_SIGNAL;
-> +					idx++;
-> +
-> +					gem_execbuf3(fd, &execbuf);
-> +				}
-> +			}
-> +
-> +			igt_assert(syncobj_timeline_wait(fd, exec_syncobj, fence_value, idx,
-> +							 gettime_ns() + (2 * NSEC_PER_SEC),
-> +							 DRM_SYNCOBJ_WAIT_FLAGS_WAIT_FOR_SUBMIT, NULL));
-> +			while (idx)
-> +				syncobj_destroy(fd, exec_syncobj[--idx]);
-> +			syncobj_destroy(fd, bind_syncobj);
-> +			i915_vm_unbind(fd, vm_id, BATCH_VA, batch_size);
-> +			gem_close(fd, handle);
-> +			free(sub_name);
-> +		}
-> +	}
-> +
-> +	igt_fixture {
-> +		intel_ctx_destroy(fd, ctx);
-> +		gem_vm_destroy(fd, vm_id);
-> +		free(query_info);
-> +		igt_collection_destroy(set);
-> +		igt_stop_hang_detector();
-> +		intel_ctx_destroy(fd, base_ctx);
-> +		close(fd);
-> +	}
-> +}
-> diff --git a/tests/intel-ci/fast-feedback.testlist b/tests/intel-ci/fast-feedback.testlist
-> index 8a47eaddda..c5be7e300b 100644
-> --- a/tests/intel-ci/fast-feedback.testlist
-> +++ b/tests/intel-ci/fast-feedback.testlist
-> @@ -27,6 +27,7 @@ igt@gem_exec_fence@nb-await
->   igt@gem_exec_gttfill@basic
->   igt@gem_exec_parallel@engines
->   igt@gem_exec_store@basic
-> +igt@gem_exec3_basic@basic
->   igt@gem_flink_basic@bad-flink
->   igt@gem_flink_basic@bad-open
->   igt@gem_flink_basic@basic
-> diff --git a/tests/meson.build b/tests/meson.build
-> index 1b9529a7e2..50de8b7e89 100644
-> --- a/tests/meson.build
-> +++ b/tests/meson.build
-> @@ -252,6 +252,7 @@ i915_progs = [
->   	'sysfs_timeslice_duration',
->   	'i915_vm_bind_sanity',
->   	'i915_vm_bind_basic',
-> +	'gem_exec3_basic',
->   ]
->   
->   msm_progs = [
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_7018 -> IGTPW_7976
+
+  CI-20190529: 20190529
+  CI_DRM_12254: 2e6cdde56f896add665edb8d2f6d3dfce8b1b3b6 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_7976: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7976/index.html
+  IGT_7018: 8312a2fe3f3287ba4ac4bc8d100de0734480f482 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+
+Testlist changes
+----------------
+
+-igt@gem_exec3_balancer@parallel-ordering
+-igt@gem_exec3_basic@basic
+-igt@gem_lmem_swapping@vm_bind
+-igt@i915_vm_bind_basic@2m
+-igt@i915_vm_bind_basic@64k
+-igt@i915_vm_bind_basic@basic
+-igt@i915_vm_bind_basic@multi_cmds
+-igt@i915_vm_bind_basic@multi_ctxts
+-igt@i915_vm_bind_basic@share_vm
+-igt@i915_vm_bind_basic@skip_copy
+-igt@i915_vm_bind_basic@skip_unbind
+-igt@i915_vm_bind_sanity@basic
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7976/index.html
+
+--===============3406085341361794783==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>lib/igt_device_scan: add filer card=all</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/109824/">https://patchwork.freedesktop.org/series/109824/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7976/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7976/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_12254 -&gt; IGTPW_7976</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7976/index.html</p>
+<h2>Participating hosts (45 -&gt; 44)</h2>
+<p>Additional (2): fi-hsw-4770 bat-atsm-1 <br />
+  Missing    (3): fi-bdw-samus fi-icl-u2 fi-kbl-guc </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_7976 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@gem_exec_gttfill@basic:</p>
+<ul>
+<li>fi-pnv-d510:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12254/fi-pnv-d510/igt@gem_exec_gttfill@basic.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7976/fi-pnv-d510/igt@gem_exec_gttfill@basic.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7229">i915#7229</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_exec_suspend@basic-s3@smem:</p>
+<ul>
+<li>fi-bdw-gvtdvm:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7976/fi-bdw-gvtdvm/igt@gem_exec_suspend@basic-s3@smem.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/146">i915#146</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_tiled_blits@basic:</p>
+<ul>
+<li>fi-pnv-d510:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12254/fi-pnv-d510/igt@gem_tiled_blits@basic.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7976/fi-pnv-d510/igt@gem_tiled_blits@basic.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_pm_backlight@basic-brightness:</p>
+<ul>
+<li>fi-hsw-4770:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7976/fi-hsw-4770/igt@i915_pm_backlight@basic-brightness.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3012">i915#3012</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_pm_rpm@module-reload:</p>
+<ul>
+<li>fi-hsw-4770:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7976/fi-hsw-4770/igt@i915_pm_rpm@module-reload.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7221">i915#7221</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_addfb_basic@addfb25-y-tiled-small-legacy:</p>
+<ul>
+<li>fi-hsw-4770:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7976/fi-hsw-4770/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +9 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_chamelium@dp-crc-fast:</p>
+<ul>
+<li>fi-hsw-4770:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7976/fi-hsw-4770/igt@kms_chamelium@dp-crc-fast.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://bugs.freedesktop.org/show_bug.cgi?id=111827">fdo#111827</a>) +7 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_psr@sprite_plane_onoff:</p>
+<ul>
+<li>fi-hsw-4770:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7976/fi-hsw-4770/igt@kms_psr@sprite_plane_onoff.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/1072">i915#1072</a>) +3 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@runner@aborted:</p>
+<ul>
+<li>fi-hsw-4770:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7976/fi-hsw-4770/igt@runner@aborted.html">FAIL</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4312">i915#4312</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/5594">i915#5594</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Warnings</h4>
+<ul>
+<li>igt@i915_suspend@basic-s3-without-i915:<ul>
+<li>fi-bdw-gvtdvm:      <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12254/fi-bdw-gvtdvm/igt@i915_suspend@basic-s3-without-i915.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/146">i915#146</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7976/fi-bdw-gvtdvm/igt@i915_suspend@basic-s3-without-i915.html">FAIL</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=103375">fdo#103375</a>)</li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_7018 -&gt; IGTPW_7976</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_12254: 2e6cdde56f896add665edb8d2f6d3dfce8b1b3b6 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_7976: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7976/index.html<br />
+  IGT_7018: 8312a2fe3f3287ba4ac4bc8d100de0734480f482 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+<h2>Testlist changes</h2>
+<p>-igt@gem_exec3_balancer@parallel-ordering<br />
+-igt@gem_exec3_basic@basic<br />
+-igt@gem_lmem_swapping@vm_bind<br />
+-igt@i915_vm_bind_basic@2m<br />
+-igt@i915_vm_bind_basic@64k<br />
+-igt@i915_vm_bind_basic@basic<br />
+-igt@i915_vm_bind_basic@multi_cmds<br />
+-igt@i915_vm_bind_basic@multi_ctxts<br />
+-igt@i915_vm_bind_basic@share_vm<br />
+-igt@i915_vm_bind_basic@skip_copy<br />
+-igt@i915_vm_bind_basic@skip_unbind<br />
+-igt@i915_vm_bind_sanity@basic</p>
+
+</body>
+</html>
+
+--===============3406085341361794783==--
