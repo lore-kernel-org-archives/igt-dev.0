@@ -1,21 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E056D10E1FD
- for <igt-dev@lists.freedesktop.org>; Tue, 18 Oct 2022 09:26:44 +0000 (UTC)
-Message-ID: <06b92e9e-818b-44da-e788-beff6785e112@intel.com>
-Date: Tue, 18 Oct 2022 10:26:39 +0100
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 52B3D10E64F
+ for <igt-dev@lists.freedesktop.org>; Tue, 18 Oct 2022 09:34:17 +0000 (UTC)
+Message-ID: <956a1367-ca0d-a26d-5f82-30d01e71a106@intel.com>
+Date: Tue, 18 Oct 2022 10:34:06 +0100
 MIME-Version: 1.0
+Content-Language: en-GB
 To: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>,
  igt-dev@lists.freedesktop.org
 References: <20221018071705.3906-1-niranjana.vishwanathapura@intel.com>
- <20221018071705.3906-5-niranjana.vishwanathapura@intel.com>
-Content-Language: en-GB
+ <20221018071705.3906-10-niranjana.vishwanathapura@intel.com>
 From: Matthew Auld <matthew.auld@intel.com>
-In-Reply-To: <20221018071705.3906-5-niranjana.vishwanathapura@intel.com>
+In-Reply-To: <20221018071705.3906-10-niranjana.vishwanathapura@intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Subject: Re: [igt-dev] [PATCH i-g-t v4 04/11] lib/vm_bind: Add vm_bind
- specific library functions
+Subject: Re: [igt-dev] [PATCH i-g-t v4 09/11] tests/i915/vm_bind: Add
+ gem_exec3_basic test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -29,121 +29,186 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On 18/10/2022 08:16, Niranjana Vishwanathapura wrote:
-> Add vm_bind specific library interfaces.
+On 18/10/2022 08:17, Niranjana Vishwanathapura wrote:
+> Port gem_exec_basic to a new gem_exec3_basic test which
+> uses the newer execbuf3 ioctl.
+> 
+> v2: use i915_vm_bind library functions
 > 
 > Signed-off-by: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
 > ---
->   lib/i915/i915_vm_bind.c | 61 +++++++++++++++++++++++++++++++++++++++++
->   lib/i915/i915_vm_bind.h | 16 +++++++++++
->   lib/meson.build         |  1 +
->   3 files changed, 78 insertions(+)
->   create mode 100644 lib/i915/i915_vm_bind.c
->   create mode 100644 lib/i915/i915_vm_bind.h
+>   tests/i915/gem_exec3_basic.c          | 133 ++++++++++++++++++++++++++
+>   tests/intel-ci/fast-feedback.testlist |   1 +
+>   tests/meson.build                     |   1 +
+>   3 files changed, 135 insertions(+)
+>   create mode 100644 tests/i915/gem_exec3_basic.c
 > 
-> diff --git a/lib/i915/i915_vm_bind.c b/lib/i915/i915_vm_bind.c
+> diff --git a/tests/i915/gem_exec3_basic.c b/tests/i915/gem_exec3_basic.c
 > new file mode 100644
-> index 0000000000..5624f589b5
+> index 0000000000..3994381748
 > --- /dev/null
-> +++ b/lib/i915/i915_vm_bind.c
-> @@ -0,0 +1,61 @@
+> +++ b/tests/i915/gem_exec3_basic.c
+> @@ -0,0 +1,133 @@
 > +// SPDX-License-Identifier: MIT
 > +/*
 > + * Copyright © 2022 Intel Corporation
 > + */
 > +
-> +#include <errno.h>
-> +#include <string.h>
-> +#include <sys/ioctl.h>
+> +/** @file gem_exec3_basic.c
+> + *
+> + * Basic execbuf3 test.
+> + * Ported from gem_exec_basic and made to work with
+> + * vm_bind and execbuf3.
+> + *
+> + */
 > +
-> +#include "ioctl_wrappers.h"
-> +#include "i915_drm.h"
-> +#include "i915_drm_local.h"
-> +#include "i915_vm_bind.h"
+> +#include "i915/gem.h"
+> +#include "i915/i915_vm_bind.h"
+> +#include "igt.h"
+> +#include "igt_collection.h"
+> +#include "igt_syncobj.h"
 > +
-> +void i915_vm_bind(int i915, uint32_t vm_id, uint64_t va, uint32_t handle,
-> +		  uint64_t offset, uint64_t length, uint32_t syncobj,
+> +#include "i915/gem_create.h"
+> +#include "i915/gem_vm.h"
+> +
+> +IGT_TEST_DESCRIPTION("Basic sanity check of execbuf3-ioctl rings.");
+> +
+> +#define BATCH_VA	0xa0000000
+> +#define PAGE_SIZE	4096
+> +
+> +static uint64_t gettime_ns(void)
+> +{
+> +	struct timespec current;
+> +	clock_gettime(CLOCK_MONOTONIC, &current);
+> +	return (uint64_t)current.tv_sec * NSEC_PER_SEC + current.tv_nsec;
+> +}
+> +
+> +static uint32_t batch_create(int fd, uint64_t *batch_size, uint32_t region)
+> +{
+> +	const uint32_t bbe = MI_BATCH_BUFFER_END;
+> +	uint32_t handle;
+> +
+> +	igt_assert(__gem_create_in_memory_regions(fd, &handle, batch_size, region) == 0);
+> +	gem_write(fd, handle, 0, &bbe, sizeof(bbe));
+> +
+> +	return handle;
+> +}
+> +
+> +igt_main
+> +{
+> +	const struct intel_execution_engine2 *e;
+> +	struct drm_i915_query_memory_regions *query_info;
+> +	struct igt_collection *regions, *set;
+> +	const intel_ctx_t *base_ctx, *ctx;
+> +	uint32_t vm_id;
+> +	int fd = -1;
+> +
+> +	igt_fixture {
+> +		fd = drm_open_driver(DRIVER_INTEL);
+> +		base_ctx = intel_ctx_create_all_physical(fd);
+> +
+> +		igt_require_gem(fd);
+> +		igt_require(i915_vm_bind_version(fd) == 1);
 
-It's not possible to have a valid syncobj = 0 right?
+Here and elsewhere, should that rather be >= 1?
 
 Reviewed-by: Matthew Auld <matthew.auld@intel.com>
 
-> +		  uint64_t fence_value)
-> +{
-> +	struct drm_i915_gem_vm_bind bind;
+
+> +		igt_fork_hang_detector(fd);
 > +
-> +	memset(&bind, 0, sizeof(bind));
-> +	bind.vm_id = vm_id;
-> +	bind.handle = handle;
-> +	bind.start = va;
-> +	bind.offset = offset;
-> +	bind.length = length;
-> +	if (syncobj) {
-> +		bind.fence.handle = syncobj;
-> +		bind.fence.value = fence_value;
-> +		bind.fence.flags = I915_TIMELINE_FENCE_SIGNAL;
+> +		vm_id = gem_vm_create_in_vm_bind_mode(fd);
+> +		ctx  = intel_ctx_create(fd, &base_ctx->cfg);
+> +		gem_context_set_vm(fd, ctx->id, vm_id);
+> +
+> +		query_info = gem_get_query_memory_regions(fd);
+> +		igt_assert(query_info);
+> +
+> +		set = get_memory_region_set(query_info,
+> +					    I915_SYSTEM_MEMORY,
+> +					    I915_DEVICE_MEMORY);
 > +	}
 > +
-> +	gem_vm_bind(i915, &bind);
+> +	igt_describe("Check basic functionality of GEM_EXECBUFFER3 ioctl on every"
+> +		     " ring and iterating over memory regions.");
+> +	igt_subtest_with_dynamic("basic") {
+> +		for_each_combination(regions, 1, set) {
+> +			struct drm_i915_gem_timeline_fence exec_fence[GEM_MAX_ENGINES][2] = { };
+> +			char *sub_name = memregion_dynamic_subtest_name(regions);
+> +			uint32_t region = igt_collection_get_value(regions, 0);
+> +			uint32_t bind_syncobj, exec_syncobj[GEM_MAX_ENGINES];
+> +			uint64_t fence_value[GEM_MAX_ENGINES] = { };
+> +			uint64_t batch_size = PAGE_SIZE;
+> +			uint32_t handle, idx = 0;
+> +
+> +			handle = batch_create(fd, &batch_size, region);
+> +			bind_syncobj = syncobj_create(fd, 0);
+> +			i915_vm_bind(fd, vm_id, BATCH_VA, handle, 0, batch_size, bind_syncobj, 0);
+> +
+> +			for_each_ctx_engine(fd, ctx, e) {
+> +				igt_dynamic_f("%s-%s", e->name, sub_name) {
+> +					struct drm_i915_gem_execbuffer3 execbuf = {
+> +						.ctx_id = ctx->id,
+> +						.batch_address = BATCH_VA,
+> +						.engine_idx = e->flags,
+> +						.fence_count = 2,
+> +						.timeline_fences = to_user_pointer(&exec_fence[idx]),
+> +					};
+> +
+> +					exec_syncobj[idx] = syncobj_create(fd, 0);
+> +					exec_fence[idx][0].handle = bind_syncobj;
+> +					exec_fence[idx][0].flags = I915_TIMELINE_FENCE_WAIT;
+> +					exec_fence[idx][1].handle = exec_syncobj[idx];
+> +					exec_fence[idx][1].flags = I915_TIMELINE_FENCE_SIGNAL;
+> +					idx++;
+> +
+> +					gem_execbuf3(fd, &execbuf);
+> +				}
+> +			}
+> +
+> +			igt_assert(syncobj_timeline_wait(fd, exec_syncobj, fence_value, idx,
+> +							 gettime_ns() + (2 * NSEC_PER_SEC),
+> +							 DRM_SYNCOBJ_WAIT_FLAGS_WAIT_FOR_SUBMIT, NULL));
+> +			while (idx)
+> +				syncobj_destroy(fd, exec_syncobj[--idx]);
+> +			syncobj_destroy(fd, bind_syncobj);
+> +			i915_vm_unbind(fd, vm_id, BATCH_VA, batch_size);
+> +			gem_close(fd, handle);
+> +			free(sub_name);
+> +		}
+> +	}
+> +
+> +	igt_fixture {
+> +		intel_ctx_destroy(fd, ctx);
+> +		gem_vm_destroy(fd, vm_id);
+> +		free(query_info);
+> +		igt_collection_destroy(set);
+> +		igt_stop_hang_detector();
+> +		intel_ctx_destroy(fd, base_ctx);
+> +		close(fd);
+> +	}
 > +}
-> +
-> +void i915_vm_unbind(int i915, uint32_t vm_id, uint64_t va, uint64_t length)
-> +{
-> +	struct drm_i915_gem_vm_unbind unbind;
-> +
-> +	memset(&unbind, 0, sizeof(unbind));
-> +	unbind.vm_id = vm_id;
-> +	unbind.start = va;
-> +	unbind.length = length;
-> +
-> +	gem_vm_unbind(i915, &unbind);
-> +}
-> +
-> +int i915_vm_bind_version(int i915)
-> +{
-> +	struct drm_i915_getparam gp;
-> +	int value = 0;
-> +
-> +	memset(&gp, 0, sizeof(gp));
-> +	gp.param = I915_PARAM_VM_BIND_VERSION;
-> +	gp.value = &value;
-> +
-> +	ioctl(i915, DRM_IOCTL_I915_GETPARAM, &gp, sizeof(gp));
-> +	errno = 0;
-> +
-> +	return value;
-> +}
-> diff --git a/lib/i915/i915_vm_bind.h b/lib/i915/i915_vm_bind.h
-> new file mode 100644
-> index 0000000000..46a382c032
-> --- /dev/null
-> +++ b/lib/i915/i915_vm_bind.h
-> @@ -0,0 +1,16 @@
-> +/* SPDX-License-Identifier: MIT */
-> +/*
-> + * Copyright © 2022 Intel Corporation
-> + */
-> +#ifndef _I915_VM_BIND_H_
-> +#define _I915_VM_BIND_H_
-> +
-> +#include <stdint.h>
-> +
-> +void i915_vm_bind(int i915, uint32_t vm_id, uint64_t va, uint32_t handle,
-> +		  uint64_t offset, uint64_t length, uint32_t syncobj,
-> +		  uint64_t fence_value);
-> +void i915_vm_unbind(int i915, uint32_t vm_id, uint64_t va, uint64_t length);
-> +int i915_vm_bind_version(int i915);
-> +
-> +#endif /* _I915_VM_BIND_ */
-> diff --git a/lib/meson.build b/lib/meson.build
-> index 8d6c8a244a..e50a2b0e79 100644
-> --- a/lib/meson.build
-> +++ b/lib/meson.build
-> @@ -14,6 +14,7 @@ lib_sources = [
->   	'i915/intel_mocs.c',
->   	'i915/i915_blt.c',
->   	'i915/i915_crc.c',
-> +	'i915/i915_vm_bind.c',
->   	'igt_collection.c',
->   	'igt_color_encoding.c',
->   	'igt_crc.c',
+> diff --git a/tests/intel-ci/fast-feedback.testlist b/tests/intel-ci/fast-feedback.testlist
+> index 8a47eaddda..c5be7e300b 100644
+> --- a/tests/intel-ci/fast-feedback.testlist
+> +++ b/tests/intel-ci/fast-feedback.testlist
+> @@ -27,6 +27,7 @@ igt@gem_exec_fence@nb-await
+>   igt@gem_exec_gttfill@basic
+>   igt@gem_exec_parallel@engines
+>   igt@gem_exec_store@basic
+> +igt@gem_exec3_basic@basic
+>   igt@gem_flink_basic@bad-flink
+>   igt@gem_flink_basic@bad-open
+>   igt@gem_flink_basic@basic
+> diff --git a/tests/meson.build b/tests/meson.build
+> index 1b9529a7e2..50de8b7e89 100644
+> --- a/tests/meson.build
+> +++ b/tests/meson.build
+> @@ -252,6 +252,7 @@ i915_progs = [
+>   	'sysfs_timeslice_duration',
+>   	'i915_vm_bind_sanity',
+>   	'i915_vm_bind_basic',
+> +	'gem_exec3_basic',
+>   ]
+>   
+>   msm_progs = [
