@@ -1,20 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2E70110E288
- for <igt-dev@lists.freedesktop.org>; Tue, 18 Oct 2022 16:06:55 +0000 (UTC)
-Message-ID: <640e3f12-db6d-1ea1-9a43-441b36540776@linux.intel.com>
-Date: Tue, 18 Oct 2022 17:06:29 +0100
-MIME-Version: 1.0
+Received: from NAM11-BN8-obe.outbound.protection.outlook.com
+ (mail-bn8nam11on2041.outbound.protection.outlook.com [40.107.236.41])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6CF3210E283
+ for <igt-dev@lists.freedesktop.org>; Tue, 18 Oct 2022 16:09:56 +0000 (UTC)
+Message-ID: <80b537b3-07a8-c7ee-c0f3-5ff141720f78@amd.com>
+Date: Tue, 18 Oct 2022 12:09:52 -0400
+To: juhapekka.heikkila@gmail.com, igt-dev@lists.freedesktop.org
+References: <20221014184942.205868-1-aurabindo.pillai@amd.com>
+ <b2631fef-ddca-e74d-cd8b-39f76fb4af7d@gmail.com>
 Content-Language: en-US
-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org
-References: <20221018091001.18552-1-kamil.konieczny@linux.intel.com>
-From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
-In-Reply-To: <20221018091001.18552-1-kamil.konieczny@linux.intel.com>
+From: Aurabindo Pillai <aurabindo.pillai@amd.com>
+In-Reply-To: <b2631fef-ddca-e74d-cd8b-39f76fb4af7d@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Subject: Re: [igt-dev] [PATCH i-g-t 0/2] lib/igt_device_scan: add filer
- card=all
+Content-Transfer-Encoding: 8bit
+MIME-Version: 1.0
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_plane_cursor: Change API for
+ collecting the CRC
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,23 +28,84 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
 
-On 18/10/2022 10:09, Kamil Konieczny wrote:
-> Allow to select all (up to 16) discrete cards with the help of
-> card=all or card=*, for example:
+
+On 2022-10-15 16:30, Juha-Pekka Heikkila wrote:
+> On 14.10.2022 21.49, Aurabindo Pillai wrote:
+>> On AMD hw, igt_pipe_crc_get_current() does not work correctly, but
+>> igt_pipe_crc_collect_crc() does. The latter is more robust and reports
+>> the expected crc. This is due to a delay of 2 frames in the hardware for
+>> crc capture.
+>>
+>> The following diff is an alternate fix instead of changing the API:
+>>
+>> diff --git a/lib/igt_debugfs.c b/lib/igt_debugfs.c
+>> index fa1e3b69..dfcb2638 100644
+>> --- a/lib/igt_debugfs.c
+>> +++ b/lib/igt_debugfs.c
+>> @@ -1061,6 +1061,10 @@ igt_pipe_crc_get_current(int drm_fd, 
+>> igt_pipe_crc_t *pipe_crc, igt_crc_t *crc)
+>>   {
+>>          unsigned vblank = kmstest_get_vblank(drm_fd, pipe_crc->pipe, 
+>> 0) + 1;
+>>
+>> +       /* AMD hw has an additional frame delay */
+>> +       if (is_amdgpu_device(drm_fd))
+>> +               vblank += 1;
+>> +
+>>          return igt_pipe_crc_get_for_frame(drm_fd, pipe_crc, vblank, 
+>> crc);
+>>   }
+>>
+>> Since the above solution adds device specific code into core IGT lib,
+>> changing the API is a preferable solution.
 > 
-> ./gem_basic --device=pci:vendor=intel,device=discrete,card=all
+> This sound like you are fixing driver bug in test suite. If pipe crc 
+> doesn't match it mean rendered picture is wrong. If later crcs match 
+> you're probably showing picture too early, I have no amd hw at hand so I 
+> have no real idea what's going wrong.
 
-What should this do btw? Run the tests on more than one card in 
-sequence? Isn't that test runner's job?
+Looks like patchwork got confused. The hunk above is not part of the 
+change and was just meant to show the underlying problem. Its either the 
+above one, or the one below that fixes the issue.
 
-Regards,
+Since flipping and crc enablement happen asynchronously, more often than 
+not -  we return an 'uncooked' crc on first frame probably because hw 
+isn't ready yet. For this reason, we skip the first two CRC values. Its 
+not a driver bug.
 
-Tvrtko
-
-> Kamil Konieczny (2):
->    lib/igt_device_scan: refactor filer adding
->    lib/igt_device_scan: add card=all filter selector
 > 
->   lib/igt_device_scan.c | 36 ++++++++++++++++++++++++++++++++++--
->   1 file changed, 34 insertions(+), 2 deletions(-)
+>>
+>> Signed-off-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
+>> ---
+>>   tests/kms_plane_cursor.c | 6 ++----
+>>   1 file changed, 2 insertions(+), 4 deletions(-)
+>>
+>> diff --git a/tests/kms_plane_cursor.c b/tests/kms_plane_cursor.c
+>> index e9abfd78..e2a9e97b 100644
+>> --- a/tests/kms_plane_cursor.c
+>> +++ b/tests/kms_plane_cursor.c
+>> @@ -150,8 +150,7 @@ static void test_cursor_pos(data_t *data, int x, 
+>> int y, unsigned int flags)
+>>       igt_plane_set_fb(data->cursor, NULL);
+>>       igt_display_commit_atomic(&data->display, 0, NULL);
+>> -    igt_pipe_crc_start(data->pipe_crc);
+>> -    igt_pipe_crc_get_current(data->drm_fd, data->pipe_crc, &ref_crc);
+>> +    igt_pipe_crc_collect_crc(data->pipe_crc, &ref_crc);
 > 
+> This change would slow test down and on same go make it possible for 
+> other drivers to get same problem on crcs with nobody noticing it. I'd 
+> suggest instead of relaxing test to figure out why your crcs are not 
+> matching.
+Would you rather have the AMD specific quirks instead? This is from 
+kms_rotation_crc:
+
+  if (is_amdgpu_device(data->gfx_fd)) {
+          igt_pipe_crc_collect_crc(
+                  data->pipe_crc,
+                  &data->crc_rect[data->output_crc_in_use][rect].flip_crc);
+  } else {
+          igt_pipe_crc_get_current(
+                  display->drm_fd, data->pipe_crc,
+                  &data->crc_rect[data->output_crc_in_use][rect].flip_crc);
+          igt_remove_fb(data->gfx_fd, &data->fb_flip);
+  }
