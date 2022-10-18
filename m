@@ -1,20 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AE1E310E254
- for <igt-dev@lists.freedesktop.org>; Tue, 18 Oct 2022 15:14:51 +0000 (UTC)
-Date: Tue, 18 Oct 2022 17:12:36 +0200
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Message-ID: <Y07CGX8+Y9IlCAHZ@zkempczy-mobl2>
-References: <20221018091001.18552-1-kamil.konieczny@linux.intel.com>
- <20221018091001.18552-2-kamil.konieczny@linux.intel.com>
+Content-Type: multipart/alternative;
+ boundary="===============7650563604354688882=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20221018091001.18552-2-kamil.konieczny@linux.intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 1/2] lib/igt_device_scan: refactor filer
- adding
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Mark Yacoub" <markyacoub@chromium.org>
+Date: Tue, 18 Oct 2022 15:49:19 -0000
+Message-ID: <166610815984.20426.16735639176272897494@emeril.freedesktop.org>
+References: <20221018145926.4014906-1-markyacoub@chromium.org>
+In-Reply-To: <20221018145926.4014906-1-markyacoub@chromium.org>
+Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3IgUmVmYWN0?=
+ =?utf-8?q?or_Display_Outputs_to_handle_MST_Connectors=2E?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,52 +17,188 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Tue, Oct 18, 2022 at 11:10:00AM +0200, Kamil Konieczny wrote:
-> Refactor filter adding loop.
-> 
-> Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> ---
->  lib/igt_device_scan.c | 14 ++++++++------
->  1 file changed, 8 insertions(+), 6 deletions(-)
-> 
-> diff --git a/lib/igt_device_scan.c b/lib/igt_device_scan.c
-> index 15be3844..6f5b90e6 100644
-> --- a/lib/igt_device_scan.c
-> +++ b/lib/igt_device_scan.c
-> @@ -1775,13 +1775,15 @@ int igt_device_filter_add(const char *filters)
->  
->  	while ((filter = strsep(&dup, ";"))) {
->  		bool is_valid = is_filter_valid(filter);
-> +		struct device_filter *df;
->  		igt_warn_on(!is_valid);
-> -		if (is_valid) {
-> -			struct device_filter *df = malloc(sizeof(*df));
-> -			strncpy(df->filter, filter, sizeof(df->filter)-1);
-> -			igt_list_add_tail(&df->link, &device_filters);
-> -			count++;
-> -		}
-> +		if (!is_valid)
-> +			continue;
-> +
-> +		df = malloc(sizeof(*df));
-> +		strncpy(df->filter, filter, sizeof(df->filter)-1);
-> +		igt_list_add_tail(&df->link, &device_filters);
-> +		count++;
+--===============7650563604354688882==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Ok, avoiding long if-block looks better for me.
+== Series Details ==
 
-Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
---
-Zbigniew
+Series: Refactor Display Outputs to handle MST Connectors.
+URL   : https://patchwork.freedesktop.org/series/109831/
+State : failure
 
->  	}
->  
->  	free(dup_orig);
-> -- 
-> 2.34.1
-> 
+== Summary ==
+
+CI Bug Log - changes from IGT_7019 -> IGTPW_7977
+====================================================
+
+Summary
+-------
+
+  **FAILURE**
+
+  Serious unknown changes coming with IGTPW_7977 absolutely need to be
+  verified manually.
+  
+  If you think the reported changes have nothing to do with the changes
+  introduced in IGTPW_7977, please notify your bug team to allow them
+  to document this new failure mode, which will reduce false positives in CI.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7977/index.html
+
+Participating hosts (42 -> 41)
+------------------------------
+
+  Missing    (1): bat-adlm-1 
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in IGTPW_7977:
+
+### IGT changes ###
+
+#### Possible regressions ####
+
+  * igt@i915_pm_rpm@module-reload:
+    - fi-bdw-5557u:       [PASS][1] -> [INCOMPLETE][2]
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7019/fi-bdw-5557u/igt@i915_pm_rpm@module-reload.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7977/fi-bdw-5557u/igt@i915_pm_rpm@module-reload.html
+
+  
+Known issues
+------------
+
+  Here are the changes found in IGTPW_7977 that come from known issues:
+
+### IGT changes ###
+
+#### Possible fixes ####
+
+  * igt@fbdev@read:
+    - {bat-rpls-2}:       [SKIP][3] ([i915#2582]) -> [PASS][4] +4 similar issues
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7019/bat-rpls-2/igt@fbdev@read.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7977/bat-rpls-2/igt@fbdev@read.html
+
+  
+#### Warnings ####
+
+  * igt@gem_lmem_swapping@random-engines:
+    - fi-bdw-5557u:       [INCOMPLETE][5] -> [SKIP][6] ([fdo#109271])
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7019/fi-bdw-5557u/igt@gem_lmem_swapping@random-engines.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7977/fi-bdw-5557u/igt@gem_lmem_swapping@random-engines.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [i915#2582]: https://gitlab.freedesktop.org/drm/intel/issues/2582
+  [i915#5537]: https://gitlab.freedesktop.org/drm/intel/issues/5537
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_7019 -> IGTPW_7977
+
+  CI-20190529: 20190529
+  CI_DRM_12257: b249abef9f86f788e6bacc657ae8eb7743948200 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_7977: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7977/index.html
+  IGT_7019: fdbafce2b74e84739bb1d81223ae6f01fb442980 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7977/index.html
+
+--===============7650563604354688882==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Refactor Display Outputs to handle MST Connectors.</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/109831/">https://patchwork.freedesktop.org/series/109831/</a></td></tr>
+<tr><td><b>State:</b></td><td>failure</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7977/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7977/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_7019 -&gt; IGTPW_7977</h1>
+<h2>Summary</h2>
+<p><strong>FAILURE</strong></p>
+<p>Serious unknown changes coming with IGTPW_7977 absolutely need to be<br />
+  verified manually.</p>
+<p>If you think the reported changes have nothing to do with the changes<br />
+  introduced in IGTPW_7977, please notify your bug team to allow them<br />
+  to document this new failure mode, which will reduce false positives in CI.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7977/index.html</p>
+<h2>Participating hosts (42 -&gt; 41)</h2>
+<p>Missing    (1): bat-adlm-1 </p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in IGTPW_7977:</p>
+<h3>IGT changes</h3>
+<h4>Possible regressions</h4>
+<ul>
+<li>igt@i915_pm_rpm@module-reload:<ul>
+<li>fi-bdw-5557u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7019/fi-bdw-5557u/igt@i915_pm_rpm@module-reload.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7977/fi-bdw-5557u/igt@i915_pm_rpm@module-reload.html">INCOMPLETE</a></li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_7977 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@fbdev@read:<ul>
+<li>{bat-rpls-2}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7019/bat-rpls-2/igt@fbdev@read.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2582">i915#2582</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7977/bat-rpls-2/igt@fbdev@read.html">PASS</a> +4 similar issues</li>
+</ul>
+</li>
+</ul>
+<h4>Warnings</h4>
+<ul>
+<li>igt@gem_lmem_swapping@random-engines:<ul>
+<li>fi-bdw-5557u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7019/fi-bdw-5557u/igt@gem_lmem_swapping@random-engines.html">INCOMPLETE</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7977/fi-bdw-5557u/igt@gem_lmem_swapping@random-engines.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>)</li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_7019 -&gt; IGTPW_7977</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_12257: b249abef9f86f788e6bacc657ae8eb7743948200 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_7977: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7977/index.html<br />
+  IGT_7019: fdbafce2b74e84739bb1d81223ae6f01fb442980 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============7650563604354688882==--
