@@ -1,22 +1,24 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-yb1-xb2b.google.com (mail-yb1-xb2b.google.com
- [IPv6:2607:f8b0:4864:20::b2b])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9AF1F10E29C
- for <igt-dev@lists.freedesktop.org>; Tue, 18 Oct 2022 16:49:10 +0000 (UTC)
-Received: by mail-yb1-xb2b.google.com with SMTP id 63so17685423ybq.4
- for <igt-dev@lists.freedesktop.org>; Tue, 18 Oct 2022 09:49:10 -0700 (PDT)
+Received: from mail-ej1-x631.google.com (mail-ej1-x631.google.com
+ [IPv6:2a00:1450:4864:20::631])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7B62210EFA3
+ for <igt-dev@lists.freedesktop.org>; Tue, 18 Oct 2022 17:18:55 +0000 (UTC)
+Received: by mail-ej1-x631.google.com with SMTP id w18so33925974ejq.11
+ for <igt-dev@lists.freedesktop.org>; Tue, 18 Oct 2022 10:18:55 -0700 (PDT)
+Message-ID: <8b174345-980e-eaad-6daa-b1f7e8683b0a@gmail.com>
+Date: Tue, 18 Oct 2022 20:18:46 +0300
 MIME-Version: 1.0
-References: <20221018145926.4014906-1-markyacoub@chromium.org>
- <166610815984.20426.16735639176272897494@emeril.freedesktop.org>
-In-Reply-To: <166610815984.20426.16735639176272897494@emeril.freedesktop.org>
-From: Mark Yacoub <markyacoub@chromium.org>
-Date: Tue, 18 Oct 2022 12:48:58 -0400
-Message-ID: <CAJUqKUrEPg245vu6bhM3xxOHuUs39rfHGAKvMHBfD7i_noZXdA@mail.gmail.com>
-To: "Vudum, Lakshminarayana" <lakshminarayana.vudum@intel.com>
-Content-Type: multipart/alternative; boundary="00000000000000db1305eb51dfe1"
-Subject: Re: [igt-dev]
-	=?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3IgUmVmYWN0?=
-	=?utf-8?q?or_Display_Outputs_to_handle_MST_Connectors=2E?=
+Content-Language: en-US
+To: Aurabindo Pillai <aurabindo.pillai@amd.com>, igt-dev@lists.freedesktop.org
+References: <20221014184942.205868-1-aurabindo.pillai@amd.com>
+ <b2631fef-ddca-e74d-cd8b-39f76fb4af7d@gmail.com>
+ <80b537b3-07a8-c7ee-c0f3-5ff141720f78@amd.com>
+From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+In-Reply-To: <80b537b3-07a8-c7ee-c0f3-5ff141720f78@amd.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_plane_cursor: Change API for
+ collecting the CRC
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,208 +26,111 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org
+Reply-To: juhapekka.heikkila@gmail.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---00000000000000db1305eb51dfe1
-Content-Type: text/plain; charset="UTF-8"
+On 18.10.2022 19.09, Aurabindo Pillai wrote:
+> 
+> 
+> On 2022-10-15 16:30, Juha-Pekka Heikkila wrote:
+>> On 14.10.2022 21.49, Aurabindo Pillai wrote:
+>>> On AMD hw, igt_pipe_crc_get_current() does not work correctly, but
+>>> igt_pipe_crc_collect_crc() does. The latter is more robust and reports
+>>> the expected crc. This is due to a delay of 2 frames in the hardware for
+>>> crc capture.
+>>>
+>>> The following diff is an alternate fix instead of changing the API:
+>>>
+>>> diff --git a/lib/igt_debugfs.c b/lib/igt_debugfs.c
+>>> index fa1e3b69..dfcb2638 100644
+>>> --- a/lib/igt_debugfs.c
+>>> +++ b/lib/igt_debugfs.c
+>>> @@ -1061,6 +1061,10 @@ igt_pipe_crc_get_current(int drm_fd, 
+>>> igt_pipe_crc_t *pipe_crc, igt_crc_t *crc)
+>>>   {
+>>>          unsigned vblank = kmstest_get_vblank(drm_fd, pipe_crc->pipe, 
+>>> 0) + 1;
+>>>
+>>> +       /* AMD hw has an additional frame delay */
+>>> +       if (is_amdgpu_device(drm_fd))
+>>> +               vblank += 1;
+>>> +
+>>>          return igt_pipe_crc_get_for_frame(drm_fd, pipe_crc, vblank, 
+>>> crc);
+>>>   }
+>>>
+>>> Since the above solution adds device specific code into core IGT lib,
+>>> changing the API is a preferable solution.
+>>
+>> This sound like you are fixing driver bug in test suite. If pipe crc 
+>> doesn't match it mean rendered picture is wrong. If later crcs match 
+>> you're probably showing picture too early, I have no amd hw at hand so 
+>> I have no real idea what's going wrong.
+> 
+> Looks like patchwork got confused. The hunk above is not part of the 
+> change and was just meant to show the underlying problem. Its either the 
+> above one, or the one below that fixes the issue.
+> 
+> Since flipping and crc enablement happen asynchronously, more often than 
+> not -  we return an 'uncooked' crc on first frame probably because hw 
+> isn't ready yet. For this reason, we skip the first two CRC values. Its 
+> not a driver bug.
 
-Hi Lakshminarayana,
-i have feeling it's irrelevant, so let's rerun.
+If crc enablement is where problem is coming from would correct place 
+for amd related special case then be at igt_pipe_crc_start() ?
 
-Also, i like how the KIs are much less now!
+If you look at that function you see also Intel hw need special handling 
+there with fifo underruns.
 
-On Tue, Oct 18, 2022 at 11:49 AM Patchwork <patchwork@emeril.freedesktop.org>
-wrote:
+> 
+>>
+>>>
+>>> Signed-off-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
+>>> ---
+>>>   tests/kms_plane_cursor.c | 6 ++----
+>>>   1 file changed, 2 insertions(+), 4 deletions(-)
+>>>
+>>> diff --git a/tests/kms_plane_cursor.c b/tests/kms_plane_cursor.c
+>>> index e9abfd78..e2a9e97b 100644
+>>> --- a/tests/kms_plane_cursor.c
+>>> +++ b/tests/kms_plane_cursor.c
+>>> @@ -150,8 +150,7 @@ static void test_cursor_pos(data_t *data, int x, 
+>>> int y, unsigned int flags)
+>>>       igt_plane_set_fb(data->cursor, NULL);
+>>>       igt_display_commit_atomic(&data->display, 0, NULL);
+>>> -    igt_pipe_crc_start(data->pipe_crc);
+>>> -    igt_pipe_crc_get_current(data->drm_fd, data->pipe_crc, &ref_crc);
+>>> +    igt_pipe_crc_collect_crc(data->pipe_crc, &ref_crc);
+>>
+>> This change would slow test down and on same go make it possible for 
+>> other drivers to get same problem on crcs with nobody noticing it. I'd 
+>> suggest instead of relaxing test to figure out why your crcs are not 
+>> matching.
+> Would you rather have the AMD specific quirks instead? This is from 
+> kms_rotation_crc:
+> 
+>   if (is_amdgpu_device(data->gfx_fd)) {
+>           igt_pipe_crc_collect_crc(
+>                   data->pipe_crc,
+>                   &data->crc_rect[data->output_crc_in_use][rect].flip_crc);
+>   } else {
+>           igt_pipe_crc_get_current(
+>                   display->drm_fd, data->pipe_crc,
+>                   &data->crc_rect[data->output_crc_in_use][rect].flip_crc);
+>           igt_remove_fb(data->gfx_fd, &data->fb_flip);
+>   }
+> 
 
-> *Patch Details*
-> *Series:* Refactor Display Outputs to handle MST Connectors.
-> *URL:* https://patchwork.freedesktop.org/series/109831/
-> *State:* failure
-> *Details:* https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7977/index.html CI
-> Bug Log - changes from IGT_7019 -> IGTPW_7977 Summary
->
-> *FAILURE*
->
-> Serious unknown changes coming with IGTPW_7977 absolutely need to be
-> verified manually.
->
-> If you think the reported changes have nothing to do with the changes
-> introduced in IGTPW_7977, please notify your bug team to allow them
-> to document this new failure mode, which will reduce false positives in CI.
->
-> External URL:
-> https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7977/index.html
-> Participating hosts (42 -> 41)
->
-> Missing (1): bat-adlm-1
-> Possible new issues
->
-> Here are the unknown changes that may have been introduced in IGTPW_7977:
-> IGT changes Possible regressions
->
->    - igt@i915_pm_rpm@module-reload:
->       - fi-bdw-5557u: PASS
->       <https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7019/fi-bdw-5557u/igt@i915_pm_rpm@module-reload.html>
->       -> INCOMPLETE
->       <https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7977/fi-bdw-5557u/igt@i915_pm_rpm@module-reload.html>
->
-> Known issues
->
-> Here are the changes found in IGTPW_7977 that come from known issues:
-> IGT changes Possible fixes
->
->    - igt@fbdev@read:
->       - {bat-rpls-2}: SKIP
->       <https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7019/bat-rpls-2/igt@fbdev@read.html>
->       (i915#2582 <https://gitlab.freedesktop.org/drm/intel/issues/2582>)
->       -> PASS
->       <https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7977/bat-rpls-2/igt@fbdev@read.html>
->       +4 similar issues
->
-> Warnings
->
->    - igt@gem_lmem_swapping@random-engines:
->       - fi-bdw-5557u: INCOMPLETE
->       <https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7019/fi-bdw-5557u/igt@gem_lmem_swapping@random-engines.html>
->       -> SKIP
->       <https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7977/fi-bdw-5557u/igt@gem_lmem_swapping@random-engines.html>
->       (fdo#109271 <https://bugs.freedesktop.org/show_bug.cgi?id=109271>)
->
-> {name}: This element is suppressed. This means it is ignored when computing
-> the status of the difference (SUCCESS, WARNING, or FAILURE).
-> Build changes
->
->    - CI: CI-20190529 -> None
->    - IGT: IGT_7019 -> IGTPW_7977
->
-> CI-20190529: 20190529
-> CI_DRM_12257: b249abef9f86f788e6bacc657ae8eb7743948200 @ git://
-> anongit.freedesktop.org/gfx-ci/linux
-> IGTPW_7977: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7977/index.html
-> IGT_7019: fdbafce2b74e84739bb1d81223ae6f01fb442980 @
-> https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
->
+In those rotation tests I believe this was relating for way around for 
+test baked in optimization where amd hw didn't like primary plane 
+getting disabled and that's why crc counter was not running constantly 
+on amd.
 
---00000000000000db1305eb51dfe1
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+If problem is always with first crc(s) then probably correct place to 
+fix this issue is in igt_pipe_crc_start() if you don't want to fix it at 
+driver end. For these debugging features I have no opinion which end fix 
+really belong to.
 
-<div dir=3D"ltr">Hi Lakshminarayana,<div>i have feeling it&#39;s irrelevant=
-, so let&#39;s rerun.</div><div><br></div><div>Also, i like how the KIs are=
- much less now!</div></div><br><div class=3D"gmail_quote"><div dir=3D"ltr" =
-class=3D"gmail_attr">On Tue, Oct 18, 2022 at 11:49 AM Patchwork &lt;<a href=
-=3D"mailto:patchwork@emeril.freedesktop.org">patchwork@emeril.freedesktop.o=
-rg</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" style=3D"margi=
-n:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex=
-"><div class=3D"msg-5460314360011642413">
-<u></u>
-
-=20
- =20
- =20
- =20
-
-<div>
-
-
-<b>Patch Details</b>
-<table>
-<tbody><tr><td><b>Series:</b></td><td>Refactor Display Outputs to handle MS=
-T Connectors.</td></tr>
-<tr><td><b>URL:</b></td><td><a href=3D"https://patchwork.freedesktop.org/se=
-ries/109831/" target=3D"_blank">https://patchwork.freedesktop.org/series/10=
-9831/</a></td></tr>
-<tr><td><b>State:</b></td><td>failure</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href=3D"https://intel-gfx-ci.01.org/=
-tree/drm-tip/IGTPW_7977/index.html" target=3D"_blank">https://intel-gfx-ci.=
-01.org/tree/drm-tip/IGTPW_7977/index.html</a></td></tr>
-
-</tbody></table>
-
-
-    <h1>CI Bug Log - changes from IGT_7019 -&gt; IGTPW_7977</h1>
-<h2>Summary</h2>
-<p><strong>FAILURE</strong></p>
-<p>Serious unknown changes coming with IGTPW_7977 absolutely need to be<br>
-  verified manually.</p>
-<p>If you think the reported changes have nothing to do with the changes<br=
->
-  introduced in IGTPW_7977, please notify your bug team to allow them<br>
-  to document this new failure mode, which will reduce false positives in C=
-I.</p>
-<p>External URL: <a href=3D"https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_=
-7977/index.html" target=3D"_blank">https://intel-gfx-ci.01.org/tree/drm-tip=
-/IGTPW_7977/index.html</a></p>
-<h2>Participating hosts (42 -&gt; 41)</h2>
-<p>Missing    (1): bat-adlm-1 </p>
-<h2>Possible new issues</h2>
-<p>Here are the unknown changes that may have been introduced in IGTPW_7977=
-:</p>
-<h3>IGT changes</h3>
-<h4>Possible regressions</h4>
-<ul>
-<li>igt@i915_pm_rpm@module-reload:<ul>
-<li>fi-bdw-5557u:       <a href=3D"https://intel-gfx-ci.01.org/tree/drm-tip=
-/IGT_7019/fi-bdw-5557u/igt@i915_pm_rpm@module-reload.html" target=3D"_blank=
-">PASS</a> -&gt; <a href=3D"https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_=
-7977/fi-bdw-5557u/igt@i915_pm_rpm@module-reload.html" target=3D"_blank">INC=
-OMPLETE</a></li>
-</ul>
-</li>
-</ul>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_7977 that come from known issues:</p=
->
-<h3>IGT changes</h3>
-<h4>Possible fixes</h4>
-<ul>
-<li>igt@fbdev@read:<ul>
-<li>{bat-rpls-2}:       <a href=3D"https://intel-gfx-ci.01.org/tree/drm-tip=
-/IGT_7019/bat-rpls-2/igt@fbdev@read.html" target=3D"_blank">SKIP</a> (<a hr=
-ef=3D"https://gitlab.freedesktop.org/drm/intel/issues/2582" target=3D"_blan=
-k">i915#2582</a>) -&gt; <a href=3D"https://intel-gfx-ci.01.org/tree/drm-tip=
-/IGTPW_7977/bat-rpls-2/igt@fbdev@read.html" target=3D"_blank">PASS</a> +4 s=
-imilar issues</li>
-</ul>
-</li>
-</ul>
-<h4>Warnings</h4>
-<ul>
-<li>igt@gem_lmem_swapping@random-engines:<ul>
-<li>fi-bdw-5557u:       <a href=3D"https://intel-gfx-ci.01.org/tree/drm-tip=
-/IGT_7019/fi-bdw-5557u/igt@gem_lmem_swapping@random-engines.html" target=3D=
-"_blank">INCOMPLETE</a> -&gt; <a href=3D"https://intel-gfx-ci.01.org/tree/d=
-rm-tip/IGTPW_7977/fi-bdw-5557u/igt@gem_lmem_swapping@random-engines.html" t=
-arget=3D"_blank">SKIP</a> (<a href=3D"https://bugs.freedesktop.org/show_bug=
-.cgi?id=3D109271" target=3D"_blank">fdo#109271</a>)</li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when comput=
-ing<br>
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_7019 -&gt; IGTPW_7977</li>
-</ul>
-<p>CI-20190529: 20190529<br>
-  CI_DRM_12257: b249abef9f86f788e6bacc657ae8eb7743948200 @ git://<a href=3D=
-"http://anongit.freedesktop.org/gfx-ci/linux" target=3D"_blank">anongit.fre=
-edesktop.org/gfx-ci/linux</a><br>
-  IGTPW_7977: <a href=3D"https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_797=
-7/index.html" target=3D"_blank">https://intel-gfx-ci.01.org/tree/drm-tip/IG=
-TPW_7977/index.html</a><br>
-  IGT_7019: fdbafce2b74e84739bb1d81223ae6f01fb442980 @ <a href=3D"https://g=
-itlab.freedesktop.org/drm/igt-gpu-tools.git" target=3D"_blank">https://gitl=
-ab.freedesktop.org/drm/igt-gpu-tools.git</a></p>
-
-</div>
-
-</div></blockquote></div>
-
---00000000000000db1305eb51dfe1--
+/Juha-Pekka
