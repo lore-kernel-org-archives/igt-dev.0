@@ -1,18 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4B0D810EEC4
- for <igt-dev@lists.freedesktop.org>; Tue, 18 Oct 2022 07:17:20 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C513210EEBF
+ for <igt-dev@lists.freedesktop.org>; Tue, 18 Oct 2022 07:17:19 +0000 (UTC)
 From: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 18 Oct 2022 00:17:00 -0700
-Message-Id: <20221018071705.3906-7-niranjana.vishwanathapura@intel.com>
+Date: Tue, 18 Oct 2022 00:16:59 -0700
+Message-Id: <20221018071705.3906-6-niranjana.vishwanathapura@intel.com>
 In-Reply-To: <20221018071705.3906-1-niranjana.vishwanathapura@intel.com>
 References: <20221018071705.3906-1-niranjana.vishwanathapura@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v4 06/11] tests/i915/vm_bind: Add vm_bind
- sanity test
+Subject: [igt-dev] [PATCH i-g-t v4 05/11] lib/vm_bind: Add
+ __prime_handle_to_fd()
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,329 +25,190 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add sanity test to exercise vm_bind uapi.
-Test for various cases with vm_bind and vm_unbind ioctls.
+Make __prime_handle_to_fd() as a library interface as VM_BIND
+functionality will also be using it.
 
-v2: Add more input validity tests
-    Add sanity test to fast-feedback.testlist
-v3: Add only basic-smem subtest to fast-feedback.testlist
-v4: Use gem_create_ext to create vm private objects,
-    Ensure vm private objects are only allowed in vm_bind mode,
-    Use library routine i915_vm_bind_version()
+v2: Rename prime_handle_to_fd_no_assert() to __prime_handle_to_fd()
 
 Reviewed-by: Matthew Auld <matthew.auld@intel.com>
 Signed-off-by: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
 ---
- tests/i915/i915_vm_bind_sanity.c      | 275 ++++++++++++++++++++++++++
- tests/intel-ci/fast-feedback.testlist |   1 +
- tests/meson.build                     |   1 +
- 3 files changed, 277 insertions(+)
- create mode 100644 tests/i915/i915_vm_bind_sanity.c
+ lib/ioctl_wrappers.c    | 39 +++++++++++++++++++++++++++++++++------
+ lib/ioctl_wrappers.h    |  1 +
+ tests/i915/gem_pwrite.c | 16 +---------------
+ tests/prime_mmap.c      | 26 ++++----------------------
+ 4 files changed, 39 insertions(+), 43 deletions(-)
 
-diff --git a/tests/i915/i915_vm_bind_sanity.c b/tests/i915/i915_vm_bind_sanity.c
-new file mode 100644
-index 0000000000..322b6190e9
---- /dev/null
-+++ b/tests/i915/i915_vm_bind_sanity.c
-@@ -0,0 +1,275 @@
-+// SPDX-License-Identifier: MIT
-+/*
-+ * Copyright © 2022 Intel Corporation
-+ */
+diff --git a/lib/ioctl_wrappers.c b/lib/ioctl_wrappers.c
+index ac37b6bb43..db9cbb724c 100644
+--- a/lib/ioctl_wrappers.c
++++ b/lib/ioctl_wrappers.c
+@@ -1153,28 +1153,55 @@ void gem_require_mocs_registers(int fd)
+ /* prime */
+ 
+ /**
+- * prime_handle_to_fd:
++ * __prime_handle_to_fd:
+  * @fd: open i915 drm file descriptor
+  * @handle: file-private gem buffer object handle
++ * @flags: DRM_IOCTL_PRIME_HANDLE_TO_FD ioctl flags
++ * @fd_out: place holder for output file handle
+  *
+  * This wraps the PRIME_HANDLE_TO_FD ioctl, which is used to export a gem buffer
+  * object into a global (i.e. potentially cross-device) dma-buf file-descriptor
+  * handle.
+  *
+- * Returns: The created dma-buf fd handle.
++ * Returns: 0 on success, error otherwise. Upon success, it returns
++ *          the created dma-buf fd handle in fd_out.
+  */
+-int prime_handle_to_fd(int fd, uint32_t handle)
++int __prime_handle_to_fd(int fd, uint32_t handle, int flags, int *fd_out)
+ {
+ 	struct drm_prime_handle args;
++	int ret;
+ 
+ 	memset(&args, 0, sizeof(args));
+ 	args.handle = handle;
+-	args.flags = DRM_CLOEXEC;
++	args.flags = flags;
+ 	args.fd = -1;
+ 
+-	do_ioctl(fd, DRM_IOCTL_PRIME_HANDLE_TO_FD, &args);
++	ret = drmIoctl(fd, DRM_IOCTL_PRIME_HANDLE_TO_FD, &args);
++	if (ret)
++		ret = -errno;
++	*fd_out = args.fd;
+ 
+-	return args.fd;
++	return ret;
++}
 +
-+/** @file i915_vm_bind_sanity.c
++/**
++ * prime_handle_to_fd:
++ * @fd: open i915 drm file descriptor
++ * @handle: file-private gem buffer object handle
 + *
-+ * This is the sanity test for VM_BIND UAPI.
++ * This wraps the PRIME_HANDLE_TO_FD ioctl, which is used to export a gem buffer
++ * object into a global (i.e. potentially cross-device) dma-buf file-descriptor
++ * handle. It asserts that ioctl succeeds.
 + *
-+ * The goal is to test the UAPI interface.
++ * Returns: The created dma-buf fd handle.
 + */
-+
-+#include <errno.h>
-+#include <fcntl.h>
-+#include <sys/ioctl.h>
-+#include <sys/poll.h>
-+
-+#include "i915/gem.h"
-+#include "i915/gem_create.h"
-+#include "i915/gem_vm.h"
-+#include "i915/i915_vm_bind.h"
-+#include "intel_allocator.h"
-+#include "igt.h"
-+#include "igt_syncobj.h"
-+
-+#define PAGE_SIZE   4096
-+#define SZ_64K      (16 * PAGE_SIZE)
-+#define SZ_2M       (512 * PAGE_SIZE)
-+
-+IGT_TEST_DESCRIPTION("Sanity test vm_bind related interfaces");
-+
-+static uint64_t
-+gettime_ns(void)
++int prime_handle_to_fd(int fd, uint32_t handle)
 +{
-+	struct timespec current;
-+	clock_gettime(CLOCK_MONOTONIC, &current);
-+	return (uint64_t)current.tv_sec * NSEC_PER_SEC + current.tv_nsec;
-+}
-+
-+static bool syncobj_busy(int fd, uint32_t handle)
-+{
-+	bool result;
-+	int sf;
-+
-+	sf = syncobj_handle_to_fd(fd, handle,
-+				  DRM_SYNCOBJ_HANDLE_TO_FD_FLAGS_EXPORT_SYNC_FILE);
-+	result = poll(&(struct pollfd){sf, POLLIN}, 1, 0) == 0;
-+	close(sf);
-+
-+	return result;
-+}
-+
-+static inline int
-+__vm_bind(int fd, uint32_t vm_id, uint32_t handle, uint64_t start,
-+	  uint64_t offset, uint64_t length, uint64_t flags,
-+	  struct drm_i915_gem_timeline_fence *fence, uint64_t extensions)
-+{
-+	struct drm_i915_gem_vm_bind bind;
-+
-+	memset(&bind, 0, sizeof(bind));
-+	bind.vm_id = vm_id;
-+	bind.handle = handle;
-+	bind.start = start;
-+	bind.offset = offset;
-+	bind.length = length;
-+	bind.flags = flags;
-+	bind.extensions = extensions;
-+	if (fence)
-+		bind.fence = *fence;
-+
-+	return __gem_vm_bind(fd, &bind);
-+}
-+
-+static inline void
-+vm_bind(int fd, uint32_t vm_id, uint32_t handle, uint64_t start,
-+	uint64_t offset, uint64_t length, uint64_t flags,
-+	struct drm_i915_gem_timeline_fence *fence)
-+{
-+	igt_assert_eq(__vm_bind(fd, vm_id, handle, start, offset,
-+				length, flags, fence, 0), 0);
-+	if (fence) {
-+		igt_assert(syncobj_timeline_wait(fd, &fence->handle, (uint64_t *)&fence->value,
-+						 1, gettime_ns() + (2 * NSEC_PER_SEC),
-+						 DRM_SYNCOBJ_WAIT_FLAGS_WAIT_FOR_SUBMIT, NULL));
-+		igt_assert(!syncobj_busy(fd, fence->handle));
-+	}
-+}
-+
-+static inline int
-+__vm_unbind(int fd, uint32_t vm_id, uint64_t start, uint64_t length, uint64_t flags,
-+	    uint32_t rsvd, uint64_t extensions)
-+{
-+	struct drm_i915_gem_vm_unbind unbind;
-+
-+	memset(&unbind, 0, sizeof(unbind));
-+	unbind.vm_id = vm_id;
-+	unbind.rsvd = rsvd;
-+	unbind.start = start;
-+	unbind.length = length;
-+	unbind.flags = flags;
-+	unbind.extensions = extensions;
-+
-+	return __gem_vm_unbind(fd, &unbind);
-+}
-+
-+static inline void
-+vm_unbind(int fd, uint32_t vm_id, uint64_t start, uint64_t length, uint64_t flags)
-+{
-+	igt_assert_eq(__vm_unbind(fd, vm_id, start, length, flags, 0, 0), 0);
-+}
-+
-+static void basic(int fd, const struct gem_memory_region *mr)
-+{
-+	uint32_t vm_id, vm_id2, vm_id_exec_mode, handle;
-+	struct drm_i915_gem_create_ext_memory_regions setparam_region = {
-+		.base = { .name = I915_GEM_CREATE_EXT_MEMORY_REGIONS },
-+		.regions = to_user_pointer(&mr->ci),
-+		.num_regions = 1,
-+	};
-+	struct drm_i915_gem_timeline_fence fence = {
-+		.handle = syncobj_create(fd, 0),
-+		.flags = I915_TIMELINE_FENCE_SIGNAL,
-+		.value = 0,
-+	};
-+	struct drm_i915_gem_create_ext_vm_private vm_priv = {
-+		.base = { .name = I915_GEM_CREATE_EXT_VM_PRIVATE },
-+	};
-+	struct drm_i915_gem_execbuffer2 execbuf;
-+	struct drm_i915_gem_exec_object2 obj;
-+	uint64_t ahnd, va, pg_size, size;
-+	const intel_ctx_t *ctx;
 +	int dmabuf;
 +
-+	ahnd = intel_allocator_open_full(fd, 1, 0, 0,
-+					 INTEL_ALLOCATOR_RANDOM,
-+					 ALLOC_STRATEGY_HIGH_TO_LOW,
-+					 SZ_2M);
++	igt_assert_eq(__prime_handle_to_fd(fd, handle, DRM_CLOEXEC, &dmabuf), 0);
 +
-+	pg_size = ((mr->ci.memory_class == I915_MEMORY_CLASS_DEVICE) &&
-+		   HAS_64K_PAGES(intel_get_drm_devid(fd))) ? SZ_64K : PAGE_SIZE;
-+	size = pg_size * 4;
-+
-+	vm_id = gem_vm_create_in_vm_bind_mode(fd);
-+	handle = gem_create_ext(fd, size, 0, &setparam_region.base);
-+	va = CANONICAL(get_offset(ahnd, handle, size, 0));
-+
-+	/* Bind and unbind */
-+	vm_bind(fd, vm_id, handle, va, 0, size, 0, NULL);
-+	vm_unbind(fd, vm_id, va, size, 0);
-+
-+	/* Bind with out fence */
-+	vm_bind(fd, vm_id, handle, va, 0, size, 0, &fence);
-+	vm_unbind(fd, vm_id, va, size, 0);
-+
-+	/* Aliasing bind and unbind */
-+	vm_bind(fd, vm_id, handle, va, 0, size, 0, NULL);
-+	vm_bind(fd, vm_id, handle, va + SZ_2M, 0, size, 0, NULL);
-+	vm_unbind(fd, vm_id, va, size, 0);
-+	vm_unbind(fd, vm_id, va + SZ_2M, size, 0);
-+
-+	/* MBZ fields are not 0 */
-+	igt_assert_eq(__vm_bind(fd, vm_id, handle, va, 0, size, 0x10, NULL, 0), -EINVAL);
-+	igt_assert_eq(__vm_bind(fd, vm_id, handle, va, 0, size, 0, NULL, to_user_pointer(&obj)), -EINVAL);
-+	vm_bind(fd, vm_id, handle, va, 0, size, 0, NULL);
-+	igt_assert_eq(__vm_unbind(fd, vm_id, va, size, 0x10, 0, 0), -EINVAL);
-+	igt_assert_eq(__vm_unbind(fd, vm_id, va, size, 0, 0x10, 0), -EINVAL);
-+	igt_assert_eq(__vm_unbind(fd, vm_id, va, size, 0, 0, to_user_pointer(&obj)), -EINVAL);
-+	vm_unbind(fd, vm_id, va, size, 0);
-+
-+	/* Invalid handle */
-+	igt_assert_eq(__vm_bind(fd, vm_id, handle + 10, va, 0, size, 0, NULL, 0), -ENOENT);
-+
-+	/* Invalid mapping range */
-+	igt_assert_eq(__vm_bind(fd, vm_id, handle, va, 0, 0, 0, NULL, 0), -EINVAL);
-+	igt_assert_eq(__vm_bind(fd, vm_id, handle, va, pg_size, size, 0, NULL, 0), -EINVAL);
-+
-+	/* Unaligned binds */
-+	igt_assert_eq(__vm_bind(fd, vm_id, handle, va + 0x10, 0, size, 0, NULL, 0), -EINVAL);
-+	igt_assert_eq(__vm_bind(fd, vm_id, handle, va, pg_size / 2, pg_size, 0, NULL, 0), -EINVAL);
-+	igt_assert_eq(__vm_bind(fd, vm_id, handle, va, 0, pg_size / 2, 0, NULL, 0), -EINVAL);
-+
-+	/* range overflow binds */
-+	igt_assert_eq(__vm_bind(fd, vm_id, handle, va, pg_size, -pg_size, 0, NULL, 0), -EINVAL);
-+	igt_assert_eq(__vm_bind(fd, vm_id, handle, va, pg_size * 2, -pg_size, 0, NULL, 0), -EINVAL);
-+
-+	/* re-bind VA range without unbinding */
-+	vm_bind(fd, vm_id, handle, va, 0, size, 0, NULL);
-+	igt_assert_eq(__vm_bind(fd, vm_id, handle, va, 0, size, 0, NULL, 0), -EEXIST);
-+	vm_unbind(fd, vm_id, va, size, 0);
-+
-+	/* unbind a non-existing mapping */
-+	igt_assert_eq(__vm_bind(fd, vm_id, 0, va + SZ_2M, 0, size, 0, NULL, 0), -ENOENT);
-+
-+	/* unbind with length mismatch */
-+	vm_bind(fd, vm_id, handle, va, 0, size, 0, NULL);
-+	igt_assert_eq(__vm_bind(fd, vm_id, handle, va, 0, size * 2, 0, NULL, 0), -EINVAL);
-+	vm_unbind(fd, vm_id, va, size, 0);
-+
-+	/* validate exclusivity of vm_bind & exec modes of binding */
-+	vm_id_exec_mode = gem_vm_create(fd);
-+	igt_assert_eq(__vm_bind(fd, vm_id_exec_mode, handle, va, 0, size, 0, NULL, 0), -EOPNOTSUPP);
-+
-+	ctx = intel_ctx_create_all_physical(fd);
-+	gem_context_set_vm(fd, ctx->id, vm_id);
-+	(void)gem_context_get_vm(fd, ctx->id);
-+
-+	memset(&obj, 0, sizeof(obj));
-+	memset(&execbuf, 0, sizeof(execbuf));
-+	execbuf.buffers_ptr = to_user_pointer(&obj);
-+	execbuf.buffer_count = 1;
-+	obj.handle = handle;
-+	i915_execbuffer2_set_context_id(execbuf, ctx->id);
-+	igt_assert_eq(__gem_execbuf(fd, &execbuf), -EOPNOTSUPP);
-+
-+	intel_ctx_destroy(fd, ctx);
-+	gem_vm_destroy(fd, vm_id_exec_mode);
-+	gem_close(fd, handle);
-+
-+	/* validate VM private objects */
-+	setparam_region.base.next_extension = to_user_pointer(&vm_priv);
-+	igt_assert_eq(__gem_create_ext(fd, &size, 0, &handle,
-+				       &setparam_region.base), -ENOENT);
-+	vm_priv.rsvd = 0x10;
-+	igt_assert_eq(__gem_create_ext(fd, &size, 0, &handle,
-+				       &setparam_region.base), -EINVAL);
-+	vm_id2 = gem_vm_create(fd);
-+	vm_priv.rsvd = 0;
-+	vm_priv.vm_id = vm_id2;
-+	igt_assert_eq(__gem_create_ext(fd, &size, 0, &handle,
-+				       &setparam_region.base), -EINVAL);
-+	gem_vm_destroy(fd, vm_id2);
-+
-+	vm_id2 = gem_vm_create_in_vm_bind_mode(fd);
-+	vm_priv.vm_id = vm_id2;
-+	handle = gem_create_ext(fd, size, 0, &setparam_region.base);
-+
-+	igt_assert_eq(__prime_handle_to_fd(fd, handle, DRM_CLOEXEC, &dmabuf), -EINVAL);
-+	igt_assert_eq(__vm_bind(fd, vm_id, handle, va, 0, size, 0, NULL, 0), -EINVAL);
-+	vm_bind(fd, vm_id2, handle, va, 0, size, 0, NULL);
-+	vm_unbind(fd, vm_id2, va, size, 0);
-+
-+	gem_close(fd, handle);
-+	gem_vm_destroy(fd, vm_id2);
-+	gem_vm_destroy(fd, vm_id);
-+	syncobj_destroy(fd, fence.handle);
-+	intel_allocator_close(ahnd);
-+}
-+
-+igt_main
-+{
-+	int fd;
-+
-+	igt_fixture {
-+		fd = drm_open_driver(DRIVER_INTEL);
-+		igt_require_gem(fd);
-+		igt_require(i915_vm_bind_version(fd) == 1);
-+	}
-+
-+	igt_describe("Basic vm_bind sanity test");
-+	igt_subtest_with_dynamic("basic") {
-+		for_each_memory_region(r, fd) {
-+			if (r->ci.memory_instance)
-+				continue;
-+
-+			igt_dynamic_f("%s", r->name)
-+				basic(fd, r);
-+		}
-+	}
-+
-+	igt_fixture {
-+		close(fd);
-+	}
-+
-+	igt_exit();
-+}
-diff --git a/tests/intel-ci/fast-feedback.testlist b/tests/intel-ci/fast-feedback.testlist
-index bd5538a035..185c2fef54 100644
---- a/tests/intel-ci/fast-feedback.testlist
-+++ b/tests/intel-ci/fast-feedback.testlist
-@@ -53,6 +53,7 @@ igt@i915_getparams_basic@basic-eu-total
- igt@i915_getparams_basic@basic-subslice-total
- igt@i915_hangman@error-state-basic
- igt@i915_pciid
-+igt@i915_vm_bind_sanity@basic
- igt@kms_addfb_basic@addfb25-bad-modifier
- igt@kms_addfb_basic@addfb25-framebuffer-vs-set-tiling
- igt@kms_addfb_basic@addfb25-modifier-no-flag
-diff --git a/tests/meson.build b/tests/meson.build
-index 12e53e0bd2..d81c6c28c2 100644
---- a/tests/meson.build
-+++ b/tests/meson.build
-@@ -250,6 +250,7 @@ i915_progs = [
- 	'sysfs_heartbeat_interval',
- 	'sysfs_preempt_timeout',
- 	'sysfs_timeslice_duration',
-+	'i915_vm_bind_sanity',
- ]
++	return dmabuf;
+ }
  
- msm_progs = [
+ /**
+diff --git a/lib/ioctl_wrappers.h b/lib/ioctl_wrappers.h
+index 223cd9160c..66faa27551 100644
+--- a/lib/ioctl_wrappers.h
++++ b/lib/ioctl_wrappers.h
+@@ -143,6 +143,7 @@ struct local_dma_buf_sync {
+ #define LOCAL_DMA_BUF_BASE 'b'
+ #define LOCAL_DMA_BUF_IOCTL_SYNC _IOW(LOCAL_DMA_BUF_BASE, 0, struct local_dma_buf_sync)
+ 
++int __prime_handle_to_fd(int fd, uint32_t handle, int flags, int *fd_out);
+ int prime_handle_to_fd(int fd, uint32_t handle);
+ #ifndef DRM_RDWR
+ #define DRM_RDWR O_RDWR
+diff --git a/tests/i915/gem_pwrite.c b/tests/i915/gem_pwrite.c
+index 6e3f833cd8..f4fe069caf 100644
+--- a/tests/i915/gem_pwrite.c
++++ b/tests/i915/gem_pwrite.c
+@@ -293,19 +293,6 @@ struct ufd_thread {
+ 	int err;
+ };
+ 
+-static int __prime_handle_to_fd(int fd, uint32_t handle)
+-{
+-	struct drm_prime_handle args;
+-
+-	memset(&args, 0, sizeof(args));
+-	args.handle = handle;
+-	args.flags = DRM_CLOEXEC;
+-	args.fd = -1;
+-
+-	ioctl(fd, DRM_IOCTL_PRIME_HANDLE_TO_FD, &args);
+-	return args.fd;
+-}
+-
+ static uint32_t dmabuf_create_handle(int i915, int vgem)
+ {
+ 	struct vgem_bo scratch;
+@@ -317,8 +304,7 @@ static uint32_t dmabuf_create_handle(int i915, int vgem)
+ 	scratch.bpp = 32;
+ 	vgem_create(vgem, &scratch);
+ 
+-	dmabuf = __prime_handle_to_fd(vgem, scratch.handle);
+-	if (dmabuf < 0)
++	if (__prime_handle_to_fd(vgem, scratch.handle, DRM_CLOEXEC, &dmabuf))
+ 		return 0;
+ 
+ 	handle = prime_fd_to_handle(i915, dmabuf);
+diff --git a/tests/prime_mmap.c b/tests/prime_mmap.c
+index bc19f68c98..432e857631 100644
+--- a/tests/prime_mmap.c
++++ b/tests/prime_mmap.c
+@@ -298,24 +298,6 @@ test_dup(uint32_t region, uint64_t size)
+ 	close (dma_buf_fd);
+ }
+ 
+-/* Used for error case testing to avoid wrapper */
+-static int prime_handle_to_fd_no_assert(uint32_t handle, int flags, int *fd_out)
+-{
+-	struct drm_prime_handle args;
+-	int ret;
+-
+-	args.handle = handle;
+-	args.flags = flags;
+-	args.fd = -1;
+-
+-	ret = drmIoctl(fd, DRM_IOCTL_PRIME_HANDLE_TO_FD, &args);
+-	if (ret)
+-		ret = errno;
+-	*fd_out = args.fd;
+-
+-	return ret;
+-}
+-
+ static bool has_userptr(void)
+ {
+ 	uint32_t handle = 0;
+@@ -346,9 +328,9 @@ test_userptr(uint32_t region, uint64_t size)
+ 	gem_userptr(fd, (uint32_t *)ptr, size, 0, 0, &handle);
+ 
+ 	/* export userptr */
+-	ret = prime_handle_to_fd_no_assert(handle, DRM_CLOEXEC, &dma_buf_fd);
++	ret = __prime_handle_to_fd(fd, handle, DRM_CLOEXEC, &dma_buf_fd);
+ 	if (ret) {
+-		igt_assert(ret == EINVAL || ret == ENODEV);
++		igt_assert(ret == -EINVAL || ret == -ENODEV);
+ 		goto free_userptr;
+ 	} else {
+ 		igt_assert_eq(ret, 0);
+@@ -376,7 +358,7 @@ test_errors(uint32_t region, uint64_t size)
+ 	/* Test for invalid flags */
+ 	igt_assert(__gem_create_in_memory_regions(fd, &handle, &size, region) == 0);
+ 	for (i = 0; i < ARRAY_SIZE(invalid_flags); i++) {
+-		prime_handle_to_fd_no_assert(handle, invalid_flags[i], &dma_buf_fd);
++		__prime_handle_to_fd(fd, handle, invalid_flags[i], &dma_buf_fd);
+ 		igt_assert_eq(errno, EINVAL);
+ 		errno = 0;
+ 	}
+@@ -386,7 +368,7 @@ test_errors(uint32_t region, uint64_t size)
+ 	igt_assert(__gem_create_in_memory_regions(fd, &handle, &size, region) == 0);
+ 	fill_bo(handle, size);
+ 	gem_close(fd, handle);
+-	prime_handle_to_fd_no_assert(handle, DRM_CLOEXEC, &dma_buf_fd);
++	__prime_handle_to_fd(fd, handle, DRM_CLOEXEC, &dma_buf_fd);
+ 	igt_assert(dma_buf_fd == -1 && errno == ENOENT);
+ 	errno = 0;
+ 
 -- 
 2.21.0.rc0.32.g243a4c7e27
