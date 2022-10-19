@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9375910F23A
- for <igt-dev@lists.freedesktop.org>; Wed, 19 Oct 2022 13:17:43 +0000 (UTC)
-Date: Wed, 19 Oct 2022 15:17:37 +0200
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 248E210E437
+ for <igt-dev@lists.freedesktop.org>; Wed, 19 Oct 2022 13:33:29 +0000 (UTC)
+Date: Wed, 19 Oct 2022 15:33:25 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Message-ID: <Y0/48XWtQrAtoEfa@kamilkon-desk1>
-References: <20221019102325.2886794-1-vikas.srivastava@intel.com>
+Message-ID: <Y0/8pa8r6XY2PlF0@kamilkon-desk1>
+References: <20221017090111.18429-1-matthew.auld@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20221019102325.2886794-1-vikas.srivastava@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/i915/i915_module_load : Use
- GEM_BUSY instead of SET_CACHE for sanity check
+In-Reply-To: <20221017090111.18429-1-matthew.auld@intel.com>
+Subject: Re: [igt-dev] [CI 1/2] tests/i915/query: sanity check reported GTT
+ alignment
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,78 +20,74 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Jonathan Cavitt <jonathan.cavitt@intel.com>,
- Chris P Wilson <chris.p.wilson@intel.com>, Fei Yang <fei.yang@intel.com>,
- Janga Rahul Kumar <janga.rahul.kumar@intel.com>
+Cc: Matthew Auld <matthew.auld@intel.com>, Nirmoy Das <nirmoy.das@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Vikas,
+Hi Matthew,
 
-few more nits, see below.
+On 2022-10-17 at 10:01:10 +0100, Matthew Auld wrote:
+> Ensure the kernel is reporting "normal" values here, based on our
+> current expectations.
+> 
+> Signed-off-by: Matthew Auld <matthew.auld@intel.com>
+> Cc: Andrzej Hajda <andrzej.hajda@intel.com>
+> Cc: Nirmoy Das <nirmoy.das@intel.com>
+> Reviewed-by: Nirmoy Das <nirmoy.das@intel.com>
+- ^
+imho you should remove this when sending patch. Please also use
+[PATCH i-g-t] or [PATCH i-g-t vN] in Subject: line (with
+N=version > 1) instead of [CI 1/2]. It would also help if you
+could send series bigger than one patch with cover letter
+(well, now it can stay as is).
 
-On 2022-10-19 at 15:53:25 +0530, Vikas Srivastava wrote:
->     Use GEM_BUSY ioctl for sanity check as SET_CACHING ioctl
->     is not supported on latest platforms like MTL.
->     
->     References: VLK-36552
------------------ ^
-Remove this line, general rule is do not use VLK references
-or any other ones which are not public. If you really think it
-can help, put them after line  with only three "---" and before
-"diff --git" so that will be removed after "git am" command and
-will not land in git history.
-
->     
->     Signed-off-by: vikas srivastava <vikas.srivastava@intel.com>
-
-If you did not change anything in patch, do not add your s-o-b and
-add line "From: original author <author@address>" at begin of
-commit message, see for example:
-
-https://patchwork.freedesktop.org/series/108022/
-
-This one was resended:
-https://patchwork.freedesktop.org/patch/500903/?series=108022&rev=3
-
-This was resended and changed (so it has two s-o-b):
-https://patchwork.freedesktop.org/patch/500905/?series=108022&rev=3
+> ---
+>  tests/i915/i915_query.c | 10 ++++++++++
+>  1 file changed, 10 insertions(+)
+> 
+> diff --git a/tests/i915/i915_query.c b/tests/i915/i915_query.c
+> index 4e43c7cd..bff073d2 100644
+> --- a/tests/i915/i915_query.c
+> +++ b/tests/i915/i915_query.c
+> @@ -638,6 +638,8 @@ static void upload(int fd, struct igt_list_head *handles, uint32_t num_handles)
+>  	free(exec);
+>  }
+>  
+> +/** XXX: remove once we sync the uapi header */
+> +#define gtt_alignment rsvd0
+>  static void test_query_regions_sanity_check(int fd)
+>  {
+>  	struct drm_i915_query_memory_regions *regions;
+> @@ -664,6 +666,11 @@ static void test_query_regions_sanity_check(int fd)
+>  		struct drm_i915_gem_memory_class_instance r1 = info.region;
+>  		int j;
+>  
+> +		if (info.gtt_alignment) {
+> +			igt_assert_lte_u64(4096, info.gtt_alignment);
+> +			igt_assert(is_power_of_two(info.gtt_alignment));
+> +		}
+> +
+>  		if (r1.memory_class == I915_MEMORY_CLASS_SYSTEM) {
+>  			igt_assert_eq(r1.memory_instance, 0);
+>  			found_system = true;
+> @@ -674,6 +681,9 @@ static void test_query_regions_sanity_check(int fd)
+>  			igt_assert(info.unallocated_cpu_visible_size == 0 ||
+>  				   info.unallocated_cpu_visible_size ==
+>  				   info.unallocated_size);
+> +
+> +			igt_assert(info.gtt_alignment == 0 ||
+> +				   info.gtt_alignment == 4096);
+-------------------------------------------------------- ^
+Why not copy your check from above ? This is restricting to only
+4KB or 0 and can break for bigger values.
 
 Regards,
 Kamil
 
->     Signed-off-by: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
->     Acked-by: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
->     Cc: Aravind Iddamsetty<aravind.iddamsetty@intel.com>
->     Cc: Fei Yang <fei.yang@intel.com>
->     Cc: Stuart Summers <stuart.summers@intel.com>
->     Cc: Chris Wilson <chris.p.wilson@intel.com>
->     
-> ---
->  tests/i915/i915_module_load.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/tests/i915/i915_module_load.c b/tests/i915/i915_module_load.c
-> index 1009a22b..eebb3167 100644
-> --- a/tests/i915/i915_module_load.c
-> +++ b/tests/i915/i915_module_load.c
-> @@ -226,13 +226,13 @@ inject_fault(const char *module_name, const char *opt, int fault)
->  
->  static void gem_sanitycheck(void)
->  {
-> -	struct drm_i915_gem_caching args = {};
-> +	struct drm_i915_gem_busy args = {};
->  	int i915 = __drm_open_driver(DRIVER_INTEL);
->  	int expected = gem_has_lmem(i915) ? -ENODEV : -ENOENT;
->  	int err;
->  
->  	err = 0;
-> -	if (ioctl(i915, DRM_IOCTL_I915_GEM_SET_CACHING, &args))
-> +	if (ioctl(i915,DRM_IOCTL_I915_GEM_BUSY, &args))
->  		err = -errno;
->  	if (err == expected)
->  		store_all(i915);
+>  		} else {
+>  			igt_assert(info.probed_cpu_visible_size <= info.probed_size);
+>  			igt_assert(info.unallocated_size <= info.probed_size);
 > -- 
-> 2.25.1
+> 2.37.3
 > 
