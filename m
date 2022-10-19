@@ -1,23 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from NAM02-SN1-obe.outbound.protection.outlook.com
- (mail-sn1anam02on2057.outbound.protection.outlook.com [40.107.96.57])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C661A10E97E
- for <igt-dev@lists.freedesktop.org>; Tue, 18 Oct 2022 23:17:03 +0000 (UTC)
-Message-ID: <97a2f3ce-5009-7fac-cd34-c3b676673382@amd.com>
-Date: Tue, 18 Oct 2022 19:16:58 -0400
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6313510F0F2
+ for <igt-dev@lists.freedesktop.org>; Wed, 19 Oct 2022 04:06:03 +0000 (UTC)
+Message-ID: <f23df31a-a677-e901-3566-36c640f4449e@intel.com>
+Date: Wed, 19 Oct 2022 09:35:43 +0530
 Content-Language: en-US
-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org, Vitaly Prosyak <vitaly.prosyak@amd.com>,
- pierre-eric.pelloux-prayer@amd.com, marek.olsak@amd.com
-References: <20221018030055.73636-1-vitaly.prosyak@amd.com>
- <20221018030055.73636-2-vitaly.prosyak@amd.com>
- <Y05WE6jTmKTClhQn@kamilkon-desk1>
-From: vitaly prosyak <vprosyak@amd.com>
-In-Reply-To: <Y05WE6jTmKTClhQn@kamilkon-desk1>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+To: Mohammed Thasleem <mohammed.thasleem@intel.com>,
+ <igt-dev@lists.freedesktop.org>
+References: <20221010201130.35343-1-mohammed.thasleem@intel.com>
+ <20221010201130.35343-2-mohammed.thasleem@intel.com>
+From: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
+In-Reply-To: <20221010201130.35343-2-mohammed.thasleem@intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH 2/7] lib/amdgpu: add deadlock helpers
+Subject: Re: [igt-dev] [PATCH v6 1/2] tests/kms_properties: Create dynamic
+ subtests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -29,386 +27,266 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Kamil
+On Tue-11-10-2022 01:41 am, Mohammed Thasleem wrote:
+> Modified kms_properties to include dynamic test cases.
+> 
+> v2: Fixed compilation issue.
+> v3: Removed redundant code.
+> v4: Moved get_prop_sanity calls to igt_subtest_group.
+> v5: Replace for loop with for_each_disconnected_output.
+> v6: Moved cleanup part to igt cleanup patch.
+> 
+> Signed-off-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
+> ---
+>   tests/kms_properties.c | 163 ++++++++++++++++++-----------------------
+>   1 file changed, 72 insertions(+), 91 deletions(-)
+> 
+> diff --git a/tests/kms_properties.c b/tests/kms_properties.c
+> index 2958efac..bcc8fbdd 100644
+> --- a/tests/kms_properties.c
+> +++ b/tests/kms_properties.c
+> @@ -230,48 +230,28 @@ static void run_connector_property_tests(igt_display_t *display, enum pipe pipe,
+>   
+>   static void plane_properties(igt_display_t *display, bool atomic)
+>   {
+> -	bool found_any = false, found;
+>   	igt_output_t *output;
+>   	enum pipe pipe;
+>   
+> -	if (atomic)
+> -		igt_skip_on(!display->is_atomic);
+> -
+> -	for_each_pipe(display, pipe) {
+> -		found = false;
+> -
+> -		for_each_valid_output_on_pipe(display, pipe, output) {
+> -			found_any = found = true;
+> -
+> +	for_each_pipe_with_single_output(display, pipe, output) {
 
-Thanks for the comments
+Do we really need the output to test plane properties? this test will 
+skip on no-display configs.
 
-On 2022-10-18 03:30, Kamil Konieczny wrote:
-> Hi Vitaly,
->
-> On 2022-10-17 at 23:00:50 -0400, vitaly.prosyak@amd.com wrote:
->> From: Vitaly Prosyak <vitaly.prosyak@amd.com>
->>
->> To validate amdgpu reset functionality.
-> --^
-> To validate
-> or
-> Helpers to validate
->
-> You introduce here new lib so maybe describe what functional
-> changes you added, are they only for deadlock detection ?
-The directory lib/amdgpu was introduced before to handle
+> +		igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe),
+> +			      igt_output_name(output)) {
+>   			run_plane_property_tests(display, pipe, output, atomic);
+> -			break;
+>   		}
+>   	}
+> -
+> -	igt_skip_on(!found_any);
+>   }
+>   
+>   static void crtc_properties(igt_display_t *display, bool atomic)
+>   {
+> -	bool found_any_valid_pipe = false, found;
+>   	enum pipe pipe;
+>   	igt_output_t *output;
+>   
+> -	if (atomic)
+> -		igt_skip_on(!display->is_atomic);
+> -
+> -	for_each_pipe(display, pipe) {
+> -		found = false;
+> -
+> -		for_each_valid_output_on_pipe(display, pipe, output) {
+> -			found_any_valid_pipe = found = true;
+> -
+> +	for_each_pipe_with_single_output(display, pipe, output) {
 
-ASIC-specific registers also other stuff which could be shared between 
-different tests and for misc. helpers.
+Please check the above comment.
 
-I will rework these commits based on suggestions from Pierre-Eric.
+> +		igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe),
+> +			      igt_output_name(output)) {
+>   			run_crtc_property_tests(display, pipe, output, atomic);
+> -			break;
+>   		}
+>   	}
+> -
+> -	igt_skip_on(!found_any_valid_pipe);
+>   }
+>   
+>   static void connector_properties(igt_display_t *display, bool atomic)
+> @@ -280,22 +260,19 @@ static void connector_properties(igt_display_t *display, bool atomic)
+>   	enum pipe pipe;
+>   	igt_output_t *output;
+>   
+> -	if (atomic)
+> -		igt_skip_on(!display->is_atomic);
+> -
+>   	for_each_connected_output(display, output) {
+> -		bool found = false;
+>   
+>   		for_each_pipe(display, pipe) {
+>   			if (!igt_pipe_connector_valid(pipe, output))
+>   				continue;
+>   
+> -			found = true;
+> -			run_connector_property_tests(display, pipe, output, atomic);
+> -			break;
+> +			igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe),
+> +				      igt_output_name(output)) {
+> +				run_connector_property_tests(display, pipe, output, atomic);
+> +			}
 
-It is a test for GPU reset functionality.
+Results are not matching with the existing tests (results are not 
+available for disconnected outputs).
 
->
-> Read some helpfull notes about writing commit message and
-> descriptions:
->
-> https://nam11.safelinks.protection.outlook.com/?url=https%3A%2F%2Fwww.ozlabs.org%2F~akpm%2Fstuff%2Ftpp.txt&amp;data=05%7C01%7Cvitaly.prosyak%40amd.com%7C710a8503e20e4df2244c08dab0dab564%7C3dd8961fe4884e608e11a82d994e183d%7C0%7C0%7C638016750638710920%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C3000%7C%7C%7C&amp;sdata=ud3r3QbemOH1wYiQoEJJ1EayuI4cyQ2rv40tyl7lwRc%3D&amp;reserved=0
->
-> https://nam11.safelinks.protection.outlook.com/?url=https%3A%2F%2Fkernelnewbies.org%2FPatchPhilosophy&amp;data=05%7C01%7Cvitaly.prosyak%40amd.com%7C710a8503e20e4df2244c08dab0dab564%7C3dd8961fe4884e608e11a82d994e183d%7C0%7C0%7C638016750638710920%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C3000%7C%7C%7C&amp;sdata=jKJecDyRufT2hf61OJBoP58be27m9oZsaUFjAyps08w%3D&amp;reserved=0
->
-> https://nam11.safelinks.protection.outlook.com/?url=https%3A%2F%2Felixir.bootlin.com%2Flinux%2Flatest%2Fsource%2FDocumentation%2Fprocess%2Fsubmitting-patches.rst&amp;data=05%7C01%7Cvitaly.prosyak%40amd.com%7C710a8503e20e4df2244c08dab0dab564%7C3dd8961fe4884e608e11a82d994e183d%7C0%7C0%7C638016750638710920%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C3000%7C%7C%7C&amp;sdata=9tsIV%2FMRxuhZcxo5rrxWfoPlqOml%2FwJs26%2BiEVCAc48%3D&amp;reserved=0
->
-> https://nam11.safelinks.protection.outlook.com/?url=https%3A%2F%2Fwww.kernel.org%2Fdoc%2Fhtml%2Flatest%2Fprocess%2Fsubmitting-patches.html%23the-canonical-patch-format&amp;data=05%7C01%7Cvitaly.prosyak%40amd.com%7C710a8503e20e4df2244c08dab0dab564%7C3dd8961fe4884e608e11a82d994e183d%7C0%7C0%7C638016750638710920%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C3000%7C%7C%7C&amp;sdata=p2usMKcqlntRFgsrl8bIfw90JRca7dYRvyR4%2FSM5nEY%3D&amp;reserved=0
-Thanks
->
->> Signed-off-by: Vitaly Prosyak <vitaly.prosyak@amd.com>
->> ---
->>   lib/amdgpu/amd_deadlock_helpers.c | 260 ++++++++++++++++++++++++++++++
->>   lib/amdgpu/amd_deadlock_helpers.h |  34 ++++
->>   lib/meson.build                   |   3 +-
->>   3 files changed, 296 insertions(+), 1 deletion(-)
->>   create mode 100644 lib/amdgpu/amd_deadlock_helpers.c
->>   create mode 100644 lib/amdgpu/amd_deadlock_helpers.h
->>
->> diff --git a/lib/amdgpu/amd_deadlock_helpers.c b/lib/amdgpu/amd_deadlock_helpers.c
->> new file mode 100644
->> index 000000000..c6528c6ad
->> --- /dev/null
->> +++ b/lib/amdgpu/amd_deadlock_helpers.c
->> @@ -0,0 +1,260 @@
->> +/*
->> + * Copyright 2022 Advanced Micro Devices, Inc.
->> + *  *
->> + * Permission is hereby granted, free of charge, to any person obtaining a
->> + * copy of this software and associated documentation files (the "Software"),
->> + * to deal in the Software without restriction, including without limitation
->> + * the rights to use, copy, modify, merge, publish, distribute, sublicense,
->> + * and/or sell copies of the Software, and to permit persons to whom the
->> + * Software is furnished to do so, subject to the following conditions:
->> + *
->> + * The above copyright notice and this permission notice shall be included in
->> + * all copies or substantial portions of the Software.
->> + *
->> + * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
->> + * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
->> + * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
->> + * THE COPYRIGHT HOLDER(S) OR AUTHOR(S) BE LIABLE FOR ANY CLAIM, DAMAGES OR
->> + * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
->> + * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
->> + * OTHER DEALINGS IN THE SOFTWARE.
-> Use SPDX licence here, see .h and .c files in lib/ which uses
-> them.
-Will do.
->
->> + *
->> + *
->> + */
->> +#include <amdgpu.h>
->> +#include "amdgpu_drm.h"
->> +#include "amd_PM4.h"
->> +#include "amd_sdma.h"
->> +#include <unistd.h>
->> +#include <pthread.h>
->> +#include "amd_memory.h"
->> +#include "amd_deadlock_helpers.h"
->> +#include "amd_ip_blocks.h"
->> +
->> +static int use_uc_mtype = 0;
->> +
->> +static void *write_mem_address(void *data)
->> +{
->> +#define WRITE_MEM_ADDRESS_DELAY_MS 100
->> +
->> +	int i;
->> +	uint32_t * ib_result_cpu = data;
->> +
->> +	/* useconds_t range is [0, 1,000,000] so use loop for waits > 1s */
->> +	for (i = 0; i < WRITE_MEM_ADDRESS_DELAY_MS; i++)
->> +		usleep(1000);
->> +
->> +	ib_result_cpu[256] = 0x1;
->> +	/* printf("ib_result_cpu[256] = 0x1;\n"); */
->> +
->> +	return 0;
->> +}
->> +
->> +void
->> +amdgpu_deadlock_helper(amdgpu_device_handle device_handle, unsigned ip_type, bool with_thread)
->> +{
->> +	amdgpu_context_handle context_handle;
->> +	amdgpu_bo_handle ib_result_handle;
->> +	void *ib_result_cpu;
->> +	uint32_t *ib_result_cpu2;
->> +	uint64_t ib_result_mc_address;
->> +	struct amdgpu_cs_request ibs_request;
->> +	struct amdgpu_cs_ib_info ib_info;
->> +	struct amdgpu_cs_fence fence_status;
->> +	uint32_t expired;
->> +	int i, r;
->> +	amdgpu_bo_list_handle bo_list;
->> +	amdgpu_va_handle va_handle;
->> +	int bo_cmd_size = 4096;
->> +	pthread_t stress_thread = {0};
->> +	struct amdgpu_cmd_base * base_cmd = get_cmd_base();
->> +
->> +	r = amdgpu_cs_ctx_create(device_handle, &context_handle);
->> +	igt_assert_eq(r, 0);
->> +
->> +	r = amdgpu_bo_alloc_and_map_raw(device_handle, bo_cmd_size, bo_cmd_size,
->> +			AMDGPU_GEM_DOMAIN_GTT, 0, use_uc_mtype ? AMDGPU_VM_MTYPE_UC : 0,
->> +						    &ib_result_handle, &ib_result_cpu,
->> +						    &ib_result_mc_address, &va_handle);
->> +	igt_assert_eq(r, 0);
->> +
->> +	r = amdgpu_get_bo_list(device_handle, ib_result_handle, NULL,
->> +			       &bo_list);
->> +	igt_assert_eq(r, 0);
->> +
->> +	base_cmd->attach_buf(base_cmd, ib_result_cpu, bo_cmd_size);
->> +
->> +	if (with_thread) {
->> +			r = pthread_create(&stress_thread, NULL, &write_mem_address, ib_result_cpu);
->> +			igt_assert_eq(r, 0);
->> +	}
->> +
->> +	base_cmd->emit(base_cmd, PACKET3(PACKET3_WAIT_REG_MEM, 5));
->> +
->> +	base_cmd->emit(base_cmd, (WAIT_REG_MEM_MEM_SPACE(1)  /* memory */|
->> +							  WAIT_REG_MEM_FUNCTION(4) /* != */|
->> +							  WAIT_REG_MEM_ENGINE(0)/* me */));
->> +
->> +	base_cmd->emit(base_cmd, (ib_result_mc_address + 256*4) & 0xfffffffc);
->> +	base_cmd->emit(base_cmd, ((ib_result_mc_address + 256*4) >> 32) & 0xffffffff);
->> +
->> +	base_cmd->emit(base_cmd, 0);/* reference value */
->> +	base_cmd->emit(base_cmd, 0xffffffff); /* and mask */
->> +	base_cmd->emit(base_cmd, 0x00000004);/* poll interval */
->> +	base_cmd->emit_repeat(base_cmd, 0xffff1000, 16 - base_cmd->cdw);
->> +
->> +
->> +	ib_result_cpu2 = ib_result_cpu;
->> +	ib_result_cpu2[256] = 0x0; /* the memory we wait on to change */
->> +
->> +
->> +
->> +	memset(&ib_info, 0, sizeof(struct amdgpu_cs_ib_info));
->> +	ib_info.ib_mc_address = ib_result_mc_address;
->> +	ib_info.size = base_cmd->cdw;
->> +
->> +	memset(&ibs_request, 0, sizeof(struct amdgpu_cs_request));
->> +	ibs_request.ip_type = ip_type;
->> +	ibs_request.ring = 0;
->> +	ibs_request.number_of_ibs = 1;
->> +	ibs_request.ibs = &ib_info;
->> +	ibs_request.resources = bo_list;
->> +	ibs_request.fence_info.handle = NULL;
->> +	for (i = 0; i < 200; i++) {
->> +		r = amdgpu_cs_submit(context_handle, 0,&ibs_request, 1);
->> +		if (r != 0 && r != -ECANCELED)
->> +			igt_assert(0);
->> +	}
->> +
->> +	memset(&fence_status, 0, sizeof(struct amdgpu_cs_fence));
->> +	fence_status.context = context_handle;
->> +	fence_status.ip_type = ip_type;
->> +	fence_status.ip_instance = 0;
->> +	fence_status.ring = 0;
->> +	fence_status.fence = ibs_request.seq_no;
->> +
->> +	r = amdgpu_cs_query_fence_status(&fence_status,
->> +			AMDGPU_TIMEOUT_INFINITE,0, &expired);
->> +	if (r != 0 && r != -ECANCELED)
->> +		igt_assert(0);
->> +
->> +	if (with_thread)
->> +		pthread_join(stress_thread, NULL);
->> +
->> +	amdgpu_bo_list_destroy(bo_list);
->> +
->> +	amdgpu_bo_unmap_and_free(ib_result_handle, va_handle,
->> +				     ib_result_mc_address, 4096);
->> +
->> +	amdgpu_cs_ctx_free(context_handle);
->> +
->> +	free_cmd_base(base_cmd);
->> +}
->> +
->> +void
->> +amdgpu_deadlock_sdma(amdgpu_device_handle device_handle, bool with_thread)
->> +{
->> +	amdgpu_context_handle context_handle;
->> +	amdgpu_bo_handle ib_result_handle;
->> +	void *ib_result_cpu;
->> +	uint32_t *ib_result_cpu2;
->> +	uint64_t ib_result_mc_address;
->> +	struct amdgpu_cs_request ibs_request;
->> +	struct amdgpu_cs_ib_info ib_info;
->> +	struct amdgpu_cs_fence fence_status;
->> +	uint32_t expired;
->> +	int i, r;
->> +	amdgpu_bo_list_handle bo_list;
->> +	amdgpu_va_handle va_handle;
->> +	struct drm_amdgpu_info_hw_ip info;
->> +	uint32_t ring_id;
->> +	pthread_t stress_thread = {0};
->> +	int bo_cmd_size = 4096;
->> +	struct amdgpu_cmd_base * base_cmd;
->> +
->> +	r = amdgpu_query_hw_ip_info(device_handle, AMDGPU_HW_IP_DMA, 0, &info);
->> +	igt_assert_eq(r, 0);
->> +
->> +	r = amdgpu_cs_ctx_create(device_handle, &context_handle);
->> +	igt_assert_eq(r, 0);
->> +
->> +	for (ring_id = 0; (1 << ring_id) & info.available_rings; ring_id++) {
->> +
->> +		r = amdgpu_bo_alloc_and_map_raw(device_handle, 4096, 4096,
->> +				AMDGPU_GEM_DOMAIN_GTT, 0, use_uc_mtype ? AMDGPU_VM_MTYPE_UC : 0,
->> +							    &ib_result_handle, &ib_result_cpu,
->> +							    &ib_result_mc_address, &va_handle);
->> +		igt_assert_eq(r, 0);
->> +
->> +		if (with_thread) {
->> +			r = pthread_create(&stress_thread, NULL, &write_mem_address, ib_result_cpu);
->> +			igt_assert_eq(r, 0);
->> +		}
->> +
->> +		r = amdgpu_get_bo_list(device_handle, ib_result_handle, NULL,
->> +				       &bo_list);
->> +		igt_assert_eq(r, 0);
->> +
->> +		base_cmd = get_cmd_base();
->> +		base_cmd->attach_buf(base_cmd, ib_result_cpu, bo_cmd_size);
->> +
->> +		base_cmd->emit(base_cmd, SDMA_PKT_HEADER_OP(SDMA_OP_POLL_REGMEM) |
->> +					(0 << 26) | /* WAIT_REG_MEM */(4 << 28) | /* != */(1 << 31)
->> +					/* memory */);
->> +
->> +		base_cmd->emit(base_cmd, (ib_result_mc_address + 256*4) & 0xfffffffc);
->> +
->> +		base_cmd->emit(base_cmd, ((ib_result_mc_address + 256*4) >> 32) & 0xffffffff);
->> +
->> +		base_cmd->emit(base_cmd, 0); /* reference value */
->> +		base_cmd->emit(base_cmd, 0xffffffff); /* and mask */
->> +
->> +		base_cmd->emit(base_cmd,  4 | /* poll interval */(0xfff << 16)/* retry count */);
->> +
->> +		base_cmd->emit_repeat(base_cmd, 0, 16 - base_cmd->cdw);
->> +
->> +		ib_result_cpu2 = ib_result_cpu;
->> +		ib_result_cpu2[256] = 0x0; /* the memory we wait on to change */
->> +
->> +		memset(&ib_info, 0, sizeof(struct amdgpu_cs_ib_info));
->> +		ib_info.ib_mc_address = ib_result_mc_address;
->> +		ib_info.size = base_cmd->cdw;
->> +
->> +		memset(&ibs_request, 0, sizeof(struct amdgpu_cs_request));
->> +		ibs_request.ip_type = AMDGPU_HW_IP_DMA;
->> +		ibs_request.ring = ring_id;
->> +		ibs_request.number_of_ibs = 1;
->> +		ibs_request.ibs = &ib_info;
->> +		ibs_request.resources = bo_list;
->> +		ibs_request.fence_info.handle = NULL;
->> +
->> +		for (i = 0; i < 200; i++) {
->> +			r = amdgpu_cs_submit(context_handle, 0,&ibs_request, 1);
->> +			if (r != 0 && r != -ECANCELED)
->> +				igt_assert(0);
->> +		}
->> +
->> +		memset(&fence_status, 0, sizeof(struct amdgpu_cs_fence));
->> +		fence_status.context = context_handle;
->> +		fence_status.ip_type = AMDGPU_HW_IP_DMA;
->> +		fence_status.ip_instance = 0;
->> +		fence_status.ring = ring_id;
->> +		fence_status.fence = ibs_request.seq_no;
->> +
->> +		r = amdgpu_cs_query_fence_status(&fence_status,
->> +				AMDGPU_TIMEOUT_INFINITE,0, &expired);
->> +		if (r != 0 && r != -ECANCELED)
->> +			igt_assert(0);
->> +
->> +		if (with_thread)
->> +			pthread_join(stress_thread, NULL);
->> +
->> +		r = amdgpu_bo_list_destroy(bo_list);
->> +		igt_assert_eq(r, 0);
->> +
->> +		amdgpu_bo_unmap_and_free(ib_result_handle, va_handle,
->> +					     ib_result_mc_address, 4096);
->> +		free_cmd_base(base_cmd);
->> +	}
->> +	amdgpu_cs_ctx_free(context_handle);
->> +}
->> diff --git a/lib/amdgpu/amd_deadlock_helpers.h b/lib/amdgpu/amd_deadlock_helpers.h
->> new file mode 100644
->> index 000000000..91dcf8bb2
->> --- /dev/null
->> +++ b/lib/amdgpu/amd_deadlock_helpers.h
->> @@ -0,0 +1,34 @@
->> +/*
->> + * Copyright 2022 Advanced Micro Devices, Inc.
->> + *
->> + * Permission is hereby granted, free of charge, to any person obtaining a
->> + * copy of this software and associated documentation files (the "Software"),
->> + * to deal in the Software without restriction, including without limitation
->> + * the rights to use, copy, modify, merge, publish, distribute, sublicense,
->> + * and/or sell copies of the Software, and to permit persons to whom the
->> + * Software is furnished to do so, subject to the following conditions:
->> + *
->> + * The above copyright notice and this permission notice shall be included in
->> + * all copies or substantial portions of the Software.
->> + *
->> + * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
->> + * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
->> + * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
->> + * THE COPYRIGHT HOLDER(S) OR AUTHOR(S) BE LIABLE FOR ANY CLAIM, DAMAGES OR
->> + * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
->> + * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
->> + * OTHER DEALINGS IN THE SOFTWARE.
->> + *
->> + *
->> + */
-> Same here, use SPDX.
-Will do.
->
-> Regards,
-> Kamil
->
->> +#ifndef __AMD_DEADLOCK_HELPERS_H__
->> +#define __AMD_DEADLOCK_HELPERS_H__
->> +
->> +void
->> +amdgpu_deadlock_helper(amdgpu_device_handle device_handle, unsigned ip_type, bool with_thread);
->> +
->> +void
->> +amdgpu_deadlock_sdma(amdgpu_device_handle device_handle, bool with_thread);
->> +
->> +#endif
->> +
->> diff --git a/lib/meson.build b/lib/meson.build
->> index 8d6c8a244..47f9fdab4 100644
->> --- a/lib/meson.build
->> +++ b/lib/meson.build
->> @@ -138,7 +138,8 @@ if libdrm_amdgpu.found()
->>   		'amdgpu/amd_gfx_v8_0.c',
->>   		'amdgpu/amd_gfx_v9_0.c',
->>   		'amdgpu/amd_dispatch_helpers.c',
->> -		'amdgpu/amd_dispatch.c'
->> +		'amdgpu/amd_dispatch.c',
->> +		'amdgpu/amd_deadlock_helpers.c'
->>   	]
->>   endif
->>   
->> -- 
->> 2.25.1
->>
-Thanks Vitaly
+https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7965/shards-all.html?testfilter=kms_properties@connector-properties
+
+- Bhanu
+
+>   		}
+> +		break;
+>   
+> -		igt_assert_f(found, "Connected output should have at least 1 valid crtc\n");
+>   	}
+>   
+>   	for (i = 0; i < display->n_outputs; i++)
+> @@ -707,25 +684,56 @@ static void invalid_properties(igt_display_t *display, bool atomic)
+>   	igt_output_t *output;
+>   	igt_plane_t *plane;
+>   	enum pipe pipe;
+> -	int i;
+> -
+> -	if (atomic)
+> -		igt_skip_on(!display->is_atomic);
+>   
+>   	for_each_pipe(display, pipe)
+> -		test_object_invalid_properties(display, display->pipes[pipe].crtc_id, DRM_MODE_OBJECT_CRTC, atomic);
+> +		igt_dynamic_f("pipe-%s", kmstest_pipe_name(pipe))
+> +			test_object_invalid_properties(display, display->pipes[pipe].crtc_id,
+> +						       DRM_MODE_OBJECT_CRTC, atomic);
+>   
+>   	for_each_pipe(display, pipe)
+> -		for_each_plane_on_pipe(display, pipe, plane)
+> -			test_object_invalid_properties(display, plane->drm_plane->plane_id, DRM_MODE_OBJECT_PLANE, atomic);
+> +		igt_dynamic_f("pipe-%s-plane", kmstest_pipe_name(pipe))
+> +			for_each_plane_on_pipe(display, pipe, plane)
+> +				test_object_invalid_properties(display, plane->drm_plane->plane_id,
+> +							       DRM_MODE_OBJECT_PLANE, atomic);
+> +
+> +	for_each_output(display, output)
+> +		igt_dynamic_f("%s", igt_output_name(output))
+> +			test_object_invalid_properties(display, output->id,
+> +						       DRM_MODE_OBJECT_CONNECTOR, atomic);
+>   
+> -	for (i = 0, output = &display->outputs[0]; i < display->n_outputs; output = &display->outputs[++i])
+> -		test_object_invalid_properties(display, output->id, DRM_MODE_OBJECT_CONNECTOR, atomic);
+>   }
+>   
+>   igt_main
+>   {
+>   	igt_display_t display;
+> +	int i;
+> +	static const struct {
+> +		const char *name;
+> +		void (*func)(igt_display_t *, bool);
+> +		const bool atomic;
+> +		const char *desc;
+> +	} tests[] = {
+> +		{ "plane-properties-legacy", plane_properties, false,
+> +		  "Tests plane properties with legacy commit" },
+> +		{ "plane-properties-atomic", plane_properties, true,
+> +		  "Tests plane properties with atomic commit" },
+> +		{ "crtc-properties-legacy", crtc_properties, false,
+> +		  "Tests crtc properties with legacy commit" },
+> +		{ "crtc-properties-atomic", crtc_properties, true,
+> +		  "Tests crtc properties with atomic commit" },
+> +		{ "connector-properties-legacy", connector_properties, false,
+> +		  "Tests connector properties with legacy commit" },
+> +		{ "connector-properties-atomic", connector_properties, true,
+> +		  "Tests connector properties with atomic commit" },
+> +		{ "invalid-properties-legacy", invalid_properties, false,
+> +		  "Checks each property of any type with combination of mode "
+> +		  "object with legacy commit and make sure only valid properties "
+> +		  "are set to mode object else return with relevant error" },
+> +		{ "invalid-properties-atomic", invalid_properties, true,
+> +		  "Checks each property of any type with combination of mode object "
+> +		  "with atomic commit and make sure only valid properties are set to "
+> +		  "mode object else return with relevant error" },
+> +	};
+>   
+>   	igt_fixture {
+>   		display.drm_fd = drm_open_driver_master(DRIVER_ANY);
+> @@ -735,59 +743,32 @@ igt_main
+>   		igt_display_require(&display, display.drm_fd);
+>   	}
+>   
+> -	igt_describe("Tests plane properties with legacy commit");
+> -	igt_subtest("plane-properties-legacy")
+> -		plane_properties(&display, false);
+> -
+> -	igt_describe("Tests plane properties with atomic commit");
+> -	igt_subtest("plane-properties-atomic")
+> -		plane_properties(&display, true);
+> -
+> -	igt_describe("Tests crtc properties with legacy commit");
+> -	igt_subtest("crtc-properties-legacy")
+> -		crtc_properties(&display, false);
+> -
+> -	igt_describe("Tests crtc properties with atomic commit");
+> -	igt_subtest("crtc-properties-atomic")
+> -		crtc_properties(&display, true);
+> -
+> -	igt_describe("Tests connector properties with legacy commit");
+> -	igt_subtest("connector-properties-legacy")
+> -		connector_properties(&display, false);
+> -
+> -	igt_describe("Tests connector properties with atomic commit");
+> -	igt_subtest("connector-properties-atomic")
+> -		connector_properties(&display, true);
+> -
+> -	igt_describe("Checks each property of any type with combination of mode object with legacy "
+> -		     "commit and make sure only valid properties are set to mode object else "
+> -		     "return with relevant error");
+> -
+> -	igt_subtest("invalid-properties-legacy")
+> -		invalid_properties(&display, false);
+> -
+> -	igt_describe("Checks each property of any type with combination of mode object with atomic "
+> -		     "commit and make sure only valid properties are set to mode object else "
+> -		     "return with relevant error");
+> -
+> -	igt_subtest("invalid-properties-atomic")
+> -		invalid_properties(&display, true);
+> +	for (i = 0; i < ARRAY_SIZE(tests); i++) {
+> +		igt_describe_f("%s\n", tests[i].desc);
+> +		igt_subtest_with_dynamic_f("%s", tests[i].name) {
+> +			if (tests->atomic && !display.is_atomic)
+> +				continue;
+>   
+> -	igt_describe("Test validates the properties of all planes, crtc and connectors with atomic commit");
+> -	igt_subtest("get_properties-sanity-atomic") {
+> -		igt_skip_on(!display.is_atomic);
+> -		get_prop_sanity(&display, true);
+> +			tests[i].func(&display, tests->atomic);
+> +		}
+>   	}
+>   
+> -	igt_describe("Test validates the properties of all planes, crtc and connectors with legacy commit");
+> -	igt_subtest("get_properties-sanity-non-atomic") {
+> -		if (display.is_atomic)
+> -			igt_assert_eq(drmSetClientCap(display.drm_fd, DRM_CLIENT_CAP_ATOMIC, 0), 0);
+> +	igt_subtest_group {
+> +		igt_describe("Test validates the properties of all planes, crtc and connectors with legacy commit");
+> +		igt_subtest("get_properties-sanity-non-atomic") {
+> +			if (display.is_atomic)
+> +				igt_assert_eq(drmSetClientCap(display.drm_fd, DRM_CLIENT_CAP_ATOMIC, 0), 0);
+> +			get_prop_sanity(&display, false);
+> +			if (display.is_atomic)
+> +				igt_assert_eq(drmSetClientCap(display.drm_fd, DRM_CLIENT_CAP_ATOMIC, 1), 0);
+> +		}
+>   
+> -		get_prop_sanity(&display, false);
+> +		igt_fixture
+> +			igt_require(display.is_atomic);
+>   
+> -		if (display.is_atomic)
+> -			igt_assert_eq(drmSetClientCap(display.drm_fd, DRM_CLIENT_CAP_ATOMIC, 1), 0);
+> +		igt_describe("Test validates the properties of all planes, crtc and connectors with atomic commit");
+> +		igt_subtest("get_properties-sanity-atomic")
+> +			get_prop_sanity(&display, true);
+>   	}
+>   
+>   	igt_fixture {
