@@ -1,17 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1237210E9A5
- for <igt-dev@lists.freedesktop.org>; Wed, 19 Oct 2022 12:23:56 +0000 (UTC)
-Date: Wed, 19 Oct 2022 14:23:41 +0200
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A83A510E2F2
+ for <igt-dev@lists.freedesktop.org>; Wed, 19 Oct 2022 12:43:53 +0000 (UTC)
+Date: Wed, 19 Oct 2022 14:43:48 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Message-ID: <Y0/sTWjg3THTEkkC@kamilkon-desk1>
-References: <20221017075822.2655487-1-vikas.srivastava@intel.com>
+Message-ID: <Y0/xBFcOXIE2/8PO@kamilkon-desk1>
+References: <20221019102325.2886794-1-vikas.srivastava@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20221017075822.2655487-1-vikas.srivastava@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t] Avoid caching ioctl during fork
+In-Reply-To: <20221019102325.2886794-1-vikas.srivastava@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/i915/i915_module_load : Use
+ GEM_BUSY instead of SET_CACHE for sanity check
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,114 +21,76 @@ List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Cc: Jonathan Cavitt <jonathan.cavitt@intel.com>,
- Chris P Wilson <chris.p.wilson@intel.com>, Fei Yang <fei.yang@intel.com>
+ Chris P Wilson <chris.p.wilson@intel.com>, Fei Yang <fei.yang@intel.com>,
+ Janga Rahul Kumar <janga.rahul.kumar@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
 Hi Vikas,
 
-please improve your commit description in subject, now it is
-a little ambiguous, put also name of test you changed, so it
-will looks like:
+put version number in subject, it should be like vN where
+N=number. You can omit it when you send version 1, bute then
+any new should be numbered. Remove space after i915_module_load
+and ':'. In summary this should be:
 
-tests/i915/gem_ctx_engines: Avoid SET_CACHING ioctl
+[PATCH i-g-t v4] tests/i915/i915_module_load: Use GEM_BUSY instead of SET_CACHE for sanity check
+------------ ^ ---------------------------- ^
 
-or
-
-tests/gem_ctx_engines: Avoid SET_CACHING ioctl
-
-Subject: Re: [igt-dev] [PATCH i-g-t] Avoid caching ioctl during fork
-
-On 2022-10-17 at 13:28:22 +0530, vikassri07 wrote:
->     Both gem_exec_flush and gem_ctx_engines require the SET_CACHING ioctl
+On 2022-10-19 at 15:53:25 +0530, Vikas Srivastava wrote:
+>     Use GEM_BUSY ioctl for sanity check as SET_CACHING ioctl
  ^^^^^
-Remove whitespaces before text (here and below).
-
->     for some subtests.  The ioctl itself, called by gem_set_caching, is
+>     is not supported on latest platforms like MTL.
  ^^^^^
+Remove white spaces at begin of line.
 
->     wrapped in an igt_require, forcing a skip when the ioctl fails.  MTL
->     currently fails this check with -EOPNOTSUPP 100% of the time.
-> 
->     Normally, the ioctl failing and causing a test skip wouldn't be a
->     problem.  Howerver, the failing call to the ioctl is made within a
->     forked child process in some cases, which causes an error to occur.  By
->     checking whether or not caching is supported before these cases occur,
-      ^        ^              ^
->     the resulting error can be downgraded to a graceful skip.
-
-This long description is now wrong, I do not see any check added
-nor any igt_skip() ? Please correct commit description.
-
-Please also read CONTRIBUTING.md from igt project and some other
-helpfull notes:
-
-https://www.ozlabs.org/~akpm/stuff/tpp.txt
-
-https://kernelnewbies.org/PatchPhilosophy
-
-https://elixir.bootlin.com/linux/latest/source/Documentation/process/submitting-patches.rst
-
-https://www.kernel.org/doc/html/latest/process/submitting-patches.html#the-canonical-patch-format
-
-> 
->     v2: The gem_ctx_engines subtest does not require using gem_set_caching
->     if the domain is moved from CPU to WC, so the ioctl was removed from
->     the execution path.
->     v3: Replace gem_mmap__cpu with gem_mmap__device_coherent instead of
->     gem_mmap__wc in gem_ctx_engines.c
->     v4: Fix formatting
-> 
->     References: VLK-34086
->     Signed-off-by: vikas.srivastava <vikas.srivastava@intel.com> 
--------------------- ^    ^^
-This should be:      Vikas Srivastava <vikas.srivastava@intel.com>
-
->     CC: Jonathan Cavitt <jonathan.cavitt@intel.com>
->     CC: Fei Yang <fei.yang@intel.com>
->     CC: Chris Wilson <chris.p.wilson@intel.com>
+>     
+>     References: VLK-36552
+>     
+>     Signed-off-by: vikas srivastava <vikas.srivastava@intel.com>
+>     Signed-off-by: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
+>     Acked-by: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
+>     Cc: Aravind Iddamsetty<aravind.iddamsetty@intel.com>
+>     Cc: Fei Yang <fei.yang@intel.com>
+>     Cc: Stuart Summers <stuart.summers@intel.com>
+>     Cc: Chris Wilson <chris.p.wilson@intel.com>
  ^^^^^
-Last line where you should remove white spaces.
+Last place where spaces should be removed.
+
+Please use checkpatch script from Linux kernel for checking
+and correcting your patches before sendig them.
+
+>     
+> ---
+>  tests/i915/i915_module_load.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/tests/i915/i915_module_load.c b/tests/i915/i915_module_load.c
+> index 1009a22b..eebb3167 100644
+> --- a/tests/i915/i915_module_load.c
+> +++ b/tests/i915/i915_module_load.c
+> @@ -226,13 +226,13 @@ inject_fault(const char *module_name, const char *opt, int fault)
+>  
+>  static void gem_sanitycheck(void)
+>  {
+> -	struct drm_i915_gem_caching args = {};
+> +	struct drm_i915_gem_busy args = {};
+>  	int i915 = __drm_open_driver(DRIVER_INTEL);
+>  	int expected = gem_has_lmem(i915) ? -ENODEV : -ENOENT;
+>  	int err;
+>  
+>  	err = 0;
+> -	if (ioctl(i915, DRM_IOCTL_I915_GEM_SET_CACHING, &args))
+> +	if (ioctl(i915,DRM_IOCTL_I915_GEM_BUSY, &args))
+---------------------- ^
+Put space after "," (this one spotted by checkpatch).
 
 Regards,
 Kamil
 
-> 
-> ---
->  tests/i915/gem_ctx_engines.c | 11 ++++-------
->  1 file changed, 4 insertions(+), 7 deletions(-)
-> 
-> diff --git a/tests/i915/gem_ctx_engines.c b/tests/i915/gem_ctx_engines.c
-> index b0646516..e9cc25d6 100644
-> --- a/tests/i915/gem_ctx_engines.c
-> +++ b/tests/i915/gem_ctx_engines.c
-> @@ -492,12 +492,10 @@ static void independent(int i915, const intel_ctx_t *base_ctx,
->  	}
->  	param.ctx_id = gem_context_create(i915);
->  	gem_context_set_param(i915, &param);
-> -
-> -	if (!gem_has_lmem(i915))
-> -		gem_set_caching(i915, results.handle, I915_CACHING_CACHED);
-> -	map = gem_mmap__cpu(i915, results.handle, 0, 4096, PROT_READ);
-> +	
-> +	map = gem_mmap__device_coherent(i915, results.handle, 0, 4096, PROT_READ);
->  	gem_set_domain(i915, results.handle,
-> -		       I915_GEM_DOMAIN_CPU, I915_GEM_DOMAIN_CPU);
-> +		       I915_GEM_DOMAIN_WC, I915_GEM_DOMAIN_WC);
->  
->  	for (int i = 0; i < I915_EXEC_RING_MASK + 1; i++) {
->  		struct drm_i915_gem_exec_object2 obj[2] = {
-> @@ -515,8 +513,7 @@ static void independent(int i915, const intel_ctx_t *base_ctx,
->  		uint32_t *cs;
->  		int j = 0;
->  
-> -		cs = gem_mmap__cpu(i915, obj[1].handle, 0, 4096, PROT_WRITE);
-> -
-> +		cs = gem_mmap__device_coherent(i915, obj[1].handle, 0, 4096, PROT_WRITE);
->  		cs[j] = 0x24 << 23 | 1; /* SRM */
->  		if (has_64bit_reloc)
->  			cs[j]++;
+>  		err = -errno;
+>  	if (err == expected)
+>  		store_all(i915);
 > -- 
 > 2.25.1
 > 
