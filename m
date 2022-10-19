@@ -1,21 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6313510F0F2
- for <igt-dev@lists.freedesktop.org>; Wed, 19 Oct 2022 04:06:03 +0000 (UTC)
-Message-ID: <f23df31a-a677-e901-3566-36c640f4449e@intel.com>
-Date: Wed, 19 Oct 2022 09:35:43 +0530
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A891B10EA7F
+ for <igt-dev@lists.freedesktop.org>; Wed, 19 Oct 2022 07:26:02 +0000 (UTC)
+From: "Dandamudi, Priyanka" <priyanka.dandamudi@intel.com>
+To: "Srivastava, Vikas" <vikas.srivastava@intel.com>,
+ "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Wilson,
+ Chris P" <chris.p.wilson@intel.com>
+Date: Wed, 19 Oct 2022 07:25:53 +0000
+Message-ID: <DM6PR11MB44929940DA19092E724182B68D2B9@DM6PR11MB4492.namprd11.prod.outlook.com>
+References: <20221017075822.2655487-1-vikas.srivastava@intel.com>
+In-Reply-To: <20221017075822.2655487-1-vikas.srivastava@intel.com>
 Content-Language: en-US
-To: Mohammed Thasleem <mohammed.thasleem@intel.com>,
- <igt-dev@lists.freedesktop.org>
-References: <20221010201130.35343-1-mohammed.thasleem@intel.com>
- <20221010201130.35343-2-mohammed.thasleem@intel.com>
-From: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
-In-Reply-To: <20221010201130.35343-2-mohammed.thasleem@intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH v6 1/2] tests/kms_properties: Create dynamic
- subtests
+Subject: Re: [igt-dev] [PATCH i-g-t] Avoid caching ioctl during fork
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,270 +22,94 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: "Cavitt, Jonathan" <jonathan.cavitt@intel.com>, "Yang,
+ Fei" <fei.yang@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Tue-11-10-2022 01:41 am, Mohammed Thasleem wrote:
-> Modified kms_properties to include dynamic test cases.
-> 
-> v2: Fixed compilation issue.
-> v3: Removed redundant code.
-> v4: Moved get_prop_sanity calls to igt_subtest_group.
-> v5: Replace for loop with for_each_disconnected_output.
-> v6: Moved cleanup part to igt cleanup patch.
-> 
-> Signed-off-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
+Add original author in the signed-off along with yours.
+After that change.
+Acked-by: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
+
+> -----Original Message-----
+> From: igt-dev <igt-dev-bounces@lists.freedesktop.org> On Behalf Of
+> vikassri07
+> Sent: 17 October 2022 01:28 PM
+> To: igt-dev@lists.freedesktop.org; Wilson, Chris P
+> <chris.p.wilson@intel.com>
+> Cc: Cavitt, Jonathan <jonathan.cavitt@intel.com>; Yang, Fei
+> <fei.yang@intel.com>
+> Subject: [igt-dev] [PATCH i-g-t] Avoid caching ioctl during fork
+>=20
+>     Both gem_exec_flush and gem_ctx_engines require the SET_CACHING
+> ioctl
+>     for some subtests.  The ioctl itself, called by gem_set_caching, is
+>     wrapped in an igt_require, forcing a skip when the ioctl fails.  MTL
+>     currently fails this check with -EOPNOTSUPP 100% of the time.
+>=20
+>     Normally, the ioctl failing and causing a test skip wouldn't be a
+>     problem.  Howerver, the failing call to the ioctl is made within a
+>     forked child process in some cases, which causes an error to occur.  =
+By
+>     checking whether or not caching is supported before these cases occur=
+,
+>     the resulting error can be downgraded to a graceful skip.
+>=20
+>     v2: The gem_ctx_engines subtest does not require using gem_set_cachin=
+g
+>     if the domain is moved from CPU to WC, so the ioctl was removed from
+>     the execution path.
+>     v3: Replace gem_mmap__cpu with gem_mmap__device_coherent instead
+> of
+>     gem_mmap__wc in gem_ctx_engines.c
+>     v4: Fix formatting
+>=20
+>     References: VLK-34086
+>     Signed-off-by: vikas.srivastava <vikas.srivastava@intel.com>
+>     CC: Jonathan Cavitt <jonathan.cavitt@intel.com>
+>     CC: Fei Yang <fei.yang@intel.com>
+>     CC: Chris Wilson <chris.p.wilson@intel.com>
+>=20
 > ---
->   tests/kms_properties.c | 163 ++++++++++++++++++-----------------------
->   1 file changed, 72 insertions(+), 91 deletions(-)
-> 
-> diff --git a/tests/kms_properties.c b/tests/kms_properties.c
-> index 2958efac..bcc8fbdd 100644
-> --- a/tests/kms_properties.c
-> +++ b/tests/kms_properties.c
-> @@ -230,48 +230,28 @@ static void run_connector_property_tests(igt_display_t *display, enum pipe pipe,
->   
->   static void plane_properties(igt_display_t *display, bool atomic)
->   {
-> -	bool found_any = false, found;
->   	igt_output_t *output;
->   	enum pipe pipe;
->   
-> -	if (atomic)
-> -		igt_skip_on(!display->is_atomic);
+>  tests/i915/gem_ctx_engines.c | 11 ++++-------
+>  1 file changed, 4 insertions(+), 7 deletions(-)
+>=20
+> diff --git a/tests/i915/gem_ctx_engines.c b/tests/i915/gem_ctx_engines.c
+> index b0646516..e9cc25d6 100644
+> --- a/tests/i915/gem_ctx_engines.c
+> +++ b/tests/i915/gem_ctx_engines.c
+> @@ -492,12 +492,10 @@ static void independent(int i915, const intel_ctx_t
+> *base_ctx,
+>  	}
+>  	param.ctx_id =3D gem_context_create(i915);
+>  	gem_context_set_param(i915, &param);
 > -
-> -	for_each_pipe(display, pipe) {
-> -		found = false;
-> -
-> -		for_each_valid_output_on_pipe(display, pipe, output) {
-> -			found_any = found = true;
-> -
-> +	for_each_pipe_with_single_output(display, pipe, output) {
-
-Do we really need the output to test plane properties? this test will 
-skip on no-display configs.
-
-> +		igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe),
-> +			      igt_output_name(output)) {
->   			run_plane_property_tests(display, pipe, output, atomic);
-> -			break;
->   		}
->   	}
-> -
-> -	igt_skip_on(!found_any);
->   }
->   
->   static void crtc_properties(igt_display_t *display, bool atomic)
->   {
-> -	bool found_any_valid_pipe = false, found;
->   	enum pipe pipe;
->   	igt_output_t *output;
->   
-> -	if (atomic)
-> -		igt_skip_on(!display->is_atomic);
-> -
-> -	for_each_pipe(display, pipe) {
-> -		found = false;
-> -
-> -		for_each_valid_output_on_pipe(display, pipe, output) {
-> -			found_any_valid_pipe = found = true;
-> -
-> +	for_each_pipe_with_single_output(display, pipe, output) {
-
-Please check the above comment.
-
-> +		igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe),
-> +			      igt_output_name(output)) {
->   			run_crtc_property_tests(display, pipe, output, atomic);
-> -			break;
->   		}
->   	}
-> -
-> -	igt_skip_on(!found_any_valid_pipe);
->   }
->   
->   static void connector_properties(igt_display_t *display, bool atomic)
-> @@ -280,22 +260,19 @@ static void connector_properties(igt_display_t *display, bool atomic)
->   	enum pipe pipe;
->   	igt_output_t *output;
->   
-> -	if (atomic)
-> -		igt_skip_on(!display->is_atomic);
-> -
->   	for_each_connected_output(display, output) {
-> -		bool found = false;
->   
->   		for_each_pipe(display, pipe) {
->   			if (!igt_pipe_connector_valid(pipe, output))
->   				continue;
->   
-> -			found = true;
-> -			run_connector_property_tests(display, pipe, output, atomic);
-> -			break;
-> +			igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe),
-> +				      igt_output_name(output)) {
-> +				run_connector_property_tests(display, pipe, output, atomic);
-> +			}
-
-Results are not matching with the existing tests (results are not 
-available for disconnected outputs).
-
-https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7965/shards-all.html?testfilter=kms_properties@connector-properties
-
-- Bhanu
-
->   		}
-> +		break;
->   
-> -		igt_assert_f(found, "Connected output should have at least 1 valid crtc\n");
->   	}
->   
->   	for (i = 0; i < display->n_outputs; i++)
-> @@ -707,25 +684,56 @@ static void invalid_properties(igt_display_t *display, bool atomic)
->   	igt_output_t *output;
->   	igt_plane_t *plane;
->   	enum pipe pipe;
-> -	int i;
-> -
-> -	if (atomic)
-> -		igt_skip_on(!display->is_atomic);
->   
->   	for_each_pipe(display, pipe)
-> -		test_object_invalid_properties(display, display->pipes[pipe].crtc_id, DRM_MODE_OBJECT_CRTC, atomic);
-> +		igt_dynamic_f("pipe-%s", kmstest_pipe_name(pipe))
-> +			test_object_invalid_properties(display, display->pipes[pipe].crtc_id,
-> +						       DRM_MODE_OBJECT_CRTC, atomic);
->   
->   	for_each_pipe(display, pipe)
-> -		for_each_plane_on_pipe(display, pipe, plane)
-> -			test_object_invalid_properties(display, plane->drm_plane->plane_id, DRM_MODE_OBJECT_PLANE, atomic);
-> +		igt_dynamic_f("pipe-%s-plane", kmstest_pipe_name(pipe))
-> +			for_each_plane_on_pipe(display, pipe, plane)
-> +				test_object_invalid_properties(display, plane->drm_plane->plane_id,
-> +							       DRM_MODE_OBJECT_PLANE, atomic);
+> -	if (!gem_has_lmem(i915))
+> -		gem_set_caching(i915, results.handle,
+> I915_CACHING_CACHED);
+> -	map =3D gem_mmap__cpu(i915, results.handle, 0, 4096, PROT_READ);
 > +
-> +	for_each_output(display, output)
-> +		igt_dynamic_f("%s", igt_output_name(output))
-> +			test_object_invalid_properties(display, output->id,
-> +						       DRM_MODE_OBJECT_CONNECTOR, atomic);
->   
-> -	for (i = 0, output = &display->outputs[0]; i < display->n_outputs; output = &display->outputs[++i])
-> -		test_object_invalid_properties(display, output->id, DRM_MODE_OBJECT_CONNECTOR, atomic);
->   }
->   
->   igt_main
->   {
->   	igt_display_t display;
-> +	int i;
-> +	static const struct {
-> +		const char *name;
-> +		void (*func)(igt_display_t *, bool);
-> +		const bool atomic;
-> +		const char *desc;
-> +	} tests[] = {
-> +		{ "plane-properties-legacy", plane_properties, false,
-> +		  "Tests plane properties with legacy commit" },
-> +		{ "plane-properties-atomic", plane_properties, true,
-> +		  "Tests plane properties with atomic commit" },
-> +		{ "crtc-properties-legacy", crtc_properties, false,
-> +		  "Tests crtc properties with legacy commit" },
-> +		{ "crtc-properties-atomic", crtc_properties, true,
-> +		  "Tests crtc properties with atomic commit" },
-> +		{ "connector-properties-legacy", connector_properties, false,
-> +		  "Tests connector properties with legacy commit" },
-> +		{ "connector-properties-atomic", connector_properties, true,
-> +		  "Tests connector properties with atomic commit" },
-> +		{ "invalid-properties-legacy", invalid_properties, false,
-> +		  "Checks each property of any type with combination of mode "
-> +		  "object with legacy commit and make sure only valid properties "
-> +		  "are set to mode object else return with relevant error" },
-> +		{ "invalid-properties-atomic", invalid_properties, true,
-> +		  "Checks each property of any type with combination of mode object "
-> +		  "with atomic commit and make sure only valid properties are set to "
-> +		  "mode object else return with relevant error" },
-> +	};
->   
->   	igt_fixture {
->   		display.drm_fd = drm_open_driver_master(DRIVER_ANY);
-> @@ -735,59 +743,32 @@ igt_main
->   		igt_display_require(&display, display.drm_fd);
->   	}
->   
-> -	igt_describe("Tests plane properties with legacy commit");
-> -	igt_subtest("plane-properties-legacy")
-> -		plane_properties(&display, false);
+> +	map =3D gem_mmap__device_coherent(i915, results.handle, 0, 4096,
+> +PROT_READ);
+>  	gem_set_domain(i915, results.handle,
+> -		       I915_GEM_DOMAIN_CPU, I915_GEM_DOMAIN_CPU);
+> +		       I915_GEM_DOMAIN_WC, I915_GEM_DOMAIN_WC);
+>=20
+>  	for (int i =3D 0; i < I915_EXEC_RING_MASK + 1; i++) {
+>  		struct drm_i915_gem_exec_object2 obj[2] =3D { @@ -515,8
+> +513,7 @@ static void independent(int i915, const intel_ctx_t *base_ctx,
+>  		uint32_t *cs;
+>  		int j =3D 0;
+>=20
+> -		cs =3D gem_mmap__cpu(i915, obj[1].handle, 0, 4096,
+> PROT_WRITE);
 > -
-> -	igt_describe("Tests plane properties with atomic commit");
-> -	igt_subtest("plane-properties-atomic")
-> -		plane_properties(&display, true);
-> -
-> -	igt_describe("Tests crtc properties with legacy commit");
-> -	igt_subtest("crtc-properties-legacy")
-> -		crtc_properties(&display, false);
-> -
-> -	igt_describe("Tests crtc properties with atomic commit");
-> -	igt_subtest("crtc-properties-atomic")
-> -		crtc_properties(&display, true);
-> -
-> -	igt_describe("Tests connector properties with legacy commit");
-> -	igt_subtest("connector-properties-legacy")
-> -		connector_properties(&display, false);
-> -
-> -	igt_describe("Tests connector properties with atomic commit");
-> -	igt_subtest("connector-properties-atomic")
-> -		connector_properties(&display, true);
-> -
-> -	igt_describe("Checks each property of any type with combination of mode object with legacy "
-> -		     "commit and make sure only valid properties are set to mode object else "
-> -		     "return with relevant error");
-> -
-> -	igt_subtest("invalid-properties-legacy")
-> -		invalid_properties(&display, false);
-> -
-> -	igt_describe("Checks each property of any type with combination of mode object with atomic "
-> -		     "commit and make sure only valid properties are set to mode object else "
-> -		     "return with relevant error");
-> -
-> -	igt_subtest("invalid-properties-atomic")
-> -		invalid_properties(&display, true);
-> +	for (i = 0; i < ARRAY_SIZE(tests); i++) {
-> +		igt_describe_f("%s\n", tests[i].desc);
-> +		igt_subtest_with_dynamic_f("%s", tests[i].name) {
-> +			if (tests->atomic && !display.is_atomic)
-> +				continue;
->   
-> -	igt_describe("Test validates the properties of all planes, crtc and connectors with atomic commit");
-> -	igt_subtest("get_properties-sanity-atomic") {
-> -		igt_skip_on(!display.is_atomic);
-> -		get_prop_sanity(&display, true);
-> +			tests[i].func(&display, tests->atomic);
-> +		}
->   	}
->   
-> -	igt_describe("Test validates the properties of all planes, crtc and connectors with legacy commit");
-> -	igt_subtest("get_properties-sanity-non-atomic") {
-> -		if (display.is_atomic)
-> -			igt_assert_eq(drmSetClientCap(display.drm_fd, DRM_CLIENT_CAP_ATOMIC, 0), 0);
-> +	igt_subtest_group {
-> +		igt_describe("Test validates the properties of all planes, crtc and connectors with legacy commit");
-> +		igt_subtest("get_properties-sanity-non-atomic") {
-> +			if (display.is_atomic)
-> +				igt_assert_eq(drmSetClientCap(display.drm_fd, DRM_CLIENT_CAP_ATOMIC, 0), 0);
-> +			get_prop_sanity(&display, false);
-> +			if (display.is_atomic)
-> +				igt_assert_eq(drmSetClientCap(display.drm_fd, DRM_CLIENT_CAP_ATOMIC, 1), 0);
-> +		}
->   
-> -		get_prop_sanity(&display, false);
-> +		igt_fixture
-> +			igt_require(display.is_atomic);
->   
-> -		if (display.is_atomic)
-> -			igt_assert_eq(drmSetClientCap(display.drm_fd, DRM_CLIENT_CAP_ATOMIC, 1), 0);
-> +		igt_describe("Test validates the properties of all planes, crtc and connectors with atomic commit");
-> +		igt_subtest("get_properties-sanity-atomic")
-> +			get_prop_sanity(&display, true);
->   	}
->   
->   	igt_fixture {
+> +		cs =3D gem_mmap__device_coherent(i915, obj[1].handle, 0,
+> 4096,
+> +PROT_WRITE);
+>  		cs[j] =3D 0x24 << 23 | 1; /* SRM */
+>  		if (has_64bit_reloc)
+>  			cs[j]++;
+> --
+> 2.25.1
