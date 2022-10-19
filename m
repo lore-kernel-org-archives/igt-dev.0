@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from NAM10-MW2-obe.outbound.protection.outlook.com
- (mail-mw2nam10on2042.outbound.protection.outlook.com [40.107.94.42])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 65D6F10E077
- for <igt-dev@lists.freedesktop.org>; Wed, 19 Oct 2022 19:45:11 +0000 (UTC)
+Received: from NAM02-BN1-obe.outbound.protection.outlook.com
+ (mail-bn1nam07on2057.outbound.protection.outlook.com [40.107.212.57])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A77AD10E082
+ for <igt-dev@lists.freedesktop.org>; Wed, 19 Oct 2022 19:55:18 +0000 (UTC)
 From: Aurabindo Pillai <aurabindo.pillai@amd.com>
 To: <igt-dev@lists.freedesktop.org>
-Date: Wed, 19 Oct 2022 15:45:07 -0400
-Message-ID: <20221019194507.3670217-1-aurabindo.pillai@amd.com>
+Date: Wed, 19 Oct 2022 15:55:14 -0400
+Message-ID: <20221019195514.3676771-1-aurabindo.pillai@amd.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-Subject: [igt-dev] [PATCH i-g-t v2] tests/kms_plane_cursor: Change API for
+Subject: [igt-dev] [PATCH i-g-t v3] tests/kms_plane_cursor: Change API for
  collecting the CRC for AMDGPU
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -34,12 +34,18 @@ igt_pipe_crc_collect_crc() for the side effect of skipping 2 frames
 within the driver thereby giving expected CRC values
 
 Signed-off-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
+--
+
+Changes in V3
+-------------
+
+* Fix a copy paste error
 ---
  tests/kms_plane_cursor.c | 16 ++++++++++++----
  1 file changed, 12 insertions(+), 4 deletions(-)
 
 diff --git a/tests/kms_plane_cursor.c b/tests/kms_plane_cursor.c
-index e9abfd78..94c1fb64 100644
+index e9abfd78..1caa822e 100644
 --- a/tests/kms_plane_cursor.c
 +++ b/tests/kms_plane_cursor.c
 @@ -150,8 +150,12 @@ static void test_cursor_pos(data_t *data, int x, int y, unsigned int flags)
@@ -64,8 +70,8 @@ index e9abfd78..94c1fb64 100644
 -	igt_pipe_crc_get_current(data->drm_fd, data->pipe_crc, &test_crc);
 -	igt_pipe_crc_stop(data->pipe_crc);
 +	if (!is_amdgpu_device(data->drm_fd)) {
-+		igt_pipe_crc_start(data->pipe_crc);
 +		igt_pipe_crc_get_current(data->drm_fd, data->pipe_crc, &test_crc);
++		igt_pipe_crc_stop(data->pipe_crc);
 +	} else {
 +		igt_pipe_crc_collect_crc(data->pipe_crc, &test_crc);
 +	}
