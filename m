@@ -1,11 +1,11 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A83A510E2F2
- for <igt-dev@lists.freedesktop.org>; Wed, 19 Oct 2022 12:43:53 +0000 (UTC)
-Date: Wed, 19 Oct 2022 14:43:48 +0200
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9375910F23A
+ for <igt-dev@lists.freedesktop.org>; Wed, 19 Oct 2022 13:17:43 +0000 (UTC)
+Date: Wed, 19 Oct 2022 15:17:37 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Message-ID: <Y0/xBFcOXIE2/8PO@kamilkon-desk1>
+Message-ID: <Y0/48XWtQrAtoEfa@kamilkon-desk1>
 References: <20221019102325.2886794-1-vikas.srivastava@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
@@ -29,37 +29,44 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 Hi Vikas,
 
-put version number in subject, it should be like vN where
-N=number. You can omit it when you send version 1, bute then
-any new should be numbered. Remove space after i915_module_load
-and ':'. In summary this should be:
-
-[PATCH i-g-t v4] tests/i915/i915_module_load: Use GEM_BUSY instead of SET_CACHE for sanity check
------------- ^ ---------------------------- ^
+few more nits, see below.
 
 On 2022-10-19 at 15:53:25 +0530, Vikas Srivastava wrote:
 >     Use GEM_BUSY ioctl for sanity check as SET_CACHING ioctl
- ^^^^^
 >     is not supported on latest platforms like MTL.
- ^^^^^
-Remove white spaces at begin of line.
-
 >     
 >     References: VLK-36552
+----------------- ^
+Remove this line, general rule is do not use VLK references
+or any other ones which are not public. If you really think it
+can help, put them after line  with only three "---" and before
+"diff --git" so that will be removed after "git am" command and
+will not land in git history.
+
 >     
 >     Signed-off-by: vikas srivastava <vikas.srivastava@intel.com>
+
+If you did not change anything in patch, do not add your s-o-b and
+add line "From: original author <author@address>" at begin of
+commit message, see for example:
+
+https://patchwork.freedesktop.org/series/108022/
+
+This one was resended:
+https://patchwork.freedesktop.org/patch/500903/?series=108022&rev=3
+
+This was resended and changed (so it has two s-o-b):
+https://patchwork.freedesktop.org/patch/500905/?series=108022&rev=3
+
+Regards,
+Kamil
+
 >     Signed-off-by: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
 >     Acked-by: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
 >     Cc: Aravind Iddamsetty<aravind.iddamsetty@intel.com>
 >     Cc: Fei Yang <fei.yang@intel.com>
 >     Cc: Stuart Summers <stuart.summers@intel.com>
 >     Cc: Chris Wilson <chris.p.wilson@intel.com>
- ^^^^^
-Last place where spaces should be removed.
-
-Please use checkpatch script from Linux kernel for checking
-and correcting your patches before sendig them.
-
 >     
 > ---
 >  tests/i915/i915_module_load.c | 4 ++--
@@ -82,12 +89,6 @@ and correcting your patches before sendig them.
 >  	err = 0;
 > -	if (ioctl(i915, DRM_IOCTL_I915_GEM_SET_CACHING, &args))
 > +	if (ioctl(i915,DRM_IOCTL_I915_GEM_BUSY, &args))
----------------------- ^
-Put space after "," (this one spotted by checkpatch).
-
-Regards,
-Kamil
-
 >  		err = -errno;
 >  	if (err == expected)
 >  		store_all(i915);
