@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D584F10E33C
- for <igt-dev@lists.freedesktop.org>; Wed, 19 Oct 2022 08:39:51 +0000 (UTC)
-From: vikassri07 <vikas.srivastava@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Wed, 19 Oct 2022 14:09:04 +0530
-Message-Id: <20221019083904.2878834-1-vikas.srivastava@intel.com>
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t] tests/i915/i915_module_load : Use GEM_BUSY
- instead of SET_CACHE for sanity check
+Content-Transfer-Encoding: 7bit
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "vikassri07" <vikas.srivastava@intel.com>
+Date: Wed, 19 Oct 2022 09:00:30 -0000
+Message-ID: <166617003059.29707.1662141004646818403@emeril.freedesktop.org>
+References: <20221019083123.2878349-1-vikas.srivastava@intel.com>
+In-Reply-To: <20221019083123.2878349-1-vikas.srivastava@intel.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_A?=
+ =?utf-8?q?void_caching_ioctl_during_fork_=28rev3=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,48 +17,45 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: janga.rahul.kumar@intel.com
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-    Use GEM_BUSY ioctl for sanity check as SET_CACHING ioctl
-    is not supported on latest platforms like MTL.
-    
-    References: VLK-36552
-    
-    Signed-off-by: vikas.srivastava <vikas.srivastava@intel.com>
-    Signed-off-by: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
-    Author: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
-    Acked-by: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
-    Cc: Aravind Iddamsetty<aravind.iddamsetty@intel.com>
-    Cc: Fei Yang <fei.yang@intel.com>
-    Cc: Stuart Summers <stuart.summers@intel.com>
-    Cc: Chris Wilson <chris.p.wilson@intel.com>
-    
----
- tests/i915/i915_module_load.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+== Series Details ==
 
-diff --git a/tests/i915/i915_module_load.c b/tests/i915/i915_module_load.c
-index 1009a22b..eebb3167 100644
---- a/tests/i915/i915_module_load.c
-+++ b/tests/i915/i915_module_load.c
-@@ -226,13 +226,13 @@ inject_fault(const char *module_name, const char *opt, int fault)
- 
- static void gem_sanitycheck(void)
- {
--	struct drm_i915_gem_caching args = {};
-+	struct drm_i915_gem_busy args = {};
- 	int i915 = __drm_open_driver(DRIVER_INTEL);
- 	int expected = gem_has_lmem(i915) ? -ENODEV : -ENOENT;
- 	int err;
- 
- 	err = 0;
--	if (ioctl(i915, DRM_IOCTL_I915_GEM_SET_CACHING, &args))
-+	if (ioctl(i915,DRM_IOCTL_I915_GEM_BUSY, &args))
- 		err = -errno;
- 	if (err == expected)
- 		store_all(i915);
--- 
-2.25.1
+Series: Avoid caching ioctl during fork (rev3)
+URL   : https://patchwork.freedesktop.org/series/109753/
+State : warning
+
+== Summary ==
+
+Pipeline status: FAILED.
+
+see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/715461 for the overview.
+
+test:ninja-test-mips has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/30005445):
+  Ok:                   23
+  Expected Fail:         4
+  Fail:                293
+  Unexpected Pass:       0
+  Skipped:               0
+  Timeout:               0
+  
+  Full log written to /builds/gfx-ci/igt-ci-tags/build/meson-logs/testlog.txt
+  section_end:1666169876:step_script
+  section_start:1666169876:upload_artifacts_on_failure
+  Uploading artifacts for failed job
+  Uploading artifacts...
+  build: found 1789 matching files and directories   
+  Uploading artifacts as "archive" to coordinator... 201 Created  id=30005445 responseStatus=201 Created token=j2Jsb1zG
+  section_end:1666169887:upload_artifacts_on_failure
+  section_start:1666169887:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1666169887:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+
+== Logs ==
+
+For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/715461
