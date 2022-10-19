@@ -1,14 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6DA6510F195
- for <igt-dev@lists.freedesktop.org>; Wed, 19 Oct 2022 08:32:28 +0000 (UTC)
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D584F10E33C
+ for <igt-dev@lists.freedesktop.org>; Wed, 19 Oct 2022 08:39:51 +0000 (UTC)
 From: vikassri07 <vikas.srivastava@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Wed, 19 Oct 2022 14:01:23 +0530
-Message-Id: <20221019083123.2878349-1-vikas.srivastava@intel.com>
+Date: Wed, 19 Oct 2022 14:09:04 +0530
+Message-Id: <20221019083904.2878834-1-vikas.srivastava@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t] Avoid caching ioctl during fork
+Subject: [igt-dev] [PATCH i-g-t] tests/i915/i915_module_load : Use GEM_BUSY
+ instead of SET_CACHE for sanity check
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -16,70 +17,48 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: jonathan.cavitt@intel.com
+Cc: janga.rahul.kumar@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-    Both gem_exec_flush and gem_ctx_engines require the SET_CACHING ioctl
-    for some subtests.  The ioctl itself, called by gem_set_caching, is
-    wrapped in an igt_require, forcing a skip when the ioctl fails.  MTL
-    currently fails this check with -EOPNOTSUPP 100% of the time.
-
-    Normally, the ioctl failing and causing a test skip wouldn't be a
-    problem.  Howerver, the failing call to the ioctl is made within a
-    forked child process in some cases, which causes an error to occur.  By
-    checking whether or not caching is supported before these cases occur,
-    the resulting error can be downgraded to a graceful skip.
-
-    v2: The gem_ctx_engines subtest does not require using gem_set_caching
-    if the domain is moved from CPU to WC, so the ioctl was removed from
-    the execution path.
-    v3: Replace gem_mmap__cpu with gem_mmap__device_coherent instead of
-    gem_mmap__wc in gem_ctx_engines.c
-    v4: Fix formatting
-
-    References: VLK-34086
-    Signed-off-by: vikas.srivastava <vikas.srivastava@intel.com> 
-    Signed-off-by: Jonathan Cavitt <jonathan.cavitt@intel.com>
-    Author: Jonathan Cavitt <jonathan.cavitt@intel.com>
+    Use GEM_BUSY ioctl for sanity check as SET_CACHING ioctl
+    is not supported on latest platforms like MTL.
+    
+    References: VLK-36552
+    
+    Signed-off-by: vikas.srivastava <vikas.srivastava@intel.com>
+    Signed-off-by: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
+    Author: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
     Acked-by: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
-    CC: Fei Yang <fei.yang@intel.com>
-    CC: Chris Wilson <chris.p.wilson@intel.com>
-
+    Cc: Aravind Iddamsetty<aravind.iddamsetty@intel.com>
+    Cc: Fei Yang <fei.yang@intel.com>
+    Cc: Stuart Summers <stuart.summers@intel.com>
+    Cc: Chris Wilson <chris.p.wilson@intel.com>
+    
 ---
- tests/i915/gem_ctx_engines.c | 11 ++++-------
- 1 file changed, 4 insertions(+), 7 deletions(-)
+ tests/i915/i915_module_load.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/tests/i915/gem_ctx_engines.c b/tests/i915/gem_ctx_engines.c
-index b0646516..e9cc25d6 100644
---- a/tests/i915/gem_ctx_engines.c
-+++ b/tests/i915/gem_ctx_engines.c
-@@ -492,12 +492,10 @@ static void independent(int i915, const intel_ctx_t *base_ctx,
- 	}
- 	param.ctx_id = gem_context_create(i915);
- 	gem_context_set_param(i915, &param);
--
--	if (!gem_has_lmem(i915))
--		gem_set_caching(i915, results.handle, I915_CACHING_CACHED);
--	map = gem_mmap__cpu(i915, results.handle, 0, 4096, PROT_READ);
-+	
-+	map = gem_mmap__device_coherent(i915, results.handle, 0, 4096, PROT_READ);
- 	gem_set_domain(i915, results.handle,
--		       I915_GEM_DOMAIN_CPU, I915_GEM_DOMAIN_CPU);
-+		       I915_GEM_DOMAIN_WC, I915_GEM_DOMAIN_WC);
+diff --git a/tests/i915/i915_module_load.c b/tests/i915/i915_module_load.c
+index 1009a22b..eebb3167 100644
+--- a/tests/i915/i915_module_load.c
++++ b/tests/i915/i915_module_load.c
+@@ -226,13 +226,13 @@ inject_fault(const char *module_name, const char *opt, int fault)
  
- 	for (int i = 0; i < I915_EXEC_RING_MASK + 1; i++) {
- 		struct drm_i915_gem_exec_object2 obj[2] = {
-@@ -515,8 +513,7 @@ static void independent(int i915, const intel_ctx_t *base_ctx,
- 		uint32_t *cs;
- 		int j = 0;
+ static void gem_sanitycheck(void)
+ {
+-	struct drm_i915_gem_caching args = {};
++	struct drm_i915_gem_busy args = {};
+ 	int i915 = __drm_open_driver(DRIVER_INTEL);
+ 	int expected = gem_has_lmem(i915) ? -ENODEV : -ENOENT;
+ 	int err;
  
--		cs = gem_mmap__cpu(i915, obj[1].handle, 0, 4096, PROT_WRITE);
--
-+		cs = gem_mmap__device_coherent(i915, obj[1].handle, 0, 4096, PROT_WRITE);
- 		cs[j] = 0x24 << 23 | 1; /* SRM */
- 		if (has_64bit_reloc)
- 			cs[j]++;
+ 	err = 0;
+-	if (ioctl(i915, DRM_IOCTL_I915_GEM_SET_CACHING, &args))
++	if (ioctl(i915,DRM_IOCTL_I915_GEM_BUSY, &args))
+ 		err = -errno;
+ 	if (err == expected)
+ 		store_all(i915);
 -- 
 2.25.1
