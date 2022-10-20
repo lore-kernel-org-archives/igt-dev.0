@@ -1,21 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from NAM10-DM6-obe.outbound.protection.outlook.com
- (mail-dm6nam10on2068.outbound.protection.outlook.com [40.107.93.68])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2ECF110E32C
- for <igt-dev@lists.freedesktop.org>; Thu, 13 Oct 2022 19:05:29 +0000 (UTC)
-Message-ID: <96ffa57b-8277-9194-039e-a814caac68bd@amd.com>
-Date: Thu, 13 Oct 2022 13:05:24 -0600
-To: Mark Yacoub <markyacoub@chromium.org>
-References: <20221012235706.75569-1-alex.hung@amd.com>
- <CAJUqKUr1QyvaRZ-gAfRt5Cz2xU+Nkxf_cQ5GCwVyBPTc6hEB8w@mail.gmail.com>
-Content-Language: en-US
-From: Alex Hung <alex.hung@amd.com>
-In-Reply-To: <CAJUqKUr1QyvaRZ-gAfRt5Cz2xU+Nkxf_cQ5GCwVyBPTc6hEB8w@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9326810E1AF
+ for <igt-dev@lists.freedesktop.org>; Thu, 20 Oct 2022 10:08:55 +0000 (UTC)
+Date: Thu, 20 Oct 2022 13:08:43 +0300
+From: Petri Latvala <petri.latvala@intel.com>
+To: Ville =?iso-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
+Message-ID: <Y1EeK3eYlyeMvwMI@platvala-desk.ger.corp.intel.com>
+References: <20221019163029.19301-1-ville.syrjala@linux.intel.com>
+ <20221019163029.19301-3-ville.syrjala@linux.intel.com>
+ <Y1EYt9whKh4zZSzQ@kamilkon-desk1> <Y1EacxG3rZ7kx7Zr@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH 1/2] tests/kms_universal_plane: turn off pipe
- when primary plane is off
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <Y1EacxG3rZ7kx7Zr@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t v3 3/3] lib/crc: Move pipe CRC stuff out
+ from igt_debugfs
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,80 +28,57 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
+On Thu, Oct 20, 2022 at 12:52:51PM +0300, Ville Syrjälä wrote:
+> On Thu, Oct 20, 2022 at 11:45:27AM +0200, Kamil Konieczny wrote:
+> > Hi Ville,
+> > 
+> > On 2022-10-19 at 19:30:29 +0300, Ville Syrjala wrote:
+> > > From: Ville Syrjälä <ville.syrjala@linux.intel.com>
+> > 
+> > You are author and sender, no need for this "From:" line.
+> 
+> It's an old trick to work around email servers that rewrite the From
+> header. I suppose I could get rid of it now that I no longer send
+> via such servers, but meh.
+> 
+> <snip>
+> > > diff --git a/lib/igt_pipe_crc.c b/lib/igt_pipe_crc.c
+> > > new file mode 100644
+> > > index 000000000000..14fe7331f0b0
+> > > --- /dev/null
+> > > +++ b/lib/igt_pipe_crc.c
+> > > @@ -0,0 +1,610 @@
+> > > +/*
+> > > + * Copyright © 2013 Intel Corporation
+> > > + *
+> > > + * Permission is hereby granted, free of charge, to any person obtaining a
+> > > + * copy of this software and associated documentation files (the "Software"),
+> > > + * to deal in the Software without restriction, including without limitation
+> > > + * the rights to use, copy, modify, merge, publish, distribute, sublicense,
+> > > + * and/or sell copies of the Software, and to permit persons to whom the
+> > > + * Software is furnished to do so, subject to the following conditions:
+> > > + *
+> > > + * The above copyright notice and this permission notice (including the next
+> > > + * paragraph) shall be included in all copies or substantial portions of the
+> > > + * Software.
+> > > + *
+> > > + * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+> > > + * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+> > > + * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
+> > > + * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+> > > + * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+> > > + * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
+> > > + * IN THE SOFTWARE.
+> > > + *
+> > > + */
+> > 
+> > Please use SPDX licence here.
+> 
+> Didn't realize we started to use those in igt. I'll respin.
+
+They are ok to use in new files, not in old files. Season's greetings
+from Legal.
 
 
-On 2022-10-13 08:19, Mark Yacoub wrote:
-> On Wed, Oct 12, 2022 at 7:57 PM Alex Hung <alex.hung@amd.com> wrote:
->>
->> GPU drivers can reject when crtc is on and primary plane is off,
->> so turn crtc off with primary plane and turn it on afterwards.
->>
->> Signed-off-by: Alex Hung <alex.hung@amd.com>
->> ---
->>   tests/kms_universal_plane.c | 13 +++++++++++++
->>   1 file changed, 13 insertions(+)
->>
->> diff --git a/tests/kms_universal_plane.c b/tests/kms_universal_plane.c
->> index 64416afd..468f7a4e 100644
->> --- a/tests/kms_universal_plane.c
->> +++ b/tests/kms_universal_plane.c
->> @@ -62,6 +62,13 @@ typedef struct {
->>          struct igt_fb biggreen_fb, smallred_fb, smallblue_fb;
->>   } gen9_test_t;
->>
->> +static void
->> +set_pipe_on_off(igt_display_t *display, igt_output_t *output, enum pipe pipe)
->> +{
->> +       igt_output_set_pipe(output, pipe);
->> +       igt_display_commit2(display, COMMIT_LEGACY);
-> Why did you choose legacy commit?
-
-This seems to be most stable. I observed failures / regressions if using 
-atomic and universal on both intel and amd devices, but not with legacy.
-
->> +}
->> +
->>   static void
->>   functional_test_init(functional_test_t *test, igt_output_t *output, enum pipe pipe)
->>   {
->> @@ -228,12 +235,14 @@ functional_test_pipe(data_t *data, enum pipe pipe, igt_output_t *output)
->>          igt_pipe_crc_collect_crc(test.pipe_crc, &test.crc_7);
->>
->>          /* Step 11: Disable primary plane */
->> +       set_pipe_on_off(&data->display, output, PIPE_NONE);
->>          igt_plane_set_fb(primary, NULL);
->>          igt_display_commit2(display, COMMIT_UNIVERSAL);
->>
->>          /* Step 12: Legacy modeset to yellow FB (CRC 8) */
->>          igt_plane_set_fb(primary, &test.yellow_fb);
->>          igt_display_commit2(display, COMMIT_LEGACY);
->> +       set_pipe_on_off(&data->display, output, pipe);
->>          igt_pipe_crc_collect_crc(test.pipe_crc, &test.crc_8);
->>
->>          /* Step 13: Legacy API', blue primary, red sprite */
->> @@ -497,8 +506,10 @@ pageflip_test_pipe(data_t *data, enum pipe pipe, igt_output_t *output)
->>          igt_display_commit2(&data->display, COMMIT_LEGACY);
->>
->>          /* Disable the primary plane */
->> +       set_pipe_on_off(&data->display, output, PIPE_NONE);
->>          igt_plane_set_fb(primary, NULL);
->>          igt_display_commit2(&data->display, COMMIT_UNIVERSAL);
->> +       set_pipe_on_off(&data->display, output, pipe);
->>
->>          /*
->>           * Issue a pageflip to red FB
->> @@ -520,9 +531,11 @@ pageflip_test_pipe(data_t *data, enum pipe pipe, igt_output_t *output)
->>           * completes, which we don't have a good way to specifically test for,
->>           * but at least we can make sure that nothing blows up.
->>           */
->> +       set_pipe_on_off(&data->display, output, pipe);
->>          igt_assert(drmModePageFlip(data->drm_fd, output->config.crtc->crtc_id,
->>                                     test.red_fb.fb_id, DRM_MODE_PAGE_FLIP_EVENT,
->>                                     &test) == 0);
->> +       set_pipe_on_off(&data->display, output, PIPE_NONE);
->>          igt_plane_set_fb(primary, NULL);
->>          igt_display_commit2(&data->display, COMMIT_UNIVERSAL);
->>
->> --
->> 2.38.0
->>
+-- 
+Petri Latvala
