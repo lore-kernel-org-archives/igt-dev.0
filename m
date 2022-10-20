@@ -1,16 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============0171487659528317686=="
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7A7D410E3D6
+ for <igt-dev@lists.freedesktop.org>; Thu, 20 Oct 2022 08:18:56 +0000 (UTC)
+Date: Thu, 20 Oct 2022 11:18:42 +0300
+From: Petri Latvala <petri.latvala@intel.com>
+To: Ville Syrjala <ville.syrjala@linux.intel.com>
+Message-ID: <Y1EEYo8Nwv9aLySS@platvala-desk.ger.corp.intel.com>
+References: <20221019163029.19301-1-ville.syrjala@linux.intel.com>
+ <20221019163029.19301-3-ville.syrjala@linux.intel.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: =?utf-8?q?Zbigniew_Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Date: Thu, 20 Oct 2022 07:53:43 -0000
-Message-ID: <166625242312.8589.8237608056471076865@emeril.freedesktop.org>
-References: <20221020065337.26978-1-zbigniew.kempczynski@intel.com>
-In-Reply-To: <20221020065337.26978-1-zbigniew.kempczynski@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3IgbGliL2k5?=
- =?utf-8?q?15=5Fblt=3A_Equalize_pitch_and_aux-ccs_for_full_resolve_=28rev2?=
- =?utf-8?q?=29?=
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20221019163029.19301-3-ville.syrjala@linux.intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t v3 3/3] lib/crc: Move pipe CRC stuff out
+ from igt_debugfs
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,459 +22,1527 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============0171487659528317686==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+On Wed, Oct 19, 2022 at 07:30:29PM +0300, Ville Syrjala wrote:
+> From: Ville Syrjälä <ville.syrjala@linux.intel.com>
+> 
+> No reason to hide the pipe CRC code inside the debugfs stuff.
+> The fact that pipe CRCs are operated through debugfs is just
+> an irrelevant implementation detail.
+> 
+> Fixed up the few cases that don't include igt.h with this cocci:
+> @find@
+> identifier ID;
+> @@
+> igt_crc_t ID;
+> 
+> @has_include@
+> @@
+> (
+>  #include "igt_pipe_crc.h"
+> |
+>  #include "igt.h"
+> )
+> 
+> @depends on find && !has_include@
+> @@
+>   #include "igt_kms.h"
+> + #include "igt_pipe_crc.h"
+> 
+> v2: better cocci to catch lib/igt_chamelium.c
+> v3: Rebase and roll on doc fix from Petri
+> 
+> Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-== Series Details ==
+For the series:
 
-Series: lib/i915_blt: Equalize pitch and aux-ccs for full resolve (rev2)
-URL   : https://patchwork.freedesktop.org/series/109922/
-State : failure
-
-== Summary ==
-
-CI Bug Log - changes from CI_DRM_12262 -> IGTPW_7989
-====================================================
-
-Summary
--------
-
-  **FAILURE**
-
-  Serious unknown changes coming with IGTPW_7989 absolutely need to be
-  verified manually.
-  
-  If you think the reported changes have nothing to do with the changes
-  introduced in IGTPW_7989, please notify your bug team to allow them
-  to document this new failure mode, which will reduce false positives in CI.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7989/index.html
-
-Participating hosts (43 -> 42)
-------------------------------
-
-  Additional (1): fi-icl-u2 
-  Missing    (2): fi-bdw-samus fi-tgl-dsi 
-
-Possible new issues
--------------------
-
-  Here are the unknown changes that may have been introduced in IGTPW_7989:
-
-### IGT changes ###
-
-#### Possible regressions ####
-
-  * igt@gem_ctx_exec@basic:
-    - fi-bsw-nick:        [PASS][1] -> [DMESG-WARN][2]
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12262/fi-bsw-nick/igt@gem_ctx_exec@basic.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7989/fi-bsw-nick/igt@gem_ctx_exec@basic.html
-
-  
-#### Suppressed ####
-
-  The following results come from untrusted machines, tests, or statuses.
-  They do not affect the overall result.
-
-  * igt@i915_pm_rpm@basic-rte:
-    - {bat-rplp-1}:       [PASS][3] -> [DMESG-WARN][4]
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12262/bat-rplp-1/igt@i915_pm_rpm@basic-rte.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7989/bat-rplp-1/igt@i915_pm_rpm@basic-rte.html
-
-  
-Known issues
-------------
-
-  Here are the changes found in IGTPW_7989 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@gem_huc_copy@huc-copy:
-    - fi-icl-u2:          NOTRUN -> [SKIP][5] ([i915#2190])
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7989/fi-icl-u2/igt@gem_huc_copy@huc-copy.html
-
-  * igt@gem_lmem_swapping@random-engines:
-    - fi-icl-u2:          NOTRUN -> [SKIP][6] ([i915#4613]) +3 similar issues
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7989/fi-icl-u2/igt@gem_lmem_swapping@random-engines.html
-
-  * igt@i915_selftest@live@gem_contexts:
-    - fi-glk-j4005:       [PASS][7] -> [DMESG-FAIL][8] ([i915#7270])
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12262/fi-glk-j4005/igt@i915_selftest@live@gem_contexts.html
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7989/fi-glk-j4005/igt@i915_selftest@live@gem_contexts.html
-
-  * igt@i915_selftest@live@gem_migrate:
-    - fi-icl-u2:          NOTRUN -> [DMESG-FAIL][9] ([i915#4890])
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7989/fi-icl-u2/igt@i915_selftest@live@gem_migrate.html
-
-  * igt@i915_selftest@live@gt_heartbeat:
-    - fi-glk-j4005:       [PASS][10] -> [DMESG-FAIL][11] ([i915#5334])
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12262/fi-glk-j4005/igt@i915_selftest@live@gt_heartbeat.html
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7989/fi-glk-j4005/igt@i915_selftest@live@gt_heartbeat.html
-
-  * igt@kms_chamelium@common-hpd-after-suspend:
-    - fi-hsw-4770:        NOTRUN -> [SKIP][12] ([fdo#109271] / [fdo#111827])
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7989/fi-hsw-4770/igt@kms_chamelium@common-hpd-after-suspend.html
-    - fi-rkl-11600:       NOTRUN -> [SKIP][13] ([fdo#111827])
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7989/fi-rkl-11600/igt@kms_chamelium@common-hpd-after-suspend.html
-
-  * igt@kms_chamelium@hdmi-hpd-fast:
-    - fi-icl-u2:          NOTRUN -> [SKIP][14] ([fdo#111827]) +7 similar issues
-   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7989/fi-icl-u2/igt@kms_chamelium@hdmi-hpd-fast.html
-
-  * igt@kms_cursor_legacy@basic-busy-flip-before-cursor:
-    - fi-icl-u2:          NOTRUN -> [SKIP][15] ([i915#4103])
-   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7989/fi-icl-u2/igt@kms_cursor_legacy@basic-busy-flip-before-cursor.html
-
-  * igt@kms_force_connector_basic@force-load-detect:
-    - fi-icl-u2:          NOTRUN -> [SKIP][16] ([fdo#109285])
-   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7989/fi-icl-u2/igt@kms_force_connector_basic@force-load-detect.html
-
-  * igt@kms_setmode@basic-clone-single-crtc:
-    - fi-icl-u2:          NOTRUN -> [SKIP][17] ([i915#3555])
-   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7989/fi-icl-u2/igt@kms_setmode@basic-clone-single-crtc.html
-
-  * igt@prime_vgem@basic-userptr:
-    - fi-icl-u2:          NOTRUN -> [SKIP][18] ([fdo#109295] / [i915#3301])
-   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7989/fi-icl-u2/igt@prime_vgem@basic-userptr.html
-
-  * igt@runner@aborted:
-    - fi-icl-u2:          NOTRUN -> [FAIL][19] ([i915#4312])
-   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7989/fi-icl-u2/igt@runner@aborted.html
-
-  
-#### Possible fixes ####
-
-  * igt@gem_exec_gttfill@basic:
-    - fi-pnv-d510:        [FAIL][20] ([i915#7229]) -> [PASS][21]
-   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12262/fi-pnv-d510/igt@gem_exec_gttfill@basic.html
-   [21]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7989/fi-pnv-d510/igt@gem_exec_gttfill@basic.html
-
-  * igt@i915_pm_rpm@module-reload:
-    - {bat-rpls-2}:       [DMESG-WARN][22] ([i915#5537]) -> [PASS][23]
-   [22]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12262/bat-rpls-2/igt@i915_pm_rpm@module-reload.html
-   [23]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7989/bat-rpls-2/igt@i915_pm_rpm@module-reload.html
-
-  * igt@i915_selftest@live@gem_contexts:
-    - fi-rkl-11600:       [DMESG-FAIL][24] -> [PASS][25]
-   [24]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12262/fi-rkl-11600/igt@i915_selftest@live@gem_contexts.html
-   [25]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7989/fi-rkl-11600/igt@i915_selftest@live@gem_contexts.html
-    - {bat-dg2-11}:       [DMESG-FAIL][26] ([i915#7270]) -> [PASS][27]
-   [26]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12262/bat-dg2-11/igt@i915_selftest@live@gem_contexts.html
-   [27]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7989/bat-dg2-11/igt@i915_selftest@live@gem_contexts.html
-
-  * igt@i915_selftest@live@hangcheck:
-    - fi-hsw-4770:        [INCOMPLETE][28] ([i915#4785]) -> [PASS][29]
-   [28]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12262/fi-hsw-4770/igt@i915_selftest@live@hangcheck.html
-   [29]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7989/fi-hsw-4770/igt@i915_selftest@live@hangcheck.html
-    - fi-adl-ddr5:        [DMESG-WARN][30] ([i915#5591]) -> [PASS][31]
-   [30]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12262/fi-adl-ddr5/igt@i915_selftest@live@hangcheck.html
-   [31]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7989/fi-adl-ddr5/igt@i915_selftest@live@hangcheck.html
-
-  * igt@i915_selftest@live@requests:
-    - {bat-adln-1}:       [DMESG-FAIL][32] ([i915#7269]) -> [PASS][33]
-   [32]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12262/bat-adln-1/igt@i915_selftest@live@requests.html
-   [33]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7989/bat-adln-1/igt@i915_selftest@live@requests.html
-    - {bat-adlp-6}:       [DMESG-FAIL][34] ([i915#7269]) -> [PASS][35]
-   [34]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12262/bat-adlp-6/igt@i915_selftest@live@requests.html
-   [35]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7989/bat-adlp-6/igt@i915_selftest@live@requests.html
-
-  * igt@i915_selftest@live@slpc:
-    - {bat-adln-1}:       [DMESG-FAIL][36] ([i915#6997]) -> [PASS][37]
-   [36]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12262/bat-adln-1/igt@i915_selftest@live@slpc.html
-   [37]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7989/bat-adln-1/igt@i915_selftest@live@slpc.html
-
-  * igt@i915_suspend@basic-s3-without-i915:
-    - fi-rkl-11600:       [INCOMPLETE][38] ([i915#5982]) -> [PASS][39]
-   [38]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12262/fi-rkl-11600/igt@i915_suspend@basic-s3-without-i915.html
-   [39]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7989/fi-rkl-11600/igt@i915_suspend@basic-s3-without-i915.html
-
-  
-#### Warnings ####
-
-  * igt@runner@aborted:
-    - fi-bsw-nick:        [FAIL][40] ([fdo#109271] / [i915#4312]) -> [FAIL][41] ([i915#4312])
-   [40]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12262/fi-bsw-nick/igt@runner@aborted.html
-   [41]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7989/fi-bsw-nick/igt@runner@aborted.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
-  [fdo#109285]: https://bugs.freedesktop.org/show_bug.cgi?id=109285
-  [fdo#109295]: https://bugs.freedesktop.org/show_bug.cgi?id=109295
-  [fdo#111827]: https://bugs.freedesktop.org/show_bug.cgi?id=111827
-  [i915#2190]: https://gitlab.freedesktop.org/drm/intel/issues/2190
-  [i915#2867]: https://gitlab.freedesktop.org/drm/intel/issues/2867
-  [i915#3301]: https://gitlab.freedesktop.org/drm/intel/issues/3301
-  [i915#3555]: https://gitlab.freedesktop.org/drm/intel/issues/3555
-  [i915#4103]: https://gitlab.freedesktop.org/drm/intel/issues/4103
-  [i915#4312]: https://gitlab.freedesktop.org/drm/intel/issues/4312
-  [i915#4613]: https://gitlab.freedesktop.org/drm/intel/issues/4613
-  [i915#4785]: https://gitlab.freedesktop.org/drm/intel/issues/4785
-  [i915#4890]: https://gitlab.freedesktop.org/drm/intel/issues/4890
-  [i915#4983]: https://gitlab.freedesktop.org/drm/intel/issues/4983
-  [i915#5334]: https://gitlab.freedesktop.org/drm/intel/issues/5334
-  [i915#5537]: https://gitlab.freedesktop.org/drm/intel/issues/5537
-  [i915#5591]: https://gitlab.freedesktop.org/drm/intel/issues/5591
-  [i915#5828]: https://gitlab.freedesktop.org/drm/intel/issues/5828
-  [i915#5982]: https://gitlab.freedesktop.org/drm/intel/issues/5982
-  [i915#6257]: https://gitlab.freedesktop.org/drm/intel/issues/6257
-  [i915#6997]: https://gitlab.freedesktop.org/drm/intel/issues/6997
-  [i915#7029]: https://gitlab.freedesktop.org/drm/intel/issues/7029
-  [i915#7229]: https://gitlab.freedesktop.org/drm/intel/issues/7229
-  [i915#7269]: https://gitlab.freedesktop.org/drm/intel/issues/7269
-  [i915#7270]: https://gitlab.freedesktop.org/drm/intel/issues/7270
+Reviewed-by: Petri Latvala <petri.latvala@intel.com>
 
 
-Build changes
--------------
 
-  * CI: CI-20190529 -> None
-  * IGT: IGT_7020 -> IGTPW_7989
-
-  CI-20190529: 20190529
-  CI_DRM_12262: bbb4ee9bfa314f7a64d5b49112aa93c058f0c014 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_7989: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7989/index.html
-  IGT_7020: 05b7eaf9ade2216d17c069c89439015757ee25f7 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7989/index.html
-
---===============0171487659528317686==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>lib/i915_blt: Equalize pitch and aux-ccs for full resolve (rev2)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/109922/">https://patchwork.freedesktop.org/series/109922/</a></td></tr>
-<tr><td><b>State:</b></td><td>failure</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7989/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7989/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from CI_DRM_12262 -&gt; IGTPW_7989</h1>
-<h2>Summary</h2>
-<p><strong>FAILURE</strong></p>
-<p>Serious unknown changes coming with IGTPW_7989 absolutely need to be<br />
-  verified manually.</p>
-<p>If you think the reported changes have nothing to do with the changes<br />
-  introduced in IGTPW_7989, please notify your bug team to allow them<br />
-  to document this new failure mode, which will reduce false positives in CI.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7989/index.html</p>
-<h2>Participating hosts (43 -&gt; 42)</h2>
-<p>Additional (1): fi-icl-u2 <br />
-  Missing    (2): fi-bdw-samus fi-tgl-dsi </p>
-<h2>Possible new issues</h2>
-<p>Here are the unknown changes that may have been introduced in IGTPW_7989:</p>
-<h3>IGT changes</h3>
-<h4>Possible regressions</h4>
-<ul>
-<li>igt@gem_ctx_exec@basic:<ul>
-<li>fi-bsw-nick:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12262/fi-bsw-nick/igt@gem_ctx_exec@basic.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7989/fi-bsw-nick/igt@gem_ctx_exec@basic.html">DMESG-WARN</a></li>
-</ul>
-</li>
-</ul>
-<h4>Suppressed</h4>
-<p>The following results come from untrusted machines, tests, or statuses.<br />
-  They do not affect the overall result.</p>
-<ul>
-<li>igt@i915_pm_rpm@basic-rte:<ul>
-<li>{bat-rplp-1}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12262/bat-rplp-1/igt@i915_pm_rpm@basic-rte.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7989/bat-rplp-1/igt@i915_pm_rpm@basic-rte.html">DMESG-WARN</a></li>
-</ul>
-</li>
-</ul>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_7989 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@gem_huc_copy@huc-copy:</p>
-<ul>
-<li>fi-icl-u2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7989/fi-icl-u2/igt@gem_huc_copy@huc-copy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2190">i915#2190</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_lmem_swapping@random-engines:</p>
-<ul>
-<li>fi-icl-u2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7989/fi-icl-u2/igt@gem_lmem_swapping@random-engines.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4613">i915#4613</a>) +3 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@gem_contexts:</p>
-<ul>
-<li>fi-glk-j4005:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12262/fi-glk-j4005/igt@i915_selftest@live@gem_contexts.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7989/fi-glk-j4005/igt@i915_selftest@live@gem_contexts.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7270">i915#7270</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@gem_migrate:</p>
-<ul>
-<li>fi-icl-u2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7989/fi-icl-u2/igt@i915_selftest@live@gem_migrate.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4890">i915#4890</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@gt_heartbeat:</p>
-<ul>
-<li>fi-glk-j4005:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12262/fi-glk-j4005/igt@i915_selftest@live@gt_heartbeat.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7989/fi-glk-j4005/igt@i915_selftest@live@gt_heartbeat.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5334">i915#5334</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_chamelium@common-hpd-after-suspend:</p>
-<ul>
-<li>
-<p>fi-hsw-4770:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7989/fi-hsw-4770/igt@kms_chamelium@common-hpd-after-suspend.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://bugs.freedesktop.org/show_bug.cgi?id=111827">fdo#111827</a>)</p>
-</li>
-<li>
-<p>fi-rkl-11600:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7989/fi-rkl-11600/igt@kms_chamelium@common-hpd-after-suspend.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=111827">fdo#111827</a>)</p>
-</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_chamelium@hdmi-hpd-fast:</p>
-<ul>
-<li>fi-icl-u2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7989/fi-icl-u2/igt@kms_chamelium@hdmi-hpd-fast.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=111827">fdo#111827</a>) +7 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_cursor_legacy@basic-busy-flip-before-cursor:</p>
-<ul>
-<li>fi-icl-u2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7989/fi-icl-u2/igt@kms_cursor_legacy@basic-busy-flip-before-cursor.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4103">i915#4103</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_force_connector_basic@force-load-detect:</p>
-<ul>
-<li>fi-icl-u2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7989/fi-icl-u2/igt@kms_force_connector_basic@force-load-detect.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109285">fdo#109285</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_setmode@basic-clone-single-crtc:</p>
-<ul>
-<li>fi-icl-u2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7989/fi-icl-u2/igt@kms_setmode@basic-clone-single-crtc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3555">i915#3555</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@prime_vgem@basic-userptr:</p>
-<ul>
-<li>fi-icl-u2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7989/fi-icl-u2/igt@prime_vgem@basic-userptr.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109295">fdo#109295</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3301">i915#3301</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@runner@aborted:</p>
-<ul>
-<li>fi-icl-u2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7989/fi-icl-u2/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4312">i915#4312</a>)</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@gem_exec_gttfill@basic:</p>
-<ul>
-<li>fi-pnv-d510:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12262/fi-pnv-d510/igt@gem_exec_gttfill@basic.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7229">i915#7229</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7989/fi-pnv-d510/igt@gem_exec_gttfill@basic.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@i915_pm_rpm@module-reload:</p>
-<ul>
-<li>{bat-rpls-2}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12262/bat-rpls-2/igt@i915_pm_rpm@module-reload.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5537">i915#5537</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7989/bat-rpls-2/igt@i915_pm_rpm@module-reload.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@gem_contexts:</p>
-<ul>
-<li>
-<p>fi-rkl-11600:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12262/fi-rkl-11600/igt@i915_selftest@live@gem_contexts.html">DMESG-FAIL</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7989/fi-rkl-11600/igt@i915_selftest@live@gem_contexts.html">PASS</a></p>
-</li>
-<li>
-<p>{bat-dg2-11}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12262/bat-dg2-11/igt@i915_selftest@live@gem_contexts.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7270">i915#7270</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7989/bat-dg2-11/igt@i915_selftest@live@gem_contexts.html">PASS</a></p>
-</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@hangcheck:</p>
-<ul>
-<li>
-<p>fi-hsw-4770:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12262/fi-hsw-4770/igt@i915_selftest@live@hangcheck.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4785">i915#4785</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7989/fi-hsw-4770/igt@i915_selftest@live@hangcheck.html">PASS</a></p>
-</li>
-<li>
-<p>fi-adl-ddr5:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12262/fi-adl-ddr5/igt@i915_selftest@live@hangcheck.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5591">i915#5591</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7989/fi-adl-ddr5/igt@i915_selftest@live@hangcheck.html">PASS</a></p>
-</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@requests:</p>
-<ul>
-<li>
-<p>{bat-adln-1}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12262/bat-adln-1/igt@i915_selftest@live@requests.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7269">i915#7269</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7989/bat-adln-1/igt@i915_selftest@live@requests.html">PASS</a></p>
-</li>
-<li>
-<p>{bat-adlp-6}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12262/bat-adlp-6/igt@i915_selftest@live@requests.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7269">i915#7269</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7989/bat-adlp-6/igt@i915_selftest@live@requests.html">PASS</a></p>
-</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@slpc:</p>
-<ul>
-<li>{bat-adln-1}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12262/bat-adln-1/igt@i915_selftest@live@slpc.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6997">i915#6997</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7989/bat-adln-1/igt@i915_selftest@live@slpc.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@i915_suspend@basic-s3-without-i915:</p>
-<ul>
-<li>fi-rkl-11600:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12262/fi-rkl-11600/igt@i915_suspend@basic-s3-without-i915.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5982">i915#5982</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7989/fi-rkl-11600/igt@i915_suspend@basic-s3-without-i915.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<h4>Warnings</h4>
-<ul>
-<li>igt@runner@aborted:<ul>
-<li>fi-bsw-nick:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12262/fi-bsw-nick/igt@runner@aborted.html">FAIL</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4312">i915#4312</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7989/fi-bsw-nick/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4312">i915#4312</a>)</li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_7020 -&gt; IGTPW_7989</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_12262: bbb4ee9bfa314f7a64d5b49112aa93c058f0c014 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_7989: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_7989/index.html<br />
-  IGT_7020: 05b7eaf9ade2216d17c069c89439015757ee25f7 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-
-</body>
-</html>
-
---===============0171487659528317686==--
+> ---
+>  .../igt-gpu-tools/igt-gpu-tools-docs.xml      |   1 +
+>  lib/igt.h                                     |   1 +
+>  lib/igt_chamelium.c                           |   1 +
+>  lib/igt_chamelium.h                           |   1 +
+>  lib/igt_debugfs.c                             | 564 ----------------
+>  lib/igt_debugfs.h                             |  57 --
+>  lib/igt_fb.h                                  |   1 +
+>  lib/igt_pipe_crc.c                            | 610 ++++++++++++++++++
+>  lib/igt_pipe_crc.h                            |  87 +++
+>  lib/meson.build                               |   1 +
+>  tests/i915/kms_mmap_write_crc.c               |   1 +
+>  tools/intel_display_crc.c                     |   1 +
+>  12 files changed, 705 insertions(+), 621 deletions(-)
+>  create mode 100644 lib/igt_pipe_crc.c
+>  create mode 100644 lib/igt_pipe_crc.h
+> 
+> diff --git a/docs/reference/igt-gpu-tools/igt-gpu-tools-docs.xml b/docs/reference/igt-gpu-tools/igt-gpu-tools-docs.xml
+> index a19f786e841b..1ce842f45321 100644
+> --- a/docs/reference/igt-gpu-tools/igt-gpu-tools-docs.xml
+> +++ b/docs/reference/igt-gpu-tools/igt-gpu-tools-docs.xml
+> @@ -37,6 +37,7 @@
+>      <xi:include href="xml/igt_list.xml"/>
+>      <xi:include href="xml/igt_map.xml"/>
+>      <xi:include href="xml/igt_msm.xml"/>
+> +    <xi:include href="xml/igt_pipe_crc.xml"/>
+>      <xi:include href="xml/igt_pm.xml"/>
+>      <xi:include href="xml/igt_primes.xml"/>
+>      <xi:include href="xml/igt_rand.xml"/>
+> diff --git a/lib/igt.h b/lib/igt.h
+> index 96a368e11bbf..88938109e003 100644
+> --- a/lib/igt.h
+> +++ b/lib/igt.h
+> @@ -37,6 +37,7 @@
+>  #include "igt_gt.h"
+>  #include "igt_kms.h"
+>  #include "igt_params.h"
+> +#include "igt_pipe_crc.h"
+>  #include "igt_pm.h"
+>  #include "igt_stats.h"
+>  #ifdef HAVE_CHAMELIUM
+> diff --git a/lib/igt_chamelium.c b/lib/igt_chamelium.c
+> index 26244bd5fc97..ea296e027e16 100644
+> --- a/lib/igt_chamelium.c
+> +++ b/lib/igt_chamelium.c
+> @@ -44,6 +44,7 @@
+>  #include "igt_frame.h"
+>  #include "igt_list.h"
+>  #include "igt_kms.h"
+> +#include "igt_pipe_crc.h"
+>  #include "igt_rc.h"
+>  
+>  /**
+> diff --git a/lib/igt_chamelium.h b/lib/igt_chamelium.h
+> index f40e848e4f67..af88fec914bd 100644
+> --- a/lib/igt_chamelium.h
+> +++ b/lib/igt_chamelium.h
+> @@ -36,6 +36,7 @@
+>  
+>  struct igt_fb;
+>  struct edid;
+> +typedef struct _igt_crc igt_crc_t;
+>  
+>  struct chamelium;
+>  struct chamelium_port;
+> diff --git a/lib/igt_debugfs.c b/lib/igt_debugfs.c
+> index fc4697b0af4a..85d350d359bd 100644
+> --- a/lib/igt_debugfs.c
+> +++ b/lib/igt_debugfs.c
+> @@ -55,24 +55,6 @@
+>   * basic functions to access debugfs files with e.g. igt_debugfs_open() it also
+>   * provides higher-level wrappers for some debugfs features.
+>   *
+> - * # Pipe CRC Support
+> - *
+> - * This library wraps up the kernel's support for capturing pipe CRCs into a
+> - * neat and tidy package. For the detailed usage see all the functions which
+> - * work on #igt_pipe_crc_t. This is supported on all platforms and outputs.
+> - *
+> - * Actually using pipe CRCs to write modeset tests is a bit tricky though, so
+> - * there is no way to directly check a CRC: Both the details of the plane
+> - * blending, color correction and other hardware and how exactly the CRC is
+> - * computed at each tap point vary by hardware generation and are not disclosed.
+> - *
+> - * The only way to use #igt_crc_t CRCs therefore is to compare CRCs among each
+> - * another either for equality or difference. Otherwise CRCs must be treated as
+> - * completely opaque values. Note that not even CRCs from different pipes or tap
+> - * points on the same platform can be compared. Hence only use
+> - * igt_assert_crc_equal() to inspect CRC values captured by the same
+> - * #igt_pipe_crc_t object.
+> - *
+>   * # Other debugfs interface wrappers
+>   *
+>   * This covers the miscellaneous debugfs interface wrappers:
+> @@ -425,175 +407,6 @@ bool igt_debugfs_search(int device, const char *filename, const char *substring)
+>  	return matched;
+>  }
+>  
+> -/*
+> - * Pipe CRC
+> - */
+> -
+> -/**
+> - * igt_find_crc_mismatch:
+> - * @a: first pipe CRC value
+> - * @b: second pipe CRC value
+> - * @index: index of the first value that mismatched
+> - *
+> - * Check if CRC a and CRC b mismatch.
+> - *
+> - * Returns true if CRC values mismatch, false otherwise;
+> - */
+> -bool igt_find_crc_mismatch(const igt_crc_t *a, const igt_crc_t *b, int *index)
+> -{
+> -	int nwords = min(a->n_words, b->n_words);
+> -	int i;
+> -
+> -	for (i = 0; i < nwords; i++) {
+> -		if (a->crc[i] != b->crc[i]) {
+> -			if (index)
+> -				*index = i;
+> -
+> -			return true;
+> -		}
+> -	}
+> -
+> -	if (a->n_words != b->n_words) {
+> -		if (index)
+> -			*index = i;
+> -		return true;
+> -	}
+> -
+> -	return false;
+> -}
+> -
+> -/**
+> - * igt_assert_crc_equal:
+> - * @a: first pipe CRC value
+> - * @b: second pipe CRC value
+> - *
+> - * Compares two CRC values and fails the testcase if they don't match with
+> - * igt_fail(). Note that due to CRC collisions CRC based testcase can only
+> - * assert that CRCs match, never that they are different. Otherwise there might
+> - * be random testcase failures when different screen contents end up with the
+> - * same CRC by chance.
+> - *
+> - * Passing --skip-crc-compare on the command line will force this function
+> - * to always pass, which can be useful in interactive debugging where you
+> - * might know the test will fail, but still want the test to keep going as if
+> - * it had succeeded so that you can see the on-screen behavior.
+> - *
+> - */
+> -void igt_assert_crc_equal(const igt_crc_t *a, const igt_crc_t *b)
+> -{
+> -	int index;
+> -	bool mismatch;
+> -
+> -	mismatch = igt_find_crc_mismatch(a, b, &index);
+> -	if (mismatch)
+> -		igt_debug("CRC mismatch%s at index %d: 0x%x != 0x%x\n",
+> -			  igt_skip_crc_compare ? " (ignored)" : "",
+> -			  index, a->crc[index], b->crc[index]);
+> -
+> -	igt_assert(!mismatch || igt_skip_crc_compare);
+> -}
+> -
+> -/**
+> - * igt_check_crc_equal:
+> - * @a: first pipe CRC value
+> - * @b: second pipe CRC value
+> - *
+> - * Compares two CRC values and return whether they match.
+> - *
+> - * Returns: A boolean indicating whether the CRC values match
+> - */
+> -bool igt_check_crc_equal(const igt_crc_t *a, const igt_crc_t *b)
+> -{
+> -	int index;
+> -	bool mismatch;
+> -
+> -	mismatch = igt_find_crc_mismatch(a, b, &index);
+> -	if (mismatch)
+> -		igt_debug("CRC mismatch at index %d: 0x%x != 0x%x\n", index,
+> -			  a->crc[index], b->crc[index]);
+> -
+> -	return !mismatch;
+> -}
+> -
+> -/**
+> - * igt_crc_to_string_extended:
+> - * @crc: pipe CRC value to print
+> - * @delimiter: The delimiter to use between crc words
+> - * @crc_size: the number of bytes to print per crc word (between 1 and 4)
+> - *
+> - * This function allocates a string and formats @crc into it, depending on
+> - * @delimiter and @crc_size.
+> - * The caller is responsible for freeing the string.
+> - *
+> - * This should only ever be used for diagnostic debug output.
+> - */
+> -char *igt_crc_to_string_extended(igt_crc_t *crc, char delimiter, int crc_size)
+> -{
+> -	int i;
+> -	int len = 0;
+> -	int field_width = 2 * crc_size; /* Two chars per byte. */
+> -	char *buf = malloc((field_width+1) * crc->n_words);
+> -
+> -	if (!buf)
+> -		return NULL;
+> -
+> -	for (i = 0; i < crc->n_words - 1; i++)
+> -		len += sprintf(buf + len, "%0*x%c", field_width,
+> -			       crc->crc[i], delimiter);
+> -
+> -	sprintf(buf + len, "%0*x", field_width, crc->crc[i]);
+> -
+> -	return buf;
+> -}
+> -
+> -/**
+> - * igt_crc_to_string:
+> - * @crc: pipe CRC value to print
+> - *
+> - * This function allocates a string and formats @crc into it.
+> - * The caller is responsible for freeing the string.
+> - *
+> - * This should only ever be used for diagnostic debug output.
+> - */
+> -char *igt_crc_to_string(igt_crc_t *crc)
+> -{
+> -	return igt_crc_to_string_extended(crc, ' ', 4);
+> -}
+> -
+> -#define MAX_CRC_ENTRIES 10
+> -#define MAX_LINE_LEN (10 + 11 * MAX_CRC_ENTRIES + 1)
+> -
+> -struct _igt_pipe_crc {
+> -	int fd;
+> -	int dir;
+> -	int ctl_fd;
+> -	int crc_fd;
+> -	int flags;
+> -
+> -	enum pipe pipe;
+> -	char *source;
+> -};
+> -
+> -/**
+> - * igt_require_pipe_crc:
+> - *
+> - * Convenience helper to check whether pipe CRC capturing is supported by the
+> - * kernel. Uses igt_skip to automatically skip the test/subtest if this isn't
+> - * the case.
+> - */
+> -void igt_require_pipe_crc(int fd)
+> -{
+> -	int dir;
+> -	struct stat stat;
+> -
+> -	dir = igt_debugfs_dir(fd);
+> -	igt_require_f(dir >= 0, "Could not open debugfs directory\n");
+> -	igt_require_f(fstatat(dir, "crtc-0/crc/control", &stat, 0) == 0,
+> -		      "CRCs not supported on this platform\n");
+> -
+> -	close(dir);
+> -}
+> -
+>  static void igt_hpd_storm_exit_handler(int sig)
+>  {
+>  	int fd = drm_open_driver(DRIVER_INTEL);
+> @@ -715,383 +528,6 @@ void igt_require_hpd_storm_ctl(int drm_fd)
+>  	close(fd);
+>  }
+>  
+> -static igt_pipe_crc_t *
+> -pipe_crc_new(int fd, enum pipe pipe, const char *source, int flags)
+> -{
+> -	igt_pipe_crc_t *pipe_crc;
+> -	char buf[128];
+> -	int debugfs;
+> -	const char *env_source;
+> -
+> -	igt_assert(source);
+> -
+> -	env_source = getenv("IGT_CRC_SOURCE");
+> -
+> -	if (!env_source)
+> -		env_source = source;
+> -
+> -	debugfs = igt_debugfs_dir(fd);
+> -	igt_assert(debugfs != -1);
+> -
+> -	pipe_crc = calloc(1, sizeof(struct _igt_pipe_crc));
+> -	igt_assert(pipe_crc);
+> -
+> -	sprintf(buf, "crtc-%d/crc/control", pipe);
+> -	pipe_crc->ctl_fd = openat(debugfs, buf, O_WRONLY);
+> -	igt_assert(pipe_crc->ctl_fd != -1);
+> -
+> -	pipe_crc->crc_fd = -1;
+> -	pipe_crc->fd = fd;
+> -	pipe_crc->dir = debugfs;
+> -	pipe_crc->pipe = pipe;
+> -	pipe_crc->source = strdup(env_source);
+> -	igt_assert(pipe_crc->source);
+> -	pipe_crc->flags = flags;
+> -
+> -	return pipe_crc;
+> -}
+> -
+> -/**
+> - * igt_pipe_crc_new:
+> - * @pipe: display pipe to use as source
+> - * @source: CRC tap point to use as source
+> - *
+> - * This sets up a new pipe CRC capture object for the given @pipe and @source
+> - * in blocking mode.
+> - *
+> - * Returns: A pipe CRC object for the given @pipe and @source. The library
+> - * assumes that the source is always available since recent kernels support at
+> - * least IGT_PIPE_CRC_SOURCE_AUTO everywhere.
+> - */
+> -igt_pipe_crc_t *
+> -igt_pipe_crc_new(int fd, enum pipe pipe, const char *source)
+> -{
+> -	return pipe_crc_new(fd, pipe, source, O_RDONLY);
+> -}
+> -
+> -/**
+> - * igt_pipe_crc_new_nonblock:
+> - * @pipe: display pipe to use as source
+> - * @source: CRC tap point to use as source
+> - *
+> - * This sets up a new pipe CRC capture object for the given @pipe and @source
+> - * in nonblocking mode.
+> - *
+> - * Returns: A pipe CRC object for the given @pipe and @source. The library
+> - * assumes that the source is always available since recent kernels support at
+> - * least IGT_PIPE_CRC_SOURCE_AUTO everywhere.
+> - */
+> -igt_pipe_crc_t *
+> -igt_pipe_crc_new_nonblock(int fd, enum pipe pipe, const char *source)
+> -{
+> -	return pipe_crc_new(fd, pipe, source, O_RDONLY | O_NONBLOCK);
+> -}
+> -
+> -/**
+> - * igt_pipe_crc_free:
+> - * @pipe_crc: pipe CRC object
+> - *
+> - * Frees all resources associated with @pipe_crc.
+> - */
+> -void igt_pipe_crc_free(igt_pipe_crc_t *pipe_crc)
+> -{
+> -	if (!pipe_crc)
+> -		return;
+> -
+> -	close(pipe_crc->ctl_fd);
+> -	close(pipe_crc->crc_fd);
+> -	close(pipe_crc->dir);
+> -	free(pipe_crc->source);
+> -	free(pipe_crc);
+> -}
+> -
+> -static bool pipe_crc_init_from_string(igt_pipe_crc_t *pipe_crc, igt_crc_t *crc,
+> -				      const char *line)
+> -{
+> -	int i;
+> -	const char *buf;
+> -
+> -	if (strncmp(line, "XXXXXXXXXX", 10) == 0)
+> -		crc->has_valid_frame = false;
+> -	else {
+> -		crc->has_valid_frame = true;
+> -		crc->frame = strtoul(line, NULL, 16);
+> -	}
+> -
+> -	buf = line + 10;
+> -	for (i = 0; *buf != '\n'; i++, buf += 11)
+> -		crc->crc[i] = strtoul(buf, NULL, 16);
+> -
+> -	crc->n_words = i;
+> -
+> -	return true;
+> -}
+> -
+> -static int read_crc(igt_pipe_crc_t *pipe_crc, igt_crc_t *out)
+> -{
+> -	ssize_t bytes_read;
+> -	char buf[MAX_LINE_LEN + 1];
+> -
+> -	igt_set_timeout(5, "CRC reading");
+> -	bytes_read = read(pipe_crc->crc_fd, &buf, MAX_LINE_LEN);
+> -	igt_reset_timeout();
+> -
+> -	if (bytes_read < 0)
+> -		bytes_read = -errno;
+> -	else
+> -		buf[bytes_read] = '\0';
+> -
+> -	if (bytes_read > 0 && !pipe_crc_init_from_string(pipe_crc, out, buf))
+> -		return -EINVAL;
+> -
+> -	return bytes_read;
+> -}
+> -
+> -static void read_one_crc(igt_pipe_crc_t *pipe_crc, igt_crc_t *out)
+> -{
+> -	int ret;
+> -
+> -	fcntl(pipe_crc->crc_fd, F_SETFL, pipe_crc->flags & ~O_NONBLOCK);
+> -
+> -	do {
+> -		ret = read_crc(pipe_crc, out);
+> -	} while (ret == -EINTR);
+> -
+> -	fcntl(pipe_crc->crc_fd, F_SETFL, pipe_crc->flags);
+> -}
+> -
+> -/**
+> - * igt_pipe_crc_start:
+> - * @pipe_crc: pipe CRC object
+> - *
+> - * Starts the CRC capture process on @pipe_crc.
+> - */
+> -void igt_pipe_crc_start(igt_pipe_crc_t *pipe_crc)
+> -{
+> -	const char *src = pipe_crc->source;
+> -	struct pollfd pfd;
+> -	char buf[32];
+> -
+> -	/* Stop first just to make sure we don't have lingering state left. */
+> -	igt_pipe_crc_stop(pipe_crc);
+> -
+> -	igt_reset_fifo_underrun_reporting(pipe_crc->fd);
+> -
+> -	igt_assert_eq(write(pipe_crc->ctl_fd, src, strlen(src)), strlen(src));
+> -
+> -	sprintf(buf, "crtc-%d/crc/data", pipe_crc->pipe);
+> -
+> -	igt_set_timeout(10, "Opening crc fd, and poll for first CRC.");
+> -	pipe_crc->crc_fd = openat(pipe_crc->dir, buf, pipe_crc->flags);
+> -	igt_assert(pipe_crc->crc_fd != -1);
+> -
+> -	pfd.fd = pipe_crc->crc_fd;
+> -	pfd.events = POLLIN;
+> -	poll(&pfd, 1, -1);
+> -
+> -	igt_reset_timeout();
+> -
+> -	errno = 0;
+> -}
+> -
+> -/**
+> - * igt_pipe_crc_stop:
+> - * @pipe_crc: pipe CRC object
+> - *
+> - * Stops the CRC capture process on @pipe_crc.
+> - */
+> -void igt_pipe_crc_stop(igt_pipe_crc_t *pipe_crc)
+> -{
+> -	close(pipe_crc->crc_fd);
+> -	pipe_crc->crc_fd = -1;
+> -}
+> -
+> -/**
+> - * igt_pipe_crc_get_crcs:
+> - * @pipe_crc: pipe CRC object
+> - * @n_crcs: number of CRCs to capture
+> - * @out_crcs: buffer pointer for the captured CRC values
+> - *
+> - * Read up to @n_crcs from @pipe_crc. This function does not block, and will
+> - * return early if not enough CRCs can be captured, if @pipe_crc has been
+> - * opened using igt_pipe_crc_new_nonblock(). It will block until @n_crcs are
+> - * retrieved if @pipe_crc has been opened using igt_pipe_crc_new(). @out_crcs is
+> - * alloced by this function and must be released with free() by the caller.
+> - *
+> - * Callers must start and stop the capturing themselves by calling
+> - * igt_pipe_crc_start() and igt_pipe_crc_stop(). For one-shot CRC collecting
+> - * look at igt_pipe_crc_collect_crc().
+> - *
+> - * Returns:
+> - * The number of CRCs captured. Should be equal to @n_crcs in blocking mode, but
+> - * can be less (even zero) in non-blocking mode.
+> - */
+> -int
+> -igt_pipe_crc_get_crcs(igt_pipe_crc_t *pipe_crc, int n_crcs,
+> -		      igt_crc_t **out_crcs)
+> -{
+> -	igt_crc_t *crcs;
+> -	int n = 0;
+> -
+> -	crcs = calloc(n_crcs, sizeof(igt_crc_t));
+> -
+> -	do {
+> -		igt_crc_t *crc = &crcs[n];
+> -		int ret;
+> -
+> -		ret = read_crc(pipe_crc, crc);
+> -		if (ret == -EAGAIN)
+> -			break;
+> -
+> -		if (ret < 0)
+> -			continue;
+> -
+> -		n++;
+> -	} while (n < n_crcs);
+> -
+> -	*out_crcs = crcs;
+> -	return n;
+> -}
+> -
+> -static void crc_sanity_checks(igt_pipe_crc_t *pipe_crc, igt_crc_t *crc)
+> -{
+> -	int i;
+> -	bool all_zero = true;
+> -
+> -	/* Any CRC value can be considered valid on amdgpu hardware. */
+> -	if (is_amdgpu_device(pipe_crc->fd))
+> -		return;
+> -
+> -	for (i = 0; i < crc->n_words; i++) {
+> -		igt_warn_on_f(crc->crc[i] == 0xffffffff,
+> -			      "Suspicious CRC: it looks like the CRC "
+> -			      "read back was from a register in a powered "
+> -			      "down well\n");
+> -		if (crc->crc[i])
+> -			all_zero = false;
+> -	}
+> -
+> -	igt_warn_on_f(all_zero, "Suspicious CRC: All values are 0.\n");
+> -}
+> -
+> -/**
+> - * igt_pipe_crc_drain:
+> - * @pipe_crc: pipe CRC object
+> - *
+> - * Discards all currently queued CRC values from @pipe_crc. This function does
+> - * not block, and is useful to flush @pipe_crc. Afterwards you can get a fresh
+> - * CRC with igt_pipe_crc_get_single().
+> - */
+> -void igt_pipe_crc_drain(igt_pipe_crc_t *pipe_crc)
+> -{
+> -	int ret;
+> -	igt_crc_t crc;
+> -
+> -	fcntl(pipe_crc->crc_fd, F_SETFL, pipe_crc->flags | O_NONBLOCK);
+> -
+> -	do {
+> -		ret = read_crc(pipe_crc, &crc);
+> -	} while (ret > 0 || ret == -EINVAL);
+> -
+> -	fcntl(pipe_crc->crc_fd, F_SETFL, pipe_crc->flags);
+> -}
+> -
+> -/**
+> - * igt_pipe_crc_get_single:
+> - * @pipe_crc: pipe CRC object
+> - * @crc: buffer pointer for the captured CRC value
+> - *
+> - * Read a single @crc from @pipe_crc. This function blocks even
+> - * when nonblocking CRC is requested.
+> - *
+> - * Callers must start and stop the capturing themselves by calling
+> - * igt_pipe_crc_start() and igt_pipe_crc_stop(). For one-shot CRC collecting
+> - * look at igt_pipe_crc_collect_crc().
+> - *
+> - * If capturing has been going on for a while and a fresh crc is required,
+> - * you should use igt_pipe_crc_get_current() instead.
+> - */
+> -void igt_pipe_crc_get_single(igt_pipe_crc_t *pipe_crc, igt_crc_t *crc)
+> -{
+> -	read_one_crc(pipe_crc, crc);
+> -
+> -	crc_sanity_checks(pipe_crc, crc);
+> -}
+> -
+> -/**
+> - * igt_pipe_crc_get_current:
+> - * @drm_fd: Pointer to drm fd for vblank counter
+> - * @pipe_crc: pipe CRC object
+> - * @vblank: frame counter value we're looking for
+> - * @crc: buffer pointer for the captured CRC value
+> - *
+> - * Same as igt_pipe_crc_get_single(), but will wait until a CRC has been captured
+> - * for frame @vblank.
+> - */
+> -void
+> -igt_pipe_crc_get_for_frame(int drm_fd, igt_pipe_crc_t *pipe_crc,
+> -			   unsigned int vblank, igt_crc_t *crc)
+> -{
+> -	do {
+> -		read_one_crc(pipe_crc, crc);
+> -
+> -		/* Only works with valid frame counter */
+> -		if (!crc->has_valid_frame) {
+> -			igt_pipe_crc_drain(pipe_crc);
+> -			igt_pipe_crc_get_single(pipe_crc, crc);
+> -			return;
+> -		}
+> -	} while (igt_vblank_before(crc->frame, vblank));
+> -
+> -	crc_sanity_checks(pipe_crc, crc);
+> -}
+> -
+> -/**
+> - * igt_pipe_crc_get_current:
+> - * @drm_fd: Pointer to drm fd for vblank counter
+> - * @pipe_crc: pipe CRC object
+> - * @crc: buffer pointer for the captured CRC value
+> - *
+> - * Same as igt_pipe_crc_get_single(), but will wait until a new CRC can be captured.
+> - * This is useful for retrieving the current CRC in a more race free way than
+> - * igt_pipe_crc_drain() + igt_pipe_crc_get_single().
+> - */
+> -void
+> -igt_pipe_crc_get_current(int drm_fd, igt_pipe_crc_t *pipe_crc, igt_crc_t *crc)
+> -{
+> -	unsigned vblank = kmstest_get_vblank(drm_fd, pipe_crc->pipe, 0) + 1;
+> -
+> -	return igt_pipe_crc_get_for_frame(drm_fd, pipe_crc, vblank, crc);
+> -}
+> -
+> -/**
+> - * igt_pipe_crc_collect_crc:
+> - * @pipe_crc: pipe CRC object
+> - * @out_crc: buffer for the captured CRC values
+> - *
+> - * Read a single CRC from @pipe_crc. This function blocks until the CRC is
+> - * retrieved, irrespective of whether @pipe_crc has been opened with
+> - * igt_pipe_crc_new() or igt_pipe_crc_new_nonblock().  @out_crc must be
+> - * allocated by the caller.
+> - *
+> - * This function takes care of the pipe_crc book-keeping, it will start/stop
+> - * the collection of the CRC.
+> - *
+> - * This function also calls the interactive debug with the "crc" domain, so you
+> - * can make use of this feature to actually see the screen that is being CRC'd.
+> - *
+> - * For continuous CRC collection look at igt_pipe_crc_start(),
+> - * igt_pipe_crc_get_crcs() and igt_pipe_crc_stop().
+> - */
+> -void igt_pipe_crc_collect_crc(igt_pipe_crc_t *pipe_crc, igt_crc_t *out_crc)
+> -{
+> -	igt_debug_wait_for_keypress("crc");
+> -
+> -	igt_pipe_crc_start(pipe_crc);
+> -	igt_pipe_crc_get_single(pipe_crc, out_crc);
+> -	igt_pipe_crc_stop(pipe_crc);
+> -}
+> -
+>  /**
+>   * igt_reset_fifo_underrun_reporting:
+>   * @drm_fd: drm device file descriptor
+> diff --git a/lib/igt_debugfs.h b/lib/igt_debugfs.h
+> index 05d29f171610..a883e2d4afdb 100644
+> --- a/lib/igt_debugfs.h
+> +++ b/lib/igt_debugfs.h
+> @@ -68,63 +68,6 @@ bool igt_debugfs_search(int fd, const char *filename, const char *substring);
+>  #define igt_debugfs_write(fd, filename, buf) \
+>  		__igt_debugfs_write(fd, (filename), (buf), sizeof(buf))
+>  
+> -/*
+> - * Pipe CRC
+> - */
+> -
+> -/**
+> - * igt_pipe_crc_t:
+> - *
+> - * Pipe CRC support structure. Needs to be allocated and set up with
+> - * igt_pipe_crc_new() for a specific pipe and pipe CRC source value.
+> - */
+> -typedef struct _igt_pipe_crc igt_pipe_crc_t;
+> -
+> -#define DRM_MAX_CRC_NR 10
+> -/**
+> - * igt_crc_t:
+> - * @frame: frame number of the capture CRC
+> - * @n_words: internal field, don't access
+> - * @crc: internal field, don't access
+> - *
+> - * Pipe CRC value. All other members than @frame are private and should not be
+> - * inspected by testcases.
+> - */
+> -typedef struct {
+> -	uint32_t frame;
+> -	bool has_valid_frame;
+> -	int n_words;
+> -	uint32_t crc[DRM_MAX_CRC_NR];
+> -} igt_crc_t;
+> -
+> -#define IGT_PIPE_CRC_SOURCE_AUTO "auto"
+> -#define AMDGPU_PIPE_CRC_SOURCE_DPRX "dprx"
+> -
+> -bool igt_find_crc_mismatch(const igt_crc_t *a, const igt_crc_t *b, int *index);
+> -void igt_assert_crc_equal(const igt_crc_t *a, const igt_crc_t *b);
+> -bool igt_check_crc_equal(const igt_crc_t *a, const igt_crc_t *b);
+> -char *igt_crc_to_string_extended(igt_crc_t *crc, char delimiter, int crc_size);
+> -char *igt_crc_to_string(igt_crc_t *crc);
+> -
+> -void igt_require_pipe_crc(int fd);
+> -igt_pipe_crc_t *
+> -igt_pipe_crc_new(int fd, enum pipe pipe, const char *source);
+> -igt_pipe_crc_t *
+> -igt_pipe_crc_new_nonblock(int fd, enum pipe pipe, const char *source);
+> -void igt_pipe_crc_free(igt_pipe_crc_t *pipe_crc);
+> -void igt_pipe_crc_start(igt_pipe_crc_t *pipe_crc);
+> -void igt_pipe_crc_stop(igt_pipe_crc_t *pipe_crc);
+> -__attribute__((warn_unused_result))
+> -int igt_pipe_crc_get_crcs(igt_pipe_crc_t *pipe_crc, int n_crcs,
+> -			  igt_crc_t **out_crcs);
+> -void igt_pipe_crc_drain(igt_pipe_crc_t *pipe_crc);
+> -void igt_pipe_crc_get_single(igt_pipe_crc_t *pipe_crc, igt_crc_t *out_crc);
+> -void igt_pipe_crc_get_current(int drm_fd, igt_pipe_crc_t *pipe_crc, igt_crc_t *crc);
+> -void igt_pipe_crc_get_for_frame(int drm_fd, igt_pipe_crc_t *pipe_crc,
+> -				unsigned int vblank, igt_crc_t *crc);
+> -
+> -void igt_pipe_crc_collect_crc(igt_pipe_crc_t *pipe_crc, igt_crc_t *out_crc);
+> -
+>  void igt_hpd_storm_set_threshold(int fd, unsigned int threshold);
+>  void igt_hpd_storm_reset(int fd);
+>  bool igt_hpd_storm_detected(int fd);
+> diff --git a/lib/igt_fb.h b/lib/igt_fb.h
+> index b3f096fe3837..6995b14b2828 100644
+> --- a/lib/igt_fb.h
+> +++ b/lib/igt_fb.h
+> @@ -41,6 +41,7 @@
+>  #include "igt_debugfs.h"
+>  
+>  struct buf_ops;
+> +typedef struct _igt_crc igt_crc_t;
+>  
+>  /*
+>   * Internal format to denote a buffer compatible with pixman's
+> diff --git a/lib/igt_pipe_crc.c b/lib/igt_pipe_crc.c
+> new file mode 100644
+> index 000000000000..14fe7331f0b0
+> --- /dev/null
+> +++ b/lib/igt_pipe_crc.c
+> @@ -0,0 +1,610 @@
+> +/*
+> + * Copyright © 2013 Intel Corporation
+> + *
+> + * Permission is hereby granted, free of charge, to any person obtaining a
+> + * copy of this software and associated documentation files (the "Software"),
+> + * to deal in the Software without restriction, including without limitation
+> + * the rights to use, copy, modify, merge, publish, distribute, sublicense,
+> + * and/or sell copies of the Software, and to permit persons to whom the
+> + * Software is furnished to do so, subject to the following conditions:
+> + *
+> + * The above copyright notice and this permission notice (including the next
+> + * paragraph) shall be included in all copies or substantial portions of the
+> + * Software.
+> + *
+> + * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+> + * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+> + * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
+> + * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+> + * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+> + * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
+> + * IN THE SOFTWARE.
+> + *
+> + */
+> +
+> +#include <inttypes.h>
+> +#include <sys/stat.h>
+> +#include <sys/mount.h>
+> +#ifdef __linux__
+> +#include <sys/sysmacros.h>
+> +#endif
+> +#include <dirent.h>
+> +#include <errno.h>
+> +#include <stdio.h>
+> +#include <stdlib.h>
+> +#include <limits.h>
+> +#include <string.h>
+> +#include <fcntl.h>
+> +#include <unistd.h>
+> +#include <poll.h>
+> +
+> +#include "drmtest.h"
+> +#include "igt_aux.h"
+> +#include "igt_kms.h"
+> +#include "igt_debugfs.h"
+> +#include "igt_pipe_crc.h"
+> +
+> +/**
+> + * SECTION:igt_pipe_crc
+> + * @short_description: Pipe CRC support
+> + * @title: pipe_crc
+> + * @include: igt_pipe_crc.h
+> + *
+> + * This library wraps up the kernel's support for capturing pipe CRCs into a
+> + * neat and tidy package. For the detailed usage see all the functions which
+> + * work on #igt_pipe_crc_t. This is supported on all platforms and outputs.
+> + *
+> + * Actually using pipe CRCs to write modeset tests is a bit tricky though, so
+> + * there is no way to directly check a CRC: Both the details of the plane
+> + * blending, color correction and other hardware and how exactly the CRC is
+> + * computed at each tap point vary by hardware generation and are not disclosed.
+> + *
+> + * The only way to use #igt_crc_t CRCs therefore is to compare CRCs among each
+> + * another either for equality or difference. Otherwise CRCs must be treated as
+> + * completely opaque values. Note that not even CRCs from different pipes or tap
+> + * points on the same platform can be compared. Hence only use
+> + * igt_assert_crc_equal() to inspect CRC values captured by the same
+> + * #igt_pipe_crc_t object.
+> + */
+> +
+> +/**
+> + * igt_find_crc_mismatch:
+> + * @a: first pipe CRC value
+> + * @b: second pipe CRC value
+> + * @index: index of the first value that mismatched
+> + *
+> + * Check if CRC a and CRC b mismatch.
+> + *
+> + * Returns true if CRC values mismatch, false otherwise;
+> + */
+> +bool igt_find_crc_mismatch(const igt_crc_t *a, const igt_crc_t *b, int *index)
+> +{
+> +	int nwords = min(a->n_words, b->n_words);
+> +	int i;
+> +
+> +	for (i = 0; i < nwords; i++) {
+> +		if (a->crc[i] != b->crc[i]) {
+> +			if (index)
+> +				*index = i;
+> +
+> +			return true;
+> +		}
+> +	}
+> +
+> +	if (a->n_words != b->n_words) {
+> +		if (index)
+> +			*index = i;
+> +		return true;
+> +	}
+> +
+> +	return false;
+> +}
+> +
+> +/**
+> + * igt_assert_crc_equal:
+> + * @a: first pipe CRC value
+> + * @b: second pipe CRC value
+> + *
+> + * Compares two CRC values and fails the testcase if they don't match with
+> + * igt_fail(). Note that due to CRC collisions CRC based testcase can only
+> + * assert that CRCs match, never that they are different. Otherwise there might
+> + * be random testcase failures when different screen contents end up with the
+> + * same CRC by chance.
+> + *
+> + * Passing --skip-crc-compare on the command line will force this function
+> + * to always pass, which can be useful in interactive debugging where you
+> + * might know the test will fail, but still want the test to keep going as if
+> + * it had succeeded so that you can see the on-screen behavior.
+> + *
+> + */
+> +void igt_assert_crc_equal(const igt_crc_t *a, const igt_crc_t *b)
+> +{
+> +	int index;
+> +	bool mismatch;
+> +
+> +	mismatch = igt_find_crc_mismatch(a, b, &index);
+> +	if (mismatch)
+> +		igt_debug("CRC mismatch%s at index %d: 0x%x != 0x%x\n",
+> +			  igt_skip_crc_compare ? " (ignored)" : "",
+> +			  index, a->crc[index], b->crc[index]);
+> +
+> +	igt_assert(!mismatch || igt_skip_crc_compare);
+> +}
+> +
+> +/**
+> + * igt_check_crc_equal:
+> + * @a: first pipe CRC value
+> + * @b: second pipe CRC value
+> + *
+> + * Compares two CRC values and return whether they match.
+> + *
+> + * Returns: A boolean indicating whether the CRC values match
+> + */
+> +bool igt_check_crc_equal(const igt_crc_t *a, const igt_crc_t *b)
+> +{
+> +	int index;
+> +	bool mismatch;
+> +
+> +	mismatch = igt_find_crc_mismatch(a, b, &index);
+> +	if (mismatch)
+> +		igt_debug("CRC mismatch at index %d: 0x%x != 0x%x\n", index,
+> +			  a->crc[index], b->crc[index]);
+> +
+> +	return !mismatch;
+> +}
+> +
+> +/**
+> + * igt_crc_to_string_extended:
+> + * @crc: pipe CRC value to print
+> + * @delimiter: The delimiter to use between crc words
+> + * @crc_size: the number of bytes to print per crc word (between 1 and 4)
+> + *
+> + * This function allocates a string and formats @crc into it, depending on
+> + * @delimiter and @crc_size.
+> + * The caller is responsible for freeing the string.
+> + *
+> + * This should only ever be used for diagnostic debug output.
+> + */
+> +char *igt_crc_to_string_extended(igt_crc_t *crc, char delimiter, int crc_size)
+> +{
+> +	int i;
+> +	int len = 0;
+> +	int field_width = 2 * crc_size; /* Two chars per byte. */
+> +	char *buf = malloc((field_width+1) * crc->n_words);
+> +
+> +	if (!buf)
+> +		return NULL;
+> +
+> +	for (i = 0; i < crc->n_words - 1; i++)
+> +		len += sprintf(buf + len, "%0*x%c", field_width,
+> +			       crc->crc[i], delimiter);
+> +
+> +	sprintf(buf + len, "%0*x", field_width, crc->crc[i]);
+> +
+> +	return buf;
+> +}
+> +
+> +/**
+> + * igt_crc_to_string:
+> + * @crc: pipe CRC value to print
+> + *
+> + * This function allocates a string and formats @crc into it.
+> + * The caller is responsible for freeing the string.
+> + *
+> + * This should only ever be used for diagnostic debug output.
+> + */
+> +char *igt_crc_to_string(igt_crc_t *crc)
+> +{
+> +	return igt_crc_to_string_extended(crc, ' ', 4);
+> +}
+> +
+> +#define MAX_CRC_ENTRIES 10
+> +#define MAX_LINE_LEN (10 + 11 * MAX_CRC_ENTRIES + 1)
+> +
+> +struct _igt_pipe_crc {
+> +	int fd;
+> +	int dir;
+> +	int ctl_fd;
+> +	int crc_fd;
+> +	int flags;
+> +
+> +	enum pipe pipe;
+> +	char *source;
+> +};
+> +
+> +/**
+> + * igt_require_pipe_crc:
+> + *
+> + * Convenience helper to check whether pipe CRC capturing is supported by the
+> + * kernel. Uses igt_skip to automatically skip the test/subtest if this isn't
+> + * the case.
+> + */
+> +void igt_require_pipe_crc(int fd)
+> +{
+> +	int dir;
+> +	struct stat stat;
+> +
+> +	dir = igt_debugfs_dir(fd);
+> +	igt_require_f(dir >= 0, "Could not open debugfs directory\n");
+> +	igt_require_f(fstatat(dir, "crtc-0/crc/control", &stat, 0) == 0,
+> +		      "CRCs not supported on this platform\n");
+> +
+> +	close(dir);
+> +}
+> +
+> +static igt_pipe_crc_t *
+> +pipe_crc_new(int fd, enum pipe pipe, const char *source, int flags)
+> +{
+> +	igt_pipe_crc_t *pipe_crc;
+> +	char buf[128];
+> +	int debugfs;
+> +	const char *env_source;
+> +
+> +	igt_assert(source);
+> +
+> +	env_source = getenv("IGT_CRC_SOURCE");
+> +
+> +	if (!env_source)
+> +		env_source = source;
+> +
+> +	debugfs = igt_debugfs_dir(fd);
+> +	igt_assert(debugfs != -1);
+> +
+> +	pipe_crc = calloc(1, sizeof(struct _igt_pipe_crc));
+> +	igt_assert(pipe_crc);
+> +
+> +	sprintf(buf, "crtc-%d/crc/control", pipe);
+> +	pipe_crc->ctl_fd = openat(debugfs, buf, O_WRONLY);
+> +	igt_assert(pipe_crc->ctl_fd != -1);
+> +
+> +	pipe_crc->crc_fd = -1;
+> +	pipe_crc->fd = fd;
+> +	pipe_crc->dir = debugfs;
+> +	pipe_crc->pipe = pipe;
+> +	pipe_crc->source = strdup(env_source);
+> +	igt_assert(pipe_crc->source);
+> +	pipe_crc->flags = flags;
+> +
+> +	return pipe_crc;
+> +}
+> +
+> +/**
+> + * igt_pipe_crc_new:
+> + * @pipe: display pipe to use as source
+> + * @source: CRC tap point to use as source
+> + *
+> + * This sets up a new pipe CRC capture object for the given @pipe and @source
+> + * in blocking mode.
+> + *
+> + * Returns: A pipe CRC object for the given @pipe and @source. The library
+> + * assumes that the source is always available since recent kernels support at
+> + * least IGT_PIPE_CRC_SOURCE_AUTO everywhere.
+> + */
+> +igt_pipe_crc_t *
+> +igt_pipe_crc_new(int fd, enum pipe pipe, const char *source)
+> +{
+> +	return pipe_crc_new(fd, pipe, source, O_RDONLY);
+> +}
+> +
+> +/**
+> + * igt_pipe_crc_new_nonblock:
+> + * @pipe: display pipe to use as source
+> + * @source: CRC tap point to use as source
+> + *
+> + * This sets up a new pipe CRC capture object for the given @pipe and @source
+> + * in nonblocking mode.
+> + *
+> + * Returns: A pipe CRC object for the given @pipe and @source. The library
+> + * assumes that the source is always available since recent kernels support at
+> + * least IGT_PIPE_CRC_SOURCE_AUTO everywhere.
+> + */
+> +igt_pipe_crc_t *
+> +igt_pipe_crc_new_nonblock(int fd, enum pipe pipe, const char *source)
+> +{
+> +	return pipe_crc_new(fd, pipe, source, O_RDONLY | O_NONBLOCK);
+> +}
+> +
+> +/**
+> + * igt_pipe_crc_free:
+> + * @pipe_crc: pipe CRC object
+> + *
+> + * Frees all resources associated with @pipe_crc.
+> + */
+> +void igt_pipe_crc_free(igt_pipe_crc_t *pipe_crc)
+> +{
+> +	if (!pipe_crc)
+> +		return;
+> +
+> +	close(pipe_crc->ctl_fd);
+> +	close(pipe_crc->crc_fd);
+> +	close(pipe_crc->dir);
+> +	free(pipe_crc->source);
+> +	free(pipe_crc);
+> +}
+> +
+> +static bool pipe_crc_init_from_string(igt_pipe_crc_t *pipe_crc, igt_crc_t *crc,
+> +				      const char *line)
+> +{
+> +	int i;
+> +	const char *buf;
+> +
+> +	if (strncmp(line, "XXXXXXXXXX", 10) == 0)
+> +		crc->has_valid_frame = false;
+> +	else {
+> +		crc->has_valid_frame = true;
+> +		crc->frame = strtoul(line, NULL, 16);
+> +	}
+> +
+> +	buf = line + 10;
+> +	for (i = 0; *buf != '\n'; i++, buf += 11)
+> +		crc->crc[i] = strtoul(buf, NULL, 16);
+> +
+> +	crc->n_words = i;
+> +
+> +	return true;
+> +}
+> +
+> +static int read_crc(igt_pipe_crc_t *pipe_crc, igt_crc_t *out)
+> +{
+> +	ssize_t bytes_read;
+> +	char buf[MAX_LINE_LEN + 1];
+> +
+> +	igt_set_timeout(5, "CRC reading");
+> +	bytes_read = read(pipe_crc->crc_fd, &buf, MAX_LINE_LEN);
+> +	igt_reset_timeout();
+> +
+> +	if (bytes_read < 0)
+> +		bytes_read = -errno;
+> +	else
+> +		buf[bytes_read] = '\0';
+> +
+> +	if (bytes_read > 0 && !pipe_crc_init_from_string(pipe_crc, out, buf))
+> +		return -EINVAL;
+> +
+> +	return bytes_read;
+> +}
+> +
+> +static void read_one_crc(igt_pipe_crc_t *pipe_crc, igt_crc_t *out)
+> +{
+> +	int ret;
+> +
+> +	fcntl(pipe_crc->crc_fd, F_SETFL, pipe_crc->flags & ~O_NONBLOCK);
+> +
+> +	do {
+> +		ret = read_crc(pipe_crc, out);
+> +	} while (ret == -EINTR);
+> +
+> +	fcntl(pipe_crc->crc_fd, F_SETFL, pipe_crc->flags);
+> +}
+> +
+> +/**
+> + * igt_pipe_crc_start:
+> + * @pipe_crc: pipe CRC object
+> + *
+> + * Starts the CRC capture process on @pipe_crc.
+> + */
+> +void igt_pipe_crc_start(igt_pipe_crc_t *pipe_crc)
+> +{
+> +	const char *src = pipe_crc->source;
+> +	struct pollfd pfd;
+> +	char buf[32];
+> +
+> +	/* Stop first just to make sure we don't have lingering state left. */
+> +	igt_pipe_crc_stop(pipe_crc);
+> +
+> +	igt_reset_fifo_underrun_reporting(pipe_crc->fd);
+> +
+> +	igt_assert_eq(write(pipe_crc->ctl_fd, src, strlen(src)), strlen(src));
+> +
+> +	sprintf(buf, "crtc-%d/crc/data", pipe_crc->pipe);
+> +
+> +	igt_set_timeout(10, "Opening crc fd, and poll for first CRC.");
+> +	pipe_crc->crc_fd = openat(pipe_crc->dir, buf, pipe_crc->flags);
+> +	igt_assert(pipe_crc->crc_fd != -1);
+> +
+> +	pfd.fd = pipe_crc->crc_fd;
+> +	pfd.events = POLLIN;
+> +	poll(&pfd, 1, -1);
+> +
+> +	igt_reset_timeout();
+> +
+> +	errno = 0;
+> +}
+> +
+> +/**
+> + * igt_pipe_crc_stop:
+> + * @pipe_crc: pipe CRC object
+> + *
+> + * Stops the CRC capture process on @pipe_crc.
+> + */
+> +void igt_pipe_crc_stop(igt_pipe_crc_t *pipe_crc)
+> +{
+> +	close(pipe_crc->crc_fd);
+> +	pipe_crc->crc_fd = -1;
+> +}
+> +
+> +/**
+> + * igt_pipe_crc_get_crcs:
+> + * @pipe_crc: pipe CRC object
+> + * @n_crcs: number of CRCs to capture
+> + * @out_crcs: buffer pointer for the captured CRC values
+> + *
+> + * Read up to @n_crcs from @pipe_crc. This function does not block, and will
+> + * return early if not enough CRCs can be captured, if @pipe_crc has been
+> + * opened using igt_pipe_crc_new_nonblock(). It will block until @n_crcs are
+> + * retrieved if @pipe_crc has been opened using igt_pipe_crc_new(). @out_crcs is
+> + * alloced by this function and must be released with free() by the caller.
+> + *
+> + * Callers must start and stop the capturing themselves by calling
+> + * igt_pipe_crc_start() and igt_pipe_crc_stop(). For one-shot CRC collecting
+> + * look at igt_pipe_crc_collect_crc().
+> + *
+> + * Returns:
+> + * The number of CRCs captured. Should be equal to @n_crcs in blocking mode, but
+> + * can be less (even zero) in non-blocking mode.
+> + */
+> +int
+> +igt_pipe_crc_get_crcs(igt_pipe_crc_t *pipe_crc, int n_crcs,
+> +		      igt_crc_t **out_crcs)
+> +{
+> +	igt_crc_t *crcs;
+> +	int n = 0;
+> +
+> +	crcs = calloc(n_crcs, sizeof(igt_crc_t));
+> +
+> +	do {
+> +		igt_crc_t *crc = &crcs[n];
+> +		int ret;
+> +
+> +		ret = read_crc(pipe_crc, crc);
+> +		if (ret == -EAGAIN)
+> +			break;
+> +
+> +		if (ret < 0)
+> +			continue;
+> +
+> +		n++;
+> +	} while (n < n_crcs);
+> +
+> +	*out_crcs = crcs;
+> +	return n;
+> +}
+> +
+> +static void crc_sanity_checks(igt_pipe_crc_t *pipe_crc, igt_crc_t *crc)
+> +{
+> +	int i;
+> +	bool all_zero = true;
+> +
+> +	/* Any CRC value can be considered valid on amdgpu hardware. */
+> +	if (is_amdgpu_device(pipe_crc->fd))
+> +		return;
+> +
+> +	for (i = 0; i < crc->n_words; i++) {
+> +		igt_warn_on_f(crc->crc[i] == 0xffffffff,
+> +			      "Suspicious CRC: it looks like the CRC "
+> +			      "read back was from a register in a powered "
+> +			      "down well\n");
+> +		if (crc->crc[i])
+> +			all_zero = false;
+> +	}
+> +
+> +	igt_warn_on_f(all_zero, "Suspicious CRC: All values are 0.\n");
+> +}
+> +
+> +/**
+> + * igt_pipe_crc_drain:
+> + * @pipe_crc: pipe CRC object
+> + *
+> + * Discards all currently queued CRC values from @pipe_crc. This function does
+> + * not block, and is useful to flush @pipe_crc. Afterwards you can get a fresh
+> + * CRC with igt_pipe_crc_get_single().
+> + */
+> +void igt_pipe_crc_drain(igt_pipe_crc_t *pipe_crc)
+> +{
+> +	int ret;
+> +	igt_crc_t crc;
+> +
+> +	fcntl(pipe_crc->crc_fd, F_SETFL, pipe_crc->flags | O_NONBLOCK);
+> +
+> +	do {
+> +		ret = read_crc(pipe_crc, &crc);
+> +	} while (ret > 0 || ret == -EINVAL);
+> +
+> +	fcntl(pipe_crc->crc_fd, F_SETFL, pipe_crc->flags);
+> +}
+> +
+> +/**
+> + * igt_pipe_crc_get_single:
+> + * @pipe_crc: pipe CRC object
+> + * @crc: buffer pointer for the captured CRC value
+> + *
+> + * Read a single @crc from @pipe_crc. This function blocks even
+> + * when nonblocking CRC is requested.
+> + *
+> + * Callers must start and stop the capturing themselves by calling
+> + * igt_pipe_crc_start() and igt_pipe_crc_stop(). For one-shot CRC collecting
+> + * look at igt_pipe_crc_collect_crc().
+> + *
+> + * If capturing has been going on for a while and a fresh crc is required,
+> + * you should use igt_pipe_crc_get_current() instead.
+> + */
+> +void igt_pipe_crc_get_single(igt_pipe_crc_t *pipe_crc, igt_crc_t *crc)
+> +{
+> +	read_one_crc(pipe_crc, crc);
+> +
+> +	crc_sanity_checks(pipe_crc, crc);
+> +}
+> +
+> +/**
+> + * igt_pipe_crc_get_current:
+> + * @drm_fd: Pointer to drm fd for vblank counter
+> + * @pipe_crc: pipe CRC object
+> + * @vblank: frame counter value we're looking for
+> + * @crc: buffer pointer for the captured CRC value
+> + *
+> + * Same as igt_pipe_crc_get_single(), but will wait until a CRC has been captured
+> + * for frame @vblank.
+> + */
+> +void
+> +igt_pipe_crc_get_for_frame(int drm_fd, igt_pipe_crc_t *pipe_crc,
+> +			   unsigned int vblank, igt_crc_t *crc)
+> +{
+> +	do {
+> +		read_one_crc(pipe_crc, crc);
+> +
+> +		/* Only works with valid frame counter */
+> +		if (!crc->has_valid_frame) {
+> +			igt_pipe_crc_drain(pipe_crc);
+> +			igt_pipe_crc_get_single(pipe_crc, crc);
+> +			return;
+> +		}
+> +	} while (igt_vblank_before(crc->frame, vblank));
+> +
+> +	crc_sanity_checks(pipe_crc, crc);
+> +}
+> +
+> +/**
+> + * igt_pipe_crc_get_current:
+> + * @drm_fd: Pointer to drm fd for vblank counter
+> + * @pipe_crc: pipe CRC object
+> + * @crc: buffer pointer for the captured CRC value
+> + *
+> + * Same as igt_pipe_crc_get_single(), but will wait until a new CRC can be captured.
+> + * This is useful for retrieving the current CRC in a more race free way than
+> + * igt_pipe_crc_drain() + igt_pipe_crc_get_single().
+> + */
+> +void
+> +igt_pipe_crc_get_current(int drm_fd, igt_pipe_crc_t *pipe_crc, igt_crc_t *crc)
+> +{
+> +	unsigned vblank = kmstest_get_vblank(drm_fd, pipe_crc->pipe, 0) + 1;
+> +
+> +	return igt_pipe_crc_get_for_frame(drm_fd, pipe_crc, vblank, crc);
+> +}
+> +
+> +/**
+> + * igt_pipe_crc_collect_crc:
+> + * @pipe_crc: pipe CRC object
+> + * @out_crc: buffer for the captured CRC values
+> + *
+> + * Read a single CRC from @pipe_crc. This function blocks until the CRC is
+> + * retrieved, irrespective of whether @pipe_crc has been opened with
+> + * igt_pipe_crc_new() or igt_pipe_crc_new_nonblock().  @out_crc must be
+> + * allocated by the caller.
+> + *
+> + * This function takes care of the pipe_crc book-keeping, it will start/stop
+> + * the collection of the CRC.
+> + *
+> + * This function also calls the interactive debug with the "crc" domain, so you
+> + * can make use of this feature to actually see the screen that is being CRC'd.
+> + *
+> + * For continuous CRC collection look at igt_pipe_crc_start(),
+> + * igt_pipe_crc_get_crcs() and igt_pipe_crc_stop().
+> + */
+> +void igt_pipe_crc_collect_crc(igt_pipe_crc_t *pipe_crc, igt_crc_t *out_crc)
+> +{
+> +	igt_debug_wait_for_keypress("crc");
+> +
+> +	igt_pipe_crc_start(pipe_crc);
+> +	igt_pipe_crc_get_single(pipe_crc, out_crc);
+> +	igt_pipe_crc_stop(pipe_crc);
+> +}
+> diff --git a/lib/igt_pipe_crc.h b/lib/igt_pipe_crc.h
+> new file mode 100644
+> index 000000000000..2e1d3f918bf2
+> --- /dev/null
+> +++ b/lib/igt_pipe_crc.h
+> @@ -0,0 +1,87 @@
+> +/*
+> + * Copyright © 2013 Intel Corporation
+> + *
+> + * Permission is hereby granted, free of charge, to any person obtaining a
+> + * copy of this software and associated documentation files (the "Software"),
+> + * to deal in the Software without restriction, including without limitation
+> + * the rights to use, copy, modify, merge, publish, distribute, sublicense,
+> + * and/or sell copies of the Software, and to permit persons to whom the
+> + * Software is furnished to do so, subject to the following conditions:
+> + *
+> + * The above copyright notice and this permission notice (including the next
+> + * paragraph) shall be included in all copies or substantial portions of the
+> + * Software.
+> + *
+> + * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+> + * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+> + * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
+> + * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+> + * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+> + * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
+> + * IN THE SOFTWARE.
+> + *
+> + */
+> +
+> +#ifndef __IGT_PIPE_CRC_H__
+> +#define __IGT_PIPE_CRC_H__
+> +
+> +#include <stdbool.h>
+> +#include <stdint.h>
+> +
+> +enum pipe;
+> +
+> +/**
+> + * igt_pipe_crc_t:
+> + *
+> + * Pipe CRC support structure. Needs to be allocated and set up with
+> + * igt_pipe_crc_new() for a specific pipe and pipe CRC source value.
+> + */
+> +typedef struct _igt_pipe_crc igt_pipe_crc_t;
+> +
+> +#define DRM_MAX_CRC_NR 10
+> +/**
+> + * igt_crc_t:
+> + * @frame: frame number of the capture CRC
+> + * @n_words: internal field, don't access
+> + * @crc: internal field, don't access
+> + *
+> + * Pipe CRC value. All other members than @frame are private and should not be
+> + * inspected by testcases.
+> + */
+> +struct _igt_crc {
+> +	uint32_t frame;
+> +	bool has_valid_frame;
+> +	int n_words;
+> +	uint32_t crc[DRM_MAX_CRC_NR];
+> +};
+> +typedef struct _igt_crc igt_crc_t;
+> +
+> +#define IGT_PIPE_CRC_SOURCE_AUTO "auto"
+> +#define AMDGPU_PIPE_CRC_SOURCE_DPRX "dprx"
+> +
+> +bool igt_find_crc_mismatch(const igt_crc_t *a, const igt_crc_t *b, int *index);
+> +void igt_assert_crc_equal(const igt_crc_t *a, const igt_crc_t *b);
+> +bool igt_check_crc_equal(const igt_crc_t *a, const igt_crc_t *b);
+> +char *igt_crc_to_string_extended(igt_crc_t *crc, char delimiter, int crc_size);
+> +char *igt_crc_to_string(igt_crc_t *crc);
+> +
+> +void igt_require_pipe_crc(int fd);
+> +igt_pipe_crc_t *
+> +igt_pipe_crc_new(int fd, enum pipe pipe, const char *source);
+> +igt_pipe_crc_t *
+> +igt_pipe_crc_new_nonblock(int fd, enum pipe pipe, const char *source);
+> +void igt_pipe_crc_free(igt_pipe_crc_t *pipe_crc);
+> +void igt_pipe_crc_start(igt_pipe_crc_t *pipe_crc);
+> +void igt_pipe_crc_stop(igt_pipe_crc_t *pipe_crc);
+> +__attribute__((warn_unused_result))
+> +int igt_pipe_crc_get_crcs(igt_pipe_crc_t *pipe_crc, int n_crcs,
+> +			  igt_crc_t **out_crcs);
+> +void igt_pipe_crc_drain(igt_pipe_crc_t *pipe_crc);
+> +void igt_pipe_crc_get_single(igt_pipe_crc_t *pipe_crc, igt_crc_t *out_crc);
+> +void igt_pipe_crc_get_current(int drm_fd, igt_pipe_crc_t *pipe_crc, igt_crc_t *crc);
+> +void igt_pipe_crc_get_for_frame(int drm_fd, igt_pipe_crc_t *pipe_crc,
+> +				unsigned int vblank, igt_crc_t *crc);
+> +
+> +void igt_pipe_crc_collect_crc(igt_pipe_crc_t *pipe_crc, igt_crc_t *out_crc);
+> +
+> +#endif /* __IGT_PIPE_CRC_H__ */
+> diff --git a/lib/meson.build b/lib/meson.build
+> index 8d6c8a244afe..56d6a41fa612 100644
+> --- a/lib/meson.build
+> +++ b/lib/meson.build
+> @@ -30,6 +30,7 @@ lib_sources = [
+>  	'igt_os.c',
+>  	'igt_params.c',
+>  	'igt_perf.c',
+> +	'igt_pipe_crc.c',
+>  	'igt_power.c',
+>  	'igt_primes.c',
+>  	'igt_rand.c',
+> diff --git a/tests/i915/kms_mmap_write_crc.c b/tests/i915/kms_mmap_write_crc.c
+> index c36547fced9c..96ddac116378 100644
+> --- a/tests/i915/kms_mmap_write_crc.c
+> +++ b/tests/i915/kms_mmap_write_crc.c
+> @@ -33,6 +33,7 @@
+>  #include "drmtest.h"
+>  #include "igt_debugfs.h"
+>  #include "igt_kms.h"
+> +#include "igt_pipe_crc.h"
+>  #include "intel_chipset.h"
+>  #include "ioctl_wrappers.h"
+>  #include "igt_aux.h"
+> diff --git a/tools/intel_display_crc.c b/tools/intel_display_crc.c
+> index 61291fc2aa88..357ffb8229f6 100644
+> --- a/tools/intel_display_crc.c
+> +++ b/tools/intel_display_crc.c
+> @@ -32,6 +32,7 @@
+>  #include "igt_core.h"
+>  #include "igt_debugfs.h"
+>  #include "igt_kms.h"
+> +#include "igt_pipe_crc.h"
+>  
+>  typedef struct {
+>  	int fd;
+> -- 
+> 2.35.1
+> 
