@@ -1,25 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from NAM02-SN1-obe.outbound.protection.outlook.com
- (mail-sn1anam02on2087.outbound.protection.outlook.com [40.107.96.87])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 80A3910E1EE
- for <igt-dev@lists.freedesktop.org>; Thu, 20 Oct 2022 20:04:35 +0000 (UTC)
-Message-ID: <ececf77a-a1b4-b5ee-d772-3f5235288bd6@amd.com>
-Date: Thu, 20 Oct 2022 16:04:31 -0400
-Content-Language: en-US
-To: juhapekka.heikkila@gmail.com, igt-dev@lists.freedesktop.org
-References: <20221014184942.205868-1-aurabindo.pillai@amd.com>
- <b2631fef-ddca-e74d-cd8b-39f76fb4af7d@gmail.com>
- <80b537b3-07a8-c7ee-c0f3-5ff141720f78@amd.com>
- <8b174345-980e-eaad-6daa-b1f7e8683b0a@gmail.com>
- <1fa65573-b86c-3d59-bff4-e640eb6272f9@amd.com>
- <8bce1c75-a1ca-1ba5-0715-cfc5dc79025d@gmail.com>
+Received: from NAM12-DM6-obe.outbound.protection.outlook.com
+ (mail-dm6nam12on2077.outbound.protection.outlook.com [40.107.243.77])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5015A10E09E
+ for <igt-dev@lists.freedesktop.org>; Thu, 20 Oct 2022 21:09:04 +0000 (UTC)
 From: Aurabindo Pillai <aurabindo.pillai@amd.com>
-In-Reply-To: <8bce1c75-a1ca-1ba5-0715-cfc5dc79025d@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+To: <igt-dev@lists.freedesktop.org>
+Date: Thu, 20 Oct 2022 17:08:59 -0400
+Message-ID: <20221020210859.446086-1-aurabindo.pillai@amd.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_plane_cursor: Change API for
- collecting the CRC
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+Subject: [igt-dev] [PATCH i-g-t] tests/kms_plane_cursor: Wait for an extra
+ vblank on AMD hw
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -31,108 +23,31 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
+On AMD hardware, atomic cursor updates are not synchronized with the
+same frame in the atomic code path, resulting in cursor programming
+getting deferred to the next frame. Add a device specific quirk to
+account for this delay.
 
+Signed-off-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
+---
+ tests/kms_plane_cursor.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-On 2022-10-20 07:27, Juha-Pekka Heikkila wrote:
-> On 19.10.2022 21.38, Aurabindo Pillai wrote:
->>
->>
->> On 2022-10-18 13:18, Juha-Pekka Heikkila wrote:
->>> On 18.10.2022 19.09, Aurabindo Pillai wrote:
->>>>
->>>>
->>>> On 2022-10-15 16:30, Juha-Pekka Heikkila wrote:
->>>>> On 14.10.2022 21.49, Aurabindo Pillai wrote:
->>>>>> On AMD hw, igt_pipe_crc_get_current() does not work correctly, but
->>>>>> igt_pipe_crc_collect_crc() does. The latter is more robust and 
->>>>>> reports
->>>>>> the expected crc. This is due to a delay of 2 frames in the 
->>>>>> hardware for
->>>>>> crc capture.
->>>>>>
->>>>>> The following diff is an alternate fix instead of changing the API:
->>>>>>
->>>>>> diff --git a/lib/igt_debugfs.c b/lib/igt_debugfs.c
->>>>>> index fa1e3b69..dfcb2638 100644
->>>>>> --- a/lib/igt_debugfs.c
->>>>>> +++ b/lib/igt_debugfs.c
->>>>>> @@ -1061,6 +1061,10 @@ igt_pipe_crc_get_current(int drm_fd, 
->>>>>> igt_pipe_crc_t *pipe_crc, igt_crc_t *crc)
->>>>>>   {
->>>>>>          unsigned vblank = kmstest_get_vblank(drm_fd, 
->>>>>> pipe_crc->pipe, 0) + 1;
->>>>>>
->>>>>> +       /* AMD hw has an additional frame delay */
->>>>>> +       if (is_amdgpu_device(drm_fd))
->>>>>> +               vblank += 1;
->>>>>> +
->>>>>>          return igt_pipe_crc_get_for_frame(drm_fd, pipe_crc, 
->>>>>> vblank, crc);
->>>>>>   }
->>>>>>
->>>>>> Since the above solution adds device specific code into core IGT lib,
->>>>>> changing the API is a preferable solution.
->>>>>
->>>>> This sound like you are fixing driver bug in test suite. If pipe 
->>>>> crc doesn't match it mean rendered picture is wrong. If later crcs 
->>>>> match you're probably showing picture too early, I have no amd hw 
->>>>> at hand so I have no real idea what's going wrong.
->>>>
->>>> Looks like patchwork got confused. The hunk above is not part of the 
->>>> change and was just meant to show the underlying problem. Its either 
->>>> the above one, or the one below that fixes the issue.
->>>>
->>>> Since flipping and crc enablement happen asynchronously, more often 
->>>> than not -  we return an 'uncooked' crc on first frame probably 
->>>> because hw isn't ready yet. For this reason, we skip the first two 
->>>> CRC values. Its not a driver bug.
->>>
->>> If crc enablement is where problem is coming from would correct place 
->>> for amd related special case then be at igt_pipe_crc_start() ?
->>>
->>> If you look at that function you see also Intel hw need special 
->>> handling there with fifo underruns.
->>
->> Here is the case that fails:
->>
->> igt_pipe_crc_start()
->> igt_pipe_crc_get_current(ref_crc)
->> igt_pipe_crc_get_current(test_crc)
->> igt_pipe_crc_stop()
->>
->> Once I change the API like in this patch, this sequence becomes:
->>
->> igt_pipe_crc_start()
->> igt_pipe_crc_get_current(ref_crc)
->> igt_pipe_crc_stop()
->>
->> igt_pipe_crc_start()
->> igt_pipe_crc_get_current(test_crc)
->> igt_pipe_crc_stop()
->>
->> Since igt_pipe_crc_start() already calls an igt_pipe_crc_stop(), the 
->> openat syscall within igt_pipe_crc_start() is what helps in a pass, 
->> since inside the driver, we skip the first two CRCs when it's opened.
->>
->> The subsequent calls to igt_pipe_crc_get_current() should technically 
->> be correct, without having to require additional frame delays. 
->> However, cursor updates aren't synchronized with our atomic code path 
->> with the same frame. It's possible that they get deferred to the next.
->>
->> I think a proper fix would be to make the cursor programming an atomic 
->> update for AMDGPU, but that's not a trivial change. Someone else was 
->> working on this, though. Until that solution is ready, I'd like a 
->> device specific call to igt_pipe_crc_collect_crc() so that this test 
->> passes on AMD hw.
-> 
-> This sound similar issue as guys writing msm driver are having. Their 
-> argument was on kms_cursor_crc legacy cursor api is not supposing to be 
-> frame exact but they still wanted crc test to pass. You can see 
-> discussion here
-
-Sorry, I think my fingers skipped a crucial part in my response. I meant 
-to say that cursor updates aren't synchronized with our atomic code path 
-with the same frame.
-
-But thanks for linking the other discussion. Skipping a vblank does 
-help. I'll send a v4
+diff --git a/tests/kms_plane_cursor.c b/tests/kms_plane_cursor.c
+index e9abfd78..5af390e0 100644
+--- a/tests/kms_plane_cursor.c
++++ b/tests/kms_plane_cursor.c
+@@ -169,6 +169,11 @@ static void test_cursor_pos(data_t *data, int x, int y, unsigned int flags)
+ 	igt_plane_set_position(data->cursor, x, y);
+ 	igt_display_commit_atomic(&data->display, 0, NULL);
+ 
++	/* Wait for one more vblank since cursor updates are not
++	 * synchronized to the same frame on AMD hw */
++	if(is_amdgpu_device(data->drm_fd))
++		igt_wait_for_vblank_count(data->drm_fd, data->display.pipes[data->pipe_id].crtc_offset, 1);
++
+ 	igt_pipe_crc_get_current(data->drm_fd, data->pipe_crc, &test_crc);
+ 	igt_pipe_crc_stop(data->pipe_crc);
+ 
+-- 
+2.38.0
