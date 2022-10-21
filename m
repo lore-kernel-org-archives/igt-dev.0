@@ -1,17 +1,22 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: text/plain; charset="utf-8"
+Received: from us-smtp-delivery-124.mimecast.com
+ (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0D10B10E25D
+ for <igt-dev@lists.freedesktop.org>; Fri, 21 Oct 2022 21:07:51 +0000 (UTC)
+Received: by mail-qt1-f197.google.com with SMTP id
+ cc18-20020a05622a411200b0039cdeb3a699so3325118qtb.23
+ for <igt-dev@lists.freedesktop.org>; Fri, 21 Oct 2022 14:07:50 -0700 (PDT)
+Message-ID: <dbadbf293272cd8ddf6001739193acadd42e13fe.camel@redhat.com>
+From: Lyude Paul <lyude@redhat.com>
+To: Mark Yacoub <markyacoub@chromium.org>, igt-dev@lists.freedesktop.org
+Date: Fri, 21 Oct 2022 17:07:47 -0400
+In-Reply-To: <20221019174217.201103-1-markyacoub@chromium.org>
+References: <20221019174217.201103-1-markyacoub@chromium.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 7bit
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: =?utf-8?b?VmlsbGUgU3lyasOkbMOk?= <ville.syrjala@linux.intel.com>
-Date: Thu, 20 Oct 2022 10:20:49 -0000
-Message-ID: <166626124927.8590.11027256699465956189@emeril.freedesktop.org>
-References: <20221019163029.19301-1-ville.syrjala@linux.intel.com>
-In-Reply-To: <20221019163029.19301-1-ville.syrjala@linux.intel.com>
-Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_s?=
- =?utf-8?q?eries_starting_with_=5Bi-g-t=2Cv3=2C1/3=5D_lib/crc=3A_s/INTEL?=
- =?utf-8?q?=5FPIPE=5FCRC=5FSOURCE=5FAUTO/IGT=5FPIPE=5FCRC=5FSOURCE=5FAUTO/?=
- =?utf-8?q?_=28rev2=29?=
+Subject: Re: [igt-dev] [PATCH] chamelium: Get connector After plug to get
+ EDID
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,45 +24,54 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
+Cc: robdclark@chromium.org, petri.latvala@intel.com, markyacoub@google.com,
+ seanpaul@chromium.org, ihf@google.com, matthewtlam@google.com,
+ khaled.almahallawy@intel.com, amstan@chromium.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-== Series Details ==
+Reviewed-by: Lyude Paul <lyude@redhat.com>
 
-Series: series starting with [i-g-t,v3,1/3] lib/crc: s/INTEL_PIPE_CRC_SOURCE_AUTO/IGT_PIPE_CRC_SOURCE_AUTO/ (rev2)
-URL   : https://patchwork.freedesktop.org/series/109900/
-State : warning
+On Wed, 2022-10-19 at 13:42 -0400, Mark Yacoub wrote:
+> [Why]
+> MST connectors can change connector IDs between plugs. Getting the EDID
+> prop requires a valid connector ID.
+> 
+> [How]
+> Get Connector AFTER a plug, just before it's being used.
+> 
+> Fixes: kms_chamelium@dp-edid-read
+> 
+> Signed-off-by: Mark Yacoub <markyacoub@chromium.org>
+> ---
+>  tests/chamelium/kms_chamelium.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/tests/chamelium/kms_chamelium.c b/tests/chamelium/kms_chamelium.c
+> index 870edb91..99cc23a1 100644
+> --- a/tests/chamelium/kms_chamelium.c
+> +++ b/tests/chamelium/kms_chamelium.c
+> @@ -447,8 +447,7 @@ static void
+>  igt_custom_edid_type_read(data_t *data, struct chamelium_port *port, enum igt_custom_edid_type edid)
+>  {
+>  	drmModePropertyBlobPtr edid_blob = NULL;
+> -	drmModeConnector *connector = chamelium_port_get_connector(
+> -	    data->chamelium, port, false);
+> +	drmModeConnector *connector;
+>  	size_t raw_edid_size;
+>  	const struct edid *raw_edid;
+>  	uint64_t edid_blob_id;
+> @@ -464,6 +463,7 @@ igt_custom_edid_type_read(data_t *data, struct chamelium_port *port, enum igt_cu
+>  
+>  	igt_skip_on(check_analog_bridge(data, port));
+>  
+> +	connector = chamelium_port_get_connector(data->chamelium, port, true);
+>  	igt_assert(kmstest_get_property(data->drm_fd, connector->connector_id,
+>  					DRM_MODE_OBJECT_CONNECTOR, "EDID", NULL,
+>  					&edid_blob_id, NULL));
 
-== Summary ==
-
-Pipeline status: FAILED.
-
-see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/716657 for the overview.
-
-test:ninja-test-mips has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/30101213):
-  Ok:                   23
-  Expected Fail:         4
-  Fail:                293
-  Unexpected Pass:       0
-  Skipped:               0
-  Timeout:               0
-  
-  Full log written to /builds/gfx-ci/igt-ci-tags/build/meson-logs/testlog.txt
-  section_end:1666260936:step_script
-  section_start:1666260936:upload_artifacts_on_failure
-  Uploading artifacts for failed job
-  Uploading artifacts...
-  build: found 1792 matching files and directories   
-  Uploading artifacts as "archive" to coordinator... 201 Created  id=30101213 responseStatus=201 Created token=r6Kvs5jR
-  section_end:1666260946:upload_artifacts_on_failure
-  section_start:1666260946:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1666260947:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-
-== Logs ==
-
-For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/716657
+-- 
+Cheers,
+ Lyude Paul (she/her)
+ Software Engineer at Red Hat
