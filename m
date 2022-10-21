@@ -1,20 +1,22 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4AB9710E6E1
- for <igt-dev@lists.freedesktop.org>; Thu, 27 Oct 2022 20:18:07 +0000 (UTC)
-Date: Thu, 27 Oct 2022 23:18:03 +0300
-From: Ville =?iso-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Message-ID: <Y1rne8IlEYz7fBya@intel.com>
-References: <20221007134029.3188-1-ville.syrjala@linux.intel.com>
- <20221007134029.3188-3-ville.syrjala@linux.intel.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2B8E110E66C
+ for <igt-dev@lists.freedesktop.org>; Fri, 21 Oct 2022 20:47:59 +0000 (UTC)
+Date: Fri, 21 Oct 2022 13:47:33 -0700
+From: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
+To: Matthew Auld <matthew.auld@intel.com>
+Message-ID: <Y1MFZaz8DK0qGOc8@nvishwa1-DESK>
+References: <20221018071705.3906-1-niranjana.vishwanathapura@intel.com>
+ <20221018071705.3906-11-niranjana.vishwanathapura@intel.com>
+ <544255c6-c652-024b-d488-560723d2a199@intel.com>
+ <Y1L88EtG1bqwAmoZ@nvishwa1-DESK>
+Content-Type: text/plain; charset="iso-8859-1"; format=flowed
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20221007134029.3188-3-ville.syrjala@linux.intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 3/3] Revert "tests/kms_invalid_mode:
- Test Cleanup"
+In-Reply-To: <Y1L88EtG1bqwAmoZ@nvishwa1-DESK>
+MIME-Version: 1.0
+Subject: Re: [igt-dev] [PATCH i-g-t v4 10/11] tests/i915/vm_bind: Add
+ gem_exec3_balancer test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,116 +24,543 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Nidhi Gupta <nidhi1.gupta@intel.com>
+Cc: igt-dev@lists.freedesktop.org, daniel.vetter@intel.com,
+ thomas.hellstrom@intel.com, petri.latvala@intel.com, tvrtko.ursulin@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Fri, Oct 07, 2022 at 04:40:29PM +0300, Ville Syrjala wrote:
-> From: Ville Syrjälä <ville.syrjala@linux.intel.com>
-> 
-> This reverts commit 6725767a84109e934ca138d94df0482386c44532.
-> 
-> This was no cleanup. It does fifteen different things and
-> in the process flat out breaks the test at least on all
-> non-atomic drivers/platforms.
-> 
-> Cc: Nidhi Gupta <nidhi1.gupta@intel.com>
-> Cc: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-> Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+On Fri, Oct 21, 2022 at 01:11:28PM -0700, Niranjana Vishwanathapura wrote:
+>On Fri, Oct 21, 2022 at 05:42:55PM +0100, Matthew Auld wrote:
+>>On 18/10/2022 08:17, Niranjana Vishwanathapura wrote:
+>>>To test parallel submissions support in execbuf3, port the subtest
+>>>gem_exec_balancer@parallel-ordering to a new gem_exec3_balancer test
+>>>and switch to execbuf3 ioctl.
+>>>
+>>>v2: use i915_vm_bind library functions
+>>>
+>>>Signed-off-by: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
+>>>---
+>>> tests/i915/gem_exec3_balancer.c | 473 ++++++++++++++++++++++++++++++++
+>>> tests/meson.build               |   7 +
+>>> 2 files changed, 480 insertions(+)
+>>> create mode 100644 tests/i915/gem_exec3_balancer.c
+>>>
+>>>diff --git a/tests/i915/gem_exec3_balancer.c b/tests/i915/gem_exec3_balancer.c
+>>>new file mode 100644
+>>>index 0000000000..34b2a6a0b3
+>>>--- /dev/null
+>>>+++ b/tests/i915/gem_exec3_balancer.c
+>>>@@ -0,0 +1,473 @@
+>>>+// SPDX-License-Identifier: MIT
+>>>+/*
+>>>+ * Copyright © 2022 Intel Corporation
+>>>+ */
+>>>+
+>>>+/** @file gem_exec3_balancer.c
+>>>+ *
+>>>+ * Load balancer tests with execbuf3.
+>>>+ * Ported from gem_exec_balancer and made to work with
+>>>+ * vm_bind and execbuf3.
+>>>+ *
+>>>+ */
+>>>+
+>>>+#include <poll.h>
+>>>+
+>>>+#include "i915/gem.h"
+>>>+#include "i915/i915_vm_bind.h"
+>>>+#include "i915/gem_engine_topology.h"
+>>>+#include "i915/gem_create.h"
+>>>+#include "i915/gem_vm.h"
+>>>+#include "igt.h"
+>>>+#include "igt_gt.h"
+>>>+#include "igt_perf.h"
+>>>+#include "igt_syncobj.h"
+>>>+
+>>>+IGT_TEST_DESCRIPTION("Exercise in-kernel load-balancing with execbuf3");
+>>>+
+>>>+#define INSTANCE_COUNT (1 << I915_PMU_SAMPLE_INSTANCE_BITS)
+>>>+
+>>>+static bool has_class_instance(int i915, uint16_t class, uint16_t instance)
+>>>+{
+>>>+	int fd;
+>>>+
+>>>+	fd = perf_i915_open(i915, I915_PMU_ENGINE_BUSY(class, instance));
+>>>+	if (fd >= 0) {
+>>>+		close(fd);
+>>>+		return true;
+>>>+	}
+>>>+
+>>>+	return false;
+>>>+}
+>>>+
+>>>+static struct i915_engine_class_instance *
+>>>+list_engines(int i915, uint32_t class_mask, unsigned int *out)
+>>>+{
+>>>+	unsigned int count = 0, size = 64;
+>>>+	struct i915_engine_class_instance *engines;
+>>>+
+>>>+	engines = malloc(size * sizeof(*engines));
+>>>+	igt_assert(engines);
+>>>+
+>>>+	for (enum drm_i915_gem_engine_class class = I915_ENGINE_CLASS_RENDER;
+>>>+	     class_mask;
+>>>+	     class++, class_mask >>= 1) {
+>>>+		if (!(class_mask & 1))
+>>>+			continue;
+>>>+
+>>>+		for (unsigned int instance = 0;
+>>>+		     instance < INSTANCE_COUNT;
+>>>+		     instance++) {
+>>>+			if (!has_class_instance(i915, class, instance))
+>>>+				continue;
+>>>+
+>>>+			if (count == size) {
+>>>+				size *= 2;
+>>>+				engines = realloc(engines,
+>>>+						  size * sizeof(*engines));
+>>>+				igt_assert(engines);
+>>>+			}
+>>>+
+>>>+			engines[count++] = (struct i915_engine_class_instance){
+>>>+				.engine_class = class,
+>>>+				.engine_instance = instance,
+>>>+			};
+>>>+		}
+>>>+	}
+>>>+
+>>>+	if (!count) {
+>>>+		free(engines);
+>>>+		engines = NULL;
+>>>+	}
+>>>+
+>>>+	*out = count;
+>>>+	return engines;
+>>>+}
+>>>+
+>>>+static bool has_perf_engines(int i915)
+>>>+{
+>>>+	return i915_perf_type_id(i915);
+>>>+}
+>>>+
+>>>+static intel_ctx_cfg_t
+>>>+ctx_cfg_for_engines(const struct i915_engine_class_instance *ci,
+>>>+		    unsigned int count)
+>>>+{
+>>>+	intel_ctx_cfg_t cfg = { };
+>>>+	unsigned int i;
+>>>+
+>>>+	for (i = 0; i < count; i++)
+>>>+		cfg.engines[i] = ci[i];
+>>>+	cfg.num_engines = count;
+>>>+
+>>>+	return cfg;
+>>>+}
+>>>+
+>>>+static const intel_ctx_t *
+>>>+ctx_create_engines(int i915, const struct i915_engine_class_instance *ci,
+>>>+		   unsigned int count)
+>>>+{
+>>>+	intel_ctx_cfg_t cfg = ctx_cfg_for_engines(ci, count);
+>>>+	return intel_ctx_create(i915, &cfg);
+>>>+}
+>>>+
+>>>+static void check_bo(int i915, uint32_t handle, unsigned int expected,
+>>>+		     bool wait)
+>>>+{
+>>>+	uint32_t *map;
+>>>+
+>>>+	map = gem_mmap__cpu(i915, handle, 0, 4096, PROT_READ);
+>>>+	if (wait)
+>>>+		gem_set_domain(i915, handle, I915_GEM_DOMAIN_CPU,
+>>>+			       I915_GEM_DOMAIN_CPU);
+>>
+>>Hmm, does the wait still work as expected in set_domain() or does 
+>>that ignore BOOKKEEP, in which case this doesn't do anything with 
+>>eb3? Perhaps can be deleted? Also slightly worried about the dirty 
+>>tracking, and whether this test cares...
+>
+>I think we still need this. gem_set_domain() will correctly wait for
+>implicit dependency tracking only and hence will ignore BOOKKEEP. As
+>there is no implicit dependency tracking with VM_BIND, user has to
+>do an explicit wait. This test is properly waiting for execution fence
+>status before calling this function. Hence I think we should be good.
+>
 
-Is anyone going to do anything about this or do I just push the
-reverts?
+So, probably instead of naming it 'wait', we should call it 'flush'
+or something for calling get_set_domain()?
 
-> ---
->  tests/kms_invalid_mode.c | 39 ++++++++++++++++++++++++---------------
->  1 file changed, 24 insertions(+), 15 deletions(-)
-> 
-> diff --git a/tests/kms_invalid_mode.c b/tests/kms_invalid_mode.c
-> index 21ee91abf54b..0287ee02c1c4 100644
-> --- a/tests/kms_invalid_mode.c
-> +++ b/tests/kms_invalid_mode.c
-> @@ -35,6 +35,7 @@ struct _data {
->  	enum pipe pipe;
->  	igt_display_t display;
->  	igt_output_t *output;
-> +	drmModeResPtr res;
->  	int max_dotclock;
->  	bool (*adjust_mode)(data_t *data, drmModeModeInfoPtr mode);
->  };
-> @@ -181,29 +182,35 @@ static void
->  test_output(data_t *data)
->  {
->  	igt_output_t *output = data->output;
-> +	drmModeModeInfo mode;
->  	struct igt_fb fb;
->  	int ret;
-> -	drmModeModeInfo *mode;
-> +	uint32_t crtc_id;
->  
-> -	igt_output_set_pipe(output, data->pipe);
-> +	/*
-> +	 * FIXME test every mode we have to be more
-> +	 * sure everything is really getting rejected?
-> +	 */
-> +	mode = *igt_output_get_mode(output);
-> +	igt_require(data->adjust_mode(data, &mode));
->  
-> -	igt_create_fb(data->drm_fd, 512, 512, DRM_FORMAT_XRGB8888,
-> +	igt_create_fb(data->drm_fd,
-> +		      max_t(uint16_t, mode.hdisplay, 64),
-> +		      max_t(uint16_t, mode.vdisplay, 64),
-> +		      DRM_FORMAT_XRGB8888,
->  		      DRM_FORMAT_MOD_LINEAR,
->  		      &fb);
->  
-> -	for_each_connector_mode(output) {
-> -		mode = &output->config.connector->modes[j__];
-> -		igt_require(data->adjust_mode(data, mode));
-> -		igt_output_override_mode(output, mode);
-> -		ret = igt_display_try_commit2(&data->display, data->display.is_atomic ? COMMIT_ATOMIC : COMMIT_LEGACY);
-> -		igt_assert(ret == -EINVAL);
-> -	}
-> +	kmstest_unset_all_crtcs(data->drm_fd, data->res);
-> +
-> +	crtc_id = data->display.pipes[data->pipe].crtc_id;
-> +
-> +	ret = drmModeSetCrtc(data->drm_fd, crtc_id,
-> +			     fb.fb_id, 0, 0,
-> +			     &output->id, 1, &mode);
-> +	igt_assert_lt(ret, 0);
->  
->  	igt_remove_fb(data->drm_fd, &fb);
-> -	igt_output_override_mode(output, NULL);
-> -	/*unset_all_crtcs*/
-> -	igt_display_reset(&data->display);
-> -	igt_display_commit(&data->display);
->  }
->  
->  static int i915_max_dotclock(data_t *data)
-> @@ -283,10 +290,11 @@ igt_main
->  		kmstest_set_vt_graphics_mode();
->  
->  		igt_display_require(&data.display, data.drm_fd);
-> +		data.res = drmModeGetResources(data.drm_fd);
-> +		igt_assert(data.res);
->  
->  		data.max_dotclock = i915_max_dotclock(&data);
->  		igt_info("Max dotclock: %d kHz\n", data.max_dotclock);
-> -		igt_display_require_output(&data.display);
->  	}
->  
->  	igt_describe("Make sure all modesets are rejected when the requested mode is invalid");
-> @@ -306,5 +314,6 @@ igt_main
->  	igt_fixture {
->  		igt_display_fini(&data.display);
->  		igt_reset_connectors();
-> +		drmModeFreeResources(data.res);
->  	}
->  }
-> -- 
-> 2.35.1
+Niranjana
 
--- 
-Ville Syrjälä
-Intel
+>Regards,
+>Niranjana
+>
+>>
+>>>+	igt_assert_eq(map[0], expected);
+>>>+	munmap(map, 4096);
+>>>+}
+>>>+
+>>>+static struct drm_i915_query_engine_info *query_engine_info(int i915)
+>>>+{
+>>>+	struct drm_i915_query_engine_info *engines;
+>>>+
+>>>+#define QUERY_SIZE	0x4000
+>>>+	engines = malloc(QUERY_SIZE);
+>>>+	igt_assert(engines);
+>>>+	memset(engines, 0, QUERY_SIZE);
+>>>+	igt_assert(!__gem_query_engines(i915, engines, QUERY_SIZE));
+>>>+#undef QUERY_SIZE
+>>>+
+>>>+	return engines;
+>>>+}
+>>>+
+>>>+/* This function only works if siblings contains all instances of a class */
+>>>+static void logical_sort_siblings(int i915,
+>>>+				  struct i915_engine_class_instance *siblings,
+>>>+				  unsigned int count)
+>>>+{
+>>>+	struct i915_engine_class_instance *sorted;
+>>>+	struct drm_i915_query_engine_info *engines;
+>>>+	unsigned int i, j;
+>>>+
+>>>+	sorted = calloc(count, sizeof(*sorted));
+>>>+	igt_assert(sorted);
+>>>+
+>>>+	engines = query_engine_info(i915);
+>>>+
+>>>+	for (j = 0; j < count; ++j) {
+>>>+		for (i = 0; i < engines->num_engines; ++i) {
+>>>+			if (siblings[j].engine_class ==
+>>>+			    engines->engines[i].engine.engine_class &&
+>>>+			    siblings[j].engine_instance ==
+>>>+			    engines->engines[i].engine.engine_instance) {
+>>>+				uint16_t logical_instance =
+>>>+					engines->engines[i].logical_instance;
+>>>+
+>>>+				igt_assert(logical_instance < count);
+>>>+				igt_assert(!sorted[logical_instance].engine_class);
+>>>+				igt_assert(!sorted[logical_instance].engine_instance);
+>>>+
+>>>+				sorted[logical_instance] = siblings[j];
+>>>+				break;
+>>>+			}
+>>>+		}
+>>>+		igt_assert(i != engines->num_engines);
+>>>+	}
+>>>+
+>>>+	memcpy(siblings, sorted, sizeof(*sorted) * count);
+>>>+	free(sorted);
+>>>+	free(engines);
+>>>+}
+>>>+
+>>>+static bool fence_busy(int fence)
+>>>+{
+>>>+	return poll(&(struct pollfd){fence, POLLIN}, 1, 0) == 0;
+>>>+}
+>>>+
+>>>+/*
+>>>+ * Always reading from engine instance 0, with GuC submission the values are the
+>>>+ * same across all instances. Execlists they may differ but quite unlikely they
+>>>+ * would be and if they are we can live with this.
+>>>+ */
+>>>+static unsigned int get_timeslice(int i915,
+>>>+				  struct i915_engine_class_instance engine)
+>>>+{
+>>>+	unsigned int val;
+>>>+
+>>>+	switch (engine.engine_class) {
+>>>+	case I915_ENGINE_CLASS_RENDER:
+>>>+		gem_engine_property_scanf(i915, "rcs0", "timeslice_duration_ms",
+>>>+					  "%d", &val);
+>>>+		break;
+>>>+	case I915_ENGINE_CLASS_COPY:
+>>>+		gem_engine_property_scanf(i915, "bcs0", "timeslice_duration_ms",
+>>>+					  "%d", &val);
+>>>+		break;
+>>>+	case I915_ENGINE_CLASS_VIDEO:
+>>>+		gem_engine_property_scanf(i915, "vcs0", "timeslice_duration_ms",
+>>>+					  "%d", &val);
+>>>+		break;
+>>>+	case I915_ENGINE_CLASS_VIDEO_ENHANCE:
+>>>+		gem_engine_property_scanf(i915, "vecs0", "timeslice_duration_ms",
+>>>+					  "%d", &val);
+>>>+		break;
+>>>+	}
+>>>+
+>>>+	return val;
+>>>+}
+>>>+
+>>>+static uint64_t gettime_ns(void)
+>>>+{
+>>>+	struct timespec current;
+>>>+	clock_gettime(CLOCK_MONOTONIC, &current);
+>>>+	return (uint64_t)current.tv_sec * NSEC_PER_SEC + current.tv_nsec;
+>>>+}
+>>>+
+>>>+static bool syncobj_busy(int i915, uint32_t handle)
+>>>+{
+>>>+	bool result;
+>>>+	int sf;
+>>>+
+>>>+	sf = syncobj_handle_to_fd(i915, handle,
+>>>+				  DRM_SYNCOBJ_HANDLE_TO_FD_FLAGS_EXPORT_SYNC_FILE);
+>>>+	result = poll(&(struct pollfd){sf, POLLIN}, 1, 0) == 0;
+>>>+	close(sf);
+>>>+
+>>>+	return result;
+>>>+}
+>>>+
+>>>+/*
+>>>+ * Ensure a parallel submit actually runs on HW in parallel by putting on a
+>>>+ * spinner on 1 engine, doing a parallel submit, and parallel submit is blocked
+>>>+ * behind spinner.
+>>>+ */
+>>>+static void parallel_ordering(int i915, unsigned int flags)
+>>>+{
+>>>+	uint32_t vm_id;
+>>>+	int class;
+>>>+
+>>>+	vm_id = gem_vm_create_in_vm_bind_mode(i915);
+>>>+
+>>>+	for (class = 0; class < 32; class++) {
+>>>+		struct drm_i915_gem_timeline_fence exec_fence[32] = { };
+>>>+		const intel_ctx_t *ctx = NULL, *spin_ctx = NULL;
+>>>+		uint64_t fence_value = 0, batch_addr[32] = { };
+>>>+		struct i915_engine_class_instance *siblings;
+>>>+		uint32_t exec_syncobj, bind_syncobj[32];
+>>>+		struct drm_i915_gem_execbuffer3 execbuf;
+>>>+		uint32_t batch[16], obj[32];
+>>>+		intel_ctx_cfg_t cfg;
+>>>+		unsigned int count;
+>>>+		igt_spin_t *spin;
+>>>+		uint64_t ahnd;
+>>>+		int i = 0;
+>>>+
+>>>+		siblings = list_engines(i915, 1u << class, &count);
+>>>+		if (!siblings)
+>>>+			continue;
+>>>+
+>>>+		if (count < 2) {
+>>>+			free(siblings);
+>>>+			continue;
+>>>+		}
+>>>+
+>>>+		logical_sort_siblings(i915, siblings, count);
+>>>+
+>>>+		memset(&cfg, 0, sizeof(cfg));
+>>>+		cfg.parallel = true;
+>>>+		cfg.num_engines = 1;
+>>>+		cfg.width = count;
+>>>+		memcpy(cfg.engines, siblings, sizeof(*siblings) * count);
+>>>+
+>>>+		if (__intel_ctx_create(i915, &cfg, &ctx)) {
+>>>+			free(siblings);
+>>>+			continue;
+>>>+		}
+>>>+		gem_context_set_vm(i915, ctx->id, vm_id);
+>>>+
+>>>+		batch[i] = MI_ATOMIC | MI_ATOMIC_INC;
+>>>+#define TARGET_BO_OFFSET	(0x1 << 16)
+>>>+		batch[++i] = TARGET_BO_OFFSET;
+>>>+		batch[++i] = 0;
+>>>+		batch[++i] = MI_BATCH_BUFFER_END;
+>>>+
+>>>+		obj[0] = gem_create(i915, 4096);
+>>>+		bind_syncobj[0] = syncobj_create(i915, 0);
+>>>+		exec_fence[0].handle = bind_syncobj[0];
+>>>+		exec_fence[0].flags = I915_TIMELINE_FENCE_WAIT;
+>>>+		i915_vm_bind(i915, vm_id, TARGET_BO_OFFSET, obj[0], 0, 4096, bind_syncobj[0], 0);
+>>>+
+>>>+		for (i = 1; i < count + 1; ++i) {
+>>>+			obj[i] = gem_create(i915, 4096);
+>>>+			gem_write(i915, obj[i], 0, batch, sizeof(batch));
+>>>+
+>>>+			batch_addr[i - 1] = TARGET_BO_OFFSET * (i + 1);
+>>>+			bind_syncobj[i] = syncobj_create(i915, 0);
+>>>+			exec_fence[i].handle = bind_syncobj[i];
+>>>+			exec_fence[i].flags = I915_TIMELINE_FENCE_WAIT;
+>>>+			i915_vm_bind(i915, vm_id, batch_addr[i - 1], obj[i], 0, 4096, bind_syncobj[i], 0);
+>>>+		}
+>>>+
+>>>+		exec_syncobj = syncobj_create(i915, 0);
+>>>+		exec_fence[i].handle = exec_syncobj;
+>>>+		exec_fence[i].flags = I915_TIMELINE_FENCE_SIGNAL;
+>>>+
+>>>+		memset(&execbuf, 0, sizeof(execbuf));
+>>>+		execbuf.ctx_id = ctx->id,
+>>>+		execbuf.batch_address = to_user_pointer(batch_addr),
+>>>+		execbuf.fence_count = count + 2,
+>>>+		execbuf.timeline_fences = to_user_pointer(exec_fence),
+>>>+
+>>>+		/* Block parallel submission */
+>>>+		spin_ctx = ctx_create_engines(i915, siblings, count);
+>>>+		ahnd = get_simple_ahnd(i915, spin_ctx->id);
+>>>+		spin = __igt_spin_new(i915,
+>>>+				      .ahnd = ahnd,
+>>>+				      .ctx = spin_ctx,
+>>>+				      .engine = 0,
+>>>+				      .flags = IGT_SPIN_FENCE_OUT |
+>>>+				      IGT_SPIN_NO_PREEMPTION);
+>>>+
+>>>+		/* Wait for spinners to start */
+>>>+		usleep(5 * 10000);
+>>>+		igt_assert(fence_busy(spin->out_fence));
+>>>+
+>>>+		/* Submit parallel execbuf */
+>>>+		gem_execbuf3(i915, &execbuf);
+>>>+
+>>>+		/*
+>>>+		 * Wait long enough for timeslcing to kick in but not
+>>>+		 * preemption. Spinner + parallel execbuf should be
+>>>+		 * active. Assuming default timeslice / preemption values, if
+>>>+		 * these are changed it is possible for the test to fail.
+>>>+		 */
+>>>+		usleep(get_timeslice(i915, siblings[0]) * 2);
+>>>+		igt_assert(fence_busy(spin->out_fence));
+>>>+		igt_assert(syncobj_busy(i915, exec_syncobj));
+>>>+		check_bo(i915, obj[0], 0, false);
+>>>+
+>>>+		/*
+>>>+		 * End spinner and wait for spinner + parallel execbuf
+>>>+		 * to compelte.
+>>>+		 */
+>>>+		igt_spin_end(spin);
+>>>+		igt_assert(syncobj_timeline_wait(i915, &exec_syncobj, &fence_value, 1,
+>>>+						 gettime_ns() + (2 * NSEC_PER_SEC),
+>>>+						 DRM_SYNCOBJ_WAIT_FLAGS_WAIT_FOR_SUBMIT, NULL));
+>>>+		igt_assert(!syncobj_busy(i915, exec_syncobj));
+>>>+		syncobj_destroy(i915, exec_syncobj);
+>>>+		for (i = 0; i < count + 1; ++i)
+>>>+			syncobj_destroy(i915, bind_syncobj[i]);
+>>>+		check_bo(i915, obj[0], count, true);
+>>>+
+>>>+		/* Clean up */
+>>>+		intel_ctx_destroy(i915, ctx);
+>>>+		intel_ctx_destroy(i915, spin_ctx);
+>>>+		i915_vm_unbind(i915, vm_id, TARGET_BO_OFFSET, 4096);
+>>>+		for (i = 1; i < count + 1; ++i)
+>>>+			i915_vm_unbind(i915, vm_id, batch_addr[i - 1], 4096);
+>>>+
+>>>+		for (i = 0; i < count + 1; ++i)
+>>>+			gem_close(i915, obj[i]);
+>>>+		free(siblings);
+>>>+		igt_spin_free(i915, spin);
+>>>+		put_ahnd(ahnd);
+>>>+	}
+>>>+
+>>>+	gem_vm_destroy(i915, vm_id);
+>>>+}
+>>>+
+>>>+static bool has_load_balancer(int i915)
+>>>+{
+>>>+	const intel_ctx_cfg_t cfg = {
+>>>+		.load_balance = true,
+>>>+		.num_engines = 1,
+>>>+	};
+>>>+	const intel_ctx_t *ctx = NULL;
+>>>+	int err;
+>>>+
+>>>+	err = __intel_ctx_create(i915, &cfg, &ctx);
+>>>+	intel_ctx_destroy(i915, ctx);
+>>>+
+>>>+	return err == 0;
+>>>+}
+>>>+
+>>>+static bool has_logical_mapping(int i915)
+>>>+{
+>>>+	struct drm_i915_query_engine_info *engines;
+>>>+	unsigned int i;
+>>>+
+>>>+	engines = query_engine_info(i915);
+>>>+
+>>>+	for (i = 0; i < engines->num_engines; ++i)
+>>>+		if (!(engines->engines[i].flags &
+>>>+		     I915_ENGINE_INFO_HAS_LOGICAL_INSTANCE)) {
+>>>+			free(engines);
+>>>+			return false;
+>>>+		}
+>>>+
+>>>+	free(engines);
+>>>+	return true;
+>>>+}
+>>>+
+>>>+static bool has_parallel_execbuf(int i915)
+>>>+{
+>>>+	intel_ctx_cfg_t cfg = {
+>>>+		.parallel = true,
+>>>+		.num_engines = 1,
+>>>+	};
+>>>+	const intel_ctx_t *ctx = NULL;
+>>>+	int err;
+>>>+
+>>>+	for (int class = 0; class < 32; class++) {
+>>>+		struct i915_engine_class_instance *siblings;
+>>>+		unsigned int count;
+>>>+
+>>>+		siblings = list_engines(i915, 1u << class, &count);
+>>>+		if (!siblings)
+>>>+			continue;
+>>>+
+>>>+		if (count < 2) {
+>>>+			free(siblings);
+>>>+			continue;
+>>>+		}
+>>>+
+>>>+		logical_sort_siblings(i915, siblings, count);
+>>>+
+>>>+		cfg.width = count;
+>>>+		memcpy(cfg.engines, siblings, sizeof(*siblings) * count);
+>>>+		free(siblings);
+>>>+
+>>>+		err = __intel_ctx_create(i915, &cfg, &ctx);
+>>>+		intel_ctx_destroy(i915, ctx);
+>>>+
+>>>+		return err == 0;
+>>>+	}
+>>>+
+>>>+	return false;
+>>>+}
+>>>+
+>>>+igt_main
+>>>+{
+>>>+	int i915 = -1;
+>>>+
+>>>+	igt_fixture {
+>>>+		i915 = drm_open_driver(DRIVER_INTEL);
+>>>+		igt_require_gem(i915);
+>>>+
+>>>+		gem_require_contexts(i915);
+>>>+		igt_require(i915_vm_bind_version(i915) == 1);
+>>>+		igt_require(gem_has_engine_topology(i915));
+>>>+		igt_require(has_load_balancer(i915));
+>>>+		igt_require(has_perf_engines(i915));
+>>>+	}
+>>>+
+>>>+	igt_subtest_group {
+>>>+		igt_fixture {
+>>>+			igt_require(has_logical_mapping(i915));
+>>>+			igt_require(has_parallel_execbuf(i915));
+>>>+		}
+>>>+
+>>>+		igt_describe("Ensure a parallel submit actually runs in parallel");
+>>>+		igt_subtest("parallel-ordering")
+>>>+			parallel_ordering(i915, 0);
+>>>+	}
+>>>+}
+>>>diff --git a/tests/meson.build b/tests/meson.build
+>>>index 50de8b7e89..6ca5a94282 100644
+>>>--- a/tests/meson.build
+>>>+++ b/tests/meson.build
+>>>@@ -375,6 +375,13 @@ test_executables += executable('gem_exec_balancer', 'i915/gem_exec_balancer.c',
+>>> 	   install : true)
+>>> test_list += 'gem_exec_balancer'
+>>>+test_executables += executable('gem_exec3_balancer', 'i915/gem_exec3_balancer.c',
+>>>+	   dependencies : test_deps + [ lib_igt_perf ],
+>>>+	   install_dir : libexecdir,
+>>>+	   install_rpath : libexecdir_rpathdir,
+>>>+	   install : true)
+>>>+test_list += 'gem_exec3_balancer'
+>>>+
+>>> test_executables += executable('gem_mmap_offset',
+>>> 	   join_paths('i915', 'gem_mmap_offset.c'),
+>>> 	   dependencies : test_deps + [ libatomic ],
