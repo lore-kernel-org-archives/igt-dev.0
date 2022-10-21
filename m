@@ -1,22 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6E7C010E491
- for <igt-dev@lists.freedesktop.org>; Fri, 21 Oct 2022 08:14:51 +0000 (UTC)
-Message-ID: <7220fa85-ade4-2e9a-abb2-2df6dc2387cf@linux.intel.com>
-Date: Fri, 21 Oct 2022 09:14:39 +0100
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9DE5410E649
+ for <igt-dev@lists.freedesktop.org>; Fri, 21 Oct 2022 08:54:48 +0000 (UTC)
+From: Karolina Drobnik <karolina.drobnik@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Fri, 21 Oct 2022 10:54:40 +0200
+Message-Id: <cover.1666337964.git.karolina.drobnik@intel.com>
 MIME-Version: 1.0
-Content-Language: en-US
-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org
-References: <20221018091001.18552-1-kamil.konieczny@linux.intel.com>
- <640e3f12-db6d-1ea1-9a43-441b36540776@linux.intel.com>
- <Y0/i3Nfzj31QA/Y8@kamilkon-desk1>
-From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
-In-Reply-To: <Y0/i3Nfzj31QA/Y8@kamilkon-desk1>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Subject: Re: [igt-dev] [PATCH i-g-t 0/2] lib/igt_device_scan: add filer
- card=all
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t 0/3] Add support for intel_ctx_t in intel_bb
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,36 +20,38 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
+Currently, intel_bb assumes that context has a fixed set of engines, which
+might not be the case for contexts passed from the userspace. They may use
+a custom engines layout, so the legacy flags like I915_EXEC_BLT wouldn't
+match the actual engine indices.
 
-On 19/10/2022 12:43, Kamil Konieczny wrote:
-> Hi Tvrtko,
-> 
-> On 2022-10-18 at 17:06:29 +0100, Tvrtko Ursulin wrote:
->>
->> On 18/10/2022 10:09, Kamil Konieczny wrote:
->>> Allow to select all (up to 16) discrete cards with the help of
->>> card=all or card=*, for example:
->>>
->>> ./gem_basic --device=pci:vendor=intel,device=discrete,card=all
->>
->> What should this do btw? Run the tests on more than one card in sequence?
->> Isn't that test runner's job?
->>
->> Regards,
->> Tvrtko
-> 
-> The purpose it to run test in parallel with the help of new fork
-> helper or with threads. See my RFC patchset (using fork)
-> 
-> https://patchwork.freedesktop.org/series/109487/
-> Add multi-process subtests for multi-GPUs
+To address this issue, the series adds an additional field to intel_bb,
+intel_ctx_cfg_t (intel_ctx_t configuration), that describes the engine
+instances, together with an engine index lookup function, find_engine().
+The function added in the second patch is used by intel_bb_flush_render()
+and intel_bb_flush_blit() helpers.
 
-Those would be running completely independently - I mean no interaction 
-between the GPUs like work handover, buffer sharing and that? If so my 
-gut feeling is that the direction needs to be carefully considered. Test 
-runner could do that just as well for probably much less complication. 
-But that's just my opinion, so FWIW.
+The last patch in the series adds a test where we define a context with
+the blitter engine at index 0 (1 in the legacy mode) to verify that
+(1) intel_bb can indeed handle external contexts, and (2) intel_bb_exec gets
+the correct engine id in intel_bb_flush_blit().
 
-Regards,
+Karolina Drobnik (3):
+  lib/intel_batchbuffer: Extend __intel_bb_create to handle context
+    config
+  lib/intel_batchbuffer: Add support for custom engine layouts
+  tests/api_intel_bb: Add misplaced_blitter test
 
-Tvrtko
+ lib/igt_draw.c                  |  2 +-
+ lib/intel_batchbuffer.c         | 86 +++++++++++++++++++++++++--------
+ lib/intel_batchbuffer.h         |  6 ++-
+ lib/media_fill.c                |  2 +-
+ tests/i915/api_intel_bb.c       | 36 +++++++++++++-
+ tests/i915/gem_ppgtt.c          |  2 +-
+ tests/i915/gem_pxp.c            | 16 +++---
+ tests/i915/kms_fence_pin_leak.c |  2 +-
+ tests/i915/perf.c               | 18 +++----
+ 9 files changed, 126 insertions(+), 44 deletions(-)
+
+--
+2.25.1
