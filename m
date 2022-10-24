@@ -1,18 +1,22 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Message-ID: <3de34172-f489-5a12-ca86-9552493394af@gmail.com>
-Date: Mon, 24 Oct 2022 21:16:45 +0300
+Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 446F610E05F
+ for <igt-dev@lists.freedesktop.org>; Mon, 24 Oct 2022 19:26:58 +0000 (UTC)
+Date: Mon, 24 Oct 2022 21:26:53 +0200
+From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+To: Karolina Drobnik <karolina.drobnik@intel.com>
+Message-ID: <Y1bm/cWa8qMEfy0H@zkempczy-mobl2>
+References: <cover.1666337964.git.karolina.drobnik@intel.com>
+ <7d94f91418690a9415fca2f68c5add75a488daa7.1666337964.git.karolina.drobnik@intel.com>
+ <Y1YzZVpzuX18AsKX@zkempczy-mobl2>
+ <39c8f8f0-a420-5e26-1633-143e4d57eb9d@intel.com>
 MIME-Version: 1.0
-Content-Language: en-US
-To: =?UTF-8?B?VmlsbGUgU3lyasOkbMOk?= <ville.syrjala@linux.intel.com>,
- Rob Clark <robdclark@gmail.com>
-References: <20221024124323.tfyxcadyd4nz56jz@houat>
- <CAF6AEGuokyL+_ZsWeeMeyCcyErapka0ALZQ60bdWKvja3gcN9Q@mail.gmail.com>
- <Y1a2Eb1rwMyk35v+@intel.com>
-From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-In-Reply-To: <Y1a2Eb1rwMyk35v+@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Subject: Re: [igt-dev] Must-Pass Test Suite for KMS drivers
+In-Reply-To: <39c8f8f0-a420-5e26-1633-143e4d57eb9d@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 2/3] lib/intel_batchbuffer: Add support
+ for custom engine layouts
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,144 +24,136 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: juhapekka.heikkila@gmail.com
-Cc: Petri Latvala <petri.latvala@intel.com>,
- Tim Gover <tim.gover@raspberrypi.com>, David Airlie <airlied@linux.ie>,
- Martin Roukala <martin.roukala@mupuf.org>, dri-devel@lists.freedesktop.org,
- igt-dev@lists.freedesktop.org, maxime@cerno.tech,
- Thomas Zimmermann <tzimmermann@suse.de>,
- Daniel Vetter <daniel.vetter@intel.com>, Phil Elwell <phil@raspberrypi.com>,
- Dom Cobley <dom@raspberrypi.com>
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On 24.10.2022 18.58, Ville Syrjälä wrote:
-> On Mon, Oct 24, 2022 at 08:48:15AM -0700, Rob Clark wrote:
->> On Mon, Oct 24, 2022 at 5:43 AM <maxime@cerno.tech> wrote:
->>>
->>> Hi,
->>>
->>> I've discussing the idea for the past year to add an IGT test suite that
->>> all well-behaved KMS drivers must pass.
->>>
->>> The main idea behind it comes from v4l2-compliance and cec-compliance,
->>> that are being used to validate that the drivers are sane.
->>>
->>> We should probably start building up the test list, and eventually
->>> mandate that all tests pass for all the new KMS drivers we would merge
->>> in the kernel, and be run by KCi or similar.
->>
->> Let's get https://patchwork.freedesktop.org/patch/502641/ merged
->> first, that already gives us a mechanism similar to what we use in
->> mesa to track pass/fail/flake
->>
->> Beyond that, I think some of the igt tests need to get more stable
->> before we could consider a "mustpass" list.  The kms_lease tests seem
->> to fail on msm due to bad assumptions in the test about which CRTCs
->> primary planes can attach to.  The legacy-cursor crc tests seem a bit
->> racy (there was a patch posted for that, not sure if it landed yet),
->> etc.
+On Mon, Oct 24, 2022 at 03:16:16PM +0200, Karolina Drobnik wrote:
+> On 24.10.2022 08:40, Zbigniew Kempczyński wrote:
+> > On Fri, Oct 21, 2022 at 10:54:42AM +0200, Karolina Drobnik wrote:
+> > > Don't assume fixed engine ids and use context configuration in
+> > > intel_bb to find the appropriate engine when executing the batchbuffer.
+> > > 
+> > > Signed-off-by: Karolina Drobnik <karolina.drobnik@intel.com>
+> > > ---
+> > >   lib/intel_batchbuffer.c | 45 +++++++++++++++++++++++++++++++++--------
+> > >   1 file changed, 37 insertions(+), 8 deletions(-)
+> > > 
+> > > diff --git a/lib/intel_batchbuffer.c b/lib/intel_batchbuffer.c
+> > > index 70d819aa..20b7e255 100644
+> > > --- a/lib/intel_batchbuffer.c
+> > > +++ b/lib/intel_batchbuffer.c
+> > > @@ -1490,6 +1490,31 @@ static bool aux_needs_softpin(int i915)
+> > >   	return intel_gen(intel_get_drm_devid(i915)) >= 12;
+> > >   }
+> > > +static bool has_ctx_cfg(struct intel_bb *ibb)
+> > > +{
+> > > +	return ibb->cfg && (ibb->cfg->num_engines > 0);
+> > > +}
+> > > +
+> > > +static bool find_engine(struct intel_bb *ibb, unsigned int class, uint32_t *ring)
+> > 
+> > Why not:
+> > 
+> > static uint32_t find_engine(struct intel_bb *ibb, unsigned int class)
+> > 
+> > then all logic with selecting legacy/user engine hide here in the
+> > implementation? Especially you're not using return value in any form.
 > 
-> I think the safest set to start with would be pure uapi validation
-> stuff. Anything that interactics with real world hardware is a much
-> tougher cookie.
+> I wanted to avoid checking for cfg in two functions, and return early if
+> there is no config. But there is another problem with my approach -- we
+> silently allow legacy engine id if no suitable engine was found in the
+> config. Should we return -1 is such case, and check for it in
+> intel_bb_flush_render() and intel_bb_flush_blit()?
+
+If there's no cfg we have legacy context, and if user will call
+
+ring = find_engine(ibb, I915_ENGINE_CLASS_RENDER);
+
+find_engine() should simply return I915_EXEC_RENDER whereas for
+I915_ENGINE_CLASS_COPY return I915_EXEC_BLT/DEFAULT according to
+current conditional code (and so on for other engines).
+
+When cfg doesn't contain dedicated class configured I think we
+should assert because there's no option to satisfy the caller 
+according to requested engine.
+
+--
+Zbigniew
+
 > 
-
-I agree with Ville
-
-As is with different pixel formats on different kms crc tests there are 
-specialities just to make crcs happy hence I think crc tests will need 
-to be carefully chosen for this type test set.
-
-And as for those legacy cursor tests to be included people first need 
-consensus across drivers how those tests are supposed to work and then 
-strip out platform specific quirks from those tests.
-
-/Juha-Pekka
-
->>
->> The best thing to do is actually start running CI and tracking xfails
->> and flakes ;-)
->>
->> BR,
->> -R
->>
->>> I did a first pass to create a draft of such a test-suite, which would
->>> contain:
->>>
->>> igt@core_auth@basic-auth
->>> igt@core_auth@getclient-master-drop
->>> igt@core_auth@getclient-simple
->>> igt@core_auth@many-magics
->>> igt@core_getclient
->>> igt@core_getstats
->>> igt@core_getversion
->>> igt@core_hotunplug@hotrebind-lateclose
->>> igt@core_hotunplug@hotunbind-rebind
->>> igt@core_hotunplug@unbind-rebind
->>> igt@core_setmaster
->>> igt@core_setmaster_vs_auth
->>> igt@device_reset@unbind-reset-rebind
->>> igt@drm_read
->>> igt@dumb_buffer
->>> igt@fbdev
->>> igt@feature_discovery@display
->>> igt@kms_3d
->>> igt@kms_addfb_basic
->>> igt@kms_async_flips
->>> igt@kms_color
->>> igt@kms_concurrent
->>> igt@kms_cursor_crc
->>> igt@kms_cursor_edge_walk
->>> igt@kms_cursor_legacy@basic-busy-flip-before-cursor
->>> igt@kms_cursor_legacy@basic-flip-after-cursor
->>> igt@kms_cursor_legacy@basic-flip-after-cursor
->>> igt@kms_display_modes
->>> igt@kms_dither
->>> igt@kms_dp_aux_dev
->>> igt@kms_flip@basic-flip-vs-dpms
->>> igt@kms_flip@basic-flip-vs-modeset
->>> igt@kms_flip@basic-flip-vs-wf_vblank
->>> igt@kms_flip@basic-plain-flip
->>> igt@kms_flip_event_leak@basic
->>> igt@kms_force_connector_basic@force-connector-state
->>> igt@kms_force_connector_basic@force-edid
->>> igt@kms_force_connector_basic@force-load-detect
->>> igt@kms_force_connector_basic@prune-stale-modes
->>> igt@kms_getfb
->>> igt@kms_hdmi_inject
->>> igt@kms_hdr
->>> igt@kms_invalid_mode
->>> igt@kms_lease
->>> igt@kms_panel_fitting
->>> igt@kms_pipe_crc_basic
->>> igt@kms_plane_alpha_blend
->>> igt@kms_plane
->>> igt@kms_plane_cursor
->>> igt@kms_plane_lowres
->>> igt@kms_plane_multiple
->>> igt@kms_plane_scaling
->>> igt@kms_prop_blob
->>> igt@kms_properties
->>> igt@kms_rmfb
->>> igt@kms_scaling_modes
->>> igt@kms_sequence
->>> igt@kms_setmode
->>> igt@kms_sysfs_edid_timing
->>> igt@kms_tv_load_detect
->>> igt@kms_universal_plane
->>> igt@kms_vblank
->>> igt@kms_vrr
->>> igt@kms_writeback
->>>
->>> Most of them are skipped on vc4 right now, but I could see that some of
->>> them fail already (kms_rmfb, core_hotunplug), so it proves to be useful
->>> already.
->>>
->>> What do you think? Is there some more tests needed, or did I include
->>> some tests that shouldn't have been there?
->>>
->>> Thanks!
->>> Maxime
+> All the best,
+> Karolina
 > 
+> > 
+> > --
+> > Zbigniew
+> > 
+> > > +{
+> > > +	intel_ctx_cfg_t *cfg;
+> > > +	int i;
+> > > +
+> > > +	/* Use legacy engines when there is no context config */
+> > > +	if (!has_ctx_cfg(ibb))
+> > > +		return false;
+> > > +
+> > > +	cfg = ibb->cfg;
+> > > +	for (i = 0; i < cfg->num_engines; i++) {
+> > > +		if (cfg->engines[i].engine_class == class) {
+> > > +			*ring = i;
+> > > +			return true;
+> > > +		}
+> > > +	}
+> > > +
+> > > +	return false;
+> > > +}
+> > > +
+> > >   /**
+> > >    * intel_bb_create:
+> > >    * @i915: drm fd
+> > > @@ -2790,34 +2815,38 @@ void intel_bb_flush(struct intel_bb *ibb, uint32_t ring)
+> > >    * intel_bb_flush_render:
+> > >    * @ibb: batchbuffer
+> > >    *
+> > > - * If batch is not empty emit batch buffer end, execute on render ring
+> > > - * and reset the batch. Context used to execute is batch context.
+> > > + * If batch is not empty emit batch buffer end, find the render engine id,
+> > > + * execute on the ring and reset the batch. Context used to execute
+> > > + * is batch context.
+> > >    */
+> > >   void intel_bb_flush_render(struct intel_bb *ibb)
+> > >   {
+> > > +	uint32_t ring = I915_EXEC_RENDER;
+> > > +
+> > >   	if (intel_bb_emit_flush_common(ibb) == 0)
+> > >   		return;
+> > > -	intel_bb_exec_with_ring(ibb, I915_EXEC_RENDER);
+> > > +	find_engine(ibb, I915_ENGINE_CLASS_RENDER, &ring);
+> > > +	intel_bb_exec_with_ring(ibb, ring);
+> > >   }
+> > >   /*
+> > >    * intel_bb_flush_blit:
+> > >    * @ibb: batchbuffer
+> > >    *
+> > > - * If batch is not empty emit batch buffer end, execute on default/blit ring
+> > > - * (depends on gen) and reset the batch.
+> > > + * If batch is not empty emit batch buffer end, find a suitable ring
+> > > + * (depending on gen and context configuration) and reset the batch.
+> > >    * Context used to execute is batch context.
+> > >    */
+> > >   void intel_bb_flush_blit(struct intel_bb *ibb)
+> > >   {
+> > > -	uint32_t ring = I915_EXEC_DEFAULT;
+> > > +	uint32_t ring;
+> > >   	if (intel_bb_emit_flush_common(ibb) == 0)
+> > >   		return;
+> > > -	if (HAS_BLT_RING(ibb->devid))
+> > > -		ring = I915_EXEC_BLT;
+> > > +	ring = HAS_BLT_RING(ibb->devid) ? I915_EXEC_BLT : I915_EXEC_DEFAULT;
+> > > +	find_engine(ibb, I915_ENGINE_CLASS_COPY, &ring);
+> > >   	intel_bb_exec_with_ring(ibb, ring);
+> > >   }
+> > > -- 
+> > > 2.25.1
+> > > 
