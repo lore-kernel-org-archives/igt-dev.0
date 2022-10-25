@@ -1,17 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8852A10E299
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E891710E2A7
  for <igt-dev@lists.freedesktop.org>; Tue, 25 Oct 2022 06:59:45 +0000 (UTC)
 From: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Mon, 24 Oct 2022 23:59:32 -0700
-Message-Id: <20221025065941.13397-4-niranjana.vishwanathapura@intel.com>
+Date: Mon, 24 Oct 2022 23:59:36 -0700
+Message-Id: <20221025065941.13397-8-niranjana.vishwanathapura@intel.com>
 In-Reply-To: <20221025065941.13397-1-niranjana.vishwanathapura@intel.com>
 References: <20221025065941.13397-1-niranjana.vishwanathapura@intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v5 03/12] lib/vm_bind: Add vm_bind/unbind
- and execbuf3 ioctls
+Subject: [igt-dev] [PATCH i-g-t v5 07/12] tests/i915/vm_bind: Add vm_bind
+ sanity test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,125 +26,362 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add required library interfaces for new vm_bind/unbind
-and execbuf3 ioctls.
+Add sanity test to exercise vm_bind uapi.
+Test for various cases with vm_bind and vm_unbind ioctls.
+
+v2: Add more input validity tests
+    Add sanity test to fast-feedback.testlist
+v3: Add only basic-smem subtest to fast-feedback.testlist
+v4: Use gem_create_ext to create vm private objects,
+    Ensure vm private objects are only allowed in vm_bind mode,
+    Use library routine i915_vm_bind_version()
+v5: Add execbuf3 sanity tests, use mr->gtt_alignment,
+    add non-recoverable context sanity test
 
 Reviewed-by: Matthew Auld <matthew.auld@intel.com>
 Signed-off-by: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
 ---
- lib/ioctl_wrappers.c | 78 ++++++++++++++++++++++++++++++++++++++++++++
- lib/ioctl_wrappers.h |  6 ++++
- 2 files changed, 84 insertions(+)
+ tests/i915/i915_vm_bind_sanity.c      | 306 ++++++++++++++++++++++++++
+ tests/intel-ci/fast-feedback.testlist |   1 +
+ tests/meson.build                     |   1 +
+ 3 files changed, 308 insertions(+)
+ create mode 100644 tests/i915/i915_vm_bind_sanity.c
 
-diff --git a/lib/ioctl_wrappers.c b/lib/ioctl_wrappers.c
-index 09eb3ce7b5..ac37b6bb43 100644
---- a/lib/ioctl_wrappers.c
-+++ b/lib/ioctl_wrappers.c
-@@ -706,6 +706,38 @@ void gem_execbuf_wr(int fd, struct drm_i915_gem_execbuffer2 *execbuf)
- 	igt_assert_eq(__gem_execbuf_wr(fd, execbuf), 0);
- }
- 
-+/**
-+ * __gem_execbuf3:
-+ * @fd: open i915 drm file descriptor
-+ * @execbuf: execbuffer data structure
-+ *
-+ * This wraps the EXECBUFFER3 ioctl, which submits a batchbuffer for the gpu to
-+ * run. This is allowed to fail, with -errno returned.
+diff --git a/tests/i915/i915_vm_bind_sanity.c b/tests/i915/i915_vm_bind_sanity.c
+new file mode 100644
+index 0000000000..69455b8072
+--- /dev/null
++++ b/tests/i915/i915_vm_bind_sanity.c
+@@ -0,0 +1,306 @@
++// SPDX-License-Identifier: MIT
++/*
++ * Copyright © 2022 Intel Corporation
 + */
-+int __gem_execbuf3(int fd, struct drm_i915_gem_execbuffer3 *execbuf)
++
++/** @file i915_vm_bind_sanity.c
++ *
++ * This is the sanity test for VM_BIND UAPI.
++ *
++ * The goal is to test the UAPI interface.
++ */
++
++#include <errno.h>
++#include <fcntl.h>
++#include <sys/ioctl.h>
++#include <sys/poll.h>
++
++#include "i915/gem.h"
++#include "i915/gem_create.h"
++#include "i915/gem_vm.h"
++#include "i915/i915_vm_bind.h"
++#include "intel_allocator.h"
++#include "igt.h"
++#include "igt_syncobj.h"
++
++#define PAGE_SIZE   4096
++#define SZ_64K      (16 * PAGE_SIZE)
++#define SZ_2M       (512 * PAGE_SIZE)
++
++IGT_TEST_DESCRIPTION("Sanity test vm_bind related interfaces");
++
++static uint64_t
++gettime_ns(void)
 +{
-+	int err = 0;
-+	if (igt_ioctl(fd, DRM_IOCTL_I915_GEM_EXECBUFFER3, execbuf)) {
-+		err = -errno;
-+		igt_assume(err != 0);
++	struct timespec current;
++	clock_gettime(CLOCK_MONOTONIC, &current);
++	return (uint64_t)current.tv_sec * NSEC_PER_SEC + current.tv_nsec;
++}
++
++static bool syncobj_busy(int fd, uint32_t handle)
++{
++	bool result;
++	int sf;
++
++	sf = syncobj_handle_to_fd(fd, handle,
++				  DRM_SYNCOBJ_HANDLE_TO_FD_FLAGS_EXPORT_SYNC_FILE);
++	result = poll(&(struct pollfd){sf, POLLIN}, 1, 0) == 0;
++	close(sf);
++
++	return result;
++}
++
++static inline int
++__vm_bind(int fd, uint32_t vm_id, uint32_t handle, uint64_t start,
++	  uint64_t offset, uint64_t length, uint64_t flags,
++	  struct drm_i915_gem_timeline_fence *fence, uint64_t extensions)
++{
++	struct drm_i915_gem_vm_bind bind;
++
++	memset(&bind, 0, sizeof(bind));
++	bind.vm_id = vm_id;
++	bind.handle = handle;
++	bind.start = start;
++	bind.offset = offset;
++	bind.length = length;
++	bind.flags = flags;
++	bind.extensions = extensions;
++	if (fence)
++		bind.fence = *fence;
++
++	return __gem_vm_bind(fd, &bind);
++}
++
++static inline void
++vm_bind(int fd, uint32_t vm_id, uint32_t handle, uint64_t start,
++	uint64_t offset, uint64_t length, uint64_t flags,
++	struct drm_i915_gem_timeline_fence *fence)
++{
++	igt_assert_eq(__vm_bind(fd, vm_id, handle, start, offset,
++				length, flags, fence, 0), 0);
++	if (fence) {
++		igt_assert(syncobj_timeline_wait(fd, &fence->handle, (uint64_t *)&fence->value,
++						 1, gettime_ns() + (2 * NSEC_PER_SEC),
++						 DRM_SYNCOBJ_WAIT_FLAGS_WAIT_FOR_SUBMIT, NULL));
++		igt_assert(!syncobj_busy(fd, fence->handle));
 +	}
-+	errno = 0;
-+	return err;
 +}
 +
-+/**
-+ * gem_execbuf3:
-+ * @fd: open i915 drm file descriptor
-+ * @execbuf: execbuffer data structure
-+ *
-+ * This wraps the EXECBUFFER3 ioctl, which submits a batchbuffer for the gpu to
-+ * run.
-+ */
-+void gem_execbuf3(int fd, struct drm_i915_gem_execbuffer3 *execbuf)
++static inline int
++__vm_unbind(int fd, uint32_t vm_id, uint64_t start, uint64_t length, uint64_t flags,
++	    uint32_t rsvd, uint64_t rsvd2_0, uint64_t rsvd2_1, uint64_t extensions)
 +{
-+	igt_assert_eq(__gem_execbuf3(fd, execbuf), 0);
++	struct drm_i915_gem_vm_unbind unbind;
++
++	memset(&unbind, 0, sizeof(unbind));
++	unbind.vm_id = vm_id;
++	unbind.rsvd = rsvd;
++	unbind.rsvd2[0] = rsvd2_0;
++	unbind.rsvd2[1] = rsvd2_1;
++	unbind.start = start;
++	unbind.length = length;
++	unbind.flags = flags;
++	unbind.extensions = extensions;
++
++	return __gem_vm_unbind(fd, &unbind);
 +}
 +
- /**
-  * gem_madvise:
-  * @fd: open i915 drm file descriptor
-@@ -1328,3 +1360,49 @@ bool igt_has_drm_cap(int fd, uint64_t capability)
- 	igt_assert(drmIoctl(fd, DRM_IOCTL_GET_CAP, &cap) == 0);
- 	return cap.value;
- }
-+
-+/* VM_BIND */
-+
-+int __gem_vm_bind(int fd, struct drm_i915_gem_vm_bind *bind)
++static inline void
++vm_unbind(int fd, uint32_t vm_id, uint64_t start, uint64_t length, uint64_t flags)
 +{
-+	int err = 0;
-+
-+	if (drmIoctl(fd, DRM_IOCTL_I915_GEM_VM_BIND, bind))
-+		err = -errno;
-+	return err;
++	igt_assert_eq(__vm_unbind(fd, vm_id, start, length, flags, 0, 0, 0, 0), 0);
 +}
 +
-+/**
-+ * gem_vm_bind:
-+ * @fd: open i915 drm file descriptor
-+ * @bind: vm_bind data structure
-+ *
-+ * This wraps the VM_BIND ioctl to bind an address range to
-+ * the specified address space.
-+ */
-+void gem_vm_bind(int fd, struct drm_i915_gem_vm_bind *bind)
++static void basic(int fd, const struct gem_memory_region *mr)
 +{
-+	igt_assert_eq(__gem_vm_bind(fd, bind), 0);
++	uint32_t vm_id, vm_id2, vm_id_exec_mode, handle;
++	struct drm_i915_gem_create_ext_memory_regions setparam_region = {
++		.base = { .name = I915_GEM_CREATE_EXT_MEMORY_REGIONS },
++		.regions = to_user_pointer(&mr->ci),
++		.num_regions = 1,
++	};
++	struct drm_i915_gem_timeline_fence fence = {
++		.handle = syncobj_create(fd, 0),
++		.flags = I915_TIMELINE_FENCE_SIGNAL,
++		.value = 0,
++	};
++	struct drm_i915_gem_create_ext_vm_private vm_priv = {
++		.base = { .name = I915_GEM_CREATE_EXT_VM_PRIVATE },
++	};
++	struct drm_i915_gem_context_param param = {
++		.param = I915_CONTEXT_PARAM_RECOVERABLE,
++		.value = 0,
++	};
++	struct drm_i915_gem_execbuffer3 execbuf3;
++	struct drm_i915_gem_execbuffer2 execbuf;
++	struct drm_i915_gem_exec_object2 obj;
++	uint64_t pg_size = mr->gtt_alignment;
++	uint64_t ahnd, va, size = pg_size * 4;
++	const intel_ctx_t *ctx;
++	int dmabuf;
++
++	ahnd = intel_allocator_open_full(fd, 1, 0, 0,
++					 INTEL_ALLOCATOR_RANDOM,
++					 ALLOC_STRATEGY_HIGH_TO_LOW,
++					 pg_size);
++
++	vm_id = gem_vm_create_in_vm_bind_mode(fd);
++	handle = gem_create_ext(fd, size, 0, &setparam_region.base);
++	va = CANONICAL(get_offset(ahnd, handle, size, 0));
++
++	/* Bind and unbind */
++	vm_bind(fd, vm_id, handle, va, 0, size, 0, NULL);
++	vm_unbind(fd, vm_id, va, size, 0);
++
++	/* Bind with out fence */
++	vm_bind(fd, vm_id, handle, va, 0, size, 0, &fence);
++	vm_unbind(fd, vm_id, va, size, 0);
++
++	/* Aliasing bind and unbind */
++	vm_bind(fd, vm_id, handle, va, 0, size, 0, NULL);
++	vm_bind(fd, vm_id, handle, va + SZ_2M, 0, size, 0, NULL);
++	vm_unbind(fd, vm_id, va, size, 0);
++	vm_unbind(fd, vm_id, va + SZ_2M, size, 0);
++
++	/* MBZ fields are not 0 */
++	igt_assert_eq(__vm_bind(fd, vm_id, handle, va, 0, size, 0x10, NULL, 0), -EINVAL);
++	fence.flags |= I915_TIMELINE_FENCE_WAIT;
++	igt_assert_eq(__vm_bind(fd, vm_id, handle, va, 0, size, 0x10, &fence, 0), -EINVAL);
++	igt_assert_eq(__vm_bind(fd, vm_id, handle, va, 0, size, 0, NULL, to_user_pointer(&obj)), -EINVAL);
++	vm_bind(fd, vm_id, handle, va, 0, size, 0, NULL);
++	igt_assert_eq(__vm_unbind(fd, vm_id, va, size, 0x10, 0, 0, 0, 0), -EINVAL);
++	igt_assert_eq(__vm_unbind(fd, vm_id, va, size, 0, 0x10, 0, 0, 0), -EINVAL);
++	igt_assert_eq(__vm_unbind(fd, vm_id, va, size, 0, 0, 0x10, 0, 0), -EINVAL);
++	igt_assert_eq(__vm_unbind(fd, vm_id, va, size, 0, 0, 0, 0x10, 0), -EINVAL);
++	igt_assert_eq(__vm_unbind(fd, vm_id, va, size, 0, 0, 0, 0, to_user_pointer(&obj)), -EINVAL);
++	vm_unbind(fd, vm_id, va, size, 0);
++
++	/* Invalid handle */
++	igt_assert_eq(__vm_bind(fd, vm_id, handle + 10, va, 0, size, 0, NULL, 0), -ENOENT);
++
++	/* Invalid mapping range */
++	igt_assert_eq(__vm_bind(fd, vm_id, handle, va, 0, 0, 0, NULL, 0), -EINVAL);
++	igt_assert_eq(__vm_bind(fd, vm_id, handle, va, pg_size, size, 0, NULL, 0), -EINVAL);
++
++	/* Unaligned binds */
++	igt_assert_eq(__vm_bind(fd, vm_id, handle, va + 0x10, 0, size, 0, NULL, 0), -EINVAL);
++	igt_assert_eq(__vm_bind(fd, vm_id, handle, va, pg_size / 2, pg_size, 0, NULL, 0), -EINVAL);
++	igt_assert_eq(__vm_bind(fd, vm_id, handle, va, 0, pg_size / 2, 0, NULL, 0), -EINVAL);
++
++	/* range overflow binds */
++	igt_assert_eq(__vm_bind(fd, vm_id, handle, va, pg_size, -pg_size, 0, NULL, 0), -EINVAL);
++	igt_assert_eq(__vm_bind(fd, vm_id, handle, va, pg_size * 2, -pg_size, 0, NULL, 0), -EINVAL);
++
++	/* re-bind VA range without unbinding */
++	vm_bind(fd, vm_id, handle, va, 0, size, 0, NULL);
++	igt_assert_eq(__vm_bind(fd, vm_id, handle, va, 0, size, 0, NULL, 0), -EEXIST);
++	vm_unbind(fd, vm_id, va, size, 0);
++
++	/* unbind a non-existing mapping */
++	igt_assert_eq(__vm_bind(fd, vm_id, 0, va + SZ_2M, 0, size, 0, NULL, 0), -ENOENT);
++
++	/* unbind with length mismatch */
++	vm_bind(fd, vm_id, handle, va, 0, size, 0, NULL);
++	igt_assert_eq(__vm_bind(fd, vm_id, handle, va, 0, size * 2, 0, NULL, 0), -EINVAL);
++	vm_unbind(fd, vm_id, va, size, 0);
++
++	/* validate exclusivity of vm_bind & exec modes of binding */
++	vm_id_exec_mode = gem_vm_create(fd);
++	igt_assert_eq(__vm_bind(fd, vm_id_exec_mode, handle, va, 0, size, 0, NULL, 0), -EOPNOTSUPP);
++
++	/* validate vm_bind mode doesn't work with the default recoverble context */
++	ctx = intel_ctx_create_all_physical(fd);
++	gem_context_set_vm(fd, ctx->id, vm_id);
++	param.ctx_id = ctx->id;
++	igt_assert_eq(__gem_context_get_param(fd, &param), -EINVAL);
++	intel_ctx_destroy(fd, ctx);
++
++	/* create context, make it non-recoverable and assign vm_bind vm */
++	ctx = intel_ctx_create_all_physical(fd);
++	gem_context_set_param(fd, &param);
++	gem_context_set_vm(fd, ctx->id, vm_id);
++	(void)gem_context_get_vm(fd, ctx->id);
++
++	memset(&obj, 0, sizeof(obj));
++	memset(&execbuf, 0, sizeof(execbuf));
++	execbuf.buffers_ptr = to_user_pointer(&obj);
++	execbuf.buffer_count = 1;
++	obj.handle = handle;
++	i915_execbuffer2_set_context_id(execbuf, ctx->id);
++	igt_assert_eq(__gem_execbuf(fd, &execbuf), -EOPNOTSUPP);
++
++	memset(&execbuf3, 0, sizeof(execbuf3));
++	igt_assert_eq(__gem_execbuf3(fd, &execbuf3), -EOPNOTSUPP);
++
++	/* execbuf3 MBZ fields are not 0 */
++	execbuf3.ctx_id = ctx->id;
++	execbuf3.flags = 0x10;
++	igt_assert_eq(__gem_execbuf3(fd, &execbuf3), -EINVAL);
++	execbuf3.flags = 0;
++	execbuf3.rsvd = 0x10;
++	igt_assert_eq(__gem_execbuf3(fd, &execbuf3), -EINVAL);
++	execbuf3.rsvd = 0;
++	execbuf3.extensions = to_user_pointer(&obj);
++	igt_assert_eq(__gem_execbuf3(fd, &execbuf3), -EINVAL);
++
++	intel_ctx_destroy(fd, ctx);
++	gem_vm_destroy(fd, vm_id_exec_mode);
++	gem_close(fd, handle);
++
++	/* validate VM private objects */
++	setparam_region.base.next_extension = to_user_pointer(&vm_priv);
++	igt_assert_eq(__gem_create_ext(fd, &size, 0, &handle,
++				       &setparam_region.base), -ENOENT);
++	vm_priv.rsvd = 0x10;
++	igt_assert_eq(__gem_create_ext(fd, &size, 0, &handle,
++				       &setparam_region.base), -EINVAL);
++	vm_id2 = gem_vm_create(fd);
++	vm_priv.rsvd = 0;
++	vm_priv.vm_id = vm_id2;
++	igt_assert_eq(__gem_create_ext(fd, &size, 0, &handle,
++				       &setparam_region.base), -EINVAL);
++	gem_vm_destroy(fd, vm_id2);
++
++	vm_id2 = gem_vm_create_in_vm_bind_mode(fd);
++	vm_priv.vm_id = vm_id2;
++	handle = gem_create_ext(fd, size, 0, &setparam_region.base);
++
++	igt_assert_eq(__prime_handle_to_fd(fd, handle, DRM_CLOEXEC, &dmabuf), -EINVAL);
++	igt_assert_eq(__vm_bind(fd, vm_id, handle, va, 0, size, 0, NULL, 0), -EINVAL);
++	vm_bind(fd, vm_id2, handle, va, 0, size, 0, NULL);
++	vm_unbind(fd, vm_id2, va, size, 0);
++
++	gem_close(fd, handle);
++	gem_vm_destroy(fd, vm_id2);
++	gem_vm_destroy(fd, vm_id);
++	syncobj_destroy(fd, fence.handle);
++	intel_allocator_close(ahnd);
 +}
 +
-+int __gem_vm_unbind(int fd, struct drm_i915_gem_vm_unbind *unbind)
++igt_main
 +{
-+	int err = 0;
++	int fd;
 +
-+	if (drmIoctl(fd, DRM_IOCTL_I915_GEM_VM_UNBIND, unbind))
-+		err = -errno;
-+	return err;
-+}
++	igt_fixture {
++		fd = drm_open_driver(DRIVER_INTEL);
++		igt_require_gem(fd);
++		igt_require(i915_vm_bind_version(fd) == 1);
++	}
 +
-+/**
-+ * gem_vm_unbind:
-+ * @fd: open i915 drm file descriptor
-+ * @unbind: vm_unbind data structure
-+ *
-+ * This wraps the VM_UNBIND ioctl to unbind an address range from
-+ * the specified address space.
-+ */
-+void gem_vm_unbind(int fd, struct drm_i915_gem_vm_unbind *unbind)
-+{
-+	igt_assert_eq(__gem_vm_unbind(fd, unbind), 0);
++	igt_describe("Basic vm_bind sanity test");
++	igt_subtest_with_dynamic("basic") {
++		for_each_memory_region(r, fd) {
++			if (r->ci.memory_instance)
++				continue;
++
++			igt_dynamic_f("%s", r->name)
++				basic(fd, r);
++		}
++	}
++
++	igt_fixture {
++		close(fd);
++	}
++
++	igt_exit();
 +}
-diff --git a/lib/ioctl_wrappers.h b/lib/ioctl_wrappers.h
-index 9a897fec23..223cd9160c 100644
---- a/lib/ioctl_wrappers.h
-+++ b/lib/ioctl_wrappers.h
-@@ -84,6 +84,12 @@ void gem_execbuf_wr(int fd, struct drm_i915_gem_execbuffer2 *execbuf);
- int __gem_execbuf_wr(int fd, struct drm_i915_gem_execbuffer2 *execbuf);
- void gem_execbuf(int fd, struct drm_i915_gem_execbuffer2 *execbuf);
- int __gem_execbuf(int fd, struct drm_i915_gem_execbuffer2 *execbuf);
-+void gem_execbuf3(int fd, struct drm_i915_gem_execbuffer3 *execbuf);
-+int __gem_execbuf3(int fd, struct drm_i915_gem_execbuffer3 *execbuf);
-+int __gem_vm_bind(int fd, struct drm_i915_gem_vm_bind *bind);
-+void gem_vm_bind(int fd, struct drm_i915_gem_vm_bind *bind);
-+int __gem_vm_unbind(int fd, struct drm_i915_gem_vm_unbind *unbind);
-+void gem_vm_unbind(int fd, struct drm_i915_gem_vm_unbind *unbind);
- 
- #ifndef I915_GEM_DOMAIN_WC
- #define I915_GEM_DOMAIN_WC 0x80
+diff --git a/tests/intel-ci/fast-feedback.testlist b/tests/intel-ci/fast-feedback.testlist
+index bd5538a035..185c2fef54 100644
+--- a/tests/intel-ci/fast-feedback.testlist
++++ b/tests/intel-ci/fast-feedback.testlist
+@@ -53,6 +53,7 @@ igt@i915_getparams_basic@basic-eu-total
+ igt@i915_getparams_basic@basic-subslice-total
+ igt@i915_hangman@error-state-basic
+ igt@i915_pciid
++igt@i915_vm_bind_sanity@basic
+ igt@kms_addfb_basic@addfb25-bad-modifier
+ igt@kms_addfb_basic@addfb25-framebuffer-vs-set-tiling
+ igt@kms_addfb_basic@addfb25-modifier-no-flag
+diff --git a/tests/meson.build b/tests/meson.build
+index 12e53e0bd2..423db3057b 100644
+--- a/tests/meson.build
++++ b/tests/meson.build
+@@ -225,6 +225,7 @@ i915_progs = [
+ 	'i915_query',
+ 	'i915_selftest',
+ 	'i915_suspend',
++	'i915_vm_bind_sanity',
+ 	'kms_big_fb',
+ 	'kms_big_joiner' ,
+ 	'kms_busy',
 -- 
 2.21.0.rc0.32.g243a4c7e27
