@@ -1,17 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C2B0A10E1E4
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C2F9A10E248
  for <igt-dev@lists.freedesktop.org>; Tue, 25 Oct 2022 20:07:18 +0000 (UTC)
 From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 25 Oct 2022 20:06:55 +0000
-Message-Id: <20221025200709.83314-16-umesh.nerlige.ramappa@intel.com>
+Date: Tue, 25 Oct 2022 20:06:57 +0000
+Message-Id: <20221025200709.83314-18-umesh.nerlige.ramappa@intel.com>
 In-Reply-To: <20221025200709.83314-1-umesh.nerlige.ramappa@intel.com>
 References: <20221025200709.83314-1-umesh.nerlige.ramappa@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH 15/29] lib/i915/perf: implement report
- accumulation for new format
+Subject: [igt-dev] [PATCH 17/29] lib/i915/perf: fixup report validity
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,57 +24,37 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
 
-Available on XEHPSDV+.
+It appears that on Gfx12+ there is no more validity bit in the
+reports.
 
 Signed-off-by: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
 Reviewed-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 ---
- lib/i915/perf.c | 33 +++++++++++++++++++++++++++++++++
- 1 file changed, 33 insertions(+)
+ lib/i915/perf_data_reader.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/lib/i915/perf.c b/lib/i915/perf.c
-index 4d7fe43c..cc7dceea 100644
---- a/lib/i915/perf.c
-+++ b/lib/i915/perf.c
-@@ -778,6 +778,39 @@ void intel_perf_accumulate_reports(struct intel_perf_accumulator *acc,
- 	memset(acc, 0, sizeof(*acc));
+diff --git a/lib/i915/perf_data_reader.c b/lib/i915/perf_data_reader.c
+index e69189ac..857bcd3a 100644
+--- a/lib/i915/perf_data_reader.c
++++ b/lib/i915/perf_data_reader.c
+@@ -45,13 +45,14 @@ oa_report_ctx_is_valid(const struct intel_perf_devinfo *devinfo,
+ {
+ 	const uint32_t *report = (const uint32_t *) _report;
  
- 	switch (oa_format) {
-+	case I915_OA_FORMAT_A24u40_A14u32_B8_C8:
-+		accumulate_uint32(start + 1, end + 1, deltas + idx++); /* timestamp */
-+		accumulate_uint32(start + 3, end + 3, deltas + idx++); /* clock */
-+
-+		/* 4x 32bit A0-3 counters... */
-+		for (i = 0; i < 4; i++)
-+			accumulate_uint32(start + 4 + i, end + 4 + i, deltas + idx++);
-+
-+		/* 20x 40bit A4-23 counters... */
-+		for (i = 0; i < 20; i++)
-+			accumulate_uint40(i + 4, start, end, deltas + idx++);
-+
-+		/* 4x 32bit A24-27 counters... */
-+		for (i = 0; i < 4; i++)
-+			accumulate_uint32(start + 28 + i, end + 28 + i, deltas + idx++);
-+
-+		/* 4x 40bit A28-31 counters... */
-+		for (i = 0; i < 4; i++)
-+			accumulate_uint40(i + 28, start, end, deltas + idx++);
-+
-+		/* 5x 32bit A32-36 counters... */
-+		for (i = 0; i < 5; i++)
-+			accumulate_uint32(start + 36 + i, end + 36 + i, deltas + idx++);
-+
-+		/* 1x 32bit A37 counter... */
-+		accumulate_uint32(start + 46, end + 46, deltas + idx++);
-+
-+		/* 8x 32bit B counters + 8x 32bit C counters... */
-+		for (i = 0; i < 16; i++)
-+			accumulate_uint32(start + 48 + i, end + 48 + i, deltas + idx++);
-+		break;
-+
-+	case I915_OAR_FORMAT_A32u40_A4u32_B8_C8:
- 	case I915_OA_FORMAT_A32u40_A4u32_B8_C8:
- 		accumulate_uint32(start + 1, end + 1, deltas + idx++); /* timestamp */
- 		accumulate_uint32(start + 3, end + 3, deltas + idx++); /* clock */
+-	if (devinfo->graphics_ver < 8) {
++	if (devinfo->graphics_ver < 8)
+ 		return false; /* TODO */
+-	} else if (devinfo->graphics_ver == 8) {
++	if (devinfo->graphics_ver >= 12)
++		return true; /* Always valid */
++	if (devinfo->graphics_ver == 8)
+ 		return report[0] & (1ul << 25);
+-	} else if (devinfo->graphics_ver > 8) {
++	if (devinfo->graphics_ver > 8)
+ 		return report[0] & (1ul << 16);
+-	}
+ 
+ 	return false;
+ }
 -- 
 2.25.1
