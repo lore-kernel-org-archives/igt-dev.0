@@ -1,16 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2F83410E1EE
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3A12610E1B9
  for <igt-dev@lists.freedesktop.org>; Tue, 25 Oct 2022 20:07:18 +0000 (UTC)
 From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 25 Oct 2022 20:06:49 +0000
-Message-Id: <20221025200709.83314-10-umesh.nerlige.ramappa@intel.com>
+Date: Tue, 25 Oct 2022 20:06:50 +0000
+Message-Id: <20221025200709.83314-11-umesh.nerlige.ramappa@intel.com>
 In-Reply-To: <20221025200709.83314-1-umesh.nerlige.ramappa@intel.com>
 References: <20221025200709.83314-1-umesh.nerlige.ramappa@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH 09/29] i915/perf: Use gt in perf tests and lib
+Subject: [igt-dev] [PATCH 10/29] i915/perf: Explicitly state rendercopy
+ needs for a test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,150 +23,100 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Enable perf tests to use gt information for sysfs attributes.
+Let tests explicitly require rendercopy before running. This helps in
+temporarily blocking these tests until rendercopy is available on new
+platforms.
 
 Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 Reviewed-by: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
 ---
- lib/i915/perf.c   | 36 ++++++++++++++++++++++++++++++++++--
- tests/i915/perf.c | 27 ++++++++++++++++++++-------
- 2 files changed, 54 insertions(+), 9 deletions(-)
+ tests/i915/perf.c | 25 ++++++++++++++++++++++---
+ 1 file changed, 22 insertions(+), 3 deletions(-)
 
-diff --git a/lib/i915/perf.c b/lib/i915/perf.c
-index 95e33b3c..4f19a005 100644
---- a/lib/i915/perf.c
-+++ b/lib/i915/perf.c
-@@ -511,6 +511,35 @@ open_master_sysfs_dir(int drm_fd)
- 	return sysfs;
- }
- 
-+typedef enum {
-+	RPS_MIN_FREQ_MHZ,
-+	RPS_MAX_FREQ_MHZ,
-+
-+	RPS_MAX_ATTR,
-+} intel_sysfs_attr_id;
-+
-+static const char *intel_sysfs_attr_name[2][RPS_MAX_ATTR] =
-+{
-+	{
-+		"gt_min_freq_mhz",
-+		"gt_max_freq_mhz",
-+	},
-+	{
-+		"gt/gt0/rps_min_freq_mhz",
-+		"gt/gt0/rps_max_freq_mhz",
-+	},
-+};
-+
-+static const char *
-+intel_sysfs_attr_id_to_name(int sysfs_dirfd, intel_sysfs_attr_id id)
-+{
-+	assert(id < RPS_MAX_ATTR);
-+
-+	return !faccessat(sysfs_dirfd, "gt", O_RDONLY, 0) ?
-+		intel_sysfs_attr_name[1][id] :
-+		intel_sysfs_attr_name[0][id];
-+}
-+
- struct intel_perf *
- intel_perf_for_fd(int drm_fd)
- {
-@@ -526,8 +555,11 @@ intel_perf_for_fd(int drm_fd)
- 	if (sysfs_dir_fd < 0)
- 		return NULL;
- 
--	if (!read_sysfs(sysfs_dir_fd, "gt_min_freq_mhz", &gt_min_freq) ||
--	    !read_sysfs(sysfs_dir_fd, "gt_max_freq_mhz", &gt_max_freq)) {
-+#define read_sysfs_rps(fd, id, value) \
-+	read_sysfs(fd, intel_sysfs_attr_id_to_name(fd, id), value)
-+
-+	if (!read_sysfs_rps(sysfs_dir_fd, RPS_MIN_FREQ_MHZ, &gt_min_freq) ||
-+	    !read_sysfs_rps(sysfs_dir_fd, RPS_MAX_FREQ_MHZ, &gt_max_freq)) {
- 		close(sysfs_dir_fd);
- 		return NULL;
- 	}
 diff --git a/tests/i915/perf.c b/tests/i915/perf.c
-index 75594f04..0543a79e 100644
+index 0543a79e..989f1fce 100644
 --- a/tests/i915/perf.c
 +++ b/tests/i915/perf.c
-@@ -345,11 +345,11 @@ try_sysfs_read_u64(const char *path, uint64_t *val)
- }
+@@ -1545,6 +1545,9 @@ static void load_helper_set_load(enum load load)
  
- static unsigned long
--sysfs_read(const char *path)
-+sysfs_read(enum i915_attr_id id)
+ static void load_helper_run(enum load load)
  {
- 	unsigned long value;
++	if (!render_copy)
++		return;
++
+ 	/*
+ 	 * FIXME fork helpers won't get cleaned up when started from within a
+ 	 * subtest, so handle the case where it sticks around a bit too long.
+@@ -1577,12 +1580,20 @@ static void load_helper_run(enum load load)
  
--	igt_assert(igt_sysfs_scanf(sysfs, path, "%lu", &value) == 1);
-+	igt_assert(igt_sysfs_rps_scanf(sysfs, id, "%lu", &value) == 1);
- 
- 	return value;
- }
-@@ -4177,7 +4177,7 @@ gen12_test_single_ctx_render_target_writes_a_counter(void)
- 
- static unsigned long rc6_residency_ms(void)
+ static void load_helper_stop(void)
  {
--	return sysfs_read("power/rc6_residency_ms");
-+	return sysfs_read(RC6_RESIDENCY_MS);
++	if (!render_copy)
++		return;
++
+ 	kill(lh.igt_proc.pid, SIGUSR1);
+ 	igt_assert(igt_wait_helper(&lh.igt_proc) == 0);
  }
  
- static void
-@@ -4200,7 +4200,7 @@ test_rc6_disable(void)
- 	unsigned long rc6_start, rc6_end, rc6_enabled;
- 
- 	rc6_enabled = 0;
--	igt_sysfs_scanf(sysfs, "power/rc6_enable", "%lu", &rc6_enabled);
-+	igt_sysfs_rps_scanf(sysfs, RC6_ENABLE, "%lu", &rc6_enabled);
- 	igt_require(rc6_enabled);
- 
- 	/* Verify rc6 is functional by measuring residency while idle */
-@@ -4837,6 +4837,19 @@ done:
- 	return ref_count;
- }
- 
-+static int perf_sysfs_open(int i915)
-+{
-+	int dirfd, gt;
+ static void load_helper_init(void)
+ {
++	if (!render_copy) {
++		igt_info("Running test without render_copy\n");
++		return;
++	}
 +
-+	/* use the first available sysfs interface */
-+	for_each_sysfs_gt_dirfd(i915, dirfd, gt)
-+		break;
+ 	lh.devid = intel_get_drm_devid(drm_fd);
+ 
+ 	/* MI_STORE_DATA can only use GTT address on gen4+/g33 and needs
+@@ -1603,7 +1614,12 @@ static void load_helper_init(void)
+ 
+ static void load_helper_fini(void)
+ {
+-	int i915 = buf_ops_get_fd(lh.bops);
++	int i915;
 +
-+	igt_assert(dirfd != -1);
++	if (!render_copy)
++		return;
 +
-+	return dirfd;
-+}
-+
- /* check that an open i915 perf stream holds a reference on the drm i915 module
-  * including in the corner case where the original drm fd has been closed.
-  */
-@@ -4872,7 +4885,7 @@ test_i915_ref_count(void)
- 	drm_fd = __drm_open_driver(DRIVER_INTEL);
- 	igt_require_intel(drm_fd);
- 	devid = intel_get_drm_devid(drm_fd);
--	sysfs = igt_sysfs_open(drm_fd);
-+	sysfs = perf_sysfs_open(drm_fd);
++	i915 = buf_ops_get_fd(lh.bops);
  
- 	/* Note: these global variables are only initialized after calling
- 	 * init_sys_info()...
-@@ -4974,14 +4987,14 @@ igt_main
- 		igt_require_gem(drm_fd);
- 
- 		devid = intel_get_drm_devid(drm_fd);
--		sysfs = igt_sysfs_open(drm_fd);
-+		sysfs = perf_sysfs_open(drm_fd);
- 
- 		igt_require(init_sys_info());
- 
- 		write_u64_file("/proc/sys/dev/i915/perf_stream_paranoid", 1);
- 		write_u64_file("/proc/sys/dev/i915/oa_max_sample_rate", 100000);
- 
--		gt_max_freq_mhz = sysfs_read("gt_boost_freq_mhz");
-+		gt_max_freq_mhz = sysfs_read(RPS_RP0_FREQ_MHZ);
+ 	if (lh.igt_proc.running)
+ 		load_helper_stop();
+@@ -4997,7 +5013,6 @@ igt_main
+ 		gt_max_freq_mhz = sysfs_read(RPS_RP0_FREQ_MHZ);
  
  		render_copy = igt_get_render_copyfunc(devid);
- 		igt_require_f(render_copy, "no render-copy function\n");
+-		igt_require_f(render_copy, "no render-copy function\n");
+ 	}
+ 
+ 	igt_subtest("non-system-wide-paranoid")
+@@ -5100,6 +5115,7 @@ igt_main
+ 
+ 	igt_subtest("unprivileged-single-ctx-counters") {
+ 		igt_require(IS_HASWELL(devid));
++		igt_require_f(render_copy, "no render-copy function\n");
+ 		hsw_test_single_ctx_counters();
+ 	}
+ 
+@@ -5113,6 +5129,7 @@ igt_main
+ 		 * For gen12 implement a separate test that uses only OAR
+ 		 */
+ 		igt_require(intel_gen(devid) >= 8 && intel_gen(devid) < 12);
++		igt_require_f(render_copy, "no render-copy function\n");
+ 		gen8_test_single_ctx_render_target_writes_a_counter();
+ 	}
+ 
+@@ -5128,8 +5145,10 @@ igt_main
+ 			gen12_test_oa_tlb_invalidate();
+ 
+ 		igt_describe("Measure performance for a specific context using OAR in Gen 12");
+-		igt_subtest("gen12-unprivileged-single-ctx-counters")
++		igt_subtest("gen12-unprivileged-single-ctx-counters") {
++			igt_require_f(render_copy, "no render-copy function\n");
+ 			gen12_test_single_ctx_render_target_writes_a_counter();
++		}
+ 	}
+ 
+ 	igt_subtest("rc6-disable")
 -- 
 2.25.1
