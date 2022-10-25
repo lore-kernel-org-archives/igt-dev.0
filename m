@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8FCA010E23E
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C2B0A10E1E4
  for <igt-dev@lists.freedesktop.org>; Tue, 25 Oct 2022 20:07:18 +0000 (UTC)
 From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 25 Oct 2022 20:06:54 +0000
-Message-Id: <20221025200709.83314-15-umesh.nerlige.ramappa@intel.com>
+Date: Tue, 25 Oct 2022 20:06:55 +0000
+Message-Id: <20221025200709.83314-16-umesh.nerlige.ramappa@intel.com>
 In-Reply-To: <20221025200709.83314-1-umesh.nerlige.ramappa@intel.com>
 References: <20221025200709.83314-1-umesh.nerlige.ramappa@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH 14/29] i915/perf: Wait longer for rc6 residency in
- DG2
+Subject: [igt-dev] [PATCH 15/29] lib/i915/perf: implement report
+ accumulation for new format
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,57 +23,59 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-igt@perf@rc6-disable waits for 50ms to check if we entered rc6. One some
-failures this seems to take longer to enter rc6, about 100ms. Tweak the
-test for DG2 to use a longer wait time.
+From: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
 
-Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
-Acked-by: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
+Available on XEHPSDV+.
+
+Signed-off-by: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
+Reviewed-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 ---
- tests/i915/perf.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ lib/i915/perf.c | 33 +++++++++++++++++++++++++++++++++
+ 1 file changed, 33 insertions(+)
 
-diff --git a/tests/i915/perf.c b/tests/i915/perf.c
-index befae0da..7045c214 100644
---- a/tests/i915/perf.c
-+++ b/tests/i915/perf.c
-@@ -4272,7 +4272,10 @@ test_rc6_disable(void)
- 		.properties_ptr = to_user_pointer(properties),
- 	};
- 	unsigned long rc6_start, rc6_end, rc6_enabled;
-+	uint32_t rc6_duration;
+diff --git a/lib/i915/perf.c b/lib/i915/perf.c
+index 4d7fe43c..cc7dceea 100644
+--- a/lib/i915/perf.c
++++ b/lib/i915/perf.c
+@@ -778,6 +778,39 @@ void intel_perf_accumulate_reports(struct intel_perf_accumulator *acc,
+ 	memset(acc, 0, sizeof(*acc));
  
-+	/* On DG2, we wait longer to enter rc6 */
-+	rc6_duration = IS_DG2(devid) ? 100000 : 50000;
- 	rc6_enabled = 0;
- 	igt_sysfs_rps_scanf(sysfs, RC6_ENABLE, "%lu", &rc6_enabled);
- 	igt_require(rc6_enabled);
-@@ -4280,7 +4283,7 @@ test_rc6_disable(void)
- 	/* Verify rc6 is functional by measuring residency while idle */
- 	gem_quiescent_gpu(drm_fd);
- 	rc6_start = rc6_residency_ms();
--	usleep(50000);
-+	usleep(rc6_duration);
- 	rc6_end = rc6_residency_ms();
- 	igt_require(rc6_end != rc6_start);
- 
-@@ -4288,7 +4291,7 @@ test_rc6_disable(void)
- 	stream_fd = __perf_open(drm_fd, &param, false);
- 
- 	rc6_start = rc6_residency_ms();
--	usleep(50000);
-+	usleep(rc6_duration);
- 	rc6_end = rc6_residency_ms();
- 	igt_assert_eq(rc6_end - rc6_start, 0);
- 
-@@ -4297,7 +4300,7 @@ test_rc6_disable(void)
- 
- 	/* But once OA is closed, we expect the device to sleep again */
- 	rc6_start = rc6_residency_ms();
--	usleep(50000);
-+	usleep(rc6_duration);
- 	rc6_end = rc6_residency_ms();
- 	igt_assert_neq(rc6_end - rc6_start, 0);
- }
+ 	switch (oa_format) {
++	case I915_OA_FORMAT_A24u40_A14u32_B8_C8:
++		accumulate_uint32(start + 1, end + 1, deltas + idx++); /* timestamp */
++		accumulate_uint32(start + 3, end + 3, deltas + idx++); /* clock */
++
++		/* 4x 32bit A0-3 counters... */
++		for (i = 0; i < 4; i++)
++			accumulate_uint32(start + 4 + i, end + 4 + i, deltas + idx++);
++
++		/* 20x 40bit A4-23 counters... */
++		for (i = 0; i < 20; i++)
++			accumulate_uint40(i + 4, start, end, deltas + idx++);
++
++		/* 4x 32bit A24-27 counters... */
++		for (i = 0; i < 4; i++)
++			accumulate_uint32(start + 28 + i, end + 28 + i, deltas + idx++);
++
++		/* 4x 40bit A28-31 counters... */
++		for (i = 0; i < 4; i++)
++			accumulate_uint40(i + 28, start, end, deltas + idx++);
++
++		/* 5x 32bit A32-36 counters... */
++		for (i = 0; i < 5; i++)
++			accumulate_uint32(start + 36 + i, end + 36 + i, deltas + idx++);
++
++		/* 1x 32bit A37 counter... */
++		accumulate_uint32(start + 46, end + 46, deltas + idx++);
++
++		/* 8x 32bit B counters + 8x 32bit C counters... */
++		for (i = 0; i < 16; i++)
++			accumulate_uint32(start + 48 + i, end + 48 + i, deltas + idx++);
++		break;
++
++	case I915_OAR_FORMAT_A32u40_A4u32_B8_C8:
+ 	case I915_OA_FORMAT_A32u40_A4u32_B8_C8:
+ 		accumulate_uint32(start + 1, end + 1, deltas + idx++); /* timestamp */
+ 		accumulate_uint32(start + 3, end + 3, deltas + idx++); /* clock */
 -- 
 2.25.1
