@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 063BF10E1A0
- for <igt-dev@lists.freedesktop.org>; Tue, 25 Oct 2022 20:07:17 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8735410E2DF
+ for <igt-dev@lists.freedesktop.org>; Tue, 25 Oct 2022 20:07:19 +0000 (UTC)
 From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 25 Oct 2022 20:06:47 +0000
-Message-Id: <20221025200709.83314-8-umesh.nerlige.ramappa@intel.com>
+Date: Tue, 25 Oct 2022 20:07:09 +0000
+Message-Id: <20221025200709.83314-30-umesh.nerlige.ramappa@intel.com>
 In-Reply-To: <20221025200709.83314-1-umesh.nerlige.ramappa@intel.com>
 References: <20221025200709.83314-1-umesh.nerlige.ramappa@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH 07/29] i915/perf: Define OA report types and fix
- oa-formats test
+Subject: [igt-dev] [PATCH 29/29] lib/i915/perf: configure OA timestamp shift
+ and mask for ACM
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,57 +23,34 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-With newer gen12 platforms, formats used for OAG buffer and
-MI_REPORT_PERF_FORMAT differ slightly. This causes issues when the
-oa-formats test does a sanity check. Run oa-formats for OAG reports
-only.
+From: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
 
-OAR formats must be tested with the gen12-mi-rpc and
-gen12-unprivileged-single-ctx-counters.
+OA reports have the timestamp value shifted to the right by 1 bits, it
+also means we cannot use the top bit for comparison. Configure OA
+timestamp shift and mask for ACM.
 
-v2: Clarify commit message
-
-Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
-Reviewed-by: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
+Signed-off-by: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
+Reviewed-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 ---
- tests/i915/perf.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ lib/i915/perf.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/tests/i915/perf.c b/tests/i915/perf.c
-index 5fe874c1..65434055 100644
---- a/tests/i915/perf.c
-+++ b/tests/i915/perf.c
-@@ -95,6 +95,13 @@ struct accumulator {
- 	uint64_t deltas[MAX_RAW_OA_COUNTERS];
- };
+diff --git a/lib/i915/perf.c b/lib/i915/perf.c
+index fa291998..28f37948 100644
+--- a/lib/i915/perf.c
++++ b/lib/i915/perf.c
+@@ -377,6 +377,12 @@ intel_perf_for_devinfo(uint32_t device_id,
+ 		intel_perf_load_metrics_adl(perf);
+ 	} else if (devinfo->is_dg2) {
+ 		perf->devinfo.eu_threads_count = 8;
++		/* OA reports have the timestamp value shifted to the
++		 * right by 1 bits, it also means we cannot use the
++		 * top bit for comparison.
++		 */
++		perf->devinfo.oa_timestamp_shift = -1;
++		perf->devinfo.oa_timestamp_mask = 0x7fffffff;
  
-+enum {
-+	OAG,
-+	OAR,
-+
-+	MAX_OA_TYPE,
-+};
-+
- struct oa_format {
- 	const char *name;
- 	size_t size;
-@@ -108,6 +115,7 @@ struct oa_format {
- 	int n_b;
- 	int c_off;
- 	int n_c;
-+	int oa_type;
- };
- 
- static struct oa_format hsw_oa_formats[I915_OA_FORMAT_MAX] = {
-@@ -1483,6 +1491,9 @@ test_oa_formats(void)
- 		if (!format.name) /* sparse, indexed by ID */
- 			continue;
- 
-+		if (format.oa_type != OAG) /* sparse, indexed by ID */
-+			continue;
-+
- 		igt_debug("Checking OA format %s\n", format.name);
- 
- 		open_and_read_2_oa_reports(i,
+ 		if (is_acm_gt1(&perf->devinfo))
+ 			intel_perf_load_metrics_acmgt1(perf);
 -- 
 2.25.1
