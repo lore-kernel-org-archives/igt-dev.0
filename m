@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2B07F10E261
- for <igt-dev@lists.freedesktop.org>; Tue, 25 Oct 2022 20:07:19 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8FCA010E23E
+ for <igt-dev@lists.freedesktop.org>; Tue, 25 Oct 2022 20:07:18 +0000 (UTC)
 From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 25 Oct 2022 20:07:02 +0000
-Message-Id: <20221025200709.83314-23-umesh.nerlige.ramappa@intel.com>
+Date: Tue, 25 Oct 2022 20:06:54 +0000
+Message-Id: <20221025200709.83314-15-umesh.nerlige.ramappa@intel.com>
 In-Reply-To: <20221025200709.83314-1-umesh.nerlige.ramappa@intel.com>
 References: <20221025200709.83314-1-umesh.nerlige.ramappa@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH 22/29] tools/i915-perf: make timestamp range
- easier to compare
+Subject: [igt-dev] [PATCH 14/29] i915/perf: Wait longer for rc6 residency in
+ DG2
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,41 +23,57 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
+igt@perf@rc6-disable waits for 50ms to check if we entered rc6. One some
+failures this seems to take longer to enter rc6, about 100ms. Tweak the
+test for DG2 to use a longer wait time.
 
-With timestamp bit shifting stuff, aligning values in the console is
-useful to compare them.
-
-Signed-off-by: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
-Reviewed-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+Acked-by: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
 ---
- tools/i915-perf/i915_perf_reader.c | 9 ++++++---
+ tests/i915/perf.c | 9 ++++++---
  1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/tools/i915-perf/i915_perf_reader.c b/tools/i915-perf/i915_perf_reader.c
-index 4a2e3df4..92e43c19 100644
---- a/tools/i915-perf/i915_perf_reader.c
-+++ b/tools/i915-perf/i915_perf_reader.c
-@@ -235,14 +235,17 @@ main(int argc, char *argv[])
- 		return EXIT_FAILURE;
- 	}
+diff --git a/tests/i915/perf.c b/tests/i915/perf.c
+index befae0da..7045c214 100644
+--- a/tests/i915/perf.c
++++ b/tests/i915/perf.c
+@@ -4272,7 +4272,10 @@ test_rc6_disable(void)
+ 		.properties_ptr = to_user_pointer(properties),
+ 	};
+ 	unsigned long rc6_start, rc6_end, rc6_enabled;
++	uint32_t rc6_duration;
  
--	fprintf(stdout, "Timestamp correlation CPU range: 0x%016"PRIx64"-0x%016"PRIx64"\n",
-+	fprintf(stdout, "Timestamp correlation CPU range:       0x%016"PRIx64"-0x%016"PRIx64"\n",
- 		reader.correlations[0]->cpu_timestamp,
- 		reader.correlations[reader.n_correlations - 1]->cpu_timestamp);
--	fprintf(stdout, "Timestamp correlation GPU range: 0x%016"PRIx64"-0x%016"PRIx64"\n",
-+	fprintf(stdout, "Timestamp correlation GPU range (64b): 0x%016"PRIx64"-0x%016"PRIx64"\n",
- 		reader.correlations[0]->gpu_timestamp,
- 		reader.correlations[reader.n_correlations - 1]->gpu_timestamp);
-+	fprintf(stdout, "Timestamp correlation GPU range (32b): 0x%016"PRIx64"-0x%016"PRIx64"\n",
-+		reader.correlations[0]->gpu_timestamp & 0xffffffff,
-+		reader.correlations[reader.n_correlations - 1]->gpu_timestamp & 0xffffffff);
++	/* On DG2, we wait longer to enter rc6 */
++	rc6_duration = IS_DG2(devid) ? 100000 : 50000;
+ 	rc6_enabled = 0;
+ 	igt_sysfs_rps_scanf(sysfs, RC6_ENABLE, "%lu", &rc6_enabled);
+ 	igt_require(rc6_enabled);
+@@ -4280,7 +4283,7 @@ test_rc6_disable(void)
+ 	/* Verify rc6 is functional by measuring residency while idle */
+ 	gem_quiescent_gpu(drm_fd);
+ 	rc6_start = rc6_residency_ms();
+-	usleep(50000);
++	usleep(rc6_duration);
+ 	rc6_end = rc6_residency_ms();
+ 	igt_require(rc6_end != rc6_start);
  
--	fprintf(stdout, "OA data timestamp range: 0x%016"PRIx64"-0x%016"PRIx64"\n",
-+	fprintf(stdout, "OA data timestamp range:               0x%016"PRIx64"-0x%016"PRIx64"\n",
- 		intel_perf_read_record_timestamp(reader.perf,
- 						 reader.metric_set,
- 						 reader.records[0]),
+@@ -4288,7 +4291,7 @@ test_rc6_disable(void)
+ 	stream_fd = __perf_open(drm_fd, &param, false);
+ 
+ 	rc6_start = rc6_residency_ms();
+-	usleep(50000);
++	usleep(rc6_duration);
+ 	rc6_end = rc6_residency_ms();
+ 	igt_assert_eq(rc6_end - rc6_start, 0);
+ 
+@@ -4297,7 +4300,7 @@ test_rc6_disable(void)
+ 
+ 	/* But once OA is closed, we expect the device to sleep again */
+ 	rc6_start = rc6_residency_ms();
+-	usleep(50000);
++	usleep(rc6_duration);
+ 	rc6_end = rc6_residency_ms();
+ 	igt_assert_neq(rc6_end - rc6_start, 0);
+ }
 -- 
 2.25.1
