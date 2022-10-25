@@ -1,23 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 96B2210E079
- for <igt-dev@lists.freedesktop.org>; Tue, 25 Oct 2022 06:10:46 +0000 (UTC)
-Message-ID: <a7106856-ac09-a92a-7bb6-61ccc41e1a60@intel.com>
-Date: Tue, 25 Oct 2022 08:10:45 +0200
-Content-Language: en-US
-To: =?UTF-8?Q?Zbigniew_Kempczy=c5=84ski?= <zbigniew.kempczynski@intel.com>
-References: <cover.1666337964.git.karolina.drobnik@intel.com>
- <7d94f91418690a9415fca2f68c5add75a488daa7.1666337964.git.karolina.drobnik@intel.com>
- <Y1YzZVpzuX18AsKX@zkempczy-mobl2>
- <39c8f8f0-a420-5e26-1633-143e4d57eb9d@intel.com>
- <Y1bm/cWa8qMEfy0H@zkempczy-mobl2>
-From: Karolina Drobnik <karolina.drobnik@intel.com>
-In-Reply-To: <Y1bm/cWa8qMEfy0H@zkempczy-mobl2>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1CF4010E2AD
+ for <igt-dev@lists.freedesktop.org>; Tue, 25 Oct 2022 06:59:46 +0000 (UTC)
+From: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Mon, 24 Oct 2022 23:59:39 -0700
+Message-Id: <20221025065941.13397-11-niranjana.vishwanathapura@intel.com>
+In-Reply-To: <20221025065941.13397-1-niranjana.vishwanathapura@intel.com>
+References: <20221025065941.13397-1-niranjana.vishwanathapura@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t 2/3] lib/intel_batchbuffer: Add support
- for custom engine layouts
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t v5 10/12] tests/i915/vm_bind: Add
+ gem_exec3_basic test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,142 +20,194 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org
+Cc: tvrtko.ursulin@intel.com, thomas.hellstrom@intel.com,
+ matthew.auld@intel.com, daniel.vetter@intel.com, petri.latvala@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On 24.10.2022 21:26, Zbigniew Kempczyński wrote:
-> On Mon, Oct 24, 2022 at 03:16:16PM +0200, Karolina Drobnik wrote:
->> On 24.10.2022 08:40, Zbigniew Kempczyński wrote:
->>> On Fri, Oct 21, 2022 at 10:54:42AM +0200, Karolina Drobnik wrote:
->>>> Don't assume fixed engine ids and use context configuration in
->>>> intel_bb to find the appropriate engine when executing the batchbuffer.
->>>>
->>>> Signed-off-by: Karolina Drobnik <karolina.drobnik@intel.com>
->>>> ---
->>>>    lib/intel_batchbuffer.c | 45 +++++++++++++++++++++++++++++++++--------
->>>>    1 file changed, 37 insertions(+), 8 deletions(-)
->>>>
->>>> diff --git a/lib/intel_batchbuffer.c b/lib/intel_batchbuffer.c
->>>> index 70d819aa..20b7e255 100644
->>>> --- a/lib/intel_batchbuffer.c
->>>> +++ b/lib/intel_batchbuffer.c
->>>> @@ -1490,6 +1490,31 @@ static bool aux_needs_softpin(int i915)
->>>>    	return intel_gen(intel_get_drm_devid(i915)) >= 12;
->>>>    }
->>>> +static bool has_ctx_cfg(struct intel_bb *ibb)
->>>> +{
->>>> +	return ibb->cfg && (ibb->cfg->num_engines > 0);
->>>> +}
->>>> +
->>>> +static bool find_engine(struct intel_bb *ibb, unsigned int class, uint32_t *ring)
->>>
->>> Why not:
->>>
->>> static uint32_t find_engine(struct intel_bb *ibb, unsigned int class)
->>>
->>> then all logic with selecting legacy/user engine hide here in the
->>> implementation? Especially you're not using return value in any form.
->>
->> I wanted to avoid checking for cfg in two functions, and return early if
->> there is no config. But there is another problem with my approach -- we
->> silently allow legacy engine id if no suitable engine was found in the
->> config. Should we return -1 is such case, and check for it in
->> intel_bb_flush_render() and intel_bb_flush_blit()?
-> 
-> If there's no cfg we have legacy context, and if user will call
-> 
-> ring = find_engine(ibb, I915_ENGINE_CLASS_RENDER);
-> 
-> find_engine() should simply return I915_EXEC_RENDER whereas for
-> I915_ENGINE_CLASS_COPY return I915_EXEC_BLT/DEFAULT according to
-> current conditional code (and so on for other engines).
-> 
-> When cfg doesn't contain dedicated class configured I think we
-> should assert because there's no option to satisfy the caller
-> according to requested engine.
+Port gem_exec_basic to a new gem_exec3_basic test which
+uses the newer execbuf3 ioctl.
 
-Sounds like a plan, will incorporate it in v2.
+v2: use i915_vm_bind library functions
 
-All the best,
-Karolina
+Reviewed-by: Matthew Auld <matthew.auld@intel.com>
+Signed-off-by: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
+---
+ tests/i915/gem_exec3_basic.c          | 139 ++++++++++++++++++++++++++
+ tests/intel-ci/fast-feedback.testlist |   1 +
+ tests/meson.build                     |   1 +
+ 3 files changed, 141 insertions(+)
+ create mode 100644 tests/i915/gem_exec3_basic.c
 
-> --
-> Zbigniew
-> 
->>
->> All the best,
->> Karolina
->>
->>>
->>> --
->>> Zbigniew
->>>
->>>> +{
->>>> +	intel_ctx_cfg_t *cfg;
->>>> +	int i;
->>>> +
->>>> +	/* Use legacy engines when there is no context config */
->>>> +	if (!has_ctx_cfg(ibb))
->>>> +		return false;
->>>> +
->>>> +	cfg = ibb->cfg;
->>>> +	for (i = 0; i < cfg->num_engines; i++) {
->>>> +		if (cfg->engines[i].engine_class == class) {
->>>> +			*ring = i;
->>>> +			return true;
->>>> +		}
->>>> +	}
->>>> +
->>>> +	return false;
->>>> +}
->>>> +
->>>>    /**
->>>>     * intel_bb_create:
->>>>     * @i915: drm fd
->>>> @@ -2790,34 +2815,38 @@ void intel_bb_flush(struct intel_bb *ibb, uint32_t ring)
->>>>     * intel_bb_flush_render:
->>>>     * @ibb: batchbuffer
->>>>     *
->>>> - * If batch is not empty emit batch buffer end, execute on render ring
->>>> - * and reset the batch. Context used to execute is batch context.
->>>> + * If batch is not empty emit batch buffer end, find the render engine id,
->>>> + * execute on the ring and reset the batch. Context used to execute
->>>> + * is batch context.
->>>>     */
->>>>    void intel_bb_flush_render(struct intel_bb *ibb)
->>>>    {
->>>> +	uint32_t ring = I915_EXEC_RENDER;
->>>> +
->>>>    	if (intel_bb_emit_flush_common(ibb) == 0)
->>>>    		return;
->>>> -	intel_bb_exec_with_ring(ibb, I915_EXEC_RENDER);
->>>> +	find_engine(ibb, I915_ENGINE_CLASS_RENDER, &ring);
->>>> +	intel_bb_exec_with_ring(ibb, ring);
->>>>    }
->>>>    /*
->>>>     * intel_bb_flush_blit:
->>>>     * @ibb: batchbuffer
->>>>     *
->>>> - * If batch is not empty emit batch buffer end, execute on default/blit ring
->>>> - * (depends on gen) and reset the batch.
->>>> + * If batch is not empty emit batch buffer end, find a suitable ring
->>>> + * (depending on gen and context configuration) and reset the batch.
->>>>     * Context used to execute is batch context.
->>>>     */
->>>>    void intel_bb_flush_blit(struct intel_bb *ibb)
->>>>    {
->>>> -	uint32_t ring = I915_EXEC_DEFAULT;
->>>> +	uint32_t ring;
->>>>    	if (intel_bb_emit_flush_common(ibb) == 0)
->>>>    		return;
->>>> -	if (HAS_BLT_RING(ibb->devid))
->>>> -		ring = I915_EXEC_BLT;
->>>> +	ring = HAS_BLT_RING(ibb->devid) ? I915_EXEC_BLT : I915_EXEC_DEFAULT;
->>>> +	find_engine(ibb, I915_ENGINE_CLASS_COPY, &ring);
->>>>    	intel_bb_exec_with_ring(ibb, ring);
->>>>    }
->>>> -- 
->>>> 2.25.1
->>>>
+diff --git a/tests/i915/gem_exec3_basic.c b/tests/i915/gem_exec3_basic.c
+new file mode 100644
+index 0000000000..cbe712b751
+--- /dev/null
++++ b/tests/i915/gem_exec3_basic.c
+@@ -0,0 +1,139 @@
++// SPDX-License-Identifier: MIT
++/*
++ * Copyright © 2022 Intel Corporation
++ */
++
++/** @file gem_exec3_basic.c
++ *
++ * Basic execbuf3 test.
++ * Ported from gem_exec_basic and made to work with
++ * vm_bind and execbuf3.
++ *
++ */
++
++#include "i915/gem.h"
++#include "i915/i915_vm_bind.h"
++#include "igt.h"
++#include "igt_collection.h"
++#include "igt_syncobj.h"
++
++#include "i915/gem_create.h"
++#include "i915/gem_vm.h"
++
++IGT_TEST_DESCRIPTION("Basic sanity check of execbuf3-ioctl rings.");
++
++#define BATCH_VA	0xa0000000
++#define PAGE_SIZE	4096
++
++static uint64_t gettime_ns(void)
++{
++	struct timespec current;
++	clock_gettime(CLOCK_MONOTONIC, &current);
++	return (uint64_t)current.tv_sec * NSEC_PER_SEC + current.tv_nsec;
++}
++
++static uint32_t batch_create(int fd, uint64_t *batch_size, uint32_t region)
++{
++	const uint32_t bbe = MI_BATCH_BUFFER_END;
++	uint32_t handle;
++
++	igt_assert(__gem_create_in_memory_regions(fd, &handle, batch_size, region) == 0);
++	gem_write(fd, handle, 0, &bbe, sizeof(bbe));
++
++	return handle;
++}
++
++igt_main
++{
++	const struct intel_execution_engine2 *e;
++	struct drm_i915_query_memory_regions *query_info;
++	struct igt_collection *regions, *set;
++	const intel_ctx_t *base_ctx, *ctx;
++	struct drm_i915_gem_context_param param = {
++		.param = I915_CONTEXT_PARAM_RECOVERABLE,
++		.value = 0,
++	};
++	uint32_t vm_id;
++	int fd = -1;
++
++	igt_fixture {
++		fd = drm_open_driver(DRIVER_INTEL);
++		base_ctx = intel_ctx_create_all_physical(fd);
++
++		igt_require_gem(fd);
++		igt_require(i915_vm_bind_version(fd) == 1);
++		igt_fork_hang_detector(fd);
++
++		vm_id = gem_vm_create_in_vm_bind_mode(fd);
++		ctx  = intel_ctx_create(fd, &base_ctx->cfg);
++		param.ctx_id = ctx->id;
++		gem_context_set_param(fd, &param);
++		gem_context_set_vm(fd, ctx->id, vm_id);
++
++		query_info = gem_get_query_memory_regions(fd);
++		igt_assert(query_info);
++
++		set = get_memory_region_set(query_info,
++					    I915_SYSTEM_MEMORY,
++					    I915_DEVICE_MEMORY);
++	}
++
++	igt_describe("Check basic functionality of GEM_EXECBUFFER3 ioctl on every"
++		     " ring and iterating over memory regions.");
++	igt_subtest_with_dynamic("basic") {
++		for_each_combination(regions, 1, set) {
++			struct drm_i915_gem_timeline_fence exec_fence[GEM_MAX_ENGINES][2] = { };
++			char *sub_name = memregion_dynamic_subtest_name(regions);
++			uint32_t region = igt_collection_get_value(regions, 0);
++			uint32_t bind_syncobj, exec_syncobj[GEM_MAX_ENGINES];
++			uint64_t fence_value[GEM_MAX_ENGINES] = { };
++			uint64_t batch_size = PAGE_SIZE;
++			uint32_t handle, idx = 0;
++
++			handle = batch_create(fd, &batch_size, region);
++			bind_syncobj = syncobj_create(fd, 0);
++			i915_vm_bind(fd, vm_id, BATCH_VA, handle, 0, batch_size, bind_syncobj, 0);
++
++			for_each_ctx_engine(fd, ctx, e) {
++				igt_dynamic_f("%s-%s", e->name, sub_name) {
++					struct drm_i915_gem_execbuffer3 execbuf = {
++						.ctx_id = ctx->id,
++						.batch_address = BATCH_VA,
++						.engine_idx = e->flags,
++						.fence_count = 2,
++						.timeline_fences = to_user_pointer(&exec_fence[idx]),
++					};
++
++					exec_syncobj[idx] = syncobj_create(fd, 0);
++					exec_fence[idx][0].handle = bind_syncobj;
++					exec_fence[idx][0].flags = I915_TIMELINE_FENCE_WAIT;
++					exec_fence[idx][1].handle = exec_syncobj[idx];
++					exec_fence[idx][1].flags = I915_TIMELINE_FENCE_SIGNAL;
++					idx++;
++
++					gem_execbuf3(fd, &execbuf);
++				}
++			}
++
++			igt_assert(syncobj_timeline_wait(fd, exec_syncobj, fence_value, idx,
++							 gettime_ns() + (2 * NSEC_PER_SEC),
++							 DRM_SYNCOBJ_WAIT_FLAGS_WAIT_FOR_SUBMIT, NULL));
++			while (idx)
++				syncobj_destroy(fd, exec_syncobj[--idx]);
++			syncobj_destroy(fd, bind_syncobj);
++			i915_vm_unbind(fd, vm_id, BATCH_VA, batch_size);
++			gem_close(fd, handle);
++			free(sub_name);
++		}
++	}
++
++	igt_fixture {
++		intel_ctx_destroy(fd, ctx);
++		gem_vm_destroy(fd, vm_id);
++		free(query_info);
++		igt_collection_destroy(set);
++		igt_stop_hang_detector();
++		intel_ctx_destroy(fd, base_ctx);
++		close(fd);
++	}
++}
+diff --git a/tests/intel-ci/fast-feedback.testlist b/tests/intel-ci/fast-feedback.testlist
+index 8a47eaddda..c5be7e300b 100644
+--- a/tests/intel-ci/fast-feedback.testlist
++++ b/tests/intel-ci/fast-feedback.testlist
+@@ -27,6 +27,7 @@ igt@gem_exec_fence@nb-await
+ igt@gem_exec_gttfill@basic
+ igt@gem_exec_parallel@engines
+ igt@gem_exec_store@basic
++igt@gem_exec3_basic@basic
+ igt@gem_flink_basic@bad-flink
+ igt@gem_flink_basic@bad-open
+ igt@gem_flink_basic@basic
+diff --git a/tests/meson.build b/tests/meson.build
+index 63404e491b..915f67857a 100644
+--- a/tests/meson.build
++++ b/tests/meson.build
+@@ -148,6 +148,7 @@ i915_progs = [
+ 	'gem_exec_store',
+ 	'gem_exec_suspend',
+ 	'gem_exec_whisper',
++	'gem_exec3_basic',
+ 	'gem_fd_exhaustion',
+ 	'gem_fence_thrash',
+ 	'gem_fence_upload',
+-- 
+2.21.0.rc0.32.g243a4c7e27
