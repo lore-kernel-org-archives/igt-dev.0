@@ -1,17 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3A63910E11C
- for <igt-dev@lists.freedesktop.org>; Tue, 25 Oct 2022 07:15:11 +0000 (UTC)
-From: Karolina Drobnik <karolina.drobnik@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Tue, 25 Oct 2022 09:15:00 +0200
-Message-Id: <513fe4a81e23cff178117d899cfe5f99d9bb17e1.1666680959.git.karolina.drobnik@intel.com>
-In-Reply-To: <cover.1666680959.git.karolina.drobnik@intel.com>
-References: <cover.1666680959.git.karolina.drobnik@intel.com>
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v2 2/3] lib/intel_batchbuffer: Add support
- for custom engine layouts
+Content-Transfer-Encoding: 7bit
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Niranjana Vishwanathapura" <niranjana.vishwanathapura@intel.com>
+Date: Tue, 25 Oct 2022 07:48:45 -0000
+Message-ID: <166668412581.15482.18431989231532761826@emeril.freedesktop.org>
+References: <20221025065941.13397-1-niranjana.vishwanathapura@intel.com>
+In-Reply-To: <20221025065941.13397-1-niranjana.vishwanathapura@intel.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_v?=
+ =?utf-8?q?m=5Fbind=3A_Add_VM=5FBIND_validation_support_=28rev9=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,104 +17,89 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Don't assume fixed engine ids and use context configuration in
-intel_bb to find the appropriate engine when executing the batchbuffer.
+== Series Details ==
 
-Signed-off-by: Karolina Drobnik <karolina.drobnik@intel.com>
----
- lib/intel_batchbuffer.c | 49 ++++++++++++++++++++++++++++++++++-------
- 1 file changed, 41 insertions(+), 8 deletions(-)
+Series: vm_bind: Add VM_BIND validation support (rev9)
+URL   : https://patchwork.freedesktop.org/series/105881/
+State : warning
 
-diff --git a/lib/intel_batchbuffer.c b/lib/intel_batchbuffer.c
-index 0b18f86a..5358b82b 100644
---- a/lib/intel_batchbuffer.c
-+++ b/lib/intel_batchbuffer.c
-@@ -1491,6 +1491,29 @@ static bool aux_needs_softpin(int i915)
- 	return intel_gen(intel_get_drm_devid(i915)) >= 12;
- }
- 
-+static bool has_ctx_cfg(struct intel_bb *ibb)
-+{
-+	return ibb->cfg && (ibb->cfg->num_engines > 0);
-+}
-+
-+static uint32_t find_engine(struct intel_bb *ibb, unsigned int class)
-+{
-+	intel_ctx_cfg_t *cfg;
-+	unsigned int i;
-+	uint32_t engine_id = -1;
-+
-+	cfg = ibb->cfg;
-+	for (i = 0; i < cfg->num_engines; i++) {
-+		if (cfg->engines[i].engine_class == class)
-+			engine_id = i;
-+	}
-+
-+	/* Make sure we actually found the engine */
-+	igt_assert(engine_id != -1);
-+
-+	return engine_id;
-+}
-+
- /**
-  * intel_bb_create:
-  * @i915: drm fd
-@@ -2792,34 +2815,44 @@ void intel_bb_flush(struct intel_bb *ibb, uint32_t ring)
-  * intel_bb_flush_render:
-  * @ibb: batchbuffer
-  *
-- * If batch is not empty emit batch buffer end, execute on render ring
-- * and reset the batch. Context used to execute is batch context.
-+ * If batch is not empty emit batch buffer end, find the render engine id,
-+ * execute on the ring and reset the batch. Context used to execute
-+ * is batch context.
-  */
- void intel_bb_flush_render(struct intel_bb *ibb)
- {
-+	uint32_t ring;
-+
- 	if (intel_bb_emit_flush_common(ibb) == 0)
- 		return;
- 
--	intel_bb_exec_with_ring(ibb, I915_EXEC_RENDER);
-+	if (has_ctx_cfg(ibb))
-+		ring = find_engine(ibb, I915_ENGINE_CLASS_RENDER);
-+	else
-+		ring = I915_EXEC_RENDER;
-+
-+	intel_bb_exec_with_ring(ibb, ring);
- }
- 
- /*
-  * intel_bb_flush_blit:
-  * @ibb: batchbuffer
-  *
-- * If batch is not empty emit batch buffer end, execute on default/blit ring
-- * (depends on gen) and reset the batch.
-+ * If batch is not empty emit batch buffer end, find a suitable ring
-+ * (depending on gen and context configuration) and reset the batch.
-  * Context used to execute is batch context.
-  */
- void intel_bb_flush_blit(struct intel_bb *ibb)
- {
--	uint32_t ring = I915_EXEC_DEFAULT;
-+	uint32_t ring;
- 
- 	if (intel_bb_emit_flush_common(ibb) == 0)
- 		return;
- 
--	if (HAS_BLT_RING(ibb->devid))
--		ring = I915_EXEC_BLT;
-+	if (has_ctx_cfg(ibb))
-+		ring = find_engine(ibb, I915_ENGINE_CLASS_COPY);
-+	else
-+		ring = HAS_BLT_RING(ibb->devid) ? I915_EXEC_BLT : I915_EXEC_DEFAULT;
- 
- 	intel_bb_exec_with_ring(ibb, ring);
- }
--- 
-2.25.1
+== Summary ==
+
+Pipeline status: FAILED.
+
+see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/720549 for the overview.
+
+test:ninja-test has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/30371993):
+  334/338 assembler test/rnde-intsrc              OK       0.02 s 
+  335/338 assembler test/rndz                     OK       0.03 s 
+  336/338 assembler test/lzd                      OK       0.04 s 
+  337/338 assembler test/not                      OK       0.03 s 
+  338/338 assembler test/immediate                OK       0.02 s 
+  
+  Ok:                  333
+  Expected Fail:         4
+  Fail:                  1
+  Unexpected Pass:       0
+  Skipped:               0
+  Timeout:               0
+  
+  Full log written to /builds/gfx-ci/igt-ci-tags/build/meson-logs/testlog.txt
+  section_end:1666683185:step_script
+  section_start:1666683185:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1666683186:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
+
+test:ninja-test-clang has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/30371994):
+  334/338 assembler test/rnde-intsrc              OK       0.05 s 
+  335/338 assembler test/rndz                     OK       0.05 s 
+  336/338 assembler test/lzd                      OK       0.02 s 
+  337/338 assembler test/not                      OK       0.04 s 
+  338/338 assembler test/immediate                OK       0.04 s 
+  
+  Ok:                  333
+  Expected Fail:         4
+  Fail:                  1
+  Unexpected Pass:       0
+  Skipped:               0
+  Timeout:               0
+  
+  Full log written to /builds/gfx-ci/igt-ci-tags/build/meson-logs/testlog.txt
+  section_end:1666683361:step_script
+  section_start:1666683361:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1666683361:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
+
+test:ninja-test-mips has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/30372592):
+  Ok:                  319
+  Expected Fail:         4
+  Fail:                  1
+  Unexpected Pass:       0
+  Skipped:               0
+  Timeout:               0
+  
+  Full log written to /builds/gfx-ci/igt-ci-tags/build/meson-logs/testlog.txt
+  section_end:1666684040:step_script
+  section_start:1666684040:upload_artifacts_on_failure
+  Uploading artifacts for failed job
+  Uploading artifacts...
+  build: found 1816 matching files and directories   
+  Uploading artifacts as "archive" to coordinator... 201 Created  id=30372592 responseStatus=201 Created token=_hpHWzYx
+  section_end:1666684052:upload_artifacts_on_failure
+  section_start:1666684052:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1666684053:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+
+== Logs ==
+
+For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/720549
