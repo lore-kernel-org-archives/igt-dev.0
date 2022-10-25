@@ -1,18 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C19FA10E29F
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A29F910E29E
  for <igt-dev@lists.freedesktop.org>; Tue, 25 Oct 2022 06:59:45 +0000 (UTC)
 From: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Mon, 24 Oct 2022 23:59:34 -0700
-Message-Id: <20221025065941.13397-6-niranjana.vishwanathapura@intel.com>
+Date: Mon, 24 Oct 2022 23:59:33 -0700
+Message-Id: <20221025065941.13397-5-niranjana.vishwanathapura@intel.com>
 In-Reply-To: <20221025065941.13397-1-niranjana.vishwanathapura@intel.com>
 References: <20221025065941.13397-1-niranjana.vishwanathapura@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v5 05/12] lib/vm_bind: Add vm_bind specific
- library functions
+Subject: [igt-dev] [PATCH i-g-t v5 04/12] lib/vm_bind: Add vm_bind mode
+ support for VM
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,118 +25,139 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add vm_bind specific library interfaces.
+Add required library interfaces to create VM in
+vm_bind mode and assign the VM to a context.
 
 Reviewed-by: Matthew Auld <matthew.auld@intel.com>
 Signed-off-by: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
 ---
- lib/i915/i915_vm_bind.c | 61 +++++++++++++++++++++++++++++++++++++++++
- lib/i915/i915_vm_bind.h | 16 +++++++++++
- lib/meson.build         |  1 +
- 3 files changed, 78 insertions(+)
- create mode 100644 lib/i915/i915_vm_bind.c
- create mode 100644 lib/i915/i915_vm_bind.h
+ lib/i915/gem_context.c | 24 ++++++++++++++++++++++++
+ lib/i915/gem_context.h |  3 +++
+ lib/i915/gem_vm.c      | 31 ++++++++++++++++++++++++++-----
+ lib/i915/gem_vm.h      |  3 ++-
+ 4 files changed, 55 insertions(+), 6 deletions(-)
 
-diff --git a/lib/i915/i915_vm_bind.c b/lib/i915/i915_vm_bind.c
-new file mode 100644
-index 0000000000..5624f589b5
---- /dev/null
-+++ b/lib/i915/i915_vm_bind.c
-@@ -0,0 +1,61 @@
-+// SPDX-License-Identifier: MIT
-+/*
-+ * Copyright © 2022 Intel Corporation
+diff --git a/lib/i915/gem_context.c b/lib/i915/gem_context.c
+index fe989a8d1c..2d06b41980 100644
+--- a/lib/i915/gem_context.c
++++ b/lib/i915/gem_context.c
+@@ -517,3 +517,27 @@ uint32_t gem_context_create_for_class(int i915,
+ 	*count = i;
+ 	return p.ctx_id;
+ }
++
++uint32_t gem_context_get_vm(int fd, uint32_t ctx_id)
++{
++	struct drm_i915_gem_context_param p = {
++		.param = I915_CONTEXT_PARAM_VM,
++		.ctx_id = ctx_id,
++	};
++
++	gem_context_get_param(fd, &p);
++	igt_assert(p.value);
++
++	return p.value;
++}
++
++void gem_context_set_vm(int fd, uint32_t ctx_id, uint32_t vm_id)
++{
++	struct drm_i915_gem_context_param p = {
++		.param = I915_CONTEXT_PARAM_VM,
++		.ctx_id = ctx_id,
++		.value = vm_id,
++	};
++
++	gem_context_set_param(fd, &p);
++}
+diff --git a/lib/i915/gem_context.h b/lib/i915/gem_context.h
+index 505d55724e..2a2247fe10 100644
+--- a/lib/i915/gem_context.h
++++ b/lib/i915/gem_context.h
+@@ -63,4 +63,7 @@ void gem_context_set_persistence(int i915, uint32_t ctx, bool state);
+ 
+ bool gem_context_has_engine(int fd, uint32_t ctx, uint64_t engine);
+ 
++uint32_t gem_context_get_vm(int fd, uint32_t ctx_id);
++void gem_context_set_vm(int fd, uint32_t ctx_id, uint32_t vm_id);
++
+ #endif /* GEM_CONTEXT_H */
+diff --git a/lib/i915/gem_vm.c b/lib/i915/gem_vm.c
+index 9a022a56c7..ee3c65d06e 100644
+--- a/lib/i915/gem_vm.c
++++ b/lib/i915/gem_vm.c
+@@ -48,7 +48,7 @@ bool gem_has_vm(int i915)
+ {
+ 	uint32_t vm_id = 0;
+ 
+-	__gem_vm_create(i915, &vm_id);
++	__gem_vm_create(i915, 0, &vm_id);
+ 	if (vm_id)
+ 		gem_vm_destroy(i915, vm_id);
+ 
+@@ -67,9 +67,9 @@ void gem_require_vm(int i915)
+ 	igt_require(gem_has_vm(i915));
+ }
+ 
+-int __gem_vm_create(int i915, uint32_t *vm_id)
++int __gem_vm_create(int i915, uint32_t flags, uint32_t *vm_id)
+ {
+-       struct drm_i915_gem_vm_control ctl = {};
++       struct drm_i915_gem_vm_control ctl = { .flags = flags };
+        int err = 0;
+ 
+        if (igt_ioctl(i915, DRM_IOCTL_I915_GEM_VM_CREATE, &ctl) == 0) {
+@@ -88,7 +88,8 @@ int __gem_vm_create(int i915, uint32_t *vm_id)
+  * @i915: open i915 drm file descriptor
+  *
+  * This wraps the VM_CREATE ioctl, which is used to allocate a new
+- * address space for use with GEM contexts.
++ * address space for use with GEM contexts, with legacy execbuff
++ * method of binding.
+  *
+  * Returns: The id of the allocated address space.
+  */
+@@ -96,7 +97,27 @@ uint32_t gem_vm_create(int i915)
+ {
+ 	uint32_t vm_id;
+ 
+-	igt_assert_eq(__gem_vm_create(i915, &vm_id), 0);
++	igt_assert_eq(__gem_vm_create(i915, 0, &vm_id), 0);
++	igt_assert(vm_id != 0);
++
++	return vm_id;
++}
++
++/**
++ * gem_vm_create_in_vm_bind_mode:
++ * @i915: open i915 drm file descriptor
++ *
++ * This wraps the VM_CREATE ioctl with I915_VM_CREATE_FLAGS_USE_VM_BIND,
++ * flag which is used to allocate a new address space for use with GEM contexts
++ * with vm_bind mode of binding.
++ *
++ * Returns: The id of the allocated address space.
 + */
-+
-+#include <errno.h>
-+#include <string.h>
-+#include <sys/ioctl.h>
-+
-+#include "ioctl_wrappers.h"
-+#include "i915_drm.h"
-+#include "i915_drm_local.h"
-+#include "i915_vm_bind.h"
-+
-+void i915_vm_bind(int i915, uint32_t vm_id, uint64_t va, uint32_t handle,
-+		  uint64_t offset, uint64_t length, uint32_t syncobj,
-+		  uint64_t fence_value)
++uint32_t gem_vm_create_in_vm_bind_mode(int i915)
 +{
-+	struct drm_i915_gem_vm_bind bind;
++	uint32_t vm_id;
 +
-+	memset(&bind, 0, sizeof(bind));
-+	bind.vm_id = vm_id;
-+	bind.handle = handle;
-+	bind.start = va;
-+	bind.offset = offset;
-+	bind.length = length;
-+	if (syncobj) {
-+		bind.fence.handle = syncobj;
-+		bind.fence.value = fence_value;
-+		bind.fence.flags = I915_TIMELINE_FENCE_SIGNAL;
-+	}
-+
-+	gem_vm_bind(i915, &bind);
-+}
-+
-+void i915_vm_unbind(int i915, uint32_t vm_id, uint64_t va, uint64_t length)
-+{
-+	struct drm_i915_gem_vm_unbind unbind;
-+
-+	memset(&unbind, 0, sizeof(unbind));
-+	unbind.vm_id = vm_id;
-+	unbind.start = va;
-+	unbind.length = length;
-+
-+	gem_vm_unbind(i915, &unbind);
-+}
-+
-+int i915_vm_bind_version(int i915)
-+{
-+	struct drm_i915_getparam gp;
-+	int value = 0;
-+
-+	memset(&gp, 0, sizeof(gp));
-+	gp.param = I915_PARAM_VM_BIND_VERSION;
-+	gp.value = &value;
-+
-+	ioctl(i915, DRM_IOCTL_I915_GETPARAM, &gp, sizeof(gp));
-+	errno = 0;
-+
-+	return value;
-+}
-diff --git a/lib/i915/i915_vm_bind.h b/lib/i915/i915_vm_bind.h
-new file mode 100644
-index 0000000000..46a382c032
---- /dev/null
-+++ b/lib/i915/i915_vm_bind.h
-@@ -0,0 +1,16 @@
-+/* SPDX-License-Identifier: MIT */
-+/*
-+ * Copyright © 2022 Intel Corporation
-+ */
-+#ifndef _I915_VM_BIND_H_
-+#define _I915_VM_BIND_H_
-+
-+#include <stdint.h>
-+
-+void i915_vm_bind(int i915, uint32_t vm_id, uint64_t va, uint32_t handle,
-+		  uint64_t offset, uint64_t length, uint32_t syncobj,
-+		  uint64_t fence_value);
-+void i915_vm_unbind(int i915, uint32_t vm_id, uint64_t va, uint64_t length);
-+int i915_vm_bind_version(int i915);
-+
-+#endif /* _I915_VM_BIND_ */
-diff --git a/lib/meson.build b/lib/meson.build
-index 1fa6d6ee61..955e09ba34 100644
---- a/lib/meson.build
-+++ b/lib/meson.build
-@@ -14,6 +14,7 @@ lib_sources = [
- 	'i915/intel_mocs.c',
- 	'i915/i915_blt.c',
- 	'i915/i915_crc.c',
-+	'i915/i915_vm_bind.c',
- 	'igt_collection.c',
- 	'igt_color_encoding.c',
- 	'igt_crc.c',
++	igt_assert_eq(__gem_vm_create(i915, I915_VM_CREATE_FLAGS_USE_VM_BIND, &vm_id), 0);
+ 	igt_assert(vm_id != 0);
+ 
+ 	return vm_id;
+diff --git a/lib/i915/gem_vm.h b/lib/i915/gem_vm.h
+index acbb663e65..6cf46d8876 100644
+--- a/lib/i915/gem_vm.h
++++ b/lib/i915/gem_vm.h
+@@ -31,7 +31,8 @@ bool gem_has_vm(int i915);
+ void gem_require_vm(int i915);
+ 
+ uint32_t gem_vm_create(int i915);
+-int __gem_vm_create(int i915, uint32_t *vm_id);
++uint32_t gem_vm_create_in_vm_bind_mode(int i915);
++int __gem_vm_create(int i915, uint32_t flags, uint32_t *vm_id);
+ 
+ void gem_vm_destroy(int i915, uint32_t vm_id);
+ int __gem_vm_destroy(int i915, uint32_t vm_id);
 -- 
 2.21.0.rc0.32.g243a4c7e27
