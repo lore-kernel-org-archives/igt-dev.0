@@ -1,21 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 37FD910E1CB
- for <igt-dev@lists.freedesktop.org>; Tue, 25 Oct 2022 12:29:09 +0000 (UTC)
-Message-ID: <d6210119-5533-d4ba-e795-b165aec0decf@intel.com>
-Date: Tue, 25 Oct 2022 14:29:07 +0200
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0F4B310E393
+ for <igt-dev@lists.freedesktop.org>; Tue, 25 Oct 2022 12:33:13 +0000 (UTC)
+Message-ID: <b48186ee-77f1-c2d1-fc26-51ace3fe1377@intel.com>
+Date: Tue, 25 Oct 2022 14:33:11 +0200
 Content-Language: en-US
 To: =?UTF-8?Q?Zbigniew_Kempczy=c5=84ski?= <zbigniew.kempczynski@intel.com>
 References: <cover.1666680959.git.karolina.drobnik@intel.com>
- <513fe4a81e23cff178117d899cfe5f99d9bb17e1.1666680959.git.karolina.drobnik@intel.com>
- <Y1ep9FTpDzaUYCFO@zkempczy-mobl2>
+ <eca32324040a1ce100d6bf9fb39cb5d2643cc85b.1666680959.git.karolina.drobnik@intel.com>
+ <Y1ekWXpp7q2M+8f5@zkempczy-mobl2>
 From: Karolina Drobnik <karolina.drobnik@intel.com>
-In-Reply-To: <Y1ep9FTpDzaUYCFO@zkempczy-mobl2>
+In-Reply-To: <Y1ekWXpp7q2M+8f5@zkempczy-mobl2>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t v2 2/3] lib/intel_batchbuffer: Add
- support for custom engine layouts
+Subject: Re: [igt-dev] [PATCH i-g-t v2 3/3] tests/api_intel_bb: Add
+ misplaced_blitter test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,124 +28,103 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On 25.10.2022 11:18, Zbigniew Kempczyński wrote:
-> On Tue, Oct 25, 2022 at 09:15:00AM +0200, Karolina Drobnik wrote:
->> Don't assume fixed engine ids and use context configuration in
->> intel_bb to find the appropriate engine when executing the batchbuffer.
+On 25.10.2022 10:54, Zbigniew Kempczyński wrote:
+> On Tue, Oct 25, 2022 at 09:15:01AM +0200, Karolina Drobnik wrote:
+>> Exercise intel_bb with a custom context engines layout.
 >>
 >> Signed-off-by: Karolina Drobnik <karolina.drobnik@intel.com>
 >> ---
->>   lib/intel_batchbuffer.c | 49 ++++++++++++++++++++++++++++++++++-------
->>   1 file changed, 41 insertions(+), 8 deletions(-)
+>>   tests/i915/api_intel_bb.c | 38 ++++++++++++++++++++++++++++++++++++++
+>>   1 file changed, 38 insertions(+)
 >>
->> diff --git a/lib/intel_batchbuffer.c b/lib/intel_batchbuffer.c
->> index 0b18f86a..5358b82b 100644
->> --- a/lib/intel_batchbuffer.c
->> +++ b/lib/intel_batchbuffer.c
->> @@ -1491,6 +1491,29 @@ static bool aux_needs_softpin(int i915)
->>   	return intel_gen(intel_get_drm_devid(i915)) >= 12;
+>> diff --git a/tests/i915/api_intel_bb.c b/tests/i915/api_intel_bb.c
+>> index 6ba1fd1b..44272e9a 100644
+>> --- a/tests/i915/api_intel_bb.c
+>> +++ b/tests/i915/api_intel_bb.c
+>> @@ -50,6 +50,8 @@
+>>   #define COLOR_77	0x77
+>>   #define COLOR_CC	0xcc
+>>   
+>> +#define MI_FLUSH_DW	(0x26 << 23)
+>> +
+>>   IGT_TEST_DESCRIPTION("intel_bb API check.");
+>>   
+>>   enum reloc_objects {
+>> @@ -1209,6 +1211,38 @@ static void full_batch(struct buf_ops *bops)
+>>   	intel_bb_destroy(ibb);
 >>   }
 >>   
->> +static bool has_ctx_cfg(struct intel_bb *ibb)
+>> +static void misplaced_blitter(struct buf_ops *bops)
 >> +{
->> +	return ibb->cfg && (ibb->cfg->num_engines > 0);
-> 
-> Brackets are not necessary.
-
-I added them to improve readability. Can remove them, no problem.
-
->> +}
+>> +	int i915 = buf_ops_get_fd(bops);
+>> +	struct intel_bb *ibb;
 >> +
->> +static uint32_t find_engine(struct intel_bb *ibb, unsigned int class)
->> +{
->> +	intel_ctx_cfg_t *cfg;
->> +	unsigned int i;
->> +	uint32_t engine_id = -1;
+>> +	gem_require_contexts(i915);
 >> +
->> +	cfg = ibb->cfg;
->> +	for (i = 0; i < cfg->num_engines; i++) {
->> +		if (cfg->engines[i].engine_class == class)
->> +			engine_id = i;
->> +	}
+>> +	/* Use custom configuration with blitter at index 0 */
+>> +	const intel_ctx_cfg_t cfg = (intel_ctx_cfg_t) {
+>> +			.num_engines = 2,
+>> +			.engines = {
+>> +				{ .engine_class = I915_ENGINE_CLASS_COPY,
+>> +				  .engine_instance = 0
+>> +				},
+>> +				{ .engine_class = I915_ENGINE_CLASS_RENDER,
+>> +				  .engine_instance = 0
+>> +				},
+>> +			},
+>> +		};
+> 
+> Compiler complains:
+> 
+> ../tests/i915/api_intel_bb.c:1222:9: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+>   1222 |         const intel_ctx_cfg_t cfg = (intel_ctx_cfg_t) {
+> 
+> Please fix this.
+
+I defined it already as const because that's what intel_ctx_create() 
+expects, but I can change it.
+
+Also, with kernel now using C11, don't we want to change the standard 
+for IGTs as well? (that's more of a general comment, not to this warning)
+
+>> +	const intel_ctx_t *ctx = intel_ctx_create(i915, &cfg);
 >> +
->> +	/* Make sure we actually found the engine */
->> +	igt_assert(engine_id != -1);
+>> +	ibb = intel_bb_create_with_context(i915, ctx->id, &ctx->cfg, PAGE_SIZE);
+>> +
+>> +	/* Try to execute blitter-specific instruction */
+>> +	intel_bb_out(ibb, MI_FLUSH_DW);
 > 
-> Add some info what's wrong here with igt_assert_f().
+> Are you sure? Check instruction length and required data.
 
-Good call, I forgot about that helper.
-
-> 
-> With above fixed:
-> 
-> Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-> 
+Will double check.
 
 Thanks,
 Karolina
 
 > --
 > Zbigniew
+> 
+>> +	intel_bb_emit_bbe(ibb);
+>> +	intel_bb_flush_blit(ibb);
 >> +
->> +	return engine_id;
+>> +	intel_bb_destroy(ibb);
+>> +	intel_ctx_destroy(i915, ctx);
 >> +}
 >> +
->>   /**
->>    * intel_bb_create:
->>    * @i915: drm fd
->> @@ -2792,34 +2815,44 @@ void intel_bb_flush(struct intel_bb *ibb, uint32_t ring)
->>    * intel_bb_flush_render:
->>    * @ibb: batchbuffer
->>    *
->> - * If batch is not empty emit batch buffer end, execute on render ring
->> - * and reset the batch. Context used to execute is batch context.
->> + * If batch is not empty emit batch buffer end, find the render engine id,
->> + * execute on the ring and reset the batch. Context used to execute
->> + * is batch context.
->>    */
->>   void intel_bb_flush_render(struct intel_bb *ibb)
+>>   static int render(struct buf_ops *bops, uint32_t tiling, bool do_reloc,
+>>   		  uint32_t width, uint32_t height)
 >>   {
->> +	uint32_t ring;
+>> @@ -1581,6 +1615,10 @@ igt_main_args("dpibc:", NULL, help_str, opt_handler, NULL)
+>>   	igt_subtest("full-batch")
+>>   		full_batch(bops);
+>>   
+>> +	igt_describe("Execute intel_bb with set of engines provided by userspace");
+>> +	igt_subtest("misplaced-blitter")
+>> +		misplaced_blitter(bops);
 >> +
->>   	if (intel_bb_emit_flush_common(ibb) == 0)
->>   		return;
->>   
->> -	intel_bb_exec_with_ring(ibb, I915_EXEC_RENDER);
->> +	if (has_ctx_cfg(ibb))
->> +		ring = find_engine(ibb, I915_ENGINE_CLASS_RENDER);
->> +	else
->> +		ring = I915_EXEC_RENDER;
->> +
->> +	intel_bb_exec_with_ring(ibb, ring);
->>   }
->>   
->>   /*
->>    * intel_bb_flush_blit:
->>    * @ibb: batchbuffer
->>    *
->> - * If batch is not empty emit batch buffer end, execute on default/blit ring
->> - * (depends on gen) and reset the batch.
->> + * If batch is not empty emit batch buffer end, find a suitable ring
->> + * (depending on gen and context configuration) and reset the batch.
->>    * Context used to execute is batch context.
->>    */
->>   void intel_bb_flush_blit(struct intel_bb *ibb)
->>   {
->> -	uint32_t ring = I915_EXEC_DEFAULT;
->> +	uint32_t ring;
->>   
->>   	if (intel_bb_emit_flush_common(ibb) == 0)
->>   		return;
->>   
->> -	if (HAS_BLT_RING(ibb->devid))
->> -		ring = I915_EXEC_BLT;
->> +	if (has_ctx_cfg(ibb))
->> +		ring = find_engine(ibb, I915_ENGINE_CLASS_COPY);
->> +	else
->> +		ring = HAS_BLT_RING(ibb->devid) ? I915_EXEC_BLT : I915_EXEC_DEFAULT;
->>   
->>   	intel_bb_exec_with_ring(ibb, ring);
->>   }
+>>   	igt_subtest_with_dynamic("render") {
+>>   		for (i = 0; i < ARRAY_SIZE(tests); i++) {
+>>   			const struct test *t = &tests[i];
 >> -- 
 >> 2.25.1
 >>
