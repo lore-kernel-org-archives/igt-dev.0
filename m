@@ -1,17 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id F3ACB10E24B
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2F83410E1EE
  for <igt-dev@lists.freedesktop.org>; Tue, 25 Oct 2022 20:07:18 +0000 (UTC)
 From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 25 Oct 2022 20:06:58 +0000
-Message-Id: <20221025200709.83314-19-umesh.nerlige.ramappa@intel.com>
+Date: Tue, 25 Oct 2022 20:06:49 +0000
+Message-Id: <20221025200709.83314-10-umesh.nerlige.ramappa@intel.com>
 In-Reply-To: <20221025200709.83314-1-umesh.nerlige.ramappa@intel.com>
 References: <20221025200709.83314-1-umesh.nerlige.ramappa@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH 18/29] lib/i915/perf: add a helper to read
- timestamps
+Subject: [igt-dev] [PATCH 09/29] i915/perf: Use gt in perf tests and lib
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,149 +22,150 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
+Enable perf tests to use gt information for sysfs attributes.
 
-We expect location/size of the timestamp might move around in the
-report.
-
-Signed-off-by: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
-Reviewed-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+Reviewed-by: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
 ---
- lib/i915/perf.c                    | 21 +++++++++++++++++++++
- lib/i915/perf.h                    |  4 ++++
- lib/i915/perf_data_reader.c        | 14 ++++++--------
- lib/meson.build                    |  4 ++--
- tools/i915-perf/i915_perf_reader.c | 20 ++++++++++++++++++++
- 5 files changed, 53 insertions(+), 10 deletions(-)
+ lib/i915/perf.c   | 36 ++++++++++++++++++++++++++++++++++--
+ tests/i915/perf.c | 27 ++++++++++++++++++++-------
+ 2 files changed, 54 insertions(+), 9 deletions(-)
 
 diff --git a/lib/i915/perf.c b/lib/i915/perf.c
-index cc7dceea..f7aff13a 100644
+index 95e33b3c..4f19a005 100644
 --- a/lib/i915/perf.c
 +++ b/lib/i915/perf.c
-@@ -839,3 +839,24 @@ void intel_perf_accumulate_reports(struct intel_perf_accumulator *acc,
- 	}
- 
+@@ -511,6 +511,35 @@ open_master_sysfs_dir(int drm_fd)
+ 	return sysfs;
  }
+ 
++typedef enum {
++	RPS_MIN_FREQ_MHZ,
++	RPS_MAX_FREQ_MHZ,
 +
-+uint64_t intel_perf_read_record_timestamp(const struct intel_perf *perf,
-+					  const struct intel_perf_metric_set *metric_set,
-+					  const struct drm_i915_perf_record_header *record)
++	RPS_MAX_ATTR,
++} intel_sysfs_attr_id;
++
++static const char *intel_sysfs_attr_name[2][RPS_MAX_ATTR] =
 +{
-+       const uint32_t *report32 = (const uint32_t *)(record + 1);
-+       uint64_t ts;
++	{
++		"gt_min_freq_mhz",
++		"gt_max_freq_mhz",
++	},
++	{
++		"gt/gt0/rps_min_freq_mhz",
++		"gt/gt0/rps_max_freq_mhz",
++	},
++};
 +
-+       switch (metric_set->perf_oa_format) {
-+       case I915_OA_FORMAT_A24u40_A14u32_B8_C8:
-+       case I915_OA_FORMAT_A32u40_A4u32_B8_C8:
-+       case I915_OA_FORMAT_A45_B8_C8:
-+               ts = report32[1];
-+               break;
++static const char *
++intel_sysfs_attr_id_to_name(int sysfs_dirfd, intel_sysfs_attr_id id)
++{
++	assert(id < RPS_MAX_ATTR);
 +
-+       default:
-+               assert(0);
-+       }
-+
-+       return ts;
++	return !faccessat(sysfs_dirfd, "gt", O_RDONLY, 0) ?
++		intel_sysfs_attr_name[1][id] :
++		intel_sysfs_attr_name[0][id];
 +}
-diff --git a/lib/i915/perf.h b/lib/i915/perf.h
-index 4091feb9..88a36ebe 100644
---- a/lib/i915/perf.h
-+++ b/lib/i915/perf.h
-@@ -324,6 +324,10 @@ void intel_perf_accumulate_reports(struct intel_perf_accumulator *acc,
- 				   const struct drm_i915_perf_record_header *record0,
- 				   const struct drm_i915_perf_record_header *record1);
- 
-+uint64_t intel_perf_read_record_timestamp(const struct intel_perf *perf,
-+					  const struct intel_perf_metric_set *metric_set,
-+					  const struct drm_i915_perf_record_header *record);
 +
- #ifdef __cplusplus
- };
- #endif
-diff --git a/lib/i915/perf_data_reader.c b/lib/i915/perf_data_reader.c
-index 857bcd3a..4d1efe92 100644
---- a/lib/i915/perf_data_reader.c
-+++ b/lib/i915/perf_data_reader.c
-@@ -65,12 +65,6 @@ oa_report_ctx_id(const struct intel_perf_devinfo *devinfo, const uint8_t *report
- 	return ((const uint32_t *) report)[2];
+ struct intel_perf *
+ intel_perf_for_fd(int drm_fd)
+ {
+@@ -526,8 +555,11 @@ intel_perf_for_fd(int drm_fd)
+ 	if (sysfs_dir_fd < 0)
+ 		return NULL;
+ 
+-	if (!read_sysfs(sysfs_dir_fd, "gt_min_freq_mhz", &gt_min_freq) ||
+-	    !read_sysfs(sysfs_dir_fd, "gt_max_freq_mhz", &gt_max_freq)) {
++#define read_sysfs_rps(fd, id, value) \
++	read_sysfs(fd, intel_sysfs_attr_id_to_name(fd, id), value)
++
++	if (!read_sysfs_rps(sysfs_dir_fd, RPS_MIN_FREQ_MHZ, &gt_min_freq) ||
++	    !read_sysfs_rps(sysfs_dir_fd, RPS_MAX_FREQ_MHZ, &gt_max_freq)) {
+ 		close(sysfs_dir_fd);
+ 		return NULL;
+ 	}
+diff --git a/tests/i915/perf.c b/tests/i915/perf.c
+index 75594f04..0543a79e 100644
+--- a/tests/i915/perf.c
++++ b/tests/i915/perf.c
+@@ -345,11 +345,11 @@ try_sysfs_read_u64(const char *path, uint64_t *val)
  }
  
--static inline uint64_t
--oa_report_timestamp(const uint8_t *report)
--{
--	return ((const uint32_t *)report)[1];
--}
--
+ static unsigned long
+-sysfs_read(const char *path)
++sysfs_read(enum i915_attr_id id)
+ {
+ 	unsigned long value;
+ 
+-	igt_assert(igt_sysfs_scanf(sysfs, path, "%lu", &value) == 1);
++	igt_assert(igt_sysfs_rps_scanf(sysfs, id, "%lu", &value) == 1);
+ 
+ 	return value;
+ }
+@@ -4177,7 +4177,7 @@ gen12_test_single_ctx_render_target_writes_a_counter(void)
+ 
+ static unsigned long rc6_residency_ms(void)
+ {
+-	return sysfs_read("power/rc6_residency_ms");
++	return sysfs_read(RC6_RESIDENCY_MS);
+ }
+ 
  static void
- append_record(struct intel_perf_data_reader *reader,
- 	      const struct drm_i915_perf_record_header *header)
-@@ -298,8 +292,12 @@ generate_cpu_events(struct intel_perf_data_reader *reader)
- 		last_ctx_id = oa_report_ctx_id(&reader->devinfo, start_report);
- 		current_ctx_id = oa_report_ctx_id(&reader->devinfo, end_report);
+@@ -4200,7 +4200,7 @@ test_rc6_disable(void)
+ 	unsigned long rc6_start, rc6_end, rc6_enabled;
  
--		gpu_ts_start = oa_report_timestamp(start_report);
--		gpu_ts_end = oa_report_timestamp(end_report);
-+		gpu_ts_start = intel_perf_read_record_timestamp(reader->perf,
-+								reader->metric_set,
-+								last_header);
-+		gpu_ts_end = intel_perf_read_record_timestamp(reader->perf,
-+							      reader->metric_set,
-+							      current_header);
+ 	rc6_enabled = 0;
+-	igt_sysfs_scanf(sysfs, "power/rc6_enable", "%lu", &rc6_enabled);
++	igt_sysfs_rps_scanf(sysfs, RC6_ENABLE, "%lu", &rc6_enabled);
+ 	igt_require(rc6_enabled);
  
- 		if (last_ctx_id == current_ctx_id)
- 			continue;
-diff --git a/lib/meson.build b/lib/meson.build
-index 50ffd8cd..747889b9 100644
---- a/lib/meson.build
-+++ b/lib/meson.build
-@@ -321,7 +321,7 @@ lib_igt_i915_perf_build = shared_library(
-   dependencies: lib_igt_chipset,
-   include_directories : inc,
-   install: true,
--  soversion: '1.3')
-+  soversion: '1.4')
+ 	/* Verify rc6 is functional by measuring residency while idle */
+@@ -4837,6 +4837,19 @@ done:
+ 	return ref_count;
+ }
  
- lib_igt_i915_perf = declare_dependency(
-   link_with : lib_igt_i915_perf_build,
-@@ -342,7 +342,7 @@ pkgconf.set('prefix', get_option('prefix'))
- pkgconf.set('exec_prefix', '${prefix}')
- pkgconf.set('libdir', '${prefix}/@0@'.format(get_option('libdir')))
- pkgconf.set('includedir', '${prefix}/@0@'.format(get_option('includedir')))
--pkgconf.set('i915_perf_version', '1.3.0')
-+pkgconf.set('i915_perf_version', '1.4.0')
- 
- configure_file(
-   input : 'i915-perf.pc.in',
-diff --git a/tools/i915-perf/i915_perf_reader.c b/tools/i915-perf/i915_perf_reader.c
-index e51f5a5d..afd8c39c 100644
---- a/tools/i915-perf/i915_perf_reader.c
-+++ b/tools/i915-perf/i915_perf_reader.c
-@@ -230,6 +230,26 @@ main(int argc, char *argv[])
- 	fprintf(stdout, "Context switches: %u\n", reader.n_timelines);
- 	fprintf(stdout, "Timestamp correlation points: %u\n", reader.n_correlations);
- 
-+	if (reader.n_correlations < 2) {
-+		fprintf(stderr, "Less than 2 CPU/GPU timestamp correlation points.\n");
-+		return EXIT_FAILURE;
-+	}
++static int perf_sysfs_open(int i915)
++{
++	int dirfd, gt;
 +
-+	fprintf(stdout, "Timestamp correlation CPU range: 0x%016"PRIx64"-0x%016"PRIx64"\n",
-+		reader.correlations[0]->cpu_timestamp,
-+		reader.correlations[reader.n_correlations - 1]->cpu_timestamp);
-+	fprintf(stdout, "Timestamp correlation GPU range: 0x%016"PRIx64"-0x%016"PRIx64"\n",
-+		reader.correlations[0]->gpu_timestamp,
-+		reader.correlations[reader.n_correlations - 1]->gpu_timestamp);
++	/* use the first available sysfs interface */
++	for_each_sysfs_gt_dirfd(i915, dirfd, gt)
++		break;
 +
-+	fprintf(stdout, "OA data timestamp range: 0x%016"PRIx64"-0x%016"PRIx64"\n",
-+		intel_perf_read_record_timestamp(reader.perf,
-+						 reader.metric_set,
-+						 reader.records[0]),
-+		intel_perf_read_record_timestamp(reader.perf,
-+						 reader.metric_set,
-+						 reader.records[reader.n_records - 1]));
++	igt_assert(dirfd != -1);
 +
- 	if (strcmp(reader.metric_set_uuid, reader.metric_set->hw_config_guid)) {
- 		fprintf(stdout,
- 			"WARNING: Recording used a different HW configuration.\n"
++	return dirfd;
++}
++
+ /* check that an open i915 perf stream holds a reference on the drm i915 module
+  * including in the corner case where the original drm fd has been closed.
+  */
+@@ -4872,7 +4885,7 @@ test_i915_ref_count(void)
+ 	drm_fd = __drm_open_driver(DRIVER_INTEL);
+ 	igt_require_intel(drm_fd);
+ 	devid = intel_get_drm_devid(drm_fd);
+-	sysfs = igt_sysfs_open(drm_fd);
++	sysfs = perf_sysfs_open(drm_fd);
+ 
+ 	/* Note: these global variables are only initialized after calling
+ 	 * init_sys_info()...
+@@ -4974,14 +4987,14 @@ igt_main
+ 		igt_require_gem(drm_fd);
+ 
+ 		devid = intel_get_drm_devid(drm_fd);
+-		sysfs = igt_sysfs_open(drm_fd);
++		sysfs = perf_sysfs_open(drm_fd);
+ 
+ 		igt_require(init_sys_info());
+ 
+ 		write_u64_file("/proc/sys/dev/i915/perf_stream_paranoid", 1);
+ 		write_u64_file("/proc/sys/dev/i915/oa_max_sample_rate", 100000);
+ 
+-		gt_max_freq_mhz = sysfs_read("gt_boost_freq_mhz");
++		gt_max_freq_mhz = sysfs_read(RPS_RP0_FREQ_MHZ);
+ 
+ 		render_copy = igt_get_render_copyfunc(devid);
+ 		igt_require_f(render_copy, "no render-copy function\n");
 -- 
 2.25.1
