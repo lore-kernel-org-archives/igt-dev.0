@@ -1,20 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4489910E5FF
- for <igt-dev@lists.freedesktop.org>; Wed, 26 Oct 2022 17:00:33 +0000 (UTC)
-Date: Wed, 26 Oct 2022 19:00:31 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Message-ID: <Y1lnrwIfl+vTZh9O@kamilkon-desk1>
-References: <20221017090111.18429-1-matthew.auld@intel.com>
- <Y0/8pa8r6XY2PlF0@kamilkon-desk1>
- <6244b0f0-5c0c-a6d7-0fef-2e90262c8b1a@intel.com>
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2CE0910E634
+ for <igt-dev@lists.freedesktop.org>; Wed, 26 Oct 2022 17:29:49 +0000 (UTC)
+Message-ID: <1907d36f-145c-1b47-f667-36e8afbacefc@intel.com>
+Date: Wed, 26 Oct 2022 18:29:43 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <6244b0f0-5c0c-a6d7-0fef-2e90262c8b1a@intel.com>
-Subject: Re: [igt-dev] [CI 1/2] tests/i915/query: sanity check reported GTT
- alignment
+Content-Language: en-GB
+To: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>,
+ igt-dev@lists.freedesktop.org
+References: <20221025065941.13397-1-niranjana.vishwanathapura@intel.com>
+ <20221025065941.13397-2-niranjana.vishwanathapura@intel.com>
+From: Matthew Auld <matthew.auld@intel.com>
+In-Reply-To: <20221025065941.13397-2-niranjana.vishwanathapura@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Subject: Re: [igt-dev] [PATCH i-g-t v5 01/12] include/drm-uapi: memory
+ region gtt_alignment support
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,109 +23,97 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Matthew Auld <matthew.auld@intel.com>, Nirmoy Das <nirmoy.das@intel.com>
+Cc: tvrtko.ursulin@intel.com, thomas.hellstrom@intel.com,
+ daniel.vetter@intel.com, petri.latvala@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi,
-
-On 2022-10-19 at 15:03:08 +0100, Matthew Auld wrote:
-> Hi,
+On 25/10/2022 07:59, Niranjana Vishwanathapura wrote:
+> Pull in gtt_alignment addition in drm_i915_memory_region_info
+> uapi and update library to include this field.
 > 
-> On 19/10/2022 14:33, Kamil Konieczny wrote:
-> > Hi Matthew,
-> > 
-> > On 2022-10-17 at 10:01:10 +0100, Matthew Auld wrote:
-> > > Ensure the kernel is reporting "normal" values here, based on our
-> > > current expectations.
-> > > 
-> > > Signed-off-by: Matthew Auld <matthew.auld@intel.com>
-> > > Cc: Andrzej Hajda <andrzej.hajda@intel.com>
-> > > Cc: Nirmoy Das <nirmoy.das@intel.com>
-> > > Reviewed-by: Nirmoy Das <nirmoy.das@intel.com>
-> > - ^
-> > imho you should remove this when sending patch.
+> Signed-off-by: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
+> ---
+>   include/drm-uapi/i915_drm.h    | 30 ++++++++++++++++++++++++++++--
+>   lib/i915/intel_memory_region.c |  1 +
+>   lib/i915/intel_memory_region.h |  1 +
+>   3 files changed, 30 insertions(+), 2 deletions(-)
 > 
-> Hmm, what should be removed here? Do you mean the r-b tag?
-> 
-> > Please also use
-> > [PATCH i-g-t] or [PATCH i-g-t vN] in Subject: line (with
-> > N=version > 1) instead of [CI 1/2]. It would also help if you
-> > could send series bigger than one patch with cover letter
-> > (well, now it can stay as is).
-> 
-> The patch should be unchanged, I'm just re-sending with [CI] and
-> --suppress-cc=all since I just want to get some CI results before merging
-> (i.e not requesting review from the mailing list), now that the
-> corresponding kernel patches are merged. The patch has already been
-> reviewed.
-> 
-> > 
-> > > ---
-> > >   tests/i915/i915_query.c | 10 ++++++++++
-> > >   1 file changed, 10 insertions(+)
-> > > 
-> > > diff --git a/tests/i915/i915_query.c b/tests/i915/i915_query.c
-> > > index 4e43c7cd..bff073d2 100644
-> > > --- a/tests/i915/i915_query.c
-> > > +++ b/tests/i915/i915_query.c
-> > > @@ -638,6 +638,8 @@ static void upload(int fd, struct igt_list_head *handles, uint32_t num_handles)
-> > >   	free(exec);
-> > >   }
-> > > +/** XXX: remove once we sync the uapi header */
-> > > +#define gtt_alignment rsvd0
-> > >   static void test_query_regions_sanity_check(int fd)
-> > >   {
-> > >   	struct drm_i915_query_memory_regions *regions;
-> > > @@ -664,6 +666,11 @@ static void test_query_regions_sanity_check(int fd)
-> > >   		struct drm_i915_gem_memory_class_instance r1 = info.region;
-> > >   		int j;
-> > > +		if (info.gtt_alignment) {
-> > > +			igt_assert_lte_u64(4096, info.gtt_alignment);
-> > > +			igt_assert(is_power_of_two(info.gtt_alignment));
-> > > +		}
-> > > +
-> > >   		if (r1.memory_class == I915_MEMORY_CLASS_SYSTEM) {
-> > >   			igt_assert_eq(r1.memory_instance, 0);
-> > >   			found_system = true;
-> > > @@ -674,6 +681,9 @@ static void test_query_regions_sanity_check(int fd)
-> > >   			igt_assert(info.unallocated_cpu_visible_size == 0 ||
-> > >   				   info.unallocated_cpu_visible_size ==
-> > >   				   info.unallocated_size);
-> > > +
-> > > +			igt_assert(info.gtt_alignment == 0 ||
-> > > +				   info.gtt_alignment == 4096);
-> > -------------------------------------------------------- ^
-> > Why not copy your check from above ? This is restricting to only
-> > 4KB or 0 and can break for bigger values.
-> 
-> We want it to break for bigger values. This check is for system memory, and
-> likely means we have a silly bug since we should not expect anything other
-> than 4K (or zero if the kernel doesn't support the field).
+> diff --git a/include/drm-uapi/i915_drm.h b/include/drm-uapi/i915_drm.h
+> index ae9558b3d9..b3a200fc5d 100644
+> --- a/include/drm-uapi/i915_drm.h
+> +++ b/include/drm-uapi/i915_drm.h
+> @@ -3215,8 +3215,34 @@ struct drm_i915_memory_region_info {
+>   	/** @region: The class:instance pair encoding */
+>   	struct drm_i915_gem_memory_class_instance region;
+>   
+> -	/** @rsvd0: MBZ */
+> -	__u32 rsvd0;
+> +	union {
+> +		/** @rsvd0: MBZ */
+> +		__u32 rsvd0;
+> +
+> +		/**
+> +		 * @gtt_alignment:
+> +		 *
+> +		 * The minimum required GTT alignment for this type of memory.
+> +		 * When allocating a GTT address it must be aligned to this
+> +		 * value or larger. On some platforms the kernel might opt to
+> +		 * using 64K pages for I915_MEMORY_CLASS_DEVICE, where 64K GTT
+> +		 * pages can then be used if we also use 64K GTT alignment.
+> +		 *
+> +		 * NOTE: If this is zero then this must be an older
+> +		 * kernel which lacks support for this field.
+> +		 *
+> +		 * Side note: For larger objects (especially for
+> +		 * I915_MEMORY_CLASS_DEVICE), like 2M+ in size, userspace should
+> +		 * consider potentially bumping the GTT alignment to say 2M,
+> +		 * which could potentially increase the likelihood of the kernel
+> +		 * being able to utilise 2M GTT pages underneath, if the layout
+> +		 * of the physical pages allows it.  On some configurations we
+> +		 * can then also use a more efficient page-table layout, if we
+> +		 * can't use the more desirable 2M GTT page, so long as we know
+> +		 * that the entire page-table will be used by this object.
+> +		 */
+> +		__u32 gtt_alignment;
+> +	};
+>   
+>   	/**
+>   	 * @probed_size: Memory probed by the driver
+> diff --git a/lib/i915/intel_memory_region.c b/lib/i915/intel_memory_region.c
+> index 84e1bceb38..cbe27d6714 100644
+> --- a/lib/i915/intel_memory_region.c
+> +++ b/lib/i915/intel_memory_region.c
+> @@ -944,6 +944,7 @@ struct gem_memory_region *__gem_get_memory_regions(int i915)
+>   
+>   		r->ci = info->regions[i].region;
+>   		r->size = info->regions[i].probed_size;
+> +		r->gtt_alignment = info->regions[i].gtt_alignment;
 
-This should be PAGE_SIZE instead of 4096, also you can consider
-checking for HUGE_PAGE_SIZE but that depends on userspace and
-kernel options:
+I made a big mess here since this change needs to be temporarily 
+reverted[1]. Sorry about that. For now we could maybe just do something 
+like:
 
-grep -i hugepagesize /proc/meminfo
+gtt_alignment = HAS_64K_PAGES() && ci.memory_type == DEVICE ? 64K : 4K;
 
-Hugepagesize:       2048 kB
+I can then fix this up when adding back the gtt_alignment, if your 
+series is merged first.
 
-So imho at least change 4096 into PAGE_SIZE (in few places where
-it is used).
+[1] https://patchwork.freedesktop.org/series/110041/
 
-Regards,
-Kamil
-
-> 
-> > 
-> > Regards,
-> > Kamil
-> > 
-> > >   		} else {
-> > >   			igt_assert(info.probed_cpu_visible_size <= info.probed_size);
-> > >   			igt_assert(info.unallocated_size <= info.probed_size);
-> > > -- 
-> > > 2.37.3
-> > > 
+>   		r->cpu_size = info->regions[i].probed_cpu_visible_size;
+>   		if (r->size == -1ull)
+>   			r->size = igt_get_avail_ram_mb() << 20;
+> diff --git a/lib/i915/intel_memory_region.h b/lib/i915/intel_memory_region.h
+> index 425bda0ec7..84abb95b1a 100644
+> --- a/lib/i915/intel_memory_region.h
+> +++ b/lib/i915/intel_memory_region.h
+> @@ -174,6 +174,7 @@ struct gem_memory_region {
+>   	char *name;
+>   
+>   	struct drm_i915_gem_memory_class_instance ci;
+> +	uint64_t gtt_alignment;
+>   	uint64_t size;
+>   	uint64_t cpu_size;
+>   };
