@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E61E010E6E1
- for <igt-dev@lists.freedesktop.org>; Thu, 27 Oct 2022 20:55:42 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 80B0A10E71B
+ for <igt-dev@lists.freedesktop.org>; Thu, 27 Oct 2022 20:55:43 +0000 (UTC)
 From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Thu, 27 Oct 2022 20:55:30 +0000
-Message-Id: <20221027205535.12824-24-umesh.nerlige.ramappa@intel.com>
+Date: Thu, 27 Oct 2022 20:55:32 +0000
+Message-Id: <20221027205535.12824-26-umesh.nerlige.ramappa@intel.com>
 In-Reply-To: <20221027205535.12824-1-umesh.nerlige.ramappa@intel.com>
 References: <20221027205535.12824-1-umesh.nerlige.ramappa@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v2 23/28] tools/i915-perf: record remaining
- perf data on exit
+Subject: [igt-dev] [PATCH i-g-t v2 25/28] lib/i915/perf: add helper function
+ to get report reason
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,27 +25,104 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
 
+Useful to inspect reports.
+
 Signed-off-by: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
 Reviewed-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 ---
- tools/i915-perf/i915_perf_recorder.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ lib/i915/perf.c | 54 +++++++++++++++++++++++++++++++++++++++++++++++++
+ lib/i915/perf.h |  3 +++
+ lib/meson.build |  2 +-
+ 3 files changed, 58 insertions(+), 1 deletion(-)
 
-diff --git a/tools/i915-perf/i915_perf_recorder.c b/tools/i915-perf/i915_perf_recorder.c
-index f8f9b737..d16f1546 100644
---- a/tools/i915-perf/i915_perf_recorder.c
-+++ b/tools/i915-perf/i915_perf_recorder.c
-@@ -1144,6 +1144,11 @@ main(int argc, char *argv[])
+diff --git a/lib/i915/perf.c b/lib/i915/perf.c
+index 2d309e57..fa291998 100644
+--- a/lib/i915/perf.c
++++ b/lib/i915/perf.c
+@@ -902,3 +902,57 @@ uint64_t intel_perf_read_record_timestamp_raw(const struct intel_perf *perf,
  
- 	fprintf(stdout, "Exiting...\n");
- 
-+	if (!write_i915_perf_data(ctx.output_stream, ctx.perf_fd)) {
-+		fprintf(stderr, "Failed to write i915-perf data: %s\n",
-+			strerror(errno));
+        return ts;
+ }
++
++const char *intel_perf_read_report_reason(const struct intel_perf *perf,
++					  const struct drm_i915_perf_record_header *record)
++{
++	const uint32_t *report = (const uint32_t *) (record + 1);
++
++	/* Not really documented on Gfx7/7.5*/
++	if (perf->devinfo.graphics_ver < 8)
++		return "timer";
++
++	/* Gfx8-11 */
++	if (perf->devinfo.graphics_ver < 12) {
++		uint32_t reason = report[0] >> 19;
++		if (reason & (1u << 0))
++			return "timer";
++		if (reason & (1u << 1))
++			return "trigger1";
++		if (reason & (1u << 2))
++			return "trigger2";
++		if (reason & (1u << 3))
++			return "context-switch";
++		if (reason & (1u << 4))
++			return "go-transition";
++
++		if (perf->devinfo.graphics_ver >= 9 &&
++		    reason & (1u << 5))
++			return "clock-ratio-change";
++
++		return "unknown";
 +	}
 +
- 	if (!write_correlation_timestamps(ctx.output_stream, ctx.drm_fd)) {
- 		fprintf(stderr,
- 			"Failed to write final i915 timestamp correlation data: %s\n",
++	/* Gfx12 */
++	if (perf->devinfo.graphics_ver <= 12) {
++		uint32_t reason = report[0] >> 19;
++		if (reason & (1u << 0))
++			return "timer";
++		if (reason & (1u << 1))
++			return "trigger1";
++		if (reason & (1u << 2))
++			return "trigger2";
++		if (reason & (1u << 3))
++			return "context-switch";
++		if (reason & (1u << 4))
++			return "go-transition";
++		if (reason & (1u << 5))
++			return "clock-ratio-change";
++		if (reason & (1u << 6))
++			return "mmio-trigger";
++
++		return "unknown";
++	}
++
++	return "unknown";
++}
+diff --git a/lib/i915/perf.h b/lib/i915/perf.h
+index 8a2ef9e7..e6e60dc9 100644
+--- a/lib/i915/perf.h
++++ b/lib/i915/perf.h
+@@ -348,6 +348,9 @@ uint64_t intel_perf_read_record_timestamp_raw(const struct intel_perf *perf,
+ 					      const struct intel_perf_metric_set *metric_set,
+ 					      const struct drm_i915_perf_record_header *record);
+ 
++const char *intel_perf_read_report_reason(const struct intel_perf *perf,
++					  const struct drm_i915_perf_record_header *record);
++
+ #ifdef __cplusplus
+ };
+ #endif
+diff --git a/lib/meson.build b/lib/meson.build
+index 6b5b9e04..4b6d2267 100644
+--- a/lib/meson.build
++++ b/lib/meson.build
+@@ -342,7 +342,7 @@ pkgconf.set('prefix', get_option('prefix'))
+ pkgconf.set('exec_prefix', '${prefix}')
+ pkgconf.set('libdir', '${prefix}/@0@'.format(get_option('libdir')))
+ pkgconf.set('includedir', '${prefix}/@0@'.format(get_option('includedir')))
+-pkgconf.set('i915_perf_version', '1.5.0')
++pkgconf.set('i915_perf_version', '1.5.1')
+ 
+ configure_file(
+   input : 'i915-perf.pc.in',
 -- 
 2.25.1
