@@ -1,17 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 17C5310E6F6
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3730B10E6FD
  for <igt-dev@lists.freedesktop.org>; Thu, 27 Oct 2022 20:55:42 +0000 (UTC)
 From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Thu, 27 Oct 2022 20:55:20 +0000
-Message-Id: <20221027205535.12824-14-umesh.nerlige.ramappa@intel.com>
+Date: Thu, 27 Oct 2022 20:55:19 +0000
+Message-Id: <20221027205535.12824-13-umesh.nerlige.ramappa@intel.com>
 In-Reply-To: <20221027205535.12824-1-umesh.nerlige.ramappa@intel.com>
 References: <20221027205535.12824-1-umesh.nerlige.ramappa@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v2 13/28] i915/perf: Fix CS timestamp vs OA
- timstamp mismatch
+Subject: [igt-dev] [PATCH i-g-t v2 12/28] i915/perf: Add OA formats for DG2
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,97 +22,180 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-CS timestamp can have an additional configuration that shifts the
-timestamp value by a specified number of bits. On DG2, this additional
-configuration is ignored by OA, so OA timestamps are missing the shift.
+Add OA formats for DG2.
 
-Add newly defined interface to get the exact OA timestamp frequency so
-that the deltas can be accurately calculated.
+v2:
+- 40-bit A counter accumulation was broken due to incorrect DG2 format
+  definition. Introduce first_a40 to fix the sanity check.
+- Drop 64-bit OA formats
+- Set the correct OAR format for mi-rpc
 
 Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
-Reviewed-by: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
+Reviewed-by: Lionel Landwerlin <lionel.g.landwerlin@intel.com> #v1
 ---
- include/drm-uapi/i915_drm.h |  6 ++++++
- lib/i915/perf.c             |  6 +++++-
- tests/i915/perf.c           | 25 ++++++++++++++++++++++++-
- 3 files changed, 35 insertions(+), 2 deletions(-)
+ include/drm-uapi/i915_drm.h |  4 +++
+ tests/i915/perf.c           | 50 +++++++++++++++++++++++++++++++------
+ 2 files changed, 46 insertions(+), 8 deletions(-)
 
 diff --git a/include/drm-uapi/i915_drm.h b/include/drm-uapi/i915_drm.h
-index 70700c7d..b71acfba 100644
+index ae9558b3..70700c7d 100644
 --- a/include/drm-uapi/i915_drm.h
 +++ b/include/drm-uapi/i915_drm.h
-@@ -749,6 +749,12 @@ typedef struct drm_i915_irq_wait {
- /* Query if the kernel supports the I915_USERPTR_PROBE flag. */
- #define I915_PARAM_HAS_USERPTR_PROBE 56
+@@ -2535,6 +2535,10 @@ enum drm_i915_oa_format {
+ 	I915_OA_FORMAT_A12_B8_C8,
+ 	I915_OA_FORMAT_A32u40_A4u32_B8_C8,
  
-+/*
-+ * Frequency of the timestamps in OA reports. This used to be the same as the CS
-+ * timestamp frequency, but differs on some platforms.
-+ */
-+#define I915_PARAM_OA_TIMESTAMP_FREQUENCY 57
++	/* DG2 */
++	I915_OAR_FORMAT_A32u40_A4u32_B8_C8,
++	I915_OA_FORMAT_A24u40_A14u32_B8_C8,
 +
- /* Must be kept compact -- no holes and well documented */
- 
- typedef struct drm_i915_getparam {
-diff --git a/lib/i915/perf.c b/lib/i915/perf.c
-index 4f19a005..4d7fe43c 100644
---- a/lib/i915/perf.c
-+++ b/lib/i915/perf.c
-@@ -566,7 +566,11 @@ intel_perf_for_fd(int drm_fd)
- 	close(sysfs_dir_fd);
- 
- 	if (getparam(drm_fd, I915_PARAM_CHIPSET_ID, &device_id) ||
--	    getparam(drm_fd, I915_PARAM_REVISION, &device_revision) ||
-+	    getparam(drm_fd, I915_PARAM_REVISION, &device_revision))
-+		return NULL;
-+
-+	/* if OA_TIMESTAMP_FREQUENCY is not supported, fall back to CS_TIMESTAMP_FREQUENCY */
-+	if (getparam(drm_fd, I915_PARAM_OA_TIMESTAMP_FREQUENCY, &timestamp_frequency) &&
- 	    getparam(drm_fd, I915_PARAM_CS_TIMESTAMP_FREQUENCY, &timestamp_frequency))
- 		return NULL;
+ 	I915_OA_FORMAT_MAX	    /* non-ABI */
+ };
  
 diff --git a/tests/i915/perf.c b/tests/i915/perf.c
-index a49fc198..108255ef 100644
+index 7acc5364..a49fc198 100644
 --- a/tests/i915/perf.c
 +++ b/tests/i915/perf.c
-@@ -442,6 +442,29 @@ gen8_read_report_reason(const uint32_t *report)
- 		return "unknown";
+@@ -110,6 +110,7 @@ struct oa_format {
+ 	int a_off;
+ 	int n_a;
+ 	int first_a;
++	int first_a40;
+ 	int b_off;
+ 	int n_b;
+ 	int c_off;
+@@ -179,6 +180,26 @@ static struct oa_format gen12_oa_formats[I915_OA_FORMAT_MAX] = {
+ 		.c_off = 224, .n_c = 8, },
+ };
+ 
++static struct oa_format dg2_oa_formats[I915_OA_FORMAT_MAX] = {
++	[I915_OAR_FORMAT_A32u40_A4u32_B8_C8] = {
++		"A32u40_A4u32_B8_C8", .size = 256,
++		.a40_high_off = 160, .a40_low_off = 16, .n_a40 = 32,
++		.a_off = 144, .n_a = 4, .first_a = 32,
++		.b_off = 192, .n_b = 8,
++		.c_off = 224, .n_c = 8, .oa_type = OAR, },
++	/* This format has A36 and A37 interleaved with high bytes of some A
++	 * counters, so we will accumulate only subset of counters.
++	 */
++	[I915_OA_FORMAT_A24u40_A14u32_B8_C8] = {
++		"A24u40_A14u32_B8_C8", .size = 256,
++		/* u40: A4 - A23 */
++		.a40_high_off = 160, .a40_low_off = 16, .n_a40 = 20, .first_a40 = 4,
++		/* u32: A0 - A3 */
++		.a_off = 16, .n_a = 4,
++		.b_off = 192, .n_b = 8,
++		.c_off = 224, .n_c = 8, .oa_type = OAG, },
++};
++
+ static bool hsw_undefined_a_counters[45] = {
+ 	[4] = true,
+ 	[6] = true,
+@@ -237,6 +258,8 @@ get_oa_format(enum drm_i915_oa_format format)
+ {
+ 	if (IS_HASWELL(devid))
+ 		return hsw_oa_formats[format];
++	else if (IS_DG2(devid))
++		return dg2_oa_formats[format];
+ 	else if (IS_GEN12(devid))
+ 		return gen12_oa_formats[format];
+ 	else
+@@ -509,6 +532,15 @@ oa_report_get_ctx_id(uint32_t *report)
+ 	return report[2];
  }
  
-+static uint32_t
-+cs_timestamp_frequency(int fd)
++static int
++oar_unit_default_format(void)
 +{
-+	struct drm_i915_getparam gp = {};
-+	static uint32_t value = 0;
++	if (IS_DG2(devid))
++		return I915_OAR_FORMAT_A32u40_A4u32_B8_C8;
 +
-+	if (value)
-+		return value;
-+
-+	gp.param = I915_PARAM_CS_TIMESTAMP_FREQUENCY;
-+	gp.value = (int *)(&value);
-+
-+	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_I915_GETPARAM, &gp), 0);
-+
-+	return value;
++	return test_set->perf_oa_format;
 +}
 +
-+static uint64_t
-+cs_timebase_scale(uint32_t u32_delta)
-+{
-+	return ((uint64_t)u32_delta * NSEC_PER_SEC) / cs_timestamp_frequency(drm_fd);
-+}
-+
- static uint64_t
- timebase_scale(uint32_t u32_delta)
- {
-@@ -4142,7 +4165,7 @@ static void gen12_single_ctx_helper(void)
- 	/* Sanity check that we can pass the delta to timebase_scale */
- 	igt_assert(delta_ts64 < UINT32_MAX);
- 	delta_oa32_ns = timebase_scale(delta_oa32);
--	delta_ts64_ns = timebase_scale(delta_ts64);
-+	delta_ts64_ns = cs_timebase_scale(delta_ts64);
+ /*
+  * Temporary wrapper to distinguish mappings on !llc platforms,
+  * where it seems cache over GEM_MMAP_OFFSET is not flushed before execution.
+@@ -802,7 +834,7 @@ gen8_sanity_check_test_oa_reports(const uint32_t *oa_report0,
+ 	max_delta = clock_delta * intel_perf->devinfo.n_eus;
  
- 	igt_debug("oa32 delta = %u, = %uns\n",
- 			delta_oa32, (unsigned)delta_oa32_ns);
+ 	/* Gen8+ has some 40bit A counters... */
+-	for (int j = 0; j < format.n_a40; j++) {
++	for (int j = format.first_a40; j < format.n_a40 + format.first_a40; j++) {
+ 		uint64_t value0 = gen8_read_40bit_a_counter(oa_report0, fmt, j);
+ 		uint64_t value1 = gen8_read_40bit_a_counter(oa_report1, fmt, j);
+ 		uint64_t delta = gen8_40bit_a_delta(value0, value1);
+@@ -1260,7 +1292,7 @@ read_2_oa_reports(int format_id,
+ 			igt_assert_eq(header->size, sample_size);
+ 
+ 			report = (const void *)(header + 1);
+-			dump_report(report, 64, "oa-formats");
++			dump_report(report, format_size / 4, "oa-formats");
+ 
+ 			igt_debug("read report: reason = %x, timestamp = %x, exponent mask=%x\n",
+ 				  report[0], report[1], exponent_mask);
+@@ -1484,8 +1516,8 @@ test_oa_formats(void)
+ {
+ 	for (int i = 0; i < I915_OA_FORMAT_MAX; i++) {
+ 		struct oa_format format = get_oa_format(i);
+-		uint32_t oa_report0[64];
+-		uint32_t oa_report1[64];
++		uint32_t oa_report0[format.size / 4];
++		uint32_t oa_report1[format.size / 4];
+ 
+ 		if (!format.name) /* sparse, indexed by ID */
+ 			continue;
+@@ -3016,6 +3048,7 @@ test_disabled_read_error(void)
+ static void
+ gen12_test_mi_rpc(void)
+ {
++	uint64_t fmt = oar_unit_default_format();
+ 	uint64_t properties[] = {
+ 		/* On Gen12, MI RPC uses OAR. OAR is configured only for the
+ 		 * render context that wants to measure the performance. Hence a
+@@ -3036,7 +3069,7 @@ gen12_test_mi_rpc(void)
+ 		 * values.
+ 		 */
+ 		DRM_I915_PERF_PROP_OA_METRICS_SET, test_set->perf_oa_metrics_set,
+-		DRM_I915_PERF_PROP_OA_FORMAT, test_set->perf_oa_format,
++		DRM_I915_PERF_PROP_OA_FORMAT, fmt,
+ 	};
+ 	struct drm_i915_perf_open_param param = {
+ 		.flags = I915_PERF_FLAG_FD_CLOEXEC,
+@@ -3050,7 +3083,7 @@ gen12_test_mi_rpc(void)
+ 	uint32_t ctx_id = INVALID_CTX_ID;
+ 	uint32_t *report32;
+ 	size_t format_size_32;
+-	struct oa_format format = get_oa_format(test_set->perf_oa_format);
++	struct oa_format format = get_oa_format(fmt);
+ 
+ 	/* Ensure perf_stream_paranoid is set to 1 by default */
+ 	write_u64_file("/proc/sys/dev/i915/perf_stream_paranoid", 1);
+@@ -3865,6 +3898,7 @@ again:
+ 
+ static void gen12_single_ctx_helper(void)
+ {
++	uint64_t fmt = oar_unit_default_format();
+ 	uint64_t properties[] = {
+ 		/* Have a random value here for the context id, but initialize
+ 		 * it once you figure out the context ID for the work to be
+@@ -3880,7 +3914,7 @@ static void gen12_single_ctx_helper(void)
+ 		 * values.
+ 		 */
+ 		DRM_I915_PERF_PROP_OA_METRICS_SET, test_set->perf_oa_metrics_set,
+-		DRM_I915_PERF_PROP_OA_FORMAT, test_set->perf_oa_format,
++		DRM_I915_PERF_PROP_OA_FORMAT, fmt,
+ 	};
+ 	struct drm_i915_perf_open_param param = {
+ 		.flags = I915_PERF_FLAG_FD_CLOEXEC,
+@@ -3903,7 +3937,7 @@ static void gen12_single_ctx_helper(void)
+ 	uint32_t ctx1_id = INVALID_CTX_ID;
+ 	int ret;
+ 	struct accumulator accumulator = {
+-		.format = test_set->perf_oa_format
++		.format = fmt
+ 	};
+ 
+ 	bops = buf_ops_create(drm_fd);
 -- 
 2.25.1
