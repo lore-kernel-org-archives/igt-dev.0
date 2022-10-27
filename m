@@ -1,21 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DD6E210E3FC
- for <igt-dev@lists.freedesktop.org>; Wed, 26 Oct 2022 21:27:21 +0000 (UTC)
-Date: Wed, 26 Oct 2022 14:27:13 -0700
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6EAE210E717
+ for <igt-dev@lists.freedesktop.org>; Thu, 27 Oct 2022 20:55:43 +0000 (UTC)
 From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
-To: <igt-dev@lists.freedesktop.org>
-Message-ID: <Y1mmMVQmRTCQai0T@unerlige-ril>
-References: <20221025200709.83314-1-umesh.nerlige.ramappa@intel.com>
- <166678303735.25381.17629886299115710864@emeril.freedesktop.org>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <166678303735.25381.17629886299115710864@emeril.freedesktop.org>
+To: igt-dev@lists.freedesktop.org
+Date: Thu, 27 Oct 2022 20:55:34 +0000
+Message-Id: <20221027205535.12824-28-umesh.nerlige.ramappa@intel.com>
+In-Reply-To: <20221027205535.12824-1-umesh.nerlige.ramappa@intel.com>
+References: <20221027205535.12824-1-umesh.nerlige.ramappa@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev]
- =?utf-8?b?4pyXIEZpLkNJLklHVDogZmFpbHVyZSBmb3IgU2Vjb25k?=
- =?utf-8?q?_part_of_DG2_OA_tests?=
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t v2 27/28] lib/i915: add new ACM/DG2 format
+ in codegen
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,63 +23,37 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Wed, Oct 26, 2022 at 11:17:17AM +0000, Patchwork wrote:
->   Patch Details
->
->   Series:  Second part of DG2 OA tests
->   URL:     [1]https://patchwork.freedesktop.org/series/110141/
->   State:   failure
->   Details: [2]https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8001/index.html
->
->         CI Bug Log - changes from CI_DRM_12294_full -> IGTPW_8001_full
->
->Summary
->
->   FAILURE
->
->   Serious unknown changes coming with IGTPW_8001_full absolutely need to be
->   verified manually.
->
->   If you think the reported changes have nothing to do with the changes
->   introduced in IGTPW_8001_full, please notify your bug team to allow them
->   to document this new failure mode, which will reduce false positives in
->   CI.
->
->   External URL:
->   https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8001/index.html
->
->Participating hosts (11 -> 8)
->
->   Missing (3): pig-skl-6260u pig-kbl-iris pig-glk-j5005
->
->Possible new issues
->
->   Here are the unknown changes that may have been introduced in
->   IGTPW_8001_full:
->
->  IGT changes
->
->    Possible regressions
->
->     * igt@perf@global-sseu-config:
->
->          * shard-tglb: [3]PASS -> [4]SKIP
->
->    Suppressed
->
->   The following results come from untrusted machines, tests, or statuses.
->   They do not affect the overall result.
->
->     * igt@perf@global-sseu-config:
->
->          * {shard-rkl}: NOTRUN -> [5]SKIP
->
->          * {shard-dg1}: [6]PASS -> [7]SKIP
+From: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
 
-sseu-config related tests are now limited to gen11 only, so they are 
-expected to skip on other platforms.
+Signed-off-by: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
+Reviewed-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+---
+ lib/i915/perf-configs/perf-metricset-codegen.py | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
-Umesh
->
->Known issues
->
+diff --git a/lib/i915/perf-configs/perf-metricset-codegen.py b/lib/i915/perf-configs/perf-metricset-codegen.py
+index 00528c31..80b01be5 100644
+--- a/lib/i915/perf-configs/perf-metricset-codegen.py
++++ b/lib/i915/perf-configs/perf-metricset-codegen.py
+@@ -126,6 +126,19 @@ def generate_metric_sets(args, gen):
+                 metric_set->c_offset = metric_set->b_offset + 8;
+                 metric_set->perfcnt_offset = metric_set->c_offset + 8;
+ 
++            """))
++        elif gen.chipset.startswith("acm"):
++            c(textwrap.dedent("""\
++                metric_set->perf_oa_format = I915_OA_FORMAT_A24u40_A14u32_B8_C8;
++
++                metric_set->perf_raw_size = 256;
++                metric_set->gpu_time_offset = 0;
++                metric_set->gpu_clock_offset = 1;
++                metric_set->a_offset = 2;
++                metric_set->b_offset = metric_set->a_offset + 38;
++                metric_set->c_offset = metric_set->b_offset + 8;
++                metric_set->perfcnt_offset = metric_set->c_offset + 8;
++
+             """))
+         else:
+             c(textwrap.dedent("""\
+-- 
+2.25.1
