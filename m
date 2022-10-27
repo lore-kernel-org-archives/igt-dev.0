@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A6C3C10E6E2
- for <igt-dev@lists.freedesktop.org>; Thu, 27 Oct 2022 20:55:42 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3AA5D10E714
+ for <igt-dev@lists.freedesktop.org>; Thu, 27 Oct 2022 20:55:43 +0000 (UTC)
 From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Thu, 27 Oct 2022 20:55:27 +0000
-Message-Id: <20221027205535.12824-21-umesh.nerlige.ramappa@intel.com>
+Date: Thu, 27 Oct 2022 20:55:25 +0000
+Message-Id: <20221027205535.12824-19-umesh.nerlige.ramappa@intel.com>
 In-Reply-To: <20221027205535.12824-1-umesh.nerlige.ramappa@intel.com>
 References: <20221027205535.12824-1-umesh.nerlige.ramappa@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v2 20/28] tools/i915-perf-recorder: capture
- OA & CS frequencies
+Subject: [igt-dev] [PATCH i-g-t v2 18/28] lib/i915/perf: store bit shifting
+ required for OA timestamps
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,102 +25,181 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
 
-CS & OA timestamp don't have the same accuracy, so we need to adjuste
-the correlated timestamps (capture from the CS unit) in the recording
-to fit the data in the OA reports.
+Some new platforms have the OA timestamps shifted to the right by a
+number of bits. This is configurable but since i915 appears to leave
+the default values, let's just hardcode this in the device info.
 
 Signed-off-by: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
 Reviewed-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 ---
- tools/i915-perf/i915_perf_recorder.c | 43 ++++++++++++++++++++++++----
- 1 file changed, 38 insertions(+), 5 deletions(-)
+ lib/i915/perf.c                    | 31 +++++++++++++++++++++++++-----
+ lib/i915/perf.h                    | 18 ++++++++++++++++-
+ lib/i915/perf_data_reader.c        |  2 +-
+ lib/meson.build                    |  4 ++--
+ tools/i915-perf/i915_perf_reader.c |  3 ++-
+ 5 files changed, 48 insertions(+), 10 deletions(-)
 
-diff --git a/tools/i915-perf/i915_perf_recorder.c b/tools/i915-perf/i915_perf_recorder.c
-index 7ced7b40..72011c87 100644
---- a/tools/i915-perf/i915_perf_recorder.c
-+++ b/tools/i915-perf/i915_perf_recorder.c
-@@ -328,7 +328,7 @@ perf_ioctl(int fd, unsigned long request, void *arg)
+diff --git a/lib/i915/perf.c b/lib/i915/perf.c
+index f7aff13a..4c1b75ad 100644
+--- a/lib/i915/perf.c
++++ b/lib/i915/perf.c
+@@ -299,6 +299,10 @@ intel_perf_for_devinfo(uint32_t device_id,
+ 	/* Valid on most generations except Gen9LP. */
+ 	perf->devinfo.eu_threads_count = 7;
+ 
++	/* Most platforms have full 32bit timestamps. */
++	perf->devinfo.oa_timestamp_mask = 0xffffffff;
++	perf->devinfo.oa_timestamp_shift = 0;
++
+ 	if (devinfo->is_haswell) {
+ 		intel_perf_load_metrics_hsw(perf);
+ 	} else if (devinfo->is_broadwell) {
+@@ -765,7 +769,8 @@ accumulate_uint40(int a_index,
  }
  
- static uint64_t
--get_device_timestamp_frequency(const struct intel_device_info *devinfo, int drm_fd)
-+get_device_cs_timestamp_frequency(const struct intel_device_info *devinfo, int drm_fd)
+ void intel_perf_accumulate_reports(struct intel_perf_accumulator *acc,
+-				   int oa_format,
++				   const struct intel_perf *perf,
++				   const struct intel_perf_metric_set *metric_set,
+ 				   const struct drm_i915_perf_record_header *record0,
+ 				   const struct drm_i915_perf_record_header *record1)
  {
- 	drm_i915_getparam_t gp;
- 	int timestamp_frequency;
-@@ -352,12 +352,44 @@ get_device_timestamp_frequency(const struct intel_device_info *devinfo, int drm_
- 	return 12000000;
+@@ -777,9 +782,13 @@ void intel_perf_accumulate_reports(struct intel_perf_accumulator *acc,
+ 
+ 	memset(acc, 0, sizeof(*acc));
+ 
+-	switch (oa_format) {
++	switch (metric_set->perf_oa_format) {
+ 	case I915_OA_FORMAT_A24u40_A14u32_B8_C8:
+-		accumulate_uint32(start + 1, end + 1, deltas + idx++); /* timestamp */
++		/* timestamp */
++		if (perf->devinfo.oa_timestamp_shift >= 0)
++			deltas[idx++] += (end[1] - start[1]) << perf->devinfo.oa_timestamp_shift;
++		else
++			deltas[idx++] += (end[1] - start[1]) >> (-perf->devinfo.oa_timestamp_shift);
+ 		accumulate_uint32(start + 3, end + 3, deltas + idx++); /* clock */
+ 
+ 		/* 4x 32bit A0-3 counters... */
+@@ -812,7 +821,10 @@ void intel_perf_accumulate_reports(struct intel_perf_accumulator *acc,
+ 
+ 	case I915_OAR_FORMAT_A32u40_A4u32_B8_C8:
+ 	case I915_OA_FORMAT_A32u40_A4u32_B8_C8:
+-		accumulate_uint32(start + 1, end + 1, deltas + idx++); /* timestamp */
++		if (perf->devinfo.oa_timestamp_shift >= 0)
++			deltas[idx++] += (end[1] - start[1]) << perf->devinfo.oa_timestamp_shift;
++		else
++			deltas[idx++] += (end[1] - start[1]) >> (-perf->devinfo.oa_timestamp_shift);
+ 		accumulate_uint32(start + 3, end + 3, deltas + idx++); /* clock */
+ 
+ 		/* 32x 40bit A counters... */
+@@ -829,7 +841,11 @@ void intel_perf_accumulate_reports(struct intel_perf_accumulator *acc,
+ 		break;
+ 
+ 	case I915_OA_FORMAT_A45_B8_C8:
+-		accumulate_uint32(start + 1, end + 1, deltas); /* timestamp */
++		/* timestamp */
++		if (perf->devinfo.oa_timestamp_shift >= 0)
++			deltas[0] += (end[1] - start[1]) << perf->devinfo.oa_timestamp_shift;
++		else
++			deltas[0] += (end[1] - start[1]) >> (-perf->devinfo.oa_timestamp_shift);
+ 
+ 		for (i = 0; i < 61; i++)
+ 			accumulate_uint32(start + 3 + i, end + 3 + i, deltas + 1 + i);
+@@ -858,5 +874,10 @@ uint64_t intel_perf_read_record_timestamp(const struct intel_perf *perf,
+                assert(0);
+        }
+ 
++       if (perf->devinfo.oa_timestamp_shift >= 0)
++	       ts <<= perf->devinfo.oa_timestamp_shift;
++       else
++	       ts >>= -perf->devinfo.oa_timestamp_shift;
++
+        return ts;
  }
- 
-+static uint64_t
-+get_device_oa_timestamp_frequency(const struct intel_device_info *devinfo, int drm_fd)
-+{
-+	drm_i915_getparam_t gp;
-+	int timestamp_frequency;
-+
-+	gp.param = I915_PARAM_OA_TIMESTAMP_FREQUENCY;
-+	gp.value = &timestamp_frequency;
-+	if (perf_ioctl(drm_fd, DRM_IOCTL_I915_GETPARAM, &gp) == 0)
-+		return timestamp_frequency;
-+
-+	gp.param = I915_PARAM_CS_TIMESTAMP_FREQUENCY;
-+	gp.value = &timestamp_frequency;
-+	if (perf_ioctl(drm_fd, DRM_IOCTL_I915_GETPARAM, &gp) == 0)
-+		return timestamp_frequency;
-+
-+
-+	if (devinfo->graphics_ver > 9) {
-+		fprintf(stderr, "Unable to query timestamp frequency from i915, please update kernel.\n");
-+		return 0;
-+	}
-+
-+	fprintf(stderr, "Warning: unable to query timestamp frequency from i915, guessing values...\n");
-+
-+	if (devinfo->graphics_ver <= 8)
-+		return 12500000;
-+	if (devinfo->is_broxton)
-+		return 19200000;
-+	return 12000000;
-+}
-+
- struct recording_context {
- 	int drm_fd;
- 	int perf_fd;
- 
+diff --git a/lib/i915/perf.h b/lib/i915/perf.h
+index 88a36ebe..a0dba342 100644
+--- a/lib/i915/perf.h
++++ b/lib/i915/perf.h
+@@ -56,6 +56,21 @@ struct intel_perf_devinfo {
  	uint32_t devid;
--	uint64_t timestamp_frequency;
-+	uint64_t oa_timestamp_frequency;
-+	uint64_t cs_timestamp_frequency;
+ 	uint32_t graphics_ver;
+ 	uint32_t revision;
++	/**
++	 * Bit shifting required to put OA report timestamps into
++	 * timestamp_frequency (some HW generations can shift
++	 * timestamp values to the right by a number of bits).
++	 */
++	int32_t  oa_timestamp_shift;
++	/**
++	 * On some platforms only part of the timestamp bits are valid
++	 * (on previous platforms we would get full 32bits, newer
++	 * platforms can have fewer). It's important to know when
++	 * correlating the full 36bits timestamps to the OA report
++	 * timestamps.
++	 */
++	uint64_t  oa_timestamp_mask;
++	/* Frequency of the timestamps in Hz */
+ 	uint64_t timestamp_frequency;
+ 	uint64_t gt_min_freq;
+ 	uint64_t gt_max_freq;
+@@ -320,7 +335,8 @@ void intel_perf_add_metric_set(struct intel_perf *perf,
+ void intel_perf_load_perf_configs(struct intel_perf *perf, int drm_fd);
  
- 	const struct intel_device_info *devinfo;
+ void intel_perf_accumulate_reports(struct intel_perf_accumulator *acc,
+-				   int oa_format,
++				   const struct intel_perf *perf,
++				   const struct intel_perf_metric_set *metric_set,
+ 				   const struct drm_i915_perf_record_header *record0,
+ 				   const struct drm_i915_perf_record_header *record1);
  
-@@ -459,7 +491,7 @@ static bool
- write_header(FILE *output, struct recording_context *ctx)
- {
- 	struct intel_perf_record_device_info info = {
--		.timestamp_frequency = ctx->timestamp_frequency,
-+		.timestamp_frequency = ctx->oa_timestamp_frequency,
- 		.device_id = ctx->perf->devinfo.devid,
- 		.device_revision = ctx->perf->devinfo.revision,
- 		.gt_min_frequency = ctx->perf->devinfo.gt_min_freq,
-@@ -964,7 +996,8 @@ main(int argc, char *argv[])
+diff --git a/lib/i915/perf_data_reader.c b/lib/i915/perf_data_reader.c
+index 4d1efe92..fcdd5ed1 100644
+--- a/lib/i915/perf_data_reader.c
++++ b/lib/i915/perf_data_reader.c
+@@ -209,7 +209,7 @@ correlate_gpu_timestamp(struct intel_perf_data_reader *reader,
+ 	 * Try to figure what portion of the correlation data the
+ 	 * 32bit timestamp belongs to.
+ 	 */
+-	uint64_t mask = 0xffffffff;
++	uint64_t mask = reader->perf->devinfo.oa_timestamp_mask;
+ 	int corr_idx = -1;
  
- 	intel_perf_load_perf_configs(ctx.perf, ctx.drm_fd);
+ 	for (uint32_t i = 0; i < reader->n_correlation_chunks; i++) {
+diff --git a/lib/meson.build b/lib/meson.build
+index 747889b9..6b5b9e04 100644
+--- a/lib/meson.build
++++ b/lib/meson.build
+@@ -321,7 +321,7 @@ lib_igt_i915_perf_build = shared_library(
+   dependencies: lib_igt_chipset,
+   include_directories : inc,
+   install: true,
+-  soversion: '1.4')
++  soversion: '1.5')
  
--	ctx.timestamp_frequency = get_device_timestamp_frequency(ctx.devinfo, ctx.drm_fd);
-+	ctx.oa_timestamp_frequency = get_device_oa_timestamp_frequency(ctx.devinfo, ctx.drm_fd);
-+	ctx.cs_timestamp_frequency = get_device_cs_timestamp_frequency(ctx.devinfo, ctx.drm_fd);
+ lib_igt_i915_perf = declare_dependency(
+   link_with : lib_igt_i915_perf_build,
+@@ -342,7 +342,7 @@ pkgconf.set('prefix', get_option('prefix'))
+ pkgconf.set('exec_prefix', '${prefix}')
+ pkgconf.set('libdir', '${prefix}/@0@'.format(get_option('libdir')))
+ pkgconf.set('includedir', '${prefix}/@0@'.format(get_option('includedir')))
+-pkgconf.set('i915_perf_version', '1.4.0')
++pkgconf.set('i915_perf_version', '1.5.0')
  
- 	signal(SIGINT, sigint_handler);
+ configure_file(
+   input : 'i915-perf.pc.in',
+diff --git a/tools/i915-perf/i915_perf_reader.c b/tools/i915-perf/i915_perf_reader.c
+index afd8c39c..4a2e3df4 100644
+--- a/tools/i915-perf/i915_perf_reader.c
++++ b/tools/i915-perf/i915_perf_reader.c
+@@ -271,7 +271,8 @@ main(int argc, char *argv[])
+ 		fprintf(stdout, "hw_id=0x%x %s\n",
+ 			item->hw_id, item->hw_id == 0xffffffff ? "(idle)" : "");
  
-@@ -1036,7 +1069,7 @@ main(int argc, char *argv[])
- 		goto fail;
- 	}
+-		intel_perf_accumulate_reports(&accu, reader.metric_set->perf_oa_format,
++		intel_perf_accumulate_reports(&accu,
++					      reader.perf, reader.metric_set,
+ 					      i915_report0, i915_report1);
  
--	ctx.oa_exponent = oa_exponent_for_period(ctx.timestamp_frequency, perf_period);
-+	ctx.oa_exponent = oa_exponent_for_period(ctx.oa_timestamp_frequency, perf_period);
- 	fprintf(stdout, "Opening perf stream with metric_id=%"PRIu64" oa_exponent=%u oa_format=%u\n",
- 		ctx.metric_set->perf_oa_metrics_set, ctx.oa_exponent,
- 		ctx.metric_set->perf_oa_format);
+ 		for (uint32_t c = 0; c < n_counters; c++) {
 -- 
 2.25.1
