@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8C83610E70B
- for <igt-dev@lists.freedesktop.org>; Thu, 27 Oct 2022 20:55:42 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 54BB210E6E8
+ for <igt-dev@lists.freedesktop.org>; Thu, 27 Oct 2022 20:55:43 +0000 (UTC)
 From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Thu, 27 Oct 2022 20:55:28 +0000
-Message-Id: <20221027205535.12824-22-umesh.nerlige.ramappa@intel.com>
+Date: Thu, 27 Oct 2022 20:55:31 +0000
+Message-Id: <20221027205535.12824-25-umesh.nerlige.ramappa@intel.com>
 In-Reply-To: <20221027205535.12824-1-umesh.nerlige.ramappa@intel.com>
 References: <20221027205535.12824-1-umesh.nerlige.ramappa@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v2 21/28] tools/i915-perf: make timestamp
- range easier to compare
+Subject: [igt-dev] [PATCH i-g-t v2 24/28] lib/i915/perf: add a raw timestamp
+ utility
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,39 +25,77 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
 
-With timestamp bit shifting stuff, aligning values in the console is
-useful to compare them.
+Helpful to figure out the bitshifting needed in OA timestamp.
 
 Signed-off-by: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
 Reviewed-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 ---
- tools/i915-perf/i915_perf_reader.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ lib/i915/perf.c                    | 21 +++++++++++++++++++++
+ lib/i915/perf.h                    |  4 ++++
+ tools/i915-perf/i915_perf_reader.c |  7 +++++++
+ 3 files changed, 32 insertions(+)
 
+diff --git a/lib/i915/perf.c b/lib/i915/perf.c
+index 4c1b75ad..2d309e57 100644
+--- a/lib/i915/perf.c
++++ b/lib/i915/perf.c
+@@ -881,3 +881,24 @@ uint64_t intel_perf_read_record_timestamp(const struct intel_perf *perf,
+ 
+        return ts;
+ }
++
++uint64_t intel_perf_read_record_timestamp_raw(const struct intel_perf *perf,
++					  const struct intel_perf_metric_set *metric_set,
++					  const struct drm_i915_perf_record_header *record)
++{
++       const uint32_t *report32 = (const uint32_t *)(record + 1);
++       uint64_t ts;
++
++       switch (metric_set->perf_oa_format) {
++       case I915_OA_FORMAT_A24u40_A14u32_B8_C8:
++       case I915_OA_FORMAT_A32u40_A4u32_B8_C8:
++       case I915_OA_FORMAT_A45_B8_C8:
++               ts = report32[1];
++               break;
++
++       default:
++               assert(0);
++       }
++
++       return ts;
++}
+diff --git a/lib/i915/perf.h b/lib/i915/perf.h
+index a0dba342..8a2ef9e7 100644
+--- a/lib/i915/perf.h
++++ b/lib/i915/perf.h
+@@ -344,6 +344,10 @@ uint64_t intel_perf_read_record_timestamp(const struct intel_perf *perf,
+ 					  const struct intel_perf_metric_set *metric_set,
+ 					  const struct drm_i915_perf_record_header *record);
+ 
++uint64_t intel_perf_read_record_timestamp_raw(const struct intel_perf *perf,
++					      const struct intel_perf_metric_set *metric_set,
++					      const struct drm_i915_perf_record_header *record);
++
+ #ifdef __cplusplus
+ };
+ #endif
 diff --git a/tools/i915-perf/i915_perf_reader.c b/tools/i915-perf/i915_perf_reader.c
-index 4a2e3df4..92e43c19 100644
+index 92e43c19..9be1a9fc 100644
 --- a/tools/i915-perf/i915_perf_reader.c
 +++ b/tools/i915-perf/i915_perf_reader.c
-@@ -235,14 +235,17 @@ main(int argc, char *argv[])
- 		return EXIT_FAILURE;
- 	}
- 
--	fprintf(stdout, "Timestamp correlation CPU range: 0x%016"PRIx64"-0x%016"PRIx64"\n",
-+	fprintf(stdout, "Timestamp correlation CPU range:       0x%016"PRIx64"-0x%016"PRIx64"\n",
- 		reader.correlations[0]->cpu_timestamp,
- 		reader.correlations[reader.n_correlations - 1]->cpu_timestamp);
--	fprintf(stdout, "Timestamp correlation GPU range: 0x%016"PRIx64"-0x%016"PRIx64"\n",
-+	fprintf(stdout, "Timestamp correlation GPU range (64b): 0x%016"PRIx64"-0x%016"PRIx64"\n",
- 		reader.correlations[0]->gpu_timestamp,
- 		reader.correlations[reader.n_correlations - 1]->gpu_timestamp);
-+	fprintf(stdout, "Timestamp correlation GPU range (32b): 0x%016"PRIx64"-0x%016"PRIx64"\n",
-+		reader.correlations[0]->gpu_timestamp & 0xffffffff,
-+		reader.correlations[reader.n_correlations - 1]->gpu_timestamp & 0xffffffff);
- 
--	fprintf(stdout, "OA data timestamp range: 0x%016"PRIx64"-0x%016"PRIx64"\n",
-+	fprintf(stdout, "OA data timestamp range:               0x%016"PRIx64"-0x%016"PRIx64"\n",
+@@ -252,6 +252,13 @@ main(int argc, char *argv[])
  		intel_perf_read_record_timestamp(reader.perf,
  						 reader.metric_set,
- 						 reader.records[0]),
+ 						 reader.records[reader.n_records - 1]));
++	fprintf(stdout, "OA raw data timestamp range:           0x%016"PRIx64"-0x%016"PRIx64"\n",
++		intel_perf_read_record_timestamp_raw(reader.perf,
++						     reader.metric_set,
++						     reader.records[0]),
++		intel_perf_read_record_timestamp_raw(reader.perf,
++						     reader.metric_set,
++						     reader.records[reader.n_records - 1]));
+ 
+ 	if (strcmp(reader.metric_set_uuid, reader.metric_set->hw_config_guid)) {
+ 		fprintf(stdout,
 -- 
 2.25.1
