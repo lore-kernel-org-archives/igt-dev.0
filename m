@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2E51F10E6FB
- for <igt-dev@lists.freedesktop.org>; Thu, 27 Oct 2022 20:55:42 +0000 (UTC)
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1E98A10E70E
+ for <igt-dev@lists.freedesktop.org>; Thu, 27 Oct 2022 20:55:43 +0000 (UTC)
 From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Thu, 27 Oct 2022 20:55:22 +0000
-Message-Id: <20221027205535.12824-16-umesh.nerlige.ramappa@intel.com>
+Date: Thu, 27 Oct 2022 20:55:29 +0000
+Message-Id: <20221027205535.12824-23-umesh.nerlige.ramappa@intel.com>
 In-Reply-To: <20221027205535.12824-1-umesh.nerlige.ramappa@intel.com>
 References: <20221027205535.12824-1-umesh.nerlige.ramappa@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v2 15/28] tools/i915-perf-recorder: add
- ability to select device
+Subject: [igt-dev] [PATCH i-g-t v2 22/28] tools/i915-perf: printout CPU
+ clock used
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,122 +25,43 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
 
-We're starting to have system with multiple Intel GPUs.
-
 Signed-off-by: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
 Reviewed-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 ---
- tools/i915-perf/i915_perf_recorder.c | 50 ++++++++++++++++++++++++----
- 1 file changed, 43 insertions(+), 7 deletions(-)
+ tools/i915-perf/i915_perf_recorder.c | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
 diff --git a/tools/i915-perf/i915_perf_recorder.c b/tools/i915-perf/i915_perf_recorder.c
-index 00195290..7ced7b40 100644
+index 72011c87..f8f9b737 100644
 --- a/tools/i915-perf/i915_perf_recorder.c
 +++ b/tools/i915-perf/i915_perf_recorder.c
-@@ -250,16 +250,37 @@ find_intel_render_node(void)
- 	return -1;
- }
+@@ -588,6 +588,17 @@ static uint64_t timespec_diff(struct timespec *begin,
  
-+static void
-+print_intel_devices(void)
+ static clock_t correlation_clock_id = CLOCK_MONOTONIC;
+ 
++static const char *
++get_correlation_clock_name(clock_t clock_id)
 +{
-+	fprintf(stdout, "Available devices:\n");
-+	for (int i = 0; i < 128; i++) {
-+		if (read_device_param("card", i, "vendor") == 0x8086) {
-+			uint32_t devid = read_device_param("card", i, "device");
-+			const struct intel_device_info *devinfo =
-+				intel_get_device_info(devid);
-+			fprintf(stdout, "   %i: %s (0x%04hx)\n", i,
-+				devinfo ? devinfo->codename : "unknwon",
-+				devid);
-+		}
-+	}
++  switch (clock_id) {
++  case CLOCK_BOOTTIME:      return "bootime";
++  case CLOCK_MONOTONIC:     return "monotonic";
++  case CLOCK_MONOTONIC_RAW: return "monotonic_raw";
++  default:                  return "*unknown*";
++  }
 +}
 +
- static int
--open_render_node(uint32_t *devid)
-+open_render_node(uint32_t *devid, int card)
+ static bool
+ get_correlation_timestamps(struct intel_perf_record_timestamp_correlation *corr, int drm_fd)
  {
- 	char *name;
- 	int ret;
- 	int fd;
-+	int render;
- 
--	int render = find_intel_render_node();
--	if (render < 0)
--		return -1;
-+	if (card < 0) {
-+		render = find_intel_render_node();
-+		if (render < 0)
-+			return -1;
-+	} else {
-+		render = 128 + card;
-+	}
- 
- 	ret = asprintf(&name, "/dev/dri/renderD%u", render);
- 	assert(ret != -1);
-@@ -722,6 +743,9 @@ usage(const char *name)
- 		"Recording tool for i915-perf.\n"
- 		"\n"
- 		"     --help,               -h          Print this screen\n"
-+		"     --device,             -d <value>  Device to use\n"
-+		"                                       (value=list to list devices\n"
-+		"                                        value=1 to use /dev/dri/card1)\n"
- 		"     --correlation-period, -c <value>  Time period of timestamp correlation in seconds\n"
- 		"                                       (default = 1.0)\n"
- 		"     --perf-period,        -p <value>  Time period of i915-perf reports in seconds\n"
-@@ -772,6 +796,7 @@ main(int argc, char *argv[])
- {
- 	const struct option long_options[] = {
- 		{"help",                       no_argument, 0, 'h'},
-+		{"device",               required_argument, 0, 'd'},
- 		{"correlation-period",   required_argument, 0, 'c'},
- 		{"perf-period",          required_argument, 0, 'p'},
- 		{"metric",               required_argument, 0, 'm'},
-@@ -798,7 +823,7 @@ main(int argc, char *argv[])
- 	struct timespec now;
- 	uint64_t corr_period_ns, poll_time_ns;
- 	uint32_t circular_size = 0;
--	int opt;
-+	int opt, dev_node_id = -1;
- 	bool list_counters = false;
- 	FILE *output = NULL;
- 	struct recording_context ctx = {
-@@ -812,7 +837,7 @@ main(int argc, char *argv[])
- 		.poll_period = 5 * 1000 * 1000,
- 	};
- 
--	while ((opt = getopt_long(argc, argv, "hc:p:m:Co:s:f:k:P:", long_options, NULL)) != -1) {
-+	while ((opt = getopt_long(argc, argv, "hc:d:p:m:Co:s:f:k:P:", long_options, NULL)) != -1) {
- 		switch (opt) {
- 		case 'h':
- 			usage(argv[0]);
-@@ -820,6 +845,12 @@ main(int argc, char *argv[])
- 		case 'c':
- 			corr_period = atof(optarg);
- 			break;
-+		case 'd':
-+			if (!strcmp(optarg, "list"))
-+				dev_node_id = -2;
-+			else
-+				dev_node_id = atoi(optarg);
-+			break;
- 		case 'p':
- 			perf_period = atof(optarg);
- 			break;
-@@ -865,7 +896,12 @@ main(int argc, char *argv[])
- 		}
+@@ -1069,6 +1080,9 @@ main(int argc, char *argv[])
+ 		goto fail;
  	}
  
--	ctx.drm_fd = open_render_node(&ctx.devid);
-+	if (dev_node_id == -2) {
-+		print_intel_devices();
-+		return EXIT_SUCCESS;
-+	}
++	fprintf(stdout, "Using correlation clock: %s\n",
++		get_correlation_clock_name(correlation_clock_id));
 +
-+	ctx.drm_fd = open_render_node(&ctx.devid, dev_node_id);
- 	if (ctx.drm_fd < 0) {
- 		fprintf(stderr, "Unable to open device.\n");
- 		return EXIT_FAILURE;
+ 	ctx.oa_exponent = oa_exponent_for_period(ctx.oa_timestamp_frequency, perf_period);
+ 	fprintf(stdout, "Opening perf stream with metric_id=%"PRIu64" oa_exponent=%u oa_format=%u\n",
+ 		ctx.metric_set->perf_oa_metrics_set, ctx.oa_exponent,
 -- 
 2.25.1
