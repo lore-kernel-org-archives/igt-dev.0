@@ -1,20 +1,23 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 85E2010E5FC
- for <igt-dev@lists.freedesktop.org>; Thu, 27 Oct 2022 00:46:22 +0000 (UTC)
-Date: Wed, 26 Oct 2022 17:46:10 -0700
-From: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
-To: Matthew Auld <matthew.auld@intel.com>
-Message-ID: <Y1nU0kKNQMOqRlhi@nvishwa1-DESK>
-References: <20221025065941.13397-1-niranjana.vishwanathapura@intel.com>
- <20221025065941.13397-2-niranjana.vishwanathapura@intel.com>
- <1907d36f-145c-1b47-f667-36e8afbacefc@intel.com>
-Content-Type: text/plain; charset="us-ascii"; format=flowed
-Content-Disposition: inline
-In-Reply-To: <1907d36f-145c-1b47-f667-36e8afbacefc@intel.com>
+Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0B7D710E352
+ for <igt-dev@lists.freedesktop.org>; Thu, 27 Oct 2022 01:12:52 +0000 (UTC)
+Message-ID: <cf999c8e-0c47-e52c-afa0-897edb962c06@intel.com>
+Date: Thu, 27 Oct 2022 06:42:00 +0530
+Content-Language: en-US
+To: Alex Hung <alex.hung@amd.com>, Petri Latvala <petri.latvala@intel.com>,
+ Swati Sharma <swati2.sharma@intel.com>
+References: <20221026021615.2445018-1-alex.hung@amd.com>
+ <Y1jo6avSqRrAU7rY@platvala-desk.ger.corp.intel.com>
+ <79df58ca-1e4e-e86b-af75-799d7e81df73@intel.com>
+ <1c4a2175-eab7-a0c3-6df2-75d2b1445358@amd.com>
+From: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
+In-Reply-To: <1c4a2175-eab7-a0c3-6df2-75d2b1445358@amd.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t v5 01/12] include/drm-uapi: memory
- region gtt_alignment support
+Subject: Re: [igt-dev] [PATCH] tests/kms_dp_aux_dev: Check DP connection
+ only before tests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,100 +25,95 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: tvrtko.ursulin@intel.com, igt-dev@lists.freedesktop.org,
- thomas.hellstrom@intel.com, daniel.vetter@intel.com, petri.latvala@intel.com
+Cc: igt-dev@lists.freedesktop.org, markyacoub@google.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Wed, Oct 26, 2022 at 06:29:43PM +0100, Matthew Auld wrote:
->On 25/10/2022 07:59, Niranjana Vishwanathapura wrote:
->>Pull in gtt_alignment addition in drm_i915_memory_region_info
->>uapi and update library to include this field.
+On Wed-26-10-2022 08:37 pm, Alex Hung wrote:
+> 
+> 
+> On 2022-10-26 05:14, Modem, Bhanuprakash wrote:
+>> On Wed-26-10-2022 01:29 pm, Petri Latvala wrote:
+>>> On Tue, Oct 25, 2022 at 08:16:15PM -0600, Alex Hung wrote:
+>>>> Without DP port connected, kernel reports "Too many retries"
+>>>> that indicates no sink to respond. This is the same across GPUs.
+>>>>
+>>>> amdgpu ... DM aux hw bus 2: Too many retries, giving up. First 
+>>>> error: -5
+>>>> i915 ... AUX C/DDI C/PHY C: Too many retries, giving up. First 
+>>>> error: -110
+>>>>
+>>>> In addition, the test can result time out such as below:
+>>>>
+>>>> /dev/drm_dp_aux0: Connection timed out
+>>>> /dev/drm_dp_aux1: Connection timed out
 >>
->>Signed-off-by: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
->>---
->>  include/drm-uapi/i915_drm.h    | 30 ++++++++++++++++++++++++++++--
->>  lib/i915/intel_memory_region.c |  1 +
->>  lib/i915/intel_memory_region.h |  1 +
->>  3 files changed, 30 insertions(+), 2 deletions(-)
+>> These timeouts are already handled in this test: 
+>> https://nam11.safelinks.protection.outlook.com/?url=https%3A%2F%2Fcgit.freedesktop.org%2Fdrm%2Figt-gpu-tools%2Ftree%2Ftests%2Fkms_dp_aux_dev.c%23n88&amp;data=05%7C01%7Calex.hung%40amd.com%7Cf247127341e34be42d0608dab7434b53%7C3dd8961fe4884e608e11a82d994e183d%7C0%7C0%7C638023796906119251%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C3000%7C%7C%7C&amp;sdata=4kt0bcLG6jsPpagnkqwcVWxhvf00Omjr3kjCTs%2BEu2o%3D&amp;reserved=0
 >>
->>diff --git a/include/drm-uapi/i915_drm.h b/include/drm-uapi/i915_drm.h
->>index ae9558b3d9..b3a200fc5d 100644
->>--- a/include/drm-uapi/i915_drm.h
->>+++ b/include/drm-uapi/i915_drm.h
->>@@ -3215,8 +3215,34 @@ struct drm_i915_memory_region_info {
->>  	/** @region: The class:instance pair encoding */
->>  	struct drm_i915_gem_memory_class_instance region;
->>-	/** @rsvd0: MBZ */
->>-	__u32 rsvd0;
->>+	union {
->>+		/** @rsvd0: MBZ */
->>+		__u32 rsvd0;
->>+
->>+		/**
->>+		 * @gtt_alignment:
->>+		 *
->>+		 * The minimum required GTT alignment for this type of memory.
->>+		 * When allocating a GTT address it must be aligned to this
->>+		 * value or larger. On some platforms the kernel might opt to
->>+		 * using 64K pages for I915_MEMORY_CLASS_DEVICE, where 64K GTT
->>+		 * pages can then be used if we also use 64K GTT alignment.
->>+		 *
->>+		 * NOTE: If this is zero then this must be an older
->>+		 * kernel which lacks support for this field.
->>+		 *
->>+		 * Side note: For larger objects (especially for
->>+		 * I915_MEMORY_CLASS_DEVICE), like 2M+ in size, userspace should
->>+		 * consider potentially bumping the GTT alignment to say 2M,
->>+		 * which could potentially increase the likelihood of the kernel
->>+		 * being able to utilise 2M GTT pages underneath, if the layout
->>+		 * of the physical pages allows it.  On some configurations we
->>+		 * can then also use a more efficient page-table layout, if we
->>+		 * can't use the more desirable 2M GTT page, so long as we know
->>+		 * that the entire page-table will be used by this object.
->>+		 */
->>+		__u32 gtt_alignment;
->>+	};
->>  	/**
->>  	 * @probed_size: Memory probed by the driver
->>diff --git a/lib/i915/intel_memory_region.c b/lib/i915/intel_memory_region.c
->>index 84e1bceb38..cbe27d6714 100644
->>--- a/lib/i915/intel_memory_region.c
->>+++ b/lib/i915/intel_memory_region.c
->>@@ -944,6 +944,7 @@ struct gem_memory_region *__gem_get_memory_regions(int i915)
->>  		r->ci = info->regions[i].region;
->>  		r->size = info->regions[i].probed_size;
->>+		r->gtt_alignment = info->regions[i].gtt_alignment;
->
->I made a big mess here since this change needs to be temporarily 
->reverted[1]. Sorry about that. For now we could maybe just do 
->something like:
->
->gtt_alignment = HAS_64K_PAGES() && ci.memory_type == DEVICE ? 64K : 4K;
->
->I can then fix this up when adding back the gtt_alignment, if your 
->series is merged first.
->
->[1] https://patchwork.freedesktop.org/series/110041/
+>> IMO, It could be fine with existing test, since it'll work as a kind 
+>> of negative scenario.
+> 1. If a case is known for not going to work, is it necessary to test it?
+> 
+> 2. copied code here for discussion
+> 
+> igt_assert(ret == sizeof(buf) ||
+>      errno == ETIMEDOUT ||
+>      errno == EIO && is_mst_connector(drm_fd, connector_id)));
+> 
+> As in description, the i915 returns -110 (ETIMEOUT) but amdgpu returns 
+> -5 (EIO), and the above code handles i915 well but that's not always 
+> true for other scenario.
+> 
+> Do you prefer I made changes like the below instead?
+> 
+> igt_assert(ret == sizeof(buf) ||
+>      errno == ETIMEDOUT ||
+> -    errno == EIO && is_mst_connector(drm_fd, connector_id)));
+> +    errno == EIO);
 
-Ok, will do.
+Yes, probably don't break the existing one:
 
-Thanks,
-Niranjana
+  igt_assert(ret == sizeof(buf) ||
+       errno == ETIMEDOUT ||
+-     (errno == EIO && is_mst_connector(drm_fd, connector_id)));
++     (errno == EIO &&
++      (is_mst_connector(drm_fd, connector_id || 
+is_amdgpu_device(drm_fd)))));
 
->
->>  		r->cpu_size = info->regions[i].probed_cpu_visible_size;
->>  		if (r->size == -1ull)
->>  			r->size = igt_get_avail_ram_mb() << 20;
->>diff --git a/lib/i915/intel_memory_region.h b/lib/i915/intel_memory_region.h
->>index 425bda0ec7..84abb95b1a 100644
->>--- a/lib/i915/intel_memory_region.h
->>+++ b/lib/i915/intel_memory_region.h
->>@@ -174,6 +174,7 @@ struct gem_memory_region {
->>  	char *name;
->>  	struct drm_i915_gem_memory_class_instance ci;
->>+	uint64_t gtt_alignment;
->>  	uint64_t size;
->>  	uint64_t cpu_size;
->>  };
+- Bhanu
+
+> 
+>>
+>> - Bhanu
+>>
+>>>>
+>>>> As a result, checking DP connection alone should be sufficient.
+>>>>
+>>>> Signed-off-by: Alex Hung <alex.hung@amd.com>
+>>>> ---
+>>>>   tests/kms_dp_aux_dev.c | 3 +--
+>>>>   1 file changed, 1 insertion(+), 2 deletions(-)
+>>>>
+>>>> diff --git a/tests/kms_dp_aux_dev.c b/tests/kms_dp_aux_dev.c
+>>>> index ed9dd510..7fce74a4 100644
+>>>> --- a/tests/kms_dp_aux_dev.c
+>>>> +++ b/tests/kms_dp_aux_dev.c
+>>>> @@ -53,8 +53,7 @@ static bool test(int drm_fd, uint32_t connector_id)
+>>>>       drmModeFreeConnector(connector);
+>>>>       igt_assert(dir_fd >= 0);
+>>>> -    if (connector->connection != DRM_MODE_CONNECTED &&
+>>>> -        is_mst_connector(drm_fd, connector_id)) {
+>>>> +    if (connector->connection != DRM_MODE_CONNECTED) {
+>>>>           close(dir_fd);
+>>>>           return false;
+>>>>       }
+>>>
+>>>
+>>> Bhanuprakash, Swati, you wrote/reviewed this piece of code, please 
+>>> review
+>>> this patch.
+>>>
+>>>
+>>
