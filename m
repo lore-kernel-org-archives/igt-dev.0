@@ -1,15 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E4B9810E6E2
+ for <igt-dev@lists.freedesktop.org>; Thu, 27 Oct 2022 20:55:40 +0000 (UTC)
+From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Thu, 27 Oct 2022 20:55:09 +0000
+Message-Id: <20221027205535.12824-3-umesh.nerlige.ramappa@intel.com>
+In-Reply-To: <20221027205535.12824-1-umesh.nerlige.ramappa@intel.com>
+References: <20221027205535.12824-1-umesh.nerlige.ramappa@intel.com>
 MIME-Version: 1.0
-References: <20221024124323.tfyxcadyd4nz56jz@houat>
- <CAF6AEGuokyL+_ZsWeeMeyCcyErapka0ALZQ60bdWKvja3gcN9Q@mail.gmail.com>
- <20221026081711.zj7h2rpfd4kfkpqe@houat>
-In-Reply-To: <20221026081711.zj7h2rpfd4kfkpqe@houat>
-From: Rob Clark <robdclark@gmail.com>
-Date: Thu, 27 Oct 2022 08:08:28 -0700
-Message-ID: <CAF6AEGs3j7wmjM10o2Dpw4mgTJC7L4SXHPZkJm_DjeQVG5H_vA@mail.gmail.com>
-To: maxime@cerno.tech
-Content-Type: text/plain; charset="UTF-8"
-Subject: Re: [igt-dev] Must-Pass Test Suite for KMS drivers
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t v2 02/28] i915/perf: Check regularly if we
+ are done reading reports
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,103 +19,64 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Petri Latvala <petri.latvala@intel.com>,
- Tim Gover <tim.gover@raspberrypi.com>,
- Martin Roukala <martin.roukala@mupuf.org>, dri-devel@lists.freedesktop.org,
- igt-dev@lists.freedesktop.org, Tomeu Vizoso <tomeu.vizoso@collabora.com>,
- Thomas Zimmermann <tzimmermann@suse.de>,
- Daniel Vetter <daniel.vetter@intel.com>, Dave Airlie <airlied@gmail.com>,
- Phil Elwell <phil@raspberrypi.com>, Dom Cobley <dom@raspberrypi.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Wed, Oct 26, 2022 at 1:17 AM <maxime@cerno.tech> wrote:
->
-> Hi Rob,
->
-> On Mon, Oct 24, 2022 at 08:48:15AM -0700, Rob Clark wrote:
-> > On Mon, Oct 24, 2022 at 5:43 AM <maxime@cerno.tech> wrote:
-> > > I've discussing the idea for the past year to add an IGT test suite that
-> > > all well-behaved KMS drivers must pass.
-> > >
-> > > The main idea behind it comes from v4l2-compliance and cec-compliance,
-> > > that are being used to validate that the drivers are sane.
-> > >
-> > > We should probably start building up the test list, and eventually
-> > > mandate that all tests pass for all the new KMS drivers we would merge
-> > > in the kernel, and be run by KCi or similar.
-> >
-> > Let's get https://patchwork.freedesktop.org/patch/502641/ merged
-> > first, that already gives us a mechanism similar to what we use in
-> > mesa to track pass/fail/flake
->
-> I'm not sure it's a dependency per-se, and I believe both can (and
-> should) happen separately.
+If we pass a user buffer as large as the OA buffer, the OA unit will
+return all available reports. In the second part of the
+buffer-fill/enable-disable tests, we are collecting all reports within a
+time window, but we only check the time window in the outer while loop.
+We may have read well past that window if OA returns more reports. Fix
+this rare failure by checking for the window within the inner for loop.
 
-Basically my reasoning is that getting IGT green is a process that so
-far is consisting of equal parts IGT test fixes, to clear out
-lingering i915'isms, etc, and driver fixes.  Yes, you could do this
-manually but the drm/ci approach seems like it would make it easier to
-track, so it is easier to see what tests are being run on which hw,
-and what the pass/fail/flake status is.  And the expectation files can
-also be updated as we uprev the igt version being used in CI.
+Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+Reviewed-by: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
+---
+ tests/i915/perf.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-I could be biased by how CI has been deployed (IMHO, successfully) in
-mesa.. my experience there doesn't make me see any value in a
-"mustpass" list.  But does make me see value in automating and
-tracking status.  Obviously we want all the tests to pass, but getting
-there is going to be a process.  Tracking that progress is the thing
-that is useful now.
-
-BR,
--R
-
-> AFAIU, the CI patches are here to track which tests are supposed to be
-> working and which aren't so that we can track regressions.
->
-> The list I was talking about is here to identify issues in the first
-> place. All tests must pass, and if one fails it should be considered a
-> hard failure.
->
-> This would be eligible for CI only for drivers which have been known to
-> pass them all already, but we wouldn't need to track which ones can fail
-> or not, all of them must.
->
-> > Beyond that, I think some of the igt tests need to get more stable
-> > before we could consider a "mustpass" list.
->
-> I agree that IGT tests could get more stable on ARM platforms, but it's
-> also a chicken-and-egg issue. If no-one is using them regularly on ARM,
-> then they'll never get fixed.
->
-> > The kms_lease tests seem to fail on msm due to bad assumptions in the
-> > test about which CRTCs primary planes can attach to. The legacy-cursor
-> > crc tests seem a bit racy (there was a patch posted for that, not sure
-> > if it landed yet), etc.
->
-> And this is fine, we can merge that list without them, and if and when
-> they get stable, we'll add them later.
->
-> > The best thing to do is actually start running CI and tracking xfails
-> > and flakes ;-)
->
-> Again, I wouldn't oppose them.
->
-> The issue I'm trying to solve is that there's just no way to know, at
-> the moment:
->
->   - When you're running IGT, which tests are relevant for your platform
->     exactly.
->
->   - If some of them fail, is it expected for them to fail or not. The
->     ci/ patch you mentioned help for that a bit, but only for platforms
->     where someone already did that work. When you want to do that work
->     in the first place, it's extremely tedious and obscure.
->
->   - And if some of them fail, is it something that I should actually fix
->     or not.
->
-> The mustpass list addresses all those issues by providing a baseline.
->
-> Maxime
+diff --git a/tests/i915/perf.c b/tests/i915/perf.c
+index 5502a3fb..51e2dc87 100644
+--- a/tests/i915/perf.c
++++ b/tests/i915/perf.c
+@@ -2522,6 +2522,9 @@ test_buffer_fill(void)
+ 						first_timestamp = report[1];
+ 					last_timestamp = report[1];
+ 
++					if (((last_timestamp - first_timestamp) * oa_period) < (fill_duration / 2))
++						break;
++
+ 					if (oa_report_is_periodic(oa_exponent, report)) {
+ 						memcpy(last_periodic_report, report,
+ 						       sizeof(last_periodic_report));
+@@ -2537,6 +2540,8 @@ test_buffer_fill(void)
+ 
+ 		do_ioctl(stream_fd, I915_PERF_IOCTL_DISABLE, 0);
+ 
++		igt_debug("first ts = %u, last ts = %u\n", first_timestamp, last_timestamp);
++
+ 		igt_debug("%f < %zu < %f\n",
+ 			  report_size * n_full_oa_reports * 0.45,
+ 			  n_periodic_reports * report_size,
+@@ -2732,6 +2737,9 @@ test_enable_disable(void)
+ 						  oa_report_is_periodic(oa_exponent, report),
+ 						  oa_report_get_ctx_id(report));
+ 
++					if (((last_timestamp - first_timestamp) * oa_period) < (fill_duration / 2))
++						break;
++
+ 					if (oa_report_is_periodic(oa_exponent, report)) {
+ 						memcpy(last_periodic_report, report,
+ 						       sizeof(last_periodic_report));
+@@ -2755,6 +2763,8 @@ test_enable_disable(void)
+ 
+ 		do_ioctl(stream_fd, I915_PERF_IOCTL_DISABLE, 0);
+ 
++		igt_debug("first ts = %u, last ts = %u\n", first_timestamp, last_timestamp);
++
+ 		igt_debug("%f < %zu < %f\n",
+ 			  report_size * n_full_oa_reports * 0.45,
+ 			  n_periodic_reports * report_size,
+-- 
+2.25.1
