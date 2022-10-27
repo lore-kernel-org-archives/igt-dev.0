@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E46F710E6F4
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 43B2E10E6E7
  for <igt-dev@lists.freedesktop.org>; Thu, 27 Oct 2022 20:55:41 +0000 (UTC)
 From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Thu, 27 Oct 2022 20:55:17 +0000
-Message-Id: <20221027205535.12824-11-umesh.nerlige.ramappa@intel.com>
+Date: Thu, 27 Oct 2022 20:55:11 +0000
+Message-Id: <20221027205535.12824-5-umesh.nerlige.ramappa@intel.com>
 In-Reply-To: <20221027205535.12824-1-umesh.nerlige.ramappa@intel.com>
 References: <20221027205535.12824-1-umesh.nerlige.ramappa@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v2 10/28] i915/perf: Explicitly state
- rendercopy needs for a test
+Subject: [igt-dev] [PATCH i-g-t v2 04/28] i915/perf: Check return value from
+ getparam
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,100 +23,70 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Let tests explicitly require rendercopy before running. This helps in
-temporarily blocking these tests until rendercopy is available on new
-platforms.
+In some cases getparam could fail. Check return from getparam and fail
+early on.
 
 Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 Reviewed-by: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
 ---
- tests/i915/perf.c | 25 ++++++++++++++++++++++---
- 1 file changed, 22 insertions(+), 3 deletions(-)
+ lib/i915/perf.c | 28 +++++++++++++++-------------
+ 1 file changed, 15 insertions(+), 13 deletions(-)
 
-diff --git a/tests/i915/perf.c b/tests/i915/perf.c
-index 5236a025..24a6e5bd 100644
---- a/tests/i915/perf.c
-+++ b/tests/i915/perf.c
-@@ -1545,6 +1545,9 @@ static void load_helper_set_load(enum load load)
- 
- static void load_helper_run(enum load load)
- {
-+	if (!render_copy)
-+		return;
-+
- 	/*
- 	 * FIXME fork helpers won't get cleaned up when started from within a
- 	 * subtest, so handle the case where it sticks around a bit too long.
-@@ -1577,12 +1580,20 @@ static void load_helper_run(enum load load)
- 
- static void load_helper_stop(void)
- {
-+	if (!render_copy)
-+		return;
-+
- 	kill(lh.igt_proc.pid, SIGUSR1);
- 	igt_assert(igt_wait_helper(&lh.igt_proc) == 0);
+diff --git a/lib/i915/perf.c b/lib/i915/perf.c
+index 840d77f6..95e33b3c 100644
+--- a/lib/i915/perf.c
++++ b/lib/i915/perf.c
+@@ -389,19 +389,16 @@ intel_perf_for_devinfo(uint32_t device_id,
+ 	return perf;
  }
  
- static void load_helper_init(void)
+-static uint32_t
+-getparam(int drm_fd, uint32_t param)
++static int
++getparam(int drm_fd, uint32_t param, uint32_t *val)
  {
-+	if (!render_copy) {
-+		igt_info("Running test without render_copy\n");
-+		return;
-+	}
-+
- 	lh.devid = intel_get_drm_devid(drm_fd);
+-        struct drm_i915_getparam gp;
+-        int val = -1;
+-
+-        memset(&gp, 0, sizeof(gp));
+-        gp.param = param;
+-        gp.value = &val;
++	struct drm_i915_getparam gp;
  
- 	/* MI_STORE_DATA can only use GTT address on gen4+/g33 and needs
-@@ -1603,7 +1614,12 @@ static void load_helper_init(void)
+-	perf_ioctl(drm_fd, DRM_IOCTL_I915_GETPARAM, &gp);
++	memset(&gp, 0, sizeof(gp));
++	gp.param = param;
++	gp.value = (int *)val;
  
- static void load_helper_fini(void)
+-        return val;
++	return perf_ioctl(drm_fd, DRM_IOCTL_I915_GETPARAM, &gp);
+ }
+ 
+ static bool
+@@ -517,9 +514,9 @@ open_master_sysfs_dir(int drm_fd)
+ struct intel_perf *
+ intel_perf_for_fd(int drm_fd)
  {
--	int i915 = buf_ops_get_fd(lh.bops);
-+	int i915;
+-	uint32_t device_id = getparam(drm_fd, I915_PARAM_CHIPSET_ID);
+-	uint32_t device_revision = getparam(drm_fd, I915_PARAM_REVISION);
+-	uint32_t timestamp_frequency = getparam(drm_fd, I915_PARAM_CS_TIMESTAMP_FREQUENCY);
++	uint32_t device_id;
++	uint32_t device_revision;
++	uint32_t timestamp_frequency;
+ 	uint64_t gt_min_freq;
+ 	uint64_t gt_max_freq;
+ 	struct drm_i915_query_topology_info *topology;
+@@ -536,6 +533,11 @@ intel_perf_for_fd(int drm_fd)
+ 	}
+ 	close(sysfs_dir_fd);
+ 
++	if (getparam(drm_fd, I915_PARAM_CHIPSET_ID, &device_id) ||
++	    getparam(drm_fd, I915_PARAM_REVISION, &device_revision) ||
++	    getparam(drm_fd, I915_PARAM_CS_TIMESTAMP_FREQUENCY, &timestamp_frequency))
++		return NULL;
 +
-+	if (!render_copy)
-+		return;
-+
-+	i915 = buf_ops_get_fd(lh.bops);
- 
- 	if (lh.igt_proc.running)
- 		load_helper_stop();
-@@ -4997,7 +5013,6 @@ igt_main
- 		gt_max_freq_mhz = sysfs_read(RPS_RP0_FREQ_MHZ);
- 
- 		render_copy = igt_get_render_copyfunc(devid);
--		igt_require_f(render_copy, "no render-copy function\n");
- 	}
- 
- 	igt_subtest("non-system-wide-paranoid")
-@@ -5100,6 +5115,7 @@ igt_main
- 
- 	igt_subtest("unprivileged-single-ctx-counters") {
- 		igt_require(IS_HASWELL(devid));
-+		igt_require_f(render_copy, "no render-copy function\n");
- 		hsw_test_single_ctx_counters();
- 	}
- 
-@@ -5113,6 +5129,7 @@ igt_main
- 		 * For gen12 implement a separate test that uses only OAR
- 		 */
- 		igt_require(intel_gen(devid) >= 8 && intel_gen(devid) < 12);
-+		igt_require_f(render_copy, "no render-copy function\n");
- 		gen8_test_single_ctx_render_target_writes_a_counter();
- 	}
- 
-@@ -5128,8 +5145,10 @@ igt_main
- 			gen12_test_oa_tlb_invalidate();
- 
- 		igt_describe("Measure performance for a specific context using OAR in Gen 12");
--		igt_subtest("gen12-unprivileged-single-ctx-counters")
-+		igt_subtest("gen12-unprivileged-single-ctx-counters") {
-+			igt_require_f(render_copy, "no render-copy function\n");
- 			gen12_test_single_ctx_render_target_writes_a_counter();
-+		}
- 	}
- 
- 	igt_subtest("rc6-disable")
+ 	topology = query_topology(drm_fd);
+ 	if (!topology)
+ 		return NULL;
 -- 
 2.25.1
