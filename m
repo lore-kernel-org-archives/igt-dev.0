@@ -1,17 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 889B110E71D
- for <igt-dev@lists.freedesktop.org>; Thu, 27 Oct 2022 20:55:43 +0000 (UTC)
-From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Thu, 27 Oct 2022 20:55:35 +0000
-Message-Id: <20221027205535.12824-29-umesh.nerlige.ramappa@intel.com>
-In-Reply-To: <20221027205535.12824-1-umesh.nerlige.ramappa@intel.com>
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6689A10E6E8
+ for <igt-dev@lists.freedesktop.org>; Thu, 27 Oct 2022 21:31:33 +0000 (UTC)
+Message-ID: <d732f7b8-4d34-bf0e-ac32-8ba3fcf193f6@intel.com>
+Date: Fri, 28 Oct 2022 00:31:24 +0300
+To: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>,
+ <igt-dev@lists.freedesktop.org>
 References: <20221027205535.12824-1-umesh.nerlige.ramappa@intel.com>
+ <20221027205535.12824-6-umesh.nerlige.ramappa@intel.com>
+Content-Language: en-US
+From: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
+In-Reply-To: <20221027205535.12824-6-umesh.nerlige.ramappa@intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v2 28/28] lib/i915/perf: configure OA
- timestamp shift and mask for ACM
+Subject: Re: [igt-dev] [PATCH i-g-t v2 05/28] i915/perf: Skip sseu-config
+ tests for gfx12.50+
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,34 +27,37 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
+On 27/10/2022 23:55, Umesh Nerlige Ramappa wrote:
+> On Gen11, the Media driver will need to limit dispatch to only big
+> subslices (usually half the EUs depending on EU fusing). If media,
+> render and OA are running in parallel, then OA will lose the NOA config
+> because half of the EUs will be turned off by media. To avoid this with
+> concurrent use cases, an sseu config to keep all EUs powered on is
+> passed to OA in the i915_perf_open_ioctl params. This configuration is
+> made part of the render contexts, so that it's applied when 3d contexts
+> are running. Since this is an issue on gen11, skip sseu-config tests on
+> other platforms.
+>
+> v2:
+> - While sseu-config is only applicable gen11, gfx12 is already shipped
+>    with this, so skip the test only for gfx12.50+
+>
+> Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+Reviewed-by: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
+> ---
+>   tests/i915/perf.c | 1 +
+>   1 file changed, 1 insertion(+)
+>
+> diff --git a/tests/i915/perf.c b/tests/i915/perf.c
+> index 0b8f6ac8..8d1e3658 100644
+> --- a/tests/i915/perf.c
+> +++ b/tests/i915/perf.c
+> @@ -5112,6 +5112,7 @@ igt_main
+>   	igt_subtest_group {
+>   		igt_fixture {
+>   			igt_require(i915_perf_revision(drm_fd) >= 4);
+> +			igt_require(intel_graphics_ver(devid) < IP_VER(12, 50));
+>   		}
+>   
+>   		igt_describe("Verify invalid SSEU opening parameters");
 
-OA reports have the timestamp value shifted to the right by 1 bits, it
-also means we cannot use the top bit for comparison. Configure OA
-timestamp shift and mask for ACM.
-
-Signed-off-by: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
-Reviewed-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
----
- lib/i915/perf.c | 6 ++++++
- 1 file changed, 6 insertions(+)
-
-diff --git a/lib/i915/perf.c b/lib/i915/perf.c
-index fa291998..28f37948 100644
---- a/lib/i915/perf.c
-+++ b/lib/i915/perf.c
-@@ -377,6 +377,12 @@ intel_perf_for_devinfo(uint32_t device_id,
- 		intel_perf_load_metrics_adl(perf);
- 	} else if (devinfo->is_dg2) {
- 		perf->devinfo.eu_threads_count = 8;
-+		/* OA reports have the timestamp value shifted to the
-+		 * right by 1 bits, it also means we cannot use the
-+		 * top bit for comparison.
-+		 */
-+		perf->devinfo.oa_timestamp_shift = -1;
-+		perf->devinfo.oa_timestamp_mask = 0x7fffffff;
- 
- 		if (is_acm_gt1(&perf->devinfo))
- 			intel_perf_load_metrics_acmgt1(perf);
--- 
-2.25.1
