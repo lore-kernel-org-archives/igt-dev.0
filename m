@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1E98A10E70E
- for <igt-dev@lists.freedesktop.org>; Thu, 27 Oct 2022 20:55:43 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E61E010E6E1
+ for <igt-dev@lists.freedesktop.org>; Thu, 27 Oct 2022 20:55:42 +0000 (UTC)
 From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Thu, 27 Oct 2022 20:55:29 +0000
-Message-Id: <20221027205535.12824-23-umesh.nerlige.ramappa@intel.com>
+Date: Thu, 27 Oct 2022 20:55:30 +0000
+Message-Id: <20221027205535.12824-24-umesh.nerlige.ramappa@intel.com>
 In-Reply-To: <20221027205535.12824-1-umesh.nerlige.ramappa@intel.com>
 References: <20221027205535.12824-1-umesh.nerlige.ramappa@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v2 22/28] tools/i915-perf: printout CPU
- clock used
+Subject: [igt-dev] [PATCH i-g-t v2 23/28] tools/i915-perf: record remaining
+ perf data on exit
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,40 +28,24 @@ From: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
 Signed-off-by: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
 Reviewed-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 ---
- tools/i915-perf/i915_perf_recorder.c | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ tools/i915-perf/i915_perf_recorder.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
 diff --git a/tools/i915-perf/i915_perf_recorder.c b/tools/i915-perf/i915_perf_recorder.c
-index 72011c87..f8f9b737 100644
+index f8f9b737..d16f1546 100644
 --- a/tools/i915-perf/i915_perf_recorder.c
 +++ b/tools/i915-perf/i915_perf_recorder.c
-@@ -588,6 +588,17 @@ static uint64_t timespec_diff(struct timespec *begin,
+@@ -1144,6 +1144,11 @@ main(int argc, char *argv[])
  
- static clock_t correlation_clock_id = CLOCK_MONOTONIC;
+ 	fprintf(stdout, "Exiting...\n");
  
-+static const char *
-+get_correlation_clock_name(clock_t clock_id)
-+{
-+  switch (clock_id) {
-+  case CLOCK_BOOTTIME:      return "bootime";
-+  case CLOCK_MONOTONIC:     return "monotonic";
-+  case CLOCK_MONOTONIC_RAW: return "monotonic_raw";
-+  default:                  return "*unknown*";
-+  }
-+}
++	if (!write_i915_perf_data(ctx.output_stream, ctx.perf_fd)) {
++		fprintf(stderr, "Failed to write i915-perf data: %s\n",
++			strerror(errno));
++	}
 +
- static bool
- get_correlation_timestamps(struct intel_perf_record_timestamp_correlation *corr, int drm_fd)
- {
-@@ -1069,6 +1080,9 @@ main(int argc, char *argv[])
- 		goto fail;
- 	}
- 
-+	fprintf(stdout, "Using correlation clock: %s\n",
-+		get_correlation_clock_name(correlation_clock_id));
-+
- 	ctx.oa_exponent = oa_exponent_for_period(ctx.oa_timestamp_frequency, perf_period);
- 	fprintf(stdout, "Opening perf stream with metric_id=%"PRIu64" oa_exponent=%u oa_format=%u\n",
- 		ctx.metric_set->perf_oa_metrics_set, ctx.oa_exponent,
+ 	if (!write_correlation_timestamps(ctx.output_stream, ctx.drm_fd)) {
+ 		fprintf(stderr,
+ 			"Failed to write final i915 timestamp correlation data: %s\n",
 -- 
 2.25.1
