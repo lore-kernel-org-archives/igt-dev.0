@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 456F010E6FF
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 17C5310E6F6
  for <igt-dev@lists.freedesktop.org>; Thu, 27 Oct 2022 20:55:42 +0000 (UTC)
 From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Thu, 27 Oct 2022 20:55:24 +0000
-Message-Id: <20221027205535.12824-18-umesh.nerlige.ramappa@intel.com>
+Date: Thu, 27 Oct 2022 20:55:20 +0000
+Message-Id: <20221027205535.12824-14-umesh.nerlige.ramappa@intel.com>
 In-Reply-To: <20221027205535.12824-1-umesh.nerlige.ramappa@intel.com>
 References: <20221027205535.12824-1-umesh.nerlige.ramappa@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v2 17/28] lib/i915/perf: add a helper to
- read timestamps
+Subject: [igt-dev] [PATCH i-g-t v2 13/28] i915/perf: Fix CS timestamp vs OA
+ timstamp mismatch
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,149 +23,97 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
+CS timestamp can have an additional configuration that shifts the
+timestamp value by a specified number of bits. On DG2, this additional
+configuration is ignored by OA, so OA timestamps are missing the shift.
 
-We expect location/size of the timestamp might move around in the
-report.
+Add newly defined interface to get the exact OA timestamp frequency so
+that the deltas can be accurately calculated.
 
-Signed-off-by: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
-Reviewed-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+Reviewed-by: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
 ---
- lib/i915/perf.c                    | 21 +++++++++++++++++++++
- lib/i915/perf.h                    |  4 ++++
- lib/i915/perf_data_reader.c        | 14 ++++++--------
- lib/meson.build                    |  4 ++--
- tools/i915-perf/i915_perf_reader.c | 20 ++++++++++++++++++++
- 5 files changed, 53 insertions(+), 10 deletions(-)
+ include/drm-uapi/i915_drm.h |  6 ++++++
+ lib/i915/perf.c             |  6 +++++-
+ tests/i915/perf.c           | 25 ++++++++++++++++++++++++-
+ 3 files changed, 35 insertions(+), 2 deletions(-)
 
+diff --git a/include/drm-uapi/i915_drm.h b/include/drm-uapi/i915_drm.h
+index 70700c7d..b71acfba 100644
+--- a/include/drm-uapi/i915_drm.h
++++ b/include/drm-uapi/i915_drm.h
+@@ -749,6 +749,12 @@ typedef struct drm_i915_irq_wait {
+ /* Query if the kernel supports the I915_USERPTR_PROBE flag. */
+ #define I915_PARAM_HAS_USERPTR_PROBE 56
+ 
++/*
++ * Frequency of the timestamps in OA reports. This used to be the same as the CS
++ * timestamp frequency, but differs on some platforms.
++ */
++#define I915_PARAM_OA_TIMESTAMP_FREQUENCY 57
++
+ /* Must be kept compact -- no holes and well documented */
+ 
+ typedef struct drm_i915_getparam {
 diff --git a/lib/i915/perf.c b/lib/i915/perf.c
-index cc7dceea..f7aff13a 100644
+index 4f19a005..4d7fe43c 100644
 --- a/lib/i915/perf.c
 +++ b/lib/i915/perf.c
-@@ -839,3 +839,24 @@ void intel_perf_accumulate_reports(struct intel_perf_accumulator *acc,
- 	}
+@@ -566,7 +566,11 @@ intel_perf_for_fd(int drm_fd)
+ 	close(sysfs_dir_fd);
  
- }
+ 	if (getparam(drm_fd, I915_PARAM_CHIPSET_ID, &device_id) ||
+-	    getparam(drm_fd, I915_PARAM_REVISION, &device_revision) ||
++	    getparam(drm_fd, I915_PARAM_REVISION, &device_revision))
++		return NULL;
 +
-+uint64_t intel_perf_read_record_timestamp(const struct intel_perf *perf,
-+					  const struct intel_perf_metric_set *metric_set,
-+					  const struct drm_i915_perf_record_header *record)
++	/* if OA_TIMESTAMP_FREQUENCY is not supported, fall back to CS_TIMESTAMP_FREQUENCY */
++	if (getparam(drm_fd, I915_PARAM_OA_TIMESTAMP_FREQUENCY, &timestamp_frequency) &&
+ 	    getparam(drm_fd, I915_PARAM_CS_TIMESTAMP_FREQUENCY, &timestamp_frequency))
+ 		return NULL;
+ 
+diff --git a/tests/i915/perf.c b/tests/i915/perf.c
+index a49fc198..108255ef 100644
+--- a/tests/i915/perf.c
++++ b/tests/i915/perf.c
+@@ -442,6 +442,29 @@ gen8_read_report_reason(const uint32_t *report)
+ 		return "unknown";
+ }
+ 
++static uint32_t
++cs_timestamp_frequency(int fd)
 +{
-+       const uint32_t *report32 = (const uint32_t *)(record + 1);
-+       uint64_t ts;
++	struct drm_i915_getparam gp = {};
++	static uint32_t value = 0;
 +
-+       switch (metric_set->perf_oa_format) {
-+       case I915_OA_FORMAT_A24u40_A14u32_B8_C8:
-+       case I915_OA_FORMAT_A32u40_A4u32_B8_C8:
-+       case I915_OA_FORMAT_A45_B8_C8:
-+               ts = report32[1];
-+               break;
++	if (value)
++		return value;
 +
-+       default:
-+               assert(0);
-+       }
++	gp.param = I915_PARAM_CS_TIMESTAMP_FREQUENCY;
++	gp.value = (int *)(&value);
 +
-+       return ts;
++	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_I915_GETPARAM, &gp), 0);
++
++	return value;
 +}
-diff --git a/lib/i915/perf.h b/lib/i915/perf.h
-index 4091feb9..88a36ebe 100644
---- a/lib/i915/perf.h
-+++ b/lib/i915/perf.h
-@@ -324,6 +324,10 @@ void intel_perf_accumulate_reports(struct intel_perf_accumulator *acc,
- 				   const struct drm_i915_perf_record_header *record0,
- 				   const struct drm_i915_perf_record_header *record1);
- 
-+uint64_t intel_perf_read_record_timestamp(const struct intel_perf *perf,
-+					  const struct intel_perf_metric_set *metric_set,
-+					  const struct drm_i915_perf_record_header *record);
 +
- #ifdef __cplusplus
- };
- #endif
-diff --git a/lib/i915/perf_data_reader.c b/lib/i915/perf_data_reader.c
-index 857bcd3a..4d1efe92 100644
---- a/lib/i915/perf_data_reader.c
-+++ b/lib/i915/perf_data_reader.c
-@@ -65,12 +65,6 @@ oa_report_ctx_id(const struct intel_perf_devinfo *devinfo, const uint8_t *report
- 	return ((const uint32_t *) report)[2];
- }
- 
--static inline uint64_t
--oa_report_timestamp(const uint8_t *report)
--{
--	return ((const uint32_t *)report)[1];
--}
--
- static void
- append_record(struct intel_perf_data_reader *reader,
- 	      const struct drm_i915_perf_record_header *header)
-@@ -298,8 +292,12 @@ generate_cpu_events(struct intel_perf_data_reader *reader)
- 		last_ctx_id = oa_report_ctx_id(&reader->devinfo, start_report);
- 		current_ctx_id = oa_report_ctx_id(&reader->devinfo, end_report);
- 
--		gpu_ts_start = oa_report_timestamp(start_report);
--		gpu_ts_end = oa_report_timestamp(end_report);
-+		gpu_ts_start = intel_perf_read_record_timestamp(reader->perf,
-+								reader->metric_set,
-+								last_header);
-+		gpu_ts_end = intel_perf_read_record_timestamp(reader->perf,
-+							      reader->metric_set,
-+							      current_header);
- 
- 		if (last_ctx_id == current_ctx_id)
- 			continue;
-diff --git a/lib/meson.build b/lib/meson.build
-index 50ffd8cd..747889b9 100644
---- a/lib/meson.build
-+++ b/lib/meson.build
-@@ -321,7 +321,7 @@ lib_igt_i915_perf_build = shared_library(
-   dependencies: lib_igt_chipset,
-   include_directories : inc,
-   install: true,
--  soversion: '1.3')
-+  soversion: '1.4')
- 
- lib_igt_i915_perf = declare_dependency(
-   link_with : lib_igt_i915_perf_build,
-@@ -342,7 +342,7 @@ pkgconf.set('prefix', get_option('prefix'))
- pkgconf.set('exec_prefix', '${prefix}')
- pkgconf.set('libdir', '${prefix}/@0@'.format(get_option('libdir')))
- pkgconf.set('includedir', '${prefix}/@0@'.format(get_option('includedir')))
--pkgconf.set('i915_perf_version', '1.3.0')
-+pkgconf.set('i915_perf_version', '1.4.0')
- 
- configure_file(
-   input : 'i915-perf.pc.in',
-diff --git a/tools/i915-perf/i915_perf_reader.c b/tools/i915-perf/i915_perf_reader.c
-index e51f5a5d..afd8c39c 100644
---- a/tools/i915-perf/i915_perf_reader.c
-+++ b/tools/i915-perf/i915_perf_reader.c
-@@ -230,6 +230,26 @@ main(int argc, char *argv[])
- 	fprintf(stdout, "Context switches: %u\n", reader.n_timelines);
- 	fprintf(stdout, "Timestamp correlation points: %u\n", reader.n_correlations);
- 
-+	if (reader.n_correlations < 2) {
-+		fprintf(stderr, "Less than 2 CPU/GPU timestamp correlation points.\n");
-+		return EXIT_FAILURE;
-+	}
++static uint64_t
++cs_timebase_scale(uint32_t u32_delta)
++{
++	return ((uint64_t)u32_delta * NSEC_PER_SEC) / cs_timestamp_frequency(drm_fd);
++}
 +
-+	fprintf(stdout, "Timestamp correlation CPU range: 0x%016"PRIx64"-0x%016"PRIx64"\n",
-+		reader.correlations[0]->cpu_timestamp,
-+		reader.correlations[reader.n_correlations - 1]->cpu_timestamp);
-+	fprintf(stdout, "Timestamp correlation GPU range: 0x%016"PRIx64"-0x%016"PRIx64"\n",
-+		reader.correlations[0]->gpu_timestamp,
-+		reader.correlations[reader.n_correlations - 1]->gpu_timestamp);
-+
-+	fprintf(stdout, "OA data timestamp range: 0x%016"PRIx64"-0x%016"PRIx64"\n",
-+		intel_perf_read_record_timestamp(reader.perf,
-+						 reader.metric_set,
-+						 reader.records[0]),
-+		intel_perf_read_record_timestamp(reader.perf,
-+						 reader.metric_set,
-+						 reader.records[reader.n_records - 1]));
-+
- 	if (strcmp(reader.metric_set_uuid, reader.metric_set->hw_config_guid)) {
- 		fprintf(stdout,
- 			"WARNING: Recording used a different HW configuration.\n"
+ static uint64_t
+ timebase_scale(uint32_t u32_delta)
+ {
+@@ -4142,7 +4165,7 @@ static void gen12_single_ctx_helper(void)
+ 	/* Sanity check that we can pass the delta to timebase_scale */
+ 	igt_assert(delta_ts64 < UINT32_MAX);
+ 	delta_oa32_ns = timebase_scale(delta_oa32);
+-	delta_ts64_ns = timebase_scale(delta_ts64);
++	delta_ts64_ns = cs_timebase_scale(delta_ts64);
+ 
+ 	igt_debug("oa32 delta = %u, = %uns\n",
+ 			delta_oa32, (unsigned)delta_oa32_ns);
 -- 
 2.25.1
