@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 68D8610E8E5
- for <igt-dev@lists.freedesktop.org>; Fri, 28 Oct 2022 19:53:04 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 274DA10E8CF
+ for <igt-dev@lists.freedesktop.org>; Fri, 28 Oct 2022 19:53:03 +0000 (UTC)
 From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Fri, 28 Oct 2022 19:52:46 +0000
-Message-Id: <20221028195258.106453-17-umesh.nerlige.ramappa@intel.com>
+Date: Fri, 28 Oct 2022 19:52:32 +0000
+Message-Id: <20221028195258.106453-3-umesh.nerlige.ramappa@intel.com>
 In-Reply-To: <20221028195258.106453-1-umesh.nerlige.ramappa@intel.com>
 References: <20221028195258.106453-1-umesh.nerlige.ramappa@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v3 16/28] lib/i915/perf: fixup report
- validity
+Subject: [igt-dev] [PATCH i-g-t v3 02/28] i915/perf: Check regularly if we
+ are done reading reports
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,39 +23,60 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
+If we pass a user buffer as large as the OA buffer, the OA unit will
+return all available reports. In the second part of the
+buffer-fill/enable-disable tests, we are collecting all reports within a
+time window, but we only check the time window in the outer while loop.
+We may have read well past that window if OA returns more reports. Fix
+this rare failure by checking for the window within the inner for loop.
 
-It appears that on Gfx12+ there is no more validity bit in the
-reports.
-
-Signed-off-by: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
-Reviewed-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+Reviewed-by: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
 ---
- lib/i915/perf_data_reader.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ tests/i915/perf.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/lib/i915/perf_data_reader.c b/lib/i915/perf_data_reader.c
-index e69189ac..857bcd3a 100644
---- a/lib/i915/perf_data_reader.c
-+++ b/lib/i915/perf_data_reader.c
-@@ -45,13 +45,14 @@ oa_report_ctx_is_valid(const struct intel_perf_devinfo *devinfo,
- {
- 	const uint32_t *report = (const uint32_t *) _report;
+diff --git a/tests/i915/perf.c b/tests/i915/perf.c
+index 5502a3fb..51e2dc87 100644
+--- a/tests/i915/perf.c
++++ b/tests/i915/perf.c
+@@ -2522,6 +2522,9 @@ test_buffer_fill(void)
+ 						first_timestamp = report[1];
+ 					last_timestamp = report[1];
  
--	if (devinfo->graphics_ver < 8) {
-+	if (devinfo->graphics_ver < 8)
- 		return false; /* TODO */
--	} else if (devinfo->graphics_ver == 8) {
-+	if (devinfo->graphics_ver >= 12)
-+		return true; /* Always valid */
-+	if (devinfo->graphics_ver == 8)
- 		return report[0] & (1ul << 25);
--	} else if (devinfo->graphics_ver > 8) {
-+	if (devinfo->graphics_ver > 8)
- 		return report[0] & (1ul << 16);
--	}
++					if (((last_timestamp - first_timestamp) * oa_period) < (fill_duration / 2))
++						break;
++
+ 					if (oa_report_is_periodic(oa_exponent, report)) {
+ 						memcpy(last_periodic_report, report,
+ 						       sizeof(last_periodic_report));
+@@ -2537,6 +2540,8 @@ test_buffer_fill(void)
  
- 	return false;
- }
+ 		do_ioctl(stream_fd, I915_PERF_IOCTL_DISABLE, 0);
+ 
++		igt_debug("first ts = %u, last ts = %u\n", first_timestamp, last_timestamp);
++
+ 		igt_debug("%f < %zu < %f\n",
+ 			  report_size * n_full_oa_reports * 0.45,
+ 			  n_periodic_reports * report_size,
+@@ -2732,6 +2737,9 @@ test_enable_disable(void)
+ 						  oa_report_is_periodic(oa_exponent, report),
+ 						  oa_report_get_ctx_id(report));
+ 
++					if (((last_timestamp - first_timestamp) * oa_period) < (fill_duration / 2))
++						break;
++
+ 					if (oa_report_is_periodic(oa_exponent, report)) {
+ 						memcpy(last_periodic_report, report,
+ 						       sizeof(last_periodic_report));
+@@ -2755,6 +2763,8 @@ test_enable_disable(void)
+ 
+ 		do_ioctl(stream_fd, I915_PERF_IOCTL_DISABLE, 0);
+ 
++		igt_debug("first ts = %u, last ts = %u\n", first_timestamp, last_timestamp);
++
+ 		igt_debug("%f < %zu < %f\n",
+ 			  report_size * n_full_oa_reports * 0.45,
+ 			  n_periodic_reports * report_size,
 -- 
 2.25.1
