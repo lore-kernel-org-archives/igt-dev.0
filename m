@@ -1,22 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.220.28])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DDAF010E799
- for <igt-dev@lists.freedesktop.org>; Fri, 28 Oct 2022 07:31:41 +0000 (UTC)
-Message-ID: <f3341ef6-4634-39e4-9bbc-e49e0aa806ee@suse.de>
-Date: Fri, 28 Oct 2022 09:31:38 +0200
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 055E010E127
+ for <igt-dev@lists.freedesktop.org>; Fri, 28 Oct 2022 08:33:55 +0000 (UTC)
+Date: Fri, 28 Oct 2022 10:33:50 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Message-ID: <Y1uT7n9QZmcsh6E0@kamilkon-desk1>
+References: <20221021131933.3122199-1-vikas.srivastava@intel.com>
 MIME-Version: 1.0
-Content-Language: en-US
-To: maxime@cerno.tech, Daniel Vetter <daniel.vetter@intel.com>,
- David Airlie <airlied@linux.ie>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Petri Latvala <petri.latvala@intel.com>, Arkadiusz Hiler <arek@hiler.eu>
-References: <20221024124323.tfyxcadyd4nz56jz@houat>
-From: Thomas Zimmermann <tzimmermann@suse.de>
-In-Reply-To: <20221024124323.tfyxcadyd4nz56jz@houat>
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature";
- boundary="------------rBN7fG0GKjRtpAPYHg0NYT7y"
-Subject: Re: [igt-dev] Must-Pass Test Suite for KMS drivers
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20221021131933.3122199-1-vikas.srivastava@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t v2] tests/i915/gem_ctx_engines: Avoid
+ SET_CACHING ioctl during fork
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,114 +20,71 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Dom Cobley <dom@raspberrypi.com>, Tim Gover <tim.gover@raspberrypi.com>,
- Martin Roukala <martin.roukala@mupuf.org>, dri-devel@lists.freedesktop.org,
- igt-dev@lists.freedesktop.org, Phil Elwell <phil@raspberrypi.com>
+Cc: Jonathan Cavitt <jonathan.cavitt@intel.com>,
+ Chris Wilson <chris.p.wilson@intel.com>, Fei Yang <fei.yang@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---------------rBN7fG0GKjRtpAPYHg0NYT7y
-Content-Type: multipart/mixed; boundary="------------m24y0gGPKII7VFHotbbJbuF9";
- protected-headers="v1"
-From: Thomas Zimmermann <tzimmermann@suse.de>
-To: maxime@cerno.tech, Daniel Vetter <daniel.vetter@intel.com>,
- David Airlie <airlied@linux.ie>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Petri Latvala <petri.latvala@intel.com>, Arkadiusz Hiler <arek@hiler.eu>
-Cc: Dom Cobley <dom@raspberrypi.com>, Tim Gover <tim.gover@raspberrypi.com>,
- Dave Stevenson <dave.stevenson@raspberrypi.com>,
- Martin Roukala <martin.roukala@mupuf.org>, igt-dev@lists.freedesktop.org,
- dri-devel@lists.freedesktop.org, Phil Elwell <phil@raspberrypi.com>
-Message-ID: <f3341ef6-4634-39e4-9bbc-e49e0aa806ee@suse.de>
-Subject: Re: Must-Pass Test Suite for KMS drivers
-References: <20221024124323.tfyxcadyd4nz56jz@houat>
-In-Reply-To: <20221024124323.tfyxcadyd4nz56jz@houat>
+On 2022-10-21 at 18:49:33 +0530, Vikas Srivastava wrote:
+> From: Jonathan Cavitt <jonathan.cavitt@intel.com>
+> 
+> Some subtests for gem_ctx_engines require the SET_CACHING
+> ioctl to run.  However, the function that calls it is
+> wrapped by an igt_require and thus causes a skip when the
+> ioctl fails.  Unfortunately, MTL currently fails this check
+> with -EOPNOTSUPP.
+> 
+> While the ioctl failing and resulting in a skip wouldn't
+> normally be a problem, the failing call is occasionally
+> made within a forked child process, which causes an error.
+> Fortunately, use of the ioctl can be avoided by using wc
+> instead of cpu for mmapping and domain operations.
+> 
+> v2: Use gem_mmap__device_coherent instead of gem_mmap__wc
+> 
+> Signed-off-by: Jonathan Cavitt <jonathan.cavitt@intel.com>
+> Acked-by: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
+> CC: Fei Yang <fei.yang@intel.com>
+> CC: Chris Wilson <chris.p.wilson@intel.com>
 
---------------m24y0gGPKII7VFHotbbJbuF9
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: base64
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
-SGkgTWF4aW1lDQoNCkFtIDI0LjEwLjIyIHVtIDE0OjQzIHNjaHJpZWIgbWF4aW1lQGNlcm5v
-LnRlY2g6DQo+IEhpLA0KPiANCj4gSSd2ZSBkaXNjdXNzaW5nIHRoZSBpZGVhIGZvciB0aGUg
-cGFzdCB5ZWFyIHRvIGFkZCBhbiBJR1QgdGVzdCBzdWl0ZSB0aGF0DQo+IGFsbCB3ZWxsLWJl
-aGF2ZWQgS01TIGRyaXZlcnMgbXVzdCBwYXNzLg0KPiANCj4gVGhlIG1haW4gaWRlYSBiZWhp
-bmQgaXQgY29tZXMgZnJvbSB2NGwyLWNvbXBsaWFuY2UgYW5kIGNlYy1jb21wbGlhbmNlLA0K
-PiB0aGF0IGFyZSBiZWluZyB1c2VkIHRvIHZhbGlkYXRlIHRoYXQgdGhlIGRyaXZlcnMgYXJl
-IHNhbmUuDQo+IA0KPiBXZSBzaG91bGQgcHJvYmFibHkgc3RhcnQgYnVpbGRpbmcgdXAgdGhl
-IHRlc3QgbGlzdCwgYW5kIGV2ZW50dWFsbHkNCj4gbWFuZGF0ZSB0aGF0IGFsbCB0ZXN0cyBw
-YXNzIGZvciBhbGwgdGhlIG5ldyBLTVMgZHJpdmVycyB3ZSB3b3VsZCBtZXJnZQ0KPiBpbiB0
-aGUga2VybmVsLCBhbmQgYmUgcnVuIGJ5IEtDaSBvciBzaW1pbGFyLg0KPiANCj4gSSBkaWQg
-YSBmaXJzdCBwYXNzIHRvIGNyZWF0ZSBhIGRyYWZ0IG9mIHN1Y2ggYSB0ZXN0LXN1aXRlLCB3
-aGljaCB3b3VsZA0KPiBjb250YWluOg0KPiANCj4gaWd0QGNvcmVfYXV0aEBiYXNpYy1hdXRo
-DQo+IGlndEBjb3JlX2F1dGhAZ2V0Y2xpZW50LW1hc3Rlci1kcm9wDQo+IGlndEBjb3JlX2F1
-dGhAZ2V0Y2xpZW50LXNpbXBsZQ0KPiBpZ3RAY29yZV9hdXRoQG1hbnktbWFnaWNzDQo+IGln
-dEBjb3JlX2dldGNsaWVudA0KPiBpZ3RAY29yZV9nZXRzdGF0cw0KPiBpZ3RAY29yZV9nZXR2
-ZXJzaW9uDQo+IGlndEBjb3JlX2hvdHVucGx1Z0Bob3RyZWJpbmQtbGF0ZWNsb3NlDQo+IGln
-dEBjb3JlX2hvdHVucGx1Z0Bob3R1bmJpbmQtcmViaW5kDQo+IGlndEBjb3JlX2hvdHVucGx1
-Z0B1bmJpbmQtcmViaW5kDQo+IGlndEBjb3JlX3NldG1hc3Rlcg0KPiBpZ3RAY29yZV9zZXRt
-YXN0ZXJfdnNfYXV0aA0KPiBpZ3RAZGV2aWNlX3Jlc2V0QHVuYmluZC1yZXNldC1yZWJpbmQN
-Cj4gaWd0QGRybV9yZWFkDQo+IGlndEBkdW1iX2J1ZmZlcg0KPiBpZ3RAZmJkZXYNCg0KTWF5
-YmUgd2UgbWFrZSB0aGlzIHRlc3Qgb3B0aW9uYWw/IEF0IGxlYXN0IHNwcmQgZGVjaWRlZCB0
-byBub3Qgc3VwcG9ydCANCmZiZGV2IGF0IGFsbC4NCg0KQmVzdCByZWdhcmRzDQpUaG9tYXMN
-Cg0KPiBpZ3RAZmVhdHVyZV9kaXNjb3ZlcnlAZGlzcGxheQ0KPiBpZ3RAa21zXzNkDQo+IGln
-dEBrbXNfYWRkZmJfYmFzaWMNCj4gaWd0QGttc19hc3luY19mbGlwcw0KPiBpZ3RAa21zX2Nv
-bG9yDQo+IGlndEBrbXNfY29uY3VycmVudA0KPiBpZ3RAa21zX2N1cnNvcl9jcmMNCj4gaWd0
-QGttc19jdXJzb3JfZWRnZV93YWxrDQo+IGlndEBrbXNfY3Vyc29yX2xlZ2FjeUBiYXNpYy1i
-dXN5LWZsaXAtYmVmb3JlLWN1cnNvcg0KPiBpZ3RAa21zX2N1cnNvcl9sZWdhY3lAYmFzaWMt
-ZmxpcC1hZnRlci1jdXJzb3INCj4gaWd0QGttc19jdXJzb3JfbGVnYWN5QGJhc2ljLWZsaXAt
-YWZ0ZXItY3Vyc29yDQo+IGlndEBrbXNfZGlzcGxheV9tb2Rlcw0KPiBpZ3RAa21zX2RpdGhl
-cg0KPiBpZ3RAa21zX2RwX2F1eF9kZXYNCj4gaWd0QGttc19mbGlwQGJhc2ljLWZsaXAtdnMt
-ZHBtcw0KPiBpZ3RAa21zX2ZsaXBAYmFzaWMtZmxpcC12cy1tb2Rlc2V0DQo+IGlndEBrbXNf
-ZmxpcEBiYXNpYy1mbGlwLXZzLXdmX3ZibGFuaw0KPiBpZ3RAa21zX2ZsaXBAYmFzaWMtcGxh
-aW4tZmxpcA0KPiBpZ3RAa21zX2ZsaXBfZXZlbnRfbGVha0BiYXNpYw0KPiBpZ3RAa21zX2Zv
-cmNlX2Nvbm5lY3Rvcl9iYXNpY0Bmb3JjZS1jb25uZWN0b3Itc3RhdGUNCj4gaWd0QGttc19m
-b3JjZV9jb25uZWN0b3JfYmFzaWNAZm9yY2UtZWRpZA0KPiBpZ3RAa21zX2ZvcmNlX2Nvbm5l
-Y3Rvcl9iYXNpY0Bmb3JjZS1sb2FkLWRldGVjdA0KPiBpZ3RAa21zX2ZvcmNlX2Nvbm5lY3Rv
-cl9iYXNpY0BwcnVuZS1zdGFsZS1tb2Rlcw0KPiBpZ3RAa21zX2dldGZiDQo+IGlndEBrbXNf
-aGRtaV9pbmplY3QNCj4gaWd0QGttc19oZHINCj4gaWd0QGttc19pbnZhbGlkX21vZGUNCj4g
-aWd0QGttc19sZWFzZQ0KPiBpZ3RAa21zX3BhbmVsX2ZpdHRpbmcNCj4gaWd0QGttc19waXBl
-X2NyY19iYXNpYw0KPiBpZ3RAa21zX3BsYW5lX2FscGhhX2JsZW5kDQo+IGlndEBrbXNfcGxh
-bmUNCj4gaWd0QGttc19wbGFuZV9jdXJzb3INCj4gaWd0QGttc19wbGFuZV9sb3dyZXMNCj4g
-aWd0QGttc19wbGFuZV9tdWx0aXBsZQ0KPiBpZ3RAa21zX3BsYW5lX3NjYWxpbmcNCj4gaWd0
-QGttc19wcm9wX2Jsb2INCj4gaWd0QGttc19wcm9wZXJ0aWVzDQo+IGlndEBrbXNfcm1mYg0K
-PiBpZ3RAa21zX3NjYWxpbmdfbW9kZXMNCj4gaWd0QGttc19zZXF1ZW5jZQ0KPiBpZ3RAa21z
-X3NldG1vZGUNCj4gaWd0QGttc19zeXNmc19lZGlkX3RpbWluZw0KPiBpZ3RAa21zX3R2X2xv
-YWRfZGV0ZWN0DQo+IGlndEBrbXNfdW5pdmVyc2FsX3BsYW5lDQo+IGlndEBrbXNfdmJsYW5r
-DQo+IGlndEBrbXNfdnJyDQo+IGlndEBrbXNfd3JpdGViYWNrDQo+IA0KPiBNb3N0IG9mIHRo
-ZW0gYXJlIHNraXBwZWQgb24gdmM0IHJpZ2h0IG5vdywgYnV0IEkgY291bGQgc2VlIHRoYXQg
-c29tZSBvZg0KPiB0aGVtIGZhaWwgYWxyZWFkeSAoa21zX3JtZmIsIGNvcmVfaG90dW5wbHVn
-KSwgc28gaXQgcHJvdmVzIHRvIGJlIHVzZWZ1bA0KPiBhbHJlYWR5Lg0KPiANCj4gV2hhdCBk
-byB5b3UgdGhpbms/IElzIHRoZXJlIHNvbWUgbW9yZSB0ZXN0cyBuZWVkZWQsIG9yIGRpZCBJ
-IGluY2x1ZGUNCj4gc29tZSB0ZXN0cyB0aGF0IHNob3VsZG4ndCBoYXZlIGJlZW4gdGhlcmU/
-DQo+IA0KPiBUaGFua3MhDQo+IE1heGltZQ0KDQotLSANClRob21hcyBaaW1tZXJtYW5uDQpH
-cmFwaGljcyBEcml2ZXIgRGV2ZWxvcGVyDQpTVVNFIFNvZnR3YXJlIFNvbHV0aW9ucyBHZXJt
-YW55IEdtYkgNCk1heGZlbGRzdHIuIDUsIDkwNDA5IE7DvHJuYmVyZywgR2VybWFueQ0KKEhS
-QiAzNjgwOSwgQUcgTsO8cm5iZXJnKQ0KR2VzY2jDpGZ0c2bDvGhyZXI6IEl2byBUb3Rldg0K
-
-
---------------m24y0gGPKII7VFHotbbJbuF9--
-
---------------rBN7fG0GKjRtpAPYHg0NYT7y
-Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="OpenPGP_signature"
-
------BEGIN PGP SIGNATURE-----
-
-wsF5BAABCAAjFiEExndm/fpuMUdwYFFolh/E3EQov+AFAmNbhVoFAwAAAAAACgkQlh/E3EQov+AB
-SA/8Cwg3z1ondGChup0qD/vHCV8EIOXPXbDNN5lRVoAiBJYinfxUDsyK2+d41WRi1iPP44QSwn7c
-kTZ3dndeAdGj/YFw2vhT0Q/mosHVBjFIx/0ct06G/OykAlmEmiBuL6iS+7YYAPzELolw8dLZExF9
-oyTgSp9VYTuRs1hxgAbMQkX8JGaqwuYqJv5uQityufSLlDm3TpwYmovfrbNAfq+zS5+QYuCLzaMQ
-ySEbq9vssEJhok9UynI45fr6/tAPt6LtIjXw9eJKiaH6je8/gOiLngaebueaKDP4MMyRlfx4wxLl
-DL10HE4vgLxhsn+DRQfVjxAsQtlC+jCcoB+IPHLQxnUjsuwoY/U3pFm5RYr2E2/hei1hDVEiUn4s
-56zdGHrPRLAf3nX+rEhyA6MR6zguh4WP6JtKSFaWlH0nsQgQaC8Mjg8E8jfa27BYWADBVO6zZb34
-TVOc+wkBb3hPaLSPxG4TBtdP7g/gOrRClCmzLcqZgt6QY5QzCfReVpKV1FrNx1lM+0xOaaggwpDl
-zKqQeoqKRbGfTNglthVdsvULXB+SKm7EmrT0aeAFCUbk/Ht8857Qwp8dhH1sAofpST0/oN5ojJT+
-MsjCBKxn3t72RaSY2Z+DptVlGTYa9139ZVU5UtC40RguuxxiB80j1krxCKRJoAzzxJkyJOFMjqlT
-eBk=
-=XAy0
------END PGP SIGNATURE-----
-
---------------rBN7fG0GKjRtpAPYHg0NYT7y--
+> 
+> ---
+>  tests/i915/gem_ctx_engines.c | 11 ++++-------
+>  1 file changed, 4 insertions(+), 7 deletions(-)
+> 
+> diff --git a/tests/i915/gem_ctx_engines.c b/tests/i915/gem_ctx_engines.c
+> index b0646516..e9cc25d6 100644
+> --- a/tests/i915/gem_ctx_engines.c
+> +++ b/tests/i915/gem_ctx_engines.c
+> @@ -492,12 +492,10 @@ static void independent(int i915, const intel_ctx_t *base_ctx,
+>  	}
+>  	param.ctx_id = gem_context_create(i915);
+>  	gem_context_set_param(i915, &param);
+> -
+> -	if (!gem_has_lmem(i915))
+> -		gem_set_caching(i915, results.handle, I915_CACHING_CACHED);
+> -	map = gem_mmap__cpu(i915, results.handle, 0, 4096, PROT_READ);
+> +	
+> +	map = gem_mmap__device_coherent(i915, results.handle, 0, 4096, PROT_READ);
+>  	gem_set_domain(i915, results.handle,
+> -		       I915_GEM_DOMAIN_CPU, I915_GEM_DOMAIN_CPU);
+> +		       I915_GEM_DOMAIN_WC, I915_GEM_DOMAIN_WC);
+>  
+>  	for (int i = 0; i < I915_EXEC_RING_MASK + 1; i++) {
+>  		struct drm_i915_gem_exec_object2 obj[2] = {
+> @@ -515,8 +513,7 @@ static void independent(int i915, const intel_ctx_t *base_ctx,
+>  		uint32_t *cs;
+>  		int j = 0;
+>  
+> -		cs = gem_mmap__cpu(i915, obj[1].handle, 0, 4096, PROT_WRITE);
+> -
+> +		cs = gem_mmap__device_coherent(i915, obj[1].handle, 0, 4096, PROT_WRITE);
+>  		cs[j] = 0x24 << 23 | 1; /* SRM */
+>  		if (has_64bit_reloc)
+>  			cs[j]++;
+> -- 
+> 2.25.1
+> 
