@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C5AD810E8D7
- for <igt-dev@lists.freedesktop.org>; Fri, 28 Oct 2022 19:53:03 +0000 (UTC)
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 172E610E8CF
+ for <igt-dev@lists.freedesktop.org>; Fri, 28 Oct 2022 19:53:05 +0000 (UTC)
 From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Fri, 28 Oct 2022 19:52:37 +0000
-Message-Id: <20221028195258.106453-8-umesh.nerlige.ramappa@intel.com>
+Date: Fri, 28 Oct 2022 19:52:51 +0000
+Message-Id: <20221028195258.106453-22-umesh.nerlige.ramappa@intel.com>
 In-Reply-To: <20221028195258.106453-1-umesh.nerlige.ramappa@intel.com>
 References: <20221028195258.106453-1-umesh.nerlige.ramappa@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v3 07/28] i915/perf: Define OA report types
- and fix oa-formats test
+Subject: [igt-dev] [PATCH i-g-t v3 21/28] tools/i915-perf: make timestamp
+ range easier to compare
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,57 +23,41 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-With newer gen12 platforms, formats used for OAG buffer and
-MI_REPORT_PERF_FORMAT differ slightly. This causes issues when the
-oa-formats test does a sanity check. Run oa-formats for OAG reports
-only.
+From: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
 
-OAR formats must be tested with the gen12-mi-rpc and
-gen12-unprivileged-single-ctx-counters.
+With timestamp bit shifting stuff, aligning values in the console is
+useful to compare them.
 
-v2: Clarify commit message
-
-Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
-Reviewed-by: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
+Signed-off-by: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
+Reviewed-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 ---
- tests/i915/perf.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ tools/i915-perf/i915_perf_reader.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/tests/i915/perf.c b/tests/i915/perf.c
-index 974f3755..741af078 100644
---- a/tests/i915/perf.c
-+++ b/tests/i915/perf.c
-@@ -95,6 +95,13 @@ struct accumulator {
- 	uint64_t deltas[MAX_RAW_OA_COUNTERS];
- };
+diff --git a/tools/i915-perf/i915_perf_reader.c b/tools/i915-perf/i915_perf_reader.c
+index 4a2e3df4..92e43c19 100644
+--- a/tools/i915-perf/i915_perf_reader.c
++++ b/tools/i915-perf/i915_perf_reader.c
+@@ -235,14 +235,17 @@ main(int argc, char *argv[])
+ 		return EXIT_FAILURE;
+ 	}
  
-+enum {
-+	OAG,
-+	OAR,
-+
-+	MAX_OA_TYPE,
-+};
-+
- struct oa_format {
- 	const char *name;
- 	size_t size;
-@@ -108,6 +115,7 @@ struct oa_format {
- 	int n_b;
- 	int c_off;
- 	int n_c;
-+	int oa_type;
- };
+-	fprintf(stdout, "Timestamp correlation CPU range: 0x%016"PRIx64"-0x%016"PRIx64"\n",
++	fprintf(stdout, "Timestamp correlation CPU range:       0x%016"PRIx64"-0x%016"PRIx64"\n",
+ 		reader.correlations[0]->cpu_timestamp,
+ 		reader.correlations[reader.n_correlations - 1]->cpu_timestamp);
+-	fprintf(stdout, "Timestamp correlation GPU range: 0x%016"PRIx64"-0x%016"PRIx64"\n",
++	fprintf(stdout, "Timestamp correlation GPU range (64b): 0x%016"PRIx64"-0x%016"PRIx64"\n",
+ 		reader.correlations[0]->gpu_timestamp,
+ 		reader.correlations[reader.n_correlations - 1]->gpu_timestamp);
++	fprintf(stdout, "Timestamp correlation GPU range (32b): 0x%016"PRIx64"-0x%016"PRIx64"\n",
++		reader.correlations[0]->gpu_timestamp & 0xffffffff,
++		reader.correlations[reader.n_correlations - 1]->gpu_timestamp & 0xffffffff);
  
- static struct oa_format hsw_oa_formats[I915_OA_FORMAT_MAX] = {
-@@ -1483,6 +1491,9 @@ test_oa_formats(void)
- 		if (!format.name) /* sparse, indexed by ID */
- 			continue;
- 
-+		if (format.oa_type != OAG) /* sparse, indexed by ID */
-+			continue;
-+
- 		igt_debug("Checking OA format %s\n", format.name);
- 
- 		open_and_read_2_oa_reports(i,
+-	fprintf(stdout, "OA data timestamp range: 0x%016"PRIx64"-0x%016"PRIx64"\n",
++	fprintf(stdout, "OA data timestamp range:               0x%016"PRIx64"-0x%016"PRIx64"\n",
+ 		intel_perf_read_record_timestamp(reader.perf,
+ 						 reader.metric_set,
+ 						 reader.records[0]),
 -- 
 2.25.1
