@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A2A7510E8F2
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 526D310E8ED
  for <igt-dev@lists.freedesktop.org>; Fri, 28 Oct 2022 19:53:05 +0000 (UTC)
 From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Fri, 28 Oct 2022 19:52:57 +0000
-Message-Id: <20221028195258.106453-28-umesh.nerlige.ramappa@intel.com>
+Date: Fri, 28 Oct 2022 19:52:54 +0000
+Message-Id: <20221028195258.106453-25-umesh.nerlige.ramappa@intel.com>
 In-Reply-To: <20221028195258.106453-1-umesh.nerlige.ramappa@intel.com>
 References: <20221028195258.106453-1-umesh.nerlige.ramappa@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v3 27/28] lib/i915: add new ACM/DG2 format
- in codegen
+Subject: [igt-dev] [PATCH i-g-t v3 24/28] lib/i915/perf: add a raw timestamp
+ utility
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,35 +25,77 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
 
+Helpful to figure out the bitshifting needed in OA timestamp.
+
 Signed-off-by: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
 Reviewed-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 ---
- lib/i915/perf-configs/perf-metricset-codegen.py | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ lib/i915/perf.c                    | 21 +++++++++++++++++++++
+ lib/i915/perf.h                    |  4 ++++
+ tools/i915-perf/i915_perf_reader.c |  7 +++++++
+ 3 files changed, 32 insertions(+)
 
-diff --git a/lib/i915/perf-configs/perf-metricset-codegen.py b/lib/i915/perf-configs/perf-metricset-codegen.py
-index 00528c31..80b01be5 100644
---- a/lib/i915/perf-configs/perf-metricset-codegen.py
-+++ b/lib/i915/perf-configs/perf-metricset-codegen.py
-@@ -126,6 +126,19 @@ def generate_metric_sets(args, gen):
-                 metric_set->c_offset = metric_set->b_offset + 8;
-                 metric_set->perfcnt_offset = metric_set->c_offset + 8;
+diff --git a/lib/i915/perf.c b/lib/i915/perf.c
+index 4c1b75ad..2d309e57 100644
+--- a/lib/i915/perf.c
++++ b/lib/i915/perf.c
+@@ -881,3 +881,24 @@ uint64_t intel_perf_read_record_timestamp(const struct intel_perf *perf,
  
-+            """))
-+        elif gen.chipset.startswith("acm"):
-+            c(textwrap.dedent("""\
-+                metric_set->perf_oa_format = I915_OA_FORMAT_A24u40_A14u32_B8_C8;
+        return ts;
+ }
 +
-+                metric_set->perf_raw_size = 256;
-+                metric_set->gpu_time_offset = 0;
-+                metric_set->gpu_clock_offset = 1;
-+                metric_set->a_offset = 2;
-+                metric_set->b_offset = metric_set->a_offset + 38;
-+                metric_set->c_offset = metric_set->b_offset + 8;
-+                metric_set->perfcnt_offset = metric_set->c_offset + 8;
++uint64_t intel_perf_read_record_timestamp_raw(const struct intel_perf *perf,
++					  const struct intel_perf_metric_set *metric_set,
++					  const struct drm_i915_perf_record_header *record)
++{
++       const uint32_t *report32 = (const uint32_t *)(record + 1);
++       uint64_t ts;
 +
-             """))
-         else:
-             c(textwrap.dedent("""\
++       switch (metric_set->perf_oa_format) {
++       case I915_OA_FORMAT_A24u40_A14u32_B8_C8:
++       case I915_OA_FORMAT_A32u40_A4u32_B8_C8:
++       case I915_OA_FORMAT_A45_B8_C8:
++               ts = report32[1];
++               break;
++
++       default:
++               assert(0);
++       }
++
++       return ts;
++}
+diff --git a/lib/i915/perf.h b/lib/i915/perf.h
+index a0dba342..8a2ef9e7 100644
+--- a/lib/i915/perf.h
++++ b/lib/i915/perf.h
+@@ -344,6 +344,10 @@ uint64_t intel_perf_read_record_timestamp(const struct intel_perf *perf,
+ 					  const struct intel_perf_metric_set *metric_set,
+ 					  const struct drm_i915_perf_record_header *record);
+ 
++uint64_t intel_perf_read_record_timestamp_raw(const struct intel_perf *perf,
++					      const struct intel_perf_metric_set *metric_set,
++					      const struct drm_i915_perf_record_header *record);
++
+ #ifdef __cplusplus
+ };
+ #endif
+diff --git a/tools/i915-perf/i915_perf_reader.c b/tools/i915-perf/i915_perf_reader.c
+index 92e43c19..9be1a9fc 100644
+--- a/tools/i915-perf/i915_perf_reader.c
++++ b/tools/i915-perf/i915_perf_reader.c
+@@ -252,6 +252,13 @@ main(int argc, char *argv[])
+ 		intel_perf_read_record_timestamp(reader.perf,
+ 						 reader.metric_set,
+ 						 reader.records[reader.n_records - 1]));
++	fprintf(stdout, "OA raw data timestamp range:           0x%016"PRIx64"-0x%016"PRIx64"\n",
++		intel_perf_read_record_timestamp_raw(reader.perf,
++						     reader.metric_set,
++						     reader.records[0]),
++		intel_perf_read_record_timestamp_raw(reader.perf,
++						     reader.metric_set,
++						     reader.records[reader.n_records - 1]));
+ 
+ 	if (strcmp(reader.metric_set_uuid, reader.metric_set->hw_config_guid)) {
+ 		fprintf(stdout,
 -- 
 2.25.1
