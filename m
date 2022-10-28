@@ -1,17 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id F41C810E224
- for <igt-dev@lists.freedesktop.org>; Fri, 28 Oct 2022 19:53:03 +0000 (UTC)
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 94EA110E8EA
+ for <igt-dev@lists.freedesktop.org>; Fri, 28 Oct 2022 19:53:04 +0000 (UTC)
 From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Fri, 28 Oct 2022 19:52:36 +0000
-Message-Id: <20221028195258.106453-7-umesh.nerlige.ramappa@intel.com>
+Date: Fri, 28 Oct 2022 19:52:49 +0000
+Message-Id: <20221028195258.106453-20-umesh.nerlige.ramappa@intel.com>
 In-Reply-To: <20221028195258.106453-1-umesh.nerlige.ramappa@intel.com>
 References: <20221028195258.106453-1-umesh.nerlige.ramappa@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v3 06/28] i915/perf: Account for OA sampling
- interval in polling test
+Subject: [igt-dev] [PATCH i-g-t v3 19/28] lib/i915/perf: indentation fix
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,48 +22,28 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-The polling test reads all the reports and then expects EAGAIN on a
-subsequent read since it has consumed all available data. This
-works well for OA sampling periods in the order of 10s of ms. For
-smaller sampling periods like 500 us, we end up reading valid data and
-the test fails. Fix the check to account for the OA sampling period.
+From: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
 
-Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
-Reviewed-by: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
+Signed-off-by: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
+Reviewed-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 ---
- tests/i915/perf.c | 16 ++++++++++++----
- 1 file changed, 12 insertions(+), 4 deletions(-)
+ lib/i915/perf_data_reader.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/tests/i915/perf.c b/tests/i915/perf.c
-index 8d1e3658..974f3755 100644
---- a/tests/i915/perf.c
-+++ b/tests/i915/perf.c
-@@ -2220,14 +2220,22 @@ test_polling(uint64_t requested_oa_period, bool set_kernel_hrtimer, uint64_t ker
- 			n_extra_iterations++;
- 
- 		/* At this point, after consuming pending reports (and hoping
--		 * the scheduler hasn't stopped us for too long we now
--		 * expect EAGAIN on read.
-+		 * the scheduler hasn't stopped us for too long) we now expect
-+		 * EAGAIN on read. While this works most of the times, there are
-+		 * some rare failures when the OA period passed to this test is
-+		 * very small (say 500 us) and that results in some valid
-+		 * reports here. To weed out those rare occurences we assert
-+		 * only if the OA period is >= 40 ms because 40 ms has withstood
-+		 * the test of time on most platforms (ref: subtest: polling).
- 		 */
- 		while ((ret = read(stream_fd, buf, sizeof(buf))) < 0 &&
- 		       errno == EINTR)
- 			;
--		igt_assert_eq(ret, -1);
--		igt_assert_eq(errno, EAGAIN);
-+
-+		if (requested_oa_period >= 40000000) {
-+			igt_assert_eq(ret, -1);
-+			igt_assert_eq(errno, EAGAIN);
-+		}
- 
- 		n++;
- 	}
+diff --git a/lib/i915/perf_data_reader.c b/lib/i915/perf_data_reader.c
+index fcdd5ed1..10e78e63 100644
+--- a/lib/i915/perf_data_reader.c
++++ b/lib/i915/perf_data_reader.c
+@@ -337,8 +337,8 @@ bool
+ intel_perf_data_reader_init(struct intel_perf_data_reader *reader,
+ 			    int perf_file_fd)
+ {
+-        struct stat st;
+-        if (fstat(perf_file_fd, &st) != 0) {
++	struct stat st;
++	if (fstat(perf_file_fd, &st) != 0) {
+ 		snprintf(reader->error_msg, sizeof(reader->error_msg),
+ 			 "Unable to access file (%s)", strerror(errno));
+ 		return false;
 -- 
 2.25.1
