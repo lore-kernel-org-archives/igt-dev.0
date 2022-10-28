@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 274DA10E8CF
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 939BD10E8D6
  for <igt-dev@lists.freedesktop.org>; Fri, 28 Oct 2022 19:53:03 +0000 (UTC)
 From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Fri, 28 Oct 2022 19:52:32 +0000
-Message-Id: <20221028195258.106453-3-umesh.nerlige.ramappa@intel.com>
+Date: Fri, 28 Oct 2022 19:52:34 +0000
+Message-Id: <20221028195258.106453-5-umesh.nerlige.ramappa@intel.com>
 In-Reply-To: <20221028195258.106453-1-umesh.nerlige.ramappa@intel.com>
 References: <20221028195258.106453-1-umesh.nerlige.ramappa@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v3 02/28] i915/perf: Check regularly if we
- are done reading reports
+Subject: [igt-dev] [PATCH i-g-t v3 04/28] i915/perf: Check return value from
+ getparam
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,60 +23,70 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-If we pass a user buffer as large as the OA buffer, the OA unit will
-return all available reports. In the second part of the
-buffer-fill/enable-disable tests, we are collecting all reports within a
-time window, but we only check the time window in the outer while loop.
-We may have read well past that window if OA returns more reports. Fix
-this rare failure by checking for the window within the inner for loop.
+In some cases getparam could fail. Check return from getparam and fail
+early on.
 
 Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 Reviewed-by: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
 ---
- tests/i915/perf.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ lib/i915/perf.c | 28 +++++++++++++++-------------
+ 1 file changed, 15 insertions(+), 13 deletions(-)
 
-diff --git a/tests/i915/perf.c b/tests/i915/perf.c
-index 5502a3fb..51e2dc87 100644
---- a/tests/i915/perf.c
-+++ b/tests/i915/perf.c
-@@ -2522,6 +2522,9 @@ test_buffer_fill(void)
- 						first_timestamp = report[1];
- 					last_timestamp = report[1];
+diff --git a/lib/i915/perf.c b/lib/i915/perf.c
+index 840d77f6..95e33b3c 100644
+--- a/lib/i915/perf.c
++++ b/lib/i915/perf.c
+@@ -389,19 +389,16 @@ intel_perf_for_devinfo(uint32_t device_id,
+ 	return perf;
+ }
  
-+					if (((last_timestamp - first_timestamp) * oa_period) < (fill_duration / 2))
-+						break;
+-static uint32_t
+-getparam(int drm_fd, uint32_t param)
++static int
++getparam(int drm_fd, uint32_t param, uint32_t *val)
+ {
+-        struct drm_i915_getparam gp;
+-        int val = -1;
+-
+-        memset(&gp, 0, sizeof(gp));
+-        gp.param = param;
+-        gp.value = &val;
++	struct drm_i915_getparam gp;
+ 
+-	perf_ioctl(drm_fd, DRM_IOCTL_I915_GETPARAM, &gp);
++	memset(&gp, 0, sizeof(gp));
++	gp.param = param;
++	gp.value = (int *)val;
+ 
+-        return val;
++	return perf_ioctl(drm_fd, DRM_IOCTL_I915_GETPARAM, &gp);
+ }
+ 
+ static bool
+@@ -517,9 +514,9 @@ open_master_sysfs_dir(int drm_fd)
+ struct intel_perf *
+ intel_perf_for_fd(int drm_fd)
+ {
+-	uint32_t device_id = getparam(drm_fd, I915_PARAM_CHIPSET_ID);
+-	uint32_t device_revision = getparam(drm_fd, I915_PARAM_REVISION);
+-	uint32_t timestamp_frequency = getparam(drm_fd, I915_PARAM_CS_TIMESTAMP_FREQUENCY);
++	uint32_t device_id;
++	uint32_t device_revision;
++	uint32_t timestamp_frequency;
+ 	uint64_t gt_min_freq;
+ 	uint64_t gt_max_freq;
+ 	struct drm_i915_query_topology_info *topology;
+@@ -536,6 +533,11 @@ intel_perf_for_fd(int drm_fd)
+ 	}
+ 	close(sysfs_dir_fd);
+ 
++	if (getparam(drm_fd, I915_PARAM_CHIPSET_ID, &device_id) ||
++	    getparam(drm_fd, I915_PARAM_REVISION, &device_revision) ||
++	    getparam(drm_fd, I915_PARAM_CS_TIMESTAMP_FREQUENCY, &timestamp_frequency))
++		return NULL;
 +
- 					if (oa_report_is_periodic(oa_exponent, report)) {
- 						memcpy(last_periodic_report, report,
- 						       sizeof(last_periodic_report));
-@@ -2537,6 +2540,8 @@ test_buffer_fill(void)
- 
- 		do_ioctl(stream_fd, I915_PERF_IOCTL_DISABLE, 0);
- 
-+		igt_debug("first ts = %u, last ts = %u\n", first_timestamp, last_timestamp);
-+
- 		igt_debug("%f < %zu < %f\n",
- 			  report_size * n_full_oa_reports * 0.45,
- 			  n_periodic_reports * report_size,
-@@ -2732,6 +2737,9 @@ test_enable_disable(void)
- 						  oa_report_is_periodic(oa_exponent, report),
- 						  oa_report_get_ctx_id(report));
- 
-+					if (((last_timestamp - first_timestamp) * oa_period) < (fill_duration / 2))
-+						break;
-+
- 					if (oa_report_is_periodic(oa_exponent, report)) {
- 						memcpy(last_periodic_report, report,
- 						       sizeof(last_periodic_report));
-@@ -2755,6 +2763,8 @@ test_enable_disable(void)
- 
- 		do_ioctl(stream_fd, I915_PERF_IOCTL_DISABLE, 0);
- 
-+		igt_debug("first ts = %u, last ts = %u\n", first_timestamp, last_timestamp);
-+
- 		igt_debug("%f < %zu < %f\n",
- 			  report_size * n_full_oa_reports * 0.45,
- 			  n_periodic_reports * report_size,
+ 	topology = query_topology(drm_fd);
+ 	if (!topology)
+ 		return NULL;
 -- 
 2.25.1
