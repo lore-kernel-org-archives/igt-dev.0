@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6C03710E8EF
- for <igt-dev@lists.freedesktop.org>; Fri, 28 Oct 2022 19:53:05 +0000 (UTC)
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 784EC10E8E7
+ for <igt-dev@lists.freedesktop.org>; Fri, 28 Oct 2022 19:53:04 +0000 (UTC)
 From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Fri, 28 Oct 2022 19:52:55 +0000
-Message-Id: <20221028195258.106453-26-umesh.nerlige.ramappa@intel.com>
+Date: Fri, 28 Oct 2022 19:52:45 +0000
+Message-Id: <20221028195258.106453-16-umesh.nerlige.ramappa@intel.com>
 In-Reply-To: <20221028195258.106453-1-umesh.nerlige.ramappa@intel.com>
 References: <20221028195258.106453-1-umesh.nerlige.ramappa@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v3 25/28] lib/i915/perf: add helper function
- to get report reason
+Subject: [igt-dev] [PATCH i-g-t v3 15/28] tools/i915-perf-recorder: add
+ ability to select device
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,104 +25,122 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
 
-Useful to inspect reports.
+We're starting to have system with multiple Intel GPUs.
 
 Signed-off-by: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
 Reviewed-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 ---
- lib/i915/perf.c | 54 +++++++++++++++++++++++++++++++++++++++++++++++++
- lib/i915/perf.h |  3 +++
- lib/meson.build |  2 +-
- 3 files changed, 58 insertions(+), 1 deletion(-)
+ tools/i915-perf/i915_perf_recorder.c | 50 ++++++++++++++++++++++++----
+ 1 file changed, 43 insertions(+), 7 deletions(-)
 
-diff --git a/lib/i915/perf.c b/lib/i915/perf.c
-index 2d309e57..fa291998 100644
---- a/lib/i915/perf.c
-+++ b/lib/i915/perf.c
-@@ -902,3 +902,57 @@ uint64_t intel_perf_read_record_timestamp_raw(const struct intel_perf *perf,
- 
-        return ts;
+diff --git a/tools/i915-perf/i915_perf_recorder.c b/tools/i915-perf/i915_perf_recorder.c
+index 00195290..7ced7b40 100644
+--- a/tools/i915-perf/i915_perf_recorder.c
++++ b/tools/i915-perf/i915_perf_recorder.c
+@@ -250,16 +250,37 @@ find_intel_render_node(void)
+ 	return -1;
  }
-+
-+const char *intel_perf_read_report_reason(const struct intel_perf *perf,
-+					  const struct drm_i915_perf_record_header *record)
+ 
++static void
++print_intel_devices(void)
 +{
-+	const uint32_t *report = (const uint32_t *) (record + 1);
-+
-+	/* Not really documented on Gfx7/7.5*/
-+	if (perf->devinfo.graphics_ver < 8)
-+		return "timer";
-+
-+	/* Gfx8-11 */
-+	if (perf->devinfo.graphics_ver < 12) {
-+		uint32_t reason = report[0] >> 19;
-+		if (reason & (1u << 0))
-+			return "timer";
-+		if (reason & (1u << 1))
-+			return "trigger1";
-+		if (reason & (1u << 2))
-+			return "trigger2";
-+		if (reason & (1u << 3))
-+			return "context-switch";
-+		if (reason & (1u << 4))
-+			return "go-transition";
-+
-+		if (perf->devinfo.graphics_ver >= 9 &&
-+		    reason & (1u << 5))
-+			return "clock-ratio-change";
-+
-+		return "unknown";
++	fprintf(stdout, "Available devices:\n");
++	for (int i = 0; i < 128; i++) {
++		if (read_device_param("card", i, "vendor") == 0x8086) {
++			uint32_t devid = read_device_param("card", i, "device");
++			const struct intel_device_info *devinfo =
++				intel_get_device_info(devid);
++			fprintf(stdout, "   %i: %s (0x%04hx)\n", i,
++				devinfo ? devinfo->codename : "unknwon",
++				devid);
++		}
 +	}
-+
-+	/* Gfx12 */
-+	if (perf->devinfo.graphics_ver <= 12) {
-+		uint32_t reason = report[0] >> 19;
-+		if (reason & (1u << 0))
-+			return "timer";
-+		if (reason & (1u << 1))
-+			return "trigger1";
-+		if (reason & (1u << 2))
-+			return "trigger2";
-+		if (reason & (1u << 3))
-+			return "context-switch";
-+		if (reason & (1u << 4))
-+			return "go-transition";
-+		if (reason & (1u << 5))
-+			return "clock-ratio-change";
-+		if (reason & (1u << 6))
-+			return "mmio-trigger";
-+
-+		return "unknown";
-+	}
-+
-+	return "unknown";
 +}
-diff --git a/lib/i915/perf.h b/lib/i915/perf.h
-index 8a2ef9e7..e6e60dc9 100644
---- a/lib/i915/perf.h
-+++ b/lib/i915/perf.h
-@@ -348,6 +348,9 @@ uint64_t intel_perf_read_record_timestamp_raw(const struct intel_perf *perf,
- 					      const struct intel_perf_metric_set *metric_set,
- 					      const struct drm_i915_perf_record_header *record);
- 
-+const char *intel_perf_read_report_reason(const struct intel_perf *perf,
-+					  const struct drm_i915_perf_record_header *record);
 +
- #ifdef __cplusplus
- };
- #endif
-diff --git a/lib/meson.build b/lib/meson.build
-index 6b5b9e04..4b6d2267 100644
---- a/lib/meson.build
-+++ b/lib/meson.build
-@@ -342,7 +342,7 @@ pkgconf.set('prefix', get_option('prefix'))
- pkgconf.set('exec_prefix', '${prefix}')
- pkgconf.set('libdir', '${prefix}/@0@'.format(get_option('libdir')))
- pkgconf.set('includedir', '${prefix}/@0@'.format(get_option('includedir')))
--pkgconf.set('i915_perf_version', '1.5.0')
-+pkgconf.set('i915_perf_version', '1.5.1')
+ static int
+-open_render_node(uint32_t *devid)
++open_render_node(uint32_t *devid, int card)
+ {
+ 	char *name;
+ 	int ret;
+ 	int fd;
++	int render;
  
- configure_file(
-   input : 'i915-perf.pc.in',
+-	int render = find_intel_render_node();
+-	if (render < 0)
+-		return -1;
++	if (card < 0) {
++		render = find_intel_render_node();
++		if (render < 0)
++			return -1;
++	} else {
++		render = 128 + card;
++	}
+ 
+ 	ret = asprintf(&name, "/dev/dri/renderD%u", render);
+ 	assert(ret != -1);
+@@ -722,6 +743,9 @@ usage(const char *name)
+ 		"Recording tool for i915-perf.\n"
+ 		"\n"
+ 		"     --help,               -h          Print this screen\n"
++		"     --device,             -d <value>  Device to use\n"
++		"                                       (value=list to list devices\n"
++		"                                        value=1 to use /dev/dri/card1)\n"
+ 		"     --correlation-period, -c <value>  Time period of timestamp correlation in seconds\n"
+ 		"                                       (default = 1.0)\n"
+ 		"     --perf-period,        -p <value>  Time period of i915-perf reports in seconds\n"
+@@ -772,6 +796,7 @@ main(int argc, char *argv[])
+ {
+ 	const struct option long_options[] = {
+ 		{"help",                       no_argument, 0, 'h'},
++		{"device",               required_argument, 0, 'd'},
+ 		{"correlation-period",   required_argument, 0, 'c'},
+ 		{"perf-period",          required_argument, 0, 'p'},
+ 		{"metric",               required_argument, 0, 'm'},
+@@ -798,7 +823,7 @@ main(int argc, char *argv[])
+ 	struct timespec now;
+ 	uint64_t corr_period_ns, poll_time_ns;
+ 	uint32_t circular_size = 0;
+-	int opt;
++	int opt, dev_node_id = -1;
+ 	bool list_counters = false;
+ 	FILE *output = NULL;
+ 	struct recording_context ctx = {
+@@ -812,7 +837,7 @@ main(int argc, char *argv[])
+ 		.poll_period = 5 * 1000 * 1000,
+ 	};
+ 
+-	while ((opt = getopt_long(argc, argv, "hc:p:m:Co:s:f:k:P:", long_options, NULL)) != -1) {
++	while ((opt = getopt_long(argc, argv, "hc:d:p:m:Co:s:f:k:P:", long_options, NULL)) != -1) {
+ 		switch (opt) {
+ 		case 'h':
+ 			usage(argv[0]);
+@@ -820,6 +845,12 @@ main(int argc, char *argv[])
+ 		case 'c':
+ 			corr_period = atof(optarg);
+ 			break;
++		case 'd':
++			if (!strcmp(optarg, "list"))
++				dev_node_id = -2;
++			else
++				dev_node_id = atoi(optarg);
++			break;
+ 		case 'p':
+ 			perf_period = atof(optarg);
+ 			break;
+@@ -865,7 +896,12 @@ main(int argc, char *argv[])
+ 		}
+ 	}
+ 
+-	ctx.drm_fd = open_render_node(&ctx.devid);
++	if (dev_node_id == -2) {
++		print_intel_devices();
++		return EXIT_SUCCESS;
++	}
++
++	ctx.drm_fd = open_render_node(&ctx.devid, dev_node_id);
+ 	if (ctx.drm_fd < 0) {
+ 		fprintf(stderr, "Unable to open device.\n");
+ 		return EXIT_FAILURE;
 -- 
 2.25.1
