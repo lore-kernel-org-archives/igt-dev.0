@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 53DA410E8DE
- for <igt-dev@lists.freedesktop.org>; Fri, 28 Oct 2022 19:53:04 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id F41C810E224
+ for <igt-dev@lists.freedesktop.org>; Fri, 28 Oct 2022 19:53:03 +0000 (UTC)
 From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Fri, 28 Oct 2022 19:52:43 +0000
-Message-Id: <20221028195258.106453-14-umesh.nerlige.ramappa@intel.com>
+Date: Fri, 28 Oct 2022 19:52:36 +0000
+Message-Id: <20221028195258.106453-7-umesh.nerlige.ramappa@intel.com>
 In-Reply-To: <20221028195258.106453-1-umesh.nerlige.ramappa@intel.com>
 References: <20221028195258.106453-1-umesh.nerlige.ramappa@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v3 13/28] i915/perf: Fix CS timestamp vs OA
- timstamp mismatch
+Subject: [igt-dev] [PATCH i-g-t v3 06/28] i915/perf: Account for OA sampling
+ interval in polling test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,97 +23,48 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-CS timestamp can have an additional configuration that shifts the
-timestamp value by a specified number of bits. On DG2, this additional
-configuration is ignored by OA, so OA timestamps are missing the shift.
-
-Add newly defined interface to get the exact OA timestamp frequency so
-that the deltas can be accurately calculated.
+The polling test reads all the reports and then expects EAGAIN on a
+subsequent read since it has consumed all available data. This
+works well for OA sampling periods in the order of 10s of ms. For
+smaller sampling periods like 500 us, we end up reading valid data and
+the test fails. Fix the check to account for the OA sampling period.
 
 Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 Reviewed-by: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
 ---
- include/drm-uapi/i915_drm.h |  6 ++++++
- lib/i915/perf.c             |  6 +++++-
- tests/i915/perf.c           | 25 ++++++++++++++++++++++++-
- 3 files changed, 35 insertions(+), 2 deletions(-)
+ tests/i915/perf.c | 16 ++++++++++++----
+ 1 file changed, 12 insertions(+), 4 deletions(-)
 
-diff --git a/include/drm-uapi/i915_drm.h b/include/drm-uapi/i915_drm.h
-index 70700c7d..b71acfba 100644
---- a/include/drm-uapi/i915_drm.h
-+++ b/include/drm-uapi/i915_drm.h
-@@ -749,6 +749,12 @@ typedef struct drm_i915_irq_wait {
- /* Query if the kernel supports the I915_USERPTR_PROBE flag. */
- #define I915_PARAM_HAS_USERPTR_PROBE 56
- 
-+/*
-+ * Frequency of the timestamps in OA reports. This used to be the same as the CS
-+ * timestamp frequency, but differs on some platforms.
-+ */
-+#define I915_PARAM_OA_TIMESTAMP_FREQUENCY 57
-+
- /* Must be kept compact -- no holes and well documented */
- 
- typedef struct drm_i915_getparam {
-diff --git a/lib/i915/perf.c b/lib/i915/perf.c
-index 4f19a005..4d7fe43c 100644
---- a/lib/i915/perf.c
-+++ b/lib/i915/perf.c
-@@ -566,7 +566,11 @@ intel_perf_for_fd(int drm_fd)
- 	close(sysfs_dir_fd);
- 
- 	if (getparam(drm_fd, I915_PARAM_CHIPSET_ID, &device_id) ||
--	    getparam(drm_fd, I915_PARAM_REVISION, &device_revision) ||
-+	    getparam(drm_fd, I915_PARAM_REVISION, &device_revision))
-+		return NULL;
-+
-+	/* if OA_TIMESTAMP_FREQUENCY is not supported, fall back to CS_TIMESTAMP_FREQUENCY */
-+	if (getparam(drm_fd, I915_PARAM_OA_TIMESTAMP_FREQUENCY, &timestamp_frequency) &&
- 	    getparam(drm_fd, I915_PARAM_CS_TIMESTAMP_FREQUENCY, &timestamp_frequency))
- 		return NULL;
- 
 diff --git a/tests/i915/perf.c b/tests/i915/perf.c
-index a49fc198..108255ef 100644
+index 8d1e3658..974f3755 100644
 --- a/tests/i915/perf.c
 +++ b/tests/i915/perf.c
-@@ -442,6 +442,29 @@ gen8_read_report_reason(const uint32_t *report)
- 		return "unknown";
- }
+@@ -2220,14 +2220,22 @@ test_polling(uint64_t requested_oa_period, bool set_kernel_hrtimer, uint64_t ker
+ 			n_extra_iterations++;
  
-+static uint32_t
-+cs_timestamp_frequency(int fd)
-+{
-+	struct drm_i915_getparam gp = {};
-+	static uint32_t value = 0;
+ 		/* At this point, after consuming pending reports (and hoping
+-		 * the scheduler hasn't stopped us for too long we now
+-		 * expect EAGAIN on read.
++		 * the scheduler hasn't stopped us for too long) we now expect
++		 * EAGAIN on read. While this works most of the times, there are
++		 * some rare failures when the OA period passed to this test is
++		 * very small (say 500 us) and that results in some valid
++		 * reports here. To weed out those rare occurences we assert
++		 * only if the OA period is >= 40 ms because 40 ms has withstood
++		 * the test of time on most platforms (ref: subtest: polling).
+ 		 */
+ 		while ((ret = read(stream_fd, buf, sizeof(buf))) < 0 &&
+ 		       errno == EINTR)
+ 			;
+-		igt_assert_eq(ret, -1);
+-		igt_assert_eq(errno, EAGAIN);
 +
-+	if (value)
-+		return value;
-+
-+	gp.param = I915_PARAM_CS_TIMESTAMP_FREQUENCY;
-+	gp.value = (int *)(&value);
-+
-+	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_I915_GETPARAM, &gp), 0);
-+
-+	return value;
-+}
-+
-+static uint64_t
-+cs_timebase_scale(uint32_t u32_delta)
-+{
-+	return ((uint64_t)u32_delta * NSEC_PER_SEC) / cs_timestamp_frequency(drm_fd);
-+}
-+
- static uint64_t
- timebase_scale(uint32_t u32_delta)
- {
-@@ -4142,7 +4165,7 @@ static void gen12_single_ctx_helper(void)
- 	/* Sanity check that we can pass the delta to timebase_scale */
- 	igt_assert(delta_ts64 < UINT32_MAX);
- 	delta_oa32_ns = timebase_scale(delta_oa32);
--	delta_ts64_ns = timebase_scale(delta_ts64);
-+	delta_ts64_ns = cs_timebase_scale(delta_ts64);
++		if (requested_oa_period >= 40000000) {
++			igt_assert_eq(ret, -1);
++			igt_assert_eq(errno, EAGAIN);
++		}
  
- 	igt_debug("oa32 delta = %u, = %uns\n",
- 			delta_oa32, (unsigned)delta_oa32_ns);
+ 		n++;
+ 	}
 -- 
 2.25.1
