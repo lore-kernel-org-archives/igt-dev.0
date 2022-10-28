@@ -1,19 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5E55D10E1CC
- for <igt-dev@lists.freedesktop.org>; Fri, 28 Oct 2022 14:03:46 +0000 (UTC)
-Date: Fri, 28 Oct 2022 15:59:06 +0200
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 60C5B10E84E
+ for <igt-dev@lists.freedesktop.org>; Fri, 28 Oct 2022 14:57:10 +0000 (UTC)
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Message-ID: <Y1vgKu0XDdAaEhKa@kamilkon-desk1>
-References: <20221010145708.1986912-1-petri.latvala@intel.com>
- <20221010145708.1986912-7-petri.latvala@intel.com>
+Date: Fri, 28 Oct 2022 16:57:02 +0200
+Message-Id: <20221028145704.30669-1-kamil.konieczny@linux.intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20221010145708.1986912-7-petri.latvala@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 7/7] runner: Disable socket
- communications for now
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t v2 0/2] lib/igt_device_scan: add filer
+ card=all
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,52 +23,23 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Petri,
+Allow to select all (up to 16) discrete cards with the help of
+card=all or card=*, for example:
 
-On 2022-10-10 at 17:57:08 +0300, Petri Latvala wrote:
-> Currently, having i915 CI systems test the socket communications when
-> testing is impossible. If a test hangs completely, the incomplete set
-> of results are processed into results.json with an older IGT version
-> from a previous post-merge build, which is unable to parse socket
-> communications. Disable them for now.
-> 
-> This commit will get reverted after suitable testing has been possible
-> to execute.
+./gem_basic --device=pci:vendor=intel,device=discrete,card=all
 
-imho this is a little unclear why adding var is acutally disabling
-anything, but maybe it is that current CI do not have it ?
+v2: correct misspelled word at patch 1/2 (Zbigniew)
+  stop filter splat (Petri)
 
-> 
-> Signed-off-by: Petri Latvala <petri.latvala@intel.com>
-> ---
->  runner/executor.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
-> 
-> diff --git a/runner/executor.c b/runner/executor.c
-> index 125f08a2..f6f27d48 100644
-> --- a/runner/executor.c
-> +++ b/runner/executor.c
-> @@ -1657,7 +1657,8 @@ static int execute_next_entry(struct execute_state *state,
->  
->  		sigprocmask(SIG_UNBLOCK, sigmask, NULL);
->  
-> -		if (socketfd >= 0 && !getenv("IGT_RUNNER_DISABLE_SOCKET_COMMUNICATION")) {
-> +		if (socketfd >= 0 && !getenv("IGT_RUNNER_DISABLE_SOCKET_COMMUNICATION") &&
-> +		    getenv("IGT_RUNNER_ENABLE_SOCKET_COMMUNICATION")) {
+Cc: Petri Latvala <petri.latvala@intel.com>
+Cc: "Zbigniew Kempczyński" <zbigniew.kempczynski@intel.com>
 
-what about IGT_RUNNER_ENABLE_SOCKET_COMMUNICATION_REMOVE_ME ? 
-or IGT_RUNNER_ENABLE_SOCKET_COMMUNICATION_REMOVE_FIXME ? 
-Or maybe you plan to keep it here and remove _DISABLE_ one ?
+Kamil Konieczny (2):
+  lib/igt_device_scan: refactor filter adding
+  lib/igt_device_scan: add card=all filter selector
 
-With or without it
-Acked-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+ lib/igt_device_scan.c | 43 +++++++++++++++++++++++++++++++++++++++++--
+ 1 file changed, 41 insertions(+), 2 deletions(-)
 
---
-Kamil
-
->  			snprintf(envstring, sizeof(envstring), "%d", socketfd);
->  			setenv("IGT_RUNNER_SOCKET_FD", envstring, 1);
->  		}
-> -- 
-> 2.30.2
-> 
+-- 
+2.34.1
