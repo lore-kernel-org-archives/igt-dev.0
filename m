@@ -1,19 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A004710E172
- for <igt-dev@lists.freedesktop.org>; Fri, 28 Oct 2022 13:49:51 +0000 (UTC)
-Date: Fri, 28 Oct 2022 15:49:49 +0200
+Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2BFA410E172
+ for <igt-dev@lists.freedesktop.org>; Fri, 28 Oct 2022 13:51:27 +0000 (UTC)
+Date: Fri, 28 Oct 2022 15:51:24 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Message-ID: <Y1vd/S2yz6gnEQXA@kamilkon-desk1>
+Message-ID: <Y1veXEBaGuKimUlV@kamilkon-desk1>
 References: <20221010145708.1986912-1-petri.latvala@intel.com>
- <20221010145708.1986912-4-petri.latvala@intel.com>
+ <20221010145708.1986912-5-petri.latvala@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20221010145708.1986912-4-petri.latvala@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 4/7] runner/runner_tests: Add tests for
- socket communications
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20221010145708.1986912-5-petri.latvala@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 5/7] lib/tests: Add unit tests for
+ socket communication packet creation
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,257 +29,300 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 Hi Petri,
 
-On 2022-10-10 at 17:57:05 +0300, Petri Latvala wrote:
-
-imho at least one line of comment here but it's your choice.
+imho a comment here would be nice, your choice.
 
 Acked-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
+On 2022-10-10 at 17:57:06 +0300, Petri Latvala wrote:
 > Signed-off-by: Petri Latvala <petri.latvala@intel.com>
 > Cc: Arkadiusz Hiler <arek@hiler.eu>
 > ---
->  runner/runner_tests.c | 186 ++++++++++++++++++++++++++++++++++++++++++
->  1 file changed, 186 insertions(+)
+>  lib/tests/igt_runnercomms_packets.c | 263 ++++++++++++++++++++++++++++
+>  lib/tests/meson.build               |   1 +
+>  2 files changed, 264 insertions(+)
+>  create mode 100644 lib/tests/igt_runnercomms_packets.c
 > 
-> diff --git a/runner/runner_tests.c b/runner/runner_tests.c
-> index db0ce2ac..a7e968f8 100644
-> --- a/runner/runner_tests.c
-> +++ b/runner/runner_tests.c
-> @@ -7,6 +7,7 @@
->  #include <json.h>
->  
->  #include "igt.h"
+> diff --git a/lib/tests/igt_runnercomms_packets.c b/lib/tests/igt_runnercomms_packets.c
+> new file mode 100644
+> index 00000000..167ad8e6
+> --- /dev/null
+> +++ b/lib/tests/igt_runnercomms_packets.c
+> @@ -0,0 +1,263 @@
+> +/* SPDX-License-Identifier: MIT */
+> +/*
+> + * Copyright © 2022 Intel Corporation
+> + */
+> +
 > +#include "runnercomms.h"
->  
->  #include "settings.h"
->  #include "job_list.h"
-> @@ -239,6 +240,16 @@ static void assert_execution_results_exist(int dirfd)
->  	assert_execution_created(dirfd, "dmesg.txt");
->  }
->  
-> +static void write_packet_with_canary(int fd, struct runnerpacket *packet)
+> +
+> +#include "igt_core.h"
+> +
+> +static void igt_assert_eqstr(const char *one, const char *two)
 > +{
-> +	uint32_t canary = socket_dump_canary();
+> +	if (one == NULL && two == NULL)
+> +		return;
 > +
-> +	write(fd, &canary, sizeof(canary));
-> +	write(fd, packet, packet->size);
+> +	igt_assert_f(one != NULL && two != NULL, "Strings differ (one is NULL): %s vs %s\n", one, two);
 > +
-> +	free(packet);
+> +	igt_assert_f(!strcmp(one, two), "Strings differ: '%s' vs '%s'\n", one, two);
 > +}
 > +
->  igt_main
->  {
->  	struct settings *settings = malloc(sizeof(*settings));
-> @@ -1226,6 +1237,62 @@ igt_main
->  		}
->  	}
->  
-> +	igt_subtest_group {
-> +		char dirname[] = "tmpdirXXXXXX";
-> +		struct job_list *list = malloc(sizeof(*list));
-> +		volatile int dirfd = -1, subdirfd = -1, fd = -1;
 > +
-> +		igt_fixture {
-> +			init_job_list(list);
-> +			igt_require(mkdtemp(dirname) != NULL);
-> +		}
+> +static const uint8_t num8 = 5;
+> +static const int32_t num32 = -67;
+> +static const char *text1 = "Text one";
+> +static const char *text2 = "Text two";
+> +static const char *text3 = "Text three";
+> +static const char *text4 = "Text four";
 > +
-> +		igt_subtest("execute-initialize-subtest-started-comms") {
-> +			struct execute_state state;
-> +			const char *argv[] = { "runner",
-> +					       "--allow-non-root",
-> +					       "--multiple-mode",
-> +					       "-t", "successtest",
-> +					       testdatadir,
-> +					       dirname,
-> +			};
-> +			const char excludestring[] = "!first-subtest";
+> +static struct runnerpacket *create_log(void)
+> +{
+> +	return runnerpacket_log(num8, text1);
+> +}
 > +
-> +			igt_assert(parse_options(ARRAY_SIZE(argv), (char**)argv, settings));
-> +			igt_assert(create_job_list(list, settings));
-> +			igt_assert(list->size == 1);
-> +			igt_assert(list->entries[0].subtest_count == 0);
+> +static void validate_log(struct runnerpacket *packet)
+> +{
+> +	runnerpacket_read_helper helper;
 > +
-> +			igt_assert(serialize_settings(settings));
-> +			igt_assert(serialize_job_list(list, settings));
+> +	helper = read_runnerpacket(packet);
 > +
-> +			igt_assert((dirfd = open(dirname, O_DIRECTORY | O_RDONLY)) >= 0);
-> +			igt_assert(mkdirat(dirfd, "0", 0770) == 0);
-> +			igt_assert((subdirfd = openat(dirfd, "0", O_DIRECTORY | O_RDONLY)) >= 0);
-> +			igt_assert((fd = openat(subdirfd, "comms", O_CREAT | O_WRONLY | O_EXCL, 0660)) >= 0);
-> +			write_packet_with_canary(fd, runnerpacket_subtest_start("first-subtest"));
+> +	igt_assert_eq(packet->type, PACKETTYPE_LOG);
+> +	igt_assert_eq(helper.type, PACKETTYPE_LOG);
 > +
-> +			free_job_list(list);
-> +			clear_settings(settings);
-> +			igt_assert(initialize_execute_state_from_resume(dirfd, &state, settings, list));
+> +	igt_assert_eq(helper.log.stream, num8);
+> +	igt_assert_eqstr(helper.log.text, text1);
+> +}
 > +
-> +			igt_assert_eq(state.next, 0);
-> +			igt_assert_eq(list->size, 1);
-> +			igt_assert_eq(list->entries[0].subtest_count, 2);
-> +			igt_assert_eqstr(list->entries[0].subtests[0], "*");
-> +			igt_assert_eqstr(list->entries[0].subtests[1], excludestring);
-> +		}
+> +static struct runnerpacket *create_exec(void)
+> +{
+> +	char *argv[] = { strdup(text1), strdup(text2), strdup(text3), strdup(text4), NULL };
+> +	struct runnerpacket *packet;
 > +
-> +		igt_fixture {
-> +			close(fd);
-> +			close(subdirfd);
-> +			close(dirfd);
-> +			clear_directory(dirname);
-> +			free_job_list(list);
-> +			free(list);
+> +	packet = runnerpacket_exec(argv);
+> +
+> +	free(argv[0]);
+> +	free(argv[1]);
+> +	free(argv[2]);
+> +	free(argv[3]);
+> +
+> +	return packet;
+> +}
+> +
+> +static void validate_exec(struct runnerpacket *packet)
+> +{
+> +	runnerpacket_read_helper helper;
+> +	char cmpstr[256];
+> +
+> +	helper = read_runnerpacket(packet);
+> +
+> +	igt_assert_eq(packet->type, PACKETTYPE_EXEC);
+> +	igt_assert_eq(helper.type, PACKETTYPE_EXEC);
+> +
+> +	snprintf(cmpstr, sizeof(cmpstr), "%s %s %s %s", text1, text2, text3, text4);
+> +	igt_assert_eqstr(helper.exec.cmdline, cmpstr);
+> +}
+> +
+> +static struct runnerpacket *create_exit(void)
+> +{
+> +	return runnerpacket_exit(num32, text1);
+> +}
+> +
+> +static void validate_exit(struct runnerpacket *packet)
+> +{
+> +	runnerpacket_read_helper helper;
+> +
+> +	helper = read_runnerpacket(packet);
+> +
+> +	igt_assert_eq(packet->type, PACKETTYPE_EXIT);
+> +	igt_assert_eq(helper.type, PACKETTYPE_EXIT);
+> +
+> +	igt_assert_eq(helper.exit.exitcode, num32);
+> +	igt_assert_eqstr(helper.exit.timeused, text1);
+> +}
+> +
+> +static struct runnerpacket *create_subtest_start(void)
+> +{
+> +	return runnerpacket_subtest_start(text1);
+> +}
+> +
+> +static void validate_subtest_start(struct runnerpacket *packet)
+> +{
+> +	runnerpacket_read_helper helper;
+> +
+> +	helper = read_runnerpacket(packet);
+> +
+> +	igt_assert_eq(packet->type, PACKETTYPE_SUBTEST_START);
+> +	igt_assert_eq(helper.type, PACKETTYPE_SUBTEST_START);
+> +
+> +	igt_assert_eqstr(helper.subteststart.name, text1);
+> +}
+> +
+> +static struct runnerpacket *create_subtest_result(void)
+> +{
+> +	return runnerpacket_subtest_result(text1, text2, text3, text4);
+> +}
+> +
+> +static void validate_subtest_result(struct runnerpacket *packet)
+> +{
+> +	runnerpacket_read_helper helper;
+> +
+> +	helper = read_runnerpacket(packet);
+> +
+> +	igt_assert_eq(packet->type, PACKETTYPE_SUBTEST_RESULT);
+> +	igt_assert_eq(helper.type, PACKETTYPE_SUBTEST_RESULT);
+> +
+> +	igt_assert_eqstr(helper.subtestresult.name, text1);
+> +	igt_assert_eqstr(helper.subtestresult.result, text2);
+> +	igt_assert_eqstr(helper.subtestresult.timeused, text3);
+> +	igt_assert_eqstr(helper.subtestresult.reason, text4);
+> +}
+> +
+> +static struct runnerpacket *create_dynamic_subtest_start(void)
+> +{
+> +	return runnerpacket_dynamic_subtest_start(text1);
+> +}
+> +
+> +static void validate_dynamic_subtest_start(struct runnerpacket *packet)
+> +{
+> +	runnerpacket_read_helper helper;
+> +
+> +	helper = read_runnerpacket(packet);
+> +
+> +	igt_assert_eq(packet->type, PACKETTYPE_DYNAMIC_SUBTEST_START);
+> +	igt_assert_eq(helper.type, PACKETTYPE_DYNAMIC_SUBTEST_START);
+> +
+> +	igt_assert_eqstr(helper.dynamicsubteststart.name, text1);
+> +}
+> +
+> +static struct runnerpacket *create_dynamic_subtest_result(void)
+> +{
+> +	return runnerpacket_dynamic_subtest_result(text1, text2, text3, text4);
+> +}
+> +
+> +static void validate_dynamic_subtest_result(struct runnerpacket *packet)
+> +{
+> +	runnerpacket_read_helper helper;
+> +
+> +	helper = read_runnerpacket(packet);
+> +
+> +	igt_assert_eq(packet->type, PACKETTYPE_DYNAMIC_SUBTEST_RESULT);
+> +	igt_assert_eq(helper.type, PACKETTYPE_DYNAMIC_SUBTEST_RESULT);
+> +
+> +	igt_assert_eqstr(helper.dynamicsubtestresult.name, text1);
+> +	igt_assert_eqstr(helper.dynamicsubtestresult.result, text2);
+> +	igt_assert_eqstr(helper.dynamicsubtestresult.timeused, text3);
+> +	igt_assert_eqstr(helper.dynamicsubtestresult.reason, text4);
+> +}
+> +
+> +static struct runnerpacket *create_versionstring(void)
+> +{
+> +	return runnerpacket_versionstring(text1);
+> +}
+> +
+> +static void validate_versionstring(struct runnerpacket *packet)
+> +{
+> +	runnerpacket_read_helper helper;
+> +
+> +	helper = read_runnerpacket(packet);
+> +
+> +	igt_assert_eq(packet->type, PACKETTYPE_VERSIONSTRING);
+> +	igt_assert_eq(helper.type, PACKETTYPE_VERSIONSTRING);
+> +
+> +	igt_assert_eqstr(helper.versionstring.text, text1);
+> +}
+> +
+> +static struct runnerpacket *create_result_override(void)
+> +{
+> +	return runnerpacket_resultoverride(text1);
+> +}
+> +
+> +static void validate_result_override(struct runnerpacket *packet)
+> +{
+> +	runnerpacket_read_helper helper;
+> +
+> +	helper = read_runnerpacket(packet);
+> +
+> +	igt_assert_eq(packet->type, PACKETTYPE_RESULT_OVERRIDE);
+> +	igt_assert_eq(helper.type, PACKETTYPE_RESULT_OVERRIDE);
+> +
+> +	igt_assert_eqstr(helper.resultoverride.result, text1);
+> +}
+> +
+> +struct {
+> +	struct runnerpacket * (*create)(void);
+> +	void (*validate)(struct runnerpacket *packet);
+> +} basic_creation[] = {
+> +		      { create_log, validate_log },
+> +		      { create_exec, validate_exec },
+> +		      { create_exit, validate_exit },
+> +		      { create_subtest_start, validate_subtest_start },
+> +		      { create_subtest_result, validate_subtest_result },
+> +		      { create_dynamic_subtest_start, validate_dynamic_subtest_start },
+> +		      { create_dynamic_subtest_result, validate_dynamic_subtest_result },
+> +		      { create_versionstring, validate_versionstring },
+> +		      { create_result_override, validate_result_override },
+> +		      { NULL, NULL }
+> +};
+> +
+> +igt_main
+> +{
+> +	igt_subtest("create-and-parse-normal") {
+> +		for (typeof (*basic_creation) *t = basic_creation; t->create; t++) {
+> +			struct runnerpacket *packet;
+> +
+> +			packet = t->create();
+> +			igt_assert(packet != NULL);
+> +			igt_assert(packet->type != PACKETTYPE_INVALID);
+> +			t->validate(packet);
 > +		}
 > +	}
 > +
->  	igt_subtest_group {
->  		char dirname[] = "tmpdirXXXXXX";
->  		struct job_list *list = malloc(sizeof(*list));
-> @@ -1282,6 +1349,62 @@ igt_main
->  		}
->  	}
->  
-> +	igt_subtest_group {
-> +		char dirname[] = "tmpdirXXXXXX";
-> +		struct job_list *list = malloc(sizeof(*list));
-> +		volatile int dirfd = -1, subdirfd = -1, fd = -1;
+> +	igt_subtest("packet-too-short") {
+> +		struct runnerpacket *packet;
+> +		runnerpacket_read_helper helper;
 > +
-> +		igt_fixture {
-> +			init_job_list(list);
-> +			igt_require(mkdtemp(dirname) != NULL);
-> +		}
+> +		packet = runnerpacket_log(1, "Hello");
+> +		igt_assert(packet != NULL);
+> +		igt_assert_eq(packet->type, PACKETTYPE_LOG);
 > +
-> +		igt_subtest("execute-initialize-all-subtests-started-comms") {
-> +			struct execute_state state;
-> +			const char *argv[] = { "runner",
-> +					       "--allow-non-root",
-> +					       "--multiple-mode",
-> +					       "-t", "successtest@first-subtest",
-> +					       "-t", "successtest@second-subtest",
-> +					       testdatadir,
-> +					       dirname,
-> +			};
+> +		packet->size = 4; /* not even sizeof(*packet) */
+> +		helper = read_runnerpacket(packet);
+> +		igt_assert_eq(helper.type, PACKETTYPE_INVALID);
 > +
-> +			igt_assert(parse_options(ARRAY_SIZE(argv), (char**)argv, settings));
-> +			igt_assert(create_job_list(list, settings));
-> +			igt_assert(list->size == 1);
-> +			igt_assert(list->entries[0].subtest_count == 2);
-> +
-> +			igt_assert(serialize_settings(settings));
-> +			igt_assert(serialize_job_list(list, settings));
-> +
-> +			igt_assert((dirfd = open(dirname, O_DIRECTORY | O_RDONLY)) >= 0);
-> +			igt_assert(mkdirat(dirfd, "0", 0770) == 0);
-> +			igt_assert((subdirfd = openat(dirfd, "0", O_DIRECTORY | O_RDONLY)) >= 0);
-> +			igt_assert((fd = openat(subdirfd, "comms", O_CREAT | O_WRONLY | O_EXCL, 0660)) >= 0);
-> +			write_packet_with_canary(fd, runnerpacket_subtest_start("first-subtest"));
-> +			write_packet_with_canary(fd, runnerpacket_subtest_start("second-subtest"));
-> +
-> +			free_job_list(list);
-> +			clear_settings(settings);
-> +			igt_assert(initialize_execute_state_from_resume(dirfd, &state, settings, list));
-> +
-> +			/* All subtests are in journal, the entry should be considered completed */
-> +			igt_assert_eq(state.next, 1);
-> +			igt_assert_eq(list->size, 1);
-> +			igt_assert_eq(list->entries[0].subtest_count, 4);
-> +		}
-> +
-> +		igt_fixture {
-> +			close(fd);
-> +			close(subdirfd);
-> +			close(dirfd);
-> +			clear_directory(dirname);
-> +			free_job_list(list);
-> +			free(list);
-> +		}
+> +		free(packet);
 > +	}
 > +
->  	igt_subtest_group {
->  		char dirname[] = "tmpdirXXXXXX";
->  		struct job_list *list = malloc(sizeof(*list));
-> @@ -1341,6 +1464,66 @@ igt_main
->  		}
->  	}
->  
-> +	igt_subtest_group {
-> +		char dirname[] = "tmpdirXXXXXX";
-> +		struct job_list *list = malloc(sizeof(*list));
-> +		volatile int dirfd = -1, subdirfd = -1, fd = -1;
+> +	igt_subtest("nul-termination-missing") {
+> +		/* Parsing should reject the packet when nul-termination is missing */
+> +		struct runnerpacket *packet;
+> +		runnerpacket_read_helper helper;
 > +
-> +		igt_fixture {
-> +			init_job_list(list);
-> +			igt_require(mkdtemp(dirname) != NULL);
-> +		}
+> +		uint8_t num = 1;
+> +		const char *text = "This is text";
+> +		packet = runnerpacket_log(num, text);
+> +		igt_assert(packet != NULL);
+> +		igt_assert_eq(packet->type, PACKETTYPE_LOG);
 > +
-> +		igt_subtest("execute-initialize-subtests-complete-comms") {
-> +			struct execute_state state;
-> +			const char *argv[] = { "runner",
-> +					       "--allow-non-root",
-> +					       "--multiple-mode",
-> +					       testdatadir,
-> +					       dirname,
-> +			};
+> +		/* make the packet too short to include the nul-termination in the string */
+> +		packet->size -= 2;
+> +		helper = read_runnerpacket(packet);
+> +		igt_assert_eq(helper.type, PACKETTYPE_INVALID);
 > +
-> +			igt_assert(parse_options(ARRAY_SIZE(argv), (char**)argv, settings));
-> +			igt_assert(create_job_list(list, settings));
-> +			igt_assert(list->size == NUM_TESTDATA_BINARIES);
-> +
-> +			if (!strcmp(list->entries[0].binary, "no-subtests")) {
-> +				struct job_list_entry tmp = list->entries[0];
-> +				list->entries[0] = list->entries[1];
-> +				list->entries[1] = tmp;
-> +			}
-> +
-> +			igt_assert(list->entries[0].subtest_count == 0);
-> +
-> +			igt_assert(serialize_settings(settings));
-> +			igt_assert(serialize_job_list(list, settings));
-> +
-> +			igt_assert_lte(0, dirfd = open(dirname, O_DIRECTORY | O_RDONLY));
-> +			igt_assert_eq(mkdirat(dirfd, "0", 0770), 0);
-> +			igt_assert((subdirfd = openat(dirfd, "0", O_DIRECTORY | O_RDONLY)) >= 0);
-> +			igt_assert((fd = openat(subdirfd, "comms", O_CREAT | O_WRONLY | O_EXCL, 0660)) >= 0);
-> +			write_packet_with_canary(fd, runnerpacket_subtest_start("first-subtest"));
-> +			write_packet_with_canary(fd, runnerpacket_subtest_start("second-subtest"));
-> +			write_packet_with_canary(fd, runnerpacket_exit(0, "0.000s"));
-> +
-> +			free_job_list(list);
-> +			clear_settings(settings);
-> +			igt_assert(initialize_execute_state_from_resume(dirfd, &state, settings, list));
-> +
-> +			igt_assert_eq(state.next, 1);
-> +			igt_assert_eq(list->size, NUM_TESTDATA_BINARIES);
-> +		}
-> +
-> +		igt_fixture {
-> +			close(fd);
-> +			close(subdirfd);
-> +			close(dirfd);
-> +			clear_directory(dirname);
-> +			free_job_list(list);
-> +			free(list);
-> +		}
+> +		free(packet);
 > +	}
-> +
->  	igt_subtest_group {
->  		struct job_list *list = malloc(sizeof(*list));
->  		volatile int dirfd = -1, subdirfd = -1, fd = -1;
-> @@ -1490,6 +1673,8 @@ igt_main
->  			char dirname[] = "tmpdirXXXXXX";
->  
->  			igt_fixture {
-> +				/* This test checks that the stdout parsing for result without time data works, so use that */
-> +				setenv("IGT_RUNNER_DISABLE_SOCKET_COMMUNICATION", "1", 1);
->  				igt_require(mkdtemp(dirname) != NULL);
->  				rmdir(dirname);
->  			}
-> @@ -1554,6 +1739,7 @@ igt_main
->  				close(dirfd);
->  				clear_directory(dirname);
->  				free_job_list(list);
-> +				unsetenv("IGT_RUNNER_DISABLE_SOCKET_COMMUNICATION");
->  			}
->  		}
->  
+> +}
+> diff --git a/lib/tests/meson.build b/lib/tests/meson.build
+> index d5666c24..7a52a787 100644
+> --- a/lib/tests/meson.build
+> +++ b/lib/tests/meson.build
+> @@ -14,6 +14,7 @@ lib_tests = [
+>  	'igt_invalid_subtest_name',
+>  	'igt_nesting',
+>  	'igt_no_exit',
+> +	'igt_runnercomms_packets',
+>  	'igt_segfault',
+>  	'igt_simulation',
+>  	'igt_stats',
 > -- 
 > 2.30.2
 > 
