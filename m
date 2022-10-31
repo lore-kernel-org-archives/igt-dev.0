@@ -1,16 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============8484525533109237969=="
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2F81110E177
+ for <igt-dev@lists.freedesktop.org>; Mon, 31 Oct 2022 21:30:36 +0000 (UTC)
+Date: Mon, 31 Oct 2022 14:30:29 -0700
+From: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
+To: Matthew Auld <matthew.auld@intel.com>
+Message-ID: <Y2A+dU1yd3ZY7V0+@nvishwa1-DESK>
+References: <20221025065941.13397-1-niranjana.vishwanathapura@intel.com>
+ <20221025065941.13397-10-niranjana.vishwanathapura@intel.com>
+ <dda61893-16c9-a553-4b45-41d0bcfad47f@intel.com>
+Content-Type: text/plain; charset="us-ascii"; format=flowed
+Content-Disposition: inline
+In-Reply-To: <dda61893-16c9-a553-4b45-41d0bcfad47f@intel.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Rodrigo Vivi" <rodrigo.vivi@intel.com>
-Date: Mon, 31 Oct 2022 20:40:57 -0000
-Message-ID: <166724885736.2015.10222538597273400919@emeril.freedesktop.org>
-References: <20221031195859.127493-1-rodrigo.vivi@intel.com>
-In-Reply-To: <20221031195859.127493-1-rodrigo.vivi@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3Igc2VyaWVz?=
- =?utf-8?q?_starting_with_=5Bi-g-t=2C1/2=5D_tools/intel=5Fpm=5Frpm=3A_Remo?=
- =?utf-8?q?ve_unused_devid=2E?=
+Subject: Re: [igt-dev] [PATCH i-g-t v5 09/12] tests/i915/vm_bind: Add
+ userptr subtest
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,289 +22,139 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
+Cc: tvrtko.ursulin@intel.com, igt-dev@lists.freedesktop.org,
+ thomas.hellstrom@intel.com, daniel.vetter@intel.com, petri.latvala@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============8484525533109237969==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+On Mon, Oct 31, 2022 at 03:46:10PM +0000, Matthew Auld wrote:
+>On 25/10/2022 07:59, Niranjana Vishwanathapura wrote:
+>>Add userptr object type to vm_bind_basic test.
+>>
+>>v2: Run all tests for userptr type
+>>v3: Change info to debug messages, remove igt_collection usage
+>>
+>>Signed-off-by: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
+>
+>>---
+>>  tests/i915/i915_vm_bind_basic.c | 55 +++++++++++++++++++++++++++++----
+>>  1 file changed, 49 insertions(+), 6 deletions(-)
+>>
+>>diff --git a/tests/i915/i915_vm_bind_basic.c b/tests/i915/i915_vm_bind_basic.c
+>>index e794f0a845..f9cbb198e6 100644
+>>--- a/tests/i915/i915_vm_bind_basic.c
+>>+++ b/tests/i915/i915_vm_bind_basic.c
+>>@@ -235,16 +235,24 @@ static uint32_t create_obj(int fd, struct gem_memory_region *mr, uint32_t size,
+>>  {
+>>  	uint32_t handle;
+>>-	handle = gem_create_in_memory_region_list(fd, size, 0, &mr->ci, 1);
+>>-	*addr = gem_mmap__cpu(fd, handle, 0, size, PROT_WRITE);
+>>+	if (!mr) {
+>>+		igt_assert(posix_memalign(addr, SZ_2M * MAX_CTXTS, size) == 0);
+>>+		gem_userptr(fd, *addr, size, 0, 0, &handle);
+>>+	} else {
+>>+		handle = gem_create_in_memory_region_list(fd, size, 0, &mr->ci, 1);
+>>+		*addr = gem_mmap__cpu(fd, handle, 0, size, PROT_WRITE);
+>>+	}
+>>  	return handle;
+>>  }
+>>-static void destroy_obj(int fd, uint32_t handle, uint32_t size, void *addr)
+>>+static void destroy_obj(int fd, uint32_t handle, uint32_t size, void *addr, bool is_userptr)
+>>  {
+>>  	igt_assert(gem_munmap(addr, size) == 0);
+>>  	gem_close(fd, handle);
+>>+
+>>+	if (is_userptr)
+>>+		free(addr);
+>>  }
+>>  static void create_src_objs(int fd, struct gem_memory_region *mr, uint32_t src[],
+>>@@ -255,6 +263,14 @@ static void create_src_objs(int fd, struct gem_memory_region *mr, uint32_t src[]
+>>  	if (!num_cmds)
+>>  		return;
+>>+	if (!mr) {
+>>+		for (i = 0; i < num_cmds; i++) {
+>>+			src[i] = create_obj(fd, NULL, size, &src_addr[i]);
+>>+			igt_debug("Src (userptr) obj 0x%x created\n", src[i]);
+>>+		}
+>>+		return;
+>>+	}
+>>+
+>>  	/* Create first src object always in memory region 'mr' */
+>>  	src[i] = create_obj(fd, mr, size, &src_addr[i]);
+>>  	igt_debug("Src (%s) obj 0x%x created\n", mr->name, src[i]);
+>>@@ -293,7 +309,7 @@ static void destroy_src_objs(int fd, struct gem_memory_region *mr, uint32_t src[
+>>  	for (i = 0; i < num_cmds; i++) {
+>>  		igt_debug("Closing src object 0x%x\n", src[i]);
+>>-		destroy_obj(fd, src[i], size, src_addr[i]);
+>>+		destroy_obj(fd, src[i], size, src_addr[i], !mr);
+>>  	}
+>>  }
+>>@@ -301,7 +317,7 @@ static uint32_t create_dst_obj(int fd, struct gem_memory_region *mr, uint32_t si
+>>  {
+>>  	uint32_t dst = create_obj(fd, mr, size, dst_addr);
+>>-	igt_debug("Dst (%s) obj 0x%x created\n", mr->name, dst);
+>>+	igt_debug("Dst (%s) obj 0x%x created\n", mr ? mr->name : "userptr", dst);
+>>  	return dst;
+>>  }
+>>@@ -309,7 +325,7 @@ static void destroy_dst_obj(int fd, struct gem_memory_region *mr, uint32_t dst,
+>>  			    uint32_t size, void *dst_addr)
+>>  {
+>>  	igt_debug("Closing dst object 0x%x\n", dst);
+>>-	destroy_obj(fd, dst, size, dst_addr);
+>>+	destroy_obj(fd, dst, size, dst_addr, !mr);
+>>  }
+>>  static void pattern_fill_buf(void *src_addr[], uint32_t size, uint32_t num_cmds, uint32_t npages)
+>>@@ -499,6 +515,25 @@ static void run_test(int fd, const intel_ctx_t *base_ctx, struct test_cfg *cfg,
+>>  		gem_vm_destroy(fd, shared_vm_id);
+>>  }
+>>+static int has_userptr(int fd)
+>>+{
+>>+	uint32_t handle = 0;
+>>+	void *ptr;
+>>+	int ret;
+>>+
+>>+	assert(posix_memalign(&ptr, PAGE_SIZE, PAGE_SIZE) == 0);
+>>+	ret = __gem_userptr(fd, ptr, PAGE_SIZE, 0, 0, &handle);
+>>+	if (ret != 0) {
+>>+		free(ptr);
+>>+		return 0;
+>>+	}
+>>+
+>>+	gem_close(fd, handle);
+>>+	free(ptr);
+>>+
+>>+	return handle != 0;
+>>+}
+>>+
+>>  igt_main
+>>  {
+>>  	struct test_cfg *t, tests[] = {
+>>@@ -547,6 +582,14 @@ igt_main
+>>  				igt_dynamic_f("%s", r->name)
+>>  					run_test(fd, ctx, &cfg, r, alignment, e);
+>>  			}
+>>+
+>>+			if (has_userptr(fd)) {
+>
+>It's probably fair to assume vm_bind support also means we have 
+>userptr?  But I guess can't hurt to check.
+>
 
-== Series Details ==
+Yah, I think so, but yah it doesn't hurt to check in case for somereason
+we disable userptr.
 
-Series: series starting with [i-g-t,1/2] tools/intel_pm_rpm: Remove unused devid.
-URL   : https://patchwork.freedesktop.org/series/110340/
-State : success
+>Reviewed-by: Matthew Auld <matthew.auld@intel.com>
 
-== Summary ==
+Thanks,
+Niranjana
 
-CI Bug Log - changes from CI_DRM_12325 -> IGTPW_8021
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8021/index.html
-
-Participating hosts (40 -> 28)
-------------------------------
-
-  Additional (1): fi-rkl-11600 
-  Missing    (13): fi-cml-u2 bat-dg2-8 bat-adlm-1 bat-dg2-9 bat-adlp-6 bat-adlp-4 fi-hsw-4770 bat-adln-1 bat-rplp-1 bat-rpls-1 bat-rpls-2 bat-dg2-11 bat-jsl-1 
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_8021 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@gem_huc_copy@huc-copy:
-    - fi-rkl-11600:       NOTRUN -> [SKIP][1] ([i915#2190])
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8021/fi-rkl-11600/igt@gem_huc_copy@huc-copy.html
-
-  * igt@gem_lmem_swapping@parallel-random-engines:
-    - fi-rkl-11600:       NOTRUN -> [SKIP][2] ([i915#4613]) +3 similar issues
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8021/fi-rkl-11600/igt@gem_lmem_swapping@parallel-random-engines.html
-
-  * igt@gem_tiled_pread_basic:
-    - fi-rkl-11600:       NOTRUN -> [SKIP][3] ([i915#3282])
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8021/fi-rkl-11600/igt@gem_tiled_pread_basic.html
-
-  * igt@i915_pm_backlight@basic-brightness:
-    - fi-rkl-11600:       NOTRUN -> [SKIP][4] ([i915#3012])
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8021/fi-rkl-11600/igt@i915_pm_backlight@basic-brightness.html
-
-  * igt@i915_suspend@basic-s3-without-i915:
-    - fi-rkl-11600:       NOTRUN -> [INCOMPLETE][5] ([i915#4817])
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8021/fi-rkl-11600/igt@i915_suspend@basic-s3-without-i915.html
-
-  * igt@kms_chamelium@hdmi-hpd-fast:
-    - fi-rkl-11600:       NOTRUN -> [SKIP][6] ([fdo#111827]) +7 similar issues
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8021/fi-rkl-11600/igt@kms_chamelium@hdmi-hpd-fast.html
-
-  * igt@kms_cursor_legacy@basic-busy-flip-before-cursor:
-    - fi-rkl-11600:       NOTRUN -> [SKIP][7] ([i915#4103])
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8021/fi-rkl-11600/igt@kms_cursor_legacy@basic-busy-flip-before-cursor.html
-
-  * igt@kms_force_connector_basic@force-load-detect:
-    - fi-rkl-11600:       NOTRUN -> [SKIP][8] ([fdo#109285] / [i915#4098])
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8021/fi-rkl-11600/igt@kms_force_connector_basic@force-load-detect.html
-
-  * igt@kms_psr@sprite_plane_onoff:
-    - fi-rkl-11600:       NOTRUN -> [SKIP][9] ([i915#1072]) +3 similar issues
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8021/fi-rkl-11600/igt@kms_psr@sprite_plane_onoff.html
-
-  * igt@kms_setmode@basic-clone-single-crtc:
-    - fi-rkl-11600:       NOTRUN -> [SKIP][10] ([i915#3555] / [i915#4098])
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8021/fi-rkl-11600/igt@kms_setmode@basic-clone-single-crtc.html
-
-  * igt@prime_vgem@basic-read:
-    - fi-rkl-11600:       NOTRUN -> [SKIP][11] ([fdo#109295] / [i915#3291] / [i915#3708]) +2 similar issues
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8021/fi-rkl-11600/igt@prime_vgem@basic-read.html
-
-  * igt@prime_vgem@basic-userptr:
-    - fi-rkl-11600:       NOTRUN -> [SKIP][12] ([fdo#109295] / [i915#3301] / [i915#3708])
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8021/fi-rkl-11600/igt@prime_vgem@basic-userptr.html
-
-  
-#### Possible fixes ####
-
-  * igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions-varying-size:
-    - fi-bsw-kefka:       [FAIL][13] ([i915#6298]) -> [PASS][14]
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12325/fi-bsw-kefka/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions-varying-size.html
-   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8021/fi-bsw-kefka/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions-varying-size.html
-
-  * igt@kms_pipe_crc_basic@suspend-read-crc@pipe-b-hdmi-a-2:
-    - fi-icl-u2:          [DMESG-WARN][15] ([i915#2867]) -> [PASS][16]
-   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12325/fi-icl-u2/igt@kms_pipe_crc_basic@suspend-read-crc@pipe-b-hdmi-a-2.html
-   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8021/fi-icl-u2/igt@kms_pipe_crc_basic@suspend-read-crc@pipe-b-hdmi-a-2.html
-
-  
-  [fdo#109285]: https://bugs.freedesktop.org/show_bug.cgi?id=109285
-  [fdo#109295]: https://bugs.freedesktop.org/show_bug.cgi?id=109295
-  [fdo#111827]: https://bugs.freedesktop.org/show_bug.cgi?id=111827
-  [i915#1072]: https://gitlab.freedesktop.org/drm/intel/issues/1072
-  [i915#2190]: https://gitlab.freedesktop.org/drm/intel/issues/2190
-  [i915#2867]: https://gitlab.freedesktop.org/drm/intel/issues/2867
-  [i915#3012]: https://gitlab.freedesktop.org/drm/intel/issues/3012
-  [i915#3282]: https://gitlab.freedesktop.org/drm/intel/issues/3282
-  [i915#3291]: https://gitlab.freedesktop.org/drm/intel/issues/3291
-  [i915#3301]: https://gitlab.freedesktop.org/drm/intel/issues/3301
-  [i915#3555]: https://gitlab.freedesktop.org/drm/intel/issues/3555
-  [i915#3708]: https://gitlab.freedesktop.org/drm/intel/issues/3708
-  [i915#4098]: https://gitlab.freedesktop.org/drm/intel/issues/4098
-  [i915#4103]: https://gitlab.freedesktop.org/drm/intel/issues/4103
-  [i915#4613]: https://gitlab.freedesktop.org/drm/intel/issues/4613
-  [i915#4817]: https://gitlab.freedesktop.org/drm/intel/issues/4817
-  [i915#6298]: https://gitlab.freedesktop.org/drm/intel/issues/6298
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_7032 -> IGTPW_8021
-
-  CI-20190529: 20190529
-  CI_DRM_12325: 1a90222aa5e5bb86ffcbde5ba9611659a23f0df6 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_8021: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8021/index.html
-  IGT_7032: 372c56225e12578a7a4a6bcc5b79eb40b643fcde @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8021/index.html
-
---===============8484525533109237969==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>series starting with [i-g-t,1/2] tools/intel_pm_rpm: Remove unused devid.</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/110340/">https://patchwork.freedesktop.org/series/110340/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8021/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8021/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from CI_DRM_12325 -&gt; IGTPW_8021</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8021/index.html</p>
-<h2>Participating hosts (40 -&gt; 28)</h2>
-<p>Additional (1): fi-rkl-11600 <br />
-  Missing    (13): fi-cml-u2 bat-dg2-8 bat-adlm-1 bat-dg2-9 bat-adlp-6 bat-adlp-4 fi-hsw-4770 bat-adln-1 bat-rplp-1 bat-rpls-1 bat-rpls-2 bat-dg2-11 bat-jsl-1 </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_8021 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@gem_huc_copy@huc-copy:</p>
-<ul>
-<li>fi-rkl-11600:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8021/fi-rkl-11600/igt@gem_huc_copy@huc-copy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2190">i915#2190</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_lmem_swapping@parallel-random-engines:</p>
-<ul>
-<li>fi-rkl-11600:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8021/fi-rkl-11600/igt@gem_lmem_swapping@parallel-random-engines.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4613">i915#4613</a>) +3 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_tiled_pread_basic:</p>
-<ul>
-<li>fi-rkl-11600:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8021/fi-rkl-11600/igt@gem_tiled_pread_basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3282">i915#3282</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_pm_backlight@basic-brightness:</p>
-<ul>
-<li>fi-rkl-11600:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8021/fi-rkl-11600/igt@i915_pm_backlight@basic-brightness.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3012">i915#3012</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_suspend@basic-s3-without-i915:</p>
-<ul>
-<li>fi-rkl-11600:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8021/fi-rkl-11600/igt@i915_suspend@basic-s3-without-i915.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4817">i915#4817</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_chamelium@hdmi-hpd-fast:</p>
-<ul>
-<li>fi-rkl-11600:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8021/fi-rkl-11600/igt@kms_chamelium@hdmi-hpd-fast.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=111827">fdo#111827</a>) +7 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_cursor_legacy@basic-busy-flip-before-cursor:</p>
-<ul>
-<li>fi-rkl-11600:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8021/fi-rkl-11600/igt@kms_cursor_legacy@basic-busy-flip-before-cursor.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4103">i915#4103</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_force_connector_basic@force-load-detect:</p>
-<ul>
-<li>fi-rkl-11600:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8021/fi-rkl-11600/igt@kms_force_connector_basic@force-load-detect.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109285">fdo#109285</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4098">i915#4098</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr@sprite_plane_onoff:</p>
-<ul>
-<li>fi-rkl-11600:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8021/fi-rkl-11600/igt@kms_psr@sprite_plane_onoff.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1072">i915#1072</a>) +3 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_setmode@basic-clone-single-crtc:</p>
-<ul>
-<li>fi-rkl-11600:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8021/fi-rkl-11600/igt@kms_setmode@basic-clone-single-crtc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3555">i915#3555</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4098">i915#4098</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@prime_vgem@basic-read:</p>
-<ul>
-<li>fi-rkl-11600:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8021/fi-rkl-11600/igt@prime_vgem@basic-read.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109295">fdo#109295</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3291">i915#3291</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3708">i915#3708</a>) +2 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@prime_vgem@basic-userptr:</p>
-<ul>
-<li>fi-rkl-11600:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8021/fi-rkl-11600/igt@prime_vgem@basic-userptr.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109295">fdo#109295</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3301">i915#3301</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3708">i915#3708</a>)</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions-varying-size:</p>
-<ul>
-<li>fi-bsw-kefka:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12325/fi-bsw-kefka/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions-varying-size.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6298">i915#6298</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8021/fi-bsw-kefka/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions-varying-size.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pipe_crc_basic@suspend-read-crc@pipe-b-hdmi-a-2:</p>
-<ul>
-<li>fi-icl-u2:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12325/fi-icl-u2/igt@kms_pipe_crc_basic@suspend-read-crc@pipe-b-hdmi-a-2.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2867">i915#2867</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8021/fi-icl-u2/igt@kms_pipe_crc_basic@suspend-read-crc@pipe-b-hdmi-a-2.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_7032 -&gt; IGTPW_8021</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_12325: 1a90222aa5e5bb86ffcbde5ba9611659a23f0df6 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_8021: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8021/index.html<br />
-  IGT_7032: 372c56225e12578a7a4a6bcc5b79eb40b643fcde @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-
-</body>
-</html>
-
---===============8484525533109237969==--
+>
+>>+				struct test_cfg cfg = *t;
+>>+
+>>+				/* Use NULL memory region for userptr */
+>>+				igt_dynamic("userptr")
+>>+					run_test(fd, ctx, &cfg, NULL, PAGE_SIZE, e);
+>>+			}
+>>  		}
+>>  	}
