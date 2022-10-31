@@ -1,21 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 30B0710E184
- for <igt-dev@lists.freedesktop.org>; Mon, 31 Oct 2022 10:08:47 +0000 (UTC)
-From: "Gupta, Anshuman" <anshuman.gupta@intel.com>
-To: "Tauro, Riana" <riana.tauro@intel.com>, "igt-dev@lists.freedesktop.org"
- <igt-dev@lists.freedesktop.org>
-Date: Mon, 31 Oct 2022 10:08:19 +0000
-Message-ID: <CY5PR11MB6211BAC08F51B2CFA3F8F30995379@CY5PR11MB6211.namprd11.prod.outlook.com>
-References: <20221031095521.3749655-1-riana.tauro@intel.com>
- <20221031095521.3749655-2-riana.tauro@intel.com>
-In-Reply-To: <20221031095521.3749655-2-riana.tauro@intel.com>
-Content-Language: en-US
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4E3F810E18B
+ for <igt-dev@lists.freedesktop.org>; Mon, 31 Oct 2022 10:16:38 +0000 (UTC)
+Date: Mon, 31 Oct 2022 12:16:35 +0200
+From: Petri Latvala <petri.latvala@intel.com>
+To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ igt-dev@lists.freedesktop.org, Arkadiusz Hiler <arek@hiler.eu>
+Message-ID: <Y1+gg2wP0NynvQDc@platvala-desk.ger.corp.intel.com>
+References: <20221010145708.1986912-1-petri.latvala@intel.com>
+ <20221010145708.1986912-7-petri.latvala@intel.com>
+ <Y1vgKu0XDdAaEhKa@kamilkon-desk1>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t 1/1] tests/debugfs_test: Add basic-hwmon
- test
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Y1vgKu0XDdAaEhKa@kamilkon-desk1>
+Subject: Re: [igt-dev] [PATCH i-g-t 7/7] runner: Disable socket
+ communications for now
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,76 +23,55 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: "Nilawar, Badal" <badal.nilawar@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
+On Fri, Oct 28, 2022 at 03:59:06PM +0200, Kamil Konieczny wrote:
+> Hi Petri,
+> 
+> On 2022-10-10 at 17:57:08 +0300, Petri Latvala wrote:
+> > Currently, having i915 CI systems test the socket communications when
+> > testing is impossible. If a test hangs completely, the incomplete set
+> > of results are processed into results.json with an older IGT version
+> > from a previous post-merge build, which is unable to parse socket
+> > communications. Disable them for now.
+> > 
+> > This commit will get reverted after suitable testing has been possible
+> > to execute.
+> 
+> imho this is a little unclear why adding var is acutally disabling
+> anything, but maybe it is that current CI do not have it ?
+
+Exactly that. Prevent the feature from being used by requiring an
+environment variable that isn't set in CI.
+
+> 
+> > 
+> > Signed-off-by: Petri Latvala <petri.latvala@intel.com>
+> > ---
+> >  runner/executor.c | 3 ++-
+> >  1 file changed, 2 insertions(+), 1 deletion(-)
+> > 
+> > diff --git a/runner/executor.c b/runner/executor.c
+> > index 125f08a2..f6f27d48 100644
+> > --- a/runner/executor.c
+> > +++ b/runner/executor.c
+> > @@ -1657,7 +1657,8 @@ static int execute_next_entry(struct execute_state *state,
+> >  
+> >  		sigprocmask(SIG_UNBLOCK, sigmask, NULL);
+> >  
+> > -		if (socketfd >= 0 && !getenv("IGT_RUNNER_DISABLE_SOCKET_COMMUNICATION")) {
+> > +		if (socketfd >= 0 && !getenv("IGT_RUNNER_DISABLE_SOCKET_COMMUNICATION") &&
+> > +		    getenv("IGT_RUNNER_ENABLE_SOCKET_COMMUNICATION")) {
+> 
+> what about IGT_RUNNER_ENABLE_SOCKET_COMMUNICATION_REMOVE_ME ? 
+> or IGT_RUNNER_ENABLE_SOCKET_COMMUNICATION_REMOVE_FIXME ? 
+> Or maybe you plan to keep it here and remove _DISABLE_ one ?
+
+I plan to keep the DISABLE variable as a killswitch. I'll rename the
+enable var to make it clear it's not there to stay.
 
 
-> -----Original Message-----
-> From: Tauro, Riana <riana.tauro@intel.com>
-> Sent: Monday, October 31, 2022 3:25 PM
-> To: igt-dev@lists.freedesktop.org
-> Cc: Tauro, Riana <riana.tauro@intel.com>; Gupta, Anshuman
-> <anshuman.gupta@intel.com>; Dixit, Ashutosh <ashutosh.dixit@intel.com>;
-> Nilawar, Badal <badal.nilawar@intel.com>
-> Subject: [PATCH i-g-t 1/1] tests/debugfs_test: Add basic-hwmon test
->=20
-> Add a testcase that verifies hwmon directory in dgfx and prints all the e=
-ntries
->=20
-> Signed-off-by: Riana Tauro <riana.tauro@intel.com>
-Reviewed-by: Anshuman Gupta <anshuman.gupta@intel.com>
-> ---
->  tests/debugfs_test.c | 14 ++++++++++++--
->  1 file changed, 12 insertions(+), 2 deletions(-)
->=20
-> diff --git a/tests/debugfs_test.c b/tests/debugfs_test.c index
-> 0b4b6e23..99fef354 100644
-> --- a/tests/debugfs_test.c
-> +++ b/tests/debugfs_test.c
-> @@ -24,12 +24,13 @@
->=20
->  #include "i915/gem.h"
->  #include "igt.h"
-> +#include "igt_hwmon.h"
->  #include "igt_sysfs.h"
->  #include <fcntl.h>
->  #include <sys/types.h>
->  #include <dirent.h>
->=20
-> -IGT_TEST_DESCRIPTION("Read entries from debugfs and sysfs paths.");
-> +IGT_TEST_DESCRIPTION("Read entries from debugfs,hwmon and sysfs
-> +paths.");
->=20
->  static void read_and_discard_sysfs_entries(int path_fd, int indent)  { @=
-@ -
-> 178,7 +179,7 @@ retry:
->=20
->  igt_main
->  {
-> -	int fd =3D -1, debugfs, sysfs;
-> +	int fd =3D -1, debugfs, sysfs, hwmon_fd;
->=20
->  	igt_fixture {
->  		fd =3D drm_open_driver_master(DRIVER_INTEL);
-> @@ -196,6 +197,15 @@ igt_main
->  	igt_subtest("read_all_entries")
->  		read_and_discard_sysfs_entries(debugfs, 0);
->=20
-> +	igt_describe("Read all entries from hwmon path");
-> +	igt_subtest("basic-hwmon") {
-> +		igt_require_f(gem_has_lmem(fd), "Test applicable only for
-> dgfx\n");
-> +		hwmon_fd =3D igt_hwmon_open(fd);
-> +		igt_assert(hwmon_fd >=3D 0);
-> +		read_and_discard_sysfs_entries(hwmon_fd, 0);
-> +		close(hwmon_fd);
-> +	}
-> +
->  	igt_describe("Read all debugfs entries with display on/off.");
->  	igt_subtest_group
->  		kms_tests(fd, debugfs);
-> --
-> 2.25.1
+-- 
+Petri Latvala
