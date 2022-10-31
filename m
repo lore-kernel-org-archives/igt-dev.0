@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 50A8010E0F9
- for <igt-dev@lists.freedesktop.org>; Mon, 31 Oct 2022 18:15:04 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 463C410E027
+ for <igt-dev@lists.freedesktop.org>; Mon, 31 Oct 2022 18:15:07 +0000 (UTC)
 From: Swati Sharma <swati2.sharma@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Mon, 31 Oct 2022 23:46:37 +0530
-Message-Id: <20221031181639.15046-2-swati2.sharma@intel.com>
+Date: Mon, 31 Oct 2022 23:46:39 +0530
+Message-Id: <20221031181639.15046-4-swati2.sharma@intel.com>
 In-Reply-To: <20221031181639.15046-1-swati2.sharma@intel.com>
 References: <20221031181639.15046-1-swati2.sharma@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 1/3] lib/kms: Add helpers for VDSC YCbCr420
- debugfs entry
+Subject: [igt-dev] [PATCH i-g-t 3/3] tests/i915/kms_dsc: Enable validation
+ for VDSC YCbCr420
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,142 +23,296 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Helper functions are added for getting/setting VDSC YCbCr420 debugfs entry.
+Existing i-g-t is extended to enable validation for VDSC YCbCr420.
+If a mode is supported in both RGB and YCbCr420 output formats by the
+sink, i915 driver policy is to try RGB first and fall back to YCbCr420, if
+mode cannot be shown using RGB. To test YCbCr420, we need a debugfs
+entry (force_dsc_ycbcr420) to force this output format; so that YCbCr420 code
+gets executed.
+From i-g-t, we have set this debugfs entry. However, before setting
+debugfs entry, we have checked capability i.e. YCbCr420 is supported by
+both platform (D14+) and sink.
+Also, all the modes doesn't support both YCbCr420 and RGB formats; so if
+sink and platform supports YCbCr420 we will do try commit with each mode
+till we get a successful commit.
 
 Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
 ---
- lib/igt_kms.c | 67 +++++++++++++++++++++++++++++++++++++++++++++++++++
- lib/igt_kms.h |  7 ++++--
- 2 files changed, 72 insertions(+), 2 deletions(-)
+ tests/i915/kms_dsc.c | 190 +++++++++++++++++++++++++++++++++----------
+ 1 file changed, 146 insertions(+), 44 deletions(-)
 
-diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-index 921a623d..cbe2c7e3 100644
---- a/lib/igt_kms.c
-+++ b/lib/igt_kms.c
-@@ -5546,6 +5546,20 @@ bool check_dsc_debugfs(int drmfd, char *connector_name,
- 	return strstr(buf, check_str);
+diff --git a/tests/i915/kms_dsc.c b/tests/i915/kms_dsc.c
+index b162f93d..5e0f4c61 100644
+--- a/tests/i915/kms_dsc.c
++++ b/tests/i915/kms_dsc.c
+@@ -66,7 +66,10 @@ typedef struct {
+ } data_t;
+ 
+ bool force_dsc_en_orig;
++bool force_dsc_ycbcr420_en_orig;
+ int force_dsc_restore_fd = -1;
++int force_dsc_ycbcr420_restore_fd = -1;
++static int count = 0;
+ 
+ const struct {
+ 	const int format;
+@@ -107,6 +110,16 @@ static void force_dsc_enable_bpc(data_t *data)
+ 	igt_assert_f(ret > 0, "forcing input dsc bpc debugfs_write failed\n");
  }
  
-+static
-+bool check_dsc_ycbcr420_debugfs(int drmfd, char *connector_name,
-+                                const char *check_str)
++static void force_dsc_ycbcr420_enable(data_t *data)
 +{
-+	char file_name[128] = {0};
-+	char buf[512];
++	int ret;
 +
-+	sprintf(file_name, "%s/i915_dsc_ycbcr420", connector_name);
-+
-+	igt_debugfs_read(drmfd, file_name, buf);
-+
-+	return strstr(buf, check_str);
++	igt_debug("Forcing DSC YCbCr420 on %s\n", data->output->name);
++	ret = igt_force_dsc_ycbcr420_enable(data->drm_fd,
++					    data->output->name);
++	igt_assert_f(ret > 0, "forcing dsc ycbcr420 debugfs_write failed\n");
 +}
 +
- static
- int write_dsc_debugfs(int drmfd, char *connector_name,
- 		      const char *file_name,
-@@ -5577,6 +5591,18 @@ bool igt_is_dsc_supported(int drmfd, char *connector_name)
- 	return check_dsc_debugfs(drmfd, connector_name, "DSC_Sink_Support: yes");
+ static void save_force_dsc_en(data_t *data)
+ {
+ 	force_dsc_en_orig =
+@@ -130,9 +143,34 @@ static void restore_force_dsc_en(void)
+ 	force_dsc_restore_fd = -1;
  }
  
-+/*
-+ * igt_is_dsc_ycbcr420_supported:
-+ * @drmfd: A drm file descriptor
-+ * @connector_name: Name of the libdrm connector we're going to use
-+ *
-+ * Returns: True if DSC YCbCr420 is supported for the given connector, false otherwise.
-+ */
-+bool igt_is_dsc_ycbcr420_supported(int drmfd, char *connector_name)
++static void save_force_dsc_ycbcr420_en(data_t *data)
 +{
-+	return check_dsc_debugfs(drmfd, connector_name, "DSC_YCBCR420_Sink_Support: yes");
++	force_dsc_ycbcr420_en_orig =
++		igt_is_force_dsc_ycbcr420_enabled(data->drm_fd,
++						  data->output->name);
++	force_dsc_ycbcr420_restore_fd =
++		igt_get_dsc_ycbcr420_debugfs_fd(data->drm_fd,
++						data->output->name);
++	igt_assert(force_dsc_ycbcr420_restore_fd >= 0);
 +}
 +
- /*
-  * igt_is_fec_supported:
-  * @drmfd: A drm file descriptor
-@@ -5614,6 +5640,19 @@ bool igt_is_force_dsc_enabled(int drmfd, char *connector_name)
- 	return check_dsc_debugfs(drmfd, connector_name, "Force_DSC_Enable: yes");
++static void restore_force_dsc_ycbcr420_en(void)
++{
++	if (force_dsc_ycbcr420_restore_fd < 0)
++		return;
++
++	igt_debug("Restoring DSC YCbCr420 enable\n");
++	igt_assert(write(force_dsc_ycbcr420_restore_fd, force_dsc_ycbcr420_en_orig ? "1" : "0", 1) == 1);
++
++	close(force_dsc_ycbcr420_restore_fd);
++	force_dsc_ycbcr420_restore_fd = -1;
++}
++
++
+ static void kms_dsc_exit_handler(int sig)
+ {
+ 	restore_force_dsc_en();
++	restore_force_dsc_ycbcr420_en();
  }
  
-+/*
-+ * igt_is_force_dsc_ycbcr420_enabled:
-+ * @drmfd: A drm file descriptor
-+ * @connector_name: Name of the libdrm connector we're going to use
-+ *
-+ * Returns: True if DSC YCbCr420 is force enabled (via debugfs) for the given connector,
-+ * false otherwise.
-+ */
-+bool igt_is_force_dsc_ycbcr420_enabled(int drmfd, char *connector_name)
-+{
-+	return check_dsc_ycbcr420_debugfs(drmfd, connector_name, "Force_DSC_YCBCR420_Enable: yes");
-+}
-+
- /*
-  * igt_force_dsc_enable:
-  * @drmfd: A drm file descriptor
-@@ -5626,6 +5665,18 @@ int igt_force_dsc_enable(int drmfd, char *connector_name)
- 	return write_dsc_debugfs(drmfd, connector_name, "i915_dsc_fec_support", "1");
+ static drmModeModeInfo *get_highres_mode(igt_output_t *output)
+@@ -147,6 +185,20 @@ static drmModeModeInfo *get_highres_mode(igt_output_t *output)
+ 	return highest_mode;
  }
  
-+/*
-+ * igt_force_dsc_ycbcr420_enable:
-+ * @drmfd: A drm file descriptor
-+ * @connector_name: Name of the libdrm connector we're going to use
-+ *
-+ * Returns: 1 on success or negative error code, in case of failure.
-+ */
-+int igt_force_dsc_ycbcr420_enable(int drmfd, char *connector_name)
++static drmModeModeInfo *get_next_mode(igt_output_t *output)
 +{
-+	return write_dsc_debugfs(drmfd, connector_name, "i915_dsc_ycbcr420", "1");
++	drmModeConnector *connector = output->config.connector;
++	drmModeModeInfo *next_mode = NULL;
++
++	for (int i = count; i < connector->count_modes; i++) {
++		next_mode = &connector->modes[i];
++		count ++;
++		break;
++	}
++
++	return next_mode;
 +}
 +
- /*
-  * igt_force_dsc_enable_bpc:
-  * @drmfd: A drm file descriptor
-@@ -5659,6 +5710,22 @@ int igt_get_dsc_debugfs_fd(int drmfd, char *connector_name)
- 	return openat(igt_debugfs_dir(drmfd), file_name, O_WRONLY);
+ static bool check_dsc_on_connector(data_t *data)
+ {
+ 	igt_output_t *output = data->output;
+@@ -167,6 +219,29 @@ static bool check_dsc_on_connector(data_t *data)
+ 	return true;
  }
  
-+/*
-+ * igt_get_dsc_ycbcr420_debugfs_fd:
-+ * @drmfd: A drm file descriptor
-+ * @connector_name: Name of the libdrm connector we're going to use
-+ *
-+ * Returns: fd of the DSC YCbCr420 debugfs for the given connector, else returns -1.
-+ */
-+int igt_get_dsc_ycbcr420_debugfs_fd(int drmfd, char *connector_name)
++static bool check_dsc_ycbcr420_on_connector(data_t *data)
 +{
-+	char file_name[128] = {0};
++	igt_output_t *output = data->output;
 +
-+	sprintf(file_name, "%s/i915_dsc_ycbcr420", connector_name);
++	if (!igt_is_dsc_ycbcr420_supported(data->drm_fd, output->name)) {
++		igt_debug("DSC YCbCr420 not supported on connector %s\n",
++			  output->name);
++		return false;
++	}
 +
-+	return openat(igt_debugfs_dir(drmfd), file_name, O_WRONLY);
++	return true;
 +}
 +
- /*
-  * igt_get_output_max_bpc:
-  * @drmfd: A drm file descriptor
-diff --git a/lib/igt_kms.h b/lib/igt_kms.h
-index b09441d0..d5d5aa6c 100644
---- a/lib/igt_kms.h
-+++ b/lib/igt_kms.h
-@@ -973,13 +973,16 @@ void igt_dump_crtcs_fd(int drmfd);
- bool igt_override_all_active_output_modes_to_fit_bw(igt_display_t *display);
++/* YCbCr420 DSC is supported on disp ver 14+ */
++static bool check_ycbcr420_constraint(data_t *data, int flag)
++{
++	if (data->disp_ver >= 14 && flag)
++		return check_dsc_ycbcr420_on_connector(data);
++	else
++		return true;
++}
++
++
+ static bool check_big_joiner_pipe_constraint(data_t *data)
+ {
+ 	igt_output_t *output = data->output;
+@@ -226,69 +301,90 @@ static void test_cleanup(data_t *data)
+ static void update_display(data_t *data, enum dsc_test_type test_type,
+ 			   unsigned int plane_format, int flag)
+ {
++	int ret;
+ 	bool enabled;
+ 	igt_plane_t *primary;
+ 	drmModeModeInfo *mode;
++	bool test_complete = false;
+ 	igt_output_t *output = data->output;
+ 	igt_display_t *display = &data->display;
  
- bool igt_is_dsc_supported(int drmfd, char *connector_name);
-+bool igt_is_dsc_ycbcr420_supported(int drmfd, char *connector_name);
- bool igt_is_fec_supported(int drmfd, char *connector_name);
- bool igt_is_dsc_enabled(int drmfd, char *connector_name);
- bool igt_is_force_dsc_enabled(int drmfd, char *connector_name);
-+bool igt_is_force_dsc_ycbcr420_enabled(int drmfd, char *connector_name);
- int igt_force_dsc_enable(int drmfd, char *connector_name);
--int igt_force_dsc_enable_bpc(int drmfd, char *connector_name,
--			     int bpc);
-+int igt_force_dsc_enable_bpc(int drmfd, char *connector_name, int bpc);
-+int igt_force_dsc_ycbcr420_enable(int drmfd, char *connector_name);
- int igt_get_dsc_debugfs_fd(int drmfd, char *connector_name);
-+int igt_get_dsc_ycbcr420_debugfs_fd(int drmfd, char *connector_name);
+-	/* sanitize the state before starting the subtest */
+-	igt_display_reset(display);
+-	igt_display_commit(display);
++	count = 0;
++	while (!test_complete) {
++		/* sanitize the state before starting the subtest */
++		igt_display_reset(display);
++		igt_display_commit(display);
  
- unsigned int igt_get_output_max_bpc(int drmfd, char *connector_name);
- unsigned int igt_get_pipe_current_bpc(int drmfd, enum pipe pipe);
+-	igt_debug("DSC is supported on %s\n", data->output->name);
+-	save_force_dsc_en(data);
+-	force_dsc_enable(data);
++		igt_debug("DSC is supported on %s\n", data->output->name);
++		save_force_dsc_en(data);
++		force_dsc_enable(data);
+ 
+-	if (test_type == TEST_DSC_BPC) {
+-		igt_debug("Trying to set input BPC to %d\n", data->input_bpc);
+-		force_dsc_enable_bpc(data);
+-	}
++		if (flag) {
++			igt_debug("DSC YCbCr420 is supported on %s\n", data->output->name);
++			save_force_dsc_ycbcr420_en(data);
++			force_dsc_ycbcr420_enable(data);
++		}
+ 
+-	igt_output_set_pipe(output, data->pipe);
++		if (test_type == TEST_DSC_BPC) {
++			igt_debug("Trying to set input BPC to %d\n", data->input_bpc);
++			force_dsc_enable_bpc(data);
++		}
+ 
+-	mode = get_highres_mode(output);
+-	igt_require(mode != NULL);
+-	igt_output_override_mode(output, mode);
++		igt_output_set_pipe(output, data->pipe);
+ 
+-	primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
++		if (flag)
++			mode = get_next_mode(output);
++		else
++			mode = get_highres_mode(output);
+ 
+-	igt_skip_on(!igt_plane_has_format_mod(primary, plane_format,
+-		    DRM_FORMAT_MOD_LINEAR));
++		igt_require(mode != NULL);
++		igt_output_override_mode(output, mode);
+ 
+-	igt_create_pattern_fb(data->drm_fd,
+-			      mode->hdisplay,
+-			      mode->vdisplay,
+-			      plane_format,
+-			      DRM_FORMAT_MOD_LINEAR,
+-			      &data->fb_test_pattern);
++		primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
+ 
+-	igt_plane_set_fb(primary, &data->fb_test_pattern);
+-	igt_display_commit(display);
++		igt_skip_on(!igt_plane_has_format_mod(primary, plane_format,
++			    DRM_FORMAT_MOD_LINEAR));
+ 
+-	/* until we have CRC check support, manually check if RGB test
+-	 * pattern has no corruption.
+-	 */
+-	manual("RGB test pattern without corruption");
++		igt_create_pattern_fb(data->drm_fd,
++				      mode->hdisplay,
++				      mode->vdisplay,
++				      plane_format,
++				      DRM_FORMAT_MOD_LINEAR,
++				      &data->fb_test_pattern);
+ 
+-	enabled = igt_is_dsc_enabled(data->drm_fd, output->name);
+-	igt_info("Current mode is: %dx%d @%dHz -- DSC is: %s\n",
+-				mode->hdisplay,
+-				mode->vdisplay,
+-				mode->vrefresh,
+-				enabled ? "ON" : "OFF");
++		igt_plane_set_fb(primary, &data->fb_test_pattern);
++		ret = igt_display_try_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
++		if (ret != -EINVAL) {
++			igt_display_commit(display);
++			test_complete = true;
++		}
+ 
+-	restore_force_dsc_en();
+-	igt_debug("Reset compression BPC\n");
+-	data->input_bpc = 0;
+-	force_dsc_enable_bpc(data);
++		/*
++		 * until we have CRC check support, manually check if RGB test
++		 * pattern has no corruption.
++		 */
++		manual("RGB test pattern without corruption");
++
++		enabled = igt_is_dsc_enabled(data->drm_fd, output->name);
++		igt_info("Current mode is: %dx%d @%dHz -- DSC is: %s\n",
++					mode->hdisplay,
++					mode->vdisplay,
++					mode->vrefresh,
++					enabled ? "ON" : "OFF");
++
++		restore_force_dsc_en();
++		if (flag)
++			restore_force_dsc_ycbcr420_en();
++		igt_debug("Reset compression BPC\n");
++		data->input_bpc = 0;
++		force_dsc_enable_bpc(data);
+ 
+-	igt_assert_f(enabled,
+-		     "Default DSC enable failed on connector: %s pipe: %s\n",
+-		     output->name,
+-		     kmstest_pipe_name(data->pipe));
++		igt_assert_f(enabled,
++			     "Default DSC enable failed on connector: %s pipe: %s\n",
++			     output->name, kmstest_pipe_name(data->pipe));
+ 
+-	test_cleanup(data);
++		test_cleanup(data);
++	}
+ }
+ 
+ static void test_dsc(data_t *data, enum dsc_test_type test_type, int bpc,
+@@ -307,6 +403,9 @@ static void test_dsc(data_t *data, enum dsc_test_type test_type, int bpc,
+ 		if (!check_dsc_on_connector(data))
+ 			continue;
+ 
++		if (!check_ycbcr420_constraint(data, flag))
++			continue;
++
+ 		if (!check_gen11_dp_constraint(data))
+ 			continue;
+ 
+@@ -330,6 +429,9 @@ static void run_test(data_t *data, enum dsc_test_type test_type, int bpc,
+ 		     unsigned int plane_format)
+ {
+ 	test_dsc(data, test_type, bpc, plane_format, 0);
++
++	if (data->disp_ver >= 14)
++		test_dsc(data, test_type, bpc, plane_format, 1);
+ }
+ 
+ igt_main
 -- 
 2.25.1
