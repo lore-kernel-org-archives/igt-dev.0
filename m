@@ -1,20 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 92A7610E276
- for <igt-dev@lists.freedesktop.org>; Mon, 31 Oct 2022 15:21:15 +0000 (UTC)
-Date: Mon, 31 Oct 2022 17:21:12 +0200
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1666410E18B
+ for <igt-dev@lists.freedesktop.org>; Mon, 31 Oct 2022 10:24:57 +0000 (UTC)
 From: Petri Latvala <petri.latvala@intel.com>
-To: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
-Message-ID: <Y1/n6AG2xdM+RI1g@platvala-desk.ger.corp.intel.com>
-References: <20221031095521.3749655-1-riana.tauro@intel.com>
- <20221031095521.3749655-2-riana.tauro@intel.com>
- <877d0gdnz8.wl-ashutosh.dixit@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Mon, 31 Oct 2022 12:24:34 +0200
+Message-Id: <20221031102434.2250160-7-petri.latvala@intel.com>
+In-Reply-To: <20221031102434.2250160-1-petri.latvala@intel.com>
+References: <20221031102434.2250160-1-petri.latvala@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <877d0gdnz8.wl-ashutosh.dixit@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 1/1] tests/debugfs_test: Add basic-hwmon
- test
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t v2 7/7] runner: Disable socket
+ communications for now
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,91 +19,48 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org, badal.nilawar@intel.com
+Cc: Petri Latvala <petri.latvala@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Mon, Oct 31, 2022 at 08:14:35AM -0700, Dixit, Ashutosh wrote:
-> On Mon, 31 Oct 2022 02:55:21 -0700, Riana Tauro wrote:
-> >
-> > Add a testcase that verifies hwmon directory in dgfx and prints all
-> > the entries
-> >
-> > Signed-off-by: Riana Tauro <riana.tauro@intel.com>
-> > ---
-> >  tests/debugfs_test.c | 14 ++++++++++++--
-> >  1 file changed, 12 insertions(+), 2 deletions(-)
-> >
-> > diff --git a/tests/debugfs_test.c b/tests/debugfs_test.c
-> > index 0b4b6e23..99fef354 100644
-> > --- a/tests/debugfs_test.c
-> > +++ b/tests/debugfs_test.c
-> > @@ -24,12 +24,13 @@
-> >
-> >  #include "i915/gem.h"
-> >  #include "igt.h"
-> > +#include "igt_hwmon.h"
-> >  #include "igt_sysfs.h"
-> >  #include <fcntl.h>
-> >  #include <sys/types.h>
-> >  #include <dirent.h>
-> >
-> > -IGT_TEST_DESCRIPTION("Read entries from debugfs and sysfs paths.");
-> > +IGT_TEST_DESCRIPTION("Read entries from debugfs,hwmon and sysfs paths.");
->                                                    ^
-> Space here ----------------------------------------|
-> 
-> Do we also need to add this test to fast_feedback testlist to add to BAT as
-> some people are asking? Not sure what the procedure for adding to BAT
-> testlist is? Let's ask Petri.
+Currently, having i915 CI systems test the socket communications when
+testing is impossible. If a test hangs completely, the incomplete set
+of results are processed into results.json with an older IGT version
+from a previous post-merge build, which is unable to parse socket
+communications. Disable them for now.
 
-What's the runtime of the test? None of the shards executed it, it
-looks like.
+This commit will get reverted after suitable testing has been possible
+to execute.
 
-If the test behaves well and brings value from the greater HW coverage
-of the BAT farm, it's a matter of making a patch and getting an ack
-from CI.
+v2: Rename the enable var, explain its presence further in a comment
+    (Kamil)
 
+Signed-off-by: Petri Latvala <petri.latvala@intel.com>
+Acked-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+---
+ runner/executor.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
+diff --git a/runner/executor.c b/runner/executor.c
+index 669e8524..a79a34e0 100644
+--- a/runner/executor.c
++++ b/runner/executor.c
+@@ -1659,7 +1659,14 @@ static int execute_next_entry(struct execute_state *state,
+ 
+ 		sigprocmask(SIG_UNBLOCK, sigmask, NULL);
+ 
+-		if (socketfd >= 0 && !getenv("IGT_RUNNER_DISABLE_SOCKET_COMMUNICATION")) {
++		if (socketfd >= 0 && !getenv("IGT_RUNNER_DISABLE_SOCKET_COMMUNICATION") &&
++		    getenv("IGT_RUNNER_ENABLE_SOCKET_COMMUNICATION_FIXME")) {
++			/*
++			 * The variable for enabling socket comms is
++			 * temporary. Do not use unless you really
++			 * know what you're doing. Requiring it will
++			 * go away later.
++			 */
+ 			snprintf(envstring, sizeof(envstring), "%d", socketfd);
+ 			setenv("IGT_RUNNER_SOCKET_FD", envstring, 1);
+ 		}
 -- 
-Petri Latvala
-
-
-> 
-> Thanks.
-> --
-> Ashutosh
-> 
-> 
-> >
-> >  static void read_and_discard_sysfs_entries(int path_fd, int indent)
-> >  {
-> > @@ -178,7 +179,7 @@ retry:
-> >
-> >  igt_main
-> >  {
-> > -	int fd = -1, debugfs, sysfs;
-> > +	int fd = -1, debugfs, sysfs, hwmon_fd;
-> >
-> >	igt_fixture {
-> >		fd = drm_open_driver_master(DRIVER_INTEL);
-> > @@ -196,6 +197,15 @@ igt_main
-> >	igt_subtest("read_all_entries")
-> >		read_and_discard_sysfs_entries(debugfs, 0);
-> >
-> > +	igt_describe("Read all entries from hwmon path");
-> > +	igt_subtest("basic-hwmon") {
-> > +		igt_require_f(gem_has_lmem(fd), "Test applicable only for dgfx\n");
-> > +		hwmon_fd = igt_hwmon_open(fd);
-> > +		igt_assert(hwmon_fd >= 0);
-> > +		read_and_discard_sysfs_entries(hwmon_fd, 0);
-> > +		close(hwmon_fd);
-> > +	}
-> > +
-> >	igt_describe("Read all debugfs entries with display on/off.");
-> >	igt_subtest_group
-> >		kms_tests(fd, debugfs);
-> > --
-> > 2.25.1
-> >
+2.30.2
