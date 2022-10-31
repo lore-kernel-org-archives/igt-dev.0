@@ -1,17 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 463C410E027
- for <igt-dev@lists.freedesktop.org>; Mon, 31 Oct 2022 18:15:07 +0000 (UTC)
-From: Swati Sharma <swati2.sharma@intel.com>
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1287910E027
+ for <igt-dev@lists.freedesktop.org>; Mon, 31 Oct 2022 18:18:54 +0000 (UTC)
+From: Vikas Srivastava <vikas.srivastava@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Mon, 31 Oct 2022 23:46:39 +0530
-Message-Id: <20221031181639.15046-4-swati2.sharma@intel.com>
-In-Reply-To: <20221031181639.15046-1-swati2.sharma@intel.com>
-References: <20221031181639.15046-1-swati2.sharma@intel.com>
+Date: Mon, 31 Oct 2022 23:47:46 +0530
+Message-Id: <20221031181746.4143408-1-vikas.srivastava@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 3/3] tests/i915/kms_dsc: Enable validation
- for VDSC YCbCr420
+Subject: [igt-dev] [PATCH i-g-t] test/i915/gem_linear_blits: Added COPY
+ Commands modification for MTL
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,300 +17,369 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: janga.rahul.kumar@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Existing i-g-t is extended to enable validation for VDSC YCbCr420.
-If a mode is supported in both RGB and YCbCr420 output formats by the
-sink, i915 driver policy is to try RGB first and fall back to YCbCr420, if
-mode cannot be shown using RGB. To test YCbCr420, we need a debugfs
-entry (force_dsc_ycbcr420) to force this output format; so that YCbCr420 code
-gets executed.
-From i-g-t, we have set this debugfs entry. However, before setting
-debugfs entry, we have checked capability i.e. YCbCr420 is supported by
-both platform (D14+) and sink.
-Also, all the modes doesn't support both YCbCr420 and RGB formats; so if
-sink and platform supports YCbCr420 we will do try commit with each mode
-till we get a successful commit.
+Test case uses legacy command which is not supported on MTL.
+Modified test to use XY_FAST_COPY_BLT.
 
-Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
+Signed-off-by: Arjun Melkaveri <arjun.melkaveri@intel.com>
+Acked-by: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
+
 ---
- tests/i915/kms_dsc.c | 190 +++++++++++++++++++++++++++++++++----------
- 1 file changed, 146 insertions(+), 44 deletions(-)
+ tests/i915/gem_close_race.c    |  95 ++++++++++++++++--------
+ tests/i915/gem_linear_blits.c  |  64 ++++++++++------
+ tests/i915/gem_userptr_blits.c | 131 +++++++++++++++++++++------------
+ 3 files changed, 190 insertions(+), 100 deletions(-)
 
-diff --git a/tests/i915/kms_dsc.c b/tests/i915/kms_dsc.c
-index b162f93d..5e0f4c61 100644
---- a/tests/i915/kms_dsc.c
-+++ b/tests/i915/kms_dsc.c
-@@ -66,7 +66,10 @@ typedef struct {
- } data_t;
+diff --git a/tests/i915/gem_close_race.c b/tests/i915/gem_close_race.c
+index e37a88828..2a939c94c 100644
+--- a/tests/i915/gem_close_race.c
++++ b/tests/i915/gem_close_race.c
+@@ -70,40 +70,73 @@ static void selfcopy(int fd, uint32_t ctx, uint32_t handle, int loops)
+ 	struct drm_i915_gem_create create;
+ 	uint32_t buf[16], *b = buf;
+ 	int err;
++	uint32_t src_x1 = 0;
  
- bool force_dsc_en_orig;
-+bool force_dsc_ycbcr420_en_orig;
- int force_dsc_restore_fd = -1;
-+int force_dsc_ycbcr420_restore_fd = -1;
-+static int count = 0;
+ 	memset(reloc, 0, sizeof(reloc));
  
- const struct {
- 	const int format;
-@@ -107,6 +110,16 @@ static void force_dsc_enable_bpc(data_t *data)
- 	igt_assert_f(ret > 0, "forcing input dsc bpc debugfs_write failed\n");
- }
- 
-+static void force_dsc_ycbcr420_enable(data_t *data)
-+{
-+	int ret;
+-	*b = COPY_BLT_CMD | BLT_WRITE_ALPHA | BLT_WRITE_RGB;
+-	if (has_64bit_relocations)
+-		*b += 2;
+-	b++;
+-	*b++ = 0xcc << 16 | 1 << 25 | 1 << 24 | (4*1024);
+-	*b++ = 0;
+-	*b++ = 1 << 16 | 1024;
+-
+-	reloc[0].offset = (b - buf) * sizeof(*b);
+-	reloc[0].target_handle = handle;
+-	reloc[0].read_domains = I915_GEM_DOMAIN_RENDER;
+-	reloc[0].write_domain = I915_GEM_DOMAIN_RENDER;
+-	reloc[0].presumed_offset = data_addr;
+-	*b++ = data_addr;
+-	if (has_64bit_relocations)
+-		*b++ = CANONICAL(data_addr) >> 32;
+-
+-	*b++ = 512 << 16;
+-	*b++ = 4*1024;
+-
+-	reloc[1].offset = (b - buf) * sizeof(*b);
+-	reloc[1].target_handle = handle;
+-	reloc[1].read_domains = I915_GEM_DOMAIN_RENDER;
+-	reloc[1].write_domain = 0;
+-	reloc[1].presumed_offset = data_addr;
+-	*b++ = data_addr;
+-	if (has_64bit_relocations)
+-		*b++ = CANONICAL(data_addr) >> 32;
+-
+-	*b++ = MI_BATCH_BUFFER_END;
+-	*b++ = 0;
++	 if (intel_graphics_ver(devid) >= IP_VER(12, 60)) {
++                *b++ = XY_FAST_COPY_BLT;
++                *b = XY_FAST_COPY_COLOR_DEPTH_32;
++                if (intel_graphics_ver(devid) >= IP_VER(20, 0))
++                        *b = XY_FAST_COPY_SRC_TILING_Yf |
++                                XY_FAST_COPY_DST_TILING_Yf;
++                b++;
++                *b++ = 0;
++                *b++ = 1 << 16 | 1024;/* dst X2 , y2 */
 +
-+	igt_debug("Forcing DSC YCbCr420 on %s\n", data->output->name);
-+	ret = igt_force_dsc_ycbcr420_enable(data->drm_fd,
-+					    data->output->name);
-+	igt_assert_f(ret > 0, "forcing dsc ycbcr420 debugfs_write failed\n");
-+}
++                reloc[0].offset = (b - buf) * sizeof(*b);
++                reloc[0].target_handle = handle;
++                reloc[0].read_domains = I915_GEM_DOMAIN_RENDER;
++                reloc[0].write_domain = I915_GEM_DOMAIN_RENDER;
 +
- static void save_force_dsc_en(data_t *data)
- {
- 	force_dsc_en_orig =
-@@ -130,9 +143,34 @@ static void restore_force_dsc_en(void)
- 	force_dsc_restore_fd = -1;
- }
- 
-+static void save_force_dsc_ycbcr420_en(data_t *data)
-+{
-+	force_dsc_ycbcr420_en_orig =
-+		igt_is_force_dsc_ycbcr420_enabled(data->drm_fd,
-+						  data->output->name);
-+	force_dsc_ycbcr420_restore_fd =
-+		igt_get_dsc_ycbcr420_debugfs_fd(data->drm_fd,
-+						data->output->name);
-+	igt_assert(force_dsc_ycbcr420_restore_fd >= 0);
-+}
++                *b++ = 0;/* dst address lower bits */
++                *b++ = 0;/* dst address upper bits */
 +
-+static void restore_force_dsc_ycbcr420_en(void)
-+{
-+	if (force_dsc_ycbcr420_restore_fd < 0)
-+		return;
++                *b++ = 512 << 16 | src_x1;/* src x1,y1 */
++                *b++ = 4*1024;/* src pitch */
 +
-+	igt_debug("Restoring DSC YCbCr420 enable\n");
-+	igt_assert(write(force_dsc_ycbcr420_restore_fd, force_dsc_ycbcr420_en_orig ? "1" : "0", 1) == 1);
++                reloc[1].offset = (b - buf) * sizeof(*b);
++                reloc[1].target_handle = handle;
++                reloc[1].read_domains = I915_GEM_DOMAIN_RENDER;
++                reloc[1].write_domain = 0;
 +
-+	close(force_dsc_ycbcr420_restore_fd);
-+	force_dsc_ycbcr420_restore_fd = -1;
-+}
++                *b++ = 0;// src address lower bits
++                *b++ = 0;// src address upper bits
++                *b++ = MI_BATCH_BUFFER_END;
++                *b++ = MI_NOOP;
++        } else {
++		*b = COPY_BLT_CMD | BLT_WRITE_ALPHA | BLT_WRITE_RGB;
++                if (has_64bit_relocations)
++                        *b += 2;
++                b++;
++                *b++ = 0xcc << 16 | 1 << 25 | 1 << 24 | (4*1024);
++                *b++ = 0;
++                *b++ = 1 << 16 | 1024;
 +
++                reloc[0].offset = (b - buf) * sizeof(*b);
++                reloc[0].target_handle = handle;
++                reloc[0].read_domains = I915_GEM_DOMAIN_RENDER;
++                reloc[0].write_domain = I915_GEM_DOMAIN_RENDER;
++                reloc[0].presumed_offset = data_addr;
++                *b++ = data_addr;
++                if (has_64bit_relocations)
++                        *b++ = CANONICAL(data_addr) >> 32;
 +
- static void kms_dsc_exit_handler(int sig)
- {
- 	restore_force_dsc_en();
-+	restore_force_dsc_ycbcr420_en();
- }
- 
- static drmModeModeInfo *get_highres_mode(igt_output_t *output)
-@@ -147,6 +185,20 @@ static drmModeModeInfo *get_highres_mode(igt_output_t *output)
- 	return highest_mode;
- }
- 
-+static drmModeModeInfo *get_next_mode(igt_output_t *output)
-+{
-+	drmModeConnector *connector = output->config.connector;
-+	drmModeModeInfo *next_mode = NULL;
++                *b++ = 512 << 16;
++                *b++ = 4*1024;
 +
-+	for (int i = count; i < connector->count_modes; i++) {
-+		next_mode = &connector->modes[i];
-+		count ++;
-+		break;
-+	}
++                reloc[1].offset = (b - buf) * sizeof(*b);
++                reloc[1].target_handle = handle;
++                reloc[1].read_domains = I915_GEM_DOMAIN_RENDER;
++                reloc[1].write_domain = 0;
++                reloc[1].presumed_offset = data_addr;
++                *b++ = data_addr;
++                if (has_64bit_relocations)
++                        *b++ = CANONICAL(data_addr) >> 32;
 +
-+	return next_mode;
-+}
++                *b++ = MI_BATCH_BUFFER_END;
++                *b++ = 0;
++        }
+ 
+ 	memset(gem_exec, 0, sizeof(gem_exec));
+ 	gem_exec[0].handle = handle;
+diff --git a/tests/i915/gem_linear_blits.c b/tests/i915/gem_linear_blits.c
+index d02751be9..ae9971ca7 100644
+--- a/tests/i915/gem_linear_blits.c
++++ b/tests/i915/gem_linear_blits.c
+@@ -67,6 +67,7 @@ static void copy(int fd, uint64_t ahnd, uint32_t dst, uint32_t src,
+ 	struct drm_i915_gem_relocation_entry reloc[2];
+ 	struct drm_i915_gem_exec_object2 obj[3];
+ 	struct drm_i915_gem_execbuffer2 exec;
++	static uint32_t devid;
+ 	int i = 0;
+ 
+ 	memset(obj, 0, sizeof(obj));
+@@ -83,29 +84,46 @@ static void copy(int fd, uint64_t ahnd, uint32_t dst, uint32_t src,
+ 	obj[2].offset = CANONICAL(obj[2].offset);
+ 	obj[2].flags = EXEC_OBJECT_SUPPORTS_48B_ADDRESS;
+ 
+-	batch[i++] = XY_SRC_COPY_BLT_CMD |
+-		  XY_SRC_COPY_BLT_WRITE_ALPHA |
+-		  XY_SRC_COPY_BLT_WRITE_RGB;
+-	if (intel_gen(intel_get_drm_devid(fd)) >= 8)
+-		batch[i - 1] |= 8;
+-	else
+-		batch[i - 1] |= 6;
+-
+-	batch[i++] = (3 << 24) | /* 32 bits */
+-		  (0xcc << 16) | /* copy ROP */
+-		  WIDTH*4;
+-	batch[i++] = 0; /* dst x1,y1 */
+-	batch[i++] = (HEIGHT << 16) | WIDTH; /* dst x2,y2 */
+-	batch[i++] = obj[0].offset;
+-	if (intel_gen(intel_get_drm_devid(fd)) >= 8)
+-		batch[i++] = obj[0].offset >> 32;
+-	batch[i++] = 0; /* src x1,y1 */
+-	batch[i++] = WIDTH*4;
+-	batch[i++] = obj[1].offset;
+-	if (intel_gen(intel_get_drm_devid(fd)) >= 8)
+-		batch[i++] = obj[1].offset >> 32;
+-	batch[i++] = MI_BATCH_BUFFER_END;
+-	batch[i++] = MI_NOOP;
++	devid = intel_get_drm_devid(fd);
 +
- static bool check_dsc_on_connector(data_t *data)
- {
- 	igt_output_t *output = data->output;
-@@ -167,6 +219,29 @@ static bool check_dsc_on_connector(data_t *data)
- 	return true;
- }
- 
-+static bool check_dsc_ycbcr420_on_connector(data_t *data)
-+{
-+	igt_output_t *output = data->output;
++	if (intel_graphics_ver(devid) >= IP_VER(12, 60)) {
++                batch[i++] = XY_FAST_COPY_BLT;
++                batch[i++] = XY_FAST_COPY_COLOR_DEPTH_32 | WIDTH*4;
++                batch[i++] = 0;/* dst x1,y1 */
++                batch[i++] = (HEIGHT << 16) | WIDTH;/* dst x2,y2 */
++                batch[i++] = obj[0].offset;       /* dst address lower bits */
++                batch[i++] = obj[0].offset >> 32; /* dst address upper bits */
++                batch[i++] = 0;/* src x1,y1 */
++                batch[i++] = WIDTH*4;/* src pitch */
++                batch[i++] = obj[1].offset;       /* src address lower bits */
++                batch[i++] = obj[1].offset >> 32; /* src address upper bits */
++                batch[i++] = MI_BATCH_BUFFER_END;
++                batch[i++] = MI_NOOP;
++        } else {
++		 batch[i++] = XY_SRC_COPY_BLT_CMD |
++                          XY_SRC_COPY_BLT_WRITE_ALPHA |
++                          XY_SRC_COPY_BLT_WRITE_RGB;
++                if (intel_gen(intel_get_drm_devid(fd)) >= 8)
++                        batch[i - 1] |= 8;
++                else
++                        batch[i - 1] |= 6;
 +
-+	if (!igt_is_dsc_ycbcr420_supported(data->drm_fd, output->name)) {
-+		igt_debug("DSC YCbCr420 not supported on connector %s\n",
-+			  output->name);
-+		return false;
-+	}
++                batch[i++] = (3 << 24) | /* 32 bits */
++                          (0xcc << 16) | /* copy ROP */
++                          WIDTH*4;
++                batch[i++] = 0; /* dst x1,y1 */
++                batch[i++] = (HEIGHT << 16) | WIDTH; /* dst x2,y2 */
++                batch[i++] = obj[0].offset;
++                if (intel_gen(intel_get_drm_devid(fd)) >= 8)
++                        batch[i++] = obj[0].offset >> 32;
++                batch[i++] = 0; /* src x1,y1 */
++                batch[i++] = WIDTH*4;
++                batch[i++] = obj[1].offset;
++                if (intel_gen(intel_get_drm_devid(fd)) >= 8)
++                        batch[i++] = obj[1].offset >> 32;
++                batch[i++] = MI_BATCH_BUFFER_END;
++                batch[i++] = MI_NOOP;
++        }
+ 
+ 	gem_write(fd, obj[2].handle, 0, batch, i * sizeof(batch[0]));
+ 
+diff --git a/tests/i915/gem_userptr_blits.c b/tests/i915/gem_userptr_blits.c
+index 698508669..cc26cf125 100644
+--- a/tests/i915/gem_userptr_blits.c
++++ b/tests/i915/gem_userptr_blits.c
+@@ -100,6 +100,7 @@ static int copy(int fd, uint32_t dst, uint32_t src)
+ 	struct drm_i915_gem_exec_object2 obj[3];
+ 	struct drm_i915_gem_execbuffer2 exec;
+ 	uint32_t handle;
++	static uint32_t devid;
+ 	int ret, i=0;
+ 	uint64_t dst_offset, src_offset, bb_offset;
+ 	bool has_relocs = gem_has_relocations(fd);
+@@ -108,29 +109,47 @@ static int copy(int fd, uint32_t dst, uint32_t src)
+ 	dst_offset = bb_offset + 4096;
+ 	src_offset = dst_offset + WIDTH * HEIGHT * sizeof(uint32_t) * (src != dst);
+ 
+-	batch[i++] = XY_SRC_COPY_BLT_CMD |
+-		  XY_SRC_COPY_BLT_WRITE_ALPHA |
+-		  XY_SRC_COPY_BLT_WRITE_RGB;
+-	if (intel_gen(intel_get_drm_devid(fd)) >= 8)
+-		batch[i - 1] |= 8;
+-	else
+-		batch[i - 1] |= 6;
+-
+-	batch[i++] = (3 << 24) | /* 32 bits */
+-		  (0xcc << 16) | /* copy ROP */
+-		  WIDTH*4;
+-	batch[i++] = 0; /* dst x1,y1 */
+-	batch[i++] = (HEIGHT << 16) | WIDTH; /* dst x2,y2 */
+-	batch[i++] = dst_offset; /* dst reloc */
+-	if (intel_gen(intel_get_drm_devid(fd)) >= 8)
+-		batch[i++] = dst_offset >> 32;
+-	batch[i++] = 0; /* src x1,y1 */
+-	batch[i++] = WIDTH*4;
+-	batch[i++] = src_offset; /* src reloc */
+-	if (intel_gen(intel_get_drm_devid(fd)) >= 8)
+-		batch[i++] = src_offset >> 32;
+-	batch[i++] = MI_BATCH_BUFFER_END;
+-	batch[i++] = MI_NOOP;
++	devid = intel_get_drm_devid(fd);
 +
-+	return true;
-+}
++        if (intel_graphics_ver(devid) >= IP_VER(12, 60)) {
++                batch[i++] = XY_FAST_COPY_BLT;
++                batch[i++] = XY_FAST_COPY_COLOR_DEPTH_32 | WIDTH*4;
++                batch[i++] = 0;/* dst x1,y1 */
++                batch[i++] = (HEIGHT << 16) | WIDTH;/* dst x2,y2 */
++                batch[i++] = 0;/* dst address lower bits */
++                batch[i++] = 0;/* dst address upper bits */
++                batch[i++] = 0;/* src x1,y1 */
++                batch[i++] = WIDTH*4;/* src pitch */
++                batch[i++] = 0;// src address lower bits
++                batch[i++] = 0;// src address upper bits
++                batch[i++] = MI_BATCH_BUFFER_END;
++                batch[i++] = MI_NOOP;
++        } else {
++                batch[i++] = XY_SRC_COPY_BLT_CMD |
++                             XY_SRC_COPY_BLT_WRITE_ALPHA |
++                             XY_SRC_COPY_BLT_WRITE_RGB;
 +
-+/* YCbCr420 DSC is supported on disp ver 14+ */
-+static bool check_ycbcr420_constraint(data_t *data, int flag)
-+{
-+	if (data->disp_ver >= 14 && flag)
-+		return check_dsc_ycbcr420_on_connector(data);
-+	else
-+		return true;
-+}
++                if (intel_gen(intel_get_drm_devid(fd)) >= 8)
++                        batch[i - 1] |= 8;
++                else
++                        batch[i - 1] |= 6;
 +
++                batch[i++] = (3 << 24) | /* 32 bits */
++                          (0xcc << 16) | /* copy ROP */
++                          WIDTH*4;
++                batch[i++] = 0; /* dst x1,y1 */
++                batch[i++] = (HEIGHT << 16) | WIDTH; /* dst x2,y2 */
++                batch[i++] = dst_offset; /* dst reloc */
++                if (intel_gen(intel_get_drm_devid(fd)) >= 8)
++                        batch[i++] = dst_offset >> 32;
++                batch[i++] = 0; /* src x1,y1 */
++                batch[i++] = WIDTH*4;
++		batch[i++] = src_offset; /* src reloc */
++                if (intel_gen(intel_get_drm_devid(fd)) >= 8)
++                        batch[i++] = src_offset >> 32;
++                batch[i++] = MI_BATCH_BUFFER_END;
++                batch[i++] = MI_NOOP;
++        }
+ 
+ 	handle = gem_create(fd, 4096);
+ 	gem_write(fd, handle, 0, batch, sizeof(batch));
+@@ -206,29 +225,49 @@ blit(int fd, uint32_t dst, uint32_t src, uint32_t *all_bo, int n_bo)
+ 	struct drm_i915_gem_execbuffer2 exec;
+ 	uint32_t handle;
+ 	int n, ret, i=0;
+-
+-	batch[i++] = XY_SRC_COPY_BLT_CMD |
+-		  XY_SRC_COPY_BLT_WRITE_ALPHA |
+-		  XY_SRC_COPY_BLT_WRITE_RGB;
+-	if (intel_gen(intel_get_drm_devid(fd)) >= 8)
+-		batch[i - 1] |= 8;
+-	else
+-		batch[i - 1] |= 6;
+-	batch[i++] = (3 << 24) | /* 32 bits */
+-		  (0xcc << 16) | /* copy ROP */
+-		  WIDTH*4;
+-	batch[i++] = 0; /* dst x1,y1 */
+-	batch[i++] = (HEIGHT << 16) | WIDTH; /* dst x2,y2 */
+-	batch[i++] = 0; /* dst reloc */
+-	if (intel_gen(intel_get_drm_devid(fd)) >= 8)
+-		batch[i++] = 0;
+-	batch[i++] = 0; /* src x1,y1 */
+-	batch[i++] = WIDTH*4;
+-	batch[i++] = 0; /* src reloc */
+-	if (intel_gen(intel_get_drm_devid(fd)) >= 8)
+-		batch[i++] = 0;
+-	batch[i++] = MI_BATCH_BUFFER_END;
+-	batch[i++] = MI_NOOP;
++	static uint32_t devid;
 +
- static bool check_big_joiner_pipe_constraint(data_t *data)
- {
- 	igt_output_t *output = data->output;
-@@ -226,69 +301,90 @@ static void test_cleanup(data_t *data)
- static void update_display(data_t *data, enum dsc_test_type test_type,
- 			   unsigned int plane_format, int flag)
- {
-+	int ret;
- 	bool enabled;
- 	igt_plane_t *primary;
- 	drmModeModeInfo *mode;
-+	bool test_complete = false;
- 	igt_output_t *output = data->output;
- 	igt_display_t *display = &data->display;
- 
--	/* sanitize the state before starting the subtest */
--	igt_display_reset(display);
--	igt_display_commit(display);
-+	count = 0;
-+	while (!test_complete) {
-+		/* sanitize the state before starting the subtest */
-+		igt_display_reset(display);
-+		igt_display_commit(display);
- 
--	igt_debug("DSC is supported on %s\n", data->output->name);
--	save_force_dsc_en(data);
--	force_dsc_enable(data);
-+		igt_debug("DSC is supported on %s\n", data->output->name);
-+		save_force_dsc_en(data);
-+		force_dsc_enable(data);
- 
--	if (test_type == TEST_DSC_BPC) {
--		igt_debug("Trying to set input BPC to %d\n", data->input_bpc);
--		force_dsc_enable_bpc(data);
--	}
-+		if (flag) {
-+			igt_debug("DSC YCbCr420 is supported on %s\n", data->output->name);
-+			save_force_dsc_ycbcr420_en(data);
-+			force_dsc_ycbcr420_enable(data);
-+		}
- 
--	igt_output_set_pipe(output, data->pipe);
-+		if (test_type == TEST_DSC_BPC) {
-+			igt_debug("Trying to set input BPC to %d\n", data->input_bpc);
-+			force_dsc_enable_bpc(data);
-+		}
- 
--	mode = get_highres_mode(output);
--	igt_require(mode != NULL);
--	igt_output_override_mode(output, mode);
-+		igt_output_set_pipe(output, data->pipe);
- 
--	primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
-+		if (flag)
-+			mode = get_next_mode(output);
-+		else
-+			mode = get_highres_mode(output);
- 
--	igt_skip_on(!igt_plane_has_format_mod(primary, plane_format,
--		    DRM_FORMAT_MOD_LINEAR));
-+		igt_require(mode != NULL);
-+		igt_output_override_mode(output, mode);
- 
--	igt_create_pattern_fb(data->drm_fd,
--			      mode->hdisplay,
--			      mode->vdisplay,
--			      plane_format,
--			      DRM_FORMAT_MOD_LINEAR,
--			      &data->fb_test_pattern);
-+		primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
- 
--	igt_plane_set_fb(primary, &data->fb_test_pattern);
--	igt_display_commit(display);
-+		igt_skip_on(!igt_plane_has_format_mod(primary, plane_format,
-+			    DRM_FORMAT_MOD_LINEAR));
- 
--	/* until we have CRC check support, manually check if RGB test
--	 * pattern has no corruption.
--	 */
--	manual("RGB test pattern without corruption");
-+		igt_create_pattern_fb(data->drm_fd,
-+				      mode->hdisplay,
-+				      mode->vdisplay,
-+				      plane_format,
-+				      DRM_FORMAT_MOD_LINEAR,
-+				      &data->fb_test_pattern);
- 
--	enabled = igt_is_dsc_enabled(data->drm_fd, output->name);
--	igt_info("Current mode is: %dx%d @%dHz -- DSC is: %s\n",
--				mode->hdisplay,
--				mode->vdisplay,
--				mode->vrefresh,
--				enabled ? "ON" : "OFF");
-+		igt_plane_set_fb(primary, &data->fb_test_pattern);
-+		ret = igt_display_try_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
-+		if (ret != -EINVAL) {
-+			igt_display_commit(display);
-+			test_complete = true;
-+		}
- 
--	restore_force_dsc_en();
--	igt_debug("Reset compression BPC\n");
--	data->input_bpc = 0;
--	force_dsc_enable_bpc(data);
-+		/*
-+		 * until we have CRC check support, manually check if RGB test
-+		 * pattern has no corruption.
-+		 */
-+		manual("RGB test pattern without corruption");
++	devid = intel_get_drm_devid(fd);
 +
-+		enabled = igt_is_dsc_enabled(data->drm_fd, output->name);
-+		igt_info("Current mode is: %dx%d @%dHz -- DSC is: %s\n",
-+					mode->hdisplay,
-+					mode->vdisplay,
-+					mode->vrefresh,
-+					enabled ? "ON" : "OFF");
++        if (intel_graphics_ver(devid) >= IP_VER(12, 60)) {
++                batch[i++] = XY_FAST_COPY_BLT;
++                batch[i++] = XY_FAST_COPY_COLOR_DEPTH_32 | WIDTH*4;
++                batch[i++] = 0;/* dst x1,y1 */
++                batch[i++] = (HEIGHT << 16) | WIDTH;/* dst x2,y2 */
++                batch[i++] = 0;/* dst address lower bits */
++                batch[i++] = 0;/* dst address upper bits */
++                batch[i++] = 0;/* src x1,y1 */
++                batch[i++] = WIDTH*4;/* src pitch */
++                batch[i++] = 0;// src address lower bits
++                batch[i++] = 0;// src address upper bits
++                batch[i++] = MI_BATCH_BUFFER_END;
++                batch[i++] = MI_NOOP;
++        } else {
++                batch[i++] = XY_SRC_COPY_BLT_CMD |
++                             XY_SRC_COPY_BLT_WRITE_ALPHA |
++                             XY_SRC_COPY_BLT_WRITE_RGB;
 +
-+		restore_force_dsc_en();
-+		if (flag)
-+			restore_force_dsc_ycbcr420_en();
-+		igt_debug("Reset compression BPC\n");
-+		data->input_bpc = 0;
-+		force_dsc_enable_bpc(data);
- 
--	igt_assert_f(enabled,
--		     "Default DSC enable failed on connector: %s pipe: %s\n",
--		     output->name,
--		     kmstest_pipe_name(data->pipe));
-+		igt_assert_f(enabled,
-+			     "Default DSC enable failed on connector: %s pipe: %s\n",
-+			     output->name, kmstest_pipe_name(data->pipe));
- 
--	test_cleanup(data);
-+		test_cleanup(data);
-+	}
- }
- 
- static void test_dsc(data_t *data, enum dsc_test_type test_type, int bpc,
-@@ -307,6 +403,9 @@ static void test_dsc(data_t *data, enum dsc_test_type test_type, int bpc,
- 		if (!check_dsc_on_connector(data))
- 			continue;
- 
-+		if (!check_ycbcr420_constraint(data, flag))
-+			continue;
++                if (intel_gen(intel_get_drm_devid(fd)) >= 8)
++                        batch[i - 1] |= 8;
++                else
++                        batch[i - 1] |= 6;
 +
- 		if (!check_gen11_dp_constraint(data))
- 			continue;
++                batch[i++] = (3 << 24) | /* 32 bits */
++                          (0xcc << 16) | /* copy ROP */
++                          WIDTH*4;
++                batch[i++] = 0; /* dst x1,y1 */
++                batch[i++] = (HEIGHT << 16) | WIDTH; /* dst x2,y2 */
++                batch[i++] = dst_offset; /* dst reloc */
++                if (intel_gen(intel_get_drm_devid(fd)) >= 8)
++                        batch[i++] = dst_offset >> 32;
++                batch[i++] = 0; /* src x1,y1 */
++                batch[i++] = WIDTH*4;
++                batch[i++] = src_offset; /* src reloc */
++                if (intel_gen(intel_get_drm_devid(fd)) >= 8)
++                        batch[i++] = src_offset >> 32;
++                batch[i++] = MI_BATCH_BUFFER_END;
++                batch[i++] = MI_NOOP;
++        }
  
-@@ -330,6 +429,9 @@ static void run_test(data_t *data, enum dsc_test_type test_type, int bpc,
- 		     unsigned int plane_format)
- {
- 	test_dsc(data, test_type, bpc, plane_format, 0);
-+
-+	if (data->disp_ver >= 14)
-+		test_dsc(data, test_type, bpc, plane_format, 1);
- }
- 
- igt_main
+ 	handle = gem_create(fd, 4096);
+ 	gem_write(fd, handle, 0, batch, sizeof(batch));
 -- 
 2.25.1
