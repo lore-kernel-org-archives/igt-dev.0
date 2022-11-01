@@ -1,18 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5D54F10E7C3
- for <igt-dev@lists.freedesktop.org>; Fri, 25 Nov 2022 14:08:28 +0000 (UTC)
-Date: Fri, 25 Nov 2022 13:08:22 -0100
-From: Melissa Wen <mwen@igalia.com>
-To: =?utf-8?B?TWHDrXJh?= Canal <mcanal@igalia.com>
-Message-ID: <20221125140804.nr5x44d22s3apdfq@mail.igalia.com>
-References: <20221111195813.277822-1-mcanal@igalia.com>
+Received: from fanzine2.igalia.com (fanzine.igalia.com [178.60.130.6])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7E4E510E411
+ for <igt-dev@lists.freedesktop.org>; Tue,  1 Nov 2022 18:46:34 +0000 (UTC)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
- protocol="application/pgp-signature"; boundary="dstcj2n3f2dsj2dv"
-Content-Disposition: inline
-In-Reply-To: <20221111195813.277822-1-mcanal@igalia.com>
-Subject: Re: [igt-dev] [PATCH i-g-t v2 0/7] V3D IGT Tests Updates
+Date: Tue, 01 Nov 2022 19:46:29 +0100
+From: aemad <aemad@igalia.com>
+To: juhapekka.heikkila@gmail.com
+In-Reply-To: <3703439d-a975-3756-00b1-a925d16f9e9a@gmail.com>
+References: <20221009151844.3456-1-aemad@igalia.com>
+ <aa261d04-81b3-48ac-603b-c75fcb3c8909@gmail.com>
+ <31ec4c5751bfda7c1f174b9e0c898280@igalia.com>
+ <3703439d-a975-3756-00b1-a925d16f9e9a@gmail.com>
+Message-ID: <4a52845c13b5b582116ae84808950f32@igalia.com>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_cursor_crc: prevent the
+ entire test from being aborted when a subtest fails
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,104 +23,278 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org, petri.latvala@intel.com,
- Emma Anholt <emma@anholt.net>
+Cc: igt-dev@lists.freedesktop.org, petri.latvala@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
+On 2022-11-01 16:11, Juha-Pekka Heikkila wrote:
+> On 1.11.2022 13.25, aemad wrote:
+>> On 2022-10-10 13:16, Juha-Pekka Heikkila wrote:
+>>> Hi Alaa,
+>>>
+>>> what's that invalid argument you're getting on addfb? I never tried
+>>> this with vkms, normally just on i915. With i915 I cannot reproduce
+>>> that abort you're seeing. Other kms tests run on your setup?
+>>>
+>>
+>> Hi Juha-Pekka,
+>>
+>>> Anyway, that revert you're suggesting would remove support for msm
+>>> driver on this test. Let's first summon those who made these changes
+>>> to comment. (cc'ing Modem and Swati)
+>>
+>> Could you please explain why this patch will remove MSM driver support?
+>>
+> 
+> See in test what's done with data.vblank_wait_count variable. That is
+> there because on msm legacy cursor is not updated asynchronously and
+> msm cursor likely will miss even second frame. Taking that out will
+> cause these tests reliably fail on msm.
+> 
+> I was just today because of unrelated cursor issues looking into this,
+> I still don't have patch though. As Swati/Modem didn't come back with
+> a fix I was looking to take out all dynamic stuff, it should solve
+> this issue.
+> 
+> /Juha-Pekka
 
---dstcj2n3f2dsj2dv
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="ram4ekgsqat2h7ca"
-Content-Disposition: inline
-
-
---ram4ekgsqat2h7ca
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-O 11/11, Ma=EDra Canal wrote:
-> This series aims to update the V3D IGT tests. The first five patches cont=
-ain
-> some janitorial duties related to the existing tests: updating the uAPI h=
-eader,
-> creating a folder for the V3D tests, removing some unused includes, addin=
-g=20
-> descriptions to the existing tests and adding a macro with the default PA=
-GE_SIZE.
-> The last two patches include new tests for the V3D driver.
->=20
-> Best Regards,
-> - Ma=EDra Canal
-
-Hi Maira,
-
-Thanks for this work.
-
-Overall LGTM. I asked two improvements, and with that you can include my
-r-b tag in the next version.
-
-Reviewed-by: Melissa Wen <mwen@igalia.com>
-
->=20
-> v1 -> v2: https://patchwork.freedesktop.org/series/110681/
-> - Use SPDX licence (Kamil Konieczny).
-> - Add descriptions to each new added test with igt_describe (Kamil Koniec=
-zny).
-> - Add descriptions to existing V3D tests.
->=20
-> Ma=EDra Canal (7):
->   include/drm-uapi: Update to the latest v3d_drm.h
->   tests/v3d: Move V3D tests to their own folder
->   tests/v3d: Remove unused or redundant includes
->   tests/v3d: Add igt_describe() to all V3D subtests
->   lib/igt_v3d: Add PAGE_SIZE macro to V3D
->   tests/v3d_create_bo: Create test for V3D's Create BO IOCTL
->   tests/v3d_perfmon: Create test for V3D's Perfmon IOCTLs
->=20
->  include/drm-uapi/v3d_drm.h          |  78 +++++++++++++++
->  lib/igt_v3d.c                       |  39 +++++++-
->  lib/igt_v3d.h                       |   6 ++
->  tests/meson.build                   |  20 +++-
->  tests/v3d/v3d_create_bo.c           |  63 ++++++++++++
->  tests/{ =3D> v3d}/v3d_get_bo_offset.c |  21 ++--
->  tests/{ =3D> v3d}/v3d_get_param.c     |  17 +---
->  tests/{ =3D> v3d}/v3d_mmap.c          |  15 +--
->  tests/v3d/v3d_perfmon.c             | 144 ++++++++++++++++++++++++++++
->  tests/v3d_ci/v3d.testlist           |  14 +++
->  10 files changed, 373 insertions(+), 44 deletions(-)
->  create mode 100644 tests/v3d/v3d_create_bo.c
->  rename tests/{ =3D> v3d}/v3d_get_bo_offset.c (85%)
->  rename tests/{ =3D> v3d}/v3d_get_param.c (88%)
->  rename tests/{ =3D> v3d}/v3d_mmap.c (85%)
->  create mode 100644 tests/v3d/v3d_perfmon.c
->=20
-> --=20
-> 2.38.1
->=20
-
---ram4ekgsqat2h7ca--
-
---dstcj2n3f2dsj2dv
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEEd8WOo/JViG+Tu+XIwqF3j0dLehwFAmOAzFYACgkQwqF3j0dL
-ehxIkg/+Px03MPGybmyP0alFEqIYhWAmxb+FULEFVXXYgQcgeIKC8vOxoYY/s3hr
-wiN0nEgYoFNDFJvCrVT5M6MN3+X2R2UYh+qFmJAqNfMXL46RQ0LLeOEOTicd7Upj
-wscMiCPZI7bdu9+ZmK3vqRCfjujkGz7WO+s33nJ41Gz+9QHHJ/cyCiAI9jJerfHr
-1YcXYGGflsShDLlfL2ewsGJMOQIpLB9tPe/7gIG+3wdS5MfHR+ZVZMwxg/Xx4YXm
-FBOZmcLlwuO/VrmFoEKbmgFmJweIsw3k/Ex8ctIX/K3LFloOQVHxxuOBsmZiUhVN
-1LAhOyU3y1XNrxoIe0dd1FsYBZvUThKiaBunETiW4h69O3Mv+wZMCUTUArEivPdO
-sZShYR/OSmZ3ehXSCdDYIIQIDe6rMPqkSG+tKDbDFiqQCE+ciW53zNS70rIJRbwE
-T3oaFVUiv85MJeDTguh3YsKIcuEJ17r+7toFU32o+IkKGNNLfjwx6Rb5PsyeBrKj
-yfS7XFOXJE4af5AgLg5WPVn+HBoxOOby2VKvaH40Nf1V1JyZMc6LKejgDz+ElW4Y
-6cxON4jqFo0Q4lPpQTZJ3oWjd6gdc9kGDPjVohVjFM8XNwgce305SZzpU+6Egl5+
-h0JcSooyjZ2hmbYWxJbFQdCONxFFcPMfnWdIIxWtx9StjK9OhlI=
-=NOiP
------END PGP SIGNATURE-----
-
---dstcj2n3f2dsj2dv--
+Got it, thanks Juha.
+> 
+>>
+>>>
+>>> /Juha-Pekka
+>>>
+>>> On 9.10.2022 18.18, Alaa Emad wrote:
+>>>> Any test failure prevents the other tests to be run, aborting the entire test loop. This behavior was introduced by commit
+>>>> 9494d53d ("tests/kms_cursor_crc: Convert tests to dynamic").
+>>>> For instance, when running the cursor-offscreen-32x10 subtest using VKMS,
+>>>> the execution is aborted instead of SKIP/FAIL, as in the following output:
+>>>>
+>>>> $ ./tests/kms_cursor_crc --run-subtest cursor-offscreen-32x10
+>>>> (kms_cursor_crc:7447) igt_fb-CRITICAL: Test assertion failure function igt_create_fb_with_bo_size, file ../lib/igt_fb.c:2078:
+>>>> (kms_cursor_crc:7447) igt_fb-CRITICAL: Failed assertion: (__kms_addfb(fb->fd, fb->gem_handle, fb->width, fb->height, fb->drm_format, fb->modifier, fb->strides, fb->offsets, fb->num_planes, flags, &fb->fb_id)) == 0
+>>>> (kms_cursor_crc:7447) igt_fb-CRITICAL: Last errno: 22, Invalid argument
+>>>> Stack trace:
+>>>> kms_cursor_crc: ../lib/igt_core.c:1667: igt_fail: Assertion `_igt_dynamic_tests_executed < 0 || dynamic_failed_one' failed.
+>>>> Received signal SIGABRT.
+>>>>
+>>>> The test was aborted after convertig tests to dynamic with cursor size 32*10 that because of the assertion in the `igt_create_fb_with_bo_size` when creating cursor in `create_cursor_fb`.
+>>>>
+>>>> This happened because Within a igt_subtest_with_dynamic block, explicit failure (e.g. igt_assert) is not allowed,
+>>>> only dynamic subsubtests themselves will produce test results.
+>>>>
+>>>> The previous approach was running each test for all cursor sizes then move to the next test  so fix this issue
+>>>> by running all tests for one cursor size one by one, and check if cursor size is
+>>>> supported or not before running the test.
+>>>>
+>>>> Fixes: 9494d53d ("tests/kms_cursor_crc: Convert tests to dynamic")
+>>>>
+>>>> Signed-off-by: Alaa Emad <aemad@igalia.com>
+>>>> ---
+>>>>    tests/kms_cursor_crc.c | 136 +++++++++++++++++++++--------------------
+>>>>    1 file changed, 69 insertions(+), 67 deletions(-)
+>>>>
+>>>> diff --git a/tests/kms_cursor_crc.c b/tests/kms_cursor_crc.c
+>>>> index 8d3426dd..9b620389 100644
+>>>> --- a/tests/kms_cursor_crc.c
+>>>> +++ b/tests/kms_cursor_crc.c
+>>>> @@ -72,7 +72,6 @@ typedef struct {
+>>>>    	cairo_surface_t *surface;
+>>>>    	uint32_t devid;
+>>>>    	double alpha;
+>>>> -	int vblank_wait_count; /* because of msm */
+>>>>    } data_t;
+>>>>      #define TEST_DPMS (1<<0)
+>>>> @@ -125,12 +124,6 @@ static void cursor_disable(data_t *data)
+>>>>    {
+>>>>    	igt_plane_set_fb(data->cursor, NULL);
+>>>>    	igt_plane_set_position(data->cursor, 0, 0);
+>>>> -	igt_display_commit(&data->display);
+>>>> -
+>>>> -	/* do this wait here so it will not need to be added everywhere */
+>>>> -	igt_wait_for_vblank_count(data->drm_fd,
+>>>> -				  data->display.pipes[data->pipe].crtc_offset,
+>>>> -				  data->vblank_wait_count);
+>>>>    }
+>>>>      static bool chv_cursor_broken(data_t *data, int x)
+>>>> @@ -209,9 +202,8 @@ static void do_single_test(data_t *data, int x, int y, bool hw_test,
+>>>>    		igt_display_commit(display);
+>>>>      		/* Extra vblank wait is because nonblocking cursor ioctl */
+>>>> -		igt_wait_for_vblank_count(data->drm_fd,
+>>>> -					  display->pipes[data->pipe].crtc_offset,
+>>>> -					  data->vblank_wait_count);
+>>>> +		igt_wait_for_vblank(data->drm_fd,
+>>>> +				display->pipes[data->pipe].crtc_offset);
+>>>>      		igt_pipe_crc_get_current(data->drm_fd, pipe_crc, hwcrc);
+>>>>    @@ -249,7 +241,11 @@ static void do_single_test(data_t *data, int x, int y, bool hw_test,
+>>>>      		restore_image(data, swbufidx, &((cursorarea){x, y, data->curw, data->curh}));
+>>>>    		igt_plane_set_fb(data->primary, &data->primary_fb[swbufidx]);
+>>>> +
+>>>>    		igt_display_commit(display);
+>>>> +		igt_wait_for_vblank(data->drm_fd,
+>>>> +				display->pipes[data->pipe].crtc_offset);
+>>>> +
+>>>>    		igt_pipe_crc_get_current(data->drm_fd, pipe_crc, &crc);
+>>>>    		igt_assert_crc_equal(&crc, hwcrc);
+>>>>    	}
+>>>> @@ -267,7 +263,9 @@ static void do_fail_test(data_t *data, int x, int y, int expect)
+>>>>    	igt_plane_set_position(data->cursor, x, y);
+>>>>    	ret = igt_display_try_commit2(display, COMMIT_LEGACY);
+>>>>    +	igt_plane_set_position(data->cursor, 0, 0);
+>>>>    	cursor_disable(data);
+>>>> +	igt_display_commit(display);
+>>>>      	igt_assert_eq(ret, expect);
+>>>>    }
+>>>> @@ -689,10 +687,28 @@ static void test_rapid_movement(data_t *data)
+>>>>    	igt_assert_lt(usec, 0.9 * 400 * 1000000 / data->refresh);
+>>>>    }
+>>>>    -static void run_size_tests(data_t *data, void (*testfunc)(data_t *),
+>>>> -			   int w, int h)
+>>>> +static void run_size_tests(data_t *data, int w, int h)
+>>>>    {
+>>>>    	enum pipe pipe;
+>>>> +	int i;
+>>>> +
+>>>> +	struct
+>>>> +	{
+>>>> +		const char *name;
+>>>> +		void (*testfunc)(data_t *);
+>>>> +		const char *desc;
+>>>> +	} size_tests[] = {
+>>>> +		{"cursor-onscreen", test_crc_onscreen,
+>>>> +		 "Check if a given-size cursor is well-positioned inside the screen."},
+>>>> +		{"cursor-offscreen", test_crc_offscreen,
+>>>> +		 "Check if a given-size cursor is well-positioned outside the screen."},
+>>>> +		{"cursor-sliding", test_crc_sliding,
+>>>> +		 "Check the smooth and pixel-by-pixel given-size cursor movements on horizontal, vertical and diagonal."},
+>>>> +		{"cursor-random", test_crc_random,
+>>>> +		 "Check random placement of a cursor with given size."},
+>>>> +		{"cursor-rapid-movement", test_rapid_movement,
+>>>> +		 "Check the rapid update of given-size cursor movements."},
+>>>> +	};
+>>>>      	if (w == 0 && h == 0) {
+>>>>    		w = data->cursor_max_w;
+>>>> @@ -709,45 +725,38 @@ static void run_size_tests(data_t *data, void (*testfunc)(data_t *),
+>>>>    		}
+>>>>    	}
+>>>>    -	create_cursor_fb(data, w, h);
+>>>> -	if (require_cursor_size(data, w, h)) {
+>>>> -		igt_info("Cursor size %dx%d not supported by driver\n", w, h);
+>>>> -
+>>>> -		igt_remove_fb(data->drm_fd, &data->fb);
+>>>> -		return;
+>>>> -	}
+>>>> +	igt_fixture
+>>>> +		create_cursor_fb(data, w, h);
+>>>>    -	for_each_pipe(&data->display, pipe) {
+>>>> -		data->pipe = pipe;
+>>>> -		igt_dynamic_f("pipe-%s-%s",
+>>>> -			      kmstest_pipe_name(pipe), igt_output_name(data->output))
+>>>> -			run_test(data, testfunc, w, h);
+>>>> +	for (i = 0; i < ARRAY_SIZE(size_tests); i++)
+>>>> +	{
+>>>> +		igt_describe(size_tests[i].desc);
+>>>> +		igt_subtest_with_dynamic_f("%s-%dx%d", size_tests[i].name, w, h)
+>>>> +		{
+>>>> +			for_each_pipe(&data->display, pipe)
+>>>> +			{
+>>>> +				data->pipe = pipe;
+>>>> +				if (require_cursor_size(data, w, h))
+>>>> +				{
+>>>> +					igt_info("Cursor size %dx%d not supported by driver\n", w, h);
+>>>> +					continue;
+>>>> +				}
+>>>> +
+>>>> +				igt_dynamic_f("pipe-%s-%s",
+>>>> +							  kmstest_pipe_name(pipe), igt_output_name(data->output))
+>>>> +					run_test(data, size_tests[i].testfunc, w, h);
+>>>> +			}
+>>>> +		}
+>>>>    	}
+>>>>    -	igt_remove_fb(data->drm_fd, &data->fb);
+>>>> +	igt_fixture
+>>>> +		igt_remove_fb(data->drm_fd, &data->fb);
+>>>>    }
+>>>>      static void run_tests_on_pipe(data_t *data)
+>>>>    {
+>>>>    	enum pipe pipe;
+>>>>    	int cursor_size;
+>>>> -	int i;
+>>>> -	struct {
+>>>> -		const char *name;
+>>>> -		void (*testfunc)(data_t *);
+>>>> -		const char *desc;
+>>>> -	} size_tests[] = {
+>>>> -		{ "cursor-onscreen", test_crc_onscreen,
+>>>> -			"Check if a given-size cursor is well-positioned inside the screen." },
+>>>> -		{ "cursor-offscreen", test_crc_offscreen,
+>>>> -			"Check if a given-size cursor is well-positioned outside the screen." },
+>>>> -		{ "cursor-sliding", test_crc_sliding,
+>>>> -			"Check the smooth and pixel-by-pixel given-size cursor movements on horizontal, vertical and diagonal." },
+>>>> -		{ "cursor-random", test_crc_random,
+>>>> -			"Check random placement of a cursor with given size." },
+>>>> -		{ "cursor-rapid-movement", test_rapid_movement,
+>>>> -			"Check the rapid update of given-size cursor movements." },
+>>>> -	};
+>>>>      	igt_fixture {
+>>>>    		data->output = igt_get_single_output_for_pipe(&data->display, pipe);
+>>>> @@ -848,30 +857,26 @@ static void run_tests_on_pipe(data_t *data)
+>>>>    	igt_fixture
+>>>>    		igt_remove_fb(data->drm_fd, &data->fb);
+>>>>    -	for (i = 0; i < ARRAY_SIZE(size_tests); i++) {
+>>>> -		igt_describe(size_tests[i].desc);
+>>>> -		igt_subtest_group {
+>>>> -			for (cursor_size = 32; cursor_size <= 512; cursor_size *= 2) {
+>>>> -				int w = cursor_size;
+>>>> -				int h = cursor_size;
+>>>> -
+>>>> -				igt_subtest_with_dynamic_f("%s-%dx%d", size_tests[i].name, w, h)
+>>>> -					run_size_tests(data, size_tests[i].testfunc, w, h);
+>>>> -
+>>>> -				/*
+>>>> -				 * Test non-square cursors a bit on the platforms
+>>>> -				 * that support such things. And make it a bit more
+>>>> -				 * interesting by using a non-pot height.
+>>>> -				 */
+>>>> -				h /= 3;
+>>>> -				igt_subtest_with_dynamic_f("%s-%dx%d", size_tests[i].name, w, h)
+>>>> -					run_size_tests(data, size_tests[i].testfunc, w, h);
+>>>> -			}
+>>>> +	for (cursor_size = 32; cursor_size <= 512; cursor_size *= 2)
+>>>> +	{
+>>>> +		int w = cursor_size;
+>>>> +		int h = cursor_size;
+>>>>    -			igt_subtest_with_dynamic_f("%s-max-size", size_tests[i].name)
+>>>> -				run_size_tests(data, size_tests[i].testfunc, 0, 0);
+>>>> -		}
+>>>> +		igt_subtest_group
+>>>> +			run_size_tests(data, w, h);
+>>>> +
+>>>> +		/*
+>>>> +		 * Test non-square cursors a bit on the platforms
+>>>> +		 * that support such things. And make it a bit more
+>>>> +		 * interesting by using a non-pot height.
+>>>> +		 */
+>>>> +		h /= 3;
+>>>> +
+>>>> +		igt_subtest_group
+>>>> +			run_size_tests(data, w, h);
+>>>>    	}
+>>>> +
+>>>> +	run_size_tests(data, 0, 0);
+>>>>    }
+>>>>      static data_t data;
+>>>> @@ -896,8 +901,6 @@ igt_main
+>>>>    		kmstest_set_vt_graphics_mode();
+>>>>      		igt_require_pipe_crc(data.drm_fd);
+>>>> -
+>>>> -		data.vblank_wait_count = is_msm_device(data.drm_fd) ? 2 : 1;
+>>>>    	}
+>>>>      	data.cursor_max_w = cursor_width;
+>>>> @@ -913,6 +916,5 @@ igt_main
+>>>>    		}
+>>>>      		igt_display_fini(&data.display);
+>>>> -		close(data.drm_fd);
+>>>>    	}
+>>>>    }
