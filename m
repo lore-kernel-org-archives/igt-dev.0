@@ -1,23 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 83BA110E339
- for <igt-dev@lists.freedesktop.org>; Tue,  1 Nov 2022 09:01:08 +0000 (UTC)
-Date: Tue, 1 Nov 2022 11:01:07 +0200
-From: Petri Latvala <petri.latvala@intel.com>
-To: Mark Yacoub <markyacoub@chromium.org>
-Message-ID: <Y2DgU6Xl8iHVLxLh@platvala-desk.ger.corp.intel.com>
-References: <20221031163139.73486-1-markyacoub@chromium.org>
- <166723655571.2020.3993909126900647750@emeril.freedesktop.org>
- <CAJUqKUq3We+=cBkBXP4jn2S-KKkg+cd4wLytiKRM_-cd8=+oZQ@mail.gmail.com>
+Date: Tue, 1 Nov 2022 13:43:34 +0100
+From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
+To: Daniel Latypov <dlatypov@google.com>
+Message-ID: <20221101134334.59500e01@maurocar-mobl2>
+In-Reply-To: <CAGS_qxpCPTSRNAyejL0gS0pZAoVNp9SdFwPFkHRyn5yMuPGkLw@mail.gmail.com>
+References: <20220829000920.38185-1-isabbasso@riseup.net>
+ <20220829000920.38185-4-isabbasso@riseup.net>
+ <CABVgOS=HO9XAf8C5X7ZD6aTW37r06ify==7AW9a8cpKsgLVfFw@mail.gmail.com>
+ <D53B4EB1-1A95-48F1-BF49-8EC0CC7B5418@riseup.net>
+ <CAGS_qxpCPTSRNAyejL0gS0pZAoVNp9SdFwPFkHRyn5yMuPGkLw@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <CAJUqKUq3We+=cBkBXP4jn2S-KKkg+cd4wLytiKRM_-cd8=+oZQ@mail.gmail.com>
-Subject: Re: [igt-dev]
- =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_k?=
- =?utf-8?q?ms=5Fchamelium=3A_Add_new_EDID_stress_resolution_test_=28rev2?=
- =?utf-8?q?=29?=
+Subject: Re: [igt-dev] [PATCH i-g-t v2 3/4] lib/igt_kmod: add compatibility
+ for KUnit
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,231 +21,161 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org, "Vudum,
- Lakshminarayana" <lakshminarayana.vudum@intel.com>
+Cc: Shuah Khan <skhan@linuxfoundation.org>, linux-kselftest@vger.kernel.org,
+ Magali Lemes <magalilemes00@gmail.com>,
+ =?UTF-8?B?TWHDrXJh?= Canal <maira.canal@usp.br>,
+ Trevor Woerner <twoerner@gmail.com>,
+ Tales Aparecida <tales.aparecida@gmail.com>,
+ Brendan Higgins <brendanhiggins@google.com>,
+ kernel list <linux-kernel@vger.kernel.org>, leandro.ribeiro@collabora.com,
+ igt-dev@lists.freedesktop.org, ML dri-devel <dri-devel@lists.freedesktop.org>,
+ Daniel Vetter <daniel@ffwll.ch>, n@nfraprado.net,
+ David Gow <davidgow@google.com>, Isabella Basso <isabbasso@riseup.net>,
+ =?UTF-8?B?QW5kcsOp?= Almeida <andrealmeid@riseup.net>,
+ KUnit Development <kunit-dev@googlegroups.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Mon, Oct 31, 2022 at 01:32:44PM -0400, Mark Yacoub wrote:
-> Hi Lakshminarayana,
-> Something seems off here - I don't think I should modify xf86drmMode
-> in anyway. What do you think is going on? Thanks!
+On Mon, 19 Sep 2022 17:25:38 -0700
+Daniel Latypov <dlatypov@google.com> wrote:
 
-Add #include <stddef.h> to lib/igt_chamelium.h before xf86drmMode.h
+> On Mon, Sep 19, 2022 at 1:43 PM Isabella Basso <isabbasso@riseup.net> wro=
+te:
+> > >> +        * "(K)TAP version XX" should be the first line on all (sub)=
+tests as per
+> > >> +        * https://www.kernel.org/doc/html/latest/dev-tools/ktap.htm=
+l#version-lines
+> > >> +        * but actually isn't, as it currently depends on whoever wr=
+ites the
+> > >> +        * test to print this info =20
+> > >
+> > > FYI: we're really trying to fix cases of "missing version lines",
+> > > largely by making the kunit_test_suites() macro work in more
+> > > circumstances.
+> > >
+> > > So while it may be worth still handling the case where this is
+> > > missing, I don't think there are any tests in the latest versions of
+> > > the kernel which should have this missing. =20
+> >
+> > I=E2=80=99m not sure if I totally get how these work. Every time I run =
+a KUnit test I
+> > get something like this: https://pastebin.com/7Ff31PMC
+> >
+> > As you can see it has been loaded as a module, just like we intend to d=
+o it
+> > from IGT, and I see no version lines whatsoever. Am I doing something w=
+rong? =20
+>=20
+> You're doing everything right.
+>=20
+> The problem is we only print the version line for the *built-in* tests.
+> It never gets printed for tests in loadable modules.
 
---=20
-Petri Latvala
+IGT tests require loadable modules, as some tests check if bind/unbind
+and load/unload works. Also, some tests require modprobing drivers
+with different parameters.
 
+Unfortunately, kunit.py is currently broken on such cases: its parser
+simply ignores everything if the subtest doesn't have a TAP version
+just before it. See:
 
+	$ ./tools/testing/kunit/kunit.py parse /var/log/dmesg
+	[12:37:05] =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+	[12:37:05] [ERROR] Test: main: 0 tests run!
+	[12:37:05] =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+	[12:37:05] Testing complete. Ran 0 tests: errors: 1
+
+Here, I loaded the test module twice. I can force it to parse it by
+doing
+
+	$ (dmesg|grep "TAP version"; dmesg|grep -A9999 intel_i915_mock) >logs=20
+
+But then, it gets confused with two subtests with the same name:
+
+	$ ./tools/testing/kunit/kunit.py parse logs
+	[12:37:34] =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+	[12:37:34] =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D intel_i915_mock (18 =
+subtests) =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+	[12:37:34] [PASSED] sanitycheck
+	[12:37:34] [PASSED] shmem
+	[12:37:34] [PASSED] fence
+	[12:37:34] [PASSED] scatterlist
+	[12:37:34] [PASSED] syncmap
+	[12:37:34] [PASSED] uncore
+	[12:37:34] [PASSED] ring
+	[12:37:34] [PASSED] engine
+	[12:37:34] [PASSED] timelines
+	[12:37:34] [PASSED] requests
+	[12:37:34] [PASSED] objects
+	[12:37:34] [PASSED] phys
+	[12:37:34] [PASSED] dmabuf
+	[12:37:34] [PASSED] vma
+	[12:37:34] [PASSED] evict
+	[12:37:34] [PASSED] gtt
+	[12:37:34] [PASSED] hugepages
+	[12:37:34] [PASSED] memory_region
+	[12:37:34] =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D [PASSED] in=
+tel_i915_mock =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+	[12:37:34] =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D intel_i915_mock (18 =
+subtests) =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+	[12:37:34] [PASSED] sanitycheck
+	[12:37:34] [PASSED] shmem
+	[12:37:34] [PASSED] fence
+	[12:37:34] [PASSED] scatterlist
+	[12:37:34] [PASSED] syncmap
+	[12:37:34] [PASSED] uncore
+	[12:37:34] [PASSED] ring
+	[12:37:34] [PASSED] engine
+	[12:37:34] [PASSED] timelines
+	[12:37:34] [PASSED] requests
+	[12:37:34] [PASSED] objects
+	[12:37:34] [PASSED] phys
+	[12:37:34] [PASSED] dmabuf
+	[12:37:34] [PASSED] vma
+	[12:37:34] [PASSED] evict
+	[12:37:34] [PASSED] gtt
+	[12:37:34] [PASSED] hugepages
+	[12:37:34] [PASSED] memory_region
+	[12:37:34] [ERROR] Test: intel_i915_mock: Expected test number 2 but found=
+ 1
+	[12:37:34] =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D [PASSED] in=
+tel_i915_mock =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+	[12:37:34] =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+	[12:37:34] Testing complete. Ran 36 tests: passed: 36, errors: 1
+
+> Some more details below, if interested.
+> Specifically, it happens in
+> https://elixir.bootlin.com/linux/latest/C/ident/kunit_print_tap_header
+>=20
+> What David is referring to is we had tests that weren't in modules,
+> but didn't use the normal built-in code path. Those were also missing
+> TAP version lines.
+> But KUnit needs to do better here in the case of modules.
+>=20
+> The goal was that you'd be able to parse the result of module based
+> tests by something like
+> $ cat /sys/kernel/debug/kunit/*/results | ./tools/testing/kunit/kunit.py =
+parse
+> but this doesn't work because of the lack of a version line.
+
+At least here, debug/kunit doesn't exist:
+
+	sudo ls -lctra /sys/kernel/debug/|grep kunit
 
 >=20
-> On Mon, Oct 31, 2022 at 1:15 PM Patchwork
-> <patchwork@emeril.freedesktop.org> wrote:
-> >
-> > =3D=3D Series Details =3D=3D
-> >
-> > Series: kms_chamelium: Add new EDID stress resolution test (rev2)
-> > URL   : https://patchwork.freedesktop.org/series/110263/
-> > State : warning
-> >
-> > =3D=3D Summary =3D=3D
-> >
-> > Pipeline status: FAILED.
-> >
-> > see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/72569=
-1 for the overview.
-> >
-> > build:tests-debian-meson has failed (https://gitlab.freedesktop.org/gfx=
--ci/igt-ci-tags/-/jobs/30755321):
-> >   In file included from ../lib/igt_chamelium.h:32,
-> >                    from ../lib/monitor_edids/monitor_edids_helper.h:16,
-> >                    from ../lib/monitor_edids/monitor_edids_helper.c:11:
-> >   /usr/include/xf86drmMode.h:520:64: error: unknown type name =E2=80=98=
-size_t=E2=80=99
-> >    extern int drmModeCreatePropertyBlob(int fd, const void *data, size_=
-t size,
-> >                                                                   ^~~~~~
-> >   /usr/include/xf86drmMode.h:520:64: note: =E2=80=98size_t=E2=80=99 is =
-defined in header =E2=80=98<stddef.h>=E2=80=99; did you forget to =E2=80=98=
-#include <stddef.h>=E2=80=99?
-> >   /usr/include/xf86drmMode.h:44:1:
-> >   +#include <stddef.h>
-> >
-> >   /usr/include/xf86drmMode.h:520:64:
-> >    extern int drmModeCreatePropertyBlob(int fd, const void *data, size_=
-t size,
-> >                                                                   ^~~~~~
-> >   ninja: build stopped: subcommand failed.
-> >   section_end:1667235976:step_script
-> >   section_start:1667235976:cleanup_file_variables
-> >   Cleaning up project directory and file based variables
-> >   section_end:1667235978:cleanup_file_variables
-> >   ERROR: Job failed: exit code 1
-> >
-> >
-> > build:tests-fedora has failed (https://gitlab.freedesktop.org/gfx-ci/ig=
-t-ci-tags/-/jobs/30755316):
-> >   In file included from ../lib/igt_chamelium.h:32,
-> >                    from ../lib/monitor_edids/monitor_edids_helper.h:16,
-> >                    from ../lib/monitor_edids/monitor_edids_helper.c:11:
-> >   /usr/include/xf86drmMode.h:520:64: error: unknown type name =E2=80=98=
-size_t=E2=80=99
-> >     520 | extern int drmModeCreatePropertyBlob(int fd, const void *data=
-, size_t size,
-> >         |                                                              =
-  ^~~~~~
-> >   In file included from ../lib/igt_chamelium.h:32,
-> >                    from ../lib/monitor_edids/monitor_edids_helper.h:16,
-> >                    from ../lib/monitor_edids/monitor_edids_helper.c:11:
-> >   /usr/include/xf86drmMode.h:44:1: note: =E2=80=98size_t=E2=80=99 is de=
-fined in header =E2=80=98<stddef.h>=E2=80=99; did you forget to =E2=80=98#i=
-nclude <stddef.h>=E2=80=99?
-> >      43 | #include <drm.h>
-> >     +++ |+#include <stddef.h>
-> >      44 |
-> >   ninja: build stopped: subcommand failed.
-> >   section_end:1667235986:step_script
-> >   section_start:1667235986:cleanup_file_variables
-> >   Cleaning up project directory and file based variables
-> >   section_end:1667235987:cleanup_file_variables
-> >   ERROR: Job failed: exit code 1
-> >
-> >
-> > build:tests-fedora-clang has failed (https://gitlab.freedesktop.org/gfx=
--ci/igt-ci-tags/-/jobs/30755320):
-> >   [4/983] Linking static target lib/libigt-igt_audio_c.a.
-> >   [5/983] Linking static target lib/libigt-igt_alsa_c.a.
-> >   [6/983] Linking static target lib/libigt-igt_chamelium_stream_c.a.
-> >   [7/983] Compiling C object 'lib/76b5a35@@igt-monitor_edids_monitor_ed=
-ids_helper_c@sta/monitor_edids_monitor_edids_helper.c.o'.
-> >   FAILED: lib/76b5a35@@igt-monitor_edids_monitor_edids_helper_c@sta/mon=
-itor_edids_monitor_edids_helper.c.o
-> >   clang -Ilib/76b5a35@@igt-monitor_edids_monitor_edids_helper_c@sta -Il=
-ib -I../lib -I../include/drm-uapi -I../include/linux-uapi -I../lib/stubs/sy=
-scalls -I. -I../ -I/usr/include/cairo -I/usr/include/glib-2.0 -I/usr/lib64/=
-glib-2.0/include -I/usr/include/pixman-1 -I/usr/include/freetype2 -I/usr/in=
-clude/libpng16 -I/usr/include/libdrm -I/usr/include/libdrm/nouveau -I/usr/i=
-nclude/valgrind -Xclang -fcolor-diagnostics -pipe -D_FILE_OFFSET_BITS=3D64 =
--Wall -Winvalid-pch -Wextra -std=3Dgnu11 -O2 -g -D_GNU_SOURCE -include conf=
-ig.h -D_FORTIFY_SOURCE=3D2 -Wbad-function-cast -Wdeclaration-after-statemen=
-t -Wformat=3D2 -Wmissing-declarations -Wmissing-format-attribute -Wmissing-=
-noreturn -Wmissing-prototypes -Wnested-externs -Wold-style-definition -Wpoi=
-nter-arith -Wredundant-decls -Wshadow -Wstrict-prototypes -Wuninitialized -=
-Wunused -Wno-missing-field-initializers -Wno-pointer-arith -Wno-address-of-=
-packed-member -Wno-sign-compare -Wno-type-limits -Wno-unused-parameter -Wno=
--unused-result -Werror=3Daddress -Werror=3Darray-bounds -Werror=3Dimplicit =
--Werror=3Dinit-self -Werror=3Dint-to-pointer-cast -Werror=3Dmain -Werror=3D=
-missing-braces -Werror=3Dnonnull -Werror=3Dpointer-to-int-cast -Werror=3Dre=
-turn-type -Werror=3Dsequence-point -Werror=3Dtrigraphs -Werror=3Dwrite-stri=
-ngs -fno-builtin-malloc -fno-builtin-calloc -fcommon -fPIC -pthread '-DIGT_=
-DATADIR=3D"/usr/local/share/igt-gpu-tools"' '-DIGT_SRCDIR=3D"/builds/gfx-ci=
-/igt-ci-tags/tests"' '-DIGT_LOG_DOMAIN=3D"monitor_edids/monitor_edids_helpe=
-r"' -MD -MQ 'lib/76b5a35@@igt-monitor_edids_monitor_edids_helper_c@sta/moni=
-tor_edids_monitor_edids_helper.c.o' -MF 'lib/76b5a35@@igt-monitor_edids_mon=
-itor_edids_helper_c@sta/monitor_edids_monitor_edids_helper.c.o.d' -o 'lib/7=
-6b5a35@@igt-monitor_edids_monitor_edids_helper_c@sta/monitor_edids_monitor_=
-edids_helper.c.o' -c ../lib/monitor_edids/monitor_edids_helper.c
-> >   In file included from ../lib/monitor_edids/monitor_edids_helper.c:11:
-> >   In file included from ../lib/monitor_edids/monitor_edids_helper.h:16:
-> >   In file included from ../lib/igt_chamelium.h:32:
-> >   /usr/include/xf86drmMode.h:520:64: error: unknown type name 'size_t'
-> >   extern int drmModeCreatePropertyBlob(int fd, const void *data, size_t=
- size,
-> >                                                                  ^
-> >   1 error generated.
-> >   ninja: build stopped: subcommand failed.
-> >   section_end:1667235984:step_script
-> >   section_start:1667235984:cleanup_file_variables
-> >   Cleaning up project directory and file based variables
-> >   section_end:1667235984:cleanup_file_variables
-> >   ERROR: Job failed: exit code 1
-> >
-> >
-> > build:tests-fedora-no-libdrm-nouveau has failed (https://gitlab.freedes=
-ktop.org/gfx-ci/igt-ci-tags/-/jobs/30755319):
-> >   In file included from ../lib/igt_chamelium.h:32,
-> >                    from ../lib/monitor_edids/monitor_edids_helper.h:16,
-> >                    from ../lib/monitor_edids/monitor_edids_helper.c:11:
-> >   /usr/include/xf86drmMode.h:520:64: error: unknown type name =E2=80=98=
-size_t=E2=80=99
-> >     520 | extern int drmModeCreatePropertyBlob(int fd, const void *data=
-, size_t size,
-> >         |                                                              =
-  ^~~~~~
-> >   In file included from ../lib/igt_chamelium.h:32,
-> >                    from ../lib/monitor_edids/monitor_edids_helper.h:16,
-> >                    from ../lib/monitor_edids/monitor_edids_helper.c:11:
-> >   /usr/include/xf86drmMode.h:44:1: note: =E2=80=98size_t=E2=80=99 is de=
-fined in header =E2=80=98<stddef.h>=E2=80=99; did you forget to =E2=80=98#i=
-nclude <stddef.h>=E2=80=99?
-> >      43 | #include <drm.h>
-> >     +++ |+#include <stddef.h>
-> >      44 |
-> >   ninja: build stopped: subcommand failed.
-> >   section_end:1667235978:step_script
-> >   section_start:1667235978:cleanup_file_variables
-> >   Cleaning up project directory and file based variables
-> >   section_end:1667235979:cleanup_file_variables
-> >   ERROR: Job failed: exit code 1
-> >
-> >
-> > build:tests-fedora-no-libunwind has failed (https://gitlab.freedesktop.=
-org/gfx-ci/igt-ci-tags/-/jobs/30755317):
-> >   In file included from ../lib/igt_chamelium.h:32,
-> >                    from ../lib/monitor_edids/monitor_edids_helper.h:16,
-> >                    from ../lib/monitor_edids/monitor_edids_helper.c:11:
-> >   /usr/include/xf86drmMode.h:520:64: error: unknown type name =E2=80=98=
-size_t=E2=80=99
-> >     520 | extern int drmModeCreatePropertyBlob(int fd, const void *data=
-, size_t size,
-> >         |                                                              =
-  ^~~~~~
-> >   In file included from ../lib/igt_chamelium.h:32,
-> >                    from ../lib/monitor_edids/monitor_edids_helper.h:16,
-> >                    from ../lib/monitor_edids/monitor_edids_helper.c:11:
-> >   /usr/include/xf86drmMode.h:44:1: note: =E2=80=98size_t=E2=80=99 is de=
-fined in header =E2=80=98<stddef.h>=E2=80=99; did you forget to =E2=80=98#i=
-nclude <stddef.h>=E2=80=99?
-> >      43 | #include <drm.h>
-> >     +++ |+#include <stddef.h>
-> >      44 |
-> >   ninja: build stopped: subcommand failed.
-> >   section_end:1667235976:step_script
-> >   section_start:1667235976:cleanup_file_variables
-> >   Cleaning up project directory and file based variables
-> >   section_end:1667235977:cleanup_file_variables
-> >   ERROR: Job failed: exit code 1
-> >
-> >
-> > build:tests-fedora-oldest-meson has failed (https://gitlab.freedesktop.=
-org/gfx-ci/igt-ci-tags/-/jobs/30755318):
-> >   In file included from ../lib/igt_chamelium.h:32,
-> >                    from ../lib/monitor_edids/monitor_edids_helper.h:16,
-> >                    from ../lib/monitor_edids/monitor_edids_helper.c:11:
-> >   /usr/include/xf86drmMode.h:520:64: error: unknown type name =E2=80=98=
-size_t=E2=80=99
-> >     520 | extern int drmModeCreatePropertyBlob(int fd, const void *data=
-, size_t size,
-> >         |                                                              =
-  ^~~~~~
-> >   In file included from ../lib/igt_chamelium.h:32,
-> >                    from ../lib/monitor_edids/monitor_edids_helper.h:16,
-> >                    from ../lib/monitor_edids/monitor_edids_helper.c:11:
-> >   /usr/include/xf86drmMode.h:44:1: note: =E2=80=98size_t=E2=80=99 is de=
-fined in header =E2=80=98<stddef.h>=E2=80=99; did you forget to =E2=80=98#i=
-nclude <stddef.h>=E2=80=99?
-> >      43 | #include <drm.h>
-> >     +++ |+#include <stddef.h>
-> >      44 |
-> >   ninja: build stopped: subcommand failed.
-> >   section_end:1667235989:step_script
-> >   section_start:1667235989:cleanup_file_variables
-> >   Cleaning up project directory and file based variables
-> >   section_end:1667235990:cleanup_file_variables
-> >   ERROR: Job failed: exit code 1
-> >
-> > =3D=3D Logs =3D=3D
-> >
-> > For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags=
-/-/pipelines/725691
+> If we add it to each module's test results, then we'll need to update
+> the parse to allow multiple verison lines, I think.
+
+Yeah, the parser is currently broken when used with modules.
+
+Regards,
+Mauro
