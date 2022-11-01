@@ -1,24 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-ed1-x52d.google.com (mail-ed1-x52d.google.com
- [IPv6:2a00:1450:4864:20::52d])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 85BEA10E3DD
- for <igt-dev@lists.freedesktop.org>; Tue,  1 Nov 2022 15:11:51 +0000 (UTC)
-Received: by mail-ed1-x52d.google.com with SMTP id a13so22236615edj.0
- for <igt-dev@lists.freedesktop.org>; Tue, 01 Nov 2022 08:11:51 -0700 (PDT)
-Message-ID: <3703439d-a975-3756-00b1-a925d16f9e9a@gmail.com>
-Date: Tue, 1 Nov 2022 17:11:42 +0200
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Language: en-US
-To: aemad <aemad@igalia.com>
-References: <20221009151844.3456-1-aemad@igalia.com>
- <aa261d04-81b3-48ac-603b-c75fcb3c8909@gmail.com>
- <31ec4c5751bfda7c1f174b9e0c898280@igalia.com>
-From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-In-Reply-To: <31ec4c5751bfda7c1f174b9e0c898280@igalia.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_cursor_crc: prevent the
- entire test from being aborted when a subtest fails
+Content-Transfer-Encoding: quoted-printable
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Mark Yacoub" <markyacoub@chromium.org>
+Date: Tue, 01 Nov 2022 15:16:19 -0000
+Message-ID: <166731577968.13549.10701681574528166243@emeril.freedesktop.org>
+References: <20221101143743.355364-1-markyacoub@chromium.org>
+In-Reply-To: <20221101143743.355364-1-markyacoub@chromium.org>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_k?=
+ =?utf-8?q?ms=5Fchamelium=3A_Add_new_EDID_stress_resolution_test_=28rev3?=
+ =?utf-8?q?=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,275 +18,140 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: juhapekka.heikkila@gmail.com
-Cc: igt-dev@lists.freedesktop.org, petri.latvala@intel.com
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On 1.11.2022 13.25, aemad wrote:
-> On 2022-10-10 13:16, Juha-Pekka Heikkila wrote:
->> Hi Alaa,
->>
->> what's that invalid argument you're getting on addfb? I never tried
->> this with vkms, normally just on i915. With i915 I cannot reproduce
->> that abort you're seeing. Other kms tests run on your setup?
->>
-> 
-> Hi Juha-Pekka,
-> 
->> Anyway, that revert you're suggesting would remove support for msm
->> driver on this test. Let's first summon those who made these changes
->> to comment. (cc'ing Modem and Swati)
-> 
-> Could you please explain why this patch will remove MSM driver support?
-> 
+=3D=3D Series Details =3D=3D
 
-See in test what's done with data.vblank_wait_count variable. That is 
-there because on msm legacy cursor is not updated asynchronously and msm 
-cursor likely will miss even second frame. Taking that out will cause 
-these tests reliably fail on msm.
+Series: kms_chamelium: Add new EDID stress resolution test (rev3)
+URL   : https://patchwork.freedesktop.org/series/110263/
+State : warning
 
-I was just today because of unrelated cursor issues looking into this, I 
-still don't have patch though. As Swati/Modem didn't come back with a 
-fix I was looking to take out all dynamic stuff, it should solve this issue.
+=3D=3D Summary =3D=3D
 
-/Juha-Pekka
+Pipeline status: FAILED.
 
-> 
->>
->> /Juha-Pekka
->>
->> On 9.10.2022 18.18, Alaa Emad wrote:
->>> Any test failure prevents the other tests to be run, aborting the entire test loop. This behavior was introduced by commit
->>> 9494d53d ("tests/kms_cursor_crc: Convert tests to dynamic").
->>> For instance, when running the cursor-offscreen-32x10 subtest using VKMS,
->>> the execution is aborted instead of SKIP/FAIL, as in the following output:
->>>
->>> $ ./tests/kms_cursor_crc --run-subtest cursor-offscreen-32x10
->>> (kms_cursor_crc:7447) igt_fb-CRITICAL: Test assertion failure function igt_create_fb_with_bo_size, file ../lib/igt_fb.c:2078:
->>> (kms_cursor_crc:7447) igt_fb-CRITICAL: Failed assertion: (__kms_addfb(fb->fd, fb->gem_handle, fb->width, fb->height, fb->drm_format, fb->modifier, fb->strides, fb->offsets, fb->num_planes, flags, &fb->fb_id)) == 0
->>> (kms_cursor_crc:7447) igt_fb-CRITICAL: Last errno: 22, Invalid argument
->>> Stack trace:
->>> kms_cursor_crc: ../lib/igt_core.c:1667: igt_fail: Assertion `_igt_dynamic_tests_executed < 0 || dynamic_failed_one' failed.
->>> Received signal SIGABRT.
->>>
->>> The test was aborted after convertig tests to dynamic with cursor size 32*10 that because of the assertion in the `igt_create_fb_with_bo_size` when creating cursor in `create_cursor_fb`.
->>>
->>> This happened because Within a igt_subtest_with_dynamic block, explicit failure (e.g. igt_assert) is not allowed,
->>> only dynamic subsubtests themselves will produce test results.
->>>
->>> The previous approach was running each test for all cursor sizes then move to the next test  so fix this issue
->>> by running all tests for one cursor size one by one, and check if cursor size is
->>> supported or not before running the test.
->>>
->>> Fixes: 9494d53d ("tests/kms_cursor_crc: Convert tests to dynamic")
->>>
->>> Signed-off-by: Alaa Emad <aemad@igalia.com>
->>> ---
->>>    tests/kms_cursor_crc.c | 136 +++++++++++++++++++++--------------------
->>>    1 file changed, 69 insertions(+), 67 deletions(-)
->>>
->>> diff --git a/tests/kms_cursor_crc.c b/tests/kms_cursor_crc.c
->>> index 8d3426dd..9b620389 100644
->>> --- a/tests/kms_cursor_crc.c
->>> +++ b/tests/kms_cursor_crc.c
->>> @@ -72,7 +72,6 @@ typedef struct {
->>>    	cairo_surface_t *surface;
->>>    	uint32_t devid;
->>>    	double alpha;
->>> -	int vblank_wait_count; /* because of msm */
->>>    } data_t;
->>>      #define TEST_DPMS (1<<0)
->>> @@ -125,12 +124,6 @@ static void cursor_disable(data_t *data)
->>>    {
->>>    	igt_plane_set_fb(data->cursor, NULL);
->>>    	igt_plane_set_position(data->cursor, 0, 0);
->>> -	igt_display_commit(&data->display);
->>> -
->>> -	/* do this wait here so it will not need to be added everywhere */
->>> -	igt_wait_for_vblank_count(data->drm_fd,
->>> -				  data->display.pipes[data->pipe].crtc_offset,
->>> -				  data->vblank_wait_count);
->>>    }
->>>      static bool chv_cursor_broken(data_t *data, int x)
->>> @@ -209,9 +202,8 @@ static void do_single_test(data_t *data, int x, int y, bool hw_test,
->>>    		igt_display_commit(display);
->>>      		/* Extra vblank wait is because nonblocking cursor ioctl */
->>> -		igt_wait_for_vblank_count(data->drm_fd,
->>> -					  display->pipes[data->pipe].crtc_offset,
->>> -					  data->vblank_wait_count);
->>> +		igt_wait_for_vblank(data->drm_fd,
->>> +				display->pipes[data->pipe].crtc_offset);
->>>      		igt_pipe_crc_get_current(data->drm_fd, pipe_crc, hwcrc);
->>>    @@ -249,7 +241,11 @@ static void do_single_test(data_t *data, int x, int y, bool hw_test,
->>>      		restore_image(data, swbufidx, &((cursorarea){x, y, data->curw, data->curh}));
->>>    		igt_plane_set_fb(data->primary, &data->primary_fb[swbufidx]);
->>> +
->>>    		igt_display_commit(display);
->>> +		igt_wait_for_vblank(data->drm_fd,
->>> +				display->pipes[data->pipe].crtc_offset);
->>> +
->>>    		igt_pipe_crc_get_current(data->drm_fd, pipe_crc, &crc);
->>>    		igt_assert_crc_equal(&crc, hwcrc);
->>>    	}
->>> @@ -267,7 +263,9 @@ static void do_fail_test(data_t *data, int x, int y, int expect)
->>>    	igt_plane_set_position(data->cursor, x, y);
->>>    	ret = igt_display_try_commit2(display, COMMIT_LEGACY);
->>>    +	igt_plane_set_position(data->cursor, 0, 0);
->>>    	cursor_disable(data);
->>> +	igt_display_commit(display);
->>>      	igt_assert_eq(ret, expect);
->>>    }
->>> @@ -689,10 +687,28 @@ static void test_rapid_movement(data_t *data)
->>>    	igt_assert_lt(usec, 0.9 * 400 * 1000000 / data->refresh);
->>>    }
->>>    -static void run_size_tests(data_t *data, void (*testfunc)(data_t *),
->>> -			   int w, int h)
->>> +static void run_size_tests(data_t *data, int w, int h)
->>>    {
->>>    	enum pipe pipe;
->>> +	int i;
->>> +
->>> +	struct
->>> +	{
->>> +		const char *name;
->>> +		void (*testfunc)(data_t *);
->>> +		const char *desc;
->>> +	} size_tests[] = {
->>> +		{"cursor-onscreen", test_crc_onscreen,
->>> +		 "Check if a given-size cursor is well-positioned inside the screen."},
->>> +		{"cursor-offscreen", test_crc_offscreen,
->>> +		 "Check if a given-size cursor is well-positioned outside the screen."},
->>> +		{"cursor-sliding", test_crc_sliding,
->>> +		 "Check the smooth and pixel-by-pixel given-size cursor movements on horizontal, vertical and diagonal."},
->>> +		{"cursor-random", test_crc_random,
->>> +		 "Check random placement of a cursor with given size."},
->>> +		{"cursor-rapid-movement", test_rapid_movement,
->>> +		 "Check the rapid update of given-size cursor movements."},
->>> +	};
->>>      	if (w == 0 && h == 0) {
->>>    		w = data->cursor_max_w;
->>> @@ -709,45 +725,38 @@ static void run_size_tests(data_t *data, void (*testfunc)(data_t *),
->>>    		}
->>>    	}
->>>    -	create_cursor_fb(data, w, h);
->>> -	if (require_cursor_size(data, w, h)) {
->>> -		igt_info("Cursor size %dx%d not supported by driver\n", w, h);
->>> -
->>> -		igt_remove_fb(data->drm_fd, &data->fb);
->>> -		return;
->>> -	}
->>> +	igt_fixture
->>> +		create_cursor_fb(data, w, h);
->>>    -	for_each_pipe(&data->display, pipe) {
->>> -		data->pipe = pipe;
->>> -		igt_dynamic_f("pipe-%s-%s",
->>> -			      kmstest_pipe_name(pipe), igt_output_name(data->output))
->>> -			run_test(data, testfunc, w, h);
->>> +	for (i = 0; i < ARRAY_SIZE(size_tests); i++)
->>> +	{
->>> +		igt_describe(size_tests[i].desc);
->>> +		igt_subtest_with_dynamic_f("%s-%dx%d", size_tests[i].name, w, h)
->>> +		{
->>> +			for_each_pipe(&data->display, pipe)
->>> +			{
->>> +				data->pipe = pipe;
->>> +				if (require_cursor_size(data, w, h))
->>> +				{
->>> +					igt_info("Cursor size %dx%d not supported by driver\n", w, h);
->>> +					continue;
->>> +				}
->>> +
->>> +				igt_dynamic_f("pipe-%s-%s",
->>> +							  kmstest_pipe_name(pipe), igt_output_name(data->output))
->>> +					run_test(data, size_tests[i].testfunc, w, h);
->>> +			}
->>> +		}
->>>    	}
->>>    -	igt_remove_fb(data->drm_fd, &data->fb);
->>> +	igt_fixture
->>> +		igt_remove_fb(data->drm_fd, &data->fb);
->>>    }
->>>      static void run_tests_on_pipe(data_t *data)
->>>    {
->>>    	enum pipe pipe;
->>>    	int cursor_size;
->>> -	int i;
->>> -	struct {
->>> -		const char *name;
->>> -		void (*testfunc)(data_t *);
->>> -		const char *desc;
->>> -	} size_tests[] = {
->>> -		{ "cursor-onscreen", test_crc_onscreen,
->>> -			"Check if a given-size cursor is well-positioned inside the screen." },
->>> -		{ "cursor-offscreen", test_crc_offscreen,
->>> -			"Check if a given-size cursor is well-positioned outside the screen." },
->>> -		{ "cursor-sliding", test_crc_sliding,
->>> -			"Check the smooth and pixel-by-pixel given-size cursor movements on horizontal, vertical and diagonal." },
->>> -		{ "cursor-random", test_crc_random,
->>> -			"Check random placement of a cursor with given size." },
->>> -		{ "cursor-rapid-movement", test_rapid_movement,
->>> -			"Check the rapid update of given-size cursor movements." },
->>> -	};
->>>      	igt_fixture {
->>>    		data->output = igt_get_single_output_for_pipe(&data->display, pipe);
->>> @@ -848,30 +857,26 @@ static void run_tests_on_pipe(data_t *data)
->>>    	igt_fixture
->>>    		igt_remove_fb(data->drm_fd, &data->fb);
->>>    -	for (i = 0; i < ARRAY_SIZE(size_tests); i++) {
->>> -		igt_describe(size_tests[i].desc);
->>> -		igt_subtest_group {
->>> -			for (cursor_size = 32; cursor_size <= 512; cursor_size *= 2) {
->>> -				int w = cursor_size;
->>> -				int h = cursor_size;
->>> -
->>> -				igt_subtest_with_dynamic_f("%s-%dx%d", size_tests[i].name, w, h)
->>> -					run_size_tests(data, size_tests[i].testfunc, w, h);
->>> -
->>> -				/*
->>> -				 * Test non-square cursors a bit on the platforms
->>> -				 * that support such things. And make it a bit more
->>> -				 * interesting by using a non-pot height.
->>> -				 */
->>> -				h /= 3;
->>> -				igt_subtest_with_dynamic_f("%s-%dx%d", size_tests[i].name, w, h)
->>> -					run_size_tests(data, size_tests[i].testfunc, w, h);
->>> -			}
->>> +	for (cursor_size = 32; cursor_size <= 512; cursor_size *= 2)
->>> +	{
->>> +		int w = cursor_size;
->>> +		int h = cursor_size;
->>>    -			igt_subtest_with_dynamic_f("%s-max-size", size_tests[i].name)
->>> -				run_size_tests(data, size_tests[i].testfunc, 0, 0);
->>> -		}
->>> +		igt_subtest_group
->>> +			run_size_tests(data, w, h);
->>> +
->>> +		/*
->>> +		 * Test non-square cursors a bit on the platforms
->>> +		 * that support such things. And make it a bit more
->>> +		 * interesting by using a non-pot height.
->>> +		 */
->>> +		h /= 3;
->>> +
->>> +		igt_subtest_group
->>> +			run_size_tests(data, w, h);
->>>    	}
->>> +
->>> +	run_size_tests(data, 0, 0);
->>>    }
->>>      static data_t data;
->>> @@ -896,8 +901,6 @@ igt_main
->>>    		kmstest_set_vt_graphics_mode();
->>>      		igt_require_pipe_crc(data.drm_fd);
->>> -
->>> -		data.vblank_wait_count = is_msm_device(data.drm_fd) ? 2 : 1;
->>>    	}
->>>      	data.cursor_max_w = cursor_width;
->>> @@ -913,6 +916,5 @@ igt_main
->>>    		}
->>>      		igt_display_fini(&data.display);
->>> -		close(data.drm_fd);
->>>    	}
->>>    }
+see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/726485 fo=
+r the overview.
+
+build:tests-fedora has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci=
+-tags/-/jobs/30814994):
+  		  "1513141f2309070783010000023a8018"
+  		  "71382d40582c4500fd1e1100001e011d"
+  		  "8018711c1620582c2500fd1e1100009e"
+  		  "011d007251d01e206e285500fd1e1100"
+  		  "001e8c0ad08a20e02d10103e9600fd1e"
+  		  "11000018000000000000000000000000"
+  		  "0000000000000000000000000000003f" }
+  };
+  " does not begin with "struct/union [NAME] {"
+ =20
+ =20
+  FAILED: meson-install=20
+  /usr/bin/meson install --no-rebuild
+  ninja: build stopped: subcommand failed.
+  section_end:1667315304:step_script
+  section_start:1667315304:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1667315305:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+ =20
+
+build:tests-fedora-oldest-meson has failed (https://gitlab.freedesktop.org/=
+gfx-ci/igt-ci-tags/-/jobs/30814996):
+  		  "02031cf14f9005040302071601061112"
+  		  "1513141f2309070783010000023a8018"
+  		  "71382d40582c4500fd1e1100001e011d"
+  		  "8018711c1620582c2500fd1e1100009e"
+  		  "011d007251d01e206e285500fd1e1100"
+  		  "001e8c0ad08a20e02d10103e9600fd1e"
+  		  "11000018000000000000000000000000"
+  		  "0000000000000000000000000000003f" }
+  };
+  " does not begin with "struct/union [NAME] {"
+ =20
+  FAILED: meson-igt-gpu-tools-doc=20
+  /usr/bin/python3 /usr/local/bin/meson --internal commandrunner /builds/gf=
+x-ci/igt-ci-tags /builds/gfx-ci/igt-ci-tags/build docs/reference/igt-gpu-to=
+ols /usr/bin/python3 /usr/local/bin/meson /usr/bin/python3 /usr/local/bin/m=
+eson --internal gtkdoc --sourcedir=3D/builds/gfx-ci/igt-ci-tags --builddir=
+=3D/builds/gfx-ci/igt-ci-tags/build --subdir=3Ddocs/reference/igt-gpu-tools=
+ --headerdirs=3D/builds/gfx-ci/igt-ci-tags/lib@@/builds/gfx-ci/igt-ci-tags/=
+build/lib --mainfile=3Digt-gpu-tools-docs.xml --modulename=3Digt-gpu-tools =
+--mode=3Dauto --scanargs=3D--rebuild-sections --mkdbargs=3D--output-format=
+=3Dxml --content-files=3D/builds/gfx-ci/igt-ci-tags/docs/reference/igt-gpu-=
+tools/igt_test_programs.xml@@/builds/gfx-ci/igt-ci-tags/build/docs/referenc=
+e/igt-gpu-tools/igt_test_programs_amdgpu_programs.xml@@/builds/gfx-ci/igt-c=
+i-tags/build/docs/reference/igt-gpu-tools/igt_test_programs_amdgpu_descript=
+ion.xml@@/builds/gfx-ci/igt-ci-tags/build/docs/reference/igt-gpu-tools/igt_=
+test_programs_core_programs.xml@@/builds/gfx-ci/igt-ci-tags/build/docs/refe=
+rence/igt-gpu-tools/igt_test_programs_core_description.xml@@/builds/gfx-ci/=
+igt-ci-tags/build/docs/reference/igt-gpu-tools/igt_test_programs_debugfs_pr=
+ograms.xml@@/builds/gfx-ci/igt-ci-tags/build/docs/reference/igt-gpu-tools/i=
+gt_test_programs_debugfs_description.xml@@/builds/gfx-ci/igt-ci-tags/build/=
+docs/reference/igt-gpu-tools/igt_test_programs_drm_programs.xml@@/builds/gf=
+x-ci/igt-ci-tags/build/docs/reference/igt-gpu-tools/igt_test_programs_drm_d=
+escription.xml@@/builds/gfx-ci/igt-ci-tags/build/docs/reference/igt-gpu-too=
+ls/igt_test_programs_gem_programs.xml@@/builds/gfx-ci/igt-ci-tags/build/doc=
+s/reference/igt-gpu-tools/igt_test_programs_gem_description.xml@@/builds/gf=
+x-ci/igt-ci-tags/build/docs/reference/igt-gpu-tools/igt_test_programs_gen3_=
+programs.xml@@/builds/gfx-ci/igt-ci-tags/build/docs/reference/igt-gpu-tools=
+/igt_test_programs_gen3_description.xml@@/builds/gfx-ci/igt-ci-tags/build/d=
+ocs/reference/igt-gpu-tools/igt_test_programs_gen7_programs.xml@@/builds/gf=
+x-ci/igt-ci-tags/build/docs/reference/igt-gpu-tools/igt_test_programs_gen7_=
+description.xml@@/builds/gfx-ci/igt-ci-tags/build/docs/reference/igt-gpu-to=
+ols/igt_test_programs_i915_programs.xml@@/builds/gfx-ci/igt-ci-tags/build/d=
+ocs/reference/igt-gpu-tools/igt_test_programs_i915_description.xml@@/builds=
+/gfx-ci/igt-ci-tags/build/docs/reference/igt-gpu-tools/igt_test_programs_km=
+s_programs.xml@@/builds/gfx-ci/igt-ci-tags/build/docs/reference/igt-gpu-too=
+ls/igt_test_programs_kms_description.xml@@/builds/gfx-ci/igt-ci-tags/build/=
+docs/reference/igt-gpu-tools/igt_test_programs_meta_programs.xml@@/builds/g=
+fx-ci/igt-ci-tags/build/docs/reference/igt-gpu-tools/igt_test_programs_meta=
+_description.xml@@/builds/gfx-ci/igt-ci-tags/build/docs/reference/igt-gpu-t=
+ools/igt_test_programs_perf_programs.xml@@/builds/gfx-ci/igt-ci-tags/build/=
+docs/reference/igt-gpu-tools/igt_test_programs_perf_description.xml@@/build=
+s/gfx-ci/igt-ci-tags/build/docs/reference/igt-gpu-tools/igt_test_programs_p=
+m_programs.xml@@/builds/gfx-ci/igt-ci-tags/build/docs/reference/igt-gpu-too=
+ls/igt_test_programs_pm_description.xml@@/builds/gfx-ci/igt-ci-tags/build/d=
+ocs/reference/igt-gpu-tools/igt_test_programs_prime_programs.xml@@/builds/g=
+fx-ci/igt-ci-tags/build/docs/reference/igt-gpu-tools/igt_test_programs_prim=
+e_description.xml@@/builds/gfx-ci/igt-ci-tags/build/docs/reference/igt-gpu-=
+tools/igt_test_programs_sw_sync_programs.xml@@/builds/gfx-ci/igt-ci-tags/bu=
+ild/docs/reference/igt-gpu-tools/igt_test_programs_sw_sync_description.xml@=
+@/builds/gfx-ci/igt-ci-tags/build/docs/reference/igt-gpu-tools/igt_test_pro=
+grams_testdisplay_programs.xml@@/builds/gfx-ci/igt-ci-tags/build/docs/refer=
+ence/igt-gpu-tools/igt_test_programs_testdisplay_description.xml@@/builds/g=
+fx-ci/igt-ci-tags/build/docs/reference/igt-gpu-tools/igt_test_programs_tool=
+s_programs.xml@@/builds/gfx-ci/igt-ci-tags/build/docs/reference/igt-gpu-too=
+ls/igt_test_programs_tools_description.xml@@/builds/gfx-ci/igt-ci-tags/buil=
+d/docs/reference/igt-gpu-tools/igt_test_programs_vgem_programs.xml@@/builds=
+/gfx-ci/igt-ci-tags/build/docs/reference/igt-gpu-tools/igt_test_programs_vg=
+em_description.xml --ignore-headers=3Dgen6_render.h@@gen7_media.h@@gen7_ren=
+der.h@@gen8_media.h@@gen8_render.h@@gpgpu_fill.h@@i830_reg.h@@i915_3d.h@@i9=
+15_pciids.h@@i915_reg.h@@igt_edid_template.h@@intel_reg.h@@debug.h@@instdon=
+e.h@@media_fill.h@@rendercopy.h@@media_spin.h@@media_fill_gen9.h@@gen9_rend=
+er.h@@version.h '--cflags=3D-I./include/drm-uapi -I../include/drm-uapi -I./=
+include/linux-uapi -I../include/linux-uapi -I./lib -I../lib -I./lib/stubs/s=
+yscalls -I../lib/stubs/syscalls -I./. -I../. -I/usr/include/cairo -I/usr/in=
+clude/glib-2.0 -I/usr/lib64/glib-2.0/include -I/usr/include/pixman-1 -I/usr=
+/include/freetype2 -I/usr/include/libpng16 -I/usr/include/libdrm -I/usr/inc=
+lude/libdrm/nouveau -I/usr/include/valgrind' '--ldflags=3D-L/builds/gfx-ci/=
+igt-ci-tags/build/lib -Wl,-rpath,/builds/gfx-ci/igt-ci-tags/build/lib -ligt=
+ -lcairo -lglib-2.0 -ldrm -ldw -lelf -lkmod -lprocps -ludev -lm -lpciaccess=
+ -lpixman-1 -lrt -lz -ldrm_intel -ldrm_nouveau -ldrm_amdgpu -lunwind -lgsl =
+-lgslcblas -lasound -lxmlrpc -lxmlrpc_util -lxmlrpc_client' --cc=3Dcc --ld=
+=3Dcc
+  ninja: build stopped: subcommand failed.
+  section_end:1667315304:step_script
+  section_start:1667315304:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1667315305:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+
+=3D=3D Logs =3D=3D
+
+For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/p=
+ipelines/726485
