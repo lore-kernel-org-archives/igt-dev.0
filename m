@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6E50910E32D
- for <igt-dev@lists.freedesktop.org>; Tue,  1 Nov 2022 09:03:47 +0000 (UTC)
-From: Vikas Srivastava <vikas.srivastava@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Tue,  1 Nov 2022 14:32:39 +0530
-Message-Id: <20221101090239.27501-1-vikas.srivastava@intel.com>
+Content-Type: multipart/alternative;
+ boundary="===============8975557794963590725=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v2] test/i915: Added COPY Commands
- modification for MTL
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Vikas Srivastava" <vikas.srivastava@intel.com>
+Date: Tue, 01 Nov 2022 09:55:00 -0000
+Message-ID: <166729650054.13544.1745392268998660186@emeril.freedesktop.org>
+References: <20221101090239.27501-1-vikas.srivastava@intel.com>
+In-Reply-To: <20221101090239.27501-1-vikas.srivastava@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdC9p?=
+ =?utf-8?q?915=3A_Added_COPY_Commands_modification_for_MTL?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,366 +17,197 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Test case uses legacy command which is not supported on MTL.
-Modified test to use XY_FAST_COPY_BLT.
+--===============8975557794963590725==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Signed-off-by: Arjun Melkaveri <arjun.melkaveri@intel.com>
-Acked-by: priyanka dandamudi <priyanka.dandamudi@intel.com>
+== Series Details ==
 
----
- tests/i915/gem_close_race.c    |  95 ++++++++++++++++--------
- tests/i915/gem_linear_blits.c  |  64 ++++++++++------
- tests/i915/gem_userptr_blits.c | 129 +++++++++++++++++++++------------
- 3 files changed, 188 insertions(+), 100 deletions(-)
+Series: test/i915: Added COPY Commands modification for MTL
+URL   : https://patchwork.freedesktop.org/series/110361/
+State : success
 
-diff --git a/tests/i915/gem_close_race.c b/tests/i915/gem_close_race.c
-index e37a88828..2a939c94c 100644
---- a/tests/i915/gem_close_race.c
-+++ b/tests/i915/gem_close_race.c
-@@ -70,40 +70,73 @@ static void selfcopy(int fd, uint32_t ctx, uint32_t handle, int loops)
- 	struct drm_i915_gem_create create;
- 	uint32_t buf[16], *b = buf;
- 	int err;
-+	uint32_t src_x1 = 0;
- 
- 	memset(reloc, 0, sizeof(reloc));
- 
--	*b = COPY_BLT_CMD | BLT_WRITE_ALPHA | BLT_WRITE_RGB;
--	if (has_64bit_relocations)
--		*b += 2;
--	b++;
--	*b++ = 0xcc << 16 | 1 << 25 | 1 << 24 | (4*1024);
--	*b++ = 0;
--	*b++ = 1 << 16 | 1024;
--
--	reloc[0].offset = (b - buf) * sizeof(*b);
--	reloc[0].target_handle = handle;
--	reloc[0].read_domains = I915_GEM_DOMAIN_RENDER;
--	reloc[0].write_domain = I915_GEM_DOMAIN_RENDER;
--	reloc[0].presumed_offset = data_addr;
--	*b++ = data_addr;
--	if (has_64bit_relocations)
--		*b++ = CANONICAL(data_addr) >> 32;
--
--	*b++ = 512 << 16;
--	*b++ = 4*1024;
--
--	reloc[1].offset = (b - buf) * sizeof(*b);
--	reloc[1].target_handle = handle;
--	reloc[1].read_domains = I915_GEM_DOMAIN_RENDER;
--	reloc[1].write_domain = 0;
--	reloc[1].presumed_offset = data_addr;
--	*b++ = data_addr;
--	if (has_64bit_relocations)
--		*b++ = CANONICAL(data_addr) >> 32;
--
--	*b++ = MI_BATCH_BUFFER_END;
--	*b++ = 0;
-+	 if (intel_graphics_ver(devid) >= IP_VER(12, 60)) {
-+                *b++ = XY_FAST_COPY_BLT;
-+                *b = XY_FAST_COPY_COLOR_DEPTH_32;
-+                if (intel_graphics_ver(devid) >= IP_VER(20, 0))
-+                        *b = XY_FAST_COPY_SRC_TILING_Yf |
-+                                XY_FAST_COPY_DST_TILING_Yf;
-+                b++;
-+                *b++ = 0;
-+                *b++ = 1 << 16 | 1024;/* dst X2 , y2 */
-+
-+                reloc[0].offset = (b - buf) * sizeof(*b);
-+                reloc[0].target_handle = handle;
-+                reloc[0].read_domains = I915_GEM_DOMAIN_RENDER;
-+                reloc[0].write_domain = I915_GEM_DOMAIN_RENDER;
-+
-+                *b++ = 0;/* dst address lower bits */
-+                *b++ = 0;/* dst address upper bits */
-+
-+                *b++ = 512 << 16 | src_x1;/* src x1,y1 */
-+                *b++ = 4*1024;/* src pitch */
-+
-+                reloc[1].offset = (b - buf) * sizeof(*b);
-+                reloc[1].target_handle = handle;
-+                reloc[1].read_domains = I915_GEM_DOMAIN_RENDER;
-+                reloc[1].write_domain = 0;
-+
-+                *b++ = 0;// src address lower bits
-+                *b++ = 0;// src address upper bits
-+                *b++ = MI_BATCH_BUFFER_END;
-+                *b++ = MI_NOOP;
-+        } else {
-+		*b = COPY_BLT_CMD | BLT_WRITE_ALPHA | BLT_WRITE_RGB;
-+                if (has_64bit_relocations)
-+                        *b += 2;
-+                b++;
-+                *b++ = 0xcc << 16 | 1 << 25 | 1 << 24 | (4*1024);
-+                *b++ = 0;
-+                *b++ = 1 << 16 | 1024;
-+
-+                reloc[0].offset = (b - buf) * sizeof(*b);
-+                reloc[0].target_handle = handle;
-+                reloc[0].read_domains = I915_GEM_DOMAIN_RENDER;
-+                reloc[0].write_domain = I915_GEM_DOMAIN_RENDER;
-+                reloc[0].presumed_offset = data_addr;
-+                *b++ = data_addr;
-+                if (has_64bit_relocations)
-+                        *b++ = CANONICAL(data_addr) >> 32;
-+
-+                *b++ = 512 << 16;
-+                *b++ = 4*1024;
-+
-+                reloc[1].offset = (b - buf) * sizeof(*b);
-+                reloc[1].target_handle = handle;
-+                reloc[1].read_domains = I915_GEM_DOMAIN_RENDER;
-+                reloc[1].write_domain = 0;
-+                reloc[1].presumed_offset = data_addr;
-+                *b++ = data_addr;
-+                if (has_64bit_relocations)
-+                        *b++ = CANONICAL(data_addr) >> 32;
-+
-+                *b++ = MI_BATCH_BUFFER_END;
-+                *b++ = 0;
-+        }
- 
- 	memset(gem_exec, 0, sizeof(gem_exec));
- 	gem_exec[0].handle = handle;
-diff --git a/tests/i915/gem_linear_blits.c b/tests/i915/gem_linear_blits.c
-index d02751be9..ae9971ca7 100644
---- a/tests/i915/gem_linear_blits.c
-+++ b/tests/i915/gem_linear_blits.c
-@@ -67,6 +67,7 @@ static void copy(int fd, uint64_t ahnd, uint32_t dst, uint32_t src,
- 	struct drm_i915_gem_relocation_entry reloc[2];
- 	struct drm_i915_gem_exec_object2 obj[3];
- 	struct drm_i915_gem_execbuffer2 exec;
-+	static uint32_t devid;
- 	int i = 0;
- 
- 	memset(obj, 0, sizeof(obj));
-@@ -83,29 +84,46 @@ static void copy(int fd, uint64_t ahnd, uint32_t dst, uint32_t src,
- 	obj[2].offset = CANONICAL(obj[2].offset);
- 	obj[2].flags = EXEC_OBJECT_SUPPORTS_48B_ADDRESS;
- 
--	batch[i++] = XY_SRC_COPY_BLT_CMD |
--		  XY_SRC_COPY_BLT_WRITE_ALPHA |
--		  XY_SRC_COPY_BLT_WRITE_RGB;
--	if (intel_gen(intel_get_drm_devid(fd)) >= 8)
--		batch[i - 1] |= 8;
--	else
--		batch[i - 1] |= 6;
--
--	batch[i++] = (3 << 24) | /* 32 bits */
--		  (0xcc << 16) | /* copy ROP */
--		  WIDTH*4;
--	batch[i++] = 0; /* dst x1,y1 */
--	batch[i++] = (HEIGHT << 16) | WIDTH; /* dst x2,y2 */
--	batch[i++] = obj[0].offset;
--	if (intel_gen(intel_get_drm_devid(fd)) >= 8)
--		batch[i++] = obj[0].offset >> 32;
--	batch[i++] = 0; /* src x1,y1 */
--	batch[i++] = WIDTH*4;
--	batch[i++] = obj[1].offset;
--	if (intel_gen(intel_get_drm_devid(fd)) >= 8)
--		batch[i++] = obj[1].offset >> 32;
--	batch[i++] = MI_BATCH_BUFFER_END;
--	batch[i++] = MI_NOOP;
-+	devid = intel_get_drm_devid(fd);
-+
-+	if (intel_graphics_ver(devid) >= IP_VER(12, 60)) {
-+                batch[i++] = XY_FAST_COPY_BLT;
-+                batch[i++] = XY_FAST_COPY_COLOR_DEPTH_32 | WIDTH*4;
-+                batch[i++] = 0;/* dst x1,y1 */
-+                batch[i++] = (HEIGHT << 16) | WIDTH;/* dst x2,y2 */
-+                batch[i++] = obj[0].offset;       /* dst address lower bits */
-+                batch[i++] = obj[0].offset >> 32; /* dst address upper bits */
-+                batch[i++] = 0;/* src x1,y1 */
-+                batch[i++] = WIDTH*4;/* src pitch */
-+                batch[i++] = obj[1].offset;       /* src address lower bits */
-+                batch[i++] = obj[1].offset >> 32; /* src address upper bits */
-+                batch[i++] = MI_BATCH_BUFFER_END;
-+                batch[i++] = MI_NOOP;
-+        } else {
-+		 batch[i++] = XY_SRC_COPY_BLT_CMD |
-+                          XY_SRC_COPY_BLT_WRITE_ALPHA |
-+                          XY_SRC_COPY_BLT_WRITE_RGB;
-+                if (intel_gen(intel_get_drm_devid(fd)) >= 8)
-+                        batch[i - 1] |= 8;
-+                else
-+                        batch[i - 1] |= 6;
-+
-+                batch[i++] = (3 << 24) | /* 32 bits */
-+                          (0xcc << 16) | /* copy ROP */
-+                          WIDTH*4;
-+                batch[i++] = 0; /* dst x1,y1 */
-+                batch[i++] = (HEIGHT << 16) | WIDTH; /* dst x2,y2 */
-+                batch[i++] = obj[0].offset;
-+                if (intel_gen(intel_get_drm_devid(fd)) >= 8)
-+                        batch[i++] = obj[0].offset >> 32;
-+                batch[i++] = 0; /* src x1,y1 */
-+                batch[i++] = WIDTH*4;
-+                batch[i++] = obj[1].offset;
-+                if (intel_gen(intel_get_drm_devid(fd)) >= 8)
-+                        batch[i++] = obj[1].offset >> 32;
-+                batch[i++] = MI_BATCH_BUFFER_END;
-+                batch[i++] = MI_NOOP;
-+        }
- 
- 	gem_write(fd, obj[2].handle, 0, batch, i * sizeof(batch[0]));
- 
-diff --git a/tests/i915/gem_userptr_blits.c b/tests/i915/gem_userptr_blits.c
-index 698508669..ea2b82e26 100644
---- a/tests/i915/gem_userptr_blits.c
-+++ b/tests/i915/gem_userptr_blits.c
-@@ -100,6 +100,7 @@ static int copy(int fd, uint32_t dst, uint32_t src)
- 	struct drm_i915_gem_exec_object2 obj[3];
- 	struct drm_i915_gem_execbuffer2 exec;
- 	uint32_t handle;
-+	static uint32_t devid;
- 	int ret, i=0;
- 	uint64_t dst_offset, src_offset, bb_offset;
- 	bool has_relocs = gem_has_relocations(fd);
-@@ -108,29 +109,47 @@ static int copy(int fd, uint32_t dst, uint32_t src)
- 	dst_offset = bb_offset + 4096;
- 	src_offset = dst_offset + WIDTH * HEIGHT * sizeof(uint32_t) * (src != dst);
- 
--	batch[i++] = XY_SRC_COPY_BLT_CMD |
--		  XY_SRC_COPY_BLT_WRITE_ALPHA |
--		  XY_SRC_COPY_BLT_WRITE_RGB;
--	if (intel_gen(intel_get_drm_devid(fd)) >= 8)
--		batch[i - 1] |= 8;
--	else
--		batch[i - 1] |= 6;
--
--	batch[i++] = (3 << 24) | /* 32 bits */
--		  (0xcc << 16) | /* copy ROP */
--		  WIDTH*4;
--	batch[i++] = 0; /* dst x1,y1 */
--	batch[i++] = (HEIGHT << 16) | WIDTH; /* dst x2,y2 */
--	batch[i++] = dst_offset; /* dst reloc */
--	if (intel_gen(intel_get_drm_devid(fd)) >= 8)
--		batch[i++] = dst_offset >> 32;
--	batch[i++] = 0; /* src x1,y1 */
--	batch[i++] = WIDTH*4;
--	batch[i++] = src_offset; /* src reloc */
--	if (intel_gen(intel_get_drm_devid(fd)) >= 8)
--		batch[i++] = src_offset >> 32;
--	batch[i++] = MI_BATCH_BUFFER_END;
--	batch[i++] = MI_NOOP;
-+	devid = intel_get_drm_devid(fd);
-+
-+        if (intel_graphics_ver(devid) >= IP_VER(12, 60)) {
-+                batch[i++] = XY_FAST_COPY_BLT;
-+                batch[i++] = XY_FAST_COPY_COLOR_DEPTH_32 | WIDTH*4;
-+                batch[i++] = 0;/* dst x1,y1 */
-+                batch[i++] = (HEIGHT << 16) | WIDTH;/* dst x2,y2 */
-+                batch[i++] = 0;/* dst address lower bits */
-+                batch[i++] = 0;/* dst address upper bits */
-+                batch[i++] = 0;/* src x1,y1 */
-+                batch[i++] = WIDTH*4;/* src pitch */
-+                batch[i++] = 0;// src address lower bits
-+                batch[i++] = 0;// src address upper bits
-+                batch[i++] = MI_BATCH_BUFFER_END;
-+                batch[i++] = MI_NOOP;
-+        } else {
-+                batch[i++] = XY_SRC_COPY_BLT_CMD |
-+                             XY_SRC_COPY_BLT_WRITE_ALPHA |
-+                             XY_SRC_COPY_BLT_WRITE_RGB;
-+
-+                if (intel_gen(intel_get_drm_devid(fd)) >= 8)
-+                        batch[i - 1] |= 8;
-+                else
-+                        batch[i - 1] |= 6;
-+
-+                batch[i++] = (3 << 24) | /* 32 bits */
-+                          (0xcc << 16) | /* copy ROP */
-+                          WIDTH*4;
-+                batch[i++] = 0; /* dst x1,y1 */
-+                batch[i++] = (HEIGHT << 16) | WIDTH; /* dst x2,y2 */
-+                batch[i++] = dst_offset; /* dst reloc */
-+                if (intel_gen(intel_get_drm_devid(fd)) >= 8)
-+                        batch[i++] = dst_offset >> 32;
-+                batch[i++] = 0; /* src x1,y1 */
-+                batch[i++] = WIDTH*4;
-+		batch[i++] = src_offset; /* src reloc */
-+                if (intel_gen(intel_get_drm_devid(fd)) >= 8)
-+                        batch[i++] = src_offset >> 32;
-+                batch[i++] = MI_BATCH_BUFFER_END;
-+                batch[i++] = MI_NOOP;
-+        }
- 
- 	handle = gem_create(fd, 4096);
- 	gem_write(fd, handle, 0, batch, sizeof(batch));
-@@ -206,29 +225,47 @@ blit(int fd, uint32_t dst, uint32_t src, uint32_t *all_bo, int n_bo)
- 	struct drm_i915_gem_execbuffer2 exec;
- 	uint32_t handle;
- 	int n, ret, i=0;
--
--	batch[i++] = XY_SRC_COPY_BLT_CMD |
--		  XY_SRC_COPY_BLT_WRITE_ALPHA |
--		  XY_SRC_COPY_BLT_WRITE_RGB;
--	if (intel_gen(intel_get_drm_devid(fd)) >= 8)
--		batch[i - 1] |= 8;
--	else
--		batch[i - 1] |= 6;
--	batch[i++] = (3 << 24) | /* 32 bits */
--		  (0xcc << 16) | /* copy ROP */
--		  WIDTH*4;
--	batch[i++] = 0; /* dst x1,y1 */
--	batch[i++] = (HEIGHT << 16) | WIDTH; /* dst x2,y2 */
--	batch[i++] = 0; /* dst reloc */
--	if (intel_gen(intel_get_drm_devid(fd)) >= 8)
--		batch[i++] = 0;
--	batch[i++] = 0; /* src x1,y1 */
--	batch[i++] = WIDTH*4;
--	batch[i++] = 0; /* src reloc */
--	if (intel_gen(intel_get_drm_devid(fd)) >= 8)
--		batch[i++] = 0;
--	batch[i++] = MI_BATCH_BUFFER_END;
--	batch[i++] = MI_NOOP;
-+	static uint32_t devid;
-+
-+	devid = intel_get_drm_devid(fd);
-+
-+	if (intel_graphics_ver(devid) >= IP_VER(12, 60)) {
-+                batch[i++] = XY_FAST_COPY_BLT;
-+                batch[i++] = XY_FAST_COPY_COLOR_DEPTH_32 | WIDTH*4;
-+                batch[i++] = 0;/* dst x1,y1 */
-+                batch[i++] = (HEIGHT << 16) | WIDTH;/* dst x2,y2 */
-+                batch[i++] = 0;/* dst address lower bits */
-+                batch[i++] = 0;/* dst address upper bits */
-+                batch[i++] = 0;/* src x1,y1 */
-+                batch[i++] = WIDTH*4;/* src pitch */
-+                batch[i++] = 0;// src address lower bits
-+                batch[i++] = 0;// src address upper bits
-+                batch[i++] = MI_BATCH_BUFFER_END;
-+                batch[i++] = MI_NOOP;
-+        } else {
-+                batch[i++] = XY_SRC_COPY_BLT_CMD |
-+                             XY_SRC_COPY_BLT_WRITE_ALPHA |
-+                             XY_SRC_COPY_BLT_WRITE_RGB;
-+                if (intel_gen(intel_get_drm_devid(fd)) >= 8)
-+                        batch[i - 1] |= 8;
-+                else
-+                        batch[i - 1] |= 6;
-+                batch[i++] = (3 << 24) | /* 32 bits */
-+                             (0xcc << 16) | /* copy ROP */
-+                             WIDTH*4;
-+                batch[i++] = 0; /* dst x1,y1 */
-+                batch[i++] = (HEIGHT << 16) | WIDTH; /* dst x2,y2 */
-+                batch[i++] = 0; /* dst reloc */
-+                if (intel_gen(intel_get_drm_devid(fd)) >= 8)
-+                        batch[i++] = 0;
-+                batch[i++] = 0; /* src x1,y1 */
-+                batch[i++] = WIDTH*4;
-+                batch[i++] = 0; /* src reloc */
-+                if (intel_gen(intel_get_drm_devid(fd)) >= 8)
-+                        batch[i++] = 0;
-+                batch[i++] = MI_BATCH_BUFFER_END;
-+                batch[i++] = MI_NOOP;
-+        }
- 
- 	handle = gem_create(fd, 4096);
- 	gem_write(fd, handle, 0, batch, sizeof(batch));
--- 
-2.25.1
+== Summary ==
+
+CI Bug Log - changes from CI_DRM_12325 -> IGTPW_8023
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8023/index.html
+
+Participating hosts (40 -> 27)
+------------------------------
+
+  Additional (1): fi-tgl-mst 
+  Missing    (14): fi-cml-u2 bat-dg2-8 bat-adlm-1 fi-icl-u2 bat-dg2-9 bat-adlp-6 bat-adlp-4 fi-hsw-4770 bat-adln-1 bat-rplp-1 bat-rpls-1 bat-rpls-2 bat-dg2-11 bat-jsl-1 
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in IGTPW_8023:
+
+### IGT changes ###
+
+#### Suppressed ####
+
+  The following results come from untrusted machines, tests, or statuses.
+  They do not affect the overall result.
+
+  * igt@i915_pm_rpm@module-reload:
+    - {fi-tgl-mst}:       NOTRUN -> [FAIL][1]
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8023/fi-tgl-mst/igt@i915_pm_rpm@module-reload.html
+
+  
+Known issues
+------------
+
+  Here are the changes found in IGTPW_8023 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@gem_exec_gttfill@basic:
+    - fi-pnv-d510:        [PASS][2] -> [FAIL][3] ([i915#7229])
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12325/fi-pnv-d510/igt@gem_exec_gttfill@basic.html
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8023/fi-pnv-d510/igt@gem_exec_gttfill@basic.html
+
+  
+#### Possible fixes ####
+
+  * igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions-varying-size:
+    - fi-bsw-kefka:       [FAIL][4] ([i915#6298]) -> [PASS][5]
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12325/fi-bsw-kefka/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions-varying-size.html
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8023/fi-bsw-kefka/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions-varying-size.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [fdo#109285]: https://bugs.freedesktop.org/show_bug.cgi?id=109285
+  [fdo#109295]: https://bugs.freedesktop.org/show_bug.cgi?id=109295
+  [fdo#110189]: https://bugs.freedesktop.org/show_bug.cgi?id=110189
+  [fdo#111827]: https://bugs.freedesktop.org/show_bug.cgi?id=111827
+  [i915#1155]: https://gitlab.freedesktop.org/drm/intel/issues/1155
+  [i915#1245]: https://gitlab.freedesktop.org/drm/intel/issues/1245
+  [i915#2190]: https://gitlab.freedesktop.org/drm/intel/issues/2190
+  [i915#2582]: https://gitlab.freedesktop.org/drm/intel/issues/2582
+  [i915#3301]: https://gitlab.freedesktop.org/drm/intel/issues/3301
+  [i915#3555]: https://gitlab.freedesktop.org/drm/intel/issues/3555
+  [i915#4103]: https://gitlab.freedesktop.org/drm/intel/issues/4103
+  [i915#4613]: https://gitlab.freedesktop.org/drm/intel/issues/4613
+  [i915#6298]: https://gitlab.freedesktop.org/drm/intel/issues/6298
+  [i915#6434]: https://gitlab.freedesktop.org/drm/intel/issues/6434
+  [i915#7229]: https://gitlab.freedesktop.org/drm/intel/issues/7229
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_7032 -> IGTPW_8023
+
+  CI-20190529: 20190529
+  CI_DRM_12325: 1a90222aa5e5bb86ffcbde5ba9611659a23f0df6 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_8023: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8023/index.html
+  IGT_7032: 372c56225e12578a7a4a6bcc5b79eb40b643fcde @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8023/index.html
+
+--===============8975557794963590725==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>test/i915: Added COPY Commands modification for MTL</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/110361/">https://patchwork.freedesktop.org/series/110361/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8023/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8023/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_12325 -&gt; IGTPW_8023</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8023/index.html</p>
+<h2>Participating hosts (40 -&gt; 27)</h2>
+<p>Additional (1): fi-tgl-mst <br />
+  Missing    (14): fi-cml-u2 bat-dg2-8 bat-adlm-1 fi-icl-u2 bat-dg2-9 bat-adlp-6 bat-adlp-4 fi-hsw-4770 bat-adln-1 bat-rplp-1 bat-rpls-1 bat-rpls-2 bat-dg2-11 bat-jsl-1 </p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in IGTPW_8023:</p>
+<h3>IGT changes</h3>
+<h4>Suppressed</h4>
+<p>The following results come from untrusted machines, tests, or statuses.<br />
+  They do not affect the overall result.</p>
+<ul>
+<li>igt@i915_pm_rpm@module-reload:<ul>
+<li>{fi-tgl-mst}:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8023/fi-tgl-mst/igt@i915_pm_rpm@module-reload.html">FAIL</a></li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_8023 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>igt@gem_exec_gttfill@basic:<ul>
+<li>fi-pnv-d510:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12325/fi-pnv-d510/igt@gem_exec_gttfill@basic.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8023/fi-pnv-d510/igt@gem_exec_gttfill@basic.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7229">i915#7229</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions-varying-size:<ul>
+<li>fi-bsw-kefka:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12325/fi-bsw-kefka/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions-varying-size.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6298">i915#6298</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8023/fi-bsw-kefka/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions-varying-size.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_7032 -&gt; IGTPW_8023</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_12325: 1a90222aa5e5bb86ffcbde5ba9611659a23f0df6 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_8023: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8023/index.html<br />
+  IGT_7032: 372c56225e12578a7a4a6bcc5b79eb40b643fcde @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============8975557794963590725==--
