@@ -1,16 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from NAM11-CO1-obe.outbound.protection.outlook.com
- (mail-co1nam11on2059.outbound.protection.outlook.com [40.107.220.59])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D2AC510E093
- for <igt-dev@lists.freedesktop.org>; Fri,  4 Nov 2022 18:49:45 +0000 (UTC)
-From: Alex Hung <alex.hung@amd.com>
-To: <igt-dev@lists.freedesktop.org>
-Date: Fri, 4 Nov 2022 12:48:50 -0600
-Message-ID: <20221104184850.742606-1-alex.hung@amd.com>
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9CE8A10E0BF
+ for <igt-dev@lists.freedesktop.org>; Tue,  1 Nov 2022 16:25:43 +0000 (UTC)
+Date: Tue, 1 Nov 2022 12:25:35 -0400
+From: Rodrigo Vivi <rodrigo.vivi@intel.com>
+To: Anshuman Gupta <anshuman.gupta@intel.com>
+Message-ID: <Y2FIf7usXF3qEb7w@intel.com>
+References: <20221031135652.2342078-1-anshuman.gupta@intel.com>
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20221031135652.2342078-1-anshuman.gupta@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH] kms_chamelium: fix a compile warning
+Subject: Re: [igt-dev] [PATCH i-g-t] test/i915_pm_rpm: Verify bridge binds
+ with pcieport driver
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,49 +20,76 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: markyacoub@google.com
+Cc: igt-dev@lists.freedesktop.org, badal.nilawar@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Fix the following warning:
+On Mon, Oct 31, 2022 at 07:26:52PM +0530, Anshuman Gupta wrote:
+> It has been observed that on some Intel x86 host PCI core
 
-../tests/chamelium/kms_chamelium.c: In function ‘edid_stress_resolution’:
-../tests/chamelium/kms_chamelium.c:2570:31: warning: declaration of ‘monitor_edid’ shadows a global declaration [-Wshadow]
- 2570 |                 monitor_edid *monitor_edid = &edids_list[i];
-      |                               ^~~~~~~~~~~~
-In file included from ../lib/monitor_edids/dp_edids.h:15,
-                 from ../tests/chamelium/kms_chamelium.c:33:
-../lib/monitor_edids/monitor_edids_helper.h:25:3: note: shadowed declaration is here
-   25 | } monitor_edid;
-      |   ^~~~~~~~~~~~
+probably a comma would help, maybe here?!.........^
 
-Fixes: 6a25c536 (kms_chamelium: Add new EDID stress resolution test)
-Signed-off-by: Alex Hung <alex.hung@amd.com>
----
- tests/chamelium/kms_chamelium.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+> does not bind the Intel dgfx catds's pci bridge
 
-diff --git a/tests/chamelium/kms_chamelium.c b/tests/chamelium/kms_chamelium.c
-index c824e67e..09839f98 100644
---- a/tests/chamelium/kms_chamelium.c
-+++ b/tests/chamelium/kms_chamelium.c
-@@ -2567,13 +2567,13 @@ static void edid_stress_resolution(data_t *data, struct chamelium_port *port,
- 		bool is_video_stable;
- 		int screen_res_w, screen_res_h;
- 
--		monitor_edid *monitor_edid = &edids_list[i];
-+		monitor_edid *edid = &edids_list[i];
- 		igt_info("Testing out the EDID for %s\n",
--			 monitor_edid_get_name(monitor_edid));
-+			 monitor_edid_get_name(edid));
- 
- 		/* Getting and Setting the EDID on Chamelium. */
- 		chamelium_edid = get_chameleon_edid_from_monitor_edid(
--			chamelium, monitor_edid);
-+			chamelium, edid);
- 		chamelium_port_set_edid(data->chamelium, port, chamelium_edid);
- 		free_chamelium_edid_from_monitor_edid(chamelium_edid);
- 
--- 
-2.34.1
+s/catds's pci/cards' pci/
+
+> devices(virtual switch port) to the pcieport driver.
+> This leaves the pci bridge devices to D0 state and
+> burns power on dgfx card.
+> 
+> Signed-off-by: Anshuman Gupta <anshuman.gupta@intel.com>
+> ---
+>  tests/i915/i915_pm_rpm.c | 14 +++++++++++---
+>  1 file changed, 11 insertions(+), 3 deletions(-)
+> 
+> diff --git a/tests/i915/i915_pm_rpm.c b/tests/i915/i915_pm_rpm.c
+> index 1ff69a060a..92c30ae791 100644
+> --- a/tests/i915/i915_pm_rpm.c
+> +++ b/tests/i915/i915_pm_rpm.c
+> @@ -1545,12 +1545,12 @@ static void reg_read_ioctl_subtest(void)
+>  	igt_assert(wait_for_suspended());
+>  }
+>  
+> -static bool device_in_pci_d3(void)
+> +static bool device_in_pci_d3(struct pci_device *pci_dev)
+>  {
+>  	uint16_t val;
+>  	int rc;
+>  
+> -	rc = pci_device_cfg_read_u16(igt_device_get_pci_device(drm_fd), &val, 0xd4);
+> +	rc = pci_device_cfg_read_u16(pci_dev, &val, 0xd4);
+>  	igt_assert_eq(rc, 0);
+>  
+>  	igt_debug("%s: PCI D3 state=%d\n", __func__, val & 0x3);
+> @@ -1559,10 +1559,18 @@ static bool device_in_pci_d3(void)
+>  
+>  static void pci_d3_state_subtest(void)
+>  {
+> +	struct pci_device *pci_dev, *bridge_pci_dev;
+> +
+>  	igt_require(has_runtime_pm);
+>  
+> +	pci_dev = igt_device_get_pci_device(drm_fd);
+> +	bridge_pci_dev = pci_device_get_parent_bridge(pci_dev);
+> +
+>  	disable_all_screens_and_wait(&ms_data);
+> -	igt_assert(igt_wait(device_in_pci_d3(), 2000, 100));
+> +	igt_assert(igt_wait(device_in_pci_d3(pci_dev), 2000, 100));
+> +
+> +	if (gem_has_lmem(drm_fd))
+> +		igt_require((pci_device_has_kernel_driver(bridge_pci_dev));
+
+these last 2 lines seems to be doing the protection that commit msg
+requests, right? but probably the above chunck deserves a separated patch?
+or maybe explain a little bit more in the commit msg?
+
+Thanks,
+Rodrigo.
+
+>  
+>  	enable_one_screen_or_forcewake_get_and_wait(&ms_data);
+>  	igt_assert(!device_in_pci_d3());
+> -- 
+> 2.38.0
+> 
