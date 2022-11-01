@@ -1,25 +1,27 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DAE4510E40C
- for <igt-dev@lists.freedesktop.org>; Tue,  1 Nov 2022 17:23:02 +0000 (UTC)
-From: "Vudum, Lakshminarayana" <lakshminarayana.vudum@intel.com>
-To: "Latvala, Petri" <petri.latvala@intel.com>, Mark Yacoub
- <markyacoub@chromium.org>
-Date: Tue, 1 Nov 2022 17:22:50 +0000
-Message-ID: <DM4PR11MB6213BC7DC76262039324C25CEC369@DM4PR11MB6213.namprd11.prod.outlook.com>
-References: <20221031163139.73486-1-markyacoub@chromium.org>
- <166723655571.2020.3993909126900647750@emeril.freedesktop.org>
- <CAJUqKUq3We+=cBkBXP4jn2S-KKkg+cd4wLytiKRM_-cd8=+oZQ@mail.gmail.com>
- <Y2DgU6Xl8iHVLxLh@platvala-desk.ger.corp.intel.com>
-In-Reply-To: <Y2DgU6Xl8iHVLxLh@platvala-desk.ger.corp.intel.com>
-Content-Language: en-US
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Received: from mail-ed1-x529.google.com (mail-ed1-x529.google.com
+ [IPv6:2a00:1450:4864:20::529])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D834E10E40C
+ for <igt-dev@lists.freedesktop.org>; Tue,  1 Nov 2022 17:31:23 +0000 (UTC)
+Received: by mail-ed1-x529.google.com with SMTP id x2so22794774edd.2
+ for <igt-dev@lists.freedesktop.org>; Tue, 01 Nov 2022 10:31:23 -0700 (PDT)
+Message-ID: <f9e84b59-5c53-dc7c-1634-0ca2addbece2@gmail.com>
+Date: Tue, 1 Nov 2022 19:31:15 +0200
 MIME-Version: 1.0
-Subject: Re: [igt-dev]
- =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_k?=
- =?utf-8?q?ms=5Fchamelium=3A_Add_new_EDID_stress_resolution_test_=28rev2?=
- =?utf-8?q?=29?=
+Content-Language: en-US
+To: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>,
+ aemad <aemad@igalia.com>
+References: <20221009151844.3456-1-aemad@igalia.com>
+ <aa261d04-81b3-48ac-603b-c75fcb3c8909@gmail.com>
+ <31ec4c5751bfda7c1f174b9e0c898280@igalia.com>
+ <3703439d-a975-3756-00b1-a925d16f9e9a@gmail.com>
+ <d3d289cc-723f-cd30-4acc-11674e02ed8a@intel.com>
+From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+In-Reply-To: <d3d289cc-723f-cd30-4acc-11674e02ed8a@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_cursor_crc: prevent the
+ entire test from being aborted when a subtest fails
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,203 +29,351 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+Reply-To: juhapekka.heikkila@gmail.com
+Cc: igt-dev@lists.freedesktop.org, petri.latvala@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-UmV2IDEgaXMgY2xlYW4gbm93LiBCdXQgd2UgYXJlIFJldiA0IGFuZCB3YWl0aW5nIGZvciByZXN1
-bHRzPyANCg0KTGFrc2htaS4gDQoNCi0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQpGcm9tOiBM
-YXR2YWxhLCBQZXRyaSA8cGV0cmkubGF0dmFsYUBpbnRlbC5jb20+IA0KU2VudDogVHVlc2RheSwg
-Tm92ZW1iZXIgMSwgMjAyMiAyOjAxIEFNDQpUbzogTWFyayBZYWNvdWIgPG1hcmt5YWNvdWJAY2hy
-b21pdW0ub3JnPg0KQ2M6IFZ1ZHVtLCBMYWtzaG1pbmFyYXlhbmEgPGxha3NobWluYXJheWFuYS52
-dWR1bUBpbnRlbC5jb20+OyBpZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZw0KU3ViamVjdDog
-UmU6IFtpZ3QtZGV2XSDinJcgR2l0TGFiLlBpcGVsaW5lOiB3YXJuaW5nIGZvciBrbXNfY2hhbWVs
-aXVtOiBBZGQgbmV3IEVESUQgc3RyZXNzIHJlc29sdXRpb24gdGVzdCAocmV2MikNCg0KT24gTW9u
-LCBPY3QgMzEsIDIwMjIgYXQgMDE6MzI6NDRQTSAtMDQwMCwgTWFyayBZYWNvdWIgd3JvdGU6DQo+
-IEhpIExha3NobWluYXJheWFuYSwNCj4gU29tZXRoaW5nIHNlZW1zIG9mZiBoZXJlIC0gSSBkb24n
-dCB0aGluayBJIHNob3VsZCBtb2RpZnkgeGY4NmRybU1vZGUgDQo+IGluIGFueXdheS4gV2hhdCBk
-byB5b3UgdGhpbmsgaXMgZ29pbmcgb24/IFRoYW5rcyENCg0KQWRkICNpbmNsdWRlIDxzdGRkZWYu
-aD4gdG8gbGliL2lndF9jaGFtZWxpdW0uaCBiZWZvcmUgeGY4NmRybU1vZGUuaA0KDQotLQ0KUGV0
-cmkgTGF0dmFsYQ0KDQoNCg0KPiANCj4gT24gTW9uLCBPY3QgMzEsIDIwMjIgYXQgMToxNSBQTSBQ
-YXRjaHdvcmsNCj4gPHBhdGNod29ya0BlbWVyaWwuZnJlZWRlc2t0b3Aub3JnPiB3cm90ZToNCj4g
-Pg0KPiA+ID09IFNlcmllcyBEZXRhaWxzID09DQo+ID4NCj4gPiBTZXJpZXM6IGttc19jaGFtZWxp
-dW06IEFkZCBuZXcgRURJRCBzdHJlc3MgcmVzb2x1dGlvbiB0ZXN0IChyZXYyKQ0KPiA+IFVSTCAg
-IDogaHR0cHM6Ly9wYXRjaHdvcmsuZnJlZWRlc2t0b3Aub3JnL3Nlcmllcy8xMTAyNjMvDQo+ID4g
-U3RhdGUgOiB3YXJuaW5nDQo+ID4NCj4gPiA9PSBTdW1tYXJ5ID09DQo+ID4NCj4gPiBQaXBlbGlu
-ZSBzdGF0dXM6IEZBSUxFRC4NCj4gPg0KPiA+IHNlZSBodHRwczovL2dpdGxhYi5mcmVlZGVza3Rv
-cC5vcmcvZ2Z4LWNpL2lndC1jaS10YWdzLy0vcGlwZWxpbmVzLzcyNTY5MSBmb3IgdGhlIG92ZXJ2
-aWV3Lg0KPiA+DQo+ID4gYnVpbGQ6dGVzdHMtZGViaWFuLW1lc29uIGhhcyBmYWlsZWQgKGh0dHBz
-Oi8vZ2l0bGFiLmZyZWVkZXNrdG9wLm9yZy9nZngtY2kvaWd0LWNpLXRhZ3MvLS9qb2JzLzMwNzU1
-MzIxKToNCj4gPiAgIEluIGZpbGUgaW5jbHVkZWQgZnJvbSAuLi9saWIvaWd0X2NoYW1lbGl1bS5o
-OjMyLA0KPiA+ICAgICAgICAgICAgICAgICAgICBmcm9tIC4uL2xpYi9tb25pdG9yX2VkaWRzL21v
-bml0b3JfZWRpZHNfaGVscGVyLmg6MTYsDQo+ID4gICAgICAgICAgICAgICAgICAgIGZyb20gLi4v
-bGliL21vbml0b3JfZWRpZHMvbW9uaXRvcl9lZGlkc19oZWxwZXIuYzoxMToNCj4gPiAgIC91c3Iv
-aW5jbHVkZS94Zjg2ZHJtTW9kZS5oOjUyMDo2NDogZXJyb3I6IHVua25vd24gdHlwZSBuYW1lIOKA
-mHNpemVfdOKAmQ0KPiA+ICAgIGV4dGVybiBpbnQgZHJtTW9kZUNyZWF0ZVByb3BlcnR5QmxvYihp
-bnQgZmQsIGNvbnN0IHZvaWQgKmRhdGEsIHNpemVfdCBzaXplLA0KPiA+ICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIF5+fn5+
-fg0KPiA+ICAgL3Vzci9pbmNsdWRlL3hmODZkcm1Nb2RlLmg6NTIwOjY0OiBub3RlOiDigJhzaXpl
-X3TigJkgaXMgZGVmaW5lZCBpbiBoZWFkZXIg4oCYPHN0ZGRlZi5oPuKAmTsgZGlkIHlvdSBmb3Jn
-ZXQgdG8g4oCYI2luY2x1ZGUgPHN0ZGRlZi5oPuKAmT8NCj4gPiAgIC91c3IvaW5jbHVkZS94Zjg2
-ZHJtTW9kZS5oOjQ0OjE6DQo+ID4gICArI2luY2x1ZGUgPHN0ZGRlZi5oPg0KPiA+DQo+ID4gICAv
-dXNyL2luY2x1ZGUveGY4NmRybU1vZGUuaDo1MjA6NjQ6DQo+ID4gICAgZXh0ZXJuIGludCBkcm1N
-b2RlQ3JlYXRlUHJvcGVydHlCbG9iKGludCBmZCwgY29uc3Qgdm9pZCAqZGF0YSwgc2l6ZV90IHNp
-emUsDQo+ID4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgXn5+fn5+DQo+ID4gICBuaW5qYTogYnVpbGQgc3RvcHBlZDogc3Vi
-Y29tbWFuZCBmYWlsZWQuDQo+ID4gICBzZWN0aW9uX2VuZDoxNjY3MjM1OTc2OnN0ZXBfc2NyaXB0
-DQo+ID4gICBzZWN0aW9uX3N0YXJ0OjE2NjcyMzU5NzY6Y2xlYW51cF9maWxlX3ZhcmlhYmxlcw0K
-PiA+ICAgQ2xlYW5pbmcgdXAgcHJvamVjdCBkaXJlY3RvcnkgYW5kIGZpbGUgYmFzZWQgdmFyaWFi
-bGVzDQo+ID4gICBzZWN0aW9uX2VuZDoxNjY3MjM1OTc4OmNsZWFudXBfZmlsZV92YXJpYWJsZXMN
-Cj4gPiAgIEVSUk9SOiBKb2IgZmFpbGVkOiBleGl0IGNvZGUgMQ0KPiA+DQo+ID4NCj4gPiBidWls
-ZDp0ZXN0cy1mZWRvcmEgaGFzIGZhaWxlZCAoaHR0cHM6Ly9naXRsYWIuZnJlZWRlc2t0b3Aub3Jn
-L2dmeC1jaS9pZ3QtY2ktdGFncy8tL2pvYnMvMzA3NTUzMTYpOg0KPiA+ICAgSW4gZmlsZSBpbmNs
-dWRlZCBmcm9tIC4uL2xpYi9pZ3RfY2hhbWVsaXVtLmg6MzIsDQo+ID4gICAgICAgICAgICAgICAg
-ICAgIGZyb20gLi4vbGliL21vbml0b3JfZWRpZHMvbW9uaXRvcl9lZGlkc19oZWxwZXIuaDoxNiwN
-Cj4gPiAgICAgICAgICAgICAgICAgICAgZnJvbSAuLi9saWIvbW9uaXRvcl9lZGlkcy9tb25pdG9y
-X2VkaWRzX2hlbHBlci5jOjExOg0KPiA+ICAgL3Vzci9pbmNsdWRlL3hmODZkcm1Nb2RlLmg6NTIw
-OjY0OiBlcnJvcjogdW5rbm93biB0eXBlIG5hbWUg4oCYc2l6ZV904oCZDQo+ID4gICAgIDUyMCB8
-IGV4dGVybiBpbnQgZHJtTW9kZUNyZWF0ZVByb3BlcnR5QmxvYihpbnQgZmQsIGNvbnN0IHZvaWQg
-KmRhdGEsIHNpemVfdCBzaXplLA0KPiA+ICAgICAgICAgfCAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBefn5+fn4NCj4gPiAgIElu
-IGZpbGUgaW5jbHVkZWQgZnJvbSAuLi9saWIvaWd0X2NoYW1lbGl1bS5oOjMyLA0KPiA+ICAgICAg
-ICAgICAgICAgICAgICBmcm9tIC4uL2xpYi9tb25pdG9yX2VkaWRzL21vbml0b3JfZWRpZHNfaGVs
-cGVyLmg6MTYsDQo+ID4gICAgICAgICAgICAgICAgICAgIGZyb20gLi4vbGliL21vbml0b3JfZWRp
-ZHMvbW9uaXRvcl9lZGlkc19oZWxwZXIuYzoxMToNCj4gPiAgIC91c3IvaW5jbHVkZS94Zjg2ZHJt
-TW9kZS5oOjQ0OjE6IG5vdGU6IOKAmHNpemVfdOKAmSBpcyBkZWZpbmVkIGluIGhlYWRlciDigJg8
-c3RkZGVmLmg+4oCZOyBkaWQgeW91IGZvcmdldCB0byDigJgjaW5jbHVkZSA8c3RkZGVmLmg+4oCZ
-Pw0KPiA+ICAgICAgNDMgfCAjaW5jbHVkZSA8ZHJtLmg+DQo+ID4gICAgICsrKyB8KyNpbmNsdWRl
-IDxzdGRkZWYuaD4NCj4gPiAgICAgIDQ0IHwNCj4gPiAgIG5pbmphOiBidWlsZCBzdG9wcGVkOiBz
-dWJjb21tYW5kIGZhaWxlZC4NCj4gPiAgIHNlY3Rpb25fZW5kOjE2NjcyMzU5ODY6c3RlcF9zY3Jp
-cHQNCj4gPiAgIHNlY3Rpb25fc3RhcnQ6MTY2NzIzNTk4NjpjbGVhbnVwX2ZpbGVfdmFyaWFibGVz
-DQo+ID4gICBDbGVhbmluZyB1cCBwcm9qZWN0IGRpcmVjdG9yeSBhbmQgZmlsZSBiYXNlZCB2YXJp
-YWJsZXMNCj4gPiAgIHNlY3Rpb25fZW5kOjE2NjcyMzU5ODc6Y2xlYW51cF9maWxlX3ZhcmlhYmxl
-cw0KPiA+ICAgRVJST1I6IEpvYiBmYWlsZWQ6IGV4aXQgY29kZSAxDQo+ID4NCj4gPg0KPiA+IGJ1
-aWxkOnRlc3RzLWZlZG9yYS1jbGFuZyBoYXMgZmFpbGVkIChodHRwczovL2dpdGxhYi5mcmVlZGVz
-a3RvcC5vcmcvZ2Z4LWNpL2lndC1jaS10YWdzLy0vam9icy8zMDc1NTMyMCk6DQo+ID4gICBbNC85
-ODNdIExpbmtpbmcgc3RhdGljIHRhcmdldCBsaWIvbGliaWd0LWlndF9hdWRpb19jLmEuDQo+ID4g
-ICBbNS85ODNdIExpbmtpbmcgc3RhdGljIHRhcmdldCBsaWIvbGliaWd0LWlndF9hbHNhX2MuYS4N
-Cj4gPiAgIFs2Lzk4M10gTGlua2luZyBzdGF0aWMgdGFyZ2V0IGxpYi9saWJpZ3QtaWd0X2NoYW1l
-bGl1bV9zdHJlYW1fYy5hLg0KPiA+ICAgWzcvOTgzXSBDb21waWxpbmcgQyBvYmplY3QgJ2xpYi83
-NmI1YTM1QEBpZ3QtbW9uaXRvcl9lZGlkc19tb25pdG9yX2VkaWRzX2hlbHBlcl9jQHN0YS9tb25p
-dG9yX2VkaWRzX21vbml0b3JfZWRpZHNfaGVscGVyLmMubycuDQo+ID4gICBGQUlMRUQ6IGxpYi83
-NmI1YTM1QEBpZ3QtbW9uaXRvcl9lZGlkc19tb25pdG9yX2VkaWRzX2hlbHBlcl9jQHN0YS9tb25p
-dG9yX2VkaWRzX21vbml0b3JfZWRpZHNfaGVscGVyLmMubw0KPiA+ICAgY2xhbmcgLUlsaWIvNzZi
-NWEzNUBAaWd0LW1vbml0b3JfZWRpZHNfbW9uaXRvcl9lZGlkc19oZWxwZXJfY0BzdGEgLUlsaWIg
-LUkuLi9saWIgLUkuLi9pbmNsdWRlL2RybS11YXBpIC1JLi4vaW5jbHVkZS9saW51eC11YXBpIC1J
-Li4vbGliL3N0dWJzL3N5c2NhbGxzIC1JLiAtSS4uLyAtSS91c3IvaW5jbHVkZS9jYWlybyAtSS91
-c3IvaW5jbHVkZS9nbGliLTIuMCAtSS91c3IvbGliNjQvZ2xpYi0yLjAvaW5jbHVkZSAtSS91c3Iv
-aW5jbHVkZS9waXhtYW4tMSAtSS91c3IvaW5jbHVkZS9mcmVldHlwZTIgLUkvdXNyL2luY2x1ZGUv
-bGlicG5nMTYgLUkvdXNyL2luY2x1ZGUvbGliZHJtIC1JL3Vzci9pbmNsdWRlL2xpYmRybS9ub3V2
-ZWF1IC1JL3Vzci9pbmNsdWRlL3ZhbGdyaW5kIC1YY2xhbmcgLWZjb2xvci1kaWFnbm9zdGljcyAt
-cGlwZSAtRF9GSUxFX09GRlNFVF9CSVRTPTY0IC1XYWxsIC1XaW52YWxpZC1wY2ggLVdleHRyYSAt
-c3RkPWdudTExIC1PMiAtZyAtRF9HTlVfU09VUkNFIC1pbmNsdWRlIGNvbmZpZy5oIC1EX0ZPUlRJ
-RllfU09VUkNFPTIgLVdiYWQtZnVuY3Rpb24tY2FzdCAtV2RlY2xhcmF0aW9uLWFmdGVyLXN0YXRl
-bWVudCAtV2Zvcm1hdD0yIC1XbWlzc2luZy1kZWNsYXJhdGlvbnMgLVdtaXNzaW5nLWZvcm1hdC1h
-dHRyaWJ1dGUgLVdtaXNzaW5nLW5vcmV0dXJuIC1XbWlzc2luZy1wcm90b3R5cGVzIC1XbmVzdGVk
-LWV4dGVybnMgLVdvbGQtc3R5bGUtZGVmaW5pdGlvbiAtV3BvaW50ZXItYXJpdGggLVdyZWR1bmRh
-bnQtZGVjbHMgLVdzaGFkb3cgLVdzdHJpY3QtcHJvdG90eXBlcyAtV3VuaW5pdGlhbGl6ZWQgLVd1
-bnVzZWQgLVduby1taXNzaW5nLWZpZWxkLWluaXRpYWxpemVycyAtV25vLXBvaW50ZXItYXJpdGgg
-LVduby1hZGRyZXNzLW9mLXBhY2tlZC1tZW1iZXIgLVduby1zaWduLWNvbXBhcmUgLVduby10eXBl
-LWxpbWl0cyAtV25vLXVudXNlZC1wYXJhbWV0ZXIgLVduby11bnVzZWQtcmVzdWx0IC1XZXJyb3I9
-YWRkcmVzcyAtV2Vycm9yPWFycmF5LWJvdW5kcyAtV2Vycm9yPWltcGxpY2l0IC1XZXJyb3I9aW5p
-dC1zZWxmIC1XZXJyb3I9aW50LXRvLXBvaW50ZXItY2FzdCAtV2Vycm9yPW1haW4gLVdlcnJvcj1t
-aXNzaW5nLWJyYWNlcyAtV2Vycm9yPW5vbm51bGwgLVdlcnJvcj1wb2ludGVyLXRvLWludC1jYXN0
-IC1XZXJyb3I9cmV0dXJuLXR5cGUgLVdlcnJvcj1zZXF1ZW5jZS1wb2ludCAtV2Vycm9yPXRyaWdy
-YXBocyAtV2Vycm9yPXdyaXRlLXN0cmluZ3MgLWZuby1idWlsdGluLW1hbGxvYyAtZm5vLWJ1aWx0
-aW4tY2FsbG9jIC1mY29tbW9uIC1mUElDIC1wdGhyZWFkICctRElHVF9EQVRBRElSPSIvdXNyL2xv
-Y2FsL3NoYXJlL2lndC1ncHUtdG9vbHMiJyAnLURJR1RfU1JDRElSPSIvYnVpbGRzL2dmeC1jaS9p
-Z3QtY2ktdGFncy90ZXN0cyInICctRElHVF9MT0dfRE9NQUlOPSJtb25pdG9yX2VkaWRzL21vbml0
-b3JfZWRpZHNfaGVscGVyIicgLU1EIC1NUSAnbGliLzc2YjVhMzVAQGlndC1tb25pdG9yX2VkaWRz
-X21vbml0b3JfZWRpZHNfaGVscGVyX2NAc3RhL21vbml0b3JfZWRpZHNfbW9uaXRvcl9lZGlkc19o
-ZWxwZXIuYy5vJyAtTUYgJ2xpYi83NmI1YTM1QEBpZ3QtbW9uaXRvcl9lZGlkc19tb25pdG9yX2Vk
-aWRzX2hlbHBlcl9jQHN0YS9tb25pdG9yX2VkaWRzX21vbml0b3JfZWRpZHNfaGVscGVyLmMuby5k
-JyAtbyAnbGliLzc2YjVhMzVAQGlndC1tb25pdG9yX2VkaWRzX21vbml0b3JfZWRpZHNfaGVscGVy
-X2NAc3RhL21vbml0b3JfZWRpZHNfbW9uaXRvcl9lZGlkc19oZWxwZXIuYy5vJyAtYyAuLi9saWIv
-bW9uaXRvcl9lZGlkcy9tb25pdG9yX2VkaWRzX2hlbHBlci5jDQo+ID4gICBJbiBmaWxlIGluY2x1
-ZGVkIGZyb20gLi4vbGliL21vbml0b3JfZWRpZHMvbW9uaXRvcl9lZGlkc19oZWxwZXIuYzoxMToN
-Cj4gPiAgIEluIGZpbGUgaW5jbHVkZWQgZnJvbSAuLi9saWIvbW9uaXRvcl9lZGlkcy9tb25pdG9y
-X2VkaWRzX2hlbHBlci5oOjE2Og0KPiA+ICAgSW4gZmlsZSBpbmNsdWRlZCBmcm9tIC4uL2xpYi9p
-Z3RfY2hhbWVsaXVtLmg6MzI6DQo+ID4gICAvdXNyL2luY2x1ZGUveGY4NmRybU1vZGUuaDo1MjA6
-NjQ6IGVycm9yOiB1bmtub3duIHR5cGUgbmFtZSAnc2l6ZV90Jw0KPiA+ICAgZXh0ZXJuIGludCBk
-cm1Nb2RlQ3JlYXRlUHJvcGVydHlCbG9iKGludCBmZCwgY29uc3Qgdm9pZCAqZGF0YSwgc2l6ZV90
-IHNpemUsDQo+ID4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICBeDQo+ID4gICAxIGVycm9yIGdlbmVyYXRlZC4NCj4gPiAgIG5p
-bmphOiBidWlsZCBzdG9wcGVkOiBzdWJjb21tYW5kIGZhaWxlZC4NCj4gPiAgIHNlY3Rpb25fZW5k
-OjE2NjcyMzU5ODQ6c3RlcF9zY3JpcHQNCj4gPiAgIHNlY3Rpb25fc3RhcnQ6MTY2NzIzNTk4NDpj
-bGVhbnVwX2ZpbGVfdmFyaWFibGVzDQo+ID4gICBDbGVhbmluZyB1cCBwcm9qZWN0IGRpcmVjdG9y
-eSBhbmQgZmlsZSBiYXNlZCB2YXJpYWJsZXMNCj4gPiAgIHNlY3Rpb25fZW5kOjE2NjcyMzU5ODQ6
-Y2xlYW51cF9maWxlX3ZhcmlhYmxlcw0KPiA+ICAgRVJST1I6IEpvYiBmYWlsZWQ6IGV4aXQgY29k
-ZSAxDQo+ID4NCj4gPg0KPiA+IGJ1aWxkOnRlc3RzLWZlZG9yYS1uby1saWJkcm0tbm91dmVhdSBo
-YXMgZmFpbGVkIChodHRwczovL2dpdGxhYi5mcmVlZGVza3RvcC5vcmcvZ2Z4LWNpL2lndC1jaS10
-YWdzLy0vam9icy8zMDc1NTMxOSk6DQo+ID4gICBJbiBmaWxlIGluY2x1ZGVkIGZyb20gLi4vbGli
-L2lndF9jaGFtZWxpdW0uaDozMiwNCj4gPiAgICAgICAgICAgICAgICAgICAgZnJvbSAuLi9saWIv
-bW9uaXRvcl9lZGlkcy9tb25pdG9yX2VkaWRzX2hlbHBlci5oOjE2LA0KPiA+ICAgICAgICAgICAg
-ICAgICAgICBmcm9tIC4uL2xpYi9tb25pdG9yX2VkaWRzL21vbml0b3JfZWRpZHNfaGVscGVyLmM6
-MTE6DQo+ID4gICAvdXNyL2luY2x1ZGUveGY4NmRybU1vZGUuaDo1MjA6NjQ6IGVycm9yOiB1bmtu
-b3duIHR5cGUgbmFtZSDigJhzaXplX3TigJkNCj4gPiAgICAgNTIwIHwgZXh0ZXJuIGludCBkcm1N
-b2RlQ3JlYXRlUHJvcGVydHlCbG9iKGludCBmZCwgY29uc3Qgdm9pZCAqZGF0YSwgc2l6ZV90IHNp
-emUsDQo+ID4gICAgICAgICB8ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgIF5+fn5+fg0KPiA+ICAgSW4gZmlsZSBpbmNsdWRlZCBm
-cm9tIC4uL2xpYi9pZ3RfY2hhbWVsaXVtLmg6MzIsDQo+ID4gICAgICAgICAgICAgICAgICAgIGZy
-b20gLi4vbGliL21vbml0b3JfZWRpZHMvbW9uaXRvcl9lZGlkc19oZWxwZXIuaDoxNiwNCj4gPiAg
-ICAgICAgICAgICAgICAgICAgZnJvbSAuLi9saWIvbW9uaXRvcl9lZGlkcy9tb25pdG9yX2VkaWRz
-X2hlbHBlci5jOjExOg0KPiA+ICAgL3Vzci9pbmNsdWRlL3hmODZkcm1Nb2RlLmg6NDQ6MTogbm90
-ZTog4oCYc2l6ZV904oCZIGlzIGRlZmluZWQgaW4gaGVhZGVyIOKAmDxzdGRkZWYuaD7igJk7IGRp
-ZCB5b3UgZm9yZ2V0IHRvIOKAmCNpbmNsdWRlIDxzdGRkZWYuaD7igJk/DQo+ID4gICAgICA0MyB8
-ICNpbmNsdWRlIDxkcm0uaD4NCj4gPiAgICAgKysrIHwrI2luY2x1ZGUgPHN0ZGRlZi5oPg0KPiA+
-ICAgICAgNDQgfA0KPiA+ICAgbmluamE6IGJ1aWxkIHN0b3BwZWQ6IHN1YmNvbW1hbmQgZmFpbGVk
-Lg0KPiA+ICAgc2VjdGlvbl9lbmQ6MTY2NzIzNTk3ODpzdGVwX3NjcmlwdA0KPiA+ICAgc2VjdGlv
-bl9zdGFydDoxNjY3MjM1OTc4OmNsZWFudXBfZmlsZV92YXJpYWJsZXMNCj4gPiAgIENsZWFuaW5n
-IHVwIHByb2plY3QgZGlyZWN0b3J5IGFuZCBmaWxlIGJhc2VkIHZhcmlhYmxlcw0KPiA+ICAgc2Vj
-dGlvbl9lbmQ6MTY2NzIzNTk3OTpjbGVhbnVwX2ZpbGVfdmFyaWFibGVzDQo+ID4gICBFUlJPUjog
-Sm9iIGZhaWxlZDogZXhpdCBjb2RlIDENCj4gPg0KPiA+DQo+ID4gYnVpbGQ6dGVzdHMtZmVkb3Jh
-LW5vLWxpYnVud2luZCBoYXMgZmFpbGVkIChodHRwczovL2dpdGxhYi5mcmVlZGVza3RvcC5vcmcv
-Z2Z4LWNpL2lndC1jaS10YWdzLy0vam9icy8zMDc1NTMxNyk6DQo+ID4gICBJbiBmaWxlIGluY2x1
-ZGVkIGZyb20gLi4vbGliL2lndF9jaGFtZWxpdW0uaDozMiwNCj4gPiAgICAgICAgICAgICAgICAg
-ICAgZnJvbSAuLi9saWIvbW9uaXRvcl9lZGlkcy9tb25pdG9yX2VkaWRzX2hlbHBlci5oOjE2LA0K
-PiA+ICAgICAgICAgICAgICAgICAgICBmcm9tIC4uL2xpYi9tb25pdG9yX2VkaWRzL21vbml0b3Jf
-ZWRpZHNfaGVscGVyLmM6MTE6DQo+ID4gICAvdXNyL2luY2x1ZGUveGY4NmRybU1vZGUuaDo1MjA6
-NjQ6IGVycm9yOiB1bmtub3duIHR5cGUgbmFtZSDigJhzaXplX3TigJkNCj4gPiAgICAgNTIwIHwg
-ZXh0ZXJuIGludCBkcm1Nb2RlQ3JlYXRlUHJvcGVydHlCbG9iKGludCBmZCwgY29uc3Qgdm9pZCAq
-ZGF0YSwgc2l6ZV90IHNpemUsDQo+ID4gICAgICAgICB8ICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIF5+fn5+fg0KPiA+ICAgSW4g
-ZmlsZSBpbmNsdWRlZCBmcm9tIC4uL2xpYi9pZ3RfY2hhbWVsaXVtLmg6MzIsDQo+ID4gICAgICAg
-ICAgICAgICAgICAgIGZyb20gLi4vbGliL21vbml0b3JfZWRpZHMvbW9uaXRvcl9lZGlkc19oZWxw
-ZXIuaDoxNiwNCj4gPiAgICAgICAgICAgICAgICAgICAgZnJvbSAuLi9saWIvbW9uaXRvcl9lZGlk
-cy9tb25pdG9yX2VkaWRzX2hlbHBlci5jOjExOg0KPiA+ICAgL3Vzci9pbmNsdWRlL3hmODZkcm1N
-b2RlLmg6NDQ6MTogbm90ZTog4oCYc2l6ZV904oCZIGlzIGRlZmluZWQgaW4gaGVhZGVyIOKAmDxz
-dGRkZWYuaD7igJk7IGRpZCB5b3UgZm9yZ2V0IHRvIOKAmCNpbmNsdWRlIDxzdGRkZWYuaD7igJk/
-DQo+ID4gICAgICA0MyB8ICNpbmNsdWRlIDxkcm0uaD4NCj4gPiAgICAgKysrIHwrI2luY2x1ZGUg
-PHN0ZGRlZi5oPg0KPiA+ICAgICAgNDQgfA0KPiA+ICAgbmluamE6IGJ1aWxkIHN0b3BwZWQ6IHN1
-YmNvbW1hbmQgZmFpbGVkLg0KPiA+ICAgc2VjdGlvbl9lbmQ6MTY2NzIzNTk3NjpzdGVwX3Njcmlw
-dA0KPiA+ICAgc2VjdGlvbl9zdGFydDoxNjY3MjM1OTc2OmNsZWFudXBfZmlsZV92YXJpYWJsZXMN
-Cj4gPiAgIENsZWFuaW5nIHVwIHByb2plY3QgZGlyZWN0b3J5IGFuZCBmaWxlIGJhc2VkIHZhcmlh
-Ymxlcw0KPiA+ICAgc2VjdGlvbl9lbmQ6MTY2NzIzNTk3NzpjbGVhbnVwX2ZpbGVfdmFyaWFibGVz
-DQo+ID4gICBFUlJPUjogSm9iIGZhaWxlZDogZXhpdCBjb2RlIDENCj4gPg0KPiA+DQo+ID4gYnVp
-bGQ6dGVzdHMtZmVkb3JhLW9sZGVzdC1tZXNvbiBoYXMgZmFpbGVkIChodHRwczovL2dpdGxhYi5m
-cmVlZGVza3RvcC5vcmcvZ2Z4LWNpL2lndC1jaS10YWdzLy0vam9icy8zMDc1NTMxOCk6DQo+ID4g
-ICBJbiBmaWxlIGluY2x1ZGVkIGZyb20gLi4vbGliL2lndF9jaGFtZWxpdW0uaDozMiwNCj4gPiAg
-ICAgICAgICAgICAgICAgICAgZnJvbSAuLi9saWIvbW9uaXRvcl9lZGlkcy9tb25pdG9yX2VkaWRz
-X2hlbHBlci5oOjE2LA0KPiA+ICAgICAgICAgICAgICAgICAgICBmcm9tIC4uL2xpYi9tb25pdG9y
-X2VkaWRzL21vbml0b3JfZWRpZHNfaGVscGVyLmM6MTE6DQo+ID4gICAvdXNyL2luY2x1ZGUveGY4
-NmRybU1vZGUuaDo1MjA6NjQ6IGVycm9yOiB1bmtub3duIHR5cGUgbmFtZSDigJhzaXplX3TigJkN
-Cj4gPiAgICAgNTIwIHwgZXh0ZXJuIGludCBkcm1Nb2RlQ3JlYXRlUHJvcGVydHlCbG9iKGludCBm
-ZCwgY29uc3Qgdm9pZCAqZGF0YSwgc2l6ZV90IHNpemUsDQo+ID4gICAgICAgICB8ICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIF5+
-fn5+fg0KPiA+ICAgSW4gZmlsZSBpbmNsdWRlZCBmcm9tIC4uL2xpYi9pZ3RfY2hhbWVsaXVtLmg6
-MzIsDQo+ID4gICAgICAgICAgICAgICAgICAgIGZyb20gLi4vbGliL21vbml0b3JfZWRpZHMvbW9u
-aXRvcl9lZGlkc19oZWxwZXIuaDoxNiwNCj4gPiAgICAgICAgICAgICAgICAgICAgZnJvbSAuLi9s
-aWIvbW9uaXRvcl9lZGlkcy9tb25pdG9yX2VkaWRzX2hlbHBlci5jOjExOg0KPiA+ICAgL3Vzci9p
-bmNsdWRlL3hmODZkcm1Nb2RlLmg6NDQ6MTogbm90ZTog4oCYc2l6ZV904oCZIGlzIGRlZmluZWQg
-aW4gaGVhZGVyIOKAmDxzdGRkZWYuaD7igJk7IGRpZCB5b3UgZm9yZ2V0IHRvIOKAmCNpbmNsdWRl
-IDxzdGRkZWYuaD7igJk/DQo+ID4gICAgICA0MyB8ICNpbmNsdWRlIDxkcm0uaD4NCj4gPiAgICAg
-KysrIHwrI2luY2x1ZGUgPHN0ZGRlZi5oPg0KPiA+ICAgICAgNDQgfA0KPiA+ICAgbmluamE6IGJ1
-aWxkIHN0b3BwZWQ6IHN1YmNvbW1hbmQgZmFpbGVkLg0KPiA+ICAgc2VjdGlvbl9lbmQ6MTY2NzIz
-NTk4OTpzdGVwX3NjcmlwdA0KPiA+ICAgc2VjdGlvbl9zdGFydDoxNjY3MjM1OTg5OmNsZWFudXBf
-ZmlsZV92YXJpYWJsZXMNCj4gPiAgIENsZWFuaW5nIHVwIHByb2plY3QgZGlyZWN0b3J5IGFuZCBm
-aWxlIGJhc2VkIHZhcmlhYmxlcw0KPiA+ICAgc2VjdGlvbl9lbmQ6MTY2NzIzNTk5MDpjbGVhbnVw
-X2ZpbGVfdmFyaWFibGVzDQo+ID4gICBFUlJPUjogSm9iIGZhaWxlZDogZXhpdCBjb2RlIDENCj4g
-Pg0KPiA+ID09IExvZ3MgPT0NCj4gPg0KPiA+IEZvciBtb3JlIGRldGFpbHMgc2VlOiBodHRwczov
-L2dpdGxhYi5mcmVlZGVza3RvcC5vcmcvZ2Z4LWNpL2lndC1jaS10YWdzLy0vcGlwZWxpbmVzLzcy
-NTY5MQ0K
+On 1.11.2022 18.50, Modem, Bhanuprakash wrote:
+> Hi JP,
+> 
+> On Tue-01-11-2022 08:41 pm, Juha-Pekka Heikkila wrote:
+>> On 1.11.2022 13.25, aemad wrote:
+>>> On 2022-10-10 13:16, Juha-Pekka Heikkila wrote:
+>>>> Hi Alaa,
+>>>>
+>>>> what's that invalid argument you're getting on addfb? I never tried
+>>>> this with vkms, normally just on i915. With i915 I cannot reproduce
+>>>> that abort you're seeing. Other kms tests run on your setup?
+>>>>
+>>>
+>>> Hi Juha-Pekka,
+>>>
+>>>> Anyway, that revert you're suggesting would remove support for msm
+>>>> driver on this test. Let's first summon those who made these changes
+>>>> to comment. (cc'ing Modem and Swati)
+>>>
+>>> Could you please explain why this patch will remove MSM driver support?
+>>>
+>>
+>> See in test what's done with data.vblank_wait_count variable. That is 
+>> there because on msm legacy cursor is not updated asynchronously and 
+>> msm cursor likely will miss even second frame. Taking that out will 
+>> cause these tests reliably fail on msm.
+>>
+>> I was just today because of unrelated cursor issues looking into this, 
+>> I still don't have patch though. As Swati/Modem didn't come back with 
+>> a fix I was looking to take out all dynamic stuff, it should solve 
+>> this issue.
+> 
+> I am not sure, how this issue is related to dynamic subtests.
+
+Well, the structure is definitely incorrect if failure in cursor 
+framebuffer creation will cause SIGABRT. I didn't go figuring out where 
+it goes wrong, I just was interested in getting tests running correctly.
+
+In the mean time I created revert patch which probably doesn't lose 
+anything written on top of dynamic tests. Does this cause test runs go 
+correct Alaa? https://patchwork.freedesktop.org/series/110386/
+
+/Juha-Pekka
+
+> 
+> Expecting that we need to skip the test if the device is vkms & cursor 
+> height/width < 20 px. From IGT, is there any way to identify the device 
+> is VKMS or not?
+> 
+> Apart from this, I have floated patch with some minor cleanup [1].
+> @ Alaa, can you please help to check if it helps?
+> 
+> [1]: https://patchwork.freedesktop.org/series/110381/
+> 
+> - Bhanu
+> 
+>>
+>> /Juha-Pekka
+>>
+>>>
+>>>>
+>>>> /Juha-Pekka
+>>>>
+>>>> On 9.10.2022 18.18, Alaa Emad wrote:
+>>>>> Any test failure prevents the other tests to be run, aborting the 
+>>>>> entire test loop. This behavior was introduced by commit
+>>>>> 9494d53d ("tests/kms_cursor_crc: Convert tests to dynamic").
+>>>>> For instance, when running the cursor-offscreen-32x10 subtest using 
+>>>>> VKMS,
+>>>>> the execution is aborted instead of SKIP/FAIL, as in the following 
+>>>>> output:
+>>>>>
+>>>>> $ ./tests/kms_cursor_crc --run-subtest cursor-offscreen-32x10
+>>>>> (kms_cursor_crc:7447) igt_fb-CRITICAL: Test assertion failure 
+>>>>> function igt_create_fb_with_bo_size, file ../lib/igt_fb.c:2078:
+>>>>> (kms_cursor_crc:7447) igt_fb-CRITICAL: Failed assertion: 
+>>>>> (__kms_addfb(fb->fd, fb->gem_handle, fb->width, fb->height, 
+>>>>> fb->drm_format, fb->modifier, fb->strides, fb->offsets, 
+>>>>> fb->num_planes, flags, &fb->fb_id)) == 0
+>>>>> (kms_cursor_crc:7447) igt_fb-CRITICAL: Last errno: 22, Invalid 
+>>>>> argument
+>>>>> Stack trace:
+>>>>> kms_cursor_crc: ../lib/igt_core.c:1667: igt_fail: Assertion 
+>>>>> `_igt_dynamic_tests_executed < 0 || dynamic_failed_one' failed.
+>>>>> Received signal SIGABRT.
+>>>>>
+>>>>> The test was aborted after convertig tests to dynamic with cursor 
+>>>>> size 32*10 that because of the assertion in the 
+>>>>> `igt_create_fb_with_bo_size` when creating cursor in 
+>>>>> `create_cursor_fb`.
+>>>>>
+>>>>> This happened because Within a igt_subtest_with_dynamic block, 
+>>>>> explicit failure (e.g. igt_assert) is not allowed,
+>>>>> only dynamic subsubtests themselves will produce test results.
+>>>>>
+>>>>> The previous approach was running each test for all cursor sizes 
+>>>>> then move to the next test  so fix this issue
+>>>>> by running all tests for one cursor size one by one, and check if 
+>>>>> cursor size is
+>>>>> supported or not before running the test.
+>>>>>
+>>>>> Fixes: 9494d53d ("tests/kms_cursor_crc: Convert tests to dynamic")
+>>>>>
+>>>>> Signed-off-by: Alaa Emad <aemad@igalia.com>
+>>>>> ---
+>>>>>    tests/kms_cursor_crc.c | 136 
+>>>>> +++++++++++++++++++++--------------------
+>>>>>    1 file changed, 69 insertions(+), 67 deletions(-)
+>>>>>
+>>>>> diff --git a/tests/kms_cursor_crc.c b/tests/kms_cursor_crc.c
+>>>>> index 8d3426dd..9b620389 100644
+>>>>> --- a/tests/kms_cursor_crc.c
+>>>>> +++ b/tests/kms_cursor_crc.c
+>>>>> @@ -72,7 +72,6 @@ typedef struct {
+>>>>>        cairo_surface_t *surface;
+>>>>>        uint32_t devid;
+>>>>>        double alpha;
+>>>>> -    int vblank_wait_count; /* because of msm */
+>>>>>    } data_t;
+>>>>>      #define TEST_DPMS (1<<0)
+>>>>> @@ -125,12 +124,6 @@ static void cursor_disable(data_t *data)
+>>>>>    {
+>>>>>        igt_plane_set_fb(data->cursor, NULL);
+>>>>>        igt_plane_set_position(data->cursor, 0, 0);
+>>>>> -    igt_display_commit(&data->display);
+>>>>> -
+>>>>> -    /* do this wait here so it will not need to be added 
+>>>>> everywhere */
+>>>>> -    igt_wait_for_vblank_count(data->drm_fd,
+>>>>> -                  data->display.pipes[data->pipe].crtc_offset,
+>>>>> -                  data->vblank_wait_count);
+>>>>>    }
+>>>>>      static bool chv_cursor_broken(data_t *data, int x)
+>>>>> @@ -209,9 +202,8 @@ static void do_single_test(data_t *data, int x, 
+>>>>> int y, bool hw_test,
+>>>>>            igt_display_commit(display);
+>>>>>              /* Extra vblank wait is because nonblocking cursor 
+>>>>> ioctl */
+>>>>> -        igt_wait_for_vblank_count(data->drm_fd,
+>>>>> -                      display->pipes[data->pipe].crtc_offset,
+>>>>> -                      data->vblank_wait_count);
+>>>>> +        igt_wait_for_vblank(data->drm_fd,
+>>>>> +                display->pipes[data->pipe].crtc_offset);
+>>>>>              igt_pipe_crc_get_current(data->drm_fd, pipe_crc, hwcrc);
+>>>>>    @@ -249,7 +241,11 @@ static void do_single_test(data_t *data, 
+>>>>> int x, int y, bool hw_test,
+>>>>>              restore_image(data, swbufidx, &((cursorarea){x, y, 
+>>>>> data->curw, data->curh}));
+>>>>>            igt_plane_set_fb(data->primary, 
+>>>>> &data->primary_fb[swbufidx]);
+>>>>> +
+>>>>>            igt_display_commit(display);
+>>>>> +        igt_wait_for_vblank(data->drm_fd,
+>>>>> +                display->pipes[data->pipe].crtc_offset);
+>>>>> +
+>>>>>            igt_pipe_crc_get_current(data->drm_fd, pipe_crc, &crc);
+>>>>>            igt_assert_crc_equal(&crc, hwcrc);
+>>>>>        }
+>>>>> @@ -267,7 +263,9 @@ static void do_fail_test(data_t *data, int x, 
+>>>>> int y, int expect)
+>>>>>        igt_plane_set_position(data->cursor, x, y);
+>>>>>        ret = igt_display_try_commit2(display, COMMIT_LEGACY);
+>>>>>    +    igt_plane_set_position(data->cursor, 0, 0);
+>>>>>        cursor_disable(data);
+>>>>> +    igt_display_commit(display);
+>>>>>          igt_assert_eq(ret, expect);
+>>>>>    }
+>>>>> @@ -689,10 +687,28 @@ static void test_rapid_movement(data_t *data)
+>>>>>        igt_assert_lt(usec, 0.9 * 400 * 1000000 / data->refresh);
+>>>>>    }
+>>>>>    -static void run_size_tests(data_t *data, void 
+>>>>> (*testfunc)(data_t *),
+>>>>> -               int w, int h)
+>>>>> +static void run_size_tests(data_t *data, int w, int h)
+>>>>>    {
+>>>>>        enum pipe pipe;
+>>>>> +    int i;
+>>>>> +
+>>>>> +    struct
+>>>>> +    {
+>>>>> +        const char *name;
+>>>>> +        void (*testfunc)(data_t *);
+>>>>> +        const char *desc;
+>>>>> +    } size_tests[] = {
+>>>>> +        {"cursor-onscreen", test_crc_onscreen,
+>>>>> +         "Check if a given-size cursor is well-positioned inside 
+>>>>> the screen."},
+>>>>> +        {"cursor-offscreen", test_crc_offscreen,
+>>>>> +         "Check if a given-size cursor is well-positioned outside 
+>>>>> the screen."},
+>>>>> +        {"cursor-sliding", test_crc_sliding,
+>>>>> +         "Check the smooth and pixel-by-pixel given-size cursor 
+>>>>> movements on horizontal, vertical and diagonal."},
+>>>>> +        {"cursor-random", test_crc_random,
+>>>>> +         "Check random placement of a cursor with given size."},
+>>>>> +        {"cursor-rapid-movement", test_rapid_movement,
+>>>>> +         "Check the rapid update of given-size cursor movements."},
+>>>>> +    };
+>>>>>          if (w == 0 && h == 0) {
+>>>>>            w = data->cursor_max_w;
+>>>>> @@ -709,45 +725,38 @@ static void run_size_tests(data_t *data, void 
+>>>>> (*testfunc)(data_t *),
+>>>>>            }
+>>>>>        }
+>>>>>    -    create_cursor_fb(data, w, h);
+>>>>> -    if (require_cursor_size(data, w, h)) {
+>>>>> -        igt_info("Cursor size %dx%d not supported by driver\n", w, 
+>>>>> h);
+>>>>> -
+>>>>> -        igt_remove_fb(data->drm_fd, &data->fb);
+>>>>> -        return;
+>>>>> -    }
+>>>>> +    igt_fixture
+>>>>> +        create_cursor_fb(data, w, h);
+>>>>>    -    for_each_pipe(&data->display, pipe) {
+>>>>> -        data->pipe = pipe;
+>>>>> -        igt_dynamic_f("pipe-%s-%s",
+>>>>> -                  kmstest_pipe_name(pipe), 
+>>>>> igt_output_name(data->output))
+>>>>> -            run_test(data, testfunc, w, h);
+>>>>> +    for (i = 0; i < ARRAY_SIZE(size_tests); i++)
+>>>>> +    {
+>>>>> +        igt_describe(size_tests[i].desc);
+>>>>> +        igt_subtest_with_dynamic_f("%s-%dx%d", size_tests[i].name, 
+>>>>> w, h)
+>>>>> +        {
+>>>>> +            for_each_pipe(&data->display, pipe)
+>>>>> +            {
+>>>>> +                data->pipe = pipe;
+>>>>> +                if (require_cursor_size(data, w, h))
+>>>>> +                {
+>>>>> +                    igt_info("Cursor size %dx%d not supported by 
+>>>>> driver\n", w, h);
+>>>>> +                    continue;
+>>>>> +                }
+>>>>> +
+>>>>> +                igt_dynamic_f("pipe-%s-%s",
+>>>>> +                              kmstest_pipe_name(pipe), 
+>>>>> igt_output_name(data->output))
+>>>>> +                    run_test(data, size_tests[i].testfunc, w, h);
+>>>>> +            }
+>>>>> +        }
+>>>>>        }
+>>>>>    -    igt_remove_fb(data->drm_fd, &data->fb);
+>>>>> +    igt_fixture
+>>>>> +        igt_remove_fb(data->drm_fd, &data->fb);
+>>>>>    }
+>>>>>      static void run_tests_on_pipe(data_t *data)
+>>>>>    {
+>>>>>        enum pipe pipe;
+>>>>>        int cursor_size;
+>>>>> -    int i;
+>>>>> -    struct {
+>>>>> -        const char *name;
+>>>>> -        void (*testfunc)(data_t *);
+>>>>> -        const char *desc;
+>>>>> -    } size_tests[] = {
+>>>>> -        { "cursor-onscreen", test_crc_onscreen,
+>>>>> -            "Check if a given-size cursor is well-positioned 
+>>>>> inside the screen." },
+>>>>> -        { "cursor-offscreen", test_crc_offscreen,
+>>>>> -            "Check if a given-size cursor is well-positioned 
+>>>>> outside the screen." },
+>>>>> -        { "cursor-sliding", test_crc_sliding,
+>>>>> -            "Check the smooth and pixel-by-pixel given-size cursor 
+>>>>> movements on horizontal, vertical and diagonal." },
+>>>>> -        { "cursor-random", test_crc_random,
+>>>>> -            "Check random placement of a cursor with given size." },
+>>>>> -        { "cursor-rapid-movement", test_rapid_movement,
+>>>>> -            "Check the rapid update of given-size cursor 
+>>>>> movements." },
+>>>>> -    };
+>>>>>          igt_fixture {
+>>>>>            data->output = 
+>>>>> igt_get_single_output_for_pipe(&data->display, pipe);
+>>>>> @@ -848,30 +857,26 @@ static void run_tests_on_pipe(data_t *data)
+>>>>>        igt_fixture
+>>>>>            igt_remove_fb(data->drm_fd, &data->fb);
+>>>>>    -    for (i = 0; i < ARRAY_SIZE(size_tests); i++) {
+>>>>> -        igt_describe(size_tests[i].desc);
+>>>>> -        igt_subtest_group {
+>>>>> -            for (cursor_size = 32; cursor_size <= 512; cursor_size 
+>>>>> *= 2) {
+>>>>> -                int w = cursor_size;
+>>>>> -                int h = cursor_size;
+>>>>> -
+>>>>> -                igt_subtest_with_dynamic_f("%s-%dx%d", 
+>>>>> size_tests[i].name, w, h)
+>>>>> -                    run_size_tests(data, size_tests[i].testfunc, 
+>>>>> w, h);
+>>>>> -
+>>>>> -                /*
+>>>>> -                 * Test non-square cursors a bit on the platforms
+>>>>> -                 * that support such things. And make it a bit more
+>>>>> -                 * interesting by using a non-pot height.
+>>>>> -                 */
+>>>>> -                h /= 3;
+>>>>> -                igt_subtest_with_dynamic_f("%s-%dx%d", 
+>>>>> size_tests[i].name, w, h)
+>>>>> -                    run_size_tests(data, size_tests[i].testfunc, 
+>>>>> w, h);
+>>>>> -            }
+>>>>> +    for (cursor_size = 32; cursor_size <= 512; cursor_size *= 2)
+>>>>> +    {
+>>>>> +        int w = cursor_size;
+>>>>> +        int h = cursor_size;
+>>>>>    -            igt_subtest_with_dynamic_f("%s-max-size", 
+>>>>> size_tests[i].name)
+>>>>> -                run_size_tests(data, size_tests[i].testfunc, 0, 0);
+>>>>> -        }
+>>>>> +        igt_subtest_group
+>>>>> +            run_size_tests(data, w, h);
+>>>>> +
+>>>>> +        /*
+>>>>> +         * Test non-square cursors a bit on the platforms
+>>>>> +         * that support such things. And make it a bit more
+>>>>> +         * interesting by using a non-pot height.
+>>>>> +         */
+>>>>> +        h /= 3;
+>>>>> +
+>>>>> +        igt_subtest_group
+>>>>> +            run_size_tests(data, w, h);
+>>>>>        }
+>>>>> +
+>>>>> +    run_size_tests(data, 0, 0);
+>>>>>    }
+>>>>>      static data_t data;
+>>>>> @@ -896,8 +901,6 @@ igt_main
+>>>>>            kmstest_set_vt_graphics_mode();
+>>>>>              igt_require_pipe_crc(data.drm_fd);
+>>>>> -
+>>>>> -        data.vblank_wait_count = is_msm_device(data.drm_fd) ? 2 : 1;
+>>>>>        }
+>>>>>          data.cursor_max_w = cursor_width;
+>>>>> @@ -913,6 +916,5 @@ igt_main
+>>>>>            }
+>>>>>              igt_display_fini(&data.display);
+>>>>> -        close(data.drm_fd);
+>>>>>        }
+>>>>>    }
+>>
+> 
