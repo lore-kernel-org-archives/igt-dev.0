@@ -1,21 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 00B1B10E47F
- for <igt-dev@lists.freedesktop.org>; Wed,  2 Nov 2022 11:40:41 +0000 (UTC)
-Message-ID: <774290ae-4c80-a34f-cd84-f7354c628f2a@intel.com>
-Date: Wed, 2 Nov 2022 12:40:38 +0100
-Content-Language: en-US
-To: =?UTF-8?Q?Zbigniew_Kempczy=c5=84ski?= <zbigniew.kempczynski@intel.com>
-References: <cover.1667378725.git.karolina.drobnik@intel.com>
- <a61662005beead284971326185bd6f371300f545.1667378726.git.karolina.drobnik@intel.com>
- <Y2JVwQNFSZZl+Sgq@zkempczy-mobl2>
-From: Karolina Drobnik <karolina.drobnik@intel.com>
-In-Reply-To: <Y2JVwQNFSZZl+Sgq@zkempczy-mobl2>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
+Message-ID: <4bd8e049-f80d-d64f-e19c-96cf9506d6e4@linux.intel.com>
+Date: Wed, 2 Nov 2022 12:41:07 +0100
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t v3 3/3] tests/api_intel_bb: Add
- misplaced_blitter test
+Content-Language: en-US
+To: Matthew Auld <matthew.auld@intel.com>, igt-dev@lists.freedesktop.org
+References: <20221102105204.208634-1-matthew.auld@intel.com>
+From: "Das, Nirmoy" <nirmoy.das@linux.intel.com>
+In-Reply-To: <20221102105204.208634-1-matthew.auld@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/i915/gem_create: use cpu_size in
+ always_clear
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,135 +18,40 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org
+Cc: intel-gfx@lists.freedesktop.org, Nirmoy Das <nirmoy.das@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Zbigniew,
 
-Many thanks for reviewing my patches.
+On 11/2/2022 11:52 AM, Matthew Auld wrote:
+> If the we can't fit the buffer in the CPU visible portion of lmem, then
 
-On 02.11.2022 12:34, Zbigniew Kempczyński wrote:
-> On Wed, Nov 02, 2022 at 10:10:59AM +0100, Karolina Drobnik wrote:
->> Exercise intel_bb with a custom context engines layout.
->>
->> Signed-off-by: Karolina Drobnik <karolina.drobnik@intel.com>
->> ---
->>   tests/i915/api_intel_bb.c | 65 +++++++++++++++++++++++++++++++++++++--
->>   1 file changed, 63 insertions(+), 2 deletions(-)
->>
->> diff --git a/tests/i915/api_intel_bb.c b/tests/i915/api_intel_bb.c
->> index a881d6b0..c51804b1 100644
->> --- a/tests/i915/api_intel_bb.c
->> +++ b/tests/i915/api_intel_bb.c
->> @@ -40,11 +40,15 @@
->>   #include "intel_bufops.h"
->>   #include "i915/gem_vm.h"
->>   #include "i915/i915_crc.h"
->> +#include "i915/i915_blt.h"
->>   
->>   #define PAGE_SIZE 4096
->>   
->> -#define WIDTH 64
->> -#define HEIGHT 64
->> +#define WIDTH	64
->> +#define HEIGHT	64
->> +#define STRIDE	(WIDTH * 4)
->> +#define SIZE	(HEIGHT * STRIDE)
->> +
->>   #define COLOR_00	0x00
->>   #define COLOR_33	0x33
->>   #define COLOR_77	0x77
->> @@ -1209,6 +1213,57 @@ static void full_batch(struct buf_ops *bops)
->>   	intel_bb_destroy(ibb);
->>   }
->>   
->> +static void misplaced_blitter(struct buf_ops *bops)
->> +{
->> +	int i915 = buf_ops_get_fd(bops), i;
->> +	struct intel_bb *ibb;
->> +	struct intel_buf *src, *dst;
->> +	uint64_t value, *psrc, *pdst;
->> +
->> +	/* Use custom configuration with blitter at index 0 */
->> +	const intel_ctx_cfg_t cfg = (intel_ctx_cfg_t) {
->> +			.num_engines = 2,
->> +			.engines = {
->> +				{ .engine_class = I915_ENGINE_CLASS_COPY,
->> +				  .engine_instance = 0
->> +				},
->> +				{ .engine_class = I915_ENGINE_CLASS_RENDER,
->> +				  .engine_instance = 0
->> +				},
->> +			},
->> +		};
->> +
->> +	const intel_ctx_t *ctx = intel_ctx_create(i915, &cfg);
->> +
->> +	ibb = intel_bb_create_with_context(i915, ctx->id, &ctx->cfg, PAGE_SIZE);
->> +
->> +	/* Prepare for blitter copy, done to verify we found the blitter engine */
->> +	src = intel_buf_create(bops, WIDTH, HEIGHT, 32, 0, I915_TILING_NONE,
->> +			       I915_COMPRESSION_NONE);
->> +	dst = intel_buf_create(bops, WIDTH, HEIGHT, 32, 0, I915_TILING_NONE,
->> +			       I915_COMPRESSION_NONE);
->> +	psrc = intel_buf_device_map(src, true);
->> +	pdst = intel_buf_device_map(dst, true);
->> +
->> +	/* Populate src with dummy values */
->> +	memset(&value, COLOR_33, 8);
->> +	for (i = 0; i < SIZE / sizeof(value); i++)
->> +		memset(&psrc[i], value, 8);
->> +
->> +	intel_bb_copy_intel_buf(ibb, src, dst, SIZE);
->> +	intel_bb_flush_blit(ibb);
->> +	intel_bb_sync(ibb);
->> +
->> +	/* Expect to see a successful copy */
->> +	igt_assert_eq(memcmp(pdst, psrc, SIZE), 0);
-> 
-> You may get memcpy() result here...
-> 
->> +
->> +	intel_buf_unmap(src);
->> +	intel_buf_unmap(dst);
->> +
->> +	intel_bb_destroy(ibb);
->> +	intel_ctx_destroy(i915, ctx);
-> 
-> and assert here. Assuming you'll destroy src/dst as they are unmapped only.
-> There's problem of our tests - if they assert we have not freed allocations.
-> For your case there's single assertion so you can just catch this return
-> and assert on the end.
+Need a minor fix of above sentence(unwanted "the")
 
-Right, I wasn't sure if we free them after the assert. I'll correct it 
-in the next version.
+Reviewed-by: Nirmoy Das <nirmoy.das@intel.com>
 
-All the best,
-Karolina
-
-> --
-> Zbigniew
-> 
->> +}
->> +
->>   static int render(struct buf_ops *bops, uint32_t tiling, bool do_reloc,
->>   		  uint32_t width, uint32_t height)
->>   {
->> @@ -1581,6 +1636,12 @@ igt_main_args("dpibc:", NULL, help_str, opt_handler, NULL)
->>   	igt_subtest("full-batch")
->>   		full_batch(bops);
->>   
->> +	igt_describe("Execute intel_bb with set of engines provided by userspace");
->> +	igt_subtest("misplaced-blitter") {
->> +		gem_require_contexts(i915);
->> +		misplaced_blitter(bops);
->> +	}
->> +
->>   	igt_subtest_with_dynamic("render") {
->>   		for (i = 0; i < ARRAY_SIZE(tests); i++) {
->>   			const struct test *t = &tests[i];
->> -- 
->> 2.25.1
->>
+> the kernel will be unable to migrate the pages on fault on small-bar
+> systems.  Note that this doesn't restrict where the pages are allocated,
+> but should just ensure we don't SIGBUS, if we need to migrate the pages.
+>
+> Closes: https://gitlab.freedesktop.org/drm/intel/-/issues/6967
+> Signed-off-by: Matthew Auld <matthew.auld@intel.com>
+> Cc: Nirmoy Das <nirmoy.das@intel.com>
+> ---
+>   tests/i915/gem_create.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/tests/i915/gem_create.c b/tests/i915/gem_create.c
+> index 9c695fa4..af530ccc 100644
+> --- a/tests/i915/gem_create.c
+> +++ b/tests/i915/gem_create.c
+> @@ -271,7 +271,7 @@ static void always_clear(int i915, const struct gem_memory_region *r, int timeou
+>   	struct thread_clear arg = {
+>   		.i915 = i915,
+>   		.region = r->ci,
+> -		.max = r->size / 2 >> 12, /* in pages */
+> +		.max = r->cpu_size / 2 >> 12, /* in pages */
+>   		.timeout = timeout,
+>   	};
+>   	const int ncpus = sysconf(_SC_NPROCESSORS_ONLN);
