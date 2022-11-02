@@ -1,14 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1E34310E0B7
- for <igt-dev@lists.freedesktop.org>; Wed,  2 Nov 2022 05:30:06 +0000 (UTC)
-From: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 43FE810E008
+ for <igt-dev@lists.freedesktop.org>; Wed,  2 Nov 2022 04:38:34 +0000 (UTC)
+From: Riana Tauro <riana.tauro@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue,  1 Nov 2022 22:29:56 -0700
-Message-Id: <20221102052956.27662-1-niranjana.vishwanathapura@intel.com>
+Date: Wed,  2 Nov 2022 10:08:13 +0530
+Message-Id: <20221102043814.3821683-2-riana.tauro@intel.com>
+In-Reply-To: <20221102043814.3821683-1-riana.tauro@intel.com>
+References: <20221102043814.3821683-1-riana.tauro@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t] tests/i915/gem_shrink: Fix alloc_size unit
+Subject: [igt-dev] [PATCH i-g-t v2 1/2] tests/debugfs_test: Add basic-hwmon
+ test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -16,32 +19,65 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: matthew.auld@intel.com, chris.p.wilson@intel.com
+Cc: badal.nilawar@intel.com, petri.latvala@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-alloc_size is in MBs, but functions are expecting bytes.
-Convert alloc_size to bytes before using it.
+Add a testcase that verifies hwmon directory in dgfx and prints all
+the entries
 
-TODO: Needs some testing
+v2 : Addressed cosmetic review comments (Ashutosh)
 
-Signed-off-by: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
+Signed-off-by: Riana Tauro <riana.tauro@intel.com>
+Reviewed-by: Anshuman Gupta <anshuman.gupta@intel.com>
 ---
- tests/i915/gem_shrink.c | 1 +
- 1 file changed, 1 insertion(+)
+ tests/debugfs_test.c | 14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
 
-diff --git a/tests/i915/gem_shrink.c b/tests/i915/gem_shrink.c
-index 49df35c29..e3e20dfc9 100644
---- a/tests/i915/gem_shrink.c
-+++ b/tests/i915/gem_shrink.c
-@@ -455,6 +455,7 @@ igt_main
- 		igt_info("Using %d processes and %'"PRIu64"MiB per process\n",
- 			 num_processes, alloc_size);
+diff --git a/tests/debugfs_test.c b/tests/debugfs_test.c
+index 0b4b6e23..8c775158 100644
+--- a/tests/debugfs_test.c
++++ b/tests/debugfs_test.c
+@@ -24,12 +24,13 @@
  
-+		alloc_size <<= 20;
- 		igt_require_memory(num_processes, alloc_size,
- 				   CHECK_SWAP | CHECK_RAM);
+ #include "i915/gem.h"
+ #include "igt.h"
++#include "igt_hwmon.h"
+ #include "igt_sysfs.h"
+ #include <fcntl.h>
+ #include <sys/types.h>
+ #include <dirent.h>
  
+-IGT_TEST_DESCRIPTION("Read entries from debugfs and sysfs paths.");
++IGT_TEST_DESCRIPTION("Read entries from debugfs, hwmon and sysfs paths.");
+ 
+ static void read_and_discard_sysfs_entries(int path_fd, int indent)
+ {
+@@ -178,7 +179,7 @@ retry:
+ 
+ igt_main
+ {
+-	int fd = -1, debugfs, sysfs;
++	int fd = -1, debugfs, sysfs, hwmon_fd;
+ 
+ 	igt_fixture {
+ 		fd = drm_open_driver_master(DRIVER_INTEL);
+@@ -196,6 +197,15 @@ igt_main
+ 	igt_subtest("read_all_entries")
+ 		read_and_discard_sysfs_entries(debugfs, 0);
+ 
++	igt_describe("Read all entries from hwmon path");
++	igt_subtest("basic-hwmon") {
++		igt_require_f(gem_has_lmem(fd), "Test applicable only for dgfx\n");
++		hwmon_fd = igt_hwmon_open(fd);
++		igt_assert(hwmon_fd >= 0);
++		read_and_discard_sysfs_entries(hwmon_fd, 0);
++		close(hwmon_fd);
++	}
++
+ 	igt_describe("Read all debugfs entries with display on/off.");
+ 	igt_subtest_group
+ 		kms_tests(fd, debugfs);
 -- 
-2.21.0.rc0.32.g243a4c7e27
+2.25.1
