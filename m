@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7EFE510E483
- for <igt-dev@lists.freedesktop.org>; Wed,  2 Nov 2022 11:59:03 +0000 (UTC)
-From: Anshuman Gupta <anshuman.gupta@intel.com>
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A45D810E454
+ for <igt-dev@lists.freedesktop.org>; Wed,  2 Nov 2022 09:10:59 +0000 (UTC)
+From: Karolina Drobnik <karolina.drobnik@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Wed,  2 Nov 2022 17:28:50 +0530
-Message-Id: <20221102115851.2223804-2-anshuman.gupta@intel.com>
-In-Reply-To: <20221102115851.2223804-1-anshuman.gupta@intel.com>
-References: <20221102115851.2223804-1-anshuman.gupta@intel.com>
+Date: Wed,  2 Nov 2022 10:10:56 +0100
+Message-Id: <cover.1667378725.git.karolina.drobnik@intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v2 1/2] test/i915_pm_rpm: cache pci_device
+Subject: [igt-dev] [PATCH i-g-t v3 0/3] Add support for intel_ctx_t in
+ intel_bb
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,88 +18,65 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: badal.nilawar@intel.com, rodrigo.vivi@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-cache pci_device structure so that it can be passed as argument
-to device_in_pci_d3() whenever required.
+Currently, intel_bb assumes that context has a fixed set of engines, which
+might not be the case for contexts passed from the userspace. They may use
+a custom engines layout, so the legacy flags like I915_EXEC_BLT wouldn't
+match the actual engine indices.
 
-No functional change.
+To address this issue, the series adds an additional field to intel_bb,
+intel_ctx_cfg_t (intel_ctx_t configuration), that describes the engine
+instances, together with an engine index lookup function, find_engine().
+The function added in the second patch is used by intel_bb_flush_render()
+and intel_bb_flush_blit() helpers.
 
-Signed-off-by: Anshuman Gupta <anshuman.gupta@intel.com>
----
- tests/i915/i915_pm_rpm.c | 20 ++++++++++++++------
- 1 file changed, 14 insertions(+), 6 deletions(-)
+The last patch in the series adds a test where we define a context with
+the blitter engine at index 0 (1 in the legacy mode) to verify that
+(1) intel_bb can indeed handle external contexts, and (2) intel_bb_exec gets
+the correct engine id in intel_bb_flush_blit().
 
-diff --git a/tests/i915/i915_pm_rpm.c b/tests/i915/i915_pm_rpm.c
-index 1ff69a060..017c05fde 100644
---- a/tests/i915/i915_pm_rpm.c
-+++ b/tests/i915/i915_pm_rpm.c
-@@ -1545,12 +1545,12 @@ static void reg_read_ioctl_subtest(void)
- 	igt_assert(wait_for_suspended());
- }
- 
--static bool device_in_pci_d3(void)
-+static bool device_in_pci_d3(struct pci_device *pci_dev)
- {
- 	uint16_t val;
- 	int rc;
- 
--	rc = pci_device_cfg_read_u16(igt_device_get_pci_device(drm_fd), &val, 0xd4);
-+	rc = pci_device_cfg_read_u16(pci_dev, &val, 0xd4);
- 	igt_assert_eq(rc, 0);
- 
- 	igt_debug("%s: PCI D3 state=%d\n", __func__, val & 0x3);
-@@ -1559,13 +1559,17 @@ static bool device_in_pci_d3(void)
- 
- static void pci_d3_state_subtest(void)
- {
-+	struct pci_device *pci_dev;
-+
- 	igt_require(has_runtime_pm);
- 
-+	pci_dev = igt_device_get_pci_device(drm_fd);
-+
- 	disable_all_screens_and_wait(&ms_data);
--	igt_assert(igt_wait(device_in_pci_d3(), 2000, 100));
-+	igt_assert(igt_wait(device_in_pci_d3(pci_dev), 2000, 100));
- 
- 	enable_one_screen_or_forcewake_get_and_wait(&ms_data);
--	igt_assert(!device_in_pci_d3());
-+	igt_assert(!device_in_pci_d3(pci_dev));
- 	forcewake_put(&ms_data);
- }
- 
-@@ -2250,6 +2254,10 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
- 	}
- 
- 	igt_subtest("module-reload") {
-+		struct pci_device *pci_dev;
-+
-+		pci_dev = igt_device_get_pci_device(drm_fd);
-+
- 		igt_debug("Reload w/o display\n");
- 		igt_i915_driver_unload();
- 
-@@ -2257,7 +2265,7 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
- 		igt_assert_eq(igt_i915_driver_load("disable_display=1 mmio_debug=-1"), 0);
- 
- 		igt_assert(setup_environment(false));
--		igt_assert(igt_wait(device_in_pci_d3(), 2000, 100));
-+		igt_assert(igt_wait(device_in_pci_d3(pci_dev), 2000, 100));
- 		teardown_environment(false);
- 
- 		igt_debug("Reload as normal\n");
-@@ -2267,7 +2275,7 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
- 		igt_assert_eq(igt_i915_driver_load("mmio_debug=-1"), 0);
- 
- 		igt_assert(setup_environment(true));
--		igt_assert(igt_wait(device_in_pci_d3(), 2000, 100));
-+		igt_assert(igt_wait(device_in_pci_d3(pci_dev), 2000, 100));
- 		if (enable_one_screen_with_type(&ms_data, SCREEN_TYPE_ANY))
- 			drm_resources_equal_subtest();
- 		teardown_environment(true);
--- 
+v3:
+  - Add config param to intel_bb_create_full() and
+    intel_bb_create_with_allocator()
+  - Move gem_require_context() check to the subtest definition
+  - Remove unnecessary brackets in has_ctx_cfg()
+  - Use igt_assert_f() to show an error message in find_engine()
+  - Remove redundant intel_bb_emit_bbe() call in misplaced_blitter()
+  - Add blitter copy instruction to misplaced_blitter() to make sure we
+    found the correct engine (as it turns out, MI_FLUSH_DW executes on
+    render engine with no hang or whatsoever)
+
+v2:
+  - Add a blank line, removed by mistake, in __intel_bb_create()
+  - Update intel_bb_create_with_relocs_and_context() to handle
+    intel_ctx_cfg_t
+  - Rewrite find_engine() to return engine id, and update
+    intel_bb_flush_render() and intel_bb_flush_blit() accordingly
+  - Add MI_FLUSH_DW (a command that is available on blitter but not
+    on render) to make sure we actually execute the batch buffer on the
+    expected engine
+
+    All above suggested by Zbigniew
+
+Karolina Drobnik (3):
+  lib/intel_batchbuffer: Extend __intel_bb_create to handle context
+    config
+  lib/intel_batchbuffer: Add support for custom engine layouts
+  tests/api_intel_bb: Add misplaced_blitter test
+
+ lib/igt_draw.c                  |   2 +-
+ lib/intel_batchbuffer.c         | 100 +++++++++++++++++++++++++-------
+ lib/intel_batchbuffer.h         |  15 +++--
+ lib/media_fill.c                |   2 +-
+ tests/i915/api_intel_bb.c       |  77 +++++++++++++++++++++---
+ tests/i915/gem_ppgtt.c          |   2 +-
+ tests/i915/gem_pxp.c            |  16 ++---
+ tests/i915/kms_fence_pin_leak.c |   2 +-
+ tests/i915/perf.c               |  18 +++---
+ 9 files changed, 178 insertions(+), 56 deletions(-)
+
+--
 2.25.1
