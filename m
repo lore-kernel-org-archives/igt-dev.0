@@ -1,12 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-From: Matthew Auld <matthew.auld@intel.com>
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D5C4110E47B
+ for <igt-dev@lists.freedesktop.org>; Wed,  2 Nov 2022 11:05:25 +0000 (UTC)
+From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Wed,  2 Nov 2022 10:52:04 +0000
-Message-Id: <20221102105204.208634-1-matthew.auld@intel.com>
+Date: Wed,  2 Nov 2022 16:34:28 +0530
+Message-Id: <20221102110428.4049549-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t] tests/i915/gem_create: use cpu_size in
- always_clear
+Subject: [igt-dev] [i-g-t] tests/kms_cursor_crc: Fix SIGABRT in dynamic
+ subtests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -14,35 +17,172 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: intel-gfx@lists.freedesktop.org, Nirmoy Das <nirmoy.das@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-If the we can't fit the buffer in the CPU visible portion of lmem, then
-the kernel will be unable to migrate the pages on fault on small-bar
-systems.  Note that this doesn't restrict where the pages are allocated,
-but should just ensure we don't SIGBUS, if we need to migrate the pages.
+All subtests must report success/fail instead of crashing out.
 
-Closes: https://gitlab.freedesktop.org/drm/intel/-/issues/6967
-Signed-off-by: Matthew Auld <matthew.auld@intel.com>
-Cc: Nirmoy Das <nirmoy.das@intel.com>
+Fixes: 9494d53d ("tests/kms_cursor_crc: Convert tests to dynamic")
+Cc: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+Signed-off-by: Alaa Emad <aemad@igalia.com>
+Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/i915/gem_create.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tests/kms_cursor_crc.c | 113 +++++++++++++++++++++--------------------
+ 1 file changed, 59 insertions(+), 54 deletions(-)
 
-diff --git a/tests/i915/gem_create.c b/tests/i915/gem_create.c
-index 9c695fa4..af530ccc 100644
---- a/tests/i915/gem_create.c
-+++ b/tests/i915/gem_create.c
-@@ -271,7 +271,7 @@ static void always_clear(int i915, const struct gem_memory_region *r, int timeou
- 	struct thread_clear arg = {
- 		.i915 = i915,
- 		.region = r->ci,
--		.max = r->size / 2 >> 12, /* in pages */
-+		.max = r->cpu_size / 2 >> 12, /* in pages */
- 		.timeout = timeout,
- 	};
- 	const int ncpus = sysconf(_SC_NPROCESSORS_ONLN);
+diff --git a/tests/kms_cursor_crc.c b/tests/kms_cursor_crc.c
+index d51c1f90..4379a074 100644
+--- a/tests/kms_cursor_crc.c
++++ b/tests/kms_cursor_crc.c
+@@ -700,10 +700,27 @@ static void test_rapid_movement(data_t *data)
+ 	igt_assert_lt(usec, 0.9 * 400 * 1000000 / data->refresh);
+ }
+ 
+-static void run_size_tests(data_t *data, void (*testfunc)(data_t *),
+-			   int w, int h)
++static void run_size_tests(data_t *data, int w, int h)
+ {
+ 	enum pipe pipe;
++	struct {
++		const char *name;
++		void (*testfunc)(data_t *);
++		const char *desc;
++	} size_tests[] = {
++		{ "cursor-onscreen", test_crc_onscreen,
++			"Check if a given-size cursor is well-positioned inside the screen." },
++		{ "cursor-offscreen", test_crc_offscreen,
++			"Check if a given-size cursor is well-positioned outside the screen." },
++		{ "cursor-sliding", test_crc_sliding,
++			"Check the smooth and pixel-by-pixel given-size cursor movements on horizontal, vertical and diagonal." },
++		{ "cursor-random", test_crc_random,
++			"Check random placement of a cursor with given size." },
++		{ "cursor-rapid-movement", test_rapid_movement,
++			"Check the rapid update of given-size cursor movements." },
++	};
++	int i;
++	char name[16];
+ 
+ 	if (w == 0 && h == 0) {
+ 		w = data->cursor_max_w;
+@@ -718,47 +735,40 @@ static void run_size_tests(data_t *data, void (*testfunc)(data_t *),
+ 			igt_info("Cursor max size %dx%d already covered by other tests\n", w, h);
+ 			return;
+ 		}
++		strcpy(name, "max-size");
++	} else {
++		snprintf(name, sizeof(name), "%dx%d", w, h);
+ 	}
+ 
+-	create_cursor_fb(data, w, h);
+-	if (require_cursor_size(data, w, h)) {
+-		igt_info("Cursor size %dx%d not supported by driver\n", w, h);
+-
+-		igt_remove_fb(data->drm_fd, &data->fb);
+-		return;
+-	}
++	igt_fixture
++		create_cursor_fb(data, w, h);
+ 
+-	for_each_pipe(&data->display, pipe) {
+-		data->pipe = pipe;
+-		igt_dynamic_f("pipe-%s-%s",
+-			      kmstest_pipe_name(pipe), igt_output_name(data->output))
+-			run_test(data, testfunc, w, h);
++	for (i = 0; i < ARRAY_SIZE(size_tests); i++) {
++		igt_describe(size_tests[i].desc);
++		igt_subtest_with_dynamic_f("%s-%s", size_tests[i].name, name) {
++			for_each_pipe(&data->display, pipe) {
++				data->pipe = pipe;
++
++				if (require_cursor_size(data, w, h)) {
++					igt_info("Cursor size %dx%d not supported by driver\n", w, h);
++					continue;
++				}
++
++				igt_dynamic_f("pipe-%s-%s",
++					      kmstest_pipe_name(pipe), igt_output_name(data->output))
++					run_test(data, size_tests[i].testfunc, w, h);
++			}
++		}
+ 	}
+ 
+-	igt_remove_fb(data->drm_fd, &data->fb);
++	igt_fixture
++		igt_remove_fb(data->drm_fd, &data->fb);
+ }
+ 
+ static void run_tests_on_pipe(data_t *data)
+ {
+ 	enum pipe pipe;
+ 	int cursor_size;
+-	int i;
+-	struct {
+-		const char *name;
+-		void (*testfunc)(data_t *);
+-		const char *desc;
+-	} size_tests[] = {
+-		{ "cursor-onscreen", test_crc_onscreen,
+-			"Check if a given-size cursor is well-positioned inside the screen." },
+-		{ "cursor-offscreen", test_crc_offscreen,
+-			"Check if a given-size cursor is well-positioned outside the screen." },
+-		{ "cursor-sliding", test_crc_sliding,
+-			"Check the smooth and pixel-by-pixel given-size cursor movements on horizontal, vertical and diagonal." },
+-		{ "cursor-random", test_crc_random,
+-			"Check random placement of a cursor with given size." },
+-		{ "cursor-rapid-movement", test_rapid_movement,
+-			"Check the rapid update of given-size cursor movements." },
+-	};
+ 
+ 	igt_fixture {
+ 		data->output = igt_get_single_output_for_pipe(&data->display, pipe);
+@@ -859,30 +869,25 @@ static void run_tests_on_pipe(data_t *data)
+ 	igt_fixture
+ 		igt_remove_fb(data->drm_fd, &data->fb);
+ 
+-	for (i = 0; i < ARRAY_SIZE(size_tests); i++) {
+-		igt_describe(size_tests[i].desc);
+-		igt_subtest_group {
+-			for (cursor_size = 32; cursor_size <= 512; cursor_size *= 2) {
+-				int w = cursor_size;
+-				int h = cursor_size;
+-
+-				igt_subtest_with_dynamic_f("%s-%dx%d", size_tests[i].name, w, h)
+-					run_size_tests(data, size_tests[i].testfunc, w, h);
+-
+-				/*
+-				 * Test non-square cursors a bit on the platforms
+-				 * that support such things. And make it a bit more
+-				 * interesting by using a non-pot height.
+-				 */
+-				h /= 3;
+-				igt_subtest_with_dynamic_f("%s-%dx%d", size_tests[i].name, w, h)
+-					run_size_tests(data, size_tests[i].testfunc, w, h);
+-			}
++	for (cursor_size = 32; cursor_size <= 512; cursor_size *= 2) {
++		int w = cursor_size;
++		int h = cursor_size;
+ 
+-			igt_subtest_with_dynamic_f("%s-max-size", size_tests[i].name)
+-				run_size_tests(data, size_tests[i].testfunc, 0, 0);
+-		}
++		igt_subtest_group
++			run_size_tests(data, w, h);
++
++		/*
++		 * Test non-square cursors a bit on the platforms
++		 * that support such things. And make it a bit more
++		 * interesting by using a non-pot height.
++		 */
++		h /= 3;
++
++		igt_subtest_group
++			run_size_tests(data, w, h);
+ 	}
++
++	run_size_tests(data, 0, 0);
+ }
+ 
+ static data_t data;
 -- 
-2.38.1
+2.38.0
