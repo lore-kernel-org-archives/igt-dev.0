@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Date: Thu, 3 Nov 2022 15:57:10 +0100
+Date: Thu, 3 Nov 2022 16:23:02 +0100
 From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
-To: Isabella Basso <isabbasso@riseup.net>
-Message-ID: <20221103155710.36f29dd3@maurocar-mobl2>
-In-Reply-To: <20221103104840.7301df76@maurocar-mobl2>
-References: <20220829000920.38185-1-isabbasso@riseup.net>
- <20220829000920.38185-4-isabbasso@riseup.net>
- <20221103104840.7301df76@maurocar-mobl2>
+To: Shuah Khan <skhan@linuxfoundation.org>, Brendan Higgins
+ <brendan.higgins@linux.dev>, David Gow <davidgow@google.com>,
+ linux-kselftest@vger.kernel.org, kunit-dev@googlegroups.com,
+ igt-dev@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+ intel-gfx@lists.freedesktop.org
+Message-ID: <20221103162302.4ba62d72@maurocar-mobl2>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Subject: Re: [igt-dev] [PATCH i-g-t v2 3/4] lib/igt_kmod: add compatibility
- for KUnit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+Subject: [igt-dev] KUnit issues - Was: [PATCH RFC v2 8/8] drm/i915: check if
+ current->mm is not NULL
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,56 +19,163 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: davidgow@google.com, magalilemes00@gmail.com, maira.canal@usp.br,
- dlatypov@google.com, n@nfraprado.net, brendanhiggins@google.com,
- linux-kernel@vger.kernel.org, leandro.ribeiro@collabora.com,
- igt-dev@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
- linux-kselftest@vger.kernel.org, tales.aparecida@gmail.com,
- skhan@linuxfoundation.org, andrealmeid@riseup.net, kunit-dev@googlegroups.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Thu, 3 Nov 2022 10:48:40 +0100
-Mauro Carvalho Chehab <mauro.chehab@linux.intel.com> wrote:
+Hi,
 
-> On Sun, 28 Aug 2022 21:09:19 -0300
-> Isabella Basso <isabbasso@riseup.net> wrote:
-> 
-> > This adds functions for both executing the tests as well as parsing (K)TAP
-> > kmsg output, as per the KTAP spec [1].
-> > 
-> > [1] https://www.kernel.org/doc/html/latest/dev-tools/ktap.html
-> > 
-> > Signed-off-by: Isabella Basso <isabbasso@riseup.net>  
-> 
-> Hi Isabella,
-> 
-> I'm doing some tests here with my i915 KUnit patch series.
-> 
-> There's a problem with the way it is currently parsing the KTAP logs on
-> IGT. It sounds that it is parsing the data only at the end, and not as
-> they arrive. That's bad, as if something goes wrong, the previously
-> reported data is still useful.
-> 
-> Also, when there's a crash, the IGT process is getting segmentation
-> fault. So, the end result is that nothing is actually reported.
-> 
-> 	$ sudo ./build/tests/i915_selftest
-> 	IGT-Version: 1.26-gbab20eb65 (x86_64) (Linux: 6.1.0-rc2-drm-990037e9984e+ x86_64)
-> 	Segmentation fault (core dumped)
-> 
-> However, the logs are there (see enclosed). In this specific case, there
-> was a GPU hang while running one of the tests on a real hardware, which
-> is something that it is actually expected at development time.
+I'm facing a couple of issues when testing KUnit with the i915 driver.
 
-Btw, if you want to test it, the patches I'm using are at:
-	https://patchwork.freedesktop.org/series/110483/
+The DRM subsystem and the i915 driver has, for a long time, his own
+way to do unit tests, which seems to be added before KUnit.
 
-The latest patch there is a workaround that fixes the issue. So, if you
-apply patches 1-7 only, skipping (or reverting) patch 8, you'll be able
-to reproduce the Kernel crash (which seems to be caused by the way KUnit
-is initialized).
+I'm now checking if it is worth start using KUnit at i915. So, I wrote
+a RFC with some patches adding support for the tests we have to be
+reported using Kernel TAP and KUnit.
+
+There are basically 3 groups of tests there:
+
+- mock tests - check i915 hardware-independent logic;
+- live tests - run some hardware-specific tests;
+- perf tests - check perf support - also hardware-dependent.
+
+As they depend on i915 driver, they run only on x86, with PCI
+stack enabled, but the mock tests run nicely via qemu.
+
+The live and perf tests require a real hardware. As we run them
+together with our CI, which, among other things, test module
+unload/reload and test loading i915 driver with different
+modprobe parameters, the KUnit tests should be able to run as
+a module.
+
+While testing KUnit, I noticed a couple of issues:
+
+1. kunit.py parser is currently broken when used with modules
+
+the parser expects "TAP version xx" output, but this won't
+happen when loading the kunit test driver.
+
+Are there any plans or patches fixing this issue?
+
+2. current->mm is not initialized
+
+Some tests do mmap(). They need the mm user context to be initialized,
+but this is not happening right now.
+
+Are there a way to properly initialize it for KUnit?
+
+3. there's no test filters for modules
+
+In order to be able to do proper CI automation, it is needed to
+be able to control what tests will run or not. That's specially
+interesting at development time where some tests may not apply
+or not run properly on new hardware.
+
+Are there any plans to add support for it at kunit_test_suites()
+when the driver is built as module? Ideally, the best would be to
+export a per-module filter_glob parameter on such cases.
+
+4. there are actually 3 levels of tests on i915:
+	- Level 1: mock, live, perf
+	- Level 2: test group (mmap, fences, ...)
+	- Level 3: unit tests
+
+Currently, KUnit seems to have just two levels (test suite and tests).
+Are there a way to add test groups there?
 
 Regards,
 Mauro
+
+Forwarded message:
+
+Date: Thu,  3 Nov 2022 14:51:38 +0000
+From: Mauro Carvalho Chehab <mchehab@kernel.org>
+To:=20
+Cc: Thomas Hellstr=C3=B6m <thomas.hellstrom@linux.intel.com>, linux-kselfte=
+st@vger.kernel.org, Micha=C5=82 Winiarski <michal.winiarski@intel.com>, dri=
+-devel@lists.freedesktop.org, intel-gfx@lists.freedesktop.org, Daniel Latyp=
+ov <dlatypov@google.com>, linux-kernel@vger.kernel.org, igt-dev@lists.freed=
+esktop.org, Matthew Auld <matthew.auld@intel.com>, Daniel Vetter <daniel@ff=
+wll.ch>, Rodrigo Vivi <rodrigo.vivi@intel.com>, skhan@linuxfoundation.org, =
+Isabella Basso <isabbasso@riseup.net>, David Airlie <airlied@gmail.com>, Ch=
+ristian K=C3=B6nig <christian.koenig@amd.com>
+Subject: [igt-dev] [PATCH RFC v2 8/8] drm/i915: check if current->mm is not=
+ NULL
+
+
+The mmap tests require mm in order to work. Failing to do that
+will cause a crash:
+
+[  316.820722] BUG: kernel NULL pointer dereference, address: 0000000000000=
+0e8
+[  316.822517] #PF: supervisor write access in kernel mode
+[  316.823430] #PF: error_code(0x0002) - not-present page
+[  316.824390] PGD 0 P4D 0
+[  316.825357] Oops: 0002 [#1] PREEMPT SMP NOPTI
+[  316.826350] CPU: 0 PID: 1517 Comm: kunit_try_catch Tainted: G     U     =
+      N 6.1.0-rc2-drm-266703e6f163+ #14
+[  316.827503] Hardware name: Intel Corporation Tiger Lake Client Platform/=
+TigerLake Y LPDDR4x T4 Crb, BIOS TGLSFWI1.R00.3243.A01.2006102133 06/10/2020
+[  316.828633] RIP: 0010:down_write_killable+0x50/0x110
+[  316.829756] Code: 24 10 45 31 c9 31 c9 41 b8 01 00 00 00 31 d2 31 f6 48 =
+89 ef e8 e1 74 4a ff bf 01 00 00 00 e8 87 d6 46 ff 31 c0 ba 01 00 00 00 <f0=
+> 48 0f b1 13 0f 94 c0 5a 84 c0 74 62 8b 05 49 12 e4 00 85 c0 74
+[  316.830896] RSP: 0018:ffffc90001eabc58 EFLAGS: 00010246
+[  316.832008] RAX: 0000000000000000 RBX: 00000000000000e8 RCX: 00000000000=
+00000
+[  316.833141] RDX: 0000000000000001 RSI: ffffffff81c94fc9 RDI: ffffffff81c=
+94fc9
+[  316.834195] RBP: 0000000000000158 R08: 0000000000000001 R09: 00000000000=
+00000
+[  316.835231] R10: 0000000000000000 R11: ffff8883a13350b8 R12: 00000000000=
+00002
+[  316.836259] R13: 0000000000000001 R14: 0000000000100000 R15: 00000000000=
+000e8
+[  316.837237] FS:  0000000000000000(0000) GS:ffff8883a3800000(0000) knlGS:=
+0000000000000000
+[  316.838214] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[  316.839190] CR2: 00000000000000e8 CR3: 0000000002812003 CR4: 00000000007=
+70ef0
+[  316.840147] PKRU: 55555554
+[  316.841099] Call Trace:
+[  316.842047]  <TASK>
+[  316.842990]  ? vm_mmap_pgoff+0x78/0x150
+[  316.843936]  vm_mmap_pgoff+0x78/0x150
+[  316.844884]  igt_mmap_offset+0x178/0x1b9 [i915]
+[  316.846119]  __igt_mmap+0xfe/0x680 [i915]
+
+Unfortunately, when KUnit module runs, it doesn't create an
+user context, causing mmap tests to fail.
+
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+---
+
+To avoid mailbombing on a large number of people, only mailing lists were C=
+/C on the cover.
+See [PATCH RFC v2 0/8] at: https://lore.kernel.org/all/cover.1667486144.git=
+.mchehab@kernel.org/
+
+ drivers/gpu/drm/i915/gem/selftests/i915_gem_mman.c | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/drivers/gpu/drm/i915/gem/selftests/i915_gem_mman.c b/drivers/g=
+pu/drm/i915/gem/selftests/i915_gem_mman.c
+index add5ae56cd89..2c5f93e946b5 100644
+--- a/drivers/gpu/drm/i915/gem/selftests/i915_gem_mman.c
++++ b/drivers/gpu/drm/i915/gem/selftests/i915_gem_mman.c
+@@ -1845,6 +1845,11 @@ int i915_gem_mman_live_selftests(struct drm_i915_pri=
+vate *i915)
+ 		SUBTEST(igt_mmap_gpu),
+ 	};
+=20
++	if (!current->mm) {
++		pr_err("Test called without an user context!\n");
++		return -EINVAL;
++	}
++
+ 	return i915_live_subtests(tests, i915);
+ }
+ EXPORT_SYMBOL_NS_GPL(i915_gem_mman_live_selftests, I915_SELFTEST);
+--=20
+2.38.1
