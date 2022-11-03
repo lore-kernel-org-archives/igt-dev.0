@@ -1,15 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============8487623459111365154=="
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id AF4BD10E227
+ for <igt-dev@lists.freedesktop.org>; Thu,  3 Nov 2022 04:24:41 +0000 (UTC)
+Date: Thu, 3 Nov 2022 05:24:37 +0100
+From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+To: Karolina Drobnik <karolina.drobnik@intel.com>
+Message-ID: <20221103042437.6ixpfyjqsgxgpciw@zkempczy-mobl2>
+References: <cover.1667391118.git.karolina.drobnik@intel.com>
+ <68baa86ff2f0812a0cfa050c205b2fefb3a3db97.1667391118.git.karolina.drobnik@intel.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Nidhi Gupta" <nidhi1.gupta@intel.com>
-Date: Thu, 03 Nov 2022 04:01:10 -0000
-Message-ID: <166744807021.9194.15943402732333088809@emeril.freedesktop.org>
-References: <1667445898-20552-1-git-send-email-nidhi1.gupta@intel.com>
-In-Reply-To: <1667445898-20552-1-git-send-email-nidhi1.gupta@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3IgdGVzdHMv?=
- =?utf-8?q?kms=5Finvalid=5Fmode=3A_Fix_the_test_for_legacy_platform?=
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <68baa86ff2f0812a0cfa050c205b2fefb3a3db97.1667391118.git.karolina.drobnik@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t v4 3/3] tests/api_intel_bb: Add
+ misplaced_blitter test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,279 +22,124 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============8487623459111365154==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+On Wed, Nov 02, 2022 at 01:15:14PM +0100, Karolina Drobnik wrote:
+> Exercise intel_bb with a custom context engines layout.
+> 
+> Signed-off-by: Karolina Drobnik <karolina.drobnik@intel.com>
+> ---
+>  tests/i915/api_intel_bb.c | 70 +++++++++++++++++++++++++++++++++++++--
+>  1 file changed, 68 insertions(+), 2 deletions(-)
+> 
+> diff --git a/tests/i915/api_intel_bb.c b/tests/i915/api_intel_bb.c
+> index a881d6b0..d448f02d 100644
+> --- a/tests/i915/api_intel_bb.c
+> +++ b/tests/i915/api_intel_bb.c
+> @@ -40,11 +40,15 @@
+>  #include "intel_bufops.h"
+>  #include "i915/gem_vm.h"
+>  #include "i915/i915_crc.h"
+> +#include "i915/i915_blt.h"
+>  
+>  #define PAGE_SIZE 4096
+>  
+> -#define WIDTH 64
+> -#define HEIGHT 64
+> +#define WIDTH	64
+> +#define HEIGHT	64
+> +#define STRIDE	(WIDTH * 4)
+> +#define SIZE	(HEIGHT * STRIDE)
+> +
+>  #define COLOR_00	0x00
+>  #define COLOR_33	0x33
+>  #define COLOR_77	0x77
+> @@ -1209,6 +1213,62 @@ static void full_batch(struct buf_ops *bops)
+>  	intel_bb_destroy(ibb);
+>  }
+>  
+> +static void misplaced_blitter(struct buf_ops *bops)
+> +{
+> +	int i915 = buf_ops_get_fd(bops), i;
+> +	struct intel_bb *ibb;
+> +	struct intel_buf *src, *dst;
+> +	uint64_t value, *psrc, *pdst;
+> +	int cmp;
+> +
+> +	/* Use custom configuration with blitter at index 0 */
+> +	const intel_ctx_cfg_t cfg = (intel_ctx_cfg_t) {
+> +			.num_engines = 2,
+> +			.engines = {
+> +				{ .engine_class = I915_ENGINE_CLASS_COPY,
+> +				  .engine_instance = 0
+> +				},
+> +				{ .engine_class = I915_ENGINE_CLASS_RENDER,
+> +				  .engine_instance = 0
+> +				},
+> +			},
+> +		};
+> +
+> +	const intel_ctx_t *ctx = intel_ctx_create(i915, &cfg);
+> +
+> +	ibb = intel_bb_create_with_context(i915, ctx->id, &ctx->cfg, PAGE_SIZE);
+> +
+> +	/* Prepare for blitter copy, done to verify we found the blitter engine */
+> +	src = intel_buf_create(bops, WIDTH, HEIGHT, 32, 0, I915_TILING_NONE,
+> +			       I915_COMPRESSION_NONE);
+> +	dst = intel_buf_create(bops, WIDTH, HEIGHT, 32, 0, I915_TILING_NONE,
+> +			       I915_COMPRESSION_NONE);
+> +	psrc = intel_buf_device_map(src, true);
+> +	pdst = intel_buf_device_map(dst, true);
+> +
+> +	/* Populate src with dummy values */
+> +	memset(&value, COLOR_33, 8);
+> +	for (i = 0; i < SIZE / sizeof(value); i++)
+> +		memset(&psrc[i], value, 8);
+> +
+> +	intel_bb_copy_intel_buf(ibb, src, dst, SIZE);
+> +	intel_bb_flush_blit(ibb);
+> +	intel_bb_sync(ibb);
+> +
+> +	cmp = memcmp(pdst, psrc, SIZE);
+> +
+> +	intel_buf_unmap(src);
+> +	intel_buf_unmap(dst);
+> +	intel_buf_destroy(src);
+> +	intel_buf_destroy(dst);
+> +
+> +	intel_bb_destroy(ibb);
+> +	intel_ctx_destroy(i915, ctx);
+> +
+> +	/* Expect to see a successful copy */
+> +	igt_assert_eq(cmp, 0);
+> +}
+> +
+>  static int render(struct buf_ops *bops, uint32_t tiling, bool do_reloc,
+>  		  uint32_t width, uint32_t height)
+>  {
+> @@ -1581,6 +1641,12 @@ igt_main_args("dpibc:", NULL, help_str, opt_handler, NULL)
+>  	igt_subtest("full-batch")
+>  		full_batch(bops);
+>  
+> +	igt_describe("Execute intel_bb with set of engines provided by userspace");
+> +	igt_subtest("misplaced-blitter") {
+> +		gem_require_contexts(i915);
+> +		misplaced_blitter(bops);
+> +	}
+> +
+>  	igt_subtest_with_dynamic("render") {
+>  		for (i = 0; i < ARRAY_SIZE(tests); i++) {
+>  			const struct test *t = &tests[i];
+> -- 
+> 2.25.1
+>
 
-== Series Details ==
+Ok, looks good for me now:
 
-Series: tests/kms_invalid_mode: Fix the test for legacy platform
-URL   : https://patchwork.freedesktop.org/series/110461/
-State : failure
+Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 
-== Summary ==
-
-CI Bug Log - changes from CI_DRM_12333 -> IGTPW_8039
-====================================================
-
-Summary
--------
-
-  **FAILURE**
-
-  Serious unknown changes coming with IGTPW_8039 absolutely need to be
-  verified manually.
-  
-  If you think the reported changes have nothing to do with the changes
-  introduced in IGTPW_8039, please notify your bug team to allow them
-  to document this new failure mode, which will reduce false positives in CI.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8039/index.html
-
-Participating hosts (38 -> 27)
-------------------------------
-
-  Missing    (11): fi-tgl-dsi bat-dg2-8 bat-dg2-9 bat-adlp-6 bat-adlp-4 bat-adln-1 bat-rplp-1 bat-rpls-1 bat-rpls-2 bat-dg2-11 bat-jsl-1 
-
-Possible new issues
--------------------
-
-  Here are the unknown changes that may have been introduced in IGTPW_8039:
-
-### IGT changes ###
-
-#### Possible regressions ####
-
-  * igt@i915_module_load@load:
-    - fi-bdw-gvtdvm:      [PASS][1] -> [DMESG-WARN][2] +1 similar issue
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12333/fi-bdw-gvtdvm/igt@i915_module_load@load.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8039/fi-bdw-gvtdvm/igt@i915_module_load@load.html
-
-  
-Known issues
-------------
-
-  Here are the changes found in IGTPW_8039 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@gem_lmem_swapping@basic:
-    - fi-apl-guc:         NOTRUN -> [SKIP][3] ([fdo#109271] / [i915#4613]) +3 similar issues
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8039/fi-apl-guc/igt@gem_lmem_swapping@basic.html
-
-  * igt@kms_chamelium@hdmi-crc-fast:
-    - fi-apl-guc:         NOTRUN -> [SKIP][4] ([fdo#109271] / [fdo#111827]) +8 similar issues
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8039/fi-apl-guc/igt@kms_chamelium@hdmi-crc-fast.html
-
-  * igt@kms_flip@basic-flip-vs-dpms@b-edp1:
-    - fi-icl-u2:          [PASS][5] -> [DMESG-WARN][6] ([i915#4890])
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12333/fi-icl-u2/igt@kms_flip@basic-flip-vs-dpms@b-edp1.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8039/fi-icl-u2/igt@kms_flip@basic-flip-vs-dpms@b-edp1.html
-
-  * igt@kms_force_connector_basic@force-connector-state:
-    - fi-apl-guc:         NOTRUN -> [SKIP][7] ([fdo#109271]) +11 similar issues
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8039/fi-apl-guc/igt@kms_force_connector_basic@force-connector-state.html
-
-  * igt@runner@aborted:
-    - fi-icl-u2:          NOTRUN -> [FAIL][8] ([i915#4312])
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8039/fi-icl-u2/igt@runner@aborted.html
-    - fi-bdw-gvtdvm:      NOTRUN -> [FAIL][9] ([i915#4312])
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8039/fi-bdw-gvtdvm/igt@runner@aborted.html
-
-  
-#### Possible fixes ####
-
-  * igt@gem_ctx_create@basic-files:
-    - {fi-tgl-mst}:       [DMESG-WARN][10] ([i915#6434]) -> [PASS][11]
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12333/fi-tgl-mst/igt@gem_ctx_create@basic-files.html
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8039/fi-tgl-mst/igt@gem_ctx_create@basic-files.html
-
-  * igt@gem_render_tiled_blits@basic:
-    - fi-apl-guc:         [INCOMPLETE][12] -> [PASS][13]
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12333/fi-apl-guc/igt@gem_render_tiled_blits@basic.html
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8039/fi-apl-guc/igt@gem_render_tiled_blits@basic.html
-
-  * igt@gem_tiled_blits@basic:
-    - fi-pnv-d510:        [SKIP][14] ([fdo#109271]) -> [PASS][15] +1 similar issue
-   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12333/fi-pnv-d510/igt@gem_tiled_blits@basic.html
-   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8039/fi-pnv-d510/igt@gem_tiled_blits@basic.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
-  [fdo#111827]: https://bugs.freedesktop.org/show_bug.cgi?id=111827
-  [i915#4312]: https://gitlab.freedesktop.org/drm/intel/issues/4312
-  [i915#4613]: https://gitlab.freedesktop.org/drm/intel/issues/4613
-  [i915#4890]: https://gitlab.freedesktop.org/drm/intel/issues/4890
-  [i915#6106]: https://gitlab.freedesktop.org/drm/intel/issues/6106
-  [i915#6434]: https://gitlab.freedesktop.org/drm/intel/issues/6434
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_7038 -> IGTPW_8039
-
-  CI-20190529: 20190529
-  CI_DRM_12333: e7d1d39c197e7f06cf4d1ee19cfd467d6b68e10e @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_8039: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8039/index.html
-  IGT_7038: 5389b3f3b9b75df6bd8506e4aa3da357fd0c0ab1 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-
-Testlist changes
-----------------
-
-+igt@i915_pm_backlight@fade_with_dpms
-+igt@i915_pm_backlight@fade_with_suspend
--igt@i915_pm_backlight@fade-with-dpms
--igt@i915_pm_backlight@fade-with-suspend
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8039/index.html
-
---===============8487623459111365154==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/kms_invalid_mode: Fix the test for legacy platform</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/110461/">https://patchwork.freedesktop.org/series/110461/</a></td></tr>
-<tr><td><b>State:</b></td><td>failure</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8039/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8039/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from CI_DRM_12333 -&gt; IGTPW_8039</h1>
-<h2>Summary</h2>
-<p><strong>FAILURE</strong></p>
-<p>Serious unknown changes coming with IGTPW_8039 absolutely need to be<br />
-  verified manually.</p>
-<p>If you think the reported changes have nothing to do with the changes<br />
-  introduced in IGTPW_8039, please notify your bug team to allow them<br />
-  to document this new failure mode, which will reduce false positives in CI.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8039/index.html</p>
-<h2>Participating hosts (38 -&gt; 27)</h2>
-<p>Missing    (11): fi-tgl-dsi bat-dg2-8 bat-dg2-9 bat-adlp-6 bat-adlp-4 bat-adln-1 bat-rplp-1 bat-rpls-1 bat-rpls-2 bat-dg2-11 bat-jsl-1 </p>
-<h2>Possible new issues</h2>
-<p>Here are the unknown changes that may have been introduced in IGTPW_8039:</p>
-<h3>IGT changes</h3>
-<h4>Possible regressions</h4>
-<ul>
-<li>igt@i915_module_load@load:<ul>
-<li>fi-bdw-gvtdvm:      <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12333/fi-bdw-gvtdvm/igt@i915_module_load@load.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8039/fi-bdw-gvtdvm/igt@i915_module_load@load.html">DMESG-WARN</a> +1 similar issue</li>
-</ul>
-</li>
-</ul>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_8039 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@gem_lmem_swapping@basic:</p>
-<ul>
-<li>fi-apl-guc:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8039/fi-apl-guc/igt@gem_lmem_swapping@basic.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4613">i915#4613</a>) +3 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_chamelium@hdmi-crc-fast:</p>
-<ul>
-<li>fi-apl-guc:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8039/fi-apl-guc/igt@kms_chamelium@hdmi-crc-fast.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://bugs.freedesktop.org/show_bug.cgi?id=111827">fdo#111827</a>) +8 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_flip@basic-flip-vs-dpms@b-edp1:</p>
-<ul>
-<li>fi-icl-u2:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12333/fi-icl-u2/igt@kms_flip@basic-flip-vs-dpms@b-edp1.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8039/fi-icl-u2/igt@kms_flip@basic-flip-vs-dpms@b-edp1.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4890">i915#4890</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_force_connector_basic@force-connector-state:</p>
-<ul>
-<li>fi-apl-guc:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8039/fi-apl-guc/igt@kms_force_connector_basic@force-connector-state.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +11 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@runner@aborted:</p>
-<ul>
-<li>
-<p>fi-icl-u2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8039/fi-icl-u2/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4312">i915#4312</a>)</p>
-</li>
-<li>
-<p>fi-bdw-gvtdvm:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8039/fi-bdw-gvtdvm/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4312">i915#4312</a>)</p>
-</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@gem_ctx_create@basic-files:</p>
-<ul>
-<li>{fi-tgl-mst}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12333/fi-tgl-mst/igt@gem_ctx_create@basic-files.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6434">i915#6434</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8039/fi-tgl-mst/igt@gem_ctx_create@basic-files.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@gem_render_tiled_blits@basic:</p>
-<ul>
-<li>fi-apl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12333/fi-apl-guc/igt@gem_render_tiled_blits@basic.html">INCOMPLETE</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8039/fi-apl-guc/igt@gem_render_tiled_blits@basic.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@gem_tiled_blits@basic:</p>
-<ul>
-<li>fi-pnv-d510:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12333/fi-pnv-d510/igt@gem_tiled_blits@basic.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8039/fi-pnv-d510/igt@gem_tiled_blits@basic.html">PASS</a> +1 similar issue</li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_7038 -&gt; IGTPW_8039</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_12333: e7d1d39c197e7f06cf4d1ee19cfd467d6b68e10e @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_8039: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8039/index.html<br />
-  IGT_7038: 5389b3f3b9b75df6bd8506e4aa3da357fd0c0ab1 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-<h2>Testlist changes</h2>
-<p>+igt@i915_pm_backlight@fade_with_dpms<br />
-+igt@i915_pm_backlight@fade_with_suspend<br />
--igt@i915_pm_backlight@fade-with-dpms<br />
--igt@i915_pm_backlight@fade-with-suspend</p>
-
-</body>
-</html>
-
---===============8487623459111365154==--
+--
+Zbigniew 
