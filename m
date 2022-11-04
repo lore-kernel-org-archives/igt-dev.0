@@ -1,20 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 67CE310E1DD
- for <igt-dev@lists.freedesktop.org>; Mon,  7 Nov 2022 05:36:44 +0000 (UTC)
-Message-ID: <48d70134-a797-115d-a45f-a2c096e944c1@intel.com>
-Date: Mon, 7 Nov 2022 11:06:25 +0530
+Received: from NAM12-BN8-obe.outbound.protection.outlook.com
+ (mail-bn8nam12on2041.outbound.protection.outlook.com [40.107.237.41])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 64C0210E836
+ for <igt-dev@lists.freedesktop.org>; Fri,  4 Nov 2022 21:01:12 +0000 (UTC)
+Message-ID: <78bd66c0-45d3-6d55-ee1e-e23c371cdbdb@amd.com>
+Date: Fri, 4 Nov 2022 15:01:07 -0600
+To: igt-dev@lists.freedesktop.org, mwen@igalia.com
+References: <20221103184021.13961-1-mwen@igalia.com>
 Content-Language: en-US
-To: <igt-dev@lists.freedesktop.org>
-References: <20221102110428.4049549-1-bhanuprakash.modem@intel.com>
- <20221104020005.4098049-1-bhanuprakash.modem@intel.com>
-From: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
-In-Reply-To: <20221104020005.4098049-1-bhanuprakash.modem@intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
+From: Alex Hung <alex.hung@amd.com>
+In-Reply-To: <20221103184021.13961-1-mwen@igalia.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [V2 i-g-t] tests/kms_cursor_crc: Fix SIGABRT in
- dynamic subtests
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_color: check degamma and
+ gamma props in CTM subtests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,191 +26,87 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Fri-04-11-2022 07:30 am, Bhanuprakash Modem wrote:
-> All subtests must report success/fail instead of crashing out.
+Hi Melissa,
+
+Thanks for helping out.
+
+The "set_luts" is not necessary because free_lut() already checks NULL 
+pointers. See inline comments.
+
+On 2022-11-03 12:40, Melissa Wen wrote:
+> Some CTM subtests generate and set degamma/gamma LUTs without checking
+> if these properties are supported by the driver. Therefore, if degamma
+> and gamma are used in the subtest, check the color properties before
+> generate and set LUTs. If these properties are not supported, these
+> subtests will skip instead of failing.
 > 
-> V2:
-> - Fix the coverage of max-size tests
-
-Alaa, can I use your T-b & R-b to merge this patch?
-
-- Bhanu
-
-> 
-> Fixes: 9494d53d ("tests/kms_cursor_crc: Convert tests to dynamic")
-> Cc: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-> Signed-off-by: Alaa Emad <aemad@igalia.com>
-> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+> Signed-off-by: Melissa Wen <mwen@igalia.com>
 > ---
->   tests/kms_cursor_crc.c | 128 ++++++++++++++++++++++-------------------
->   1 file changed, 68 insertions(+), 60 deletions(-)
+>   tests/kms_color.c | 20 +++++++++++++-------
+>   1 file changed, 13 insertions(+), 7 deletions(-)
 > 
-> diff --git a/tests/kms_cursor_crc.c b/tests/kms_cursor_crc.c
-> index d51c1f90..68bed666 100644
-> --- a/tests/kms_cursor_crc.c
-> +++ b/tests/kms_cursor_crc.c
-> @@ -700,65 +700,78 @@ static void test_rapid_movement(data_t *data)
->   	igt_assert_lt(usec, 0.9 * 400 * 1000000 / data->refresh);
->   }
+> diff --git a/tests/kms_color.c b/tests/kms_color.c
+> index e4dc2465..e0222c42 100644
+> --- a/tests/kms_color.c
+> +++ b/tests/kms_color.c
+> @@ -463,7 +463,7 @@ static bool test_pipe_ctm(data_t *data,
+>   	};
+>   	gamma_lut_t *degamma_linear, *gamma_linear;
+>   	igt_output_t *output = data->output;
+> -	bool ret = true;
+> +	bool set_luts, ret = true;
+
+set_luts is not needed.
+
+>   	igt_display_t *display = &data->display;
+>   	drmModeModeInfo *mode = data->mode;
+>   	struct igt_fb fb_modeset, fb;
+> @@ -472,9 +472,6 @@ static bool test_pipe_ctm(data_t *data,
 >   
-> -static void run_size_tests(data_t *data, void (*testfunc)(data_t *),
-> -			   int w, int h)
-> +static void run_size_tests(data_t *data, int w, int h)
->   {
->   	enum pipe pipe;
-> +	struct {
-> +		const char *name;
-> +		void (*testfunc)(data_t *);
-> +		const char *desc;
-> +	} size_tests[] = {
-> +		{ "cursor-onscreen", test_crc_onscreen,
-> +			"Check if a given-size cursor is well-positioned inside the screen." },
-> +		{ "cursor-offscreen", test_crc_offscreen,
-> +			"Check if a given-size cursor is well-positioned outside the screen." },
-> +		{ "cursor-sliding", test_crc_sliding,
-> +			"Check the smooth and pixel-by-pixel given-size cursor movements on horizontal, vertical and diagonal." },
-> +		{ "cursor-random", test_crc_random,
-> +			"Check random placement of a cursor with given size." },
-> +		{ "cursor-rapid-movement", test_rapid_movement,
-> +			"Check the rapid update of given-size cursor movements." },
-> +	};
-> +	int i;
-> +	char name[16];
+>   	igt_require(igt_pipe_obj_has_prop(primary->pipe, IGT_CRTC_CTM));
 >   
->   	if (w == 0 && h == 0) {
->   		w = data->cursor_max_w;
->   		h = data->cursor_max_h;
+> -	degamma_linear = generate_table(data->degamma_lut_size, 1.0);
+> -	gamma_linear = generate_table(data->gamma_lut_size, 1.0);
+> -
+>   	igt_output_set_pipe(output, primary->pipe->pipe);
+>   	igt_output_override_mode(output, mode);
 >   
-> -		/*
-> -		 * No point in doing the "max-size" test if
-> -		 * it was already covered by the other tests.
-> -		 */
-> -		if ((w == h) && (w <= 512) && (h <= 512) &&
-> -		    is_power_of_two(w) && is_power_of_two(h)) {
-> -			igt_info("Cursor max size %dx%d already covered by other tests\n", w, h);
-> -			return;
-> -		}
-> +		strcpy(name, "max-size");
-> +	} else {
-> +		snprintf(name, sizeof(name), "%dx%d", w, h);
->   	}
->   
-> -	create_cursor_fb(data, w, h);
-> -	if (require_cursor_size(data, w, h)) {
-> -		igt_info("Cursor size %dx%d not supported by driver\n", w, h);
-> +	igt_fixture
-> +		create_cursor_fb(data, w, h);
->   
-> -		igt_remove_fb(data->drm_fd, &data->fb);
-> -		return;
-> -	}
-> +	for (i = 0; i < ARRAY_SIZE(size_tests); i++) {
-> +		igt_describe(size_tests[i].desc);
-> +		igt_subtest_with_dynamic_f("%s-%s", size_tests[i].name, name) {
-> +			if (!strcmp(name, "max-size")) {
-> +				/*
-> +				 * No point in doing the "max-size" test if
-> +				 * it was already covered by the other tests.
-> +				 */
-> +				if ((w == h) && (w <= 512) && (h <= 512) &&
-> +				    is_power_of_two(w) && is_power_of_two(h)) {
-> +					igt_info("Cursor max size %dx%d already covered by other tests\n", w, h);
-> +					continue;
-> +				}
-> +			}
+> @@ -501,7 +498,14 @@ static bool test_pipe_ctm(data_t *data,
+>   	 * representing intermediate values between 0 and 1.0 causes
+>   	 * rounding issues and inaccuracies leading to crc mismatch.
+>   	 */
+> -	if (memcmp(before, after, sizeof(color_t))) {
+> +	set_luts = memcmp(before, after, sizeof(color_t));
+> +	if (set_luts) {
+
+The above if condition can just stay the same since set_luts is not 
+needed afterwards.
+
+> +		igt_require(igt_pipe_obj_has_prop(primary->pipe, IGT_CRTC_DEGAMMA_LUT));
+> +		igt_require(igt_pipe_obj_has_prop(primary->pipe, IGT_CRTC_GAMMA_LUT));
 > +
-> +			for_each_pipe(&data->display, pipe) {
-> +				data->pipe = pipe;
->   
-> -	for_each_pipe(&data->display, pipe) {
-> -		data->pipe = pipe;
-> -		igt_dynamic_f("pipe-%s-%s",
-> -			      kmstest_pipe_name(pipe), igt_output_name(data->output))
-> -			run_test(data, testfunc, w, h);
-> +				if (require_cursor_size(data, w, h)) {
-> +					igt_info("Cursor size %dx%d not supported by driver\n", w, h);
-> +					continue;
-> +				}
+> +		degamma_linear = generate_table(data->degamma_lut_size, 1.0);
+> +		gamma_linear = generate_table(data->gamma_lut_size, 1.0);
 > +
-> +				igt_dynamic_f("pipe-%s-%s",
-> +					      kmstest_pipe_name(pipe), igt_output_name(data->output))
-> +					run_test(data, size_tests[i].testfunc, w, h);
-> +			}
-> +		}
->   	}
+>   		set_degamma(data, primary->pipe, degamma_linear);
+>   		set_gamma(data, primary->pipe, gamma_linear);
+>   	} else {
+> @@ -542,8 +546,10 @@ static bool test_pipe_ctm(data_t *data,
+>   	igt_remove_fb(data->drm_fd, &fb);
+>   	igt_remove_fb(data->drm_fd, &fb_modeset);
 >   
-> -	igt_remove_fb(data->drm_fd, &data->fb);
-> +	igt_fixture
-> +		igt_remove_fb(data->drm_fd, &data->fb);
+> -	free_lut(degamma_linear);
+> -	free_lut(gamma_linear);
+> +	if (set_luts) {
+> +		free_lut(degamma_linear);
+> +		free_lut(gamma_linear);
+> +	}
+
+set_luts is not needed, so no changes here because free_lut() checks 
+NULL pointers, like in the function "test_pipe_legacy_gamma_reset".
+
+>   
+>   	return ret;
 >   }
->   
->   static void run_tests_on_pipe(data_t *data)
->   {
->   	enum pipe pipe;
->   	int cursor_size;
-> -	int i;
-> -	struct {
-> -		const char *name;
-> -		void (*testfunc)(data_t *);
-> -		const char *desc;
-> -	} size_tests[] = {
-> -		{ "cursor-onscreen", test_crc_onscreen,
-> -			"Check if a given-size cursor is well-positioned inside the screen." },
-> -		{ "cursor-offscreen", test_crc_offscreen,
-> -			"Check if a given-size cursor is well-positioned outside the screen." },
-> -		{ "cursor-sliding", test_crc_sliding,
-> -			"Check the smooth and pixel-by-pixel given-size cursor movements on horizontal, vertical and diagonal." },
-> -		{ "cursor-random", test_crc_random,
-> -			"Check random placement of a cursor with given size." },
-> -		{ "cursor-rapid-movement", test_rapid_movement,
-> -			"Check the rapid update of given-size cursor movements." },
-> -	};
->   
->   	igt_fixture {
->   		data->output = igt_get_single_output_for_pipe(&data->display, pipe);
-> @@ -859,30 +872,25 @@ static void run_tests_on_pipe(data_t *data)
->   	igt_fixture
->   		igt_remove_fb(data->drm_fd, &data->fb);
->   
-> -	for (i = 0; i < ARRAY_SIZE(size_tests); i++) {
-> -		igt_describe(size_tests[i].desc);
-> -		igt_subtest_group {
-> -			for (cursor_size = 32; cursor_size <= 512; cursor_size *= 2) {
-> -				int w = cursor_size;
-> -				int h = cursor_size;
-> +	for (cursor_size = 32; cursor_size <= 512; cursor_size *= 2) {
-> +		int w = cursor_size;
-> +		int h = cursor_size;
->   
-> -				igt_subtest_with_dynamic_f("%s-%dx%d", size_tests[i].name, w, h)
-> -					run_size_tests(data, size_tests[i].testfunc, w, h);
-> +		igt_subtest_group
-> +			run_size_tests(data, w, h);
->   
-> -				/*
-> -				 * Test non-square cursors a bit on the platforms
-> -				 * that support such things. And make it a bit more
-> -				 * interesting by using a non-pot height.
-> -				 */
-> -				h /= 3;
-> -				igt_subtest_with_dynamic_f("%s-%dx%d", size_tests[i].name, w, h)
-> -					run_size_tests(data, size_tests[i].testfunc, w, h);
-> -			}
-> +		/*
-> +		 * Test non-square cursors a bit on the platforms
-> +		 * that support such things. And make it a bit more
-> +		 * interesting by using a non-pot height.
-> +		 */
-> +		h /= 3;
->   
-> -			igt_subtest_with_dynamic_f("%s-max-size", size_tests[i].name)
-> -				run_size_tests(data, size_tests[i].testfunc, 0, 0);
-> -		}
-> +		igt_subtest_group
-> +			run_size_tests(data, w, h);
->   	}
-> +
-> +	run_size_tests(data, 0, 0);
->   }
->   
->   static data_t data;
+
+
