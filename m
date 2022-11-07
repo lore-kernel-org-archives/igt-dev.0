@@ -1,20 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 666C710E30A
- for <igt-dev@lists.freedesktop.org>; Mon,  7 Nov 2022 12:54:31 +0000 (UTC)
-Message-ID: <4f753ae7-c49b-10c8-f8bd-f9b3958deb5e@intel.com>
-Date: Mon, 7 Nov 2022 18:24:17 +0530
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4DDF010E308
+ for <igt-dev@lists.freedesktop.org>; Mon,  7 Nov 2022 12:55:14 +0000 (UTC)
+Message-ID: <541e1ae9-59f1-95ca-e12f-b376ca60ae12@intel.com>
+Date: Mon, 7 Nov 2022 18:25:02 +0530
+Content-Language: en-US
 To: Swati Sharma <swati2.sharma@intel.com>, <igt-dev@lists.freedesktop.org>
 References: <20221031181639.15046-1-swati2.sharma@intel.com>
- <20221031181639.15046-4-swati2.sharma@intel.com>
-Content-Language: en-US
+ <20221031181639.15046-3-swati2.sharma@intel.com>
 From: "Nautiyal, Ankit K" <ankit.k.nautiyal@intel.com>
-In-Reply-To: <20221031181639.15046-4-swati2.sharma@intel.com>
+In-Reply-To: <20221031181639.15046-3-swati2.sharma@intel.com>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t 3/3] tests/i915/kms_dsc: Enable
- validation for VDSC YCbCr420
+Subject: Re: [igt-dev] [PATCH i-g-t 2/3] tests/i915/kms_dsc: Prep work for
+ extending val support for VDSC YCbCr420
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,334 +28,150 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 Hi Swati,
 
-The approach looks fine, but the way to loop through all modes and 
-try-commit seems wrong.
-
-Please find few comments inline:
+Please find the comments inline:
 
 On 10/31/2022 11:46 PM, Swati Sharma wrote:
-> Existing i-g-t is extended to enable validation for VDSC YCbCr420.
-> If a mode is supported in both RGB and YCbCr420 output formats by the
-> sink, i915 driver policy is to try RGB first and fall back to YCbCr420, if
-> mode cannot be shown using RGB. To test YCbCr420, we need a debugfs
-> entry (force_dsc_ycbcr420) to force this output format; so that YCbCr420 code
-> gets executed.
->  From i-g-t, we have set this debugfs entry. However, before setting
-> debugfs entry, we have checked capability i.e. YCbCr420 is supported by
-> both platform (D14+) and sink.
-> Also, all the modes doesn't support both YCbCr420 and RGB formats; so if
-> sink and platform supports YCbCr420 we will do try commit with each mode
-> till we get a successful commit.
+> Functions are modified to accommodate changes for VDSC YCbCr420.
 >
 > Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
 > ---
->   tests/i915/kms_dsc.c | 190 +++++++++++++++++++++++++++++++++----------
->   1 file changed, 146 insertions(+), 44 deletions(-)
+>   tests/i915/kms_dsc.c | 29 +++++++++++++++++++----------
+>   1 file changed, 19 insertions(+), 10 deletions(-)
 >
 > diff --git a/tests/i915/kms_dsc.c b/tests/i915/kms_dsc.c
-> index b162f93d..5e0f4c61 100644
+> index 330fc050..b162f93d 100644
 > --- a/tests/i915/kms_dsc.c
 > +++ b/tests/i915/kms_dsc.c
-> @@ -66,7 +66,10 @@ typedef struct {
+> @@ -61,6 +61,7 @@ typedef struct {
+>   	igt_output_t *output;
+>   	int input_bpc;
+>   	int n_pipes;
+> +	int disp_ver;
+>   	enum pipe pipe;
 >   } data_t;
 >   
->   bool force_dsc_en_orig;
-> +bool force_dsc_ycbcr420_en_orig;
->   int force_dsc_restore_fd = -1;
-> +int force_dsc_ycbcr420_restore_fd = -1;
-> +static int count = 0;
->   
->   const struct {
->   	const int format;
-> @@ -107,6 +110,16 @@ static void force_dsc_enable_bpc(data_t *data)
->   	igt_assert_f(ret > 0, "forcing input dsc bpc debugfs_write failed\n");
+> @@ -91,7 +92,7 @@ static void force_dsc_enable(data_t *data)
+>   	igt_debug("Forcing DSC enable on %s\n", data->output->name);
+>   	ret = igt_force_dsc_enable(data->drm_fd,
+>   				   data->output->name);
+> -	igt_assert_f(ret > 0, "debugfs_write failed");
+> +	igt_assert_f(ret > 0, "forcing dsc enable debugfs_write failed\n");
 >   }
 >   
-> +static void force_dsc_ycbcr420_enable(data_t *data)
-> +{
-> +	int ret;
-> +
-> +	igt_debug("Forcing DSC YCbCr420 on %s\n", data->output->name);
-> +	ret = igt_force_dsc_ycbcr420_enable(data->drm_fd,
-> +					    data->output->name);
-> +	igt_assert_f(ret > 0, "forcing dsc ycbcr420 debugfs_write failed\n");
-> +}
-> +
+>   static void force_dsc_enable_bpc(data_t *data)
+> @@ -103,7 +104,7 @@ static void force_dsc_enable_bpc(data_t *data)
+>   	ret = igt_force_dsc_enable_bpc(data->drm_fd,
+>   				       data->output->name,
+>   				       data->input_bpc);
+> -	igt_assert_f(ret > 0, "debugfs_write failed");
+> +	igt_assert_f(ret > 0, "forcing input dsc bpc debugfs_write failed\n");
+>   }
+>   
 >   static void save_force_dsc_en(data_t *data)
->   {
->   	force_dsc_en_orig =
-> @@ -130,9 +143,34 @@ static void restore_force_dsc_en(void)
->   	force_dsc_restore_fd = -1;
+> @@ -222,7 +223,8 @@ static void test_cleanup(data_t *data)
 >   }
 >   
-> +static void save_force_dsc_ycbcr420_en(data_t *data)
-> +{
-> +	force_dsc_ycbcr420_en_orig =
-> +		igt_is_force_dsc_ycbcr420_enabled(data->drm_fd,
-> +						  data->output->name);
-> +	force_dsc_ycbcr420_restore_fd =
-> +		igt_get_dsc_ycbcr420_debugfs_fd(data->drm_fd,
-> +						data->output->name);
-> +	igt_assert(force_dsc_ycbcr420_restore_fd >= 0);
-> +}
-> +
-> +static void restore_force_dsc_ycbcr420_en(void)
-> +{
-> +	if (force_dsc_ycbcr420_restore_fd < 0)
-> +		return;
-> +
-> +	igt_debug("Restoring DSC YCbCr420 enable\n");
-> +	igt_assert(write(force_dsc_ycbcr420_restore_fd, force_dsc_ycbcr420_en_orig ? "1" : "0", 1) == 1);
-> +
-> +	close(force_dsc_ycbcr420_restore_fd);
-> +	force_dsc_ycbcr420_restore_fd = -1;
-> +}
-> +
-> +
->   static void kms_dsc_exit_handler(int sig)
->   {
->   	restore_force_dsc_en();
-> +	restore_force_dsc_ycbcr420_en();
->   }
->   
->   static drmModeModeInfo *get_highres_mode(igt_output_t *output)
-> @@ -147,6 +185,20 @@ static drmModeModeInfo *get_highres_mode(igt_output_t *output)
->   	return highest_mode;
->   }
->   
-> +static drmModeModeInfo *get_next_mode(igt_output_t *output)
-> +{
-> +	drmModeConnector *connector = output->config.connector;
-> +	drmModeModeInfo *next_mode = NULL;
-> +
-> +	for (int i = count; i < connector->count_modes; i++) {
-> +		next_mode = &connector->modes[i];
-> +		count ++;
-> +		break;
-> +	}
-> +
-> +	return next_mode;
-> +}
-> +
->   static bool check_dsc_on_connector(data_t *data)
->   {
->   	igt_output_t *output = data->output;
-> @@ -167,6 +219,29 @@ static bool check_dsc_on_connector(data_t *data)
->   	return true;
->   }
->   
-> +static bool check_dsc_ycbcr420_on_connector(data_t *data)
-> +{
-> +	igt_output_t *output = data->output;
-> +
-> +	if (!igt_is_dsc_ycbcr420_supported(data->drm_fd, output->name)) {
-> +		igt_debug("DSC YCbCr420 not supported on connector %s\n",
-> +			  output->name);
-> +		return false;
-> +	}
-> +
-> +	return true;
-> +}
-> +
-> +/* YCbCr420 DSC is supported on disp ver 14+ */
-> +static bool check_ycbcr420_constraint(data_t *data, int flag)
-> +{
-> +	if (data->disp_ver >= 14 && flag)
-> +		return check_dsc_ycbcr420_on_connector(data);
-> +	else
-> +		return true;
-> +}
-> +
-> +
->   static bool check_big_joiner_pipe_constraint(data_t *data)
->   {
->   	igt_output_t *output = data->output;
-> @@ -226,69 +301,90 @@ static void test_cleanup(data_t *data)
->   static void update_display(data_t *data, enum dsc_test_type test_type,
->   			   unsigned int plane_format, int flag)
->   {
-> +	int ret;
->   	bool enabled;
->   	igt_plane_t *primary;
->   	drmModeModeInfo *mode;
-> +	bool test_complete = false;
->   	igt_output_t *output = data->output;
->   	igt_display_t *display = &data->display;
->   
-> -	/* sanitize the state before starting the subtest */
-> -	igt_display_reset(display);
-> -	igt_display_commit(display);
-> +	count = 0;
-> +	while (!test_complete) {
-
-This loop only makes sense for the case where we are trying to check DSC 
-with YCBCR420 for every mode.
-
-For the regular case, if the try-commit fails with highest mode for some 
-reason,  it will keep on looping because test_complete will never become 
-true.
+>   /* re-probe connectors and do a modeset with DSC */
+> -static void update_display(data_t *data, enum dsc_test_type test_type, unsigned int plane_format)
+> +static void update_display(data_t *data, enum dsc_test_type test_type,
+> +			   unsigned int plane_format, int flag)
 
 
-> +		/* sanitize the state before starting the subtest */
-> +		igt_display_reset(display);
-> +		igt_display_commit(display);
->   
-> -	igt_debug("DSC is supported on %s\n", data->output->name);
-> -	save_force_dsc_en(data);
-> -	force_dsc_enable(data);
-> +		igt_debug("DSC is supported on %s\n", data->output->name);
-> +		save_force_dsc_en(data);
-> +		force_dsc_enable(data);
->   
-> -	if (test_type == TEST_DSC_BPC) {
-> -		igt_debug("Trying to set input BPC to %d\n", data->input_bpc);
-> -		force_dsc_enable_bpc(data);
-> -	}
-> +		if (flag) {
-> +			igt_debug("DSC YCbCr420 is supported on %s\n", data->output->name);
-> +			save_force_dsc_ycbcr420_en(data);
-> +			force_dsc_ycbcr420_enable(data);
-> +		}
->   
-> -	igt_output_set_pipe(output, data->pipe);
-> +		if (test_type == TEST_DSC_BPC) {
-> +			igt_debug("Trying to set input BPC to %d\n", data->input_bpc);
-> +			force_dsc_enable_bpc(data);
-> +		}
->   
-> -	mode = get_highres_mode(output);
-> -	igt_require(mode != NULL);
-> -	igt_output_override_mode(output, mode);
-> +		igt_output_set_pipe(output, data->pipe);
->   
-> -	primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
-> +		if (flag)
-> +			mode = get_next_mode(output);
-> +		else
-> +			mode = get_highres_mode(output);
->   
-> -	igt_skip_on(!igt_plane_has_format_mod(primary, plane_format,
-> -		    DRM_FORMAT_MOD_LINEAR));
-> +		igt_require(mode != NULL);
-> +		igt_output_override_mode(output, mode);
->   
-> -	igt_create_pattern_fb(data->drm_fd,
-> -			      mode->hdisplay,
-> -			      mode->vdisplay,
-> -			      plane_format,
-> -			      DRM_FORMAT_MOD_LINEAR,
-> -			      &data->fb_test_pattern);
-> +		primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
->   
-> -	igt_plane_set_fb(primary, &data->fb_test_pattern);
-> -	igt_display_commit(display);
-> +		igt_skip_on(!igt_plane_has_format_mod(primary, plane_format,
-> +			    DRM_FORMAT_MOD_LINEAR));
->   
-> -	/* until we have CRC check support, manually check if RGB test
-> -	 * pattern has no corruption.
-> -	 */
-> -	manual("RGB test pattern without corruption");
-> +		igt_create_pattern_fb(data->drm_fd,
-> +				      mode->hdisplay,
-> +				      mode->vdisplay,
-> +				      plane_format,
-> +				      DRM_FORMAT_MOD_LINEAR,
-> +				      &data->fb_test_pattern);
->   
-> -	enabled = igt_is_dsc_enabled(data->drm_fd, output->name);
-> -	igt_info("Current mode is: %dx%d @%dHz -- DSC is: %s\n",
-> -				mode->hdisplay,
-> -				mode->vdisplay,
-> -				mode->vrefresh,
-> -				enabled ? "ON" : "OFF");
-> +		igt_plane_set_fb(primary, &data->fb_test_pattern);
-> +		ret = igt_display_try_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
-> +		if (ret != -EINVAL) {
-> +			igt_display_commit(display);
-> +			test_complete = true;
-> +		}
->   
-> -	restore_force_dsc_en();
-> -	igt_debug("Reset compression BPC\n");
-> -	data->input_bpc = 0;
-> -	force_dsc_enable_bpc(data);
-> +		/*
-> +		 * until we have CRC check support, manually check if RGB test
-> +		 * pattern has no corruption.
-> +		 */
-> +		manual("RGB test pattern without corruption");
-> +
-> +		enabled = igt_is_dsc_enabled(data->drm_fd, output->name);
-> +		igt_info("Current mode is: %dx%d @%dHz -- DSC is: %s\n",
-> +					mode->hdisplay,
-> +					mode->vdisplay,
-> +					mode->vrefresh,
-> +					enabled ? "ON" : "OFF");
-> +
-> +		restore_force_dsc_en();
-> +		if (flag)
-> +			restore_force_dsc_ycbcr420_en();
-> +		igt_debug("Reset compression BPC\n");
-> +		data->input_bpc = 0;
-> +		force_dsc_enable_bpc(data);
->   
-> -	igt_assert_f(enabled,
-> -		     "Default DSC enable failed on connector: %s pipe: %s\n",
-> -		     output->name,
-> -		     kmstest_pipe_name(data->pipe));
-> +		igt_assert_f(enabled,
-> +			     "Default DSC enable failed on connector: %s pipe: %s\n",
-> +			     output->name, kmstest_pipe_name(data->pipe));
+Flag here doesnt seem to have any meaning here. Perhaps use bool 
+test_dsc_ycbcr420.
 
+IMHO, If source and sink both support ycbcr420 then call test_dsc with 
+the flag set.
 
-This will fail when the try-commit fails, as enabled will be false. May 
-be check for DSC enabled only when test_complete is true.
+Or otherwise define a u8 test_flag, with each bit representing some test 
+configuration like DSC+Ycbcr420, DSC+Fractional etc and other future 
+uses perhaps.
 
-Also after the loop, assert for test_complete, if it fails, then the 
-test fails.
-
-
-
->   
-> -	test_cleanup(data);
-> +		test_cleanup(data);
-> +	}
->   }
->   
->   static void test_dsc(data_t *data, enum dsc_test_type test_type, int bpc,
-> @@ -307,6 +403,9 @@ static void test_dsc(data_t *data, enum dsc_test_type test_type, int bpc,
->   		if (!check_dsc_on_connector(data))
->   			continue;
->   
-> +		if (!check_ycbcr420_constraint(data, flag))
-> +			continue;
-> +
->   		if (!check_gen11_dp_constraint(data))
->   			continue;
->   
-> @@ -330,6 +429,9 @@ static void run_test(data_t *data, enum dsc_test_type test_type, int bpc,
->   		     unsigned int plane_format)
->   {
->   	test_dsc(data, test_type, bpc, plane_format, 0);
-> +
-> +	if (data->disp_ver >= 14)
-> +		test_dsc(data, test_type, bpc, plane_format, 1);
-
-
-The flag should be set, when we know that DSC YCBCR420 is supported by 
-source and sink.
-
-Instead of check_ycbcr420_constraint, use is_dsc_ycbcr420_supported, and 
-call the test_dsc with
-
-the dsc_ycbcr420 flag set.
+In that case too the bits of test flag should be set in run_test, based 
+on source+sink support.
 
 Regards,
 
 Ankit
 
 
+
+>   {
+>   	bool enabled;
+>   	igt_plane_t *primary;
+> @@ -290,7 +292,7 @@ static void update_display(data_t *data, enum dsc_test_type test_type, unsigned
 >   }
 >   
+>   static void test_dsc(data_t *data, enum dsc_test_type test_type, int bpc,
+> -		     unsigned int plane_format)
+> +		     unsigned int plane_format, int flag)
+>   {
+>   	igt_display_t *display = &data->display;
+>   	igt_output_t *output;
+> @@ -320,10 +322,16 @@ static void test_dsc(data_t *data, enum dsc_test_type test_type, int bpc,
+>   			snprintf(name, sizeof(name), "-%s", igt_format_str(plane_format));
+>   
+>   		igt_dynamic_f("pipe-%s-%s%s",  kmstest_pipe_name(data->pipe), data->output->name, name)
+> -			update_display(data, test_type, plane_format);
+> +			update_display(data, test_type, plane_format, flag);
+>   	}
+>   }
+>   
+> +static void run_test(data_t *data, enum dsc_test_type test_type, int bpc,
+> +		     unsigned int plane_format)
+> +{
+> +	test_dsc(data, test_type, bpc, plane_format, 0);
+> +}
+> +
 >   igt_main
+>   {
+>   	data_t data = {};
+> @@ -332,11 +340,12 @@ igt_main
+>   	igt_fixture {
+>   		data.drm_fd = drm_open_driver_master(DRIVER_INTEL);
+>   		data.devid = intel_get_drm_devid(data.drm_fd);
+> +		data.disp_ver = intel_display_ver(data.devid);
+>   		kmstest_set_vt_graphics_mode();
+>   		igt_install_exit_handler(kms_dsc_exit_handler);
+>   		igt_display_require(&data.display, data.drm_fd);
+>   		igt_display_require_output(&data.display);
+> -		igt_require(intel_display_ver(data.devid) >= 11);
+> +		igt_require(data.disp_ver >= 11);
+>   		data.n_pipes = 0;
+>   		for_each_pipe(&data.display, i)
+>   			data.n_pipes++;
+> @@ -346,14 +355,14 @@ igt_main
+>   		     "by a connector by forcing DSC on all connectors that support it "
+>   		     "with default parameters");
+>   	igt_subtest_with_dynamic("basic-dsc")
+> -			test_dsc(&data, TEST_DSC_BASIC, 0, DRM_FORMAT_XRGB8888);
+> +			run_test(&data, TEST_DSC_BASIC, 0, DRM_FORMAT_XRGB8888);
+>   
+>   	igt_describe("Tests basic display stream compression functionality if supported "
+>   		     "by a connector by forcing DSC on all connectors that support it "
+>   		     "with default parameters and creating fb with diff formats");
+>   	igt_subtest_with_dynamic("dsc-with-formats") {
+>   		for (int k = 0; k < ARRAY_SIZE(format_list); k++)
+> -			test_dsc(&data, TEST_DSC_BASIC, 0, format_list[k].format);
+> +			run_test(&data, TEST_DSC_BASIC, 0, format_list[k].format);
+>   	}
+>   
+>   	igt_describe("Tests basic display stream compression functionality if supported "
+> @@ -361,7 +370,7 @@ igt_main
+>   		     "with certain input BPC for the connector");
+>   	igt_subtest_with_dynamic("dsc-with-bpc") {
+>   		for (int j = 0; j < ARRAY_SIZE(bpc_list); j++)
+> -			test_dsc(&data, TEST_DSC_BPC, bpc_list[j], DRM_FORMAT_XRGB8888);
+> +			run_test(&data, TEST_DSC_BPC, bpc_list[j], DRM_FORMAT_XRGB8888);
+>   	}
+>   
+>   	igt_describe("Tests basic display stream compression functionality if supported "
+> @@ -370,7 +379,7 @@ igt_main
+>   	igt_subtest_with_dynamic("dsc-with-bpc-formats") {
+>   		for (int j = 0; j < ARRAY_SIZE(bpc_list); j++) {
+>   			for (int k = 0; k < ARRAY_SIZE(format_list); k++) {
+> -				test_dsc(&data, TEST_DSC_BPC, bpc_list[j], format_list[k].format);
+> +				run_test(&data, TEST_DSC_BPC, bpc_list[j], format_list[k].format);
+>   			}
+>   		}
+>   	}
