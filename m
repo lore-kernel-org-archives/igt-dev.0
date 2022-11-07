@@ -1,23 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1CE2D10E440
- for <igt-dev@lists.freedesktop.org>; Mon,  7 Nov 2022 16:45:06 +0000 (UTC)
-Date: Mon, 7 Nov 2022 18:45:08 +0200
-From: Petri Latvala <petri.latvala@intel.com>
-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org, Arkadiusz Hiler <arek@hiler.eu>
-Message-ID: <Y2k2FChmKEOlIvtr@platvala-desk.ger.corp.intel.com>
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A9A0710E467
+ for <igt-dev@lists.freedesktop.org>; Mon,  7 Nov 2022 16:45:31 +0000 (UTC)
+Date: Mon, 7 Nov 2022 17:45:26 +0100
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Message-ID: <Y2k2Ju/p+ZTBQ+Dz@kamilkon-desk1>
 References: <20221107120151.2365523-1-petri.latvala@intel.com>
- <20221107120151.2365523-2-petri.latvala@intel.com>
- <Y2kTMvaA0RlNt0Vz@kamilkon-desk1>
- <Y2kg8RILFo4EhmT0@platvala-desk.ger.corp.intel.com>
- <Y2k05vmtWe3l8zvN@kamilkon-desk1>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <Y2k05vmtWe3l8zvN@kamilkon-desk1>
-Subject: Re: [igt-dev] [PATCH i-g-t 2/6] igt_core: Split too long log lines
- when sending to runner with comms
+In-Reply-To: <20221107120151.2365523-1-petri.latvala@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 1/6] runner: Use a bigger buffer for
+ receiving test outputs
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,113 +20,101 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: Petri Latvala <petri.latvala@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Mon, Nov 07, 2022 at 05:40:06PM +0100, Kamil Konieczny wrote:
-> Hi Petri,
-> 
-> On 2022-11-07 at 17:14:57 +0200, Petri Latvala wrote:
-> > On Mon, Nov 07, 2022 at 03:16:18PM +0100, Kamil Konieczny wrote:
-> > > Hi Petri,
-> > > 
-> > > On 2022-11-07 at 14:01:47 +0200, Petri Latvala wrote:
-> > > > Especially with file dumps a single log packet could exceed the max
-> > > > size of a UNIX datagram. Split too long log chunks instead.
-> > > 
-> > > imho this is needed when you check packet size in other patch,
-> > > it's network layer decision to split or not packets, so on local
-> > > machine no split happens (well, I may be wrong here as I do not
-> > > know much about network communication). The other way around
-> > > would be to collect packet up to sended size.
-> > 
-> > With SOCK_STREAM, sure, but runnercomms is using SOCK_DGRAM. Datagram
-> > packets are full-or-nothing atomically.
-> > 
-> > 
-> 
-> Ah, ok, but then you risk getting your datagrams in out-of-order
-> and when you will fix this you reimplement stream. If it is to
-> be used on local machine maybe it should not happen.
+Hi Petri,
 
-AF_UNIX + SOCK_DGRAM guarantees same-order delivery.
-
--- 
-Petri Latvala
-
-
+On 2022-11-07 at 14:01:46 +0200, Petri Latvala wrote:
+> Stream-based receiving was able to use buffers of any size for read(),
+> but with datagrams we actually need to prepare for actual sizes. In
+> practice, some file dumps from tests come as single log packets of a
+> couple of kB.
 > 
-> Kamil
+> Signed-off-by: Petri Latvala <petri.latvala@intel.com>
+> Cc: Arkadiusz Hiler <arek@hiler.eu>
+> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> ---
+>  runner/executor.c | 14 ++++++++++----
+>  1 file changed, 10 insertions(+), 4 deletions(-)
 > 
-> > > 
-> > > > 
-> > > > Signed-off-by: Petri Latvala <petri.latvala@intel.com>
-> > > > Cc: Arkadiusz Hiler <arek@hiler.eu>
-> > > > Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> > > > ---
-> > > >  lib/igt_core.c | 19 ++++++++++++++++++-
-> > > >  1 file changed, 18 insertions(+), 1 deletion(-)
-> > > > 
-> > > > diff --git a/lib/igt_core.c b/lib/igt_core.c
-> > > > index 3941c528..d4bef161 100644
-> > > > --- a/lib/igt_core.c
-> > > > +++ b/lib/igt_core.c
-> > > > @@ -457,6 +457,23 @@ static void _igt_log_buffer_reset(void)
-> > > >  	pthread_mutex_unlock(&log_buffer_mutex);
-> > > >  }
-> > > >  
-> > > > +static void _log_to_runner_split(int stream, const char *str)
-> > > > +{
-> > > > +	size_t limit = 4096;
-> > > > +	char *buf;
-> > > > +
-> > > > +	if (strlen(str) > limit) {
-> > > > +		buf = calloc(limit + 1, 1);
-> > > > +		strncpy(buf, str, limit);
-> > > > +		send_to_runner(runnerpacket_log(stream, buf));
-> > > > +		free(buf);
-> > > > +
-> > > > +		_log_to_runner_split(stream, str + limit);
-> > > > +	} else {
-> > > > +		send_to_runner(runnerpacket_log(stream, str));
-> > > > +	}
-> > > > +}
-> > > > +
-> > > 
-> > > There are many places which calls send_to_runner, maybe it would
-> > > be better to split it there ?
-> > 
-> > That would complicate send_to_runner a bit too much to my
-> > taste. send_to_runner() is for all packet types, not just for log
-> > packets. It would have to check for packet type log, extract the data
-> > from that packet, and then create new ones...
-> > 
-> > > Or use _log_to_runner instead of send_to_runner ?
-> > > Btw a while loop would be better than recursive call.
-> > 
-> > Yeah, you're right. I'll change that to a while loop.
-> > 
-> > 
-> > -- 
-> > Petri Latvala
-> > 
-> > 
-> > > 
-> > > Kamil
-> > > 
-> > > >  __attribute__((format(printf, 2, 3)))
-> > > >  static void _log_line_fprintf(FILE* stream, const char *format, ...)
-> > > >  {
-> > > > @@ -467,7 +484,7 @@ static void _log_line_fprintf(FILE* stream, const char *format, ...)
-> > > >  
-> > > >  	if (runner_connected()) {
-> > > >  		vasprintf(&str, format, ap);
-> > > > -		send_to_runner(runnerpacket_log(fileno(stream), str));
-> > > > +		_log_to_runner_split(fileno(stream), str);
-> > > >  		free(str);
-> > > >  	} else {
-> > > >  		vfprintf(stream, format, ap);
-> > > > -- 
-> > > > 2.30.2
-> > > > 
+> diff --git a/runner/executor.c b/runner/executor.c
+> index a79a34e0..1fcc9afe 100644
+> --- a/runner/executor.c
+> +++ b/runner/executor.c
+> @@ -857,7 +857,8 @@ static int monitor_output(pid_t child,
+>  			  char **abortreason)
+>  {
+>  	fd_set set;
+> -	char buf[2048];
+> +	char *buf;
+> +	size_t bufsize;
+>  	char *outbuf = NULL;
+>  	size_t outbufsize = 0;
+>  	char current_subtest[256] = {};
+> @@ -910,6 +911,9 @@ static int monitor_output(pid_t child,
+>  		}
+>  	}
+>  
+> +	bufsize = 262144; /* 256 kiB */
+
+imho it is better to use define and also write this as 256*1024
+and put it in header.
+
+If you increase this size maybe you can drop splitting ?
+
+Kamil
+
+> +	buf = malloc(bufsize);
+> +
+>  	while (outfd >= 0 || errfd >= 0 || sigfd >= 0) {
+>  		const char *timeout_reason;
+>  		struct timeval tv = { .tv_sec = interval_length };
+> @@ -942,7 +946,7 @@ static int monitor_output(pid_t child,
+>  
+>  			time_last_activity = time_now;
+>  
+> -			s = read(outfd, buf, sizeof(buf));
+> +			s = read(outfd, buf, bufsize);
+>  			if (s <= 0) {
+>  				if (s < 0) {
+>  					errf("Error reading test's stdout: %m\n");
+> @@ -1037,7 +1041,7 @@ static int monitor_output(pid_t child,
+>  		if (errfd >= 0 && FD_ISSET(errfd, &set)) {
+>  			time_last_activity = time_now;
+>  
+> -			s = read(errfd, buf, sizeof(buf));
+> +			s = read(errfd, buf, bufsize);
+>  			if (s <= 0) {
+>  				if (s < 0) {
+>  					errf("Error reading test's stderr: %m\n");
+> @@ -1060,7 +1064,7 @@ static int monitor_output(pid_t child,
+>  
+>  			/* Fully drain everything */
+>  			while (true) {
+> -				s = recv(socketfd, buf, sizeof(buf), MSG_DONTWAIT);
+> +				s = recv(socketfd, buf, bufsize, MSG_DONTWAIT);
+>  
+>  				if (s < 0) {
+>  					if (errno == EAGAIN)
+> @@ -1394,6 +1398,7 @@ static int monitor_output(pid_t child,
+>  					fdatasync(outputs[_F_DMESG]);
+>  
+>  				close_watchdogs(settings);
+> +				free(buf);
+>  				free(outbuf);
+>  				close(outfd);
+>  				close(errfd);
+> @@ -1418,6 +1423,7 @@ static int monitor_output(pid_t child,
+>  	if (settings->sync)
+>  		fdatasync(outputs[_F_DMESG]);
+>  
+> +	free(buf);
+>  	free(outbuf);
+>  	close(outfd);
+>  	close(errfd);
+> -- 
+> 2.30.2
+> 
