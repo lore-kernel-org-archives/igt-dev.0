@@ -1,19 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E3EA110E44C
- for <igt-dev@lists.freedesktop.org>; Mon,  7 Nov 2022 16:16:09 +0000 (UTC)
-Date: Mon, 7 Nov 2022 17:16:05 +0100
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 52EB010E31A
+ for <igt-dev@lists.freedesktop.org>; Mon,  7 Nov 2022 14:16:22 +0000 (UTC)
+Date: Mon, 7 Nov 2022 15:16:18 +0100
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Message-ID: <Y2kvRWl0I/oPL3Ks@kamilkon-desk1>
+Message-ID: <Y2kTMvaA0RlNt0Vz@kamilkon-desk1>
 References: <20221107120151.2365523-1-petri.latvala@intel.com>
- <20221107120151.2365523-3-petri.latvala@intel.com>
+ <20221107120151.2365523-2-petri.latvala@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20221107120151.2365523-3-petri.latvala@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 3/6] runner: Continue using socket comms
- when getting an invalid packet
+In-Reply-To: <20221107120151.2365523-2-petri.latvala@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 2/6] igt_core: Split too long log lines
+ when sending to runner with comms
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,48 +26,71 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On 2022-11-07 at 14:01:48 +0200, Petri Latvala wrote:
-> If a packet of invalid size is received, inject a message in the dump,
-> override result to warn, and continue grabbing packets.
+Hi Petri,
+
+On 2022-11-07 at 14:01:47 +0200, Petri Latvala wrote:
+> Especially with file dumps a single log packet could exceed the max
+> size of a UNIX datagram. Split too long log chunks instead.
+
+imho this is needed when you check packet size in other patch,
+it's network layer decision to split or not packets, so on local
+machine no split happens (well, I may be wrong here as I do not
+know much about network communication). The other way around
+would be to collect packet up to sended size.
+
 > 
 > Signed-off-by: Petri Latvala <petri.latvala@intel.com>
 > Cc: Arkadiusz Hiler <arek@hiler.eu>
 > Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-
 > ---
->  runner/executor.c | 15 +++++++++++++--
->  1 file changed, 13 insertions(+), 2 deletions(-)
+>  lib/igt_core.c | 19 ++++++++++++++++++-
+>  1 file changed, 18 insertions(+), 1 deletion(-)
 > 
-> diff --git a/runner/executor.c b/runner/executor.c
-> index 1fcc9afe..c6389e25 100644
-> --- a/runner/executor.c
-> +++ b/runner/executor.c
-> @@ -1079,10 +1079,21 @@ static int monitor_output(pid_t child,
+> diff --git a/lib/igt_core.c b/lib/igt_core.c
+> index 3941c528..d4bef161 100644
+> --- a/lib/igt_core.c
+> +++ b/lib/igt_core.c
+> @@ -457,6 +457,23 @@ static void _igt_log_buffer_reset(void)
+>  	pthread_mutex_unlock(&log_buffer_mutex);
+>  }
 >  
->  				packet = (struct runnerpacket *)buf;
->  				if (s < sizeof(*packet) || s != packet->size) {
-> +					struct runnerpacket *message, *override;
+> +static void _log_to_runner_split(int stream, const char *str)
+> +{
+> +	size_t limit = 4096;
+> +	char *buf;
 > +
->  					errf("Socket communication error: Received %zd bytes, expected %zd\n",
->  					     s, s >= sizeof(packet->size) ? packet->size : sizeof(*packet));
-> -					close(socketfd);
-> -					socketfd = -1;
-> +					message = runnerpacket_log(STDOUT_FILENO,
-> +								   "\nrunner: Socket communication error, invalid packet size. "
-> +								   "Packet is discarded, test result and logs might be incorrect.\n");
-> +					write_packet_with_canary(outputs[_F_SOCKET], message, false);
-> +					free(message);
+> +	if (strlen(str) > limit) {
+> +		buf = calloc(limit + 1, 1);
+> +		strncpy(buf, str, limit);
+> +		send_to_runner(runnerpacket_log(stream, buf));
+> +		free(buf);
 > +
-> +					override = runnerpacket_resultoverride("warn");
-> +					write_packet_with_canary(outputs[_F_SOCKET], override, settings->sync);
-> +					free(override);
+> +		_log_to_runner_split(stream, str + limit);
+> +	} else {
+> +		send_to_runner(runnerpacket_log(stream, str));
+> +	}
+> +}
 > +
-> +					/* Continue using socket comms, hope for the best. */
->  					goto socket_end;
->  				}
+
+There are many places which calls send_to_runner, maybe it would
+be better to split it there ?
+Or use _log_to_runner instead of send_to_runner ?
+Btw a while loop would be better than recursive call.
+
+Kamil
+
+>  __attribute__((format(printf, 2, 3)))
+>  static void _log_line_fprintf(FILE* stream, const char *format, ...)
+>  {
+> @@ -467,7 +484,7 @@ static void _log_line_fprintf(FILE* stream, const char *format, ...)
 >  
+>  	if (runner_connected()) {
+>  		vasprintf(&str, format, ap);
+> -		send_to_runner(runnerpacket_log(fileno(stream), str));
+> +		_log_to_runner_split(fileno(stream), str);
+>  		free(str);
+>  	} else {
+>  		vfprintf(stream, format, ap);
 > -- 
 > 2.30.2
 > 
