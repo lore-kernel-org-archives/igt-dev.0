@@ -1,17 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5C67010E2B7
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A5D7310E2CA
  for <igt-dev@lists.freedesktop.org>; Mon,  7 Nov 2022 08:53:11 +0000 (UTC)
 From: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Mon,  7 Nov 2022 00:52:49 -0800
-Message-Id: <20221107085256.17293-7-niranjana.vishwanathapura@intel.com>
+Date: Mon,  7 Nov 2022 00:52:53 -0800
+Message-Id: <20221107085256.17293-11-niranjana.vishwanathapura@intel.com>
 In-Reply-To: <20221107085256.17293-1-niranjana.vishwanathapura@intel.com>
 References: <20221107085256.17293-1-niranjana.vishwanathapura@intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v6 06/13] lib/vm_bind: Add
- __prime_handle_to_fd()
+Subject: [igt-dev] [PATCH i-g-t v6 10/13] tests/i915/vm_bind: Add
+ gem_exec3_basic test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,190 +26,188 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Make __prime_handle_to_fd() as a library interface as VM_BIND
-functionality will also be using it.
+Port gem_exec_basic to a new gem_exec3_basic test which
+uses the newer execbuf3 ioctl.
 
-v2: Rename prime_handle_to_fd_no_assert() to __prime_handle_to_fd()
+v2: use i915_vm_bind library functions
 
 Reviewed-by: Matthew Auld <matthew.auld@intel.com>
 Signed-off-by: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
 ---
- lib/ioctl_wrappers.c    | 39 +++++++++++++++++++++++++++++++++------
- lib/ioctl_wrappers.h    |  1 +
- tests/i915/gem_pwrite.c | 16 +---------------
- tests/prime_mmap.c      | 26 ++++----------------------
- 4 files changed, 39 insertions(+), 43 deletions(-)
+ tests/i915/gem_exec3_basic.c          | 139 ++++++++++++++++++++++++++
+ tests/intel-ci/fast-feedback.testlist |   1 +
+ tests/meson.build                     |   1 +
+ 3 files changed, 141 insertions(+)
+ create mode 100644 tests/i915/gem_exec3_basic.c
 
-diff --git a/lib/ioctl_wrappers.c b/lib/ioctl_wrappers.c
-index ac37b6bb4..db9cbb724 100644
---- a/lib/ioctl_wrappers.c
-+++ b/lib/ioctl_wrappers.c
-@@ -1153,28 +1153,55 @@ void gem_require_mocs_registers(int fd)
- /* prime */
- 
- /**
-- * prime_handle_to_fd:
-+ * __prime_handle_to_fd:
-  * @fd: open i915 drm file descriptor
-  * @handle: file-private gem buffer object handle
-+ * @flags: DRM_IOCTL_PRIME_HANDLE_TO_FD ioctl flags
-+ * @fd_out: place holder for output file handle
-  *
-  * This wraps the PRIME_HANDLE_TO_FD ioctl, which is used to export a gem buffer
-  * object into a global (i.e. potentially cross-device) dma-buf file-descriptor
-  * handle.
-  *
-- * Returns: The created dma-buf fd handle.
-+ * Returns: 0 on success, error otherwise. Upon success, it returns
-+ *          the created dma-buf fd handle in fd_out.
-  */
--int prime_handle_to_fd(int fd, uint32_t handle)
-+int __prime_handle_to_fd(int fd, uint32_t handle, int flags, int *fd_out)
- {
- 	struct drm_prime_handle args;
-+	int ret;
- 
- 	memset(&args, 0, sizeof(args));
- 	args.handle = handle;
--	args.flags = DRM_CLOEXEC;
-+	args.flags = flags;
- 	args.fd = -1;
- 
--	do_ioctl(fd, DRM_IOCTL_PRIME_HANDLE_TO_FD, &args);
-+	ret = drmIoctl(fd, DRM_IOCTL_PRIME_HANDLE_TO_FD, &args);
-+	if (ret)
-+		ret = -errno;
-+	*fd_out = args.fd;
- 
--	return args.fd;
-+	return ret;
+diff --git a/tests/i915/gem_exec3_basic.c b/tests/i915/gem_exec3_basic.c
+new file mode 100644
+index 000000000..cbe712b75
+--- /dev/null
++++ b/tests/i915/gem_exec3_basic.c
+@@ -0,0 +1,139 @@
++// SPDX-License-Identifier: MIT
++/*
++ * Copyright © 2022 Intel Corporation
++ */
++
++/** @file gem_exec3_basic.c
++ *
++ * Basic execbuf3 test.
++ * Ported from gem_exec_basic and made to work with
++ * vm_bind and execbuf3.
++ *
++ */
++
++#include "i915/gem.h"
++#include "i915/i915_vm_bind.h"
++#include "igt.h"
++#include "igt_collection.h"
++#include "igt_syncobj.h"
++
++#include "i915/gem_create.h"
++#include "i915/gem_vm.h"
++
++IGT_TEST_DESCRIPTION("Basic sanity check of execbuf3-ioctl rings.");
++
++#define BATCH_VA	0xa0000000
++#define PAGE_SIZE	4096
++
++static uint64_t gettime_ns(void)
++{
++	struct timespec current;
++	clock_gettime(CLOCK_MONOTONIC, &current);
++	return (uint64_t)current.tv_sec * NSEC_PER_SEC + current.tv_nsec;
 +}
 +
-+/**
-+ * prime_handle_to_fd:
-+ * @fd: open i915 drm file descriptor
-+ * @handle: file-private gem buffer object handle
-+ *
-+ * This wraps the PRIME_HANDLE_TO_FD ioctl, which is used to export a gem buffer
-+ * object into a global (i.e. potentially cross-device) dma-buf file-descriptor
-+ * handle. It asserts that ioctl succeeds.
-+ *
-+ * Returns: The created dma-buf fd handle.
-+ */
-+int prime_handle_to_fd(int fd, uint32_t handle)
++static uint32_t batch_create(int fd, uint64_t *batch_size, uint32_t region)
 +{
-+	int dmabuf;
++	const uint32_t bbe = MI_BATCH_BUFFER_END;
++	uint32_t handle;
 +
-+	igt_assert_eq(__prime_handle_to_fd(fd, handle, DRM_CLOEXEC, &dmabuf), 0);
++	igt_assert(__gem_create_in_memory_regions(fd, &handle, batch_size, region) == 0);
++	gem_write(fd, handle, 0, &bbe, sizeof(bbe));
 +
-+	return dmabuf;
- }
- 
- /**
-diff --git a/lib/ioctl_wrappers.h b/lib/ioctl_wrappers.h
-index 223cd9160..66faa2755 100644
---- a/lib/ioctl_wrappers.h
-+++ b/lib/ioctl_wrappers.h
-@@ -143,6 +143,7 @@ struct local_dma_buf_sync {
- #define LOCAL_DMA_BUF_BASE 'b'
- #define LOCAL_DMA_BUF_IOCTL_SYNC _IOW(LOCAL_DMA_BUF_BASE, 0, struct local_dma_buf_sync)
- 
-+int __prime_handle_to_fd(int fd, uint32_t handle, int flags, int *fd_out);
- int prime_handle_to_fd(int fd, uint32_t handle);
- #ifndef DRM_RDWR
- #define DRM_RDWR O_RDWR
-diff --git a/tests/i915/gem_pwrite.c b/tests/i915/gem_pwrite.c
-index 6e3f833cd..f4fe069ca 100644
---- a/tests/i915/gem_pwrite.c
-+++ b/tests/i915/gem_pwrite.c
-@@ -293,19 +293,6 @@ struct ufd_thread {
- 	int err;
- };
- 
--static int __prime_handle_to_fd(int fd, uint32_t handle)
--{
--	struct drm_prime_handle args;
--
--	memset(&args, 0, sizeof(args));
--	args.handle = handle;
--	args.flags = DRM_CLOEXEC;
--	args.fd = -1;
--
--	ioctl(fd, DRM_IOCTL_PRIME_HANDLE_TO_FD, &args);
--	return args.fd;
--}
--
- static uint32_t dmabuf_create_handle(int i915, int vgem)
- {
- 	struct vgem_bo scratch;
-@@ -317,8 +304,7 @@ static uint32_t dmabuf_create_handle(int i915, int vgem)
- 	scratch.bpp = 32;
- 	vgem_create(vgem, &scratch);
- 
--	dmabuf = __prime_handle_to_fd(vgem, scratch.handle);
--	if (dmabuf < 0)
-+	if (__prime_handle_to_fd(vgem, scratch.handle, DRM_CLOEXEC, &dmabuf))
- 		return 0;
- 
- 	handle = prime_fd_to_handle(i915, dmabuf);
-diff --git a/tests/prime_mmap.c b/tests/prime_mmap.c
-index bc19f68c9..432e85763 100644
---- a/tests/prime_mmap.c
-+++ b/tests/prime_mmap.c
-@@ -298,24 +298,6 @@ test_dup(uint32_t region, uint64_t size)
- 	close (dma_buf_fd);
- }
- 
--/* Used for error case testing to avoid wrapper */
--static int prime_handle_to_fd_no_assert(uint32_t handle, int flags, int *fd_out)
--{
--	struct drm_prime_handle args;
--	int ret;
--
--	args.handle = handle;
--	args.flags = flags;
--	args.fd = -1;
--
--	ret = drmIoctl(fd, DRM_IOCTL_PRIME_HANDLE_TO_FD, &args);
--	if (ret)
--		ret = errno;
--	*fd_out = args.fd;
--
--	return ret;
--}
--
- static bool has_userptr(void)
- {
- 	uint32_t handle = 0;
-@@ -346,9 +328,9 @@ test_userptr(uint32_t region, uint64_t size)
- 	gem_userptr(fd, (uint32_t *)ptr, size, 0, 0, &handle);
- 
- 	/* export userptr */
--	ret = prime_handle_to_fd_no_assert(handle, DRM_CLOEXEC, &dma_buf_fd);
-+	ret = __prime_handle_to_fd(fd, handle, DRM_CLOEXEC, &dma_buf_fd);
- 	if (ret) {
--		igt_assert(ret == EINVAL || ret == ENODEV);
-+		igt_assert(ret == -EINVAL || ret == -ENODEV);
- 		goto free_userptr;
- 	} else {
- 		igt_assert_eq(ret, 0);
-@@ -376,7 +358,7 @@ test_errors(uint32_t region, uint64_t size)
- 	/* Test for invalid flags */
- 	igt_assert(__gem_create_in_memory_regions(fd, &handle, &size, region) == 0);
- 	for (i = 0; i < ARRAY_SIZE(invalid_flags); i++) {
--		prime_handle_to_fd_no_assert(handle, invalid_flags[i], &dma_buf_fd);
-+		__prime_handle_to_fd(fd, handle, invalid_flags[i], &dma_buf_fd);
- 		igt_assert_eq(errno, EINVAL);
- 		errno = 0;
- 	}
-@@ -386,7 +368,7 @@ test_errors(uint32_t region, uint64_t size)
- 	igt_assert(__gem_create_in_memory_regions(fd, &handle, &size, region) == 0);
- 	fill_bo(handle, size);
- 	gem_close(fd, handle);
--	prime_handle_to_fd_no_assert(handle, DRM_CLOEXEC, &dma_buf_fd);
-+	__prime_handle_to_fd(fd, handle, DRM_CLOEXEC, &dma_buf_fd);
- 	igt_assert(dma_buf_fd == -1 && errno == ENOENT);
- 	errno = 0;
- 
++	return handle;
++}
++
++igt_main
++{
++	const struct intel_execution_engine2 *e;
++	struct drm_i915_query_memory_regions *query_info;
++	struct igt_collection *regions, *set;
++	const intel_ctx_t *base_ctx, *ctx;
++	struct drm_i915_gem_context_param param = {
++		.param = I915_CONTEXT_PARAM_RECOVERABLE,
++		.value = 0,
++	};
++	uint32_t vm_id;
++	int fd = -1;
++
++	igt_fixture {
++		fd = drm_open_driver(DRIVER_INTEL);
++		base_ctx = intel_ctx_create_all_physical(fd);
++
++		igt_require_gem(fd);
++		igt_require(i915_vm_bind_version(fd) == 1);
++		igt_fork_hang_detector(fd);
++
++		vm_id = gem_vm_create_in_vm_bind_mode(fd);
++		ctx  = intel_ctx_create(fd, &base_ctx->cfg);
++		param.ctx_id = ctx->id;
++		gem_context_set_param(fd, &param);
++		gem_context_set_vm(fd, ctx->id, vm_id);
++
++		query_info = gem_get_query_memory_regions(fd);
++		igt_assert(query_info);
++
++		set = get_memory_region_set(query_info,
++					    I915_SYSTEM_MEMORY,
++					    I915_DEVICE_MEMORY);
++	}
++
++	igt_describe("Check basic functionality of GEM_EXECBUFFER3 ioctl on every"
++		     " ring and iterating over memory regions.");
++	igt_subtest_with_dynamic("basic") {
++		for_each_combination(regions, 1, set) {
++			struct drm_i915_gem_timeline_fence exec_fence[GEM_MAX_ENGINES][2] = { };
++			char *sub_name = memregion_dynamic_subtest_name(regions);
++			uint32_t region = igt_collection_get_value(regions, 0);
++			uint32_t bind_syncobj, exec_syncobj[GEM_MAX_ENGINES];
++			uint64_t fence_value[GEM_MAX_ENGINES] = { };
++			uint64_t batch_size = PAGE_SIZE;
++			uint32_t handle, idx = 0;
++
++			handle = batch_create(fd, &batch_size, region);
++			bind_syncobj = syncobj_create(fd, 0);
++			i915_vm_bind(fd, vm_id, BATCH_VA, handle, 0, batch_size, bind_syncobj, 0);
++
++			for_each_ctx_engine(fd, ctx, e) {
++				igt_dynamic_f("%s-%s", e->name, sub_name) {
++					struct drm_i915_gem_execbuffer3 execbuf = {
++						.ctx_id = ctx->id,
++						.batch_address = BATCH_VA,
++						.engine_idx = e->flags,
++						.fence_count = 2,
++						.timeline_fences = to_user_pointer(&exec_fence[idx]),
++					};
++
++					exec_syncobj[idx] = syncobj_create(fd, 0);
++					exec_fence[idx][0].handle = bind_syncobj;
++					exec_fence[idx][0].flags = I915_TIMELINE_FENCE_WAIT;
++					exec_fence[idx][1].handle = exec_syncobj[idx];
++					exec_fence[idx][1].flags = I915_TIMELINE_FENCE_SIGNAL;
++					idx++;
++
++					gem_execbuf3(fd, &execbuf);
++				}
++			}
++
++			igt_assert(syncobj_timeline_wait(fd, exec_syncobj, fence_value, idx,
++							 gettime_ns() + (2 * NSEC_PER_SEC),
++							 DRM_SYNCOBJ_WAIT_FLAGS_WAIT_FOR_SUBMIT, NULL));
++			while (idx)
++				syncobj_destroy(fd, exec_syncobj[--idx]);
++			syncobj_destroy(fd, bind_syncobj);
++			i915_vm_unbind(fd, vm_id, BATCH_VA, batch_size);
++			gem_close(fd, handle);
++			free(sub_name);
++		}
++	}
++
++	igt_fixture {
++		intel_ctx_destroy(fd, ctx);
++		gem_vm_destroy(fd, vm_id);
++		free(query_info);
++		igt_collection_destroy(set);
++		igt_stop_hang_detector();
++		intel_ctx_destroy(fd, base_ctx);
++		close(fd);
++	}
++}
+diff --git a/tests/intel-ci/fast-feedback.testlist b/tests/intel-ci/fast-feedback.testlist
+index bdfde4b78..8380834c1 100644
+--- a/tests/intel-ci/fast-feedback.testlist
++++ b/tests/intel-ci/fast-feedback.testlist
+@@ -28,6 +28,7 @@ igt@gem_exec_fence@nb-await
+ igt@gem_exec_gttfill@basic
+ igt@gem_exec_parallel@engines
+ igt@gem_exec_store@basic
++igt@gem_exec3_basic@basic
+ igt@gem_flink_basic@bad-flink
+ igt@gem_flink_basic@bad-open
+ igt@gem_flink_basic@basic
+diff --git a/tests/meson.build b/tests/meson.build
+index 63404e491..915f67857 100644
+--- a/tests/meson.build
++++ b/tests/meson.build
+@@ -148,6 +148,7 @@ i915_progs = [
+ 	'gem_exec_store',
+ 	'gem_exec_suspend',
+ 	'gem_exec_whisper',
++	'gem_exec3_basic',
+ 	'gem_fd_exhaustion',
+ 	'gem_fence_thrash',
+ 	'gem_fence_upload',
 -- 
 2.21.0.rc0.32.g243a4c7e27
