@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8A12310E2E6
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C260310E2EA
  for <igt-dev@lists.freedesktop.org>; Mon,  7 Nov 2022 08:53:11 +0000 (UTC)
 From: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Mon,  7 Nov 2022 00:52:51 -0800
-Message-Id: <20221107085256.17293-9-niranjana.vishwanathapura@intel.com>
+Date: Mon,  7 Nov 2022 00:52:55 -0800
+Message-Id: <20221107085256.17293-13-niranjana.vishwanathapura@intel.com>
 In-Reply-To: <20221107085256.17293-1-niranjana.vishwanathapura@intel.com>
 References: <20221107085256.17293-1-niranjana.vishwanathapura@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v6 08/13] tests/i915/vm_bind: Add basic
- VM_BIND test support
+Subject: [igt-dev] [PATCH i-g-t v6 12/13] tests/i915/vm_bind: Add
+ gem_lmem_swapping@vm_bind sub test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,621 +26,251 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add basic tests for VM_BIND functionality. Bind the buffer objects in
-device page table with VM_BIND calls and have GPU copy the data from a
-source buffer object to destination buffer object.
-Test for different buffer sizes, buffer object placement and with
-multiple contexts.
+Validate eviction of objects with persistent mappings and
+check persistent mappings are properly rebound upon subsequent
+execbuf3 call.
 
-v2: Add basic test to fast-feedback.testlist
-v3: Run all tests for different memory types,
-    pass VA instead of an array for batch_address
-v4: Iterate for memory region types instead of hardcoding,
-    use i915_vm_bind library functions
-v5: Validate synchronous vm_bind, require blt engine,
-    use mr->gtt_alignment instead of HAS_64K_PAGES,
-    change info to debug messages, remove igt_collection usage,
-    fix dg2 alignment issue
-v6: Port as per uapi reserved field changes
+TODO: Add a new swapping test with just vm_bind mode
+      (without legacy execbuf).
+
+v2: use i915_vm_bind library functions
+v3: fix dg2 alignment issue
 
 Reviewed-by: Matthew Auld <matthew.auld@intel.com>
 Signed-off-by: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
 ---
- tests/i915/i915_vm_bind_basic.c       | 560 ++++++++++++++++++++++++++
- tests/intel-ci/fast-feedback.testlist |   1 +
- tests/meson.build                     |   1 +
- 3 files changed, 562 insertions(+)
- create mode 100644 tests/i915/i915_vm_bind_basic.c
+ tests/i915/gem_lmem_swapping.c | 134 ++++++++++++++++++++++++++++++++-
+ 1 file changed, 133 insertions(+), 1 deletion(-)
 
-diff --git a/tests/i915/i915_vm_bind_basic.c b/tests/i915/i915_vm_bind_basic.c
-new file mode 100644
-index 000000000..3b29301a0
---- /dev/null
-+++ b/tests/i915/i915_vm_bind_basic.c
-@@ -0,0 +1,560 @@
-+// SPDX-License-Identifier: MIT
-+/*
-+ * Copyright © 2022 Intel Corporation
-+ */
+diff --git a/tests/i915/gem_lmem_swapping.c b/tests/i915/gem_lmem_swapping.c
+index cccdb3195..a9e2c5067 100644
+--- a/tests/i915/gem_lmem_swapping.c
++++ b/tests/i915/gem_lmem_swapping.c
+@@ -3,12 +3,16 @@
+  * Copyright © 2021 Intel Corporation
+  */
+ 
++#include <poll.h>
 +
-+/** @file i915_vm_bind_basic.c
-+ *
-+ * This is the basic test for VM_BIND functionality.
-+ *
-+ * The goal is to ensure that basics work.
-+ */
-+
-+#include <sys/poll.h>
-+
-+#include "i915/gem.h"
+ #include "i915/gem.h"
+ #include "i915/gem_create.h"
+ #include "i915/gem_vm.h"
+ #include "i915/intel_memory_region.h"
 +#include "i915/i915_vm_bind.h"
-+#include "igt.h"
+ #include "igt.h"
+ #include "igt_kmod.h"
 +#include "igt_syncobj.h"
-+#include <unistd.h>
-+#include <stdlib.h>
-+#include <stdint.h>
-+#include <stdio.h>
-+#include <string.h>
-+#include <fcntl.h>
-+#include <inttypes.h>
-+#include <errno.h>
-+#include <sys/stat.h>
-+#include <sys/ioctl.h>
-+#include "drm.h"
-+#include "i915/gem_vm.h"
+ #include <unistd.h>
+ #include <stdlib.h>
+ #include <stdint.h>
+@@ -54,6 +58,7 @@ struct params {
+ 		uint64_t max;
+ 	} size;
+ 	unsigned int count;
++	unsigned int vm_bind_count;
+ 	unsigned int loops;
+ 	unsigned int mem_limit;
+ #define TEST_VERIFY	(1 << 0)
+@@ -64,15 +69,18 @@ struct params {
+ #define TEST_MULTI	(1 << 5)
+ #define TEST_CCS	(1 << 6)
+ #define TEST_MASSIVE	(1 << 7)
++#define TEST_VM_BIND	(1 << 8)
+ 	unsigned int flags;
+ 	unsigned int seed;
+ 	bool oom_test;
++	uint64_t va;
+ };
+ 
+ struct object {
+ 	uint64_t size;
+ 	uint32_t seed;
+ 	uint32_t handle;
++	uint64_t va;
+ 	struct blt_copy_object *blt_obj;
+ };
+ 
+@@ -278,6 +286,86 @@ verify_object_ccs(int i915, const struct object *obj,
+ 	free(cmd);
+ }
+ 
++#define BATCH_VA       0xa00000
 +
-+IGT_TEST_DESCRIPTION("Basic test for vm_bind functionality");
-+
-+#define PAGE_SIZE   4096
-+#define PAGE_SHIFT  12
-+
-+#define GEN9_XY_FAST_COPY_BLT_CMD       (2 << 29 | 0x42 << 22)
-+#define BLT_DEPTH_32                    (3 << 24)
-+
-+#define DEFAULT_BUFF_SIZE  (4 * PAGE_SIZE)
-+#define SZ_64K             (16 * PAGE_SIZE)
-+#define SZ_2M              (512 * PAGE_SIZE)
-+
-+#define MAX_CTXTS   2
-+#define MAX_CMDS    4
-+
-+#define EXEC_FENCE   0
-+#define BATCH_FENCE  1
-+#define SRC_FENCE    2
-+#define DST_FENCE    3
-+#define NUM_FENCES   4
-+
-+enum {
-+	BATCH_MAP,
-+	SRC_MAP,
-+	DST_MAP = SRC_MAP + MAX_CMDS,
-+	MAX_MAP
-+};
-+
-+struct mapping {
-+	uint32_t  obj;
-+	uint64_t  va;
-+	uint64_t  offset;
-+	uint64_t  length;
-+	uint64_t  flags;
-+};
-+
-+#define SET_MAP(map, _obj, _va, _offset, _length)   \
-+{                                  \
-+	(map).obj = _obj;          \
-+	(map).va = _va;            \
-+	(map).offset = _offset;	   \
-+	(map).length = _length;	   \
-+}
-+
-+#define MAX_BATCH_DWORD    64
-+
-+#define abs(x) ((x) >= 0 ? (x) : -(x))
-+
-+#define TEST_SKIP_UNBIND      BIT(0)
-+#define TEST_SHARE_VM         BIT(1)
-+#define TEST_SYNC_BIND        BIT(2)
-+
-+#define do_unbind(cfg)      (!((cfg)->flags & TEST_SKIP_UNBIND))
-+#define do_share_vm(cfg)    ((cfg)->flags & TEST_SHARE_VM)
-+#define do_sync_bind(cfg)   ((cfg)->flags & TEST_SYNC_BIND)
-+
-+struct test_cfg {
-+	const char *name;
-+	uint32_t size;
-+	uint8_t num_cmds;
-+	uint32_t num_ctxts;
-+	uint32_t flags;
-+};
-+
-+static uint64_t
-+gettime_ns(void)
++static uint64_t gettime_ns(void)
 +{
 +	struct timespec current;
 +	clock_gettime(CLOCK_MONOTONIC, &current);
 +	return (uint64_t)current.tv_sec * NSEC_PER_SEC + current.tv_nsec;
 +}
 +
-+static bool syncobj_busy(int fd, uint32_t handle)
++static void vm_bind(int i915, struct object *list, unsigned int num, uint64_t *va,
++		    uint32_t batch, uint64_t batch_size, uint32_t vm_id)
 +{
-+	bool result;
-+	int sf;
++	uint32_t *bind_syncobj;
++	uint64_t *fence_value;
++	unsigned int i;
 +
-+	sf = syncobj_handle_to_fd(fd, handle,
-+				  DRM_SYNCOBJ_HANDLE_TO_FD_FLAGS_EXPORT_SYNC_FILE);
-+	result = poll(&(struct pollfd){sf, POLLIN}, 1, 0) == 0;
-+	close(sf);
++	bind_syncobj = calloc(num + 1, sizeof(*bind_syncobj));
++	igt_assert(bind_syncobj);
 +
-+	return result;
-+}
++	fence_value = calloc(num + 1, sizeof(*fence_value));
++	igt_assert(fence_value);
 +
-+static inline void vm_bind(int fd, uint32_t vm_id, struct mapping *m,
-+			   struct drm_i915_gem_timeline_fence *fence)
-+{
-+	uint32_t syncobj = 0;
-+
-+	if (fence) {
-+		syncobj = syncobj_create(fd, 0);
-+
-+		fence->handle = syncobj;
-+		fence->flags = I915_TIMELINE_FENCE_WAIT;
-+		fence->value = 0;
++	for (i = 0; i < num; i++) {
++		list[i].va = *va;
++		bind_syncobj[i] = syncobj_create(i915, 0);
++		i915_vm_bind(i915, vm_id, *va, list[i].handle, 0, list[i].size, bind_syncobj[i], 0);
++		*va += list[i].size;
 +	}
++	bind_syncobj[i] = syncobj_create(i915, 0);
++	i915_vm_bind(i915, vm_id, BATCH_VA, batch, 0, batch_size, bind_syncobj[i], 0);
 +
-+	igt_debug("VM_BIND vm:0x%x h:0x%x v:0x%lx o:0x%lx l:0x%lx\n",
-+		  vm_id, m->obj, m->va, m->offset, m->length);
-+	i915_vm_bind(fd, vm_id, m->va, m->obj, m->offset, m->length, syncobj, 0);
++	igt_assert(syncobj_timeline_wait(i915, bind_syncobj, fence_value, num + 1,
++					 gettime_ns() + (2 * NSEC_PER_SEC),
++					 DRM_SYNCOBJ_WAIT_FLAGS_WAIT_FOR_SUBMIT, NULL));
++	for (i = 0; i <= num; i++)
++		syncobj_destroy(i915, bind_syncobj[i]);
 +}
 +
-+static inline void vm_unbind(int fd, uint32_t vm_id, struct mapping *m)
++static void vm_unbind(int i915, struct object *list, unsigned int num,
++		      uint64_t batch_size, uint32_t vm_id)
 +{
-+	/* Object handle is not required during unbind */
-+	igt_debug("VM_UNBIND vm:0x%x v:0x%lx l:0x%lx\n", vm_id, m->va, m->length);
-+	i915_vm_unbind(fd, vm_id, m->va, m->length);
++	unsigned int i;
++
++	i915_vm_unbind(i915, vm_id, BATCH_VA, batch_size);
++	for (i = 0; i < num; i++)
++		i915_vm_unbind(i915, vm_id, list[i].va, list[i].size);
 +}
 +
-+static void debug_dump_buffer(void *buf, uint32_t size,
-+			      const char *str, bool full)
++static void move_to_lmem_execbuf3(int i915,
++				  const intel_ctx_t *ctx,
++				  unsigned int engine,
++				  bool do_oom_test)
 +{
-+	uint32_t i = 0;
++	uint32_t exec_syncobj = syncobj_create(i915, 0);
++	struct drm_i915_gem_timeline_fence exec_fence = {
++		.handle = exec_syncobj,
++		.flags = I915_TIMELINE_FENCE_SIGNAL
++	};
++	struct drm_i915_gem_execbuffer3 eb = {
++		.ctx_id = ctx->id,
++		.batch_address = BATCH_VA,
++		.engine_idx = engine,
++		.fence_count = 1,
++		.timeline_fences = to_user_pointer(&exec_fence),
++	};
++	uint64_t fence_value = 0;
++	int ret;
 +
-+	igt_debug("Printing %s size 0x%x\n", str, size);
-+	while (i < size) {
-+		uint32_t *b = buf + i;
++retry:
++	ret = __gem_execbuf3(i915, &eb);
++	if (do_oom_test && (ret == -ENOMEM || ret == -ENXIO))
++		goto retry;
++	igt_assert_eq(ret, 0);
 +
-+		igt_debug("\t%s[0x%04x]: 0x%08x 0x%08x 0x%08x 0x%08x %s\n",
-+			  str, i, b[0], b[1], b[2], b[3], full ? "" : "...");
-+		i += full ? 16 : PAGE_SIZE;
-+	}
++	igt_assert(syncobj_timeline_wait(i915, &exec_syncobj, &fence_value, 1,
++					 gettime_ns() + (2 * NSEC_PER_SEC),
++					 DRM_SYNCOBJ_WAIT_FLAGS_WAIT_FOR_SUBMIT, NULL));
++	syncobj_destroy(i915, exec_syncobj);
 +}
 +
-+static int gem_linear_fast_blt(uint32_t *batch, uint64_t src,
-+			       uint64_t dst, uint32_t size)
-+{
-+	uint32_t *cmd = batch;
-+
-+	*cmd++ = GEN9_XY_FAST_COPY_BLT_CMD | (10 - 2);
-+	*cmd++ = BLT_DEPTH_32 | PAGE_SIZE;
-+	*cmd++ = 0;
-+	*cmd++ = size >> PAGE_SHIFT << 16 | PAGE_SIZE / 4;
-+	*cmd++ = lower_32_bits(dst);
-+	*cmd++ = upper_32_bits(dst);
-+	*cmd++ = 0;
-+	*cmd++ = PAGE_SIZE;
-+	*cmd++ = lower_32_bits(src);
-+	*cmd++ = upper_32_bits(src);
-+
-+	*cmd++ = MI_BATCH_BUFFER_END;
-+	*cmd++ = 0;
-+
-+	return ALIGN((cmd - batch + 1) * sizeof(uint32_t), 8);
-+}
-+
-+static void __gem_copy(int fd, uint64_t src, uint64_t dst, uint32_t size,
-+		       uint32_t ctx_id, void *batch_addr, unsigned int eb_flags,
-+		       struct drm_i915_gem_timeline_fence *fence,
-+		       uint64_t fence_count)
-+{
-+	uint32_t len, buf[MAX_BATCH_DWORD] = { 0 };
-+	struct drm_i915_gem_execbuffer3 execbuf;
-+
-+	len = gem_linear_fast_blt(buf, src, dst, size);
-+
-+	memcpy(batch_addr, (void *)buf, len);
-+	debug_dump_buffer(buf, len, "batch", true);
-+
-+	memset(&execbuf, 0, sizeof(execbuf));
-+	execbuf.ctx_id = ctx_id;
-+	execbuf.batch_address = to_user_pointer(batch_addr);
-+	execbuf.engine_idx = eb_flags;
-+	execbuf.fence_count = fence_count;
-+	execbuf.timeline_fences = to_user_pointer(fence);
-+	gem_execbuf3(fd, &execbuf);
-+}
-+
-+static void i915_gem_copy(int fd, uint64_t src, uint64_t dst, uint32_t va_delta,
-+			  uint32_t delta, uint32_t size, const intel_ctx_t **ctx,
-+			  uint32_t num_ctxts, void **batch_addr, unsigned int eb_flags,
-+			  struct drm_i915_gem_timeline_fence (*fence)[NUM_FENCES],
-+			  uint64_t fence_count)
-+{
-+	uint32_t i;
-+
-+	for (i = 0; i < num_ctxts; i++) {
-+		igt_debug("Issuing gem copy on ctx 0x%x\n", ctx[i]->id);
-+		__gem_copy(fd, src + (i * va_delta), dst + (i * va_delta), delta,
-+			   ctx[i]->id, batch_addr[i], eb_flags, fence[i],  fence_count);
-+	}
-+}
-+
-+static void i915_gem_sync(int fd, const intel_ctx_t **ctx, uint32_t num_ctxts,
-+			  struct drm_i915_gem_timeline_fence (*fence)[NUM_FENCES])
-+{
-+	uint32_t i;
-+
-+	for (i = 0; i < num_ctxts; i++) {
-+		uint64_t fence_value = 0;
-+
-+		igt_assert(syncobj_timeline_wait(fd, &fence[i][EXEC_FENCE].handle,
-+						 (uint64_t *)&fence_value, 1,
-+						 gettime_ns() + (2 * NSEC_PER_SEC),
-+						 DRM_SYNCOBJ_WAIT_FLAGS_WAIT_FOR_SUBMIT, NULL));
-+		igt_assert(!syncobj_busy(fd, fence[i][EXEC_FENCE].handle));
-+		igt_debug("gem copy completed on ctx 0x%x\n", ctx[i]->id);
-+	}
-+}
-+
-+static uint32_t create_obj(int fd, struct gem_memory_region *mr, uint32_t size, void **addr)
-+{
-+	uint32_t handle;
-+
-+	handle = gem_create_in_memory_region_list(fd, size, 0, &mr->ci, 1);
-+	*addr = gem_mmap__cpu(fd, handle, 0, size, PROT_WRITE);
-+
-+	return handle;
-+}
-+
-+static void destroy_obj(int fd, uint32_t handle, uint32_t size, void *addr)
-+{
-+	igt_assert(gem_munmap(addr, size) == 0);
-+	gem_close(fd, handle);
-+}
-+
-+static void create_src_objs(int fd, struct gem_memory_region *mr, uint32_t src[],
-+			    uint32_t size, uint32_t num_cmds, void *src_addr[])
-+{
-+	int i = 0;
-+
-+	if (!num_cmds)
-+		return;
-+
-+	/* Create first src object always in memory region 'mr' */
-+	src[i] = create_obj(fd, mr, size, &src_addr[i]);
-+	igt_debug("Src (%s) obj 0x%x created\n", mr->name, src[i]);
-+	num_cmds--;
-+	i++;
-+
-+	if (!num_cmds)
-+		return;
-+
-+	/* Create one src object in all other memory regions */
-+	for_each_memory_region(r, fd) {
-+		if (mr &&
-+		    r->ci.memory_class == mr->ci.memory_class &&
-+		    r->ci.memory_instance == mr->ci.memory_instance)
-+			continue;
-+
-+		src[i] = create_obj(fd, r, size, &src_addr[i]);
-+		igt_debug("Src (%s) obj 0x%x created\n", r->name, src[i]);
-+		num_cmds--;
-+		i++;
-+	}
-+
-+	/* Create rest of the src objects in memory region 'mr' */
-+	while (num_cmds) {
-+		src[i] = create_obj(fd, mr, size, &src_addr[i]);
-+		igt_debug("Src (%s) obj 0x%x created\n", mr->name, src[i]);
-+		num_cmds--;
-+		i++;
-+	}
-+}
-+
-+static void destroy_src_objs(int fd, struct gem_memory_region *mr, uint32_t src[],
-+			     uint32_t size, uint32_t num_cmds, void *src_addr[])
-+{
-+	int i;
-+
-+	for (i = 0; i < num_cmds; i++) {
-+		igt_debug("Closing src object 0x%x\n", src[i]);
-+		destroy_obj(fd, src[i], size, src_addr[i]);
-+	}
-+}
-+
-+static uint32_t create_dst_obj(int fd, struct gem_memory_region *mr, uint32_t size, void **dst_addr)
-+{
-+	uint32_t dst = create_obj(fd, mr, size, dst_addr);
-+
-+	igt_debug("Dst (%s) obj 0x%x created\n", mr->name, dst);
-+	return dst;
-+}
-+
-+static void destroy_dst_obj(int fd, struct gem_memory_region *mr, uint32_t dst,
-+			    uint32_t size, void *dst_addr)
-+{
-+	igt_debug("Closing dst object 0x%x\n", dst);
-+	destroy_obj(fd, dst, size, dst_addr);
-+}
-+
-+static void pattern_fill_buf(void *src_addr[], uint32_t size, uint32_t num_cmds, uint32_t npages)
-+{
-+	uint32_t i, j;
-+	void *buf;
-+
-+	/* Allocate buffer and fill pattern */
-+	buf = malloc(size);
-+	igt_require(buf);
-+
-+	for (i = 0; i < num_cmds; i++) {
-+		for (j = 0; j < npages; j++)
-+			memset(buf + j * PAGE_SIZE, i * npages + j + 1, PAGE_SIZE);
-+
-+		memcpy(src_addr[i], buf, size);
-+	}
-+
-+	free(buf);
-+}
-+
-+static void run_test(int fd, const intel_ctx_t *base_ctx, struct test_cfg *cfg,
-+		     struct gem_memory_region *mr, uint32_t alignment,
-+		     const struct intel_execution_engine2 *e)
-+{
-+	struct drm_i915_gem_timeline_fence exec_fence[MAX_CTXTS][NUM_FENCES] = { };
-+	void *src_addr[MAX_CMDS] = { 0 }, *dst_addr = NULL;
-+	uint32_t src[MAX_CMDS], dst, i, size = cfg->size;
-+	uint32_t shared_vm_id, vm_id[MAX_CTXTS];
-+	struct mapping map[MAX_CTXTS][MAX_MAP];
-+	uint32_t num_ctxts = cfg->num_ctxts;
-+	uint32_t num_cmds = cfg->num_cmds;
-+	uint32_t npages = size / PAGE_SIZE;
-+	const intel_ctx_t *ctx[MAX_CTXTS];
-+	uint64_t src_va, dst_va, ahnd = 0;
-+	bool share_vm = do_share_vm(cfg);
-+	uint32_t delta, va_delta = SZ_2M;
-+	void *batch_addr[MAX_CTXTS];
-+	uint32_t batch[MAX_CTXTS];
-+
-+	delta = size / num_ctxts;
-+	if (share_vm)
-+		shared_vm_id = gem_vm_create_in_vm_bind_mode(fd);
-+
-+	/* Create contexts */
-+	num_ctxts = min_t(num_ctxts, MAX_CTXTS, num_ctxts);
-+	for (i = 0; i < num_ctxts; i++) {
+ static void move_to_lmem(int i915,
+ 			 const intel_ctx_t *ctx,
+ 			 struct object *list,
+@@ -325,14 +413,16 @@ static void __do_evict(int i915,
+ 	uint32_t region_id = INTEL_MEMORY_REGION_ID(region->memory_class,
+ 						    region->memory_instance);
+ 	const unsigned int max_swap_in = params->count / 100 + 1;
++	uint64_t size, ahnd, batch_size = SZ_64K;
+ 	struct object *objects, *obj, *list;
+ 	const uint32_t bpp = 32;
+ 	uint32_t width, height, stride;
++	const intel_ctx_t *vm_bind_ctx;
+ 	const intel_ctx_t *blt_ctx;
+ 	struct blt_copy_object *tmp;
+ 	unsigned int engine = 0;
++	uint32_t batch, vm_id;
+ 	unsigned int i, l;
+-	uint64_t size, ahnd;
+ 	struct timespec t = {};
+ 	unsigned int num;
+ 
+@@ -416,6 +506,26 @@ static void __do_evict(int i915,
+ 		  readable_size(params->size.max), readable_unit(params->size.max),
+ 		  params->count, seed);
+ 
++	/* VM_BIND the specified subset of objects (as persistent mappings) */
++	if (params->flags & TEST_VM_BIND) {
++		const uint32_t bbe = MI_BATCH_BUFFER_END;
 +		struct drm_i915_gem_context_param param = {
 +			.param = I915_CONTEXT_PARAM_RECOVERABLE,
 +			.value = 0,
 +		};
-+		uint32_t vmid;
 +
-+		if (share_vm)
-+			vmid = shared_vm_id;
-+		else
-+			vmid = gem_vm_create_in_vm_bind_mode(fd);
++		batch = gem_create_from_pool(i915, &batch_size, region_id);
++		gem_write(i915, batch, 0, &bbe, sizeof(bbe));
 +
-+		ctx[i] = intel_ctx_create(fd, &base_ctx->cfg);
-+		param.ctx_id = ctx[i]->id;
-+		gem_context_set_param(fd, &param);
-+		gem_context_set_vm(fd, ctx[i]->id, vmid);
-+		vm_id[i] = gem_context_get_vm(fd, ctx[i]->id);
-+
-+		exec_fence[i][EXEC_FENCE].handle = syncobj_create(fd, 0);
-+		exec_fence[i][EXEC_FENCE].flags = I915_TIMELINE_FENCE_SIGNAL;
-+		exec_fence[i][EXEC_FENCE].value = 0;
++		vm_id = gem_vm_create_in_vm_bind_mode(i915);
++		vm_bind_ctx = intel_ctx_create(i915, &ctx->cfg);
++		param.ctx_id = vm_bind_ctx->id;
++		gem_context_set_param(i915, &param);
++		gem_context_set_vm(i915, vm_bind_ctx->id, vm_id);
++		vm_bind(i915, objects, params->vm_bind_count, &params->va,
++			batch, batch_size, vm_id);
 +	}
 +
-+	/* Create objects */
-+	num_cmds = min_t(num_cmds, MAX_CMDS, num_cmds);
-+	create_src_objs(fd, mr, src, size, num_cmds, src_addr);
-+	dst = create_dst_obj(fd, mr, size, &dst_addr);
+ 	/*
+ 	 * Move random objects back into lmem.
+ 	 * For TEST_MULTI runs, make each object counts a loop to
+@@ -454,6 +564,15 @@ static void __do_evict(int i915,
+ 		}
+ 	}
+ 
++	/* Rebind persistent mappings to ensure they are swapped back in */
++	if (params->flags & TEST_VM_BIND) {
++		move_to_lmem_execbuf3(i915, vm_bind_ctx, engine, params->oom_test);
 +
++		vm_unbind(i915, objects, params->vm_bind_count, batch_size, vm_id);
++		intel_ctx_destroy(i915, vm_bind_ctx);
++		gem_vm_destroy(i915, vm_id);
++	}
++
+ 	for (i = 0; i < params->count; i++) {
+ 		gem_close(i915, objects[i].handle);
+ 		free(objects[i].blt_obj);
+@@ -553,6 +672,15 @@ static void fill_params(int i915, struct params *params,
+ 	if (flags & TEST_HEAVY)
+ 		params->loops = params->loops / 2 + 1;
+ 
 +	/*
-+	 * mmap'ed addresses are PAGE_SIZE aligned. On platforms requiring
-+	 * other alignment, use static addresses.
++	 * Set vm_bind_count and ensure it doesn't over-subscribe LMEM.
++	 * Set va range to ensure it is big enough for all bindings in a VM.
 +	 */
-+	if (num_cmds && (alignment == PAGE_SIZE)) {
-+		src_va = to_user_pointer(src_addr[0]);
-+		dst_va = to_user_pointer(dst_addr);
-+	} else {
-+		ahnd = intel_allocator_open_full(fd, 1, 0, 0,
-+						 INTEL_ALLOCATOR_RANDOM,
-+						 ALLOC_STRATEGY_HIGH_TO_LOW,
-+						 alignment);
-+		dst_va = CANONICAL(get_offset(ahnd, dst, size, 0));
-+		if (num_cmds)
-+			src_va = CANONICAL(get_offset(ahnd, src[0], size * num_cmds, 0));
++	if (flags & TEST_VM_BIND) {
++		params->vm_bind_count = params->count / 3;
++		params->va = (uint64_t)params->vm_bind_count * size * 4;
 +	}
 +
-+	pattern_fill_buf(src_addr, size, num_cmds, npages);
+ 	params->flags = flags;
+ 	params->oom_test = do_oom_test;
+ 
+@@ -583,6 +711,9 @@ static void test_evict(int i915,
+ 	if (flags & TEST_CCS)
+ 		igt_require(IS_DG2(intel_get_drm_devid(i915)));
+ 
++	if (flags & TEST_VM_BIND)
++		igt_require(i915_vm_bind_version(i915) == 1);
 +
-+	if (num_cmds)
-+		debug_dump_buffer(src_addr[num_cmds - 1], size, "src_obj", false);
-+
-+	for (i = 0; i < num_ctxts; i++) {
-+		batch[i] = gem_create_in_memory_regions(fd, PAGE_SIZE, REGION_SMEM);
-+		igt_debug("Batch obj 0x%x created in region 0x%x:0x%x\n", batch[i],
-+			  MEMORY_TYPE_FROM_REGION(REGION_SMEM), MEMORY_INSTANCE_FROM_REGION(REGION_SMEM));
-+		batch_addr[i] = gem_mmap__cpu(fd, batch[i], 0, PAGE_SIZE, PROT_WRITE);
-+	}
-+
-+	/* Create mappings */
-+	for (i = 0; i < num_ctxts; i++) {
-+		uint64_t va_offset = i * va_delta;
-+		uint64_t offset = i * delta;
-+		uint32_t j;
-+
-+		for (j = 0; j < num_cmds; j++)
-+			SET_MAP(map[i][SRC_MAP + j], src[j], src_va + va_offset, offset, delta);
-+		SET_MAP(map[i][DST_MAP], dst, dst_va + va_offset, offset, delta);
-+		SET_MAP(map[i][BATCH_MAP], batch[i], to_user_pointer(batch_addr[i]), 0, PAGE_SIZE);
-+	}
-+
-+	/* Bind the buffers to device page table */
-+	for (i = 0; i < num_ctxts; i++) {
-+		vm_bind(fd, vm_id[i], &map[i][BATCH_MAP],
-+			do_sync_bind(cfg) ? NULL : &exec_fence[i][BATCH_FENCE]);
-+		vm_bind(fd, vm_id[i], &map[i][DST_MAP],
-+			do_sync_bind(cfg) ? NULL : &exec_fence[i][DST_FENCE]);
-+	}
-+
-+	/* Have GPU do the copy */
-+	for (i = 0; i < cfg->num_cmds; i++) {
-+		uint32_t j;
-+
-+		for (j = 0; j < num_ctxts; j++)
-+			vm_bind(fd, vm_id[j], &map[j][SRC_MAP + i],
-+				do_sync_bind(cfg) ? NULL : &exec_fence[j][SRC_FENCE]);
-+
-+		i915_gem_copy(fd, src_va, dst_va, va_delta, delta, size, ctx,
-+			      num_ctxts, batch_addr, e->flags, exec_fence,
-+			      do_sync_bind(cfg) ? 1 : NUM_FENCES);
-+
-+		i915_gem_sync(fd, ctx, num_ctxts, exec_fence);
-+
-+		for (j = 0; j < num_ctxts; j++) {
-+			if (!do_sync_bind(cfg))
-+				syncobj_destroy(fd, exec_fence[j][SRC_FENCE].handle);
-+			if (do_unbind(cfg))
-+				vm_unbind(fd, vm_id[j], &map[j][SRC_MAP + i]);
-+		}
-+	}
-+	put_ahnd(ahnd);
-+
-+	/*
-+	 * Unbind buffers from device page table.
-+	 * If not, it should get unbound while freeing the buffer.
-+	 */
-+	for (i = 0; i < num_ctxts; i++) {
-+		if (!do_sync_bind(cfg)) {
-+			syncobj_destroy(fd, exec_fence[i][BATCH_FENCE].handle);
-+			syncobj_destroy(fd, exec_fence[i][DST_FENCE].handle);
-+		}
-+		if (do_unbind(cfg)) {
-+			vm_unbind(fd, vm_id[i], &map[i][BATCH_MAP]);
-+			vm_unbind(fd, vm_id[i], &map[i][DST_MAP]);
-+		}
-+	}
-+
-+	/* Close batch buffers */
-+	for (i = 0; i < num_ctxts; i++) {
-+		syncobj_destroy(fd, exec_fence[i][EXEC_FENCE].handle);
-+		gem_close(fd, batch[i]);
-+	}
-+
-+	if (num_cmds)
-+		debug_dump_buffer(dst_addr, size, "dst_obj", false);
-+
-+	/* Validate by comparing the last SRC with DST */
-+	if (num_cmds)
-+		igt_assert(memcmp(src_addr[num_cmds - 1], dst_addr, size) == 0);
-+
-+	/* Free the objects */
-+	destroy_src_objs(fd, mr, src, size, num_cmds, src_addr);
-+	destroy_dst_obj(fd, mr, dst, size, dst_addr);
-+
-+	/* Done with the contexts */
-+	for (i = 0; i < num_ctxts; i++) {
-+		igt_debug("Destroying context 0x%x\n", ctx[i]->id);
-+		gem_vm_destroy(fd, vm_id[i]);
-+		intel_ctx_destroy(fd, ctx[i]);
-+	}
-+
-+	if (share_vm)
-+		gem_vm_destroy(fd, shared_vm_id);
-+}
-+
-+igt_main
-+{
-+	struct test_cfg *t, tests[] = {
-+		{"basic", DEFAULT_BUFF_SIZE, 1, 1, 0},
-+		{"multi_cmds", DEFAULT_BUFF_SIZE, MAX_CMDS, 1, 0},
-+		{"skip_copy", DEFAULT_BUFF_SIZE, 0, 1, 0},
-+		{"skip_unbind", DEFAULT_BUFF_SIZE, 1, 1, TEST_SKIP_UNBIND},
-+		{"multi_ctxts", DEFAULT_BUFF_SIZE, 1, MAX_CTXTS, 0},
-+		{"share_vm", DEFAULT_BUFF_SIZE, 1, MAX_CTXTS, TEST_SHARE_VM},
-+		{"64K", SZ_64K, 1, 1, 0},
-+		{"2M", SZ_2M, 1, 1, 0},
-+		{"2M_sync_bind", SZ_2M, 1, 1, TEST_SYNC_BIND},
-+		{ }
-+	};
-+	int fd;
-+	struct intel_execution_engine2 *e;
-+	const intel_ctx_t *ctx;
-+	uint32_t alignment = 0;
-+
-+	igt_fixture {
-+		fd = drm_open_driver(DRIVER_INTEL);
-+		igt_require_gem(fd);
-+		igt_require(gem_has_blt(fd));
-+		igt_require(i915_vm_bind_version(fd) == 1);
-+		ctx = intel_ctx_create_all_physical(fd);
-+
-+		/* Get max alignment required */
-+		for_each_memory_region(r, fd)
-+			alignment = max_t(uint32_t, alignment, r->gtt_alignment);
-+
-+		/* Get copy engine */
-+		for_each_ctx_engine(fd, ctx, e)
-+			if (e->class == I915_ENGINE_CLASS_COPY)
-+				break;
-+	}
-+
-+	for (t = tests; t->name; t++) {
-+		igt_describe_f("VM_BIND %s", t->name);
-+		igt_subtest_with_dynamic(t->name) {
-+			for_each_memory_region(r, fd) {
-+				struct test_cfg cfg = *t;
-+
-+				if (r->ci.memory_instance)
-+					continue;
-+
-+				cfg.size = ALIGN(cfg.size, alignment);
-+				cfg.size *= cfg.num_ctxts;
-+				igt_dynamic_f("%s", r->name)
-+					run_test(fd, ctx, &cfg, r, alignment, e);
-+			}
-+		}
-+	}
-+
-+	igt_fixture {
-+		intel_ctx_destroy(fd, ctx);
-+		close(fd);
-+	}
-+
-+	igt_exit();
-+}
-diff --git a/tests/intel-ci/fast-feedback.testlist b/tests/intel-ci/fast-feedback.testlist
-index 3ae32422a..bdfde4b78 100644
---- a/tests/intel-ci/fast-feedback.testlist
-+++ b/tests/intel-ci/fast-feedback.testlist
-@@ -54,6 +54,7 @@ igt@i915_getparams_basic@basic-eu-total
- igt@i915_getparams_basic@basic-subslice-total
- igt@i915_hangman@error-state-basic
- igt@i915_pciid
-+igt@i915_vm_bind_basic@basic-smem
- igt@i915_vm_bind_sanity@basic
- igt@kms_addfb_basic@addfb25-bad-modifier
- igt@kms_addfb_basic@addfb25-framebuffer-vs-set-tiling
-diff --git a/tests/meson.build b/tests/meson.build
-index 423db3057..63404e491 100644
---- a/tests/meson.build
-+++ b/tests/meson.build
-@@ -225,6 +225,7 @@ i915_progs = [
- 	'i915_query',
- 	'i915_selftest',
- 	'i915_suspend',
-+	'i915_vm_bind_basic',
- 	'i915_vm_bind_sanity',
- 	'kms_big_fb',
- 	'kms_big_joiner' ,
+ 	fill_params(i915, &params, region, flags, nproc, false);
+ 
+ 	if (flags & TEST_PARALLEL) {
+@@ -764,6 +895,7 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
+ 		{ "heavy-verify-random-ccs", TEST_CCS | TEST_RANDOM | TEST_HEAVY },
+ 		{ "heavy-verify-multi-ccs", TEST_CCS | TEST_RANDOM | TEST_HEAVY | TEST_ENGINES | TEST_MULTI },
+ 		{ "parallel-random-verify-ccs", TEST_PARALLEL | TEST_RANDOM | TEST_CCS },
++		{ "vm_bind", TEST_VM_BIND },
+ 		{ }
+ 	};
+ 	const intel_ctx_t *ctx;
 -- 
 2.21.0.rc0.32.g243a4c7e27
