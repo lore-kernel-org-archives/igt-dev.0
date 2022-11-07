@@ -1,25 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-il1-x133.google.com (mail-il1-x133.google.com
- [IPv6:2607:f8b0:4864:20::133])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4DA7D10E4DA
- for <igt-dev@lists.freedesktop.org>; Mon,  7 Nov 2022 17:04:33 +0000 (UTC)
-Received: by mail-il1-x133.google.com with SMTP id x7so2661300ilg.0
- for <igt-dev@lists.freedesktop.org>; Mon, 07 Nov 2022 09:04:33 -0800 (PST)
+Received: from mail-qk1-x736.google.com (mail-qk1-x736.google.com
+ [IPv6:2607:f8b0:4864:20::736])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E0A0C10E4AD
+ for <igt-dev@lists.freedesktop.org>; Mon,  7 Nov 2022 17:18:56 +0000 (UTC)
+Received: by mail-qk1-x736.google.com with SMTP id g10so7558627qkl.6
+ for <igt-dev@lists.freedesktop.org>; Mon, 07 Nov 2022 09:18:56 -0800 (PST)
+From: Mark Yacoub <markyacoub@chromium.org>
+To: igt-dev@lists.freedesktop.org
+Date: Mon,  7 Nov 2022 12:18:45 -0500
+Message-Id: <20221107171845.3663446-1-markyacoub@chromium.org>
 MIME-Version: 1.0
-References: <20221024124323.tfyxcadyd4nz56jz@houat>
- <f3341ef6-4634-39e4-9bbc-e49e0aa806ee@suse.de>
- <20221107093057.5w7kdc3pjq77upng@houat>
- <555dc349-4838-3c24-b35e-38aa8afd9f1d@suse.de>
- <CAKMK7uFWv98_miqCAVWYVnZZ_V_fL0FSBc6uv0x48ZMrzLQhbA@mail.gmail.com>
- <a51ae3be-bcb2-9ae9-f7a7-31270d3b8979@suse.de>
-In-Reply-To: <a51ae3be-bcb2-9ae9-f7a7-31270d3b8979@suse.de>
-From: Daniel Vetter <daniel.vetter@ffwll.ch>
-Date: Mon, 7 Nov 2022 18:04:21 +0100
-Message-ID: <CAKMK7uH3Xft8fEBCaeG3dvWXHb+xO1C45mPEKW+pasmjdPiU+g@mail.gmail.com>
-To: Thomas Zimmermann <tzimmermann@suse.de>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [igt-dev] Must-Pass Test Suite for KMS drivers
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH] [NEW] Chamelium: Add new EDID Resolution List test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,140 +19,236 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Petri Latvala <petri.latvala@intel.com>,
- Tim Gover <tim.gover@raspberrypi.com>, David Airlie <airlied@linux.ie>,
- Martin Roukala <martin.roukala@mupuf.org>, dri-devel@lists.freedesktop.org,
- igt-dev@lists.freedesktop.org, Maxime Ripard <maxime@cerno.tech>,
- Daniel Vetter <daniel.vetter@intel.com>, Phil Elwell <phil@raspberrypi.com>,
- Dom Cobley <dom@raspberrypi.com>
+Cc: robdclark@chromium.org, vsuley@google.com, petri.latvala@intel.com,
+ ihf@google.com, amstan@chromium.org, kalin@google.com, seanpaul@chromium.org,
+ matthewtlam@google.com, khaled.almahallawy@intel.com, markyacoub@google.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Mon, 7 Nov 2022 at 11:53, Thomas Zimmermann <tzimmermann@suse.de> wrote:
->
-> Hi
->
-> Am 07.11.22 um 11:26 schrieb Daniel Vetter:
-> > On Mon, 7 Nov 2022 at 10:43, Thomas Zimmermann <tzimmermann@suse.de> wr=
-ote:
-> >>
-> >> Hi
-> >>
-> >> Am 07.11.22 um 10:30 schrieb Maxime Ripard:
-> >>> Hi Thomas,
-> >>>
-> >>> On Fri, Oct 28, 2022 at 09:31:38AM +0200, Thomas Zimmermann wrote:
-> >>>> Am 24.10.22 um 14:43 schrieb maxime@cerno.tech:
-> >>>>> I've discussing the idea for the past year to add an IGT test suite=
- that
-> >>>>> all well-behaved KMS drivers must pass.
-> >>>>>
-> >>>>> The main idea behind it comes from v4l2-compliance and cec-complian=
-ce,
-> >>>>> that are being used to validate that the drivers are sane.
-> >>>>>
-> >>>>> We should probably start building up the test list, and eventually
-> >>>>> mandate that all tests pass for all the new KMS drivers we would me=
-rge
-> >>>>> in the kernel, and be run by KCi or similar.
-> >>>>>
-> >>>>> I did a first pass to create a draft of such a test-suite, which wo=
-uld
-> >>>>> contain:
-> >>>>>
-> >>>>> igt@core_auth@basic-auth
-> >>>>> igt@core_auth@getclient-master-drop
-> >>>>> igt@core_auth@getclient-simple
-> >>>>> igt@core_auth@many-magics
-> >>>>> igt@core_getclient
-> >>>>> igt@core_getstats
-> >>>>> igt@core_getversion
-> >>>>> igt@core_hotunplug@hotrebind-lateclose
-> >>>>> igt@core_hotunplug@hotunbind-rebind
-> >>>>> igt@core_hotunplug@unbind-rebind
-> >>>>> igt@core_setmaster
-> >>>>> igt@core_setmaster_vs_auth
-> >>>>> igt@device_reset@unbind-reset-rebind
-> >>>>> igt@drm_read
-> >>>>> igt@dumb_buffer
-> >>>>> igt@fbdev
-> >>>>
-> >>>> Maybe we make this test optional? At least sprd decided to not suppo=
-rt fbdev
-> >>>> at all.
-> >>>
-> >>> I'm not sure we need to make that test optional, or at least, we shou=
-ld
-> >>> run it all the time, but skip it if there's no fbdev emulation, and n=
-ot
-> >>> report it as a failure?
-> >>
-> >> Sure. I just meant that fbdev support shouldn't be a blocker. If there=
-,
-> >> it should work of course.
-> >
-> > Not supporting fbdev looks more like an accident than intention here,
-> > and maybe a good reason to have these kind of must-past lists.
->
-> No. Back then, I specifically asked the developer, Kevin Tang IIRC,
-> about fbdev/console support and he replied that he has no intention of
-> adding it.
->
-> It's the only driver without fbdev, but as we don't have such a
-> requirements AFAIK, I left it at that.
+[Why]
+1. Users can change resolutions of monitors on the fly.
+2. Monitors can come with different shapes and form aka different modes.
+Test a change between different modes on the fly.
 
-It does hurt a bit the sales pitch that a drm-kms driver is the
-one-stop-shop for display driver needs, and so I'd only do this if
-there's some technical reasons why fbdev just wont work (like no hw
-support for formats fbdev supports or something), and not just because
-the vendor has no need for this right now. Otoh it's generally just
-one line to add if the driver works correctly, so ...
+[How]
+1. Created an EDID based on a random combination of screen size, Refresh
+   Rate and Aspect Ratio.
+2. Set that EDID to Chamelium.
+3. Iterate over every mode on the connector, assign it to the connector
+   and check that the screen resolution changes to this one.
 
-*shrug*
+Test Based on: [ChromeOS AutoTest
+display_ResolutionList](https://chromium.googlesource.com/chromiumos/third_party/autotest/+/HEAD/server/site_tests/display_ResolutionList/display_ResolutionList.py)
 
-Cheers, Daniel
+Tested on: TGL with Cv3
 
->
-> Best regards
-> Thomas
->
-> > Eventually, once the i915-ism is worked out of igt well enough for a
-> > set of tests at least. The drm/ci effort should help in building up
-> > that list (by essentially extracting the common set of tests that
-> > everyone passes and graduating that to the must-pass list for kms
-> > conformance or whatever we'll call it).
-> > -Daniel
-> >
-> >>
-> >> Best regards
-> >> Thomas
-> >>
-> >>>
-> >>> Maxime
-> >>
-> >> --
-> >> Thomas Zimmermann
-> >> Graphics Driver Developer
-> >> SUSE Software Solutions Germany GmbH
-> >> Maxfeldstr. 5, 90409 N=C3=BCrnberg, Germany
-> >> (HRB 36809, AG N=C3=BCrnberg)
-> >> Gesch=C3=A4ftsf=C3=BChrer: Ivo Totev
-> >
-> >
-> >
->
-> --
-> Thomas Zimmermann
-> Graphics Driver Developer
-> SUSE Software Solutions Germany GmbH
-> Maxfeldstr. 5, 90409 N=C3=BCrnberg, Germany
-> (HRB 36809, AG N=C3=BCrnberg)
-> Gesch=C3=A4ftsf=C3=BChrer: Ivo Totev
+Signed-off-by: Mark Yacoub <markyacoub@chromium.org>
+---
+ lib/igt_edid.c                  |  4 +-
+ lib/igt_edid.h                  |  2 +
+ lib/igt_kms.c                   | 31 +++++++++++++++
+ lib/igt_kms.h                   |  5 ++-
+ tests/chamelium/kms_chamelium.c | 68 +++++++++++++++++++++++++++++++++
+ 5 files changed, 107 insertions(+), 3 deletions(-)
 
-
-
---=20
-Daniel Vetter
-Software Engineer, Intel Corporation
-http://blog.ffwll.ch
+diff --git a/lib/igt_edid.c b/lib/igt_edid.c
+index bff13a0d..9c67e51b 100644
+--- a/lib/igt_edid.c
++++ b/lib/igt_edid.c
+@@ -61,8 +61,8 @@ static const char monitor_range_padding[] = {
+ const uint8_t hdmi_ieee_oui[3] = {0x03, 0x0C, 0x00};
+ 
+ /* vfreq is in Hz */
+-static void std_timing_set(struct std_timing *st, int hsize, int vfreq,
+-			   enum std_timing_aspect aspect)
++void std_timing_set(struct std_timing *st, int hsize, int vfreq,
++		    enum std_timing_aspect aspect)
+ {
+ 	assert(hsize >= 256 && hsize <= 2288);
+ 	st->hsize = hsize / 8 - 31;
+diff --git a/lib/igt_edid.h b/lib/igt_edid.h
+index a9251d68..609f3cd4 100644
+--- a/lib/igt_edid.h
++++ b/lib/igt_edid.h
+@@ -379,6 +379,8 @@ size_t edid_get_size(const struct edid *edid);
+ void edid_get_mfg(const struct edid *edid, char out[static 3]);
+ uint8_t edid_get_deep_color_from_vsdb(const struct edid *edid);
+ uint8_t edid_get_bit_depth_from_vid(const struct edid *edid);
++void std_timing_set(struct std_timing *st, int hsize, int vfreq,
++		    enum std_timing_aspect aspect); // rename
+ void detailed_timing_set_mode(struct detailed_timing *dt, drmModeModeInfo *mode,
+ 			      int width_mm, int height_mm);
+ void detailed_timing_set_monitor_range_mode(struct detailed_timing *dt,
+diff --git a/lib/igt_kms.c b/lib/igt_kms.c
+index 921a623d..437977a7 100644
+--- a/lib/igt_kms.c
++++ b/lib/igt_kms.c
+@@ -133,6 +133,35 @@ const struct edid *igt_kms_get_base_edid(void)
+ 	return &edid;
+ }
+ 
++const struct edid *igt_kms_get_full_edid(void)
++{
++	static struct edid edid;
++	drmModeModeInfo mode = {};
++	mode.clock = 148500;
++	mode.hdisplay = 2288;
++	mode.hsync_start = 2008;
++	mode.hsync_end = 2052;
++	mode.htotal = 2200;
++	mode.vdisplay = 1287;
++	mode.vsync_start = 1084;
++	mode.vsync_end = 1089;
++	mode.vtotal = 1125;
++	mode.vrefresh = 144;
++	edid_init_with_mode(&edid, &mode);
++
++	std_timing_set(&edid.standard_timings[0], 256, 60, STD_TIMING_16_10);
++	std_timing_set(&edid.standard_timings[1], 510, 69, STD_TIMING_4_3);
++	std_timing_set(&edid.standard_timings[2], 764, 78, STD_TIMING_5_4);
++	std_timing_set(&edid.standard_timings[3], 1018, 87, STD_TIMING_16_9);
++	std_timing_set(&edid.standard_timings[4], 1526, 96, STD_TIMING_16_10);
++	std_timing_set(&edid.standard_timings[5], 1780, 105, STD_TIMING_4_3);
++	std_timing_set(&edid.standard_timings[6], 2034, 114, STD_TIMING_5_4);
++	std_timing_set(&edid.standard_timings[7], 2288, 123, STD_TIMING_16_9);
++
++	edid_update_checksum(&edid);
++	return &edid;
++}
++
+ const struct edid *igt_kms_get_base_tile_edid(void)
+ {
+ 	static struct edid edid;
+@@ -548,6 +577,8 @@ const struct edid *igt_kms_get_custom_edid(enum igt_custom_edid_type edid)
+ 	switch (edid) {
+ 	case IGT_CUSTOM_EDID_BASE:
+ 		return igt_kms_get_base_edid();
++	case IGT_CUSTOM_EDID_FULL:
++		return igt_kms_get_full_edid();
+ 	case IGT_CUSTOM_EDID_ALT:
+ 		return igt_kms_get_alt_edid();
+ 	case IGT_CUSTOM_EDID_HDMI_AUDIO:
+diff --git a/lib/igt_kms.h b/lib/igt_kms.h
+index b09441d0..7a00d204 100644
+--- a/lib/igt_kms.h
++++ b/lib/igt_kms.h
+@@ -82,6 +82,7 @@ enum port {
+  *
+  * Enum used for the helper function igt_custom_edid_type
+  * @IGT_CUSTOM_EDID_BASE: Returns base edid
++ * @IGT_CUSTOM_EDID_FULL: Returns edid with full list of standard timings.
+  * @IGT_CUSTOM_EDID_ALT: Returns alternate edid
+  * @IGT_CUSTOM_EDID_HDMI_AUDIO: Returns edid with HDMI audio block
+  * @IGT_CUSTOM_EDID_DP_AUDIO: Returns edid with DP audio block
+@@ -89,12 +90,13 @@ enum port {
+  */
+ enum igt_custom_edid_type {
+ 	IGT_CUSTOM_EDID_BASE,
++	IGT_CUSTOM_EDID_FULL,
+ 	IGT_CUSTOM_EDID_ALT,
+ 	IGT_CUSTOM_EDID_HDMI_AUDIO,
+ 	IGT_CUSTOM_EDID_DP_AUDIO,
+ 	IGT_CUSTOM_EDID_ASPECT_RATIO,
+ };
+-#define IGT_CUSTOM_EDID_COUNT 5
++#define IGT_CUSTOM_EDID_COUNT 6
+ 
+ /**
+  * kmstest_port_name:
+@@ -865,6 +867,7 @@ void igt_reset_connectors(void);
+ uint32_t kmstest_get_vbl_flag(int crtc_offset);
+ 
+ const struct edid *igt_kms_get_base_edid(void);
++const struct edid *igt_kms_get_full_edid(void);
+ const struct edid *igt_kms_get_base_tile_edid(void);
+ const struct edid *igt_kms_get_alt_edid(void);
+ const struct edid *igt_kms_get_hdmi_audio_edid(void);
+diff --git a/tests/chamelium/kms_chamelium.c b/tests/chamelium/kms_chamelium.c
+index 2bc97d5a..c8fbc45c 100644
+--- a/tests/chamelium/kms_chamelium.c
++++ b/tests/chamelium/kms_chamelium.c
+@@ -2612,6 +2612,70 @@ static void edid_stress_resolution(data_t *data, struct chamelium_port *port,
+ 			      data->ports, data->port_count);
+ }
+ 
++static const char igt_edid_resolution_list_desc[] =
++	"Get an EDID with many modes of different configurations, set them on the screen and check the"
++	"screen resolution matches the mode resolution.";
++static void edid_resolution_list(data_t *data, struct chamelium_port *port)
++{
++	struct chamelium *chamelium = data->chamelium;
++	struct udev_monitor *mon = igt_watch_uevents();
++	drmModeConnector *init_connector;
++	drmModeModeInfoPtr modes;
++	int count_modes;
++	int i;
++	igt_output_t *output;
++	enum pipe pipe;
++
++	chamelium_unplug(chamelium, port);
++	set_edid(data, port, IGT_CUSTOM_EDID_FULL);
++
++	igt_flush_uevents(mon);
++	chamelium_plug(chamelium, port);
++	wait_for_connector_after_hotplug(data, mon, port, DRM_MODE_CONNECTED);
++	igt_flush_uevents(mon);
++
++	init_connector = chamelium_port_get_connector(chamelium, port, true);
++	modes = init_connector->modes;
++	count_modes = init_connector->count_modes;
++
++	output = get_output_for_port(data, port);
++	pipe = get_pipe_for_output(&data->display, output);
++	igt_output_set_pipe(output, pipe);
++
++	for (i = 0; i < count_modes; ++i)
++		igt_debug("#%d %s %uHz\n", i, modes[i].name, modes[i].vrefresh);
++
++	for (i = 0; i < count_modes; ++i) {
++		struct chamelium_edid *chamelium_edid;
++		struct igt_fb fb = { 0 };
++		bool is_video_stable;
++		int screen_res_w, screen_res_h;
++		drmModeConnector *connector;
++		drmModeModeInfoPtr expected_mode;
++		bool is_same_mode;
++
++		igt_info("Testing #%d %s %uHz\n", i, modes[i].name,
++			 modes[i].vrefresh);
++
++		/* Set the screen mode with the one we chose. */
++		create_fb_for_mode(data, &fb, &modes[i]);
++		enable_output(data, port, output, &modes[i], &fb);
++		is_video_stable = chamelium_port_wait_video_input_stable(
++			chamelium, port, 10);
++		igt_assert(is_video_stable);
++
++		chamelium_port_get_resolution(chamelium, port, &screen_res_w,
++					      &screen_res_h);
++		igt_assert(screen_res_w == modes[i].hdisplay);
++		igt_assert(screen_res_h == modes[i].vdisplay);
++
++		igt_remove_fb(data->drm_fd, &fb);
++	}
++
++	igt_modeset_disable_all_outputs(&data->display);
++	drmModeFreeConnector(init_connector);
++}
++
+ #define for_each_port(p, port)            \
+ 	for (p = 0, port = data.ports[p]; \
+ 	     p < data.port_count;         \
+@@ -2714,6 +2778,10 @@ igt_main
+ 			edid_stress_resolution(&data, port, DP_EDIDS_NON_4K,
+ 					       ARRAY_SIZE(DP_EDIDS_NON_4K));
+ 
++		igt_describe(igt_edid_resolution_list_desc);
++		connector_subtest("dp-edid-resolution-list", DisplayPort)
++			edid_resolution_list(&data, port);
++
+ 		igt_describe(test_suspend_resume_hpd_desc);
+ 		connector_subtest("dp-hpd-after-suspend", DisplayPort)
+ 			test_suspend_resume_hpd(&data, port,
+-- 
+2.38.1.431.g37b22c650d-goog
