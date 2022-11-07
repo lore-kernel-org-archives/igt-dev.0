@@ -1,20 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from NAM04-BN8-obe.outbound.protection.outlook.com
- (mail-bn8nam04on2062.outbound.protection.outlook.com [40.107.100.62])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2B92410E446
- for <igt-dev@lists.freedesktop.org>; Mon,  7 Nov 2022 20:31:19 +0000 (UTC)
-Message-ID: <58e72002-e40a-7557-ea8c-f5fe1c315c96@amd.com>
-Date: Mon, 7 Nov 2022 13:31:11 -0700
-To: Melissa Wen <mwen@igalia.com>, igt-dev@lists.freedesktop.org
-References: <20221107195227.1741453-1-mwen@igalia.com>
-Content-Language: en-US
-From: Alex Hung <alex.hung@amd.com>
-In-Reply-To: <20221107195227.1741453-1-mwen@igalia.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/alternative;
+ boundary="===============6556757660174570444=="
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t v2] tests/kms_color: check degamma and
- gamma props in CTM subtests
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
+Date: Mon, 07 Nov 2022 21:05:15 -0000
+Message-ID: <166785511585.17761.5359142656651709209@emeril.freedesktop.org>
+References: <20221107195036.1933629-1-ashutosh.dixit@intel.com>
+In-Reply-To: <20221107195036.1933629-1-ashutosh.dixit@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
+ =?utf-8?q?perf=5Fpmu=3A_Try_to_repro_GL_=236806?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,54 +17,281 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Petri Latvala <petri.latvala@intel.com>, kernel-dev@igalia.com
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
+--===============6556757660174570444==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+== Series Details ==
+
+Series: tests/perf_pmu: Try to repro GL #6806
+URL   : https://patchwork.freedesktop.org/series/110630/
+State : success
+
+== Summary ==
+
+CI Bug Log - changes from CI_DRM_12352 -> IGTPW_8061
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8061/index.html
+
+Participating hosts (40 -> 37)
+------------------------------
+
+  Additional (1): fi-pnv-d510 
+  Missing    (4): fi-ctg-p8600 fi-ilk-m540 fi-rkl-11600 fi-bdw-samus 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_8061 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@kms_chamelium@common-hpd-after-suspend:
+    - fi-hsw-4770:        NOTRUN -> [SKIP][1] ([fdo#109271] / [fdo#111827])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8061/fi-hsw-4770/igt@kms_chamelium@common-hpd-after-suspend.html
+    - bat-adlp-4:         NOTRUN -> [SKIP][2] ([fdo#111827])
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8061/bat-adlp-4/igt@kms_chamelium@common-hpd-after-suspend.html
+
+  * igt@kms_pipe_crc_basic@suspend-read-crc:
+    - bat-adlp-4:         NOTRUN -> [SKIP][3] ([i915#3546])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8061/bat-adlp-4/igt@kms_pipe_crc_basic@suspend-read-crc.html
+
+  * igt@kms_psr@primary_page_flip:
+    - fi-pnv-d510:        NOTRUN -> [SKIP][4] ([fdo#109271]) +44 similar issues
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8061/fi-pnv-d510/igt@kms_psr@primary_page_flip.html
+
+  * igt@perf_pmu@frequency:
+    - fi-ilk-650:         NOTRUN -> [SKIP][5] ([fdo#109271])
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8061/fi-ilk-650/igt@perf_pmu@frequency.html
+    - fi-blb-e6850:       NOTRUN -> [SKIP][6] ([fdo#109271])
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8061/fi-blb-e6850/igt@perf_pmu@frequency.html
+    - fi-bsw-nick:        NOTRUN -> [SKIP][7] ([fdo#109271])
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8061/fi-bsw-nick/igt@perf_pmu@frequency.html
+    - fi-bsw-kefka:       NOTRUN -> [SKIP][8] ([fdo#109271])
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8061/fi-bsw-kefka/igt@perf_pmu@frequency.html
+    - fi-elk-e7500:       NOTRUN -> [SKIP][9] ([fdo#109271])
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8061/fi-elk-e7500/igt@perf_pmu@frequency.html
+
+  
+#### Possible fixes ####
+
+  * igt@gem_huc_copy@huc-copy:
+    - {bat-dg2-8}:        [FAIL][10] ([i915#7029]) -> [PASS][11]
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12352/bat-dg2-8/igt@gem_huc_copy@huc-copy.html
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8061/bat-dg2-8/igt@gem_huc_copy@huc-copy.html
+
+  * igt@i915_selftest@live@gt_heartbeat:
+    - fi-glk-j4005:       [DMESG-FAIL][12] ([i915#5334]) -> [PASS][13]
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12352/fi-glk-j4005/igt@i915_selftest@live@gt_heartbeat.html
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8061/fi-glk-j4005/igt@i915_selftest@live@gt_heartbeat.html
+
+  * igt@i915_selftest@live@hangcheck:
+    - fi-hsw-4770:        [INCOMPLETE][14] ([i915#4785]) -> [PASS][15]
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12352/fi-hsw-4770/igt@i915_selftest@live@hangcheck.html
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8061/fi-hsw-4770/igt@i915_selftest@live@hangcheck.html
+
+  * igt@i915_selftest@live@migrate:
+    - bat-adlp-4:         [INCOMPLETE][16] ([i915#7308] / [i915#7348]) -> [PASS][17]
+   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12352/bat-adlp-4/igt@i915_selftest@live@migrate.html
+   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8061/bat-adlp-4/igt@i915_selftest@live@migrate.html
+
+  * igt@i915_selftest@live@reset:
+    - {bat-rpls-1}:       [DMESG-FAIL][18] ([i915#4983]) -> [PASS][19]
+   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12352/bat-rpls-1/igt@i915_selftest@live@reset.html
+   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8061/bat-rpls-1/igt@i915_selftest@live@reset.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [fdo#111827]: https://bugs.freedesktop.org/show_bug.cgi?id=111827
+  [i915#2867]: https://gitlab.freedesktop.org/drm/intel/issues/2867
+  [i915#3546]: https://gitlab.freedesktop.org/drm/intel/issues/3546
+  [i915#4785]: https://gitlab.freedesktop.org/drm/intel/issues/4785
+  [i915#4983]: https://gitlab.freedesktop.org/drm/intel/issues/4983
+  [i915#5334]: https://gitlab.freedesktop.org/drm/intel/issues/5334
+  [i915#6367]: https://gitlab.freedesktop.org/drm/intel/issues/6367
+  [i915#6471]: https://gitlab.freedesktop.org/drm/intel/issues/6471
+  [i915#6687]: https://gitlab.freedesktop.org/drm/intel/issues/6687
+  [i915#6806]: https://gitlab.freedesktop.org/drm/intel/issues/6806
+  [i915#7029]: https://gitlab.freedesktop.org/drm/intel/issues/7029
+  [i915#7308]: https://gitlab.freedesktop.org/drm/intel/issues/7308
+  [i915#7348]: https://gitlab.freedesktop.org/drm/intel/issues/7348
 
 
-On 2022-11-07 12:52, Melissa Wen wrote:
-> Some CTM subtests generate and set degamma/gamma LUTs without checking
-> if these properties are supported by the driver. Therefore, if degamma
-> and gamma are used in the subtest, check the color properties before
-> generate and set LUTs. If these properties are not supported, these
-> subtests will skip instead of failing.
-> 
-> v2:
-> - remove unnecessary set_luts check (Alex Hung)
-> 
-> Signed-off-by: Melissa Wen <mwen@igalia.com>
-> ---
->   tests/kms_color.c | 9 ++++++---
->   1 file changed, 6 insertions(+), 3 deletions(-)
-> 
-> diff --git a/tests/kms_color.c b/tests/kms_color.c
-> index e4dc2465..1902cd0c 100644
-> --- a/tests/kms_color.c
-> +++ b/tests/kms_color.c
-> @@ -472,9 +472,6 @@ static bool test_pipe_ctm(data_t *data,
->   
->   	igt_require(igt_pipe_obj_has_prop(primary->pipe, IGT_CRTC_CTM));
->   
-> -	degamma_linear = generate_table(data->degamma_lut_size, 1.0);
-> -	gamma_linear = generate_table(data->gamma_lut_size, 1.0);
-> -
->   	igt_output_set_pipe(output, primary->pipe->pipe);
->   	igt_output_override_mode(output, mode);
->   
-> @@ -502,6 +499,12 @@ static bool test_pipe_ctm(data_t *data,
->   	 * rounding issues and inaccuracies leading to crc mismatch.
->   	 */
->   	if (memcmp(before, after, sizeof(color_t))) {
-> +		igt_require(igt_pipe_obj_has_prop(primary->pipe, IGT_CRTC_DEGAMMA_LUT));
-> +		igt_require(igt_pipe_obj_has_prop(primary->pipe, IGT_CRTC_GAMMA_LUT));
-> +
-> +		degamma_linear = generate_table(data->degamma_lut_size, 1.0);
-> +		gamma_linear = generate_table(data->gamma_lut_size, 1.0);
-> +
->   		set_degamma(data, primary->pipe, degamma_linear);
->   		set_gamma(data, primary->pipe, gamma_linear);
->   	} else {
+Build changes
+-------------
 
-Reviewed-by: Alex Hung <alex.hung@amd.com>
+  * CI: CI-20190529 -> None
+  * IGT: IGT_7046 -> IGTPW_8061
+
+  CI-20190529: 20190529
+  CI_DRM_12352: c55ac6a74bd18aee708060f2f48d7947913282f6 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_8061: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8061/index.html
+  IGT_7046: c58d96d0fe237474b074e3472ce09c57c830d5de @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+
+Testlist changes
+----------------
+
+-igt@kms_chamelium@dp-edid-resolution-list
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8061/index.html
+
+--===============6556757660174570444==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/perf_pmu: Try to repro GL #6806</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/110630/">https://patchwork.freedesktop.org/series/110630/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8061/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8061/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_12352 -&gt; IGTPW_8061</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8061/index.html</p>
+<h2>Participating hosts (40 -&gt; 37)</h2>
+<p>Additional (1): fi-pnv-d510 <br />
+  Missing    (4): fi-ctg-p8600 fi-ilk-m540 fi-rkl-11600 fi-bdw-samus </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_8061 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@kms_chamelium@common-hpd-after-suspend:</p>
+<ul>
+<li>
+<p>fi-hsw-4770:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8061/fi-hsw-4770/igt@kms_chamelium@common-hpd-after-suspend.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://bugs.freedesktop.org/show_bug.cgi?id=111827">fdo#111827</a>)</p>
+</li>
+<li>
+<p>bat-adlp-4:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8061/bat-adlp-4/igt@kms_chamelium@common-hpd-after-suspend.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=111827">fdo#111827</a>)</p>
+</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@suspend-read-crc:</p>
+<ul>
+<li>bat-adlp-4:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8061/bat-adlp-4/igt@kms_pipe_crc_basic@suspend-read-crc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3546">i915#3546</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_psr@primary_page_flip:</p>
+<ul>
+<li>fi-pnv-d510:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8061/fi-pnv-d510/igt@kms_psr@primary_page_flip.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +44 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@perf_pmu@frequency:</p>
+<ul>
+<li>
+<p>fi-ilk-650:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8061/fi-ilk-650/igt@perf_pmu@frequency.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>)</p>
+</li>
+<li>
+<p>fi-blb-e6850:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8061/fi-blb-e6850/igt@perf_pmu@frequency.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>)</p>
+</li>
+<li>
+<p>fi-bsw-nick:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8061/fi-bsw-nick/igt@perf_pmu@frequency.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>)</p>
+</li>
+<li>
+<p>fi-bsw-kefka:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8061/fi-bsw-kefka/igt@perf_pmu@frequency.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>)</p>
+</li>
+<li>
+<p>fi-elk-e7500:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8061/fi-elk-e7500/igt@perf_pmu@frequency.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>)</p>
+</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@gem_huc_copy@huc-copy:</p>
+<ul>
+<li>{bat-dg2-8}:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12352/bat-dg2-8/igt@gem_huc_copy@huc-copy.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7029">i915#7029</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8061/bat-dg2-8/igt@gem_huc_copy@huc-copy.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@gt_heartbeat:</p>
+<ul>
+<li>fi-glk-j4005:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12352/fi-glk-j4005/igt@i915_selftest@live@gt_heartbeat.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5334">i915#5334</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8061/fi-glk-j4005/igt@i915_selftest@live@gt_heartbeat.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@hangcheck:</p>
+<ul>
+<li>fi-hsw-4770:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12352/fi-hsw-4770/igt@i915_selftest@live@hangcheck.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4785">i915#4785</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8061/fi-hsw-4770/igt@i915_selftest@live@hangcheck.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@migrate:</p>
+<ul>
+<li>bat-adlp-4:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12352/bat-adlp-4/igt@i915_selftest@live@migrate.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7308">i915#7308</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7348">i915#7348</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8061/bat-adlp-4/igt@i915_selftest@live@migrate.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@reset:</p>
+<ul>
+<li>{bat-rpls-1}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12352/bat-rpls-1/igt@i915_selftest@live@reset.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4983">i915#4983</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8061/bat-rpls-1/igt@i915_selftest@live@reset.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_7046 -&gt; IGTPW_8061</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_12352: c55ac6a74bd18aee708060f2f48d7947913282f6 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_8061: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8061/index.html<br />
+  IGT_7046: c58d96d0fe237474b074e3472ce09c57c830d5de @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+<h2>Testlist changes</h2>
+<p>-igt@kms_chamelium@dp-edid-resolution-list</p>
+
+</body>
+</html>
+
+--===============6556757660174570444==--
