@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5718810E2F7
- for <igt-dev@lists.freedesktop.org>; Mon,  7 Nov 2022 12:02:08 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9DA8E10E2F7
+ for <igt-dev@lists.freedesktop.org>; Mon,  7 Nov 2022 12:02:11 +0000 (UTC)
 From: Petri Latvala <petri.latvala@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Mon,  7 Nov 2022 14:01:49 +0200
-Message-Id: <20221107120151.2365523-4-petri.latvala@intel.com>
+Date: Mon,  7 Nov 2022 14:01:51 +0200
+Message-Id: <20221107120151.2365523-6-petri.latvala@intel.com>
 In-Reply-To: <20221107120151.2365523-1-petri.latvala@intel.com>
 References: <20221107120151.2365523-1-petri.latvala@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 4/6] igt_core: Make sure test result gets to
- runner when test has no subtests
+Subject: [igt-dev] [PATCH i-g-t 6/6] Revert "runner: Disable socket
+ communications for now"
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,30 +24,37 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-One more raw printf, converted to the wrapper that sends to runner if
-connected.
+With a couple of fixes, using socket comms is now suitably ready for
+prime time.
+
+This reverts commit 372c56225e12578a7a4a6bcc5b79eb40b643fcde.
 
 Signed-off-by: Petri Latvala <petri.latvala@intel.com>
 Cc: Arkadiusz Hiler <arek@hiler.eu>
 Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 ---
- lib/igt_core.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ runner/executor.c | 9 +--------
+ 1 file changed, 1 insertion(+), 8 deletions(-)
 
-diff --git a/lib/igt_core.c b/lib/igt_core.c
-index d4bef161..30b43715 100644
---- a/lib/igt_core.c
-+++ b/lib/igt_core.c
-@@ -2260,8 +2260,8 @@ void igt_exit(void)
- 				result = "FAIL";
+diff --git a/runner/executor.c b/runner/executor.c
+index c6389e25..4881f71a 100644
+--- a/runner/executor.c
++++ b/runner/executor.c
+@@ -1676,14 +1676,7 @@ static int execute_next_entry(struct execute_state *state,
+ 
+ 		sigprocmask(SIG_UNBLOCK, sigmask, NULL);
+ 
+-		if (socketfd >= 0 && !getenv("IGT_RUNNER_DISABLE_SOCKET_COMMUNICATION") &&
+-		    getenv("IGT_RUNNER_ENABLE_SOCKET_COMMUNICATION_FIXME")) {
+-			/*
+-			 * The variable for enabling socket comms is
+-			 * temporary. Do not use unless you really
+-			 * know what you're doing. Requiring it will
+-			 * go away later.
+-			 */
++		if (socketfd >= 0 && !getenv("IGT_RUNNER_DISABLE_SOCKET_COMMUNICATION")) {
+ 			snprintf(envstring, sizeof(envstring), "%d", socketfd);
+ 			setenv("IGT_RUNNER_SOCKET_FD", envstring, 1);
  		}
- 
--		printf("%s (%.3fs)\n",
--		       result, igt_time_elapsed(&subtest_time, &now));
-+		_log_line_fprintf(stdout, "%s (%.3fs)\n",
-+				  result, igt_time_elapsed(&subtest_time, &now));
- 	}
- 
- 	exit(igt_exitcode);
 -- 
 2.30.2
