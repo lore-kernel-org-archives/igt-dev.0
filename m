@@ -1,12 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-From: Matthew Auld <matthew.auld@intel.com>
+Received: from fanzine2.igalia.com (fanzine.igalia.com [178.60.130.6])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B72A210E3FC
+ for <igt-dev@lists.freedesktop.org>; Mon,  7 Nov 2022 19:52:52 +0000 (UTC)
+From: Melissa Wen <mwen@igalia.com>
 To: igt-dev@lists.freedesktop.org
-Date: Wed,  2 Nov 2022 15:05:00 +0000
-Message-Id: <20221102150500.227161-1-matthew.auld@intel.com>
+Date: Mon,  7 Nov 2022 18:52:27 -0100
+Message-Id: <20221107195227.1741453-1-mwen@igalia.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t] tests/i915/module_load: restore
- gem_sanitycheck for discrete
+Subject: [igt-dev] [PATCH i-g-t v2] tests/kms_color: check degamma and gamma
+ props in CTM subtests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -14,39 +17,51 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: intel-gfx@lists.freedesktop.org,
- Janga Rahul Kumar <janga.rahul.kumar@intel.com>
+Cc: Petri Latvala <petri.latvala@intel.com>, kernel-dev@igalia.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-This looks to be recently broken in: 5389b3f3
-("tests/i915/i915_module_load: Use GEM_BUSY instead of SET_CACHE for
-sanity check").
+Some CTM subtests generate and set degamma/gamma LUTs without checking
+if these properties are supported by the driver. Therefore, if degamma
+and gamma are used in the subtest, check the color properties before
+generate and set LUTs. If these properties are not supported, these
+subtests will skip instead of failing.
 
-Which fails on discrete platforms, since we switched over to the
-gem_busy ioctl, from the set_caching ioctl, which no longer gives
--ENODEV as the expected error.
+v2:
+- remove unnecessary set_luts check (Alex Hung)
 
-Signed-off-by: Matthew Auld <matthew.auld@intel.com>
-Cc: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
-Cc: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
+Signed-off-by: Melissa Wen <mwen@igalia.com>
 ---
- tests/i915/i915_module_load.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tests/kms_color.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/tests/i915/i915_module_load.c b/tests/i915/i915_module_load.c
-index eebb3167..d3a86b11 100644
---- a/tests/i915/i915_module_load.c
-+++ b/tests/i915/i915_module_load.c
-@@ -228,7 +228,7 @@ static void gem_sanitycheck(void)
- {
- 	struct drm_i915_gem_busy args = {};
- 	int i915 = __drm_open_driver(DRIVER_INTEL);
--	int expected = gem_has_lmem(i915) ? -ENODEV : -ENOENT;
-+	int expected = -ENOENT;
- 	int err;
+diff --git a/tests/kms_color.c b/tests/kms_color.c
+index e4dc2465..1902cd0c 100644
+--- a/tests/kms_color.c
++++ b/tests/kms_color.c
+@@ -472,9 +472,6 @@ static bool test_pipe_ctm(data_t *data,
  
- 	err = 0;
+ 	igt_require(igt_pipe_obj_has_prop(primary->pipe, IGT_CRTC_CTM));
+ 
+-	degamma_linear = generate_table(data->degamma_lut_size, 1.0);
+-	gamma_linear = generate_table(data->gamma_lut_size, 1.0);
+-
+ 	igt_output_set_pipe(output, primary->pipe->pipe);
+ 	igt_output_override_mode(output, mode);
+ 
+@@ -502,6 +499,12 @@ static bool test_pipe_ctm(data_t *data,
+ 	 * rounding issues and inaccuracies leading to crc mismatch.
+ 	 */
+ 	if (memcmp(before, after, sizeof(color_t))) {
++		igt_require(igt_pipe_obj_has_prop(primary->pipe, IGT_CRTC_DEGAMMA_LUT));
++		igt_require(igt_pipe_obj_has_prop(primary->pipe, IGT_CRTC_GAMMA_LUT));
++
++		degamma_linear = generate_table(data->degamma_lut_size, 1.0);
++		gamma_linear = generate_table(data->gamma_lut_size, 1.0);
++
+ 		set_degamma(data, primary->pipe, degamma_linear);
+ 		set_gamma(data, primary->pipe, gamma_linear);
+ 	} else {
 -- 
-2.38.1
+2.35.1
