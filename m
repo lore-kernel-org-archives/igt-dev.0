@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C260310E2EA
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3CB4010E2C5
  for <igt-dev@lists.freedesktop.org>; Mon,  7 Nov 2022 08:53:11 +0000 (UTC)
 From: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Mon,  7 Nov 2022 00:52:55 -0800
-Message-Id: <20221107085256.17293-13-niranjana.vishwanathapura@intel.com>
+Date: Mon,  7 Nov 2022 00:52:48 -0800
+Message-Id: <20221107085256.17293-6-niranjana.vishwanathapura@intel.com>
 In-Reply-To: <20221107085256.17293-1-niranjana.vishwanathapura@intel.com>
 References: <20221107085256.17293-1-niranjana.vishwanathapura@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v6 12/13] tests/i915/vm_bind: Add
- gem_lmem_swapping@vm_bind sub test
+Subject: [igt-dev] [PATCH i-g-t v6 05/13] lib/vm_bind: Add vm_bind specific
+ library functions
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,251 +26,118 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Validate eviction of objects with persistent mappings and
-check persistent mappings are properly rebound upon subsequent
-execbuf3 call.
-
-TODO: Add a new swapping test with just vm_bind mode
-      (without legacy execbuf).
-
-v2: use i915_vm_bind library functions
-v3: fix dg2 alignment issue
+Add vm_bind specific library interfaces.
 
 Reviewed-by: Matthew Auld <matthew.auld@intel.com>
 Signed-off-by: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
 ---
- tests/i915/gem_lmem_swapping.c | 134 ++++++++++++++++++++++++++++++++-
- 1 file changed, 133 insertions(+), 1 deletion(-)
+ lib/i915/i915_vm_bind.c | 61 +++++++++++++++++++++++++++++++++++++++++
+ lib/i915/i915_vm_bind.h | 16 +++++++++++
+ lib/meson.build         |  1 +
+ 3 files changed, 78 insertions(+)
+ create mode 100644 lib/i915/i915_vm_bind.c
+ create mode 100644 lib/i915/i915_vm_bind.h
 
-diff --git a/tests/i915/gem_lmem_swapping.c b/tests/i915/gem_lmem_swapping.c
-index cccdb3195..a9e2c5067 100644
---- a/tests/i915/gem_lmem_swapping.c
-+++ b/tests/i915/gem_lmem_swapping.c
-@@ -3,12 +3,16 @@
-  * Copyright © 2021 Intel Corporation
-  */
- 
-+#include <poll.h>
+diff --git a/lib/i915/i915_vm_bind.c b/lib/i915/i915_vm_bind.c
+new file mode 100644
+index 000000000..5624f589b
+--- /dev/null
++++ b/lib/i915/i915_vm_bind.c
+@@ -0,0 +1,61 @@
++// SPDX-License-Identifier: MIT
++/*
++ * Copyright © 2022 Intel Corporation
++ */
 +
- #include "i915/gem.h"
- #include "i915/gem_create.h"
- #include "i915/gem_vm.h"
- #include "i915/intel_memory_region.h"
-+#include "i915/i915_vm_bind.h"
- #include "igt.h"
- #include "igt_kmod.h"
-+#include "igt_syncobj.h"
- #include <unistd.h>
- #include <stdlib.h>
- #include <stdint.h>
-@@ -54,6 +58,7 @@ struct params {
- 		uint64_t max;
- 	} size;
- 	unsigned int count;
-+	unsigned int vm_bind_count;
- 	unsigned int loops;
- 	unsigned int mem_limit;
- #define TEST_VERIFY	(1 << 0)
-@@ -64,15 +69,18 @@ struct params {
- #define TEST_MULTI	(1 << 5)
- #define TEST_CCS	(1 << 6)
- #define TEST_MASSIVE	(1 << 7)
-+#define TEST_VM_BIND	(1 << 8)
- 	unsigned int flags;
- 	unsigned int seed;
- 	bool oom_test;
-+	uint64_t va;
- };
- 
- struct object {
- 	uint64_t size;
- 	uint32_t seed;
- 	uint32_t handle;
-+	uint64_t va;
- 	struct blt_copy_object *blt_obj;
- };
- 
-@@ -278,6 +286,86 @@ verify_object_ccs(int i915, const struct object *obj,
- 	free(cmd);
- }
- 
-+#define BATCH_VA       0xa00000
++#include <errno.h>
++#include <string.h>
++#include <sys/ioctl.h>
 +
-+static uint64_t gettime_ns(void)
++#include "ioctl_wrappers.h"
++#include "i915_drm.h"
++#include "i915_drm_local.h"
++#include "i915_vm_bind.h"
++
++void i915_vm_bind(int i915, uint32_t vm_id, uint64_t va, uint32_t handle,
++		  uint64_t offset, uint64_t length, uint32_t syncobj,
++		  uint64_t fence_value)
 +{
-+	struct timespec current;
-+	clock_gettime(CLOCK_MONOTONIC, &current);
-+	return (uint64_t)current.tv_sec * NSEC_PER_SEC + current.tv_nsec;
-+}
++	struct drm_i915_gem_vm_bind bind;
 +
-+static void vm_bind(int i915, struct object *list, unsigned int num, uint64_t *va,
-+		    uint32_t batch, uint64_t batch_size, uint32_t vm_id)
-+{
-+	uint32_t *bind_syncobj;
-+	uint64_t *fence_value;
-+	unsigned int i;
-+
-+	bind_syncobj = calloc(num + 1, sizeof(*bind_syncobj));
-+	igt_assert(bind_syncobj);
-+
-+	fence_value = calloc(num + 1, sizeof(*fence_value));
-+	igt_assert(fence_value);
-+
-+	for (i = 0; i < num; i++) {
-+		list[i].va = *va;
-+		bind_syncobj[i] = syncobj_create(i915, 0);
-+		i915_vm_bind(i915, vm_id, *va, list[i].handle, 0, list[i].size, bind_syncobj[i], 0);
-+		*va += list[i].size;
-+	}
-+	bind_syncobj[i] = syncobj_create(i915, 0);
-+	i915_vm_bind(i915, vm_id, BATCH_VA, batch, 0, batch_size, bind_syncobj[i], 0);
-+
-+	igt_assert(syncobj_timeline_wait(i915, bind_syncobj, fence_value, num + 1,
-+					 gettime_ns() + (2 * NSEC_PER_SEC),
-+					 DRM_SYNCOBJ_WAIT_FLAGS_WAIT_FOR_SUBMIT, NULL));
-+	for (i = 0; i <= num; i++)
-+		syncobj_destroy(i915, bind_syncobj[i]);
-+}
-+
-+static void vm_unbind(int i915, struct object *list, unsigned int num,
-+		      uint64_t batch_size, uint32_t vm_id)
-+{
-+	unsigned int i;
-+
-+	i915_vm_unbind(i915, vm_id, BATCH_VA, batch_size);
-+	for (i = 0; i < num; i++)
-+		i915_vm_unbind(i915, vm_id, list[i].va, list[i].size);
-+}
-+
-+static void move_to_lmem_execbuf3(int i915,
-+				  const intel_ctx_t *ctx,
-+				  unsigned int engine,
-+				  bool do_oom_test)
-+{
-+	uint32_t exec_syncobj = syncobj_create(i915, 0);
-+	struct drm_i915_gem_timeline_fence exec_fence = {
-+		.handle = exec_syncobj,
-+		.flags = I915_TIMELINE_FENCE_SIGNAL
-+	};
-+	struct drm_i915_gem_execbuffer3 eb = {
-+		.ctx_id = ctx->id,
-+		.batch_address = BATCH_VA,
-+		.engine_idx = engine,
-+		.fence_count = 1,
-+		.timeline_fences = to_user_pointer(&exec_fence),
-+	};
-+	uint64_t fence_value = 0;
-+	int ret;
-+
-+retry:
-+	ret = __gem_execbuf3(i915, &eb);
-+	if (do_oom_test && (ret == -ENOMEM || ret == -ENXIO))
-+		goto retry;
-+	igt_assert_eq(ret, 0);
-+
-+	igt_assert(syncobj_timeline_wait(i915, &exec_syncobj, &fence_value, 1,
-+					 gettime_ns() + (2 * NSEC_PER_SEC),
-+					 DRM_SYNCOBJ_WAIT_FLAGS_WAIT_FOR_SUBMIT, NULL));
-+	syncobj_destroy(i915, exec_syncobj);
-+}
-+
- static void move_to_lmem(int i915,
- 			 const intel_ctx_t *ctx,
- 			 struct object *list,
-@@ -325,14 +413,16 @@ static void __do_evict(int i915,
- 	uint32_t region_id = INTEL_MEMORY_REGION_ID(region->memory_class,
- 						    region->memory_instance);
- 	const unsigned int max_swap_in = params->count / 100 + 1;
-+	uint64_t size, ahnd, batch_size = SZ_64K;
- 	struct object *objects, *obj, *list;
- 	const uint32_t bpp = 32;
- 	uint32_t width, height, stride;
-+	const intel_ctx_t *vm_bind_ctx;
- 	const intel_ctx_t *blt_ctx;
- 	struct blt_copy_object *tmp;
- 	unsigned int engine = 0;
-+	uint32_t batch, vm_id;
- 	unsigned int i, l;
--	uint64_t size, ahnd;
- 	struct timespec t = {};
- 	unsigned int num;
- 
-@@ -416,6 +506,26 @@ static void __do_evict(int i915,
- 		  readable_size(params->size.max), readable_unit(params->size.max),
- 		  params->count, seed);
- 
-+	/* VM_BIND the specified subset of objects (as persistent mappings) */
-+	if (params->flags & TEST_VM_BIND) {
-+		const uint32_t bbe = MI_BATCH_BUFFER_END;
-+		struct drm_i915_gem_context_param param = {
-+			.param = I915_CONTEXT_PARAM_RECOVERABLE,
-+			.value = 0,
-+		};
-+
-+		batch = gem_create_from_pool(i915, &batch_size, region_id);
-+		gem_write(i915, batch, 0, &bbe, sizeof(bbe));
-+
-+		vm_id = gem_vm_create_in_vm_bind_mode(i915);
-+		vm_bind_ctx = intel_ctx_create(i915, &ctx->cfg);
-+		param.ctx_id = vm_bind_ctx->id;
-+		gem_context_set_param(i915, &param);
-+		gem_context_set_vm(i915, vm_bind_ctx->id, vm_id);
-+		vm_bind(i915, objects, params->vm_bind_count, &params->va,
-+			batch, batch_size, vm_id);
++	memset(&bind, 0, sizeof(bind));
++	bind.vm_id = vm_id;
++	bind.handle = handle;
++	bind.start = va;
++	bind.offset = offset;
++	bind.length = length;
++	if (syncobj) {
++		bind.fence.handle = syncobj;
++		bind.fence.value = fence_value;
++		bind.fence.flags = I915_TIMELINE_FENCE_SIGNAL;
 +	}
 +
- 	/*
- 	 * Move random objects back into lmem.
- 	 * For TEST_MULTI runs, make each object counts a loop to
-@@ -454,6 +564,15 @@ static void __do_evict(int i915,
- 		}
- 	}
- 
-+	/* Rebind persistent mappings to ensure they are swapped back in */
-+	if (params->flags & TEST_VM_BIND) {
-+		move_to_lmem_execbuf3(i915, vm_bind_ctx, engine, params->oom_test);
++	gem_vm_bind(i915, &bind);
++}
 +
-+		vm_unbind(i915, objects, params->vm_bind_count, batch_size, vm_id);
-+		intel_ctx_destroy(i915, vm_bind_ctx);
-+		gem_vm_destroy(i915, vm_id);
-+	}
++void i915_vm_unbind(int i915, uint32_t vm_id, uint64_t va, uint64_t length)
++{
++	struct drm_i915_gem_vm_unbind unbind;
 +
- 	for (i = 0; i < params->count; i++) {
- 		gem_close(i915, objects[i].handle);
- 		free(objects[i].blt_obj);
-@@ -553,6 +672,15 @@ static void fill_params(int i915, struct params *params,
- 	if (flags & TEST_HEAVY)
- 		params->loops = params->loops / 2 + 1;
- 
-+	/*
-+	 * Set vm_bind_count and ensure it doesn't over-subscribe LMEM.
-+	 * Set va range to ensure it is big enough for all bindings in a VM.
-+	 */
-+	if (flags & TEST_VM_BIND) {
-+		params->vm_bind_count = params->count / 3;
-+		params->va = (uint64_t)params->vm_bind_count * size * 4;
-+	}
++	memset(&unbind, 0, sizeof(unbind));
++	unbind.vm_id = vm_id;
++	unbind.start = va;
++	unbind.length = length;
 +
- 	params->flags = flags;
- 	params->oom_test = do_oom_test;
- 
-@@ -583,6 +711,9 @@ static void test_evict(int i915,
- 	if (flags & TEST_CCS)
- 		igt_require(IS_DG2(intel_get_drm_devid(i915)));
- 
-+	if (flags & TEST_VM_BIND)
-+		igt_require(i915_vm_bind_version(i915) == 1);
++	gem_vm_unbind(i915, &unbind);
++}
 +
- 	fill_params(i915, &params, region, flags, nproc, false);
- 
- 	if (flags & TEST_PARALLEL) {
-@@ -764,6 +895,7 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
- 		{ "heavy-verify-random-ccs", TEST_CCS | TEST_RANDOM | TEST_HEAVY },
- 		{ "heavy-verify-multi-ccs", TEST_CCS | TEST_RANDOM | TEST_HEAVY | TEST_ENGINES | TEST_MULTI },
- 		{ "parallel-random-verify-ccs", TEST_PARALLEL | TEST_RANDOM | TEST_CCS },
-+		{ "vm_bind", TEST_VM_BIND },
- 		{ }
- 	};
- 	const intel_ctx_t *ctx;
++int i915_vm_bind_version(int i915)
++{
++	struct drm_i915_getparam gp;
++	int value = 0;
++
++	memset(&gp, 0, sizeof(gp));
++	gp.param = I915_PARAM_VM_BIND_VERSION;
++	gp.value = &value;
++
++	ioctl(i915, DRM_IOCTL_I915_GETPARAM, &gp, sizeof(gp));
++	errno = 0;
++
++	return value;
++}
+diff --git a/lib/i915/i915_vm_bind.h b/lib/i915/i915_vm_bind.h
+new file mode 100644
+index 000000000..46a382c03
+--- /dev/null
++++ b/lib/i915/i915_vm_bind.h
+@@ -0,0 +1,16 @@
++/* SPDX-License-Identifier: MIT */
++/*
++ * Copyright © 2022 Intel Corporation
++ */
++#ifndef _I915_VM_BIND_H_
++#define _I915_VM_BIND_H_
++
++#include <stdint.h>
++
++void i915_vm_bind(int i915, uint32_t vm_id, uint64_t va, uint32_t handle,
++		  uint64_t offset, uint64_t length, uint32_t syncobj,
++		  uint64_t fence_value);
++void i915_vm_unbind(int i915, uint32_t vm_id, uint64_t va, uint64_t length);
++int i915_vm_bind_version(int i915);
++
++#endif /* _I915_VM_BIND_ */
+diff --git a/lib/meson.build b/lib/meson.build
+index ac7126fbf..154f674cb 100644
+--- a/lib/meson.build
++++ b/lib/meson.build
+@@ -14,6 +14,7 @@ lib_sources = [
+ 	'i915/intel_mocs.c',
+ 	'i915/i915_blt.c',
+ 	'i915/i915_crc.c',
++	'i915/i915_vm_bind.c',
+ 	'igt_collection.c',
+ 	'igt_color_encoding.c',
+ 	'igt_crc.c',
 -- 
 2.21.0.rc0.32.g243a4c7e27
