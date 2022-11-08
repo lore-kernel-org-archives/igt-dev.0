@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 12C8810E24E
- for <igt-dev@lists.freedesktop.org>; Tue,  8 Nov 2022 10:07:41 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9BAE310E3CC
+ for <igt-dev@lists.freedesktop.org>; Tue,  8 Nov 2022 10:07:42 +0000 (UTC)
 From: Petri Latvala <petri.latvala@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue,  8 Nov 2022 12:07:29 +0200
-Message-Id: <20221108100733.2378106-2-petri.latvala@intel.com>
+Date: Tue,  8 Nov 2022 12:07:30 +0200
+Message-Id: <20221108100733.2378106-3-petri.latvala@intel.com>
 In-Reply-To: <20221108100733.2378106-1-petri.latvala@intel.com>
 References: <20221108100733.2378106-1-petri.latvala@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v2 2/6] igt_core: Split too long log lines
- when sending to runner with comms
+Subject: [igt-dev] [PATCH i-g-t 3/6] runner: Continue using socket comms
+ when getting an invalid packet
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,58 +24,44 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Especially with file dumps a single log packet could exceed the max
-size of a UNIX datagram. Split too long log chunks instead.
-
-v2: Use while loop instead of recursion (Kamil).
+If a packet of invalid size is received, inject a message in the dump,
+override result to warn, and continue grabbing packets.
 
 Signed-off-by: Petri Latvala <petri.latvala@intel.com>
 Cc: Arkadiusz Hiler <arek@hiler.eu>
 Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 ---
- lib/igt_core.c | 23 ++++++++++++++++++++++-
- 1 file changed, 22 insertions(+), 1 deletion(-)
+ runner/executor.c | 15 +++++++++++++--
+ 1 file changed, 13 insertions(+), 2 deletions(-)
 
-diff --git a/lib/igt_core.c b/lib/igt_core.c
-index 3941c528..cab5f860 100644
---- a/lib/igt_core.c
-+++ b/lib/igt_core.c
-@@ -457,6 +457,27 @@ static void _igt_log_buffer_reset(void)
- 	pthread_mutex_unlock(&log_buffer_mutex);
- }
+diff --git a/runner/executor.c b/runner/executor.c
+index 7fa932ac..c5f03614 100644
+--- a/runner/executor.c
++++ b/runner/executor.c
+@@ -1082,10 +1082,21 @@ static int monitor_output(pid_t child,
  
-+static void _log_to_runner_split(int stream, const char *str)
-+{
-+	size_t limit = 4096;
-+	char *buf = NULL;
+ 				packet = (struct runnerpacket *)buf;
+ 				if (s < sizeof(*packet) || s != packet->size) {
++					struct runnerpacket *message, *override;
 +
-+	while (strlen(str) > limit) {
-+		if (!buf)
-+			buf = malloc(limit + 1);
+ 					errf("Socket communication error: Received %zd bytes, expected %zd\n",
+ 					     s, s >= sizeof(packet->size) ? packet->size : sizeof(*packet));
+-					close(socketfd);
+-					socketfd = -1;
++					message = runnerpacket_log(STDOUT_FILENO,
++								   "\nrunner: Socket communication error, invalid packet size. "
++								   "Packet is discarded, test result and logs might be incorrect.\n");
++					write_packet_with_canary(outputs[_F_SOCKET], message, false);
++					free(message);
 +
-+		strncpy(buf, str, limit);
-+		buf[limit] = '\0';
++					override = runnerpacket_resultoverride("warn");
++					write_packet_with_canary(outputs[_F_SOCKET], override, settings->sync);
++					free(override);
 +
-+		send_to_runner(runnerpacket_log(stream, buf));
-+
-+		str += limit;
-+	}
-+
-+	send_to_runner(runnerpacket_log(stream, str));
-+	free(buf);
-+}
-+
- __attribute__((format(printf, 2, 3)))
- static void _log_line_fprintf(FILE* stream, const char *format, ...)
- {
-@@ -467,7 +488,7 @@ static void _log_line_fprintf(FILE* stream, const char *format, ...)
++					/* Continue using socket comms, hope for the best. */
+ 					goto socket_end;
+ 				}
  
- 	if (runner_connected()) {
- 		vasprintf(&str, format, ap);
--		send_to_runner(runnerpacket_log(fileno(stream), str));
-+		_log_to_runner_split(fileno(stream), str);
- 		free(str);
- 	} else {
- 		vfprintf(stream, format, ap);
 -- 
 2.30.2
