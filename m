@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 52ED210E288
- for <igt-dev@lists.freedesktop.org>; Tue,  8 Nov 2022 12:58:45 +0000 (UTC)
-From: Nidhi Gupta <nidhi1.gupta@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Tue,  8 Nov 2022 18:33:02 +0530
-Message-Id: <1667912583-27297-2-git-send-email-nidhi1.gupta@intel.com>
-In-Reply-To: <1667912583-27297-1-git-send-email-nidhi1.gupta@intel.com>
+Content-Type: multipart/alternative;
+ boundary="===============0229816753104840307=="
+MIME-Version: 1.0
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Nidhi Gupta" <nidhi1.gupta@intel.com>
+Date: Tue, 08 Nov 2022 13:34:38 -0000
+Message-ID: <166791447807.2235.10399556221105095006@emeril.freedesktop.org>
 References: <1667912583-27297-1-git-send-email-nidhi1.gupta@intel.com>
-Subject: [igt-dev] [PATCH 1/2] tests/i915/i915_pm_backlight: Add new subtest
- to validate dual panel backlight
+In-Reply-To: <1667912583-27297-1-git-send-email-nidhi1.gupta@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
+ =?utf-8?q?i915/i915=5Fpm=5Fbacklight=3A_Add_new_subtest_and_test_cleanup?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,326 +17,424 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Nidhi Gupta <nidhi1.gupta@intel.com>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Since driver can now support multiple eDPs and Debugfs structure for
-backlight changed per connector the test should then iterate through
-all eDP connectors.
+--===============0229816753104840307==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Signed-off-by: Nidhi Gupta <nidhi1.gupta@intel.com>
-Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
----
- tests/i915/i915_pm_backlight.c | 208 +++++++++++++++++++++++++++++------------
- 1 file changed, 148 insertions(+), 60 deletions(-)
+== Series Details ==
 
-diff --git a/tests/i915/i915_pm_backlight.c b/tests/i915/i915_pm_backlight.c
-index cafae7f..fdf1315 100644
---- a/tests/i915/i915_pm_backlight.c
-+++ b/tests/i915/i915_pm_backlight.c
-@@ -34,29 +34,39 @@
- #include <errno.h>
- #include <unistd.h>
- #include <time.h>
-+#include "igt_device.h"
-+#include "igt_device_scan.h"
- 
- struct context {
- 	int max;
-+	igt_output_t *output;
-+	char path[PATH_MAX];
- };
- 
-+enum {
-+	TEST_NONE = 0,
-+	TEST_DPMS,
-+	TEST_SUSPEND,
-+};
- 
- #define TOLERANCE 5 /* percent */
--#define BACKLIGHT_PATH "/sys/class/backlight/intel_backlight"
-+#define BACKLIGHT_PATH "/sys/class/backlight"
- 
- #define FADESTEPS 10
- #define FADESPEED 100 /* milliseconds between steps */
- 
-+#define NUM_EDP_OUTPUTS 2
-+
- IGT_TEST_DESCRIPTION("Basic backlight sysfs test");
- 
--static int backlight_read(int *result, const char *fname)
-+static int backlight_read(int *result, const char *fname, struct context *context)
- {
- 	int fd;
- 	char full[PATH_MAX];
--	char dst[64];
-+	char dst[512];
- 	int r, e;
- 
--	igt_assert(snprintf(full, PATH_MAX, "%s/%s", BACKLIGHT_PATH, fname) < PATH_MAX);
--
-+	igt_assert(snprintf(full, PATH_MAX, "%s/%s/%s", BACKLIGHT_PATH, context->path, fname) < PATH_MAX);
- 	fd = open(full, O_RDONLY);
- 	if (fd == -1)
- 		return -errno;
-@@ -73,14 +83,14 @@ static int backlight_read(int *result, const char *fname)
- 	return errno;
- }
- 
--static int backlight_write(int value, const char *fname)
-+static int backlight_write(int value, const char *fname, struct context *context)
- {
- 	int fd;
- 	char full[PATH_MAX];
- 	char src[64];
- 	int len;
- 
--	igt_assert(snprintf(full, PATH_MAX, "%s/%s", BACKLIGHT_PATH, fname) < PATH_MAX);
-+	igt_assert(snprintf(full, PATH_MAX, "%s/%s/%s", BACKLIGHT_PATH, context->path, fname) < PATH_MAX);
- 	fd = open(full, O_WRONLY);
- 	if (fd == -1)
- 		return -errno;
-@@ -100,12 +110,12 @@ static void test_and_verify(struct context *context, int val)
- 	const int tolerance = val * TOLERANCE / 100;
- 	int result;
- 
--	igt_assert_eq(backlight_write(val, "brightness"), 0);
--	igt_assert_eq(backlight_read(&result, "brightness"), 0);
-+	igt_assert_eq(backlight_write(val, "brightness", context), 0);
-+	igt_assert_eq(backlight_read(&result, "brightness", context), 0);
- 	/* Check that the exact value sticks */
- 	igt_assert_eq(result, val);
- 
--	igt_assert_eq(backlight_read(&result, "actual_brightness"), 0);
-+	igt_assert_eq(backlight_read(&result, "actual_brightness", context), 0);
- 	/* Some rounding may happen depending on hw */
- 	igt_assert_f(result >= max(0, val - tolerance) &&
- 		     result <= min(context->max, val + tolerance),
-@@ -124,16 +134,16 @@ static void test_bad_brightness(struct context *context)
- {
- 	int val;
- 	/* First write some sane value */
--	backlight_write(context->max / 2, "brightness");
-+	backlight_write(context->max / 2, "brightness", context);
- 	/* Writing invalid values should fail and not change the value */
--	igt_assert_lt(backlight_write(-1, "brightness"), 0);
--	backlight_read(&val, "brightness");
-+	igt_assert_lt(backlight_write(-1, "brightness", context), 0);
-+	backlight_read(&val, "brightness", context);
- 	igt_assert_eq(val, context->max / 2);
--	igt_assert_lt(backlight_write(context->max + 1, "brightness"), 0);
--	backlight_read(&val, "brightness");
-+	igt_assert_lt(backlight_write(context->max + 1, "brightness", context), 0);
-+	backlight_read(&val, "brightness", context);
- 	igt_assert_eq(val, context->max / 2);
--	igt_assert_lt(backlight_write(INT_MAX, "brightness"), 0);
--	backlight_read(&val, "brightness");
-+	igt_assert_lt(backlight_write(INT_MAX, "brightness", context), 0);
-+	backlight_read(&val, "brightness", context);
- 	igt_assert_eq(val, context->max / 2);
- }
- 
-@@ -179,21 +189,57 @@ test_fade_with_suspend(struct context *context, igt_output_t *output)
- 	test_fade(context);
- }
- 
-+static void test_cleanup(igt_display_t *display, igt_output_t *output)
-+{
-+	igt_output_set_pipe(output, PIPE_NONE);
-+	igt_display_commit2(display, display->is_atomic ? COMMIT_ATOMIC : COMMIT_LEGACY);
-+	igt_pm_restore_sata_link_power_management();
-+}
-+
-+static void test_setup(igt_display_t display, igt_output_t *output)
-+{
-+	igt_plane_t *primary;
-+	drmModeModeInfo *mode;
-+	struct igt_fb fb;
-+	enum pipe pipe;
-+
-+	igt_display_reset(&display);
-+
-+	for_each_pipe(&display, pipe) {
-+		if (!igt_pipe_connector_valid(pipe, output))
-+			continue;
-+
-+		igt_output_set_pipe(output, pipe);
-+		mode = igt_output_get_mode(output);
-+
-+		igt_create_pattern_fb(display.drm_fd,
-+				      mode->hdisplay, mode->vdisplay,
-+				      DRM_FORMAT_XRGB8888,
-+				      DRM_FORMAT_MOD_LINEAR, &fb);
-+		primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
-+		igt_plane_set_fb(primary, &fb);
-+
-+		igt_display_commit2(&display, display.is_atomic ? COMMIT_ATOMIC : COMMIT_LEGACY);
-+		igt_pm_enable_sata_link_power_management();
-+
-+		break;
-+	}
-+}
-+
- igt_main
- {
--	struct context context = {0};
--	int old;
-+	int old, fd;
-+	int i = 0;
- 	igt_display_t display;
- 	igt_output_t *output;
--	struct igt_fb fb;
-+	char file_path_n[PATH_MAX] = "";
-+	bool dual_edp = false;
-+	struct context contexts[NUM_EDP_OUTPUTS];
- 
- 	igt_fixture {
--		enum pipe pipe;
- 		bool found = false;
- 		char full_name[32] = {};
- 		char *name;
--		drmModeModeInfo *mode;
--		igt_plane_t *primary;
- 
- 		/*
- 		 * Backlight tests requires the output to be enabled,
-@@ -202,56 +248,98 @@ igt_main
- 		kmstest_set_vt_graphics_mode();
- 		igt_display_require(&display, drm_open_driver(DRIVER_INTEL));
- 
--		/* Get the max value and skip the whole test if sysfs interface not available */
--		igt_skip_on(backlight_read(&old, "brightness"));
--		igt_assert(backlight_read(&context.max, "max_brightness") > -1);
-+		for_each_connected_output(&display, output) {
-+			if (output->config.connector->connector_type != DRM_MODE_CONNECTOR_eDP)
-+				continue;
- 
--		/* should be ../../cardX-$output */
--		igt_assert_lt(12, readlink(BACKLIGHT_PATH "/device", full_name, sizeof(full_name) - 1));
--		name = basename(full_name);
-+			if (found)
-+				snprintf(file_path_n, PATH_MAX, "%s/card%i-%s-backlight/brightness",
-+					 BACKLIGHT_PATH, igt_device_get_card_index(display.drm_fd),
-+					 igt_output_name(output));
-+			else
-+				snprintf(file_path_n, PATH_MAX, "%s/intel_backlight/brightness", BACKLIGHT_PATH);
- 
--		for_each_pipe_with_valid_output(&display, pipe, output) {
--			if (strcmp(name + 6, output->name))
-+			fd = open(file_path_n, O_RDONLY);
-+			if (fd == -1) {
- 				continue;
--			found = true;
--			break;
-+			}
-+			if (found)
-+				snprintf(contexts[i].path, PATH_MAX, "card%i-%s-backlight",
-+					 igt_device_get_card_index(display.drm_fd),
-+					 igt_output_name(output));
-+			else
-+				snprintf(contexts[i].path, PATH_MAX, "intel_backlight");
-+
-+			close(fd);
-+
-+			/* should be ../../cardX-$output */
-+			snprintf(file_path_n, PATH_MAX, "%s/%s/device", BACKLIGHT_PATH, contexts[i].path);
-+			igt_assert_lt(16, readlink(file_path_n, full_name, sizeof(full_name) - 1));
-+			name = basename(full_name);
-+
-+			if (!strcmp(name + 6, output->name)) {
-+				contexts[i++].output = output;
-+
-+				if (found)
-+					dual_edp = true;
-+				else
-+					found = true;
-+			}
- 		}
-+		igt_require_f(found, "No valid output found.\n");
-+	}
- 
--		igt_require_f(found,
--			      "Could not map backlight for \"%s\" to connected output\n",
--			      name);
--
--		igt_output_set_pipe(output, pipe);
--		mode = igt_output_get_mode(output);
--
--		igt_create_pattern_fb(display.drm_fd,
--				      mode->hdisplay, mode->vdisplay,
--				      DRM_FORMAT_XRGB8888,
--				      DRM_FORMAT_MOD_LINEAR, &fb);
--		primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
--		igt_plane_set_fb(primary, &fb);
-+	igt_subtest("basic-brightness") {
-+		for (int j = 0; j < (dual_edp ? 2 : 1); j++) {
-+			test_setup(display, &contexts->output[j]);
-+			igt_assert(backlight_read(&contexts[j].max, "max_brightness", &contexts[j]) > -1);
-+			test_brightness(&contexts[j]);
-+			test_cleanup(&display, output);
-+		}
-+	}
- 
--		igt_display_commit2(&display, display.is_atomic ? COMMIT_ATOMIC : COMMIT_LEGACY);
--		igt_pm_enable_sata_link_power_management();
-+	igt_subtest("bad-brightness") {
-+		for (int j = 0; j < (dual_edp ? 2 : 1); j++) {
-+			test_setup(display, &contexts->output[j]);
-+			igt_assert(backlight_read(&contexts[j].max, "max_brightness", &contexts[j]) > -1);
-+			test_bad_brightness(&contexts[j]);
-+			test_cleanup(&display, output);
-+		}
-+	}
-+	igt_subtest("fade") {
-+		for (int j = 0; j < (dual_edp ? 2 : 1); j++) {
-+			test_setup(display, &contexts->output[j]);
-+			igt_assert(backlight_read(&contexts[j].max, "max_brightness", &contexts[j]) > -1);
-+			test_fade(&contexts[j]);
-+			test_cleanup(&display, output);
-+		}
- 	}
-+	igt_subtest("fade_with_dpms") {
-+		for (int j = 0; j < (dual_edp ? 2 : 1); j++) {
-+			test_setup(display, &contexts->output[j]);
-+			igt_assert(backlight_read(&contexts[j].max, "max_brightness", &contexts[j]) > -1);
-+			test_fade_with_dpms(&contexts[j], output);
-+			test_cleanup(&display, output);
-+		}
-+	}
-+	igt_subtest("fade_with_suspend") {
-+		for (int j = 0; j < (dual_edp ? 2 : 1); j++) {
-+			test_setup(display, &contexts->output[j]);
-+			igt_assert(backlight_read(&contexts[j].max, "max_brightness", &contexts[j]) > -1);
-+			test_fade_with_suspend(&contexts[j], output);
-+			test_cleanup(&display, output);
-+		}
-+	}
-+
- 
--	igt_subtest("basic-brightness")
--		test_brightness(&context);
--	igt_subtest("bad-brightness")
--		test_bad_brightness(&context);
--	igt_subtest("fade")
--		test_fade(&context);
--	igt_subtest("fade_with_dpms")
--		test_fade_with_dpms(&context, output);
--	igt_subtest("fade_with_suspend")
--		test_fade_with_suspend(&context, output);
- 
- 	igt_fixture {
- 		/* Restore old brightness */
--		backlight_write(old, "brightness");
-+		for (int j = 0; j < (dual_edp ? 2 : 1); j++) {
-+			backlight_write(old, "brightness", &contexts[j]);
-+		}
- 
- 		igt_display_fini(&display);
--		igt_remove_fb(display.drm_fd, &fb);
- 		igt_pm_restore_sata_link_power_management();
- 		close(display.drm_fd);
- 	}
--- 
-1.9.1
+Series: tests/i915/i915_pm_backlight: Add new subtest and test cleanup
+URL   : https://patchwork.freedesktop.org/series/110663/
+State : success
+
+== Summary ==
+
+CI Bug Log - changes from CI_DRM_12354 -> IGTPW_8066
+====================================================
+
+Summary
+-------
+
+  **WARNING**
+
+  Minor unknown changes coming with IGTPW_8066 need to be verified
+  manually.
+  
+  If you think the reported changes have nothing to do with the changes
+  introduced in IGTPW_8066, please notify your bug team to allow them
+  to document this new failure mode, which will reduce false positives in CI.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8066/index.html
+
+Participating hosts (40 -> 37)
+------------------------------
+
+  Additional (1): bat-dg1-7 
+  Missing    (4): fi-ctg-p8600 fi-hsw-4770 fi-ilk-m540 fi-bdw-samus 
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in IGTPW_8066:
+
+### IGT changes ###
+
+#### Warnings ####
+
+  * igt@i915_pm_backlight@basic-brightness:
+    - fi-rkl-guc:         [SKIP][1] ([i915#3012]) -> [SKIP][2]
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12354/fi-rkl-guc/igt@i915_pm_backlight@basic-brightness.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8066/fi-rkl-guc/igt@i915_pm_backlight@basic-brightness.html
+    - fi-rkl-11600:       [SKIP][3] ([i915#3012]) -> [SKIP][4]
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12354/fi-rkl-11600/igt@i915_pm_backlight@basic-brightness.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8066/fi-rkl-11600/igt@i915_pm_backlight@basic-brightness.html
+
+  
+#### Suppressed ####
+
+  The following results come from untrusted machines, tests, or statuses.
+  They do not affect the overall result.
+
+  * igt@i915_pm_backlight@basic-brightness:
+    - {bat-dg2-8}:        [SKIP][5] ([i915#1155]) -> [SKIP][6]
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12354/bat-dg2-8/igt@i915_pm_backlight@basic-brightness.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8066/bat-dg2-8/igt@i915_pm_backlight@basic-brightness.html
+    - {bat-rpls-1}:       [SKIP][7] ([i915#1155]) -> [SKIP][8]
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12354/bat-rpls-1/igt@i915_pm_backlight@basic-brightness.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8066/bat-rpls-1/igt@i915_pm_backlight@basic-brightness.html
+    - {bat-rpls-2}:       [SKIP][9] ([i915#1155]) -> [SKIP][10]
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12354/bat-rpls-2/igt@i915_pm_backlight@basic-brightness.html
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8066/bat-rpls-2/igt@i915_pm_backlight@basic-brightness.html
+    - {bat-dg1-7}:        NOTRUN -> [SKIP][11]
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8066/bat-dg1-7/igt@i915_pm_backlight@basic-brightness.html
+    - {bat-dg2-9}:        [SKIP][12] ([i915#1155]) -> [SKIP][13]
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12354/bat-dg2-9/igt@i915_pm_backlight@basic-brightness.html
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8066/bat-dg2-9/igt@i915_pm_backlight@basic-brightness.html
+    - {bat-dg2-11}:       [SKIP][14] ([i915#1155]) -> [SKIP][15]
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12354/bat-dg2-11/igt@i915_pm_backlight@basic-brightness.html
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8066/bat-dg2-11/igt@i915_pm_backlight@basic-brightness.html
+
+  * igt@i915_selftest@live@hangcheck:
+    - {bat-dg1-7}:        NOTRUN -> [INCOMPLETE][16]
+   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8066/bat-dg1-7/igt@i915_selftest@live@hangcheck.html
+
+  
+New tests
+---------
+
+  New tests have been introduced between CI_DRM_12354 and IGTPW_8066:
+
+### New IGT tests (1) ###
+
+  * igt@i915_pm_backlight@basic-brightness@edp-1:
+    - Statuses : 10 pass(s)
+    - Exec time: [0.01, 0.24] s
+
+  
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_8066 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@i915_pm_backlight@basic-brightness:
+    - fi-bxt-dsi:         [PASS][17] -> [SKIP][18] ([fdo#109271])
+   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12354/fi-bxt-dsi/igt@i915_pm_backlight@basic-brightness.html
+   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8066/fi-bxt-dsi/igt@i915_pm_backlight@basic-brightness.html
+    - fi-snb-2520m:       [PASS][19] -> [SKIP][20] ([fdo#109271])
+   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12354/fi-snb-2520m/igt@i915_pm_backlight@basic-brightness.html
+   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8066/fi-snb-2520m/igt@i915_pm_backlight@basic-brightness.html
+
+  * igt@i915_pm_rpm@basic-pci-d3-state:
+    - bat-adlp-4:         [PASS][21] -> [DMESG-WARN][22] ([i915#7077])
+   [21]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12354/bat-adlp-4/igt@i915_pm_rpm@basic-pci-d3-state.html
+   [22]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8066/bat-adlp-4/igt@i915_pm_rpm@basic-pci-d3-state.html
+
+  * igt@i915_suspend@basic-s2idle-without-i915:
+    - fi-bdw-gvtdvm:      NOTRUN -> [INCOMPLETE][23] ([i915#146])
+   [23]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8066/fi-bdw-gvtdvm/igt@i915_suspend@basic-s2idle-without-i915.html
+
+  * igt@kms_chamelium@hdmi-hpd-fast:
+    - fi-bdw-gvtdvm:      NOTRUN -> [SKIP][24] ([fdo#109271] / [fdo#111827]) +7 similar issues
+   [24]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8066/fi-bdw-gvtdvm/igt@kms_chamelium@hdmi-hpd-fast.html
+
+  * igt@kms_flip@basic-plain-flip:
+    - fi-bdw-gvtdvm:      NOTRUN -> [SKIP][25] ([fdo#109271]) +31 similar issues
+   [25]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8066/fi-bdw-gvtdvm/igt@kms_flip@basic-plain-flip.html
+
+  * igt@runner@aborted:
+    - bat-adlp-4:         NOTRUN -> [FAIL][26] ([i915#4312])
+   [26]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8066/bat-adlp-4/igt@runner@aborted.html
+
+  
+#### Possible fixes ####
+
+  * igt@gem_exec_parallel@engines@contexts:
+    - fi-bdw-gvtdvm:      [INCOMPLETE][27] -> [PASS][28]
+   [27]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12354/fi-bdw-gvtdvm/igt@gem_exec_parallel@engines@contexts.html
+   [28]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8066/fi-bdw-gvtdvm/igt@gem_exec_parallel@engines@contexts.html
+
+  * igt@gem_linear_blits@basic:
+    - fi-pnv-d510:        [SKIP][29] ([fdo#109271]) -> [PASS][30]
+   [29]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12354/fi-pnv-d510/igt@gem_linear_blits@basic.html
+   [30]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8066/fi-pnv-d510/igt@gem_linear_blits@basic.html
+
+  * igt@i915_selftest@live@gt_heartbeat:
+    - fi-apl-guc:         [DMESG-FAIL][31] ([i915#5334]) -> [PASS][32]
+   [31]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12354/fi-apl-guc/igt@i915_selftest@live@gt_heartbeat.html
+   [32]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8066/fi-apl-guc/igt@i915_selftest@live@gt_heartbeat.html
+
+  * igt@i915_selftest@live@migrate:
+    - {bat-adlp-6}:       [INCOMPLETE][33] ([i915#7348]) -> [PASS][34]
+   [33]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12354/bat-adlp-6/igt@i915_selftest@live@migrate.html
+   [34]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8066/bat-adlp-6/igt@i915_selftest@live@migrate.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [fdo#109285]: https://bugs.freedesktop.org/show_bug.cgi?id=109285
+  [fdo#111827]: https://bugs.freedesktop.org/show_bug.cgi?id=111827
+  [i915#1072]: https://gitlab.freedesktop.org/drm/intel/issues/1072
+  [i915#1155]: https://gitlab.freedesktop.org/drm/intel/issues/1155
+  [i915#146]: https://gitlab.freedesktop.org/drm/intel/issues/146
+  [i915#2867]: https://gitlab.freedesktop.org/drm/intel/issues/2867
+  [i915#3012]: https://gitlab.freedesktop.org/drm/intel/issues/3012
+  [i915#3555]: https://gitlab.freedesktop.org/drm/intel/issues/3555
+  [i915#3708]: https://gitlab.freedesktop.org/drm/intel/issues/3708
+  [i915#4077]: https://gitlab.freedesktop.org/drm/intel/issues/4077
+  [i915#4079]: https://gitlab.freedesktop.org/drm/intel/issues/4079
+  [i915#4083]: https://gitlab.freedesktop.org/drm/intel/issues/4083
+  [i915#4103]: https://gitlab.freedesktop.org/drm/intel/issues/4103
+  [i915#4212]: https://gitlab.freedesktop.org/drm/intel/issues/4212
+  [i915#4213]: https://gitlab.freedesktop.org/drm/intel/issues/4213
+  [i915#4215]: https://gitlab.freedesktop.org/drm/intel/issues/4215
+  [i915#4258]: https://gitlab.freedesktop.org/drm/intel/issues/4258
+  [i915#4312]: https://gitlab.freedesktop.org/drm/intel/issues/4312
+  [i915#4873]: https://gitlab.freedesktop.org/drm/intel/issues/4873
+  [i915#5334]: https://gitlab.freedesktop.org/drm/intel/issues/5334
+  [i915#6367]: https://gitlab.freedesktop.org/drm/intel/issues/6367
+  [i915#6434]: https://gitlab.freedesktop.org/drm/intel/issues/6434
+  [i915#6621]: https://gitlab.freedesktop.org/drm/intel/issues/6621
+  [i915#6687]: https://gitlab.freedesktop.org/drm/intel/issues/6687
+  [i915#6997]: https://gitlab.freedesktop.org/drm/intel/issues/6997
+  [i915#7029]: https://gitlab.freedesktop.org/drm/intel/issues/7029
+  [i915#7077]: https://gitlab.freedesktop.org/drm/intel/issues/7077
+  [i915#7346]: https://gitlab.freedesktop.org/drm/intel/issues/7346
+  [i915#7348]: https://gitlab.freedesktop.org/drm/intel/issues/7348
+  [i915#7355]: https://gitlab.freedesktop.org/drm/intel/issues/7355
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_7047 -> IGTPW_8066
+
+  CI-20190529: 20190529
+  CI_DRM_12354: ee91a500e2dc4a8b28c9e90a81e70767e6630301 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_8066: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8066/index.html
+  IGT_7047: 9cea1d05f492429a6d793995b87081e87a94b492 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+
+Testlist changes
+----------------
+
++igt@i915_pm_backlight@fade-with-dpms
++igt@i915_pm_backlight@fade-with-suspend
+-igt@i915_pm_backlight@fade_with_dpms
+-igt@i915_pm_backlight@fade_with_suspend
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8066/index.html
+
+--===============0229816753104840307==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/i915/i915_pm_backlight: Add new subtest and test cleanup</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/110663/">https://patchwork.freedesktop.org/series/110663/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8066/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8066/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_12354 -&gt; IGTPW_8066</h1>
+<h2>Summary</h2>
+<p><strong>WARNING</strong></p>
+<p>Minor unknown changes coming with IGTPW_8066 need to be verified<br />
+  manually.</p>
+<p>If you think the reported changes have nothing to do with the changes<br />
+  introduced in IGTPW_8066, please notify your bug team to allow them<br />
+  to document this new failure mode, which will reduce false positives in CI.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8066/index.html</p>
+<h2>Participating hosts (40 -&gt; 37)</h2>
+<p>Additional (1): bat-dg1-7 <br />
+  Missing    (4): fi-ctg-p8600 fi-hsw-4770 fi-ilk-m540 fi-bdw-samus </p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in IGTPW_8066:</p>
+<h3>IGT changes</h3>
+<h4>Warnings</h4>
+<ul>
+<li>
+<p>igt@i915_pm_backlight@basic-brightness:</p>
+<ul>
+<li>
+<p>fi-rkl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12354/fi-rkl-guc/igt@i915_pm_backlight@basic-brightness.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3012">i915#3012</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8066/fi-rkl-guc/igt@i915_pm_backlight@basic-brightness.html">SKIP</a></p>
+</li>
+<li>
+<p>fi-rkl-11600:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12354/fi-rkl-11600/igt@i915_pm_backlight@basic-brightness.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3012">i915#3012</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8066/fi-rkl-11600/igt@i915_pm_backlight@basic-brightness.html">SKIP</a></p>
+</li>
+</ul>
+</li>
+</ul>
+<h4>Suppressed</h4>
+<p>The following results come from untrusted machines, tests, or statuses.<br />
+  They do not affect the overall result.</p>
+<ul>
+<li>
+<p>igt@i915_pm_backlight@basic-brightness:</p>
+<ul>
+<li>
+<p>{bat-dg2-8}:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12354/bat-dg2-8/igt@i915_pm_backlight@basic-brightness.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1155">i915#1155</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8066/bat-dg2-8/igt@i915_pm_backlight@basic-brightness.html">SKIP</a></p>
+</li>
+<li>
+<p>{bat-rpls-1}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12354/bat-rpls-1/igt@i915_pm_backlight@basic-brightness.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1155">i915#1155</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8066/bat-rpls-1/igt@i915_pm_backlight@basic-brightness.html">SKIP</a></p>
+</li>
+<li>
+<p>{bat-rpls-2}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12354/bat-rpls-2/igt@i915_pm_backlight@basic-brightness.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1155">i915#1155</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8066/bat-rpls-2/igt@i915_pm_backlight@basic-brightness.html">SKIP</a></p>
+</li>
+<li>
+<p>{bat-dg1-7}:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8066/bat-dg1-7/igt@i915_pm_backlight@basic-brightness.html">SKIP</a></p>
+</li>
+<li>
+<p>{bat-dg2-9}:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12354/bat-dg2-9/igt@i915_pm_backlight@basic-brightness.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1155">i915#1155</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8066/bat-dg2-9/igt@i915_pm_backlight@basic-brightness.html">SKIP</a></p>
+</li>
+<li>
+<p>{bat-dg2-11}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12354/bat-dg2-11/igt@i915_pm_backlight@basic-brightness.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1155">i915#1155</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8066/bat-dg2-11/igt@i915_pm_backlight@basic-brightness.html">SKIP</a></p>
+</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@hangcheck:</p>
+<ul>
+<li>{bat-dg1-7}:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8066/bat-dg1-7/igt@i915_selftest@live@hangcheck.html">INCOMPLETE</a></li>
+</ul>
+</li>
+</ul>
+<h2>New tests</h2>
+<p>New tests have been introduced between CI_DRM_12354 and IGTPW_8066:</p>
+<h3>New IGT tests (1)</h3>
+<ul>
+<li>igt@i915_pm_backlight@basic-brightness@edp-1:<ul>
+<li>Statuses : 10 pass(s)</li>
+<li>Exec time: [0.01, 0.24] s</li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_8066 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@i915_pm_backlight@basic-brightness:</p>
+<ul>
+<li>
+<p>fi-bxt-dsi:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12354/fi-bxt-dsi/igt@i915_pm_backlight@basic-brightness.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8066/fi-bxt-dsi/igt@i915_pm_backlight@basic-brightness.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>)</p>
+</li>
+<li>
+<p>fi-snb-2520m:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12354/fi-snb-2520m/igt@i915_pm_backlight@basic-brightness.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8066/fi-snb-2520m/igt@i915_pm_backlight@basic-brightness.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>)</p>
+</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_pm_rpm@basic-pci-d3-state:</p>
+<ul>
+<li>bat-adlp-4:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12354/bat-adlp-4/igt@i915_pm_rpm@basic-pci-d3-state.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8066/bat-adlp-4/igt@i915_pm_rpm@basic-pci-d3-state.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7077">i915#7077</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_suspend@basic-s2idle-without-i915:</p>
+<ul>
+<li>fi-bdw-gvtdvm:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8066/fi-bdw-gvtdvm/igt@i915_suspend@basic-s2idle-without-i915.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/146">i915#146</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_chamelium@hdmi-hpd-fast:</p>
+<ul>
+<li>fi-bdw-gvtdvm:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8066/fi-bdw-gvtdvm/igt@kms_chamelium@hdmi-hpd-fast.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://bugs.freedesktop.org/show_bug.cgi?id=111827">fdo#111827</a>) +7 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@basic-plain-flip:</p>
+<ul>
+<li>fi-bdw-gvtdvm:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8066/fi-bdw-gvtdvm/igt@kms_flip@basic-plain-flip.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +31 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@runner@aborted:</p>
+<ul>
+<li>bat-adlp-4:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8066/bat-adlp-4/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4312">i915#4312</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@gem_exec_parallel@engines@contexts:</p>
+<ul>
+<li>fi-bdw-gvtdvm:      <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12354/fi-bdw-gvtdvm/igt@gem_exec_parallel@engines@contexts.html">INCOMPLETE</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8066/fi-bdw-gvtdvm/igt@gem_exec_parallel@engines@contexts.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@gem_linear_blits@basic:</p>
+<ul>
+<li>fi-pnv-d510:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12354/fi-pnv-d510/igt@gem_linear_blits@basic.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8066/fi-pnv-d510/igt@gem_linear_blits@basic.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@gt_heartbeat:</p>
+<ul>
+<li>fi-apl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12354/fi-apl-guc/igt@i915_selftest@live@gt_heartbeat.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5334">i915#5334</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8066/fi-apl-guc/igt@i915_selftest@live@gt_heartbeat.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@migrate:</p>
+<ul>
+<li>{bat-adlp-6}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12354/bat-adlp-6/igt@i915_selftest@live@migrate.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7348">i915#7348</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8066/bat-adlp-6/igt@i915_selftest@live@migrate.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_7047 -&gt; IGTPW_8066</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_12354: ee91a500e2dc4a8b28c9e90a81e70767e6630301 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_8066: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8066/index.html<br />
+  IGT_7047: 9cea1d05f492429a6d793995b87081e87a94b492 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+<h2>Testlist changes</h2>
+<p>+igt@i915_pm_backlight@fade-with-dpms<br />
++igt@i915_pm_backlight@fade-with-suspend<br />
+-igt@i915_pm_backlight@fade_with_dpms<br />
+-igt@i915_pm_backlight@fade_with_suspend</p>
+
+</body>
+</html>
+
+--===============0229816753104840307==--
