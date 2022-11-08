@@ -1,14 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 537F110E4F5
- for <igt-dev@lists.freedesktop.org>; Tue,  8 Nov 2022 19:01:53 +0000 (UTC)
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DF3AC10E4F5
+ for <igt-dev@lists.freedesktop.org>; Tue,  8 Nov 2022 19:06:07 +0000 (UTC)
 From: Ashutosh Dixit <ashutosh.dixit@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue,  8 Nov 2022 11:01:28 -0800
-Message-Id: <20221108190128.2165396-1-ashutosh.dixit@intel.com>
+Date: Tue,  8 Nov 2022 11:06:03 -0800
+Message-Id: <20221108190603.2174441-1-ashutosh.dixit@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [CI i-g-t] tests/perf_pmu: Try to repro GL #6806
+Subject: [igt-dev] [PATCH i-g-t] tests/perf_pmu: Compare against requested
+ freq in frequency subtest
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,23 +21,24 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-CI ONLY, PLEASE DON'T REVIEW
-
-Try to repro GL #6806 and see what is really happening there since it could
-not be reproduced locally. Also see if the
-https://patchwork.freedesktop.org/series/110574/ will fix the issue.
+In igt@perf_pmu@frequency subtest, compare the requested freq reported by
+PMU not against the set freq but against the requested freq reported in
+sysfs. If requested freq differs from the set freq (even when min == max
+freq) for whatever reason, the sysfs requested freq should be closer to the
+PMU measured requested freq which should minimize sporadic failures.
 
 v2: Introduce a 100 ms delay after setting freq
 
 Bug: https://gitlab.freedesktop.org/drm/intel/-/issues/6806
+Cc: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
 Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
 ---
- tests/i915/perf_pmu.c                 | 20 ++++++++++++++------
+ tests/i915/perf_pmu.c                 | 23 +++++++++++++++--------
  tests/intel-ci/fast-feedback.testlist |  1 +
- 2 files changed, 15 insertions(+), 6 deletions(-)
+ 2 files changed, 16 insertions(+), 8 deletions(-)
 
 diff --git a/tests/i915/perf_pmu.c b/tests/i915/perf_pmu.c
-index f363db2ba13..60679601991 100644
+index f363db2ba13..02f6ae989b1 100644
 --- a/tests/i915/perf_pmu.c
 +++ b/tests/i915/perf_pmu.c
 @@ -1543,10 +1543,13 @@ test_interrupts_sync(int gem_fd)
@@ -107,25 +109,32 @@ index f363db2ba13..60679601991 100644
  	if (igt_sysfs_get_u32(sysfs, "gt_min_freq_mhz") != min_freq)
  		igt_warn("Unable to restore min frequency to saved value [%u MHz], now %u MHz\n",
  			 min_freq, igt_sysfs_get_u32(sysfs, "gt_min_freq_mhz"));
-@@ -1632,6 +1639,7 @@ test_frequency(int gem_fd)
- 		 min[0], min[1]);
+@@ -1633,12 +1640,12 @@ test_frequency(int gem_fd)
  	igt_info("Max frequency: requested %.1f, actual %.1f\n",
  		 max[0], max[1]);
-+	igt_info("Sysfs requested: min %d, max %d\n", min_req, max_req);
  
- 	assert_within_epsilon(min[0], min_freq, tolerance);
+-	assert_within_epsilon(min[0], min_freq, tolerance);
++	assert_within_epsilon(min[0], min_req, tolerance);
  	/*
+ 	 * On thermally throttled devices we cannot be sure maximum frequency
+ 	 * can be reached so use larger tolerance downards.
+ 	 */
+-	__assert_within_epsilon(max[0], max_freq, tolerance, 0.15f);
++	__assert_within_epsilon(max[0], max_req, tolerance, 0.15f);
+ }
+ 
+ static void
 diff --git a/tests/intel-ci/fast-feedback.testlist b/tests/intel-ci/fast-feedback.testlist
-index f57f8ff3be1..a2bb37fb4ae 100644
+index f57f8ff3be1..57cc4cf0a88 100644
 --- a/tests/intel-ci/fast-feedback.testlist
 +++ b/tests/intel-ci/fast-feedback.testlist
-@@ -128,6 +128,7 @@ igt@i915_pm_backlight@basic-brightness
- igt@i915_pm_rpm@basic-pci-d3-state
+@@ -129,6 +129,7 @@ igt@i915_pm_rpm@basic-pci-d3-state
  igt@i915_pm_rpm@basic-rte
  igt@i915_pm_rps@basic-api
-+igt@perf_pmu@frequency
  igt@prime_self_import@basic-llseek-bad
++igt@perf_pmu@frequency
  igt@prime_self_import@basic-llseek-size
  igt@prime_self_import@basic-with_fd_dup
+ igt@prime_self_import@basic-with_one_bo
 -- 
 2.38.0
