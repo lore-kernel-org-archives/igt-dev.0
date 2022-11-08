@@ -1,25 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 037C310E284
- for <igt-dev@lists.freedesktop.org>; Tue,  8 Nov 2022 09:24:17 +0000 (UTC)
-Message-ID: <2225190b-be60-03c0-e84b-56de7c9836f8@linux.intel.com>
-Date: Tue, 8 Nov 2022 09:24:14 +0000
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C24C910E3C8
+ for <igt-dev@lists.freedesktop.org>; Tue,  8 Nov 2022 09:39:38 +0000 (UTC)
+Date: Tue, 8 Nov 2022 11:39:43 +0200
+From: Petri Latvala <petri.latvala@intel.com>
+To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ igt-dev@lists.freedesktop.org, Arkadiusz Hiler <arek@hiler.eu>
+Message-ID: <Y2oj39os69lVwUk/@platvala-desk.ger.corp.intel.com>
+References: <20221107120151.2365523-1-petri.latvala@intel.com>
+ <Y2k2Ju/p+ZTBQ+Dz@kamilkon-desk1>
 MIME-Version: 1.0
-Content-Language: en-US
-To: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>,
- "Belgaumkar, Vinay" <vinay.belgaumkar@intel.com>
-References: <20221107062329.1927534-1-ashutosh.dixit@intel.com>
- <ebfddcea-8427-5d87-83e9-93a1fef024e6@linux.intel.com>
- <87mt92l2nc.wl-ashutosh.dixit@intel.com>
- <87leoml2g4.wl-ashutosh.dixit@intel.com>
- <33646ce6-6692-1244-cb9f-4740105aadef@intel.com>
- <87fseuut9l.wl-ashutosh.dixit@intel.com>
-From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
-In-Reply-To: <87fseuut9l.wl-ashutosh.dixit@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/perf_pmu: Compare against
- requested freq in frequency subtest
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Y2k2Ju/p+ZTBQ+Dz@kamilkon-desk1>
+Subject: Re: [igt-dev] [PATCH i-g-t 1/6] runner: Use a bigger buffer for
+ receiving test outputs
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,81 +22,62 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-
-On 08/11/2022 01:31, Dixit, Ashutosh wrote:
-> On Mon, 07 Nov 2022 16:57:24 -0800, Belgaumkar, Vinay wrote:
->> On 11/7/2022 4:22 PM, Dixit, Ashutosh wrote:
->>> On Mon, 07 Nov 2022 16:18:31 -0800, Dixit, Ashutosh wrote:
->>> Hi Vinay,
->>>
->>> A question for you below.
->>>
->>>> So I submitted this patch to repro the issue and to print out the requested
->>>> freq from sysfs:
->>>>
->>>> https://patchwork.freedesktop.org/series/110630/
->>>>
->>>> And we can see the output here:
->>>>
->>>> https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8061/bat-dg2-11/igt@perf_pmu@frequency.html
->>>>
->>>> ```
->>>> IGT-Version: 1.26-g1bef4d081 (x86_64) (Linux: 6.1.0-rc4-CI_DRM_12352-gc55ac6a74bd1+ x86_64)
->>>> Starting subtest: frequency
->>>> Frequency: min=300, max=2050, boost=2050 MHz
->>>> Min frequency: requested 349.7, actual 349.7
->>>> Max frequency: requested 2048.0, actual 2048.0
->>>> Sysfs requested: min 350, max 2050
->>>> Stack trace:
->>>>     #0 ../../../usr/src/igt-gpu-tools/lib/igt_core.c:1908 __igt_fail_assert()
->>>>     #1 ../../../usr/src/igt-gpu-tools/tests/i915/perf_pmu.c:1656 __igt_unique____real_main2147()
->>>>     #2 ../../../usr/src/igt-gpu-tools/tests/i915/perf_pmu.c:2147 main()
->>>>     #3 [__libc_start_main+0xf3]
->>>>     #4 [_start+0x2e]
->>>> Subtest frequency: FAIL (2.212s)
->>>> ```
->>>>
->>>> So we clearly see the requested freq from sysfs is indeed 350 MHz so
->>>> SLPC/PCODE is not honoring the set min == max == boost freq (and PMU is
->>>> measuring what sysfs is showing). In general PCODE is the final arbiter in
->>>> such cases and we do occasionally see instances where set freq limits are
->>>> not honored.
->>>>
->>>> I would say if igt@perf_pmu@frequency is testing freq measured by PMU then
->>>> the patch below is correct. Whether SLPC/PCODE is honoring the set freq
->>>> limits should be tested in a SLPC test (which we also have).
->>>
->>> igt@perf_pmu@frequency sets 'min == max == boost == 300 MHz' but we still
->>> see the requested freq to be 350 MHz. Do we have a SLPC test covering this
->>> scenario or should we add one? This is failing on one of the DG2's.
->>
->> Does adding a delay help (around 20 ms for the h2g to go through
->> typically)?
+On Mon, Nov 07, 2022 at 05:45:26PM +0100, Kamil Konieczny wrote:
+> Hi Petri,
 > 
-> There is no delay but the test calls gem_quiescent_gpu() after setting 'min
-> == max == boost == 300 MHz' and then launches a spinner. We are checking
-> the requested freq 500 ms after the spinner is started (so plenty of time
-> for the h2g) and still the requested freq is 350 MHz.
+> On 2022-11-07 at 14:01:46 +0200, Petri Latvala wrote:
+> > Stream-based receiving was able to use buffers of any size for read(),
+> > but with datagrams we actually need to prepare for actual sizes. In
+> > practice, some file dumps from tests come as single log packets of a
+> > couple of kB.
+> > 
+> > Signed-off-by: Petri Latvala <petri.latvala@intel.com>
+> > Cc: Arkadiusz Hiler <arek@hiler.eu>
+> > Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> > ---
+> >  runner/executor.c | 14 ++++++++++----
+> >  1 file changed, 10 insertions(+), 4 deletions(-)
+> > 
+> > diff --git a/runner/executor.c b/runner/executor.c
+> > index a79a34e0..1fcc9afe 100644
+> > --- a/runner/executor.c
+> > +++ b/runner/executor.c
+> > @@ -857,7 +857,8 @@ static int monitor_output(pid_t child,
+> >  			  char **abortreason)
+> >  {
+> >  	fd_set set;
+> > -	char buf[2048];
+> > +	char *buf;
+> > +	size_t bufsize;
+> >  	char *outbuf = NULL;
+> >  	size_t outbufsize = 0;
+> >  	char current_subtest[256] = {};
+> > @@ -910,6 +911,9 @@ static int monitor_output(pid_t child,
+> >  		}
+> >  	}
+> >  
+> > +	bufsize = 262144; /* 256 kiB */
 > 
->> Also, is there a workload running when we change the min=max=boost to
->> 300?
-> 
-> No, the workload is started after setting the freq and calling
-> gem_quiescent_gpu().
+> imho it is better to use define and also write this as 256*1024
+> and put it in header.
 
-Implication here seems to be that gem_quiescent_gpu() would need to 
-cover H2G communication - does it?
+Sure.
 
->> We already check these things in our SLPC selftests.
+> If you increase this size maybe you can drop splitting ?
 
-Is it then expected to respect the 300MHz max in this case? Or if it 
-can't, should it be reflected in the sysfs readback?
+Splitting is only done for log packets. Currently there's no obvious
+way for other packet types to be larger than reasonable but for
+futureproofing it's good to be defensive in both ends.
 
-Regards,
+Having e.g. assertion failure reason fields (when that is stuffed into
+the subtest result packet) go multiple kilobytes sounds wild but who
+knows what kind of autogenerated igt_assert macros people will attempt
+to write...
 
-Tvrtko
+
+-- 
+Petri Latvala
