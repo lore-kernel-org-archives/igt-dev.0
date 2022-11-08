@@ -1,17 +1,22 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7D19E10E0E8
- for <igt-dev@lists.freedesktop.org>; Tue,  8 Nov 2022 10:07:47 +0000 (UTC)
-From: Petri Latvala <petri.latvala@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Tue,  8 Nov 2022 12:07:33 +0200
-Message-Id: <20221108100733.2378106-6-petri.latvala@intel.com>
-In-Reply-To: <20221108100733.2378106-1-petri.latvala@intel.com>
-References: <20221108100733.2378106-1-petri.latvala@intel.com>
+Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9105A10E3D5
+ for <igt-dev@lists.freedesktop.org>; Tue,  8 Nov 2022 11:48:24 +0000 (UTC)
+From: "Gupta, Anshuman" <anshuman.gupta@intel.com>
+To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+Date: Tue, 8 Nov 2022 11:48:21 +0000
+Message-ID: <CY5PR11MB6211D51E3B643951B9D84E1D953F9@CY5PR11MB6211.namprd11.prod.outlook.com>
+References: <20221107131842.31387-1-anshuman.gupta@intel.com>
+ <20221107131842.31387-2-anshuman.gupta@intel.com>
+ <Y2k6G02oTAep271k@kamilkon-desk1>
+In-Reply-To: <Y2k6G02oTAep271k@kamilkon-desk1>
+Content-Language: en-US
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 6/6] Revert "runner: Disable socket
- communications for now"
+Subject: Re: [igt-dev] [PATCH i-g-t 1/3] lib/igt_pm: Refactor get
+ firmware_node fd
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,43 +24,68 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Petri Latvala <petri.latvala@intel.com>
+Cc: "Nilawar, Badal" <badal.nilawar@intel.com>, "Vivi,
+ Rodrigo" <rodrigo.vivi@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-With a couple of fixes, using socket comms is now suitably ready for
-prime time.
-
-This reverts commit 372c56225e12578a7a4a6bcc5b79eb40b643fcde.
-
-Signed-off-by: Petri Latvala <petri.latvala@intel.com>
-Cc: Arkadiusz Hiler <arek@hiler.eu>
-Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
----
- runner/executor.c | 9 +--------
- 1 file changed, 1 insertion(+), 8 deletions(-)
-
-diff --git a/runner/executor.c b/runner/executor.c
-index c5f03614..2feef2c9 100644
---- a/runner/executor.c
-+++ b/runner/executor.c
-@@ -1679,14 +1679,7 @@ static int execute_next_entry(struct execute_state *state,
- 
- 		sigprocmask(SIG_UNBLOCK, sigmask, NULL);
- 
--		if (socketfd >= 0 && !getenv("IGT_RUNNER_DISABLE_SOCKET_COMMUNICATION") &&
--		    getenv("IGT_RUNNER_ENABLE_SOCKET_COMMUNICATION_FIXME")) {
--			/*
--			 * The variable for enabling socket comms is
--			 * temporary. Do not use unless you really
--			 * know what you're doing. Requiring it will
--			 * go away later.
--			 */
-+		if (socketfd >= 0 && !getenv("IGT_RUNNER_DISABLE_SOCKET_COMMUNICATION")) {
- 			snprintf(envstring, sizeof(envstring), "%d", socketfd);
- 			setenv("IGT_RUNNER_SOCKET_FD", envstring, 1);
- 		}
--- 
-2.30.2
+DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogS2FtaWwgS29uaWVjem55
+IDxrYW1pbC5rb25pZWN6bnlAbGludXguaW50ZWwuY29tPg0KPiBTZW50OiBNb25kYXksIE5vdmVt
+YmVyIDcsIDIwMjIgMTA6MzIgUE0NCj4gVG86IGlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3Jn
+DQo+IENjOiBHdXB0YSwgQW5zaHVtYW4gPGFuc2h1bWFuLmd1cHRhQGludGVsLmNvbT47IE5pbGF3
+YXIsIEJhZGFsDQo+IDxiYWRhbC5uaWxhd2FyQGludGVsLmNvbT47IFZpdmksIFJvZHJpZ28gPHJv
+ZHJpZ28udml2aUBpbnRlbC5jb20+DQo+IFN1YmplY3Q6IFJlOiBbaWd0LWRldl0gW1BBVENIIGkt
+Zy10IDEvM10gbGliL2lndF9wbTogUmVmYWN0b3IgZ2V0DQo+IGZpcm13YXJlX25vZGUgZmQNCj4g
+DQo+IEhpIEFuc2h1bWFuLA0KPiANCj4gT24gMjAyMi0xMS0wNyBhdCAxODo0ODo0MCArMDUzMCwg
+QW5zaHVtYW4gR3VwdGEgd3JvdGU6DQo+ID4gQ3JlYXRlZCBpZ3RfcG1fb3Blbl9wY2lfZmlybXdh
+cmVfbm9kZSgpIHRvIHJlZmFjdG9yIHRoZSByZXRyaWV2aW5nIHRoZQ0KPiA+IGZpcm13YXJlX25v
+ZGUgZmQgY29kZS4NCj4gPg0KPiA+IGlndF9wbV9vcGVuX3BjaV9maXJtd2FyZV9ub2RlKCkgd2ls
+bCBiZSB1c2VkIGJ5IG90aGVyIGZpcm13YXJlX25vZGUNCj4gPiBjb25zdW1lcnMuDQo+ID4NCj4g
+PiBXaGlsZSBkb2luZyB0aGF0IGZpeGVkIHRoZSBsZWFrZWQgZmQgYXMgd2VsbC4NCj4gPg0KPiA+
+IFNpZ25lZC1vZmYtYnk6IEFuc2h1bWFuIEd1cHRhIDxhbnNodW1hbi5ndXB0YUBpbnRlbC5jb20+
+DQo+ID4gLS0tDQo+ID4gIGxpYi9pZ3RfcG0uYyB8IDI5ICsrKysrKysrKysrKysrKysrKysrLS0t
+LS0tLS0tDQo+ID4gIDEgZmlsZSBjaGFuZ2VkLCAyMCBpbnNlcnRpb25zKCspLCA5IGRlbGV0aW9u
+cygtKQ0KPiA+DQo+ID4gZGlmZiAtLWdpdCBhL2xpYi9pZ3RfcG0uYyBiL2xpYi9pZ3RfcG0uYyBp
+bmRleCAxZTZlOWVkM2YuLmUyODljNDhlNA0KPiA+IDEwMDY0NA0KPiA+IC0tLSBhL2xpYi9pZ3Rf
+cG0uYw0KPiA+ICsrKyBiL2xpYi9pZ3RfcG0uYw0KPiA+IEBAIC04NjMsNiArODYzLDIwIEBAIGJv
+b2wgaTkxNV9vdXRwdXRfaXNfbHBzcF9jYXBhYmxlKGludCBkcm1fZmQsDQo+IGlndF9vdXRwdXRf
+dCAqb3V0cHV0KQ0KPiA+ICAJcmV0dXJuIHN0cnN0cihidWYsICJMUFNQOiBjYXBhYmxlIik7ICB9
+DQo+ID4NCj4gPiArc3RhdGljIGludCBpZ3RfcG1fb3Blbl9wY2lfZmlybXdhcmVfbm9kZShzdHJ1
+Y3QgcGNpX2RldmljZSAqcGNpX2RldikNCj4gPiArew0KPiA+ICsJY2hhciBuYW1lW1BBVEhfTUFY
+XTsNCj4gPiArCWludCBkaXI7DQo+ID4gKw0KPiA+ICsJc25wcmludGYobmFtZSwgUEFUSF9NQVgs
+DQo+ID4gKw0KPiAiL3N5cy9idXMvcGNpL2RldmljZXMvJTA0eDolMDJ4OiUwMnguJTAxeC9maXJt
+d2FyZV9ub2RlIiwNCj4gPiArCQkgcGNpX2Rldi0+ZG9tYWluLCBwY2lfZGV2LT5idXMsIHBjaV9k
+ZXYtPmRldiwgcGNpX2Rldi0NCj4gPmZ1bmMpOw0KPiA+ICsNCj4gPiArCWRpciA9IG9wZW4obmFt
+ZSwgT19SRE9OTFkpOw0KPiA+ICsNCj4gPiArCXJldHVybiBkaXI7DQo+ID4gK30NCj4gPiArDQo+
+ID4gIC8qKg0KPiA+ICAgKiBpZ3RfcG1fYWNwaV9kM2NvbGRfc3VwcG9ydGVkOg0KPiA+ICAgKiBA
+cGNpX2Rldjogcm9vdCBwb3J0IHBjaV9kZXYuDQo+ID4gQEAgLTg3MywyMyArODg3LDIwIEBAIGJv
+b2wgaTkxNV9vdXRwdXRfaXNfbHBzcF9jYXBhYmxlKGludCBkcm1fZmQsDQo+IGlndF9vdXRwdXRf
+dCAqb3V0cHV0KQ0KPiA+ICAgKi8NCj4gPiAgYm9vbCBpZ3RfcG1fYWNwaV9kM2NvbGRfc3VwcG9y
+dGVkKHN0cnVjdCBwY2lfZGV2aWNlICpwY2lfZGV2KSAgew0KPiA+IC0JY2hhciBuYW1lW1BBVEhf
+TUFYXTsNCj4gPiAtCWludCBkaXIsIGZkOw0KPiA+ICsJaW50IGZpcm13YXJlX25vZGVfZmQsIGZk
+Ow0KPiA+DQo+ID4gLQlzbnByaW50ZihuYW1lLCBQQVRIX01BWCwNCj4gPiAtDQo+ICIvc3lzL2J1
+cy9wY2kvZGV2aWNlcy8lMDR4OiUwMng6JTAyeC4lMDF4L2Zpcm13YXJlX25vZGUiLA0KPiA+IC0J
+CSBwY2lfZGV2LT5kb21haW4sIHBjaV9kZXYtPmJ1cywgcGNpX2Rldi0+ZGV2LCBwY2lfZGV2LQ0K
+PiA+ZnVuYyk7DQo+ID4gLQ0KPiA+IC0JZGlyID0gb3BlbihuYW1lLCBPX1JET05MWSk7DQo+ID4g
+LQlpZ3RfcmVxdWlyZShkaXIgPiAwKTsNCj4gPiArCWZpcm13YXJlX25vZGVfZmQgPSBpZ3RfcG1f
+b3Blbl9wY2lfZmlybXdhcmVfbm9kZShwY2lfZGV2KTsNCj4gPiArCWlndF9yZXF1aXJlKGZpcm13
+YXJlX25vZGVfZmQgPiAwKTsNCj4gDQo+IGltaG8gaXQgaXMgYmV0dGVyIGp1c3QgcmV0dXJuIGZh
+bHNlIGhlcmUuDQpUaGFua3MgZm9yIHJldmlldyAsIEkgd2lsbCBhZGRyZXNzIHRoYXQuIA0KPiAN
+Cj4gPg0KPiA+ICAJLyogQklPUyBuZWVkIHRvIGVuYWJsZSBBQ1BJIEQzQ29sZCBTdXBwb3J0Liov
+DQo+ID4gLQlmZCA9IG9wZW5hdChkaXIsICJyZWFsX3Bvd2VyX3N0YXRlIiwgT19SRE9OTFkpOw0K
+PiA+ICsJZmQgPSBvcGVuYXQoZmlybXdhcmVfbm9kZV9mZCwgInJlYWxfcG93ZXJfc3RhdGUiLCBP
+X1JET05MWSk7DQo+ID4gIAlpZiAoZmQgPCAwICYmIGVycm5vID09IEVOT0VOVCkNCj4gDQo+IEhl
+cmUgeW91IHNob3VsZCBhbHNvIGNsb3NlKGZpcm13YXJlX25vZGVfZmQpIGJlZm9yZSByZXR1cm4u
+DQpUaGFua3MgZm9yIHBvaW50aW5nIGl0Lg0KPiBCdHcgY2hlY2sgZm9yIGVycm5vIGxvb2tzIHN0
+cmFuZ2UuDQpJdCBpcyBwb3NzaWJsZSB0aGF0IGEgcGNpZSBkZXZpY2Ugd291bGQgbm90IGhhdmUg
+ZmlybXdhcmVfbm9kZSBlbnRyeSwNClRoYXQgaXMgdGhlIHJlYXNvbiB0byBjaGVjayBmb3IgRU5P
+RU5ULCBmb3Igb3RoZXIgZXJyb3JzIHdlIG1heSBkb27igJl0DQp3YW50IHRvIGNvbnRpbnVlLg0K
+PiANCj4gPiAgCQlyZXR1cm4gZmFsc2U7DQo+ID4NCj4gPiAgCWlndF9yZXF1aXJlKGZkID4gMCk7
+DQo+IA0KPiBUaGlzIGlzIG1peGluZyB0d28gZGlmZmVyZW50IGVycm9yIGJlaGF2aW91ciwgcmV0
+dXJuIGJvb2wgdmVyc3VzIGlndF9yZXF1aXJlLA0KPiBpbWhvIGl0IGlzIGJldHRlciB0byByZXR1
+cm4gZmFsc2UgaW5zdGVhZC4NCkkgd2lsbCBzZW5kIGEgc2VwYXJhdGUgY2xlYW51cCBwYXRjaCBm
+b3IgaXQuDQpUaGFua3MsDQpBbnNodW1hbiBHdXB0YS4NCj4gDQo+IFJlZ2FyZHMsDQo+IEthbWls
+DQo+IA0KPiA+DQo+ID4gKwljbG9zZShmaXJtd2FyZV9ub2RlX2ZkKTsNCj4gPiArCWNsb3NlKGZk
+KTsNCj4gPiAgCXJldHVybiB0cnVlOw0KPiA+ICB9DQo+ID4NCj4gPiAtLQ0KPiA+IDIuMjUuMQ0K
+PiA+DQo=
