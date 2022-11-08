@@ -1,22 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9105A10E3D5
- for <igt-dev@lists.freedesktop.org>; Tue,  8 Nov 2022 11:48:24 +0000 (UTC)
-From: "Gupta, Anshuman" <anshuman.gupta@intel.com>
-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-Date: Tue, 8 Nov 2022 11:48:21 +0000
-Message-ID: <CY5PR11MB6211D51E3B643951B9D84E1D953F9@CY5PR11MB6211.namprd11.prod.outlook.com>
-References: <20221107131842.31387-1-anshuman.gupta@intel.com>
- <20221107131842.31387-2-anshuman.gupta@intel.com>
- <Y2k6G02oTAep271k@kamilkon-desk1>
-In-Reply-To: <Y2k6G02oTAep271k@kamilkon-desk1>
-Content-Language: en-US
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 868B310E3FD
+ for <igt-dev@lists.freedesktop.org>; Tue,  8 Nov 2022 11:56:08 +0000 (UTC)
+Date: Tue, 8 Nov 2022 12:56:04 +0100
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Message-ID: <Y2pD1BRp+thEZPtH@kamilkon-desk1>
+References: <20221108100733.2378106-1-petri.latvala@intel.com>
+ <20221108100733.2378106-2-petri.latvala@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t 1/3] lib/igt_pm: Refactor get
- firmware_node fd
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20221108100733.2378106-2-petri.latvala@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t v2 2/6] igt_core: Split too long log
+ lines when sending to runner with comms
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,68 +21,83 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: "Nilawar, Badal" <badal.nilawar@intel.com>, "Vivi,
- Rodrigo" <rodrigo.vivi@intel.com>
+Cc: Petri Latvala <petri.latvala@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogS2FtaWwgS29uaWVjem55
-IDxrYW1pbC5rb25pZWN6bnlAbGludXguaW50ZWwuY29tPg0KPiBTZW50OiBNb25kYXksIE5vdmVt
-YmVyIDcsIDIwMjIgMTA6MzIgUE0NCj4gVG86IGlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3Jn
-DQo+IENjOiBHdXB0YSwgQW5zaHVtYW4gPGFuc2h1bWFuLmd1cHRhQGludGVsLmNvbT47IE5pbGF3
-YXIsIEJhZGFsDQo+IDxiYWRhbC5uaWxhd2FyQGludGVsLmNvbT47IFZpdmksIFJvZHJpZ28gPHJv
-ZHJpZ28udml2aUBpbnRlbC5jb20+DQo+IFN1YmplY3Q6IFJlOiBbaWd0LWRldl0gW1BBVENIIGkt
-Zy10IDEvM10gbGliL2lndF9wbTogUmVmYWN0b3IgZ2V0DQo+IGZpcm13YXJlX25vZGUgZmQNCj4g
-DQo+IEhpIEFuc2h1bWFuLA0KPiANCj4gT24gMjAyMi0xMS0wNyBhdCAxODo0ODo0MCArMDUzMCwg
-QW5zaHVtYW4gR3VwdGEgd3JvdGU6DQo+ID4gQ3JlYXRlZCBpZ3RfcG1fb3Blbl9wY2lfZmlybXdh
-cmVfbm9kZSgpIHRvIHJlZmFjdG9yIHRoZSByZXRyaWV2aW5nIHRoZQ0KPiA+IGZpcm13YXJlX25v
-ZGUgZmQgY29kZS4NCj4gPg0KPiA+IGlndF9wbV9vcGVuX3BjaV9maXJtd2FyZV9ub2RlKCkgd2ls
-bCBiZSB1c2VkIGJ5IG90aGVyIGZpcm13YXJlX25vZGUNCj4gPiBjb25zdW1lcnMuDQo+ID4NCj4g
-PiBXaGlsZSBkb2luZyB0aGF0IGZpeGVkIHRoZSBsZWFrZWQgZmQgYXMgd2VsbC4NCj4gPg0KPiA+
-IFNpZ25lZC1vZmYtYnk6IEFuc2h1bWFuIEd1cHRhIDxhbnNodW1hbi5ndXB0YUBpbnRlbC5jb20+
-DQo+ID4gLS0tDQo+ID4gIGxpYi9pZ3RfcG0uYyB8IDI5ICsrKysrKysrKysrKysrKysrKysrLS0t
-LS0tLS0tDQo+ID4gIDEgZmlsZSBjaGFuZ2VkLCAyMCBpbnNlcnRpb25zKCspLCA5IGRlbGV0aW9u
-cygtKQ0KPiA+DQo+ID4gZGlmZiAtLWdpdCBhL2xpYi9pZ3RfcG0uYyBiL2xpYi9pZ3RfcG0uYyBp
-bmRleCAxZTZlOWVkM2YuLmUyODljNDhlNA0KPiA+IDEwMDY0NA0KPiA+IC0tLSBhL2xpYi9pZ3Rf
-cG0uYw0KPiA+ICsrKyBiL2xpYi9pZ3RfcG0uYw0KPiA+IEBAIC04NjMsNiArODYzLDIwIEBAIGJv
-b2wgaTkxNV9vdXRwdXRfaXNfbHBzcF9jYXBhYmxlKGludCBkcm1fZmQsDQo+IGlndF9vdXRwdXRf
-dCAqb3V0cHV0KQ0KPiA+ICAJcmV0dXJuIHN0cnN0cihidWYsICJMUFNQOiBjYXBhYmxlIik7ICB9
-DQo+ID4NCj4gPiArc3RhdGljIGludCBpZ3RfcG1fb3Blbl9wY2lfZmlybXdhcmVfbm9kZShzdHJ1
-Y3QgcGNpX2RldmljZSAqcGNpX2RldikNCj4gPiArew0KPiA+ICsJY2hhciBuYW1lW1BBVEhfTUFY
-XTsNCj4gPiArCWludCBkaXI7DQo+ID4gKw0KPiA+ICsJc25wcmludGYobmFtZSwgUEFUSF9NQVgs
-DQo+ID4gKw0KPiAiL3N5cy9idXMvcGNpL2RldmljZXMvJTA0eDolMDJ4OiUwMnguJTAxeC9maXJt
-d2FyZV9ub2RlIiwNCj4gPiArCQkgcGNpX2Rldi0+ZG9tYWluLCBwY2lfZGV2LT5idXMsIHBjaV9k
-ZXYtPmRldiwgcGNpX2Rldi0NCj4gPmZ1bmMpOw0KPiA+ICsNCj4gPiArCWRpciA9IG9wZW4obmFt
-ZSwgT19SRE9OTFkpOw0KPiA+ICsNCj4gPiArCXJldHVybiBkaXI7DQo+ID4gK30NCj4gPiArDQo+
-ID4gIC8qKg0KPiA+ICAgKiBpZ3RfcG1fYWNwaV9kM2NvbGRfc3VwcG9ydGVkOg0KPiA+ICAgKiBA
-cGNpX2Rldjogcm9vdCBwb3J0IHBjaV9kZXYuDQo+ID4gQEAgLTg3MywyMyArODg3LDIwIEBAIGJv
-b2wgaTkxNV9vdXRwdXRfaXNfbHBzcF9jYXBhYmxlKGludCBkcm1fZmQsDQo+IGlndF9vdXRwdXRf
-dCAqb3V0cHV0KQ0KPiA+ICAgKi8NCj4gPiAgYm9vbCBpZ3RfcG1fYWNwaV9kM2NvbGRfc3VwcG9y
-dGVkKHN0cnVjdCBwY2lfZGV2aWNlICpwY2lfZGV2KSAgew0KPiA+IC0JY2hhciBuYW1lW1BBVEhf
-TUFYXTsNCj4gPiAtCWludCBkaXIsIGZkOw0KPiA+ICsJaW50IGZpcm13YXJlX25vZGVfZmQsIGZk
-Ow0KPiA+DQo+ID4gLQlzbnByaW50ZihuYW1lLCBQQVRIX01BWCwNCj4gPiAtDQo+ICIvc3lzL2J1
-cy9wY2kvZGV2aWNlcy8lMDR4OiUwMng6JTAyeC4lMDF4L2Zpcm13YXJlX25vZGUiLA0KPiA+IC0J
-CSBwY2lfZGV2LT5kb21haW4sIHBjaV9kZXYtPmJ1cywgcGNpX2Rldi0+ZGV2LCBwY2lfZGV2LQ0K
-PiA+ZnVuYyk7DQo+ID4gLQ0KPiA+IC0JZGlyID0gb3BlbihuYW1lLCBPX1JET05MWSk7DQo+ID4g
-LQlpZ3RfcmVxdWlyZShkaXIgPiAwKTsNCj4gPiArCWZpcm13YXJlX25vZGVfZmQgPSBpZ3RfcG1f
-b3Blbl9wY2lfZmlybXdhcmVfbm9kZShwY2lfZGV2KTsNCj4gPiArCWlndF9yZXF1aXJlKGZpcm13
-YXJlX25vZGVfZmQgPiAwKTsNCj4gDQo+IGltaG8gaXQgaXMgYmV0dGVyIGp1c3QgcmV0dXJuIGZh
-bHNlIGhlcmUuDQpUaGFua3MgZm9yIHJldmlldyAsIEkgd2lsbCBhZGRyZXNzIHRoYXQuIA0KPiAN
-Cj4gPg0KPiA+ICAJLyogQklPUyBuZWVkIHRvIGVuYWJsZSBBQ1BJIEQzQ29sZCBTdXBwb3J0Liov
-DQo+ID4gLQlmZCA9IG9wZW5hdChkaXIsICJyZWFsX3Bvd2VyX3N0YXRlIiwgT19SRE9OTFkpOw0K
-PiA+ICsJZmQgPSBvcGVuYXQoZmlybXdhcmVfbm9kZV9mZCwgInJlYWxfcG93ZXJfc3RhdGUiLCBP
-X1JET05MWSk7DQo+ID4gIAlpZiAoZmQgPCAwICYmIGVycm5vID09IEVOT0VOVCkNCj4gDQo+IEhl
-cmUgeW91IHNob3VsZCBhbHNvIGNsb3NlKGZpcm13YXJlX25vZGVfZmQpIGJlZm9yZSByZXR1cm4u
-DQpUaGFua3MgZm9yIHBvaW50aW5nIGl0Lg0KPiBCdHcgY2hlY2sgZm9yIGVycm5vIGxvb2tzIHN0
-cmFuZ2UuDQpJdCBpcyBwb3NzaWJsZSB0aGF0IGEgcGNpZSBkZXZpY2Ugd291bGQgbm90IGhhdmUg
-ZmlybXdhcmVfbm9kZSBlbnRyeSwNClRoYXQgaXMgdGhlIHJlYXNvbiB0byBjaGVjayBmb3IgRU5P
-RU5ULCBmb3Igb3RoZXIgZXJyb3JzIHdlIG1heSBkb27igJl0DQp3YW50IHRvIGNvbnRpbnVlLg0K
-PiANCj4gPiAgCQlyZXR1cm4gZmFsc2U7DQo+ID4NCj4gPiAgCWlndF9yZXF1aXJlKGZkID4gMCk7
-DQo+IA0KPiBUaGlzIGlzIG1peGluZyB0d28gZGlmZmVyZW50IGVycm9yIGJlaGF2aW91ciwgcmV0
-dXJuIGJvb2wgdmVyc3VzIGlndF9yZXF1aXJlLA0KPiBpbWhvIGl0IGlzIGJldHRlciB0byByZXR1
-cm4gZmFsc2UgaW5zdGVhZC4NCkkgd2lsbCBzZW5kIGEgc2VwYXJhdGUgY2xlYW51cCBwYXRjaCBm
-b3IgaXQuDQpUaGFua3MsDQpBbnNodW1hbiBHdXB0YS4NCj4gDQo+IFJlZ2FyZHMsDQo+IEthbWls
-DQo+IA0KPiA+DQo+ID4gKwljbG9zZShmaXJtd2FyZV9ub2RlX2ZkKTsNCj4gPiArCWNsb3NlKGZk
-KTsNCj4gPiAgCXJldHVybiB0cnVlOw0KPiA+ICB9DQo+ID4NCj4gPiAtLQ0KPiA+IDIuMjUuMQ0K
-PiA+DQo=
+Hi Petri,
+
+On 2022-11-08 at 12:07:29 +0200, Petri Latvala wrote:
+> Especially with file dumps a single log packet could exceed the max
+> size of a UNIX datagram. Split too long log chunks instead.
+> 
+> v2: Use while loop instead of recursion (Kamil).
+> 
+> Signed-off-by: Petri Latvala <petri.latvala@intel.com>
+> Cc: Arkadiusz Hiler <arek@hiler.eu>
+> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> ---
+>  lib/igt_core.c | 23 ++++++++++++++++++++++-
+>  1 file changed, 22 insertions(+), 1 deletion(-)
+> 
+> diff --git a/lib/igt_core.c b/lib/igt_core.c
+> index 3941c528..cab5f860 100644
+> --- a/lib/igt_core.c
+> +++ b/lib/igt_core.c
+> @@ -457,6 +457,27 @@ static void _igt_log_buffer_reset(void)
+>  	pthread_mutex_unlock(&log_buffer_mutex);
+>  }
+>  
+> +static void _log_to_runner_split(int stream, const char *str)
+> +{
+> +	size_t limit = 4096;
+> +	char *buf = NULL;
+> +
+> +	while (strlen(str) > limit) {
+
+Small optimization would be to get once size = strlen(str)
+before while and use it in loop
+	while (size > limit) {
+
+> +		if (!buf)
+> +			buf = malloc(limit + 1);
+> +
+> +		strncpy(buf, str, limit);
+> +		buf[limit] = '\0';
+> +
+> +		send_to_runner(runnerpacket_log(stream, buf));
+> +
+> +		str += limit;
+
+So you can add here:
+		size -= limit;
+
+With or without it
+
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+
+--
+Kamil
+
+> +	}
+> +
+> +	send_to_runner(runnerpacket_log(stream, str));
+> +	free(buf);
+> +}
+> +
+>  __attribute__((format(printf, 2, 3)))
+>  static void _log_line_fprintf(FILE* stream, const char *format, ...)
+>  {
+> @@ -467,7 +488,7 @@ static void _log_line_fprintf(FILE* stream, const char *format, ...)
+>  
+>  	if (runner_connected()) {
+>  		vasprintf(&str, format, ap);
+> -		send_to_runner(runnerpacket_log(fileno(stream), str));
+> +		_log_to_runner_split(fileno(stream), str);
+>  		free(str);
+>  	} else {
+>  		vfprintf(stream, format, ap);
+> -- 
+> 2.30.2
+> 
