@@ -1,21 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7E16510E538
- for <igt-dev@lists.freedesktop.org>; Tue,  8 Nov 2022 23:55:22 +0000 (UTC)
-From: "Gupta, Nidhi1" <nidhi1.gupta@intel.com>
-To: Ville Syrjala <ville.syrjala@linux.intel.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-Date: Tue, 8 Nov 2022 23:55:17 +0000
-Message-ID: <PH7PR11MB6006B9A9A57C2B4729B63B3CC53F9@PH7PR11MB6006.namprd11.prod.outlook.com>
-References: <20221107152052.29137-1-ville.syrjala@linux.intel.com>
- <20221107152052.29137-2-ville.syrjala@linux.intel.com>
-In-Reply-To: <20221107152052.29137-2-ville.syrjala@linux.intel.com>
-Content-Language: en-US
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Received: from fanzine2.igalia.com (fanzine.igalia.com [178.60.130.6])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6EE3C10E53A
+ for <igt-dev@lists.freedesktop.org>; Tue,  8 Nov 2022 23:57:53 +0000 (UTC)
+From: =?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>
+To: igt-dev@lists.freedesktop.org
+Date: Tue,  8 Nov 2022 20:57:19 -0300
+Message-Id: <20221108235724.126287-2-mcanal@igalia.com>
+In-Reply-To: <20221108235724.126287-1-mcanal@igalia.com>
+References: <20221108235724.126287-1-mcanal@igalia.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t 2/2] Revert "tests/kms_invalid_mode:
- Test Cleanup"
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t 1/6] include/drm-uapi: Update to the latest
+ v3d_drm.h
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,69 +20,142 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: petri.latvala@intel.com, Emma Anholt <emma@anholt.net>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-DQoNCi0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQpGcm9tOiBWaWxsZSBTeXJqYWxhIDx2aWxs
-ZS5zeXJqYWxhQGxpbnV4LmludGVsLmNvbT4gDQpTZW50OiBNb25kYXksIE5vdmVtYmVyIDcsIDIw
-MjIgODo1MSBQTQ0KVG86IGlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnDQpDYzogR3VwdGEs
-IE5pZGhpMSA8bmlkaGkxLmd1cHRhQGludGVsLmNvbT47IE1vZGVtLCBCaGFudXByYWthc2ggPGJo
-YW51cHJha2FzaC5tb2RlbUBpbnRlbC5jb20+DQpTdWJqZWN0OiBbUEFUQ0ggaS1nLXQgMi8yXSBS
-ZXZlcnQgInRlc3RzL2ttc19pbnZhbGlkX21vZGU6IFRlc3QgQ2xlYW51cCINCg0KRnJvbTogVmls
-bGUgU3lyasOkbMOkIDx2aWxsZS5zeXJqYWxhQGxpbnV4LmludGVsLmNvbT4NCg0KVGhpcyByZXZl
-cnRzIGNvbW1pdCA2NzI1NzY3YTg0MTA5ZTkzNGNhMTM4ZDk0ZGYwNDgyMzg2YzQ0NTMyLg0KDQpU
-aGlzIHdhcyBubyBjbGVhbnVwLiBJdCBkb2VzIGZpZnRlZW4gZGlmZmVyZW50IHRoaW5ncyBhbmQg
-aW4gdGhlIHByb2Nlc3MgZmxhdCBvdXQgYnJlYWtzIHRoZSB0ZXN0IGF0IGxlYXN0IG9uIGFsbCBu
-b24tYXRvbWljIGRyaXZlcnMvcGxhdGZvcm1zLg0KDQpDYzogTmlkaGkgR3VwdGEgPG5pZGhpMS5n
-dXB0YUBpbnRlbC5jb20+DQpDYzogQmhhbnVwcmFrYXNoIE1vZGVtIDxiaGFudXByYWthc2gubW9k
-ZW1AaW50ZWwuY29tPg0KU2lnbmVkLW9mZi1ieTogVmlsbGUgU3lyasOkbMOkIDx2aWxsZS5zeXJq
-YWxhQGxpbnV4LmludGVsLmNvbT4NCkFja2VkLWJ5OiBOaWRoaSBHdXB0YSA8bmlkaGkxLmd1cHRh
-QGludGVsLmNvbT4NCi0tLQ0KIHRlc3RzL2ttc19pbnZhbGlkX21vZGUuYyB8IDM5ICsrKysrKysr
-KysrKysrKysrKysrKysrKy0tLS0tLS0tLS0tLS0tLQ0KIDEgZmlsZSBjaGFuZ2VkLCAyNCBpbnNl
-cnRpb25zKCspLCAxNSBkZWxldGlvbnMoLSkNCg0KZGlmZiAtLWdpdCBhL3Rlc3RzL2ttc19pbnZh
-bGlkX21vZGUuYyBiL3Rlc3RzL2ttc19pbnZhbGlkX21vZGUuYyBpbmRleCA4YzM0NTc2NmQxOTIu
-LjQwMDQyZDRlODFhNSAxMDA2NDQNCi0tLSBhL3Rlc3RzL2ttc19pbnZhbGlkX21vZGUuYw0KKysr
-IGIvdGVzdHMva21zX2ludmFsaWRfbW9kZS5jDQpAQCAtMzUsNiArMzUsNyBAQCBzdHJ1Y3QgX2Rh
-dGEgew0KIAllbnVtIHBpcGUgcGlwZTsNCiAJaWd0X2Rpc3BsYXlfdCBkaXNwbGF5Ow0KIAlpZ3Rf
-b3V0cHV0X3QgKm91dHB1dDsNCisJZHJtTW9kZVJlc1B0ciByZXM7DQogCWludCBtYXhfZG90Y2xv
-Y2s7DQogCWJvb2wgKCphZGp1c3RfbW9kZSkoZGF0YV90ICpkYXRhLCBkcm1Nb2RlTW9kZUluZm9Q
-dHIgbW9kZSk7ICB9OyBAQCAtMTgxLDI5ICsxODIsMzUgQEAgc3RhdGljIHZvaWQgIHRlc3Rfb3V0
-cHV0KGRhdGFfdCAqZGF0YSkgIHsNCiAJaWd0X291dHB1dF90ICpvdXRwdXQgPSBkYXRhLT5vdXRw
-dXQ7DQorCWRybU1vZGVNb2RlSW5mbyBtb2RlOw0KIAlzdHJ1Y3QgaWd0X2ZiIGZiOw0KIAlpbnQg
-cmV0Ow0KLQlkcm1Nb2RlTW9kZUluZm8gKm1vZGU7DQorCXVpbnQzMl90IGNydGNfaWQ7DQogDQot
-CWlndF9vdXRwdXRfc2V0X3BpcGUob3V0cHV0LCBkYXRhLT5waXBlKTsNCisJLyoNCisJICogRklY
-TUUgdGVzdCBldmVyeSBtb2RlIHdlIGhhdmUgdG8gYmUgbW9yZQ0KKwkgKiBzdXJlIGV2ZXJ5dGhp
-bmcgaXMgcmVhbGx5IGdldHRpbmcgcmVqZWN0ZWQ/DQorCSAqLw0KKwltb2RlID0gKmlndF9vdXRw
-dXRfZ2V0X21vZGUob3V0cHV0KTsNCisJaWd0X3JlcXVpcmUoZGF0YS0+YWRqdXN0X21vZGUoZGF0
-YSwgJm1vZGUpKTsNCiANCi0JaWd0X2NyZWF0ZV9mYihkYXRhLT5kcm1fZmQsIDUxMiwgNTEyLCBE
-Uk1fRk9STUFUX1hSR0I4ODg4LA0KKwlpZ3RfY3JlYXRlX2ZiKGRhdGEtPmRybV9mZCwNCisJCSAg
-ICAgIG1heF90KHVpbnQxNl90LCBtb2RlLmhkaXNwbGF5LCA2NCksDQorCQkgICAgICBtYXhfdCh1
-aW50MTZfdCwgbW9kZS52ZGlzcGxheSwgNjQpLA0KKwkJICAgICAgRFJNX0ZPUk1BVF9YUkdCODg4
-OCwNCiAJCSAgICAgIERSTV9GT1JNQVRfTU9EX0xJTkVBUiwNCiAJCSAgICAgICZmYik7DQogDQot
-CWZvcl9lYWNoX2Nvbm5lY3Rvcl9tb2RlKG91dHB1dCkgew0KLQkJbW9kZSA9ICZvdXRwdXQtPmNv
-bmZpZy5jb25uZWN0b3ItPm1vZGVzW2pfX107DQotCQlpZ3RfcmVxdWlyZShkYXRhLT5hZGp1c3Rf
-bW9kZShkYXRhLCBtb2RlKSk7DQotCQlpZ3Rfb3V0cHV0X292ZXJyaWRlX21vZGUob3V0cHV0LCBt
-b2RlKTsNCi0JCXJldCA9IGlndF9kaXNwbGF5X3RyeV9jb21taXQyKCZkYXRhLT5kaXNwbGF5LCBk
-YXRhLT5kaXNwbGF5LmlzX2F0b21pYyA/IENPTU1JVF9BVE9NSUMgOiBDT01NSVRfTEVHQUNZKTsN
-Ci0JCWlndF9hc3NlcnQocmV0ID09IC1FSU5WQUwpOw0KLQl9DQorCWttc3Rlc3RfdW5zZXRfYWxs
-X2NydGNzKGRhdGEtPmRybV9mZCwgZGF0YS0+cmVzKTsNCisNCisJY3J0Y19pZCA9IGRhdGEtPmRp
-c3BsYXkucGlwZXNbZGF0YS0+cGlwZV0uY3J0Y19pZDsNCisNCisJcmV0ID0gZHJtTW9kZVNldENy
-dGMoZGF0YS0+ZHJtX2ZkLCBjcnRjX2lkLA0KKwkJCSAgICAgZmIuZmJfaWQsIDAsIDAsDQorCQkJ
-ICAgICAmb3V0cHV0LT5pZCwgMSwgJm1vZGUpOw0KKwlpZ3RfYXNzZXJ0X2x0KHJldCwgMCk7DQog
-DQogCWlndF9yZW1vdmVfZmIoZGF0YS0+ZHJtX2ZkLCAmZmIpOw0KLQlpZ3Rfb3V0cHV0X292ZXJy
-aWRlX21vZGUob3V0cHV0LCBOVUxMKTsNCi0JLyp1bnNldF9hbGxfY3J0Y3MqLw0KLQlpZ3RfZGlz
-cGxheV9yZXNldCgmZGF0YS0+ZGlzcGxheSk7DQotCWlndF9kaXNwbGF5X2NvbW1pdCgmZGF0YS0+
-ZGlzcGxheSk7DQogfQ0KIA0KIHN0YXRpYyBpbnQgaTkxNV9tYXhfZG90Y2xvY2soZGF0YV90ICpk
-YXRhKSBAQCAtMjgzLDEwICsyOTAsMTEgQEAgaWd0X21haW4NCiAJCWttc3Rlc3Rfc2V0X3Z0X2dy
-YXBoaWNzX21vZGUoKTsNCiANCiAJCWlndF9kaXNwbGF5X3JlcXVpcmUoJmRhdGEuZGlzcGxheSwg
-ZGF0YS5kcm1fZmQpOw0KKwkJZGF0YS5yZXMgPSBkcm1Nb2RlR2V0UmVzb3VyY2VzKGRhdGEuZHJt
-X2ZkKTsNCisJCWlndF9hc3NlcnQoZGF0YS5yZXMpOw0KIA0KIAkJZGF0YS5tYXhfZG90Y2xvY2sg
-PSBpOTE1X21heF9kb3RjbG9jaygmZGF0YSk7DQogCQlpZ3RfaW5mbygiTWF4IGRvdGNsb2NrOiAl
-ZCBrSHpcbiIsIGRhdGEubWF4X2RvdGNsb2NrKTsNCi0JCWlndF9kaXNwbGF5X3JlcXVpcmVfb3V0
-cHV0KCZkYXRhLmRpc3BsYXkpOw0KIAl9DQogDQogCWlndF9kZXNjcmliZSgiTWFrZSBzdXJlIGFs
-bCBtb2Rlc2V0cyBhcmUgcmVqZWN0ZWQgd2hlbiB0aGUgcmVxdWVzdGVkIG1vZGUgaXMgaW52YWxp
-ZCIpOyBAQCAtMzA2LDYgKzMxNCw3IEBAIGlndF9tYWluDQogCWlndF9maXh0dXJlIHsNCiAJCWln
-dF9kaXNwbGF5X2ZpbmkoJmRhdGEuZGlzcGxheSk7DQogCQlpZ3RfcmVzZXRfY29ubmVjdG9ycygp
-Ow0KKwkJZHJtTW9kZUZyZWVSZXNvdXJjZXMoZGF0YS5yZXMpOw0KIAkJY2xvc2UoZGF0YS5kcm1f
-ZmQpOw0KIAl9DQogfQ0KLS0NCjIuMzcuNA0KDQo=
+Update to the latest master version of the DRM UAPI header file from
+git://anongit.freedesktop.org/drm/drm-misc:
+    a108772d03d8 Merge drm/drm-next into drm-misc-next
+
+Signed-off-by: Maíra Canal <mcanal@igalia.com>
+---
+ include/drm-uapi/v3d_drm.h | 78 ++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 78 insertions(+)
+
+diff --git a/include/drm-uapi/v3d_drm.h b/include/drm-uapi/v3d_drm.h
+index 4104f22f..3dfc0af8 100644
+--- a/include/drm-uapi/v3d_drm.h
++++ b/include/drm-uapi/v3d_drm.h
+@@ -58,6 +58,67 @@ extern "C" {
+ 						   struct drm_v3d_perfmon_get_values)
+ 
+ #define DRM_V3D_SUBMIT_CL_FLUSH_CACHE             0x01
++#define DRM_V3D_SUBMIT_EXTENSION		  0x02
++
++/* struct drm_v3d_extension - ioctl extensions
++ *
++ * Linked-list of generic extensions where the id identify which struct is
++ * pointed by ext_data. Therefore, DRM_V3D_EXT_ID_* is used on id to identify
++ * the extension type.
++ */
++struct drm_v3d_extension {
++	__u64 next;
++	__u32 id;
++#define DRM_V3D_EXT_ID_MULTI_SYNC		0x01
++	__u32 flags; /* mbz */
++};
++
++/* struct drm_v3d_sem - wait/signal semaphore
++ *
++ * If binary semaphore, it only takes syncobj handle and ignores flags and
++ * point fields. Point is defined for timeline syncobj feature.
++ */
++struct drm_v3d_sem {
++	__u32 handle; /* syncobj */
++	/* rsv below, for future uses */
++	__u32 flags;
++	__u64 point;  /* for timeline sem support */
++	__u64 mbz[2]; /* must be zero, rsv */
++};
++
++/* Enum for each of the V3D queues. */
++enum v3d_queue {
++	V3D_BIN,
++	V3D_RENDER,
++	V3D_TFU,
++	V3D_CSD,
++	V3D_CACHE_CLEAN,
++};
++
++/**
++ * struct drm_v3d_multi_sync - ioctl extension to add support multiples
++ * syncobjs for commands submission.
++ *
++ * When an extension of DRM_V3D_EXT_ID_MULTI_SYNC id is defined, it points to
++ * this extension to define wait and signal dependencies, instead of single
++ * in/out sync entries on submitting commands. The field flags is used to
++ * determine the stage to set wait dependencies.
++ */
++struct drm_v3d_multi_sync {
++	struct drm_v3d_extension base;
++	/* Array of wait and signal semaphores */
++	__u64 in_syncs;
++	__u64 out_syncs;
++
++	/* Number of entries */
++	__u32 in_sync_count;
++	__u32 out_sync_count;
++
++	/* set the stage (v3d_queue) to sync */
++	__u32 wait_stage;
++
++	__u32 pad; /* mbz */
++};
+ 
+ /**
+  * struct drm_v3d_submit_cl - ioctl argument for submitting commands to the 3D
+@@ -135,12 +196,16 @@ struct drm_v3d_submit_cl {
+ 	/* Number of BO handles passed in (size is that times 4). */
+ 	__u32 bo_handle_count;
+ 
++	/* DRM_V3D_SUBMIT_* properties */
+ 	__u32 flags;
+ 
+ 	/* ID of the perfmon to attach to this job. 0 means no perfmon. */
+ 	__u32 perfmon_id;
+ 
+ 	__u32 pad;
++
++	/* Pointer to an array of ioctl extensions*/
++	__u64 extensions;
+ };
+ 
+ /**
+@@ -210,6 +275,7 @@ enum drm_v3d_param {
+ 	DRM_V3D_PARAM_SUPPORTS_CSD,
+ 	DRM_V3D_PARAM_SUPPORTS_CACHE_FLUSH,
+ 	DRM_V3D_PARAM_SUPPORTS_PERFMON,
++	DRM_V3D_PARAM_SUPPORTS_MULTISYNC_EXT,
+ };
+ 
+ struct drm_v3d_get_param {
+@@ -248,6 +314,11 @@ struct drm_v3d_submit_tfu {
+ 	__u32 in_sync;
+ 	/* Sync object to signal when the TFU job is done. */
+ 	__u32 out_sync;
++
++	__u32 flags;
++
++	/* Pointer to an array of ioctl extensions*/
++	__u64 extensions;
+ };
+ 
+ /* Submits a compute shader for dispatch.  This job will block on any
+@@ -276,6 +347,13 @@ struct drm_v3d_submit_csd {
+ 
+ 	/* ID of the perfmon to attach to this job. 0 means no perfmon. */
+ 	__u32 perfmon_id;
++
++	/* Pointer to an array of ioctl extensions*/
++	__u64 extensions;
++
++	__u32 flags;
++
++	__u32 pad;
+ };
+ 
+ enum {
+-- 
+2.38.1
