@@ -1,18 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from fanzine2.igalia.com (fanzine.igalia.com [178.60.130.6])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5539C10E4BA
- for <igt-dev@lists.freedesktop.org>; Tue,  8 Nov 2022 16:18:24 +0000 (UTC)
-Message-ID: <2cd40a09-62a5-7eb6-5288-52645cfe72e4@igalia.com>
-Date: Tue, 8 Nov 2022 15:18:13 -0100
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C6AD810E4B7
+ for <igt-dev@lists.freedesktop.org>; Tue,  8 Nov 2022 16:19:06 +0000 (UTC)
 MIME-Version: 1.0
-Content-Language: en-US
-From: Melissa Wen <mwen@igalia.com>
-To: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Date: Tue, 08 Nov 2022 18:19:01 +0200
+From: aemad <aemad@igalia.com>
+To: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
+In-Reply-To: <48d70134-a797-115d-a45f-a2c096e944c1@intel.com>
 References: <20221102110428.4049549-1-bhanuprakash.modem@intel.com>
  <20221104020005.4098049-1-bhanuprakash.modem@intel.com>
- <20221107224749.ldeba3ztjdvff7iw@mail.igalia.com>
-In-Reply-To: <20221107224749.ldeba3ztjdvff7iw@mail.igalia.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+ <48d70134-a797-115d-a45f-a2c096e944c1@intel.com>
+Message-ID: <22ea0908793390e3d799544b482eee30@igalia.com>
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 Subject: Re: [igt-dev] [V2 i-g-t] tests/kms_cursor_crc: Fix SIGABRT in
  dynamic subtests
@@ -28,13 +27,21 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-
-On 11/7/22 21:48, Melissa Wen wrote:
-> On 11/04, Bhanuprakash Modem wrote:
+On 2022-11-07 07:36, Modem, Bhanuprakash wrote:
+> On Fri-04-11-2022 07:30 am, Bhanuprakash Modem wrote:
 >> All subtests must report success/fail instead of crashing out.
 >>
 >> V2:
 >> - Fix the coverage of max-size tests
+> 
+> Alaa, can I use your T-b & R-b to merge this patch?
+
+yes, sure
+
+- Alaa
+> 
+> - Bhanu
+> 
 >>
 >> Fixes: 9494d53d ("tests/kms_cursor_crc: Convert tests to dynamic")
 >> Cc: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
@@ -51,8 +58,7 @@ On 11/7/22 21:48, Melissa Wen wrote:
 >> @@ -700,65 +700,78 @@ static void test_rapid_movement(data_t *data)
 >>   	igt_assert_lt(usec, 0.9 * 400 * 1000000 / data->refresh);
 >>   }
->>   
->> -static void run_size_tests(data_t *data, void (*testfunc)(data_t *),
+>>   -static void run_size_tests(data_t *data, void (*testfunc)(data_t *),
 >> -			   int w, int h)
 >> +static void run_size_tests(data_t *data, int w, int h)
 >>   {
@@ -75,12 +81,10 @@ On 11/7/22 21:48, Melissa Wen wrote:
 >> +	};
 >> +	int i;
 >> +	char name[16];
->>   
->>   	if (w == 0 && h == 0) {
+>>     	if (w == 0 && h == 0) {
 >>   		w = data->cursor_max_w;
 >>   		h = data->cursor_max_h;
->>   
->> -		/*
+>>   -		/*
 >> -		 * No point in doing the "max-size" test if
 >> -		 * it was already covered by the other tests.
 >> -		 */
@@ -93,14 +97,12 @@ On 11/7/22 21:48, Melissa Wen wrote:
 >> +	} else {
 >> +		snprintf(name, sizeof(name), "%dx%d", w, h);
 >>   	}
->>   
->> -	create_cursor_fb(data, w, h);
+>>   -	create_cursor_fb(data, w, h);
 >> -	if (require_cursor_size(data, w, h)) {
 >> -		igt_info("Cursor size %dx%d not supported by driver\n", w, h);
 >> +	igt_fixture
 >> +		create_cursor_fb(data, w, h);
->>   
->> -		igt_remove_fb(data->drm_fd, &data->fb);
+>>   -		igt_remove_fb(data->drm_fd, &data->fb);
 >> -		return;
 >> -	}
 >> +	for (i = 0; i < ARRAY_SIZE(size_tests); i++) {
@@ -120,29 +122,12 @@ On 11/7/22 21:48, Melissa Wen wrote:
 >> +
 >> +			for_each_pipe(&data->display, pipe) {
 >> +				data->pipe = pipe;
->>   
->> -	for_each_pipe(&data->display, pipe) {
+>>   -	for_each_pipe(&data->display, pipe) {
 >> -		data->pipe = pipe;
 >> -		igt_dynamic_f("pipe-%s-%s",
 >> -			      kmstest_pipe_name(pipe), igt_output_name(data->output))
 >> -			run_test(data, testfunc, w, h);
 >> +				if (require_cursor_size(data, w, h)) {
-> I think here we want `!require_cursor_size()` (not require_cursor_size),
-> since zero means success for drmModeAtomicCommit(), that is used to
-> check if the cursor size is accepted or not.
-
-Never mind, I mixed up the meaning.
-
-Alaa, as you are reviewing this work, can you add your 
-Reviewed-by/Tested-by tag?
-
-Anyway, I see much of this work was done by Alaa, therefore, it would be 
-good to add a Co-developed-by tag to her too.
-
-You can also add:
-
-Reviewed-by: Melissa Wen <mwen@igalia.com>
-
 >> +					igt_info("Cursor size %dx%d not supported by driver\n", w, h);
 >> +					continue;
 >> +				}
@@ -153,13 +138,11 @@ Reviewed-by: Melissa Wen <mwen@igalia.com>
 >> +			}
 >> +		}
 >>   	}
->>   
->> -	igt_remove_fb(data->drm_fd, &data->fb);
+>>   -	igt_remove_fb(data->drm_fd, &data->fb);
 >> +	igt_fixture
 >> +		igt_remove_fb(data->drm_fd, &data->fb);
 >>   }
->>   
->>   static void run_tests_on_pipe(data_t *data)
+>>     static void run_tests_on_pipe(data_t *data)
 >>   {
 >>   	enum pipe pipe;
 >>   	int cursor_size;
@@ -180,14 +163,12 @@ Reviewed-by: Melissa Wen <mwen@igalia.com>
 >> -		{ "cursor-rapid-movement", test_rapid_movement,
 >> -			"Check the rapid update of given-size cursor movements." },
 >> -	};
->>   
->>   	igt_fixture {
+>>     	igt_fixture {
 >>   		data->output = igt_get_single_output_for_pipe(&data->display, pipe);
 >> @@ -859,30 +872,25 @@ static void run_tests_on_pipe(data_t *data)
 >>   	igt_fixture
 >>   		igt_remove_fb(data->drm_fd, &data->fb);
->>   
->> -	for (i = 0; i < ARRAY_SIZE(size_tests); i++) {
+>>   -	for (i = 0; i < ARRAY_SIZE(size_tests); i++) {
 >> -		igt_describe(size_tests[i].desc);
 >> -		igt_subtest_group {
 >> -			for (cursor_size = 32; cursor_size <= 512; cursor_size *= 2) {
@@ -196,13 +177,11 @@ Reviewed-by: Melissa Wen <mwen@igalia.com>
 >> +	for (cursor_size = 32; cursor_size <= 512; cursor_size *= 2) {
 >> +		int w = cursor_size;
 >> +		int h = cursor_size;
->>   
->> -				igt_subtest_with_dynamic_f("%s-%dx%d", size_tests[i].name, w, h)
+>>   -				igt_subtest_with_dynamic_f("%s-%dx%d", size_tests[i].name, w, h)
 >> -					run_size_tests(data, size_tests[i].testfunc, w, h);
 >> +		igt_subtest_group
 >> +			run_size_tests(data, w, h);
->>   
->> -				/*
+>>   -				/*
 >> -				 * Test non-square cursors a bit on the platforms
 >> -				 * that support such things. And make it a bit more
 >> -				 * interesting by using a non-pot height.
@@ -217,8 +196,7 @@ Reviewed-by: Melissa Wen <mwen@igalia.com>
 >> +		 * interesting by using a non-pot height.
 >> +		 */
 >> +		h /= 3;
->>   
->> -			igt_subtest_with_dynamic_f("%s-max-size", size_tests[i].name)
+>>   -			igt_subtest_with_dynamic_f("%s-max-size", size_tests[i].name)
 >> -				run_size_tests(data, size_tests[i].testfunc, 0, 0);
 >> -		}
 >> +		igt_subtest_group
@@ -227,8 +205,4 @@ Reviewed-by: Melissa Wen <mwen@igalia.com>
 >> +
 >> +	run_size_tests(data, 0, 0);
 >>   }
->>   
->>   static data_t data;
->> -- 
->> 2.38.0
->>
+>>     static data_t data;
