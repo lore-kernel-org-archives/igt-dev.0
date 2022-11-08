@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from fanzine2.igalia.com (fanzine.igalia.com [178.60.130.6])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C6AD810E4B7
- for <igt-dev@lists.freedesktop.org>; Tue,  8 Nov 2022 16:19:06 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 45E7689BEC
+ for <igt-dev@lists.freedesktop.org>; Tue,  8 Nov 2022 16:21:56 +0000 (UTC)
 MIME-Version: 1.0
-Date: Tue, 08 Nov 2022 18:19:01 +0200
+Date: Tue, 08 Nov 2022 18:21:51 +0200
 From: aemad <aemad@igalia.com>
 To: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
 In-Reply-To: <48d70134-a797-115d-a45f-a2c096e944c1@intel.com>
 References: <20221102110428.4049549-1-bhanuprakash.modem@intel.com>
  <20221104020005.4098049-1-bhanuprakash.modem@intel.com>
  <48d70134-a797-115d-a45f-a2c096e944c1@intel.com>
-Message-ID: <22ea0908793390e3d799544b482eee30@igalia.com>
+Message-ID: <743f902ad0dd6ae50a55c17e009d7e64@igalia.com>
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 Subject: Re: [igt-dev] [V2 i-g-t] tests/kms_cursor_crc: Fix SIGABRT in
@@ -36,9 +36,7 @@ On 2022-11-07 07:36, Modem, Bhanuprakash wrote:
 > 
 > Alaa, can I use your T-b & R-b to merge this patch?
 
-yes, sure
-
-- Alaa
+Reviewed-by: Alaa Emad <aemad@igalia.com>
 > 
 > - Bhanu
 > 
