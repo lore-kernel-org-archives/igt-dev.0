@@ -1,15 +1,25 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A836010E1AB
- for <igt-dev@lists.freedesktop.org>; Tue,  8 Nov 2022 08:57:39 +0000 (UTC)
-From: Vikas Srivastava <vikas.srivastava@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Tue,  8 Nov 2022 14:26:20 +0530
-Message-Id: <20221108085620.708785-1-vikas.srivastava@intel.com>
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 037C310E284
+ for <igt-dev@lists.freedesktop.org>; Tue,  8 Nov 2022 09:24:17 +0000 (UTC)
+Message-ID: <2225190b-be60-03c0-e84b-56de7c9836f8@linux.intel.com>
+Date: Tue, 8 Nov 2022 09:24:14 +0000
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t] i915/gem_exec_fence: Replace customer
- spinner with igt_spin
+Content-Language: en-US
+To: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>,
+ "Belgaumkar, Vinay" <vinay.belgaumkar@intel.com>
+References: <20221107062329.1927534-1-ashutosh.dixit@intel.com>
+ <ebfddcea-8427-5d87-83e9-93a1fef024e6@linux.intel.com>
+ <87mt92l2nc.wl-ashutosh.dixit@intel.com>
+ <87leoml2g4.wl-ashutosh.dixit@intel.com>
+ <33646ce6-6692-1244-cb9f-4740105aadef@intel.com>
+ <87fseuut9l.wl-ashutosh.dixit@intel.com>
+From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
+In-Reply-To: <87fseuut9l.wl-ashutosh.dixit@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/perf_pmu: Compare against
+ requested freq in frequency subtest
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,160 +27,81 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Chris Wilson <chris.p.wilson@intel.com>
 
-Replace the customer spinner with igt_spin, possible now that igt_spin
-can provide the out-fence. This has a major advantage, such as able to run
-on any platform, including over the cmdparser.
+On 08/11/2022 01:31, Dixit, Ashutosh wrote:
+> On Mon, 07 Nov 2022 16:57:24 -0800, Belgaumkar, Vinay wrote:
+>> On 11/7/2022 4:22 PM, Dixit, Ashutosh wrote:
+>>> On Mon, 07 Nov 2022 16:18:31 -0800, Dixit, Ashutosh wrote:
+>>> Hi Vinay,
+>>>
+>>> A question for you below.
+>>>
+>>>> So I submitted this patch to repro the issue and to print out the requested
+>>>> freq from sysfs:
+>>>>
+>>>> https://patchwork.freedesktop.org/series/110630/
+>>>>
+>>>> And we can see the output here:
+>>>>
+>>>> https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8061/bat-dg2-11/igt@perf_pmu@frequency.html
+>>>>
+>>>> ```
+>>>> IGT-Version: 1.26-g1bef4d081 (x86_64) (Linux: 6.1.0-rc4-CI_DRM_12352-gc55ac6a74bd1+ x86_64)
+>>>> Starting subtest: frequency
+>>>> Frequency: min=300, max=2050, boost=2050 MHz
+>>>> Min frequency: requested 349.7, actual 349.7
+>>>> Max frequency: requested 2048.0, actual 2048.0
+>>>> Sysfs requested: min 350, max 2050
+>>>> Stack trace:
+>>>>     #0 ../../../usr/src/igt-gpu-tools/lib/igt_core.c:1908 __igt_fail_assert()
+>>>>     #1 ../../../usr/src/igt-gpu-tools/tests/i915/perf_pmu.c:1656 __igt_unique____real_main2147()
+>>>>     #2 ../../../usr/src/igt-gpu-tools/tests/i915/perf_pmu.c:2147 main()
+>>>>     #3 [__libc_start_main+0xf3]
+>>>>     #4 [_start+0x2e]
+>>>> Subtest frequency: FAIL (2.212s)
+>>>> ```
+>>>>
+>>>> So we clearly see the requested freq from sysfs is indeed 350 MHz so
+>>>> SLPC/PCODE is not honoring the set min == max == boost freq (and PMU is
+>>>> measuring what sysfs is showing). In general PCODE is the final arbiter in
+>>>> such cases and we do occasionally see instances where set freq limits are
+>>>> not honored.
+>>>>
+>>>> I would say if igt@perf_pmu@frequency is testing freq measured by PMU then
+>>>> the patch below is correct. Whether SLPC/PCODE is honoring the set freq
+>>>> limits should be tested in a SLPC test (which we also have).
+>>>
+>>> igt@perf_pmu@frequency sets 'min == max == boost == 300 MHz' but we still
+>>> see the requested freq to be 350 MHz. Do we have a SLPC test covering this
+>>> scenario or should we add one? This is failing on one of the DG2's.
+>>
+>> Does adding a delay help (around 20 ms for the h2g to go through
+>> typically)?
+> 
+> There is no delay but the test calls gem_quiescent_gpu() after setting 'min
+> == max == boost == 300 MHz' and then launches a spinner. We are checking
+> the requested freq 500 ms after the spinner is started (so plenty of time
+> for the h2g) and still the requested freq is 350 MHz.
+> 
+>> Also, is there a workload running when we change the min=max=boost to
+>> 300?
+> 
+> No, the workload is started after setting the freq and calling
+> gem_quiescent_gpu().
 
-Signed-off-by: Chris Wilson <chris.p.wilson@intel.com>
-Acked-by: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
----
- tests/i915/gem_exec_fence.c | 101 ++++++++----------------------------
- 1 file changed, 23 insertions(+), 78 deletions(-)
+Implication here seems to be that gem_quiescent_gpu() would need to 
+cover H2G communication - does it?
 
-diff --git a/tests/i915/gem_exec_fence.c b/tests/i915/gem_exec_fence.c
-index e8d51a732..80cf7adb2 100644
---- a/tests/i915/gem_exec_fence.c
-+++ b/tests/i915/gem_exec_fence.c
-@@ -29,6 +29,7 @@
- #include "i915/gem.h"
- #include "i915/gem_create.h"
- #include "igt.h"
-+#include "igt_dummyload.h"
- #include "igt_store.h"
- #include "igt_syncobj.h"
- #include "igt_sysfs.h"
-@@ -72,104 +73,48 @@ static void test_fence_busy(int fd, const intel_ctx_t *ctx,
- 			    const struct intel_execution_engine2 *e,
- 			    unsigned flags)
- {
--	const unsigned int gen = intel_gen(intel_get_drm_devid(fd));
--	struct drm_i915_gem_exec_object2 obj;
--	struct drm_i915_gem_relocation_entry reloc;
--	struct drm_i915_gem_execbuffer2 execbuf;
--	struct timespec tv;
--	uint32_t *batch;
- 	uint64_t ahnd = get_reloc_ahnd(fd, ctx->id);
--	int fence, i, timeout;
--
--	if ((flags & HANG) == 0)
--		igt_require(gem_class_has_mutable_submission(fd, e->class));
-+	struct timespec tv;
-+	int fence, timeout;
-+	igt_spin_t *spin;
- 
- 	gem_quiescent_gpu(fd);
- 
--	memset(&execbuf, 0, sizeof(execbuf));
--	execbuf.buffers_ptr = to_user_pointer(&obj);
--	execbuf.buffer_count = 1;
--	execbuf.flags = e->flags | I915_EXEC_FENCE_OUT;
--	execbuf.rsvd1 = ctx->id;
--
--	memset(&obj, 0, sizeof(obj));
--	obj.handle = gem_create(fd, 4096);
--	obj.offset = get_offset(ahnd, obj.handle, 4096, 0);
--
--	batch = gem_mmap__device_coherent(fd, obj.handle, 0, 4096, PROT_WRITE);
--	gem_set_domain(fd, obj.handle,
--		       I915_GEM_DOMAIN_GTT, I915_GEM_DOMAIN_GTT);
--
--	i = 0;
--	if ((flags & HANG) == 0)
--		batch[i++] = 0x5 << 23;
--
--	if (!ahnd) {
--		obj.relocs_ptr = to_user_pointer(&reloc);
--		obj.relocation_count = 1;
--		memset(&reloc, 0, sizeof(reloc));
--		reloc.target_handle = obj.handle; /* recurse */
--		reloc.presumed_offset = obj.offset;
--		reloc.offset = (i + 1) * sizeof(uint32_t);
--		reloc.delta = 0;
--		reloc.read_domains = I915_GEM_DOMAIN_COMMAND;
--		reloc.write_domain = 0;
--	} else {
--		obj.flags |= EXEC_OBJECT_PINNED;
--	}
--
--	batch[i] = MI_BATCH_BUFFER_START;
--	if (gen >= 8) {
--		batch[i] |= 1 << 8 | 1;
--		batch[++i] = obj.offset;
--		batch[++i] = obj.offset >> 32;
--	} else if (gen >= 6) {
--		batch[i] |= 1 << 8;
--		batch[++i] = obj.offset;
--	} else {
--		batch[i] |= 2 << 6;
--		batch[++i] = obj.offset;
--		if (gen < 4) {
--			batch[i] |= 1;
--			reloc.delta = 1;
--		}
--	}
--	i++;
--
--	execbuf.rsvd2 = -1;
--	gem_execbuf_wr(fd, &execbuf);
--	fence = execbuf.rsvd2 >> 32;
--	igt_assert(fence != -1);
-+	spin = igt_spin_new(fd, .ahnd = ahnd, .ctx = ctx, .engine = e->flags,
-+			    .flags = IGT_SPIN_FENCE_OUT |
-+			    ((flags & HANG) ? IGT_SPIN_NO_PREEMPTION : 0));
- 
--	igt_assert(gem_bo_busy(fd, obj.handle));
-+	fence = spin->out_fence;
-+	igt_assert(gem_bo_busy(fd, spin->handle));
- 	igt_assert(fence_busy(fence));
- 
- 	timeout = 120;
- 	if ((flags & HANG) == 0) {
--		*batch = MI_BATCH_BUFFER_END;
--		__sync_synchronize();
--		timeout = 1;
-+                igt_spin_end(spin);
-+                timeout = ! igt_run_in_simulation()?1:120;
-+                if (is_sriov_enabled(fd)) timeout *= 4;
- 	}
--	munmap(batch, 4096);
- 
- 	if (flags & WAIT) {
- 		struct pollfd pfd = { .fd = fence, .events = POLLIN };
- 		igt_assert(poll(&pfd, 1, timeout*1000) == 1);
- 	} else {
- 		memset(&tv, 0, sizeof(tv));
--		while (fence_busy(fence))
--			igt_assert(igt_seconds_elapsed(&tv) < timeout);
--	}
--
--	igt_assert(!gem_bo_busy(fd, obj.handle));
-+		while (fence_busy(fence)) {
-+                        elapsed_time = igt_seconds_elapsed(&tv);
-+                        if (elapsed_time >= timeout) {
-+                                igt_info("Elapsed time (%ds)\n", elapsed_time);
-+                        }
-+                        igt_assert(igt_seconds_elapsed(&tv) < timeout);
-+                }
-+		igt_info("Elapsed time (%ds)\n", igt_seconds_elapsed(&tv));
-+	}
-+	igt_assert(!gem_bo_busy(fd, spin->handle));
- 	igt_assert_eq(sync_fence_status(fence),
- 		      flags & HANG ? -EIO : SYNC_FENCE_OK);
- 
--	close(fence);
--	gem_close(fd, obj.handle);
--	put_offset(ahnd, obj.handle);
-+	igt_spin_free(fd, spin);
- 	put_ahnd(ahnd);
--
- 	gem_quiescent_gpu(fd);
- }
- 
--- 
-2.25.1
+>> We already check these things in our SLPC selftests.
+
+Is it then expected to respect the 300MHz max in this case? Or if it 
+can't, should it be reflected in the sysfs readback?
+
+Regards,
+
+Tvrtko
