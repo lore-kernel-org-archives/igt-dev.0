@@ -1,17 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8CA4610E0BC
- for <igt-dev@lists.freedesktop.org>; Wed,  9 Nov 2022 12:54:34 +0000 (UTC)
-Date: Wed, 9 Nov 2022 13:54:30 +0100
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2617B10E0AB
+ for <igt-dev@lists.freedesktop.org>; Wed,  9 Nov 2022 13:21:01 +0000 (UTC)
+Date: Wed, 9 Nov 2022 14:20:57 +0100
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Message-ID: <Y2ujBpxfxp472LjF@kamilkon-desk1>
-References: <20221108215457.2494061-1-ashutosh.dixit@intel.com>
+Message-ID: <Y2upOWsOqjReZeOt@kamilkon-desk1>
+References: <20221109113106.821216-1-vikas.srivastava@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20221108215457.2494061-1-ashutosh.dixit@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/perf_pmu: Try to repro GL #6806
+In-Reply-To: <20221109113106.821216-1-vikas.srivastava@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/i915/gem_exec_fence: Replacing
+ customer spinner with igt_spin
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,133 +20,182 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: Chris Wilson <chris.p.wilson@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Ashutosh,
+Hi Vikas,
 
-On 2022-11-08 at 13:54:57 -0800, Ashutosh Dixit wrote:
-> CI ONLY, PLEASE DON'T REVIEW
+On 2022-11-09 at 17:01:06 +0530, Vikas Srivastava wrote:
+
+you resended Chris patch (see signed-off-by below) so please add 
+at beginning line with "From: Author Name <author@address>", like: 
+
+From: Chris Wilson <chris.p.wilson@intel.com>
+
+> Replace the customer spinner with igt_spin, possible now that igt_spin
+------------------- ^
+s/cutomer/custom/
+
+Please also correct this word in subject.
+Please use checkpatch from Linux kernel for errors or warnings
+and correct them before sending.
+
+> can provide the out-fence. This has a major advantage, such as able to run
+> on any platform, including over the cmdparser.
 > 
-> Try to repro GL #6806 and see what is really happening there since it could
-> not be reproduced locally. Also see if the
-> https://patchwork.freedesktop.org/series/110574/ will fix the issue.
+> Signed-off-by: Chris Wilson <chris.p.wilson@intel.com>
+> Acked-by: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
+> ---
+>  tests/i915/gem_exec_fence.c | 101 ++++++++----------------------------
+>  1 file changed, 23 insertions(+), 78 deletions(-)
 > 
-> v2: Introduce a 100 ms delay after setting freq
-> v3: Also print RP1/RPe freq (Vinay)
-
-Please try to use trybot for that purpose rather than main
-mailinglist,
-
-https://patchwork.freedesktop.org/project/igt-trybot/series/
-
-e-mail: intel-gfx-trybot@lists.freedesktop.org
+> diff --git a/tests/i915/gem_exec_fence.c b/tests/i915/gem_exec_fence.c
+> index e8d51a732..6ac0f0877 100644
+> --- a/tests/i915/gem_exec_fence.c
+> +++ b/tests/i915/gem_exec_fence.c
+> @@ -29,6 +29,7 @@
+>  #include "i915/gem.h"
+>  #include "i915/gem_create.h"
+>  #include "igt.h"
+> +#include "igt_dummyload.h"
+>  #include "igt_store.h"
+>  #include "igt_syncobj.h"
+>  #include "igt_sysfs.h"
+> @@ -72,104 +73,48 @@ static void test_fence_busy(int fd, const intel_ctx_t *ctx,
+>  			    const struct intel_execution_engine2 *e,
+>  			    unsigned flags)
+>  {
+> -	const unsigned int gen = intel_gen(intel_get_drm_devid(fd));
+> -	struct drm_i915_gem_exec_object2 obj;
+> -	struct drm_i915_gem_relocation_entry reloc;
+> -	struct drm_i915_gem_execbuffer2 execbuf;
+> -	struct timespec tv;
+> -	uint32_t *batch;
+>  	uint64_t ahnd = get_reloc_ahnd(fd, ctx->id);
+> -	int fence, i, timeout;
+> -
+> -	if ((flags & HANG) == 0)
+> -		igt_require(gem_class_has_mutable_submission(fd, e->class));
+> +	struct timespec tv;
+> +	int fence, timeout;
+> +	igt_spin_t *spin;
+>  
+>  	gem_quiescent_gpu(fd);
+>  
+> -	memset(&execbuf, 0, sizeof(execbuf));
+> -	execbuf.buffers_ptr = to_user_pointer(&obj);
+> -	execbuf.buffer_count = 1;
+> -	execbuf.flags = e->flags | I915_EXEC_FENCE_OUT;
+> -	execbuf.rsvd1 = ctx->id;
+> -
+> -	memset(&obj, 0, sizeof(obj));
+> -	obj.handle = gem_create(fd, 4096);
+> -	obj.offset = get_offset(ahnd, obj.handle, 4096, 0);
+> -
+> -	batch = gem_mmap__device_coherent(fd, obj.handle, 0, 4096, PROT_WRITE);
+> -	gem_set_domain(fd, obj.handle,
+> -		       I915_GEM_DOMAIN_GTT, I915_GEM_DOMAIN_GTT);
+> -
+> -	i = 0;
+> -	if ((flags & HANG) == 0)
+> -		batch[i++] = 0x5 << 23;
+> -
+> -	if (!ahnd) {
+> -		obj.relocs_ptr = to_user_pointer(&reloc);
+> -		obj.relocation_count = 1;
+> -		memset(&reloc, 0, sizeof(reloc));
+> -		reloc.target_handle = obj.handle; /* recurse */
+> -		reloc.presumed_offset = obj.offset;
+> -		reloc.offset = (i + 1) * sizeof(uint32_t);
+> -		reloc.delta = 0;
+> -		reloc.read_domains = I915_GEM_DOMAIN_COMMAND;
+> -		reloc.write_domain = 0;
+> -	} else {
+> -		obj.flags |= EXEC_OBJECT_PINNED;
+> -	}
+> -
+> -	batch[i] = MI_BATCH_BUFFER_START;
+> -	if (gen >= 8) {
+> -		batch[i] |= 1 << 8 | 1;
+> -		batch[++i] = obj.offset;
+> -		batch[++i] = obj.offset >> 32;
+> -	} else if (gen >= 6) {
+> -		batch[i] |= 1 << 8;
+> -		batch[++i] = obj.offset;
+> -	} else {
+> -		batch[i] |= 2 << 6;
+> -		batch[++i] = obj.offset;
+> -		if (gen < 4) {
+> -			batch[i] |= 1;
+> -			reloc.delta = 1;
+> -		}
+> -	}
+> -	i++;
+> -
+> -	execbuf.rsvd2 = -1;
+> -	gem_execbuf_wr(fd, &execbuf);
+> -	fence = execbuf.rsvd2 >> 32;
+> -	igt_assert(fence != -1);
+> +	spin = igt_spin_new(fd, .ahnd = ahnd, .ctx = ctx, .engine = e->flags,
+> +			    .flags = IGT_SPIN_FENCE_OUT |
+> +			    ((flags & HANG) ? IGT_SPIN_NO_PREEMPTION : 0));
+>  
+> -	igt_assert(gem_bo_busy(fd, obj.handle));
+> +	fence = spin->out_fence;
+> +	igt_assert(gem_bo_busy(fd, spin->handle));
+>  	igt_assert(fence_busy(fence));
+>  
+>  	timeout = 120;
+>  	if ((flags & HANG) == 0) {
+> -		*batch = MI_BATCH_BUFFER_END;
+> -		__sync_synchronize();
+> -		timeout = 1;
+> +                igt_spin_end(spin);
+> +                timeout = ! igt_run_in_simulation()?1:120;
+---------------------------- ^ ^ --------------------- ^ ^
+There is macro SLOW_QUICK for that purpose, please use it here.
 
 Regards,
 Kamil
 
-> 
-> Bug: https://gitlab.freedesktop.org/drm/intel/-/issues/6806
-> Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
-> ---
->  tests/i915/perf_pmu.c                 | 21 +++++++++++++++------
->  tests/intel-ci/fast-feedback.testlist |  1 +
->  2 files changed, 16 insertions(+), 6 deletions(-)
-> 
-> diff --git a/tests/i915/perf_pmu.c b/tests/i915/perf_pmu.c
-> index f363db2ba13..3bc00064878 100644
-> --- a/tests/i915/perf_pmu.c
-> +++ b/tests/i915/perf_pmu.c
-> @@ -1543,10 +1543,13 @@ test_interrupts_sync(int gem_fd)
->  	igt_assert_lte(target, busy);
+>  	}
+> -	munmap(batch, 4096);
+>  
+>  	if (flags & WAIT) {
+>  		struct pollfd pfd = { .fd = fence, .events = POLLIN };
+>  		igt_assert(poll(&pfd, 1, timeout*1000) == 1);
+>  	} else {
+> +		int elapsed_time;
+>  		memset(&tv, 0, sizeof(tv));
+> -		while (fence_busy(fence))
+> -			igt_assert(igt_seconds_elapsed(&tv) < timeout);
+> -	}
+> -
+> -	igt_assert(!gem_bo_busy(fd, obj.handle));
+> +		while (fence_busy(fence)) {
+> +                        elapsed_time = igt_seconds_elapsed(&tv);
+> +                        if (elapsed_time >= timeout) {
+> +                                igt_info("Elapsed time (%ds)\n", elapsed_time);
+> +                        }
+> +                        igt_assert(igt_seconds_elapsed(&tv) < timeout);
+> +                }
+> +		igt_info("Elapsed time (%ds)\n", igt_seconds_elapsed(&tv));
+> +	}
+> +	igt_assert(!gem_bo_busy(fd, spin->handle));
+>  	igt_assert_eq(sync_fence_status(fence),
+>  		      flags & HANG ? -EIO : SYNC_FENCE_OK);
+>  
+> -	close(fence);
+> -	gem_close(fd, obj.handle);
+> -	put_offset(ahnd, obj.handle);
+> +	igt_spin_free(fd, spin);
+>  	put_ahnd(ahnd);
+> -
+>  	gem_quiescent_gpu(fd);
 >  }
 >  
-> +/* Wait for GuC SLPC freq changes to take effect */
-> +#define wait_freq_set()		usleep(100000)
-> +
->  static void
->  test_frequency(int gem_fd)
->  {
-> -	uint32_t min_freq, max_freq, boost_freq;
-> +	uint32_t min_freq, max_freq, boost_freq, min_req, max_req;
->  	uint64_t val[2], start[2], slept;
->  	double min[2], max[2];
->  	igt_spin_t *spin;
-> @@ -1572,10 +1575,11 @@ test_frequency(int gem_fd)
->  	 * Set GPU to min frequency and read PMU counters.
->  	 */
->  	igt_require(igt_sysfs_set_u32(sysfs, "gt_min_freq_mhz", min_freq));
-> -	igt_require(igt_sysfs_get_u32(sysfs, "gt_min_freq_mhz") == min_freq);
->  	igt_require(igt_sysfs_set_u32(sysfs, "gt_max_freq_mhz", min_freq));
-> -	igt_require(igt_sysfs_get_u32(sysfs, "gt_max_freq_mhz") == min_freq);
->  	igt_require(igt_sysfs_set_u32(sysfs, "gt_boost_freq_mhz", min_freq));
-> +	wait_freq_set();
-> +	igt_require(igt_sysfs_get_u32(sysfs, "gt_min_freq_mhz") == min_freq);
-> +	igt_require(igt_sysfs_get_u32(sysfs, "gt_max_freq_mhz") == min_freq);
->  	igt_require(igt_sysfs_get_u32(sysfs, "gt_boost_freq_mhz") == min_freq);
->  
->  	gem_quiescent_gpu(gem_fd); /* Idle to be sure the change takes effect */
-> @@ -1587,6 +1591,7 @@ test_frequency(int gem_fd)
->  
->  	min[0] = 1e9*(val[0] - start[0]) / slept;
->  	min[1] = 1e9*(val[1] - start[1]) / slept;
-> +	min_req = igt_sysfs_get_u32(sysfs, "gt_cur_freq_mhz");
->  
->  	igt_spin_free(gem_fd, spin);
->  	gem_quiescent_gpu(gem_fd); /* Don't leak busy bo into the next phase */
-> @@ -1597,11 +1602,11 @@ test_frequency(int gem_fd)
->  	 * Set GPU to max frequency and read PMU counters.
->  	 */
->  	igt_require(igt_sysfs_set_u32(sysfs, "gt_max_freq_mhz", max_freq));
-> -	igt_require(igt_sysfs_get_u32(sysfs, "gt_max_freq_mhz") == max_freq);
->  	igt_require(igt_sysfs_set_u32(sysfs, "gt_boost_freq_mhz", boost_freq));
-> -	igt_require(igt_sysfs_get_u32(sysfs, "gt_boost_freq_mhz") == boost_freq);
-> -
->  	igt_require(igt_sysfs_set_u32(sysfs, "gt_min_freq_mhz", max_freq));
-> +	wait_freq_set();
-> +	igt_require(igt_sysfs_get_u32(sysfs, "gt_max_freq_mhz") == max_freq);
-> +	igt_require(igt_sysfs_get_u32(sysfs, "gt_boost_freq_mhz") == boost_freq);
->  	igt_require(igt_sysfs_get_u32(sysfs, "gt_min_freq_mhz") == max_freq);
->  
->  	gem_quiescent_gpu(gem_fd);
-> @@ -1613,6 +1618,7 @@ test_frequency(int gem_fd)
->  
->  	max[0] = 1e9*(val[0] - start[0]) / slept;
->  	max[1] = 1e9*(val[1] - start[1]) / slept;
-> +	max_req = igt_sysfs_get_u32(sysfs, "gt_cur_freq_mhz");
->  
->  	igt_spin_free(gem_fd, spin);
->  	gem_quiescent_gpu(gem_fd);
-> @@ -1621,6 +1627,7 @@ test_frequency(int gem_fd)
->  	 * Restore min/max.
->  	 */
->  	igt_sysfs_set_u32(sysfs, "gt_min_freq_mhz", min_freq);
-> +	wait_freq_set();
->  	if (igt_sysfs_get_u32(sysfs, "gt_min_freq_mhz") != min_freq)
->  		igt_warn("Unable to restore min frequency to saved value [%u MHz], now %u MHz\n",
->  			 min_freq, igt_sysfs_get_u32(sysfs, "gt_min_freq_mhz"));
-> @@ -1632,6 +1639,8 @@ test_frequency(int gem_fd)
->  		 min[0], min[1]);
->  	igt_info("Max frequency: requested %.1f, actual %.1f\n",
->  		 max[0], max[1]);
-> +	igt_info("Sysfs requested: min %d, max %d\n", min_req, max_req);
-> +	igt_info("RP1/Rpe freq: %d\n", igt_sysfs_get_u32(sysfs, "gt_RP1_freq_mhz"));
->  
->  	assert_within_epsilon(min[0], min_freq, tolerance);
->  	/*
-> diff --git a/tests/intel-ci/fast-feedback.testlist b/tests/intel-ci/fast-feedback.testlist
-> index f57f8ff3be1..a2bb37fb4ae 100644
-> --- a/tests/intel-ci/fast-feedback.testlist
-> +++ b/tests/intel-ci/fast-feedback.testlist
-> @@ -128,6 +128,7 @@ igt@i915_pm_backlight@basic-brightness
->  igt@i915_pm_rpm@basic-pci-d3-state
->  igt@i915_pm_rpm@basic-rte
->  igt@i915_pm_rps@basic-api
-> +igt@perf_pmu@frequency
->  igt@prime_self_import@basic-llseek-bad
->  igt@prime_self_import@basic-llseek-size
->  igt@prime_self_import@basic-with_fd_dup
 > -- 
-> 2.38.0
+> 2.25.1
 > 
