@@ -1,16 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============8422221921692581624=="
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7ADB610E3ED
+ for <igt-dev@lists.freedesktop.org>; Thu, 10 Nov 2022 14:56:35 +0000 (UTC)
+Date: Thu, 10 Nov 2022 15:56:28 +0100
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Message-ID: <Y20RHGSQbozZv23z@kamilkon-desk1>
+References: <20221107171845.3663446-1-markyacoub@chromium.org>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Vikas Srivastava" <vikas.srivastava@intel.com>
-Date: Thu, 10 Nov 2022 14:45:51 -0000
-Message-ID: <166809155116.16949.14183193955843393227@emeril.freedesktop.org>
-References: <20221110053713.892216-1-vikas.srivastava@intel.com>
-In-Reply-To: <20221110053713.892216-1-vikas.srivastava@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
- =?utf-8?q?i915/gem=5Fexec=5Ffence=3A_Replacing_custom_spinner_with_igt=5F?=
- =?utf-8?q?spin?=
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20221107171845.3663446-1-markyacoub@chromium.org>
+Subject: Re: [igt-dev] [PATCH] [NEW] Chamelium: Add new EDID Resolution List
+ test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,429 +20,258 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
+Cc: robdclark@chromium.org, vsuley@google.com, petri.latvala@intel.com,
+ markyacoub@google.com, kalin@google.com, seanpaul@chromium.org, ihf@google.com,
+ matthewtlam@google.com, khaled.almahallawy@intel.com, amstan@chromium.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============8422221921692581624==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Hi Mark,
 
-== Series Details ==
+I have few nits, see below.
 
-Series: tests/i915/gem_exec_fence: Replacing custom spinner with igt_spin
-URL   : https://patchwork.freedesktop.org/series/110735/
-State : success
+On 2022-11-07 at 12:18:45 -0500, Mark Yacoub wrote:
+> [Why]
+> 1. Users can change resolutions of monitors on the fly.
+> 2. Monitors can come with different shapes and form aka different modes.
+> Test a change between different modes on the fly.
+> 
+> [How]
+> 1. Created an EDID based on a random combination of screen size, Refresh
+>    Rate and Aspect Ratio.
+> 2. Set that EDID to Chamelium.
+> 3. Iterate over every mode on the connector, assign it to the connector
+>    and check that the screen resolution changes to this one.
+> 
+> Test Based on: [ChromeOS AutoTest
+> display_ResolutionList](https://chromium.googlesource.com/chromiumos/third_party/autotest/+/HEAD/server/site_tests/display_ResolutionList/display_ResolutionList.py)
+> 
+> Tested on: TGL with Cv3
+> 
+> Signed-off-by: Mark Yacoub <markyacoub@chromium.org>
+> ---
+>  lib/igt_edid.c                  |  4 +-
+>  lib/igt_edid.h                  |  2 +
+>  lib/igt_kms.c                   | 31 +++++++++++++++
+>  lib/igt_kms.h                   |  5 ++-
+>  tests/chamelium/kms_chamelium.c | 68 +++++++++++++++++++++++++++++++++
+>  5 files changed, 107 insertions(+), 3 deletions(-)
+> 
+> diff --git a/lib/igt_edid.c b/lib/igt_edid.c
+> index bff13a0d..9c67e51b 100644
+> --- a/lib/igt_edid.c
+> +++ b/lib/igt_edid.c
+> @@ -61,8 +61,8 @@ static const char monitor_range_padding[] = {
+>  const uint8_t hdmi_ieee_oui[3] = {0x03, 0x0C, 0x00};
+>  
+>  /* vfreq is in Hz */
+> -static void std_timing_set(struct std_timing *st, int hsize, int vfreq,
+> -			   enum std_timing_aspect aspect)
+> +void std_timing_set(struct std_timing *st, int hsize, int vfreq,
+> +		    enum std_timing_aspect aspect)
+>  {
+>  	assert(hsize >= 256 && hsize <= 2288);
+>  	st->hsize = hsize / 8 - 31;
+> diff --git a/lib/igt_edid.h b/lib/igt_edid.h
+> index a9251d68..609f3cd4 100644
+> --- a/lib/igt_edid.h
+> +++ b/lib/igt_edid.h
+> @@ -379,6 +379,8 @@ size_t edid_get_size(const struct edid *edid);
+>  void edid_get_mfg(const struct edid *edid, char out[static 3]);
+>  uint8_t edid_get_deep_color_from_vsdb(const struct edid *edid);
+>  uint8_t edid_get_bit_depth_from_vid(const struct edid *edid);
+> +void std_timing_set(struct std_timing *st, int hsize, int vfreq,
+> +		    enum std_timing_aspect aspect); // rename
+--------------------------------------------------- ^
+Remove this or did you mean naming this function
+edid_std_timing_set ?
 
-== Summary ==
+>  void detailed_timing_set_mode(struct detailed_timing *dt, drmModeModeInfo *mode,
+>  			      int width_mm, int height_mm);
+>  void detailed_timing_set_monitor_range_mode(struct detailed_timing *dt,
+> diff --git a/lib/igt_kms.c b/lib/igt_kms.c
+> index 921a623d..437977a7 100644
+> --- a/lib/igt_kms.c
+> +++ b/lib/igt_kms.c
+> @@ -133,6 +133,35 @@ const struct edid *igt_kms_get_base_edid(void)
+>  	return &edid;
+>  }
+>  
+> +const struct edid *igt_kms_get_full_edid(void)
+> +{
+> +	static struct edid edid;
+> +	drmModeModeInfo mode = {};
 
-CI Bug Log - changes from CI_DRM_12364 -> IGTPW_8079
-====================================================
+Put newline here.
 
-Summary
--------
+> +	mode.clock = 148500;
+> +	mode.hdisplay = 2288;
+> +	mode.hsync_start = 2008;
+> +	mode.hsync_end = 2052;
+> +	mode.htotal = 2200;
+> +	mode.vdisplay = 1287;
+> +	mode.vsync_start = 1084;
+> +	mode.vsync_end = 1089;
+> +	mode.vtotal = 1125;
+> +	mode.vrefresh = 144;
+> +	edid_init_with_mode(&edid, &mode);
+> +
+> +	std_timing_set(&edid.standard_timings[0], 256, 60, STD_TIMING_16_10);
+> +	std_timing_set(&edid.standard_timings[1], 510, 69, STD_TIMING_4_3);
+> +	std_timing_set(&edid.standard_timings[2], 764, 78, STD_TIMING_5_4);
+> +	std_timing_set(&edid.standard_timings[3], 1018, 87, STD_TIMING_16_9);
+> +	std_timing_set(&edid.standard_timings[4], 1526, 96, STD_TIMING_16_10);
+> +	std_timing_set(&edid.standard_timings[5], 1780, 105, STD_TIMING_4_3);
+> +	std_timing_set(&edid.standard_timings[6], 2034, 114, STD_TIMING_5_4);
+> +	std_timing_set(&edid.standard_timings[7], 2288, 123, STD_TIMING_16_9);
+> +
+> +	edid_update_checksum(&edid);
+> +	return &edid;
+> +}
+> +
+>  const struct edid *igt_kms_get_base_tile_edid(void)
+>  {
+>  	static struct edid edid;
+> @@ -548,6 +577,8 @@ const struct edid *igt_kms_get_custom_edid(enum igt_custom_edid_type edid)
+>  	switch (edid) {
+>  	case IGT_CUSTOM_EDID_BASE:
+>  		return igt_kms_get_base_edid();
+> +	case IGT_CUSTOM_EDID_FULL:
+> +		return igt_kms_get_full_edid();
+>  	case IGT_CUSTOM_EDID_ALT:
+>  		return igt_kms_get_alt_edid();
+>  	case IGT_CUSTOM_EDID_HDMI_AUDIO:
+> diff --git a/lib/igt_kms.h b/lib/igt_kms.h
+> index b09441d0..7a00d204 100644
+> --- a/lib/igt_kms.h
+> +++ b/lib/igt_kms.h
+> @@ -82,6 +82,7 @@ enum port {
+>   *
+>   * Enum used for the helper function igt_custom_edid_type
+>   * @IGT_CUSTOM_EDID_BASE: Returns base edid
+> + * @IGT_CUSTOM_EDID_FULL: Returns edid with full list of standard timings.
+>   * @IGT_CUSTOM_EDID_ALT: Returns alternate edid
+>   * @IGT_CUSTOM_EDID_HDMI_AUDIO: Returns edid with HDMI audio block
+>   * @IGT_CUSTOM_EDID_DP_AUDIO: Returns edid with DP audio block
+> @@ -89,12 +90,13 @@ enum port {
+>   */
+>  enum igt_custom_edid_type {
+>  	IGT_CUSTOM_EDID_BASE,
+> +	IGT_CUSTOM_EDID_FULL,
+>  	IGT_CUSTOM_EDID_ALT,
+>  	IGT_CUSTOM_EDID_HDMI_AUDIO,
+>  	IGT_CUSTOM_EDID_DP_AUDIO,
+>  	IGT_CUSTOM_EDID_ASPECT_RATIO,
+>  };
+> -#define IGT_CUSTOM_EDID_COUNT 5
+> +#define IGT_CUSTOM_EDID_COUNT 6
+>  
+>  /**
+>   * kmstest_port_name:
+> @@ -865,6 +867,7 @@ void igt_reset_connectors(void);
+>  uint32_t kmstest_get_vbl_flag(int crtc_offset);
+>  
+>  const struct edid *igt_kms_get_base_edid(void);
+> +const struct edid *igt_kms_get_full_edid(void);
+>  const struct edid *igt_kms_get_base_tile_edid(void);
+>  const struct edid *igt_kms_get_alt_edid(void);
+>  const struct edid *igt_kms_get_hdmi_audio_edid(void);
+> diff --git a/tests/chamelium/kms_chamelium.c b/tests/chamelium/kms_chamelium.c
+> index 2bc97d5a..c8fbc45c 100644
+> --- a/tests/chamelium/kms_chamelium.c
+> +++ b/tests/chamelium/kms_chamelium.c
+> @@ -2612,6 +2612,70 @@ static void edid_stress_resolution(data_t *data, struct chamelium_port *port,
+>  			      data->ports, data->port_count);
+>  }
+>  
+> +static const char igt_edid_resolution_list_desc[] =
+> +	"Get an EDID with many modes of different configurations, set them on the screen and check the"
+> +	"screen resolution matches the mode resolution.";
+-------- ^
+Put space before screen word.
+You can test it with --describe option.
 
-  **SUCCESS**
+Put also newline here.
 
-  No regressions found.
+Regards,
+Kamil
 
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8079/index.html
-
-Participating hosts (39 -> 39)
-------------------------------
-
-  Additional (2): fi-hsw-4770 fi-rkl-11600 
-  Missing    (2): fi-ctg-p8600 fi-bdw-samus 
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_8079 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@gem_huc_copy@huc-copy:
-    - fi-rkl-11600:       NOTRUN -> [SKIP][1] ([i915#2190])
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8079/fi-rkl-11600/igt@gem_huc_copy@huc-copy.html
-
-  * igt@gem_lmem_swapping@basic:
-    - fi-rkl-11600:       NOTRUN -> [SKIP][2] ([i915#4613]) +3 similar issues
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8079/fi-rkl-11600/igt@gem_lmem_swapping@basic.html
-
-  * igt@gem_softpin@allocator-basic-reserve:
-    - fi-hsw-4770:        NOTRUN -> [SKIP][3] ([fdo#109271]) +9 similar issues
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8079/fi-hsw-4770/igt@gem_softpin@allocator-basic-reserve.html
-
-  * igt@gem_tiled_pread_basic:
-    - fi-rkl-11600:       NOTRUN -> [SKIP][4] ([i915#3282])
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8079/fi-rkl-11600/igt@gem_tiled_pread_basic.html
-
-  * igt@i915_pm_backlight@basic-brightness:
-    - fi-hsw-4770:        NOTRUN -> [SKIP][5] ([fdo#109271] / [i915#3012])
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8079/fi-hsw-4770/igt@i915_pm_backlight@basic-brightness.html
-    - fi-rkl-11600:       NOTRUN -> [SKIP][6] ([i915#3012])
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8079/fi-rkl-11600/igt@i915_pm_backlight@basic-brightness.html
-
-  * igt@i915_suspend@basic-s3-without-i915:
-    - fi-rkl-11600:       NOTRUN -> [INCOMPLETE][7] ([i915#4817])
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8079/fi-rkl-11600/igt@i915_suspend@basic-s3-without-i915.html
-
-  * igt@kms_chamelium@dp-crc-fast:
-    - fi-hsw-4770:        NOTRUN -> [SKIP][8] ([fdo#109271] / [fdo#111827]) +8 similar issues
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8079/fi-hsw-4770/igt@kms_chamelium@dp-crc-fast.html
-
-  * igt@kms_chamelium@hdmi-edid-read:
-    - fi-rkl-11600:       NOTRUN -> [SKIP][9] ([fdo#111827]) +7 similar issues
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8079/fi-rkl-11600/igt@kms_chamelium@hdmi-edid-read.html
-
-  * igt@kms_cursor_legacy@basic-busy-flip-before-cursor:
-    - fi-rkl-11600:       NOTRUN -> [SKIP][10] ([i915#4103])
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8079/fi-rkl-11600/igt@kms_cursor_legacy@basic-busy-flip-before-cursor.html
-
-  * igt@kms_force_connector_basic@force-load-detect:
-    - fi-rkl-11600:       NOTRUN -> [SKIP][11] ([fdo#109285] / [i915#4098])
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8079/fi-rkl-11600/igt@kms_force_connector_basic@force-load-detect.html
-
-  * igt@kms_psr@primary_page_flip:
-    - fi-rkl-11600:       NOTRUN -> [SKIP][12] ([i915#1072]) +3 similar issues
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8079/fi-rkl-11600/igt@kms_psr@primary_page_flip.html
-
-  * igt@kms_psr@sprite_plane_onoff:
-    - fi-hsw-4770:        NOTRUN -> [SKIP][13] ([fdo#109271] / [i915#1072]) +3 similar issues
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8079/fi-hsw-4770/igt@kms_psr@sprite_plane_onoff.html
-
-  * igt@kms_setmode@basic-clone-single-crtc:
-    - fi-rkl-11600:       NOTRUN -> [SKIP][14] ([i915#3555] / [i915#4098])
-   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8079/fi-rkl-11600/igt@kms_setmode@basic-clone-single-crtc.html
-
-  * igt@prime_vgem@basic-read:
-    - fi-rkl-11600:       NOTRUN -> [SKIP][15] ([fdo#109295] / [i915#3291] / [i915#3708]) +2 similar issues
-   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8079/fi-rkl-11600/igt@prime_vgem@basic-read.html
-
-  * igt@prime_vgem@basic-userptr:
-    - fi-rkl-11600:       NOTRUN -> [SKIP][16] ([fdo#109295] / [i915#3301] / [i915#3708])
-   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8079/fi-rkl-11600/igt@prime_vgem@basic-userptr.html
-
-  
-#### Possible fixes ####
-
-  * igt@gem_exec_fence@basic-busy@bcs0:
-    - fi-glk-j4005:       [SKIP][17] ([fdo#109271]) -> [PASS][18] +1 similar issue
-   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12364/fi-glk-j4005/igt@gem_exec_fence@basic-busy@bcs0.html
-   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8079/fi-glk-j4005/igt@gem_exec_fence@basic-busy@bcs0.html
-    - fi-bxt-dsi:         [SKIP][19] ([fdo#109271]) -> [PASS][20] +1 similar issue
-   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12364/fi-bxt-dsi/igt@gem_exec_fence@basic-busy@bcs0.html
-   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8079/fi-bxt-dsi/igt@gem_exec_fence@basic-busy@bcs0.html
-    - fi-skl-6700k2:      [SKIP][21] ([fdo#109271]) -> [PASS][22] +1 similar issue
-   [21]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12364/fi-skl-6700k2/igt@gem_exec_fence@basic-busy@bcs0.html
-   [22]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8079/fi-skl-6700k2/igt@gem_exec_fence@basic-busy@bcs0.html
-    - fi-cfl-8109u:       [SKIP][23] ([fdo#109271]) -> [PASS][24] +1 similar issue
-   [23]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12364/fi-cfl-8109u/igt@gem_exec_fence@basic-busy@bcs0.html
-   [24]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8079/fi-cfl-8109u/igt@gem_exec_fence@basic-busy@bcs0.html
-    - fi-kbl-7567u:       [SKIP][25] ([fdo#109271]) -> [PASS][26] +1 similar issue
-   [25]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12364/fi-kbl-7567u/igt@gem_exec_fence@basic-busy@bcs0.html
-   [26]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8079/fi-kbl-7567u/igt@gem_exec_fence@basic-busy@bcs0.html
-    - fi-kbl-8809g:       [SKIP][27] ([fdo#109271]) -> [PASS][28] +1 similar issue
-   [27]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12364/fi-kbl-8809g/igt@gem_exec_fence@basic-busy@bcs0.html
-   [28]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8079/fi-kbl-8809g/igt@gem_exec_fence@basic-busy@bcs0.html
-
-  * igt@gem_exec_fence@basic-wait@bcs0:
-    - fi-cfl-guc:         [SKIP][29] ([fdo#109271]) -> [PASS][30] +1 similar issue
-   [29]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12364/fi-cfl-guc/igt@gem_exec_fence@basic-wait@bcs0.html
-   [30]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8079/fi-cfl-guc/igt@gem_exec_fence@basic-wait@bcs0.html
-    - fi-kbl-x1275:       [SKIP][31] ([fdo#109271]) -> [PASS][32] +1 similar issue
-   [31]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12364/fi-kbl-x1275/igt@gem_exec_fence@basic-wait@bcs0.html
-   [32]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8079/fi-kbl-x1275/igt@gem_exec_fence@basic-wait@bcs0.html
-    - fi-skl-6600u:       [SKIP][33] ([fdo#109271]) -> [PASS][34] +1 similar issue
-   [33]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12364/fi-skl-6600u/igt@gem_exec_fence@basic-wait@bcs0.html
-   [34]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8079/fi-skl-6600u/igt@gem_exec_fence@basic-wait@bcs0.html
-    - fi-apl-guc:         [SKIP][35] ([fdo#109271]) -> [PASS][36] +1 similar issue
-   [35]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12364/fi-apl-guc/igt@gem_exec_fence@basic-wait@bcs0.html
-   [36]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8079/fi-apl-guc/igt@gem_exec_fence@basic-wait@bcs0.html
-    - fi-skl-guc:         [SKIP][37] ([fdo#109271]) -> [PASS][38] +1 similar issue
-   [37]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12364/fi-skl-guc/igt@gem_exec_fence@basic-wait@bcs0.html
-   [38]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8079/fi-skl-guc/igt@gem_exec_fence@basic-wait@bcs0.html
-    - fi-cfl-8700k:       [SKIP][39] ([fdo#109271]) -> [PASS][40] +1 similar issue
-   [39]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12364/fi-cfl-8700k/igt@gem_exec_fence@basic-wait@bcs0.html
-   [40]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8079/fi-cfl-8700k/igt@gem_exec_fence@basic-wait@bcs0.html
-
-  * igt@gem_exec_suspend@basic-s0@smem:
-    - {bat-rplp-1}:       [DMESG-WARN][41] ([i915#2867]) -> [PASS][42]
-   [41]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12364/bat-rplp-1/igt@gem_exec_suspend@basic-s0@smem.html
-   [42]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8079/bat-rplp-1/igt@gem_exec_suspend@basic-s0@smem.html
-    - {bat-rpls-2}:       [DMESG-WARN][43] ([i915#6434]) -> [PASS][44]
-   [43]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12364/bat-rpls-2/igt@gem_exec_suspend@basic-s0@smem.html
-   [44]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8079/bat-rpls-2/igt@gem_exec_suspend@basic-s0@smem.html
-
-  * igt@i915_selftest@live@migrate:
-    - {bat-adlp-6}:       [INCOMPLETE][45] ([i915#7348]) -> [PASS][46]
-   [45]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12364/bat-adlp-6/igt@i915_selftest@live@migrate.html
-   [46]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8079/bat-adlp-6/igt@i915_selftest@live@migrate.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
-  [fdo#109285]: https://bugs.freedesktop.org/show_bug.cgi?id=109285
-  [fdo#109295]: https://bugs.freedesktop.org/show_bug.cgi?id=109295
-  [fdo#111827]: https://bugs.freedesktop.org/show_bug.cgi?id=111827
-  [i915#1072]: https://gitlab.freedesktop.org/drm/intel/issues/1072
-  [i915#2190]: https://gitlab.freedesktop.org/drm/intel/issues/2190
-  [i915#2867]: https://gitlab.freedesktop.org/drm/intel/issues/2867
-  [i915#3012]: https://gitlab.freedesktop.org/drm/intel/issues/3012
-  [i915#3282]: https://gitlab.freedesktop.org/drm/intel/issues/3282
-  [i915#3291]: https://gitlab.freedesktop.org/drm/intel/issues/3291
-  [i915#3301]: https://gitlab.freedesktop.org/drm/intel/issues/3301
-  [i915#3555]: https://gitlab.freedesktop.org/drm/intel/issues/3555
-  [i915#3708]: https://gitlab.freedesktop.org/drm/intel/issues/3708
-  [i915#4098]: https://gitlab.freedesktop.org/drm/intel/issues/4098
-  [i915#4103]: https://gitlab.freedesktop.org/drm/intel/issues/4103
-  [i915#4613]: https://gitlab.freedesktop.org/drm/intel/issues/4613
-  [i915#4817]: https://gitlab.freedesktop.org/drm/intel/issues/4817
-  [i915#6367]: https://gitlab.freedesktop.org/drm/intel/issues/6367
-  [i915#6434]: https://gitlab.freedesktop.org/drm/intel/issues/6434
-  [i915#7348]: https://gitlab.freedesktop.org/drm/intel/issues/7348
-  [i915#7456]: https://gitlab.freedesktop.org/drm/intel/issues/7456
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_7050 -> IGTPW_8079
-
-  CI-20190529: 20190529
-  CI_DRM_12364: e8bcb44a50317c067823a983fa2badde97e41fdd @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_8079: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8079/index.html
-  IGT_7050: 42839a7c2bab78bc6cda8c949d8545606f377735 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8079/index.html
-
---===============8422221921692581624==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/i915/gem_exec_fence: Replacing custom spinner with igt_spin</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/110735/">https://patchwork.freedesktop.org/series/110735/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8079/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8079/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from CI_DRM_12364 -&gt; IGTPW_8079</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8079/index.html</p>
-<h2>Participating hosts (39 -&gt; 39)</h2>
-<p>Additional (2): fi-hsw-4770 fi-rkl-11600 <br />
-  Missing    (2): fi-ctg-p8600 fi-bdw-samus </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_8079 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@gem_huc_copy@huc-copy:</p>
-<ul>
-<li>fi-rkl-11600:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8079/fi-rkl-11600/igt@gem_huc_copy@huc-copy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2190">i915#2190</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_lmem_swapping@basic:</p>
-<ul>
-<li>fi-rkl-11600:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8079/fi-rkl-11600/igt@gem_lmem_swapping@basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4613">i915#4613</a>) +3 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_softpin@allocator-basic-reserve:</p>
-<ul>
-<li>fi-hsw-4770:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8079/fi-hsw-4770/igt@gem_softpin@allocator-basic-reserve.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +9 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_tiled_pread_basic:</p>
-<ul>
-<li>fi-rkl-11600:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8079/fi-rkl-11600/igt@gem_tiled_pread_basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3282">i915#3282</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_pm_backlight@basic-brightness:</p>
-<ul>
-<li>
-<p>fi-hsw-4770:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8079/fi-hsw-4770/igt@i915_pm_backlight@basic-brightness.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3012">i915#3012</a>)</p>
-</li>
-<li>
-<p>fi-rkl-11600:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8079/fi-rkl-11600/igt@i915_pm_backlight@basic-brightness.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3012">i915#3012</a>)</p>
-</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_suspend@basic-s3-without-i915:</p>
-<ul>
-<li>fi-rkl-11600:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8079/fi-rkl-11600/igt@i915_suspend@basic-s3-without-i915.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4817">i915#4817</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_chamelium@dp-crc-fast:</p>
-<ul>
-<li>fi-hsw-4770:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8079/fi-hsw-4770/igt@kms_chamelium@dp-crc-fast.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://bugs.freedesktop.org/show_bug.cgi?id=111827">fdo#111827</a>) +8 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_chamelium@hdmi-edid-read:</p>
-<ul>
-<li>fi-rkl-11600:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8079/fi-rkl-11600/igt@kms_chamelium@hdmi-edid-read.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=111827">fdo#111827</a>) +7 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_cursor_legacy@basic-busy-flip-before-cursor:</p>
-<ul>
-<li>fi-rkl-11600:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8079/fi-rkl-11600/igt@kms_cursor_legacy@basic-busy-flip-before-cursor.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4103">i915#4103</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_force_connector_basic@force-load-detect:</p>
-<ul>
-<li>fi-rkl-11600:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8079/fi-rkl-11600/igt@kms_force_connector_basic@force-load-detect.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109285">fdo#109285</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4098">i915#4098</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr@primary_page_flip:</p>
-<ul>
-<li>fi-rkl-11600:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8079/fi-rkl-11600/igt@kms_psr@primary_page_flip.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1072">i915#1072</a>) +3 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr@sprite_plane_onoff:</p>
-<ul>
-<li>fi-hsw-4770:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8079/fi-hsw-4770/igt@kms_psr@sprite_plane_onoff.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/1072">i915#1072</a>) +3 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_setmode@basic-clone-single-crtc:</p>
-<ul>
-<li>fi-rkl-11600:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8079/fi-rkl-11600/igt@kms_setmode@basic-clone-single-crtc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3555">i915#3555</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4098">i915#4098</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@prime_vgem@basic-read:</p>
-<ul>
-<li>fi-rkl-11600:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8079/fi-rkl-11600/igt@prime_vgem@basic-read.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109295">fdo#109295</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3291">i915#3291</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3708">i915#3708</a>) +2 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@prime_vgem@basic-userptr:</p>
-<ul>
-<li>fi-rkl-11600:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8079/fi-rkl-11600/igt@prime_vgem@basic-userptr.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109295">fdo#109295</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3301">i915#3301</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3708">i915#3708</a>)</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@gem_exec_fence@basic-busy@bcs0:</p>
-<ul>
-<li>
-<p>fi-glk-j4005:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12364/fi-glk-j4005/igt@gem_exec_fence@basic-busy@bcs0.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8079/fi-glk-j4005/igt@gem_exec_fence@basic-busy@bcs0.html">PASS</a> +1 similar issue</p>
-</li>
-<li>
-<p>fi-bxt-dsi:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12364/fi-bxt-dsi/igt@gem_exec_fence@basic-busy@bcs0.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8079/fi-bxt-dsi/igt@gem_exec_fence@basic-busy@bcs0.html">PASS</a> +1 similar issue</p>
-</li>
-<li>
-<p>fi-skl-6700k2:      <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12364/fi-skl-6700k2/igt@gem_exec_fence@basic-busy@bcs0.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8079/fi-skl-6700k2/igt@gem_exec_fence@basic-busy@bcs0.html">PASS</a> +1 similar issue</p>
-</li>
-<li>
-<p>fi-cfl-8109u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12364/fi-cfl-8109u/igt@gem_exec_fence@basic-busy@bcs0.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8079/fi-cfl-8109u/igt@gem_exec_fence@basic-busy@bcs0.html">PASS</a> +1 similar issue</p>
-</li>
-<li>
-<p>fi-kbl-7567u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12364/fi-kbl-7567u/igt@gem_exec_fence@basic-busy@bcs0.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8079/fi-kbl-7567u/igt@gem_exec_fence@basic-busy@bcs0.html">PASS</a> +1 similar issue</p>
-</li>
-<li>
-<p>fi-kbl-8809g:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12364/fi-kbl-8809g/igt@gem_exec_fence@basic-busy@bcs0.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8079/fi-kbl-8809g/igt@gem_exec_fence@basic-busy@bcs0.html">PASS</a> +1 similar issue</p>
-</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_exec_fence@basic-wait@bcs0:</p>
-<ul>
-<li>
-<p>fi-cfl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12364/fi-cfl-guc/igt@gem_exec_fence@basic-wait@bcs0.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8079/fi-cfl-guc/igt@gem_exec_fence@basic-wait@bcs0.html">PASS</a> +1 similar issue</p>
-</li>
-<li>
-<p>fi-kbl-x1275:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12364/fi-kbl-x1275/igt@gem_exec_fence@basic-wait@bcs0.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8079/fi-kbl-x1275/igt@gem_exec_fence@basic-wait@bcs0.html">PASS</a> +1 similar issue</p>
-</li>
-<li>
-<p>fi-skl-6600u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12364/fi-skl-6600u/igt@gem_exec_fence@basic-wait@bcs0.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8079/fi-skl-6600u/igt@gem_exec_fence@basic-wait@bcs0.html">PASS</a> +1 similar issue</p>
-</li>
-<li>
-<p>fi-apl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12364/fi-apl-guc/igt@gem_exec_fence@basic-wait@bcs0.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8079/fi-apl-guc/igt@gem_exec_fence@basic-wait@bcs0.html">PASS</a> +1 similar issue</p>
-</li>
-<li>
-<p>fi-skl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12364/fi-skl-guc/igt@gem_exec_fence@basic-wait@bcs0.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8079/fi-skl-guc/igt@gem_exec_fence@basic-wait@bcs0.html">PASS</a> +1 similar issue</p>
-</li>
-<li>
-<p>fi-cfl-8700k:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12364/fi-cfl-8700k/igt@gem_exec_fence@basic-wait@bcs0.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8079/fi-cfl-8700k/igt@gem_exec_fence@basic-wait@bcs0.html">PASS</a> +1 similar issue</p>
-</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_exec_suspend@basic-s0@smem:</p>
-<ul>
-<li>
-<p>{bat-rplp-1}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12364/bat-rplp-1/igt@gem_exec_suspend@basic-s0@smem.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2867">i915#2867</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8079/bat-rplp-1/igt@gem_exec_suspend@basic-s0@smem.html">PASS</a></p>
-</li>
-<li>
-<p>{bat-rpls-2}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12364/bat-rpls-2/igt@gem_exec_suspend@basic-s0@smem.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6434">i915#6434</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8079/bat-rpls-2/igt@gem_exec_suspend@basic-s0@smem.html">PASS</a></p>
-</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@migrate:</p>
-<ul>
-<li>{bat-adlp-6}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12364/bat-adlp-6/igt@i915_selftest@live@migrate.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7348">i915#7348</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8079/bat-adlp-6/igt@i915_selftest@live@migrate.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_7050 -&gt; IGTPW_8079</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_12364: e8bcb44a50317c067823a983fa2badde97e41fdd @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_8079: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8079/index.html<br />
-  IGT_7050: 42839a7c2bab78bc6cda8c949d8545606f377735 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-
-</body>
-</html>
-
---===============8422221921692581624==--
+> +static void edid_resolution_list(data_t *data, struct chamelium_port *port)
+> +{
+> +	struct chamelium *chamelium = data->chamelium;
+> +	struct udev_monitor *mon = igt_watch_uevents();
+> +	drmModeConnector *init_connector;
+> +	drmModeModeInfoPtr modes;
+> +	int count_modes;
+> +	int i;
+> +	igt_output_t *output;
+> +	enum pipe pipe;
+> +
+> +	chamelium_unplug(chamelium, port);
+> +	set_edid(data, port, IGT_CUSTOM_EDID_FULL);
+> +
+> +	igt_flush_uevents(mon);
+> +	chamelium_plug(chamelium, port);
+> +	wait_for_connector_after_hotplug(data, mon, port, DRM_MODE_CONNECTED);
+> +	igt_flush_uevents(mon);
+> +
+> +	init_connector = chamelium_port_get_connector(chamelium, port, true);
+> +	modes = init_connector->modes;
+> +	count_modes = init_connector->count_modes;
+> +
+> +	output = get_output_for_port(data, port);
+> +	pipe = get_pipe_for_output(&data->display, output);
+> +	igt_output_set_pipe(output, pipe);
+> +
+> +	for (i = 0; i < count_modes; ++i)
+> +		igt_debug("#%d %s %uHz\n", i, modes[i].name, modes[i].vrefresh);
+> +
+> +	for (i = 0; i < count_modes; ++i) {
+> +		struct chamelium_edid *chamelium_edid;
+> +		struct igt_fb fb = { 0 };
+> +		bool is_video_stable;
+> +		int screen_res_w, screen_res_h;
+> +		drmModeConnector *connector;
+> +		drmModeModeInfoPtr expected_mode;
+> +		bool is_same_mode;
+> +
+> +		igt_info("Testing #%d %s %uHz\n", i, modes[i].name,
+> +			 modes[i].vrefresh);
+> +
+> +		/* Set the screen mode with the one we chose. */
+> +		create_fb_for_mode(data, &fb, &modes[i]);
+> +		enable_output(data, port, output, &modes[i], &fb);
+> +		is_video_stable = chamelium_port_wait_video_input_stable(
+> +			chamelium, port, 10);
+> +		igt_assert(is_video_stable);
+> +
+> +		chamelium_port_get_resolution(chamelium, port, &screen_res_w,
+> +					      &screen_res_h);
+> +		igt_assert(screen_res_w == modes[i].hdisplay);
+> +		igt_assert(screen_res_h == modes[i].vdisplay);
+> +
+> +		igt_remove_fb(data->drm_fd, &fb);
+> +	}
+> +
+> +	igt_modeset_disable_all_outputs(&data->display);
+> +	drmModeFreeConnector(init_connector);
+> +}
+> +
+>  #define for_each_port(p, port)            \
+>  	for (p = 0, port = data.ports[p]; \
+>  	     p < data.port_count;         \
+> @@ -2714,6 +2778,10 @@ igt_main
+>  			edid_stress_resolution(&data, port, DP_EDIDS_NON_4K,
+>  					       ARRAY_SIZE(DP_EDIDS_NON_4K));
+>  
+> +		igt_describe(igt_edid_resolution_list_desc);
+> +		connector_subtest("dp-edid-resolution-list", DisplayPort)
+> +			edid_resolution_list(&data, port);
+> +
+>  		igt_describe(test_suspend_resume_hpd_desc);
+>  		connector_subtest("dp-hpd-after-suspend", DisplayPort)
+>  			test_suspend_resume_hpd(&data, port,
+> -- 
+> 2.38.1.431.g37b22c650d-goog
+> 
