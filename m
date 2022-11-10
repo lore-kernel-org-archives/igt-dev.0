@@ -1,20 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1E8D610E856
- for <igt-dev@lists.freedesktop.org>; Thu, 10 Nov 2022 15:07:14 +0000 (UTC)
-Date: Thu, 10 Nov 2022 16:06:53 +0100
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C874A10E871
+ for <igt-dev@lists.freedesktop.org>; Thu, 10 Nov 2022 15:11:10 +0000 (UTC)
+From: Karolina Stolarek <karolina.stolarek@intel.com>
 To: igt-dev@lists.freedesktop.org
-Message-ID: <Y20TjezTLUm22XDM@kamilkon-desk1>
-References: <20221108235724.126287-1-mcanal@igalia.com>
- <20221108235724.126287-6-mcanal@igalia.com>
+Date: Thu, 10 Nov 2022 16:10:52 +0100
+Message-Id: <20221110151052.40009-1-karolina.stolarek@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20221108235724.126287-6-mcanal@igalia.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 5/6] tests/v3d_create_bo: Create test
- for V3D's Create BO IOCTL
+Subject: [igt-dev] [PATCH i-g-t] tests/api_intel_bb: Run misplaced-blitter
+ only with supported engines
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,147 +17,93 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: petri.latvala@intel.com, Emma Anholt <emma@anholt.net>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Maíra,
+The previous version of the test assumed a fixed set of engines
+which might not be supported on some platforms. Make the test
+more flexible when initializing the second engine instance in
+context config. Skip the test altogether if there is no dedicated
+copy engine.
 
-few nits, see below.
+Fixes: https://gitlab.freedesktop.org/drm/intel/-/issues/7493
+Signed-off-by: Karolina Stolarek <karolina.stolarek@intel.com>
+---
+ tests/i915/api_intel_bb.c | 53 ++++++++++++++++++++++++++++-----------
+ 1 file changed, 39 insertions(+), 14 deletions(-)
 
-On 2022-11-08 at 20:57:23 -0300, Maíra Canal wrote:
-> Add three igt_subtests for the DRM_IOCTL_V3D_CREATE_BO, which tests the
-> creation of a zeroed BO and a 4096 bytes BO, and tests if the BO is
-> properly cleaned.
-> 
-> Signed-off-by: Maíra Canal <mcanal@igalia.com>
-> ---
->  tests/meson.build         |  1 +
->  tests/v3d/v3d_create_bo.c | 79 +++++++++++++++++++++++++++++++++++++++
->  tests/v3d_ci/v3d.testlist |  3 ++
->  3 files changed, 83 insertions(+)
->  create mode 100644 tests/v3d/v3d_create_bo.c
-> 
-> diff --git a/tests/meson.build b/tests/meson.build
-> index 5c9b1829..f1a6a9dd 100644
-> --- a/tests/meson.build
-> +++ b/tests/meson.build
-> @@ -256,6 +256,7 @@ msm_progs = [
->  ]
->  
->  v3d_progs = [
-> +	'v3d_create_bo',
->  	'v3d_get_bo_offset',
->  	'v3d_get_param',
->  	'v3d_mmap',
-> diff --git a/tests/v3d/v3d_create_bo.c b/tests/v3d/v3d_create_bo.c
-> new file mode 100644
-> index 00000000..9b13f603
-> --- /dev/null
-> +++ b/tests/v3d/v3d_create_bo.c
-> @@ -0,0 +1,79 @@
-> +/*
-> + * Copyright © 2022 Igalia S.L.
-> + *
-> + * Permission is hereby granted, free of charge, to any person obtaining a
-> + * copy of this software and associated documentation files (the "Software"),
-> + * to deal in the Software without restriction, including without limitation
-> + * the rights to use, copy, modify, merge, publish, distribute, sublicense,
-> + * and/or sell copies of the Software, and to permit persons to whom the
-> + * Software is furnished to do so, subject to the following conditions:
-> + *
-> + * The above copyright notice and this permission notice (including the next
-> + * paragraph) shall be included in all copies or substantial portions of the
-> + * Software.
-> + *
-> + * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-> + * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-> + * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
-> + * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-> + * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
-> + * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
-> + * IN THE SOFTWARE.
-
-Please use SPDX licence instead.
-
-> + *
-> + * Authors:
-> + * 	Maíra Canal <mcanal@igalia.com>
-> + */
-> +
-> +#include "igt.h"
-> +#include "igt_v3d.h"
-> +
-> +igt_main
-> +{
-> +	int fd;
-> +
-> +	igt_fixture {
-> +		fd = drm_open_driver(DRIVER_V3D);
-> +	}
-> +
-
-Please put description to each new added test with igt_describe,
-here and below. Look at lib/igt_core.h for how to do it.
-You can test it with --describe option.
-
-Regards,
-Kamil
-
-> +	igt_subtest("create-bo-0") {
-> +		struct drm_v3d_create_bo create = {
-> +			.size = 0,
-> +		};
-> +		do_ioctl_err(fd, DRM_IOCTL_V3D_CREATE_BO, &create, EINVAL);
-> +	}
-> +
-> +	igt_subtest("create-bo-4096") {
-> +		struct v3d_bo *bo = igt_v3d_create_bo(fd, PAGE_SIZE);
-> +		igt_v3d_free_bo(fd, bo);
-> +	}
-> +
-> +	igt_subtest("create-bo-zeroed") {
-> +		int fd2 = drm_open_driver(DRIVER_V3D);
-> +		struct v3d_bo *bo;
-> +		/* A size different from any used in our other tests, to try
-> +		 * to convince it to land as the only one of its size in the
-> +		 * kernel BO cache
-> +		 */
-> +		size_t size = 3 * PAGE_SIZE, i;
-> +
-> +		/* Make a BO and free it on our main fd. */
-> +		bo = igt_v3d_create_bo(fd, size);
-> +		bo->map = igt_v3d_mmap_bo(fd, bo->handle, size, PROT_READ | PROT_WRITE);
-> +		memset(bo->map, 0xd0, size);
-> +		igt_v3d_free_bo(fd, bo);
-> +
-> +		/* Now, allocate a BO on the other fd and make sure it doesn't
-> +		 * have the old contents.
-> +		 */
-> +		bo = igt_v3d_create_bo(fd2, size);
-> +		bo->map = igt_v3d_mmap_bo(fd2, bo->handle, size, PROT_READ | PROT_WRITE);
-> +		for (i = 0; i < size / 4; i++)
-> +			igt_assert_eq_u32(((uint32_t *)bo->map)[i], 0x0);
-> +		igt_v3d_free_bo(fd2, bo);
-> +
-> +		close(fd2);
-> +	}
-> +
-> +	igt_fixture
-> +		close(fd);
-> +}
-> diff --git a/tests/v3d_ci/v3d.testlist b/tests/v3d_ci/v3d.testlist
-> index b55e8e57..f4355285 100644
-> --- a/tests/v3d_ci/v3d.testlist
-> +++ b/tests/v3d_ci/v3d.testlist
-> @@ -1,3 +1,6 @@
-> +igt@v3d_create_bo@create-bo-0
-> +igt@v3d_create_bo@create-bo-4096
-> +igt@v3d_create_bo@create-bo-zeroed
->  igt@v3d_get_bo_offset@create-get-offsets
->  igt@v3d_get_bo_offset@get-bad-handle
->  igt@v3d_get_param@base-params
-> -- 
-> 2.38.1
-> 
+diff --git a/tests/i915/api_intel_bb.c b/tests/i915/api_intel_bb.c
+index d448f02d..1bb047ed 100644
+--- a/tests/i915/api_intel_bb.c
++++ b/tests/i915/api_intel_bb.c
+@@ -1213,28 +1213,53 @@ static void full_batch(struct buf_ops *bops)
+ 	intel_bb_destroy(ibb);
+ }
+ 
++static void require_engine(const intel_ctx_cfg_t *cfg, enum drm_i915_gem_engine_class class)
++{
++	int i, class_id = -1;
++
++	for (i = 0; i < cfg->num_engines; i++)
++		if (cfg->engines[i].engine_class == class)
++			class_id = i;
++
++	igt_require_f(class_id != -1, "Requested engine not supported\n");
++}
++
+ static void misplaced_blitter(struct buf_ops *bops)
+ {
+ 	int i915 = buf_ops_get_fd(bops), i;
+ 	struct intel_bb *ibb;
+ 	struct intel_buf *src, *dst;
+ 	uint64_t value, *psrc, *pdst;
+-	int cmp;
++	int cmp, err;
++	const intel_ctx_t *ctx;
++	enum drm_i915_gem_engine_class engine_class;
++	intel_ctx_cfg_t cfg = {}, cfg_all_physical = intel_ctx_cfg_all_physical(i915);
++
++	/* Make sure we have a copy enigne and something to misplace it with */
++	require_engine(&cfg_all_physical, I915_ENGINE_CLASS_COPY);
++	igt_require(cfg_all_physical.num_engines > 1);
++
++	/* Find a supported engine class which is not blitter */
++	for (i = 0; i < cfg_all_physical.num_engines; i++) {
++		engine_class = cfg_all_physical.engines[i].engine_class;
++
++		if (engine_class != I915_ENGINE_CLASS_COPY)
++			break;
++	}
+ 
+ 	/* Use custom configuration with blitter at index 0 */
+-	const intel_ctx_cfg_t cfg = (intel_ctx_cfg_t) {
+-			.num_engines = 2,
+-			.engines = {
+-				{ .engine_class = I915_ENGINE_CLASS_COPY,
+-				  .engine_instance = 0
+-				},
+-				{ .engine_class = I915_ENGINE_CLASS_RENDER,
+-				  .engine_instance = 0
+-				},
+-			},
+-		};
+-
+-	const intel_ctx_t *ctx = intel_ctx_create(i915, &cfg);
++	cfg.engines[0] = (struct i915_engine_class_instance) {
++				.engine_class = I915_ENGINE_CLASS_COPY,
++				.engine_instance = 0
++			};
++	cfg.engines[1] = (struct i915_engine_class_instance) {
++				.engine_class = engine_class,
++				.engine_instance = 0
++			};
++	cfg.num_engines =  2;
++
++	err = __intel_ctx_create(i915, &cfg, &ctx);
++	igt_assert_eq(err, 0);
+ 
+ 	ibb = intel_bb_create_with_context(i915, ctx->id, &ctx->cfg, PAGE_SIZE);
+ 
+-- 
+2.25.1
