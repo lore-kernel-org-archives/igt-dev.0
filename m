@@ -1,19 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 83B5710E847
- for <igt-dev@lists.freedesktop.org>; Thu, 10 Nov 2022 14:57:25 +0000 (UTC)
-Message-ID: <9b3c4cab-8d91-0c4f-5c9f-49b6849b4835@intel.com>
-Date: Thu, 10 Nov 2022 20:27:11 +0530
-To: Ashutosh Dixit <ashutosh.dixit@intel.com>, <igt-dev@lists.freedesktop.org>
-References: <20220927062839.2718582-1-ashutosh.dixit@intel.com>
-Content-Language: en-US
-From: "Nilawar, Badal" <badal.nilawar@intel.com>
-In-Reply-To: <20220927062839.2718582-1-ashutosh.dixit@intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1E8D610E856
+ for <igt-dev@lists.freedesktop.org>; Thu, 10 Nov 2022 15:07:14 +0000 (UTC)
+Date: Thu, 10 Nov 2022 16:06:53 +0100
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Message-ID: <Y20TjezTLUm22XDM@kamilkon-desk1>
+References: <20221108235724.126287-1-mcanal@igalia.com>
+ <20221108235724.126287-6-mcanal@igalia.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t] i915/i915_pm_rps: Actual freq can be 0
- when idle or in RC6
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20221108235724.126287-6-mcanal@igalia.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 5/6] tests/v3d_create_bo: Create test
+ for V3D's Create BO IOCTL
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,47 +22,147 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: petri.latvala@intel.com, Emma Anholt <emma@anholt.net>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
+Hi Maíra,
 
+few nits, see below.
 
-On 27-09-2022 11:58, Ashutosh Dixit wrote:
-> From: Vinay Belgaumkar <vinay.belgaumkar@intel.com>
+On 2022-11-08 at 20:57:23 -0300, Maíra Canal wrote:
+> Add three igt_subtests for the DRM_IOCTL_V3D_CREATE_BO, which tests the
+> creation of a zeroed BO and a 4096 bytes BO, and tests if the BO is
+> properly cleaned.
 > 
-> Actual freq read from sysfs can be 0, i.e. less than RPn, in certain
-> situations. For example when the device is idle (without the runtime PM
-> wakeref) actual freq read from sysfs will be 0. Also on Gen12+ actual freq
-> read from HW will be 0 in RC6. Therefore modify checks comparing actual
-> freq with RPn.
-> 
-> Signed-off-by: Vinay Belgaumkar <vinay.belgaumkar@intel.com>
-> Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
-Reviewed-by: Badal Nilawar <badal.nilawar@intel.com>
+> Signed-off-by: Maíra Canal <mcanal@igalia.com>
 > ---
->   tests/i915/i915_pm_rps.c | 5 +++--
->   1 file changed, 3 insertions(+), 2 deletions(-)
+>  tests/meson.build         |  1 +
+>  tests/v3d/v3d_create_bo.c | 79 +++++++++++++++++++++++++++++++++++++++
+>  tests/v3d_ci/v3d.testlist |  3 ++
+>  3 files changed, 83 insertions(+)
+>  create mode 100644 tests/v3d/v3d_create_bo.c
 > 
-> diff --git a/tests/i915/i915_pm_rps.c b/tests/i915/i915_pm_rps.c
-> index db39ec69865c..4865ed1f0042 100644
-> --- a/tests/i915/i915_pm_rps.c
-> +++ b/tests/i915/i915_pm_rps.c
-> @@ -483,14 +483,15 @@ static void idle_check(void)
->   		read_freqs(freqs);
->   		dump(freqs);
->   		check_freq_constraints(freqs);
-> -		if (freqs[ACT] == freqs[RPn])
-> +		if (freqs[ACT] <= freqs[RPn])
->   			break;
->   		usleep(1000 * IDLE_WAIT_TIMESTEP_MSEC);
->   		wait += IDLE_WAIT_TIMESTEP_MSEC;
->   	} while (wait < IDLE_WAIT_TIMEOUT_MSEC);
->   
->   	igt_debugfs_dump(drm_fd, "i915_rps_boost_info");
-> -	igt_assert_eq(freqs[ACT], freqs[RPn]);
-> +	/* Actual freq may be 0 when idle or in RC6 */
-> +	igt_assert_lte(freqs[ACT], freqs[RPn]);
->   	igt_debug("Required %d msec to reach cur=idle\n", wait);
->   }
->   
+> diff --git a/tests/meson.build b/tests/meson.build
+> index 5c9b1829..f1a6a9dd 100644
+> --- a/tests/meson.build
+> +++ b/tests/meson.build
+> @@ -256,6 +256,7 @@ msm_progs = [
+>  ]
+>  
+>  v3d_progs = [
+> +	'v3d_create_bo',
+>  	'v3d_get_bo_offset',
+>  	'v3d_get_param',
+>  	'v3d_mmap',
+> diff --git a/tests/v3d/v3d_create_bo.c b/tests/v3d/v3d_create_bo.c
+> new file mode 100644
+> index 00000000..9b13f603
+> --- /dev/null
+> +++ b/tests/v3d/v3d_create_bo.c
+> @@ -0,0 +1,79 @@
+> +/*
+> + * Copyright © 2022 Igalia S.L.
+> + *
+> + * Permission is hereby granted, free of charge, to any person obtaining a
+> + * copy of this software and associated documentation files (the "Software"),
+> + * to deal in the Software without restriction, including without limitation
+> + * the rights to use, copy, modify, merge, publish, distribute, sublicense,
+> + * and/or sell copies of the Software, and to permit persons to whom the
+> + * Software is furnished to do so, subject to the following conditions:
+> + *
+> + * The above copyright notice and this permission notice (including the next
+> + * paragraph) shall be included in all copies or substantial portions of the
+> + * Software.
+> + *
+> + * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+> + * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+> + * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
+> + * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+> + * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+> + * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
+> + * IN THE SOFTWARE.
+
+Please use SPDX licence instead.
+
+> + *
+> + * Authors:
+> + * 	Maíra Canal <mcanal@igalia.com>
+> + */
+> +
+> +#include "igt.h"
+> +#include "igt_v3d.h"
+> +
+> +igt_main
+> +{
+> +	int fd;
+> +
+> +	igt_fixture {
+> +		fd = drm_open_driver(DRIVER_V3D);
+> +	}
+> +
+
+Please put description to each new added test with igt_describe,
+here and below. Look at lib/igt_core.h for how to do it.
+You can test it with --describe option.
+
+Regards,
+Kamil
+
+> +	igt_subtest("create-bo-0") {
+> +		struct drm_v3d_create_bo create = {
+> +			.size = 0,
+> +		};
+> +		do_ioctl_err(fd, DRM_IOCTL_V3D_CREATE_BO, &create, EINVAL);
+> +	}
+> +
+> +	igt_subtest("create-bo-4096") {
+> +		struct v3d_bo *bo = igt_v3d_create_bo(fd, PAGE_SIZE);
+> +		igt_v3d_free_bo(fd, bo);
+> +	}
+> +
+> +	igt_subtest("create-bo-zeroed") {
+> +		int fd2 = drm_open_driver(DRIVER_V3D);
+> +		struct v3d_bo *bo;
+> +		/* A size different from any used in our other tests, to try
+> +		 * to convince it to land as the only one of its size in the
+> +		 * kernel BO cache
+> +		 */
+> +		size_t size = 3 * PAGE_SIZE, i;
+> +
+> +		/* Make a BO and free it on our main fd. */
+> +		bo = igt_v3d_create_bo(fd, size);
+> +		bo->map = igt_v3d_mmap_bo(fd, bo->handle, size, PROT_READ | PROT_WRITE);
+> +		memset(bo->map, 0xd0, size);
+> +		igt_v3d_free_bo(fd, bo);
+> +
+> +		/* Now, allocate a BO on the other fd and make sure it doesn't
+> +		 * have the old contents.
+> +		 */
+> +		bo = igt_v3d_create_bo(fd2, size);
+> +		bo->map = igt_v3d_mmap_bo(fd2, bo->handle, size, PROT_READ | PROT_WRITE);
+> +		for (i = 0; i < size / 4; i++)
+> +			igt_assert_eq_u32(((uint32_t *)bo->map)[i], 0x0);
+> +		igt_v3d_free_bo(fd2, bo);
+> +
+> +		close(fd2);
+> +	}
+> +
+> +	igt_fixture
+> +		close(fd);
+> +}
+> diff --git a/tests/v3d_ci/v3d.testlist b/tests/v3d_ci/v3d.testlist
+> index b55e8e57..f4355285 100644
+> --- a/tests/v3d_ci/v3d.testlist
+> +++ b/tests/v3d_ci/v3d.testlist
+> @@ -1,3 +1,6 @@
+> +igt@v3d_create_bo@create-bo-0
+> +igt@v3d_create_bo@create-bo-4096
+> +igt@v3d_create_bo@create-bo-zeroed
+>  igt@v3d_get_bo_offset@create-get-offsets
+>  igt@v3d_get_bo_offset@get-bad-handle
+>  igt@v3d_get_param@base-params
+> -- 
+> 2.38.1
+> 
