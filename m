@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 64FF610E668
- for <igt-dev@lists.freedesktop.org>; Thu, 10 Nov 2022 07:09:09 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3837E10E66B
+ for <igt-dev@lists.freedesktop.org>; Thu, 10 Nov 2022 07:09:17 +0000 (UTC)
 From: Ananya Sharma <ananya.sharma@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Thu, 10 Nov 2022 12:38:22 +0530
-Message-Id: <20221110070828.26227-2-ananya.sharma@intel.com>
+Date: Thu, 10 Nov 2022 12:38:26 +0530
+Message-Id: <20221110070828.26227-6-ananya.sharma@intel.com>
 In-Reply-To: <20221110070828.26227-1-ananya.sharma@intel.com>
 References: <20221110070828.26227-1-ananya.sharma@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v4 1/7] tests/kms_color_helper: helper to
- enable MPO + pipe color test
+Subject: [igt-dev] [PATCH i-g-t v4 5/7] tests/chamelium/kms_color_chamelium:
+ MPO + pipe color test for degamma
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,283 +23,244 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Adding support of multiple planes in pipe color test by splitting the
-screen into two parts i.e. one plane having RGB format and another
-one having NV12 format. To add this support for multiple planes the
-two functions paint_rectangle() and paint_gradient_rectangle() are
-modified in kms_color_helper accordingly. This patch contains the
-effected changes that will take place in kms_color and
-kms_color_chamelium due to the changes in kms_color_helper.
+Adding multiple planes with two different formats i.e. RGB and
+NV12 in pipe color test for degamma in kms_color_chamelium too
+as we can expect crc mismatches due to the hardware round-ups
+the LUT values. This will also increase the coverage in color
+management.
 
 Signed-off-by: Ananya Sharma <ananya.sharma@intel.com>
 ---
- tests/chamelium/kms_color_chamelium.c | 23 +++++++++++++++--------
- tests/kms_color.c                     | 24 ++++++++++++++++--------
- tests/kms_color_helper.c              | 26 +++++++++++++++-----------
- tests/kms_color_helper.h              | 10 ++++++++--
- 4 files changed, 54 insertions(+), 29 deletions(-)
+ tests/chamelium/kms_color_chamelium.c | 132 +++++++++++++++++++-------
+ 1 file changed, 99 insertions(+), 33 deletions(-)
 
 diff --git a/tests/chamelium/kms_color_chamelium.c b/tests/chamelium/kms_color_chamelium.c
-index 907f4dd5..4a8cb339 100644
+index 4a8cb339..6043718c 100644
 --- a/tests/chamelium/kms_color_chamelium.c
 +++ b/tests/chamelium/kms_color_chamelium.c
-@@ -85,12 +85,14 @@ static bool test_pipe_degamma(data_t *data,
- 	igt_display_commit(&data->display);
+@@ -33,19 +33,28 @@ IGT_TEST_DESCRIPTION("Test Color Features at Pipe level using Chamelium to verif
+  */
+ static bool test_pipe_degamma(data_t *data,
+ 			      igt_plane_t *primary,
++			      bool multiplane,
+ 			      struct chamelium_port *port)
+ {
+ 	igt_output_t *output = data->output;
++	igt_plane_t *overlay = data->overlay;
+ 	gamma_lut_t *degamma_full;
+ 	drmModeModeInfo *mode = data->mode;
+-	struct igt_fb fb_modeset, fb, fbref;
++	struct igt_fb fb0, fb1, fbref;
+ 	struct chamelium_frame_dump *frame_fullcolors;
+-	int fb_id, fb_modeset_id, fbref_id;
++	int fb_id0, fb_id1, fbref_id;
+ 	color_t red_green_blue[] = {
+ 		{ 1.0, 0.0, 0.0 },
+ 		{ 0.0, 1.0, 0.0 },
+ 		{ 0.0, 0.0, 1.0 }
+ 	};
++	color_t blue_red_green[] = {
++		{ 0.0, 1.0, 0.0 },
++		{ 0.0, 0.0, 1.0 },
++		{ 1.0, 0.0, 0.0 }
++	};
++	int primary_x, primary_y, primary_h, primary_w;
++	int overlay_x, overlay_y, overlay_h, overlay_w;
+ 	bool ret;
  
- 	/* Draw solid colors with linear degamma transformation. */
--	paint_rectangles(data, mode, red_green_blue, &fbref);
-+	paint_rectangles(data, mode->vdisplay, mode->hdisplay,
-+			 0, 0, red_green_blue, &fbref);
+ 	igt_require(igt_pipe_obj_has_prop(primary->pipe, IGT_CRTC_DEGAMMA_LUT));
+@@ -54,22 +63,39 @@ static bool test_pipe_degamma(data_t *data,
+ 
+ 	igt_output_set_pipe(output, primary->pipe->pipe);
+ 
+-	/* Create a framebuffer at the size of the output. */
+-	fb_id = igt_create_fb(data->drm_fd,
+-			      mode->hdisplay,
+-			      mode->vdisplay,
+-			      DRM_FORMAT_XRGB8888,
+-			      DRM_FORMAT_MOD_LINEAR,
+-			      &fb);
+-	igt_assert(fb_id);
++	primary_w = mode->hdisplay;
++	primary_h = mode->vdisplay/2;
++	overlay_w = mode->hdisplay;
++	overlay_h = primary_h + (mode->vdisplay % 2);
++	primary_x = 0;
++	primary_y = 0;
++	overlay_x = 0;
++	overlay_y = primary_h;
+ 
+-	fb_modeset_id = igt_create_fb(data->drm_fd,
+-				      mode->hdisplay,
+-				      mode->vdisplay,
+-				      DRM_FORMAT_XRGB8888,
+-				      DRM_FORMAT_MOD_LINEAR,
+-				      &fb_modeset);
+-	igt_assert(fb_modeset_id);
++	/* Create a framebuffer at the size of the output. */
++	fb_id0 = igt_create_fb(data->drm_fd,
++			       primary_w,
++			       primary_h,
++			       data->drm_format,
++			       DRM_FORMAT_MOD_LINEAR,
++			       &fb0);
++	igt_assert(fb_id0);
++
++	igt_plane_set_fb(primary, &fb0);
++	igt_plane_set_position(primary, primary_x, primary_y);
++
++	if (multiplane) {
++		fb_id1 = igt_create_fb(data->drm_fd,
++				       overlay_w,
++				       overlay_h,
++				       data->drm_format_overlay,
++				       DRM_FORMAT_MOD_LINEAR,
++				       &fb1);
++		igt_assert(fb_id1);
++
++		igt_plane_set_fb(overlay, &fb1);
++		igt_plane_set_position(overlay, overlay_x, overlay_y);
++	}
+ 
+ 	fbref_id = igt_create_fb(data->drm_fd,
+ 				 mode->hdisplay,
+@@ -79,23 +105,31 @@ static bool test_pipe_degamma(data_t *data,
+ 				 &fbref);
+ 	igt_assert(fbref_id);
+ 
+-	igt_plane_set_fb(primary, &fb_modeset);
+ 	disable_ctm(primary->pipe);
+ 	disable_gamma(primary->pipe);
+-	igt_display_commit(&data->display);
++	igt_display_commit2(&data->display, multiplane ? COMMIT_ATOMIC : COMMIT_LEGACY);
+ 
+-	/* Draw solid colors with linear degamma transformation. */
+-	paint_rectangles(data, mode->vdisplay, mode->hdisplay,
+-			 0, 0, red_green_blue, &fbref);
++	/* Draw solid colors with no degamma transformation. */
++	paint_rectangles(data, primary_h, primary_w, 0, 0, red_green_blue, &fbref);
++	paint_rectangles(data, overlay_h, overlay_w, 0, 0, blue_red_green, &fbref);
  
  	/* Draw a gradient with degamma LUT to remap all
  	 * values to max red/green/blue.
  	 */
--	paint_gradient_rectangles(data, mode, red_green_blue, &fb);
-+	paint_gradient_rectangles(data, mode->vdisplay, mode->hdisplay,
-+				  0, 0, red_green_blue, &fb);
- 	igt_plane_set_fb(primary, &fb);
+-	paint_gradient_rectangles(data, mode->vdisplay, mode->hdisplay,
+-				  0, 0, red_green_blue, &fb);
+-	igt_plane_set_fb(primary, &fb);
++	paint_gradient_rectangles(data, primary_h, primary_w,
++				  primary_x, primary_y, red_green_blue, &fb0);
++	igt_plane_set_fb(primary, &fb0);
++	igt_plane_set_position(primary, primary_x, primary_y);
++
++	if (multiplane) {
++		paint_gradient_rectangles(data, overlay_h, overlay_w, 0, 0,
++					  blue_red_green, &fb1);
++		igt_plane_set_fb(overlay, &fb1);
++		igt_plane_set_position(overlay, overlay_x, overlay_y);
++	}
++
  	set_degamma(data, primary->pipe, degamma_full);
- 	igt_display_commit(&data->display);
-@@ -175,12 +177,14 @@ static bool test_pipe_gamma(data_t *data,
- 	igt_display_commit(&data->display);
- 
- 	/* Draw solid colors with no gamma transformation. */
--	paint_rectangles(data, mode, red_green_blue, &fbref);
-+	paint_rectangles(data, mode->vdisplay, mode->hdisplay,
-+			 0, 0, red_green_blue, &fbref);
- 
- 	/* Draw a gradient with gamma LUT to remap all values
- 	 * to max red/green/blue.
- 	 */
--	paint_gradient_rectangles(data, mode, red_green_blue, &fb);
-+	paint_gradient_rectangles(data, mode->vdisplay, mode->hdisplay,
-+				  0, 0, red_green_blue, &fb);
- 	igt_plane_set_fb(primary, &fb);
- 	igt_display_commit(&data->display);
+-	igt_display_commit(&data->display);
++	igt_display_commit2(&data->display, multiplane ? COMMIT_ATOMIC : COMMIT_LEGACY);
  	chamelium_capture(data->chamelium, port, 0, 0, 0, 0, 1);
-@@ -269,10 +273,11 @@ static bool test_pipe_ctm(data_t *data,
- 	disable_ctm(primary->pipe);
- 	igt_display_commit(&data->display);
+ 	frame_fullcolors =
+ 		chamelium_read_captured_frame(data->chamelium, 0);
+@@ -110,8 +144,10 @@ static bool test_pipe_degamma(data_t *data,
  
--	paint_rectangles(data, mode, after, &fbref);
-+	paint_rectangles(data, mode->vdisplay, mode->hdisplay,
-+			 0, 0, after, &fbref);
+ 	disable_degamma(primary->pipe);
+ 	igt_plane_set_fb(primary, NULL);
++	if (multiplane)
++		igt_plane_set_fb(overlay, NULL);
+ 	igt_output_set_pipe(output, PIPE_NONE);
+-	igt_display_commit(&data->display);
++	igt_display_commit2(&data->display, multiplane ? COMMIT_ATOMIC : COMMIT_LEGACY);
+ 	free_lut(degamma_full);
  
- 	/* With CTM transformation. */
--	paint_rectangles(data, mode, before, &fb);
-+	paint_rectangles(data, mode->vdisplay, mode->hdisplay, 0, 0, before, &fb);
- 	igt_plane_set_fb(primary, &fb);
- 	set_ctm(primary->pipe, ctm_matrix);
- 	igt_display_commit(&data->display);
-@@ -367,7 +372,8 @@ static bool test_pipe_limited_range_ctm(data_t *data,
- 	igt_output_set_prop_value(output,
- 				  IGT_CONNECTOR_BROADCAST_RGB,
- 				  BROADCAST_RGB_FULL);
--	paint_rectangles(data, mode, red_green_blue_limited, &fb);
-+	paint_rectangles(data, mode->vdisplay, mode->hdisplay,
-+			 0, 0, red_green_blue_limited, &fb);
- 	igt_plane_set_fb(primary, &fb);
- 	igt_display_commit(&data->display);
- 
-@@ -375,7 +381,8 @@ static bool test_pipe_limited_range_ctm(data_t *data,
- 	igt_output_set_prop_value(output,
- 				  IGT_CONNECTOR_BROADCAST_RGB,
- 				  BROADCAST_RGB_16_235);
--	paint_rectangles(data, mode, red_green_blue_full, &fb);
-+	paint_rectangles(data, mode->vdisplay, mode->hdisplay,
-+			 0, 0, red_green_blue_full, &fb);
- 
- 	/* And reset.. */
- 	igt_output_set_prop_value(output,
-diff --git a/tests/kms_color.c b/tests/kms_color.c
-index e4dc2465..cbe3c391 100644
---- a/tests/kms_color.c
-+++ b/tests/kms_color.c
-@@ -76,7 +76,8 @@ static bool test_pipe_degamma(data_t *data,
- 	igt_display_commit(&data->display);
- 
- 	/* Draw solid colors with linear degamma transformation. */
--	paint_rectangles(data, mode, red_green_blue, &fb);
-+	paint_rectangles(data, mode->vdisplay, mode->hdisplay,
-+			 0, 0, red_green_blue, &fb);
- 	igt_plane_set_fb(primary, &fb);
- 	igt_display_commit(&data->display);
- 	igt_wait_for_vblank(data->drm_fd,
-@@ -87,7 +88,8 @@ static bool test_pipe_degamma(data_t *data,
- 	 * Draw a gradient with degamma LUT to remap all
- 	 * values to max red/green/blue.
- 	 */
--	paint_gradient_rectangles(data, mode, red_green_blue, &fb);
-+	paint_gradient_rectangles(data, mode->vdisplay, mode->hdisplay,
-+				  0, 0, red_green_blue, &fb);
- 	igt_plane_set_fb(primary, &fb);
- 	set_degamma(data, primary->pipe, degamma_full);
- 	igt_display_commit(&data->display);
-@@ -166,7 +168,8 @@ static bool test_pipe_gamma(data_t *data,
- 	igt_display_commit(&data->display);
- 
- 	/* Draw solid colors with no gamma transformation. */
--	paint_rectangles(data, mode, red_green_blue, &fb);
-+	paint_rectangles(data, mode->vdisplay, mode->hdisplay,
-+			 0, 0, red_green_blue, &fb);
- 	igt_plane_set_fb(primary, &fb);
- 	igt_display_commit(&data->display);
- 	igt_wait_for_vblank(data->drm_fd,
-@@ -177,7 +180,8 @@ static bool test_pipe_gamma(data_t *data,
- 	 * Draw a gradient with gamma LUT to remap all values
- 	 * to max red/green/blue.
- 	 */
--	paint_gradient_rectangles(data, mode, red_green_blue, &fb);
-+	paint_gradient_rectangles(data, mode->vdisplay, mode->hdisplay,
-+				  0, 0, red_green_blue, &fb);
- 	igt_plane_set_fb(primary, &fb);
- 	igt_display_commit(&data->display);
- 	igt_wait_for_vblank(data->drm_fd,
-@@ -261,7 +265,8 @@ static bool test_pipe_legacy_gamma(data_t *data,
- 	igt_display_commit(&data->display);
- 
- 	/* Draw solid colors with no gamma transformation. */
--	paint_rectangles(data, mode, red_green_blue, &fb);
-+	paint_rectangles(data, mode->vdisplay, mode->hdisplay,
-+			 0, 0, red_green_blue, &fb);
- 	igt_plane_set_fb(primary, &fb);
- 	igt_display_commit(&data->display);
- 	igt_wait_for_vblank(data->drm_fd,
-@@ -272,7 +277,8 @@ static bool test_pipe_legacy_gamma(data_t *data,
- 	 * Draw a gradient with gamma LUT to remap all values
- 	 * to max red/green/blue.
- 	 */
--	paint_gradient_rectangles(data, mode, red_green_blue, &fb);
-+	paint_gradient_rectangles(data, mode->vdisplay, mode->hdisplay,
-+				  0, 0, red_green_blue, &fb);
- 	igt_plane_set_fb(primary, &fb);
- 
- 	red_lut[0] = green_lut[0] = blue_lut[0] = 0;
-@@ -513,7 +519,8 @@ static bool test_pipe_ctm(data_t *data,
- 	disable_ctm(primary->pipe);
- 	igt_display_commit(&data->display);
- 
--	paint_rectangles(data, mode, after, &fb);
-+	paint_rectangles(data, mode->vdisplay, mode->hdisplay,
-+			 0, 0, after, &fb);
- 	igt_plane_set_fb(primary, &fb);
- 	set_ctm(primary->pipe, ctm_identity);
- 	igt_display_commit(&data->display);
-@@ -522,7 +529,8 @@ static bool test_pipe_ctm(data_t *data,
- 	igt_pipe_crc_collect_crc(data->pipe_crc, &crc_software);
- 
- 	/* With CTM transformation. */
--	paint_rectangles(data, mode, before, &fb);
-+	paint_rectangles(data, mode->vdisplay, mode->hdisplay,
-+			 0, 0, before, &fb);
- 	igt_plane_set_fb(primary, &fb);
- 	set_ctm(primary->pipe, ctm_matrix);
- 	igt_display_commit(&data->display);
-diff --git a/tests/kms_color_helper.c b/tests/kms_color_helper.c
-index 55f3e409..dbcb3f34 100644
---- a/tests/kms_color_helper.c
-+++ b/tests/kms_color_helper.c
-@@ -41,20 +41,22 @@ uint64_t get_max_bpc(igt_output_t *output)
+ 	return ret;
+@@ -124,6 +160,7 @@ static bool test_pipe_degamma(data_t *data,
+  */
+ static bool test_pipe_gamma(data_t *data,
+ 			    igt_plane_t *primary,
++			    bool multiplane,
+ 			    struct chamelium_port *port)
+ {
+ 	igt_output_t *output = data->output;
+@@ -454,9 +491,11 @@ static int test_setup(data_t *data, enum pipe p)
  }
  
- void paint_gradient_rectangles(data_t *data,
--			       drmModeModeInfo *mode,
-+			       uint16_t vdisplay,
-+			       uint16_t hdisplay,
-+			       int x, int y,
- 			       color_t *colors,
- 			       struct igt_fb *fb)
+ static void
+-run_gamma_degamma_tests_for_pipe(data_t *data, enum pipe p,
+-		bool (*test_t)(data_t*, igt_plane_t*, struct chamelium_port*))
++run_gamma_degamma_tests_for_pipe(data_t *data, enum pipe p, bool multiplane,
++		bool (*test_t)(data_t*, igt_plane_t*, bool, struct chamelium_port*))
  {
- 	cairo_t *cr = igt_get_cairo_ctx(data->drm_fd, fb);
--	int i, l = mode->hdisplay / 3;
--	int rows_remaining = mode->hdisplay % 3;
-+	int i, l = hdisplay / 3;
-+	int rows_remaining = hdisplay % 3;
- 
- 	/* Paint 3 gradient rectangles with red/green/blue between 1.0 and
- 	 * 0.5. We want to avoid 0 so each max LUTs only affect their own
- 	 * rectangle.
- 	 */
- 	for (i = 0 ; i < 3; i++) {
--		igt_paint_color_gradient_range(cr, i * l, 0, l, mode->vdisplay,
-+		igt_paint_color_gradient_range(cr, (x + (i * l)), y, l, vdisplay,
- 					       colors[i].r != 0 ? 0.2 : 0,
- 					       colors[i].g != 0 ? 0.2 : 0,
- 					       colors[i].b != 0 ? 0.2 : 0,
-@@ -64,8 +66,8 @@ void paint_gradient_rectangles(data_t *data,
- 	}
- 
- 	if (rows_remaining > 0)
--		igt_paint_color_gradient_range(cr, i * l, 0, rows_remaining,
--					       mode->vdisplay,
-+		igt_paint_color_gradient_range(cr, (x + (i * l)), y, rows_remaining,
-+					       vdisplay,
- 					       colors[i-1].r != 0 ? 0.2 : 0,
- 					       colors[i-1].g != 0 ? 0.2 : 0,
- 					       colors[i-1].b != 0 ? 0.2 : 0,
-@@ -77,22 +79,24 @@ void paint_gradient_rectangles(data_t *data,
- }
- 
- void paint_rectangles(data_t *data,
--		      drmModeModeInfo *mode,
-+		      uint16_t vdisplay,
-+		      uint16_t hdisplay,
-+		      int x, int y,
- 		      color_t *colors,
- 		      struct igt_fb *fb)
- {
- 	cairo_t *cr = igt_get_cairo_ctx(data->drm_fd, fb);
--	int i, l = mode->hdisplay / 3;
--	int rows_remaining = mode->hdisplay % 3;
-+	int i, l = hdisplay / 3;
-+	int rows_remaining = hdisplay % 3;
- 
- 	/* Paint 3 solid rectangles. */
- 	for (i = 0 ; i < 3; i++) {
--		igt_paint_color(cr, i * l, 0, l, mode->vdisplay,
-+		igt_paint_color(cr, (x + (i * l)), y, l, vdisplay,
- 				colors[i].r, colors[i].g, colors[i].b);
- 	}
- 
- 	if (rows_remaining > 0)
--		igt_paint_color(cr, i * l, 0, rows_remaining, mode->vdisplay,
-+		igt_paint_color(cr, (x + (i * l)), y, rows_remaining, vdisplay,
- 				colors[i-1].r, colors[i-1].g, colors[i-1].b);
- 
- 	igt_put_cairo_ctx(cr);
-diff --git a/tests/kms_color_helper.h b/tests/kms_color_helper.h
-index f0ae30e3..199d449c 100644
---- a/tests/kms_color_helper.h
-+++ b/tests/kms_color_helper.h
-@@ -51,9 +51,11 @@ typedef struct {
- 	igt_pipe_crc_t *pipe_crc;
- 	igt_output_t *output;
- 	igt_plane_t *primary;
 +	igt_plane_t *overlay;
- 	drmModeModeInfo *mode;
++	int count = 0;
+ 	int port_idx = test_setup(data, p);
  
- 	uint32_t drm_format;
-+	uint32_t drm_format_overlay;
- 	uint32_t color_depth;
- 	uint64_t degamma_lut_size;
- 	uint64_t gamma_lut_size;
-@@ -72,11 +74,15 @@ typedef struct {
- bool panel_supports_deep_color(int fd, char *output_name);
- uint64_t get_max_bpc(igt_output_t *output);
- void paint_gradient_rectangles(data_t *data,
--			       drmModeModeInfo *mode,
-+			       uint16_t vdisplay,
-+			       uint16_t hdisplay,
-+			       int x, int y,
- 			       color_t *colors,
- 			       struct igt_fb *fb);
- void paint_rectangles(data_t *data,
--		      drmModeModeInfo *mode,
-+		      uint16_t vdisplay,
-+		      uint16_t hdisplay,
-+		      int x, int y,
- 		      color_t *colors,
- 		      struct igt_fb *fb);
- gamma_lut_t *alloc_lut(int lut_size);
+ 	igt_require(port_idx >= 0);
+@@ -465,8 +504,25 @@ run_gamma_degamma_tests_for_pipe(data_t *data, enum pipe p,
+ 	data->drm_format = DRM_FORMAT_XRGB8888;
+ 	data->mode = igt_output_get_mode(data->output);
+ 
++	if (multiplane) {
++		for_each_plane_on_pipe(&data->display, p, overlay) {
++			if (overlay->type != DRM_PLANE_TYPE_OVERLAY)
++				continue;
++
++			if (igt_plane_has_format_mod(overlay, DRM_FORMAT_NV12,
++						     DRM_FORMAT_MOD_LINEAR)) {
++				count++;
++				break;
++			}
++		}
++		igt_require_f(count, "No valid planes found.\n");
++	}
++
++	data->overlay = overlay;
++	data->drm_format_overlay = DRM_FORMAT_NV12;
++
+ 	igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(p), data->output->name)
+-		igt_assert(test_t(data, data->primary, data->ports[port_idx]));
++		igt_assert(test_t(data, data->primary, multiplane,  data->ports[port_idx]));
+ }
+ 
+ static void
+@@ -555,13 +611,17 @@ run_tests_for_pipe(data_t *data)
+ 	enum pipe pipe;
+ 	struct {
+ 		const char *name;
+-		bool (*test_t)(data_t*, igt_plane_t*, struct chamelium_port*);
++		bool (*test_t)(data_t*, igt_plane_t*, bool, struct chamelium_port*);
++		bool multiplane;
+ 		const char *desc;
+ 	} gamma_degamma_tests[] = {
+-		{ "degamma", test_pipe_degamma,
++		{ "degamma", test_pipe_degamma, false,
+ 		  "Verify that degamma LUT transformation works correctly" },
+ 
+-		{ "gamma", test_pipe_gamma,
++		{ "degamma-multiplane", test_pipe_degamma, true,
++		  "Verify that degamma LUT transformation works correctly for multiplanes" },
++
++		{ "gamma", test_pipe_gamma, false,
+ 		  "Verify that gamma LUT transformation works correctly" },
+ 	};
+ 	struct {
+@@ -643,8 +703,14 @@ run_tests_for_pipe(data_t *data)
+ 	for (i = 0; i < ARRAY_SIZE(gamma_degamma_tests); i++) {
+ 		igt_describe_f("%s", gamma_degamma_tests[i].desc);
+ 		igt_subtest_with_dynamic_f("%s", gamma_degamma_tests[i].name) {
++			if (gamma_degamma_tests[i].multiplane &&
++			   (!data->display.is_atomic ||
++			    !igt_display_has_format_mod(&data->display, DRM_FORMAT_NV12,
++							DRM_FORMAT_MOD_LINEAR)))
++				continue;
+ 			for_each_pipe(&data->display, pipe) {
+ 				run_gamma_degamma_tests_for_pipe(data, pipe,
++								 gamma_degamma_tests[i].multiplane,
+ 								 gamma_degamma_tests[i].test_t);
+ 			}
+ 		}
 -- 
 2.25.1
