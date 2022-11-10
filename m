@@ -1,17 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 50AC410E66A
- for <igt-dev@lists.freedesktop.org>; Thu, 10 Nov 2022 07:09:15 +0000 (UTC)
-From: Ananya Sharma <ananya.sharma@intel.com>
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 15E5710E09E
+ for <igt-dev@lists.freedesktop.org>; Thu, 10 Nov 2022 05:38:36 +0000 (UTC)
+From: Vikas Srivastava <vikas.srivastava@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Thu, 10 Nov 2022 12:38:25 +0530
-Message-Id: <20221110070828.26227-5-ananya.sharma@intel.com>
-In-Reply-To: <20221110070828.26227-1-ananya.sharma@intel.com>
-References: <20221110070828.26227-1-ananya.sharma@intel.com>
+Date: Thu, 10 Nov 2022 11:07:13 +0530
+Message-Id: <20221110053713.892216-1-vikas.srivastava@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v4 4/7] tests/kms_color: MPO + pipe color
- test for ctm
+Subject: [igt-dev] [PATCH i-g-t] tests/i915/gem_exec_fence: Replacing custom
+ spinner with igt_spin
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,336 +17,161 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: chris.p.wilson@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Adding multiple planes with two different formats i.e. RGB and NV12 in
-pipe color test for ctm. This will increase the YUV coverage in color
-management.
+From: Chris Wilson <chris.p.wilson@intel.com>
 
-Signed-off-by: Ananya Sharma <ananya.sharma@intel.com>
+Replace the custom spinner with igt_spin, possible now that igt_spin
+can provide the out-fence. This has a major advantage, such as able to run
+on any platform, including over the cmdparser.
+
+Signed-off-by: Chris Wilson <chris.p.wilson@intel.com>
+Acked-by: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
 ---
- tests/kms_color.c | 157 ++++++++++++++++++++++++++++++++++------------
- 1 file changed, 117 insertions(+), 40 deletions(-)
+ tests/i915/gem_exec_fence.c | 101 ++++++++----------------------------
+ 1 file changed, 23 insertions(+), 78 deletions(-)
 
-diff --git a/tests/kms_color.c b/tests/kms_color.c
-index 3b376922..35d4cdfe 100644
---- a/tests/kms_color.c
-+++ b/tests/kms_color.c
-@@ -543,6 +543,7 @@ end:
-  */
- static bool test_pipe_ctm(data_t *data,
- 			  igt_plane_t *primary,
-+			  bool multiplane,
- 			  color_t *before,
- 			  color_t *after,
- 			  double *ctm_matrix)
-@@ -552,14 +553,17 @@ static bool test_pipe_ctm(data_t *data,
- 		0.0, 1.0, 0.0,
- 		0.0, 0.0, 1.0
- 	};
-+	igt_plane_t *overlay = data->overlay;
- 	gamma_lut_t *degamma_linear, *gamma_linear;
- 	igt_output_t *output = data->output;
- 	bool ret = true;
- 	igt_display_t *display = &data->display;
- 	drmModeModeInfo *mode = data->mode;
--	struct igt_fb fb_modeset, fb;
-+	struct igt_fb fb0, fb1;
- 	igt_crc_t crc_software, crc_hardware;
--	int fb_id, fb_modeset_id;
-+	int fb_id0, fb_id1;
-+	int primary_x, primary_y, primary_h, primary_w;
-+	int overlay_x, overlay_y, overlay_h, overlay_w;
- 
- 	igt_require(igt_pipe_obj_has_prop(primary->pipe, IGT_CRTC_CTM));
- 
-@@ -569,23 +573,39 @@ static bool test_pipe_ctm(data_t *data,
- 	igt_output_set_pipe(output, primary->pipe->pipe);
- 	igt_output_override_mode(output, mode);
- 
-+	primary_w = mode->hdisplay;
-+	primary_h = multiplane ? (mode->vdisplay / 2) : mode->vdisplay;
-+	overlay_w = mode->hdisplay;
-+	overlay_h = primary_h + (mode->vdisplay % 2);
-+	primary_x = 0;
-+	primary_y = 0;
-+	overlay_x = 0;
-+	overlay_y = primary_h;
-+
- 	/* Create a framebuffer at the size of the output. */
--	fb_id = igt_create_fb(data->drm_fd,
--			      mode->hdisplay,
--			      mode->vdisplay,
--			      data->drm_format,
--			      DRM_FORMAT_MOD_LINEAR,
--			      &fb);
--	igt_assert(fb_id);
-+	fb_id0 = igt_create_fb(data->drm_fd,
-+			       primary_w,
-+			       primary_h,
-+			       data->drm_format,
-+			       DRM_FORMAT_MOD_LINEAR,
-+			       &fb0);
-+	igt_assert(fb_id0);
- 
--	fb_modeset_id = igt_create_fb(data->drm_fd,
--				      mode->hdisplay,
--				      mode->vdisplay,
--				      data->drm_format,
--				      DRM_FORMAT_MOD_LINEAR,
--				      &fb_modeset);
--	igt_assert(fb_modeset_id);
--	igt_plane_set_fb(primary, &fb_modeset);
-+	igt_plane_set_fb(primary, &fb0);
-+	igt_plane_set_position(primary, primary_x, primary_y);
-+
-+	if (multiplane) {
-+		fb_id1 = igt_create_fb(data->drm_fd,
-+				       overlay_w,
-+				       overlay_h,
-+				       data->drm_format_overlay,
-+				       DRM_FORMAT_MOD_LINEAR,
-+				       &fb1);
-+		igt_assert(fb_id1);
-+
-+		igt_plane_set_fb(overlay, &fb1);
-+		igt_plane_set_position(overlay, overlay_x, overlay_y);
-+	}
- 
- 	/*
- 	 * Don't program LUT's for max CTM cases, as limitation of
-@@ -602,23 +622,37 @@ static bool test_pipe_ctm(data_t *data,
- 	}
- 
- 	disable_ctm(primary->pipe);
--	igt_display_commit(&data->display);
-+	igt_display_commit2(&data->display, multiplane ? COMMIT_ATOMIC : COMMIT_LEGACY);
-+
-+	paint_rectangles(data, primary_h, primary_w, primary_x, primary_y, after, &fb0);
-+	igt_plane_set_fb(primary, &fb0);
-+	igt_plane_set_position(primary, primary_x, primary_y);
-+
-+	if (multiplane) {
-+		paint_rectangles(data, overlay_h, overlay_w, 0, 0, after, &fb1);
-+		igt_plane_set_fb(overlay, &fb1);
-+		igt_plane_set_position(overlay, overlay_x, overlay_y);
-+	}
- 
--	paint_rectangles(data, mode->vdisplay, mode->hdisplay,
--			 0, 0, after, &fb);
--	igt_plane_set_fb(primary, &fb);
- 	set_ctm(primary->pipe, ctm_identity);
--	igt_display_commit(&data->display);
-+	igt_display_commit2(&data->display, multiplane ? COMMIT_ATOMIC : COMMIT_LEGACY);
- 	igt_wait_for_vblank(data->drm_fd,
- 			    display->pipes[primary->pipe->pipe].crtc_offset);
- 	igt_pipe_crc_collect_crc(data->pipe_crc, &crc_software);
- 
- 	/* With CTM transformation. */
--	paint_rectangles(data, mode->vdisplay, mode->hdisplay,
--			 0, 0, before, &fb);
--	igt_plane_set_fb(primary, &fb);
-+	paint_rectangles(data, primary_h, primary_w, primary_x, primary_y, before, &fb0);
-+	igt_plane_set_fb(primary, &fb0);
-+	igt_plane_set_position(primary, primary_x, primary_y);
-+
-+	if (multiplane) {
-+		paint_rectangles(data, overlay_h, overlay_w, 0, 0, before, &fb1);
-+		igt_plane_set_fb(overlay, &fb1);
-+		igt_plane_set_position(overlay, overlay_x, overlay_y);
-+	}
-+
- 	set_ctm(primary->pipe, ctm_matrix);
--	igt_display_commit(&data->display);
-+	igt_display_commit2(&data->display, multiplane ? COMMIT_ATOMIC : COMMIT_LEGACY);
- 	igt_wait_for_vblank(data->drm_fd,
- 			    display->pipes[primary->pipe->pipe].crtc_offset);
- 	igt_pipe_crc_collect_crc(data->pipe_crc, &crc_hardware);
-@@ -629,11 +663,18 @@ static bool test_pipe_ctm(data_t *data,
- 	 */
- 	ret &= igt_skip_crc_compare || igt_check_crc_equal(&crc_software, &crc_hardware);
- 
-+	disable_degamma(primary->pipe);
-+	disable_gamma(primary->pipe);
-+	disable_ctm(primary->pipe);
-+
- 	igt_plane_set_fb(primary, NULL);
-+	if (multiplane)
-+		igt_plane_set_fb(overlay, NULL);
- 	igt_output_set_pipe(output, PIPE_NONE);
--	igt_display_commit(&data->display);
--	igt_remove_fb(data->drm_fd, &fb);
--	igt_remove_fb(data->drm_fd, &fb_modeset);
-+	igt_display_commit2(&data->display, multiplane ? COMMIT_ATOMIC : COMMIT_LEGACY);
-+	igt_remove_fb(data->drm_fd, &fb0);
-+	if (multiplane)
-+		igt_remove_fb(data->drm_fd, &fb1);
- 
- 	free_lut(degamma_linear);
- 	free_lut(gamma_linear);
-@@ -841,10 +882,13 @@ run_gamma_degamma_tests_for_pipe(data_t *data, enum pipe p, bool multiplane,
- 
- static void
- run_ctm_tests_for_pipe(data_t *data, enum pipe p,
-+		       bool multiplane,
- 		       color_t *expected_colors,
- 		       double *ctm,
- 		       int iter)
+diff --git a/tests/i915/gem_exec_fence.c b/tests/i915/gem_exec_fence.c
+index e8d51a732..6ac0f0877 100644
+--- a/tests/i915/gem_exec_fence.c
++++ b/tests/i915/gem_exec_fence.c
+@@ -29,6 +29,7 @@
+ #include "i915/gem.h"
+ #include "i915/gem_create.h"
+ #include "igt.h"
++#include "igt_dummyload.h"
+ #include "igt_store.h"
+ #include "igt_syncobj.h"
+ #include "igt_sysfs.h"
+@@ -72,104 +73,48 @@ static void test_fence_busy(int fd, const intel_ctx_t *ctx,
+ 			    const struct intel_execution_engine2 *e,
+ 			    unsigned flags)
  {
-+	igt_plane_t *overlay;
-+	int count = 0;
- 	double delta;
- 	color_t red_green_blue[] = {
- 		{ 1.0, 0.0, 0.0 },
-@@ -863,12 +907,29 @@ run_ctm_tests_for_pipe(data_t *data, enum pipe p,
- 	data->drm_format = DRM_FORMAT_XRGB8888;
- 	data->mode = igt_output_get_mode(data->output);
+-	const unsigned int gen = intel_gen(intel_get_drm_devid(fd));
+-	struct drm_i915_gem_exec_object2 obj;
+-	struct drm_i915_gem_relocation_entry reloc;
+-	struct drm_i915_gem_execbuffer2 execbuf;
+-	struct timespec tv;
+-	uint32_t *batch;
+ 	uint64_t ahnd = get_reloc_ahnd(fd, ctx->id);
+-	int fence, i, timeout;
+-
+-	if ((flags & HANG) == 0)
+-		igt_require(gem_class_has_mutable_submission(fd, e->class));
++	struct timespec tv;
++	int fence, timeout;
++	igt_spin_t *spin;
  
-+	if (multiplane) {
-+		for_each_plane_on_pipe(&data->display, p, overlay) {
-+			if (overlay->type != DRM_PLANE_TYPE_OVERLAY)
-+				continue;
-+
-+			if (igt_plane_has_format_mod(overlay, DRM_FORMAT_NV12,
-+						     DRM_FORMAT_MOD_LINEAR)) {
-+				count++;
-+				break;
-+			}
-+		}
-+		igt_require_f(count, "No valid planes found.\n");
+ 	gem_quiescent_gpu(fd);
+ 
+-	memset(&execbuf, 0, sizeof(execbuf));
+-	execbuf.buffers_ptr = to_user_pointer(&obj);
+-	execbuf.buffer_count = 1;
+-	execbuf.flags = e->flags | I915_EXEC_FENCE_OUT;
+-	execbuf.rsvd1 = ctx->id;
+-
+-	memset(&obj, 0, sizeof(obj));
+-	obj.handle = gem_create(fd, 4096);
+-	obj.offset = get_offset(ahnd, obj.handle, 4096, 0);
+-
+-	batch = gem_mmap__device_coherent(fd, obj.handle, 0, 4096, PROT_WRITE);
+-	gem_set_domain(fd, obj.handle,
+-		       I915_GEM_DOMAIN_GTT, I915_GEM_DOMAIN_GTT);
+-
+-	i = 0;
+-	if ((flags & HANG) == 0)
+-		batch[i++] = 0x5 << 23;
+-
+-	if (!ahnd) {
+-		obj.relocs_ptr = to_user_pointer(&reloc);
+-		obj.relocation_count = 1;
+-		memset(&reloc, 0, sizeof(reloc));
+-		reloc.target_handle = obj.handle; /* recurse */
+-		reloc.presumed_offset = obj.offset;
+-		reloc.offset = (i + 1) * sizeof(uint32_t);
+-		reloc.delta = 0;
+-		reloc.read_domains = I915_GEM_DOMAIN_COMMAND;
+-		reloc.write_domain = 0;
+-	} else {
+-		obj.flags |= EXEC_OBJECT_PINNED;
+-	}
+-
+-	batch[i] = MI_BATCH_BUFFER_START;
+-	if (gen >= 8) {
+-		batch[i] |= 1 << 8 | 1;
+-		batch[++i] = obj.offset;
+-		batch[++i] = obj.offset >> 32;
+-	} else if (gen >= 6) {
+-		batch[i] |= 1 << 8;
+-		batch[++i] = obj.offset;
+-	} else {
+-		batch[i] |= 2 << 6;
+-		batch[++i] = obj.offset;
+-		if (gen < 4) {
+-			batch[i] |= 1;
+-			reloc.delta = 1;
+-		}
+-	}
+-	i++;
+-
+-	execbuf.rsvd2 = -1;
+-	gem_execbuf_wr(fd, &execbuf);
+-	fence = execbuf.rsvd2 >> 32;
+-	igt_assert(fence != -1);
++	spin = igt_spin_new(fd, .ahnd = ahnd, .ctx = ctx, .engine = e->flags,
++			    .flags = IGT_SPIN_FENCE_OUT |
++			    ((flags & HANG) ? IGT_SPIN_NO_PREEMPTION : 0));
+ 
+-	igt_assert(gem_bo_busy(fd, obj.handle));
++	fence = spin->out_fence;
++	igt_assert(gem_bo_busy(fd, spin->handle));
+ 	igt_assert(fence_busy(fence));
+ 
+ 	timeout = 120;
+ 	if ((flags & HANG) == 0) {
+-		*batch = MI_BATCH_BUFFER_END;
+-		__sync_synchronize();
+-		timeout = 1;
++                igt_spin_end(spin);
++                timeout = ! igt_run_in_simulation()?1:120;
+ 	}
+-	munmap(batch, 4096);
+ 
+ 	if (flags & WAIT) {
+ 		struct pollfd pfd = { .fd = fence, .events = POLLIN };
+ 		igt_assert(poll(&pfd, 1, timeout*1000) == 1);
+ 	} else {
++		int elapsed_time;
+ 		memset(&tv, 0, sizeof(tv));
+-		while (fence_busy(fence))
+-			igt_assert(igt_seconds_elapsed(&tv) < timeout);
+-	}
+-
+-	igt_assert(!gem_bo_busy(fd, obj.handle));
++		while (fence_busy(fence)) {
++                        elapsed_time = igt_seconds_elapsed(&tv);
++                        if (elapsed_time >= timeout) {
++                                igt_info("Elapsed time (%ds)\n", elapsed_time);
++                        }
++                        igt_assert(igt_seconds_elapsed(&tv) < timeout);
++                }
++		igt_info("Elapsed time (%ds)\n", igt_seconds_elapsed(&tv));
 +	}
-+
-+	data->overlay = overlay;
-+	data->drm_format_overlay = DRM_FORMAT_NV12;
-+
- 	igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(p), data->output->name) {
- 		bool success = false;
- 		int i;
++	igt_assert(!gem_bo_busy(fd, spin->handle));
+ 	igt_assert_eq(sync_fence_status(fence),
+ 		      flags & HANG ? -EIO : SYNC_FENCE_OK);
  
- 		if (!iter)
--			success = test_pipe_ctm(data, data->primary, red_green_blue,
-+			success = test_pipe_ctm(data, data->primary, multiplane, red_green_blue,
- 						expected_colors, ctm);
+-	close(fence);
+-	gem_close(fd, obj.handle);
+-	put_offset(ahnd, obj.handle);
++	igt_spin_free(fd, spin);
+ 	put_ahnd(ahnd);
+-
+ 	gem_quiescent_gpu(fd);
+ }
  
- 		/*
-@@ -882,7 +943,7 @@ run_ctm_tests_for_pipe(data_t *data, enum pipe p,
- 				expected_colors[1].g =
- 				expected_colors[2].b =
- 				ctm[0] + delta * (i - (iter / 2));
--			if (test_pipe_ctm(data, data->primary, red_green_blue,
-+			if (test_pipe_ctm(data, data->primary, multiplane, red_green_blue,
- 					  expected_colors, ctm)) {
- 				success = true;
- 				break;
-@@ -969,7 +1030,7 @@ run_deep_color_tests_for_pipe(data_t *data, enum pipe p)
- 			igt_display_reset(&data->display);
- 			igt_output_set_prop_value(output, IGT_CONNECTOR_MAX_BPC, 10);
- 
--			ret = test_pipe_ctm(data, data->primary,
-+			ret = test_pipe_ctm(data, data->primary, false,
- 					    red_green_blue,
- 					    blue_green_blue, ctm);
- 
-@@ -1049,11 +1110,21 @@ run_tests_for_pipe(data_t *data)
- 	struct {
- 		const char *name;
- 		int iter;
-+		bool multiplane;
- 		color_t colors[3];
- 		double ctm[9];
- 		const char *desc;
- 	} ctm_tests[] = {
--		{ "ctm-red-to-blue", 0,
-+		{ "ctm-multiplane", 0, true,
-+			{{ 0.0, 0.0, 1.0 },
-+			 { 0.0, 1.0, 0.0 },
-+			 { 0.0, 0.0, 1.0 }},
-+		  { 0.0, 0.0, 0.0,
-+		    0.0, 1.0, 0.0,
-+		    1.0, 0.0, 1.0 },
-+		  "Check the color transformation from red to blue"
-+		},
-+		{ "ctm-red-to-blue", 0, false,
- 			{{ 0.0, 0.0, 1.0 },
- 			 { 0.0, 1.0, 0.0 },
- 			 { 0.0, 0.0, 1.0 }},
-@@ -1062,7 +1133,7 @@ run_tests_for_pipe(data_t *data)
- 		    1.0, 0.0, 1.0 },
- 		  "Check the color transformation from red to blue"
- 		},
--		{ "ctm-green-to-red", 0,
-+		{ "ctm-green-to-red", 0, false,
- 			{{ 1.0, 0.0, 0.0 },
- 			 { 1.0, 0.0, 0.0 },
- 			 { 0.0, 0.0, 1.0 }},
-@@ -1071,7 +1142,7 @@ run_tests_for_pipe(data_t *data)
- 		    0.0, 0.0, 1.0 },
- 		  "Check the color transformation from green to red"
- 		},
--		{ "ctm-blue-to-red", 0,
-+		{ "ctm-blue-to-red", 0, false,
- 			{{ 1.0, 0.0, 0.0 },
- 			 { 0.0, 1.0, 0.0 },
- 			 { 1.0, 0.0, 0.0 }},
-@@ -1080,7 +1151,7 @@ run_tests_for_pipe(data_t *data)
- 		    0.0, 0.0, 0.0 },
- 		  "Check the color transformation from blue to red"
- 		},
--		{ "ctm-max", 0,
-+		{ "ctm-max", 0, false,
- 			{{ 1.0, 0.0, 0.0 },
- 			 { 0.0, 1.0, 0.0 },
- 			 { 0.0, 0.0, 1.0 }},
-@@ -1089,7 +1160,7 @@ run_tests_for_pipe(data_t *data)
- 		    0.0, 0.0, 100.0 },
- 		  "Check the color transformation for maximum transparency"
- 		},
--		{ "ctm-negative", 0,
-+		{ "ctm-negative", 0, false,
- 			{{ 0.0, 0.0, 0.0 },
- 			 { 0.0, 0.0, 0.0 },
- 			 { 0.0, 0.0, 0.0 }},
-@@ -1098,21 +1169,21 @@ run_tests_for_pipe(data_t *data)
- 		    0.0, 0.0, -1.0 },
- 		  "Check the color transformation for negative transparency"
- 		},
--		{ "ctm-0-25", 5,
-+		{ "ctm-0-25", 5, false,
- 			{{ 0.0, }, { 0.0, }, { 0.0, }},
- 		  { 0.25, 0.0,  0.0,
- 		    0.0,  0.25, 0.0,
- 		    0.0,  0.0,  0.25 },
- 		  "Check the color transformation for 0.25 transparency"
- 		},
--		{ "ctm-0-50", 5,
-+		{ "ctm-0-50", 5, false,
- 			{{ 0.0, }, { 0.0, }, { 0.0, }},
- 		  { 0.5,  0.0,  0.0,
- 		    0.0,  0.5,  0.0,
- 		    0.0,  0.0,  0.5 },
- 		  "Check the color transformation for 0.5 transparency"
- 		},
--		{ "ctm-0-75", 7,
-+		{ "ctm-0-75", 7, false,
- 			{{ 0.0, }, { 0.0, }, { 0.0, }},
- 		  { 0.75, 0.0,  0.0,
- 		    0.0,  0.75, 0.0,
-@@ -1140,8 +1211,14 @@ run_tests_for_pipe(data_t *data)
- 	for (i = 0; i < ARRAY_SIZE(ctm_tests); i++) {
- 		igt_describe_f("%s", ctm_tests[i].desc);
- 		igt_subtest_with_dynamic_f("%s", ctm_tests[i].name) {
-+			if (ctm_tests[i].multiplane &&
-+			   (!data->display.is_atomic || !igt_display_has_format_mod(&data->display,
-+										    DRM_FORMAT_NV12,
-+										    DRM_FORMAT_MOD_LINEAR)))
-+				continue;
- 			for_each_pipe(&data->display, pipe) {
- 				run_ctm_tests_for_pipe(data, pipe,
-+						       ctm_tests[i].multiplane,
- 						       ctm_tests[i].colors,
- 						       ctm_tests[i].ctm,
- 						       ctm_tests[i].iter);
 -- 
 2.25.1
