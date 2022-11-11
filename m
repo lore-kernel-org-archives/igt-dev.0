@@ -1,15 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 79B7810E8C4
- for <igt-dev@lists.freedesktop.org>; Fri, 11 Nov 2022 20:42:36 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E81A610E8C7
+ for <igt-dev@lists.freedesktop.org>; Fri, 11 Nov 2022 20:42:40 +0000 (UTC)
 From: =?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>
 To: igt-dev@lists.freedesktop.org
-Date: Fri, 11 Nov 2022 16:58:06 -0300
-Message-Id: <20221111195813.277822-1-mcanal@igalia.com>
+Date: Fri, 11 Nov 2022 16:58:08 -0300
+Message-Id: <20221111195813.277822-3-mcanal@igalia.com>
+In-Reply-To: <20221111195813.277822-1-mcanal@igalia.com>
+References: <20221111195813.277822-1-mcanal@igalia.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v2 0/7] V3D IGT Tests Updates
+Subject: [igt-dev] [PATCH i-g-t v2 2/7] tests/v3d: Move V3D tests to their
+ own folder
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,45 +25,74 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-This series aims to update the V3D IGT tests. The first five patches contain
-some janitorial duties related to the existing tests: updating the uAPI header,
-creating a folder for the V3D tests, removing some unused includes, adding 
-descriptions to the existing tests and adding a macro with the default PAGE_SIZE.
-The last two patches include new tests for the V3D driver.
+With the introduction of new tests to V3D, in order to avoid polluting
+the main tests folder, move the V3D tests to a separate folder.
 
-Best Regards,
-- Maíra Canal
+Signed-off-by: Maíra Canal <mcanal@igalia.com>
+---
+ tests/meson.build                   | 18 +++++++++++++++---
+ tests/{ => v3d}/v3d_get_bo_offset.c |  0
+ tests/{ => v3d}/v3d_get_param.c     |  0
+ tests/{ => v3d}/v3d_mmap.c          |  0
+ 4 files changed, 15 insertions(+), 3 deletions(-)
+ rename tests/{ => v3d}/v3d_get_bo_offset.c (100%)
+ rename tests/{ => v3d}/v3d_get_param.c (100%)
+ rename tests/{ => v3d}/v3d_mmap.c (100%)
 
-v1 -> v2: https://patchwork.freedesktop.org/series/110681/
-- Use SPDX licence (Kamil Konieczny).
-- Add descriptions to each new added test with igt_describe (Kamil Konieczny).
-- Add descriptions to existing V3D tests.
-
-Maíra Canal (7):
-  include/drm-uapi: Update to the latest v3d_drm.h
-  tests/v3d: Move V3D tests to their own folder
-  tests/v3d: Remove unused or redundant includes
-  tests/v3d: Add igt_describe() to all V3D subtests
-  lib/igt_v3d: Add PAGE_SIZE macro to V3D
-  tests/v3d_create_bo: Create test for V3D's Create BO IOCTL
-  tests/v3d_perfmon: Create test for V3D's Perfmon IOCTLs
-
- include/drm-uapi/v3d_drm.h          |  78 +++++++++++++++
- lib/igt_v3d.c                       |  39 +++++++-
- lib/igt_v3d.h                       |   6 ++
- tests/meson.build                   |  20 +++-
- tests/v3d/v3d_create_bo.c           |  63 ++++++++++++
- tests/{ => v3d}/v3d_get_bo_offset.c |  21 ++--
- tests/{ => v3d}/v3d_get_param.c     |  17 +---
- tests/{ => v3d}/v3d_mmap.c          |  15 +--
- tests/v3d/v3d_perfmon.c             | 144 ++++++++++++++++++++++++++++
- tests/v3d_ci/v3d.testlist           |  14 +++
- 10 files changed, 373 insertions(+), 44 deletions(-)
- create mode 100644 tests/v3d/v3d_create_bo.c
- rename tests/{ => v3d}/v3d_get_bo_offset.c (85%)
- rename tests/{ => v3d}/v3d_get_param.c (88%)
- rename tests/{ => v3d}/v3d_mmap.c (85%)
- create mode 100644 tests/v3d/v3d_perfmon.c
-
+diff --git a/tests/meson.build b/tests/meson.build
+index 12e53e0b..5c9b1829 100644
+--- a/tests/meson.build
++++ b/tests/meson.build
+@@ -80,9 +80,6 @@ test_progs = [
+ 	'syncobj_timeline',
+ 	'template',
+ 	'tools_test',
+-	'v3d_get_bo_offset',
+-	'v3d_get_param',
+-	'v3d_mmap',
+ 	'vc4_create_bo',
+ 	'vc4_dmabuf_poll',
+ 	'vc4_label_bo',
+@@ -258,6 +255,12 @@ msm_progs = [
+ 	'msm_submit'
+ ]
+ 
++v3d_progs = [
++	'v3d_get_bo_offset',
++	'v3d_get_param',
++	'v3d_mmap',
++]
++
+ chamelium_progs = [
+ 	'kms_chamelium',
+ ]
+@@ -305,6 +308,15 @@ foreach prog : msm_progs
+ 	test_list += prog
+ endforeach
+ 
++foreach prog : v3d_progs
++	test_executables += executable(prog, join_paths('v3d', prog + '.c'),
++				       dependencies : test_deps,
++				       install_dir : libexecdir,
++				       install_rpath : libexecdir_rpathdir,
++				       install : true)
++	test_list += prog
++endforeach
++
+ if chamelium.found()
+ 	foreach prog : chamelium_progs
+ 		test_executables += executable(prog,
+diff --git a/tests/v3d_get_bo_offset.c b/tests/v3d/v3d_get_bo_offset.c
+similarity index 100%
+rename from tests/v3d_get_bo_offset.c
+rename to tests/v3d/v3d_get_bo_offset.c
+diff --git a/tests/v3d_get_param.c b/tests/v3d/v3d_get_param.c
+similarity index 100%
+rename from tests/v3d_get_param.c
+rename to tests/v3d/v3d_get_param.c
+diff --git a/tests/v3d_mmap.c b/tests/v3d/v3d_mmap.c
+similarity index 100%
+rename from tests/v3d_mmap.c
+rename to tests/v3d/v3d_mmap.c
 -- 
 2.38.1
