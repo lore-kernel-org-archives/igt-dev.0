@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 048CE10E7D6
- for <igt-dev@lists.freedesktop.org>; Fri, 11 Nov 2022 09:12:51 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 29AB510E7D5
+ for <igt-dev@lists.freedesktop.org>; Fri, 11 Nov 2022 09:12:41 +0000 (UTC)
 From: Alaa Emad <aemad@igalia.com>
 To: igt-dev@lists.freedesktop.org
-Date: Fri, 11 Nov 2022 10:29:27 +0200
-Message-Id: <922db994cb1fecf36b2b1d84c87a5fbf4fe02507.1668154709.git.aemad@igalia.com>
+Date: Fri, 11 Nov 2022 10:29:28 +0200
+Message-Id: <7fe70477cb032cec411a5550f8e6a4ef59118366.1668154709.git.aemad@igalia.com>
 In-Reply-To: <cover.1668154709.git.aemad@igalia.com>
 References: <cover.1668154709.git.aemad@igalia.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH RFC i-g-t 4/8] tests/kms_universal_plane: decouple
- verification of setup plane FB's while CRTC is disabled
+Subject: [igt-dev] [PATCH RFC i-g-t 5/8] tests/kms_universal_plane: decouple
+ verification of ablity to modeset with the primary plane off
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,24 +24,24 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-decouple verification of setup plane FB's while CRTC is disabled in a separated subtests
-to be able to run it individually, creating the function.
+decouple verification of ablity to modeset with the primary plane off
+in a separated subtests to be able to run it individually, creating the function.
 
 Signed-off-by: Alaa Emad <aemad@igalia.com>
 ---
- tests/kms_universal_plane.c | 93 +++++++++++++++++++++++++++++++++++++
- 1 file changed, 93 insertions(+)
+ tests/kms_universal_plane.c | 72 +++++++++++++++++++++++++++++++++++++
+ 1 file changed, 72 insertions(+)
 
 diff --git a/tests/kms_universal_plane.c b/tests/kms_universal_plane.c
-index bd374464..b3cba31f 100644
+index b3cba31f..89ca5a2b 100644
 --- a/tests/kms_universal_plane.c
 +++ b/tests/kms_universal_plane.c
-@@ -297,6 +297,94 @@ test_re_enable_primary_with_blue(data_t *data, enum pipe pipe, igt_output_t *out
+@@ -385,6 +385,73 @@ test_universal_api_with_crtc_off(data_t *data, enum pipe pipe, igt_output_t *out
  	functional_test_fini(&test, output);
  }
  
 +static void
-+test_universal_api_with_crtc_off(data_t *data, enum pipe pipe, igt_output_t *output)
++test_legacy_modeset_to_yellow_fb(data_t *data, enum pipe pipe, igt_output_t *output)
 +{
 +	functional_test_t test = { .data = data };
 +	igt_display_t *display = &data->display;
@@ -80,47 +80,25 @@ index bd374464..b3cba31f 100644
 +
 +	igt_plane_set_position(sprite, 100, 100);
 +
-+	/* Step 2: Legacy API', blue primary, red sprite (CRC 2) */
-+	igt_plane_set_fb(primary, &test.blue_fb);
-+	igt_plane_set_fb(sprite, &test.red_fb);
-+	igt_display_commit2(display, COMMIT_LEGACY);
-+	igt_pipe_crc_collect_crc(test.pipe_crc, &test.crc_2);
-+
-+	/* Step 7: Legacy API's, yellow primary, no sprite */
++	/* Step 3: Legacy API's, yellow primary (CRC 3) */
 +	igt_plane_set_fb(primary, &test.yellow_fb);
-+	igt_plane_set_fb(sprite, NULL);
 +	igt_display_commit2(display, COMMIT_LEGACY);
++	igt_pipe_crc_collect_crc(test.pipe_crc, &test.crc_3);
 +
-+	/* Step 8: Disable CRTC */
++	/* Step 11: Disable primary plane */
 +	igt_plane_set_fb(primary, NULL);
-+	igt_display_commit2(display, COMMIT_LEGACY);
-+
-+	/* Step 9: Universal API's with crtc off:
-+	 *  - red sprite
-+	 *  - multiple primary fb's, ending in blue
-+	 */
-+	igt_plane_set_fb(sprite, &test.red_fb);
 +	igt_display_commit2(display, COMMIT_UNIVERSAL);
++
++	/* Step 12: Legacy modeset to yellow FB (CRC 8) */
 +	igt_plane_set_fb(primary, &test.yellow_fb);
-+	igt_display_commit2(display, COMMIT_UNIVERSAL);
-+	igt_plane_set_fb(primary, &test.black_fb);
-+	igt_display_commit2(display, COMMIT_UNIVERSAL);
-+	igt_plane_set_fb(primary, &test.blue_fb);
-+	igt_display_commit2(display, COMMIT_UNIVERSAL);
-+
-+	/* Step 10: Enable crtc (fb = -1), take CRC (CRC 7) */
-+	igt_assert(drmModeSetCrtc(data->drm_fd, output->config.crtc->crtc_id, -1,
-+				  0, 0, &output->config.connector->connector_id,
-+				  1, test.mode) == 0);
-+	igt_pipe_crc_collect_crc(test.pipe_crc, &test.crc_7);
-+
++	igt_display_commit2(display, COMMIT_LEGACY);
++	igt_pipe_crc_collect_crc(test.pipe_crc, &test.crc_8);
 +
 +	/*
-+	 * We should be able to setup plane FB's while CRTC is disabled and
-+	 * then have them pop up correctly when the CRTC is re-enabled.
++	 * We should be able to modeset with the primary plane off
++	 * successfully
 +	 */
-+	igt_assert_crc_equal(&test.crc_2, &test.crc_7);
-+
++	igt_assert_crc_equal(&test.crc_3, &test.crc_8);
 +
 +	igt_plane_set_fb(primary, NULL);
 +	igt_plane_set_fb(sprite, NULL);
@@ -128,17 +106,18 @@ index bd374464..b3cba31f 100644
 +	functional_test_fini(&test, output);
 +}
 +
++
  /*
   * Universal plane functional testing.
   *   - Black primary plane via traditional interfaces, red sprite, grab CRC:1.
-@@ -984,6 +1072,11 @@ run_tests_for_pipe(data_t *data, enum pipe pipe)
+@@ -1077,6 +1144,11 @@ run_tests_for_pipe(data_t *data, enum pipe pipe)
  		for_each_valid_output_on_pipe(&data->display, pipe, output)
- 			test_re_enable_primary_with_blue(data, pipe, output);
+ 			test_universal_api_with_crtc_off(data, pipe, output);
  
-+	igt_subtest_f("universal-api-with-crtc-off-%s",
++	igt_subtest_f("legacy-modeset-to-yellow-fb-%s",
 +		      kmstest_pipe_name(pipe))
 +		for_each_valid_output_on_pipe(&data->display, pipe, output)
-+			test_universal_api_with_crtc_off(data, pipe, output);
++			test_legacy_modeset_to_yellow_fb(data, pipe, output);
 +
  	igt_describe("Check the switching between different primary plane fbs with CRTC off");
  	igt_subtest_f("universal-plane-pipe-%s-functional",
