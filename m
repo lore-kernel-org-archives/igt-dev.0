@@ -1,15 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6A50510E0B1
- for <igt-dev@lists.freedesktop.org>; Sat, 12 Nov 2022 06:08:40 +0000 (UTC)
-From: Vikas Srivastava <vikas.srivastava@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Sat, 12 Nov 2022 11:37:14 +0530
-Message-Id: <20221112060714.1084199-1-vikas.srivastava@intel.com>
+Content-Type: multipart/alternative;
+ boundary="===============0476596401040114327=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v2] tests/i915/gem_exec_fence: Replacing
- custom spinner with igt_spin
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Vikas Srivastava" <vikas.srivastava@intel.com>
+Date: Sat, 12 Nov 2022 06:51:14 -0000
+Message-ID: <166823587456.14830.4945143583574628966@emeril.freedesktop.org>
+References: <20221112060714.1084199-1-vikas.srivastava@intel.com>
+In-Reply-To: <20221112060714.1084199-1-vikas.srivastava@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
+ =?utf-8?q?i915/gem=5Fexec=5Ffence=3A_Replacing_custom_spinner_with_igt=5F?=
+ =?utf-8?q?spin_=28rev2=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,185 +18,280 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: chris.p.wilson@intel.com
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Chris Wilson <chris.p.wilson@intel.com>
+--===============0476596401040114327==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Replace the custom spinner with igt_spin, possible now that igt_spin
-can provide the out-fence. This has a major advantage, such as able to run
-on any platform, including over the cmdparser.
+== Series Details ==
 
-Signed-off-by: Chris Wilson <chris.p.wilson@intel.com>
-Acked-by: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
----
- tests/i915/gem_exec_fence.c | 108 +++++++++---------------------------
- 1 file changed, 26 insertions(+), 82 deletions(-)
+Series: tests/i915/gem_exec_fence: Replacing custom spinner with igt_spin (rev2)
+URL   : https://patchwork.freedesktop.org/series/110735/
+State : success
 
-diff --git a/tests/i915/gem_exec_fence.c b/tests/i915/gem_exec_fence.c
-index e8d51a732..4b5a74490 100644
---- a/tests/i915/gem_exec_fence.c
-+++ b/tests/i915/gem_exec_fence.c
-@@ -25,10 +25,10 @@
- #include <sys/ioctl.h>
- #include <sys/poll.h>
- #include <sys/signal.h>
--
- #include "i915/gem.h"
- #include "i915/gem_create.h"
- #include "igt.h"
-+#include "igt_dummyload.h"
- #include "igt_store.h"
- #include "igt_syncobj.h"
- #include "igt_sysfs.h"
-@@ -40,11 +40,11 @@ IGT_TEST_DESCRIPTION("Check that execbuf waits for explicit fences");
- 
- #ifndef SYNC_IOC_MERGE
- struct sync_merge_data {
--	char    name[32];
--	int32_t fd2;
--	int32_t fence;
--	uint32_t        flags;
--	uint32_t        pad;
-+	char     name[32];
-+	int32_t  fd2;
-+	int32_t  fence;
-+	uint32_t flags;
-+	uint32_t pad;
- };
- #define SYNC_IOC_MAGIC '>'
- #define SYNC_IOC_MERGE _IOWR(SYNC_IOC_MAGIC, 3, struct sync_merge_data)
-@@ -67,109 +67,53 @@ static bool fence_busy(int fence)
- #define HANG 0x1
- #define NONBLOCK 0x2
- #define WAIT 0x4
-+#define NOT(n) !n
- 
- static void test_fence_busy(int fd, const intel_ctx_t *ctx,
- 			    const struct intel_execution_engine2 *e,
- 			    unsigned flags)
- {
--	const unsigned int gen = intel_gen(intel_get_drm_devid(fd));
--	struct drm_i915_gem_exec_object2 obj;
--	struct drm_i915_gem_relocation_entry reloc;
--	struct drm_i915_gem_execbuffer2 execbuf;
--	struct timespec tv;
--	uint32_t *batch;
- 	uint64_t ahnd = get_reloc_ahnd(fd, ctx->id);
--	int fence, i, timeout;
--
--	if ((flags & HANG) == 0)
--		igt_require(gem_class_has_mutable_submission(fd, e->class));
-+	struct timespec tv;
-+	int fence, timeout;
-+	igt_spin_t *spin;
- 
- 	gem_quiescent_gpu(fd);
- 
--	memset(&execbuf, 0, sizeof(execbuf));
--	execbuf.buffers_ptr = to_user_pointer(&obj);
--	execbuf.buffer_count = 1;
--	execbuf.flags = e->flags | I915_EXEC_FENCE_OUT;
--	execbuf.rsvd1 = ctx->id;
--
--	memset(&obj, 0, sizeof(obj));
--	obj.handle = gem_create(fd, 4096);
--	obj.offset = get_offset(ahnd, obj.handle, 4096, 0);
--
--	batch = gem_mmap__device_coherent(fd, obj.handle, 0, 4096, PROT_WRITE);
--	gem_set_domain(fd, obj.handle,
--		       I915_GEM_DOMAIN_GTT, I915_GEM_DOMAIN_GTT);
--
--	i = 0;
--	if ((flags & HANG) == 0)
--		batch[i++] = 0x5 << 23;
--
--	if (!ahnd) {
--		obj.relocs_ptr = to_user_pointer(&reloc);
--		obj.relocation_count = 1;
--		memset(&reloc, 0, sizeof(reloc));
--		reloc.target_handle = obj.handle; /* recurse */
--		reloc.presumed_offset = obj.offset;
--		reloc.offset = (i + 1) * sizeof(uint32_t);
--		reloc.delta = 0;
--		reloc.read_domains = I915_GEM_DOMAIN_COMMAND;
--		reloc.write_domain = 0;
--	} else {
--		obj.flags |= EXEC_OBJECT_PINNED;
--	}
--
--	batch[i] = MI_BATCH_BUFFER_START;
--	if (gen >= 8) {
--		batch[i] |= 1 << 8 | 1;
--		batch[++i] = obj.offset;
--		batch[++i] = obj.offset >> 32;
--	} else if (gen >= 6) {
--		batch[i] |= 1 << 8;
--		batch[++i] = obj.offset;
--	} else {
--		batch[i] |= 2 << 6;
--		batch[++i] = obj.offset;
--		if (gen < 4) {
--			batch[i] |= 1;
--			reloc.delta = 1;
--		}
--	}
--	i++;
--
--	execbuf.rsvd2 = -1;
--	gem_execbuf_wr(fd, &execbuf);
--	fence = execbuf.rsvd2 >> 32;
--	igt_assert(fence != -1);
-+	spin = igt_spin_new(fd, .ahnd = ahnd, .ctx = ctx, .engine = e->flags,
-+			    .flags = IGT_SPIN_FENCE_OUT |
-+			    ((flags & HANG) ? IGT_SPIN_NO_PREEMPTION : 0));
- 
--	igt_assert(gem_bo_busy(fd, obj.handle));
-+	fence = spin->out_fence;
-+	igt_assert(gem_bo_busy(fd, spin->handle));
- 	igt_assert(fence_busy(fence));
- 
- 	timeout = 120;
- 	if ((flags & HANG) == 0) {
--		*batch = MI_BATCH_BUFFER_END;
--		__sync_synchronize();
--		timeout = 1;
-+		igt_spin_end(spin);
-+		timeout = NOT(igt_run_in_simulation())?1:120;
- 	}
--	munmap(batch, 4096);
- 
- 	if (flags & WAIT) {
- 		struct pollfd pfd = { .fd = fence, .events = POLLIN };
- 		igt_assert(poll(&pfd, 1, timeout*1000) == 1);
- 	} else {
-+		int elapsed_time;
- 		memset(&tv, 0, sizeof(tv));
--		while (fence_busy(fence))
-+		while (fence_busy(fence)) {
-+			elapsed_time = igt_seconds_elapsed(&tv);
-+			if (elapsed_time >= timeout)
-+				igt_info("Elapsed time (%ds)\n", elapsed_time);
- 			igt_assert(igt_seconds_elapsed(&tv) < timeout);
-+		}
-+		igt_info("Elapsed time (%ds)\n", igt_seconds_elapsed(&tv));
- 	}
--
--	igt_assert(!gem_bo_busy(fd, obj.handle));
-+	igt_assert(!gem_bo_busy(fd, spin->handle));
- 	igt_assert_eq(sync_fence_status(fence),
- 		      flags & HANG ? -EIO : SYNC_FENCE_OK);
- 
--	close(fence);
--	gem_close(fd, obj.handle);
--	put_offset(ahnd, obj.handle);
-+	igt_spin_free(fd, spin);
- 	put_ahnd(ahnd);
--
- 	gem_quiescent_gpu(fd);
- }
- 
--- 
-2.25.1
+== Summary ==
+
+CI Bug Log - changes from CI_DRM_12372 -> IGTPW_8091
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8091/index.html
+
+Participating hosts (41 -> 40)
+------------------------------
+
+  Additional (1): fi-pnv-d510 
+  Missing    (2): fi-ctg-p8600 fi-bdw-samus 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_8091 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@i915_selftest@live@gt_engines:
+    - fi-rkl-guc:         [PASS][1] -> [INCOMPLETE][2] ([i915#4418])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12372/fi-rkl-guc/igt@i915_selftest@live@gt_engines.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8091/fi-rkl-guc/igt@i915_selftest@live@gt_engines.html
+
+  * igt@kms_psr@primary_page_flip:
+    - fi-pnv-d510:        NOTRUN -> [SKIP][3] ([fdo#109271]) +43 similar issues
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8091/fi-pnv-d510/igt@kms_psr@primary_page_flip.html
+
+  * igt@runner@aborted:
+    - fi-rkl-guc:         NOTRUN -> [FAIL][4] ([i915#4312])
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8091/fi-rkl-guc/igt@runner@aborted.html
+
+  
+#### Possible fixes ####
+
+  * igt@gem_exec_fence@basic-busy@bcs0:
+    - fi-glk-j4005:       [SKIP][5] ([fdo#109271]) -> [PASS][6] +1 similar issue
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12372/fi-glk-j4005/igt@gem_exec_fence@basic-busy@bcs0.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8091/fi-glk-j4005/igt@gem_exec_fence@basic-busy@bcs0.html
+    - fi-bxt-dsi:         [SKIP][7] ([fdo#109271]) -> [PASS][8] +1 similar issue
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12372/fi-bxt-dsi/igt@gem_exec_fence@basic-busy@bcs0.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8091/fi-bxt-dsi/igt@gem_exec_fence@basic-busy@bcs0.html
+    - fi-skl-6700k2:      [SKIP][9] ([fdo#109271]) -> [PASS][10] +1 similar issue
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12372/fi-skl-6700k2/igt@gem_exec_fence@basic-busy@bcs0.html
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8091/fi-skl-6700k2/igt@gem_exec_fence@basic-busy@bcs0.html
+    - fi-cfl-8109u:       [SKIP][11] ([fdo#109271]) -> [PASS][12] +1 similar issue
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12372/fi-cfl-8109u/igt@gem_exec_fence@basic-busy@bcs0.html
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8091/fi-cfl-8109u/igt@gem_exec_fence@basic-busy@bcs0.html
+    - fi-kbl-7567u:       [SKIP][13] ([fdo#109271]) -> [PASS][14] +1 similar issue
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12372/fi-kbl-7567u/igt@gem_exec_fence@basic-busy@bcs0.html
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8091/fi-kbl-7567u/igt@gem_exec_fence@basic-busy@bcs0.html
+
+  * igt@gem_exec_fence@basic-wait@bcs0:
+    - fi-cfl-guc:         [SKIP][15] ([fdo#109271]) -> [PASS][16] +1 similar issue
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12372/fi-cfl-guc/igt@gem_exec_fence@basic-wait@bcs0.html
+   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8091/fi-cfl-guc/igt@gem_exec_fence@basic-wait@bcs0.html
+    - {bat-kbl-2}:        [SKIP][17] ([fdo#109271]) -> [PASS][18] +1 similar issue
+   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12372/bat-kbl-2/igt@gem_exec_fence@basic-wait@bcs0.html
+   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8091/bat-kbl-2/igt@gem_exec_fence@basic-wait@bcs0.html
+    - fi-skl-6600u:       [SKIP][19] ([fdo#109271]) -> [PASS][20] +1 similar issue
+   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12372/fi-skl-6600u/igt@gem_exec_fence@basic-wait@bcs0.html
+   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8091/fi-skl-6600u/igt@gem_exec_fence@basic-wait@bcs0.html
+    - fi-apl-guc:         [SKIP][21] ([fdo#109271]) -> [PASS][22] +1 similar issue
+   [21]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12372/fi-apl-guc/igt@gem_exec_fence@basic-wait@bcs0.html
+   [22]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8091/fi-apl-guc/igt@gem_exec_fence@basic-wait@bcs0.html
+    - fi-skl-guc:         [SKIP][23] ([fdo#109271]) -> [PASS][24] +1 similar issue
+   [23]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12372/fi-skl-guc/igt@gem_exec_fence@basic-wait@bcs0.html
+   [24]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8091/fi-skl-guc/igt@gem_exec_fence@basic-wait@bcs0.html
+    - fi-cfl-8700k:       [SKIP][25] ([fdo#109271]) -> [PASS][26] +1 similar issue
+   [25]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12372/fi-cfl-8700k/igt@gem_exec_fence@basic-wait@bcs0.html
+   [26]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8091/fi-cfl-8700k/igt@gem_exec_fence@basic-wait@bcs0.html
+
+  * igt@gem_exec_suspend@basic-s0@smem:
+    - {bat-rplp-1}:       [DMESG-WARN][27] ([i915#2867]) -> [PASS][28]
+   [27]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12372/bat-rplp-1/igt@gem_exec_suspend@basic-s0@smem.html
+   [28]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8091/bat-rplp-1/igt@gem_exec_suspend@basic-s0@smem.html
+
+  * igt@i915_selftest@live@hugepages:
+    - {bat-rpls-2}:       [DMESG-WARN][29] ([i915#5278]) -> [PASS][30]
+   [29]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12372/bat-rpls-2/igt@i915_selftest@live@hugepages.html
+   [30]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8091/bat-rpls-2/igt@i915_selftest@live@hugepages.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [i915#2867]: https://gitlab.freedesktop.org/drm/intel/issues/2867
+  [i915#4258]: https://gitlab.freedesktop.org/drm/intel/issues/4258
+  [i915#4312]: https://gitlab.freedesktop.org/drm/intel/issues/4312
+  [i915#4418]: https://gitlab.freedesktop.org/drm/intel/issues/4418
+  [i915#4983]: https://gitlab.freedesktop.org/drm/intel/issues/4983
+  [i915#5278]: https://gitlab.freedesktop.org/drm/intel/issues/5278
+  [i915#6367]: https://gitlab.freedesktop.org/drm/intel/issues/6367
+  [i915#6687]: https://gitlab.freedesktop.org/drm/intel/issues/6687
+  [i915#6949]: https://gitlab.freedesktop.org/drm/intel/issues/6949
+  [i915#7058]: https://gitlab.freedesktop.org/drm/intel/issues/7058
+  [i915#7346]: https://gitlab.freedesktop.org/drm/intel/issues/7346
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_7051 -> IGTPW_8091
+
+  CI-20190529: 20190529
+  CI_DRM_12372: 2cc304afd4967ceffd14940ff73a8beb31778f90 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_8091: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8091/index.html
+  IGT_7051: 7da9f813cdacb80d4471fc6ddb493bae9c46913d @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8091/index.html
+
+--===============0476596401040114327==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/i915/gem_exec_fence: Replacing custom spinner with igt_spin (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/110735/">https://patchwork.freedesktop.org/series/110735/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8091/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8091/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_12372 -&gt; IGTPW_8091</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8091/index.html</p>
+<h2>Participating hosts (41 -&gt; 40)</h2>
+<p>Additional (1): fi-pnv-d510 <br />
+  Missing    (2): fi-ctg-p8600 fi-bdw-samus </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_8091 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live@gt_engines:</p>
+<ul>
+<li>fi-rkl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12372/fi-rkl-guc/igt@i915_selftest@live@gt_engines.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8091/fi-rkl-guc/igt@i915_selftest@live@gt_engines.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4418">i915#4418</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_psr@primary_page_flip:</p>
+<ul>
+<li>fi-pnv-d510:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8091/fi-pnv-d510/igt@kms_psr@primary_page_flip.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +43 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@runner@aborted:</p>
+<ul>
+<li>fi-rkl-guc:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8091/fi-rkl-guc/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4312">i915#4312</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@gem_exec_fence@basic-busy@bcs0:</p>
+<ul>
+<li>
+<p>fi-glk-j4005:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12372/fi-glk-j4005/igt@gem_exec_fence@basic-busy@bcs0.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8091/fi-glk-j4005/igt@gem_exec_fence@basic-busy@bcs0.html">PASS</a> +1 similar issue</p>
+</li>
+<li>
+<p>fi-bxt-dsi:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12372/fi-bxt-dsi/igt@gem_exec_fence@basic-busy@bcs0.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8091/fi-bxt-dsi/igt@gem_exec_fence@basic-busy@bcs0.html">PASS</a> +1 similar issue</p>
+</li>
+<li>
+<p>fi-skl-6700k2:      <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12372/fi-skl-6700k2/igt@gem_exec_fence@basic-busy@bcs0.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8091/fi-skl-6700k2/igt@gem_exec_fence@basic-busy@bcs0.html">PASS</a> +1 similar issue</p>
+</li>
+<li>
+<p>fi-cfl-8109u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12372/fi-cfl-8109u/igt@gem_exec_fence@basic-busy@bcs0.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8091/fi-cfl-8109u/igt@gem_exec_fence@basic-busy@bcs0.html">PASS</a> +1 similar issue</p>
+</li>
+<li>
+<p>fi-kbl-7567u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12372/fi-kbl-7567u/igt@gem_exec_fence@basic-busy@bcs0.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8091/fi-kbl-7567u/igt@gem_exec_fence@basic-busy@bcs0.html">PASS</a> +1 similar issue</p>
+</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_exec_fence@basic-wait@bcs0:</p>
+<ul>
+<li>
+<p>fi-cfl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12372/fi-cfl-guc/igt@gem_exec_fence@basic-wait@bcs0.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8091/fi-cfl-guc/igt@gem_exec_fence@basic-wait@bcs0.html">PASS</a> +1 similar issue</p>
+</li>
+<li>
+<p>{bat-kbl-2}:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12372/bat-kbl-2/igt@gem_exec_fence@basic-wait@bcs0.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8091/bat-kbl-2/igt@gem_exec_fence@basic-wait@bcs0.html">PASS</a> +1 similar issue</p>
+</li>
+<li>
+<p>fi-skl-6600u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12372/fi-skl-6600u/igt@gem_exec_fence@basic-wait@bcs0.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8091/fi-skl-6600u/igt@gem_exec_fence@basic-wait@bcs0.html">PASS</a> +1 similar issue</p>
+</li>
+<li>
+<p>fi-apl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12372/fi-apl-guc/igt@gem_exec_fence@basic-wait@bcs0.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8091/fi-apl-guc/igt@gem_exec_fence@basic-wait@bcs0.html">PASS</a> +1 similar issue</p>
+</li>
+<li>
+<p>fi-skl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12372/fi-skl-guc/igt@gem_exec_fence@basic-wait@bcs0.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8091/fi-skl-guc/igt@gem_exec_fence@basic-wait@bcs0.html">PASS</a> +1 similar issue</p>
+</li>
+<li>
+<p>fi-cfl-8700k:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12372/fi-cfl-8700k/igt@gem_exec_fence@basic-wait@bcs0.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8091/fi-cfl-8700k/igt@gem_exec_fence@basic-wait@bcs0.html">PASS</a> +1 similar issue</p>
+</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_exec_suspend@basic-s0@smem:</p>
+<ul>
+<li>{bat-rplp-1}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12372/bat-rplp-1/igt@gem_exec_suspend@basic-s0@smem.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2867">i915#2867</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8091/bat-rplp-1/igt@gem_exec_suspend@basic-s0@smem.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@hugepages:</p>
+<ul>
+<li>{bat-rpls-2}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12372/bat-rpls-2/igt@i915_selftest@live@hugepages.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5278">i915#5278</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8091/bat-rpls-2/igt@i915_selftest@live@hugepages.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_7051 -&gt; IGTPW_8091</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_12372: 2cc304afd4967ceffd14940ff73a8beb31778f90 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_8091: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8091/index.html<br />
+  IGT_7051: 7da9f813cdacb80d4471fc6ddb493bae9c46913d @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============0476596401040114327==--
