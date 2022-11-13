@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1576410E0EF
- for <igt-dev@lists.freedesktop.org>; Sun, 13 Nov 2022 07:53:17 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CAEB510E1EF
+ for <igt-dev@lists.freedesktop.org>; Sun, 13 Nov 2022 07:53:16 +0000 (UTC)
 From: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Sat, 12 Nov 2022 23:53:05 -0800
-Message-Id: <20221113075309.32023-10-niranjana.vishwanathapura@intel.com>
+Date: Sat, 12 Nov 2022 23:53:02 -0800
+Message-Id: <20221113075309.32023-7-niranjana.vishwanathapura@intel.com>
 In-Reply-To: <20221113075309.32023-1-niranjana.vishwanathapura@intel.com>
 References: <20221113075309.32023-1-niranjana.vishwanathapura@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v7 09/13] tests/i915/vm_bind: Add userptr
- subtest
+Subject: [igt-dev] [PATCH i-g-t v7 06/13] lib/vm_bind: Add
+ __prime_handle_to_fd()
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,131 +25,190 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add userptr object type to vm_bind_basic test.
+Make __prime_handle_to_fd() as a library interface as VM_BIND
+functionality will also be using it.
 
-v2: Run all tests for userptr type
-v3: Change info to debug messages, remove igt_collection usage
+v2: Rename prime_handle_to_fd_no_assert() to __prime_handle_to_fd()
 
 Reviewed-by: Matthew Auld <matthew.auld@intel.com>
 Signed-off-by: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
 ---
- tests/i915/i915_vm_bind_basic.c | 55 +++++++++++++++++++++++++++++----
- 1 file changed, 49 insertions(+), 6 deletions(-)
+ lib/ioctl_wrappers.c    | 39 +++++++++++++++++++++++++++++++++------
+ lib/ioctl_wrappers.h    |  1 +
+ tests/i915/gem_pwrite.c | 16 +---------------
+ tests/prime_mmap.c      | 26 ++++----------------------
+ 4 files changed, 39 insertions(+), 43 deletions(-)
 
-diff --git a/tests/i915/i915_vm_bind_basic.c b/tests/i915/i915_vm_bind_basic.c
-index 3b29301a0..971d65a74 100644
---- a/tests/i915/i915_vm_bind_basic.c
-+++ b/tests/i915/i915_vm_bind_basic.c
-@@ -234,16 +234,24 @@ static uint32_t create_obj(int fd, struct gem_memory_region *mr, uint32_t size,
+diff --git a/lib/ioctl_wrappers.c b/lib/ioctl_wrappers.c
+index ac37b6bb4..db9cbb724 100644
+--- a/lib/ioctl_wrappers.c
++++ b/lib/ioctl_wrappers.c
+@@ -1153,28 +1153,55 @@ void gem_require_mocs_registers(int fd)
+ /* prime */
+ 
+ /**
+- * prime_handle_to_fd:
++ * __prime_handle_to_fd:
+  * @fd: open i915 drm file descriptor
+  * @handle: file-private gem buffer object handle
++ * @flags: DRM_IOCTL_PRIME_HANDLE_TO_FD ioctl flags
++ * @fd_out: place holder for output file handle
+  *
+  * This wraps the PRIME_HANDLE_TO_FD ioctl, which is used to export a gem buffer
+  * object into a global (i.e. potentially cross-device) dma-buf file-descriptor
+  * handle.
+  *
+- * Returns: The created dma-buf fd handle.
++ * Returns: 0 on success, error otherwise. Upon success, it returns
++ *          the created dma-buf fd handle in fd_out.
+  */
+-int prime_handle_to_fd(int fd, uint32_t handle)
++int __prime_handle_to_fd(int fd, uint32_t handle, int flags, int *fd_out)
  {
- 	uint32_t handle;
- 
--	handle = gem_create_in_memory_region_list(fd, size, 0, &mr->ci, 1);
--	*addr = gem_mmap__cpu(fd, handle, 0, size, PROT_WRITE);
-+	if (!mr) {
-+		igt_assert(posix_memalign(addr, SZ_2M * MAX_CTXTS, size) == 0);
-+		gem_userptr(fd, *addr, size, 0, 0, &handle);
-+	} else {
-+		handle = gem_create_in_memory_region_list(fd, size, 0, &mr->ci, 1);
-+		*addr = gem_mmap__cpu(fd, handle, 0, size, PROT_WRITE);
-+	}
- 
- 	return handle;
- }
- 
--static void destroy_obj(int fd, uint32_t handle, uint32_t size, void *addr)
-+static void destroy_obj(int fd, uint32_t handle, uint32_t size, void *addr, bool is_userptr)
- {
- 	igt_assert(gem_munmap(addr, size) == 0);
- 	gem_close(fd, handle);
-+
-+	if (is_userptr)
-+		free(addr);
- }
- 
- static void create_src_objs(int fd, struct gem_memory_region *mr, uint32_t src[],
-@@ -254,6 +262,14 @@ static void create_src_objs(int fd, struct gem_memory_region *mr, uint32_t src[]
- 	if (!num_cmds)
- 		return;
- 
-+	if (!mr) {
-+		for (i = 0; i < num_cmds; i++) {
-+			src[i] = create_obj(fd, NULL, size, &src_addr[i]);
-+			igt_debug("Src (userptr) obj 0x%x created\n", src[i]);
-+		}
-+		return;
-+	}
-+
- 	/* Create first src object always in memory region 'mr' */
- 	src[i] = create_obj(fd, mr, size, &src_addr[i]);
- 	igt_debug("Src (%s) obj 0x%x created\n", mr->name, src[i]);
-@@ -292,7 +308,7 @@ static void destroy_src_objs(int fd, struct gem_memory_region *mr, uint32_t src[
- 
- 	for (i = 0; i < num_cmds; i++) {
- 		igt_debug("Closing src object 0x%x\n", src[i]);
--		destroy_obj(fd, src[i], size, src_addr[i]);
-+		destroy_obj(fd, src[i], size, src_addr[i], !mr);
- 	}
- }
- 
-@@ -300,7 +316,7 @@ static uint32_t create_dst_obj(int fd, struct gem_memory_region *mr, uint32_t si
- {
- 	uint32_t dst = create_obj(fd, mr, size, dst_addr);
- 
--	igt_debug("Dst (%s) obj 0x%x created\n", mr->name, dst);
-+	igt_debug("Dst (%s) obj 0x%x created\n", mr ? mr->name : "userptr", dst);
- 	return dst;
- }
- 
-@@ -308,7 +324,7 @@ static void destroy_dst_obj(int fd, struct gem_memory_region *mr, uint32_t dst,
- 			    uint32_t size, void *dst_addr)
- {
- 	igt_debug("Closing dst object 0x%x\n", dst);
--	destroy_obj(fd, dst, size, dst_addr);
-+	destroy_obj(fd, dst, size, dst_addr, !mr);
- }
- 
- static void pattern_fill_buf(void *src_addr[], uint32_t size, uint32_t num_cmds, uint32_t npages)
-@@ -498,6 +514,25 @@ static void run_test(int fd, const intel_ctx_t *base_ctx, struct test_cfg *cfg,
- 		gem_vm_destroy(fd, shared_vm_id);
- }
- 
-+static int has_userptr(int fd)
-+{
-+	uint32_t handle = 0;
-+	void *ptr;
+ 	struct drm_prime_handle args;
 +	int ret;
-+
-+	assert(posix_memalign(&ptr, PAGE_SIZE, PAGE_SIZE) == 0);
-+	ret = __gem_userptr(fd, ptr, PAGE_SIZE, 0, 0, &handle);
-+	if (ret != 0) {
-+		free(ptr);
-+		return 0;
-+	}
-+
-+	gem_close(fd, handle);
-+	free(ptr);
-+
-+	return handle != 0;
+ 
+ 	memset(&args, 0, sizeof(args));
+ 	args.handle = handle;
+-	args.flags = DRM_CLOEXEC;
++	args.flags = flags;
+ 	args.fd = -1;
+ 
+-	do_ioctl(fd, DRM_IOCTL_PRIME_HANDLE_TO_FD, &args);
++	ret = drmIoctl(fd, DRM_IOCTL_PRIME_HANDLE_TO_FD, &args);
++	if (ret)
++		ret = -errno;
++	*fd_out = args.fd;
+ 
+-	return args.fd;
++	return ret;
 +}
 +
- igt_main
++/**
++ * prime_handle_to_fd:
++ * @fd: open i915 drm file descriptor
++ * @handle: file-private gem buffer object handle
++ *
++ * This wraps the PRIME_HANDLE_TO_FD ioctl, which is used to export a gem buffer
++ * object into a global (i.e. potentially cross-device) dma-buf file-descriptor
++ * handle. It asserts that ioctl succeeds.
++ *
++ * Returns: The created dma-buf fd handle.
++ */
++int prime_handle_to_fd(int fd, uint32_t handle)
++{
++	int dmabuf;
++
++	igt_assert_eq(__prime_handle_to_fd(fd, handle, DRM_CLOEXEC, &dmabuf), 0);
++
++	return dmabuf;
+ }
+ 
+ /**
+diff --git a/lib/ioctl_wrappers.h b/lib/ioctl_wrappers.h
+index 223cd9160..66faa2755 100644
+--- a/lib/ioctl_wrappers.h
++++ b/lib/ioctl_wrappers.h
+@@ -143,6 +143,7 @@ struct local_dma_buf_sync {
+ #define LOCAL_DMA_BUF_BASE 'b'
+ #define LOCAL_DMA_BUF_IOCTL_SYNC _IOW(LOCAL_DMA_BUF_BASE, 0, struct local_dma_buf_sync)
+ 
++int __prime_handle_to_fd(int fd, uint32_t handle, int flags, int *fd_out);
+ int prime_handle_to_fd(int fd, uint32_t handle);
+ #ifndef DRM_RDWR
+ #define DRM_RDWR O_RDWR
+diff --git a/tests/i915/gem_pwrite.c b/tests/i915/gem_pwrite.c
+index 6e3f833cd..f4fe069ca 100644
+--- a/tests/i915/gem_pwrite.c
++++ b/tests/i915/gem_pwrite.c
+@@ -293,19 +293,6 @@ struct ufd_thread {
+ 	int err;
+ };
+ 
+-static int __prime_handle_to_fd(int fd, uint32_t handle)
+-{
+-	struct drm_prime_handle args;
+-
+-	memset(&args, 0, sizeof(args));
+-	args.handle = handle;
+-	args.flags = DRM_CLOEXEC;
+-	args.fd = -1;
+-
+-	ioctl(fd, DRM_IOCTL_PRIME_HANDLE_TO_FD, &args);
+-	return args.fd;
+-}
+-
+ static uint32_t dmabuf_create_handle(int i915, int vgem)
  {
- 	struct test_cfg *t, tests[] = {
-@@ -548,6 +583,14 @@ igt_main
- 				igt_dynamic_f("%s", r->name)
- 					run_test(fd, ctx, &cfg, r, alignment, e);
- 			}
-+
-+			if (has_userptr(fd)) {
-+				struct test_cfg cfg = *t;
-+
-+				/* Use NULL memory region for userptr */
-+				igt_dynamic("userptr")
-+					run_test(fd, ctx, &cfg, NULL, PAGE_SIZE, e);
-+			}
- 		}
+ 	struct vgem_bo scratch;
+@@ -317,8 +304,7 @@ static uint32_t dmabuf_create_handle(int i915, int vgem)
+ 	scratch.bpp = 32;
+ 	vgem_create(vgem, &scratch);
+ 
+-	dmabuf = __prime_handle_to_fd(vgem, scratch.handle);
+-	if (dmabuf < 0)
++	if (__prime_handle_to_fd(vgem, scratch.handle, DRM_CLOEXEC, &dmabuf))
+ 		return 0;
+ 
+ 	handle = prime_fd_to_handle(i915, dmabuf);
+diff --git a/tests/prime_mmap.c b/tests/prime_mmap.c
+index bc19f68c9..432e85763 100644
+--- a/tests/prime_mmap.c
++++ b/tests/prime_mmap.c
+@@ -298,24 +298,6 @@ test_dup(uint32_t region, uint64_t size)
+ 	close (dma_buf_fd);
+ }
+ 
+-/* Used for error case testing to avoid wrapper */
+-static int prime_handle_to_fd_no_assert(uint32_t handle, int flags, int *fd_out)
+-{
+-	struct drm_prime_handle args;
+-	int ret;
+-
+-	args.handle = handle;
+-	args.flags = flags;
+-	args.fd = -1;
+-
+-	ret = drmIoctl(fd, DRM_IOCTL_PRIME_HANDLE_TO_FD, &args);
+-	if (ret)
+-		ret = errno;
+-	*fd_out = args.fd;
+-
+-	return ret;
+-}
+-
+ static bool has_userptr(void)
+ {
+ 	uint32_t handle = 0;
+@@ -346,9 +328,9 @@ test_userptr(uint32_t region, uint64_t size)
+ 	gem_userptr(fd, (uint32_t *)ptr, size, 0, 0, &handle);
+ 
+ 	/* export userptr */
+-	ret = prime_handle_to_fd_no_assert(handle, DRM_CLOEXEC, &dma_buf_fd);
++	ret = __prime_handle_to_fd(fd, handle, DRM_CLOEXEC, &dma_buf_fd);
+ 	if (ret) {
+-		igt_assert(ret == EINVAL || ret == ENODEV);
++		igt_assert(ret == -EINVAL || ret == -ENODEV);
+ 		goto free_userptr;
+ 	} else {
+ 		igt_assert_eq(ret, 0);
+@@ -376,7 +358,7 @@ test_errors(uint32_t region, uint64_t size)
+ 	/* Test for invalid flags */
+ 	igt_assert(__gem_create_in_memory_regions(fd, &handle, &size, region) == 0);
+ 	for (i = 0; i < ARRAY_SIZE(invalid_flags); i++) {
+-		prime_handle_to_fd_no_assert(handle, invalid_flags[i], &dma_buf_fd);
++		__prime_handle_to_fd(fd, handle, invalid_flags[i], &dma_buf_fd);
+ 		igt_assert_eq(errno, EINVAL);
+ 		errno = 0;
  	}
+@@ -386,7 +368,7 @@ test_errors(uint32_t region, uint64_t size)
+ 	igt_assert(__gem_create_in_memory_regions(fd, &handle, &size, region) == 0);
+ 	fill_bo(handle, size);
+ 	gem_close(fd, handle);
+-	prime_handle_to_fd_no_assert(handle, DRM_CLOEXEC, &dma_buf_fd);
++	__prime_handle_to_fd(fd, handle, DRM_CLOEXEC, &dma_buf_fd);
+ 	igt_assert(dma_buf_fd == -1 && errno == ENOENT);
+ 	errno = 0;
  
 -- 
 2.21.0.rc0.32.g243a4c7e27
