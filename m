@@ -1,17 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D016210E0EF
- for <igt-dev@lists.freedesktop.org>; Sun, 13 Nov 2022 07:53:15 +0000 (UTC)
-From: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Sat, 12 Nov 2022 23:52:57 -0800
-Message-Id: <20221113075309.32023-2-niranjana.vishwanathapura@intel.com>
-In-Reply-To: <20221113075309.32023-1-niranjana.vishwanathapura@intel.com>
-References: <20221113075309.32023-1-niranjana.vishwanathapura@intel.com>
+Received: from NAM10-BN7-obe.outbound.protection.outlook.com
+ (mail-bn7nam10on2057.outbound.protection.outlook.com [40.107.92.57])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0E96910E22D
+ for <igt-dev@lists.freedesktop.org>; Sun, 13 Nov 2022 17:22:22 +0000 (UTC)
+Message-ID: <234691dc-3e3f-a651-9692-0948ab8fbe87@amd.com>
+Date: Sun, 13 Nov 2022 12:23:06 -0500
+To: Melissa Wen <mwen@igalia.com>, igt-dev@lists.freedesktop.org
+References: <20221108194449.6288-1-mwen@igalia.com>
+Content-Language: en-US
+From: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
+In-Reply-To: <20221108194449.6288-1-mwen@igalia.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v7 01/13] lib/i915: memory region
- gtt_alignment support
+Subject: Re: [igt-dev] [PATCH i-g-t v3] tests/kms_color: check degamma and
+ gamma props in CTM subtests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,64 +22,72 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: tvrtko.ursulin@intel.com, thomas.hellstrom@intel.com,
- matthew.auld@intel.com, daniel.vetter@intel.com, petri.latvala@intel.com
+Cc: Petri Latvala <petri.latvala@intel.com>, kernel-dev@igalia.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Update library to include gtt_alignment field to support
-platforms with 64K device memory pages.
 
-v2: Do not pull in gtt_alignment uapi
 
-Reviewed-by: Matthew Auld <matthew.auld@intel.com>
-Signed-off-by: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
----
- lib/i915/intel_memory_region.c | 6 ++++++
- lib/i915/intel_memory_region.h | 1 +
- lib/intel_chipset.h            | 2 ++
- 3 files changed, 9 insertions(+)
+On 11/8/22 14:44, Melissa Wen wrote:
+> Some CTM subtests generate and set degamma/gamma LUTs without checking
+> if these properties are supported by the driver. Therefore, if degamma
+> and gamma are used in the subtest, check the color properties before
+> generate and set LUTs. If these properties are not supported, these
+> subtests will skip instead of failing.
+> 
+> v2:
+> - remove unnecessary set_luts check (Alex Hung)
+> 
+> v3:
+> - initialize degamma and gamma LUTs as NULL
+> 
+> Signed-off-by: Melissa Wen <mwen@igalia.com>
+> Reviewed-by: Alex Hung <alex.hung@amd.com>
+> ---
+>   tests/kms_color.c | 11 +++++++----
+>   1 file changed, 7 insertions(+), 4 deletions(-)
+> 
+> diff --git a/tests/kms_color.c b/tests/kms_color.c
+> index e4dc2465..d016cefb 100644
+> --- a/tests/kms_color.c
+> +++ b/tests/kms_color.c
+> @@ -461,7 +461,7 @@ static bool test_pipe_ctm(data_t *data,
+>   		0.0, 1.0, 0.0,
+>   		0.0, 0.0, 1.0
+>   	};
+> -	gamma_lut_t *degamma_linear, *gamma_linear;
+> +	gamma_lut_t *degamma_linear = NULL, *gamma_linear = NULL;
+>   	igt_output_t *output = data->output;
+>   	bool ret = true;
+>   	igt_display_t *display = &data->display;
+> @@ -472,9 +472,6 @@ static bool test_pipe_ctm(data_t *data,
+>   
+>   	igt_require(igt_pipe_obj_has_prop(primary->pipe, IGT_CRTC_CTM));
+>   
+> -	degamma_linear = generate_table(data->degamma_lut_size, 1.0);
+> -	gamma_linear = generate_table(data->gamma_lut_size, 1.0);
+> -
+>   	igt_output_set_pipe(output, primary->pipe->pipe);
+>   	igt_output_override_mode(output, mode);
+>   
+> @@ -502,6 +499,12 @@ static bool test_pipe_ctm(data_t *data,
+>   	 * rounding issues and inaccuracies leading to crc mismatch.
+>   	 */
+>   	if (memcmp(before, after, sizeof(color_t))) {
+> +		igt_require(igt_pipe_obj_has_prop(primary->pipe, IGT_CRTC_DEGAMMA_LUT));
+> +		igt_require(igt_pipe_obj_has_prop(primary->pipe, IGT_CRTC_GAMMA_LUT));
+> +
+> +		degamma_linear = generate_table(data->degamma_lut_size, 1.0);
+> +		gamma_linear = generate_table(data->gamma_lut_size, 1.0);
+> +
+>   		set_degamma(data, primary->pipe, degamma_linear);
+>   		set_gamma(data, primary->pipe, gamma_linear);
+>   	} else {
 
-diff --git a/lib/i915/intel_memory_region.c b/lib/i915/intel_memory_region.c
-index 84e1bceb3..964962ebb 100644
---- a/lib/i915/intel_memory_region.c
-+++ b/lib/i915/intel_memory_region.c
-@@ -948,6 +948,12 @@ struct gem_memory_region *__gem_get_memory_regions(int i915)
- 		if (r->size == -1ull)
- 			r->size = igt_get_avail_ram_mb() << 20;
- 
-+		if (HAS_64K_PAGES(intel_get_drm_devid(i915)) &&
-+		    r->ci.memory_class == I915_MEMORY_CLASS_DEVICE)
-+			r->gtt_alignment = 16 * PAGE_SIZE;
-+		else
-+			r->gtt_alignment = PAGE_SIZE;
-+
- 		asprintf(&r->name, "%s%d",
- 			 region_repr(&r->ci), r->ci.memory_instance);
- 
-diff --git a/lib/i915/intel_memory_region.h b/lib/i915/intel_memory_region.h
-index 425bda0ec..84abb95b1 100644
---- a/lib/i915/intel_memory_region.h
-+++ b/lib/i915/intel_memory_region.h
-@@ -174,6 +174,7 @@ struct gem_memory_region {
- 	char *name;
- 
- 	struct drm_i915_gem_memory_class_instance ci;
-+	uint64_t gtt_alignment;
- 	uint64_t size;
- 	uint64_t cpu_size;
- };
-diff --git a/lib/intel_chipset.h b/lib/intel_chipset.h
-index d7a6ff190..7cf825915 100644
---- a/lib/intel_chipset.h
-+++ b/lib/intel_chipset.h
-@@ -225,4 +225,6 @@ void intel_check_pch(void);
- 
- #define HAS_FLATCCS(devid)	(intel_get_device_info(devid)->has_flatccs)
- 
-+#define HAS_64K_PAGES(devid)	(IS_DG2(devid))
-+
- #endif /* _INTEL_CHIPSET_H */
--- 
-2.21.0.rc0.32.g243a4c7e27
+Hi Melissa,
+
+Thanks a lot for this patch. I already merged it into IGT.
+
+Best Regards
+Siqueira
