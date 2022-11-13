@@ -1,15 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 03A8510E1EB
- for <igt-dev@lists.freedesktop.org>; Sun, 13 Nov 2022 07:53:15 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A2DFA10E1EB
+ for <igt-dev@lists.freedesktop.org>; Sun, 13 Nov 2022 07:53:16 +0000 (UTC)
 From: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Sat, 12 Nov 2022 23:52:56 -0800
-Message-Id: <20221113075309.32023-1-niranjana.vishwanathapura@intel.com>
+Date: Sat, 12 Nov 2022 23:53:01 -0800
+Message-Id: <20221113075309.32023-6-niranjana.vishwanathapura@intel.com>
+In-Reply-To: <20221113075309.32023-1-niranjana.vishwanathapura@intel.com>
+References: <20221113075309.32023-1-niranjana.vishwanathapura@intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v7 00/13] vm_bind: Add VM_BIND validation
- support
+Subject: [igt-dev] [PATCH i-g-t v7 05/13] lib/vm_bind: Add vm_bind specific
+ library functions
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,95 +26,118 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-DRM_I915_GEM_VM_BIND/UNBIND ioctls allows UMD to bind/unbind GEM
-buffer objects (BOs) or sections of a BOs at specified GPU virtual
-addresses on a specified address space (VM). Multiple mappings can map
-to the same physical pages of an object (aliasing). These mappings (also
-referred to as persistent mappings) will be persistent across multiple
-GPU submissions (execbuf calls) issued by the UMD, without user having
-to provide a list of all required mappings during each submission (as
-required by older execbuf mode).
+Add vm_bind specific library interfaces.
 
-The new execbuf3 ioctl (I915_GEM_EXECBUFFER3) will only work in vm_bind
-mode. The vm_bind mode only works with this new execbuf3 ioctl.
-
-Add sanity tests to validate the VM_BIND, VM_UNBIND and execbuf3 ioctls.
-
-Add basic test to create and VM_BIND the objects and issue execbuf3 for
-GPU to copy the data from a source to destination buffer.
-
-TODOs:
-* More validation support.
-* Port some relevant gem_exec_* tests for execbuf3.
-
-NOTEs:
-* It is based on below VM_BIND design+uapi rfc.
-  Documentation/gpu/rfc/i915_vm_bind.rst
-
-* The i915 VM_BIND support is posted as,
-  [PATCH v7 00/20] drm/i915/vm_bind: Add VM_BIND functionality
-
-v2: Address various review comments
-v3: Add gem_exec3_basic and gem_exec3_balancer tests,
-    add gem_lmem_swapping@vm_bind subtest and some fixes.
-v4: Add and use i915_vm_bind library functions,
-    add lmem test if lmem region is present instead of skipping,
-    remove helpers to create vm_private objects, instead use
-    gem_create_ext() function.
-v5: Use memory region's gtt_alignment, use non-recoverable faults,
-    fix review comments.
-v6: Rebased, add sanity tests for added reserved uapi fields,
-    add gem_shrink@vm_bind* subtests.
-v7: Pull in uapi changes and address review comments
-
+Reviewed-by: Matthew Auld <matthew.auld@intel.com>
 Signed-off-by: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
-
-Niranjana Vishwanathapura (13):
-  lib/i915: memory region gtt_alignment support
-  lib/vm_bind: import uapi definitions
-  lib/vm_bind: Add vm_bind/unbind and execbuf3 ioctls
-  lib/vm_bind: Add vm_bind mode support for VM
-  lib/vm_bind: Add vm_bind specific library functions
-  lib/vm_bind: Add __prime_handle_to_fd()
-  tests/i915/vm_bind: Add vm_bind sanity test
-  tests/i915/vm_bind: Add basic VM_BIND test support
-  tests/i915/vm_bind: Add userptr subtest
-  tests/i915/vm_bind: Add gem_exec3_basic test
-  tests/i915/vm_bind: Add gem_exec3_balancer test
-  tests/i915/vm_bind: Add gem_lmem_swapping@vm_bind sub test
-  tests/i915/vm_bind: Add gem_shrink@vm_bind* subtests
-
- lib/i915/gem_context.c                |  24 +
- lib/i915/gem_context.h                |   3 +
- lib/i915/gem_vm.c                     |  31 +-
- lib/i915/gem_vm.h                     |   3 +-
- lib/i915/i915_drm_local.h             | 297 +++++++++++++
- lib/i915/i915_vm_bind.c               |  61 +++
- lib/i915/i915_vm_bind.h               |  16 +
- lib/i915/intel_memory_region.c        |   6 +
- lib/i915/intel_memory_region.h        |   1 +
- lib/intel_chipset.h                   |   2 +
- lib/ioctl_wrappers.c                  | 117 ++++-
- lib/ioctl_wrappers.h                  |   7 +
- lib/meson.build                       |   1 +
- tests/i915/gem_exec3_balancer.c       | 466 ++++++++++++++++++++
- tests/i915/gem_exec3_basic.c          | 139 ++++++
- tests/i915/gem_lmem_swapping.c        | 134 +++++-
- tests/i915/gem_pwrite.c               |  16 +-
- tests/i915/gem_shrink.c               |  74 +++-
- tests/i915/i915_vm_bind_basic.c       | 603 ++++++++++++++++++++++++++
- tests/i915/i915_vm_bind_sanity.c      | 351 +++++++++++++++
- tests/intel-ci/blacklist.txt          |   2 +-
- tests/intel-ci/fast-feedback.testlist |   3 +
- tests/meson.build                     |  10 +
- tests/prime_mmap.c                    |  26 +-
- 24 files changed, 2338 insertions(+), 55 deletions(-)
+---
+ lib/i915/i915_vm_bind.c | 61 +++++++++++++++++++++++++++++++++++++++++
+ lib/i915/i915_vm_bind.h | 16 +++++++++++
+ lib/meson.build         |  1 +
+ 3 files changed, 78 insertions(+)
  create mode 100644 lib/i915/i915_vm_bind.c
  create mode 100644 lib/i915/i915_vm_bind.h
- create mode 100644 tests/i915/gem_exec3_balancer.c
- create mode 100644 tests/i915/gem_exec3_basic.c
- create mode 100644 tests/i915/i915_vm_bind_basic.c
- create mode 100644 tests/i915/i915_vm_bind_sanity.c
 
+diff --git a/lib/i915/i915_vm_bind.c b/lib/i915/i915_vm_bind.c
+new file mode 100644
+index 000000000..5624f589b
+--- /dev/null
++++ b/lib/i915/i915_vm_bind.c
+@@ -0,0 +1,61 @@
++// SPDX-License-Identifier: MIT
++/*
++ * Copyright © 2022 Intel Corporation
++ */
++
++#include <errno.h>
++#include <string.h>
++#include <sys/ioctl.h>
++
++#include "ioctl_wrappers.h"
++#include "i915_drm.h"
++#include "i915_drm_local.h"
++#include "i915_vm_bind.h"
++
++void i915_vm_bind(int i915, uint32_t vm_id, uint64_t va, uint32_t handle,
++		  uint64_t offset, uint64_t length, uint32_t syncobj,
++		  uint64_t fence_value)
++{
++	struct drm_i915_gem_vm_bind bind;
++
++	memset(&bind, 0, sizeof(bind));
++	bind.vm_id = vm_id;
++	bind.handle = handle;
++	bind.start = va;
++	bind.offset = offset;
++	bind.length = length;
++	if (syncobj) {
++		bind.fence.handle = syncobj;
++		bind.fence.value = fence_value;
++		bind.fence.flags = I915_TIMELINE_FENCE_SIGNAL;
++	}
++
++	gem_vm_bind(i915, &bind);
++}
++
++void i915_vm_unbind(int i915, uint32_t vm_id, uint64_t va, uint64_t length)
++{
++	struct drm_i915_gem_vm_unbind unbind;
++
++	memset(&unbind, 0, sizeof(unbind));
++	unbind.vm_id = vm_id;
++	unbind.start = va;
++	unbind.length = length;
++
++	gem_vm_unbind(i915, &unbind);
++}
++
++int i915_vm_bind_version(int i915)
++{
++	struct drm_i915_getparam gp;
++	int value = 0;
++
++	memset(&gp, 0, sizeof(gp));
++	gp.param = I915_PARAM_VM_BIND_VERSION;
++	gp.value = &value;
++
++	ioctl(i915, DRM_IOCTL_I915_GETPARAM, &gp, sizeof(gp));
++	errno = 0;
++
++	return value;
++}
+diff --git a/lib/i915/i915_vm_bind.h b/lib/i915/i915_vm_bind.h
+new file mode 100644
+index 000000000..46a382c03
+--- /dev/null
++++ b/lib/i915/i915_vm_bind.h
+@@ -0,0 +1,16 @@
++/* SPDX-License-Identifier: MIT */
++/*
++ * Copyright © 2022 Intel Corporation
++ */
++#ifndef _I915_VM_BIND_H_
++#define _I915_VM_BIND_H_
++
++#include <stdint.h>
++
++void i915_vm_bind(int i915, uint32_t vm_id, uint64_t va, uint32_t handle,
++		  uint64_t offset, uint64_t length, uint32_t syncobj,
++		  uint64_t fence_value);
++void i915_vm_unbind(int i915, uint32_t vm_id, uint64_t va, uint64_t length);
++int i915_vm_bind_version(int i915);
++
++#endif /* _I915_VM_BIND_ */
+diff --git a/lib/meson.build b/lib/meson.build
+index ac7126fbf..154f674cb 100644
+--- a/lib/meson.build
++++ b/lib/meson.build
+@@ -14,6 +14,7 @@ lib_sources = [
+ 	'i915/intel_mocs.c',
+ 	'i915/i915_blt.c',
+ 	'i915/i915_crc.c',
++	'i915/i915_vm_bind.c',
+ 	'igt_collection.c',
+ 	'igt_color_encoding.c',
+ 	'igt_crc.c',
 -- 
 2.21.0.rc0.32.g243a4c7e27
