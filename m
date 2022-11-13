@@ -1,18 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E20EA10E1F2
- for <igt-dev@lists.freedesktop.org>; Sun, 13 Nov 2022 07:53:16 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1576410E0EF
+ for <igt-dev@lists.freedesktop.org>; Sun, 13 Nov 2022 07:53:17 +0000 (UTC)
 From: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Sat, 12 Nov 2022 23:53:03 -0800
-Message-Id: <20221113075309.32023-8-niranjana.vishwanathapura@intel.com>
+Date: Sat, 12 Nov 2022 23:53:05 -0800
+Message-Id: <20221113075309.32023-10-niranjana.vishwanathapura@intel.com>
 In-Reply-To: <20221113075309.32023-1-niranjana.vishwanathapura@intel.com>
 References: <20221113075309.32023-1-niranjana.vishwanathapura@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v7 07/13] tests/i915/vm_bind: Add vm_bind
- sanity test
+Subject: [igt-dev] [PATCH i-g-t v7 09/13] tests/i915/vm_bind: Add userptr
+ subtest
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,409 +25,131 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add sanity test to exercise vm_bind uapi.
-Test for various cases with vm_bind and vm_unbind ioctls.
+Add userptr object type to vm_bind_basic test.
 
-v2: Add more input validity tests
-    Add sanity test to fast-feedback.testlist
-v3: Add only basic-smem subtest to fast-feedback.testlist
-v4: Use gem_create_ext to create vm private objects,
-    Ensure vm private objects are only allowed in vm_bind mode,
-    Use library routine i915_vm_bind_version()
-v5: Add execbuf3 sanity tests, use mr->gtt_alignment,
-    add non-recoverable context sanity test
-v6: Add more execbuf3 sanity tests
-v7: Port as per uapi reserved field changes
+v2: Run all tests for userptr type
+v3: Change info to debug messages, remove igt_collection usage
 
 Reviewed-by: Matthew Auld <matthew.auld@intel.com>
 Signed-off-by: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
 ---
- tests/i915/i915_vm_bind_sanity.c      | 351 ++++++++++++++++++++++++++
- tests/intel-ci/fast-feedback.testlist |   1 +
- tests/meson.build                     |   1 +
- 3 files changed, 353 insertions(+)
- create mode 100644 tests/i915/i915_vm_bind_sanity.c
+ tests/i915/i915_vm_bind_basic.c | 55 +++++++++++++++++++++++++++++----
+ 1 file changed, 49 insertions(+), 6 deletions(-)
 
-diff --git a/tests/i915/i915_vm_bind_sanity.c b/tests/i915/i915_vm_bind_sanity.c
-new file mode 100644
-index 000000000..fbb97110e
---- /dev/null
-+++ b/tests/i915/i915_vm_bind_sanity.c
-@@ -0,0 +1,351 @@
-+// SPDX-License-Identifier: MIT
-+/*
-+ * Copyright © 2022 Intel Corporation
-+ */
-+
-+/** @file i915_vm_bind_sanity.c
-+ *
-+ * This is the sanity test for VM_BIND UAPI.
-+ *
-+ * The goal is to test the UAPI interface.
-+ */
-+
-+#include <errno.h>
-+#include <fcntl.h>
-+#include <sys/ioctl.h>
-+#include <sys/poll.h>
-+
-+#include "i915/gem.h"
-+#include "i915/gem_create.h"
-+#include "i915/gem_vm.h"
-+#include "i915/i915_vm_bind.h"
-+#include "intel_allocator.h"
-+#include "igt.h"
-+#include "igt_syncobj.h"
-+
-+#define PAGE_SIZE   4096
-+#define SZ_64K      (16 * PAGE_SIZE)
-+#define SZ_2M       (512 * PAGE_SIZE)
-+
-+IGT_TEST_DESCRIPTION("Sanity test vm_bind related interfaces");
-+
-+static uint64_t
-+gettime_ns(void)
-+{
-+	struct timespec current;
-+	clock_gettime(CLOCK_MONOTONIC, &current);
-+	return (uint64_t)current.tv_sec * NSEC_PER_SEC + current.tv_nsec;
-+}
-+
-+static bool syncobj_busy(int fd, uint32_t handle)
-+{
-+	bool result;
-+	int sf;
-+
-+	sf = syncobj_handle_to_fd(fd, handle,
-+				  DRM_SYNCOBJ_HANDLE_TO_FD_FLAGS_EXPORT_SYNC_FILE);
-+	result = poll(&(struct pollfd){sf, POLLIN}, 1, 0) == 0;
-+	close(sf);
-+
-+	return result;
-+}
-+
-+static inline int
-+__vm_bind(int fd, uint32_t vm_id, uint32_t handle, uint64_t start, uint64_t offset,
-+	  uint64_t length, uint64_t flags, uint64_t rsvd_0, uint64_t rsvd_1,
-+	  struct drm_i915_gem_timeline_fence *fence, uint64_t extensions)
-+{
-+	struct drm_i915_gem_vm_bind bind;
-+
-+	memset(&bind, 0, sizeof(bind));
-+	bind.vm_id = vm_id;
-+	bind.handle = handle;
-+	bind.start = start;
-+	bind.offset = offset;
-+	bind.length = length;
-+	bind.flags = flags;
-+	bind.rsvd[0] = rsvd_0;
-+	bind.rsvd[1] = rsvd_1;
-+	bind.extensions = extensions;
-+	if (fence)
-+		bind.fence = *fence;
-+
-+	return __gem_vm_bind(fd, &bind);
-+}
-+
-+static inline void
-+vm_bind(int fd, uint32_t vm_id, uint32_t handle, uint64_t start,
-+	uint64_t offset, uint64_t length,
-+	struct drm_i915_gem_timeline_fence *fence)
-+{
-+	igt_assert_eq(__vm_bind(fd, vm_id, handle, start, offset,
-+				length, 0, 0, 0, fence, 0), 0);
-+	if (fence) {
-+		igt_assert(syncobj_timeline_wait(fd, &fence->handle, (uint64_t *)&fence->value,
-+						 1, gettime_ns() + (2 * NSEC_PER_SEC),
-+						 DRM_SYNCOBJ_WAIT_FLAGS_WAIT_FOR_SUBMIT, NULL));
-+		igt_assert(!syncobj_busy(fd, fence->handle));
+diff --git a/tests/i915/i915_vm_bind_basic.c b/tests/i915/i915_vm_bind_basic.c
+index 3b29301a0..971d65a74 100644
+--- a/tests/i915/i915_vm_bind_basic.c
++++ b/tests/i915/i915_vm_bind_basic.c
+@@ -234,16 +234,24 @@ static uint32_t create_obj(int fd, struct gem_memory_region *mr, uint32_t size,
+ {
+ 	uint32_t handle;
+ 
+-	handle = gem_create_in_memory_region_list(fd, size, 0, &mr->ci, 1);
+-	*addr = gem_mmap__cpu(fd, handle, 0, size, PROT_WRITE);
++	if (!mr) {
++		igt_assert(posix_memalign(addr, SZ_2M * MAX_CTXTS, size) == 0);
++		gem_userptr(fd, *addr, size, 0, 0, &handle);
++	} else {
++		handle = gem_create_in_memory_region_list(fd, size, 0, &mr->ci, 1);
++		*addr = gem_mmap__cpu(fd, handle, 0, size, PROT_WRITE);
 +	}
-+}
+ 
+ 	return handle;
+ }
+ 
+-static void destroy_obj(int fd, uint32_t handle, uint32_t size, void *addr)
++static void destroy_obj(int fd, uint32_t handle, uint32_t size, void *addr, bool is_userptr)
+ {
+ 	igt_assert(gem_munmap(addr, size) == 0);
+ 	gem_close(fd, handle);
 +
-+static inline int
-+__vm_unbind(int fd, uint32_t vm_id, uint64_t start, uint64_t length, uint32_t pad,
-+	    uint64_t flags, uint64_t rsvd_0, uint64_t rsvd_1, uint64_t extensions)
-+{
-+	struct drm_i915_gem_vm_unbind unbind;
-+
-+	memset(&unbind, 0, sizeof(unbind));
-+	unbind.vm_id = vm_id;
-+	unbind.pad = pad;
-+	unbind.flags = flags;
-+	unbind.rsvd[0] = rsvd_0;
-+	unbind.rsvd[1] = rsvd_1;
-+	unbind.start = start;
-+	unbind.length = length;
-+	unbind.extensions = extensions;
-+
-+	return __gem_vm_unbind(fd, &unbind);
-+}
-+
-+static inline void
-+vm_unbind(int fd, uint32_t vm_id, uint64_t start, uint64_t length, uint64_t flags)
-+{
-+	igt_assert_eq(__vm_unbind(fd, vm_id, start, length, 0, 0, 0, 0, 0), 0);
-+}
-+
-+static inline int
-+__execbuf3(int fd, uint32_t ctx_id, uint32_t engine_idx, uint64_t batch_addresses,
-+	   uint64_t flags, uint64_t fence_count, uint64_t fences, uint64_t rsvd,
-+	   uint64_t extensions)
-+{
-+	struct drm_i915_gem_execbuffer3 execbuf3;
-+
-+	memset(&execbuf3, 0, sizeof(execbuf3));
-+	execbuf3.ctx_id = ctx_id;
-+	execbuf3.engine_idx = engine_idx;
-+	execbuf3.batch_address = batch_addresses;
-+	execbuf3.flags = flags;
-+	execbuf3.fence_count = fence_count;
-+	execbuf3.timeline_fences = fences;
-+	execbuf3.rsvd = rsvd;
-+	execbuf3.extensions = extensions;
-+
-+	return __gem_execbuf3(fd, &execbuf3);
-+}
-+
-+static void basic(int fd, const struct gem_memory_region *mr)
-+{
-+	uint32_t vm_id, vm_id2, vm_id_exec_mode, handle;
-+	struct drm_i915_gem_create_ext_memory_regions setparam_region = {
-+		.base = { .name = I915_GEM_CREATE_EXT_MEMORY_REGIONS },
-+		.regions = to_user_pointer(&mr->ci),
-+		.num_regions = 1,
-+	};
-+	struct drm_i915_gem_timeline_fence fence = {
-+		.handle = syncobj_create(fd, 0),
-+		.flags = I915_TIMELINE_FENCE_SIGNAL,
-+		.value = 0,
-+	};
-+	struct drm_i915_gem_timeline_fence exec_fence = {
-+		.handle = syncobj_create(fd, 0),
-+		.flags = I915_TIMELINE_FENCE_SIGNAL,
-+		.value = 0,
-+	};
-+	struct drm_i915_gem_create_ext_vm_private vm_priv = {
-+		.base = { .name = I915_GEM_CREATE_EXT_VM_PRIVATE },
-+	};
-+	struct drm_i915_gem_context_param param = {
-+		.param = I915_CONTEXT_PARAM_RECOVERABLE,
-+		.value = 0,
-+	};
-+	const uint32_t bbe = MI_BATCH_BUFFER_END;
-+	struct drm_i915_gem_execbuffer2 execbuf;
-+	const struct intel_execution_engine2 *e;
-+	struct drm_i915_gem_exec_object2 obj;
-+	uint64_t pg_size = mr->gtt_alignment;
-+	uint64_t ahnd, va, size = pg_size * 4;
-+	const intel_ctx_t *ctx;
-+	int dmabuf;
-+
-+	ahnd = intel_allocator_open_full(fd, 1, 0, 0,
-+					 INTEL_ALLOCATOR_RANDOM,
-+					 ALLOC_STRATEGY_HIGH_TO_LOW,
-+					 pg_size);
-+
-+	vm_id = gem_vm_create_in_vm_bind_mode(fd);
-+	handle = gem_create_ext(fd, size, 0, &setparam_region.base);
-+	va = CANONICAL(get_offset(ahnd, handle, size, 0));
-+
-+	/* Bind and unbind */
-+	vm_bind(fd, vm_id, handle, va, 0, size, NULL);
-+	vm_unbind(fd, vm_id, va, size, 0);
-+
-+	/* Bind with out fence */
-+	vm_bind(fd, vm_id, handle, va, 0, size, &fence);
-+	vm_unbind(fd, vm_id, va, size, 0);
-+
-+	/* Aliasing bind and unbind */
-+	vm_bind(fd, vm_id, handle, va, 0, size, NULL);
-+	vm_bind(fd, vm_id, handle, va + SZ_2M, 0, size, NULL);
-+	vm_unbind(fd, vm_id, va, size, 0);
-+	vm_unbind(fd, vm_id, va + SZ_2M, size, 0);
-+
-+	/* MBZ fields are not 0 */
-+	igt_assert_eq(__vm_bind(fd, vm_id, handle, va, 0, size, 0x10, 0, 0, NULL, 0), -EINVAL);
-+	igt_assert_eq(__vm_bind(fd, vm_id, handle, va, 0, size, 0, 0x10, 0, NULL, 0), -EINVAL);
-+	igt_assert_eq(__vm_bind(fd, vm_id, handle, va, 0, size, 0, 0, 0x10, NULL, 0), -EINVAL);
-+	fence.flags |= I915_TIMELINE_FENCE_WAIT;
-+	igt_assert_eq(__vm_bind(fd, vm_id, handle, va, 0, size, 0, 0, 0, &fence, 0), -EINVAL);
-+	fence.flags |= 0x1000;
-+	igt_assert_eq(__vm_bind(fd, vm_id, handle, va, 0, size, 0, 0, 0, &fence, 0), -EINVAL);
-+	igt_assert_eq(__vm_bind(fd, vm_id, handle, va, 0, size, 0, 0, 0, NULL, to_user_pointer(&obj)), -EINVAL);
-+	vm_bind(fd, vm_id, handle, va, 0, size, NULL);
-+	igt_assert_eq(__vm_unbind(fd, vm_id, va, size, 0x10, 0, 0, 0, 0), -EINVAL);
-+	igt_assert_eq(__vm_unbind(fd, vm_id, va, size, 0, 0x10, 0, 0, 0), -EINVAL);
-+	igt_assert_eq(__vm_unbind(fd, vm_id, va, size, 0, 0, 0x10, 0, 0), -EINVAL);
-+	igt_assert_eq(__vm_unbind(fd, vm_id, va, size, 0, 0, 0, 0x10, 0), -EINVAL);
-+	igt_assert_eq(__vm_unbind(fd, vm_id, va, size, 0, 0, 0, 0, to_user_pointer(&obj)), -EINVAL);
-+	vm_unbind(fd, vm_id, va, size, 0);
-+
-+	/* Invalid handle */
-+	igt_assert_eq(__vm_bind(fd, vm_id, handle + 10, va, 0, size, 0, 0, 0, NULL, 0), -ENOENT);
-+
-+	/* Invalid mapping range */
-+	igt_assert_eq(__vm_bind(fd, vm_id, handle, va, 0, 0, 0, 0, 0, NULL, 0), -EINVAL);
-+	igt_assert_eq(__vm_bind(fd, vm_id, handle, va, pg_size, size, 0, 0, 0, NULL, 0), -EINVAL);
-+
-+	/* Unaligned binds */
-+	igt_assert_eq(__vm_bind(fd, vm_id, handle, va + 0x10, 0, size, 0, 0, 0, NULL, 0), -EINVAL);
-+	igt_assert_eq(__vm_bind(fd, vm_id, handle, va, pg_size / 2, pg_size, 0, 0, 0, NULL, 0), -EINVAL);
-+	igt_assert_eq(__vm_bind(fd, vm_id, handle, va, 0, pg_size / 2, 0, 0, 0, NULL, 0), -EINVAL);
-+
-+	/* range overflow binds */
-+	igt_assert_eq(__vm_bind(fd, vm_id, handle, va, pg_size, -pg_size, 0, 0, 0, NULL, 0), -EINVAL);
-+	igt_assert_eq(__vm_bind(fd, vm_id, handle, va, pg_size * 2, -pg_size, 0, 0, 0, NULL, 0), -EINVAL);
-+
-+	/* re-bind VA range without unbinding */
-+	vm_bind(fd, vm_id, handle, va, 0, size, NULL);
-+	igt_assert_eq(__vm_bind(fd, vm_id, handle, va, 0, size, 0, 0, 0, NULL, 0), -EEXIST);
-+	vm_unbind(fd, vm_id, va, size, 0);
-+
-+	/* unbind a non-existing mapping */
-+	igt_assert_eq(__vm_bind(fd, vm_id, 0, va + SZ_2M, 0, size, 0, 0, 0, NULL, 0), -ENOENT);
-+
-+	/* unbind with length mismatch */
-+	vm_bind(fd, vm_id, handle, va, 0, size, NULL);
-+	igt_assert_eq(__vm_bind(fd, vm_id, handle, va, 0, size * 2, 0, 0, 0, NULL, 0), -EINVAL);
-+	vm_unbind(fd, vm_id, va, size, 0);
-+
-+	/* validate exclusivity of vm_bind & exec modes of binding */
-+	vm_id_exec_mode = gem_vm_create(fd);
-+	igt_assert_eq(__vm_bind(fd, vm_id_exec_mode, handle, va, 0, size, 0, 0, 0, NULL, 0), -EOPNOTSUPP);
-+
-+	/* vm_bind mode with the default recoverable context */
-+	ctx = intel_ctx_create_all_physical(fd);
-+	gem_context_set_vm(fd, ctx->id, vm_id);
-+	param.ctx_id = ctx->id;
-+	igt_assert_eq(__gem_context_get_param(fd, &param), -EINVAL);
-+	intel_ctx_destroy(fd, ctx);
-+
-+	/* create context, make it non-recoverable and assign vm_bind vm */
-+	ctx = intel_ctx_create_all_physical(fd);
-+	param.ctx_id = ctx->id;
-+	gem_context_set_param(fd, &param);
-+	gem_context_set_vm(fd, ctx->id, vm_id);
-+	(void)gem_context_get_vm(fd, ctx->id);
-+
-+	/* vm_bind mode with legacy execbuf */
-+	memset(&obj, 0, sizeof(obj));
-+	memset(&execbuf, 0, sizeof(execbuf));
-+	execbuf.buffers_ptr = to_user_pointer(&obj);
-+	execbuf.buffer_count = 1;
-+	obj.handle = handle;
-+	i915_execbuffer2_set_context_id(execbuf, ctx->id);
-+	igt_assert_eq(__gem_execbuf(fd, &execbuf), -EOPNOTSUPP);
-+
-+	/* vm_bind mode with execbuf3 */
-+	gem_write(fd, handle, 0, &bbe, sizeof(bbe));
-+	vm_bind(fd, vm_id, handle, va, 0, size, NULL);
-+	/* grab any engine */
-+	for_each_ctx_engine(fd, ctx, e)
-+		break;
-+
-+	igt_assert_eq(__execbuf3(fd, ctx->id, e->flags, va, 0, 0, 0, 0, 0), 0);
-+	igt_assert_eq(__execbuf3(fd, ctx->id, e->flags, va, 0, 1, to_user_pointer(&exec_fence), 0, 0), 0);
-+	igt_assert(syncobj_timeline_wait(fd, &exec_fence.handle, (uint64_t *)&exec_fence.value, 1,
-+					 gettime_ns() + (2 * NSEC_PER_SEC),
-+					 DRM_SYNCOBJ_WAIT_FLAGS_WAIT_FOR_SUBMIT, NULL));
-+
-+	/* execbuf3 with non-vm_bind mode */
-+	igt_assert_eq(__execbuf3(fd, 0, e->flags, va, 0, 0, 0, 0, 0), -EOPNOTSUPP);
-+
-+	/* execbuf3 MBZ fields are not 0 */
-+	igt_assert_eq(__execbuf3(fd, ctx->id, e->flags, va, 0x10, 0, 0, 0, 0), -EINVAL);
-+	igt_assert_eq(__execbuf3(fd, ctx->id, e->flags, va, 0, 0, 0, 0x10, 0), -EINVAL);
-+	igt_assert_eq(__execbuf3(fd, ctx->id, e->flags, va, 0, 0, 0, 0, 0x10), -EINVAL);
-+	exec_fence.flags |= 0x100;
-+	igt_assert_eq(__execbuf3(fd, ctx->id, e->flags, va, 0, 1, to_user_pointer(&exec_fence), 0, 0), -EINVAL);
-+
-+	vm_unbind(fd, vm_id, va, size, 0);
-+	intel_ctx_destroy(fd, ctx);
-+	gem_vm_destroy(fd, vm_id_exec_mode);
-+	gem_close(fd, handle);
-+
-+	/* validate VM private objects */
-+	setparam_region.base.next_extension = to_user_pointer(&vm_priv);
-+	igt_assert_eq(__gem_create_ext(fd, &size, 0, &handle,
-+				       &setparam_region.base), -ENOENT);
-+	vm_priv.rsvd = 0x10;
-+	igt_assert_eq(__gem_create_ext(fd, &size, 0, &handle,
-+				       &setparam_region.base), -EINVAL);
-+	vm_id2 = gem_vm_create(fd);
-+	vm_priv.rsvd = 0;
-+	vm_priv.vm_id = vm_id2;
-+	igt_assert_eq(__gem_create_ext(fd, &size, 0, &handle,
-+				       &setparam_region.base), -EINVAL);
-+	gem_vm_destroy(fd, vm_id2);
-+
-+	vm_id2 = gem_vm_create_in_vm_bind_mode(fd);
-+	vm_priv.vm_id = vm_id2;
-+	handle = gem_create_ext(fd, size, 0, &setparam_region.base);
-+
-+	igt_assert_eq(__prime_handle_to_fd(fd, handle, DRM_CLOEXEC, &dmabuf), -EINVAL);
-+	igt_assert_eq(__vm_bind(fd, vm_id, handle, va, 0, size, 0, 0, 0, NULL, 0), -EINVAL);
-+	vm_bind(fd, vm_id2, handle, va, 0, size, NULL);
-+	vm_unbind(fd, vm_id2, va, size, 0);
-+
-+	gem_close(fd, handle);
-+	gem_vm_destroy(fd, vm_id2);
-+	gem_vm_destroy(fd, vm_id);
-+	syncobj_destroy(fd, fence.handle);
-+	syncobj_destroy(fd, exec_fence.handle);
-+	intel_allocator_close(ahnd);
-+}
-+
-+igt_main
-+{
-+	int fd;
-+
-+	igt_fixture {
-+		fd = drm_open_driver(DRIVER_INTEL);
-+		igt_require_gem(fd);
-+		igt_require(i915_vm_bind_version(fd) == 1);
-+	}
-+
-+	igt_describe("Basic vm_bind sanity test");
-+	igt_subtest_with_dynamic("basic") {
-+		for_each_memory_region(r, fd) {
-+			if (r->ci.memory_instance)
-+				continue;
-+
-+			igt_dynamic_f("%s", r->name)
-+				basic(fd, r);
++	if (is_userptr)
++		free(addr);
+ }
+ 
+ static void create_src_objs(int fd, struct gem_memory_region *mr, uint32_t src[],
+@@ -254,6 +262,14 @@ static void create_src_objs(int fd, struct gem_memory_region *mr, uint32_t src[]
+ 	if (!num_cmds)
+ 		return;
+ 
++	if (!mr) {
++		for (i = 0; i < num_cmds; i++) {
++			src[i] = create_obj(fd, NULL, size, &src_addr[i]);
++			igt_debug("Src (userptr) obj 0x%x created\n", src[i]);
 +		}
++		return;
 +	}
 +
-+	igt_fixture {
-+		close(fd);
+ 	/* Create first src object always in memory region 'mr' */
+ 	src[i] = create_obj(fd, mr, size, &src_addr[i]);
+ 	igt_debug("Src (%s) obj 0x%x created\n", mr->name, src[i]);
+@@ -292,7 +308,7 @@ static void destroy_src_objs(int fd, struct gem_memory_region *mr, uint32_t src[
+ 
+ 	for (i = 0; i < num_cmds; i++) {
+ 		igt_debug("Closing src object 0x%x\n", src[i]);
+-		destroy_obj(fd, src[i], size, src_addr[i]);
++		destroy_obj(fd, src[i], size, src_addr[i], !mr);
+ 	}
+ }
+ 
+@@ -300,7 +316,7 @@ static uint32_t create_dst_obj(int fd, struct gem_memory_region *mr, uint32_t si
+ {
+ 	uint32_t dst = create_obj(fd, mr, size, dst_addr);
+ 
+-	igt_debug("Dst (%s) obj 0x%x created\n", mr->name, dst);
++	igt_debug("Dst (%s) obj 0x%x created\n", mr ? mr->name : "userptr", dst);
+ 	return dst;
+ }
+ 
+@@ -308,7 +324,7 @@ static void destroy_dst_obj(int fd, struct gem_memory_region *mr, uint32_t dst,
+ 			    uint32_t size, void *dst_addr)
+ {
+ 	igt_debug("Closing dst object 0x%x\n", dst);
+-	destroy_obj(fd, dst, size, dst_addr);
++	destroy_obj(fd, dst, size, dst_addr, !mr);
+ }
+ 
+ static void pattern_fill_buf(void *src_addr[], uint32_t size, uint32_t num_cmds, uint32_t npages)
+@@ -498,6 +514,25 @@ static void run_test(int fd, const intel_ctx_t *base_ctx, struct test_cfg *cfg,
+ 		gem_vm_destroy(fd, shared_vm_id);
+ }
+ 
++static int has_userptr(int fd)
++{
++	uint32_t handle = 0;
++	void *ptr;
++	int ret;
++
++	assert(posix_memalign(&ptr, PAGE_SIZE, PAGE_SIZE) == 0);
++	ret = __gem_userptr(fd, ptr, PAGE_SIZE, 0, 0, &handle);
++	if (ret != 0) {
++		free(ptr);
++		return 0;
 +	}
 +
-+	igt_exit();
++	gem_close(fd, handle);
++	free(ptr);
++
++	return handle != 0;
 +}
-diff --git a/tests/intel-ci/fast-feedback.testlist b/tests/intel-ci/fast-feedback.testlist
-index f57f8ff3b..3ae32422a 100644
---- a/tests/intel-ci/fast-feedback.testlist
-+++ b/tests/intel-ci/fast-feedback.testlist
-@@ -54,6 +54,7 @@ igt@i915_getparams_basic@basic-eu-total
- igt@i915_getparams_basic@basic-subslice-total
- igt@i915_hangman@error-state-basic
- igt@i915_pciid
-+igt@i915_vm_bind_sanity@basic
- igt@kms_addfb_basic@addfb25-bad-modifier
- igt@kms_addfb_basic@addfb25-framebuffer-vs-set-tiling
- igt@kms_addfb_basic@addfb25-modifier-no-flag
-diff --git a/tests/meson.build b/tests/meson.build
-index 12e53e0bd..423db3057 100644
---- a/tests/meson.build
-+++ b/tests/meson.build
-@@ -225,6 +225,7 @@ i915_progs = [
- 	'i915_query',
- 	'i915_selftest',
- 	'i915_suspend',
-+	'i915_vm_bind_sanity',
- 	'kms_big_fb',
- 	'kms_big_joiner' ,
- 	'kms_busy',
++
+ igt_main
+ {
+ 	struct test_cfg *t, tests[] = {
+@@ -548,6 +583,14 @@ igt_main
+ 				igt_dynamic_f("%s", r->name)
+ 					run_test(fd, ctx, &cfg, r, alignment, e);
+ 			}
++
++			if (has_userptr(fd)) {
++				struct test_cfg cfg = *t;
++
++				/* Use NULL memory region for userptr */
++				igt_dynamic("userptr")
++					run_test(fd, ctx, &cfg, NULL, PAGE_SIZE, e);
++			}
+ 		}
+ 	}
+ 
 -- 
 2.21.0.rc0.32.g243a4c7e27
