@@ -1,17 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5264710E0EF
- for <igt-dev@lists.freedesktop.org>; Sun, 13 Nov 2022 07:53:16 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 03A8510E1EB
+ for <igt-dev@lists.freedesktop.org>; Sun, 13 Nov 2022 07:53:15 +0000 (UTC)
 From: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Sat, 12 Nov 2022 23:52:59 -0800
-Message-Id: <20221113075309.32023-4-niranjana.vishwanathapura@intel.com>
-In-Reply-To: <20221113075309.32023-1-niranjana.vishwanathapura@intel.com>
-References: <20221113075309.32023-1-niranjana.vishwanathapura@intel.com>
+Date: Sat, 12 Nov 2022 23:52:56 -0800
+Message-Id: <20221113075309.32023-1-niranjana.vishwanathapura@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v7 03/13] lib/vm_bind: Add vm_bind/unbind
- and execbuf3 ioctls
+Subject: [igt-dev] [PATCH i-g-t v7 00/13] vm_bind: Add VM_BIND validation
+ support
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,125 +23,95 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add required library interfaces for new vm_bind/unbind
-and execbuf3 ioctls.
+DRM_I915_GEM_VM_BIND/UNBIND ioctls allows UMD to bind/unbind GEM
+buffer objects (BOs) or sections of a BOs at specified GPU virtual
+addresses on a specified address space (VM). Multiple mappings can map
+to the same physical pages of an object (aliasing). These mappings (also
+referred to as persistent mappings) will be persistent across multiple
+GPU submissions (execbuf calls) issued by the UMD, without user having
+to provide a list of all required mappings during each submission (as
+required by older execbuf mode).
 
-Reviewed-by: Matthew Auld <matthew.auld@intel.com>
+The new execbuf3 ioctl (I915_GEM_EXECBUFFER3) will only work in vm_bind
+mode. The vm_bind mode only works with this new execbuf3 ioctl.
+
+Add sanity tests to validate the VM_BIND, VM_UNBIND and execbuf3 ioctls.
+
+Add basic test to create and VM_BIND the objects and issue execbuf3 for
+GPU to copy the data from a source to destination buffer.
+
+TODOs:
+* More validation support.
+* Port some relevant gem_exec_* tests for execbuf3.
+
+NOTEs:
+* It is based on below VM_BIND design+uapi rfc.
+  Documentation/gpu/rfc/i915_vm_bind.rst
+
+* The i915 VM_BIND support is posted as,
+  [PATCH v7 00/20] drm/i915/vm_bind: Add VM_BIND functionality
+
+v2: Address various review comments
+v3: Add gem_exec3_basic and gem_exec3_balancer tests,
+    add gem_lmem_swapping@vm_bind subtest and some fixes.
+v4: Add and use i915_vm_bind library functions,
+    add lmem test if lmem region is present instead of skipping,
+    remove helpers to create vm_private objects, instead use
+    gem_create_ext() function.
+v5: Use memory region's gtt_alignment, use non-recoverable faults,
+    fix review comments.
+v6: Rebased, add sanity tests for added reserved uapi fields,
+    add gem_shrink@vm_bind* subtests.
+v7: Pull in uapi changes and address review comments
+
 Signed-off-by: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
----
- lib/ioctl_wrappers.c | 78 ++++++++++++++++++++++++++++++++++++++++++++
- lib/ioctl_wrappers.h |  6 ++++
- 2 files changed, 84 insertions(+)
 
-diff --git a/lib/ioctl_wrappers.c b/lib/ioctl_wrappers.c
-index 09eb3ce7b..ac37b6bb4 100644
---- a/lib/ioctl_wrappers.c
-+++ b/lib/ioctl_wrappers.c
-@@ -706,6 +706,38 @@ void gem_execbuf_wr(int fd, struct drm_i915_gem_execbuffer2 *execbuf)
- 	igt_assert_eq(__gem_execbuf_wr(fd, execbuf), 0);
- }
- 
-+/**
-+ * __gem_execbuf3:
-+ * @fd: open i915 drm file descriptor
-+ * @execbuf: execbuffer data structure
-+ *
-+ * This wraps the EXECBUFFER3 ioctl, which submits a batchbuffer for the gpu to
-+ * run. This is allowed to fail, with -errno returned.
-+ */
-+int __gem_execbuf3(int fd, struct drm_i915_gem_execbuffer3 *execbuf)
-+{
-+	int err = 0;
-+	if (igt_ioctl(fd, DRM_IOCTL_I915_GEM_EXECBUFFER3, execbuf)) {
-+		err = -errno;
-+		igt_assume(err != 0);
-+	}
-+	errno = 0;
-+	return err;
-+}
-+
-+/**
-+ * gem_execbuf3:
-+ * @fd: open i915 drm file descriptor
-+ * @execbuf: execbuffer data structure
-+ *
-+ * This wraps the EXECBUFFER3 ioctl, which submits a batchbuffer for the gpu to
-+ * run.
-+ */
-+void gem_execbuf3(int fd, struct drm_i915_gem_execbuffer3 *execbuf)
-+{
-+	igt_assert_eq(__gem_execbuf3(fd, execbuf), 0);
-+}
-+
- /**
-  * gem_madvise:
-  * @fd: open i915 drm file descriptor
-@@ -1328,3 +1360,49 @@ bool igt_has_drm_cap(int fd, uint64_t capability)
- 	igt_assert(drmIoctl(fd, DRM_IOCTL_GET_CAP, &cap) == 0);
- 	return cap.value;
- }
-+
-+/* VM_BIND */
-+
-+int __gem_vm_bind(int fd, struct drm_i915_gem_vm_bind *bind)
-+{
-+	int err = 0;
-+
-+	if (drmIoctl(fd, DRM_IOCTL_I915_GEM_VM_BIND, bind))
-+		err = -errno;
-+	return err;
-+}
-+
-+/**
-+ * gem_vm_bind:
-+ * @fd: open i915 drm file descriptor
-+ * @bind: vm_bind data structure
-+ *
-+ * This wraps the VM_BIND ioctl to bind an address range to
-+ * the specified address space.
-+ */
-+void gem_vm_bind(int fd, struct drm_i915_gem_vm_bind *bind)
-+{
-+	igt_assert_eq(__gem_vm_bind(fd, bind), 0);
-+}
-+
-+int __gem_vm_unbind(int fd, struct drm_i915_gem_vm_unbind *unbind)
-+{
-+	int err = 0;
-+
-+	if (drmIoctl(fd, DRM_IOCTL_I915_GEM_VM_UNBIND, unbind))
-+		err = -errno;
-+	return err;
-+}
-+
-+/**
-+ * gem_vm_unbind:
-+ * @fd: open i915 drm file descriptor
-+ * @unbind: vm_unbind data structure
-+ *
-+ * This wraps the VM_UNBIND ioctl to unbind an address range from
-+ * the specified address space.
-+ */
-+void gem_vm_unbind(int fd, struct drm_i915_gem_vm_unbind *unbind)
-+{
-+	igt_assert_eq(__gem_vm_unbind(fd, unbind), 0);
-+}
-diff --git a/lib/ioctl_wrappers.h b/lib/ioctl_wrappers.h
-index 9a897fec2..223cd9160 100644
---- a/lib/ioctl_wrappers.h
-+++ b/lib/ioctl_wrappers.h
-@@ -84,6 +84,12 @@ void gem_execbuf_wr(int fd, struct drm_i915_gem_execbuffer2 *execbuf);
- int __gem_execbuf_wr(int fd, struct drm_i915_gem_execbuffer2 *execbuf);
- void gem_execbuf(int fd, struct drm_i915_gem_execbuffer2 *execbuf);
- int __gem_execbuf(int fd, struct drm_i915_gem_execbuffer2 *execbuf);
-+void gem_execbuf3(int fd, struct drm_i915_gem_execbuffer3 *execbuf);
-+int __gem_execbuf3(int fd, struct drm_i915_gem_execbuffer3 *execbuf);
-+int __gem_vm_bind(int fd, struct drm_i915_gem_vm_bind *bind);
-+void gem_vm_bind(int fd, struct drm_i915_gem_vm_bind *bind);
-+int __gem_vm_unbind(int fd, struct drm_i915_gem_vm_unbind *unbind);
-+void gem_vm_unbind(int fd, struct drm_i915_gem_vm_unbind *unbind);
- 
- #ifndef I915_GEM_DOMAIN_WC
- #define I915_GEM_DOMAIN_WC 0x80
+Niranjana Vishwanathapura (13):
+  lib/i915: memory region gtt_alignment support
+  lib/vm_bind: import uapi definitions
+  lib/vm_bind: Add vm_bind/unbind and execbuf3 ioctls
+  lib/vm_bind: Add vm_bind mode support for VM
+  lib/vm_bind: Add vm_bind specific library functions
+  lib/vm_bind: Add __prime_handle_to_fd()
+  tests/i915/vm_bind: Add vm_bind sanity test
+  tests/i915/vm_bind: Add basic VM_BIND test support
+  tests/i915/vm_bind: Add userptr subtest
+  tests/i915/vm_bind: Add gem_exec3_basic test
+  tests/i915/vm_bind: Add gem_exec3_balancer test
+  tests/i915/vm_bind: Add gem_lmem_swapping@vm_bind sub test
+  tests/i915/vm_bind: Add gem_shrink@vm_bind* subtests
+
+ lib/i915/gem_context.c                |  24 +
+ lib/i915/gem_context.h                |   3 +
+ lib/i915/gem_vm.c                     |  31 +-
+ lib/i915/gem_vm.h                     |   3 +-
+ lib/i915/i915_drm_local.h             | 297 +++++++++++++
+ lib/i915/i915_vm_bind.c               |  61 +++
+ lib/i915/i915_vm_bind.h               |  16 +
+ lib/i915/intel_memory_region.c        |   6 +
+ lib/i915/intel_memory_region.h        |   1 +
+ lib/intel_chipset.h                   |   2 +
+ lib/ioctl_wrappers.c                  | 117 ++++-
+ lib/ioctl_wrappers.h                  |   7 +
+ lib/meson.build                       |   1 +
+ tests/i915/gem_exec3_balancer.c       | 466 ++++++++++++++++++++
+ tests/i915/gem_exec3_basic.c          | 139 ++++++
+ tests/i915/gem_lmem_swapping.c        | 134 +++++-
+ tests/i915/gem_pwrite.c               |  16 +-
+ tests/i915/gem_shrink.c               |  74 +++-
+ tests/i915/i915_vm_bind_basic.c       | 603 ++++++++++++++++++++++++++
+ tests/i915/i915_vm_bind_sanity.c      | 351 +++++++++++++++
+ tests/intel-ci/blacklist.txt          |   2 +-
+ tests/intel-ci/fast-feedback.testlist |   3 +
+ tests/meson.build                     |  10 +
+ tests/prime_mmap.c                    |  26 +-
+ 24 files changed, 2338 insertions(+), 55 deletions(-)
+ create mode 100644 lib/i915/i915_vm_bind.c
+ create mode 100644 lib/i915/i915_vm_bind.h
+ create mode 100644 tests/i915/gem_exec3_balancer.c
+ create mode 100644 tests/i915/gem_exec3_basic.c
+ create mode 100644 tests/i915/i915_vm_bind_basic.c
+ create mode 100644 tests/i915/i915_vm_bind_sanity.c
+
 -- 
 2.21.0.rc0.32.g243a4c7e27
