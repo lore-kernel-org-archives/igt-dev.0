@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 36A2910E044
- for <igt-dev@lists.freedesktop.org>; Tue, 15 Nov 2022 17:10:14 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EB87510E092
+ for <igt-dev@lists.freedesktop.org>; Tue, 15 Nov 2022 17:10:30 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 15 Nov 2022 22:38:16 +0530
-Message-Id: <20221115170855.196572-14-bhanuprakash.modem@intel.com>
+Date: Tue, 15 Nov 2022 22:38:29 +0530
+Message-Id: <20221115170855.196572-27-bhanuprakash.modem@intel.com>
 In-Reply-To: <20221115170855.196572-1-bhanuprakash.modem@intel.com>
 References: <20221115170855.196572-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t v5 13/52] tests/kms_cursor_edge_walk: Add support
+Subject: [igt-dev] [i-g-t v5 26/52] tests/kms_plane_multiple: Add support
  for Bigjoiner
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -33,26 +33,53 @@ Example:
 V2: - Use updated helper name
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Reviewed-by: Karthik B S <karthik.b.s@intel.com>
 ---
- tests/kms_cursor_edge_walk.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ tests/kms_plane_multiple.c | 15 ++++++++++++---
+ 1 file changed, 12 insertions(+), 3 deletions(-)
 
-diff --git a/tests/kms_cursor_edge_walk.c b/tests/kms_cursor_edge_walk.c
-index e653b9ab..86b880d8 100644
---- a/tests/kms_cursor_edge_walk.c
-+++ b/tests/kms_cursor_edge_walk.c
-@@ -351,6 +351,12 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
- 						data.curh = data.curw;
- 						igt_require(data.curw <= max_curw && data.curh <= max_curh);
+diff --git a/tests/kms_plane_multiple.c b/tests/kms_plane_multiple.c
+index 75659015..7dd9d586 100644
+--- a/tests/kms_plane_multiple.c
++++ b/tests/kms_plane_multiple.c
+@@ -103,6 +103,7 @@ get_reference_crc(data_t *data, igt_output_t *output, enum pipe pipe,
+ 	igt_plane_t *primary;
+ 	int ret;
  
-+						igt_display_reset(&data.display);
-+						igt_output_set_pipe(data.output, data.pipe);
-+						if (!i915_pipe_output_combo_valid(&data.display))
-+							continue;
++	igt_display_reset(&data->display);
+ 	igt_output_set_pipe(output, pipe);
+ 
+ 	primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
+@@ -290,6 +291,9 @@ test_plane_position_with_output(data_t *data, enum pipe pipe,
+ 	bool loop_forever;
+ 	char info[256];
+ 
++	igt_info("Using (pipe %s + %s) to run the subtest.\n",
++		 kmstest_pipe_name(pipe), igt_output_name(output));
 +
-+						igt_output_set_pipe(data.output, PIPE_NONE);
- 						igt_dynamic_f("pipe-%s-%s-%dx%d",
- 							      kmstest_pipe_name(data.pipe),
- 							      data.output->name,
+ 	if (opt.iterations == LOOP_FOREVER) {
+ 		loop_forever = true;
+ 		sprintf(info, "forever");
+@@ -373,12 +377,17 @@ static void run_test(data_t *data, uint64_t modifier)
+ {
+ 	enum pipe pipe;
+ 	igt_output_t *output;
++	igt_display_t *display = &data->display;
+ 
+-	if (!igt_display_has_format_mod(&data->display, DRM_FORMAT_XRGB8888, modifier))
++	if (!igt_display_has_format_mod(display, DRM_FORMAT_XRGB8888, modifier))
+ 		return;
+ 
+-	for_each_pipe_with_valid_output(&data->display, pipe, output) {
+-		igt_display_reset(&data->display);
++	for_each_pipe_with_valid_output(display, pipe, output) {
++		igt_display_reset(display);
++
++		igt_output_set_pipe(output, pipe);
++		if (!i915_pipe_output_combo_valid(display))
++			continue;
+ 
+ 		igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), output->name)
+ 			test_plane_position(data, pipe, output, modifier);
 -- 
 2.38.0
