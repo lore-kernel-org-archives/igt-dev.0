@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 059F710E3ED
- for <igt-dev@lists.freedesktop.org>; Tue, 15 Nov 2022 17:00:40 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B184910E044
+ for <igt-dev@lists.freedesktop.org>; Tue, 15 Nov 2022 17:00:33 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 15 Nov 2022 22:28:37 +0530
-Message-Id: <20221115165916.196084-15-bhanuprakash.modem@intel.com>
+Date: Tue, 15 Nov 2022 22:28:32 +0530
+Message-Id: <20221115165916.196084-10-bhanuprakash.modem@intel.com>
 In-Reply-To: <20221115165916.196084-1-bhanuprakash.modem@intel.com>
 References: <20221115165916.196084-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t v5 13/52] tests/kms_cursor_edge_walk: Add support
- for Bigjoiner
+Subject: [igt-dev] [i-g-t v5 08/52] tests/kms_color: Add support for
+ Bigjoiner
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -34,25 +34,52 @@ V2: - Use updated helper name
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/kms_cursor_edge_walk.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ tests/kms_color.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/tests/kms_cursor_edge_walk.c b/tests/kms_cursor_edge_walk.c
-index e653b9ab..86b880d8 100644
---- a/tests/kms_cursor_edge_walk.c
-+++ b/tests/kms_cursor_edge_walk.c
-@@ -351,6 +351,12 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
- 						data.curh = data.curw;
- 						igt_require(data.curw <= max_curw && data.curh <= max_curh);
+diff --git a/tests/kms_color.c b/tests/kms_color.c
+index d016cefb..5d53b441 100644
+--- a/tests/kms_color.c
++++ b/tests/kms_color.c
+@@ -725,9 +725,13 @@ run_gamma_degamma_tests_for_pipe(data_t *data, enum pipe p,
+ 	data->drm_format = DRM_FORMAT_XRGB8888;
+ 	data->mode = igt_output_get_mode(data->output);
  
-+						igt_display_reset(&data.display);
-+						igt_output_set_pipe(data.output, data.pipe);
-+						if (!i915_pipe_output_combo_valid(&data.display))
-+							continue;
++	if (!pipe_output_combo_valid(data, p))
++		goto out;
 +
-+						igt_output_set_pipe(data.output, PIPE_NONE);
- 						igt_dynamic_f("pipe-%s-%s-%dx%d",
- 							      kmstest_pipe_name(data.pipe),
- 							      data.output->name,
+ 	igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(p), data->output->name)
+ 		igt_assert(test_t(data, data->primary));
+ 
++out:
+ 	test_cleanup(data);
+ }
+ 
+@@ -755,6 +759,9 @@ run_ctm_tests_for_pipe(data_t *data, enum pipe p,
+ 	data->drm_format = DRM_FORMAT_XRGB8888;
+ 	data->mode = igt_output_get_mode(data->output);
+ 
++	if (!pipe_output_combo_valid(data, p))
++		goto out;
++
+ 	igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(p), data->output->name) {
+ 		bool success = false;
+ 		int i;
+@@ -783,6 +790,7 @@ run_ctm_tests_for_pipe(data_t *data, enum pipe p,
+ 		igt_assert(success);
+ 	}
+ 
++out:
+ 	test_cleanup(data);
+ }
+ 
+@@ -823,7 +831,6 @@ run_deep_color_tests_for_pipe(data_t *data, enum pipe p)
+ 		igt_display_reset(&data->display);
+ 		igt_output_set_prop_value(output, IGT_CONNECTOR_MAX_BPC, 10);
+ 		igt_output_set_pipe(output, p);
+-		igt_display_commit_atomic(&data->display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
+ 
+ 		if (is_i915_device(data->drm_fd) &&
+ 		    !igt_max_bpc_constraint(&data->display, p, output, 10))
 -- 
 2.38.0
