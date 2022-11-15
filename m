@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E759689561
- for <igt-dev@lists.freedesktop.org>; Tue, 15 Nov 2022 17:01:03 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A395A89056
+ for <igt-dev@lists.freedesktop.org>; Tue, 15 Nov 2022 17:01:32 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 15 Nov 2022 22:28:51 +0530
-Message-Id: <20221115165916.196084-29-bhanuprakash.modem@intel.com>
+Date: Tue, 15 Nov 2022 22:29:10 +0530
+Message-Id: <20221115165916.196084-48-bhanuprakash.modem@intel.com>
 In-Reply-To: <20221115165916.196084-1-bhanuprakash.modem@intel.com>
 References: <20221115165916.196084-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t v5 27/52] tests/kms_plane_scaling: Add support for
- Bigjoiner
+Subject: [igt-dev] [i-g-t v5 46/52] tests/i915/kms_frontbuffer_tracking: Add
+ support for Bigjoiner
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -33,331 +33,40 @@ V2: - Use updated helper name
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/kms_plane_scaling.c | 218 +++++++++++++++++++++++++-------------
- 1 file changed, 145 insertions(+), 73 deletions(-)
+ tests/i915/kms_frontbuffer_tracking.c | 16 ++++++++++++----
+ 1 file changed, 12 insertions(+), 4 deletions(-)
 
-diff --git a/tests/kms_plane_scaling.c b/tests/kms_plane_scaling.c
-index 4c621cce..49a194e1 100644
---- a/tests/kms_plane_scaling.c
-+++ b/tests/kms_plane_scaling.c
-@@ -546,30 +546,45 @@ static void test_scaler_with_pixel_format_pipe(data_t *d, int width, int height,
- 	}
- }
+diff --git a/tests/i915/kms_frontbuffer_tracking.c b/tests/i915/kms_frontbuffer_tracking.c
+index 5b47999e..650e14a7 100644
+--- a/tests/i915/kms_frontbuffer_tracking.c
++++ b/tests/i915/kms_frontbuffer_tracking.c
+@@ -403,15 +403,23 @@ static bool find_connector(bool edp_only, bool pipe_a,
+ 		if (pipe_a && pipe != PIPE_A)
+ 			continue;
  
--static void find_connected_pipe(igt_display_t *display, bool second, enum pipe *pipe, igt_output_t **output)
-+static enum pipe
-+find_connected_pipe(igt_display_t *display, bool second, igt_output_t **output)
- {
--	enum pipe first = PIPE_NONE;
--	igt_output_t *first_output = NULL;
-+	enum pipe pipe;
-+	bool first_output = false;
- 	bool found = false;
- 
--	for_each_pipe_with_valid_output(display, *pipe, *output) {
--		if (first == *pipe || *output == first_output)
--			continue;
-+	igt_display_reset(display);
- 
--		if (second) {
--			first = *pipe;
--			first_output = *output;
--			second = false;
--			continue;
--		}
-+	for_each_pipe(display, pipe) {
-+		for_each_valid_output_on_pipe(display, pipe, *output) {
-+			if((*output)->pending_pipe != PIPE_NONE)
-+				continue;
- 
--		return;
-+			igt_output_set_pipe(*output, pipe);
-+			if (i915_pipe_output_combo_valid(display)) {
-+				found = true;
+-		if (output == forbidden_output || pipe == forbidden_pipe)
++		if (output == forbidden_output || pipe == forbidden_pipe) {
++			igt_output_set_pipe(output, pipe);
++			igt_output_override_mode(output, connector_get_mode(output));
 +
-+				if (second) {
-+					first_output = true;
-+					second = false;
-+					found = false;
-+				}
-+				break;
-+			}
-+			igt_output_set_pipe(*output, PIPE_NONE);
+ 			continue;
 +		}
-+		if (found)
-+			break;
+ 
+ 		if (c->connector_type == DRM_MODE_CONNECTOR_eDP && opt.no_edp)
+ 			continue;
+ 
+-		*ret_output = output;
+-		*ret_pipe = pipe;
+-		return true;
++		igt_output_set_pipe(output, pipe);
++		igt_output_override_mode(output, connector_get_mode(output));
++		if (i915_pipe_output_combo_valid(&drm.display)) {
++			*ret_output = output;
++			*ret_pipe = pipe;
++			return true;
++		}
  	}
  
-+	igt_display_reset(display);
-+
- 	if (first_output)
- 		igt_require_f(found, "No second valid output found\n");
- 	else
- 		igt_require_f(found, "No valid outputs found\n");
-+
-+	return pipe;
- }
- 
- static void
-@@ -749,13 +764,16 @@ static void test_scaler_with_multi_pipe_plane(data_t *d)
- 	enum pipe pipe1, pipe2;
- 	int ret1, ret2;
- 
--	cleanup_crtc(d);
--
--	find_connected_pipe(display, false, &pipe1, &output1);
--	find_connected_pipe(display, true, &pipe2, &output2);
-+	cleanup_fbs(d);
- 
-+	pipe1 = find_connected_pipe(display, false, &output1);
-+	pipe2 = find_connected_pipe(display, true, &output2);
- 	igt_skip_on(!output1 || !output2);
- 
-+	igt_info("Using (pipe %s + %s) and (pipe %s + %s) to run the subtest.\n",
-+		 kmstest_pipe_name(pipe1), igt_output_name(output1),
-+		 kmstest_pipe_name(pipe2), igt_output_name(output2));
-+
- 	igt_output_set_pipe(output1, pipe1);
- 	igt_output_set_pipe(output2, pipe2);
- 
-@@ -820,6 +838,22 @@ static void test_scaler_with_multi_pipe_plane(data_t *d)
- 	igt_assert_eq(ret1 && ret2, 0);
- }
- 
-+static bool
-+pipe_output_combo_valid(igt_display_t *display,
-+			enum pipe pipe, igt_output_t *output)
-+{
-+	bool ret = true;
-+
-+	igt_display_reset(display);
-+
-+	igt_output_set_pipe(output, pipe);
-+	if (!i915_pipe_output_combo_valid(display))
-+		ret = false;
-+	igt_output_set_pipe(output, PIPE_NONE);
-+
-+	return ret;
-+}
-+
- static int opt_handler(int opt, int opt_index, void *_data)
- {
- 	data_t *data = _data;
-@@ -861,17 +895,22 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
- 		for (int index = 0; index < ARRAY_SIZE(scaler_with_pixel_format_tests); index++) {
- 			igt_describe(scaler_with_pixel_format_tests[index].describe);
- 			igt_subtest_with_dynamic(scaler_with_pixel_format_tests[index].name) {
--			for_each_pipe_with_single_output(&data.display, pipe, output)
--				igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), igt_output_name(output)) {
--					drmModeModeInfo *mode;
--
--					mode = igt_output_get_mode(output);
--
--					test_scaler_with_pixel_format_pipe(&data,
--							get_width(mode, scaler_with_pixel_format_tests[index].sf),
--							get_height(mode, scaler_with_pixel_format_tests[index].sf),
--							scaler_with_pixel_format_tests[index].is_upscale,
--							pipe, output);
-+				for_each_pipe(&data.display, pipe) {
-+					for_each_valid_output_on_pipe(&data.display, pipe, output) {
-+						if (!pipe_output_combo_valid(&data.display, pipe, output))
-+							continue;
-+
-+						igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), igt_output_name(output)) {
-+							drmModeModeInfo *mode = igt_output_get_mode(output);
-+
-+							test_scaler_with_pixel_format_pipe(&data,
-+								get_width(mode, scaler_with_pixel_format_tests[index].sf),
-+								get_height(mode, scaler_with_pixel_format_tests[index].sf),
-+								scaler_with_pixel_format_tests[index].is_upscale,
-+								pipe, output);
-+						}
-+						break;
-+					}
- 				}
- 			}
- 		}
-@@ -879,17 +918,22 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
- 		for (int index = 0; index < ARRAY_SIZE(scaler_with_rotation_tests); index++) {
- 			igt_describe(scaler_with_rotation_tests[index].describe);
- 			igt_subtest_with_dynamic(scaler_with_rotation_tests[index].name) {
--			for_each_pipe_with_single_output(&data.display, pipe, output)
--				igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), igt_output_name(output)) {
--					drmModeModeInfo *mode;
--
--					mode = igt_output_get_mode(output);
--
--					test_scaler_with_rotation_pipe(&data,
--							get_width(mode, scaler_with_rotation_tests[index].sf),
--							get_height(mode, scaler_with_rotation_tests[index].sf),
--							scaler_with_rotation_tests[index].is_upscale,
--							pipe, output);
-+				for_each_pipe(&data.display, pipe) {
-+					for_each_valid_output_on_pipe(&data.display, pipe, output) {
-+						if (!pipe_output_combo_valid(&data.display, pipe, output))
-+							continue;
-+
-+						igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), igt_output_name(output)) {
-+							drmModeModeInfo *mode = igt_output_get_mode(output);
-+
-+							test_scaler_with_rotation_pipe(&data,
-+								get_width(mode, scaler_with_rotation_tests[index].sf),
-+								get_height(mode, scaler_with_rotation_tests[index].sf),
-+								scaler_with_rotation_tests[index].is_upscale,
-+								pipe, output);
-+						}
-+						break;
-+					}
- 				}
- 			}
- 		}
-@@ -897,85 +941,113 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
- 		for (int index = 0; index < ARRAY_SIZE(scaler_with_modifiers_tests); index++) {
- 			igt_describe(scaler_with_modifiers_tests[index].describe);
- 			igt_subtest_with_dynamic(scaler_with_modifiers_tests[index].name) {
--			for_each_pipe_with_single_output(&data.display, pipe, output)
--				igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), igt_output_name(output)) {
--					drmModeModeInfo *mode;
--
--					mode = igt_output_get_mode(output);
--
--					test_scaler_with_modifier_pipe(&data,
--							get_width(mode, scaler_with_rotation_tests[index].sf),
--							get_height(mode, scaler_with_rotation_tests[index].sf),
--							scaler_with_rotation_tests[index].is_upscale,
--							pipe, output);
-+				for_each_pipe(&data.display, pipe) {
-+					for_each_valid_output_on_pipe(&data.display, pipe, output) {
-+						if (!pipe_output_combo_valid(&data.display, pipe, output))
-+							continue;
-+
-+						igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), igt_output_name(output)) {
-+							drmModeModeInfo *mode = igt_output_get_mode(output);
-+
-+							test_scaler_with_modifier_pipe(&data,
-+								get_width(mode, scaler_with_rotation_tests[index].sf),
-+								get_height(mode, scaler_with_rotation_tests[index].sf),
-+								scaler_with_rotation_tests[index].is_upscale,
-+								pipe, output);
-+						}
-+						break;
-+					}
- 				}
- 			}
- 		}
- 
- 		igt_describe("Tests scaling with clipping and clamping, pixel formats.");
- 		igt_subtest_with_dynamic("plane-scaler-with-clipping-clamping-pixel-formats") {
--			for_each_pipe_with_single_output(&data.display, pipe, output) {
--				drmModeModeInfo *mode;
-+			for_each_pipe(&data.display, pipe) {
-+				for_each_valid_output_on_pipe(&data.display, pipe, output) {
-+					if (!pipe_output_combo_valid(&data.display, pipe, output))
-+						continue;
- 
--				mode = igt_output_get_mode(output);
-+					igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), igt_output_name(output)) {
-+						drmModeModeInfo *mode = igt_output_get_mode(output);
- 
--				igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), igt_output_name(output))
--					test_scaler_with_pixel_format_pipe(&data, mode->hdisplay + 100,
-+						test_scaler_with_pixel_format_pipe(&data, mode->hdisplay + 100,
- 							mode->vdisplay + 100, false, pipe, output);
-+					}
-+					break;
-+				}
- 			}
- 		}
- 
- 		igt_describe("Tests scaling with clipping and clamping, rotation.");
- 		igt_subtest_with_dynamic("plane-scaler-with-clipping-clamping-rotation") {
--			for_each_pipe_with_single_output(&data.display, pipe, output) {
--				drmModeModeInfo *mode;
-+			for_each_pipe(&data.display, pipe) {
-+				for_each_valid_output_on_pipe(&data.display, pipe, output) {
-+					if (!pipe_output_combo_valid(&data.display, pipe, output))
-+						continue;
- 
--				mode = igt_output_get_mode(output);
-+					igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), igt_output_name(output)) {
-+						drmModeModeInfo *mode = igt_output_get_mode(output);
- 
--				igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), igt_output_name(output))
--					test_scaler_with_rotation_pipe(&data, mode->hdisplay + 100,
-+						test_scaler_with_rotation_pipe(&data, mode->hdisplay + 100,
- 							mode->vdisplay + 100, false, pipe, output);
-+					}
-+					break;
-+				}
- 			}
- 		}
- 
- 		igt_describe("Tests scaling with clipping and clamping, modifiers.");
- 		igt_subtest_with_dynamic("plane-scaler-with-clipping-clamping-modifiers") {
--			for_each_pipe_with_single_output(&data.display, pipe, output) {
--				drmModeModeInfo *mode;
--
--				mode = igt_output_get_mode(output);
--
--				igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), igt_output_name(output))
--					test_scaler_with_modifier_pipe(&data, mode->hdisplay + 100,
-+			for_each_pipe(&data.display, pipe) {
-+				for_each_valid_output_on_pipe(&data.display, pipe, output) {
-+					if (!pipe_output_combo_valid(&data.display, pipe, output))
-+						continue;
-+
-+					igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), igt_output_name(output)) {
-+						drmModeModeInfo *mode = igt_output_get_mode(output);
-+						test_scaler_with_modifier_pipe(&data, mode->hdisplay + 100,
- 							mode->vdisplay + 100, false, pipe, output);
-+					}
-+					break;
-+				}
- 			}
- 		}
- 
- 		for (int index = 0; index < ARRAY_SIZE(scaler_with_2_planes_tests); index++) {
- 			igt_describe(scaler_with_2_planes_tests[index].describe);
- 			igt_subtest_with_dynamic(scaler_with_2_planes_tests[index].name) {
--			for_each_pipe_with_single_output(&data.display, pipe, output)
--				igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), igt_output_name(output)) {
--					drmModeModeInfo *mode;
-+			for_each_pipe(&data.display, pipe) {
-+				for_each_valid_output_on_pipe(&data.display, pipe, output) {
-+					if (!pipe_output_combo_valid(&data.display, pipe, output))
-+						continue;
- 
--					mode = igt_output_get_mode(output);
-+					igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), igt_output_name(output)) {
-+						drmModeModeInfo *mode = igt_output_get_mode(output);
- 
--					test_planes_scaling_combo(&data,
-+						test_planes_scaling_combo(&data,
- 							get_width(mode, scaler_with_2_planes_tests[index].sf_plane1),
- 							get_height(mode, scaler_with_2_planes_tests[index].sf_plane1),
- 							get_width(mode, scaler_with_2_planes_tests[index].sf_plane2),
- 							get_height(mode, scaler_with_2_planes_tests[index].sf_plane2),
- 							pipe, output, scaler_with_2_planes_tests[index].test_type);
-+					}
-+					break;
- 				}
- 			}
-+			}
- 		}
- 
- 		igt_describe("Negative test for number of scalers per pipe.");
- 		igt_subtest_with_dynamic("invalid-num-scalers") {
--			for_each_pipe_with_valid_output(&data.display, pipe, output)
-+			for_each_pipe_with_valid_output(&data.display, pipe, output) {
-+				if (!pipe_output_combo_valid(&data.display, pipe, output))
-+					continue;
-+
- 				igt_dynamic_f("pipe-%s-%s-invalid-num-scalers",
- 					       kmstest_pipe_name(pipe), igt_output_name(output))
- 					test_invalid_num_scalers(&data, pipe, output);
-+			}
- 		}
- 	}
- 
+ 	return false;
 -- 
 2.38.0
