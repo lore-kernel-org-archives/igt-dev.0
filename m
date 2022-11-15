@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8FC9910E168
- for <igt-dev@lists.freedesktop.org>; Tue, 15 Nov 2022 17:00:46 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CEA8E10E044
+ for <igt-dev@lists.freedesktop.org>; Tue, 15 Nov 2022 17:00:31 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 15 Nov 2022 22:28:41 +0530
-Message-Id: <20221115165916.196084-19-bhanuprakash.modem@intel.com>
+Date: Tue, 15 Nov 2022 22:28:31 +0530
+Message-Id: <20221115165916.196084-9-bhanuprakash.modem@intel.com>
 In-Reply-To: <20221115165916.196084-1-bhanuprakash.modem@intel.com>
 References: <20221115165916.196084-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t v5 17/52] tests/kms_flip_event_leak: Add support
- for Bigjoiner
+Subject: [igt-dev] [i-g-t v5 07/52] tests/kms_color_helper: Helper to check
+ Bigjoiner constraint
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,8 +23,8 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-This patch will add a check to Skip the subtest if a selected pipe/output
-combo won't support Bigjoiner or 8K mode.
+Add a helper to Skip the subtest if a selected pipe/output combo
+won't support Bigjoiner or 8K mode.
 
 Example:
 * Pipe-D wont support a mode > 5K
@@ -33,41 +33,45 @@ Example:
 V2: - Use updated helper name
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Reviewed-by: Jeevan B <jeevan.b@intel.com>
 ---
- tests/kms_flip_event_leak.c | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ tests/kms_color_helper.c | 12 ++++++++++++
+ tests/kms_color_helper.h |  1 +
+ 2 files changed, 13 insertions(+)
 
-diff --git a/tests/kms_flip_event_leak.c b/tests/kms_flip_event_leak.c
-index 56ff2af2..75206ee6 100644
---- a/tests/kms_flip_event_leak.c
-+++ b/tests/kms_flip_event_leak.c
-@@ -48,10 +48,6 @@ static void test(data_t *data, enum pipe pipe, igt_output_t *output)
- 	struct igt_fb fb[2];
- 	int fd, ret;
+diff --git a/tests/kms_color_helper.c b/tests/kms_color_helper.c
+index 55f3e409..2f9950f8 100644
+--- a/tests/kms_color_helper.c
++++ b/tests/kms_color_helper.c
+@@ -24,6 +24,18 @@
  
--	igt_display_reset(&data->display);
--	/* select the pipe we want to use */
--	igt_output_set_pipe(output, pipe);
--
- 	primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
- 	mode = igt_output_get_mode(output);
+ #include "kms_color_helper.h"
  
-@@ -104,9 +100,14 @@ igt_main
- 		igt_display_require_output(&data.display);
- 	}
- 
--
- 	igt_subtest_with_dynamic("basic") {
- 		for_each_pipe_with_valid_output(&data.display, pipe, output) {
-+			igt_display_reset(&data.display);
++bool pipe_output_combo_valid(data_t *data, enum pipe pipe)
++{
++	bool ret = true;
 +
-+			igt_output_set_pipe(output, pipe);
-+			if (!i915_pipe_output_combo_valid(&data.display))
-+				continue;
++	igt_output_set_pipe(data->output, pipe);
++	if (!i915_pipe_output_combo_valid(&data->display))
++		ret = false;
++	igt_output_set_pipe(data->output, PIPE_NONE);
 +
- 			igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), igt_output_name(output)) {
- 				test(&data, pipe, output);
- 			}
++	return ret;
++}
++
+ bool
+ panel_supports_deep_color(int drm_fd, char *output_name)
+ {
+diff --git a/tests/kms_color_helper.h b/tests/kms_color_helper.h
+index f0ae30e3..bfed2fb8 100644
+--- a/tests/kms_color_helper.h
++++ b/tests/kms_color_helper.h
+@@ -69,6 +69,7 @@ typedef struct {
+ 	color_t coeffs[];
+ } gamma_lut_t;
+ 
++bool pipe_output_combo_valid(data_t *data, enum pipe pipe);
+ bool panel_supports_deep_color(int fd, char *output_name);
+ uint64_t get_max_bpc(igt_output_t *output);
+ void paint_gradient_rectangles(data_t *data,
 -- 
 2.38.0
