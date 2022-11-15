@@ -1,17 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CB52610E43A
- for <igt-dev@lists.freedesktop.org>; Tue, 15 Nov 2022 17:11:02 +0000 (UTC)
+Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0E38410E04B
+ for <igt-dev@lists.freedesktop.org>; Tue, 15 Nov 2022 17:10:36 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 15 Nov 2022 22:38:54 +0530
-Message-Id: <20221115170855.196572-52-bhanuprakash.modem@intel.com>
+Date: Tue, 15 Nov 2022 22:38:33 +0530
+Message-Id: <20221115170855.196572-31-bhanuprakash.modem@intel.com>
 In-Reply-To: <20221115170855.196572-1-bhanuprakash.modem@intel.com>
 References: <20221115170855.196572-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t v5 51/52] tests/i915/kms_psr_stress_test: Add
- support for Bigjoiner
+Subject: [igt-dev] [i-g-t v5 30/52] tests/kms_rmfb: Add support for Bigjoiner
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -33,35 +32,39 @@ Example:
 V2: - Use updated helper name
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Reviewed-by: Jeevan B <jeevan.b@intel.com>
+Reviewed-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
 ---
- tests/i915/kms_psr_stress_test.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ tests/kms_rmfb.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/tests/i915/kms_psr_stress_test.c b/tests/i915/kms_psr_stress_test.c
-index daac41d4..26e222a2 100644
---- a/tests/i915/kms_psr_stress_test.c
-+++ b/tests/i915/kms_psr_stress_test.c
-@@ -72,7 +72,13 @@ static void setup_output(data_t *data)
- 		if (c->connector_type != DRM_MODE_CONNECTOR_eDP)
- 			continue;
- 
-+		igt_display_reset(display);
- 		igt_output_set_pipe(output, pipe);
-+		if (!i915_pipe_output_combo_valid(display)) {
-+			igt_output_set_pipe(output, PIPE_NONE);
-+			continue;
-+		}
+diff --git a/tests/kms_rmfb.c b/tests/kms_rmfb.c
+index 7e43e1bd..50df4295 100644
+--- a/tests/kms_rmfb.c
++++ b/tests/kms_rmfb.c
+@@ -155,8 +155,15 @@ run_rmfb_test(struct rmfb_data *data, bool reopen)
+ {
+ 	igt_output_t *output;
+ 	enum pipe pipe;
++	igt_display_t *display = &data->display;
 +
- 		data->output = output;
- 		data->mode = igt_output_get_mode(output);
++	for_each_pipe_with_single_output(display, pipe, output) {
++		igt_display_reset(display);
++
++		igt_output_set_pipe(output, pipe);
++		if (!i915_pipe_output_combo_valid(display))
++			continue;
  
-@@ -374,4 +380,4 @@ igt_main
- 		close(data.debugfs_fd);
- 		close(data.drm_fd);
+-	for_each_pipe_with_single_output(&data->display, pipe, output) {
+ 		igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe),
+ 			      igt_output_name(output))
+ 			test_rmfb(data, output, pipe, reopen);
+@@ -192,7 +199,6 @@ igt_main
+ 		igt_describe(tests[i].description);
+ 		igt_subtest_with_dynamic(tests[i].name) {
+ 			run_rmfb_test(&data, tests[i].reopen);
+-
+ 		}
  	}
--}
-\ No newline at end of file
-+}
+ 
 -- 
 2.38.0
