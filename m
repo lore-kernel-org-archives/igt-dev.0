@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 12B5110E435
- for <igt-dev@lists.freedesktop.org>; Tue, 15 Nov 2022 17:11:02 +0000 (UTC)
+Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 732B810E044
+ for <igt-dev@lists.freedesktop.org>; Tue, 15 Nov 2022 17:10:56 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 15 Nov 2022 22:38:53 +0530
-Message-Id: <20221115170855.196572-51-bhanuprakash.modem@intel.com>
+Date: Tue, 15 Nov 2022 22:38:49 +0530
+Message-Id: <20221115170855.196572-47-bhanuprakash.modem@intel.com>
 In-Reply-To: <20221115170855.196572-1-bhanuprakash.modem@intel.com>
 References: <20221115170855.196572-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t v5 50/52] tests/i915/kms_psr: Add support for
- Bigjoiner
+Subject: [igt-dev] [i-g-t v5 46/52] tests/i915/kms_frontbuffer_tracking: Add
+ support for Bigjoiner
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,36 +23,50 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-This patch will add a check to Skip the subtest if a selected pipe/output
-combo won't support Bigjoiner or 8K mode.
-
-Example:
-* Pipe-D wont support a mode > 5K
-* To use 8K mode on a pipe then consecutive pipe must be available & free.
+As many 2x tests are currently running on Pipe-A & B only, those
+tests will always SKIP if there is any 8K supported panel in the
+config. Instead of Skipping the test, add some intelligence to
+the subtest to identify the valid pipe/output combo to execute
+the subtest.
 
 V2: - Use updated helper name
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Reviewed-by: Jeevan B <jeevan.b@intel.com>
 ---
- tests/i915/kms_psr.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ tests/i915/kms_frontbuffer_tracking.c | 16 ++++++++++++----
+ 1 file changed, 12 insertions(+), 4 deletions(-)
 
-diff --git a/tests/i915/kms_psr.c b/tests/i915/kms_psr.c
-index 59f38e20..c9290234 100644
---- a/tests/i915/kms_psr.c
-+++ b/tests/i915/kms_psr.c
-@@ -102,7 +102,11 @@ static void setup_output(data_t *data)
- 		if (c->connector_type != DRM_MODE_CONNECTOR_eDP)
+diff --git a/tests/i915/kms_frontbuffer_tracking.c b/tests/i915/kms_frontbuffer_tracking.c
+index 5b47999e..650e14a7 100644
+--- a/tests/i915/kms_frontbuffer_tracking.c
++++ b/tests/i915/kms_frontbuffer_tracking.c
+@@ -403,15 +403,23 @@ static bool find_connector(bool edp_only, bool pipe_a,
+ 		if (pipe_a && pipe != PIPE_A)
  			continue;
  
-+		igt_display_reset(display);
- 		igt_output_set_pipe(output, pipe);
-+		if (!i915_pipe_output_combo_valid(display))
-+			continue;
+-		if (output == forbidden_output || pipe == forbidden_pipe)
++		if (output == forbidden_output || pipe == forbidden_pipe) {
++			igt_output_set_pipe(output, pipe);
++			igt_output_override_mode(output, connector_get_mode(output));
 +
- 		data->crtc_id = output->config.crtc->crtc_id;
- 		data->output = output;
- 		data->mode = igt_output_get_mode(output);
+ 			continue;
++		}
+ 
+ 		if (c->connector_type == DRM_MODE_CONNECTOR_eDP && opt.no_edp)
+ 			continue;
+ 
+-		*ret_output = output;
+-		*ret_pipe = pipe;
+-		return true;
++		igt_output_set_pipe(output, pipe);
++		igt_output_override_mode(output, connector_get_mode(output));
++		if (i915_pipe_output_combo_valid(&drm.display)) {
++			*ret_output = output;
++			*ret_pipe = pipe;
++			return true;
++		}
+ 	}
+ 
+ 	return false;
 -- 
 2.38.0
