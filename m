@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C8E4C10E044
- for <igt-dev@lists.freedesktop.org>; Tue, 15 Nov 2022 17:10:02 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CD2D610E044
+ for <igt-dev@lists.freedesktop.org>; Tue, 15 Nov 2022 17:10:07 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 15 Nov 2022 22:38:07 +0530
-Message-Id: <20221115170855.196572-5-bhanuprakash.modem@intel.com>
+Date: Tue, 15 Nov 2022 22:38:11 +0530
+Message-Id: <20221115170855.196572-9-bhanuprakash.modem@intel.com>
 In-Reply-To: <20221115170855.196572-1-bhanuprakash.modem@intel.com>
 References: <20221115170855.196572-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t v5 04/52] tests/kms_atomic: Add support for
+Subject: [igt-dev] [i-g-t v5 08/52] tests/kms_color: Add support for
  Bigjoiner
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -34,87 +34,52 @@ V2: - Use updated helper name
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/kms_atomic.c | 32 ++++++++++++++++++++++++++++----
- 1 file changed, 28 insertions(+), 4 deletions(-)
+ tests/kms_color.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/tests/kms_atomic.c b/tests/kms_atomic.c
-index 2a3fb74b..61117a3f 100644
---- a/tests/kms_atomic.c
-+++ b/tests/kms_atomic.c
-@@ -1265,6 +1265,10 @@ static void atomic_plane_damage(igt_pipe_t *pipe, igt_plane_t *plane, struct igt
+diff --git a/tests/kms_color.c b/tests/kms_color.c
+index d016cefb..5d53b441 100644
+--- a/tests/kms_color.c
++++ b/tests/kms_color.c
+@@ -725,9 +725,13 @@ run_gamma_degamma_tests_for_pipe(data_t *data, enum pipe p,
+ 	data->drm_format = DRM_FORMAT_XRGB8888;
+ 	data->mode = igt_output_get_mode(data->output);
  
- static void atomic_setup(igt_display_t *display, enum pipe pipe, igt_output_t *output, igt_plane_t *primary, struct igt_fb *fb)
- {
-+	igt_info("Using (pipe %s + %s) to run the subtest.\n",
-+		 kmstest_pipe_name(pipe), igt_output_name(output));
++	if (!pipe_output_combo_valid(data, p))
++		goto out;
 +
-+	igt_display_reset(display);
- 	igt_output_set_pipe(output, pipe);
- 	igt_plane_set_fb(primary, fb);
+ 	igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(p), data->output->name)
+ 		igt_assert(test_t(data, data->primary));
  
-@@ -1293,6 +1297,7 @@ igt_main
- 	igt_plane_t *primary = NULL;
- 	drmModeModeInfo *mode;
- 	struct igt_fb fb;
-+	bool valid_config = false;
++out:
+ 	test_cleanup(data);
+ }
  
- 	igt_fixture {
- 		display.drm_fd = drm_open_driver_master(DRIVER_ANY);
-@@ -1303,8 +1308,16 @@ igt_main
- 		igt_require(display.is_atomic);
- 		igt_display_require_output(&display);
+@@ -755,6 +759,9 @@ run_ctm_tests_for_pipe(data_t *data, enum pipe p,
+ 	data->drm_format = DRM_FORMAT_XRGB8888;
+ 	data->mode = igt_output_get_mode(data->output);
  
--		for_each_pipe_with_valid_output(&display, pipe, output)
--			break;
-+		for_each_pipe_with_valid_output(&display, pipe, output) {
-+			igt_display_reset(&display);
++	if (!pipe_output_combo_valid(data, p))
++		goto out;
 +
-+			igt_output_set_pipe(output, pipe);
-+			if (i915_pipe_output_combo_valid(&display)) {
-+				valid_config = true;
-+				break;
-+			}
-+		}
-+		igt_require(valid_config);
- 
- 		pipe_obj = &display.pipes[pipe];
- 		primary = igt_pipe_get_plane_type(pipe_obj, DRM_PLANE_TYPE_PRIMARY);
-@@ -1342,9 +1355,13 @@ igt_main
- 	igt_subtest("plane-primary-overlay-mutable-zpos") {
- 		uint32_t format_primary = DRM_FORMAT_ARGB8888;
- 		uint32_t format_overlay = DRM_FORMAT_ARGB1555;
-+		igt_plane_t *overlay;
- 
--		igt_plane_t *overlay =
--			igt_pipe_get_plane_type(pipe_obj, DRM_PLANE_TYPE_OVERLAY);
-+		igt_info("Using (pipe %s + %s) to run the subtest.\n",
-+			 kmstest_pipe_name(pipe), igt_output_name(output));
-+
-+		igt_display_reset(&display);
-+		overlay = igt_pipe_get_plane_type(pipe_obj, DRM_PLANE_TYPE_OVERLAY);
- 		igt_require(overlay);
- 
- 		igt_require(igt_plane_has_prop(primary, IGT_PLANE_ZPOS));
-@@ -1361,6 +1378,10 @@ igt_main
- 	igt_describe("Verify the reported zpos property of planes by making sure "\
- 		     "only higher zpos planes cover the lower zpos ones.");
- 	igt_subtest("plane-immutable-zpos") {
-+		igt_info("Using (pipe %s + %s) to run the subtest.\n",
-+			 kmstest_pipe_name(pipe), igt_output_name(output));
-+
-+		igt_display_reset(&display);
- 		igt_output_set_pipe(output, pipe);
- 		plane_immutable_zpos(&display, pipe_obj, output);
- 	}
-@@ -1370,6 +1391,9 @@ igt_main
- 	igt_subtest("test-only") {
- 		atomic_clear(&display, pipe, primary, output);
- 
-+		igt_info("Using (pipe %s + %s) to run the subtest.\n",
-+			 kmstest_pipe_name(pipe), igt_output_name(output));
-+
- 		test_only(pipe_obj, primary, output);
+ 	igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(p), data->output->name) {
+ 		bool success = false;
+ 		int i;
+@@ -783,6 +790,7 @@ run_ctm_tests_for_pipe(data_t *data, enum pipe p,
+ 		igt_assert(success);
  	}
  
++out:
+ 	test_cleanup(data);
+ }
+ 
+@@ -823,7 +831,6 @@ run_deep_color_tests_for_pipe(data_t *data, enum pipe p)
+ 		igt_display_reset(&data->display);
+ 		igt_output_set_prop_value(output, IGT_CONNECTOR_MAX_BPC, 10);
+ 		igt_output_set_pipe(output, p);
+-		igt_display_commit_atomic(&data->display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
+ 
+ 		if (is_i915_device(data->drm_fd) &&
+ 		    !igt_max_bpc_constraint(&data->display, p, output, 10))
 -- 
 2.38.0
