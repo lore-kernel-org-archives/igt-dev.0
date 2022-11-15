@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A395A89056
- for <igt-dev@lists.freedesktop.org>; Tue, 15 Nov 2022 17:01:32 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 684EB10E42B
+ for <igt-dev@lists.freedesktop.org>; Tue, 15 Nov 2022 17:01:47 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 15 Nov 2022 22:29:10 +0530
-Message-Id: <20221115165916.196084-48-bhanuprakash.modem@intel.com>
+Date: Tue, 15 Nov 2022 22:29:15 +0530
+Message-Id: <20221115165916.196084-53-bhanuprakash.modem@intel.com>
 In-Reply-To: <20221115165916.196084-1-bhanuprakash.modem@intel.com>
 References: <20221115165916.196084-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t v5 46/52] tests/i915/kms_frontbuffer_tracking: Add
+Subject: [igt-dev] [i-g-t v5 51/52] tests/i915/kms_psr_stress_test: Add
  support for Bigjoiner
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -23,50 +23,45 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-As many 2x tests are currently running on Pipe-A & B only, those
-tests will always SKIP if there is any 8K supported panel in the
-config. Instead of Skipping the test, add some intelligence to
-the subtest to identify the valid pipe/output combo to execute
-the subtest.
+This patch will add a check to Skip the subtest if a selected pipe/output
+combo won't support Bigjoiner or 8K mode.
+
+Example:
+* Pipe-D wont support a mode > 5K
+* To use 8K mode on a pipe then consecutive pipe must be available & free.
 
 V2: - Use updated helper name
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Reviewed-by: Jeevan B <jeevan.b@intel.com>
 ---
- tests/i915/kms_frontbuffer_tracking.c | 16 ++++++++++++----
- 1 file changed, 12 insertions(+), 4 deletions(-)
+ tests/i915/kms_psr_stress_test.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/tests/i915/kms_frontbuffer_tracking.c b/tests/i915/kms_frontbuffer_tracking.c
-index 5b47999e..650e14a7 100644
---- a/tests/i915/kms_frontbuffer_tracking.c
-+++ b/tests/i915/kms_frontbuffer_tracking.c
-@@ -403,15 +403,23 @@ static bool find_connector(bool edp_only, bool pipe_a,
- 		if (pipe_a && pipe != PIPE_A)
+diff --git a/tests/i915/kms_psr_stress_test.c b/tests/i915/kms_psr_stress_test.c
+index daac41d4..26e222a2 100644
+--- a/tests/i915/kms_psr_stress_test.c
++++ b/tests/i915/kms_psr_stress_test.c
+@@ -72,7 +72,13 @@ static void setup_output(data_t *data)
+ 		if (c->connector_type != DRM_MODE_CONNECTOR_eDP)
  			continue;
  
--		if (output == forbidden_output || pipe == forbidden_pipe)
-+		if (output == forbidden_output || pipe == forbidden_pipe) {
-+			igt_output_set_pipe(output, pipe);
-+			igt_output_override_mode(output, connector_get_mode(output));
++		igt_display_reset(display);
+ 		igt_output_set_pipe(output, pipe);
++		if (!i915_pipe_output_combo_valid(display)) {
++			igt_output_set_pipe(output, PIPE_NONE);
++			continue;
++		}
 +
- 			continue;
-+		}
+ 		data->output = output;
+ 		data->mode = igt_output_get_mode(output);
  
- 		if (c->connector_type == DRM_MODE_CONNECTOR_eDP && opt.no_edp)
- 			continue;
- 
--		*ret_output = output;
--		*ret_pipe = pipe;
--		return true;
-+		igt_output_set_pipe(output, pipe);
-+		igt_output_override_mode(output, connector_get_mode(output));
-+		if (i915_pipe_output_combo_valid(&drm.display)) {
-+			*ret_output = output;
-+			*ret_pipe = pipe;
-+			return true;
-+		}
+@@ -374,4 +380,4 @@ igt_main
+ 		close(data.debugfs_fd);
+ 		close(data.drm_fd);
  	}
- 
- 	return false;
+-}
+\ No newline at end of file
++}
 -- 
 2.38.0
