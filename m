@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4DD9210E436
- for <igt-dev@lists.freedesktop.org>; Tue, 15 Nov 2022 17:10:46 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 345C710E430
+ for <igt-dev@lists.freedesktop.org>; Tue, 15 Nov 2022 17:10:41 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 15 Nov 2022 22:38:41 +0530
-Message-Id: <20221115170855.196572-39-bhanuprakash.modem@intel.com>
+Date: Tue, 15 Nov 2022 22:38:37 +0530
+Message-Id: <20221115170855.196572-35-bhanuprakash.modem@intel.com>
 In-Reply-To: <20221115170855.196572-1-bhanuprakash.modem@intel.com>
 References: <20221115170855.196572-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t v5 38/52] tests/i915/kms_big_joiner: Negative
- tests for Bigjoiner
+Subject: [igt-dev] [i-g-t v5 34/52] tests/kms_universal_plane: Add support
+ for Bigjoiner
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,254 +23,184 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add negative tests to validate Bigjoiner or 8K mode.
+This patch will add a check to Skip the subtest if a selected pipe/output
+combo won't support Bigjoiner or 8K mode.
 
 Example:
 * Pipe-D wont support a mode > 5K
 * To use 8K mode on a pipe then consecutive pipe must be available & free.
 
-Kernel should reject the commit/modeset if above conditions won't met.
-
-V2:
-- Fix redundant negative tests
-V3:
-- Drop duplicate logic
+V2: - Use updated helper name
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Reviewed-by: Karthik B S <karthik.b.s@intel.com>
 ---
- tests/i915/kms_big_joiner.c | 187 +++++++++++++++---------------------
- 1 file changed, 79 insertions(+), 108 deletions(-)
+ tests/kms_universal_plane.c | 94 +++++++++++++++++++++++++++++++++----
+ 1 file changed, 84 insertions(+), 10 deletions(-)
 
-diff --git a/tests/i915/kms_big_joiner.c b/tests/i915/kms_big_joiner.c
-index 71b2526d..e7a139b3 100644
---- a/tests/i915/kms_big_joiner.c
-+++ b/tests/i915/kms_big_joiner.c
-@@ -45,111 +45,42 @@ typedef struct {
+diff --git a/tests/kms_universal_plane.c b/tests/kms_universal_plane.c
+index dd8fa193..2a9eb021 100644
+--- a/tests/kms_universal_plane.c
++++ b/tests/kms_universal_plane.c
+@@ -381,6 +381,9 @@ sanity_test_pipe(data_t *data, enum pipe pipe, igt_output_t *output)
  
- static void test_invalid_modeset(data_t *data)
- {
--	drmModeModeInfo *mode;
-+	igt_output_t *output;
- 	igt_display_t *display = &data->display;
--	igt_output_t *output, *big_joiner_output = NULL, *second_output = NULL;
- 	int ret;
--	igt_pipe_t *pipe;
--	igt_plane_t *plane;
--
--	igt_display_reset(display);
+ 	igt_require_pipe(&data->display, pipe);
  
--	for_each_connected_output(display, output) {
--		mode = &output->config.connector->modes[0];
-+	igt_info("Bigjoiner test on ");
-+	for_each_connected_output(display, output){
-+		enum pipe p = output->pending_pipe;
-+		drmModeModeInfo *mode;
-+		igt_pipe_t *pipe;
-+		igt_plane_t *plane;
++	igt_info("Using (pipe %s + %s) to run the subtest.\n",
++		 kmstest_pipe_name(pipe), igt_output_name(output));
++
+ 	igt_output_set_pipe(output, pipe);
+ 	mode = igt_output_get_mode(output);
  
--		if (data->big_joiner_output[0].id == output->id) {
--			big_joiner_output = output;
--		} else if (second_output == NULL) {
--			second_output = output;
--		}
--	}
-+		if (p == PIPE_NONE)
-+			continue;
+@@ -494,6 +497,9 @@ pageflip_test_pipe(data_t *data, enum pipe pipe, igt_output_t *output)
  
--	igt_output_set_pipe(big_joiner_output, data->pipe1);
-+		mode = igt_output_get_mode(output);
-+		igt_info("pipe:%s, output:%s, mode:", kmstest_pipe_name(p), igt_output_name(output));
-+		kmstest_dump_mode(mode);
+ 	igt_require_pipe(&data->display, pipe);
  
--	mode = &big_joiner_output->config.connector->modes[data->big_joiner_output[0].mode_number];
--	igt_output_override_mode(big_joiner_output, mode);
--
--	pipe = &display->pipes[data->pipe1];
--	plane = igt_pipe_get_plane_type(pipe, DRM_PLANE_TYPE_PRIMARY);
--
--	igt_plane_set_fb(plane, &data->fb);
--	igt_fb_set_size(&data->fb, plane, mode->hdisplay, mode->vdisplay);
--	igt_plane_set_size(plane, mode->hdisplay, mode->vdisplay);
--
--	igt_display_commit2(display, COMMIT_ATOMIC);
-+		pipe = &display->pipes[p];
-+		plane = igt_pipe_get_plane_type(pipe, DRM_PLANE_TYPE_PRIMARY);
++	igt_info("Using (pipe %s + %s) to run the subtest.\n",
++		 kmstest_pipe_name(pipe), igt_output_name(output));
++
+ 	igt_output_set_pipe(output, pipe);
  
--	igt_output_set_pipe(second_output, data->pipe2);
--
--	mode = igt_output_get_mode(second_output);
-+		igt_plane_set_fb(plane, &data->fb);
-+		igt_fb_set_size(&data->fb, plane, mode->hdisplay, mode->vdisplay);
-+		igt_plane_set_size(plane, mode->hdisplay, mode->vdisplay);
-+	}
+ 	pageflip_test_init(&test, output, pipe);
+@@ -604,6 +610,9 @@ cursor_leak_test_pipe(data_t *data, enum pipe pipe, igt_output_t *output)
+ 	igt_require(display->has_cursor_plane);
+ 	igt_require_intel(data->drm_fd);
  
--	pipe = &display->pipes[data->pipe2];
--	plane = igt_pipe_get_plane_type(pipe, DRM_PLANE_TYPE_PRIMARY);
--
--	igt_plane_set_fb(plane, &data->fb);
--	igt_fb_set_size(&data->fb, plane, mode->hdisplay, mode->vdisplay);
--	igt_plane_set_size(plane, mode->hdisplay, mode->vdisplay);
-+	igt_assert(!igt_check_bigjoiner_support(display));
++	igt_info("Using (pipe %s + %s) to run the subtest.\n",
++		 kmstest_pipe_name(pipe), igt_output_name(output));
++
+ 	igt_output_set_pipe(output, pipe);
+ 	mode = igt_output_get_mode(output);
  
- 	/* This commit is expectd to fail as this pipe is being used for big joiner */
- 	ret = igt_display_try_commit_atomic(display, DRM_MODE_ATOMIC_TEST_ONLY |
- 					    DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
--	igt_assert_lt(ret, 0);
--
--	igt_output_set_pipe(big_joiner_output, PIPE_NONE);
--	igt_output_set_pipe(second_output, PIPE_NONE);
--
--	pipe = &display->pipes[data->pipe1];
--	plane = igt_pipe_get_plane_type(pipe, DRM_PLANE_TYPE_PRIMARY);
--
--	/*
--	 * Do not explicitly set the plane of the second output to NULL,
--	 * as it is the adjacent pipe to the big joiner output and
--	 * setting the big joiner plane to NULL will take care of this.
--	 */
--	igt_plane_set_fb(plane, NULL);
--	igt_display_commit2(display, COMMIT_ATOMIC);
--	igt_output_override_mode(big_joiner_output, NULL);
--
--	igt_output_set_pipe(second_output, data->pipe2);
--
--	mode = igt_output_get_mode(second_output);
--
--	pipe = &display->pipes[data->pipe2];
--	plane = igt_pipe_get_plane_type(pipe, DRM_PLANE_TYPE_PRIMARY);
--
--	igt_plane_set_fb(plane, &data->fb);
--	igt_fb_set_size(&data->fb, plane, mode->hdisplay, mode->vdisplay);
--	igt_plane_set_size(plane, mode->hdisplay, mode->vdisplay);
+@@ -731,6 +740,9 @@ pageflip_win_test_pipe(data_t *data, enum pipe pipe, igt_output_t *output)
+ 	igt_skip_on(is_i915_device(data->drm_fd) && data->display_ver < 9);
+ 	igt_require_pipe(&data->display, pipe);
  
-+	igt_display_reset(&data->display);
- 	igt_display_commit2(display, COMMIT_ATOMIC);
++	igt_info("Using (pipe %s + %s) to run the subtest.\n",
++		 kmstest_pipe_name(pipe), igt_output_name(output));
++
+ 	igt_output_set_pipe(output, pipe);
  
--	igt_output_set_pipe(big_joiner_output, data->pipe1);
--
--	mode = &big_joiner_output->config.connector->modes[data->big_joiner_output[0].mode_number];
--	igt_output_override_mode(big_joiner_output, mode);
--
--	pipe = &display->pipes[data->pipe1];
--	plane = igt_pipe_get_plane_type(pipe, DRM_PLANE_TYPE_PRIMARY);
--
--	igt_plane_set_fb(plane, &data->fb);
--	igt_fb_set_size(&data->fb, plane, mode->hdisplay, mode->vdisplay);
--	igt_plane_set_size(plane, mode->hdisplay, mode->vdisplay);
--
--	/* This commit is expected to fail as the adjacent pipe is already in use*/
--	ret = igt_display_try_commit_atomic(display, DRM_MODE_ATOMIC_TEST_ONLY |
--					    DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
- 	igt_assert_lt(ret, 0);
--
--	igt_output_set_pipe(big_joiner_output, PIPE_NONE);
--	igt_output_set_pipe(second_output, PIPE_NONE);
--	igt_plane_set_fb(plane, NULL);
--
--	pipe = &display->pipes[data->pipe2];
--	plane = igt_pipe_get_plane_type(pipe, DRM_PLANE_TYPE_PRIMARY);
--	igt_plane_set_fb(plane, NULL);
--
--	igt_display_commit2(display, COMMIT_ATOMIC);
--
--	igt_output_override_mode(big_joiner_output, NULL);
+ 	gen9_test_init(&test, output, pipe);
+@@ -766,6 +778,22 @@ pageflip_win_test_pipe(data_t *data, enum pipe pipe, igt_output_t *output)
+ 	gen9_test_fini(&test, output);
  }
  
- static void test_basic_modeset(data_t *data)
-@@ -261,19 +192,17 @@ igt_main
- 		igt_require(data.display.is_atomic);
++static bool
++pipe_output_combo_valid(igt_display_t *display,
++			enum pipe pipe, igt_output_t *output)
++{
++	bool ret = true;
++
++	igt_display_reset(display);
++
++	igt_output_set_pipe(output, pipe);
++	if (!i915_pipe_output_combo_valid(display))
++		ret = false;
++	igt_output_set_pipe(output, PIPE_NONE);
++
++	return ret;
++}
++
+ static void
+ run_tests_for_pipe(data_t *data, enum pipe pipe)
+ {
+@@ -784,34 +812,79 @@ run_tests_for_pipe(data_t *data, enum pipe pipe)
  
- 		for_each_connected_output(&data.display, output) {
--			if (count < 2) {
--				for (i = 0; i < output->config.connector->count_modes; i++) {
--					mode = &output->config.connector->modes[i];
--					if (mode->hdisplay > MAX_HDISPLAY_PER_PIPE) {
--						data.big_joiner_output[count].mode_number = i;
--						data.big_joiner_output[count].id = output->id;
--						count++;
--
--						width = max(width, mode->hdisplay);
--						height = max(height, mode->vdisplay);
--						break;
--					}
--				}
-+			igt_sort_connector_modes(output->config.connector,
-+						 sort_drm_modes_by_res_dsc);
+ 	igt_describe("Check the switching between different primary plane fbs with CRTC off");
+ 	igt_subtest_f("universal-plane-pipe-%s-functional",
+-		      kmstest_pipe_name(pipe))
+-		for_each_valid_output_on_pipe(&data->display, pipe, output)
++		      kmstest_pipe_name(pipe)) {
++		bool found = false;
 +
-+			mode = &output->config.connector->modes[0];
-+			if (mode->hdisplay > MAX_HDISPLAY_PER_PIPE) {
-+				data.big_joiner_output[count].mode_number = i;
-+				data.big_joiner_output[count].id = output->id;
-+				count++;
-+
-+				width = max(width, mode->hdisplay);
-+				height = max(height, mode->vdisplay);
- 			}
- 			valid_output++;
- 		}
-@@ -303,14 +232,56 @@ igt_main
- 	igt_describe("Verify if the modeset on the adjoining pipe is rejected "
- 		     "when the pipe is active with a big joiner modeset");
- 	igt_subtest_with_dynamic("invalid-modeset") {
--		igt_require_f(valid_output > 1, "No valid Second output found\n");
--		for (i = 0; i < data.n_pipes - 1; i++) {
--			data.pipe1 = pipe_seq[i];
--			data.pipe2 = pipe_seq[i + 1];
--			igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe_seq[i]),
--						    kmstest_pipe_name(pipe_seq[i + 1]))
-+		data.pipe1 = pipe_seq[j - 1];
-+
-+		igt_display_reset(&data.display);
-+		for_each_connected_output(&data.display, output) {
-+			if (data.big_joiner_output[0].id != output->id)
++		for_each_valid_output_on_pipe(&data->display, pipe, output) {
++			if (!pipe_output_combo_valid(&data->display, pipe, output))
 +				continue;
 +
-+			igt_sort_connector_modes(output->config.connector,
-+						 sort_drm_modes_by_res_dsc);
-+
-+			igt_output_set_pipe(output, data.pipe1);
-+			igt_output_override_mode(output, &output->config.connector->modes[0]);
-+
-+			igt_dynamic_f("pipe-%s-%s",
-+				      kmstest_pipe_name(data.pipe1),
-+				      igt_output_name(output))
- 				test_invalid_modeset(&data);
- 		}
-+
-+		if(valid_output > 1) {
-+			for (i = 0; i < data.n_pipes - 1; i++) {
-+				igt_output_t *first_output = NULL, *second_output = NULL;
-+
-+				data.pipe1 = pipe_seq[i];
-+				data.pipe2 = pipe_seq[i + 1];
-+
-+				igt_display_reset(&data.display);
-+				for_each_connected_output(&data.display, output) {
-+					igt_sort_connector_modes(output->config.connector,
-+								 sort_drm_modes_by_res_dsc);
-+
-+					if (data.big_joiner_output[0].id == output->id) {
-+						first_output = output;
-+						igt_output_set_pipe(output, data.pipe1);
-+						igt_output_override_mode(output, &output->config.connector->modes[0]);
-+					} else if (second_output == NULL) {
-+						second_output = output;
-+						igt_output_set_pipe(output, data.pipe2);
-+						igt_output_override_mode(output, &output->config.connector->modes[0]);
-+					}
-+				}
-+
-+				igt_dynamic_f("pipe-%s-%s-pipe-%s-%s",
-+					      kmstest_pipe_name(data.pipe1),
-+					      igt_output_name(first_output),
-+					      kmstest_pipe_name(data.pipe2),
-+					      igt_output_name(second_output))
-+					test_invalid_modeset(&data);
-+			}
++			found = true;
+ 			functional_test_pipe(data, pipe, output);
 +		}
++		igt_require_f(found, "No valid pipe/output combo found.\n");
++	}
+ 
+ 	igt_describe("Test for scale-up or scale-down using universal plane API without covering CRTC");
+ 	igt_subtest_f("universal-plane-pipe-%s-sanity",
+-		      kmstest_pipe_name(pipe))
+-		for_each_valid_output_on_pipe(&data->display, pipe, output)
++		      kmstest_pipe_name(pipe)) {
++		bool found = false;
++
++		for_each_valid_output_on_pipe(&data->display, pipe, output) {
++			if (!pipe_output_combo_valid(&data->display, pipe, output))
++				continue;
++
++			found = true;
+ 			sanity_test_pipe(data, pipe, output);
++		}
++		igt_require_f(found, "No valid pipe/output combo found.\n");
++	}
+ 
+ 	igt_describe("Check pageflips while primary plane is disabled before IOCTL or between IOCTL"
+ 			" and pageflip execution");
+ 	igt_subtest_f("disable-primary-vs-flip-pipe-%s",
+-		      kmstest_pipe_name(pipe))
+-		for_each_valid_output_on_pipe(&data->display, pipe, output)
++		      kmstest_pipe_name(pipe)) {
++		bool found = false;
++
++		for_each_valid_output_on_pipe(&data->display, pipe, output) {
++			if (!pipe_output_combo_valid(&data->display, pipe, output))
++				continue;
++
++			found = true;
+ 			pageflip_test_pipe(data, pipe, output);
++		}
++		igt_require_f(found, "No valid pipe/output combo found.\n");
++	}
+ 
+ 	igt_describe("Check for cursor leaks after performing cursor operations");
+ 	igt_subtest_f("cursor-fb-leak-pipe-%s",
+-		      kmstest_pipe_name(pipe))
+-		for_each_valid_output_on_pipe(&data->display, pipe, output)
++		      kmstest_pipe_name(pipe)) {
++		bool found = false;
++
++		for_each_valid_output_on_pipe(&data->display, pipe, output) {
++			if (!pipe_output_combo_valid(&data->display, pipe, output))
++				continue;
++
++			found = true;
+ 			cursor_leak_test_pipe(data, pipe, output);
++		}
++		igt_require_f(found, "No valid pipe/output combo found.\n");
++	}
+ 
+ 	igt_describe("Check if pageflip succeeds in windowed setting");
+ 	igt_subtest_f("universal-plane-pageflip-windowed-pipe-%s",
+-		      kmstest_pipe_name(pipe))
+-		for_each_valid_output_on_pipe(&data->display, pipe, output)
++		      kmstest_pipe_name(pipe)) {
++		bool found = false;
++
++		for_each_valid_output_on_pipe(&data->display, pipe, output) {
++			if (!pipe_output_combo_valid(&data->display, pipe, output))
++				continue;
++
++			found = true;
+ 			pageflip_win_test_pipe(data, pipe, output);
++		}
++		igt_require_f(found, "No valid pipe/output combo found.\n");
++	}
+ }
+ 
+ static data_t data;
+@@ -829,6 +902,7 @@ igt_main
+ 
+ 		igt_require_pipe_crc(data.drm_fd);
+ 		igt_display_require(&data.display, data.drm_fd);
++		igt_display_require_output(&data.display);
  	}
  
- 	igt_describe("Verify simultaneous modeset on 2 big joiner outputs");
+ 	for_each_pipe_static(pipe) {
 -- 
 2.38.0
