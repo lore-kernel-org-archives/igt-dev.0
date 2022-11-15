@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C7D0810E04B
- for <igt-dev@lists.freedesktop.org>; Tue, 15 Nov 2022 17:10:34 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A966D10E092
+ for <igt-dev@lists.freedesktop.org>; Tue, 15 Nov 2022 17:10:29 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 15 Nov 2022 22:38:32 +0530
-Message-Id: <20221115170855.196572-30-bhanuprakash.modem@intel.com>
+Date: Tue, 15 Nov 2022 22:38:28 +0530
+Message-Id: <20221115170855.196572-26-bhanuprakash.modem@intel.com>
 In-Reply-To: <20221115170855.196572-1-bhanuprakash.modem@intel.com>
 References: <20221115170855.196572-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t v5 29/52] tests/kms_properties: Add support for
+Subject: [igt-dev] [i-g-t v5 25/52] tests/kms_plane_lowres: Add support for
  Bigjoiner
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -33,53 +33,24 @@ Example:
 V2: - Use updated helper name
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Reviewed-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
+Reviewed-by: Karthik B S <karthik.b.s@intel.com>
 ---
- tests/kms_properties.c | 18 ++++++++++++++++++
- 1 file changed, 18 insertions(+)
+ tests/kms_plane_lowres.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/tests/kms_properties.c b/tests/kms_properties.c
-index 2958efac..2fe8dfa6 100644
---- a/tests/kms_properties.c
-+++ b/tests/kms_properties.c
-@@ -241,6 +241,12 @@ static void plane_properties(igt_display_t *display, bool atomic)
- 		found = false;
+diff --git a/tests/kms_plane_lowres.c b/tests/kms_plane_lowres.c
+index 6dfc147c..958d3ec6 100644
+--- a/tests/kms_plane_lowres.c
++++ b/tests/kms_plane_lowres.c
+@@ -277,6 +277,9 @@ static void run_test(data_t *data, uint64_t modifier)
+ 			igt_display_reset(&data->display);
+ 			igt_output_set_pipe(data->output, data->pipe);
  
- 		for_each_valid_output_on_pipe(display, pipe, output) {
-+			igt_display_reset(display);
-+
-+			igt_output_set_pipe(output, pipe);
-+			if (!i915_pipe_output_combo_valid(display))
++			if (!i915_pipe_output_combo_valid(&data->display))
 +				continue;
 +
- 			found_any = found = true;
+ 			data->pipe_crc = igt_pipe_crc_new(data->drm_fd, data->pipe,
+ 							  IGT_PIPE_CRC_SOURCE_AUTO);
  
- 			run_plane_property_tests(display, pipe, output, atomic);
-@@ -264,6 +270,12 @@ static void crtc_properties(igt_display_t *display, bool atomic)
- 		found = false;
- 
- 		for_each_valid_output_on_pipe(display, pipe, output) {
-+			igt_display_reset(display);
-+
-+			igt_output_set_pipe(output, pipe);
-+			if (!i915_pipe_output_combo_valid(display))
-+				continue;
-+
- 			found_any_valid_pipe = found = true;
- 
- 			run_crtc_property_tests(display, pipe, output, atomic);
-@@ -290,6 +302,12 @@ static void connector_properties(igt_display_t *display, bool atomic)
- 			if (!igt_pipe_connector_valid(pipe, output))
- 				continue;
- 
-+			igt_display_reset(display);
-+
-+			igt_output_set_pipe(output, pipe);
-+			if (!i915_pipe_output_combo_valid(display))
-+				continue;
-+
- 			found = true;
- 			run_connector_property_tests(display, pipe, output, atomic);
- 			break;
 -- 
 2.38.0
