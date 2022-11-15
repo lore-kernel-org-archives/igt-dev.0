@@ -1,16 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0E38410E04B
- for <igt-dev@lists.freedesktop.org>; Tue, 15 Nov 2022 17:10:36 +0000 (UTC)
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5F28E10E159
+ for <igt-dev@lists.freedesktop.org>; Tue, 15 Nov 2022 17:11:04 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 15 Nov 2022 22:38:33 +0530
-Message-Id: <20221115170855.196572-31-bhanuprakash.modem@intel.com>
+Date: Tue, 15 Nov 2022 22:38:55 +0530
+Message-Id: <20221115170855.196572-53-bhanuprakash.modem@intel.com>
 In-Reply-To: <20221115170855.196572-1-bhanuprakash.modem@intel.com>
 References: <20221115170855.196572-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t v5 30/52] tests/kms_rmfb: Add support for Bigjoiner
+Subject: [igt-dev] [i-g-t v5 52/52] tests/i915/kms_pwrite_crc: Add support
+ for Bigjoiner
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -30,41 +31,44 @@ Example:
 * To use 8K mode on a pipe then consecutive pipe must be available & free.
 
 V2: - Use updated helper name
+V3: - Fix the usage of pipe & output
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 Reviewed-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
 ---
- tests/kms_rmfb.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ tests/i915/kms_pwrite_crc.c | 12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
 
-diff --git a/tests/kms_rmfb.c b/tests/kms_rmfb.c
-index 7e43e1bd..50df4295 100644
---- a/tests/kms_rmfb.c
-+++ b/tests/kms_rmfb.c
-@@ -155,8 +155,15 @@ run_rmfb_test(struct rmfb_data *data, bool reopen)
+diff --git a/tests/i915/kms_pwrite_crc.c b/tests/i915/kms_pwrite_crc.c
+index c84a184d..3278d876 100644
+--- a/tests/i915/kms_pwrite_crc.c
++++ b/tests/i915/kms_pwrite_crc.c
+@@ -110,6 +110,7 @@ static void prepare_crtc(data_t *data)
+ 	igt_output_t *output = data->output;
+ 	drmModeModeInfo *mode;
+ 
++	igt_display_reset(display);
+ 	/* select the pipe we want to use */
+ 	igt_output_set_pipe(output, data->pipe);
+ 
+@@ -156,12 +157,13 @@ static void cleanup_crtc(data_t *data)
+ static void run_test(data_t *data)
  {
- 	igt_output_t *output;
- 	enum pipe pipe;
-+	igt_display_t *display = &data->display;
-+
-+	for_each_pipe_with_single_output(display, pipe, output) {
+ 	igt_display_t *display = &data->display;
+-	igt_output_t *output;
+-	enum pipe pipe;
+ 
+-	for_each_pipe_with_valid_output(display, pipe, output) {
+-		data->output = output;
+-		data->pipe = pipe;
++	for_each_pipe_with_valid_output(display, data->pipe, data->output) {
 +		igt_display_reset(display);
 +
-+		igt_output_set_pipe(output, pipe);
++		igt_output_set_pipe(data->output, data->pipe);
 +		if (!i915_pipe_output_combo_valid(display))
 +			continue;
  
--	for_each_pipe_with_single_output(&data->display, pipe, output) {
- 		igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe),
- 			      igt_output_name(output))
- 			test_rmfb(data, output, pipe, reopen);
-@@ -192,7 +199,6 @@ igt_main
- 		igt_describe(tests[i].description);
- 		igt_subtest_with_dynamic(tests[i].name) {
- 			run_rmfb_test(&data, tests[i].reopen);
--
- 		}
- 	}
- 
+ 		prepare_crtc(data);
+ 		test(data);
 -- 
 2.38.0
