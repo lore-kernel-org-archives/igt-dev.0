@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E347889561
- for <igt-dev@lists.freedesktop.org>; Tue, 15 Nov 2022 17:01:10 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 950CA10E42E
+ for <igt-dev@lists.freedesktop.org>; Tue, 15 Nov 2022 17:00:56 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 15 Nov 2022 22:28:56 +0530
-Message-Id: <20221115165916.196084-34-bhanuprakash.modem@intel.com>
+Date: Tue, 15 Nov 2022 22:28:48 +0530
+Message-Id: <20221115165916.196084-26-bhanuprakash.modem@intel.com>
 In-Reply-To: <20221115165916.196084-1-bhanuprakash.modem@intel.com>
 References: <20221115165916.196084-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t v5 32/52] tests/kms_scaling_modes: Add support for
+Subject: [igt-dev] [i-g-t v5 24/52] tests/kms_plane_cursor: Add support for
  Bigjoiner
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -34,32 +34,25 @@ V2: - Use updated helper name
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/kms_scaling_modes.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ tests/kms_plane_cursor.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/tests/kms_scaling_modes.c b/tests/kms_scaling_modes.c
-index 039e4a8d..cf637712 100644
---- a/tests/kms_scaling_modes.c
-+++ b/tests/kms_scaling_modes.c
-@@ -93,13 +93,17 @@ static void test_scaling_mode(data_t *data, uint32_t flags)
- 	enum pipe pipe;
+diff --git a/tests/kms_plane_cursor.c b/tests/kms_plane_cursor.c
+index 9b27586c..9e317cbf 100644
+--- a/tests/kms_plane_cursor.c
++++ b/tests/kms_plane_cursor.c
+@@ -85,6 +85,12 @@ static void test_init(data_t *data, enum pipe pipe_id, igt_output_t *output)
+ 	data->overlay = igt_pipe_get_plane_type(data->pipe, DRM_PLANE_TYPE_OVERLAY);
+ 	data->cursor = igt_pipe_get_plane_type(data->pipe, DRM_PLANE_TYPE_CURSOR);
  
- 	for_each_pipe_with_valid_output(display, pipe, output) {
-+		igt_display_reset(display);
++	igt_output_set_pipe(data->output, data->pipe_id);
++	igt_require(i915_pipe_output_combo_valid(display));
 +
- 		if (!has_scaling_mode(output))
- 			continue;
- 
-+		igt_output_set_pipe(output, pipe);
-+		if (!i915_pipe_output_combo_valid(display))
-+			continue;
++	igt_info("Using (pipe %s + %s) to run the subtest.\n",
++		 kmstest_pipe_name(data->pipe_id), igt_output_name(data->output));
 +
- 		igt_dynamic_f("%s-pipe-%s", output->name, kmstest_pipe_name(pipe))
- 			test_scaling_mode_on_output(display, pipe, output, flags);
--
--		igt_display_reset(display);
- 	}
- }
- 
+ 	igt_require_pipe_crc(data->drm_fd);
+ 	data->pipe_crc = igt_pipe_crc_new(data->drm_fd, data->pipe_id,
+ 					  IGT_PIPE_CRC_SOURCE_AUTO);
 -- 
 2.38.0
