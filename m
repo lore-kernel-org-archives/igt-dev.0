@@ -1,17 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id ED0FC89561
- for <igt-dev@lists.freedesktop.org>; Tue, 15 Nov 2022 17:00:26 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 38CFA89561
+ for <igt-dev@lists.freedesktop.org>; Tue, 15 Nov 2022 17:00:24 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 15 Nov 2022 22:28:27 +0530
-Message-Id: <20221115165916.196084-5-bhanuprakash.modem@intel.com>
+Date: Tue, 15 Nov 2022 22:28:25 +0530
+Message-Id: <20221115165916.196084-3-bhanuprakash.modem@intel.com>
 In-Reply-To: <20221115165916.196084-1-bhanuprakash.modem@intel.com>
 References: <20221115165916.196084-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t v5 03/52] tests/kms_async_flips: Add support for
- Bigjoiner
+Subject: [igt-dev] [i-g-t] tests/kms_vrr: Add Negative tests to validate VRR
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,73 +22,157 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-This patch will add a check to Skip the subtest if a selected pipe/output
-combo won't support Bigjoiner or 8K mode.
+This patch will try to enable VRR on Non-VRR panel. VRR should
+not be enabled on the Non-VRR panel. It is unlikely to reject the
+commit/modeset. And the expected behavior is the same as disabling
+VRR on a VRR capable panel.
 
-Example:
-* Pipe-D wont support a mode > 5K
-* To use 8K mode on a pipe then consecutive pipe must be available & free.
+V2, V3:
+- Fix the condition check to run basic tests
+V4:
+- Fix the crash in CI (devided by zero)
 
-V2: - Use updated helper name
-
+Cc: Manasi Navare <manasi.d.navare@intel.com>
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Reviewed-by: Manasi Navare <manasi.d.navare@intel.com>
 ---
- tests/kms_async_flips.c | 24 +++++++++++-------------
- 1 file changed, 11 insertions(+), 13 deletions(-)
+ tests/kms_vrr.c | 70 ++++++++++++++++++++++++++++++++++++-------------
+ 1 file changed, 52 insertions(+), 18 deletions(-)
 
-diff --git a/tests/kms_async_flips.c b/tests/kms_async_flips.c
-index 7cb71f6b..674fcb5a 100644
---- a/tests/kms_async_flips.c
-+++ b/tests/kms_async_flips.c
-@@ -330,15 +330,6 @@ static void test_cursor(data_t *data)
- 	struct igt_fb cursor_fb;
- 	struct drm_mode_cursor cur;
+diff --git a/tests/kms_vrr.c b/tests/kms_vrr.c
+index 8976d4a6..68c4f264 100644
+--- a/tests/kms_vrr.c
++++ b/tests/kms_vrr.c
+@@ -41,10 +41,11 @@
+ 	(m)->type, (m)->flags
  
--	/*
--	 * Intel's PSR2 selective fetch adds other planes to state when
--	 * necessary, causing the async flip to fail because async flip is not
--	 * supported in cursor plane.
--	 */
--	igt_skip_on_f(i915_psr2_selective_fetch_check(data->drm_fd),
--		      "PSR2 sel fetch causes cursor to be added to primary plane " \
--		      "pages flips and async flip is not supported in cursor\n");
--
- 	do_or_die(drmGetCap(data->drm_fd, DRM_CAP_CURSOR_WIDTH, &width));
- 	do_or_die(drmGetCap(data->drm_fd, DRM_CAP_CURSOR_WIDTH, &height));
+ enum {
+-	TEST_NONE = 0,
+-	TEST_DPMS = 1 << 0,
+-	TEST_SUSPEND = 1 << 1,
+-	TEST_FLIPLINE = 1 << 2,
++	TEST_BASIC = 1 << 0,
++	TEST_DPMS = 1 << 1,
++	TEST_SUSPEND = 1 << 2,
++	TEST_FLIPLINE = 1 << 3,
++	TEST_NEGATIVE = 1 << 4,
+ };
  
-@@ -380,12 +371,12 @@ static void test_invalid(data_t *data)
- 	struct igt_fb fb;
- 	drmModeModeInfo *mode;
- 
-+	test_init(data);
-+
- 	mode = igt_output_get_mode(data->output);
- 	width = mode->hdisplay;
- 	height = mode->vdisplay;
- 
--	test_init(data);
--
- 	igt_create_fb(data->drm_fd, width, height, DRM_FORMAT_XRGB8888,
- 		      I915_FORMAT_MOD_Y_TILED, &fb);
- 
-@@ -542,9 +533,16 @@ static void run_test(data_t *data, void (*test)(data_t *))
+ typedef struct range {
+@@ -116,7 +117,7 @@ static uint64_t get_time_ns(void)
+ /* Returns the rate duration in nanoseconds for the given refresh rate. */
+ static uint64_t rate_from_refresh(uint64_t refresh)
  {
- 	igt_output_t *output;
- 	enum pipe pipe;
-+	igt_display_t *display = &data->display;
-+
-+	for_each_pipe(display, pipe) {
-+		for_each_valid_output_on_pipe(display, pipe, output) {
-+			igt_display_reset(display);
-+
-+			igt_output_set_pipe(output, pipe);
-+			if (!i915_pipe_output_combo_valid(display))
-+				continue;
+-	return NSECS_PER_SEC / refresh;
++	return refresh ? (NSECS_PER_SEC / refresh) : 0;
+ }
  
--	for_each_pipe(&data->display, pipe) {
--		for_each_valid_output_on_pipe(&data->display, pipe, output) {
- 			igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), output->name) {
- 				data->output = output;
- 				data->pipe = pipe;
+ /* Instead of running on default mode, loop through the connector modes
+@@ -179,11 +180,16 @@ static vtest_ns_t get_test_rate_ns(range_t range)
+ 	return vtest_ns;
+ }
+ 
+-/* Returns true if an output supports VRR. */
++/* Returns true if driver supports VRR. */
+ static bool has_vrr(igt_output_t *output)
+ {
+-	return igt_output_has_prop(output, IGT_CONNECTOR_VRR_CAPABLE) &&
+-	       igt_output_get_prop(output, IGT_CONNECTOR_VRR_CAPABLE);
++	return igt_output_has_prop(output, IGT_CONNECTOR_VRR_CAPABLE);
++}
++
++/* Returns true if an output supports VRR. */
++static bool vrr_capable(igt_output_t *output)
++{
++	return igt_output_get_prop(output, IGT_CONNECTOR_VRR_CAPABLE);
+ }
+ 
+ /* Toggles variable refresh rate on the pipe. */
+@@ -398,7 +404,8 @@ test_basic(data_t *data, enum pipe pipe, igt_output_t *output, uint32_t flags)
+ 	 *      Flip will happen right away so returned refresh rate is 50Hz.
+ 	 * if refresh_rate < 40Hz:
+ 	 *      h/w will terminate the vblank at Vmax which is obvious.
+-	 *      So, for now we can safely ignore the lower refresh rates
++	 *      So, vblank termination should happen at Vmax, and flip done at
++	 *      next Vmin.
+ 	 */
+ 	if (flags & TEST_FLIPLINE) {
+ 		rate = rate_from_refresh(range.max + 5);
+@@ -408,17 +415,33 @@ test_basic(data_t *data, enum pipe pipe, igt_output_t *output, uint32_t flags)
+ 			     (range.max + 5), rate, result);
+ 	}
+ 
+-	rate = vtest_ns.mid;
+-	result = flip_and_measure(data, output, pipe, rate, TEST_DURATION_NS);
+-	igt_assert_f(result > 75,
+-		     "Refresh rate (%u Hz) %"PRIu64"ns: Target VRR on threshold not reached, result was %u%%\n",
+-		     ((range.max + range.min) / 2), rate, result);
++	if (flags & ~TEST_NEGATIVE) {
++		rate = vtest_ns.mid;
++		result = flip_and_measure(data, output, pipe, rate, TEST_DURATION_NS);
++		igt_assert_f(result > 75,
++			     "Refresh rate (%u Hz) %"PRIu64"ns: Target VRR on threshold not reached, result was %u%%\n",
++			     ((range.max + range.min) / 2), rate, result);
++	}
+ 
+-	set_vrr_on_pipe(data, pipe, false);
++	if (flags & TEST_FLIPLINE) {
++		rate = rate_from_refresh(range.min - 5);
++		result = flip_and_measure(data, output, pipe, rate, TEST_DURATION_NS);
++		igt_assert_f(result < 50,
++			     "Refresh rate (%u Hz) %"PRIu64"ns: Target VRR on threshold exceeded, result was %u%%\n",
++			     (range.min - 5), rate, result);
++	}
++
++	/*
++	 * If we request VRR on a non-VRR panel, it is unlikely to reject the
++	 * modeset. And the expected behavior is the same as disabling VRR on
++	 * a VRR capable panel.
++	 */
++	set_vrr_on_pipe(data, pipe, (flags & TEST_NEGATIVE)? true : false);
++	rate = vtest_ns.mid;
+ 	result = flip_and_measure(data, output, pipe, rate, TEST_DURATION_NS);
+ 	igt_assert_f(result < 10,
+-		     "Refresh rate (%u Hz) %"PRIu64"ns: Target VRR off threshold exceeded, result was %u%%\n",
+-		     ((range.max + range.min) / 2), rate, result);
++		     "Refresh rate (%u Hz) %"PRIu64"ns: Target VRR %s threshold exceeded, result was %u%%\n",
++		     ((range.max + range.min) / 2), rate, (flags & TEST_NEGATIVE)? "on" : "off", result);
+ 
+ 	/* Clean-up */
+ 	igt_plane_set_fb(data->primary, NULL);
+@@ -442,6 +465,13 @@ run_vrr_test(data_t *data, test_t test, uint32_t flags)
+ 		if (!has_vrr(output))
+ 			continue;
+ 
++		/* For Negative tests, panel should be non-vrr. */
++		if ((flags & TEST_NEGATIVE) && vrr_capable(output))
++			continue;
++
++		if ((flags & ~TEST_NEGATIVE) && !vrr_capable(output))
++			continue;
++
+ 		for_each_pipe(&data->display, pipe) {
+ 			if (igt_pipe_connector_valid(pipe, output)) {
+ 				igt_dynamic_f("pipe-%s-%s",
+@@ -470,7 +500,7 @@ igt_main
+ 	igt_describe("Tests that VRR is enabled and that the difference between flip "
+ 		     "timestamps converges to the requested rate");
+ 	igt_subtest_with_dynamic("flip-basic")
+-		run_vrr_test(&data, test_basic, 0);
++		run_vrr_test(&data, test_basic, TEST_BASIC);
+ 
+ 	igt_describe("Tests with DPMS that VRR is enabled and that the difference between flip "
+ 		     "timestamps converges to the requested rate.");
+@@ -486,6 +516,10 @@ igt_main
+ 	igt_subtest_with_dynamic("flipline")
+ 		run_vrr_test(&data, test_basic, TEST_FLIPLINE);
+ 
++	igt_describe("Make sure that VRR should not be enabled on the Non-VRR panel.");
++	igt_subtest_with_dynamic("negative-basic")
++		run_vrr_test(&data, test_basic, TEST_NEGATIVE);
++
+ 	igt_fixture {
+ 		igt_display_fini(&data.display);
+ 	}
 -- 
 2.38.0
