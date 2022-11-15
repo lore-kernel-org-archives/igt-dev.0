@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BC87610E429
- for <igt-dev@lists.freedesktop.org>; Tue, 15 Nov 2022 17:10:28 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C3F6D10E155
+ for <igt-dev@lists.freedesktop.org>; Tue, 15 Nov 2022 17:10:20 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 15 Nov 2022 22:38:27 +0530
-Message-Id: <20221115170855.196572-25-bhanuprakash.modem@intel.com>
+Date: Tue, 15 Nov 2022 22:38:21 +0530
+Message-Id: <20221115170855.196572-19-bhanuprakash.modem@intel.com>
 In-Reply-To: <20221115170855.196572-1-bhanuprakash.modem@intel.com>
 References: <20221115170855.196572-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t v5 24/52] tests/kms_plane_cursor: Add support for
+Subject: [igt-dev] [i-g-t v5 18/52] tests/kms_invalid_mode: Add support for
  Bigjoiner
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -34,25 +34,25 @@ V2: - Use updated helper name
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/kms_plane_cursor.c | 6 ++++++
+ tests/kms_invalid_mode.c | 6 ++++++
  1 file changed, 6 insertions(+)
 
-diff --git a/tests/kms_plane_cursor.c b/tests/kms_plane_cursor.c
-index 9b27586c..9e317cbf 100644
---- a/tests/kms_plane_cursor.c
-+++ b/tests/kms_plane_cursor.c
-@@ -85,6 +85,12 @@ static void test_init(data_t *data, enum pipe pipe_id, igt_output_t *output)
- 	data->overlay = igt_pipe_get_plane_type(data->pipe, DRM_PLANE_TYPE_OVERLAY);
- 	data->cursor = igt_pipe_get_plane_type(data->pipe, DRM_PLANE_TYPE_CURSOR);
- 
-+	igt_output_set_pipe(data->output, data->pipe_id);
-+	igt_require(i915_pipe_output_combo_valid(display));
+diff --git a/tests/kms_invalid_mode.c b/tests/kms_invalid_mode.c
+index 40042d4e..86f529e8 100644
+--- a/tests/kms_invalid_mode.c
++++ b/tests/kms_invalid_mode.c
+@@ -301,6 +301,12 @@ igt_main
+ 	for (int i = 0; i < ARRAY_SIZE(subtests); i++) {
+ 		igt_subtest_with_dynamic(subtests[i].name) {
+ 			for_each_pipe_with_valid_output(&data.display, pipe, output) {
++				igt_display_reset(&data.display);
 +
-+	igt_info("Using (pipe %s + %s) to run the subtest.\n",
-+		 kmstest_pipe_name(data->pipe_id), igt_output_name(data->output));
++				igt_output_set_pipe(output, pipe);
++				if (!i915_pipe_output_combo_valid(&data.display))
++					continue;
 +
- 	igt_require_pipe_crc(data->drm_fd);
- 	data->pipe_crc = igt_pipe_crc_new(data->drm_fd, data->pipe_id,
- 					  IGT_PIPE_CRC_SOURCE_AUTO);
+ 				igt_dynamic_f("%s-pipe-%s", igt_output_name(output), kmstest_pipe_name(pipe)) {
+ 					data.output = output;
+ 					data.pipe = pipe;
 -- 
 2.38.0
