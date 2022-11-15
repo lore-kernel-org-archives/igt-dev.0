@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B097B10E04B
- for <igt-dev@lists.freedesktop.org>; Tue, 15 Nov 2022 17:10:38 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0584610E044
+ for <igt-dev@lists.freedesktop.org>; Tue, 15 Nov 2022 17:10:53 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 15 Nov 2022 22:38:35 +0530
-Message-Id: <20221115170855.196572-33-bhanuprakash.modem@intel.com>
+Date: Tue, 15 Nov 2022 22:38:47 +0530
+Message-Id: <20221115170855.196572-45-bhanuprakash.modem@intel.com>
 In-Reply-To: <20221115170855.196572-1-bhanuprakash.modem@intel.com>
 References: <20221115170855.196572-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t v5 32/52] tests/kms_scaling_modes: Add support for
- Bigjoiner
+Subject: [igt-dev] [i-g-t v5 44/52] tests/i915/kms_flip_scaled_crc: Add
+ support for Bigjoiner
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -34,32 +34,40 @@ V2: - Use updated helper name
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/kms_scaling_modes.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ tests/i915/kms_flip_scaled_crc.c | 13 ++++++++++++-
+ 1 file changed, 12 insertions(+), 1 deletion(-)
 
-diff --git a/tests/kms_scaling_modes.c b/tests/kms_scaling_modes.c
-index 039e4a8d..cf637712 100644
---- a/tests/kms_scaling_modes.c
-+++ b/tests/kms_scaling_modes.c
-@@ -93,13 +93,17 @@ static void test_scaling_mode(data_t *data, uint32_t flags)
- 	enum pipe pipe;
- 
- 	for_each_pipe_with_valid_output(display, pipe, output) {
-+		igt_display_reset(display);
+diff --git a/tests/i915/kms_flip_scaled_crc.c b/tests/i915/kms_flip_scaled_crc.c
+index 10465ca7..1b497dcc 100644
+--- a/tests/i915/kms_flip_scaled_crc.c
++++ b/tests/i915/kms_flip_scaled_crc.c
+@@ -648,8 +648,13 @@ igt_main
+ 			for_each_pipe(&data.display, pipe) {
+ 				bool found = false;
+ 				for_each_valid_output_on_pipe(&data.display, pipe, output) {
++					igt_display_reset(&data.display);
 +
- 		if (!has_scaling_mode(output))
- 			continue;
- 
-+		igt_output_set_pipe(output, pipe);
-+		if (!i915_pipe_output_combo_valid(display))
-+			continue;
+ 					modetoset = find_mode(&data, output);
+-					if (modetoset) {
++					igt_output_set_pipe(output, pipe);
++					igt_output_override_mode(output, modetoset);
 +
- 		igt_dynamic_f("%s-pipe-%s", output->name, kmstest_pipe_name(pipe))
- 			test_scaling_mode_on_output(display, pipe, output, flags);
--
--		igt_display_reset(display);
- 	}
- }
- 
++					if (modetoset && i915_pipe_output_combo_valid(&data.display)) {
+ 						found = true;
+ 						igt_dynamic_f("pipe-%s-valid-mode", kmstest_pipe_name(pipe))
+ 							run_tests(&data, index, pipe, output, modetoset);
+@@ -658,6 +663,12 @@ igt_main
+ 				}
+ 				if (!found) {
+ 					for_each_valid_output_on_pipe(&data.display, pipe, output) {
++						igt_display_reset(&data.display);
++
++						igt_output_set_pipe(output, pipe);
++						if (!i915_pipe_output_combo_valid(&data.display))
++							continue;
++
+ 						igt_dynamic_f("pipe-%s-default-mode", kmstest_pipe_name(pipe))
+ 							run_tests(&data, index, pipe, output, modetoset);
+ 					}
 -- 
 2.38.0
