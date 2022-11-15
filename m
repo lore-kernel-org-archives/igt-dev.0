@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5977F10E044
- for <igt-dev@lists.freedesktop.org>; Tue, 15 Nov 2022 17:10:10 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2BA6910E044
+ for <igt-dev@lists.freedesktop.org>; Tue, 15 Nov 2022 17:10:55 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 15 Nov 2022 22:38:13 +0530
-Message-Id: <20221115170855.196572-11-bhanuprakash.modem@intel.com>
+Date: Tue, 15 Nov 2022 22:38:48 +0530
+Message-Id: <20221115170855.196572-46-bhanuprakash.modem@intel.com>
 In-Reply-To: <20221115170855.196572-1-bhanuprakash.modem@intel.com>
 References: <20221115170855.196572-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t v5 10/52] tests/kms_concurrent: Add support for
- Bigjoiner
+Subject: [igt-dev] [i-g-t v5 45/52] tests/i915/kms_flip_tiling: Add support
+ for Bigjoiner
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -34,31 +34,35 @@ V2: - Use updated helper name
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/kms_concurrent.c | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ tests/i915/kms_flip_tiling.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/tests/kms_concurrent.c b/tests/kms_concurrent.c
-index 6f8ffd4a..e6d61a84 100644
---- a/tests/kms_concurrent.c
-+++ b/tests/kms_concurrent.c
-@@ -330,9 +330,17 @@ run_tests_for_pipe(data_t *data, enum pipe pipe)
- 	igt_describe("Test atomic mode setting concurrently with multiple planes and screen "
- 		     "resolution.");
- 	igt_subtest_with_dynamic_f("pipe-%s", kmstest_pipe_name(pipe)) {
--		for_each_valid_output_on_pipe(&data->display, pipe, output)
-+		for_each_valid_output_on_pipe(&data->display, pipe, output) {
-+			igt_display_reset(&data->display);
+diff --git a/tests/i915/kms_flip_tiling.c b/tests/i915/kms_flip_tiling.c
+index 1183feb6..2e2b9511 100644
+--- a/tests/i915/kms_flip_tiling.c
++++ b/tests/i915/kms_flip_tiling.c
+@@ -79,6 +79,9 @@ test_flip_tiling(data_t *data, enum pipe pipe, igt_output_t *output, uint64_t mo
+ 	igt_crc_t reference_crc, crc;
+ 	int fb_id, ret;
+ 
++	igt_info("Using (pipe %s + %s) to run the subtest.\n",
++		 kmstest_pipe_name(pipe), igt_output_name(output));
 +
-+			igt_output_set_pipe(output, pipe);
-+			if (!i915_pipe_output_combo_valid(&data->display))
+ 	memcpy(&data->old_fb, &data->fb, sizeof(data->fb));
+ 
+ 	mode = igt_output_get_mode(output);
+@@ -195,8 +198,12 @@ igt_main
+ 		for_each_pipe_with_valid_output(&data.display, pipe, output) {
+ 			igt_plane_t *plane;
+ 
++			igt_display_reset(&data.display);
+ 			pipe_crc_free(&data);
++
+ 			igt_output_set_pipe(output, pipe);
++			if (!i915_pipe_output_combo_valid(&data.display))
 +				continue;
-+
-+			igt_output_set_pipe(output, PIPE_NONE);
- 			igt_dynamic_f("%s", igt_output_name(output))
- 				run_test(data, pipe, output);
-+		}
- 	}
- }
+ 
+ 			plane = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
  
 -- 
 2.38.0
