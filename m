@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0584610E044
- for <igt-dev@lists.freedesktop.org>; Tue, 15 Nov 2022 17:10:53 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 05D1110E42E
+ for <igt-dev@lists.freedesktop.org>; Tue, 15 Nov 2022 17:10:39 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 15 Nov 2022 22:38:47 +0530
-Message-Id: <20221115170855.196572-45-bhanuprakash.modem@intel.com>
+Date: Tue, 15 Nov 2022 22:38:36 +0530
+Message-Id: <20221115170855.196572-34-bhanuprakash.modem@intel.com>
 In-Reply-To: <20221115170855.196572-1-bhanuprakash.modem@intel.com>
 References: <20221115170855.196572-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t v5 44/52] tests/i915/kms_flip_scaled_crc: Add
- support for Bigjoiner
+Subject: [igt-dev] [i-g-t v5 33/52] tests/kms_sequence: Add support for
+ Bigjoiner
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -34,40 +34,25 @@ V2: - Use updated helper name
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/i915/kms_flip_scaled_crc.c | 13 ++++++++++++-
- 1 file changed, 12 insertions(+), 1 deletion(-)
+ tests/kms_sequence.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/tests/i915/kms_flip_scaled_crc.c b/tests/i915/kms_flip_scaled_crc.c
-index 10465ca7..1b497dcc 100644
---- a/tests/i915/kms_flip_scaled_crc.c
-+++ b/tests/i915/kms_flip_scaled_crc.c
-@@ -648,8 +648,13 @@ igt_main
- 			for_each_pipe(&data.display, pipe) {
- 				bool found = false;
- 				for_each_valid_output_on_pipe(&data.display, pipe, output) {
+diff --git a/tests/kms_sequence.c b/tests/kms_sequence.c
+index c72857a3..c8a3d6bb 100644
+--- a/tests/kms_sequence.c
++++ b/tests/kms_sequence.c
+@@ -285,6 +285,12 @@ igt_main
+ 				     "drmCrtcQueueSequence");
+ 			igt_subtest_with_dynamic_f("%s-%s", f->name, m->name) {
+ 				for_each_pipe_with_valid_output(&data.display, p, output) {
 +					igt_display_reset(&data.display);
 +
- 					modetoset = find_mode(&data, output);
--					if (modetoset) {
-+					igt_output_set_pipe(output, pipe);
-+					igt_output_override_mode(output, modetoset);
++					igt_output_set_pipe(output, p);
++					if (!i915_pipe_output_combo_valid(&data.display))
++						continue;
 +
-+					if (modetoset && i915_pipe_output_combo_valid(&data.display)) {
- 						found = true;
- 						igt_dynamic_f("pipe-%s-valid-mode", kmstest_pipe_name(pipe))
- 							run_tests(&data, index, pipe, output, modetoset);
-@@ -658,6 +663,12 @@ igt_main
- 				}
- 				if (!found) {
- 					for_each_valid_output_on_pipe(&data.display, pipe, output) {
-+						igt_display_reset(&data.display);
-+
-+						igt_output_set_pipe(output, pipe);
-+						if (!i915_pipe_output_combo_valid(&data.display))
-+							continue;
-+
- 						igt_dynamic_f("pipe-%s-default-mode", kmstest_pipe_name(pipe))
- 							run_tests(&data, index, pipe, output, modetoset);
- 					}
+ 					igt_dynamic_f("%s-pipe-%s", igt_output_name(output), kmstest_pipe_name(p)) {
+ 						data.pipe = p;
+ 						data.output = output;
 -- 
 2.38.0
