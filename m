@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DD6F110E429
- for <igt-dev@lists.freedesktop.org>; Tue, 15 Nov 2022 17:00:53 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E347889561
+ for <igt-dev@lists.freedesktop.org>; Tue, 15 Nov 2022 17:01:10 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 15 Nov 2022 22:28:47 +0530
-Message-Id: <20221115165916.196084-25-bhanuprakash.modem@intel.com>
+Date: Tue, 15 Nov 2022 22:28:56 +0530
+Message-Id: <20221115165916.196084-34-bhanuprakash.modem@intel.com>
 In-Reply-To: <20221115165916.196084-1-bhanuprakash.modem@intel.com>
 References: <20221115165916.196084-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t v5 23/52] tests/kms_plane_alpha_blend: Add support
- for Bigjoiner
+Subject: [igt-dev] [i-g-t v5 32/52] tests/kms_scaling_modes: Add support for
+ Bigjoiner
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -31,40 +31,35 @@ Example:
 * To use 8K mode on a pipe then consecutive pipe must be available & free.
 
 V2: - Use updated helper name
-V3: - Rebase
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Reviewed-by:  Swati Sharma <swati2.sharma@intel.com>
 ---
- tests/kms_plane_alpha_blend.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ tests/kms_scaling_modes.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/tests/kms_plane_alpha_blend.c b/tests/kms_plane_alpha_blend.c
-index ccf1d657..1c5ab920 100644
---- a/tests/kms_plane_alpha_blend.c
-+++ b/tests/kms_plane_alpha_blend.c
-@@ -171,9 +171,6 @@ static void prepare_crtc(data_t *data, igt_output_t *output, enum pipe pipe)
- 	int w, h;
- 	igt_plane_t *primary = igt_pipe_get_plane_type(&display->pipes[pipe], DRM_PLANE_TYPE_PRIMARY);
+diff --git a/tests/kms_scaling_modes.c b/tests/kms_scaling_modes.c
+index 039e4a8d..cf637712 100644
+--- a/tests/kms_scaling_modes.c
++++ b/tests/kms_scaling_modes.c
+@@ -93,13 +93,17 @@ static void test_scaling_mode(data_t *data, uint32_t flags)
+ 	enum pipe pipe;
  
--	igt_display_reset(display);
--	igt_output_set_pipe(output, pipe);
+ 	for_each_pipe_with_valid_output(display, pipe, output) {
++		igt_display_reset(display);
++
+ 		if (!has_scaling_mode(output))
+ 			continue;
+ 
++		igt_output_set_pipe(output, pipe);
++		if (!i915_pipe_output_combo_valid(display))
++			continue;
++
+ 		igt_dynamic_f("%s-pipe-%s", output->name, kmstest_pipe_name(pipe))
+ 			test_scaling_mode_on_output(display, pipe, output, flags);
 -
- 	/* create the pipe_crc object for this pipe */
- 	igt_pipe_crc_free(data->pipe_crc);
- 	data->pipe_crc = igt_pipe_crc_new(data->gfx_fd, pipe,
-@@ -617,6 +614,12 @@ static void run_subtests(data_t *data)
+-		igt_display_reset(display);
+ 	}
+ }
  
- 		igt_subtest_with_dynamic(subtests[i].name) {
- 			for_each_pipe_with_single_output(&data->display, pipe, output) {
-+				igt_display_reset(&data->display);
-+
-+				igt_output_set_pipe(output, pipe);
-+				if (!i915_pipe_output_combo_valid(&data->display))
-+					continue;
-+
- 				prepare_crtc(data, output, pipe);
- 				if (!pipe_check(data, pipe, subtests[i].blend, subtests[i].must_multiply))
- 					continue;
 -- 
 2.38.0
