@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D1D1D10E42E
- for <igt-dev@lists.freedesktop.org>; Tue, 15 Nov 2022 17:01:07 +0000 (UTC)
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8DC8289056
+ for <igt-dev@lists.freedesktop.org>; Tue, 15 Nov 2022 17:01:35 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 15 Nov 2022 22:28:55 +0530
-Message-Id: <20221115165916.196084-33-bhanuprakash.modem@intel.com>
+Date: Tue, 15 Nov 2022 22:29:11 +0530
+Message-Id: <20221115165916.196084-49-bhanuprakash.modem@intel.com>
 In-Reply-To: <20221115165916.196084-1-bhanuprakash.modem@intel.com>
 References: <20221115165916.196084-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t v5 31/52] tests/kms_rotation_crc: Add support for
- Bigjoiner
+Subject: [igt-dev] [i-g-t v5 47/52] tests/i915/kms_mmap_write_crc: Add
+ support for Bigjoiner
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -33,85 +33,27 @@ Example:
 V2: - Use updated helper name
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Reviewed-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
 ---
- tests/kms_rotation_crc.c | 25 ++++++++++++++++++++++++-
- 1 file changed, 24 insertions(+), 1 deletion(-)
+ tests/i915/kms_mmap_write_crc.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/tests/kms_rotation_crc.c b/tests/kms_rotation_crc.c
-index 72c20d5a..295aed76 100644
---- a/tests/kms_rotation_crc.c
-+++ b/tests/kms_rotation_crc.c
-@@ -215,6 +215,8 @@ static void prepare_crtc(data_t *data, igt_output_t *output, enum pipe pipe,
- 	cleanup_crtc(data);
+diff --git a/tests/i915/kms_mmap_write_crc.c b/tests/i915/kms_mmap_write_crc.c
+index 96ddac11..4f7a86bf 100644
+--- a/tests/i915/kms_mmap_write_crc.c
++++ b/tests/i915/kms_mmap_write_crc.c
+@@ -277,6 +277,12 @@ igt_main_args("n", NULL, NULL, opt_handler, NULL)
  
- 	igt_output_set_pipe(output, pipe);
-+	igt_require(i915_pipe_output_combo_valid(display));
+ 	igt_subtest_with_dynamic("main") {
+ 		for_each_pipe_with_valid_output(&data.display, pipe, output) {
++			igt_display_reset(&data.display);
 +
- 	igt_plane_set_rotation(plane, IGT_ROTATION_0);
- 
- 	/* create the pipe_crc object for this pipe */
-@@ -479,6 +481,7 @@ static void test_plane_rotation(data_t *data, int plane_type, bool test_bad_form
- 	igt_output_t *output;
- 	enum pipe pipe;
- 	int pipe_count = 0, connected_outputs = 0;
-+	bool found = false;
- 
- 	if (is_amdgpu_device(data->gfx_fd))
- 		igt_require(plane_type != DRM_PLANE_TYPE_OVERLAY &&
-@@ -496,6 +499,13 @@ static void test_plane_rotation(data_t *data, int plane_type, bool test_bad_form
- 		igt_plane_t *plane;
- 		int i, j, c;
- 
-+		igt_display_reset(display);
++			igt_output_set_pipe(output, pipe);
++			if (!i915_pipe_output_combo_valid(&data.display))
++				continue;
 +
-+		igt_output_set_pipe(output, pipe);
-+		if (!i915_pipe_output_combo_valid(display))
-+			continue;
-+
-+		found = true;
- 		mode = igt_output_get_mode(output);
- 
- 		/*
-@@ -586,6 +596,7 @@ static void test_plane_rotation(data_t *data, int plane_type, bool test_bad_form
- 			igt_pipe_crc_stop(data->pipe_crc);
- 		}
- 	}
-+	igt_require_f(found, "No valid pipe/output combo found.\n");
- }
- 
- typedef struct {
-@@ -804,12 +815,22 @@ static void test_multi_plane_rotation(data_t *data, enum pipe pipe)
- 		{IGT_ROTATION_270, .2f, .4f, I915_FORMAT_MOD_Y_TILED },
- 		{IGT_ROTATION_270, .2f, .4f, I915_FORMAT_MOD_Yf_TILED },
- 	};
-+	bool found = false;
-+
-+	igt_display_require_output(display);
- 
- 	for_each_valid_output_on_pipe(display, pipe, output) {
- 		int i, j, k, l, flipsw, fliphw;
-+
-+		igt_display_reset(display);
-+
- 		igt_output_set_pipe(output, pipe);
-+		if (!i915_pipe_output_combo_valid(display))
-+			continue;
-+
-+		found = true;
-+
- 		mode = igt_output_get_mode(output);
--		igt_display_require_output(display);
- 		igt_display_commit2(display, COMMIT_ATOMIC);
- 
- 		p[0].plane = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
-@@ -952,6 +973,8 @@ static void test_multi_plane_rotation(data_t *data, enum pipe pipe)
- 			igt_remove_fb(data->gfx_fd, &planeconfigs[c].fbs[d][MULTIPLANE_ROTATED]);
- 		}
- 	}
-+
-+	igt_require_f(found, "No valid pipe/output combo found.\n");
- }
- 
- static void test_plane_rotation_exhaust_fences(data_t *data,
+ 			igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe),
+ 				      igt_output_name(output)) {
+ 				data.output = output;
 -- 
 2.38.0
