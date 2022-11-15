@@ -1,16 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9DD2389561
- for <igt-dev@lists.freedesktop.org>; Tue, 15 Nov 2022 17:01:16 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7458C10E429
+ for <igt-dev@lists.freedesktop.org>; Tue, 15 Nov 2022 17:00:50 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 15 Nov 2022 22:29:00 +0530
-Message-Id: <20221115165916.196084-38-bhanuprakash.modem@intel.com>
+Date: Tue, 15 Nov 2022 22:28:45 +0530
+Message-Id: <20221115165916.196084-23-bhanuprakash.modem@intel.com>
 In-Reply-To: <20221115165916.196084-1-bhanuprakash.modem@intel.com>
 References: <20221115165916.196084-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t v5 36/52] tests/kms_vrr: Add support for Bigjoiner
+Subject: [igt-dev] [i-g-t v5 21/52] tests/kms_pipe_crc_basic: Add support
+ for Bigjoiner
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -32,27 +33,65 @@ Example:
 V2: - Use updated helper name
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Reviewed-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
 ---
- tests/kms_vrr.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ tests/kms_pipe_crc_basic.c | 24 ++++++++++++++++++++++++
+ 1 file changed, 24 insertions(+)
 
-diff --git a/tests/kms_vrr.c b/tests/kms_vrr.c
-index 8976d4a6..619b3789 100644
---- a/tests/kms_vrr.c
-+++ b/tests/kms_vrr.c
-@@ -444,6 +444,12 @@ run_vrr_test(data_t *data, test_t test, uint32_t flags)
+diff --git a/tests/kms_pipe_crc_basic.c b/tests/kms_pipe_crc_basic.c
+index 91a1b8ab..ffc77eb3 100644
+--- a/tests/kms_pipe_crc_basic.c
++++ b/tests/kms_pipe_crc_basic.c
+@@ -274,6 +274,21 @@ static void test_disable_crc_after_crtc(data_t *data, enum pipe pipe,
+ 	igt_remove_fb(data->drm_fd, &data->fb);
+ }
  
- 		for_each_pipe(&data->display, pipe) {
- 			if (igt_pipe_connector_valid(pipe, output)) {
-+				igt_display_reset(&data->display);
++static bool pipe_output_combo_valid(igt_display_t *display,
++				    enum pipe pipe, igt_output_t *output)
++{
++	bool ret = true;
 +
-+				igt_output_set_pipe(output, pipe);
-+				if (!i915_pipe_output_combo_valid(&data->display))
++	igt_display_reset(display);
++
++	igt_output_set_pipe(output, pipe);
++	if (!i915_pipe_output_combo_valid(display))
++		ret = false;
++	igt_output_set_pipe(output, PIPE_NONE);
++
++	return ret;
++}
++
+ data_t data = {0, };
+ 
+ igt_main
+@@ -322,6 +337,9 @@ igt_main
+ 		igt_describe(tests[i].desc);
+ 		igt_subtest_with_dynamic(tests[i].name) {
+ 			for_each_pipe_with_single_output(&data.display, pipe, output) {
++				if(!pipe_output_combo_valid(&data.display, pipe, output))
 +					continue;
 +
- 				igt_dynamic_f("pipe-%s-%s",
- 					      kmstest_pipe_name(pipe), output->name)
- 					test(data, pipe, output, flags);
+ 				igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), output->name) {
+ 					if (tests[i].flags & TEST_SUSPEND) {
+ 						test_read_crc(&data, pipe, output, 0);
+@@ -350,6 +368,9 @@ igt_main
+ 		     "does not cause issues.");
+ 	igt_subtest_with_dynamic("disable-crc-after-crtc") {
+ 		for_each_pipe_with_single_output(&data.display, pipe, output) {
++			if(!pipe_output_combo_valid(&data.display, pipe, output))
++				continue;
++
+ 			igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), output->name)
+ 				test_disable_crc_after_crtc(&data, pipe, output);
+ 		}
+@@ -358,6 +379,9 @@ igt_main
+ 	igt_describe("Basic sanity check for CRC mismatches");
+ 	igt_subtest_with_dynamic("compare-crc-sanitycheck") {
+ 		for_each_pipe_with_single_output(&data.display, pipe, output) {
++			if(!pipe_output_combo_valid(&data.display, pipe, output))
++				continue;
++
+ 			igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), output->name)
+ 				test_compare_crc(&data, pipe, output);
+ 		}
 -- 
 2.38.0
