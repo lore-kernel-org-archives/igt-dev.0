@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5785B10E15A
- for <igt-dev@lists.freedesktop.org>; Tue, 15 Nov 2022 17:10:23 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3F8C110E159
+ for <igt-dev@lists.freedesktop.org>; Tue, 15 Nov 2022 17:11:00 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 15 Nov 2022 22:38:23 +0530
-Message-Id: <20221115170855.196572-21-bhanuprakash.modem@intel.com>
+Date: Tue, 15 Nov 2022 22:38:52 +0530
+Message-Id: <20221115170855.196572-50-bhanuprakash.modem@intel.com>
 In-Reply-To: <20221115170855.196572-1-bhanuprakash.modem@intel.com>
 References: <20221115170855.196572-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t v5 20/52] tests/kms_multipipe_modeset: Find the
- suitable mode instead of using default
+Subject: [igt-dev] [i-g-t v5 49/52] tests/i915/kms_psr2_su: Add support for
+ Bigjoiner
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,41 +23,46 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-As we are trying to run this subtest on all pipes + all outputs, It is not
-possible to use 8K mode. To use 8K mode on a pipe then the consecutive pipe
-must be free which is not true here.
+This patch will add a check to Skip the subtest if a selected pipe/output
+combo won't support Bigjoiner or 8K mode.
 
-Instead, reduce the resolution from 8K and run the test otherwise we'll endup
-with the test failures.
+Example:
+* Pipe-D wont support a mode > 5K
+* To use 8K mode on a pipe then consecutive pipe must be available & free.
 
-V2:
-- Fix commit message
+V2: - Use updated helper name
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Reviewed-by: Karthik B S <karthik.b.s@intel.com>
+Reviewed-by: Jeevan B <jeevan.b@intel.com>
 ---
- tests/kms_multipipe_modeset.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ tests/i915/kms_psr2_su.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/tests/kms_multipipe_modeset.c b/tests/kms_multipipe_modeset.c
-index 1fdfb9a9..5c26165a 100644
---- a/tests/kms_multipipe_modeset.c
-+++ b/tests/kms_multipipe_modeset.c
-@@ -46,6 +46,15 @@ static void run_test(data_t *data, int valid_outputs)
- 	drmModeModeInfo *mode;
- 	int i = 0;
+diff --git a/tests/i915/kms_psr2_su.c b/tests/i915/kms_psr2_su.c
+index 84dc30c3..3e0a78f2 100644
+--- a/tests/i915/kms_psr2_su.c
++++ b/tests/i915/kms_psr2_su.c
+@@ -104,7 +104,11 @@ static void setup_output(data_t *data)
+ 		if (c->connector_type != DRM_MODE_CONNECTOR_eDP)
+ 			continue;
  
-+	/* Find suitable mode/resolution combo */
-+	for_each_connected_output(display, output) {
-+		pipe = &display->pipes[i];
-+		igt_output_set_pipe(output, i);
++		igt_display_reset(display);
+ 		igt_output_set_pipe(output, pipe);
++		if (!i915_pipe_output_combo_valid(display))
++			continue;
 +
-+		i++;
-+	}
-+	igt_require(igt_override_all_active_output_modes_to_fit_bw(display));
+ 		data->output = output;
+ 		data->mode = igt_output_get_mode(output);
+ 
+@@ -116,6 +120,9 @@ static void display_init(data_t *data)
+ {
+ 	igt_display_require(&data->display, data->drm_fd);
+ 	setup_output(data);
 +
- 	for_each_connected_output(display, output) {
- 		mode = igt_output_get_mode(output);
- 		igt_assert(mode);
++	igt_require_f(data->output, "No available output found\n");
++	igt_require_f(data->mode, "No available mode found on %s\n", data->output->name);
+ }
+ 
+ static void display_fini(data_t *data)
 -- 
 2.38.0
