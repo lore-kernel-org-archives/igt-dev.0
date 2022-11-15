@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 295D010E044
- for <igt-dev@lists.freedesktop.org>; Tue, 15 Nov 2022 17:10:59 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E5F9910E044
+ for <igt-dev@lists.freedesktop.org>; Tue, 15 Nov 2022 17:10:52 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 15 Nov 2022 22:38:51 +0530
-Message-Id: <20221115170855.196572-49-bhanuprakash.modem@intel.com>
+Date: Tue, 15 Nov 2022 22:38:46 +0530
+Message-Id: <20221115170855.196572-44-bhanuprakash.modem@intel.com>
 In-Reply-To: <20221115170855.196572-1-bhanuprakash.modem@intel.com>
 References: <20221115170855.196572-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t v5 48/52] tests/i915/kms_psr2_sf: Add support for
- Bigjoiner
+Subject: [igt-dev] [i-g-t v5 43/52] tests/i915/kms_fence_pin_leak: Add
+ support for Bigjoiner
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -33,36 +33,36 @@ Example:
 V2: - Use updated helper name
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Reviewed-by: Jeevan B <jeevan.b@intel.com>
 ---
- tests/i915/kms_psr2_sf.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ tests/i915/kms_fence_pin_leak.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/tests/i915/kms_psr2_sf.c b/tests/i915/kms_psr2_sf.c
-index cfde6cfc..2b2f6166 100644
---- a/tests/i915/kms_psr2_sf.c
-+++ b/tests/i915/kms_psr2_sf.c
-@@ -115,7 +115,11 @@ static void setup_output(data_t *data)
- 		if (c->connector_type != DRM_MODE_CONNECTOR_eDP)
- 			continue;
+diff --git a/tests/i915/kms_fence_pin_leak.c b/tests/i915/kms_fence_pin_leak.c
+index 1972a699..63657a74 100644
+--- a/tests/i915/kms_fence_pin_leak.c
++++ b/tests/i915/kms_fence_pin_leak.c
+@@ -124,6 +124,9 @@ static void run_single_test(data_t *data, enum pipe pipe, igt_output_t *output)
+ 	struct igt_fb fb[2];
+ 	int i;
  
++	igt_info("Using (pipe %s + %s) to run the subtest.\n",
++		 kmstest_pipe_name(pipe), igt_output_name(output));
++
+ 	igt_output_set_pipe(output, pipe);
+ 
+ 	mode = igt_output_get_mode(output);
+@@ -196,6 +199,12 @@ static void run_test(data_t *data)
+ 	enum pipe p;
+ 
+ 	for_each_pipe_with_valid_output(display, p, output) {
 +		igt_display_reset(display);
- 		igt_output_set_pipe(output, pipe);
++
++		igt_output_set_pipe(output, p);
 +		if (!i915_pipe_output_combo_valid(display))
 +			continue;
 +
- 		data->output = output;
- 		data->mode = igt_output_get_mode(output);
+ 		run_single_test(data, p, output);
  
-@@ -127,6 +131,9 @@ static void display_init(data_t *data)
- {
- 	igt_display_require(&data->display, data->drm_fd);
- 	setup_output(data);
-+
-+	igt_require_f(data->output, "No available output found\n");
-+	igt_require_f(data->mode, "No available mode found on %s\n", data->output->name);
- }
- 
- static void display_fini(data_t *data)
+ 		return; /* one time ought to be enough */
 -- 
 2.38.0
