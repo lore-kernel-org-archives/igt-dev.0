@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A642D10E142
- for <igt-dev@lists.freedesktop.org>; Tue, 15 Nov 2022 17:00:34 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D2B2B10E168
+ for <igt-dev@lists.freedesktop.org>; Tue, 15 Nov 2022 17:00:37 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 15 Nov 2022 22:28:33 +0530
-Message-Id: <20221115165916.196084-11-bhanuprakash.modem@intel.com>
+Date: Tue, 15 Nov 2022 22:28:35 +0530
+Message-Id: <20221115165916.196084-13-bhanuprakash.modem@intel.com>
 In-Reply-To: <20221115165916.196084-1-bhanuprakash.modem@intel.com>
 References: <20221115165916.196084-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t v5 09/52] tests/chamelium/kms_color_chamelium: Add
+Subject: [igt-dev] [i-g-t v5 11/52] tests/kms_content_protection: Add
  support for Bigjoiner
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -34,42 +34,41 @@ V2: - Use updated helper name
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/chamelium/kms_color_chamelium.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ tests/kms_content_protection.c | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
-diff --git a/tests/chamelium/kms_color_chamelium.c b/tests/chamelium/kms_color_chamelium.c
-index 907f4dd5..b7c84ae4 100644
---- a/tests/chamelium/kms_color_chamelium.c
-+++ b/tests/chamelium/kms_color_chamelium.c
-@@ -458,6 +458,9 @@ run_gamma_degamma_tests_for_pipe(data_t *data, enum pipe p,
- 	data->drm_format = DRM_FORMAT_XRGB8888;
- 	data->mode = igt_output_get_mode(data->output);
+diff --git a/tests/kms_content_protection.c b/tests/kms_content_protection.c
+index aa28b7bf..0aa2a8a2 100644
+--- a/tests/kms_content_protection.c
++++ b/tests/kms_content_protection.c
+@@ -502,6 +502,13 @@ test_content_protection(enum igt_commit_style s, int content_type)
+ 				continue;
  
-+	if (!pipe_output_combo_valid(data, p))
-+		return;
+ 			igt_display_reset(display);
 +
- 	igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(p), data->output->name)
- 		igt_assert(test_t(data, data->primary, data->ports[port_idx]));
- }
-@@ -493,6 +496,9 @@ run_ctm_tests_for_pipe(data_t *data, enum pipe p,
- 	data->drm_format = DRM_FORMAT_XRGB8888;
- 	data->mode = igt_output_get_mode(data->output);
++			igt_output_set_pipe(output, pipe);
++			if (!i915_pipe_output_combo_valid(display)) {
++				igt_output_set_pipe(output, PIPE_NONE);
++				continue;
++			}
++
+ 			modeset_with_fb(pipe, output, s);
  
-+	if (!pipe_output_combo_valid(data, p))
-+		return;
-+
- 	igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(p), data->output->name) {
- 		bool success = false;
- 		int i;
-@@ -538,6 +544,9 @@ run_limited_range_ctm_test_for_pipe(data_t *data, enum pipe p,
- 	data->drm_format = DRM_FORMAT_XRGB8888;
- 	data->mode = igt_output_get_mode(data->output);
+ 			if (!output_hdcp_capable(output, content_type))
+@@ -623,6 +630,14 @@ test_content_protection_mst(int content_type)
+ 		igt_assert_f(pipe_found, "No valid pipe found for %s\n", output->name);
  
-+	if (!pipe_output_combo_valid(data, p))
-+		return;
+ 		igt_output_set_pipe(output, pipe);
++		if (!i915_pipe_output_combo_valid(display)){
++			igt_output_set_pipe(output, PIPE_NONE);
++			continue;
++		}
 +
- 	igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(p), data->output->name)
- 		igt_assert(test_t(data, data->primary, data->ports[port_idx]));
- }
++		igt_info("Using (pipe %s + %s) to run the subtest.\n",
++			 kmstest_pipe_name(pipe), igt_output_name(output));
++
+ 		prepare_modeset_on_mst_output(output);
+ 		mst_output[dp_mst_outputs++] = output;
+ 	}
 -- 
 2.38.0
