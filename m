@@ -1,17 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3A49610E42E
- for <igt-dev@lists.freedesktop.org>; Tue, 15 Nov 2022 17:01:01 +0000 (UTC)
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4B32510E044
+ for <igt-dev@lists.freedesktop.org>; Tue, 15 Nov 2022 17:07:53 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 15 Nov 2022 22:28:50 +0530
-Message-Id: <20221115165916.196084-28-bhanuprakash.modem@intel.com>
+Date: Tue, 15 Nov 2022 22:36:39 +0530
+Message-Id: <20221115170639.196447-1-bhanuprakash.modem@intel.com>
 In-Reply-To: <20221115165916.196084-1-bhanuprakash.modem@intel.com>
 References: <20221115165916.196084-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t v5 26/52] tests/kms_plane_multiple: Add support
- for Bigjoiner
+Subject: [igt-dev] [i-g-t v5 00/52] Add IGT support for Bigjoiner
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,63 +22,125 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-This patch will add a check to Skip the subtest if a selected pipe/output
-combo won't support Bigjoiner or 8K mode.
-
-Example:
-* Pipe-D wont support a mode > 5K
+Add IGT support for bigjoiner:
+* Pipe-D won't support mode > 5K
 * To use 8K mode on a pipe then consecutive pipe must be available & free.
 
-V2: - Use updated helper name
+V2: - Rebase
+V3: - Optimizations in helper
+V4, V5: - Rebase
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Reviewed-by: Karthik B S <karthik.b.s@intel.com>
----
- tests/kms_plane_multiple.c | 15 ++++++++++++---
- 1 file changed, 12 insertions(+), 3 deletions(-)
 
-diff --git a/tests/kms_plane_multiple.c b/tests/kms_plane_multiple.c
-index 75659015..7dd9d586 100644
---- a/tests/kms_plane_multiple.c
-+++ b/tests/kms_plane_multiple.c
-@@ -103,6 +103,7 @@ get_reference_crc(data_t *data, igt_output_t *output, enum pipe pipe,
- 	igt_plane_t *primary;
- 	int ret;
- 
-+	igt_display_reset(&data->display);
- 	igt_output_set_pipe(output, pipe);
- 
- 	primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
-@@ -290,6 +291,9 @@ test_plane_position_with_output(data_t *data, enum pipe pipe,
- 	bool loop_forever;
- 	char info[256];
- 
-+	igt_info("Using (pipe %s + %s) to run the subtest.\n",
-+		 kmstest_pipe_name(pipe), igt_output_name(output));
-+
- 	if (opt.iterations == LOOP_FOREVER) {
- 		loop_forever = true;
- 		sprintf(info, "forever");
-@@ -373,12 +377,17 @@ static void run_test(data_t *data, uint64_t modifier)
- {
- 	enum pipe pipe;
- 	igt_output_t *output;
-+	igt_display_t *display = &data->display;
- 
--	if (!igt_display_has_format_mod(&data->display, DRM_FORMAT_XRGB8888, modifier))
-+	if (!igt_display_has_format_mod(display, DRM_FORMAT_XRGB8888, modifier))
- 		return;
- 
--	for_each_pipe_with_valid_output(&data->display, pipe, output) {
--		igt_display_reset(&data->display);
-+	for_each_pipe_with_valid_output(display, pipe, output) {
-+		igt_display_reset(display);
-+
-+		igt_output_set_pipe(output, pipe);
-+		if (!i915_pipe_output_combo_valid(display))
-+			continue;
- 
- 		igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), output->name)
- 			test_plane_position(data, pipe, output, modifier);
--- 
+Bhanuprakash Modem (52):
+  lib/igt_kms: Add a helper for valid pipe/output constraint
+  lib/igt_kms: Bigjoiner check in max_bpc constraint
+  tests/kms_async_flips: Add support for Bigjoiner
+  tests/kms_atomic: Add support for Bigjoiner
+  tests/kms_atomic_interruptible: Add support for Bigjoiner
+  tests/kms_atomic_transition: Add support for Bigjoiner
+  tests/kms_color_helper: Helper to check Bigjoiner constraint
+  tests/kms_color: Add support for Bigjoiner
+  tests/chamelium/kms_color_chamelium: Add support for Bigjoiner
+  tests/kms_concurrent: Add support for Bigjoiner
+  tests/kms_content_protection: Add support for Bigjoiner
+  tests/kms_cursor_crc: Add support for Bigjoiner
+  tests/kms_cursor_edge_walk: Add support for Bigjoiner
+  tests/kms_cursor_legacy: Add support for Bigjoiner
+  tests/kms_display_modes: Add support for Bigjoiner
+  tests/kms_dp_tiled_display: Add support for Bigjoiner
+  tests/kms_flip_event_leak: Add support for Bigjoiner
+  tests/kms_invalid_mode: Add support for Bigjoiner
+  tests/kms_lease: Add support for Bigjoiner
+  tests/kms_multipipe_modeset: Find the suitable mode instead of using
+    default
+  tests/kms_pipe_crc_basic: Add support for Bigjoiner
+  tests/kms_plane: Add support for Bigjoiner
+  tests/kms_plane_alpha_blend: Add support for Bigjoiner
+  tests/kms_plane_cursor: Add support for Bigjoiner
+  tests/kms_plane_lowres: Add support for Bigjoiner
+  tests/kms_plane_multiple: Add support for Bigjoiner
+  tests/kms_plane_scaling: Add support for Bigjoiner
+  tests/kms_prime: Add support for Bigjoiner
+  tests/kms_properties: Add support for Bigjoiner
+  tests/kms_rmfb: Add support for Bigjoiner
+  tests/kms_rotation_crc: Add support for Bigjoiner
+  tests/kms_scaling_modes: Add support for Bigjoiner
+  tests/kms_sequence: Add support for Bigjoiner
+  tests/kms_universal_plane: Add support for Bigjoiner
+  tests/kms_vblank: Add support for Bigjoiner
+  tests/kms_vrr: Add support for Bigjoiner
+  tests/i915/kms_big_fb: Add support for Bigjoiner
+  tests/i915/kms_big_joiner: Negative tests for Bigjoiner
+  tests/i915/kms_busy: Add support for Bigjoiner
+  tests/i915/kms_ccs: Add support for Bigjoiner
+  tests/i915/kms_cdclk: Add support for Bigjoiner
+  tests/i915/kms_draw_crc: Add support for Bigjoiner
+  tests/i915/kms_fence_pin_leak: Add support for Bigjoiner
+  tests/i915/kms_flip_scaled_crc: Add support for Bigjoiner
+  tests/i915/kms_flip_tiling: Add support for Bigjoiner
+  tests/i915/kms_frontbuffer_tracking: Add support for Bigjoiner
+  tests/i915/kms_mmap_write_crc: Add support for Bigjoiner
+  tests/i915/kms_psr2_sf: Add support for Bigjoiner
+  tests/i915/kms_psr2_su: Add support for Bigjoiner
+  tests/i915/kms_psr: Add support for Bigjoiner
+  tests/i915/kms_psr_stress_test: Add support for Bigjoiner
+  tests/i915/kms_pwrite_crc: Add support for Bigjoiner
+
+ lib/igt_kms.c                         |  54 ++++++-
+ lib/igt_kms.h                         |   1 +
+ tests/chamelium/kms_color_chamelium.c |   9 ++
+ tests/i915/kms_big_fb.c               |  13 ++
+ tests/i915/kms_big_joiner.c           | 187 ++++++++++------------
+ tests/i915/kms_busy.c                 | 106 ++++++++-----
+ tests/i915/kms_ccs.c                  |  18 ++-
+ tests/i915/kms_cdclk.c                |  93 ++++++-----
+ tests/i915/kms_draw_crc.c             |  10 +-
+ tests/i915/kms_fence_pin_leak.c       |   9 ++
+ tests/i915/kms_flip_scaled_crc.c      |  13 +-
+ tests/i915/kms_flip_tiling.c          |   7 +
+ tests/i915/kms_frontbuffer_tracking.c |  16 +-
+ tests/i915/kms_mmap_write_crc.c       |   6 +
+ tests/i915/kms_psr.c                  |   4 +
+ tests/i915/kms_psr2_sf.c              |   7 +
+ tests/i915/kms_psr2_su.c              |   7 +
+ tests/i915/kms_psr_stress_test.c      |   8 +-
+ tests/i915/kms_pwrite_crc.c           |  12 +-
+ tests/kms_async_flips.c               |  24 ++-
+ tests/kms_atomic.c                    |  32 +++-
+ tests/kms_atomic_interruptible.c      |  40 +++++
+ tests/kms_atomic_transition.c         |  50 +++++-
+ tests/kms_color.c                     |   9 +-
+ tests/kms_color_helper.c              |  12 ++
+ tests/kms_color_helper.h              |   1 +
+ tests/kms_concurrent.c                |  10 +-
+ tests/kms_content_protection.c        |  15 ++
+ tests/kms_cursor_crc.c                |  33 ++++
+ tests/kms_cursor_edge_walk.c          |   6 +
+ tests/kms_cursor_legacy.c             | 202 +++++++++++++++---------
+ tests/kms_display_modes.c             | 104 +++++++-----
+ tests/kms_dp_tiled_display.c          |   1 +
+ tests/kms_flip_event_leak.c           |  11 +-
+ tests/kms_invalid_mode.c              |   6 +
+ tests/kms_lease.c                     |   8 +-
+ tests/kms_multipipe_modeset.c         |   9 ++
+ tests/kms_pipe_crc_basic.c            |  24 +++
+ tests/kms_plane.c                     |  30 ++--
+ tests/kms_plane_alpha_blend.c         |   9 +-
+ tests/kms_plane_cursor.c              |   6 +
+ tests/kms_plane_lowres.c              |   3 +
+ tests/kms_plane_multiple.c            |  15 +-
+ tests/kms_plane_scaling.c             | 218 +++++++++++++++++---------
+ tests/kms_prime.c                     |  11 +-
+ tests/kms_properties.c                |  18 +++
+ tests/kms_rmfb.c                      |  10 +-
+ tests/kms_rotation_crc.c              |  25 ++-
+ tests/kms_scaling_modes.c             |   8 +-
+ tests/kms_sequence.c                  |   6 +
+ tests/kms_universal_plane.c           |  94 +++++++++--
+ tests/kms_vblank.c                    |  54 ++++++-
+ tests/kms_vrr.c                       |   6 +
+ 53 files changed, 1219 insertions(+), 471 deletions(-)
+
+--
 2.38.0
