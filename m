@@ -1,18 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7FE1910E159
- for <igt-dev@lists.freedesktop.org>; Tue, 15 Nov 2022 20:21:33 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 31D5110E15A
+ for <igt-dev@lists.freedesktop.org>; Tue, 15 Nov 2022 20:21:30 +0000 (UTC)
 From: =?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 15 Nov 2022 17:20:58 -0300
-Message-Id: <20221115202101.278995-3-mcanal@igalia.com>
-In-Reply-To: <20221115202101.278995-1-mcanal@igalia.com>
-References: <20221115202101.278995-1-mcanal@igalia.com>
+Date: Tue, 15 Nov 2022 17:20:56 -0300
+Message-Id: <20221115202101.278995-1-mcanal@igalia.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 2/5] tests/vc4: Remove unused or redundant
- includes
+Subject: [igt-dev] [PATCH i-g-t 0/5] VC4 IGT Tests Updates
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,239 +23,52 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-The VC4 test files contain some includes that aren't required for
-compilation: some includes are simply not used and others are included
-through other headers. Simplify the code by removing unused includes.
+This series aims to update the VC4 IGT tests. The first three patches contain
+some janitorial duties related to the existing tests: creating a folder for the
+VC4 tests, removing some unused includes, and adding a macro with the default
+PAGE_SIZE. The fourth patch includes new tests for the VC4's performance
+monitors. Finally, the last patch adds an igt_require to all the VC4 tests to
+check that the tests are not running on BCM2711.
 
-Signed-off-by: Maíra Canal <mcanal@igalia.com>
----
- lib/igt_vc4.c                | 14 --------------
- lib/igt_vc4.h                |  2 ++
- tests/vc4/vc4_create_bo.c    | 10 ----------
- tests/vc4/vc4_dmabuf_poll.c  | 10 ----------
- tests/vc4/vc4_label_bo.c     | 11 -----------
- tests/vc4/vc4_lookup_fail.c  | 10 ----------
- tests/vc4/vc4_purgeable_bo.c | 10 ----------
- tests/vc4/vc4_tiling.c       | 11 -----------
- tests/vc4/vc4_wait_bo.c      |  9 ---------
- tests/vc4/vc4_wait_seqno.c   | 11 +----------
- 10 files changed, 3 insertions(+), 95 deletions(-)
+This series was tested on the Raspberry Pi 3 Model B and Raspberry Pi 4 Model B,
+and the HTML outputs of the VC4 tests are available on:
 
-diff --git a/lib/igt_vc4.c b/lib/igt_vc4.c
-index 4415fa32..54718cee 100644
---- a/lib/igt_vc4.c
-+++ b/lib/igt_vc4.c
-@@ -21,25 +21,11 @@
-  * IN THE SOFTWARE.
-  */
- 
--#include <assert.h>
--#include <string.h>
--#include <signal.h>
--#include <errno.h>
--#include <sys/mman.h>
--#include <sys/types.h>
--#include <sys/stat.h>
--#include <sys/ioctl.h>
--#include <fcntl.h>
--
- #include "drmtest.h"
- #include "igt_aux.h"
--#include "igt_core.h"
- #include "igt_fb.h"
- #include "igt_vc4.h"
- #include "ioctl_wrappers.h"
--#include "intel_reg.h"
--#include "intel_chipset.h"
--#include "vc4_drm.h"
- #include "vc4_packet.h"
- 
- #if NEW_CONTEXT_PARAM_NO_ERROR_CAPTURE_API
-diff --git a/lib/igt_vc4.h b/lib/igt_vc4.h
-index f32bf398..a088d0a3 100644
---- a/lib/igt_vc4.h
-+++ b/lib/igt_vc4.h
-@@ -24,6 +24,8 @@
- #ifndef IGT_VC4_H
- #define IGT_VC4_H
- 
-+#include "vc4_drm.h"
-+
- uint32_t igt_vc4_get_cleared_bo(int fd, size_t size, uint32_t clearval);
- int igt_vc4_create_bo(int fd, size_t size);
- void *igt_vc4_mmap_bo(int fd, uint32_t handle, uint32_t size, unsigned prot);
-diff --git a/tests/vc4/vc4_create_bo.c b/tests/vc4/vc4_create_bo.c
-index 99d180a8..46d1c954 100644
---- a/tests/vc4/vc4_create_bo.c
-+++ b/tests/vc4/vc4_create_bo.c
-@@ -23,16 +23,6 @@
- 
- #include "igt.h"
- #include "igt_vc4.h"
--#include <unistd.h>
--#include <stdlib.h>
--#include <stdio.h>
--#include <string.h>
--#include <fcntl.h>
--#include <inttypes.h>
--#include <errno.h>
--#include <sys/stat.h>
--#include <sys/ioctl.h>
--#include "vc4_drm.h"
- 
- igt_main
- {
-diff --git a/tests/vc4/vc4_dmabuf_poll.c b/tests/vc4/vc4_dmabuf_poll.c
-index 260e30c3..da99964b 100644
---- a/tests/vc4/vc4_dmabuf_poll.c
-+++ b/tests/vc4/vc4_dmabuf_poll.c
-@@ -23,17 +23,7 @@
- 
- #include "igt.h"
- #include "igt_vc4.h"
--#include <unistd.h>
--#include <stdlib.h>
--#include <stdio.h>
--#include <string.h>
--#include <fcntl.h>
--#include <inttypes.h>
--#include <errno.h>
--#include <sys/stat.h>
--#include <sys/ioctl.h>
- #include <poll.h>
--#include "vc4_drm.h"
- 
- static void
- poll_write_bo_test(int fd, int poll_flag)
-diff --git a/tests/vc4/vc4_label_bo.c b/tests/vc4/vc4_label_bo.c
-index 7510f87d..6fc53ce8 100644
---- a/tests/vc4/vc4_label_bo.c
-+++ b/tests/vc4/vc4_label_bo.c
-@@ -23,17 +23,6 @@
- 
- #include "igt.h"
- #include "igt_vc4.h"
--#include <unistd.h>
--#include <stdlib.h>
--#include <stdio.h>
--#include <string.h>
--#include <fcntl.h>
--#include <inttypes.h>
--#include <errno.h>
--#include <sys/stat.h>
--#include <sys/ioctl.h>
--#include <poll.h>
--#include "vc4_drm.h"
- 
- static void
- set_label(int fd, int handle, const char *name, int err)
-diff --git a/tests/vc4/vc4_lookup_fail.c b/tests/vc4/vc4_lookup_fail.c
-index f0234ee5..e5a03540 100644
---- a/tests/vc4/vc4_lookup_fail.c
-+++ b/tests/vc4/vc4_lookup_fail.c
-@@ -22,16 +22,6 @@
-  */
- 
- #include "igt.h"
--#include <assert.h>
--#include <unistd.h>
--#include <stdlib.h>
--#include <stdio.h>
--#include <string.h>
--#include <fcntl.h>
--#include <inttypes.h>
--#include <errno.h>
--#include <sys/stat.h>
--#include <sys/ioctl.h>
- #include "vc4_drm.h"
- #include "vc4_packet.h"
- 
-diff --git a/tests/vc4/vc4_purgeable_bo.c b/tests/vc4/vc4_purgeable_bo.c
-index d9f7547f..676bc1f3 100644
---- a/tests/vc4/vc4_purgeable_bo.c
-+++ b/tests/vc4/vc4_purgeable_bo.c
-@@ -23,17 +23,7 @@
- 
- #include "igt.h"
- #include "igt_vc4.h"
--#include <unistd.h>
- #include <signal.h>
--#include <stdlib.h>
--#include <stdio.h>
--#include <string.h>
--#include <fcntl.h>
--#include <inttypes.h>
--#include <errno.h>
--#include <sys/stat.h>
--#include <sys/ioctl.h>
--#include "vc4_drm.h"
- 
- struct igt_vc4_bo {
- 	struct igt_list_head node;
-diff --git a/tests/vc4/vc4_tiling.c b/tests/vc4/vc4_tiling.c
-index b96fe4ad..0d37c8b1 100644
---- a/tests/vc4/vc4_tiling.c
-+++ b/tests/vc4/vc4_tiling.c
-@@ -23,17 +23,6 @@
- 
- #include "igt.h"
- #include "igt_vc4.h"
--#include <unistd.h>
--#include <stdlib.h>
--#include <stdio.h>
--#include <string.h>
--#include <fcntl.h>
--#include <inttypes.h>
--#include <errno.h>
--#include <sys/stat.h>
--#include <sys/ioctl.h>
--#include <poll.h>
--#include "vc4_drm.h"
- 
- igt_main
- {
-diff --git a/tests/vc4/vc4_wait_bo.c b/tests/vc4/vc4_wait_bo.c
-index 65a085a3..8c7437f8 100644
---- a/tests/vc4/vc4_wait_bo.c
-+++ b/tests/vc4/vc4_wait_bo.c
-@@ -23,16 +23,7 @@
- 
- #include "igt.h"
- #include "igt_vc4.h"
--#include <unistd.h>
--#include <stdlib.h>
--#include <stdio.h>
--#include <string.h>
--#include <fcntl.h>
--#include <inttypes.h>
--#include <errno.h>
--#include <sys/stat.h>
- #include <sys/ioctl.h>
--#include "vc4_drm.h"
- 
- static void
- test_used_bo(int fd, uint64_t timeout)
-diff --git a/tests/vc4/vc4_wait_seqno.c b/tests/vc4/vc4_wait_seqno.c
-index bcc263cb..61485bbf 100644
---- a/tests/vc4/vc4_wait_seqno.c
-+++ b/tests/vc4/vc4_wait_seqno.c
-@@ -22,16 +22,7 @@
-  */
- 
- #include "igt.h"
--#include <unistd.h>
--#include <stdlib.h>
--#include <stdio.h>
--#include <string.h>
--#include <fcntl.h>
--#include <inttypes.h>
--#include <errno.h>
--#include <sys/stat.h>
--#include <sys/ioctl.h>
--#include "vc4_drm.h"
-+#include "igt_vc4.h"
- 
- igt_main
- {
+- Raspberry Pi 4: https://mairacanal.fedorapeople.org/igt-results/rpi4/html/
+- Raspberry Pi 3: https://mairacanal.fedorapeople.org/igt-results/rpi3/html/
+
+Best Regards,
+- Maíra Canal
+
+Maíra Canal (5):
+  tests/vc4: Move VC4 tests to their own folder
+  tests/vc4: Remove unused or redundant includes
+  lib/igt_vc4: Add PAGE_SIZE macro to VC4
+  tests/vc4_perfmon: Create test for VC4's Perfmon IOCTLs
+  tests/vc4: Skip VC4 tests if they are running on BCM2711/RaspberryPi4
+
+ lib/igt_vc4.c                      |  56 +++++++++---
+ lib/igt_vc4.h                      |   9 ++
+ tests/meson.build                  |  29 ++++--
+ tests/{ => vc4}/vc4_create_bo.c    |  15 +---
+ tests/{ => vc4}/vc4_dmabuf_poll.c  |  14 +--
+ tests/{ => vc4}/vc4_label_bo.c     |  21 ++---
+ tests/{ => vc4}/vc4_lookup_fail.c  |  14 +--
+ tests/vc4/vc4_perfmon.c            | 138 +++++++++++++++++++++++++++++
+ tests/{ => vc4}/vc4_purgeable_bo.c |  10 ---
+ tests/{ => vc4}/vc4_tiling.c       |  27 ++----
+ tests/{ => vc4}/vc4_wait_bo.c      |  14 +--
+ tests/{ => vc4}/vc4_wait_seqno.c   |  15 +---
+ tests/vc4_ci/vc4.testlist          |  10 +++
+ 13 files changed, 250 insertions(+), 122 deletions(-)
+ rename tests/{ => vc4}/vc4_create_bo.c (89%)
+ rename tests/{ => vc4}/vc4_dmabuf_poll.c (91%)
+ rename tests/{ => vc4}/vc4_label_bo.c (85%)
+ rename tests/{ => vc4}/vc4_lookup_fail.c (90%)
+ create mode 100644 tests/vc4/vc4_perfmon.c
+ rename tests/{ => vc4}/vc4_purgeable_bo.c (97%)
+ rename tests/{ => vc4}/vc4_tiling.c (88%)
+ rename tests/{ => vc4}/vc4_wait_bo.c (92%)
+ rename tests/{ => vc4}/vc4_wait_seqno.c (89%)
+
 -- 
 2.38.1
