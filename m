@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7A74E10E044
- for <igt-dev@lists.freedesktop.org>; Tue, 15 Nov 2022 17:00:30 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id ED0FC89561
+ for <igt-dev@lists.freedesktop.org>; Tue, 15 Nov 2022 17:00:26 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 15 Nov 2022 22:28:30 +0530
-Message-Id: <20221115165916.196084-8-bhanuprakash.modem@intel.com>
+Date: Tue, 15 Nov 2022 22:28:27 +0530
+Message-Id: <20221115165916.196084-5-bhanuprakash.modem@intel.com>
 In-Reply-To: <20221115165916.196084-1-bhanuprakash.modem@intel.com>
 References: <20221115165916.196084-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t v5 06/52] tests/kms_atomic_transition: Add support
- for Bigjoiner
+Subject: [igt-dev] [i-g-t v5 03/52] tests/kms_async_flips: Add support for
+ Bigjoiner
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -34,111 +34,62 @@ V2: - Use updated helper name
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/kms_atomic_transition.c | 50 ++++++++++++++++++++++++++++++++---
- 1 file changed, 46 insertions(+), 4 deletions(-)
+ tests/kms_async_flips.c | 24 +++++++++++-------------
+ 1 file changed, 11 insertions(+), 13 deletions(-)
 
-diff --git a/tests/kms_atomic_transition.c b/tests/kms_atomic_transition.c
-index 6d2ebbbf..5285585f 100644
---- a/tests/kms_atomic_transition.c
-+++ b/tests/kms_atomic_transition.c
-@@ -68,6 +68,10 @@ run_primary_test(data_t *data, enum pipe pipe, igt_output_t *output)
- 	unsigned flags = DRM_MODE_ATOMIC_TEST_ONLY | DRM_MODE_ATOMIC_ALLOW_MODESET;
+diff --git a/tests/kms_async_flips.c b/tests/kms_async_flips.c
+index 7cb71f6b..674fcb5a 100644
+--- a/tests/kms_async_flips.c
++++ b/tests/kms_async_flips.c
+@@ -330,15 +330,6 @@ static void test_cursor(data_t *data)
+ 	struct igt_fb cursor_fb;
+ 	struct drm_mode_cursor cur;
  
- 	igt_display_reset(&data->display);
-+
-+	igt_info("Using (pipe %s + %s) to run the subtest.\n",
-+		 kmstest_pipe_name(pipe), igt_output_name(output));
-+
- 	igt_output_set_pipe(output, pipe);
- 	primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
+-	/*
+-	 * Intel's PSR2 selective fetch adds other planes to state when
+-	 * necessary, causing the async flip to fail because async flip is not
+-	 * supported in cursor plane.
+-	 */
+-	igt_skip_on_f(i915_psr2_selective_fetch_check(data->drm_fd),
+-		      "PSR2 sel fetch causes cursor to be added to primary plane " \
+-		      "pages flips and async flip is not supported in cursor\n");
+-
+ 	do_or_die(drmGetCap(data->drm_fd, DRM_CAP_CURSOR_WIDTH, &width));
+ 	do_or_die(drmGetCap(data->drm_fd, DRM_CAP_CURSOR_WIDTH, &height));
  
-@@ -487,6 +491,9 @@ run_transition_test(data_t *data, enum pipe pipe, igt_output_t *output,
- 	unsigned flags = 0;
- 	int ret;
+@@ -380,12 +371,12 @@ static void test_invalid(data_t *data)
+ 	struct igt_fb fb;
+ 	drmModeModeInfo *mode;
  
-+	igt_info("Using (pipe %s + %s) to run the subtest.\n",
-+		 kmstest_pipe_name(pipe), igt_output_name(output));
++	test_init(data);
 +
- 	if (fencing)
- 		prepare_fencing(data, pipe);
- 	else
-@@ -753,8 +760,13 @@ static unsigned set_combinations(data_t *data, unsigned mask, struct igt_fb *fb)
- 			if (output->pending_pipe != PIPE_NONE)
- 				continue;
+ 	mode = igt_output_get_mode(data->output);
+ 	width = mode->hdisplay;
+ 	height = mode->vdisplay;
  
--			mode = igt_output_get_mode(output);
--			break;
-+			igt_output_set_pipe(output, pipe);
-+			if (i915_pipe_output_combo_valid(&data->display)) {
-+				mode = igt_output_get_mode(output);
-+				break;
-+			} else {
-+				igt_output_set_pipe(output, PIPE_NONE);
-+			}
- 		}
+-	test_init(data);
+-
+ 	igt_create_fb(data->drm_fd, width, height, DRM_FORMAT_XRGB8888,
+ 		      I915_FORMAT_MOD_Y_TILED, &fb);
  
- 		if (!mode)
-@@ -840,8 +852,17 @@ retry:
- 				continue;
- 
- 			igt_output_set_pipe(output, i);
--			mode = igt_output_get_mode(output);
--			break;
-+			if (i915_pipe_output_combo_valid(&data->display)) {
-+				mode = igt_output_get_mode(output);
-+
-+				igt_info("(pipe %s + %s), mode:",
-+					 kmstest_pipe_name(i), igt_output_name(output));
-+				kmstest_dump_mode(mode);
-+
-+				break;
-+			} else {
-+				igt_output_set_pipe(output, PIPE_NONE);
-+			}
- 		}
- 
- 		if (mode) {
-@@ -980,6 +1001,21 @@ static void run_modeset_transition(data_t *data, int requested_outputs, bool non
- 	igt_remove_fb(data->drm_fd, &data->fbs[1]);
- }
- 
-+static bool pipe_output_combo_valid(igt_display_t *display,
-+				    enum pipe pipe, igt_output_t *output)
-+{
-+	bool ret = true;
-+
-+	igt_display_reset(display);
-+
-+	igt_output_set_pipe(output, pipe);
-+	if (!i915_pipe_output_combo_valid(display))
-+		ret = false;
-+	igt_output_set_pipe(output, PIPE_NONE);
-+
-+	return ret;
-+}
-+
- static int opt_handler(int opt, int opt_index, void *_data)
+@@ -542,9 +533,16 @@ static void run_test(data_t *data, void (*test)(data_t *))
  {
- 	data_t *data = _data;
-@@ -1079,6 +1115,9 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
- 			if (pipe_count == 2 * count && !data.extended)
- 				break;
- 
-+			if (!pipe_output_combo_valid(&data.display, pipe, output))
+ 	igt_output_t *output;
+ 	enum pipe pipe;
++	igt_display_t *display = &data->display;
++
++	for_each_pipe(display, pipe) {
++		for_each_valid_output_on_pipe(display, pipe, output) {
++			igt_display_reset(display);
++
++			igt_output_set_pipe(output, pipe);
++			if (!i915_pipe_output_combo_valid(display))
 +				continue;
-+
- 			pipe_count++;
- 			igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), igt_output_name(output))
- 				run_primary_test(&data, pipe, output);
-@@ -1108,6 +1147,9 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
- 				if (pipe_count == 2 * count && !data.extended)
- 					break;
  
-+				if (!pipe_output_combo_valid(&data.display, pipe, output))
-+					continue;
-+
- 				pipe_count++;
- 				igt_dynamic_f("pipe-%s-%s",
- 					      kmstest_pipe_name(pipe),
+-	for_each_pipe(&data->display, pipe) {
+-		for_each_valid_output_on_pipe(&data->display, pipe, output) {
+ 			igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), output->name) {
+ 				data->output = output;
+ 				data->pipe = pipe;
 -- 
 2.38.0
