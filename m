@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 05F3610E142
- for <igt-dev@lists.freedesktop.org>; Tue, 15 Nov 2022 17:01:48 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6888A10E092
+ for <igt-dev@lists.freedesktop.org>; Tue, 15 Nov 2022 17:01:29 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 15 Nov 2022 22:29:16 +0530
-Message-Id: <20221115165916.196084-54-bhanuprakash.modem@intel.com>
+Date: Tue, 15 Nov 2022 22:29:09 +0530
+Message-Id: <20221115165916.196084-47-bhanuprakash.modem@intel.com>
 In-Reply-To: <20221115165916.196084-1-bhanuprakash.modem@intel.com>
 References: <20221115165916.196084-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t v5 52/52] tests/i915/kms_pwrite_crc: Add support
+Subject: [igt-dev] [i-g-t v5 45/52] tests/i915/kms_flip_tiling: Add support
  for Bigjoiner
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -31,44 +31,38 @@ Example:
 * To use 8K mode on a pipe then consecutive pipe must be available & free.
 
 V2: - Use updated helper name
-V3: - Fix the usage of pipe & output
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Reviewed-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
 ---
- tests/i915/kms_pwrite_crc.c | 12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
+ tests/i915/kms_flip_tiling.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/tests/i915/kms_pwrite_crc.c b/tests/i915/kms_pwrite_crc.c
-index c84a184d..3278d876 100644
---- a/tests/i915/kms_pwrite_crc.c
-+++ b/tests/i915/kms_pwrite_crc.c
-@@ -110,6 +110,7 @@ static void prepare_crtc(data_t *data)
- 	igt_output_t *output = data->output;
- 	drmModeModeInfo *mode;
+diff --git a/tests/i915/kms_flip_tiling.c b/tests/i915/kms_flip_tiling.c
+index 1183feb6..2e2b9511 100644
+--- a/tests/i915/kms_flip_tiling.c
++++ b/tests/i915/kms_flip_tiling.c
+@@ -79,6 +79,9 @@ test_flip_tiling(data_t *data, enum pipe pipe, igt_output_t *output, uint64_t mo
+ 	igt_crc_t reference_crc, crc;
+ 	int fb_id, ret;
  
-+	igt_display_reset(display);
- 	/* select the pipe we want to use */
- 	igt_output_set_pipe(output, data->pipe);
- 
-@@ -156,12 +157,13 @@ static void cleanup_crtc(data_t *data)
- static void run_test(data_t *data)
- {
- 	igt_display_t *display = &data->display;
--	igt_output_t *output;
--	enum pipe pipe;
- 
--	for_each_pipe_with_valid_output(display, pipe, output) {
--		data->output = output;
--		data->pipe = pipe;
-+	for_each_pipe_with_valid_output(display, data->pipe, data->output) {
-+		igt_display_reset(display);
++	igt_info("Using (pipe %s + %s) to run the subtest.\n",
++		 kmstest_pipe_name(pipe), igt_output_name(output));
 +
-+		igt_output_set_pipe(data->output, data->pipe);
-+		if (!i915_pipe_output_combo_valid(display))
-+			continue;
+ 	memcpy(&data->old_fb, &data->fb, sizeof(data->fb));
  
- 		prepare_crtc(data);
- 		test(data);
+ 	mode = igt_output_get_mode(output);
+@@ -195,8 +198,12 @@ igt_main
+ 		for_each_pipe_with_valid_output(&data.display, pipe, output) {
+ 			igt_plane_t *plane;
+ 
++			igt_display_reset(&data.display);
+ 			pipe_crc_free(&data);
++
+ 			igt_output_set_pipe(output, pipe);
++			if (!i915_pipe_output_combo_valid(&data.display))
++				continue;
+ 
+ 			plane = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
+ 
 -- 
 2.38.0
