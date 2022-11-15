@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6231110E044
- for <igt-dev@lists.freedesktop.org>; Tue, 15 Nov 2022 17:10:51 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 295D010E044
+ for <igt-dev@lists.freedesktop.org>; Tue, 15 Nov 2022 17:10:59 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 15 Nov 2022 22:38:45 +0530
-Message-Id: <20221115170855.196572-43-bhanuprakash.modem@intel.com>
+Date: Tue, 15 Nov 2022 22:38:51 +0530
+Message-Id: <20221115170855.196572-49-bhanuprakash.modem@intel.com>
 In-Reply-To: <20221115170855.196572-1-bhanuprakash.modem@intel.com>
 References: <20221115170855.196572-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t v5 42/52] tests/i915/kms_draw_crc: Add support for
+Subject: [igt-dev] [i-g-t v5 48/52] tests/i915/kms_psr2_sf: Add support for
  Bigjoiner
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -33,34 +33,36 @@ Example:
 V2: - Use updated helper name
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Reviewed-by: Jeevan B <jeevan.b@intel.com>
 ---
- tests/i915/kms_draw_crc.c | 10 ++++------
- 1 file changed, 4 insertions(+), 6 deletions(-)
+ tests/i915/kms_psr2_sf.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/tests/i915/kms_draw_crc.c b/tests/i915/kms_draw_crc.c
-index c2ac4721..01c3808c 100644
---- a/tests/i915/kms_draw_crc.c
-+++ b/tests/i915/kms_draw_crc.c
-@@ -59,16 +59,14 @@ static void find_modeset_params(void)
- {
- 	enum pipe pipe;
- 
--	igt_display_reset(&display);
--	igt_display_commit(&display);
--
- 	for_each_pipe_with_valid_output(&display, pipe, output) {
--		igt_output_set_pipe(output, pipe);
-+		igt_display_reset(&display);
- 
--		mode = igt_output_get_mode(output);
--		if (!mode)
-+		igt_output_set_pipe(output, pipe);
-+		if (!i915_pipe_output_combo_valid(&display))
+diff --git a/tests/i915/kms_psr2_sf.c b/tests/i915/kms_psr2_sf.c
+index cfde6cfc..2b2f6166 100644
+--- a/tests/i915/kms_psr2_sf.c
++++ b/tests/i915/kms_psr2_sf.c
+@@ -115,7 +115,11 @@ static void setup_output(data_t *data)
+ 		if (c->connector_type != DRM_MODE_CONNECTOR_eDP)
  			continue;
  
-+		mode = igt_output_get_mode(output);
- 		pipe_crc = igt_pipe_crc_new(drm_fd, pipe, IGT_PIPE_CRC_SOURCE_AUTO);
- 		/*Only one pipe/output is enough*/
- 		break;
++		igt_display_reset(display);
+ 		igt_output_set_pipe(output, pipe);
++		if (!i915_pipe_output_combo_valid(display))
++			continue;
++
+ 		data->output = output;
+ 		data->mode = igt_output_get_mode(output);
+ 
+@@ -127,6 +131,9 @@ static void display_init(data_t *data)
+ {
+ 	igt_display_require(&data->display, data->drm_fd);
+ 	setup_output(data);
++
++	igt_require_f(data->output, "No available output found\n");
++	igt_require_f(data->mode, "No available mode found on %s\n", data->output->name);
+ }
+ 
+ static void display_fini(data_t *data)
 -- 
 2.38.0
