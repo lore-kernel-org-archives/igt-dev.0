@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A966D10E092
- for <igt-dev@lists.freedesktop.org>; Tue, 15 Nov 2022 17:10:29 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5977F10E044
+ for <igt-dev@lists.freedesktop.org>; Tue, 15 Nov 2022 17:10:10 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 15 Nov 2022 22:38:28 +0530
-Message-Id: <20221115170855.196572-26-bhanuprakash.modem@intel.com>
+Date: Tue, 15 Nov 2022 22:38:13 +0530
+Message-Id: <20221115170855.196572-11-bhanuprakash.modem@intel.com>
 In-Reply-To: <20221115170855.196572-1-bhanuprakash.modem@intel.com>
 References: <20221115170855.196572-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t v5 25/52] tests/kms_plane_lowres: Add support for
+Subject: [igt-dev] [i-g-t v5 10/52] tests/kms_concurrent: Add support for
  Bigjoiner
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -33,24 +33,32 @@ Example:
 V2: - Use updated helper name
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Reviewed-by: Karthik B S <karthik.b.s@intel.com>
 ---
- tests/kms_plane_lowres.c | 3 +++
- 1 file changed, 3 insertions(+)
+ tests/kms_concurrent.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/tests/kms_plane_lowres.c b/tests/kms_plane_lowres.c
-index 6dfc147c..958d3ec6 100644
---- a/tests/kms_plane_lowres.c
-+++ b/tests/kms_plane_lowres.c
-@@ -277,6 +277,9 @@ static void run_test(data_t *data, uint64_t modifier)
- 			igt_display_reset(&data->display);
- 			igt_output_set_pipe(data->output, data->pipe);
- 
+diff --git a/tests/kms_concurrent.c b/tests/kms_concurrent.c
+index 6f8ffd4a..e6d61a84 100644
+--- a/tests/kms_concurrent.c
++++ b/tests/kms_concurrent.c
+@@ -330,9 +330,17 @@ run_tests_for_pipe(data_t *data, enum pipe pipe)
+ 	igt_describe("Test atomic mode setting concurrently with multiple planes and screen "
+ 		     "resolution.");
+ 	igt_subtest_with_dynamic_f("pipe-%s", kmstest_pipe_name(pipe)) {
+-		for_each_valid_output_on_pipe(&data->display, pipe, output)
++		for_each_valid_output_on_pipe(&data->display, pipe, output) {
++			igt_display_reset(&data->display);
++
++			igt_output_set_pipe(output, pipe);
 +			if (!i915_pipe_output_combo_valid(&data->display))
 +				continue;
 +
- 			data->pipe_crc = igt_pipe_crc_new(data->drm_fd, data->pipe,
- 							  IGT_PIPE_CRC_SOURCE_AUTO);
++			igt_output_set_pipe(output, PIPE_NONE);
+ 			igt_dynamic_f("%s", igt_output_name(output))
+ 				run_test(data, pipe, output);
++		}
+ 	}
+ }
  
 -- 
 2.38.0
