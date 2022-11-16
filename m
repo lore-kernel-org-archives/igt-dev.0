@@ -1,17 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CB61410E43D
- for <igt-dev@lists.freedesktop.org>; Wed, 16 Nov 2022 08:24:23 +0000 (UTC)
-From: Anshuman Gupta <anshuman.gupta@intel.com>
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2903710E02D
+ for <igt-dev@lists.freedesktop.org>; Wed, 16 Nov 2022 08:50:08 +0000 (UTC)
+From: Vikas Srivastava <vikas.srivastava@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Wed, 16 Nov 2022 13:53:34 +0530
-Message-Id: <20221116082335.1194410-3-anshuman.gupta@intel.com>
-In-Reply-To: <20221116082335.1194410-1-anshuman.gupta@intel.com>
-References: <20221116082335.1194410-1-anshuman.gupta@intel.com>
+Date: Wed, 16 Nov 2022 14:18:35 +0530
+Message-Id: <20221116084835.1485815-1-vikas.srivastava@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v2 2/3] test/device_reset: Refactor
- initiate_device_reset
+Subject: [igt-dev] [PATCHi i-g-t] lib: Remove deprecated interfaces from
+ huc_copy for Gen12+ platforms.
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,88 +17,153 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: badal.nilawar@intel.com, rodrigo.vivi@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Added a reset type enum to support multiple types
-of reset like WARM, COLD and FLR reset.
+From: "Ye, Tony" <tony.ye@intel.com>
 
-No functional change.
+Stop using relocs and the legacy execbuf flags.
 
-v2:
-- Removed WARM_RESET enum as not used yet. [Badal]
+Signed-off-by: "Ye, Tony" <tony.ye@intel.com>
+Signed-off-by: Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>
+Ackedd-by: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
 
-Signed-off-by: Anshuman Gupta <anshuman.gupta@intel.com>
 ---
- tests/device_reset.c | 20 ++++++++++++++------
- 1 file changed, 14 insertions(+), 6 deletions(-)
+ lib/huc_copy.c          | 77 +++++++++++++++++++++++++++++++++++++++++
+ lib/huc_copy.h          |  4 +++
+ lib/intel_batchbuffer.c |  8 +++--
+ 3 files changed, 87 insertions(+), 2 deletions(-)
 
-diff --git a/tests/device_reset.c b/tests/device_reset.c
-index e60d4c7fde..0c477a02c0 100644
---- a/tests/device_reset.c
-+++ b/tests/device_reset.c
-@@ -19,6 +19,11 @@ IGT_TEST_DESCRIPTION("Examine behavior of a driver on device sysfs reset");
- #define DEV_PATH_LEN 80
- #define DEV_BUS_ADDR_LEN 13 /* addr has form 0000:00:00.0 */
+diff --git a/lib/huc_copy.c b/lib/huc_copy.c
+index 6ec68864b..3b011a305 100644
+--- a/lib/huc_copy.c
++++ b/lib/huc_copy.c
+@@ -26,6 +26,8 @@
+ #include "drmtest.h"
+ #include "huc_copy.h"
+ #include "intel_allocator.h"
++#include "intel_ctx.h"
++#include "i915/gem_engine_topology.h"
  
-+enum reset {
-+	COLD_RESET,
-+	FLR_RESET
-+};
-+
- /**
-  * Helper structure containing file descriptors
-  * and bus address related to tested device
-@@ -222,10 +227,13 @@ static void driver_bind(struct device_fds *dev)
+ static void
+ gen9_emit_huc_virtual_addr_state(struct drm_i915_gem_exec_object2 *src,
+@@ -123,3 +125,78 @@ gen9_huc_copyfunc(int fd, uint64_t ahnd,
+ 
+ 	gem_execbuf(fd, &execbuf);
  }
++
++static void
++gen12_emit_huc_virtual_addr_state(struct drm_i915_gem_exec_object2 *src,
++		struct drm_i915_gem_exec_object2 *dst,
++		uint32_t *buf,
++		int *i)
++{
++	buf[(*i)++] = HUC_VIRTUAL_ADDR_STATE;
++
++	for (int j = 0; j < HUC_VIRTUAL_ADDR_REGION_NUM; j++) {
++		if (j == HUC_VIRTUAL_ADDR_REGION_SRC) {
++			buf[(*i)++] = src->offset;
++		} else if (j == HUC_VIRTUAL_ADDR_REGION_DST) {
++			buf[(*i)++] = dst->offset;
++		} else {
++			buf[(*i)++] = 0;
++		}
++		buf[(*i)++] = 0;
++		buf[(*i)++] = 0;
++	}
++}
++
++void
++gen12_huc_copyfunc(int fd, uint64_t ahnd,
++		  struct drm_i915_gem_exec_object2 *obj, uint64_t *objsize)
++{
++	struct drm_i915_gem_execbuffer2 execbuf;
++	int i = 0;
++	uint32_t buf[63];
++	const intel_ctx_t *ctx;
++
++	/* load huc kernel */
++	buf[i++] = HUC_IMEM_STATE;
++	buf[i++] = 0;
++	buf[i++] = 0;
++	buf[i++] = 0;
++	buf[i++] = 0x3;
++
++	buf[i++] = MFX_WAIT;
++	buf[i++] = MFX_WAIT;
++
++	buf[i++] = HUC_PIPE_MODE_SELECT;
++	buf[i++] = 0;
++	buf[i++] = 0;
++
++	buf[i++] = MFX_WAIT;
++
++	obj[0].offset = 0x200000;
++	obj[0].flags |= EXEC_OBJECT_PINNED;
++	obj[1].offset = 0x400000;
++	obj[1].flags |= EXEC_OBJECT_PINNED;
++	obj[1].flags |= EXEC_OBJECT_WRITE;
++	obj[2].offset = 0x600000;
++	obj[2].flags |= EXEC_OBJECT_PINNED;
++	gen12_emit_huc_virtual_addr_state(&obj[0], &obj[1], buf, &i);
++
++	buf[i++] = HUC_START;
++	buf[i++] = 1;
++
++	buf[i++] = MI_BATCH_BUFFER_END;
++
++	gem_write(fd, obj[2].handle, 0, buf, sizeof(buf));
++
++	memset(&execbuf, 0, sizeof(execbuf));
++	execbuf.buffers_ptr = to_user_pointer(obj);
++	execbuf.buffer_count = 3;
++	execbuf.flags = I915_EXEC_DEFAULT;
++
++	ctx = intel_ctx_create_for_engine(fd, I915_ENGINE_CLASS_VIDEO, 0);
++	execbuf.rsvd1 = ctx->id;
++
++	gem_execbuf(fd, &execbuf);
++
++	intel_ctx_destroy(fd, ctx);
++}
+diff --git a/lib/huc_copy.h b/lib/huc_copy.h
+index 69d140933..e87e62c9c 100644
+--- a/lib/huc_copy.h
++++ b/lib/huc_copy.h
+@@ -46,4 +46,8 @@ void
+ gen9_huc_copyfunc(int fd, uint64_t ahnd,
+ 		  struct drm_i915_gem_exec_object2 *obj, uint64_t *objsize);
  
- /* Initiate device reset */
--static void initiate_device_reset(struct device_fds *dev)
-+static void initiate_device_reset(struct device_fds *dev, enum reset type)
++void
++gen12_huc_copyfunc(int fd, uint64_t ahnd,
++		   struct drm_i915_gem_exec_object2 *obj, uint64_t *objsize);
++
+ #endif /* HUC_COPY_H */
+diff --git a/lib/intel_batchbuffer.c b/lib/intel_batchbuffer.c
+index 19a1fbe4d..9a855a7f0 100644
+--- a/lib/intel_batchbuffer.c
++++ b/lib/intel_batchbuffer.c
+@@ -3066,14 +3066,18 @@ void intel_bb_copy_intel_buf(struct intel_bb *ibb,
+  * Returns:
+  *
+  * The platform-specific huc copy function pointer for the device specified
+- * with @devid. Will return NULL when no media spin function is implemented.
++ * with @devid. Will return NULL when no huc copy function is implemented.
+  */
+ igt_huc_copyfunc_t igt_get_huc_copyfunc(int devid)
  {
- 	igt_debug("reset device\n");
--	igt_assert(igt_sysfs_set(dev->fds.dev_dir, "reset", "1"));
-+
-+	if (type == FLR_RESET)
-+		igt_assert(igt_sysfs_set(dev->fds.dev_dir, "reset", "1"));
-+
+ 	igt_huc_copyfunc_t copy = NULL;
+ 
+-	if (IS_GEN12(devid) || IS_GEN11(devid) || IS_GEN9(devid))
++	if (AT_LEAST_GEN(devid, 12))
++		copy = gen12_huc_copyfunc;
++	else if (IS_GEN11(devid) || IS_GEN9(devid))
+ 		copy = gen9_huc_copyfunc;
++	else
++		copy = NULL;
+ 
+ 	return copy;
  }
- 
- static bool is_i915_wedged(int i915)
-@@ -274,14 +282,14 @@ static void set_device_filter(const char* dev_path)
- 	igt_assert_eq(igt_device_filter_add(filter), 1);
- }
- 
--static void unbind_reset_rebind(struct device_fds *dev)
-+static void unbind_reset_rebind(struct device_fds *dev, enum reset type)
- {
- 	igt_debug("close the device\n");
- 	close_if_opened(&dev->fds.dev);
- 
- 	driver_unbind(dev);
- 
--	initiate_device_reset(dev);
-+	initiate_device_reset(dev, type);
- 
- 	driver_bind(dev);
- }
-@@ -306,13 +314,13 @@ igt_main
- 	igt_describe("Unbinds driver from device, initiates reset"
- 		     " then rebinds driver to device");
- 	igt_subtest("unbind-reset-rebind") {
--		unbind_reset_rebind(&dev);
-+		unbind_reset_rebind(&dev, FLR_RESET);
- 		healthcheck(&dev);
- 	}
- 
- 	igt_describe("Resets device with bound driver");
- 	igt_subtest("reset-bound") {
--		initiate_device_reset(&dev);
-+		initiate_device_reset(&dev, FLR_RESET);
- 		healthcheck(&dev);
- 	}
- 
 -- 
 2.25.1
