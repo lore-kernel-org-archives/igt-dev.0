@@ -1,15 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2903710E02D
- for <igt-dev@lists.freedesktop.org>; Wed, 16 Nov 2022 08:50:08 +0000 (UTC)
-From: Vikas Srivastava <vikas.srivastava@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Wed, 16 Nov 2022 14:18:35 +0530
-Message-Id: <20221116084835.1485815-1-vikas.srivastava@intel.com>
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 916E110E45A
+ for <igt-dev@lists.freedesktop.org>; Wed, 16 Nov 2022 09:41:43 +0000 (UTC)
+Date: Wed, 16 Nov 2022 11:41:38 +0200
+From: Petri Latvala <petri.latvala@intel.com>
+To: Mark Yacoub <markyacoub@chromium.org>
+Message-ID: <Y3SwUuskS8pcv8BK@platvala-desk.ger.corp.intel.com>
+References: <20221110174133.262111-1-markyacoub@chromium.org>
+ <20221115175257.3988088-1-markyacoub@chromium.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCHi i-g-t] lib: Remove deprecated interfaces from
- huc_copy for Gen12+ platforms.
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20221115175257.3988088-1-markyacoub@chromium.org>
+Subject: Re: [igt-dev] [PATCH v3] [NEW] Chamelium: Add new EDID Resolution
+ List test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,153 +21,252 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: robdclark@chromium.org, vsuley@google.com, amstan@chromium.org,
+ ihf@google.com, igt-dev@lists.freedesktop.org, kalin@google.com,
+ seanpaul@chromium.org, matthewtlam@google.com, markyacoub@google.com,
+ khaled.almahallawy@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: "Ye, Tony" <tony.ye@intel.com>
+On Tue, Nov 15, 2022 at 12:52:57PM -0500, Mark Yacoub wrote:
+> [Why]
+> 1. Users can change resolutions of monitors on the fly.
+> 2. Monitors can come with different shapes and form aka different modes.
+> Test a change between different modes on the fly.
+> 
+> [How]
+> 1. Created an EDID based on a random combination of screen size, Refresh
+>    Rate and Aspect Ratio.
+> 2. Set that EDID to Chamelium.
+> 3. Iterate over every mode on the connector, assign it to the connector
+>    and check that the screen resolution changes to this one.
+> 
+> Test Based on: [ChromeOS AutoTest
+> display_ResolutionList](https://chromium.googlesource.com/chromiumos/third_party/autotest/+/HEAD/server/site_tests/display_ResolutionList/display_ResolutionList.py)
+> 
+> Tested on: TGL with Cv3
+> 
+> Signed-off-by: Mark Yacoub <markyacoub@chromium.org>
+> ---
+>  lib/igt_edid.c                  |  7 +++-
+>  lib/igt_edid.h                  |  2 +
+>  lib/igt_kms.c                   | 32 +++++++++++++++
+>  lib/igt_kms.h                   |  5 ++-
+>  tests/chamelium/kms_chamelium.c | 69 +++++++++++++++++++++++++++++++++
+>  5 files changed, 112 insertions(+), 3 deletions(-)
+> 
+> diff --git a/lib/igt_edid.c b/lib/igt_edid.c
+> index bff13a0d..b5e0b4ba 100644
+> --- a/lib/igt_edid.c
+> +++ b/lib/igt_edid.c
+> @@ -60,8 +60,11 @@ static const char monitor_range_padding[] = {
+>  
+>  const uint8_t hdmi_ieee_oui[3] = {0x03, 0x0C, 0x00};
+>  
+> -/* vfreq is in Hz */
+> -static void std_timing_set(struct std_timing *st, int hsize, int vfreq,
+> +/**
+> + * std_timing_set: Sets the EDID standard timing for a given |hsize|, |vfreq|
+> + * in Hz and |aspect| ratio
 
-Stop using relocs and the legacy execbuf flags.
+Use @param when referring to parameters.
 
-Signed-off-by: "Ye, Tony" <tony.ye@intel.com>
-Signed-off-by: Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>
-Ackedd-by: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
+With that changed,
+Reviewed-by: Petri Latvala <petri.latvala@intel.com>
 
----
- lib/huc_copy.c          | 77 +++++++++++++++++++++++++++++++++++++++++
- lib/huc_copy.h          |  4 +++
- lib/intel_batchbuffer.c |  8 +++--
- 3 files changed, 87 insertions(+), 2 deletions(-)
 
-diff --git a/lib/huc_copy.c b/lib/huc_copy.c
-index 6ec68864b..3b011a305 100644
---- a/lib/huc_copy.c
-+++ b/lib/huc_copy.c
-@@ -26,6 +26,8 @@
- #include "drmtest.h"
- #include "huc_copy.h"
- #include "intel_allocator.h"
-+#include "intel_ctx.h"
-+#include "i915/gem_engine_topology.h"
- 
- static void
- gen9_emit_huc_virtual_addr_state(struct drm_i915_gem_exec_object2 *src,
-@@ -123,3 +125,78 @@ gen9_huc_copyfunc(int fd, uint64_t ahnd,
- 
- 	gem_execbuf(fd, &execbuf);
- }
-+
-+static void
-+gen12_emit_huc_virtual_addr_state(struct drm_i915_gem_exec_object2 *src,
-+		struct drm_i915_gem_exec_object2 *dst,
-+		uint32_t *buf,
-+		int *i)
-+{
-+	buf[(*i)++] = HUC_VIRTUAL_ADDR_STATE;
-+
-+	for (int j = 0; j < HUC_VIRTUAL_ADDR_REGION_NUM; j++) {
-+		if (j == HUC_VIRTUAL_ADDR_REGION_SRC) {
-+			buf[(*i)++] = src->offset;
-+		} else if (j == HUC_VIRTUAL_ADDR_REGION_DST) {
-+			buf[(*i)++] = dst->offset;
-+		} else {
-+			buf[(*i)++] = 0;
-+		}
-+		buf[(*i)++] = 0;
-+		buf[(*i)++] = 0;
-+	}
-+}
-+
-+void
-+gen12_huc_copyfunc(int fd, uint64_t ahnd,
-+		  struct drm_i915_gem_exec_object2 *obj, uint64_t *objsize)
-+{
-+	struct drm_i915_gem_execbuffer2 execbuf;
-+	int i = 0;
-+	uint32_t buf[63];
-+	const intel_ctx_t *ctx;
-+
-+	/* load huc kernel */
-+	buf[i++] = HUC_IMEM_STATE;
-+	buf[i++] = 0;
-+	buf[i++] = 0;
-+	buf[i++] = 0;
-+	buf[i++] = 0x3;
-+
-+	buf[i++] = MFX_WAIT;
-+	buf[i++] = MFX_WAIT;
-+
-+	buf[i++] = HUC_PIPE_MODE_SELECT;
-+	buf[i++] = 0;
-+	buf[i++] = 0;
-+
-+	buf[i++] = MFX_WAIT;
-+
-+	obj[0].offset = 0x200000;
-+	obj[0].flags |= EXEC_OBJECT_PINNED;
-+	obj[1].offset = 0x400000;
-+	obj[1].flags |= EXEC_OBJECT_PINNED;
-+	obj[1].flags |= EXEC_OBJECT_WRITE;
-+	obj[2].offset = 0x600000;
-+	obj[2].flags |= EXEC_OBJECT_PINNED;
-+	gen12_emit_huc_virtual_addr_state(&obj[0], &obj[1], buf, &i);
-+
-+	buf[i++] = HUC_START;
-+	buf[i++] = 1;
-+
-+	buf[i++] = MI_BATCH_BUFFER_END;
-+
-+	gem_write(fd, obj[2].handle, 0, buf, sizeof(buf));
-+
-+	memset(&execbuf, 0, sizeof(execbuf));
-+	execbuf.buffers_ptr = to_user_pointer(obj);
-+	execbuf.buffer_count = 3;
-+	execbuf.flags = I915_EXEC_DEFAULT;
-+
-+	ctx = intel_ctx_create_for_engine(fd, I915_ENGINE_CLASS_VIDEO, 0);
-+	execbuf.rsvd1 = ctx->id;
-+
-+	gem_execbuf(fd, &execbuf);
-+
-+	intel_ctx_destroy(fd, ctx);
-+}
-diff --git a/lib/huc_copy.h b/lib/huc_copy.h
-index 69d140933..e87e62c9c 100644
---- a/lib/huc_copy.h
-+++ b/lib/huc_copy.h
-@@ -46,4 +46,8 @@ void
- gen9_huc_copyfunc(int fd, uint64_t ahnd,
- 		  struct drm_i915_gem_exec_object2 *obj, uint64_t *objsize);
- 
-+void
-+gen12_huc_copyfunc(int fd, uint64_t ahnd,
-+		   struct drm_i915_gem_exec_object2 *obj, uint64_t *objsize);
-+
- #endif /* HUC_COPY_H */
-diff --git a/lib/intel_batchbuffer.c b/lib/intel_batchbuffer.c
-index 19a1fbe4d..9a855a7f0 100644
---- a/lib/intel_batchbuffer.c
-+++ b/lib/intel_batchbuffer.c
-@@ -3066,14 +3066,18 @@ void intel_bb_copy_intel_buf(struct intel_bb *ibb,
-  * Returns:
-  *
-  * The platform-specific huc copy function pointer for the device specified
-- * with @devid. Will return NULL when no media spin function is implemented.
-+ * with @devid. Will return NULL when no huc copy function is implemented.
-  */
- igt_huc_copyfunc_t igt_get_huc_copyfunc(int devid)
- {
- 	igt_huc_copyfunc_t copy = NULL;
- 
--	if (IS_GEN12(devid) || IS_GEN11(devid) || IS_GEN9(devid))
-+	if (AT_LEAST_GEN(devid, 12))
-+		copy = gen12_huc_copyfunc;
-+	else if (IS_GEN11(devid) || IS_GEN9(devid))
- 		copy = gen9_huc_copyfunc;
-+	else
-+		copy = NULL;
- 
- 	return copy;
- }
--- 
-2.25.1
+
+> + */
+> + void std_timing_set(struct std_timing *st, int hsize, int vfreq,
+>  			   enum std_timing_aspect aspect)
+>  {
+>  	assert(hsize >= 256 && hsize <= 2288);
+> diff --git a/lib/igt_edid.h b/lib/igt_edid.h
+> index a9251d68..477f16c2 100644
+> --- a/lib/igt_edid.h
+> +++ b/lib/igt_edid.h
+> @@ -379,6 +379,8 @@ size_t edid_get_size(const struct edid *edid);
+>  void edid_get_mfg(const struct edid *edid, char out[static 3]);
+>  uint8_t edid_get_deep_color_from_vsdb(const struct edid *edid);
+>  uint8_t edid_get_bit_depth_from_vid(const struct edid *edid);
+> +void std_timing_set(struct std_timing *st, int hsize, int vfreq,
+> +		    enum std_timing_aspect aspect);
+>  void detailed_timing_set_mode(struct detailed_timing *dt, drmModeModeInfo *mode,
+>  			      int width_mm, int height_mm);
+>  void detailed_timing_set_monitor_range_mode(struct detailed_timing *dt,
+> diff --git a/lib/igt_kms.c b/lib/igt_kms.c
+> index 921a623d..b4a98ae1 100644
+> --- a/lib/igt_kms.c
+> +++ b/lib/igt_kms.c
+> @@ -133,6 +133,36 @@ const struct edid *igt_kms_get_base_edid(void)
+>  	return &edid;
+>  }
+>  
+> +const struct edid *igt_kms_get_full_edid(void)
+> +{
+> +	static struct edid edid;
+> +	drmModeModeInfo mode = {};
+> +
+> +	mode.clock = 148500;
+> +	mode.hdisplay = 2288;
+> +	mode.hsync_start = 2008;
+> +	mode.hsync_end = 2052;
+> +	mode.htotal = 2200;
+> +	mode.vdisplay = 1287;
+> +	mode.vsync_start = 1084;
+> +	mode.vsync_end = 1089;
+> +	mode.vtotal = 1125;
+> +	mode.vrefresh = 144;
+> +	edid_init_with_mode(&edid, &mode);
+> +
+> +	std_timing_set(&edid.standard_timings[0], 256, 60, STD_TIMING_16_10);
+> +	std_timing_set(&edid.standard_timings[1], 510, 69, STD_TIMING_4_3);
+> +	std_timing_set(&edid.standard_timings[2], 764, 78, STD_TIMING_5_4);
+> +	std_timing_set(&edid.standard_timings[3], 1018, 87, STD_TIMING_16_9);
+> +	std_timing_set(&edid.standard_timings[4], 1526, 96, STD_TIMING_16_10);
+> +	std_timing_set(&edid.standard_timings[5], 1780, 105, STD_TIMING_4_3);
+> +	std_timing_set(&edid.standard_timings[6], 2034, 114, STD_TIMING_5_4);
+> +	std_timing_set(&edid.standard_timings[7], 2288, 123, STD_TIMING_16_9);
+> +
+> +	edid_update_checksum(&edid);
+> +	return &edid;
+> +}
+> +
+>  const struct edid *igt_kms_get_base_tile_edid(void)
+>  {
+>  	static struct edid edid;
+> @@ -548,6 +578,8 @@ const struct edid *igt_kms_get_custom_edid(enum igt_custom_edid_type edid)
+>  	switch (edid) {
+>  	case IGT_CUSTOM_EDID_BASE:
+>  		return igt_kms_get_base_edid();
+> +	case IGT_CUSTOM_EDID_FULL:
+> +		return igt_kms_get_full_edid();
+>  	case IGT_CUSTOM_EDID_ALT:
+>  		return igt_kms_get_alt_edid();
+>  	case IGT_CUSTOM_EDID_HDMI_AUDIO:
+> diff --git a/lib/igt_kms.h b/lib/igt_kms.h
+> index b09441d0..7a00d204 100644
+> --- a/lib/igt_kms.h
+> +++ b/lib/igt_kms.h
+> @@ -82,6 +82,7 @@ enum port {
+>   *
+>   * Enum used for the helper function igt_custom_edid_type
+>   * @IGT_CUSTOM_EDID_BASE: Returns base edid
+> + * @IGT_CUSTOM_EDID_FULL: Returns edid with full list of standard timings.
+>   * @IGT_CUSTOM_EDID_ALT: Returns alternate edid
+>   * @IGT_CUSTOM_EDID_HDMI_AUDIO: Returns edid with HDMI audio block
+>   * @IGT_CUSTOM_EDID_DP_AUDIO: Returns edid with DP audio block
+> @@ -89,12 +90,13 @@ enum port {
+>   */
+>  enum igt_custom_edid_type {
+>  	IGT_CUSTOM_EDID_BASE,
+> +	IGT_CUSTOM_EDID_FULL,
+>  	IGT_CUSTOM_EDID_ALT,
+>  	IGT_CUSTOM_EDID_HDMI_AUDIO,
+>  	IGT_CUSTOM_EDID_DP_AUDIO,
+>  	IGT_CUSTOM_EDID_ASPECT_RATIO,
+>  };
+> -#define IGT_CUSTOM_EDID_COUNT 5
+> +#define IGT_CUSTOM_EDID_COUNT 6
+>  
+>  /**
+>   * kmstest_port_name:
+> @@ -865,6 +867,7 @@ void igt_reset_connectors(void);
+>  uint32_t kmstest_get_vbl_flag(int crtc_offset);
+>  
+>  const struct edid *igt_kms_get_base_edid(void);
+> +const struct edid *igt_kms_get_full_edid(void);
+>  const struct edid *igt_kms_get_base_tile_edid(void);
+>  const struct edid *igt_kms_get_alt_edid(void);
+>  const struct edid *igt_kms_get_hdmi_audio_edid(void);
+> diff --git a/tests/chamelium/kms_chamelium.c b/tests/chamelium/kms_chamelium.c
+> index 2bc97d5a..d2ec5175 100644
+> --- a/tests/chamelium/kms_chamelium.c
+> +++ b/tests/chamelium/kms_chamelium.c
+> @@ -2612,6 +2612,71 @@ static void edid_stress_resolution(data_t *data, struct chamelium_port *port,
+>  			      data->ports, data->port_count);
+>  }
+>  
+> +static const char igt_edid_resolution_list_desc[] =
+> +	"Get an EDID with many modes of different configurations, set them on the screen and check the"
+> +	" screen resolution matches the mode resolution.";
+> +
+> +static void edid_resolution_list(data_t *data, struct chamelium_port *port)
+> +{
+> +	struct chamelium *chamelium = data->chamelium;
+> +	struct udev_monitor *mon = igt_watch_uevents();
+> +	drmModeConnector *init_connector;
+> +	drmModeModeInfoPtr modes;
+> +	int count_modes;
+> +	int i;
+> +	igt_output_t *output;
+> +	enum pipe pipe;
+> +
+> +	chamelium_unplug(chamelium, port);
+> +	set_edid(data, port, IGT_CUSTOM_EDID_FULL);
+> +
+> +	igt_flush_uevents(mon);
+> +	chamelium_plug(chamelium, port);
+> +	wait_for_connector_after_hotplug(data, mon, port, DRM_MODE_CONNECTED);
+> +	igt_flush_uevents(mon);
+> +
+> +	init_connector = chamelium_port_get_connector(chamelium, port, true);
+> +	modes = init_connector->modes;
+> +	count_modes = init_connector->count_modes;
+> +
+> +	output = get_output_for_port(data, port);
+> +	pipe = get_pipe_for_output(&data->display, output);
+> +	igt_output_set_pipe(output, pipe);
+> +
+> +	for (i = 0; i < count_modes; ++i)
+> +		igt_debug("#%d %s %uHz\n", i, modes[i].name, modes[i].vrefresh);
+> +
+> +	for (i = 0; i < count_modes; ++i) {
+> +		struct chamelium_edid *chamelium_edid;
+> +		struct igt_fb fb = { 0 };
+> +		bool is_video_stable;
+> +		int screen_res_w, screen_res_h;
+> +		drmModeConnector *connector;
+> +		drmModeModeInfoPtr expected_mode;
+> +		bool is_same_mode;
+> +
+> +		igt_info("Testing #%d %s %uHz\n", i, modes[i].name,
+> +			 modes[i].vrefresh);
+> +
+> +		/* Set the screen mode with the one we chose. */
+> +		create_fb_for_mode(data, &fb, &modes[i]);
+> +		enable_output(data, port, output, &modes[i], &fb);
+> +		is_video_stable = chamelium_port_wait_video_input_stable(
+> +			chamelium, port, 10);
+> +		igt_assert(is_video_stable);
+> +
+> +		chamelium_port_get_resolution(chamelium, port, &screen_res_w,
+> +					      &screen_res_h);
+> +		igt_assert_eq(screen_res_w, modes[i].hdisplay);
+> +		igt_assert_eq(screen_res_h, modes[i].vdisplay);
+> +
+> +		igt_remove_fb(data->drm_fd, &fb);
+> +	}
+> +
+> +	igt_modeset_disable_all_outputs(&data->display);
+> +	drmModeFreeConnector(init_connector);
+> +}
+> +
+>  #define for_each_port(p, port)            \
+>  	for (p = 0, port = data.ports[p]; \
+>  	     p < data.port_count;         \
+> @@ -2714,6 +2779,10 @@ igt_main
+>  			edid_stress_resolution(&data, port, DP_EDIDS_NON_4K,
+>  					       ARRAY_SIZE(DP_EDIDS_NON_4K));
+>  
+> +		igt_describe(igt_edid_resolution_list_desc);
+> +		connector_subtest("dp-edid-resolution-list", DisplayPort)
+> +			edid_resolution_list(&data, port);
+> +
+>  		igt_describe(test_suspend_resume_hpd_desc);
+>  		connector_subtest("dp-hpd-after-suspend", DisplayPort)
+>  			test_suspend_resume_hpd(&data, port,
+> -- 
+> 2.38.1.431.g37b22c650d-goog
+> 
