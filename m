@@ -1,22 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de
- [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 14E9110E4AD
- for <igt-dev@lists.freedesktop.org>; Wed, 16 Nov 2022 13:43:32 +0000 (UTC)
-Message-ID: <773cf4a1b289ced10f4373b03cb14126c7d32bf7.camel@pengutronix.de>
-From: Philipp Zabel <p.zabel@pengutronix.de>
-To: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>,
- igt-dev@lists.freedesktop.org, Intel-gfx@lists.freedesktop.org,
- dri-devel@lists.freedesktop.org
-Date: Wed, 16 Nov 2022 14:43:28 +0100
-In-Reply-To: <20221111155844.3290531-9-tvrtko.ursulin@linux.intel.com>
-References: <20221111155844.3290531-1-tvrtko.ursulin@linux.intel.com>
- <20221111155844.3290531-9-tvrtko.ursulin@linux.intel.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D8FED10E4C7
+ for <igt-dev@lists.freedesktop.org>; Wed, 16 Nov 2022 14:47:56 +0000 (UTC)
+Date: Wed, 16 Nov 2022 15:47:52 +0100
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Message-ID: <Y3T4GEJKxrCLEJ9o@kamilkon-desk1>
+References: <20221116111140.2516606-1-petri.latvala@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t 8/8] gputop: Basic vendor agnostic GPU
- top tool
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20221116111140.2516606-1-petri.latvala@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t] runner: Don't read journal at all if
+ socket comms are used
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,40 +20,60 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Rob Clark <robdclark@chromium.org>,
- Christian =?ISO-8859-1?Q?K=F6nig?= <ckoenig.leichtzumerken@gmail.com>,
- Christian =?ISO-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
- Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+Cc: Petri Latvala <petri.latvala@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Fr, 2022-11-11 at 15:58 +0000, Tvrtko Ursulin wrote:
-> From: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
->=20
-> Rudimentary vendor agnostic example of how lib_igt_drm_clients can be use=
-d
-> to display a sorted by card and usage list of processes using GPUs.
->=20
-> Borrows a bit of code from intel_gpu_top but for now omits the fancy
-> features like interactive functionality, card selection, client
-> aggregation, sort modes, JSON output  and pretty engine names. Also no
-> support for global GPU or system metrics.
->=20
-> On the other hand it shows clients from all DRM cards which
-> intel_gpu_top does not do.
->=20
-> Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
-> Cc: Rob Clark <robdclark@chromium.org>
-> Cc: Christian K=C3=B6nig <ckoenig.leichtzumerken@gmail.com>
-> Acked-by: Christian K=C3=B6nig <christian.koenig@amd.com>
+On 2022-11-16 at 13:11:40 +0200, Petri Latvala wrote:
+> When socket communications are used, the journal is left empty. When
+> processing results, reading an empty journal will add a test result
+> for the requested test, which can be incorrect when using testlists
+> with wildcards.
+> 
+> Testlists with wildcards were not the intended use of testlists but
+> they are used and thus this is considered a fix for a regression.
+> 
+> Signed-off-by: Petri Latvala <petri.latvala@intel.com>
+> Cc: Nicholas Choi <Nicholas.Choi@amd.com>
+> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
-Tested-by: Philipp Zabel <p.zabel@pengutronix.de>
+Acked-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
-on etnaviv with [1].
-
-[1] https://lore.kernel.org/dri-devel/20220916151205.165687-3-l.stach@pengu=
-tronix.de/
-
-regards
-Philipp
+> ---
+>  runner/resultgen.c | 12 ++++++------
+>  1 file changed, 6 insertions(+), 6 deletions(-)
+> 
+> diff --git a/runner/resultgen.c b/runner/resultgen.c
+> index 05c4234e..596de786 100644
+> --- a/runner/resultgen.c
+> +++ b/runner/resultgen.c
+> @@ -2119,12 +2119,6 @@ static bool parse_test_directory(int dirfd,
+>  		return false;
+>  	}
+>  
+> -	/*
+> -	 * fill_from_journal fills the subtests struct and adds
+> -	 * timeout results where applicable.
+> -	 */
+> -	fill_from_journal(fds[_F_JOURNAL], entry, &subtests, results);
+> -
+>  	/*
+>  	 * Get test output from socket comms if it exists, otherwise
+>  	 * parse stdout/stderr
+> @@ -2137,6 +2131,12 @@ static bool parse_test_directory(int dirfd,
+>  	}
+>  
+>  	if (commsparsed == COMMSPARSE_EMPTY) {
+> +		/*
+> +		 * fill_from_journal fills the subtests struct and
+> +		 * adds timeout results where applicable.
+> +		 */
+> +		fill_from_journal(fds[_F_JOURNAL], entry, &subtests, results);
+> +
+>  		if (!fill_from_output(fds[_F_OUT], entry->binary, "out", &subtests, results->tests) ||
+>  		    !fill_from_output(fds[_F_ERR], entry->binary, "err", &subtests, results->tests)) {
+>  			fprintf(stderr, "Error parsing output files (out.txt, err.txt)\n");
+> -- 
+> 2.30.2
+> 
