@@ -1,19 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DE9D110E1BC
- for <igt-dev@lists.freedesktop.org>; Wed, 16 Nov 2022 19:58:15 +0000 (UTC)
-Date: Wed, 16 Nov 2022 14:58:05 -0500
-From: Rodrigo Vivi <rodrigo.vivi@intel.com>
-To: Anshuman Gupta <anshuman.gupta@intel.com>
-Message-ID: <Y3VAzf628sVXRgbE@intel.com>
-References: <20221116082335.1194410-1-anshuman.gupta@intel.com>
- <20221116082335.1194410-3-anshuman.gupta@intel.com>
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20221116082335.1194410-3-anshuman.gupta@intel.com>
+Content-Type: multipart/alternative;
+ boundary="===============2050571762391422695=="
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t v2 2/3] test/device_reset: Refactor
- initiate_device_reset
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: =?utf-8?q?Ma=C3=ADra_Canal?= <mairacanal@riseup.net>
+Date: Wed, 16 Nov 2022 20:39:12 -0000
+Message-ID: <166863115241.29191.16901519746284987907@emeril.freedesktop.org>
+References: <20221116195344.220596-1-mairacanal@riseup.net>
+In-Reply-To: <20221116195344.220596-1-mairacanal@riseup.net>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
+ =?utf-8?q?amdgpu/amd=5Fbypass=3A_skip_if_connector_is_not_DisplayPort_=28?=
+ =?utf-8?q?rev3=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,92 +18,148 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org, badal.nilawar@intel.com
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Wed, Nov 16, 2022 at 01:53:34PM +0530, Anshuman Gupta wrote:
-> Added a reset type enum to support multiple types
-> of reset like WARM, COLD and FLR reset.
-> 
-> No functional change.
-> 
-> v2:
-> - Removed WARM_RESET enum as not used yet. [Badal]
-> 
-> Signed-off-by: Anshuman Gupta <anshuman.gupta@intel.com>
+--===============2050571762391422695==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-> ---
->  tests/device_reset.c | 20 ++++++++++++++------
->  1 file changed, 14 insertions(+), 6 deletions(-)
-> 
-> diff --git a/tests/device_reset.c b/tests/device_reset.c
-> index e60d4c7fde..0c477a02c0 100644
-> --- a/tests/device_reset.c
-> +++ b/tests/device_reset.c
-> @@ -19,6 +19,11 @@ IGT_TEST_DESCRIPTION("Examine behavior of a driver on device sysfs reset");
->  #define DEV_PATH_LEN 80
->  #define DEV_BUS_ADDR_LEN 13 /* addr has form 0000:00:00.0 */
->  
-> +enum reset {
-> +	COLD_RESET,
-> +	FLR_RESET
-> +};
-> +
->  /**
->   * Helper structure containing file descriptors
->   * and bus address related to tested device
-> @@ -222,10 +227,13 @@ static void driver_bind(struct device_fds *dev)
->  }
->  
->  /* Initiate device reset */
-> -static void initiate_device_reset(struct device_fds *dev)
-> +static void initiate_device_reset(struct device_fds *dev, enum reset type)
->  {
->  	igt_debug("reset device\n");
-> -	igt_assert(igt_sysfs_set(dev->fds.dev_dir, "reset", "1"));
-> +
-> +	if (type == FLR_RESET)
-> +		igt_assert(igt_sysfs_set(dev->fds.dev_dir, "reset", "1"));
-> +
->  }
->  
->  static bool is_i915_wedged(int i915)
-> @@ -274,14 +282,14 @@ static void set_device_filter(const char* dev_path)
->  	igt_assert_eq(igt_device_filter_add(filter), 1);
->  }
->  
-> -static void unbind_reset_rebind(struct device_fds *dev)
-> +static void unbind_reset_rebind(struct device_fds *dev, enum reset type)
->  {
->  	igt_debug("close the device\n");
->  	close_if_opened(&dev->fds.dev);
->  
->  	driver_unbind(dev);
->  
-> -	initiate_device_reset(dev);
-> +	initiate_device_reset(dev, type);
->  
->  	driver_bind(dev);
->  }
-> @@ -306,13 +314,13 @@ igt_main
->  	igt_describe("Unbinds driver from device, initiates reset"
->  		     " then rebinds driver to device");
->  	igt_subtest("unbind-reset-rebind") {
-> -		unbind_reset_rebind(&dev);
-> +		unbind_reset_rebind(&dev, FLR_RESET);
->  		healthcheck(&dev);
->  	}
->  
->  	igt_describe("Resets device with bound driver");
->  	igt_subtest("reset-bound") {
-> -		initiate_device_reset(&dev);
-> +		initiate_device_reset(&dev, FLR_RESET);
->  		healthcheck(&dev);
->  	}
->  
-> -- 
-> 2.25.1
-> 
+== Series Details ==
+
+Series: tests/amdgpu/amd_bypass: skip if connector is not DisplayPort (rev3)
+URL   : https://patchwork.freedesktop.org/series/107239/
+State : success
+
+== Summary ==
+
+CI Bug Log - changes from CI_DRM_12390 -> IGTPW_8122
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8122/index.html
+
+Participating hosts (41 -> 27)
+------------------------------
+
+  Missing    (14): bat-dg1-7 fi-rkl-11600 bat-dg1-6 bat-dg1-5 bat-dg2-8 bat-adlm-1 bat-dg2-9 bat-adlp-6 bat-adlp-4 bat-adln-1 bat-rplp-1 bat-rpls-2 bat-dg2-11 bat-jsl-1 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_8122 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@kms_chamelium@common-hpd-after-suspend:
+    - fi-hsw-4770:        NOTRUN -> [SKIP][1] ([fdo#109271] / [fdo#111827])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8122/fi-hsw-4770/igt@kms_chamelium@common-hpd-after-suspend.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_selftest@live@hangcheck:
+    - fi-hsw-4770:        [INCOMPLETE][2] ([i915#4785]) -> [PASS][3]
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12390/fi-hsw-4770/igt@i915_selftest@live@hangcheck.html
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8122/fi-hsw-4770/igt@i915_selftest@live@hangcheck.html
+
+  
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [fdo#111827]: https://bugs.freedesktop.org/show_bug.cgi?id=111827
+  [i915#4785]: https://gitlab.freedesktop.org/drm/intel/issues/4785
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_7062 -> IGTPW_8122
+
+  CI-20190529: 20190529
+  CI_DRM_12390: b7288a4715c68710aadbd63112b699356e8a2b65 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_8122: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8122/index.html
+  IGT_7062: 6539ea5fe17fce683133c45f07fac316593ee1f7 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8122/index.html
+
+--===============2050571762391422695==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/amdgpu/amd_bypass: skip if connector is not DisplayPort (rev3)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/107239/">https://patchwork.freedesktop.org/series/107239/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8122/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8122/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_12390 -&gt; IGTPW_8122</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8122/index.html</p>
+<h2>Participating hosts (41 -&gt; 27)</h2>
+<p>Missing    (14): bat-dg1-7 fi-rkl-11600 bat-dg1-6 bat-dg1-5 bat-dg2-8 bat-adlm-1 bat-dg2-9 bat-adlp-6 bat-adlp-4 bat-adln-1 bat-rplp-1 bat-rpls-2 bat-dg2-11 bat-jsl-1 </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_8122 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>igt@kms_chamelium@common-hpd-after-suspend:<ul>
+<li>fi-hsw-4770:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8122/fi-hsw-4770/igt@kms_chamelium@common-hpd-after-suspend.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://bugs.freedesktop.org/show_bug.cgi?id=111827">fdo#111827</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@i915_selftest@live@hangcheck:<ul>
+<li>fi-hsw-4770:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12390/fi-hsw-4770/igt@i915_selftest@live@hangcheck.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4785">i915#4785</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8122/fi-hsw-4770/igt@i915_selftest@live@hangcheck.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_7062 -&gt; IGTPW_8122</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_12390: b7288a4715c68710aadbd63112b699356e8a2b65 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_8122: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8122/index.html<br />
+  IGT_7062: 6539ea5fe17fce683133c45f07fac316593ee1f7 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============2050571762391422695==--
