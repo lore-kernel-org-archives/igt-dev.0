@@ -1,15 +1,22 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============8165907575674781727=="
+Received: from mail-wr1-x433.google.com (mail-wr1-x433.google.com
+ [IPv6:2a00:1450:4864:20::433])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id F357A10E685
+ for <igt-dev@lists.freedesktop.org>; Thu, 17 Nov 2022 21:13:34 +0000 (UTC)
+Received: by mail-wr1-x433.google.com with SMTP id k8so6001034wrh.1
+ for <igt-dev@lists.freedesktop.org>; Thu, 17 Nov 2022 13:13:34 -0800 (PST)
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Mark Yacoub" <markyacoub@chromium.org>
-Date: Thu, 17 Nov 2022 21:11:05 -0000
-Message-ID: <166871946517.12188.1433790947181713185@emeril.freedesktop.org>
-References: <20221117194639.481656-1-markyacoub@chromium.org>
-In-Reply-To: <20221117194639.481656-1-markyacoub@chromium.org>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgQ3YzIFdv?=
- =?utf-8?q?rkaround=3A_Skip_Plug_all_at_init=2E?=
+References: <20221117084129.2534819-1-petri.latvala@intel.com>
+ <Y3YYUtBv1gklPkLv@kamilkon-desk1>
+In-Reply-To: <Y3YYUtBv1gklPkLv@kamilkon-desk1>
+From: Craig Small <csmall@dropbear.xyz>
+Date: Fri, 18 Nov 2022 08:13:21 +1100
+Message-ID: <CALy8Cw7xqRk+zb2e68J-pY0Y51ZRh=oS5oecs1jYqTv_-R6OhQ@mail.gmail.com>
+To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ igt-dev@lists.freedesktop.org,
+ Petri Latvala <petri.latvala@intel.com>, Craig Small <csmall@dropbear.xyz>
+Content-Type: multipart/alternative; boundary="000000000000c5096505edb10f7a"
+Subject: Re: [igt-dev] [PATCH i-g-t] Use the new procps library libproc2
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,224 +24,308 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============8165907575674781727==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+--000000000000c5096505edb10f7a
+Content-Type: text/plain; charset="UTF-8"
 
-== Series Details ==
+On Thu, 17 Nov 2022 at 22:17, Kamil Konieczny <
+kamil.konieczny@linux.intel.com> wrote:
 
-Series: Cv3 Workaround: Skip Plug all at init.
-URL   : https://patchwork.freedesktop.org/series/111037/
-State : success
-
-== Summary ==
-
-CI Bug Log - changes from IGT_7066 -> IGTPW_8126
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8126/index.html
-
-Participating hosts (42 -> 37)
-------------------------------
-
-  Additional (1): bat-jsl-1 
-  Missing    (6): fi-ilk-m540 bat-dg1-6 fi-ctg-p8600 fi-hsw-4770 bat-rpls-1 fi-bdw-samus 
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_8126 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@i915_selftest@live@mman:
-    - fi-rkl-guc:         [PASS][1] -> [TIMEOUT][2] ([i915#6794])
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7066/fi-rkl-guc/igt@i915_selftest@live@mman.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8126/fi-rkl-guc/igt@i915_selftest@live@mman.html
-
-  
-#### Possible fixes ####
-
-  * igt@i915_selftest@live@gt_heartbeat:
-    - fi-bxt-dsi:         [DMESG-FAIL][3] ([i915#5334]) -> [PASS][4]
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7066/fi-bxt-dsi/igt@i915_selftest@live@gt_heartbeat.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8126/fi-bxt-dsi/igt@i915_selftest@live@gt_heartbeat.html
-
-  * igt@i915_selftest@live@gt_pm:
-    - {bat-adln-1}:       [DMESG-FAIL][5] ([i915#4258]) -> [PASS][6]
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7066/bat-adln-1/igt@i915_selftest@live@gt_pm.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8126/bat-adln-1/igt@i915_selftest@live@gt_pm.html
-
-  * igt@i915_selftest@live@hangcheck:
-    - {bat-dg1-7}:        [INCOMPLETE][7] -> [PASS][8]
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7066/bat-dg1-7/igt@i915_selftest@live@hangcheck.html
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8126/bat-dg1-7/igt@i915_selftest@live@hangcheck.html
-
-  * igt@i915_selftest@live@reset:
-    - {bat-rpls-2}:       [DMESG-FAIL][9] ([i915#4983]) -> [PASS][10]
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7066/bat-rpls-2/igt@i915_selftest@live@reset.html
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8126/bat-rpls-2/igt@i915_selftest@live@reset.html
-
-  
-#### Warnings ####
-
-  * igt@i915_suspend@basic-s3-without-i915:
-    - fi-rkl-11600:       [FAIL][11] ([fdo#103375]) -> [INCOMPLETE][12] ([i915#4817])
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7066/fi-rkl-11600/igt@i915_suspend@basic-s3-without-i915.html
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8126/fi-rkl-11600/igt@i915_suspend@basic-s3-without-i915.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [fdo#103375]: https://bugs.freedesktop.org/show_bug.cgi?id=103375
-  [fdo#109285]: https://bugs.freedesktop.org/show_bug.cgi?id=109285
-  [fdo#109295]: https://bugs.freedesktop.org/show_bug.cgi?id=109295
-  [fdo#111827]: https://bugs.freedesktop.org/show_bug.cgi?id=111827
-  [i915#2190]: https://gitlab.freedesktop.org/drm/intel/issues/2190
-  [i915#3003]: https://gitlab.freedesktop.org/drm/intel/issues/3003
-  [i915#3301]: https://gitlab.freedesktop.org/drm/intel/issues/3301
-  [i915#3555]: https://gitlab.freedesktop.org/drm/intel/issues/3555
-  [i915#4078]: https://gitlab.freedesktop.org/drm/intel/issues/4078
-  [i915#4103]: https://gitlab.freedesktop.org/drm/intel/issues/4103
-  [i915#4258]: https://gitlab.freedesktop.org/drm/intel/issues/4258
-  [i915#4312]: https://gitlab.freedesktop.org/drm/intel/issues/4312
-  [i915#4613]: https://gitlab.freedesktop.org/drm/intel/issues/4613
-  [i915#4817]: https://gitlab.freedesktop.org/drm/intel/issues/4817
-  [i915#4983]: https://gitlab.freedesktop.org/drm/intel/issues/4983
-  [i915#5153]: https://gitlab.freedesktop.org/drm/intel/issues/5153
-  [i915#5334]: https://gitlab.freedesktop.org/drm/intel/issues/5334
-  [i915#6559]: https://gitlab.freedesktop.org/drm/intel/issues/6559
-  [i915#6794]: https://gitlab.freedesktop.org/drm/intel/issues/6794
-  [i915#6997]: https://gitlab.freedesktop.org/drm/intel/issues/6997
-  [i915#7456]: https://gitlab.freedesktop.org/drm/intel/issues/7456
+> Hi Craig,
+>
+> On 2022-11-17 at 10:41:29 +0200, Petri Latvala wrote:
+> > +#ifdef HAVE_LIBPROCPS
+> >  #include <proc/readproc.h>
+> > +#endif
+> > +#ifdef HAVE_LIBPROC2
+> -- ^
+> Maybe just #elif ?
+>
+That's probably better, you don't want both to happen.
 
 
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_7066 -> IGTPW_8126
-
-  CI-20190529: 20190529
-  CI_DRM_12396: 75ed1f4f7835f178647e3f73910ed4af0944d9ec @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_8126: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8126/index.html
-  IGT_7066: 2470b918175f314fef2e4e8ef0aa8acafb4ff945 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8126/index.html
-
---===============8165907575674781727==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+> -- ^^^^^^^^^^^^^^^^^^
+> > +#include <dirent.h>
+> -- ^^^^^^^^^^^^^^^^^^
+> What this has with libproc2 ?
+> Note also that FreeBSD have its own limits.h
+>
+I'm not sure why that would be there, the library handles the directory
+enumeration.
 
 
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
+>
+> > +         if (!strncasecmp(pid_comm, comm, strlen(pid_comm))) {
+>
+> Processes AA and aa are different, why do you use strncasecmp ?
+>
+I agree, but the original uses strncasecmp. They both should use strncmp
+but that's beyond "making it work with libproc2".
+Otherwise linking with libprocps is case-insenstive and linking with
+libproc2 is case sensitive.
 
 
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>Cv3 Workaround: Skip Plug all at init.</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/111037/">https://patchwork.freedesktop.org/series/111037/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
+>
+> > @@ -1524,10 +1616,13 @@ static void pipewire_reserve_wait(void)
+> >       char xdg_dir[PATH_MAX];
+> >       const char *homedir;
+> >       struct passwd *pw;
+> > -     proc_t *proc_info;
+> > -     PROCTAB *proc;
+> > +     int tid=0, euid, egid;
+> >
+> > +#ifdef HAVE_LIBPROCPS
+> >       igt_fork_helper(&pw_reserve_proc) {
+> > +             proc_t *proc_info;
+> > +             PROCTAB *proc;
+> > +
+> >               igt_info("Preventing pipewire-pulse to use the audio
+> drivers\n");
+> >
+> >               proc = openproc(PROC_FILLCOM | PROC_FILLSTAT |
+> PROC_FILLARG);
+> > @@ -1540,19 +1635,44 @@ static void pipewire_reserve_wait(void)
+> >               }
+> >               closeproc(proc);
+> >
+> > +             tid = proc_info->tid;
+> > +             euid = proc_info->euid;
+> > +             egid = proc_info->egid;
+> > +             freeproc(proc_info);
+> > +#endif
+> > +#ifdef HAVE_LIBPROC2
+> > +     igt_fork(child, 1) {
+>
+> This should be fork_helper like above.
+>
+Did something change here recently? My version of pipewire_reserve_wait()
+has igt_fork()
+However, whatever the current version is doing they should be the same.
 
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8126/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8126/index.html</a></td></tr>
 
-</table>
+>
+> > +             enum pids_item Items[] = { PIDS_ID_PID, PIDS_ID_EUID,
+> PIDS_ID_EGID };
+> > +             enum rel_items { EU_PID, EU_EUID, EU_EGID };
+> > +             struct pids_info *info = NULL;
+> > +             struct pids_stack *stack;
+> > +
+> > +             igt_info("Preventing pipewire-pulse to use the audio
+> drivers\n");
+> > +
+> > +             if (procps_pids_new(&info, Items, 3) < 0)
+> > +                 return;
+> ------------------- ^
+> Use exit(0) here plus maybe some ing_info why it failed ?
+>
+Ah yes, because at this point you're running as a child process.
+The error message we (procps) use for this is:
+"Unable to create pid info structure"
+So this would be
+{
+  igt_info("Unable to create pid info structure");
+  exit(0);
+}
 
+> @@ -1584,6 +1702,10 @@ int pipewire_pulse_start_reserve(void)
+> >        * pipewire version 0.3.50 or upper.
+> >        */
+> >       for (attempts = 0; attempts < PIPEWIRE_RESERVE_MAX_TIME;
+> attempts++) {
+> > +#ifdef HAVE_LIBPROCPS
+> > +             PROCTAB *proc;
+> > +             proc_t *proc_info;
+> > +
+> >               usleep(1000);
+> >               proc = openproc(PROC_FILLCOM | PROC_FILLSTAT |
+> PROC_FILLARG);
+> >               igt_assert(proc != NULL);
+> > @@ -1598,6 +1720,25 @@ int pipewire_pulse_start_reserve(void)
+> >                       freeproc(proc_info);
+> >               }
+> >               closeproc(proc);
+> > +#endif
+> > +#ifdef HAVE_LIBPROC2
+> > +             enum pids_item Items[] = { PIDS_ID_PID, PIDS_CMD };
+> > +             struct pids_info *info = NULL;
+> > +             struct pids_stack *stack;
+> > +
+> > +             usleep(1000);
+> > +
+> > +             if (procps_pids_new(&info, Items, 2) < 0)
+> > +                     return 1;
+> ----------------------- ^
+> break or igt_assert_f(errno == 0, "Getting procps failed\n"); here.
+>
+If procps_pids_new() returns a negative number then getting the info
+structure has failed.
+This is very similar to igt_assert(proc != NULL) above in the same function.
+I'm not sure of your coding style, should you assert that procps_pids_new
+returns >= 0? or use the branch?
 
-    <h1>CI Bug Log - changes from IGT_7066 -&gt; IGTPW_8126</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8126/index.html</p>
-<h2>Participating hosts (42 -&gt; 37)</h2>
-<p>Additional (1): bat-jsl-1 <br />
-  Missing    (6): fi-ilk-m540 bat-dg1-6 fi-ctg-p8600 fi-hsw-4770 bat-rpls-1 fi-bdw-samus </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_8126 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>igt@i915_selftest@live@mman:<ul>
-<li>fi-rkl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7066/fi-rkl-guc/igt@i915_selftest@live@mman.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8126/fi-rkl-guc/igt@i915_selftest@live@mman.html">TIMEOUT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6794">i915#6794</a>)</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@i915_selftest@live@gt_heartbeat:</p>
-<ul>
-<li>fi-bxt-dsi:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7066/fi-bxt-dsi/igt@i915_selftest@live@gt_heartbeat.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5334">i915#5334</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8126/fi-bxt-dsi/igt@i915_selftest@live@gt_heartbeat.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@gt_pm:</p>
-<ul>
-<li>{bat-adln-1}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7066/bat-adln-1/igt@i915_selftest@live@gt_pm.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4258">i915#4258</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8126/bat-adln-1/igt@i915_selftest@live@gt_pm.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@hangcheck:</p>
-<ul>
-<li>{bat-dg1-7}:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7066/bat-dg1-7/igt@i915_selftest@live@hangcheck.html">INCOMPLETE</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8126/bat-dg1-7/igt@i915_selftest@live@hangcheck.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@reset:</p>
-<ul>
-<li>{bat-rpls-2}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7066/bat-rpls-2/igt@i915_selftest@live@reset.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4983">i915#4983</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8126/bat-rpls-2/igt@i915_selftest@live@reset.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<h4>Warnings</h4>
-<ul>
-<li>igt@i915_suspend@basic-s3-without-i915:<ul>
-<li>fi-rkl-11600:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7066/fi-rkl-11600/igt@i915_suspend@basic-s3-without-i915.html">FAIL</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=103375">fdo#103375</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8126/fi-rkl-11600/igt@i915_suspend@basic-s3-without-i915.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4817">i915#4817</a>)</li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_7066 -&gt; IGTPW_8126</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_12396: 75ed1f4f7835f178647e3f73910ed4af0944d9ec @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_8126: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8126/index.html<br />
-  IGT_7066: 2470b918175f314fef2e4e8ef0aa8acafb4ff945 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+Thankyou for your review on this patch. The sole goal of this patch is so
+igt does the same thing with libprocps and libproc2 so I've tried to keep
+the same behavior.
 
-</body>
-</html>
+  - Craig
 
---===============8165907575674781727==--
+--000000000000c5096505edb10f7a
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><div dir=3D"ltr"><br></div><br><div class=3D"gmail_quote">=
+<div dir=3D"ltr" class=3D"gmail_attr">On Thu, 17 Nov 2022 at 22:17, Kamil K=
+onieczny &lt;<a href=3D"mailto:kamil.konieczny@linux.intel.com">kamil.konie=
+czny@linux.intel.com</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quo=
+te" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204=
+);padding-left:1ex">Hi Craig,<br>
+<br>
+On 2022-11-17 at 10:41:29 +0200, Petri Latvala wrote:<br>&gt; +#ifdef HAVE_=
+LIBPROCPS<br>
+&gt;=C2=A0 #include &lt;proc/readproc.h&gt;<br>
+&gt; +#endif<br>
+&gt; +#ifdef HAVE_LIBPROC2<br>
+-- ^<br>
+Maybe just #elif ?<br></blockquote><div>That&#39;s probably better, you don=
+&#39;t want both to happen.</div><div>=C2=A0</div><blockquote class=3D"gmai=
+l_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,20=
+4,204);padding-left:1ex">-- ^^^^^^^^^^^^^^^^^^<br>
+&gt; +#include &lt;dirent.h&gt;<br>
+-- ^^^^^^^^^^^^^^^^^^<br>
+What this has with libproc2 ?<br>
+Note also that FreeBSD have its own limits.h<br></blockquote><div>I&#39;m n=
+ot sure why that would be there, the library handles the directory enumerat=
+ion.</div><div>=C2=A0</div><blockquote class=3D"gmail_quote" style=3D"margi=
+n:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex=
+">
+<br>&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0if (!strncasecmp(pid_comm, comm=
+, strlen(pid_comm))) {<br>
+<br>
+Processes AA and aa are different, why do you use strncasecmp ?<br></blockq=
+uote><div>I agree, but the original uses strncasecmp. They both should use =
+strncmp but that&#39;s beyond &quot;making it work with libproc2&quot;.</di=
+v><div>Otherwise linking with libprocps is case-insenstive=C2=A0and linking=
+=C2=A0with libproc2 is case sensitive.=C2=A0</div><div>=C2=A0</div><blockqu=
+ote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px=
+ solid rgb(204,204,204);padding-left:1ex"><br>
+&gt; @@ -1524,10 +1616,13 @@ static void pipewire_reserve_wait(void)<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0char xdg_dir[PATH_MAX];<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0const char *homedir;<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0struct passwd *pw;<br>
+&gt; -=C2=A0 =C2=A0 =C2=A0proc_t *proc_info;<br>
+&gt; -=C2=A0 =C2=A0 =C2=A0PROCTAB *proc;<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0int tid=3D0, euid, egid;<br>
+&gt;=C2=A0 <br>
+&gt; +#ifdef HAVE_LIBPROCPS<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0igt_fork_helper(&amp;pw_reserve_proc) {<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0proc_t *proc_info;<br=
+>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0PROCTAB *proc;<br>
+&gt; +<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0igt_info(&quot;P=
+reventing pipewire-pulse to use the audio drivers\n&quot;);<br>
+&gt;=C2=A0 <br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0proc =3D openpro=
+c(PROC_FILLCOM | PROC_FILLSTAT | PROC_FILLARG);<br>
+&gt; @@ -1540,19 +1635,44 @@ static void pipewire_reserve_wait(void)<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0}<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0closeproc(proc);=
+<br>
+&gt;=C2=A0 <br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0tid =3D proc_info-&gt=
+;tid;<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0euid =3D proc_info-&g=
+t;euid;<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0egid =3D proc_info-&g=
+t;egid;<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0freeproc(proc_info);<=
+br>
+&gt; +#endif<br>
+&gt; +#ifdef HAVE_LIBPROC2<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0igt_fork(child, 1) {<br>
+<br>
+This should be fork_helper like above.<br></blockquote><div>Did something c=
+hange here recently? My version of pipewire_reserve_wait() has igt_fork()</=
+div><div>However, whatever the current version is doing they should be the =
+same.</div><div>=C2=A0</div><blockquote class=3D"gmail_quote" style=3D"marg=
+in:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1e=
+x">
+<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0enum pids_item Items[=
+] =3D { PIDS_ID_PID, PIDS_ID_EUID, PIDS_ID_EGID };<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0enum rel_items { EU_P=
+ID, EU_EUID, EU_EGID };<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0struct pids_info *inf=
+o =3D NULL;<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0struct pids_stack *st=
+ack;<br>
+&gt; +<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0igt_info(&quot;Preven=
+ting pipewire-pulse to use the audio drivers\n&quot;);<br>
+&gt; +<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0if (procps_pids_new(&=
+amp;info, Items, 3) &lt; 0)<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0return;=
+<br>
+------------------- ^<br>
+Use exit(0) here plus maybe some ing_info why it failed ?<br></blockquote><=
+div>Ah yes, because at this point=C2=A0you&#39;re running as a child proces=
+s.=C2=A0</div><div>The error message we (procps) use for this is:</div><div=
+>&quot;Unable to create pid info structure&quot;<br></div><div>So this woul=
+d be</div><div>{</div><div>=C2=A0 igt_info(&quot;Unable to create pid info =
+structure&quot;);</div><div>=C2=A0 exit(0);</div><div>}</div><div><br></div=
+><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border=
+-left:1px solid rgb(204,204,204);padding-left:1ex">&gt; @@ -1584,6 +1702,10=
+ @@ int pipewire_pulse_start_reserve(void)<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 * pipewire version 0.3.50 or upper.<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 */<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0for (attempts =3D 0; attempts &lt; PIPEWIRE_=
+RESERVE_MAX_TIME; attempts++) {<br>
+&gt; +#ifdef HAVE_LIBPROCPS<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0PROCTAB *proc;<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0proc_t *proc_info;<br=
+>
+&gt; +<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0usleep(1000);<br=
+>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0proc =3D openpro=
+c(PROC_FILLCOM | PROC_FILLSTAT | PROC_FILLARG);<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0igt_assert(proc =
+!=3D NULL);<br>
+&gt; @@ -1598,6 +1720,25 @@ int pipewire_pulse_start_reserve(void)<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 =C2=A0freeproc(proc_info);<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0}<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0closeproc(proc);=
+<br>
+&gt; +#endif<br>
+&gt; +#ifdef HAVE_LIBPROC2<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0enum pids_item Items[=
+] =3D { PIDS_ID_PID, PIDS_CMD };<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0struct pids_info *inf=
+o =3D NULL;<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0struct pids_stack *st=
+ack;<br>
+&gt; +<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0usleep(1000);<br>
+&gt; +<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0if (procps_pids_new(&=
+amp;info, Items, 2) &lt; 0)<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
+ =C2=A0return 1;<br>
+----------------------- ^<br>
+break or igt_assert_f(errno =3D=3D 0, &quot;Getting procps failed\n&quot;);=
+ here.<br></blockquote><div>If procps_pids_new() returns a negative number =
+then getting the info structure has failed.</div><div>This is very similar =
+to igt_assert(proc !=3D NULL) above in the same function.</div><div>I&#39;m=
+ not sure of your coding style, should you assert that procps_pids_new retu=
+rns &gt;=3D 0? or use the branch?</div><div><br></div><div>Thankyou for you=
+r review on this patch. The sole goal of this patch is so igt does the same=
+ thing with libprocps and libproc2 so I&#39;ve tried to keep the same behav=
+ior.</div><div><br></div><div>=C2=A0 - Craig</div><div><br></div></div></di=
+v>
+
+--000000000000c5096505edb10f7a--
