@@ -1,20 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-wm1-x32b.google.com (mail-wm1-x32b.google.com
- [IPv6:2a00:1450:4864:20::32b])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C2C0110E577
- for <igt-dev@lists.freedesktop.org>; Thu, 17 Nov 2022 09:05:15 +0000 (UTC)
-Received: by mail-wm1-x32b.google.com with SMTP id t4so903230wmj.5
- for <igt-dev@lists.freedesktop.org>; Thu, 17 Nov 2022 01:05:15 -0800 (PST)
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8769310E63E
+ for <igt-dev@lists.freedesktop.org>; Thu, 17 Nov 2022 15:52:08 +0000 (UTC)
+Date: Thu, 17 Nov 2022 16:52:06 +0100
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Message-ID: <Y3ZYphN7f2BMYhdY@kamilkon-desk1>
+References: <20221116103706.1492876-1-vikas.srivastava@intel.com>
 MIME-Version: 1.0
-References: <20221117084129.2534819-1-petri.latvala@intel.com>
- <Y3X0zvavwvxhcBqL@platvala-desk.ger.corp.intel.com>
-In-Reply-To: <Y3X0zvavwvxhcBqL@platvala-desk.ger.corp.intel.com>
-From: Craig Small <csmall@dropbear.xyz>
-Date: Thu, 17 Nov 2022 20:05:03 +1100
-Message-ID: <CALy8Cw5unkaRt0+ENVKp3gywkr2GthLnMghc1eO2r93xV4L+hg@mail.gmail.com>
-To: Petri Latvala <petri.latvala@intel.com>
-Content-Type: multipart/alternative; boundary="0000000000001bbb1105eda6e349"
-Subject: Re: [igt-dev] [PATCH i-g-t] Use the new procps library libproc2
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20221116103706.1492876-1-vikas.srivastava@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t v2] lib: Remove deprecated interfaces
+ from huc_copy for Gen12+ platforms.
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,50 +20,202 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---0000000000001bbb1105eda6e349
-Content-Type: text/plain; charset="UTF-8"
+Hi,
 
-Hi Petri,
-  Yes I am the author of the patch.
+please change subject of this commit, there are no changes
+in old huc_copy in this patch. Also remove dot from end of
+the Subject: line, s/platforms./platforms/
 
-Feel free to adjust the follow, for example I'm not 100% sure how you
-section your program up.
+On 2022-11-16 at 16:07:06 +0530, Vikas Srivastava wrote:
+> From: "Ye, Tony" <tony.ye@intel.com>
+> 
+> Stop using relocs and the legacy execbuf flags.
 
-igt_core: Link to libproc2
+You should put here a little more explanation, as I see this it
+is rather
 
-libprocps, the library that provides information out of the proc filesystem,
-has been renamed to libproc2 and has a new API.
+Add new huc_copy for gen12+ with no-relocs and no legacy flags
 
-This change will use either library and, for the newer one extracts the
-values
-once, rather than parsing the pids_info over and over.
+and there are no changes in old code (except for adding that
+AT_LEAST_GEN(12)).
 
-Signed-off-by: Craig Small <csmall@dropbear.xyz>
+> 
+> Signed-off-by: "Ye, Tony" <tony.ye@intel.com>
+> Signed-off-by: Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>
+> Acked-by: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
+> 
+> ---
+>  lib/huc_copy.c          | 77 +++++++++++++++++++++++++++++++++++++++++
+>  lib/huc_copy.h          |  4 +++
+>  lib/intel_batchbuffer.c |  8 +++--
+>  3 files changed, 87 insertions(+), 2 deletions(-)
+> 
+> diff --git a/lib/huc_copy.c b/lib/huc_copy.c
+> index 6ec68864b..3b011a305 100644
+> --- a/lib/huc_copy.c
+> +++ b/lib/huc_copy.c
+> @@ -26,6 +26,8 @@
+>  #include "drmtest.h"
+>  #include "huc_copy.h"
+>  #include "intel_allocator.h"
+> +#include "intel_ctx.h"
+> +#include "i915/gem_engine_topology.h"
+>  
+>  static void
+>  gen9_emit_huc_virtual_addr_state(struct drm_i915_gem_exec_object2 *src,
+> @@ -123,3 +125,78 @@ gen9_huc_copyfunc(int fd, uint64_t ahnd,
+>  
+>  	gem_execbuf(fd, &execbuf);
+>  }
+> +
+> +static void
+> +gen12_emit_huc_virtual_addr_state(struct drm_i915_gem_exec_object2 *src,
+> +		struct drm_i915_gem_exec_object2 *dst,
+> +		uint32_t *buf,
+> +		int *i)
+> +{
+> +	buf[(*i)++] = HUC_VIRTUAL_ADDR_STATE;
+> +
+> +	for (int j = 0; j < HUC_VIRTUAL_ADDR_REGION_NUM; j++) {
+> +		if (j == HUC_VIRTUAL_ADDR_REGION_SRC) {
+> +			buf[(*i)++] = src->offset;
 
+Addr is 48-bit and here we copy only lower 32-bit,
+this may work with relocs but not with pinned addresses.
 
+> +		} else if (j == HUC_VIRTUAL_ADDR_REGION_DST) {
+> +			buf[(*i)++] = dst->offset;
 
->
+Same here.
 
---0000000000001bbb1105eda6e349
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+> +		} else {
+> +			buf[(*i)++] = 0;
+> +		}
+> +		buf[(*i)++] = 0;
+> +		buf[(*i)++] = 0;
+> +	}
+> +}
+> +
+> +void
+> +gen12_huc_copyfunc(int fd, uint64_t ahnd,
+> +		  struct drm_i915_gem_exec_object2 *obj, uint64_t *objsize)
+> +{
+> +	struct drm_i915_gem_execbuffer2 execbuf;
+> +	int i = 0;
+> +	uint32_t buf[63];
+> +	const intel_ctx_t *ctx;
+> +
+> +	/* load huc kernel */
+> +	buf[i++] = HUC_IMEM_STATE;
+> +	buf[i++] = 0;
+> +	buf[i++] = 0;
+> +	buf[i++] = 0;
+> +	buf[i++] = 0x3;
+> +
+> +	buf[i++] = MFX_WAIT;
+> +	buf[i++] = MFX_WAIT;
+> +
+> +	buf[i++] = HUC_PIPE_MODE_SELECT;
+> +	buf[i++] = 0;
+> +	buf[i++] = 0;
+> +
+> +	buf[i++] = MFX_WAIT;
+> +
+> +	obj[0].offset = 0x200000;
+----------------------- ^
+Use ahnd as in gen9_huc_copy (without reloc code).
 
-<div dir=3D"ltr">Hi Petri,<div>=C2=A0 Yes I am the author of the patch.</di=
-v><div><br></div><div>Feel free to adjust the follow, for example I&#39;m n=
-ot 100% sure how you section your program up.</div><div><br></div><div>igt_=
-core: Link to libproc2<br><br>libprocps, the library that provides informat=
-ion out of the proc filesystem,<br>has been renamed to libproc2 and has a n=
-ew API.<br><br>This change will use either library and, for the newer one e=
-xtracts the values<br>once, rather than parsing the pids_info over and over=
-.<br><br>Signed-off-by: Craig Small &lt;<a href=3D"mailto:csmall@dropbear.x=
-yz">csmall@dropbear.xyz</a>&gt;<br><br></div><div><br></div><div class=3D"g=
-mail_quote"><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0=
-.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex"><br>
-</blockquote></div></div>
+> +	obj[0].flags |= EXEC_OBJECT_PINNED;
+Add also:
+			| EXEC_OBJECT_SUPPORTS_48B_ADDRESS
 
---0000000000001bbb1105eda6e349--
+> +	obj[1].offset = 0x400000;
+
+Same here.
+
+> +	obj[1].flags |= EXEC_OBJECT_PINNED;
+> +	obj[1].flags |= EXEC_OBJECT_WRITE;
+Add also
+			| EXEC_OBJECT_SUPPORTS_48B_ADDRESS
+
+and maybe make it one bit-or like:
+	obj[1].flags |= EXEC_OBJECT_PINNED | EXEC_OBJECT_WRITE |
+			EXEC_OBJECT_SUPPORTS_48B_ADDRESS;
+
+> +	obj[2].offset = 0x600000;
+
+Same here.
+
+> +	obj[2].flags |= EXEC_OBJECT_PINNED;
+
+Same here (48-bit).
+
+Regards,
+Kamil
+
+> +	gen12_emit_huc_virtual_addr_state(&obj[0], &obj[1], buf, &i);
+> +
+> +	buf[i++] = HUC_START;
+> +	buf[i++] = 1;
+> +
+> +	buf[i++] = MI_BATCH_BUFFER_END;
+> +
+> +	gem_write(fd, obj[2].handle, 0, buf, sizeof(buf));
+> +
+> +	memset(&execbuf, 0, sizeof(execbuf));
+> +	execbuf.buffers_ptr = to_user_pointer(obj);
+> +	execbuf.buffer_count = 3;
+> +	execbuf.flags = I915_EXEC_DEFAULT;
+> +
+> +	ctx = intel_ctx_create_for_engine(fd, I915_ENGINE_CLASS_VIDEO, 0);
+> +	execbuf.rsvd1 = ctx->id;
+> +
+> +	gem_execbuf(fd, &execbuf);
+> +
+> +	intel_ctx_destroy(fd, ctx);
+> +}
+> diff --git a/lib/huc_copy.h b/lib/huc_copy.h
+> index 69d140933..e87e62c9c 100644
+> --- a/lib/huc_copy.h
+> +++ b/lib/huc_copy.h
+> @@ -46,4 +46,8 @@ void
+>  gen9_huc_copyfunc(int fd, uint64_t ahnd,
+>  		  struct drm_i915_gem_exec_object2 *obj, uint64_t *objsize);
+>  
+> +void
+> +gen12_huc_copyfunc(int fd, uint64_t ahnd,
+> +		   struct drm_i915_gem_exec_object2 *obj, uint64_t *objsize);
+> +
+>  #endif /* HUC_COPY_H */
+> diff --git a/lib/intel_batchbuffer.c b/lib/intel_batchbuffer.c
+> index 19a1fbe4d..9a855a7f0 100644
+> --- a/lib/intel_batchbuffer.c
+> +++ b/lib/intel_batchbuffer.c
+> @@ -3066,14 +3066,18 @@ void intel_bb_copy_intel_buf(struct intel_bb *ibb,
+>   * Returns:
+>   *
+>   * The platform-specific huc copy function pointer for the device specified
+> - * with @devid. Will return NULL when no media spin function is implemented.
+> + * with @devid. Will return NULL when no huc copy function is implemented.
+>   */
+>  igt_huc_copyfunc_t igt_get_huc_copyfunc(int devid)
+>  {
+>  	igt_huc_copyfunc_t copy = NULL;
+>  
+> -	if (IS_GEN12(devid) || IS_GEN11(devid) || IS_GEN9(devid))
+> +	if (AT_LEAST_GEN(devid, 12))
+> +		copy = gen12_huc_copyfunc;
+> +	else if (IS_GEN11(devid) || IS_GEN9(devid))
+>  		copy = gen9_huc_copyfunc;
+> +	else
+> +		copy = NULL;
+>  
+>  	return copy;
+>  }
+> -- 
+> 2.25.1
+> 
