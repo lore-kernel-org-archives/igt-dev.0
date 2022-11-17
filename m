@@ -1,15 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============0219926158714429538=="
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8818810E60C
+ for <igt-dev@lists.freedesktop.org>; Thu, 17 Nov 2022 14:30:16 +0000 (UTC)
+Date: Thu, 17 Nov 2022 15:30:14 +0100
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Message-ID: <Y3ZFdmYYnexMZZDC@kamilkon-desk1>
+References: <20221112060714.1084199-1-vikas.srivastava@intel.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Nidhi Gupta" <nidhi1.gupta@intel.com>
-Date: Thu, 17 Nov 2022 13:41:44 -0000
-Message-ID: <166869250482.12188.14042403148564922657@emeril.freedesktop.org>
-References: <1668685498-10679-1-git-send-email-nidhi1.gupta@intel.com>
-In-Reply-To: <1668685498-10679-1-git-send-email-nidhi1.gupta@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgQWRkIG5l?=
- =?utf-8?q?w_subtest_and_test_cleanup_=28rev4=29?=
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20221112060714.1084199-1-vikas.srivastava@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t v2] tests/i915/gem_exec_fence: Replacing
+ custom spinner with igt_spin
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,422 +20,203 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
+Cc: Chris P Wilson <chris.p.wilson@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============0219926158714429538==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Hi Vikas,
 
-== Series Details ==
+On 2022-11-12 at 11:37:14 +0530, Vikas Srivastava wrote:
+> From: Chris Wilson <chris.p.wilson@intel.com>
+> 
+> Replace the custom spinner with igt_spin, possible now that igt_spin
+> can provide the out-fence. This has a major advantage, such as able to run
+> on any platform, including over the cmdparser.
+> 
+> Signed-off-by: Chris Wilson <chris.p.wilson@intel.com>
+> Acked-by: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
 
-Series: Add new subtest and test cleanup (rev4)
-URL   : https://patchwork.freedesktop.org/series/110845/
-State : success
+Thank you for resending this with corrections, I have few small
+nits, see below.
 
-== Summary ==
+> ---
+>  tests/i915/gem_exec_fence.c | 108 +++++++++---------------------------
+>  1 file changed, 26 insertions(+), 82 deletions(-)
+> 
+> diff --git a/tests/i915/gem_exec_fence.c b/tests/i915/gem_exec_fence.c
+> index e8d51a732..4b5a74490 100644
+> --- a/tests/i915/gem_exec_fence.c
+> +++ b/tests/i915/gem_exec_fence.c
+> @@ -25,10 +25,10 @@
+>  #include <sys/ioctl.h>
+>  #include <sys/poll.h>
+>  #include <sys/signal.h>
+> -
+>  #include "i915/gem.h"
+>  #include "i915/gem_create.h"
+>  #include "igt.h"
+> +#include "igt_dummyload.h"
+>  #include "igt_store.h"
+>  #include "igt_syncobj.h"
+>  #include "igt_sysfs.h"
+> @@ -40,11 +40,11 @@ IGT_TEST_DESCRIPTION("Check that execbuf waits for explicit fences");
+>  
+>  #ifndef SYNC_IOC_MERGE
+>  struct sync_merge_data {
+> -	char    name[32];
+> -	int32_t fd2;
+> -	int32_t fence;
+> -	uint32_t        flags;
+> -	uint32_t        pad;
+> +	char     name[32];
+> +	int32_t  fd2;
+> +	int32_t  fence;
+> +	uint32_t flags;
+> +	uint32_t pad;
+>  };
+>  #define SYNC_IOC_MAGIC '>'
+>  #define SYNC_IOC_MERGE _IOWR(SYNC_IOC_MAGIC, 3, struct sync_merge_data)
+> @@ -67,109 +67,53 @@ static bool fence_busy(int fence)
+>  #define HANG 0x1
+>  #define NONBLOCK 0x2
+>  #define WAIT 0x4
+> +#define NOT(n) !n
 
-CI Bug Log - changes from CI_DRM_12393 -> IGTPW_8125
-====================================================
+Remove this NOT(n) macro, see below.
 
-Summary
--------
+>  
+>  static void test_fence_busy(int fd, const intel_ctx_t *ctx,
+>  			    const struct intel_execution_engine2 *e,
+>  			    unsigned flags)
+>  {
+> -	const unsigned int gen = intel_gen(intel_get_drm_devid(fd));
+> -	struct drm_i915_gem_exec_object2 obj;
+> -	struct drm_i915_gem_relocation_entry reloc;
+> -	struct drm_i915_gem_execbuffer2 execbuf;
+> -	struct timespec tv;
+> -	uint32_t *batch;
+>  	uint64_t ahnd = get_reloc_ahnd(fd, ctx->id);
+> -	int fence, i, timeout;
+> -
+> -	if ((flags & HANG) == 0)
+> -		igt_require(gem_class_has_mutable_submission(fd, e->class));
+> +	struct timespec tv;
+> +	int fence, timeout;
+> +	igt_spin_t *spin;
+>  
+>  	gem_quiescent_gpu(fd);
+>  
+> -	memset(&execbuf, 0, sizeof(execbuf));
+> -	execbuf.buffers_ptr = to_user_pointer(&obj);
+> -	execbuf.buffer_count = 1;
+> -	execbuf.flags = e->flags | I915_EXEC_FENCE_OUT;
+> -	execbuf.rsvd1 = ctx->id;
+> -
+> -	memset(&obj, 0, sizeof(obj));
+> -	obj.handle = gem_create(fd, 4096);
+> -	obj.offset = get_offset(ahnd, obj.handle, 4096, 0);
+> -
+> -	batch = gem_mmap__device_coherent(fd, obj.handle, 0, 4096, PROT_WRITE);
+> -	gem_set_domain(fd, obj.handle,
+> -		       I915_GEM_DOMAIN_GTT, I915_GEM_DOMAIN_GTT);
+> -
+> -	i = 0;
+> -	if ((flags & HANG) == 0)
+> -		batch[i++] = 0x5 << 23;
+> -
+> -	if (!ahnd) {
+> -		obj.relocs_ptr = to_user_pointer(&reloc);
+> -		obj.relocation_count = 1;
+> -		memset(&reloc, 0, sizeof(reloc));
+> -		reloc.target_handle = obj.handle; /* recurse */
+> -		reloc.presumed_offset = obj.offset;
+> -		reloc.offset = (i + 1) * sizeof(uint32_t);
+> -		reloc.delta = 0;
+> -		reloc.read_domains = I915_GEM_DOMAIN_COMMAND;
+> -		reloc.write_domain = 0;
+> -	} else {
+> -		obj.flags |= EXEC_OBJECT_PINNED;
+> -	}
+> -
+> -	batch[i] = MI_BATCH_BUFFER_START;
+> -	if (gen >= 8) {
+> -		batch[i] |= 1 << 8 | 1;
+> -		batch[++i] = obj.offset;
+> -		batch[++i] = obj.offset >> 32;
+> -	} else if (gen >= 6) {
+> -		batch[i] |= 1 << 8;
+> -		batch[++i] = obj.offset;
+> -	} else {
+> -		batch[i] |= 2 << 6;
+> -		batch[++i] = obj.offset;
+> -		if (gen < 4) {
+> -			batch[i] |= 1;
+> -			reloc.delta = 1;
+> -		}
+> -	}
+> -	i++;
+> -
+> -	execbuf.rsvd2 = -1;
+> -	gem_execbuf_wr(fd, &execbuf);
+> -	fence = execbuf.rsvd2 >> 32;
+> -	igt_assert(fence != -1);
+> +	spin = igt_spin_new(fd, .ahnd = ahnd, .ctx = ctx, .engine = e->flags,
+> +			    .flags = IGT_SPIN_FENCE_OUT |
+> +			    ((flags & HANG) ? IGT_SPIN_NO_PREEMPTION : 0));
+>  
+> -	igt_assert(gem_bo_busy(fd, obj.handle));
+> +	fence = spin->out_fence;
+> +	igt_assert(gem_bo_busy(fd, spin->handle));
+>  	igt_assert(fence_busy(fence));
+>  
+>  	timeout = 120;
+>  	if ((flags & HANG) == 0) {
+> -		*batch = MI_BATCH_BUFFER_END;
+> -		__sync_synchronize();
+> -		timeout = 1;
+> +		igt_spin_end(spin);
+> +		timeout = NOT(igt_run_in_simulation())?1:120;
 
-  **WARNING**
+Here use SLOW_QUICK macro, this should be:
+		timeout = SLOW_QUICK(120, 1);
 
-  Minor unknown changes coming with IGTPW_8125 need to be verified
-  manually.
-  
-  If you think the reported changes have nothing to do with the changes
-  introduced in IGTPW_8125, please notify your bug team to allow them
-  to document this new failure mode, which will reduce false positives in CI.
+Regards,
+Kamil
 
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8125/index.html
-
-Participating hosts (37 -> 36)
-------------------------------
-
-  Missing    (1): bat-dg1-5 
-
-Possible new issues
--------------------
-
-  Here are the unknown changes that may have been introduced in IGTPW_8125:
-
-### IGT changes ###
-
-#### Warnings ####
-
-  * igt@i915_pm_backlight@basic-brightness:
-    - fi-rkl-guc:         [SKIP][1] ([i915#3012]) -> [SKIP][2]
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12393/fi-rkl-guc/igt@i915_pm_backlight@basic-brightness.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8125/fi-rkl-guc/igt@i915_pm_backlight@basic-brightness.html
-    - bat-dg1-6:          [SKIP][3] ([i915#1155]) -> [SKIP][4]
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12393/bat-dg1-6/igt@i915_pm_backlight@basic-brightness.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8125/bat-dg1-6/igt@i915_pm_backlight@basic-brightness.html
-
-  
-#### Suppressed ####
-
-  The following results come from untrusted machines, tests, or statuses.
-  They do not affect the overall result.
-
-  * igt@i915_pm_backlight@basic-brightness:
-    - {bat-dg2-8}:        [SKIP][5] ([i915#1155]) -> [SKIP][6]
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12393/bat-dg2-8/igt@i915_pm_backlight@basic-brightness.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8125/bat-dg2-8/igt@i915_pm_backlight@basic-brightness.html
-    - {bat-adlm-1}:       [SKIP][7] ([i915#1155]) -> [SKIP][8]
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12393/bat-adlm-1/igt@i915_pm_backlight@basic-brightness.html
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8125/bat-adlm-1/igt@i915_pm_backlight@basic-brightness.html
-    - {bat-rpls-2}:       [SKIP][9] ([i915#1155]) -> [SKIP][10]
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12393/bat-rpls-2/igt@i915_pm_backlight@basic-brightness.html
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8125/bat-rpls-2/igt@i915_pm_backlight@basic-brightness.html
-    - {bat-dg1-7}:        [SKIP][11] ([i915#1155]) -> [SKIP][12]
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12393/bat-dg1-7/igt@i915_pm_backlight@basic-brightness.html
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8125/bat-dg1-7/igt@i915_pm_backlight@basic-brightness.html
-    - {bat-dg2-9}:        [SKIP][13] ([i915#1155]) -> [SKIP][14]
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12393/bat-dg2-9/igt@i915_pm_backlight@basic-brightness.html
-   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8125/bat-dg2-9/igt@i915_pm_backlight@basic-brightness.html
-    - {bat-dg2-11}:       [SKIP][15] ([i915#1155]) -> [SKIP][16]
-   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12393/bat-dg2-11/igt@i915_pm_backlight@basic-brightness.html
-   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8125/bat-dg2-11/igt@i915_pm_backlight@basic-brightness.html
-
-  
-New tests
----------
-
-  New tests have been introduced between CI_DRM_12393 and IGTPW_8125:
-
-### New IGT tests (1) ###
-
-  * igt@i915_pm_backlight@basic-brightness@edp-1:
-    - Statuses : 10 pass(s)
-    - Exec time: [0.0] s
-
-  
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_8125 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@gem_lmem_swapping@basic:
-    - fi-apl-guc:         NOTRUN -> [SKIP][17] ([fdo#109271] / [i915#4613]) +3 similar issues
-   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8125/fi-apl-guc/igt@gem_lmem_swapping@basic.html
-
-  * igt@i915_pm_backlight@basic-brightness:
-    - fi-bxt-dsi:         [PASS][18] -> [SKIP][19] ([fdo#109271])
-   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12393/fi-bxt-dsi/igt@i915_pm_backlight@basic-brightness.html
-   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8125/fi-bxt-dsi/igt@i915_pm_backlight@basic-brightness.html
-    - fi-snb-2520m:       [PASS][20] -> [SKIP][21] ([fdo#109271])
-   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12393/fi-snb-2520m/igt@i915_pm_backlight@basic-brightness.html
-   [21]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8125/fi-snb-2520m/igt@i915_pm_backlight@basic-brightness.html
-
-  * igt@i915_selftest@live@gt_engines:
-    - bat-dg1-6:          [PASS][22] -> [INCOMPLETE][23] ([i915#4418])
-   [22]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12393/bat-dg1-6/igt@i915_selftest@live@gt_engines.html
-   [23]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8125/bat-dg1-6/igt@i915_selftest@live@gt_engines.html
-
-  * igt@i915_selftest@live@hangcheck:
-    - fi-hsw-4770:        [PASS][24] -> [INCOMPLETE][25] ([i915#4785])
-   [24]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12393/fi-hsw-4770/igt@i915_selftest@live@hangcheck.html
-   [25]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8125/fi-hsw-4770/igt@i915_selftest@live@hangcheck.html
-
-  * igt@kms_chamelium@common-hpd-after-suspend:
-    - fi-apl-guc:         NOTRUN -> [SKIP][26] ([fdo#109271] / [fdo#111827])
-   [26]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8125/fi-apl-guc/igt@kms_chamelium@common-hpd-after-suspend.html
-
-  * igt@runner@aborted:
-    - fi-hsw-4770:        NOTRUN -> [FAIL][27] ([fdo#109271] / [i915#4312] / [i915#5594])
-   [27]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8125/fi-hsw-4770/igt@runner@aborted.html
-    - bat-dg1-6:          NOTRUN -> [FAIL][28] ([i915#4312])
-   [28]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8125/bat-dg1-6/igt@runner@aborted.html
-
-  
-#### Possible fixes ####
-
-  * igt@core_hotunplug@unbind-rebind:
-    - fi-apl-guc:         [INCOMPLETE][29] ([i915#7073]) -> [PASS][30]
-   [29]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12393/fi-apl-guc/igt@core_hotunplug@unbind-rebind.html
-   [30]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8125/fi-apl-guc/igt@core_hotunplug@unbind-rebind.html
-
-  * igt@fbdev@read:
-    - {bat-rpls-2}:       [SKIP][31] ([i915#2582]) -> [PASS][32] +4 similar issues
-   [31]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12393/bat-rpls-2/igt@fbdev@read.html
-   [32]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8125/bat-rpls-2/igt@fbdev@read.html
-
-  * igt@gem_exec_suspend@basic-s0@smem:
-    - {bat-rpls-2}:       [DMESG-WARN][33] ([i915#6434]) -> [PASS][34]
-   [33]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12393/bat-rpls-2/igt@gem_exec_suspend@basic-s0@smem.html
-   [34]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8125/bat-rpls-2/igt@gem_exec_suspend@basic-s0@smem.html
-
-  * igt@i915_selftest@live@migrate:
-    - {bat-adlp-6}:       [INCOMPLETE][35] ([i915#7348]) -> [PASS][36]
-   [35]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12393/bat-adlp-6/igt@i915_selftest@live@migrate.html
-   [36]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8125/bat-adlp-6/igt@i915_selftest@live@migrate.html
-
-  
-#### Warnings ####
-
-  * igt@i915_pm_backlight@basic-brightness:
-    - fi-hsw-4770:        [SKIP][37] ([fdo#109271] / [i915#3012]) -> [SKIP][38] ([fdo#109271])
-   [37]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12393/fi-hsw-4770/igt@i915_pm_backlight@basic-brightness.html
-   [38]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8125/fi-hsw-4770/igt@i915_pm_backlight@basic-brightness.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
-  [fdo#111827]: https://bugs.freedesktop.org/show_bug.cgi?id=111827
-  [i915#1155]: https://gitlab.freedesktop.org/drm/intel/issues/1155
-  [i915#2582]: https://gitlab.freedesktop.org/drm/intel/issues/2582
-  [i915#2867]: https://gitlab.freedesktop.org/drm/intel/issues/2867
-  [i915#3012]: https://gitlab.freedesktop.org/drm/intel/issues/3012
-  [i915#4312]: https://gitlab.freedesktop.org/drm/intel/issues/4312
-  [i915#4418]: https://gitlab.freedesktop.org/drm/intel/issues/4418
-  [i915#4613]: https://gitlab.freedesktop.org/drm/intel/issues/4613
-  [i915#4785]: https://gitlab.freedesktop.org/drm/intel/issues/4785
-  [i915#4983]: https://gitlab.freedesktop.org/drm/intel/issues/4983
-  [i915#5278]: https://gitlab.freedesktop.org/drm/intel/issues/5278
-  [i915#5594]: https://gitlab.freedesktop.org/drm/intel/issues/5594
-  [i915#6434]: https://gitlab.freedesktop.org/drm/intel/issues/6434
-  [i915#6471]: https://gitlab.freedesktop.org/drm/intel/issues/6471
-  [i915#7073]: https://gitlab.freedesktop.org/drm/intel/issues/7073
-  [i915#7348]: https://gitlab.freedesktop.org/drm/intel/issues/7348
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_7064 -> IGTPW_8125
-
-  CI-20190529: 20190529
-  CI_DRM_12393: a6222aec808264869901cbfb64aff0779425dde9 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_8125: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8125/index.html
-  IGT_7064: f5cc3abb3d99e9ab5da2285b184e045da95c35a2 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-
-Testlist changes
-----------------
-
-+igt@i915_pm_backlight@fade-with-dpms
-+igt@i915_pm_backlight@fade-with-suspend
--igt@i915_pm_backlight@fade_with_dpms
--igt@i915_pm_backlight@fade_with_suspend
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8125/index.html
-
---===============0219926158714429538==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>Add new subtest and test cleanup (rev4)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/110845/">https://patchwork.freedesktop.org/series/110845/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8125/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8125/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from CI_DRM_12393 -&gt; IGTPW_8125</h1>
-<h2>Summary</h2>
-<p><strong>WARNING</strong></p>
-<p>Minor unknown changes coming with IGTPW_8125 need to be verified<br />
-  manually.</p>
-<p>If you think the reported changes have nothing to do with the changes<br />
-  introduced in IGTPW_8125, please notify your bug team to allow them<br />
-  to document this new failure mode, which will reduce false positives in CI.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8125/index.html</p>
-<h2>Participating hosts (37 -&gt; 36)</h2>
-<p>Missing    (1): bat-dg1-5 </p>
-<h2>Possible new issues</h2>
-<p>Here are the unknown changes that may have been introduced in IGTPW_8125:</p>
-<h3>IGT changes</h3>
-<h4>Warnings</h4>
-<ul>
-<li>
-<p>igt@i915_pm_backlight@basic-brightness:</p>
-<ul>
-<li>
-<p>fi-rkl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12393/fi-rkl-guc/igt@i915_pm_backlight@basic-brightness.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3012">i915#3012</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8125/fi-rkl-guc/igt@i915_pm_backlight@basic-brightness.html">SKIP</a></p>
-</li>
-<li>
-<p>bat-dg1-6:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12393/bat-dg1-6/igt@i915_pm_backlight@basic-brightness.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1155">i915#1155</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8125/bat-dg1-6/igt@i915_pm_backlight@basic-brightness.html">SKIP</a></p>
-</li>
-</ul>
-</li>
-</ul>
-<h4>Suppressed</h4>
-<p>The following results come from untrusted machines, tests, or statuses.<br />
-  They do not affect the overall result.</p>
-<ul>
-<li>
-<p>igt@i915_pm_backlight@basic-brightness:</p>
-<ul>
-<li>
-<p>{bat-dg2-8}:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12393/bat-dg2-8/igt@i915_pm_backlight@basic-brightness.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1155">i915#1155</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8125/bat-dg2-8/igt@i915_pm_backlight@basic-brightness.html">SKIP</a></p>
-</li>
-<li>
-<p>{bat-adlm-1}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12393/bat-adlm-1/igt@i915_pm_backlight@basic-brightness.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1155">i915#1155</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8125/bat-adlm-1/igt@i915_pm_backlight@basic-brightness.html">SKIP</a></p>
-</li>
-<li>
-<p>{bat-rpls-2}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12393/bat-rpls-2/igt@i915_pm_backlight@basic-brightness.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1155">i915#1155</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8125/bat-rpls-2/igt@i915_pm_backlight@basic-brightness.html">SKIP</a></p>
-</li>
-<li>
-<p>{bat-dg1-7}:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12393/bat-dg1-7/igt@i915_pm_backlight@basic-brightness.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1155">i915#1155</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8125/bat-dg1-7/igt@i915_pm_backlight@basic-brightness.html">SKIP</a></p>
-</li>
-<li>
-<p>{bat-dg2-9}:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12393/bat-dg2-9/igt@i915_pm_backlight@basic-brightness.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1155">i915#1155</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8125/bat-dg2-9/igt@i915_pm_backlight@basic-brightness.html">SKIP</a></p>
-</li>
-<li>
-<p>{bat-dg2-11}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12393/bat-dg2-11/igt@i915_pm_backlight@basic-brightness.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1155">i915#1155</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8125/bat-dg2-11/igt@i915_pm_backlight@basic-brightness.html">SKIP</a></p>
-</li>
-</ul>
-</li>
-</ul>
-<h2>New tests</h2>
-<p>New tests have been introduced between CI_DRM_12393 and IGTPW_8125:</p>
-<h3>New IGT tests (1)</h3>
-<ul>
-<li>igt@i915_pm_backlight@basic-brightness@edp-1:<ul>
-<li>Statuses : 10 pass(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-</ul>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_8125 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@gem_lmem_swapping@basic:</p>
-<ul>
-<li>fi-apl-guc:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8125/fi-apl-guc/igt@gem_lmem_swapping@basic.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4613">i915#4613</a>) +3 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_pm_backlight@basic-brightness:</p>
-<ul>
-<li>
-<p>fi-bxt-dsi:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12393/fi-bxt-dsi/igt@i915_pm_backlight@basic-brightness.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8125/fi-bxt-dsi/igt@i915_pm_backlight@basic-brightness.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>)</p>
-</li>
-<li>
-<p>fi-snb-2520m:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12393/fi-snb-2520m/igt@i915_pm_backlight@basic-brightness.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8125/fi-snb-2520m/igt@i915_pm_backlight@basic-brightness.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>)</p>
-</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@gt_engines:</p>
-<ul>
-<li>bat-dg1-6:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12393/bat-dg1-6/igt@i915_selftest@live@gt_engines.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8125/bat-dg1-6/igt@i915_selftest@live@gt_engines.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4418">i915#4418</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@hangcheck:</p>
-<ul>
-<li>fi-hsw-4770:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12393/fi-hsw-4770/igt@i915_selftest@live@hangcheck.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8125/fi-hsw-4770/igt@i915_selftest@live@hangcheck.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4785">i915#4785</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_chamelium@common-hpd-after-suspend:</p>
-<ul>
-<li>fi-apl-guc:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8125/fi-apl-guc/igt@kms_chamelium@common-hpd-after-suspend.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://bugs.freedesktop.org/show_bug.cgi?id=111827">fdo#111827</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@runner@aborted:</p>
-<ul>
-<li>
-<p>fi-hsw-4770:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8125/fi-hsw-4770/igt@runner@aborted.html">FAIL</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4312">i915#4312</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/5594">i915#5594</a>)</p>
-</li>
-<li>
-<p>bat-dg1-6:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8125/bat-dg1-6/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4312">i915#4312</a>)</p>
-</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@core_hotunplug@unbind-rebind:</p>
-<ul>
-<li>fi-apl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12393/fi-apl-guc/igt@core_hotunplug@unbind-rebind.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7073">i915#7073</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8125/fi-apl-guc/igt@core_hotunplug@unbind-rebind.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@fbdev@read:</p>
-<ul>
-<li>{bat-rpls-2}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12393/bat-rpls-2/igt@fbdev@read.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2582">i915#2582</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8125/bat-rpls-2/igt@fbdev@read.html">PASS</a> +4 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_exec_suspend@basic-s0@smem:</p>
-<ul>
-<li>{bat-rpls-2}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12393/bat-rpls-2/igt@gem_exec_suspend@basic-s0@smem.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6434">i915#6434</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8125/bat-rpls-2/igt@gem_exec_suspend@basic-s0@smem.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@migrate:</p>
-<ul>
-<li>{bat-adlp-6}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12393/bat-adlp-6/igt@i915_selftest@live@migrate.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7348">i915#7348</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8125/bat-adlp-6/igt@i915_selftest@live@migrate.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<h4>Warnings</h4>
-<ul>
-<li>igt@i915_pm_backlight@basic-brightness:<ul>
-<li>fi-hsw-4770:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12393/fi-hsw-4770/igt@i915_pm_backlight@basic-brightness.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3012">i915#3012</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8125/fi-hsw-4770/igt@i915_pm_backlight@basic-brightness.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>)</li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_7064 -&gt; IGTPW_8125</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_12393: a6222aec808264869901cbfb64aff0779425dde9 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_8125: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8125/index.html<br />
-  IGT_7064: f5cc3abb3d99e9ab5da2285b184e045da95c35a2 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-<h2>Testlist changes</h2>
-<p>+igt@i915_pm_backlight@fade-with-dpms<br />
-+igt@i915_pm_backlight@fade-with-suspend<br />
--igt@i915_pm_backlight@fade_with_dpms<br />
--igt@i915_pm_backlight@fade_with_suspend</p>
-
-</body>
-</html>
-
---===============0219926158714429538==--
+>  	}
+> -	munmap(batch, 4096);
+>  
+>  	if (flags & WAIT) {
+>  		struct pollfd pfd = { .fd = fence, .events = POLLIN };
+>  		igt_assert(poll(&pfd, 1, timeout*1000) == 1);
+>  	} else {
+> +		int elapsed_time;
+>  		memset(&tv, 0, sizeof(tv));
+> -		while (fence_busy(fence))
+> +		while (fence_busy(fence)) {
+> +			elapsed_time = igt_seconds_elapsed(&tv);
+> +			if (elapsed_time >= timeout)
+> +				igt_info("Elapsed time (%ds)\n", elapsed_time);
+>  			igt_assert(igt_seconds_elapsed(&tv) < timeout);
+> +		}
+> +		igt_info("Elapsed time (%ds)\n", igt_seconds_elapsed(&tv));
+>  	}
+> -
+> -	igt_assert(!gem_bo_busy(fd, obj.handle));
+> +	igt_assert(!gem_bo_busy(fd, spin->handle));
+>  	igt_assert_eq(sync_fence_status(fence),
+>  		      flags & HANG ? -EIO : SYNC_FENCE_OK);
+>  
+> -	close(fence);
+> -	gem_close(fd, obj.handle);
+> -	put_offset(ahnd, obj.handle);
+> +	igt_spin_free(fd, spin);
+>  	put_ahnd(ahnd);
+> -
+>  	gem_quiescent_gpu(fd);
+>  }
+>  
+> -- 
+> 2.25.1
+> 
