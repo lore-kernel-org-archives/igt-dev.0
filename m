@@ -1,18 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-lj1-x22d.google.com (mail-lj1-x22d.google.com
- [IPv6:2a00:1450:4864:20::22d])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BF77810E6BC
- for <igt-dev@lists.freedesktop.org>; Thu, 17 Nov 2022 22:59:33 +0000 (UTC)
-Received: by mail-lj1-x22d.google.com with SMTP id a15so4648132ljb.7
- for <igt-dev@lists.freedesktop.org>; Thu, 17 Nov 2022 14:59:33 -0800 (PST)
-From: Daniil Tatianin <99danilt@gmail.com>
-To: Development mailing list for IGT GPU Tools <igt-dev@lists.freedesktop.org>
-Date: Fri, 18 Nov 2022 01:59:07 +0300
-Message-Id: <20221117225907.793-1-99danilt@gmail.com>
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E2D9210E1F0
+ for <igt-dev@lists.freedesktop.org>; Fri, 18 Nov 2022 08:36:45 +0000 (UTC)
+Date: Fri, 18 Nov 2022 10:35:43 +0200
+From: Petri Latvala <petri.latvala@intel.com>
+To: Mark Yacoub <markyacoub@chromium.org>
+Message-ID: <Y3dD3zhcUrhmvwoC@platvala-desk.ger.corp.intel.com>
+References: <20221117194639.481656-1-markyacoub@chromium.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH v1] tools/intel_gtt: stop confusing GTT and BAR
- sizes
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20221117194639.481656-1-markyacoub@chromium.org>
+Subject: Re: [igt-dev] [PATCH] Cv3 Workaround: Skip Plug all at init.
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,118 +19,89 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Daniil Tatianin <99danilt@gmail.com>
+Cc: robdclark@chromium.org, vsuley@google.com, amstan@chromium.org,
+ ihf@google.com, igt-dev@lists.freedesktop.org, kalin@google.com,
+ seanpaul@chromium.org, matthewtlam@google.com, markyacoub@google.com,
+ khaled.almahallawy@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-The GTT iteration loop would erroneously check "< gtt_size" as an
-indicator for when it should stop, which would make it exit the loop
-right after dumping 2-8 mib of address space depending on the
-GPU generation.
+On Thu, Nov 17, 2022 at 02:46:39PM -0500, Mark Yacoub wrote:
+> [Why]
+> Currently, Cv3 doesn't allow all ports to be plugged in at the same time
+> so chamelium_plug_all() always fails.
+> 
+> [How]
+> Check for the first Port ID as it's unique between V2 and V3, and skip
+> the plugging if it's V3.
+> 
+> Signed-off-by: Mark Yacoub <markyacoub@chromium.org>
+> ---
+>  lib/igt_chamelium.c | 11 +++++++++++
+>  1 file changed, 11 insertions(+)
+> 
+> diff --git a/lib/igt_chamelium.c b/lib/igt_chamelium.c
+> index 68864bb8..6c52ac3b 100644
+> --- a/lib/igt_chamelium.c
+> +++ b/lib/igt_chamelium.c
+> @@ -3015,10 +3015,19 @@ bool chamelium_plug_all(struct chamelium *chamelium)
+>  	int port_ids[CHAMELIUM_MAX_PORTS];
+>  	xmlrpc_value *v;
+>  
+> +	igt_debug("CHAMELIUM PLUG ALL\n");
+> +
+>  	port_count = chamelium_get_video_ports(chamelium, port_ids);
+> +	igt_debug("CHAMELIUM PLUG ALL: %zu ports\n", port_count);
+>  	if (port_count <= 0)
+>  		return false;
+>  
+> +	/* A temporary workaround for Chamelium V3: Currently, Cv3 doesn't allow
+> +	 * all ports to be plugged in at the same time. Cv3 first port has an ID
+> +	 * of 0 while Cv2 has first port ID as 1. */
 
-Calculate the actual size of GTT in 'gtt_max_addr', and rewrite the
-iteration loop to use it. While at it, also make virtual addresses
-64-bit so that they don't wrap around at the 4GiB mark.
+Format this comment as
 
-Signed-off-by: Daniil Tatianin <99danilt@gmail.com>
----
- tools/intel_gtt.c | 32 ++++++++++++++++++--------------
- 1 file changed, 18 insertions(+), 14 deletions(-)
+/*
+ * Text starts from this line.
+ * The begin and end of block comment on their own lines
+ */
 
-diff --git a/tools/intel_gtt.c b/tools/intel_gtt.c
-index 311694ba..c0f3d16a 100644
---- a/tools/intel_gtt.c
-+++ b/tools/intel_gtt.c
-@@ -96,6 +96,11 @@ static uint64_t get_phys(uint32_t pt_offset)
- 	return (phys | pae) & ~0xfff;
- }
 
-+static int get_pte_size(void)
-+{
-+	return intel_gen(devid) < 8 ? 4 : 8;
-+}
-+
- static void pte_dump(int size, uint32_t offset) {
- 	int pte_size;
- 	int entries;
-@@ -105,11 +110,7 @@ static void pte_dump(int size, uint32_t offset) {
- 	if (size % 16)
- 		size = (size + 16) & ~0xffff;
 
--	if (intel_gen(devid) < 8)
--		pte_size = 4;
--	else
--		pte_size = 8;
--
-+	pte_size = get_pte_size();
- 	entries = size / pte_size;
+> +	if (port_ids[0] == 0)
+> +		return true;
+> +
+>  	for (int i = 0; i < port_count; ++i) {
+>  		v = __chamelium_rpc(chamelium, NULL, "Plug", "(i)", port_ids[i]);
+>  
+> @@ -3053,6 +3062,7 @@ bool chamelium_wait_all_configured_ports_connected(struct chamelium *chamelium,
+>  	for (int i = 0; group_list[i] != NULL; i++) {
+>  		char *map_name;
+>  		group = group_list[i];
+> +		igt_debug("Checking group %s", group);
 
- 	printf("GTT offset   |                 %d PTEs (%d MB)\n", entries,
-@@ -139,7 +140,8 @@ static void pte_dump(int size, uint32_t offset) {
- int main(int argc, char **argv)
- {
- 	struct pci_device *pci_dev;
--	unsigned int start, gtt_size;
-+	unsigned gtt_size;
-+	uint64_t start, gtt_max_addr;
- 	int flag[] = {
- 		PCI_DEV_MAP_FLAG_WRITE_COMBINE,
- 		PCI_DEV_MAP_FLAG_WRITABLE,
-@@ -190,14 +192,15 @@ int main(int argc, char **argv)
- 		return 0;
- 	}
+Make sure debug prints end in newline.
 
--	for (start = 0; start < gtt_size; start += KB(4)) {
--		uint64_t start_phys = get_phys(start);
--		uint32_t end;
-+	gtt_max_addr = (gtt_size / get_pte_size()) * KB(4ull);
-+
-+	for (start = 0; start < gtt_max_addr; start += KB(4)) {
-+		uint64_t end, start_phys = get_phys(start);
- 		int constant_length = 0;
- 		int linear_length = 0;
+>  
+>  		if (!strstr(group, "Chamelium:"))
+>  			continue;
+> @@ -3060,6 +3070,7 @@ bool chamelium_wait_all_configured_ports_connected(struct chamelium *chamelium,
+>  		igt_assert(chamelium->port_count <= CHAMELIUM_MAX_PORTS);
+>  
+>  		map_name = group + (sizeof("Chamelium:") - 1);
+> +		igt_debug("Checking map %s", map_name);
 
- 		/* Check if it's a linear sequence */
--		for (end = start + KB(4); end < gtt_size; end += KB(4)) {
-+		for (end = start + KB(4); end < gtt_max_addr; end += KB(4)) {
- 			uint64_t end_phys = get_phys(end);
- 			if (end_phys == start_phys + (end - start))
- 				linear_length++;
-@@ -205,7 +208,7 @@ int main(int argc, char **argv)
- 				break;
- 		}
- 		if (linear_length > 0) {
--			printf("0x%08x - 0x%08x: linear from "
-+			printf("0x%08" PRIx64 "- 0x%08" PRIx64 ": linear from "
- 			       "0x%" PRIx64 " to 0x%" PRIx64 "\n",
- 			       start, end - KB(4),
- 			       start_phys, start_phys + (end - start) - KB(4));
-@@ -214,7 +217,7 @@ int main(int argc, char **argv)
- 		}
+Same here.
 
- 		/* Check if it's a constant sequence */
--		for (end = start + KB(4); end < gtt_size; end += KB(4)) {
-+		for (end = start + KB(4); end < gtt_max_addr; end += KB(4)) {
- 			uint64_t end_phys = get_phys(end);
- 			if (end_phys == start_phys)
- 				constant_length++;
-@@ -222,13 +225,14 @@ int main(int argc, char **argv)
- 				break;
- 		}
- 		if (constant_length > 0) {
--			printf("0x%08x - 0x%08x: constant 0x%" PRIx64 "\n",
-+			printf("0x%08" PRIx64 " - 0x%08" PRIx64
-+				": constant 0x%" PRIx64 "\n",
- 			       start, end - KB(4), start_phys);
- 			start = end - KB(4);
- 			continue;
- 		}
 
--		printf("0x%08x: 0x%" PRIx64 "\n", start, start_phys);
-+		printf("0x%08" PRIx64 ": 0x%" PRIx64 "\n", start, start_phys);
- 	}
+-- 
+Petri Latvala
 
- 	return 0;
---
-2.36.1.windows.1
+
+>  
+>  		for (int j = 0;
+>  		     j < res->count_connectors;
+> -- 
+> 2.38.1.584.g0f3c55d4c2-goog
+> 
