@@ -1,17 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E05AC89561
- for <igt-dev@lists.freedesktop.org>; Tue, 15 Nov 2022 17:01:13 +0000 (UTC)
-From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Tue, 15 Nov 2022 22:28:58 +0530
-Message-Id: <20221115165916.196084-36-bhanuprakash.modem@intel.com>
-In-Reply-To: <20221115165916.196084-1-bhanuprakash.modem@intel.com>
-References: <20221115165916.196084-1-bhanuprakash.modem@intel.com>
+Content-Type: multipart/alternative;
+ boundary="===============2684546756970566822=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t v5 34/52] tests/kms_universal_plane: Add support
- for Bigjoiner
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Daniil Tatianin" <99danilt@gmail.com>
+Date: Fri, 18 Nov 2022 10:29:09 -0000
+Message-ID: <166876734995.25641.14558354550020014543@emeril.freedesktop.org>
+References: <20221117225907.793-1-99danilt@gmail.com>
+In-Reply-To: <20221117225907.793-1-99danilt@gmail.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdG9vbHMv?=
+ =?utf-8?q?intel=5Fgtt=3A_stop_confusing_GTT_and_BAR_sizes?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,188 +17,197 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-This patch will add a check to Skip the subtest if a selected pipe/output
-combo won't support Bigjoiner or 8K mode.
+--===============2684546756970566822==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Example:
-* Pipe-D wont support a mode > 5K
-* To use 8K mode on a pipe then consecutive pipe must be available & free.
+== Series Details ==
 
-V2: - Use updated helper name
+Series: tools/intel_gtt: stop confusing GTT and BAR sizes
+URL   : https://patchwork.freedesktop.org/series/111058/
+State : success
 
-Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
----
- tests/kms_universal_plane.c | 94 +++++++++++++++++++++++++++++++++----
- 1 file changed, 84 insertions(+), 10 deletions(-)
+== Summary ==
 
-diff --git a/tests/kms_universal_plane.c b/tests/kms_universal_plane.c
-index dd8fa193..2a9eb021 100644
---- a/tests/kms_universal_plane.c
-+++ b/tests/kms_universal_plane.c
-@@ -381,6 +381,9 @@ sanity_test_pipe(data_t *data, enum pipe pipe, igt_output_t *output)
- 
- 	igt_require_pipe(&data->display, pipe);
- 
-+	igt_info("Using (pipe %s + %s) to run the subtest.\n",
-+		 kmstest_pipe_name(pipe), igt_output_name(output));
-+
- 	igt_output_set_pipe(output, pipe);
- 	mode = igt_output_get_mode(output);
- 
-@@ -494,6 +497,9 @@ pageflip_test_pipe(data_t *data, enum pipe pipe, igt_output_t *output)
- 
- 	igt_require_pipe(&data->display, pipe);
- 
-+	igt_info("Using (pipe %s + %s) to run the subtest.\n",
-+		 kmstest_pipe_name(pipe), igt_output_name(output));
-+
- 	igt_output_set_pipe(output, pipe);
- 
- 	pageflip_test_init(&test, output, pipe);
-@@ -604,6 +610,9 @@ cursor_leak_test_pipe(data_t *data, enum pipe pipe, igt_output_t *output)
- 	igt_require(display->has_cursor_plane);
- 	igt_require_intel(data->drm_fd);
- 
-+	igt_info("Using (pipe %s + %s) to run the subtest.\n",
-+		 kmstest_pipe_name(pipe), igt_output_name(output));
-+
- 	igt_output_set_pipe(output, pipe);
- 	mode = igt_output_get_mode(output);
- 
-@@ -731,6 +740,9 @@ pageflip_win_test_pipe(data_t *data, enum pipe pipe, igt_output_t *output)
- 	igt_skip_on(is_i915_device(data->drm_fd) && data->display_ver < 9);
- 	igt_require_pipe(&data->display, pipe);
- 
-+	igt_info("Using (pipe %s + %s) to run the subtest.\n",
-+		 kmstest_pipe_name(pipe), igt_output_name(output));
-+
- 	igt_output_set_pipe(output, pipe);
- 
- 	gen9_test_init(&test, output, pipe);
-@@ -766,6 +778,22 @@ pageflip_win_test_pipe(data_t *data, enum pipe pipe, igt_output_t *output)
- 	gen9_test_fini(&test, output);
- }
- 
-+static bool
-+pipe_output_combo_valid(igt_display_t *display,
-+			enum pipe pipe, igt_output_t *output)
-+{
-+	bool ret = true;
-+
-+	igt_display_reset(display);
-+
-+	igt_output_set_pipe(output, pipe);
-+	if (!i915_pipe_output_combo_valid(display))
-+		ret = false;
-+	igt_output_set_pipe(output, PIPE_NONE);
-+
-+	return ret;
-+}
-+
- static void
- run_tests_for_pipe(data_t *data, enum pipe pipe)
- {
-@@ -784,34 +812,79 @@ run_tests_for_pipe(data_t *data, enum pipe pipe)
- 
- 	igt_describe("Check the switching between different primary plane fbs with CRTC off");
- 	igt_subtest_f("universal-plane-pipe-%s-functional",
--		      kmstest_pipe_name(pipe))
--		for_each_valid_output_on_pipe(&data->display, pipe, output)
-+		      kmstest_pipe_name(pipe)) {
-+		bool found = false;
-+
-+		for_each_valid_output_on_pipe(&data->display, pipe, output) {
-+			if (!pipe_output_combo_valid(&data->display, pipe, output))
-+				continue;
-+
-+			found = true;
- 			functional_test_pipe(data, pipe, output);
-+		}
-+		igt_require_f(found, "No valid pipe/output combo found.\n");
-+	}
- 
- 	igt_describe("Test for scale-up or scale-down using universal plane API without covering CRTC");
- 	igt_subtest_f("universal-plane-pipe-%s-sanity",
--		      kmstest_pipe_name(pipe))
--		for_each_valid_output_on_pipe(&data->display, pipe, output)
-+		      kmstest_pipe_name(pipe)) {
-+		bool found = false;
-+
-+		for_each_valid_output_on_pipe(&data->display, pipe, output) {
-+			if (!pipe_output_combo_valid(&data->display, pipe, output))
-+				continue;
-+
-+			found = true;
- 			sanity_test_pipe(data, pipe, output);
-+		}
-+		igt_require_f(found, "No valid pipe/output combo found.\n");
-+	}
- 
- 	igt_describe("Check pageflips while primary plane is disabled before IOCTL or between IOCTL"
- 			" and pageflip execution");
- 	igt_subtest_f("disable-primary-vs-flip-pipe-%s",
--		      kmstest_pipe_name(pipe))
--		for_each_valid_output_on_pipe(&data->display, pipe, output)
-+		      kmstest_pipe_name(pipe)) {
-+		bool found = false;
-+
-+		for_each_valid_output_on_pipe(&data->display, pipe, output) {
-+			if (!pipe_output_combo_valid(&data->display, pipe, output))
-+				continue;
-+
-+			found = true;
- 			pageflip_test_pipe(data, pipe, output);
-+		}
-+		igt_require_f(found, "No valid pipe/output combo found.\n");
-+	}
- 
- 	igt_describe("Check for cursor leaks after performing cursor operations");
- 	igt_subtest_f("cursor-fb-leak-pipe-%s",
--		      kmstest_pipe_name(pipe))
--		for_each_valid_output_on_pipe(&data->display, pipe, output)
-+		      kmstest_pipe_name(pipe)) {
-+		bool found = false;
-+
-+		for_each_valid_output_on_pipe(&data->display, pipe, output) {
-+			if (!pipe_output_combo_valid(&data->display, pipe, output))
-+				continue;
-+
-+			found = true;
- 			cursor_leak_test_pipe(data, pipe, output);
-+		}
-+		igt_require_f(found, "No valid pipe/output combo found.\n");
-+	}
- 
- 	igt_describe("Check if pageflip succeeds in windowed setting");
- 	igt_subtest_f("universal-plane-pageflip-windowed-pipe-%s",
--		      kmstest_pipe_name(pipe))
--		for_each_valid_output_on_pipe(&data->display, pipe, output)
-+		      kmstest_pipe_name(pipe)) {
-+		bool found = false;
-+
-+		for_each_valid_output_on_pipe(&data->display, pipe, output) {
-+			if (!pipe_output_combo_valid(&data->display, pipe, output))
-+				continue;
-+
-+			found = true;
- 			pageflip_win_test_pipe(data, pipe, output);
-+		}
-+		igt_require_f(found, "No valid pipe/output combo found.\n");
-+	}
- }
- 
- static data_t data;
-@@ -829,6 +902,7 @@ igt_main
- 
- 		igt_require_pipe_crc(data.drm_fd);
- 		igt_display_require(&data.display, data.drm_fd);
-+		igt_display_require_output(&data.display);
- 	}
- 
- 	for_each_pipe_static(pipe) {
--- 
-2.38.0
+CI Bug Log - changes from CI_DRM_12398 -> IGTPW_8128
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8128/index.html
+
+Participating hosts (41 -> 37)
+------------------------------
+
+  Missing    (4): fi-ctg-p8600 fi-ilk-m540 fi-bdw-samus bat-dg1-6 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_8128 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@gem_lmem_swapping@basic:
+    - fi-apl-guc:         NOTRUN -> [SKIP][1] ([fdo#109271] / [i915#4613]) +3 similar issues
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8128/fi-apl-guc/igt@gem_lmem_swapping@basic.html
+
+  * igt@i915_selftest@live@gt_lrc:
+    - fi-rkl-guc:         [PASS][2] -> [INCOMPLETE][3] ([i915#4983])
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12398/fi-rkl-guc/igt@i915_selftest@live@gt_lrc.html
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8128/fi-rkl-guc/igt@i915_selftest@live@gt_lrc.html
+
+  * igt@kms_chamelium@common-hpd-after-suspend:
+    - fi-apl-guc:         NOTRUN -> [SKIP][4] ([fdo#109271] / [fdo#111827])
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8128/fi-apl-guc/igt@kms_chamelium@common-hpd-after-suspend.html
+
+  
+#### Possible fixes ####
+
+  * igt@core_hotunplug@unbind-rebind:
+    - fi-apl-guc:         [INCOMPLETE][5] ([i915#7073]) -> [PASS][6]
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12398/fi-apl-guc/igt@core_hotunplug@unbind-rebind.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8128/fi-apl-guc/igt@core_hotunplug@unbind-rebind.html
+
+  * igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions-varying-size:
+    - fi-bsw-kefka:       [FAIL][7] ([i915#6298]) -> [PASS][8]
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12398/fi-bsw-kefka/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions-varying-size.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8128/fi-bsw-kefka/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions-varying-size.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [fdo#111827]: https://bugs.freedesktop.org/show_bug.cgi?id=111827
+  [i915#2582]: https://gitlab.freedesktop.org/drm/intel/issues/2582
+  [i915#4312]: https://gitlab.freedesktop.org/drm/intel/issues/4312
+  [i915#4613]: https://gitlab.freedesktop.org/drm/intel/issues/4613
+  [i915#4983]: https://gitlab.freedesktop.org/drm/intel/issues/4983
+  [i915#6298]: https://gitlab.freedesktop.org/drm/intel/issues/6298
+  [i915#6367]: https://gitlab.freedesktop.org/drm/intel/issues/6367
+  [i915#6997]: https://gitlab.freedesktop.org/drm/intel/issues/6997
+  [i915#7073]: https://gitlab.freedesktop.org/drm/intel/issues/7073
+  [i915#7077]: https://gitlab.freedesktop.org/drm/intel/issues/7077
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_7068 -> IGTPW_8128
+
+  CI-20190529: 20190529
+  CI_DRM_12398: 6ff9396457d55a1915566b11121e8fe6f9068b1c @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_8128: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8128/index.html
+  IGT_7068: 5c0ec905b6bbecfb8df8b8f3315d0470539e6ae3 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8128/index.html
+
+--===============2684546756970566822==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tools/intel_gtt: stop confusing GTT and BAR sizes</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/111058/">https://patchwork.freedesktop.org/series/111058/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8128/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8128/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_12398 -&gt; IGTPW_8128</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8128/index.html</p>
+<h2>Participating hosts (41 -&gt; 37)</h2>
+<p>Missing    (4): fi-ctg-p8600 fi-ilk-m540 fi-bdw-samus bat-dg1-6 </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_8128 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@gem_lmem_swapping@basic:</p>
+<ul>
+<li>fi-apl-guc:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8128/fi-apl-guc/igt@gem_lmem_swapping@basic.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4613">i915#4613</a>) +3 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@gt_lrc:</p>
+<ul>
+<li>fi-rkl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12398/fi-rkl-guc/igt@i915_selftest@live@gt_lrc.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8128/fi-rkl-guc/igt@i915_selftest@live@gt_lrc.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4983">i915#4983</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_chamelium@common-hpd-after-suspend:</p>
+<ul>
+<li>fi-apl-guc:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8128/fi-apl-guc/igt@kms_chamelium@common-hpd-after-suspend.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://bugs.freedesktop.org/show_bug.cgi?id=111827">fdo#111827</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@core_hotunplug@unbind-rebind:</p>
+<ul>
+<li>fi-apl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12398/fi-apl-guc/igt@core_hotunplug@unbind-rebind.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7073">i915#7073</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8128/fi-apl-guc/igt@core_hotunplug@unbind-rebind.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions-varying-size:</p>
+<ul>
+<li>fi-bsw-kefka:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12398/fi-bsw-kefka/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions-varying-size.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6298">i915#6298</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8128/fi-bsw-kefka/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions-varying-size.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_7068 -&gt; IGTPW_8128</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_12398: 6ff9396457d55a1915566b11121e8fe6f9068b1c @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_8128: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8128/index.html<br />
+  IGT_7068: 5c0ec905b6bbecfb8df8b8f3315d0470539e6ae3 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============2684546756970566822==--
