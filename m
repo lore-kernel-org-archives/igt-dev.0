@@ -1,25 +1,24 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-yw1-x1134.google.com (mail-yw1-x1134.google.com
- [IPv6:2607:f8b0:4864:20::1134])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6394F10E777
- for <igt-dev@lists.freedesktop.org>; Fri, 18 Nov 2022 16:39:48 +0000 (UTC)
-Received: by mail-yw1-x1134.google.com with SMTP id
- 00721157ae682-37063f855e5so54820637b3.3
- for <igt-dev@lists.freedesktop.org>; Fri, 18 Nov 2022 08:39:48 -0800 (PST)
-MIME-Version: 1.0
-References: <20221117194639.481656-1-markyacoub@chromium.org>
- <Y3diRurGtb79zJnJ@kamilkon-desk1>
-In-Reply-To: <Y3diRurGtb79zJnJ@kamilkon-desk1>
-From: Mark Yacoub <markyacoub@chromium.org>
-Date: Fri, 18 Nov 2022 11:39:36 -0500
-Message-ID: <CAJUqKUoB3C=EBLh79b1HDAKN2KJQYBrqjHi937qePx-b9vyCWA@mail.gmail.com>
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9EB9F10E227
+ for <igt-dev@lists.freedesktop.org>; Fri, 18 Nov 2022 18:25:47 +0000 (UTC)
+Message-ID: <fe879709-46a2-a875-99a4-cb929ec87e87@intel.com>
+Date: Fri, 18 Nov 2022 10:25:40 -0800
 To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org,
- robdclark@chromium.org, vsuley@google.com, petri.latvala@intel.com,
- ihf@google.com, amstan@chromium.org, kalin@google.com, seanpaul@chromium.org,
- matthewtlam@google.com, khaled.almahallawy@intel.com, markyacoub@google.com
-Content-Type: text/plain; charset="UTF-8"
-Subject: Re: [igt-dev] [PATCH] Cv3 Workaround: Skip Plug all at init.
+ <igt-dev@lists.freedesktop.org>, Vikas Srivastava
+ <vikas.srivastava@intel.com>, Daniele Ceraolo Spurio
+ <daniele.ceraolospurio@intel.com>, Priyanka Dandamudi
+ <priyanka.dandamudi@intel.com>
+References: <20221116103706.1492876-1-vikas.srivastava@intel.com>
+ <Y3ZYphN7f2BMYhdY@kamilkon-desk1>
+Content-Language: en-US
+From: "Ye, Tony" <tony.ye@intel.com>
+In-Reply-To: <Y3ZYphN7f2BMYhdY@kamilkon-desk1>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+MIME-Version: 1.0
+Subject: Re: [igt-dev] [PATCH i-g-t v2] lib: Remove deprecated interfaces
+ from huc_copy for Gen12+ platforms.
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -31,99 +30,222 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Fri, Nov 18, 2022 at 5:45 AM Kamil Konieczny
-<kamil.konieczny@linux.intel.com> wrote:
+
+On 11/17/2022 7:52 AM, Kamil Konieczny wrote:
+> Hi,
 >
-> Hi Mark,
+> please change subject of this commit, there are no changes
+> in old huc_copy in this patch. Also remove dot from end of
+> the Subject: line, s/platforms./platforms/
 >
-> On 2022-11-17 at 14:46:39 -0500, Mark Yacoub wrote:
+> On 2022-11-16 at 16:07:06 +0530, Vikas Srivastava wrote:
+>> From: "Ye, Tony" <tony.ye@intel.com>
+>>
+>> Stop using relocs and the legacy execbuf flags.
+> You should put here a little more explanation, as I see this it
+> is rather
 >
-> Few nits for subject line:
-> [PATCH] Cv3 Workaround: Skip Plug all at init.
-> ----------- ^ --------- ^ -- ^ ------------- ^
-> Generally do not use upper case in subject (with exceptions to
-> some propoer names like GPU, CPU etc) and do not end it with
-> dot, so better:
+> Add new huc_copy for gen12+ with no-relocs and no legacy flags
 >
-> [PATCH] Cv3 workaround: skip plug all at init
+> and there are no changes in old code (except for adding that
+> AT_LEAST_GEN(12)).
+
+The patch is to switch to softpin from relocations in the huc_copy test 
+on Gen12+. The old platforms stay with relocations. See the change in 
+the igt_get_huc_copyfunc function.
+
+
 >
-Fixed
-> > [Why]
-> > Currently, Cv3 doesn't allow all ports to be plugged in at the same time
-> > so chamelium_plug_all() always fails.
-> >
-> > [How]
-> > Check for the first Port ID as it's unique between V2 and V3, and skip
-> > the plugging if it's V3.
-> >
-> > Signed-off-by: Mark Yacoub <markyacoub@chromium.org>
-> > ---
-> >  lib/igt_chamelium.c | 11 +++++++++++
-> >  1 file changed, 11 insertions(+)
-> >
-> > diff --git a/lib/igt_chamelium.c b/lib/igt_chamelium.c
-> > index 68864bb8..6c52ac3b 100644
-> > --- a/lib/igt_chamelium.c
-> > +++ b/lib/igt_chamelium.c
-> > @@ -3015,10 +3015,19 @@ bool chamelium_plug_all(struct chamelium *chamelium)
-> >       int port_ids[CHAMELIUM_MAX_PORTS];
-> >       xmlrpc_value *v;
-> >
-> > +     igt_debug("CHAMELIUM PLUG ALL\n");
-> ------------------ ^
-> Don't use upper-case, so
-> s/CHAMELIUM PLUG ALL/Chamelium plug all/
+>> Signed-off-by: "Ye, Tony" <tony.ye@intel.com>
+>> Signed-off-by: Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>
+>> Acked-by: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
+>>
+>> ---
+>>   lib/huc_copy.c          | 77 +++++++++++++++++++++++++++++++++++++++++
+>>   lib/huc_copy.h          |  4 +++
+>>   lib/intel_batchbuffer.c |  8 +++--
+>>   3 files changed, 87 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/lib/huc_copy.c b/lib/huc_copy.c
+>> index 6ec68864b..3b011a305 100644
+>> --- a/lib/huc_copy.c
+>> +++ b/lib/huc_copy.c
+>> @@ -26,6 +26,8 @@
+>>   #include "drmtest.h"
+>>   #include "huc_copy.h"
+>>   #include "intel_allocator.h"
+>> +#include "intel_ctx.h"
+>> +#include "i915/gem_engine_topology.h"
+>>   
+>>   static void
+>>   gen9_emit_huc_virtual_addr_state(struct drm_i915_gem_exec_object2 *src,
+>> @@ -123,3 +125,78 @@ gen9_huc_copyfunc(int fd, uint64_t ahnd,
+>>   
+>>   	gem_execbuf(fd, &execbuf);
+>>   }
+>> +
+>> +static void
+>> +gen12_emit_huc_virtual_addr_state(struct drm_i915_gem_exec_object2 *src,
+>> +		struct drm_i915_gem_exec_object2 *dst,
+>> +		uint32_t *buf,
+>> +		int *i)
+>> +{
+>> +	buf[(*i)++] = HUC_VIRTUAL_ADDR_STATE;
+>> +
+>> +	for (int j = 0; j < HUC_VIRTUAL_ADDR_REGION_NUM; j++) {
+>> +		if (j == HUC_VIRTUAL_ADDR_REGION_SRC) {
+>> +			buf[(*i)++] = src->offset;
+> Addr is 48-bit and here we copy only lower 32-bit,
+> this may work with relocs but not with pinned addresses.
+
+
+The test only uses 3 addresses: 2M, 4M, 6M. So 48b flag is not set and 
+we only copy the lower 32 bits.
+
+
 >
-Removed. I accidentally forgot to amend my changes.
-> > +
-> >       port_count = chamelium_get_video_ports(chamelium, port_ids);
-> > +     igt_debug("CHAMELIUM PLUG ALL: %zu ports\n", port_count);
-> ------------------ ^
+>> +		} else if (j == HUC_VIRTUAL_ADDR_REGION_DST) {
+>> +			buf[(*i)++] = dst->offset;
 > Same here.
 >
-Removed.
-> >       if (port_count <= 0)
-> >               return false;
-> >
-> > +     /* A temporary workaround for Chamelium V3: Currently, Cv3 doesn't allow
-> > +      * all ports to be plugged in at the same time. Cv3 first port has an ID
-> > +      * of 0 while Cv2 has first port ID as 1. */
-> > +     if (port_ids[0] == 0)
+>> +		} else {
+>> +			buf[(*i)++] = 0;
+>> +		}
+>> +		buf[(*i)++] = 0;
+>> +		buf[(*i)++] = 0;
+>> +	}
+>> +}
+>> +
+>> +void
+>> +gen12_huc_copyfunc(int fd, uint64_t ahnd,
+>> +		  struct drm_i915_gem_exec_object2 *obj, uint64_t *objsize)
+>> +{
+>> +	struct drm_i915_gem_execbuffer2 execbuf;
+>> +	int i = 0;
+>> +	uint32_t buf[63];
+>> +	const intel_ctx_t *ctx;
+>> +
+>> +	/* load huc kernel */
+>> +	buf[i++] = HUC_IMEM_STATE;
+>> +	buf[i++] = 0;
+>> +	buf[i++] = 0;
+>> +	buf[i++] = 0;
+>> +	buf[i++] = 0x3;
+>> +
+>> +	buf[i++] = MFX_WAIT;
+>> +	buf[i++] = MFX_WAIT;
+>> +
+>> +	buf[i++] = HUC_PIPE_MODE_SELECT;
+>> +	buf[i++] = 0;
+>> +	buf[i++] = 0;
+>> +
+>> +	buf[i++] = MFX_WAIT;
+>> +
+>> +	obj[0].offset = 0x200000;
+> ----------------------- ^
+> Use ahnd as in gen9_huc_copy (without reloc code).
+
+
+The code here is simply assigning a graphics virtual address to the 
+source buffer object.
+
+
+>> +	obj[0].flags |= EXEC_OBJECT_PINNED;
+> Add also:
+> 			| EXEC_OBJECT_SUPPORTS_48B_ADDRESS
+
+As explained above,  we don't need 48b address.
+
+
 >
-> If you put debugs elsewhere, maybe also put it here ?
-I added a debug to know that this is Cv3
-> This looks like you will not test any plugged port on Cv3 ?
-We use autodiscovery later on to figure out what is connected.
-> Do you have separate test iterate on ports ?
-> Do you want to test anything here for Cv3 if port_count == 1 ?
-We do test it elsewhere when we set up the chamelium ports anyway.
+>> +	obj[1].offset = 0x400000;
+> Same here.
+>
+>> +	obj[1].flags |= EXEC_OBJECT_PINNED;
+>> +	obj[1].flags |= EXEC_OBJECT_WRITE;
+> Add also
+> 			| EXEC_OBJECT_SUPPORTS_48B_ADDRESS
+>
+> and maybe make it one bit-or like:
+> 	obj[1].flags |= EXEC_OBJECT_PINNED | EXEC_OBJECT_WRITE |
+> 			EXEC_OBJECT_SUPPORTS_48B_ADDRESS;
+>
+>> +	obj[2].offset = 0x600000;
+> Same here.
+>
+>> +	obj[2].flags |= EXEC_OBJECT_PINNED;
+> Same here (48-bit).
 >
 > Regards,
 > Kamil
 >
-Thanks a lot for your review. Let me know if you'd like to me to
-always add you on my IGT patches.
-> > +             return true;
-> > +
-> >       for (int i = 0; i < port_count; ++i) {
-> >               v = __chamelium_rpc(chamelium, NULL, "Plug", "(i)", port_ids[i]);
-> >
-> > @@ -3053,6 +3062,7 @@ bool chamelium_wait_all_configured_ports_connected(struct chamelium *chamelium,
-> >       for (int i = 0; group_list[i] != NULL; i++) {
-> >               char *map_name;
-> >               group = group_list[i];
-> > +             igt_debug("Checking group %s", group);
-> >
-> >               if (!strstr(group, "Chamelium:"))
-> >                       continue;
-> > @@ -3060,6 +3070,7 @@ bool chamelium_wait_all_configured_ports_connected(struct chamelium *chamelium,
-> >               igt_assert(chamelium->port_count <= CHAMELIUM_MAX_PORTS);
-> >
-> >               map_name = group + (sizeof("Chamelium:") - 1);
-> > +             igt_debug("Checking map %s", map_name);
-> >
-> >               for (int j = 0;
-> >                    j < res->count_connectors;
-> > --
-> > 2.38.1.584.g0f3c55d4c2-goog
-> >
+>> +	gen12_emit_huc_virtual_addr_state(&obj[0], &obj[1], buf, &i);
+>> +
+>> +	buf[i++] = HUC_START;
+>> +	buf[i++] = 1;
+>> +
+>> +	buf[i++] = MI_BATCH_BUFFER_END;
+>> +
+>> +	gem_write(fd, obj[2].handle, 0, buf, sizeof(buf));
+>> +
+>> +	memset(&execbuf, 0, sizeof(execbuf));
+>> +	execbuf.buffers_ptr = to_user_pointer(obj);
+>> +	execbuf.buffer_count = 3;
+>> +	execbuf.flags = I915_EXEC_DEFAULT;
+>> +
+>> +	ctx = intel_ctx_create_for_engine(fd, I915_ENGINE_CLASS_VIDEO, 0);
+>> +	execbuf.rsvd1 = ctx->id;
+>> +
+>> +	gem_execbuf(fd, &execbuf);
+>> +
+>> +	intel_ctx_destroy(fd, ctx);
+>> +}
+>> diff --git a/lib/huc_copy.h b/lib/huc_copy.h
+>> index 69d140933..e87e62c9c 100644
+>> --- a/lib/huc_copy.h
+>> +++ b/lib/huc_copy.h
+>> @@ -46,4 +46,8 @@ void
+>>   gen9_huc_copyfunc(int fd, uint64_t ahnd,
+>>   		  struct drm_i915_gem_exec_object2 *obj, uint64_t *objsize);
+>>   
+>> +void
+>> +gen12_huc_copyfunc(int fd, uint64_t ahnd,
+>> +		   struct drm_i915_gem_exec_object2 *obj, uint64_t *objsize);
+>> +
+>>   #endif /* HUC_COPY_H */
+>> diff --git a/lib/intel_batchbuffer.c b/lib/intel_batchbuffer.c
+>> index 19a1fbe4d..9a855a7f0 100644
+>> --- a/lib/intel_batchbuffer.c
+>> +++ b/lib/intel_batchbuffer.c
+>> @@ -3066,14 +3066,18 @@ void intel_bb_copy_intel_buf(struct intel_bb *ibb,
+>>    * Returns:
+>>    *
+>>    * The platform-specific huc copy function pointer for the device specified
+>> - * with @devid. Will return NULL when no media spin function is implemented.
+>> + * with @devid. Will return NULL when no huc copy function is implemented.
+>>    */
+>>   igt_huc_copyfunc_t igt_get_huc_copyfunc(int devid)
+>>   {
+>>   	igt_huc_copyfunc_t copy = NULL;
+>>   
+>> -	if (IS_GEN12(devid) || IS_GEN11(devid) || IS_GEN9(devid))
+>> +	if (AT_LEAST_GEN(devid, 12))
+>> +		copy = gen12_huc_copyfunc;
+
+As mentioned above, we switch to softpin on Gen12+ and stay with old 
+func on earlier platforms.
+
+Thanks,
+Tony
+
+
+>> +	else if (IS_GEN11(devid) || IS_GEN9(devid))
+>>   		copy = gen9_huc_copyfunc;
+>> +	else
+>> +		copy = NULL;
+>>   
+>>   	return copy;
+>>   }
+>> -- 
+>> 2.25.1
+>>
