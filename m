@@ -1,18 +1,23 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-yb1-xb2e.google.com (mail-yb1-xb2e.google.com
- [IPv6:2607:f8b0:4864:20::b2e])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8DBF610E777
- for <igt-dev@lists.freedesktop.org>; Fri, 18 Nov 2022 16:40:10 +0000 (UTC)
-Received: by mail-yb1-xb2e.google.com with SMTP id e68so6280049ybh.2
- for <igt-dev@lists.freedesktop.org>; Fri, 18 Nov 2022 08:40:10 -0800 (PST)
+Received: from mail-yw1-x1134.google.com (mail-yw1-x1134.google.com
+ [IPv6:2607:f8b0:4864:20::1134])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6394F10E777
+ for <igt-dev@lists.freedesktop.org>; Fri, 18 Nov 2022 16:39:48 +0000 (UTC)
+Received: by mail-yw1-x1134.google.com with SMTP id
+ 00721157ae682-37063f855e5so54820637b3.3
+ for <igt-dev@lists.freedesktop.org>; Fri, 18 Nov 2022 08:39:48 -0800 (PST)
 MIME-Version: 1.0
 References: <20221117194639.481656-1-markyacoub@chromium.org>
- <Y3dD3zhcUrhmvwoC@platvala-desk.ger.corp.intel.com>
-In-Reply-To: <Y3dD3zhcUrhmvwoC@platvala-desk.ger.corp.intel.com>
+ <Y3diRurGtb79zJnJ@kamilkon-desk1>
+In-Reply-To: <Y3diRurGtb79zJnJ@kamilkon-desk1>
 From: Mark Yacoub <markyacoub@chromium.org>
-Date: Fri, 18 Nov 2022 11:39:59 -0500
-Message-ID: <CAJUqKUppHCLqvM5Ee-Q4VwQ_B-0q0kZ72b1a2MYTse9K6N7DwA@mail.gmail.com>
-To: Petri Latvala <petri.latvala@intel.com>
+Date: Fri, 18 Nov 2022 11:39:36 -0500
+Message-ID: <CAJUqKUoB3C=EBLh79b1HDAKN2KJQYBrqjHi937qePx-b9vyCWA@mail.gmail.com>
+To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ igt-dev@lists.freedesktop.org,
+ robdclark@chromium.org, vsuley@google.com, petri.latvala@intel.com,
+ ihf@google.com, amstan@chromium.org, kalin@google.com, seanpaul@chromium.org,
+ matthewtlam@google.com, khaled.almahallawy@intel.com, markyacoub@google.com
 Content-Type: text/plain; charset="UTF-8"
 Subject: Re: [igt-dev] [PATCH] Cv3 Workaround: Skip Plug all at init.
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
@@ -22,17 +27,27 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: robdclark@chromium.org, vsuley@google.com, amstan@chromium.org,
- ihf@google.com, igt-dev@lists.freedesktop.org, kalin@google.com,
- seanpaul@chromium.org, matthewtlam@google.com, markyacoub@google.com,
- khaled.almahallawy@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Fri, Nov 18, 2022 at 3:36 AM Petri Latvala <petri.latvala@intel.com> wrote:
+On Fri, Nov 18, 2022 at 5:45 AM Kamil Konieczny
+<kamil.konieczny@linux.intel.com> wrote:
 >
-> On Thu, Nov 17, 2022 at 02:46:39PM -0500, Mark Yacoub wrote:
+> Hi Mark,
+>
+> On 2022-11-17 at 14:46:39 -0500, Mark Yacoub wrote:
+>
+> Few nits for subject line:
+> [PATCH] Cv3 Workaround: Skip Plug all at init.
+> ----------- ^ --------- ^ -- ^ ------------- ^
+> Generally do not use upper case in subject (with exceptions to
+> some propoer names like GPU, CPU etc) and do not end it with
+> dot, so better:
+>
+> [PATCH] Cv3 workaround: skip plug all at init
+>
+Fixed
 > > [Why]
 > > Currently, Cv3 doesn't allow all ports to be plugged in at the same time
 > > so chamelium_plug_all() always fails.
@@ -55,27 +70,39 @@ On Fri, Nov 18, 2022 at 3:36 AM Petri Latvala <petri.latvala@intel.com> wrote:
 > >       xmlrpc_value *v;
 > >
 > > +     igt_debug("CHAMELIUM PLUG ALL\n");
+> ------------------ ^
+> Don't use upper-case, so
+> s/CHAMELIUM PLUG ALL/Chamelium plug all/
+>
+Removed. I accidentally forgot to amend my changes.
 > > +
 > >       port_count = chamelium_get_video_ports(chamelium, port_ids);
 > > +     igt_debug("CHAMELIUM PLUG ALL: %zu ports\n", port_count);
+> ------------------ ^
+> Same here.
+>
+Removed.
 > >       if (port_count <= 0)
 > >               return false;
 > >
 > > +     /* A temporary workaround for Chamelium V3: Currently, Cv3 doesn't allow
 > > +      * all ports to be plugged in at the same time. Cv3 first port has an ID
 > > +      * of 0 while Cv2 has first port ID as 1. */
->
-> Format this comment as
->
-> /*
->  * Text starts from this line.
->  * The begin and end of block comment on their own lines
->  */
->
-Fixed.
->
->
 > > +     if (port_ids[0] == 0)
+>
+> If you put debugs elsewhere, maybe also put it here ?
+I added a debug to know that this is Cv3
+> This looks like you will not test any plugged port on Cv3 ?
+We use autodiscovery later on to figure out what is connected.
+> Do you have separate test iterate on ports ?
+> Do you want to test anything here for Cv3 if port_count == 1 ?
+We do test it elsewhere when we set up the chamelium ports anyway.
+>
+> Regards,
+> Kamil
+>
+Thanks a lot for your review. Let me know if you'd like to me to
+always add you on my IGT patches.
 > > +             return true;
 > > +
 > >       for (int i = 0; i < port_count; ++i) {
@@ -86,10 +113,6 @@ Fixed.
 > >               char *map_name;
 > >               group = group_list[i];
 > > +             igt_debug("Checking group %s", group);
->
-> Make sure debug prints end in newline.
->
-Removed.
 > >
 > >               if (!strstr(group, "Chamelium:"))
 > >                       continue;
@@ -98,15 +121,6 @@ Removed.
 > >
 > >               map_name = group + (sizeof("Chamelium:") - 1);
 > > +             igt_debug("Checking map %s", map_name);
->
-> Same here.
-Removed.
->
->
-> --
-> Petri Latvala
->
->
 > >
 > >               for (int j = 0;
 > >                    j < res->count_connectors;
