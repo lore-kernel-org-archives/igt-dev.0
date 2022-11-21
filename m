@@ -1,15 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============0469354057314374721=="
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
 From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Matthew Auld" <matthew.auld@intel.com>
-Date: Mon, 21 Nov 2022 11:28:31 -0000
-Message-ID: <166903011101.22095.6943951491099388823@emeril.freedesktop.org>
-References: <20221118155335.635430-1-matthew.auld@intel.com>
-In-Reply-To: <20221118155335.635430-1-matthew.auld@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
- =?utf-8?q?i915/gem=5Fexec=5Fbalancer=3A_exercise_dmabuf_import_=28rev2=29?=
+To: "Vikas Srivastava" <vikas.srivastava@intel.com>
+Date: Mon, 21 Nov 2022 11:30:16 -0000
+Message-ID: <166903021668.22094.3293335455775541685@emeril.freedesktop.org>
+References: <20221121105436.1992501-1-vikas.srivastava@intel.com>
+In-Reply-To: <20221121105436.1992501-1-vikas.srivastava@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJVSUxEOiBmYWlsdXJlIGZvciB0ZXN0?=
+ =?utf-8?q?s/i915/gem=5Fuserptr=5Fblits=3A_Added_XY=5FFAST=5FCOPY=5FBLT_Co?=
+ =?utf-8?q?mmand_for_MTL?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,188 +24,97 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============0469354057314374721==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+=3D=3D Series Details =3D=3D
 
-== Series Details ==
+Series: tests/i915/gem_userptr_blits: Added XY_FAST_COPY_BLT Command for MTL
+URL   : https://patchwork.freedesktop.org/series/111133/
+State : failure
 
-Series: tests/i915/gem_exec_balancer: exercise dmabuf import (rev2)
-URL   : https://patchwork.freedesktop.org/series/111080/
-State : success
+=3D=3D Summary =3D=3D
 
-== Summary ==
+IGT patchset build failed on latest successful build
+40a2de5cc6a6b43af7da7905bfe1ede9d9a3200c tests/i915/gem_exec_fence: Replaci=
+ng custom spinner with igt_spin
 
-CI Bug Log - changes from CI_DRM_12407 -> IGTPW_8135
-====================================================
+[194/554] Linking target tests/gem_lmem_swapping.
+[195/554] Linking target tests/gem_lut_handle.
+[196/554] Linking target tests/gem_madvise.
+[197/554] Linking target tests/gem_media_fill.
+[198/554] Linking target tests/gem_media_vme.
+[199/554] Linking target tests/gem_mmap.
+[200/554] Linking target tests/gem_mmap_gtt.
+[201/554] Linking target tests/gem_partial_pwrite_pread.
+[202/554] Linking target tests/gem_ppgtt.
+[203/554] Linking target tests/gem_pread.
+[204/554] Linking target tests/gem_pread_after_blit.
+[205/554] Linking target tests/gem_pwrite.
+[206/554] Linking target tests/gem_pwrite_snooped.
+[207/554] Linking target tests/gem_pxp.
+[208/554] Linking target tests/gem_read_read_speed.
+[209/554] Linking target tests/gem_readwrite.
+[210/554] Linking target tests/gem_reg_read.
+[211/554] Linking target tests/gem_render_copy.
+[212/554] Linking target tests/gem_render_copy_redux.
+[213/554] Linking target tests/gem_request_retire.
+[214/554] Linking target tests/gem_render_tiled_blits.
+[215/554] Linking target tests/gem_render_linear_blits.
+[216/554] Linking target tests/gem_ringfill.
+[217/554] Linking target tests/gem_reset_stats.
+[218/554] Linking target tests/gem_set_tiling_vs_blt.
+[219/554] Linking target tests/gem_set_tiling_vs_gtt.
+[220/554] Linking target tests/gem_set_tiling_vs_pwrite.
+[221/554] Linking target tests/gem_shrink.
+[222/554] Linking target tests/gem_softpin.
+[223/554] Linking target tests/gem_spin_batch.
+[224/554] Linking target tests/gem_streaming_writes.
+[225/554] Linking target tests/gem_sync.
+[226/554] Linking target tests/gem_tiled_blits.
+[227/554] Linking target tests/gem_tiled_partial_pwrite_pread.
+[228/554] Linking target tests/gem_tiled_fence_blits.
+[229/554] Linking target tests/gem_tiled_pread_basic.
+[230/554] Linking target tests/gem_tiled_pread_pwrite.
+[231/554] Linking target tests/gem_tiled_swapping.
+[232/554] Linking target tests/gem_tiled_wb.
+[233/554] Linking target tests/gem_tiled_wc.
+[234/554] Compiling C object 'tests/59830eb@@gem_userptr_blits@exe/i915_gem=
+_userptr_blits.c.o'.
+FAILED: tests/59830eb@@gem_userptr_blits@exe/i915_gem_userptr_blits.c.o=20
+cc -Itests/59830eb@@gem_userptr_blits@exe -Itests -I../../../usr/src/igt-gp=
+u-tools/tests -I../../../usr/src/igt-gpu-tools/include/drm-uapi -I../../../=
+usr/src/igt-gpu-tools/include/linux-uapi -Ilib -I../../../usr/src/igt-gpu-t=
+ools/lib -I../../../usr/src/igt-gpu-tools/lib/stubs/syscalls -I. -I../../..=
+/usr/src/igt-gpu-tools/ -I/usr/include/cairo -I/usr/include/glib-2.0 -I/usr=
+/lib/x86_64-linux-gnu/glib-2.0/include -I/usr/include/pixman-1 -I/usr/inclu=
+de/uuid -I/usr/include/freetype2 -I/usr/include/libpng16 -I/usr/include/lib=
+drm -I/usr/include/x86_64-linux-gnu -I/usr/include/valgrind -I/usr/include =
+-fdiagnostics-color=3Dalways -pipe -D_FILE_OFFSET_BITS=3D64 -Wall -Winvalid=
+-pch -Wextra -std=3Dgnu11 -O2 -g -D_GNU_SOURCE -include config.h -D_FORTIFY=
+_SOURCE=3D2 -Wbad-function-cast -Wdeclaration-after-statement -Wformat=3D2 =
+-Wimplicit-fallthrough=3D0 -Wlogical-op -Wmissing-declarations -Wmissing-fo=
+rmat-attribute -Wmissing-noreturn -Wmissing-prototypes -Wnested-externs -Wo=
+ld-style-definition -Wpointer-arith -Wredundant-decls -Wshadow -Wstrict-pro=
+totypes -Wuninitialized -Wunused -Wno-clobbered -Wno-maybe-uninitialized -W=
+no-missing-field-initializers -Wno-pointer-arith -Wno-address-of-packed-mem=
+ber -Wno-sign-compare -Wno-type-limits -Wno-unused-parameter -Wno-unused-re=
+sult -Werror=3Daddress -Werror=3Darray-bounds -Werror=3Dimplicit -Werror=3D=
+init-self -Werror=3Dint-to-pointer-cast -Werror=3Dmain -Werror=3Dmissing-br=
+aces -Werror=3Dnonnull -Werror=3Dpointer-to-int-cast -Werror=3Dreturn-type =
+-Werror=3Dsequence-point -Werror=3Dtrigraphs -Werror=3Dwrite-strings -fno-b=
+uiltin-malloc -fno-builtin-calloc -fcommon -pthread -MD -MQ 'tests/59830eb@=
+@gem_userptr_blits@exe/i915_gem_userptr_blits.c.o' -MF 'tests/59830eb@@gem_=
+userptr_blits@exe/i915_gem_userptr_blits.c.o.d' -o 'tests/59830eb@@gem_user=
+ptr_blits@exe/i915_gem_userptr_blits.c.o' -c ../../../usr/src/igt-gpu-tools=
+/tests/i915/gem_userptr_blits.c
+../../../usr/src/igt-gpu-tools/tests/i915/gem_userptr_blits.c: In function =
+=E2=80=98copy=E2=80=99:
+../../../usr/src/igt-gpu-tools/tests/i915/gem_userptr_blits.c:114:6: error:=
+ implicit declaration of function =E2=80=98IS_PONTEVECCHIO=E2=80=99 [-Werro=
+r=3Dimplicit-function-declaration]
+  114 |  if (IS_PONTEVECCHIO(devid)) {
+      |      ^~~~~~~~~~~~~~~
+../../../usr/src/igt-gpu-tools/tests/i915/gem_userptr_blits.c:114:6: warnin=
+g: nested extern declaration of =E2=80=98IS_PONTEVECCHIO=E2=80=99 [-Wnested=
+-externs]
+cc1: some warnings being treated as errors
+ninja: build stopped: subcommand failed.
 
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8135/index.html
-
-Participating hosts (23 -> 24)
-------------------------------
-
-  Additional (2): fi-hsw-4770 bat-kbl-2 
-  Missing    (1): fi-ilk-m540 
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_8135 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@i915_suspend@basic-s3-without-i915:
-    - fi-rkl-11600:       [PASS][1] -> [INCOMPLETE][2] ([i915#4817])
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12407/fi-rkl-11600/igt@i915_suspend@basic-s3-without-i915.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8135/fi-rkl-11600/igt@i915_suspend@basic-s3-without-i915.html
-
-  * igt@kms_addfb_basic@addfb25-y-tiled-small-legacy:
-    - fi-hsw-4770:        NOTRUN -> [SKIP][3] ([fdo#109271]) +11 similar issues
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8135/fi-hsw-4770/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html
-
-  * igt@kms_chamelium@dp-crc-fast:
-    - fi-hsw-4770:        NOTRUN -> [SKIP][4] ([fdo#109271] / [fdo#111827]) +8 similar issues
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8135/fi-hsw-4770/igt@kms_chamelium@dp-crc-fast.html
-
-  * igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions-varying-size:
-    - fi-bsw-kefka:       [PASS][5] -> [FAIL][6] ([i915#6298])
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12407/fi-bsw-kefka/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions-varying-size.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8135/fi-bsw-kefka/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions-varying-size.html
-
-  * igt@kms_psr@sprite_plane_onoff:
-    - fi-hsw-4770:        NOTRUN -> [SKIP][7] ([fdo#109271] / [i915#1072]) +3 similar issues
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8135/fi-hsw-4770/igt@kms_psr@sprite_plane_onoff.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
-  [fdo#111827]: https://bugs.freedesktop.org/show_bug.cgi?id=111827
-  [i915#1072]: https://gitlab.freedesktop.org/drm/intel/issues/1072
-  [i915#4817]: https://gitlab.freedesktop.org/drm/intel/issues/4817
-  [i915#6298]: https://gitlab.freedesktop.org/drm/intel/issues/6298
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_7069 -> IGTPW_8135
-
-  CI-20190529: 20190529
-  CI_DRM_12407: acd6b3e8e35f7b7b5ce9d16d85f5cdc1e5a94bdf @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_8135: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8135/index.html
-  IGT_7069: 40a2de5cc6a6b43af7da7905bfe1ede9d9a3200c @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-
-Testlist changes
-----------------
-
-+igt@gem_exec_balancer@parallel-out-fence-import-dmabuf
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8135/index.html
-
---===============0469354057314374721==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/i915/gem_exec_balancer: exercise dmabuf import (rev2)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/111080/">https://patchwork.freedesktop.org/series/111080/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8135/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8135/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from CI_DRM_12407 -&gt; IGTPW_8135</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8135/index.html</p>
-<h2>Participating hosts (23 -&gt; 24)</h2>
-<p>Additional (2): fi-hsw-4770 bat-kbl-2 <br />
-  Missing    (1): fi-ilk-m540 </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_8135 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@i915_suspend@basic-s3-without-i915:</p>
-<ul>
-<li>fi-rkl-11600:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12407/fi-rkl-11600/igt@i915_suspend@basic-s3-without-i915.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8135/fi-rkl-11600/igt@i915_suspend@basic-s3-without-i915.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4817">i915#4817</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_addfb_basic@addfb25-y-tiled-small-legacy:</p>
-<ul>
-<li>fi-hsw-4770:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8135/fi-hsw-4770/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +11 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_chamelium@dp-crc-fast:</p>
-<ul>
-<li>fi-hsw-4770:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8135/fi-hsw-4770/igt@kms_chamelium@dp-crc-fast.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://bugs.freedesktop.org/show_bug.cgi?id=111827">fdo#111827</a>) +8 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions-varying-size:</p>
-<ul>
-<li>fi-bsw-kefka:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12407/fi-bsw-kefka/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions-varying-size.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8135/fi-bsw-kefka/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions-varying-size.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6298">i915#6298</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr@sprite_plane_onoff:</p>
-<ul>
-<li>fi-hsw-4770:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8135/fi-hsw-4770/igt@kms_psr@sprite_plane_onoff.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/1072">i915#1072</a>) +3 similar issues</li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_7069 -&gt; IGTPW_8135</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_12407: acd6b3e8e35f7b7b5ce9d16d85f5cdc1e5a94bdf @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_8135: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8135/index.html<br />
-  IGT_7069: 40a2de5cc6a6b43af7da7905bfe1ede9d9a3200c @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-<h2>Testlist changes</h2>
-<p>+igt@gem_exec_balancer@parallel-out-fence-import-dmabuf</p>
-
-</body>
-</html>
-
---===============0469354057314374721==--
