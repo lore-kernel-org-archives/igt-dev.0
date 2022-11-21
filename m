@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: text/plain; charset="utf-8"
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 726A710E2BF
+ for <igt-dev@lists.freedesktop.org>; Mon, 21 Nov 2022 12:16:31 +0000 (UTC)
+From: Vikas Srivastava <vikas.srivastava@intel.com>
+To: igt-dev@lists.freedesktop.org,
+	kamil.konieczny@linux.intel.com
+Date: Mon, 21 Nov 2022 17:44:48 +0530
+Message-Id: <20221121121448.2003910-1-vikas.srivastava@intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Vikas Srivastava" <vikas.srivastava@intel.com>
-Date: Mon, 21 Nov 2022 11:30:16 -0000
-Message-ID: <166903021668.22094.3293335455775541685@emeril.freedesktop.org>
-References: <20221121105436.1992501-1-vikas.srivastava@intel.com>
-In-Reply-To: <20221121105436.1992501-1-vikas.srivastava@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJVSUxEOiBmYWlsdXJlIGZvciB0ZXN0?=
- =?utf-8?q?s/i915/gem=5Fuserptr=5Fblits=3A_Added_XY=5FFAST=5FCOPY=5FBLT_Co?=
- =?utf-8?q?mmand_for_MTL?=
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t v2]tests/i915/gem_userptr_blits: Added
+ XY_FAST_COPY_BLT Command for MTL
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,103 +18,175 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-=3D=3D Series Details =3D=3D
+From: Arjun Melkaveri <arjun.melkaveri@intel.com>
 
-Series: tests/i915/gem_userptr_blits: Added XY_FAST_COPY_BLT Command for MTL
-URL   : https://patchwork.freedesktop.org/series/111133/
-State : failure
+Test case uses legacy command which is not supported on MTL.
+Modified test to use XY_FAST_COPY_BLT.
 
-=3D=3D Summary =3D=3D
+Signed-off-by: Arjun Melkaveri <arjun.melkaveri@intel.com>
+Acked-by: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
+---
+ tests/i915/gem_userptr_blits.c | 127 +++++++++++++++++++++------------
+ 1 file changed, 82 insertions(+), 45 deletions(-)
 
-IGT patchset build failed on latest successful build
-40a2de5cc6a6b43af7da7905bfe1ede9d9a3200c tests/i915/gem_exec_fence: Replaci=
-ng custom spinner with igt_spin
-
-[194/554] Linking target tests/gem_lmem_swapping.
-[195/554] Linking target tests/gem_lut_handle.
-[196/554] Linking target tests/gem_madvise.
-[197/554] Linking target tests/gem_media_fill.
-[198/554] Linking target tests/gem_media_vme.
-[199/554] Linking target tests/gem_mmap.
-[200/554] Linking target tests/gem_mmap_gtt.
-[201/554] Linking target tests/gem_partial_pwrite_pread.
-[202/554] Linking target tests/gem_ppgtt.
-[203/554] Linking target tests/gem_pread.
-[204/554] Linking target tests/gem_pread_after_blit.
-[205/554] Linking target tests/gem_pwrite.
-[206/554] Linking target tests/gem_pwrite_snooped.
-[207/554] Linking target tests/gem_pxp.
-[208/554] Linking target tests/gem_read_read_speed.
-[209/554] Linking target tests/gem_readwrite.
-[210/554] Linking target tests/gem_reg_read.
-[211/554] Linking target tests/gem_render_copy.
-[212/554] Linking target tests/gem_render_copy_redux.
-[213/554] Linking target tests/gem_request_retire.
-[214/554] Linking target tests/gem_render_tiled_blits.
-[215/554] Linking target tests/gem_render_linear_blits.
-[216/554] Linking target tests/gem_ringfill.
-[217/554] Linking target tests/gem_reset_stats.
-[218/554] Linking target tests/gem_set_tiling_vs_blt.
-[219/554] Linking target tests/gem_set_tiling_vs_gtt.
-[220/554] Linking target tests/gem_set_tiling_vs_pwrite.
-[221/554] Linking target tests/gem_shrink.
-[222/554] Linking target tests/gem_softpin.
-[223/554] Linking target tests/gem_spin_batch.
-[224/554] Linking target tests/gem_streaming_writes.
-[225/554] Linking target tests/gem_sync.
-[226/554] Linking target tests/gem_tiled_blits.
-[227/554] Linking target tests/gem_tiled_partial_pwrite_pread.
-[228/554] Linking target tests/gem_tiled_fence_blits.
-[229/554] Linking target tests/gem_tiled_pread_basic.
-[230/554] Linking target tests/gem_tiled_pread_pwrite.
-[231/554] Linking target tests/gem_tiled_swapping.
-[232/554] Linking target tests/gem_tiled_wb.
-[233/554] Linking target tests/gem_tiled_wc.
-[234/554] Compiling C object 'tests/59830eb@@gem_userptr_blits@exe/i915_gem=
-_userptr_blits.c.o'.
-FAILED: tests/59830eb@@gem_userptr_blits@exe/i915_gem_userptr_blits.c.o=20
-cc -Itests/59830eb@@gem_userptr_blits@exe -Itests -I../../../usr/src/igt-gp=
-u-tools/tests -I../../../usr/src/igt-gpu-tools/include/drm-uapi -I../../../=
-usr/src/igt-gpu-tools/include/linux-uapi -Ilib -I../../../usr/src/igt-gpu-t=
-ools/lib -I../../../usr/src/igt-gpu-tools/lib/stubs/syscalls -I. -I../../..=
-/usr/src/igt-gpu-tools/ -I/usr/include/cairo -I/usr/include/glib-2.0 -I/usr=
-/lib/x86_64-linux-gnu/glib-2.0/include -I/usr/include/pixman-1 -I/usr/inclu=
-de/uuid -I/usr/include/freetype2 -I/usr/include/libpng16 -I/usr/include/lib=
-drm -I/usr/include/x86_64-linux-gnu -I/usr/include/valgrind -I/usr/include =
--fdiagnostics-color=3Dalways -pipe -D_FILE_OFFSET_BITS=3D64 -Wall -Winvalid=
--pch -Wextra -std=3Dgnu11 -O2 -g -D_GNU_SOURCE -include config.h -D_FORTIFY=
-_SOURCE=3D2 -Wbad-function-cast -Wdeclaration-after-statement -Wformat=3D2 =
--Wimplicit-fallthrough=3D0 -Wlogical-op -Wmissing-declarations -Wmissing-fo=
-rmat-attribute -Wmissing-noreturn -Wmissing-prototypes -Wnested-externs -Wo=
-ld-style-definition -Wpointer-arith -Wredundant-decls -Wshadow -Wstrict-pro=
-totypes -Wuninitialized -Wunused -Wno-clobbered -Wno-maybe-uninitialized -W=
-no-missing-field-initializers -Wno-pointer-arith -Wno-address-of-packed-mem=
-ber -Wno-sign-compare -Wno-type-limits -Wno-unused-parameter -Wno-unused-re=
-sult -Werror=3Daddress -Werror=3Darray-bounds -Werror=3Dimplicit -Werror=3D=
-init-self -Werror=3Dint-to-pointer-cast -Werror=3Dmain -Werror=3Dmissing-br=
-aces -Werror=3Dnonnull -Werror=3Dpointer-to-int-cast -Werror=3Dreturn-type =
--Werror=3Dsequence-point -Werror=3Dtrigraphs -Werror=3Dwrite-strings -fno-b=
-uiltin-malloc -fno-builtin-calloc -fcommon -pthread -MD -MQ 'tests/59830eb@=
-@gem_userptr_blits@exe/i915_gem_userptr_blits.c.o' -MF 'tests/59830eb@@gem_=
-userptr_blits@exe/i915_gem_userptr_blits.c.o.d' -o 'tests/59830eb@@gem_user=
-ptr_blits@exe/i915_gem_userptr_blits.c.o' -c ../../../usr/src/igt-gpu-tools=
-/tests/i915/gem_userptr_blits.c
-../../../usr/src/igt-gpu-tools/tests/i915/gem_userptr_blits.c: In function =
-=E2=80=98copy=E2=80=99:
-../../../usr/src/igt-gpu-tools/tests/i915/gem_userptr_blits.c:114:6: error:=
- implicit declaration of function =E2=80=98IS_PONTEVECCHIO=E2=80=99 [-Werro=
-r=3Dimplicit-function-declaration]
-  114 |  if (IS_PONTEVECCHIO(devid)) {
-      |      ^~~~~~~~~~~~~~~
-../../../usr/src/igt-gpu-tools/tests/i915/gem_userptr_blits.c:114:6: warnin=
-g: nested extern declaration of =E2=80=98IS_PONTEVECCHIO=E2=80=99 [-Wnested=
--externs]
-cc1: some warnings being treated as errors
-ninja: build stopped: subcommand failed.
-
+diff --git a/tests/i915/gem_userptr_blits.c b/tests/i915/gem_userptr_blits.c
+index 698508669..9158647fd 100644
+--- a/tests/i915/gem_userptr_blits.c
++++ b/tests/i915/gem_userptr_blits.c
+@@ -99,6 +99,7 @@ static int copy(int fd, uint32_t dst, uint32_t src)
+ 	struct drm_i915_gem_relocation_entry reloc[2];
+ 	struct drm_i915_gem_exec_object2 obj[3];
+ 	struct drm_i915_gem_execbuffer2 exec;
++	static uint32_t devid;
+ 	uint32_t handle;
+ 	int ret, i=0;
+ 	uint64_t dst_offset, src_offset, bb_offset;
+@@ -108,29 +109,46 @@ static int copy(int fd, uint32_t dst, uint32_t src)
+ 	dst_offset = bb_offset + 4096;
+ 	src_offset = dst_offset + WIDTH * HEIGHT * sizeof(uint32_t) * (src != dst);
+ 
+-	batch[i++] = XY_SRC_COPY_BLT_CMD |
+-		  XY_SRC_COPY_BLT_WRITE_ALPHA |
+-		  XY_SRC_COPY_BLT_WRITE_RGB;
+-	if (intel_gen(intel_get_drm_devid(fd)) >= 8)
+-		batch[i - 1] |= 8;
+-	else
+-		batch[i - 1] |= 6;
+-
+-	batch[i++] = (3 << 24) | /* 32 bits */
+-		  (0xcc << 16) | /* copy ROP */
+-		  WIDTH*4;
+-	batch[i++] = 0; /* dst x1,y1 */
+-	batch[i++] = (HEIGHT << 16) | WIDTH; /* dst x2,y2 */
+-	batch[i++] = dst_offset; /* dst reloc */
+-	if (intel_gen(intel_get_drm_devid(fd)) >= 8)
+-		batch[i++] = dst_offset >> 32;
+-	batch[i++] = 0; /* src x1,y1 */
+-	batch[i++] = WIDTH*4;
+-	batch[i++] = src_offset; /* src reloc */
+-	if (intel_gen(intel_get_drm_devid(fd)) >= 8)
+-		batch[i++] = src_offset >> 32;
+-	batch[i++] = MI_BATCH_BUFFER_END;
+-	batch[i++] = MI_NOOP;
++	devid = intel_get_drm_devid(fd);
++
++	if (intel_graphics_ver(devid) >= IP_VER(12, 60)) {
++		batch[i++] = XY_FAST_COPY_BLT;
++		batch[i++] = XY_FAST_COPY_COLOR_DEPTH_32 | WIDTH*4;
++		batch[i++] = 0;/* dst x1,y1 */
++		batch[i++] = (HEIGHT << 16) | WIDTH;/* dst x2,y2 */
++		batch[i++] = 0;/* dst address lower bits */
++		batch[i++] = 0;/* dst address upper bits */
++		batch[i++] = 0;/* src x1,y1 */
++		batch[i++] = WIDTH*4;/* src pitch */
++		batch[i++] = 0;// src address lower bits
++		batch[i++] = 0;// src address upper bits
++		batch[i++] = MI_BATCH_BUFFER_END;
++		batch[i++] = MI_NOOP;
++	} else {
++		batch[i++] = XY_SRC_COPY_BLT_CMD |
++			     XY_SRC_COPY_BLT_WRITE_ALPHA |
++			     XY_SRC_COPY_BLT_WRITE_RGB;
++		if (intel_gen(intel_get_drm_devid(fd)) >= 8)
++			batch[i - 1] |= 8;
++		else
++			batch[i - 1] |= 6;
++
++		batch[i++] = (3 << 24) | /* 32 bits */
++			  (0xcc << 16) | /* copy ROP */
++			  WIDTH*4;
++		batch[i++] = 0; /* dst x1,y1 */
++		batch[i++] = (HEIGHT << 16) | WIDTH; /* dst x2,y2 */
++		batch[i++] = dst_offset; /* dst reloc */
++		if (intel_gen(intel_get_drm_devid(fd)) >= 8)
++			batch[i++] = dst_offset >> 32;
++		batch[i++] = 0; /* src x1,y1 */
++		batch[i++] = WIDTH*4;
++		batch[i++] = src_offset; /* src reloc */
++		if (intel_gen(intel_get_drm_devid(fd)) >= 8)
++			batch[i++] = src_offset >> 32;
++		batch[i++] = MI_BATCH_BUFFER_END;
++		batch[i++] = MI_NOOP;
++	}
+ 
+ 	handle = gem_create(fd, 4096);
+ 	gem_write(fd, handle, 0, batch, sizeof(batch));
+@@ -204,31 +222,50 @@ blit(int fd, uint32_t dst, uint32_t src, uint32_t *all_bo, int n_bo)
+ 	struct drm_i915_gem_relocation_entry reloc[2];
+ 	struct drm_i915_gem_exec_object2 *obj;
+ 	struct drm_i915_gem_execbuffer2 exec;
++	static uint32_t devid;
++
+ 	uint32_t handle;
+ 	int n, ret, i=0;
+ 
+-	batch[i++] = XY_SRC_COPY_BLT_CMD |
+-		  XY_SRC_COPY_BLT_WRITE_ALPHA |
+-		  XY_SRC_COPY_BLT_WRITE_RGB;
+-	if (intel_gen(intel_get_drm_devid(fd)) >= 8)
+-		batch[i - 1] |= 8;
+-	else
+-		batch[i - 1] |= 6;
+-	batch[i++] = (3 << 24) | /* 32 bits */
+-		  (0xcc << 16) | /* copy ROP */
+-		  WIDTH*4;
+-	batch[i++] = 0; /* dst x1,y1 */
+-	batch[i++] = (HEIGHT << 16) | WIDTH; /* dst x2,y2 */
+-	batch[i++] = 0; /* dst reloc */
+-	if (intel_gen(intel_get_drm_devid(fd)) >= 8)
+-		batch[i++] = 0;
+-	batch[i++] = 0; /* src x1,y1 */
+-	batch[i++] = WIDTH*4;
+-	batch[i++] = 0; /* src reloc */
+-	if (intel_gen(intel_get_drm_devid(fd)) >= 8)
+-		batch[i++] = 0;
+-	batch[i++] = MI_BATCH_BUFFER_END;
+-	batch[i++] = MI_NOOP;
++	devid = intel_get_drm_devid(fd);
++
++	if (intel_graphics_ver(devid) >= IP_VER(12, 60)) {
++		batch[i++] = XY_FAST_COPY_BLT;
++		batch[i++] = XY_FAST_COPY_COLOR_DEPTH_32 | WIDTH*4;
++		batch[i++] = 0;/* dst x1,y1 */
++		batch[i++] = (HEIGHT << 16) | WIDTH;/* dst x2,y2 */
++		batch[i++] = 0;/* dst address lower bits */
++		batch[i++] = 0;/* dst address upper bits */
++		batch[i++] = 0;/* src x1,y1 */
++		batch[i++] = WIDTH*4;/* src pitch */
++		batch[i++] = 0;// src address lower bits
++		batch[i++] = 0;// src address upper bits
++		batch[i++] = MI_BATCH_BUFFER_END;
++		batch[i++] = MI_NOOP;
++	} else {
++		batch[i++] = XY_SRC_COPY_BLT_CMD |
++			     XY_SRC_COPY_BLT_WRITE_ALPHA |
++			     XY_SRC_COPY_BLT_WRITE_RGB;
++		if (intel_gen(intel_get_drm_devid(fd)) >= 8)
++			batch[i - 1] |= 8;
++		else
++			batch[i - 1] |= 6;
++		batch[i++] = (3 << 24) | /* 32 bits */
++			     (0xcc << 16) | /* copy ROP */
++			     WIDTH*4;
++		batch[i++] = 0; /* dst x1,y1 */
++		batch[i++] = (HEIGHT << 16) | WIDTH; /* dst x2,y2 */
++		batch[i++] = 0; /* dst reloc */
++		if (intel_gen(intel_get_drm_devid(fd)) >= 8)
++			batch[i++] = 0;
++		batch[i++] = 0; /* src x1,y1 */
++		batch[i++] = WIDTH*4;
++		batch[i++] = 0; /* src reloc */
++		if (intel_gen(intel_get_drm_devid(fd)) >= 8)
++			batch[i++] = 0;
++		batch[i++] = MI_BATCH_BUFFER_END;
++		batch[i++] = MI_NOOP;
++	}
+ 
+ 	handle = gem_create(fd, 4096);
+ 	gem_write(fd, handle, 0, batch, sizeof(batch));
+-- 
+2.25.1
