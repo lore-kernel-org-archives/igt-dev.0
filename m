@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9D72910E38F
- for <igt-dev@lists.freedesktop.org>; Tue, 22 Nov 2022 06:52:15 +0000 (UTC)
-From: Vikas Srivastava <vikas.srivastava@intel.com>
-To: igt-dev@lists.freedesktop.org,
-	kamil.konieczny@linux.intel.com
-Date: Tue, 22 Nov 2022 12:20:35 +0530
-Message-Id: <20221122065035.40580-1-vikas.srivastava@intel.com>
+Message-ID: <ef633c97-64e1-b39e-3e15-4368799922a4@intel.com>
+Date: Tue, 22 Nov 2022 08:22:37 +0100
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v4] tests/i915/gem_userptr_blits: Added
- XY_FAST_COPY_BLT Command for MTL
+Content-Language: en-US
+To: igt-dev@lists.freedesktop.org, intel-gfx@lists.freedesktop.org
+References: <20221115072834.2115985-1-andrzej.hajda@intel.com>
+From: Andrzej Hajda <andrzej.hajda@intel.com>
+In-Reply-To: <20221115072834.2115985-1-andrzej.hajda@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Subject: Re: [igt-dev] [i-g-t] tests/kms_plane: skip memory demanding modes
+ in test_plane_panning
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,179 +18,84 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: Chris Wilson <chris.p.wilson@intel.com>,
+ Matthew Auld <matthew.auld@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Arjun Melkaveri <arjun.melkaveri@intel.com>
+Gently ping.
 
-Test case uses legacy command which is not supported on MTL.
-Modified test to use XY_FAST_COPY_BLT.
+Regards
+Andrzej
 
-Signed-off-by: Arjun Melkaveri <arjun.melkaveri@intel.com>
-Acked-by: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
----
- tests/i915/gem_userptr_blits.c | 131 +++++++++++++++++++++------------
- 1 file changed, 84 insertions(+), 47 deletions(-)
-
-diff --git a/tests/i915/gem_userptr_blits.c b/tests/i915/gem_userptr_blits.c
-index 698508669..2b566982c 100644
---- a/tests/i915/gem_userptr_blits.c
-+++ b/tests/i915/gem_userptr_blits.c
-@@ -99,8 +99,9 @@ static int copy(int fd, uint32_t dst, uint32_t src)
- 	struct drm_i915_gem_relocation_entry reloc[2];
- 	struct drm_i915_gem_exec_object2 obj[3];
- 	struct drm_i915_gem_execbuffer2 exec;
-+	static uint32_t devid;
- 	uint32_t handle;
--	int ret, i=0;
-+	int ret, i = 0;
- 	uint64_t dst_offset, src_offset, bb_offset;
- 	bool has_relocs = gem_has_relocations(fd);
- 
-@@ -108,29 +109,44 @@ static int copy(int fd, uint32_t dst, uint32_t src)
- 	dst_offset = bb_offset + 4096;
- 	src_offset = dst_offset + WIDTH * HEIGHT * sizeof(uint32_t) * (src != dst);
- 
--	batch[i++] = XY_SRC_COPY_BLT_CMD |
--		  XY_SRC_COPY_BLT_WRITE_ALPHA |
--		  XY_SRC_COPY_BLT_WRITE_RGB;
--	if (intel_gen(intel_get_drm_devid(fd)) >= 8)
--		batch[i - 1] |= 8;
--	else
--		batch[i - 1] |= 6;
--
--	batch[i++] = (3 << 24) | /* 32 bits */
--		  (0xcc << 16) | /* copy ROP */
--		  WIDTH*4;
--	batch[i++] = 0; /* dst x1,y1 */
--	batch[i++] = (HEIGHT << 16) | WIDTH; /* dst x2,y2 */
--	batch[i++] = dst_offset; /* dst reloc */
--	if (intel_gen(intel_get_drm_devid(fd)) >= 8)
--		batch[i++] = dst_offset >> 32;
--	batch[i++] = 0; /* src x1,y1 */
--	batch[i++] = WIDTH*4;
--	batch[i++] = src_offset; /* src reloc */
--	if (intel_gen(intel_get_drm_devid(fd)) >= 8)
--		batch[i++] = src_offset >> 32;
--	batch[i++] = MI_BATCH_BUFFER_END;
--	batch[i++] = MI_NOOP;
-+	devid = intel_get_drm_devid(fd);
-+
-+	if (intel_graphics_ver(devid) >= IP_VER(12, 60)) {
-+		batch[i++] = XY_FAST_COPY_BLT;
-+		batch[i++] = XY_FAST_COPY_COLOR_DEPTH_32 | WIDTH*4;
-+		batch[i++] = 0;/* dst x1,y1 */
-+		batch[i++] = (HEIGHT << 16) | WIDTH;/* dst x2,y2 */
-+		batch[i++] = dst_offset;/* dst address */
-+		batch[i++] = 0;/* src x1,y1 */
-+		batch[i++] = WIDTH*4;/* src pitch */
-+		batch[i++] = src_offset;/* src address */
-+		batch[i++] = MI_BATCH_BUFFER_END;
-+		batch[i++] = MI_NOOP;
-+	} else {
-+		batch[i++] = XY_SRC_COPY_BLT_CMD |
-+			     XY_SRC_COPY_BLT_WRITE_ALPHA |
-+			     XY_SRC_COPY_BLT_WRITE_RGB;
-+		if (intel_gen(intel_get_drm_devid(fd)) >= 8)
-+			batch[i - 1] |= 8;
-+		else
-+			batch[i - 1] |= 6;
-+
-+		batch[i++] = (3 << 24) | /* 32 bits */
-+			  (0xcc << 16) | /* copy ROP */
-+			  WIDTH*4;
-+		batch[i++] = 0; /* dst x1,y1 */
-+		batch[i++] = (HEIGHT << 16) | WIDTH; /* dst x2,y2 */
-+		batch[i++] = dst_offset; /* dst reloc */
-+		if (intel_gen(intel_get_drm_devid(fd)) >= 8)
-+			batch[i++] = dst_offset >> 32;
-+		batch[i++] = 0; /* src x1,y1 */
-+		batch[i++] = WIDTH*4;
-+		batch[i++] = src_offset; /* src reloc */
-+		if (intel_gen(intel_get_drm_devid(fd)) >= 8)
-+			batch[i++] = src_offset >> 32;
-+		batch[i++] = MI_BATCH_BUFFER_END;
-+		batch[i++] = MI_NOOP;
-+	}
- 
- 	handle = gem_create(fd, 4096);
- 	gem_write(fd, handle, 0, batch, sizeof(batch));
-@@ -204,31 +220,52 @@ blit(int fd, uint32_t dst, uint32_t src, uint32_t *all_bo, int n_bo)
- 	struct drm_i915_gem_relocation_entry reloc[2];
- 	struct drm_i915_gem_exec_object2 *obj;
- 	struct drm_i915_gem_execbuffer2 exec;
-+	static uint32_t devid;
- 	uint32_t handle;
--	int n, ret, i=0;
-+	int n, ret, i = 0;
-+	uint64_t dst_offset, src_offset, bb_offset;
- 
--	batch[i++] = XY_SRC_COPY_BLT_CMD |
--		  XY_SRC_COPY_BLT_WRITE_ALPHA |
--		  XY_SRC_COPY_BLT_WRITE_RGB;
--	if (intel_gen(intel_get_drm_devid(fd)) >= 8)
--		batch[i - 1] |= 8;
--	else
--		batch[i - 1] |= 6;
--	batch[i++] = (3 << 24) | /* 32 bits */
--		  (0xcc << 16) | /* copy ROP */
--		  WIDTH*4;
--	batch[i++] = 0; /* dst x1,y1 */
--	batch[i++] = (HEIGHT << 16) | WIDTH; /* dst x2,y2 */
--	batch[i++] = 0; /* dst reloc */
--	if (intel_gen(intel_get_drm_devid(fd)) >= 8)
--		batch[i++] = 0;
--	batch[i++] = 0; /* src x1,y1 */
--	batch[i++] = WIDTH*4;
--	batch[i++] = 0; /* src reloc */
--	if (intel_gen(intel_get_drm_devid(fd)) >= 8)
--		batch[i++] = 0;
--	batch[i++] = MI_BATCH_BUFFER_END;
--	batch[i++] = MI_NOOP;
-+	bb_offset = 16 << 20;
-+	dst_offset = bb_offset + 4096;
-+	src_offset = dst_offset + WIDTH * HEIGHT * sizeof(uint32_t) * (src != dst);
-+
-+	devid = intel_get_drm_devid(fd);
-+
-+	if (intel_graphics_ver(devid) >= IP_VER(12, 60)) {
-+		batch[i++] = XY_FAST_COPY_BLT;
-+		batch[i++] = XY_FAST_COPY_COLOR_DEPTH_32 | WIDTH*4;
-+		batch[i++] = 0;/* dst x1,y1 */
-+		batch[i++] = (HEIGHT << 16) | WIDTH;/* dst x2,y2 */
-+		batch[i++] = dst_offset;/* dst address */
-+		batch[i++] = 0;/* src x1,y1 */
-+		batch[i++] = WIDTH*4;/* src pitch */
-+		batch[i++] = src_offset;//src address
-+		batch[i++] = MI_BATCH_BUFFER_END;
-+		batch[i++] = MI_NOOP;
-+	} else {
-+		batch[i++] = XY_SRC_COPY_BLT_CMD |
-+			     XY_SRC_COPY_BLT_WRITE_ALPHA |
-+			     XY_SRC_COPY_BLT_WRITE_RGB;
-+		if (intel_gen(intel_get_drm_devid(fd)) >= 8)
-+			batch[i - 1] |= 8;
-+		else
-+			batch[i - 1] |= 6;
-+		batch[i++] = (3 << 24) | /* 32 bits */
-+			     (0xcc << 16) | /* copy ROP */
-+			     WIDTH*4;
-+		batch[i++] = 0; /* dst x1,y1 */
-+		batch[i++] = (HEIGHT << 16) | WIDTH; /* dst x2,y2 */
-+		batch[i++] = dst_offset;/* dst reloc */
-+		if (intel_gen(intel_get_drm_devid(fd)) >= 8)
-+			batch[i++] = 0;
-+		batch[i++] = 0; /* src x1,y1 */
-+		batch[i++] = WIDTH*4;
-+		batch[i++] = src_offset; /* src reloc */
-+		if (intel_gen(intel_get_drm_devid(fd)) >= 8)
-+			batch[i++] = 0;
-+		batch[i++] = MI_BATCH_BUFFER_END;
-+		batch[i++] = MI_NOOP;
-+	}
- 
- 	handle = gem_create(fd, 4096);
- 	gem_write(fd, handle, 0, batch, sizeof(batch));
--- 
-2.25.1
+On 15.11.2022 08:28, Andrzej Hajda wrote:
+> test_plane_panning requires about 10 times bigger amount of memory than
+> memory required by framebuffer in default display mode. In case of some
+> configurations it can exceed available memory (4k modes on small-bar
+> systems), causing test aborts.
+>
+> Closes: https://gitlab.freedesktop.org/drm/intel/-/issues/6824
+> Signed-off-by: Andrzej Hajda <andrzej.hajda@intel.com>
+> ---
+>   tests/kms_plane.c | 28 +++++++++++++++++++++++++---
+>   1 file changed, 25 insertions(+), 3 deletions(-)
+>
+> diff --git a/tests/kms_plane.c b/tests/kms_plane.c
+> index 8a54ba6645c..fc530d2cfd3 100644
+> --- a/tests/kms_plane.c
+> +++ b/tests/kms_plane.c
+> @@ -342,14 +342,14 @@ test_plane_panning_with_output(data_t *data,
+>   	drmModeModeInfo *mode;
+>   	igt_crc_t crc;
+>   
+> -	igt_info("Testing connector %s using pipe %s\n",
+> -		 igt_output_name(output), kmstest_pipe_name(pipe));
+> -
+>   	igt_output_set_pipe(output, pipe);
+>   
+>   	mode = igt_output_get_mode(output);
+>   	primary = igt_output_get_plane(output, 0);
+>   
+> +	igt_info("Testing connector %s using pipe %s, mode %s\n",
+> +		 igt_output_name(output), kmstest_pipe_name(pipe), mode->name);
+> +
+>   	create_fb_for_mode_panning(data, mode, &primary_fb);
+>   	igt_plane_set_fb(primary, &primary_fb);
+>   
+> @@ -381,6 +381,8 @@ test_plane_panning_with_output(data_t *data,
+>   static void
+>   test_plane_panning(data_t *data, enum pipe pipe)
+>   {
+> +	bool mode_found = false;
+> +	uint64_t mem_size = 0;
+>   	igt_output_t *output;
+>   	igt_crc_t ref_crc;
+>   
+> @@ -389,6 +391,26 @@ test_plane_panning(data_t *data, enum pipe pipe)
+>   
+>   	test_init(data, pipe);
+>   
+> +	for_each_memory_region(r, data->drm_fd)
+> +		if (r->ci.memory_class == I915_MEMORY_CLASS_DEVICE)
+> +			mem_size = r->cpu_size;
+> +
+> +	for_each_connector_mode(output) {
+> +		drmModeModeInfo *m = &output->config.connector->modes[j__];
+> +		uint32_t fb_size = m->hdisplay * m->vdisplay * 4;
+> +
+> +		/* test allocates 2 double-dim fbs, add one more, to be safe */
+> +		if (mem_size && 3 * 4 * fb_size > mem_size) {
+> +			igt_debug("Skipping mode %s due to low memory\n", m->name);
+> +			continue;
+> +		}
+> +
+> +		igt_output_override_mode(output, m);
+> +		mode_found = true;
+> +		break;
+> +	}
+> +	igt_require(mode_found);
+> +
+>   	if (data->flags & TEST_PANNING_TOP_LEFT)
+>   		test_grab_crc(data, output, pipe, &red, data->flags, &ref_crc);
+>   	else
