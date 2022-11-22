@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2E05E10E3E4
- for <igt-dev@lists.freedesktop.org>; Tue, 22 Nov 2022 14:00:27 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B69F310E3E3
+ for <igt-dev@lists.freedesktop.org>; Tue, 22 Nov 2022 14:00:26 +0000 (UTC)
 From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 22 Nov 2022 15:00:06 +0100
-Message-Id: <20221122140007.71246-4-zbigniew.kempczynski@intel.com>
+Date: Tue, 22 Nov 2022 15:00:05 +0100
+Message-Id: <20221122140007.71246-3-zbigniew.kempczynski@intel.com>
 In-Reply-To: <20221122140007.71246-1-zbigniew.kempczynski@intel.com>
 References: <20221122140007.71246-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 3/4] benchmarks/intel_upload_blit_*: Remove
- libdrm in upload blits
+Subject: [igt-dev] [PATCH i-g-t 2/4] tests/prime_nv_*: Remove prime_nv_*
+ tests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,737 +20,1771 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: Petri Latvala <petri.latvala@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Few benchmarks still used libdrm so let's rewrite them to be libdrm
-free. I tried to mimic the libdrm behavior as much as possible but
-according how libdrm caches handles/mappings there may be some
-differences in performance execution.
+All prime_nv tests are not executing on CI and they are using libdrm
+so let's get rid of them.
 
 Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+Cc: Petri Latvala <petri.latvala@intel.com>
 ---
- benchmarks/intel_upload_blit_large.c     | 131 ++++++++++++---------
- benchmarks/intel_upload_blit_large_gtt.c | 130 ++++++++++++---------
- benchmarks/intel_upload_blit_large_map.c | 132 ++++++++++++---------
- benchmarks/intel_upload_blit_small.c     | 139 ++++++++++++++---------
- 4 files changed, 311 insertions(+), 221 deletions(-)
+ tests/meson.build      |   3 -
+ tests/prime_nv_api.c   | 410 -------------------
+ tests/prime_nv_pcopy.c | 905 -----------------------------------------
+ tests/prime_nv_test.c  | 399 ------------------
+ 4 files changed, 1717 deletions(-)
+ delete mode 100644 tests/prime_nv_api.c
+ delete mode 100644 tests/prime_nv_pcopy.c
+ delete mode 100644 tests/prime_nv_test.c
 
-diff --git a/benchmarks/intel_upload_blit_large.c b/benchmarks/intel_upload_blit_large.c
-index 12bbae3d06..af52d7a4e5 100644
---- a/benchmarks/intel_upload_blit_large.c
-+++ b/benchmarks/intel_upload_blit_large.c
-@@ -45,6 +45,7 @@
-  */
+diff --git a/tests/meson.build b/tests/meson.build
+index a030ff6f5e..0af4554e1c 100644
+--- a/tests/meson.build
++++ b/tests/meson.build
+@@ -265,9 +265,6 @@ test_deps = [ igt_deps ]
  
- #include "igt.h"
-+#include "i915/gem_create.h"
- #include <stdlib.h>
- #include <stdio.h>
- #include <string.h>
-@@ -72,74 +73,99 @@ get_time_in_secs(void)
- }
- 
- static void
--do_render(drm_intel_bufmgr *bufmgr, struct intel_batchbuffer *batch,
--	  drm_intel_bo *dst_bo, int width, int height)
-+do_render(int i915, uint32_t dst_handle)
- {
--	uint32_t data[width * height];
--	drm_intel_bo *src_bo;
+ if libdrm_nouveau.found()
+ 	test_progs += [
+-		'prime_nv_api',
+-		'prime_nv_pcopy',
+-		'prime_nv_test',
+ 		'nouveau_crc',
+ 	]
+ 	test_deps += libdrm_nouveau
+diff --git a/tests/prime_nv_api.c b/tests/prime_nv_api.c
+deleted file mode 100644
+index 054a1ec64a..0000000000
+--- a/tests/prime_nv_api.c
++++ /dev/null
+@@ -1,410 +0,0 @@
+-/* wierd use of API tests */
+-
+-/* test1- export buffer from intel, import same fd twice into nouveau,
+-   check handles match
+-   test2 - export buffer from intel, import fd once, close fd, try import again
+-   fail if it succeeds
+-   test3 - export buffer from intel, import twice on nouveau, check handle is the same
+-   test4 - export handle twice from intel, import into nouveau twice, check handle is the same
+-*/
+-
+-#include "igt.h"
+-#include <stdio.h>
+-#include <stdlib.h>
+-#include <unistd.h>
+-#include <fcntl.h>
+-#include <sys/stat.h>
+-
+-#include "intel_bufmgr.h"
+-#include "nouveau.h"
+-
+-#define BO_SIZE (256*1024)
+-
+-int intel_fd = -1, intel_fd2 = -1, nouveau_fd = -1, nouveau_fd2 = -1;
+-drm_intel_bufmgr *bufmgr;
+-drm_intel_bufmgr *bufmgr2;
+-struct nouveau_device *ndev, *ndev2;
+-struct nouveau_client *nclient, *nclient2;
+-uint32_t devid;
+-struct intel_batchbuffer *intel_batch;
+-
+-static void find_and_open_devices(void)
+-{
 -	int i;
-+	struct drm_i915_gem_execbuffer2 exec = {};
-+	struct drm_i915_gem_exec_object2 obj[3] = {};
-+	struct drm_i915_gem_relocation_entry reloc[2];
- 	static uint32_t seed = 1;
-+	uint32_t data[OBJECT_WIDTH * OBJECT_HEIGHT];
-+	uint64_t size = OBJECT_WIDTH * OBJECT_HEIGHT * 4, bb_size = 4096;
-+	uint32_t src_handle, bb_handle, *bb;
-+	uint32_t gen = intel_gen(intel_get_drm_devid(i915));
-+	const bool has_64b_reloc = gen >= 8;
-+	int i;
-+
-+	bb_handle = gem_create_from_pool(i915, &bb_size, REGION_SMEM);
-+	src_handle = gem_create_from_pool(i915, &size, REGION_SMEM);
- 
--	/* Generate some junk.  Real workloads would be doing a lot more
--	 * work to generate the junk.
+-	char path[80];
+-	struct stat buf;
+-	FILE *fl;
+-	char vendor_id[8];
+-	int venid;
+-	for (i = 0; i < 9; i++) {
+-		char *ret;
+-
+-		sprintf(path, "/sys/class/drm/card%d/device/vendor", i);
+-		if (stat(path, &buf))
+-			break;
+-
+-		fl = fopen(path, "r");
+-		if (!fl)
+-			break;
+-
+-		ret = fgets(vendor_id, 8, fl);
+-		igt_assert(ret);
+-		fclose(fl);
+-
+-		venid = strtoul(vendor_id, NULL, 16);
+-		sprintf(path, "/dev/dri/card%d", i);
+-		if (venid == 0x8086) {
+-			intel_fd = open(path, O_RDWR);
+-			igt_assert(intel_fd);
+-			intel_fd2 = open(path, O_RDWR);
+-			igt_assert(intel_fd2);
+-		} else if (venid == 0x10de) {
+-			nouveau_fd = open(path, O_RDWR);
+-			igt_assert(nouveau_fd);
+-			nouveau_fd2 = open(path, O_RDWR);
+-			igt_assert(nouveau_fd2);
+-		}
+-	}
+-}
+-
+-static void test_i915_nv_import_twice(void)
+-{
+-	drm_intel_bo *test_intel_bo;
+-	int prime_fd;
+-	struct nouveau_bo *nvbo = NULL, *nvbo2 = NULL;
+-
+-	test_intel_bo = drm_intel_bo_alloc(bufmgr, "test bo", BO_SIZE, 4096);
+-
+-	igt_assert(drm_intel_bo_gem_export_to_prime(test_intel_bo, &prime_fd) == 0);
+-
+-	igt_assert(nouveau_bo_prime_handle_ref(ndev, prime_fd, &nvbo) == 0);
+-	igt_assert(nouveau_bo_prime_handle_ref(ndev2, prime_fd, &nvbo2) == 0);
+-	close(prime_fd);
+-
+-	nouveau_bo_ref(NULL, &nvbo2);
+-	nouveau_bo_ref(NULL, &nvbo);
+-	drm_intel_bo_unreference(test_intel_bo);
+-}
+-
+-static void test_i915_nv_import_twice_check_flink_name(void)
+-{
+-	drm_intel_bo *test_intel_bo;
+-	int prime_fd;
+-	struct nouveau_bo *nvbo = NULL, *nvbo2 = NULL;
+-	uint32_t flink_name1, flink_name2;
+-
+-	test_intel_bo = drm_intel_bo_alloc(bufmgr, "test bo", BO_SIZE, 4096);
+-
+-	igt_assert(drm_intel_bo_gem_export_to_prime(test_intel_bo, &prime_fd) == 0);
+-
+-	igt_assert(nouveau_bo_prime_handle_ref(ndev, prime_fd, &nvbo) == 0);
+-	igt_assert(nouveau_bo_prime_handle_ref(ndev2, prime_fd, &nvbo2) == 0);
+-	close(prime_fd);
+-
+-	igt_assert(nouveau_bo_name_get(nvbo, &flink_name1) == 0);
+-	igt_assert(nouveau_bo_name_get(nvbo2, &flink_name2) == 0);
+-
+-	igt_assert_eq_u32(flink_name1, flink_name2);
+-
+-	nouveau_bo_ref(NULL, &nvbo2);
+-	nouveau_bo_ref(NULL, &nvbo);
+-	drm_intel_bo_unreference(test_intel_bo);
+-}
+-
+-static void test_i915_nv_reimport_twice_check_flink_name(void)
+-{
+-	drm_intel_bo *test_intel_bo;
+-	int prime_fd;
+-	struct nouveau_bo *nvbo = NULL, *nvbo2 = NULL;
+-	uint32_t flink_name1, flink_name2;
+-
+-	test_intel_bo = drm_intel_bo_alloc(bufmgr, "test bo", BO_SIZE, 4096);
+-
+-	igt_assert(drm_intel_bo_gem_export_to_prime(test_intel_bo, &prime_fd) == 0);
+-
+-	igt_assert(nouveau_bo_prime_handle_ref(ndev, prime_fd, &nvbo) == 0);
+-
+-	/* create a new dma-buf */
+-	close(prime_fd);
+-	igt_assert(drm_intel_bo_gem_export_to_prime(test_intel_bo, &prime_fd) == 0);
+-
+-	igt_assert(nouveau_bo_prime_handle_ref(ndev2, prime_fd, &nvbo2) == 0);
+-	close(prime_fd);
+-
+-	igt_assert(nouveau_bo_name_get(nvbo, &flink_name1) == 0);
+-	igt_assert(nouveau_bo_name_get(nvbo2, &flink_name2) == 0);
+-
+-	igt_assert_eq_u32(flink_name1, flink_name2);
+-
+-	nouveau_bo_ref(NULL, &nvbo2);
+-	nouveau_bo_ref(NULL, &nvbo);
+-	drm_intel_bo_unreference(test_intel_bo);
+-}
+-
+-static void test_nv_i915_import_twice_check_flink_name(void)
+-{
+-	drm_intel_bo *intel_bo = NULL, *intel_bo2 = NULL;
+-	int prime_fd;
+-	struct nouveau_bo *nvbo = NULL;
+-	uint32_t flink_name1, flink_name2;
+-
+-	igt_assert(nouveau_bo_new(ndev, NOUVEAU_BO_GART | NOUVEAU_BO_MAP,
+-				  0, BO_SIZE, NULL, &nvbo) == 0);
+-
+-	igt_assert(nouveau_bo_set_prime(nvbo, &prime_fd) == 0);
+-
+-	intel_bo = drm_intel_bo_gem_create_from_prime(bufmgr, prime_fd, BO_SIZE);
+-	igt_assert(intel_bo);
+-
+-	intel_bo2 = drm_intel_bo_gem_create_from_prime(bufmgr2, prime_fd, BO_SIZE);
+-	igt_assert(intel_bo2);
+-	close(prime_fd);
+-
+-	igt_assert(drm_intel_bo_flink(intel_bo, &flink_name1) == 0);
+-	igt_assert(drm_intel_bo_flink(intel_bo2, &flink_name2) == 0);
+-
+-	igt_assert_eq_u32(flink_name1, flink_name2);
+-
+-	nouveau_bo_ref(NULL, &nvbo);
+-	drm_intel_bo_unreference(intel_bo);
+-	drm_intel_bo_unreference(intel_bo2);
+-}
+-
+-static void test_nv_i915_reimport_twice_check_flink_name(void)
+-{
+-	drm_intel_bo *intel_bo = NULL, *intel_bo2 = NULL;
+-	int prime_fd;
+-	struct nouveau_bo *nvbo = NULL;
+-	uint32_t flink_name1, flink_name2;
+-
+-	igt_assert(nouveau_bo_new(ndev, NOUVEAU_BO_GART | NOUVEAU_BO_MAP,
+-				  0, BO_SIZE, NULL, &nvbo) == 0);
+-
+-	igt_assert(nouveau_bo_set_prime(nvbo, &prime_fd) == 0);
+-
+-	intel_bo = drm_intel_bo_gem_create_from_prime(bufmgr, prime_fd, BO_SIZE);
+-	igt_assert(intel_bo);
+-	close(prime_fd);
+-	igt_assert(nouveau_bo_set_prime(nvbo, &prime_fd) == 0);
+-
+-	intel_bo2 = drm_intel_bo_gem_create_from_prime(bufmgr2, prime_fd, BO_SIZE);
+-	igt_assert(intel_bo2);
+-	close(prime_fd);
+-
+-	igt_assert(drm_intel_bo_flink(intel_bo, &flink_name1) == 0);
+-	igt_assert(drm_intel_bo_flink(intel_bo2, &flink_name2) == 0);
+-
+-	igt_assert_eq_u32(flink_name1, flink_name2);
+-
+-	nouveau_bo_ref(NULL, &nvbo);
+-	drm_intel_bo_unreference(intel_bo);
+-	drm_intel_bo_unreference(intel_bo2);
+-}
+-
+-static void test_i915_nv_import_vs_close(void)
+-{
+-	drm_intel_bo *test_intel_bo;
+-	int prime_fd;
+-	struct nouveau_bo *nvbo = NULL, *nvbo2 = NULL;
+-
+-	test_intel_bo = drm_intel_bo_alloc(bufmgr, "test bo", BO_SIZE, 4096);
+-	igt_assert(test_intel_bo);
+-
+-	igt_assert(drm_intel_bo_gem_export_to_prime(test_intel_bo, &prime_fd) == 0);
+-
+-	igt_assert(nouveau_bo_prime_handle_ref(ndev, prime_fd, &nvbo) == 0);
+-	close(prime_fd);
+-	igt_assert(nouveau_bo_prime_handle_ref(ndev2, prime_fd, &nvbo2) < 0);
+-
+-	nouveau_bo_ref(NULL, &nvbo2);
+-	nouveau_bo_ref(NULL, &nvbo);
+-	drm_intel_bo_unreference(test_intel_bo);
+-}
+-
+-/* import handle twice on one driver */
+-static void test_i915_nv_double_import(void)
+-{
+-	drm_intel_bo *test_intel_bo;
+-	int prime_fd;
+-	struct nouveau_bo *nvbo = NULL, *nvbo2 = NULL;
+-
+-	test_intel_bo = drm_intel_bo_alloc(bufmgr, "test bo", BO_SIZE, 4096);
+-	igt_assert(test_intel_bo);
+-
+-	igt_assert(drm_intel_bo_gem_export_to_prime(test_intel_bo, &prime_fd) == 0);
+-
+-	igt_assert(nouveau_bo_prime_handle_ref(ndev, prime_fd, &nvbo) == 0);
+-	igt_assert(nouveau_bo_prime_handle_ref(ndev, prime_fd, &nvbo2) == 0);
+-	close(prime_fd);
+-
+-	igt_assert(nvbo->handle == nvbo2->handle);
+-
+-	nouveau_bo_ref(NULL, &nvbo2);
+-	nouveau_bo_ref(NULL, &nvbo);
+-	drm_intel_bo_unreference(test_intel_bo);
+-}
+-
+-/* export handle twice from one driver - import twice
+-   see if we get same object */
+-static void test_i915_nv_double_export(void)
+-{
+-	drm_intel_bo *test_intel_bo;
+-	int prime_fd, prime_fd2;
+-	struct nouveau_bo *nvbo = NULL, *nvbo2 = NULL;
+-
+-	test_intel_bo = drm_intel_bo_alloc(bufmgr, "test bo", BO_SIZE, 4096);
+-	igt_assert(test_intel_bo);
+-
+-	drm_intel_bo_gem_export_to_prime(test_intel_bo, &prime_fd);
+-
+-	drm_intel_bo_gem_export_to_prime(test_intel_bo, &prime_fd2);
+-
+-	igt_assert(nouveau_bo_prime_handle_ref(ndev, prime_fd, &nvbo) == 0);
+-	close(prime_fd);
+-	igt_assert(nouveau_bo_prime_handle_ref(ndev, prime_fd2, &nvbo2) == 0);
+-	close(prime_fd2);
+-
+-	igt_assert(nvbo->handle == nvbo2->handle);
+-
+-	nouveau_bo_ref(NULL, &nvbo2);
+-	nouveau_bo_ref(NULL, &nvbo);
+-	drm_intel_bo_unreference(test_intel_bo);
+-}
+-
+-/* export handle from intel driver - reimport to intel driver
+-   see if you get same object */
+-static void test_i915_self_import(void)
+-{
+-	drm_intel_bo *test_intel_bo, *test_intel_bo2;
+-	int prime_fd;
+-
+-	test_intel_bo = drm_intel_bo_alloc(bufmgr, "test bo", BO_SIZE, 4096);
+-
+-	drm_intel_bo_gem_export_to_prime(test_intel_bo, &prime_fd);
+-
+-	test_intel_bo2 = drm_intel_bo_gem_create_from_prime(bufmgr, prime_fd, BO_SIZE);
+-	close(prime_fd);
+-	igt_assert(test_intel_bo2);
+-
+-	igt_assert(test_intel_bo->handle == test_intel_bo2->handle);
+-
+-	drm_intel_bo_unreference(test_intel_bo);
+-}
+-
+-/* nouveau export reimport test */
+-static void test_nv_self_import(void)
+-{
+-	int prime_fd;
+-	struct nouveau_bo *nvbo, *nvbo2;
+-
+-	igt_assert(nouveau_bo_new(ndev, NOUVEAU_BO_GART | NOUVEAU_BO_MAP,
+-				  0, BO_SIZE, NULL, &nvbo) == 0);
+-	igt_assert(nouveau_bo_set_prime(nvbo, &prime_fd) == 0);
+-
+-	igt_assert(nouveau_bo_prime_handle_ref(ndev, prime_fd, &nvbo2) == 0);
+-	close(prime_fd);
+-
+-	igt_assert(nvbo->handle == nvbo2->handle);
+-	nouveau_bo_ref(NULL, &nvbo);
+-	nouveau_bo_ref(NULL, &nvbo2);
+-}
+-
+-/* export handle from intel driver - reimport to another intel driver bufmgr
+-   see if you get same object */
+-static void test_i915_self_import_to_different_fd(void)
+-{
+-	drm_intel_bo *test_intel_bo, *test_intel_bo2;
+-	int prime_fd;
+-
+-	test_intel_bo = drm_intel_bo_alloc(bufmgr, "test bo", BO_SIZE, 4096);
+-
+-	drm_intel_bo_gem_export_to_prime(test_intel_bo, &prime_fd);
+-
+-	test_intel_bo2 = drm_intel_bo_gem_create_from_prime(bufmgr2, prime_fd, BO_SIZE);
+-	close(prime_fd);
+-	igt_assert(test_intel_bo2);
+-
+-	drm_intel_bo_unreference(test_intel_bo2);
+-	drm_intel_bo_unreference(test_intel_bo);
+-}
+-
+-/* nouveau export reimport to other driver test */
+-static void test_nv_self_import_to_different_fd(void)
+-{
+-	int prime_fd;
+-	struct nouveau_bo *nvbo, *nvbo2;
+-
+-	igt_assert(nouveau_bo_new(ndev, NOUVEAU_BO_GART | NOUVEAU_BO_MAP,
+-				  0, BO_SIZE, NULL, &nvbo) == 0);
+-	igt_assert(nouveau_bo_set_prime(nvbo, &prime_fd) == 0);
+-
+-	igt_assert(nouveau_bo_prime_handle_ref(ndev2, prime_fd, &nvbo2) == 0);
+-	close(prime_fd);
+-
+-	/* not sure what to test for, just make sure we don't explode */
+-	nouveau_bo_ref(NULL, &nvbo);
+-	nouveau_bo_ref(NULL, &nvbo2);
+-}
+-
+-igt_main
+-{
+-	igt_fixture {
+-		find_and_open_devices();
+-
+-		igt_require(nouveau_fd != -1);
+-		igt_require(nouveau_fd2 != -1);
+-		igt_require(intel_fd != -1);
+-		igt_require(intel_fd2 != -1);
+-
+-		/* set up intel bufmgr */
+-		bufmgr = drm_intel_bufmgr_gem_init(intel_fd, 4096);
+-		igt_assert(bufmgr);
+-		/* Do not enable reuse, we share (almost) all buffers. */
+-		//drm_intel_bufmgr_gem_enable_reuse(bufmgr);
+-
+-		bufmgr2 = drm_intel_bufmgr_gem_init(intel_fd2, 4096);
+-		igt_assert(bufmgr2);
+-		drm_intel_bufmgr_gem_enable_reuse(bufmgr2);
+-
+-		/* set up nouveau bufmgr */
+-		igt_assert(nouveau_device_wrap(nouveau_fd, 0, &ndev) >= 0);
+-		igt_assert(nouveau_client_new(ndev, &nclient) >= 0);
+-
+-		/* set up nouveau bufmgr */
+-		igt_assert(nouveau_device_wrap(nouveau_fd2, 0, &ndev2) >= 0);
+-
+-		igt_assert(nouveau_client_new(ndev2, &nclient2) >= 0);;
+-
+-		/* set up an intel batch buffer */
+-		devid = intel_get_drm_devid(intel_fd);
+-		intel_batch = intel_batchbuffer_alloc(bufmgr, devid);
+-		igt_assert(intel_batch);
+-	}
+-
+-#define xtest(name) \
+-	igt_subtest(#name) \
+-		test_##name();
+-
+-	xtest(i915_nv_import_twice);
+-	xtest(i915_nv_import_twice_check_flink_name);
+-	xtest(i915_nv_reimport_twice_check_flink_name);
+-	xtest(nv_i915_import_twice_check_flink_name);
+-	xtest(nv_i915_reimport_twice_check_flink_name);
+-	xtest(i915_nv_import_vs_close);
+-	xtest(i915_nv_double_import);
+-	xtest(i915_nv_double_export);
+-	xtest(i915_self_import);
+-	xtest(nv_self_import);
+-	xtest(i915_self_import_to_different_fd);
+-	xtest(nv_self_import_to_different_fd);
+-	
+-	igt_fixture {
+-		intel_batchbuffer_free(intel_batch);
+-
+-		nouveau_device_del(&ndev);
+-		drm_intel_bufmgr_destroy(bufmgr);
+-
+-		close(intel_fd);
+-		close(nouveau_fd);
+-	}
+-}
+diff --git a/tests/prime_nv_pcopy.c b/tests/prime_nv_pcopy.c
+deleted file mode 100644
+index e465e5fc03..0000000000
+--- a/tests/prime_nv_pcopy.c
++++ /dev/null
+@@ -1,905 +0,0 @@
+-/* basic set of prime tests between intel and nouveau */
+-
+-/* test list -
+-   1. share buffer from intel -> nouveau.
+-   2. share buffer from nouveau -> intel
+-   3. share intel->nouveau, map on both, write intel, read nouveau
+-   4. share intel->nouveau, blit intel fill, readback on nouveau
+-   test 1 + map buffer, read/write, map other size.
+-   do some hw actions on the buffer
+-   some illegal operations -
+-       close prime fd try and map
+-
+-   TODO add some nouveau rendering tests
+-*/
+-
+-
+-#include "igt.h"
+-#include <inttypes.h>
+-#include <stdio.h>
+-#include <stdlib.h>
+-#include <unistd.h>
+-#include <fcntl.h>
+-#include <string.h>
+-#include <sys/stat.h>
+-#include <sys/ioctl.h>
+-#include <errno.h>
+-
+-#include "intel_bufmgr.h"
+-#include "nouveau.h"
+-
+-static int intel_fd = -1, nouveau_fd = -1;
+-static drm_intel_bufmgr *bufmgr;
+-static struct nouveau_device *ndev;
+-static struct nouveau_client *nclient;
+-static uint32_t devid;
+-static struct intel_batchbuffer *batch;
+-static struct nouveau_object *nchannel, *pcopy;
+-static struct nouveau_bufctx *nbufctx;
+-static struct nouveau_pushbuf *npush;
+-
+-static struct nouveau_bo *query_bo;
+-static uint32_t query_counter;
+-static volatile uint32_t *query;
+-static uint32_t memtype_intel, tile_intel_y, tile_intel_x;
+-
+-#define SUBC_COPY(x) 6, (x)
+-#define NV01_SUBCHAN_OBJECT 0
+-
+-#define NV01_SUBC(subc, mthd) SUBC_##subc((NV01_SUBCHAN_##mthd))
+-
+-typedef struct {
+-	uint32_t w, h;
+-	uint32_t pitch, lines;
+-} rect;
+-
+-static void nv_bo_alloc(struct nouveau_bo **bo, rect *r,
+-			uint32_t w, uint32_t h, uint32_t tile_mode,
+-			int handle, uint32_t dom)
+-{
+-	uint32_t size;
+-	uint32_t dx = 1, dy = 1, memtype = 0;
+-
+-	*bo = NULL;
+-	if (tile_mode) {
+-		uint32_t tile_y;
+-		uint32_t tile_x;
+-
+-		/* Y major tiling */
+-		if ((tile_mode & 0xf) == 0xe)
+-			/* but the internal layout is different */
+-			tile_x = 7;
+-		else
+-			tile_x = 6 + (tile_mode & 0xf);
+-		if (ndev->chipset < 0xc0) {
+-			memtype = 0x70;
+-			tile_y = 2;
+-		} else {
+-			memtype = 0xfe;
+-			tile_y = 3;
+-		}
+-		if ((tile_mode & 0xf) == 0xe)
+-			memtype = memtype_intel;
+-		tile_y += ((tile_mode & 0xf0)>>4);
+-
+-		dx = 1 << tile_x;
+-		dy = 1 << tile_y;
+-		igt_debug("Tiling requirements: x y %u %u\n", dx, dy);
+-	}
+-
+-	r->w = w;
+-	r->h = h;
+-
+-	r->pitch = w = (w + dx-1) & ~(dx-1);
+-	r->lines = h = (h + dy-1) & ~(dy-1);
+-	size = w*h;
+-
+-	if (handle < 0) {
+-		union nouveau_bo_config cfg;
+-		cfg.nv50.memtype = memtype;
+-		cfg.nv50.tile_mode = tile_mode;
+-		if (dom == NOUVEAU_BO_GART)
+-			dom |= NOUVEAU_BO_MAP;
+-		igt_assert(nouveau_bo_new(ndev, dom, 4096, size, &cfg, bo) == 0);
+-		igt_assert(nouveau_bo_map(*bo, NOUVEAU_BO_RDWR, nclient) == 0);
+-
+-		igt_debug("new flags %08x memtype %08x tile %08x\n",
+-			  (*bo)->flags, (*bo)->config.nv50.memtype,
+-			  (*bo)->config.nv50.tile_mode);
+-		if (tile_mode == tile_intel_y || tile_mode == tile_intel_x) {
+-			igt_debug("tile mode was: %02x, now: %02x\n",
+-				  (*bo)->config.nv50.tile_mode, tile_mode);
+-			/* Doesn't like intel tiling much.. */
+-			(*bo)->config.nv50.tile_mode = tile_mode;
+-		}
+-	} else {
+-		igt_assert(nouveau_bo_prime_handle_ref(ndev, handle, bo) == 0);
+-		close(handle);
+-		igt_assert_f((*bo)->size >= size,
+-			     "expected bo size to be at least %u,"
+-			     "but received %"PRIu64"\n", size, (*bo)->size);
+-		igt_debug("prime flags %08x memtype %08x tile %08x\n",
+-			  (*bo)->flags, (*bo)->config.nv50.memtype,
+-			  (*bo)->config.nv50.tile_mode);
+-		(*bo)->config.nv50.memtype = memtype;
+-		(*bo)->config.nv50.tile_mode = tile_mode;
+-	}
+-	igt_debug("size: %"PRIu64"\n", (*bo)->size);
+-}
+-
+-static inline void
+-PUSH_DATA(struct nouveau_pushbuf *push, uint32_t data)
+-{
+-	*push->cur++ = data;
+-}
+-
+-static inline void
+-BEGIN_NV04(struct nouveau_pushbuf *push, int subc, int mthd, int size)
+-{
+-	PUSH_DATA (push, 0x00000000 | (size << 18) | (subc << 13) | mthd);
+-}
+-
+-__maybe_unused static inline void
+-BEGIN_NI04(struct nouveau_pushbuf *push, int subc, int mthd, int size)
+-{
+-	PUSH_DATA (push, 0x40000000 | (size << 18) | (subc << 13) | mthd);
+-}
+-
+-static inline void
+-BEGIN_NVC0(struct nouveau_pushbuf *push, int subc, int mthd, int size)
+-{
+-	PUSH_DATA (push, 0x20000000 | (size << 16) | (subc << 13) | (mthd / 4));
+-}
+-
+-static inline void
+-BEGIN_NVXX(struct nouveau_pushbuf *push, int subc, int mthd, int size)
+-{
+-	if (ndev->chipset < 0xc0)
+-		BEGIN_NV04(push, subc, mthd, size);
+-	else
+-		BEGIN_NVC0(push, subc, mthd, size);
+-}
+-
+-static void
+-noop_intel(drm_intel_bo *bo)
+-{
+-	BEGIN_BATCH(3, 1);
+-	OUT_BATCH(MI_NOOP);
+-	OUT_BATCH(MI_BATCH_BUFFER_END);
+-	OUT_RELOC(bo, I915_GEM_DOMAIN_RENDER,
+-			I915_GEM_DOMAIN_RENDER, 0);
+-	ADVANCE_BATCH();
+-
+-	intel_batchbuffer_flush(batch);
+-}
+-
+-static void find_and_open_devices(void)
+-{
+-	int i;
+-	char path[80], *unused;
+-	struct stat buf;
+-	FILE *fl;
+-	char vendor_id[8] = {};
+-	int venid;
+-	for (i = 0; i < 9; i++) {
+-		sprintf(path, "/sys/class/drm/card%d/device/vendor", i);
+-		if (stat(path, &buf))
+-			break;
+-
+-		fl = fopen(path, "r");
+-		if (!fl)
+-			break;
+-
+-		unused = fgets(vendor_id, sizeof(vendor_id)-1, fl);
+-		(void)unused;
+-		fclose(fl);
+-
+-		venid = strtoul(vendor_id, NULL, 16);
+-		sprintf(path, "/dev/dri/card%d", i);
+-		if (venid == 0x8086) {
+-			intel_fd = open(path, O_RDWR);
+-			igt_assert(intel_fd);
+-		} else if (venid == 0x10de) {
+-			nouveau_fd = open(path, O_RDWR);
+-			igt_assert(nouveau_fd);
+-		}
+-	}
+-}
+-
+-static void init_nouveau(void)
+-{
+-	struct nv04_fifo nv04_data = { .vram = 0xbeef0201,
+-				       .gart = 0xbeef0202 };
+-	struct nvc0_fifo nvc0_data = { };
+-	struct nouveau_fifo *fifo;
+-	int size;
+-	uint32_t class;
+-	void *data;
+-
+-	igt_assert(nouveau_device_wrap(nouveau_fd, 0, &ndev) == 0);
+-
+-	igt_assert(nouveau_client_new(ndev, &nclient) == 0);
+-
+-	igt_skip_on_f(ndev->chipset < 0xa3 || ndev->chipset == 0xaa || ndev->chipset == 0xac,
+-		      "Your card doesn't support PCOPY\n");
+-
+-	// TODO: Get a kepler and add support for it
+-	igt_skip_on_f(ndev->chipset >= 0xe0,
+-		      "Unsure how kepler works!\n");
+-	igt_assert(nouveau_bo_new(ndev,  NOUVEAU_BO_GART | NOUVEAU_BO_MAP,
+-				  4096, 4096, NULL, &query_bo) == 0);
+-	igt_assert(nouveau_bo_map(query_bo, NOUVEAU_BO_RDWR, nclient) == 0);
+-	query = query_bo->map;
+-	*query = query_counter;
+-
+-	if (ndev->chipset < 0xc0) {
+-		class = 0x85b5;
+-		data = &nv04_data;
+-		size = sizeof(nv04_data);
+-	} else {
+-		class = ndev->chipset < 0xe0 ? 0x490b5 : 0xa0b5;
+-		data = &nvc0_data;
+-		size = sizeof(nvc0_data);
+-	}
+-
+-	igt_assert(nouveau_object_new(&ndev->object, 0, NOUVEAU_FIFO_CHANNEL_CLASS,
+-				      data, size, &nchannel) == 0);
+-
+-	fifo = nchannel->data;
+-
+-	igt_assert(nouveau_pushbuf_new(nclient, nchannel, 4, 32 * 1024,
+-				       true, &npush) == 0);
+-
+-	igt_assert(nouveau_bufctx_new(nclient, 1, &nbufctx) == 0);
+-
+-	npush->user_priv = nbufctx;
+-
+-	/* Hope this is enough init for PCOPY */
+-	igt_assert(nouveau_object_new(nchannel, class, class & 0xffff, NULL, 0, &pcopy) == 0);
+-	igt_assert(nouveau_pushbuf_space(npush, 512, 0, 0) == 0);
+-
+-	if (ndev->chipset < 0xc0) {
+-		struct nv04_fifo *nv04_fifo = (struct nv04_fifo*)fifo;
+-		tile_intel_y = 0x3e;
+-		tile_intel_x = 0x13;
+-
+-		BEGIN_NV04(npush, NV01_SUBC(COPY, OBJECT), 1);
+-		PUSH_DATA(npush, pcopy->handle);
+-		BEGIN_NV04(npush, SUBC_COPY(0x0180), 3);
+-		PUSH_DATA(npush, nv04_fifo->vram);
+-		PUSH_DATA(npush, nv04_fifo->vram);
+-		PUSH_DATA(npush, nv04_fifo->vram);
+-	} else {
+-		tile_intel_y = 0x2e;
+-		tile_intel_x = 0x03;
+-		BEGIN_NVC0(npush, NV01_SUBC(COPY, OBJECT), 1);
+-		PUSH_DATA(npush, pcopy->handle);
+-	}
+-	nouveau_pushbuf_kick(npush, npush->channel);
+-}
+-
+-static void fill16(void *ptr, uint32_t val)
+-{
+-	uint32_t *p = ptr;
+-	val = (val) | (val << 8) | (val << 16) | (val << 24);
+-	p[0] = p[1] = p[2] = p[3] = val;
+-}
+-
+-#define TILE_SIZE 4096
+-
+-static void swtile_y(uint8_t *out, const uint8_t *in, int w, int h)
+-{
+-	uint32_t x, y, dx, dy;
+-	uint8_t *endptr = out + w * h;
+-	igt_assert(!(w % 128));
+-	igt_assert(!(h % 32));
+-
+-	for (y = 0; y < h; y += 32) {
+-		for (x = 0; x < w; x += 128, out += TILE_SIZE) {
+-			for (dx = 0; dx < 8; ++dx) {
+-				for (dy = 0; dy < 32; ++dy) {
+-					uint32_t out_ofs = (dx * 32 + dy) * 16;
+-					uint32_t in_ofs = (y + dy) * w + (x + 16 * dx);
+-					igt_assert(out_ofs < TILE_SIZE);
+-					igt_assert(in_ofs < w*h);
+-
+-					// To do the Y tiling quirk:
+-					// out_ofs = out_ofs ^ (((out_ofs >> 9) & 1) << 6);
+-					memcpy(&out[out_ofs], &in[in_ofs], 16);
+-				}
+-			}
+-		}
+-	}
+-	igt_assert(out == endptr);
+-}
+-
+-static void swtile_x(uint8_t *out, const uint8_t *in, int w, int h)
+-{
+-	uint32_t x, y, dy;
+-	uint8_t *endptr = out + w * h;
+-	igt_assert(!(w % 512));
+-	igt_assert(!(h % 8));
+-
+-	for (y = 0; y < h; y += 8) {
+-		for (x = 0; x < w; x += 512, out += TILE_SIZE) {
+-			for (dy = 0; dy < 8; ++dy) {
+-				uint32_t out_ofs = 512 * dy;
+-				uint32_t in_ofs = (y + dy) * w + x;
+-				igt_assert(out_ofs < TILE_SIZE);
+-				igt_assert(in_ofs < w*h);
+-				memcpy(&out[out_ofs], &in[in_ofs], 512);
+-			}
+-		}
+-	}
+-	igt_assert(out == endptr);
+-}
+-
+-static void perform_copy(struct nouveau_bo *nvbo, const rect *dst,
+-			 uint32_t dst_x, uint32_t dst_y,
+-			 struct nouveau_bo *nvbi, const rect *src,
+-			 uint32_t src_x, uint32_t src_y,
+-			 uint32_t w, uint32_t h)
+-{
+-	struct nouveau_pushbuf_refn refs[] = {
+-		{ nvbi, (nvbi->flags & NOUVEAU_BO_APER) | NOUVEAU_BO_RD },
+-		{ nvbo, (nvbo->flags & NOUVEAU_BO_APER) | NOUVEAU_BO_WR },
+-		{ query_bo, NOUVEAU_BO_GART | NOUVEAU_BO_RDWR }
+-	};
+-	uint32_t cpp = 1, exec = 0x00003000; /* QUERY|QUERY_SHORT|FORMAT */
+-	uint32_t src_off = 0, dst_off = 0;
+-	struct nouveau_pushbuf *push = npush;
+-	int ret;
+-
+-	if (nvbi->config.nv50.tile_mode == tile_intel_y)
+-		igt_debug("src is y-tiled\n");
+-	if (nvbo->config.nv50.tile_mode == tile_intel_y)
+-		igt_debug("dst is y-tiled\n");
+-
+-	igt_assert(nouveau_pushbuf_space(push, 64, 0, 0) == 0);
+-	igt_assert(nouveau_pushbuf_refn(push, refs, 3) == 0);
+-
+-	if (!nvbi->config.nv50.tile_mode) {
+-		src_off = src_y * src->pitch + src_x;
+-		exec |= 0x00000010;
+-	}
+-
+-	if (!nvbo->config.nv50.tile_mode) {
+-		dst_off = dst_y * dst->pitch + dst_x;
+-		exec |= 0x00000100;
+-	}
+-
+-	BEGIN_NVXX(push, SUBC_COPY(0x0200), 7);
+-	PUSH_DATA (push, nvbi->config.nv50.tile_mode);
+-	PUSH_DATA (push, src->pitch / cpp);
+-	PUSH_DATA (push, src->h);
+-	PUSH_DATA (push, 1);
+-	PUSH_DATA (push, 0);
+-	PUSH_DATA (push, src_x / cpp);
+-	PUSH_DATA (push, src_y);
+-
+-	BEGIN_NVXX(push, SUBC_COPY(0x0220), 7);
+-	PUSH_DATA (push, nvbo->config.nv50.tile_mode);
+-	PUSH_DATA (push, dst->pitch / cpp);
+-	PUSH_DATA (push, dst->h);
+-	PUSH_DATA (push, 1);
+-	PUSH_DATA (push, 0);
+-	PUSH_DATA (push, dst_x / cpp);
+-	PUSH_DATA (push, dst_y);
+-
+-	BEGIN_NVXX(push, SUBC_COPY(0x030c), 9);
+-	PUSH_DATA (push, (nvbi->offset + src_off) >> 32);
+-	PUSH_DATA (push, (nvbi->offset + src_off));
+-	PUSH_DATA (push, (nvbo->offset + dst_off) >> 32);
+-	PUSH_DATA (push, (nvbo->offset + dst_off));
+-	PUSH_DATA (push, src->pitch);
+-	PUSH_DATA (push, dst->pitch);
+-	PUSH_DATA (push, w / cpp);
+-	PUSH_DATA (push, h);
+-	PUSH_DATA (push, 0x03333120);
+-
+-	BEGIN_NVXX(push, SUBC_COPY(0x0338), 3);
+-	PUSH_DATA (push, (query_bo->offset) >> 32);
+-	PUSH_DATA (push, (query_bo->offset));
+-	PUSH_DATA (push, ++query_counter);
+-
+-	BEGIN_NVXX(push, SUBC_COPY(0x0300), 1);
+-	PUSH_DATA (push, exec);
+-
+-	ret = nouveau_pushbuf_kick(push, push->channel);
+-	while (!ret && *query < query_counter) { usleep(1000); }
+-
+-	igt_assert_eq(ret, 0);
+-}
+-
+-static void check1_macro(uint32_t *p, uint32_t w, uint32_t h)
+-{
+-	uint32_t i, val, j;
+-
+-	for (i = 0; i < 256; ++i, p += 4) {
+-		val = (i) | (i << 8) | (i << 16) | (i << 24);
+-		igt_assert_f(p[0] == val && p[1] == val && p[2] == val && p[3] == val,
+-			     "Retile check failed in first tile!\n"
+-			     "%08x %08x %08x %08x instead of %08x\n",
+-			     p[0], p[1], p[2], p[3], val);
+-	}
+-
+-	val = 0x3e3e3e3e;
+-	for (i = 0; i < 256 * (w-1); ++i, p += 4) {
+-		igt_assert_f(p[0] == val && p[1] == val && p[2] == val && p[3] == val,
+-			     "Retile check failed in second tile!\n"
+-			     "%08x %08x %08x %08x instead of %08x\n",
+-			     p[0], p[1], p[2], p[3], val);
+-	}
+-
+-	for (j = 1; j < h; ++j) {
+-		val = 0x7e7e7e7e;
+-		for (i = 0; i < 256; ++i, p += 4) {
+-			igt_assert_f(p[0] == val && p[1] == val && p[2] == val && p[3] == val,
+-				     "Retile check failed in third tile!\n"
+-				     "%08x %08x %08x %08x instead of %08x\n",
+-				     p[0], p[1], p[2], p[3], val);
+-		}
+-
+-		val = 0xcececece;
+-		for (i = 0; i < 256 * (w-1); ++i, p += 4) {
+-			igt_assert_f(p[0] == val && p[1] == val && p[2] == val && p[3] == val,
+-				     "Retile check failed in fourth tile!\n"
+-				     "%08x %08x %08x %08x instead of %08x\n",
+-				     p[0], p[1], p[2], p[3], val);
+-		}
+-	}
+-}
+-
+-/* test 1, see if we can copy from linear to intel Y format safely */
+-static void test1_macro(void)
+-{
+-	int prime_fd = -1;
+-	struct nouveau_bo *nvbo = NULL, *nvbi = NULL;
+-	rect dst, src;
+-	uint8_t *ptr;
+-	uint32_t w = 2 * 128, h = 2 * 32, x, y;
+-
+-	nv_bo_alloc(&nvbi, &src, w, h, 0, -1, NOUVEAU_BO_GART);
+-	nv_bo_alloc(&nvbo, &dst, w, h, tile_intel_y, -1, NOUVEAU_BO_GART);
+-
+-	nouveau_bo_set_prime(nvbo, &prime_fd);
+-
+-	/* Set up something for our tile that should map into the first
+-	 * y-major tile, assuming my understanding of documentation is
+-	 * correct
 -	 */
--	for (i = 0; i < width * height; i++) {
-+	for (i = 0; i < OBJECT_WIDTH * OBJECT_HEIGHT; i++)
- 		data[i] = seed++;
+-
+-	/* First tile should be read out in groups of 16 bytes that
+-	 * are all set to a linear increasing value..
+-	 */
+-	ptr = nvbi->map;
+-	for (x = 0; x < 128; x += 16)
+-		for (y = 0; y < 32; ++y)
+-			fill16(&ptr[y * w + x], x * 2 + y);
+-
+-	/* second tile */
+-	for (x = 128; x < w; x += 16)
+-		for (y = 0; y < 32; ++y)
+-			fill16(&ptr[y * w + x], 0x3e);
+-
+-	/* third tile */
+-	for (x = 0; x < 128; x += 16)
+-		for (y = 32; y < h; ++y)
+-			fill16(&ptr[y * w + x], 0x7e);
+-
+-	/* last tile */
+-	for (x = 128; x < w; x += 16)
+-		for (y = 32; y < h; ++y)
+-			fill16(&ptr[y * w + x], 0xce);
+-	memset(nvbo->map, 0xfc, w * h);
+-
+-	if (pcopy)
+-		perform_copy(nvbo, &dst, 0, 0, nvbi, &src, 0, 0, w, h);
+-	else
+-		swtile_y(nvbo->map, nvbi->map, w, h);
+-	check1_macro(nvbo->map, w/128, h/32);
+-
+-	nouveau_bo_ref(NULL, &nvbo);
+-	nouveau_bo_ref(NULL, &nvbi);
+-	close(prime_fd);
+-}
+-
+-static void dump_line(uint8_t *map)
+-{
+-	uint32_t dx, dy;
+-	igt_debug("Dumping sub-tile:\n");
+-	for (dy = 0; dy < 32; ++dy) {
+-		for (dx = 0; dx < 15; ++dx, ++map) {
+-			igt_debug("%02x ", *map);
+-		}
+-		igt_debug("%02x\n", *(map++));
 -	}
- 
--	/* Upload the junk. */
--	src_bo = drm_intel_bo_alloc(bufmgr, "src", sizeof(data), 4096);
--	drm_intel_bo_subdata(src_bo, 0, sizeof(data), data);
-+	gem_write(i915, src_handle, 0, data, sizeof(data));
- 
- 	/* Render the junk to the dst. */
--	BLIT_COPY_BATCH_START(0);
--	OUT_BATCH((3 << 24) | /* 32 bits */
-+	bb = gem_mmap__device_coherent(i915, bb_handle, 0, bb_size, PROT_WRITE);
-+	i = 0;
-+	bb[i++] = XY_SRC_COPY_BLT_CMD |
-+		  XY_SRC_COPY_BLT_WRITE_ALPHA |
-+		  XY_SRC_COPY_BLT_WRITE_RGB |
-+		  (6 + 2*(gen >= 8));
-+	bb[i++] = (3 << 24) | /* 32 bits */
- 		  (0xcc << 16) | /* copy ROP */
--		  (width * 4) /* dst pitch */);
--	OUT_BATCH(0); /* dst x1,y1 */
--	OUT_BATCH((height << 16) | width); /* dst x2,y2 */
--	OUT_RELOC(dst_bo, I915_GEM_DOMAIN_RENDER, I915_GEM_DOMAIN_RENDER, 0);
--	OUT_BATCH(0); /* src x1,y1 */
--	OUT_BATCH(width * 4); /* src pitch */
--	OUT_RELOC(src_bo, I915_GEM_DOMAIN_RENDER, 0, 0);
--	ADVANCE_BATCH();
+-}
 -
--	intel_batchbuffer_flush(batch);
+-static void check1_micro(void *map, uint32_t pitch, uint32_t lines,
+-			 uint32_t dst_x, uint32_t dst_y, uint32_t w, uint32_t h)
+-{
+-	uint32_t x, y;
 -
--	drm_intel_bo_unreference(src_bo);
-+		  (OBJECT_WIDTH * 4) /* dst pitch */;
-+	bb[i++] = 0; /* dst x1,y1 */
-+	bb[i++] = (OBJECT_HEIGHT << 16) | OBJECT_WIDTH; /* dst x2,y2 */
-+
-+	obj[0].handle = dst_handle;
-+	obj[0].offset = dst_handle * size;
-+	reloc[0].target_handle = dst_handle;
-+	reloc[0].presumed_offset = obj[0].offset;
-+	reloc[0].offset = sizeof(uint32_t) * i;
-+	reloc[0].read_domains = I915_GEM_DOMAIN_RENDER;
-+	reloc[0].write_domain = I915_GEM_DOMAIN_RENDER;
-+	bb[i++] = obj[0].offset;
-+	if (has_64b_reloc)
-+		bb[i++] = obj[0].offset >> 32;
-+
-+	bb[i++] = 0; /* src x1,y1 */
-+	bb[i++] = OBJECT_WIDTH * 4; /* src pitch */
-+
-+	obj[1].handle = src_handle;
-+	obj[1].offset = src_handle * size;
-+	reloc[1].target_handle = src_handle;
-+	reloc[1].presumed_offset = obj[1].offset;
-+	reloc[1].offset = sizeof(uint32_t) * i;
-+	reloc[1].read_domains = I915_GEM_DOMAIN_RENDER;
-+	reloc[1].write_domain = 0;
-+	bb[i++] = obj[1].offset;
-+	if (has_64b_reloc)
-+		bb[i++] = obj[1].offset >> 32;
-+
-+	obj[2].handle = bb_handle;
-+	obj[2].relocs_ptr = to_user_pointer(reloc);
-+	obj[2].relocation_count = 2;
-+
-+	bb[i++] = MI_BATCH_BUFFER_END;
-+	gem_munmap(bb, bb_size);
-+
-+	exec.buffers_ptr = to_user_pointer(obj);
-+	exec.buffer_count = 3;
-+	exec.flags = gen >= 6 ? I915_EXEC_BLT : 0 | I915_EXEC_NO_RELOC;
-+
-+	gem_execbuf(i915, &exec);
- }
- 
- int main(int argc, char **argv)
- {
--	int fd;
--	int object_size = OBJECT_WIDTH * OBJECT_HEIGHT * 4;
- 	double start_time, end_time;
--	drm_intel_bo *dst_bo;
--	drm_intel_bufmgr *bufmgr;
--	struct intel_batchbuffer *batch;
+-	/* check only the relevant subrectangle [0..w) [0...h) */
+-	uint8_t *m = map;
+-	for (y = 0; y < h; ++y, m += pitch) {
+-		for (x = 0; x < w; ++x) {
+-			uint8_t expected = ((y & 3) << 6) | (x & 0x3f);
+-
+-			if (expected != m[x])
+-				dump_line(m);
+-
+-			igt_assert_f(expected == m[x],
+-				     "failed check at x=%u y=%u, expected %02x got %02x\n",
+-				     x, y, expected, m[x]);
+-		}
+-	}
+-}
+-
+-/* test 1, but check micro format, should be unaffected by bit9 swizzling */
+-static void test1_micro(void)
+-{
+-	struct nouveau_bo *bo_intel = NULL, *bo_nvidia = NULL, *bo_linear = NULL;
+-	rect intel, nvidia, linear;
+-	uint32_t tiling = I915_TILING_Y;
+-
+-	uint32_t src_x = 0, src_y = 0;
+-	uint32_t dst_x = 0, dst_y = 0;
+-	uint32_t x, y, w = 256, h = 64;
+-
+-	drm_intel_bo *test_intel_bo;
+-	int prime_fd;
+-
+-	test_intel_bo = drm_intel_bo_alloc(bufmgr, "test bo", w * h, 4096);
+-	igt_assert(test_intel_bo);
+-	drm_intel_bo_set_tiling(test_intel_bo, &tiling, w);
+-	igt_assert(tiling == I915_TILING_Y);
+-	igt_assert(drm_intel_gem_bo_map_gtt(test_intel_bo) == 0);
+-
+-	drm_intel_bo_gem_export_to_prime(test_intel_bo, &prime_fd);
+-	igt_assert_lte(0, prime_fd);
+-	noop_intel(test_intel_bo);
+-
+-	nv_bo_alloc(&bo_intel, &intel, w, h, tile_intel_y, prime_fd, 0);
+-	nv_bo_alloc(&bo_nvidia, &nvidia, w, h, 0x10, -1, NOUVEAU_BO_VRAM);
+-	nv_bo_alloc(&bo_linear, &linear, w, h, 0, -1, NOUVEAU_BO_GART);
+-
+-	for (y = 0; y < linear.h; ++y) {
+-		uint8_t *map = bo_linear->map;
+-		map += y * linear.pitch;
+-		for (x = 0; x < linear.pitch; ++x) {
+-			uint8_t pos = x & 0x3f;
+-			/* low 4 bits: micro tile pos */
+-			/* 2 bits: x pos in tile (wraps) */
+-			/* 2 bits: y pos in tile (wraps) */
+-			pos |= (y & 3) << 6;
+-			map[x] = pos;
+-		}
+-	}
+-
+-	perform_copy(bo_nvidia, &nvidia, 0, 0, bo_linear, &linear, 0, 0, nvidia.pitch, nvidia.h);
+-
+-	/* Perform the actual sub rectangle copy */
+-	if (pcopy)
+-		perform_copy(bo_intel, &intel, dst_x, dst_y, bo_nvidia, &nvidia, src_x, src_y, w, h);
+-	else
+-		swtile_y(test_intel_bo->virtual, bo_linear->map, w, h);
+-
+-	noop_intel(test_intel_bo);
+-	check1_micro(test_intel_bo->virtual, intel.pitch, intel.h, dst_x, dst_y, w, h);
+-
+-	nouveau_bo_ref(NULL, &bo_linear);
+-	nouveau_bo_ref(NULL, &bo_nvidia);
+-	nouveau_bo_ref(NULL, &bo_intel);
+-	drm_intel_bo_unreference(test_intel_bo);
+-}
+-
+-/* test 2, see if we can copy from linear to intel X format safely
+- * Seems nvidia lacks a method to do it, so just keep this test
+- * as a reference for potential future tests. Software tiling is
+- * used for now
+- */
+-static void test2(void)
+-{
+-	struct nouveau_bo *nvbo = NULL, *nvbi = NULL;
+-	rect dst, src;
+-	uint8_t *ptr;
+-	uint32_t w = 1024, h = 16, x, y;
+-
+-	nv_bo_alloc(&nvbi, &src, w, h, 0, -1, NOUVEAU_BO_GART);
+-	nv_bo_alloc(&nvbo, &dst, w, h, tile_intel_x, -1, NOUVEAU_BO_GART);
+-
+-	/* Set up something for our tile that should map into the first
+-	 * y-major tile, assuming my understanding of documentation is
+-	 * correct
+-	 */
+-
+-	/* First tile should be read out in groups of 16 bytes that
+-	 * are all set to a linear increasing value..
+-	 */
+-	ptr = nvbi->map;
+-	for (y = 0; y < 8; ++y)
+-		for (x = 0; x < 512; x += 16)
+-			fill16(&ptr[y * w + x], (y * 512 + x)/16);
+-
+-	for (y = 0; y < 8; ++y)
+-		for (x = 512; x < w; x += 16)
+-			fill16(&ptr[y * w + x], 0x3e);
+-
+-	for (y = 8; y < h; ++y)
+-		for (x = 0; x < 512; x += 16)
+-			fill16(&ptr[y * w + x], 0x7e);
+-
+-	for (y = 8; y < h; ++y)
+-		for (x = 512; x < w; x += 16)
+-			fill16(&ptr[y * w + x], 0xce);
+-	memset(nvbo->map, 0xfc, w * h);
+-
+-	/* do this in software, there is no X major tiling in PCOPY (yet?) */
+-	if (0 && pcopy)
+-		perform_copy(nvbo, &dst, 0, 0, nvbi, &src, 0, 0, w, h);
+-	else
+-		swtile_x(nvbo->map, nvbi->map, w, h);
+-	check1_macro(nvbo->map, w/512, h/8);
+-
+-	nouveau_bo_ref(NULL, &nvbo);
+-	nouveau_bo_ref(NULL, &nvbi);
+-}
+-
+-static void check3(const uint32_t *p, uint32_t pitch, uint32_t lines,
+-		   uint32_t sub_x, uint32_t sub_y,
+-		   uint32_t sub_w, uint32_t sub_h)
+-{
+-	uint32_t x, y;
+-
+-	sub_w += sub_x;
+-	sub_h += sub_y;
+-
+-	igt_assert_f(p[pitch * lines / 4 - 1] != 0x03030303,
+-		     "copy failed: Not all lines have been copied back!\n");
+-
+-	for (y = 0; y < lines; ++y) {
+-		for (x = 0; x < pitch; x += 4, ++p) {
+-			uint32_t expected;
+-			if ((x < sub_x || x >= sub_w) ||
+-			    (y < sub_y || y >= sub_h))
+-				expected = 0x80808080;
+-			else
+-				expected = 0x04040404;
+-			igt_assert_f(*p == expected,
+-				     "%u,%u should be %08x, but is %08x\n",
+-				     x, y, expected, *p);
+-		}
+-	}
+-}
+-
+-/* copy from nvidia bo to intel bo and copy to a linear bo to check if tiling went succesful */
+-static void test3_base(int tile_src, int tile_dst)
+-{
+-	struct nouveau_bo *bo_intel = NULL, *bo_nvidia = NULL, *bo_linear = NULL;
+-	rect intel, nvidia, linear;
+-	uint32_t cpp = 4;
+-
+-	uint32_t src_x = 1 * cpp, src_y = 1;
+-	uint32_t dst_x = 2 * cpp, dst_y = 26;
+-	uint32_t w = 298 * cpp, h = 298;
+-
+-	drm_intel_bo *test_intel_bo;
+-	int prime_fd;
+-
+-	test_intel_bo = drm_intel_bo_alloc(bufmgr, "test bo", 2048 * cpp * 768, 4096);
+-	igt_assert(test_intel_bo);
+-
+-	drm_intel_bo_gem_export_to_prime(test_intel_bo, &prime_fd);
+-	igt_assert_lte(0, prime_fd);
+-
+-	nv_bo_alloc(&bo_intel, &intel, 2048 * cpp, 768, tile_dst, prime_fd, 0);
+-	nv_bo_alloc(&bo_nvidia, &nvidia, 300 * cpp, 300, tile_src, -1, NOUVEAU_BO_VRAM);
+-	nv_bo_alloc(&bo_linear, &linear, 2048 * cpp, 768, 0, -1, NOUVEAU_BO_GART);
+-
+-	noop_intel(test_intel_bo);
+-	memset(bo_linear->map, 0x80, bo_linear->size);
+-	perform_copy(bo_intel, &intel, 0, 0, bo_linear, &linear, 0, 0, linear.pitch, linear.h);
+-	noop_intel(test_intel_bo);
+-
+-	memset(bo_linear->map, 0x04, bo_linear->size);
+-	perform_copy(bo_nvidia, &nvidia, 0, 0, bo_linear, &linear, 0, 0, nvidia.pitch, nvidia.h);
+-
+-	/* Perform the actual sub rectangle copy */
+-	noop_intel(test_intel_bo);
+-	perform_copy(bo_intel, &intel, dst_x, dst_y, bo_nvidia, &nvidia, src_x, src_y, w, h);
+-	noop_intel(test_intel_bo);
+-
+-	memset(bo_linear->map, 0x3, bo_linear->size);
+-	noop_intel(test_intel_bo);
+-	perform_copy(bo_linear, &linear, 0, 0, bo_intel, &intel, 0, 0, intel.pitch, intel.h);
+-	noop_intel(test_intel_bo);
+-
+-	check3(bo_linear->map, linear.pitch, linear.h, dst_x, dst_y, w, h);
+-
+-	nouveau_bo_ref(NULL, &bo_linear);
+-	nouveau_bo_ref(NULL, &bo_nvidia);
+-	nouveau_bo_ref(NULL, &bo_intel);
+-	drm_intel_bo_unreference(test_intel_bo);
+-}
+-
+-static void test3_1(void)
+-{
+-	/* nvidia tiling to intel */
+-	test3_base(0x40, tile_intel_y);
+-}
+-
+-static void test3_2(void)
+-{
+-	/* intel tiling to nvidia */
+-	test3_base(tile_intel_y, 0x40);
+-}
+-
+-static void test3_3(void)
+-{
+-	/* intel tiling to linear */
+-	test3_base(tile_intel_y, 0);
+-}
+-
+-static void test3_4(void)
+-{
+-	/* linear tiling to intel */
+-	test3_base(0, tile_intel_y);
+-}
+-
+-static void test3_5(void)
+-{
+-	/* linear to linear */
+-	test3_base(0, 0);
+-}
+-
+-/* Acquire when == SEQUENCE */
+-#define SEMA_ACQUIRE_EQUAL 1
+-
+-/* Release, and write a 16 byte query structure to sema:
+- * { (uint32)seq, (uint32)0, (uint64)timestamp } */
+-#define SEMA_WRITE_LONG 2
+-
+-/* Acquire when >= SEQUENCE */
+-#define SEMA_ACQUIRE_GEQUAL 4
+-
+-/* Test only new style semaphores, old ones are AWFUL */
+-static void test_semaphore(void)
+-{
+-	drm_intel_bo *test_intel_bo = NULL;
+-	struct nouveau_bo *sema_bo = NULL;
+-	int prime_fd;
+-	uint32_t *sema;
+-	struct nouveau_pushbuf *push = npush;
+-
+-	igt_skip_on(ndev->chipset < 0x84);
+-
+-	/* Should probably be kept in sysmem */
+-	test_intel_bo = drm_intel_bo_alloc(bufmgr, "semaphore bo", 4096, 4096);
+-	igt_assert(test_intel_bo);
+-
+-	drm_intel_bo_gem_export_to_prime(test_intel_bo, &prime_fd);
+-	igt_assert_lte(0, prime_fd);
+-	igt_assert(nouveau_bo_prime_handle_ref(ndev, prime_fd, &sema_bo) == 0);
+-	close(prime_fd);
+-
+-	igt_assert(drm_intel_gem_bo_map_gtt(test_intel_bo) == 0);
+-	sema = test_intel_bo->virtual;
+-	sema++;
+-	*sema = 0;
+-
+-	igt_assert(nouveau_pushbuf_space(push, 64, 0, 0) == 0);
+-	igt_assert(nouveau_pushbuf_refn(push, &(struct nouveau_pushbuf_refn)
+-					{ sema_bo, NOUVEAU_BO_GART|NOUVEAU_BO_RDWR }, 1) == 0);
+-
+-	if (ndev->chipset < 0xc0) {
+-		struct nv04_fifo *nv04_fifo = nchannel->data;
+-		/* kernel binds it's own dma object here and overwrites old one,
+-		 * so just rebind vram every time we submit
+-		 */
+-		BEGIN_NV04(npush, SUBC_COPY(0x0060), 1);
+-		PUSH_DATA(npush, nv04_fifo->vram);
+-	}
+-	BEGIN_NVXX(push, SUBC_COPY(0x0010), 4);
+-	PUSH_DATA(push, sema_bo->offset >> 32);
+-	PUSH_DATA(push, sema_bo->offset + 4);
+-	PUSH_DATA(push, 2); // SEQUENCE
+-	PUSH_DATA(push, SEMA_WRITE_LONG); // TRIGGER
+-
+-	BEGIN_NVXX(push, SUBC_COPY(0x0018), 2);
+-	PUSH_DATA(push, 3);
+-	PUSH_DATA(push, SEMA_ACQUIRE_EQUAL);
+-	BEGIN_NVXX(push, SUBC_COPY(0x0018), 2);
+-	PUSH_DATA(push, 4);
+-	PUSH_DATA(push, SEMA_WRITE_LONG);
+-
+-	BEGIN_NVXX(push, SUBC_COPY(0x0018), 2);
+-	PUSH_DATA(push, 5);
+-	PUSH_DATA(push, SEMA_ACQUIRE_GEQUAL);
+-	BEGIN_NVXX(push, SUBC_COPY(0x0018), 2);
+-	PUSH_DATA(push, 6);
+-	PUSH_DATA(push, SEMA_WRITE_LONG);
+-
+-	BEGIN_NVXX(push, SUBC_COPY(0x0018), 2);
+-	PUSH_DATA(push, 7);
+-	PUSH_DATA(push, SEMA_ACQUIRE_GEQUAL);
+-	BEGIN_NVXX(push, SUBC_COPY(0x0018), 2);
+-	PUSH_DATA(push, 9);
+-	PUSH_DATA(push, SEMA_WRITE_LONG);
+-	nouveau_pushbuf_kick(push, push->channel);
+-
+-	usleep(1000);
+-	igt_assert(*sema == 2);
+-
+-	*sema = 3;
+-	usleep(1000);
+-	igt_assert(*sema == 4);
+-
+-	*sema = 5;
+-	usleep(1000);
+-	igt_assert(*sema == 6);
+-
+-	*sema = 8;
+-	usleep(1000);
+-	igt_assert(*sema == 9);
+-
+-	nouveau_bo_ref(NULL, &sema_bo);
+-	drm_intel_bo_unreference(test_intel_bo);
+-}
+-
+-igt_main
+-{
+-	igt_fixture {
+-		find_and_open_devices();
+-
+-		igt_require(nouveau_fd != -1);
+-		igt_require(intel_fd != -1);
+-
+-		/* set up intel bufmgr */
+-		bufmgr = drm_intel_bufmgr_gem_init(intel_fd, 4096);
+-		igt_assert(bufmgr);
+-		/* Do not enable reuse, we share (almost) all buffers. */
+-		//drm_intel_bufmgr_gem_enable_reuse(bufmgr);
+-
+-		/* set up nouveau bufmgr */
+-		init_nouveau();
+-
+-		/* set up an intel batch buffer */
+-		devid = intel_get_drm_devid(intel_fd);
+-		batch = intel_batchbuffer_alloc(bufmgr, devid);
+-		igt_assert(batch);
+-	}
+-
+-#define xtest(x, args...) \
+-	igt_subtest( #x ) \
+-		(x)(args);
+-
+-	xtest(test1_macro);
+-	xtest(test1_micro);
+-	//xtest(test1_swizzle);
+-	xtest(test2);
+-	xtest(test3_1);
+-	xtest(test3_2);
+-	xtest(test3_3);
+-	xtest(test3_4);
+-	xtest(test3_5);
+-	xtest(test_semaphore);
+-
+-	igt_fixture {
+-		nouveau_bo_ref(NULL, &query_bo);
+-		nouveau_object_del(&pcopy);
+-		nouveau_bufctx_del(&nbufctx);
+-		nouveau_pushbuf_del(&npush);
+-		nouveau_object_del(&nchannel);
+-
+-		intel_batchbuffer_free(batch);
+-
+-		nouveau_client_del(&nclient);
+-		nouveau_device_del(&ndev);
+-		drm_intel_bufmgr_destroy(bufmgr);
+-
+-		close(intel_fd);
+-		close(nouveau_fd);
+-	}
+-}
+diff --git a/tests/prime_nv_test.c b/tests/prime_nv_test.c
+deleted file mode 100644
+index 81d142f42e..0000000000
+--- a/tests/prime_nv_test.c
++++ /dev/null
+@@ -1,399 +0,0 @@
+-/* basic set of prime tests between intel and nouveau */
+-
+-/* test list -
+-   1. share buffer from intel -> nouveau.
+-   2. share buffer from nouveau -> intel
+-   3. share intel->nouveau, map on both, write intel, read nouveau
+-   4. share intel->nouveau, blit intel fill, readback on nouveau
+-   test 1 + map buffer, read/write, map other size.
+-   do some hw actions on the buffer
+-   some illegal operations -
+-       close prime fd try and map
+-
+-   TODO add some nouveau rendering tests
+-*/
+-
+-
+-#include "igt.h"
+-#include <stdio.h>
+-#include <stdlib.h>
+-#include <unistd.h>
+-#include <fcntl.h>
+-#include <string.h>
+-#include <sys/stat.h>
+-#include <sys/ioctl.h>
+-
+-#include "intel_bufmgr.h"
+-#include "nouveau.h"
+-
+-int intel_fd = -1, nouveau_fd = -1;
+-drm_intel_bufmgr *bufmgr;
+-struct nouveau_device *ndev;
+-struct nouveau_client *nclient;
+-uint32_t devid;
+-struct intel_batchbuffer *intel_batch;
+-
+-#define BO_SIZE (256*1024)
+-
+-static int find_and_open_devices(void)
+-{
 -	int i;
+-	char path[80];
+-	struct stat buf;
+-	FILE *fl;
+-	char vendor_id[8];
+-	int venid;
+-	for (i = 0; i < 9; i++) {
+-		char *ret;
 -
--	fd = drm_open_driver(DRIVER_INTEL);
-+	uint32_t dst_handle;
-+	int i915, i;
- 
--	bufmgr = drm_intel_bufmgr_gem_init(fd, 4096);
--	drm_intel_bufmgr_gem_enable_reuse(bufmgr);
+-		sprintf(path, "/sys/class/drm/card%d/device/vendor", i);
+-		if (stat(path, &buf))
+-			break;
 -
--	batch = intel_batchbuffer_alloc(bufmgr, intel_get_drm_devid(fd));
+-		fl = fopen(path, "r");
+-		if (!fl)
+-			break;
 -
--	dst_bo = drm_intel_bo_alloc(bufmgr, "dst", object_size, 4096);
-+	i915 = drm_open_driver(DRIVER_INTEL);
-+	dst_handle = gem_create(i915, OBJECT_WIDTH * OBJECT_HEIGHT * 4);
- 
- 	/* Prep loop to get us warmed up. */
--	for (i = 0; i < 60; i++) {
--		do_render(bufmgr, batch, dst_bo, OBJECT_WIDTH, OBJECT_HEIGHT);
+-		ret = fgets(vendor_id, 8, fl);
+-		igt_assert(ret);
+-		fclose(fl);
+-
+-		venid = strtoul(vendor_id, NULL, 16);
+-		sprintf(path, "/dev/dri/card%d", i);
+-		if (venid == 0x8086) {
+-			intel_fd = open(path, O_RDWR);
+-			if (!intel_fd)
+-				return -1;
+-		} else if (venid == 0x10de) {
+-			nouveau_fd = open(path, O_RDWR);
+-			if (!nouveau_fd)
+-				return -1;
+-		}
 -	}
--	drm_intel_bo_wait_rendering(dst_bo);
-+	for (i = 0; i < 60; i++)
-+		do_render(i915, dst_handle);
-+	gem_sync(i915, dst_handle);
- 
- 	/* Do the actual timing. */
- 	start_time = get_time_in_secs();
--	for (i = 0; i < 200; i++) {
--		do_render(bufmgr, batch, dst_bo, OBJECT_WIDTH, OBJECT_HEIGHT);
--	}
--	drm_intel_bo_wait_rendering(dst_bo);
-+	for (i = 0; i < 200; i++)
-+		do_render(i915, dst_handle);
-+	gem_sync(i915, dst_handle);
-+
- 	end_time = get_time_in_secs();
- 
- 	printf("%d iterations in %.03f secs: %.01f MB/sec\n", i,
-@@ -147,10 +173,5 @@ int main(int argc, char **argv)
- 	       (double)i * OBJECT_WIDTH * OBJECT_HEIGHT * 4 / 1024.0 / 1024.0 /
- 	       (end_time - start_time));
- 
--	intel_batchbuffer_free(batch);
--	drm_intel_bufmgr_destroy(bufmgr);
--
--	close(fd);
--
 -	return 0;
-+	close(i915);
- }
-diff --git a/benchmarks/intel_upload_blit_large_gtt.c b/benchmarks/intel_upload_blit_large_gtt.c
-index 0b704b57d4..1e991a6b24 100644
---- a/benchmarks/intel_upload_blit_large_gtt.c
-+++ b/benchmarks/intel_upload_blit_large_gtt.c
-@@ -45,6 +45,7 @@
-  */
- 
- #include "igt.h"
-+#include "i915/gem_create.h"
- #include <stdlib.h>
- #include <stdio.h>
- #include <string.h>
-@@ -69,74 +70,98 @@ get_time_in_secs(void)
- }
- 
- static void
--do_render(drm_intel_bufmgr *bufmgr, struct intel_batchbuffer *batch,
--	  drm_intel_bo *dst_bo, int width, int height)
-+do_render(int i915, uint32_t dst_handle)
- {
--	uint32_t *data;
--	drm_intel_bo *src_bo;
--	int i;
-+	struct drm_i915_gem_execbuffer2 exec = {};
-+	struct drm_i915_gem_exec_object2 obj[3] = {};
-+	struct drm_i915_gem_relocation_entry reloc[2];
- 	static uint32_t seed = 1;
-+	uint64_t size = OBJECT_WIDTH * OBJECT_HEIGHT * 4, bb_size = 4096;
-+	uint32_t *data, src_handle, bb_handle, *bb;
-+	uint32_t gen = intel_gen(intel_get_drm_devid(i915));
-+	const bool has_64b_reloc = gen >= 8;
-+	int i;
- 
--	src_bo = drm_intel_bo_alloc(bufmgr, "src", width * height * 4, 4096);
+-}
 -
--	drm_intel_gem_bo_map_gtt(src_bo);
-+	bb_handle = gem_create_from_pool(i915, &bb_size, REGION_SMEM);
-+	src_handle = gem_create_from_pool(i915, &size, REGION_SMEM);
- 
--	data = src_bo->virtual;
--	for (i = 0; i < width * height; i++) {
-+	data = gem_mmap__gtt(i915, src_handle, size, PROT_WRITE);
-+	for (i = 0; i < OBJECT_WIDTH * OBJECT_HEIGHT; i++)
- 		data[i] = seed++;
+-/*
+- * prime test 1 -
+- * allocate buffer on intel,
+- * set prime on buffer,
+- * retrive buffer from nouveau,
+- * close prime_fd,
+- *  unref buffers
+- */
+-static void test_i915_nv_sharing(void)
+-{
+-	drm_intel_bo *test_intel_bo;
+-	int prime_fd;
+-	struct nouveau_bo *nvbo;
+-
+-	test_intel_bo = drm_intel_bo_alloc(bufmgr, "test bo", BO_SIZE, 4096);
+-	igt_assert(test_intel_bo);
+-
+-	drm_intel_bo_gem_export_to_prime(test_intel_bo, &prime_fd);
+-
+-	igt_assert(nouveau_bo_prime_handle_ref(ndev, prime_fd, &nvbo) == 0);
+-	close(prime_fd);
+-
+-	nouveau_bo_ref(NULL, &nvbo);
+-	drm_intel_bo_unreference(test_intel_bo);
+-}
+-
+-/*
+- * prime test 2 -
+- * allocate buffer on nouveau
+- * set prime on buffer,
+- * retrive buffer from intel
+- * close prime_fd,
+- *  unref buffers
+- */
+-static void test_nv_i915_sharing(void)
+-{
+-	drm_intel_bo *test_intel_bo;
+-	int prime_fd;
+-	struct nouveau_bo *nvbo;
+-
+-	igt_assert(nouveau_bo_new(ndev, NOUVEAU_BO_GART | NOUVEAU_BO_MAP,
+-				  0, BO_SIZE, NULL, &nvbo) == 0);
+-	igt_assert(nouveau_bo_set_prime(nvbo, &prime_fd) == 0);
+-
+-	test_intel_bo = drm_intel_bo_gem_create_from_prime(bufmgr, prime_fd, BO_SIZE);
+-	close(prime_fd);
+-	igt_assert(test_intel_bo);
+-
+-	nouveau_bo_ref(NULL, &nvbo);
+-	drm_intel_bo_unreference(test_intel_bo);
+-}
+-
+-/*
+- * allocate intel, give to nouveau, map on nouveau
+- * write 0xdeadbeef, non-gtt map on intel, read
+- */
+-static void test_nv_write_i915_cpu_mmap_read(void)
+-{
+-	drm_intel_bo *test_intel_bo;
+-	int prime_fd;
+-	struct nouveau_bo *nvbo = NULL;
+-	uint32_t *ptr;
+-
+-	test_intel_bo = drm_intel_bo_alloc(bufmgr, "test bo", BO_SIZE, 4096);
+-
+-	drm_intel_bo_gem_export_to_prime(test_intel_bo, &prime_fd);
+-
+-	igt_assert(nouveau_bo_prime_handle_ref(ndev, prime_fd, &nvbo) == 0);
+-	close(prime_fd);
+-
+-	igt_assert(nouveau_bo_map(nvbo, NOUVEAU_BO_RDWR, nclient) == 0);
+-	ptr = nvbo->map;
+-	*ptr = 0xdeadbeef;
+-
+-	drm_intel_bo_map(test_intel_bo, 1);
+-	ptr = test_intel_bo->virtual;
+-	igt_assert(ptr);
+-
+-	igt_assert(*ptr == 0xdeadbeef);
+-	nouveau_bo_ref(NULL, &nvbo);
+-	drm_intel_bo_unreference(test_intel_bo);
+-}
+-
+-/*
+- * allocate intel, give to nouveau, map on nouveau
+- * write 0xdeadbeef, gtt map on intel, read
+- */
+-static void test_nv_write_i915_gtt_mmap_read(void)
+-{
+-	drm_intel_bo *test_intel_bo;
+-	int prime_fd;
+-	struct nouveau_bo *nvbo = NULL;
+-	uint32_t *ptr;
+-
+-	test_intel_bo = drm_intel_bo_alloc(bufmgr, "test bo", BO_SIZE, 4096);
+-
+-	drm_intel_bo_gem_export_to_prime(test_intel_bo, &prime_fd);
+-
+-	igt_assert(nouveau_bo_prime_handle_ref(ndev, prime_fd, &nvbo) == 0);
+-	close(prime_fd);
+-	igt_assert(nouveau_bo_map(nvbo, NOUVEAU_BO_RDWR, nclient) == 0);
+-	ptr = nvbo->map;
+-	*ptr = 0xdeadbeef;
+-
+-	drm_intel_gem_bo_map_gtt(test_intel_bo);
+-	ptr = test_intel_bo->virtual;
+-	igt_assert(ptr);
+-
+-	igt_assert(*ptr == 0xdeadbeef);
+-
+-	nouveau_bo_ref(NULL, &nvbo);
+-	drm_intel_bo_unreference(test_intel_bo);
+-}
+-
+-/* test drm_intel_bo_map doesn't work properly,
+-   this tries to map the backing shmem fd, which doesn't exist
+-   for these objects */
+-__noreturn static void test_i915_import_cpu_mmap(void)
+-{
+-	drm_intel_bo *test_intel_bo;
+-	int prime_fd;
+-	struct nouveau_bo *nvbo;
+-	uint32_t *ptr;
+-
+-	igt_skip("cpu mmap support for imported dma-bufs not yet implemented\n");
+-
+-	igt_assert(nouveau_bo_new(ndev, NOUVEAU_BO_GART | NOUVEAU_BO_MAP,
+-				  0, BO_SIZE, NULL, &nvbo) == 0);
+-	igt_assert(nouveau_bo_set_prime(nvbo, &prime_fd) == 0);
+-	test_intel_bo = drm_intel_bo_gem_create_from_prime(bufmgr, prime_fd, BO_SIZE);
+-	close(prime_fd);
+-	igt_assert(test_intel_bo);
+-
+-	igt_assert(nouveau_bo_map(nvbo, NOUVEAU_BO_RDWR, nclient) == 0);
+-
+-	ptr = nvbo->map;
+-	*ptr = 0xdeadbeef;
+-
+-	igt_assert(drm_intel_bo_map(test_intel_bo, 0) == 0);
+-	igt_assert(test_intel_bo->virtual);
+-	ptr = test_intel_bo->virtual;
+-
+-	igt_assert(*ptr == 0xdeadbeef);
+-	nouveau_bo_ref(NULL, &nvbo);
+-	drm_intel_bo_unreference(test_intel_bo);
+-}
+-
+-/* test drm_intel_bo_map_gtt works properly,
+-   this tries to map the backing shmem fd, which doesn't exist
+-   for these objects */
+-static void test_i915_import_gtt_mmap(void)
+-{
+-	drm_intel_bo *test_intel_bo;
+-	int prime_fd;
+-	struct nouveau_bo *nvbo;
+-	uint32_t *ptr;
+-
+-	igt_assert(nouveau_bo_new(ndev, NOUVEAU_BO_GART | NOUVEAU_BO_MAP,
+-				  0, BO_SIZE, NULL, &nvbo) == 0);
+-	igt_assert(nouveau_bo_set_prime(nvbo, &prime_fd) == 0);
+-
+-	test_intel_bo = drm_intel_bo_gem_create_from_prime(bufmgr, prime_fd, BO_SIZE);
+-	close(prime_fd);
+-	igt_assert(test_intel_bo);
+-
+-	igt_assert(nouveau_bo_map(nvbo, NOUVEAU_BO_RDWR, nclient) == 0);
+-
+-	ptr = nvbo->map;
+-	*ptr = 0xdeadbeef;
+-	*(ptr + 1) = 0xa55a55;
+-
+-	igt_assert(drm_intel_gem_bo_map_gtt(test_intel_bo) == 0);
+-	igt_assert(test_intel_bo->virtual);
+-	ptr = test_intel_bo->virtual;
+-
+-	igt_assert(*ptr == 0xdeadbeef);
+-	nouveau_bo_ref(NULL, &nvbo);
+-	drm_intel_bo_unreference(test_intel_bo);
+-}
+-
+-/* test 7 - import from nouveau into intel, test pread/pwrite fail */
+-static void test_i915_import_pread_pwrite(void)
+-{
+-	drm_intel_bo *test_intel_bo;
+-	int prime_fd;
+-	struct nouveau_bo *nvbo;
+-	uint32_t *ptr;
+-	uint32_t buf[64];
+-
+-	igt_assert(nouveau_bo_new(ndev, NOUVEAU_BO_GART | NOUVEAU_BO_MAP,
+-				  0, BO_SIZE, NULL, &nvbo) == 0);
+-	igt_assert(nouveau_bo_set_prime(nvbo, &prime_fd) == 0);
+-
+-	test_intel_bo = drm_intel_bo_gem_create_from_prime(bufmgr, prime_fd, BO_SIZE);
+-	close(prime_fd);
+-	igt_assert(test_intel_bo);
+-
+-	igt_assert(nouveau_bo_map(nvbo, NOUVEAU_BO_RDWR, nclient) == 0);
+-
+-	ptr = nvbo->map;
+-	*ptr = 0xdeadbeef;
+-
+-	gem_read(intel_fd, test_intel_bo->handle, 0, buf, 256);
+-	igt_assert(buf[0] == 0xdeadbeef);
+-	buf[0] = 0xabcdef55;
+-
+-	gem_write(intel_fd, test_intel_bo->handle, 0, buf, 4);
+-
+-	igt_assert(*ptr == 0xabcdef55);
+-
+-	nouveau_bo_ref(NULL, &nvbo);
+-	drm_intel_bo_unreference(test_intel_bo);
+-}
+-
+-static void
+-set_bo(drm_intel_bo *bo, uint32_t val, int width, int height)
+-{
+-        int size = width * height;
+-        uint32_t *vaddr;
+-
+-        drm_intel_gem_bo_start_gtt_access(bo, true);
+-        vaddr = bo->virtual;
+-        while (size--)
+-                *vaddr++ = val;
+-}
+-
+-static drm_intel_bo *
+-create_bo(drm_intel_bufmgr *ibufmgr, uint32_t val, int width, int height)
+-{
+-        drm_intel_bo *bo;
+-
+-        bo = drm_intel_bo_alloc(ibufmgr, "bo", 4*width*height, 0);
+-        igt_assert(bo);
+-
+-        /* gtt map doesn't have a write parameter, so just keep the mapping
+-         * around (to avoid the set_domain with the gtt write domain set) and
+-         * manually tell the kernel when we start access the gtt. */
+-        drm_intel_gem_bo_map_gtt(bo);
+-
+-        set_bo(bo, val, width, height);
+-
+-        return bo;
+-}
+-
+-/* use intel hw to fill the BO with a blit from another BO,
+-   then readback from the nouveau bo, check value is correct */
+-static void test_i915_blt_fill_nv_read(void)
+-{
+-	drm_intel_bo *test_intel_bo, *src_bo;
+-	int prime_fd;
+-	struct nouveau_bo *nvbo = NULL;
+-	uint32_t *ptr;
+-
+-	src_bo = create_bo(bufmgr, 0xaa55aa55, 256, 1);
+-
+-	test_intel_bo = drm_intel_bo_alloc(bufmgr, "test bo", BO_SIZE, 4096);
+-
+-	drm_intel_bo_gem_export_to_prime(test_intel_bo, &prime_fd);
+-
+-	igt_assert(nouveau_bo_prime_handle_ref(ndev, prime_fd, &nvbo) == 0);
+-	close(prime_fd);
+-
+-	intel_copy_bo(intel_batch, test_intel_bo, src_bo, BO_SIZE);
+-
+-	igt_assert(nouveau_bo_map(nvbo, NOUVEAU_BO_RDWR, nclient) == 0);
+-
+-	drm_intel_bo_map(test_intel_bo, 0);
+-
+-	ptr = nvbo->map;
+-	igt_assert(*ptr == 0xaa55aa55);
+-	nouveau_bo_ref(NULL, &nvbo);
+-	drm_intel_bo_unreference(test_intel_bo);
+-}
+-
+-/* test 8 use nouveau to do blit */
+-
+-/* test 9 nouveau copy engine?? */
+-
+-igt_main
+-{
+-	igt_fixture {
+-		igt_assert(find_and_open_devices() == 0);
+-
+-		igt_require(nouveau_fd != -1);
+-		igt_require(intel_fd != -1);
+-
+-		/* set up intel bufmgr */
+-		bufmgr = drm_intel_bufmgr_gem_init(intel_fd, 4096);
+-		igt_assert(bufmgr);
+-		/* Do not enable reuse, we share (almost) all buffers. */
+-		//drm_intel_bufmgr_gem_enable_reuse(bufmgr);
+-
+-		/* set up nouveau bufmgr */
+-		igt_assert(nouveau_device_wrap(nouveau_fd, 0, &ndev) == 0);
+-		igt_assert(nouveau_client_new(ndev, &nclient) == 0);
+-
+-		/* set up an intel batch buffer */
+-		devid = intel_get_drm_devid(intel_fd);
+-		intel_batch = intel_batchbuffer_alloc(bufmgr, devid);
 -	}
 -
--	drm_intel_gem_bo_unmap_gtt(src_bo);
-+	gem_munmap(data, size);
- 
- 	/* Render the junk to the dst. */
--	BLIT_COPY_BATCH_START(0);
--	OUT_BATCH((3 << 24) | /* 32 bits */
-+	bb = gem_mmap__device_coherent(i915, bb_handle, 0, bb_size, PROT_WRITE);
-+	i = 0;
-+	bb[i++] = XY_SRC_COPY_BLT_CMD |
-+		  XY_SRC_COPY_BLT_WRITE_ALPHA |
-+		  XY_SRC_COPY_BLT_WRITE_RGB |
-+		  (6 + 2*(gen >= 8));
-+	bb[i++] = (3 << 24) | /* 32 bits */
- 		  (0xcc << 16) | /* copy ROP */
--		  (width * 4) /* dst pitch */);
--	OUT_BATCH(0); /* dst x1,y1 */
--	OUT_BATCH((height << 16) | width); /* dst x2,y2 */
--	OUT_RELOC(dst_bo, I915_GEM_DOMAIN_RENDER, I915_GEM_DOMAIN_RENDER, 0);
--	OUT_BATCH(0); /* src x1,y1 */
--	OUT_BATCH(width * 4); /* src pitch */
--	OUT_RELOC(src_bo, I915_GEM_DOMAIN_RENDER, 0, 0);
--	ADVANCE_BATCH();
+-#define xtest(name) \
+-	igt_subtest(#name) \
+-		test_##name();
 -
--	intel_batchbuffer_flush(batch);
+-	xtest(i915_nv_sharing);
+-	xtest(nv_i915_sharing);
+-	xtest(nv_write_i915_cpu_mmap_read);
+-	xtest(nv_write_i915_gtt_mmap_read);
+-	xtest(i915_import_cpu_mmap);
+-	xtest(i915_import_gtt_mmap);
+-	xtest(i915_import_pread_pwrite);
+-	xtest(i915_blt_fill_nv_read);
 -
--	drm_intel_bo_unreference(src_bo);
-+		  (OBJECT_WIDTH * 4) /* dst pitch */;
-+	bb[i++] = 0; /* dst x1,y1 */
-+	bb[i++] = (OBJECT_HEIGHT << 16) | OBJECT_WIDTH; /* dst x2,y2 */
-+
-+	obj[0].handle = dst_handle;
-+	obj[0].offset = dst_handle * size;
-+	reloc[0].target_handle = dst_handle;
-+	reloc[0].presumed_offset = obj[0].offset;
-+	reloc[0].offset = sizeof(uint32_t) * i;
-+	reloc[0].read_domains = I915_GEM_DOMAIN_RENDER;
-+	reloc[0].write_domain = I915_GEM_DOMAIN_RENDER;
-+	bb[i++] = obj[0].offset;
-+	if (has_64b_reloc)
-+		bb[i++] = obj[0].offset >> 32;
-+
-+	bb[i++] = 0; /* src x1,y1 */
-+	bb[i++] = OBJECT_WIDTH * 4; /* src pitch */
-+
-+	obj[1].handle = src_handle;
-+	obj[1].offset = src_handle * size;
-+	reloc[1].target_handle = src_handle;
-+	reloc[1].presumed_offset = obj[1].offset;
-+	reloc[1].offset = sizeof(uint32_t) * i;
-+	reloc[1].read_domains = I915_GEM_DOMAIN_RENDER;
-+	reloc[1].write_domain = 0;
-+	bb[i++] = obj[1].offset;
-+	if (has_64b_reloc)
-+		bb[i++] = obj[1].offset >> 32;
-+
-+	obj[2].handle = bb_handle;
-+	obj[2].relocs_ptr = to_user_pointer(reloc);
-+	obj[2].relocation_count = 2;
-+
-+	bb[i++] = MI_BATCH_BUFFER_END;
-+	gem_munmap(bb, bb_size);
-+
-+	exec.buffers_ptr = to_user_pointer(obj);
-+	exec.buffer_count = 3;
-+	exec.flags = gen >= 6 ? I915_EXEC_BLT : 0 | I915_EXEC_NO_RELOC;
-+
-+	gem_execbuf(i915, &exec);
- }
- 
- int main(int argc, char **argv)
- {
--	int fd;
--	int object_size = OBJECT_WIDTH * OBJECT_HEIGHT * 4;
- 	double start_time, end_time;
--	drm_intel_bo *dst_bo;
--	drm_intel_bufmgr *bufmgr;
--	struct intel_batchbuffer *batch;
--	int i;
+-	igt_fixture {
+-		intel_batchbuffer_free(intel_batch);
 -
--	fd = drm_open_driver(DRIVER_INTEL);
-+	uint32_t dst_handle;
-+	int i915, i;
- 
--	bufmgr = drm_intel_bufmgr_gem_init(fd, 4096);
--	drm_intel_bufmgr_gem_enable_reuse(bufmgr);
+-		nouveau_device_del(&ndev);
+-		drm_intel_bufmgr_destroy(bufmgr);
 -
--	batch = intel_batchbuffer_alloc(bufmgr, intel_get_drm_devid(fd));
--
--	dst_bo = drm_intel_bo_alloc(bufmgr, "dst", object_size, 4096);
-+	i915 = drm_open_driver(DRIVER_INTEL);
-+	dst_handle = gem_create(i915, OBJECT_WIDTH * OBJECT_HEIGHT * 4);
- 
- 	/* Prep loop to get us warmed up. */
--	for (i = 0; i < 60; i++) {
--		do_render(bufmgr, batch, dst_bo, OBJECT_WIDTH, OBJECT_HEIGHT);
+-		close(intel_fd);
+-		close(nouveau_fd);
 -	}
--	drm_intel_bo_wait_rendering(dst_bo);
-+	for (i = 0; i < 60; i++)
-+		do_render(i915, dst_handle);
-+	gem_sync(i915, dst_handle);
- 
- 	/* Do the actual timing. */
- 	start_time = get_time_in_secs();
--	for (i = 0; i < 200; i++) {
--		do_render(bufmgr, batch, dst_bo, OBJECT_WIDTH, OBJECT_HEIGHT);
--	}
--	drm_intel_bo_wait_rendering(dst_bo);
-+	for (i = 0; i < 200; i++)
-+		do_render(i915, dst_handle);
-+	gem_sync(i915, dst_handle);
-+
- 	end_time = get_time_in_secs();
- 
- 	printf("%d iterations in %.03f secs: %.01f MB/sec\n", i,
-@@ -144,10 +169,5 @@ int main(int argc, char **argv)
- 	       (double)i * OBJECT_WIDTH * OBJECT_HEIGHT * 4 / 1024.0 / 1024.0 /
- 	       (end_time - start_time));
- 
--	intel_batchbuffer_free(batch);
--	drm_intel_bufmgr_destroy(bufmgr);
--
--	close(fd);
--
--	return 0;
-+	close(i915);
- }
-diff --git a/benchmarks/intel_upload_blit_large_map.c b/benchmarks/intel_upload_blit_large_map.c
-index ae05434f26..6d3cd748cf 100644
---- a/benchmarks/intel_upload_blit_large_map.c
-+++ b/benchmarks/intel_upload_blit_large_map.c
-@@ -48,6 +48,7 @@
-  */
- 
- #include "igt.h"
-+#include "i915/gem_create.h"
- #include <stdlib.h>
- #include <stdio.h>
- #include <string.h>
-@@ -72,74 +73,99 @@ get_time_in_secs(void)
- }
- 
- static void
--do_render(drm_intel_bufmgr *bufmgr, struct intel_batchbuffer *batch,
--	  drm_intel_bo *dst_bo, int width, int height)
-+do_render(int i915, uint32_t dst_handle)
- {
--	uint32_t *data;
--	drm_intel_bo *src_bo;
--	int i;
-+	struct drm_i915_gem_execbuffer2 exec = {};
-+	struct drm_i915_gem_exec_object2 obj[3] = {};
-+	struct drm_i915_gem_relocation_entry reloc[2];
- 	static uint32_t seed = 1;
-+	uint64_t size = OBJECT_WIDTH * OBJECT_HEIGHT * 4, bb_size = 4096;
-+	uint32_t *data, src_handle, bb_handle, *bb;
-+	uint32_t gen = intel_gen(intel_get_drm_devid(i915));
-+	const bool has_64b_reloc = gen >= 8;
-+	int i;
- 
--	src_bo = drm_intel_bo_alloc(bufmgr, "src", width * height * 4, 4096);
--
--	drm_intel_bo_map(src_bo, 1);
-+	bb_handle = gem_create_from_pool(i915, &bb_size, REGION_SMEM);
-+	src_handle = gem_create_from_pool(i915, &size, REGION_SMEM);
- 
--	data = src_bo->virtual;
--	for (i = 0; i < width * height; i++) {
-+	data = gem_mmap__cpu(i915, src_handle, 0, size, PROT_WRITE);
-+	for (i = 0; i < OBJECT_WIDTH * OBJECT_HEIGHT; i++)
- 		data[i] = seed++;
--	}
--
--	drm_intel_bo_unmap(src_bo);
-+	gem_set_domain(i915, src_handle, I915_GEM_DOMAIN_CPU, 0);
-+	gem_munmap(data, size);
- 
- 	/* Render the junk to the dst. */
--	BLIT_COPY_BATCH_START(0);
--	OUT_BATCH((3 << 24) | /* 32 bits */
-+	bb = gem_mmap__device_coherent(i915, bb_handle, 0, bb_size, PROT_WRITE);
-+	i = 0;
-+	bb[i++] = XY_SRC_COPY_BLT_CMD |
-+		  XY_SRC_COPY_BLT_WRITE_ALPHA |
-+		  XY_SRC_COPY_BLT_WRITE_RGB |
-+		  (6 + 2*(gen >= 8));
-+	bb[i++] = (3 << 24) | /* 32 bits */
- 		  (0xcc << 16) | /* copy ROP */
--		  (width * 4) /* dst pitch */);
--	OUT_BATCH(0); /* dst x1,y1 */
--	OUT_BATCH((height << 16) | width); /* dst x2,y2 */
--	OUT_RELOC(dst_bo, I915_GEM_DOMAIN_RENDER, I915_GEM_DOMAIN_RENDER, 0);
--	OUT_BATCH(0); /* src x1,y1 */
--	OUT_BATCH(width * 4); /* src pitch */
--	OUT_RELOC(src_bo, I915_GEM_DOMAIN_RENDER, 0, 0);
--	ADVANCE_BATCH();
--
--	intel_batchbuffer_flush(batch);
--
--	drm_intel_bo_unreference(src_bo);
-+		  (OBJECT_WIDTH * 4) /* dst pitch */;
-+	bb[i++] = 0; /* dst x1,y1 */
-+	bb[i++] = (OBJECT_HEIGHT << 16) | OBJECT_WIDTH; /* dst x2,y2 */
-+
-+	obj[0].handle = dst_handle;
-+	obj[0].offset = dst_handle * size;
-+	reloc[0].target_handle = dst_handle;
-+	reloc[0].presumed_offset = obj[0].offset;
-+	reloc[0].offset = sizeof(uint32_t) * i;
-+	reloc[0].read_domains = I915_GEM_DOMAIN_RENDER;
-+	reloc[0].write_domain = I915_GEM_DOMAIN_RENDER;
-+	bb[i++] = obj[0].offset;
-+	if (has_64b_reloc)
-+		bb[i++] = obj[0].offset >> 32;
-+
-+	bb[i++] = 0; /* src x1,y1 */
-+	bb[i++] = OBJECT_WIDTH * 4; /* src pitch */
-+
-+	obj[1].handle = src_handle;
-+	obj[1].offset = src_handle * size;
-+	reloc[1].target_handle = src_handle;
-+	reloc[1].presumed_offset = obj[1].offset;
-+	reloc[1].offset = sizeof(uint32_t) * i;
-+	reloc[1].read_domains = I915_GEM_DOMAIN_RENDER;
-+	reloc[1].write_domain = 0;
-+	bb[i++] = obj[1].offset;
-+	if (has_64b_reloc)
-+		bb[i++] = obj[1].offset >> 32;
-+
-+	obj[2].handle = bb_handle;
-+	obj[2].relocs_ptr = to_user_pointer(reloc);
-+	obj[2].relocation_count = 2;
-+
-+	bb[i++] = MI_BATCH_BUFFER_END;
-+	gem_munmap(bb, bb_size);
-+
-+	exec.buffers_ptr = to_user_pointer(obj);
-+	exec.buffer_count = 3;
-+	exec.flags = gen >= 6 ? I915_EXEC_BLT : 0 | I915_EXEC_NO_RELOC;
-+
-+	gem_execbuf(i915, &exec);
- }
- 
- int main(int argc, char **argv)
- {
--	int fd;
--	int object_size = OBJECT_WIDTH * OBJECT_HEIGHT * 4;
- 	double start_time, end_time;
--	drm_intel_bo *dst_bo;
--	drm_intel_bufmgr *bufmgr;
--	struct intel_batchbuffer *batch;
--	int i;
--
--	fd = drm_open_driver(DRIVER_INTEL);
-+	uint32_t dst_handle;
-+	int i915, i;
- 
--	bufmgr = drm_intel_bufmgr_gem_init(fd, 4096);
--	drm_intel_bufmgr_gem_enable_reuse(bufmgr);
--
--	batch = intel_batchbuffer_alloc(bufmgr, intel_get_drm_devid(fd));
--
--	dst_bo = drm_intel_bo_alloc(bufmgr, "dst", object_size, 4096);
-+	i915 = drm_open_driver(DRIVER_INTEL);
-+	dst_handle = gem_create(i915, OBJECT_WIDTH * OBJECT_HEIGHT * 4);
- 
- 	/* Prep loop to get us warmed up. */
--	for (i = 0; i < 60; i++) {
--		do_render(bufmgr, batch, dst_bo, OBJECT_WIDTH, OBJECT_HEIGHT);
--	}
--	drm_intel_bo_wait_rendering(dst_bo);
-+	for (i = 0; i < 60; i++)
-+		do_render(i915, dst_handle);
-+	gem_sync(i915, dst_handle);
- 
- 	/* Do the actual timing. */
- 	start_time = get_time_in_secs();
--	for (i = 0; i < 200; i++) {
--		do_render(bufmgr, batch, dst_bo, OBJECT_WIDTH, OBJECT_HEIGHT);
--	}
--	drm_intel_bo_wait_rendering(dst_bo);
-+	for (i = 0; i < 200; i++)
-+		do_render(i915, dst_handle);
-+	gem_sync(i915, dst_handle);
-+
- 	end_time = get_time_in_secs();
- 
- 	printf("%d iterations in %.03f secs: %.01f MB/sec\n", i,
-@@ -147,10 +173,6 @@ int main(int argc, char **argv)
- 	       (double)i * OBJECT_WIDTH * OBJECT_HEIGHT * 4 / 1024.0 / 1024.0 /
- 	       (end_time - start_time));
- 
--	intel_batchbuffer_free(batch);
--	drm_intel_bufmgr_destroy(bufmgr);
--
--	close(fd);
--
--	return 0;
-+	close(i915);
- }
-+
-diff --git a/benchmarks/intel_upload_blit_small.c b/benchmarks/intel_upload_blit_small.c
-index 7e3346eb74..525d68e36a 100644
---- a/benchmarks/intel_upload_blit_small.c
-+++ b/benchmarks/intel_upload_blit_small.c
-@@ -41,6 +41,7 @@
-  */
- 
- #include "igt.h"
-+#include "i915/gem_create.h"
- #include <stdlib.h>
- #include <stdio.h>
- #include <string.h>
-@@ -66,21 +67,27 @@ get_time_in_secs(void)
- }
- 
- static void
--do_render(drm_intel_bufmgr *bufmgr, struct intel_batchbuffer *batch,
--	  drm_intel_bo *dst_bo, int width, int height)
-+do_render(int i915, uint32_t dst_handle)
- {
--	uint32_t data[64];
--	drm_intel_bo *src_bo;
--	int i;
-+	struct drm_i915_gem_execbuffer2 exec = {};
-+	struct drm_i915_gem_exec_object2 obj[3] = {};
-+	struct drm_i915_gem_relocation_entry reloc[2];
- 	static uint32_t seed = 1;
-+	uint32_t data[OBJECT_WIDTH * OBJECT_HEIGHT];
-+	uint64_t size = OBJECT_WIDTH * OBJECT_HEIGHT * 4, bb_size = 4096;
-+	uint32_t src_handle, bb_handle, *bb;
-+	uint32_t gen = intel_gen(intel_get_drm_devid(i915));
-+	const bool has_64b_reloc = gen >= 8;
-+	int i;
- 
--	src_bo = drm_intel_bo_alloc(bufmgr, "src", width * height * 4, 4096);
-+	bb_handle = gem_create_from_pool(i915, &bb_size, REGION_SMEM);
-+	src_handle = gem_create_from_pool(i915, &size, REGION_SMEM);
- 
- 	/* Upload some junk.  Real workloads would be doing a lot more
- 	 * work to generate the junk.
- 	 */
--	for (i = 0; i < width * height;) {
--		int size, j;
-+	for (i = 0; i < OBJECT_WIDTH * OBJECT_HEIGHT; i++) {
-+		int subsize, j;
- 
- 		/* Choose a size from 1 to 64 dwords to upload.
- 		 * Normal workloads have a distribution of sizes with a
-@@ -88,68 +95,92 @@ do_render(drm_intel_bufmgr *bufmgr, struct intel_batchbuffer *batch,
- 		 * pile of vertices, most likely), but I'm trying to get at
- 		 * the cost of the small uploads here.
- 		 */
--		size = random() % 64 + 1;
--		if (i + size > width * height)
--			size = width * height - i;
-+		subsize = random() % 64 + 1;
-+		if (i + subsize > OBJECT_WIDTH * OBJECT_HEIGHT)
-+			subsize = OBJECT_WIDTH * OBJECT_HEIGHT - i;
- 
--		for (j = 0; j < size; j++)
-+		for (j = 0; j < subsize; j++)
- 			data[j] = seed++;
- 
- 		/* Upload the junk. */
--		drm_intel_bo_subdata(src_bo, i * 4, size * 4, data);
-+		//drm_intel_bo_subdata(src_bo, i * 4, size * 4, data);
-+		gem_write(i915, src_handle, i * 4, data, subsize * 4);
- 
--		i += size;
-+		i += subsize;
- 	}
- 
- 	/* Render the junk to the dst. */
--	BLIT_COPY_BATCH_START(0);
--	OUT_BATCH((3 << 24) | /* 32 bits */
-+	bb = gem_mmap__device_coherent(i915, bb_handle, 0, bb_size, PROT_WRITE);
-+	i = 0;
-+	bb[i++] = XY_SRC_COPY_BLT_CMD |
-+		  XY_SRC_COPY_BLT_WRITE_ALPHA |
-+		  XY_SRC_COPY_BLT_WRITE_RGB |
-+		  (6 + 2*(gen >= 8));
-+	bb[i++] = (3 << 24) | /* 32 bits */
- 		  (0xcc << 16) | /* copy ROP */
--		  (width * 4) /* dst pitch */);
--	OUT_BATCH(0); /* dst x1,y1 */
--	OUT_BATCH((height << 16) | width); /* dst x2,y2 */
--	OUT_RELOC(dst_bo, I915_GEM_DOMAIN_RENDER, I915_GEM_DOMAIN_RENDER, 0);
--	OUT_BATCH(0); /* src x1,y1 */
--	OUT_BATCH(width * 4); /* src pitch */
--	OUT_RELOC(src_bo, I915_GEM_DOMAIN_RENDER, 0, 0);
--	ADVANCE_BATCH();
--
--	intel_batchbuffer_flush(batch);
--
--	drm_intel_bo_unreference(src_bo);
-+		  (OBJECT_WIDTH * 4) /* dst pitch */;
-+	bb[i++] = 0; /* dst x1,y1 */
-+	bb[i++] = (OBJECT_HEIGHT << 16) | OBJECT_WIDTH; /* dst x2,y2 */
-+
-+	obj[0].handle = dst_handle;
-+	obj[0].offset = dst_handle * size;
-+	reloc[0].target_handle = dst_handle;
-+	reloc[0].presumed_offset = obj[0].offset;
-+	reloc[0].offset = sizeof(uint32_t) * i;
-+	reloc[0].read_domains = I915_GEM_DOMAIN_RENDER;
-+	reloc[0].write_domain = I915_GEM_DOMAIN_RENDER;
-+	bb[i++] = obj[0].offset;
-+	if (has_64b_reloc)
-+		bb[i++] = obj[0].offset >> 32;
-+
-+	bb[i++] = 0; /* src x1,y1 */
-+	bb[i++] = OBJECT_WIDTH * 4; /* src pitch */
-+
-+	obj[1].handle = src_handle;
-+	obj[1].offset = src_handle * size;
-+	reloc[1].target_handle = src_handle;
-+	reloc[1].presumed_offset = obj[1].offset;
-+	reloc[1].offset = sizeof(uint32_t) * i;
-+	reloc[1].read_domains = I915_GEM_DOMAIN_RENDER;
-+	reloc[1].write_domain = 0;
-+	bb[i++] = obj[1].offset;
-+	if (has_64b_reloc)
-+		bb[i++] = obj[1].offset >> 32;
-+
-+	obj[2].handle = bb_handle;
-+	obj[2].relocs_ptr = to_user_pointer(reloc);
-+	obj[2].relocation_count = 2;
-+
-+	bb[i++] = MI_BATCH_BUFFER_END;
-+	gem_munmap(bb, bb_size);
-+
-+	exec.buffers_ptr = to_user_pointer(obj);
-+	exec.buffer_count = 3;
-+	exec.flags = gen >= 6 ? I915_EXEC_BLT : 0 | I915_EXEC_NO_RELOC;
-+
-+	gem_execbuf(i915, &exec);
- }
- 
- int main(int argc, char **argv)
- {
--	int fd;
--	int object_size = OBJECT_WIDTH * OBJECT_HEIGHT * 4;
- 	double start_time, end_time;
--	drm_intel_bo *dst_bo;
--	drm_intel_bufmgr *bufmgr;
--	struct intel_batchbuffer *batch;
--	int i;
--
--	fd = drm_open_driver(DRIVER_INTEL);
--
--	bufmgr = drm_intel_bufmgr_gem_init(fd, 4096);
--	drm_intel_bufmgr_gem_enable_reuse(bufmgr);
--
--	batch = intel_batchbuffer_alloc(bufmgr, intel_get_drm_devid(fd));
-+	uint32_t dst_handle;
-+	int i915, i;
- 
--	dst_bo = drm_intel_bo_alloc(bufmgr, "dst", object_size, 4096);
-+	i915 = drm_open_driver(DRIVER_INTEL);
-+	dst_handle = gem_create(i915, OBJECT_WIDTH * OBJECT_HEIGHT * 4);
- 
- 	/* Prep loop to get us warmed up. */
--	for (i = 0; i < 20; i++) {
--		do_render(bufmgr, batch, dst_bo, OBJECT_WIDTH, OBJECT_HEIGHT);
--	}
--	drm_intel_bo_wait_rendering(dst_bo);
-+	for (i = 0; i < 60; i++)
-+		do_render(i915, dst_handle);
-+	gem_sync(i915, dst_handle);
- 
- 	/* Do the actual timing. */
- 	start_time = get_time_in_secs();
--	for (i = 0; i < 1000; i++) {
--		do_render(bufmgr, batch, dst_bo, OBJECT_WIDTH, OBJECT_HEIGHT);
--	}
--	drm_intel_bo_wait_rendering(dst_bo);
-+	for (i = 0; i < 1000; i++)
-+		do_render(i915, dst_handle);
-+	gem_sync(i915, dst_handle);
-+
- 	end_time = get_time_in_secs();
- 
- 	printf("%d iterations in %.03f secs: %.01f MB/sec\n", i,
-@@ -157,10 +188,6 @@ int main(int argc, char **argv)
- 	       (double)i * OBJECT_WIDTH * OBJECT_HEIGHT * 4 / 1024.0 / 1024.0 /
- 	       (end_time - start_time));
- 
--	intel_batchbuffer_free(batch);
--	drm_intel_bufmgr_destroy(bufmgr);
--
--	close(fd);
--
--	return 0;
-+	close(i915);
- }
-+
+-}
 -- 
 2.34.1
