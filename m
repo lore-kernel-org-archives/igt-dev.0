@@ -1,16 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Message-ID: <ef633c97-64e1-b39e-3e15-4368799922a4@intel.com>
-Date: Tue, 22 Nov 2022 08:22:37 +0100
+Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8157788D18
+ for <igt-dev@lists.freedesktop.org>; Tue, 22 Nov 2022 08:19:12 +0000 (UTC)
+Date: Tue, 22 Nov 2022 09:18:51 +0100
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Message-ID: <Y3yF61JmDxBS7OQi@kamilkon-desk1>
+References: <20221117194639.481656-1-markyacoub@chromium.org>
+ <20221118163545.671778-1-markyacoub@chromium.org>
 MIME-Version: 1.0
-Content-Language: en-US
-To: igt-dev@lists.freedesktop.org, intel-gfx@lists.freedesktop.org
-References: <20221115072834.2115985-1-andrzej.hajda@intel.com>
-From: Andrzej Hajda <andrzej.hajda@intel.com>
-In-Reply-To: <20221115072834.2115985-1-andrzej.hajda@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Subject: Re: [igt-dev] [i-g-t] tests/kms_plane: skip memory demanding modes
- in test_plane_panning
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20221118163545.671778-1-markyacoub@chromium.org>
+Subject: Re: [igt-dev] [PATCH v2] Cv3 workaround: skip plug all at init
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,84 +20,50 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Chris Wilson <chris.p.wilson@intel.com>,
- Matthew Auld <matthew.auld@intel.com>
+Cc: markyacoub@google.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Gently ping.
+On 2022-11-18 at 11:35:45 -0500, Mark Yacoub wrote:
+> [Why]
+> Currently, Cv3 doesn't allow all ports to be plugged in at the same time
+> so chamelium_plug_all() always fails.
+> 
+> [How]
+> Check for the first Port ID as it's unique between V2 and V3, and skip
+> the plugging if it's V3.
+> 
+> Signed-off-by: Mark Yacoub <markyacoub@chromium.org>
 
-Regards
-Andrzej
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
-On 15.11.2022 08:28, Andrzej Hajda wrote:
-> test_plane_panning requires about 10 times bigger amount of memory than
-> memory required by framebuffer in default display mode. In case of some
-> configurations it can exceed available memory (4k modes on small-bar
-> systems), causing test aborts.
->
-> Closes: https://gitlab.freedesktop.org/drm/intel/-/issues/6824
-> Signed-off-by: Andrzej Hajda <andrzej.hajda@intel.com>
 > ---
->   tests/kms_plane.c | 28 +++++++++++++++++++++++++---
->   1 file changed, 25 insertions(+), 3 deletions(-)
->
-> diff --git a/tests/kms_plane.c b/tests/kms_plane.c
-> index 8a54ba6645c..fc530d2cfd3 100644
-> --- a/tests/kms_plane.c
-> +++ b/tests/kms_plane.c
-> @@ -342,14 +342,14 @@ test_plane_panning_with_output(data_t *data,
->   	drmModeModeInfo *mode;
->   	igt_crc_t crc;
->   
-> -	igt_info("Testing connector %s using pipe %s\n",
-> -		 igt_output_name(output), kmstest_pipe_name(pipe));
-> -
->   	igt_output_set_pipe(output, pipe);
->   
->   	mode = igt_output_get_mode(output);
->   	primary = igt_output_get_plane(output, 0);
->   
-> +	igt_info("Testing connector %s using pipe %s, mode %s\n",
-> +		 igt_output_name(output), kmstest_pipe_name(pipe), mode->name);
-> +
->   	create_fb_for_mode_panning(data, mode, &primary_fb);
->   	igt_plane_set_fb(primary, &primary_fb);
->   
-> @@ -381,6 +381,8 @@ test_plane_panning_with_output(data_t *data,
->   static void
->   test_plane_panning(data_t *data, enum pipe pipe)
->   {
-> +	bool mode_found = false;
-> +	uint64_t mem_size = 0;
->   	igt_output_t *output;
->   	igt_crc_t ref_crc;
->   
-> @@ -389,6 +391,26 @@ test_plane_panning(data_t *data, enum pipe pipe)
->   
->   	test_init(data, pipe);
->   
-> +	for_each_memory_region(r, data->drm_fd)
-> +		if (r->ci.memory_class == I915_MEMORY_CLASS_DEVICE)
-> +			mem_size = r->cpu_size;
-> +
-> +	for_each_connector_mode(output) {
-> +		drmModeModeInfo *m = &output->config.connector->modes[j__];
-> +		uint32_t fb_size = m->hdisplay * m->vdisplay * 4;
-> +
-> +		/* test allocates 2 double-dim fbs, add one more, to be safe */
-> +		if (mem_size && 3 * 4 * fb_size > mem_size) {
-> +			igt_debug("Skipping mode %s due to low memory\n", m->name);
-> +			continue;
-> +		}
-> +
-> +		igt_output_override_mode(output, m);
-> +		mode_found = true;
-> +		break;
+>  lib/igt_chamelium.c | 11 +++++++++++
+>  1 file changed, 11 insertions(+)
+> 
+> diff --git a/lib/igt_chamelium.c b/lib/igt_chamelium.c
+> index 68864bb8..79920de1 100644
+> --- a/lib/igt_chamelium.c
+> +++ b/lib/igt_chamelium.c
+> @@ -3019,6 +3019,17 @@ bool chamelium_plug_all(struct chamelium *chamelium)
+>  	if (port_count <= 0)
+>  		return false;
+>  
+> +	/*
+> +	 * A temporary workaround for Chamelium V3: Currently, Cv3 doesn't allow
+> +	 * all ports to be plugged in at the same time. Cv3 first port has an ID
+> +	 * of 0 while Cv2 has first port ID as 1.
+> +	 * TODO(markyacoub): Remove this workaround when V3 is fixed.
+> +	 */
+> +	if (port_ids[0] == 0) {
+> +		igt_debug("This should be Cv3. Skipping plugging all ports\n");
+> +		return true;
 > +	}
-> +	igt_require(mode_found);
 > +
->   	if (data->flags & TEST_PANNING_TOP_LEFT)
->   		test_grab_crc(data, output, pipe, &red, data->flags, &ref_crc);
->   	else
+>  	for (int i = 0; i < port_count; ++i) {
+>  		v = __chamelium_rpc(chamelium, NULL, "Plug", "(i)", port_ids[i]);
+>  
+> -- 
+> 2.38.1.584.g0f3c55d4c2-goog
+> 
