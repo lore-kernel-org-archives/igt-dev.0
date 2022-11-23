@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5226810E638
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7A55F10E63C
  for <igt-dev@lists.freedesktop.org>; Wed, 23 Nov 2022 21:18:34 +0000 (UTC)
 From: Ashutosh Dixit <ashutosh.dixit@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Wed, 23 Nov 2022 13:18:29 -0800
-Message-Id: <20221123211830.630263-2-ashutosh.dixit@intel.com>
+Date: Wed, 23 Nov 2022 13:18:30 -0800
+Message-Id: <20221123211830.630263-3-ashutosh.dixit@intel.com>
 In-Reply-To: <20221123211830.630263-1-ashutosh.dixit@intel.com>
 References: <20221123211830.630263-1-ashutosh.dixit@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 1/2] tests/perf_pmu: Compare against
- requested freq in frequency subtest
+Subject: [igt-dev] [PATCH i-g-t 2/2] tests/gem_ctx_freq: Compare against
+ requested freq
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,105 +28,83 @@ actual freq's can differ from the min/max freq set. For example "efficient
 freq" (when in effect) can override set min/max freq. In general FW is the
 final arbiter in determining freq and can override set values.
 
-Therefore in igt@perf_pmu@frequency subtest, compare the requested freq
-reported by PMU not against the set freq's but against the requested freq
-reported in sysfs. Also add a delay after setting freq's to account for
-messaging delays in setting freq's in GuC.
+Therefore compare the requested freq reported by PMU not against the set
+freq's but against the requested freq reported in sysfs. Also add a delay
+after setting freq's to account for messaging delays in setting freq's in
+GuC.
 
-Bug: https://gitlab.freedesktop.org/drm/intel/-/issues/6806
+Bug: https://gitlab.freedesktop.org/drm/intel/-/issues/6786
 Cc: Vinay Belgaumkar <vinay.belgaumkar@intel.com>
 Cc: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
 Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
 ---
- tests/i915/perf_pmu.c | 23 +++++++++++++++--------
- 1 file changed, 15 insertions(+), 8 deletions(-)
+ tests/i915/gem_ctx_freq.c | 19 ++++++++++++-------
+ 1 file changed, 12 insertions(+), 7 deletions(-)
 
-diff --git a/tests/i915/perf_pmu.c b/tests/i915/perf_pmu.c
-index f363db2ba13..02f6ae989b1 100644
---- a/tests/i915/perf_pmu.c
-+++ b/tests/i915/perf_pmu.c
-@@ -1543,10 +1543,13 @@ test_interrupts_sync(int gem_fd)
- 	igt_assert_lte(target, busy);
+diff --git a/tests/i915/gem_ctx_freq.c b/tests/i915/gem_ctx_freq.c
+index a29fe68b72e..cc2e0505a41 100644
+--- a/tests/i915/gem_ctx_freq.c
++++ b/tests/i915/gem_ctx_freq.c
+@@ -104,23 +104,28 @@ static void triangle_fill(uint32_t *t, unsigned int nstep,
+ 	}
  }
  
 +/* Wait for GuC SLPC freq changes to take effect */
 +#define wait_freq_set()		usleep(100000)
 +
- static void
- test_frequency(int gem_fd)
+ static void set_sysfs_freq(uint32_t min, uint32_t max)
  {
--	uint32_t min_freq, max_freq, boost_freq;
-+	uint32_t min_freq, max_freq, boost_freq, min_req, max_req;
- 	uint64_t val[2], start[2], slept;
- 	double min[2], max[2];
- 	igt_spin_t *spin;
-@@ -1572,10 +1575,11 @@ test_frequency(int gem_fd)
- 	 * Set GPU to min frequency and read PMU counters.
- 	 */
- 	igt_require(igt_sysfs_set_u32(sysfs, "gt_min_freq_mhz", min_freq));
--	igt_require(igt_sysfs_get_u32(sysfs, "gt_min_freq_mhz") == min_freq);
- 	igt_require(igt_sysfs_set_u32(sysfs, "gt_max_freq_mhz", min_freq));
--	igt_require(igt_sysfs_get_u32(sysfs, "gt_max_freq_mhz") == min_freq);
- 	igt_require(igt_sysfs_set_u32(sysfs, "gt_boost_freq_mhz", min_freq));
+ 	igt_sysfs_printf(sysfs, "gt_min_freq_mhz", "%u", min);
+ 	igt_sysfs_printf(sysfs, "gt_max_freq_mhz", "%u", max);
 +	wait_freq_set();
-+	igt_require(igt_sysfs_get_u32(sysfs, "gt_min_freq_mhz") == min_freq);
-+	igt_require(igt_sysfs_get_u32(sysfs, "gt_max_freq_mhz") == min_freq);
- 	igt_require(igt_sysfs_get_u32(sysfs, "gt_boost_freq_mhz") == min_freq);
- 
- 	gem_quiescent_gpu(gem_fd); /* Idle to be sure the change takes effect */
-@@ -1587,6 +1591,7 @@ test_frequency(int gem_fd)
- 
- 	min[0] = 1e9*(val[0] - start[0]) / slept;
- 	min[1] = 1e9*(val[1] - start[1]) / slept;
-+	min_req = igt_sysfs_get_u32(sysfs, "gt_cur_freq_mhz");
- 
- 	igt_spin_free(gem_fd, spin);
- 	gem_quiescent_gpu(gem_fd); /* Don't leak busy bo into the next phase */
-@@ -1597,11 +1602,11 @@ test_frequency(int gem_fd)
- 	 * Set GPU to max frequency and read PMU counters.
- 	 */
- 	igt_require(igt_sysfs_set_u32(sysfs, "gt_max_freq_mhz", max_freq));
--	igt_require(igt_sysfs_get_u32(sysfs, "gt_max_freq_mhz") == max_freq);
- 	igt_require(igt_sysfs_set_u32(sysfs, "gt_boost_freq_mhz", boost_freq));
--	igt_require(igt_sysfs_get_u32(sysfs, "gt_boost_freq_mhz") == boost_freq);
--
- 	igt_require(igt_sysfs_set_u32(sysfs, "gt_min_freq_mhz", max_freq));
-+	wait_freq_set();
-+	igt_require(igt_sysfs_get_u32(sysfs, "gt_max_freq_mhz") == max_freq);
-+	igt_require(igt_sysfs_get_u32(sysfs, "gt_boost_freq_mhz") == boost_freq);
- 	igt_require(igt_sysfs_get_u32(sysfs, "gt_min_freq_mhz") == max_freq);
- 
- 	gem_quiescent_gpu(gem_fd);
-@@ -1613,6 +1618,7 @@ test_frequency(int gem_fd)
- 
- 	max[0] = 1e9*(val[0] - start[0]) / slept;
- 	max[1] = 1e9*(val[1] - start[1]) / slept;
-+	max_req = igt_sysfs_get_u32(sysfs, "gt_cur_freq_mhz");
- 
- 	igt_spin_free(gem_fd, spin);
- 	gem_quiescent_gpu(gem_fd);
-@@ -1621,6 +1627,7 @@ test_frequency(int gem_fd)
- 	 * Restore min/max.
- 	 */
- 	igt_sysfs_set_u32(sysfs, "gt_min_freq_mhz", min_freq);
-+	wait_freq_set();
- 	if (igt_sysfs_get_u32(sysfs, "gt_min_freq_mhz") != min_freq)
- 		igt_warn("Unable to restore min frequency to saved value [%u MHz], now %u MHz\n",
- 			 min_freq, igt_sysfs_get_u32(sysfs, "gt_min_freq_mhz"));
-@@ -1633,12 +1640,12 @@ test_frequency(int gem_fd)
- 	igt_info("Max frequency: requested %.1f, actual %.1f\n",
- 		 max[0], max[1]);
- 
--	assert_within_epsilon(min[0], min_freq, tolerance);
-+	assert_within_epsilon(min[0], min_req, tolerance);
- 	/*
- 	 * On thermally throttled devices we cannot be sure maximum frequency
- 	 * can be reached so use larger tolerance downards.
- 	 */
--	__assert_within_epsilon(max[0], max_freq, tolerance, 0.15f);
-+	__assert_within_epsilon(max[0], max_req, tolerance, 0.15f);
  }
  
- static void
+-static bool get_sysfs_freq(uint32_t *min, uint32_t *max)
++static bool get_sysfs_freq(uint32_t *min, uint32_t *max, uint32_t *req)
+ {
+ 	return (igt_sysfs_scanf(sysfs, "gt_min_freq_mhz", "%u", min) == 1 &&
+-		igt_sysfs_scanf(sysfs, "gt_max_freq_mhz", "%u", max) == 1);
++		igt_sysfs_scanf(sysfs, "gt_max_freq_mhz", "%u", max) == 1 &&
++		igt_sysfs_scanf(sysfs, "gt_cur_freq_mhz", "%u", req) == 1);
+ }
+ 
+ static void sysfs_range(int i915)
+ {
+ #define N_STEPS 10
+ 	uint32_t frequencies[TRIANGLE_SIZE(N_STEPS)];
+-	uint32_t sys_min, sys_max;
++	uint32_t sys_min, sys_max, req;
+ 	igt_spin_t *spin;
+ 	double measured;
+ 	int pmu;
+@@ -133,7 +138,7 @@ static void sysfs_range(int i915)
+ 	 * constriained sysfs range.
+ 	 */
+ 
+-	igt_require(get_sysfs_freq(&sys_min, &sys_max));
++	igt_require(get_sysfs_freq(&sys_min, &sys_max, &req));
+ 	igt_info("System min freq: %dMHz; max freq: %dMHz\n", sys_min, sys_max);
+ 
+ 	triangle_fill(frequencies, N_STEPS, sys_min, sys_max);
+@@ -150,7 +155,7 @@ static void sysfs_range(int i915)
+ 		usleep(10000);
+ 
+ 		set_sysfs_freq(sys_freq, sys_freq);
+-		get_sysfs_freq(&cur, &discard);
++		get_sysfs_freq(&cur, &discard, &req);
+ 
+ 		measured = measure_frequency(pmu, SAMPLE_PERIOD);
+ 		igt_debugfs_dump(i915, "i915_rps_boost_info");
+@@ -159,8 +164,8 @@ static void sysfs_range(int i915)
+ 		__igt_spin_free_idle(i915, spin);
+ 
+ 		igt_info("sysfs: Measured %.1fMHz, expected %dMhz\n",
+-			 measured, cur);
+-		pmu_assert(measured, cur);
++			 measured, req);
++		pmu_assert(measured, req);
+ 	}
+ 	gem_quiescent_gpu(i915);
+ 
 -- 
 2.38.0
