@@ -1,18 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 59A0710E22E
- for <igt-dev@lists.freedesktop.org>; Wed, 23 Nov 2022 11:46:55 +0000 (UTC)
-Date: Wed, 23 Nov 2022 12:46:51 +0100
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B18E310E3E8
+ for <igt-dev@lists.freedesktop.org>; Wed, 23 Nov 2022 12:55:50 +0000 (UTC)
+Date: Wed, 23 Nov 2022 13:55:45 +0100
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Message-ID: <Y34IK0CfztnHIXks@kamilkon-desk1>
-References: <20221117225907.793-1-99danilt@gmail.com>
+Message-ID: <Y34YUQhiKL9se16+@kamilkon-desk1>
+References: <20221116082335.1194410-1-anshuman.gupta@intel.com>
+ <20221116082335.1194410-2-anshuman.gupta@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20221117225907.793-1-99danilt@gmail.com>
-Subject: Re: [igt-dev] [PATCH v1] tools/intel_gtt: stop confusing GTT and
- BAR sizes
+In-Reply-To: <20221116082335.1194410-2-anshuman.gupta@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t v2 1/3] lib/igt_pm: Refactor get
+ firmware_node fd
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,128 +21,100 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Daniil Tatianin <99danilt@gmail.com>
+Cc: badal.nilawar@intel.com, rodrigo.vivi@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Daniil,
+Hi,
 
-On 2022-11-18 at 01:59:07 +0300, Daniil Tatianin wrote:
-> The GTT iteration loop would erroneously check "< gtt_size" as an
-> indicator for when it should stop, which would make it exit the loop
-> right after dumping 2-8 mib of address space depending on the
-> GPU generation.
+On 2022-11-16 at 13:53:33 +0530, Anshuman Gupta wrote:
+> Created igt_pm_open_pci_firmware_node() to refactor
+> the retrieving the firmware_node fd code.
 > 
-> Calculate the actual size of GTT in 'gtt_max_addr', and rewrite the
-> iteration loop to use it. While at it, also make virtual addresses
-> 64-bit so that they don't wrap around at the 4GiB mark.
+> igt_pm_open_pci_firmware_node() will be used by other
+> firmware_node consumers.
 > 
-> Signed-off-by: Daniil Tatianin <99danilt@gmail.com>
-
-There is only one concern - this programm assumes 4KB page size
-and uses unsigned instead of unsigned int (or uint64_t).
-
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-
+> While doing that fixed the leaked fd as well.
+> 
+> v2:
+> - return false instead of igt_require on no firmware_node_fd. [Kamil]
+> - use igt_assert() when failed to open 'real_power_state' on error
+>   other then ENONET.
+> 
+> Signed-off-by: Anshuman Gupta <anshuman.gupta@intel.com>
+> Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
 > ---
->  tools/intel_gtt.c | 32 ++++++++++++++++++--------------
->  1 file changed, 18 insertions(+), 14 deletions(-)
+>  lib/igt_pm.c | 36 +++++++++++++++++++++++++-----------
+>  1 file changed, 25 insertions(+), 11 deletions(-)
 > 
-> diff --git a/tools/intel_gtt.c b/tools/intel_gtt.c
-> index 311694ba..c0f3d16a 100644
-> --- a/tools/intel_gtt.c
-> +++ b/tools/intel_gtt.c
-> @@ -96,6 +96,11 @@ static uint64_t get_phys(uint32_t pt_offset)
->  	return (phys | pae) & ~0xfff;
+> diff --git a/lib/igt_pm.c b/lib/igt_pm.c
+> index 1e6e9ed3ff..4f0cfbdd10 100644
+> --- a/lib/igt_pm.c
+> +++ b/lib/igt_pm.c
+> @@ -863,6 +863,20 @@ bool i915_output_is_lpsp_capable(int drm_fd, igt_output_t *output)
+>  	return strstr(buf, "LPSP: capable");
 >  }
-> 
-> +static int get_pte_size(void)
+>  
+> +static int igt_pm_open_pci_firmware_node(struct pci_device *pci_dev)
 > +{
-> +	return intel_gen(devid) < 8 ? 4 : 8;
+> +	char name[PATH_MAX];
+> +	int dir;
+> +
+> +	snprintf(name, PATH_MAX,
+> +		 "/sys/bus/pci/devices/%04x:%02x:%02x.%01x/firmware_node",
+> +		 pci_dev->domain, pci_dev->bus, pci_dev->dev, pci_dev->func);
+> +
+> +	dir = open(name, O_RDONLY);
+> +
+> +	return dir;
 > +}
 > +
->  static void pte_dump(int size, uint32_t offset) {
->  	int pte_size;
->  	int entries;
-> @@ -105,11 +110,7 @@ static void pte_dump(int size, uint32_t offset) {
->  	if (size % 16)
->  		size = (size + 16) & ~0xffff;
-> 
-> -	if (intel_gen(devid) < 8)
-> -		pte_size = 4;
-> -	else
-> -		pte_size = 8;
-> -
-> +	pte_size = get_pte_size();
->  	entries = size / pte_size;
-> 
->  	printf("GTT offset   |                 %d PTEs (%d MB)\n", entries,
-> @@ -139,7 +140,8 @@ static void pte_dump(int size, uint32_t offset) {
->  int main(int argc, char **argv)
+>  /**
+>   * igt_pm_acpi_d3cold_supported:
+>   * @pci_dev: root port pci_dev.
+> @@ -873,23 +887,23 @@ bool i915_output_is_lpsp_capable(int drm_fd, igt_output_t *output)
+>   */
+>  bool igt_pm_acpi_d3cold_supported(struct pci_device *pci_dev)
 >  {
->  	struct pci_device *pci_dev;
-> -	unsigned int start, gtt_size;
-> +	unsigned gtt_size;
-> +	uint64_t start, gtt_max_addr;
->  	int flag[] = {
->  		PCI_DEV_MAP_FLAG_WRITE_COMBINE,
->  		PCI_DEV_MAP_FLAG_WRITABLE,
-> @@ -190,14 +192,15 @@ int main(int argc, char **argv)
->  		return 0;
->  	}
-> 
-> -	for (start = 0; start < gtt_size; start += KB(4)) {
-> -		uint64_t start_phys = get_phys(start);
-> -		uint32_t end;
-> +	gtt_max_addr = (gtt_size / get_pte_size()) * KB(4ull);
-> +
-> +	for (start = 0; start < gtt_max_addr; start += KB(4)) {
-> +		uint64_t end, start_phys = get_phys(start);
->  		int constant_length = 0;
->  		int linear_length = 0;
-> 
->  		/* Check if it's a linear sequence */
-> -		for (end = start + KB(4); end < gtt_size; end += KB(4)) {
-> +		for (end = start + KB(4); end < gtt_max_addr; end += KB(4)) {
->  			uint64_t end_phys = get_phys(end);
->  			if (end_phys == start_phys + (end - start))
->  				linear_length++;
-> @@ -205,7 +208,7 @@ int main(int argc, char **argv)
->  				break;
->  		}
->  		if (linear_length > 0) {
-> -			printf("0x%08x - 0x%08x: linear from "
-> +			printf("0x%08" PRIx64 "- 0x%08" PRIx64 ": linear from "
->  			       "0x%" PRIx64 " to 0x%" PRIx64 "\n",
->  			       start, end - KB(4),
->  			       start_phys, start_phys + (end - start) - KB(4));
-> @@ -214,7 +217,7 @@ int main(int argc, char **argv)
->  		}
-> 
->  		/* Check if it's a constant sequence */
-> -		for (end = start + KB(4); end < gtt_size; end += KB(4)) {
-> +		for (end = start + KB(4); end < gtt_max_addr; end += KB(4)) {
->  			uint64_t end_phys = get_phys(end);
->  			if (end_phys == start_phys)
->  				constant_length++;
-> @@ -222,13 +225,14 @@ int main(int argc, char **argv)
->  				break;
->  		}
->  		if (constant_length > 0) {
-> -			printf("0x%08x - 0x%08x: constant 0x%" PRIx64 "\n",
-> +			printf("0x%08" PRIx64 " - 0x%08" PRIx64
-> +				": constant 0x%" PRIx64 "\n",
->  			       start, end - KB(4), start_phys);
->  			start = end - KB(4);
->  			continue;
->  		}
-> 
-> -		printf("0x%08x: 0x%" PRIx64 "\n", start, start_phys);
-> +		printf("0x%08" PRIx64 ": 0x%" PRIx64 "\n", start, start_phys);
->  	}
-> 
->  	return 0;
-> --
-> 2.36.1.windows.1
+> -	char name[PATH_MAX];
+> -	int dir, fd;
+> -
+> -	snprintf(name, PATH_MAX,
+> -		 "/sys/bus/pci/devices/%04x:%02x:%02x.%01x/firmware_node",
+> -		 pci_dev->domain, pci_dev->bus, pci_dev->dev, pci_dev->func);
+> +	int firmware_node_fd, fd;
+>  
+> -	dir = open(name, O_RDONLY);
+> -	igt_require(dir > 0);
+> +	firmware_node_fd = igt_pm_open_pci_firmware_node(pci_dev);
+> +	if (firmware_node_fd < 0)
+> +		return false;
+>  
+>  	/* BIOS need to enable ACPI D3Cold Support.*/
+> -	fd = openat(dir, "real_power_state", O_RDONLY);
+> -	if (fd < 0 && errno == ENOENT)
+> +	fd = openat(firmware_node_fd, "real_power_state", O_RDONLY);
+> +	if (fd < 0 && errno == ENOENT) {
+> +		close(firmware_node_fd);
+>  		return false;
+> +	}
+>  
+> -	igt_require(fd > 0);
+> +	igt_assert(errno > 0);
+------------------------ ^
+This should be == , so
+	igt_assert(errno == 0);
+
+Regards,
+Kamil
+
+>  
+> +	close(firmware_node_fd);
+> +	close(fd);
+>  	return true;
+>  }
+>  
+> -- 
+> 2.25.1
 > 
