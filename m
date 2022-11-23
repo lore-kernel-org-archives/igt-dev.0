@@ -1,19 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B18E310E3E8
- for <igt-dev@lists.freedesktop.org>; Wed, 23 Nov 2022 12:55:50 +0000 (UTC)
-Date: Wed, 23 Nov 2022 13:55:45 +0100
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B08EB10E548
+ for <igt-dev@lists.freedesktop.org>; Wed, 23 Nov 2022 13:02:25 +0000 (UTC)
+Date: Wed, 23 Nov 2022 14:02:20 +0100
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Message-ID: <Y34YUQhiKL9se16+@kamilkon-desk1>
-References: <20221116082335.1194410-1-anshuman.gupta@intel.com>
- <20221116082335.1194410-2-anshuman.gupta@intel.com>
+Message-ID: <Y34Z3KnBQEVGIH/z@kamilkon-desk1>
+References: <20221116103706.1492876-1-vikas.srivastava@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20221116082335.1194410-2-anshuman.gupta@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t v2 1/3] lib/igt_pm: Refactor get
- firmware_node fd
+In-Reply-To: <20221116103706.1492876-1-vikas.srivastava@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t v2] lib: Remove deprecated interfaces
+ from huc_copy for Gen12+ platforms.
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,100 +20,166 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: badal.nilawar@intel.com, rodrigo.vivi@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
 Hi,
 
-On 2022-11-16 at 13:53:33 +0530, Anshuman Gupta wrote:
-> Created igt_pm_open_pci_firmware_node() to refactor
-> the retrieving the firmware_node fd code.
+On 2022-11-16 at 16:07:06 +0530, Vikas Srivastava wrote:
+> From: "Ye, Tony" <tony.ye@intel.com>
 > 
-> igt_pm_open_pci_firmware_node() will be used by other
-> firmware_node consumers.
+> Stop using relocs and the legacy execbuf flags.
 > 
-> While doing that fixed the leaked fd as well.
+> Signed-off-by: "Ye, Tony" <tony.ye@intel.com>
+> Signed-off-by: Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>
+> Acked-by: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
 > 
-> v2:
-> - return false instead of igt_require on no firmware_node_fd. [Kamil]
-> - use igt_assert() when failed to open 'real_power_state' on error
->   other then ENONET.
-> 
-> Signed-off-by: Anshuman Gupta <anshuman.gupta@intel.com>
-> Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
 > ---
->  lib/igt_pm.c | 36 +++++++++++++++++++++++++-----------
->  1 file changed, 25 insertions(+), 11 deletions(-)
+>  lib/huc_copy.c          | 77 +++++++++++++++++++++++++++++++++++++++++
+>  lib/huc_copy.h          |  4 +++
+>  lib/intel_batchbuffer.c |  8 +++--
+>  3 files changed, 87 insertions(+), 2 deletions(-)
 > 
-> diff --git a/lib/igt_pm.c b/lib/igt_pm.c
-> index 1e6e9ed3ff..4f0cfbdd10 100644
-> --- a/lib/igt_pm.c
-> +++ b/lib/igt_pm.c
-> @@ -863,6 +863,20 @@ bool i915_output_is_lpsp_capable(int drm_fd, igt_output_t *output)
->  	return strstr(buf, "LPSP: capable");
->  }
+> diff --git a/lib/huc_copy.c b/lib/huc_copy.c
+> index 6ec68864b..3b011a305 100644
+> --- a/lib/huc_copy.c
+> +++ b/lib/huc_copy.c
+> @@ -26,6 +26,8 @@
+>  #include "drmtest.h"
+>  #include "huc_copy.h"
+>  #include "intel_allocator.h"
+> +#include "intel_ctx.h"
+> +#include "i915/gem_engine_topology.h"
 >  
-> +static int igt_pm_open_pci_firmware_node(struct pci_device *pci_dev)
+>  static void
+>  gen9_emit_huc_virtual_addr_state(struct drm_i915_gem_exec_object2 *src,
+> @@ -123,3 +125,78 @@ gen9_huc_copyfunc(int fd, uint64_t ahnd,
+>  
+>  	gem_execbuf(fd, &execbuf);
+>  }
+> +
+> +static void
+> +gen12_emit_huc_virtual_addr_state(struct drm_i915_gem_exec_object2 *src,
+> +		struct drm_i915_gem_exec_object2 *dst,
+> +		uint32_t *buf,
+> +		int *i)
 > +{
-> +	char name[PATH_MAX];
-> +	int dir;
+> +	buf[(*i)++] = HUC_VIRTUAL_ADDR_STATE;
 > +
-> +	snprintf(name, PATH_MAX,
-> +		 "/sys/bus/pci/devices/%04x:%02x:%02x.%01x/firmware_node",
-> +		 pci_dev->domain, pci_dev->bus, pci_dev->dev, pci_dev->func);
-> +
-> +	dir = open(name, O_RDONLY);
-> +
-> +	return dir;
+> +	for (int j = 0; j < HUC_VIRTUAL_ADDR_REGION_NUM; j++) {
+> +		if (j == HUC_VIRTUAL_ADDR_REGION_SRC) {
+> +			buf[(*i)++] = src->offset;
+> +		} else if (j == HUC_VIRTUAL_ADDR_REGION_DST) {
+> +			buf[(*i)++] = dst->offset;
+> +		} else {
+> +			buf[(*i)++] = 0;
+> +		}
+> +		buf[(*i)++] = 0;
+> +		buf[(*i)++] = 0;
+> +	}
 > +}
 > +
->  /**
->   * igt_pm_acpi_d3cold_supported:
->   * @pci_dev: root port pci_dev.
-> @@ -873,23 +887,23 @@ bool i915_output_is_lpsp_capable(int drm_fd, igt_output_t *output)
->   */
->  bool igt_pm_acpi_d3cold_supported(struct pci_device *pci_dev)
->  {
-> -	char name[PATH_MAX];
-> -	int dir, fd;
-> -
-> -	snprintf(name, PATH_MAX,
-> -		 "/sys/bus/pci/devices/%04x:%02x:%02x.%01x/firmware_node",
-> -		 pci_dev->domain, pci_dev->bus, pci_dev->dev, pci_dev->func);
-> +	int firmware_node_fd, fd;
->  
-> -	dir = open(name, O_RDONLY);
-> -	igt_require(dir > 0);
-> +	firmware_node_fd = igt_pm_open_pci_firmware_node(pci_dev);
-> +	if (firmware_node_fd < 0)
-> +		return false;
->  
->  	/* BIOS need to enable ACPI D3Cold Support.*/
-> -	fd = openat(dir, "real_power_state", O_RDONLY);
-> -	if (fd < 0 && errno == ENOENT)
-> +	fd = openat(firmware_node_fd, "real_power_state", O_RDONLY);
-> +	if (fd < 0 && errno == ENOENT) {
-> +		close(firmware_node_fd);
->  		return false;
-> +	}
->  
-> -	igt_require(fd > 0);
-> +	igt_assert(errno > 0);
------------------------- ^
-This should be == , so
-	igt_assert(errno == 0);
+> +void
+> +gen12_huc_copyfunc(int fd, uint64_t ahnd,
+> +		  struct drm_i915_gem_exec_object2 *obj, uint64_t *objsize)
+> +{
+> +	struct drm_i915_gem_execbuffer2 execbuf;
+> +	int i = 0;
+> +	uint32_t buf[63];
+> +	const intel_ctx_t *ctx;
+> +
+> +	/* load huc kernel */
+> +	buf[i++] = HUC_IMEM_STATE;
+> +	buf[i++] = 0;
+> +	buf[i++] = 0;
+> +	buf[i++] = 0;
+> +	buf[i++] = 0x3;
+> +
+> +	buf[i++] = MFX_WAIT;
+> +	buf[i++] = MFX_WAIT;
+> +
+> +	buf[i++] = HUC_PIPE_MODE_SELECT;
+> +	buf[i++] = 0;
+> +	buf[i++] = 0;
+> +
+> +	buf[i++] = MFX_WAIT;
+> +
+> +	obj[0].offset = 0x200000;
+> +	obj[0].flags |= EXEC_OBJECT_PINNED;
+> +	obj[1].offset = 0x400000;
+> +	obj[1].flags |= EXEC_OBJECT_PINNED;
+> +	obj[1].flags |= EXEC_OBJECT_WRITE;
+> +	obj[2].offset = 0x600000;
+> +	obj[2].flags |= EXEC_OBJECT_PINNED;
+> +	gen12_emit_huc_virtual_addr_state(&obj[0], &obj[1], buf, &i);
+> +
+> +	buf[i++] = HUC_START;
+> +	buf[i++] = 1;
+> +
+> +	buf[i++] = MI_BATCH_BUFFER_END;
+> +
+> +	gem_write(fd, obj[2].handle, 0, buf, sizeof(buf));
+> +
+> +	memset(&execbuf, 0, sizeof(execbuf));
+> +	execbuf.buffers_ptr = to_user_pointer(obj);
+> +	execbuf.buffer_count = 3;
+> +	execbuf.flags = I915_EXEC_DEFAULT;
 
-Regards,
+Add here one more flag: I915_EXEC_NO_RELOC
+	execbuf.flags = I915_EXEC_DEFAULT | I915_EXEC_NO_RELOC;
+
+It will help in transition to no-reloc (and will be ignored when
+relocations will be disbaled in driver).
+
+Regrads,
 Kamil
-
+> +
+> +	ctx = intel_ctx_create_for_engine(fd, I915_ENGINE_CLASS_VIDEO, 0);
+> +	execbuf.rsvd1 = ctx->id;
+> +
+> +	gem_execbuf(fd, &execbuf);
+> +
+> +	intel_ctx_destroy(fd, ctx);
+> +}
+> diff --git a/lib/huc_copy.h b/lib/huc_copy.h
+> index 69d140933..e87e62c9c 100644
+> --- a/lib/huc_copy.h
+> +++ b/lib/huc_copy.h
+> @@ -46,4 +46,8 @@ void
+>  gen9_huc_copyfunc(int fd, uint64_t ahnd,
+>  		  struct drm_i915_gem_exec_object2 *obj, uint64_t *objsize);
 >  
-> +	close(firmware_node_fd);
-> +	close(fd);
->  	return true;
+> +void
+> +gen12_huc_copyfunc(int fd, uint64_t ahnd,
+> +		   struct drm_i915_gem_exec_object2 *obj, uint64_t *objsize);
+> +
+>  #endif /* HUC_COPY_H */
+> diff --git a/lib/intel_batchbuffer.c b/lib/intel_batchbuffer.c
+> index 19a1fbe4d..9a855a7f0 100644
+> --- a/lib/intel_batchbuffer.c
+> +++ b/lib/intel_batchbuffer.c
+> @@ -3066,14 +3066,18 @@ void intel_bb_copy_intel_buf(struct intel_bb *ibb,
+>   * Returns:
+>   *
+>   * The platform-specific huc copy function pointer for the device specified
+> - * with @devid. Will return NULL when no media spin function is implemented.
+> + * with @devid. Will return NULL when no huc copy function is implemented.
+>   */
+>  igt_huc_copyfunc_t igt_get_huc_copyfunc(int devid)
+>  {
+>  	igt_huc_copyfunc_t copy = NULL;
+>  
+> -	if (IS_GEN12(devid) || IS_GEN11(devid) || IS_GEN9(devid))
+> +	if (AT_LEAST_GEN(devid, 12))
+> +		copy = gen12_huc_copyfunc;
+> +	else if (IS_GEN11(devid) || IS_GEN9(devid))
+>  		copy = gen9_huc_copyfunc;
+> +	else
+> +		copy = NULL;
+>  
+>  	return copy;
 >  }
->  
 > -- 
 > 2.25.1
 > 
