@@ -1,16 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3553010E521
- for <igt-dev@lists.freedesktop.org>; Wed, 23 Nov 2022 08:55:23 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 10D6A10E521
+ for <igt-dev@lists.freedesktop.org>; Wed, 23 Nov 2022 08:55:25 +0000 (UTC)
 From: Anshuman Gupta <anshuman.gupta@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Wed, 23 Nov 2022 14:24:38 +0530
-Message-Id: <20221123085441.2821638-3-anshuman.gupta@intel.com>
+Date: Wed, 23 Nov 2022 14:24:40 +0530
+Message-Id: <20221123085441.2821638-5-anshuman.gupta@intel.com>
 In-Reply-To: <20221123085441.2821638-1-anshuman.gupta@intel.com>
 References: <20221123085441.2821638-1-anshuman.gupta@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v3 2/5] lib/igt_pci: Add PCIe slot cap
+Subject: [igt-dev] [PATCH i-g-t v3 4/5] test/device_reset: Refactor
+ initiate_device_reset
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,27 +24,84 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Adding PCIe slot cap register offset and Power Controller Present
-bit mask macros.
+Added a reset type enum to support multiple types
+of reset like WARM, COLD and FLR reset.
+
+No functional change.
+
+v2:
+- Removed WARM_RESET enum as not used yet. [Badal]
 
 Signed-off-by: Anshuman Gupta <anshuman.gupta@intel.com>
+Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
 ---
- lib/igt_pci.h | 3 +++
- 1 file changed, 3 insertions(+)
+ tests/device_reset.c | 20 ++++++++++++++------
+ 1 file changed, 14 insertions(+), 6 deletions(-)
 
-diff --git a/lib/igt_pci.h b/lib/igt_pci.h
-index 68afd2dacb..5c2863d657 100644
---- a/lib/igt_pci.h
-+++ b/lib/igt_pci.h
-@@ -21,6 +21,9 @@ enum pci_cap_id {
- 	PCI_EXPRESS_CAP_ID = 0x10
- };
+diff --git a/tests/device_reset.c b/tests/device_reset.c
+index e60d4c7fde..0c477a02c0 100644
+--- a/tests/device_reset.c
++++ b/tests/device_reset.c
+@@ -19,6 +19,11 @@ IGT_TEST_DESCRIPTION("Examine behavior of a driver on device sysfs reset");
+ #define DEV_PATH_LEN 80
+ #define DEV_BUS_ADDR_LEN 13 /* addr has form 0000:00:00.0 */
  
-+#define PCI_SLOT_CAP_OFFSET 0x14  /* PCIe specs chapter 7.8.9 */
-+#define  PCI_SLOT_PWR_CTRL_PRESENT (1 << 1)
++enum reset {
++	COLD_RESET,
++	FLR_RESET
++};
 +
- int find_pci_cap_offset_at(struct pci_device *dev, enum pci_cap_id cap_id,
- 			   int start_offset);
+ /**
+  * Helper structure containing file descriptors
+  * and bus address related to tested device
+@@ -222,10 +227,13 @@ static void driver_bind(struct device_fds *dev)
+ }
+ 
+ /* Initiate device reset */
+-static void initiate_device_reset(struct device_fds *dev)
++static void initiate_device_reset(struct device_fds *dev, enum reset type)
+ {
+ 	igt_debug("reset device\n");
+-	igt_assert(igt_sysfs_set(dev->fds.dev_dir, "reset", "1"));
++
++	if (type == FLR_RESET)
++		igt_assert(igt_sysfs_set(dev->fds.dev_dir, "reset", "1"));
++
+ }
+ 
+ static bool is_i915_wedged(int i915)
+@@ -274,14 +282,14 @@ static void set_device_filter(const char* dev_path)
+ 	igt_assert_eq(igt_device_filter_add(filter), 1);
+ }
+ 
+-static void unbind_reset_rebind(struct device_fds *dev)
++static void unbind_reset_rebind(struct device_fds *dev, enum reset type)
+ {
+ 	igt_debug("close the device\n");
+ 	close_if_opened(&dev->fds.dev);
+ 
+ 	driver_unbind(dev);
+ 
+-	initiate_device_reset(dev);
++	initiate_device_reset(dev, type);
+ 
+ 	driver_bind(dev);
+ }
+@@ -306,13 +314,13 @@ igt_main
+ 	igt_describe("Unbinds driver from device, initiates reset"
+ 		     " then rebinds driver to device");
+ 	igt_subtest("unbind-reset-rebind") {
+-		unbind_reset_rebind(&dev);
++		unbind_reset_rebind(&dev, FLR_RESET);
+ 		healthcheck(&dev);
+ 	}
+ 
+ 	igt_describe("Resets device with bound driver");
+ 	igt_subtest("reset-bound") {
+-		initiate_device_reset(&dev);
++		initiate_device_reset(&dev, FLR_RESET);
+ 		healthcheck(&dev);
+ 	}
  
 -- 
 2.25.1
