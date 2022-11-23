@@ -1,17 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 10D6A10E521
- for <igt-dev@lists.freedesktop.org>; Wed, 23 Nov 2022 08:55:25 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 65E4210E522
+ for <igt-dev@lists.freedesktop.org>; Wed, 23 Nov 2022 08:55:24 +0000 (UTC)
 From: Anshuman Gupta <anshuman.gupta@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Wed, 23 Nov 2022 14:24:40 +0530
-Message-Id: <20221123085441.2821638-5-anshuman.gupta@intel.com>
+Date: Wed, 23 Nov 2022 14:24:37 +0530
+Message-Id: <20221123085441.2821638-2-anshuman.gupta@intel.com>
 In-Reply-To: <20221123085441.2821638-1-anshuman.gupta@intel.com>
 References: <20221123085441.2821638-1-anshuman.gupta@intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=yes
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v3 4/5] test/device_reset: Refactor
- initiate_device_reset
+Subject: [igt-dev] [PATCH i-g-t v3 1/5] lib/igt_pci: helpers to get PCI
+ capabilities offset
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,84 +25,120 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Added a reset type enum to support multiple types
-of reset like WARM, COLD and FLR reset.
+Added helper functions to search for PCI capabilities
+with help of libpciaccess library.
 
-No functional change.
-
-v2:
-- Removed WARM_RESET enum as not used yet. [Badal]
-
+Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
+Co-developed-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
+Signed-off-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
 Signed-off-by: Anshuman Gupta <anshuman.gupta@intel.com>
-Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
 ---
- tests/device_reset.c | 20 ++++++++++++++------
- 1 file changed, 14 insertions(+), 6 deletions(-)
+ lib/igt_pci.c   | 44 ++++++++++++++++++++++++++++++++++++++++++++
+ lib/igt_pci.h   | 32 ++++++++++++++++++++++++++++++++
+ lib/meson.build |  1 +
+ 3 files changed, 77 insertions(+)
+ create mode 100644 lib/igt_pci.c
+ create mode 100644 lib/igt_pci.h
 
-diff --git a/tests/device_reset.c b/tests/device_reset.c
-index e60d4c7fde..0c477a02c0 100644
---- a/tests/device_reset.c
-+++ b/tests/device_reset.c
-@@ -19,6 +19,11 @@ IGT_TEST_DESCRIPTION("Examine behavior of a driver on device sysfs reset");
- #define DEV_PATH_LEN 80
- #define DEV_BUS_ADDR_LEN 13 /* addr has form 0000:00:00.0 */
- 
-+enum reset {
-+	COLD_RESET,
-+	FLR_RESET
+diff --git a/lib/igt_pci.c b/lib/igt_pci.c
+new file mode 100644
+index 0000000000..bc0369341d
+--- /dev/null
++++ b/lib/igt_pci.c
+@@ -0,0 +1,44 @@
++// SPDX-License-Identifier: MIT
++/*
++ * Copyright © 2022 Intel Corporation
++ */
++
++#include <pciaccess.h>
++#include "igt_pci.h"
++
++/**
++ * find_pci_cap_offset:
++ * @dev: pci device
++ * @cap_id: searched capability id, 0 means any capability
++ * @start_offset: offset in config space from which we start searching
++ *
++ * return:
++ * -1 on config read error, 0 if capability is not found,
++ * otherwise offset at which capability with cap_id is found
++ */
++int find_pci_cap_offset_at(struct pci_device *dev, enum pci_cap_id cap_id,
++			   int start_offset)
++{
++	uint8_t offset;
++	uint16_t cap_header;
++	int loop = (PCI_CFG_SPACE_SIZE - PCI_TYPE0_1_HEADER_SIZE)
++			/ sizeof(cap_header);
++
++	if (pci_device_cfg_read_u8(dev, &offset, start_offset))
++		return -1;
++
++	while (loop--) {
++		if (offset < PCI_TYPE0_1_HEADER_SIZE)
++			break;
++
++		if (pci_device_cfg_read_u16(dev, &cap_header, (offset & 0xFC)))
++			return -1;
++
++		if (!cap_id || cap_id == (cap_header & 0xFF))
++			return offset;
++
++		offset = cap_header >> 8;
++	}
++
++	return 0;
++}
+diff --git a/lib/igt_pci.h b/lib/igt_pci.h
+new file mode 100644
+index 0000000000..68afd2dacb
+--- /dev/null
++++ b/lib/igt_pci.h
+@@ -0,0 +1,32 @@
++// SPDX-License-Identifier: MIT
++/*
++ * Copyright © 2022 Intel Corporation
++ */
++
++#ifndef __IGT_PCI_H__
++#define __IGT_PCI_H__
++
++#include <stdint.h>
++#include <endian.h>
++
++/* forward declaration */
++struct pci_device;
++
++#define PCI_TYPE0_1_HEADER_SIZE 0x40
++#define PCI_CAPS_START 0x34
++#define PCI_CFG_SPACE_SIZE 0x100
++#define PCIE_CFG_SPACE_SIZE 0x1000
++
++enum pci_cap_id {
++	PCI_EXPRESS_CAP_ID = 0x10
 +};
 +
- /**
-  * Helper structure containing file descriptors
-  * and bus address related to tested device
-@@ -222,10 +227,13 @@ static void driver_bind(struct device_fds *dev)
- }
- 
- /* Initiate device reset */
--static void initiate_device_reset(struct device_fds *dev)
-+static void initiate_device_reset(struct device_fds *dev, enum reset type)
- {
- 	igt_debug("reset device\n");
--	igt_assert(igt_sysfs_set(dev->fds.dev_dir, "reset", "1"));
++int find_pci_cap_offset_at(struct pci_device *dev, enum pci_cap_id cap_id,
++			   int start_offset);
 +
-+	if (type == FLR_RESET)
-+		igt_assert(igt_sysfs_set(dev->fds.dev_dir, "reset", "1"));
++static inline int find_pci_cap_offset(struct pci_device *dev, enum pci_cap_id cap_id)
++{
++	return find_pci_cap_offset_at(dev, cap_id, PCI_CAPS_START);
++}
 +
- }
- 
- static bool is_i915_wedged(int i915)
-@@ -274,14 +282,14 @@ static void set_device_filter(const char* dev_path)
- 	igt_assert_eq(igt_device_filter_add(filter), 1);
- }
- 
--static void unbind_reset_rebind(struct device_fds *dev)
-+static void unbind_reset_rebind(struct device_fds *dev, enum reset type)
- {
- 	igt_debug("close the device\n");
- 	close_if_opened(&dev->fds.dev);
- 
- 	driver_unbind(dev);
- 
--	initiate_device_reset(dev);
-+	initiate_device_reset(dev, type);
- 
- 	driver_bind(dev);
- }
-@@ -306,13 +314,13 @@ igt_main
- 	igt_describe("Unbinds driver from device, initiates reset"
- 		     " then rebinds driver to device");
- 	igt_subtest("unbind-reset-rebind") {
--		unbind_reset_rebind(&dev);
-+		unbind_reset_rebind(&dev, FLR_RESET);
- 		healthcheck(&dev);
- 	}
- 
- 	igt_describe("Resets device with bound driver");
- 	igt_subtest("reset-bound") {
--		initiate_device_reset(&dev);
-+		initiate_device_reset(&dev, FLR_RESET);
- 		healthcheck(&dev);
- 	}
- 
++#endif
+diff --git a/lib/meson.build b/lib/meson.build
+index cef2d0ff3d..e0fb7ddfed 100644
+--- a/lib/meson.build
++++ b/lib/meson.build
+@@ -33,6 +33,7 @@ lib_sources = [
+ 	'igt_pipe_crc.c',
+ 	'igt_power.c',
+ 	'igt_primes.c',
++	'igt_pci.c',
+ 	'igt_rand.c',
+ 	'igt_stats.c',
+ 	'igt_syncobj.c',
 -- 
 2.25.1
