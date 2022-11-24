@@ -1,11 +1,11 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Content-Type: multipart/alternative;
- boundary="===============5827375090401381149=="
+ boundary="===============0291630222446615292=="
 MIME-Version: 1.0
 From: Patchwork <patchwork@emeril.freedesktop.org>
 To: "Mark Yacoub" <markyacoub@chromium.org>
-Date: Thu, 24 Nov 2022 08:43:57 -0000
-Message-ID: <166927943798.28647.14529438408474312410@emeril.freedesktop.org>
+Date: Thu, 24 Nov 2022 09:57:04 -0000
+Message-ID: <166928382421.28648.9441046191606308113@emeril.freedesktop.org>
 References: <20221121191747.2817707-1-markyacoub@chromium.org>
 In-Reply-To: <20221121191747.2817707-1-markyacoub@chromium.org>
 Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3IgQ2hhbWVs?=
@@ -23,7 +23,7 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============5827375090401381149==
+--===============0291630222446615292==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -68,13 +68,11 @@ Possible new issues
 
 #### Possible regressions ####
 
-  * igt@kms_chamelium@vga-edid-read:
-    - bat-dg1-6:          NOTRUN -> [SKIP][1] +4 similar issues
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8147/bat-dg1-6/igt@kms_chamelium@vga-edid-read.html
-
-  * igt@kms_chamelium@vga-hpd-fast:
-    - fi-icl-u2:          NOTRUN -> [SKIP][2] +4 similar issues
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8147/fi-icl-u2/igt@kms_chamelium@vga-hpd-fast.html
+  * igt@kms_chamelium@dp-crc-fast:
+    - fi-icl-u2:          NOTRUN -> [SKIP][1] +2 similar issues
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8147/fi-icl-u2/igt@kms_chamelium@dp-crc-fast.html
+    - bat-dg1-6:          NOTRUN -> [SKIP][2] +2 similar issues
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8147/bat-dg1-6/igt@kms_chamelium@dp-crc-fast.html
 
   
 #### Warnings ####
@@ -83,21 +81,19 @@ Possible new issues
     - bat-adlp-4:         [SKIP][3] ([fdo#111827]) -> [SKIP][4] +8 similar issues
    [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12424/bat-adlp-4/igt@kms_chamelium@dp-crc-fast.html
    [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8147/bat-adlp-4/igt@kms_chamelium@dp-crc-fast.html
+    - bat-dg1-5:          [SKIP][5] ([fdo#111827]) -> [SKIP][6] +2 similar issues
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12424/bat-dg1-5/igt@kms_chamelium@dp-crc-fast.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8147/bat-dg1-5/igt@kms_chamelium@dp-crc-fast.html
 
   * igt@kms_chamelium@hdmi-crc-fast:
-    - fi-rkl-guc:         [SKIP][5] ([fdo#111827]) -> [SKIP][6] +8 similar issues
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12424/fi-rkl-guc/igt@kms_chamelium@hdmi-crc-fast.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8147/fi-rkl-guc/igt@kms_chamelium@hdmi-crc-fast.html
+    - fi-rkl-guc:         [SKIP][7] ([fdo#111827]) -> [SKIP][8] +8 similar issues
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12424/fi-rkl-guc/igt@kms_chamelium@hdmi-crc-fast.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8147/fi-rkl-guc/igt@kms_chamelium@hdmi-crc-fast.html
 
   * igt@kms_chamelium@hdmi-hpd-fast:
-    - fi-rkl-11600:       [SKIP][7] ([fdo#111827]) -> [SKIP][8] +7 similar issues
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12424/fi-rkl-11600/igt@kms_chamelium@hdmi-hpd-fast.html
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8147/fi-rkl-11600/igt@kms_chamelium@hdmi-hpd-fast.html
-
-  * igt@kms_chamelium@vga-hpd-fast:
-    - bat-dg1-5:          [SKIP][9] ([fdo#111827]) -> [SKIP][10] +4 similar issues
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12424/bat-dg1-5/igt@kms_chamelium@vga-hpd-fast.html
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8147/bat-dg1-5/igt@kms_chamelium@vga-hpd-fast.html
+    - fi-rkl-11600:       [SKIP][9] ([fdo#111827]) -> [SKIP][10] +7 similar issues
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12424/fi-rkl-11600/igt@kms_chamelium@hdmi-hpd-fast.html
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8147/fi-rkl-11600/igt@kms_chamelium@hdmi-hpd-fast.html
 
   
 #### Suppressed ####
@@ -226,11 +222,11 @@ Known issues
    [51]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8147/bat-dg1-5/igt@kms_chamelium@common-hpd-after-suspend.html
 
   * igt@kms_chamelium@hdmi-crc-fast:
-    - bat-dg1-6:          NOTRUN -> [SKIP][52] ([i915#7593]) +3 similar issues
+    - bat-dg1-6:          NOTRUN -> [SKIP][52] ([i915#7593]) +5 similar issues
    [52]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8147/bat-dg1-6/igt@kms_chamelium@hdmi-crc-fast.html
 
   * igt@kms_chamelium@hdmi-hpd-fast:
-    - fi-icl-u2:          NOTRUN -> [SKIP][53] ([i915#7593]) +3 similar issues
+    - fi-icl-u2:          NOTRUN -> [SKIP][53] ([i915#7593]) +5 similar issues
    [53]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8147/fi-icl-u2/igt@kms_chamelium@hdmi-hpd-fast.html
     - fi-skl-6700k2:      [PASS][54] -> [SKIP][55] ([fdo#109271]) +1 similar issue
    [54]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12424/fi-skl-6700k2/igt@kms_chamelium@hdmi-hpd-fast.html
@@ -371,7 +367,7 @@ Known issues
    [107]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8147/fi-elk-e7500/igt@kms_chamelium@hdmi-edid-read.html
 
   * igt@kms_chamelium@hdmi-hpd-fast:
-    - bat-dg1-5:          [SKIP][108] ([fdo#111827]) -> [SKIP][109] ([i915#7593]) +2 similar issues
+    - bat-dg1-5:          [SKIP][108] ([fdo#111827]) -> [SKIP][109] ([i915#7593]) +4 similar issues
    [108]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12424/bat-dg1-5/igt@kms_chamelium@hdmi-hpd-fast.html
    [109]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8147/bat-dg1-5/igt@kms_chamelium@hdmi-hpd-fast.html
 
@@ -532,7 +528,7 @@ Testlist changes
 
 For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8147/index.html
 
---===============5827375090401381149==
+--===============0291630222446615292==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -579,15 +575,14 @@ Content-Transfer-Encoding: 7bit
 <h4>Possible regressions</h4>
 <ul>
 <li>
-<p>igt@kms_chamelium@vga-edid-read:</p>
+<p>igt@kms_chamelium@dp-crc-fast:</p>
 <ul>
-<li>bat-dg1-6:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8147/bat-dg1-6/igt@kms_chamelium@vga-edid-read.html">SKIP</a> +4 similar issues</li>
-</ul>
+<li>
+<p>fi-icl-u2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8147/fi-icl-u2/igt@kms_chamelium@dp-crc-fast.html">SKIP</a> +2 similar issues</p>
 </li>
 <li>
-<p>igt@kms_chamelium@vga-hpd-fast:</p>
-<ul>
-<li>fi-icl-u2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8147/fi-icl-u2/igt@kms_chamelium@vga-hpd-fast.html">SKIP</a> +4 similar issues</li>
+<p>bat-dg1-6:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8147/bat-dg1-6/igt@kms_chamelium@dp-crc-fast.html">SKIP</a> +2 similar issues</p>
+</li>
 </ul>
 </li>
 </ul>
@@ -596,7 +591,12 @@ Content-Transfer-Encoding: 7bit
 <li>
 <p>igt@kms_chamelium@dp-crc-fast:</p>
 <ul>
-<li>bat-adlp-4:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12424/bat-adlp-4/igt@kms_chamelium@dp-crc-fast.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=111827">fdo#111827</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8147/bat-adlp-4/igt@kms_chamelium@dp-crc-fast.html">SKIP</a> +8 similar issues</li>
+<li>
+<p>bat-adlp-4:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12424/bat-adlp-4/igt@kms_chamelium@dp-crc-fast.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=111827">fdo#111827</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8147/bat-adlp-4/igt@kms_chamelium@dp-crc-fast.html">SKIP</a> +8 similar issues</p>
+</li>
+<li>
+<p>bat-dg1-5:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12424/bat-dg1-5/igt@kms_chamelium@dp-crc-fast.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=111827">fdo#111827</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8147/bat-dg1-5/igt@kms_chamelium@dp-crc-fast.html">SKIP</a> +2 similar issues</p>
+</li>
 </ul>
 </li>
 <li>
@@ -609,12 +609,6 @@ Content-Transfer-Encoding: 7bit
 <p>igt@kms_chamelium@hdmi-hpd-fast:</p>
 <ul>
 <li>fi-rkl-11600:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12424/fi-rkl-11600/igt@kms_chamelium@hdmi-hpd-fast.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=111827">fdo#111827</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8147/fi-rkl-11600/igt@kms_chamelium@hdmi-hpd-fast.html">SKIP</a> +7 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_chamelium@vga-hpd-fast:</p>
-<ul>
-<li>bat-dg1-5:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12424/bat-dg1-5/igt@kms_chamelium@vga-hpd-fast.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=111827">fdo#111827</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8147/bat-dg1-5/igt@kms_chamelium@vga-hpd-fast.html">SKIP</a> +4 similar issues</li>
 </ul>
 </li>
 </ul>
@@ -783,14 +777,14 @@ Content-Transfer-Encoding: 7bit
 <li>
 <p>igt@kms_chamelium@hdmi-crc-fast:</p>
 <ul>
-<li>bat-dg1-6:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8147/bat-dg1-6/igt@kms_chamelium@hdmi-crc-fast.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7593">i915#7593</a>) +3 similar issues</li>
+<li>bat-dg1-6:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8147/bat-dg1-6/igt@kms_chamelium@hdmi-crc-fast.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7593">i915#7593</a>) +5 similar issues</li>
 </ul>
 </li>
 <li>
 <p>igt@kms_chamelium@hdmi-hpd-fast:</p>
 <ul>
 <li>
-<p>fi-icl-u2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8147/fi-icl-u2/igt@kms_chamelium@hdmi-hpd-fast.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7593">i915#7593</a>) +3 similar issues</p>
+<p>fi-icl-u2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8147/fi-icl-u2/igt@kms_chamelium@hdmi-hpd-fast.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7593">i915#7593</a>) +5 similar issues</p>
 </li>
 <li>
 <p>fi-skl-6700k2:      <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12424/fi-skl-6700k2/igt@kms_chamelium@hdmi-hpd-fast.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8147/fi-skl-6700k2/igt@kms_chamelium@hdmi-hpd-fast.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +1 similar issue</p>
@@ -984,7 +978,7 @@ Content-Transfer-Encoding: 7bit
 <li>
 <p>igt@kms_chamelium@hdmi-hpd-fast:</p>
 <ul>
-<li>bat-dg1-5:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12424/bat-dg1-5/igt@kms_chamelium@hdmi-hpd-fast.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=111827">fdo#111827</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8147/bat-dg1-5/igt@kms_chamelium@hdmi-hpd-fast.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7593">i915#7593</a>) +2 similar issues</li>
+<li>bat-dg1-5:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12424/bat-dg1-5/igt@kms_chamelium@hdmi-hpd-fast.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=111827">fdo#111827</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8147/bat-dg1-5/igt@kms_chamelium@hdmi-hpd-fast.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7593">i915#7593</a>) +4 similar issues</li>
 </ul>
 </li>
 <li>
@@ -1090,4 +1084,4 @@ Content-Transfer-Encoding: 7bit
 </body>
 </html>
 
---===============5827375090401381149==--
+--===============0291630222446615292==--
