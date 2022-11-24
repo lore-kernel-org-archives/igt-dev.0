@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D3F6B10E6E8
- for <igt-dev@lists.freedesktop.org>; Thu, 24 Nov 2022 10:39:04 +0000 (UTC)
-Date: Thu, 24 Nov 2022 11:39:00 +0100
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Message-ID: <Y39JxFxaRNdJXnNs@kamilkon-desk1>
-References: <20221122140007.71246-1-zbigniew.kempczynski@intel.com>
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9CCE410E6D9
+ for <igt-dev@lists.freedesktop.org>; Thu, 24 Nov 2022 10:39:14 +0000 (UTC)
+Date: Thu, 24 Nov 2022 12:39:32 +0200
+From: Petri Latvala <petri.latvala@intel.com>
+To: =?iso-8859-1?Q?Ma=EDra?= Canal <mcanal@igalia.com>
+Message-ID: <Y39J5Gv3rmFz6b4j@platvala-desk.ger.corp.intel.com>
+References: <20221115202101.278995-1-mcanal@igalia.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20221122140007.71246-1-zbigniew.kempczynski@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 0/4] Remove libdrm remnants in i915 code
+In-Reply-To: <20221115202101.278995-1-mcanal@igalia.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 0/5] VC4 IGT Tests Updates
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,61 +20,42 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Petri Latvala <petri.latvala@intel.com>
+Cc: igt-dev@lists.freedesktop.org, Maxime Ripard <maxime@cerno.tech>,
+ Emma Anholt <emma@anholt.net>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Zbigniew,
+On Tue, Nov 15, 2022 at 05:20:56PM -0300, Maíra Canal wrote:
+> This series aims to update the VC4 IGT tests. The first three patches contain
+> some janitorial duties related to the existing tests: creating a folder for the
+> VC4 tests, removing some unused includes, and adding a macro with the default
+> PAGE_SIZE. The fourth patch includes new tests for the VC4's performance
+> monitors. Finally, the last patch adds an igt_require to all the VC4 tests to
+> check that the tests are not running on BCM2711.
+> 
+> This series was tested on the Raspberry Pi 3 Model B and Raspberry Pi 4 Model B,
+> and the HTML outputs of the VC4 tests are available on:
+> 
+> - Raspberry Pi 4: https://mairacanal.fedorapeople.org/igt-results/rpi4/html/
+> - Raspberry Pi 3: https://mairacanal.fedorapeople.org/igt-results/rpi3/html/
+> 
+> Best Regards,
+> - Maíra Canal
+> 
+> Maíra Canal (5):
+>   tests/vc4: Move VC4 tests to their own folder
+>   tests/vc4: Remove unused or redundant includes
+>   lib/igt_vc4: Add PAGE_SIZE macro to VC4
+>   tests/vc4_perfmon: Create test for VC4's Perfmon IOCTLs
+>   tests/vc4: Skip VC4 tests if they are running on BCM2711/RaspberryPi4
 
-On 2022-11-22 at 15:00:03 +0100, Zbigniew KempczyÅ„ski wrote:
-> I want finally remove all libdrm stuff, to get this I had to:
-> 
-> 1. remove prime_udl tests - it is not used in CI due to lack of 
->    DisplayLink hardware,
-> 2. remove prime_nv_* tests - similar, there's no compatible hw
->    I can rewrite the test and it is not exercised by CI so lets
->    get rid of it. If someone is complaining we can back to it
->    in the future or is welcome to rewrite it.
 
-imho it will be good to send these two removals in separate
-patchset so it will be more visibile to anyone interested.
+Patches 1-3 are
+Reviewed-by: Petri Latvala <petri.latvala@intel.com>
 
-Regards,
-Kamil
+I'm unable to fully review patches 4+5, for those
+Acked-by: Petri Latvala <petri.latvala@intel.com>
 
-> 3. rewrite intel_upload_blit_* benchmarks - I tried to mimic 
->    behavior as much as possible but there'e some minor differences
->    in execution time. I think it is related to libdrm internals
->    (how it caches handles/mappings). I'm not sure but it shouldn't
->    much affect what benchmark is exercising.
-> 4. remove all intel_batchbuffer_* code
-> 
-> Cc: Petri Latvala <petri.latvala@intel.com>
-> 
-> Zbigniew KempczyÅ„ski (4):
->   tests/prime_udl: Remove prime_udl test
->   tests/prime_nv_*: Remove prime_nv_* tests
->   benchmarks/intel_upload_blit_*: Remove libdrm in upload blits
->   lib/intel_batchbuffer: Get rid of libdrm batchbuffer
-> 
->  benchmarks/intel_upload_blit_large.c     | 131 ++--
->  benchmarks/intel_upload_blit_large_gtt.c | 130 ++--
->  benchmarks/intel_upload_blit_large_map.c | 132 ++--
->  benchmarks/intel_upload_blit_small.c     | 139 ++--
->  lib/intel_batchbuffer.c                  | 574 +-------------
->  lib/intel_batchbuffer.h                  | 248 -------
->  tests/meson.build                        |   4 -
->  tests/prime_nv_api.c                     | 410 ----------
->  tests/prime_nv_pcopy.c                   | 905 -----------------------
->  tests/prime_nv_test.c                    | 399 ----------
->  tests/prime_udl.c                        | 160 ----
->  11 files changed, 313 insertions(+), 2919 deletions(-)
->  delete mode 100644 tests/prime_nv_api.c
->  delete mode 100644 tests/prime_nv_pcopy.c
->  delete mode 100644 tests/prime_nv_test.c
->  delete mode 100644 tests/prime_udl.c
-> 
-> -- 
-> 2.34.1
-> 
+Whether you want to have someone do a full review on the last two
+patches before merging is up to you, let me know.
