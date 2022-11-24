@@ -1,21 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3916010E6F6
- for <igt-dev@lists.freedesktop.org>; Thu, 24 Nov 2022 12:42:13 +0000 (UTC)
-Message-ID: <c90ded5b-f24f-781a-0d09-bf38a3a9770e@linux.intel.com>
-Date: Thu, 24 Nov 2022 12:42:08 +0000
+Message-ID: <b2df860d-9963-a00f-45eb-57770ec7864d@intel.com>
+Date: Thu, 24 Nov 2022 13:59:18 +0100
 MIME-Version: 1.0
 Content-Language: en-US
-To: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
-References: <20221119020023.3376-1-ashutosh.dixit@intel.com>
- <4b9229ee-baa0-c146-adff-425f36d95eaf@linux.intel.com>
- <87pmdew6l6.wl-ashutosh.dixit@intel.com>
-From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
-In-Reply-To: <87pmdew6l6.wl-ashutosh.dixit@intel.com>
+To: Matthew Auld <matthew.auld@intel.com>, igt-dev@lists.freedesktop.org
+References: <20221118155335.635430-1-matthew.auld@intel.com>
+From: Andrzej Hajda <andrzej.hajda@intel.com>
+In-Reply-To: <20221118155335.635430-1-matthew.auld@intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/perf_pmu: Compare against
- requested freq in frequency subtest
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/i915/gem_exec_balancer: exercise
+ dmabuf import
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,239 +18,121 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org
+Cc: intel-gfx@lists.freedesktop.org, Nirmoy Das <nirmoy.das@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
 
-On 23/11/2022 06:03, Dixit, Ashutosh wrote:
-> On Mon, 21 Nov 2022 01:09:55 -0800, Tvrtko Ursulin wrote:
->>
-> 
-> Hi Tvrtko,
-> 
-> I am only offering an overall clarification below first, not answering all
-> of your points for now.
-> 
->>
->> On 19/11/2022 02:00, Ashutosh Dixit wrote:
->>> With SLPC, even when we set the same min and max freq's, the requested and
->>> actual freq's can differ from the min/max freq set. For example "efficient
->>> freq" (when in effect) can override set min/max freq. In general FW is the
->>> final arbiter in determining freq and can override set values.
->>>
->>> Therefore in igt@perf_pmu@frequency subtest, compare the requested freq
->>> reported by PMU not against the set freq's but against the requested freq
->>> reported in sysfs. Also add a delay after setting freq's to account for
->>> messaging delays in setting freq's in GuC.
->>>
->>> v2: Introduce a 100 ms delay after setting freq
->>> v3: Update commit message, code identical to v2
->>>
->>> Bug: https://gitlab.freedesktop.org/drm/intel/-/issues/6806
->>> Cc: Vinay Belgaumkar <vinay.belgaumkar@intel.com>
->>> Cc: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
->>> Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
->>> ---
->>>    tests/i915/perf_pmu.c | 23 +++++++++++++++--------
->>>    1 file changed, 15 insertions(+), 8 deletions(-)
->>>
->>> diff --git a/tests/i915/perf_pmu.c b/tests/i915/perf_pmu.c
->>> index f363db2ba13..02f6ae989b1 100644
->>> --- a/tests/i915/perf_pmu.c
->>> +++ b/tests/i915/perf_pmu.c
->>> @@ -1543,10 +1543,13 @@ test_interrupts_sync(int gem_fd)
->>> 	igt_assert_lte(target, busy);
->>>    }
->>>    +/* Wait for GuC SLPC freq changes to take effect */
->>> +#define wait_freq_set()		usleep(100000)
->>
->> A future task of maybe adding a drop_caches flag to wait for this?
->>
->> Alternatively, if we have a sysfs or debugfs file which reflects the value
->> once GuC has processed it, keep reading it until it is updated? Even if to
->> something other than it was before the write, to handle the inability to
->> set the exact requested frequency sometimes?
->>>
->>> +
->>>    static void
->>>    test_frequency(int gem_fd)
->>>    {
->>> -	uint32_t min_freq, max_freq, boost_freq;
->>> +	uint32_t min_freq, max_freq, boost_freq, min_req, max_req;
->>> 	uint64_t val[2], start[2], slept;
->>> 	double min[2], max[2];
->>> 	igt_spin_t *spin;
->>> @@ -1572,10 +1575,11 @@ test_frequency(int gem_fd)
->>> 	 * Set GPU to min frequency and read PMU counters.
->>> 	 */
->>> 	igt_require(igt_sysfs_set_u32(sysfs, "gt_min_freq_mhz", min_freq));
->>> -	igt_require(igt_sysfs_get_u32(sysfs, "gt_min_freq_mhz") == min_freq);
->>> 	igt_require(igt_sysfs_set_u32(sysfs, "gt_max_freq_mhz", min_freq));
->>> -	igt_require(igt_sysfs_get_u32(sysfs, "gt_max_freq_mhz") == min_freq);
->>> 	igt_require(igt_sysfs_set_u32(sysfs, "gt_boost_freq_mhz", min_freq));
->>> +	wait_freq_set();
->>> +	igt_require(igt_sysfs_get_u32(sysfs, "gt_min_freq_mhz") == min_freq);
->>> +	igt_require(igt_sysfs_get_u32(sysfs, "gt_max_freq_mhz") == min_freq);
->>> 	igt_require(igt_sysfs_get_u32(sysfs, "gt_boost_freq_mhz") == min_freq);
->>> 		gem_quiescent_gpu(gem_fd); /* Idle to be sure the change takes
->>> effect */
->>> @@ -1587,6 +1591,7 @@ test_frequency(int gem_fd)
->>> 		min[0] = 1e9*(val[0] - start[0]) / slept;
->>> 	min[1] = 1e9*(val[1] - start[1]) / slept;
->>> +	min_req = igt_sysfs_get_u32(sysfs, "gt_cur_freq_mhz");
->>
->> This really leaves a bad taste for me still, sorry. First of all, it may
->> make it more palatable if readback was immediately after wait_freq_set(),
->> or as part of it. Otherwise it seems like even more confused test and sysfs
->> ABI.
->>
->> Did we close on my question of whether we can make readback of
->> gt_max_freq_mhz actually represent the real max? Correct me please if I got
->> confused - with min freq checking here we write max=300 and get 350? If so
->> can we make gt_max_freq_mhz return 350 after the write of 300? Or return an
->> error?
-> 
-> Did you read Vinay's email on v1 here:
-> 
-> https://patchwork.freedesktop.org/patch/510304/?series=110574&rev=1#comment_921571
-> 
-> As Vinay says, SLPC is requesting an entirely different freq (the effecient
-> freq rather than the set 'min == max freq') and no amount of waiting will
-> result in the requested freq being the same as the set 'min == max
-> freq'. Also the efficient freq cannot be controlled from user space.
 
-Why is that not a break in our ABI? What is the point in allowing users 
-to write into this field if the desired value can be silently ignored?
+On 18.11.2022 16:53, Matthew Auld wrote:
+> With parallel submission it should be easy to get a fence array as the
+> output fence. Try importing this into dma-buf reservation object, to see
+> if anything explodes.
+>
+> References: https://gitlab.freedesktop.org/drm/intel/-/issues/7532
+> Signed-off-by: Matthew Auld <matthew.auld@intel.com>
+> Cc: Andrzej Hajda <andrzej.hajda@intel.com>
+> Cc: Nirmoy Das <nirmoy.das@intel.com>
+> ---
+>   tests/i915/gem_exec_balancer.c | 39 ++++++++++++++++++++++++++++++++++
+>   1 file changed, 39 insertions(+)
+>
+> diff --git a/tests/i915/gem_exec_balancer.c b/tests/i915/gem_exec_balancer.c
+> index 4300dbd1..fdae8de5 100644
+> --- a/tests/i915/gem_exec_balancer.c
+> +++ b/tests/i915/gem_exec_balancer.c
+> @@ -37,6 +37,7 @@
+>   #include "igt_sysfs.h"
+>   #include "igt_types.h"
+>   #include "sw_sync.h"
+> +#include <linux/dma-buf.h>
+>   
+>   IGT_TEST_DESCRIPTION("Exercise in-kernel load-balancing");
+>   
+> @@ -2856,6 +2857,24 @@ static void logical_sort_siblings(int i915,
+>   #define PARALLEL_SUBMIT_FENCE		(0x1 << 3)
+>   #define PARALLEL_CONTEXTS		(0x1 << 4)
+>   #define PARALLEL_VIRTUAL		(0x1 << 5)
+> +#define PARALLEL_OUT_FENCE_DMABUF	(0x1 << 6)
+> +
+> +struct igt_dma_buf_sync_file {
+> +        __u32 flags;
+> +        __s32 fd;
+> +};
+> +
+> +#define IGT_DMA_BUF_IOCTL_EXPORT_SYNC_FILE _IOWR(DMA_BUF_BASE, 2, struct igt_dma_buf_sync_file)
+> +#define IGT_DMA_BUF_IOCTL_IMPORT_SYNC_FILE _IOW(DMA_BUF_BASE, 3, struct igt_dma_buf_sync_file)
+> +
+> +static void dmabuf_import_sync_file(int dmabuf, uint32_t flags, int sync_fd)
+> +{
+> +        struct igt_dma_buf_sync_file arg;
+> +
+> +        arg.flags = flags;
+> +        arg.fd = sync_fd;
+> +        do_ioctl(dmabuf, IGT_DMA_BUF_IOCTL_IMPORT_SYNC_FILE, &arg);
+> +}
 
-> (So in the example above min and max are set to 300 MHz and SLPC is
-> requesting efficient freq which is 350 or 400 MHz. So min and max values
-> are correct at 300 MHz and requested/actual freq will show 350/400 MHz).
-> 
-> Let me also explain what happens in GuC FW when we change min/max freq:
-> * i915 receives min/max freq from sysfs and sends a message to GuC to
->    change min/max freq.
-> * The message itself might be queued behind other messages in the host to
->    GuC queue. i915 is still blocked in the sysfs handler.
-> * Now when GuC receives the message interrupt, in its top-half handler it
->    validates the freq parameters and sends a message back to host saying the
->    freq change has been accepted. But min/max freq is actually changed later
->    in the bottom-half handler in GuC FW. So the top half only validates the
->    freq value.
-> * When i915 receives the message from GuC top half, the sysfs handler
->    unblocks and starts reflecting the new min/max freq value.
-> 
-> So the delay for the new min/max freq values to take effect is between
-> returning from the sysfs handler and when the min/max freq are really set
-> in GuC bottom half (an indeterminate possibly large amount of time if GuC
-> is busy).
+Wouldn't be good to move code above to some common lib?
+Anyway:
+Reviewed-by: Andrzej Hajda <andrzej.hajda@intel.com>
 
-Do we have a drop_caches flag which would force waiting of idle GuC, 
-which would cover the bottom half as well? Could we or should we add it 
-if not? Would beat the usleep approach..
+Regards
+Andrzej
 
-> So as you see this introduces an indeterminacy due to to GuC interface not
-> being synchronous. If this needs to be fixed, it needs to be fixed in GuC
-> FW rather than waiting etc. in i915. GuC needs to implement another
-> notification to host /after/ the min/max freq change has been applied in
-> its bottom half. Doing this is not a priority for the GuC team at this
-> point.
-
-Is there a method for querying the real min from GuC, which would maybe 
-work after waiting for GuC to idle?
-
-> 
-> However, this bug is not due to these delays but due to GuC requesting the
-> efficient freq instead of the set 'min == max freq' as mentioned above.
-> 
-> If all these delays are confusing we can revert to v1 of the patch:
-> 
-> https://patchwork.freedesktop.org/patch/510304/?series=110574&rev=1
-> 
-> v1 is simple and does not introduce these delays but just reads the
-> requested freq from sysfs after the 500 ms PMU measurement but while the
-> spinner is still running (which we do in v3 too). Without load SLPC will
-> only request RPn so to compare with PMU measurement we must read the
-> requested freq from sysfs with the spinner load. v1 is sufficient to fix
-> the bug but I thought to be completely safe it is better to add
-> wait_freq_set() after changing min/max freq (and hence v3).
-> 
-> I hope this clarifies things somewhat. If not please let me know.
-
-It clarifies a large chunk thank you.
-
-Another question which you missed is why is it needed for the max mode? 
-There we allow a 15% error (more than 5% default). Is that not enough 
-with SLPC?
-
-Regards,
-
-Tvrtko
-
-> 
-> Thanks.
-> --
-> Ashutosh
-> 
-> 
->>> 	igt_spin_free(gem_fd, spin);
->>> 	gem_quiescent_gpu(gem_fd); /* Don't leak busy bo into the next phase */
->>> @@ -1597,11 +1602,11 @@ test_frequency(int gem_fd)
->>> 	 * Set GPU to max frequency and read PMU counters.
->>> 	 */
->>> 	igt_require(igt_sysfs_set_u32(sysfs, "gt_max_freq_mhz", max_freq));
->>> -	igt_require(igt_sysfs_get_u32(sysfs, "gt_max_freq_mhz") == max_freq);
->>> 	igt_require(igt_sysfs_set_u32(sysfs, "gt_boost_freq_mhz", boost_freq));
->>> -	igt_require(igt_sysfs_get_u32(sysfs, "gt_boost_freq_mhz") == boost_freq);
->>> -
->>> 	igt_require(igt_sysfs_set_u32(sysfs, "gt_min_freq_mhz", max_freq));
->>> +	wait_freq_set();
->>> +	igt_require(igt_sysfs_get_u32(sysfs, "gt_max_freq_mhz") == max_freq);
->>> +	igt_require(igt_sysfs_get_u32(sysfs, "gt_boost_freq_mhz") == boost_freq);
->>> 	igt_require(igt_sysfs_get_u32(sysfs, "gt_min_freq_mhz") == max_freq);
->>> 		gem_quiescent_gpu(gem_fd);
->>> @@ -1613,6 +1618,7 @@ test_frequency(int gem_fd)
->>> 		max[0] = 1e9*(val[0] - start[0]) / slept;
->>> 	max[1] = 1e9*(val[1] - start[1]) / slept;
->>> +	max_req = igt_sysfs_get_u32(sysfs, "gt_cur_freq_mhz");
->>
->> For the max freq use case we had 15% downward tolerance to account for
->> thermally challenged.
->>
->> a) Is that not enough with SLPC? Like there is a new "failure" mode?
->>
->> b) Is the extra 10% needed with the sysfs readback added? Aka do we need
->> both?
->>
->>> 		igt_spin_free(gem_fd, spin);
->>> 	gem_quiescent_gpu(gem_fd);
->>> @@ -1621,6 +1627,7 @@ test_frequency(int gem_fd)
->>> 	 * Restore min/max.
->>> 	 */
->>> 	igt_sysfs_set_u32(sysfs, "gt_min_freq_mhz", min_freq);
->>> +	wait_freq_set();
->>> 	if (igt_sysfs_get_u32(sysfs, "gt_min_freq_mhz") != min_freq)
->>> 		igt_warn("Unable to restore min frequency to saved value [%u MHz], now %u MHz\n",
->>> 			 min_freq, igt_sysfs_get_u32(sysfs, "gt_min_freq_mhz"));
->>> @@ -1633,12 +1640,12 @@ test_frequency(int gem_fd)
->>> 	igt_info("Max frequency: requested %.1f, actual %.1f\n",
->>> 		 max[0], max[1]);
->>>    -	assert_within_epsilon(min[0], min_freq, tolerance);
->>> +	assert_within_epsilon(min[0], min_req, tolerance);
->>> 	/*
->>> 	 * On thermally throttled devices we cannot be sure maximum frequency
->>> 	 * can be reached so use larger tolerance downards.
->>> 	 */
->>> -	__assert_within_epsilon(max[0], max_freq, tolerance, 0.15f);
->>> +	__assert_within_epsilon(max[0], max_req, tolerance, 0.15f);
->>
->>
->> This 0.15f is what I was talking about above.
->>
->> Regards,
->>
->> Tvrtko
->>
->>>    }
->>>      static void
+>   
+>   static void parallel_thread(int i915, unsigned int flags,
+>   			    struct i915_engine_class_instance *siblings,
+> @@ -2871,6 +2890,8 @@ static void parallel_thread(int i915, unsigned int flags,
+>   	uint32_t target_bo_idx = 0;
+>   	uint32_t first_bb_idx = 1;
+>   	intel_ctx_cfg_t cfg;
+> +	uint32_t dmabuf_handle;
+> +	int dmabuf;
+>   
+>   	igt_assert(bb_per_execbuf < 32);
+>   
+> @@ -2924,11 +2945,20 @@ static void parallel_thread(int i915, unsigned int flags,
+>   	execbuf.buffers_ptr = to_user_pointer(obj);
+>   	execbuf.rsvd1 = ctx->id;
+>   
+> +	if (flags & PARALLEL_OUT_FENCE_DMABUF) {
+> +		dmabuf_handle = gem_create(i915, 4096);
+> +		dmabuf = prime_handle_to_fd(i915, dmabuf_handle);
+> +	}
+> +
+>   	for (n = 0; n < PARALLEL_BB_LOOP_COUNT; ++n) {
+>   		execbuf.flags &= ~0x3full;
+>   		gem_execbuf_wr(i915, &execbuf);
+>   
+>   		if (flags & PARALLEL_OUT_FENCE) {
+> +			if (flags & PARALLEL_OUT_FENCE_DMABUF)
+> +				dmabuf_import_sync_file(dmabuf, DMA_BUF_SYNC_WRITE,
+> +							execbuf.rsvd2 >> 32);
+> +
+>   			igt_assert_eq(sync_fence_wait(execbuf.rsvd2 >> 32,
+>   						      1000), 0);
+>   			igt_assert_eq(sync_fence_status(execbuf.rsvd2 >> 32), 1);
+> @@ -2959,6 +2989,11 @@ static void parallel_thread(int i915, unsigned int flags,
+>   	if (fence)
+>   		close(fence);
+>   
+> +	if (flags & PARALLEL_OUT_FENCE_DMABUF) {
+> +		gem_close(i915, dmabuf_handle);
+> +		close(dmabuf);
+> +	}
+> +
+>   	check_bo(i915, obj[target_bo_idx].handle,
+>   		 bb_per_execbuf * PARALLEL_BB_LOOP_COUNT, true);
+>   
+> @@ -3420,6 +3455,10 @@ igt_main
+>   		igt_subtest("parallel-out-fence")
+>   			parallel(i915, PARALLEL_OUT_FENCE);
+>   
+> +		igt_subtest("parallel-out-fence-import-dmabuf")
+> +			parallel(i915, PARALLEL_OUT_FENCE |
+> +				 PARALLEL_OUT_FENCE_DMABUF);
+> +
+>   		igt_subtest("parallel-keep-in-fence")
+>   			parallel(i915, PARALLEL_OUT_FENCE | PARALLEL_IN_FENCE);
+>   
