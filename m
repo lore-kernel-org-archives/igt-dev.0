@@ -1,14 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3CBDF10E214
- for <igt-dev@lists.freedesktop.org>; Fri, 25 Nov 2022 09:08:51 +0000 (UTC)
-From: Jeevan B <jeevan.b@intel.com>
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 36A6D10E6EB
+ for <igt-dev@lists.freedesktop.org>; Thu, 24 Nov 2022 11:55:40 +0000 (UTC)
+From: Swati Sharma <swati2.sharma@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Fri, 25 Nov 2022 14:34:01 +0530
-Message-Id: <20221125090401.13539-1-jeevan.b@intel.com>
+Date: Thu, 24 Nov 2022 17:27:13 +0530
+Message-Id: <20221124115714.31557-3-swati2.sharma@intel.com>
+In-Reply-To: <20221124115714.31557-1-swati2.sharma@intel.com>
+References: <20221124115714.31557-1-swati2.sharma@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t] lib/mtl: Add Meteorlake platform definition
+Subject: [igt-dev] [PATCH i-g-t v2 2/3] tests/i915/kms_dsc: Prep work for
+ extending val support for VDSC YCbCr420
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,60 +23,116 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Signed-off-by: Jeevan B <jeevan.b@intel.com>
----
- lib/intel_chipset.h     |  2 ++
- lib/intel_device_info.c | 11 +++++++++++
- 2 files changed, 13 insertions(+)
+Functions are modified to accommodate changes for VDSC YCbCr420.
 
-diff --git a/lib/intel_chipset.h b/lib/intel_chipset.h
-index d7a6ff19..9b39472a 100644
---- a/lib/intel_chipset.h
-+++ b/lib/intel_chipset.h
-@@ -85,6 +85,7 @@ struct intel_device_info {
- 	bool is_raptorlake_s : 1;
- 	bool is_alderlake_p : 1;
- 	bool is_alderlake_n : 1;
-+	bool is_meteorlake : 1;
- 	const char *codename;
- };
+v2: -Removed flag (Ankit)
+
+Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
+---
+ tests/i915/kms_dsc.c | 25 +++++++++++++++++--------
+ 1 file changed, 17 insertions(+), 8 deletions(-)
+
+diff --git a/tests/i915/kms_dsc.c b/tests/i915/kms_dsc.c
+index 330fc050b..6fef764de 100644
+--- a/tests/i915/kms_dsc.c
++++ b/tests/i915/kms_dsc.c
+@@ -61,6 +61,7 @@ typedef struct {
+ 	igt_output_t *output;
+ 	int input_bpc;
+ 	int n_pipes;
++	int disp_ver;
+ 	enum pipe pipe;
+ } data_t;
  
-@@ -194,6 +195,7 @@ void intel_check_pch(void);
- #define IS_RAPTORLAKE_S(devid)	(intel_get_device_info(devid)->is_raptorlake_s)
- #define IS_ALDERLAKE_P(devid)	(intel_get_device_info(devid)->is_alderlake_p)
- #define IS_ALDERLAKE_N(devid)	(intel_get_device_info(devid)->is_alderlake_n)
-+#define IS_METEORLAKE(devid)	(intel_get_device_info(devid)->is_meteorlake)
+@@ -91,7 +92,7 @@ static void force_dsc_enable(data_t *data)
+ 	igt_debug("Forcing DSC enable on %s\n", data->output->name);
+ 	ret = igt_force_dsc_enable(data->drm_fd,
+ 				   data->output->name);
+-	igt_assert_f(ret > 0, "debugfs_write failed");
++	igt_assert_f(ret > 0, "forcing dsc enable debugfs_write failed\n");
+ }
  
- #define IS_GEN(devid, x)	(intel_get_device_info(devid)->graphics_ver == x)
- #define AT_LEAST_GEN(devid, x)	(intel_get_device_info(devid)->graphics_ver >= x)
-diff --git a/lib/intel_device_info.c b/lib/intel_device_info.c
-index ebfcea73..68dd17ee 100644
---- a/lib/intel_device_info.c
-+++ b/lib/intel_device_info.c
-@@ -439,6 +439,15 @@ static const struct intel_device_info intel_ats_m_info = {
- 	.has_flatccs = true,
- };
+ static void force_dsc_enable_bpc(data_t *data)
+@@ -103,7 +104,7 @@ static void force_dsc_enable_bpc(data_t *data)
+ 	ret = igt_force_dsc_enable_bpc(data->drm_fd,
+ 				       data->output->name,
+ 				       data->input_bpc);
+-	igt_assert_f(ret > 0, "debugfs_write failed");
++	igt_assert_f(ret > 0, "forcing input dsc bpc debugfs_write failed\n");
+ }
  
-+static const struct intel_device_info intel_meteorlake_info = {
-+	.graphics_ver = 12,
-+	.graphics_rel = 70,
-+	.display_ver = 14,
-+	.has_4tile = true,
-+	.is_meteorlake = true,
-+	.codename = "meteorlake"
-+};
+ static void save_force_dsc_en(data_t *data)
+@@ -222,7 +223,8 @@ static void test_cleanup(data_t *data)
+ }
+ 
+ /* re-probe connectors and do a modeset with DSC */
+-static void update_display(data_t *data, enum dsc_test_type test_type, unsigned int plane_format)
++static void update_display(data_t *data, enum dsc_test_type test_type,
++			   unsigned int plane_format)
+ {
+ 	bool enabled;
+ 	igt_plane_t *primary;
+@@ -324,6 +326,12 @@ static void test_dsc(data_t *data, enum dsc_test_type test_type, int bpc,
+ 	}
+ }
+ 
++static void run_test(data_t *data, enum dsc_test_type test_type, int bpc,
++		     unsigned int plane_format)
++{
++	test_dsc(data, test_type, bpc, plane_format);
++}
 +
- static const struct pci_id_match intel_device_match[] = {
- 	INTEL_I810_IDS(&intel_i810_info),
- 	INTEL_I815_IDS(&intel_i815_info),
-@@ -538,6 +547,8 @@ static const struct pci_id_match intel_device_match[] = {
+ igt_main
+ {
+ 	data_t data = {};
+@@ -332,11 +340,12 @@ igt_main
+ 	igt_fixture {
+ 		data.drm_fd = drm_open_driver_master(DRIVER_INTEL);
+ 		data.devid = intel_get_drm_devid(data.drm_fd);
++		data.disp_ver = intel_display_ver(data.devid);
+ 		kmstest_set_vt_graphics_mode();
+ 		igt_install_exit_handler(kms_dsc_exit_handler);
+ 		igt_display_require(&data.display, data.drm_fd);
+ 		igt_display_require_output(&data.display);
+-		igt_require(intel_display_ver(data.devid) >= 11);
++		igt_require(data.disp_ver >= 11);
+ 		data.n_pipes = 0;
+ 		for_each_pipe(&data.display, i)
+ 			data.n_pipes++;
+@@ -346,14 +355,14 @@ igt_main
+ 		     "by a connector by forcing DSC on all connectors that support it "
+ 		     "with default parameters");
+ 	igt_subtest_with_dynamic("basic-dsc")
+-			test_dsc(&data, TEST_DSC_BASIC, 0, DRM_FORMAT_XRGB8888);
++			run_test(&data, TEST_DSC_BASIC, 0, DRM_FORMAT_XRGB8888);
  
- 	INTEL_ATS_M_IDS(&intel_ats_m_info),
+ 	igt_describe("Tests basic display stream compression functionality if supported "
+ 		     "by a connector by forcing DSC on all connectors that support it "
+ 		     "with default parameters and creating fb with diff formats");
+ 	igt_subtest_with_dynamic("dsc-with-formats") {
+ 		for (int k = 0; k < ARRAY_SIZE(format_list); k++)
+-			test_dsc(&data, TEST_DSC_BASIC, 0, format_list[k].format);
++			run_test(&data, TEST_DSC_BASIC, 0, format_list[k].format);
+ 	}
  
-+	INTEL_MTL_IDS(&intel_meteorlake_info),
-+
- 	INTEL_VGA_DEVICE(PCI_MATCH_ANY, &intel_generic_info),
- };
+ 	igt_describe("Tests basic display stream compression functionality if supported "
+@@ -361,7 +370,7 @@ igt_main
+ 		     "with certain input BPC for the connector");
+ 	igt_subtest_with_dynamic("dsc-with-bpc") {
+ 		for (int j = 0; j < ARRAY_SIZE(bpc_list); j++)
+-			test_dsc(&data, TEST_DSC_BPC, bpc_list[j], DRM_FORMAT_XRGB8888);
++			run_test(&data, TEST_DSC_BPC, bpc_list[j], DRM_FORMAT_XRGB8888);
+ 	}
  
+ 	igt_describe("Tests basic display stream compression functionality if supported "
+@@ -370,7 +379,7 @@ igt_main
+ 	igt_subtest_with_dynamic("dsc-with-bpc-formats") {
+ 		for (int j = 0; j < ARRAY_SIZE(bpc_list); j++) {
+ 			for (int k = 0; k < ARRAY_SIZE(format_list); k++) {
+-				test_dsc(&data, TEST_DSC_BPC, bpc_list[j], format_list[k].format);
++				run_test(&data, TEST_DSC_BPC, bpc_list[j], format_list[k].format);
+ 			}
+ 		}
+ 	}
 -- 
-2.36.0
+2.25.1
