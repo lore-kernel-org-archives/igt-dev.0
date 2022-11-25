@@ -1,14 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D4C0E10E6E0
- for <igt-dev@lists.freedesktop.org>; Thu, 24 Nov 2022 11:55:39 +0000 (UTC)
-From: Swati Sharma <swati2.sharma@intel.com>
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3CBDF10E214
+ for <igt-dev@lists.freedesktop.org>; Fri, 25 Nov 2022 09:08:51 +0000 (UTC)
+From: Jeevan B <jeevan.b@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Thu, 24 Nov 2022 17:27:11 +0530
-Message-Id: <20221124115714.31557-1-swati2.sharma@intel.com>
+Date: Fri, 25 Nov 2022 14:34:01 +0530
+Message-Id: <20221125090401.13539-1-jeevan.b@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v2 0/3] VDSC YCbCr420
+Subject: [igt-dev] [PATCH i-g-t] lib/mtl: Add Meteorlake platform definition
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,20 +20,60 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Extend validation support for VDSC YCbCr420.
+Signed-off-by: Jeevan B <jeevan.b@intel.com>
+---
+ lib/intel_chipset.h     |  2 ++
+ lib/intel_device_info.c | 11 +++++++++++
+ 2 files changed, 13 insertions(+)
 
-v2: -addressed review comments by Ankit on patch[1][2]
-
-Swati Sharma (3):
-  lib/kms: Add helpers for VDSC YCbCr420 debugfs entry
-  tests/i915/kms_dsc: Prep work for extending val support for VDSC
-    YCbCr420
-  tests/i915/kms_dsc: Enable validation for VDSC YCbCr420
-
- lib/igt_kms.c        |  67 ++++++++++++++
- lib/igt_kms.h        |   7 +-
- tests/i915/kms_dsc.c | 216 ++++++++++++++++++++++++++++++++-----------
- 3 files changed, 234 insertions(+), 56 deletions(-)
-
+diff --git a/lib/intel_chipset.h b/lib/intel_chipset.h
+index d7a6ff19..9b39472a 100644
+--- a/lib/intel_chipset.h
++++ b/lib/intel_chipset.h
+@@ -85,6 +85,7 @@ struct intel_device_info {
+ 	bool is_raptorlake_s : 1;
+ 	bool is_alderlake_p : 1;
+ 	bool is_alderlake_n : 1;
++	bool is_meteorlake : 1;
+ 	const char *codename;
+ };
+ 
+@@ -194,6 +195,7 @@ void intel_check_pch(void);
+ #define IS_RAPTORLAKE_S(devid)	(intel_get_device_info(devid)->is_raptorlake_s)
+ #define IS_ALDERLAKE_P(devid)	(intel_get_device_info(devid)->is_alderlake_p)
+ #define IS_ALDERLAKE_N(devid)	(intel_get_device_info(devid)->is_alderlake_n)
++#define IS_METEORLAKE(devid)	(intel_get_device_info(devid)->is_meteorlake)
+ 
+ #define IS_GEN(devid, x)	(intel_get_device_info(devid)->graphics_ver == x)
+ #define AT_LEAST_GEN(devid, x)	(intel_get_device_info(devid)->graphics_ver >= x)
+diff --git a/lib/intel_device_info.c b/lib/intel_device_info.c
+index ebfcea73..68dd17ee 100644
+--- a/lib/intel_device_info.c
++++ b/lib/intel_device_info.c
+@@ -439,6 +439,15 @@ static const struct intel_device_info intel_ats_m_info = {
+ 	.has_flatccs = true,
+ };
+ 
++static const struct intel_device_info intel_meteorlake_info = {
++	.graphics_ver = 12,
++	.graphics_rel = 70,
++	.display_ver = 14,
++	.has_4tile = true,
++	.is_meteorlake = true,
++	.codename = "meteorlake"
++};
++
+ static const struct pci_id_match intel_device_match[] = {
+ 	INTEL_I810_IDS(&intel_i810_info),
+ 	INTEL_I815_IDS(&intel_i815_info),
+@@ -538,6 +547,8 @@ static const struct pci_id_match intel_device_match[] = {
+ 
+ 	INTEL_ATS_M_IDS(&intel_ats_m_info),
+ 
++	INTEL_MTL_IDS(&intel_meteorlake_info),
++
+ 	INTEL_VGA_DEVICE(PCI_MATCH_ANY, &intel_generic_info),
+ };
+ 
 -- 
-2.25.1
+2.36.0
