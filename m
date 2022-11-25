@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DA9AE10E741
- for <igt-dev@lists.freedesktop.org>; Fri, 25 Nov 2022 11:56:29 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 68D8310E73F
+ for <igt-dev@lists.freedesktop.org>; Fri, 25 Nov 2022 11:56:26 +0000 (UTC)
 From: Swati Sharma <swati2.sharma@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Fri, 25 Nov 2022 17:28:06 +0530
-Message-Id: <20221125115808.13394-5-swati2.sharma@intel.com>
+Date: Fri, 25 Nov 2022 17:28:04 +0530
+Message-Id: <20221125115808.13394-3-swati2.sharma@intel.com>
 In-Reply-To: <20221125115808.13394-1-swati2.sharma@intel.com>
 References: <20221125115808.13394-1-swati2.sharma@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 4/6] lib/kms: Add helpers for VDSC
- Fractional BPP debugfs entry
+Subject: [igt-dev] [PATCH i-g-t 2/6] tests/i915/kms_dsc: Prep work for
+ extending val support for VDSC YCbCr420
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,155 +23,114 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Helper functions are added for getting/setting VDSC Fractional BPP
-debugfs entry.
+Functions are modified to accommodate changes for VDSC YCbCr420.
 
 Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
 ---
- lib/igt_kms.c | 78 +++++++++++++++++++++++++++++++++++++++++++++++++++
- lib/igt_kms.h |  4 +++
- 2 files changed, 82 insertions(+)
+ tests/i915/kms_dsc.c | 25 +++++++++++++++++--------
+ 1 file changed, 17 insertions(+), 8 deletions(-)
 
-diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-index c7135790b..93f45410c 100644
---- a/lib/igt_kms.c
-+++ b/lib/igt_kms.c
-@@ -5592,6 +5592,20 @@ bool check_dsc_ycbcr420_debugfs(int drmfd, char *connector_name,
- 	return strstr(buf, check_str);
+diff --git a/tests/i915/kms_dsc.c b/tests/i915/kms_dsc.c
+index 330fc050b..6fef764de 100644
+--- a/tests/i915/kms_dsc.c
++++ b/tests/i915/kms_dsc.c
+@@ -61,6 +61,7 @@ typedef struct {
+ 	igt_output_t *output;
+ 	int input_bpc;
+ 	int n_pipes;
++	int disp_ver;
+ 	enum pipe pipe;
+ } data_t;
+ 
+@@ -91,7 +92,7 @@ static void force_dsc_enable(data_t *data)
+ 	igt_debug("Forcing DSC enable on %s\n", data->output->name);
+ 	ret = igt_force_dsc_enable(data->drm_fd,
+ 				   data->output->name);
+-	igt_assert_f(ret > 0, "debugfs_write failed");
++	igt_assert_f(ret > 0, "forcing dsc enable debugfs_write failed\n");
  }
  
-+static
-+bool check_dsc_fractional_bpp_debugfs(int drmfd, char *connector_name,
-+				      const char *check_str)
-+{
-+	char file_name[128] = {0};
-+	char buf[512];
-+
-+	sprintf(file_name, "%s/i915_dsc_fractional_bpp", connector_name);
-+
-+	igt_debugfs_read(drmfd, file_name, buf);
-+
-+	return strstr(buf, check_str);
-+}
-+
- static
- int write_dsc_debugfs(int drmfd, char *connector_name,
- 		      const char *file_name,
-@@ -5623,6 +5637,29 @@ bool igt_is_dsc_supported(int drmfd, char *connector_name)
- 	return check_dsc_debugfs(drmfd, connector_name, "DSC_Sink_Support: yes");
+ static void force_dsc_enable_bpc(data_t *data)
+@@ -103,7 +104,7 @@ static void force_dsc_enable_bpc(data_t *data)
+ 	ret = igt_force_dsc_enable_bpc(data->drm_fd,
+ 				       data->output->name,
+ 				       data->input_bpc);
+-	igt_assert_f(ret > 0, "debugfs_write failed");
++	igt_assert_f(ret > 0, "forcing input dsc bpc debugfs_write failed\n");
  }
  
-+/*
-+ * igt_get_dsc_fractional_bpp_supported:
-+ * @drmfd: A drm file descriptor
-+ * @connector_name: Name of the libdrm connector we're going to use
-+ *
-+ * Returns: The dsc sink bpp precision.
-+ */
-+int igt_get_dsc_fractional_bpp_supported(int drmfd, char *connector_name)
-+{
-+	char file_name[128] = {0};
-+	char buf[24];
-+	char *start_loc;
-+	int bpp_prec;
-+
-+	sprintf(file_name, "%s/i915_dsc_fec_support", connector_name);
-+	igt_debugfs_read(drmfd, file_name, buf);
-+
-+	igt_assert(start_loc = strstr(buf, "DSC_Sink_BPP_Precision: "));
-+	igt_assert_eq(sscanf(start_loc, "DSC_Sink_BPP_Precision: %d", &bpp_prec), 1);
-+
-+	return bpp_prec;
-+}
-+
- /*
-  * igt_is_dsc_ycbcr420_supported:
-  * @drmfd: A drm file descriptor
-@@ -5685,6 +5722,19 @@ bool igt_is_force_dsc_ycbcr420_enabled(int drmfd, char *connector_name)
- 	return check_dsc_ycbcr420_debugfs(drmfd, connector_name, "Force_DSC_YCBCR420_Enable: yes");
+ static void save_force_dsc_en(data_t *data)
+@@ -222,7 +223,8 @@ static void test_cleanup(data_t *data)
  }
  
-+/*
-+ * igt_is_force_dsc_fractional_bpp_enabled:
-+ * @drmfd: A drm file descriptor
-+ * @connector_name: Name of the libdrm connector we're going to use
-+ *
-+ * Returns: True if DSC Fractional BPP is force enabled (via debugfs) for the given connector,
-+ * false otherwise.
-+ */
-+bool igt_is_force_dsc_fractional_bpp_enabled(int drmfd, char *connector_name)
-+{
-+	return check_dsc_fractional_bpp_debugfs(drmfd, connector_name, "Force_DSC_Fractional_BPP_Enable: yes");
-+}
-+
- /*
-  * igt_force_dsc_enable:
-  * @drmfd: A drm file descriptor
-@@ -5709,6 +5759,18 @@ int igt_force_dsc_ycbcr420_enable(int drmfd, char *connector_name)
- 	return write_dsc_debugfs(drmfd, connector_name, "i915_dsc_ycbcr420", "1");
+ /* re-probe connectors and do a modeset with DSC */
+-static void update_display(data_t *data, enum dsc_test_type test_type, unsigned int plane_format)
++static void update_display(data_t *data, enum dsc_test_type test_type,
++			   unsigned int plane_format)
+ {
+ 	bool enabled;
+ 	igt_plane_t *primary;
+@@ -324,6 +326,12 @@ static void test_dsc(data_t *data, enum dsc_test_type test_type, int bpc,
+ 	}
  }
  
-+/*
-+ * igt_force_dsc_fractional_bpp_enable:
-+ * @drmfd: A drm file descriptor
-+ * @connector_name: Name of the libdrm connector we're going to use
-+ *
-+ * Returns: 1 on success or negative error code, in case of failure.
-+ */
-+int igt_force_dsc_fractional_bpp_enable(int drmfd, char *connector_name)
++static void run_test(data_t *data, enum dsc_test_type test_type, int bpc,
++		     unsigned int plane_format)
 +{
-+	return write_dsc_debugfs(drmfd, connector_name, "i915_dsc_fractional_bpp", "1");
++	test_dsc(data, test_type, bpc, plane_format);
 +}
 +
- /*
-  * igt_force_dsc_enable_bpc:
-  * @drmfd: A drm file descriptor
-@@ -5758,6 +5820,22 @@ int igt_get_dsc_ycbcr420_debugfs_fd(int drmfd, char *connector_name)
- 	return openat(igt_debugfs_dir(drmfd), file_name, O_WRONLY);
- }
+ igt_main
+ {
+ 	data_t data = {};
+@@ -332,11 +340,12 @@ igt_main
+ 	igt_fixture {
+ 		data.drm_fd = drm_open_driver_master(DRIVER_INTEL);
+ 		data.devid = intel_get_drm_devid(data.drm_fd);
++		data.disp_ver = intel_display_ver(data.devid);
+ 		kmstest_set_vt_graphics_mode();
+ 		igt_install_exit_handler(kms_dsc_exit_handler);
+ 		igt_display_require(&data.display, data.drm_fd);
+ 		igt_display_require_output(&data.display);
+-		igt_require(intel_display_ver(data.devid) >= 11);
++		igt_require(data.disp_ver >= 11);
+ 		data.n_pipes = 0;
+ 		for_each_pipe(&data.display, i)
+ 			data.n_pipes++;
+@@ -346,14 +355,14 @@ igt_main
+ 		     "by a connector by forcing DSC on all connectors that support it "
+ 		     "with default parameters");
+ 	igt_subtest_with_dynamic("basic-dsc")
+-			test_dsc(&data, TEST_DSC_BASIC, 0, DRM_FORMAT_XRGB8888);
++			run_test(&data, TEST_DSC_BASIC, 0, DRM_FORMAT_XRGB8888);
  
-+/*
-+ * igt_get_dsc_fractional_bpp_debugfs_fd:
-+ * @drmfd: A drm file descriptor
-+ * @connector_name: Name of the libdrm connector we're going to use
-+ *
-+ * Returns: fd of the DSC Fractional BPP debugfs for the given connector, else returns -1.
-+ */
-+int igt_get_dsc_fractional_bpp_debugfs_fd(int drmfd, char *connector_name)
-+{
-+	char file_name[128] = {0};
-+
-+	sprintf(file_name, "%s/i915_dsc_fractional_bpp", connector_name);
-+
-+	return openat(igt_debugfs_dir(drmfd), file_name, O_WRONLY);
-+}
-+
- /*
-  * igt_get_output_max_bpc:
-  * @drmfd: A drm file descriptor
-diff --git a/lib/igt_kms.h b/lib/igt_kms.h
-index ccd8adf2c..990157bbc 100644
---- a/lib/igt_kms.h
-+++ b/lib/igt_kms.h
-@@ -977,15 +977,19 @@ bool igt_override_all_active_output_modes_to_fit_bw(igt_display_t *display);
+ 	igt_describe("Tests basic display stream compression functionality if supported "
+ 		     "by a connector by forcing DSC on all connectors that support it "
+ 		     "with default parameters and creating fb with diff formats");
+ 	igt_subtest_with_dynamic("dsc-with-formats") {
+ 		for (int k = 0; k < ARRAY_SIZE(format_list); k++)
+-			test_dsc(&data, TEST_DSC_BASIC, 0, format_list[k].format);
++			run_test(&data, TEST_DSC_BASIC, 0, format_list[k].format);
+ 	}
  
- bool igt_is_dsc_supported(int drmfd, char *connector_name);
- bool igt_is_dsc_ycbcr420_supported(int drmfd, char *connector_name);
-+int igt_get_dsc_fractional_bpp_supported(int drmfd, char *connector_name);
- bool igt_is_fec_supported(int drmfd, char *connector_name);
- bool igt_is_dsc_enabled(int drmfd, char *connector_name);
- bool igt_is_force_dsc_enabled(int drmfd, char *connector_name);
- bool igt_is_force_dsc_ycbcr420_enabled(int drmfd, char *connector_name);
-+bool igt_is_force_dsc_fractional_bpp_enabled(int drmfd, char *connector_name);
- int igt_force_dsc_enable(int drmfd, char *connector_name);
- int igt_force_dsc_enable_bpc(int drmfd, char *connector_name, int bpc);
- int igt_force_dsc_ycbcr420_enable(int drmfd, char *connector_name);
-+int igt_force_dsc_fractional_bpp_enable(int drmfd, char *connector_name);
- int igt_get_dsc_debugfs_fd(int drmfd, char *connector_name);
- int igt_get_dsc_ycbcr420_debugfs_fd(int drmfd, char *connector_name);
-+int igt_get_dsc_fractional_bpp_debugfs_fd(int drmfd, char *connector_name);
+ 	igt_describe("Tests basic display stream compression functionality if supported "
+@@ -361,7 +370,7 @@ igt_main
+ 		     "with certain input BPC for the connector");
+ 	igt_subtest_with_dynamic("dsc-with-bpc") {
+ 		for (int j = 0; j < ARRAY_SIZE(bpc_list); j++)
+-			test_dsc(&data, TEST_DSC_BPC, bpc_list[j], DRM_FORMAT_XRGB8888);
++			run_test(&data, TEST_DSC_BPC, bpc_list[j], DRM_FORMAT_XRGB8888);
+ 	}
  
- unsigned int igt_get_output_max_bpc(int drmfd, char *connector_name);
- unsigned int igt_get_pipe_current_bpc(int drmfd, enum pipe pipe);
+ 	igt_describe("Tests basic display stream compression functionality if supported "
+@@ -370,7 +379,7 @@ igt_main
+ 	igt_subtest_with_dynamic("dsc-with-bpc-formats") {
+ 		for (int j = 0; j < ARRAY_SIZE(bpc_list); j++) {
+ 			for (int k = 0; k < ARRAY_SIZE(format_list); k++) {
+-				test_dsc(&data, TEST_DSC_BPC, bpc_list[j], format_list[k].format);
++				run_test(&data, TEST_DSC_BPC, bpc_list[j], format_list[k].format);
+ 			}
+ 		}
+ 	}
 -- 
 2.25.1
