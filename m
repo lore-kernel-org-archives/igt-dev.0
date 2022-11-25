@@ -1,20 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 250A410E7D8
- for <igt-dev@lists.freedesktop.org>; Fri, 25 Nov 2022 14:24:51 +0000 (UTC)
-Date: Fri, 25 Nov 2022 13:24:33 -0100
-From: Melissa Wen <mwen@igalia.com>
-To: =?utf-8?B?TWHDrXJh?= Canal <mcanal@igalia.com>
-Message-ID: <20221125142433.5bwuwj3g4ocicdfw@mail.igalia.com>
-References: <20221115202101.278995-1-mcanal@igalia.com>
- <20221115202101.278995-6-mcanal@igalia.com>
+Date: Fri, 25 Nov 2022 10:24:30 +0100
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Message-ID: <Y4CJzrkdF+jQapMs@kamilkon-desk1>
+References: <20221118155335.635430-1-matthew.auld@intel.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
- protocol="application/pgp-signature"; boundary="wf5nzc5svny6dnhc"
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20221115202101.278995-6-mcanal@igalia.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 5/5] tests/vc4: Skip VC4 tests if they
- are running on BCM2711/RaspberryPi4
+In-Reply-To: <20221118155335.635430-1-matthew.auld@intel.com>
+Subject: Re: [igt-dev] [Intel-gfx] [PATCH i-g-t]
+ tests/i915/gem_exec_balancer: exercise dmabuf import
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,214 +17,129 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: petri.latvala@intel.com, Emma Anholt <emma@anholt.net>,
- igt-dev@lists.freedesktop.org, Maxime Ripard <maxime@cerno.tech>
+Cc: intel-gfx@lists.freedesktop.org, Nirmoy Das <nirmoy.das@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
+Hi Matthew,
 
---wf5nzc5svny6dnhc
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+few nits, see below.
 
-O 11/15, Ma=EDra Canal wrote:
-> Currently, if the VC4 tests are run on BCM2711/Raspberry Pi 4, they will
-> fail with no warning. So, add igt_require to the VC4 tests to check if
-> VC4 has rendering capabilities before running the tests.
->=20
-> In order to check if VC4 is running on BCM2711/Raspberry Pi 4, create a
-> function that checks the return of DRM_VC4_GET_PARAM IOCTL when the
-> parameter DRM_VC4_PARAM_V3D_IDENT0 is asked. If the IOCTL fails with
-> errno EINVAL, it means that the tests are being run on
-> BCM2711/Raspberry Pi 4.
->=20
-
-Should we include somehow a feature-unsupported subtest before
-skipping them? I think it's good to check the driver is able to refuse
-those ioctls correctly in case the RENDER feature is not supported.
-And after this validation we can skip the subtests related to this
-feature. Sounds clearer to me, what you think?
-
-> Signed-off-by: Ma=EDra Canal <mcanal@igalia.com>
+On 2022-11-18 at 15:53:35 +0000, Matthew Auld wrote:
+> With parallel submission it should be easy to get a fence array as the
+> output fence. Try importing this into dma-buf reservation object, to see
+> if anything explodes.
+> 
+> References: https://gitlab.freedesktop.org/drm/intel/-/issues/7532
+> Signed-off-by: Matthew Auld <matthew.auld@intel.com>
+> Cc: Andrzej Hajda <andrzej.hajda@intel.com>
+> Cc: Nirmoy Das <nirmoy.das@intel.com>
 > ---
->  lib/igt_vc4.c               | 8 ++++++++
->  lib/igt_vc4.h               | 1 +
->  tests/vc4/vc4_create_bo.c   | 1 +
->  tests/vc4/vc4_dmabuf_poll.c | 4 +++-
->  tests/vc4/vc4_label_bo.c    | 4 +++-
->  tests/vc4/vc4_perfmon.c     | 4 +++-
->  tests/vc4/vc4_tiling.c      | 4 +++-
->  tests/vc4/vc4_wait_bo.c     | 1 +
->  tests/vc4/vc4_wait_seqno.c  | 4 +++-
->  9 files changed, 26 insertions(+), 5 deletions(-)
->=20
-> diff --git a/lib/igt_vc4.c b/lib/igt_vc4.c
-> index f73f8a86..2df58e4f 100644
-> --- a/lib/igt_vc4.c
-> +++ b/lib/igt_vc4.c
-> @@ -59,6 +59,14 @@ bool igt_vc4_is_tiled(uint64_t modifier)
->  	}
->  }
-> =20
-> +bool igt_vc4_is_v3d(int fd)
-> +{
-> +	struct drm_vc4_get_param arg =3D {
-> +		.param =3D DRM_VC4_PARAM_V3D_IDENT0,
-> +	};
-> +	return !(igt_ioctl(fd, DRM_IOCTL_VC4_GET_PARAM, &arg) =3D=3D -1 && errn=
-o =3D=3D EINVAL);
-
-Looking the current code, I was expecting a ENODEV is returned before
-the driver returns a EINVAL. Is it not the way that the driver handles
-it in previous kernel version?
-> +}
+>  tests/i915/gem_exec_balancer.c | 39 ++++++++++++++++++++++++++++++++++
+>  1 file changed, 39 insertions(+)
+> 
+> diff --git a/tests/i915/gem_exec_balancer.c b/tests/i915/gem_exec_balancer.c
+> index 4300dbd1..fdae8de5 100644
+> --- a/tests/i915/gem_exec_balancer.c
+> +++ b/tests/i915/gem_exec_balancer.c
+> @@ -37,6 +37,7 @@
+>  #include "igt_sysfs.h"
+>  #include "igt_types.h"
+>  #include "sw_sync.h"
+> +#include <linux/dma-buf.h>
+>  
+>  IGT_TEST_DESCRIPTION("Exercise in-kernel load-balancing");
+>  
+> @@ -2856,6 +2857,24 @@ static void logical_sort_siblings(int i915,
+>  #define PARALLEL_SUBMIT_FENCE		(0x1 << 3)
+>  #define PARALLEL_CONTEXTS		(0x1 << 4)
+>  #define PARALLEL_VIRTUAL		(0x1 << 5)
+> +#define PARALLEL_OUT_FENCE_DMABUF	(0x1 << 6)
 > +
->  /**
->   * igt_vc4_get_cleared_bo:
->   * @fd: device file descriptor
-> diff --git a/lib/igt_vc4.h b/lib/igt_vc4.h
-> index 71f213e6..384d7d6e 100644
-> --- a/lib/igt_vc4.h
-> +++ b/lib/igt_vc4.h
-> @@ -34,6 +34,7 @@ void *igt_vc4_mmap_bo(int fd, uint32_t handle, uint32_t=
- size, unsigned prot);
->  int igt_vc4_get_param(int fd, uint32_t param, uint64_t *val);
->  bool igt_vc4_purgeable_bo(int fd, int handle, bool purgeable);
->  bool igt_vc4_is_tiled(uint64_t modifier);
-> +bool igt_vc4_is_v3d(int fd);
-> =20
->  uint32_t igt_vc4_perfmon_create(int fd, uint32_t ncounters, uint8_t *eve=
-nts);
->  void igt_vc4_perfmon_get_values(int fd, uint32_t id);
-> diff --git a/tests/vc4/vc4_create_bo.c b/tests/vc4/vc4_create_bo.c
-> index c4909b49..c17f25b0 100644
-> --- a/tests/vc4/vc4_create_bo.c
-> +++ b/tests/vc4/vc4_create_bo.c
-> @@ -30,6 +30,7 @@ igt_main
-> =20
->  	igt_fixture {
->  		fd =3D drm_open_driver(DRIVER_VC4);
-> +		igt_require(igt_vc4_is_v3d(fd));
->  	}
-> =20
->  	igt_subtest("create-bo-4096") {
-> diff --git a/tests/vc4/vc4_dmabuf_poll.c b/tests/vc4/vc4_dmabuf_poll.c
-> index da99964b..c76d4950 100644
-> --- a/tests/vc4/vc4_dmabuf_poll.c
-> +++ b/tests/vc4/vc4_dmabuf_poll.c
-> @@ -59,8 +59,10 @@ igt_main
->  {
->  	int fd;
-> =20
-> -	igt_fixture
-> +	igt_fixture {
->  		fd =3D drm_open_driver(DRIVER_VC4);
-> +		igt_require(igt_vc4_is_v3d(fd));
+> +struct igt_dma_buf_sync_file {
+> +        __u32 flags;
+> +        __s32 fd;
+> +};
+> +
+> +#define IGT_DMA_BUF_IOCTL_EXPORT_SYNC_FILE _IOWR(DMA_BUF_BASE, 2, struct igt_dma_buf_sync_file)
+> +#define IGT_DMA_BUF_IOCTL_IMPORT_SYNC_FILE _IOW(DMA_BUF_BASE, 3, struct igt_dma_buf_sync_file)
+> +
+> +static void dmabuf_import_sync_file(int dmabuf, uint32_t flags, int sync_fd)
+> +{
+> +        struct igt_dma_buf_sync_file arg;
+> +
+> +        arg.flags = flags;
+> +        arg.fd = sync_fd;
+> +        do_ioctl(dmabuf, IGT_DMA_BUF_IOCTL_IMPORT_SYNC_FILE, &arg);
+> +}
+
+You did not check for error here, so either add assert
+do_ioctl ... == 0 or change function name, add __ before like:
+static int __dmabuf_import_sync_file(int dmabuf, uint32_t flags, int sync_fd)
+
+>  
+>  static void parallel_thread(int i915, unsigned int flags,
+>  			    struct i915_engine_class_instance *siblings,
+> @@ -2871,6 +2890,8 @@ static void parallel_thread(int i915, unsigned int flags,
+>  	uint32_t target_bo_idx = 0;
+>  	uint32_t first_bb_idx = 1;
+>  	intel_ctx_cfg_t cfg;
+> +	uint32_t dmabuf_handle;
+> +	int dmabuf;
+>  
+>  	igt_assert(bb_per_execbuf < 32);
+>  
+> @@ -2924,11 +2945,20 @@ static void parallel_thread(int i915, unsigned int flags,
+>  	execbuf.buffers_ptr = to_user_pointer(obj);
+>  	execbuf.rsvd1 = ctx->id;
+>  
+> +	if (flags & PARALLEL_OUT_FENCE_DMABUF) {
+> +		dmabuf_handle = gem_create(i915, 4096);
+> +		dmabuf = prime_handle_to_fd(i915, dmabuf_handle);
 > +	}
-> =20
->  	igt_subtest("poll-write-waits-until-write-done") {
->  		poll_write_bo_test(fd, POLLOUT);
-> diff --git a/tests/vc4/vc4_label_bo.c b/tests/vc4/vc4_label_bo.c
-> index dd8b5f9a..252bd1ed 100644
-> --- a/tests/vc4/vc4_label_bo.c
-> +++ b/tests/vc4/vc4_label_bo.c
-> @@ -43,8 +43,10 @@ igt_main
->  {
->  	int fd;
-> =20
-> -	igt_fixture
-> +	igt_fixture {
->  		fd =3D drm_open_driver(DRIVER_VC4);
-> +		igt_require(igt_vc4_is_v3d(fd));
+> +
+>  	for (n = 0; n < PARALLEL_BB_LOOP_COUNT; ++n) {
+>  		execbuf.flags &= ~0x3full;
+>  		gem_execbuf_wr(i915, &execbuf);
+>  
+>  		if (flags & PARALLEL_OUT_FENCE) {
+> +			if (flags & PARALLEL_OUT_FENCE_DMABUF)
+> +				dmabuf_import_sync_file(dmabuf, DMA_BUF_SYNC_WRITE,
+> +							execbuf.rsvd2 >> 32);
+> +
+>  			igt_assert_eq(sync_fence_wait(execbuf.rsvd2 >> 32,
+>  						      1000), 0);
+>  			igt_assert_eq(sync_fence_status(execbuf.rsvd2 >> 32), 1);
+> @@ -2959,6 +2989,11 @@ static void parallel_thread(int i915, unsigned int flags,
+>  	if (fence)
+>  		close(fence);
+>  
+> +	if (flags & PARALLEL_OUT_FENCE_DMABUF) {
+> +		gem_close(i915, dmabuf_handle);
+> +		close(dmabuf);
 > +	}
-> =20
->  	igt_subtest("set-label") {
->  		int handle =3D igt_vc4_create_bo(fd, PAGE_SIZE);
-> diff --git a/tests/vc4/vc4_perfmon.c b/tests/vc4/vc4_perfmon.c
-> index ca7567fd..30186519 100644
-> --- a/tests/vc4/vc4_perfmon.c
-> +++ b/tests/vc4/vc4_perfmon.c
-> @@ -12,8 +12,10 @@ igt_main
->  {
->  	int fd;
-> =20
-> -	igt_fixture
-> +	igt_fixture {
->  		fd =3D drm_open_driver(DRIVER_VC4);
-> +		igt_require(igt_vc4_is_v3d(fd));
-> +	}
-> =20
->  	igt_describe("Make sure a perfmon cannot be created with zero counters.=
-");
->  	igt_subtest("create-perfmon-0") {
-> diff --git a/tests/vc4/vc4_tiling.c b/tests/vc4/vc4_tiling.c
-> index 372b1fed..f5bf31f5 100644
-> --- a/tests/vc4/vc4_tiling.c
-> +++ b/tests/vc4/vc4_tiling.c
-> @@ -28,8 +28,10 @@ igt_main
->  {
->  	int fd;
-> =20
-> -	igt_fixture
-> +	igt_fixture {
->  		fd =3D drm_open_driver(DRIVER_VC4);
-> +		igt_require(igt_vc4_is_v3d(fd));
-> +	}
-> =20
->  	igt_subtest("get-bad-handle") {
->  		struct drm_vc4_get_tiling get =3D {
-> diff --git a/tests/vc4/vc4_wait_bo.c b/tests/vc4/vc4_wait_bo.c
-> index 386642b9..c88a4ac4 100644
-> --- a/tests/vc4/vc4_wait_bo.c
-> +++ b/tests/vc4/vc4_wait_bo.c
-> @@ -64,6 +64,7 @@ igt_main
-> =20
->  	igt_fixture {
->  		fd =3D drm_open_driver(DRIVER_VC4);
-> +		igt_require(igt_vc4_is_v3d(fd));
->  		bo_handle =3D igt_vc4_create_bo(fd, PAGE_SIZE);
->  	}
-> =20
-> diff --git a/tests/vc4/vc4_wait_seqno.c b/tests/vc4/vc4_wait_seqno.c
-> index 61485bbf..78984fa3 100644
-> --- a/tests/vc4/vc4_wait_seqno.c
-> +++ b/tests/vc4/vc4_wait_seqno.c
-> @@ -28,8 +28,10 @@ igt_main
->  {
->  	int fd;
-> =20
-> -	igt_fixture
-> +	igt_fixture {
->  		fd =3D drm_open_driver(DRIVER_VC4);
-> +		igt_require(igt_vc4_is_v3d(fd));
-> +	}
-> =20
->  	/* A 64-bit seqno should never hit the maximum value over the
->  	 * lifetime of the system.  (A submit per 1000 cycles at 1Ghz
-> --=20
+> +
+>  	check_bo(i915, obj[target_bo_idx].handle,
+>  		 bb_per_execbuf * PARALLEL_BB_LOOP_COUNT, true);
+>  
+> @@ -3420,6 +3455,10 @@ igt_main
+>  		igt_subtest("parallel-out-fence")
+>  			parallel(i915, PARALLEL_OUT_FENCE);
+>  
+
+Please put description here.
+
+Regards,
+Kamil
+
+> +		igt_subtest("parallel-out-fence-import-dmabuf")
+> +			parallel(i915, PARALLEL_OUT_FENCE |
+> +				 PARALLEL_OUT_FENCE_DMABUF);
+> +
+>  		igt_subtest("parallel-keep-in-fence")
+>  			parallel(i915, PARALLEL_OUT_FENCE | PARALLEL_IN_FENCE);
+>  
+> -- 
 > 2.38.1
->=20
-
---wf5nzc5svny6dnhc
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEEd8WOo/JViG+Tu+XIwqF3j0dLehwFAmOA0BsACgkQwqF3j0dL
-ehzK/g//aZPAElfAZF4G8pdsXW/tvUx6LJxqKqDkvodrQuQEImp+G3MpsBo/a8Ks
-jdNF2zQXTnhvT6hl8R1EuV0g42YFUOett3Pg8WMWguG9fuMTND+etG2GYiPvf04f
-mwnKUczKsM/05xFg/aAmHnGKxDOj25suqAWIxsBYlYoyq8zYsZMuBJ086w07XvQX
-tJIZj1Ol97krGmnR4b6r8f699iygTosDxihbHKnIpHVXzKvRcKHHJ4H8xXjpEHKa
-jyRZGP3Y07ITngDk1xqczygzVdEqgI6L5Kln2x+iwSOUjeNIKsnWZ6PlFn+UUpEk
-pC7RE0OgwqxWcI7MKXhxj0GtEDAVDqcksPgu9LrGGktLiCoFHveUVLpVUecoqXHm
-KcXKhEKGEYhBioylmPEM/w7O/Bxma8Dsagop0BylRkoBuy66e7spS1GRRG/gz+Zy
-Kuq3676TD01o+2bwWBVkSNvkdiAswvu1EDiUYy8h++faYZxeQBL/hOyWLAmgLBVc
-9iK23UZsb6+p8f/DXjiuSzFNia9P2juD497Af5aa/fXfBcUdiYvDQGK9guNB/zCv
-uTITrOxZiUIo9dx3RZMsk+sw+AtNKJ89PvGNC4osTSvwsTx85WG9W+NZmzv/c030
-Z9jf+/YUJddgKie7rxArKXewlA8OjXZAe08ektzVTfnHRbnHjdI=
-=9Zmg
------END PGP SIGNATURE-----
-
---wf5nzc5svny6dnhc--
+> 
