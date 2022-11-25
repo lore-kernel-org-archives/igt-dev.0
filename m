@@ -1,15 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Date: Fri, 25 Nov 2022 10:24:30 +0100
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Message-ID: <Y4CJzrkdF+jQapMs@kamilkon-desk1>
-References: <20221118155335.635430-1-matthew.auld@intel.com>
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3212610E5C3
+ for <igt-dev@lists.freedesktop.org>; Fri, 25 Nov 2022 09:31:15 +0000 (UTC)
+From: "Hogander, Jouni" <jouni.hogander@intel.com>
+To: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "B,
+ Jeevan" <jeevan.b@intel.com>
+Date: Fri, 25 Nov 2022 09:31:11 +0000
+Message-ID: <e93c7a6ecee320588398ce3690fabb7ebcf75345.camel@intel.com>
+References: <20221125090401.13539-1-jeevan.b@intel.com>
+In-Reply-To: <20221125090401.13539-1-jeevan.b@intel.com>
+Content-Language: en-US
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <F21CDA26796F0C419FBDE11A156B0063@namprd11.prod.outlook.com>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20221118155335.635430-1-matthew.auld@intel.com>
-Subject: Re: [igt-dev] [Intel-gfx] [PATCH i-g-t]
- tests/i915/gem_exec_balancer: exercise dmabuf import
+Subject: Re: [igt-dev] [PATCH i-g-t] lib/mtl: Add Meteorlake platform
+ definition
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,129 +23,50 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: intel-gfx@lists.freedesktop.org, Nirmoy Das <nirmoy.das@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Matthew,
-
-few nits, see below.
-
-On 2022-11-18 at 15:53:35 +0000, Matthew Auld wrote:
-> With parallel submission it should be easy to get a fence array as the
-> output fence. Try importing this into dma-buf reservation object, to see
-> if anything explodes.
-> 
-> References: https://gitlab.freedesktop.org/drm/intel/-/issues/7532
-> Signed-off-by: Matthew Auld <matthew.auld@intel.com>
-> Cc: Andrzej Hajda <andrzej.hajda@intel.com>
-> Cc: Nirmoy Das <nirmoy.das@intel.com>
-> ---
->  tests/i915/gem_exec_balancer.c | 39 ++++++++++++++++++++++++++++++++++
->  1 file changed, 39 insertions(+)
-> 
-> diff --git a/tests/i915/gem_exec_balancer.c b/tests/i915/gem_exec_balancer.c
-> index 4300dbd1..fdae8de5 100644
-> --- a/tests/i915/gem_exec_balancer.c
-> +++ b/tests/i915/gem_exec_balancer.c
-> @@ -37,6 +37,7 @@
->  #include "igt_sysfs.h"
->  #include "igt_types.h"
->  #include "sw_sync.h"
-> +#include <linux/dma-buf.h>
->  
->  IGT_TEST_DESCRIPTION("Exercise in-kernel load-balancing");
->  
-> @@ -2856,6 +2857,24 @@ static void logical_sort_siblings(int i915,
->  #define PARALLEL_SUBMIT_FENCE		(0x1 << 3)
->  #define PARALLEL_CONTEXTS		(0x1 << 4)
->  #define PARALLEL_VIRTUAL		(0x1 << 5)
-> +#define PARALLEL_OUT_FENCE_DMABUF	(0x1 << 6)
-> +
-> +struct igt_dma_buf_sync_file {
-> +        __u32 flags;
-> +        __s32 fd;
-> +};
-> +
-> +#define IGT_DMA_BUF_IOCTL_EXPORT_SYNC_FILE _IOWR(DMA_BUF_BASE, 2, struct igt_dma_buf_sync_file)
-> +#define IGT_DMA_BUF_IOCTL_IMPORT_SYNC_FILE _IOW(DMA_BUF_BASE, 3, struct igt_dma_buf_sync_file)
-> +
-> +static void dmabuf_import_sync_file(int dmabuf, uint32_t flags, int sync_fd)
-> +{
-> +        struct igt_dma_buf_sync_file arg;
-> +
-> +        arg.flags = flags;
-> +        arg.fd = sync_fd;
-> +        do_ioctl(dmabuf, IGT_DMA_BUF_IOCTL_IMPORT_SYNC_FILE, &arg);
-> +}
-
-You did not check for error here, so either add assert
-do_ioctl ... == 0 or change function name, add __ before like:
-static int __dmabuf_import_sync_file(int dmabuf, uint32_t flags, int sync_fd)
-
->  
->  static void parallel_thread(int i915, unsigned int flags,
->  			    struct i915_engine_class_instance *siblings,
-> @@ -2871,6 +2890,8 @@ static void parallel_thread(int i915, unsigned int flags,
->  	uint32_t target_bo_idx = 0;
->  	uint32_t first_bb_idx = 1;
->  	intel_ctx_cfg_t cfg;
-> +	uint32_t dmabuf_handle;
-> +	int dmabuf;
->  
->  	igt_assert(bb_per_execbuf < 32);
->  
-> @@ -2924,11 +2945,20 @@ static void parallel_thread(int i915, unsigned int flags,
->  	execbuf.buffers_ptr = to_user_pointer(obj);
->  	execbuf.rsvd1 = ctx->id;
->  
-> +	if (flags & PARALLEL_OUT_FENCE_DMABUF) {
-> +		dmabuf_handle = gem_create(i915, 4096);
-> +		dmabuf = prime_handle_to_fd(i915, dmabuf_handle);
-> +	}
-> +
->  	for (n = 0; n < PARALLEL_BB_LOOP_COUNT; ++n) {
->  		execbuf.flags &= ~0x3full;
->  		gem_execbuf_wr(i915, &execbuf);
->  
->  		if (flags & PARALLEL_OUT_FENCE) {
-> +			if (flags & PARALLEL_OUT_FENCE_DMABUF)
-> +				dmabuf_import_sync_file(dmabuf, DMA_BUF_SYNC_WRITE,
-> +							execbuf.rsvd2 >> 32);
-> +
->  			igt_assert_eq(sync_fence_wait(execbuf.rsvd2 >> 32,
->  						      1000), 0);
->  			igt_assert_eq(sync_fence_status(execbuf.rsvd2 >> 32), 1);
-> @@ -2959,6 +2989,11 @@ static void parallel_thread(int i915, unsigned int flags,
->  	if (fence)
->  		close(fence);
->  
-> +	if (flags & PARALLEL_OUT_FENCE_DMABUF) {
-> +		gem_close(i915, dmabuf_handle);
-> +		close(dmabuf);
-> +	}
-> +
->  	check_bo(i915, obj[target_bo_idx].handle,
->  		 bb_per_execbuf * PARALLEL_BB_LOOP_COUNT, true);
->  
-> @@ -3420,6 +3455,10 @@ igt_main
->  		igt_subtest("parallel-out-fence")
->  			parallel(i915, PARALLEL_OUT_FENCE);
->  
-
-Please put description here.
-
-Regards,
-Kamil
-
-> +		igt_subtest("parallel-out-fence-import-dmabuf")
-> +			parallel(i915, PARALLEL_OUT_FENCE |
-> +				 PARALLEL_OUT_FENCE_DMABUF);
-> +
->  		igt_subtest("parallel-keep-in-fence")
->  			parallel(i915, PARALLEL_OUT_FENCE | PARALLEL_IN_FENCE);
->  
-> -- 
-> 2.38.1
-> 
+UmV2aWV3ZWQtYnk6IEpvdW5pIEjDtmdhbmRlciA8am91bmkuaG9nYW5kZXJAaW50ZWwuY29tPg0K
+DQpPbiBGcmksIDIwMjItMTEtMjUgYXQgMTQ6MzQgKzA1MzAsIEplZXZhbiBCIHdyb3RlOg0KPiBT
+aWduZWQtb2ZmLWJ5OiBKZWV2YW4gQiA8amVldmFuLmJAaW50ZWwuY29tPg0KPiAtLS0NCj4gwqBs
+aWIvaW50ZWxfY2hpcHNldC5owqDCoMKgwqAgfMKgIDIgKysNCj4gwqBsaWIvaW50ZWxfZGV2aWNl
+X2luZm8uYyB8IDExICsrKysrKysrKysrDQo+IMKgMiBmaWxlcyBjaGFuZ2VkLCAxMyBpbnNlcnRp
+b25zKCspDQo+IA0KPiBkaWZmIC0tZ2l0IGEvbGliL2ludGVsX2NoaXBzZXQuaCBiL2xpYi9pbnRl
+bF9jaGlwc2V0LmgNCj4gaW5kZXggZDdhNmZmMTkuLjliMzk0NzJhIDEwMDY0NA0KPiAtLS0gYS9s
+aWIvaW50ZWxfY2hpcHNldC5oDQo+ICsrKyBiL2xpYi9pbnRlbF9jaGlwc2V0LmgNCj4gQEAgLTg1
+LDYgKzg1LDcgQEAgc3RydWN0IGludGVsX2RldmljZV9pbmZvIHsNCj4gwqDCoMKgwqDCoMKgwqDC
+oGJvb2wgaXNfcmFwdG9ybGFrZV9zIDogMTsNCj4gwqDCoMKgwqDCoMKgwqDCoGJvb2wgaXNfYWxk
+ZXJsYWtlX3AgOiAxOw0KPiDCoMKgwqDCoMKgwqDCoMKgYm9vbCBpc19hbGRlcmxha2VfbiA6IDE7
+DQo+ICvCoMKgwqDCoMKgwqDCoGJvb2wgaXNfbWV0ZW9ybGFrZSA6IDE7DQo+IMKgwqDCoMKgwqDC
+oMKgwqBjb25zdCBjaGFyICpjb2RlbmFtZTsNCj4gwqB9Ow0KPiDCoA0KPiBAQCAtMTk0LDYgKzE5
+NSw3IEBAIHZvaWQgaW50ZWxfY2hlY2tfcGNoKHZvaWQpOw0KPiDCoCNkZWZpbmUgSVNfUkFQVE9S
+TEFLRV9TKGRldmlkKcKgKGludGVsX2dldF9kZXZpY2VfaW5mbyhkZXZpZCktDQo+ID5pc19yYXB0
+b3JsYWtlX3MpDQo+IMKgI2RlZmluZSBJU19BTERFUkxBS0VfUChkZXZpZCnCoMKgKGludGVsX2dl
+dF9kZXZpY2VfaW5mbyhkZXZpZCktDQo+ID5pc19hbGRlcmxha2VfcCkNCj4gwqAjZGVmaW5lIElT
+X0FMREVSTEFLRV9OKGRldmlkKcKgwqAoaW50ZWxfZ2V0X2RldmljZV9pbmZvKGRldmlkKS0NCj4g
+PmlzX2FsZGVybGFrZV9uKQ0KPiArI2RlZmluZSBJU19NRVRFT1JMQUtFKGRldmlkKcKgwqDCoChp
+bnRlbF9nZXRfZGV2aWNlX2luZm8oZGV2aWQpLQ0KPiA+aXNfbWV0ZW9ybGFrZSkNCj4gwqANCj4g
+wqAjZGVmaW5lIElTX0dFTihkZXZpZCwgeCnCoMKgwqDCoMKgwqDCoChpbnRlbF9nZXRfZGV2aWNl
+X2luZm8oZGV2aWQpLQ0KPiA+Z3JhcGhpY3NfdmVyID09IHgpDQo+IMKgI2RlZmluZSBBVF9MRUFT
+VF9HRU4oZGV2aWQsIHgpwqAoaW50ZWxfZ2V0X2RldmljZV9pbmZvKGRldmlkKS0NCj4gPmdyYXBo
+aWNzX3ZlciA+PSB4KQ0KPiBkaWZmIC0tZ2l0IGEvbGliL2ludGVsX2RldmljZV9pbmZvLmMgYi9s
+aWIvaW50ZWxfZGV2aWNlX2luZm8uYw0KPiBpbmRleCBlYmZjZWE3My4uNjhkZDE3ZWUgMTAwNjQ0
+DQo+IC0tLSBhL2xpYi9pbnRlbF9kZXZpY2VfaW5mby5jDQo+ICsrKyBiL2xpYi9pbnRlbF9kZXZp
+Y2VfaW5mby5jDQo+IEBAIC00MzksNiArNDM5LDE1IEBAIHN0YXRpYyBjb25zdCBzdHJ1Y3QgaW50
+ZWxfZGV2aWNlX2luZm8NCj4gaW50ZWxfYXRzX21faW5mbyA9IHsNCj4gwqDCoMKgwqDCoMKgwqDC
+oC5oYXNfZmxhdGNjcyA9IHRydWUsDQo+IMKgfTsNCj4gwqANCj4gK3N0YXRpYyBjb25zdCBzdHJ1
+Y3QgaW50ZWxfZGV2aWNlX2luZm8gaW50ZWxfbWV0ZW9ybGFrZV9pbmZvID0gew0KPiArwqDCoMKg
+wqDCoMKgwqAuZ3JhcGhpY3NfdmVyID0gMTIsDQo+ICvCoMKgwqDCoMKgwqDCoC5ncmFwaGljc19y
+ZWwgPSA3MCwNCj4gK8KgwqDCoMKgwqDCoMKgLmRpc3BsYXlfdmVyID0gMTQsDQo+ICvCoMKgwqDC
+oMKgwqDCoC5oYXNfNHRpbGUgPSB0cnVlLA0KPiArwqDCoMKgwqDCoMKgwqAuaXNfbWV0ZW9ybGFr
+ZSA9IHRydWUsDQo+ICvCoMKgwqDCoMKgwqDCoC5jb2RlbmFtZSA9ICJtZXRlb3JsYWtlIg0KPiAr
+fTsNCj4gKw0KPiDCoHN0YXRpYyBjb25zdCBzdHJ1Y3QgcGNpX2lkX21hdGNoIGludGVsX2Rldmlj
+ZV9tYXRjaFtdID0gew0KPiDCoMKgwqDCoMKgwqDCoMKgSU5URUxfSTgxMF9JRFMoJmludGVsX2k4
+MTBfaW5mbyksDQo+IMKgwqDCoMKgwqDCoMKgwqBJTlRFTF9JODE1X0lEUygmaW50ZWxfaTgxNV9p
+bmZvKSwNCj4gQEAgLTUzOCw2ICs1NDcsOCBAQCBzdGF0aWMgY29uc3Qgc3RydWN0IHBjaV9pZF9t
+YXRjaA0KPiBpbnRlbF9kZXZpY2VfbWF0Y2hbXSA9IHsNCj4gwqANCj4gwqDCoMKgwqDCoMKgwqDC
+oElOVEVMX0FUU19NX0lEUygmaW50ZWxfYXRzX21faW5mbyksDQo+IMKgDQo+ICvCoMKgwqDCoMKg
+wqDCoElOVEVMX01UTF9JRFMoJmludGVsX21ldGVvcmxha2VfaW5mbyksDQo+ICsNCj4gwqDCoMKg
+wqDCoMKgwqDCoElOVEVMX1ZHQV9ERVZJQ0UoUENJX01BVENIX0FOWSwgJmludGVsX2dlbmVyaWNf
+aW5mbyksDQo+IMKgfTsNCj4gwqANCg0K
