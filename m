@@ -1,17 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8CC8610E0B9
- for <igt-dev@lists.freedesktop.org>; Fri, 25 Nov 2022 04:27:32 +0000 (UTC)
-Message-ID: <f0b7332c-a834-b86d-38fc-ba7a74c109bc@intel.com>
-Date: Fri, 25 Nov 2022 09:57:12 +0530
-Content-Language: en-US
-To: Anshuman Gupta <anshuman.gupta@intel.com>, <igt-dev@lists.freedesktop.org>
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4C96810E293
+ for <igt-dev@lists.freedesktop.org>; Fri, 25 Nov 2022 04:54:02 +0000 (UTC)
+From: "Gupta, Anshuman" <anshuman.gupta@intel.com>
+To: "Iddamsetty, Aravind" <aravind.iddamsetty@intel.com>,
+ "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+Date: Fri, 25 Nov 2022 04:53:57 +0000
+Message-ID: <CY5PR11MB621184D24C992C252DA0C3E9950E9@CY5PR11MB6211.namprd11.prod.outlook.com>
 References: <20221123085441.2821638-1-anshuman.gupta@intel.com>
  <20221123085441.2821638-6-anshuman.gupta@intel.com>
-From: "Iddamsetty, Aravind" <aravind.iddamsetty@intel.com>
-In-Reply-To: <20221123085441.2821638-6-anshuman.gupta@intel.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
+ <f0b7332c-a834-b86d-38fc-ba7a74c109bc@intel.com>
+In-Reply-To: <f0b7332c-a834-b86d-38fc-ba7a74c109bc@intel.com>
+Content-Language: en-US
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
 Subject: Re: [igt-dev] [PATCH i-g-t v3 5/5] tests/device_reset: Add cold
  reset IGT test
@@ -22,317 +24,206 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: badal.nilawar@intel.com, rodrigo.vivi@intel.com
+Cc: "Nilawar, Badal" <badal.nilawar@intel.com>, "Vivi,
+ Rodrigo" <rodrigo.vivi@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-
-
-On 23-11-2022 14:24, Anshuman Gupta wrote:
-> Add cold-reset IGT subtest, IGT subtest will use
-> /sys/bus/pci/slots/$SUN/power sysfs in order to
-> initiate a cold reset sequence. $SUN value will be
-> retrieved from PCIe device ACPI firmware node.
-> 
-> v2:
-> - %s/igt_require(fd > 0)/igt_assert(errno >0)
-> v3:
-> - Added Slot Power Controller capability check. [Aravind]
-> - Check whether slot is powered down before powering up. [Aravind]
-> 
-> Signed-off-by: Anshuman Gupta <anshuman.gupta@intel.com>
-> Reviewed-by: Badal Nilawar <badal.nilawar@intel.com>
-> ---
->  lib/igt_pm.c         |  40 +++++++++++
->  lib/igt_pm.h         |   1 +
->  tests/device_reset.c | 153 ++++++++++++++++++++++++++++++++++++++++---
->  3 files changed, 184 insertions(+), 10 deletions(-)
-> 
-> diff --git a/lib/igt_pm.c b/lib/igt_pm.c
-> index 4f0cfbdd10..9b7ed4be64 100644
-> --- a/lib/igt_pm.c
-> +++ b/lib/igt_pm.c
-> @@ -877,6 +877,46 @@ static int igt_pm_open_pci_firmware_node(struct pci_device *pci_dev)
->  	return dir;
->  }
->  
-> +/**
-> + * igt_pm_get_pcie_acpihp_slot:
-> + * @pci_dev: pci bridge device.
-> + * Get pci bridge acpi hotplug slot number, if bridge's ACPI firmware_node
-> + * handle supports _SUN method.
-> + *
-> + * Returns:
-> + * PCIe bridge Slot number.
-> + * Returns -ENOENT number in case firmware_node/sun is not supported by the
-> + * bridge.
-> + */
-> +int igt_pm_get_pcie_acpihp_slot(struct pci_device *pci_dev)
-> +{
-> +	int firmware_node_fd, fd, n_read;
-> +	char sun[8];
-> +
-> +	firmware_node_fd = igt_pm_open_pci_firmware_node(pci_dev);
-> +
-> +	if (firmware_node_fd < 0 && errno == ENOENT)
-> +		return -ENOENT;
-> +
-> +	igt_require(firmware_node_fd > 0);
-> +
-> +	fd = openat(firmware_node_fd, "sun", O_RDONLY);
-> +	if (fd < 0 && errno == ENOENT) {
-> +		close(firmware_node_fd);
-> +		return -ENOENT;
-> +	}
-> +
-> +	igt_assert(errno > 0);
-> +
-> +	n_read = read(fd, sun, sizeof(sun));
-> +	igt_assert(n_read > 0);
-> +
-> +	close(firmware_node_fd);
-> +	close(fd);
-> +
-> +	return strtol(sun, NULL, 10);
-> +}
-> +
->  /**
->   * igt_pm_acpi_d3cold_supported:
->   * @pci_dev: root port pci_dev.
-> diff --git a/lib/igt_pm.h b/lib/igt_pm.h
-> index e81fceb897..f65b960c38 100644
-> --- a/lib/igt_pm.h
-> +++ b/lib/igt_pm.h
-> @@ -73,6 +73,7 @@ bool igt_wait_for_pm_status(enum igt_runtime_pm_status status);
->  bool igt_pm_dmc_loaded(int debugfs);
->  bool igt_pm_pc8_plus_residencies_enabled(int msr_fd);
->  bool i915_output_is_lpsp_capable(int drm_fd, igt_output_t *output);
-> +int igt_pm_get_pcie_acpihp_slot(struct pci_device *pci_dev);
->  bool igt_pm_acpi_d3cold_supported(struct pci_device *pci_dev);
->  enum igt_acpi_d_state
->  igt_pm_get_acpi_real_d_state(struct pci_device *pci_dev);
-> diff --git a/tests/device_reset.c b/tests/device_reset.c
-> index 0c477a02c0..4c624ce7d3 100644
-> --- a/tests/device_reset.c
-> +++ b/tests/device_reset.c
-> @@ -9,7 +9,9 @@
->  
->  #include "i915/gem.h"
->  #include "igt.h"
-> +#include "igt_device.h"
->  #include "igt_device_scan.h"
-> +#include "igt_pci.h"
->  #include "igt_sysfs.h"
->  #include "igt_kmod.h"
->  
-> @@ -33,6 +35,7 @@ struct device_fds {
->  		int dev;
->  		int dev_dir;
->  		int drv_dir;
-> +		int slot_dir; /* pci hotplug slots fd */
->  	} fds;
->  	char dev_bus_addr[DEV_BUS_ADDR_LEN];
->  	bool snd_unload;
-> @@ -62,6 +65,45 @@ static int open_driver_sysfs_dir(int fd)
->  	return __open_sysfs_dir(fd, "device/driver");
->  }
->  
-> +static int open_slot_sysfs_dir(int fd)
-> +{
-> +	struct pci_device *pci_dev = NULL;
-> +	int slot_fd = -1, slot;
-> +	char slot_fd_path[PATH_MAX];
-> +
-> +	pci_dev = igt_device_get_pci_device(fd);
-> +	igt_require(pci_dev);
-> +
-> +	while ((pci_dev = pci_device_get_parent_bridge(pci_dev))) {
-> +		slot = igt_pm_get_pcie_acpihp_slot(pci_dev);
-> +		if (slot == -ENOENT) {
-> +			igt_debug("Bridge PCI device %04x:%02x:%02x.%01x does not support acpihp slot\n",
-> +				  pci_dev->domain, pci_dev->bus, pci_dev->dev, pci_dev->func);
-> +			continue;
-> +		}
-> +
-> +		/*
-> +		 * Upon getting the valid acpihp slot number break the loop.
-> +		 * It is the desired acpihp slot for gfx card.
-> +		 */
-> +		if (slot > 0) {
-> +			igt_debug("Bridge PCI device %04x:%02x:%02x.%01x associated acpihp slot %d\n",
-> +				  pci_dev->domain, pci_dev->bus, pci_dev->dev, pci_dev->func, slot);
-> +			break;
-> +		}
-> +	}
-> +
-> +	if (!pci_dev)
-> +		return slot_fd;
-> +
-> +	snprintf(slot_fd_path, PATH_MAX, "/sys/bus/pci/slots/%d", slot);
-> +	slot_fd = open(slot_fd_path, O_RDONLY);
-> +	if (slot_fd < 0)
-> +		return -errno;
-> +
-> +	return slot_fd;
-> +}
-> +
->  /**
->   * device_sysfs_path:
->   * @fd: opened device file descriptor
-> @@ -124,6 +166,8 @@ static void init_device_fds(struct device_fds *dev)
->  
->  	dev->fds.drv_dir = open_driver_sysfs_dir(dev->fds.dev);
->  	igt_assert_fd(dev->fds.drv_dir);
-> +
-> +	dev->fds.slot_dir = open_slot_sysfs_dir(dev->fds.dev);
->  }
->  
->  static int close_if_opened(int *fd)
-> @@ -142,6 +186,7 @@ static void cleanup_device_fds(struct device_fds *dev)
->  	igt_ignore_warn(close_if_opened(&dev->fds.dev));
->  	igt_ignore_warn(close_if_opened(&dev->fds.dev_dir));
->  	igt_ignore_warn(close_if_opened(&dev->fds.drv_dir));
-> +	igt_ignore_warn(close_if_opened(&dev->fds.slot_dir));
->  }
->  
->  /**
-> @@ -179,6 +224,60 @@ static bool is_sysfs_reset_supported(int fd)
->  	return true;
->  }
->  
-> +/**
-> + * is_sysfs_cold_reset_supported:
-> + * @fd: opened device file descriptor
-> + *
-> + * Check if device supports cold reset based on sysfs file presence.
-> + *
-> + * Returns:
-> + * True if device supports reset, false otherwise.
-> + */
-> +static bool is_sysfs_cold_reset_supported(int slot_fd)
-> +{
-> +	struct stat st;
-> +	int rc;
-> +	int cold_reset_fd = -1;
-> +
-> +	cold_reset_fd = openat(slot_fd, "power", O_WRONLY);
-> +
-> +	if (cold_reset_fd < 0)
-> +		return false;
-> +
-> +	rc = fstat(cold_reset_fd, &st);
-> +	close(cold_reset_fd);
-> +
-> +	if (rc || !S_ISREG(st.st_mode))
-> +		return false;
-> +
-> +	return true;
-> +}
-> +
-
-why do not you combine the below two checks into
-is_sysfs_cold_reset_supported as the check will be done only if power
-sysfs is present.
-
-Thanks,
-Aravind.
-> +static bool is_pci_power_ctrl_present(struct pci_device *dev)
-> +{
-> +	int offset;
-> +	uint32_t slot_cap;
-> +
-> +	offset = find_pci_cap_offset(dev, PCI_EXPRESS_CAP_ID);
-> +	igt_require_f(offset > 0, "PCI Express Capability not found\n");
-> +	igt_assert(!pci_device_cfg_read_u32(dev, &slot_cap, offset + PCI_SLOT_CAP_OFFSET));
-> +	igt_debug("slot cap register 0x%x\n", slot_cap);
-> +
-> +	return slot_cap & PCI_SLOT_PWR_CTRL_PRESENT;
-> +}
-> +
-> +static bool is_slot_power_ctrl_present(int fd)
-> +{
-> +	struct pci_device *root;
-> +
-> +	/*
-> +	 * Card root port Slot Capabilities Register
-> +	 * determines Power Controller Presence.
-> +	 */
-> +	root = igt_device_get_pci_root_port(fd);
-> +	return is_pci_power_ctrl_present(root);
-> +}
-> +
->  /* Unbind the driver from the device */
->  static void driver_unbind(struct device_fds *dev)
->  {
-> @@ -231,8 +330,13 @@ static void initiate_device_reset(struct device_fds *dev, enum reset type)
->  {
->  	igt_debug("reset device\n");
->  
-> -	if (type == FLR_RESET)
-> +	if (type == FLR_RESET) {
->  		igt_assert(igt_sysfs_set(dev->fds.dev_dir, "reset", "1"));
-> +	} else if (type == COLD_RESET) {
-> +		igt_assert(igt_sysfs_set(dev->fds.slot_dir, "power", "0"));
-> +		igt_assert(!igt_sysfs_get_boolean(dev->fds.slot_dir, "power"));
-> +		igt_assert(igt_sysfs_set(dev->fds.slot_dir, "power", "1"));
-> +	}
->  
->  }
->  
-> @@ -311,17 +415,46 @@ igt_main
->  		igt_skip_on(!is_sysfs_reset_supported(dev.fds.dev));
->  	}
->  
-> -	igt_describe("Unbinds driver from device, initiates reset"
-> -		     " then rebinds driver to device");
-> -	igt_subtest("unbind-reset-rebind") {
-> -		unbind_reset_rebind(&dev, FLR_RESET);
-> -		healthcheck(&dev);
-> +	igt_subtest_group {
-> +		igt_describe("Unbinds driver from device, initiates reset"
-> +			     " then rebinds driver to device");
-> +		igt_subtest("unbind-reset-rebind") {
-> +			unbind_reset_rebind(&dev, FLR_RESET);
-> +			healthcheck(&dev);
-> +		}
-> +
-> +		igt_describe("Resets device with bound driver");
-> +		igt_subtest("reset-bound") {
-> +			initiate_device_reset(&dev, FLR_RESET);
-> +			/*
-> +			 * Cold reset will initiate card boot sequence again,
-> +			 * therefore let healthcheck() re-epen the dev fd.
-> +			 */
-> +			dev.fds.dev = -1;
-> +			healthcheck(&dev);
-> +		}
->  	}
->  
-> -	igt_describe("Resets device with bound driver");
-> -	igt_subtest("reset-bound") {
-> -		initiate_device_reset(&dev, FLR_RESET);
-> -		healthcheck(&dev);
-> +	igt_subtest_group {
-> +		igt_fixture {
-> +			igt_skip_on_f(dev.fds.slot_dir < 0, "Gfx Card does not support any "
-> +				      "pcie slot for cold reset\n");
-> +			igt_skip_on(!is_sysfs_cold_reset_supported(dev.fds.slot_dir));
-> +			igt_skip_on(!is_slot_power_ctrl_present(dev.fds.dev));
-> +		}
-> +
-> +		igt_describe("Unbinds driver from device, initiates cold reset"
-> +			     " then rebinds driver to device");
-> +		igt_subtest("unbind-cold-reset-rebind") {
-> +			unbind_reset_rebind(&dev, COLD_RESET);
-> +			healthcheck(&dev);
-> +		}
-> +
-> +		igt_describe("Cold Resets device with bound driver");
-> +		igt_subtest("cold-reset-bound") {
-> +			initiate_device_reset(&dev, COLD_RESET);
-> +			healthcheck(&dev);
-> +		}
->  	}
->  
->  	igt_fixture {
+DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogSWRkYW1zZXR0eSwgQXJh
+dmluZCA8YXJhdmluZC5pZGRhbXNldHR5QGludGVsLmNvbT4NCj4gU2VudDogRnJpZGF5LCBOb3Zl
+bWJlciAyNSwgMjAyMiA5OjU3IEFNDQo+IFRvOiBHdXB0YSwgQW5zaHVtYW4gPGFuc2h1bWFuLmd1
+cHRhQGludGVsLmNvbT47IGlndC0NCj4gZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZw0KPiBDYzog
+Vml2aSwgUm9kcmlnbyA8cm9kcmlnby52aXZpQGludGVsLmNvbT47IGthbWlsLmtvbmllY3pueUBs
+aW51eC5pbnRlbC5jb207DQo+IFRhbmd1ZHUsIFRpbGFrIDx0aWxhay50YW5ndWR1QGludGVsLmNv
+bT47IE5pbGF3YXIsIEJhZGFsDQo+IDxiYWRhbC5uaWxhd2FyQGludGVsLmNvbT4NCj4gU3ViamVj
+dDogUmU6IFtQQVRDSCBpLWctdCB2MyA1LzVdIHRlc3RzL2RldmljZV9yZXNldDogQWRkIGNvbGQg
+cmVzZXQgSUdUIHRlc3QNCj4gDQo+IA0KPiANCj4gT24gMjMtMTEtMjAyMiAxNDoyNCwgQW5zaHVt
+YW4gR3VwdGEgd3JvdGU6DQo+ID4gQWRkIGNvbGQtcmVzZXQgSUdUIHN1YnRlc3QsIElHVCBzdWJ0
+ZXN0IHdpbGwgdXNlDQo+ID4gL3N5cy9idXMvcGNpL3Nsb3RzLyRTVU4vcG93ZXIgc3lzZnMgaW4g
+b3JkZXIgdG8gaW5pdGlhdGUgYSBjb2xkIHJlc2V0DQo+ID4gc2VxdWVuY2UuICRTVU4gdmFsdWUg
+d2lsbCBiZSByZXRyaWV2ZWQgZnJvbSBQQ0llIGRldmljZSBBQ1BJIGZpcm13YXJlDQo+ID4gbm9k
+ZS4NCj4gPg0KPiA+IHYyOg0KPiA+IC0gJXMvaWd0X3JlcXVpcmUoZmQgPiAwKS9pZ3RfYXNzZXJ0
+KGVycm5vID4wKQ0KPiA+IHYzOg0KPiA+IC0gQWRkZWQgU2xvdCBQb3dlciBDb250cm9sbGVyIGNh
+cGFiaWxpdHkgY2hlY2suIFtBcmF2aW5kXQ0KPiA+IC0gQ2hlY2sgd2hldGhlciBzbG90IGlzIHBv
+d2VyZWQgZG93biBiZWZvcmUgcG93ZXJpbmcgdXAuIFtBcmF2aW5kXQ0KPiA+DQo+ID4gU2lnbmVk
+LW9mZi1ieTogQW5zaHVtYW4gR3VwdGEgPGFuc2h1bWFuLmd1cHRhQGludGVsLmNvbT4NCj4gPiBS
+ZXZpZXdlZC1ieTogQmFkYWwgTmlsYXdhciA8YmFkYWwubmlsYXdhckBpbnRlbC5jb20+DQo+ID4g
+LS0tDQo+ID4gIGxpYi9pZ3RfcG0uYyAgICAgICAgIHwgIDQwICsrKysrKysrKysrDQo+ID4gIGxp
+Yi9pZ3RfcG0uaCAgICAgICAgIHwgICAxICsNCj4gPiAgdGVzdHMvZGV2aWNlX3Jlc2V0LmMgfCAx
+NTMNCj4gPiArKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrLS0tDQo+ID4g
+IDMgZmlsZXMgY2hhbmdlZCwgMTg0IGluc2VydGlvbnMoKyksIDEwIGRlbGV0aW9ucygtKQ0KPiA+
+DQo+ID4gZGlmZiAtLWdpdCBhL2xpYi9pZ3RfcG0uYyBiL2xpYi9pZ3RfcG0uYyBpbmRleCA0ZjBj
+ZmJkZDEwLi45YjdlZDRiZTY0DQo+ID4gMTAwNjQ0DQo+ID4gLS0tIGEvbGliL2lndF9wbS5jDQo+
+ID4gKysrIGIvbGliL2lndF9wbS5jDQo+ID4gQEAgLTg3Nyw2ICs4NzcsNDYgQEAgc3RhdGljIGlu
+dCBpZ3RfcG1fb3Blbl9wY2lfZmlybXdhcmVfbm9kZShzdHJ1Y3QNCj4gcGNpX2RldmljZSAqcGNp
+X2RldikNCj4gPiAgCXJldHVybiBkaXI7DQo+ID4gIH0NCj4gPg0KPiA+ICsvKioNCj4gPiArICog
+aWd0X3BtX2dldF9wY2llX2FjcGlocF9zbG90Og0KPiA+ICsgKiBAcGNpX2RldjogcGNpIGJyaWRn
+ZSBkZXZpY2UuDQo+ID4gKyAqIEdldCBwY2kgYnJpZGdlIGFjcGkgaG90cGx1ZyBzbG90IG51bWJl
+ciwgaWYgYnJpZGdlJ3MgQUNQSQ0KPiA+ICtmaXJtd2FyZV9ub2RlDQo+ID4gKyAqIGhhbmRsZSBz
+dXBwb3J0cyBfU1VOIG1ldGhvZC4NCj4gPiArICoNCj4gPiArICogUmV0dXJuczoNCj4gPiArICog
+UENJZSBicmlkZ2UgU2xvdCBudW1iZXIuDQo+ID4gKyAqIFJldHVybnMgLUVOT0VOVCBudW1iZXIg
+aW4gY2FzZSBmaXJtd2FyZV9ub2RlL3N1biBpcyBub3Qgc3VwcG9ydGVkDQo+ID4gK2J5IHRoZQ0K
+PiA+ICsgKiBicmlkZ2UuDQo+ID4gKyAqLw0KPiA+ICtpbnQgaWd0X3BtX2dldF9wY2llX2FjcGlo
+cF9zbG90KHN0cnVjdCBwY2lfZGV2aWNlICpwY2lfZGV2KSB7DQo+ID4gKwlpbnQgZmlybXdhcmVf
+bm9kZV9mZCwgZmQsIG5fcmVhZDsNCj4gPiArCWNoYXIgc3VuWzhdOw0KPiA+ICsNCj4gPiArCWZp
+cm13YXJlX25vZGVfZmQgPSBpZ3RfcG1fb3Blbl9wY2lfZmlybXdhcmVfbm9kZShwY2lfZGV2KTsN
+Cj4gPiArDQo+ID4gKwlpZiAoZmlybXdhcmVfbm9kZV9mZCA8IDAgJiYgZXJybm8gPT0gRU5PRU5U
+KQ0KPiA+ICsJCXJldHVybiAtRU5PRU5UOw0KPiA+ICsNCj4gPiArCWlndF9yZXF1aXJlKGZpcm13
+YXJlX25vZGVfZmQgPiAwKTsNCj4gPiArDQo+ID4gKwlmZCA9IG9wZW5hdChmaXJtd2FyZV9ub2Rl
+X2ZkLCAic3VuIiwgT19SRE9OTFkpOw0KPiA+ICsJaWYgKGZkIDwgMCAmJiBlcnJubyA9PSBFTk9F
+TlQpIHsNCj4gPiArCQljbG9zZShmaXJtd2FyZV9ub2RlX2ZkKTsNCj4gPiArCQlyZXR1cm4gLUVO
+T0VOVDsNCj4gPiArCX0NCj4gPiArDQo+ID4gKwlpZ3RfYXNzZXJ0KGVycm5vID4gMCk7DQo+ID4g
+Kw0KPiA+ICsJbl9yZWFkID0gcmVhZChmZCwgc3VuLCBzaXplb2Yoc3VuKSk7DQo+ID4gKwlpZ3Rf
+YXNzZXJ0KG5fcmVhZCA+IDApOw0KPiA+ICsNCj4gPiArCWNsb3NlKGZpcm13YXJlX25vZGVfZmQp
+Ow0KPiA+ICsJY2xvc2UoZmQpOw0KPiA+ICsNCj4gPiArCXJldHVybiBzdHJ0b2woc3VuLCBOVUxM
+LCAxMCk7DQo+ID4gK30NCj4gPiArDQo+ID4gIC8qKg0KPiA+ICAgKiBpZ3RfcG1fYWNwaV9kM2Nv
+bGRfc3VwcG9ydGVkOg0KPiA+ICAgKiBAcGNpX2Rldjogcm9vdCBwb3J0IHBjaV9kZXYuDQo+ID4g
+ZGlmZiAtLWdpdCBhL2xpYi9pZ3RfcG0uaCBiL2xpYi9pZ3RfcG0uaCBpbmRleCBlODFmY2ViODk3
+Li5mNjViOTYwYzM4DQo+ID4gMTAwNjQ0DQo+ID4gLS0tIGEvbGliL2lndF9wbS5oDQo+ID4gKysr
+IGIvbGliL2lndF9wbS5oDQo+ID4gQEAgLTczLDYgKzczLDcgQEAgYm9vbCBpZ3Rfd2FpdF9mb3Jf
+cG1fc3RhdHVzKGVudW0NCj4gPiBpZ3RfcnVudGltZV9wbV9zdGF0dXMgc3RhdHVzKTsgIGJvb2wg
+aWd0X3BtX2RtY19sb2FkZWQoaW50IGRlYnVnZnMpOw0KPiA+IGJvb2wgaWd0X3BtX3BjOF9wbHVz
+X3Jlc2lkZW5jaWVzX2VuYWJsZWQoaW50IG1zcl9mZCk7ICBib29sDQo+ID4gaTkxNV9vdXRwdXRf
+aXNfbHBzcF9jYXBhYmxlKGludCBkcm1fZmQsIGlndF9vdXRwdXRfdCAqb3V0cHV0KTsNCj4gPiAr
+aW50IGlndF9wbV9nZXRfcGNpZV9hY3BpaHBfc2xvdChzdHJ1Y3QgcGNpX2RldmljZSAqcGNpX2Rl
+dik7DQo+ID4gIGJvb2wgaWd0X3BtX2FjcGlfZDNjb2xkX3N1cHBvcnRlZChzdHJ1Y3QgcGNpX2Rl
+dmljZSAqcGNpX2Rldik7ICBlbnVtDQo+ID4gaWd0X2FjcGlfZF9zdGF0ZSAgaWd0X3BtX2dldF9h
+Y3BpX3JlYWxfZF9zdGF0ZShzdHJ1Y3QgcGNpX2RldmljZQ0KPiA+ICpwY2lfZGV2KTsgZGlmZiAt
+LWdpdCBhL3Rlc3RzL2RldmljZV9yZXNldC5jIGIvdGVzdHMvZGV2aWNlX3Jlc2V0LmMNCj4gPiBp
+bmRleCAwYzQ3N2EwMmMwLi40YzYyNGNlN2QzIDEwMDY0NA0KPiA+IC0tLSBhL3Rlc3RzL2Rldmlj
+ZV9yZXNldC5jDQo+ID4gKysrIGIvdGVzdHMvZGV2aWNlX3Jlc2V0LmMNCj4gPiBAQCAtOSw3ICs5
+LDkgQEANCj4gPg0KPiA+ICAjaW5jbHVkZSAiaTkxNS9nZW0uaCINCj4gPiAgI2luY2x1ZGUgImln
+dC5oIg0KPiA+ICsjaW5jbHVkZSAiaWd0X2RldmljZS5oIg0KPiA+ICAjaW5jbHVkZSAiaWd0X2Rl
+dmljZV9zY2FuLmgiDQo+ID4gKyNpbmNsdWRlICJpZ3RfcGNpLmgiDQo+ID4gICNpbmNsdWRlICJp
+Z3Rfc3lzZnMuaCINCj4gPiAgI2luY2x1ZGUgImlndF9rbW9kLmgiDQo+ID4NCj4gPiBAQCAtMzMs
+NiArMzUsNyBAQCBzdHJ1Y3QgZGV2aWNlX2ZkcyB7DQo+ID4gIAkJaW50IGRldjsNCj4gPiAgCQlp
+bnQgZGV2X2RpcjsNCj4gPiAgCQlpbnQgZHJ2X2RpcjsNCj4gPiArCQlpbnQgc2xvdF9kaXI7IC8q
+IHBjaSBob3RwbHVnIHNsb3RzIGZkICovDQo+ID4gIAl9IGZkczsNCj4gPiAgCWNoYXIgZGV2X2J1
+c19hZGRyW0RFVl9CVVNfQUREUl9MRU5dOw0KPiA+ICAJYm9vbCBzbmRfdW5sb2FkOw0KPiA+IEBA
+IC02Miw2ICs2NSw0NSBAQCBzdGF0aWMgaW50IG9wZW5fZHJpdmVyX3N5c2ZzX2RpcihpbnQgZmQp
+DQo+ID4gIAlyZXR1cm4gX19vcGVuX3N5c2ZzX2RpcihmZCwgImRldmljZS9kcml2ZXIiKTsgIH0N
+Cj4gPg0KPiA+ICtzdGF0aWMgaW50IG9wZW5fc2xvdF9zeXNmc19kaXIoaW50IGZkKSB7DQo+ID4g
+KwlzdHJ1Y3QgcGNpX2RldmljZSAqcGNpX2RldiA9IE5VTEw7DQo+ID4gKwlpbnQgc2xvdF9mZCA9
+IC0xLCBzbG90Ow0KPiA+ICsJY2hhciBzbG90X2ZkX3BhdGhbUEFUSF9NQVhdOw0KPiA+ICsNCj4g
+PiArCXBjaV9kZXYgPSBpZ3RfZGV2aWNlX2dldF9wY2lfZGV2aWNlKGZkKTsNCj4gPiArCWlndF9y
+ZXF1aXJlKHBjaV9kZXYpOw0KPiA+ICsNCj4gPiArCXdoaWxlICgocGNpX2RldiA9IHBjaV9kZXZp
+Y2VfZ2V0X3BhcmVudF9icmlkZ2UocGNpX2RldikpKSB7DQo+ID4gKwkJc2xvdCA9IGlndF9wbV9n
+ZXRfcGNpZV9hY3BpaHBfc2xvdChwY2lfZGV2KTsNCj4gPiArCQlpZiAoc2xvdCA9PSAtRU5PRU5U
+KSB7DQo+ID4gKwkJCWlndF9kZWJ1ZygiQnJpZGdlIFBDSSBkZXZpY2UgJTA0eDolMDJ4OiUwMngu
+JTAxeA0KPiBkb2VzIG5vdCBzdXBwb3J0IGFjcGlocCBzbG90XG4iLA0KPiA+ICsJCQkJICBwY2lf
+ZGV2LT5kb21haW4sIHBjaV9kZXYtPmJ1cywgcGNpX2Rldi0NCj4gPmRldiwgcGNpX2Rldi0+ZnVu
+Yyk7DQo+ID4gKwkJCWNvbnRpbnVlOw0KPiA+ICsJCX0NCj4gPiArDQo+ID4gKwkJLyoNCj4gPiAr
+CQkgKiBVcG9uIGdldHRpbmcgdGhlIHZhbGlkIGFjcGlocCBzbG90IG51bWJlciBicmVhayB0aGUg
+bG9vcC4NCj4gPiArCQkgKiBJdCBpcyB0aGUgZGVzaXJlZCBhY3BpaHAgc2xvdCBmb3IgZ2Z4IGNh
+cmQuDQo+ID4gKwkJICovDQo+ID4gKwkJaWYgKHNsb3QgPiAwKSB7DQo+ID4gKwkJCWlndF9kZWJ1
+ZygiQnJpZGdlIFBDSSBkZXZpY2UgJTA0eDolMDJ4OiUwMnguJTAxeA0KPiBhc3NvY2lhdGVkIGFj
+cGlocCBzbG90ICVkXG4iLA0KPiA+ICsJCQkJICBwY2lfZGV2LT5kb21haW4sIHBjaV9kZXYtPmJ1
+cywgcGNpX2Rldi0NCj4gPmRldiwgcGNpX2Rldi0+ZnVuYywgc2xvdCk7DQo+ID4gKwkJCWJyZWFr
+Ow0KPiA+ICsJCX0NCj4gPiArCX0NCj4gPiArDQo+ID4gKwlpZiAoIXBjaV9kZXYpDQo+ID4gKwkJ
+cmV0dXJuIHNsb3RfZmQ7DQo+ID4gKw0KPiA+ICsJc25wcmludGYoc2xvdF9mZF9wYXRoLCBQQVRI
+X01BWCwgIi9zeXMvYnVzL3BjaS9zbG90cy8lZCIsIHNsb3QpOw0KPiA+ICsJc2xvdF9mZCA9IG9w
+ZW4oc2xvdF9mZF9wYXRoLCBPX1JET05MWSk7DQo+ID4gKwlpZiAoc2xvdF9mZCA8IDApDQo+ID4g
+KwkJcmV0dXJuIC1lcnJubzsNCj4gPiArDQo+ID4gKwlyZXR1cm4gc2xvdF9mZDsNCj4gPiArfQ0K
+PiA+ICsNCj4gPiAgLyoqDQo+ID4gICAqIGRldmljZV9zeXNmc19wYXRoOg0KPiA+ICAgKiBAZmQ6
+IG9wZW5lZCBkZXZpY2UgZmlsZSBkZXNjcmlwdG9yIEBAIC0xMjQsNiArMTY2LDggQEAgc3RhdGlj
+IHZvaWQNCj4gPiBpbml0X2RldmljZV9mZHMoc3RydWN0IGRldmljZV9mZHMgKmRldikNCj4gPg0K
+PiA+ICAJZGV2LT5mZHMuZHJ2X2RpciA9IG9wZW5fZHJpdmVyX3N5c2ZzX2RpcihkZXYtPmZkcy5k
+ZXYpOw0KPiA+ICAJaWd0X2Fzc2VydF9mZChkZXYtPmZkcy5kcnZfZGlyKTsNCj4gPiArDQo+ID4g
+KwlkZXYtPmZkcy5zbG90X2RpciA9IG9wZW5fc2xvdF9zeXNmc19kaXIoZGV2LT5mZHMuZGV2KTsN
+Cj4gPiAgfQ0KPiA+DQo+ID4gIHN0YXRpYyBpbnQgY2xvc2VfaWZfb3BlbmVkKGludCAqZmQpDQo+
+ID4gQEAgLTE0Miw2ICsxODYsNyBAQCBzdGF0aWMgdm9pZCBjbGVhbnVwX2RldmljZV9mZHMoc3Ry
+dWN0IGRldmljZV9mZHMNCj4gKmRldikNCj4gPiAgCWlndF9pZ25vcmVfd2FybihjbG9zZV9pZl9v
+cGVuZWQoJmRldi0+ZmRzLmRldikpOw0KPiA+ICAJaWd0X2lnbm9yZV93YXJuKGNsb3NlX2lmX29w
+ZW5lZCgmZGV2LT5mZHMuZGV2X2RpcikpOw0KPiA+ICAJaWd0X2lnbm9yZV93YXJuKGNsb3NlX2lm
+X29wZW5lZCgmZGV2LT5mZHMuZHJ2X2RpcikpOw0KPiA+ICsJaWd0X2lnbm9yZV93YXJuKGNsb3Nl
+X2lmX29wZW5lZCgmZGV2LT5mZHMuc2xvdF9kaXIpKTsNCj4gPiAgfQ0KPiA+DQo+ID4gIC8qKg0K
+PiA+IEBAIC0xNzksNiArMjI0LDYwIEBAIHN0YXRpYyBib29sIGlzX3N5c2ZzX3Jlc2V0X3N1cHBv
+cnRlZChpbnQgZmQpDQo+ID4gIAlyZXR1cm4gdHJ1ZTsNCj4gPiAgfQ0KPiA+DQo+ID4gKy8qKg0K
+PiA+ICsgKiBpc19zeXNmc19jb2xkX3Jlc2V0X3N1cHBvcnRlZDoNCj4gPiArICogQGZkOiBvcGVu
+ZWQgZGV2aWNlIGZpbGUgZGVzY3JpcHRvcg0KPiA+ICsgKg0KPiA+ICsgKiBDaGVjayBpZiBkZXZp
+Y2Ugc3VwcG9ydHMgY29sZCByZXNldCBiYXNlZCBvbiBzeXNmcyBmaWxlIHByZXNlbmNlLg0KPiA+
+ICsgKg0KPiA+ICsgKiBSZXR1cm5zOg0KPiA+ICsgKiBUcnVlIGlmIGRldmljZSBzdXBwb3J0cyBy
+ZXNldCwgZmFsc2Ugb3RoZXJ3aXNlLg0KPiA+ICsgKi8NCj4gPiArc3RhdGljIGJvb2wgaXNfc3lz
+ZnNfY29sZF9yZXNldF9zdXBwb3J0ZWQoaW50IHNsb3RfZmQpIHsNCj4gPiArCXN0cnVjdCBzdGF0
+IHN0Ow0KPiA+ICsJaW50IHJjOw0KPiA+ICsJaW50IGNvbGRfcmVzZXRfZmQgPSAtMTsNCj4gPiAr
+DQo+ID4gKwljb2xkX3Jlc2V0X2ZkID0gb3BlbmF0KHNsb3RfZmQsICJwb3dlciIsIE9fV1JPTkxZ
+KTsNCj4gPiArDQo+ID4gKwlpZiAoY29sZF9yZXNldF9mZCA8IDApDQo+ID4gKwkJcmV0dXJuIGZh
+bHNlOw0KPiA+ICsNCj4gPiArCXJjID0gZnN0YXQoY29sZF9yZXNldF9mZCwgJnN0KTsNCj4gPiAr
+CWNsb3NlKGNvbGRfcmVzZXRfZmQpOw0KPiA+ICsNCj4gPiArCWlmIChyYyB8fCAhU19JU1JFRyhz
+dC5zdF9tb2RlKSkNCj4gPiArCQlyZXR1cm4gZmFsc2U7DQo+ID4gKw0KPiA+ICsJcmV0dXJuIHRy
+dWU7DQo+ID4gK30NCj4gPiArDQo+IA0KPiB3aHkgZG8gbm90IHlvdSBjb21iaW5lIHRoZSBiZWxv
+dyB0d28gY2hlY2tzIGludG8NCj4gaXNfc3lzZnNfY29sZF9yZXNldF9zdXBwb3J0ZWQgYXMgdGhl
+IGNoZWNrIHdpbGwgYmUgZG9uZSBvbmx5IGlmIHBvd2VyIHN5c2ZzDQo+IGlzIHByZXNlbnQuDQpU
+aGFua3MgZm9yIHJldmlldyBhZnRlciB0aGlzIGNvbW1lbnQsIEkgYW0gcG9uZGVyaW5nIHRoYXQg
+IGl0IHdvdWxkIGJlIGJldHRlciB0byBjaGVjayB0aGUgDQppc19zbG90X3Bvd2VyX2N0cmxfcHJl
+c2VudCgpICBldmVuIGJlZm9yZSBjaGVja2luZyBmb3Igc2xvdCBudW1iZXIgdG8gc2F2ZSB0aGUg
+Q0kgdGltZS4NCkFzIHdpdGhvdXQgcG93ZXIgY29udHJvbGxlciBjYXBhYmlsaXR5IGl0IGlzIGlu
+IHZhaW4gdG8gY2hlY2sgZm9yIHNsb3QgbnVtYmVyLiANCiBpZ3Rfc2tpcF9vbl9mKCFpc19zbG90
+X3Bvd2VyX2N0cmxfcHJlc2VudChkZXYuZmRzLmRldiksICJHZnggQ2FyZCByb290IHBvcnQgZG9l
+cyBub3Qgc3VwcG9ydCBwb3dlciBjdHJsIik7DQogaWd0X3NraXBfb25fZihkZXYuZmRzLnNsb3Rf
+ZGlyIDwgMCwgIkdmeCBDYXJkIGRvZXMgbm90IHN1cHBvcnQgYW55ICINCgkJCQkgICAgICAicGNp
+ZSBzbG90IGZvciBjb2xkIHJlc2V0XG4iKTsNCiBpZ3Rfc2tpcF9vbighaXNfc3lzZnNfY29sZF9y
+ZXNldF9zdXBwb3J0ZWQoZGV2LmZkcy5zbG90X2RpcikpOw0KIGlndF9za2lwX29uKCFpc19zbG90
+X3Bvd2VyX2N0cmxfcHJlc2VudChkZXYuZmRzLmRldikpOw0KDQpCUiwNCkFuc2h1bWFuIEd1cHRh
+Lg0KPiANCj4gVGhhbmtzLA0KPiBBcmF2aW5kLg0KPiA+ICtzdGF0aWMgYm9vbCBpc19wY2lfcG93
+ZXJfY3RybF9wcmVzZW50KHN0cnVjdCBwY2lfZGV2aWNlICpkZXYpIHsNCj4gPiArCWludCBvZmZz
+ZXQ7DQo+ID4gKwl1aW50MzJfdCBzbG90X2NhcDsNCj4gPiArDQo+ID4gKwlvZmZzZXQgPSBmaW5k
+X3BjaV9jYXBfb2Zmc2V0KGRldiwgUENJX0VYUFJFU1NfQ0FQX0lEKTsNCj4gPiArCWlndF9yZXF1
+aXJlX2Yob2Zmc2V0ID4gMCwgIlBDSSBFeHByZXNzIENhcGFiaWxpdHkgbm90IGZvdW5kXG4iKTsN
+Cj4gPiArCWlndF9hc3NlcnQoIXBjaV9kZXZpY2VfY2ZnX3JlYWRfdTMyKGRldiwgJnNsb3RfY2Fw
+LCBvZmZzZXQgKw0KPiBQQ0lfU0xPVF9DQVBfT0ZGU0VUKSk7DQo+ID4gKwlpZ3RfZGVidWcoInNs
+b3QgY2FwIHJlZ2lzdGVyIDB4JXhcbiIsIHNsb3RfY2FwKTsNCj4gPiArDQo+ID4gKwlyZXR1cm4g
+c2xvdF9jYXAgJiBQQ0lfU0xPVF9QV1JfQ1RSTF9QUkVTRU5UOyB9DQo+ID4gKw0KPiA+ICtzdGF0
+aWMgYm9vbCBpc19zbG90X3Bvd2VyX2N0cmxfcHJlc2VudChpbnQgZmQpIHsNCj4gPiArCXN0cnVj
+dCBwY2lfZGV2aWNlICpyb290Ow0KPiA+ICsNCj4gPiArCS8qDQo+ID4gKwkgKiBDYXJkIHJvb3Qg
+cG9ydCBTbG90IENhcGFiaWxpdGllcyBSZWdpc3Rlcg0KPiA+ICsJICogZGV0ZXJtaW5lcyBQb3dl
+ciBDb250cm9sbGVyIFByZXNlbmNlLg0KPiA+ICsJICovDQo+ID4gKwlyb290ID0gaWd0X2Rldmlj
+ZV9nZXRfcGNpX3Jvb3RfcG9ydChmZCk7DQo+ID4gKwlyZXR1cm4gaXNfcGNpX3Bvd2VyX2N0cmxf
+cHJlc2VudChyb290KTsgfQ0KPiA+ICsNCj4gPiAgLyogVW5iaW5kIHRoZSBkcml2ZXIgZnJvbSB0
+aGUgZGV2aWNlICovICBzdGF0aWMgdm9pZA0KPiA+IGRyaXZlcl91bmJpbmQoc3RydWN0IGRldmlj
+ZV9mZHMgKmRldikgIHsgQEAgLTIzMSw4ICszMzAsMTMgQEAgc3RhdGljDQo+ID4gdm9pZCBpbml0
+aWF0ZV9kZXZpY2VfcmVzZXQoc3RydWN0IGRldmljZV9mZHMgKmRldiwgZW51bSByZXNldCB0eXBl
+KSAgew0KPiA+ICAJaWd0X2RlYnVnKCJyZXNldCBkZXZpY2VcbiIpOw0KPiA+DQo+ID4gLQlpZiAo
+dHlwZSA9PSBGTFJfUkVTRVQpDQo+ID4gKwlpZiAodHlwZSA9PSBGTFJfUkVTRVQpIHsNCj4gPiAg
+CQlpZ3RfYXNzZXJ0KGlndF9zeXNmc19zZXQoZGV2LT5mZHMuZGV2X2RpciwgInJlc2V0IiwgIjEi
+KSk7DQo+ID4gKwl9IGVsc2UgaWYgKHR5cGUgPT0gQ09MRF9SRVNFVCkgew0KPiA+ICsJCWlndF9h
+c3NlcnQoaWd0X3N5c2ZzX3NldChkZXYtPmZkcy5zbG90X2RpciwgInBvd2VyIiwgIjAiKSk7DQo+
+ID4gKwkJaWd0X2Fzc2VydCghaWd0X3N5c2ZzX2dldF9ib29sZWFuKGRldi0+ZmRzLnNsb3RfZGly
+LA0KPiAicG93ZXIiKSk7DQo+ID4gKwkJaWd0X2Fzc2VydChpZ3Rfc3lzZnNfc2V0KGRldi0+ZmRz
+LnNsb3RfZGlyLCAicG93ZXIiLCAiMSIpKTsNCj4gPiArCX0NCj4gPg0KPiA+ICB9DQo+ID4NCj4g
+PiBAQCAtMzExLDE3ICs0MTUsNDYgQEAgaWd0X21haW4NCj4gPiAgCQlpZ3Rfc2tpcF9vbighaXNf
+c3lzZnNfcmVzZXRfc3VwcG9ydGVkKGRldi5mZHMuZGV2KSk7DQo+ID4gIAl9DQo+ID4NCj4gPiAt
+CWlndF9kZXNjcmliZSgiVW5iaW5kcyBkcml2ZXIgZnJvbSBkZXZpY2UsIGluaXRpYXRlcyByZXNl
+dCINCj4gPiAtCQkgICAgICIgdGhlbiByZWJpbmRzIGRyaXZlciB0byBkZXZpY2UiKTsNCj4gPiAt
+CWlndF9zdWJ0ZXN0KCJ1bmJpbmQtcmVzZXQtcmViaW5kIikgew0KPiA+IC0JCXVuYmluZF9yZXNl
+dF9yZWJpbmQoJmRldiwgRkxSX1JFU0VUKTsNCj4gPiAtCQloZWFsdGhjaGVjaygmZGV2KTsNCj4g
+PiArCWlndF9zdWJ0ZXN0X2dyb3VwIHsNCj4gPiArCQlpZ3RfZGVzY3JpYmUoIlVuYmluZHMgZHJp
+dmVyIGZyb20gZGV2aWNlLCBpbml0aWF0ZXMgcmVzZXQiDQo+ID4gKwkJCSAgICAgIiB0aGVuIHJl
+YmluZHMgZHJpdmVyIHRvIGRldmljZSIpOw0KPiA+ICsJCWlndF9zdWJ0ZXN0KCJ1bmJpbmQtcmVz
+ZXQtcmViaW5kIikgew0KPiA+ICsJCQl1bmJpbmRfcmVzZXRfcmViaW5kKCZkZXYsIEZMUl9SRVNF
+VCk7DQo+ID4gKwkJCWhlYWx0aGNoZWNrKCZkZXYpOw0KPiA+ICsJCX0NCj4gPiArDQo+ID4gKwkJ
+aWd0X2Rlc2NyaWJlKCJSZXNldHMgZGV2aWNlIHdpdGggYm91bmQgZHJpdmVyIik7DQo+ID4gKwkJ
+aWd0X3N1YnRlc3QoInJlc2V0LWJvdW5kIikgew0KPiA+ICsJCQlpbml0aWF0ZV9kZXZpY2VfcmVz
+ZXQoJmRldiwgRkxSX1JFU0VUKTsNCj4gPiArCQkJLyoNCj4gPiArCQkJICogQ29sZCByZXNldCB3
+aWxsIGluaXRpYXRlIGNhcmQgYm9vdCBzZXF1ZW5jZSBhZ2FpbiwNCj4gPiArCQkJICogdGhlcmVm
+b3JlIGxldCBoZWFsdGhjaGVjaygpIHJlLWVwZW4gdGhlIGRldiBmZC4NCj4gPiArCQkJICovDQo+
+ID4gKwkJCWRldi5mZHMuZGV2ID0gLTE7DQo+ID4gKwkJCWhlYWx0aGNoZWNrKCZkZXYpOw0KPiA+
+ICsJCX0NCj4gPiAgCX0NCj4gPg0KPiA+IC0JaWd0X2Rlc2NyaWJlKCJSZXNldHMgZGV2aWNlIHdp
+dGggYm91bmQgZHJpdmVyIik7DQo+ID4gLQlpZ3Rfc3VidGVzdCgicmVzZXQtYm91bmQiKSB7DQo+
+ID4gLQkJaW5pdGlhdGVfZGV2aWNlX3Jlc2V0KCZkZXYsIEZMUl9SRVNFVCk7DQo+ID4gLQkJaGVh
+bHRoY2hlY2soJmRldik7DQo+ID4gKwlpZ3Rfc3VidGVzdF9ncm91cCB7DQo+ID4gKwkJaWd0X2Zp
+eHR1cmUgew0KPiA+ICsJCQlpZ3Rfc2tpcF9vbl9mKGRldi5mZHMuc2xvdF9kaXIgPCAwLCAiR2Z4
+IENhcmQgZG9lcw0KPiBub3Qgc3VwcG9ydCBhbnkgIg0KPiA+ICsJCQkJICAgICAgInBjaWUgc2xv
+dCBmb3IgY29sZCByZXNldFxuIik7DQo+ID4gKw0KPiAJaWd0X3NraXBfb24oIWlzX3N5c2ZzX2Nv
+bGRfcmVzZXRfc3VwcG9ydGVkKGRldi5mZHMuc2xvdF9kaXIpKTsNCj4gPiArDQo+IAlpZ3Rfc2tp
+cF9vbighaXNfc2xvdF9wb3dlcl9jdHJsX3ByZXNlbnQoZGV2LmZkcy5kZXYpKTsNCj4gPiArCQl9
+DQo+ID4gKw0KPiA+ICsJCWlndF9kZXNjcmliZSgiVW5iaW5kcyBkcml2ZXIgZnJvbSBkZXZpY2Us
+IGluaXRpYXRlcyBjb2xkDQo+IHJlc2V0Ig0KPiA+ICsJCQkgICAgICIgdGhlbiByZWJpbmRzIGRy
+aXZlciB0byBkZXZpY2UiKTsNCj4gPiArCQlpZ3Rfc3VidGVzdCgidW5iaW5kLWNvbGQtcmVzZXQt
+cmViaW5kIikgew0KPiA+ICsJCQl1bmJpbmRfcmVzZXRfcmViaW5kKCZkZXYsIENPTERfUkVTRVQp
+Ow0KPiA+ICsJCQloZWFsdGhjaGVjaygmZGV2KTsNCj4gPiArCQl9DQo+ID4gKw0KPiA+ICsJCWln
+dF9kZXNjcmliZSgiQ29sZCBSZXNldHMgZGV2aWNlIHdpdGggYm91bmQgZHJpdmVyIik7DQo+ID4g
+KwkJaWd0X3N1YnRlc3QoImNvbGQtcmVzZXQtYm91bmQiKSB7DQo+ID4gKwkJCWluaXRpYXRlX2Rl
+dmljZV9yZXNldCgmZGV2LCBDT0xEX1JFU0VUKTsNCj4gPiArCQkJaGVhbHRoY2hlY2soJmRldik7
+DQo+ID4gKwkJfQ0KPiA+ICAJfQ0KPiA+DQo+ID4gIAlpZ3RfZml4dHVyZSB7DQo=
