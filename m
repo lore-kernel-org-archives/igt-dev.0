@@ -1,14 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9CDF310E73F
- for <igt-dev@lists.freedesktop.org>; Fri, 25 Nov 2022 11:56:23 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 030D310E741
+ for <igt-dev@lists.freedesktop.org>; Fri, 25 Nov 2022 11:56:32 +0000 (UTC)
 From: Swati Sharma <swati2.sharma@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Fri, 25 Nov 2022 17:28:02 +0530
-Message-Id: <20221125115808.13394-1-swati2.sharma@intel.com>
+Date: Fri, 25 Nov 2022 17:28:08 +0530
+Message-Id: <20221125115808.13394-7-swati2.sharma@intel.com>
+In-Reply-To: <20221125115808.13394-1-swati2.sharma@intel.com>
+References: <20221125115808.13394-1-swati2.sharma@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 0/6] VDSC YCbCr420 + Fractional BPP
+Subject: [igt-dev] [PATCH i-g-t 6/6] tests/i915/kms_dsc: Add test summary
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,23 +22,35 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-In this series, fractional BPP patches are added
-on top of VDSC YCbCr420 from
-https://patchwork.freedesktop.org/series/110336/
+Add test summary giving overall view of what all is being validated
+in the test.
 
-Swati Sharma (6):
-  lib/kms: Add helpers for VDSC YCbCr420 debugfs entry
-  tests/i915/kms_dsc: Prep work for extending val support for VDSC
-    YCbCr420
-  tests/i915/kms_dsc: Enable validation for VDSC YCbCr420
-  lib/kms: Add helpers for VDSC Fractional BPP debugfs entry
-  tests/i915/kms_dsc: Enable validation for VDSC Fractional BPP
-  tests/i915/kms_dsc: Add test summary
+Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
+---
+ tests/i915/kms_dsc.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
- lib/igt_kms.c        | 145 ++++++++++++++++++++
- lib/igt_kms.h        |  11 +-
- tests/i915/kms_dsc.c | 312 +++++++++++++++++++++++++++++++++++--------
- 3 files changed, 411 insertions(+), 57 deletions(-)
-
+diff --git a/tests/i915/kms_dsc.c b/tests/i915/kms_dsc.c
+index a85066bb9..ee5d0434c 100644
+--- a/tests/i915/kms_dsc.c
++++ b/tests/i915/kms_dsc.c
+@@ -48,6 +48,17 @@
+ 
+ IGT_TEST_DESCRIPTION("Test to validate display stream compression");
+ 
++/*
++ * i915 driver supports DSC1.1 from gen11+. To validate DSC, we have
++ * different scenarios
++ * (i) basic modeset (ii) input bpc (iii) formats (iv) fractional bpp
++ * These tests will check for basic DSC support by the connector and
++ * few other gen specific constraints. Fractional bpp got introduced
++ * with DSC1.2 from MTL. By default, tests will get executed on RGB444
++ * output format. However, if sink and platform supports YCBCR420, all the
++ * tests will get executed with this format too.
++ */
++
+ enum dsc_test_type {
+ 	TEST_DSC_BASIC,
+ 	TEST_DSC_BPC,
 -- 
 2.25.1
