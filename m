@@ -1,18 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8818810E60C
- for <igt-dev@lists.freedesktop.org>; Thu, 17 Nov 2022 14:30:16 +0000 (UTC)
-Date: Thu, 17 Nov 2022 15:30:14 +0100
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Message-ID: <Y3ZFdmYYnexMZZDC@kamilkon-desk1>
-References: <20221112060714.1084199-1-vikas.srivastava@intel.com>
+Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0A3EA10E79C
+ for <igt-dev@lists.freedesktop.org>; Fri, 25 Nov 2022 14:51:10 +0000 (UTC)
+Date: Fri, 25 Nov 2022 13:50:55 -0100
+From: Melissa Wen <mwen@igalia.com>
+To: =?utf-8?B?TWHDrXJh?= Canal <mcanal@igalia.com>
+Message-ID: <20221125145055.5dlcarmgogoixc7f@mail.igalia.com>
+References: <20221115202101.278995-1-mcanal@igalia.com>
+ <20221115202101.278995-2-mcanal@igalia.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: multipart/signed; micalg=pgp-sha512;
+ protocol="application/pgp-signature"; boundary="zjxqjndiqsdpiwv2"
 Content-Disposition: inline
-In-Reply-To: <20221112060714.1084199-1-vikas.srivastava@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t v2] tests/i915/gem_exec_fence: Replacing
- custom spinner with igt_spin
+In-Reply-To: <20221115202101.278995-2-mcanal@igalia.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 1/5] tests/vc4: Move VC4 tests to their
+ own folder
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,203 +22,153 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Chris P Wilson <chris.p.wilson@intel.com>
+Cc: petri.latvala@intel.com, Emma Anholt <emma@anholt.net>,
+ igt-dev@lists.freedesktop.org, Maxime Ripard <maxime@cerno.tech>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Vikas,
 
-On 2022-11-12 at 11:37:14 +0530, Vikas Srivastava wrote:
-> From: Chris Wilson <chris.p.wilson@intel.com>
-> 
-> Replace the custom spinner with igt_spin, possible now that igt_spin
-> can provide the out-fence. This has a major advantage, such as able to run
-> on any platform, including over the cmdparser.
-> 
-> Signed-off-by: Chris Wilson <chris.p.wilson@intel.com>
-> Acked-by: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
+--zjxqjndiqsdpiwv2
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Thank you for resending this with corrections, I have few small
-nits, see below.
-
+On 11/15, Ma=EDra Canal wrote:
+> VC4 contains a substantial number of tests. In order to avoid polluting
+> the main tests folder, move the VC4 tests to a separate folder.
+>=20
+> Signed-off-by: Ma=EDra Canal <mcanal@igalia.com>
 > ---
->  tests/i915/gem_exec_fence.c | 108 +++++++++---------------------------
->  1 file changed, 26 insertions(+), 82 deletions(-)
-> 
-> diff --git a/tests/i915/gem_exec_fence.c b/tests/i915/gem_exec_fence.c
-> index e8d51a732..4b5a74490 100644
-> --- a/tests/i915/gem_exec_fence.c
-> +++ b/tests/i915/gem_exec_fence.c
-> @@ -25,10 +25,10 @@
->  #include <sys/ioctl.h>
->  #include <sys/poll.h>
->  #include <sys/signal.h>
-> -
->  #include "i915/gem.h"
->  #include "i915/gem_create.h"
->  #include "igt.h"
-> +#include "igt_dummyload.h"
->  #include "igt_store.h"
->  #include "igt_syncobj.h"
->  #include "igt_sysfs.h"
-> @@ -40,11 +40,11 @@ IGT_TEST_DESCRIPTION("Check that execbuf waits for explicit fences");
->  
->  #ifndef SYNC_IOC_MERGE
->  struct sync_merge_data {
-> -	char    name[32];
-> -	int32_t fd2;
-> -	int32_t fence;
-> -	uint32_t        flags;
-> -	uint32_t        pad;
-> +	char     name[32];
-> +	int32_t  fd2;
-> +	int32_t  fence;
-> +	uint32_t flags;
-> +	uint32_t pad;
->  };
->  #define SYNC_IOC_MAGIC '>'
->  #define SYNC_IOC_MERGE _IOWR(SYNC_IOC_MAGIC, 3, struct sync_merge_data)
-> @@ -67,109 +67,53 @@ static bool fence_busy(int fence)
->  #define HANG 0x1
->  #define NONBLOCK 0x2
->  #define WAIT 0x4
-> +#define NOT(n) !n
+>  tests/meson.build                  | 28 ++++++++++++++++++++--------
+>  tests/{ =3D> vc4}/vc4_create_bo.c    |  0
+>  tests/{ =3D> vc4}/vc4_dmabuf_poll.c  |  0
+>  tests/{ =3D> vc4}/vc4_label_bo.c     |  0
+>  tests/{ =3D> vc4}/vc4_lookup_fail.c  |  0
+>  tests/{ =3D> vc4}/vc4_purgeable_bo.c |  0
+>  tests/{ =3D> vc4}/vc4_tiling.c       |  0
+>  tests/{ =3D> vc4}/vc4_wait_bo.c      |  0
+>  tests/{ =3D> vc4}/vc4_wait_seqno.c   |  0
+>  9 files changed, 20 insertions(+), 8 deletions(-)
+>  rename tests/{ =3D> vc4}/vc4_create_bo.c (100%)
+>  rename tests/{ =3D> vc4}/vc4_dmabuf_poll.c (100%)
+>  rename tests/{ =3D> vc4}/vc4_label_bo.c (100%)
+>  rename tests/{ =3D> vc4}/vc4_lookup_fail.c (100%)
+>  rename tests/{ =3D> vc4}/vc4_purgeable_bo.c (100%)
+>  rename tests/{ =3D> vc4}/vc4_tiling.c (100%)
+>  rename tests/{ =3D> vc4}/vc4_wait_bo.c (100%)
+>  rename tests/{ =3D> vc4}/vc4_wait_seqno.c (100%)
+>=20
+> diff --git a/tests/meson.build b/tests/meson.build
+> index 12e53e0b..c42efdef 100644
+> --- a/tests/meson.build
+> +++ b/tests/meson.build
+> @@ -83,14 +83,6 @@ test_progs =3D [
+>  	'v3d_get_bo_offset',
+>  	'v3d_get_param',
+>  	'v3d_mmap',
+> -	'vc4_create_bo',
+> -	'vc4_dmabuf_poll',
+> -	'vc4_label_bo',
+> -	'vc4_lookup_fail',
+> -	'vc4_purgeable_bo',
+> -	'vc4_tiling',
+> -	'vc4_wait_bo',
+> -	'vc4_wait_seqno',
+>  	'vgem_basic',
+>  	'vgem_slow',
+>  ]
+> @@ -258,6 +250,17 @@ msm_progs =3D [
+>  	'msm_submit'
+>  ]
+> =20
+> +vc4_progs =3D [
+> +	'vc4_create_bo',
+> +	'vc4_dmabuf_poll',
+> +	'vc4_label_bo',
+> +	'vc4_lookup_fail',
+> +	'vc4_purgeable_bo',
+> +	'vc4_tiling',
+> +	'vc4_wait_bo',
+> +	'vc4_wait_seqno',
+> +]
+> +
+As I commented for v3d tests, it would be clearer to me ig the test go
+to a subdir /build/tests/vc4/ as I see for amdgpu tests.
 
-Remove this NOT(n) macro, see below.
+>  chamelium_progs =3D [
+>  	'kms_chamelium',
+>  ]
+> @@ -305,6 +308,15 @@ foreach prog : msm_progs
+>  	test_list +=3D prog
+>  endforeach
+> =20
+> +foreach prog : vc4_progs
+> +	test_executables +=3D executable(prog, join_paths('vc4', prog + '.c'),
+> +				       dependencies : test_deps,
+> +				       install_dir : libexecdir,
+> +				       install_rpath : libexecdir_rpathdir,
+> +				       install : true)
+> +	test_list +=3D prog
+> +endforeach
+> +
+>  if chamelium.found()
+>  	foreach prog : chamelium_progs
+>  		test_executables +=3D executable(prog,
+> diff --git a/tests/vc4_create_bo.c b/tests/vc4/vc4_create_bo.c
+> similarity index 100%
+> rename from tests/vc4_create_bo.c
+> rename to tests/vc4/vc4_create_bo.c
+> diff --git a/tests/vc4_dmabuf_poll.c b/tests/vc4/vc4_dmabuf_poll.c
+> similarity index 100%
+> rename from tests/vc4_dmabuf_poll.c
+> rename to tests/vc4/vc4_dmabuf_poll.c
+> diff --git a/tests/vc4_label_bo.c b/tests/vc4/vc4_label_bo.c
+> similarity index 100%
+> rename from tests/vc4_label_bo.c
+> rename to tests/vc4/vc4_label_bo.c
+> diff --git a/tests/vc4_lookup_fail.c b/tests/vc4/vc4_lookup_fail.c
+> similarity index 100%
+> rename from tests/vc4_lookup_fail.c
+> rename to tests/vc4/vc4_lookup_fail.c
+> diff --git a/tests/vc4_purgeable_bo.c b/tests/vc4/vc4_purgeable_bo.c
+> similarity index 100%
+> rename from tests/vc4_purgeable_bo.c
+> rename to tests/vc4/vc4_purgeable_bo.c
+> diff --git a/tests/vc4_tiling.c b/tests/vc4/vc4_tiling.c
+> similarity index 100%
+> rename from tests/vc4_tiling.c
+> rename to tests/vc4/vc4_tiling.c
+> diff --git a/tests/vc4_wait_bo.c b/tests/vc4/vc4_wait_bo.c
+> similarity index 100%
+> rename from tests/vc4_wait_bo.c
+> rename to tests/vc4/vc4_wait_bo.c
+> diff --git a/tests/vc4_wait_seqno.c b/tests/vc4/vc4_wait_seqno.c
+> similarity index 100%
+> rename from tests/vc4_wait_seqno.c
+> rename to tests/vc4/vc4_wait_seqno.c
+> --=20
+> 2.38.1
+>=20
 
->  
->  static void test_fence_busy(int fd, const intel_ctx_t *ctx,
->  			    const struct intel_execution_engine2 *e,
->  			    unsigned flags)
->  {
-> -	const unsigned int gen = intel_gen(intel_get_drm_devid(fd));
-> -	struct drm_i915_gem_exec_object2 obj;
-> -	struct drm_i915_gem_relocation_entry reloc;
-> -	struct drm_i915_gem_execbuffer2 execbuf;
-> -	struct timespec tv;
-> -	uint32_t *batch;
->  	uint64_t ahnd = get_reloc_ahnd(fd, ctx->id);
-> -	int fence, i, timeout;
-> -
-> -	if ((flags & HANG) == 0)
-> -		igt_require(gem_class_has_mutable_submission(fd, e->class));
-> +	struct timespec tv;
-> +	int fence, timeout;
-> +	igt_spin_t *spin;
->  
->  	gem_quiescent_gpu(fd);
->  
-> -	memset(&execbuf, 0, sizeof(execbuf));
-> -	execbuf.buffers_ptr = to_user_pointer(&obj);
-> -	execbuf.buffer_count = 1;
-> -	execbuf.flags = e->flags | I915_EXEC_FENCE_OUT;
-> -	execbuf.rsvd1 = ctx->id;
-> -
-> -	memset(&obj, 0, sizeof(obj));
-> -	obj.handle = gem_create(fd, 4096);
-> -	obj.offset = get_offset(ahnd, obj.handle, 4096, 0);
-> -
-> -	batch = gem_mmap__device_coherent(fd, obj.handle, 0, 4096, PROT_WRITE);
-> -	gem_set_domain(fd, obj.handle,
-> -		       I915_GEM_DOMAIN_GTT, I915_GEM_DOMAIN_GTT);
-> -
-> -	i = 0;
-> -	if ((flags & HANG) == 0)
-> -		batch[i++] = 0x5 << 23;
-> -
-> -	if (!ahnd) {
-> -		obj.relocs_ptr = to_user_pointer(&reloc);
-> -		obj.relocation_count = 1;
-> -		memset(&reloc, 0, sizeof(reloc));
-> -		reloc.target_handle = obj.handle; /* recurse */
-> -		reloc.presumed_offset = obj.offset;
-> -		reloc.offset = (i + 1) * sizeof(uint32_t);
-> -		reloc.delta = 0;
-> -		reloc.read_domains = I915_GEM_DOMAIN_COMMAND;
-> -		reloc.write_domain = 0;
-> -	} else {
-> -		obj.flags |= EXEC_OBJECT_PINNED;
-> -	}
-> -
-> -	batch[i] = MI_BATCH_BUFFER_START;
-> -	if (gen >= 8) {
-> -		batch[i] |= 1 << 8 | 1;
-> -		batch[++i] = obj.offset;
-> -		batch[++i] = obj.offset >> 32;
-> -	} else if (gen >= 6) {
-> -		batch[i] |= 1 << 8;
-> -		batch[++i] = obj.offset;
-> -	} else {
-> -		batch[i] |= 2 << 6;
-> -		batch[++i] = obj.offset;
-> -		if (gen < 4) {
-> -			batch[i] |= 1;
-> -			reloc.delta = 1;
-> -		}
-> -	}
-> -	i++;
-> -
-> -	execbuf.rsvd2 = -1;
-> -	gem_execbuf_wr(fd, &execbuf);
-> -	fence = execbuf.rsvd2 >> 32;
-> -	igt_assert(fence != -1);
-> +	spin = igt_spin_new(fd, .ahnd = ahnd, .ctx = ctx, .engine = e->flags,
-> +			    .flags = IGT_SPIN_FENCE_OUT |
-> +			    ((flags & HANG) ? IGT_SPIN_NO_PREEMPTION : 0));
->  
-> -	igt_assert(gem_bo_busy(fd, obj.handle));
-> +	fence = spin->out_fence;
-> +	igt_assert(gem_bo_busy(fd, spin->handle));
->  	igt_assert(fence_busy(fence));
->  
->  	timeout = 120;
->  	if ((flags & HANG) == 0) {
-> -		*batch = MI_BATCH_BUFFER_END;
-> -		__sync_synchronize();
-> -		timeout = 1;
-> +		igt_spin_end(spin);
-> +		timeout = NOT(igt_run_in_simulation())?1:120;
+--zjxqjndiqsdpiwv2
+Content-Type: application/pgp-signature; name="signature.asc"
 
-Here use SLOW_QUICK macro, this should be:
-		timeout = SLOW_QUICK(120, 1);
+-----BEGIN PGP SIGNATURE-----
 
-Regards,
-Kamil
+iQIzBAABCgAdFiEEd8WOo/JViG+Tu+XIwqF3j0dLehwFAmOA1kcACgkQwqF3j0dL
+ehzGFQ/8Daw2REHjqHTC8r+3DS36ON9mBm2YDIYyJttVe0iXG8GGO41OCMutHyDt
+9eJuX4oKNgZ/qAKCsWV500bbcIeD+pdRVsP+yIXWXcvXpO3bWqgQ9ooa6ZKRBbEw
+RI4k6gud7R6P5ccFhOmpLc24aTemvVrhCTbJB5HAiuiAy/IYKdcaqGqLfyC3z4Ke
+VYAUnlltnJbQ2myMtJApDRv6e3hxL4epX7pRsW8heejXWNs07rYDMmtJkewYgKqu
+n4v+qwQ5whLYTx0UUoqzM8mK7vZ1SoJebFWa2QHbdchxjTlsJ2X1z+NoSneyONVs
+GOZbbu2mLUI8WC/cxpLIw4jBf0QyYFZs/Boc6jA82IP5OPopBLePvZ4gpXN+8G9m
+6WBiQlZC+11O7Wiy224KUl8fdpo9pdLf+u00VHkJ5wEeIXE1xs8bmX2gySzO1VZ1
+9pDsLVjh/TCiIWpF35C04WhGjlXvPpwi8brRdiYRedWumQumlAyeboZKLiClh9wv
+Lxgw2E7zjPSslrI6aZuFQo36kGgsmSN+FWeqEcBEhc4oesmv8wNGuwl7JwfY41Qs
+FfZM1jJC02mIq3uhKy56Kp40mFpjLAIfdPVRjVByjzjjd+pw83g3ae0uy/DgFmnN
+FwTk24GAKSyPBemItgNBZdXAsMqvKHurKw2LmxpAT8g7HboRNZc=
+=q4Ys
+-----END PGP SIGNATURE-----
 
->  	}
-> -	munmap(batch, 4096);
->  
->  	if (flags & WAIT) {
->  		struct pollfd pfd = { .fd = fence, .events = POLLIN };
->  		igt_assert(poll(&pfd, 1, timeout*1000) == 1);
->  	} else {
-> +		int elapsed_time;
->  		memset(&tv, 0, sizeof(tv));
-> -		while (fence_busy(fence))
-> +		while (fence_busy(fence)) {
-> +			elapsed_time = igt_seconds_elapsed(&tv);
-> +			if (elapsed_time >= timeout)
-> +				igt_info("Elapsed time (%ds)\n", elapsed_time);
->  			igt_assert(igt_seconds_elapsed(&tv) < timeout);
-> +		}
-> +		igt_info("Elapsed time (%ds)\n", igt_seconds_elapsed(&tv));
->  	}
-> -
-> -	igt_assert(!gem_bo_busy(fd, obj.handle));
-> +	igt_assert(!gem_bo_busy(fd, spin->handle));
->  	igt_assert_eq(sync_fence_status(fence),
->  		      flags & HANG ? -EIO : SYNC_FENCE_OK);
->  
-> -	close(fence);
-> -	gem_close(fd, obj.handle);
-> -	put_offset(ahnd, obj.handle);
-> +	igt_spin_free(fd, spin);
->  	put_ahnd(ahnd);
-> -
->  	gem_quiescent_gpu(fd);
->  }
->  
-> -- 
-> 2.25.1
-> 
+--zjxqjndiqsdpiwv2--
