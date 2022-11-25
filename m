@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 50FE010E740
- for <igt-dev@lists.freedesktop.org>; Fri, 25 Nov 2022 11:56:28 +0000 (UTC)
-From: Swati Sharma <swati2.sharma@intel.com>
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8D1EB10E740
+ for <igt-dev@lists.freedesktop.org>; Fri, 25 Nov 2022 12:02:07 +0000 (UTC)
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Fri, 25 Nov 2022 17:28:05 +0530
-Message-Id: <20221125115808.13394-4-swati2.sharma@intel.com>
-In-Reply-To: <20221125115808.13394-1-swati2.sharma@intel.com>
-References: <20221125115808.13394-1-swati2.sharma@intel.com>
+Date: Fri, 25 Nov 2022 13:01:42 +0100
+Message-Id: <20221125120148.28490-3-kamil.konieczny@linux.intel.com>
+In-Reply-To: <20221125120148.28490-1-kamil.konieczny@linux.intel.com>
+References: <20221125120148.28490-1-kamil.konieczny@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 3/6] tests/i915/kms_dsc: Enable validation
- for VDSC YCbCr420
+Subject: [igt-dev] [RFC PATCH v3 2/8] lib/igt_core: store GPU string or
+ opened device name
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,315 +23,95 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Existing i-g-t is extended to enable validation for VDSC YCbCr420.
-If a mode is supported in both RGB and YCbCr420 output formats by the
-sink, i915 driver policy is to try RGB first and fall back to YCbCr420, if
-mode cannot be shown using RGB. To test YCbCr420, we need a debugfs
-entry (force_dsc_ycbcr420) to force this output format; so that YCbCr420 code
-gets executed.
-From i-g-t, we have set this debugfs entry. However, before setting
-debugfs entry, we have checked capability i.e. YCbCr420 is supported by
-both platform (D14+) and sink.
-Also, all the modes doesn't support both YCbCr420 and RGB formats; so if
-sink and platform supports YCbCr420 we will do try commit with each mode
-till we get a successful commit.
+From: Mauro Carvalho Chehab <mchehab@kernel.org>
 
-v2: -used is_dsc_ycbcr420_supported() (Ankit)
-    -handled try-commit correctly (Ankit)
-    -instead of flag use enum for output formats (Ankit)
+This is helpful on tests that run with multiple GPUs.
+The name will be automatically filled when a device will
+be opened.
 
-Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
+v2: reorganized code, changed commit message to note that
+  it will be filled with pathname of opended device, also
+  correct static initialization [Kamil]
+
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 ---
- tests/i915/kms_dsc.c | 195 ++++++++++++++++++++++++++++++++-----------
- 1 file changed, 147 insertions(+), 48 deletions(-)
+ lib/drmtest.c  |  4 +++-
+ lib/igt_core.c | 30 ++++++++++++++++++++++++++++++
+ lib/igt_core.h |  6 ++++++
+ 3 files changed, 39 insertions(+), 1 deletion(-)
 
-diff --git a/tests/i915/kms_dsc.c b/tests/i915/kms_dsc.c
-index 6fef764de..6a3eecdb4 100644
---- a/tests/i915/kms_dsc.c
-+++ b/tests/i915/kms_dsc.c
-@@ -53,6 +53,11 @@ enum dsc_test_type {
- 	TEST_DSC_BPC
- };
- 
-+enum dsc_output_format {
-+	DSC_FORMAT_RGB444,
-+	DSC_FORMAT_YCBCR420
-+};
-+
- typedef struct {
- 	int drm_fd;
- 	uint32_t devid;
-@@ -66,7 +71,10 @@ typedef struct {
- } data_t;
- 
- bool force_dsc_en_orig;
-+bool force_dsc_ycbcr420_en_orig;
- int force_dsc_restore_fd = -1;
-+int force_dsc_ycbcr420_restore_fd = -1;
-+static int count = 0;
- 
- const struct {
- 	const int format;
-@@ -107,6 +115,16 @@ static void force_dsc_enable_bpc(data_t *data)
- 	igt_assert_f(ret > 0, "forcing input dsc bpc debugfs_write failed\n");
- }
- 
-+static void force_dsc_ycbcr420_enable(data_t *data)
-+{
-+	int ret;
-+
-+	igt_debug("Forcing DSC YCbCr420 on %s\n", data->output->name);
-+	ret = igt_force_dsc_ycbcr420_enable(data->drm_fd,
-+					    data->output->name);
-+	igt_assert_f(ret > 0, "forcing dsc ycbcr420 debugfs_write failed\n");
-+}
-+
- static void save_force_dsc_en(data_t *data)
- {
- 	force_dsc_en_orig =
-@@ -130,9 +148,34 @@ static void restore_force_dsc_en(void)
- 	force_dsc_restore_fd = -1;
- }
- 
-+static void save_force_dsc_ycbcr420_en(data_t *data)
-+{
-+	force_dsc_ycbcr420_en_orig =
-+		igt_is_force_dsc_ycbcr420_enabled(data->drm_fd,
-+						  data->output->name);
-+	force_dsc_ycbcr420_restore_fd =
-+		igt_get_dsc_ycbcr420_debugfs_fd(data->drm_fd,
-+						data->output->name);
-+	igt_assert(force_dsc_ycbcr420_restore_fd >= 0);
-+}
-+
-+static void restore_force_dsc_ycbcr420_en(void)
-+{
-+	if (force_dsc_ycbcr420_restore_fd < 0)
-+		return;
-+
-+	igt_debug("Restoring DSC YCbCr420 enable\n");
-+	igt_assert(write(force_dsc_ycbcr420_restore_fd, force_dsc_ycbcr420_en_orig ? "1" : "0", 1) == 1);
-+
-+	close(force_dsc_ycbcr420_restore_fd);
-+	force_dsc_ycbcr420_restore_fd = -1;
-+}
-+
-+
- static void kms_dsc_exit_handler(int sig)
- {
- 	restore_force_dsc_en();
-+	restore_force_dsc_ycbcr420_en();
- }
- 
- static drmModeModeInfo *get_highres_mode(igt_output_t *output)
-@@ -147,6 +190,20 @@ static drmModeModeInfo *get_highres_mode(igt_output_t *output)
- 	return highest_mode;
- }
- 
-+static drmModeModeInfo *get_next_mode(igt_output_t *output)
-+{
-+	drmModeConnector *connector = output->config.connector;
-+	drmModeModeInfo *next_mode = NULL;
-+
-+	for (int i = count; i < connector->count_modes; i++) {
-+		next_mode = &connector->modes[i];
-+		count ++;
-+		break;
+diff --git a/lib/drmtest.c b/lib/drmtest.c
+index 16e80bdf..5eb98272 100644
+--- a/lib/drmtest.c
++++ b/lib/drmtest.c
+@@ -222,8 +222,10 @@ static int open_device(const char *name, unsigned int chipset)
+ 			break;
+ 		}
+ 	}
+-	if ((chipset & chip) == chip)
++	if ((chipset & chip) == chip) {
++		set_gpu_string(name);
+ 		return fd;
 +	}
-+
-+	return next_mode;
-+}
-+
- static bool check_dsc_on_connector(data_t *data)
- {
- 	igt_output_t *output = data->output;
-@@ -167,6 +224,19 @@ static bool check_dsc_on_connector(data_t *data)
- 	return true;
- }
  
-+static bool is_dsc_ycbcr420_supported(data_t *data)
-+{
-+	igt_output_t *output = data->output;
-+
-+	if (!igt_is_dsc_ycbcr420_supported(data->drm_fd, output->name)) {
-+		igt_debug("DSC YCbCr420 not supported on connector %s\n",
-+			  output->name);
-+		return false;
-+	}
-+
-+	return true;
-+}
-+
- static bool check_big_joiner_pipe_constraint(data_t *data)
- {
- 	igt_output_t *output = data->output;
-@@ -224,75 +294,100 @@ static void test_cleanup(data_t *data)
- 
- /* re-probe connectors and do a modeset with DSC */
- static void update_display(data_t *data, enum dsc_test_type test_type,
--			   unsigned int plane_format)
-+			   unsigned int plane_format, enum dsc_output_format output_format)
- {
-+	int ret;
- 	bool enabled;
- 	igt_plane_t *primary;
- 	drmModeModeInfo *mode;
-+	bool test_complete = false;
- 	igt_output_t *output = data->output;
- 	igt_display_t *display = &data->display;
- 
--	/* sanitize the state before starting the subtest */
--	igt_display_reset(display);
--	igt_display_commit(display);
-+	count = 0;
-+	while (!test_complete) {
-+		/* sanitize the state before starting the subtest */
-+		igt_display_reset(display);
-+		igt_display_commit(display);
- 
--	igt_debug("DSC is supported on %s\n", data->output->name);
--	save_force_dsc_en(data);
--	force_dsc_enable(data);
-+		igt_debug("DSC is supported on %s\n", data->output->name);
-+		save_force_dsc_en(data);
-+		force_dsc_enable(data);
- 
--	if (test_type == TEST_DSC_BPC) {
--		igt_debug("Trying to set input BPC to %d\n", data->input_bpc);
--		force_dsc_enable_bpc(data);
--	}
-+		if (output_format == DSC_FORMAT_YCBCR420) {
-+			igt_debug("DSC YCbCr420 is supported on %s\n", data->output->name);
-+			save_force_dsc_ycbcr420_en(data);
-+			force_dsc_ycbcr420_enable(data);
-+		}
- 
--	igt_output_set_pipe(output, data->pipe);
-+		if (test_type == TEST_DSC_BPC) {
-+			igt_debug("Trying to set input BPC to %d\n", data->input_bpc);
-+			force_dsc_enable_bpc(data);
-+		}
- 
--	mode = get_highres_mode(output);
--	igt_require(mode != NULL);
--	igt_output_override_mode(output, mode);
-+		igt_output_set_pipe(output, data->pipe);
- 
--	primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
-+		if (output_format == DSC_FORMAT_YCBCR420)
-+			mode = get_next_mode(output);
-+		else
-+			mode = get_highres_mode(output);
- 
--	igt_skip_on(!igt_plane_has_format_mod(primary, plane_format,
--		    DRM_FORMAT_MOD_LINEAR));
-+		igt_require(mode != NULL);
-+		igt_output_override_mode(output, mode);
- 
--	igt_create_pattern_fb(data->drm_fd,
--			      mode->hdisplay,
--			      mode->vdisplay,
--			      plane_format,
--			      DRM_FORMAT_MOD_LINEAR,
--			      &data->fb_test_pattern);
-+		primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
- 
--	igt_plane_set_fb(primary, &data->fb_test_pattern);
--	igt_display_commit(display);
-+		igt_skip_on(!igt_plane_has_format_mod(primary, plane_format,
-+			    DRM_FORMAT_MOD_LINEAR));
- 
--	/* until we have CRC check support, manually check if RGB test
--	 * pattern has no corruption.
--	 */
--	manual("RGB test pattern without corruption");
-+		igt_create_pattern_fb(data->drm_fd,
-+				      mode->hdisplay,
-+				      mode->vdisplay,
-+				      plane_format,
-+				      DRM_FORMAT_MOD_LINEAR,
-+				      &data->fb_test_pattern);
- 
--	enabled = igt_is_dsc_enabled(data->drm_fd, output->name);
--	igt_info("Current mode is: %dx%d @%dHz -- DSC is: %s\n",
--				mode->hdisplay,
--				mode->vdisplay,
--				mode->vrefresh,
--				enabled ? "ON" : "OFF");
-+		igt_plane_set_fb(primary, &data->fb_test_pattern);
-+		ret = igt_display_try_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
-+		if (ret == 0) {
-+			igt_display_commit(display);
-+			test_complete = true;
-+		} else if (output_format == DSC_FORMAT_YCBCR420) {
-+			continue;
-+		}
- 
--	restore_force_dsc_en();
--	igt_debug("Reset compression BPC\n");
--	data->input_bpc = 0;
--	force_dsc_enable_bpc(data);
-+		igt_assert_eq(ret, 0);
-+
-+		/* until we have CRC check support, manually check if RGB test
-+		 * pattern has no corruption.
-+		 */
-+		manual("RGB test pattern without corruption");
-+
-+		enabled = igt_is_dsc_enabled(data->drm_fd, output->name);
-+		igt_info("Current mode is: %dx%d @%dHz -- DSC is: %s\n",
-+					mode->hdisplay,
-+					mode->vdisplay,
-+					mode->vrefresh,
-+					enabled ? "ON" : "OFF");
-+
-+		restore_force_dsc_en();
-+		if (output_format == DSC_FORMAT_YCBCR420)
-+			restore_force_dsc_ycbcr420_en();
-+		igt_debug("Reset compression BPC\n");
-+		data->input_bpc = 0;
-+		force_dsc_enable_bpc(data);
- 
--	igt_assert_f(enabled,
--		     "Default DSC enable failed on connector: %s pipe: %s\n",
--		     output->name,
--		     kmstest_pipe_name(data->pipe));
-+		igt_assert_f(enabled,
-+			    "Default DSC enable failed on connector: %s pipe: %s\n",
-+			    output->name,
-+			    kmstest_pipe_name(data->pipe));
- 
--	test_cleanup(data);
-+		test_cleanup(data);
-+	}
- }
- 
- static void test_dsc(data_t *data, enum dsc_test_type test_type, int bpc,
--		     unsigned int plane_format)
-+		     unsigned int plane_format, enum dsc_output_format output_format)
- {
- 	igt_display_t *display = &data->display;
- 	igt_output_t *output;
-@@ -322,14 +417,18 @@ static void test_dsc(data_t *data, enum dsc_test_type test_type, int bpc,
- 			snprintf(name, sizeof(name), "-%s", igt_format_str(plane_format));
- 
- 		igt_dynamic_f("pipe-%s-%s%s",  kmstest_pipe_name(data->pipe), data->output->name, name)
--			update_display(data, test_type, plane_format);
-+			update_display(data, test_type, plane_format, output_format);
+ err:
+ 	close(fd);
+diff --git a/lib/igt_core.c b/lib/igt_core.c
+index ca363b7d..c86acf2a 100644
+--- a/lib/igt_core.c
++++ b/lib/igt_core.c
+@@ -1576,6 +1576,36 @@ static void kill_and_wait(pid_t *pids, int size, int signum)
  	}
  }
  
- static void run_test(data_t *data, enum dsc_test_type test_type, int bpc,
- 		     unsigned int plane_format)
- {
--	test_dsc(data, test_type, bpc, plane_format);
-+	test_dsc(data, test_type, bpc, plane_format, DSC_FORMAT_RGB444);
++static __thread char *gpu_string;
 +
-+	/* YCbCr420 DSC is supported on display version 14+ */
-+	if ((data->disp_ver >= 14) && (is_dsc_ycbcr420_supported(data)))
-+		test_dsc(data, test_type, bpc, plane_format, DSC_FORMAT_YCBCR420);
++void set_gpu_string(const char *fname)
++{
++	char sysfs[PATH_MAX], *path, *p;
++
++	if (gpu_string) {
++		free(gpu_string);
++		gpu_string = NULL;
++	}
++
++	if (!fname)
++		return;
++
++	p = strrchr(fname, '/');
++	if (!p) {
++		path = strdup(fname);
++	} else {
++		p++;
++
++		strcpy(sysfs, "/sys/class/drm/");
++		strcat(sysfs, p);
++		path = realpath(sysfs, NULL);
++		igt_debug("opened %s as %s\n", fname, path);
++	}
++
++	gpu_string = path;
++	igt_assert(gpu_string);
++}
++
+ __noreturn static void exit_subtest(const char *result)
+ {
+ 	struct timespec now;
+diff --git a/lib/igt_core.h b/lib/igt_core.h
+index 082da036..276bf42f 100644
+--- a/lib/igt_core.h
++++ b/lib/igt_core.h
+@@ -1519,4 +1519,10 @@ static inline void igt_pci_system_cleanup(void)
+ {
  }
  
- igt_main
++/**
++ * set_gpu_string():
++ * Sets a string to describe the GPU being tested
++ */
++void set_gpu_string(const char *string);
++
+ #endif /* IGT_CORE_H */
 -- 
-2.25.1
+2.34.1
