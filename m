@@ -1,12 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from NAM02-SN1-obe.outbound.protection.outlook.com
- (mail-sn1nam02on2053.outbound.protection.outlook.com [40.107.96.53])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D391A10E226
- for <igt-dev@lists.freedesktop.org>; Mon, 28 Nov 2022 19:03:21 +0000 (UTC)
+Received: from NAM10-DM6-obe.outbound.protection.outlook.com
+ (mail-dm6nam10on2064.outbound.protection.outlook.com [40.107.93.64])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A1E2810E243
+ for <igt-dev@lists.freedesktop.org>; Mon, 28 Nov 2022 19:08:00 +0000 (UTC)
 From: <vitaly.prosyak@amd.com>
 To: <igt-dev@lists.freedesktop.org>
-Date: Mon, 28 Nov 2022 14:02:32 -0500
-Message-ID: <20221128190232.10182-1-vitaly.prosyak@amd.com>
+Date: Mon, 28 Nov 2022 14:07:44 -0500
+Message-ID: <20221128190744.11648-1-vitaly.prosyak@amd.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
@@ -18,16 +18,18 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: pierre-eric.pelloux-prayer@amd.com, jiadong.zhu@amd.com
+Cc: pierre-eric.pelloux-prayer@amd.com, Jiadong Zhu <Jiadong.Zhu@amd.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Vitaly Prosyak <vitaly.prosyak@amd.com>
 
+Vg-20 and other ASIC's from GFX9 family.
 Use always AMDGPU_CTX_NO_RESET for comparison of return code.
 
 Signed-off-by: Vitaly Prosyak <vitaly.prosyak@amd.com>
+Reviewed-by: Jiadong Zhu <Jiadong.Zhu@amd.com>
 ---
  lib/amdgpu/amd_dispatch.c  | 5 +----
  lib/amdgpu/amd_ip_blocks.c | 3 +--
