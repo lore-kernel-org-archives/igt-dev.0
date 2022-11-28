@@ -1,18 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A8EBC10E16D
- for <igt-dev@lists.freedesktop.org>; Mon, 21 Nov 2022 14:09:33 +0000 (UTC)
-Date: Mon, 21 Nov 2022 15:09:28 +0100
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 221A710E2AB
+ for <igt-dev@lists.freedesktop.org>; Mon, 28 Nov 2022 08:25:33 +0000 (UTC)
+From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 To: igt-dev@lists.freedesktop.org
-Message-ID: <Y3uGmAmERjEbiBne@kamilkon-desk1>
-References: <20221121105436.1992501-1-vikas.srivastava@intel.com>
+Date: Mon, 28 Nov 2022 09:25:16 +0100
+Message-Id: <20221128082516.16347-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20221121105436.1992501-1-vikas.srivastava@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/i915/gem_userptr_blits: Added
- XY_FAST_COPY_BLT Command for MTL
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t] tests/prime_udl: Remove intel-libdrm
+ dependency
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,204 +18,143 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Arjun Melkaveri <arjun.melkaveri@intel.com>
+Cc: Petri Latvala <petri.latvala@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi,
+To remove all intel-libdrm code in intel_batchbuffer we need to rewrite
+and drop it in all dependent code. Currently CI doesn't exercise this
+test and I don't have DisplayLink hardware so this is blind rewrite
+(instead of removing the test). Common xf86drmMode calls are left
+intact as igt likely won't remove libdrm totally.
 
-On 2022-11-21 at 16:24:36 +0530, Vikas Srivastava wrote:
-> From: Arjun Melkaveri <arjun.melkaveri@intel.com>
-> 
-> Test case uses legacy command which is not supported on MTL.
-> Modified test to use XY_FAST_COPY_BLT.
-> 
-> Signed-off-by: Arjun Melkaveri <arjun.melkaveri@intel.com>
-> Acked-by: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
-> ---
->  tests/i915/gem_userptr_blits.c | 128 +++++++++++++++++++++------------
->  1 file changed, 83 insertions(+), 45 deletions(-)
-> 
-> diff --git a/tests/i915/gem_userptr_blits.c b/tests/i915/gem_userptr_blits.c
-> index 698508669..22cbd5e02 100644
-> --- a/tests/i915/gem_userptr_blits.c
-> +++ b/tests/i915/gem_userptr_blits.c
-> @@ -99,6 +99,7 @@ static int copy(int fd, uint32_t dst, uint32_t src)
->  	struct drm_i915_gem_relocation_entry reloc[2];
->  	struct drm_i915_gem_exec_object2 obj[3];
->  	struct drm_i915_gem_execbuffer2 exec;
-> +	static uint32_t devid;
->  	uint32_t handle;
->  	int ret, i=0;
->  	uint64_t dst_offset, src_offset, bb_offset;
-> @@ -108,29 +109,47 @@ static int copy(int fd, uint32_t dst, uint32_t src)
->  	dst_offset = bb_offset + 4096;
->  	src_offset = dst_offset + WIDTH * HEIGHT * sizeof(uint32_t) * (src != dst);
->  
-> -	batch[i++] = XY_SRC_COPY_BLT_CMD |
-> -		  XY_SRC_COPY_BLT_WRITE_ALPHA |
-> -		  XY_SRC_COPY_BLT_WRITE_RGB;
-> -	if (intel_gen(intel_get_drm_devid(fd)) >= 8)
-> -		batch[i - 1] |= 8;
-> -	else
-> -		batch[i - 1] |= 6;
-> -
-> -	batch[i++] = (3 << 24) | /* 32 bits */
-> -		  (0xcc << 16) | /* copy ROP */
-> -		  WIDTH*4;
-> -	batch[i++] = 0; /* dst x1,y1 */
-> -	batch[i++] = (HEIGHT << 16) | WIDTH; /* dst x2,y2 */
-> -	batch[i++] = dst_offset; /* dst reloc */
-> -	if (intel_gen(intel_get_drm_devid(fd)) >= 8)
-> -		batch[i++] = dst_offset >> 32;
-> -	batch[i++] = 0; /* src x1,y1 */
-> -	batch[i++] = WIDTH*4;
-> -	batch[i++] = src_offset; /* src reloc */
-> -	if (intel_gen(intel_get_drm_devid(fd)) >= 8)
-> -		batch[i++] = src_offset >> 32;
-> -	batch[i++] = MI_BATCH_BUFFER_END;
-> -	batch[i++] = MI_NOOP;
-> +	devid = intel_get_drm_devid(fd);
-> +
-> +	if (IS_PONTEVECCHIO(devid)) {
------------ ^
-imho here check for >= gen12
+Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+Cc: Petri Latvala <petri.latvala@intel.com>
+---
+ tests/prime_udl.c | 61 +++++++++++++++++------------------------------
+ 1 file changed, 22 insertions(+), 39 deletions(-)
 
-> +		batch[i++] = XY_FAST_COPY_BLT;
-> +		batch[i++] = XY_FAST_COPY_COLOR_DEPTH_32 | WIDTH*4;
-> +		batch[i++] = 0;/* dst x1,y1 */
-> +		batch[i++] = (HEIGHT << 16) | WIDTH;/* dst x2,y2 */
-> +		batch[i++] = 0;/* dst address lower bits */
----------------------------- ^
-> +		batch[i++] = 0;/* dst address upper bits */
----------------------------- ^
-Use dst_offset
-
-> +		batch[i++] = 0;/* src x1,y1 */
-> +		batch[i++] = WIDTH*4;/* src pitch */
-> +		batch[i++] = 0;// src address lower bits
----------------------------- ^
-> +		batch[i++] = 0;// src address upper bits
----------------------------- ^
-Use src_offset
-
-> +		batch[i++] = MI_BATCH_BUFFER_END;
-> +		batch[i++] = MI_NOOP;
-> +	} else {
-> +		batch[i++] = XY_SRC_COPY_BLT_CMD |
-> +			     XY_SRC_COPY_BLT_WRITE_ALPHA |
-> +			     XY_SRC_COPY_BLT_WRITE_RGB;
-> +
-> +		if (intel_gen(intel_get_drm_devid(fd)) >= 8)
-> +			batch[i - 1] |= 8;
-> +		else
-> +			batch[i - 1] |= 6;
-> +
-> +		batch[i++] = (3 << 24) | /* 32 bits */
-> +			  (0xcc << 16) | /* copy ROP */
-> +			  WIDTH*4;
-> +		batch[i++] = 0; /* dst x1,y1 */
-> +		batch[i++] = (HEIGHT << 16) | WIDTH; /* dst x2,y2 */
-> +		batch[i++] = dst_offset; /* dst reloc */
-> +		if (intel_gen(intel_get_drm_devid(fd)) >= 8)
-> +			batch[i++] = dst_offset >> 32;
-> +		batch[i++] = 0; /* src x1,y1 */
-> +		batch[i++] = WIDTH*4;
-> +		batch[i++] = src_offset; /* src reloc */
-> +		if (intel_gen(intel_get_drm_devid(fd)) >= 8)
-> +			batch[i++] = src_offset >> 32;
-> +		batch[i++] = MI_BATCH_BUFFER_END;
-> +		batch[i++] = MI_NOOP;
-> +	}
->  
->  	handle = gem_create(fd, 4096);
->  	gem_write(fd, handle, 0, batch, sizeof(batch));
-> @@ -204,31 +223,50 @@ blit(int fd, uint32_t dst, uint32_t src, uint32_t *all_bo, int n_bo)
->  	struct drm_i915_gem_relocation_entry reloc[2];
->  	struct drm_i915_gem_exec_object2 *obj;
->  	struct drm_i915_gem_execbuffer2 exec;
-> +	static uint32_t devid;
-> +
->  	uint32_t handle;
->  	int n, ret, i=0;
->  
-> -	batch[i++] = XY_SRC_COPY_BLT_CMD |
-> -		  XY_SRC_COPY_BLT_WRITE_ALPHA |
-> -		  XY_SRC_COPY_BLT_WRITE_RGB;
-> -	if (intel_gen(intel_get_drm_devid(fd)) >= 8)
-> -		batch[i - 1] |= 8;
-> -	else
-> -		batch[i - 1] |= 6;
-> -	batch[i++] = (3 << 24) | /* 32 bits */
-> -		  (0xcc << 16) | /* copy ROP */
-> -		  WIDTH*4;
-> -	batch[i++] = 0; /* dst x1,y1 */
-> -	batch[i++] = (HEIGHT << 16) | WIDTH; /* dst x2,y2 */
-> -	batch[i++] = 0; /* dst reloc */
-> -	if (intel_gen(intel_get_drm_devid(fd)) >= 8)
-> -		batch[i++] = 0;
-> -	batch[i++] = 0; /* src x1,y1 */
-> -	batch[i++] = WIDTH*4;
-> -	batch[i++] = 0; /* src reloc */
-> -	if (intel_gen(intel_get_drm_devid(fd)) >= 8)
-> -		batch[i++] = 0;
-> -	batch[i++] = MI_BATCH_BUFFER_END;
-> -	batch[i++] = MI_NOOP;
-> +	devid = intel_get_drm_devid(fd);
-> +
-> +	if (IS_PONTEVECCHIO(devid)) {
-
-Same here.
-
-> +		batch[i++] = XY_FAST_COPY_BLT;
-> +		batch[i++] = XY_FAST_COPY_COLOR_DEPTH_32 | WIDTH*4;
-> +		batch[i++] = 0;/* dst x1,y1 */
-> +		batch[i++] = (HEIGHT << 16) | WIDTH;/* dst x2,y2 */
-> +		batch[i++] = 0;/* dst address lower bits */
-> +		batch[i++] = 0;/* dst address upper bits */
-
-Same here.
-
-> +		batch[i++] = 0;/* src x1,y1 */
-> +		batch[i++] = WIDTH*4;/* src pitch */
-> +		batch[i++] = 0;// src address lower bits
-> +		batch[i++] = 0;// src address upper bits
-
-Same here.
-
-Regards,
-Kamil
-
-> +		batch[i++] = MI_BATCH_BUFFER_END;
-> +		batch[i++] = MI_NOOP;
-> +	} else {
-> +		batch[i++] = XY_SRC_COPY_BLT_CMD |
-> +			     XY_SRC_COPY_BLT_WRITE_ALPHA |
-> +			     XY_SRC_COPY_BLT_WRITE_RGB;
-> +		if (intel_gen(intel_get_drm_devid(fd)) >= 8)
-> +			batch[i - 1] |= 8;
-> +		else
-> +			batch[i - 1] |= 6;
-> +		batch[i++] = (3 << 24) | /* 32 bits */
-> +			     (0xcc << 16) | /* copy ROP */
-> +			     WIDTH*4;
-> +		batch[i++] = 0; /* dst x1,y1 */
-> +		batch[i++] = (HEIGHT << 16) | WIDTH; /* dst x2,y2 */
-> +		batch[i++] = 0; /* dst reloc */
-> +		if (intel_gen(intel_get_drm_devid(fd)) >= 8)
-> +			batch[i++] = 0;
-> +		batch[i++] = 0; /* src x1,y1 */
-> +		batch[i++] = WIDTH*4;
-> +		batch[i++] = 0; /* src reloc */
-> +		if (intel_gen(intel_get_drm_devid(fd)) >= 8)
-> +			batch[i++] = 0;
-> +		batch[i++] = MI_BATCH_BUFFER_END;
-> +		batch[i++] = MI_NOOP;
-> +	}
->  
->  	handle = gem_create(fd, 4096);
->  	gem_write(fd, handle, 0, batch, sizeof(batch));
-> -- 
-> 2.25.1
-> 
+diff --git a/tests/prime_udl.c b/tests/prime_udl.c
+index 582e31f5df..4898694f5f 100644
+--- a/tests/prime_udl.c
++++ b/tests/prime_udl.c
+@@ -12,6 +12,7 @@
+ #include <xf86drmMode.h>
+ 
+ #include "intel_bufmgr.h"
++#include "i915/gem_create.h"
+ 
+ IGT_TEST_DESCRIPTION("Basic set of prime tests between Intel and DisplayLink");
+ 
+@@ -30,6 +31,7 @@ static int find_and_open_devices(void)
+ 	FILE *fl;
+ 	char vendor_id[8];
+ 	int venid;
++
+ 	for (i = 0; i < 9; i++) {
+ 		sprintf(path, "/sys/class/drm/card%d/device/vendor", i);
+ 		if (stat(path, &buf)) {
+@@ -78,57 +80,50 @@ static int dumb_bo_destroy(int fd, uint32_t handle)
+ /*
+  * simple share and import
+  */
+-static int test1(void)
++static void test1(void)
+ {
+-	drm_intel_bo *test_intel_bo;
++	uint32_t intel_handle, udl_handle;
+ 	int prime_fd;
+-	int ret;
+-	uint32_t udl_handle;
+ 
+-	test_intel_bo = drm_intel_bo_alloc(bufmgr, "test bo", BO_SIZE, 4096);
++	intel_handle = gem_create(intel_fd, BO_SIZE);
+ 
+-	drm_intel_bo_gem_export_to_prime(test_intel_bo, &prime_fd);
++	prime_fd = prime_handle_to_fd(intel_fd, intel_handle);
++	igt_assert(prime_fd >= 0);
+ 
+-	ret = drmPrimeFDToHandle(udl_fd, prime_fd, &udl_handle);
++	udl_handle = prime_fd_to_handle(udl_fd, prime_fd);
++	igt_assert(udl_handle > 0);
+ 
+ 	dumb_bo_destroy(udl_fd, udl_handle);
+-	drm_intel_bo_unreference(test_intel_bo);
+-	return ret;
++	gem_close(intel_fd, intel_handle);
+ }
+ 
+-static int test2(void)
++static void test2(void)
+ {
+-	drm_intel_bo *test_intel_bo;
++	uint32_t intel_handle, udl_handle;
+ 	uint32_t fb_id;
+ 	drmModeClip clip;
+ 	int prime_fd;
+-	uint32_t udl_handle;
+ 	int ret;
+ 
+-	test_intel_bo = drm_intel_bo_alloc(bufmgr, "test bo", BO_SIZE, 4096);
++	intel_handle = gem_create(intel_fd, BO_SIZE);
+ 
+-	drm_intel_bo_gem_export_to_prime(test_intel_bo, &prime_fd);
++	prime_fd = prime_handle_to_fd(intel_fd, intel_handle);
++	igt_assert(prime_fd >= 0);
+ 
+-	ret = drmPrimeFDToHandle(udl_fd, prime_fd, &udl_handle);
+-	if (ret)
+-		goto out;
++	udl_handle = prime_fd_to_handle(udl_fd, prime_fd);
+ 
+ 	ret = drmModeAddFB(udl_fd, 640, 480, 16, 16, 640, udl_handle, &fb_id);
+-	if (ret)
+-		goto out;
++	igt_assert(ret == 0);
+ 
+ 	clip.x1 = 0;
+ 	clip.y1 = 0;
+ 	clip.x2 = 10;
+ 	clip.y2 = 10;
+ 	ret = drmModeDirtyFB(udl_fd, fb_id, &clip, 1);
+-	if (ret) {
+-		return ret;
+-	}
+-out:
++	igt_assert(ret == 0);
++
+ 	dumb_bo_destroy(udl_fd, udl_handle);
+-	drm_intel_bo_unreference(test_intel_bo);
+-	return ret;
++	gem_close(intel_fd, intel_handle);
+ }
+ 
+ igt_simple_main
+@@ -138,22 +133,10 @@ igt_simple_main
+ 	igt_skip_on(udl_fd == -1);
+ 	igt_skip_on(intel_fd == -1);
+ 
+-	/* set up intel bufmgr */
+-	bufmgr = drm_intel_bufmgr_gem_init(intel_fd, 4096);
+-	drm_intel_bufmgr_gem_enable_reuse(bufmgr);
+-
+-	/* set up an intel batch buffer */
+-	devid = intel_get_drm_devid(intel_fd);
+-	intel_batch = intel_batchbuffer_alloc(bufmgr, devid);
+-
+ 	/* create an object on the i915 */
+-	igt_assert(test1() == 0);
+-
+-	igt_assert(test2() == 0);
+-
+-	intel_batchbuffer_free(intel_batch);
++	test1();
+ 
+-	drm_intel_bufmgr_destroy(bufmgr);
++	test2();
+ 
+ 	close(intel_fd);
+ 	close(udl_fd);
+-- 
+2.34.1
