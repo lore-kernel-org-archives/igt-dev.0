@@ -1,20 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 35DD110E3C8
- for <igt-dev@lists.freedesktop.org>; Tue, 29 Nov 2022 12:01:08 +0000 (UTC)
-Message-ID: <c04a4be3-b368-e4b0-0cee-4ae3497a88f9@intel.com>
-Date: Tue, 29 Nov 2022 17:30:54 +0530
-To: Anshuman Gupta <anshuman.gupta@intel.com>, <igt-dev@lists.freedesktop.org>
-References: <20221123085441.2821638-1-anshuman.gupta@intel.com>
- <20221123085441.2821638-2-anshuman.gupta@intel.com>
-Content-Language: en-US
-From: "Nilawar, Badal" <badal.nilawar@intel.com>
-In-Reply-To: <20221123085441.2821638-2-anshuman.gupta@intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
+Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6BEE310E031
+ for <igt-dev@lists.freedesktop.org>; Tue, 29 Nov 2022 12:16:09 +0000 (UTC)
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t v3 1/5] lib/igt_pci: helpers to get PCI
- capabilities offset
+Date: Tue, 29 Nov 2022 13:16:00 +0100
+From: aemad <aemad@igalia.com>
+To: Alex Hung <alex.hung@amd.com>
+In-Reply-To: <f605162c-f374-9268-3cc9-579dd68363c2@amd.com>
+References: <cover.1668154709.git.aemad@igalia.com>
+ <35b8b7adb1e5671c2c1ae43ba7ce4774@igalia.com>
+ <f605162c-f374-9268-3cc9-579dd68363c2@amd.com>
+Message-ID: <5c96437128e41514a0ae88a6c2dff8dd@igalia.com>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Subject: Re: [igt-dev] [PATCH RFC i-g-t 0/8] tests/kms_universal_plane:
+ divide `functional_test_pipe` to mini-subtests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,131 +22,94 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: rodrigo.vivi@intel.com
+Cc: petri.latvala@intel.com, igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Anshuman,
+Hi Alex,
 
-On 23-11-2022 14:24, Anshuman Gupta wrote:
-> Added helper functions to search for PCI capabilities
-> with help of libpciaccess library.
+On 2022-11-17 22:35, Alex Hung wrote:
+> Hi Aemad,
 > 
-> Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
-> Co-developed-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
-> Signed-off-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
-> Signed-off-by: Anshuman Gupta <anshuman.gupta@intel.com>
-> ---
->   lib/igt_pci.c   | 44 ++++++++++++++++++++++++++++++++++++++++++++
->   lib/igt_pci.h   | 32 ++++++++++++++++++++++++++++++++
->   lib/meson.build |  1 +
->   3 files changed, 77 insertions(+)
->   create mode 100644 lib/igt_pci.c
->   create mode 100644 lib/igt_pci.h
+> Thanks for breaking the test into smaller subtests.
 > 
-> diff --git a/lib/igt_pci.c b/lib/igt_pci.c
-> new file mode 100644
-> index 0000000000..bc0369341d
-> --- /dev/null
-> +++ b/lib/igt_pci.c
-> @@ -0,0 +1,44 @@
-> +// SPDX-License-Identifier: MIT
-> +/*
-> + * Copyright © 2022 Intel Corporation
-> + */
-> +
-> +#include <pciaccess.h>
-> +#include "igt_pci.h"
-> +
-> +/**
-> + * find_pci_cap_offset:
-> + * @dev: pci device
-> + * @cap_id: searched capability id, 0 means any capability
-> + * @start_offset: offset in config space from which we start searching
-> + *
-> + * return:
-> + * -1 on config read error, 0 if capability is not found,
-> + * otherwise offset at which capability with cap_id is found
-> + */
-> +int find_pci_cap_offset_at(struct pci_device *dev, enum pci_cap_id cap_id,
-> +			   int start_offset)
-> +{
-> +	uint8_t offset;
-> +	uint16_t cap_header;
-> +	int loop = (PCI_CFG_SPACE_SIZE - PCI_TYPE0_1_HEADER_SIZE)
-> +			/ sizeof(cap_header);
-> +
-> +	if (pci_device_cfg_read_u8(dev, &offset, start_offset))
-> +		return -1;
-> +
-> +	while (loop--) {
-> +		if (offset < PCI_TYPE0_1_HEADER_SIZE)
-> +			break;
-> +
-> +		if (pci_device_cfg_read_u16(dev, &cap_header, (offset & 0xFC)))
-> +			return -1;
-> +
-> +		if (!cap_id || cap_id == (cap_header & 0xFF))
-> +			return offset;
-> +
-> +		offset = cap_header >> 8;
-For the last capability, next capability address will always be 0. So 
-above instead of using while(loop--) we can use while(offset).
+> Some GPU drivers, including amdgpu, do not allow primary plane off
+> without turning crtc off
+> (https://elixir.bootlin.com/linux/latest/source/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_crtc.c#L385),
+> but kms_universal_plane has many the below code which was guarded with
+> is_amdgpu_device()
+> 
+>         igt_plane_set_fb(primary, NULL);
+>         igt_display_commit2(&data->display, COMMIT_UNIVERSAL);
+> 
+> Many of the is_amdgpu_device() are not present in your patches and
+> kms_universal fails. I needed to add is_amdgpu_device() to patch 2~3
+> and 5~7 (I didn't check 8).
+> 
+> -------------------------
 
-Regards,
-Badal
-> +	}
-> +
-> +	return 0;
-> +}
-> diff --git a/lib/igt_pci.h b/lib/igt_pci.h
-> new file mode 100644
-> index 0000000000..68afd2dacb
-> --- /dev/null
-> +++ b/lib/igt_pci.h
-> @@ -0,0 +1,32 @@
-> +// SPDX-License-Identifier: MIT
-> +/*
-> + * Copyright © 2022 Intel Corporation
-> + */
-> +
-> +#ifndef __IGT_PCI_H__
-> +#define __IGT_PCI_H__
-> +
-> +#include <stdint.h>
-> +#include <endian.h>
-> +
-> +/* forward declaration */
-> +struct pci_device;
-> +
-> +#define PCI_TYPE0_1_HEADER_SIZE 0x40
-> +#define PCI_CAPS_START 0x34
-> +#define PCI_CFG_SPACE_SIZE 0x100
-> +#define PCIE_CFG_SPACE_SIZE 0x1000
-> +
-> +enum pci_cap_id {
-> +	PCI_EXPRESS_CAP_ID = 0x10
-> +};
-> +
-> +int find_pci_cap_offset_at(struct pci_device *dev, enum pci_cap_id cap_id,
-> +			   int start_offset);
-> +
-> +static inline int find_pci_cap_offset(struct pci_device *dev, enum pci_cap_id cap_id)
-> +{
-> +	return find_pci_cap_offset_at(dev, cap_id, PCI_CAPS_START);
-> +}
-> +
-> +#endif
-> diff --git a/lib/meson.build b/lib/meson.build
-> index cef2d0ff3d..e0fb7ddfed 100644
-> --- a/lib/meson.build
-> +++ b/lib/meson.build
-> @@ -33,6 +33,7 @@ lib_sources = [
->   	'igt_pipe_crc.c',
->   	'igt_power.c',
->   	'igt_primes.c',
-> +	'igt_pci.c',
->   	'igt_rand.c',
->   	'igt_stats.c',
->   	'igt_syncobj.c',
+Thanks for your feedback, I will add AMD guard and resend them again.
+
+BR,
+Alaa
+
+> 
+> From: aemad <aemad@igalia.com>
+> Sent: 11 November 2022 01:31
+> To: igt-dev@lists.freedesktop.org <igt-dev@lists.freedesktop.org>
+> Cc: petri.latvala@intel.com <petri.latvala@intel.com>;
+> bhanuprakash.modem@intel.com <bhanuprakash.modem@intel.com>;
+> ville.syrjala@linux.intel.com <ville.syrjala@linux.intel.com>;
+> Siqueira, Rodrigo <Rodrigo.Siqueira@amd.com>; Hung, Alex
+> <Alex.Hung@amd.com>; markyacoub@chromium.org
+> <markyacoub@chromium.org>; mwen@igalia.com <mwen@igalia.com>;
+> andrealmeid@igalia.com <andrealmeid@igalia.com>
+> Subject: Re: [PATCH RFC i-g-t 0/8] tests/kms_universal_plane: divide
+> `functional_test_pipe` to mini-subtests 
+> 
+> Please, let me know your thoughts.
+> 
+> On 2022-11-11 09:29, Alaa Emad wrote:
+>> Divide the `functional_test_pipe` test into seven subtests based on
+> CRC
+>> comparisons because this will make it easier to debug the test and
+> help
+>> in detecting the failure.
+>>
+>> First 7 patches decouple each subtest and run it individually
+> keeping
+>> `functional_test_pipe' test as it is. After making sure that each
+>> subtest can run individually with the expected result on both vkms
+> and i915
+>> drivers, improve the test by creating `run_functional_test_pipe` and
+>> call all subtests from it and call `run_functional_test_pipe` in
+>> `igt_main`.
+>>
+>>
+>> Alaa Emad (8):
+>>   tests/kms_universal_plane: decouple verification of legacy and
+> atomic
+>>     api
+>>   tests/kms_universal_plane: decouple verification of disabling
+> primary
+>>     plane
+>>   tests/kms_universal_plane: decouple verification of re-enabling
+>>     primary plane
+>>   tests/kms_universal_plane: decouple verification of setup plane
+> FB's
+>>     while CRTC is disabled
+>>   tests/kms_universal_plane: decouple verification of ablity to
+> modeset
+>>     with the primary plane off
+>>   tests/kms_universal_plane: decouple verification of ablity to move
+> the
+>>     primary plane completely offscreen
+>>   tests/kms_universal_plane: decouple verification of ablity to
+>>     explicitly disable an already implicitly-disabled primary plane
+>>   tests/kms_universal_plane: create the run_functional_test_pipe and
+>>     call all tests from it
+>>
+>>  tests/kms_universal_plane.c | 416
+> ++++++++++++++++++++++--------------
+>>  1 file changed, 261 insertions(+), 155 deletions(-)
