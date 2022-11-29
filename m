@@ -1,17 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E566B10E374
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CC04410E370
  for <igt-dev@lists.freedesktop.org>; Tue, 29 Nov 2022 07:24:01 +0000 (UTC)
 From: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Mon, 28 Nov 2022 23:23:42 -0800
-Message-Id: <20221129072355.769-2-niranjana.vishwanathapura@intel.com>
-In-Reply-To: <20221129072355.769-1-niranjana.vishwanathapura@intel.com>
-References: <20221129072355.769-1-niranjana.vishwanathapura@intel.com>
+Date: Mon, 28 Nov 2022 23:23:41 -0800
+Message-Id: <20221129072355.769-1-niranjana.vishwanathapura@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v8 01/14] lib/i915: memory region
- gtt_alignment support
+Subject: [igt-dev] [PATCH i-g-t v8 00/14] vm_bind: Add VM_BIND validation
+ support
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,58 +23,97 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Update library to include gtt_alignment field to support
-platforms with 64K device memory pages.
+DRM_I915_GEM_VM_BIND/UNBIND ioctls allows UMD to bind/unbind GEM
+buffer objects (BOs) or sections of a BOs at specified GPU virtual
+addresses on a specified address space (VM). Multiple mappings can map
+to the same physical pages of an object (aliasing). These mappings (also
+referred to as persistent mappings) will be persistent across multiple
+GPU submissions (execbuf calls) issued by the UMD, without user having
+to provide a list of all required mappings during each submission (as
+required by older execbuf mode).
 
-v2: Do not pull in gtt_alignment uapi
+The new execbuf3 ioctl (I915_GEM_EXECBUFFER3) will only work in vm_bind
+mode. The vm_bind mode only works with this new execbuf3 ioctl.
 
-Reviewed-by: Matthew Auld <matthew.auld@intel.com>
+Add tests to validate the VM_BIND, VM_UNBIND and execbuf3 ioctls and
+various scenarios involving persistent mappings.
+
+TODOs:
+* More validation support.
+* Port some relevant gem_exec_* tests for execbuf3.
+
+NOTEs:
+* It is based on below VM_BIND design+uapi rfc.
+  Documentation/gpu/rfc/i915_vm_bind.rst
+
+* The i915 VM_BIND support is posted as,
+  [PATCH v8 00/22] drm/i915/vm_bind: Add VM_BIND functionality
+
+v2: Address various review comments
+v3: Add gem_exec3_basic and gem_exec3_balancer tests,
+    add gem_lmem_swapping@vm_bind subtest and some fixes.
+v4: Add and use i915_vm_bind library functions,
+    add lmem test if lmem region is present instead of skipping,
+    remove helpers to create vm_private objects, instead use
+    gem_create_ext() function.
+v5: Use memory region's gtt_alignment, use non-recoverable faults,
+    fix review comments.
+v6: Rebased, add sanity tests for added reserved uapi fields,
+    add gem_shrink@vm_bind* subtests.
+v7: Pull in uapi changes and address review comments
+v8: Rebased, add capture test
+
 Signed-off-by: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
----
- lib/i915/intel_memory_region.c | 6 ++++++
- lib/i915/intel_memory_region.h | 1 +
- lib/intel_chipset.h            | 2 ++
- 3 files changed, 9 insertions(+)
 
-diff --git a/lib/i915/intel_memory_region.c b/lib/i915/intel_memory_region.c
-index 84e1bceb3..964962ebb 100644
---- a/lib/i915/intel_memory_region.c
-+++ b/lib/i915/intel_memory_region.c
-@@ -948,6 +948,12 @@ struct gem_memory_region *__gem_get_memory_regions(int i915)
- 		if (r->size == -1ull)
- 			r->size = igt_get_avail_ram_mb() << 20;
- 
-+		if (HAS_64K_PAGES(intel_get_drm_devid(i915)) &&
-+		    r->ci.memory_class == I915_MEMORY_CLASS_DEVICE)
-+			r->gtt_alignment = 16 * PAGE_SIZE;
-+		else
-+			r->gtt_alignment = PAGE_SIZE;
-+
- 		asprintf(&r->name, "%s%d",
- 			 region_repr(&r->ci), r->ci.memory_instance);
- 
-diff --git a/lib/i915/intel_memory_region.h b/lib/i915/intel_memory_region.h
-index 425bda0ec..84abb95b1 100644
---- a/lib/i915/intel_memory_region.h
-+++ b/lib/i915/intel_memory_region.h
-@@ -174,6 +174,7 @@ struct gem_memory_region {
- 	char *name;
- 
- 	struct drm_i915_gem_memory_class_instance ci;
-+	uint64_t gtt_alignment;
- 	uint64_t size;
- 	uint64_t cpu_size;
- };
-diff --git a/lib/intel_chipset.h b/lib/intel_chipset.h
-index 9b39472ad..0d825d42c 100644
---- a/lib/intel_chipset.h
-+++ b/lib/intel_chipset.h
-@@ -227,4 +227,6 @@ void intel_check_pch(void);
- 
- #define HAS_FLATCCS(devid)	(intel_get_device_info(devid)->has_flatccs)
- 
-+#define HAS_64K_PAGES(devid)	(IS_DG2(devid))
-+
- #endif /* _INTEL_CHIPSET_H */
+Niranjana Vishwanathapura (14):
+  lib/i915: memory region gtt_alignment support
+  lib/vm_bind: import uapi definitions
+  lib/vm_bind: Add vm_bind/unbind and execbuf3 ioctls
+  lib/vm_bind: Add vm_bind mode support for VM
+  lib/vm_bind: Add vm_bind specific library functions
+  lib/vm_bind: Add __prime_handle_to_fd()
+  tests/i915/vm_bind: Add vm_bind sanity test
+  tests/i915/vm_bind: Add basic VM_BIND test support
+  tests/i915/vm_bind: Add userptr subtest
+  tests/i915/vm_bind: Add gem_exec3_basic test
+  tests/i915/vm_bind: Add gem_exec3_balancer test
+  tests/i915/vm_bind: Add gem_lmem_swapping@vm_bind sub test
+  tests/i915/vm_bind: Add gem_shrink@vm_bind* subtests
+  tests/i915/vm_bind: Test capture of persistent mappings
+
+ lib/i915/gem_context.c                |  24 +
+ lib/i915/gem_context.h                |   3 +
+ lib/i915/gem_vm.c                     |  31 +-
+ lib/i915/gem_vm.h                     |   3 +-
+ lib/i915/i915_drm_local.h             | 300 +++++++++++++
+ lib/i915/i915_vm_bind.c               |  62 +++
+ lib/i915/i915_vm_bind.h               |  16 +
+ lib/i915/intel_memory_region.c        |   6 +
+ lib/i915/intel_memory_region.h        |   1 +
+ lib/intel_chipset.h                   |   2 +
+ lib/ioctl_wrappers.c                  | 117 ++++-
+ lib/ioctl_wrappers.h                  |   7 +
+ lib/meson.build                       |   1 +
+ tests/i915/gem_exec3_balancer.c       | 470 ++++++++++++++++++++
+ tests/i915/gem_exec3_basic.c          | 139 ++++++
+ tests/i915/gem_lmem_swapping.c        | 134 +++++-
+ tests/i915/gem_pwrite.c               |  16 +-
+ tests/i915/gem_shrink.c               |  70 ++-
+ tests/i915/i915_vm_bind_basic.c       | 606 ++++++++++++++++++++++++++
+ tests/i915/i915_vm_bind_capture.c     | 445 +++++++++++++++++++
+ tests/i915/i915_vm_bind_sanity.c      | 357 +++++++++++++++
+ tests/intel-ci/blacklist.txt          |   2 +-
+ tests/intel-ci/fast-feedback.testlist |   3 +
+ tests/meson.build                     |  11 +
+ tests/prime_mmap.c                    |  26 +-
+ 25 files changed, 2799 insertions(+), 53 deletions(-)
+ create mode 100644 lib/i915/i915_vm_bind.c
+ create mode 100644 lib/i915/i915_vm_bind.h
+ create mode 100644 tests/i915/gem_exec3_balancer.c
+ create mode 100644 tests/i915/gem_exec3_basic.c
+ create mode 100644 tests/i915/i915_vm_bind_basic.c
+ create mode 100644 tests/i915/i915_vm_bind_capture.c
+ create mode 100644 tests/i915/i915_vm_bind_sanity.c
+
 -- 
 2.21.0.rc0.32.g243a4c7e27
