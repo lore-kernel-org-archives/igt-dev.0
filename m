@@ -1,15 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C614710E050
- for <igt-dev@lists.freedesktop.org>; Tue, 29 Nov 2022 15:20:15 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BF40210E0B7
+ for <igt-dev@lists.freedesktop.org>; Tue, 29 Nov 2022 15:20:20 +0000 (UTC)
 From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 29 Nov 2022 16:12:09 +0100
-Message-Id: <20221129151220.131979-1-zbigniew.kempczynski@intel.com>
+Date: Tue, 29 Nov 2022 16:12:13 +0100
+Message-Id: <20221129151220.131979-5-zbigniew.kempczynski@intel.com>
+In-Reply-To: <20221129151220.131979-1-zbigniew.kempczynski@intel.com>
+References: <20221129151220.131979-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v3 00/11] Remove libdrm remnants in i915 code
+Subject: [igt-dev] [PATCH i-g-t v3 04/11] tests/drm_import_export: Remove
+ the test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,86 +24,337 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-v2: rewrite instead of prime_udl/prime_nv_* removals.
-v3: remove all references to libdrm-intel/intel_bufmgr
+Test exercises libdrm prime operations what is about to remove from IGT.
 
-I want finally remove all libdrm stuff, to get this I had to:
-
-1. remove missed bufmgr field in i915_pipe_stress
-
-2. rewrite prime_udl test - it is not used in CI due to lack of 
-   DisplayLink hardware and I also don't have such hardware so 
-   this is blind rewrite
-
-3. rewrite prime_nv_* tests - similar to prime_udl (blind rewrite)
-
-4. remove drm_import_export test, it exercises libdrm prime caps
-
-5. rewrite intel_upload_blit_* benchmarks - I tried to mimic 
-   behavior as much as possible but there'e some minor differences
-   in execution time. I think it is related to libdrm internals
-   (how it caches handles/mappings). I'm not sure but it shouldn't
-   much affect what benchmark is exercising.
-
-6. remove all intel_batchbuffer_* code
-
-7. get libdrm decode code and adopt to use in igt
-
-8. use local decode code (taken from libdrm) in intel_dump|error_decode
-   tools
-
-9. remove unused functions in ioctl_wrappers
-
-10 remove libdrm definitions in tools/meson.build
-
-11. remove libdrm/stubs definitions in lib/meson.build + libdrm stubs
-
+Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 Cc: Petri Latvala <petri.latvala@intel.com>
-
-Zbigniew Kempczyński (4):
-  tests/prime_udl: Remove intel-libdrm dependency
-  tests/prime_nv: Remove intel-libdrm calls
-  tests/drm_import_export: Remove the test
-  benchmarks/intel_upload_blit_*: Remove libdrm in upload blits
-  lib/intel_batchbuffer: Get rid of libdrm batchbuffer
-  lib/intel_decode: Get drm decode code and adopt to use in igt
-  tools/intel_dump|error_decode: Use local igt decode code
-  lib/ioctl_wrappers: Remove gem_handle_to_libdrm_bo
-  tools/meson: Move tools out of libdrm scope
-  lib/meson: Remove libdrm configuration and intel_bufmgr stubs
-
- benchmarks/intel_upload_blit_large.c     |  131 +-
- benchmarks/intel_upload_blit_large_gtt.c |  130 +-
- benchmarks/intel_upload_blit_large_map.c |  132 +-
- benchmarks/intel_upload_blit_small.c     |  139 +-
- benchmarks/meson.build                   |   13 +-
- lib/i915/intel_decode.c                  | 3962 ++++++++++++++++++++++
- lib/i915/intel_decode.h                  |   42 +
- lib/intel_batchbuffer.c                  |  575 +---
- lib/intel_batchbuffer.h                  |  248 --
- lib/ioctl_wrappers.c                     |   31 -
- lib/ioctl_wrappers.h                     |    5 -
- lib/meson.build                          |    8 +-
- lib/stubs/drm/README                     |    4 -
- lib/stubs/drm/intel_bufmgr.c             |  292 --
- lib/stubs/drm/intel_bufmgr.h             |  323 --
- tests/drm_import_export.c                |  304 --
- tests/i915/i915_pipe_stress.c            |    1 -
- tests/meson.build                        |    1 -
- tests/prime_nv_api.c                     |  151 +-
- tests/prime_nv_pcopy.c                   |  107 +-
- tests/prime_nv_test.c                    |  162 +-
- tests/prime_udl.c                        |   64 +-
- tools/intel_dump_decode.c                |   16 +-
- tools/intel_error_decode.c               |   14 +-
- tools/meson.build                        |   15 +-
- 25 files changed, 4536 insertions(+), 2334 deletions(-)
- create mode 100644 lib/i915/intel_decode.c
- create mode 100644 lib/i915/intel_decode.h
- delete mode 100644 lib/stubs/drm/README
- delete mode 100644 lib/stubs/drm/intel_bufmgr.c
- delete mode 100644 lib/stubs/drm/intel_bufmgr.h
+---
+ tests/drm_import_export.c | 304 --------------------------------------
+ tests/meson.build         |   1 -
+ 2 files changed, 305 deletions(-)
  delete mode 100644 tests/drm_import_export.c
 
+diff --git a/tests/drm_import_export.c b/tests/drm_import_export.c
+deleted file mode 100644
+index 2dd2f3cb9f..0000000000
+--- a/tests/drm_import_export.c
++++ /dev/null
+@@ -1,304 +0,0 @@
+-/*
+- * Copyright © 2014 Intel Corporation
+- *
+- * Permission is hereby granted, free of charge, to any person obtaining a
+- * copy of this software and associated documentation files (the "Software"),
+- * to deal in the Software without restriction, including without limitation
+- * the rights to use, copy, modify, merge, publish, distribute, sublicense,
+- * and/or sell copies of the Software, and to permit persons to whom the
+- * Software is furnished to do so, subject to the following conditions:
+- *
+- * The above copyright notice and this permission notice (including the next
+- * paragraph) shall be included in all copies or substantial portions of the
+- * Software.
+- *
+- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
+- * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+- * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
+- * IN THE SOFTWARE.
+- *
+- * Authors:
+- *    Daniel Vetter <daniel.vetter@ffwll.ch>
+- */
+-
+-#include "igt.h"
+-#include <stdio.h>
+-#include <sys/types.h>
+-#include <sys/stat.h>
+-#include <fcntl.h>
+-#include <stdlib.h>
+-#include <string.h>
+-#include <drm.h>
+-#include <i915_drm.h>
+-#include <xf86drm.h>
+-#include <intel_bufmgr.h>
+-#include <errno.h>
+-#include <pthread.h>
+-#include <unistd.h>
+-#include <sys/syscall.h>
+-
+-#include "i915/gem.h"
+-
+-#define DURATION 10
+-IGT_TEST_DESCRIPTION("Basic check to verify the behaviour of libdrm bo for prime/flink");
+-
+-int fd;
+-drm_intel_bufmgr *bufmgr;
+-int fd1;
+-drm_intel_bufmgr *bufmgr1;
+-
+-bool use_flink;
+-
+-static void new_buffers(void)
+-{
+-	unsigned int *buf1;
+-	drm_intel_bo *bo1, *bo2;
+-
+-
+-	bo1 = drm_intel_bo_alloc(bufmgr, "buf1",16384, 4096);
+-	igt_assert(bo1);
+-	drm_intel_bo_map(bo1, 1);
+-	bo2 = drm_intel_bo_alloc(bufmgr, "buf2", 16384, 4096);
+-	igt_assert(bo2);
+-	drm_intel_bo_map(bo2, 1);
+-
+-	buf1 = (unsigned int *)bo1->virtual;
+-	igt_assert(buf1);
+-	memset(buf1, 0, 16384);
+-	buf1[4000]=0x05000000;
+-
+-	drm_intel_bo_exec(bo1, 16384, NULL, 0,0);
+-	drm_intel_bo_wait_rendering(bo1);
+-
+-	drm_intel_bo_unmap( bo1 );
+-	drm_intel_bo_unreference(bo1);
+-
+-	drm_intel_bo_unmap( bo2 );
+-	drm_intel_bo_unreference(bo2);
+-}
+-
+-static void test_surfaces(drm_intel_bo *bo_shared)
+-{
+-	drm_intel_bo * bo;
+-	int loop=2;
+-
+-	while(loop--) {
+-		if (use_flink) {
+-			uint32_t name;
+-			drm_intel_bo_flink(bo_shared, &name);
+-			bo = drm_intel_bo_gem_create_from_name(bufmgr,
+-							       "shared resource",
+-							       name);
+-		} else {
+-			int prime_fd;
+-
+-			drm_intel_bo_gem_export_to_prime(bo_shared, &prime_fd);
+-			bo = drm_intel_bo_gem_create_from_prime(bufmgr,
+-								prime_fd, 4096);
+-			close(prime_fd);
+-		}
+-
+-		igt_assert(bo);
+-		new_buffers();
+-		drm_intel_bo_unreference(bo);
+-	}
+-}
+-
+-static void start_test(void)
+-{
+-	igt_until_timeout(DURATION) {
+-		drm_intel_bo * bo_shared;
+-
+-		bo_shared = drm_intel_bo_alloc(bufmgr1, "buf-shared",16384, 4096);
+-		test_surfaces(bo_shared);
+-		drm_intel_bo_unreference(bo_shared);
+-	}
+-}
+-
+-static void * test_thread(void * par)
+-{
+-#ifdef __linux__
+-	igt_debug("start %ld\n", (long) gettid());
+-#else
+-	igt_debug("start %ld\n", (long) pthread_self());
+-#endif
+-	start_test();
+-
+-	return NULL;
+-}
+-
+-struct import_race_thread_data {
+-	int prime_fd;
+-	uint32_t flink_name;
+-	unsigned int stop;
+-	pthread_mutex_t mutex;
+-};
+-
+-/*
+- * Attempt to import the bo. It is possible that GEM_CLOSE was already called
+- * in different thread and from i915 point of view the handle is no longer
+- * valid (thus create_from_prime/name should fail).
+- */
+-static void *import_close_thread(void *data)
+-{
+-	struct import_race_thread_data *t = (struct import_race_thread_data *)data;
+-	drm_intel_bo *bo;
+-	pthread_mutex_lock(&t->mutex);
+-	while (!t->stop) {
+-		pthread_mutex_unlock(&t->mutex);
+-		bo = NULL;
+-		if (use_flink)
+-			bo = drm_intel_bo_gem_create_from_name(bufmgr, "buf-shared", t->flink_name);
+-		else {
+-			pthread_mutex_lock(&t->mutex);
+-			if (t->prime_fd != -1) {
+-				bo = drm_intel_bo_gem_create_from_prime(bufmgr, t->prime_fd, 4096);
+-				pthread_mutex_unlock(&t->mutex);
+-			}
+-			else
+-				/* Lock should be held on entering the loop */
+-				continue;
+-		}
+-
+-		if (bo == NULL) {
+-			/*
+-			 * If the bo is NULL it means that we've unreferenced in other
+-			 * thread - therefore we should expect ENOENT
+-			 */
+-			igt_assert_eq(errno, ENOENT);
+-		} else {
+-			drm_intel_bo_unreference(bo);
+-		}
+-
+-		pthread_mutex_lock(&t->mutex);
+-	}
+-	pthread_mutex_unlock(&t->mutex);
+-
+-	return NULL;
+-}
+-
+-/*
+- * It is possible to race between unreference of the underlying BO and importing
+- * it from prime_fd/name. Verify that the behaviour of libdrm is consistent for
+- * prime/flink.
+- */
+-static void test_import_close_race(void)
+-{
+-	pthread_t t;
+-	drm_intel_bo *bo;
+-	struct import_race_thread_data t_data;
+-
+-	memset(&t_data, 0, sizeof(t_data));
+-	pthread_mutex_init(&t_data.mutex, NULL);
+-	t_data.prime_fd = -1;
+-
+-	igt_assert_eq(pthread_create(&t, NULL, import_close_thread , &t_data), 0);
+-
+-	igt_until_timeout(DURATION) {
+-		bo = drm_intel_bo_alloc(bufmgr, "buf-shared", 4096, 4096);
+-		igt_assert(bo != NULL);
+-		/*
+-		 * We setup the test in such way, that create_from_* can race between
+-		 * unreference. If we're using prime, prime_fd is always a valid fd.
+-		 */
+-		if (use_flink)
+-			igt_assert_eq(drm_intel_bo_flink(bo, &(t_data.flink_name)), 0);
+-		else {
+-			pthread_mutex_lock(&t_data.mutex);
+-			igt_assert_eq(drm_intel_bo_gem_export_to_prime(bo, &(t_data.prime_fd)), 0);
+-			igt_assert_neq(t_data.prime_fd, -1);
+-			pthread_mutex_unlock(&t_data.mutex);
+-		}
+-
+-		drm_intel_bo_unreference(bo);
+-
+-		pthread_mutex_lock(&t_data.mutex);
+-		close(t_data.prime_fd);
+-		t_data.prime_fd = -1;
+-		pthread_mutex_unlock(&t_data.mutex);
+-	}
+-
+-	pthread_mutex_lock(&t_data.mutex);
+-	t_data.stop = 1;
+-	pthread_mutex_unlock(&t_data.mutex);
+-
+-	pthread_join(t, NULL);
+-	pthread_mutex_destroy(&t_data.mutex);
+-}
+-
+-pthread_t test_thread_id1;
+-pthread_t test_thread_id2;
+-pthread_t test_thread_id3;
+-pthread_t test_thread_id4;
+-
+-igt_main {
+-	igt_fixture {
+-		fd1 = drm_open_driver(DRIVER_INTEL);
+-		igt_require_gem(fd1);
+-
+-		bufmgr1 = drm_intel_bufmgr_gem_init(fd1, 8 *1024);
+-		igt_require(bufmgr1);
+-
+-		drm_intel_bufmgr_gem_enable_reuse(bufmgr1);
+-
+-		fd = gem_reopen_driver(fd1);
+-		bufmgr = drm_intel_bufmgr_gem_init(fd, 8 *1024);
+-		igt_assert(bufmgr);
+-
+-		drm_intel_bufmgr_gem_enable_reuse(bufmgr);
+-	}
+-
+-	igt_describe("Verify whether the behaviour of libdrm"
+-		     " is consistent for flink or not.");
+-	igt_subtest("import-close-race-flink") {
+-		use_flink = true;
+-		test_import_close_race();
+-	}
+-
+-	igt_describe("Verify whether the behaviour of libdrm"
+-		     " is consistent for prime or not.");
+-	igt_subtest("import-close-race-prime") {
+-		use_flink = false;
+-		test_import_close_race();
+-	}
+-
+-	igt_describe("Multithreaded test to validate the (lack of) locking in"
+-		     " the flink code in libdrm.");
+-	igt_subtest("flink") {
+-		use_flink = true;
+-
+-		pthread_create(&test_thread_id1, NULL, test_thread, NULL);
+-		pthread_create(&test_thread_id2, NULL, test_thread, NULL);
+-		pthread_create(&test_thread_id3, NULL, test_thread, NULL);
+-		pthread_create(&test_thread_id4, NULL, test_thread, NULL);
+-
+-		pthread_join(test_thread_id1, NULL);
+-		pthread_join(test_thread_id2, NULL);
+-		pthread_join(test_thread_id3, NULL);
+-		pthread_join(test_thread_id4, NULL);
+-	}
+-
+-	igt_describe("Multithreaded test to validate the (lack of) locking in"
+-		     " the prime code in libdrm.");
+-	igt_subtest("prime") {
+-		use_flink = false;
+-
+-		pthread_create(&test_thread_id1, NULL, test_thread, NULL);
+-		pthread_create(&test_thread_id2, NULL, test_thread, NULL);
+-		pthread_create(&test_thread_id3, NULL, test_thread, NULL);
+-		pthread_create(&test_thread_id4, NULL, test_thread, NULL);
+-
+-		pthread_join(test_thread_id1, NULL);
+-		pthread_join(test_thread_id2, NULL);
+-		pthread_join(test_thread_id3, NULL);
+-		pthread_join(test_thread_id4, NULL);
+-	}
+-
+-	igt_fixture {
+-		close(fd);
+-		close(fd1);
+-	}
+-}
+diff --git a/tests/meson.build b/tests/meson.build
+index 5c052e7332..7121050130 100644
+--- a/tests/meson.build
++++ b/tests/meson.build
+@@ -10,7 +10,6 @@ test_progs = [
+ 	'dmabuf_sync_file',
+ 	'device_reset',
+ 	'drm_buddy',
+-	'drm_import_export',
+ 	'drm_mm',
+ 	'drm_read',
+ 	'fbdev',
 -- 
 2.34.1
