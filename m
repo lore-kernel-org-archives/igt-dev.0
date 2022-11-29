@@ -1,16 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from letterbox.kde.org (letterbox.kde.org [46.43.1.242])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A50C910E0F5
- for <igt-dev@lists.freedesktop.org>; Tue, 29 Nov 2022 17:27:30 +0000 (UTC)
-From: Zack Rusin <zack@kde.org>
+Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 71B0510E172
+ for <igt-dev@lists.freedesktop.org>; Tue, 29 Nov 2022 18:41:08 +0000 (UTC)
+From: =?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 29 Nov 2022 12:27:17 -0500
-Message-Id: <20221129172718.151773-3-zack@kde.org>
-In-Reply-To: <20221129172718.151773-1-zack@kde.org>
-References: <20221129172718.151773-1-zack@kde.org>
+Date: Tue, 29 Nov 2022 15:40:31 -0300
+Message-Id: <20221129184038.72946-1-mcanal@igalia.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 2/3] lib/igt_kms: vmwgfx returns 8 crtc
+Subject: [igt-dev] [PATCH i-g-t v3 0/7] V3D IGT Tests Updates
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,48 +17,57 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: Zack Rusin <zackr@vmware.com>
-Cc: krastevm@vmware.com, banackm@vmware.com, mombasawalam@vmware.com
+Cc: petri.latvala@intel.com, Emma Anholt <emma@anholt.net>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Zack Rusin <zackr@vmware.com>
+This series aims to update the V3D IGT tests. The first five patches contain
+some janitorial duties related to the existing tests: updating the uAPI header,
+creating a folder for the V3D tests, removing some unused includes, adding 
+descriptions to the existing tests and adding a macro with the default PAGE_SIZE.
+The last two patches include new tests for the V3D driver.
 
-To avoid crashes in multiple tests we need to extend the number of
-available pipe's to match the numbers returned by the virtualized drivers.
+Best Regards,
+- Maíra Canal
 
-Signed-off-by: Zack Rusin <zackr@vmware.com>
----
- lib/igt_kms.c | 2 +-
- lib/igt_kms.h | 2 ++
- 2 files changed, 3 insertions(+), 1 deletion(-)
+v1 -> v2:
+- Use SPDX licence (Kamil Konieczny).
+- Add descriptions to each new added test with igt_describe (Kamil Konieczny).
+- Add descriptions to existing V3D tests.
 
-diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-index 921a623d..f9ee6328 100644
---- a/lib/igt_kms.c
-+++ b/lib/igt_kms.c
-@@ -807,7 +807,7 @@ static igt_plane_t *igt_get_assigned_primary(igt_output_t *output, igt_pipe_t *p
-  */
- const char *kmstest_pipe_name(enum pipe pipe)
- {
--	static const char str[] = "A\0B\0C\0D\0E\0F";
-+	static const char str[] = "A\0B\0C\0D\0E\0F\0G\0H";
- 
- 	_Static_assert(sizeof(str) == IGT_MAX_PIPES * 2,
- 		       "Missing pipe name");
-diff --git a/lib/igt_kms.h b/lib/igt_kms.h
-index b09441d0..f330d97a 100644
---- a/lib/igt_kms.h
-+++ b/lib/igt_kms.h
-@@ -62,6 +62,8 @@ enum pipe {
-         PIPE_D,
-         PIPE_E,
-         PIPE_F,
-+	PIPE_G,
-+	PIPE_H,
-         IGT_MAX_PIPES
- };
- const char *kmstest_pipe_name(enum pipe pipe);
+v2 -> v3:
+- Install V3D tests on build/tests/v3d/ instead of build/tests/ (Melissa Wen).
+- Include a subtest for no-flags validation on v3d_create_bo (Melissa Wen).
+
+Maíra Canal (7):
+  include/drm-uapi: Update to the latest v3d_drm.h
+  tests/v3d: Move V3D tests to their own folder
+  tests/v3d: Remove unused or redundant includes
+  tests/v3d: Add igt_describe() to all V3D subtests
+  lib/igt_v3d: Add PAGE_SIZE macro to V3D
+  tests/v3d_create_bo: Create test for V3D's Create BO IOCTL
+  tests/v3d_perfmon: Create test for V3D's Perfmon IOCTLs
+
+ include/drm-uapi/v3d_drm.h          |  78 +++++++++++++++
+ lib/igt_v3d.c                       |  39 +++++++-
+ lib/igt_v3d.h                       |   6 ++
+ meson.build                         |   8 ++
+ tests/meson.build                   |   5 +-
+ tests/v3d/meson.build               |  16 ++++
+ tests/v3d/v3d_create_bo.c           |  71 ++++++++++++++
+ tests/{ => v3d}/v3d_get_bo_offset.c |  21 ++--
+ tests/{ => v3d}/v3d_get_param.c     |  17 +---
+ tests/{ => v3d}/v3d_mmap.c          |  15 +--
+ tests/v3d/v3d_perfmon.c             | 144 ++++++++++++++++++++++++++++
+ tests/v3d_ci/v3d.testlist           |  27 ++++--
+ 12 files changed, 397 insertions(+), 50 deletions(-)
+ create mode 100644 tests/v3d/meson.build
+ create mode 100644 tests/v3d/v3d_create_bo.c
+ rename tests/{ => v3d}/v3d_get_bo_offset.c (85%)
+ rename tests/{ => v3d}/v3d_get_param.c (88%)
+ rename tests/{ => v3d}/v3d_mmap.c (85%)
+ create mode 100644 tests/v3d/v3d_perfmon.c
+
 -- 
-2.37.2
+2.38.1
