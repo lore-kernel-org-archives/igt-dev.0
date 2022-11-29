@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BF40210E0B7
- for <igt-dev@lists.freedesktop.org>; Tue, 29 Nov 2022 15:20:20 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D34EB10E0E4
+ for <igt-dev@lists.freedesktop.org>; Tue, 29 Nov 2022 15:20:26 +0000 (UTC)
 From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 29 Nov 2022 16:12:13 +0100
-Message-Id: <20221129151220.131979-5-zbigniew.kempczynski@intel.com>
+Date: Tue, 29 Nov 2022 16:12:14 +0100
+Message-Id: <20221129151220.131979-6-zbigniew.kempczynski@intel.com>
 In-Reply-To: <20221129151220.131979-1-zbigniew.kempczynski@intel.com>
 References: <20221129151220.131979-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v3 04/11] tests/drm_import_export: Remove
- the test
+Subject: [igt-dev] [PATCH i-g-t v3 05/11] benchmarks/intel_upload_blit_*:
+ Remove libdrm in upload blits
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,337 +24,766 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Test exercises libdrm prime operations what is about to remove from IGT.
+Few benchmarks still used libdrm so let's rewrite them to be libdrm
+free. I tried to mimic the libdrm behavior as much as possible but
+according how libdrm caches handles/mappings there may be some
+differences in performance execution.
+
+v2: Move benchmarks to scope without libdrm in meson.build
 
 Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 Cc: Petri Latvala <petri.latvala@intel.com>
 ---
- tests/drm_import_export.c | 304 --------------------------------------
- tests/meson.build         |   1 -
- 2 files changed, 305 deletions(-)
- delete mode 100644 tests/drm_import_export.c
+ benchmarks/intel_upload_blit_large.c     | 131 ++++++++++++---------
+ benchmarks/intel_upload_blit_large_gtt.c | 130 ++++++++++++---------
+ benchmarks/intel_upload_blit_large_map.c | 132 ++++++++++++---------
+ benchmarks/intel_upload_blit_small.c     | 139 ++++++++++++++---------
+ benchmarks/meson.build                   |  13 +--
+ 5 files changed, 315 insertions(+), 230 deletions(-)
 
-diff --git a/tests/drm_import_export.c b/tests/drm_import_export.c
-deleted file mode 100644
-index 2dd2f3cb9f..0000000000
---- a/tests/drm_import_export.c
-+++ /dev/null
-@@ -1,304 +0,0 @@
--/*
-- * Copyright © 2014 Intel Corporation
-- *
-- * Permission is hereby granted, free of charge, to any person obtaining a
-- * copy of this software and associated documentation files (the "Software"),
-- * to deal in the Software without restriction, including without limitation
-- * the rights to use, copy, modify, merge, publish, distribute, sublicense,
-- * and/or sell copies of the Software, and to permit persons to whom the
-- * Software is furnished to do so, subject to the following conditions:
-- *
-- * The above copyright notice and this permission notice (including the next
-- * paragraph) shall be included in all copies or substantial portions of the
-- * Software.
-- *
-- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
-- * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
-- * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
-- * IN THE SOFTWARE.
-- *
-- * Authors:
-- *    Daniel Vetter <daniel.vetter@ffwll.ch>
-- */
--
--#include "igt.h"
--#include <stdio.h>
--#include <sys/types.h>
--#include <sys/stat.h>
--#include <fcntl.h>
--#include <stdlib.h>
--#include <string.h>
--#include <drm.h>
--#include <i915_drm.h>
--#include <xf86drm.h>
--#include <intel_bufmgr.h>
--#include <errno.h>
--#include <pthread.h>
--#include <unistd.h>
--#include <sys/syscall.h>
--
--#include "i915/gem.h"
--
--#define DURATION 10
--IGT_TEST_DESCRIPTION("Basic check to verify the behaviour of libdrm bo for prime/flink");
--
--int fd;
--drm_intel_bufmgr *bufmgr;
--int fd1;
--drm_intel_bufmgr *bufmgr1;
--
--bool use_flink;
--
--static void new_buffers(void)
--{
--	unsigned int *buf1;
--	drm_intel_bo *bo1, *bo2;
--
--
--	bo1 = drm_intel_bo_alloc(bufmgr, "buf1",16384, 4096);
--	igt_assert(bo1);
--	drm_intel_bo_map(bo1, 1);
--	bo2 = drm_intel_bo_alloc(bufmgr, "buf2", 16384, 4096);
--	igt_assert(bo2);
--	drm_intel_bo_map(bo2, 1);
--
--	buf1 = (unsigned int *)bo1->virtual;
--	igt_assert(buf1);
--	memset(buf1, 0, 16384);
--	buf1[4000]=0x05000000;
--
--	drm_intel_bo_exec(bo1, 16384, NULL, 0,0);
--	drm_intel_bo_wait_rendering(bo1);
--
--	drm_intel_bo_unmap( bo1 );
--	drm_intel_bo_unreference(bo1);
--
--	drm_intel_bo_unmap( bo2 );
--	drm_intel_bo_unreference(bo2);
--}
--
--static void test_surfaces(drm_intel_bo *bo_shared)
--{
--	drm_intel_bo * bo;
--	int loop=2;
--
--	while(loop--) {
--		if (use_flink) {
--			uint32_t name;
--			drm_intel_bo_flink(bo_shared, &name);
--			bo = drm_intel_bo_gem_create_from_name(bufmgr,
--							       "shared resource",
--							       name);
--		} else {
--			int prime_fd;
--
--			drm_intel_bo_gem_export_to_prime(bo_shared, &prime_fd);
--			bo = drm_intel_bo_gem_create_from_prime(bufmgr,
--								prime_fd, 4096);
--			close(prime_fd);
--		}
--
--		igt_assert(bo);
--		new_buffers();
--		drm_intel_bo_unreference(bo);
+diff --git a/benchmarks/intel_upload_blit_large.c b/benchmarks/intel_upload_blit_large.c
+index 12bbae3d06..af52d7a4e5 100644
+--- a/benchmarks/intel_upload_blit_large.c
++++ b/benchmarks/intel_upload_blit_large.c
+@@ -45,6 +45,7 @@
+  */
+ 
+ #include "igt.h"
++#include "i915/gem_create.h"
+ #include <stdlib.h>
+ #include <stdio.h>
+ #include <string.h>
+@@ -72,74 +73,99 @@ get_time_in_secs(void)
+ }
+ 
+ static void
+-do_render(drm_intel_bufmgr *bufmgr, struct intel_batchbuffer *batch,
+-	  drm_intel_bo *dst_bo, int width, int height)
++do_render(int i915, uint32_t dst_handle)
+ {
+-	uint32_t data[width * height];
+-	drm_intel_bo *src_bo;
+-	int i;
++	struct drm_i915_gem_execbuffer2 exec = {};
++	struct drm_i915_gem_exec_object2 obj[3] = {};
++	struct drm_i915_gem_relocation_entry reloc[2];
+ 	static uint32_t seed = 1;
++	uint32_t data[OBJECT_WIDTH * OBJECT_HEIGHT];
++	uint64_t size = OBJECT_WIDTH * OBJECT_HEIGHT * 4, bb_size = 4096;
++	uint32_t src_handle, bb_handle, *bb;
++	uint32_t gen = intel_gen(intel_get_drm_devid(i915));
++	const bool has_64b_reloc = gen >= 8;
++	int i;
++
++	bb_handle = gem_create_from_pool(i915, &bb_size, REGION_SMEM);
++	src_handle = gem_create_from_pool(i915, &size, REGION_SMEM);
+ 
+-	/* Generate some junk.  Real workloads would be doing a lot more
+-	 * work to generate the junk.
+-	 */
+-	for (i = 0; i < width * height; i++) {
++	for (i = 0; i < OBJECT_WIDTH * OBJECT_HEIGHT; i++)
+ 		data[i] = seed++;
 -	}
--}
+ 
+-	/* Upload the junk. */
+-	src_bo = drm_intel_bo_alloc(bufmgr, "src", sizeof(data), 4096);
+-	drm_intel_bo_subdata(src_bo, 0, sizeof(data), data);
++	gem_write(i915, src_handle, 0, data, sizeof(data));
+ 
+ 	/* Render the junk to the dst. */
+-	BLIT_COPY_BATCH_START(0);
+-	OUT_BATCH((3 << 24) | /* 32 bits */
++	bb = gem_mmap__device_coherent(i915, bb_handle, 0, bb_size, PROT_WRITE);
++	i = 0;
++	bb[i++] = XY_SRC_COPY_BLT_CMD |
++		  XY_SRC_COPY_BLT_WRITE_ALPHA |
++		  XY_SRC_COPY_BLT_WRITE_RGB |
++		  (6 + 2*(gen >= 8));
++	bb[i++] = (3 << 24) | /* 32 bits */
+ 		  (0xcc << 16) | /* copy ROP */
+-		  (width * 4) /* dst pitch */);
+-	OUT_BATCH(0); /* dst x1,y1 */
+-	OUT_BATCH((height << 16) | width); /* dst x2,y2 */
+-	OUT_RELOC(dst_bo, I915_GEM_DOMAIN_RENDER, I915_GEM_DOMAIN_RENDER, 0);
+-	OUT_BATCH(0); /* src x1,y1 */
+-	OUT_BATCH(width * 4); /* src pitch */
+-	OUT_RELOC(src_bo, I915_GEM_DOMAIN_RENDER, 0, 0);
+-	ADVANCE_BATCH();
 -
--static void start_test(void)
--{
--	igt_until_timeout(DURATION) {
--		drm_intel_bo * bo_shared;
+-	intel_batchbuffer_flush(batch);
 -
--		bo_shared = drm_intel_bo_alloc(bufmgr1, "buf-shared",16384, 4096);
--		test_surfaces(bo_shared);
--		drm_intel_bo_unreference(bo_shared);
+-	drm_intel_bo_unreference(src_bo);
++		  (OBJECT_WIDTH * 4) /* dst pitch */;
++	bb[i++] = 0; /* dst x1,y1 */
++	bb[i++] = (OBJECT_HEIGHT << 16) | OBJECT_WIDTH; /* dst x2,y2 */
++
++	obj[0].handle = dst_handle;
++	obj[0].offset = dst_handle * size;
++	reloc[0].target_handle = dst_handle;
++	reloc[0].presumed_offset = obj[0].offset;
++	reloc[0].offset = sizeof(uint32_t) * i;
++	reloc[0].read_domains = I915_GEM_DOMAIN_RENDER;
++	reloc[0].write_domain = I915_GEM_DOMAIN_RENDER;
++	bb[i++] = obj[0].offset;
++	if (has_64b_reloc)
++		bb[i++] = obj[0].offset >> 32;
++
++	bb[i++] = 0; /* src x1,y1 */
++	bb[i++] = OBJECT_WIDTH * 4; /* src pitch */
++
++	obj[1].handle = src_handle;
++	obj[1].offset = src_handle * size;
++	reloc[1].target_handle = src_handle;
++	reloc[1].presumed_offset = obj[1].offset;
++	reloc[1].offset = sizeof(uint32_t) * i;
++	reloc[1].read_domains = I915_GEM_DOMAIN_RENDER;
++	reloc[1].write_domain = 0;
++	bb[i++] = obj[1].offset;
++	if (has_64b_reloc)
++		bb[i++] = obj[1].offset >> 32;
++
++	obj[2].handle = bb_handle;
++	obj[2].relocs_ptr = to_user_pointer(reloc);
++	obj[2].relocation_count = 2;
++
++	bb[i++] = MI_BATCH_BUFFER_END;
++	gem_munmap(bb, bb_size);
++
++	exec.buffers_ptr = to_user_pointer(obj);
++	exec.buffer_count = 3;
++	exec.flags = gen >= 6 ? I915_EXEC_BLT : 0 | I915_EXEC_NO_RELOC;
++
++	gem_execbuf(i915, &exec);
+ }
+ 
+ int main(int argc, char **argv)
+ {
+-	int fd;
+-	int object_size = OBJECT_WIDTH * OBJECT_HEIGHT * 4;
+ 	double start_time, end_time;
+-	drm_intel_bo *dst_bo;
+-	drm_intel_bufmgr *bufmgr;
+-	struct intel_batchbuffer *batch;
+-	int i;
+-
+-	fd = drm_open_driver(DRIVER_INTEL);
++	uint32_t dst_handle;
++	int i915, i;
+ 
+-	bufmgr = drm_intel_bufmgr_gem_init(fd, 4096);
+-	drm_intel_bufmgr_gem_enable_reuse(bufmgr);
+-
+-	batch = intel_batchbuffer_alloc(bufmgr, intel_get_drm_devid(fd));
+-
+-	dst_bo = drm_intel_bo_alloc(bufmgr, "dst", object_size, 4096);
++	i915 = drm_open_driver(DRIVER_INTEL);
++	dst_handle = gem_create(i915, OBJECT_WIDTH * OBJECT_HEIGHT * 4);
+ 
+ 	/* Prep loop to get us warmed up. */
+-	for (i = 0; i < 60; i++) {
+-		do_render(bufmgr, batch, dst_bo, OBJECT_WIDTH, OBJECT_HEIGHT);
 -	}
--}
--
--static void * test_thread(void * par)
--{
--#ifdef __linux__
--	igt_debug("start %ld\n", (long) gettid());
--#else
--	igt_debug("start %ld\n", (long) pthread_self());
--#endif
--	start_test();
--
--	return NULL;
--}
--
--struct import_race_thread_data {
--	int prime_fd;
--	uint32_t flink_name;
--	unsigned int stop;
--	pthread_mutex_t mutex;
--};
--
--/*
-- * Attempt to import the bo. It is possible that GEM_CLOSE was already called
-- * in different thread and from i915 point of view the handle is no longer
-- * valid (thus create_from_prime/name should fail).
-- */
--static void *import_close_thread(void *data)
--{
--	struct import_race_thread_data *t = (struct import_race_thread_data *)data;
--	drm_intel_bo *bo;
--	pthread_mutex_lock(&t->mutex);
--	while (!t->stop) {
--		pthread_mutex_unlock(&t->mutex);
--		bo = NULL;
--		if (use_flink)
--			bo = drm_intel_bo_gem_create_from_name(bufmgr, "buf-shared", t->flink_name);
--		else {
--			pthread_mutex_lock(&t->mutex);
--			if (t->prime_fd != -1) {
--				bo = drm_intel_bo_gem_create_from_prime(bufmgr, t->prime_fd, 4096);
--				pthread_mutex_unlock(&t->mutex);
--			}
--			else
--				/* Lock should be held on entering the loop */
--				continue;
--		}
--
--		if (bo == NULL) {
--			/*
--			 * If the bo is NULL it means that we've unreferenced in other
--			 * thread - therefore we should expect ENOENT
--			 */
--			igt_assert_eq(errno, ENOENT);
--		} else {
--			drm_intel_bo_unreference(bo);
--		}
--
--		pthread_mutex_lock(&t->mutex);
+-	drm_intel_bo_wait_rendering(dst_bo);
++	for (i = 0; i < 60; i++)
++		do_render(i915, dst_handle);
++	gem_sync(i915, dst_handle);
+ 
+ 	/* Do the actual timing. */
+ 	start_time = get_time_in_secs();
+-	for (i = 0; i < 200; i++) {
+-		do_render(bufmgr, batch, dst_bo, OBJECT_WIDTH, OBJECT_HEIGHT);
 -	}
--	pthread_mutex_unlock(&t->mutex);
+-	drm_intel_bo_wait_rendering(dst_bo);
++	for (i = 0; i < 200; i++)
++		do_render(i915, dst_handle);
++	gem_sync(i915, dst_handle);
++
+ 	end_time = get_time_in_secs();
+ 
+ 	printf("%d iterations in %.03f secs: %.01f MB/sec\n", i,
+@@ -147,10 +173,5 @@ int main(int argc, char **argv)
+ 	       (double)i * OBJECT_WIDTH * OBJECT_HEIGHT * 4 / 1024.0 / 1024.0 /
+ 	       (end_time - start_time));
+ 
+-	intel_batchbuffer_free(batch);
+-	drm_intel_bufmgr_destroy(bufmgr);
 -
--	return NULL;
--}
+-	close(fd);
 -
--/*
-- * It is possible to race between unreference of the underlying BO and importing
-- * it from prime_fd/name. Verify that the behaviour of libdrm is consistent for
-- * prime/flink.
-- */
--static void test_import_close_race(void)
--{
--	pthread_t t;
--	drm_intel_bo *bo;
--	struct import_race_thread_data t_data;
+-	return 0;
++	close(i915);
+ }
+diff --git a/benchmarks/intel_upload_blit_large_gtt.c b/benchmarks/intel_upload_blit_large_gtt.c
+index 0b704b57d4..1e991a6b24 100644
+--- a/benchmarks/intel_upload_blit_large_gtt.c
++++ b/benchmarks/intel_upload_blit_large_gtt.c
+@@ -45,6 +45,7 @@
+  */
+ 
+ #include "igt.h"
++#include "i915/gem_create.h"
+ #include <stdlib.h>
+ #include <stdio.h>
+ #include <string.h>
+@@ -69,74 +70,98 @@ get_time_in_secs(void)
+ }
+ 
+ static void
+-do_render(drm_intel_bufmgr *bufmgr, struct intel_batchbuffer *batch,
+-	  drm_intel_bo *dst_bo, int width, int height)
++do_render(int i915, uint32_t dst_handle)
+ {
+-	uint32_t *data;
+-	drm_intel_bo *src_bo;
+-	int i;
++	struct drm_i915_gem_execbuffer2 exec = {};
++	struct drm_i915_gem_exec_object2 obj[3] = {};
++	struct drm_i915_gem_relocation_entry reloc[2];
+ 	static uint32_t seed = 1;
++	uint64_t size = OBJECT_WIDTH * OBJECT_HEIGHT * 4, bb_size = 4096;
++	uint32_t *data, src_handle, bb_handle, *bb;
++	uint32_t gen = intel_gen(intel_get_drm_devid(i915));
++	const bool has_64b_reloc = gen >= 8;
++	int i;
+ 
+-	src_bo = drm_intel_bo_alloc(bufmgr, "src", width * height * 4, 4096);
 -
--	memset(&t_data, 0, sizeof(t_data));
--	pthread_mutex_init(&t_data.mutex, NULL);
--	t_data.prime_fd = -1;
--
--	igt_assert_eq(pthread_create(&t, NULL, import_close_thread , &t_data), 0);
--
--	igt_until_timeout(DURATION) {
--		bo = drm_intel_bo_alloc(bufmgr, "buf-shared", 4096, 4096);
--		igt_assert(bo != NULL);
--		/*
--		 * We setup the test in such way, that create_from_* can race between
--		 * unreference. If we're using prime, prime_fd is always a valid fd.
--		 */
--		if (use_flink)
--			igt_assert_eq(drm_intel_bo_flink(bo, &(t_data.flink_name)), 0);
--		else {
--			pthread_mutex_lock(&t_data.mutex);
--			igt_assert_eq(drm_intel_bo_gem_export_to_prime(bo, &(t_data.prime_fd)), 0);
--			igt_assert_neq(t_data.prime_fd, -1);
--			pthread_mutex_unlock(&t_data.mutex);
--		}
--
--		drm_intel_bo_unreference(bo);
--
--		pthread_mutex_lock(&t_data.mutex);
--		close(t_data.prime_fd);
--		t_data.prime_fd = -1;
--		pthread_mutex_unlock(&t_data.mutex);
+-	drm_intel_gem_bo_map_gtt(src_bo);
++	bb_handle = gem_create_from_pool(i915, &bb_size, REGION_SMEM);
++	src_handle = gem_create_from_pool(i915, &size, REGION_SMEM);
+ 
+-	data = src_bo->virtual;
+-	for (i = 0; i < width * height; i++) {
++	data = gem_mmap__gtt(i915, src_handle, size, PROT_WRITE);
++	for (i = 0; i < OBJECT_WIDTH * OBJECT_HEIGHT; i++)
+ 		data[i] = seed++;
 -	}
 -
--	pthread_mutex_lock(&t_data.mutex);
--	t_data.stop = 1;
--	pthread_mutex_unlock(&t_data.mutex);
+-	drm_intel_gem_bo_unmap_gtt(src_bo);
++	gem_munmap(data, size);
+ 
+ 	/* Render the junk to the dst. */
+-	BLIT_COPY_BATCH_START(0);
+-	OUT_BATCH((3 << 24) | /* 32 bits */
++	bb = gem_mmap__device_coherent(i915, bb_handle, 0, bb_size, PROT_WRITE);
++	i = 0;
++	bb[i++] = XY_SRC_COPY_BLT_CMD |
++		  XY_SRC_COPY_BLT_WRITE_ALPHA |
++		  XY_SRC_COPY_BLT_WRITE_RGB |
++		  (6 + 2*(gen >= 8));
++	bb[i++] = (3 << 24) | /* 32 bits */
+ 		  (0xcc << 16) | /* copy ROP */
+-		  (width * 4) /* dst pitch */);
+-	OUT_BATCH(0); /* dst x1,y1 */
+-	OUT_BATCH((height << 16) | width); /* dst x2,y2 */
+-	OUT_RELOC(dst_bo, I915_GEM_DOMAIN_RENDER, I915_GEM_DOMAIN_RENDER, 0);
+-	OUT_BATCH(0); /* src x1,y1 */
+-	OUT_BATCH(width * 4); /* src pitch */
+-	OUT_RELOC(src_bo, I915_GEM_DOMAIN_RENDER, 0, 0);
+-	ADVANCE_BATCH();
 -
--	pthread_join(t, NULL);
--	pthread_mutex_destroy(&t_data.mutex);
--}
+-	intel_batchbuffer_flush(batch);
 -
--pthread_t test_thread_id1;
--pthread_t test_thread_id2;
--pthread_t test_thread_id3;
--pthread_t test_thread_id4;
+-	drm_intel_bo_unreference(src_bo);
++		  (OBJECT_WIDTH * 4) /* dst pitch */;
++	bb[i++] = 0; /* dst x1,y1 */
++	bb[i++] = (OBJECT_HEIGHT << 16) | OBJECT_WIDTH; /* dst x2,y2 */
++
++	obj[0].handle = dst_handle;
++	obj[0].offset = dst_handle * size;
++	reloc[0].target_handle = dst_handle;
++	reloc[0].presumed_offset = obj[0].offset;
++	reloc[0].offset = sizeof(uint32_t) * i;
++	reloc[0].read_domains = I915_GEM_DOMAIN_RENDER;
++	reloc[0].write_domain = I915_GEM_DOMAIN_RENDER;
++	bb[i++] = obj[0].offset;
++	if (has_64b_reloc)
++		bb[i++] = obj[0].offset >> 32;
++
++	bb[i++] = 0; /* src x1,y1 */
++	bb[i++] = OBJECT_WIDTH * 4; /* src pitch */
++
++	obj[1].handle = src_handle;
++	obj[1].offset = src_handle * size;
++	reloc[1].target_handle = src_handle;
++	reloc[1].presumed_offset = obj[1].offset;
++	reloc[1].offset = sizeof(uint32_t) * i;
++	reloc[1].read_domains = I915_GEM_DOMAIN_RENDER;
++	reloc[1].write_domain = 0;
++	bb[i++] = obj[1].offset;
++	if (has_64b_reloc)
++		bb[i++] = obj[1].offset >> 32;
++
++	obj[2].handle = bb_handle;
++	obj[2].relocs_ptr = to_user_pointer(reloc);
++	obj[2].relocation_count = 2;
++
++	bb[i++] = MI_BATCH_BUFFER_END;
++	gem_munmap(bb, bb_size);
++
++	exec.buffers_ptr = to_user_pointer(obj);
++	exec.buffer_count = 3;
++	exec.flags = gen >= 6 ? I915_EXEC_BLT : 0 | I915_EXEC_NO_RELOC;
++
++	gem_execbuf(i915, &exec);
+ }
+ 
+ int main(int argc, char **argv)
+ {
+-	int fd;
+-	int object_size = OBJECT_WIDTH * OBJECT_HEIGHT * 4;
+ 	double start_time, end_time;
+-	drm_intel_bo *dst_bo;
+-	drm_intel_bufmgr *bufmgr;
+-	struct intel_batchbuffer *batch;
+-	int i;
 -
--igt_main {
--	igt_fixture {
--		fd1 = drm_open_driver(DRIVER_INTEL);
--		igt_require_gem(fd1);
+-	fd = drm_open_driver(DRIVER_INTEL);
++	uint32_t dst_handle;
++	int i915, i;
+ 
+-	bufmgr = drm_intel_bufmgr_gem_init(fd, 4096);
+-	drm_intel_bufmgr_gem_enable_reuse(bufmgr);
 -
--		bufmgr1 = drm_intel_bufmgr_gem_init(fd1, 8 *1024);
--		igt_require(bufmgr1);
+-	batch = intel_batchbuffer_alloc(bufmgr, intel_get_drm_devid(fd));
 -
--		drm_intel_bufmgr_gem_enable_reuse(bufmgr1);
+-	dst_bo = drm_intel_bo_alloc(bufmgr, "dst", object_size, 4096);
++	i915 = drm_open_driver(DRIVER_INTEL);
++	dst_handle = gem_create(i915, OBJECT_WIDTH * OBJECT_HEIGHT * 4);
+ 
+ 	/* Prep loop to get us warmed up. */
+-	for (i = 0; i < 60; i++) {
+-		do_render(bufmgr, batch, dst_bo, OBJECT_WIDTH, OBJECT_HEIGHT);
+-	}
+-	drm_intel_bo_wait_rendering(dst_bo);
++	for (i = 0; i < 60; i++)
++		do_render(i915, dst_handle);
++	gem_sync(i915, dst_handle);
+ 
+ 	/* Do the actual timing. */
+ 	start_time = get_time_in_secs();
+-	for (i = 0; i < 200; i++) {
+-		do_render(bufmgr, batch, dst_bo, OBJECT_WIDTH, OBJECT_HEIGHT);
+-	}
+-	drm_intel_bo_wait_rendering(dst_bo);
++	for (i = 0; i < 200; i++)
++		do_render(i915, dst_handle);
++	gem_sync(i915, dst_handle);
++
+ 	end_time = get_time_in_secs();
+ 
+ 	printf("%d iterations in %.03f secs: %.01f MB/sec\n", i,
+@@ -144,10 +169,5 @@ int main(int argc, char **argv)
+ 	       (double)i * OBJECT_WIDTH * OBJECT_HEIGHT * 4 / 1024.0 / 1024.0 /
+ 	       (end_time - start_time));
+ 
+-	intel_batchbuffer_free(batch);
+-	drm_intel_bufmgr_destroy(bufmgr);
 -
--		fd = gem_reopen_driver(fd1);
--		bufmgr = drm_intel_bufmgr_gem_init(fd, 8 *1024);
--		igt_assert(bufmgr);
+-	close(fd);
 -
--		drm_intel_bufmgr_gem_enable_reuse(bufmgr);
+-	return 0;
++	close(i915);
+ }
+diff --git a/benchmarks/intel_upload_blit_large_map.c b/benchmarks/intel_upload_blit_large_map.c
+index ae05434f26..6d3cd748cf 100644
+--- a/benchmarks/intel_upload_blit_large_map.c
++++ b/benchmarks/intel_upload_blit_large_map.c
+@@ -48,6 +48,7 @@
+  */
+ 
+ #include "igt.h"
++#include "i915/gem_create.h"
+ #include <stdlib.h>
+ #include <stdio.h>
+ #include <string.h>
+@@ -72,74 +73,99 @@ get_time_in_secs(void)
+ }
+ 
+ static void
+-do_render(drm_intel_bufmgr *bufmgr, struct intel_batchbuffer *batch,
+-	  drm_intel_bo *dst_bo, int width, int height)
++do_render(int i915, uint32_t dst_handle)
+ {
+-	uint32_t *data;
+-	drm_intel_bo *src_bo;
+-	int i;
++	struct drm_i915_gem_execbuffer2 exec = {};
++	struct drm_i915_gem_exec_object2 obj[3] = {};
++	struct drm_i915_gem_relocation_entry reloc[2];
+ 	static uint32_t seed = 1;
++	uint64_t size = OBJECT_WIDTH * OBJECT_HEIGHT * 4, bb_size = 4096;
++	uint32_t *data, src_handle, bb_handle, *bb;
++	uint32_t gen = intel_gen(intel_get_drm_devid(i915));
++	const bool has_64b_reloc = gen >= 8;
++	int i;
+ 
+-	src_bo = drm_intel_bo_alloc(bufmgr, "src", width * height * 4, 4096);
+-
+-	drm_intel_bo_map(src_bo, 1);
++	bb_handle = gem_create_from_pool(i915, &bb_size, REGION_SMEM);
++	src_handle = gem_create_from_pool(i915, &size, REGION_SMEM);
+ 
+-	data = src_bo->virtual;
+-	for (i = 0; i < width * height; i++) {
++	data = gem_mmap__cpu(i915, src_handle, 0, size, PROT_WRITE);
++	for (i = 0; i < OBJECT_WIDTH * OBJECT_HEIGHT; i++)
+ 		data[i] = seed++;
 -	}
 -
--	igt_describe("Verify whether the behaviour of libdrm"
--		     " is consistent for flink or not.");
--	igt_subtest("import-close-race-flink") {
--		use_flink = true;
--		test_import_close_race();
+-	drm_intel_bo_unmap(src_bo);
++	gem_set_domain(i915, src_handle, I915_GEM_DOMAIN_CPU, 0);
++	gem_munmap(data, size);
+ 
+ 	/* Render the junk to the dst. */
+-	BLIT_COPY_BATCH_START(0);
+-	OUT_BATCH((3 << 24) | /* 32 bits */
++	bb = gem_mmap__device_coherent(i915, bb_handle, 0, bb_size, PROT_WRITE);
++	i = 0;
++	bb[i++] = XY_SRC_COPY_BLT_CMD |
++		  XY_SRC_COPY_BLT_WRITE_ALPHA |
++		  XY_SRC_COPY_BLT_WRITE_RGB |
++		  (6 + 2*(gen >= 8));
++	bb[i++] = (3 << 24) | /* 32 bits */
+ 		  (0xcc << 16) | /* copy ROP */
+-		  (width * 4) /* dst pitch */);
+-	OUT_BATCH(0); /* dst x1,y1 */
+-	OUT_BATCH((height << 16) | width); /* dst x2,y2 */
+-	OUT_RELOC(dst_bo, I915_GEM_DOMAIN_RENDER, I915_GEM_DOMAIN_RENDER, 0);
+-	OUT_BATCH(0); /* src x1,y1 */
+-	OUT_BATCH(width * 4); /* src pitch */
+-	OUT_RELOC(src_bo, I915_GEM_DOMAIN_RENDER, 0, 0);
+-	ADVANCE_BATCH();
+-
+-	intel_batchbuffer_flush(batch);
+-
+-	drm_intel_bo_unreference(src_bo);
++		  (OBJECT_WIDTH * 4) /* dst pitch */;
++	bb[i++] = 0; /* dst x1,y1 */
++	bb[i++] = (OBJECT_HEIGHT << 16) | OBJECT_WIDTH; /* dst x2,y2 */
++
++	obj[0].handle = dst_handle;
++	obj[0].offset = dst_handle * size;
++	reloc[0].target_handle = dst_handle;
++	reloc[0].presumed_offset = obj[0].offset;
++	reloc[0].offset = sizeof(uint32_t) * i;
++	reloc[0].read_domains = I915_GEM_DOMAIN_RENDER;
++	reloc[0].write_domain = I915_GEM_DOMAIN_RENDER;
++	bb[i++] = obj[0].offset;
++	if (has_64b_reloc)
++		bb[i++] = obj[0].offset >> 32;
++
++	bb[i++] = 0; /* src x1,y1 */
++	bb[i++] = OBJECT_WIDTH * 4; /* src pitch */
++
++	obj[1].handle = src_handle;
++	obj[1].offset = src_handle * size;
++	reloc[1].target_handle = src_handle;
++	reloc[1].presumed_offset = obj[1].offset;
++	reloc[1].offset = sizeof(uint32_t) * i;
++	reloc[1].read_domains = I915_GEM_DOMAIN_RENDER;
++	reloc[1].write_domain = 0;
++	bb[i++] = obj[1].offset;
++	if (has_64b_reloc)
++		bb[i++] = obj[1].offset >> 32;
++
++	obj[2].handle = bb_handle;
++	obj[2].relocs_ptr = to_user_pointer(reloc);
++	obj[2].relocation_count = 2;
++
++	bb[i++] = MI_BATCH_BUFFER_END;
++	gem_munmap(bb, bb_size);
++
++	exec.buffers_ptr = to_user_pointer(obj);
++	exec.buffer_count = 3;
++	exec.flags = gen >= 6 ? I915_EXEC_BLT : 0 | I915_EXEC_NO_RELOC;
++
++	gem_execbuf(i915, &exec);
+ }
+ 
+ int main(int argc, char **argv)
+ {
+-	int fd;
+-	int object_size = OBJECT_WIDTH * OBJECT_HEIGHT * 4;
+ 	double start_time, end_time;
+-	drm_intel_bo *dst_bo;
+-	drm_intel_bufmgr *bufmgr;
+-	struct intel_batchbuffer *batch;
+-	int i;
+-
+-	fd = drm_open_driver(DRIVER_INTEL);
++	uint32_t dst_handle;
++	int i915, i;
+ 
+-	bufmgr = drm_intel_bufmgr_gem_init(fd, 4096);
+-	drm_intel_bufmgr_gem_enable_reuse(bufmgr);
+-
+-	batch = intel_batchbuffer_alloc(bufmgr, intel_get_drm_devid(fd));
+-
+-	dst_bo = drm_intel_bo_alloc(bufmgr, "dst", object_size, 4096);
++	i915 = drm_open_driver(DRIVER_INTEL);
++	dst_handle = gem_create(i915, OBJECT_WIDTH * OBJECT_HEIGHT * 4);
+ 
+ 	/* Prep loop to get us warmed up. */
+-	for (i = 0; i < 60; i++) {
+-		do_render(bufmgr, batch, dst_bo, OBJECT_WIDTH, OBJECT_HEIGHT);
 -	}
--
--	igt_describe("Verify whether the behaviour of libdrm"
--		     " is consistent for prime or not.");
--	igt_subtest("import-close-race-prime") {
--		use_flink = false;
--		test_import_close_race();
+-	drm_intel_bo_wait_rendering(dst_bo);
++	for (i = 0; i < 60; i++)
++		do_render(i915, dst_handle);
++	gem_sync(i915, dst_handle);
+ 
+ 	/* Do the actual timing. */
+ 	start_time = get_time_in_secs();
+-	for (i = 0; i < 200; i++) {
+-		do_render(bufmgr, batch, dst_bo, OBJECT_WIDTH, OBJECT_HEIGHT);
 -	}
+-	drm_intel_bo_wait_rendering(dst_bo);
++	for (i = 0; i < 200; i++)
++		do_render(i915, dst_handle);
++	gem_sync(i915, dst_handle);
++
+ 	end_time = get_time_in_secs();
+ 
+ 	printf("%d iterations in %.03f secs: %.01f MB/sec\n", i,
+@@ -147,10 +173,6 @@ int main(int argc, char **argv)
+ 	       (double)i * OBJECT_WIDTH * OBJECT_HEIGHT * 4 / 1024.0 / 1024.0 /
+ 	       (end_time - start_time));
+ 
+-	intel_batchbuffer_free(batch);
+-	drm_intel_bufmgr_destroy(bufmgr);
 -
--	igt_describe("Multithreaded test to validate the (lack of) locking in"
--		     " the flink code in libdrm.");
--	igt_subtest("flink") {
--		use_flink = true;
+-	close(fd);
 -
--		pthread_create(&test_thread_id1, NULL, test_thread, NULL);
--		pthread_create(&test_thread_id2, NULL, test_thread, NULL);
--		pthread_create(&test_thread_id3, NULL, test_thread, NULL);
--		pthread_create(&test_thread_id4, NULL, test_thread, NULL);
+-	return 0;
++	close(i915);
+ }
++
+diff --git a/benchmarks/intel_upload_blit_small.c b/benchmarks/intel_upload_blit_small.c
+index 7e3346eb74..525d68e36a 100644
+--- a/benchmarks/intel_upload_blit_small.c
++++ b/benchmarks/intel_upload_blit_small.c
+@@ -41,6 +41,7 @@
+  */
+ 
+ #include "igt.h"
++#include "i915/gem_create.h"
+ #include <stdlib.h>
+ #include <stdio.h>
+ #include <string.h>
+@@ -66,21 +67,27 @@ get_time_in_secs(void)
+ }
+ 
+ static void
+-do_render(drm_intel_bufmgr *bufmgr, struct intel_batchbuffer *batch,
+-	  drm_intel_bo *dst_bo, int width, int height)
++do_render(int i915, uint32_t dst_handle)
+ {
+-	uint32_t data[64];
+-	drm_intel_bo *src_bo;
+-	int i;
++	struct drm_i915_gem_execbuffer2 exec = {};
++	struct drm_i915_gem_exec_object2 obj[3] = {};
++	struct drm_i915_gem_relocation_entry reloc[2];
+ 	static uint32_t seed = 1;
++	uint32_t data[OBJECT_WIDTH * OBJECT_HEIGHT];
++	uint64_t size = OBJECT_WIDTH * OBJECT_HEIGHT * 4, bb_size = 4096;
++	uint32_t src_handle, bb_handle, *bb;
++	uint32_t gen = intel_gen(intel_get_drm_devid(i915));
++	const bool has_64b_reloc = gen >= 8;
++	int i;
+ 
+-	src_bo = drm_intel_bo_alloc(bufmgr, "src", width * height * 4, 4096);
++	bb_handle = gem_create_from_pool(i915, &bb_size, REGION_SMEM);
++	src_handle = gem_create_from_pool(i915, &size, REGION_SMEM);
+ 
+ 	/* Upload some junk.  Real workloads would be doing a lot more
+ 	 * work to generate the junk.
+ 	 */
+-	for (i = 0; i < width * height;) {
+-		int size, j;
++	for (i = 0; i < OBJECT_WIDTH * OBJECT_HEIGHT; i++) {
++		int subsize, j;
+ 
+ 		/* Choose a size from 1 to 64 dwords to upload.
+ 		 * Normal workloads have a distribution of sizes with a
+@@ -88,68 +95,92 @@ do_render(drm_intel_bufmgr *bufmgr, struct intel_batchbuffer *batch,
+ 		 * pile of vertices, most likely), but I'm trying to get at
+ 		 * the cost of the small uploads here.
+ 		 */
+-		size = random() % 64 + 1;
+-		if (i + size > width * height)
+-			size = width * height - i;
++		subsize = random() % 64 + 1;
++		if (i + subsize > OBJECT_WIDTH * OBJECT_HEIGHT)
++			subsize = OBJECT_WIDTH * OBJECT_HEIGHT - i;
+ 
+-		for (j = 0; j < size; j++)
++		for (j = 0; j < subsize; j++)
+ 			data[j] = seed++;
+ 
+ 		/* Upload the junk. */
+-		drm_intel_bo_subdata(src_bo, i * 4, size * 4, data);
++		//drm_intel_bo_subdata(src_bo, i * 4, size * 4, data);
++		gem_write(i915, src_handle, i * 4, data, subsize * 4);
+ 
+-		i += size;
++		i += subsize;
+ 	}
+ 
+ 	/* Render the junk to the dst. */
+-	BLIT_COPY_BATCH_START(0);
+-	OUT_BATCH((3 << 24) | /* 32 bits */
++	bb = gem_mmap__device_coherent(i915, bb_handle, 0, bb_size, PROT_WRITE);
++	i = 0;
++	bb[i++] = XY_SRC_COPY_BLT_CMD |
++		  XY_SRC_COPY_BLT_WRITE_ALPHA |
++		  XY_SRC_COPY_BLT_WRITE_RGB |
++		  (6 + 2*(gen >= 8));
++	bb[i++] = (3 << 24) | /* 32 bits */
+ 		  (0xcc << 16) | /* copy ROP */
+-		  (width * 4) /* dst pitch */);
+-	OUT_BATCH(0); /* dst x1,y1 */
+-	OUT_BATCH((height << 16) | width); /* dst x2,y2 */
+-	OUT_RELOC(dst_bo, I915_GEM_DOMAIN_RENDER, I915_GEM_DOMAIN_RENDER, 0);
+-	OUT_BATCH(0); /* src x1,y1 */
+-	OUT_BATCH(width * 4); /* src pitch */
+-	OUT_RELOC(src_bo, I915_GEM_DOMAIN_RENDER, 0, 0);
+-	ADVANCE_BATCH();
 -
--		pthread_join(test_thread_id1, NULL);
--		pthread_join(test_thread_id2, NULL);
--		pthread_join(test_thread_id3, NULL);
--		pthread_join(test_thread_id4, NULL);
+-	intel_batchbuffer_flush(batch);
+-
+-	drm_intel_bo_unreference(src_bo);
++		  (OBJECT_WIDTH * 4) /* dst pitch */;
++	bb[i++] = 0; /* dst x1,y1 */
++	bb[i++] = (OBJECT_HEIGHT << 16) | OBJECT_WIDTH; /* dst x2,y2 */
++
++	obj[0].handle = dst_handle;
++	obj[0].offset = dst_handle * size;
++	reloc[0].target_handle = dst_handle;
++	reloc[0].presumed_offset = obj[0].offset;
++	reloc[0].offset = sizeof(uint32_t) * i;
++	reloc[0].read_domains = I915_GEM_DOMAIN_RENDER;
++	reloc[0].write_domain = I915_GEM_DOMAIN_RENDER;
++	bb[i++] = obj[0].offset;
++	if (has_64b_reloc)
++		bb[i++] = obj[0].offset >> 32;
++
++	bb[i++] = 0; /* src x1,y1 */
++	bb[i++] = OBJECT_WIDTH * 4; /* src pitch */
++
++	obj[1].handle = src_handle;
++	obj[1].offset = src_handle * size;
++	reloc[1].target_handle = src_handle;
++	reloc[1].presumed_offset = obj[1].offset;
++	reloc[1].offset = sizeof(uint32_t) * i;
++	reloc[1].read_domains = I915_GEM_DOMAIN_RENDER;
++	reloc[1].write_domain = 0;
++	bb[i++] = obj[1].offset;
++	if (has_64b_reloc)
++		bb[i++] = obj[1].offset >> 32;
++
++	obj[2].handle = bb_handle;
++	obj[2].relocs_ptr = to_user_pointer(reloc);
++	obj[2].relocation_count = 2;
++
++	bb[i++] = MI_BATCH_BUFFER_END;
++	gem_munmap(bb, bb_size);
++
++	exec.buffers_ptr = to_user_pointer(obj);
++	exec.buffer_count = 3;
++	exec.flags = gen >= 6 ? I915_EXEC_BLT : 0 | I915_EXEC_NO_RELOC;
++
++	gem_execbuf(i915, &exec);
+ }
+ 
+ int main(int argc, char **argv)
+ {
+-	int fd;
+-	int object_size = OBJECT_WIDTH * OBJECT_HEIGHT * 4;
+ 	double start_time, end_time;
+-	drm_intel_bo *dst_bo;
+-	drm_intel_bufmgr *bufmgr;
+-	struct intel_batchbuffer *batch;
+-	int i;
+-
+-	fd = drm_open_driver(DRIVER_INTEL);
+-
+-	bufmgr = drm_intel_bufmgr_gem_init(fd, 4096);
+-	drm_intel_bufmgr_gem_enable_reuse(bufmgr);
+-
+-	batch = intel_batchbuffer_alloc(bufmgr, intel_get_drm_devid(fd));
++	uint32_t dst_handle;
++	int i915, i;
+ 
+-	dst_bo = drm_intel_bo_alloc(bufmgr, "dst", object_size, 4096);
++	i915 = drm_open_driver(DRIVER_INTEL);
++	dst_handle = gem_create(i915, OBJECT_WIDTH * OBJECT_HEIGHT * 4);
+ 
+ 	/* Prep loop to get us warmed up. */
+-	for (i = 0; i < 20; i++) {
+-		do_render(bufmgr, batch, dst_bo, OBJECT_WIDTH, OBJECT_HEIGHT);
 -	}
--
--	igt_describe("Multithreaded test to validate the (lack of) locking in"
--		     " the prime code in libdrm.");
--	igt_subtest("prime") {
--		use_flink = false;
--
--		pthread_create(&test_thread_id1, NULL, test_thread, NULL);
--		pthread_create(&test_thread_id2, NULL, test_thread, NULL);
--		pthread_create(&test_thread_id3, NULL, test_thread, NULL);
--		pthread_create(&test_thread_id4, NULL, test_thread, NULL);
--
--		pthread_join(test_thread_id1, NULL);
--		pthread_join(test_thread_id2, NULL);
--		pthread_join(test_thread_id3, NULL);
--		pthread_join(test_thread_id4, NULL);
+-	drm_intel_bo_wait_rendering(dst_bo);
++	for (i = 0; i < 60; i++)
++		do_render(i915, dst_handle);
++	gem_sync(i915, dst_handle);
+ 
+ 	/* Do the actual timing. */
+ 	start_time = get_time_in_secs();
+-	for (i = 0; i < 1000; i++) {
+-		do_render(bufmgr, batch, dst_bo, OBJECT_WIDTH, OBJECT_HEIGHT);
 -	}
+-	drm_intel_bo_wait_rendering(dst_bo);
++	for (i = 0; i < 1000; i++)
++		do_render(i915, dst_handle);
++	gem_sync(i915, dst_handle);
++
+ 	end_time = get_time_in_secs();
+ 
+ 	printf("%d iterations in %.03f secs: %.01f MB/sec\n", i,
+@@ -157,10 +188,6 @@ int main(int argc, char **argv)
+ 	       (double)i * OBJECT_WIDTH * OBJECT_HEIGHT * 4 / 1024.0 / 1024.0 /
+ 	       (end_time - start_time));
+ 
+-	intel_batchbuffer_free(batch);
+-	drm_intel_bufmgr_destroy(bufmgr);
 -
--	igt_fixture {
--		close(fd);
--		close(fd1);
--	}
--}
-diff --git a/tests/meson.build b/tests/meson.build
-index 5c052e7332..7121050130 100644
---- a/tests/meson.build
-+++ b/tests/meson.build
-@@ -10,7 +10,6 @@ test_progs = [
- 	'dmabuf_sync_file',
- 	'device_reset',
- 	'drm_buddy',
--	'drm_import_export',
- 	'drm_mm',
- 	'drm_read',
- 	'fbdev',
+-	close(fd);
+-
+-	return 0;
++	close(i915);
+ }
++
+diff --git a/benchmarks/meson.build b/benchmarks/meson.build
+index 98a08e25cd..c451268bc4 100644
+--- a/benchmarks/meson.build
++++ b/benchmarks/meson.build
+@@ -13,20 +13,15 @@ benchmark_progs = [
+ 	'gem_syslatency',
+ 	'gem_userptr_benchmark',
+ 	'gem_wsim',
++	'intel_upload_blit_large',
++	'intel_upload_blit_large_gtt',
++	'intel_upload_blit_large_map',
++	'intel_upload_blit_small',
+ 	'kms_vblank',
+ 	'prime_lookup',
+ 	'vgem_mmap',
+ ]
+ 
+-if libdrm_intel.found()
+-	benchmark_progs += [
+-		'intel_upload_blit_large',
+-		'intel_upload_blit_large_gtt',
+-		'intel_upload_blit_large_map',
+-		'intel_upload_blit_small',
+-	]
+-endif
+-
+ benchmarksdir = join_paths(libexecdir, 'benchmarks')
+ 
+ foreach prog : benchmark_progs
 -- 
 2.34.1
