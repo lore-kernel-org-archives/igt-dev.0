@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4763F10E36F
- for <igt-dev@lists.freedesktop.org>; Tue, 29 Nov 2022 07:24:03 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id F05D910E371
+ for <igt-dev@lists.freedesktop.org>; Tue, 29 Nov 2022 07:24:05 +0000 (UTC)
 From: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Mon, 28 Nov 2022 23:23:45 -0800
-Message-Id: <20221129072355.769-5-niranjana.vishwanathapura@intel.com>
+Date: Mon, 28 Nov 2022 23:23:50 -0800
+Message-Id: <20221129072355.769-10-niranjana.vishwanathapura@intel.com>
 In-Reply-To: <20221129072355.769-1-niranjana.vishwanathapura@intel.com>
 References: <20221129072355.769-1-niranjana.vishwanathapura@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v8 04/14] lib/vm_bind: Add vm_bind mode
- support for VM
+Subject: [igt-dev] [PATCH i-g-t v8 09/14] tests/i915/vm_bind: Add userptr
+ subtest
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,139 +25,135 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add required library interfaces to create VM in
-vm_bind mode and assign the VM to a context.
+Add userptr object type to vm_bind_basic test.
+
+v2: Run all tests for userptr type
+v3: Change info to debug messages, remove igt_collection usage
+v4: only munmap non-userptr objects
 
 Reviewed-by: Matthew Auld <matthew.auld@intel.com>
 Signed-off-by: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
 ---
- lib/i915/gem_context.c | 24 ++++++++++++++++++++++++
- lib/i915/gem_context.h |  3 +++
- lib/i915/gem_vm.c      | 31 ++++++++++++++++++++++++++-----
- lib/i915/gem_vm.h      |  3 ++-
- 4 files changed, 55 insertions(+), 6 deletions(-)
+ tests/i915/i915_vm_bind_basic.c | 59 +++++++++++++++++++++++++++++----
+ 1 file changed, 52 insertions(+), 7 deletions(-)
 
-diff --git a/lib/i915/gem_context.c b/lib/i915/gem_context.c
-index fe989a8d1..2d06b4198 100644
---- a/lib/i915/gem_context.c
-+++ b/lib/i915/gem_context.c
-@@ -517,3 +517,27 @@ uint32_t gem_context_create_for_class(int i915,
- 	*count = i;
- 	return p.ctx_id;
- }
-+
-+uint32_t gem_context_get_vm(int fd, uint32_t ctx_id)
-+{
-+	struct drm_i915_gem_context_param p = {
-+		.param = I915_CONTEXT_PARAM_VM,
-+		.ctx_id = ctx_id,
-+	};
-+
-+	gem_context_get_param(fd, &p);
-+	igt_assert(p.value);
-+
-+	return p.value;
-+}
-+
-+void gem_context_set_vm(int fd, uint32_t ctx_id, uint32_t vm_id)
-+{
-+	struct drm_i915_gem_context_param p = {
-+		.param = I915_CONTEXT_PARAM_VM,
-+		.ctx_id = ctx_id,
-+		.value = vm_id,
-+	};
-+
-+	gem_context_set_param(fd, &p);
-+}
-diff --git a/lib/i915/gem_context.h b/lib/i915/gem_context.h
-index 505d55724..2a2247fe1 100644
---- a/lib/i915/gem_context.h
-+++ b/lib/i915/gem_context.h
-@@ -63,4 +63,7 @@ void gem_context_set_persistence(int i915, uint32_t ctx, bool state);
- 
- bool gem_context_has_engine(int fd, uint32_t ctx, uint64_t engine);
- 
-+uint32_t gem_context_get_vm(int fd, uint32_t ctx_id);
-+void gem_context_set_vm(int fd, uint32_t ctx_id, uint32_t vm_id);
-+
- #endif /* GEM_CONTEXT_H */
-diff --git a/lib/i915/gem_vm.c b/lib/i915/gem_vm.c
-index 9a022a56c..ee3c65d06 100644
---- a/lib/i915/gem_vm.c
-+++ b/lib/i915/gem_vm.c
-@@ -48,7 +48,7 @@ bool gem_has_vm(int i915)
+diff --git a/tests/i915/i915_vm_bind_basic.c b/tests/i915/i915_vm_bind_basic.c
+index a7016c4b9..cc5b65235 100644
+--- a/tests/i915/i915_vm_bind_basic.c
++++ b/tests/i915/i915_vm_bind_basic.c
+@@ -235,16 +235,26 @@ static uint32_t create_obj(int fd, struct gem_memory_region *mr, uint32_t size,
  {
- 	uint32_t vm_id = 0;
+ 	uint32_t handle;
  
--	__gem_vm_create(i915, &vm_id);
-+	__gem_vm_create(i915, 0, &vm_id);
- 	if (vm_id)
- 		gem_vm_destroy(i915, vm_id);
+-	handle = gem_create_in_memory_region_list(fd, size, 0, &mr->ci, 1);
+-	*addr = gem_mmap__cpu(fd, handle, 0, size, PROT_WRITE);
++	if (!mr) {
++		igt_assert(posix_memalign(addr, SZ_2M * MAX_CTXTS, size) == 0);
++		gem_userptr(fd, *addr, size, 0, 0, &handle);
++	} else {
++		handle = gem_create_in_memory_region_list(fd, size, 0, &mr->ci, 1);
++		*addr = gem_mmap__cpu(fd, handle, 0, size, PROT_WRITE);
++	}
  
-@@ -67,9 +67,9 @@ void gem_require_vm(int i915)
- 	igt_require(gem_has_vm(i915));
+ 	return handle;
  }
  
--int __gem_vm_create(int i915, uint32_t *vm_id)
-+int __gem_vm_create(int i915, uint32_t flags, uint32_t *vm_id)
+-static void destroy_obj(int fd, uint32_t handle, uint32_t size, void *addr)
++static void destroy_obj(int fd, uint32_t handle, uint32_t size, void *addr, bool is_userptr)
  {
--       struct drm_i915_gem_vm_control ctl = {};
-+       struct drm_i915_gem_vm_control ctl = { .flags = flags };
-        int err = 0;
- 
-        if (igt_ioctl(i915, DRM_IOCTL_I915_GEM_VM_CREATE, &ctl) == 0) {
-@@ -88,7 +88,8 @@ int __gem_vm_create(int i915, uint32_t *vm_id)
-  * @i915: open i915 drm file descriptor
-  *
-  * This wraps the VM_CREATE ioctl, which is used to allocate a new
-- * address space for use with GEM contexts.
-+ * address space for use with GEM contexts, with legacy execbuff
-+ * method of binding.
-  *
-  * Returns: The id of the allocated address space.
-  */
-@@ -96,7 +97,27 @@ uint32_t gem_vm_create(int i915)
- {
- 	uint32_t vm_id;
- 
--	igt_assert_eq(__gem_vm_create(i915, &vm_id), 0);
-+	igt_assert_eq(__gem_vm_create(i915, 0, &vm_id), 0);
-+	igt_assert(vm_id != 0);
+-	igt_assert(gem_munmap(addr, size) == 0);
++	if (!is_userptr)
++		igt_assert(gem_munmap(addr, size) == 0);
 +
-+	return vm_id;
+ 	gem_close(fd, handle);
++
++	if (is_userptr)
++		free(addr);
+ }
+ 
+ static void create_src_objs(int fd, struct gem_memory_region *mr, uint32_t src[],
+@@ -255,6 +265,14 @@ static void create_src_objs(int fd, struct gem_memory_region *mr, uint32_t src[]
+ 	if (!num_cmds)
+ 		return;
+ 
++	if (!mr) {
++		for (i = 0; i < num_cmds; i++) {
++			src[i] = create_obj(fd, NULL, size, &src_addr[i]);
++			igt_debug("Src (userptr) obj 0x%x created\n", src[i]);
++		}
++		return;
++	}
++
+ 	/* Create first src object always in memory region 'mr' */
+ 	src[i] = create_obj(fd, mr, size, &src_addr[i]);
+ 	igt_debug("Src (%s) obj 0x%x created\n", mr->name, src[i]);
+@@ -293,7 +311,7 @@ static void destroy_src_objs(int fd, struct gem_memory_region *mr, uint32_t src[
+ 
+ 	for (i = 0; i < num_cmds; i++) {
+ 		igt_debug("Closing src object 0x%x\n", src[i]);
+-		destroy_obj(fd, src[i], size, src_addr[i]);
++		destroy_obj(fd, src[i], size, src_addr[i], !mr);
+ 	}
+ }
+ 
+@@ -301,7 +319,7 @@ static uint32_t create_dst_obj(int fd, struct gem_memory_region *mr, uint32_t si
+ {
+ 	uint32_t dst = create_obj(fd, mr, size, dst_addr);
+ 
+-	igt_debug("Dst (%s) obj 0x%x created\n", mr->name, dst);
++	igt_debug("Dst (%s) obj 0x%x created\n", mr ? mr->name : "userptr", dst);
+ 	return dst;
+ }
+ 
+@@ -309,7 +327,7 @@ static void destroy_dst_obj(int fd, struct gem_memory_region *mr, uint32_t dst,
+ 			    uint32_t size, void *dst_addr)
+ {
+ 	igt_debug("Closing dst object 0x%x\n", dst);
+-	destroy_obj(fd, dst, size, dst_addr);
++	destroy_obj(fd, dst, size, dst_addr, !mr);
+ }
+ 
+ static void pattern_fill_buf(void *src_addr[], uint32_t size, uint32_t num_cmds, uint32_t npages)
+@@ -499,6 +517,25 @@ static void run_test(int fd, const intel_ctx_t *base_ctx, struct test_cfg *cfg,
+ 		gem_vm_destroy(fd, shared_vm_id);
+ }
+ 
++static int has_userptr(int fd)
++{
++	uint32_t handle = 0;
++	void *ptr;
++	int ret;
++
++	assert(posix_memalign(&ptr, PAGE_SIZE, PAGE_SIZE) == 0);
++	ret = __gem_userptr(fd, ptr, PAGE_SIZE, 0, 0, &handle);
++	if (ret != 0) {
++		free(ptr);
++		return 0;
++	}
++
++	gem_close(fd, handle);
++	free(ptr);
++
++	return handle != 0;
 +}
 +
-+/**
-+ * gem_vm_create_in_vm_bind_mode:
-+ * @i915: open i915 drm file descriptor
-+ *
-+ * This wraps the VM_CREATE ioctl with I915_VM_CREATE_FLAGS_USE_VM_BIND,
-+ * flag which is used to allocate a new address space for use with GEM contexts
-+ * with vm_bind mode of binding.
-+ *
-+ * Returns: The id of the allocated address space.
-+ */
-+uint32_t gem_vm_create_in_vm_bind_mode(int i915)
-+{
-+	uint32_t vm_id;
+ igt_main
+ {
+ 	struct test_cfg *t, tests[] = {
+@@ -549,6 +586,14 @@ igt_main
+ 				igt_dynamic_f("%s", r->name)
+ 					run_test(fd, ctx, &cfg, r, alignment, e);
+ 			}
 +
-+	igt_assert_eq(__gem_vm_create(i915, I915_VM_CREATE_FLAGS_USE_VM_BIND, &vm_id), 0);
- 	igt_assert(vm_id != 0);
++			if (has_userptr(fd)) {
++				struct test_cfg cfg = *t;
++
++				/* Use NULL memory region for userptr */
++				igt_dynamic("userptr")
++					run_test(fd, ctx, &cfg, NULL, PAGE_SIZE, e);
++			}
+ 		}
+ 	}
  
- 	return vm_id;
-diff --git a/lib/i915/gem_vm.h b/lib/i915/gem_vm.h
-index acbb663e6..6cf46d887 100644
---- a/lib/i915/gem_vm.h
-+++ b/lib/i915/gem_vm.h
-@@ -31,7 +31,8 @@ bool gem_has_vm(int i915);
- void gem_require_vm(int i915);
- 
- uint32_t gem_vm_create(int i915);
--int __gem_vm_create(int i915, uint32_t *vm_id);
-+uint32_t gem_vm_create_in_vm_bind_mode(int i915);
-+int __gem_vm_create(int i915, uint32_t flags, uint32_t *vm_id);
- 
- void gem_vm_destroy(int i915, uint32_t vm_id);
- int __gem_vm_destroy(int i915, uint32_t vm_id);
 -- 
 2.21.0.rc0.32.g243a4c7e27
