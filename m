@@ -1,19 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CE2A810E041
- for <igt-dev@lists.freedesktop.org>; Tue, 29 Nov 2022 13:14:57 +0000 (UTC)
-From: Jani Nikula <jani.nikula@intel.com>
-To: Ville =?utf-8?B?U3lyasOkbMOk?= <ville.syrjala@linux.intel.com>
-In-Reply-To: <Y4XYGG+X8qFZiIsf@intel.com>
-References: <20221129084710.1151876-1-jani.nikula@intel.com>
- <Y4XYGG+X8qFZiIsf@intel.com>
-Date: Tue, 29 Nov 2022 15:14:51 +0200
-Message-ID: <87zgc93nsk.fsf@intel.com>
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2E75D10E094
+ for <igt-dev@lists.freedesktop.org>; Tue, 29 Nov 2022 14:44:00 +0000 (UTC)
+Message-ID: <75df0ee9-880b-3544-27a1-50d5ce79d130@intel.com>
+Date: Tue, 29 Nov 2022 20:13:23 +0530
+Content-Language: en-US
+To: Anshuman Gupta <anshuman.gupta@intel.com>, <igt-dev@lists.freedesktop.org>
+References: <20221123085441.2821638-1-anshuman.gupta@intel.com>
+ <20221123085441.2821638-3-anshuman.gupta@intel.com>
+From: "Nilawar, Badal" <badal.nilawar@intel.com>
+In-Reply-To: <20221123085441.2821638-3-anshuman.gupta@intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [igt-dev] [PATCH i-g-t] tools/intel_vbt_decode: decode VBT MIPI
- sequence v4 native flag
+Subject: Re: [igt-dev] [PATCH i-g-t v3 2/5] lib/igt_pci: Add PCIe slot cap
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,57 +21,40 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org
+Cc: rodrigo.vivi@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Tue, 29 Nov 2022, Ville Syrj=C3=A4l=C3=A4 <ville.syrjala@linux.intel.com=
-> wrote:
-> On Tue, Nov 29, 2022 at 10:47:10AM +0200, Jani Nikula wrote:
->> MIPI sequence v4 has a flag for native/non-native GPIO.
->
-> An naturally zero docs on what it actually means. But looks like
-> we're just meant to poke various DE registers for the "native" case.
->
-> Reviewed-by: Ville Syrj=C3=A4l=C3=A4 <ville.syrjala@linux.intel.com>
+Hi Anshuman,
 
-Thanks, pushed this one.
+With a comment this is
+Reviewed-by: Badal Nilawar <badal.nilawar@intel.com>
+On 23-11-2022 14:24, Anshuman Gupta wrote:
+> Adding PCIe slot cap register offset and Power Controller Present
+> bit mask macros.
+> 
+> Signed-off-by: Anshuman Gupta <anshuman.gupta@intel.com>
+> ---
+>   lib/igt_pci.h | 3 +++
+>   1 file changed, 3 insertions(+)
+> 
+> diff --git a/lib/igt_pci.h b/lib/igt_pci.h
+> index 68afd2dacb..5c2863d657 100644
+> --- a/lib/igt_pci.h
+> +++ b/lib/igt_pci.h
+> @@ -21,6 +21,9 @@ enum pci_cap_id {
+>   	PCI_EXPRESS_CAP_ID = 0x10
+>   };
+>   
+> +#define PCI_SLOT_CAP_OFFSET 0x14  /* PCIe specs chapter 7.8.9 */
+I think lets avoid adding comment about chapter number. Chapter number 
+can change as specs keep updating.
 
-BR,
-Jani.
-
-
->
->>=20
->> Signed-off-by: Jani Nikula <jani.nikula@intel.com>
->> ---
->>  tools/intel_vbt_decode.c | 8 ++++++--
->>  1 file changed, 6 insertions(+), 2 deletions(-)
->>=20
->> diff --git a/tools/intel_vbt_decode.c b/tools/intel_vbt_decode.c
->> index a63bfdda142a..94a910b5c107 100644
->> --- a/tools/intel_vbt_decode.c
->> +++ b/tools/intel_vbt_decode.c
->> @@ -2049,8 +2049,12 @@ static const uint8_t *mipi_dump_gpio(const uint8_=
-t *data, uint8_t seq_version)
->>  		number =3D *data++;
->>  		flags =3D *data++;
->>=20=20
->> -		printf("\t\t\tGPIO index %u, number %u, set %d (0x%02x)\n",
->> -		       index, number, flags & 1, flags);
->> +		if (seq_version >=3D 4)
->> +			printf("\t\t\tGPIO index %u, number %u, native %d, set %d (0x%02x)\n=
-",
->> +			       index, number, !(flags & 2), flags & 1, flags);
->> +		else
->> +			printf("\t\t\tGPIO index %u, number %u, set %d (0x%02x)\n",
->> +			       index, number, flags & 1, flags);
->>  	} else {
->>  		index =3D *data++;
->>  		flags =3D *data++;
->> --=20
->> 2.34.1
-
---=20
-Jani Nikula, Intel Open Source Graphics Center
+Regards,
+Badal
+> +#define  PCI_SLOT_PWR_CTRL_PRESENT (1 << 1)
+> +
+>   int find_pci_cap_offset_at(struct pci_device *dev, enum pci_cap_id cap_id,
+>   			   int start_offset);
+>   
