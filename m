@@ -1,18 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9760B10E36B
- for <igt-dev@lists.freedesktop.org>; Tue, 29 Nov 2022 07:24:07 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id ACF9510E36B
+ for <igt-dev@lists.freedesktop.org>; Tue, 29 Nov 2022 07:24:08 +0000 (UTC)
 From: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Mon, 28 Nov 2022 23:23:53 -0800
-Message-Id: <20221129072355.769-13-niranjana.vishwanathapura@intel.com>
+Date: Mon, 28 Nov 2022 23:23:55 -0800
+Message-Id: <20221129072355.769-15-niranjana.vishwanathapura@intel.com>
 In-Reply-To: <20221129072355.769-1-niranjana.vishwanathapura@intel.com>
 References: <20221129072355.769-1-niranjana.vishwanathapura@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v8 12/14] tests/i915/vm_bind: Add
- gem_lmem_swapping@vm_bind sub test
+Subject: [igt-dev] [PATCH i-g-t v8 14/14] tests/i915/vm_bind: Test capture
+ of persistent mappings
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,251 +25,479 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Validate eviction of objects with persistent mappings and
-check persistent mappings are properly rebound upon subsequent
-execbuf3 call.
+Add i915_vm_bind_capture to validate dump capture of persistent
+mappings including partial binding.
 
-TODO: Add a new swapping test with just vm_bind mode
-      (without legacy execbuf).
-
-v2: use i915_vm_bind library functions
-v3: fix dg2 alignment issue
-
-Reviewed-by: Matthew Auld <matthew.auld@intel.com>
+Signed-off-by: Brian Welty <brian.welty@intel.com>
 Signed-off-by: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
 ---
- tests/i915/gem_lmem_swapping.c | 134 ++++++++++++++++++++++++++++++++-
- 1 file changed, 133 insertions(+), 1 deletion(-)
+ tests/i915/i915_vm_bind_capture.c | 445 ++++++++++++++++++++++++++++++
+ tests/meson.build                 |   1 +
+ 2 files changed, 446 insertions(+)
+ create mode 100644 tests/i915/i915_vm_bind_capture.c
 
-diff --git a/tests/i915/gem_lmem_swapping.c b/tests/i915/gem_lmem_swapping.c
-index 969fb9080..7d009c853 100644
---- a/tests/i915/gem_lmem_swapping.c
-+++ b/tests/i915/gem_lmem_swapping.c
-@@ -3,12 +3,16 @@
-  * Copyright © 2021 Intel Corporation
-  */
- 
-+#include <poll.h>
+diff --git a/tests/i915/i915_vm_bind_capture.c b/tests/i915/i915_vm_bind_capture.c
+new file mode 100644
+index 000000000..f82f53b96
+--- /dev/null
++++ b/tests/i915/i915_vm_bind_capture.c
+@@ -0,0 +1,445 @@
++// SPDX-License-Identifier: MIT
++/*
++ * Copyright(c) 2022 Intel Corporation. All rights reserved.
++ */
 +
- #include "i915/gem.h"
- #include "i915/gem_create.h"
- #include "i915/gem_vm.h"
- #include "i915/intel_memory_region.h"
++/** @file gem_vm_bind_capture.c
++ *
++ * This is the test for dump capture of VM_BIND mappings.
++ *
++ * The goal is to simply ensure that capture of persistent mappings
++ * works. This test in part is derived from gem_exec_capture.c
++ */
++
++#include <sys/poll.h>
++#include <zlib.h>
++#include <sched.h>
++
++#include "i915/gem.h"
++#include "i915/gem_create.h"
++#include "i915/gem_vm.h"
 +#include "i915/i915_vm_bind.h"
- #include "igt.h"
- #include "igt_kmod.h"
++#include "igt.h"
++#include "igt_device.h"
 +#include "igt_syncobj.h"
- #include <unistd.h>
- #include <stdlib.h>
- #include <stdint.h>
-@@ -54,6 +58,7 @@ struct params {
- 		uint64_t max;
- 	} size;
- 	unsigned int count;
-+	unsigned int vm_bind_count;
- 	unsigned int loops;
- 	unsigned int mem_limit;
- #define TEST_VERIFY	(1 << 0)
-@@ -64,15 +69,18 @@ struct params {
- #define TEST_MULTI	(1 << 5)
- #define TEST_CCS	(1 << 6)
- #define TEST_MASSIVE	(1 << 7)
-+#define TEST_VM_BIND	(1 << 8)
- 	unsigned int flags;
- 	unsigned int seed;
- 	bool oom_test;
-+	uint64_t va;
- };
- 
- struct object {
- 	uint64_t size;
- 	uint32_t seed;
- 	uint32_t handle;
-+	uint64_t va;
- 	struct blt_copy_object *blt_obj;
- };
- 
-@@ -278,6 +286,86 @@ verify_object_ccs(int i915, const struct object *obj,
- 	free(cmd);
- }
- 
-+#define BATCH_VA       0xa00000
++#include "igt_sysfs.h"
++#include "igt_types.h"
++#include "intel_ctx.h"
 +
-+static uint64_t gettime_ns(void)
++
++#define PAGE_SIZE   4096
++
++#define NUM_OBJS  3
++#define NUM_MAPS  4
++#define BATCH_VA  0x8000000
++
++IGT_TEST_DESCRIPTION("Check that we capture the user specified persistent mappings on a hang");
++
++struct mappings {
++	uint32_t  obj;
++	uint64_t  va;
++	uint64_t  offset;
++	uint64_t  length;
++
++	uint32_t  idx;
++	uint32_t  expect;
++	bool      found;
++};
++
++static unsigned long zlib_inflate(uint32_t **ptr, unsigned long len)
++{
++	struct z_stream_s zstream;
++	void *out;
++
++	memset(&zstream, 0, sizeof(zstream));
++
++	zstream.next_in = (unsigned char *)*ptr;
++	zstream.avail_in = 4*len;
++
++	if (inflateInit(&zstream) != Z_OK)
++		return 0;
++
++	out = malloc(128*4096); /* approximate obj size */
++	zstream.next_out = out;
++	zstream.avail_out = 128*4096;
++
++	do {
++		switch (inflate(&zstream, Z_SYNC_FLUSH)) {
++		case Z_STREAM_END:
++			goto end;
++		case Z_OK:
++			break;
++		default:
++			inflateEnd(&zstream);
++			return 0;
++		}
++
++		if (zstream.avail_out)
++			break;
++
++		out = realloc(out, 2*zstream.total_out);
++		if (out == NULL) {
++			inflateEnd(&zstream);
++			return 0;
++		}
++
++		zstream.next_out = (unsigned char *)out + zstream.total_out;
++		zstream.avail_out = zstream.total_out;
++	} while (1);
++end:
++	inflateEnd(&zstream);
++	free(*ptr);
++	*ptr = out;
++	return zstream.total_out / 4;
++}
++
++static unsigned long
++ascii85_decode(char *in, uint32_t **out, bool inflate, char **end)
++{
++	unsigned long len = 0, size = 1024;
++
++	*out = realloc(*out, sizeof(uint32_t)*size);
++	if (*out == NULL)
++		return 0;
++
++	while (*in >= '!' && *in <= 'z') {
++		uint32_t v = 0;
++
++		if (len == size) {
++			size *= 2;
++			*out = realloc(*out, sizeof(uint32_t)*size);
++			if (*out == NULL)
++				return 0;
++		}
++
++		if (*in == 'z') {
++			in++;
++		} else {
++			v += in[0] - 33; v *= 85;
++			v += in[1] - 33; v *= 85;
++			v += in[2] - 33; v *= 85;
++			v += in[3] - 33; v *= 85;
++			v += in[4] - 33;
++			in += 5;
++		}
++		(*out)[len++] = v;
++	}
++	*end = in;
++
++	if (!inflate)
++		return len;
++
++	return zlib_inflate(out, len);
++}
++
++static int check_error_state(int dir, struct mappings *map, uint32_t num_maps)
++{
++	char *error, *str;
++	int blobs = 0;
++
++	errno = 0;
++	error = igt_sysfs_get(dir, "error");
++	igt_sysfs_set(dir, "error", "Begone!");
++	igt_assert(error);
++	igt_assert(errno != ENOMEM);
++	igt_debug("%s\n", error);
++
++	/* render ring --- user = 0x00000000 ffffd000 */
++	for (str = error; (str = strstr(str, "--- user = ")); ) {
++		uint32_t *data = NULL;
++		uint64_t addr;
++		unsigned long i, j, sz;
++		unsigned long start;
++		unsigned long end;
++
++		if (strncmp(str, "--- user = 0x", 13))
++			break;
++		str += 13;
++		addr = strtoul(str, &str, 16);
++		addr <<= 32;
++		addr |= strtoul(str + 1, &str, 16);
++		igt_assert(*str++ == '\n');
++
++		start = 0;
++		end = num_maps;
++		while (end > start) {
++			i = (end - start) / 2 + start;
++			if (map[i].va < addr)
++				start = i + 1;
++			else if (map[i].va > addr)
++				end = i;
++			else
++				break;
++		}
++
++		igt_assert(map[i].va == addr);
++		igt_assert(!map[i].found);
++		map[i].found = true;
++		igt_debug("offset:%"PRIx64", index:%d\n",
++			  addr, map[i].idx);
++
++		/* gtt_page_sizes = 0x00010000 */
++		if (strncmp(str, "gtt_page_sizes = 0x", 19) == 0) {
++			str += 19 + 8;
++			igt_assert(*str++ == '\n');
++		}
++
++		if (!(*str == ':' || *str == '~'))
++			continue;
++
++		igt_debug("blob:%.64s\n", str);
++		sz = ascii85_decode(str + 1, &data, *str == ':', &str);
++		igt_debug("Found addr 0x%lx sz 0x%lx\n", addr, sz);
++		igt_assert_eq(4 * sz, map[i].length);
++		igt_assert(*str++ == '\n');
++		str = strchr(str, '-');
++
++		for (j = 0; j < sz; j++)
++			igt_assert_eq(data[j], map[i].expect + j);
++
++		blobs++;
++		free(data);
++	}
++
++	free(error);
++	return blobs;
++}
++
++static int gem_recurse(uint32_t *batch, uint64_t batch_va)
++{
++	*batch++ = MI_BATCH_BUFFER_START | 1 << 8 | 1;
++	*batch++ = lower_32_bits(batch_va);
++	*batch++ = upper_32_bits(batch_va);
++	*batch = 0;
++
++	return 4 * sizeof(uint32_t);
++}
++
++static struct gem_engine_properties
++configure_hangs(int fd, const struct intel_execution_engine2 *e, int ctx_id)
++{
++	struct gem_engine_properties props;
++
++	/* Ensure fast hang detection */
++	props.engine = e;
++	props.preempt_timeout = 250;
++	props.heartbeat_interval = 500;
++	gem_engine_properties_configure(fd, &props);
++
++	/* Allow engine based resets and disable banning */
++	igt_allow_hang(fd, ctx_id, HANG_ALLOW_CAPTURE | HANG_WANT_ENGINE_RESET);
++
++	return props;
++}
++
++static uint64_t
++gettime_ns(void)
 +{
 +	struct timespec current;
 +	clock_gettime(CLOCK_MONOTONIC, &current);
 +	return (uint64_t)current.tv_sec * NSEC_PER_SEC + current.tv_nsec;
 +}
 +
-+static void vm_bind(int i915, struct object *list, unsigned int num, uint64_t *va,
-+		    uint32_t batch, uint64_t batch_size, uint32_t vm_id)
++static void gem_reset(int fd, int dir, uint32_t ctx_id, uint32_t batch,
++		      uint64_t batch_va, struct intel_execution_engine2 *e)
 +{
-+	uint32_t *bind_syncobj;
-+	uint64_t *fence_value;
-+	unsigned int i;
++	struct drm_i915_gem_timeline_fence exec_fence = { };
++	struct drm_i915_gem_execbuffer3 execbuf = { };
++	uint64_t fence_value = 0;
++	uint32_t exec_syncobj;
++	uint32_t buf[20], len;
 +
-+	bind_syncobj = calloc(num + 1, sizeof(*bind_syncobj));
-+	igt_assert(bind_syncobj);
++	len = gem_recurse(buf, batch_va);
++	gem_write(fd, batch, 0, buf, len);
 +
-+	fence_value = calloc(num + 1, sizeof(*fence_value));
-+	igt_assert(fence_value);
++	execbuf.ctx_id = ctx_id;
++	execbuf.batch_address = batch_va;
++	execbuf.engine_idx = e->flags;
++	execbuf.fence_count = 1;
++	execbuf.timeline_fences = to_user_pointer(&exec_fence);
 +
-+	for (i = 0; i < num; i++) {
-+		list[i].va = *va;
-+		bind_syncobj[i] = syncobj_create(i915, 0);
-+		i915_vm_bind(i915, vm_id, *va, list[i].handle, 0, list[i].size, 0, bind_syncobj[i], 0);
-+		*va += list[i].size;
-+	}
-+	bind_syncobj[i] = syncobj_create(i915, 0);
-+	i915_vm_bind(i915, vm_id, BATCH_VA, batch, 0, batch_size, 0, bind_syncobj[i], 0);
++	exec_syncobj = syncobj_create(fd, 0);
++	exec_fence.handle = exec_syncobj;
++	exec_fence.flags = I915_TIMELINE_FENCE_SIGNAL;
 +
-+	igt_assert(syncobj_timeline_wait(i915, bind_syncobj, fence_value, num + 1,
++	gem_execbuf3(fd, &execbuf);
++
++	igt_assert(syncobj_timeline_wait(fd, &exec_syncobj, &fence_value, 1,
 +					 gettime_ns() + (2 * NSEC_PER_SEC),
 +					 DRM_SYNCOBJ_WAIT_FLAGS_WAIT_FOR_SUBMIT, NULL));
-+	for (i = 0; i <= num; i++)
-+		syncobj_destroy(i915, bind_syncobj[i]);
++	syncobj_destroy(fd, exec_syncobj);
 +}
 +
-+static void vm_unbind(int i915, struct object *list, unsigned int num,
-+		      uint64_t batch_size, uint32_t vm_id)
++static void set_map(struct mappings *m, uint32_t idx, uint32_t obj, uint64_t va,
++		    uint64_t offset, uint64_t length, uint32_t expect)
 +{
-+	unsigned int i;
-+
-+	i915_vm_unbind(i915, vm_id, BATCH_VA, batch_size);
-+	for (i = 0; i < num; i++)
-+		i915_vm_unbind(i915, vm_id, list[i].va, list[i].size);
++	m->idx = idx;
++	m->obj = obj;
++	m->va = va;
++	m->offset = offset;
++	m->length = length;
++	m->expect = expect;
++	igt_debug("Created mapping:0x%x - va 0x%lx handle %d offset 0x%lx length 0x%lx\n",
++		  m->idx, m->va, m->obj, m->offset, m->length);
 +}
 +
-+static void move_to_lmem_execbuf3(int i915,
-+				  const intel_ctx_t *ctx,
-+				  unsigned int engine,
-+				  bool do_oom_test)
++static uint32_t create_obj(int fd, struct gem_memory_region *mr, uint32_t size, void **addr)
 +{
-+	uint32_t exec_syncobj = syncobj_create(i915, 0);
-+	struct drm_i915_gem_timeline_fence exec_fence = {
-+		.handle = exec_syncobj,
-+		.flags = I915_TIMELINE_FENCE_SIGNAL
++	uint32_t handle;
++
++	if (!mr) {
++		igt_assert(posix_memalign(addr, PAGE_SIZE, size) == 0);
++		gem_userptr(fd, *addr, size, 0, 0, &handle);
++	} else {
++		handle = gem_create_in_memory_region_list(fd, size, 0, &mr->ci, 1);
++		*addr = gem_mmap__cpu(fd, handle, 0, size, PROT_WRITE);
++	}
++
++	return handle;
++}
++
++static void destroy_obj(int fd, uint32_t handle, uint32_t size, void *addr, bool is_userptr)
++{
++	if (!is_userptr)
++		igt_assert(gem_munmap(addr, size) == 0);
++
++	gem_close(fd, handle);
++
++	if (is_userptr)
++		free(addr);
++}
++
++static void run_vm_bind_capture(int fd, int dir, const intel_ctx_t *base_ctx,
++				struct gem_memory_region *mr,
++				struct intel_execution_engine2 *e)
++{
++	uint64_t obj_size = (mr ? mr->gtt_alignment : PAGE_SIZE) * 4;
++	struct mappings *m, map[NUM_MAPS * NUM_OBJS + 1] = { };
++	struct drm_i915_gem_context_param param = {
++		.param = I915_CONTEXT_PARAM_RECOVERABLE,
++		.value = 0,
 +	};
-+	struct drm_i915_gem_execbuffer3 eb = {
-+		.ctx_id = ctx->id,
-+		.batch_address = BATCH_VA,
-+		.engine_idx = engine,
-+		.fence_count = 1,
-+		.timeline_fences = to_user_pointer(&exec_fence),
-+	};
-+	uint64_t fence_value = 0;
++	struct gem_engine_properties saved_engine;
++	uint32_t i, obj[NUM_OBJS];
++	uint32_t *addr[NUM_OBJS];
++	const intel_ctx_t *ctx;
++	uint32_t vm_id, batch;
++
++	ctx = intel_ctx_create(fd, &base_ctx->cfg);
++	param.ctx_id = ctx->id;
++	gem_context_set_param(fd, &param);
++	vm_id = gem_vm_create_in_vm_bind_mode(fd);
++	gem_context_set_vm(fd, ctx->id, vm_id);
++
++	saved_engine = configure_hangs(fd, e, ctx->id);
++
++	/* Create objects and mappings */
++	batch = gem_create(fd, PAGE_SIZE);
++	for (i = 0, m = map; i < NUM_OBJS; i++) {
++		obj[i] = create_obj(fd, mr, obj_size, (void **)&addr[i]);
++
++		for (unsigned int n = 0; n < obj_size / sizeof(*addr[0]); n++)
++			addr[i][n] = (i << 24) + n;
++
++		/* Full bind */
++		set_map(m++, 0 + (i * NUM_MAPS), obj[i], 0xa000000 << i, 0, obj_size, (i << 24));
++		/* Full bind with alias VA */
++		set_map(m++, 1 + (i * NUM_MAPS), obj[i], 0xb000000 << i, 0, obj_size, (i << 24));
++		/* Partial bind */
++		set_map(m++, 2 + (i * NUM_MAPS), obj[i], 0xc000000 << i, 0, obj_size / 2, (i << 24));
++		/* Partial bind with offset */
++		set_map(m++, 3 + (i * NUM_MAPS), obj[i], 0xd000000 << i, obj_size / 2, obj_size / 2,
++			(i << 24) + (obj_size / 2) / sizeof(*addr[0]));
++	}
++	m->length = 0;
++
++	i915_vm_bind(fd, vm_id, BATCH_VA, batch, 0, PAGE_SIZE, 0, 0, 0);
++	/* Bind mappings with capture request */
++	for (m = map; m->length; m++)
++		i915_vm_bind(fd, vm_id, m->va, m->obj, m->offset, m->length,
++			     I915_GEM_VM_BIND_CAPTURE, 0, 0);
++
++	/* Cause reset and check the dump */
++	gem_reset(fd, dir, ctx->id, batch, BATCH_VA, e);
++	igt_assert_eq(check_error_state(dir, map, NUM_OBJS * NUM_MAPS), NUM_OBJS * NUM_MAPS);
++
++	for (m = map; m->length; m++)
++		i915_vm_unbind(fd, vm_id, m->va, m->length);
++	i915_vm_unbind(fd, vm_id, BATCH_VA, PAGE_SIZE);
++
++	gem_close(fd, batch);
++	for (i = 0; i < NUM_OBJS; i++)
++		destroy_obj(fd, obj[i], obj_size, (void *)addr[i], !mr);
++
++	gem_engine_properties_restore(fd, &saved_engine);
++
++	gem_vm_destroy(fd, vm_id);
++	intel_ctx_destroy(fd, ctx);
++}
++
++static int has_userptr(int fd)
++{
++	uint32_t handle = 0;
++	void *ptr;
 +	int ret;
 +
-+retry:
-+	ret = __gem_execbuf3(i915, &eb);
-+	if (do_oom_test && (ret == -ENOMEM || ret == -ENXIO))
-+		goto retry;
-+	igt_assert_eq(ret, 0);
++	assert(posix_memalign(&ptr, PAGE_SIZE, PAGE_SIZE) == 0);
++	ret = __gem_userptr(fd, ptr, PAGE_SIZE, 0, 0, &handle);
++	if (ret != 0) {
++		free(ptr);
++		return 0;
++	}
 +
-+	igt_assert(syncobj_timeline_wait(i915, &exec_syncobj, &fence_value, 1,
-+					 gettime_ns() + (2 * NSEC_PER_SEC),
-+					 DRM_SYNCOBJ_WAIT_FLAGS_WAIT_FOR_SUBMIT, NULL));
-+	syncobj_destroy(i915, exec_syncobj);
++	gem_close(fd, handle);
++	free(ptr);
++
++	return handle != 0;
 +}
 +
- static void move_to_lmem(int i915,
- 			 const intel_ctx_t *ctx,
- 			 struct object *list,
-@@ -325,14 +413,16 @@ static void __do_evict(int i915,
- 	uint32_t region_id = INTEL_MEMORY_REGION_ID(region->memory_class,
- 						    region->memory_instance);
- 	const unsigned int max_swap_in = params->count / 100 + 1;
-+	uint64_t size, ahnd, batch_size = SZ_64K;
- 	struct object *objects, *obj, *list;
- 	const uint32_t bpp = 32;
- 	uint32_t width, height, stride;
-+	const intel_ctx_t *vm_bind_ctx;
- 	const intel_ctx_t *blt_ctx;
- 	struct blt_copy_object *tmp;
- 	unsigned int engine = 0;
-+	uint32_t batch, vm_id;
- 	unsigned int i, l;
--	uint64_t size, ahnd;
- 	struct timespec t = {};
- 	unsigned int num;
- 
-@@ -416,6 +506,26 @@ static void __do_evict(int i915,
- 		  readable_size(params->size.max), readable_unit(params->size.max),
- 		  params->count, seed);
- 
-+	/* VM_BIND the specified subset of objects (as persistent mappings) */
-+	if (params->flags & TEST_VM_BIND) {
-+		const uint32_t bbe = MI_BATCH_BUFFER_END;
-+		struct drm_i915_gem_context_param param = {
-+			.param = I915_CONTEXT_PARAM_RECOVERABLE,
-+			.value = 0,
-+		};
++static size_t safer_strlen(const char *s)
++{
++	return s ? strlen(s) : 0;
++}
 +
-+		batch = gem_create_from_pool(i915, &batch_size, region_id);
-+		gem_write(i915, batch, 0, &bbe, sizeof(bbe));
++igt_main
++{
++	struct intel_execution_engine2 *e;
++	const intel_ctx_t *ctx = NULL;
++	igt_fd_t(dir);
++	igt_fd_t(fd);
 +
-+		vm_id = gem_vm_create_in_vm_bind_mode(i915);
-+		vm_bind_ctx = intel_ctx_create(i915, &ctx->cfg);
-+		param.ctx_id = vm_bind_ctx->id;
-+		gem_context_set_param(i915, &param);
-+		gem_context_set_vm(i915, vm_bind_ctx->id, vm_id);
-+		vm_bind(i915, objects, params->vm_bind_count, &params->va,
-+			batch, batch_size, vm_id);
++	igt_fixture {
++		fd = drm_open_driver(DRIVER_INTEL);
++		igt_require_gem(fd);
++		igt_allow_hang(fd, 0, HANG_ALLOW_CAPTURE | HANG_WANT_ENGINE_RESET);
++
++		dir = igt_sysfs_open(fd);
++		igt_require(igt_sysfs_set(dir, "error", "Begone!"));
++		igt_require(safer_strlen(igt_sysfs_get(dir, "error")) > 0);
++		ctx = intel_ctx_create_all_physical(fd);
 +	}
 +
- 	/*
- 	 * Move random objects back into lmem.
- 	 * For TEST_MULTI runs, make each object counts a loop to
-@@ -454,6 +564,15 @@ static void __do_evict(int i915,
- 		}
- 	}
- 
-+	/* Rebind persistent mappings to ensure they are swapped back in */
-+	if (params->flags & TEST_VM_BIND) {
-+		move_to_lmem_execbuf3(i915, vm_bind_ctx, engine, params->oom_test);
++	igt_describe("Basic vm_bind capture test");
++	igt_subtest_with_dynamic("basic") {
++		for_each_ctx_engine(fd, ctx, e) {
 +
-+		vm_unbind(i915, objects, params->vm_bind_count, batch_size, vm_id);
-+		intel_ctx_destroy(i915, vm_bind_ctx);
-+		gem_vm_destroy(i915, vm_id);
++			for_each_memory_region(r, fd) {
++				if (r->ci.memory_instance)
++					continue;
++
++				igt_dynamic_f("%s-%s", e->name, r->name)
++					run_vm_bind_capture(fd, dir, ctx, r, e);
++			}
++
++			if (has_userptr(fd)) {
++				/* Use NULL memory region for userptr */
++				igt_dynamic_f("%s-userptr", e->name)
++					run_vm_bind_capture(fd, dir, ctx, NULL, e);
++			}
++		}
 +	}
 +
- 	for (i = 0; i < params->count; i++) {
- 		gem_close(i915, objects[i].handle);
- 		free(objects[i].blt_obj);
-@@ -553,6 +672,15 @@ static void fill_params(int i915, struct params *params,
- 	if (flags & TEST_HEAVY)
- 		params->loops = params->loops / 2 + 1;
- 
-+	/*
-+	 * Set vm_bind_count and ensure it doesn't over-subscribe LMEM.
-+	 * Set va range to ensure it is big enough for all bindings in a VM.
-+	 */
-+	if (flags & TEST_VM_BIND) {
-+		params->vm_bind_count = params->count / 3;
-+		params->va = (uint64_t)params->vm_bind_count * size * 4;
++	igt_fixture {
++		intel_ctx_destroy(fd, ctx);
 +	}
-+
- 	params->flags = flags;
- 	params->oom_test = do_oom_test;
- 
-@@ -583,6 +711,9 @@ static void test_evict(int i915,
- 	if (flags & TEST_CCS)
- 		igt_require(IS_DG2(intel_get_drm_devid(i915)));
- 
-+	if (flags & TEST_VM_BIND)
-+		igt_require(i915_vm_bind_version(i915) == 1);
-+
- 	fill_params(i915, &params, region, flags, nproc, false);
- 
- 	if (flags & TEST_PARALLEL) {
-@@ -764,6 +895,7 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
- 		{ "heavy-verify-random-ccs", TEST_CCS | TEST_RANDOM | TEST_HEAVY },
- 		{ "heavy-verify-multi-ccs", TEST_CCS | TEST_RANDOM | TEST_HEAVY | TEST_ENGINES | TEST_MULTI },
- 		{ "parallel-random-verify-ccs", TEST_PARALLEL | TEST_RANDOM | TEST_CCS },
-+		{ "vm_bind", TEST_VM_BIND },
- 		{ }
- 	};
- 	const intel_ctx_t *ctx;
++}
+diff --git a/tests/meson.build b/tests/meson.build
+index 395c88a7d..ea282654c 100644
+--- a/tests/meson.build
++++ b/tests/meson.build
+@@ -229,6 +229,7 @@ i915_progs = [
+ 	'i915_suspend',
+ 	'i915_vm_bind_basic',
+ 	'i915_vm_bind_sanity',
++        'i915_vm_bind_capture',
+ 	'kms_big_fb',
+ 	'kms_big_joiner' ,
+ 	'kms_busy',
 -- 
 2.21.0.rc0.32.g243a4c7e27
