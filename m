@@ -1,15 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 71B0510E172
- for <igt-dev@lists.freedesktop.org>; Tue, 29 Nov 2022 18:41:08 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3DF0410E172
+ for <igt-dev@lists.freedesktop.org>; Tue, 29 Nov 2022 18:41:09 +0000 (UTC)
 From: =?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 29 Nov 2022 15:40:31 -0300
-Message-Id: <20221129184038.72946-1-mcanal@igalia.com>
+Date: Tue, 29 Nov 2022 15:40:32 -0300
+Message-Id: <20221129184038.72946-2-mcanal@igalia.com>
+In-Reply-To: <20221129184038.72946-1-mcanal@igalia.com>
+References: <20221129184038.72946-1-mcanal@igalia.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v3 0/7] V3D IGT Tests Updates
+Subject: [igt-dev] [PATCH i-g-t v3 1/7] include/drm-uapi: Update to the
+ latest v3d_drm.h
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,52 +25,138 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-This series aims to update the V3D IGT tests. The first five patches contain
-some janitorial duties related to the existing tests: updating the uAPI header,
-creating a folder for the V3D tests, removing some unused includes, adding 
-descriptions to the existing tests and adding a macro with the default PAGE_SIZE.
-The last two patches include new tests for the V3D driver.
+Update to the latest master version of the DRM UAPI header file from
+git://anongit.freedesktop.org/drm/drm-misc:
+    a108772d03d8 Merge drm/drm-next into drm-misc-next
 
-Best Regards,
-- Maíra Canal
+Reviewed-by: Melissa Wen <mwen@igalia.com>
+Signed-off-by: Maíra Canal <mcanal@igalia.com>
+---
+ include/drm-uapi/v3d_drm.h | 78 ++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 78 insertions(+)
 
-v1 -> v2:
-- Use SPDX licence (Kamil Konieczny).
-- Add descriptions to each new added test with igt_describe (Kamil Konieczny).
-- Add descriptions to existing V3D tests.
-
-v2 -> v3:
-- Install V3D tests on build/tests/v3d/ instead of build/tests/ (Melissa Wen).
-- Include a subtest for no-flags validation on v3d_create_bo (Melissa Wen).
-
-Maíra Canal (7):
-  include/drm-uapi: Update to the latest v3d_drm.h
-  tests/v3d: Move V3D tests to their own folder
-  tests/v3d: Remove unused or redundant includes
-  tests/v3d: Add igt_describe() to all V3D subtests
-  lib/igt_v3d: Add PAGE_SIZE macro to V3D
-  tests/v3d_create_bo: Create test for V3D's Create BO IOCTL
-  tests/v3d_perfmon: Create test for V3D's Perfmon IOCTLs
-
- include/drm-uapi/v3d_drm.h          |  78 +++++++++++++++
- lib/igt_v3d.c                       |  39 +++++++-
- lib/igt_v3d.h                       |   6 ++
- meson.build                         |   8 ++
- tests/meson.build                   |   5 +-
- tests/v3d/meson.build               |  16 ++++
- tests/v3d/v3d_create_bo.c           |  71 ++++++++++++++
- tests/{ => v3d}/v3d_get_bo_offset.c |  21 ++--
- tests/{ => v3d}/v3d_get_param.c     |  17 +---
- tests/{ => v3d}/v3d_mmap.c          |  15 +--
- tests/v3d/v3d_perfmon.c             | 144 ++++++++++++++++++++++++++++
- tests/v3d_ci/v3d.testlist           |  27 ++++--
- 12 files changed, 397 insertions(+), 50 deletions(-)
- create mode 100644 tests/v3d/meson.build
- create mode 100644 tests/v3d/v3d_create_bo.c
- rename tests/{ => v3d}/v3d_get_bo_offset.c (85%)
- rename tests/{ => v3d}/v3d_get_param.c (88%)
- rename tests/{ => v3d}/v3d_mmap.c (85%)
- create mode 100644 tests/v3d/v3d_perfmon.c
-
+diff --git a/include/drm-uapi/v3d_drm.h b/include/drm-uapi/v3d_drm.h
+index 4104f22f..3dfc0af8 100644
+--- a/include/drm-uapi/v3d_drm.h
++++ b/include/drm-uapi/v3d_drm.h
+@@ -58,6 +58,67 @@ extern "C" {
+ 						   struct drm_v3d_perfmon_get_values)
+ 
+ #define DRM_V3D_SUBMIT_CL_FLUSH_CACHE             0x01
++#define DRM_V3D_SUBMIT_EXTENSION		  0x02
++
++/* struct drm_v3d_extension - ioctl extensions
++ *
++ * Linked-list of generic extensions where the id identify which struct is
++ * pointed by ext_data. Therefore, DRM_V3D_EXT_ID_* is used on id to identify
++ * the extension type.
++ */
++struct drm_v3d_extension {
++	__u64 next;
++	__u32 id;
++#define DRM_V3D_EXT_ID_MULTI_SYNC		0x01
++	__u32 flags; /* mbz */
++};
++
++/* struct drm_v3d_sem - wait/signal semaphore
++ *
++ * If binary semaphore, it only takes syncobj handle and ignores flags and
++ * point fields. Point is defined for timeline syncobj feature.
++ */
++struct drm_v3d_sem {
++	__u32 handle; /* syncobj */
++	/* rsv below, for future uses */
++	__u32 flags;
++	__u64 point;  /* for timeline sem support */
++	__u64 mbz[2]; /* must be zero, rsv */
++};
++
++/* Enum for each of the V3D queues. */
++enum v3d_queue {
++	V3D_BIN,
++	V3D_RENDER,
++	V3D_TFU,
++	V3D_CSD,
++	V3D_CACHE_CLEAN,
++};
++
++/**
++ * struct drm_v3d_multi_sync - ioctl extension to add support multiples
++ * syncobjs for commands submission.
++ *
++ * When an extension of DRM_V3D_EXT_ID_MULTI_SYNC id is defined, it points to
++ * this extension to define wait and signal dependencies, instead of single
++ * in/out sync entries on submitting commands. The field flags is used to
++ * determine the stage to set wait dependencies.
++ */
++struct drm_v3d_multi_sync {
++	struct drm_v3d_extension base;
++	/* Array of wait and signal semaphores */
++	__u64 in_syncs;
++	__u64 out_syncs;
++
++	/* Number of entries */
++	__u32 in_sync_count;
++	__u32 out_sync_count;
++
++	/* set the stage (v3d_queue) to sync */
++	__u32 wait_stage;
++
++	__u32 pad; /* mbz */
++};
+ 
+ /**
+  * struct drm_v3d_submit_cl - ioctl argument for submitting commands to the 3D
+@@ -135,12 +196,16 @@ struct drm_v3d_submit_cl {
+ 	/* Number of BO handles passed in (size is that times 4). */
+ 	__u32 bo_handle_count;
+ 
++	/* DRM_V3D_SUBMIT_* properties */
+ 	__u32 flags;
+ 
+ 	/* ID of the perfmon to attach to this job. 0 means no perfmon. */
+ 	__u32 perfmon_id;
+ 
+ 	__u32 pad;
++
++	/* Pointer to an array of ioctl extensions*/
++	__u64 extensions;
+ };
+ 
+ /**
+@@ -210,6 +275,7 @@ enum drm_v3d_param {
+ 	DRM_V3D_PARAM_SUPPORTS_CSD,
+ 	DRM_V3D_PARAM_SUPPORTS_CACHE_FLUSH,
+ 	DRM_V3D_PARAM_SUPPORTS_PERFMON,
++	DRM_V3D_PARAM_SUPPORTS_MULTISYNC_EXT,
+ };
+ 
+ struct drm_v3d_get_param {
+@@ -248,6 +314,11 @@ struct drm_v3d_submit_tfu {
+ 	__u32 in_sync;
+ 	/* Sync object to signal when the TFU job is done. */
+ 	__u32 out_sync;
++
++	__u32 flags;
++
++	/* Pointer to an array of ioctl extensions*/
++	__u64 extensions;
+ };
+ 
+ /* Submits a compute shader for dispatch.  This job will block on any
+@@ -276,6 +347,13 @@ struct drm_v3d_submit_csd {
+ 
+ 	/* ID of the perfmon to attach to this job. 0 means no perfmon. */
+ 	__u32 perfmon_id;
++
++	/* Pointer to an array of ioctl extensions*/
++	__u64 extensions;
++
++	__u32 flags;
++
++	__u32 pad;
+ };
+ 
+ enum {
 -- 
 2.38.1
