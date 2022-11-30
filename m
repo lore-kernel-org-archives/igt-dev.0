@@ -1,17 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 91CE410E421
- for <igt-dev@lists.freedesktop.org>; Wed, 30 Nov 2022 08:43:50 +0000 (UTC)
-Date: Wed, 30 Nov 2022 09:43:45 +0100
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Message-ID: <Y4cXwayr5QBmlGW8@kamilkon-desk1>
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DE5AE10E41C
+ for <igt-dev@lists.freedesktop.org>; Wed, 30 Nov 2022 08:46:31 +0000 (UTC)
+From: "Gupta, Anshuman" <anshuman.gupta@intel.com>
+To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+Date: Wed, 30 Nov 2022 08:46:28 +0000
+Message-ID: <CY5PR11MB6211EBB4B4CEACAF6AF3BA8D95159@CY5PR11MB6211.namprd11.prod.outlook.com>
 References: <20221123085441.2821638-1-anshuman.gupta@intel.com>
  <20221123085441.2821638-4-anshuman.gupta@intel.com>
+ <Y4cXwayr5QBmlGW8@kamilkon-desk1>
+In-Reply-To: <Y4cXwayr5QBmlGW8@kamilkon-desk1>
+Content-Language: en-US
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20221123085441.2821638-4-anshuman.gupta@intel.com>
 Subject: Re: [igt-dev] [PATCH i-g-t v3 3/5] lib/igt_pm: Refactor get
  firmware_node fd
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
@@ -21,104 +24,70 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: badal.nilawar@intel.com, rodrigo.vivi@intel.com
+Cc: "Nilawar, Badal" <badal.nilawar@intel.com>, "Vivi,
+ Rodrigo" <rodrigo.vivi@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Anshuman,
-
-one small nit, see below.
-
-On 2022-11-23 at 14:24:39 +0530, Anshuman Gupta wrote:
-> Created igt_pm_open_pci_firmware_node() to refactor
-> the retrieving the firmware_node fd code.
-> 
-> igt_pm_open_pci_firmware_node() will be used by other
-> firmware_node consumers.
-> 
-> While doing that fixed the leaked fd as well.
-> 
-> v2:
-> - return false instead of igt_require on no firmware_node_fd. [Kamil]
-> - use igt_assert() when failed to open 'real_power_state' on error
->   other then ENONET.
-> 
-> Signed-off-by: Anshuman Gupta <anshuman.gupta@intel.com>
-> Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-> ---
->  lib/igt_pm.c | 36 +++++++++++++++++++++++++-----------
->  1 file changed, 25 insertions(+), 11 deletions(-)
-> 
-> diff --git a/lib/igt_pm.c b/lib/igt_pm.c
-> index 1e6e9ed3ff..4f0cfbdd10 100644
-> --- a/lib/igt_pm.c
-> +++ b/lib/igt_pm.c
-> @@ -863,6 +863,20 @@ bool i915_output_is_lpsp_capable(int drm_fd, igt_output_t *output)
->  	return strstr(buf, "LPSP: capable");
->  }
->  
-> +static int igt_pm_open_pci_firmware_node(struct pci_device *pci_dev)
-> +{
-> +	char name[PATH_MAX];
-> +	int dir;
-> +
-> +	snprintf(name, PATH_MAX,
-> +		 "/sys/bus/pci/devices/%04x:%02x:%02x.%01x/firmware_node",
-> +		 pci_dev->domain, pci_dev->bus, pci_dev->dev, pci_dev->func);
-> +
-> +	dir = open(name, O_RDONLY);
-> +
-> +	return dir;
-> +}
-> +
->  /**
->   * igt_pm_acpi_d3cold_supported:
->   * @pci_dev: root port pci_dev.
-> @@ -873,23 +887,23 @@ bool i915_output_is_lpsp_capable(int drm_fd, igt_output_t *output)
->   */
->  bool igt_pm_acpi_d3cold_supported(struct pci_device *pci_dev)
->  {
-> -	char name[PATH_MAX];
-> -	int dir, fd;
-> -
-> -	snprintf(name, PATH_MAX,
-> -		 "/sys/bus/pci/devices/%04x:%02x:%02x.%01x/firmware_node",
-> -		 pci_dev->domain, pci_dev->bus, pci_dev->dev, pci_dev->func);
-> +	int firmware_node_fd, fd;
->  
-> -	dir = open(name, O_RDONLY);
-> -	igt_require(dir > 0);
-> +	firmware_node_fd = igt_pm_open_pci_firmware_node(pci_dev);
-> +	if (firmware_node_fd < 0)
-> +		return false;
->  
->  	/* BIOS need to enable ACPI D3Cold Support.*/
-> -	fd = openat(dir, "real_power_state", O_RDONLY);
-> -	if (fd < 0 && errno == ENOENT)
-> +	fd = openat(firmware_node_fd, "real_power_state", O_RDONLY);
-> +	if (fd < 0 && errno == ENOENT) {
-> +		close(firmware_node_fd);
->  		return false;
-> +	}
->  
-> -	igt_require(fd > 0);
-> +	igt_assert(errno > 0);
-
-You want here no error, so
-	igt_assert(errno == 0);
-or better:
-	igt_assert_f(fd > 0, "failed to open real_power_state, errno=%d\n", errno);
-
-Regards,
-Kamil
-
->  
-> +	close(firmware_node_fd);
-> +	close(fd);
->  	return true;
->  }
->  
-> -- 
-> 2.25.1
-> 
+DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogS2FtaWwgS29uaWVjem55
+IDxrYW1pbC5rb25pZWN6bnlAbGludXguaW50ZWwuY29tPg0KPiBTZW50OiBXZWRuZXNkYXksIE5v
+dmVtYmVyIDMwLCAyMDIyIDI6MTQgUE0NCj4gVG86IGlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Au
+b3JnDQo+IENjOiBHdXB0YSwgQW5zaHVtYW4gPGFuc2h1bWFuLmd1cHRhQGludGVsLmNvbT47IFZp
+dmksIFJvZHJpZ28NCj4gPHJvZHJpZ28udml2aUBpbnRlbC5jb20+OyBrYW1pbC5rb25pZWN6bnlA
+bGludXguaW50ZWwuY29tOyBUYW5ndWR1LCBUaWxhaw0KPiA8dGlsYWsudGFuZ3VkdUBpbnRlbC5j
+b20+OyBOaWxhd2FyLCBCYWRhbCA8YmFkYWwubmlsYXdhckBpbnRlbC5jb20+Ow0KPiBJZGRhbXNl
+dHR5LCBBcmF2aW5kIDxhcmF2aW5kLmlkZGFtc2V0dHlAaW50ZWwuY29tPg0KPiBTdWJqZWN0OiBS
+ZTogW1BBVENIIGktZy10IHYzIDMvNV0gbGliL2lndF9wbTogUmVmYWN0b3IgZ2V0IGZpcm13YXJl
+X25vZGUgZmQNCj4gDQo+IEhpIEFuc2h1bWFuLA0KPiANCj4gb25lIHNtYWxsIG5pdCwgc2VlIGJl
+bG93Lg0KPiANCj4gT24gMjAyMi0xMS0yMyBhdCAxNDoyNDozOSArMDUzMCwgQW5zaHVtYW4gR3Vw
+dGEgd3JvdGU6DQo+ID4gQ3JlYXRlZCBpZ3RfcG1fb3Blbl9wY2lfZmlybXdhcmVfbm9kZSgpIHRv
+IHJlZmFjdG9yIHRoZSByZXRyaWV2aW5nIHRoZQ0KPiA+IGZpcm13YXJlX25vZGUgZmQgY29kZS4N
+Cj4gPg0KPiA+IGlndF9wbV9vcGVuX3BjaV9maXJtd2FyZV9ub2RlKCkgd2lsbCBiZSB1c2VkIGJ5
+IG90aGVyIGZpcm13YXJlX25vZGUNCj4gPiBjb25zdW1lcnMuDQo+ID4NCj4gPiBXaGlsZSBkb2lu
+ZyB0aGF0IGZpeGVkIHRoZSBsZWFrZWQgZmQgYXMgd2VsbC4NCj4gPg0KPiA+IHYyOg0KPiA+IC0g
+cmV0dXJuIGZhbHNlIGluc3RlYWQgb2YgaWd0X3JlcXVpcmUgb24gbm8gZmlybXdhcmVfbm9kZV9m
+ZC4gW0thbWlsXQ0KPiA+IC0gdXNlIGlndF9hc3NlcnQoKSB3aGVuIGZhaWxlZCB0byBvcGVuICdy
+ZWFsX3Bvd2VyX3N0YXRlJyBvbiBlcnJvcg0KPiA+ICAgb3RoZXIgdGhlbiBFTk9ORVQuDQo+ID4N
+Cj4gPiBTaWduZWQtb2ZmLWJ5OiBBbnNodW1hbiBHdXB0YSA8YW5zaHVtYW4uZ3VwdGFAaW50ZWwu
+Y29tPg0KPiA+IFJldmlld2VkLWJ5OiBSb2RyaWdvIFZpdmkgPHJvZHJpZ28udml2aUBpbnRlbC5j
+b20+DQo+ID4gLS0tDQo+ID4gIGxpYi9pZ3RfcG0uYyB8IDM2ICsrKysrKysrKysrKysrKysrKysr
+KysrKystLS0tLS0tLS0tLQ0KPiA+ICAxIGZpbGUgY2hhbmdlZCwgMjUgaW5zZXJ0aW9ucygrKSwg
+MTEgZGVsZXRpb25zKC0pDQo+ID4NCj4gPiBkaWZmIC0tZ2l0IGEvbGliL2lndF9wbS5jIGIvbGli
+L2lndF9wbS5jIGluZGV4IDFlNmU5ZWQzZmYuLjRmMGNmYmRkMTANCj4gPiAxMDA2NDQNCj4gPiAt
+LS0gYS9saWIvaWd0X3BtLmMNCj4gPiArKysgYi9saWIvaWd0X3BtLmMNCj4gPiBAQCAtODYzLDYg
+Kzg2MywyMCBAQCBib29sIGk5MTVfb3V0cHV0X2lzX2xwc3BfY2FwYWJsZShpbnQgZHJtX2ZkLA0K
+PiBpZ3Rfb3V0cHV0X3QgKm91dHB1dCkNCj4gPiAgCXJldHVybiBzdHJzdHIoYnVmLCAiTFBTUDog
+Y2FwYWJsZSIpOyAgfQ0KPiA+DQo+ID4gK3N0YXRpYyBpbnQgaWd0X3BtX29wZW5fcGNpX2Zpcm13
+YXJlX25vZGUoc3RydWN0IHBjaV9kZXZpY2UgKnBjaV9kZXYpDQo+ID4gK3sNCj4gPiArCWNoYXIg
+bmFtZVtQQVRIX01BWF07DQo+ID4gKwlpbnQgZGlyOw0KPiA+ICsNCj4gPiArCXNucHJpbnRmKG5h
+bWUsIFBBVEhfTUFYLA0KPiA+ICsNCj4gIi9zeXMvYnVzL3BjaS9kZXZpY2VzLyUwNHg6JTAyeDol
+MDJ4LiUwMXgvZmlybXdhcmVfbm9kZSIsDQo+ID4gKwkJIHBjaV9kZXYtPmRvbWFpbiwgcGNpX2Rl
+di0+YnVzLCBwY2lfZGV2LT5kZXYsIHBjaV9kZXYtDQo+ID5mdW5jKTsNCj4gPiArDQo+ID4gKwlk
+aXIgPSBvcGVuKG5hbWUsIE9fUkRPTkxZKTsNCj4gPiArDQo+ID4gKwlyZXR1cm4gZGlyOw0KPiA+
+ICt9DQo+ID4gKw0KPiA+ICAvKioNCj4gPiAgICogaWd0X3BtX2FjcGlfZDNjb2xkX3N1cHBvcnRl
+ZDoNCj4gPiAgICogQHBjaV9kZXY6IHJvb3QgcG9ydCBwY2lfZGV2Lg0KPiA+IEBAIC04NzMsMjMg
+Kzg4NywyMyBAQCBib29sIGk5MTVfb3V0cHV0X2lzX2xwc3BfY2FwYWJsZShpbnQgZHJtX2ZkLA0K
+PiBpZ3Rfb3V0cHV0X3QgKm91dHB1dCkNCj4gPiAgICovDQo+ID4gIGJvb2wgaWd0X3BtX2FjcGlf
+ZDNjb2xkX3N1cHBvcnRlZChzdHJ1Y3QgcGNpX2RldmljZSAqcGNpX2RldikgIHsNCj4gPiAtCWNo
+YXIgbmFtZVtQQVRIX01BWF07DQo+ID4gLQlpbnQgZGlyLCBmZDsNCj4gPiAtDQo+ID4gLQlzbnBy
+aW50ZihuYW1lLCBQQVRIX01BWCwNCj4gPiAtDQo+ICIvc3lzL2J1cy9wY2kvZGV2aWNlcy8lMDR4
+OiUwMng6JTAyeC4lMDF4L2Zpcm13YXJlX25vZGUiLA0KPiA+IC0JCSBwY2lfZGV2LT5kb21haW4s
+IHBjaV9kZXYtPmJ1cywgcGNpX2Rldi0+ZGV2LCBwY2lfZGV2LQ0KPiA+ZnVuYyk7DQo+ID4gKwlp
+bnQgZmlybXdhcmVfbm9kZV9mZCwgZmQ7DQo+ID4NCj4gPiAtCWRpciA9IG9wZW4obmFtZSwgT19S
+RE9OTFkpOw0KPiA+IC0JaWd0X3JlcXVpcmUoZGlyID4gMCk7DQo+ID4gKwlmaXJtd2FyZV9ub2Rl
+X2ZkID0gaWd0X3BtX29wZW5fcGNpX2Zpcm13YXJlX25vZGUocGNpX2Rldik7DQo+ID4gKwlpZiAo
+ZmlybXdhcmVfbm9kZV9mZCA8IDApDQo+ID4gKwkJcmV0dXJuIGZhbHNlOw0KPiA+DQo+ID4gIAkv
+KiBCSU9TIG5lZWQgdG8gZW5hYmxlIEFDUEkgRDNDb2xkIFN1cHBvcnQuKi8NCj4gPiAtCWZkID0g
+b3BlbmF0KGRpciwgInJlYWxfcG93ZXJfc3RhdGUiLCBPX1JET05MWSk7DQo+ID4gLQlpZiAoZmQg
+PCAwICYmIGVycm5vID09IEVOT0VOVCkNCj4gPiArCWZkID0gb3BlbmF0KGZpcm13YXJlX25vZGVf
+ZmQsICJyZWFsX3Bvd2VyX3N0YXRlIiwgT19SRE9OTFkpOw0KPiA+ICsJaWYgKGZkIDwgMCAmJiBl
+cnJubyA9PSBFTk9FTlQpIHsNCj4gPiArCQljbG9zZShmaXJtd2FyZV9ub2RlX2ZkKTsNCj4gPiAg
+CQlyZXR1cm4gZmFsc2U7DQo+ID4gKwl9DQo+ID4NCj4gPiAtCWlndF9yZXF1aXJlKGZkID4gMCk7
+DQo+ID4gKwlpZ3RfYXNzZXJ0KGVycm5vID4gMCk7DQo+IA0KPiBZb3Ugd2FudCBoZXJlIG5vIGVy
+cm9yLCBzbw0KPiAJaWd0X2Fzc2VydChlcnJubyA9PSAwKTsNCj4gb3IgYmV0dGVyOg0KPiAJaWd0
+X2Fzc2VydF9mKGZkID4gMCwgImZhaWxlZCB0byBvcGVuIHJlYWxfcG93ZXJfc3RhdGUsIGVycm5v
+PSVkXG4iLA0KPiBlcnJubyk7DQpUaGFua3MgZm9yIHBvaW50aW5nIGl0IG91dC4NCkkgd2lsbCBm
+aXggaXQuDQpCUiwNCkFuc2h1bWFuLg0KPiANCj4gUmVnYXJkcywNCj4gS2FtaWwNCj4gDQo+ID4N
+Cj4gPiArCWNsb3NlKGZpcm13YXJlX25vZGVfZmQpOw0KPiA+ICsJY2xvc2UoZmQpOw0KPiA+ICAJ
+cmV0dXJuIHRydWU7DQo+ID4gIH0NCj4gPg0KPiA+IC0tDQo+ID4gMi4yNS4xDQo+ID4NCg==
