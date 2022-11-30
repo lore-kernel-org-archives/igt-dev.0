@@ -1,19 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BDAA810E108
- for <igt-dev@lists.freedesktop.org>; Wed, 30 Nov 2022 17:16:19 +0000 (UTC)
-Date: Wed, 30 Nov 2022 19:16:15 +0200
-From: Ville =?iso-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
-To: Jani Nikula <jani.nikula@intel.com>
-Message-ID: <Y4eP3+uvLqsue2Zz@intel.com>
-References: <20221129131424.2096289-1-jani.nikula@intel.com>
+Received: from mail-qk1-x72e.google.com (mail-qk1-x72e.google.com
+ [IPv6:2607:f8b0:4864:20::72e])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 310E310E10F
+ for <igt-dev@lists.freedesktop.org>; Wed, 30 Nov 2022 17:42:25 +0000 (UTC)
+Received: by mail-qk1-x72e.google.com with SMTP id i9so12840972qkl.5
+ for <igt-dev@lists.freedesktop.org>; Wed, 30 Nov 2022 09:42:25 -0800 (PST)
+From: Mark Yacoub <markyacoub@chromium.org>
+To: igt-dev@lists.freedesktop.org
+Date: Wed, 30 Nov 2022 12:42:17 -0500
+Message-Id: <20221130174217.2261845-1-markyacoub@chromium.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20221129131424.2096289-1-jani.nikula@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t] tools/intel_vbt_decode: print debug-ish
- messages to stderr
+Subject: [igt-dev] [PATCH] igt_chameleon: Assert if there are no connected
+ ports
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,50 +20,40 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org
+Cc: robdclark@chromium.org, vsuley@google.com, petri.latvala@intel.com,
+ ihf@google.com, amstan@chromium.org, kalin@google.com, seanpaul@chromium.org,
+ matthewtlam@google.com, markyacoub@google.com, khaled.almahallawy@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Tue, Nov 29, 2022 at 03:14:24PM +0200, Jani Nikula wrote:
-> The tool outputs the decoded and somewhat nicely formatted VBT to
-> stdout, so debug style messages to stdout aren't a great fit. For
-> example:
-> 
-> BDB blocks present:
-> 	  1   2   9  10  12  20  27  40Generating LVDS data table pointers
->   41Generating LVDS data table pointers
->   42  43  44  46  51  52  53
-> 	 56  57  58 252 253 254
-> 
-> Print the debug message about data table pointers to stderr instead.
-> 
-> Fixes: ce4d30196d3c ("tools/intel_vbt_decode: Generate LVDS data table pointes if not provided")
-> Cc: Ville Syrjälä <ville.syrjala@linux.intel.com>
-> Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+[Why]
+The tests are meant to run on devices that have a chameleon connected.
+If autodiscovery finds no port, it means something is off and the DUT is
+not behaving well.
 
-Reviewed-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+[How]
+Add an assert if no port is mapped.
 
-> ---
->  tools/intel_vbt_decode.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/tools/intel_vbt_decode.c b/tools/intel_vbt_decode.c
-> index 94a910b5c107..8f707c1f822a 100644
-> --- a/tools/intel_vbt_decode.c
-> +++ b/tools/intel_vbt_decode.c
-> @@ -460,7 +460,7 @@ static struct bdb_block *find_section(const struct context *context, int section
->  
->  	data = find_raw_section(context, section_id);
->  	if (!data && section_id == BDB_LVDS_LFP_DATA_PTRS) {
-> -		printf("Generating LVDS data table pointers\n");
-> +		fprintf(stderr, "Generating LVDS data table pointers\n");
->  		temp_block = generate_lvds_data_ptrs(context);
->  		if (temp_block)
->  			data = temp_block + 3;
-> -- 
-> 2.34.1
+Signed-off-by: Mark Yacoub <markyacoub@chromium.org>
+---
+ lib/igt_chamelium.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
+diff --git a/lib/igt_chamelium.c b/lib/igt_chamelium.c
+index 79920de1..4e7a7a8f 100644
+--- a/lib/igt_chamelium.c
++++ b/lib/igt_chamelium.c
+@@ -2749,6 +2749,10 @@ unplug_port:
+ 	igt_debug("Auto-discovery took %fms and found %i connector(s)\n",
+ 		  (float)elapsed_ns / (1000 * 1000), chamelium->port_count);
+ 
++	igt_assert_f(
++		is_any_port_mapped,
++		"No port is mapped. We don't expect to have no connected connectors.\n");
++
+ 	return is_any_port_mapped;
+ }
+ 
 -- 
-Ville Syrjälä
-Intel
+2.38.1.584.g0f3c55d4c2-goog
