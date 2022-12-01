@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: text/plain; charset="utf-8"
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EDD0610E5E2
+ for <igt-dev@lists.freedesktop.org>; Thu,  1 Dec 2022 13:30:54 +0000 (UTC)
+From: Vikas Srivastava <vikas.srivastava@intel.com>
+To: igt-dev@lists.freedesktop.org,
+	kamil.konieczny@linux.intel.com
+Date: Thu,  1 Dec 2022 18:59:08 +0530
+Message-Id: <20221201132908.668499-1-vikas.srivastava@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Vikas Srivastava" <vikas.srivastava@intel.com>
-Date: Thu, 01 Dec 2022 13:08:58 -0000
-Message-ID: <166990013846.14637.5634421676403713643@emeril.freedesktop.org>
-References: <20221201124644.660870-1-vikas.srivastava@intel.com>
-In-Reply-To: <20221201124644.660870-1-vikas.srivastava@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJVSUxEOiBmYWlsdXJlIGZvciB0ZXN0?=
- =?utf-8?q?s/prime=5Fmmap=5Fcoherency=3A_Adding_blitter_copy_support_for_g?=
- =?utf-8?q?en12+_platforms?=
+Subject: [igt-dev] [PATCH i-g-t] tests/i915: Tests modified to use COPY
+ Command modification for gen12+ platforms
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,71 +18,123 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-== Series Details ==
+From: Arjun Melkaveri <arjun.melkaveri@intel.com>
 
-Series: tests/prime_mmap_coherency: Adding blitter copy support for gen12+ platforms
-URL   : https://patchwork.freedesktop.org/series/111532/
-State : failure
+gem_partial_pwrite_pread , gem_evict_everythig and gem_evict_alignment
+were using legacy command which is not supported on gen12+ platforms.
+Modified test to use XY_FAST_COPY_BLT.
 
-== Summary ==
+Signed-off-by: Arjun Melkaveri <arjun.melkaveri@intel.com>
+Signed-off-by: vikas srivastava <vikas.srivastava@intel.com>
+---
+ tests/i915/gem_evict_alignment.c      | 25 ++++++++++++++++---------
+ tests/i915/gem_evict_everything.c     | 25 ++++++++++++++++---------
+ tests/i915/gem_partial_pwrite_pread.c | 17 +++++++++++------
+ 3 files changed, 43 insertions(+), 24 deletions(-)
 
-IGT patchset build failed on latest successful build
-71bce31c26998d5d53cff3138049261fd6c4fbaf tests/v3d_perfmon: Create test for V3D's Perfmon IOCTLs
-
-      |                                 ^~~~
-In file included from ../../../usr/src/igt-gpu-tools/lib/intel_bufops.h:7,
-                 from ../../../usr/src/igt-gpu-tools/lib/igt_draw.h:28,
-                 from ../../../usr/src/igt-gpu-tools/lib/igt.h:33,
-                 from ../../../usr/src/igt-gpu-tools/tests/prime_mmap_coherency.c:33:
-../../../usr/src/igt-gpu-tools/lib/intel_batchbuffer.h:311:28: note: expected ‘const intel_ctx_cfg_t *’ {aka ‘const struct intel_ctx_cfg *’} but argument is of type ‘int’
-  311 |     const intel_ctx_cfg_t *cfg,
-      |     ~~~~~~~~~~~~~~~~~~~~~~~^~~
-../../../usr/src/igt-gpu-tools/tests/prime_mmap_coherency.c:39:6: error: too few arguments to function ‘igt_blitter_fast_copy__raw’
-   39 |     (igt_blitter_fast_copy__raw(expr)) : \
-      |      ^~~~~~~~~~~~~~~~~~~~~~~~~~
-../../../usr/src/igt-gpu-tools/tests/prime_mmap_coherency.c:255:2: note: in expansion of macro ‘blitter_copy’
-  255 |  blitter_copy(local_fd, ahnd, 0, bo_1->handle, 0, width * 4,
-      |  ^~~~~~~~~~~~
-In file included from ../../../usr/src/igt-gpu-tools/lib/intel_bufops.h:7,
-                 from ../../../usr/src/igt-gpu-tools/lib/igt_draw.h:28,
-                 from ../../../usr/src/igt-gpu-tools/lib/igt.h:33,
-                 from ../../../usr/src/igt-gpu-tools/tests/prime_mmap_coherency.c:33:
-../../../usr/src/igt-gpu-tools/lib/intel_batchbuffer.h:308:6: note: declared here
-  308 | void igt_blitter_fast_copy__raw(int fd,
-      |      ^~~~~~~~~~~~~~~~~~~~~~~~~~
-../../../usr/src/igt-gpu-tools/tests/prime_mmap_coherency.c:255:38: warning: passing argument 4 of ‘igt_blitter_src_copy’ makes pointer from integer without a cast [-Wint-conversion]
-  255 |  blitter_copy(local_fd, ahnd, 0, bo_1->handle, 0, width * 4,
-      |                                  ~~~~^~~~~~~~
-      |                                      |
-      |                                      int
-../../../usr/src/igt-gpu-tools/tests/prime_mmap_coherency.c:40:27: note: in definition of macro ‘blitter_copy’
-   40 |     (igt_blitter_src_copy(expr)))
-      |                           ^~~~
-In file included from ../../../usr/src/igt-gpu-tools/lib/intel_bufops.h:7,
-                 from ../../../usr/src/igt-gpu-tools/lib/igt_draw.h:28,
-                 from ../../../usr/src/igt-gpu-tools/lib/igt.h:33,
-                 from ../../../usr/src/igt-gpu-tools/tests/prime_mmap_coherency.c:33:
-../../../usr/src/igt-gpu-tools/lib/intel_batchbuffer.h:277:29: note: expected ‘const intel_ctx_cfg_t *’ {aka ‘const struct intel_ctx_cfg *’} but argument is of type ‘int’
-  277 |      const intel_ctx_cfg_t *cfg,
-      |      ~~~~~~~~~~~~~~~~~~~~~~~^~~
-../../../usr/src/igt-gpu-tools/tests/prime_mmap_coherency.c:40:6: error: too few arguments to function ‘igt_blitter_src_copy’
-   40 |     (igt_blitter_src_copy(expr)))
-      |      ^~~~~~~~~~~~~~~~~~~~
-../../../usr/src/igt-gpu-tools/tests/prime_mmap_coherency.c:255:2: note: in expansion of macro ‘blitter_copy’
-  255 |  blitter_copy(local_fd, ahnd, 0, bo_1->handle, 0, width * 4,
-      |  ^~~~~~~~~~~~
-In file included from ../../../usr/src/igt-gpu-tools/lib/intel_bufops.h:7,
-                 from ../../../usr/src/igt-gpu-tools/lib/igt_draw.h:28,
-                 from ../../../usr/src/igt-gpu-tools/lib/igt.h:33,
-                 from ../../../usr/src/igt-gpu-tools/tests/prime_mmap_coherency.c:33:
-../../../usr/src/igt-gpu-tools/lib/intel_batchbuffer.h:274:6: note: declared here
-  274 | void igt_blitter_src_copy(int fd,
-      |      ^~~~~~~~~~~~~~~~~~~~
-ninja: build stopped: subcommand failed.
-
+diff --git a/tests/i915/gem_evict_alignment.c b/tests/i915/gem_evict_alignment.c
+index 0b560ab03..36045de20 100644
+--- a/tests/i915/gem_evict_alignment.c
++++ b/tests/i915/gem_evict_alignment.c
+@@ -64,15 +64,22 @@ copy(int fd, uint32_t dst, uint32_t src, uint32_t *all_bo,
+ 	struct drm_i915_gem_execbuffer2 exec;
+ 	uint32_t handle;
+ 	int n, i=0;
+-
+-	batch[i++] = (XY_SRC_COPY_BLT_CMD |
+-		    XY_SRC_COPY_BLT_WRITE_ALPHA |
+-		    XY_SRC_COPY_BLT_WRITE_RGB | 6);
+-	if (intel_gen(intel_get_drm_devid(fd)) >= 8)
+-		batch[i - 1] += 2;
+-	batch[i++] = (3 << 24) | /* 32 bits */
+-		  (0xcc << 16) | /* copy ROP */
+-		  WIDTH*4;
++	uint32_t devid;
++
++	devid = intel_get_drm_devid(fd);
++	if (intel_graphics_ver(devid) >= IP_VER(12, 60)) {
++		batch[i++] = XY_FAST_COPY_BLT;
++		batch[i++] = XY_FAST_COPY_COLOR_DEPTH_32 | WIDTH*4;
++	} else {
++		batch[i++] = (XY_SRC_COPY_BLT_CMD |
++			      XY_SRC_COPY_BLT_WRITE_ALPHA |
++			      XY_SRC_COPY_BLT_WRITE_RGB | 6);
++		if (intel_gen(intel_get_drm_devid(fd)) >= 8)
++			batch[i - 1] += 2;
++		batch[i++] = (3 << 24) | /* 32 bits */
++			     (0xcc << 16) | /* copy ROP */
++			     WIDTH*4;
++	}
+ 	batch[i++] = 0; /* dst x1,y1 */
+ 	batch[i++] = (HEIGHT << 16) | WIDTH; /* dst x2,y2 */
+ 	batch[i++] = 0; /* dst reloc */
+diff --git a/tests/i915/gem_evict_everything.c b/tests/i915/gem_evict_everything.c
+index 120f89072..995df2e82 100644
+--- a/tests/i915/gem_evict_everything.c
++++ b/tests/i915/gem_evict_everything.c
+@@ -64,15 +64,22 @@ copy(int fd, uint32_t dst, uint32_t src, uint32_t *all_bo, int n_bo)
+ 	struct drm_i915_gem_execbuffer2 exec;
+ 	uint32_t handle;
+ 	int n, ret, i=0;
+-
+-	batch[i++] = (XY_SRC_COPY_BLT_CMD |
+-		    XY_SRC_COPY_BLT_WRITE_ALPHA |
+-		    XY_SRC_COPY_BLT_WRITE_RGB | 6);
+-	if (intel_gen(intel_get_drm_devid(fd)) >= 8)
+-		batch[i - 1] += 2;
+-	batch[i++] = (3 << 24) | /* 32 bits */
+-		  (0xcc << 16) | /* copy ROP */
+-		  WIDTH*4;
++	uint32_t devid;
++
++	devid = intel_get_drm_devid(fd);
++	if (intel_graphics_ver(devid) >= IP_VER(12, 60)) {
++		batch[i++] = XY_FAST_COPY_BLT;
++		batch[i++] = XY_FAST_COPY_COLOR_DEPTH_32 | WIDTH*4;
++	} else {
++		batch[i++] = (XY_SRC_COPY_BLT_CMD |
++			      XY_SRC_COPY_BLT_WRITE_ALPHA |
++			      XY_SRC_COPY_BLT_WRITE_RGB | 6);
++		if (intel_gen(intel_get_drm_devid(fd)) >= 8)
++			batch[i - 1] += 2;
++		batch[i++] = (3 << 24) | /* 32 bits */
++			     (0xcc << 16) | /* copy ROP */
++			     WIDTH*4;
++	}
+ 	batch[i++] = 0; /* dst x1,y1 */
+ 	batch[i++] = (HEIGHT << 16) | WIDTH; /* dst x2,y2 */
+ 	batch[i++] = 0; /* dst reloc */
+diff --git a/tests/i915/gem_partial_pwrite_pread.c b/tests/i915/gem_partial_pwrite_pread.c
+index 474149d48..9b5b05700 100644
+--- a/tests/i915/gem_partial_pwrite_pread.c
++++ b/tests/i915/gem_partial_pwrite_pread.c
+@@ -86,12 +86,17 @@ static void copy_bo(struct intel_bb *ibb,
+ 	intel_bb_add_intel_buf(ibb, src, false);
+ 	intel_bb_add_intel_buf(ibb, dst, true);
+ 
+-	intel_bb_out(ibb,
+-		     XY_SRC_COPY_BLT_CMD |
+-		     XY_SRC_COPY_BLT_WRITE_ALPHA |
+-		     XY_SRC_COPY_BLT_WRITE_RGB |
+-		     (6 + 2 * has_64b_reloc));
+-	intel_bb_out(ibb, 3 << 24 | 0xcc << 16 | 4096);
++	if (intel_graphics_ver(ibb->devid) >= IP_VER(12, 60)) {
++		intel_bb_out(ibb, XY_FAST_COPY_BLT);
++		intel_bb_out(ibb, XY_FAST_COPY_COLOR_DEPTH_32  | 4096);
++	} else {
++		intel_bb_out(ibb,
++			     XY_SRC_COPY_BLT_CMD |
++			     XY_SRC_COPY_BLT_WRITE_ALPHA |
++			     XY_SRC_COPY_BLT_WRITE_RGB |
++			     (6 + 2 * has_64b_reloc));
++		intel_bb_out(ibb, 3 << 24 | 0xcc << 16 | 4096);
++	}
+ 	intel_bb_out(ibb, 0 << 16 | 0);
+ 	intel_bb_out(ibb, (BO_SIZE/4096) << 16 | 1024);
+ 	intel_bb_emit_reloc_fenced(ibb, dst->handle,
+-- 
+2.25.1
