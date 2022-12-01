@@ -1,21 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-ua1-x929.google.com (mail-ua1-x929.google.com
- [IPv6:2607:f8b0:4864:20::929])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5A32110E151
- for <igt-dev@lists.freedesktop.org>; Thu,  1 Dec 2022 16:37:31 +0000 (UTC)
-Received: by mail-ua1-x929.google.com with SMTP id c26so782067uak.5
- for <igt-dev@lists.freedesktop.org>; Thu, 01 Dec 2022 08:37:31 -0800 (PST)
+From: Matthew Auld <matthew.auld@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Thu,  1 Dec 2022 16:49:44 +0000
+Message-Id: <20221201164944.327019-2-matthew.auld@intel.com>
+In-Reply-To: <20221201164944.327019-1-matthew.auld@intel.com>
+References: <20221201164944.327019-1-matthew.auld@intel.com>
 MIME-Version: 1.0
-References: <20221130174217.2261845-1-markyacoub@chromium.org>
- <Y4i8YB2kx6wKjqpn@platvala-desk.ger.corp.intel.com>
-In-Reply-To: <Y4i8YB2kx6wKjqpn@platvala-desk.ger.corp.intel.com>
-From: Mark Yacoub <markyacoub@google.com>
-Date: Thu, 1 Dec 2022 11:37:19 -0500
-Message-ID: <CAC0gqY7BL66YbV1XaOJDBKJU3E5Cju8usBDNuTtergioPOxHFA@mail.gmail.com>
-To: Petri Latvala <petri.latvala@intel.com>
-Content-Type: text/plain; charset="UTF-8"
-Subject: Re: [igt-dev] [PATCH] igt_chameleon: Assert if there are no
- connected ports
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t 2/2] tests/i915/gem_exec_balancer: exercise
+ dmabuf import
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,54 +16,110 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: robdclark@chromium.org, vsuley@google.com, amstan@chromium.org,
- ihf@google.com, igt-dev@lists.freedesktop.org, kalin@google.com,
- seanpaul@chromium.org, matthewtlam@google.com, khaled.almahallawy@intel.com
+Cc: intel-gfx@lists.freedesktop.org, Nirmoy Das <nirmoy.das@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Thu, Dec 1, 2022 at 9:38 AM Petri Latvala <petri.latvala@intel.com> wrote:
->
-> On Wed, Nov 30, 2022 at 12:42:17PM -0500, Mark Yacoub wrote:
-> > [Why]
-> > The tests are meant to run on devices that have a chameleon connected.
-> > If autodiscovery finds no port, it means something is off and the DUT is
-> > not behaving well.
-> >
-> > [How]
-> > Add an assert if no port is mapped.
-> >
-> > Signed-off-by: Mark Yacoub <markyacoub@chromium.org>
-> > ---
-> >  lib/igt_chamelium.c | 4 ++++
-> >  1 file changed, 4 insertions(+)
-> >
-> > diff --git a/lib/igt_chamelium.c b/lib/igt_chamelium.c
-> > index 79920de1..4e7a7a8f 100644
-> > --- a/lib/igt_chamelium.c
-> > +++ b/lib/igt_chamelium.c
-> > @@ -2749,6 +2749,10 @@ unplug_port:
-> >       igt_debug("Auto-discovery took %fms and found %i connector(s)\n",
-> >                 (float)elapsed_ns / (1000 * 1000), chamelium->port_count);
-> >
-> > +     igt_assert_f(
-> > +             is_any_port_mapped,
-> > +             "No port is mapped. We don't expect to have no connected connectors.\n");
-> > +
->
-> If this situation (chamelium is configured but is not suitable for
-> testing) ever happens, in my opinion an igt_abort would be more
-> appropriate. Similar to the case where chamelium is configured but
-> cannot be reached. What do you think?
->
-So the case I saw is volteer failing to connect any of its ports
-because of some bug it has that if it doesn't disconnect cleanly it
-stops working without extra steps. I thought when we catch this, this
-might be a good candidate for a real bug to file so it's a legit DUT
-failure, hence the assert, rather than abort because test conditions
-weren't met.
-They're both good to me, so whatever you think is best.
->
-> --
-> Petri Latvala
+With parallel submission it should be easy to get a fence array as the
+output fence. Try importing this into dma-buf reservation object, to see
+if anything explodes.
+
+v2: (Kamil)
+ - Use ifdef __linux__ for linux headers
+ - Add igt_describe() for new test
+
+References: https://gitlab.freedesktop.org/drm/intel/-/issues/7532
+Signed-off-by: Matthew Auld <matthew.auld@intel.com>
+Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Cc: Andrzej Hajda <andrzej.hajda@intel.com>
+Cc: Nirmoy Das <nirmoy.das@intel.com>
+Reviewed-by: Andrzej Hajda <andrzej.hajda@intel.com>
+---
+ tests/i915/gem_exec_balancer.c | 26 ++++++++++++++++++++++++++
+ 1 file changed, 26 insertions(+)
+
+diff --git a/tests/i915/gem_exec_balancer.c b/tests/i915/gem_exec_balancer.c
+index 4300dbd1..8a68c341 100644
+--- a/tests/i915/gem_exec_balancer.c
++++ b/tests/i915/gem_exec_balancer.c
+@@ -22,11 +22,15 @@
+  */
+ 
+ #include <fcntl.h>
++#ifdef __linux__
++#include <linux/dma-buf.h>
++#endif
+ #include <sched.h>
+ #include <sys/ioctl.h>
+ #include <sys/signal.h>
+ #include <poll.h>
+ 
++#include "dmabuf_sync_file.h"
+ #include "i915/gem.h"
+ #include "i915/gem_engine_topology.h"
+ #include "i915/gem_create.h"
+@@ -2856,6 +2860,7 @@ static void logical_sort_siblings(int i915,
+ #define PARALLEL_SUBMIT_FENCE		(0x1 << 3)
+ #define PARALLEL_CONTEXTS		(0x1 << 4)
+ #define PARALLEL_VIRTUAL		(0x1 << 5)
++#define PARALLEL_OUT_FENCE_DMABUF	(0x1 << 6)
+ 
+ static void parallel_thread(int i915, unsigned int flags,
+ 			    struct i915_engine_class_instance *siblings,
+@@ -2871,6 +2876,8 @@ static void parallel_thread(int i915, unsigned int flags,
+ 	uint32_t target_bo_idx = 0;
+ 	uint32_t first_bb_idx = 1;
+ 	intel_ctx_cfg_t cfg;
++	uint32_t dmabuf_handle;
++	int dmabuf;
+ 
+ 	igt_assert(bb_per_execbuf < 32);
+ 
+@@ -2924,11 +2931,20 @@ static void parallel_thread(int i915, unsigned int flags,
+ 	execbuf.buffers_ptr = to_user_pointer(obj);
+ 	execbuf.rsvd1 = ctx->id;
+ 
++	if (flags & PARALLEL_OUT_FENCE_DMABUF) {
++		dmabuf_handle = gem_create(i915, 4096);
++		dmabuf = prime_handle_to_fd(i915, dmabuf_handle);
++	}
++
+ 	for (n = 0; n < PARALLEL_BB_LOOP_COUNT; ++n) {
+ 		execbuf.flags &= ~0x3full;
+ 		gem_execbuf_wr(i915, &execbuf);
+ 
+ 		if (flags & PARALLEL_OUT_FENCE) {
++			if (flags & PARALLEL_OUT_FENCE_DMABUF)
++				dmabuf_import_sync_file(dmabuf, DMA_BUF_SYNC_WRITE,
++							execbuf.rsvd2 >> 32);
++
+ 			igt_assert_eq(sync_fence_wait(execbuf.rsvd2 >> 32,
+ 						      1000), 0);
+ 			igt_assert_eq(sync_fence_status(execbuf.rsvd2 >> 32), 1);
+@@ -2959,6 +2975,11 @@ static void parallel_thread(int i915, unsigned int flags,
+ 	if (fence)
+ 		close(fence);
+ 
++	if (flags & PARALLEL_OUT_FENCE_DMABUF) {
++		gem_close(i915, dmabuf_handle);
++		close(dmabuf);
++	}
++
+ 	check_bo(i915, obj[target_bo_idx].handle,
+ 		 bb_per_execbuf * PARALLEL_BB_LOOP_COUNT, true);
+ 
+@@ -3420,6 +3441,11 @@ igt_main
+ 		igt_subtest("parallel-out-fence")
+ 			parallel(i915, PARALLEL_OUT_FENCE);
+ 
++		igt_describe("Regression test to check that dmabuf imported sync file can handle fence array");
++		igt_subtest("parallel-dmabuf-import-out-fence")
++			parallel(i915, PARALLEL_OUT_FENCE |
++				 PARALLEL_OUT_FENCE_DMABUF);
++
+ 		igt_subtest("parallel-keep-in-fence")
+ 			parallel(i915, PARALLEL_OUT_FENCE | PARALLEL_IN_FENCE);
+ 
+-- 
+2.38.1
