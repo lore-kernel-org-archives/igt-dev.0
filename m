@@ -1,12 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-From: Matthew Auld <matthew.auld@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Thu,  1 Dec 2022 16:49:43 +0000
-Message-Id: <20221201164944.327019-1-matthew.auld@intel.com>
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 1/2] lib/dmabuf_sync_file: move common stuff
- into lib
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Mark Yacoub" <markyacoub@chromium.org>
+Date: Thu, 01 Dec 2022 18:13:07 -0000
+Message-ID: <166991838722.14638.128753715912446842@emeril.freedesktop.org>
+References: <20221130204526.3182975-1-markyacoub@chromium.org>
+In-Reply-To: <20221130204526.3182975-1-markyacoub@chromium.org>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_C?=
+ =?utf-8?q?hamelium=3A_Split_kms=5Fchamelium_into_multiple_kms=5Fchamelium?=
+ =?utf-8?q?_tests_=28rev2=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -14,356 +18,155 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: intel-gfx@lists.freedesktop.org, Nirmoy Das <nirmoy.das@intel.com>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-So we can use this across different tests.
+== Series Details ==
 
-Signed-off-by: Matthew Auld <matthew.auld@intel.com>
-Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Cc: Andrzej Hajda <andrzej.hajda@intel.com>
-Cc: Nirmoy Das <nirmoy.das@intel.com>
----
- lib/dmabuf_sync_file.c   | 138 +++++++++++++++++++++++++++++++++++++++
- lib/dmabuf_sync_file.h   |  19 ++++++
- lib/meson.build          |   1 +
- tests/dmabuf_sync_file.c | 135 ++------------------------------------
- 4 files changed, 164 insertions(+), 129 deletions(-)
- create mode 100644 lib/dmabuf_sync_file.c
- create mode 100644 lib/dmabuf_sync_file.h
+Series: Chamelium: Split kms_chamelium into multiple kms_chamelium tests (rev2)
+URL   : https://patchwork.freedesktop.org/series/111501/
+State : warning
 
-diff --git a/lib/dmabuf_sync_file.c b/lib/dmabuf_sync_file.c
-new file mode 100644
-index 00000000..24e0f96d
---- /dev/null
-+++ b/lib/dmabuf_sync_file.c
-@@ -0,0 +1,138 @@
-+// SPDX-License-Identifier: MIT
-+
-+#ifdef __linux__
-+#include <linux/dma-buf.h>
-+#endif
-+#include <sys/poll.h>
-+
-+#include "igt.h"
-+#include "igt_vgem.h"
-+#include "sw_sync.h"
-+
-+#include "dmabuf_sync_file.h"
-+
-+struct igt_dma_buf_sync_file {
-+	__u32 flags;
-+	__s32 fd;
-+};
-+
-+#define IGT_DMA_BUF_IOCTL_EXPORT_SYNC_FILE _IOWR(DMA_BUF_BASE, 2, struct igt_dma_buf_sync_file)
-+#define IGT_DMA_BUF_IOCTL_IMPORT_SYNC_FILE _IOW(DMA_BUF_BASE, 3, struct igt_dma_buf_sync_file)
-+
-+bool has_dmabuf_export_sync_file(int fd)
-+{
-+	struct vgem_bo bo;
-+	int dmabuf, ret;
-+	struct igt_dma_buf_sync_file arg;
-+
-+	bo.width = 1;
-+	bo.height = 1;
-+	bo.bpp = 32;
-+	vgem_create(fd, &bo);
-+
-+	dmabuf = prime_handle_to_fd(fd, bo.handle);
-+	gem_close(fd, bo.handle);
-+
-+	arg.flags = DMA_BUF_SYNC_WRITE;
-+	arg.fd = -1;
-+
-+	ret = igt_ioctl(dmabuf, IGT_DMA_BUF_IOCTL_EXPORT_SYNC_FILE, &arg);
-+	close(dmabuf);
-+	igt_assert(ret == 0 || errno == ENOTTY);
-+
-+	return ret == 0;
-+}
-+
-+int dmabuf_export_sync_file(int dmabuf, uint32_t flags)
-+{
-+	struct igt_dma_buf_sync_file arg;
-+
-+	arg.flags = flags;
-+	arg.fd = -1;
-+	do_ioctl(dmabuf, IGT_DMA_BUF_IOCTL_EXPORT_SYNC_FILE, &arg);
-+
-+	return arg.fd;
-+}
-+
-+bool has_dmabuf_import_sync_file(int fd)
-+{
-+	struct vgem_bo bo;
-+	int dmabuf, timeline, fence, ret;
-+	struct igt_dma_buf_sync_file arg;
-+
-+	bo.width = 1;
-+	bo.height = 1;
-+	bo.bpp = 32;
-+	vgem_create(fd, &bo);
-+
-+	dmabuf = prime_handle_to_fd(fd, bo.handle);
-+	gem_close(fd, bo.handle);
-+
-+	timeline = sw_sync_timeline_create();
-+	fence = sw_sync_timeline_create_fence(timeline, 1);
-+	sw_sync_timeline_inc(timeline, 1);
-+
-+	arg.flags = DMA_BUF_SYNC_RW;
-+	arg.fd = fence;
-+
-+	ret = igt_ioctl(dmabuf, IGT_DMA_BUF_IOCTL_IMPORT_SYNC_FILE, &arg);
-+	close(dmabuf);
-+	close(fence);
-+	igt_assert(ret == 0 || errno == ENOTTY);
-+
-+	return ret == 0;
-+}
-+
-+void dmabuf_import_sync_file(int dmabuf, uint32_t flags, int sync_fd)
-+{
-+	struct igt_dma_buf_sync_file arg;
-+
-+	arg.flags = flags;
-+	arg.fd = sync_fd;
-+	do_ioctl(dmabuf, IGT_DMA_BUF_IOCTL_IMPORT_SYNC_FILE, &arg);
-+}
-+
-+void
-+dmabuf_import_timeline_fence(int dmabuf, uint32_t flags,
-+			     int timeline, uint32_t seqno)
-+{
-+	int fence;
-+
-+	fence = sw_sync_timeline_create_fence(timeline, seqno);
-+	dmabuf_import_sync_file(dmabuf, flags, fence);
-+	close(fence);
-+}
-+
-+bool dmabuf_busy(int dmabuf, uint32_t flags)
-+{
-+	struct pollfd pfd = { .fd = dmabuf };
-+
-+	/* If DMA_BUF_SYNC_WRITE is set, we don't want to set POLLIN or
-+	 * else poll() may return a non-zero value if there are only read
-+	 * fences because POLLIN is ready even if POLLOUT isn't.
-+	 */
-+	if (flags & DMA_BUF_SYNC_WRITE)
-+		pfd.events |= POLLOUT;
-+	else if (flags & DMA_BUF_SYNC_READ)
-+		pfd.events |= POLLIN;
-+
-+	return poll(&pfd, 1, 0) == 0;
-+}
-+
-+bool sync_file_busy(int sync_file)
-+{
-+	struct pollfd pfd = { .fd = sync_file, .events = POLLIN };
-+	return poll(&pfd, 1, 0) == 0;
-+}
-+
-+bool dmabuf_sync_file_busy(int dmabuf, uint32_t flags)
-+{
-+	int sync_file;
-+	bool busy;
-+
-+	sync_file = dmabuf_export_sync_file(dmabuf, flags);
-+	busy = sync_file_busy(sync_file);
-+	close(sync_file);
-+
-+	return busy;
-+}
-diff --git a/lib/dmabuf_sync_file.h b/lib/dmabuf_sync_file.h
-new file mode 100644
-index 00000000..08da8150
---- /dev/null
-+++ b/lib/dmabuf_sync_file.h
-@@ -0,0 +1,19 @@
-+/* SPDX-License-Identifier: MIT */
-+
-+#ifndef DMABUF_SYNC_FILE_H
-+#define DMABUF_SYNC_FILE_H
-+
-+#include <stdbool.h>
-+#include <stdint.h>
-+
-+bool has_dmabuf_export_sync_file(int fd);
-+bool has_dmabuf_import_sync_file(int fd);
-+int dmabuf_export_sync_file(int dmabuf, uint32_t flags);
-+void dmabuf_import_sync_file(int dmabuf, uint32_t flags, int sync_fd);
-+void dmabuf_import_timeline_fence(int dmabuf, uint32_t flags,
-+			     int timeline, uint32_t seqno);
-+bool dmabuf_busy(int dmabuf, uint32_t flags);
-+bool sync_file_busy(int sync_file);
-+bool dmabuf_sync_file_busy(int dmabuf, uint32_t flags);
-+
-+#endif
-diff --git a/lib/meson.build b/lib/meson.build
-index cef2d0ff..896d5733 100644
---- a/lib/meson.build
-+++ b/lib/meson.build
-@@ -1,5 +1,6 @@
- lib_sources = [
- 	'drmtest.c',
-+	'dmabuf_sync_file.c',
- 	'huc_copy.c',
- 	'i915/gem.c',
- 	'i915/gem_context.c',
-diff --git a/tests/dmabuf_sync_file.c b/tests/dmabuf_sync_file.c
-index 2179a76d..f59be125 100644
---- a/tests/dmabuf_sync_file.c
-+++ b/tests/dmabuf_sync_file.c
-@@ -1,140 +1,17 @@
- // SPDX-License-Identifier: MIT
- 
-+#ifdef __linux__
-+#include <linux/dma-buf.h>
-+#endif
-+#include <sys/poll.h>
-+
- #include "igt.h"
- #include "igt_vgem.h"
- #include "sw_sync.h"
--
--#include <linux/dma-buf.h>
--#include <sys/poll.h>
-+#include "dmabuf_sync_file.h"
- 
- IGT_TEST_DESCRIPTION("Tests for sync_file support in dma-buf");
- 
--struct igt_dma_buf_sync_file {
--	__u32 flags;
--	__s32 fd;
--};
--
--#define IGT_DMA_BUF_IOCTL_EXPORT_SYNC_FILE _IOWR(DMA_BUF_BASE, 2, struct igt_dma_buf_sync_file)
--#define IGT_DMA_BUF_IOCTL_IMPORT_SYNC_FILE _IOW(DMA_BUF_BASE, 3, struct igt_dma_buf_sync_file)
--
--static bool has_dmabuf_export_sync_file(int fd)
--{
--	struct vgem_bo bo;
--	int dmabuf, ret;
--	struct igt_dma_buf_sync_file arg;
--
--	bo.width = 1;
--	bo.height = 1;
--	bo.bpp = 32;
--	vgem_create(fd, &bo);
--
--	dmabuf = prime_handle_to_fd(fd, bo.handle);
--	gem_close(fd, bo.handle);
--
--	arg.flags = DMA_BUF_SYNC_WRITE;
--	arg.fd = -1;
--
--	ret = igt_ioctl(dmabuf, IGT_DMA_BUF_IOCTL_EXPORT_SYNC_FILE, &arg);
--	close(dmabuf);
--	igt_assert(ret == 0 || errno == ENOTTY);
--
--	return ret == 0;
--}
--
--static int dmabuf_export_sync_file(int dmabuf, uint32_t flags)
--{
--	struct igt_dma_buf_sync_file arg;
--
--	arg.flags = flags;
--	arg.fd = -1;
--	do_ioctl(dmabuf, IGT_DMA_BUF_IOCTL_EXPORT_SYNC_FILE, &arg);
--
--	return arg.fd;
--}
--
--static bool has_dmabuf_import_sync_file(int fd)
--{
--	struct vgem_bo bo;
--	int dmabuf, timeline, fence, ret;
--	struct igt_dma_buf_sync_file arg;
--
--	bo.width = 1;
--	bo.height = 1;
--	bo.bpp = 32;
--	vgem_create(fd, &bo);
--
--	dmabuf = prime_handle_to_fd(fd, bo.handle);
--	gem_close(fd, bo.handle);
--
--	timeline = sw_sync_timeline_create();
--	fence = sw_sync_timeline_create_fence(timeline, 1);
--	sw_sync_timeline_inc(timeline, 1);
--
--	arg.flags = DMA_BUF_SYNC_RW;
--	arg.fd = fence;
--
--	ret = igt_ioctl(dmabuf, IGT_DMA_BUF_IOCTL_IMPORT_SYNC_FILE, &arg);
--	close(dmabuf);
--	close(fence);
--	igt_assert(ret == 0 || errno == ENOTTY);
--
--	return ret == 0;
--}
--
--static void dmabuf_import_sync_file(int dmabuf, uint32_t flags, int sync_fd)
--{
--	struct igt_dma_buf_sync_file arg;
--
--	arg.flags = flags;
--	arg.fd = sync_fd;
--	do_ioctl(dmabuf, IGT_DMA_BUF_IOCTL_IMPORT_SYNC_FILE, &arg);
--}
--
--static void
--dmabuf_import_timeline_fence(int dmabuf, uint32_t flags,
--			     int timeline, uint32_t seqno)
--{
--	int fence;
--
--	fence = sw_sync_timeline_create_fence(timeline, seqno);
--	dmabuf_import_sync_file(dmabuf, flags, fence);
--	close(fence);
--}
--
--static bool dmabuf_busy(int dmabuf, uint32_t flags)
--{
--	struct pollfd pfd = { .fd = dmabuf };
--
--	/* If DMA_BUF_SYNC_WRITE is set, we don't want to set POLLIN or
--	 * else poll() may return a non-zero value if there are only read
--	 * fences because POLLIN is ready even if POLLOUT isn't.
--	 */
--	if (flags & DMA_BUF_SYNC_WRITE)
--		pfd.events |= POLLOUT;
--	else if (flags & DMA_BUF_SYNC_READ)
--		pfd.events |= POLLIN;
--
--	return poll(&pfd, 1, 0) == 0;
--}
--
--static bool sync_file_busy(int sync_file)
--{
--	struct pollfd pfd = { .fd = sync_file, .events = POLLIN };
--	return poll(&pfd, 1, 0) == 0;
--}
--
--static bool dmabuf_sync_file_busy(int dmabuf, uint32_t flags)
--{
--	int sync_file;
--	bool busy;
--
--	sync_file = dmabuf_export_sync_file(dmabuf, flags);
--	busy = sync_file_busy(sync_file);
--	close(sync_file);
--
--	return busy;
--}
--
- static void test_export_basic(int fd)
- {
- 	struct vgem_bo bo;
--- 
-2.38.1
+== Summary ==
+
+Pipeline status: FAILED.
+
+see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/752655 for the overview.
+
+build:tests-debian-meson has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/32808705):
+  ../tests/chamelium/kms_chamelium_edid.c:145:7: warning: nested extern declaration of ‘drmModeGetPropertyBlob’ [-Wnested-externs]
+         drmModeGetPropertyBlob(data->drm_fd, edid_blob_id));
+         ^~~~~~~~~~~~~~~~~~~~~~
+  ../lib/igt_core.h:676:13: note: in definition of macro ‘igt_assert’
+    do { if (!(expr)) \
+               ^~~~
+  ../tests/chamelium/kms_chamelium_edid.c:144:23: warning: assignment to ‘drmModePropertyBlobPtr’ {aka ‘struct _drmModePropertyBlob *’} from ‘int’ makes pointer from integer without a cast [-Wint-conversion]
+    igt_assert(edid_blob =
+                         ^
+  ../lib/igt_core.h:676:13: note: in definition of macro ‘igt_assert’
+    do { if (!(expr)) \
+               ^~~~
+  cc1: some warnings being treated as errors
+  ninja: build stopped: subcommand failed.
+  section_end:1669917860:step_script
+  section_start:1669917860:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1669917860:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
+
+build:tests-fedora has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/32808700):
+  ../tests/chamelium/kms_chamelium_edid.c:145:7: warning: nested extern declaration of ‘drmModeGetPropertyBlob’ [-Wnested-externs]
+    145 |       drmModeGetPropertyBlob(data->drm_fd, edid_blob_id));
+        |       ^~~~~~~~~~~~~~~~~~~~~~
+  ../lib/igt_core.h:676:13: note: in definition of macro ‘igt_assert’
+    676 |  do { if (!(expr)) \
+        |             ^~~~
+  ../tests/chamelium/kms_chamelium_edid.c:144:23: warning: assignment to ‘drmModePropertyBlobPtr’ {aka ‘struct _drmModePropertyBlob *’} from ‘int’ makes pointer from integer without a cast [-Wint-conversion]
+    144 |  igt_assert(edid_blob =
+        |                       ^
+  ../lib/igt_core.h:676:13: note: in definition of macro ‘igt_assert’
+    676 |  do { if (!(expr)) \
+        |             ^~~~
+  cc1: some warnings being treated as errors
+  ninja: build stopped: subcommand failed.
+  section_end:1669917871:step_script
+  section_start:1669917871:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1669917871:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
+
+build:tests-fedora-clang has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/32808704):
+          uint32_t bpp;
+          ^
+  /usr/include/xf86drmMode.h:221:2: error: unknown type name 'uint32_t'
+          uint32_t depth;
+          ^
+  /usr/include/xf86drmMode.h:223:2: error: unknown type name 'uint32_t'
+          uint32_t handle;
+          ^
+  /usr/include/xf86drmMode.h:229:2: error: unknown type name 'uint32_t'
+          uint32_t id;
+          ^
+  fatal error: too many errors emitted, stopping now [-ferror-limit=]
+  20 errors generated.
+  ninja: build stopped: subcommand failed.
+  section_end:1669917933:step_script
+  section_start:1669917933:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1669917934:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
+
+build:tests-fedora-no-libdrm-nouveau has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/32808703):
+  ../tests/chamelium/kms_chamelium_edid.c:145:7: warning: nested extern declaration of ‘drmModeGetPropertyBlob’ [-Wnested-externs]
+    145 |       drmModeGetPropertyBlob(data->drm_fd, edid_blob_id));
+        |       ^~~~~~~~~~~~~~~~~~~~~~
+  ../lib/igt_core.h:676:13: note: in definition of macro ‘igt_assert’
+    676 |  do { if (!(expr)) \
+        |             ^~~~
+  ../tests/chamelium/kms_chamelium_edid.c:144:23: warning: assignment to ‘drmModePropertyBlobPtr’ {aka ‘struct _drmModePropertyBlob *’} from ‘int’ makes pointer from integer without a cast [-Wint-conversion]
+    144 |  igt_assert(edid_blob =
+        |                       ^
+  ../lib/igt_core.h:676:13: note: in definition of macro ‘igt_assert’
+    676 |  do { if (!(expr)) \
+        |             ^~~~
+  cc1: some warnings being treated as errors
+  ninja: build stopped: subcommand failed.
+  section_end:1669917870:step_script
+  section_start:1669917870:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1669917871:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
+
+build:tests-fedora-no-libunwind has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/32808701):
+  ../tests/chamelium/kms_chamelium_edid.c:145:7: warning: nested extern declaration of ‘drmModeGetPropertyBlob’ [-Wnested-externs]
+    145 |       drmModeGetPropertyBlob(data->drm_fd, edid_blob_id));
+        |       ^~~~~~~~~~~~~~~~~~~~~~
+  ../lib/igt_core.h:676:13: note: in definition of macro ‘igt_assert’
+    676 |  do { if (!(expr)) \
+        |             ^~~~
+  ../tests/chamelium/kms_chamelium_edid.c:144:23: warning: assignment to ‘drmModePropertyBlobPtr’ {aka ‘struct _drmModePropertyBlob *’} from ‘int’ makes pointer from integer without a cast [-Wint-conversion]
+    144 |  igt_assert(edid_blob =
+        |                       ^
+  ../lib/igt_core.h:676:13: note: in definition of macro ‘igt_assert’
+    676 |  do { if (!(expr)) \
+        |             ^~~~
+  cc1: some warnings being treated as errors
+  ninja: build stopped: subcommand failed.
+  section_end:1669917855:step_script
+  section_start:1669917855:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1669917856:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
+
+build:tests-fedora-oldest-meson has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/32808702):
+  ../tests/chamelium/kms_chamelium_edid.c:145:7: warning: nested extern declaration of ‘drmModeGetPropertyBlob’ [-Wnested-externs]
+    145 |       drmModeGetPropertyBlob(data->drm_fd, edid_blob_id));
+        |       ^~~~~~~~~~~~~~~~~~~~~~
+  ../lib/igt_core.h:676:13: note: in definition of macro ‘igt_assert’
+    676 |  do { if (!(expr)) \
+        |             ^~~~
+  ../tests/chamelium/kms_chamelium_edid.c:144:23: warning: assignment to ‘drmModePropertyBlobPtr’ {aka ‘struct _drmModePropertyBlob *’} from ‘int’ makes pointer from integer without a cast [-Wint-conversion]
+    144 |  igt_assert(edid_blob =
+        |                       ^
+  ../lib/igt_core.h:676:13: note: in definition of macro ‘igt_assert’
+    676 |  do { if (!(expr)) \
+        |             ^~~~
+  cc1: some warnings being treated as errors
+  ninja: build stopped: subcommand failed.
+  section_end:1669917863:step_script
+  section_start:1669917863:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1669917863:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+
+== Logs ==
+
+For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/752655
