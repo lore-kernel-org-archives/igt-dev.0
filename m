@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7C32010E72B
- for <igt-dev@lists.freedesktop.org>; Fri,  2 Dec 2022 20:57:34 +0000 (UTC)
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5A3B210E72D
+ for <igt-dev@lists.freedesktop.org>; Fri,  2 Dec 2022 20:57:38 +0000 (UTC)
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Fri,  2 Dec 2022 21:57:04 +0100
-Message-Id: <20221202205705.58879-7-kamil.konieczny@linux.intel.com>
+Date: Fri,  2 Dec 2022 21:57:05 +0100
+Message-Id: <20221202205705.58879-8-kamil.konieczny@linux.intel.com>
 In-Reply-To: <20221202205705.58879-1-kamil.konieczny@linux.intel.com>
 References: <20221202205705.58879-1-kamil.konieczny@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 6/7] tests/i915/gem_exec_gttfill: add new
- subtest multigpu-basic
+Subject: [igt-dev] [PATCH i-g-t 7/7] tests/i915/gem_close_race: add multiGPU
+ subtests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,76 +23,111 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add new subtest multigpu-basic to be run on two or more GPU cards
-simultanosly. For this to work test should be run with --device
-option, for example with:
-  --device=pci:vendor=Intel,device=discrete,card=0\;pci:vendor=Intel,device=discrete,card=1
-or
-  --device=pci:vendor=Intel,device=discrete,card=all
+Add two multiGPU subtests multigpu-basic-threads and
+multigpu-basic-process.
 
 Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 ---
- tests/i915/gem_exec_gttfill.c | 32 ++++++++++++++++++++++++++++++--
- 1 file changed, 30 insertions(+), 2 deletions(-)
+ tests/i915/gem_close_race.c | 54 +++++++++++++++++++++++++++++++++++++
+ 1 file changed, 54 insertions(+)
 
-diff --git a/tests/i915/gem_exec_gttfill.c b/tests/i915/gem_exec_gttfill.c
-index f9f244d6..5be8428d 100644
---- a/tests/i915/gem_exec_gttfill.c
-+++ b/tests/i915/gem_exec_gttfill.c
-@@ -24,6 +24,7 @@
- #include "i915/gem.h"
- #include "i915/gem_create.h"
+diff --git a/tests/i915/gem_close_race.c b/tests/i915/gem_close_race.c
+index e37a8882..3ef073b8 100644
+--- a/tests/i915/gem_close_race.c
++++ b/tests/i915/gem_close_race.c
+@@ -47,6 +47,7 @@
+ #include "i915/gem_mman.h"
  #include "igt.h"
+ #include "igt_aux.h"
 +#include "igt_device_scan.h"
- #include "igt_rand.h"
  
- IGT_TEST_DESCRIPTION("Fill the GTT with batches.");
-@@ -226,7 +227,7 @@ igt_main
+ #define OBJECT_SIZE (256 * 1024)
+ 
+@@ -254,6 +255,31 @@ static void thread(int fd, struct drm_gem_open name,
+ 	free(history);
+ }
+ 
++static void multigpu_threads(int timeout, unsigned int flags, int gpu_count)
++{
++	int size = sysconf(_SC_NPROCESSORS_ONLN);
++
++	size /= gpu_count;
++	if (size < 1)
++		size = 1;
++
++	igt_multi_fork(gpu, gpu_count) {
++		struct drm_gem_open name;
++		int fd = __drm_open_driver_another(gpu, DRIVER_INTEL);
++
++		igt_assert(fd > 0);
++
++		igt_fork(child, size)
++			thread(fd, name, timeout, flags);
++
++		igt_waitchildren();
++		gem_quiescent_gpu(fd);
++		close(fd);
++	}
++
++	igt_waitchildren();
++}
++
+ static void threads(int timeout, unsigned int flags)
  {
- 	const struct intel_execution_engine2 *e;
- 	const intel_ctx_t *ctx;
--	int i915 = -1;
-+	int i915 = -1, gpu_count;
+ 	struct drm_gem_open name;
+@@ -272,6 +298,8 @@ static void threads(int timeout, unsigned int flags)
  
+ igt_main
+ {
++	int gpu_count;
++
  	igt_fixture {
- 		i915 = drm_open_driver(DRIVER_INTEL);
-@@ -258,9 +259,36 @@ igt_main
- 		fillgtt(i915, ctx, ALL_ENGINES, 20);
+ 		int fd;
  
- 	igt_fixture {
--		intel_allocator_multiprocess_stop();
- 		igt_stop_hang_detector();
- 		intel_ctx_destroy(i915, ctx);
-+		// prepare multigpu tests
+@@ -286,6 +314,10 @@ igt_main
+ 		exec_addr = max_t(exec_addr, exec_addr, data_addr);
+ 		data_addr += exec_addr;
+ 
 +		gpu_count = igt_device_filter_count();
 +		if (gpu_count < 2)
 +			gpu_count = 1;
-+	}
 +
-+	igt_subtest("multigpu-basic") { /* run on two or more discrete cards */
+ 		igt_fork_hang_detector(fd);
+ 		close(fd);
+ 	}
+@@ -302,11 +334,33 @@ igt_main
+ 		close(fd);
+ 	}
+ 
++	igt_describe("Basic workload submission on multi-GPU machine.");
++	igt_subtest("multigpu-basic-process") {
 +		igt_require(gpu_count > 1);
++
 +		igt_multi_fork(child, gpu_count) {
-+			int g_fd;
-+			// prepare
-+			g_fd = __drm_open_driver_another(child, DRIVER_INTEL);
-+			igt_assert(g_fd >= 0);
-+			ctx = intel_ctx_create_all_physical(g_fd);
-+			igt_fork_hang_detector(g_fd);
-+			// subtest
-+			fillgtt(g_fd, ctx, ALL_ENGINES, 1);
-+			// release resources
-+			igt_stop_hang_detector();
-+			intel_ctx_destroy(g_fd, ctx);
-+			close(g_fd);
++			int fd = __drm_open_driver_another(child, DRIVER_INTEL);
++
++			igt_assert(fd > 0);
++			process(fd, child);
++			gem_quiescent_gpu(fd);
++			close(fd);
 +		}
 +
 +		igt_waitchildren();
 +	}
 +
-+	igt_fixture {
-+		intel_allocator_multiprocess_stop();
- 		close(i915);
- 	}
- }
+ 	igt_describe("Share buffer handle across different drm fd's and trying to race "
+ 		     " gem_close against continuous workload with minimum timeout.");
+ 	igt_subtest("basic-threads")
+ 		threads(1, 0);
+ 
++	igt_describe("Run basic-threads race on multi-GPU machine.");
++	igt_subtest("multigpu-basic-threads") {
++		igt_require(gpu_count > 1);
++		multigpu_threads(1, 0, gpu_count);
++	}
++
+ 	igt_describe("Test try to race gem_close against submission of continuous"
+ 		     " workload.");
+ 	igt_subtest("process-exit") {
 -- 
 2.34.1
