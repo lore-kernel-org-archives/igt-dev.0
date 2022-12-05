@@ -1,20 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Message-ID: <23a2c68a-3d6c-bf62-ae81-45bddcee7ad9@intel.com>
-Date: Mon, 5 Dec 2022 17:11:44 +0000
+Content-Type: multipart/alternative;
+ boundary="===============2607640706100302803=="
 MIME-Version: 1.0
-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
- Petri Latvala <petri.latvala@intel.com>,
- Andrzej Hajda <andrzej.hajda@intel.com>, Nirmoy Das <nirmoy.das@intel.com>
-References: <20221202120242.425128-1-matthew.auld@intel.com>
- <Y44c3jwNu1wpALfv@kamilkon-desk1>
-Content-Language: en-GB
-From: Matthew Auld <matthew.auld@intel.com>
-In-Reply-To: <Y44c3jwNu1wpALfv@kamilkon-desk1>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Subject: Re: [igt-dev] [PATCH i-g-t v2 1/2] lib/dmabuf_sync_file: move
- common stuff into lib
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Vikas Srivastava" <vikas.srivastava@intel.com>
+Date: Mon, 05 Dec 2022 19:06:02 -0000
+Message-ID: <167026716284.24403.7061046643413857291@emeril.freedesktop.org>
+References: <20221205170114.946594-1-vikas.srivastava@intel.com>
+In-Reply-To: <20221205170114.946594-1-vikas.srivastava@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3IgdGVzdHMv?=
+ =?utf-8?q?i915/gem=5Fblits=3A_Added_XY=5FFAST=5FCOPY=5FBLT_support_for_ge?=
+ =?utf-8?q?m=5Fblits?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,492 +18,281 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On 05/12/2022 16:31, Kamil Konieczny wrote:
-> Hi Matt,
-> 
-> after re-reading I have few more nits.
-> 
-> On 2022-12-02 at 12:02:41 +0000, Matthew Auld wrote:
->> So we can use this across different tests.
->>
->> v2
->>    - Add docs for everything (Petri)
->>    - Add missing copyright and fix headers slightly (Kamil)
->>
->> Signed-off-by: Matthew Auld <matthew.auld@intel.com>
->> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
->> Cc: Petri Latvala <petri.latvala@intel.com>
->> Cc: Andrzej Hajda <andrzej.hajda@intel.com>
->> Cc: Nirmoy Das <nirmoy.das@intel.com>
->> ---
->>   .../igt-gpu-tools/igt-gpu-tools-docs.xml      |   1 +
->>   lib/dmabuf_sync_file.c                        | 211 ++++++++++++++++++
->>   lib/dmabuf_sync_file.h                        |  26 +++
->>   lib/meson.build                               |   1 +
->>   tests/dmabuf_sync_file.c                      | 133 +----------
->>   5 files changed, 243 insertions(+), 129 deletions(-)
->>   create mode 100644 lib/dmabuf_sync_file.c
->>   create mode 100644 lib/dmabuf_sync_file.h
->>
->> diff --git a/docs/reference/igt-gpu-tools/igt-gpu-tools-docs.xml b/docs/reference/igt-gpu-tools/igt-gpu-tools-docs.xml
->> index 1ce842f4..102c8a89 100644
->> --- a/docs/reference/igt-gpu-tools/igt-gpu-tools-docs.xml
->> +++ b/docs/reference/igt-gpu-tools/igt-gpu-tools-docs.xml
->> @@ -15,6 +15,7 @@
->>   
->>     <chapter>
->>       <title>API Reference</title>
->> +    <xi:include href="xml/dmabuf_sync_file.xml"/>
->>       <xi:include href="xml/drmtest.xml"/>
->>       <xi:include href="xml/igt_alsa.xml"/>
->>       <xi:include href="xml/igt_audio.xml"/>
->> diff --git a/lib/dmabuf_sync_file.c b/lib/dmabuf_sync_file.c
->> new file mode 100644
->> index 00000000..bcce2486
->> --- /dev/null
->> +++ b/lib/dmabuf_sync_file.c
->> @@ -0,0 +1,211 @@
->> +// SPDX-License-Identifier: MIT
->> +/*
->> + * Copyright © 2022 Intel Corporation
->> + */
->> +
->> +#include "igt.h"
->> +#include "igt_vgem.h"
->> +#include "sw_sync.h"
->> +
->> +#include "dmabuf_sync_file.h"
->> +
->> +/**
->> + * SECTION: dmabuf_sync_file
->> + * @short_description: DMABUF importing/exporting fencing support library
->> + * @title: DMABUF Sync File
->> + * @include: dmabuf_sync_file.h
->> + */
->> +
->> +struct igt_dma_buf_sync_file {
->> +	__u32 flags;
->> +	__s32 fd;
->> +};
->> +
->> +#define IGT_DMA_BUF_IOCTL_EXPORT_SYNC_FILE _IOWR(DMA_BUF_BASE, 2, struct igt_dma_buf_sync_file)
->> +#define IGT_DMA_BUF_IOCTL_IMPORT_SYNC_FILE _IOW(DMA_BUF_BASE, 3, struct igt_dma_buf_sync_file)
->> +
->> +/**
->> + * has_dmabuf_export_sync_file:
->> + * @fd: The open drm fd
->> + *
->> + * Check if the kernel supports exporting a sync file from dmabuf.
->> + */
->> +bool has_dmabuf_export_sync_file(int fd)
->> +{
->> +	struct vgem_bo bo;
->> +	int dmabuf, ret;
->> +	struct igt_dma_buf_sync_file arg;
->> +
->> +	bo.width = 1;
->> +	bo.height = 1;
->> +	bo.bpp = 32;
->> +	vgem_create(fd, &bo);
->> +
->> +	dmabuf = prime_handle_to_fd(fd, bo.handle);
->> +	gem_close(fd, bo.handle);
->> +
->> +	arg.flags = DMA_BUF_SYNC_WRITE;
->> +	arg.fd = -1;
->> +
->> +	ret = igt_ioctl(dmabuf, IGT_DMA_BUF_IOCTL_EXPORT_SYNC_FILE, &arg);
->> +	close(dmabuf);
->> +	igt_assert(ret == 0 || errno == ENOTTY);
-> 
-> imho we should not explode here, it was ok in test but in lib
-> we should just return false in case of unexpected error, you can
-> add igt_debug if you think it will help.
-> This may lead to change in place where you use it, like
-> 	igt_require(has_dmabuf_export_sync_file(fd));
+--===============2607640706100302803==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Yup, makes sense. Will fix.
+== Series Details ==
 
-> 
->> +
->> +	return ret == 0;
->> +}
->> +
->> +/**
->> + * dmabuf_export_sync_file:
->> + * @dmabuf: The dmabuf fd
->> + * @flags: The flags to control the behaviour
->> + *
->> + * Take a snapshot of the current dma-resv fences in the dmabuf, and export as a
->> + * syncfile. The @flags should at least specify either DMA_BUF_SYNC_WRITE or
->> + * DMA_BUF_SYNC_READ, depending on if we care about the read or write fences.
->> + */
->> +int dmabuf_export_sync_file(int dmabuf, uint32_t flags)
-> 
-> As you do not check for errors so this should be
-> int __dmabuf_export_sync_file(int dmabuf, uint32_t flags)
+Series: tests/i915/gem_blits: Added XY_FAST_COPY_BLT support for gem_blits
+URL   : https://patchwork.freedesktop.org/series/111635/
+State : failure
 
-do_ioctl() is doing an igt_assert_eq(ioctl(...), 0). Or what do you mean 
-by not checking for errors?
+== Summary ==
 
-> 
->> +{
->> +	struct igt_dma_buf_sync_file arg;
->> +
->> +	arg.flags = flags;
->> +	arg.fd = -1;
->> +	do_ioctl(dmabuf, IGT_DMA_BUF_IOCTL_EXPORT_SYNC_FILE, &arg);
->> +
->> +	return arg.fd;
->> +}
->> +
->> +/**
->> + * has_dmabuf_import_sync_file:
->> + * @fd: The open drm fd
->> + *
->> + * Check if the kernel supports importing a sync file into a dmabuf.
->> + */
->> +bool has_dmabuf_import_sync_file(int fd)
->> +{
->> +	struct vgem_bo bo;
->> +	int dmabuf, timeline, fence, ret;
->> +	struct igt_dma_buf_sync_file arg;
->> +
->> +	bo.width = 1;
->> +	bo.height = 1;
->> +	bo.bpp = 32;
->> +	vgem_create(fd, &bo);
->> +
->> +	dmabuf = prime_handle_to_fd(fd, bo.handle);
->> +	gem_close(fd, bo.handle);
->> +
->> +	timeline = sw_sync_timeline_create();
->> +	fence = sw_sync_timeline_create_fence(timeline, 1);
->> +	sw_sync_timeline_inc(timeline, 1);
->> +
->> +	arg.flags = DMA_BUF_SYNC_RW;
->> +	arg.fd = fence;
->> +
->> +	ret = igt_ioctl(dmabuf, IGT_DMA_BUF_IOCTL_IMPORT_SYNC_FILE, &arg);
->> +	close(dmabuf);
->> +	close(fence);
->> +	igt_assert(ret == 0 || errno == ENOTTY);
-> 
-> Same here, return false instead of assert.
-> 
->> +
->> +	return ret == 0;
->> +}
->> +
->> +/**
->> + * dmabuf_import_sync_file:
->> + * @dmabuf: The dmabuf fd
->> + * @flags: The flags to control the behaviour
->> + * @sync_fd: The sync file (i.e our fence) to import
->> + *
->> + * Import the sync file @sync_fd, into the dmabuf. The @flags should at least
->> + * specify DMA_BUF_SYNC_WRITE or DMA_BUF_SYNC_READ, depending on if we are
->> + * importing the @sync_fd as a read or write fence.
->> + */
->> +void dmabuf_import_sync_file(int dmabuf, uint32_t flags, int sync_fd)
-> 
-> Same here, no error checks so use __ like:
-> void __dmabuf_import_sync_file(int dmabuf, uint32_t flags, int sync_fd)
-> 
->> +{
->> +	struct igt_dma_buf_sync_file arg;
->> +
->> +	arg.flags = flags;
->> +	arg.fd = sync_fd;
->> +	do_ioctl(dmabuf, IGT_DMA_BUF_IOCTL_IMPORT_SYNC_FILE, &arg);
->> +}
->> +
->> +/**
->> + * dmabuf_import_timeline_fence:
->> + * @dmabuf: The dmabuf fd
->> + * @flags: The flags to control the behaviour
->> + * @timeline: The sync file timeline where the new fence is created
->> + * @seqno: The sequence number to use for the fence
->> + *
->> + * Create a new fence as part of @timeline, and import as a sync file into the
->> + * dmabuf.  The @flags should at least specify DMA_BUF_SYNC_WRITE or
->> + * DMA_BUF_SYNC_READ, depending on if we are importing the new fence as a read
->> + * or write fence.
->> + */
->> +void dmabuf_import_timeline_fence(int dmabuf, uint32_t flags,
-> 
-> Same here, no error checks so use __ before function name.
-> 
->> +				  int timeline, uint32_t seqno)
->> +{
->> +	int fence;
->> +
->> +	fence = sw_sync_timeline_create_fence(timeline, seqno);
->> +	dmabuf_import_sync_file(dmabuf, flags, fence);
->> +	close(fence);
->> +}
->> +
->> +/**
->> + * dmabuf_busy:
->> + * @dmabuf: The dmabuf fd
->> + * @flags: The flags to control the behaviour
->> + *
->> + * Check if the fences in the dmabuf are still busy. The @flags should at least
->> + * specify DMA_BUF_SYNC_WRITE or DMA_BUF_SYNC_READ, depending on if we are
->> + * checking if the read or read fences have all signalled. Or DMA_BUF_SYNC_RW if
->> + * we care about both.
->> + */
->> +bool dmabuf_busy(int dmabuf, uint32_t flags)
->> +{
->> +	struct pollfd pfd = { .fd = dmabuf };
->> +
->> +	/* If DMA_BUF_SYNC_WRITE is set, we don't want to set POLLIN or
->> +	 * else poll() may return a non-zero value if there are only read
->> +	 * fences because POLLIN is ready even if POLLOUT isn't.
->> +	 */
->> +	if (flags & DMA_BUF_SYNC_WRITE)
->> +		pfd.events |= POLLOUT;
->> +	else if (flags & DMA_BUF_SYNC_READ)
->> +		pfd.events |= POLLIN;
->> +
->> +	return poll(&pfd, 1, 0) == 0;
->> +}
->> +
->> +/**
->> + * sync_file_busy:
->> + * @sync_file: The sync file to check
->> + *
->> + * Check if the @sync_file is still busy or not.
->> + */
->> +bool sync_file_busy(int sync_file)
->> +{
->> +	struct pollfd pfd = { .fd = sync_file, .events = POLLIN };
->> +	return poll(&pfd, 1, 0) == 0;
->> +}
->> +
->> +/**
->> + * dmabuf_sync_file_busy:
->> + * @dmabuf: The dmabuf fd
->> + * @flags: The flags to control the behaviour
->> + *
->> + * Export the current fences in @dmabuf as a sync file and check if still busy.
->> + * The @flags should at least contain DMA_BUF_SYNC_WRITE or DMA_BUF_SYNC_READ,
->> + * to specify which fences are to be exported from the @dmabuf and checked if
->> + * busy. Or DMA_BUF_SYNC_RW if we care about both.
->> + */
->> +bool dmabuf_sync_file_busy(int dmabuf, uint32_t flags)
->> +{
->> +	int sync_file;
->> +	bool busy;
->> +
->> +	sync_file = dmabuf_export_sync_file(dmabuf, flags);
-> 
-> Check for error here.
-> 
-> Regards,
-> Kamil
-> 
->> +	busy = sync_file_busy(sync_file);
->> +	close(sync_file);
->> +
->> +	return busy;
->> +}
->> diff --git a/lib/dmabuf_sync_file.h b/lib/dmabuf_sync_file.h
->> new file mode 100644
->> index 00000000..d642ff30
->> --- /dev/null
->> +++ b/lib/dmabuf_sync_file.h
->> @@ -0,0 +1,26 @@
->> +/* SPDX-License-Identifier: MIT */
->> +/*
->> + * Copyright © 2022 Intel Corporation
->> + */
->> +
->> +#ifndef DMABUF_SYNC_FILE_H
->> +#define DMABUF_SYNC_FILE_H
->> +
->> +#ifdef __linux__
->> +#include <linux/dma-buf.h>
->> +#endif
->> +#include <sys/poll.h>
->> +#include <stdbool.h>
->> +#include <stdint.h>
->> +
->> +bool has_dmabuf_export_sync_file(int fd);
->> +bool has_dmabuf_import_sync_file(int fd);
->> +int dmabuf_export_sync_file(int dmabuf, uint32_t flags);
->> +void dmabuf_import_sync_file(int dmabuf, uint32_t flags, int sync_fd);
->> +void dmabuf_import_timeline_fence(int dmabuf, uint32_t flags,
->> +			     int timeline, uint32_t seqno);
->> +bool dmabuf_busy(int dmabuf, uint32_t flags);
->> +bool sync_file_busy(int sync_file);
->> +bool dmabuf_sync_file_busy(int dmabuf, uint32_t flags);
->> +
->> +#endif
->> diff --git a/lib/meson.build b/lib/meson.build
->> index cef2d0ff..896d5733 100644
->> --- a/lib/meson.build
->> +++ b/lib/meson.build
->> @@ -1,5 +1,6 @@
->>   lib_sources = [
->>   	'drmtest.c',
->> +	'dmabuf_sync_file.c',
->>   	'huc_copy.c',
->>   	'i915/gem.c',
->>   	'i915/gem_context.c',
->> diff --git a/tests/dmabuf_sync_file.c b/tests/dmabuf_sync_file.c
->> index 2179a76d..25bb6ad7 100644
->> --- a/tests/dmabuf_sync_file.c
->> +++ b/tests/dmabuf_sync_file.c
->> @@ -1,140 +1,15 @@
->>   // SPDX-License-Identifier: MIT
->> +/*
->> + * Copyright © 2022 Intel Corporation
->> + */
->>   
->>   #include "igt.h"
->>   #include "igt_vgem.h"
->>   #include "sw_sync.h"
->> -
->> -#include <linux/dma-buf.h>
->> -#include <sys/poll.h>
->> +#include "dmabuf_sync_file.h"
->>   
->>   IGT_TEST_DESCRIPTION("Tests for sync_file support in dma-buf");
->>   
->> -struct igt_dma_buf_sync_file {
->> -	__u32 flags;
->> -	__s32 fd;
->> -};
->> -
->> -#define IGT_DMA_BUF_IOCTL_EXPORT_SYNC_FILE _IOWR(DMA_BUF_BASE, 2, struct igt_dma_buf_sync_file)
->> -#define IGT_DMA_BUF_IOCTL_IMPORT_SYNC_FILE _IOW(DMA_BUF_BASE, 3, struct igt_dma_buf_sync_file)
->> -
->> -static bool has_dmabuf_export_sync_file(int fd)
->> -{
->> -	struct vgem_bo bo;
->> -	int dmabuf, ret;
->> -	struct igt_dma_buf_sync_file arg;
->> -
->> -	bo.width = 1;
->> -	bo.height = 1;
->> -	bo.bpp = 32;
->> -	vgem_create(fd, &bo);
->> -
->> -	dmabuf = prime_handle_to_fd(fd, bo.handle);
->> -	gem_close(fd, bo.handle);
->> -
->> -	arg.flags = DMA_BUF_SYNC_WRITE;
->> -	arg.fd = -1;
->> -
->> -	ret = igt_ioctl(dmabuf, IGT_DMA_BUF_IOCTL_EXPORT_SYNC_FILE, &arg);
->> -	close(dmabuf);
->> -	igt_assert(ret == 0 || errno == ENOTTY);
->> -
->> -	return ret == 0;
->> -}
->> -
->> -static int dmabuf_export_sync_file(int dmabuf, uint32_t flags)
->> -{
->> -	struct igt_dma_buf_sync_file arg;
->> -
->> -	arg.flags = flags;
->> -	arg.fd = -1;
->> -	do_ioctl(dmabuf, IGT_DMA_BUF_IOCTL_EXPORT_SYNC_FILE, &arg);
->> -
->> -	return arg.fd;
->> -}
->> -
->> -static bool has_dmabuf_import_sync_file(int fd)
->> -{
->> -	struct vgem_bo bo;
->> -	int dmabuf, timeline, fence, ret;
->> -	struct igt_dma_buf_sync_file arg;
->> -
->> -	bo.width = 1;
->> -	bo.height = 1;
->> -	bo.bpp = 32;
->> -	vgem_create(fd, &bo);
->> -
->> -	dmabuf = prime_handle_to_fd(fd, bo.handle);
->> -	gem_close(fd, bo.handle);
->> -
->> -	timeline = sw_sync_timeline_create();
->> -	fence = sw_sync_timeline_create_fence(timeline, 1);
->> -	sw_sync_timeline_inc(timeline, 1);
->> -
->> -	arg.flags = DMA_BUF_SYNC_RW;
->> -	arg.fd = fence;
->> -
->> -	ret = igt_ioctl(dmabuf, IGT_DMA_BUF_IOCTL_IMPORT_SYNC_FILE, &arg);
->> -	close(dmabuf);
->> -	close(fence);
->> -	igt_assert(ret == 0 || errno == ENOTTY);
->> -
->> -	return ret == 0;
->> -}
->> -
->> -static void dmabuf_import_sync_file(int dmabuf, uint32_t flags, int sync_fd)
->> -{
->> -	struct igt_dma_buf_sync_file arg;
->> -
->> -	arg.flags = flags;
->> -	arg.fd = sync_fd;
->> -	do_ioctl(dmabuf, IGT_DMA_BUF_IOCTL_IMPORT_SYNC_FILE, &arg);
->> -}
->> -
->> -static void
->> -dmabuf_import_timeline_fence(int dmabuf, uint32_t flags,
->> -			     int timeline, uint32_t seqno)
->> -{
->> -	int fence;
->> -
->> -	fence = sw_sync_timeline_create_fence(timeline, seqno);
->> -	dmabuf_import_sync_file(dmabuf, flags, fence);
->> -	close(fence);
->> -}
->> -
->> -static bool dmabuf_busy(int dmabuf, uint32_t flags)
->> -{
->> -	struct pollfd pfd = { .fd = dmabuf };
->> -
->> -	/* If DMA_BUF_SYNC_WRITE is set, we don't want to set POLLIN or
->> -	 * else poll() may return a non-zero value if there are only read
->> -	 * fences because POLLIN is ready even if POLLOUT isn't.
->> -	 */
->> -	if (flags & DMA_BUF_SYNC_WRITE)
->> -		pfd.events |= POLLOUT;
->> -	else if (flags & DMA_BUF_SYNC_READ)
->> -		pfd.events |= POLLIN;
->> -
->> -	return poll(&pfd, 1, 0) == 0;
->> -}
->> -
->> -static bool sync_file_busy(int sync_file)
->> -{
->> -	struct pollfd pfd = { .fd = sync_file, .events = POLLIN };
->> -	return poll(&pfd, 1, 0) == 0;
->> -}
->> -
->> -static bool dmabuf_sync_file_busy(int dmabuf, uint32_t flags)
->> -{
->> -	int sync_file;
->> -	bool busy;
->> -
->> -	sync_file = dmabuf_export_sync_file(dmabuf, flags);
->> -	busy = sync_file_busy(sync_file);
->> -	close(sync_file);
->> -
->> -	return busy;
->> -}
->> -
->>   static void test_export_basic(int fd)
->>   {
->>   	struct vgem_bo bo;
->> -- 
->> 2.38.1
->>
+CI Bug Log - changes from CI_DRM_12468 -> IGTPW_8194
+====================================================
+
+Summary
+-------
+
+  **FAILURE**
+
+  Serious unknown changes coming with IGTPW_8194 absolutely need to be
+  verified manually.
+  
+  If you think the reported changes have nothing to do with the changes
+  introduced in IGTPW_8194, please notify your bug team to allow them
+  to document this new failure mode, which will reduce false positives in CI.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8194/index.html
+
+Participating hosts (44 -> 44)
+------------------------------
+
+  Additional (1): fi-tgl-dsi 
+  Missing    (1): bat-adlp-6 
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in IGTPW_8194:
+
+### IGT changes ###
+
+#### Possible regressions ####
+
+  * igt@i915_selftest@live@execlists:
+    - fi-bsw-nick:        [PASS][1] -> [INCOMPLETE][2]
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12468/fi-bsw-nick/igt@i915_selftest@live@execlists.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8194/fi-bsw-nick/igt@i915_selftest@live@execlists.html
+
+  
+Known issues
+------------
+
+  Here are the changes found in IGTPW_8194 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@i915_selftest@live@hangcheck:
+    - fi-hsw-4770:        [PASS][3] -> [INCOMPLETE][4] ([i915#4785])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12468/fi-hsw-4770/igt@i915_selftest@live@hangcheck.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8194/fi-hsw-4770/igt@i915_selftest@live@hangcheck.html
+    - fi-rkl-guc:         [PASS][5] -> [INCOMPLETE][6] ([i915#4983])
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12468/fi-rkl-guc/igt@i915_selftest@live@hangcheck.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8194/fi-rkl-guc/igt@i915_selftest@live@hangcheck.html
+
+  * igt@kms_chamelium@common-hpd-after-suspend:
+    - fi-ivb-3770:        NOTRUN -> [SKIP][7] ([fdo#109271] / [fdo#111827])
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8194/fi-ivb-3770/igt@kms_chamelium@common-hpd-after-suspend.html
+
+  * igt@runner@aborted:
+    - fi-hsw-4770:        NOTRUN -> [FAIL][8] ([fdo#109271] / [i915#4312] / [i915#5594])
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8194/fi-hsw-4770/igt@runner@aborted.html
+
+  
+#### Possible fixes ####
+
+  * igt@gem_exec_gttfill@basic:
+    - fi-pnv-d510:        [FAIL][9] ([i915#7229]) -> [PASS][10]
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12468/fi-pnv-d510/igt@gem_exec_gttfill@basic.html
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8194/fi-pnv-d510/igt@gem_exec_gttfill@basic.html
+
+  * igt@i915_pm_rpm@module-reload:
+    - {bat-rpls-2}:       [WARN][11] ([i915#7346]) -> [PASS][12]
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12468/bat-rpls-2/igt@i915_pm_rpm@module-reload.html
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8194/bat-rpls-2/igt@i915_pm_rpm@module-reload.html
+
+  * igt@i915_selftest@live@hangcheck:
+    - fi-ivb-3770:        [INCOMPLETE][13] ([i915#3303] / [i915#7122]) -> [PASS][14]
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12468/fi-ivb-3770/igt@i915_selftest@live@hangcheck.html
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8194/fi-ivb-3770/igt@i915_selftest@live@hangcheck.html
+
+  * igt@kms_pipe_crc_basic@suspend-read-crc@pipe-c-dp-3:
+    - {bat-dg2-9}:        [FAIL][15] ([fdo#103375]) -> [PASS][16] +1 similar issue
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12468/bat-dg2-9/igt@kms_pipe_crc_basic@suspend-read-crc@pipe-c-dp-3.html
+   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8194/bat-dg2-9/igt@kms_pipe_crc_basic@suspend-read-crc@pipe-c-dp-3.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [fdo#103375]: https://bugs.freedesktop.org/show_bug.cgi?id=103375
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [fdo#109284]: https://bugs.freedesktop.org/show_bug.cgi?id=109284
+  [fdo#109285]: https://bugs.freedesktop.org/show_bug.cgi?id=109285
+  [fdo#109295]: https://bugs.freedesktop.org/show_bug.cgi?id=109295
+  [fdo#110189]: https://bugs.freedesktop.org/show_bug.cgi?id=110189
+  [fdo#111827]: https://bugs.freedesktop.org/show_bug.cgi?id=111827
+  [i915#1759]: https://gitlab.freedesktop.org/drm/intel/issues/1759
+  [i915#2190]: https://gitlab.freedesktop.org/drm/intel/issues/2190
+  [i915#3301]: https://gitlab.freedesktop.org/drm/intel/issues/3301
+  [i915#3303]: https://gitlab.freedesktop.org/drm/intel/issues/3303
+  [i915#3546]: https://gitlab.freedesktop.org/drm/intel/issues/3546
+  [i915#3555]: https://gitlab.freedesktop.org/drm/intel/issues/3555
+  [i915#4103]: https://gitlab.freedesktop.org/drm/intel/issues/4103
+  [i915#4312]: https://gitlab.freedesktop.org/drm/intel/issues/4312
+  [i915#4613]: https://gitlab.freedesktop.org/drm/intel/issues/4613
+  [i915#4785]: https://gitlab.freedesktop.org/drm/intel/issues/4785
+  [i915#4983]: https://gitlab.freedesktop.org/drm/intel/issues/4983
+  [i915#5594]: https://gitlab.freedesktop.org/drm/intel/issues/5594
+  [i915#6367]: https://gitlab.freedesktop.org/drm/intel/issues/6367
+  [i915#6434]: https://gitlab.freedesktop.org/drm/intel/issues/6434
+  [i915#6949]: https://gitlab.freedesktop.org/drm/intel/issues/6949
+  [i915#6997]: https://gitlab.freedesktop.org/drm/intel/issues/6997
+  [i915#7058]: https://gitlab.freedesktop.org/drm/intel/issues/7058
+  [i915#7122]: https://gitlab.freedesktop.org/drm/intel/issues/7122
+  [i915#7229]: https://gitlab.freedesktop.org/drm/intel/issues/7229
+  [i915#7346]: https://gitlab.freedesktop.org/drm/intel/issues/7346
+  [i915#7456]: https://gitlab.freedesktop.org/drm/intel/issues/7456
+  [i915#7561]: https://gitlab.freedesktop.org/drm/intel/issues/7561
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_7083 -> IGTPW_8194
+
+  CI-20190529: 20190529
+  CI_DRM_12468: af29385be15ff0c030e00e8d9e48cebab385d7a0 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_8194: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8194/index.html
+  IGT_7083: c001793d5f22deb01918b6ba52af829794582df1 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8194/index.html
+
+--===============2607640706100302803==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/i915/gem_blits: Added XY_FAST_COPY_BLT support for gem_blits</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/111635/">https://patchwork.freedesktop.org/series/111635/</a></td></tr>
+<tr><td><b>State:</b></td><td>failure</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8194/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8194/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_12468 -&gt; IGTPW_8194</h1>
+<h2>Summary</h2>
+<p><strong>FAILURE</strong></p>
+<p>Serious unknown changes coming with IGTPW_8194 absolutely need to be<br />
+  verified manually.</p>
+<p>If you think the reported changes have nothing to do with the changes<br />
+  introduced in IGTPW_8194, please notify your bug team to allow them<br />
+  to document this new failure mode, which will reduce false positives in CI.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8194/index.html</p>
+<h2>Participating hosts (44 -&gt; 44)</h2>
+<p>Additional (1): fi-tgl-dsi <br />
+  Missing    (1): bat-adlp-6 </p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in IGTPW_8194:</p>
+<h3>IGT changes</h3>
+<h4>Possible regressions</h4>
+<ul>
+<li>igt@i915_selftest@live@execlists:<ul>
+<li>fi-bsw-nick:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12468/fi-bsw-nick/igt@i915_selftest@live@execlists.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8194/fi-bsw-nick/igt@i915_selftest@live@execlists.html">INCOMPLETE</a></li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_8194 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live@hangcheck:</p>
+<ul>
+<li>
+<p>fi-hsw-4770:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12468/fi-hsw-4770/igt@i915_selftest@live@hangcheck.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8194/fi-hsw-4770/igt@i915_selftest@live@hangcheck.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4785">i915#4785</a>)</p>
+</li>
+<li>
+<p>fi-rkl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12468/fi-rkl-guc/igt@i915_selftest@live@hangcheck.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8194/fi-rkl-guc/igt@i915_selftest@live@hangcheck.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4983">i915#4983</a>)</p>
+</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_chamelium@common-hpd-after-suspend:</p>
+<ul>
+<li>fi-ivb-3770:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8194/fi-ivb-3770/igt@kms_chamelium@common-hpd-after-suspend.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://bugs.freedesktop.org/show_bug.cgi?id=111827">fdo#111827</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@runner@aborted:</p>
+<ul>
+<li>fi-hsw-4770:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8194/fi-hsw-4770/igt@runner@aborted.html">FAIL</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4312">i915#4312</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/5594">i915#5594</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@gem_exec_gttfill@basic:</p>
+<ul>
+<li>fi-pnv-d510:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12468/fi-pnv-d510/igt@gem_exec_gttfill@basic.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7229">i915#7229</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8194/fi-pnv-d510/igt@gem_exec_gttfill@basic.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_pm_rpm@module-reload:</p>
+<ul>
+<li>{bat-rpls-2}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12468/bat-rpls-2/igt@i915_pm_rpm@module-reload.html">WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7346">i915#7346</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8194/bat-rpls-2/igt@i915_pm_rpm@module-reload.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@hangcheck:</p>
+<ul>
+<li>fi-ivb-3770:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12468/fi-ivb-3770/igt@i915_selftest@live@hangcheck.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3303">i915#3303</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7122">i915#7122</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8194/fi-ivb-3770/igt@i915_selftest@live@hangcheck.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@suspend-read-crc@pipe-c-dp-3:</p>
+<ul>
+<li>{bat-dg2-9}:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12468/bat-dg2-9/igt@kms_pipe_crc_basic@suspend-read-crc@pipe-c-dp-3.html">FAIL</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=103375">fdo#103375</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8194/bat-dg2-9/igt@kms_pipe_crc_basic@suspend-read-crc@pipe-c-dp-3.html">PASS</a> +1 similar issue</li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_7083 -&gt; IGTPW_8194</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_12468: af29385be15ff0c030e00e8d9e48cebab385d7a0 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_8194: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8194/index.html<br />
+  IGT_7083: c001793d5f22deb01918b6ba52af829794582df1 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============2607640706100302803==--
