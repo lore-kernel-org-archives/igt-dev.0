@@ -1,18 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9CC6110E1CB
- for <igt-dev@lists.freedesktop.org>; Mon,  5 Dec 2022 12:21:38 +0000 (UTC)
-From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Mon,  5 Dec 2022 13:21:28 +0100
-Message-Id: <20221205122129.33249-2-zbigniew.kempczynski@intel.com>
-In-Reply-To: <20221205122129.33249-1-zbigniew.kempczynski@intel.com>
-References: <20221205122129.33249-1-zbigniew.kempczynski@intel.com>
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 291C410E0EC
+ for <igt-dev@lists.freedesktop.org>; Mon,  5 Dec 2022 06:15:37 +0000 (UTC)
+Date: Mon, 5 Dec 2022 07:15:31 +0100
+From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
+To: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Message-ID: <20221205071531.618f0708@maurocar-mobl2>
+In-Reply-To: <20221202205705.58879-5-kamil.konieczny@linux.intel.com>
+References: <20221202205705.58879-1-kamil.konieczny@linux.intel.com>
+ <20221202205705.58879-5-kamil.konieczny@linux.intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v2 1/2] tests/gem_softpin: Add flink reopen
- eviction subtest
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Subject: Re: [igt-dev] [PATCH i-g-t 4/7] lib/tests/igt_fork: add tests for
+ igt_multi_fork
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,198 +21,178 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-For set of objects exported via global namespacing verify objects
-can be randomly opened, binded, executed and closed. Random open
-always returns same handle id so vma rebind is necessary. Exercise
-this when objects are opened in more opened drm fds.
+On Fri,  2 Dec 2022 21:57:02 +0100
+Kamil Konieczny <kamil.konieczny@linux.intel.com> wrote:
 
-Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
----
- tests/i915/gem_softpin.c | 161 +++++++++++++++++++++++++++++++++++++++
- 1 file changed, 161 insertions(+)
+> Create tests for new library macro igt_multi_fork. Also while at
+> this, change comment into prints which helps testing.
+> 
+> Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
-diff --git a/tests/i915/gem_softpin.c b/tests/i915/gem_softpin.c
-index a85a366408..1b905f69d8 100644
---- a/tests/i915/gem_softpin.c
-+++ b/tests/i915/gem_softpin.c
-@@ -1149,6 +1149,153 @@ static void evict_single_offset(int fd, const intel_ctx_t *ctx, int timeout)
- 	igt_assert_eq(intel_detect_and_clear_missed_interrupts(fd), 0);
- }
- 
-+struct thread {
-+	pthread_t thread;
-+	pthread_mutex_t *mutex;
-+	pthread_cond_t *cond;
-+	uint32_t *scratch;
-+	const intel_ctx_t *ctx;
-+	unsigned int engine;
-+	int fd, *go;
-+};
-+
-+#define NUMOBJ 16
-+#define NUMTHREADS 4
-+
-+static void *thread(void *data)
-+{
-+	struct thread *t = data;
-+	struct drm_i915_gem_exec_object2 obj[2];
-+	struct drm_i915_gem_execbuffer2 execbuf;
-+	const intel_ctx_t *ctx = NULL;
-+	uint64_t offset_obj, offset_bb;
-+	uint32_t batch = MI_BATCH_BUFFER_END;
-+	int fd, succeeded = 0;
-+
-+	fd = gem_reopen_driver(t->fd);
-+	ctx = intel_ctx_create(fd, &t->ctx->cfg);
-+	offset_obj = gem_detect_safe_start_offset(fd);
-+	offset_bb = ALIGN(offset_obj + 4096, gem_detect_safe_alignment(fd));
-+	igt_debug("reopened fd: %d, ctx: %u, object offset: %llx, bb offset: %llx\n",
-+		  fd, ctx->id, (long long) offset_obj, (long long) offset_bb);
-+
-+	pthread_mutex_lock(t->mutex);
-+	while (*t->go == 0)
-+		pthread_cond_wait(t->cond, t->mutex);
-+	pthread_mutex_unlock(t->mutex);
-+
-+	memset(obj, 0, sizeof(obj));
-+	obj[0].flags = EXEC_OBJECT_WRITE;
-+	obj[1].handle = gem_create(fd, 4096);
-+	gem_write(fd, obj[1].handle, 0, &batch, sizeof(batch));
-+
-+	memset(&execbuf, 0, sizeof(execbuf));
-+	execbuf.buffers_ptr = to_user_pointer(obj);
-+	execbuf.buffer_count = 2;
-+	execbuf.flags = t->engine;
-+	execbuf.flags |= I915_EXEC_HANDLE_LUT;
-+	execbuf.flags |= I915_EXEC_NO_RELOC;
-+	execbuf.rsvd1 = ctx->id;
-+
-+	igt_until_timeout(1) {
-+		unsigned int x = rand() % NUMOBJ;
-+		int ret;
-+
-+		obj[0].handle = gem_open(fd, t->scratch[x]);
-+
-+		obj[0].offset = offset_obj;
-+		obj[0].flags |= EXEC_OBJECT_PINNED | EXEC_OBJECT_WRITE |
-+				EXEC_OBJECT_SUPPORTS_48B_ADDRESS;
-+		obj[1].offset = offset_bb;
-+		obj[1].flags |= EXEC_OBJECT_PINNED | EXEC_OBJECT_SUPPORTS_48B_ADDRESS;
-+
-+		ret = __gem_execbuf(fd, &execbuf);
-+		if (ret)
-+			igt_debug("<fd: %d, ctx: %u, x: %2u, engine: %d> "
-+				  "object handle: %2u (flink: %2u), bb handle: %2u, "
-+				  "offsets: %llx, %llx [ret: %d, succeeded: %d]\n",
-+				  fd, ctx->id, x, t->engine,
-+				  obj[0].handle, t->scratch[x], obj[1].handle,
-+				  (long long) obj[0].offset,
-+				  (long long) obj[1].offset, ret, succeeded);
-+		else
-+			succeeded++;
-+
-+		igt_assert(!ret);
-+		gem_close(fd, obj[0].handle);
-+	}
-+
-+	intel_ctx_destroy(fd, ctx);
-+	gem_close(fd, obj[1].handle);
-+	close(fd);
-+
-+	return NULL;
-+}
-+
-+static void evict_flink(int fd, const intel_ctx_t *ctx,
-+			const struct intel_execution_engine2 *engine)
-+{
-+	unsigned int engines[I915_EXEC_RING_MASK + 1], nengine;
-+	uint32_t scratch[NUMOBJ], handle[NUMOBJ];
-+	struct thread *threads;
-+	pthread_mutex_t mutex;
-+	pthread_cond_t cond;
-+	int go;
-+	int i;
-+
-+	igt_require(igt_allow_unlimited_files());
-+
-+	nengine = 0;
-+	if (!engine) {
-+		struct intel_execution_engine2 *e;
-+
-+		for_each_ctx_engine(fd, ctx, e)
-+			engines[nengine++] = e->flags;
-+	} else {
-+		engines[nengine++] = engine->flags;
-+	}
-+	igt_require(nengine);
-+
-+	for (i = 0; i < NUMOBJ; i++) {
-+		handle[i] = gem_create(fd, 4096);
-+		scratch[i] = gem_flink(fd, handle[i]);
-+	}
-+
-+	threads = calloc(NUMTHREADS, sizeof(struct thread));
-+	igt_assert(threads);
-+
-+	intel_detect_and_clear_missed_interrupts(fd);
-+	pthread_mutex_init(&mutex, 0);
-+	pthread_cond_init(&cond, 0);
-+	go = 0;
-+
-+	for (i = 0; i < NUMTHREADS; i++) {
-+		threads[i].fd = fd;
-+		threads[i].ctx = ctx;
-+		threads[i].engine = engines[i % nengine];
-+		threads[i].scratch = scratch;
-+		threads[i].mutex = &mutex;
-+		threads[i].cond = &cond;
-+		threads[i].go = &go;
-+
-+		pthread_create(&threads[i].thread, 0, thread, &threads[i]);
-+	}
-+
-+	pthread_mutex_lock(&mutex);
-+	go = NUMTHREADS;
-+	pthread_cond_broadcast(&cond);
-+	pthread_mutex_unlock(&mutex);
-+
-+	for (i = 0; i < NUMTHREADS; i++)
-+		pthread_join(threads[i].thread, NULL);
-+
-+	for (i = 0; i < NUMOBJ; i++)
-+		gem_close(fd, handle[i]);
-+
-+	igt_assert_eq(intel_detect_and_clear_missed_interrupts(fd), 0);
-+	free(threads);
-+}
-+
- static void make_batch(int i915, uint32_t handle, uint64_t size)
- {
- 	uint32_t *bb = gem_mmap__device_coherent(i915, handle, 0, size, PROT_WRITE);
-@@ -1307,6 +1454,20 @@ igt_main
- 		igt_describe("Use same offset for all engines and for different handles.");
- 		igt_subtest("evict-single-offset")
- 			evict_single_offset(fd, ctx, 20);
-+
-+		igt_describe("Check eviction of vma on importing flink in reopened drm fds");
-+		igt_subtest_with_dynamic("evict-flink") {
-+			for_each_ctx_engine(fd, ctx, e) {
-+				igt_dynamic(e->name)
-+					evict_flink(fd, ctx, e);
-+			}
-+		}
-+
-+		igt_describe("Check eviction of vma on importing flink in reopened drm fds"
-+			     " executing on randomly selected engines");
-+		igt_subtest("evict-flink-all") {
-+			evict_flink(fd, ctx, NULL);
-+		}
- 	}
- 
- 	igt_describe("Check start offset and alignment detection.");
--- 
-2.34.1
+LGTM.
+
+Reviewed-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+
+> ---
+>  lib/tests/igt_fork.c | 93 +++++++++++++++++++++++++++++++-------------
+>  1 file changed, 65 insertions(+), 28 deletions(-)
+> 
+> diff --git a/lib/tests/igt_fork.c b/lib/tests/igt_fork.c
+> index d883aba4..163e16a7 100644
+> --- a/lib/tests/igt_fork.c
+> +++ b/lib/tests/igt_fork.c
+> @@ -37,13 +37,20 @@
+>  char test[] = "test";
+>  char *fake_argv[] = { test };
+>  int fake_argc = ARRAY_SIZE(fake_argv);
+> +int fork_type_dyn;
+>  
+>  __noreturn static void igt_fork_vs_skip(void)
+>  {
+>  	igt_simple_init(fake_argc, fake_argv);
+>  
+> -	igt_fork(i, 1) {
+> -		igt_skip("skipping");
+> +	if (fork_type_dyn) {
+> +		igt_multi_fork(i, 1) {
+> +			igt_skip("skipping multi-fork");
+> +		}
+> +	} else {
+> +		igt_fork(i, 1) {
+> +			igt_skip("skipping fork");
+> +		}
+>  	}
+>  
+>  	igt_waitchildren();
+> @@ -55,8 +62,14 @@ __noreturn static void igt_fork_vs_assert(void)
+>  {
+>  	igt_simple_init(fake_argc, fake_argv);
+>  
+> -	igt_fork(i, 1) {
+> -		igt_assert(0);
+> +	if (fork_type_dyn) {
+> +		igt_multi_fork(i, 1) {
+> +			igt_assert(0);
+> +		}
+> +	} else {
+> +		igt_fork(i, 1) {
+> +			igt_assert(0);
+> +		}
+>  	}
+>  
+>  	igt_waitchildren();
+> @@ -68,8 +81,14 @@ __noreturn static void igt_fork_leak(void)
+>  {
+>  	igt_simple_init(fake_argc, fake_argv);
+>  
+> -	igt_fork(i, 1) {
+> -		sleep(10);
+> +	if (fork_type_dyn) {
+> +		igt_multi_fork(i, 1) {
+> +			sleep(10);
+> +		}
+> +	} else {
+> +		igt_fork(i, 1) {
+> +			sleep(10);
+> +		}
+>  	}
+>  
+>  	igt_exit();
+> @@ -97,8 +116,14 @@ __noreturn static void igt_fork_timeout_leak(void)
+>  {
+>  	igt_simple_init(fake_argc, fake_argv);
+>  
+> -	igt_fork(i, 1) {
+> -		sleep(10);
+> +	if (fork_type_dyn) {
+> +		igt_multi_fork(i, 1) {
+> +			sleep(10);
+> +		}
+> +	} else {
+> +		igt_fork(i, 1) {
+> +			sleep(10);
+> +		}
+>  	}
+>  
+>  	igt_waitchildren_timeout(1, "library test");
+> @@ -115,14 +140,19 @@ __noreturn static void subtest_leak(void)
+>  	igt_subtest_init(fake_argc, fake_argv);
+>  
+>  	igt_subtest("fork-leak") {
+> -		igt_fork(child, num_children)
+> -			children[child] = getpid();
+> +		if (fork_type_dyn) {
+> +			igt_multi_fork(child, num_children)
+> +				children[child] = getpid();
+> +		} else {
+> +			igt_fork(child, num_children)
+> +				children[child] = getpid();
+> +		}
+>  
+>  		/* leak the children */
+>  		igt_assert(0);
+>  	}
+>  
+> -	/* We expect the exit_subtest to cleanup after the igt_fork */
+> +	/* We expect the exit_subtest to cleanup after the igt_fork and igt_multi_fork */
+>  	for (int i = 0; i < num_children; i++) {
+>  		if (children[i] > 0)
+>  			assert(kill(children[i], 0) == -1 && errno == ESRCH);
+> @@ -137,26 +167,33 @@ int main(int argc, char **argv)
+>  {
+>  	int ret;
+>  
+> -	/* check that igt_assert is forwarded */
+> -	ret = do_fork(igt_fork_vs_assert);
+> -	internal_assert_wexited(ret, IGT_EXIT_FAILURE);
+> +	for (fork_type_dyn = 0;	fork_type_dyn <= 1; ++fork_type_dyn) {
+> +		printf("Checking %sfork ...\n", fork_type_dyn ? "multi-" : "");
+> +
+> +		printf("\ncheck that igt_assert is forwarded\n");
+> +		ret = do_fork(igt_fork_vs_assert);
+> +		internal_assert_wexited(ret, IGT_EXIT_FAILURE);
+>  
+> -	/* check that igt_skip within a fork blows up */
+> -	ret = do_fork(igt_fork_vs_skip);
+> -	internal_assert_wexited(ret, SIGABRT + 128);
+> +		printf("\ncheck that igt_skip within a fork blows up\n");
+> +		ret = do_fork(igt_fork_vs_skip);
+> +		internal_assert_wexited(ret, SIGABRT + 128);
+>  
+> -	/* check that failure to clean up fails */
+> -	ret = do_fork(igt_fork_leak);
+> -	internal_assert_wsignaled(ret, SIGABRT);
+> +		printf("\ncheck that failure to clean up fails\n");
+> +		ret = do_fork(igt_fork_leak);
+> +		internal_assert_wsignaled(ret, SIGABRT);
+>  
+> -	/* check that igt_waitchildren_timeout cleans up*/
+> -	ret = do_fork(igt_fork_timeout_leak);
+> -	internal_assert_wexited(ret, SIGKILL + 128);
+> +		printf("\ncheck that igt_waitchildren_timeout cleans up\n");
+> +		ret = do_fork(igt_fork_timeout_leak);
+> +		internal_assert_wexited(ret, SIGKILL + 128);
+>  
+> -	/* check that any other process leaks are caught*/
+> -	ret = do_fork(plain_fork_leak);
+> -	internal_assert_wsignaled(ret, SIGABRT);
+> +		printf("\ncheck that any other process leaks are caught\n");
+> +		ret = do_fork(plain_fork_leak);
+> +		internal_assert_wsignaled(ret, SIGABRT);
+> +
+> +		printf("\ncheck subtest leak %d\n", fork_type_dyn);
+> +		ret = do_fork(subtest_leak);
+> +		internal_assert_wexited(ret, IGT_EXIT_FAILURE); /* not asserted! */
+> +	}
+>  
+> -	ret = do_fork(subtest_leak);
+> -	internal_assert_wexited(ret, IGT_EXIT_FAILURE); /* not asserted! */
+> +	printf("SUCCESS all tests passed\n");
+
+
+>  }
