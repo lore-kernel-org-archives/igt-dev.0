@@ -1,16 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 004EB10E25A
- for <igt-dev@lists.freedesktop.org>; Mon,  5 Dec 2022 17:03:14 +0000 (UTC)
-From: Vikas Srivastava <vikas.srivastava@intel.com>
-To: igt-dev@lists.freedesktop.org,
-	kamil.konieczny@linux.intel.com
-Date: Mon,  5 Dec 2022 22:31:14 +0530
-Message-Id: <20221205170114.946594-1-vikas.srivastava@intel.com>
+Message-ID: <23a2c68a-3d6c-bf62-ae81-45bddcee7ad9@intel.com>
+Date: Mon, 5 Dec 2022 17:11:44 +0000
 MIME-Version: 1.0
+To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ igt-dev@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
+ Petri Latvala <petri.latvala@intel.com>,
+ Andrzej Hajda <andrzej.hajda@intel.com>, Nirmoy Das <nirmoy.das@intel.com>
+References: <20221202120242.425128-1-matthew.auld@intel.com>
+ <Y44c3jwNu1wpALfv@kamilkon-desk1>
+Content-Language: en-GB
+From: Matthew Auld <matthew.auld@intel.com>
+In-Reply-To: <Y44c3jwNu1wpALfv@kamilkon-desk1>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v3] tests/i915/gem_blits: Added
- XY_FAST_COPY_BLT support for gem_blits
+Subject: Re: [igt-dev] [PATCH i-g-t v2 1/2] lib/dmabuf_sync_file: move
+ common stuff into lib
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,248 +26,488 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Arjun Melkaveri <arjun.melkaveri@intel.com>
+On 05/12/2022 16:31, Kamil Konieczny wrote:
+> Hi Matt,
+> 
+> after re-reading I have few more nits.
+> 
+> On 2022-12-02 at 12:02:41 +0000, Matthew Auld wrote:
+>> So we can use this across different tests.
+>>
+>> v2
+>>    - Add docs for everything (Petri)
+>>    - Add missing copyright and fix headers slightly (Kamil)
+>>
+>> Signed-off-by: Matthew Auld <matthew.auld@intel.com>
+>> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+>> Cc: Petri Latvala <petri.latvala@intel.com>
+>> Cc: Andrzej Hajda <andrzej.hajda@intel.com>
+>> Cc: Nirmoy Das <nirmoy.das@intel.com>
+>> ---
+>>   .../igt-gpu-tools/igt-gpu-tools-docs.xml      |   1 +
+>>   lib/dmabuf_sync_file.c                        | 211 ++++++++++++++++++
+>>   lib/dmabuf_sync_file.h                        |  26 +++
+>>   lib/meson.build                               |   1 +
+>>   tests/dmabuf_sync_file.c                      | 133 +----------
+>>   5 files changed, 243 insertions(+), 129 deletions(-)
+>>   create mode 100644 lib/dmabuf_sync_file.c
+>>   create mode 100644 lib/dmabuf_sync_file.h
+>>
+>> diff --git a/docs/reference/igt-gpu-tools/igt-gpu-tools-docs.xml b/docs/reference/igt-gpu-tools/igt-gpu-tools-docs.xml
+>> index 1ce842f4..102c8a89 100644
+>> --- a/docs/reference/igt-gpu-tools/igt-gpu-tools-docs.xml
+>> +++ b/docs/reference/igt-gpu-tools/igt-gpu-tools-docs.xml
+>> @@ -15,6 +15,7 @@
+>>   
+>>     <chapter>
+>>       <title>API Reference</title>
+>> +    <xi:include href="xml/dmabuf_sync_file.xml"/>
+>>       <xi:include href="xml/drmtest.xml"/>
+>>       <xi:include href="xml/igt_alsa.xml"/>
+>>       <xi:include href="xml/igt_audio.xml"/>
+>> diff --git a/lib/dmabuf_sync_file.c b/lib/dmabuf_sync_file.c
+>> new file mode 100644
+>> index 00000000..bcce2486
+>> --- /dev/null
+>> +++ b/lib/dmabuf_sync_file.c
+>> @@ -0,0 +1,211 @@
+>> +// SPDX-License-Identifier: MIT
+>> +/*
+>> + * Copyright © 2022 Intel Corporation
+>> + */
+>> +
+>> +#include "igt.h"
+>> +#include "igt_vgem.h"
+>> +#include "sw_sync.h"
+>> +
+>> +#include "dmabuf_sync_file.h"
+>> +
+>> +/**
+>> + * SECTION: dmabuf_sync_file
+>> + * @short_description: DMABUF importing/exporting fencing support library
+>> + * @title: DMABUF Sync File
+>> + * @include: dmabuf_sync_file.h
+>> + */
+>> +
+>> +struct igt_dma_buf_sync_file {
+>> +	__u32 flags;
+>> +	__s32 fd;
+>> +};
+>> +
+>> +#define IGT_DMA_BUF_IOCTL_EXPORT_SYNC_FILE _IOWR(DMA_BUF_BASE, 2, struct igt_dma_buf_sync_file)
+>> +#define IGT_DMA_BUF_IOCTL_IMPORT_SYNC_FILE _IOW(DMA_BUF_BASE, 3, struct igt_dma_buf_sync_file)
+>> +
+>> +/**
+>> + * has_dmabuf_export_sync_file:
+>> + * @fd: The open drm fd
+>> + *
+>> + * Check if the kernel supports exporting a sync file from dmabuf.
+>> + */
+>> +bool has_dmabuf_export_sync_file(int fd)
+>> +{
+>> +	struct vgem_bo bo;
+>> +	int dmabuf, ret;
+>> +	struct igt_dma_buf_sync_file arg;
+>> +
+>> +	bo.width = 1;
+>> +	bo.height = 1;
+>> +	bo.bpp = 32;
+>> +	vgem_create(fd, &bo);
+>> +
+>> +	dmabuf = prime_handle_to_fd(fd, bo.handle);
+>> +	gem_close(fd, bo.handle);
+>> +
+>> +	arg.flags = DMA_BUF_SYNC_WRITE;
+>> +	arg.fd = -1;
+>> +
+>> +	ret = igt_ioctl(dmabuf, IGT_DMA_BUF_IOCTL_EXPORT_SYNC_FILE, &arg);
+>> +	close(dmabuf);
+>> +	igt_assert(ret == 0 || errno == ENOTTY);
+> 
+> imho we should not explode here, it was ok in test but in lib
+> we should just return false in case of unexpected error, you can
+> add igt_debug if you think it will help.
+> This may lead to change in place where you use it, like
+> 	igt_require(has_dmabuf_export_sync_file(fd));
 
-Test case uses legacy command which is not supported starting from PVC.
-Modified test to use XY_FAST_COPY_BLT.
+Yup, makes sense. Will fix.
 
-Signed-off-by: Arjun Melkaveri <arjun.melkaveri@intel.com>
-Signed-off-by: Vikas Srivastava <vikas.srivastava@intel.com>
-Acked-by: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
----
- lib/intel_batchbuffer.c | 33 ++++++++++++---
- lib/intel_batchbuffer.h |  6 +++
- tests/i915/gem_blits.c  | 94 ++++++++++++++++++++++++++---------------
- 3 files changed, 94 insertions(+), 39 deletions(-)
+> 
+>> +
+>> +	return ret == 0;
+>> +}
+>> +
+>> +/**
+>> + * dmabuf_export_sync_file:
+>> + * @dmabuf: The dmabuf fd
+>> + * @flags: The flags to control the behaviour
+>> + *
+>> + * Take a snapshot of the current dma-resv fences in the dmabuf, and export as a
+>> + * syncfile. The @flags should at least specify either DMA_BUF_SYNC_WRITE or
+>> + * DMA_BUF_SYNC_READ, depending on if we care about the read or write fences.
+>> + */
+>> +int dmabuf_export_sync_file(int dmabuf, uint32_t flags)
+> 
+> As you do not check for errors so this should be
+> int __dmabuf_export_sync_file(int dmabuf, uint32_t flags)
 
-diff --git a/lib/intel_batchbuffer.c b/lib/intel_batchbuffer.c
-index 19a1fbe4d..6a61cbd2f 100644
---- a/lib/intel_batchbuffer.c
-+++ b/lib/intel_batchbuffer.c
-@@ -605,8 +605,19 @@ static uint32_t fast_copy_pitch(unsigned int stride, unsigned int tiling)
- 		return stride;
- }
- 
--static uint32_t fast_copy_dword0(unsigned int src_tiling,
--				 unsigned int dst_tiling)
-+/**
-+ * fast_copy_dword0:
-+ * @src_tiling: The tile format supported by source
-+ * @dst_tiling: The tile format supported by destination
-+ *
-+ * Set the source and destination tile format types bits for fast copy.
-+ *
-+ * Returns:
-+ * The dwords that will conatin the set bit for source and destination tiling.
-+ */
-+
-+uint32_t fast_copy_dword0(unsigned int src_tiling,
-+			  unsigned int dst_tiling)
- {
- 	uint32_t dword0 = 0;
- 
-@@ -649,9 +660,21 @@ static uint32_t fast_copy_dword0(unsigned int src_tiling,
- 	return dword0;
- }
- 
--static uint32_t fast_copy_dword1(unsigned int src_tiling,
--				 unsigned int dst_tiling,
--				 int bpp)
-+/**
-+ * fast_copy_dword1:
-+ * @src_tiling: The tile format supported by source
-+ * @dst_tiling: The tile format supported by destination
-+ * @bpp: Fast copy color depth parameter
-+
-+ * Set the source and destination tile format types and color depth bits for fast copy.
-+ *
-+ * Returns:
-+ * The dword1 that will conatin the set bit for color depth and source ,destination tiling.
-+ */
-+
-+uint32_t fast_copy_dword1(unsigned int src_tiling,
-+			  unsigned int dst_tiling,
-+			  int bpp)
- {
- 	uint32_t dword1 = 0;
- 
-diff --git a/lib/intel_batchbuffer.h b/lib/intel_batchbuffer.h
-index 2c19c39b1..5ce719951 100644
---- a/lib/intel_batchbuffer.h
-+++ b/lib/intel_batchbuffer.h
-@@ -271,6 +271,12 @@ unsigned int igt_buf_intel_ccs_width(unsigned int gen,
- unsigned int igt_buf_intel_ccs_height(unsigned int gen,
- 				      const struct igt_buf *buf);
- 
-+uint32_t fast_copy_dword0(unsigned int src_tiling,
-+			  unsigned int dst_tiling);
-+uint32_t fast_copy_dword1(unsigned int src_tiling,
-+			  unsigned int dst_tiling,
-+			  int bpp);
-+
- void igt_blitter_src_copy(int fd,
- 			  uint64_t ahnd,
- 			  uint32_t ctx,
-diff --git a/tests/i915/gem_blits.c b/tests/i915/gem_blits.c
-index 24e83b9f5..63dea350c 100644
---- a/tests/i915/gem_blits.c
-+++ b/tests/i915/gem_blits.c
-@@ -22,6 +22,7 @@
-  *
-  */
- 
-+#include "intel_batchbuffer.h"
- #include "i915/gem.h"
- #include "i915/gem_create.h"
- #include "igt.h"
-@@ -33,6 +34,8 @@
- #define BCS_SRC_Y (1 << 0)
- #define BCS_DST_Y (1 << 1)
- 
-+static uint32_t devid;
-+
- struct device {
- 	int fd;
- 	int gen;
-@@ -147,8 +150,7 @@ static void buffer_set_tiling(const struct device *device,
- 	struct drm_i915_gem_relocation_entry reloc[2];
- 	struct drm_i915_gem_execbuffer2 execbuf;
- 	const bool has_64b_reloc = device->gen >= 8;
--	uint32_t stride, size, pitch;
--	uint32_t *batch;
-+	uint32_t stride, size, pitch, *batch, dword1;
- 	int i;
- 
- 	if (buffer->tiling == tiling)
-@@ -209,19 +211,28 @@ static void buffer_set_tiling(const struct device *device,
- 		batch[i++] = mask;
- 	}
- 
--	batch[i] = (XY_SRC_COPY_BLT_CMD |
--		    XY_SRC_COPY_BLT_WRITE_ALPHA |
--		    XY_SRC_COPY_BLT_WRITE_RGB);
--	if (device->gen >= 4 && buffer->tiling)
--		batch[i] |= XY_SRC_COPY_BLT_SRC_TILED;
--	if (device->gen >= 4 && tiling)
--		batch[i] |= XY_SRC_COPY_BLT_DST_TILED;
--	batch[i++] |= 6 + 2 * has_64b_reloc;
--
- 	pitch = stride;
- 	if (device->gen >= 4 && tiling)
- 		pitch /= 4;
--	batch[i++] = 3 << 24 | 0xcc << 16 | pitch;
-+
-+	if (intel_graphics_ver(devid) >= IP_VER(12, 60)) {
-+		batch[i++] = fast_copy_dword0(buffer->tiling, tiling);
-+		/* PVC requires tile4 bit to be set for YMAJOR mode */
-+		dword1 = fast_copy_dword1(
-+				(buffer->tiling) ? I915_TILING_Yf : I915_TILING_NONE,
-+				(tiling) ? I915_TILING_Yf : I915_TILING_NONE, 32);
-+		batch[i++] = dword1 | pitch;
-+	} else {
-+		batch[i] = (XY_SRC_COPY_BLT_CMD |
-+			    XY_SRC_COPY_BLT_WRITE_ALPHA |
-+			    XY_SRC_COPY_BLT_WRITE_RGB);
-+		if (device->gen >= 4 && buffer->tiling)
-+			batch[i] |= XY_SRC_COPY_BLT_SRC_TILED;
-+		if (device->gen >= 4 && tiling)
-+			batch[i] |= XY_SRC_COPY_BLT_DST_TILED;
-+		batch[i++] |= 6 + 2 * has_64b_reloc;
-+		batch[i++] = 3 << 24 | 0xcc << 16 | pitch;
-+	}
- 	batch[i++] = 0;
- 	batch[i++] = buffer->height << 16 | buffer->width;
- 	reloc[0].target_handle = obj[0].handle;
-@@ -298,8 +309,7 @@ static bool blit_to_linear(const struct device *device,
- 	struct drm_i915_gem_relocation_entry reloc[2];
- 	struct drm_i915_gem_execbuffer2 execbuf;
- 	const bool has_64b_reloc = device->gen >= 8;
--	uint32_t *batch;
--	uint32_t pitch;
-+	uint32_t *batch, pitch, dword1;
- 	int i = 0;
- 
- 	igt_assert(buffer->tiling);
-@@ -354,14 +364,22 @@ static bool blit_to_linear(const struct device *device,
- 		batch[i++] = mask;
- 	}
- 
--	batch[i] = (XY_SRC_COPY_BLT_CMD |
--		    XY_SRC_COPY_BLT_WRITE_ALPHA |
--		    XY_SRC_COPY_BLT_WRITE_RGB);
--	if (device->gen >= 4 && buffer->tiling)
--		batch[i] |= XY_SRC_COPY_BLT_SRC_TILED;
--	batch[i++] |= 6 + 2 * has_64b_reloc;
--
--	batch[i++] = 3 << 24 | 0xcc << 16 | buffer->stride;
-+	if (intel_graphics_ver(devid) >= IP_VER(12, 60)) {
-+		batch[i++] = fast_copy_dword0(buffer->tiling, 0);
-+		/* PVC requires tile4 bit to be set for YMAJOR mode */
-+		dword1 = fast_copy_dword1(
-+				(buffer->tiling) ? I915_TILING_Yf : I915_TILING_NONE,
-+				0, 32);
-+		batch[i++] = dword1 | buffer->stride;
-+	} else {
-+		batch[i] = (XY_SRC_COPY_BLT_CMD |
-+			    XY_SRC_COPY_BLT_WRITE_ALPHA |
-+			    XY_SRC_COPY_BLT_WRITE_RGB);
-+		if (device->gen >= 4 && buffer->tiling)
-+			batch[i] |= XY_SRC_COPY_BLT_SRC_TILED;
-+		batch[i++] |= 6 + 2 * has_64b_reloc;
-+		batch[i++] = 3 << 24 | 0xcc << 16 | buffer->stride;
-+	}
- 	batch[i++] = 0;
- 	batch[i++] = buffer->height << 16 | buffer->width;
- 	reloc[0].target_handle = obj[0].handle;
-@@ -600,8 +618,7 @@ blit(const struct device *device,
- 	struct drm_i915_gem_relocation_entry reloc[2];
- 	struct drm_i915_gem_execbuffer2 execbuf;
- 	const bool has_64b_reloc = device->gen >= 8;
--	uint32_t *batch;
--	uint32_t pitch;
-+	uint32_t *batch, dword1, pitch;
- 	int i = 0;
- 
- 	if (src_x < 0) {
-@@ -689,20 +706,29 @@ blit(const struct device *device,
- 		batch[i++] = mask;
- 	}
- 
--	batch[i] = (XY_SRC_COPY_BLT_CMD |
--		    XY_SRC_COPY_BLT_WRITE_ALPHA |
--		    XY_SRC_COPY_BLT_WRITE_RGB);
--	if (device->gen >= 4 && src->tiling)
--		batch[i] |= XY_SRC_COPY_BLT_SRC_TILED;
--	if (device->gen >= 4 && dst->tiling)
--		batch[i] |= XY_SRC_COPY_BLT_DST_TILED;
--	batch[i++] |= 6 + 2 * has_64b_reloc;
--
- 	pitch = dst->stride;
- 	if (device->gen >= 4 && dst->tiling)
- 		pitch /= 4;
--	batch[i++] = 3 << 24 | 0xcc << 16 | pitch;
- 
-+	if (intel_graphics_ver(devid) >= IP_VER(12, 60)) {
-+		batch[i++] = fast_copy_dword0(src->tiling, dst->tiling);
-+		/* PVC requires tile4 bit to be set for YMAJOR mode */
-+		dword1 = fast_copy_dword1(
-+				(src->tiling) ? I915_TILING_Yf : I915_TILING_NONE,
-+				(dst->tiling) ? I915_TILING_Yf : I915_TILING_NONE,
-+				32);
-+		batch[i++] = dword1 | pitch;
-+	} else {
-+		batch[i] = (XY_SRC_COPY_BLT_CMD |
-+			    XY_SRC_COPY_BLT_WRITE_ALPHA |
-+			    XY_SRC_COPY_BLT_WRITE_RGB);
-+		if (device->gen >= 4 && src->tiling)
-+			batch[i] |= XY_SRC_COPY_BLT_SRC_TILED;
-+		if (device->gen >= 4 && dst->tiling)
-+			batch[i] |= XY_SRC_COPY_BLT_DST_TILED;
-+		batch[i++] |= 6 + 2 * has_64b_reloc;
-+		batch[i++] = 3 << 24 | 0xcc << 16 | pitch;
-+	}
- 	batch[i++] = dst_y << 16 | dst_x;
- 	batch[i++] = (height + dst_y) << 16 | (width + dst_x);
- 	reloc[0].target_handle = obj[0].handle;
--- 
-2.25.1
+do_ioctl() is doing an igt_assert_eq(ioctl(...), 0). Or what do you mean 
+by not checking for errors?
+
+> 
+>> +{
+>> +	struct igt_dma_buf_sync_file arg;
+>> +
+>> +	arg.flags = flags;
+>> +	arg.fd = -1;
+>> +	do_ioctl(dmabuf, IGT_DMA_BUF_IOCTL_EXPORT_SYNC_FILE, &arg);
+>> +
+>> +	return arg.fd;
+>> +}
+>> +
+>> +/**
+>> + * has_dmabuf_import_sync_file:
+>> + * @fd: The open drm fd
+>> + *
+>> + * Check if the kernel supports importing a sync file into a dmabuf.
+>> + */
+>> +bool has_dmabuf_import_sync_file(int fd)
+>> +{
+>> +	struct vgem_bo bo;
+>> +	int dmabuf, timeline, fence, ret;
+>> +	struct igt_dma_buf_sync_file arg;
+>> +
+>> +	bo.width = 1;
+>> +	bo.height = 1;
+>> +	bo.bpp = 32;
+>> +	vgem_create(fd, &bo);
+>> +
+>> +	dmabuf = prime_handle_to_fd(fd, bo.handle);
+>> +	gem_close(fd, bo.handle);
+>> +
+>> +	timeline = sw_sync_timeline_create();
+>> +	fence = sw_sync_timeline_create_fence(timeline, 1);
+>> +	sw_sync_timeline_inc(timeline, 1);
+>> +
+>> +	arg.flags = DMA_BUF_SYNC_RW;
+>> +	arg.fd = fence;
+>> +
+>> +	ret = igt_ioctl(dmabuf, IGT_DMA_BUF_IOCTL_IMPORT_SYNC_FILE, &arg);
+>> +	close(dmabuf);
+>> +	close(fence);
+>> +	igt_assert(ret == 0 || errno == ENOTTY);
+> 
+> Same here, return false instead of assert.
+> 
+>> +
+>> +	return ret == 0;
+>> +}
+>> +
+>> +/**
+>> + * dmabuf_import_sync_file:
+>> + * @dmabuf: The dmabuf fd
+>> + * @flags: The flags to control the behaviour
+>> + * @sync_fd: The sync file (i.e our fence) to import
+>> + *
+>> + * Import the sync file @sync_fd, into the dmabuf. The @flags should at least
+>> + * specify DMA_BUF_SYNC_WRITE or DMA_BUF_SYNC_READ, depending on if we are
+>> + * importing the @sync_fd as a read or write fence.
+>> + */
+>> +void dmabuf_import_sync_file(int dmabuf, uint32_t flags, int sync_fd)
+> 
+> Same here, no error checks so use __ like:
+> void __dmabuf_import_sync_file(int dmabuf, uint32_t flags, int sync_fd)
+> 
+>> +{
+>> +	struct igt_dma_buf_sync_file arg;
+>> +
+>> +	arg.flags = flags;
+>> +	arg.fd = sync_fd;
+>> +	do_ioctl(dmabuf, IGT_DMA_BUF_IOCTL_IMPORT_SYNC_FILE, &arg);
+>> +}
+>> +
+>> +/**
+>> + * dmabuf_import_timeline_fence:
+>> + * @dmabuf: The dmabuf fd
+>> + * @flags: The flags to control the behaviour
+>> + * @timeline: The sync file timeline where the new fence is created
+>> + * @seqno: The sequence number to use for the fence
+>> + *
+>> + * Create a new fence as part of @timeline, and import as a sync file into the
+>> + * dmabuf.  The @flags should at least specify DMA_BUF_SYNC_WRITE or
+>> + * DMA_BUF_SYNC_READ, depending on if we are importing the new fence as a read
+>> + * or write fence.
+>> + */
+>> +void dmabuf_import_timeline_fence(int dmabuf, uint32_t flags,
+> 
+> Same here, no error checks so use __ before function name.
+> 
+>> +				  int timeline, uint32_t seqno)
+>> +{
+>> +	int fence;
+>> +
+>> +	fence = sw_sync_timeline_create_fence(timeline, seqno);
+>> +	dmabuf_import_sync_file(dmabuf, flags, fence);
+>> +	close(fence);
+>> +}
+>> +
+>> +/**
+>> + * dmabuf_busy:
+>> + * @dmabuf: The dmabuf fd
+>> + * @flags: The flags to control the behaviour
+>> + *
+>> + * Check if the fences in the dmabuf are still busy. The @flags should at least
+>> + * specify DMA_BUF_SYNC_WRITE or DMA_BUF_SYNC_READ, depending on if we are
+>> + * checking if the read or read fences have all signalled. Or DMA_BUF_SYNC_RW if
+>> + * we care about both.
+>> + */
+>> +bool dmabuf_busy(int dmabuf, uint32_t flags)
+>> +{
+>> +	struct pollfd pfd = { .fd = dmabuf };
+>> +
+>> +	/* If DMA_BUF_SYNC_WRITE is set, we don't want to set POLLIN or
+>> +	 * else poll() may return a non-zero value if there are only read
+>> +	 * fences because POLLIN is ready even if POLLOUT isn't.
+>> +	 */
+>> +	if (flags & DMA_BUF_SYNC_WRITE)
+>> +		pfd.events |= POLLOUT;
+>> +	else if (flags & DMA_BUF_SYNC_READ)
+>> +		pfd.events |= POLLIN;
+>> +
+>> +	return poll(&pfd, 1, 0) == 0;
+>> +}
+>> +
+>> +/**
+>> + * sync_file_busy:
+>> + * @sync_file: The sync file to check
+>> + *
+>> + * Check if the @sync_file is still busy or not.
+>> + */
+>> +bool sync_file_busy(int sync_file)
+>> +{
+>> +	struct pollfd pfd = { .fd = sync_file, .events = POLLIN };
+>> +	return poll(&pfd, 1, 0) == 0;
+>> +}
+>> +
+>> +/**
+>> + * dmabuf_sync_file_busy:
+>> + * @dmabuf: The dmabuf fd
+>> + * @flags: The flags to control the behaviour
+>> + *
+>> + * Export the current fences in @dmabuf as a sync file and check if still busy.
+>> + * The @flags should at least contain DMA_BUF_SYNC_WRITE or DMA_BUF_SYNC_READ,
+>> + * to specify which fences are to be exported from the @dmabuf and checked if
+>> + * busy. Or DMA_BUF_SYNC_RW if we care about both.
+>> + */
+>> +bool dmabuf_sync_file_busy(int dmabuf, uint32_t flags)
+>> +{
+>> +	int sync_file;
+>> +	bool busy;
+>> +
+>> +	sync_file = dmabuf_export_sync_file(dmabuf, flags);
+> 
+> Check for error here.
+> 
+> Regards,
+> Kamil
+> 
+>> +	busy = sync_file_busy(sync_file);
+>> +	close(sync_file);
+>> +
+>> +	return busy;
+>> +}
+>> diff --git a/lib/dmabuf_sync_file.h b/lib/dmabuf_sync_file.h
+>> new file mode 100644
+>> index 00000000..d642ff30
+>> --- /dev/null
+>> +++ b/lib/dmabuf_sync_file.h
+>> @@ -0,0 +1,26 @@
+>> +/* SPDX-License-Identifier: MIT */
+>> +/*
+>> + * Copyright © 2022 Intel Corporation
+>> + */
+>> +
+>> +#ifndef DMABUF_SYNC_FILE_H
+>> +#define DMABUF_SYNC_FILE_H
+>> +
+>> +#ifdef __linux__
+>> +#include <linux/dma-buf.h>
+>> +#endif
+>> +#include <sys/poll.h>
+>> +#include <stdbool.h>
+>> +#include <stdint.h>
+>> +
+>> +bool has_dmabuf_export_sync_file(int fd);
+>> +bool has_dmabuf_import_sync_file(int fd);
+>> +int dmabuf_export_sync_file(int dmabuf, uint32_t flags);
+>> +void dmabuf_import_sync_file(int dmabuf, uint32_t flags, int sync_fd);
+>> +void dmabuf_import_timeline_fence(int dmabuf, uint32_t flags,
+>> +			     int timeline, uint32_t seqno);
+>> +bool dmabuf_busy(int dmabuf, uint32_t flags);
+>> +bool sync_file_busy(int sync_file);
+>> +bool dmabuf_sync_file_busy(int dmabuf, uint32_t flags);
+>> +
+>> +#endif
+>> diff --git a/lib/meson.build b/lib/meson.build
+>> index cef2d0ff..896d5733 100644
+>> --- a/lib/meson.build
+>> +++ b/lib/meson.build
+>> @@ -1,5 +1,6 @@
+>>   lib_sources = [
+>>   	'drmtest.c',
+>> +	'dmabuf_sync_file.c',
+>>   	'huc_copy.c',
+>>   	'i915/gem.c',
+>>   	'i915/gem_context.c',
+>> diff --git a/tests/dmabuf_sync_file.c b/tests/dmabuf_sync_file.c
+>> index 2179a76d..25bb6ad7 100644
+>> --- a/tests/dmabuf_sync_file.c
+>> +++ b/tests/dmabuf_sync_file.c
+>> @@ -1,140 +1,15 @@
+>>   // SPDX-License-Identifier: MIT
+>> +/*
+>> + * Copyright © 2022 Intel Corporation
+>> + */
+>>   
+>>   #include "igt.h"
+>>   #include "igt_vgem.h"
+>>   #include "sw_sync.h"
+>> -
+>> -#include <linux/dma-buf.h>
+>> -#include <sys/poll.h>
+>> +#include "dmabuf_sync_file.h"
+>>   
+>>   IGT_TEST_DESCRIPTION("Tests for sync_file support in dma-buf");
+>>   
+>> -struct igt_dma_buf_sync_file {
+>> -	__u32 flags;
+>> -	__s32 fd;
+>> -};
+>> -
+>> -#define IGT_DMA_BUF_IOCTL_EXPORT_SYNC_FILE _IOWR(DMA_BUF_BASE, 2, struct igt_dma_buf_sync_file)
+>> -#define IGT_DMA_BUF_IOCTL_IMPORT_SYNC_FILE _IOW(DMA_BUF_BASE, 3, struct igt_dma_buf_sync_file)
+>> -
+>> -static bool has_dmabuf_export_sync_file(int fd)
+>> -{
+>> -	struct vgem_bo bo;
+>> -	int dmabuf, ret;
+>> -	struct igt_dma_buf_sync_file arg;
+>> -
+>> -	bo.width = 1;
+>> -	bo.height = 1;
+>> -	bo.bpp = 32;
+>> -	vgem_create(fd, &bo);
+>> -
+>> -	dmabuf = prime_handle_to_fd(fd, bo.handle);
+>> -	gem_close(fd, bo.handle);
+>> -
+>> -	arg.flags = DMA_BUF_SYNC_WRITE;
+>> -	arg.fd = -1;
+>> -
+>> -	ret = igt_ioctl(dmabuf, IGT_DMA_BUF_IOCTL_EXPORT_SYNC_FILE, &arg);
+>> -	close(dmabuf);
+>> -	igt_assert(ret == 0 || errno == ENOTTY);
+>> -
+>> -	return ret == 0;
+>> -}
+>> -
+>> -static int dmabuf_export_sync_file(int dmabuf, uint32_t flags)
+>> -{
+>> -	struct igt_dma_buf_sync_file arg;
+>> -
+>> -	arg.flags = flags;
+>> -	arg.fd = -1;
+>> -	do_ioctl(dmabuf, IGT_DMA_BUF_IOCTL_EXPORT_SYNC_FILE, &arg);
+>> -
+>> -	return arg.fd;
+>> -}
+>> -
+>> -static bool has_dmabuf_import_sync_file(int fd)
+>> -{
+>> -	struct vgem_bo bo;
+>> -	int dmabuf, timeline, fence, ret;
+>> -	struct igt_dma_buf_sync_file arg;
+>> -
+>> -	bo.width = 1;
+>> -	bo.height = 1;
+>> -	bo.bpp = 32;
+>> -	vgem_create(fd, &bo);
+>> -
+>> -	dmabuf = prime_handle_to_fd(fd, bo.handle);
+>> -	gem_close(fd, bo.handle);
+>> -
+>> -	timeline = sw_sync_timeline_create();
+>> -	fence = sw_sync_timeline_create_fence(timeline, 1);
+>> -	sw_sync_timeline_inc(timeline, 1);
+>> -
+>> -	arg.flags = DMA_BUF_SYNC_RW;
+>> -	arg.fd = fence;
+>> -
+>> -	ret = igt_ioctl(dmabuf, IGT_DMA_BUF_IOCTL_IMPORT_SYNC_FILE, &arg);
+>> -	close(dmabuf);
+>> -	close(fence);
+>> -	igt_assert(ret == 0 || errno == ENOTTY);
+>> -
+>> -	return ret == 0;
+>> -}
+>> -
+>> -static void dmabuf_import_sync_file(int dmabuf, uint32_t flags, int sync_fd)
+>> -{
+>> -	struct igt_dma_buf_sync_file arg;
+>> -
+>> -	arg.flags = flags;
+>> -	arg.fd = sync_fd;
+>> -	do_ioctl(dmabuf, IGT_DMA_BUF_IOCTL_IMPORT_SYNC_FILE, &arg);
+>> -}
+>> -
+>> -static void
+>> -dmabuf_import_timeline_fence(int dmabuf, uint32_t flags,
+>> -			     int timeline, uint32_t seqno)
+>> -{
+>> -	int fence;
+>> -
+>> -	fence = sw_sync_timeline_create_fence(timeline, seqno);
+>> -	dmabuf_import_sync_file(dmabuf, flags, fence);
+>> -	close(fence);
+>> -}
+>> -
+>> -static bool dmabuf_busy(int dmabuf, uint32_t flags)
+>> -{
+>> -	struct pollfd pfd = { .fd = dmabuf };
+>> -
+>> -	/* If DMA_BUF_SYNC_WRITE is set, we don't want to set POLLIN or
+>> -	 * else poll() may return a non-zero value if there are only read
+>> -	 * fences because POLLIN is ready even if POLLOUT isn't.
+>> -	 */
+>> -	if (flags & DMA_BUF_SYNC_WRITE)
+>> -		pfd.events |= POLLOUT;
+>> -	else if (flags & DMA_BUF_SYNC_READ)
+>> -		pfd.events |= POLLIN;
+>> -
+>> -	return poll(&pfd, 1, 0) == 0;
+>> -}
+>> -
+>> -static bool sync_file_busy(int sync_file)
+>> -{
+>> -	struct pollfd pfd = { .fd = sync_file, .events = POLLIN };
+>> -	return poll(&pfd, 1, 0) == 0;
+>> -}
+>> -
+>> -static bool dmabuf_sync_file_busy(int dmabuf, uint32_t flags)
+>> -{
+>> -	int sync_file;
+>> -	bool busy;
+>> -
+>> -	sync_file = dmabuf_export_sync_file(dmabuf, flags);
+>> -	busy = sync_file_busy(sync_file);
+>> -	close(sync_file);
+>> -
+>> -	return busy;
+>> -}
+>> -
+>>   static void test_export_basic(int fd)
+>>   {
+>>   	struct vgem_bo bo;
+>> -- 
+>> 2.38.1
+>>
