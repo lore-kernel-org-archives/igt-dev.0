@@ -1,15 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Content-Type: multipart/alternative;
- boundary="===============8349900858725445279=="
+ boundary="===============3467846603883055353=="
 MIME-Version: 1.0
 From: Patchwork <patchwork@emeril.freedesktop.org>
 To: =?utf-8?q?Zbigniew_Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Date: Mon, 05 Dec 2022 10:52:39 -0000
-Message-ID: <167023755908.24405.7463364194849316746@emeril.freedesktop.org>
-References: <20221205092511.16008-1-zbigniew.kempczynski@intel.com>
-In-Reply-To: <20221205092511.16008-1-zbigniew.kempczynski@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3IgRXhlcmNp?=
- =?utf-8?q?se_evict-flink-*?=
+Date: Mon, 05 Dec 2022 11:22:57 -0000
+Message-ID: <167023937707.24405.5798728581354879666@emeril.freedesktop.org>
+References: <20221202081025.20273-1-zbigniew.kempczynski@intel.com>
+In-Reply-To: <20221202081025.20273-1-zbigniew.kempczynski@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3IgdGVzdHMv?=
+ =?utf-8?q?gem=5Flmem=5Fswapping=3A_Use_feature_macro_instead_checking_pla?=
+ =?utf-8?q?tform_=28rev3=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,20 +24,20 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============8349900858725445279==
+--===============3467846603883055353==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 
 == Series Details ==
 
-Series: Exercise evict-flink-*
-URL   : https://patchwork.freedesktop.org/series/111620/
+Series: tests/gem_lmem_swapping: Use feature macro instead checking platform (rev3)
+URL   : https://patchwork.freedesktop.org/series/111573/
 State : failure
 
 == Summary ==
 
-CI Bug Log - changes from CI_DRM_12466 -> IGTPW_8190
+CI Bug Log - changes from CI_DRM_12466 -> IGTPW_8191
 ====================================================
 
 Summary
@@ -44,141 +45,127 @@ Summary
 
   **FAILURE**
 
-  Serious unknown changes coming with IGTPW_8190 absolutely need to be
+  Serious unknown changes coming with IGTPW_8191 absolutely need to be
   verified manually.
   
   If you think the reported changes have nothing to do with the changes
-  introduced in IGTPW_8190, please notify your bug team to allow them
+  introduced in IGTPW_8191, please notify your bug team to allow them
   to document this new failure mode, which will reduce false positives in CI.
 
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8190/index.html
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8191/index.html
 
-Participating hosts (44 -> 31)
+Participating hosts (44 -> 42)
 ------------------------------
 
-  Missing    (13): fi-kbl-soraka bat-kbl-2 bat-adlp-9 fi-bsw-n3050 bat-dg1-5 bat-dg2-8 bat-dg2-9 bat-adlp-6 bat-adlp-4 fi-hsw-4770 bat-jsl-3 bat-dg2-11 fi-bsw-nick 
+  Missing    (2): fi-rkl-11600 fi-tgl-dsi 
 
 Possible new issues
 -------------------
 
-  Here are the unknown changes that may have been introduced in IGTPW_8190:
+  Here are the unknown changes that may have been introduced in IGTPW_8191:
 
 ### IGT changes ###
 
 #### Possible regressions ####
 
   * {igt@gem_softpin@evict-flink-all} (NEW):
-    - fi-rkl-guc:         NOTRUN -> [FAIL][1] +5 similar issues
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8190/fi-rkl-guc/igt@gem_softpin@evict-flink-all.html
-    - fi-skl-guc:         NOTRUN -> [FAIL][2] +5 similar issues
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8190/fi-skl-guc/igt@gem_softpin@evict-flink-all.html
-    - bat-dg1-6:          NOTRUN -> [FAIL][3] +6 similar issues
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8190/bat-dg1-6/igt@gem_softpin@evict-flink-all.html
-    - fi-cfl-8700k:       NOTRUN -> [FAIL][4] +5 similar issues
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8190/fi-cfl-8700k/igt@gem_softpin@evict-flink-all.html
-    - {fi-tgl-dsi}:       NOTRUN -> [FAIL][5] +6 similar issues
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8190/fi-tgl-dsi/igt@gem_softpin@evict-flink-all.html
-    - {bat-rplp-1}:       NOTRUN -> [FAIL][6] +6 similar issues
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8190/bat-rplp-1/igt@gem_softpin@evict-flink-all.html
-    - fi-rkl-11600:       NOTRUN -> [FAIL][7] +5 similar issues
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8190/fi-rkl-11600/igt@gem_softpin@evict-flink-all.html
+    - {bat-adlp-9}:       NOTRUN -> [FAIL][1] +6 similar issues
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8191/bat-adlp-9/igt@gem_softpin@evict-flink-all.html
+    - {bat-dg2-11}:       NOTRUN -> [FAIL][2] +8 similar issues
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8191/bat-dg2-11/igt@gem_softpin@evict-flink-all.html
+    - fi-bsw-nick:        NOTRUN -> [FAIL][3] +5 similar issues
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8191/fi-bsw-nick/igt@gem_softpin@evict-flink-all.html
+    - {bat-kbl-2}:        NOTRUN -> [FAIL][4] +6 similar issues
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8191/bat-kbl-2/igt@gem_softpin@evict-flink-all.html
 
-  * {igt@gem_softpin@evict-flink@bcs0} (NEW):
-    - fi-adl-ddr5:        NOTRUN -> [FAIL][8] +5 similar issues
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8190/fi-adl-ddr5/igt@gem_softpin@evict-flink@bcs0.html
-    - fi-cfl-guc:         NOTRUN -> [FAIL][9] +5 similar issues
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8190/fi-cfl-guc/igt@gem_softpin@evict-flink@bcs0.html
-    - {fi-ehl-2}:         NOTRUN -> [FAIL][10] +5 similar issues
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8190/fi-ehl-2/igt@gem_softpin@evict-flink@bcs0.html
+  * {igt@gem_softpin@evict-flink@ccs0} (NEW):
+    - {bat-dg2-9}:        NOTRUN -> [FAIL][5] +11 similar issues
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8191/bat-dg2-9/igt@gem_softpin@evict-flink@ccs0.html
 
-  * {igt@gem_softpin@evict-flink@rcs0} (NEW):
-    - {bat-jsl-1}:        NOTRUN -> [FAIL][11] +5 similar issues
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8190/bat-jsl-1/igt@gem_softpin@evict-flink@rcs0.html
-    - {fi-jsl-1}:         NOTRUN -> [FAIL][12] +5 similar issues
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8190/fi-jsl-1/igt@gem_softpin@evict-flink@rcs0.html
+  * {igt@gem_softpin@evict-flink@ccs1} (NEW):
+    - {bat-dg2-8}:        NOTRUN -> [FAIL][6] +11 similar issues
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8191/bat-dg2-8/igt@gem_softpin@evict-flink@ccs1.html
 
   * {igt@gem_softpin@evict-flink@vcs0} (NEW):
-    - fi-icl-u2:          NOTRUN -> [FAIL][13] +6 similar issues
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8190/fi-icl-u2/igt@gem_softpin@evict-flink@vcs0.html
-    - fi-apl-guc:         NOTRUN -> [FAIL][14] +5 similar issues
-   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8190/fi-apl-guc/igt@gem_softpin@evict-flink@vcs0.html
-    - fi-bdw-gvtdvm:      NOTRUN -> [FAIL][15] +6 similar issues
-   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8190/fi-bdw-gvtdvm/igt@gem_softpin@evict-flink@vcs0.html
-    - fi-bsw-kefka:       NOTRUN -> [FAIL][16] +5 similar issues
-   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8190/fi-bsw-kefka/igt@gem_softpin@evict-flink@vcs0.html
-    - {bat-dg1-7}:        NOTRUN -> [FAIL][17] +6 similar issues
-   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8190/bat-dg1-7/igt@gem_softpin@evict-flink@vcs0.html
-    - fi-skl-6700k2:      NOTRUN -> [FAIL][18] +5 similar issues
-   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8190/fi-skl-6700k2/igt@gem_softpin@evict-flink@vcs0.html
-    - fi-cfl-8109u:       NOTRUN -> [FAIL][19] +6 similar issues
-   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8190/fi-cfl-8109u/igt@gem_softpin@evict-flink@vcs0.html
-    - fi-kbl-7567u:       NOTRUN -> [FAIL][20] +6 similar issues
-   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8190/fi-kbl-7567u/igt@gem_softpin@evict-flink@vcs0.html
-    - {bat-adln-1}:       NOTRUN -> [FAIL][21] +5 similar issues
-   [21]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8190/bat-adln-1/igt@gem_softpin@evict-flink@vcs0.html
-    - fi-kbl-8809g:       NOTRUN -> [FAIL][22] +5 similar issues
-   [22]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8190/fi-kbl-8809g/igt@gem_softpin@evict-flink@vcs0.html
-    - {bat-adlm-1}:       NOTRUN -> [FAIL][23] +6 similar issues
-   [23]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8190/bat-adlm-1/igt@gem_softpin@evict-flink@vcs0.html
-
-  * {igt@gem_softpin@evict-flink@vecs0} (NEW):
-    - {bat-rpls-2}:       NOTRUN -> [FAIL][24] +6 similar issues
-   [24]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8190/bat-rpls-2/igt@gem_softpin@evict-flink@vecs0.html
-    - fi-glk-j4005:       NOTRUN -> [FAIL][25] +5 similar issues
-   [25]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8190/fi-glk-j4005/igt@gem_softpin@evict-flink@vecs0.html
+    - bat-dg1-5:          NOTRUN -> [FAIL][7] +6 similar issues
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8191/bat-dg1-5/igt@gem_softpin@evict-flink@vcs0.html
+    - {bat-jsl-3}:        NOTRUN -> [FAIL][8] +5 similar issues
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8191/bat-jsl-3/igt@gem_softpin@evict-flink@vcs0.html
+    - fi-kbl-soraka:      NOTRUN -> [FAIL][9] +5 similar issues
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8191/fi-kbl-soraka/igt@gem_softpin@evict-flink@vcs0.html
+    - bat-adlp-4:         NOTRUN -> [FAIL][10] +6 similar issues
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8191/bat-adlp-4/igt@gem_softpin@evict-flink@vcs0.html
 
   * igt@meta_test@fail-result (NEW):
-    - fi-ilk-650:         NOTRUN -> [FAIL][26]
-   [26]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8190/fi-ilk-650/igt@meta_test@fail-result.html
-    - fi-blb-e6850:       NOTRUN -> [FAIL][27]
-   [27]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8190/fi-blb-e6850/igt@meta_test@fail-result.html
-    - fi-pnv-d510:        NOTRUN -> [FAIL][28]
-   [28]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8190/fi-pnv-d510/igt@meta_test@fail-result.html
-    - fi-ivb-3770:        NOTRUN -> [FAIL][29]
-   [29]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8190/fi-ivb-3770/igt@meta_test@fail-result.html
-    - fi-elk-e7500:       NOTRUN -> [FAIL][30]
-   [30]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8190/fi-elk-e7500/igt@meta_test@fail-result.html
-    - fi-snb-2600:        NOTRUN -> [FAIL][31]
-   [31]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8190/fi-snb-2600/igt@meta_test@fail-result.html
+    - {bat-adlp-6}:       NOTRUN -> [FAIL][11] +6 similar issues
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8191/bat-adlp-6/igt@meta_test@fail-result.html
+
+  
+#### Warnings ####
+
+  * igt@runner@aborted:
+    - fi-bsw-n3050:       [FAIL][12] ([i915#4312]) -> [FAIL][13]
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12466/fi-bsw-n3050/igt@runner@aborted.html
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8191/fi-bsw-n3050/igt@runner@aborted.html
 
   
 New tests
 ---------
 
-  New tests have been introduced between CI_DRM_12466 and IGTPW_8190:
+  New tests have been introduced between CI_DRM_12466 and IGTPW_8191:
 
-### New IGT tests (8) ###
+### New IGT tests (13) ###
 
   * igt@gem_softpin@evict-flink:
-    - Statuses : 6 skip(s)
-    - Exec time: [0.0] s
+    - Statuses :
+    - Exec time: [None] s
 
   * igt@gem_softpin@evict-flink-all:
-    - Statuses : 25 fail(s) 6 skip(s)
+    - Statuses : 11 fail(s)
     - Exec time: [0.0] s
 
   * igt@gem_softpin@evict-flink@bcs0:
-    - Statuses : 25 fail(s)
+    - Statuses : 11 fail(s)
+    - Exec time: [0.0] s
+
+  * igt@gem_softpin@evict-flink@ccs0:
+    - Statuses : 3 fail(s)
+    - Exec time: [0.0] s
+
+  * igt@gem_softpin@evict-flink@ccs1:
+    - Statuses : 2 fail(s)
+    - Exec time: [0.0] s
+
+  * igt@gem_softpin@evict-flink@ccs2:
+    - Statuses : 2 fail(s)
+    - Exec time: [0.0] s
+
+  * igt@gem_softpin@evict-flink@ccs3:
+    - Statuses : 2 fail(s)
     - Exec time: [0.0] s
 
   * igt@gem_softpin@evict-flink@rcs0:
-    - Statuses : 25 fail(s)
+    - Statuses : 11 fail(s)
     - Exec time: [0.0] s
 
   * igt@gem_softpin@evict-flink@vcs0:
-    - Statuses : 25 fail(s)
+    - Statuses : 11 fail(s)
     - Exec time: [0.0] s
 
   * igt@gem_softpin@evict-flink@vcs1:
-    - Statuses : 10 fail(s)
+    - Statuses : 8 fail(s)
     - Exec time: [0.0] s
 
   * igt@gem_softpin@evict-flink@vecs0:
-    - Statuses : 25 fail(s)
+    - Statuses : 11 fail(s)
+    - Exec time: [0.0] s
+
+  * igt@gem_softpin@evict-flink@vecs1:
+    - Statuses : 3 fail(s)
     - Exec time: [0.0] s
 
   * igt@meta_test@fail-result:
-    - Statuses : 31 fail(s)
+    - Statuses : 11 fail(s)
     - Exec time: [0.0] s
 
   
@@ -186,59 +173,97 @@ New tests
 Known issues
 ------------
 
-  Here are the changes found in IGTPW_8190 that come from known issues:
+  Here are the changes found in IGTPW_8191 that come from known issues:
 
 ### IGT changes ###
 
 #### Issues hit ####
 
-  * {igt@gem_softpin@evict-flink} (NEW):
-    - fi-blb-e6850:       NOTRUN -> [SKIP][32] ([fdo#109271]) +1 similar issue
-   [32]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8190/fi-blb-e6850/igt@gem_softpin@evict-flink.html
+  * igt@gem_exec_gttfill@basic:
+    - fi-pnv-d510:        [PASS][14] -> [FAIL][15] ([i915#7229])
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12466/fi-pnv-d510/igt@gem_exec_gttfill@basic.html
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8191/fi-pnv-d510/igt@gem_exec_gttfill@basic.html
 
-  * {igt@gem_softpin@evict-flink-all} (NEW):
-    - fi-snb-2600:        NOTRUN -> [SKIP][33] ([fdo#109271]) +1 similar issue
-   [33]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8190/fi-snb-2600/igt@gem_softpin@evict-flink-all.html
-    - fi-ivb-3770:        NOTRUN -> [SKIP][34] ([fdo#109271]) +1 similar issue
-   [34]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8190/fi-ivb-3770/igt@gem_softpin@evict-flink-all.html
-    - fi-elk-e7500:       NOTRUN -> [SKIP][35] ([fdo#109271]) +1 similar issue
-   [35]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8190/fi-elk-e7500/igt@gem_softpin@evict-flink-all.html
-    - fi-ilk-650:         NOTRUN -> [SKIP][36] ([fdo#109271]) +1 similar issue
-   [36]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8190/fi-ilk-650/igt@gem_softpin@evict-flink-all.html
-    - fi-pnv-d510:        NOTRUN -> [SKIP][37] ([fdo#109271]) +1 similar issue
-   [37]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8190/fi-pnv-d510/igt@gem_softpin@evict-flink-all.html
+  * igt@kms_chamelium@common-hpd-after-suspend:
+    - fi-hsw-4770:        NOTRUN -> [SKIP][16] ([fdo#109271] / [fdo#111827])
+   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8191/fi-hsw-4770/igt@kms_chamelium@common-hpd-after-suspend.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_module_load@reload:
+    - {bat-rpls-2}:       [DMESG-WARN][17] ([i915#6434]) -> [PASS][18]
+   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12466/bat-rpls-2/igt@i915_module_load@reload.html
+   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8191/bat-rpls-2/igt@i915_module_load@reload.html
+
+  * igt@i915_pm_rpm@module-reload:
+    - {bat-rpls-2}:       [WARN][19] ([i915#7346]) -> [PASS][20]
+   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12466/bat-rpls-2/igt@i915_pm_rpm@module-reload.html
+   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8191/bat-rpls-2/igt@i915_pm_rpm@module-reload.html
+
+  * igt@i915_selftest@live@gt_mocs:
+    - {bat-dg1-7}:        [INCOMPLETE][21] -> [PASS][22]
+   [21]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12466/bat-dg1-7/igt@i915_selftest@live@gt_mocs.html
+   [22]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8191/bat-dg1-7/igt@i915_selftest@live@gt_mocs.html
+
+  * igt@i915_selftest@live@hangcheck:
+    - fi-hsw-4770:        [INCOMPLETE][23] ([i915#4785]) -> [PASS][24]
+   [23]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12466/fi-hsw-4770/igt@i915_selftest@live@hangcheck.html
+   [24]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8191/fi-hsw-4770/igt@i915_selftest@live@hangcheck.html
+
+  * igt@i915_selftest@live@reset:
+    - {bat-rpls-2}:       [DMESG-FAIL][25] ([i915#4983]) -> [PASS][26]
+   [25]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12466/bat-rpls-2/igt@i915_selftest@live@reset.html
+   [26]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8191/bat-rpls-2/igt@i915_selftest@live@reset.html
+
+  * igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions-varying-size:
+    - fi-bsw-kefka:       [FAIL][27] ([i915#6298]) -> [PASS][28]
+   [27]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12466/fi-bsw-kefka/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions-varying-size.html
+   [28]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8191/fi-bsw-kefka/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions-varying-size.html
 
   
   {name}: This element is suppressed. This means it is ignored when computing
           the status of the difference (SUCCESS, WARNING, or FAILURE).
 
   [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [fdo#111827]: https://bugs.freedesktop.org/show_bug.cgi?id=111827
+  [i915#2867]: https://gitlab.freedesktop.org/drm/intel/issues/2867
+  [i915#4078]: https://gitlab.freedesktop.org/drm/intel/issues/4078
+  [i915#4312]: https://gitlab.freedesktop.org/drm/intel/issues/4312
+  [i915#4785]: https://gitlab.freedesktop.org/drm/intel/issues/4785
+  [i915#4983]: https://gitlab.freedesktop.org/drm/intel/issues/4983
+  [i915#5122]: https://gitlab.freedesktop.org/drm/intel/issues/5122
+  [i915#6298]: https://gitlab.freedesktop.org/drm/intel/issues/6298
+  [i915#6367]: https://gitlab.freedesktop.org/drm/intel/issues/6367
+  [i915#6434]: https://gitlab.freedesktop.org/drm/intel/issues/6434
+  [i915#6559]: https://gitlab.freedesktop.org/drm/intel/issues/6559
+  [i915#7229]: https://gitlab.freedesktop.org/drm/intel/issues/7229
+  [i915#7346]: https://gitlab.freedesktop.org/drm/intel/issues/7346
 
 
 Build changes
 -------------
 
   * CI: CI-20190529 -> None
-  * IGT: IGT_7080 -> IGTPW_8190
+  * IGT: IGT_7080 -> IGTPW_8191
 
   CI-20190529: 20190529
   CI_DRM_12466: 359d1acd20aea425840eaea1908f3257bb7de1eb @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_8190: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8190/index.html
+  IGTPW_8191: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8191/index.html
   IGT_7080: 14721e0783757dfa44ca2677851c3ba508b09682 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
 
 
 Testlist changes
 ----------------
 
-+igt@gem_softpin@evict-flink
-+igt@gem_softpin@evict-flink-all
--igt@kms_async_flips@async-flip-with-page-flip-events-linear
+-igt@gem_softpin@evict-flink
+-igt@gem_softpin@evict-flink-all
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8190/index.html
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8191/index.html
 
---===============8349900858725445279==
+--===============3467846603883055353==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -258,28 +283,28 @@ Content-Transfer-Encoding: 7bit
 
 <b>Patch Details</b>
 <table>
-<tr><td><b>Series:</b></td><td>Exercise evict-flink-*</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/111620/">https://patchwork.freedesktop.org/series/111620/</a></td></tr>
+<tr><td><b>Series:</b></td><td>tests/gem_lmem_swapping: Use feature macro instead checking platform (rev3)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/111573/">https://patchwork.freedesktop.org/series/111573/</a></td></tr>
 <tr><td><b>State:</b></td><td>failure</td></tr>
 
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8190/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8190/index.html</a></td></tr>
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8191/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8191/index.html</a></td></tr>
 
 </table>
 
 
-    <h1>CI Bug Log - changes from CI_DRM_12466 -&gt; IGTPW_8190</h1>
+    <h1>CI Bug Log - changes from CI_DRM_12466 -&gt; IGTPW_8191</h1>
 <h2>Summary</h2>
 <p><strong>FAILURE</strong></p>
-<p>Serious unknown changes coming with IGTPW_8190 absolutely need to be<br />
+<p>Serious unknown changes coming with IGTPW_8191 absolutely need to be<br />
   verified manually.</p>
 <p>If you think the reported changes have nothing to do with the changes<br />
-  introduced in IGTPW_8190, please notify your bug team to allow them<br />
+  introduced in IGTPW_8191, please notify your bug team to allow them<br />
   to document this new failure mode, which will reduce false positives in CI.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8190/index.html</p>
-<h2>Participating hosts (44 -&gt; 31)</h2>
-<p>Missing    (13): fi-kbl-soraka bat-kbl-2 bat-adlp-9 fi-bsw-n3050 bat-dg1-5 bat-dg2-8 bat-dg2-9 bat-adlp-6 bat-adlp-4 fi-hsw-4770 bat-jsl-3 bat-dg2-11 fi-bsw-nick </p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8191/index.html</p>
+<h2>Participating hosts (44 -&gt; 42)</h2>
+<p>Missing    (2): fi-rkl-11600 fi-tgl-dsi </p>
 <h2>Possible new issues</h2>
-<p>Here are the unknown changes that may have been introduced in IGTPW_8190:</p>
+<p>Here are the unknown changes that may have been introduced in IGTPW_8191:</p>
 <h3>IGT changes</h3>
 <h4>Possible regressions</h4>
 <ul>
@@ -287,216 +312,212 @@ Content-Transfer-Encoding: 7bit
 <p>{igt@gem_softpin@evict-flink-all} (NEW):</p>
 <ul>
 <li>
-<p>fi-rkl-guc:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8190/fi-rkl-guc/igt@gem_softpin@evict-flink-all.html">FAIL</a> +5 similar issues</p>
+<p>{bat-adlp-9}:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8191/bat-adlp-9/igt@gem_softpin@evict-flink-all.html">FAIL</a> +6 similar issues</p>
 </li>
 <li>
-<p>fi-skl-guc:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8190/fi-skl-guc/igt@gem_softpin@evict-flink-all.html">FAIL</a> +5 similar issues</p>
+<p>{bat-dg2-11}:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8191/bat-dg2-11/igt@gem_softpin@evict-flink-all.html">FAIL</a> +8 similar issues</p>
 </li>
 <li>
-<p>bat-dg1-6:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8190/bat-dg1-6/igt@gem_softpin@evict-flink-all.html">FAIL</a> +6 similar issues</p>
+<p>fi-bsw-nick:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8191/fi-bsw-nick/igt@gem_softpin@evict-flink-all.html">FAIL</a> +5 similar issues</p>
 </li>
 <li>
-<p>fi-cfl-8700k:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8190/fi-cfl-8700k/igt@gem_softpin@evict-flink-all.html">FAIL</a> +5 similar issues</p>
-</li>
-<li>
-<p>{fi-tgl-dsi}:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8190/fi-tgl-dsi/igt@gem_softpin@evict-flink-all.html">FAIL</a> +6 similar issues</p>
-</li>
-<li>
-<p>{bat-rplp-1}:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8190/bat-rplp-1/igt@gem_softpin@evict-flink-all.html">FAIL</a> +6 similar issues</p>
-</li>
-<li>
-<p>fi-rkl-11600:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8190/fi-rkl-11600/igt@gem_softpin@evict-flink-all.html">FAIL</a> +5 similar issues</p>
+<p>{bat-kbl-2}:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8191/bat-kbl-2/igt@gem_softpin@evict-flink-all.html">FAIL</a> +6 similar issues</p>
 </li>
 </ul>
 </li>
 <li>
-<p>{igt@gem_softpin@evict-flink@bcs0} (NEW):</p>
+<p>{igt@gem_softpin@evict-flink@ccs0} (NEW):</p>
 <ul>
-<li>
-<p>fi-adl-ddr5:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8190/fi-adl-ddr5/igt@gem_softpin@evict-flink@bcs0.html">FAIL</a> +5 similar issues</p>
-</li>
-<li>
-<p>fi-cfl-guc:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8190/fi-cfl-guc/igt@gem_softpin@evict-flink@bcs0.html">FAIL</a> +5 similar issues</p>
-</li>
-<li>
-<p>{fi-ehl-2}:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8190/fi-ehl-2/igt@gem_softpin@evict-flink@bcs0.html">FAIL</a> +5 similar issues</p>
-</li>
+<li>{bat-dg2-9}:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8191/bat-dg2-9/igt@gem_softpin@evict-flink@ccs0.html">FAIL</a> +11 similar issues</li>
 </ul>
 </li>
 <li>
-<p>{igt@gem_softpin@evict-flink@rcs0} (NEW):</p>
+<p>{igt@gem_softpin@evict-flink@ccs1} (NEW):</p>
 <ul>
-<li>
-<p>{bat-jsl-1}:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8190/bat-jsl-1/igt@gem_softpin@evict-flink@rcs0.html">FAIL</a> +5 similar issues</p>
-</li>
-<li>
-<p>{fi-jsl-1}:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8190/fi-jsl-1/igt@gem_softpin@evict-flink@rcs0.html">FAIL</a> +5 similar issues</p>
-</li>
+<li>{bat-dg2-8}:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8191/bat-dg2-8/igt@gem_softpin@evict-flink@ccs1.html">FAIL</a> +11 similar issues</li>
 </ul>
 </li>
 <li>
 <p>{igt@gem_softpin@evict-flink@vcs0} (NEW):</p>
 <ul>
 <li>
-<p>fi-icl-u2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8190/fi-icl-u2/igt@gem_softpin@evict-flink@vcs0.html">FAIL</a> +6 similar issues</p>
+<p>bat-dg1-5:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8191/bat-dg1-5/igt@gem_softpin@evict-flink@vcs0.html">FAIL</a> +6 similar issues</p>
 </li>
 <li>
-<p>fi-apl-guc:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8190/fi-apl-guc/igt@gem_softpin@evict-flink@vcs0.html">FAIL</a> +5 similar issues</p>
+<p>{bat-jsl-3}:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8191/bat-jsl-3/igt@gem_softpin@evict-flink@vcs0.html">FAIL</a> +5 similar issues</p>
 </li>
 <li>
-<p>fi-bdw-gvtdvm:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8190/fi-bdw-gvtdvm/igt@gem_softpin@evict-flink@vcs0.html">FAIL</a> +6 similar issues</p>
+<p>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8191/fi-kbl-soraka/igt@gem_softpin@evict-flink@vcs0.html">FAIL</a> +5 similar issues</p>
 </li>
 <li>
-<p>fi-bsw-kefka:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8190/fi-bsw-kefka/igt@gem_softpin@evict-flink@vcs0.html">FAIL</a> +5 similar issues</p>
-</li>
-<li>
-<p>{bat-dg1-7}:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8190/bat-dg1-7/igt@gem_softpin@evict-flink@vcs0.html">FAIL</a> +6 similar issues</p>
-</li>
-<li>
-<p>fi-skl-6700k2:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8190/fi-skl-6700k2/igt@gem_softpin@evict-flink@vcs0.html">FAIL</a> +5 similar issues</p>
-</li>
-<li>
-<p>fi-cfl-8109u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8190/fi-cfl-8109u/igt@gem_softpin@evict-flink@vcs0.html">FAIL</a> +6 similar issues</p>
-</li>
-<li>
-<p>fi-kbl-7567u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8190/fi-kbl-7567u/igt@gem_softpin@evict-flink@vcs0.html">FAIL</a> +6 similar issues</p>
-</li>
-<li>
-<p>{bat-adln-1}:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8190/bat-adln-1/igt@gem_softpin@evict-flink@vcs0.html">FAIL</a> +5 similar issues</p>
-</li>
-<li>
-<p>fi-kbl-8809g:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8190/fi-kbl-8809g/igt@gem_softpin@evict-flink@vcs0.html">FAIL</a> +5 similar issues</p>
-</li>
-<li>
-<p>{bat-adlm-1}:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8190/bat-adlm-1/igt@gem_softpin@evict-flink@vcs0.html">FAIL</a> +6 similar issues</p>
-</li>
-</ul>
-</li>
-<li>
-<p>{igt@gem_softpin@evict-flink@vecs0} (NEW):</p>
-<ul>
-<li>
-<p>{bat-rpls-2}:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8190/bat-rpls-2/igt@gem_softpin@evict-flink@vecs0.html">FAIL</a> +6 similar issues</p>
-</li>
-<li>
-<p>fi-glk-j4005:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8190/fi-glk-j4005/igt@gem_softpin@evict-flink@vecs0.html">FAIL</a> +5 similar issues</p>
+<p>bat-adlp-4:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8191/bat-adlp-4/igt@gem_softpin@evict-flink@vcs0.html">FAIL</a> +6 similar issues</p>
 </li>
 </ul>
 </li>
 <li>
 <p>igt@meta_test@fail-result (NEW):</p>
 <ul>
-<li>
-<p>fi-ilk-650:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8190/fi-ilk-650/igt@meta_test@fail-result.html">FAIL</a></p>
+<li>{bat-adlp-6}:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8191/bat-adlp-6/igt@meta_test@fail-result.html">FAIL</a> +6 similar issues</li>
+</ul>
 </li>
-<li>
-<p>fi-blb-e6850:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8190/fi-blb-e6850/igt@meta_test@fail-result.html">FAIL</a></p>
-</li>
-<li>
-<p>fi-pnv-d510:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8190/fi-pnv-d510/igt@meta_test@fail-result.html">FAIL</a></p>
-</li>
-<li>
-<p>fi-ivb-3770:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8190/fi-ivb-3770/igt@meta_test@fail-result.html">FAIL</a></p>
-</li>
-<li>
-<p>fi-elk-e7500:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8190/fi-elk-e7500/igt@meta_test@fail-result.html">FAIL</a></p>
-</li>
-<li>
-<p>fi-snb-2600:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8190/fi-snb-2600/igt@meta_test@fail-result.html">FAIL</a></p>
-</li>
+</ul>
+<h4>Warnings</h4>
+<ul>
+<li>igt@runner@aborted:<ul>
+<li>fi-bsw-n3050:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12466/fi-bsw-n3050/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4312">i915#4312</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8191/fi-bsw-n3050/igt@runner@aborted.html">FAIL</a></li>
 </ul>
 </li>
 </ul>
 <h2>New tests</h2>
-<p>New tests have been introduced between CI_DRM_12466 and IGTPW_8190:</p>
-<h3>New IGT tests (8)</h3>
+<p>New tests have been introduced between CI_DRM_12466 and IGTPW_8191:</p>
+<h3>New IGT tests (13)</h3>
 <ul>
 <li>
 <p>igt@gem_softpin@evict-flink:</p>
 <ul>
-<li>Statuses : 6 skip(s)</li>
-<li>Exec time: [0.0] s</li>
+<li>Statuses :</li>
+<li>Exec time: [None] s</li>
 </ul>
 </li>
 <li>
 <p>igt@gem_softpin@evict-flink-all:</p>
 <ul>
-<li>Statuses : 25 fail(s) 6 skip(s)</li>
+<li>Statuses : 11 fail(s)</li>
 <li>Exec time: [0.0] s</li>
 </ul>
 </li>
 <li>
 <p>igt@gem_softpin@evict-flink@bcs0:</p>
 <ul>
-<li>Statuses : 25 fail(s)</li>
+<li>Statuses : 11 fail(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_softpin@evict-flink@ccs0:</p>
+<ul>
+<li>Statuses : 3 fail(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_softpin@evict-flink@ccs1:</p>
+<ul>
+<li>Statuses : 2 fail(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_softpin@evict-flink@ccs2:</p>
+<ul>
+<li>Statuses : 2 fail(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_softpin@evict-flink@ccs3:</p>
+<ul>
+<li>Statuses : 2 fail(s)</li>
 <li>Exec time: [0.0] s</li>
 </ul>
 </li>
 <li>
 <p>igt@gem_softpin@evict-flink@rcs0:</p>
 <ul>
-<li>Statuses : 25 fail(s)</li>
+<li>Statuses : 11 fail(s)</li>
 <li>Exec time: [0.0] s</li>
 </ul>
 </li>
 <li>
 <p>igt@gem_softpin@evict-flink@vcs0:</p>
 <ul>
-<li>Statuses : 25 fail(s)</li>
+<li>Statuses : 11 fail(s)</li>
 <li>Exec time: [0.0] s</li>
 </ul>
 </li>
 <li>
 <p>igt@gem_softpin@evict-flink@vcs1:</p>
 <ul>
-<li>Statuses : 10 fail(s)</li>
+<li>Statuses : 8 fail(s)</li>
 <li>Exec time: [0.0] s</li>
 </ul>
 </li>
 <li>
 <p>igt@gem_softpin@evict-flink@vecs0:</p>
 <ul>
-<li>Statuses : 25 fail(s)</li>
+<li>Statuses : 11 fail(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_softpin@evict-flink@vecs1:</p>
+<ul>
+<li>Statuses : 3 fail(s)</li>
 <li>Exec time: [0.0] s</li>
 </ul>
 </li>
 <li>
 <p>igt@meta_test@fail-result:</p>
 <ul>
-<li>Statuses : 31 fail(s)</li>
+<li>Statuses : 11 fail(s)</li>
 <li>Exec time: [0.0] s</li>
 </ul>
 </li>
 </ul>
 <h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_8190 that come from known issues:</p>
+<p>Here are the changes found in IGTPW_8191 that come from known issues:</p>
 <h3>IGT changes</h3>
 <h4>Issues hit</h4>
 <ul>
 <li>
-<p>{igt@gem_softpin@evict-flink} (NEW):</p>
+<p>igt@gem_exec_gttfill@basic:</p>
 <ul>
-<li>fi-blb-e6850:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8190/fi-blb-e6850/igt@gem_softpin@evict-flink.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +1 similar issue</li>
+<li>fi-pnv-d510:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12466/fi-pnv-d510/igt@gem_exec_gttfill@basic.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8191/fi-pnv-d510/igt@gem_exec_gttfill@basic.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7229">i915#7229</a>)</li>
 </ul>
 </li>
 <li>
-<p>{igt@gem_softpin@evict-flink-all} (NEW):</p>
+<p>igt@kms_chamelium@common-hpd-after-suspend:</p>
+<ul>
+<li>fi-hsw-4770:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8191/fi-hsw-4770/igt@kms_chamelium@common-hpd-after-suspend.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://bugs.freedesktop.org/show_bug.cgi?id=111827">fdo#111827</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
 <ul>
 <li>
-<p>fi-snb-2600:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8190/fi-snb-2600/igt@gem_softpin@evict-flink-all.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +1 similar issue</p>
+<p>igt@i915_module_load@reload:</p>
+<ul>
+<li>{bat-rpls-2}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12466/bat-rpls-2/igt@i915_module_load@reload.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6434">i915#6434</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8191/bat-rpls-2/igt@i915_module_load@reload.html">PASS</a></li>
+</ul>
 </li>
 <li>
-<p>fi-ivb-3770:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8190/fi-ivb-3770/igt@gem_softpin@evict-flink-all.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +1 similar issue</p>
+<p>igt@i915_pm_rpm@module-reload:</p>
+<ul>
+<li>{bat-rpls-2}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12466/bat-rpls-2/igt@i915_pm_rpm@module-reload.html">WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7346">i915#7346</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8191/bat-rpls-2/igt@i915_pm_rpm@module-reload.html">PASS</a></li>
+</ul>
 </li>
 <li>
-<p>fi-elk-e7500:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8190/fi-elk-e7500/igt@gem_softpin@evict-flink-all.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +1 similar issue</p>
+<p>igt@i915_selftest@live@gt_mocs:</p>
+<ul>
+<li>{bat-dg1-7}:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12466/bat-dg1-7/igt@i915_selftest@live@gt_mocs.html">INCOMPLETE</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8191/bat-dg1-7/igt@i915_selftest@live@gt_mocs.html">PASS</a></li>
+</ul>
 </li>
 <li>
-<p>fi-ilk-650:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8190/fi-ilk-650/igt@gem_softpin@evict-flink-all.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +1 similar issue</p>
+<p>igt@i915_selftest@live@hangcheck:</p>
+<ul>
+<li>fi-hsw-4770:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12466/fi-hsw-4770/igt@i915_selftest@live@hangcheck.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4785">i915#4785</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8191/fi-hsw-4770/igt@i915_selftest@live@hangcheck.html">PASS</a></li>
+</ul>
 </li>
 <li>
-<p>fi-pnv-d510:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8190/fi-pnv-d510/igt@gem_softpin@evict-flink-all.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +1 similar issue</p>
+<p>igt@i915_selftest@live@reset:</p>
+<ul>
+<li>{bat-rpls-2}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12466/bat-rpls-2/igt@i915_selftest@live@reset.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4983">i915#4983</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8191/bat-rpls-2/igt@i915_selftest@live@reset.html">PASS</a></li>
+</ul>
 </li>
+<li>
+<p>igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions-varying-size:</p>
+<ul>
+<li>fi-bsw-kefka:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12466/fi-bsw-kefka/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions-varying-size.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6298">i915#6298</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8191/fi-bsw-kefka/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions-varying-size.html">PASS</a></li>
 </ul>
 </li>
 </ul>
@@ -505,18 +526,17 @@ Content-Transfer-Encoding: 7bit
 <h2>Build changes</h2>
 <ul>
 <li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_7080 -&gt; IGTPW_8190</li>
+<li>IGT: IGT_7080 -&gt; IGTPW_8191</li>
 </ul>
 <p>CI-20190529: 20190529<br />
   CI_DRM_12466: 359d1acd20aea425840eaea1908f3257bb7de1eb @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_8190: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8190/index.html<br />
+  IGTPW_8191: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8191/index.html<br />
   IGT_7080: 14721e0783757dfa44ca2677851c3ba508b09682 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
 <h2>Testlist changes</h2>
-<p>+igt@gem_softpin@evict-flink<br />
-+igt@gem_softpin@evict-flink-all<br />
--igt@kms_async_flips@async-flip-with-page-flip-events-linear</p>
+<p>-igt@gem_softpin@evict-flink<br />
+-igt@gem_softpin@evict-flink-all</p>
 
 </body>
 </html>
 
---===============8349900858725445279==--
+--===============3467846603883055353==--
