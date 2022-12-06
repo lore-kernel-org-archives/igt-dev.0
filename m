@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CF54110E303
- for <igt-dev@lists.freedesktop.org>; Tue,  6 Dec 2022 07:47:38 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9E1C010E0F7
+ for <igt-dev@lists.freedesktop.org>; Tue,  6 Dec 2022 07:47:41 +0000 (UTC)
 From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue,  6 Dec 2022 08:47:05 +0100
-Message-Id: <20221206074708.30690-9-zbigniew.kempczynski@intel.com>
+Date: Tue,  6 Dec 2022 08:47:06 +0100
+Message-Id: <20221206074708.30690-10-zbigniew.kempczynski@intel.com>
 In-Reply-To: <20221206074708.30690-1-zbigniew.kempczynski@intel.com>
 References: <20221206074708.30690-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v4 08/11] tools/intel_dump|error_decode: Use
- local igt decode code
+Subject: [igt-dev] [PATCH i-g-t v4 09/11] lib/ioctl_wrappers: Remove
+ gem_handle_to_libdrm_bo
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,134 +24,80 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Instead of using libdrm decode code, switch to ported to IGT counterpart.
+Function is not used anymore in IGT so lets remove it, especially it
+keeps libdrm dependency.
 
 Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 Cc: Petri Latvala <petri.latvala@intel.com>
 ---
- tools/intel_dump_decode.c  | 16 ++++++++--------
- tools/intel_error_decode.c | 14 +++++++-------
- 2 files changed, 15 insertions(+), 15 deletions(-)
+ lib/ioctl_wrappers.c | 31 -------------------------------
+ lib/ioctl_wrappers.h |  5 -----
+ 2 files changed, 36 deletions(-)
 
-diff --git a/tools/intel_dump_decode.c b/tools/intel_dump_decode.c
-index 4bb774406f..95e06fbe7f 100644
---- a/tools/intel_dump_decode.c
-+++ b/tools/intel_dump_decode.c
-@@ -34,9 +34,9 @@
- #include <fcntl.h>
- #include <getopt.h>
+diff --git a/lib/ioctl_wrappers.c b/lib/ioctl_wrappers.c
+index 09eb3ce7b5..1ab41ab6d6 100644
+--- a/lib/ioctl_wrappers.c
++++ b/lib/ioctl_wrappers.c
+@@ -92,37 +92,6 @@
+ int (*igt_ioctl)(int fd, unsigned long request, void *arg) = drmIoctl;
  
--#include <intel_bufmgr.h>
-+#include "i915/intel_decode.h"
  
--struct drm_intel_decode *ctx;
-+struct intel_decode *ctx;
- 
- static void
- read_bin_file(const char * filename)
-@@ -54,12 +54,12 @@ read_bin_file(const char * filename)
- 		exit (1);
- 	}
- 
--	drm_intel_decode_set_dump_past_end(ctx, 1);
-+	intel_decode_set_dump_past_end(ctx, 1);
- 
- 	offset = 0;
- 	while ((ret = read (fd, buf, sizeof(buf))) > 0) {
--		drm_intel_decode_set_batch_pointer(ctx, buf, offset, ret/4);
--		drm_intel_decode(ctx);
-+		intel_decode_set_batch_pointer(ctx, buf, offset, ret/4);
-+		intel_decode(ctx);
- 		offset += ret;
- 	}
- 	close (fd);
-@@ -112,8 +112,8 @@ read_data_file(const char * filename)
-     }
- 
-     if (count) {
--	drm_intel_decode_set_batch_pointer(ctx, data, gtt_offset, count);
--	drm_intel_decode(ctx);
-+	intel_decode_set_batch_pointer(ctx, data, gtt_offset, count);
-+	intel_decode(ctx);
-     }
- 
-     free (data);
-@@ -192,7 +192,7 @@ main (int argc, char *argv[])
- 	if (devid_str)
- 		devid = strtoul(devid_str, NULL, 0);
- 
--	ctx = drm_intel_decode_context_alloc(devid);
-+	ctx = intel_decode_context_alloc(devid);
- 
- 	if (optind == argc) {
- 		fprintf(stderr, "no input file given\n");
-diff --git a/tools/intel_error_decode.c b/tools/intel_error_decode.c
-index 90a18a07ba..99680bedc7 100644
---- a/tools/intel_error_decode.c
-+++ b/tools/intel_error_decode.c
-@@ -49,7 +49,6 @@
- #include <sys/stat.h>
- #include <err.h>
- #include <assert.h>
--#include <intel_bufmgr.h>
- #include <zlib.h>
- #include <ctype.h>
- 
-@@ -58,6 +57,7 @@
- #include "instdone.h"
- #include "intel_reg.h"
- #include "drmtest.h"
-+#include "i915/intel_decode.h"
- 
- static uint32_t
- print_head(unsigned int reg)
-@@ -445,7 +445,7 @@ static bool maybe_ascii(const void *data, int check)
- 	return true;
- }
- 
--static void decode(struct drm_intel_decode *ctx,
-+static void decode(struct intel_decode *ctx,
- 		   const char *buffer_name,
- 		   const char *ring_name,
- 		   uint64_t gtt_offset,
-@@ -466,9 +466,9 @@ static void decode(struct drm_intel_decode *ctx,
- 	printf("\n");
- 
- 	if (decode && ctx) {
--		drm_intel_decode_set_batch_pointer(ctx, data, gtt_offset,
-+		intel_decode_set_batch_pointer(ctx, data, gtt_offset,
- 						   *count);
--		drm_intel_decode(ctx);
-+		intel_decode(ctx);
- 	} else if (maybe_ascii(data, 16)) {
- 		printf("%*s\n", 4 * *count, (char *)data);
- 	} else {
-@@ -566,7 +566,7 @@ static int ascii85_decode(const char *in, uint32_t **out, bool inflate)
- static void
- read_data_file(FILE *file)
+-/**
+- * gem_handle_to_libdrm_bo:
+- * @bufmgr: libdrm buffer manager instance
+- * @fd: open i915 drm file descriptor
+- * @name: buffer name in libdrm
+- * @handle: gem buffer object handle
+- *
+- * This helper function imports a raw gem buffer handle into the libdrm buffer
+- * manager.
+- *
+- * Returns: The imported libdrm buffer manager object.
+- */
+-drm_intel_bo *
+-gem_handle_to_libdrm_bo(drm_intel_bufmgr *bufmgr, int fd, const char *name, uint32_t handle)
+-{
+-	struct drm_gem_flink flink;
+-	int ret;
+-	drm_intel_bo *bo;
+-
+-	memset(&flink, 0, sizeof(handle));
+-	flink.handle = handle;
+-	ret = ioctl(fd, DRM_IOCTL_GEM_FLINK, &flink);
+-	igt_assert(ret == 0);
+-	errno = 0;
+-
+-	bo = drm_intel_bo_gem_create_from_name(bufmgr, name, flink.name);
+-	igt_assert(bo);
+-
+-	return bo;
+-}
+-
+ static int
+ __gem_get_tiling(int fd, struct drm_i915_gem_get_tiling *arg)
  {
--	struct drm_intel_decode *decode_ctx = NULL;
-+	struct intel_decode *decode_ctx = NULL;
- 	uint32_t devid = PCI_CHIP_I855_GM;
- 	uint32_t *data = NULL;
- 	uint32_t head[MAX_RINGS];
-@@ -692,7 +692,7 @@ read_data_file(FILE *file)
- 				printf("Detected GEN%i chipset\n",
- 						intel_gen(devid));
+diff --git a/lib/ioctl_wrappers.h b/lib/ioctl_wrappers.h
+index 9a897fec23..cf228c2651 100644
+--- a/lib/ioctl_wrappers.h
++++ b/lib/ioctl_wrappers.h
+@@ -33,7 +33,6 @@
+ #include <stdint.h>
+ #include <stdbool.h>
+ #include <sys/mman.h>
+-#include <intel_bufmgr.h>
+ #include <i915_drm.h>
  
--				decode_ctx = drm_intel_decode_context_alloc(devid);
-+				decode_ctx = intel_decode_context_alloc(devid);
- 			}
+ #include "i915/gem_context.h"
+@@ -51,10 +50,6 @@
+  */
+ extern int (*igt_ioctl)(int fd, unsigned long request, void *arg);
  
- 			matched = sscanf(line, "  CTL: 0x%08x\n", &reg);
-@@ -708,7 +708,7 @@ read_data_file(FILE *file)
- 			if (matched == 1) {
- 				print_acthd(reg, ring_length);
- 				if (decode_ctx)
--					drm_intel_decode_set_head_tail(decode_ctx,
-+					intel_decode_set_head_tail(decode_ctx,
- 								       reg,
- 								       0xffffffff);
- 			}
+-/* libdrm interfacing */
+-drm_intel_bo * gem_handle_to_libdrm_bo(drm_intel_bufmgr *bufmgr, int fd,
+-				       const char *name, uint32_t handle);
+-
+ /* ioctl_wrappers.c:
+  *
+  * ioctl wrappers and similar stuff for bare metal testing */
 -- 
 2.34.1
