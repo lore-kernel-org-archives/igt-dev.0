@@ -1,17 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 188CC10E313
- for <igt-dev@lists.freedesktop.org>; Tue,  6 Dec 2022 11:20:52 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9D1D310E31D
+ for <igt-dev@lists.freedesktop.org>; Tue,  6 Dec 2022 11:20:55 +0000 (UTC)
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue,  6 Dec 2022 12:20:28 +0100
-Message-Id: <20221206112033.16684-3-kamil.konieczny@linux.intel.com>
+Date: Tue,  6 Dec 2022 12:20:29 +0100
+Message-Id: <20221206112033.16684-4-kamil.konieczny@linux.intel.com>
 In-Reply-To: <20221206112033.16684-1-kamil.konieczny@linux.intel.com>
 References: <20221206112033.16684-1-kamil.konieczny@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v2 2/7] lib/igt_core: store GPU string or
- opened device name
+Subject: [igt-dev] [PATCH i-g-t v2 3/7] lib/igt_core: add prefix to logging
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,96 +23,44 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Mauro Carvalho Chehab <mchehab@kernel.org>
-
-This is helpful on tests that run with multiple GPUs.
-The name will be automatically filled when a device will
-be opened.
-
-v2: reorganized code, changed commit message to note that
-  it will be filled with pathname of opended device, also
-  correct static initialization [Kamil]
+Allow to store prefix for logs and print it before any message.
+This will allow to diagnose on wich GPU occurred problems when
+tested on multi-GPU machines.
 
 Cc: Petri Latvala <petri.latvala@intel.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Reviewed-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 ---
- lib/drmtest.c  |  4 +++-
- lib/igt_core.c | 30 ++++++++++++++++++++++++++++++
- lib/igt_core.h |  6 ++++++
- 3 files changed, 39 insertions(+), 1 deletion(-)
+ lib/igt_core.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/lib/drmtest.c b/lib/drmtest.c
-index 16e80bdf..5eb98272 100644
---- a/lib/drmtest.c
-+++ b/lib/drmtest.c
-@@ -222,8 +222,10 @@ static int open_device(const char *name, unsigned int chipset)
- 			break;
- 		}
- 	}
--	if ((chipset & chip) == chip)
-+	if ((chipset & chip) == chip) {
-+		set_gpu_string(name);
- 		return fd;
-+	}
- 
- err:
- 	close(fd);
 diff --git a/lib/igt_core.c b/lib/igt_core.c
-index dca380d0..68ae7289 100644
+index 68ae7289..65b7be64 100644
 --- a/lib/igt_core.c
 +++ b/lib/igt_core.c
-@@ -1576,6 +1576,36 @@ static void kill_and_wait(pid_t *pids, int size, int signum)
- 	}
- }
+@@ -348,6 +348,8 @@ static struct {
+ 	uint8_t start, end;
+ } log_buffer;
+ static pthread_mutex_t log_buffer_mutex = PTHREAD_MUTEX_INITIALIZER;
++#define LOG_PREFIX_SIZE 32
++char log_prefix[LOG_PREFIX_SIZE] = { 0 };
  
-+static __thread char *gpu_string;
-+
-+void set_gpu_string(const char *fname)
-+{
-+	char sysfs[PATH_MAX], *path, *p;
-+
-+	if (gpu_string) {
-+		free(gpu_string);
-+		gpu_string = NULL;
-+	}
-+
-+	if (!fname)
-+		return;
-+
-+	p = strrchr(fname, '/');
-+	if (!p) {
-+		path = strdup(fname);
+ GKeyFile *igt_key_file;
+ 
+@@ -3105,8 +3107,12 @@ void igt_vlog(const char *domain, enum igt_log_level level, const char *format,
+ 	program_name = command_str;
+ #endif
+ 
+-	if (asprintf(&thread_id, "[thread:%d] ", gettid()) == -1)
+-		thread_id = NULL;
++	if (igt_thread_is_main()) {
++		thread_id = strdup(log_prefix);
 +	} else {
-+		p++;
-+
-+		strcpy(sysfs, "/sys/class/drm/");
-+		strcat(sysfs, p);
-+		path = realpath(sysfs, NULL);
-+		igt_debug("opened %s as %s\n", fname, path);
++		if (asprintf(&thread_id, "%s[thread:%d] ", log_prefix, gettid()) == -1)
++			thread_id = NULL;
 +	}
-+
-+	gpu_string = path;
-+	igt_assert(gpu_string);
-+}
-+
- __noreturn static void exit_subtest(const char *result)
- {
- 	struct timespec now;
-diff --git a/lib/igt_core.h b/lib/igt_core.h
-index 5d5593e0..1f7e3652 100644
---- a/lib/igt_core.h
-+++ b/lib/igt_core.h
-@@ -1519,4 +1519,10 @@ static inline void igt_pci_system_cleanup(void)
- {
- }
  
-+/**
-+ * set_gpu_string():
-+ * Sets a string to describe the GPU being tested
-+ */
-+void set_gpu_string(const char *string);
-+
- #endif /* IGT_CORE_H */
+ 	if (!thread_id)
+ 		return;
 -- 
 2.34.1
