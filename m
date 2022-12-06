@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3AF4410E324
- for <igt-dev@lists.freedesktop.org>; Tue,  6 Dec 2022 11:21:10 +0000 (UTC)
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0EC8A10E313
+ for <igt-dev@lists.freedesktop.org>; Tue,  6 Dec 2022 08:56:01 +0000 (UTC)
+From: Alan Previn <alan.previn.teres.alexis@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue,  6 Dec 2022 12:20:33 +0100
-Message-Id: <20221206112033.16684-8-kamil.konieczny@linux.intel.com>
-In-Reply-To: <20221206112033.16684-1-kamil.konieczny@linux.intel.com>
-References: <20221206112033.16684-1-kamil.konieczny@linux.intel.com>
+Date: Tue,  6 Dec 2022 00:58:46 -0800
+Message-Id: <20221206085849.271505-9-alan.previn.teres.alexis@intel.com>
+In-Reply-To: <20221206085849.271505-1-alan.previn.teres.alexis@intel.com>
+References: <20221206085849.271505-1-alan.previn.teres.alexis@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v2 7/7] tests/i915/gem_close_race: add
- multiGPU subtests
+Subject: [igt-dev] [PATCH i-g-t v2 08/11] tools/intel_guc_logger: Limit
+ relay logging output file to 4GB.
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,112 +23,84 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add two multiGPU subtests multigpu-basic-threads and
-multigpu-basic-process.
+Because the GuC Log buffer header structure has a buffer-size
+data type of 32 bits, let's make the output file size limit
+a total of 4GB.
 
-v2: remove code for setting gpu_count=1 (Mauro)
-
-Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Reviewed-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+Signed-off-by: Alan Previn <alan.previn.teres.alexis@intel.com>
 ---
- tests/i915/gem_close_race.c | 52 +++++++++++++++++++++++++++++++++++++
- 1 file changed, 52 insertions(+)
+ tools/intel_guc_logger.c | 17 ++++++++++-------
+ 1 file changed, 10 insertions(+), 7 deletions(-)
 
-diff --git a/tests/i915/gem_close_race.c b/tests/i915/gem_close_race.c
-index e37a8882..9c646f42 100644
---- a/tests/i915/gem_close_race.c
-+++ b/tests/i915/gem_close_race.c
-@@ -47,6 +47,7 @@
- #include "i915/gem_mman.h"
- #include "igt.h"
- #include "igt_aux.h"
-+#include "igt_device_scan.h"
+diff --git a/tools/intel_guc_logger.c b/tools/intel_guc_logger.c
+index 38c50598..be09190c 100644
+--- a/tools/intel_guc_logger.c
++++ b/tools/intel_guc_logger.c
+@@ -68,7 +68,7 @@
+ 					 *  64K -> log events buffer     *
+ 					 */
+ #define DEFAULT_POLL_TIMEOUT         2 /* default timeout of 2ms */
+-#define DEFAULT_MAX_OUTPUT_SIZE      MB(4 * 1024) /* default to 4 GB max file size */
++#define DEFAULT_MAX_OUTPUT_SIZE_MB   (4 * 1024) /* default to 4 GB max file size */
  
- #define OBJECT_SIZE (256 * 1024)
+ enum relay_cmd {
+ 	RELAY_CMD_DISABLE = 0,
+@@ -104,7 +104,7 @@ struct global_t {
+ 	uint32_t usr_gt_id;
+ 	uint32_t avail_guc_mask;
+ 	char *out_filename;
+-	uint64_t max_filesize;
++	long long max_filesize;
+ 	uint32_t test_duration;
+ 	int poll_timeout;
+ 	bool discard_oldlogs;
+@@ -361,7 +361,7 @@ struct guc_log_buffer_state_2_0 {
  
-@@ -254,6 +255,31 @@ static void thread(int fd, struct drm_gem_open name,
- 	free(history);
- }
- 
-+static void multigpu_threads(int timeout, unsigned int flags, int gpu_count)
-+{
-+	int size = sysconf(_SC_NPROCESSORS_ONLN);
-+
-+	size /= gpu_count;
-+	if (size < 1)
-+		size = 1;
-+
-+	igt_multi_fork(gpu, gpu_count) {
-+		struct drm_gem_open name;
-+		int fd = __drm_open_driver_another(gpu, DRIVER_INTEL);
-+
-+		igt_assert(fd > 0);
-+
-+		igt_fork(child, size)
-+			thread(fd, name, timeout, flags);
-+
-+		igt_waitchildren();
-+		gem_quiescent_gpu(fd);
-+		close(fd);
-+	}
-+
-+	igt_waitchildren();
-+}
-+
- static void threads(int timeout, unsigned int flags)
+ static bool file_reached_maxsize(struct global_t *gbl, struct guc_t *guc)
  {
- 	struct drm_gem_open name;
-@@ -272,6 +298,8 @@ static void threads(int timeout, unsigned int flags)
+-	if (gbl->max_filesize && MB(gbl->max_filesize) - guc->total_bytes_written <= 0)
++	if (gbl->max_filesize && (gbl->max_filesize - guc->total_bytes_written <= 0))
+ 		return true;
  
- igt_main
- {
-+	int gpu_count;
-+
- 	igt_fixture {
- 		int fd;
+ 	return false;
+@@ -508,8 +508,7 @@ static bool write_extracted_data(struct global_t *gbl, struct guc_t *guc,
+ 		else
+ 			igt_info("wrote %d KB out to dat file\n", (copied / 1024));
+ 		if (file_reached_maxsize(gbl, guc)) {
+-			igt_info("Reached target filesize of %" PRIu64 " bytes\n",
+-				 MB(gbl->max_filesize));
++			igt_info("Reached target filesize of %lld bytes\n", gbl->max_filesize);
+ 			guc->stop_logging = true;
+ 		}
+ 		return true;
+@@ -757,7 +756,10 @@ static int parse_options(int opt, int opt_index, void *ptr)
+ 	case 's':
+ 		data->max_filesize = atoll(optarg);
+ 		igt_assert_f(data->max_filesize > 0, "invalid input for -s option\n");
+-		igt_debug("max allowed size of the output file is %lu MB\n", data->max_filesize);
++		if (data->max_filesize >= DEFAULT_MAX_OUTPUT_SIZE_MB)
++			data->max_filesize = DEFAULT_MAX_OUTPUT_SIZE_MB;
++		igt_debug("max allowed size of the output file is %lld MB\n", data->max_filesize);
++		data->max_filesize *= MB(1);
+ 		break;
+ 	case 'd':
+ 		data->discard_oldlogs = true;
+@@ -794,7 +796,7 @@ static void process_command_line(int argc, char **argv, struct global_t *data)
+ 		"  -o --outputfile=name   name of the output file, including the location, where logs will be stored\n"
+ 		"  -t --testduration=sec  max duration in seconds for which the logger should run\n"
+ 		"  -p --polltimeout=ms    polling timeout in ms, -1 == indefinite wait for the new data\n"
+-		"  -s --size=MB           max size of output file in MBs after which logging will be stopped\n"
++		"  -s --size=MB           max size of output file in MBs after which logging stops, default is 4GB\n"
+ 		"  -d --discard           discard the old/boot-time logs before entering into the capture loop\n"
+ 		"  -i --gt_id             GT-ID of GuC to capture from, defaults to capture from gt0\n";
  
-@@ -286,6 +314,8 @@ igt_main
- 		exec_addr = max_t(exec_addr, exec_addr, data_addr);
- 		data_addr += exec_addr;
+@@ -816,6 +818,7 @@ int main(int argc, char **argv)
+ 	gbldata.verbosity    = DEFAULT_GUCLOG_VERBOSITY;
+ 	gbldata.usr_gt_id    = DEFAULT_GT_ID;
+ 	gbldata.poll_timeout = DEFAULT_POLL_TIMEOUT;
++	gbldata.max_filesize = DEFAULT_MAX_OUTPUT_SIZE_MB * MB(1);
+ 	gbldata.drmfd        = drm_open_driver_render(DRIVER_INTEL);
+ 	igt_assert(gbldata.drmfd != -1);
  
-+		gpu_count = igt_device_filter_count();
-+
- 		igt_fork_hang_detector(fd);
- 		close(fd);
- 	}
-@@ -302,11 +332,33 @@ igt_main
- 		close(fd);
- 	}
- 
-+	igt_describe("Basic workload submission on multi-GPU machine.");
-+	igt_subtest("multigpu-basic-process") {
-+		igt_require(gpu_count > 1);
-+
-+		igt_multi_fork(child, gpu_count) {
-+			int fd = __drm_open_driver_another(child, DRIVER_INTEL);
-+
-+			igt_assert(fd > 0);
-+			process(fd, child);
-+			gem_quiescent_gpu(fd);
-+			close(fd);
-+		}
-+
-+		igt_waitchildren();
-+	}
-+
- 	igt_describe("Share buffer handle across different drm fd's and trying to race "
- 		     " gem_close against continuous workload with minimum timeout.");
- 	igt_subtest("basic-threads")
- 		threads(1, 0);
- 
-+	igt_describe("Run basic-threads race on multi-GPU machine.");
-+	igt_subtest("multigpu-basic-threads") {
-+		igt_require(gpu_count > 1);
-+		multigpu_threads(1, 0, gpu_count);
-+	}
-+
- 	igt_describe("Test try to race gem_close against submission of continuous"
- 		     " workload.");
- 	igt_subtest("process-exit") {
 -- 
 2.34.1
