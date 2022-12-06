@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7A5F510E304
- for <igt-dev@lists.freedesktop.org>; Tue,  6 Dec 2022 08:56:00 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CA2FE10E311
+ for <igt-dev@lists.freedesktop.org>; Tue,  6 Dec 2022 08:56:01 +0000 (UTC)
 From: Alan Previn <alan.previn.teres.alexis@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue,  6 Dec 2022 00:58:41 -0800
-Message-Id: <20221206085849.271505-4-alan.previn.teres.alexis@intel.com>
+Date: Tue,  6 Dec 2022 00:58:49 -0800
+Message-Id: <20221206085849.271505-12-alan.previn.teres.alexis@intel.com>
 In-Reply-To: <20221206085849.271505-1-alan.previn.teres.alexis@intel.com>
 References: <20221206085849.271505-1-alan.previn.teres.alexis@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v2 03/11] tools/intel_guc_logger: Add GT-ID
- selection for intel_guc_logger
+Subject: [igt-dev] [PATCH i-g-t v2 11/11] tools/intel_guc_logger: Add useful
+ debug messages
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,143 +23,108 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-With the introduction of MTL and multi-tile products, add a new
-cmd line param for users to select which GT to collect GuC relay
-logs from.
+Add useful debug messages for verbose logging progress so that
+errors or warnings are not lost while capturing data.
 
 Signed-off-by: Alan Previn <alan.previn.teres.alexis@intel.com>
 ---
- tools/intel_guc_logger.c | 58 +++++++++++++++++++++++++++++++++++-----
- 1 file changed, 51 insertions(+), 7 deletions(-)
+ tools/intel_guc_logger.c | 33 ++++++++++++++++++++++++++++++++-
+ 1 file changed, 32 insertions(+), 1 deletion(-)
 
 diff --git a/tools/intel_guc_logger.c b/tools/intel_guc_logger.c
-index 356cde59..f694ff18 100644
+index 8bea2b4b..008bee50 100644
 --- a/tools/intel_guc_logger.c
 +++ b/tools/intel_guc_logger.c
-@@ -48,9 +48,12 @@
-   #define PAGE_SIZE 4096
- #endif
+@@ -450,6 +450,16 @@ static bool write_extracted_data(struct global_t *gbl, struct guc_t *guc,
  
--#define GLR_LOGLEVEL_NAME         "guc_log_level"
--#define GLR_CTL_NAME              "guc_log_relay_ctl"
--#define GLR_CHANNEL_NAME          "guc_log_relay_chan0"
-+#define MAX_GTS                      4
-+#define DEFAULT_GT_ID                0 /* default logging from GuC GT-0 */
+ 	memcpy(&header, inptr, sizeof(header));
+ 
++	igt_debug("header->marker[0] = 0x%08x\n", header.marker[0]);
++	igt_debug("header->marker[1] = 0x%08x\n", header.marker[1]);
++	igt_debug("header->read_offset = 0x%08x\n", header.read_offset);
++	igt_debug("header->write_offset = 0x%08x\n", header.write_offset);
++	igt_debug("header->size = 0x%08x\n", header.size);
++	igt_debug("header->sampled_write_offset = 0x%08x\n", header.sampled_write_offset);
++	igt_debug("header->wrap_offset = 0x%08x\n", header.wrap_offset);
++	igt_debug("header->flags = 0x%08x\n", header.flags);
++	igt_debug("header->counts = 0x%08x\n", header.version);
 +
-+#define GLR_LOGLEVEL_NAME            "guc_log_level"
-+#define GLR_CTL_NAME                 "guc_log_relay_ctl"
-+#define GLR_CHANNEL_NAME             "guc_log_relay_chan0"
+ 	/* verify we have a valid header info */
+ 	if (header.marker[0] != GUCLOGEVT_2_0_HEADER_MAGIC_DW0 ||
+ 	    header.marker[1] != GUCLOGEVT_2_0_HEADER_MAGIC_DW1) {
+@@ -555,14 +565,16 @@ static void *flusher(void *arg)
+ 			 * the disk file.
+ 			 */
+ 			if (guc->capturing_stopped) {
+-				igt_debug("flusher to exit now\n");
++				igt_debug("Write-flush exiting\n");
+ 				pthread_mutex_unlock(&guc->mutex);
+ 				return NULL;
+ 			}
++			igt_debug("Write-flush waiting\n");
+ 			pthread_cond_wait(&guc->underflow_cond, &guc->mutex);
+ 		};
+ 		pthread_mutex_unlock(&guc->mutex);
  
- #define DEFAULT_OUTPUT_FILE_NAME     "guc_log_dump" /*.dat suffic added later*/
- #define DEFAULT_GUCLOG_VERBOSITY     3 /* by default capture logs at max verbosity */
-@@ -96,6 +99,8 @@ struct guc_t {
- struct global_t {
- 	int drmfd;
- 	int verbosity;
-+	uint32_t usr_gt_id;
-+	uint32_t avail_guc_mask;
- 	char *out_filename;
- 	uint64_t max_filesize;
- 	uint32_t test_duration;
-@@ -111,6 +116,23 @@ struct thread_t {
- /* only global instance needed for killing threads from main's signal handler */
- struct thread_t *gbl_thread_handle;
++		igt_debug("Write-flush extracting\n");
+ 		ptr = guc->readbuf + (guc->consumed % guc->subbuf_count) * subbuf_size;
+ 		if (write_extracted_data(gbl, guc, ptr, subbuf_size)) {
+ 			pthread_mutex_lock(&guc->mutex);
+@@ -669,6 +681,8 @@ static void update_outfile_header(struct thread_t *tdata)
+ 		lseek(guc->outfd, KB(4) - 1, SEEK_CUR);
+ 		write(guc->outfd, "", 1);
  
-+static void get_avail_guc_mask(struct global_t *gbl)
-+{
-+	int i, fd;
-+	char path[20];
++		igt_debug("Finalizing header data of GT-%d to buffer-size = %ld\n",
++			  guc->gt_id, guc->total_bytes_written);
+ 		/*
+ 		 * Go back to top of the file and update the debug-log-events
+ 		 * header structure with new head + tail ptrs and size so the
+@@ -683,6 +697,17 @@ static void update_outfile_header(struct thread_t *tdata)
+ 			tmphdr.write_offset = guc->total_bytes_written;
+ 			tmphdr.wrap_offset = guc->total_bytes_written;
+ 
++			igt_debug("Final header->marker[0] = 0x%08x\n", tmphdr.marker[0]);
++			igt_debug("Final header->marker[1] = 0x%08x\n", tmphdr.marker[1]);
++			igt_debug("Final header->read_offset = 0x%08x\n", tmphdr.read_offset);
++			igt_debug("Final header->write_offset = 0x%08x\n", tmphdr.write_offset);
++			igt_debug("Final header->size = 0x%08x\n", tmphdr.size);
++			igt_debug("Final header->sampled_write_offset = 0x%08x\n",
++				  tmphdr.sampled_write_offset);
++			igt_debug("Final header->wrap_offset = 0x%08x\n", tmphdr.wrap_offset);
++			igt_debug("Final header->flags = 0x%08x\n", tmphdr.flags);
++			igt_debug("Final header->counts = 0x%08x\n", tmphdr.version);
 +
-+	/* Query the number of GTs with GuC based on debugfs paths */
-+	for (i = 0; i < MAX_GTS; i++) {
-+		sprintf(path, "gt%d/uc/guc_info", i);
-+		fd = igt_debugfs_open(gbl->drmfd, path, O_RDONLY);
-+		if (fd > 0) {
-+			igt_debug("Found GUC at GT-ID-%d\n", i);
-+			gbl->avail_guc_mask |= (1 << i);
-+			close(fd);
-+		}
-+	}
-+}
-+
- static void get_guc_subbuf_info(struct thread_t *tdata)
- {
- 	int fd, ret, j;
-@@ -492,7 +514,7 @@ static int parse_options(int opt, int opt_index, void *ptr)
- 	case 'o':
- 		data->out_filename = strdup(optarg);
- 		igt_assert_f(data->out_filename, "Couldn't allocate the o/p filename\n");
--		igt_debug("logs to be stored in file %s_G[GuC-ID]\n", data->out_filename);
-+		igt_debug("logs to be stored in file %s_G[GT-ID]\n", data->out_filename);
- 		break;
- 	case 't':
- 		data->test_duration = atoi(optarg);
-@@ -515,6 +537,14 @@ static int parse_options(int opt, int opt_index, void *ptr)
- 		data->discard_oldlogs = true;
- 		igt_debug("old/boot-time logs will be discarded\n");
- 		break;
-+	case 'i':
-+		data->usr_gt_id = atoi(optarg);
-+		igt_assert_f((data->usr_gt_id >= 0) && (data->usr_gt_id < MAX_GTS),
-+			     "invalid input for -i (GT-ID) option\n");
-+		igt_assert_f((data->avail_guc_mask & BIT(data->usr_gt_id)),
-+			     "Requested GT-ID-%d unavailable, avail-mask = 0x%08x\n",
-+			     data->usr_gt_id, data->avail_guc_mask);
-+		break;
- 	}
+ 			if (lseek(guc->outfd, 0, SEEK_SET) == 0)
+ 				write(guc->outfd, &tmphdr, sizeof(tmphdr));
+ 		} else {
+@@ -824,6 +849,7 @@ int main(int argc, char **argv)
+ 	struct thread_t thread[1];
+ 	struct pollfd relay_poll_fd;
+ 	int nfds, ret;
++	int poll_msg_count = 0;
  
- 	return 0;
-@@ -529,6 +559,7 @@ static void process_command_line(int argc, char **argv, struct global_t *data)
- 		{"polltimeout", required_argument, 0, 'p'},
- 		{"size", required_argument, 0, 's'},
- 		{"discard", no_argument, 0, 'd'},
-+		{"gt_id", required_argument, 0, 'i'},
- 		{ 0, 0, 0, 0 }
- 	};
- 
-@@ -538,9 +569,10 @@ static void process_command_line(int argc, char **argv, struct global_t *data)
- 		"  -t --testduration=sec  max duration in seconds for which the logger should run\n"
- 		"  -p --polltimeout=ms    polling timeout in ms, -1 == indefinite wait for the new data\n"
- 		"  -s --size=MB           max size of output file in MBs after which logging will be stopped\n"
--		"  -d --discard           discard the old/boot-time logs before entering into the capture loop\n";
-+		"  -d --discard           discard the old/boot-time logs before entering into the capture loop\n"
-+		"  -i --gt_id             GT-ID of GuC to capture from, defaults to capture from gt0\n";
- 
--	igt_simple_init_parse_opts(&argc, argv, "v:o:b:t:p:s:d", long_options,
-+	igt_simple_init_parse_opts(&argc, argv, "v:o:b:t:p:s:d:i", long_options,
- 				   help, parse_options, data);
- }
- 
-@@ -556,6 +588,7 @@ int main(int argc, char **argv)
  	/* setup global context */
  	memset(&gbldata, 0, sizeof(gbldata));
- 	gbldata.verbosity    = DEFAULT_GUCLOG_VERBOSITY;
-+	gbldata.usr_gt_id    = DEFAULT_GT_ID;
- 	gbldata.poll_timeout = DEFAULT_POLL_TIMEOUT;
- 	gbldata.drmfd        = drm_open_driver_render(DRIVER_INTEL);
- 	igt_assert(gbldata.drmfd != -1);
-@@ -567,10 +600,21 @@ int main(int argc, char **argv)
+@@ -891,6 +917,8 @@ int main(int argc, char **argv)
+ 		 * succession (less than a jiffy gap between 2 flush interrupts)
+ 		 * causing relay to run out of sub buffers to store new logs.
+ 		 */
++		if (++poll_msg_count % 200 == 0)
++			igt_debug("Read-pull waited %d\n", poll_msg_count);
+ 		ret = poll(&relay_poll_fd, nfds, gbldata.poll_timeout);
+ 		if (ret < 0) {
+ 			if (errno == EINTR)
+@@ -902,8 +930,11 @@ int main(int argc, char **argv)
+ 		if (!relay_poll_fd.revents)
+ 			continue;
  
- 	thread[0].global = &gbldata;
- 	thread[0].guc = &gucdata[0];
--	get_guc_subbuf_info(&thread[0]);
++		igt_debug("Read-pull copying data after %d polls\n", poll_msg_count);
++		poll_msg_count = 0;
+ 		pull_data(&thread[0]);
+ 	} while (!thread[0].guc->stop_logging);
++	igt_debug("Read-pull exiting\n");
  
-+	get_avail_guc_mask(&gbldata);
-+	igt_assert_f(gbldata.avail_guc_mask, "Can't detect any available GuC's");
-+
-+	get_guc_subbuf_info(&thread[0]);
- 	process_command_line(argc, argv, &gbldata);
- 
-+	igt_assert_f((gbldata.avail_guc_mask & BIT(gbldata.usr_gt_id)),
-+		     "GuC of GT-ID-%d not avail. Avail-Mask = 0x%08x. Use '-i' option!\n",
-+		     gbldata.usr_gt_id, gbldata.avail_guc_mask);
-+
-+	gucdata[0].gt_id = gbldata.usr_gt_id;
-+	sprintf(gucdata[0].fspath, "gt%d/uc", gbldata.usr_gt_id);
-+	igt_info("Logging on GuC of GT_ID-%d\n", gbldata.usr_gt_id);
-+
- 	gbl_thread_handle = thread;
- 
- 	init_main_thread(&thread[0]);
+ 	/* Pause logging on the GuC side */
+ 	guc_log_control(&thread[0], RELAY_CMD_FLUSH);
 -- 
 2.34.1
