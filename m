@@ -1,14 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E56E310E02A
- for <igt-dev@lists.freedesktop.org>; Tue,  6 Dec 2022 08:55:59 +0000 (UTC)
-From: Alan Previn <alan.previn.teres.alexis@intel.com>
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3AF4410E324
+ for <igt-dev@lists.freedesktop.org>; Tue,  6 Dec 2022 11:21:10 +0000 (UTC)
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue,  6 Dec 2022 00:58:38 -0800
-Message-Id: <20221206085849.271505-1-alan.previn.teres.alexis@intel.com>
+Date: Tue,  6 Dec 2022 12:20:33 +0100
+Message-Id: <20221206112033.16684-8-kamil.konieczny@linux.intel.com>
+In-Reply-To: <20221206112033.16684-1-kamil.konieczny@linux.intel.com>
+References: <20221206112033.16684-1-kamil.konieczny@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v2 00/11] Resurrect GuC Relay Logging
+Subject: [igt-dev] [PATCH i-g-t v2 7/7] tests/i915/gem_close_race: add
+ multiGPU subtests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,46 +23,112 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-This series brings GuC relay logging back to life by
-re-aligning the (previously implicit, now query-able)
-guc-log-relay subbuffer-specs, debugfs file handle names
-and usages between intel_guc_logger tool and i915.
+Add two multiGPU subtests multigpu-basic-threads and
+multigpu-basic-process.
 
-This series depends on fixes and updates on the
-kernel side via this series:
-https://patchwork.freedesktop.org/series/103767/
+v2: remove code for setting gpu_count=1 (Mauro)
 
-Changes from prio revs:
-   v1: - With MTL and multi-tile, add support for GT-ID
-         selection for GuC logging.
-       - Add new design changes to flusher thread to do
-         decoding of the GuC log buffer header data and
-         unwrap all head-->tail regions into a linear
-         sequence so we can concatenate the GuC log outoput
-         file to make it look like a single large contiguous
-         GuC Log buffer (as it it came direct from memory).
-         This was a design miss from original code and is
-         needed to ensure internal tools can decode the logs. 
+Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Reviewed-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+---
+ tests/i915/gem_close_race.c | 52 +++++++++++++++++++++++++++++++++++++
+ 1 file changed, 52 insertions(+)
 
-
-Alan Previn (11):
-  tools/intel_guc_logger: Re-enable basic functionality
-  tools/intel_guc_logger: Refactor intel_guc_logger globals into structs
-  tools/intel_guc_logger: Add GT-ID selection for intel_guc_logger
-  tools/intel_guc_logger: Add helper function for flusher code
-  tools/intel_guc_logger: Add GuC Log header structure definition
-  tools/intel_guc_logger: Concatenate log samples into a contiguous
-    file.
-  tools/intel_guc_logger: Add overflow awareness.
-  tools/intel_guc_logger: Limit relay logging output file to 4GB.
-  tools/intel_guc_logger: By default don't change GuC log verbosity
-  tools/intel_guc_logger: On exit, save any leftover GuC log data
-  tools/intel_guc_logger: Add useful debug messages
-
- tools/intel_guc_logger.c | 851 +++++++++++++++++++++++++++++++--------
- 1 file changed, 674 insertions(+), 177 deletions(-)
-
-
-base-commit: c001793d5f22deb01918b6ba52af829794582df1
+diff --git a/tests/i915/gem_close_race.c b/tests/i915/gem_close_race.c
+index e37a8882..9c646f42 100644
+--- a/tests/i915/gem_close_race.c
++++ b/tests/i915/gem_close_race.c
+@@ -47,6 +47,7 @@
+ #include "i915/gem_mman.h"
+ #include "igt.h"
+ #include "igt_aux.h"
++#include "igt_device_scan.h"
+ 
+ #define OBJECT_SIZE (256 * 1024)
+ 
+@@ -254,6 +255,31 @@ static void thread(int fd, struct drm_gem_open name,
+ 	free(history);
+ }
+ 
++static void multigpu_threads(int timeout, unsigned int flags, int gpu_count)
++{
++	int size = sysconf(_SC_NPROCESSORS_ONLN);
++
++	size /= gpu_count;
++	if (size < 1)
++		size = 1;
++
++	igt_multi_fork(gpu, gpu_count) {
++		struct drm_gem_open name;
++		int fd = __drm_open_driver_another(gpu, DRIVER_INTEL);
++
++		igt_assert(fd > 0);
++
++		igt_fork(child, size)
++			thread(fd, name, timeout, flags);
++
++		igt_waitchildren();
++		gem_quiescent_gpu(fd);
++		close(fd);
++	}
++
++	igt_waitchildren();
++}
++
+ static void threads(int timeout, unsigned int flags)
+ {
+ 	struct drm_gem_open name;
+@@ -272,6 +298,8 @@ static void threads(int timeout, unsigned int flags)
+ 
+ igt_main
+ {
++	int gpu_count;
++
+ 	igt_fixture {
+ 		int fd;
+ 
+@@ -286,6 +314,8 @@ igt_main
+ 		exec_addr = max_t(exec_addr, exec_addr, data_addr);
+ 		data_addr += exec_addr;
+ 
++		gpu_count = igt_device_filter_count();
++
+ 		igt_fork_hang_detector(fd);
+ 		close(fd);
+ 	}
+@@ -302,11 +332,33 @@ igt_main
+ 		close(fd);
+ 	}
+ 
++	igt_describe("Basic workload submission on multi-GPU machine.");
++	igt_subtest("multigpu-basic-process") {
++		igt_require(gpu_count > 1);
++
++		igt_multi_fork(child, gpu_count) {
++			int fd = __drm_open_driver_another(child, DRIVER_INTEL);
++
++			igt_assert(fd > 0);
++			process(fd, child);
++			gem_quiescent_gpu(fd);
++			close(fd);
++		}
++
++		igt_waitchildren();
++	}
++
+ 	igt_describe("Share buffer handle across different drm fd's and trying to race "
+ 		     " gem_close against continuous workload with minimum timeout.");
+ 	igt_subtest("basic-threads")
+ 		threads(1, 0);
+ 
++	igt_describe("Run basic-threads race on multi-GPU machine.");
++	igt_subtest("multigpu-basic-threads") {
++		igt_require(gpu_count > 1);
++		multigpu_threads(1, 0, gpu_count);
++	}
++
+ 	igt_describe("Test try to race gem_close against submission of continuous"
+ 		     " workload.");
+ 	igt_subtest("process-exit") {
 -- 
 2.34.1
