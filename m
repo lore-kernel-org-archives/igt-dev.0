@@ -1,15 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============7513344730194137300=="
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 From: Patchwork <patchwork@emeril.freedesktop.org>
-To: =?utf-8?q?Zbigniew_Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Date: Tue, 06 Dec 2022 18:23:11 -0000
-Message-ID: <167035099141.3370.4109527262527050591@emeril.freedesktop.org>
-References: <20221206175222.63998-1-zbigniew.kempczynski@intel.com>
-In-Reply-To: <20221206175222.63998-1-zbigniew.kempczynski@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3IgRXhlcmNp?=
- =?utf-8?q?se_evict-prime-*_=28rev2=29?=
+To: "Mark Yacoub" <markyacoub@chromium.org>
+Date: Tue, 06 Dec 2022 19:19:17 -0000
+Message-ID: <167035435750.3370.5422249350476316701@emeril.freedesktop.org>
+References: <20221130204526.3182975-1-markyacoub@chromium.org>
+In-Reply-To: <20221130204526.3182975-1-markyacoub@chromium.org>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_C?=
+ =?utf-8?q?hamelium=3A_Split_kms=5Fchamelium_into_multiple_kms=5Fchamelium?=
+ =?utf-8?q?_tests_=28rev3=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,772 +24,149 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============7513344730194137300==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
 == Series Details ==
 
-Series: Exercise evict-prime-* (rev2)
-URL   : https://patchwork.freedesktop.org/series/111684/
-State : failure
+Series: Chamelium: Split kms_chamelium into multiple kms_chamelium tests (rev3)
+URL   : https://patchwork.freedesktop.org/series/111501/
+State : warning
 
 == Summary ==
 
-CI Bug Log - changes from CI_DRM_12475 -> IGTPW_8206
-====================================================
+Pipeline status: FAILED.
 
-Summary
--------
+see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/756315 for the overview.
 
-  **FAILURE**
-
-  Serious unknown changes coming with IGTPW_8206 absolutely need to be
-  verified manually.
-  
-  If you think the reported changes have nothing to do with the changes
-  introduced in IGTPW_8206, please notify your bug team to allow them
-  to document this new failure mode, which will reduce false positives in CI.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8206/index.html
-
-Participating hosts (30 -> 44)
-------------------------------
-
-  Additional (15): fi-kbl-soraka bat-kbl-2 bat-adls-5 bat-dg1-6 bat-dg1-5 fi-bsw-n3050 bat-dg2-8 bat-adlp-9 fi-tgl-dsi bat-dg2-9 bat-adlp-6 bat-adlp-4 bat-jsl-3 bat-dg2-11 fi-bsw-nick 
-  Missing    (1): fi-cfl-8700k 
-
-Possible new issues
--------------------
-
-  Here are the unknown changes that may have been introduced in IGTPW_8206:
-
-### IGT changes ###
-
-#### Possible regressions ####
-
-  * {igt@gem_softpin@evict-prime@all} (NEW):
-    - fi-kbl-soraka:      NOTRUN -> [FAIL][1] +5 similar issues
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8206/fi-kbl-soraka/igt@gem_softpin@evict-prime@all.html
-    - fi-glk-j4005:       NOTRUN -> [FAIL][2] +5 similar issues
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8206/fi-glk-j4005/igt@gem_softpin@evict-prime@all.html
-    - fi-skl-6700k2:      NOTRUN -> [FAIL][3] +5 similar issues
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8206/fi-skl-6700k2/igt@gem_softpin@evict-prime@all.html
-    - fi-cfl-8109u:       NOTRUN -> [FAIL][4] +6 similar issues
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8206/fi-cfl-8109u/igt@gem_softpin@evict-prime@all.html
-    - bat-adlp-4:         NOTRUN -> [FAIL][5] +6 similar issues
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8206/bat-adlp-4/igt@gem_softpin@evict-prime@all.html
-    - {bat-adlp-9}:       NOTRUN -> [FAIL][6] +6 similar issues
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8206/bat-adlp-9/igt@gem_softpin@evict-prime@all.html
-    - fi-kbl-7567u:       NOTRUN -> [FAIL][7] +6 similar issues
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8206/fi-kbl-7567u/igt@gem_softpin@evict-prime@all.html
-    - {bat-adln-1}:       NOTRUN -> [FAIL][8] +5 similar issues
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8206/bat-adln-1/igt@gem_softpin@evict-prime@all.html
-    - fi-kbl-8809g:       NOTRUN -> [FAIL][9] +5 similar issues
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8206/fi-kbl-8809g/igt@gem_softpin@evict-prime@all.html
-    - bat-dg1-6:          NOTRUN -> [FAIL][10] +6 similar issues
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8206/bat-dg1-6/igt@gem_softpin@evict-prime@all.html
-    - {fi-tgl-dsi}:       NOTRUN -> [FAIL][11] +6 similar issues
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8206/fi-tgl-dsi/igt@gem_softpin@evict-prime@all.html
-
-  * {igt@gem_softpin@evict-prime@bcs0} (NEW):
-    - {bat-jsl-3}:        NOTRUN -> [FAIL][12] +5 similar issues
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8206/bat-jsl-3/igt@gem_softpin@evict-prime@bcs0.html
-    - fi-rkl-guc:         NOTRUN -> [FAIL][13] +5 similar issues
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8206/fi-rkl-guc/igt@gem_softpin@evict-prime@bcs0.html
-    - fi-skl-guc:         NOTRUN -> [FAIL][14] +5 similar issues
-   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8206/fi-skl-guc/igt@gem_softpin@evict-prime@bcs0.html
-    - {bat-dg2-11}:       NOTRUN -> [FAIL][15] +8 similar issues
-   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8206/bat-dg2-11/igt@gem_softpin@evict-prime@bcs0.html
-    - {bat-rpls-2}:       NOTRUN -> [FAIL][16] +6 similar issues
-   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8206/bat-rpls-2/igt@gem_softpin@evict-prime@bcs0.html
-
-  * {igt@gem_softpin@evict-prime@ccs2} (NEW):
-    - {bat-dg2-8}:        NOTRUN -> [FAIL][17] +11 similar issues
-   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8206/bat-dg2-8/igt@gem_softpin@evict-prime@ccs2.html
-
-  * {igt@gem_softpin@evict-prime@rcs0} (NEW):
-    - {fi-jsl-1}:         NOTRUN -> [FAIL][18] +5 similar issues
-   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8206/fi-jsl-1/igt@gem_softpin@evict-prime@rcs0.html
-    - {bat-adlm-1}:       NOTRUN -> [FAIL][19] +6 similar issues
-   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8206/bat-adlm-1/igt@gem_softpin@evict-prime@rcs0.html
-    - {bat-rplp-1}:       NOTRUN -> [FAIL][20] +6 similar issues
-   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8206/bat-rplp-1/igt@gem_softpin@evict-prime@rcs0.html
-
-  * {igt@gem_softpin@evict-prime@vcs0} (NEW):
-    - {bat-kbl-2}:        NOTRUN -> [FAIL][21] +6 similar issues
-   [21]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8206/bat-kbl-2/igt@gem_softpin@evict-prime@vcs0.html
-
-  * {igt@gem_softpin@evict-prime@vcs1} (NEW):
-    - {bat-adlp-6}:       NOTRUN -> [FAIL][22] +6 similar issues
-   [22]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8206/bat-adlp-6/igt@gem_softpin@evict-prime@vcs1.html
-
-  * {igt@gem_softpin@evict-prime@vecs0} (NEW):
-    - fi-rkl-11600:       NOTRUN -> [FAIL][23] +5 similar issues
-   [23]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8206/fi-rkl-11600/igt@gem_softpin@evict-prime@vecs0.html
-    - fi-icl-u2:          NOTRUN -> [FAIL][24] +6 similar issues
-   [24]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8206/fi-icl-u2/igt@gem_softpin@evict-prime@vecs0.html
-    - {bat-adls-5}:       NOTRUN -> [FAIL][25] +5 similar issues
-   [25]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8206/bat-adls-5/igt@gem_softpin@evict-prime@vecs0.html
-    - fi-bsw-kefka:       NOTRUN -> [FAIL][26] +5 similar issues
-   [26]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8206/fi-bsw-kefka/igt@gem_softpin@evict-prime@vecs0.html
-    - fi-adl-ddr5:        NOTRUN -> [FAIL][27] +5 similar issues
-   [27]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8206/fi-adl-ddr5/igt@gem_softpin@evict-prime@vecs0.html
-    - fi-apl-guc:         NOTRUN -> [FAIL][28] +5 similar issues
-   [28]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8206/fi-apl-guc/igt@gem_softpin@evict-prime@vecs0.html
-    - bat-dg1-5:          NOTRUN -> [FAIL][29] +6 similar issues
-   [29]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8206/bat-dg1-5/igt@gem_softpin@evict-prime@vecs0.html
-    - fi-cfl-guc:         NOTRUN -> [FAIL][30] +5 similar issues
-   [30]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8206/fi-cfl-guc/igt@gem_softpin@evict-prime@vecs0.html
-    - fi-bdw-gvtdvm:      NOTRUN -> [FAIL][31] +6 similar issues
-   [31]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8206/fi-bdw-gvtdvm/igt@gem_softpin@evict-prime@vecs0.html
-    - {fi-ehl-2}:         NOTRUN -> [FAIL][32] +5 similar issues
-   [32]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8206/fi-ehl-2/igt@gem_softpin@evict-prime@vecs0.html
-    - {bat-dg2-9}:        NOTRUN -> [FAIL][33] +11 similar issues
-   [33]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8206/bat-dg2-9/igt@gem_softpin@evict-prime@vecs0.html
-    - {bat-dg1-7}:        NOTRUN -> [FAIL][34] +6 similar issues
-   [34]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8206/bat-dg1-7/igt@gem_softpin@evict-prime@vecs0.html
-
-  * igt@meta_test@fail-result (NEW):
-    - fi-ilk-650:         NOTRUN -> [FAIL][35]
-   [35]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8206/fi-ilk-650/igt@meta_test@fail-result.html
-    - {bat-jsl-1}:        NOTRUN -> [FAIL][36] +5 similar issues
-   [36]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8206/bat-jsl-1/igt@meta_test@fail-result.html
-    - fi-bsw-nick:        NOTRUN -> [FAIL][37] +5 similar issues
-   [37]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8206/fi-bsw-nick/igt@meta_test@fail-result.html
-    - fi-blb-e6850:       NOTRUN -> [FAIL][38]
-   [38]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8206/fi-blb-e6850/igt@meta_test@fail-result.html
-    - fi-pnv-d510:        NOTRUN -> [FAIL][39]
-   [39]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8206/fi-pnv-d510/igt@meta_test@fail-result.html
-    - fi-hsw-4770:        NOTRUN -> [FAIL][40]
-   [40]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8206/fi-hsw-4770/igt@meta_test@fail-result.html
-    - fi-ivb-3770:        NOTRUN -> [FAIL][41]
-   [41]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8206/fi-ivb-3770/igt@meta_test@fail-result.html
-    - fi-elk-e7500:       NOTRUN -> [FAIL][42]
-   [42]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8206/fi-elk-e7500/igt@meta_test@fail-result.html
-    - fi-snb-2600:        NOTRUN -> [FAIL][43]
-   [43]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8206/fi-snb-2600/igt@meta_test@fail-result.html
-
-  * igt@runner@aborted:
-    - fi-bsw-n3050:       NOTRUN -> [FAIL][44]
-   [44]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8206/fi-bsw-n3050/igt@runner@aborted.html
-
-  
-New tests
----------
-
-  New tests have been introduced between CI_DRM_12475 and IGTPW_8206:
-
-### New IGT tests (25) ###
-
-  * igt@gem_softpin@evict-prime:
-    - Statuses : 7 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@gem_softpin@evict-prime-sanity-check:
-    - Statuses : 7 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@gem_softpin@evict-prime-sanity-check@all:
-    - Statuses : 36 pass(s)
-    - Exec time: [0.0] s
-
-  * igt@gem_softpin@evict-prime-sanity-check@bcs0:
-    - Statuses : 36 pass(s)
-    - Exec time: [0.0] s
-
-  * igt@gem_softpin@evict-prime-sanity-check@ccs0:
-    - Statuses : 3 pass(s)
-    - Exec time: [0.0] s
-
-  * igt@gem_softpin@evict-prime-sanity-check@ccs1:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.0] s
-
-  * igt@gem_softpin@evict-prime-sanity-check@ccs2:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.0] s
-
-  * igt@gem_softpin@evict-prime-sanity-check@ccs3:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.0] s
-
-  * igt@gem_softpin@evict-prime-sanity-check@rcs0:
-    - Statuses : 36 pass(s)
-    - Exec time: [0.0] s
-
-  * igt@gem_softpin@evict-prime-sanity-check@vcs0:
-    - Statuses : 36 pass(s)
-    - Exec time: [0.0] s
-
-  * igt@gem_softpin@evict-prime-sanity-check@vcs1:
-    - Statuses : 18 pass(s)
-    - Exec time: [0.0] s
-
-  * igt@gem_softpin@evict-prime-sanity-check@vecs0:
-    - Statuses : 36 pass(s)
-    - Exec time: [0.0] s
-
-  * igt@gem_softpin@evict-prime-sanity-check@vecs1:
-    - Statuses : 3 pass(s)
-    - Exec time: [0.0] s
-
-  * igt@gem_softpin@evict-prime@all:
-    - Statuses : 36 fail(s)
-    - Exec time: [0.0] s
-
-  * igt@gem_softpin@evict-prime@bcs0:
-    - Statuses : 36 fail(s)
-    - Exec time: [0.0] s
-
-  * igt@gem_softpin@evict-prime@ccs0:
-    - Statuses : 3 fail(s)
-    - Exec time: [0.0] s
-
-  * igt@gem_softpin@evict-prime@ccs1:
-    - Statuses : 2 fail(s)
-    - Exec time: [0.0] s
-
-  * igt@gem_softpin@evict-prime@ccs2:
-    - Statuses : 2 fail(s)
-    - Exec time: [0.0] s
-
-  * igt@gem_softpin@evict-prime@ccs3:
-    - Statuses : 2 fail(s)
-    - Exec time: [0.0] s
-
-  * igt@gem_softpin@evict-prime@rcs0:
-    - Statuses : 36 fail(s)
-    - Exec time: [0.0] s
-
-  * igt@gem_softpin@evict-prime@vcs0:
-    - Statuses : 36 fail(s)
-    - Exec time: [0.0] s
-
-  * igt@gem_softpin@evict-prime@vcs1:
-    - Statuses : 18 fail(s)
-    - Exec time: [0.0] s
-
-  * igt@gem_softpin@evict-prime@vecs0:
-    - Statuses : 36 fail(s)
-    - Exec time: [0.0] s
-
-  * igt@gem_softpin@evict-prime@vecs1:
-    - Statuses : 3 fail(s)
-    - Exec time: [0.0] s
-
-  * igt@meta_test@fail-result:
-    - Statuses : 43 fail(s)
-    - Exec time: [0.0] s
-
+build:tests-debian-meson has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/33057333):
+  /usr/include/xf86drmMode.h:545:39: error: unknown type name ‘uint32_t’
+   extern int drmModeRevokeLease(int fd, uint32_t lessee_id);
+                                         ^~~~~~~~
+  ../tests/chamelium/kms_chamelium_edid.c: In function ‘igt_custom_edid_type_read’:
+  ../tests/chamelium/kms_chamelium_edid.c:144:14: error: implicit declaration of function ‘drmModeGetPropertyBlob’; did you mean ‘drmModeFreePropertyBlob’? [-Werror=implicit-function-declaration]
+    edid_blob = drmModeGetPropertyBlob(data->drm_fd, edid_blob_id);
+                ^~~~~~~~~~~~~~~~~~~~~~
+                drmModeFreePropertyBlob
+  ../tests/chamelium/kms_chamelium_edid.c:144:14: warning: nested extern declaration of ‘drmModeGetPropertyBlob’ [-Wnested-externs]
+  ../tests/chamelium/kms_chamelium_edid.c:144:12: warning: assignment to ‘drmModePropertyBlobPtr’ {aka ‘struct _drmModePropertyBlob *’} from ‘int’ makes pointer from integer without a cast [-Wint-conversion]
+    edid_blob = drmModeGetPropertyBlob(data->drm_fd, edid_blob_id);
+              ^
+  cc1: some warnings being treated as errors
+  ninja: build stopped: subcommand failed.
+  section_end:1670353936:step_script
+  section_start:1670353936:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1670353936:cleanup_file_variables
+  ERROR: Job failed: exit code 1
   
 
-Known issues
-------------
-
-  Here are the changes found in IGTPW_8206 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * {igt@gem_softpin@evict-prime} (NEW):
-    - fi-ivb-3770:        NOTRUN -> [SKIP][45] ([fdo#109271]) +1 similar issue
-   [45]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8206/fi-ivb-3770/igt@gem_softpin@evict-prime.html
-    - fi-snb-2600:        NOTRUN -> [SKIP][46] ([fdo#109271]) +1 similar issue
-   [46]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8206/fi-snb-2600/igt@gem_softpin@evict-prime.html
-    - fi-ilk-650:         NOTRUN -> [SKIP][47] ([fdo#109271]) +1 similar issue
-   [47]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8206/fi-ilk-650/igt@gem_softpin@evict-prime.html
-    - fi-elk-e7500:       NOTRUN -> [SKIP][48] ([fdo#109271]) +1 similar issue
-   [48]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8206/fi-elk-e7500/igt@gem_softpin@evict-prime.html
-    - fi-blb-e6850:       NOTRUN -> [SKIP][49] ([fdo#109271]) +1 similar issue
-   [49]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8206/fi-blb-e6850/igt@gem_softpin@evict-prime.html
-
-  * {igt@gem_softpin@evict-prime-sanity-check} (NEW):
-    - fi-pnv-d510:        NOTRUN -> [SKIP][50] ([fdo#109271]) +1 similar issue
-   [50]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8206/fi-pnv-d510/igt@gem_softpin@evict-prime-sanity-check.html
-    - fi-hsw-4770:        NOTRUN -> [SKIP][51] ([fdo#109271]) +1 similar issue
-   [51]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8206/fi-hsw-4770/igt@gem_softpin@evict-prime-sanity-check.html
-
+build:tests-fedora has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/33057328):
+  /usr/include/xf86drmMode.h:545:39: error: unknown type name ‘uint32_t’
+    545 | extern int drmModeRevokeLease(int fd, uint32_t lessee_id);
+        |                                       ^~~~~~~~
+  ../tests/chamelium/kms_chamelium_edid.c: In function ‘igt_custom_edid_type_read’:
+  ../tests/chamelium/kms_chamelium_edid.c:144:14: error: implicit declaration of function ‘drmModeGetPropertyBlob’; did you mean ‘drmModeFreePropertyBlob’? [-Werror=implicit-function-declaration]
+    144 |  edid_blob = drmModeGetPropertyBlob(data->drm_fd, edid_blob_id);
+        |              ^~~~~~~~~~~~~~~~~~~~~~
+        |              drmModeFreePropertyBlob
+  ../tests/chamelium/kms_chamelium_edid.c:144:14: warning: nested extern declaration of ‘drmModeGetPropertyBlob’ [-Wnested-externs]
+  ../tests/chamelium/kms_chamelium_edid.c:144:12: warning: assignment to ‘drmModePropertyBlobPtr’ {aka ‘struct _drmModePropertyBlob *’} from ‘int’ makes pointer from integer without a cast [-Wint-conversion]
+    144 |  edid_blob = drmModeGetPropertyBlob(data->drm_fd, edid_blob_id);
+        |            ^
+  cc1: some warnings being treated as errors
+  ninja: build stopped: subcommand failed.
+  section_end:1670353945:step_script
+  section_start:1670353945:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1670353947:cleanup_file_variables
+  ERROR: Job failed: exit code 1
   
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
 
-  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+build:tests-fedora-clang has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/33057332):
+          uint32_t bpp;
+          ^
+  /usr/include/xf86drmMode.h:221:2: error: unknown type name 'uint32_t'
+          uint32_t depth;
+          ^
+  /usr/include/xf86drmMode.h:223:2: error: unknown type name 'uint32_t'
+          uint32_t handle;
+          ^
+  /usr/include/xf86drmMode.h:229:2: error: unknown type name 'uint32_t'
+          uint32_t id;
+          ^
+  fatal error: too many errors emitted, stopping now [-ferror-limit=]
+  20 errors generated.
+  ninja: build stopped: subcommand failed.
+  section_end:1670354021:step_script
+  section_start:1670354021:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1670354022:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
 
+build:tests-fedora-no-libdrm-nouveau has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/33057331):
+  /usr/include/xf86drmMode.h:545:39: error: unknown type name ‘uint32_t’
+    545 | extern int drmModeRevokeLease(int fd, uint32_t lessee_id);
+        |                                       ^~~~~~~~
+  ../tests/chamelium/kms_chamelium_edid.c: In function ‘igt_custom_edid_type_read’:
+  ../tests/chamelium/kms_chamelium_edid.c:144:14: error: implicit declaration of function ‘drmModeGetPropertyBlob’; did you mean ‘drmModeFreePropertyBlob’? [-Werror=implicit-function-declaration]
+    144 |  edid_blob = drmModeGetPropertyBlob(data->drm_fd, edid_blob_id);
+        |              ^~~~~~~~~~~~~~~~~~~~~~
+        |              drmModeFreePropertyBlob
+  ../tests/chamelium/kms_chamelium_edid.c:144:14: warning: nested extern declaration of ‘drmModeGetPropertyBlob’ [-Wnested-externs]
+  ../tests/chamelium/kms_chamelium_edid.c:144:12: warning: assignment to ‘drmModePropertyBlobPtr’ {aka ‘struct _drmModePropertyBlob *’} from ‘int’ makes pointer from integer without a cast [-Wint-conversion]
+    144 |  edid_blob = drmModeGetPropertyBlob(data->drm_fd, edid_blob_id);
+        |            ^
+  cc1: some warnings being treated as errors
+  ninja: build stopped: subcommand failed.
+  section_end:1670353944:step_script
+  section_start:1670353944:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1670353945:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
 
-Build changes
--------------
+build:tests-fedora-no-libunwind has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/33057329):
+  /usr/include/xf86drmMode.h:545:39: error: unknown type name ‘uint32_t’
+    545 | extern int drmModeRevokeLease(int fd, uint32_t lessee_id);
+        |                                       ^~~~~~~~
+  ../tests/chamelium/kms_chamelium_edid.c: In function ‘igt_custom_edid_type_read’:
+  ../tests/chamelium/kms_chamelium_edid.c:144:14: error: implicit declaration of function ‘drmModeGetPropertyBlob’; did you mean ‘drmModeFreePropertyBlob’? [-Werror=implicit-function-declaration]
+    144 |  edid_blob = drmModeGetPropertyBlob(data->drm_fd, edid_blob_id);
+        |              ^~~~~~~~~~~~~~~~~~~~~~
+        |              drmModeFreePropertyBlob
+  ../tests/chamelium/kms_chamelium_edid.c:144:14: warning: nested extern declaration of ‘drmModeGetPropertyBlob’ [-Wnested-externs]
+  ../tests/chamelium/kms_chamelium_edid.c:144:12: warning: assignment to ‘drmModePropertyBlobPtr’ {aka ‘struct _drmModePropertyBlob *’} from ‘int’ makes pointer from integer without a cast [-Wint-conversion]
+    144 |  edid_blob = drmModeGetPropertyBlob(data->drm_fd, edid_blob_id);
+        |            ^
+  cc1: some warnings being treated as errors
+  ninja: build stopped: subcommand failed.
+  section_end:1670353953:step_script
+  section_start:1670353953:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1670353953:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
 
-  * CI: CI-20190529 -> None
-  * IGT: IGT_7084 -> IGTPW_8206
-
-  CI-20190529: 20190529
-  CI_DRM_12475: ebea1ef56080671403683f4c09e89c3e7b7e28da @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_8206: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8206/index.html
-  IGT_7084: ec81855d36887dfe81d5ff513ed6d512773da37e @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-
-Testlist changes
-----------------
-
-+igt@gem_softpin@evict-prime
-+igt@gem_softpin@evict-prime-sanity-check
+build:tests-fedora-oldest-meson has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/33057330):
+  /usr/include/xf86drmMode.h:545:39: error: unknown type name ‘uint32_t’
+    545 | extern int drmModeRevokeLease(int fd, uint32_t lessee_id);
+        |                                       ^~~~~~~~
+  ../tests/chamelium/kms_chamelium_edid.c: In function ‘igt_custom_edid_type_read’:
+  ../tests/chamelium/kms_chamelium_edid.c:144:14: error: implicit declaration of function ‘drmModeGetPropertyBlob’; did you mean ‘drmModeFreePropertyBlob’? [-Werror=implicit-function-declaration]
+    144 |  edid_blob = drmModeGetPropertyBlob(data->drm_fd, edid_blob_id);
+        |              ^~~~~~~~~~~~~~~~~~~~~~
+        |              drmModeFreePropertyBlob
+  ../tests/chamelium/kms_chamelium_edid.c:144:14: warning: nested extern declaration of ‘drmModeGetPropertyBlob’ [-Wnested-externs]
+  ../tests/chamelium/kms_chamelium_edid.c:144:12: warning: assignment to ‘drmModePropertyBlobPtr’ {aka ‘struct _drmModePropertyBlob *’} from ‘int’ makes pointer from integer without a cast [-Wint-conversion]
+    144 |  edid_blob = drmModeGetPropertyBlob(data->drm_fd, edid_blob_id);
+        |            ^
+  cc1: some warnings being treated as errors
+  ninja: build stopped: subcommand failed.
+  section_end:1670353953:step_script
+  section_start:1670353953:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1670353954:cleanup_file_variables
+  ERROR: Job failed: exit code 1
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8206/index.html
-
---===============7513344730194137300==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>Exercise evict-prime-* (rev2)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/111684/">https://patchwork.freedesktop.org/series/111684/</a></td></tr>
-<tr><td><b>State:</b></td><td>failure</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8206/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8206/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from CI_DRM_12475 -&gt; IGTPW_8206</h1>
-<h2>Summary</h2>
-<p><strong>FAILURE</strong></p>
-<p>Serious unknown changes coming with IGTPW_8206 absolutely need to be<br />
-  verified manually.</p>
-<p>If you think the reported changes have nothing to do with the changes<br />
-  introduced in IGTPW_8206, please notify your bug team to allow them<br />
-  to document this new failure mode, which will reduce false positives in CI.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8206/index.html</p>
-<h2>Participating hosts (30 -&gt; 44)</h2>
-<p>Additional (15): fi-kbl-soraka bat-kbl-2 bat-adls-5 bat-dg1-6 bat-dg1-5 fi-bsw-n3050 bat-dg2-8 bat-adlp-9 fi-tgl-dsi bat-dg2-9 bat-adlp-6 bat-adlp-4 bat-jsl-3 bat-dg2-11 fi-bsw-nick <br />
-  Missing    (1): fi-cfl-8700k </p>
-<h2>Possible new issues</h2>
-<p>Here are the unknown changes that may have been introduced in IGTPW_8206:</p>
-<h3>IGT changes</h3>
-<h4>Possible regressions</h4>
-<ul>
-<li>
-<p>{igt@gem_softpin@evict-prime@all} (NEW):</p>
-<ul>
-<li>
-<p>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8206/fi-kbl-soraka/igt@gem_softpin@evict-prime@all.html">FAIL</a> +5 similar issues</p>
-</li>
-<li>
-<p>fi-glk-j4005:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8206/fi-glk-j4005/igt@gem_softpin@evict-prime@all.html">FAIL</a> +5 similar issues</p>
-</li>
-<li>
-<p>fi-skl-6700k2:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8206/fi-skl-6700k2/igt@gem_softpin@evict-prime@all.html">FAIL</a> +5 similar issues</p>
-</li>
-<li>
-<p>fi-cfl-8109u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8206/fi-cfl-8109u/igt@gem_softpin@evict-prime@all.html">FAIL</a> +6 similar issues</p>
-</li>
-<li>
-<p>bat-adlp-4:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8206/bat-adlp-4/igt@gem_softpin@evict-prime@all.html">FAIL</a> +6 similar issues</p>
-</li>
-<li>
-<p>{bat-adlp-9}:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8206/bat-adlp-9/igt@gem_softpin@evict-prime@all.html">FAIL</a> +6 similar issues</p>
-</li>
-<li>
-<p>fi-kbl-7567u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8206/fi-kbl-7567u/igt@gem_softpin@evict-prime@all.html">FAIL</a> +6 similar issues</p>
-</li>
-<li>
-<p>{bat-adln-1}:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8206/bat-adln-1/igt@gem_softpin@evict-prime@all.html">FAIL</a> +5 similar issues</p>
-</li>
-<li>
-<p>fi-kbl-8809g:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8206/fi-kbl-8809g/igt@gem_softpin@evict-prime@all.html">FAIL</a> +5 similar issues</p>
-</li>
-<li>
-<p>bat-dg1-6:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8206/bat-dg1-6/igt@gem_softpin@evict-prime@all.html">FAIL</a> +6 similar issues</p>
-</li>
-<li>
-<p>{fi-tgl-dsi}:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8206/fi-tgl-dsi/igt@gem_softpin@evict-prime@all.html">FAIL</a> +6 similar issues</p>
-</li>
-</ul>
-</li>
-<li>
-<p>{igt@gem_softpin@evict-prime@bcs0} (NEW):</p>
-<ul>
-<li>
-<p>{bat-jsl-3}:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8206/bat-jsl-3/igt@gem_softpin@evict-prime@bcs0.html">FAIL</a> +5 similar issues</p>
-</li>
-<li>
-<p>fi-rkl-guc:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8206/fi-rkl-guc/igt@gem_softpin@evict-prime@bcs0.html">FAIL</a> +5 similar issues</p>
-</li>
-<li>
-<p>fi-skl-guc:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8206/fi-skl-guc/igt@gem_softpin@evict-prime@bcs0.html">FAIL</a> +5 similar issues</p>
-</li>
-<li>
-<p>{bat-dg2-11}:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8206/bat-dg2-11/igt@gem_softpin@evict-prime@bcs0.html">FAIL</a> +8 similar issues</p>
-</li>
-<li>
-<p>{bat-rpls-2}:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8206/bat-rpls-2/igt@gem_softpin@evict-prime@bcs0.html">FAIL</a> +6 similar issues</p>
-</li>
-</ul>
-</li>
-<li>
-<p>{igt@gem_softpin@evict-prime@ccs2} (NEW):</p>
-<ul>
-<li>{bat-dg2-8}:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8206/bat-dg2-8/igt@gem_softpin@evict-prime@ccs2.html">FAIL</a> +11 similar issues</li>
-</ul>
-</li>
-<li>
-<p>{igt@gem_softpin@evict-prime@rcs0} (NEW):</p>
-<ul>
-<li>
-<p>{fi-jsl-1}:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8206/fi-jsl-1/igt@gem_softpin@evict-prime@rcs0.html">FAIL</a> +5 similar issues</p>
-</li>
-<li>
-<p>{bat-adlm-1}:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8206/bat-adlm-1/igt@gem_softpin@evict-prime@rcs0.html">FAIL</a> +6 similar issues</p>
-</li>
-<li>
-<p>{bat-rplp-1}:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8206/bat-rplp-1/igt@gem_softpin@evict-prime@rcs0.html">FAIL</a> +6 similar issues</p>
-</li>
-</ul>
-</li>
-<li>
-<p>{igt@gem_softpin@evict-prime@vcs0} (NEW):</p>
-<ul>
-<li>{bat-kbl-2}:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8206/bat-kbl-2/igt@gem_softpin@evict-prime@vcs0.html">FAIL</a> +6 similar issues</li>
-</ul>
-</li>
-<li>
-<p>{igt@gem_softpin@evict-prime@vcs1} (NEW):</p>
-<ul>
-<li>{bat-adlp-6}:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8206/bat-adlp-6/igt@gem_softpin@evict-prime@vcs1.html">FAIL</a> +6 similar issues</li>
-</ul>
-</li>
-<li>
-<p>{igt@gem_softpin@evict-prime@vecs0} (NEW):</p>
-<ul>
-<li>
-<p>fi-rkl-11600:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8206/fi-rkl-11600/igt@gem_softpin@evict-prime@vecs0.html">FAIL</a> +5 similar issues</p>
-</li>
-<li>
-<p>fi-icl-u2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8206/fi-icl-u2/igt@gem_softpin@evict-prime@vecs0.html">FAIL</a> +6 similar issues</p>
-</li>
-<li>
-<p>{bat-adls-5}:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8206/bat-adls-5/igt@gem_softpin@evict-prime@vecs0.html">FAIL</a> +5 similar issues</p>
-</li>
-<li>
-<p>fi-bsw-kefka:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8206/fi-bsw-kefka/igt@gem_softpin@evict-prime@vecs0.html">FAIL</a> +5 similar issues</p>
-</li>
-<li>
-<p>fi-adl-ddr5:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8206/fi-adl-ddr5/igt@gem_softpin@evict-prime@vecs0.html">FAIL</a> +5 similar issues</p>
-</li>
-<li>
-<p>fi-apl-guc:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8206/fi-apl-guc/igt@gem_softpin@evict-prime@vecs0.html">FAIL</a> +5 similar issues</p>
-</li>
-<li>
-<p>bat-dg1-5:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8206/bat-dg1-5/igt@gem_softpin@evict-prime@vecs0.html">FAIL</a> +6 similar issues</p>
-</li>
-<li>
-<p>fi-cfl-guc:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8206/fi-cfl-guc/igt@gem_softpin@evict-prime@vecs0.html">FAIL</a> +5 similar issues</p>
-</li>
-<li>
-<p>fi-bdw-gvtdvm:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8206/fi-bdw-gvtdvm/igt@gem_softpin@evict-prime@vecs0.html">FAIL</a> +6 similar issues</p>
-</li>
-<li>
-<p>{fi-ehl-2}:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8206/fi-ehl-2/igt@gem_softpin@evict-prime@vecs0.html">FAIL</a> +5 similar issues</p>
-</li>
-<li>
-<p>{bat-dg2-9}:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8206/bat-dg2-9/igt@gem_softpin@evict-prime@vecs0.html">FAIL</a> +11 similar issues</p>
-</li>
-<li>
-<p>{bat-dg1-7}:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8206/bat-dg1-7/igt@gem_softpin@evict-prime@vecs0.html">FAIL</a> +6 similar issues</p>
-</li>
-</ul>
-</li>
-<li>
-<p>igt@meta_test@fail-result (NEW):</p>
-<ul>
-<li>
-<p>fi-ilk-650:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8206/fi-ilk-650/igt@meta_test@fail-result.html">FAIL</a></p>
-</li>
-<li>
-<p>{bat-jsl-1}:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8206/bat-jsl-1/igt@meta_test@fail-result.html">FAIL</a> +5 similar issues</p>
-</li>
-<li>
-<p>fi-bsw-nick:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8206/fi-bsw-nick/igt@meta_test@fail-result.html">FAIL</a> +5 similar issues</p>
-</li>
-<li>
-<p>fi-blb-e6850:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8206/fi-blb-e6850/igt@meta_test@fail-result.html">FAIL</a></p>
-</li>
-<li>
-<p>fi-pnv-d510:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8206/fi-pnv-d510/igt@meta_test@fail-result.html">FAIL</a></p>
-</li>
-<li>
-<p>fi-hsw-4770:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8206/fi-hsw-4770/igt@meta_test@fail-result.html">FAIL</a></p>
-</li>
-<li>
-<p>fi-ivb-3770:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8206/fi-ivb-3770/igt@meta_test@fail-result.html">FAIL</a></p>
-</li>
-<li>
-<p>fi-elk-e7500:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8206/fi-elk-e7500/igt@meta_test@fail-result.html">FAIL</a></p>
-</li>
-<li>
-<p>fi-snb-2600:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8206/fi-snb-2600/igt@meta_test@fail-result.html">FAIL</a></p>
-</li>
-</ul>
-</li>
-<li>
-<p>igt@runner@aborted:</p>
-<ul>
-<li>fi-bsw-n3050:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8206/fi-bsw-n3050/igt@runner@aborted.html">FAIL</a></li>
-</ul>
-</li>
-</ul>
-<h2>New tests</h2>
-<p>New tests have been introduced between CI_DRM_12475 and IGTPW_8206:</p>
-<h3>New IGT tests (25)</h3>
-<ul>
-<li>
-<p>igt@gem_softpin@evict-prime:</p>
-<ul>
-<li>Statuses : 7 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_softpin@evict-prime-sanity-check:</p>
-<ul>
-<li>Statuses : 7 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_softpin@evict-prime-sanity-check@all:</p>
-<ul>
-<li>Statuses : 36 pass(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_softpin@evict-prime-sanity-check@bcs0:</p>
-<ul>
-<li>Statuses : 36 pass(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_softpin@evict-prime-sanity-check@ccs0:</p>
-<ul>
-<li>Statuses : 3 pass(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_softpin@evict-prime-sanity-check@ccs1:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_softpin@evict-prime-sanity-check@ccs2:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_softpin@evict-prime-sanity-check@ccs3:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_softpin@evict-prime-sanity-check@rcs0:</p>
-<ul>
-<li>Statuses : 36 pass(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_softpin@evict-prime-sanity-check@vcs0:</p>
-<ul>
-<li>Statuses : 36 pass(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_softpin@evict-prime-sanity-check@vcs1:</p>
-<ul>
-<li>Statuses : 18 pass(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_softpin@evict-prime-sanity-check@vecs0:</p>
-<ul>
-<li>Statuses : 36 pass(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_softpin@evict-prime-sanity-check@vecs1:</p>
-<ul>
-<li>Statuses : 3 pass(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_softpin@evict-prime@all:</p>
-<ul>
-<li>Statuses : 36 fail(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_softpin@evict-prime@bcs0:</p>
-<ul>
-<li>Statuses : 36 fail(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_softpin@evict-prime@ccs0:</p>
-<ul>
-<li>Statuses : 3 fail(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_softpin@evict-prime@ccs1:</p>
-<ul>
-<li>Statuses : 2 fail(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_softpin@evict-prime@ccs2:</p>
-<ul>
-<li>Statuses : 2 fail(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_softpin@evict-prime@ccs3:</p>
-<ul>
-<li>Statuses : 2 fail(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_softpin@evict-prime@rcs0:</p>
-<ul>
-<li>Statuses : 36 fail(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_softpin@evict-prime@vcs0:</p>
-<ul>
-<li>Statuses : 36 fail(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_softpin@evict-prime@vcs1:</p>
-<ul>
-<li>Statuses : 18 fail(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_softpin@evict-prime@vecs0:</p>
-<ul>
-<li>Statuses : 36 fail(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_softpin@evict-prime@vecs1:</p>
-<ul>
-<li>Statuses : 3 fail(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@meta_test@fail-result:</p>
-<ul>
-<li>Statuses : 43 fail(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-</ul>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_8206 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>{igt@gem_softpin@evict-prime} (NEW):</p>
-<ul>
-<li>
-<p>fi-ivb-3770:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8206/fi-ivb-3770/igt@gem_softpin@evict-prime.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +1 similar issue</p>
-</li>
-<li>
-<p>fi-snb-2600:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8206/fi-snb-2600/igt@gem_softpin@evict-prime.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +1 similar issue</p>
-</li>
-<li>
-<p>fi-ilk-650:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8206/fi-ilk-650/igt@gem_softpin@evict-prime.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +1 similar issue</p>
-</li>
-<li>
-<p>fi-elk-e7500:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8206/fi-elk-e7500/igt@gem_softpin@evict-prime.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +1 similar issue</p>
-</li>
-<li>
-<p>fi-blb-e6850:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8206/fi-blb-e6850/igt@gem_softpin@evict-prime.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +1 similar issue</p>
-</li>
-</ul>
-</li>
-<li>
-<p>{igt@gem_softpin@evict-prime-sanity-check} (NEW):</p>
-<ul>
-<li>
-<p>fi-pnv-d510:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8206/fi-pnv-d510/igt@gem_softpin@evict-prime-sanity-check.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +1 similar issue</p>
-</li>
-<li>
-<p>fi-hsw-4770:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8206/fi-hsw-4770/igt@gem_softpin@evict-prime-sanity-check.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +1 similar issue</p>
-</li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_7084 -&gt; IGTPW_8206</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_12475: ebea1ef56080671403683f4c09e89c3e7b7e28da @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_8206: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8206/index.html<br />
-  IGT_7084: ec81855d36887dfe81d5ff513ed6d512773da37e @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-<h2>Testlist changes</h2>
-<p>+igt@gem_softpin@evict-prime<br />
-+igt@gem_softpin@evict-prime-sanity-check</p>
-
-</body>
-</html>
-
---===============7513344730194137300==--
+For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/756315
