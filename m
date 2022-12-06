@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B9B4810E304
- for <igt-dev@lists.freedesktop.org>; Tue,  6 Dec 2022 08:56:01 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C56B110E02A
+ for <igt-dev@lists.freedesktop.org>; Tue,  6 Dec 2022 08:56:00 +0000 (UTC)
 From: Alan Previn <alan.previn.teres.alexis@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue,  6 Dec 2022 00:58:48 -0800
-Message-Id: <20221206085849.271505-11-alan.previn.teres.alexis@intel.com>
+Date: Tue,  6 Dec 2022 00:58:43 -0800
+Message-Id: <20221206085849.271505-6-alan.previn.teres.alexis@intel.com>
 In-Reply-To: <20221206085849.271505-1-alan.previn.teres.alexis@intel.com>
 References: <20221206085849.271505-1-alan.previn.teres.alexis@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v2 10/11] tools/intel_guc_logger: On exit,
- save any leftover GuC log data
+Subject: [igt-dev] [PATCH i-g-t v2 05/11] tools/intel_guc_logger: Add GuC
+ Log header structure definition
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,72 +23,62 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On exit, trigger the kernel, via debugfs, to flush any leftover GuC
-log data so we can receive and save that into the end of the
-output file using existing helper function.
+We need to redesign the logger to generate an output file that's formatted
+as a single log buffer. It needs to continuously concatenate new GuC Log
+buffer samnples provided by the kernel. To do this, the logger needs the
+header structure of GuC log buffers as per the definition of the GuC
+firmware.
+
+Add this header structure that will be used in upcoming patches to extract
+GuC Log debug entries.
 
 Signed-off-by: Alan Previn <alan.previn.teres.alexis@intel.com>
 ---
- tools/intel_guc_logger.c | 19 +++++++++----------
- 1 file changed, 9 insertions(+), 10 deletions(-)
+ tools/intel_guc_logger.c | 32 ++++++++++++++++++++++++++++++++
+ 1 file changed, 32 insertions(+)
 
 diff --git a/tools/intel_guc_logger.c b/tools/intel_guc_logger.c
-index 7243ad43..8bea2b4b 100644
+index ce4d1bc5..fdef4622 100644
 --- a/tools/intel_guc_logger.c
 +++ b/tools/intel_guc_logger.c
-@@ -224,7 +224,7 @@ static void guc_log_control(struct thread_t *tdata, enum relay_cmd cmd)
- 		igt_assert_f(tdata->guc->control_fd >= 0, "Can't open GuC log relay-ctl file\n");
+@@ -317,6 +317,38 @@ static void pull_data(struct thread_t *tdata)
  	}
- 
--	if (tdata->guc->control_fd) {
-+	if (tdata->guc->control_fd && cmd > RELAY_CMD_DISABLE) {
- 		ret = asprintf(&str, "0x%" PRIx64, (unsigned long)cmd);
- 		igt_assert_neq(ret, -1);
- 		ret = write(tdata->guc->control_fd, str, ret);
-@@ -254,7 +254,10 @@ static void int_sig_handler(int sig)
- 		gbl_thread_handle[0].guc->stop_logging = true;
  }
  
--static void pull_leftover_data(struct thread_t *tdata)
-+static bool write_extracted_data(struct global_t *gbl, struct guc_t *guc,
-+				 char *inptr, int subbuf_size);
++/**
++ * struct guc_log_buffer_state_format_2_0 - GuC log buffer state
++ * It includes snippet from i915 guc-log-relay code:
++ *
++ * Below state structure is used for describing the location of new GuC firmware
++ * log data. This includes the read_offset that points to the location where i915
++ * read last in log buffer (the last data we already wrote to file) as well as the
++ * write_offset which is incremented by GuC with the number new bytes of log data.
++ * When the log buffer becomes half full, GuC sends a flush interrupt to i915.
++ * GuC firmware expects that while it is writing to second half of the buffer,
++ * first half would get consumed by i915 and then get a flush completed
++ * acknowledgment from Host. Thus, we would expect to see the size of new incoming
++ * data being about half the size of the buffer state size member variable.
++ * If the read and write pointers are equal, it means that the buffer is full
++ */
 +
-+static void pull_leftover_data(struct thread_t *tdata, bool save_it)
++#define GUCLOGEVT_2_0_START_OFFSET      PAGE_SIZE
++
++struct guc_log_buffer_state_2_0 {
++	uint32_t marker[2]; /* we should find GUCLOG_LOGEVENTHEADER_MAGIC */
++#define GUCLOGEVT_2_0_HEADER_MAGIC_DW0 0XCABBA9E6
++#define GUCLOGEVT_2_0_HEADER_MAGIC_DW1 0XDEADFEED
++	uint32_t read_offset; /* start offset inclusive of new data */
++	uint32_t write_offset;  /* GuC in midst of writing new data, ignore this */
++	uint32_t size; /* the buffer size that driver and GuC shares */
++	uint32_t sampled_write_offset; /* end-offset exclusive of new data */
++	uint32_t wrap_offset; /* end-offset exclusive when data wraps */
++	uint32_t flags; /* GuC uses to update driver of events like overflows */
++	uint32_t version; /* we currently recognize version 2 */
++#define GUCLOGEVT_2_0_VERSION          0x0002
++};
++
+ static bool file_reached_maxsize(struct global_t *gbl, struct guc_t *guc)
  {
- 	struct guc_t *guc = tdata->guc;
- 	unsigned int bytes_read = 0;
-@@ -275,12 +278,8 @@ static void pull_leftover_data(struct thread_t *tdata)
- 			igt_warn("invalid leftover-size from GuC GT-%d relay-channel\n",
- 				 guc->gt_id);
- 		bytes_read += ret;
--		if (guc->outfd >= 0) {
--			ret = write(guc->outfd, guc->readbuf, subbuf_size);
--			if (ret != subbuf_size)
--				igt_warn("Couldn't dump leftover logs to file\n");
--			guc->total_bytes_written += ret;
--		}
-+		if (guc->outfd >= 0 && save_it)
-+			write_extracted_data(tdata->global, guc, guc->readbuf, subbuf_size);
- 	} while(1);
- 
- 	igt_debug("%u bytes flushed from GuC GT-%d\n", bytes_read, guc->gt_id);
-@@ -629,7 +628,7 @@ static void open_relay_file(struct thread_t *tdata)
- 	 * a different shell.
- 	 */
- 	if (tdata->global->discard_oldlogs)
--		pull_leftover_data(tdata);
-+		pull_leftover_data(tdata, false);
- }
- 
- static void open_output_file(struct thread_t *tdata)
-@@ -914,7 +913,7 @@ int main(int argc, char **argv)
- 	thread[0].guc->capturing_stopped = 1;
- 	pthread_cond_signal(&thread[0].guc->underflow_cond);
- 	pthread_join(thread[0].guc->flush_thread, NULL);
--	pull_leftover_data(&thread[0]);
-+	pull_leftover_data(&thread[0], true);
- 	update_outfile_header(&thread[0]);
- 	igt_info("total bytes written %" PRIu64 "\n", thread[0].guc->total_bytes_written);
- 
+ 	if (gbl->max_filesize && MB(gbl->max_filesize) - guc->total_bytes_written <= 0)
 -- 
 2.34.1
