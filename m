@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9E1C010E0F7
- for <igt-dev@lists.freedesktop.org>; Tue,  6 Dec 2022 07:47:41 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8F33310E306
+ for <igt-dev@lists.freedesktop.org>; Tue,  6 Dec 2022 07:47:44 +0000 (UTC)
 From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue,  6 Dec 2022 08:47:06 +0100
-Message-Id: <20221206074708.30690-10-zbigniew.kempczynski@intel.com>
+Date: Tue,  6 Dec 2022 08:47:07 +0100
+Message-Id: <20221206074708.30690-11-zbigniew.kempczynski@intel.com>
 In-Reply-To: <20221206074708.30690-1-zbigniew.kempczynski@intel.com>
 References: <20221206074708.30690-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v4 09/11] lib/ioctl_wrappers: Remove
- gem_handle_to_libdrm_bo
+Subject: [igt-dev] [PATCH i-g-t v4 10/11] tools/meson: Move tools out of
+ libdrm scope
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,80 +24,57 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Function is not used anymore in IGT so lets remove it, especially it
-keeps libdrm dependency.
+Libdrm was removed from intel tools so lets remove libdrm configuration
+and migrate tools to normal tools list.
 
 Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 Cc: Petri Latvala <petri.latvala@intel.com>
 ---
- lib/ioctl_wrappers.c | 31 -------------------------------
- lib/ioctl_wrappers.h |  5 -----
- 2 files changed, 36 deletions(-)
+ tools/meson.build | 15 +++++----------
+ 1 file changed, 5 insertions(+), 10 deletions(-)
 
-diff --git a/lib/ioctl_wrappers.c b/lib/ioctl_wrappers.c
-index 09eb3ce7b5..1ab41ab6d6 100644
---- a/lib/ioctl_wrappers.c
-+++ b/lib/ioctl_wrappers.c
-@@ -92,37 +92,6 @@
- int (*igt_ioctl)(int fd, unsigned long request, void *arg) = drmIoctl;
+diff --git a/tools/meson.build b/tools/meson.build
+index 24d0ea7140..d2defec870 100644
+--- a/tools/meson.build
++++ b/tools/meson.build
+@@ -18,9 +18,12 @@ tools_progs = [
+ 	'intel_bios_dumper',
+ 	'intel_display_crc',
+ 	'intel_display_poller',
++	'intel_dump_decode',
++	'intel_error_decode',
+ 	'intel_forcewaked',
+ 	'intel_gpu_frequency',
+ 	'intel_firmware_decode',
++	'intel_framebuffer_dump',
+ 	'intel_gpu_time',
+ 	'intel_gtt',
+ 	'intel_guc_logger',
+@@ -28,6 +31,7 @@ tools_progs = [
+ 	'intel_lid',
+ 	'intel_opregion_decode',
+ 	'intel_panel_fitter',
++	'intel_perf_counters',
+ 	'intel_pm_rpm',
+ 	'intel_reg_checker',
+ 	'intel_residency',
+@@ -40,16 +44,7 @@ tools_progs = [
+ 	'lsgpu',
+ ]
+ tool_deps = igt_deps
+-
+-if libdrm_intel.found()
+-	tools_progs += [
+-		'intel_dump_decode',
+-		'intel_error_decode',
+-		'intel_framebuffer_dump',
+-		'intel_perf_counters',
+-	]
+-	tool_deps += zlib
+-endif
++tool_deps += zlib
  
- 
--/**
-- * gem_handle_to_libdrm_bo:
-- * @bufmgr: libdrm buffer manager instance
-- * @fd: open i915 drm file descriptor
-- * @name: buffer name in libdrm
-- * @handle: gem buffer object handle
-- *
-- * This helper function imports a raw gem buffer handle into the libdrm buffer
-- * manager.
-- *
-- * Returns: The imported libdrm buffer manager object.
-- */
--drm_intel_bo *
--gem_handle_to_libdrm_bo(drm_intel_bufmgr *bufmgr, int fd, const char *name, uint32_t handle)
--{
--	struct drm_gem_flink flink;
--	int ret;
--	drm_intel_bo *bo;
--
--	memset(&flink, 0, sizeof(handle));
--	flink.handle = handle;
--	ret = ioctl(fd, DRM_IOCTL_GEM_FLINK, &flink);
--	igt_assert(ret == 0);
--	errno = 0;
--
--	bo = drm_intel_bo_gem_create_from_name(bufmgr, name, flink.name);
--	igt_assert(bo);
--
--	return bo;
--}
--
- static int
- __gem_get_tiling(int fd, struct drm_i915_gem_get_tiling *arg)
- {
-diff --git a/lib/ioctl_wrappers.h b/lib/ioctl_wrappers.h
-index 9a897fec23..cf228c2651 100644
---- a/lib/ioctl_wrappers.h
-+++ b/lib/ioctl_wrappers.h
-@@ -33,7 +33,6 @@
- #include <stdint.h>
- #include <stdbool.h>
- #include <sys/mman.h>
--#include <intel_bufmgr.h>
- #include <i915_drm.h>
- 
- #include "i915/gem_context.h"
-@@ -51,10 +50,6 @@
-  */
- extern int (*igt_ioctl)(int fd, unsigned long request, void *arg);
- 
--/* libdrm interfacing */
--drm_intel_bo * gem_handle_to_libdrm_bo(drm_intel_bufmgr *bufmgr, int fd,
--				       const char *name, uint32_t handle);
--
- /* ioctl_wrappers.c:
-  *
-  * ioctl wrappers and similar stuff for bare metal testing */
+ foreach prog : tools_progs
+ 	executable(prog, prog + '.c',
 -- 
 2.34.1
