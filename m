@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 788E710E32D
- for <igt-dev@lists.freedesktop.org>; Tue,  6 Dec 2022 15:01:37 +0000 (UTC)
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3F64C10E32D
+ for <igt-dev@lists.freedesktop.org>; Tue,  6 Dec 2022 15:01:41 +0000 (UTC)
 From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue,  6 Dec 2022 16:01:23 +0100
-Message-Id: <20221206150124.55842-2-zbigniew.kempczynski@intel.com>
+Date: Tue,  6 Dec 2022 16:01:24 +0100
+Message-Id: <20221206150124.55842-3-zbigniew.kempczynski@intel.com>
 In-Reply-To: <20221206150124.55842-1-zbigniew.kempczynski@intel.com>
 References: <20221206150124.55842-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v4 1/2] tests/gem_softpin: Add prime reopen
- eviction subtest
+Subject: [igt-dev] [PATCH i-g-t v4 2/2] HAX: Exercise evict-prime and
+ evict-prime-sanity-check
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,219 +24,196 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-For set of objects exported via prime fd verify objects can be randomly
-opened, binded, executed and closed. Random open always returns same
-handle id so vma rebind is necessary. Exercise this when objects are
-opened in more opened drm fds.
-
 Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-
 ---
-v2: put 'all' subtest in dynamic subtest, add sanity check with
-    single thread.
-v3: move to prime fd instead flink, clean on dyn subtest failure
----
- tests/i915/gem_softpin.c | 181 +++++++++++++++++++++++++++++++++++++++
- 1 file changed, 181 insertions(+)
+ tests/intel-ci/fast-feedback.testlist | 180 +-------------------------
+ 1 file changed, 3 insertions(+), 177 deletions(-)
 
-diff --git a/tests/i915/gem_softpin.c b/tests/i915/gem_softpin.c
-index a85a366408..ad6d3f531c 100644
---- a/tests/i915/gem_softpin.c
-+++ b/tests/i915/gem_softpin.c
-@@ -1149,6 +1149,167 @@ static void evict_single_offset(int fd, const intel_ctx_t *ctx, int timeout)
- 	igt_assert_eq(intel_detect_and_clear_missed_interrupts(fd), 0);
- }
+diff --git a/tests/intel-ci/fast-feedback.testlist b/tests/intel-ci/fast-feedback.testlist
+index f57f8ff3be..5ffb5fd025 100644
+--- a/tests/intel-ci/fast-feedback.testlist
++++ b/tests/intel-ci/fast-feedback.testlist
+@@ -1,178 +1,4 @@
+-# Try to load the driver if it's not available yet.
+-igt@i915_module_load@load
++igt@gem_softpin@evict-flink-sanity-check
++igt@gem_softpin@evict-flink
  
-+struct thread {
-+	pthread_t thread;
-+	pthread_mutex_t *mutex;
-+	pthread_cond_t *cond;
-+	int *scratch;
-+	const intel_ctx_t *ctx;
-+	unsigned int engine;
-+	int fd, *go;
-+};
-+
-+#define NUMOBJ 16
-+
-+static void *thread(void *data)
-+{
-+	struct thread *t = data;
-+	struct drm_i915_gem_exec_object2 obj[2];
-+	struct drm_i915_gem_execbuffer2 execbuf;
-+	const intel_ctx_t *ctx = NULL;
-+	uint64_t offset_obj, offset_bb;
-+	uint32_t batch = MI_BATCH_BUFFER_END;
-+	int fd, ret, succeeded = 0;
-+
-+	fd = gem_reopen_driver(t->fd);
-+	ctx = intel_ctx_create(fd, &t->ctx->cfg);
-+	offset_obj = gem_detect_safe_start_offset(fd);
-+	offset_bb = ALIGN(offset_obj + 4096, gem_detect_safe_alignment(fd));
-+	igt_debug("reopened fd: %d, ctx: %u, object offset: %llx, bb offset: %llx\n",
-+		  fd, ctx->id, (long long) offset_obj, (long long) offset_bb);
-+
-+	pthread_mutex_lock(t->mutex);
-+	while (*t->go == 0)
-+		pthread_cond_wait(t->cond, t->mutex);
-+	pthread_mutex_unlock(t->mutex);
-+
-+	memset(obj, 0, sizeof(obj));
-+	obj[0].offset = offset_obj;
-+	obj[0].flags = EXEC_OBJECT_PINNED | EXEC_OBJECT_WRITE |
-+		       EXEC_OBJECT_SUPPORTS_48B_ADDRESS;
-+	obj[1].handle = gem_create(fd, 4096);
-+	obj[1].offset = offset_bb;
-+	obj[1].flags |= EXEC_OBJECT_PINNED | EXEC_OBJECT_SUPPORTS_48B_ADDRESS;
-+	gem_write(fd, obj[1].handle, 0, &batch, sizeof(batch));
-+
-+	memset(&execbuf, 0, sizeof(execbuf));
-+	execbuf.buffers_ptr = to_user_pointer(obj);
-+	execbuf.buffer_count = 2;
-+	execbuf.flags = t->engine;
-+	execbuf.flags |= I915_EXEC_HANDLE_LUT;
-+	execbuf.flags |= I915_EXEC_NO_RELOC;
-+	execbuf.rsvd1 = ctx->id;
-+
-+	igt_until_timeout(1) {
-+		unsigned int x = rand() % NUMOBJ;
-+
-+		obj[0].handle = prime_fd_to_handle(fd, t->scratch[x]);
-+
-+		ret = __gem_execbuf(fd, &execbuf);
-+		if (ret)
-+			igt_debug("<fd: %d, ctx: %u, x: %2u, engine: %d> "
-+				  "object handle: %2u (prime fd: %2d), bb handle: %2u, "
-+				  "offsets: %llx, %llx [ret: %d, succeeded: %d]\n",
-+				  fd, ctx->id, x, t->engine,
-+				  obj[0].handle, t->scratch[x], obj[1].handle,
-+				  (long long) obj[0].offset,
-+				  (long long) obj[1].offset, ret, succeeded);
-+		else
-+			succeeded++;
-+
-+		gem_close(fd, obj[0].handle);
-+
-+		if (ret)
-+			break;
-+	}
-+
-+	if (!ret)
-+		igt_debug("<fd: %d, ctx: %u, engine: %d> succeeded: %d\n",
-+			  fd, ctx->id, t->engine, succeeded);
-+	intel_ctx_destroy(fd, ctx);
-+	gem_close(fd, obj[1].handle);
-+	close(fd);
-+
-+	return (void *) from_user_pointer(ret);
-+}
-+
-+static void evict_prime(int fd, const intel_ctx_t *ctx,
-+			const struct intel_execution_engine2 *engine,
-+			int numthreads)
-+{
-+	unsigned int engines[I915_EXEC_RING_MASK + 1], nengine;
-+	uint32_t handle[NUMOBJ];
-+	int scratch[NUMOBJ];
-+	struct thread *threads;
-+	pthread_mutex_t mutex;
-+	pthread_cond_t cond;
-+	int go;
-+	int i;
-+	bool failed = false;
-+
-+	igt_require(igt_allow_unlimited_files());
-+
-+	nengine = 0;
-+	if (!engine) {
-+		struct intel_execution_engine2 *e;
-+
-+		for_each_ctx_engine(fd, ctx, e)
-+			engines[nengine++] = e->flags;
-+	} else {
-+		engines[nengine++] = engine->flags;
-+	}
-+	igt_require(nengine);
-+
-+	for (i = 0; i < NUMOBJ; i++) {
-+		handle[i] = gem_create(fd, 4096);
-+		scratch[i] = prime_handle_to_fd(fd, handle[i]);
-+	}
-+
-+	threads = calloc(numthreads, sizeof(struct thread));
-+	igt_assert(numthreads);
-+
-+	intel_detect_and_clear_missed_interrupts(fd);
-+	pthread_mutex_init(&mutex, 0);
-+	pthread_cond_init(&cond, 0);
-+	go = 0;
-+
-+	for (i = 0; i < numthreads; i++) {
-+		threads[i].fd = fd;
-+		threads[i].ctx = ctx;
-+		threads[i].engine = engines[i % nengine];
-+		threads[i].scratch = scratch;
-+		threads[i].mutex = &mutex;
-+		threads[i].cond = &cond;
-+		threads[i].go = &go;
-+
-+		pthread_create(&threads[i].thread, 0, thread, &threads[i]);
-+	}
-+
-+	pthread_mutex_lock(&mutex);
-+	go = numthreads;
-+	pthread_cond_broadcast(&cond);
-+	pthread_mutex_unlock(&mutex);
-+
-+	for (i = 0; i < numthreads; i++) {
-+		void *retp;
-+		int ret;
-+
-+		pthread_join(threads[i].thread, &retp);
-+		ret = (int) to_user_pointer(retp);
-+		if (ret)
-+			failed = true;
-+	}
-+
-+	for (i = 0; i < NUMOBJ; i++) {
-+		gem_close(fd, handle[i]);
-+		close(scratch[i]);
-+	}
-+
-+	igt_assert_eq(intel_detect_and_clear_missed_interrupts(fd), 0);
-+	free(threads);
-+	igt_assert_eq(failed, false);
-+}
-+
- static void make_batch(int i915, uint32_t handle, uint64_t size)
- {
- 	uint32_t *bb = gem_mmap__device_coherent(i915, handle, 0, size, PROT_WRITE);
-@@ -1307,6 +1468,26 @@ igt_main
- 		igt_describe("Use same offset for all engines and for different handles.");
- 		igt_subtest("evict-single-offset")
- 			evict_single_offset(fd, ctx, 20);
-+
-+		igt_describe("Check eviction of vma on importing prime fd in reopened "
-+			     "drm fd in single thread");
-+		igt_subtest_with_dynamic("evict-prime-sanity-check") {
-+			for_each_ctx_engine(fd, ctx, e) {
-+				igt_dynamic(e->name)
-+					evict_prime(fd, ctx, e, 1);
-+			}
-+			igt_dynamic("all")
-+				evict_prime(fd, ctx, NULL, 1);
-+		}
-+		igt_describe("Check eviction of vma on importing prime fd in reopened drm fds");
-+		igt_subtest_with_dynamic("evict-prime") {
-+			for_each_ctx_engine(fd, ctx, e) {
-+				igt_dynamic(e->name)
-+					evict_prime(fd, ctx, e, 4);
-+			}
-+			igt_dynamic("all")
-+				evict_prime(fd, ctx, NULL, 4);
-+		}
- 	}
- 
- 	igt_describe("Check start offset and alignment detection.");
+-# Keep alphabetically sorted by default
+-igt@core_auth@basic-auth
+-igt@debugfs_test@read_all_entries
+-igt@debugfs_test@basic-hwmon
+-igt@fbdev@eof
+-igt@fbdev@info
+-igt@fbdev@nullptr
+-igt@fbdev@read
+-igt@fbdev@write
+-igt@gem_basic@bad-close
+-igt@gem_basic@create-close
+-igt@gem_basic@create-fd-close
+-igt@gem_busy@busy@all
+-igt@gem_close_race@basic-process
+-igt@gem_close_race@basic-threads
+-igt@gem_ctx_create@basic
+-igt@gem_ctx_create@basic-files
+-igt@gem_ctx_exec@basic
+-igt@gem_exec_basic@basic
+-igt@gem_exec_create@basic
+-igt@gem_exec_fence@basic-busy
+-igt@gem_exec_fence@basic-wait
+-igt@gem_exec_fence@basic-await
+-igt@gem_exec_fence@nb-await
+-igt@gem_exec_gttfill@basic
+-igt@gem_exec_parallel@engines
+-igt@gem_exec_store@basic
+-igt@gem_flink_basic@bad-flink
+-igt@gem_flink_basic@bad-open
+-igt@gem_flink_basic@basic
+-igt@gem_flink_basic@double-flink
+-igt@gem_flink_basic@flink-lifetime
+-igt@gem_huc_copy@huc-copy
+-igt@gem_linear_blits@basic
+-igt@gem_mmap@basic
+-igt@gem_mmap_gtt@basic
+-igt@gem_render_linear_blits@basic
+-igt@gem_render_tiled_blits@basic
+-igt@gem_ringfill@basic-all
+-igt@gem_softpin@allocator-basic
+-igt@gem_softpin@allocator-basic-reserve
+-igt@gem_softpin@safe-alignment
+-igt@gem_sync@basic-all
+-igt@gem_sync@basic-each
+-igt@gem_tiled_blits@basic
+-igt@gem_tiled_fence_blits@basic
+-igt@gem_tiled_pread_basic
+-igt@gem_wait@busy@all
+-igt@gem_wait@wait@all
+-igt@i915_getparams_basic@basic-eu-total
+-igt@i915_getparams_basic@basic-subslice-total
+-igt@i915_hangman@error-state-basic
+-igt@i915_pciid
+-igt@kms_addfb_basic@addfb25-bad-modifier
+-igt@kms_addfb_basic@addfb25-framebuffer-vs-set-tiling
+-igt@kms_addfb_basic@addfb25-modifier-no-flag
+-igt@kms_addfb_basic@addfb25-x-tiled-legacy
+-igt@kms_addfb_basic@addfb25-x-tiled-mismatch-legacy
+-igt@kms_addfb_basic@addfb25-yf-tiled-legacy
+-igt@kms_addfb_basic@addfb25-y-tiled-legacy
+-igt@kms_addfb_basic@addfb25-y-tiled-small-legacy
+-igt@kms_addfb_basic@bad-pitch-0
+-igt@kms_addfb_basic@bad-pitch-1024
+-igt@kms_addfb_basic@bad-pitch-128
+-igt@kms_addfb_basic@bad-pitch-256
+-igt@kms_addfb_basic@bad-pitch-32
+-igt@kms_addfb_basic@bad-pitch-63
+-igt@kms_addfb_basic@bad-pitch-65536
+-igt@kms_addfb_basic@bad-pitch-999
+-igt@kms_addfb_basic@basic
+-igt@kms_addfb_basic@basic-x-tiled-legacy
+-igt@kms_addfb_basic@basic-y-tiled-legacy
+-igt@kms_addfb_basic@bo-too-small
+-igt@kms_addfb_basic@bo-too-small-due-to-tiling
+-igt@kms_addfb_basic@clobberred-modifier
+-igt@kms_addfb_basic@framebuffer-vs-set-tiling
+-igt@kms_addfb_basic@invalid-get-prop
+-igt@kms_addfb_basic@invalid-get-prop-any
+-igt@kms_addfb_basic@invalid-set-prop
+-igt@kms_addfb_basic@invalid-set-prop-any
+-igt@kms_addfb_basic@no-handle
+-igt@kms_addfb_basic@size-max
+-igt@kms_addfb_basic@small-bo
+-igt@kms_addfb_basic@tile-pitch-mismatch
+-igt@kms_addfb_basic@too-high
+-igt@kms_addfb_basic@too-wide
+-igt@kms_addfb_basic@unused-handle
+-igt@kms_addfb_basic@unused-modifier
+-igt@kms_addfb_basic@unused-offsets
+-igt@kms_addfb_basic@unused-pitches
+-igt@kms_busy@basic
+-igt@kms_chamelium@dp-hpd-fast
+-igt@kms_chamelium@dp-edid-read
+-igt@kms_chamelium@dp-crc-fast
+-igt@kms_chamelium@hdmi-hpd-fast
+-igt@kms_chamelium@hdmi-edid-read
+-igt@kms_chamelium@hdmi-crc-fast
+-igt@kms_chamelium@vga-hpd-fast
+-igt@kms_chamelium@vga-edid-read
+-igt@kms_prop_blob@basic
+-igt@kms_cursor_legacy@basic-busy-flip-before-cursor
+-igt@kms_cursor_legacy@basic-flip-after-cursor
+-igt@kms_cursor_legacy@basic-flip-before-cursor
+-igt@kms_flip@basic-flip-vs-dpms
+-igt@kms_flip@basic-flip-vs-modeset
+-igt@kms_flip@basic-flip-vs-wf_vblank
+-igt@kms_flip@basic-plain-flip
+-igt@kms_force_connector_basic@force-connector-state
+-igt@kms_force_connector_basic@force-edid
+-igt@kms_force_connector_basic@force-load-detect
+-igt@kms_force_connector_basic@prune-stale-modes
+-igt@kms_frontbuffer_tracking@basic
+-igt@kms_pipe_crc_basic@compare-crc-sanitycheck
+-igt@kms_pipe_crc_basic@hang-read-crc
+-igt@kms_pipe_crc_basic@nonblocking-crc
+-igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence
+-igt@kms_pipe_crc_basic@read-crc
+-igt@kms_pipe_crc_basic@read-crc-frame-sequence
+-igt@kms_psr@primary_page_flip
+-igt@kms_psr@cursor_plane_move
+-igt@kms_psr@sprite_plane_onoff
+-igt@kms_psr@primary_mmap_gtt
+-igt@kms_setmode@basic-clone-single-crtc
+-igt@i915_pm_backlight@basic-brightness
+-igt@i915_pm_rpm@basic-pci-d3-state
+-igt@i915_pm_rpm@basic-rte
+-igt@i915_pm_rps@basic-api
+-igt@prime_self_import@basic-llseek-bad
+-igt@prime_self_import@basic-llseek-size
+-igt@prime_self_import@basic-with_fd_dup
+-igt@prime_self_import@basic-with_one_bo
+-igt@prime_self_import@basic-with_one_bo_two_files
+-igt@prime_self_import@basic-with_two_bos
+-igt@prime_vgem@basic-fence-flip
+-igt@prime_vgem@basic-fence-mmap
+-igt@prime_vgem@basic-fence-read
+-igt@prime_vgem@basic-gtt
+-igt@prime_vgem@basic-read
+-igt@prime_vgem@basic-write
+-igt@prime_vgem@basic-userptr
+-igt@vgem_basic@setversion
+-igt@vgem_basic@create
+-igt@vgem_basic@debugfs
+-igt@vgem_basic@dmabuf-export
+-igt@vgem_basic@dmabuf-fence
+-igt@vgem_basic@dmabuf-fence-before
+-igt@vgem_basic@dmabuf-mmap
+-igt@vgem_basic@mmap
+-igt@vgem_basic@second-client
+-igt@vgem_basic@sysfs
+-
+-# All tests that do module unloading and reloading are executed last.
+-# They will sometimes reveal issues of earlier tests leaving the
+-# driver in a broken state that is not otherwise noticed in that test.
+-
+-igt@core_hotunplug@unbind-rebind
+-igt@vgem_basic@unload
+-igt@i915_module_load@reload
+-igt@gem_lmem_swapping@basic
+-igt@gem_lmem_swapping@parallel-random-engines
+-igt@gem_lmem_swapping@random-engines
+-igt@gem_lmem_swapping@verify-random
+-igt@i915_pm_rpm@module-reload
+-
+-# Kernel selftests
+-igt@i915_selftest@live
+-igt@dmabuf@all
+-
+-# System wide suspend tests
+-igt@i915_suspend@basic-s2idle-without-i915
+-igt@i915_suspend@basic-s3-without-i915
+-igt@gem_exec_suspend@basic-s0
+-igt@gem_exec_suspend@basic-s3
+-igt@kms_chamelium@common-hpd-after-suspend
+-igt@kms_pipe_crc_basic@suspend-read-crc
++igt@meta_test@fail-result
 -- 
 2.34.1
