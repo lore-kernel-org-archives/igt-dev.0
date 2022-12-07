@@ -1,16 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5916310E38D
- for <igt-dev@lists.freedesktop.org>; Wed,  7 Dec 2022 10:25:40 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3158B10E391
+ for <igt-dev@lists.freedesktop.org>; Wed,  7 Dec 2022 10:25:43 +0000 (UTC)
 From: Anshuman Gupta <anshuman.gupta@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Wed,  7 Dec 2022 15:55:20 +0530
-Message-Id: <20221207102523.1028941-3-anshuman.gupta@intel.com>
+Date: Wed,  7 Dec 2022 15:55:21 +0530
+Message-Id: <20221207102523.1028941-4-anshuman.gupta@intel.com>
 In-Reply-To: <20221207102523.1028941-1-anshuman.gupta@intel.com>
 References: <20221207102523.1028941-1-anshuman.gupta@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v4 2/5] lib/igt_pci: Add PCIe slot cap
+Subject: [igt-dev] [PATCH i-g-t v4 3/5] lib/igt_pm: Refactor get
+ firmware_node fd
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,28 +24,86 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Adding PCIe slot cap register offset and Power Controller Present
-bit mask macros.
+Created igt_pm_open_pci_firmware_node() to refactor
+the retrieving the firmware_node fd code.
+
+igt_pm_open_pci_firmware_node() will be used by other
+firmware_node consumers.
+
+While doing that fixed the leaked fd as well.
+
+v2:
+- return false instead of igt_require on no firmware_node_fd. [Kamil]
+- use igt_assert() when failed to open 'real_power_state' on error
+  other then ENONET.
+v3:
+- Fixed the nit. [Kmail]
 
 Signed-off-by: Anshuman Gupta <anshuman.gupta@intel.com>
-Reviewed-by: Badal Nilawar <badal.nilawar@intel.com>
+Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
 ---
- lib/igt_pci.h | 3 +++
- 1 file changed, 3 insertions(+)
+ lib/igt_pm.c | 36 +++++++++++++++++++++++++-----------
+ 1 file changed, 25 insertions(+), 11 deletions(-)
 
-diff --git a/lib/igt_pci.h b/lib/igt_pci.h
-index 7cb23a26d8..876e4ec24d 100644
---- a/lib/igt_pci.h
-+++ b/lib/igt_pci.h
-@@ -20,6 +20,9 @@ enum pci_cap_id {
- 	PCI_EXPRESS_CAP_ID = 0x10
- };
+diff --git a/lib/igt_pm.c b/lib/igt_pm.c
+index 1e6e9ed3ff..1e144a7397 100644
+--- a/lib/igt_pm.c
++++ b/lib/igt_pm.c
+@@ -863,6 +863,20 @@ bool i915_output_is_lpsp_capable(int drm_fd, igt_output_t *output)
+ 	return strstr(buf, "LPSP: capable");
+ }
  
-+#define PCI_SLOT_CAP_OFFSET 0x14  /* PCIe specs chapter 7.8.9 */
-+#define  PCI_SLOT_PWR_CTRL_PRESENT (1 << 1)
++static int igt_pm_open_pci_firmware_node(struct pci_device *pci_dev)
++{
++	char name[PATH_MAX];
++	int dir;
 +
- int find_pci_cap_offset(struct pci_device *dev, enum pci_cap_id cap_id);
++	snprintf(name, PATH_MAX,
++		 "/sys/bus/pci/devices/%04x:%02x:%02x.%01x/firmware_node",
++		 pci_dev->domain, pci_dev->bus, pci_dev->dev, pci_dev->func);
++
++	dir = open(name, O_RDONLY);
++
++	return dir;
++}
++
+ /**
+  * igt_pm_acpi_d3cold_supported:
+  * @pci_dev: root port pci_dev.
+@@ -873,23 +887,23 @@ bool i915_output_is_lpsp_capable(int drm_fd, igt_output_t *output)
+  */
+ bool igt_pm_acpi_d3cold_supported(struct pci_device *pci_dev)
+ {
+-	char name[PATH_MAX];
+-	int dir, fd;
+-
+-	snprintf(name, PATH_MAX,
+-		 "/sys/bus/pci/devices/%04x:%02x:%02x.%01x/firmware_node",
+-		 pci_dev->domain, pci_dev->bus, pci_dev->dev, pci_dev->func);
++	int firmware_node_fd, fd;
  
- #endif
+-	dir = open(name, O_RDONLY);
+-	igt_require(dir > 0);
++	firmware_node_fd = igt_pm_open_pci_firmware_node(pci_dev);
++	if (firmware_node_fd < 0)
++		return false;
+ 
+ 	/* BIOS need to enable ACPI D3Cold Support.*/
+-	fd = openat(dir, "real_power_state", O_RDONLY);
+-	if (fd < 0 && errno == ENOENT)
++	fd = openat(firmware_node_fd, "real_power_state", O_RDONLY);
++	if (fd < 0 && errno == ENOENT) {
++		close(firmware_node_fd);
+ 		return false;
++	}
+ 
+-	igt_require(fd > 0);
++	igt_assert_f(fd > 0, "failed to open real_power_state, errno=%d\n", errno);
+ 
++	close(firmware_node_fd);
++	close(fd);
+ 	return true;
+ }
+ 
 -- 
 2.25.1
