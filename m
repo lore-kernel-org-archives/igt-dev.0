@@ -1,19 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1315B10E38E
- for <igt-dev@lists.freedesktop.org>; Wed,  7 Dec 2022 10:31:34 +0000 (UTC)
-Date: Wed, 7 Dec 2022 12:32:04 +0200
-From: Petri Latvala <petri.latvala@intel.com>
-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Message-ID: <Y5BrpFsef7PImLOL@platvala-desk.ger.corp.intel.com>
-References: <20221202205705.58879-1-kamil.konieczny@linux.intel.com>
- <20221202205705.58879-3-kamil.konieczny@linux.intel.com>
+Content-Type: multipart/alternative;
+ boundary="===============8671412128743302622=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20221202205705.58879-3-kamil.konieczny@linux.intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 2/7] lib/igt_core: store GPU string or
- opened device name
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Anshuman Gupta" <anshuman.gupta@intel.com>
+Date: Wed, 07 Dec 2022 10:59:20 -0000
+Message-ID: <167041076095.14514.16135454446480208881@emeril.freedesktop.org>
+References: <20221207102523.1028941-1-anshuman.gupta@intel.com>
+In-Reply-To: <20221207102523.1028941-1-anshuman.gupta@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgQ29sZCBS?=
+ =?utf-8?q?eset_IGT_Test?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,114 +17,274 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Fri, Dec 02, 2022 at 09:57:00PM +0100, Kamil Konieczny wrote:
-> From: Mauro Carvalho Chehab <mchehab@kernel.org>
-> 
-> This is helpful on tests that run with multiple GPUs.
-> The name will be automatically filled when a device will
-> be opened.
-> 
-> v2: reorganized code, changed commit message to note that
->   it will be filled with pathname of opended device, also
->   correct static initialization [Kamil]
-> 
-> Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
-> Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> ---
->  lib/drmtest.c  |  4 +++-
->  lib/igt_core.c | 30 ++++++++++++++++++++++++++++++
->  lib/igt_core.h |  6 ++++++
->  3 files changed, 39 insertions(+), 1 deletion(-)
-> 
-> diff --git a/lib/drmtest.c b/lib/drmtest.c
-> index 16e80bdf..5eb98272 100644
-> --- a/lib/drmtest.c
-> +++ b/lib/drmtest.c
-> @@ -222,8 +222,10 @@ static int open_device(const char *name, unsigned int chipset)
->  			break;
->  		}
->  	}
-> -	if ((chipset & chip) == chip)
-> +	if ((chipset & chip) == chip) {
-> +		set_gpu_string(name);
->  		return fd;
-> +	}
->  
->  err:
->  	close(fd);
-> diff --git a/lib/igt_core.c b/lib/igt_core.c
-> index dca380d0..68ae7289 100644
-> --- a/lib/igt_core.c
-> +++ b/lib/igt_core.c
-> @@ -1576,6 +1576,36 @@ static void kill_and_wait(pid_t *pids, int size, int signum)
->  	}
->  }
->  
-> +static __thread char *gpu_string;
-> +
+--===============8671412128743302622==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-This is assuming that multiple gpu usage is done from different
-threads/processes per gpu. What about tests that call
-drm_open_driver_another() from the same thread?
+== Series Details ==
 
-What about tests that don't call drm_open_driver() at all?
+Series: Cold Reset IGT Test
+URL   : https://patchwork.freedesktop.org/series/111719/
+State : success
+
+== Summary ==
+
+CI Bug Log - changes from CI_DRM_12476 -> IGTPW_8209
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8209/index.html
+
+Participating hosts (30 -> 29)
+------------------------------
+
+  Additional (1): fi-kbl-8809g 
+  Missing    (2): fi-rkl-11600 fi-tgl-dsi 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_8209 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@gem_exec_gttfill@basic:
+    - fi-pnv-d510:        [PASS][1] -> [FAIL][2] ([i915#7229])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12476/fi-pnv-d510/igt@gem_exec_gttfill@basic.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8209/fi-pnv-d510/igt@gem_exec_gttfill@basic.html
+
+  * igt@gem_huc_copy@huc-copy:
+    - fi-kbl-8809g:       NOTRUN -> [SKIP][3] ([fdo#109271] / [i915#2190])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8209/fi-kbl-8809g/igt@gem_huc_copy@huc-copy.html
+
+  * igt@i915_module_load@reload:
+    - fi-kbl-8809g:       NOTRUN -> [DMESG-WARN][4] ([i915#6899])
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8209/fi-kbl-8809g/igt@i915_module_load@reload.html
+
+  * igt@i915_selftest@live@hangcheck:
+    - fi-icl-u2:          [PASS][5] -> [INCOMPLETE][6] ([i915#5153])
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12476/fi-icl-u2/igt@i915_selftest@live@hangcheck.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8209/fi-icl-u2/igt@i915_selftest@live@hangcheck.html
+
+  * igt@kms_chamelium@vga-edid-read:
+    - fi-kbl-8809g:       NOTRUN -> [SKIP][7] ([fdo#109271] / [fdo#111827]) +7 similar issues
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8209/fi-kbl-8809g/igt@kms_chamelium@vga-edid-read.html
+
+  * igt@kms_cursor_legacy@basic-busy-flip-before-cursor:
+    - fi-kbl-8809g:       NOTRUN -> [SKIP][8] ([fdo#109271]) +24 similar issues
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8209/fi-kbl-8809g/igt@kms_cursor_legacy@basic-busy-flip-before-cursor.html
+
+  * igt@runner@aborted:
+    - fi-kbl-8809g:       NOTRUN -> [FAIL][9] ([i915#4312] / [i915#4991])
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8209/fi-kbl-8809g/igt@runner@aborted.html
+    - fi-icl-u2:          NOTRUN -> [FAIL][10] ([i915#4312])
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8209/fi-icl-u2/igt@runner@aborted.html
+
+  
+#### Possible fixes ####
+
+  * igt@fbdev@read:
+    - {bat-rpls-2}:       [SKIP][11] ([i915#2582]) -> [PASS][12] +4 similar issues
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12476/bat-rpls-2/igt@fbdev@read.html
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8209/bat-rpls-2/igt@fbdev@read.html
+
+  * igt@i915_module_load@reload:
+    - {bat-rpls-2}:       [INCOMPLETE][13] ([i915#6434]) -> [PASS][14]
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12476/bat-rpls-2/igt@i915_module_load@reload.html
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8209/bat-rpls-2/igt@i915_module_load@reload.html
+
+  * igt@i915_selftest@live@gt_heartbeat:
+    - {bat-jsl-1}:        [DMESG-FAIL][15] ([i915#5334]) -> [PASS][16]
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12476/bat-jsl-1/igt@i915_selftest@live@gt_heartbeat.html
+   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8209/bat-jsl-1/igt@i915_selftest@live@gt_heartbeat.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [fdo#111827]: https://bugs.freedesktop.org/show_bug.cgi?id=111827
+  [i915#2190]: https://gitlab.freedesktop.org/drm/intel/issues/2190
+  [i915#2582]: https://gitlab.freedesktop.org/drm/intel/issues/2582
+  [i915#2867]: https://gitlab.freedesktop.org/drm/intel/issues/2867
+  [i915#4258]: https://gitlab.freedesktop.org/drm/intel/issues/4258
+  [i915#4312]: https://gitlab.freedesktop.org/drm/intel/issues/4312
+  [i915#4613]: https://gitlab.freedesktop.org/drm/intel/issues/4613
+  [i915#4991]: https://gitlab.freedesktop.org/drm/intel/issues/4991
+  [i915#5153]: https://gitlab.freedesktop.org/drm/intel/issues/5153
+  [i915#5334]: https://gitlab.freedesktop.org/drm/intel/issues/5334
+  [i915#6434]: https://gitlab.freedesktop.org/drm/intel/issues/6434
+  [i915#6559]: https://gitlab.freedesktop.org/drm/intel/issues/6559
+  [i915#6899]: https://gitlab.freedesktop.org/drm/intel/issues/6899
+  [i915#6997]: https://gitlab.freedesktop.org/drm/intel/issues/6997
+  [i915#7229]: https://gitlab.freedesktop.org/drm/intel/issues/7229
+  [i915#7346]: https://gitlab.freedesktop.org/drm/intel/issues/7346
 
 
--- 
-Petri Latvala
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_7084 -> IGTPW_8209
+
+  CI-20190529: 20190529
+  CI_DRM_12476: e76e37e7dff49e6cb61ca9b8ccf913153aaccca7 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_8209: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8209/index.html
+  IGT_7084: ec81855d36887dfe81d5ff513ed6d512773da37e @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
 
 
-> +void set_gpu_string(const char *fname)
-> +{
-> +	char sysfs[PATH_MAX], *path, *p;
-> +
-> +	if (gpu_string) {
-> +		free(gpu_string);
-> +		gpu_string = NULL;
-> +	}
-> +
-> +	if (!fname)
-> +		return;
-> +
-> +	p = strrchr(fname, '/');
-> +	if (!p) {
-> +		path = strdup(fname);
-> +	} else {
-> +		p++;
-> +
-> +		strcpy(sysfs, "/sys/class/drm/");
-> +		strcat(sysfs, p);
-> +		path = realpath(sysfs, NULL);
-> +		igt_debug("opened %s as %s\n", fname, path);
-> +	}
-> +
-> +	gpu_string = path;
-> +	igt_assert(gpu_string);
-> +}
-> +
->  __noreturn static void exit_subtest(const char *result)
->  {
->  	struct timespec now;
-> diff --git a/lib/igt_core.h b/lib/igt_core.h
-> index 5d5593e0..1f7e3652 100644
-> --- a/lib/igt_core.h
-> +++ b/lib/igt_core.h
-> @@ -1519,4 +1519,10 @@ static inline void igt_pci_system_cleanup(void)
->  {
->  }
->  
-> +/**
-> + * set_gpu_string():
-> + * Sets a string to describe the GPU being tested
-> + */
-> +void set_gpu_string(const char *string);
-> +
->  #endif /* IGT_CORE_H */
-> -- 
-> 2.34.1
-> 
+Testlist changes
+----------------
+
++++ 73 lines
+--- 71 lines
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8209/index.html
+
+--===============8671412128743302622==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Cold Reset IGT Test</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/111719/">https://patchwork.freedesktop.org/series/111719/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8209/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8209/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_12476 -&gt; IGTPW_8209</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8209/index.html</p>
+<h2>Participating hosts (30 -&gt; 29)</h2>
+<p>Additional (1): fi-kbl-8809g <br />
+  Missing    (2): fi-rkl-11600 fi-tgl-dsi </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_8209 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@gem_exec_gttfill@basic:</p>
+<ul>
+<li>fi-pnv-d510:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12476/fi-pnv-d510/igt@gem_exec_gttfill@basic.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8209/fi-pnv-d510/igt@gem_exec_gttfill@basic.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7229">i915#7229</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_huc_copy@huc-copy:</p>
+<ul>
+<li>fi-kbl-8809g:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8209/fi-kbl-8809g/igt@gem_huc_copy@huc-copy.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2190">i915#2190</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_module_load@reload:</p>
+<ul>
+<li>fi-kbl-8809g:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8209/fi-kbl-8809g/igt@i915_module_load@reload.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6899">i915#6899</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@hangcheck:</p>
+<ul>
+<li>fi-icl-u2:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12476/fi-icl-u2/igt@i915_selftest@live@hangcheck.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8209/fi-icl-u2/igt@i915_selftest@live@hangcheck.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5153">i915#5153</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_chamelium@vga-edid-read:</p>
+<ul>
+<li>fi-kbl-8809g:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8209/fi-kbl-8809g/igt@kms_chamelium@vga-edid-read.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://bugs.freedesktop.org/show_bug.cgi?id=111827">fdo#111827</a>) +7 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_cursor_legacy@basic-busy-flip-before-cursor:</p>
+<ul>
+<li>fi-kbl-8809g:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8209/fi-kbl-8809g/igt@kms_cursor_legacy@basic-busy-flip-before-cursor.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +24 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@runner@aborted:</p>
+<ul>
+<li>
+<p>fi-kbl-8809g:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8209/fi-kbl-8809g/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4312">i915#4312</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4991">i915#4991</a>)</p>
+</li>
+<li>
+<p>fi-icl-u2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8209/fi-icl-u2/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4312">i915#4312</a>)</p>
+</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@fbdev@read:</p>
+<ul>
+<li>{bat-rpls-2}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12476/bat-rpls-2/igt@fbdev@read.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2582">i915#2582</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8209/bat-rpls-2/igt@fbdev@read.html">PASS</a> +4 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_module_load@reload:</p>
+<ul>
+<li>{bat-rpls-2}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12476/bat-rpls-2/igt@i915_module_load@reload.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6434">i915#6434</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8209/bat-rpls-2/igt@i915_module_load@reload.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@gt_heartbeat:</p>
+<ul>
+<li>{bat-jsl-1}:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12476/bat-jsl-1/igt@i915_selftest@live@gt_heartbeat.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5334">i915#5334</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8209/bat-jsl-1/igt@i915_selftest@live@gt_heartbeat.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_7084 -&gt; IGTPW_8209</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_12476: e76e37e7dff49e6cb61ca9b8ccf913153aaccca7 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_8209: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8209/index.html<br />
+  IGT_7084: ec81855d36887dfe81d5ff513ed6d512773da37e @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+<h2>Testlist changes</h2>
+<p>+++ 73 lines<br />
+--- 71 lines</p>
+
+</body>
+</html>
+
+--===============8671412128743302622==--
