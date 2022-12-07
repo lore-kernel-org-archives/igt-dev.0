@@ -1,20 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3698D10E186
- for <igt-dev@lists.freedesktop.org>; Wed,  7 Dec 2022 13:10:14 +0000 (UTC)
-Message-ID: <b57eaee8-9297-9183-ab09-bd36bdb9dd73@intel.com>
-Date: Wed, 7 Dec 2022 18:39:59 +0530
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C2DB510E0E3
+ for <igt-dev@lists.freedesktop.org>; Wed,  7 Dec 2022 13:15:20 +0000 (UTC)
+Message-ID: <0d823a76-f41c-32ef-55b4-bfc2c06f3116@intel.com>
+Date: Wed, 7 Dec 2022 18:45:04 +0530
+Content-Language: en-US
 To: Anshuman Gupta <anshuman.gupta@intel.com>, <igt-dev@lists.freedesktop.org>
 References: <20221207102523.1028941-1-anshuman.gupta@intel.com>
- <20221207102523.1028941-2-anshuman.gupta@intel.com>
-Content-Language: en-US
+ <20221207102523.1028941-6-anshuman.gupta@intel.com>
 From: "Nilawar, Badal" <badal.nilawar@intel.com>
-In-Reply-To: <20221207102523.1028941-2-anshuman.gupta@intel.com>
+In-Reply-To: <20221207102523.1028941-6-anshuman.gupta@intel.com>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t v4 1/5] lib/igt_pci: helpers to get PCI
- capabilities offset
+Subject: Re: [igt-dev] [PATCH i-g-t v4 5/5] tests/device_reset: Add cold
+ reset IGT test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,134 +27,300 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
+Hi Anshuman,
 
 
 On 07-12-2022 15:55, Anshuman Gupta wrote:
-> Added helper functions to search for PCI capabilities
-> with help of libpciaccess library.
+> Add cold-reset IGT subtest, IGT subtest will use
+> /sys/bus/pci/slots/$SUN/power sysfs in order to
+> initiate a cold reset sequence. $SUN value will be
+> retrieved from PCIe device ACPI firmware node.
 > 
 > v2:
-> - Added offset == 0 check at starts of capability loop. [Badal]
-> - Removed unused macro and removed inline from function. [Kamil]
-> - Added assertion when capability offset doesn't terminate. [Kamil]
-> - Made find_pci_cap_offset_at() static, exported only
->    find_pci_cap_offset(). [Kamil]
+> - %s/igt_require(fd > 0)/igt_assert(errno >0)
+> v3:
+> - Added Slot Power Controller capability check. [Aravind]
+> - Check whether slot is powered down before powering up. [Aravind]
+> v4:
+> - Check power ctrl presence before slot presence to save CI
+>    execution time.
+> v5:
+> - Review comment addressal about igt assertion,
+>    return type and null terminated string. [Kamil]
+> - Remove the FLR_RESET subgroup. [Kmail]
+> - Moved the misplaced code comment. [Kamil]
 > 
-> Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
-> Co-developed-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
-> Signed-off-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
 > Signed-off-by: Anshuman Gupta <anshuman.gupta@intel.com>
-Reviewed-by: Badal Nilawar <badal.nilawar@intel.com>
+> Reviewed-by: Badal Nilawar <badal.nilawar@intel.com>
+Looks good to me. You can keep my RB.
+
+Regards,
+Badal
 > ---
->   lib/igt_pci.c   | 56 +++++++++++++++++++++++++++++++++++++++++++++++++
->   lib/igt_pci.h   | 25 ++++++++++++++++++++++
->   lib/meson.build |  1 +
->   3 files changed, 82 insertions(+)
->   create mode 100644 lib/igt_pci.c
->   create mode 100644 lib/igt_pci.h
+>   lib/igt_pm.c         |  41 +++++++++++++
+>   lib/igt_pm.h         |   1 +
+>   tests/device_reset.c | 136 ++++++++++++++++++++++++++++++++++++++++++-
+>   3 files changed, 177 insertions(+), 1 deletion(-)
 > 
-> diff --git a/lib/igt_pci.c b/lib/igt_pci.c
-> new file mode 100644
-> index 0000000000..b088835a92
-> --- /dev/null
-> +++ b/lib/igt_pci.c
-> @@ -0,0 +1,56 @@
-> +// SPDX-License-Identifier: MIT
-> +/*
-> + * Copyright © 2022 Intel Corporation
+> diff --git a/lib/igt_pm.c b/lib/igt_pm.c
+> index 1e144a7397..26e8c9f05f 100644
+> --- a/lib/igt_pm.c
+> +++ b/lib/igt_pm.c
+> @@ -877,6 +877,47 @@ static int igt_pm_open_pci_firmware_node(struct pci_device *pci_dev)
+>   	return dir;
+>   }
+>   
+> +/**
+> + * igt_pm_get_pcie_acpihp_slot:
+> + * @pci_dev: pci bridge device.
+> + * Get pci bridge acpi hotplug slot number, if bridge's ACPI firmware_node
+> + * handle supports _SUN method.
+> + *
+> + * Returns:
+> + * PCIe bridge Slot number.
+> + * Returns -ENOENT number in case firmware_node/sun is not supported by the
+> + * bridge.
 > + */
-> +
-> +#include <pciaccess.h>
-> +#include "igt_core.h"
-> +#include "igt_pci.h"
-> +
-> +static int find_pci_cap_offset_at(struct pci_device *dev, enum pci_cap_id cap_id,
-> +				  int start_offset)
+> +int igt_pm_get_pcie_acpihp_slot(struct pci_device *pci_dev)
 > +{
-> +	uint8_t offset;
-> +	uint16_t cap_header;
-> +	int loop = (PCI_CFG_SPACE_SIZE - PCI_TYPE0_1_HEADER_SIZE)
-> +			/ sizeof(cap_header);
+> +	int firmware_node_fd, fd, n_read;
+> +	char sun[8];
 > +
-> +	if (pci_device_cfg_read_u8(dev, &offset, start_offset))
-> +		return -1;
+> +	firmware_node_fd = igt_pm_open_pci_firmware_node(pci_dev);
 > +
-> +	while (loop--) {
-> +		igt_assert_f(offset != 0xff, "pci config space inaccessible\n");
+> +	if (firmware_node_fd < 0 && errno == ENOENT)
+> +		return -ENOENT;
 > +
-> +		if (!offset)
-> +			break;
+> +	igt_require(firmware_node_fd > 0);
 > +
-> +		if (offset < PCI_TYPE0_1_HEADER_SIZE)
-> +			break;
-> +
-> +		if (pci_device_cfg_read_u16(dev, &cap_header, (offset & 0xFC)))
-> +			return -1;
-> +
-> +		if (!cap_id || cap_id == (cap_header & 0xFF))
-> +			return offset;
-> +
-> +		offset = cap_header >> 8;
+> +	fd = openat(firmware_node_fd, "sun", O_RDONLY);
+> +	if (fd < 0 && errno == ENOENT) {
+> +		close(firmware_node_fd);
+> +		return -ENOENT;
 > +	}
 > +
-> +	igt_fail_on_f(loop <= 0 && offset, "pci capability offset doesn't terminate\n");
+> +	igt_assert_f(fd > 0, "failed to open real_power_state, errno=%d\n", errno);
 > +
-> +	return 0;
+> +	n_read = read(fd, sun, sizeof(sun));
+> +
+> +	close(firmware_node_fd);
+> +	close(fd);
+> +	igt_assert(n_read > 0 && n_read < sizeof(sun));
+> +	sun[n_read] = '\0';
+> +
+> +	return strtol(sun, NULL, 10);
 > +}
 > +
-> +/**
-> + * find_pci_cap_offset:
-> + * @dev: pci device
-> + * @cap_id: searched capability id, 0 means any capability
-> + *
-> + * return:
-> + * -1 on config read error, 0 if capability is not found,
-> + * otherwise offset at which capability with cap_id is found
-> + */
-> +int find_pci_cap_offset(struct pci_device *dev, enum pci_cap_id cap_id)
+>   /**
+>    * igt_pm_acpi_d3cold_supported:
+>    * @pci_dev: root port pci_dev.
+> diff --git a/lib/igt_pm.h b/lib/igt_pm.h
+> index e81fceb897..f65b960c38 100644
+> --- a/lib/igt_pm.h
+> +++ b/lib/igt_pm.h
+> @@ -73,6 +73,7 @@ bool igt_wait_for_pm_status(enum igt_runtime_pm_status status);
+>   bool igt_pm_dmc_loaded(int debugfs);
+>   bool igt_pm_pc8_plus_residencies_enabled(int msr_fd);
+>   bool i915_output_is_lpsp_capable(int drm_fd, igt_output_t *output);
+> +int igt_pm_get_pcie_acpihp_slot(struct pci_device *pci_dev);
+>   bool igt_pm_acpi_d3cold_supported(struct pci_device *pci_dev);
+>   enum igt_acpi_d_state
+>   igt_pm_get_acpi_real_d_state(struct pci_device *pci_dev);
+> diff --git a/tests/device_reset.c b/tests/device_reset.c
+> index 0c477a02c0..39ee8dca9f 100644
+> --- a/tests/device_reset.c
+> +++ b/tests/device_reset.c
+> @@ -9,7 +9,9 @@
+>   
+>   #include "i915/gem.h"
+>   #include "igt.h"
+> +#include "igt_device.h"
+>   #include "igt_device_scan.h"
+> +#include "igt_pci.h"
+>   #include "igt_sysfs.h"
+>   #include "igt_kmod.h"
+>   
+> @@ -33,6 +35,7 @@ struct device_fds {
+>   		int dev;
+>   		int dev_dir;
+>   		int drv_dir;
+> +		int slot_dir; /* pci hotplug slots fd */
+>   	} fds;
+>   	char dev_bus_addr[DEV_BUS_ADDR_LEN];
+>   	bool snd_unload;
+> @@ -62,6 +65,74 @@ static int open_driver_sysfs_dir(int fd)
+>   	return __open_sysfs_dir(fd, "device/driver");
+>   }
+>   
+> +static bool is_pci_power_ctrl_present(struct pci_device *dev)
 > +{
-> +	return find_pci_cap_offset_at(dev, cap_id, PCI_CAPS_START);
+> +	int offset;
+> +	uint32_t slot_cap;
+> +
+> +	offset = find_pci_cap_offset(dev, PCI_EXPRESS_CAP_ID);
+> +	igt_require_f(offset > 0, "PCI Express Capability not found\n");
+> +	igt_assert(!pci_device_cfg_read_u32(dev, &slot_cap, offset + PCI_SLOT_CAP_OFFSET));
+> +	igt_debug("slot cap register 0x%x\n", slot_cap);
+> +
+> +	return slot_cap & PCI_SLOT_PWR_CTRL_PRESENT;
 > +}
-> diff --git a/lib/igt_pci.h b/lib/igt_pci.h
-> new file mode 100644
-> index 0000000000..7cb23a26d8
-> --- /dev/null
-> +++ b/lib/igt_pci.h
-> @@ -0,0 +1,25 @@
-> +// SPDX-License-Identifier: MIT
-> +/*
-> + * Copyright © 2022 Intel Corporation
+> +
+> +static bool is_slot_power_ctrl_present(int fd)
+> +{
+> +	struct pci_device *root;
+> +
+> +	/*
+> +	 * Card root port Slot Capabilities Register
+> +	 * determines Power Controller Presence.
+> +	 */
+> +	root = igt_device_get_pci_root_port(fd);
+> +	return is_pci_power_ctrl_present(root);
+> +}
+> +
+> +static int open_slot_sysfs_dir(int fd)
+> +{
+> +	struct pci_device *pci_dev = NULL;
+> +	int slot_fd = -1, slot;
+> +	char slot_fd_path[PATH_MAX];
+> +
+> +	/* Don't search for slot if root port doesn't support power ctrl */
+> +	if (!is_slot_power_ctrl_present(fd))
+> +		return -ENOTSUP;
+> +
+> +	pci_dev = igt_device_get_pci_device(fd);
+> +	igt_require(pci_dev);
+> +
+> +	while ((pci_dev = pci_device_get_parent_bridge(pci_dev))) {
+> +		slot = igt_pm_get_pcie_acpihp_slot(pci_dev);
+> +		if (slot == -ENOENT) {
+> +			igt_debug("Bridge PCI device %04x:%02x:%02x.%01x does not support acpihp slot\n",
+> +				  pci_dev->domain, pci_dev->bus, pci_dev->dev, pci_dev->func);
+> +			continue;
+> +		}
+> +
+> +		/*
+> +		 * Upon getting the valid acpihp slot number break the loop.
+> +		 * It is the desired acpihp slot for gfx card.
+> +		 */
+> +		if (slot > 0) {
+> +			igt_debug("Bridge PCI device %04x:%02x:%02x.%01x associated acpihp slot %d\n",
+> +				  pci_dev->domain, pci_dev->bus, pci_dev->dev, pci_dev->func, slot);
+> +			break;
+> +		}
+> +	}
+> +
+> +	if (!pci_dev)
+> +		return -1;
+> +
+> +	snprintf(slot_fd_path, PATH_MAX, "/sys/bus/pci/slots/%d", slot);
+> +	slot_fd = open(slot_fd_path, O_RDONLY);
+> +	if (slot_fd < 0)
+> +		return -errno;
+> +
+> +	return slot_fd;
+> +}
+> +
+>   /**
+>    * device_sysfs_path:
+>    * @fd: opened device file descriptor
+> @@ -124,6 +195,8 @@ static void init_device_fds(struct device_fds *dev)
+>   
+>   	dev->fds.drv_dir = open_driver_sysfs_dir(dev->fds.dev);
+>   	igt_assert_fd(dev->fds.drv_dir);
+> +
+> +	dev->fds.slot_dir = open_slot_sysfs_dir(dev->fds.dev);
+>   }
+>   
+>   static int close_if_opened(int *fd)
+> @@ -142,6 +215,7 @@ static void cleanup_device_fds(struct device_fds *dev)
+>   	igt_ignore_warn(close_if_opened(&dev->fds.dev));
+>   	igt_ignore_warn(close_if_opened(&dev->fds.dev_dir));
+>   	igt_ignore_warn(close_if_opened(&dev->fds.drv_dir));
+> +	igt_ignore_warn(close_if_opened(&dev->fds.slot_dir));
+>   }
+>   
+>   /**
+> @@ -179,6 +253,35 @@ static bool is_sysfs_reset_supported(int fd)
+>   	return true;
+>   }
+>   
+> +/**
+> + * is_sysfs_cold_reset_supported:
+> + * @fd: opened device file descriptor
+> + *
+> + * Check if device supports cold reset based on sysfs file presence.
+> + *
+> + * Returns:
+> + * True if device supports reset, false otherwise.
 > + */
+> +static bool is_sysfs_cold_reset_supported(int slot_fd)
+> +{
+> +	struct stat st;
+> +	int rc;
+> +	int cold_reset_fd = -1;
 > +
-> +#ifndef __IGT_PCI_H__
-> +#define __IGT_PCI_H__
+> +	cold_reset_fd = openat(slot_fd, "power", O_WRONLY);
 > +
-> +#include <stdint.h>
-> +#include <endian.h>
+> +	if (cold_reset_fd < 0)
+> +		return false;
 > +
-> +/* forward declaration */
-> +struct pci_device;
+> +	rc = fstat(cold_reset_fd, &st);
+> +	close(cold_reset_fd);
 > +
-> +#define PCI_TYPE0_1_HEADER_SIZE 0x40
-> +#define PCI_CAPS_START 0x34
-> +#define PCI_CFG_SPACE_SIZE 0x100
+> +	if (rc || !S_ISREG(st.st_mode))
+> +		return false;
 > +
-> +enum pci_cap_id {
-> +	PCI_EXPRESS_CAP_ID = 0x10
-> +};
+> +	return true;
+> +}
 > +
-> +int find_pci_cap_offset(struct pci_device *dev, enum pci_cap_id cap_id);
+>   /* Unbind the driver from the device */
+>   static void driver_unbind(struct device_fds *dev)
+>   {
+> @@ -231,8 +334,13 @@ static void initiate_device_reset(struct device_fds *dev, enum reset type)
+>   {
+>   	igt_debug("reset device\n");
+>   
+> -	if (type == FLR_RESET)
+> +	if (type == FLR_RESET) {
+>   		igt_assert(igt_sysfs_set(dev->fds.dev_dir, "reset", "1"));
+> +	} else if (type == COLD_RESET) {
+> +		igt_assert(igt_sysfs_set(dev->fds.slot_dir, "power", "0"));
+> +		igt_assert(!igt_sysfs_get_boolean(dev->fds.slot_dir, "power"));
+> +		igt_assert(igt_sysfs_set(dev->fds.slot_dir, "power", "1"));
+> +	}
+>   
+>   }
+>   
+> @@ -324,6 +432,32 @@ igt_main
+>   		healthcheck(&dev);
+>   	}
+>   
+> +	igt_subtest_group {
+> +		igt_fixture {
+> +			igt_skip_on_f(dev.fds.slot_dir < 0, "Gfx Card does not support any "
+> +				      "pcie slot for cold reset\n");
+> +			igt_skip_on(!is_sysfs_cold_reset_supported(dev.fds.slot_dir));
+> +		}
 > +
-> +#endif
-> diff --git a/lib/meson.build b/lib/meson.build
-> index 8ae9fe13d1..f4a0bdc29a 100644
-> --- a/lib/meson.build
-> +++ b/lib/meson.build
-> @@ -33,6 +33,7 @@ lib_sources = [
->   	'igt_pipe_crc.c',
->   	'igt_power.c',
->   	'igt_primes.c',
-> +	'igt_pci.c',
->   	'igt_rand.c',
->   	'igt_stats.c',
->   	'igt_syncobj.c',
+> +		igt_describe("Unbinds driver from device, initiates cold reset"
+> +			     " then rebinds driver to device");
+> +		igt_subtest("unbind-cold-reset-rebind") {
+> +			unbind_reset_rebind(&dev, COLD_RESET);
+> +			healthcheck(&dev);
+> +		}
+> +
+> +		igt_describe("Cold Resets device with bound driver");
+> +		igt_subtest("cold-reset-bound") {
+> +			initiate_device_reset(&dev, COLD_RESET);
+> +			/*
+> +			 * Cold reset will initiate card boot sequence again,
+> +			 * therefore let healthcheck() re-epen the dev fd.
+> +			 */
+> +			dev.fds.dev = -1;
+> +			healthcheck(&dev);
+> +		}
+> +	}
+> +
+>   	igt_fixture {
+>   		cleanup_device_fds(&dev);
+>   	}
