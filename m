@@ -1,17 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7AF9110E4E2
- for <igt-dev@lists.freedesktop.org>; Thu,  8 Dec 2022 22:38:39 +0000 (UTC)
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1C0EA10E1BD
+ for <igt-dev@lists.freedesktop.org>; Thu,  8 Dec 2022 22:41:26 +0000 (UTC)
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Thu,  8 Dec 2022 23:38:08 +0100
-Message-Id: <20221208223808.66267-7-kamil.konieczny@linux.intel.com>
+Date: Thu,  8 Dec 2022 23:38:04 +0100
+Message-Id: <20221208223808.66267-3-kamil.konieczny@linux.intel.com>
 In-Reply-To: <20221208223808.66267-1-kamil.konieczny@linux.intel.com>
 References: <20221208223808.66267-1-kamil.konieczny@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v3 6/6] tests/i915/gem_close_race: add
- multiGPU subtests
+Subject: [igt-dev] [PATCH i-g-t v3 2/6] lib/igt_core: add prefix to logging
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,116 +18,49 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: Petri Latvala <petri.latvala@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add two multiGPU subtests multigpu-basic-threads and
-multigpu-basic-process.
+Allow to store prefix for logs and print it before any message.
+This will allow to diagnose on wich GPU occurred problems when
+tested on multi-GPU machines.
 
-v2: remove code for setting gpu_count=1 (Mauro)
-
+Cc: Petri Latvala <petri.latvala@intel.com>
 Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 Reviewed-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 ---
- tests/i915/gem_close_race.c | 52 +++++++++++++++++++++++++++++++++++++
- 1 file changed, 52 insertions(+)
+ lib/igt_core.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/tests/i915/gem_close_race.c b/tests/i915/gem_close_race.c
-index e37a8882..9c646f42 100644
---- a/tests/i915/gem_close_race.c
-+++ b/tests/i915/gem_close_race.c
-@@ -47,6 +47,7 @@
- #include "i915/gem_mman.h"
- #include "igt.h"
- #include "igt_aux.h"
-+#include "igt_device_scan.h"
+diff --git a/lib/igt_core.c b/lib/igt_core.c
+index 0b1b2a5f..eff3d427 100644
+--- a/lib/igt_core.c
++++ b/lib/igt_core.c
+@@ -348,6 +348,8 @@ static struct {
+ 	uint8_t start, end;
+ } log_buffer;
+ static pthread_mutex_t log_buffer_mutex = PTHREAD_MUTEX_INITIALIZER;
++#define LOG_PREFIX_SIZE 32
++char log_prefix[LOG_PREFIX_SIZE] = { 0 };
  
- #define OBJECT_SIZE (256 * 1024)
+ GKeyFile *igt_key_file;
  
-@@ -254,6 +255,31 @@ static void thread(int fd, struct drm_gem_open name,
- 	free(history);
- }
+@@ -3075,8 +3077,12 @@ void igt_vlog(const char *domain, enum igt_log_level level, const char *format,
+ 	program_name = command_str;
+ #endif
  
-+static void multigpu_threads(int timeout, unsigned int flags, int gpu_count)
-+{
-+	int size = sysconf(_SC_NPROCESSORS_ONLN);
-+
-+	size /= gpu_count;
-+	if (size < 1)
-+		size = 1;
-+
-+	igt_multi_fork(gpu, gpu_count) {
-+		struct drm_gem_open name;
-+		int fd = __drm_open_driver_another(gpu, DRIVER_INTEL);
-+
-+		igt_assert(fd > 0);
-+
-+		igt_fork(child, size)
-+			thread(fd, name, timeout, flags);
-+
-+		igt_waitchildren();
-+		gem_quiescent_gpu(fd);
-+		close(fd);
+-	if (asprintf(&thread_id, "[thread:%d] ", gettid()) == -1)
+-		thread_id = NULL;
++	if (igt_thread_is_main()) {
++		thread_id = strdup(log_prefix);
++	} else {
++		if (asprintf(&thread_id, "%s[thread:%d] ", log_prefix, gettid()) == -1)
++			thread_id = NULL;
 +	}
-+
-+	igt_waitchildren();
-+}
-+
- static void threads(int timeout, unsigned int flags)
- {
- 	struct drm_gem_open name;
-@@ -272,6 +298,8 @@ static void threads(int timeout, unsigned int flags)
  
- igt_main
- {
-+	int gpu_count;
-+
- 	igt_fixture {
- 		int fd;
- 
-@@ -286,6 +314,8 @@ igt_main
- 		exec_addr = max_t(exec_addr, exec_addr, data_addr);
- 		data_addr += exec_addr;
- 
-+		gpu_count = igt_device_filter_count();
-+
- 		igt_fork_hang_detector(fd);
- 		close(fd);
- 	}
-@@ -302,11 +332,33 @@ igt_main
- 		close(fd);
- 	}
- 
-+	igt_describe("Basic workload submission on multi-GPU machine.");
-+	igt_subtest("multigpu-basic-process") {
-+		igt_require(gpu_count > 1);
-+
-+		igt_multi_fork(child, gpu_count) {
-+			int fd = __drm_open_driver_another(child, DRIVER_INTEL);
-+
-+			igt_assert(fd > 0);
-+			process(fd, child);
-+			gem_quiescent_gpu(fd);
-+			close(fd);
-+		}
-+
-+		igt_waitchildren();
-+	}
-+
- 	igt_describe("Share buffer handle across different drm fd's and trying to race "
- 		     " gem_close against continuous workload with minimum timeout.");
- 	igt_subtest("basic-threads")
- 		threads(1, 0);
- 
-+	igt_describe("Run basic-threads race on multi-GPU machine.");
-+	igt_subtest("multigpu-basic-threads") {
-+		igt_require(gpu_count > 1);
-+		multigpu_threads(1, 0, gpu_count);
-+	}
-+
- 	igt_describe("Test try to race gem_close against submission of continuous"
- 		     " workload.");
- 	igt_subtest("process-exit") {
+ 	if (!thread_id)
+ 		return;
 -- 
 2.34.1
