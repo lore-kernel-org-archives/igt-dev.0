@@ -1,20 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4E74910E471
- for <igt-dev@lists.freedesktop.org>; Thu,  8 Dec 2022 08:00:33 +0000 (UTC)
-Message-ID: <eb37f629-8fb0-c1ed-94cf-a7fd6acfb94e@linux.intel.com>
-Date: Thu, 8 Dec 2022 09:00:27 +0100
+Message-ID: <93439b11-cf27-86a4-4e75-13720d36b084@linux.intel.com>
+Date: Thu, 8 Dec 2022 09:39:51 +0100
 MIME-Version: 1.0
 Content-Language: en-US
-To: Anshuman Gupta <anshuman.gupta@intel.com>, igt-dev@lists.freedesktop.org
-References: <20221207102523.1028941-1-anshuman.gupta@intel.com>
- <20221207102523.1028941-2-anshuman.gupta@intel.com>
-From: "Bernatowicz, Marcin" <marcin.bernatowicz@linux.intel.com>
-In-Reply-To: <20221207102523.1028941-2-anshuman.gupta@intel.com>
+To: Matthew Auld <matthew.auld@intel.com>, igt-dev@lists.freedesktop.org
+References: <20221207165248.226867-1-matthew.auld@intel.com>
+From: "Das, Nirmoy" <nirmoy.das@linux.intel.com>
+In-Reply-To: <20221207165248.226867-1-matthew.auld@intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Subject: Re: [igt-dev] [PATCH i-g-t v4 1/5] lib/igt_pci: helpers to get PCI
- capabilities offset
+Subject: Re: [igt-dev] [PATCH i-g-t v3 1/2] lib/dmabuf_sync_file: move
+ common stuff into lib
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,144 +18,454 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: badal.nilawar@intel.com, rodrigo.vivi@intel.com
+Cc: intel-gfx@lists.freedesktop.org, Petri Latvala <petri.latvala@intel.com>,
+ Nirmoy Das <nirmoy.das@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
+LGTM the series is Reviewed-by: Nirmoy Das <nirmoy.das@intel.com>
 
-
-On 12/7/2022 11:25 AM, Anshuman Gupta wrote:
-> Added helper functions to search for PCI capabilities
-> with help of libpciaccess library.
-> 
-> v2:
-> - Added offset == 0 check at starts of capability loop. [Badal]
-> - Removed unused macro and removed inline from function. [Kamil]
-> - Added assertion when capability offset doesn't terminate. [Kamil]
-> - Made find_pci_cap_offset_at() static, exported only
->    find_pci_cap_offset(). [Kamil]
-> 
-> Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
-> Co-developed-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
-> Signed-off-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
-> Signed-off-by: Anshuman Gupta <anshuman.gupta@intel.com>
+On 12/7/2022 5:52 PM, Matthew Auld wrote:
+> So we can use this across different tests.
+>
+> v2
+>    - Add docs for everything (Petri)
+>    - Add missing copyright and fix headers slightly (Kamil)
+> v3:
+>    - Just return true/false, for the has() family of functions, instead
+>      of tripping up an assert() (Kamil)
+>
+> Signed-off-by: Matthew Auld <matthew.auld@intel.com>
+> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> Cc: Petri Latvala <petri.latvala@intel.com>
+> Cc: Andrzej Hajda <andrzej.hajda@intel.com>
+> Cc: Nirmoy Das <nirmoy.das@intel.com>
 > ---
->   lib/igt_pci.c   | 56 +++++++++++++++++++++++++++++++++++++++++++++++++
->   lib/igt_pci.h   | 25 ++++++++++++++++++++++
->   lib/meson.build |  1 +
->   3 files changed, 82 insertions(+)
->   create mode 100644 lib/igt_pci.c
->   create mode 100644 lib/igt_pci.h
-> 
-> diff --git a/lib/igt_pci.c b/lib/igt_pci.c
+>   .../igt-gpu-tools/igt-gpu-tools-docs.xml      |   1 +
+>   lib/dmabuf_sync_file.c                        | 208 ++++++++++++++++++
+>   lib/dmabuf_sync_file.h                        |  26 +++
+>   lib/meson.build                               |   1 +
+>   tests/dmabuf_sync_file.c                      | 133 +----------
+>   5 files changed, 240 insertions(+), 129 deletions(-)
+>   create mode 100644 lib/dmabuf_sync_file.c
+>   create mode 100644 lib/dmabuf_sync_file.h
+>
+> diff --git a/docs/reference/igt-gpu-tools/igt-gpu-tools-docs.xml b/docs/reference/igt-gpu-tools/igt-gpu-tools-docs.xml
+> index 1ce842f4..102c8a89 100644
+> --- a/docs/reference/igt-gpu-tools/igt-gpu-tools-docs.xml
+> +++ b/docs/reference/igt-gpu-tools/igt-gpu-tools-docs.xml
+> @@ -15,6 +15,7 @@
+>   
+>     <chapter>
+>       <title>API Reference</title>
+> +    <xi:include href="xml/dmabuf_sync_file.xml"/>
+>       <xi:include href="xml/drmtest.xml"/>
+>       <xi:include href="xml/igt_alsa.xml"/>
+>       <xi:include href="xml/igt_audio.xml"/>
+> diff --git a/lib/dmabuf_sync_file.c b/lib/dmabuf_sync_file.c
 > new file mode 100644
-> index 0000000000..b088835a92
+> index 00000000..7803ec67
 > --- /dev/null
-> +++ b/lib/igt_pci.c
-> @@ -0,0 +1,56 @@
+> +++ b/lib/dmabuf_sync_file.c
+> @@ -0,0 +1,208 @@
 > +// SPDX-License-Identifier: MIT
 > +/*
 > + * Copyright © 2022 Intel Corporation
 > + */
 > +
-> +#include <pciaccess.h>
-> +#include "igt_core.h"
-> +#include "igt_pci.h"
+> +#include "igt.h"
+> +#include "igt_vgem.h"
+> +#include "sw_sync.h"
 > +
-> +static int find_pci_cap_offset_at(struct pci_device *dev, enum pci_cap_id cap_id,
-> +				  int start_offset)
+> +#include "dmabuf_sync_file.h"
+> +
+> +/**
+> + * SECTION: dmabuf_sync_file
+> + * @short_description: DMABUF importing/exporting fencing support library
+> + * @title: DMABUF Sync File
+> + * @include: dmabuf_sync_file.h
+> + */
+> +
+> +struct igt_dma_buf_sync_file {
+> +	__u32 flags;
+> +	__s32 fd;
+> +};
+> +
+> +#define IGT_DMA_BUF_IOCTL_EXPORT_SYNC_FILE _IOWR(DMA_BUF_BASE, 2, struct igt_dma_buf_sync_file)
+> +#define IGT_DMA_BUF_IOCTL_IMPORT_SYNC_FILE _IOW(DMA_BUF_BASE, 3, struct igt_dma_buf_sync_file)
+> +
+> +/**
+> + * has_dmabuf_export_sync_file:
+> + * @fd: The open drm fd
+> + *
+> + * Check if the kernel supports exporting a sync file from dmabuf.
+> + */
+> +bool has_dmabuf_export_sync_file(int fd)
 > +{
-> +	uint8_t offset;
-> +	uint16_t cap_header;
-
-maybe if we do not trust pci_device_cfg_read_XXX functions to return 
-error when value could not be read or if variable is not assigned
-we should initialize them to 0xff
-
-> +	int loop = (PCI_CFG_SPACE_SIZE - PCI_TYPE0_1_HEADER_SIZE)
-> +			/ sizeof(cap_header);
+> +	struct vgem_bo bo;
+> +	int dmabuf, ret;
+> +	struct igt_dma_buf_sync_file arg;
 > +
-> +	if (pci_device_cfg_read_u8(dev, &offset, start_offset))
-> +		return -1;
+> +	bo.width = 1;
+> +	bo.height = 1;
+> +	bo.bpp = 32;
+> +	vgem_create(fd, &bo);
 > +
-> +	while (loop--) {
-> +		igt_assert_f(offset != 0xff, "pci config space inaccessible\n");
+> +	dmabuf = prime_handle_to_fd(fd, bo.handle);
+> +	gem_close(fd, bo.handle);
 > +
-> +		if (!offset)
-> +			break;
-the above is redundant as the next if breaks if offset == 0
+> +	arg.flags = DMA_BUF_SYNC_WRITE;
+> +	arg.fd = -1;
 > +
-> +		if (offset < PCI_TYPE0_1_HEADER_SIZE)
-> +			break;
+> +	ret = igt_ioctl(dmabuf, IGT_DMA_BUF_IOCTL_EXPORT_SYNC_FILE, &arg);
+> +	close(dmabuf);
 > +
-> +		if (pci_device_cfg_read_u16(dev, &cap_header, (offset & 0xFC)))
-> +			return -1;
-> +
-> +		if (!cap_id || cap_id == (cap_header & 0xFF))
-> +			return offset;
-> +
-> +		offset = cap_header >> 8;
-> +	}
-> +
-> +	igt_fail_on_f(loop <= 0 && offset, "pci capability offset doesn't terminate\n");
-> +
-> +	return 0;
+> +	return (ret == 0 || errno == ENOTTY);
 > +}
 > +
 > +/**
-> + * find_pci_cap_offset:
-> + * @dev: pci device
-> + * @cap_id: searched capability id, 0 means any capability
+> + * dmabuf_export_sync_file:
+> + * @dmabuf: The dmabuf fd
+> + * @flags: The flags to control the behaviour
 > + *
-> + * return:
-> + * -1 on config read error, 0 if capability is not found,
-> + * otherwise offset at which capability with cap_id is found
+> + * Take a snapshot of the current dma-resv fences in the dmabuf, and export as a
+> + * syncfile. The @flags should at least specify either DMA_BUF_SYNC_WRITE or
+> + * DMA_BUF_SYNC_READ, depending on if we care about the read or write fences.
 > + */
-> +int find_pci_cap_offset(struct pci_device *dev, enum pci_cap_id cap_id)
+> +int dmabuf_export_sync_file(int dmabuf, uint32_t flags)
 > +{
-> +	return find_pci_cap_offset_at(dev, cap_id, PCI_CAPS_START);
+> +	struct igt_dma_buf_sync_file arg;
+> +
+> +	arg.flags = flags;
+> +	arg.fd = -1;
+> +	do_ioctl(dmabuf, IGT_DMA_BUF_IOCTL_EXPORT_SYNC_FILE, &arg);
+> +
+> +	return arg.fd;
 > +}
-> diff --git a/lib/igt_pci.h b/lib/igt_pci.h
+> +
+> +/**
+> + * has_dmabuf_import_sync_file:
+> + * @fd: The open drm fd
+> + *
+> + * Check if the kernel supports importing a sync file into a dmabuf.
+> + */
+> +bool has_dmabuf_import_sync_file(int fd)
+> +{
+> +	struct vgem_bo bo;
+> +	int dmabuf, timeline, fence, ret;
+> +	struct igt_dma_buf_sync_file arg;
+> +
+> +	bo.width = 1;
+> +	bo.height = 1;
+> +	bo.bpp = 32;
+> +	vgem_create(fd, &bo);
+> +
+> +	dmabuf = prime_handle_to_fd(fd, bo.handle);
+> +	gem_close(fd, bo.handle);
+> +
+> +	timeline = sw_sync_timeline_create();
+> +	fence = sw_sync_timeline_create_fence(timeline, 1);
+> +	sw_sync_timeline_inc(timeline, 1);
+> +
+> +	arg.flags = DMA_BUF_SYNC_RW;
+> +	arg.fd = fence;
+> +
+> +	ret = igt_ioctl(dmabuf, IGT_DMA_BUF_IOCTL_IMPORT_SYNC_FILE, &arg);
+> +	close(dmabuf);
+> +	close(fence);
+> +	return (ret == 0 || errno == ENOTTY);
+> +}
+> +
+> +/**
+> + * dmabuf_import_sync_file:
+> + * @dmabuf: The dmabuf fd
+> + * @flags: The flags to control the behaviour
+> + * @sync_fd: The sync file (i.e our fence) to import
+> + *
+> + * Import the sync file @sync_fd, into the dmabuf. The @flags should at least
+> + * specify DMA_BUF_SYNC_WRITE or DMA_BUF_SYNC_READ, depending on if we are
+> + * importing the @sync_fd as a read or write fence.
+> + */
+> +void dmabuf_import_sync_file(int dmabuf, uint32_t flags, int sync_fd)
+> +{
+> +	struct igt_dma_buf_sync_file arg;
+> +
+> +	arg.flags = flags;
+> +	arg.fd = sync_fd;
+> +	do_ioctl(dmabuf, IGT_DMA_BUF_IOCTL_IMPORT_SYNC_FILE, &arg);
+> +}
+> +
+> +/**
+> + * dmabuf_import_timeline_fence:
+> + * @dmabuf: The dmabuf fd
+> + * @flags: The flags to control the behaviour
+> + * @timeline: The sync file timeline where the new fence is created
+> + * @seqno: The sequence number to use for the fence
+> + *
+> + * Create a new fence as part of @timeline, and import as a sync file into the
+> + * dmabuf.  The @flags should at least specify DMA_BUF_SYNC_WRITE or
+> + * DMA_BUF_SYNC_READ, depending on if we are importing the new fence as a read
+> + * or write fence.
+> + */
+> +void dmabuf_import_timeline_fence(int dmabuf, uint32_t flags,
+> +				  int timeline, uint32_t seqno)
+> +{
+> +	int fence;
+> +
+> +	fence = sw_sync_timeline_create_fence(timeline, seqno);
+> +	dmabuf_import_sync_file(dmabuf, flags, fence);
+> +	close(fence);
+> +}
+> +
+> +/**
+> + * dmabuf_busy:
+> + * @dmabuf: The dmabuf fd
+> + * @flags: The flags to control the behaviour
+> + *
+> + * Check if the fences in the dmabuf are still busy. The @flags should at least
+> + * specify DMA_BUF_SYNC_WRITE or DMA_BUF_SYNC_READ, depending on if we are
+> + * checking if the read or read fences have all signalled. Or DMA_BUF_SYNC_RW if
+> + * we care about both.
+> + */
+> +bool dmabuf_busy(int dmabuf, uint32_t flags)
+> +{
+> +	struct pollfd pfd = { .fd = dmabuf };
+> +
+> +	/* If DMA_BUF_SYNC_WRITE is set, we don't want to set POLLIN or
+> +	 * else poll() may return a non-zero value if there are only read
+> +	 * fences because POLLIN is ready even if POLLOUT isn't.
+> +	 */
+> +	if (flags & DMA_BUF_SYNC_WRITE)
+> +		pfd.events |= POLLOUT;
+> +	else if (flags & DMA_BUF_SYNC_READ)
+> +		pfd.events |= POLLIN;
+> +
+> +	return poll(&pfd, 1, 0) == 0;
+> +}
+> +
+> +/**
+> + * sync_file_busy:
+> + * @sync_file: The sync file to check
+> + *
+> + * Check if the @sync_file is still busy or not.
+> + */
+> +bool sync_file_busy(int sync_file)
+> +{
+> +	struct pollfd pfd = { .fd = sync_file, .events = POLLIN };
+> +	return poll(&pfd, 1, 0) == 0;
+> +}
+> +
+> +/**
+> + * dmabuf_sync_file_busy:
+> + * @dmabuf: The dmabuf fd
+> + * @flags: The flags to control the behaviour
+> + *
+> + * Export the current fences in @dmabuf as a sync file and check if still busy.
+> + * The @flags should at least contain DMA_BUF_SYNC_WRITE or DMA_BUF_SYNC_READ,
+> + * to specify which fences are to be exported from the @dmabuf and checked if
+> + * busy. Or DMA_BUF_SYNC_RW if we care about both.
+> + */
+> +bool dmabuf_sync_file_busy(int dmabuf, uint32_t flags)
+> +{
+> +	int sync_file;
+> +	bool busy;
+> +
+> +	sync_file = dmabuf_export_sync_file(dmabuf, flags);
+> +	busy = sync_file_busy(sync_file);
+> +	close(sync_file);
+> +
+> +	return busy;
+> +}
+> diff --git a/lib/dmabuf_sync_file.h b/lib/dmabuf_sync_file.h
 > new file mode 100644
-> index 0000000000..7cb23a26d8
+> index 00000000..d642ff30
 > --- /dev/null
-> +++ b/lib/igt_pci.h
-> @@ -0,0 +1,25 @@
-> +// SPDX-License-Identifier: MIT
+> +++ b/lib/dmabuf_sync_file.h
+> @@ -0,0 +1,26 @@
+> +/* SPDX-License-Identifier: MIT */
 > +/*
 > + * Copyright © 2022 Intel Corporation
 > + */
 > +
-> +#ifndef __IGT_PCI_H__
-> +#define __IGT_PCI_H__
+> +#ifndef DMABUF_SYNC_FILE_H
+> +#define DMABUF_SYNC_FILE_H
 > +
+> +#ifdef __linux__
+> +#include <linux/dma-buf.h>
+> +#endif
+> +#include <sys/poll.h>
+> +#include <stdbool.h>
 > +#include <stdint.h>
-> +#include <endian.h>
 > +
-> +/* forward declaration */
-> +struct pci_device;
-> +
-> +#define PCI_TYPE0_1_HEADER_SIZE 0x40
-> +#define PCI_CAPS_START 0x34
-> +#define PCI_CFG_SPACE_SIZE 0x100
-> +
-> +enum pci_cap_id {
-> +	PCI_EXPRESS_CAP_ID = 0x10
-> +};
-> +
-> +int find_pci_cap_offset(struct pci_device *dev, enum pci_cap_id cap_id);
+> +bool has_dmabuf_export_sync_file(int fd);
+> +bool has_dmabuf_import_sync_file(int fd);
+> +int dmabuf_export_sync_file(int dmabuf, uint32_t flags);
+> +void dmabuf_import_sync_file(int dmabuf, uint32_t flags, int sync_fd);
+> +void dmabuf_import_timeline_fence(int dmabuf, uint32_t flags,
+> +			     int timeline, uint32_t seqno);
+> +bool dmabuf_busy(int dmabuf, uint32_t flags);
+> +bool sync_file_busy(int sync_file);
+> +bool dmabuf_sync_file_busy(int dmabuf, uint32_t flags);
 > +
 > +#endif
 > diff --git a/lib/meson.build b/lib/meson.build
-> index 8ae9fe13d1..f4a0bdc29a 100644
+> index 2c6ebce7..19d9f4f2 100644
 > --- a/lib/meson.build
 > +++ b/lib/meson.build
-> @@ -33,6 +33,7 @@ lib_sources = [
->   	'igt_pipe_crc.c',
->   	'igt_power.c',
->   	'igt_primes.c',
-> +	'igt_pci.c',
->   	'igt_rand.c',
->   	'igt_stats.c',
->   	'igt_syncobj.c',
+> @@ -1,5 +1,6 @@
+>   lib_sources = [
+>   	'drmtest.c',
+> +	'dmabuf_sync_file.c',
+>   	'huc_copy.c',
+>   	'i915/gem.c',
+>   	'i915/gem_context.c',
+> diff --git a/tests/dmabuf_sync_file.c b/tests/dmabuf_sync_file.c
+> index 2179a76d..25bb6ad7 100644
+> --- a/tests/dmabuf_sync_file.c
+> +++ b/tests/dmabuf_sync_file.c
+> @@ -1,140 +1,15 @@
+>   // SPDX-License-Identifier: MIT
+> +/*
+> + * Copyright © 2022 Intel Corporation
+> + */
+>   
+>   #include "igt.h"
+>   #include "igt_vgem.h"
+>   #include "sw_sync.h"
+> -
+> -#include <linux/dma-buf.h>
+> -#include <sys/poll.h>
+> +#include "dmabuf_sync_file.h"
+>   
+>   IGT_TEST_DESCRIPTION("Tests for sync_file support in dma-buf");
+>   
+> -struct igt_dma_buf_sync_file {
+> -	__u32 flags;
+> -	__s32 fd;
+> -};
+> -
+> -#define IGT_DMA_BUF_IOCTL_EXPORT_SYNC_FILE _IOWR(DMA_BUF_BASE, 2, struct igt_dma_buf_sync_file)
+> -#define IGT_DMA_BUF_IOCTL_IMPORT_SYNC_FILE _IOW(DMA_BUF_BASE, 3, struct igt_dma_buf_sync_file)
+> -
+> -static bool has_dmabuf_export_sync_file(int fd)
+> -{
+> -	struct vgem_bo bo;
+> -	int dmabuf, ret;
+> -	struct igt_dma_buf_sync_file arg;
+> -
+> -	bo.width = 1;
+> -	bo.height = 1;
+> -	bo.bpp = 32;
+> -	vgem_create(fd, &bo);
+> -
+> -	dmabuf = prime_handle_to_fd(fd, bo.handle);
+> -	gem_close(fd, bo.handle);
+> -
+> -	arg.flags = DMA_BUF_SYNC_WRITE;
+> -	arg.fd = -1;
+> -
+> -	ret = igt_ioctl(dmabuf, IGT_DMA_BUF_IOCTL_EXPORT_SYNC_FILE, &arg);
+> -	close(dmabuf);
+> -	igt_assert(ret == 0 || errno == ENOTTY);
+> -
+> -	return ret == 0;
+> -}
+> -
+> -static int dmabuf_export_sync_file(int dmabuf, uint32_t flags)
+> -{
+> -	struct igt_dma_buf_sync_file arg;
+> -
+> -	arg.flags = flags;
+> -	arg.fd = -1;
+> -	do_ioctl(dmabuf, IGT_DMA_BUF_IOCTL_EXPORT_SYNC_FILE, &arg);
+> -
+> -	return arg.fd;
+> -}
+> -
+> -static bool has_dmabuf_import_sync_file(int fd)
+> -{
+> -	struct vgem_bo bo;
+> -	int dmabuf, timeline, fence, ret;
+> -	struct igt_dma_buf_sync_file arg;
+> -
+> -	bo.width = 1;
+> -	bo.height = 1;
+> -	bo.bpp = 32;
+> -	vgem_create(fd, &bo);
+> -
+> -	dmabuf = prime_handle_to_fd(fd, bo.handle);
+> -	gem_close(fd, bo.handle);
+> -
+> -	timeline = sw_sync_timeline_create();
+> -	fence = sw_sync_timeline_create_fence(timeline, 1);
+> -	sw_sync_timeline_inc(timeline, 1);
+> -
+> -	arg.flags = DMA_BUF_SYNC_RW;
+> -	arg.fd = fence;
+> -
+> -	ret = igt_ioctl(dmabuf, IGT_DMA_BUF_IOCTL_IMPORT_SYNC_FILE, &arg);
+> -	close(dmabuf);
+> -	close(fence);
+> -	igt_assert(ret == 0 || errno == ENOTTY);
+> -
+> -	return ret == 0;
+> -}
+> -
+> -static void dmabuf_import_sync_file(int dmabuf, uint32_t flags, int sync_fd)
+> -{
+> -	struct igt_dma_buf_sync_file arg;
+> -
+> -	arg.flags = flags;
+> -	arg.fd = sync_fd;
+> -	do_ioctl(dmabuf, IGT_DMA_BUF_IOCTL_IMPORT_SYNC_FILE, &arg);
+> -}
+> -
+> -static void
+> -dmabuf_import_timeline_fence(int dmabuf, uint32_t flags,
+> -			     int timeline, uint32_t seqno)
+> -{
+> -	int fence;
+> -
+> -	fence = sw_sync_timeline_create_fence(timeline, seqno);
+> -	dmabuf_import_sync_file(dmabuf, flags, fence);
+> -	close(fence);
+> -}
+> -
+> -static bool dmabuf_busy(int dmabuf, uint32_t flags)
+> -{
+> -	struct pollfd pfd = { .fd = dmabuf };
+> -
+> -	/* If DMA_BUF_SYNC_WRITE is set, we don't want to set POLLIN or
+> -	 * else poll() may return a non-zero value if there are only read
+> -	 * fences because POLLIN is ready even if POLLOUT isn't.
+> -	 */
+> -	if (flags & DMA_BUF_SYNC_WRITE)
+> -		pfd.events |= POLLOUT;
+> -	else if (flags & DMA_BUF_SYNC_READ)
+> -		pfd.events |= POLLIN;
+> -
+> -	return poll(&pfd, 1, 0) == 0;
+> -}
+> -
+> -static bool sync_file_busy(int sync_file)
+> -{
+> -	struct pollfd pfd = { .fd = sync_file, .events = POLLIN };
+> -	return poll(&pfd, 1, 0) == 0;
+> -}
+> -
+> -static bool dmabuf_sync_file_busy(int dmabuf, uint32_t flags)
+> -{
+> -	int sync_file;
+> -	bool busy;
+> -
+> -	sync_file = dmabuf_export_sync_file(dmabuf, flags);
+> -	busy = sync_file_busy(sync_file);
+> -	close(sync_file);
+> -
+> -	return busy;
+> -}
+> -
+>   static void test_export_basic(int fd)
+>   {
+>   	struct vgem_bo bo;
