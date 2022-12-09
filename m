@@ -1,22 +1,23 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AEFF310E0C1
- for <igt-dev@lists.freedesktop.org>; Mon,  5 Dec 2022 04:17:09 +0000 (UTC)
-From: "Murthy, Arun R" <arun.r.murthy@intel.com>
-To: "B S, Karthik" <karthik.b.s@intel.com>, "igt-dev@lists.freedesktop.org"
- <igt-dev@lists.freedesktop.org>
-Date: Mon, 5 Dec 2022 04:16:59 +0000
-Message-ID: <DM6PR11MB3177ACFC298E6FB2BE4ECD8CBA189@DM6PR11MB3177.namprd11.prod.outlook.com>
-References: <20220829093147.3836523-1-arun.r.murthy@intel.com>
- <20220905120150.4074178-1-arun.r.murthy@intel.com>
- <655676c0-71ac-dee5-efdf-53a301252d3c@intel.com>
-In-Reply-To: <655676c0-71ac-dee5-efdf-53a301252d3c@intel.com>
-Content-Language: en-US
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B73AA10E228
+ for <igt-dev@lists.freedesktop.org>; Fri,  9 Dec 2022 04:08:42 +0000 (UTC)
+Date: Fri, 9 Dec 2022 05:08:38 +0100
+From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ igt-dev@lists.freedesktop.org,
+ Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Message-ID: <20221209040838.z2nglkjgwctvmhyl@zkempczy-mobl2>
+References: <20221206175222.63998-1-zbigniew.kempczynski@intel.com>
+ <20221206175222.63998-2-zbigniew.kempczynski@intel.com>
+ <Y5JIjc/9hG+i6ikB@kamilkon-desk1>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCHv3 i-g-t] tests/kms_async_flips: Enable async
- flip on linear buffer
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <Y5JIjc/9hG+i6ikB@kamilkon-desk1>
+Subject: Re: [igt-dev] [PATCH i-g-t v2 1/2] tests/gem_softpin: Add prime
+ reopen eviction subtest
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,105 +25,237 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: "Nikula, Jani" <jani.nikula@intel.com>, "Latvala,
- Petri" <petri.latvala@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-PiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPiBGcm9tOiBCIFMsIEthcnRoaWsgPGthcnRo
-aWsuYi5zQGludGVsLmNvbT4NCj4gU2VudDogRnJpZGF5LCBOb3ZlbWJlciA0LCAyMDIyIDk6Mzgg
-QU0NCj4gVG86IE11cnRoeSwgQXJ1biBSIDxhcnVuLnIubXVydGh5QGludGVsLmNvbT47IGlndC0N
-Cj4gZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZw0KPiBDYzogTGF0dmFsYSwgUGV0cmkgPHBldHJp
-LmxhdHZhbGFAaW50ZWwuY29tPjsgTmlrdWxhLCBKYW5pDQo+IDxqYW5pLm5pa3VsYUBpbnRlbC5j
-b20+DQo+IFN1YmplY3Q6IFJlOiBbUEFUQ0h2MyBpLWctdF0gdGVzdHMva21zX2FzeW5jX2ZsaXBz
-OiBFbmFibGUgYXN5bmMgZmxpcCBvbiBsaW5lYXINCj4gYnVmZmVyDQo+IA0KPiBIaSwNCj4gDQo+
-IE9uIDkvNS8yMDIyIDU6MzEgUE0sIEFydW4gUiBNdXJ0aHkgd3JvdGU6DQo+ID4gT24gSW50ZWwg
-R2VuIHBsYXRmb3JtcyA+PSBHRU4xMiwgQXN5bmMgb24gbGluZWFyIGJ1ZmZlciBpcyBzdXBwb3J0
-ZWQsDQo+ID4gaGVuY2UgZW5hYmxpbmcgdGVzdCBmb3IgdGhlIHNhbWUuDQo+ID4NCj4gPiB2Mjog
-QWRkZWQgbmV3IGxpbmUgY2hhcmFjdGVyIGZvciBpZ3Rfc2tpcF9vbl9mIChQZXRyaSkNCj4gPiAg
-ICAgIEFkZGVkIG5ldyBlbGVtZW50IG1vZGlmaWVyIGluIGRhdGEgc3RydWN0IChKUCkNCj4gPiB2
-MzogVXNlIGRpc3BsYXkgdmVyIGluc3RlYWQgb2YgZ3JhcGhpY3MgdmVyKEphbmkgTikNCj4gPg0K
-PiA+IFNpZ25lZC1vZmYtYnk6IEFydW4gUiBNdXJ0aHkgPGFydW4uci5tdXJ0aHlAaW50ZWwuY29t
-Pg0KPiA+IC0tLQ0KPiA+ICAgdGVzdHMva21zX2FzeW5jX2ZsaXBzLmMgfCAyNiArKysrKysrKysr
-KysrKysrKysrKysrKy0tLQ0KPiA+ICAgMSBmaWxlIGNoYW5nZWQsIDIzIGluc2VydGlvbnMoKyks
-IDMgZGVsZXRpb25zKC0pDQo+ID4NCj4gPiBkaWZmIC0tZ2l0IGEvdGVzdHMva21zX2FzeW5jX2Zs
-aXBzLmMgYi90ZXN0cy9rbXNfYXN5bmNfZmxpcHMuYyBpbmRleA0KPiA+IDY5NWFlYTc0Li43ZmY3
-MWQ4MyAxMDA2NDQNCj4gPiAtLS0gYS90ZXN0cy9rbXNfYXN5bmNfZmxpcHMuYw0KPiA+ICsrKyBi
-L3Rlc3RzL2ttc19hc3luY19mbGlwcy5jDQo+ID4gQEAgLTYxLDYgKzYxLDcgQEAgdHlwZWRlZiBz
-dHJ1Y3Qgew0KPiA+ICAgCWJvb2wgZXh0ZW5kZWQ7DQo+ID4gICAJZW51bSBwaXBlIHBpcGU7DQo+
-ID4gICAJYm9vbCBhbHRlcm5hdGVfc3luY19hc3luYzsNCj4gPiArCXVpbnQ2NF90IG1vZGlmaWVy
-Ow0KPiA+ICAgfSBkYXRhX3Q7DQo+ID4NCj4gPiAgIHN0YXRpYyB2b2lkIGZsaXBfaGFuZGxlcihp
-bnQgZmRfLCB1bnNpZ25lZCBpbnQgc2VxdWVuY2UsIHVuc2lnbmVkDQo+ID4gaW50IHR2X3NlYywg
-QEAgLTEyNSw3ICsxMjYsNyBAQCBzdGF0aWMgdm9pZCBtYWtlX2ZiKGRhdGFfdCAqZGF0YSwNCj4g
-PiBzdHJ1Y3QgaWd0X2ZiICpmYiwNCj4gPg0KPiA+ICAgCWlmIChpc19pOTE1X2RldmljZShkYXRh
-LT5kcm1fZmQpKSB7DQo+ID4gICAJCWlndF9jcmVhdGVfZmIoZGF0YS0+ZHJtX2ZkLCB3aWR0aCwg
-aGVpZ2h0LA0KPiBEUk1fRk9STUFUX1hSR0I4ODg4LA0KPiA+IC0JCQkgICAgICBJOTE1X0ZPUk1B
-VF9NT0RfWF9USUxFRCwgZmIpOw0KPiA+ICsJCQkgICAgICBkYXRhLT5tb2RpZmllciwgZmIpOw0K
-PiA+ICAgCQlpZ3RfZHJhd19maWxsX2ZiKGRhdGEtPmRybV9mZCwgZmIsIDB4ODgpOw0KPiA+ICAg
-CX0gZWxzZSB7DQo+ID4gICAJCWlndF9jcmVhdGVfY29sb3JfZmIoZGF0YS0+ZHJtX2ZkLCB3aWR0
-aCwgaGVpZ2h0LA0KPiA+IERSTV9GT1JNQVRfWFJHQjg4ODgsIEBAIC01OTQsMjEgKzU5NSwzNyBA
-QCBpZ3RfbWFpbl9hcmdzKCJlIiwNCj4gTlVMTCwgaGVscF9zdHIsIG9wdF9oYW5kbGVyLCAmZGF0
-YSkNCj4gPiAgIAkJaWd0X2ZpeHR1cmUNCj4gPiAgIAkJCXJlcXVpcmVfbW9ub3RvbmljX3RpbWVz
-dGFtcChkYXRhLmRybV9mZCk7DQo+ID4NCj4gPiAtCQlpZ3RfZGVzY3JpYmUoIldhaXQgZm9yIHBh
-Z2UgZmxpcCBldmVudHMgaW4gYmV0d2VlbiBzdWNjZXNzaXZlDQo+IGFzeW5jaHJvbm91cyBmbGlw
-cyIpOw0KPiA+ICsJCWlndF9kZXNjcmliZSgiV2FpdCBmb3IgcGFnZSBmbGlwIGV2ZW50cyBpbiBi
-ZXR3ZWVuIHN1Y2Nlc3NpdmUNCj4gPiArYXN5bmNocm9ub3VzIGZsaXBzIG9uIFggVGlsZWQgYnVm
-ZmVyIik7DQo+IFRoZSBkZXNjcmlwdGlvbiBpcyBtaXNsZWFkaW5nIGJlY2F1c2Ugb24gbm9uLWk5
-MTUgcGxhdGZvcm1zIHdlIHdpbGwgc3RpbGwgdXNlDQo+IGxpbmVhciBidWZmZXIuDQo+IElmIHdl
-IHdhbnQgdG8gbWFrZSB0aGlzIHgtdGlsZWQgc3BlY2lmaWMgdGhlbiB3ZSBtaWdodCBuZWVkIGFu
-IGk5MTUgY2hlY2sNCj4gaGVyZS4NCg0KTm93IHRoZXJlIGFyZSB0d28gc2VwYXJhdGUgc3ViLXRl
-c3Qgb25lIGZvciBYLXRpbGVkIGFuZCBvdGhlciBmb3IgbGluZWFyLg0KDQo+ID4gICAJCWlndF9z
-dWJ0ZXN0X3dpdGhfZHluYW1pYygiYXN5bmMtZmxpcC13aXRoLXBhZ2UtZmxpcC1ldmVudHMiKQ0K
-PiB7DQo+ID4gICAJCQlkYXRhLmFsdGVybmF0ZV9zeW5jX2FzeW5jID0gZmFsc2U7DQo+ID4gKwkJ
-CWRhdGEubW9kaWZpZXIgPSBJOTE1X0ZPUk1BVF9NT0RfWF9USUxFRDsNCj4gPiAgIAkJCXJ1bl90
-ZXN0KCZkYXRhLCB0ZXN0X2FzeW5jX2ZsaXApOw0KPiA+ICAgCQl9DQo+ID4NCj4gPiArCQlpZ3Rf
-ZGVzY3JpYmUoIldhaXQgZm9yIHBhZ2UgZmxpcCBldmVudHMgaW4gYmV0d2VlbiBzdWNjZXNzaXZl
-DQo+IGFzeW5jaHJvbm91cyBmbGlwcyBvbiBMaW5lYXIgYnVmZmVyIik7DQo+ID4gKwkJaWd0X3N1
-YnRlc3Rfd2l0aF9keW5hbWljKCJhc3luYy1mbGlwLXdpdGgtcGFnZS1mbGlwLWV2ZW50cy0NCj4g
-bGluZWFyIikgew0KPiA+ICsJCQlkYXRhLmFsdGVybmF0ZV9zeW5jX2FzeW5jID0gZmFsc2U7DQo+
-ID4gKwkJCWRhdGEubW9kaWZpZXIgPSBEUk1fRk9STUFUX01PRF9MSU5FQVI7DQo+ID4gKwkJCWlm
-KGlzX2k5MTVfZGV2aWNlKGRhdGEuZHJtX2ZkKSkgew0KPiA+ICsJCQkJaWd0X3NraXBfb25fZihp
-bnRlbF9kaXNwbGF5X3ZlcigNCj4gPiArDQo+IAlpbnRlbF9nZXRfZHJtX2RldmlkKGRhdGEuZHJt
-X2ZkKSkgPCAxMiwNCj4gPiArCQkJCQkJIkFzeW5jIG9uIExpbmVhciBidWZmZXIgbm90DQo+IHN1
-cHBvcnRlZFxuIik7DQo+ID4gKwkJCQlydW5fdGVzdCgmZGF0YSwgdGVzdF9hc3luY19mbGlwKTsN
-Cj4gDQo+IFRoZSBsaW5lYXIgYnVmZmVycyBhcmUgc3VwcG9ydGVkIGluIGFueSBjYXNlIG9uIG5v
-bi1pOTE1IHBsYXRmb3Jtcywgc28gd2UNCj4gY291bGQgaGF2ZSB0aGUgcnVuX3Rlc3Qgb3V0c2lk
-ZSB0aGUgaTkxNSBjaGVjaz8NCkRvbmUuDQo+IA0KPiBBbHNvLCBqdXN0IHRoaW5raW5nIGlmIHdl
-IHdvdWxkIG5lZWQgYSBzZXBhcmF0ZSB0ZXN0IGZvciBsaW5lYXIgb3IganVzdCB1cGRhdGUNCj4g
-dGhlIGNvbmRpdGlvbiBpbiBtYWtlX2ZiIHRvIHVzZSBsaW5lYXIgbW9kaWZpZXIgaWYgR2VuID49
-IDEyIGluIGk5MTU/DQpJdHMgYWxyZWFkeSBhIHNlcGFyYXRlIHN1YiB0ZXN0Lg0KDQoNCkFsc28g
-dGhlIHRlc3QgcmVzdWx0cyB3aXRoIHRoZSBrZXJuZWwgcGF0Y2ggY2FuIGJlIGxvY2F0ZWQgQCBo
-dHRwczovL2ludGVsLWdmeC1jaS4wMS5vcmcvdHJlZS9kcm0tdGlwL1RyeWJvdF8xMDk0NDN2Ny9p
-bmRleC5odG1sDQoNClRoYW5rcyBhbmQgUmVnYXJkcywNCkFydW4gUiBNdXJ0aHkNCi0tLS0tLS0t
-LS0tLS0tLS0tLS0tDQo+IA0KPiBUaGFua3MsDQo+IEthcnRoaWsuQi5TDQo+ID4gKwkJCX0NCj4g
-PiArCQl9DQo+ID4gKw0KPiA+ICAgCQlpZ3RfZGVzY3JpYmUoIkFsdGVybmF0ZSBiZXR3ZWVuIHN5
-bmMgYW5kIGFzeW5jIGZsaXBzIik7DQo+ID4gICAJCWlndF9zdWJ0ZXN0X3dpdGhfZHluYW1pYygi
-YWx0ZXJuYXRlLXN5bmMtYXN5bmMtZmxpcCIpIHsNCj4gPiArCQkJZGF0YS5tb2RpZmllciA9IEk5
-MTVfRk9STUFUX01PRF9YX1RJTEVEOw0KPiA+ICAgCQkJZGF0YS5hbHRlcm5hdGVfc3luY19hc3lu
-YyA9IHRydWU7DQo+ID4gICAJCQlydW5fdGVzdCgmZGF0YSwgdGVzdF9hc3luY19mbGlwKTsNCj4g
-PiAgIAkJfQ0KPiA+DQo+ID4gICAJCWlndF9kZXNjcmliZSgiVmVyaWZ5IHRoYXQgdGhlIGFzeW5j
-IGZsaXAgdGltZXN0YW1wIGRvZXMgbm90DQo+IGNvaW5jaWRlIHdpdGggZWl0aGVyIHByZXZpb3Vz
-IG9yIG5leHQgdmJsYW5rIik7DQo+ID4gLQkJaWd0X3N1YnRlc3Rfd2l0aF9keW5hbWljKCJ0ZXN0
-LXRpbWUtc3RhbXAiKQ0KPiA+ICsJCWlndF9zdWJ0ZXN0X3dpdGhfZHluYW1pYygidGVzdC10aW1l
-LXN0YW1wIikgew0KPiA+ICsJCQlkYXRhLm1vZGlmaWVyID0gSTkxNV9GT1JNQVRfTU9EX1hfVElM
-RUQ7DQo+ID4gICAJCQlydW5fdGVzdCgmZGF0YSwgdGVzdF90aW1lc3RhbXApOw0KPiA+ICsJCX0N
-Cj4gPiAgIAl9DQo+ID4NCj4gPiAgIAlpZ3RfZGVzY3JpYmUoIlZlcmlmeSB0aGF0IHRoZSBEUk1f
-SU9DVExfTU9ERV9DVVJTT1IgcGFzc2VzDQo+IGFmdGVyDQo+ID4gYXN5bmMgZmxpcCIpOyBAQCAt
-NjIyLDYgKzYzOSw3IEBAIGlndF9tYWluX2FyZ3MoImUiLCBOVUxMLCBoZWxwX3N0ciwNCj4gb3B0
-X2hhbmRsZXIsICZkYXRhKQ0KPiA+ICAgCQkJICAgICAgIlBTUjIgc2VsIGZldGNoIGNhdXNlcyBj
-dXJzb3IgdG8gYmUgYWRkZWQgdG8NCj4gcHJpbWFyeSBwbGFuZSAiIFwNCj4gPiAgIAkJCSAgICAg
-ICJwYWdlcyBmbGlwcyBhbmQgYXN5bmMgZmxpcCBpcyBub3Qgc3VwcG9ydGVkIGluDQo+IGN1cnNv
-clxuIik7DQo+ID4NCj4gPiArCQlkYXRhLm1vZGlmaWVyID0gSTkxNV9GT1JNQVRfTU9EX1hfVElM
-RUQ7DQo+ID4gICAJCXJ1bl90ZXN0KCZkYXRhLCB0ZXN0X2N1cnNvcik7DQo+ID4gICAJfQ0KPiA+
-DQo+ID4gQEAgLTYzMiw2ICs2NTAsNyBAQCBpZ3RfbWFpbl9hcmdzKCJlIiwgTlVMTCwgaGVscF9z
-dHIsIG9wdF9oYW5kbGVyLA0KPiAmZGF0YSkNCj4gPiAgIAkJaWd0X3JlcXVpcmUoaWd0X2Rpc3Bs
-YXlfaGFzX2Zvcm1hdF9tb2QoJmRhdGEuZGlzcGxheSwNCj4gRFJNX0ZPUk1BVF9YUkdCODg4OCwN
-Cj4gPg0KPiBJOTE1X0ZPUk1BVF9NT0RfWV9USUxFRCkpOw0KPiA+DQo+ID4gKwkJZGF0YS5tb2Rp
-ZmllciA9IEk5MTVfRk9STUFUX01PRF9YX1RJTEVEOw0KPiA+ICAgCQlydW5fdGVzdCgmZGF0YSwg
-dGVzdF9pbnZhbGlkKTsNCj4gPiAgIAl9DQo+ID4NCj4gPiBAQCAtNjQwLDYgKzY1OSw3IEBAIGln
-dF9tYWluX2FyZ3MoImUiLCBOVUxMLCBoZWxwX3N0ciwgb3B0X2hhbmRsZXIsDQo+ICZkYXRhKQ0K
-PiA+ICAgCQkvKiBEZXZpY2VzIHdpdGhvdXQgQ1JDIGNhbid0IHJ1biB0aGlzIHRlc3QgKi8NCj4g
-PiAgIAkJaWd0X3JlcXVpcmVfcGlwZV9jcmMoZGF0YS5kcm1fZmQpOw0KPiA+DQo+ID4gKwkJZGF0
-YS5tb2RpZmllciA9IEk5MTVfRk9STUFUX01PRF9YX1RJTEVEOw0KPiA+ICAgCQlydW5fdGVzdCgm
-ZGF0YSwgdGVzdF9jcmMpOw0KPiA+ICAgCX0NCj4gPg0K
+On Thu, Dec 08, 2022 at 09:26:53PM +0100, Kamil Konieczny wrote:
+> On 2022-12-06 at 18:52:21 +0100, Zbigniew Kempczyński wrote:
+> > For set of objects exported via prime fd verify objects can be randomly
+> > opened, binded, executed and closed. Random open always returns same
+> > handle id so vma rebind is necessary. Exercise this when objects are
+> > opened in more opened drm fds.
+> > 
+> > Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+> > 
+> 
+> Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+
+Thank you. I'm going to merge this patch without entries for BAT runs.
+However IGT's will start reporting failures on this test until bug will
+be created for it.
+
+--
+Zbigniew
+
+> 
+> > ---
+> > v2: put 'all' subtest in dynamic subtest, add sanity check with
+> >     single thread.
+> > v3: move to prime fd instead flink, clean on dyn subtest failure
+> > ---
+> >  tests/i915/gem_softpin.c | 181 +++++++++++++++++++++++++++++++++++++++
+> >  1 file changed, 181 insertions(+)
+> > 
+> > diff --git a/tests/i915/gem_softpin.c b/tests/i915/gem_softpin.c
+> > index a85a366408..ad6d3f531c 100644
+> > --- a/tests/i915/gem_softpin.c
+> > +++ b/tests/i915/gem_softpin.c
+> > @@ -1149,6 +1149,167 @@ static void evict_single_offset(int fd, const intel_ctx_t *ctx, int timeout)
+> >  	igt_assert_eq(intel_detect_and_clear_missed_interrupts(fd), 0);
+> >  }
+> >  
+> > +struct thread {
+> > +	pthread_t thread;
+> > +	pthread_mutex_t *mutex;
+> > +	pthread_cond_t *cond;
+> > +	int *scratch;
+> > +	const intel_ctx_t *ctx;
+> > +	unsigned int engine;
+> > +	int fd, *go;
+> > +};
+> > +
+> > +#define NUMOBJ 16
+> > +
+> > +static void *thread(void *data)
+> > +{
+> > +	struct thread *t = data;
+> > +	struct drm_i915_gem_exec_object2 obj[2];
+> > +	struct drm_i915_gem_execbuffer2 execbuf;
+> > +	const intel_ctx_t *ctx = NULL;
+> > +	uint64_t offset_obj, offset_bb;
+> > +	uint32_t batch = MI_BATCH_BUFFER_END;
+> > +	int fd, ret, succeeded = 0;
+> > +
+> > +	fd = gem_reopen_driver(t->fd);
+> > +	ctx = intel_ctx_create(fd, &t->ctx->cfg);
+> > +	offset_obj = gem_detect_safe_start_offset(fd);
+> > +	offset_bb = ALIGN(offset_obj + 4096, gem_detect_safe_alignment(fd));
+> > +	igt_debug("reopened fd: %d, ctx: %u, object offset: %llx, bb offset: %llx\n",
+> > +		  fd, ctx->id, (long long) offset_obj, (long long) offset_bb);
+> > +
+> > +	pthread_mutex_lock(t->mutex);
+> > +	while (*t->go == 0)
+> > +		pthread_cond_wait(t->cond, t->mutex);
+> > +	pthread_mutex_unlock(t->mutex);
+> > +
+> > +	memset(obj, 0, sizeof(obj));
+> > +	obj[0].offset = offset_obj;
+> > +	obj[0].flags = EXEC_OBJECT_PINNED | EXEC_OBJECT_WRITE |
+> > +		       EXEC_OBJECT_SUPPORTS_48B_ADDRESS;
+> > +	obj[1].handle = gem_create(fd, 4096);
+> > +	obj[1].offset = offset_bb;
+> > +	obj[1].flags |= EXEC_OBJECT_PINNED | EXEC_OBJECT_SUPPORTS_48B_ADDRESS;
+> > +	gem_write(fd, obj[1].handle, 0, &batch, sizeof(batch));
+> > +
+> > +	memset(&execbuf, 0, sizeof(execbuf));
+> > +	execbuf.buffers_ptr = to_user_pointer(obj);
+> > +	execbuf.buffer_count = 2;
+> > +	execbuf.flags = t->engine;
+> > +	execbuf.flags |= I915_EXEC_HANDLE_LUT;
+> > +	execbuf.flags |= I915_EXEC_NO_RELOC;
+> > +	execbuf.rsvd1 = ctx->id;
+> > +
+> > +	igt_until_timeout(1) {
+> > +		unsigned int x = rand() % NUMOBJ;
+> > +
+> > +		obj[0].handle = prime_fd_to_handle(fd, t->scratch[x]);
+> > +
+> > +		ret = __gem_execbuf(fd, &execbuf);
+> > +		if (ret)
+> > +			igt_debug("<fd: %d, ctx: %u, x: %2u, engine: %d> "
+> > +				  "object handle: %2u (prime fd: %2d), bb handle: %2u, "
+> > +				  "offsets: %llx, %llx [ret: %d, succeeded: %d]\n",
+> > +				  fd, ctx->id, x, t->engine,
+> > +				  obj[0].handle, t->scratch[x], obj[1].handle,
+> > +				  (long long) obj[0].offset,
+> > +				  (long long) obj[1].offset, ret, succeeded);
+> > +		else
+> > +			succeeded++;
+> > +
+> > +		gem_close(fd, obj[0].handle);
+> > +
+> > +		if (ret)
+> > +			break;
+> > +	}
+> > +
+> > +	if (!ret)
+> > +		igt_debug("<fd: %d, ctx: %u, engine: %d> succeeded: %d\n",
+> > +			  fd, ctx->id, t->engine, succeeded);
+> > +	intel_ctx_destroy(fd, ctx);
+> > +	gem_close(fd, obj[1].handle);
+> > +	close(fd);
+> > +
+> > +	return (void *) from_user_pointer(ret);
+> > +}
+> > +
+> > +static void evict_prime(int fd, const intel_ctx_t *ctx,
+> > +			const struct intel_execution_engine2 *engine,
+> > +			int numthreads)
+> > +{
+> > +	unsigned int engines[I915_EXEC_RING_MASK + 1], nengine;
+> > +	uint32_t handle[NUMOBJ];
+> > +	int scratch[NUMOBJ];
+> > +	struct thread *threads;
+> > +	pthread_mutex_t mutex;
+> > +	pthread_cond_t cond;
+> > +	int go;
+> > +	int i;
+> > +	bool failed = false;
+> > +
+> > +	igt_require(igt_allow_unlimited_files());
+> > +
+> > +	nengine = 0;
+> > +	if (!engine) {
+> > +		struct intel_execution_engine2 *e;
+> > +
+> > +		for_each_ctx_engine(fd, ctx, e)
+> > +			engines[nengine++] = e->flags;
+> > +	} else {
+> > +		engines[nengine++] = engine->flags;
+> > +	}
+> > +	igt_require(nengine);
+> > +
+> > +	for (i = 0; i < NUMOBJ; i++) {
+> > +		handle[i] = gem_create(fd, 4096);
+> > +		scratch[i] = prime_handle_to_fd(fd, handle[i]);
+> > +	}
+> > +
+> > +	threads = calloc(numthreads, sizeof(struct thread));
+> > +	igt_assert(numthreads);
+> > +
+> > +	intel_detect_and_clear_missed_interrupts(fd);
+> > +	pthread_mutex_init(&mutex, 0);
+> > +	pthread_cond_init(&cond, 0);
+> > +	go = 0;
+> > +
+> > +	for (i = 0; i < numthreads; i++) {
+> > +		threads[i].fd = fd;
+> > +		threads[i].ctx = ctx;
+> > +		threads[i].engine = engines[i % nengine];
+> > +		threads[i].scratch = scratch;
+> > +		threads[i].mutex = &mutex;
+> > +		threads[i].cond = &cond;
+> > +		threads[i].go = &go;
+> > +
+> > +		pthread_create(&threads[i].thread, 0, thread, &threads[i]);
+> > +	}
+> > +
+> > +	pthread_mutex_lock(&mutex);
+> > +	go = numthreads;
+> > +	pthread_cond_broadcast(&cond);
+> > +	pthread_mutex_unlock(&mutex);
+> > +
+> > +	for (i = 0; i < numthreads; i++) {
+> > +		void *retp;
+> > +		int ret;
+> > +
+> > +		pthread_join(threads[i].thread, &retp);
+> > +		ret = (int) to_user_pointer(retp);
+> > +		if (ret)
+> > +			failed = true;
+> > +	}
+> > +
+> > +	for (i = 0; i < NUMOBJ; i++) {
+> > +		gem_close(fd, handle[i]);
+> > +		close(scratch[i]);
+> > +	}
+> > +
+> > +	igt_assert_eq(intel_detect_and_clear_missed_interrupts(fd), 0);
+> > +	free(threads);
+> > +	igt_assert_eq(failed, false);
+> > +}
+> > +
+> >  static void make_batch(int i915, uint32_t handle, uint64_t size)
+> >  {
+> >  	uint32_t *bb = gem_mmap__device_coherent(i915, handle, 0, size, PROT_WRITE);
+> > @@ -1307,6 +1468,26 @@ igt_main
+> >  		igt_describe("Use same offset for all engines and for different handles.");
+> >  		igt_subtest("evict-single-offset")
+> >  			evict_single_offset(fd, ctx, 20);
+> > +
+> > +		igt_describe("Check eviction of vma on importing prime fd in reopened "
+> > +			     "drm fd in single thread");
+> > +		igt_subtest_with_dynamic("evict-prime-sanity-check") {
+> > +			for_each_ctx_engine(fd, ctx, e) {
+> > +				igt_dynamic(e->name)
+> > +					evict_prime(fd, ctx, e, 1);
+> > +			}
+> > +			igt_dynamic("all")
+> > +				evict_prime(fd, ctx, NULL, 1);
+> > +		}
+> > +		igt_describe("Check eviction of vma on importing prime fd in reopened drm fds");
+> > +		igt_subtest_with_dynamic("evict-prime") {
+> > +			for_each_ctx_engine(fd, ctx, e) {
+> > +				igt_dynamic(e->name)
+> > +					evict_prime(fd, ctx, e, 4);
+> > +			}
+> > +			igt_dynamic("all")
+> > +				evict_prime(fd, ctx, NULL, 4);
+> > +		}
+> >  	}
+> >  
+> >  	igt_describe("Check start offset and alignment detection.");
+> > -- 
+> > 2.34.1
+> > 
