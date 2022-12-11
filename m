@@ -1,17 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C421210E321
- for <igt-dev@lists.freedesktop.org>; Tue,  6 Dec 2022 11:21:06 +0000 (UTC)
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Received: from mail-pj1-x1029.google.com (mail-pj1-x1029.google.com
+ [IPv6:2607:f8b0:4864:20::1029])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 908B010E06A
+ for <igt-dev@lists.freedesktop.org>; Sun, 11 Dec 2022 19:52:13 +0000 (UTC)
+Received: by mail-pj1-x1029.google.com with SMTP id gt4so8213268pjb.1
+ for <igt-dev@lists.freedesktop.org>; Sun, 11 Dec 2022 11:52:13 -0800 (PST)
+From: Rob Clark <robdclark@gmail.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue,  6 Dec 2022 12:20:32 +0100
-Message-Id: <20221206112033.16684-7-kamil.konieczny@linux.intel.com>
-In-Reply-To: <20221206112033.16684-1-kamil.konieczny@linux.intel.com>
-References: <20221206112033.16684-1-kamil.konieczny@linux.intel.com>
+Date: Sun, 11 Dec 2022 11:52:13 -0800
+Message-Id: <20221211195213.120336-1-robdclark@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v2 6/7] tests/i915/gem_exec_gttfill: add new
- subtest multigpu-basic
+Subject: [igt-dev] [PATCH igt] tests/kms_color: Gamma tests should require
+ hw support
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,81 +20,35 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: Rob Clark <robdclark@chromium.org>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add new subtest multigpu-basic to be run on two or more GPU cards
-simultanosly. For this to work test should be run with --device
-option, for example with:
-  --device=pci:vendor=Intel,device=discrete,card=0\;pci:vendor=Intel,device=discrete,card=1
-or
-  --device=pci:vendor=Intel,device=discrete,card=all
+From: Rob Clark <robdclark@chromium.org>
 
-v2: remove code for setting gpu_count=1 (Mauro)
+Some qcom devices support CTM but not gamma/degamma LUT.
 
-Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Reviewed-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+Note, the remaining failures on msm are due to CTM being supported on
+one CRTC but not the other.  But the property is exposed on both.
+
+Signed-off-by: Rob Clark <robdclark@chromium.org>
 ---
- tests/i915/gem_exec_gttfill.c | 30 ++++++++++++++++++++++++++++--
- 1 file changed, 28 insertions(+), 2 deletions(-)
+ tests/kms_color.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/tests/i915/gem_exec_gttfill.c b/tests/i915/gem_exec_gttfill.c
-index f9f244d6..a696f640 100644
---- a/tests/i915/gem_exec_gttfill.c
-+++ b/tests/i915/gem_exec_gttfill.c
-@@ -24,6 +24,7 @@
- #include "i915/gem.h"
- #include "i915/gem_create.h"
- #include "igt.h"
-+#include "igt_device_scan.h"
- #include "igt_rand.h"
+diff --git a/tests/kms_color.c b/tests/kms_color.c
+index d016cefb..cf9c27fe 100644
+--- a/tests/kms_color.c
++++ b/tests/kms_color.c
+@@ -230,6 +230,8 @@ static bool test_pipe_legacy_gamma(data_t *data,
+ 	legacy_lut_size = kms_crtc->gamma_size;
+ 	drmModeFreeCrtc(kms_crtc);
  
- IGT_TEST_DESCRIPTION("Fill the GTT with batches.");
-@@ -226,7 +227,7 @@ igt_main
- {
- 	const struct intel_execution_engine2 *e;
- 	const intel_ctx_t *ctx;
--	int i915 = -1;
-+	int i915 = -1, gpu_count;
- 
- 	igt_fixture {
- 		i915 = drm_open_driver(DRIVER_INTEL);
-@@ -258,9 +259,34 @@ igt_main
- 		fillgtt(i915, ctx, ALL_ENGINES, 20);
- 
- 	igt_fixture {
--		intel_allocator_multiprocess_stop();
- 		igt_stop_hang_detector();
- 		intel_ctx_destroy(i915, ctx);
-+		// prepare multigpu tests
-+		gpu_count = igt_device_filter_count();
-+	}
++	igt_require(legacy_lut_size > 0);
 +
-+	igt_subtest("multigpu-basic") { /* run on two or more discrete cards */
-+		igt_require(gpu_count > 1);
-+		igt_multi_fork(child, gpu_count) {
-+			int g_fd;
-+			// prepare
-+			g_fd = __drm_open_driver_another(child, DRIVER_INTEL);
-+			igt_assert(g_fd >= 0);
-+			ctx = intel_ctx_create_all_physical(g_fd);
-+			igt_fork_hang_detector(g_fd);
-+			// subtest
-+			fillgtt(g_fd, ctx, ALL_ENGINES, 1);
-+			// release resources
-+			igt_stop_hang_detector();
-+			intel_ctx_destroy(g_fd, ctx);
-+			close(g_fd);
-+		}
-+
-+		igt_waitchildren();
-+	}
-+
-+	igt_fixture {
-+		intel_allocator_multiprocess_stop();
- 		close(i915);
- 	}
- }
+ 	red_lut = malloc(sizeof(uint16_t) * legacy_lut_size);
+ 	green_lut = malloc(sizeof(uint16_t) * legacy_lut_size);
+ 	blue_lut = malloc(sizeof(uint16_t) * legacy_lut_size);
 -- 
-2.34.1
+2.38.1
