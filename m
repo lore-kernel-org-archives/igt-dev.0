@@ -1,15 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 140B610E2AC
- for <igt-dev@lists.freedesktop.org>; Mon, 12 Dec 2022 23:13:02 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 185A310E2AC
+ for <igt-dev@lists.freedesktop.org>; Mon, 12 Dec 2022 23:13:04 +0000 (UTC)
 From: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Mon, 12 Dec 2022 15:12:35 -0800
-Message-Id: <20221212231254.2303-1-niranjana.vishwanathapura@intel.com>
+Date: Mon, 12 Dec 2022 15:12:45 -0800
+Message-Id: <20221212231254.2303-11-niranjana.vishwanathapura@intel.com>
+In-Reply-To: <20221212231254.2303-1-niranjana.vishwanathapura@intel.com>
+References: <20221212231254.2303-1-niranjana.vishwanathapura@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v9 00/19] vm_bind: Add VM_BIND validation
- support
+Subject: [igt-dev] [PATCH i-g-t v9 10/19] tests/i915/vm_bind: Add userptr
+ subtest
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,117 +25,135 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-DRM_I915_GEM_VM_BIND/UNBIND ioctls allows UMD to bind/unbind GEM
-buffer objects (BOs) or sections of a BOs at specified GPU virtual
-addresses on a specified address space (VM). Multiple mappings can map
-to the same physical pages of an object (aliasing). These mappings (also
-referred to as persistent mappings) will be persistent across multiple
-GPU submissions (execbuf calls) issued by the UMD, without user having
-to provide a list of all required mappings during each submission (as
-required by older execbuf mode).
+Add userptr object type to vm_bind_basic test.
 
-The new execbuf3 ioctl (I915_GEM_EXECBUFFER3) will only work in vm_bind
-mode. The vm_bind mode only works with this new execbuf3 ioctl.
+v2: Run all tests for userptr type
+v3: Change info to debug messages, remove igt_collection usage
+v4: only munmap non-userptr objects
 
-Add tests to validate the VM_BIND, VM_UNBIND and execbuf3 ioctls and
-various scenarios involving persistent mappings.
-
-TODOs:
-* More validation support.
-* Port some relevant gem_exec_* tests for execbuf3.
-
-NOTEs:
-* It is based on below VM_BIND design+uapi rfc.
-  Documentation/gpu/rfc/i915_vm_bind.rst
-
-* The i915 VM_BIND support is posted as,
-  [PATCH v9 00/23] drm/i915/vm_bind: Add VM_BIND functionality
-
-v2: Address various review comments
-v3: Add gem_exec3_basic and gem_exec3_balancer tests,
-    add gem_lmem_swapping@vm_bind subtest and some fixes.
-v4: Add and use i915_vm_bind library functions,
-    add lmem test if lmem region is present instead of skipping,
-    remove helpers to create vm_private objects, instead use
-    gem_create_ext() function.
-v5: Use memory region's gtt_alignment, use non-recoverable faults,
-    fix review comments.
-v6: Rebased, add sanity tests for added reserved uapi fields,
-    add gem_shrink@vm_bind* subtests.
-v7: Pull in uapi changes and address review comments
-v8: Rebased, add capture test
-v9: Add exec3 support for igt_spin_factory, add userptr invalidation
-    test, move common syncobj and capture functions to libraries
-
+Reviewed-by: Matthew Auld <matthew.auld@intel.com>
 Signed-off-by: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
+---
+ tests/i915/i915_vm_bind_basic.c | 59 +++++++++++++++++++++++++++++----
+ 1 file changed, 52 insertions(+), 7 deletions(-)
 
-Niranjana Vishwanathapura (19):
-  lib/i915: memory region gtt_alignment support
-  lib/i915: Move common syncobj functions to library
-  lib/vm_bind: import uapi definitions
-  lib/vm_bind: Add vm_bind/unbind and execbuf3 ioctls
-  lib/vm_bind: Add vm_bind mode support for VM
-  lib/vm_bind: Add vm_bind specific library functions
-  lib/vm_bind: Add __prime_handle_to_fd()
-  tests/i915/vm_bind: Add vm_bind sanity test
-  tests/i915/vm_bind: Add basic VM_BIND test support
-  tests/i915/vm_bind: Add userptr subtest
-  tests/i915/vm_bind: Add gem_exec3_basic test
-  tests/i915/vm_bind: Add gem_exec3_balancer test
-  tests/i915/vm_bind: Add gem_lmem_swapping@vm_bind sub test
-  tests/i915/vm_bind: Add gem_shrink@vm_bind* subtests
-  tests/i915/vm_bind: Add i915_capture library routines
-  tests/i915/vm_bind: Test capture of persistent mappings
-  lib/vm_bind: Add execbuf3 support to igt_spin_factory
-  tests/i915/vm_bind: Use execbuf3 spinner
-  tests/i915/vm_bind: Add userptr invalidation test
-
- lib/i915/gem_context.c                |  24 ++
- lib/i915/gem_context.h                |   3 +
- lib/i915/gem_vm.c                     |  31 +-
- lib/i915/gem_vm.h                     |   3 +-
- lib/i915/i915_capture.c               |  96 +++++
- lib/i915/i915_capture.h               |  14 +
- lib/i915/i915_drm_local.h             | 304 ++++++++++++++
- lib/i915/i915_vm_bind.c               |  62 +++
- lib/i915/i915_vm_bind.h               |  16 +
- lib/i915/intel_memory_region.c        |   6 +
- lib/i915/intel_memory_region.h        |   1 +
- lib/igt_dummyload.c                   | 245 ++++++++++-
- lib/igt_dummyload.h                   |   8 +
- lib/igt_syncobj.c                     |  21 +
- lib/igt_syncobj.h                     |   9 +
- lib/intel_chipset.h                   |   2 +
- lib/ioctl_wrappers.c                  | 117 +++++-
- lib/ioctl_wrappers.h                  |   7 +
- lib/meson.build                       |   2 +
- tests/i915/gem_exec3_balancer.c       | 449 ++++++++++++++++++++
- tests/i915/gem_exec3_basic.c          | 132 ++++++
- tests/i915/gem_exec_capture.c         |  88 +---
- tests/i915/gem_exec_fence.c           |  21 -
- tests/i915/gem_lmem_swapping.c        | 125 +++++-
- tests/i915/gem_pwrite.c               |  16 +-
- tests/i915/gem_shrink.c               |  63 ++-
- tests/i915/gem_userptr_blits.c        |  71 ++++
- tests/i915/i915_vm_bind_basic.c       | 583 ++++++++++++++++++++++++++
- tests/i915/i915_vm_bind_capture.c     | 358 ++++++++++++++++
- tests/i915/i915_vm_bind_sanity.c      | 335 +++++++++++++++
- tests/intel-ci/blacklist.txt          |   2 +-
- tests/intel-ci/fast-feedback.testlist |   3 +
- tests/meson.build                     |  11 +
- tests/prime_mmap.c                    |  26 +-
- tests/syncobj_timeline.c              |   8 -
- tests/syncobj_wait.c                  |   8 -
- 36 files changed, 3086 insertions(+), 184 deletions(-)
- create mode 100644 lib/i915/i915_capture.c
- create mode 100644 lib/i915/i915_capture.h
- create mode 100644 lib/i915/i915_vm_bind.c
- create mode 100644 lib/i915/i915_vm_bind.h
- create mode 100644 tests/i915/gem_exec3_balancer.c
- create mode 100644 tests/i915/gem_exec3_basic.c
- create mode 100644 tests/i915/i915_vm_bind_basic.c
- create mode 100644 tests/i915/i915_vm_bind_capture.c
- create mode 100644 tests/i915/i915_vm_bind_sanity.c
-
+diff --git a/tests/i915/i915_vm_bind_basic.c b/tests/i915/i915_vm_bind_basic.c
+index db6758e18..db3b0a15f 100644
+--- a/tests/i915/i915_vm_bind_basic.c
++++ b/tests/i915/i915_vm_bind_basic.c
+@@ -212,16 +212,26 @@ static uint32_t create_obj(int fd, struct gem_memory_region *mr, uint32_t size,
+ {
+ 	uint32_t handle;
+ 
+-	handle = gem_create_in_memory_region_list(fd, size, 0, &mr->ci, 1);
+-	*addr = gem_mmap__cpu(fd, handle, 0, size, PROT_WRITE);
++	if (!mr) {
++		igt_assert(posix_memalign(addr, SZ_2M * MAX_CTXTS, size) == 0);
++		gem_userptr(fd, *addr, size, 0, 0, &handle);
++	} else {
++		handle = gem_create_in_memory_region_list(fd, size, 0, &mr->ci, 1);
++		*addr = gem_mmap__cpu(fd, handle, 0, size, PROT_WRITE);
++	}
+ 
+ 	return handle;
+ }
+ 
+-static void destroy_obj(int fd, uint32_t handle, uint32_t size, void *addr)
++static void destroy_obj(int fd, uint32_t handle, uint32_t size, void *addr, bool is_userptr)
+ {
+-	igt_assert(gem_munmap(addr, size) == 0);
++	if (!is_userptr)
++		igt_assert(gem_munmap(addr, size) == 0);
++
+ 	gem_close(fd, handle);
++
++	if (is_userptr)
++		free(addr);
+ }
+ 
+ static void create_src_objs(int fd, struct gem_memory_region *mr, uint32_t src[],
+@@ -232,6 +242,14 @@ static void create_src_objs(int fd, struct gem_memory_region *mr, uint32_t src[]
+ 	if (!num_cmds)
+ 		return;
+ 
++	if (!mr) {
++		for (i = 0; i < num_cmds; i++) {
++			src[i] = create_obj(fd, NULL, size, &src_addr[i]);
++			igt_debug("Src (userptr) obj 0x%x created\n", src[i]);
++		}
++		return;
++	}
++
+ 	/* Create first src object always in memory region 'mr' */
+ 	src[i] = create_obj(fd, mr, size, &src_addr[i]);
+ 	igt_debug("Src (%s) obj 0x%x created\n", mr->name, src[i]);
+@@ -270,7 +288,7 @@ static void destroy_src_objs(int fd, struct gem_memory_region *mr, uint32_t src[
+ 
+ 	for (i = 0; i < num_cmds; i++) {
+ 		igt_debug("Closing src object 0x%x\n", src[i]);
+-		destroy_obj(fd, src[i], size, src_addr[i]);
++		destroy_obj(fd, src[i], size, src_addr[i], !mr);
+ 	}
+ }
+ 
+@@ -278,7 +296,7 @@ static uint32_t create_dst_obj(int fd, struct gem_memory_region *mr, uint32_t si
+ {
+ 	uint32_t dst = create_obj(fd, mr, size, dst_addr);
+ 
+-	igt_debug("Dst (%s) obj 0x%x created\n", mr->name, dst);
++	igt_debug("Dst (%s) obj 0x%x created\n", mr ? mr->name : "userptr", dst);
+ 	return dst;
+ }
+ 
+@@ -286,7 +304,7 @@ static void destroy_dst_obj(int fd, struct gem_memory_region *mr, uint32_t dst,
+ 			    uint32_t size, void *dst_addr)
+ {
+ 	igt_debug("Closing dst object 0x%x\n", dst);
+-	destroy_obj(fd, dst, size, dst_addr);
++	destroy_obj(fd, dst, size, dst_addr, !mr);
+ }
+ 
+ static void pattern_fill_buf(void *src_addr[], uint32_t size, uint32_t num_cmds, uint32_t npages)
+@@ -476,6 +494,25 @@ static void run_test(int fd, const intel_ctx_t *base_ctx, struct test_cfg *cfg,
+ 		gem_vm_destroy(fd, shared_vm_id);
+ }
+ 
++static int has_userptr(int fd)
++{
++	uint32_t handle = 0;
++	void *ptr;
++	int ret;
++
++	assert(posix_memalign(&ptr, PAGE_SIZE, PAGE_SIZE) == 0);
++	ret = __gem_userptr(fd, ptr, PAGE_SIZE, 0, 0, &handle);
++	if (ret != 0) {
++		free(ptr);
++		return 0;
++	}
++
++	gem_close(fd, handle);
++	free(ptr);
++
++	return handle != 0;
++}
++
+ igt_main
+ {
+ 	struct test_cfg *t, tests[] = {
+@@ -526,6 +563,14 @@ igt_main
+ 				igt_dynamic_f("%s", r->name)
+ 					run_test(fd, ctx, &cfg, r, alignment, e);
+ 			}
++
++			if (has_userptr(fd)) {
++				struct test_cfg cfg = *t;
++
++				/* Use NULL memory region for userptr */
++				igt_dynamic("userptr")
++					run_test(fd, ctx, &cfg, NULL, PAGE_SIZE, e);
++			}
+ 		}
+ 	}
+ 
 -- 
 2.21.0.rc0.32.g243a4c7e27
