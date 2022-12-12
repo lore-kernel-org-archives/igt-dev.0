@@ -1,17 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 185A310E2AC
- for <igt-dev@lists.freedesktop.org>; Mon, 12 Dec 2022 23:13:04 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A129110E2B1
+ for <igt-dev@lists.freedesktop.org>; Mon, 12 Dec 2022 23:13:03 +0000 (UTC)
 From: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Mon, 12 Dec 2022 15:12:45 -0800
-Message-Id: <20221212231254.2303-11-niranjana.vishwanathapura@intel.com>
+Date: Mon, 12 Dec 2022 15:12:41 -0800
+Message-Id: <20221212231254.2303-7-niranjana.vishwanathapura@intel.com>
 In-Reply-To: <20221212231254.2303-1-niranjana.vishwanathapura@intel.com>
 References: <20221212231254.2303-1-niranjana.vishwanathapura@intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v9 10/19] tests/i915/vm_bind: Add userptr
- subtest
+Subject: [igt-dev] [PATCH i-g-t v9 06/19] lib/vm_bind: Add vm_bind specific
+ library functions
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,135 +26,121 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add userptr object type to vm_bind_basic test.
+Add vm_bind specific library interfaces.
 
-v2: Run all tests for userptr type
-v3: Change info to debug messages, remove igt_collection usage
-v4: only munmap non-userptr objects
+v2: Add flags field
 
 Reviewed-by: Matthew Auld <matthew.auld@intel.com>
 Signed-off-by: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
 ---
- tests/i915/i915_vm_bind_basic.c | 59 +++++++++++++++++++++++++++++----
- 1 file changed, 52 insertions(+), 7 deletions(-)
+ lib/i915/i915_vm_bind.c | 62 +++++++++++++++++++++++++++++++++++++++++
+ lib/i915/i915_vm_bind.h | 16 +++++++++++
+ lib/meson.build         |  1 +
+ 3 files changed, 79 insertions(+)
+ create mode 100644 lib/i915/i915_vm_bind.c
+ create mode 100644 lib/i915/i915_vm_bind.h
 
-diff --git a/tests/i915/i915_vm_bind_basic.c b/tests/i915/i915_vm_bind_basic.c
-index db6758e18..db3b0a15f 100644
---- a/tests/i915/i915_vm_bind_basic.c
-+++ b/tests/i915/i915_vm_bind_basic.c
-@@ -212,16 +212,26 @@ static uint32_t create_obj(int fd, struct gem_memory_region *mr, uint32_t size,
- {
- 	uint32_t handle;
- 
--	handle = gem_create_in_memory_region_list(fd, size, 0, &mr->ci, 1);
--	*addr = gem_mmap__cpu(fd, handle, 0, size, PROT_WRITE);
-+	if (!mr) {
-+		igt_assert(posix_memalign(addr, SZ_2M * MAX_CTXTS, size) == 0);
-+		gem_userptr(fd, *addr, size, 0, 0, &handle);
-+	} else {
-+		handle = gem_create_in_memory_region_list(fd, size, 0, &mr->ci, 1);
-+		*addr = gem_mmap__cpu(fd, handle, 0, size, PROT_WRITE);
-+	}
- 
- 	return handle;
- }
- 
--static void destroy_obj(int fd, uint32_t handle, uint32_t size, void *addr)
-+static void destroy_obj(int fd, uint32_t handle, uint32_t size, void *addr, bool is_userptr)
- {
--	igt_assert(gem_munmap(addr, size) == 0);
-+	if (!is_userptr)
-+		igt_assert(gem_munmap(addr, size) == 0);
+diff --git a/lib/i915/i915_vm_bind.c b/lib/i915/i915_vm_bind.c
+new file mode 100644
+index 000000000..201912b49
+--- /dev/null
++++ b/lib/i915/i915_vm_bind.c
+@@ -0,0 +1,62 @@
++// SPDX-License-Identifier: MIT
++/*
++ * Copyright © 2022 Intel Corporation
++ */
 +
- 	gem_close(fd, handle);
++#include <errno.h>
++#include <string.h>
++#include <sys/ioctl.h>
 +
-+	if (is_userptr)
-+		free(addr);
- }
- 
- static void create_src_objs(int fd, struct gem_memory_region *mr, uint32_t src[],
-@@ -232,6 +242,14 @@ static void create_src_objs(int fd, struct gem_memory_region *mr, uint32_t src[]
- 	if (!num_cmds)
- 		return;
- 
-+	if (!mr) {
-+		for (i = 0; i < num_cmds; i++) {
-+			src[i] = create_obj(fd, NULL, size, &src_addr[i]);
-+			igt_debug("Src (userptr) obj 0x%x created\n", src[i]);
-+		}
-+		return;
-+	}
++#include "ioctl_wrappers.h"
++#include "i915_drm.h"
++#include "i915_drm_local.h"
++#include "i915_vm_bind.h"
 +
- 	/* Create first src object always in memory region 'mr' */
- 	src[i] = create_obj(fd, mr, size, &src_addr[i]);
- 	igt_debug("Src (%s) obj 0x%x created\n", mr->name, src[i]);
-@@ -270,7 +288,7 @@ static void destroy_src_objs(int fd, struct gem_memory_region *mr, uint32_t src[
- 
- 	for (i = 0; i < num_cmds; i++) {
- 		igt_debug("Closing src object 0x%x\n", src[i]);
--		destroy_obj(fd, src[i], size, src_addr[i]);
-+		destroy_obj(fd, src[i], size, src_addr[i], !mr);
- 	}
- }
- 
-@@ -278,7 +296,7 @@ static uint32_t create_dst_obj(int fd, struct gem_memory_region *mr, uint32_t si
- {
- 	uint32_t dst = create_obj(fd, mr, size, dst_addr);
- 
--	igt_debug("Dst (%s) obj 0x%x created\n", mr->name, dst);
-+	igt_debug("Dst (%s) obj 0x%x created\n", mr ? mr->name : "userptr", dst);
- 	return dst;
- }
- 
-@@ -286,7 +304,7 @@ static void destroy_dst_obj(int fd, struct gem_memory_region *mr, uint32_t dst,
- 			    uint32_t size, void *dst_addr)
- {
- 	igt_debug("Closing dst object 0x%x\n", dst);
--	destroy_obj(fd, dst, size, dst_addr);
-+	destroy_obj(fd, dst, size, dst_addr, !mr);
- }
- 
- static void pattern_fill_buf(void *src_addr[], uint32_t size, uint32_t num_cmds, uint32_t npages)
-@@ -476,6 +494,25 @@ static void run_test(int fd, const intel_ctx_t *base_ctx, struct test_cfg *cfg,
- 		gem_vm_destroy(fd, shared_vm_id);
- }
- 
-+static int has_userptr(int fd)
++void i915_vm_bind(int i915, uint32_t vm_id, uint64_t va, uint32_t handle,
++		  uint64_t offset, uint64_t length, uint64_t flags,
++		  uint32_t syncobj, uint64_t fence_value)
 +{
-+	uint32_t handle = 0;
-+	void *ptr;
-+	int ret;
++	struct drm_i915_gem_vm_bind bind;
 +
-+	assert(posix_memalign(&ptr, PAGE_SIZE, PAGE_SIZE) == 0);
-+	ret = __gem_userptr(fd, ptr, PAGE_SIZE, 0, 0, &handle);
-+	if (ret != 0) {
-+		free(ptr);
-+		return 0;
++	memset(&bind, 0, sizeof(bind));
++	bind.vm_id = vm_id;
++	bind.handle = handle;
++	bind.start = va;
++	bind.offset = offset;
++	bind.length = length;
++	bind.flags = flags;
++	if (syncobj) {
++		bind.fence.handle = syncobj;
++		bind.fence.value = fence_value;
++		bind.fence.flags = I915_TIMELINE_FENCE_SIGNAL;
 +	}
 +
-+	gem_close(fd, handle);
-+	free(ptr);
-+
-+	return handle != 0;
++	gem_vm_bind(i915, &bind);
 +}
 +
- igt_main
- {
- 	struct test_cfg *t, tests[] = {
-@@ -526,6 +563,14 @@ igt_main
- 				igt_dynamic_f("%s", r->name)
- 					run_test(fd, ctx, &cfg, r, alignment, e);
- 			}
++void i915_vm_unbind(int i915, uint32_t vm_id, uint64_t va, uint64_t length)
++{
++	struct drm_i915_gem_vm_unbind unbind;
 +
-+			if (has_userptr(fd)) {
-+				struct test_cfg cfg = *t;
++	memset(&unbind, 0, sizeof(unbind));
++	unbind.vm_id = vm_id;
++	unbind.start = va;
++	unbind.length = length;
 +
-+				/* Use NULL memory region for userptr */
-+				igt_dynamic("userptr")
-+					run_test(fd, ctx, &cfg, NULL, PAGE_SIZE, e);
-+			}
- 		}
- 	}
- 
++	gem_vm_unbind(i915, &unbind);
++}
++
++int i915_vm_bind_version(int i915)
++{
++	struct drm_i915_getparam gp;
++	int value = 0;
++
++	memset(&gp, 0, sizeof(gp));
++	gp.param = I915_PARAM_VM_BIND_VERSION;
++	gp.value = &value;
++
++	ioctl(i915, DRM_IOCTL_I915_GETPARAM, &gp, sizeof(gp));
++	errno = 0;
++
++	return value;
++}
+diff --git a/lib/i915/i915_vm_bind.h b/lib/i915/i915_vm_bind.h
+new file mode 100644
+index 000000000..b11142cc8
+--- /dev/null
++++ b/lib/i915/i915_vm_bind.h
+@@ -0,0 +1,16 @@
++/* SPDX-License-Identifier: MIT */
++/*
++ * Copyright © 2022 Intel Corporation
++ */
++#ifndef _I915_VM_BIND_H_
++#define _I915_VM_BIND_H_
++
++#include <stdint.h>
++
++void i915_vm_bind(int i915, uint32_t vm_id, uint64_t va, uint32_t handle,
++		  uint64_t offset, uint64_t length, uint64_t flags,
++		  uint32_t syncobj, uint64_t fence_value);
++void i915_vm_unbind(int i915, uint32_t vm_id, uint64_t va, uint64_t length);
++int i915_vm_bind_version(int i915);
++
++#endif /* _I915_VM_BIND_ */
+diff --git a/lib/meson.build b/lib/meson.build
+index 19d9f4f2c..a01482c38 100644
+--- a/lib/meson.build
++++ b/lib/meson.build
+@@ -15,6 +15,7 @@ lib_sources = [
+ 	'i915/intel_mocs.c',
+ 	'i915/i915_blt.c',
+ 	'i915/i915_crc.c',
++	'i915/i915_vm_bind.c',
+ 	'igt_collection.c',
+ 	'igt_color_encoding.c',
+ 	'igt_crc.c',
 -- 
 2.21.0.rc0.32.g243a4c7e27
