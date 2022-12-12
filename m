@@ -1,18 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5D8FD10E2B8
- for <igt-dev@lists.freedesktop.org>; Mon, 12 Dec 2022 23:13:04 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id AE2A710E2B2
+ for <igt-dev@lists.freedesktop.org>; Mon, 12 Dec 2022 23:13:03 +0000 (UTC)
 From: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Mon, 12 Dec 2022 15:12:50 -0800
-Message-Id: <20221212231254.2303-16-niranjana.vishwanathapura@intel.com>
+Date: Mon, 12 Dec 2022 15:12:42 -0800
+Message-Id: <20221212231254.2303-8-niranjana.vishwanathapura@intel.com>
 In-Reply-To: <20221212231254.2303-1-niranjana.vishwanathapura@intel.com>
 References: <20221212231254.2303-1-niranjana.vishwanathapura@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v9 15/19] tests/i915/vm_bind: Add
- i915_capture library routines
+Subject: [igt-dev] [PATCH i-g-t v9 07/19] lib/vm_bind: Add
+ __prime_handle_to_fd()
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,261 +25,190 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-In preparation of i915_vm_bind_capture test, move some common
-capture decode routines to library for code sharing.
+Make __prime_handle_to_fd() as a library interface as VM_BIND
+functionality will also be using it.
 
+v2: Rename prime_handle_to_fd_no_assert() to __prime_handle_to_fd()
+
+Reviewed-by: Matthew Auld <matthew.auld@intel.com>
 Signed-off-by: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
 ---
- lib/i915/i915_capture.c       | 96 +++++++++++++++++++++++++++++++++++
- lib/i915/i915_capture.h       | 14 +++++
- lib/meson.build               |  1 +
- tests/i915/gem_exec_capture.c | 88 +-------------------------------
- 4 files changed, 112 insertions(+), 87 deletions(-)
- create mode 100644 lib/i915/i915_capture.c
- create mode 100644 lib/i915/i915_capture.h
+ lib/ioctl_wrappers.c    | 39 +++++++++++++++++++++++++++++++++------
+ lib/ioctl_wrappers.h    |  1 +
+ tests/i915/gem_pwrite.c | 16 +---------------
+ tests/prime_mmap.c      | 26 ++++----------------------
+ 4 files changed, 39 insertions(+), 43 deletions(-)
 
-diff --git a/lib/i915/i915_capture.c b/lib/i915/i915_capture.c
-new file mode 100644
-index 000000000..7430c9256
---- /dev/null
-+++ b/lib/i915/i915_capture.c
-@@ -0,0 +1,96 @@
-+// SPDX-License-Identifier: MIT
-+/*
-+ * Copyright © 2022 Intel Corporation
-+ */
-+
-+#include <stdlib.h>
-+#include <string.h>
-+#include <zlib.h>
-+
-+#include "i915_capture.h"
-+
-+static unsigned long zlib_inflate(uint32_t **ptr, unsigned long len)
-+{
-+	struct z_stream_s zstream;
-+	void *out;
-+
-+	memset(&zstream, 0, sizeof(zstream));
-+
-+	zstream.next_in = (unsigned char *)*ptr;
-+	zstream.avail_in = 4*len;
-+
-+	if (inflateInit(&zstream) != Z_OK)
-+		return 0;
-+
-+	out = malloc(128*4096); /* approximate obj size */
-+	zstream.next_out = out;
-+	zstream.avail_out = 128*4096;
-+
-+	do {
-+		switch (inflate(&zstream, Z_SYNC_FLUSH)) {
-+		case Z_STREAM_END:
-+			goto end;
-+		case Z_OK:
-+			break;
-+		default:
-+			inflateEnd(&zstream);
-+			return 0;
-+		}
-+
-+		if (zstream.avail_out)
-+			break;
-+
-+		out = realloc(out, 2*zstream.total_out);
-+		if (out == NULL) {
-+			inflateEnd(&zstream);
-+			return 0;
-+		}
-+
-+		zstream.next_out = (unsigned char *)out + zstream.total_out;
-+		zstream.avail_out = zstream.total_out;
-+	} while (1);
-+end:
-+	inflateEnd(&zstream);
-+	free(*ptr);
-+	*ptr = out;
-+	return zstream.total_out / 4;
-+}
-+
-+unsigned long
-+ascii85_decode(char *in, uint32_t **out, bool inflate, char **end)
-+{
-+	unsigned long len = 0, size = 1024;
-+
-+	*out = realloc(*out, sizeof(uint32_t)*size);
-+	if (*out == NULL)
-+		return 0;
-+
-+	while (*in >= '!' && *in <= 'z') {
-+		uint32_t v = 0;
-+
-+		if (len == size) {
-+			size *= 2;
-+			*out = realloc(*out, sizeof(uint32_t)*size);
-+			if (*out == NULL)
-+				return 0;
-+		}
-+
-+		if (*in == 'z') {
-+			in++;
-+		} else {
-+			v += in[0] - 33; v *= 85;
-+			v += in[1] - 33; v *= 85;
-+			v += in[2] - 33; v *= 85;
-+			v += in[3] - 33; v *= 85;
-+			v += in[4] - 33;
-+			in += 5;
-+		}
-+		(*out)[len++] = v;
-+	}
-+	*end = in;
-+
-+	if (!inflate)
-+		return len;
-+
-+	return zlib_inflate(out, len);
-+}
-diff --git a/lib/i915/i915_capture.h b/lib/i915/i915_capture.h
-new file mode 100644
-index 000000000..26481b8e4
---- /dev/null
-+++ b/lib/i915/i915_capture.h
-@@ -0,0 +1,14 @@
-+/* SPDX-License-Identifier: MIT */
-+/*
-+ * Copyright © 2022 Intel Corporation
-+ */
-+#ifndef _I915_CAPTURE_H_
-+#define _I915_CAPTURE_H_
-+
-+#include <stdbool.h>
-+#include <stdint.h>
-+
-+unsigned long
-+ascii85_decode(char *in, uint32_t **out, bool inflate, char **end);
-+
-+#endif /* _I915_CAPTURE_ */
-diff --git a/lib/meson.build b/lib/meson.build
-index a01482c38..9d353da16 100644
---- a/lib/meson.build
-+++ b/lib/meson.build
-@@ -14,6 +14,7 @@ lib_sources = [
- 	'i915/intel_memory_region.c',
- 	'i915/intel_mocs.c',
- 	'i915/i915_blt.c',
-+	'i915/i915_capture.c',
- 	'i915/i915_crc.c',
- 	'i915/i915_vm_bind.c',
- 	'igt_collection.c',
-diff --git a/tests/i915/gem_exec_capture.c b/tests/i915/gem_exec_capture.c
-index 2db58266f..f8f8d1ece 100644
---- a/tests/i915/gem_exec_capture.c
-+++ b/tests/i915/gem_exec_capture.c
-@@ -22,10 +22,10 @@
+diff --git a/lib/ioctl_wrappers.c b/lib/ioctl_wrappers.c
+index ac37b6bb4..db9cbb724 100644
+--- a/lib/ioctl_wrappers.c
++++ b/lib/ioctl_wrappers.c
+@@ -1153,28 +1153,55 @@ void gem_require_mocs_registers(int fd)
+ /* prime */
+ 
+ /**
+- * prime_handle_to_fd:
++ * __prime_handle_to_fd:
+  * @fd: open i915 drm file descriptor
+  * @handle: file-private gem buffer object handle
++ * @flags: DRM_IOCTL_PRIME_HANDLE_TO_FD ioctl flags
++ * @fd_out: place holder for output file handle
+  *
+  * This wraps the PRIME_HANDLE_TO_FD ioctl, which is used to export a gem buffer
+  * object into a global (i.e. potentially cross-device) dma-buf file-descriptor
+  * handle.
+  *
+- * Returns: The created dma-buf fd handle.
++ * Returns: 0 on success, error otherwise. Upon success, it returns
++ *          the created dma-buf fd handle in fd_out.
   */
+-int prime_handle_to_fd(int fd, uint32_t handle)
++int __prime_handle_to_fd(int fd, uint32_t handle, int flags, int *fd_out)
+ {
+ 	struct drm_prime_handle args;
++	int ret;
  
- #include <sys/poll.h>
--#include <zlib.h>
- #include <sched.h>
+ 	memset(&args, 0, sizeof(args));
+ 	args.handle = handle;
+-	args.flags = DRM_CLOEXEC;
++	args.flags = flags;
+ 	args.fd = -1;
  
- #include "i915/gem.h"
-+#include "i915/i915_capture.h"
- #include "i915/gem_create.h"
- #include "igt.h"
- #include "igt_device.h"
-@@ -42,92 +42,6 @@ struct offset {
- 	bool found;
+-	do_ioctl(fd, DRM_IOCTL_PRIME_HANDLE_TO_FD, &args);
++	ret = drmIoctl(fd, DRM_IOCTL_PRIME_HANDLE_TO_FD, &args);
++	if (ret)
++		ret = -errno;
++	*fd_out = args.fd;
+ 
+-	return args.fd;
++	return ret;
++}
++
++/**
++ * prime_handle_to_fd:
++ * @fd: open i915 drm file descriptor
++ * @handle: file-private gem buffer object handle
++ *
++ * This wraps the PRIME_HANDLE_TO_FD ioctl, which is used to export a gem buffer
++ * object into a global (i.e. potentially cross-device) dma-buf file-descriptor
++ * handle. It asserts that ioctl succeeds.
++ *
++ * Returns: The created dma-buf fd handle.
++ */
++int prime_handle_to_fd(int fd, uint32_t handle)
++{
++	int dmabuf;
++
++	igt_assert_eq(__prime_handle_to_fd(fd, handle, DRM_CLOEXEC, &dmabuf), 0);
++
++	return dmabuf;
+ }
+ 
+ /**
+diff --git a/lib/ioctl_wrappers.h b/lib/ioctl_wrappers.h
+index 223cd9160..66faa2755 100644
+--- a/lib/ioctl_wrappers.h
++++ b/lib/ioctl_wrappers.h
+@@ -143,6 +143,7 @@ struct local_dma_buf_sync {
+ #define LOCAL_DMA_BUF_BASE 'b'
+ #define LOCAL_DMA_BUF_IOCTL_SYNC _IOW(LOCAL_DMA_BUF_BASE, 0, struct local_dma_buf_sync)
+ 
++int __prime_handle_to_fd(int fd, uint32_t handle, int flags, int *fd_out);
+ int prime_handle_to_fd(int fd, uint32_t handle);
+ #ifndef DRM_RDWR
+ #define DRM_RDWR O_RDWR
+diff --git a/tests/i915/gem_pwrite.c b/tests/i915/gem_pwrite.c
+index 6e3f833cd..f4fe069ca 100644
+--- a/tests/i915/gem_pwrite.c
++++ b/tests/i915/gem_pwrite.c
+@@ -293,19 +293,6 @@ struct ufd_thread {
+ 	int err;
  };
  
--static unsigned long zlib_inflate(uint32_t **ptr, unsigned long len)
+-static int __prime_handle_to_fd(int fd, uint32_t handle)
 -{
--	struct z_stream_s zstream;
--	void *out;
+-	struct drm_prime_handle args;
 -
--	memset(&zstream, 0, sizeof(zstream));
+-	memset(&args, 0, sizeof(args));
+-	args.handle = handle;
+-	args.flags = DRM_CLOEXEC;
+-	args.fd = -1;
 -
--	zstream.next_in = (unsigned char *)*ptr;
--	zstream.avail_in = 4*len;
--
--	if (inflateInit(&zstream) != Z_OK)
--		return 0;
--
--	out = malloc(128*4096); /* approximate obj size */
--	zstream.next_out = out;
--	zstream.avail_out = 128*4096;
--
--	do {
--		switch (inflate(&zstream, Z_SYNC_FLUSH)) {
--		case Z_STREAM_END:
--			goto end;
--		case Z_OK:
--			break;
--		default:
--			inflateEnd(&zstream);
--			return 0;
--		}
--
--		if (zstream.avail_out)
--			break;
--
--		out = realloc(out, 2*zstream.total_out);
--		if (out == NULL) {
--			inflateEnd(&zstream);
--			return 0;
--		}
--
--		zstream.next_out = (unsigned char *)out + zstream.total_out;
--		zstream.avail_out = zstream.total_out;
--	} while (1);
--end:
--	inflateEnd(&zstream);
--	free(*ptr);
--	*ptr = out;
--	return zstream.total_out / 4;
+-	ioctl(fd, DRM_IOCTL_PRIME_HANDLE_TO_FD, &args);
+-	return args.fd;
 -}
 -
--static unsigned long
--ascii85_decode(char *in, uint32_t **out, bool inflate, char **end)
--{
--	unsigned long len = 0, size = 1024;
--
--	*out = realloc(*out, sizeof(uint32_t)*size);
--	if (*out == NULL)
--		return 0;
--
--	while (*in >= '!' && *in <= 'z') {
--		uint32_t v = 0;
--
--		if (len == size) {
--			size *= 2;
--			*out = realloc(*out, sizeof(uint32_t)*size);
--			if (*out == NULL)
--				return 0;
--		}
--
--		if (*in == 'z') {
--			in++;
--		} else {
--			v += in[0] - 33; v *= 85;
--			v += in[1] - 33; v *= 85;
--			v += in[2] - 33; v *= 85;
--			v += in[3] - 33; v *= 85;
--			v += in[4] - 33;
--			in += 5;
--		}
--		(*out)[len++] = v;
--	}
--	*end = in;
--
--	if (!inflate)
--		return len;
--
--	return zlib_inflate(out, len);
--}
--
- static int check_error_state(int dir, struct offset *obj_offsets, int obj_count,
- 			     uint64_t obj_size, bool incremental)
+ static uint32_t dmabuf_create_handle(int i915, int vgem)
  {
+ 	struct vgem_bo scratch;
+@@ -317,8 +304,7 @@ static uint32_t dmabuf_create_handle(int i915, int vgem)
+ 	scratch.bpp = 32;
+ 	vgem_create(vgem, &scratch);
+ 
+-	dmabuf = __prime_handle_to_fd(vgem, scratch.handle);
+-	if (dmabuf < 0)
++	if (__prime_handle_to_fd(vgem, scratch.handle, DRM_CLOEXEC, &dmabuf))
+ 		return 0;
+ 
+ 	handle = prime_fd_to_handle(i915, dmabuf);
+diff --git a/tests/prime_mmap.c b/tests/prime_mmap.c
+index bc19f68c9..432e85763 100644
+--- a/tests/prime_mmap.c
++++ b/tests/prime_mmap.c
+@@ -298,24 +298,6 @@ test_dup(uint32_t region, uint64_t size)
+ 	close (dma_buf_fd);
+ }
+ 
+-/* Used for error case testing to avoid wrapper */
+-static int prime_handle_to_fd_no_assert(uint32_t handle, int flags, int *fd_out)
+-{
+-	struct drm_prime_handle args;
+-	int ret;
+-
+-	args.handle = handle;
+-	args.flags = flags;
+-	args.fd = -1;
+-
+-	ret = drmIoctl(fd, DRM_IOCTL_PRIME_HANDLE_TO_FD, &args);
+-	if (ret)
+-		ret = errno;
+-	*fd_out = args.fd;
+-
+-	return ret;
+-}
+-
+ static bool has_userptr(void)
+ {
+ 	uint32_t handle = 0;
+@@ -346,9 +328,9 @@ test_userptr(uint32_t region, uint64_t size)
+ 	gem_userptr(fd, (uint32_t *)ptr, size, 0, 0, &handle);
+ 
+ 	/* export userptr */
+-	ret = prime_handle_to_fd_no_assert(handle, DRM_CLOEXEC, &dma_buf_fd);
++	ret = __prime_handle_to_fd(fd, handle, DRM_CLOEXEC, &dma_buf_fd);
+ 	if (ret) {
+-		igt_assert(ret == EINVAL || ret == ENODEV);
++		igt_assert(ret == -EINVAL || ret == -ENODEV);
+ 		goto free_userptr;
+ 	} else {
+ 		igt_assert_eq(ret, 0);
+@@ -376,7 +358,7 @@ test_errors(uint32_t region, uint64_t size)
+ 	/* Test for invalid flags */
+ 	igt_assert(__gem_create_in_memory_regions(fd, &handle, &size, region) == 0);
+ 	for (i = 0; i < ARRAY_SIZE(invalid_flags); i++) {
+-		prime_handle_to_fd_no_assert(handle, invalid_flags[i], &dma_buf_fd);
++		__prime_handle_to_fd(fd, handle, invalid_flags[i], &dma_buf_fd);
+ 		igt_assert_eq(errno, EINVAL);
+ 		errno = 0;
+ 	}
+@@ -386,7 +368,7 @@ test_errors(uint32_t region, uint64_t size)
+ 	igt_assert(__gem_create_in_memory_regions(fd, &handle, &size, region) == 0);
+ 	fill_bo(handle, size);
+ 	gem_close(fd, handle);
+-	prime_handle_to_fd_no_assert(handle, DRM_CLOEXEC, &dma_buf_fd);
++	__prime_handle_to_fd(fd, handle, DRM_CLOEXEC, &dma_buf_fd);
+ 	igt_assert(dma_buf_fd == -1 && errno == ENOENT);
+ 	errno = 0;
+ 
 -- 
 2.21.0.rc0.32.g243a4c7e27
