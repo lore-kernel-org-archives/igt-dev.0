@@ -1,18 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 260A910E2B5
- for <igt-dev@lists.freedesktop.org>; Mon, 12 Dec 2022 23:13:04 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B1C5C10E2AA
+ for <igt-dev@lists.freedesktop.org>; Mon, 12 Dec 2022 23:13:05 +0000 (UTC)
 From: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Mon, 12 Dec 2022 15:12:46 -0800
-Message-Id: <20221212231254.2303-12-niranjana.vishwanathapura@intel.com>
+Date: Mon, 12 Dec 2022 15:12:54 -0800
+Message-Id: <20221212231254.2303-20-niranjana.vishwanathapura@intel.com>
 In-Reply-To: <20221212231254.2303-1-niranjana.vishwanathapura@intel.com>
 References: <20221212231254.2303-1-niranjana.vishwanathapura@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v9 11/19] tests/i915/vm_bind: Add
- gem_exec3_basic test
+Subject: [igt-dev] [PATCH i-g-t v9 19/19] tests/i915/vm_bind: Add userptr
+ invalidation test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,182 +25,117 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Port gem_exec_basic to a new gem_exec3_basic test which
-uses the newer execbuf3 ioctl.
+Add vma-merge-execbuf3 subtest to gem_userptr_blits to
+validate userptr invalidations with VM_BIND+execbuf3.
 
-v2: use i915_vm_bind library functions
-v3: Use syncobj library functions
+NOTE:
+The test is derived from vma-merge subtest. There is a known
+fence timeout issue with vma-merge subtest which the
+vma-merge-execbuf3 inherits, but the test still passes none
+the less validates userptr invalidation of persistent mappings
+and rebinding the same in the subsequent submission.
 
-Reviewed-by: Matthew Auld <matthew.auld@intel.com>
 Signed-off-by: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
 ---
- tests/i915/gem_exec3_basic.c          | 132 ++++++++++++++++++++++++++
- tests/intel-ci/fast-feedback.testlist |   1 +
- tests/meson.build                     |   1 +
- 3 files changed, 134 insertions(+)
- create mode 100644 tests/i915/gem_exec3_basic.c
+ tests/i915/gem_userptr_blits.c | 71 ++++++++++++++++++++++++++++++++++
+ 1 file changed, 71 insertions(+)
 
-diff --git a/tests/i915/gem_exec3_basic.c b/tests/i915/gem_exec3_basic.c
-new file mode 100644
-index 000000000..edd65e7ff
---- /dev/null
-+++ b/tests/i915/gem_exec3_basic.c
-@@ -0,0 +1,132 @@
-+// SPDX-License-Identifier: MIT
-+/*
-+ * Copyright © 2022 Intel Corporation
-+ */
-+
-+/** @file gem_exec3_basic.c
-+ *
-+ * Basic execbuf3 test.
-+ * Ported from gem_exec_basic and made to work with
-+ * vm_bind and execbuf3.
-+ *
-+ */
-+
-+#include "i915/gem.h"
-+#include "i915/i915_vm_bind.h"
-+#include "igt.h"
-+#include "igt_collection.h"
-+#include "igt_syncobj.h"
-+
-+#include "i915/gem_create.h"
+diff --git a/tests/i915/gem_userptr_blits.c b/tests/i915/gem_userptr_blits.c
+index 698508669..0ec54bd21 100644
+--- a/tests/i915/gem_userptr_blits.c
++++ b/tests/i915/gem_userptr_blits.c
+@@ -60,7 +60,10 @@
+ 
+ #include "i915/gem.h"
+ #include "i915/gem_create.h"
 +#include "i915/gem_vm.h"
-+
-+IGT_TEST_DESCRIPTION("Basic sanity check of execbuf3-ioctl rings.");
-+
-+#define BATCH_VA	0xa0000000
-+#define PAGE_SIZE	4096
-+
-+static uint32_t batch_create(int fd, uint64_t *batch_size, uint32_t region)
++#include "i915/i915_vm_bind.h"
+ #include "igt.h"
++#include "igt_syncobj.h"
+ #include "igt_sysfs.h"
+ #include "igt_types.h"
+ #include "sw_sync.h"
+@@ -740,6 +743,69 @@ static void test_vma_merge(int i915)
+ 	put_ahnd(ahnd);
+ }
+ 
++static void test_vma_merge_execbuf3(int i915)
 +{
-+	const uint32_t bbe = MI_BATCH_BUFFER_END;
-+	uint32_t handle;
-+
-+	igt_assert(__gem_create_in_memory_regions(fd, &handle, batch_size, region) == 0);
-+	gem_write(fd, handle, 0, &bbe, sizeof(bbe));
-+
-+	return handle;
-+}
-+
-+igt_main
-+{
-+	const struct intel_execution_engine2 *e;
-+	struct drm_i915_query_memory_regions *query_info;
-+	struct igt_collection *regions, *set;
-+	const intel_ctx_t *base_ctx, *ctx;
 +	struct drm_i915_gem_context_param param = {
 +		.param = I915_CONTEXT_PARAM_RECOVERABLE,
 +		.value = 0,
 +	};
-+	uint32_t vm_id;
-+	int fd = -1;
++	const size_t sz = 2 * hugepagesize();
++	uint32_t handle, vm_id;
++	const intel_ctx_t *ctx;
++	igt_spin_t *spin;
++	uint64_t ahnd;
++	void *addr;
 +
-+	igt_fixture {
-+		fd = drm_open_driver(DRIVER_INTEL);
-+		base_ctx = intel_ctx_create_all_physical(fd);
++	vm_id = gem_vm_create_in_vm_bind_mode(i915);
++	ctx = intel_ctx_create_all_physical(i915);
++	param.ctx_id = ctx->id;
++	gem_context_set_param(i915, &param);
++	gem_context_set_vm(i915, ctx->id, vm_id);
++	(void)gem_context_get_vm(i915, ctx->id);
 +
-+		igt_require_gem(fd);
-+		igt_require(i915_vm_bind_version(fd) == 1);
-+		igt_fork_hang_detector(fd);
++	ahnd = get_simple_ahnd(i915, ctx->id);
++	igt_require(ahnd);
++	addr = mmap(NULL, sz, PROT_READ | PROT_WRITE,
++		    MAP_SHARED | MAP_ANONYMOUS, -1, 0);
 +
-+		vm_id = gem_vm_create_in_vm_bind_mode(fd);
-+		ctx  = intel_ctx_create(fd, &base_ctx->cfg);
-+		param.ctx_id = ctx->id;
-+		gem_context_set_param(fd, &param);
-+		gem_context_set_vm(fd, ctx->id, vm_id);
++	gem_userptr(i915, addr + sz / 2, 4096, 0, userptr_flags, &handle);
 +
-+		query_info = gem_get_query_memory_regions(fd);
-+		igt_assert(query_info);
++	spin = igt_spin_new(i915, .ctx = ctx, .vm_id = vm_id,
++			    .ahnd = ahnd, .dependency = handle,
++			    .flags = IGT_SPIN_EXECBUF3);
 +
-+		set = get_memory_region_set(query_info,
-+					    I915_SYSTEM_MEMORY,
-+					    I915_DEVICE_MEMORY);
++	for (size_t x = 0; x < sz; x += 4096) {
++		if (x == sz / 2)
++			continue;
++
++		igt_assert(mmap(addr + x, 4096, PROT_READ | PROT_WRITE,
++				MAP_FIXED | MAP_SHARED | MAP_ANON, -1, 0) !=
++			   MAP_FAILED);
 +	}
 +
-+	igt_describe("Check basic functionality of GEM_EXECBUFFER3 ioctl on every"
-+		     " ring and iterating over memory regions.");
-+	igt_subtest_with_dynamic("basic") {
-+		for_each_combination(regions, 1, set) {
-+			struct drm_i915_gem_timeline_fence exec_fence[GEM_MAX_ENGINES][2] = { };
-+			char *sub_name = memregion_dynamic_subtest_name(regions);
-+			uint32_t region = igt_collection_get_value(regions, 0);
-+			uint32_t bind_syncobj, exec_syncobj[GEM_MAX_ENGINES];
-+			uint64_t fence_value[GEM_MAX_ENGINES] = { };
-+			uint64_t batch_size = PAGE_SIZE;
-+			uint32_t handle, idx = 0;
++	igt_spin_end(spin);
++	igt_spin_reset(spin);
++	igt_assert(syncobj_timeline_wait(i915, spin->out_syncobj, NULL, spin->nengines,
++					 gettime_ns() + (2 * NSEC_PER_SEC),
++					 DRM_SYNCOBJ_WAIT_FLAGS_WAIT_FOR_SUBMIT, NULL));
 +
-+			handle = batch_create(fd, &batch_size, region);
-+			bind_syncobj = syncobj_create(fd, 0);
-+			i915_vm_bind(fd, vm_id, BATCH_VA, handle, 0, batch_size, 0, bind_syncobj, 0);
++	/* Another submission will cause rebind of invalidated mappings */
++	gem_execbuf3(i915, &spin->execbuf3);
++	igt_spin_end(spin);
++	igt_assert(syncobj_timeline_wait(i915, &spin->out_syncobj[spin->nengines - 1],
++					 NULL, 1, gettime_ns() + (2 * NSEC_PER_SEC),
++					 DRM_SYNCOBJ_WAIT_FLAGS_WAIT_FOR_SUBMIT, NULL));
++	gem_close(i915, handle);
 +
-+			for_each_ctx_engine(fd, ctx, e) {
-+				igt_dynamic_f("%s-%s", e->name, sub_name) {
-+					struct drm_i915_gem_execbuffer3 execbuf = {
-+						.ctx_id = ctx->id,
-+						.batch_address = BATCH_VA,
-+						.engine_idx = e->flags,
-+						.fence_count = 2,
-+						.timeline_fences = to_user_pointer(&exec_fence[idx]),
-+					};
++	munmap(addr, sz);
 +
-+					exec_syncobj[idx] = syncobj_create(fd, 0);
-+					exec_fence[idx][0].handle = bind_syncobj;
-+					exec_fence[idx][0].flags = I915_TIMELINE_FENCE_WAIT;
-+					exec_fence[idx][1].handle = exec_syncobj[idx];
-+					exec_fence[idx][1].flags = I915_TIMELINE_FENCE_SIGNAL;
-+					idx++;
++	igt_spin_free(i915, spin);
++	put_ahnd(ahnd);
 +
-+					gem_execbuf3(fd, &execbuf);
-+				}
-+			}
-+
-+			igt_assert(syncobj_timeline_wait(fd, exec_syncobj, fence_value, idx,
-+							 gettime_ns() + (2 * NSEC_PER_SEC),
-+							 DRM_SYNCOBJ_WAIT_FLAGS_WAIT_FOR_SUBMIT, NULL));
-+			while (idx)
-+				syncobj_destroy(fd, exec_syncobj[--idx]);
-+			syncobj_destroy(fd, bind_syncobj);
-+			i915_vm_unbind(fd, vm_id, BATCH_VA, batch_size);
-+			gem_close(fd, handle);
-+			free(sub_name);
-+		}
-+	}
-+
-+	igt_fixture {
-+		intel_ctx_destroy(fd, ctx);
-+		gem_vm_destroy(fd, vm_id);
-+		free(query_info);
-+		igt_collection_destroy(set);
-+		igt_stop_hang_detector();
-+		intel_ctx_destroy(fd, base_ctx);
-+		close(fd);
-+	}
++	intel_ctx_destroy(i915, ctx);
++	gem_vm_destroy(i915, vm_id);
 +}
-diff --git a/tests/intel-ci/fast-feedback.testlist b/tests/intel-ci/fast-feedback.testlist
-index bdfde4b78..8380834c1 100644
---- a/tests/intel-ci/fast-feedback.testlist
-+++ b/tests/intel-ci/fast-feedback.testlist
-@@ -28,6 +28,7 @@ igt@gem_exec_fence@nb-await
- igt@gem_exec_gttfill@basic
- igt@gem_exec_parallel@engines
- igt@gem_exec_store@basic
-+igt@gem_exec3_basic@basic
- igt@gem_flink_basic@bad-flink
- igt@gem_flink_basic@bad-open
- igt@gem_flink_basic@basic
-diff --git a/tests/meson.build b/tests/meson.build
-index f4ff6fe7f..2439b327c 100644
---- a/tests/meson.build
-+++ b/tests/meson.build
-@@ -145,6 +145,7 @@ i915_progs = [
- 	'gem_exec_store',
- 	'gem_exec_suspend',
- 	'gem_exec_whisper',
-+	'gem_exec3_basic',
- 	'gem_fd_exhaustion',
- 	'gem_fence_thrash',
- 	'gem_fence_upload',
++
+ static void test_huge_split(int i915)
+ {
+ 	const size_t sz = 2 * hugepagesize();
+@@ -2628,6 +2694,11 @@ igt_main_args("c:", NULL, help_str, opt_handler, NULL)
+ 		igt_subtest("vma-merge")
+ 			test_vma_merge(fd);
+ 
++		igt_subtest("vma-merge-execbuf3") {
++			igt_require(i915_vm_bind_version(fd) == 1);
++			test_vma_merge_execbuf3(fd);
++		}
++
+ 		igt_subtest("huge-split")
+ 			test_huge_split(fd);
+ 	}
 -- 
 2.21.0.rc0.32.g243a4c7e27
