@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B1C5C10E2AA
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 42AA610E2AF
  for <igt-dev@lists.freedesktop.org>; Mon, 12 Dec 2022 23:13:05 +0000 (UTC)
 From: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Mon, 12 Dec 2022 15:12:54 -0800
-Message-Id: <20221212231254.2303-20-niranjana.vishwanathapura@intel.com>
+Date: Mon, 12 Dec 2022 15:12:53 -0800
+Message-Id: <20221212231254.2303-19-niranjana.vishwanathapura@intel.com>
 In-Reply-To: <20221212231254.2303-1-niranjana.vishwanathapura@intel.com>
 References: <20221212231254.2303-1-niranjana.vishwanathapura@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v9 19/19] tests/i915/vm_bind: Add userptr
- invalidation test
+Subject: [igt-dev] [PATCH i-g-t v9 18/19] tests/i915/vm_bind: Use execbuf3
+ spinner
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,117 +25,83 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add vma-merge-execbuf3 subtest to gem_userptr_blits to
-validate userptr invalidations with VM_BIND+execbuf3.
-
-NOTE:
-The test is derived from vma-merge subtest. There is a known
-fence timeout issue with vma-merge subtest which the
-vma-merge-execbuf3 inherits, but the test still passes none
-the less validates userptr invalidation of persistent mappings
-and rebinding the same in the subsequent submission.
+Update gem_exec3_balancer test to use execbuf3 spinner.
 
 Signed-off-by: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
 ---
- tests/i915/gem_userptr_blits.c | 71 ++++++++++++++++++++++++++++++++++
- 1 file changed, 71 insertions(+)
+ tests/i915/gem_exec3_balancer.c | 21 +++++++++++----------
+ 1 file changed, 11 insertions(+), 10 deletions(-)
 
-diff --git a/tests/i915/gem_userptr_blits.c b/tests/i915/gem_userptr_blits.c
-index 698508669..0ec54bd21 100644
---- a/tests/i915/gem_userptr_blits.c
-+++ b/tests/i915/gem_userptr_blits.c
-@@ -60,7 +60,10 @@
- 
- #include "i915/gem.h"
- #include "i915/gem_create.h"
-+#include "i915/gem_vm.h"
-+#include "i915/i915_vm_bind.h"
- #include "igt.h"
-+#include "igt_syncobj.h"
- #include "igt_sysfs.h"
- #include "igt_types.h"
- #include "sw_sync.h"
-@@ -740,6 +743,69 @@ static void test_vma_merge(int i915)
- 	put_ahnd(ahnd);
+diff --git a/tests/i915/gem_exec3_balancer.c b/tests/i915/gem_exec3_balancer.c
+index 68ef040c7..23122f009 100644
+--- a/tests/i915/gem_exec3_balancer.c
++++ b/tests/i915/gem_exec3_balancer.c
+@@ -171,11 +171,6 @@ static void logical_sort_siblings(int i915,
+ 	free(engines);
  }
  
-+static void test_vma_merge_execbuf3(int i915)
-+{
-+	struct drm_i915_gem_context_param param = {
-+		.param = I915_CONTEXT_PARAM_RECOVERABLE,
-+		.value = 0,
-+	};
-+	const size_t sz = 2 * hugepagesize();
-+	uint32_t handle, vm_id;
-+	const intel_ctx_t *ctx;
-+	igt_spin_t *spin;
-+	uint64_t ahnd;
-+	void *addr;
-+
-+	vm_id = gem_vm_create_in_vm_bind_mode(i915);
-+	ctx = intel_ctx_create_all_physical(i915);
-+	param.ctx_id = ctx->id;
-+	gem_context_set_param(i915, &param);
-+	gem_context_set_vm(i915, ctx->id, vm_id);
-+	(void)gem_context_get_vm(i915, ctx->id);
-+
-+	ahnd = get_simple_ahnd(i915, ctx->id);
-+	igt_require(ahnd);
-+	addr = mmap(NULL, sz, PROT_READ | PROT_WRITE,
-+		    MAP_SHARED | MAP_ANONYMOUS, -1, 0);
-+
-+	gem_userptr(i915, addr + sz / 2, 4096, 0, userptr_flags, &handle);
-+
-+	spin = igt_spin_new(i915, .ctx = ctx, .vm_id = vm_id,
-+			    .ahnd = ahnd, .dependency = handle,
-+			    .flags = IGT_SPIN_EXECBUF3);
-+
-+	for (size_t x = 0; x < sz; x += 4096) {
-+		if (x == sz / 2)
-+			continue;
-+
-+		igt_assert(mmap(addr + x, 4096, PROT_READ | PROT_WRITE,
-+				MAP_FIXED | MAP_SHARED | MAP_ANON, -1, 0) !=
-+			   MAP_FAILED);
-+	}
-+
-+	igt_spin_end(spin);
-+	igt_spin_reset(spin);
-+	igt_assert(syncobj_timeline_wait(i915, spin->out_syncobj, NULL, spin->nengines,
-+					 gettime_ns() + (2 * NSEC_PER_SEC),
-+					 DRM_SYNCOBJ_WAIT_FLAGS_WAIT_FOR_SUBMIT, NULL));
-+
-+	/* Another submission will cause rebind of invalidated mappings */
-+	gem_execbuf3(i915, &spin->execbuf3);
-+	igt_spin_end(spin);
-+	igt_assert(syncobj_timeline_wait(i915, &spin->out_syncobj[spin->nengines - 1],
-+					 NULL, 1, gettime_ns() + (2 * NSEC_PER_SEC),
-+					 DRM_SYNCOBJ_WAIT_FLAGS_WAIT_FOR_SUBMIT, NULL));
-+	gem_close(i915, handle);
-+
-+	munmap(addr, sz);
-+
-+	igt_spin_free(i915, spin);
-+	put_ahnd(ahnd);
-+
-+	intel_ctx_destroy(i915, ctx);
-+	gem_vm_destroy(i915, vm_id);
-+}
-+
- static void test_huge_split(int i915)
+-static bool fence_busy(int fence)
+-{
+-	return poll(&(struct pollfd){fence, POLLIN}, 1, 0) == 0;
+-}
+-
+ /*
+  * Always reading from engine instance 0, with GuC submission the values are the
+  * same across all instances. Execlists they may differ but quite unlikely they
+@@ -215,10 +210,11 @@ static unsigned int get_timeslice(int i915,
+  */
+ static void parallel_ordering(int i915, unsigned int flags)
  {
- 	const size_t sz = 2 * hugepagesize();
-@@ -2628,6 +2694,11 @@ igt_main_args("c:", NULL, help_str, opt_handler, NULL)
- 		igt_subtest("vma-merge")
- 			test_vma_merge(fd);
+-	uint32_t vm_id;
++	uint32_t vm_id, spin_vm_id;
+ 	int class;
  
-+		igt_subtest("vma-merge-execbuf3") {
-+			igt_require(i915_vm_bind_version(fd) == 1);
-+			test_vma_merge_execbuf3(fd);
-+		}
-+
- 		igt_subtest("huge-split")
- 			test_huge_split(fd);
+ 	vm_id = gem_vm_create_in_vm_bind_mode(i915);
++	spin_vm_id = gem_vm_create_in_vm_bind_mode(i915);
+ 
+ 	for (class = 0; class < 32; class++) {
+ 		struct drm_i915_gem_timeline_fence exec_fence = { };
+@@ -291,17 +287,22 @@ static void parallel_ordering(int i915, unsigned int flags)
+ 
+ 		/* Block parallel submission */
+ 		spin_ctx = ctx_create_engines(i915, siblings, count);
++		param.ctx_id = spin_ctx->id;
++		gem_context_set_param(i915, &param);
++		gem_context_set_vm(i915, spin_ctx->id, spin_vm_id);
+ 		ahnd = get_simple_ahnd(i915, spin_ctx->id);
++		igt_require(ahnd);
+ 		spin = __igt_spin_new(i915,
+ 				      .ahnd = ahnd,
+ 				      .ctx = spin_ctx,
+-				      .engine = 0,
+-				      .flags = IGT_SPIN_FENCE_OUT |
++				      .vm_id = spin_vm_id,
++				      .flags = IGT_SPIN_EXECBUF3 |
+ 				      IGT_SPIN_NO_PREEMPTION);
+ 
+ 		/* Wait for spinners to start */
+ 		usleep(5 * 10000);
+-		igt_assert(fence_busy(spin->out_fence));
++		while (spin->out_syncobj[i])
++			igt_assert(syncobj_busy(i915, spin->out_syncobj[i++]));
+ 
+ 		/* Submit parallel execbuf */
+ 		gem_execbuf3(i915, &execbuf);
+@@ -313,7 +314,6 @@ static void parallel_ordering(int i915, unsigned int flags)
+ 		 * these are changed it is possible for the test to fail.
+ 		 */
+ 		usleep(get_timeslice(i915, siblings[0]) * 2);
+-		igt_assert(fence_busy(spin->out_fence));
+ 		igt_assert(syncobj_busy(i915, exec_syncobj));
+ 		check_bo(i915, obj[0], 0);
+ 
+@@ -343,6 +343,7 @@ static void parallel_ordering(int i915, unsigned int flags)
+ 		put_ahnd(ahnd);
  	}
+ 
++	gem_vm_destroy(i915, spin_vm_id);
+ 	gem_vm_destroy(i915, vm_id);
+ }
+ 
 -- 
 2.21.0.rc0.32.g243a4c7e27
