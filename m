@@ -1,17 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 59FBD10E2AE
- for <igt-dev@lists.freedesktop.org>; Mon, 12 Dec 2022 23:13:03 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 260A910E2B5
+ for <igt-dev@lists.freedesktop.org>; Mon, 12 Dec 2022 23:13:04 +0000 (UTC)
 From: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Mon, 12 Dec 2022 15:12:37 -0800
-Message-Id: <20221212231254.2303-3-niranjana.vishwanathapura@intel.com>
+Date: Mon, 12 Dec 2022 15:12:46 -0800
+Message-Id: <20221212231254.2303-12-niranjana.vishwanathapura@intel.com>
 In-Reply-To: <20221212231254.2303-1-niranjana.vishwanathapura@intel.com>
 References: <20221212231254.2303-1-niranjana.vishwanathapura@intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v9 02/19] lib/i915: Move common syncobj
- functions to library
+Subject: [igt-dev] [PATCH i-g-t v9 11/19] tests/i915/vm_bind: Add
+ gem_exec3_basic test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,149 +26,182 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-In preparation for the VM_BIND tests, move some syncobj functions
-to the library.
+Port gem_exec_basic to a new gem_exec3_basic test which
+uses the newer execbuf3 ioctl.
 
+v2: use i915_vm_bind library functions
+v3: Use syncobj library functions
+
+Reviewed-by: Matthew Auld <matthew.auld@intel.com>
 Signed-off-by: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
 ---
- lib/igt_syncobj.c           | 21 +++++++++++++++++++++
- lib/igt_syncobj.h           |  9 +++++++++
- tests/i915/gem_exec_fence.c | 21 ---------------------
- tests/syncobj_timeline.c    |  8 --------
- tests/syncobj_wait.c        |  8 --------
- 5 files changed, 30 insertions(+), 37 deletions(-)
+ tests/i915/gem_exec3_basic.c          | 132 ++++++++++++++++++++++++++
+ tests/intel-ci/fast-feedback.testlist |   1 +
+ tests/meson.build                     |   1 +
+ 3 files changed, 134 insertions(+)
+ create mode 100644 tests/i915/gem_exec3_basic.c
 
-diff --git a/lib/igt_syncobj.c b/lib/igt_syncobj.c
-index a24ed10b7..5280c272e 100644
---- a/lib/igt_syncobj.c
-+++ b/lib/igt_syncobj.c
-@@ -22,6 +22,7 @@
-  */
- 
- #include <errno.h>
-+#include <sys/poll.h>
- #include <xf86drm.h>
- 
- #include "igt.h"
-@@ -543,3 +544,23 @@ syncobj_timeline_to_timeline(int fd,
- 					 timeline_dst, point_dst,
- 					 timeline_src, point_src, 0), 0);
- }
-+
-+/**
-+ * syncobj_busy:
-+ * @fd: The DRM file descriptor
-+ * @handle: The handle to the syncobj to check
-+ * Check if a syncobj is busy.
+diff --git a/tests/i915/gem_exec3_basic.c b/tests/i915/gem_exec3_basic.c
+new file mode 100644
+index 000000000..edd65e7ff
+--- /dev/null
++++ b/tests/i915/gem_exec3_basic.c
+@@ -0,0 +1,132 @@
++// SPDX-License-Identifier: MIT
++/*
++ * Copyright © 2022 Intel Corporation
 + */
-+bool
-+syncobj_busy(int fd, uint32_t handle)
++
++/** @file gem_exec3_basic.c
++ *
++ * Basic execbuf3 test.
++ * Ported from gem_exec_basic and made to work with
++ * vm_bind and execbuf3.
++ *
++ */
++
++#include "i915/gem.h"
++#include "i915/i915_vm_bind.h"
++#include "igt.h"
++#include "igt_collection.h"
++#include "igt_syncobj.h"
++
++#include "i915/gem_create.h"
++#include "i915/gem_vm.h"
++
++IGT_TEST_DESCRIPTION("Basic sanity check of execbuf3-ioctl rings.");
++
++#define BATCH_VA	0xa0000000
++#define PAGE_SIZE	4096
++
++static uint32_t batch_create(int fd, uint64_t *batch_size, uint32_t region)
 +{
-+	bool result;
-+	int sf;
++	const uint32_t bbe = MI_BATCH_BUFFER_END;
++	uint32_t handle;
 +
-+	sf = syncobj_handle_to_fd(fd, handle,
-+				  DRM_SYNCOBJ_HANDLE_TO_FD_FLAGS_EXPORT_SYNC_FILE);
-+	result = poll(&(struct pollfd){sf, POLLIN}, 1, 0) == 0;
-+	close(sf);
++	igt_assert(__gem_create_in_memory_regions(fd, &handle, batch_size, region) == 0);
++	gem_write(fd, handle, 0, &bbe, sizeof(bbe));
 +
-+	return result;
++	return handle;
 +}
-diff --git a/lib/igt_syncobj.h b/lib/igt_syncobj.h
-index e6725671d..8a1480a97 100644
---- a/lib/igt_syncobj.h
-+++ b/lib/igt_syncobj.h
-@@ -65,5 +65,14 @@ void syncobj_timeline_to_timeline(int fd,
- 				  uint64_t timeline_src, uint32_t point_src);
- void syncobj_timeline_signal(int fd, uint32_t *handles, uint64_t *points,
- 			     uint32_t count);
-+bool syncobj_busy(int fd, uint32_t handle);
 +
-+/* Used along with syncobj_timeline_wait() */
-+static inline uint64_t gettime_ns(void)
++igt_main
 +{
-+	struct timespec current;
-+	clock_gettime(CLOCK_MONOTONIC, &current);
-+	return (uint64_t)current.tv_sec * NSEC_PER_SEC + current.tv_nsec;
++	const struct intel_execution_engine2 *e;
++	struct drm_i915_query_memory_regions *query_info;
++	struct igt_collection *regions, *set;
++	const intel_ctx_t *base_ctx, *ctx;
++	struct drm_i915_gem_context_param param = {
++		.param = I915_CONTEXT_PARAM_RECOVERABLE,
++		.value = 0,
++	};
++	uint32_t vm_id;
++	int fd = -1;
++
++	igt_fixture {
++		fd = drm_open_driver(DRIVER_INTEL);
++		base_ctx = intel_ctx_create_all_physical(fd);
++
++		igt_require_gem(fd);
++		igt_require(i915_vm_bind_version(fd) == 1);
++		igt_fork_hang_detector(fd);
++
++		vm_id = gem_vm_create_in_vm_bind_mode(fd);
++		ctx  = intel_ctx_create(fd, &base_ctx->cfg);
++		param.ctx_id = ctx->id;
++		gem_context_set_param(fd, &param);
++		gem_context_set_vm(fd, ctx->id, vm_id);
++
++		query_info = gem_get_query_memory_regions(fd);
++		igt_assert(query_info);
++
++		set = get_memory_region_set(query_info,
++					    I915_SYSTEM_MEMORY,
++					    I915_DEVICE_MEMORY);
++	}
++
++	igt_describe("Check basic functionality of GEM_EXECBUFFER3 ioctl on every"
++		     " ring and iterating over memory regions.");
++	igt_subtest_with_dynamic("basic") {
++		for_each_combination(regions, 1, set) {
++			struct drm_i915_gem_timeline_fence exec_fence[GEM_MAX_ENGINES][2] = { };
++			char *sub_name = memregion_dynamic_subtest_name(regions);
++			uint32_t region = igt_collection_get_value(regions, 0);
++			uint32_t bind_syncobj, exec_syncobj[GEM_MAX_ENGINES];
++			uint64_t fence_value[GEM_MAX_ENGINES] = { };
++			uint64_t batch_size = PAGE_SIZE;
++			uint32_t handle, idx = 0;
++
++			handle = batch_create(fd, &batch_size, region);
++			bind_syncobj = syncobj_create(fd, 0);
++			i915_vm_bind(fd, vm_id, BATCH_VA, handle, 0, batch_size, 0, bind_syncobj, 0);
++
++			for_each_ctx_engine(fd, ctx, e) {
++				igt_dynamic_f("%s-%s", e->name, sub_name) {
++					struct drm_i915_gem_execbuffer3 execbuf = {
++						.ctx_id = ctx->id,
++						.batch_address = BATCH_VA,
++						.engine_idx = e->flags,
++						.fence_count = 2,
++						.timeline_fences = to_user_pointer(&exec_fence[idx]),
++					};
++
++					exec_syncobj[idx] = syncobj_create(fd, 0);
++					exec_fence[idx][0].handle = bind_syncobj;
++					exec_fence[idx][0].flags = I915_TIMELINE_FENCE_WAIT;
++					exec_fence[idx][1].handle = exec_syncobj[idx];
++					exec_fence[idx][1].flags = I915_TIMELINE_FENCE_SIGNAL;
++					idx++;
++
++					gem_execbuf3(fd, &execbuf);
++				}
++			}
++
++			igt_assert(syncobj_timeline_wait(fd, exec_syncobj, fence_value, idx,
++							 gettime_ns() + (2 * NSEC_PER_SEC),
++							 DRM_SYNCOBJ_WAIT_FLAGS_WAIT_FOR_SUBMIT, NULL));
++			while (idx)
++				syncobj_destroy(fd, exec_syncobj[--idx]);
++			syncobj_destroy(fd, bind_syncobj);
++			i915_vm_unbind(fd, vm_id, BATCH_VA, batch_size);
++			gem_close(fd, handle);
++			free(sub_name);
++		}
++	}
++
++	igt_fixture {
++		intel_ctx_destroy(fd, ctx);
++		gem_vm_destroy(fd, vm_id);
++		free(query_info);
++		igt_collection_destroy(set);
++		igt_stop_hang_detector();
++		intel_ctx_destroy(fd, base_ctx);
++		close(fd);
++	}
 +}
- 
- #endif /* IGT_SYNCOBJ_H */
-diff --git a/tests/i915/gem_exec_fence.c b/tests/i915/gem_exec_fence.c
-index 6bf1cdb57..2c43fd291 100644
---- a/tests/i915/gem_exec_fence.c
-+++ b/tests/i915/gem_exec_fence.c
-@@ -1110,19 +1110,6 @@ static uint32_t syncobj_import(int fd, int syncobj)
- 	return syncobj_fd_to_handle(fd, syncobj, 0);
- }
- 
--static bool syncobj_busy(int fd, uint32_t handle)
--{
--	bool result;
--	int sf;
--
--	sf = syncobj_handle_to_fd(fd, handle,
--				  DRM_SYNCOBJ_HANDLE_TO_FD_FLAGS_EXPORT_SYNC_FILE);
--	result = poll(&(struct pollfd){sf, POLLIN}, 1, 0) == 0;
--	close(sf);
--
--	return result;
--}
--
- static void test_syncobj_unused_fence(int fd)
- {
- 	const uint32_t bbe = MI_BATCH_BUFFER_END;
-@@ -1916,14 +1903,6 @@ static void test_syncobj_timeline_invalid_flags(int fd)
- 	syncobj_destroy(fd, fence.handle);
- }
- 
--static uint64_t
--gettime_ns(void)
--{
--	struct timespec current;
--	clock_gettime(CLOCK_MONOTONIC, &current);
--	return (uint64_t)current.tv_sec * NSEC_PER_SEC + current.tv_nsec;
--}
--
- static const char *test_syncobj_timeline_signal_desc =
- 	"Verifies proper signaling of a timeline syncobj through execbuf";
- static void test_syncobj_timeline_signal(int fd)
-diff --git a/tests/syncobj_timeline.c b/tests/syncobj_timeline.c
-index 7f5ff6f6c..352b0fa40 100644
---- a/tests/syncobj_timeline.c
-+++ b/tests/syncobj_timeline.c
-@@ -38,14 +38,6 @@ IGT_TEST_DESCRIPTION("Tests for the drm timeline sync object API");
- 
- #define NSECS_PER_SEC 1000000000ull
- 
--static uint64_t
--gettime_ns(void)
--{
--	struct timespec current;
--	clock_gettime(CLOCK_MONOTONIC, &current);
--	return (uint64_t)current.tv_sec * NSECS_PER_SEC + current.tv_nsec;
--}
--
- static void
- sleep_nsec(uint64_t time_nsec)
- {
-diff --git a/tests/syncobj_wait.c b/tests/syncobj_wait.c
-index 427b6b119..3415c78f8 100644
---- a/tests/syncobj_wait.c
-+++ b/tests/syncobj_wait.c
-@@ -38,14 +38,6 @@ IGT_TEST_DESCRIPTION("Tests for the drm sync object wait API");
- 
- #define NSECS_PER_SEC 1000000000ull
- 
--static uint64_t
--gettime_ns(void)
--{
--	struct timespec current;
--	clock_gettime(CLOCK_MONOTONIC, &current);
--	return (uint64_t)current.tv_sec * NSECS_PER_SEC + current.tv_nsec;
--}
--
- static void
- sleep_nsec(uint64_t time_nsec)
- {
+diff --git a/tests/intel-ci/fast-feedback.testlist b/tests/intel-ci/fast-feedback.testlist
+index bdfde4b78..8380834c1 100644
+--- a/tests/intel-ci/fast-feedback.testlist
++++ b/tests/intel-ci/fast-feedback.testlist
+@@ -28,6 +28,7 @@ igt@gem_exec_fence@nb-await
+ igt@gem_exec_gttfill@basic
+ igt@gem_exec_parallel@engines
+ igt@gem_exec_store@basic
++igt@gem_exec3_basic@basic
+ igt@gem_flink_basic@bad-flink
+ igt@gem_flink_basic@bad-open
+ igt@gem_flink_basic@basic
+diff --git a/tests/meson.build b/tests/meson.build
+index f4ff6fe7f..2439b327c 100644
+--- a/tests/meson.build
++++ b/tests/meson.build
+@@ -145,6 +145,7 @@ i915_progs = [
+ 	'gem_exec_store',
+ 	'gem_exec_suspend',
+ 	'gem_exec_whisper',
++	'gem_exec3_basic',
+ 	'gem_fd_exhaustion',
+ 	'gem_fence_thrash',
+ 	'gem_fence_upload',
 -- 
 2.21.0.rc0.32.g243a4c7e27
