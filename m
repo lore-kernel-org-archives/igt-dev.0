@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AE2A710E2B2
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 59FBD10E2AE
  for <igt-dev@lists.freedesktop.org>; Mon, 12 Dec 2022 23:13:03 +0000 (UTC)
 From: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Mon, 12 Dec 2022 15:12:42 -0800
-Message-Id: <20221212231254.2303-8-niranjana.vishwanathapura@intel.com>
+Date: Mon, 12 Dec 2022 15:12:37 -0800
+Message-Id: <20221212231254.2303-3-niranjana.vishwanathapura@intel.com>
 In-Reply-To: <20221212231254.2303-1-niranjana.vishwanathapura@intel.com>
 References: <20221212231254.2303-1-niranjana.vishwanathapura@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v9 07/19] lib/vm_bind: Add
- __prime_handle_to_fd()
+Subject: [igt-dev] [PATCH i-g-t v9 02/19] lib/i915: Move common syncobj
+ functions to library
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,190 +25,149 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Make __prime_handle_to_fd() as a library interface as VM_BIND
-functionality will also be using it.
+In preparation for the VM_BIND tests, move some syncobj functions
+to the library.
 
-v2: Rename prime_handle_to_fd_no_assert() to __prime_handle_to_fd()
-
-Reviewed-by: Matthew Auld <matthew.auld@intel.com>
 Signed-off-by: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
 ---
- lib/ioctl_wrappers.c    | 39 +++++++++++++++++++++++++++++++++------
- lib/ioctl_wrappers.h    |  1 +
- tests/i915/gem_pwrite.c | 16 +---------------
- tests/prime_mmap.c      | 26 ++++----------------------
- 4 files changed, 39 insertions(+), 43 deletions(-)
+ lib/igt_syncobj.c           | 21 +++++++++++++++++++++
+ lib/igt_syncobj.h           |  9 +++++++++
+ tests/i915/gem_exec_fence.c | 21 ---------------------
+ tests/syncobj_timeline.c    |  8 --------
+ tests/syncobj_wait.c        |  8 --------
+ 5 files changed, 30 insertions(+), 37 deletions(-)
 
-diff --git a/lib/ioctl_wrappers.c b/lib/ioctl_wrappers.c
-index ac37b6bb4..db9cbb724 100644
---- a/lib/ioctl_wrappers.c
-+++ b/lib/ioctl_wrappers.c
-@@ -1153,28 +1153,55 @@ void gem_require_mocs_registers(int fd)
- /* prime */
- 
- /**
-- * prime_handle_to_fd:
-+ * __prime_handle_to_fd:
-  * @fd: open i915 drm file descriptor
-  * @handle: file-private gem buffer object handle
-+ * @flags: DRM_IOCTL_PRIME_HANDLE_TO_FD ioctl flags
-+ * @fd_out: place holder for output file handle
-  *
-  * This wraps the PRIME_HANDLE_TO_FD ioctl, which is used to export a gem buffer
-  * object into a global (i.e. potentially cross-device) dma-buf file-descriptor
-  * handle.
-  *
-- * Returns: The created dma-buf fd handle.
-+ * Returns: 0 on success, error otherwise. Upon success, it returns
-+ *          the created dma-buf fd handle in fd_out.
+diff --git a/lib/igt_syncobj.c b/lib/igt_syncobj.c
+index a24ed10b7..5280c272e 100644
+--- a/lib/igt_syncobj.c
++++ b/lib/igt_syncobj.c
+@@ -22,6 +22,7 @@
   */
--int prime_handle_to_fd(int fd, uint32_t handle)
-+int __prime_handle_to_fd(int fd, uint32_t handle, int flags, int *fd_out)
- {
- 	struct drm_prime_handle args;
-+	int ret;
  
- 	memset(&args, 0, sizeof(args));
- 	args.handle = handle;
--	args.flags = DRM_CLOEXEC;
-+	args.flags = flags;
- 	args.fd = -1;
+ #include <errno.h>
++#include <sys/poll.h>
+ #include <xf86drm.h>
  
--	do_ioctl(fd, DRM_IOCTL_PRIME_HANDLE_TO_FD, &args);
-+	ret = drmIoctl(fd, DRM_IOCTL_PRIME_HANDLE_TO_FD, &args);
-+	if (ret)
-+		ret = -errno;
-+	*fd_out = args.fd;
- 
--	return args.fd;
-+	return ret;
-+}
+ #include "igt.h"
+@@ -543,3 +544,23 @@ syncobj_timeline_to_timeline(int fd,
+ 					 timeline_dst, point_dst,
+ 					 timeline_src, point_src, 0), 0);
+ }
 +
 +/**
-+ * prime_handle_to_fd:
-+ * @fd: open i915 drm file descriptor
-+ * @handle: file-private gem buffer object handle
-+ *
-+ * This wraps the PRIME_HANDLE_TO_FD ioctl, which is used to export a gem buffer
-+ * object into a global (i.e. potentially cross-device) dma-buf file-descriptor
-+ * handle. It asserts that ioctl succeeds.
-+ *
-+ * Returns: The created dma-buf fd handle.
++ * syncobj_busy:
++ * @fd: The DRM file descriptor
++ * @handle: The handle to the syncobj to check
++ * Check if a syncobj is busy.
 + */
-+int prime_handle_to_fd(int fd, uint32_t handle)
++bool
++syncobj_busy(int fd, uint32_t handle)
 +{
-+	int dmabuf;
++	bool result;
++	int sf;
 +
-+	igt_assert_eq(__prime_handle_to_fd(fd, handle, DRM_CLOEXEC, &dmabuf), 0);
++	sf = syncobj_handle_to_fd(fd, handle,
++				  DRM_SYNCOBJ_HANDLE_TO_FD_FLAGS_EXPORT_SYNC_FILE);
++	result = poll(&(struct pollfd){sf, POLLIN}, 1, 0) == 0;
++	close(sf);
 +
-+	return dmabuf;
++	return result;
++}
+diff --git a/lib/igt_syncobj.h b/lib/igt_syncobj.h
+index e6725671d..8a1480a97 100644
+--- a/lib/igt_syncobj.h
++++ b/lib/igt_syncobj.h
+@@ -65,5 +65,14 @@ void syncobj_timeline_to_timeline(int fd,
+ 				  uint64_t timeline_src, uint32_t point_src);
+ void syncobj_timeline_signal(int fd, uint32_t *handles, uint64_t *points,
+ 			     uint32_t count);
++bool syncobj_busy(int fd, uint32_t handle);
++
++/* Used along with syncobj_timeline_wait() */
++static inline uint64_t gettime_ns(void)
++{
++	struct timespec current;
++	clock_gettime(CLOCK_MONOTONIC, &current);
++	return (uint64_t)current.tv_sec * NSEC_PER_SEC + current.tv_nsec;
++}
+ 
+ #endif /* IGT_SYNCOBJ_H */
+diff --git a/tests/i915/gem_exec_fence.c b/tests/i915/gem_exec_fence.c
+index 6bf1cdb57..2c43fd291 100644
+--- a/tests/i915/gem_exec_fence.c
++++ b/tests/i915/gem_exec_fence.c
+@@ -1110,19 +1110,6 @@ static uint32_t syncobj_import(int fd, int syncobj)
+ 	return syncobj_fd_to_handle(fd, syncobj, 0);
  }
  
- /**
-diff --git a/lib/ioctl_wrappers.h b/lib/ioctl_wrappers.h
-index 223cd9160..66faa2755 100644
---- a/lib/ioctl_wrappers.h
-+++ b/lib/ioctl_wrappers.h
-@@ -143,6 +143,7 @@ struct local_dma_buf_sync {
- #define LOCAL_DMA_BUF_BASE 'b'
- #define LOCAL_DMA_BUF_IOCTL_SYNC _IOW(LOCAL_DMA_BUF_BASE, 0, struct local_dma_buf_sync)
- 
-+int __prime_handle_to_fd(int fd, uint32_t handle, int flags, int *fd_out);
- int prime_handle_to_fd(int fd, uint32_t handle);
- #ifndef DRM_RDWR
- #define DRM_RDWR O_RDWR
-diff --git a/tests/i915/gem_pwrite.c b/tests/i915/gem_pwrite.c
-index 6e3f833cd..f4fe069ca 100644
---- a/tests/i915/gem_pwrite.c
-+++ b/tests/i915/gem_pwrite.c
-@@ -293,19 +293,6 @@ struct ufd_thread {
- 	int err;
- };
- 
--static int __prime_handle_to_fd(int fd, uint32_t handle)
+-static bool syncobj_busy(int fd, uint32_t handle)
 -{
--	struct drm_prime_handle args;
+-	bool result;
+-	int sf;
 -
--	memset(&args, 0, sizeof(args));
--	args.handle = handle;
--	args.flags = DRM_CLOEXEC;
--	args.fd = -1;
+-	sf = syncobj_handle_to_fd(fd, handle,
+-				  DRM_SYNCOBJ_HANDLE_TO_FD_FLAGS_EXPORT_SYNC_FILE);
+-	result = poll(&(struct pollfd){sf, POLLIN}, 1, 0) == 0;
+-	close(sf);
 -
--	ioctl(fd, DRM_IOCTL_PRIME_HANDLE_TO_FD, &args);
--	return args.fd;
+-	return result;
 -}
 -
- static uint32_t dmabuf_create_handle(int i915, int vgem)
+ static void test_syncobj_unused_fence(int fd)
  {
- 	struct vgem_bo scratch;
-@@ -317,8 +304,7 @@ static uint32_t dmabuf_create_handle(int i915, int vgem)
- 	scratch.bpp = 32;
- 	vgem_create(vgem, &scratch);
- 
--	dmabuf = __prime_handle_to_fd(vgem, scratch.handle);
--	if (dmabuf < 0)
-+	if (__prime_handle_to_fd(vgem, scratch.handle, DRM_CLOEXEC, &dmabuf))
- 		return 0;
- 
- 	handle = prime_fd_to_handle(i915, dmabuf);
-diff --git a/tests/prime_mmap.c b/tests/prime_mmap.c
-index bc19f68c9..432e85763 100644
---- a/tests/prime_mmap.c
-+++ b/tests/prime_mmap.c
-@@ -298,24 +298,6 @@ test_dup(uint32_t region, uint64_t size)
- 	close (dma_buf_fd);
+ 	const uint32_t bbe = MI_BATCH_BUFFER_END;
+@@ -1916,14 +1903,6 @@ static void test_syncobj_timeline_invalid_flags(int fd)
+ 	syncobj_destroy(fd, fence.handle);
  }
  
--/* Used for error case testing to avoid wrapper */
--static int prime_handle_to_fd_no_assert(uint32_t handle, int flags, int *fd_out)
+-static uint64_t
+-gettime_ns(void)
 -{
--	struct drm_prime_handle args;
--	int ret;
--
--	args.handle = handle;
--	args.flags = flags;
--	args.fd = -1;
--
--	ret = drmIoctl(fd, DRM_IOCTL_PRIME_HANDLE_TO_FD, &args);
--	if (ret)
--		ret = errno;
--	*fd_out = args.fd;
--
--	return ret;
+-	struct timespec current;
+-	clock_gettime(CLOCK_MONOTONIC, &current);
+-	return (uint64_t)current.tv_sec * NSEC_PER_SEC + current.tv_nsec;
 -}
 -
- static bool has_userptr(void)
+ static const char *test_syncobj_timeline_signal_desc =
+ 	"Verifies proper signaling of a timeline syncobj through execbuf";
+ static void test_syncobj_timeline_signal(int fd)
+diff --git a/tests/syncobj_timeline.c b/tests/syncobj_timeline.c
+index 7f5ff6f6c..352b0fa40 100644
+--- a/tests/syncobj_timeline.c
++++ b/tests/syncobj_timeline.c
+@@ -38,14 +38,6 @@ IGT_TEST_DESCRIPTION("Tests for the drm timeline sync object API");
+ 
+ #define NSECS_PER_SEC 1000000000ull
+ 
+-static uint64_t
+-gettime_ns(void)
+-{
+-	struct timespec current;
+-	clock_gettime(CLOCK_MONOTONIC, &current);
+-	return (uint64_t)current.tv_sec * NSECS_PER_SEC + current.tv_nsec;
+-}
+-
+ static void
+ sleep_nsec(uint64_t time_nsec)
  {
- 	uint32_t handle = 0;
-@@ -346,9 +328,9 @@ test_userptr(uint32_t region, uint64_t size)
- 	gem_userptr(fd, (uint32_t *)ptr, size, 0, 0, &handle);
+diff --git a/tests/syncobj_wait.c b/tests/syncobj_wait.c
+index 427b6b119..3415c78f8 100644
+--- a/tests/syncobj_wait.c
++++ b/tests/syncobj_wait.c
+@@ -38,14 +38,6 @@ IGT_TEST_DESCRIPTION("Tests for the drm sync object wait API");
  
- 	/* export userptr */
--	ret = prime_handle_to_fd_no_assert(handle, DRM_CLOEXEC, &dma_buf_fd);
-+	ret = __prime_handle_to_fd(fd, handle, DRM_CLOEXEC, &dma_buf_fd);
- 	if (ret) {
--		igt_assert(ret == EINVAL || ret == ENODEV);
-+		igt_assert(ret == -EINVAL || ret == -ENODEV);
- 		goto free_userptr;
- 	} else {
- 		igt_assert_eq(ret, 0);
-@@ -376,7 +358,7 @@ test_errors(uint32_t region, uint64_t size)
- 	/* Test for invalid flags */
- 	igt_assert(__gem_create_in_memory_regions(fd, &handle, &size, region) == 0);
- 	for (i = 0; i < ARRAY_SIZE(invalid_flags); i++) {
--		prime_handle_to_fd_no_assert(handle, invalid_flags[i], &dma_buf_fd);
-+		__prime_handle_to_fd(fd, handle, invalid_flags[i], &dma_buf_fd);
- 		igt_assert_eq(errno, EINVAL);
- 		errno = 0;
- 	}
-@@ -386,7 +368,7 @@ test_errors(uint32_t region, uint64_t size)
- 	igt_assert(__gem_create_in_memory_regions(fd, &handle, &size, region) == 0);
- 	fill_bo(handle, size);
- 	gem_close(fd, handle);
--	prime_handle_to_fd_no_assert(handle, DRM_CLOEXEC, &dma_buf_fd);
-+	__prime_handle_to_fd(fd, handle, DRM_CLOEXEC, &dma_buf_fd);
- 	igt_assert(dma_buf_fd == -1 && errno == ENOENT);
- 	errno = 0;
+ #define NSECS_PER_SEC 1000000000ull
  
+-static uint64_t
+-gettime_ns(void)
+-{
+-	struct timespec current;
+-	clock_gettime(CLOCK_MONOTONIC, &current);
+-	return (uint64_t)current.tv_sec * NSECS_PER_SEC + current.tv_nsec;
+-}
+-
+ static void
+ sleep_nsec(uint64_t time_nsec)
+ {
 -- 
 2.21.0.rc0.32.g243a4c7e27
