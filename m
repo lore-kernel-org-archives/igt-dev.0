@@ -1,24 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-ot1-x32b.google.com (mail-ot1-x32b.google.com
- [IPv6:2607:f8b0:4864:20::32b])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 00AB610E0C8
- for <igt-dev@lists.freedesktop.org>; Mon, 12 Dec 2022 21:54:42 +0000 (UTC)
-Received: by mail-ot1-x32b.google.com with SMTP id
- x44-20020a05683040ac00b006707c74330eso6041182ott.10
- for <igt-dev@lists.freedesktop.org>; Mon, 12 Dec 2022 13:54:42 -0800 (PST)
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 140B610E2AC
+ for <igt-dev@lists.freedesktop.org>; Mon, 12 Dec 2022 23:13:02 +0000 (UTC)
+From: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Mon, 12 Dec 2022 15:12:35 -0800
+Message-Id: <20221212231254.2303-1-niranjana.vishwanathapura@intel.com>
 MIME-Version: 1.0
-References: <20221211195302.120794-1-robdclark@gmail.com>
- <Y5c3G5t7DhBvFwc6@kamilkon-desk1>
-In-Reply-To: <Y5c3G5t7DhBvFwc6@kamilkon-desk1>
-From: Rob Clark <robdclark@gmail.com>
-Date: Mon, 12 Dec 2022 13:54:39 -0800
-Message-ID: <CAF6AEGvYp1rdfrpyaQBz=Agi=z-Xtg4LGDM-YxsW5z9YHn5=BA@mail.gmail.com>
-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org,
- Rob Clark <robdclark@gmail.com>, Rob Clark <robdclark@chromium.org>
-Content-Type: text/plain; charset="UTF-8"
-Subject: Re: [igt-dev] [PATCH igt] tests/msm: Read the devcore back in
- recovery tests
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t v9 00/19] vm_bind: Add VM_BIND validation
+ support
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,116 +17,123 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: tvrtko.ursulin@intel.com, thomas.hellstrom@intel.com,
+ matthew.auld@intel.com, daniel.vetter@intel.com, petri.latvala@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Mon, Dec 12, 2022 at 6:15 AM Kamil Konieczny
-<kamil.konieczny@linux.intel.com> wrote:
->
-> Hi Rob,
->
-> before sending again please rebase on current igt (see logs from
-> gitlab).
+DRM_I915_GEM_VM_BIND/UNBIND ioctls allows UMD to bind/unbind GEM
+buffer objects (BOs) or sections of a BOs at specified GPU virtual
+addresses on a specified address space (VM). Multiple mappings can map
+to the same physical pages of an object (aliasing). These mappings (also
+referred to as persistent mappings) will be persistent across multiple
+GPU submissions (execbuf calls) issued by the UMD, without user having
+to provide a list of all required mappings during each submission (as
+required by older execbuf mode).
 
-sure.. but I was based on ToT as of the 7th, and it rebased cleanly..
-not sure if you had some concern than I'm overlooking
+The new execbuf3 ioctl (I915_GEM_EXECBUFFER3) will only work in vm_bind
+mode. The vm_bind mode only works with this new execbuf3 ioctl.
 
-> I have also one small nit below.
->
-> On 2022-12-11 at 11:53:02 -0800, Rob Clark wrote:
-> > From: Rob Clark <robdclark@chromium.org>
-> >
-> > This also adds coverage for codepaths related to reading back the
-> > devcore file from sysfs, to help catch issues like
-> > https://gitlab.freedesktop.org/drm/msm/-/issues/20
-> >
-> > Signed-off-by: Rob Clark <robdclark@chromium.org>
-> > ---
-> >  tests/msm/msm_recovery.c | 42 ++++++++++++++++++++++++++++++++++++++++
-> >  1 file changed, 42 insertions(+)
-> >
-> > diff --git a/tests/msm/msm_recovery.c b/tests/msm/msm_recovery.c
-> > index e01087b4..4c2f2846 100644
-> > --- a/tests/msm/msm_recovery.c
-> > +++ b/tests/msm/msm_recovery.c
-> > @@ -22,14 +22,54 @@
-> >   */
-> >
-> >  #include <fcntl.h>
-> > +#include <glob.h>
-> >
-> >  #include "igt.h"
-> >  #include "igt_msm.h"
-> > +#include "igt_io.h"
-> >
-> >  static struct msm_device *dev;
-> >  static struct msm_bo *scratch_bo;
-> >  static uint32_t *scratch;
-> >
-> > +/*
-> > + * Helper to read and clear devcore.  We want to read it completely to ensure
-> > + * we catch any kernel side regressions like:
-> > + * https://gitlab.freedesktop.org/drm/msm/-/issues/20
-> > + */
-> > +
-> > +static void
-> > +read_and_clear_devcore(void)
-> > +{
-> > +     glob_t glob_buf = {0};
-> > +     int ret, fd;
-> > +
-> > +     ret = glob("/sys/class/devcoredump/devcd*/data", GLOB_NOSORT, NULL, &glob_buf);
-> > +     if ((ret == GLOB_NOMATCH) || !glob_buf.gl_pathc)
-> > +             return;
-> > +
-> > +     fd = open(glob_buf.gl_pathv[0], O_RDWR);
-> > +
-> > +     if (fd >= 0) {
-> > +             char buf[0x1000];
-> > +
-> > +             /*
-> > +              * We want to read the entire file but we can throw away the
-> > +              * contents.. we just want to make sure that we exercise the
-> > +              * kernel side codepaths hit when reading the devcore from
-> > +              * sysfs
-> > +              */
-> > +             do {
-> > +                     ret = igt_readn(fd, buf, sizeof(buf));
-> > +             } while (ret > 0);
-> > +
-> > +             /* Clear the devcore: */
-> > +             igt_writen(fd, "1", 1);
->
-> Put here:
->                 fclose(fd);
->
+Add tests to validate the VM_BIND, VM_UNBIND and execbuf3 ioctls and
+various scenarios involving persistent mappings.
 
-oh, right, good catch
+TODOs:
+* More validation support.
+* Port some relevant gem_exec_* tests for execbuf3.
 
-BR,
--R
+NOTEs:
+* It is based on below VM_BIND design+uapi rfc.
+  Documentation/gpu/rfc/i915_vm_bind.rst
 
-> Regards,
-> Kamil
->
-> > +     }
-> > +
-> > +     globfree(&glob_buf);
-> > +}
-> > +
-> >  /*
-> >   * Helpers for cmdstream packet building:
-> >   */
-> > @@ -102,6 +142,8 @@ do_hang_test(struct msm_pipe *pipe)
-> >                       continue;
-> >               igt_assert_eq(scratch[1+i], 2+i);
-> >       }
-> > +
-> > +     read_and_clear_devcore();
-> >  }
-> >
-> >  /*
-> > --
-> > 2.38.1
-> >
+* The i915 VM_BIND support is posted as,
+  [PATCH v9 00/23] drm/i915/vm_bind: Add VM_BIND functionality
+
+v2: Address various review comments
+v3: Add gem_exec3_basic and gem_exec3_balancer tests,
+    add gem_lmem_swapping@vm_bind subtest and some fixes.
+v4: Add and use i915_vm_bind library functions,
+    add lmem test if lmem region is present instead of skipping,
+    remove helpers to create vm_private objects, instead use
+    gem_create_ext() function.
+v5: Use memory region's gtt_alignment, use non-recoverable faults,
+    fix review comments.
+v6: Rebased, add sanity tests for added reserved uapi fields,
+    add gem_shrink@vm_bind* subtests.
+v7: Pull in uapi changes and address review comments
+v8: Rebased, add capture test
+v9: Add exec3 support for igt_spin_factory, add userptr invalidation
+    test, move common syncobj and capture functions to libraries
+
+Signed-off-by: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
+
+Niranjana Vishwanathapura (19):
+  lib/i915: memory region gtt_alignment support
+  lib/i915: Move common syncobj functions to library
+  lib/vm_bind: import uapi definitions
+  lib/vm_bind: Add vm_bind/unbind and execbuf3 ioctls
+  lib/vm_bind: Add vm_bind mode support for VM
+  lib/vm_bind: Add vm_bind specific library functions
+  lib/vm_bind: Add __prime_handle_to_fd()
+  tests/i915/vm_bind: Add vm_bind sanity test
+  tests/i915/vm_bind: Add basic VM_BIND test support
+  tests/i915/vm_bind: Add userptr subtest
+  tests/i915/vm_bind: Add gem_exec3_basic test
+  tests/i915/vm_bind: Add gem_exec3_balancer test
+  tests/i915/vm_bind: Add gem_lmem_swapping@vm_bind sub test
+  tests/i915/vm_bind: Add gem_shrink@vm_bind* subtests
+  tests/i915/vm_bind: Add i915_capture library routines
+  tests/i915/vm_bind: Test capture of persistent mappings
+  lib/vm_bind: Add execbuf3 support to igt_spin_factory
+  tests/i915/vm_bind: Use execbuf3 spinner
+  tests/i915/vm_bind: Add userptr invalidation test
+
+ lib/i915/gem_context.c                |  24 ++
+ lib/i915/gem_context.h                |   3 +
+ lib/i915/gem_vm.c                     |  31 +-
+ lib/i915/gem_vm.h                     |   3 +-
+ lib/i915/i915_capture.c               |  96 +++++
+ lib/i915/i915_capture.h               |  14 +
+ lib/i915/i915_drm_local.h             | 304 ++++++++++++++
+ lib/i915/i915_vm_bind.c               |  62 +++
+ lib/i915/i915_vm_bind.h               |  16 +
+ lib/i915/intel_memory_region.c        |   6 +
+ lib/i915/intel_memory_region.h        |   1 +
+ lib/igt_dummyload.c                   | 245 ++++++++++-
+ lib/igt_dummyload.h                   |   8 +
+ lib/igt_syncobj.c                     |  21 +
+ lib/igt_syncobj.h                     |   9 +
+ lib/intel_chipset.h                   |   2 +
+ lib/ioctl_wrappers.c                  | 117 +++++-
+ lib/ioctl_wrappers.h                  |   7 +
+ lib/meson.build                       |   2 +
+ tests/i915/gem_exec3_balancer.c       | 449 ++++++++++++++++++++
+ tests/i915/gem_exec3_basic.c          | 132 ++++++
+ tests/i915/gem_exec_capture.c         |  88 +---
+ tests/i915/gem_exec_fence.c           |  21 -
+ tests/i915/gem_lmem_swapping.c        | 125 +++++-
+ tests/i915/gem_pwrite.c               |  16 +-
+ tests/i915/gem_shrink.c               |  63 ++-
+ tests/i915/gem_userptr_blits.c        |  71 ++++
+ tests/i915/i915_vm_bind_basic.c       | 583 ++++++++++++++++++++++++++
+ tests/i915/i915_vm_bind_capture.c     | 358 ++++++++++++++++
+ tests/i915/i915_vm_bind_sanity.c      | 335 +++++++++++++++
+ tests/intel-ci/blacklist.txt          |   2 +-
+ tests/intel-ci/fast-feedback.testlist |   3 +
+ tests/meson.build                     |  11 +
+ tests/prime_mmap.c                    |  26 +-
+ tests/syncobj_timeline.c              |   8 -
+ tests/syncobj_wait.c                  |   8 -
+ 36 files changed, 3086 insertions(+), 184 deletions(-)
+ create mode 100644 lib/i915/i915_capture.c
+ create mode 100644 lib/i915/i915_capture.h
+ create mode 100644 lib/i915/i915_vm_bind.c
+ create mode 100644 lib/i915/i915_vm_bind.h
+ create mode 100644 tests/i915/gem_exec3_balancer.c
+ create mode 100644 tests/i915/gem_exec3_basic.c
+ create mode 100644 tests/i915/i915_vm_bind_basic.c
+ create mode 100644 tests/i915/i915_vm_bind_capture.c
+ create mode 100644 tests/i915/i915_vm_bind_sanity.c
+
+-- 
+2.21.0.rc0.32.g243a4c7e27
