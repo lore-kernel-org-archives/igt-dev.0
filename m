@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 42AA610E2AF
- for <igt-dev@lists.freedesktop.org>; Mon, 12 Dec 2022 23:13:05 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0264510E2AA
+ for <igt-dev@lists.freedesktop.org>; Mon, 12 Dec 2022 23:13:02 +0000 (UTC)
 From: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Mon, 12 Dec 2022 15:12:53 -0800
-Message-Id: <20221212231254.2303-19-niranjana.vishwanathapura@intel.com>
+Date: Mon, 12 Dec 2022 15:12:36 -0800
+Message-Id: <20221212231254.2303-2-niranjana.vishwanathapura@intel.com>
 In-Reply-To: <20221212231254.2303-1-niranjana.vishwanathapura@intel.com>
 References: <20221212231254.2303-1-niranjana.vishwanathapura@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v9 18/19] tests/i915/vm_bind: Use execbuf3
- spinner
+Subject: [igt-dev] [PATCH i-g-t v9 01/19] lib/i915: memory region
+ gtt_alignment support
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,83 +25,58 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Update gem_exec3_balancer test to use execbuf3 spinner.
+Update library to include gtt_alignment field to support
+platforms with 64K device memory pages.
 
+v2: Do not pull in gtt_alignment uapi
+
+Reviewed-by: Matthew Auld <matthew.auld@intel.com>
 Signed-off-by: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
 ---
- tests/i915/gem_exec3_balancer.c | 21 +++++++++++----------
- 1 file changed, 11 insertions(+), 10 deletions(-)
+ lib/i915/intel_memory_region.c | 6 ++++++
+ lib/i915/intel_memory_region.h | 1 +
+ lib/intel_chipset.h            | 2 ++
+ 3 files changed, 9 insertions(+)
 
-diff --git a/tests/i915/gem_exec3_balancer.c b/tests/i915/gem_exec3_balancer.c
-index 68ef040c7..23122f009 100644
---- a/tests/i915/gem_exec3_balancer.c
-+++ b/tests/i915/gem_exec3_balancer.c
-@@ -171,11 +171,6 @@ static void logical_sort_siblings(int i915,
- 	free(engines);
- }
+diff --git a/lib/i915/intel_memory_region.c b/lib/i915/intel_memory_region.c
+index 84e1bceb3..964962ebb 100644
+--- a/lib/i915/intel_memory_region.c
++++ b/lib/i915/intel_memory_region.c
+@@ -948,6 +948,12 @@ struct gem_memory_region *__gem_get_memory_regions(int i915)
+ 		if (r->size == -1ull)
+ 			r->size = igt_get_avail_ram_mb() << 20;
  
--static bool fence_busy(int fence)
--{
--	return poll(&(struct pollfd){fence, POLLIN}, 1, 0) == 0;
--}
--
- /*
-  * Always reading from engine instance 0, with GuC submission the values are the
-  * same across all instances. Execlists they may differ but quite unlikely they
-@@ -215,10 +210,11 @@ static unsigned int get_timeslice(int i915,
-  */
- static void parallel_ordering(int i915, unsigned int flags)
- {
--	uint32_t vm_id;
-+	uint32_t vm_id, spin_vm_id;
- 	int class;
++		if (HAS_64K_PAGES(intel_get_drm_devid(i915)) &&
++		    r->ci.memory_class == I915_MEMORY_CLASS_DEVICE)
++			r->gtt_alignment = 16 * PAGE_SIZE;
++		else
++			r->gtt_alignment = PAGE_SIZE;
++
+ 		asprintf(&r->name, "%s%d",
+ 			 region_repr(&r->ci), r->ci.memory_instance);
  
- 	vm_id = gem_vm_create_in_vm_bind_mode(i915);
-+	spin_vm_id = gem_vm_create_in_vm_bind_mode(i915);
+diff --git a/lib/i915/intel_memory_region.h b/lib/i915/intel_memory_region.h
+index 425bda0ec..84abb95b1 100644
+--- a/lib/i915/intel_memory_region.h
++++ b/lib/i915/intel_memory_region.h
+@@ -174,6 +174,7 @@ struct gem_memory_region {
+ 	char *name;
  
- 	for (class = 0; class < 32; class++) {
- 		struct drm_i915_gem_timeline_fence exec_fence = { };
-@@ -291,17 +287,22 @@ static void parallel_ordering(int i915, unsigned int flags)
+ 	struct drm_i915_gem_memory_class_instance ci;
++	uint64_t gtt_alignment;
+ 	uint64_t size;
+ 	uint64_t cpu_size;
+ };
+diff --git a/lib/intel_chipset.h b/lib/intel_chipset.h
+index 9b39472ad..0d825d42c 100644
+--- a/lib/intel_chipset.h
++++ b/lib/intel_chipset.h
+@@ -227,4 +227,6 @@ void intel_check_pch(void);
  
- 		/* Block parallel submission */
- 		spin_ctx = ctx_create_engines(i915, siblings, count);
-+		param.ctx_id = spin_ctx->id;
-+		gem_context_set_param(i915, &param);
-+		gem_context_set_vm(i915, spin_ctx->id, spin_vm_id);
- 		ahnd = get_simple_ahnd(i915, spin_ctx->id);
-+		igt_require(ahnd);
- 		spin = __igt_spin_new(i915,
- 				      .ahnd = ahnd,
- 				      .ctx = spin_ctx,
--				      .engine = 0,
--				      .flags = IGT_SPIN_FENCE_OUT |
-+				      .vm_id = spin_vm_id,
-+				      .flags = IGT_SPIN_EXECBUF3 |
- 				      IGT_SPIN_NO_PREEMPTION);
+ #define HAS_FLATCCS(devid)	(intel_get_device_info(devid)->has_flatccs)
  
- 		/* Wait for spinners to start */
- 		usleep(5 * 10000);
--		igt_assert(fence_busy(spin->out_fence));
-+		while (spin->out_syncobj[i])
-+			igt_assert(syncobj_busy(i915, spin->out_syncobj[i++]));
- 
- 		/* Submit parallel execbuf */
- 		gem_execbuf3(i915, &execbuf);
-@@ -313,7 +314,6 @@ static void parallel_ordering(int i915, unsigned int flags)
- 		 * these are changed it is possible for the test to fail.
- 		 */
- 		usleep(get_timeslice(i915, siblings[0]) * 2);
--		igt_assert(fence_busy(spin->out_fence));
- 		igt_assert(syncobj_busy(i915, exec_syncobj));
- 		check_bo(i915, obj[0], 0);
- 
-@@ -343,6 +343,7 @@ static void parallel_ordering(int i915, unsigned int flags)
- 		put_ahnd(ahnd);
- 	}
- 
-+	gem_vm_destroy(i915, spin_vm_id);
- 	gem_vm_destroy(i915, vm_id);
- }
- 
++#define HAS_64K_PAGES(devid)	(IS_DG2(devid))
++
+ #endif /* _INTEL_CHIPSET_H */
 -- 
 2.21.0.rc0.32.g243a4c7e27
