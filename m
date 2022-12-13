@@ -1,22 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A2D3A10E1D7
- for <igt-dev@lists.freedesktop.org>; Tue, 13 Dec 2022 12:50:10 +0000 (UTC)
-Message-ID: <d9f4102f-2a09-0fa2-9d33-97a729f2d9d1@intel.com>
-Date: Tue, 13 Dec 2022 18:19:57 +0530
-Content-Language: en-US
-To: Ashutosh Dixit <ashutosh.dixit@intel.com>,
- <igt-dev@lists.freedesktop.org>, Anshuman Gupta <anshuman.gupta@intel.com>,
- Badal Nilawar <badal.nilawar@intel.com>
-References: <20221212061233.2220742-1-ashutosh.dixit@intel.com>
- <20221212061233.2220742-3-ashutosh.dixit@intel.com>
-From: "Tauro, Riana" <riana.tauro@intel.com>
-In-Reply-To: <20221212061233.2220742-3-ashutosh.dixit@intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BA10B10E1E8
+ for <igt-dev@lists.freedesktop.org>; Tue, 13 Dec 2022 13:15:01 +0000 (UTC)
+Message-ID: <4bf51ced-dd46-6e95-695d-384eff1375be@intel.com>
+Date: Tue, 13 Dec 2022 13:14:50 +0000
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t 2/3] i915/i915_hwmon: General
- verification of hwmon attributes
+Content-Language: en-GB
+To: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>,
+ igt-dev@lists.freedesktop.org
+References: <20221212231254.2303-1-niranjana.vishwanathapura@intel.com>
+ <20221212231254.2303-16-niranjana.vishwanathapura@intel.com>
+From: Matthew Auld <matthew.auld@intel.com>
+In-Reply-To: <20221212231254.2303-16-niranjana.vishwanathapura@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Subject: Re: [igt-dev] [PATCH i-g-t v9 15/19] tests/i915/vm_bind: Add
+ i915_capture library routines
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,126 +23,272 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: tvrtko.ursulin@intel.com, thomas.hellstrom@intel.com,
+ daniel.vetter@intel.com, petri.latvala@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-
-Hi Ashutosh
-
-On 12/12/2022 11:42 AM, Ashutosh Dixit wrote:
-> Ensure we can read all hwmon attributes. For writable attributes, also
-> ensure the read value approximately matches the written value, taking the
-> clamping of writes into account.
+On 12/12/2022 23:12, Niranjana Vishwanathapura wrote:
+> In preparation of i915_vm_bind_capture test, move some common
+> capture decode routines to library for code sharing.
 > 
-> Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
+> Signed-off-by: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
 > ---
->   tests/i915/i915_hwmon.c | 82 +++++++++++++++++++++++++++++++++++++++++
->   tests/meson.build       |  1 +
->   2 files changed, 83 insertions(+)
->   create mode 100644 tests/i915/i915_hwmon.c
+>   lib/i915/i915_capture.c       | 96 +++++++++++++++++++++++++++++++++++
+>   lib/i915/i915_capture.h       | 14 +++++
+>   lib/meson.build               |  1 +
+>   tests/i915/gem_exec_capture.c | 88 +-------------------------------
+>   4 files changed, 112 insertions(+), 87 deletions(-)
+>   create mode 100644 lib/i915/i915_capture.c
+>   create mode 100644 lib/i915/i915_capture.h
 > 
-> diff --git a/tests/i915/i915_hwmon.c b/tests/i915/i915_hwmon.c
+> diff --git a/lib/i915/i915_capture.c b/lib/i915/i915_capture.c
 > new file mode 100644
-> index 00000000000..a0b2c48a96d
+> index 000000000..7430c9256
 > --- /dev/null
-> +++ b/tests/i915/i915_hwmon.c
-> @@ -0,0 +1,82 @@
+> +++ b/lib/i915/i915_capture.c
+> @@ -0,0 +1,96 @@
 > +// SPDX-License-Identifier: MIT
 > +/*
-> + * Copyright © 2021 Intel Corporation
+> + * Copyright © 2022 Intel Corporation
 > + */
 > +
-Year 2022
+> +#include <stdlib.h>
+> +#include <string.h>
+> +#include <zlib.h>
+> +
+> +#include "i915_capture.h"
+> +
+> +static unsigned long zlib_inflate(uint32_t **ptr, unsigned long len)
+> +{
+> +	struct z_stream_s zstream;
+> +	void *out;
+> +
+> +	memset(&zstream, 0, sizeof(zstream));
+> +
+> +	zstream.next_in = (unsigned char *)*ptr;
+> +	zstream.avail_in = 4*len;
+> +
+> +	if (inflateInit(&zstream) != Z_OK)
+> +		return 0;
+> +
+> +	out = malloc(128*4096); /* approximate obj size */
+> +	zstream.next_out = out;
+> +	zstream.avail_out = 128*4096;
+> +
+> +	do {
+> +		switch (inflate(&zstream, Z_SYNC_FLUSH)) {
+> +		case Z_STREAM_END:
+> +			goto end;
+> +		case Z_OK:
+> +			break;
+> +		default:
+> +			inflateEnd(&zstream);
+> +			return 0;
+> +		}
+> +
+> +		if (zstream.avail_out)
+> +			break;
+> +
+> +		out = realloc(out, 2*zstream.total_out);
+> +		if (out == NULL) {
+> +			inflateEnd(&zstream);
+> +			return 0;
+> +		}
+> +
+> +		zstream.next_out = (unsigned char *)out + zstream.total_out;
+> +		zstream.avail_out = zstream.total_out;
+> +	} while (1);
+> +end:
+> +	inflateEnd(&zstream);
+> +	free(*ptr);
+> +	*ptr = out;
+> +	return zstream.total_out / 4;
+> +}
+> +
+> +unsigned long
+> +ascii85_decode(char *in, uint32_t **out, bool inflate, char **end)
 
-Thanks
-Riana
-> +#include <dirent.h>
-> +#include <sys/stat.h>
-> +#include "igt.h"
-> +#include "igt_hwmon.h"
-> +#include "igt_sysfs.h"
-> +
-> +IGT_TEST_DESCRIPTION("Tests for i915 hwmon");
-> +
-> +static void hwmon_read(int hwm)
+Needs some doc. There are some examples in lib.
+
+Otherwise,
+Reviewed-by: Matthew Auld <matthew.auld@intel.com>
+
 > +{
-> +	struct dirent *de;
-> +	char val[128];
-> +	DIR *dir;
+> +	unsigned long len = 0, size = 1024;
 > +
-> +	dir = fdopendir(dup(hwm));
-> +	igt_assert(dir);
-> +	rewinddir(dir);
+> +	*out = realloc(*out, sizeof(uint32_t)*size);
+> +	if (*out == NULL)
+> +		return 0;
 > +
-> +	while ((de = readdir(dir))) {
-> +		if (de->d_type != DT_REG || !strcmp(de->d_name, "uevent"))
-> +			continue;
+> +	while (*in >= '!' && *in <= 'z') {
+> +		uint32_t v = 0;
 > +
-> +		igt_assert(igt_sysfs_scanf(hwm, de->d_name, "%127s", val) == 1);
-> +		igt_debug("'%s': %s\n", de->d_name, val);
+> +		if (len == size) {
+> +			size *= 2;
+> +			*out = realloc(*out, sizeof(uint32_t)*size);
+> +			if (*out == NULL)
+> +				return 0;
+> +		}
 > +
+> +		if (*in == 'z') {
+> +			in++;
+> +		} else {
+> +			v += in[0] - 33; v *= 85;
+> +			v += in[1] - 33; v *= 85;
+> +			v += in[2] - 33; v *= 85;
+> +			v += in[3] - 33; v *= 85;
+> +			v += in[4] - 33;
+> +			in += 5;
+> +		}
+> +		(*out)[len++] = v;
 > +	}
-> +	closedir(dir);
+> +	*end = in;
+> +
+> +	if (!inflate)
+> +		return len;
+> +
+> +	return zlib_inflate(out, len);
 > +}
+> diff --git a/lib/i915/i915_capture.h b/lib/i915/i915_capture.h
+> new file mode 100644
+> index 000000000..26481b8e4
+> --- /dev/null
+> +++ b/lib/i915/i915_capture.h
+> @@ -0,0 +1,14 @@
+> +/* SPDX-License-Identifier: MIT */
+> +/*
+> + * Copyright © 2022 Intel Corporation
+> + */
+> +#ifndef _I915_CAPTURE_H_
+> +#define _I915_CAPTURE_H_
 > +
-> +static void hwmon_write(int hwm)
-> +{
-> +	struct dirent *de;
-> +	struct stat st;
-> +	DIR *dir;
+> +#include <stdbool.h>
+> +#include <stdint.h>
 > +
-> +	dir = fdopendir(dup(hwm));
-> +	igt_assert(dir);
-> +	rewinddir(dir);
+> +unsigned long
+> +ascii85_decode(char *in, uint32_t **out, bool inflate, char **end);
 > +
-> +	while ((de = readdir(dir))) {
-> +		if (de->d_type != DT_REG || !strcmp(de->d_name, "uevent"))
-> +			continue;
-> +
-> +		igt_assert(!fstatat(hwm, de->d_name, &st, 0));
-> +		if (!(st.st_mode & 0222))
-> +			continue;
-> +
-> +		igt_sysfs_clamped_attr_verify(hwm, de->d_name);
-> +	}
-> +	closedir(dir);
-> +}
-> +
-> +igt_main
-> +{
-> +	int fd, hwm;
-> +
-> +	igt_fixture {
-> +		fd = drm_open_driver_master(DRIVER_INTEL);
-> +		hwm = igt_hwmon_open(fd);
-> +		igt_require(hwm >= 0);
-> +	}
-> +
-> +	igt_describe("Verify we can read all hwmon attributes");
-> +	igt_subtest("hwmon-read") {
-> +		hwmon_read(hwm);
-> +	}
-> +
-> +	igt_describe("Verify writable hwmon attributes");
-> +	igt_subtest("hwmon-write") {
-> +		hwmon_write(hwm);
-> +	}
-> +
-> +	igt_fixture {
-> +		close(hwm);
-> +		close(fd);
-> +	}
-> +}
-> diff --git a/tests/meson.build b/tests/meson.build
-> index 619c18b2516..a593055c23a 100644
-> --- a/tests/meson.build
-> +++ b/tests/meson.build
-> @@ -211,6 +211,7 @@ i915_progs = [
->   	'i915_fb_tiling',
->   	'i915_getparams_basic',
->   	'i915_hangman',
-> +	'i915_hwmon',
->   	'i915_module_load',
->   	'i915_pciid',
->   	'i915_pipe_stress',
+> +#endif /* _I915_CAPTURE_ */
+> diff --git a/lib/meson.build b/lib/meson.build
+> index a01482c38..9d353da16 100644
+> --- a/lib/meson.build
+> +++ b/lib/meson.build
+> @@ -14,6 +14,7 @@ lib_sources = [
+>   	'i915/intel_memory_region.c',
+>   	'i915/intel_mocs.c',
+>   	'i915/i915_blt.c',
+> +	'i915/i915_capture.c',
+>   	'i915/i915_crc.c',
+>   	'i915/i915_vm_bind.c',
+>   	'igt_collection.c',
+> diff --git a/tests/i915/gem_exec_capture.c b/tests/i915/gem_exec_capture.c
+> index 2db58266f..f8f8d1ece 100644
+> --- a/tests/i915/gem_exec_capture.c
+> +++ b/tests/i915/gem_exec_capture.c
+> @@ -22,10 +22,10 @@
+>    */
+>   
+>   #include <sys/poll.h>
+> -#include <zlib.h>
+>   #include <sched.h>
+>   
+>   #include "i915/gem.h"
+> +#include "i915/i915_capture.h"
+>   #include "i915/gem_create.h"
+>   #include "igt.h"
+>   #include "igt_device.h"
+> @@ -42,92 +42,6 @@ struct offset {
+>   	bool found;
+>   };
+>   
+> -static unsigned long zlib_inflate(uint32_t **ptr, unsigned long len)
+> -{
+> -	struct z_stream_s zstream;
+> -	void *out;
+> -
+> -	memset(&zstream, 0, sizeof(zstream));
+> -
+> -	zstream.next_in = (unsigned char *)*ptr;
+> -	zstream.avail_in = 4*len;
+> -
+> -	if (inflateInit(&zstream) != Z_OK)
+> -		return 0;
+> -
+> -	out = malloc(128*4096); /* approximate obj size */
+> -	zstream.next_out = out;
+> -	zstream.avail_out = 128*4096;
+> -
+> -	do {
+> -		switch (inflate(&zstream, Z_SYNC_FLUSH)) {
+> -		case Z_STREAM_END:
+> -			goto end;
+> -		case Z_OK:
+> -			break;
+> -		default:
+> -			inflateEnd(&zstream);
+> -			return 0;
+> -		}
+> -
+> -		if (zstream.avail_out)
+> -			break;
+> -
+> -		out = realloc(out, 2*zstream.total_out);
+> -		if (out == NULL) {
+> -			inflateEnd(&zstream);
+> -			return 0;
+> -		}
+> -
+> -		zstream.next_out = (unsigned char *)out + zstream.total_out;
+> -		zstream.avail_out = zstream.total_out;
+> -	} while (1);
+> -end:
+> -	inflateEnd(&zstream);
+> -	free(*ptr);
+> -	*ptr = out;
+> -	return zstream.total_out / 4;
+> -}
+> -
+> -static unsigned long
+> -ascii85_decode(char *in, uint32_t **out, bool inflate, char **end)
+> -{
+> -	unsigned long len = 0, size = 1024;
+> -
+> -	*out = realloc(*out, sizeof(uint32_t)*size);
+> -	if (*out == NULL)
+> -		return 0;
+> -
+> -	while (*in >= '!' && *in <= 'z') {
+> -		uint32_t v = 0;
+> -
+> -		if (len == size) {
+> -			size *= 2;
+> -			*out = realloc(*out, sizeof(uint32_t)*size);
+> -			if (*out == NULL)
+> -				return 0;
+> -		}
+> -
+> -		if (*in == 'z') {
+> -			in++;
+> -		} else {
+> -			v += in[0] - 33; v *= 85;
+> -			v += in[1] - 33; v *= 85;
+> -			v += in[2] - 33; v *= 85;
+> -			v += in[3] - 33; v *= 85;
+> -			v += in[4] - 33;
+> -			in += 5;
+> -		}
+> -		(*out)[len++] = v;
+> -	}
+> -	*end = in;
+> -
+> -	if (!inflate)
+> -		return len;
+> -
+> -	return zlib_inflate(out, len);
+> -}
+> -
+>   static int check_error_state(int dir, struct offset *obj_offsets, int obj_count,
+>   			     uint64_t obj_size, bool incremental)
+>   {
