@@ -1,17 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id EC0DF10E346
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2C27A10E1CE
  for <igt-dev@lists.freedesktop.org>; Tue, 13 Dec 2022 18:37:34 +0000 (UTC)
 From: Ashutosh Dixit <ashutosh.dixit@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 13 Dec 2022 10:37:28 -0800
-Message-Id: <20221213183728.2290910-5-ashutosh.dixit@intel.com>
-In-Reply-To: <20221213183728.2290910-1-ashutosh.dixit@intel.com>
-References: <20221213183728.2290910-1-ashutosh.dixit@intel.com>
+Date: Tue, 13 Dec 2022 10:37:24 -0800
+Message-Id: <20221213183728.2290910-1-ashutosh.dixit@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 4/4] HAX: Add i915_hwmon* to
- fast-feedback.testlist
+Subject: [igt-dev] [PATCH i-g-t 0/4] i915/i915_hwmon: General verification
+ of hwmon attributes
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,25 +22,27 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-For CI.
+Ensure we can read all hwmon attributes. For writable attributes, also
+ensure the read value approximately matches the written value, taking the
+clamping of writes into account.
 
-Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
----
- tests/intel-ci/fast-feedback.testlist | 2 ++
- 1 file changed, 2 insertions(+)
+v2: Added new patch "lib/igt_sysfs: Make it easier to extend verification
+    of clamped sysfs attr". No changes to previous patches.
 
-diff --git a/tests/intel-ci/fast-feedback.testlist b/tests/intel-ci/fast-feedback.testlist
-index f57f8ff3be1..7983d3a2236 100644
---- a/tests/intel-ci/fast-feedback.testlist
-+++ b/tests/intel-ci/fast-feedback.testlist
-@@ -53,6 +53,8 @@ igt@gem_wait@wait@all
- igt@i915_getparams_basic@basic-eu-total
- igt@i915_getparams_basic@basic-subslice-total
- igt@i915_hangman@error-state-basic
-+igt@i915_hwmon@hwmon-read
-+igt@i915_hwmon@hwmon-write
- igt@i915_pciid
- igt@kms_addfb_basic@addfb25-bad-modifier
- igt@kms_addfb_basic@addfb25-framebuffer-vs-set-tiling
+Ashutosh Dixit (4):
+  lib/igt_sysfs: Generic verification of clamped sysfs attributes
+  i915/i915_hwmon: General verification of hwmon attributes
+  lib/igt_sysfs: Make it easier to extend verification of clamped sysfs
+    attr
+  HAX: Add i915_hwmon* to fast-feedback.testlist
+
+ lib/igt_sysfs.c                       | 176 ++++++++++++++++++++++++++
+ lib/igt_sysfs.h                       |  23 ++++
+ tests/i915/i915_hwmon.c               |  88 +++++++++++++
+ tests/intel-ci/fast-feedback.testlist |   2 +
+ tests/meson.build                     |   1 +
+ 5 files changed, 290 insertions(+)
+ create mode 100644 tests/i915/i915_hwmon.c
+
 -- 
 2.38.0
