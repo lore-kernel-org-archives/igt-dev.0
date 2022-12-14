@@ -1,16 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============4509953786939106727=="
-MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Ashutosh Dixit" <ashutosh.dixit@intel.com>
-Date: Wed, 14 Dec 2022 04:30:48 -0000
-Message-ID: <167099224807.8286.8253126010672485093@emeril.freedesktop.org>
+Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A5A7610E067
+ for <igt-dev@lists.freedesktop.org>; Wed, 14 Dec 2022 06:52:01 +0000 (UTC)
+Message-ID: <f33e3666-1f19-b4ab-16d5-b161e98886c8@intel.com>
+Date: Wed, 14 Dec 2022 12:21:39 +0530
+To: Ashutosh Dixit <ashutosh.dixit@intel.com>,
+ <igt-dev@lists.freedesktop.org>, Badal Nilawar <badal.nilawar@intel.com>
 References: <20221214030951.2424386-1-ashutosh.dixit@intel.com>
-In-Reply-To: <20221214030951.2424386-1-ashutosh.dixit@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgaTkxNS9p?=
- =?utf-8?q?915=5Fhwmon=3A_General_verification_of_hwmon_attributes_=28rev4?=
- =?utf-8?q?=29?=
+ <20221214030951.2424386-2-ashutosh.dixit@intel.com>
+Content-Language: en-US
+From: "Tauro, Riana" <riana.tauro@intel.com>
+In-Reply-To: <20221214030951.2424386-2-ashutosh.dixit@intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+Subject: Re: [igt-dev] [PATCH i-g-t 1/3] lib/igt_sysfs: Generic verification
+ of writable sysfs attributes
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,416 +23,197 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============4509953786939106727==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Hi Ashutosh
 
-== Series Details ==
+On 12/14/2022 8:39 AM, Ashutosh Dixit wrote:
+> Attempt to verify writable sysfs attributes in a generic way, without going
+> into the specifics of any attribute. The attribute is first written to and
+> then read back and it is verified that the read value matches the written
+> value to a tolerance. However, when we try to do this we run into the issue
+> that a sysfs attribute might have a behavior where the read value is
+> different from the written value for any reason. For example, attributes
+> such as power, voltage, frequency and time typically have a linear region
+> outside which they are clamped (the values saturate). Therefore for such
+> attributes read values match the written value only in the linear region
+> and when writing we don't know if we are writing to the linear or to the
+> clamped region.
+> 
+> Therefore the verification implemented here takes the approach of sweeping
+> across the range of possible values of the attribute (this is done using
+> 'doubling' rather than linearly) and seeing where there are matches. There
+> should be at least one match for the verification to have succeeded.
+> 
+> Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
+> ---
+>   lib/igt_sysfs.c | 119 ++++++++++++++++++++++++++++++++++++++++++++++++
+>   lib/igt_sysfs.h |  21 +++++++++
+>   2 files changed, 140 insertions(+)
+> 
+> diff --git a/lib/igt_sysfs.c b/lib/igt_sysfs.c
+> index a913be4c8f2..c6cccf6fa1e 100644
+> --- a/lib/igt_sysfs.c
+> +++ b/lib/igt_sysfs.c
+> @@ -784,3 +784,122 @@ void fbcon_blink_enable(bool enable)
+>   	write(fd, buffer, r + 1);
+>   	close(fd);
+>   }
+> +
+> +struct rw_attr_internal {
+> +	/* we need an uint64_t array of max 64 points */
+> +	uint64_t points[64];
+> +	int num_points;
+> +};
+> +
+> +static bool rw_attr_equal_within_epsilon(uint64_t x, uint64_t ref, double tol)
+> +{
+> +	return (x <= (1.0 + tol) * ref) && (x >= (1.0 - tol) * ref);
+> +}
+> +
+> +/* Sweep the range of values for an attribute to identify matching reads/writes */
+> +static int rw_attr_sweep(igt_sysfs_rw_attr_t *rw)
+> +{
+> +	struct rw_attr_internal *pts = rw->rsvd;
+> +	uint64_t get, set = rw->start;
+> +	bool ret;
+> +
+> +	igt_debug("'%s': sweeping range of values\n", rw->attr);
+> +	while (1) {
+Can this be replaced with while(set < UINT64_MAX / 2)?
+> +		if (set >= UINT64_MAX / 2) {
+> +			igt_debug("'%s': done sweeping\n", rw->attr);
+> +			break;
+> +		}
+If ret is 0 and num_of_points is > 0 does the loop have to continue?
+Can we break since we have reached the clamped max?
 
-Series: i915/i915_hwmon: General verification of hwmon attributes (rev4)
-URL   : https://patchwork.freedesktop.org/series/111833/
-State : success
+Thanks
+Riana
 
-== Summary ==
-
-CI Bug Log - changes from CI_DRM_12502 -> IGTPW_8227
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8227/index.html
-
-Participating hosts (39 -> 18)
-------------------------------
-
-  Missing    (21): fi-kbl-soraka fi-rkl-11600 bat-dg1-6 bat-dg1-5 bat-adlp-6 bat-rpls-1 fi-skl-6600u fi-bsw-n3050 bat-dg2-8 bat-adlm-1 bat-dg2-9 bat-adln-1 bat-jsl-3 bat-rplp-1 bat-dg2-11 fi-bsw-nick bat-dg1-7 bat-kbl-2 bat-adlp-9 bat-jsl-1 bat-adlp-4 
-
-Possible new issues
--------------------
-
-  Here are the unknown changes that may have been introduced in IGTPW_8227:
-
-### IGT changes ###
-
-#### Possible regressions ####
-
-  * {igt@i915_hwmon@hwmon-read} (NEW):
-    - fi-adl-ddr5:        NOTRUN -> [SKIP][1] +1 similar issue
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8227/fi-adl-ddr5/igt@i915_hwmon@hwmon-read.html
-    - {fi-ehl-2}:         NOTRUN -> [SKIP][2] +1 similar issue
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8227/fi-ehl-2/igt@i915_hwmon@hwmon-read.html
-
-  * {igt@i915_hwmon@hwmon-write} (NEW):
-    - {fi-jsl-1}:         NOTRUN -> [SKIP][3] +1 similar issue
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8227/fi-jsl-1/igt@i915_hwmon@hwmon-write.html
-    - fi-icl-u2:          NOTRUN -> [SKIP][4] +1 similar issue
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8227/fi-icl-u2/igt@i915_hwmon@hwmon-write.html
-    - fi-rkl-guc:         NOTRUN -> [SKIP][5] +1 similar issue
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8227/fi-rkl-guc/igt@i915_hwmon@hwmon-write.html
-
-  
-New tests
----------
-
-  New tests have been introduced between CI_DRM_12502 and IGTPW_8227:
-
-### New IGT tests (2) ###
-
-  * igt@i915_hwmon@hwmon-read:
-    - Statuses : 18 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@i915_hwmon@hwmon-write:
-    - Statuses : 18 skip(s)
-    - Exec time: [0.0] s
-
-  
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_8227 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@core_hotunplug@unbind-rebind:
-    - fi-icl-u2:          [PASS][6] -> [DMESG-WARN][7] ([i915#1982])
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12502/fi-icl-u2/igt@core_hotunplug@unbind-rebind.html
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8227/fi-icl-u2/igt@core_hotunplug@unbind-rebind.html
-
-  * {igt@i915_hwmon@hwmon-read} (NEW):
-    - fi-elk-e7500:       NOTRUN -> [SKIP][8] ([fdo#109271]) +1 similar issue
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8227/fi-elk-e7500/igt@i915_hwmon@hwmon-read.html
-    - fi-bsw-kefka:       NOTRUN -> [SKIP][9] ([fdo#109271]) +1 similar issue
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8227/fi-bsw-kefka/igt@i915_hwmon@hwmon-read.html
-    - fi-cfl-guc:         NOTRUN -> [SKIP][10] ([fdo#109271]) +1 similar issue
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8227/fi-cfl-guc/igt@i915_hwmon@hwmon-read.html
-    - fi-hsw-4770:        NOTRUN -> [SKIP][11] ([fdo#109271]) +1 similar issue
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8227/fi-hsw-4770/igt@i915_hwmon@hwmon-read.html
-    - fi-ivb-3770:        NOTRUN -> [SKIP][12] ([fdo#109271]) +1 similar issue
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8227/fi-ivb-3770/igt@i915_hwmon@hwmon-read.html
-
-  * {igt@i915_hwmon@hwmon-write} (NEW):
-    - fi-snb-2600:        NOTRUN -> [SKIP][13] ([fdo#109271]) +1 similar issue
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8227/fi-snb-2600/igt@i915_hwmon@hwmon-write.html
-    - fi-bdw-gvtdvm:      NOTRUN -> [SKIP][14] ([fdo#109271]) +1 similar issue
-   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8227/fi-bdw-gvtdvm/igt@i915_hwmon@hwmon-write.html
-    - fi-pnv-d510:        NOTRUN -> [SKIP][15] ([fdo#109271]) +1 similar issue
-   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8227/fi-pnv-d510/igt@i915_hwmon@hwmon-write.html
-    - fi-glk-j4005:       NOTRUN -> [SKIP][16] ([fdo#109271]) +1 similar issue
-   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8227/fi-glk-j4005/igt@i915_hwmon@hwmon-write.html
-    - fi-skl-guc:         NOTRUN -> [SKIP][17] ([fdo#109271]) +1 similar issue
-   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8227/fi-skl-guc/igt@i915_hwmon@hwmon-write.html
-    - fi-skl-6700k2:      NOTRUN -> [SKIP][18] ([fdo#109271]) +1 similar issue
-   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8227/fi-skl-6700k2/igt@i915_hwmon@hwmon-write.html
-    - fi-kbl-7567u:       NOTRUN -> [SKIP][19] ([fdo#109271]) +1 similar issue
-   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8227/fi-kbl-7567u/igt@i915_hwmon@hwmon-write.html
-    - fi-kbl-8809g:       NOTRUN -> [SKIP][20] ([fdo#109271]) +1 similar issue
-   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8227/fi-kbl-8809g/igt@i915_hwmon@hwmon-write.html
-
-  * igt@kms_chamelium@common-hpd-after-suspend:
-    - fi-hsw-4770:        NOTRUN -> [SKIP][21] ([fdo#109271] / [fdo#111827])
-   [21]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8227/fi-hsw-4770/igt@kms_chamelium@common-hpd-after-suspend.html
-    - fi-rkl-guc:         NOTRUN -> [SKIP][22] ([fdo#111827])
-   [22]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8227/fi-rkl-guc/igt@kms_chamelium@common-hpd-after-suspend.html
-
-  
-#### Possible fixes ####
-
-  * igt@i915_selftest@live@gt_lrc:
-    - fi-rkl-guc:         [INCOMPLETE][23] ([i915#4983]) -> [PASS][24]
-   [23]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12502/fi-rkl-guc/igt@i915_selftest@live@gt_lrc.html
-   [24]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8227/fi-rkl-guc/igt@i915_selftest@live@gt_lrc.html
-
-  * igt@i915_selftest@live@hangcheck:
-    - fi-hsw-4770:        [INCOMPLETE][25] ([i915#4785]) -> [PASS][26]
-   [25]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12502/fi-hsw-4770/igt@i915_selftest@live@hangcheck.html
-   [26]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8227/fi-hsw-4770/igt@i915_selftest@live@hangcheck.html
-
-  * igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions:
-    - fi-bsw-kefka:       [FAIL][27] ([i915#6298]) -> [PASS][28]
-   [27]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12502/fi-bsw-kefka/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions.html
-   [28]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8227/fi-bsw-kefka/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
-  [fdo#111827]: https://bugs.freedesktop.org/show_bug.cgi?id=111827
-  [i915#1982]: https://gitlab.freedesktop.org/drm/intel/issues/1982
-  [i915#4785]: https://gitlab.freedesktop.org/drm/intel/issues/4785
-  [i915#4983]: https://gitlab.freedesktop.org/drm/intel/issues/4983
-  [i915#6298]: https://gitlab.freedesktop.org/drm/intel/issues/6298
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_7092 -> IGTPW_8227
-
-  CI-20190529: 20190529
-  CI_DRM_12502: cc44a1e87ea6b788868878295119398966f98a81 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_8227: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8227/index.html
-  IGT_7092: 59e3bf83f6bae0918276f880f969a10d279c657a @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-
-Testlist changes
-----------------
-
-+igt@i915_hwmon@hwmon-read
-+igt@i915_hwmon@hwmon-write
-+igt@kms_bw@linear-tiling-1-displays-1920x1080p
-+igt@kms_bw@linear-tiling-1-displays-2560x1440p
-+igt@kms_bw@linear-tiling-1-displays-3840x2160p
-+igt@kms_bw@linear-tiling-2-displays-1920x1080p
-+igt@kms_bw@linear-tiling-2-displays-2560x1440p
-+igt@kms_bw@linear-tiling-2-displays-3840x2160p
-+igt@kms_bw@linear-tiling-3-displays-1920x1080p
-+igt@kms_bw@linear-tiling-3-displays-2560x1440p
-+igt@kms_bw@linear-tiling-3-displays-3840x2160p
-+igt@kms_bw@linear-tiling-4-displays-1920x1080p
-+igt@kms_bw@linear-tiling-4-displays-2560x1440p
-+igt@kms_bw@linear-tiling-4-displays-3840x2160p
-+igt@kms_bw@linear-tiling-5-displays-1920x1080p
-+igt@kms_bw@linear-tiling-5-displays-2560x1440p
-+igt@kms_bw@linear-tiling-5-displays-3840x2160p
-+igt@kms_bw@linear-tiling-6-displays-1920x1080p
-+igt@kms_bw@linear-tiling-6-displays-2560x1440p
-+igt@kms_bw@linear-tiling-6-displays-3840x2160p
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8227/index.html
-
---===============4509953786939106727==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>i915/i915_hwmon: General verification of hwmon attributes (rev4)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/111833/">https://patchwork.freedesktop.org/series/111833/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8227/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8227/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from CI_DRM_12502 -&gt; IGTPW_8227</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8227/index.html</p>
-<h2>Participating hosts (39 -&gt; 18)</h2>
-<p>Missing    (21): fi-kbl-soraka fi-rkl-11600 bat-dg1-6 bat-dg1-5 bat-adlp-6 bat-rpls-1 fi-skl-6600u fi-bsw-n3050 bat-dg2-8 bat-adlm-1 bat-dg2-9 bat-adln-1 bat-jsl-3 bat-rplp-1 bat-dg2-11 fi-bsw-nick bat-dg1-7 bat-kbl-2 bat-adlp-9 bat-jsl-1 bat-adlp-4 </p>
-<h2>Possible new issues</h2>
-<p>Here are the unknown changes that may have been introduced in IGTPW_8227:</p>
-<h3>IGT changes</h3>
-<h4>Possible regressions</h4>
-<ul>
-<li>
-<p>{igt@i915_hwmon@hwmon-read} (NEW):</p>
-<ul>
-<li>
-<p>fi-adl-ddr5:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8227/fi-adl-ddr5/igt@i915_hwmon@hwmon-read.html">SKIP</a> +1 similar issue</p>
-</li>
-<li>
-<p>{fi-ehl-2}:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8227/fi-ehl-2/igt@i915_hwmon@hwmon-read.html">SKIP</a> +1 similar issue</p>
-</li>
-</ul>
-</li>
-<li>
-<p>{igt@i915_hwmon@hwmon-write} (NEW):</p>
-<ul>
-<li>
-<p>{fi-jsl-1}:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8227/fi-jsl-1/igt@i915_hwmon@hwmon-write.html">SKIP</a> +1 similar issue</p>
-</li>
-<li>
-<p>fi-icl-u2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8227/fi-icl-u2/igt@i915_hwmon@hwmon-write.html">SKIP</a> +1 similar issue</p>
-</li>
-<li>
-<p>fi-rkl-guc:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8227/fi-rkl-guc/igt@i915_hwmon@hwmon-write.html">SKIP</a> +1 similar issue</p>
-</li>
-</ul>
-</li>
-</ul>
-<h2>New tests</h2>
-<p>New tests have been introduced between CI_DRM_12502 and IGTPW_8227:</p>
-<h3>New IGT tests (2)</h3>
-<ul>
-<li>
-<p>igt@i915_hwmon@hwmon-read:</p>
-<ul>
-<li>Statuses : 18 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_hwmon@hwmon-write:</p>
-<ul>
-<li>Statuses : 18 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-</ul>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_8227 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@core_hotunplug@unbind-rebind:</p>
-<ul>
-<li>fi-icl-u2:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12502/fi-icl-u2/igt@core_hotunplug@unbind-rebind.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8227/fi-icl-u2/igt@core_hotunplug@unbind-rebind.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1982">i915#1982</a>)</li>
-</ul>
-</li>
-<li>
-<p>{igt@i915_hwmon@hwmon-read} (NEW):</p>
-<ul>
-<li>
-<p>fi-elk-e7500:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8227/fi-elk-e7500/igt@i915_hwmon@hwmon-read.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +1 similar issue</p>
-</li>
-<li>
-<p>fi-bsw-kefka:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8227/fi-bsw-kefka/igt@i915_hwmon@hwmon-read.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +1 similar issue</p>
-</li>
-<li>
-<p>fi-cfl-guc:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8227/fi-cfl-guc/igt@i915_hwmon@hwmon-read.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +1 similar issue</p>
-</li>
-<li>
-<p>fi-hsw-4770:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8227/fi-hsw-4770/igt@i915_hwmon@hwmon-read.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +1 similar issue</p>
-</li>
-<li>
-<p>fi-ivb-3770:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8227/fi-ivb-3770/igt@i915_hwmon@hwmon-read.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +1 similar issue</p>
-</li>
-</ul>
-</li>
-<li>
-<p>{igt@i915_hwmon@hwmon-write} (NEW):</p>
-<ul>
-<li>
-<p>fi-snb-2600:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8227/fi-snb-2600/igt@i915_hwmon@hwmon-write.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +1 similar issue</p>
-</li>
-<li>
-<p>fi-bdw-gvtdvm:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8227/fi-bdw-gvtdvm/igt@i915_hwmon@hwmon-write.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +1 similar issue</p>
-</li>
-<li>
-<p>fi-pnv-d510:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8227/fi-pnv-d510/igt@i915_hwmon@hwmon-write.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +1 similar issue</p>
-</li>
-<li>
-<p>fi-glk-j4005:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8227/fi-glk-j4005/igt@i915_hwmon@hwmon-write.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +1 similar issue</p>
-</li>
-<li>
-<p>fi-skl-guc:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8227/fi-skl-guc/igt@i915_hwmon@hwmon-write.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +1 similar issue</p>
-</li>
-<li>
-<p>fi-skl-6700k2:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8227/fi-skl-6700k2/igt@i915_hwmon@hwmon-write.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +1 similar issue</p>
-</li>
-<li>
-<p>fi-kbl-7567u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8227/fi-kbl-7567u/igt@i915_hwmon@hwmon-write.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +1 similar issue</p>
-</li>
-<li>
-<p>fi-kbl-8809g:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8227/fi-kbl-8809g/igt@i915_hwmon@hwmon-write.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +1 similar issue</p>
-</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_chamelium@common-hpd-after-suspend:</p>
-<ul>
-<li>
-<p>fi-hsw-4770:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8227/fi-hsw-4770/igt@kms_chamelium@common-hpd-after-suspend.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://bugs.freedesktop.org/show_bug.cgi?id=111827">fdo#111827</a>)</p>
-</li>
-<li>
-<p>fi-rkl-guc:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8227/fi-rkl-guc/igt@kms_chamelium@common-hpd-after-suspend.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=111827">fdo#111827</a>)</p>
-</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@i915_selftest@live@gt_lrc:</p>
-<ul>
-<li>fi-rkl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12502/fi-rkl-guc/igt@i915_selftest@live@gt_lrc.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4983">i915#4983</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8227/fi-rkl-guc/igt@i915_selftest@live@gt_lrc.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@hangcheck:</p>
-<ul>
-<li>fi-hsw-4770:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12502/fi-hsw-4770/igt@i915_selftest@live@hangcheck.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4785">i915#4785</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8227/fi-hsw-4770/igt@i915_selftest@live@hangcheck.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions:</p>
-<ul>
-<li>fi-bsw-kefka:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12502/fi-bsw-kefka/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6298">i915#6298</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8227/fi-bsw-kefka/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_7092 -&gt; IGTPW_8227</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_12502: cc44a1e87ea6b788868878295119398966f98a81 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_8227: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8227/index.html<br />
-  IGT_7092: 59e3bf83f6bae0918276f880f969a10d279c657a @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-<h2>Testlist changes</h2>
-<p>+igt@i915_hwmon@hwmon-read<br />
-+igt@i915_hwmon@hwmon-write<br />
-+igt@kms_bw@linear-tiling-1-displays-1920x1080p<br />
-+igt@kms_bw@linear-tiling-1-displays-2560x1440p<br />
-+igt@kms_bw@linear-tiling-1-displays-3840x2160p<br />
-+igt@kms_bw@linear-tiling-2-displays-1920x1080p<br />
-+igt@kms_bw@linear-tiling-2-displays-2560x1440p<br />
-+igt@kms_bw@linear-tiling-2-displays-3840x2160p<br />
-+igt@kms_bw@linear-tiling-3-displays-1920x1080p<br />
-+igt@kms_bw@linear-tiling-3-displays-2560x1440p<br />
-+igt@kms_bw@linear-tiling-3-displays-3840x2160p<br />
-+igt@kms_bw@linear-tiling-4-displays-1920x1080p<br />
-+igt@kms_bw@linear-tiling-4-displays-2560x1440p<br />
-+igt@kms_bw@linear-tiling-4-displays-3840x2160p<br />
-+igt@kms_bw@linear-tiling-5-displays-1920x1080p<br />
-+igt@kms_bw@linear-tiling-5-displays-2560x1440p<br />
-+igt@kms_bw@linear-tiling-5-displays-3840x2160p<br />
-+igt@kms_bw@linear-tiling-6-displays-1920x1080p<br />
-+igt@kms_bw@linear-tiling-6-displays-2560x1440p<br />
-+igt@kms_bw@linear-tiling-6-displays-3840x2160p</p>
-
-</body>
-</html>
-
---===============4509953786939106727==--
+> +
+> +		ret = igt_sysfs_set_u64(rw->dir, rw->attr, set);
+> +		get = igt_sysfs_get_u64(rw->dir, rw->attr);
+> +		igt_debug("'%s': ret %d set %lu get %lu\n", rw->attr, ret, set, get);
+> +		if (ret && rw_attr_equal_within_epsilon(get, set, rw->tol)) {
+> +			pts->points[pts->num_points++] = set;
+> +			igt_debug("'%s': include %lu\n", rw->attr, set);
+> +		}
+> +
+> +		set *= 2;
+> +	}
+> +
+> +	return pts->num_points ? 0 : -ENOENT;
+> +}
+> +
+> +/* Re-verify that reads following writes are equal within a tolerance */
+> +static int rw_attr_reverify_points(igt_sysfs_rw_attr_t *rw)
+> +{
+> +	struct rw_attr_internal *pts = rw->rsvd;
+> +	uint64_t get, set;
+> +	int i;
+> +
+> +	igt_debug("'%s': reverifying\n", rw->attr);
+> +	for (i = pts->num_points - 1; i >= 0; i--) {
+> +		set = pts->points[i];
+> +		if (!igt_sysfs_set_u64(rw->dir, rw->attr, set)) {
+> +			igt_debug("'%s': set %lu failed\n", rw->attr, set);
+> +			return -EIO;
+> +		}
+> +		get = igt_sysfs_get_u64(rw->dir, rw->attr);
+> +		if (!rw_attr_equal_within_epsilon(get, set, rw->tol)) {
+> +			igt_debug("'%s': mismatch set %lu get %lu\n", rw->attr, set, get);
+> +			return -EIO;
+> +		}
+> +	}
+> +	igt_debug("'%s': done reverifying\n", rw->attr);
+> +
+> +	return 0;
+> +}
+> +
+> +/**
+> + * igt_sysfs_rw_attr_verify:
+> + * @rw: 'struct igt_sysfs_rw_attr' describing a rw sysfs attr
+> + *
+> + * This function attempts to verify writable sysfs attributes, that is the
+> + * attribute is first written to and then read back and it is verified that
+> + * the read value matches the written value to a tolerance. However, when
+> + * we try to do this we run into the issue that a sysfs attribute might
+> + * have a behavior where the read value is different from the written value
+> + * for any reason. For example, attributes such as power, voltage,
+> + * frequency and time typically have a linear region outside which they are
+> + * clamped (the values saturate). Therefore for such attributes read values
+> + * match the written value only in the linear region and when writing we
+> + * don't know if we are writing to the linear or to the clamped region.
+> + *
+> + * Therefore the verification implemented here takes the approach of
+> + * sweeping across the range of possible values of the attribute (this is
+> + * done using 'doubling' rather than linearly) and seeing where there are
+> + * matches. There should be at least one match (to a tolerance) for the
+> + * verification to have succeeded.
+> + */
+> +void igt_sysfs_rw_attr_verify(igt_sysfs_rw_attr_t *rw)
+> +{
+> +	uint64_t prev, get;
+> +	struct stat st;
+> +	int ret;
+> +
+> +	igt_assert(!fstatat(rw->dir, rw->attr, &st, 0));
+> +	igt_assert(st.st_mode & 0222); /* writable */
+> +	igt_assert(rw->start);	/* cannot be 0 */
+> +
+> +	prev = igt_sysfs_get_u64(rw->dir, rw->attr);
+> +	igt_debug("'%s': prev %lu\n", rw->attr, prev);
+> +
+> +	rw->rsvd = calloc(1, sizeof(struct rw_attr_internal));
+> +	igt_assert(rw->rsvd);
+> +
+> +	ret = rw_attr_sweep(rw);
+> +	if (ret)
+> +		goto restore;
+> +
+> +	ret = rw_attr_reverify_points(rw);
+> +
+> +	/*
+> +	 * Restore previous value: we don't assert before this point so
+> +	 * that we can restore the attr before asserting
+> +	 */
+> +restore:
+> +	free(rw->rsvd);
+> +	igt_assert_eq(1, igt_sysfs_set_u64(rw->dir, rw->attr, prev));
+> +	get = igt_sysfs_get_u64(rw->dir, rw->attr);
+> +	igt_assert_eq(get, prev);
+> +	igt_assert(!ret);
+> +}
+> diff --git a/lib/igt_sysfs.h b/lib/igt_sysfs.h
+> index 1c9791a1bdc..418c800e8c5 100644
+> --- a/lib/igt_sysfs.h
+> +++ b/lib/igt_sysfs.h
+> @@ -125,4 +125,25 @@ void bind_fbcon(bool enable);
+>   void kick_snd_hda_intel(void);
+>   void fbcon_blink_enable(bool enable);
+>   
+> +/**
+> + * igt_sysfs_rw_attr:
+> + * @dir: file descriptor for parent directory
+> + * @attr: name of sysfs attribute
+> + * @start: start value for searching for matching reads/writes
+> + * @tol: tolerance to use to compare written and read values
+> + * @rsvd: reserved field used internally
+> + *
+> + * Structure used to describe the rw sysfs attribute to
+> + * igt_sysfs_rw_attr_verify
+> + */
+> +typedef struct igt_sysfs_rw_attr {
+> +	int dir;
+> +	char *attr;
+> +	uint64_t start;
+> +	double tol;
+> +	void *rsvd;
+> +} igt_sysfs_rw_attr_t;
+> +
+> +void igt_sysfs_rw_attr_verify(igt_sysfs_rw_attr_t *rw);
+> +
+>   #endif /* __IGT_SYSFS_H__ */
