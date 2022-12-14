@@ -1,16 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: text/plain; charset="utf-8"
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B2A1710E4C8
+ for <igt-dev@lists.freedesktop.org>; Wed, 14 Dec 2022 23:25:29 +0000 (UTC)
+From: Alan Previn <alan.previn.teres.alexis@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Wed, 14 Dec 2022 15:28:19 -0800
+Message-Id: <20221214232819.1973714-1-alan.previn.teres.alexis@intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Pillai, Aurabindo" <aurabindo.pillai@amd.com>
-Date: Wed, 14 Dec 2022 20:06:04 -0000
-Message-ID: <167104836417.8287.10928445025185223140@emeril.freedesktop.org>
-References: <20221214181906.561644-1-alex.hung@amd.com>
-In-Reply-To: <20221214181906.561644-1-alex.hung@amd.com>
-Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJVSUxEOiBmYWlsdXJlIGZvciB0ZXN0?=
- =?utf-8?q?s/kms=5Fbw=3A_Test_outputs_with_fb_of_the_same_resolutions_=28r?=
- =?utf-8?q?ev2=29?=
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t 1/1] tests/i915/pxp: PXP debugfs path
+ promoted to global
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,24 +17,41 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
+Cc: Alan Previn <alan.previn.teres.alexis@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-== Series Details ==
+As per recent kernel side update in preparation for
+MTL, PXP is not a global i915 subsystem so let's update
+the debugfs path to try both the legacy and new paths
+before we fail.
 
-Series: tests/kms_bw: Test outputs with fb of the same resolutions (rev2)
-URL   : https://patchwork.freedesktop.org/series/111941/
-State : failure
+Signed-off-by: Alan Previn <alan.previn.teres.alexis@intel.com>
+---
+ tests/i915/gem_pxp.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-== Summary ==
+diff --git a/tests/i915/gem_pxp.c b/tests/i915/gem_pxp.c
+index ffad9b5a..cd402c7c 100644
+--- a/tests/i915/gem_pxp.c
++++ b/tests/i915/gem_pxp.c
+@@ -848,6 +848,14 @@ static void trigger_pxp_debugfs_forced_teardown(int i915)
+ 	char str[32];
+ 
+ 	fd = igt_debugfs_open(i915, "gt/pxp/terminate_state", O_RDWR);
++	/*
++	 * At MTL onwards, we promoted PXP to be a global i915 subsystem,
++	 * so try again with a top-level path if we failed at the gt path.
++	 * If we still fail, then we assert out.
++	 */
++	if (fd < 0)
++		fd = igt_debugfs_open(i915, "pxp/terminate_state", O_RDWR);
++
+ 	igt_assert_f(fd >= 0, "Can't open pxp termination debugfs\n");
+ 	ret = snprintf(str, sizeof(str), "0x1");
+ 	igt_assert(ret > 2 && ret < sizeof(str));
 
-Applying: tests/kms_bw: Test outputs with fb of the same resolutions
-Using index info to reconstruct a base tree...
-Patch failed at 0001 tests/kms_bw: Test outputs with fb of the same resolutions
-When you have resolved this problem, run "git am --continue".
-If you prefer to skip this patch, run "git am --skip" instead.
-To restore the original branch and stop patching, run "git am --abort".
-
+base-commit: c001793d5f22deb01918b6ba52af829794582df1
+-- 
+2.34.1
