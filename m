@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3C8C010E438
- for <igt-dev@lists.freedesktop.org>; Wed, 14 Dec 2022 16:48:54 +0000 (UTC)
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CF42E10E438
+ for <igt-dev@lists.freedesktop.org>; Wed, 14 Dec 2022 16:48:52 +0000 (UTC)
 From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Wed, 14 Dec 2022 17:47:40 +0100
-Message-Id: <20221214164747.68626-5-zbigniew.kempczynski@intel.com>
+Date: Wed, 14 Dec 2022 17:47:47 +0100
+Message-Id: <20221214164747.68626-12-zbigniew.kempczynski@intel.com>
 In-Reply-To: <20221214164747.68626-1-zbigniew.kempczynski@intel.com>
 References: <20221214164747.68626-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v5 04/11] tests/drm_import_export: Remove
- the test
+Subject: [igt-dev] [PATCH i-g-t v5 11/11] lib/meson: Remove libdrm
+ configuration and intel_bufmgr stubs
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,25 +24,356 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Test exercises libdrm prime operations what is about to remove from IGT.
+We don't need to link with intel libdrm so get rid of libdrm configuration
+as well as bufmgr stub.
 
 Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 Cc: Petri Latvala <petri.latvala@intel.com>
 Acked-by: Petri Latvala <petri.latvala@intel.com>
 ---
- tests/drm_import_export.c | 304 --------------------------------------
- tests/meson.build         |   1 -
- 2 files changed, 305 deletions(-)
- delete mode 100644 tests/drm_import_export.c
+ lib/meson.build              |   7 -
+ lib/stubs/drm/README         |   4 -
+ lib/stubs/drm/intel_bufmgr.c | 292 -------------------------------
+ lib/stubs/drm/intel_bufmgr.h | 323 -----------------------------------
+ 4 files changed, 626 deletions(-)
+ delete mode 100644 lib/stubs/drm/README
+ delete mode 100644 lib/stubs/drm/intel_bufmgr.c
+ delete mode 100644 lib/stubs/drm/intel_bufmgr.h
 
-diff --git a/tests/drm_import_export.c b/tests/drm_import_export.c
+diff --git a/lib/meson.build b/lib/meson.build
+index 09da754cfe..c79e3e9520 100644
+--- a/lib/meson.build
++++ b/lib/meson.build
+@@ -115,13 +115,6 @@ lib_deps = [
+ 	zlib
+ ]
+ 
+-if libdrm_intel.found()
+-	lib_deps += libdrm_intel
+-else
+-	lib_sources += 'stubs/drm/intel_bufmgr.c'
+-	inc = [ inc, include_directories('stubs/drm') ]
+-endif
+-
+ if libdrm_nouveau.found()
+ 	lib_deps += libdrm_nouveau
+ 	lib_sources += [
+diff --git a/lib/stubs/drm/README b/lib/stubs/drm/README
 deleted file mode 100644
-index 2dd2f3cb9f..0000000000
---- a/tests/drm_import_export.c
+index 79f2b5f676..0000000000
+--- a/lib/stubs/drm/README
 +++ /dev/null
-@@ -1,304 +0,0 @@
+@@ -1,4 +0,0 @@
+-intel_bufmgr.h is a local copy of the file provided by libdrm (intel/intel_bufmgr.h).
+-
+-Before releasing i-g-t a current copy of intel_bufmgr.h should be copied into
+-this directory of i-g-t.
+diff --git a/lib/stubs/drm/intel_bufmgr.c b/lib/stubs/drm/intel_bufmgr.c
+deleted file mode 100644
+index cbab2484bd..0000000000
+--- a/lib/stubs/drm/intel_bufmgr.c
++++ /dev/null
+@@ -1,292 +0,0 @@
+-#include <stdbool.h>
+-#include <errno.h>
+-
+-#include "igt_core.h"
+-#include "intel_bufmgr.h"
+-
+-#ifdef __GNUC__
+-#pragma GCC push_options
+-#pragma GCC diagnostic ignored "-Wsuggest-attribute=noreturn"
+-#endif
+-
+-static const char missing_support_str[] = "Not compiled with libdrm_intel support\n";
+-
+-drm_intel_bufmgr *drm_intel_bufmgr_gem_init(int fd, int batch_size)
+-{
+-	igt_require_f(false, missing_support_str);
+-	return NULL;
+-}
+-
+-void drm_intel_bo_unreference(drm_intel_bo *bo)
+-{
+-	igt_require_f(false, missing_support_str);
+-}
+-
+-drm_intel_bo *drm_intel_bo_alloc(drm_intel_bufmgr *bufmgr, const char *name,
+-				 unsigned long size, unsigned int alignment)
+-{
+-	igt_require_f(false, missing_support_str);
+-	return NULL;
+-}
+-
+-int drm_intel_bo_subdata(drm_intel_bo *bo, unsigned long offset,
+-			 unsigned long size, const void *data)
+-{
+-	igt_require_f(false, missing_support_str);
+-	return -ENODEV;
+-}
+-
+-int drm_intel_gem_bo_context_exec(drm_intel_bo *bo, drm_intel_context *ctx,
+-				  int used, unsigned int flags)
+-{
+-	igt_require_f(false, missing_support_str);
+-	return -ENODEV;
+-}
+-
+-int drm_intel_bo_emit_reloc(drm_intel_bo *bo, uint32_t offset,
+-				drm_intel_bo *target_bo, uint32_t target_offset,
+-				uint32_t read_domains, uint32_t write_domain)
+-{
+-	igt_require_f(false, missing_support_str);
+-	return -ENODEV;
+-}
+-
+-int drm_intel_bo_emit_reloc_fence(drm_intel_bo *bo, uint32_t offset,
+-				  drm_intel_bo *target_bo,
+-				  uint32_t target_offset,
+-				  uint32_t read_domains, uint32_t write_domain)
+-{
+-	igt_require_f(false, missing_support_str);
+-	return -ENODEV;
+-}
+-
+-int drm_intel_bo_get_tiling(drm_intel_bo *bo, uint32_t * tiling_mode,
+-			    uint32_t * swizzle_mode)
+-{
+-	igt_require_f(false, missing_support_str);
+-	return -ENODEV;
+-}
+-
+-int drm_intel_bo_mrb_exec(drm_intel_bo *bo, int used,
+-			  struct drm_clip_rect *cliprects, int num_cliprects,
+-			  int DR4, unsigned int flags)
+-{
+-	igt_require_f(false, missing_support_str);
+-	return -ENODEV;
+-}
+-
+-void drm_intel_bufmgr_gem_set_aub_annotations(drm_intel_bo *bo,
+-					      drm_intel_aub_annotation *annotations,
+-					      unsigned count)
+-{
+-	igt_require_f(false, missing_support_str);
+-}
+-
+-void drm_intel_bufmgr_gem_enable_reuse(drm_intel_bufmgr *bufmgr)
+-{
+-	igt_require_f(false, missing_support_str);
+-}
+-
+-int drm_intel_bo_exec(drm_intel_bo *bo, int used,
+-		      struct drm_clip_rect *cliprects, int num_cliprects, int DR4)
+-{
+-	igt_require_f(false, missing_support_str);
+-	return -ENODEV;
+-}
+-
+-void drm_intel_bufmgr_destroy(drm_intel_bufmgr *bufmgr)
+-{
+-	igt_require_f(false, missing_support_str);
+-}
+-
+-void drm_intel_bo_wait_rendering(drm_intel_bo *bo)
+-{
+-	igt_require_f(false, missing_support_str);
+-}
+-
+-int drm_intel_bo_get_subdata(drm_intel_bo *bo, unsigned long offset,
+-			     unsigned long size, void *data)
+-{
+-	igt_require_f(false, missing_support_str);
+-	return -ENODEV;
+-}
+-
+-int drm_intel_bo_map(drm_intel_bo *bo, int write_enable)
+-{
+-	igt_require_f(false, missing_support_str);
+-	return -ENODEV;
+-}
+-
+-int drm_intel_gem_bo_map_gtt(drm_intel_bo *bo)
+-{
+-	igt_require_f(false, missing_support_str);
+-	return -ENODEV;
+-}
+-
+-void drm_intel_bufmgr_gem_enable_fenced_relocs(drm_intel_bufmgr *bufmgr)
+-{
+-	igt_require_f(false, missing_support_str);
+-}
+-
+-int drm_intel_bo_unmap(drm_intel_bo *bo)
+-{
+-	igt_require_f(false, missing_support_str);
+-	return -ENODEV;
+-}
+-
+-int drm_intel_bo_flink(drm_intel_bo *bo, uint32_t * name)
+-{
+-	igt_require_f(false, missing_support_str);
+-	return -ENODEV;
+-}
+-
+-drm_intel_bo *drm_intel_bo_gem_create_from_name(drm_intel_bufmgr *bufmgr,
+-						const char *name,
+-						unsigned int handle)
+-{
+-	igt_require_f(false, missing_support_str);
+-	return NULL;
+-}
+-
+-int drm_intel_bo_gem_export_to_prime(drm_intel_bo *bo, int *prime_fd)
+-{
+-	igt_require_f(false, missing_support_str);
+-	return -ENODEV;
+-}
+-
+-drm_intel_bo *drm_intel_bo_gem_create_from_prime(drm_intel_bufmgr *bufmgr,
+-						 int prime_fd, int size)
+-{
+-	igt_require_f(false, missing_support_str);
+-	return NULL;
+-}
+-
+-void drm_intel_bufmgr_gem_set_vma_cache_size(drm_intel_bufmgr *bufmgr,
+-					     int limit)
+-{
+-	igt_require_f(false, missing_support_str);
+-}
+-
+-int drm_intel_gem_bo_unmap_gtt(drm_intel_bo *bo)
+-{
+-	igt_require_f(false, missing_support_str);
+-	return -ENODEV;
+-}
+-
+-drm_intel_context *drm_intel_gem_context_create(drm_intel_bufmgr *bufmgr)
+-{
+-	igt_require_f(false, missing_support_str);
+-	return NULL;
+-}
+-
+-int drm_intel_gem_context_get_id(drm_intel_context *ctx,
+-                                 uint32_t *ctx_id)
+-{
+-	igt_require_f(false, missing_support_str);
+-	return -ENODEV;
+-}
+-
+-void drm_intel_gem_context_destroy(drm_intel_context *ctx)
+-{
+-	igt_require_f(false, missing_support_str);
+-}
+-
+-drm_intel_bo *drm_intel_bo_alloc_tiled(drm_intel_bufmgr *bufmgr,
+-				       const char *name,
+-				       int x, int y, int cpp,
+-				       uint32_t *tiling_mode,
+-				       unsigned long *pitch,
+-				       unsigned long flags)
+-{
+-	igt_require_f(false, missing_support_str);
+-	return NULL;
+-}
+-
+-void drm_intel_bufmgr_gem_set_aub_filename(drm_intel_bufmgr *bufmgr,
+-					  const char *filename)
+-{
+-	igt_require_f(false, missing_support_str);
+-}
+-
+-void drm_intel_bufmgr_gem_set_aub_dump(drm_intel_bufmgr *bufmgr, int enable)
+-{
+-	igt_require_f(false, missing_support_str);
+-}
+-
+-void drm_intel_gem_bo_aub_dump_bmp(drm_intel_bo *bo,
+-				   int x1, int y1, int width, int height,
+-				   enum aub_dump_bmp_format format,
+-				   int pitch, int offset)
+-{
+-	igt_require_f(false, missing_support_str);
+-}
+-
+-void drm_intel_gem_bo_start_gtt_access(drm_intel_bo *bo, int write_enable)
+-{
+-	igt_require_f(false, missing_support_str);
+-}
+-
+-int drm_intel_bo_set_tiling(drm_intel_bo *bo, uint32_t * tiling_mode,
+-				uint32_t stride)
+-{
+-	igt_require_f(false, missing_support_str);
+-	return -ENODEV;
+-}
+-
+-int drm_intel_bo_set_softpin_offset(drm_intel_bo *bo, uint64_t offset)
+-{
+-	igt_require_f(false, missing_support_str);
+-	return -ENODEV;
+-}
+-
+-int drm_intel_bo_disable_reuse(drm_intel_bo *bo)
+-{
+-	igt_require_f(false, missing_support_str);
+-	return -ENODEV;
+-}
+-
+-void drm_intel_bo_reference(drm_intel_bo *bo)
+-{
+-	igt_require_f(false, missing_support_str);
+-}
+-
+-int drm_intel_bufmgr_gem_get_devid(drm_intel_bufmgr *bufmgr)
+-{
+-	igt_require_f(false, missing_support_str);
+-	return -ENODEV;
+-}
+-
+-drm_intel_bo *drm_intel_bo_alloc_for_render(drm_intel_bufmgr *bufmgr,
+-					    const char *name,
+-					    unsigned long size,
+-					    unsigned int alignment)
+-{
+-	igt_require_f(false, missing_support_str);
+-	return NULL;
+-}
+-
+-int drm_intel_bo_references(drm_intel_bo *bo, drm_intel_bo *target_bo)
+-{
+-	igt_require_f(false, missing_support_str);
+-	return -ENODEV;
+-}
+-
+-int drm_intel_gem_bo_wait(drm_intel_bo *bo, int64_t timeout_ns)
+-{
+-	igt_require_f(false, missing_support_str);
+-	return -ENODEV;
+-}
+-
+-drm_intel_bo *drm_intel_bo_alloc_userptr(drm_intel_bufmgr *bufmgr,
+-					 const char *name,
+-					 void *addr, uint32_t tiling_mode,
+-					 uint32_t stride, unsigned long size,
+-					 unsigned long flags)
+-{
+-	igt_require_f(false, missing_support_str);
+-	return NULL;
+-}
+-
+-#ifdef __GNUC__
+-#pragma GCC pop_options
+-#endif
+diff --git a/lib/stubs/drm/intel_bufmgr.h b/lib/stubs/drm/intel_bufmgr.h
+deleted file mode 100644
+index f6bb4f5213..0000000000
+--- a/lib/stubs/drm/intel_bufmgr.h
++++ /dev/null
+@@ -1,323 +0,0 @@
 -/*
-- * Copyright © 2014 Intel Corporation
+- * Copyright © 2008-2012 Intel Corporation
 - *
 - * Permission is hereby granted, free of charge, to any person obtaining a
 - * copy of this software and associated documentation files (the "Software"),
@@ -64,298 +395,305 @@ index 2dd2f3cb9f..0000000000
 - * IN THE SOFTWARE.
 - *
 - * Authors:
-- *    Daniel Vetter <daniel.vetter@ffwll.ch>
+- *    Eric Anholt <eric@anholt.net>
+- *
 - */
 -
--#include "igt.h"
+-/**
+- * @file intel_bufmgr.h
+- *
+- * Public definitions of Intel-specific bufmgr functions.
+- */
+-
+-#ifndef INTEL_BUFMGR_H
+-#define INTEL_BUFMGR_H
+-
 -#include <stdio.h>
--#include <sys/types.h>
--#include <sys/stat.h>
--#include <fcntl.h>
--#include <stdlib.h>
--#include <string.h>
--#include <drm.h>
--#include <i915_drm.h>
--#include <xf86drm.h>
--#include <intel_bufmgr.h>
--#include <errno.h>
--#include <pthread.h>
--#include <unistd.h>
--#include <sys/syscall.h>
+-#include <stdint.h>
+-#include <stdio.h>
 -
--#include "i915/gem.h"
--
--#define DURATION 10
--IGT_TEST_DESCRIPTION("Basic check to verify the behaviour of libdrm bo for prime/flink");
--
--int fd;
--drm_intel_bufmgr *bufmgr;
--int fd1;
--drm_intel_bufmgr *bufmgr1;
--
--bool use_flink;
--
--static void new_buffers(void)
--{
--	unsigned int *buf1;
--	drm_intel_bo *bo1, *bo2;
--
--
--	bo1 = drm_intel_bo_alloc(bufmgr, "buf1",16384, 4096);
--	igt_assert(bo1);
--	drm_intel_bo_map(bo1, 1);
--	bo2 = drm_intel_bo_alloc(bufmgr, "buf2", 16384, 4096);
--	igt_assert(bo2);
--	drm_intel_bo_map(bo2, 1);
--
--	buf1 = (unsigned int *)bo1->virtual;
--	igt_assert(buf1);
--	memset(buf1, 0, 16384);
--	buf1[4000]=0x05000000;
--
--	drm_intel_bo_exec(bo1, 16384, NULL, 0,0);
--	drm_intel_bo_wait_rendering(bo1);
--
--	drm_intel_bo_unmap( bo1 );
--	drm_intel_bo_unreference(bo1);
--
--	drm_intel_bo_unmap( bo2 );
--	drm_intel_bo_unreference(bo2);
--}
--
--static void test_surfaces(drm_intel_bo *bo_shared)
--{
--	drm_intel_bo * bo;
--	int loop=2;
--
--	while(loop--) {
--		if (use_flink) {
--			uint32_t name;
--			drm_intel_bo_flink(bo_shared, &name);
--			bo = drm_intel_bo_gem_create_from_name(bufmgr,
--							       "shared resource",
--							       name);
--		} else {
--			int prime_fd;
--
--			drm_intel_bo_gem_export_to_prime(bo_shared, &prime_fd);
--			bo = drm_intel_bo_gem_create_from_prime(bufmgr,
--								prime_fd, 4096);
--			close(prime_fd);
--		}
--
--		igt_assert(bo);
--		new_buffers();
--		drm_intel_bo_unreference(bo);
--	}
--}
--
--static void start_test(void)
--{
--	igt_until_timeout(DURATION) {
--		drm_intel_bo * bo_shared;
--
--		bo_shared = drm_intel_bo_alloc(bufmgr1, "buf-shared",16384, 4096);
--		test_surfaces(bo_shared);
--		drm_intel_bo_unreference(bo_shared);
--	}
--}
--
--static void * test_thread(void * par)
--{
--#ifdef __linux__
--	igt_debug("start %ld\n", (long) gettid());
--#else
--	igt_debug("start %ld\n", (long) pthread_self());
+-#if defined(__cplusplus)
+-extern "C" {
 -#endif
--	start_test();
 -
--	return NULL;
--}
+-struct drm_clip_rect;
 -
--struct import_race_thread_data {
--	int prime_fd;
--	uint32_t flink_name;
--	unsigned int stop;
--	pthread_mutex_t mutex;
+-typedef struct _drm_intel_bufmgr drm_intel_bufmgr;
+-typedef struct _drm_intel_context drm_intel_context;
+-typedef struct _drm_intel_bo drm_intel_bo;
+-
+-struct _drm_intel_bo {
+-	/**
+-	 * Size in bytes of the buffer object.
+-	 *
+-	 * The size may be larger than the size originally requested for the
+-	 * allocation, such as being aligned to page size.
+-	 */
+-	unsigned long size;
+-
+-	/**
+-	 * Alignment requirement for object
+-	 *
+-	 * Used for GTT mapping & pinning the object.
+-	 */
+-	unsigned long align;
+-
+-	/**
+-	 * Deprecated field containing (possibly the low 32-bits of) the last
+-	 * seen virtual card address.  Use offset64 instead.
+-	 */
+-	unsigned long offset;
+-
+-	/**
+-	 * Virtual address for accessing the buffer data.  Only valid while
+-	 * mapped.
+-	 */
+-#ifdef __cplusplus
+-	void *virt;
+-#else
+-	void *virtual;
+-#endif
+-
+-	/** Buffer manager context associated with this buffer object */
+-	drm_intel_bufmgr *bufmgr;
+-
+-	/**
+-	 * MM-specific handle for accessing object
+-	 */
+-	int handle;
+-
+-	/**
+-	 * Last seen card virtual address (offset from the beginning of the
+-	 * aperture) for the object.  This should be used to fill relocation
+-	 * entries when calling drm_intel_bo_emit_reloc()
+-	 */
+-	uint64_t offset64;
 -};
 -
--/*
-- * Attempt to import the bo. It is possible that GEM_CLOSE was already called
-- * in different thread and from i915 point of view the handle is no longer
-- * valid (thus create_from_prime/name should fail).
+-enum aub_dump_bmp_format {
+-	AUB_DUMP_BMP_FORMAT_8BIT = 1,
+-	AUB_DUMP_BMP_FORMAT_ARGB_4444 = 4,
+-	AUB_DUMP_BMP_FORMAT_ARGB_0888 = 6,
+-	AUB_DUMP_BMP_FORMAT_ARGB_8888 = 7,
+-};
+-
+-typedef struct _drm_intel_aub_annotation {
+-	uint32_t type;
+-	uint32_t subtype;
+-	uint32_t ending_offset;
+-} drm_intel_aub_annotation;
+-
+-#define BO_ALLOC_FOR_RENDER (1<<0)
+-
+-drm_intel_bo *drm_intel_bo_alloc(drm_intel_bufmgr *bufmgr, const char *name,
+-				 unsigned long size, unsigned int alignment);
+-drm_intel_bo *drm_intel_bo_alloc_for_render(drm_intel_bufmgr *bufmgr,
+-					    const char *name,
+-					    unsigned long size,
+-					    unsigned int alignment);
+-drm_intel_bo *drm_intel_bo_alloc_userptr(drm_intel_bufmgr *bufmgr,
+-					const char *name,
+-					void *addr, uint32_t tiling_mode,
+-					uint32_t stride, unsigned long size,
+-					unsigned long flags);
+-drm_intel_bo *drm_intel_bo_alloc_tiled(drm_intel_bufmgr *bufmgr,
+-				       const char *name,
+-				       int x, int y, int cpp,
+-				       uint32_t *tiling_mode,
+-				       unsigned long *pitch,
+-				       unsigned long flags);
+-void drm_intel_bo_reference(drm_intel_bo *bo);
+-void drm_intel_bo_unreference(drm_intel_bo *bo);
+-int drm_intel_bo_map(drm_intel_bo *bo, int write_enable);
+-int drm_intel_bo_unmap(drm_intel_bo *bo);
+-
+-int drm_intel_bo_subdata(drm_intel_bo *bo, unsigned long offset,
+-			 unsigned long size, const void *data);
+-int drm_intel_bo_get_subdata(drm_intel_bo *bo, unsigned long offset,
+-			     unsigned long size, void *data);
+-void drm_intel_bo_wait_rendering(drm_intel_bo *bo);
+-
+-void drm_intel_bufmgr_set_debug(drm_intel_bufmgr *bufmgr, int enable_debug);
+-void drm_intel_bufmgr_destroy(drm_intel_bufmgr *bufmgr);
+-int drm_intel_bo_exec(drm_intel_bo *bo, int used,
+-		      struct drm_clip_rect *cliprects, int num_cliprects, int DR4);
+-int drm_intel_bo_mrb_exec(drm_intel_bo *bo, int used,
+-			struct drm_clip_rect *cliprects, int num_cliprects, int DR4,
+-			unsigned int flags);
+-int drm_intel_bufmgr_check_aperture_space(drm_intel_bo ** bo_array, int count);
+-
+-int drm_intel_bo_emit_reloc(drm_intel_bo *bo, uint32_t offset,
+-			    drm_intel_bo *target_bo, uint32_t target_offset,
+-			    uint32_t read_domains, uint32_t write_domain);
+-int drm_intel_bo_emit_reloc_fence(drm_intel_bo *bo, uint32_t offset,
+-				  drm_intel_bo *target_bo,
+-				  uint32_t target_offset,
+-				  uint32_t read_domains, uint32_t write_domain);
+-int drm_intel_bo_pin(drm_intel_bo *bo, uint32_t alignment);
+-int drm_intel_bo_unpin(drm_intel_bo *bo);
+-int drm_intel_bo_set_tiling(drm_intel_bo *bo, uint32_t * tiling_mode,
+-			    uint32_t stride);
+-int drm_intel_bo_get_tiling(drm_intel_bo *bo, uint32_t * tiling_mode,
+-			    uint32_t * swizzle_mode);
+-int drm_intel_bo_flink(drm_intel_bo *bo, uint32_t * name);
+-int drm_intel_bo_busy(drm_intel_bo *bo);
+-int drm_intel_bo_madvise(drm_intel_bo *bo, int madv);
+-int drm_intel_bo_use_48b_address_range(drm_intel_bo *bo, uint32_t enable);
+-int drm_intel_bo_set_softpin_offset(drm_intel_bo *bo, uint64_t offset);
+-
+-int drm_intel_bo_disable_reuse(drm_intel_bo *bo);
+-int drm_intel_bo_is_reusable(drm_intel_bo *bo);
+-int drm_intel_bo_references(drm_intel_bo *bo, drm_intel_bo *target_bo);
+-
+-/* drm_intel_bufmgr_gem.c */
+-drm_intel_bufmgr *drm_intel_bufmgr_gem_init(int fd, int batch_size);
+-drm_intel_bo *drm_intel_bo_gem_create_from_name(drm_intel_bufmgr *bufmgr,
+-						const char *name,
+-						unsigned int handle);
+-void drm_intel_bufmgr_gem_enable_reuse(drm_intel_bufmgr *bufmgr);
+-void drm_intel_bufmgr_gem_enable_fenced_relocs(drm_intel_bufmgr *bufmgr);
+-void drm_intel_bufmgr_gem_set_vma_cache_size(drm_intel_bufmgr *bufmgr,
+-					     int limit);
+-int drm_intel_gem_bo_map_unsynchronized(drm_intel_bo *bo);
+-int drm_intel_gem_bo_map_gtt(drm_intel_bo *bo);
+-int drm_intel_gem_bo_unmap_gtt(drm_intel_bo *bo);
+-
+-int drm_intel_gem_bo_get_reloc_count(drm_intel_bo *bo);
+-void drm_intel_gem_bo_clear_relocs(drm_intel_bo *bo, int start);
+-void drm_intel_gem_bo_start_gtt_access(drm_intel_bo *bo, int write_enable);
+-
+-void
+-drm_intel_bufmgr_gem_set_aub_filename(drm_intel_bufmgr *bufmgr,
+-				      const char *filename);
+-void drm_intel_bufmgr_gem_set_aub_dump(drm_intel_bufmgr *bufmgr, int enable);
+-void drm_intel_gem_bo_aub_dump_bmp(drm_intel_bo *bo,
+-				   int x1, int y1, int width, int height,
+-				   enum aub_dump_bmp_format format,
+-				   int pitch, int offset);
+-void
+-drm_intel_bufmgr_gem_set_aub_annotations(drm_intel_bo *bo,
+-					 drm_intel_aub_annotation *annotations,
+-					 unsigned count);
+-
+-int drm_intel_get_pipe_from_crtc_id(drm_intel_bufmgr *bufmgr, int crtc_id);
+-
+-int drm_intel_get_aperture_sizes(int fd, size_t *mappable, size_t *total);
+-int drm_intel_bufmgr_gem_get_devid(drm_intel_bufmgr *bufmgr);
+-int drm_intel_gem_bo_wait(drm_intel_bo *bo, int64_t timeout_ns);
+-
+-drm_intel_context *drm_intel_gem_context_create(drm_intel_bufmgr *bufmgr);
+-int drm_intel_gem_context_get_id(drm_intel_context *ctx,
+-                                 uint32_t *ctx_id);
+-void drm_intel_gem_context_destroy(drm_intel_context *ctx);
+-int drm_intel_gem_bo_context_exec(drm_intel_bo *bo, drm_intel_context *ctx,
+-				  int used, unsigned int flags);
+-
+-int drm_intel_bo_gem_export_to_prime(drm_intel_bo *bo, int *prime_fd);
+-drm_intel_bo *drm_intel_bo_gem_create_from_prime(drm_intel_bufmgr *bufmgr,
+-						int prime_fd, int size);
+-
+-/* drm_intel_bufmgr_fake.c */
+-drm_intel_bufmgr *drm_intel_bufmgr_fake_init(int fd,
+-					     unsigned long low_offset,
+-					     void *low_virtual,
+-					     unsigned long size,
+-					     volatile unsigned int
+-					     *last_dispatch);
+-void drm_intel_bufmgr_fake_set_last_dispatch(drm_intel_bufmgr *bufmgr,
+-					     volatile unsigned int
+-					     *last_dispatch);
+-void drm_intel_bufmgr_fake_set_exec_callback(drm_intel_bufmgr *bufmgr,
+-					     int (*exec) (drm_intel_bo *bo,
+-							  unsigned int used,
+-							  void *priv),
+-					     void *priv);
+-void drm_intel_bufmgr_fake_set_fence_callback(drm_intel_bufmgr *bufmgr,
+-					      unsigned int (*emit) (void *priv),
+-					      void (*wait) (unsigned int fence,
+-							    void *priv),
+-					      void *priv);
+-drm_intel_bo *drm_intel_bo_fake_alloc_static(drm_intel_bufmgr *bufmgr,
+-					     const char *name,
+-					     unsigned long offset,
+-					     unsigned long size, void *virt);
+-void drm_intel_bo_fake_disable_backing_store(drm_intel_bo *bo,
+-					     void (*invalidate_cb) (drm_intel_bo
+-								    * bo,
+-								    void *ptr),
+-					     void *ptr);
+-
+-void drm_intel_bufmgr_fake_contended_lock_take(drm_intel_bufmgr *bufmgr);
+-void drm_intel_bufmgr_fake_evict_all(drm_intel_bufmgr *bufmgr);
+-
+-struct drm_intel_decode *drm_intel_decode_context_alloc(uint32_t devid);
+-void drm_intel_decode_context_free(struct drm_intel_decode *ctx);
+-void drm_intel_decode_set_batch_pointer(struct drm_intel_decode *ctx,
+-					void *data, uint32_t hw_offset,
+-					int count);
+-void drm_intel_decode_set_dump_past_end(struct drm_intel_decode *ctx,
+-					int dump_past_end);
+-void drm_intel_decode_set_head_tail(struct drm_intel_decode *ctx,
+-				    uint32_t head, uint32_t tail);
+-void drm_intel_decode_set_output_file(struct drm_intel_decode *ctx, FILE *out);
+-void drm_intel_decode(struct drm_intel_decode *ctx);
+-
+-int drm_intel_reg_read(drm_intel_bufmgr *bufmgr,
+-		       uint32_t offset,
+-		       uint64_t *result);
+-
+-int drm_intel_get_reset_stats(drm_intel_context *ctx,
+-			      uint32_t *reset_count,
+-			      uint32_t *active,
+-			      uint32_t *pending);
+-
+-int drm_intel_get_subslice_total(int fd, unsigned int *subslice_total);
+-int drm_intel_get_eu_total(int fd, unsigned int *eu_total);
+-
+-/** @{ Compatibility defines to keep old code building despite the symbol rename
+- * from dri_* to drm_intel_*
 - */
--static void *import_close_thread(void *data)
--{
--	struct import_race_thread_data *t = (struct import_race_thread_data *)data;
--	drm_intel_bo *bo;
--	pthread_mutex_lock(&t->mutex);
--	while (!t->stop) {
--		pthread_mutex_unlock(&t->mutex);
--		bo = NULL;
--		if (use_flink)
--			bo = drm_intel_bo_gem_create_from_name(bufmgr, "buf-shared", t->flink_name);
--		else {
--			pthread_mutex_lock(&t->mutex);
--			if (t->prime_fd != -1) {
--				bo = drm_intel_bo_gem_create_from_prime(bufmgr, t->prime_fd, 4096);
--				pthread_mutex_unlock(&t->mutex);
--			}
--			else
--				/* Lock should be held on entering the loop */
--				continue;
--		}
+-#define dri_bo drm_intel_bo
+-#define dri_bufmgr drm_intel_bufmgr
+-#define dri_bo_alloc drm_intel_bo_alloc
+-#define dri_bo_reference drm_intel_bo_reference
+-#define dri_bo_unreference drm_intel_bo_unreference
+-#define dri_bo_map drm_intel_bo_map
+-#define dri_bo_unmap drm_intel_bo_unmap
+-#define dri_bo_subdata drm_intel_bo_subdata
+-#define dri_bo_get_subdata drm_intel_bo_get_subdata
+-#define dri_bo_wait_rendering drm_intel_bo_wait_rendering
+-#define dri_bufmgr_set_debug drm_intel_bufmgr_set_debug
+-#define dri_bufmgr_destroy drm_intel_bufmgr_destroy
+-#define dri_bo_exec drm_intel_bo_exec
+-#define dri_bufmgr_check_aperture_space drm_intel_bufmgr_check_aperture_space
+-#define dri_bo_emit_reloc(reloc_bo, read, write, target_offset,		\
+-			  reloc_offset, target_bo)			\
+-	drm_intel_bo_emit_reloc(reloc_bo, reloc_offset,			\
+-				target_bo, target_offset,		\
+-				read, write);
+-#define dri_bo_pin drm_intel_bo_pin
+-#define dri_bo_unpin drm_intel_bo_unpin
+-#define dri_bo_get_tiling drm_intel_bo_get_tiling
+-#define dri_bo_set_tiling(bo, mode) drm_intel_bo_set_tiling(bo, mode, 0)
+-#define dri_bo_flink drm_intel_bo_flink
+-#define intel_bufmgr_gem_init drm_intel_bufmgr_gem_init
+-#define intel_bo_gem_create_from_name drm_intel_bo_gem_create_from_name
+-#define intel_bufmgr_gem_enable_reuse drm_intel_bufmgr_gem_enable_reuse
+-#define intel_bufmgr_fake_init drm_intel_bufmgr_fake_init
+-#define intel_bufmgr_fake_set_last_dispatch drm_intel_bufmgr_fake_set_last_dispatch
+-#define intel_bufmgr_fake_set_exec_callback drm_intel_bufmgr_fake_set_exec_callback
+-#define intel_bufmgr_fake_set_fence_callback drm_intel_bufmgr_fake_set_fence_callback
+-#define intel_bo_fake_alloc_static drm_intel_bo_fake_alloc_static
+-#define intel_bo_fake_disable_backing_store drm_intel_bo_fake_disable_backing_store
+-#define intel_bufmgr_fake_contended_lock_take drm_intel_bufmgr_fake_contended_lock_take
+-#define intel_bufmgr_fake_evict_all drm_intel_bufmgr_fake_evict_all
 -
--		if (bo == NULL) {
--			/*
--			 * If the bo is NULL it means that we've unreferenced in other
--			 * thread - therefore we should expect ENOENT
--			 */
--			igt_assert_eq(errno, ENOENT);
--		} else {
--			drm_intel_bo_unreference(bo);
--		}
+-/** @{ */
 -
--		pthread_mutex_lock(&t->mutex);
--	}
--	pthread_mutex_unlock(&t->mutex);
--
--	return NULL;
+-#if defined(__cplusplus)
 -}
+-#endif
 -
--/*
-- * It is possible to race between unreference of the underlying BO and importing
-- * it from prime_fd/name. Verify that the behaviour of libdrm is consistent for
-- * prime/flink.
-- */
--static void test_import_close_race(void)
--{
--	pthread_t t;
--	drm_intel_bo *bo;
--	struct import_race_thread_data t_data;
--
--	memset(&t_data, 0, sizeof(t_data));
--	pthread_mutex_init(&t_data.mutex, NULL);
--	t_data.prime_fd = -1;
--
--	igt_assert_eq(pthread_create(&t, NULL, import_close_thread , &t_data), 0);
--
--	igt_until_timeout(DURATION) {
--		bo = drm_intel_bo_alloc(bufmgr, "buf-shared", 4096, 4096);
--		igt_assert(bo != NULL);
--		/*
--		 * We setup the test in such way, that create_from_* can race between
--		 * unreference. If we're using prime, prime_fd is always a valid fd.
--		 */
--		if (use_flink)
--			igt_assert_eq(drm_intel_bo_flink(bo, &(t_data.flink_name)), 0);
--		else {
--			pthread_mutex_lock(&t_data.mutex);
--			igt_assert_eq(drm_intel_bo_gem_export_to_prime(bo, &(t_data.prime_fd)), 0);
--			igt_assert_neq(t_data.prime_fd, -1);
--			pthread_mutex_unlock(&t_data.mutex);
--		}
--
--		drm_intel_bo_unreference(bo);
--
--		pthread_mutex_lock(&t_data.mutex);
--		close(t_data.prime_fd);
--		t_data.prime_fd = -1;
--		pthread_mutex_unlock(&t_data.mutex);
--	}
--
--	pthread_mutex_lock(&t_data.mutex);
--	t_data.stop = 1;
--	pthread_mutex_unlock(&t_data.mutex);
--
--	pthread_join(t, NULL);
--	pthread_mutex_destroy(&t_data.mutex);
--}
--
--pthread_t test_thread_id1;
--pthread_t test_thread_id2;
--pthread_t test_thread_id3;
--pthread_t test_thread_id4;
--
--igt_main {
--	igt_fixture {
--		fd1 = drm_open_driver(DRIVER_INTEL);
--		igt_require_gem(fd1);
--
--		bufmgr1 = drm_intel_bufmgr_gem_init(fd1, 8 *1024);
--		igt_require(bufmgr1);
--
--		drm_intel_bufmgr_gem_enable_reuse(bufmgr1);
--
--		fd = gem_reopen_driver(fd1);
--		bufmgr = drm_intel_bufmgr_gem_init(fd, 8 *1024);
--		igt_assert(bufmgr);
--
--		drm_intel_bufmgr_gem_enable_reuse(bufmgr);
--	}
--
--	igt_describe("Verify whether the behaviour of libdrm"
--		     " is consistent for flink or not.");
--	igt_subtest("import-close-race-flink") {
--		use_flink = true;
--		test_import_close_race();
--	}
--
--	igt_describe("Verify whether the behaviour of libdrm"
--		     " is consistent for prime or not.");
--	igt_subtest("import-close-race-prime") {
--		use_flink = false;
--		test_import_close_race();
--	}
--
--	igt_describe("Multithreaded test to validate the (lack of) locking in"
--		     " the flink code in libdrm.");
--	igt_subtest("flink") {
--		use_flink = true;
--
--		pthread_create(&test_thread_id1, NULL, test_thread, NULL);
--		pthread_create(&test_thread_id2, NULL, test_thread, NULL);
--		pthread_create(&test_thread_id3, NULL, test_thread, NULL);
--		pthread_create(&test_thread_id4, NULL, test_thread, NULL);
--
--		pthread_join(test_thread_id1, NULL);
--		pthread_join(test_thread_id2, NULL);
--		pthread_join(test_thread_id3, NULL);
--		pthread_join(test_thread_id4, NULL);
--	}
--
--	igt_describe("Multithreaded test to validate the (lack of) locking in"
--		     " the prime code in libdrm.");
--	igt_subtest("prime") {
--		use_flink = false;
--
--		pthread_create(&test_thread_id1, NULL, test_thread, NULL);
--		pthread_create(&test_thread_id2, NULL, test_thread, NULL);
--		pthread_create(&test_thread_id3, NULL, test_thread, NULL);
--		pthread_create(&test_thread_id4, NULL, test_thread, NULL);
--
--		pthread_join(test_thread_id1, NULL);
--		pthread_join(test_thread_id2, NULL);
--		pthread_join(test_thread_id3, NULL);
--		pthread_join(test_thread_id4, NULL);
--	}
--
--	igt_fixture {
--		close(fd);
--		close(fd1);
--	}
--}
-diff --git a/tests/meson.build b/tests/meson.build
-index 619c18b251..c6fe6a3ce6 100644
---- a/tests/meson.build
-+++ b/tests/meson.build
-@@ -10,7 +10,6 @@ test_progs = [
- 	'dmabuf_sync_file',
- 	'device_reset',
- 	'drm_buddy',
--	'drm_import_export',
- 	'drm_mm',
- 	'drm_read',
- 	'fbdev',
+-#endif /* INTEL_BUFMGR_H */
 -- 
 2.34.1
