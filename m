@@ -1,21 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 194E610E53F
- for <igt-dev@lists.freedesktop.org>; Thu, 15 Dec 2022 11:49:50 +0000 (UTC)
-Message-ID: <fcf4298a-8f6b-c1e8-58c5-bdb9bb368587@intel.com>
-Date: Thu, 15 Dec 2022 17:19:30 +0530
-To: Ashutosh Dixit <ashutosh.dixit@intel.com>,
- <igt-dev@lists.freedesktop.org>, Badal Nilawar <badal.nilawar@intel.com>
-References: <20221215023110.2436554-1-ashutosh.dixit@intel.com>
- <20221215023110.2436554-2-ashutosh.dixit@intel.com>
-Content-Language: en-US
-From: "Tauro, Riana" <riana.tauro@intel.com>
-In-Reply-To: <20221215023110.2436554-2-ashutosh.dixit@intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/alternative;
+ boundary="===============3878399864986417176=="
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t 1/3] lib/igt_sysfs: Generic verification
- of writable sysfs attributes
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Bhanuprakash Modem" <bhanuprakash.modem@intel.com>
+Date: Thu, 15 Dec 2022 12:18:22 -0000
+Message-ID: <167110670202.25117.13622576196382381608@emeril.freedesktop.org>
+References: <20221115170855.196572-1-bhanuprakash.modem@intel.com>
+In-Reply-To: <20221115170855.196572-1-bhanuprakash.modem@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgQWRkIElH?=
+ =?utf-8?q?T_support_for_Bigjoiner_=28rev10=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,160 +17,215 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
+--===============3878399864986417176==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+== Series Details ==
+
+Series: Add IGT support for Bigjoiner (rev10)
+URL   : https://patchwork.freedesktop.org/series/108183/
+State : success
+
+== Summary ==
+
+CI Bug Log - changes from CI_DRM_12509 -> IGTPW_8238
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8238/index.html
+
+Participating hosts (41 -> 33)
+------------------------------
+
+  Missing    (8): fi-kbl-soraka fi-bsw-n3050 fi-bwr-2160 fi-pnv-d510 bat-rpls-1 bat-rpls-2 fi-bsw-nick fi-skl-6600u 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_8238 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@i915_pm_rpm@basic-rte:
+    - bat-adlp-4:         [PASS][1] -> [DMESG-WARN][2] ([i915#7077])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12509/bat-adlp-4/igt@i915_pm_rpm@basic-rte.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8238/bat-adlp-4/igt@i915_pm_rpm@basic-rte.html
+
+  * igt@i915_selftest@live@gt_heartbeat:
+    - fi-skl-guc:         [PASS][3] -> [DMESG-FAIL][4] ([i915#5334])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12509/fi-skl-guc/igt@i915_selftest@live@gt_heartbeat.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8238/fi-skl-guc/igt@i915_selftest@live@gt_heartbeat.html
+
+  * igt@i915_selftest@live@hangcheck:
+    - fi-adl-ddr5:        [PASS][5] -> [DMESG-WARN][6] ([i915#5591])
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12509/fi-adl-ddr5/igt@i915_selftest@live@hangcheck.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8238/fi-adl-ddr5/igt@i915_selftest@live@hangcheck.html
+
+  * igt@runner@aborted:
+    - bat-adlp-4:         NOTRUN -> [FAIL][7] ([i915#4312])
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8238/bat-adlp-4/igt@runner@aborted.html
+
+  
+#### Possible fixes ####
+
+  * igt@gem_exec_suspend@basic-s3@smem:
+    - {bat-adlp-6}:       [DMESG-WARN][8] ([i915#2867]) -> [PASS][9]
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12509/bat-adlp-6/igt@gem_exec_suspend@basic-s3@smem.html
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8238/bat-adlp-6/igt@gem_exec_suspend@basic-s3@smem.html
+
+  * igt@i915_selftest@live@gt_heartbeat:
+    - fi-glk-j4005:       [DMESG-FAIL][10] ([i915#5334]) -> [PASS][11]
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12509/fi-glk-j4005/igt@i915_selftest@live@gt_heartbeat.html
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8238/fi-glk-j4005/igt@i915_selftest@live@gt_heartbeat.html
+
+  * igt@i915_selftest@live@migrate:
+    - {bat-adlp-6}:       [DMESG-FAIL][12] ([i915#7699]) -> [PASS][13]
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12509/bat-adlp-6/igt@i915_selftest@live@migrate.html
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8238/bat-adlp-6/igt@i915_selftest@live@migrate.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [i915#2867]: https://gitlab.freedesktop.org/drm/intel/issues/2867
+  [i915#4312]: https://gitlab.freedesktop.org/drm/intel/issues/4312
+  [i915#5334]: https://gitlab.freedesktop.org/drm/intel/issues/5334
+  [i915#5591]: https://gitlab.freedesktop.org/drm/intel/issues/5591
+  [i915#7077]: https://gitlab.freedesktop.org/drm/intel/issues/7077
+  [i915#7699]: https://gitlab.freedesktop.org/drm/intel/issues/7699
 
 
-On 12/15/2022 8:01 AM, Ashutosh Dixit wrote:
-> Attempt to verify writable sysfs attributes in a generic way, without going
-> into the specifics of any attribute. The attribute is first written to and
-> then read back and it is verified that the read value matches the written
-> value to a tolerance. However, when we try to do this we run into the issue
-> that a sysfs attribute might have a behavior where the read value is
-> different from the written value for any reason. For example, attributes
-> such as power, voltage, frequency and time typically have a linear region
-> outside which they are clamped (the values saturate). Therefore for such
-> attributes read values match the written value only in the linear region
-> and when writing we don't know if we are writing to the linear or to the
-> clamped region.
-> 
-> Therefore the verification implemented here takes the approach of sweeping
-> across the range of possible values of the attribute (this is done using
-> 'doubling' rather than linearly) and seeing where there are matches. There
-> should be at least one match for the verification to have succeeded.
-> 
-> Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
-> ---
->   lib/igt_sysfs.c | 79 +++++++++++++++++++++++++++++++++++++++++++++++++
->   lib/igt_sysfs.h | 20 +++++++++++++
->   2 files changed, 99 insertions(+)
-> 
-> diff --git a/lib/igt_sysfs.c b/lib/igt_sysfs.c
-> index a913be4c8f2..c1f8e2d8632 100644
-> --- a/lib/igt_sysfs.c
-> +++ b/lib/igt_sysfs.c
-> @@ -784,3 +784,82 @@ void fbcon_blink_enable(bool enable)
->   	write(fd, buffer, r + 1);
->   	close(fd);
->   }
-> +
-> +static bool rw_attr_equal_within_epsilon(uint64_t x, uint64_t ref, double tol)
-> +{
-> +	return (x <= (1.0 + tol) * ref) && (x >= (1.0 - tol) * ref);
-> +}
-> +
-> +/* Sweep the range of values for an attribute to identify matching reads/writes */
-> +static int rw_attr_sweep(igt_sysfs_rw_attr_t *rw)
-> +{
-> +	uint64_t get, set = rw->start;
-> +	int num_points = 0;
-> +	bool ret;
-> +
-Hi Ashutosh
+Build changes
+-------------
 
-Thanks for the clarification regarding the clamp max on the previous rev.
-done sweeping igt_debug can be retained outside the while since there is 
-no break/return anywhere else.
+  * CI: CI-20190529 -> None
+  * IGT: IGT_7094 -> IGTPW_8238
 
-Though not necessary since it behaves the same.
+  CI-20190529: 20190529
+  CI_DRM_12509: cc06f383ddbda197909a44d98ff003298aa2f2aa @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_8238: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8238/index.html
+  IGT_7094: 1763071e9d50c5e992257c9197cb26f166de6fae @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
 
-Looks good to me
-Reviewed-by: Riana Tauro <riana.tauro@intel.com>
+== Logs ==
 
-> +	igt_debug("'%s': sweeping range of values\n", rw->attr);
-> +	while (1) {
-> +		if (set >= UINT64_MAX / 2) {
-> +			igt_debug("'%s': done sweeping\n", rw->attr);
-> +			break;
-> +		}
-> +
-> +		ret = igt_sysfs_set_u64(rw->dir, rw->attr, set);
-> +		get = igt_sysfs_get_u64(rw->dir, rw->attr);
-> +		igt_debug("'%s': ret %d set %lu get %lu\n", rw->attr, ret, set, get);
-> +		if (ret && rw_attr_equal_within_epsilon(get, set, rw->tol)) {
-> +			igt_debug("'%s': matches\n", rw->attr);
-> +			num_points++;
-> +		}
-> +
-> +		set *= 2;
-> +	}
-> +
-> +	return num_points ? 0 : -ENOENT;
-> +}
-> +
-> +/**
-> + * igt_sysfs_rw_attr_verify:
-> + * @rw: 'struct igt_sysfs_rw_attr' describing a rw sysfs attr
-> + *
-> + * This function attempts to verify writable sysfs attributes, that is the
-> + * attribute is first written to and then read back and it is verified that
-> + * the read value matches the written value to a tolerance. However, when
-> + * we try to do this we run into the issue that a sysfs attribute might
-> + * have a behavior where the read value is different from the written value
-> + * for any reason. For example, attributes such as power, voltage,
-> + * frequency and time typically have a linear region outside which they are
-> + * clamped (the values saturate). Therefore for such attributes read values
-> + * match the written value only in the linear region and when writing we
-> + * don't know if we are writing to the linear or to the clamped region.
-> + *
-> + * Therefore the verification implemented here takes the approach of
-> + * sweeping across the range of possible values of the attribute (this is
-> + * done using 'doubling' rather than linearly) and seeing where there are
-> + * matches. There should be at least one match (to a tolerance) for the
-> + * verification to have succeeded.
-> + */
-> +void igt_sysfs_rw_attr_verify(igt_sysfs_rw_attr_t *rw)
-> +{
-> +	uint64_t prev, get;
-> +	struct stat st;
-> +	int ret;
-> +
-> +	igt_assert(!fstatat(rw->dir, rw->attr, &st, 0));
-> +	igt_assert(st.st_mode & 0222); /* writable */
-> +	igt_assert(rw->start);	/* cannot be 0 */
-> +
-> +	prev = igt_sysfs_get_u64(rw->dir, rw->attr);
-> +	igt_debug("'%s': prev %lu\n", rw->attr, prev);
-> +
-> +	ret = rw_attr_sweep(rw);
-> +
-> +	/*
-> +	 * Restore previous value: we don't assert before this point so
-> +	 * that we can restore the attr before asserting
-> +	 */
-> +	igt_assert_eq(1, igt_sysfs_set_u64(rw->dir, rw->attr, prev));
-> +	get = igt_sysfs_get_u64(rw->dir, rw->attr);
-> +	igt_assert_eq(get, prev);
-> +	igt_assert(!ret);
-> +}
-> diff --git a/lib/igt_sysfs.h b/lib/igt_sysfs.h
-> index 1c9791a1bdc..2e3c4813adc 100644
-> --- a/lib/igt_sysfs.h
-> +++ b/lib/igt_sysfs.h
-> @@ -125,4 +125,24 @@ void bind_fbcon(bool enable);
->   void kick_snd_hda_intel(void);
->   void fbcon_blink_enable(bool enable);
->   
-> +/**
-> + * igt_sysfs_rw_attr:
-> + * @dir: file descriptor for parent directory
-> + * @attr: name of sysfs attribute
-> + * @start: start value for searching for matching reads/writes
-> + * @tol: tolerance to use to compare written and read values
-> + * @rsvd: reserved field used internally
-> + *
-> + * Structure used to describe the rw sysfs attribute to
-> + * igt_sysfs_rw_attr_verify
-> + */
-> +typedef struct igt_sysfs_rw_attr {
-> +	int dir;
-> +	char *attr;
-> +	uint64_t start;
-> +	double tol;
-> +} igt_sysfs_rw_attr_t;
-> +
-> +void igt_sysfs_rw_attr_verify(igt_sysfs_rw_attr_t *rw);
-> +
->   #endif /* __IGT_SYSFS_H__ */
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8238/index.html
+
+--===============3878399864986417176==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Add IGT support for Bigjoiner (rev10)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/108183/">https://patchwork.freedesktop.org/series/108183/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8238/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8238/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_12509 -&gt; IGTPW_8238</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8238/index.html</p>
+<h2>Participating hosts (41 -&gt; 33)</h2>
+<p>Missing    (8): fi-kbl-soraka fi-bsw-n3050 fi-bwr-2160 fi-pnv-d510 bat-rpls-1 bat-rpls-2 fi-bsw-nick fi-skl-6600u </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_8238 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@i915_pm_rpm@basic-rte:</p>
+<ul>
+<li>bat-adlp-4:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12509/bat-adlp-4/igt@i915_pm_rpm@basic-rte.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8238/bat-adlp-4/igt@i915_pm_rpm@basic-rte.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7077">i915#7077</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@gt_heartbeat:</p>
+<ul>
+<li>fi-skl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12509/fi-skl-guc/igt@i915_selftest@live@gt_heartbeat.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8238/fi-skl-guc/igt@i915_selftest@live@gt_heartbeat.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5334">i915#5334</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@hangcheck:</p>
+<ul>
+<li>fi-adl-ddr5:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12509/fi-adl-ddr5/igt@i915_selftest@live@hangcheck.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8238/fi-adl-ddr5/igt@i915_selftest@live@hangcheck.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5591">i915#5591</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@runner@aborted:</p>
+<ul>
+<li>bat-adlp-4:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8238/bat-adlp-4/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4312">i915#4312</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@gem_exec_suspend@basic-s3@smem:</p>
+<ul>
+<li>{bat-adlp-6}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12509/bat-adlp-6/igt@gem_exec_suspend@basic-s3@smem.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2867">i915#2867</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8238/bat-adlp-6/igt@gem_exec_suspend@basic-s3@smem.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@gt_heartbeat:</p>
+<ul>
+<li>fi-glk-j4005:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12509/fi-glk-j4005/igt@i915_selftest@live@gt_heartbeat.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5334">i915#5334</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8238/fi-glk-j4005/igt@i915_selftest@live@gt_heartbeat.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@migrate:</p>
+<ul>
+<li>{bat-adlp-6}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12509/bat-adlp-6/igt@i915_selftest@live@migrate.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7699">i915#7699</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8238/bat-adlp-6/igt@i915_selftest@live@migrate.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_7094 -&gt; IGTPW_8238</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_12509: cc06f383ddbda197909a44d98ff003298aa2f2aa @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_8238: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8238/index.html<br />
+  IGT_7094: 1763071e9d50c5e992257c9197cb26f166de6fae @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============3878399864986417176==--
