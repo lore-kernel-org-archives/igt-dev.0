@@ -1,24 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0E29C10E540
- for <igt-dev@lists.freedesktop.org>; Thu, 15 Dec 2022 11:47:49 +0000 (UTC)
-Message-ID: <ec767390-93be-566c-cdef-9bddd4ca679c@intel.com>
-Date: Thu, 15 Dec 2022 12:47:37 +0100
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 194E610E53F
+ for <igt-dev@lists.freedesktop.org>; Thu, 15 Dec 2022 11:49:50 +0000 (UTC)
+Message-ID: <fcf4298a-8f6b-c1e8-58c5-bdb9bb368587@intel.com>
+Date: Thu, 15 Dec 2022 17:19:30 +0530
+To: Ashutosh Dixit <ashutosh.dixit@intel.com>,
+ <igt-dev@lists.freedesktop.org>, Badal Nilawar <badal.nilawar@intel.com>
+References: <20221215023110.2436554-1-ashutosh.dixit@intel.com>
+ <20221215023110.2436554-2-ashutosh.dixit@intel.com>
 Content-Language: en-US
-To: =?UTF-8?Q?Zbigniew_Kempczy=c5=84ski?= <zbigniew.kempczynski@intel.com>
-References: <20221212125035.51326-1-zbigniew.kempczynski@intel.com>
- <20221212125035.51326-4-zbigniew.kempczynski@intel.com>
- <b8b25523-08d1-974d-0c87-281dce06f26e@intel.com>
- <20221214195737.ai2vfag64zeloaek@zkempczy-mobl2>
- <9f486f1d-e942-9d20-75fa-253998717b30@intel.com>
- <20221215110001.misxizyfcitu3epr@zkempczy-mobl2>
-From: Karolina Stolarek <karolina.stolarek@intel.com>
-In-Reply-To: <20221215110001.misxizyfcitu3epr@zkempczy-mobl2>
+From: "Tauro, Riana" <riana.tauro@intel.com>
+In-Reply-To: <20221215023110.2436554-2-ashutosh.dixit@intel.com>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t 3/3] tests/gem_ccs: Add block-multicopy
- subtest
+Subject: Re: [igt-dev] [PATCH i-g-t 1/3] lib/igt_sysfs: Generic verification
+ of writable sysfs attributes
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,398 +23,160 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
 
 
-On 15.12.2022 12:00, Zbigniew Kempczyński wrote:
-> On Thu, Dec 15, 2022 at 09:42:56AM +0100, Karolina Stolarek wrote:
->> On 14.12.2022 20:57, Zbigniew Kempczyński wrote:
->>> On Tue, Dec 13, 2022 at 04:40:38PM +0100, Karolina Stolarek wrote:
->>>> On 12.12.2022 13:50, Zbigniew Kempczyński wrote:
->>>>> Exercise sequence of blits packed in single batch. It may reveal
->>>>> flushing/decompressing/detiling problems during execution.
->>>>> multicopy-inplace version differs from copy-inplace version with
->>>>> additional blit to same tiling format during decompression to separate
->>>>> problems visible in decompressing/detiling in one step.
->>>>>
->>>>> Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
->>>>> ---
->>>>>     tests/i915/gem_ccs.c | 262 ++++++++++++++++++++++++++++++++++++++++---
->>>>>     1 file changed, 246 insertions(+), 16 deletions(-)
->>>>>
->>>>> diff --git a/tests/i915/gem_ccs.c b/tests/i915/gem_ccs.c
->>>>> index 4ecb3e36ac..6b5f199ec7 100644
->>>>> --- a/tests/i915/gem_ccs.c
->>>>> +++ b/tests/i915/gem_ccs.c
->>>>> @@ -262,6 +262,119 @@ static void surf_copy(int i915,
->>>>>     	gem_close(i915, ccs);
->>>>>     }
->>>>> +struct blt_copy3_data {
->>>>> +	int i915;
->>>>> +	struct blt_copy_object src;
->>>>> +	struct blt_copy_object mid;
->>>>> +	struct blt_copy_object dst;
->>>>> +	struct blt_copy_object final;
->>>>> +	struct blt_copy_batch bb;
->>>>> +	enum blt_color_depth color_depth;
->>>>> +
->>>>> +	/* debug stuff */
->>>>> +	bool print_bb;
->>>>> +};
->>>>> +
->>>>> +struct blt_block_copy3_data_ext {
->>>>> +	struct blt_block_copy_object_ext src;
->>>>> +	struct blt_block_copy_object_ext mid;
->>>>> +	struct blt_block_copy_object_ext dst;
->>>>> +	struct blt_block_copy_object_ext final;
->>>>> +};
->>>>> +
->>>>> +#define FILL_OBJ(_idx, _handle, _offset, _flags) do { \
->>>>> +	obj[(_idx)].handle = (_handle); \
->>>>> +	obj[(_idx)].offset = (_offset); \
->>>>> +	obj[(_idx)++].flags = EXEC_OBJECT_PINNED | \
->>>>> +			      EXEC_OBJECT_SUPPORTS_48B_ADDRESS | (_flags) ; \
->>>>> +} while (0)
->>>>> +
->>>>
->>>> I'm not sure if we want to have a macro with a hidden side effect. "i++"
->>>> after each statement isn't pretty either, so I'm on the fence with this one.
->>>
->>> I'm aware this has side effect, but this makes main code more clear as it
->>> is not interlaced with var++ between the lines. I think reader who knows
->>> how execbuf objs works will notice there's some implicit increment in the
->>> macro.
->>
->> When I first read the code, I thought "why do we keep using the same i for
->> different objects?", and then looked at this definition. Or we could call
->> FILL_OBJ(++i, ...), but it's not pretty either.
+On 12/15/2022 8:01 AM, Ashutosh Dixit wrote:
+> Attempt to verify writable sysfs attributes in a generic way, without going
+> into the specifics of any attribute. The attribute is first written to and
+> then read back and it is verified that the read value matches the written
+> value to a tolerance. However, when we try to do this we run into the issue
+> that a sysfs attribute might have a behavior where the read value is
+> different from the written value for any reason. For example, attributes
+> such as power, voltage, frequency and time typically have a linear region
+> outside which they are clamped (the values saturate). Therefore for such
+> attributes read values match the written value only in the linear region
+> and when writing we don't know if we are writing to the linear or to the
+> clamped region.
 > 
-> This will execute increment 3 times here.
-
-Argh, you're right, silly me
-
-
-Karolina
-
-> --
-> Zbigniew
+> Therefore the verification implemented here takes the approach of sweeping
+> across the range of possible values of the attribute (this is done using
+> 'doubling' rather than linearly) and seeing where there are matches. There
+> should be at least one match for the verification to have succeeded.
 > 
->>
->>>
->>>>
->>>>> +static int blt_block_copy3(int i915,
->>>>> +			   const intel_ctx_t *ctx,
->>>>> +			   const struct intel_execution_engine2 *e,
->>>>> +			   uint64_t ahnd,
->>>>> +			   const struct blt_copy3_data *blt3,
->>>>> +			   const struct blt_block_copy3_data_ext *ext3)
->>>>> +{
->>>>> +	struct drm_i915_gem_execbuffer2 execbuf = {};
->>>>> +	struct drm_i915_gem_exec_object2 obj[5] = {};
->>>>> +	struct blt_copy_data blt0;
->>>>> +	struct blt_block_copy_data_ext ext0;
->>>>> +	uint64_t src_offset, mid_offset, dst_offset, final_offset, bb_offset, alignment;
->>>>> +	uint64_t bb_pos = 0;
->>>>> +	uint32_t *bb;
->>>>> +	int i, ret;
->>>>> +
->>>>> +	igt_assert_f(ahnd, "block-copy3 supports softpin only\n");
->>>>> +	igt_assert_f(blt3, "block-copy3 requires data to do blit\n");
->>>>> +
->>>>> +	alignment = gem_detect_safe_alignment(i915);
->>>>> +	src_offset = get_offset(ahnd, blt3->src.handle, blt3->src.size, alignment);
->>>>> +	mid_offset = get_offset(ahnd, blt3->mid.handle, blt3->mid.size, alignment);
->>>>> +	dst_offset = get_offset(ahnd, blt3->dst.handle, blt3->dst.size, alignment);
->>>>> +	final_offset = get_offset(ahnd, blt3->final.handle, blt3->final.size, alignment);
->>>>> +	bb_offset = get_offset(ahnd, blt3->bb.handle, blt3->bb.size, alignment);
->>>>> +
->>>>> +	igt_debug("src: %lx, mid: %lx, dst: %lx, final: %lx, bb: %lx, align: %lx\n",
->>>>> +		  src_offset, mid_offset, dst_offset, final_offset, bb_offset, alignment);
->>>>> +
->>>>> +	/* First blit src -> mid */
->>>>> +	memset(&blt0, 0, sizeof(blt0));
->>>>> +	blt0.src = blt3->src;
->>>>> +	blt0.dst = blt3->mid;
->>>>> +	blt0.bb = blt3->bb;
->>>>> +	blt0.color_depth = blt3->color_depth;
->>>>> +	blt0.print_bb = blt3->print_bb;
->>>>> +	ext0.src = ext3->src;
->>>>> +	ext0.dst = ext3->mid;
->>>>> +	bb_pos = emit_blt_block_copy(i915, ahnd, &blt0, &ext0, bb_pos, false);
->>>>> +
->>>>> +	/* Second blit mid -> dst */
->>>>> +	memset(&blt0, 0, sizeof(blt0));
->>>>> +	blt0.src = blt3->mid;
->>>>> +	blt0.dst = blt3->dst;
->>>>> +	blt0.bb = blt3->bb;
->>>>> +	blt0.color_depth = blt3->color_depth;
->>>>> +	blt0.print_bb = blt3->print_bb;
->>>>> +	ext0.src = ext3->mid;
->>>>> +	ext0.dst = ext3->dst;
->>>>> +	bb_pos = emit_blt_block_copy(i915, ahnd, &blt0, &ext0, bb_pos, false);
->>>>> +
->>>>> +	/* Third blit dst -> final */
->>>>> +	memset(&blt0, 0, sizeof(blt0));
->>>>> +	blt0.src = blt3->dst;
->>>>> +	blt0.dst = blt3->final;
->>>>> +	blt0.bb = blt3->bb;
->>>>> +	blt0.color_depth = blt3->color_depth;
->>>>> +	blt0.print_bb = blt3->print_bb;
->>>>> +	ext0.src = ext3->dst;
->>>>> +	ext0.dst = ext3->final;
->>>>> +	bb_pos = emit_blt_block_copy(i915, ahnd, &blt0, &ext0, bb_pos, true);
->>>>> +
->>>>> +	i = 0;
->>>>> +	FILL_OBJ(i, blt3->src.handle, CANONICAL(src_offset), 0);
->>>>> +	FILL_OBJ(i, blt3->mid.handle, CANONICAL(mid_offset), EXEC_OBJECT_WRITE);
->>>>> +	if (mid_offset != dst_offset)
->>>>> +		FILL_OBJ(i, blt3->dst.handle, CANONICAL(dst_offset), EXEC_OBJECT_WRITE);
->>>>> +	FILL_OBJ(i, blt3->final.handle, CANONICAL(final_offset), 0);
->>>>> +	FILL_OBJ(i, blt3->bb.handle, CANONICAL(bb_offset), 0);
->>>>> +
->>>>> +	execbuf.buffer_count = i;
->>>>> +
->>>>> +	for (int __i = 0; __i < i; __i++)
->>>>> +		igt_debug("obj[%d].offset: %llx, handle: %u\n",
->>>>> +			  __i, (long long) obj[__i].offset, obj[__i].handle);
->>>>> +	execbuf.buffers_ptr = to_user_pointer(obj);
->>>>> +	execbuf.rsvd1 = ctx ? ctx->id : 0;
->>>>> +	execbuf.flags = e ? e->flags : I915_EXEC_BLT;
->>>>> +	ret = __gem_execbuf(i915, &execbuf);
->>>>> +
->>>>> +	gem_sync(i915, blt3->bb.handle);
->>>>> +	munmap(bb, blt3->bb.size);
->>>>> +
->>>>> +	return ret;
->>>>> +}
->>>>> +
->>>>>     static void block_copy(int i915,
->>>>>     		       const intel_ctx_t *ctx,
->>>>>     		       const struct intel_execution_engine2 *e,
->>>>> @@ -380,10 +493,100 @@ static void block_copy(int i915,
->>>>>     	igt_assert_f(!result, "source and destination surfaces differs!\n");
->>>>>     }
->>>>> +static void block_multicopy(int i915,
->>>>> +			    const intel_ctx_t *ctx,
->>>>> +			    const struct intel_execution_engine2 *e,
->>>>> +			    uint32_t region1, uint32_t region2,
->>>>> +			    enum blt_tiling mid_tiling,
->>>>> +			    const struct test_config *config)
->>>>> +{
->>>>> +	struct blt_copy3_data blt3 = {};
->>>>> +	struct blt_block_copy3_data_ext ext3 = {}, *pext3 = &ext3;
->>>>> +	struct blt_copy_object *src, *mid, *dst, *final;
->>>>> +	const uint32_t bpp = 32;
->>>>> +	uint64_t bb_size = 4096;
->>>>> +	uint64_t ahnd = get_reloc_ahnd(i915, ctx->id);
->>>>> +	uint32_t run_id = mid_tiling;
->>>>> +	uint32_t mid_region = region2, bb;
->>>>> +	uint32_t width = param.width, height = param.height;
->>>>> +	enum blt_compression mid_compression = config->compression;
->>>>> +	int mid_compression_format = param.compression_format;
->>>>> +	enum blt_compression_type comp_type = COMPRESSION_TYPE_3D;
->>>>> +	uint8_t uc_mocs = intel_get_uc_mocs(i915);
->>>>> +	int result;
->>>>> +
->>>>> +	igt_assert(__gem_create_in_memory_regions(i915, &bb, &bb_size, region1) == 0);
->>>>> +
->>>>> +	if (!blt_supports_compression(i915))
->>>>> +		pext3 = NULL;
->>>>> +
->>>>> +	src = create_object(i915, region1, width, height, bpp, uc_mocs,
->>>>> +			    T_LINEAR, COMPRESSION_DISABLED, comp_type, true);
->>>>> +	mid = create_object(i915, mid_region, width, height, bpp, uc_mocs,
->>>>> +			    mid_tiling, mid_compression, comp_type, true);
->>>>> +	dst = create_object(i915, region1, width, height, bpp, uc_mocs,
->>>>> +			    mid_tiling, COMPRESSION_DISABLED, comp_type, true);
->>>>> +	final = create_object(i915, region1, width, height, bpp, uc_mocs,
->>>>> +			    T_LINEAR, COMPRESSION_DISABLED, comp_type, true);
->>>>> +	igt_assert(src->size == dst->size);
->>>>> +	PRINT_SURFACE_INFO("src", src);
->>>>> +	PRINT_SURFACE_INFO("mid", mid);
->>>>> +	PRINT_SURFACE_INFO("dst", dst);
->>>>> +	PRINT_SURFACE_INFO("final", final);
->>>>> +
->>>>> +	blt_surface_fill_rect(i915, src, width, height);
->>>>> +
->>>>> +	memset(&blt3, 0, sizeof(blt3));
->>>>> +	blt3.color_depth = CD_32bit;
->>>>> +	blt3.print_bb = param.print_bb;
->>>>> +	set_blt_object(&blt3.src, src);
->>>>> +	set_blt_object(&blt3.mid, mid);
->>>>> +	set_blt_object(&blt3.dst, dst);
->>>>> +	set_blt_object(&blt3.final, final);
->>>>> +
->>>>> +	if (config->inplace) {
->>>>> +		set_object(&blt3.dst, mid->handle, dst->size, mid->region, mid->mocs,
->>>>> +			   mid_tiling, COMPRESSION_DISABLED, comp_type);
->>>>> +		blt3.dst.ptr = mid->ptr;
->>>>> +	}
->>>>> +
->>>>> +	set_object_ext(&ext3.src, 0, width, height, SURFACE_TYPE_2D);
->>>>> +	set_object_ext(&ext3.mid, mid_compression_format, width, height, SURFACE_TYPE_2D);
->>>>> +	set_object_ext(&ext3.dst, 0, width, height, SURFACE_TYPE_2D);
->>>>> +	set_object_ext(&ext3.final, 0, width, height, SURFACE_TYPE_2D);
->>>>> +	set_batch(&blt3.bb, bb, bb_size, region1);
->>>>> +
->>>>> +	blt_block_copy3(i915, ctx, e, ahnd, &blt3, pext3);
->>>>> +	gem_sync(i915, blt3.final.handle);
->>>>> +
->>>>> +	WRITE_PNG(i915, run_id, "src", &blt3.src, width, height);
->>>>> +	if (!config->inplace)
->>>>> +		WRITE_PNG(i915, run_id, "mid", &blt3.mid, width, height);
->>>>> +	WRITE_PNG(i915, run_id, "dst", &blt3.dst, width, height);
->>>>> +	WRITE_PNG(i915, run_id, "final", &blt3.final, width, height);
->>>>> +
->>>>> +	result = memcmp(src->ptr, blt3.final.ptr, src->size);
->>>>> +
->>>>> +	destroy_object(i915, src);
->>>>> +	destroy_object(i915, mid);
->>>>> +	destroy_object(i915, dst);
->>>>> +	destroy_object(i915, final);
->>>>> +	gem_close(i915, bb);
->>>>> +	put_ahnd(ahnd);
->>>>> +
->>>>> +	igt_assert_f(!result, "source and destination surfaces differs!\n");
->>>>> +}
->>>>> +
->>>>> +enum copy_func {
->>>>> +	BLOCK_COPY,
->>>>> +	BLOCK_MULTICOPY,
->>>>> +};
->>>>> +
->>>>
->>>> I was thinking if we need a simple case here (i.e. one emit, src->dst)
->>>
->>> What tiling you want to blit? linear -> linear? linear -> tileN? How to
->>> verify it works? fmt1 -> fmt2 -> fmt1 is equal to fmt1 -> fmt2 (detile
->>> fmt2 -> linear on cpu).
->>>
->>> At the moment we don't verify middle surface, only assume src == dst
->>> is fine with middle blit.
->>
->> I thought about linear->linear in the beginning, but maybe it would make
->> more sense to wait for predicates that can check the middle layer and work
->> with different tilings. It can stay like this for now.
->>
->> Many thanks,
->> Karolina
->>
->>>
->>> --
->>> Zbigniew
->>>
->>>>
->>>>>     static void block_copy_test(int i915,
->>>>>     			    const struct test_config *config,
->>>>>     			    const intel_ctx_t *ctx,
->>>>> -			    struct igt_collection *set)
->>>>> +			    struct igt_collection *set,
->>>>> +			    enum copy_func copy_function)
->>>>>     {
->>>>>     	struct igt_collection *regions;
->>>>>     	const struct intel_execution_engine2 *e;
->>>>> @@ -415,15 +618,27 @@ static void block_copy_test(int i915,
->>>>>     					continue;
->>>>>     				regtxt = memregion_dynamic_subtest_name(regions);
->>>>> -				igt_dynamic_f("%s-%s-compfmt%d-%s",
->>>>> -					      blt_tiling_name(tiling),
->>>>> -					      config->compression ?
->>>>> -						      "compressed" : "uncompressed",
->>>>> -					      param.compression_format, regtxt) {
->>>>> -					block_copy(i915, ctx, e,
->>>>> -						   region1, region2,
->>>>> -						   tiling, config);
->>>>> -				}
->>>>> +
->>>>> +				if (copy_function == BLOCK_COPY)
->>>>> +					igt_dynamic_f("%s-%s-compfmt%d-%s",
->>>>> +						      blt_tiling_name(tiling),
->>>>> +						      config->compression ?
->>>>> +							      "compressed" : "uncompressed",
->>>>> +						      param.compression_format, regtxt) {
->>>>> +						block_copy(i915, ctx, e,
->>>>> +							   region1, region2,
->>>>> +							   tiling, config);
->>>>> +					}
->>>>> +				else if (copy_function == BLOCK_MULTICOPY)
->>>>> +					igt_dynamic_f("%s-%s-compfmt%d-%s-multicopy",
->>>>> +						      blt_tiling_name(tiling),
->>>>> +						      config->compression ?
->>>>> +							      "compressed" : "uncompressed",
->>>>> +						      param.compression_format, regtxt) {
->>>>> +						block_multicopy(i915, ctx, e,
->>>>> +								region1, region2,
->>>>> +								tiling, config);
->>>>> +					}
->>>>
->>>> We could avoid repetition to some extent if we had introduced a macro that
->>>> accepts a function pointer and/or some config data. But I don't feel
->>>> strongly about it, just putting it out there.
->>>>
->>>> Many thanks,
->>>> Karolina
->>>>
->>>>>     				free(regtxt);
->>>>>     			}
->>>>>     		}
->>>>> @@ -506,14 +721,21 @@ igt_main_args("bf:pst:W:H:", NULL, help_str, opt_handler, NULL)
->>>>>     	igt_subtest_with_dynamic("block-copy-uncompressed") {
->>>>>     		struct test_config config = {};
->>>>> -		block_copy_test(i915, &config, ctx, set);
->>>>> +		block_copy_test(i915, &config, ctx, set, BLOCK_COPY);
->>>>>     	}
->>>>>     	igt_describe("Check block-copy flatccs compressed blit");
->>>>>     	igt_subtest_with_dynamic("block-copy-compressed") {
->>>>>     		struct test_config config = { .compression = true };
->>>>> -		block_copy_test(i915, &config, ctx, set);
->>>>> +		block_copy_test(i915, &config, ctx, set, BLOCK_COPY);
->>>>> +	}
->>>>> +
->>>>> +	igt_describe("Check block-multicopy flatccs compressed blit");
->>>>> +	igt_subtest_with_dynamic("block-multicopy-compressed") {
->>>>> +		struct test_config config = { .compression = true };
->>>>> +
->>>>> +		block_copy_test(i915, &config, ctx, set, BLOCK_MULTICOPY);
->>>>>     	}
->>>>>     	igt_describe("Check block-copy flatccs inplace decompression blit");
->>>>> @@ -521,7 +743,15 @@ igt_main_args("bf:pst:W:H:", NULL, help_str, opt_handler, NULL)
->>>>>     		struct test_config config = { .compression = true,
->>>>>     					      .inplace = true };
->>>>> -		block_copy_test(i915, &config, ctx, set);
->>>>> +		block_copy_test(i915, &config, ctx, set, BLOCK_COPY);
->>>>> +	}
->>>>> +
->>>>> +	igt_describe("Check block-multicopy flatccs inplace decompression blit");
->>>>> +	igt_subtest_with_dynamic("block-multicopy-inplace") {
->>>>> +		struct test_config config = { .compression = true,
->>>>> +					      .inplace = true };
->>>>> +
->>>>> +		block_copy_test(i915, &config, ctx, set, BLOCK_MULTICOPY);
->>>>>     	}
->>>>>     	igt_describe("Check flatccs data can be copied from/to surface");
->>>>> @@ -529,7 +759,7 @@ igt_main_args("bf:pst:W:H:", NULL, help_str, opt_handler, NULL)
->>>>>     		struct test_config config = { .compression = true,
->>>>>     					      .surfcopy = true };
->>>>> -		block_copy_test(i915, &config, ctx, set);
->>>>> +		block_copy_test(i915, &config, ctx, set, BLOCK_COPY);
->>>>>     	}
->>>>>     	igt_describe("Check flatccs data are physically tagged and visible"
->>>>> @@ -539,7 +769,7 @@ igt_main_args("bf:pst:W:H:", NULL, help_str, opt_handler, NULL)
->>>>>     					      .surfcopy = true,
->>>>>     					      .new_ctx = true };
->>>>> -		block_copy_test(i915, &config, ctx, set);
->>>>> +		block_copy_test(i915, &config, ctx, set, BLOCK_COPY);
->>>>>     	}
->>>>>     	igt_describe("Check flatccs data persists after suspend / resume (S0)");
->>>>> @@ -548,7 +778,7 @@ igt_main_args("bf:pst:W:H:", NULL, help_str, opt_handler, NULL)
->>>>>     					      .surfcopy = true,
->>>>>     					      .suspend_resume = true };
->>>>> -		block_copy_test(i915, &config, ctx, set);
->>>>> +		block_copy_test(i915, &config, ctx, set, BLOCK_COPY);
->>>>>     	}
->>>>>     	igt_fixture {
+> Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
+> ---
+>   lib/igt_sysfs.c | 79 +++++++++++++++++++++++++++++++++++++++++++++++++
+>   lib/igt_sysfs.h | 20 +++++++++++++
+>   2 files changed, 99 insertions(+)
+> 
+> diff --git a/lib/igt_sysfs.c b/lib/igt_sysfs.c
+> index a913be4c8f2..c1f8e2d8632 100644
+> --- a/lib/igt_sysfs.c
+> +++ b/lib/igt_sysfs.c
+> @@ -784,3 +784,82 @@ void fbcon_blink_enable(bool enable)
+>   	write(fd, buffer, r + 1);
+>   	close(fd);
+>   }
+> +
+> +static bool rw_attr_equal_within_epsilon(uint64_t x, uint64_t ref, double tol)
+> +{
+> +	return (x <= (1.0 + tol) * ref) && (x >= (1.0 - tol) * ref);
+> +}
+> +
+> +/* Sweep the range of values for an attribute to identify matching reads/writes */
+> +static int rw_attr_sweep(igt_sysfs_rw_attr_t *rw)
+> +{
+> +	uint64_t get, set = rw->start;
+> +	int num_points = 0;
+> +	bool ret;
+> +
+Hi Ashutosh
+
+Thanks for the clarification regarding the clamp max on the previous rev.
+done sweeping igt_debug can be retained outside the while since there is 
+no break/return anywhere else.
+
+Though not necessary since it behaves the same.
+
+Looks good to me
+Reviewed-by: Riana Tauro <riana.tauro@intel.com>
+
+> +	igt_debug("'%s': sweeping range of values\n", rw->attr);
+> +	while (1) {
+> +		if (set >= UINT64_MAX / 2) {
+> +			igt_debug("'%s': done sweeping\n", rw->attr);
+> +			break;
+> +		}
+> +
+> +		ret = igt_sysfs_set_u64(rw->dir, rw->attr, set);
+> +		get = igt_sysfs_get_u64(rw->dir, rw->attr);
+> +		igt_debug("'%s': ret %d set %lu get %lu\n", rw->attr, ret, set, get);
+> +		if (ret && rw_attr_equal_within_epsilon(get, set, rw->tol)) {
+> +			igt_debug("'%s': matches\n", rw->attr);
+> +			num_points++;
+> +		}
+> +
+> +		set *= 2;
+> +	}
+> +
+> +	return num_points ? 0 : -ENOENT;
+> +}
+> +
+> +/**
+> + * igt_sysfs_rw_attr_verify:
+> + * @rw: 'struct igt_sysfs_rw_attr' describing a rw sysfs attr
+> + *
+> + * This function attempts to verify writable sysfs attributes, that is the
+> + * attribute is first written to and then read back and it is verified that
+> + * the read value matches the written value to a tolerance. However, when
+> + * we try to do this we run into the issue that a sysfs attribute might
+> + * have a behavior where the read value is different from the written value
+> + * for any reason. For example, attributes such as power, voltage,
+> + * frequency and time typically have a linear region outside which they are
+> + * clamped (the values saturate). Therefore for such attributes read values
+> + * match the written value only in the linear region and when writing we
+> + * don't know if we are writing to the linear or to the clamped region.
+> + *
+> + * Therefore the verification implemented here takes the approach of
+> + * sweeping across the range of possible values of the attribute (this is
+> + * done using 'doubling' rather than linearly) and seeing where there are
+> + * matches. There should be at least one match (to a tolerance) for the
+> + * verification to have succeeded.
+> + */
+> +void igt_sysfs_rw_attr_verify(igt_sysfs_rw_attr_t *rw)
+> +{
+> +	uint64_t prev, get;
+> +	struct stat st;
+> +	int ret;
+> +
+> +	igt_assert(!fstatat(rw->dir, rw->attr, &st, 0));
+> +	igt_assert(st.st_mode & 0222); /* writable */
+> +	igt_assert(rw->start);	/* cannot be 0 */
+> +
+> +	prev = igt_sysfs_get_u64(rw->dir, rw->attr);
+> +	igt_debug("'%s': prev %lu\n", rw->attr, prev);
+> +
+> +	ret = rw_attr_sweep(rw);
+> +
+> +	/*
+> +	 * Restore previous value: we don't assert before this point so
+> +	 * that we can restore the attr before asserting
+> +	 */
+> +	igt_assert_eq(1, igt_sysfs_set_u64(rw->dir, rw->attr, prev));
+> +	get = igt_sysfs_get_u64(rw->dir, rw->attr);
+> +	igt_assert_eq(get, prev);
+> +	igt_assert(!ret);
+> +}
+> diff --git a/lib/igt_sysfs.h b/lib/igt_sysfs.h
+> index 1c9791a1bdc..2e3c4813adc 100644
+> --- a/lib/igt_sysfs.h
+> +++ b/lib/igt_sysfs.h
+> @@ -125,4 +125,24 @@ void bind_fbcon(bool enable);
+>   void kick_snd_hda_intel(void);
+>   void fbcon_blink_enable(bool enable);
+>   
+> +/**
+> + * igt_sysfs_rw_attr:
+> + * @dir: file descriptor for parent directory
+> + * @attr: name of sysfs attribute
+> + * @start: start value for searching for matching reads/writes
+> + * @tol: tolerance to use to compare written and read values
+> + * @rsvd: reserved field used internally
+> + *
+> + * Structure used to describe the rw sysfs attribute to
+> + * igt_sysfs_rw_attr_verify
+> + */
+> +typedef struct igt_sysfs_rw_attr {
+> +	int dir;
+> +	char *attr;
+> +	uint64_t start;
+> +	double tol;
+> +} igt_sysfs_rw_attr_t;
+> +
+> +void igt_sysfs_rw_attr_verify(igt_sysfs_rw_attr_t *rw);
+> +
+>   #endif /* __IGT_SYSFS_H__ */
