@@ -1,15 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1538F10E5F6
- for <igt-dev@lists.freedesktop.org>; Fri, 16 Dec 2022 16:30:03 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 69E5C10E5FB
+ for <igt-dev@lists.freedesktop.org>; Fri, 16 Dec 2022 16:30:13 +0000 (UTC)
 From: =?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>
 To: igt-dev@lists.freedesktop.org
-Date: Fri, 16 Dec 2022 13:28:50 -0300
-Message-Id: <20221216162854.294042-1-mcanal@igalia.com>
+Date: Fri, 16 Dec 2022 13:28:54 -0300
+Message-Id: <20221216162854.294042-5-mcanal@igalia.com>
+In-Reply-To: <20221216162854.294042-1-mcanal@igalia.com>
+References: <20221216162854.294042-1-mcanal@igalia.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v3 0/5] VC4 IGT Tests Updates
+Subject: [igt-dev] [PATCH i-g-t v3 4/5] tests/vc4: Skip VC4 tests if they
+ are running on BCM2711/RaspberryPi4
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,65 +26,149 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-This series aims to update the VC4 IGT tests. The first three patches contain
-some janitorial duties related to the existing tests: creating a folder for the
-VC4 tests, removing some unused includes, and adding a macro with the default
-PAGE_SIZE. The fourth patch adds an igt_require to all the VC4 tests to
-check that the tests are not running on BCM2711. The final patch includes
-new tests for the VC4's performance monitors.
+Currently, if the VC4 tests are run on BCM2711/Raspberry Pi 4, they will
+fail with no warning. So, add igt_require to the VC4 tests to check if
+VC4 has rendering capabilities before running the tests.
 
-This series was tested on the Raspberry Pi 3 Model B and Raspberry Pi 4 Model B,
-and the HTML outputs of the VC4 tests are available on:
+In order to check if VC4 is running on BCM2711/Raspberry Pi 4, create a
+function that checks if the vc4 driver has syncobj capabilities. If not so,
+it means that the tests are being run on BCM2711/Raspberry Pi 4, as vc5
+doesn't have syncobj capabilities.
 
-- Raspberry Pi 4: https://mairacanal.fedorapeople.org/igt-results/rpi4-v2/html/
-- Raspberry Pi 3: https://mairacanal.fedorapeople.org/igt-results/rpi3-v2/html/
+Signed-off-by: Maíra Canal <mcanal@igalia.com>
+---
+ lib/igt_vc4.c               | 12 ++++++++++++
+ lib/igt_vc4.h               |  1 +
+ tests/vc4/vc4_create_bo.c   |  1 +
+ tests/vc4/vc4_dmabuf_poll.c |  4 +++-
+ tests/vc4/vc4_label_bo.c    |  4 +++-
+ tests/vc4/vc4_tiling.c      |  4 +++-
+ tests/vc4/vc4_wait_bo.c     |  1 +
+ tests/vc4/vc4_wait_seqno.c  |  4 +++-
+ 8 files changed, 27 insertions(+), 4 deletions(-)
 
-Best Regards,
-- Maíra Canal
-
-v1 -> v2:
-- Install VC4 tests on build/tests/vc4/ instead of build/tests/ (Melissa Wen).
-- Use the syncobj capability to identify vc4 and vc5 (Melissa Wen).
-- Change the order of the commits (Melissa Wen).
-- Add Petri Latvala tags.
-
-v2 -> v3:
-- Remove ternary conditional operator from return (Petri Latvala).
-- Add Petri Latvala tag.
-
-Maíra Canal (5):
-  tests/vc4: Move VC4 tests to their own folder
-  tests/vc4: Remove unused or redundant includes
-  lib/igt_vc4: Add PAGE_SIZE macro to VC4
-  tests/vc4: Skip VC4 tests if they are running on BCM2711/RaspberryPi4
-  tests/vc4_perfmon: Create test for VC4's Perfmon IOCTLs
-
- lib/igt_vc4.c                      |  60 ++++++++++---
- lib/igt_vc4.h                      |   9 ++
- meson.build                        |   8 ++
- tests/meson.build                  |  10 +--
- tests/vc4/meson.build              |  20 +++++
- tests/{ => vc4}/vc4_create_bo.c    |  15 +---
- tests/{ => vc4}/vc4_dmabuf_poll.c  |  14 +--
- tests/{ => vc4}/vc4_label_bo.c     |  21 ++---
- tests/{ => vc4}/vc4_lookup_fail.c  |  14 +--
- tests/vc4/vc4_perfmon.c            | 138 +++++++++++++++++++++++++++++
- tests/{ => vc4}/vc4_purgeable_bo.c |  10 ---
- tests/{ => vc4}/vc4_tiling.c       |  27 ++----
- tests/{ => vc4}/vc4_wait_bo.c      |  14 +--
- tests/{ => vc4}/vc4_wait_seqno.c   |  15 +---
- tests/vc4_ci/vc4.testlist          |  80 +++++++++--------
- 15 files changed, 298 insertions(+), 157 deletions(-)
- create mode 100644 tests/vc4/meson.build
- rename tests/{ => vc4}/vc4_create_bo.c (89%)
- rename tests/{ => vc4}/vc4_dmabuf_poll.c (91%)
- rename tests/{ => vc4}/vc4_label_bo.c (85%)
- rename tests/{ => vc4}/vc4_lookup_fail.c (90%)
- create mode 100644 tests/vc4/vc4_perfmon.c
- rename tests/{ => vc4}/vc4_purgeable_bo.c (97%)
- rename tests/{ => vc4}/vc4_tiling.c (88%)
- rename tests/{ => vc4}/vc4_wait_bo.c (92%)
- rename tests/{ => vc4}/vc4_wait_seqno.c (89%)
-
+diff --git a/lib/igt_vc4.c b/lib/igt_vc4.c
+index 54718cee..2c86bd93 100644
+--- a/lib/igt_vc4.c
++++ b/lib/igt_vc4.c
+@@ -59,6 +59,18 @@ bool igt_vc4_is_tiled(uint64_t modifier)
+ 	}
+ }
+ 
++bool igt_vc4_is_v3d(int fd)
++{
++	uint64_t value;
++
++	/*
++	 * vc5 doesn't have syncobj capabilities, only vc4.
++	 */
++	if (drmGetCap(fd, DRM_CAP_SYNCOBJ, &value))
++		return false;
++	return value;
++}
++
+ /**
+  * igt_vc4_get_cleared_bo:
+  * @fd: device file descriptor
+diff --git a/lib/igt_vc4.h b/lib/igt_vc4.h
+index ddce90da..79a6ab7d 100644
+--- a/lib/igt_vc4.h
++++ b/lib/igt_vc4.h
+@@ -34,6 +34,7 @@ void *igt_vc4_mmap_bo(int fd, uint32_t handle, uint32_t size, unsigned prot);
+ int igt_vc4_get_param(int fd, uint32_t param, uint64_t *val);
+ bool igt_vc4_purgeable_bo(int fd, int handle, bool purgeable);
+ bool igt_vc4_is_tiled(uint64_t modifier);
++bool igt_vc4_is_v3d(int fd);
+ 
+ void igt_vc4_set_tiling(int fd, uint32_t handle, uint64_t modifier);
+ uint64_t igt_vc4_get_tiling(int fd, uint32_t handle);
+diff --git a/tests/vc4/vc4_create_bo.c b/tests/vc4/vc4_create_bo.c
+index c4909b49..c17f25b0 100644
+--- a/tests/vc4/vc4_create_bo.c
++++ b/tests/vc4/vc4_create_bo.c
+@@ -30,6 +30,7 @@ igt_main
+ 
+ 	igt_fixture {
+ 		fd = drm_open_driver(DRIVER_VC4);
++		igt_require(igt_vc4_is_v3d(fd));
+ 	}
+ 
+ 	igt_subtest("create-bo-4096") {
+diff --git a/tests/vc4/vc4_dmabuf_poll.c b/tests/vc4/vc4_dmabuf_poll.c
+index da99964b..c76d4950 100644
+--- a/tests/vc4/vc4_dmabuf_poll.c
++++ b/tests/vc4/vc4_dmabuf_poll.c
+@@ -59,8 +59,10 @@ igt_main
+ {
+ 	int fd;
+ 
+-	igt_fixture
++	igt_fixture {
+ 		fd = drm_open_driver(DRIVER_VC4);
++		igt_require(igt_vc4_is_v3d(fd));
++	}
+ 
+ 	igt_subtest("poll-write-waits-until-write-done") {
+ 		poll_write_bo_test(fd, POLLOUT);
+diff --git a/tests/vc4/vc4_label_bo.c b/tests/vc4/vc4_label_bo.c
+index dd8b5f9a..252bd1ed 100644
+--- a/tests/vc4/vc4_label_bo.c
++++ b/tests/vc4/vc4_label_bo.c
+@@ -43,8 +43,10 @@ igt_main
+ {
+ 	int fd;
+ 
+-	igt_fixture
++	igt_fixture {
+ 		fd = drm_open_driver(DRIVER_VC4);
++		igt_require(igt_vc4_is_v3d(fd));
++	}
+ 
+ 	igt_subtest("set-label") {
+ 		int handle = igt_vc4_create_bo(fd, PAGE_SIZE);
+diff --git a/tests/vc4/vc4_tiling.c b/tests/vc4/vc4_tiling.c
+index 372b1fed..f5bf31f5 100644
+--- a/tests/vc4/vc4_tiling.c
++++ b/tests/vc4/vc4_tiling.c
+@@ -28,8 +28,10 @@ igt_main
+ {
+ 	int fd;
+ 
+-	igt_fixture
++	igt_fixture {
+ 		fd = drm_open_driver(DRIVER_VC4);
++		igt_require(igt_vc4_is_v3d(fd));
++	}
+ 
+ 	igt_subtest("get-bad-handle") {
+ 		struct drm_vc4_get_tiling get = {
+diff --git a/tests/vc4/vc4_wait_bo.c b/tests/vc4/vc4_wait_bo.c
+index 386642b9..c88a4ac4 100644
+--- a/tests/vc4/vc4_wait_bo.c
++++ b/tests/vc4/vc4_wait_bo.c
+@@ -64,6 +64,7 @@ igt_main
+ 
+ 	igt_fixture {
+ 		fd = drm_open_driver(DRIVER_VC4);
++		igt_require(igt_vc4_is_v3d(fd));
+ 		bo_handle = igt_vc4_create_bo(fd, PAGE_SIZE);
+ 	}
+ 
+diff --git a/tests/vc4/vc4_wait_seqno.c b/tests/vc4/vc4_wait_seqno.c
+index 61485bbf..78984fa3 100644
+--- a/tests/vc4/vc4_wait_seqno.c
++++ b/tests/vc4/vc4_wait_seqno.c
+@@ -28,8 +28,10 @@ igt_main
+ {
+ 	int fd;
+ 
+-	igt_fixture
++	igt_fixture {
+ 		fd = drm_open_driver(DRIVER_VC4);
++		igt_require(igt_vc4_is_v3d(fd));
++	}
+ 
+ 	/* A 64-bit seqno should never hit the maximum value over the
+ 	 * lifetime of the system.  (A submit per 1000 cycles at 1Ghz
 -- 
 2.38.1
