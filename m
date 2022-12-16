@@ -1,18 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5EE9010E5F6
- for <igt-dev@lists.freedesktop.org>; Fri, 16 Dec 2022 16:30:07 +0000 (UTC)
-From: =?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C49C110E152
+ for <igt-dev@lists.freedesktop.org>; Fri, 16 Dec 2022 19:16:26 +0000 (UTC)
+From: Mohammed Thasleem <mohammed.thasleem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Fri, 16 Dec 2022 13:28:52 -0300
-Message-Id: <20221216162854.294042-3-mcanal@igalia.com>
-In-Reply-To: <20221216162854.294042-1-mcanal@igalia.com>
-References: <20221216162854.294042-1-mcanal@igalia.com>
+Date: Sat, 17 Dec 2022 00:41:24 +0530
+Message-Id: <20221216191124.27930-1-mohammed.thasleem@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v3 2/5] tests/vc4: Remove unused or
- redundant includes
+Subject: [igt-dev] [PATCH i-g-t] tests/i915/i915_pm_dc : Check DC5 state
+ with externel active panel
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,246 +17,68 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: petri.latvala@intel.com, Emma Anholt <emma@anholt.net>,
- Maxime Ripard <maxime@cerno.tech>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-The VC4 test files contain some includes that aren't required for
-compilation: some includes are simply not used and others are included
-through other headers. Simplify the code by removing unused includes.
+This test validates negative scenario of DC5 state by keeping
+all connectors's DPMS property set to ON.
 
-Reviewed-by: Petri Latvala <petri.latvala@intel.com>
-Signed-off-by: Maíra Canal <mcanal@igalia.com>
+Signed-off-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
 ---
- lib/igt_vc4.c                | 14 --------------
- lib/igt_vc4.h                |  2 ++
- tests/vc4/vc4_create_bo.c    | 10 ----------
- tests/vc4/vc4_dmabuf_poll.c  | 10 ----------
- tests/vc4/vc4_label_bo.c     | 11 -----------
- tests/vc4/vc4_lookup_fail.c  | 10 ----------
- tests/vc4/vc4_purgeable_bo.c | 10 ----------
- tests/vc4/vc4_tiling.c       | 11 -----------
- tests/vc4/vc4_wait_bo.c      |  9 ---------
- tests/vc4/vc4_wait_seqno.c   | 11 +----------
- 10 files changed, 3 insertions(+), 95 deletions(-)
+ tests/i915/i915_pm_dc.c | 26 ++++++++++++++++++++++++++
+ 1 file changed, 26 insertions(+)
 
-diff --git a/lib/igt_vc4.c b/lib/igt_vc4.c
-index 4415fa32..54718cee 100644
---- a/lib/igt_vc4.c
-+++ b/lib/igt_vc4.c
-@@ -21,25 +21,11 @@
-  * IN THE SOFTWARE.
-  */
+diff --git a/tests/i915/i915_pm_dc.c b/tests/i915/i915_pm_dc.c
+index ba49d014..ebbf5fc9 100644
+--- a/tests/i915/i915_pm_dc.c
++++ b/tests/i915/i915_pm_dc.c
+@@ -246,6 +246,13 @@ static void check_dc_counter(data_t *data, int dc_flag, uint32_t prev_dc_count)
+ 		     data->debugfs_dump = igt_sysfs_get(data->debugfs_fd, PWR_DOMAIN_INFO));
+ }
  
--#include <assert.h>
--#include <string.h>
--#include <signal.h>
--#include <errno.h>
--#include <sys/mman.h>
--#include <sys/types.h>
--#include <sys/stat.h>
--#include <sys/ioctl.h>
--#include <fcntl.h>
--
- #include "drmtest.h"
- #include "igt_aux.h"
--#include "igt_core.h"
- #include "igt_fb.h"
- #include "igt_vc4.h"
- #include "ioctl_wrappers.h"
--#include "intel_reg.h"
--#include "intel_chipset.h"
--#include "vc4_drm.h"
- #include "vc4_packet.h"
- 
- #if NEW_CONTEXT_PARAM_NO_ERROR_CAPTURE_API
-diff --git a/lib/igt_vc4.h b/lib/igt_vc4.h
-index f32bf398..a088d0a3 100644
---- a/lib/igt_vc4.h
-+++ b/lib/igt_vc4.h
-@@ -24,6 +24,8 @@
- #ifndef IGT_VC4_H
- #define IGT_VC4_H
- 
-+#include "vc4_drm.h"
++static void check_dc_counter_negative(data_t *data, int dc_flag, uint32_t prev_dc_count)
++{
++	igt_assert_f(!dc_state_wait_entry(data->debugfs_fd, dc_flag, prev_dc_count),
++			"%s state is achieved\n%s:\n%s\n", dc_state_name(dc_flag), PWR_DOMAIN_INFO,
++			data->debugfs_dump = igt_sysfs_get(data->debugfs_fd, PWR_DOMAIN_INFO));
++}
 +
- uint32_t igt_vc4_get_cleared_bo(int fd, size_t size, uint32_t clearval);
- int igt_vc4_create_bo(int fd, size_t size);
- void *igt_vc4_mmap_bo(int fd, uint32_t handle, uint32_t size, unsigned prot);
-diff --git a/tests/vc4/vc4_create_bo.c b/tests/vc4/vc4_create_bo.c
-index 99d180a8..46d1c954 100644
---- a/tests/vc4/vc4_create_bo.c
-+++ b/tests/vc4/vc4_create_bo.c
-@@ -23,16 +23,6 @@
- 
- #include "igt.h"
- #include "igt_vc4.h"
--#include <unistd.h>
--#include <stdlib.h>
--#include <stdio.h>
--#include <string.h>
--#include <fcntl.h>
--#include <inttypes.h>
--#include <errno.h>
--#include <sys/stat.h>
--#include <sys/ioctl.h>
--#include "vc4_drm.h"
- 
- igt_main
+ static void setup_videoplayback(data_t *data)
  {
-diff --git a/tests/vc4/vc4_dmabuf_poll.c b/tests/vc4/vc4_dmabuf_poll.c
-index 260e30c3..da99964b 100644
---- a/tests/vc4/vc4_dmabuf_poll.c
-+++ b/tests/vc4/vc4_dmabuf_poll.c
-@@ -23,17 +23,7 @@
+ 	color_t red_green_blue[] = {
+@@ -411,6 +418,18 @@ static void test_dc_state_dpms(data_t *data, int dc_flag)
+ 	cleanup_dc_dpms(data);
+ }
  
- #include "igt.h"
- #include "igt_vc4.h"
--#include <unistd.h>
--#include <stdlib.h>
--#include <stdio.h>
--#include <string.h>
--#include <fcntl.h>
--#include <inttypes.h>
--#include <errno.h>
--#include <sys/stat.h>
--#include <sys/ioctl.h>
- #include <poll.h>
--#include "vc4_drm.h"
- 
- static void
- poll_write_bo_test(int fd, int poll_flag)
-diff --git a/tests/vc4/vc4_label_bo.c b/tests/vc4/vc4_label_bo.c
-index 7510f87d..6fc53ce8 100644
---- a/tests/vc4/vc4_label_bo.c
-+++ b/tests/vc4/vc4_label_bo.c
-@@ -23,17 +23,6 @@
- 
- #include "igt.h"
- #include "igt_vc4.h"
--#include <unistd.h>
--#include <stdlib.h>
--#include <stdio.h>
--#include <string.h>
--#include <fcntl.h>
--#include <inttypes.h>
--#include <errno.h>
--#include <sys/stat.h>
--#include <sys/ioctl.h>
--#include <poll.h>
--#include "vc4_drm.h"
- 
- static void
- set_label(int fd, int handle, const char *name, int err)
-diff --git a/tests/vc4/vc4_lookup_fail.c b/tests/vc4/vc4_lookup_fail.c
-index f0234ee5..e5a03540 100644
---- a/tests/vc4/vc4_lookup_fail.c
-+++ b/tests/vc4/vc4_lookup_fail.c
-@@ -22,16 +22,6 @@
-  */
- 
- #include "igt.h"
--#include <assert.h>
--#include <unistd.h>
--#include <stdlib.h>
--#include <stdio.h>
--#include <string.h>
--#include <fcntl.h>
--#include <inttypes.h>
--#include <errno.h>
--#include <sys/stat.h>
--#include <sys/ioctl.h>
- #include "vc4_drm.h"
- #include "vc4_packet.h"
- 
-diff --git a/tests/vc4/vc4_purgeable_bo.c b/tests/vc4/vc4_purgeable_bo.c
-index d9f7547f..676bc1f3 100644
---- a/tests/vc4/vc4_purgeable_bo.c
-+++ b/tests/vc4/vc4_purgeable_bo.c
-@@ -23,17 +23,7 @@
- 
- #include "igt.h"
- #include "igt_vc4.h"
--#include <unistd.h>
- #include <signal.h>
--#include <stdlib.h>
--#include <stdio.h>
--#include <string.h>
--#include <fcntl.h>
--#include <inttypes.h>
--#include <errno.h>
--#include <sys/stat.h>
--#include <sys/ioctl.h>
--#include "vc4_drm.h"
- 
- struct igt_vc4_bo {
- 	struct igt_list_head node;
-diff --git a/tests/vc4/vc4_tiling.c b/tests/vc4/vc4_tiling.c
-index b96fe4ad..0d37c8b1 100644
---- a/tests/vc4/vc4_tiling.c
-+++ b/tests/vc4/vc4_tiling.c
-@@ -23,17 +23,6 @@
- 
- #include "igt.h"
- #include "igt_vc4.h"
--#include <unistd.h>
--#include <stdlib.h>
--#include <stdio.h>
--#include <string.h>
--#include <fcntl.h>
--#include <inttypes.h>
--#include <errno.h>
--#include <sys/stat.h>
--#include <sys/ioctl.h>
--#include <poll.h>
--#include "vc4_drm.h"
- 
- igt_main
++static void test_dc_state_dpms_negative(data_t *data, int dc_flag)
++{
++	uint32_t dc_counter;
++
++	require_dc_counter(data->debugfs_fd, dc_flag);
++	setup_dc_dpms(data);
++	dc_counter = read_dc_counter(data->debugfs_fd, dc_flag);
++	dpms_on(data);
++	check_dc_counter_negative(data, dc_flag, dc_counter);
++	cleanup_dc_dpms(data);
++}
++
+ static bool support_dc6(int debugfs_fd)
  {
-diff --git a/tests/vc4/vc4_wait_bo.c b/tests/vc4/vc4_wait_bo.c
-index 65a085a3..8c7437f8 100644
---- a/tests/vc4/vc4_wait_bo.c
-+++ b/tests/vc4/vc4_wait_bo.c
-@@ -23,16 +23,7 @@
+ 	char buf[4096];
+@@ -552,6 +571,13 @@ igt_main
+ 		test_dc_state_dpms(&data, CHECK_DC5);
+ 	}
  
- #include "igt.h"
- #include "igt_vc4.h"
--#include <unistd.h>
--#include <stdlib.h>
--#include <stdio.h>
--#include <string.h>
--#include <fcntl.h>
--#include <inttypes.h>
--#include <errno.h>
--#include <sys/stat.h>
- #include <sys/ioctl.h>
--#include "vc4_drm.h"
- 
- static void
- test_used_bo(int fd, uint64_t timeout)
-diff --git a/tests/vc4/vc4_wait_seqno.c b/tests/vc4/vc4_wait_seqno.c
-index bcc263cb..61485bbf 100644
---- a/tests/vc4/vc4_wait_seqno.c
-+++ b/tests/vc4/vc4_wait_seqno.c
-@@ -22,16 +22,7 @@
-  */
- 
- #include "igt.h"
--#include <unistd.h>
--#include <stdlib.h>
--#include <stdio.h>
--#include <string.h>
--#include <fcntl.h>
--#include <inttypes.h>
--#include <errno.h>
--#include <sys/stat.h>
--#include <sys/ioctl.h>
--#include "vc4_drm.h"
-+#include "igt_vc4.h"
- 
- igt_main
- {
++	igt_describe("This test validates negative scenario of DC5 display "
++		     "engine entry to DC5 state while all connectors's DPMS "
++		     "property set to ON");
++	igt_subtest("dc5-dpms-negative") {
++		test_dc_state_dpms_negative(&data, CHECK_DC5);
++	}
++
+ 	igt_describe("This test validates display engine entry to DC5 state "
+ 		     "while all connectors's DPMS property set to OFF");
+ 	igt_subtest("dc6-dpms") {
 -- 
-2.38.1
+2.25.1
