@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2537A10E602
- for <igt-dev@lists.freedesktop.org>; Fri, 16 Dec 2022 16:30:17 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5EE9010E5F6
+ for <igt-dev@lists.freedesktop.org>; Fri, 16 Dec 2022 16:30:07 +0000 (UTC)
 From: =?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>
 To: igt-dev@lists.freedesktop.org
-Date: Fri, 16 Dec 2022 13:28:55 -0300
-Message-Id: <20221216162854.294042-6-mcanal@igalia.com>
+Date: Fri, 16 Dec 2022 13:28:52 -0300
+Message-Id: <20221216162854.294042-3-mcanal@igalia.com>
 In-Reply-To: <20221216162854.294042-1-mcanal@igalia.com>
 References: <20221216162854.294042-1-mcanal@igalia.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v3 5/5] tests/vc4_perfmon: Create test for
- VC4's Perfmon IOCTLs
+Subject: [igt-dev] [PATCH i-g-t v3 2/5] tests/vc4: Remove unused or
+ redundant includes
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,259 +26,240 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add igt_subtests for the VC4's Perfmon IOCTLs:
-DRM_IOCTL_VC4_PERFMON_CREATE, DRM_IOCTL_VC4_PERFMON_DESTROY and
-DRM_IOCTL_VC4_PERFMON_GET_VALUES. The tests aim to make sure that the
-performance monitors are being properly created and destroyed and to
-ensure that improper parameters return an errno.
+The VC4 test files contain some includes that aren't required for
+compilation: some includes are simply not used and others are included
+through other headers. Simplify the code by removing unused includes.
 
-Acked-by: Petri Latvala <petri.latvala@intel.com>
+Reviewed-by: Petri Latvala <petri.latvala@intel.com>
 Signed-off-by: Maíra Canal <mcanal@igalia.com>
 ---
- lib/igt_vc4.c             |  34 ++++++++++
- lib/igt_vc4.h             |   4 ++
- tests/vc4/meson.build     |   1 +
- tests/vc4/vc4_perfmon.c   | 138 ++++++++++++++++++++++++++++++++++++++
- tests/vc4_ci/vc4.testlist |  10 +++
- 5 files changed, 187 insertions(+)
- create mode 100644 tests/vc4/vc4_perfmon.c
+ lib/igt_vc4.c                | 14 --------------
+ lib/igt_vc4.h                |  2 ++
+ tests/vc4/vc4_create_bo.c    | 10 ----------
+ tests/vc4/vc4_dmabuf_poll.c  | 10 ----------
+ tests/vc4/vc4_label_bo.c     | 11 -----------
+ tests/vc4/vc4_lookup_fail.c  | 10 ----------
+ tests/vc4/vc4_purgeable_bo.c | 10 ----------
+ tests/vc4/vc4_tiling.c       | 11 -----------
+ tests/vc4/vc4_wait_bo.c      |  9 ---------
+ tests/vc4/vc4_wait_seqno.c   | 11 +----------
+ 10 files changed, 3 insertions(+), 95 deletions(-)
 
 diff --git a/lib/igt_vc4.c b/lib/igt_vc4.c
-index 2c86bd93..91f7f4b5 100644
+index 4415fa32..54718cee 100644
 --- a/lib/igt_vc4.c
 +++ b/lib/igt_vc4.c
-@@ -193,6 +193,40 @@ bool igt_vc4_purgeable_bo(int fd, int handle, bool purgeable)
- 	return arg.retained;
- }
+@@ -21,25 +21,11 @@
+  * IN THE SOFTWARE.
+  */
  
-+uint32_t igt_vc4_perfmon_create(int fd, uint32_t ncounters, uint8_t *events)
-+{
-+	struct drm_vc4_perfmon_create create = {
-+		.ncounters = ncounters,
-+	};
-+
-+	memcpy(create.events, events, ncounters * sizeof(*events));
-+
-+	do_ioctl(fd, DRM_IOCTL_VC4_PERFMON_CREATE, &create);
-+	igt_assert_neq(create.id, 0);
-+
-+	return create.id;
-+}
-+
-+void igt_vc4_perfmon_get_values(int fd, uint32_t id)
-+{
-+	uint64_t *values = calloc(DRM_VC4_MAX_PERF_COUNTERS, sizeof(*values));
-+	struct drm_vc4_perfmon_get_values get = {
-+		.id = id,
-+		.values_ptr = to_user_pointer(values),
-+	};
-+
-+	do_ioctl(fd, DRM_IOCTL_VC4_PERFMON_GET_VALUES, &get);
-+	free(values);
-+}
-+
-+void igt_vc4_perfmon_destroy(int fd, uint32_t id)
-+{
-+	struct drm_vc4_perfmon_destroy destroy = {
-+		.id = id,
-+	};
-+
-+	do_ioctl(fd, DRM_IOCTL_VC4_PERFMON_DESTROY, &destroy);
-+}
+-#include <assert.h>
+-#include <string.h>
+-#include <signal.h>
+-#include <errno.h>
+-#include <sys/mman.h>
+-#include <sys/types.h>
+-#include <sys/stat.h>
+-#include <sys/ioctl.h>
+-#include <fcntl.h>
+-
+ #include "drmtest.h"
+ #include "igt_aux.h"
+-#include "igt_core.h"
+ #include "igt_fb.h"
+ #include "igt_vc4.h"
+ #include "ioctl_wrappers.h"
+-#include "intel_reg.h"
+-#include "intel_chipset.h"
+-#include "vc4_drm.h"
+ #include "vc4_packet.h"
  
- /* Calculate the t-tile width so that size = width * height * bpp / 8. */
- #define VC4_T_TILE_W(size, height, bpp) ((size) / (height) / ((bpp) / 8))
+ #if NEW_CONTEXT_PARAM_NO_ERROR_CAPTURE_API
 diff --git a/lib/igt_vc4.h b/lib/igt_vc4.h
-index 79a6ab7d..384d7d6e 100644
+index f32bf398..a088d0a3 100644
 --- a/lib/igt_vc4.h
 +++ b/lib/igt_vc4.h
-@@ -36,6 +36,10 @@ bool igt_vc4_purgeable_bo(int fd, int handle, bool purgeable);
- bool igt_vc4_is_tiled(uint64_t modifier);
- bool igt_vc4_is_v3d(int fd);
+@@ -24,6 +24,8 @@
+ #ifndef IGT_VC4_H
+ #define IGT_VC4_H
  
-+uint32_t igt_vc4_perfmon_create(int fd, uint32_t ncounters, uint8_t *events);
-+void igt_vc4_perfmon_get_values(int fd, uint32_t id);
-+void igt_vc4_perfmon_destroy(int fd, uint32_t id);
++#include "vc4_drm.h"
 +
- void igt_vc4_set_tiling(int fd, uint32_t handle, uint64_t modifier);
- uint64_t igt_vc4_get_tiling(int fd, uint32_t handle);
+ uint32_t igt_vc4_get_cleared_bo(int fd, size_t size, uint32_t clearval);
+ int igt_vc4_create_bo(int fd, size_t size);
+ void *igt_vc4_mmap_bo(int fd, uint32_t handle, uint32_t size, unsigned prot);
+diff --git a/tests/vc4/vc4_create_bo.c b/tests/vc4/vc4_create_bo.c
+index 99d180a8..46d1c954 100644
+--- a/tests/vc4/vc4_create_bo.c
++++ b/tests/vc4/vc4_create_bo.c
+@@ -23,16 +23,6 @@
  
-diff --git a/tests/vc4/meson.build b/tests/vc4/meson.build
-index bdb2a6b0..76e6f16c 100644
---- a/tests/vc4/meson.build
-+++ b/tests/vc4/meson.build
-@@ -3,6 +3,7 @@ vc4_progs = [
- 	'vc4_dmabuf_poll',
- 	'vc4_label_bo',
- 	'vc4_lookup_fail',
-+	'vc4_perfmon',
- 	'vc4_purgeable_bo',
- 	'vc4_tiling',
- 	'vc4_wait_bo',
-diff --git a/tests/vc4/vc4_perfmon.c b/tests/vc4/vc4_perfmon.c
-new file mode 100644
-index 00000000..30186519
---- /dev/null
-+++ b/tests/vc4/vc4_perfmon.c
-@@ -0,0 +1,138 @@
-+// SPDX-License-Identifier: MIT
-+/*
-+ * Copyright © 2022 Igalia S.L.
-+ */
-+
-+#include "igt.h"
+ #include "igt.h"
+ #include "igt_vc4.h"
+-#include <unistd.h>
+-#include <stdlib.h>
+-#include <stdio.h>
+-#include <string.h>
+-#include <fcntl.h>
+-#include <inttypes.h>
+-#include <errno.h>
+-#include <sys/stat.h>
+-#include <sys/ioctl.h>
+-#include "vc4_drm.h"
+ 
+ igt_main
+ {
+diff --git a/tests/vc4/vc4_dmabuf_poll.c b/tests/vc4/vc4_dmabuf_poll.c
+index 260e30c3..da99964b 100644
+--- a/tests/vc4/vc4_dmabuf_poll.c
++++ b/tests/vc4/vc4_dmabuf_poll.c
+@@ -23,17 +23,7 @@
+ 
+ #include "igt.h"
+ #include "igt_vc4.h"
+-#include <unistd.h>
+-#include <stdlib.h>
+-#include <stdio.h>
+-#include <string.h>
+-#include <fcntl.h>
+-#include <inttypes.h>
+-#include <errno.h>
+-#include <sys/stat.h>
+-#include <sys/ioctl.h>
+ #include <poll.h>
+-#include "vc4_drm.h"
+ 
+ static void
+ poll_write_bo_test(int fd, int poll_flag)
+diff --git a/tests/vc4/vc4_label_bo.c b/tests/vc4/vc4_label_bo.c
+index 7510f87d..6fc53ce8 100644
+--- a/tests/vc4/vc4_label_bo.c
++++ b/tests/vc4/vc4_label_bo.c
+@@ -23,17 +23,6 @@
+ 
+ #include "igt.h"
+ #include "igt_vc4.h"
+-#include <unistd.h>
+-#include <stdlib.h>
+-#include <stdio.h>
+-#include <string.h>
+-#include <fcntl.h>
+-#include <inttypes.h>
+-#include <errno.h>
+-#include <sys/stat.h>
+-#include <sys/ioctl.h>
+-#include <poll.h>
+-#include "vc4_drm.h"
+ 
+ static void
+ set_label(int fd, int handle, const char *name, int err)
+diff --git a/tests/vc4/vc4_lookup_fail.c b/tests/vc4/vc4_lookup_fail.c
+index f0234ee5..e5a03540 100644
+--- a/tests/vc4/vc4_lookup_fail.c
++++ b/tests/vc4/vc4_lookup_fail.c
+@@ -22,16 +22,6 @@
+  */
+ 
+ #include "igt.h"
+-#include <assert.h>
+-#include <unistd.h>
+-#include <stdlib.h>
+-#include <stdio.h>
+-#include <string.h>
+-#include <fcntl.h>
+-#include <inttypes.h>
+-#include <errno.h>
+-#include <sys/stat.h>
+-#include <sys/ioctl.h>
+ #include "vc4_drm.h"
+ #include "vc4_packet.h"
+ 
+diff --git a/tests/vc4/vc4_purgeable_bo.c b/tests/vc4/vc4_purgeable_bo.c
+index d9f7547f..676bc1f3 100644
+--- a/tests/vc4/vc4_purgeable_bo.c
++++ b/tests/vc4/vc4_purgeable_bo.c
+@@ -23,17 +23,7 @@
+ 
+ #include "igt.h"
+ #include "igt_vc4.h"
+-#include <unistd.h>
+ #include <signal.h>
+-#include <stdlib.h>
+-#include <stdio.h>
+-#include <string.h>
+-#include <fcntl.h>
+-#include <inttypes.h>
+-#include <errno.h>
+-#include <sys/stat.h>
+-#include <sys/ioctl.h>
+-#include "vc4_drm.h"
+ 
+ struct igt_vc4_bo {
+ 	struct igt_list_head node;
+diff --git a/tests/vc4/vc4_tiling.c b/tests/vc4/vc4_tiling.c
+index b96fe4ad..0d37c8b1 100644
+--- a/tests/vc4/vc4_tiling.c
++++ b/tests/vc4/vc4_tiling.c
+@@ -23,17 +23,6 @@
+ 
+ #include "igt.h"
+ #include "igt_vc4.h"
+-#include <unistd.h>
+-#include <stdlib.h>
+-#include <stdio.h>
+-#include <string.h>
+-#include <fcntl.h>
+-#include <inttypes.h>
+-#include <errno.h>
+-#include <sys/stat.h>
+-#include <sys/ioctl.h>
+-#include <poll.h>
+-#include "vc4_drm.h"
+ 
+ igt_main
+ {
+diff --git a/tests/vc4/vc4_wait_bo.c b/tests/vc4/vc4_wait_bo.c
+index 65a085a3..8c7437f8 100644
+--- a/tests/vc4/vc4_wait_bo.c
++++ b/tests/vc4/vc4_wait_bo.c
+@@ -23,16 +23,7 @@
+ 
+ #include "igt.h"
+ #include "igt_vc4.h"
+-#include <unistd.h>
+-#include <stdlib.h>
+-#include <stdio.h>
+-#include <string.h>
+-#include <fcntl.h>
+-#include <inttypes.h>
+-#include <errno.h>
+-#include <sys/stat.h>
+ #include <sys/ioctl.h>
+-#include "vc4_drm.h"
+ 
+ static void
+ test_used_bo(int fd, uint64_t timeout)
+diff --git a/tests/vc4/vc4_wait_seqno.c b/tests/vc4/vc4_wait_seqno.c
+index bcc263cb..61485bbf 100644
+--- a/tests/vc4/vc4_wait_seqno.c
++++ b/tests/vc4/vc4_wait_seqno.c
+@@ -22,16 +22,7 @@
+  */
+ 
+ #include "igt.h"
+-#include <unistd.h>
+-#include <stdlib.h>
+-#include <stdio.h>
+-#include <string.h>
+-#include <fcntl.h>
+-#include <inttypes.h>
+-#include <errno.h>
+-#include <sys/stat.h>
+-#include <sys/ioctl.h>
+-#include "vc4_drm.h"
 +#include "igt_vc4.h"
-+
-+IGT_TEST_DESCRIPTION("Tests for the VC4's performance monitors");
-+
-+igt_main
-+{
-+	int fd;
-+
-+	igt_fixture {
-+		fd = drm_open_driver(DRIVER_VC4);
-+		igt_require(igt_vc4_is_v3d(fd));
-+	}
-+
-+	igt_describe("Make sure a perfmon cannot be created with zero counters.");
-+	igt_subtest("create-perfmon-0") {
-+		struct drm_vc4_perfmon_create create = {
-+			.ncounters = 0,
-+		};
-+		do_ioctl_err(fd, DRM_IOCTL_VC4_PERFMON_CREATE, &create, EINVAL);
-+	}
-+
-+	igt_describe("Make sure a perfmon cannot be created with more counters than the maximum allowed.");
-+	igt_subtest("create-perfmon-exceed") {
-+		struct drm_vc4_perfmon_create create = {
-+			.ncounters = DRM_VC4_MAX_PERF_COUNTERS + 1,
-+		};
-+		do_ioctl_err(fd, DRM_IOCTL_VC4_PERFMON_CREATE, &create, EINVAL);
-+	}
-+
-+	igt_describe("Make sure a perfmon cannot be created with invalid events identifiers.");
-+	igt_subtest("create-perfmon-invalid-events") {
-+		struct drm_vc4_perfmon_create create = {
-+			.ncounters = 1,
-+			.events = { VC4_PERFCNT_NUM_EVENTS },
-+		};
-+		do_ioctl_err(fd, DRM_IOCTL_VC4_PERFMON_CREATE, &create, EINVAL);
-+	}
-+
-+	igt_describe("Make sure a perfmon with 1 counter can be created.");
-+	igt_subtest("create-single-perfmon") {
-+		uint8_t events[] = { VC4_PERFCNT_FEP_VALID_PRIMS_NO_RENDER };
-+		uint32_t id = igt_vc4_perfmon_create(fd, 1, events);
-+
-+		igt_vc4_perfmon_destroy(fd, id);
-+	}
-+
-+	igt_describe("Make sure that two perfmons can be created simultaneously.");
-+	igt_subtest("create-two-perfmon") {
-+		uint8_t events_perfmon1[] = { VC4_PERFCNT_FEP_VALID_QUADS };
-+		uint8_t events_perfmon2[] = { VC4_PERFCNT_L2C_TOTAL_L2_CACHE_HIT, VC4_PERFCNT_QPU_TOTAL_UNIFORM_CACHE_MISS };
-+
-+		/* Create two different performance monitors */
-+		uint32_t id1 = igt_vc4_perfmon_create(fd, 1, events_perfmon1);
-+		uint32_t id2 = igt_vc4_perfmon_create(fd, 2, events_perfmon2);
-+
-+		/* Make sure that the id's of the performance monitors are different */
-+		igt_assert_neq(id1, id2);
-+
-+		igt_vc4_perfmon_destroy(fd, id1);
-+
-+		/* Make sure that the second perfmon it is still acessible */
-+		igt_vc4_perfmon_get_values(fd, id2);
-+
-+		igt_vc4_perfmon_destroy(fd, id2);
-+	}
-+
-+	igt_describe("Make sure that getting the values from perfmon fails for invalid identifier.");
-+	igt_subtest("get-values-invalid-perfmon") {
-+		struct drm_vc4_perfmon_get_values get = {
-+			.id = 1,
-+		};
-+		do_ioctl_err(fd, DRM_IOCTL_VC4_PERFMON_GET_VALUES, &get, EINVAL);
-+	}
-+
-+	igt_describe("Make sure that getting the values from perfmon fails for invalid memory pointer.");
-+	igt_subtest("get-values-invalid-pointer") {
-+		uint8_t counters[] = { VC4_PERFCNT_TLB_QUADS_ZERO_COVERAGE,
-+				       VC4_PERFCNT_PLB_PRIMS_OUTSIDE_VIEWPORT,
-+				       VC4_PERFCNT_QPU_TOTAL_INST_CACHE_HIT };
-+		uint32_t id = igt_vc4_perfmon_create(fd, 3, counters);
-+
-+		struct drm_vc4_perfmon_get_values get = {
-+			.id = id,
-+			.values_ptr = 0ULL
-+		};
-+
-+		do_ioctl_err(fd, DRM_IOCTL_VC4_PERFMON_GET_VALUES, &get, EFAULT);
-+
-+		igt_vc4_perfmon_destroy(fd, id);
-+	}
-+
-+	igt_describe("Sanity check for getting the values from a valid perfmon.");
-+	igt_subtest("get-values-valid-perfmon") {
-+		uint8_t events[] = { VC4_PERFCNT_VPM_TOTAL_CLK_CYCLES_VDW_STALLED,
-+				       VC4_PERFCNT_PSE_PRIMS_REVERSED,
-+				       VC4_PERFCNT_QPU_TOTAL_INST_CACHE_HIT };
-+		uint32_t id = igt_vc4_perfmon_create(fd, 3, events);
-+
-+		igt_vc4_perfmon_get_values(fd, id);
-+		igt_vc4_perfmon_destroy(fd, id);
-+	}
-+
-+	igt_describe("Make sure that destroying a non-existent perfmon fails.");
-+	igt_subtest("destroy-invalid-perfmon") {
-+		struct drm_vc4_perfmon_destroy destroy = {
-+			.id = 1,
-+		};
-+		do_ioctl_err(fd, DRM_IOCTL_VC4_PERFMON_DESTROY, &destroy, EINVAL);
-+	}
-+
-+	igt_describe("Make sure that a perfmon is not accessible after being destroyed.");
-+	igt_subtest("destroy-valid-perfmon") {
-+		uint8_t events[] = { VC4_PERFCNT_QPU_TOTAL_CLK_CYCLES_EXEC_VALID_INST,
-+				       VC4_PERFCNT_FEP_VALID_QUADS,
-+				       VC4_PERFCNT_TMU_TOTAL_TEXT_CACHE_MISS,
-+				       VC4_PERFCNT_L2C_TOTAL_L2_CACHE_MISS };
-+		uint32_t id = igt_vc4_perfmon_create(fd, 4, events);
-+		struct drm_vc4_perfmon_get_values get = {
-+			.id = id,
-+		};
-+
-+		igt_vc4_perfmon_get_values(fd, id);
-+
-+		igt_vc4_perfmon_destroy(fd, id);
-+
-+		/* Make sure that the id is no longer allocate */
-+		do_ioctl_err(fd, DRM_IOCTL_VC4_PERFMON_GET_VALUES, &get, EINVAL);
-+	}
-+
-+	igt_fixture
-+		close(fd);
-+}
-diff --git a/tests/vc4_ci/vc4.testlist b/tests/vc4_ci/vc4.testlist
-index ec09dda9..1b41538e 100644
---- a/tests/vc4_ci/vc4.testlist
-+++ b/tests/vc4_ci/vc4.testlist
-@@ -8,6 +8,16 @@ igt@vc4/vc4_label_bo@set-bad-handle
- igt@vc4/vc4_label_bo@set-bad-name
- igt@vc4/vc4_label_bo@set-kernel-name
- igt@vc4/vc4_lookup_fail@bad-color-write
-+igt@vc4/vc4_perfmon@create-perfmon-0
-+igt@vc4/vc4_perfmon@create-perfmon-exceed
-+igt@vc4/vc4_perfmon@create-perfmon-invalid-events
-+igt@vc4/vc4_perfmon@create-single-perfmon
-+igt@vc4/vc4_perfmon@create-two-perfmon
-+igt@vc4/vc4_perfmon@get-values-invalid-perfmon
-+igt@vc4/vc4_perfmon@get-values-invalid-pointer
-+igt@vc4/vc4_perfmon@get-values-valid-perfmon
-+igt@vc4/vc4_perfmon@destroy-invalid-perfmon
-+igt@vc4/vc4_perfmon@destroy-valid-perfmon
- igt@vc4/vc4_purgeable_bo@mark-willneed
- igt@vc4/vc4_purgeable_bo@mark-purgeable
- igt@vc4/vc4_purgeable_bo@mark-purgeable-twice
+ 
+ igt_main
+ {
 -- 
 2.38.1
