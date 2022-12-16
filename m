@@ -1,18 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5631910E5FB
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1538F10E5F6
  for <igt-dev@lists.freedesktop.org>; Fri, 16 Dec 2022 16:30:03 +0000 (UTC)
 From: =?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>
 To: igt-dev@lists.freedesktop.org
-Date: Fri, 16 Dec 2022 13:28:51 -0300
-Message-Id: <20221216162854.294042-2-mcanal@igalia.com>
-In-Reply-To: <20221216162854.294042-1-mcanal@igalia.com>
-References: <20221216162854.294042-1-mcanal@igalia.com>
+Date: Fri, 16 Dec 2022 13:28:50 -0300
+Message-Id: <20221216162854.294042-1-mcanal@igalia.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v3 1/5] tests/vc4: Move VC4 tests to their
- own folder
+Subject: [igt-dev] [PATCH i-g-t v3 0/5] VC4 IGT Tests Updates
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,226 +23,65 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-VC4 contains a substantial number of tests. In order to avoid polluting
-the main tests folder, move the VC4 tests to a separate folder.
-Moreover, create a subdir "vc4" to install the VC4-specific tests.
+This series aims to update the VC4 IGT tests. The first three patches contain
+some janitorial duties related to the existing tests: creating a folder for the
+VC4 tests, removing some unused includes, and adding a macro with the default
+PAGE_SIZE. The fourth patch adds an igt_require to all the VC4 tests to
+check that the tests are not running on BCM2711. The final patch includes
+new tests for the VC4's performance monitors.
 
-Acked-by: Petri Latvala <petri.latvala@intel.com>
-Signed-off-by: Maíra Canal <mcanal@igalia.com>
----
- meson.build                        |  8 ++++
- tests/meson.build                  | 10 +----
- tests/vc4/meson.build              | 19 ++++++++
- tests/{ => vc4}/vc4_create_bo.c    |  0
- tests/{ => vc4}/vc4_dmabuf_poll.c  |  0
- tests/{ => vc4}/vc4_label_bo.c     |  0
- tests/{ => vc4}/vc4_lookup_fail.c  |  0
- tests/{ => vc4}/vc4_purgeable_bo.c |  0
- tests/{ => vc4}/vc4_tiling.c       |  0
- tests/{ => vc4}/vc4_wait_bo.c      |  0
- tests/{ => vc4}/vc4_wait_seqno.c   |  0
- tests/vc4_ci/vc4.testlist          | 70 +++++++++++++++---------------
- 12 files changed, 64 insertions(+), 43 deletions(-)
+This series was tested on the Raspberry Pi 3 Model B and Raspberry Pi 4 Model B,
+and the HTML outputs of the VC4 tests are available on:
+
+- Raspberry Pi 4: https://mairacanal.fedorapeople.org/igt-results/rpi4-v2/html/
+- Raspberry Pi 3: https://mairacanal.fedorapeople.org/igt-results/rpi3-v2/html/
+
+Best Regards,
+- Maíra Canal
+
+v1 -> v2:
+- Install VC4 tests on build/tests/vc4/ instead of build/tests/ (Melissa Wen).
+- Use the syncobj capability to identify vc4 and vc5 (Melissa Wen).
+- Change the order of the commits (Melissa Wen).
+- Add Petri Latvala tags.
+
+v2 -> v3:
+- Remove ternary conditional operator from return (Petri Latvala).
+- Add Petri Latvala tag.
+
+Maíra Canal (5):
+  tests/vc4: Move VC4 tests to their own folder
+  tests/vc4: Remove unused or redundant includes
+  lib/igt_vc4: Add PAGE_SIZE macro to VC4
+  tests/vc4: Skip VC4 tests if they are running on BCM2711/RaspberryPi4
+  tests/vc4_perfmon: Create test for VC4's Perfmon IOCTLs
+
+ lib/igt_vc4.c                      |  60 ++++++++++---
+ lib/igt_vc4.h                      |   9 ++
+ meson.build                        |   8 ++
+ tests/meson.build                  |  10 +--
+ tests/vc4/meson.build              |  20 +++++
+ tests/{ => vc4}/vc4_create_bo.c    |  15 +---
+ tests/{ => vc4}/vc4_dmabuf_poll.c  |  14 +--
+ tests/{ => vc4}/vc4_label_bo.c     |  21 ++---
+ tests/{ => vc4}/vc4_lookup_fail.c  |  14 +--
+ tests/vc4/vc4_perfmon.c            | 138 +++++++++++++++++++++++++++++
+ tests/{ => vc4}/vc4_purgeable_bo.c |  10 ---
+ tests/{ => vc4}/vc4_tiling.c       |  27 ++----
+ tests/{ => vc4}/vc4_wait_bo.c      |  14 +--
+ tests/{ => vc4}/vc4_wait_seqno.c   |  15 +---
+ tests/vc4_ci/vc4.testlist          |  80 +++++++++--------
+ 15 files changed, 298 insertions(+), 157 deletions(-)
  create mode 100644 tests/vc4/meson.build
- rename tests/{ => vc4}/vc4_create_bo.c (100%)
- rename tests/{ => vc4}/vc4_dmabuf_poll.c (100%)
- rename tests/{ => vc4}/vc4_label_bo.c (100%)
- rename tests/{ => vc4}/vc4_lookup_fail.c (100%)
- rename tests/{ => vc4}/vc4_purgeable_bo.c (100%)
- rename tests/{ => vc4}/vc4_tiling.c (100%)
- rename tests/{ => vc4}/vc4_wait_bo.c (100%)
- rename tests/{ => vc4}/vc4_wait_seqno.c (100%)
+ rename tests/{ => vc4}/vc4_create_bo.c (89%)
+ rename tests/{ => vc4}/vc4_dmabuf_poll.c (91%)
+ rename tests/{ => vc4}/vc4_label_bo.c (85%)
+ rename tests/{ => vc4}/vc4_lookup_fail.c (90%)
+ create mode 100644 tests/vc4/vc4_perfmon.c
+ rename tests/{ => vc4}/vc4_purgeable_bo.c (97%)
+ rename tests/{ => vc4}/vc4_tiling.c (88%)
+ rename tests/{ => vc4}/vc4_wait_bo.c (92%)
+ rename tests/{ => vc4}/vc4_wait_seqno.c (89%)
 
-diff --git a/meson.build b/meson.build
-index 709c7a6c..f5e30827 100644
---- a/meson.build
-+++ b/meson.build
-@@ -261,6 +261,7 @@ libdir = get_option('libdir')
- libexecdir = join_paths(get_option('libexecdir'), 'igt-gpu-tools')
- amdgpudir = join_paths(libexecdir, 'amdgpu')
- v3ddir = join_paths(libexecdir, 'v3d')
-+vc4dir = join_paths(libexecdir, 'vc4')
- mandir = get_option('mandir')
- pkgconfigdir = join_paths(libdir, 'pkgconfig')
- python3 = find_program('python3', required : true)
-@@ -302,11 +303,18 @@ if get_option('use_rpath')
- 		v3d_rpathdir = join_paths(v3d_rpathdir, '..')
- 	endforeach
- 	v3d_rpathdir = join_paths(v3d_rpathdir, libdir)
-+
-+	vc4_rpathdir = '$ORIGIN'
-+	foreach p : vc4dir.split('/')
-+		vc4_rpathdir = join_paths(vc4_rpathdir, '..')
-+	endforeach
-+	vc4_rpathdir = join_paths(vc4_rpathdir, libdir)
- else
- 	bindir_rpathdir = ''
- 	libexecdir_rpathdir = ''
- 	amdgpudir_rpathdir = ''
- 	v3d_rpathdir = ''
-+	vc4_rpathdir = ''
- endif
- 
- subdir('lib')
-diff --git a/tests/meson.build b/tests/meson.build
-index a593055c..25c88f52 100644
---- a/tests/meson.build
-+++ b/tests/meson.build
-@@ -80,14 +80,6 @@ test_progs = [
- 	'syncobj_timeline',
- 	'template',
- 	'tools_test',
--	'vc4_create_bo',
--	'vc4_dmabuf_poll',
--	'vc4_label_bo',
--	'vc4_lookup_fail',
--	'vc4_purgeable_bo',
--	'vc4_tiling',
--	'vc4_wait_bo',
--	'vc4_wait_seqno',
- 	'vgem_basic',
- 	'vgem_slow',
- ]
-@@ -454,6 +446,8 @@ subdir('amdgpu')
- 
- subdir('v3d')
- 
-+subdir('vc4')
-+
- gen_testlist = find_program('generate_testlist.sh')
- test_list_target = custom_target('testlist',
- 	      output : 'test-list.txt',
-diff --git a/tests/vc4/meson.build b/tests/vc4/meson.build
-new file mode 100644
-index 00000000..bdb2a6b0
---- /dev/null
-+++ b/tests/vc4/meson.build
-@@ -0,0 +1,19 @@
-+vc4_progs = [
-+	'vc4_create_bo',
-+	'vc4_dmabuf_poll',
-+	'vc4_label_bo',
-+	'vc4_lookup_fail',
-+	'vc4_purgeable_bo',
-+	'vc4_tiling',
-+	'vc4_wait_bo',
-+	'vc4_wait_seqno',
-+]
-+
-+foreach prog : vc4_progs
-+	test_executables += executable(prog, prog + '.c',
-+				       dependencies : test_deps,
-+				       install_dir : vc4dir,
-+				       install_rpath : vc4_rpathdir,
-+				       install : true)
-+	test_list += join_paths('vc4', prog)
-+endforeach
-diff --git a/tests/vc4_create_bo.c b/tests/vc4/vc4_create_bo.c
-similarity index 100%
-rename from tests/vc4_create_bo.c
-rename to tests/vc4/vc4_create_bo.c
-diff --git a/tests/vc4_dmabuf_poll.c b/tests/vc4/vc4_dmabuf_poll.c
-similarity index 100%
-rename from tests/vc4_dmabuf_poll.c
-rename to tests/vc4/vc4_dmabuf_poll.c
-diff --git a/tests/vc4_label_bo.c b/tests/vc4/vc4_label_bo.c
-similarity index 100%
-rename from tests/vc4_label_bo.c
-rename to tests/vc4/vc4_label_bo.c
-diff --git a/tests/vc4_lookup_fail.c b/tests/vc4/vc4_lookup_fail.c
-similarity index 100%
-rename from tests/vc4_lookup_fail.c
-rename to tests/vc4/vc4_lookup_fail.c
-diff --git a/tests/vc4_purgeable_bo.c b/tests/vc4/vc4_purgeable_bo.c
-similarity index 100%
-rename from tests/vc4_purgeable_bo.c
-rename to tests/vc4/vc4_purgeable_bo.c
-diff --git a/tests/vc4_tiling.c b/tests/vc4/vc4_tiling.c
-similarity index 100%
-rename from tests/vc4_tiling.c
-rename to tests/vc4/vc4_tiling.c
-diff --git a/tests/vc4_wait_bo.c b/tests/vc4/vc4_wait_bo.c
-similarity index 100%
-rename from tests/vc4_wait_bo.c
-rename to tests/vc4/vc4_wait_bo.c
-diff --git a/tests/vc4_wait_seqno.c b/tests/vc4/vc4_wait_seqno.c
-similarity index 100%
-rename from tests/vc4_wait_seqno.c
-rename to tests/vc4/vc4_wait_seqno.c
-diff --git a/tests/vc4_ci/vc4.testlist b/tests/vc4_ci/vc4.testlist
-index e86d4c81..ec09dda9 100644
---- a/tests/vc4_ci/vc4.testlist
-+++ b/tests/vc4_ci/vc4.testlist
-@@ -1,35 +1,35 @@
--igt@vc4_create_bo@create-bo-0
--igt@vc4_create_bo@create-bo-4096
--igt@vc4_create_bo@create-bo-zeroed
--igt@vc4_dmabuf_poll@poll-read-waits-until-write-done
--igt@vc4_dmabuf_poll@poll-write-waits-until-write-done
--igt@vc4_label_bo@set-label
--igt@vc4_label_bo@set-bad-handle
--igt@vc4_label_bo@set-bad-name
--igt@vc4_label_bo@set-kernel-name
--igt@vc4_lookup_fail@bad-color-write
--igt@vc4_purgeable_bo@mark-willneed
--igt@vc4_purgeable_bo@mark-purgeable
--igt@vc4_purgeable_bo@mark-purgeable-twice
--igt@vc4_purgeable_bo@access-purgeable-bo-mem
--igt@vc4_purgeable_bo@access-purged-bo-mem
--igt@vc4_purgeable_bo@mark-unpurgeable-check-retained
--igt@vc4_purgeable_bo@mark-unpurgeable-purged
--igt@vc4_purgeable_bo@free-purged-bo
--igt@vc4_tiling@get-bad-handle
--igt@vc4_tiling@set-bad-handle
--igt@vc4_tiling@get-bad-flags
--igt@vc4_tiling@set-bad-flags
--igt@vc4_tiling@get-bad-modifier
--igt@vc4_tiling@set-bad-modifier
--igt@vc4_tiling@set-get
--igt@vc4_tiling@get-after-free
--igt@vc4_wait_bo@bad-bo
--igt@vc4_wait_bo@bad-pad
--igt@vc4_wait_bo@unused-bo-0ns
--igt@vc4_wait_bo@unused-bo-1ns
--igt@vc4_wait_bo@used-bo
--igt@vc4_wait_bo@used-bo-0ns
--igt@vc4_wait_bo@used-bo-1ns
--igt@vc4_wait_seqno@bad-seqno-0ns
--igt@vc4_wait_seqno@bad-seqno-1ns
-+igt@vc4/vc4_create_bo@create-bo-0
-+igt@vc4/vc4_create_bo@create-bo-4096
-+igt@vc4/vc4_create_bo@create-bo-zeroed
-+igt@vc4/vc4_dmabuf_poll@poll-read-waits-until-write-done
-+igt@vc4/vc4_dmabuf_poll@poll-write-waits-until-write-done
-+igt@vc4/vc4_label_bo@set-label
-+igt@vc4/vc4_label_bo@set-bad-handle
-+igt@vc4/vc4_label_bo@set-bad-name
-+igt@vc4/vc4_label_bo@set-kernel-name
-+igt@vc4/vc4_lookup_fail@bad-color-write
-+igt@vc4/vc4_purgeable_bo@mark-willneed
-+igt@vc4/vc4_purgeable_bo@mark-purgeable
-+igt@vc4/vc4_purgeable_bo@mark-purgeable-twice
-+igt@vc4/vc4_purgeable_bo@access-purgeable-bo-mem
-+igt@vc4/vc4_purgeable_bo@access-purged-bo-mem
-+igt@vc4/vc4_purgeable_bo@mark-unpurgeable-check-retained
-+igt@vc4/vc4_purgeable_bo@mark-unpurgeable-purged
-+igt@vc4/vc4_purgeable_bo@free-purged-bo
-+igt@vc4/vc4_tiling@get-bad-handle
-+igt@vc4/vc4_tiling@set-bad-handle
-+igt@vc4/vc4_tiling@get-bad-flags
-+igt@vc4/vc4_tiling@set-bad-flags
-+igt@vc4/vc4_tiling@get-bad-modifier
-+igt@vc4/vc4_tiling@set-bad-modifier
-+igt@vc4/vc4_tiling@set-get
-+igt@vc4/vc4_tiling@get-after-free
-+igt@vc4/vc4_wait_bo@bad-bo
-+igt@vc4/vc4_wait_bo@bad-pad
-+igt@vc4/vc4_wait_bo@unused-bo-0ns
-+igt@vc4/vc4_wait_bo@unused-bo-1ns
-+igt@vc4/vc4_wait_bo@used-bo
-+igt@vc4/vc4_wait_bo@used-bo-0ns
-+igt@vc4/vc4_wait_bo@used-bo-1ns
-+igt@vc4/vc4_wait_seqno@bad-seqno-0ns
-+igt@vc4/vc4_wait_seqno@bad-seqno-1ns
 -- 
 2.38.1
