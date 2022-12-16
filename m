@@ -1,23 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BC1DF10E5DB
- for <igt-dev@lists.freedesktop.org>; Fri, 16 Dec 2022 15:40:05 +0000 (UTC)
-Date: Fri, 16 Dec 2022 10:39:52 -0500
-From: Rodrigo Vivi <rodrigo.vivi@intel.com>
-To: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
-Message-ID: <Y5yRSFY09ZzbTCkS@intel.com>
-References: <20221119020023.3376-1-ashutosh.dixit@intel.com>
- <4b9229ee-baa0-c146-adff-425f36d95eaf@linux.intel.com>
- <87pmdew6l6.wl-ashutosh.dixit@intel.com>
- <c90ded5b-f24f-781a-0d09-bf38a3a9770e@linux.intel.com>
- <87sfhf7trw.wl-ashutosh.dixit@intel.com>
- <d3d29b9a-3e9b-967a-47ca-f157d32d6652@linux.intel.com>
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <d3d29b9a-3e9b-967a-47ca-f157d32d6652@linux.intel.com>
+Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5631910E5FB
+ for <igt-dev@lists.freedesktop.org>; Fri, 16 Dec 2022 16:30:03 +0000 (UTC)
+From: =?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>
+To: igt-dev@lists.freedesktop.org
+Date: Fri, 16 Dec 2022 13:28:51 -0300
+Message-Id: <20221216162854.294042-2-mcanal@igalia.com>
+In-Reply-To: <20221216162854.294042-1-mcanal@igalia.com>
+References: <20221216162854.294042-1-mcanal@igalia.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/perf_pmu: Compare against
- requested freq in frequency subtest
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t v3 1/5] tests/vc4: Move VC4 tests to their
+ own folder
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,270 +20,232 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org
+Cc: petri.latvala@intel.com, Emma Anholt <emma@anholt.net>,
+ Maxime Ripard <maxime@cerno.tech>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Fri, Dec 16, 2022 at 09:37:31AM +0000, Tvrtko Ursulin wrote:
-> 
-> On 16/12/2022 06:21, Dixit, Ashutosh wrote:
-> > On Thu, 24 Nov 2022 04:42:08 -0800, Tvrtko Ursulin wrote:
-> > > 
-> > > On 23/11/2022 06:03, Dixit, Ashutosh wrote:
-> > > > On Mon, 21 Nov 2022 01:09:55 -0800, Tvrtko Ursulin wrote:
-> > > > > 
-> > > > 
-> > 
-> > Hi Tvrtko,
-> > 
-> > Sorry for the delay in replying on this. We are discussing this but still
-> > no conclusion. I have replied what I can below, will update again after I
-> > know more. Wanted to send a reply before disappearing for the
-> > holidays. Please see below.
-> > 
-> > > > Hi Tvrtko,
-> > > > 
-> > > > I am only offering an overall clarification below first, not answering all
-> > > > of your points for now.
-> > > > 
-> > > > > 
-> > > > > On 19/11/2022 02:00, Ashutosh Dixit wrote:
-> > > > > > With SLPC, even when we set the same min and max freq's, the requested and
-> > > > > > actual freq's can differ from the min/max freq set. For example "efficient
-> > > > > > freq" (when in effect) can override set min/max freq. In general FW is the
-> > > > > > final arbiter in determining freq and can override set values.
-> > > > > > 
-> > > > > > Therefore in igt@perf_pmu@frequency subtest, compare the requested freq
-> > > > > > reported by PMU not against the set freq's but against the requested freq
-> > > > > > reported in sysfs. Also add a delay after setting freq's to account for
-> > > > > > messaging delays in setting freq's in GuC.
-> > > > > > 
-> > > > > > v2: Introduce a 100 ms delay after setting freq
-> > > > > > v3: Update commit message, code identical to v2
-> > > > > > 
-> > > > > > Bug: https://gitlab.freedesktop.org/drm/intel/-/issues/6806
-> > > > > > Cc: Vinay Belgaumkar <vinay.belgaumkar@intel.com>
-> > > > > > Cc: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
-> > > > > > Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
-> > > > > > ---
-> > > > > >     tests/i915/perf_pmu.c | 23 +++++++++++++++--------
-> > > > > >     1 file changed, 15 insertions(+), 8 deletions(-)
-> > > > > > 
-> > > > > > diff --git a/tests/i915/perf_pmu.c b/tests/i915/perf_pmu.c
-> > > > > > index f363db2ba13..02f6ae989b1 100644
-> > > > > > --- a/tests/i915/perf_pmu.c
-> > > > > > +++ b/tests/i915/perf_pmu.c
-> > > > > > @@ -1543,10 +1543,13 @@ test_interrupts_sync(int gem_fd)
-> > > > > > 	igt_assert_lte(target, busy);
-> > > > > >     }
-> > > > > >     +/* Wait for GuC SLPC freq changes to take effect */
-> > > > > > +#define wait_freq_set()		usleep(100000)
-> > > > > 
-> > > > > A future task of maybe adding a drop_caches flag to wait for this?
-> > > > > 
-> > > > > Alternatively, if we have a sysfs or debugfs file which reflects the value
-> > > > > once GuC has processed it, keep reading it until it is updated? Even if to
-> > > > > something other than it was before the write, to handle the inability to
-> > > > > set the exact requested frequency sometimes?
-> > > > > > 
-> > > > > > +
-> > > > > >     static void
-> > > > > >     test_frequency(int gem_fd)
-> > > > > >     {
-> > > > > > -	uint32_t min_freq, max_freq, boost_freq;
-> > > > > > +	uint32_t min_freq, max_freq, boost_freq, min_req, max_req;
-> > > > > > 	uint64_t val[2], start[2], slept;
-> > > > > > 	double min[2], max[2];
-> > > > > > 	igt_spin_t *spin;
-> > > > > > @@ -1572,10 +1575,11 @@ test_frequency(int gem_fd)
-> > > > > > 	 * Set GPU to min frequency and read PMU counters.
-> > > > > > 	 */
-> > > > > > 	igt_require(igt_sysfs_set_u32(sysfs, "gt_min_freq_mhz", min_freq));
-> > > > > > -	igt_require(igt_sysfs_get_u32(sysfs, "gt_min_freq_mhz") == min_freq);
-> > > > > > 	igt_require(igt_sysfs_set_u32(sysfs, "gt_max_freq_mhz", min_freq));
-> > > > > > -	igt_require(igt_sysfs_get_u32(sysfs, "gt_max_freq_mhz") == min_freq);
-> > > > > > 	igt_require(igt_sysfs_set_u32(sysfs, "gt_boost_freq_mhz", min_freq));
-> > > > > > +	wait_freq_set();
-> > > > > > +	igt_require(igt_sysfs_get_u32(sysfs, "gt_min_freq_mhz") == min_freq);
-> > > > > > +	igt_require(igt_sysfs_get_u32(sysfs, "gt_max_freq_mhz") == min_freq);
-> > > > > > 	igt_require(igt_sysfs_get_u32(sysfs, "gt_boost_freq_mhz") == min_freq);
-> > > > > > 		gem_quiescent_gpu(gem_fd); /* Idle to be sure the change takes
-> > > > > > effect */
-> > > > > > @@ -1587,6 +1591,7 @@ test_frequency(int gem_fd)
-> > > > > > 		min[0] = 1e9*(val[0] - start[0]) / slept;
-> > > > > > 	min[1] = 1e9*(val[1] - start[1]) / slept;
-> > > > > > +	min_req = igt_sysfs_get_u32(sysfs, "gt_cur_freq_mhz");
-> > > > > 
-> > > > > This really leaves a bad taste for me still, sorry. First of all, it may
-> > > > > make it more palatable if readback was immediately after wait_freq_set(),
-> > > > > or as part of it. Otherwise it seems like even more confused test and sysfs
-> > > > > ABI.
-> > > > > 
-> > > > > Did we close on my question of whether we can make readback of
-> > > > > gt_max_freq_mhz actually represent the real max? Correct me please if I got
-> > > > > confused - with min freq checking here we write max=300 and get 350? If so
-> > > > > can we make gt_max_freq_mhz return 350 after the write of 300? Or return an
-> > > > > error?
-> > > > 
-> > > > Did you read Vinay's email on v1 here:
-> > > > 
-> > > > https://patchwork.freedesktop.org/patch/510304/?series=110574&rev=1#comment_921571
-> > > > 
-> > > > As Vinay says, SLPC is requesting an entirely different freq (the effecient
-> > > > freq rather than the set 'min == max freq') and no amount of waiting will
-> > > > result in the requested freq being the same as the set 'min == max
-> > > > freq'. Also the efficient freq cannot be controlled from user space.
-> > > 
-> > > Why is that not a break in our ABI? What is the point in allowing users to
-> > > write into this field if the desired value can be silently ignored?
-> > 
-> > Yes, this is in discussion. FW is doing this and we need to see if FW can
-> > be made to obey the i915 ABI. IMHO what matters is performance per watt and
-> > if the ABI has to be tossed so be it. I will keep this list posted about
-> > what happens here. Merging any patches for these issues (GL #6806 and
-> > #6786) is blocked till the ABI breakage issue is resolved one way or
-> > another.
-> 
-> Two thoughts here, one has been mentioned before.
-> 
-> New one is that performance per watt perhaps does not matter (is not a
-> primary concern at least) for use cases where "users" (for some definition)
-> tweak the min/max in sysfs. Presumably in those cases user wants control,
-> for some reason, so as long as it is safe and within the limits why not give
-> it to them.
-> 
-> Same argument from a different angle - what is the use case for allowing
-> min/max control which does not really do what it says on the tin?
-> 
-> Old thought is this - if SLPC refuses to be controlled using our existing
-> controls then we could just say -ENODEV on attempts to modify them. Whether
-> for any input value, or some, depending on what SLPC can support (or wants
-> to support).
+VC4 contains a substantial number of tests. In order to avoid polluting
+the main tests folder, move the VC4 tests to a separate folder.
+Moreover, create a subdir "vc4" to install the VC4-specific tests.
 
-The problem is not just	SLPC. The freq is ultimately decided by PCODE and it
-has sudo and all the rights to disrespect what drivers (including SLPC as a
-a driver from PCODE perspective) are requesting.
+Acked-by: Petri Latvala <petri.latvala@intel.com>
+Signed-off-by: Maíra Canal <mcanal@igalia.com>
+---
+ meson.build                        |  8 ++++
+ tests/meson.build                  | 10 +----
+ tests/vc4/meson.build              | 19 ++++++++
+ tests/{ => vc4}/vc4_create_bo.c    |  0
+ tests/{ => vc4}/vc4_dmabuf_poll.c  |  0
+ tests/{ => vc4}/vc4_label_bo.c     |  0
+ tests/{ => vc4}/vc4_lookup_fail.c  |  0
+ tests/{ => vc4}/vc4_purgeable_bo.c |  0
+ tests/{ => vc4}/vc4_tiling.c       |  0
+ tests/{ => vc4}/vc4_wait_bo.c      |  0
+ tests/{ => vc4}/vc4_wait_seqno.c   |  0
+ tests/vc4_ci/vc4.testlist          | 70 +++++++++++++++---------------
+ 12 files changed, 64 insertions(+), 43 deletions(-)
+ create mode 100644 tests/vc4/meson.build
+ rename tests/{ => vc4}/vc4_create_bo.c (100%)
+ rename tests/{ => vc4}/vc4_dmabuf_poll.c (100%)
+ rename tests/{ => vc4}/vc4_label_bo.c (100%)
+ rename tests/{ => vc4}/vc4_lookup_fail.c (100%)
+ rename tests/{ => vc4}/vc4_purgeable_bo.c (100%)
+ rename tests/{ => vc4}/vc4_tiling.c (100%)
+ rename tests/{ => vc4}/vc4_wait_bo.c (100%)
+ rename tests/{ => vc4}/vc4_wait_seqno.c (100%)
 
-> 
-> Important to note I am primarily focusing on the min freq here, which AFAIR
-> we concluded can behave that user writes in 300, but SLPC decides it will
-> only go as low as 350.
-
-The other caveat here with the efficient freq is that it is dynamic and PCODE
-decides it with runtime conditions. It may start with 300, then move to 350,
-then back to 300. i915 is only stashing the initial value.
-
-We could potentially update our rpe everytime any freq control is touched.
-
-Just to highlight how bad this is, I've seen cases where rpe in runtime
-goes below the minimal fused freq (our rpn).
-
-> Because that is different from the existing, should
-> be well known, situation where we can write a max which cannot be achieved
-> due thermal throttling.
-
-yeap, usually when things got disrespected by PCODE there will be some thermal
-throttling information. But I have seen cases where this indicators simply do
-not exist. What complicate the api expectation to a very bad level.
-
-> 
-> Perhaps we need a table, or a summary of some kind, which explains the
-> possible behaviours for both min and max settings.
-
-This is probably a good idea. At least document everything and what and when
-things can be disrespected, etc...
-
-(and update our rpe info dynamically)
-
-> 
-> > > > (So in the example above min and max are set to 300 MHz and SLPC is
-> > > > requesting efficient freq which is 350 or 400 MHz. So min and max values
-> > > > are correct at 300 MHz and requested/actual freq will show 350/400 MHz).
-> > > > 
-> > > > Let me also explain what happens in GuC FW when we change min/max freq:
-> > > > * i915 receives min/max freq from sysfs and sends a message to GuC to
-> > > >     change min/max freq.
-> > > > * The message itself might be queued behind other messages in the host to
-> > > >     GuC queue. i915 is still blocked in the sysfs handler.
-> > > > * Now when GuC receives the message interrupt, in its top-half handler it
-> > > >     validates the freq parameters and sends a message back to host saying the
-> > > >     freq change has been accepted. But min/max freq is actually changed later
-> > > >     in the bottom-half handler in GuC FW. So the top half only validates the
-> > > >     freq value.
-> > > > * When i915 receives the message from GuC top half, the sysfs handler
-> > > >     unblocks and starts reflecting the new min/max freq value.
-> > > > 
-> > > > So the delay for the new min/max freq values to take effect is between
-> > > > returning from the sysfs handler and when the min/max freq are really set
-> > > > in GuC bottom half (an indeterminate possibly large amount of time if GuC
-> > > > is busy).
-> > > 
-> > > Do we have a drop_caches flag which would force waiting of idle GuC, which
-> > > would cover the bottom half as well? Could we or should we add it if not?
-> > > Would beat the usleep approach..
-> > 
-> > Agree, waiting for GuC to idle would do it, but not sure "how" to do it. As
-> > I said there is no notification after the bottom half is done applying the
-> > freq settings. We may need to schedule something after the freq setting
-> > host to guc command and wait for that to be done. A little bit out of my
-> > depth on this, let me know if you have any ideas here. I'll ask the GuC
-> > guys too. Currently we don't have a drop_caches flag for this.
-> 
-> Okay, I was wondering if DROP_IDLE would do it, but perhaps this bottom half
-> can run independently from those flows so it was just a thought, not a
-> claim.
-> 
-> > > > So as you see this introduces an indeterminacy due to to GuC interface not
-> > > > being synchronous. If this needs to be fixed, it needs to be fixed in GuC
-> > > > FW rather than waiting etc. in i915. GuC needs to implement another
-> > > > notification to host /after/ the min/max freq change has been applied in
-> > > > its bottom half. Doing this is not a priority for the GuC team at this
-> > > > point.
-> > > 
-> > > Is there a method for querying the real min from GuC, which would maybe
-> > > work after waiting for GuC to idle?
-> > 
-> > Will find out about this too. Afaik, at present querying the real min from
-> > GuC is not possible. As soon as the top half has completed the freq
-> > settings are updated so querying will return the new settings even though
-> > they might not have been applied by the bottom half yet.
-> 
-> And it will return the written value, or the real one? Going back to the 300
-> written in, 350 actual min freq example. Presumably 300 and 350 SLPC picks
-> is completely invisible to i915 via the FW interface?
-> 
-> > > > However, this bug is not due to these delays but due to GuC requesting the
-> > > > efficient freq instead of the set 'min == max freq' as mentioned above.
-> > > > 
-> > > > If all these delays are confusing we can revert to v1 of the patch:
-> > > > 
-> > > > https://patchwork.freedesktop.org/patch/510304/?series=110574&rev=1
-> > > > 
-> > > > v1 is simple and does not introduce these delays but just reads the
-> > > > requested freq from sysfs after the 500 ms PMU measurement but while the
-> > > > spinner is still running (which we do in v3 too). Without load SLPC will
-> > > > only request RPn so to compare with PMU measurement we must read the
-> > > > requested freq from sysfs with the spinner load. v1 is sufficient to fix
-> > > > the bug but I thought to be completely safe it is better to add
-> > > > wait_freq_set() after changing min/max freq (and hence v3).
-> > > > 
-> > > > I hope this clarifies things somewhat. If not please let me know.
-> > > 
-> > > It clarifies a large chunk thank you.
-> > > 
-> > > Another question which you missed is why is it needed for the max mode?
-> > > There we allow a 15% error (more than 5% default). Is that not enough with
-> > > SLPC?
-> > 
-> > Yes I think you are right, should not be needed for the max mode. The real
-> > issue is that efficient freq can exceed the max freq set but I think that
-> > should not be an issue if the max is RP0.
-> 
-> Ah okay, so SLPC not respecting max same as with min. I think the question
-> of what is the use case for min/max controls in the SLPC world is the one to
-> answer then.
-> 
-> Regards,
-> 
-> Tvrtko
+diff --git a/meson.build b/meson.build
+index 709c7a6c..f5e30827 100644
+--- a/meson.build
++++ b/meson.build
+@@ -261,6 +261,7 @@ libdir = get_option('libdir')
+ libexecdir = join_paths(get_option('libexecdir'), 'igt-gpu-tools')
+ amdgpudir = join_paths(libexecdir, 'amdgpu')
+ v3ddir = join_paths(libexecdir, 'v3d')
++vc4dir = join_paths(libexecdir, 'vc4')
+ mandir = get_option('mandir')
+ pkgconfigdir = join_paths(libdir, 'pkgconfig')
+ python3 = find_program('python3', required : true)
+@@ -302,11 +303,18 @@ if get_option('use_rpath')
+ 		v3d_rpathdir = join_paths(v3d_rpathdir, '..')
+ 	endforeach
+ 	v3d_rpathdir = join_paths(v3d_rpathdir, libdir)
++
++	vc4_rpathdir = '$ORIGIN'
++	foreach p : vc4dir.split('/')
++		vc4_rpathdir = join_paths(vc4_rpathdir, '..')
++	endforeach
++	vc4_rpathdir = join_paths(vc4_rpathdir, libdir)
+ else
+ 	bindir_rpathdir = ''
+ 	libexecdir_rpathdir = ''
+ 	amdgpudir_rpathdir = ''
+ 	v3d_rpathdir = ''
++	vc4_rpathdir = ''
+ endif
+ 
+ subdir('lib')
+diff --git a/tests/meson.build b/tests/meson.build
+index a593055c..25c88f52 100644
+--- a/tests/meson.build
++++ b/tests/meson.build
+@@ -80,14 +80,6 @@ test_progs = [
+ 	'syncobj_timeline',
+ 	'template',
+ 	'tools_test',
+-	'vc4_create_bo',
+-	'vc4_dmabuf_poll',
+-	'vc4_label_bo',
+-	'vc4_lookup_fail',
+-	'vc4_purgeable_bo',
+-	'vc4_tiling',
+-	'vc4_wait_bo',
+-	'vc4_wait_seqno',
+ 	'vgem_basic',
+ 	'vgem_slow',
+ ]
+@@ -454,6 +446,8 @@ subdir('amdgpu')
+ 
+ subdir('v3d')
+ 
++subdir('vc4')
++
+ gen_testlist = find_program('generate_testlist.sh')
+ test_list_target = custom_target('testlist',
+ 	      output : 'test-list.txt',
+diff --git a/tests/vc4/meson.build b/tests/vc4/meson.build
+new file mode 100644
+index 00000000..bdb2a6b0
+--- /dev/null
++++ b/tests/vc4/meson.build
+@@ -0,0 +1,19 @@
++vc4_progs = [
++	'vc4_create_bo',
++	'vc4_dmabuf_poll',
++	'vc4_label_bo',
++	'vc4_lookup_fail',
++	'vc4_purgeable_bo',
++	'vc4_tiling',
++	'vc4_wait_bo',
++	'vc4_wait_seqno',
++]
++
++foreach prog : vc4_progs
++	test_executables += executable(prog, prog + '.c',
++				       dependencies : test_deps,
++				       install_dir : vc4dir,
++				       install_rpath : vc4_rpathdir,
++				       install : true)
++	test_list += join_paths('vc4', prog)
++endforeach
+diff --git a/tests/vc4_create_bo.c b/tests/vc4/vc4_create_bo.c
+similarity index 100%
+rename from tests/vc4_create_bo.c
+rename to tests/vc4/vc4_create_bo.c
+diff --git a/tests/vc4_dmabuf_poll.c b/tests/vc4/vc4_dmabuf_poll.c
+similarity index 100%
+rename from tests/vc4_dmabuf_poll.c
+rename to tests/vc4/vc4_dmabuf_poll.c
+diff --git a/tests/vc4_label_bo.c b/tests/vc4/vc4_label_bo.c
+similarity index 100%
+rename from tests/vc4_label_bo.c
+rename to tests/vc4/vc4_label_bo.c
+diff --git a/tests/vc4_lookup_fail.c b/tests/vc4/vc4_lookup_fail.c
+similarity index 100%
+rename from tests/vc4_lookup_fail.c
+rename to tests/vc4/vc4_lookup_fail.c
+diff --git a/tests/vc4_purgeable_bo.c b/tests/vc4/vc4_purgeable_bo.c
+similarity index 100%
+rename from tests/vc4_purgeable_bo.c
+rename to tests/vc4/vc4_purgeable_bo.c
+diff --git a/tests/vc4_tiling.c b/tests/vc4/vc4_tiling.c
+similarity index 100%
+rename from tests/vc4_tiling.c
+rename to tests/vc4/vc4_tiling.c
+diff --git a/tests/vc4_wait_bo.c b/tests/vc4/vc4_wait_bo.c
+similarity index 100%
+rename from tests/vc4_wait_bo.c
+rename to tests/vc4/vc4_wait_bo.c
+diff --git a/tests/vc4_wait_seqno.c b/tests/vc4/vc4_wait_seqno.c
+similarity index 100%
+rename from tests/vc4_wait_seqno.c
+rename to tests/vc4/vc4_wait_seqno.c
+diff --git a/tests/vc4_ci/vc4.testlist b/tests/vc4_ci/vc4.testlist
+index e86d4c81..ec09dda9 100644
+--- a/tests/vc4_ci/vc4.testlist
++++ b/tests/vc4_ci/vc4.testlist
+@@ -1,35 +1,35 @@
+-igt@vc4_create_bo@create-bo-0
+-igt@vc4_create_bo@create-bo-4096
+-igt@vc4_create_bo@create-bo-zeroed
+-igt@vc4_dmabuf_poll@poll-read-waits-until-write-done
+-igt@vc4_dmabuf_poll@poll-write-waits-until-write-done
+-igt@vc4_label_bo@set-label
+-igt@vc4_label_bo@set-bad-handle
+-igt@vc4_label_bo@set-bad-name
+-igt@vc4_label_bo@set-kernel-name
+-igt@vc4_lookup_fail@bad-color-write
+-igt@vc4_purgeable_bo@mark-willneed
+-igt@vc4_purgeable_bo@mark-purgeable
+-igt@vc4_purgeable_bo@mark-purgeable-twice
+-igt@vc4_purgeable_bo@access-purgeable-bo-mem
+-igt@vc4_purgeable_bo@access-purged-bo-mem
+-igt@vc4_purgeable_bo@mark-unpurgeable-check-retained
+-igt@vc4_purgeable_bo@mark-unpurgeable-purged
+-igt@vc4_purgeable_bo@free-purged-bo
+-igt@vc4_tiling@get-bad-handle
+-igt@vc4_tiling@set-bad-handle
+-igt@vc4_tiling@get-bad-flags
+-igt@vc4_tiling@set-bad-flags
+-igt@vc4_tiling@get-bad-modifier
+-igt@vc4_tiling@set-bad-modifier
+-igt@vc4_tiling@set-get
+-igt@vc4_tiling@get-after-free
+-igt@vc4_wait_bo@bad-bo
+-igt@vc4_wait_bo@bad-pad
+-igt@vc4_wait_bo@unused-bo-0ns
+-igt@vc4_wait_bo@unused-bo-1ns
+-igt@vc4_wait_bo@used-bo
+-igt@vc4_wait_bo@used-bo-0ns
+-igt@vc4_wait_bo@used-bo-1ns
+-igt@vc4_wait_seqno@bad-seqno-0ns
+-igt@vc4_wait_seqno@bad-seqno-1ns
++igt@vc4/vc4_create_bo@create-bo-0
++igt@vc4/vc4_create_bo@create-bo-4096
++igt@vc4/vc4_create_bo@create-bo-zeroed
++igt@vc4/vc4_dmabuf_poll@poll-read-waits-until-write-done
++igt@vc4/vc4_dmabuf_poll@poll-write-waits-until-write-done
++igt@vc4/vc4_label_bo@set-label
++igt@vc4/vc4_label_bo@set-bad-handle
++igt@vc4/vc4_label_bo@set-bad-name
++igt@vc4/vc4_label_bo@set-kernel-name
++igt@vc4/vc4_lookup_fail@bad-color-write
++igt@vc4/vc4_purgeable_bo@mark-willneed
++igt@vc4/vc4_purgeable_bo@mark-purgeable
++igt@vc4/vc4_purgeable_bo@mark-purgeable-twice
++igt@vc4/vc4_purgeable_bo@access-purgeable-bo-mem
++igt@vc4/vc4_purgeable_bo@access-purged-bo-mem
++igt@vc4/vc4_purgeable_bo@mark-unpurgeable-check-retained
++igt@vc4/vc4_purgeable_bo@mark-unpurgeable-purged
++igt@vc4/vc4_purgeable_bo@free-purged-bo
++igt@vc4/vc4_tiling@get-bad-handle
++igt@vc4/vc4_tiling@set-bad-handle
++igt@vc4/vc4_tiling@get-bad-flags
++igt@vc4/vc4_tiling@set-bad-flags
++igt@vc4/vc4_tiling@get-bad-modifier
++igt@vc4/vc4_tiling@set-bad-modifier
++igt@vc4/vc4_tiling@set-get
++igt@vc4/vc4_tiling@get-after-free
++igt@vc4/vc4_wait_bo@bad-bo
++igt@vc4/vc4_wait_bo@bad-pad
++igt@vc4/vc4_wait_bo@unused-bo-0ns
++igt@vc4/vc4_wait_bo@unused-bo-1ns
++igt@vc4/vc4_wait_bo@used-bo
++igt@vc4/vc4_wait_bo@used-bo-0ns
++igt@vc4/vc4_wait_bo@used-bo-1ns
++igt@vc4/vc4_wait_seqno@bad-seqno-0ns
++igt@vc4/vc4_wait_seqno@bad-seqno-1ns
+-- 
+2.38.1
