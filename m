@@ -1,20 +1,26 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 072B510E1FA
- for <igt-dev@lists.freedesktop.org>; Mon, 19 Dec 2022 08:23:39 +0000 (UTC)
-Message-ID: <bc0a370e-41ca-4a76-777b-eda8e0107060@intel.com>
-Date: Mon, 19 Dec 2022 09:23:24 +0100
-Content-Language: en-US
-To: =?UTF-8?Q?Zbigniew_Kempczy=c5=84ski?= <zbigniew.kempczynski@intel.com>
-References: <20221215113519.36660-1-zbigniew.kempczynski@intel.com>
- <20221215113519.36660-4-zbigniew.kempczynski@intel.com>
-From: Karolina Stolarek <karolina.stolarek@intel.com>
-In-Reply-To: <20221215113519.36660-4-zbigniew.kempczynski@intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DAA3610E20C
+ for <igt-dev@lists.freedesktop.org>; Mon, 19 Dec 2022 08:47:33 +0000 (UTC)
+Message-ID: <cc8b219d-808d-151a-260b-c3992970f5cc@linux.intel.com>
+Date: Mon, 19 Dec 2022 08:46:59 +0000
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t v2 3/3] tests/gem_ccs: Add
- block-multicopy subtest
+Content-Language: en-US
+To: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>,
+ Rodrigo Vivi <rodrigo.vivi@intel.com>
+References: <20221119020023.3376-1-ashutosh.dixit@intel.com>
+ <4b9229ee-baa0-c146-adff-425f36d95eaf@linux.intel.com>
+ <87pmdew6l6.wl-ashutosh.dixit@intel.com>
+ <c90ded5b-f24f-781a-0d09-bf38a3a9770e@linux.intel.com>
+ <87sfhf7trw.wl-ashutosh.dixit@intel.com>
+ <d3d29b9a-3e9b-967a-47ca-f157d32d6652@linux.intel.com>
+ <Y5yRSFY09ZzbTCkS@intel.com> <874jtupwwl.wl-ashutosh.dixit@intel.com>
+From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
+In-Reply-To: <874jtupwwl.wl-ashutosh.dixit@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/perf_pmu: Compare against
+ requested freq in frequency subtest
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,351 +33,296 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On 15.12.2022 12:35, Zbigniew Kempczyński wrote:
-> Exercise sequence of blits packed in single batch. It may reveal
-> flushing/decompressing/detiling problems during execution.
-> multicopy-inplace version differs from copy-inplace version with
-> additional blit to same tiling format during decompression to separate
-> problems visible in decompressing/detiling in one step.
+
+On 17/12/2022 02:49, Dixit, Ashutosh wrote:
+> On Fri, 16 Dec 2022 07:39:52 -0800, Rodrigo Vivi wrote:
+>> On Fri, Dec 16, 2022 at 09:37:31AM +0000, Tvrtko Ursulin wrote:
+>>>
+>>> On 16/12/2022 06:21, Dixit, Ashutosh wrote:
+>>>> On Thu, 24 Nov 2022 04:42:08 -0800, Tvrtko Ursulin wrote:
+>>>>>
+>>>>> On 23/11/2022 06:03, Dixit, Ashutosh wrote:
+>>>>>> On Mon, 21 Nov 2022 01:09:55 -0800, Tvrtko Ursulin wrote:
+>>>>>>>
+>>>>>>
+>>>>
+>>>> Hi Tvrtko,
+>>>>
+>>>> Sorry for the delay in replying on this. We are discussing this but still
+>>>> no conclusion. I have replied what I can below, will update again after I
+>>>> know more. Wanted to send a reply before disappearing for the
+>>>> holidays. Please see below.
+>>>>
+>>>>>> Hi Tvrtko,
+>>>>>>
+>>>>>> I am only offering an overall clarification below first, not answering all
+>>>>>> of your points for now.
+>>>>>>
+>>>>>>>
+>>>>>>> On 19/11/2022 02:00, Ashutosh Dixit wrote:
+>>>>>>>> With SLPC, even when we set the same min and max freq's, the requested and
+>>>>>>>> actual freq's can differ from the min/max freq set. For example "efficient
+>>>>>>>> freq" (when in effect) can override set min/max freq. In general FW is the
+>>>>>>>> final arbiter in determining freq and can override set values.
+>>>>>>>>
+>>>>>>>> Therefore in igt@perf_pmu@frequency subtest, compare the requested freq
+>>>>>>>> reported by PMU not against the set freq's but against the requested freq
+>>>>>>>> reported in sysfs. Also add a delay after setting freq's to account for
+>>>>>>>> messaging delays in setting freq's in GuC.
+>>>>>>>>
+>>>>>>>> v2: Introduce a 100 ms delay after setting freq
+>>>>>>>> v3: Update commit message, code identical to v2
+>>>>>>>>
+>>>>>>>> Bug: https://gitlab.freedesktop.org/drm/intel/-/issues/6806
+>>>>>>>> Cc: Vinay Belgaumkar <vinay.belgaumkar@intel.com>
+>>>>>>>> Cc: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
+>>>>>>>> Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
+>>>>>>>> ---
+>>>>>>>>      tests/i915/perf_pmu.c | 23 +++++++++++++++--------
+>>>>>>>>      1 file changed, 15 insertions(+), 8 deletions(-)
+>>>>>>>>
+>>>>>>>> diff --git a/tests/i915/perf_pmu.c b/tests/i915/perf_pmu.c
+>>>>>>>> index f363db2ba13..02f6ae989b1 100644
+>>>>>>>> --- a/tests/i915/perf_pmu.c
+>>>>>>>> +++ b/tests/i915/perf_pmu.c
+>>>>>>>> @@ -1543,10 +1543,13 @@ test_interrupts_sync(int gem_fd)
+>>>>>>>> 	igt_assert_lte(target, busy);
+>>>>>>>>      }
+>>>>>>>>      +/* Wait for GuC SLPC freq changes to take effect */
+>>>>>>>> +#define wait_freq_set()		usleep(100000)
+>>>>>>>
+>>>>>>> A future task of maybe adding a drop_caches flag to wait for this?
+>>>>>>>
+>>>>>>> Alternatively, if we have a sysfs or debugfs file which reflects the value
+>>>>>>> once GuC has processed it, keep reading it until it is updated? Even if to
+>>>>>>> something other than it was before the write, to handle the inability to
+>>>>>>> set the exact requested frequency sometimes?
+>>>>>>>>
+>>>>>>>> +
+>>>>>>>>      static void
+>>>>>>>>      test_frequency(int gem_fd)
+>>>>>>>>      {
+>>>>>>>> -	uint32_t min_freq, max_freq, boost_freq;
+>>>>>>>> +	uint32_t min_freq, max_freq, boost_freq, min_req, max_req;
+>>>>>>>> 	uint64_t val[2], start[2], slept;
+>>>>>>>> 	double min[2], max[2];
+>>>>>>>> 	igt_spin_t *spin;
+>>>>>>>> @@ -1572,10 +1575,11 @@ test_frequency(int gem_fd)
+>>>>>>>> 	 * Set GPU to min frequency and read PMU counters.
+>>>>>>>> 	 */
+>>>>>>>> 	igt_require(igt_sysfs_set_u32(sysfs, "gt_min_freq_mhz", min_freq));
+>>>>>>>> -	igt_require(igt_sysfs_get_u32(sysfs, "gt_min_freq_mhz") == min_freq);
+>>>>>>>> 	igt_require(igt_sysfs_set_u32(sysfs, "gt_max_freq_mhz", min_freq));
+>>>>>>>> -	igt_require(igt_sysfs_get_u32(sysfs, "gt_max_freq_mhz") == min_freq);
+>>>>>>>> 	igt_require(igt_sysfs_set_u32(sysfs, "gt_boost_freq_mhz", min_freq));
+>>>>>>>> +	wait_freq_set();
+>>>>>>>> +	igt_require(igt_sysfs_get_u32(sysfs, "gt_min_freq_mhz") == min_freq);
+>>>>>>>> +	igt_require(igt_sysfs_get_u32(sysfs, "gt_max_freq_mhz") == min_freq);
+>>>>>>>> 	igt_require(igt_sysfs_get_u32(sysfs, "gt_boost_freq_mhz") == min_freq);
+>>>>>>>> 		gem_quiescent_gpu(gem_fd); /* Idle to be sure the change takes
+>>>>>>>> effect */
+>>>>>>>> @@ -1587,6 +1591,7 @@ test_frequency(int gem_fd)
+>>>>>>>> 		min[0] = 1e9*(val[0] - start[0]) / slept;
+>>>>>>>> 	min[1] = 1e9*(val[1] - start[1]) / slept;
+>>>>>>>> +	min_req = igt_sysfs_get_u32(sysfs, "gt_cur_freq_mhz");
+>>>>>>>
+>>>>>>> This really leaves a bad taste for me still, sorry. First of all, it may
+>>>>>>> make it more palatable if readback was immediately after wait_freq_set(),
+>>>>>>> or as part of it. Otherwise it seems like even more confused test and sysfs
+>>>>>>> ABI.
+>>>>>>>
+>>>>>>> Did we close on my question of whether we can make readback of
+>>>>>>> gt_max_freq_mhz actually represent the real max? Correct me please if I got
+>>>>>>> confused - with min freq checking here we write max=300 and get 350? If so
+>>>>>>> can we make gt_max_freq_mhz return 350 after the write of 300? Or return an
+>>>>>>> error?
+>>>>>>
+>>>>>> Did you read Vinay's email on v1 here:
+>>>>>>
+>>>>>> https://patchwork.freedesktop.org/patch/510304/?series=110574&rev=1#comment_921571
+>>>>>>
+>>>>>> As Vinay says, SLPC is requesting an entirely different freq (the effecient
+>>>>>> freq rather than the set 'min == max freq') and no amount of waiting will
+>>>>>> result in the requested freq being the same as the set 'min == max
+>>>>>> freq'. Also the efficient freq cannot be controlled from user space.
+>>>>>
+>>>>> Why is that not a break in our ABI? What is the point in allowing users to
+>>>>> write into this field if the desired value can be silently ignored?
+>>>>
+>>>> Yes, this is in discussion. FW is doing this and we need to see if FW can
+>>>> be made to obey the i915 ABI. IMHO what matters is performance per watt and
+>>>> if the ABI has to be tossed so be it. I will keep this list posted about
+>>>> what happens here. Merging any patches for these issues (GL #6806 and
+>>>> #6786) is blocked till the ABI breakage issue is resolved one way or
+>>>> another.
+>>>
+>>> Two thoughts here, one has been mentioned before.
+>>>
+>>> New one is that performance per watt perhaps does not matter (is not a
+>>> primary concern at least) for use cases where "users" (for some definition)
+>>> tweak the min/max in sysfs. Presumably in those cases user wants control,
+>>> for some reason, so as long as it is safe and within the limits why not give
+>>> it to them.
+>>>
+>>> Same argument from a different angle - what is the use case for allowing
+>>> min/max control which does not really do what it says on the tin?
+>>>
+>>> Old thought is this - if SLPC refuses to be controlled using our existing
+>>> controls then we could just say -ENODEV on attempts to modify them. Whether
+>>> for any input value, or some, depending on what SLPC can support (or wants
+>>> to support).
+>>
+>> The problem is not just	SLPC. The freq is ultimately decided by PCODE and it
+>> has sudo and all the rights to disrespect what drivers (including SLPC as a
+>> a driver from PCODE perspective) are requesting.
+>>
+>>>
+>>> Important to note I am primarily focusing on the min freq here, which AFAIR
+>>> we concluded can behave that user writes in 300, but SLPC decides it will
+>>> only go as low as 350.
+>>
+>> The other caveat here with the efficient freq is that it is dynamic and PCODE
+>> decides it with runtime conditions. It may start with 300, then move to 350,
+>> then back to 300. i915 is only stashing the initial value.
+>>
+>> We could potentially update our rpe everytime any freq control is
+>> touched.
 > 
-> Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-> Cc: Karolina Stolarek <karolina.stolarek@intel.com>
+> We thought of doing this but two points:
 > 
-> ---
-> v2: extract test functions table
-> ---
-
-That looks great right now, thanks. Checked other patches, I agree with 
-the changes. So:
-
-Reviewed-by: Karolina Stolarek <karolina.stolarek@intel.com>
-
-Many thanks,
-Karolina
-
->   tests/i915/gem_ccs.c | 250 ++++++++++++++++++++++++++++++++++++++++---
->   1 file changed, 238 insertions(+), 12 deletions(-)
+> 1. i915 now reads the same register as GuC for rpe but I never see the
+>     value in this register change.
+> 2. Even if we could know the real rpe, the freq's might be set before a
+>     workload start running and rpe might change after the workload starts
+>     running. So knowing rpe before the workload might not be very useful.
 > 
-> diff --git a/tests/i915/gem_ccs.c b/tests/i915/gem_ccs.c
-> index 4ecb3e36ac..51a5a4d086 100644
-> --- a/tests/i915/gem_ccs.c
-> +++ b/tests/i915/gem_ccs.c
-> @@ -262,6 +262,113 @@ static void surf_copy(int i915,
->   	gem_close(i915, ccs);
->   }
->   
-> +struct blt_copy3_data {
-> +	int i915;
-> +	struct blt_copy_object src;
-> +	struct blt_copy_object mid;
-> +	struct blt_copy_object dst;
-> +	struct blt_copy_object final;
-> +	struct blt_copy_batch bb;
-> +	enum blt_color_depth color_depth;
-> +
-> +	/* debug stuff */
-> +	bool print_bb;
-> +};
-> +
-> +struct blt_block_copy3_data_ext {
-> +	struct blt_block_copy_object_ext src;
-> +	struct blt_block_copy_object_ext mid;
-> +	struct blt_block_copy_object_ext dst;
-> +	struct blt_block_copy_object_ext final;
-> +};
-> +
-> +#define FILL_OBJ(_idx, _handle, _offset, _flags) do { \
-> +	obj[(_idx)].handle = (_handle); \
-> +	obj[(_idx)].offset = (_offset); \
-> +	obj[(_idx)++].flags = EXEC_OBJECT_PINNED | \
-> +			      EXEC_OBJECT_SUPPORTS_48B_ADDRESS | (_flags) ; \
-> +} while (0)
-> +
-> +static int blt_block_copy3(int i915,
-> +			   const intel_ctx_t *ctx,
-> +			   const struct intel_execution_engine2 *e,
-> +			   uint64_t ahnd,
-> +			   const struct blt_copy3_data *blt3,
-> +			   const struct blt_block_copy3_data_ext *ext3)
-> +{
-> +	struct drm_i915_gem_execbuffer2 execbuf = {};
-> +	struct drm_i915_gem_exec_object2 obj[5] = {};
-> +	struct blt_copy_data blt0;
-> +	struct blt_block_copy_data_ext ext0;
-> +	uint64_t src_offset, mid_offset, dst_offset, final_offset, bb_offset, alignment;
-> +	uint64_t bb_pos = 0;
-> +	uint32_t *bb;
-> +	int i, ret;
-> +
-> +	igt_assert_f(ahnd, "block-copy3 supports softpin only\n");
-> +	igt_assert_f(blt3, "block-copy3 requires data to do blit\n");
-> +
-> +	alignment = gem_detect_safe_alignment(i915);
-> +	src_offset = get_offset(ahnd, blt3->src.handle, blt3->src.size, alignment);
-> +	mid_offset = get_offset(ahnd, blt3->mid.handle, blt3->mid.size, alignment);
-> +	dst_offset = get_offset(ahnd, blt3->dst.handle, blt3->dst.size, alignment);
-> +	final_offset = get_offset(ahnd, blt3->final.handle, blt3->final.size, alignment);
-> +	bb_offset = get_offset(ahnd, blt3->bb.handle, blt3->bb.size, alignment);
-> +
-> +	/* First blit src -> mid */
-> +	memset(&blt0, 0, sizeof(blt0));
-> +	blt0.src = blt3->src;
-> +	blt0.dst = blt3->mid;
-> +	blt0.bb = blt3->bb;
-> +	blt0.color_depth = blt3->color_depth;
-> +	blt0.print_bb = blt3->print_bb;
-> +	ext0.src = ext3->src;
-> +	ext0.dst = ext3->mid;
-> +	bb_pos = emit_blt_block_copy(i915, ahnd, &blt0, &ext0, bb_pos, false);
-> +
-> +	/* Second blit mid -> dst */
-> +	memset(&blt0, 0, sizeof(blt0));
-> +	blt0.src = blt3->mid;
-> +	blt0.dst = blt3->dst;
-> +	blt0.bb = blt3->bb;
-> +	blt0.color_depth = blt3->color_depth;
-> +	blt0.print_bb = blt3->print_bb;
-> +	ext0.src = ext3->mid;
-> +	ext0.dst = ext3->dst;
-> +	bb_pos = emit_blt_block_copy(i915, ahnd, &blt0, &ext0, bb_pos, false);
-> +
-> +	/* Third blit dst -> final */
-> +	memset(&blt0, 0, sizeof(blt0));
-> +	blt0.src = blt3->dst;
-> +	blt0.dst = blt3->final;
-> +	blt0.bb = blt3->bb;
-> +	blt0.color_depth = blt3->color_depth;
-> +	blt0.print_bb = blt3->print_bb;
-> +	ext0.src = ext3->dst;
-> +	ext0.dst = ext3->final;
-> +	bb_pos = emit_blt_block_copy(i915, ahnd, &blt0, &ext0, bb_pos, true);
-> +
-> +	i = 0;
-> +	FILL_OBJ(i, blt3->src.handle, CANONICAL(src_offset), 0);
-> +	FILL_OBJ(i, blt3->mid.handle, CANONICAL(mid_offset), EXEC_OBJECT_WRITE);
-> +	if (mid_offset != dst_offset)
-> +		FILL_OBJ(i, blt3->dst.handle, CANONICAL(dst_offset), EXEC_OBJECT_WRITE);
-> +	FILL_OBJ(i, blt3->final.handle, CANONICAL(final_offset), 0);
-> +	FILL_OBJ(i, blt3->bb.handle, CANONICAL(bb_offset), 0);
-> +
-> +	execbuf.buffer_count = i;
-> +
-> +	execbuf.buffers_ptr = to_user_pointer(obj);
-> +	execbuf.rsvd1 = ctx ? ctx->id : 0;
-> +	execbuf.flags = e ? e->flags : I915_EXEC_BLT;
-> +	ret = __gem_execbuf(i915, &execbuf);
-> +
-> +	gem_sync(i915, blt3->bb.handle);
-> +	munmap(bb, blt3->bb.size);
-> +
-> +	return ret;
-> +}
-> +
->   static void block_copy(int i915,
->   		       const intel_ctx_t *ctx,
->   		       const struct intel_execution_engine2 *e,
-> @@ -380,10 +487,111 @@ static void block_copy(int i915,
->   	igt_assert_f(!result, "source and destination surfaces differs!\n");
->   }
->   
-> +static void block_multicopy(int i915,
-> +			    const intel_ctx_t *ctx,
-> +			    const struct intel_execution_engine2 *e,
-> +			    uint32_t region1, uint32_t region2,
-> +			    enum blt_tiling mid_tiling,
-> +			    const struct test_config *config)
-> +{
-> +	struct blt_copy3_data blt3 = {};
-> +	struct blt_block_copy3_data_ext ext3 = {}, *pext3 = &ext3;
-> +	struct blt_copy_object *src, *mid, *dst, *final;
-> +	const uint32_t bpp = 32;
-> +	uint64_t bb_size = 4096;
-> +	uint64_t ahnd = get_reloc_ahnd(i915, ctx->id);
-> +	uint32_t run_id = mid_tiling;
-> +	uint32_t mid_region = region2, bb;
-> +	uint32_t width = param.width, height = param.height;
-> +	enum blt_compression mid_compression = config->compression;
-> +	int mid_compression_format = param.compression_format;
-> +	enum blt_compression_type comp_type = COMPRESSION_TYPE_3D;
-> +	uint8_t uc_mocs = intel_get_uc_mocs(i915);
-> +	int result;
-> +
-> +	igt_assert(__gem_create_in_memory_regions(i915, &bb, &bb_size, region1) == 0);
-> +
-> +	if (!blt_supports_compression(i915))
-> +		pext3 = NULL;
-> +
-> +	src = create_object(i915, region1, width, height, bpp, uc_mocs,
-> +			    T_LINEAR, COMPRESSION_DISABLED, comp_type, true);
-> +	mid = create_object(i915, mid_region, width, height, bpp, uc_mocs,
-> +			    mid_tiling, mid_compression, comp_type, true);
-> +	dst = create_object(i915, region1, width, height, bpp, uc_mocs,
-> +			    mid_tiling, COMPRESSION_DISABLED, comp_type, true);
-> +	final = create_object(i915, region1, width, height, bpp, uc_mocs,
-> +			      T_LINEAR, COMPRESSION_DISABLED, comp_type, true);
-> +	igt_assert(src->size == dst->size);
-> +	PRINT_SURFACE_INFO("src", src);
-> +	PRINT_SURFACE_INFO("mid", mid);
-> +	PRINT_SURFACE_INFO("dst", dst);
-> +	PRINT_SURFACE_INFO("final", final);
-> +
-> +	blt_surface_fill_rect(i915, src, width, height);
-> +
-> +	memset(&blt3, 0, sizeof(blt3));
-> +	blt3.color_depth = CD_32bit;
-> +	blt3.print_bb = param.print_bb;
-> +	set_blt_object(&blt3.src, src);
-> +	set_blt_object(&blt3.mid, mid);
-> +	set_blt_object(&blt3.dst, dst);
-> +	set_blt_object(&blt3.final, final);
-> +
-> +	if (config->inplace) {
-> +		set_object(&blt3.dst, mid->handle, dst->size, mid->region, mid->mocs,
-> +			   mid_tiling, COMPRESSION_DISABLED, comp_type);
-> +		blt3.dst.ptr = mid->ptr;
-> +	}
-> +
-> +	set_object_ext(&ext3.src, 0, width, height, SURFACE_TYPE_2D);
-> +	set_object_ext(&ext3.mid, mid_compression_format, width, height, SURFACE_TYPE_2D);
-> +	set_object_ext(&ext3.dst, 0, width, height, SURFACE_TYPE_2D);
-> +	set_object_ext(&ext3.final, 0, width, height, SURFACE_TYPE_2D);
-> +	set_batch(&blt3.bb, bb, bb_size, region1);
-> +
-> +	blt_block_copy3(i915, ctx, e, ahnd, &blt3, pext3);
-> +	gem_sync(i915, blt3.final.handle);
-> +
-> +	WRITE_PNG(i915, run_id, "src", &blt3.src, width, height);
-> +	if (!config->inplace)
-> +		WRITE_PNG(i915, run_id, "mid", &blt3.mid, width, height);
-> +	WRITE_PNG(i915, run_id, "dst", &blt3.dst, width, height);
-> +	WRITE_PNG(i915, run_id, "final", &blt3.final, width, height);
-> +
-> +	result = memcmp(src->ptr, blt3.final.ptr, src->size);
-> +
-> +	destroy_object(i915, src);
-> +	destroy_object(i915, mid);
-> +	destroy_object(i915, dst);
-> +	destroy_object(i915, final);
-> +	gem_close(i915, bb);
-> +	put_ahnd(ahnd);
-> +
-> +	igt_assert_f(!result, "source and destination surfaces differs!\n");
-> +}
-> +
-> +enum copy_func {
-> +	BLOCK_COPY,
-> +	BLOCK_MULTICOPY,
-> +};
-> +
-> +static const struct {
-> +	const char *suffix;
-> +	void (*copyfn)(int, const intel_ctx_t *,
-> +		       const struct intel_execution_engine2 *,
-> +		       uint32_t, uint32_t, enum blt_tiling,
-> +		       const struct test_config *);
-> +} copyfns[] = {
-> +	[BLOCK_COPY] = { "", block_copy },
-> +	[BLOCK_MULTICOPY] = { "-multicopy", block_multicopy },
-> +};
-> +
->   static void block_copy_test(int i915,
->   			    const struct test_config *config,
->   			    const intel_ctx_t *ctx,
-> -			    struct igt_collection *set)
-> +			    struct igt_collection *set,
-> +			    enum copy_func copy_function)
->   {
->   	struct igt_collection *regions;
->   	const struct intel_execution_engine2 *e;
-> @@ -415,15 +623,18 @@ static void block_copy_test(int i915,
->   					continue;
->   
->   				regtxt = memregion_dynamic_subtest_name(regions);
-> -				igt_dynamic_f("%s-%s-compfmt%d-%s",
-> +
-> +				igt_dynamic_f("%s-%s-compfmt%d-%s%s",
->   					      blt_tiling_name(tiling),
->   					      config->compression ?
->   						      "compressed" : "uncompressed",
-> -					      param.compression_format, regtxt) {
-> -					block_copy(i915, ctx, e,
-> -						   region1, region2,
-> -						   tiling, config);
-> +					      param.compression_format, regtxt,
-> +					      copyfns[copy_function].suffix) {
-> +					copyfns[copy_function].copyfn(i915, ctx, e,
-> +								      region1, region2,
-> +								      tiling, config);
->   				}
-> +
->   				free(regtxt);
->   			}
->   		}
-> @@ -506,14 +717,21 @@ igt_main_args("bf:pst:W:H:", NULL, help_str, opt_handler, NULL)
->   	igt_subtest_with_dynamic("block-copy-uncompressed") {
->   		struct test_config config = {};
->   
-> -		block_copy_test(i915, &config, ctx, set);
-> +		block_copy_test(i915, &config, ctx, set, BLOCK_COPY);
->   	}
->   
->   	igt_describe("Check block-copy flatccs compressed blit");
->   	igt_subtest_with_dynamic("block-copy-compressed") {
->   		struct test_config config = { .compression = true };
->   
-> -		block_copy_test(i915, &config, ctx, set);
-> +		block_copy_test(i915, &config, ctx, set, BLOCK_COPY);
-> +	}
-> +
-> +	igt_describe("Check block-multicopy flatccs compressed blit");
-> +	igt_subtest_with_dynamic("block-multicopy-compressed") {
-> +		struct test_config config = { .compression = true };
-> +
-> +		block_copy_test(i915, &config, ctx, set, BLOCK_MULTICOPY);
->   	}
->   
->   	igt_describe("Check block-copy flatccs inplace decompression blit");
-> @@ -521,7 +739,15 @@ igt_main_args("bf:pst:W:H:", NULL, help_str, opt_handler, NULL)
->   		struct test_config config = { .compression = true,
->   					      .inplace = true };
->   
-> -		block_copy_test(i915, &config, ctx, set);
-> +		block_copy_test(i915, &config, ctx, set, BLOCK_COPY);
-> +	}
-> +
-> +	igt_describe("Check block-multicopy flatccs inplace decompression blit");
-> +	igt_subtest_with_dynamic("block-multicopy-inplace") {
-> +		struct test_config config = { .compression = true,
-> +					      .inplace = true };
-> +
-> +		block_copy_test(i915, &config, ctx, set, BLOCK_MULTICOPY);
->   	}
->   
->   	igt_describe("Check flatccs data can be copied from/to surface");
-> @@ -529,7 +755,7 @@ igt_main_args("bf:pst:W:H:", NULL, help_str, opt_handler, NULL)
->   		struct test_config config = { .compression = true,
->   					      .surfcopy = true };
->   
-> -		block_copy_test(i915, &config, ctx, set);
-> +		block_copy_test(i915, &config, ctx, set, BLOCK_COPY);
->   	}
->   
->   	igt_describe("Check flatccs data are physically tagged and visible"
-> @@ -539,7 +765,7 @@ igt_main_args("bf:pst:W:H:", NULL, help_str, opt_handler, NULL)
->   					      .surfcopy = true,
->   					      .new_ctx = true };
->   
-> -		block_copy_test(i915, &config, ctx, set);
-> +		block_copy_test(i915, &config, ctx, set, BLOCK_COPY);
->   	}
->   
->   	igt_describe("Check flatccs data persists after suspend / resume (S0)");
-> @@ -548,7 +774,7 @@ igt_main_args("bf:pst:W:H:", NULL, help_str, opt_handler, NULL)
->   					      .surfcopy = true,
->   					      .suspend_resume = true };
->   
-> -		block_copy_test(i915, &config, ctx, set);
-> +		block_copy_test(i915, &config, ctx, set, BLOCK_COPY);
->   	}
->   
->   	igt_fixture {
+> I am of the opposite opinion that anyway the previous kernel ABI is
+> probably now irrecoverably bust, so we should give FW free reign and stop
+> disabling efficient freq the way we do now when min_freq < rpe_freq.
+
+We have to answer the question of why we need to keep exposing the sysfs 
+controls if they don't/can't/won't do what they say on the tin. Could we 
+make a break with DG2 for instance? Some use cases might suffer but it's 
+probably better than having them think it does what they think it does, 
+or file bugs when it does not.
+
+Regards,
+
+Tvrtko
+
+> 
+> Cheers.
+> --
+> Ashutosh
+> 
+>> Just to highlight how bad this is, I've seen cases where rpe in runtime
+>> goes below the minimal fused freq (our rpn).
+>>
+>>> Because that is different from the existing, should
+>>> be well known, situation where we can write a max which cannot be achieved
+>>> due thermal throttling.
+>>
+>> yeap, usually when things got disrespected by PCODE there will be some thermal
+>> throttling information. But I have seen cases where this indicators simply do
+>> not exist. What complicate the api expectation to a very bad level.
+>>
+>>>
+>>> Perhaps we need a table, or a summary of some kind, which explains the
+>>> possible behaviours for both min and max settings.
+>>
+>> This is probably a good idea. At least document everything and what and when
+>> things can be disrespected, etc...
+>>
+>> (and update our rpe info dynamically)
+>>
+>>>
+>>>>>> (So in the example above min and max are set to 300 MHz and SLPC is
+>>>>>> requesting efficient freq which is 350 or 400 MHz. So min and max values
+>>>>>> are correct at 300 MHz and requested/actual freq will show 350/400 MHz).
+>>>>>>
+>>>>>> Let me also explain what happens in GuC FW when we change min/max freq:
+>>>>>> * i915 receives min/max freq from sysfs and sends a message to GuC to
+>>>>>>      change min/max freq.
+>>>>>> * The message itself might be queued behind other messages in the host to
+>>>>>>      GuC queue. i915 is still blocked in the sysfs handler.
+>>>>>> * Now when GuC receives the message interrupt, in its top-half handler it
+>>>>>>      validates the freq parameters and sends a message back to host saying the
+>>>>>>      freq change has been accepted. But min/max freq is actually changed later
+>>>>>>      in the bottom-half handler in GuC FW. So the top half only validates the
+>>>>>>      freq value.
+>>>>>> * When i915 receives the message from GuC top half, the sysfs handler
+>>>>>>      unblocks and starts reflecting the new min/max freq value.
+>>>>>>
+>>>>>> So the delay for the new min/max freq values to take effect is between
+>>>>>> returning from the sysfs handler and when the min/max freq are really set
+>>>>>> in GuC bottom half (an indeterminate possibly large amount of time if GuC
+>>>>>> is busy).
+>>>>>
+>>>>> Do we have a drop_caches flag which would force waiting of idle GuC, which
+>>>>> would cover the bottom half as well? Could we or should we add it if not?
+>>>>> Would beat the usleep approach..
+>>>>
+>>>> Agree, waiting for GuC to idle would do it, but not sure "how" to do it. As
+>>>> I said there is no notification after the bottom half is done applying the
+>>>> freq settings. We may need to schedule something after the freq setting
+>>>> host to guc command and wait for that to be done. A little bit out of my
+>>>> depth on this, let me know if you have any ideas here. I'll ask the GuC
+>>>> guys too. Currently we don't have a drop_caches flag for this.
+>>>
+>>> Okay, I was wondering if DROP_IDLE would do it, but perhaps this bottom half
+>>> can run independently from those flows so it was just a thought, not a
+>>> claim.
+>>>
+>>>>>> So as you see this introduces an indeterminacy due to to GuC interface not
+>>>>>> being synchronous. If this needs to be fixed, it needs to be fixed in GuC
+>>>>>> FW rather than waiting etc. in i915. GuC needs to implement another
+>>>>>> notification to host /after/ the min/max freq change has been applied in
+>>>>>> its bottom half. Doing this is not a priority for the GuC team at this
+>>>>>> point.
+>>>>>
+>>>>> Is there a method for querying the real min from GuC, which would maybe
+>>>>> work after waiting for GuC to idle?
+>>>>
+>>>> Will find out about this too. Afaik, at present querying the real min from
+>>>> GuC is not possible. As soon as the top half has completed the freq
+>>>> settings are updated so querying will return the new settings even though
+>>>> they might not have been applied by the bottom half yet.
+>>>
+>>> And it will return the written value, or the real one? Going back to the 300
+>>> written in, 350 actual min freq example. Presumably 300 and 350 SLPC picks
+>>> is completely invisible to i915 via the FW interface?
+>>>
+>>>>>> However, this bug is not due to these delays but due to GuC requesting the
+>>>>>> efficient freq instead of the set 'min == max freq' as mentioned above.
+>>>>>>
+>>>>>> If all these delays are confusing we can revert to v1 of the patch:
+>>>>>>
+>>>>>> https://patchwork.freedesktop.org/patch/510304/?series=110574&rev=1
+>>>>>>
+>>>>>> v1 is simple and does not introduce these delays but just reads the
+>>>>>> requested freq from sysfs after the 500 ms PMU measurement but while the
+>>>>>> spinner is still running (which we do in v3 too). Without load SLPC will
+>>>>>> only request RPn so to compare with PMU measurement we must read the
+>>>>>> requested freq from sysfs with the spinner load. v1 is sufficient to fix
+>>>>>> the bug but I thought to be completely safe it is better to add
+>>>>>> wait_freq_set() after changing min/max freq (and hence v3).
+>>>>>>
+>>>>>> I hope this clarifies things somewhat. If not please let me know.
+>>>>>
+>>>>> It clarifies a large chunk thank you.
+>>>>>
+>>>>> Another question which you missed is why is it needed for the max mode?
+>>>>> There we allow a 15% error (more than 5% default). Is that not enough with
+>>>>> SLPC?
+>>>>
+>>>> Yes I think you are right, should not be needed for the max mode. The real
+>>>> issue is that efficient freq can exceed the max freq set but I think that
+>>>> should not be an issue if the max is RP0.
+>>>
+>>> Ah okay, so SLPC not respecting max same as with min. I think the question
+>>> of what is the use case for min/max controls in the SLPC world is the one to
+>>> answer then.
+>>>
+>>> Regards,
+>>>
+>>> Tvrtko
