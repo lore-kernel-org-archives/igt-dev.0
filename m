@@ -1,17 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0E14310E22F
- for <igt-dev@lists.freedesktop.org>; Mon, 19 Dec 2022 11:58:41 +0000 (UTC)
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 93BD210E234
+ for <igt-dev@lists.freedesktop.org>; Mon, 19 Dec 2022 11:58:55 +0000 (UTC)
 From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Mon, 19 Dec 2022 12:58:33 +0100
-Message-Id: <20221219115834.55838-2-zbigniew.kempczynski@intel.com>
+Date: Mon, 19 Dec 2022 12:58:34 +0100
+Message-Id: <20221219115834.55838-3-zbigniew.kempczynski@intel.com>
 In-Reply-To: <20221219115834.55838-1-zbigniew.kempczynski@intel.com>
 References: <20221219115834.55838-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v2 1/2] tests/gem_*: Fix release offsets
+Subject: [igt-dev] [PATCH i-g-t v2 2/2] tests/gem_exec_whisper: Fix offsets
+ handling and separate allocators
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,90 +24,46 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-After changing reloc allocator to track offsets allocations all
-shortcommings started to be visible. Release offsets requires
-handles, not offsets so fix this in the tests.
+For multiprocess scenarios where drm fds are reopened new contexts
+created will have same ctx id. Since reloc allocator started
+tracking allocations we have ensure it will be opened on separate
+<fd, ctx> pair. Previously reloc simply incremented offsets (even in
+multiprocess scenarios) so there were no risk to reuse/rebind offsets
+from another process. Also fix bug in offset release - put_offset()
+should contain handle, not offset.
 
 Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 ---
- tests/i915/gem_blits.c         | 12 ++++++------
- tests/i915/gem_ctx_isolation.c |  6 +++---
- 2 files changed, 9 insertions(+), 9 deletions(-)
+ tests/i915/gem_exec_whisper.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/tests/i915/gem_blits.c b/tests/i915/gem_blits.c
-index 24e83b9f51..d9296cf2d1 100644
---- a/tests/i915/gem_blits.c
-+++ b/tests/i915/gem_blits.c
-@@ -264,11 +264,11 @@ static void buffer_set_tiling(const struct device *device,
- 	gem_execbuf(device->fd, &execbuf);
- 
- 	gem_close(device->fd, obj[2].handle);
--	put_offset(device->ahnd, obj[2].offset);
-+	put_offset(device->ahnd, obj[2].handle);
- 
- 	gem_close(device->fd, obj[1].handle);
-+	put_offset(device->ahnd, obj[1].handle);
- 
--	put_offset(device->ahnd, buffer->gtt_offset);
- 	buffer->gtt_offset = obj[0].offset;
- 	buffer->handle = obj[0].handle;
- 
-@@ -403,11 +403,11 @@ static bool blit_to_linear(const struct device *device,
- 
- 	gem_execbuf(device->fd, &execbuf);
- 	gem_close(device->fd, obj[2].handle);
--	put_offset(device->ahnd, obj[2].offset);
-+	put_offset(device->ahnd, obj[2].handle);
- 
- 	gem_sync(device->fd, obj[0].handle);
- 	gem_close(device->fd, obj[0].handle);
--	put_offset(device->ahnd, obj[0].offset);
-+	put_offset(device->ahnd, obj[0].handle);
- 
- 	return true;
- }
-@@ -531,7 +531,7 @@ static void buffer_free(const struct device *device, struct buffer *buffer)
- {
- 	igt_assert(buffer_check(device, buffer, GTT));
- 	gem_close(device->fd, buffer->handle);
--	put_offset(device->ahnd, buffer->gtt_offset);
-+	put_offset(device->ahnd, buffer->handle);
- 	free(buffer);
- }
- 
-@@ -744,7 +744,7 @@ blit(const struct device *device,
- 
- 	gem_execbuf(device->fd, &execbuf);
- 	gem_close(device->fd, obj[2].handle);
--	put_offset(device->ahnd, obj[2].offset);
-+	put_offset(device->ahnd, obj[2].handle);
- 
- 	dst->gtt_offset = obj[0].offset;
- 	src->gtt_offset = obj[1].offset;
-diff --git a/tests/i915/gem_ctx_isolation.c b/tests/i915/gem_ctx_isolation.c
-index ec69357140..2def529ac3 100644
---- a/tests/i915/gem_ctx_isolation.c
-+++ b/tests/i915/gem_ctx_isolation.c
-@@ -437,7 +437,7 @@ static void write_regs(int fd, uint64_t ahnd,
+diff --git a/tests/i915/gem_exec_whisper.c b/tests/i915/gem_exec_whisper.c
+index c3fc5ba804..616231aa96 100644
+--- a/tests/i915/gem_exec_whisper.c
++++ b/tests/i915/gem_exec_whisper.c
+@@ -106,10 +106,10 @@ static void init_hang(struct hang *h, int fd, const intel_ctx_cfg_t *cfg)
+ 	if (gem_has_contexts(fd)) {
+ 		h->ctx = intel_ctx_create(h->fd, cfg);
+ 		h->execbuf.rsvd1 = h->ctx->id;
+-		h->ahnd = get_reloc_ahnd(fd, h->ctx->id);
++		h->ahnd = get_reloc_ahnd(h->fd, h->ctx->id);
+ 	} else {
+ 		h->ctx = NULL;
+-		h->ahnd = get_reloc_ahnd(fd, 0);
++		h->ahnd = get_reloc_ahnd(h->fd, 0);
  	}
- 	gem_execbuf(fd, &execbuf);
- 	gem_close(fd, obj.handle);
--	put_offset(ahnd, obj.offset);
-+	put_offset(ahnd, obj.handle);
- }
  
- static void restore_regs(int fd,
-@@ -524,8 +524,8 @@ static void restore_regs(int fd,
- 	execbuf.rsvd1 = ctx->id;
- 	gem_execbuf(fd, &execbuf);
- 	gem_close(fd, obj[1].handle);
--	put_offset(ahnd, obj[0].offset);
--	put_offset(ahnd, obj[1].offset);
-+	put_offset(ahnd, obj[0].handle);
-+	put_offset(ahnd, obj[1].handle);
- }
+ 	memset(&h->execbuf, 0, sizeof(h->execbuf));
+@@ -174,7 +174,8 @@ static void submit_hang(struct hang *h, unsigned *engines, int nengine, unsigned
  
- __attribute__((unused))
+ static void fini_hang(struct hang *h)
+ {
+-	put_offset(h->ahnd, h->bb_offset);
++	gem_close(h->fd, h->obj.handle);
++	put_offset(h->ahnd, h->obj.handle);
+ 	put_ahnd(h->ahnd);
+ 	intel_ctx_destroy(h->fd, h->ctx);
+ 	close(h->fd);
 -- 
 2.34.1
