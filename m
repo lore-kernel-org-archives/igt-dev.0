@@ -1,17 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 789EB10E233
- for <igt-dev@lists.freedesktop.org>; Mon, 19 Dec 2022 11:49:38 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2828910E233
+ for <igt-dev@lists.freedesktop.org>; Mon, 19 Dec 2022 11:49:41 +0000 (UTC)
 From: Karolina Stolarek <karolina.stolarek@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Mon, 19 Dec 2022 12:49:10 +0100
-Message-Id: <cab83734d1709e78e642e2de6d6dd88d30a3e41f.1671446367.git.karolina.stolarek@intel.com>
+Date: Mon, 19 Dec 2022 12:49:11 +0100
+Message-Id: <5c2d2f5786f1b3063b5e6812e6e83ab97c7202d4.1671446367.git.karolina.stolarek@intel.com>
 In-Reply-To: <cover.1671446367.git.karolina.stolarek@intel.com>
 References: <cover.1671446367.git.karolina.stolarek@intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 3/4] lib/i915_blt: Extract init functions
- for blt_copy_object
+Subject: [igt-dev] [PATCH i-g-t 4/4] tests/gem_exercise_blt: Add fast-copy
+ test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,293 +24,252 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-gem_ccs and gem_lmem_swapping share a couple of functions. Extract them
-to i915_blt so they are accessible for both tests. Delete local
-definitions.
+Exercise a basic scenario with two block copies in separate batch
+buffers.
 
 Signed-off-by: Karolina Stolarek <karolina.stolarek@intel.com>
 ---
-Karolina's comment: I'm not convinced it's the best place for them.
-					These functions are more specific to the tests
-					than lib functions. So, I'd appreciate
-					suggestions on where I can move them to.
+Karolina's comment: I'd like to add one-bb test case, but I plan
+					it in one of the future patches.
 
- lib/i915/i915_blt.c            | 81 ++++++++++++++++++++++++++++++++++
- lib/i915/i915_blt.h            | 22 +++++++++
- tests/i915/gem_ccs.c           | 81 ----------------------------------
- tests/i915/gem_lmem_swapping.c | 36 ---------------
- 4 files changed, 103 insertions(+), 117 deletions(-)
+ tests/i915/gem_exercise_blt.c | 216 ++++++++++++++++++++++++++++++++++
+ tests/meson.build             |   1 +
+ 2 files changed, 217 insertions(+)
+ create mode 100644 tests/i915/gem_exercise_blt.c
 
-diff --git a/lib/i915/i915_blt.c b/lib/i915/i915_blt.c
-index 2513dfc0..0f9f7265 100644
---- a/lib/i915/i915_blt.c
-+++ b/lib/i915/i915_blt.c
-@@ -1053,6 +1053,87 @@ int blt_fast_copy(int i915,
- 	return ret;
- }
- 
-+void set_geom(struct blt_copy_object *obj, uint32_t pitch,
-+	      int16_t x1, int16_t y1, int16_t x2, int16_t y2,
-+	      uint16_t x_offset, uint16_t y_offset)
+diff --git a/tests/i915/gem_exercise_blt.c b/tests/i915/gem_exercise_blt.c
+new file mode 100644
+index 00000000..af0efe15
+--- /dev/null
++++ b/tests/i915/gem_exercise_blt.c
+@@ -0,0 +1,216 @@
++// SPDX-License-Identifier: MIT
++/*
++ * Copyright © 2022 Intel Corporation
++ */
++
++#include "igt.h"
++#include "drm.h"
++#include "i915/gem.h"
++#include "i915/gem_create.h"
++#include "lib/intel_chipset.h"
++#include "i915/i915_blt.h"
++#include "i915/intel_mocs.h"
++
++IGT_TEST_DESCRIPTION("Exercise blitter commands");
++
++static struct param {
++	int tiling;
++	bool write_png;
++	bool print_bb;
++	bool print_surface_info;
++	int width;
++	int height;
++} param = {
++	.tiling = -1,
++	.write_png = false,
++	.print_bb = false,
++	.print_surface_info = false,
++	.width = 512,
++	.height = 512,
++};
++
++#define PRINT_SURFACE_INFO(name, obj) do { \
++	if (param.print_surface_info) \
++		blt_surface_info((name), (obj)); } while (0)
++
++#define WRITE_PNG(fd, id, name, obj, w, h) do { \
++	if (param.write_png) \
++		blt_surface_to_png((fd), (id), (name), (obj), (w), (h)); } while (0)
++
++static void fast_copy(int i915, const intel_ctx_t *ctx,
++		      const struct intel_execution_engine2 *e,
++		      uint32_t region1, uint32_t region2,
++		      enum tiling_type mid_tiling)
 +{
-+	obj->pitch = pitch;
-+	obj->x1 = x1;
-+	obj->y1 = y1;
-+	obj->x2 = x2;
-+	obj->y2 = y2;
-+	obj->x_offset = x_offset;
-+	obj->y_offset = y_offset;
++	struct blt_copy_data blt = {};
++	struct blt_copy_object *src, *mid, *dst;
++	const uint32_t bpp = 32;
++	uint64_t bb_size = 4096;
++	uint64_t ahnd = intel_allocator_open_full(i915, ctx->id, 0, 0,
++						  INTEL_ALLOCATOR_SIMPLE,
++						  ALLOC_STRATEGY_LOW_TO_HIGH, 0);
++	uint32_t bb;
++	uint32_t width = param.width, height = param.height;
++	int result;
++
++	igt_assert(__gem_create_in_memory_regions(i915, &bb, &bb_size, region1) == 0);
++
++	src = create_object(i915, region1, width, height, bpp, 0,
++			    T_LINEAR, COMPRESSION_DISABLED, 0, true);
++	mid = create_object(i915, region2, width, height, bpp, 0,
++			    mid_tiling, COMPRESSION_DISABLED, 0, true);
++	dst = create_object(i915, region1, width, height, bpp, 0,
++			    T_LINEAR, COMPRESSION_DISABLED, 0, true);
++	igt_assert(src->size == dst->size);
++
++	blt_surface_fill_rect(i915, src, width, height);
++	WRITE_PNG(i915, mid_tiling, "src", src, width, height);
++
++	memset(&blt, 0, sizeof(blt));
++	blt.color_depth = CD_32bit;
++	blt.print_bb = param.print_bb;
++	set_blt_object(&blt.src, src);
++	set_blt_object(&blt.dst, mid);
++	set_batch(&blt.bb, bb, bb_size, region1);
++
++	blt_fast_copy(i915, ctx, e, ahnd, &blt);
++	gem_sync(i915, mid->handle);
++
++	WRITE_PNG(i915, mid_tiling, "src", &blt.src, width, height);
++	WRITE_PNG(i915, mid_tiling, "mid", &blt.dst, width, height);
++
++	memset(&blt, 0, sizeof(blt));
++	blt.color_depth = CD_32bit;
++	blt.print_bb = param.print_bb;
++	set_blt_object(&blt.src, mid);
++	set_blt_object(&blt.dst, dst);
++	set_batch(&blt.bb, bb, bb_size, region1);
++
++	blt_fast_copy(i915, ctx, e, ahnd, &blt);
++	gem_sync(i915, blt.dst.handle);
++
++	WRITE_PNG(i915, mid_tiling, "dst", &blt.dst, width, height);
++
++	result = memcmp(src->ptr, blt.dst.ptr, src->size);
++
++	destroy_object(i915, src);
++	destroy_object(i915, mid);
++	destroy_object(i915, dst);
++	gem_close(i915, bb);
++	put_ahnd(ahnd);
++
++	igt_assert_f(!result, "source and destination surfaces differs!\n");
 +}
 +
-+void set_batch(struct blt_copy_batch *batch,
-+	       uint32_t handle, uint64_t size, uint32_t region)
++static void fast_copy_test(int i915,
++			   const intel_ctx_t *ctx,
++			   struct igt_collection *set)
 +{
-+	batch->handle = handle;
-+	batch->size = size;
-+	batch->region = region;
++	struct igt_collection *regions;
++	const struct intel_execution_engine2 *e;
++	int tiling;
++
++	for_each_tiling(tiling) {
++		if (!fast_copy_supports_tiling(i915, tiling))
++			continue;
++
++		for_each_ctx_engine(i915, ctx, e) {
++			if (e->class != I915_ENGINE_CLASS_COPY)
++				continue;
++			for_each_variation_r(regions, 2, set) {
++				uint32_t region1, region2;
++				char *regtxt;
++
++				region1 = igt_collection_get_value(regions, 0);
++				region2 = igt_collection_get_value(regions, 1);
++				regtxt = memregion_dynamic_subtest_name(regions);
++
++				igt_dynamic_f("%s-%s",
++					      blt_tiling_name(tiling), regtxt) {
++					fast_copy(i915, ctx, e,
++						  region1, region2,
++						  tiling);
++				}
++
++				free(regtxt);
++			}
++		}
++	}
 +}
 +
-+struct blt_copy_object *
-+create_object(int i915, uint32_t region,
-+	      uint32_t width, uint32_t height, uint32_t bpp, uint8_t mocs,
-+	      enum tiling_type tiling,
-+	      enum blt_compression compression,
-+	      enum blt_compression_type compression_type,
-+	      bool create_mapping)
++static int opt_handler(int opt, int opt_index, void *data)
 +{
-+	struct blt_copy_object *obj;
-+	uint64_t size = width * height * bpp / 8;
-+	uint32_t stride = tiling == T_LINEAR ? width * 4 : width;
-+	uint32_t handle;
++	switch (opt) {
++	case 'b':
++		param.print_bb = true;
++		igt_debug("Print bb: %d\n", param.print_bb);
++		break;
++	case 'p':
++		param.write_png = true;
++		igt_debug("Write png: %d\n", param.write_png);
++		break;
++	case 's':
++		param.print_surface_info = true;
++		igt_debug("Print surface info: %d\n", param.print_surface_info);
++		break;
++	case 't':
++		param.tiling = 1 << atoi(optarg);
++		igt_debug("Tiling: %d\n", param.tiling);
++		break;
++	case 'W':
++		param.width = atoi(optarg);
++		igt_debug("Width: %d\n", param.width);
++		break;
++	case 'H':
++		param.height = atoi(optarg);
++		igt_debug("Height: %d\n", param.height);
++		break;
++	default:
++		return IGT_OPT_HANDLER_ERROR;
++	}
 +
-+	obj = calloc(1, sizeof(*obj));
-+
-+	obj->size = size;
-+	igt_assert(__gem_create_in_memory_regions(i915, &handle,
-+						  &size, region) == 0);
-+
-+	set_object(obj, handle, size, region, mocs, tiling,
-+		   compression, compression_type);
-+	set_geom(obj, stride, 0, 0, width, height, 0, 0);
-+
-+	if (create_mapping)
-+		obj->ptr = gem_mmap__device_coherent(i915, handle, 0, size,
-+						     PROT_READ | PROT_WRITE);
-+
-+	return obj;
++	return IGT_OPT_HANDLER_SUCCESS;
 +}
 +
-+void destroy_object(int i915, struct blt_copy_object *obj)
++const char *help_str =
++	"  -b\tPrint bb\n"
++	"  -p\tWrite PNG\n"
++	"  -s\tPrint surface info\n"
++	"  -t\tTiling format (0 - linear, 1 - XMAJOR, 2 - YMAJOR, 3 - TILE4, 4 - TILE64, 5 - YFMAJOR)\n"
++	"  -W\tWidth (default 512)\n"
++	"  -H\tHeight (default 512)"
++	;
++
++igt_main_args("b:pst:W:H:", NULL, help_str, opt_handler, NULL)
 +{
-+	if (obj->ptr)
-+		munmap(obj->ptr, obj->size);
++	struct drm_i915_query_memory_regions *query_info;
++	struct igt_collection *set;
++	const intel_ctx_t *ctx;
++	int i915;
++	igt_hang_t hang;
 +
-+	gem_close(i915, obj->handle);
-+	free(obj);
++	igt_fixture {
++		i915 = drm_open_driver(DRIVER_INTEL);
++		igt_require_gem(i915);
++		igt_require(can_fast_copy(i915));
++
++		query_info = gem_get_query_memory_regions(i915);
++		igt_require(query_info);
++
++		set = get_memory_region_set(query_info,
++					    I915_SYSTEM_MEMORY,
++					    I915_DEVICE_MEMORY);
++		ctx = intel_ctx_create_all_physical(i915);
++		hang = igt_allow_hang(i915, ctx->id, 0);
++	}
++
++	igt_describe("Check fast-copy blit");
++	igt_subtest_with_dynamic("fast-copy") {
++		fast_copy_test(i915, ctx, set);
++	}
++
++	igt_fixture {
++		igt_disallow_hang(i915, hang);
++		close(i915);
++	}
 +}
-+
-+void set_object(struct blt_copy_object *obj,
-+		uint32_t handle, uint64_t size, uint32_t region,
-+		uint8_t mocs, enum tiling_type tiling,
-+		enum blt_compression compression,
-+		enum blt_compression_type compression_type)
-+{
-+	obj->handle = handle;
-+	obj->size = size;
-+	obj->region = region;
-+	obj->mocs = mocs;
-+	obj->tiling = tiling;
-+	obj->compression = compression;
-+	obj->compression_type = compression_type;
-+}
-+
-+void set_blt_object(struct blt_copy_object *obj,
-+		    const struct blt_copy_object *orig)
-+{
-+	memcpy(obj, orig, sizeof(*obj));
-+}
-+
- /**
-  * blt_surface_fill_rect:
-  * @i915: drm fd
-diff --git a/lib/i915/i915_blt.h b/lib/i915/i915_blt.h
-index f1cf5408..1ef459c8 100644
---- a/lib/i915/i915_blt.h
-+++ b/lib/i915/i915_blt.h
-@@ -198,6 +198,28 @@ int blt_fast_copy(int i915,
- 		  uint64_t ahnd,
- 		  const struct blt_copy_data *blt);
- 
-+void set_geom(struct blt_copy_object *obj, uint32_t pitch,
-+	      int16_t x1, int16_t y1, int16_t x2, int16_t y2,
-+	      uint16_t x_offset, uint16_t y_offset);
-+void set_batch(struct blt_copy_batch *batch,
-+	       uint32_t handle, uint64_t size, uint32_t region);
-+
-+struct blt_copy_object *
-+create_object(int i915, uint32_t region,
-+	      uint32_t width, uint32_t height, uint32_t bpp, uint8_t mocs,
-+	      enum tiling_type tiling,
-+	      enum blt_compression compression,
-+	      enum blt_compression_type compression_type,
-+	      bool create_mapping);
-+void destroy_object(int i915, struct blt_copy_object *obj);
-+void set_object(struct blt_copy_object *obj,
-+		uint32_t handle, uint64_t size, uint32_t region,
-+		uint8_t mocs, enum tiling_type tiling,
-+		enum blt_compression compression,
-+		enum blt_compression_type compression_type);
-+void set_blt_object(struct blt_copy_object *obj,
-+		    const struct blt_copy_object *orig);
-+
- void blt_surface_info(const char *info,
- 		      const struct blt_copy_object *obj);
- void blt_surface_fill_rect(int i915, const struct blt_copy_object *obj,
-diff --git a/tests/i915/gem_ccs.c b/tests/i915/gem_ccs.c
-index 4c137c94..30ee60fd 100644
---- a/tests/i915/gem_ccs.c
-+++ b/tests/i915/gem_ccs.c
-@@ -44,42 +44,6 @@ struct test_config {
- 	bool suspend_resume;
- };
- 
--static void set_object(struct blt_copy_object *obj,
--		       uint32_t handle, uint64_t size, uint32_t region,
--		       uint8_t mocs, enum tiling_type tiling,
--		       enum blt_compression compression,
--		       enum blt_compression_type compression_type)
--{
--	obj->handle = handle;
--	obj->size = size;
--	obj->region = region;
--	obj->mocs = mocs;
--	obj->tiling = tiling;
--	obj->compression = compression;
--	obj->compression_type = compression_type;
--}
--
--static void set_geom(struct blt_copy_object *obj, uint32_t pitch,
--		     int16_t x1, int16_t y1, int16_t x2, int16_t y2,
--		     uint16_t x_offset, uint16_t y_offset)
--{
--	obj->pitch = pitch;
--	obj->x1 = x1;
--	obj->y1 = y1;
--	obj->x2 = x2;
--	obj->y2 = y2;
--	obj->x_offset = x_offset;
--	obj->y_offset = y_offset;
--}
--
--static void set_batch(struct blt_copy_batch *batch,
--		      uint32_t handle, uint64_t size, uint32_t region)
--{
--	batch->handle = handle;
--	batch->size = size;
--	batch->region = region;
--}
--
- static void set_object_ext(struct blt_block_copy_object_ext *obj,
- 			   uint8_t compression_format,
- 			   uint16_t surface_width, uint16_t surface_height,
-@@ -105,51 +69,6 @@ static void set_surf_object(struct blt_ctrl_surf_copy_object *obj,
- 	obj->access_type = access_type;
- }
- 
--static struct blt_copy_object *
--create_object(int i915, uint32_t region,
--	      uint32_t width, uint32_t height, uint32_t bpp, uint8_t mocs,
--	      enum tiling_type tiling,
--	      enum blt_compression compression,
--	      enum blt_compression_type compression_type,
--	      bool create_mapping)
--{
--	struct blt_copy_object *obj;
--	uint64_t size = width * height * bpp / 8;
--	uint32_t stride = tiling == T_LINEAR ? width * 4 : width;
--	uint32_t handle;
--
--	obj = calloc(1, sizeof(*obj));
--
--	obj->size = size;
--	igt_assert(__gem_create_in_memory_regions(i915, &handle,
--						  &size, region) == 0);
--
--	set_object(obj, handle, size, region, mocs, tiling,
--		   compression, compression_type);
--	set_geom(obj, stride, 0, 0, width, height, 0, 0);
--
--	if (create_mapping)
--		obj->ptr = gem_mmap__device_coherent(i915, handle, 0, size,
--						     PROT_READ | PROT_WRITE);
--
--	return obj;
--}
--
--static void destroy_object(int i915, struct blt_copy_object *obj)
--{
--	if (obj->ptr)
--		munmap(obj->ptr, obj->size);
--
--	gem_close(i915, obj->handle);
--	free(obj);
--}
--
--static void set_blt_object(struct blt_copy_object *obj,
--			   const struct blt_copy_object *orig)
--{
--	memcpy(obj, orig, sizeof(*obj));
--}
--
- #define PRINT_SURFACE_INFO(name, obj) do { \
- 	if (param.print_surface_info) \
- 		blt_surface_info((name), (obj)); } while (0)
-diff --git a/tests/i915/gem_lmem_swapping.c b/tests/i915/gem_lmem_swapping.c
-index 8cff35d5..746fbf80 100644
---- a/tests/i915/gem_lmem_swapping.c
-+++ b/tests/i915/gem_lmem_swapping.c
-@@ -76,42 +76,6 @@ struct object {
- 	struct blt_copy_object *blt_obj;
- };
- 
--static void set_object(struct blt_copy_object *obj,
--		       uint32_t handle, uint64_t size, uint32_t region,
--		       uint8_t mocs, enum tiling_type tiling,
--		       enum blt_compression compression,
--		       enum blt_compression_type compression_type)
--{
--	obj->handle = handle;
--	obj->size = size;
--	obj->region = region;
--	obj->mocs = mocs;
--	obj->tiling = tiling;
--	obj->compression = compression;
--	obj->compression_type = compression_type;
--}
--
--static void set_geom(struct blt_copy_object *obj, uint32_t pitch,
--		     int16_t x1, int16_t y1, int16_t x2, int16_t y2,
--		     uint16_t x_offset, uint16_t y_offset)
--{
--	obj->pitch = pitch;
--	obj->x1 = x1;
--	obj->y1 = y1;
--	obj->x2 = x2;
--	obj->y2 = y2;
--	obj->x_offset = x_offset;
--	obj->y_offset = y_offset;
--}
--
--static void set_batch(struct blt_copy_batch *batch,
--		      uint32_t handle, uint64_t size, uint32_t region)
--{
--	batch->handle = handle;
--	batch->size = size;
--	batch->region = region;
--}
--
- static void set_object_ext(struct blt_block_copy_object_ext *obj,
- 			   uint8_t compression_format,
- 			   uint16_t surface_width, uint16_t surface_height,
+diff --git a/tests/meson.build b/tests/meson.build
+index 5d1d4b5e..663dd3ef 100644
+--- a/tests/meson.build
++++ b/tests/meson.build
+@@ -137,6 +137,7 @@ i915_progs = [
+ 	'gem_exec_nop',
+ 	'gem_exec_parallel',
+ 	'gem_exec_params',
++	'gem_exercise_blt',
+ 	'gen7_exec_parse',
+ 	'gen9_exec_parse',
+ 	'gem_exec_reloc',
 -- 
 2.25.1
