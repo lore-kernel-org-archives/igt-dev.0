@@ -1,15 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============0809516683427727269=="
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0204D10E22F
+ for <igt-dev@lists.freedesktop.org>; Mon, 19 Dec 2022 11:26:58 +0000 (UTC)
+Date: Mon, 19 Dec 2022 12:26:54 +0100
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Message-ID: <Y6BKfvglht/vpxdw@kamilkon-desk1>
+References: <20221219070120.18630-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Jeevan B" <jeevan.b@intel.com>
-Date: Mon, 19 Dec 2022 10:28:54 -0000
-Message-ID: <167144573464.5871.14722726438336850700@emeril.freedesktop.org>
-References: <20221219091154.21828-1-jeevan.b@intel.com>
-In-Reply-To: <20221219091154.21828-1-jeevan.b@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3IgbGliL2ln?=
- =?utf-8?q?t=5Fdraw=3A_Change_MOCS_settings_for_MTL_=28rev3=29?=
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20221219070120.18630-1-zbigniew.kempczynski@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/gem_*: Fix release offsets
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,282 +20,147 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============0809516683427727269==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
 
-== Series Details ==
+Hi Zbigniew,
 
-Series: lib/igt_draw: Change MOCS settings for MTL (rev3)
-URL   : https://patchwork.freedesktop.org/series/111958/
-State : failure
+On 2022-12-19 at 08:01:20 +0100, Zbigniew Kempczyński wrote:
+> After changing reloc allocator to track offsets allocations all
+> shortcommings started to be visible. Release offsets requires
+> handles, not offsets so fix this in the tests.
 
-== Summary ==
+In gem_whisper you also corrected allocation, so imho you should
+write about it or put that in separate patch, see below.
 
-CI Bug Log - changes from CI_DRM_12514 -> IGTPW_8245
-====================================================
+> 
+> Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> ---
+>  tests/i915/gem_blits.c         | 12 ++++++------
+>  tests/i915/gem_ctx_isolation.c |  6 +++---
+>  tests/i915/gem_exec_whisper.c  |  7 ++++---
+>  3 files changed, 13 insertions(+), 12 deletions(-)
+> 
+> diff --git a/tests/i915/gem_blits.c b/tests/i915/gem_blits.c
+> index 24e83b9f51..d9296cf2d1 100644
+> --- a/tests/i915/gem_blits.c
+> +++ b/tests/i915/gem_blits.c
+> @@ -264,11 +264,11 @@ static void buffer_set_tiling(const struct device *device,
+>  	gem_execbuf(device->fd, &execbuf);
+>  
+>  	gem_close(device->fd, obj[2].handle);
+> -	put_offset(device->ahnd, obj[2].offset);
+> +	put_offset(device->ahnd, obj[2].handle);
+>  
+>  	gem_close(device->fd, obj[1].handle);
+> +	put_offset(device->ahnd, obj[1].handle);
+>  
+> -	put_offset(device->ahnd, buffer->gtt_offset);
+>  	buffer->gtt_offset = obj[0].offset;
+>  	buffer->handle = obj[0].handle;
+>  
+> @@ -403,11 +403,11 @@ static bool blit_to_linear(const struct device *device,
+>  
+>  	gem_execbuf(device->fd, &execbuf);
+>  	gem_close(device->fd, obj[2].handle);
+> -	put_offset(device->ahnd, obj[2].offset);
+> +	put_offset(device->ahnd, obj[2].handle);
+>  
+>  	gem_sync(device->fd, obj[0].handle);
+>  	gem_close(device->fd, obj[0].handle);
+> -	put_offset(device->ahnd, obj[0].offset);
+> +	put_offset(device->ahnd, obj[0].handle);
+>  
+>  	return true;
+>  }
+> @@ -531,7 +531,7 @@ static void buffer_free(const struct device *device, struct buffer *buffer)
+>  {
+>  	igt_assert(buffer_check(device, buffer, GTT));
+>  	gem_close(device->fd, buffer->handle);
+> -	put_offset(device->ahnd, buffer->gtt_offset);
+> +	put_offset(device->ahnd, buffer->handle);
+>  	free(buffer);
+>  }
+>  
+> @@ -744,7 +744,7 @@ blit(const struct device *device,
+>  
+>  	gem_execbuf(device->fd, &execbuf);
+>  	gem_close(device->fd, obj[2].handle);
+> -	put_offset(device->ahnd, obj[2].offset);
+> +	put_offset(device->ahnd, obj[2].handle);
+>  
+>  	dst->gtt_offset = obj[0].offset;
+>  	src->gtt_offset = obj[1].offset;
+> diff --git a/tests/i915/gem_ctx_isolation.c b/tests/i915/gem_ctx_isolation.c
+> index ec69357140..2def529ac3 100644
+> --- a/tests/i915/gem_ctx_isolation.c
+> +++ b/tests/i915/gem_ctx_isolation.c
+> @@ -437,7 +437,7 @@ static void write_regs(int fd, uint64_t ahnd,
+>  	}
+>  	gem_execbuf(fd, &execbuf);
+>  	gem_close(fd, obj.handle);
+> -	put_offset(ahnd, obj.offset);
+> +	put_offset(ahnd, obj.handle);
+>  }
+>  
+>  static void restore_regs(int fd,
+> @@ -524,8 +524,8 @@ static void restore_regs(int fd,
+>  	execbuf.rsvd1 = ctx->id;
+>  	gem_execbuf(fd, &execbuf);
+>  	gem_close(fd, obj[1].handle);
+> -	put_offset(ahnd, obj[0].offset);
+> -	put_offset(ahnd, obj[1].offset);
+> +	put_offset(ahnd, obj[0].handle);
+> +	put_offset(ahnd, obj[1].handle);
+>  }
+>  
+>  __attribute__((unused))
+> diff --git a/tests/i915/gem_exec_whisper.c b/tests/i915/gem_exec_whisper.c
+> index c3fc5ba804..616231aa96 100644
+> --- a/tests/i915/gem_exec_whisper.c
+> +++ b/tests/i915/gem_exec_whisper.c
+> @@ -106,10 +106,10 @@ static void init_hang(struct hang *h, int fd, const intel_ctx_cfg_t *cfg)
+>  	if (gem_has_contexts(fd)) {
+---------------------------- ^
+Should this be h->fd ?
 
-Summary
--------
+>  		h->ctx = intel_ctx_create(h->fd, cfg);
+>  		h->execbuf.rsvd1 = h->ctx->id;
+> -		h->ahnd = get_reloc_ahnd(fd, h->ctx->id);
+> +		h->ahnd = get_reloc_ahnd(h->fd, h->ctx->id);
 
-  **FAILURE**
+This is allocation.
 
-  Serious unknown changes coming with IGTPW_8245 absolutely need to be
-  verified manually.
-  
-  If you think the reported changes have nothing to do with the changes
-  introduced in IGTPW_8245, please notify your bug team to allow them
-  to document this new failure mode, which will reduce false positives in CI.
+>  	} else {
+>  		h->ctx = NULL;
+> -		h->ahnd = get_reloc_ahnd(fd, 0);
+> +		h->ahnd = get_reloc_ahnd(h->fd, 0);
 
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8245/index.html
+Same here, so maybe put this also in description ?
+Or make it separate patch ?
 
-Participating hosts (41 -> 41)
-------------------------------
+>  	}
+>  
+>  	memset(&h->execbuf, 0, sizeof(h->execbuf));
+> @@ -174,7 +174,8 @@ static void submit_hang(struct hang *h, unsigned *engines, int nengine, unsigned
+>  
+>  static void fini_hang(struct hang *h)
+>  {
+> -	put_offset(h->ahnd, h->bb_offset);
+> +	gem_close(h->fd, h->obj.handle);
 
-  No changes in participating hosts
+Here you fix another bug, missed gem_close.
 
-Possible new issues
--------------------
+Regards,
+Kamil
 
-  Here are the unknown changes that may have been introduced in IGTPW_8245:
-
-### IGT changes ###
-
-#### Possible regressions ####
-
-  * igt@i915_selftest@live@execlists:
-    - fi-bsw-nick:        [PASS][1] -> [INCOMPLETE][2]
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12514/fi-bsw-nick/igt@i915_selftest@live@execlists.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8245/fi-bsw-nick/igt@i915_selftest@live@execlists.html
-
-  
-Known issues
-------------
-
-  Here are the changes found in IGTPW_8245 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@gem_exec_suspend@basic-s3@smem:
-    - fi-rkl-11600:       NOTRUN -> [FAIL][3] ([fdo#103375])
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8245/fi-rkl-11600/igt@gem_exec_suspend@basic-s3@smem.html
-
-  * igt@i915_pm_rpm@basic-rte:
-    - bat-adlp-4:         [PASS][4] -> [DMESG-WARN][5] ([i915#7077])
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12514/bat-adlp-4/igt@i915_pm_rpm@basic-rte.html
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8245/bat-adlp-4/igt@i915_pm_rpm@basic-rte.html
-
-  * igt@kms_chamelium@common-hpd-after-suspend:
-    - fi-rkl-11600:       NOTRUN -> [SKIP][6] ([fdo#111827])
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8245/fi-rkl-11600/igt@kms_chamelium@common-hpd-after-suspend.html
-
-  * igt@runner@aborted:
-    - bat-adlp-4:         NOTRUN -> [FAIL][7] ([i915#4312])
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8245/bat-adlp-4/igt@runner@aborted.html
-    - fi-bsw-nick:        NOTRUN -> [FAIL][8] ([fdo#109271] / [i915#4312])
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8245/fi-bsw-nick/igt@runner@aborted.html
-
-  
-#### Possible fixes ####
-
-  * igt@gem_exec_gttfill@basic:
-    - fi-pnv-d510:        [FAIL][9] ([i915#7229]) -> [PASS][10]
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12514/fi-pnv-d510/igt@gem_exec_gttfill@basic.html
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8245/fi-pnv-d510/igt@gem_exec_gttfill@basic.html
-
-  * igt@i915_selftest@live@gt_heartbeat:
-    - fi-kbl-soraka:      [DMESG-FAIL][11] ([i915#5334]) -> [PASS][12]
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12514/fi-kbl-soraka/igt@i915_selftest@live@gt_heartbeat.html
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8245/fi-kbl-soraka/igt@i915_selftest@live@gt_heartbeat.html
-
-  * igt@i915_selftest@live@late_gt_pm:
-    - fi-kbl-soraka:      [INCOMPLETE][13] ([i915#7640]) -> [PASS][14]
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12514/fi-kbl-soraka/igt@i915_selftest@live@late_gt_pm.html
-   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8245/fi-kbl-soraka/igt@i915_selftest@live@late_gt_pm.html
-
-  * igt@i915_selftest@live@slpc:
-    - {bat-rpls-1}:       [DMESG-FAIL][15] ([i915#6367]) -> [PASS][16]
-   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12514/bat-rpls-1/igt@i915_selftest@live@slpc.html
-   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8245/bat-rpls-1/igt@i915_selftest@live@slpc.html
-
-  * igt@i915_suspend@basic-s3-without-i915:
-    - fi-rkl-11600:       [INCOMPLETE][17] ([i915#4817]) -> [PASS][18]
-   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12514/fi-rkl-11600/igt@i915_suspend@basic-s3-without-i915.html
-   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8245/fi-rkl-11600/igt@i915_suspend@basic-s3-without-i915.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [fdo#103375]: https://bugs.freedesktop.org/show_bug.cgi?id=103375
-  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
-  [fdo#111827]: https://bugs.freedesktop.org/show_bug.cgi?id=111827
-  [i915#4312]: https://gitlab.freedesktop.org/drm/intel/issues/4312
-  [i915#4817]: https://gitlab.freedesktop.org/drm/intel/issues/4817
-  [i915#5153]: https://gitlab.freedesktop.org/drm/intel/issues/5153
-  [i915#5334]: https://gitlab.freedesktop.org/drm/intel/issues/5334
-  [i915#6367]: https://gitlab.freedesktop.org/drm/intel/issues/6367
-  [i915#6997]: https://gitlab.freedesktop.org/drm/intel/issues/6997
-  [i915#7077]: https://gitlab.freedesktop.org/drm/intel/issues/7077
-  [i915#7229]: https://gitlab.freedesktop.org/drm/intel/issues/7229
-  [i915#7640]: https://gitlab.freedesktop.org/drm/intel/issues/7640
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_7097 -> IGTPW_8245
-
-  CI-20190529: 20190529
-  CI_DRM_12514: 6d562ff2af212328d4d4d02d7f26caa184ac2729 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_8245: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8245/index.html
-  IGT_7097: 1ff2643cb7187ddd01b0c34c59113721303e65a2 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8245/index.html
-
---===============0809516683427727269==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>lib/igt_draw: Change MOCS settings for MTL (rev3)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/111958/">https://patchwork.freedesktop.org/series/111958/</a></td></tr>
-<tr><td><b>State:</b></td><td>failure</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8245/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8245/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from CI_DRM_12514 -&gt; IGTPW_8245</h1>
-<h2>Summary</h2>
-<p><strong>FAILURE</strong></p>
-<p>Serious unknown changes coming with IGTPW_8245 absolutely need to be<br />
-  verified manually.</p>
-<p>If you think the reported changes have nothing to do with the changes<br />
-  introduced in IGTPW_8245, please notify your bug team to allow them<br />
-  to document this new failure mode, which will reduce false positives in CI.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8245/index.html</p>
-<h2>Participating hosts (41 -&gt; 41)</h2>
-<p>No changes in participating hosts</p>
-<h2>Possible new issues</h2>
-<p>Here are the unknown changes that may have been introduced in IGTPW_8245:</p>
-<h3>IGT changes</h3>
-<h4>Possible regressions</h4>
-<ul>
-<li>igt@i915_selftest@live@execlists:<ul>
-<li>fi-bsw-nick:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12514/fi-bsw-nick/igt@i915_selftest@live@execlists.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8245/fi-bsw-nick/igt@i915_selftest@live@execlists.html">INCOMPLETE</a></li>
-</ul>
-</li>
-</ul>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_8245 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@gem_exec_suspend@basic-s3@smem:</p>
-<ul>
-<li>fi-rkl-11600:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8245/fi-rkl-11600/igt@gem_exec_suspend@basic-s3@smem.html">FAIL</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=103375">fdo#103375</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_pm_rpm@basic-rte:</p>
-<ul>
-<li>bat-adlp-4:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12514/bat-adlp-4/igt@i915_pm_rpm@basic-rte.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8245/bat-adlp-4/igt@i915_pm_rpm@basic-rte.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7077">i915#7077</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_chamelium@common-hpd-after-suspend:</p>
-<ul>
-<li>fi-rkl-11600:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8245/fi-rkl-11600/igt@kms_chamelium@common-hpd-after-suspend.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=111827">fdo#111827</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@runner@aborted:</p>
-<ul>
-<li>
-<p>bat-adlp-4:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8245/bat-adlp-4/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4312">i915#4312</a>)</p>
-</li>
-<li>
-<p>fi-bsw-nick:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8245/fi-bsw-nick/igt@runner@aborted.html">FAIL</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4312">i915#4312</a>)</p>
-</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@gem_exec_gttfill@basic:</p>
-<ul>
-<li>fi-pnv-d510:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12514/fi-pnv-d510/igt@gem_exec_gttfill@basic.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7229">i915#7229</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8245/fi-pnv-d510/igt@gem_exec_gttfill@basic.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@gt_heartbeat:</p>
-<ul>
-<li>fi-kbl-soraka:      <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12514/fi-kbl-soraka/igt@i915_selftest@live@gt_heartbeat.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5334">i915#5334</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8245/fi-kbl-soraka/igt@i915_selftest@live@gt_heartbeat.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@late_gt_pm:</p>
-<ul>
-<li>fi-kbl-soraka:      <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12514/fi-kbl-soraka/igt@i915_selftest@live@late_gt_pm.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7640">i915#7640</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8245/fi-kbl-soraka/igt@i915_selftest@live@late_gt_pm.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@slpc:</p>
-<ul>
-<li>{bat-rpls-1}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12514/bat-rpls-1/igt@i915_selftest@live@slpc.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6367">i915#6367</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8245/bat-rpls-1/igt@i915_selftest@live@slpc.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@i915_suspend@basic-s3-without-i915:</p>
-<ul>
-<li>fi-rkl-11600:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12514/fi-rkl-11600/igt@i915_suspend@basic-s3-without-i915.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4817">i915#4817</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8245/fi-rkl-11600/igt@i915_suspend@basic-s3-without-i915.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_7097 -&gt; IGTPW_8245</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_12514: 6d562ff2af212328d4d4d02d7f26caa184ac2729 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_8245: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8245/index.html<br />
-  IGT_7097: 1ff2643cb7187ddd01b0c34c59113721303e65a2 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-
-</body>
-</html>
-
---===============0809516683427727269==--
+> +	put_offset(h->ahnd, h->obj.handle);
+>  	put_ahnd(h->ahnd);
+>  	intel_ctx_destroy(h->fd, h->ctx);
+>  	close(h->fd);
+> -- 
+> 2.34.1
+> 
