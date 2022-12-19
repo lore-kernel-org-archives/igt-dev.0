@@ -1,18 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3CF5F10E2B4
- for <igt-dev@lists.freedesktop.org>; Mon, 19 Dec 2022 14:58:46 +0000 (UTC)
-Date: Mon, 19 Dec 2022 06:58:40 -0800
-From: Lucas De Marchi <lucas.demarchi@intel.com>
-To: Jeevan B <jeevan.b@intel.com>
-Message-ID: <20221219145840.tcuvd7qzsscn7jw7@ldmartin-desk2.lan>
-References: <20221219091154.21828-1-jeevan.b@intel.com>
-Content-Type: text/plain; charset="us-ascii"; format=flowed
-Content-Disposition: inline
-In-Reply-To: <20221219091154.21828-1-jeevan.b@intel.com>
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 38B5D10E01F
+ for <igt-dev@lists.freedesktop.org>; Mon, 19 Dec 2022 19:18:00 +0000 (UTC)
+From: Alan Previn <alan.previn.teres.alexis@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Mon, 19 Dec 2022 11:20:48 -0800
+Message-Id: <20221219192048.2283294-1-alan.previn.teres.alexis@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t v2] lib/igt_draw: Change MOCS settings
- for MTL
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t v2 1/1] tests/i915/pxp: PXP debugfs path
+ promoted to global
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,67 +17,45 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org
+Cc: Alan Previn <alan.previn.teres.alexis@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Mon, Dec 19, 2022 at 02:41:54PM +0530, Jeevan B wrote:
->On MTL, we want the table entry labelled "UC (GO:Mem)"
->which has index 5.  This means that the MOCS value is 10.
->
->v2: Add define for MOCS settings. (Lucas)
->
->Signed-off-by: Jeevan B <jeevan.b@intel.com>
->---
-> lib/igt_draw.c | 12 +++++++++---
-> 1 file changed, 9 insertions(+), 3 deletions(-)
->
->diff --git a/lib/igt_draw.c b/lib/igt_draw.c
->index 975d65cd..4e19e42a 100644
->--- a/lib/igt_draw.c
->+++ b/lib/igt_draw.c
->@@ -651,13 +651,16 @@ static struct intel_buf *create_buf(int fd, struct buf_ops *bops,
-> 	return buf;
-> }
->
->+#define DG2_MOCS_UC_GO_MEM	2	/* MOCS index 0x1 */
->+#define MTL_MOCS_UC_GO_MEM	10	/* MOCS index 0x5 */
->+
-> static void draw_rect_blt(int fd, struct cmd_data *cmd_data,
-> 			  struct buf_data *buf, struct rect *rect,
-> 			  uint32_t tiling, uint32_t color)
-> {
-> 	struct intel_bb *ibb;
-> 	struct intel_buf *dst;
->-	int blt_cmd_len, blt_cmd_tiling, blt_cmd_depth;
->+	int blt_cmd_len, blt_cmd_tiling, blt_cmd_depth, mocs_val;
-> 	uint32_t devid = intel_get_drm_devid(fd);
-> 	int gen = intel_gen(devid);
-> 	int pitch;
->@@ -702,8 +705,11 @@ static void draw_rect_blt(int fd, struct cmd_data *cmd_data,
-> 		pitch = tiling ? buf->stride / 4 : buf->stride;
->
-> 		intel_bb_out(ibb, XY_FAST_COLOR_BLT | blt_cmd_depth);
->-		/* DG2 MOCS entry 2 is "UC - Non-Coherent; GO:Memory" */
->-		intel_bb_out(ibb, blt_cmd_tiling | 2 << 21 | (pitch-1));
->+		if (IS_METEORLAKE(intel_get_drm_devid(fd)))
->+			mocs_val = MTL_MOCS_UC_GO_MEM;
->+		else
->+			mocs_val = DG2_MOCS_UC_GO_MEM;
+As per recent kernel side update in preparation for
+MTL, PXP is now a global i915 subsystem so let's update
+the debugfs path to try both the legacy and new paths
+before we fail.
 
-nit: doing this before the calls to intel_bb_out() would be better since
-it's what is done for all the other fields (e.g. pitch, bld_cmd_depth,
-etc). With that
-	
-	Reviewed-by: Lucas De Marchi <lucas.demarchi@intel.com>
+Changes from prior rev:
+   v1: - Fix a comment (Daniele)
 
-Lucas De Marchi
+Signed-off-by: Alan Previn <alan.previn.teres.alexis@intel.com>
+Reviewed-by: Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>
+---
+ tests/i915/gem_pxp.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
->+		intel_bb_out(ibb, blt_cmd_tiling | mocs_val << 21 | (pitch-1));
-> 		intel_bb_out(ibb, (rect->y << 16) | rect->x);
-> 		intel_bb_out(ibb, ((rect->y + rect->h) << 16) | (rect->x + rect->w));
-> 		intel_bb_emit_reloc_fenced(ibb, dst->handle, 0,
->-- 
->2.36.0
->
+diff --git a/tests/i915/gem_pxp.c b/tests/i915/gem_pxp.c
+index ffad9b5a..41043df9 100644
+--- a/tests/i915/gem_pxp.c
++++ b/tests/i915/gem_pxp.c
+@@ -848,6 +848,14 @@ static void trigger_pxp_debugfs_forced_teardown(int i915)
+ 	char str[32];
+ 
+ 	fd = igt_debugfs_open(i915, "gt/pxp/terminate_state", O_RDWR);
++	/*
++	 * On newer kernels, we promoted PXP to be a global i915 subsystem,
++	 * so try again with a top-level path if we failed at the gt path.
++	 * If we still fail, then we assert out.
++	 */
++	if (fd < 0)
++		fd = igt_debugfs_open(i915, "pxp/terminate_state", O_RDWR);
++
+ 	igt_assert_f(fd >= 0, "Can't open pxp termination debugfs\n");
+ 	ret = snprintf(str, sizeof(str), "0x1");
+ 	igt_assert(ret > 2 && ret < sizeof(str));
+
+base-commit: c001793d5f22deb01918b6ba52af829794582df1
+-- 
+2.34.1
