@@ -1,11 +1,11 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CAA5E10E0DC
- for <igt-dev@lists.freedesktop.org>; Tue, 20 Dec 2022 20:39:26 +0000 (UTC)
-Date: Tue, 20 Dec 2022 21:39:23 +0100
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DFF7D10E0DC
+ for <igt-dev@lists.freedesktop.org>; Tue, 20 Dec 2022 20:40:16 +0000 (UTC)
+Date: Tue, 20 Dec 2022 21:40:13 +0100
 From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 To: Dominik Karol Piatkowski <dominik.karol.piatkowski@intel.com>
-Message-ID: <20221220203923.jkbmlnsw3hko6shs@zkempczy-mobl2>
+Message-ID: <20221220204013.o6iiykwxrwzf5dxg@zkempczy-mobl2>
 References: <20221220070717.4757-1-dominik.karol.piatkowski@intel.com>
  <20221220070717.4757-3-dominik.karol.piatkowski@intel.com>
 MIME-Version: 1.0
@@ -32,6 +32,12 @@ On Tue, Dec 20, 2022 at 08:07:17AM +0100, Dominik Karol Piatkowski wrote:
 > hardcoded start offset that may be too low.
 > 
 > Signed-off-by: Dominik Karol Piatkowski <dominik.karol.piatkowski@intel.com>
+                                 ^
+                                 +----- why there's missing ą?
+
+--
+Zbigniew
+
 > Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 > ---
 >  tests/i915/api_intel_allocator.c | 3 ++-
@@ -50,16 +56,6 @@ On Tue, Dec 20, 2022 at 08:07:17AM +0100, Dominik Karol Piatkowski wrote:
 >  
 >  	ahnd = intel_allocator_open(fd, 0, type);
 > +	intel_allocator_get_address_range(ahnd, &offset, NULL);
-
-Smart, we don't need acquire end.
-
-Anyway, lets verify trybot run, then we can merge.
-
-Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-
---
-Zbigniew
-
 >  
 >  	igt_assert_eq(intel_allocator_reserve(ahnd, 0, size, offset), true);
 >  	/* try overlapping won't succeed */
