@@ -1,17 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 88F8010E051
- for <igt-dev@lists.freedesktop.org>; Tue, 20 Dec 2022 05:30:28 +0000 (UTC)
-From: Arun R Murthy <arun.r.murthy@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Tue, 20 Dec 2022 11:00:42 +0530
-Message-Id: <20221220053042.1254128-1-arun.r.murthy@intel.com>
-In-Reply-To: <20220905120150.4074178-1-arun.r.murthy@intel.com>
-References: <20220905120150.4074178-1-arun.r.murthy@intel.com>
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 82C9F10E345
+ for <igt-dev@lists.freedesktop.org>; Tue, 20 Dec 2022 06:53:22 +0000 (UTC)
+Date: Tue, 20 Dec 2022 07:53:18 +0100
+From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+To: Lucas De Marchi <lucas.demarchi@intel.com>
+Message-ID: <20221220065318.eldyumvqdkuqurze@zkempczy-mobl2>
+References: <20221219091154.21828-1-jeevan.b@intel.com>
+ <20221219145840.tcuvd7qzsscn7jw7@ldmartin-desk2.lan>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCHv4 i-g-t] tests/kms_async_flips: Enable async flip
- on linear buffer
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20221219145840.tcuvd7qzsscn7jw7@ldmartin-desk2.lan>
+Subject: Re: [igt-dev] [PATCH i-g-t v2] lib/igt_draw: Change MOCS settings
+ for MTL
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,109 +21,75 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: petri.latvala@intel.com, jani.nikula@intel.com,
- Arun R Murthy <arun.r.murthy@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Intel Gen platforms >= GEN12, Async on linear buffer is supported,
-hence enabling test for the same.
+On Mon, Dec 19, 2022 at 06:58:40AM -0800, Lucas De Marchi wrote:
+> On Mon, Dec 19, 2022 at 02:41:54PM +0530, Jeevan B wrote:
+> > On MTL, we want the table entry labelled "UC (GO:Mem)"
+> > which has index 5.  This means that the MOCS value is 10.
+> > 
+> > v2: Add define for MOCS settings. (Lucas)
+> > 
+> > Signed-off-by: Jeevan B <jeevan.b@intel.com>
+> > ---
+> > lib/igt_draw.c | 12 +++++++++---
+> > 1 file changed, 9 insertions(+), 3 deletions(-)
+> > 
+> > diff --git a/lib/igt_draw.c b/lib/igt_draw.c
+> > index 975d65cd..4e19e42a 100644
+> > --- a/lib/igt_draw.c
+> > +++ b/lib/igt_draw.c
+> > @@ -651,13 +651,16 @@ static struct intel_buf *create_buf(int fd, struct buf_ops *bops,
+> > 	return buf;
+> > }
+> > 
+> > +#define DG2_MOCS_UC_GO_MEM	2	/* MOCS index 0x1 */
+> > +#define MTL_MOCS_UC_GO_MEM	10	/* MOCS index 0x5 */
+> > +
+> > static void draw_rect_blt(int fd, struct cmd_data *cmd_data,
+> > 			  struct buf_data *buf, struct rect *rect,
+> > 			  uint32_t tiling, uint32_t color)
+> > {
+> > 	struct intel_bb *ibb;
+> > 	struct intel_buf *dst;
+> > -	int blt_cmd_len, blt_cmd_tiling, blt_cmd_depth;
+> > +	int blt_cmd_len, blt_cmd_tiling, blt_cmd_depth, mocs_val;
+> > 	uint32_t devid = intel_get_drm_devid(fd);
+> > 	int gen = intel_gen(devid);
+> > 	int pitch;
+> > @@ -702,8 +705,11 @@ static void draw_rect_blt(int fd, struct cmd_data *cmd_data,
+> > 		pitch = tiling ? buf->stride / 4 : buf->stride;
+> > 
+> > 		intel_bb_out(ibb, XY_FAST_COLOR_BLT | blt_cmd_depth);
+> > -		/* DG2 MOCS entry 2 is "UC - Non-Coherent; GO:Memory" */
+> > -		intel_bb_out(ibb, blt_cmd_tiling | 2 << 21 | (pitch-1));
+> > +		if (IS_METEORLAKE(intel_get_drm_devid(fd)))
+> > +			mocs_val = MTL_MOCS_UC_GO_MEM;
+> > +		else
+> > +			mocs_val = DG2_MOCS_UC_GO_MEM;
+> 
+> nit: doing this before the calls to intel_bb_out() would be better since
+> it's what is done for all the other fields (e.g. pitch, bld_cmd_depth,
+> etc). With that
+> 	
+> 	Reviewed-by: Lucas De Marchi <lucas.demarchi@intel.com>
 
-v2: Added new line character for igt_skip_on_f (Petri)
-    Added new element modifier in data struct (JP)
-v3: Use display ver instead of graphics ver(Jani N)
-v4: enablled sub test on linear for all platforms(Karthik)
+I think better would be to extend intel_mocs.c and add appropriate 
+function instead of cascaded if's.
 
-Signed-off-by: Arun R Murthy <arun.r.murthy@intel.com>
----
- tests/kms_async_flips.c | 26 +++++++++++++++++++++++---
- 1 file changed, 23 insertions(+), 3 deletions(-)
+--
+Zbigniew
 
-diff --git a/tests/kms_async_flips.c b/tests/kms_async_flips.c
-index 7cb71f6b..a29bfba7 100644
---- a/tests/kms_async_flips.c
-+++ b/tests/kms_async_flips.c
-@@ -61,6 +61,7 @@ typedef struct {
- 	bool extended;
- 	enum pipe pipe;
- 	bool alternate_sync_async;
-+	uint64_t modifier;
- } data_t;
- 
- static void flip_handler(int fd_, unsigned int sequence, unsigned int tv_sec,
-@@ -125,7 +126,7 @@ static void make_fb(data_t *data, struct igt_fb *fb,
- 
- 	if (is_i915_device(data->drm_fd)) {
- 		igt_create_fb(data->drm_fd, width, height, DRM_FORMAT_XRGB8888,
--			      I915_FORMAT_MOD_X_TILED, fb);
-+			      data->modifier, fb);
- 		igt_draw_fill_fb(data->drm_fd, fb, 0x88);
- 	} else {
- 		igt_create_color_fb(data->drm_fd, width, height, DRM_FORMAT_XRGB8888,
-@@ -594,21 +595,37 @@ igt_main_args("e", NULL, help_str, opt_handler, &data)
- 		igt_fixture
- 			require_monotonic_timestamp(data.drm_fd);
- 
--		igt_describe("Wait for page flip events in between successive asynchronous flips");
-+		igt_describe("Wait for page flip events in between successive asynchronous flips on X Tiled buffer");
- 		igt_subtest_with_dynamic("async-flip-with-page-flip-events") {
- 			data.alternate_sync_async = false;
-+			data.modifier = I915_FORMAT_MOD_X_TILED;
-+			run_test(&data, test_async_flip);
-+		}
-+
-+		igt_describe("Wait for page flip events in between successive asynchronous flips on Linear buffer");
-+		igt_subtest_with_dynamic("async-flip-with-page-flip-events-linear") {
-+			data.alternate_sync_async = false;
-+			data.modifier = DRM_FORMAT_MOD_LINEAR;
-+			if(is_i915_device(data.drm_fd)) {
-+				igt_skip_on_f(intel_display_ver(
-+						intel_get_drm_devid(data.drm_fd)) < 12,
-+						"Async on Linear buffer not supported\n");
-+			}
- 			run_test(&data, test_async_flip);
- 		}
- 
- 		igt_describe("Alternate between sync and async flips");
- 		igt_subtest_with_dynamic("alternate-sync-async-flip") {
-+			data.modifier = I915_FORMAT_MOD_X_TILED;
- 			data.alternate_sync_async = true;
- 			run_test(&data, test_async_flip);
- 		}
- 
- 		igt_describe("Verify that the async flip timestamp does not coincide with either previous or next vblank");
--		igt_subtest_with_dynamic("test-time-stamp")
-+		igt_subtest_with_dynamic("test-time-stamp") {
-+			data.modifier = I915_FORMAT_MOD_X_TILED;
- 			run_test(&data, test_timestamp);
-+		}
- 	}
- 
- 	igt_describe("Verify that the DRM_IOCTL_MODE_CURSOR passes after async flip");
-@@ -622,6 +639,7 @@ igt_main_args("e", NULL, help_str, opt_handler, &data)
- 			      "PSR2 sel fetch causes cursor to be added to primary plane " \
- 			      "pages flips and async flip is not supported in cursor\n");
- 
-+		data.modifier = I915_FORMAT_MOD_X_TILED;
- 		run_test(&data, test_cursor);
- 	}
- 
-@@ -632,6 +650,7 @@ igt_main_args("e", NULL, help_str, opt_handler, &data)
- 		igt_require(igt_display_has_format_mod(&data.display, DRM_FORMAT_XRGB8888,
- 						       I915_FORMAT_MOD_Y_TILED));
- 
-+		data.modifier = I915_FORMAT_MOD_X_TILED;
- 		run_test(&data, test_invalid);
- 	}
- 
-@@ -640,6 +659,7 @@ igt_main_args("e", NULL, help_str, opt_handler, &data)
- 		/* Devices without CRC can't run this test */
- 		igt_require_pipe_crc(data.drm_fd);
- 
-+		data.modifier = I915_FORMAT_MOD_X_TILED;
- 		run_test(&data, test_crc);
- 	}
- 
--- 
-2.25.1
+> 
+> Lucas De Marchi
+> 
+> > +		intel_bb_out(ibb, blt_cmd_tiling | mocs_val << 21 | (pitch-1));
+> > 		intel_bb_out(ibb, (rect->y << 16) | rect->x);
+> > 		intel_bb_out(ibb, ((rect->y + rect->h) << 16) | (rect->x + rect->w));
+> > 		intel_bb_emit_reloc_fenced(ibb, dst->handle, 0,
+> > -- 
+> > 2.36.0
+> > 
