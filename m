@@ -1,20 +1,23 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DFF7D10E0DC
- for <igt-dev@lists.freedesktop.org>; Tue, 20 Dec 2022 20:40:16 +0000 (UTC)
-Date: Tue, 20 Dec 2022 21:40:13 +0100
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: Dominik Karol Piatkowski <dominik.karol.piatkowski@intel.com>
-Message-ID: <20221220204013.o6iiykwxrwzf5dxg@zkempczy-mobl2>
-References: <20221220070717.4757-1-dominik.karol.piatkowski@intel.com>
- <20221220070717.4757-3-dominik.karol.piatkowski@intel.com>
+Received: from NAM12-DM6-obe.outbound.protection.outlook.com
+ (mail-dm6nam12on2063.outbound.protection.outlook.com [40.107.243.63])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6F3BC10E0E6
+ for <igt-dev@lists.freedesktop.org>; Tue, 20 Dec 2022 23:49:23 +0000 (UTC)
+Message-ID: <9d82b4bb-0e71-d47d-4a79-9203868bfbd2@amd.com>
+Date: Tue, 20 Dec 2022 16:49:18 -0700
+To: Melissa Wen <mwen@igalia.com>
+References: <20221219192150.1497674-1-alex.hung@amd.com>
+ <20221220115544.ytkcz3jyfobkg3rm@mail.igalia.com>
+ <c545097f-5436-d559-f02e-8f051357d943@amd.com>
+ <20221220190607.fjrl5dyc4hzcndy3@mail.igalia.com>
+Content-Language: en-US
+From: Alex Hung <alex.hung@amd.com>
+In-Reply-To: <20221220190607.fjrl5dyc4hzcndy3@mail.igalia.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20221220070717.4757-3-dominik.karol.piatkowski@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 2/2] tests/i915/api_intel_allocator:
- Fixed start offset
+Subject: Re: [igt-dev] [PATCH] tests/kms_color: Reduce skips on some ctm-*
+ tests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,43 +25,166 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org, markyacoub@google.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Tue, Dec 20, 2022 at 08:07:17AM +0100, Dominik Karol Piatkowski wrote:
-> It is safer to use intel_allocator_get_address_range than arbitrary
-> hardcoded start offset that may be too low.
-> 
-> Signed-off-by: Dominik Karol Piatkowski <dominik.karol.piatkowski@intel.com>
-                                 ^
-                                 +----- why there's missing ą?
 
---
-Zbigniew
 
-> Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-> ---
->  tests/i915/api_intel_allocator.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
+On 2022-12-20 12:06, Melissa Wen wrote:
+> On 12/20, Alex Hung wrote:
+>>
+>>
+>> On 2022-12-20 04:55, Melissa Wen wrote:
+>>> On 12/19, Alex Hung wrote:
+>>>> 64d0ff72 introduced a workaround for ctm-max but the condition caused
+>>>> other ctm tests to skip unintentionally on some platforms.
+>>>
+>>> Hi Alex,
+>>>
+>>> Can't we just drop this gamma/degamma setup for CTM tests?
+>>>
+>>> I remember thinking about removing this setup before... From DRM docs,
+>>> "Each of the properties are optional." so I don't see an explicity
+>>> reason for degamma/gamma dependencies. I think we should only test the
+>>> CTM property here, or change the name of the subtest to describe a full
+>>> color mgmt testing.
+>>>
+>>> I took a look at previous discussions on having or not degamma/gamma
+>>> here and if it's an intel limitation, than I prefer to explicitly
+>>> restrict it for i915 HW. What do you think?
+>>
+>> Hi Melissa,
+>>
+>> I may not understand you 100%.
+>>
+>> Could you please share what you'd like to change, or create a patch for more
+>> discussion?
 > 
-> diff --git a/tests/i915/api_intel_allocator.c b/tests/i915/api_intel_allocator.c
-> index 87abd900..e9039a21 100644
-> --- a/tests/i915/api_intel_allocator.c
-> +++ b/tests/i915/api_intel_allocator.c
-> @@ -96,9 +96,10 @@ static void reserve_simple(int fd)
->  static void reserve(int fd, uint8_t type)
->  {
->  	struct test_obj obj;
-> -	uint64_t ahnd, offset = 0x40000, size = 0x1000;
-> +	uint64_t ahnd, offset, size = 0x1000;
->  
->  	ahnd = intel_allocator_open(fd, 0, type);
-> +	intel_allocator_get_address_range(ahnd, &offset, NULL);
->  
->  	igt_assert_eq(intel_allocator_reserve(ahnd, 0, size, offset), true);
->  	/* try overlapping won't succeed */
-> -- 
-> 2.34.1
+> My suggestion is basically disable degamma and gamma and only set them for
+> i915 + not max ctm case, something like the following diff:
 > 
+> diff --git a/tests/kms_color.c b/tests/kms_color.c
+> index d016cefb..2be4095d 100644
+> --- a/tests/kms_color.c
+> +++ b/tests/kms_color.c
+> @@ -493,12 +493,16 @@ static bool test_pipe_ctm(data_t *data,
+>          igt_assert(fb_modeset_id);
+>          igt_plane_set_fb(primary, &fb_modeset);
+> 
+> +       disable_degamma(primary->pipe);
+> +       disable_gamma(primary->pipe);
+> +
+>          /*
+> -        * Don't program LUT's for max CTM cases, as limitation of
+> -        * representing intermediate values between 0 and 1.0 causes
+> -        * rounding issues and inaccuracies leading to crc mismatch.
+> +        * Program LUT's only for i915, but not in max CTM cases, as limitation
+> +        * of representing intermediate values between 0 and 1.0 causes
+> +        * rounding issues and inaccuracies leading to crc mismatch in i915
+> +        * devices.
+>           */
+> -       if (memcmp(before, after, sizeof(color_t))) {
+> +       if (is_i915_device(data->drm_fd) && memcmp(before, after, sizeof(color_t))) {
+>                  igt_require(igt_pipe_obj_has_prop(primary->pipe, IGT_CRTC_DEGAMMA_LUT));
+>                  igt_require(igt_pipe_obj_has_prop(primary->pipe, IGT_CRTC_GAMMA_LUT));
+> 
+> @@ -507,10 +511,6 @@ static bool test_pipe_ctm(data_t *data,
+> 
+>                  set_degamma(data, primary->pipe, degamma_linear);
+>                  set_gamma(data, primary->pipe, gamma_linear);
+> -       } else {
+> -               /* Disable Degamma and Gamma for ctm max test */
+> -               disable_degamma(primary->pipe);
+> -               disable_gamma(primary->pipe);
+>          }
+> 
+>          disable_ctm(primary->pipe);
+> 
+
+This looks good to me, and I also tested it on 2A + 1I systems and it 
+ran fine.
+
+
+
+>>
+>> Cheers,
+>> Alex
+>>
+>>>
+>>> Best regards,
+>>>
+>>> Melissa
+>>>
+>>>>
+>>>> The patch improves the condition by keeping the original condition
+>>>> for i915 and checking degamma and gamma props for others. The
+>>>> following subtests will be executed instead of skipped.
+>>>>
+>>>>     kms_color@ctm-0-25@*
+>>>>     kms_color@ctm-0-50@*
+>>>>     kms_color@ctm-0-75@*
+>>>>     kms_color@ctm-red-to-blue@*
+>>>>     kms_color@ctm-negative@*
+>>>>
+>>>> Signed-off-by: Alex Hung <alex.hung@amd.com>
+>>>> ---
+>>>>    tests/kms_color.c | 30 +++++++++++++++++++++---------
+>>>>    1 file changed, 21 insertions(+), 9 deletions(-)
+>>>>
+>>>> diff --git a/tests/kms_color.c b/tests/kms_color.c
+>>>> index d016cefb..450bf7ca 100644
+>>>> --- a/tests/kms_color.c
+>>>> +++ b/tests/kms_color.c
+>>>> @@ -446,6 +446,26 @@ end:
+>>>>    	return ret;
+>>>>    }
+>>>> +static bool is_gamma_degamma_supported(data_t *data,
+>>>> +				       igt_plane_t *primary,
+>>>> +				       color_t *before,
+>>>> +				       color_t *after)
+>>>> +{
+>>>> +	/*
+>>>> +	 * Don't program LUT's for max CTM cases, as limitation of
+>>>> +	 * representing intermediate values between 0 and 1.0 causes
+>>>> +	 * rounding issues and inaccuracies leading to crc mismatch.
+>>>> +	 */
+>>>> +	if (is_i915_device(data->drm_fd) && memcmp(before, after, sizeof(color_t)))
+>>>> +		return true;
+>>>> +
+>>>> +	if (igt_pipe_obj_has_prop(primary->pipe, IGT_CRTC_DEGAMMA_LUT) &&
+>>>> +	    igt_pipe_obj_has_prop(primary->pipe, IGT_CRTC_GAMMA_LUT))
+>>>> +		return true;
+>>>> +
+>>>> +	return false;
+>>>> +}
+>>>> +
+>>>>    /*
+>>>>     * Draw 3 rectangles using before colors with the ctm matrix apply and verify
+>>>>     * the CRC is equal to using after colors with an identify ctm matrix.
+>>>> @@ -493,14 +513,7 @@ static bool test_pipe_ctm(data_t *data,
+>>>>    	igt_assert(fb_modeset_id);
+>>>>    	igt_plane_set_fb(primary, &fb_modeset);
+>>>> -	/*
+>>>> -	 * Don't program LUT's for max CTM cases, as limitation of
+>>>> -	 * representing intermediate values between 0 and 1.0 causes
+>>>> -	 * rounding issues and inaccuracies leading to crc mismatch.
+>>>> -	 */
+>>>> -	if (memcmp(before, after, sizeof(color_t))) {
+>>>> -		igt_require(igt_pipe_obj_has_prop(primary->pipe, IGT_CRTC_DEGAMMA_LUT));
+>>>> -		igt_require(igt_pipe_obj_has_prop(primary->pipe, IGT_CRTC_GAMMA_LUT));
+>>>> +	if (is_gamma_degamma_supported(data, primary, before, after)) {
+>>>>    		degamma_linear = generate_table(data->degamma_lut_size, 1.0);
+>>>>    		gamma_linear = generate_table(data->gamma_lut_size, 1.0);
+>>>> @@ -508,7 +521,6 @@ static bool test_pipe_ctm(data_t *data,
+>>>>    		set_degamma(data, primary->pipe, degamma_linear);
+>>>>    		set_gamma(data, primary->pipe, gamma_linear);
+>>>>    	} else {
+>>>> -		/* Disable Degamma and Gamma for ctm max test */
+>>>>    		disable_degamma(primary->pipe);
+>>>>    		disable_gamma(primary->pipe);
+>>>>    	}
+>>>> -- 
+>>>> 2.25.1
+>>>>
