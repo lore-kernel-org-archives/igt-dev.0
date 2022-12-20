@@ -1,19 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BFA0B10E3AF
- for <igt-dev@lists.freedesktop.org>; Tue, 20 Dec 2022 11:52:01 +0000 (UTC)
-Date: Tue, 20 Dec 2022 12:51:56 +0100
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: Karolina Stolarek <karolina.stolarek@intel.com>
-Message-ID: <20221220115156.x4mixwadm2aki6dl@zkempczy-mobl2>
-References: <cover.1671446367.git.karolina.stolarek@intel.com>
- <cab83734d1709e78e642e2de6d6dd88d30a3e41f.1671446367.git.karolina.stolarek@intel.com>
+Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6008110E0A9
+ for <igt-dev@lists.freedesktop.org>; Tue, 20 Dec 2022 11:56:39 +0000 (UTC)
+Date: Tue, 20 Dec 2022 10:55:44 -0100
+From: Melissa Wen <mwen@igalia.com>
+To: Alex Hung <alex.hung@amd.com>
+Message-ID: <20221220115544.ytkcz3jyfobkg3rm@mail.igalia.com>
+References: <20221219192150.1497674-1-alex.hung@amd.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha512;
+ protocol="application/pgp-signature"; boundary="6npe3frr3fcvjw7i"
 Content-Disposition: inline
-In-Reply-To: <cab83734d1709e78e642e2de6d6dd88d30a3e41f.1671446367.git.karolina.stolarek@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 3/4] lib/i915_blt: Extract init
- functions for blt_copy_object
+In-Reply-To: <20221219192150.1497674-1-alex.hung@amd.com>
+Subject: Re: [igt-dev] [PATCH] tests/kms_color: Reduce skips on some ctm-*
+ tests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,309 +21,135 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org, markyacoub@google.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Mon, Dec 19, 2022 at 12:49:10PM +0100, Karolina Stolarek wrote:
-> gem_ccs and gem_lmem_swapping share a couple of functions. Extract them
-> to i915_blt so they are accessible for both tests. Delete local
-> definitions.
-> 
-> Signed-off-by: Karolina Stolarek <karolina.stolarek@intel.com>
+
+--6npe3frr3fcvjw7i
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On 12/19, Alex Hung wrote:
+> 64d0ff72 introduced a workaround for ctm-max but the condition caused
+> other ctm tests to skip unintentionally on some platforms.
+
+Hi Alex,
+
+Can't we just drop this gamma/degamma setup for CTM tests?
+
+I remember thinking about removing this setup before... From DRM docs,
+"Each of the properties are optional." so I don't see an explicity
+reason for degamma/gamma dependencies. I think we should only test the
+CTM property here, or change the name of the subtest to describe a full
+color mgmt testing.
+
+I took a look at previous discussions on having or not degamma/gamma
+here and if it's an intel limitation, than I prefer to explicitly
+restrict it for i915 HW. What do you think?
+
+Best regards,
+
+Melissa
+
+>=20
+> The patch improves the condition by keeping the original condition
+> for i915 and checking degamma and gamma props for others. The
+> following subtests will be executed instead of skipped.
+>=20
+>   kms_color@ctm-0-25@*
+>   kms_color@ctm-0-50@*
+>   kms_color@ctm-0-75@*
+>   kms_color@ctm-red-to-blue@*
+>   kms_color@ctm-negative@*
+>=20
+> Signed-off-by: Alex Hung <alex.hung@amd.com>
 > ---
-> Karolina's comment: I'm not convinced it's the best place for them.
-> 					These functions are more specific to the tests
-> 					than lib functions. So, I'd appreciate
-> 					suggestions on where I can move them to.
-> 
->  lib/i915/i915_blt.c            | 81 ++++++++++++++++++++++++++++++++++
->  lib/i915/i915_blt.h            | 22 +++++++++
->  tests/i915/gem_ccs.c           | 81 ----------------------------------
->  tests/i915/gem_lmem_swapping.c | 36 ---------------
->  4 files changed, 103 insertions(+), 117 deletions(-)
-> 
-> diff --git a/lib/i915/i915_blt.c b/lib/i915/i915_blt.c
-> index 2513dfc0..0f9f7265 100644
-> --- a/lib/i915/i915_blt.c
-> +++ b/lib/i915/i915_blt.c
-> @@ -1053,6 +1053,87 @@ int blt_fast_copy(int i915,
+>  tests/kms_color.c | 30 +++++++++++++++++++++---------
+>  1 file changed, 21 insertions(+), 9 deletions(-)
+>=20
+> diff --git a/tests/kms_color.c b/tests/kms_color.c
+> index d016cefb..450bf7ca 100644
+> --- a/tests/kms_color.c
+> +++ b/tests/kms_color.c
+> @@ -446,6 +446,26 @@ end:
 >  	return ret;
 >  }
->  
-> +void set_geom(struct blt_copy_object *obj, uint32_t pitch,
-> +	      int16_t x1, int16_t y1, int16_t x2, int16_t y2,
-> +	      uint16_t x_offset, uint16_t y_offset)
+> =20
+> +static bool is_gamma_degamma_supported(data_t *data,
+> +				       igt_plane_t *primary,
+> +				       color_t *before,
+> +				       color_t *after)
 > +{
-> +	obj->pitch = pitch;
-> +	obj->x1 = x1;
-> +	obj->y1 = y1;
-> +	obj->x2 = x2;
-> +	obj->y2 = y2;
-> +	obj->x_offset = x_offset;
-> +	obj->y_offset = y_offset;
+> +	/*
+> +	 * Don't program LUT's for max CTM cases, as limitation of
+> +	 * representing intermediate values between 0 and 1.0 causes
+> +	 * rounding issues and inaccuracies leading to crc mismatch.
+> +	 */
+> +	if (is_i915_device(data->drm_fd) && memcmp(before, after, sizeof(color_=
+t)))
+> +		return true;
+> +
+> +	if (igt_pipe_obj_has_prop(primary->pipe, IGT_CRTC_DEGAMMA_LUT) &&
+> +	    igt_pipe_obj_has_prop(primary->pipe, IGT_CRTC_GAMMA_LUT))
+> +		return true;
+> +
+> +	return false;
 > +}
 > +
-> +void set_batch(struct blt_copy_batch *batch,
-> +	       uint32_t handle, uint64_t size, uint32_t region)
-> +{
-> +	batch->handle = handle;
-> +	batch->size = size;
-> +	batch->region = region;
-> +}
-> +
-> +struct blt_copy_object *
-> +create_object(int i915, uint32_t region,
-> +	      uint32_t width, uint32_t height, uint32_t bpp, uint8_t mocs,
-> +	      enum tiling_type tiling,
-> +	      enum blt_compression compression,
-> +	      enum blt_compression_type compression_type,
-> +	      bool create_mapping)
-> +{
-> +	struct blt_copy_object *obj;
-> +	uint64_t size = width * height * bpp / 8;
-> +	uint32_t stride = tiling == T_LINEAR ? width * 4 : width;
-> +	uint32_t handle;
-> +
-> +	obj = calloc(1, sizeof(*obj));
-> +
-> +	obj->size = size;
-> +	igt_assert(__gem_create_in_memory_regions(i915, &handle,
-> +						  &size, region) == 0);
-> +
-> +	set_object(obj, handle, size, region, mocs, tiling,
-> +		   compression, compression_type);
-> +	set_geom(obj, stride, 0, 0, width, height, 0, 0);
-> +
-> +	if (create_mapping)
-> +		obj->ptr = gem_mmap__device_coherent(i915, handle, 0, size,
-> +						     PROT_READ | PROT_WRITE);
-> +
-> +	return obj;
-> +}
-> +
-> +void destroy_object(int i915, struct blt_copy_object *obj)
-> +{
-> +	if (obj->ptr)
-> +		munmap(obj->ptr, obj->size);
-> +
-> +	gem_close(i915, obj->handle);
-> +	free(obj);
-> +}
-> +
-> +void set_object(struct blt_copy_object *obj,
-> +		uint32_t handle, uint64_t size, uint32_t region,
-> +		uint8_t mocs, enum tiling_type tiling,
-> +		enum blt_compression compression,
-> +		enum blt_compression_type compression_type)
-> +{
-> +	obj->handle = handle;
-> +	obj->size = size;
-> +	obj->region = region;
-> +	obj->mocs = mocs;
-> +	obj->tiling = tiling;
-> +	obj->compression = compression;
-> +	obj->compression_type = compression_type;
-> +}
-> +
-> +void set_blt_object(struct blt_copy_object *obj,
-> +		    const struct blt_copy_object *orig)
-> +{
-> +	memcpy(obj, orig, sizeof(*obj));
-> +}
-> +
-
-I would add some prefix, set_geom() to blt_set_geom(), etc. to minimize
-risk of name collision.
-
-But yes, I agree extracting this from test to library makes sense.
-
---
-Zbigniew
-
->  /**
->   * blt_surface_fill_rect:
->   * @i915: drm fd
-> diff --git a/lib/i915/i915_blt.h b/lib/i915/i915_blt.h
-> index f1cf5408..1ef459c8 100644
-> --- a/lib/i915/i915_blt.h
-> +++ b/lib/i915/i915_blt.h
-> @@ -198,6 +198,28 @@ int blt_fast_copy(int i915,
->  		  uint64_t ahnd,
->  		  const struct blt_copy_data *blt);
->  
-> +void set_geom(struct blt_copy_object *obj, uint32_t pitch,
-> +	      int16_t x1, int16_t y1, int16_t x2, int16_t y2,
-> +	      uint16_t x_offset, uint16_t y_offset);
-> +void set_batch(struct blt_copy_batch *batch,
-> +	       uint32_t handle, uint64_t size, uint32_t region);
-> +
-> +struct blt_copy_object *
-> +create_object(int i915, uint32_t region,
-> +	      uint32_t width, uint32_t height, uint32_t bpp, uint8_t mocs,
-> +	      enum tiling_type tiling,
-> +	      enum blt_compression compression,
-> +	      enum blt_compression_type compression_type,
-> +	      bool create_mapping);
-> +void destroy_object(int i915, struct blt_copy_object *obj);
-> +void set_object(struct blt_copy_object *obj,
-> +		uint32_t handle, uint64_t size, uint32_t region,
-> +		uint8_t mocs, enum tiling_type tiling,
-> +		enum blt_compression compression,
-> +		enum blt_compression_type compression_type);
-> +void set_blt_object(struct blt_copy_object *obj,
-> +		    const struct blt_copy_object *orig);
-> +
->  void blt_surface_info(const char *info,
->  		      const struct blt_copy_object *obj);
->  void blt_surface_fill_rect(int i915, const struct blt_copy_object *obj,
-> diff --git a/tests/i915/gem_ccs.c b/tests/i915/gem_ccs.c
-> index 4c137c94..30ee60fd 100644
-> --- a/tests/i915/gem_ccs.c
-> +++ b/tests/i915/gem_ccs.c
-> @@ -44,42 +44,6 @@ struct test_config {
->  	bool suspend_resume;
->  };
->  
-> -static void set_object(struct blt_copy_object *obj,
-> -		       uint32_t handle, uint64_t size, uint32_t region,
-> -		       uint8_t mocs, enum tiling_type tiling,
-> -		       enum blt_compression compression,
-> -		       enum blt_compression_type compression_type)
-> -{
-> -	obj->handle = handle;
-> -	obj->size = size;
-> -	obj->region = region;
-> -	obj->mocs = mocs;
-> -	obj->tiling = tiling;
-> -	obj->compression = compression;
-> -	obj->compression_type = compression_type;
-> -}
-> -
-> -static void set_geom(struct blt_copy_object *obj, uint32_t pitch,
-> -		     int16_t x1, int16_t y1, int16_t x2, int16_t y2,
-> -		     uint16_t x_offset, uint16_t y_offset)
-> -{
-> -	obj->pitch = pitch;
-> -	obj->x1 = x1;
-> -	obj->y1 = y1;
-> -	obj->x2 = x2;
-> -	obj->y2 = y2;
-> -	obj->x_offset = x_offset;
-> -	obj->y_offset = y_offset;
-> -}
-> -
-> -static void set_batch(struct blt_copy_batch *batch,
-> -		      uint32_t handle, uint64_t size, uint32_t region)
-> -{
-> -	batch->handle = handle;
-> -	batch->size = size;
-> -	batch->region = region;
-> -}
-> -
->  static void set_object_ext(struct blt_block_copy_object_ext *obj,
->  			   uint8_t compression_format,
->  			   uint16_t surface_width, uint16_t surface_height,
-> @@ -105,51 +69,6 @@ static void set_surf_object(struct blt_ctrl_surf_copy_object *obj,
->  	obj->access_type = access_type;
->  }
->  
-> -static struct blt_copy_object *
-> -create_object(int i915, uint32_t region,
-> -	      uint32_t width, uint32_t height, uint32_t bpp, uint8_t mocs,
-> -	      enum tiling_type tiling,
-> -	      enum blt_compression compression,
-> -	      enum blt_compression_type compression_type,
-> -	      bool create_mapping)
-> -{
-> -	struct blt_copy_object *obj;
-> -	uint64_t size = width * height * bpp / 8;
-> -	uint32_t stride = tiling == T_LINEAR ? width * 4 : width;
-> -	uint32_t handle;
-> -
-> -	obj = calloc(1, sizeof(*obj));
-> -
-> -	obj->size = size;
-> -	igt_assert(__gem_create_in_memory_regions(i915, &handle,
-> -						  &size, region) == 0);
-> -
-> -	set_object(obj, handle, size, region, mocs, tiling,
-> -		   compression, compression_type);
-> -	set_geom(obj, stride, 0, 0, width, height, 0, 0);
-> -
-> -	if (create_mapping)
-> -		obj->ptr = gem_mmap__device_coherent(i915, handle, 0, size,
-> -						     PROT_READ | PROT_WRITE);
-> -
-> -	return obj;
-> -}
-> -
-> -static void destroy_object(int i915, struct blt_copy_object *obj)
-> -{
-> -	if (obj->ptr)
-> -		munmap(obj->ptr, obj->size);
-> -
-> -	gem_close(i915, obj->handle);
-> -	free(obj);
-> -}
-> -
-> -static void set_blt_object(struct blt_copy_object *obj,
-> -			   const struct blt_copy_object *orig)
-> -{
-> -	memcpy(obj, orig, sizeof(*obj));
-> -}
-> -
->  #define PRINT_SURFACE_INFO(name, obj) do { \
->  	if (param.print_surface_info) \
->  		blt_surface_info((name), (obj)); } while (0)
-> diff --git a/tests/i915/gem_lmem_swapping.c b/tests/i915/gem_lmem_swapping.c
-> index 8cff35d5..746fbf80 100644
-> --- a/tests/i915/gem_lmem_swapping.c
-> +++ b/tests/i915/gem_lmem_swapping.c
-> @@ -76,42 +76,6 @@ struct object {
->  	struct blt_copy_object *blt_obj;
->  };
->  
-> -static void set_object(struct blt_copy_object *obj,
-> -		       uint32_t handle, uint64_t size, uint32_t region,
-> -		       uint8_t mocs, enum tiling_type tiling,
-> -		       enum blt_compression compression,
-> -		       enum blt_compression_type compression_type)
-> -{
-> -	obj->handle = handle;
-> -	obj->size = size;
-> -	obj->region = region;
-> -	obj->mocs = mocs;
-> -	obj->tiling = tiling;
-> -	obj->compression = compression;
-> -	obj->compression_type = compression_type;
-> -}
-> -
-> -static void set_geom(struct blt_copy_object *obj, uint32_t pitch,
-> -		     int16_t x1, int16_t y1, int16_t x2, int16_t y2,
-> -		     uint16_t x_offset, uint16_t y_offset)
-> -{
-> -	obj->pitch = pitch;
-> -	obj->x1 = x1;
-> -	obj->y1 = y1;
-> -	obj->x2 = x2;
-> -	obj->y2 = y2;
-> -	obj->x_offset = x_offset;
-> -	obj->y_offset = y_offset;
-> -}
-> -
-> -static void set_batch(struct blt_copy_batch *batch,
-> -		      uint32_t handle, uint64_t size, uint32_t region)
-> -{
-> -	batch->handle = handle;
-> -	batch->size = size;
-> -	batch->region = region;
-> -}
-> -
->  static void set_object_ext(struct blt_block_copy_object_ext *obj,
->  			   uint8_t compression_format,
->  			   uint16_t surface_width, uint16_t surface_height,
-> -- 
+>  /*
+>   * Draw 3 rectangles using before colors with the ctm matrix apply and v=
+erify
+>   * the CRC is equal to using after colors with an identify ctm matrix.
+> @@ -493,14 +513,7 @@ static bool test_pipe_ctm(data_t *data,
+>  	igt_assert(fb_modeset_id);
+>  	igt_plane_set_fb(primary, &fb_modeset);
+> =20
+> -	/*
+> -	 * Don't program LUT's for max CTM cases, as limitation of
+> -	 * representing intermediate values between 0 and 1.0 causes
+> -	 * rounding issues and inaccuracies leading to crc mismatch.
+> -	 */
+> -	if (memcmp(before, after, sizeof(color_t))) {
+> -		igt_require(igt_pipe_obj_has_prop(primary->pipe, IGT_CRTC_DEGAMMA_LUT)=
+);
+> -		igt_require(igt_pipe_obj_has_prop(primary->pipe, IGT_CRTC_GAMMA_LUT));
+> +	if (is_gamma_degamma_supported(data, primary, before, after)) {
+> =20
+>  		degamma_linear =3D generate_table(data->degamma_lut_size, 1.0);
+>  		gamma_linear =3D generate_table(data->gamma_lut_size, 1.0);
+> @@ -508,7 +521,6 @@ static bool test_pipe_ctm(data_t *data,
+>  		set_degamma(data, primary->pipe, degamma_linear);
+>  		set_gamma(data, primary->pipe, gamma_linear);
+>  	} else {
+> -		/* Disable Degamma and Gamma for ctm max test */
+>  		disable_degamma(primary->pipe);
+>  		disable_gamma(primary->pipe);
+>  	}
+> --=20
 > 2.25.1
-> 
+>=20
+
+--6npe3frr3fcvjw7i
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEd8WOo/JViG+Tu+XIwqF3j0dLehwFAmOhorsACgkQwqF3j0dL
+ehwxHg/+J0fbxHCKiWMVT8TVBbaypwBcbg9HcdzuaVl6dXFtUPVTeqXtgoahoGBO
+R2NGbu7BGTzXW0jaScI1AuLehkNbyMrBkJ3gsBYVix4R0d5RxUm7zLe1evFcTUov
+EDc8N8v8/0Zk7Sp5Y+V0wNpq2v4baEhzqhTlskPPL7T7DHJmqXZTQXUrPzl+bs+8
+8asor/iy9f6Sbq9g4uUAhw1QpfkgLMrDHTRjMpQFq6VJ6mch2fDDg2SkgeFMJZZi
+66mqHZREtID5F6Clp3KxlZrZ8Wf6+8Fem0s9CEcfLbVlQc6ZK2LhtbkvIy/3vciR
+2CxePJFObWhW32Ni9o5S3U5OP0U9EYYOW+wD3Z/QfmuaR9NyxikJrBxsUKDtHWYi
+3GjzsSeIhE024M8KbFA2NIohDYWJtHcyg2z+bAGlNslobauFDKAC3fuDqV2cPtDk
+fHHFDtIG1yMKGrDOMfiBaV3xJOSiPOb/bL7LldS87cHZVFabu9WZ2scZlWLmLCiD
+cA1LE9yl8Ot7omF6bRc4DMdWnpWUwGQESR75oFqR6JzuPvAcAqNyK8AdxwXUa6PI
+sVDYvbwwKoylE35QETPt0MojFhUAmGbKhmPTO/Fg2rWpUWQGeG2bNfN353C7A/Qg
+XWeqnbw4806qJmuNqqeX/nt30O7LxgJ//DugjV06mkzloa8gweQ=
+=nzct
+-----END PGP SIGNATURE-----
+
+--6npe3frr3fcvjw7i--
