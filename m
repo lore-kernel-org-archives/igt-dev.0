@@ -1,19 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4F74389C0A
- for <igt-dev@lists.freedesktop.org>; Wed, 21 Dec 2022 13:59:16 +0000 (UTC)
-Date: Wed, 21 Dec 2022 14:59:11 +0100
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Message-ID: <Y6MRL5p0zcqMQ/0T@kamilkon-desk1>
-References: <cover.1671446367.git.karolina.stolarek@intel.com>
- <cab83734d1709e78e642e2de6d6dd88d30a3e41f.1671446367.git.karolina.stolarek@intel.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CE68310E455
+ for <igt-dev@lists.freedesktop.org>; Wed, 21 Dec 2022 14:17:10 +0000 (UTC)
+Date: Wed, 21 Dec 2022 09:17:02 -0500
+From: Rodrigo Vivi <rodrigo.vivi@intel.com>
+To: Mohammed Thasleem <mohammed.thasleem@intel.com>
+Message-ID: <Y6MVXsw5XF6K/uxn@intel.com>
+References: <20221216191124.27930-1-mohammed.thasleem@intel.com>
+ <20221220135734.6354-1-mohammed.thasleem@intel.com>
+Content-Type: text/plain; charset="us-ascii"
 Content-Disposition: inline
-In-Reply-To: <cab83734d1709e78e642e2de6d6dd88d30a3e41f.1671446367.git.karolina.stolarek@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 3/4] lib/i915_blt: Extract init
- functions for blt_copy_object
+In-Reply-To: <20221220135734.6354-1-mohammed.thasleem@intel.com>
+MIME-Version: 1.0
+Subject: Re: [igt-dev] [PATCH v2] tests/i915/i915_pm_dc : Check DC5 state
+ with externel active panel
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,337 +21,103 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Karolina,
-
-please improve commit description,
-imho s/Extract init/Add common/
-
-On 2022-12-19 at 12:49:10 +0100, Karolina Stolarek wrote:
-> gem_ccs and gem_lmem_swapping share a couple of functions. Extract them
-> to i915_blt so they are accessible for both tests. Delete local
----------------------------------------------------- ^
-That sentence is not needed here or if you want you can write
-about refactoring (you replaced those functions with lib calls).
-
-> definitions.
-
+On Tue, Dec 20, 2022 at 07:27:34PM +0530, Mohammed Thasleem wrote:
+> This test validates negative scenario of DC5 state by keeping
+> all connectors's DPMS property set to ON.
 > 
-> Signed-off-by: Karolina Stolarek <karolina.stolarek@intel.com>
+> v2: Added function to check externel panel and skip test if not found.
+> 
+> Signed-off-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
 > ---
-> Karolina's comment: I'm not convinced it's the best place for them.
-> 					These functions are more specific to the tests
-- ^^^
-Please avoid huge empty spaces here.
-
-> 					than lib functions. So, I'd appreciate
-> 					suggestions on where I can move them to.
+>  tests/i915/i915_pm_dc.c | 44 +++++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 44 insertions(+)
 > 
->  lib/i915/i915_blt.c            | 81 ++++++++++++++++++++++++++++++++++
->  lib/i915/i915_blt.h            | 22 +++++++++
->  tests/i915/gem_ccs.c           | 81 ----------------------------------
->  tests/i915/gem_lmem_swapping.c | 36 ---------------
->  4 files changed, 103 insertions(+), 117 deletions(-)
-> 
-> diff --git a/lib/i915/i915_blt.c b/lib/i915/i915_blt.c
-> index 2513dfc0..0f9f7265 100644
-> --- a/lib/i915/i915_blt.c
-> +++ b/lib/i915/i915_blt.c
-> @@ -1053,6 +1053,87 @@ int blt_fast_copy(int i915,
->  	return ret;
+> diff --git a/tests/i915/i915_pm_dc.c b/tests/i915/i915_pm_dc.c
+> index ba49d014..5a987728 100644
+> --- a/tests/i915/i915_pm_dc.c
+> +++ b/tests/i915/i915_pm_dc.c
+> @@ -246,6 +246,13 @@ static void check_dc_counter(data_t *data, int dc_flag, uint32_t prev_dc_count)
+>  		     data->debugfs_dump = igt_sysfs_get(data->debugfs_fd, PWR_DOMAIN_INFO));
 >  }
 >  
-
-You need to add descriptions to all lib functions you added.
-
-> +void set_geom(struct blt_copy_object *obj, uint32_t pitch,
-------- ^
-The name was ok inside test, but in lib imho it's better add
-some common prefix, maybe blt_ ? For example:
-
-void blt_set_geom(...params here...
-
-> +	      int16_t x1, int16_t y1, int16_t x2, int16_t y2,
-> +	      uint16_t x_offset, uint16_t y_offset)
+> +static void check_dc_counter_negative(data_t *data, int dc_flag, uint32_t prev_dc_count)
 > +{
-> +	obj->pitch = pitch;
-> +	obj->x1 = x1;
-> +	obj->y1 = y1;
-> +	obj->x2 = x2;
-> +	obj->y2 = y2;
-> +	obj->x_offset = x_offset;
-> +	obj->y_offset = y_offset;
+> +	igt_assert_f(!dc_state_wait_entry(data->debugfs_fd, dc_flag, prev_dc_count),
+> +			"%s state is achieved\n%s:\n%s\n", dc_state_name(dc_flag), PWR_DOMAIN_INFO,
+> +			data->debugfs_dump = igt_sysfs_get(data->debugfs_fd, PWR_DOMAIN_INFO));
 > +}
 > +
-> +void set_batch(struct blt_copy_batch *batch,
-------- ^
-
-> +	       uint32_t handle, uint64_t size, uint32_t region)
-> +{
-> +	batch->handle = handle;
-> +	batch->size = size;
-> +	batch->region = region;
-> +}
-> +
-> +struct blt_copy_object *
-> +create_object(int i915, uint32_t region,
-------- ^
-
-> +	      uint32_t width, uint32_t height, uint32_t bpp, uint8_t mocs,
-> +	      enum tiling_type tiling,
-> +	      enum blt_compression compression,
-> +	      enum blt_compression_type compression_type,
-> +	      bool create_mapping)
-> +{
-> +	struct blt_copy_object *obj;
-> +	uint64_t size = width * height * bpp / 8;
-> +	uint32_t stride = tiling == T_LINEAR ? width * 4 : width;
-> +	uint32_t handle;
-> +
-> +	obj = calloc(1, sizeof(*obj));
-> +
-> +	obj->size = size;
-> +	igt_assert(__gem_create_in_memory_regions(i915, &handle,
-> +						  &size, region) == 0);
-> +
-> +	set_object(obj, handle, size, region, mocs, tiling,
-> +		   compression, compression_type);
-> +	set_geom(obj, stride, 0, 0, width, height, 0, 0);
-> +
-> +	if (create_mapping)
-> +		obj->ptr = gem_mmap__device_coherent(i915, handle, 0, size,
-> +						     PROT_READ | PROT_WRITE);
-> +
-> +	return obj;
-> +}
-> +
-> +void destroy_object(int i915, struct blt_copy_object *obj)
-------- ^
-
-> +{
-> +	if (obj->ptr)
-> +		munmap(obj->ptr, obj->size);
-> +
-> +	gem_close(i915, obj->handle);
-> +	free(obj);
-> +}
-> +
-> +void set_object(struct blt_copy_object *obj,
-------- ^
-blt_set_object
-
-> +		uint32_t handle, uint64_t size, uint32_t region,
-> +		uint8_t mocs, enum tiling_type tiling,
-> +		enum blt_compression compression,
-> +		enum blt_compression_type compression_type)
-> +{
-> +	obj->handle = handle;
-> +	obj->size = size;
-> +	obj->region = region;
-> +	obj->mocs = mocs;
-> +	obj->tiling = tiling;
-> +	obj->compression = compression;
-> +	obj->compression_type = compression_type;
-> +}
-> +
-> +void set_blt_object(struct blt_copy_object *obj,
-------- ^
-This will clash with above name blt_set_object ?
-Maybe blt_set_copy_object ?
-
-Regards,
-Kamil
-
-> +		    const struct blt_copy_object *orig)
-> +{
-> +	memcpy(obj, orig, sizeof(*obj));
-> +}
-> +
->  /**
->   * blt_surface_fill_rect:
->   * @i915: drm fd
-> diff --git a/lib/i915/i915_blt.h b/lib/i915/i915_blt.h
-> index f1cf5408..1ef459c8 100644
-> --- a/lib/i915/i915_blt.h
-> +++ b/lib/i915/i915_blt.h
-> @@ -198,6 +198,28 @@ int blt_fast_copy(int i915,
->  		  uint64_t ahnd,
->  		  const struct blt_copy_data *blt);
->  
-> +void set_geom(struct blt_copy_object *obj, uint32_t pitch,
-> +	      int16_t x1, int16_t y1, int16_t x2, int16_t y2,
-> +	      uint16_t x_offset, uint16_t y_offset);
-> +void set_batch(struct blt_copy_batch *batch,
-> +	       uint32_t handle, uint64_t size, uint32_t region);
-> +
-> +struct blt_copy_object *
-> +create_object(int i915, uint32_t region,
-> +	      uint32_t width, uint32_t height, uint32_t bpp, uint8_t mocs,
-> +	      enum tiling_type tiling,
-> +	      enum blt_compression compression,
-> +	      enum blt_compression_type compression_type,
-> +	      bool create_mapping);
-> +void destroy_object(int i915, struct blt_copy_object *obj);
-> +void set_object(struct blt_copy_object *obj,
-> +		uint32_t handle, uint64_t size, uint32_t region,
-> +		uint8_t mocs, enum tiling_type tiling,
-> +		enum blt_compression compression,
-> +		enum blt_compression_type compression_type);
-> +void set_blt_object(struct blt_copy_object *obj,
-> +		    const struct blt_copy_object *orig);
-> +
->  void blt_surface_info(const char *info,
->  		      const struct blt_copy_object *obj);
->  void blt_surface_fill_rect(int i915, const struct blt_copy_object *obj,
-> diff --git a/tests/i915/gem_ccs.c b/tests/i915/gem_ccs.c
-> index 4c137c94..30ee60fd 100644
-> --- a/tests/i915/gem_ccs.c
-> +++ b/tests/i915/gem_ccs.c
-> @@ -44,42 +44,6 @@ struct test_config {
->  	bool suspend_resume;
->  };
->  
-> -static void set_object(struct blt_copy_object *obj,
-> -		       uint32_t handle, uint64_t size, uint32_t region,
-> -		       uint8_t mocs, enum tiling_type tiling,
-> -		       enum blt_compression compression,
-> -		       enum blt_compression_type compression_type)
-> -{
-> -	obj->handle = handle;
-> -	obj->size = size;
-> -	obj->region = region;
-> -	obj->mocs = mocs;
-> -	obj->tiling = tiling;
-> -	obj->compression = compression;
-> -	obj->compression_type = compression_type;
-> -}
-> -
-> -static void set_geom(struct blt_copy_object *obj, uint32_t pitch,
-> -		     int16_t x1, int16_t y1, int16_t x2, int16_t y2,
-> -		     uint16_t x_offset, uint16_t y_offset)
-> -{
-> -	obj->pitch = pitch;
-> -	obj->x1 = x1;
-> -	obj->y1 = y1;
-> -	obj->x2 = x2;
-> -	obj->y2 = y2;
-> -	obj->x_offset = x_offset;
-> -	obj->y_offset = y_offset;
-> -}
-> -
-> -static void set_batch(struct blt_copy_batch *batch,
-> -		      uint32_t handle, uint64_t size, uint32_t region)
-> -{
-> -	batch->handle = handle;
-> -	batch->size = size;
-> -	batch->region = region;
-> -}
-> -
->  static void set_object_ext(struct blt_block_copy_object_ext *obj,
->  			   uint8_t compression_format,
->  			   uint16_t surface_width, uint16_t surface_height,
-> @@ -105,51 +69,6 @@ static void set_surf_object(struct blt_ctrl_surf_copy_object *obj,
->  	obj->access_type = access_type;
+>  static void setup_videoplayback(data_t *data)
+>  {
+>  	color_t red_green_blue[] = {
+> @@ -411,6 +418,18 @@ static void test_dc_state_dpms(data_t *data, int dc_flag)
+>  	cleanup_dc_dpms(data);
 >  }
 >  
-> -static struct blt_copy_object *
-> -create_object(int i915, uint32_t region,
-> -	      uint32_t width, uint32_t height, uint32_t bpp, uint8_t mocs,
-> -	      enum tiling_type tiling,
-> -	      enum blt_compression compression,
-> -	      enum blt_compression_type compression_type,
-> -	      bool create_mapping)
-> -{
-> -	struct blt_copy_object *obj;
-> -	uint64_t size = width * height * bpp / 8;
-> -	uint32_t stride = tiling == T_LINEAR ? width * 4 : width;
-> -	uint32_t handle;
-> -
-> -	obj = calloc(1, sizeof(*obj));
-> -
-> -	obj->size = size;
-> -	igt_assert(__gem_create_in_memory_regions(i915, &handle,
-> -						  &size, region) == 0);
-> -
-> -	set_object(obj, handle, size, region, mocs, tiling,
-> -		   compression, compression_type);
-> -	set_geom(obj, stride, 0, 0, width, height, 0, 0);
-> -
-> -	if (create_mapping)
-> -		obj->ptr = gem_mmap__device_coherent(i915, handle, 0, size,
-> -						     PROT_READ | PROT_WRITE);
-> -
-> -	return obj;
-> -}
-> -
-> -static void destroy_object(int i915, struct blt_copy_object *obj)
-> -{
-> -	if (obj->ptr)
-> -		munmap(obj->ptr, obj->size);
-> -
-> -	gem_close(i915, obj->handle);
-> -	free(obj);
-> -}
-> -
-> -static void set_blt_object(struct blt_copy_object *obj,
-> -			   const struct blt_copy_object *orig)
-> -{
-> -	memcpy(obj, orig, sizeof(*obj));
-> -}
-> -
->  #define PRINT_SURFACE_INFO(name, obj) do { \
->  	if (param.print_surface_info) \
->  		blt_surface_info((name), (obj)); } while (0)
-> diff --git a/tests/i915/gem_lmem_swapping.c b/tests/i915/gem_lmem_swapping.c
-> index 8cff35d5..746fbf80 100644
-> --- a/tests/i915/gem_lmem_swapping.c
-> +++ b/tests/i915/gem_lmem_swapping.c
-> @@ -76,42 +76,6 @@ struct object {
->  	struct blt_copy_object *blt_obj;
->  };
+> +static void test_dc_state_dpms_negative(data_t *data, int dc_flag)
+> +{
+> +	uint32_t dc_counter;
+> +
+> +	require_dc_counter(data->debugfs_fd, dc_flag);
+> +	setup_dc_dpms(data);
+> +	dc_counter = read_dc_counter(data->debugfs_fd, dc_flag);
+> +	dpms_on(data);
+
+I would say that probably the most effective negative test and
+with a bigger coverage is to add a simple assert for dc0 inside
+the dpms_on function along with the runtime_pm_active assert.
+
+> +	check_dc_counter_negative(data, dc_flag, dc_counter);
+> +	cleanup_dc_dpms(data);
+> +}
+> +
+>  static bool support_dc6(int debugfs_fd)
+>  {
+>  	char buf[4096];
+> @@ -485,6 +504,23 @@ static void test_dc9_dpms(data_t *data)
+>  	setup_dc9_dpms(data, dc_target);
+>  }
 >  
-> -static void set_object(struct blt_copy_object *obj,
-> -		       uint32_t handle, uint64_t size, uint32_t region,
-> -		       uint8_t mocs, enum tiling_type tiling,
-> -		       enum blt_compression compression,
-> -		       enum blt_compression_type compression_type)
-> -{
-> -	obj->handle = handle;
-> -	obj->size = size;
-> -	obj->region = region;
-> -	obj->mocs = mocs;
-> -	obj->tiling = tiling;
-> -	obj->compression = compression;
-> -	obj->compression_type = compression_type;
-> -}
-> -
-> -static void set_geom(struct blt_copy_object *obj, uint32_t pitch,
-> -		     int16_t x1, int16_t y1, int16_t x2, int16_t y2,
-> -		     uint16_t x_offset, uint16_t y_offset)
-> -{
-> -	obj->pitch = pitch;
-> -	obj->x1 = x1;
-> -	obj->y1 = y1;
-> -	obj->x2 = x2;
-> -	obj->y2 = y2;
-> -	obj->x_offset = x_offset;
-> -	obj->y_offset = y_offset;
-> -}
-> -
-> -static void set_batch(struct blt_copy_batch *batch,
-> -		      uint32_t handle, uint64_t size, uint32_t region)
-> -{
-> -	batch->handle = handle;
-> -	batch->size = size;
-> -	batch->region = region;
-> -}
-> -
->  static void set_object_ext(struct blt_block_copy_object_ext *obj,
->  			   uint8_t compression_format,
->  			   uint16_t surface_width, uint16_t surface_height,
+> +static void check_external_panel(igt_display_t *display)
+> +{
+> +	igt_output_t *output = NULL;
+> +	int external_panel = 0;
+> +
+> +	for_each_connected_output(display, output) {
+> +		drmModeConnectorPtr c = output->config.connector;
+> +
+> +		if (c->connector_type != DRM_MODE_CONNECTOR_eDP &&
+> +		    c->connection == DRM_MODE_CONNECTED) {
+> +			external_panel++;
+> +		}
+> +	}
+> +	igt_skip_on_f(!external_panel,
+> +		      "External panel not detected, skip execution\n");
+> +}
+> +
+>  static void kms_poll_state_restore(int sig)
+>  {
+>  	int sysfs_fd;
+> @@ -552,6 +588,14 @@ igt_main
+>  		test_dc_state_dpms(&data, CHECK_DC5);
+>  	}
+>  
+> +	igt_describe("This test validates negative scenario of DC5 display "
+> +		     "engine entry to DC5 state while all connectors's DPMS "
+> +		     "property set to ON");
+> +	igt_subtest("dc5-dpms-negative") {
+> +		check_external_panel(&data.display);
+> +		test_dc_state_dpms_negative(&data, CHECK_DC5);
+> +	}
+> +
+>  	igt_describe("This test validates display engine entry to DC5 state "
+>  		     "while all connectors's DPMS property set to OFF");
+>  	igt_subtest("dc6-dpms") {
 > -- 
 > 2.25.1
 > 
