@@ -1,15 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: text/plain; charset="utf-8"
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 13E3E10E468
+ for <igt-dev@lists.freedesktop.org>; Wed, 21 Dec 2022 17:31:25 +0000 (UTC)
+Date: Wed, 21 Dec 2022 12:31:14 -0500
+From: Rodrigo Vivi <rodrigo.vivi@intel.com>
+To: Mohammed Thasleem <mohammed.thasleem@intel.com>
+Message-ID: <Y6NC4qLQlF33DO9h@intel.com>
+References: <20221216191124.27930-1-mohammed.thasleem@intel.com>
+ <20221220135734.6354-1-mohammed.thasleem@intel.com>
+ <Y6MVXsw5XF6K/uxn@intel.com>
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <Y6MVXsw5XF6K/uxn@intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Karolina Stolarek" <karolina.stolarek@intel.com>
-Date: Wed, 21 Dec 2022 16:56:17 -0000
-Message-ID: <167164177760.32312.2142823711936803441@emeril.freedesktop.org>
-References: <cover.1671446367.git.karolina.stolarek@intel.com>
-In-Reply-To: <cover.1671446367.git.karolina.stolarek@intel.com>
-Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_I?=
- =?utf-8?q?ntroduce_blt=5Fcmd=5Finfo_struct?=
+Subject: Re: [igt-dev] [PATCH v2] tests/i915/i915_pm_dc : Check DC5 state
+ with externel active panel
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,73 +22,116 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-=3D=3D Series Details =3D=3D
+On Wed, Dec 21, 2022 at 09:17:02AM -0500, Rodrigo Vivi wrote:
+> On Tue, Dec 20, 2022 at 07:27:34PM +0530, Mohammed Thasleem wrote:
+> > This test validates negative scenario of DC5 state by keeping
+> > all connectors's DPMS property set to ON.
+> > 
+> > v2: Added function to check externel panel and skip test if not found.
+> > 
+> > Signed-off-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
+> > ---
+> >  tests/i915/i915_pm_dc.c | 44 +++++++++++++++++++++++++++++++++++++++++
+> >  1 file changed, 44 insertions(+)
+> > 
+> > diff --git a/tests/i915/i915_pm_dc.c b/tests/i915/i915_pm_dc.c
+> > index ba49d014..5a987728 100644
+> > --- a/tests/i915/i915_pm_dc.c
+> > +++ b/tests/i915/i915_pm_dc.c
+> > @@ -246,6 +246,13 @@ static void check_dc_counter(data_t *data, int dc_flag, uint32_t prev_dc_count)
+> >  		     data->debugfs_dump = igt_sysfs_get(data->debugfs_fd, PWR_DOMAIN_INFO));
+> >  }
+> >  
+> > +static void check_dc_counter_negative(data_t *data, int dc_flag, uint32_t prev_dc_count)
+> > +{
+> > +	igt_assert_f(!dc_state_wait_entry(data->debugfs_fd, dc_flag, prev_dc_count),
+> > +			"%s state is achieved\n%s:\n%s\n", dc_state_name(dc_flag), PWR_DOMAIN_INFO,
+> > +			data->debugfs_dump = igt_sysfs_get(data->debugfs_fd, PWR_DOMAIN_INFO));
+> > +}
+> > +
+> >  static void setup_videoplayback(data_t *data)
+> >  {
+> >  	color_t red_green_blue[] = {
+> > @@ -411,6 +418,18 @@ static void test_dc_state_dpms(data_t *data, int dc_flag)
+> >  	cleanup_dc_dpms(data);
+> >  }
+> >  
+> > +static void test_dc_state_dpms_negative(data_t *data, int dc_flag)
+> > +{
+> > +	uint32_t dc_counter;
+> > +
+> > +	require_dc_counter(data->debugfs_fd, dc_flag);
+> > +	setup_dc_dpms(data);
+> > +	dc_counter = read_dc_counter(data->debugfs_fd, dc_flag);
+> > +	dpms_on(data);
+> 
+> I would say that probably the most effective negative test and
+> with a bigger coverage is to add a simple assert for dc0 inside
+> the dpms_on function along with the runtime_pm_active assert.
 
-Series: Introduce blt_cmd_info struct
-URL   : https://patchwork.freedesktop.org/series/112055/
-State : warning
+Please disregard my suggestion. Unfortunately we don't have a clear
+way to always check for the DC0. One way could be checking if critical
+display registers are not zeroed, but that also is not platform agnostic
+and not good for igt...
 
-=3D=3D Summary =3D=3D
+your approach is probably better.
 
-Pipeline status: FAILED.
+> 
+> > +	check_dc_counter_negative(data, dc_flag, dc_counter);
+> > +	cleanup_dc_dpms(data);
+> > +}
+> > +
+> >  static bool support_dc6(int debugfs_fd)
+> >  {
+> >  	char buf[4096];
+> > @@ -485,6 +504,23 @@ static void test_dc9_dpms(data_t *data)
+> >  	setup_dc9_dpms(data, dc_target);
+> >  }
+> >  
+> > +static void check_external_panel(igt_display_t *display)
+> > +{
+> > +	igt_output_t *output = NULL;
+> > +	int external_panel = 0;
+> > +
+> > +	for_each_connected_output(display, output) {
+> > +		drmModeConnectorPtr c = output->config.connector;
+> > +
+> > +		if (c->connector_type != DRM_MODE_CONNECTOR_eDP &&
+> > +		    c->connection == DRM_MODE_CONNECTED) {
+> > +			external_panel++;
+> > +		}
+> > +	}
+> > +	igt_skip_on_f(!external_panel,
+> > +		      "External panel not detected, skip execution\n");
+> > +}
+> > +
+> >  static void kms_poll_state_restore(int sig)
+> >  {
+> >  	int sysfs_fd;
+> > @@ -552,6 +588,14 @@ igt_main
+> >  		test_dc_state_dpms(&data, CHECK_DC5);
+> >  	}
+> >  
+> > +	igt_describe("This test validates negative scenario of DC5 display "
+> > +		     "engine entry to DC5 state while all connectors's DPMS "
+> > +		     "property set to ON");
 
-see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/767402 fo=
-r the overview.
+is this description in the right place?
 
-build:tests-fedora-clang has failed (https://gitlab.freedesktop.org/gfx-ci/=
-igt-ci-tags/-/jobs/33833368):
-  ninja: build stopped: subcommand failed.
-  ninja: Entering directory `build'
-  [1/1223] Generating version.h with a custom command.
-  [2/1221] Compiling C object 'lib/76b5a35@@igt-i915_blt_tiling_c@sta/i915_=
-blt_tiling.c.o'.
-  FAILED: lib/76b5a35@@igt-i915_blt_tiling_c@sta/i915_blt_tiling.c.o=20
-  clang -Ilib/76b5a35@@igt-i915_blt_tiling_c@sta -Ilib -I../lib -I../includ=
-e/drm-uapi -I../include/linux-uapi -I../lib/stubs/syscalls -I. -I../ -I/usr=
-/include/cairo -I/usr/include/glib-2.0 -I/usr/lib64/glib-2.0/include -I/usr=
-/include/pixman-1 -I/usr/include/freetype2 -I/usr/include/libpng16 -I/usr/i=
-nclude/libdrm -I/usr/include/libdrm/nouveau -I/usr/include/valgrind -Xclang=
- -fcolor-diagnostics -pipe -D_FILE_OFFSET_BITS=3D64 -Wall -Winvalid-pch -We=
-xtra -std=3Dgnu11 -O2 -g -D_GNU_SOURCE -include config.h -D_FORTIFY_SOURCE=
-=3D2 -Wbad-function-cast -Wdeclaration-after-statement -Wformat=3D2 -Wmissi=
-ng-declarations -Wmissing-format-attribute -Wmissing-noreturn -Wmissing-pro=
-totypes -Wnested-externs -Wold-style-definition -Wpointer-arith -Wredundant=
--decls -Wshadow -Wstrict-prototypes -Wuninitialized -Wunused -Wno-missing-f=
-ield-initializers -Wno-pointer-arith -Wno-address-of-packed-member -Wno-sig=
-n-compare -Wno-type-limits -Wno-unused-parameter -Wno-unused-result -Werror=
-=3Daddress -Werror=3Darray-bounds -Werror=3Dimplicit -Werror=3Dinit-self -W=
-error=3Dint-to-pointer-cast -Werror=3Dmain -Werror=3Dmissing-braces -Werror=
-=3Dnonnull -Werror=3Dpointer-to-int-cast -Werror=3Dreturn-type -Werror=3Dse=
-quence-point -Werror=3Dtrigraphs -Werror=3Dwrite-strings -fno-builtin-mallo=
-c -fno-builtin-calloc -fcommon -fPIC -pthread '-DIGT_DATADIR=3D"/usr/local/=
-share/igt-gpu-tools"' '-DIGT_SRCDIR=3D"/builds/gfx-ci/igt-ci-tags/tests"' '=
--DIGT_LOG_DOMAIN=3D"i915/blt_tiling"' -MD -MQ 'lib/76b5a35@@igt-i915_blt_ti=
-ling_c@sta/i915_blt_tiling.c.o' -MF 'lib/76b5a35@@igt-i915_blt_tiling_c@sta=
-/i915_blt_tiling.c.o.d' -o 'lib/76b5a35@@igt-i915_blt_tiling_c@sta/i915_blt=
-_tiling.c.o' -c ../lib/i915/blt_tiling.c
-  ../lib/i915/blt_tiling.c:146:2: error: initializer element is not a compi=
-le-time constant
-          pre_gen6_info,
-          ^~~~~~~~~~~~~
-  ../lib/i915/blt_tiling.c:154:2: error: initializer element is not a compi=
-le-time constant
-          gen12_info,
-          ^~~~~~~~~~
-  2 errors generated.
-  ninja: build stopped: subcommand failed.
-  section_end:1671640863:step_script
-  section_start:1671640864:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1671640865:cleanup_file_variables
-  ERROR: Job failed: exit code 1
 
-=3D=3D Logs =3D=3D
-
-For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/p=
-ipelines/767402
+> > +	igt_subtest("dc5-dpms-negative") {
+> > +		check_external_panel(&data.display);
+> > +		test_dc_state_dpms_negative(&data, CHECK_DC5);
+> > +	}
+> > +
+> >  	igt_describe("This test validates display engine entry to DC5 state "
+> >  		     "while all connectors's DPMS property set to OFF");
+> >  	igt_subtest("dc6-dpms") {
+> > -- 
+> > 2.25.1
+> > 
