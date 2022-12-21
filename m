@@ -1,21 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3014110E16A
- for <igt-dev@lists.freedesktop.org>; Fri, 23 Dec 2022 08:05:25 +0000 (UTC)
-Message-ID: <9a6e5940-9685-37cc-00df-4c7cb2db7fa5@intel.com>
-Date: Fri, 23 Dec 2022 13:35:12 +0530
-Content-Language: en-US
-To: Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
- <igt-dev@lists.freedesktop.org>
-References: <20221115170855.196572-4-bhanuprakash.modem@intel.com>
- <20221223062955.2526525-1-bhanuprakash.modem@intel.com>
-From: Karthik B S <karthik.b.s@intel.com>
-In-Reply-To: <20221223062955.2526525-1-bhanuprakash.modem@intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
+Message-ID: <a95ad257-085b-a7d8-16fb-233b23192b10@linux.intel.com>
+Date: Wed, 21 Dec 2022 17:59:54 +0200
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [i-g-t v6 03/52] tests/kms_async_flips: Add support
- for Bigjoiner
+Content-Language: en-US
+To: Matthew Auld <matthew.auld@intel.com>, igt-dev@lists.freedesktop.org
+References: <20221220104625.147654-1-matthew.auld@intel.com>
+From: "Das, Nirmoy" <nirmoy.das@linux.intel.com>
+In-Reply-To: <20221220104625.147654-1-matthew.auld@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Subject: Re: [igt-dev] [PATCH i-g-t v3] tests/i915/gem_ppgtt: verify GTT
+ eviction with contended locks
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,48 +18,198 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: intel-gfx@lists.freedesktop.org, Mani Milani <mani@chromium.org>,
+ Nirmoy Das <nirmoy.das@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
 
-On 12/23/2022 11:59 AM, Bhanuprakash Modem wrote:
-> This patch will add a check to Skip the subtest if a selected pipe/output
-> combo won't support Bigjoiner or 8K mode.
+On 12/20/2022 12:46 PM, Matthew Auld wrote:
+> We should still be able to GTT evict objects during execbuf (old
+> bindings can linger around), even if there is object lock contention. In
+> the worst case the execbuf should just wait on the contented locks.
+> Returning -ENOSPC smells like a regression from past behaviour, and
+> seems to break userspace.
 >
-> Example:
-> * Pipe-D wont support a mode > 5K
-> * To use 8K mode on a pipe then consecutive pipe must be available & free.
+> v2:
+>    - Add coverage for explicit softpin
+>    - Add timeout for the spinner
+> v3:
+>    - Improve the test description
 >
-> V2: - Use updated helper name
-> V3: - Drop unrelated changes
->
-> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Reviewed-by: Karthik B S <karthik.b.s@intel.com>
+> References: https://gitlab.freedesktop.org/drm/intel/-/issues/7570
+> Signed-off-by: Matthew Auld <matthew.auld@intel.com>
+> Cc: Andrzej Hajda <andrzej.hajda@intel.com>
+> Cc: Nirmoy Das <nirmoy.das@intel.com>
+> Cc: Mani Milani <mani@chromium.org>
 > ---
->   tests/kms_async_flips.c | 11 +++++++++--
->   1 file changed, 9 insertions(+), 2 deletions(-)
+>   tests/i915/gem_ppgtt.c | 133 +++++++++++++++++++++++++++++++++++++++++
+>   1 file changed, 133 insertions(+)
 >
-> diff --git a/tests/kms_async_flips.c b/tests/kms_async_flips.c
-> index 7cb71f6b..e32ae914 100644
-> --- a/tests/kms_async_flips.c
-> +++ b/tests/kms_async_flips.c
-> @@ -542,9 +542,16 @@ static void run_test(data_t *data, void (*test)(data_t *))
->   {
->   	igt_output_t *output;
->   	enum pipe pipe;
-> +	igt_display_t *display = &data->display;
-> +
-> +	for_each_pipe(display, pipe) {
-> +		for_each_valid_output_on_pipe(display, pipe, output) {
-> +			igt_display_reset(display);
-> +
-> +			igt_output_set_pipe(output, pipe);
-> +			if (!i915_pipe_output_combo_valid(display))
-> +				continue;
+> diff --git a/tests/i915/gem_ppgtt.c b/tests/i915/gem_ppgtt.c
+> index 9673ce22..024e8d47 100644
+> --- a/tests/i915/gem_ppgtt.c
+> +++ b/tests/i915/gem_ppgtt.c
+> @@ -255,6 +255,131 @@ static void flink_and_close(void)
+>   	close(fd2);
+>   }
 >   
-> -	for_each_pipe(&data->display, pipe) {
-> -		for_each_valid_output_on_pipe(&data->display, pipe, output) {
->   			igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), output->name) {
->   				data->output = output;
->   				data->pipe = pipe;
+> +#define PAGE_SIZE 4096
+> +
+> +static uint32_t batch_create_size(int fd, uint64_t size)
+> +{
+> +	const uint32_t bbe = MI_BATCH_BUFFER_END;
+> +	uint32_t handle;
+> +
+> +	handle = gem_create(fd, size);
+> +	gem_write(fd, handle, 0, &bbe, sizeof(bbe));
+> +
+> +	return handle;
+> +}
+> +
+> +#define IGT_USE_ANY	0x1
+> +#define IGT_USE_PINNED	0x2
+> +static void upload(int fd, uint32_t handle, uint32_t in_fence, uint32_t ctx_id,
+> +		   unsigned int flags)
+> +{
+> +	struct drm_i915_gem_exec_object2 exec[2] = {};
+> +	struct drm_i915_gem_execbuffer2 execbuf = {
+> +		.buffers_ptr = to_user_pointer(&exec),
+> +		.buffer_count = 1,
+> +		.rsvd1 = ctx_id,
+> +	};
+> +
+> +	if (in_fence) {
+> +		execbuf.rsvd2 = in_fence;
+> +		execbuf.flags = I915_EXEC_FENCE_IN;
+> +	}
+> +
+> +	exec[0].handle = handle;
+> +	exec[0].flags = EXEC_OBJECT_SUPPORTS_48B_ADDRESS;
+> +
+> +	if (flags & IGT_USE_PINNED)
+> +		exec[0].flags |= EXEC_OBJECT_PINNED; /* offset = 0 */
+> +
+> +	if (flags & IGT_USE_ANY) {
+> +		exec[0].flags |= EXEC_OBJECT_PAD_TO_SIZE;
+> +		exec[0].pad_to_size = gem_aperture_size(fd);
+> +	}
+> +
+> +	gem_execbuf(fd, &execbuf);
+> +}
+> +
+> +static void shrink_vs_evict(unsigned int flags)
+> +{
+> +	const unsigned int nproc = sysconf(_SC_NPROCESSORS_ONLN) + 1;
+> +	const uint64_t timeout_5s = 5000000000LL;
+
+
+5*NSEC_PER_SEC would be nice.
+
+
+> +	int fd = drm_open_driver(DRIVER_INTEL);
+> +	uint64_t ahnd = get_reloc_ahnd(fd, 0);
+> +	const intel_ctx_t *ctx_arr[nproc];
+> +	igt_spin_t *spinner;
+> +	uint32_t handle1;
+> +	int i;
+> +
+> +	/*
+> +	 * Try to simulate some nasty object lock contention during GTT
+> +	 * eviction. Create a BO and bind across several different VMs.  Invoke
+> +	 * the shrinker on that shared BO, followed by triggering GTT eviction
+> +	 * across all VMs.  Both require the object lock to make forward
+> +	 * progress when trying to unbind the BO, but the shrinker will be
+> +	 * blocked by the spinner (until killed).  Once the spinner is killed
+> +	 * the shrinker should be able to unbind the object and drop the object
+> +	 * lock, and GTT eviction should eventually succeed. At no point should
+> +	 * we see -ENOSPC from the execbuf, even if we can't currently grab the
+> +	 * object lock.
+> +	 */
+> +
+> +	igt_require(gem_uses_full_ppgtt(fd));
+> +
+> +	igt_drop_caches_set(fd, DROP_ALL);
+> +
+> +	handle1 = gem_create(fd, PAGE_SIZE);
+> +
+> +	spinner = igt_spin_new(fd,
+> +			       .ahnd = ahnd,
+> +			       .flags = IGT_SPIN_FENCE_OUT);
+> +	igt_spin_set_timeout(spinner, timeout_5s);
+> +
+> +	/*
+> +	 * Create several VMs to ensure we don't block on the same vm lock. The
+> +	 * goal of the test is to ensure that object lock contention doesn't
+> +	 * somehow result in -ENOSPC from execbuf, if we need to trigger GTT
+> +	 * eviction.
+> +	 */
+> +	for (i = 0; i < nproc; i++) {
+> +		ctx_arr[i] = intel_ctx_create(fd, NULL);
+> +
+> +		upload(fd, handle1, spinner->execbuf.rsvd2 >> 32,
+> +		       ctx_arr[i]->id, flags);
+> +	}
+> +
+> +	igt_fork(child, 1)
+> +		igt_drop_caches_set(fd, DROP_ALL);
+> +
+> +	sleep(2); /* Give the shrinker time to find handle1 */
+> +
+> +	igt_fork(child, nproc) {
+> +		uint32_t handle2 = gem_create(fd, PAGE_SIZE);
+> +
+> +		/*
+> +		 * One of these forks will be stuck on the vm mutex, since the
+> +		 * shrinker is holding it (along with the object lock) while
+> +		 * trying to unbind the chosen vma, but is blocked by the
+> +		 * spinner. The rest should only block waiting to grab the
+> +		 * object lock for handle1, before then trying to GTT evict it
+> +		 * from their respective vm. In either case the contention of
+> +		 * the vm->mutex or object lock should never result in -ENOSPC
+> +		 * or some other error.
+> +		 */
+> +		handle2 = batch_create_size(fd, PAGE_SIZE);
+
+
+This can be
+
+uint32_t handle2 = batch_create_size(fd, PAGE_SIZE);
+
+Above gem_create seems unnecessary. With those
+
+Reviewed-by: Nirmoy Das <nirmoy.das@intel.com>
+
+
+
+> +
+> +		upload(fd, handle2, 0, ctx_arr[child]->id, flags);
+> +		gem_close(fd, handle2);
+> +	}
+> +
+> +	igt_waitchildren();
+> +	igt_spin_free(fd, spinner);
+> +
+> +	for (i = 0; i < nproc; i++)
+> +		intel_ctx_destroy(fd, ctx_arr[i]);
+> +
+> +	gem_close(fd, handle1);
+> +}
+> +
+>   static bool has_contexts(void)
+>   {
+>   	bool result;
+> @@ -331,4 +456,12 @@ igt_main
+>   
+>   	igt_subtest("flink-and-close-vma-leak")
+>   		flink_and_close();
+> +
+> +	igt_describe("Regression test to verify GTT eviction can't randomly fail due to object lock contention");
+> +	igt_subtest_group {
+> +		igt_subtest("shrink-vs-evict-any")
+> +			shrink_vs_evict(IGT_USE_ANY);
+> +		igt_subtest("shrink-vs-evict-pinned")
+> +			shrink_vs_evict(IGT_USE_PINNED);
+> +	}
+>   }
