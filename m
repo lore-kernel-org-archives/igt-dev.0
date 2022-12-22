@@ -1,11 +1,11 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5837B10E182
- for <igt-dev@lists.freedesktop.org>; Thu, 22 Dec 2022 09:40:40 +0000 (UTC)
+Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D1CB210E533
+ for <igt-dev@lists.freedesktop.org>; Thu, 22 Dec 2022 09:42:50 +0000 (UTC)
 From: Jeevan B <jeevan.b@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Thu, 22 Dec 2022 15:06:09 +0530
-Message-Id: <20221222093609.7387-1-jeevan.b@intel.com>
+Date: Thu, 22 Dec 2022 15:08:21 +0530
+Message-Id: <20221222093821.7471-1-jeevan.b@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Subject: [igt-dev] [PATCH i-g-t v3] lib/igt_draw: Change MOCS settings for
@@ -32,8 +32,8 @@ v3: Extending get_mocs_index and using get_mocs_index
 Signed-off-by: Jeevan B <jeevan.b@intel.com>
 ---
  lib/i915/intel_mocs.c | 6 +++++-
- lib/igt_draw.c        | 7 +++++--
- 2 files changed, 10 insertions(+), 3 deletions(-)
+ lib/igt_draw.c        | 4 ++--
+ 2 files changed, 7 insertions(+), 3 deletions(-)
 
 diff --git a/lib/i915/intel_mocs.c b/lib/i915/intel_mocs.c
 index df541ab0..d2994480 100644
@@ -60,7 +60,7 @@ index df541ab0..d2994480 100644
  		mocs->uc_index = GEN12_MOCS_UC_IDX;
  		mocs->wb_index = GEN12_MOCS_WB_IDX;
 diff --git a/lib/igt_draw.c b/lib/igt_draw.c
-index 975d65cd..a2c79944 100644
+index 975d65cd..b02ad2a8 100644
 --- a/lib/igt_draw.c
 +++ b/lib/igt_draw.c
 @@ -36,6 +36,7 @@
@@ -71,17 +71,7 @@ index 975d65cd..a2c79944 100644
  
  #ifndef PAGE_ALIGN
  #ifndef PAGE_SIZE
-@@ -651,6 +652,9 @@ static struct intel_buf *create_buf(int fd, struct buf_ops *bops,
- 	return buf;
- }
- 
-+#define DG2_MOCS_UC_GO_MEM	2	/* MOCS index 0x1 */
-+#define MTL_MOCS_UC_GO_MEM	10	/* MOCS index 0x5 */
-+
- static void draw_rect_blt(int fd, struct cmd_data *cmd_data,
- 			  struct buf_data *buf, struct rect *rect,
- 			  uint32_t tiling, uint32_t color)
-@@ -702,8 +706,7 @@ static void draw_rect_blt(int fd, struct cmd_data *cmd_data,
+@@ -702,8 +703,7 @@ static void draw_rect_blt(int fd, struct cmd_data *cmd_data,
  		pitch = tiling ? buf->stride / 4 : buf->stride;
  
  		intel_bb_out(ibb, XY_FAST_COLOR_BLT | blt_cmd_depth);
