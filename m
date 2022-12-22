@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1B7EC10E04C
- for <igt-dev@lists.freedesktop.org>; Thu, 22 Dec 2022 12:11:07 +0000 (UTC)
-Date: Thu, 22 Dec 2022 13:11:02 +0100
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Message-ID: <Y6RJVkHzRhp77281@kamilkon-desk1>
-References: <20221221114213.2913884-1-petri.latvala@intel.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0869910E04D
+ for <igt-dev@lists.freedesktop.org>; Thu, 22 Dec 2022 15:35:52 +0000 (UTC)
+Date: Thu, 22 Dec 2022 07:35:47 -0800
+From: Lucas De Marchi <lucas.demarchi@intel.com>
+To: Jeevan B <jeevan.b@intel.com>
+Message-ID: <20221222153547.3qhikzpgv4fcdf67@ldmartin-desk2.lan>
+References: <20221222093821.7471-1-jeevan.b@intel.com>
+Content-Type: text/plain; charset="us-ascii"; format=flowed
 Content-Disposition: inline
-In-Reply-To: <20221221114213.2913884-1-petri.latvala@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t v4] runner: Correctly handle abort
- before first test
+In-Reply-To: <20221222093821.7471-1-jeevan.b@intel.com>
+MIME-Version: 1.0
+Subject: Re: [igt-dev] [PATCH i-g-t v3] lib/igt_draw: Change MOCS settings
+ for MTL
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,153 +20,85 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Petri Latvala <petri.latvala@intel.com>,
- Chris Wilson <chris@chris-wilson.co.uk>
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On 2022-12-21 at 13:42:13 +0200, Petri Latvala wrote:
-> Don't leave the execution in a "please resume me" state if bootup
-> causes an abort condition. Especially handle the case of abort on
-> bootup when resuming correctly, so that it doesn't attempt to run a
-> test on a tainted kernel if we've explicitly configured the runner to
-> not execute when there's a taint.
-> 
-> v2: Fudge the results directory instead to get the desired results:
->     runner exits with nonzero, and resuming exits with "all done" instead
->     of executing anything.
-> 
-> v3: Use faccessat instead of open+close, use less magic strings,
->     remember to close fds (Chris)
-> 
-> v4: Use GRACEFUL_EXITCODE in monitor_output, remove the 'resuming'
->     field (why was it a double?!). (Ryszard)
->     Stop trying to execute if all tests are already run, to avoid a
->     crash in environment validation.
-> 
-> Signed-off-by: Petri Latvala <petri.latvala@intel.com>
-> Cc: Arkadiusz Hiler <arek@hiler.eu>
-> Cc: Chris Wilson <chris@chris-wilson.co.uk>
-> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> Cc: Ryszard Knop <ryszard.knop@intel.com>
+On Thu, Dec 22, 2022 at 03:08:21PM +0530, Jeevan B wrote:
+>On MTL, we want the table entry labelled "UC (GO:Mem)"
+>which has index 5.  This means that the MOCS value is 10.
+>
+>v2: Add define for MOCS settings. (Lucas)
+>v3: Extending get_mocs_index and using get_mocs_index
+>    to get mocs val. (Zbigniew)
+>
+>Signed-off-by: Jeevan B <jeevan.b@intel.com>
+>---
+> lib/i915/intel_mocs.c | 6 +++++-
+> lib/igt_draw.c        | 4 ++--
+> 2 files changed, 7 insertions(+), 3 deletions(-)
+>
+>diff --git a/lib/i915/intel_mocs.c b/lib/i915/intel_mocs.c
+>index df541ab0..d2994480 100644
+>--- a/lib/i915/intel_mocs.c
+>+++ b/lib/i915/intel_mocs.c
+>@@ -11,6 +11,8 @@
+> #define DG1_MOCS_WB_IDX				5
+> #define DG2_MOCS_UC_IDX				1
+> #define DG2_MOCS_WB_IDX				3
+>+#define MTL_MOCS_UC_IDX				5
+>+#define MTL_MOCS_WB_IDX				10
+> #define GEN12_MOCS_UC_IDX			3
+> #define GEN12_MOCS_WB_IDX			2
+> #define XY_BLOCK_COPY_BLT_MOCS_SHIFT		21
+>@@ -38,7 +40,9 @@ static void get_mocs_index(int fd, struct drm_i915_mocs_index *mocs)
+> 	} else if (IS_DG2(devid)) {
+> 		mocs->uc_index = DG2_MOCS_UC_IDX;
+> 		mocs->wb_index = DG2_MOCS_WB_IDX;
+>-
+>+	} else if (IS_METEORLAKE(devid)) {
+>+		mocs->uc_index = MTL_MOCS_UC_IDX;
+>+		mocs->wb_index = MTL_MOCS_WB_IDX;
 
-Acked-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+convention is latest platform first, so this needs to come above  DG2.
 
-> ---
->  runner/executor.c | 57 ++++++++++++++++++++++++++++++++++++++++++++---
->  1 file changed, 54 insertions(+), 3 deletions(-)
-> 
-> diff --git a/runner/executor.c b/runner/executor.c
-> index d2253082..e954c23e 100644
-> --- a/runner/executor.c
-> +++ b/runner/executor.c
-> @@ -37,6 +37,7 @@
->  
->  #define KMSG_HEADER "[IGT] "
->  #define KMSG_WARN 4
-> +#define GRACEFUL_EXITCODE -SIGHUP
->  
->  static struct {
->  	int *fds;
-> @@ -1249,7 +1250,7 @@ static int monitor_output(pid_t child,
->  					} else {
->  						dprintf(outputs[_F_JOURNAL], "%s%d (%.3fs)\n",
->  							EXECUTOR_EXIT,
-> -							-SIGHUP, 0.0);
-> +							GRACEFUL_EXITCODE, 0.0);
->  						if (settings->sync)
->  							fdatasync(outputs[_F_JOURNAL]);
->  					}
-> @@ -1720,6 +1721,41 @@ out_dirfd:
->  	return result;
->  }
->  
-> +static void fill_results_directory_with_notruns(struct job_list *list,
-> +						int resdirfd)
-> +{
-> +	int outputs[_F_LAST];
-> +	char name[32];
-> +	int dirfd;
-> +	size_t i;
-> +
-> +	for (i = 0; i < list->size; i++) {
-> +		snprintf(name, sizeof(name), "%zd", i);
-> +
-> +		if (faccessat(resdirfd, name, F_OK, 0) == 0)
-> +			continue;
-> +
-> +		mkdirat(resdirfd, name, 0777);
-> +		dirfd = openat(resdirfd, name, O_DIRECTORY | O_RDONLY);
-> +		if (dirfd < 0) {
-> +			errf("Error accessing individual test result directory\n");
-> +			return;
-> +		}
-> +
-> +		if (!open_output_files(dirfd, outputs, true)) {
-> +			errf("Error opening output files\n");
-> +			close(dirfd);
-> +			return;
-> +		}
-> +
-> +		dprintf(outputs[_F_OUT], "Forced notrun result because of abort condition on bootup\n");
-> +		dprintf(outputs[_F_JOURNAL], "%s%d (%.3fs)\n", EXECUTOR_EXIT, GRACEFUL_EXITCODE, 0.0);
-> +
-> +		close_outputs(outputs);
-> +		close(dirfd);
-> +	}
-> +}
-> +
->  static int remove_file(int dirfd, const char *name)
->  {
->  	return unlinkat(dirfd, name, 0) && errno != ENOENT;
-> @@ -1845,7 +1881,6 @@ bool initialize_execute_state_from_resume(int dirfd,
->  	clear_settings(settings);
->  	free_job_list(list);
->  	memset(state, 0, sizeof(*state));
-> -	state->resuming = true;
->  
->  	if (!read_settings_from_dir(settings, dirfd) ||
->  	    !read_job_list(list, dirfd)) {
-> @@ -2183,6 +2218,11 @@ bool execute(struct execute_state *state,
->  		return true;
->  	}
->  
-> +	if (state->next >= job_list->size) {
-> +		outf("All tests already executed.\n");
-> +		return true;
-> +	}
-> +
->  	igt_list_for_each_entry(env_var, &settings->env_vars, link) {
->  		setenv(env_var->key, env_var->value, 1);
->  	}
-> @@ -2271,7 +2311,7 @@ bool execute(struct execute_state *state,
->  	close(unamefd);
->  
->  	/* Check if we're already in abort-state at bootup */
-> -	if (!state->resuming) {
-> +	{
->  		char *reason;
->  
->  		if ((reason = need_to_abort(settings)) != NULL) {
-> @@ -2280,6 +2320,17 @@ bool execute(struct execute_state *state,
->  			free(reason);
->  			free(nexttest);
->  
-> +			/*
-> +			 * If an abort condition happened at bootup,
-> +			 * assume that it happens on every boot,
-> +			 * making this test execution impossible.
-> +			 * Write stuff to the results directory
-> +			 * indicating this so resuming immediately
-> +			 * finishes instead of getting stuck in an
-> +			 * infinite reboot loop.
-> +			 */
-> +			fill_results_directory_with_notruns(job_list, resdirfd);
-> +
->  			status = false;
->  
->  			goto end;
-> -- 
-> 2.30.2
-> 
+MTL
+DG2
+DG1
+GEN12
+..
+
+> 	} else if (IS_GEN12(devid)) {
+> 		mocs->uc_index = GEN12_MOCS_UC_IDX;
+> 		mocs->wb_index = GEN12_MOCS_WB_IDX;
+>diff --git a/lib/igt_draw.c b/lib/igt_draw.c
+>index 975d65cd..b02ad2a8 100644
+>--- a/lib/igt_draw.c
+>+++ b/lib/igt_draw.c
+>@@ -36,6 +36,7 @@
+> #include "i830_reg.h"
+> #include "i915/gem_create.h"
+> #include "i915/gem_mman.h"
+>+#include "i915/intel_mocs.h"
+>
+> #ifndef PAGE_ALIGN
+> #ifndef PAGE_SIZE
+>@@ -702,8 +703,7 @@ static void draw_rect_blt(int fd, struct cmd_data *cmd_data,
+> 		pitch = tiling ? buf->stride / 4 : buf->stride;
+>
+> 		intel_bb_out(ibb, XY_FAST_COLOR_BLT | blt_cmd_depth);
+>-		/* DG2 MOCS entry 2 is "UC - Non-Coherent; GO:Memory" */
+>-		intel_bb_out(ibb, blt_cmd_tiling | 2 << 21 | (pitch-1));
+>+		intel_bb_out(ibb, blt_cmd_tiling | intel_get_wb_mocs(fd) << 21 | (pitch-1));
+
+weren't you supposed to use the intel_get_uc_mocs()?
+
+Lucas De Marchi
+
+> 		intel_bb_out(ibb, (rect->y << 16) | rect->x);
+> 		intel_bb_out(ibb, ((rect->y + rect->h) << 16) | (rect->x + rect->w));
+> 		intel_bb_emit_reloc_fenced(ibb, dst->handle, 0,
+>-- 
+>2.36.0
+>
