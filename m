@@ -1,15 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D1CB210E533
- for <igt-dev@lists.freedesktop.org>; Thu, 22 Dec 2022 09:42:50 +0000 (UTC)
-From: Jeevan B <jeevan.b@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Thu, 22 Dec 2022 15:08:21 +0530
-Message-Id: <20221222093821.7471-1-jeevan.b@intel.com>
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9720610E533
+ for <igt-dev@lists.freedesktop.org>; Thu, 22 Dec 2022 09:51:00 +0000 (UTC)
+Message-ID: <e7628c0a-1abc-4620-53fc-d60c26afcea3@intel.com>
+Date: Thu, 22 Dec 2022 10:50:45 +0100
+Content-Language: en-US
+To: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+References: <cover.1671446367.git.karolina.stolarek@intel.com>
+ <cab83734d1709e78e642e2de6d6dd88d30a3e41f.1671446367.git.karolina.stolarek@intel.com>
+ <Y6MRL5p0zcqMQ/0T@kamilkon-desk1>
+From: Karolina Stolarek <karolina.stolarek@intel.com>
+In-Reply-To: <Y6MRL5p0zcqMQ/0T@kamilkon-desk1>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v3] lib/igt_draw: Change MOCS settings for
- MTL
+Subject: Re: [igt-dev] [PATCH i-g-t 3/4] lib/i915_blt: Extract init
+ functions for blt_copy_object
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,69 +23,352 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: lucas.demarchi@intel.com
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On MTL, we want the table entry labelled "UC (GO:Mem)"
-which has index 5.  This means that the MOCS value is 10.
+On 21.12.2022 14:59, Kamil Konieczny wrote:
+> Hi Karolina,
+> 
+> please improve commit description,
+> imho s/Extract init/Add common/
 
-v2: Add define for MOCS settings. (Lucas)
-v3: Extending get_mocs_index and using get_mocs_index
-    to get mocs val. (Zbigniew)
+But we're reusing the code, not adding new one.
 
-Signed-off-by: Jeevan B <jeevan.b@intel.com>
----
- lib/i915/intel_mocs.c | 6 +++++-
- lib/igt_draw.c        | 4 ++--
- 2 files changed, 7 insertions(+), 3 deletions(-)
+> On 2022-12-19 at 12:49:10 +0100, Karolina Stolarek wrote:
+>> gem_ccs and gem_lmem_swapping share a couple of functions. Extract them
+>> to i915_blt so they are accessible for both tests. Delete local
+> ---------------------------------------------------- ^
+> That sentence is not needed here or if you want you can write
+> about refactoring (you replaced those functions with lib calls).
+> 
+>> definitions.
+> 
+>>
+>> Signed-off-by: Karolina Stolarek <karolina.stolarek@intel.com>
+>> ---
+>> Karolina's comment: I'm not convinced it's the best place for them.
+>> 					These functions are more specific to the tests
+> - ^^^
+> Please avoid huge empty spaces here.
 
-diff --git a/lib/i915/intel_mocs.c b/lib/i915/intel_mocs.c
-index df541ab0..d2994480 100644
---- a/lib/i915/intel_mocs.c
-+++ b/lib/i915/intel_mocs.c
-@@ -11,6 +11,8 @@
- #define DG1_MOCS_WB_IDX				5
- #define DG2_MOCS_UC_IDX				1
- #define DG2_MOCS_WB_IDX				3
-+#define MTL_MOCS_UC_IDX				5
-+#define MTL_MOCS_WB_IDX				10
- #define GEN12_MOCS_UC_IDX			3
- #define GEN12_MOCS_WB_IDX			2
- #define XY_BLOCK_COPY_BLT_MOCS_SHIFT		21
-@@ -38,7 +40,9 @@ static void get_mocs_index(int fd, struct drm_i915_mocs_index *mocs)
- 	} else if (IS_DG2(devid)) {
- 		mocs->uc_index = DG2_MOCS_UC_IDX;
- 		mocs->wb_index = DG2_MOCS_WB_IDX;
--
-+	} else if (IS_METEORLAKE(devid)) {
-+		mocs->uc_index = MTL_MOCS_UC_IDX;
-+		mocs->wb_index = MTL_MOCS_WB_IDX;
- 	} else if (IS_GEN12(devid)) {
- 		mocs->uc_index = GEN12_MOCS_UC_IDX;
- 		mocs->wb_index = GEN12_MOCS_WB_IDX;
-diff --git a/lib/igt_draw.c b/lib/igt_draw.c
-index 975d65cd..b02ad2a8 100644
---- a/lib/igt_draw.c
-+++ b/lib/igt_draw.c
-@@ -36,6 +36,7 @@
- #include "i830_reg.h"
- #include "i915/gem_create.h"
- #include "i915/gem_mman.h"
-+#include "i915/intel_mocs.h"
- 
- #ifndef PAGE_ALIGN
- #ifndef PAGE_SIZE
-@@ -702,8 +703,7 @@ static void draw_rect_blt(int fd, struct cmd_data *cmd_data,
- 		pitch = tiling ? buf->stride / 4 : buf->stride;
- 
- 		intel_bb_out(ibb, XY_FAST_COLOR_BLT | blt_cmd_depth);
--		/* DG2 MOCS entry 2 is "UC - Non-Coherent; GO:Memory" */
--		intel_bb_out(ibb, blt_cmd_tiling | 2 << 21 | (pitch-1));
-+		intel_bb_out(ibb, blt_cmd_tiling | intel_get_wb_mocs(fd) << 21 | (pitch-1));
- 		intel_bb_out(ibb, (rect->y << 16) | rect->x);
- 		intel_bb_out(ibb, ((rect->y + rect->h) << 16) | (rect->x + rect->w));
- 		intel_bb_emit_reloc_fenced(ibb, dst->handle, 0,
--- 
-2.36.0
+Heh, I should've eyed it in vim before sending. Anyway, everything below 
+-- is ignored when the patch is applied.
+> 
+>> 					than lib functions. So, I'd appreciate
+>> 					suggestions on where I can move them to.
+>>
+>>   lib/i915/i915_blt.c            | 81 ++++++++++++++++++++++++++++++++++
+>>   lib/i915/i915_blt.h            | 22 +++++++++
+>>   tests/i915/gem_ccs.c           | 81 ----------------------------------
+>>   tests/i915/gem_lmem_swapping.c | 36 ---------------
+>>   4 files changed, 103 insertions(+), 117 deletions(-)
+>>
+>> diff --git a/lib/i915/i915_blt.c b/lib/i915/i915_blt.c
+>> index 2513dfc0..0f9f7265 100644
+>> --- a/lib/i915/i915_blt.c
+>> +++ b/lib/i915/i915_blt.c
+>> @@ -1053,6 +1053,87 @@ int blt_fast_copy(int i915,
+>>   	return ret;
+>>   }
+>>   
+> 
+> You need to add descriptions to all lib functions you added.
+
+I wrote in my cover letter that it's WIP and will add it in v2.
+
+>> +void set_geom(struct blt_copy_object *obj, uint32_t pitch,
+> ------- ^
+> The name was ok inside test, but in lib imho it's better add
+> some common prefix, maybe blt_ ? For example:
+> 
+> void blt_set_geom(...params here...
+> 
+
+Suggested by Zbigniewa and already applies, thanks
+
+
+All the best,
+Karolina
+>> +	      int16_t x1, int16_t y1, int16_t x2, int16_t y2,
+>> +	      uint16_t x_offset, uint16_t y_offset)
+>> +{
+>> +	obj->pitch = pitch;
+>> +	obj->x1 = x1;
+>> +	obj->y1 = y1;
+>> +	obj->x2 = x2;
+>> +	obj->y2 = y2;
+>> +	obj->x_offset = x_offset;
+>> +	obj->y_offset = y_offset;
+>> +}
+>> +
+>> +void set_batch(struct blt_copy_batch *batch,
+> ------- ^
+> 
+>> +	       uint32_t handle, uint64_t size, uint32_t region)
+>> +{
+>> +	batch->handle = handle;
+>> +	batch->size = size;
+>> +	batch->region = region;
+>> +}
+>> +
+>> +struct blt_copy_object *
+>> +create_object(int i915, uint32_t region,
+> ------- ^
+> 
+>> +	      uint32_t width, uint32_t height, uint32_t bpp, uint8_t mocs,
+>> +	      enum tiling_type tiling,
+>> +	      enum blt_compression compression,
+>> +	      enum blt_compression_type compression_type,
+>> +	      bool create_mapping)
+>> +{
+>> +	struct blt_copy_object *obj;
+>> +	uint64_t size = width * height * bpp / 8;
+>> +	uint32_t stride = tiling == T_LINEAR ? width * 4 : width;
+>> +	uint32_t handle;
+>> +
+>> +	obj = calloc(1, sizeof(*obj));
+>> +
+>> +	obj->size = size;
+>> +	igt_assert(__gem_create_in_memory_regions(i915, &handle,
+>> +						  &size, region) == 0);
+>> +
+>> +	set_object(obj, handle, size, region, mocs, tiling,
+>> +		   compression, compression_type);
+>> +	set_geom(obj, stride, 0, 0, width, height, 0, 0);
+>> +
+>> +	if (create_mapping)
+>> +		obj->ptr = gem_mmap__device_coherent(i915, handle, 0, size,
+>> +						     PROT_READ | PROT_WRITE);
+>> +
+>> +	return obj;
+>> +}
+>> +
+>> +void destroy_object(int i915, struct blt_copy_object *obj)
+> ------- ^
+> 
+>> +{
+>> +	if (obj->ptr)
+>> +		munmap(obj->ptr, obj->size);
+>> +
+>> +	gem_close(i915, obj->handle);
+>> +	free(obj);
+>> +}
+>> +
+>> +void set_object(struct blt_copy_object *obj,
+> ------- ^
+> blt_set_object
+> 
+>> +		uint32_t handle, uint64_t size, uint32_t region,
+>> +		uint8_t mocs, enum tiling_type tiling,
+>> +		enum blt_compression compression,
+>> +		enum blt_compression_type compression_type)
+>> +{
+>> +	obj->handle = handle;
+>> +	obj->size = size;
+>> +	obj->region = region;
+>> +	obj->mocs = mocs;
+>> +	obj->tiling = tiling;
+>> +	obj->compression = compression;
+>> +	obj->compression_type = compression_type;
+>> +}
+>> +
+>> +void set_blt_object(struct blt_copy_object *obj,
+> ------- ^
+> This will clash with above name blt_set_object ?
+> Maybe blt_set_copy_object ?
+> 
+> Regards,
+> Kamil
+> 
+>> +		    const struct blt_copy_object *orig)
+>> +{
+>> +	memcpy(obj, orig, sizeof(*obj));
+>> +}
+>> +
+>>   /**
+>>    * blt_surface_fill_rect:
+>>    * @i915: drm fd
+>> diff --git a/lib/i915/i915_blt.h b/lib/i915/i915_blt.h
+>> index f1cf5408..1ef459c8 100644
+>> --- a/lib/i915/i915_blt.h
+>> +++ b/lib/i915/i915_blt.h
+>> @@ -198,6 +198,28 @@ int blt_fast_copy(int i915,
+>>   		  uint64_t ahnd,
+>>   		  const struct blt_copy_data *blt);
+>>   
+>> +void set_geom(struct blt_copy_object *obj, uint32_t pitch,
+>> +	      int16_t x1, int16_t y1, int16_t x2, int16_t y2,
+>> +	      uint16_t x_offset, uint16_t y_offset);
+>> +void set_batch(struct blt_copy_batch *batch,
+>> +	       uint32_t handle, uint64_t size, uint32_t region);
+>> +
+>> +struct blt_copy_object *
+>> +create_object(int i915, uint32_t region,
+>> +	      uint32_t width, uint32_t height, uint32_t bpp, uint8_t mocs,
+>> +	      enum tiling_type tiling,
+>> +	      enum blt_compression compression,
+>> +	      enum blt_compression_type compression_type,
+>> +	      bool create_mapping);
+>> +void destroy_object(int i915, struct blt_copy_object *obj);
+>> +void set_object(struct blt_copy_object *obj,
+>> +		uint32_t handle, uint64_t size, uint32_t region,
+>> +		uint8_t mocs, enum tiling_type tiling,
+>> +		enum blt_compression compression,
+>> +		enum blt_compression_type compression_type);
+>> +void set_blt_object(struct blt_copy_object *obj,
+>> +		    const struct blt_copy_object *orig);
+>> +
+>>   void blt_surface_info(const char *info,
+>>   		      const struct blt_copy_object *obj);
+>>   void blt_surface_fill_rect(int i915, const struct blt_copy_object *obj,
+>> diff --git a/tests/i915/gem_ccs.c b/tests/i915/gem_ccs.c
+>> index 4c137c94..30ee60fd 100644
+>> --- a/tests/i915/gem_ccs.c
+>> +++ b/tests/i915/gem_ccs.c
+>> @@ -44,42 +44,6 @@ struct test_config {
+>>   	bool suspend_resume;
+>>   };
+>>   
+>> -static void set_object(struct blt_copy_object *obj,
+>> -		       uint32_t handle, uint64_t size, uint32_t region,
+>> -		       uint8_t mocs, enum tiling_type tiling,
+>> -		       enum blt_compression compression,
+>> -		       enum blt_compression_type compression_type)
+>> -{
+>> -	obj->handle = handle;
+>> -	obj->size = size;
+>> -	obj->region = region;
+>> -	obj->mocs = mocs;
+>> -	obj->tiling = tiling;
+>> -	obj->compression = compression;
+>> -	obj->compression_type = compression_type;
+>> -}
+>> -
+>> -static void set_geom(struct blt_copy_object *obj, uint32_t pitch,
+>> -		     int16_t x1, int16_t y1, int16_t x2, int16_t y2,
+>> -		     uint16_t x_offset, uint16_t y_offset)
+>> -{
+>> -	obj->pitch = pitch;
+>> -	obj->x1 = x1;
+>> -	obj->y1 = y1;
+>> -	obj->x2 = x2;
+>> -	obj->y2 = y2;
+>> -	obj->x_offset = x_offset;
+>> -	obj->y_offset = y_offset;
+>> -}
+>> -
+>> -static void set_batch(struct blt_copy_batch *batch,
+>> -		      uint32_t handle, uint64_t size, uint32_t region)
+>> -{
+>> -	batch->handle = handle;
+>> -	batch->size = size;
+>> -	batch->region = region;
+>> -}
+>> -
+>>   static void set_object_ext(struct blt_block_copy_object_ext *obj,
+>>   			   uint8_t compression_format,
+>>   			   uint16_t surface_width, uint16_t surface_height,
+>> @@ -105,51 +69,6 @@ static void set_surf_object(struct blt_ctrl_surf_copy_object *obj,
+>>   	obj->access_type = access_type;
+>>   }
+>>   
+>> -static struct blt_copy_object *
+>> -create_object(int i915, uint32_t region,
+>> -	      uint32_t width, uint32_t height, uint32_t bpp, uint8_t mocs,
+>> -	      enum tiling_type tiling,
+>> -	      enum blt_compression compression,
+>> -	      enum blt_compression_type compression_type,
+>> -	      bool create_mapping)
+>> -{
+>> -	struct blt_copy_object *obj;
+>> -	uint64_t size = width * height * bpp / 8;
+>> -	uint32_t stride = tiling == T_LINEAR ? width * 4 : width;
+>> -	uint32_t handle;
+>> -
+>> -	obj = calloc(1, sizeof(*obj));
+>> -
+>> -	obj->size = size;
+>> -	igt_assert(__gem_create_in_memory_regions(i915, &handle,
+>> -						  &size, region) == 0);
+>> -
+>> -	set_object(obj, handle, size, region, mocs, tiling,
+>> -		   compression, compression_type);
+>> -	set_geom(obj, stride, 0, 0, width, height, 0, 0);
+>> -
+>> -	if (create_mapping)
+>> -		obj->ptr = gem_mmap__device_coherent(i915, handle, 0, size,
+>> -						     PROT_READ | PROT_WRITE);
+>> -
+>> -	return obj;
+>> -}
+>> -
+>> -static void destroy_object(int i915, struct blt_copy_object *obj)
+>> -{
+>> -	if (obj->ptr)
+>> -		munmap(obj->ptr, obj->size);
+>> -
+>> -	gem_close(i915, obj->handle);
+>> -	free(obj);
+>> -}
+>> -
+>> -static void set_blt_object(struct blt_copy_object *obj,
+>> -			   const struct blt_copy_object *orig)
+>> -{
+>> -	memcpy(obj, orig, sizeof(*obj));
+>> -}
+>> -
+>>   #define PRINT_SURFACE_INFO(name, obj) do { \
+>>   	if (param.print_surface_info) \
+>>   		blt_surface_info((name), (obj)); } while (0)
+>> diff --git a/tests/i915/gem_lmem_swapping.c b/tests/i915/gem_lmem_swapping.c
+>> index 8cff35d5..746fbf80 100644
+>> --- a/tests/i915/gem_lmem_swapping.c
+>> +++ b/tests/i915/gem_lmem_swapping.c
+>> @@ -76,42 +76,6 @@ struct object {
+>>   	struct blt_copy_object *blt_obj;
+>>   };
+>>   
+>> -static void set_object(struct blt_copy_object *obj,
+>> -		       uint32_t handle, uint64_t size, uint32_t region,
+>> -		       uint8_t mocs, enum tiling_type tiling,
+>> -		       enum blt_compression compression,
+>> -		       enum blt_compression_type compression_type)
+>> -{
+>> -	obj->handle = handle;
+>> -	obj->size = size;
+>> -	obj->region = region;
+>> -	obj->mocs = mocs;
+>> -	obj->tiling = tiling;
+>> -	obj->compression = compression;
+>> -	obj->compression_type = compression_type;
+>> -}
+>> -
+>> -static void set_geom(struct blt_copy_object *obj, uint32_t pitch,
+>> -		     int16_t x1, int16_t y1, int16_t x2, int16_t y2,
+>> -		     uint16_t x_offset, uint16_t y_offset)
+>> -{
+>> -	obj->pitch = pitch;
+>> -	obj->x1 = x1;
+>> -	obj->y1 = y1;
+>> -	obj->x2 = x2;
+>> -	obj->y2 = y2;
+>> -	obj->x_offset = x_offset;
+>> -	obj->y_offset = y_offset;
+>> -}
+>> -
+>> -static void set_batch(struct blt_copy_batch *batch,
+>> -		      uint32_t handle, uint64_t size, uint32_t region)
+>> -{
+>> -	batch->handle = handle;
+>> -	batch->size = size;
+>> -	batch->region = region;
+>> -}
+>> -
+>>   static void set_object_ext(struct blt_block_copy_object_ext *obj,
+>>   			   uint8_t compression_format,
+>>   			   uint16_t surface_width, uint16_t surface_height,
+>> -- 
+>> 2.25.1
+>>
