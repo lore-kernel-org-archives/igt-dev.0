@@ -1,23 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3546810E53E
- for <igt-dev@lists.freedesktop.org>; Thu, 22 Dec 2022 10:24:46 +0000 (UTC)
-Message-ID: <eee2b182-d907-cd4d-5aeb-32b6024138fa@intel.com>
-Date: Thu, 22 Dec 2022 11:23:40 +0100
-Content-Language: en-US
-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-References: <cover.1671446367.git.karolina.stolarek@intel.com>
- <cab83734d1709e78e642e2de6d6dd88d30a3e41f.1671446367.git.karolina.stolarek@intel.com>
- <Y6MRL5p0zcqMQ/0T@kamilkon-desk1>
- <e7628c0a-1abc-4620-53fc-d60c26afcea3@intel.com>
- <Y6Qvb3/Ec/JRzhJZ@kamilkon-desk1>
-From: Karolina Stolarek <karolina.stolarek@intel.com>
-In-Reply-To: <Y6Qvb3/Ec/JRzhJZ@kamilkon-desk1>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/alternative;
+ boundary="===============7671723298901181066=="
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t 3/4] lib/i915_blt: Extract init
- functions for blt_copy_object
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Jeevan B" <jeevan.b@intel.com>
+Date: Thu, 22 Dec 2022 10:33:30 -0000
+Message-ID: <167170521019.14836.214283715959959530@emeril.freedesktop.org>
+References: <20221222093821.7471-1-jeevan.b@intel.com>
+In-Reply-To: <20221222093821.7471-1-jeevan.b@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3IgbGliL2ln?=
+ =?utf-8?q?t=5Fdraw=3A_Change_MOCS_settings_for_MTL_=28rev6=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,371 +17,268 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On 22.12.2022 11:20, Kamil Konieczny wrote:
-> Hi Karolina,
-> 
-> On 2022-12-22 at 10:50:45 +0100, Karolina Stolarek wrote:
->> On 21.12.2022 14:59, Kamil Konieczny wrote:
->>> Hi Karolina,
->>>
->>> please improve commit description,
->>> imho s/Extract init/Add common/
->>
->> But we're reusing the code, not adding new one.
-> 
-> Sorry I should wrote that for your first patch:
-> 
-> [PATCH i-g-t 1/4] lib: Describe supported blitter commands and tiling formats
-> 
-> That one should also be changed.
-> 
-> Btw that "Extract" seems to describe what you did in tests but imho it is
-> better to write in Subject: that you added new functions into lib. You will
-> describe why and how you did it in message.
+--===============7671723298901181066==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Ah, this way. Can do it.
+== Series Details ==
 
-Many thanks,
-Karolina
+Series: lib/igt_draw: Change MOCS settings for MTL (rev6)
+URL   : https://patchwork.freedesktop.org/series/111958/
+State : failure
 
-> 
-> Regards,
-> Kamil
-> 
->>
->>> On 2022-12-19 at 12:49:10 +0100, Karolina Stolarek wrote:
->>>> gem_ccs and gem_lmem_swapping share a couple of functions. Extract them
->>>> to i915_blt so they are accessible for both tests. Delete local
->>> ---------------------------------------------------- ^
->>> That sentence is not needed here or if you want you can write
->>> about refactoring (you replaced those functions with lib calls).
->>>
->>>> definitions.
->>>
->>>>
->>>> Signed-off-by: Karolina Stolarek <karolina.stolarek@intel.com>
->>>> ---
->>>> Karolina's comment: I'm not convinced it's the best place for them.
->>>> 					These functions are more specific to the tests
->>> - ^^^
->>> Please avoid huge empty spaces here.
->>
->> Heh, I should've eyed it in vim before sending. Anyway, everything below --
->> is ignored when the patch is applied.
->>>
->>>> 					than lib functions. So, I'd appreciate
->>>> 					suggestions on where I can move them to.
->>>>
->>>>    lib/i915/i915_blt.c            | 81 ++++++++++++++++++++++++++++++++++
->>>>    lib/i915/i915_blt.h            | 22 +++++++++
->>>>    tests/i915/gem_ccs.c           | 81 ----------------------------------
->>>>    tests/i915/gem_lmem_swapping.c | 36 ---------------
->>>>    4 files changed, 103 insertions(+), 117 deletions(-)
->>>>
->>>> diff --git a/lib/i915/i915_blt.c b/lib/i915/i915_blt.c
->>>> index 2513dfc0..0f9f7265 100644
->>>> --- a/lib/i915/i915_blt.c
->>>> +++ b/lib/i915/i915_blt.c
->>>> @@ -1053,6 +1053,87 @@ int blt_fast_copy(int i915,
->>>>    	return ret;
->>>>    }
->>>
->>> You need to add descriptions to all lib functions you added.
->>
->> I wrote in my cover letter that it's WIP and will add it in v2.
->>
->>>> +void set_geom(struct blt_copy_object *obj, uint32_t pitch,
->>> ------- ^
->>> The name was ok inside test, but in lib imho it's better add
->>> some common prefix, maybe blt_ ? For example:
->>>
->>> void blt_set_geom(...params here...
->>>
->>
->> Suggested by Zbigniewa and already applies, thanks
->>
->>
->> All the best,
->> Karolina
->>>> +	      int16_t x1, int16_t y1, int16_t x2, int16_t y2,
->>>> +	      uint16_t x_offset, uint16_t y_offset)
->>>> +{
->>>> +	obj->pitch = pitch;
->>>> +	obj->x1 = x1;
->>>> +	obj->y1 = y1;
->>>> +	obj->x2 = x2;
->>>> +	obj->y2 = y2;
->>>> +	obj->x_offset = x_offset;
->>>> +	obj->y_offset = y_offset;
->>>> +}
->>>> +
->>>> +void set_batch(struct blt_copy_batch *batch,
->>> ------- ^
->>>
->>>> +	       uint32_t handle, uint64_t size, uint32_t region)
->>>> +{
->>>> +	batch->handle = handle;
->>>> +	batch->size = size;
->>>> +	batch->region = region;
->>>> +}
->>>> +
->>>> +struct blt_copy_object *
->>>> +create_object(int i915, uint32_t region,
->>> ------- ^
->>>
->>>> +	      uint32_t width, uint32_t height, uint32_t bpp, uint8_t mocs,
->>>> +	      enum tiling_type tiling,
->>>> +	      enum blt_compression compression,
->>>> +	      enum blt_compression_type compression_type,
->>>> +	      bool create_mapping)
->>>> +{
->>>> +	struct blt_copy_object *obj;
->>>> +	uint64_t size = width * height * bpp / 8;
->>>> +	uint32_t stride = tiling == T_LINEAR ? width * 4 : width;
->>>> +	uint32_t handle;
->>>> +
->>>> +	obj = calloc(1, sizeof(*obj));
->>>> +
->>>> +	obj->size = size;
->>>> +	igt_assert(__gem_create_in_memory_regions(i915, &handle,
->>>> +						  &size, region) == 0);
->>>> +
->>>> +	set_object(obj, handle, size, region, mocs, tiling,
->>>> +		   compression, compression_type);
->>>> +	set_geom(obj, stride, 0, 0, width, height, 0, 0);
->>>> +
->>>> +	if (create_mapping)
->>>> +		obj->ptr = gem_mmap__device_coherent(i915, handle, 0, size,
->>>> +						     PROT_READ | PROT_WRITE);
->>>> +
->>>> +	return obj;
->>>> +}
->>>> +
->>>> +void destroy_object(int i915, struct blt_copy_object *obj)
->>> ------- ^
->>>
->>>> +{
->>>> +	if (obj->ptr)
->>>> +		munmap(obj->ptr, obj->size);
->>>> +
->>>> +	gem_close(i915, obj->handle);
->>>> +	free(obj);
->>>> +}
->>>> +
->>>> +void set_object(struct blt_copy_object *obj,
->>> ------- ^
->>> blt_set_object
->>>
->>>> +		uint32_t handle, uint64_t size, uint32_t region,
->>>> +		uint8_t mocs, enum tiling_type tiling,
->>>> +		enum blt_compression compression,
->>>> +		enum blt_compression_type compression_type)
->>>> +{
->>>> +	obj->handle = handle;
->>>> +	obj->size = size;
->>>> +	obj->region = region;
->>>> +	obj->mocs = mocs;
->>>> +	obj->tiling = tiling;
->>>> +	obj->compression = compression;
->>>> +	obj->compression_type = compression_type;
->>>> +}
->>>> +
->>>> +void set_blt_object(struct blt_copy_object *obj,
->>> ------- ^
->>> This will clash with above name blt_set_object ?
->>> Maybe blt_set_copy_object ?
->>>
->>> Regards,
->>> Kamil
->>>
->>>> +		    const struct blt_copy_object *orig)
->>>> +{
->>>> +	memcpy(obj, orig, sizeof(*obj));
->>>> +}
->>>> +
->>>>    /**
->>>>     * blt_surface_fill_rect:
->>>>     * @i915: drm fd
->>>> diff --git a/lib/i915/i915_blt.h b/lib/i915/i915_blt.h
->>>> index f1cf5408..1ef459c8 100644
->>>> --- a/lib/i915/i915_blt.h
->>>> +++ b/lib/i915/i915_blt.h
->>>> @@ -198,6 +198,28 @@ int blt_fast_copy(int i915,
->>>>    		  uint64_t ahnd,
->>>>    		  const struct blt_copy_data *blt);
->>>> +void set_geom(struct blt_copy_object *obj, uint32_t pitch,
->>>> +	      int16_t x1, int16_t y1, int16_t x2, int16_t y2,
->>>> +	      uint16_t x_offset, uint16_t y_offset);
->>>> +void set_batch(struct blt_copy_batch *batch,
->>>> +	       uint32_t handle, uint64_t size, uint32_t region);
->>>> +
->>>> +struct blt_copy_object *
->>>> +create_object(int i915, uint32_t region,
->>>> +	      uint32_t width, uint32_t height, uint32_t bpp, uint8_t mocs,
->>>> +	      enum tiling_type tiling,
->>>> +	      enum blt_compression compression,
->>>> +	      enum blt_compression_type compression_type,
->>>> +	      bool create_mapping);
->>>> +void destroy_object(int i915, struct blt_copy_object *obj);
->>>> +void set_object(struct blt_copy_object *obj,
->>>> +		uint32_t handle, uint64_t size, uint32_t region,
->>>> +		uint8_t mocs, enum tiling_type tiling,
->>>> +		enum blt_compression compression,
->>>> +		enum blt_compression_type compression_type);
->>>> +void set_blt_object(struct blt_copy_object *obj,
->>>> +		    const struct blt_copy_object *orig);
->>>> +
->>>>    void blt_surface_info(const char *info,
->>>>    		      const struct blt_copy_object *obj);
->>>>    void blt_surface_fill_rect(int i915, const struct blt_copy_object *obj,
->>>> diff --git a/tests/i915/gem_ccs.c b/tests/i915/gem_ccs.c
->>>> index 4c137c94..30ee60fd 100644
->>>> --- a/tests/i915/gem_ccs.c
->>>> +++ b/tests/i915/gem_ccs.c
->>>> @@ -44,42 +44,6 @@ struct test_config {
->>>>    	bool suspend_resume;
->>>>    };
->>>> -static void set_object(struct blt_copy_object *obj,
->>>> -		       uint32_t handle, uint64_t size, uint32_t region,
->>>> -		       uint8_t mocs, enum tiling_type tiling,
->>>> -		       enum blt_compression compression,
->>>> -		       enum blt_compression_type compression_type)
->>>> -{
->>>> -	obj->handle = handle;
->>>> -	obj->size = size;
->>>> -	obj->region = region;
->>>> -	obj->mocs = mocs;
->>>> -	obj->tiling = tiling;
->>>> -	obj->compression = compression;
->>>> -	obj->compression_type = compression_type;
->>>> -}
->>>> -
->>>> -static void set_geom(struct blt_copy_object *obj, uint32_t pitch,
->>>> -		     int16_t x1, int16_t y1, int16_t x2, int16_t y2,
->>>> -		     uint16_t x_offset, uint16_t y_offset)
->>>> -{
->>>> -	obj->pitch = pitch;
->>>> -	obj->x1 = x1;
->>>> -	obj->y1 = y1;
->>>> -	obj->x2 = x2;
->>>> -	obj->y2 = y2;
->>>> -	obj->x_offset = x_offset;
->>>> -	obj->y_offset = y_offset;
->>>> -}
->>>> -
->>>> -static void set_batch(struct blt_copy_batch *batch,
->>>> -		      uint32_t handle, uint64_t size, uint32_t region)
->>>> -{
->>>> -	batch->handle = handle;
->>>> -	batch->size = size;
->>>> -	batch->region = region;
->>>> -}
->>>> -
->>>>    static void set_object_ext(struct blt_block_copy_object_ext *obj,
->>>>    			   uint8_t compression_format,
->>>>    			   uint16_t surface_width, uint16_t surface_height,
->>>> @@ -105,51 +69,6 @@ static void set_surf_object(struct blt_ctrl_surf_copy_object *obj,
->>>>    	obj->access_type = access_type;
->>>>    }
->>>> -static struct blt_copy_object *
->>>> -create_object(int i915, uint32_t region,
->>>> -	      uint32_t width, uint32_t height, uint32_t bpp, uint8_t mocs,
->>>> -	      enum tiling_type tiling,
->>>> -	      enum blt_compression compression,
->>>> -	      enum blt_compression_type compression_type,
->>>> -	      bool create_mapping)
->>>> -{
->>>> -	struct blt_copy_object *obj;
->>>> -	uint64_t size = width * height * bpp / 8;
->>>> -	uint32_t stride = tiling == T_LINEAR ? width * 4 : width;
->>>> -	uint32_t handle;
->>>> -
->>>> -	obj = calloc(1, sizeof(*obj));
->>>> -
->>>> -	obj->size = size;
->>>> -	igt_assert(__gem_create_in_memory_regions(i915, &handle,
->>>> -						  &size, region) == 0);
->>>> -
->>>> -	set_object(obj, handle, size, region, mocs, tiling,
->>>> -		   compression, compression_type);
->>>> -	set_geom(obj, stride, 0, 0, width, height, 0, 0);
->>>> -
->>>> -	if (create_mapping)
->>>> -		obj->ptr = gem_mmap__device_coherent(i915, handle, 0, size,
->>>> -						     PROT_READ | PROT_WRITE);
->>>> -
->>>> -	return obj;
->>>> -}
->>>> -
->>>> -static void destroy_object(int i915, struct blt_copy_object *obj)
->>>> -{
->>>> -	if (obj->ptr)
->>>> -		munmap(obj->ptr, obj->size);
->>>> -
->>>> -	gem_close(i915, obj->handle);
->>>> -	free(obj);
->>>> -}
->>>> -
->>>> -static void set_blt_object(struct blt_copy_object *obj,
->>>> -			   const struct blt_copy_object *orig)
->>>> -{
->>>> -	memcpy(obj, orig, sizeof(*obj));
->>>> -}
->>>> -
->>>>    #define PRINT_SURFACE_INFO(name, obj) do { \
->>>>    	if (param.print_surface_info) \
->>>>    		blt_surface_info((name), (obj)); } while (0)
->>>> diff --git a/tests/i915/gem_lmem_swapping.c b/tests/i915/gem_lmem_swapping.c
->>>> index 8cff35d5..746fbf80 100644
->>>> --- a/tests/i915/gem_lmem_swapping.c
->>>> +++ b/tests/i915/gem_lmem_swapping.c
->>>> @@ -76,42 +76,6 @@ struct object {
->>>>    	struct blt_copy_object *blt_obj;
->>>>    };
->>>> -static void set_object(struct blt_copy_object *obj,
->>>> -		       uint32_t handle, uint64_t size, uint32_t region,
->>>> -		       uint8_t mocs, enum tiling_type tiling,
->>>> -		       enum blt_compression compression,
->>>> -		       enum blt_compression_type compression_type)
->>>> -{
->>>> -	obj->handle = handle;
->>>> -	obj->size = size;
->>>> -	obj->region = region;
->>>> -	obj->mocs = mocs;
->>>> -	obj->tiling = tiling;
->>>> -	obj->compression = compression;
->>>> -	obj->compression_type = compression_type;
->>>> -}
->>>> -
->>>> -static void set_geom(struct blt_copy_object *obj, uint32_t pitch,
->>>> -		     int16_t x1, int16_t y1, int16_t x2, int16_t y2,
->>>> -		     uint16_t x_offset, uint16_t y_offset)
->>>> -{
->>>> -	obj->pitch = pitch;
->>>> -	obj->x1 = x1;
->>>> -	obj->y1 = y1;
->>>> -	obj->x2 = x2;
->>>> -	obj->y2 = y2;
->>>> -	obj->x_offset = x_offset;
->>>> -	obj->y_offset = y_offset;
->>>> -}
->>>> -
->>>> -static void set_batch(struct blt_copy_batch *batch,
->>>> -		      uint32_t handle, uint64_t size, uint32_t region)
->>>> -{
->>>> -	batch->handle = handle;
->>>> -	batch->size = size;
->>>> -	batch->region = region;
->>>> -}
->>>> -
->>>>    static void set_object_ext(struct blt_block_copy_object_ext *obj,
->>>>    			   uint8_t compression_format,
->>>>    			   uint16_t surface_width, uint16_t surface_height,
->>>> -- 
->>>> 2.25.1
->>>>
+== Summary ==
+
+CI Bug Log - changes from IGT_7102 -> IGTPW_8262
+====================================================
+
+Summary
+-------
+
+  **FAILURE**
+
+  Serious unknown changes coming with IGTPW_8262 absolutely need to be
+  verified manually.
+  
+  If you think the reported changes have nothing to do with the changes
+  introduced in IGTPW_8262, please notify your bug team to allow them
+  to document this new failure mode, which will reduce false positives in CI.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8262/index.html
+
+Participating hosts (44 -> 43)
+------------------------------
+
+  Additional (1): fi-ilk-650 
+  Missing    (2): fi-skl-6700k2 fi-pnv-d510 
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in IGTPW_8262:
+
+### IGT changes ###
+
+#### Possible regressions ####
+
+  * igt@i915_selftest@live@gt_lrc:
+    - fi-rkl-guc:         [PASS][1] -> [INCOMPLETE][2]
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7102/fi-rkl-guc/igt@i915_selftest@live@gt_lrc.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8262/fi-rkl-guc/igt@i915_selftest@live@gt_lrc.html
+
+  
+#### Suppressed ####
+
+  The following results come from untrusted machines, tests, or statuses.
+  They do not affect the overall result.
+
+  * igt@kms_frontbuffer_tracking@basic:
+    - {bat-dg2-11}:       [PASS][3] -> [FAIL][4]
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7102/bat-dg2-11/igt@kms_frontbuffer_tracking@basic.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8262/bat-dg2-11/igt@kms_frontbuffer_tracking@basic.html
+    - {bat-dg2-9}:        [PASS][5] -> [FAIL][6]
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7102/bat-dg2-9/igt@kms_frontbuffer_tracking@basic.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8262/bat-dg2-9/igt@kms_frontbuffer_tracking@basic.html
+
+  
+Known issues
+------------
+
+  Here are the changes found in IGTPW_8262 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@i915_pm_rpm@basic-pci-d3-state:
+    - fi-ilk-650:         NOTRUN -> [SKIP][7] ([fdo#109271]) +20 similar issues
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8262/fi-ilk-650/igt@i915_pm_rpm@basic-pci-d3-state.html
+
+  * igt@i915_pm_rpm@module-reload:
+    - fi-kbl-soraka:      [PASS][8] -> [DMESG-WARN][9] ([i915#1982])
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7102/fi-kbl-soraka/igt@i915_pm_rpm@module-reload.html
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8262/fi-kbl-soraka/igt@i915_pm_rpm@module-reload.html
+
+  * igt@i915_selftest@live@gt_heartbeat:
+    - fi-kbl-soraka:      [PASS][10] -> [DMESG-FAIL][11] ([i915#5334])
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7102/fi-kbl-soraka/igt@i915_selftest@live@gt_heartbeat.html
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8262/fi-kbl-soraka/igt@i915_selftest@live@gt_heartbeat.html
+
+  * igt@i915_suspend@basic-s3-without-i915:
+    - fi-rkl-11600:       [PASS][12] -> [INCOMPLETE][13] ([i915#4817])
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7102/fi-rkl-11600/igt@i915_suspend@basic-s3-without-i915.html
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8262/fi-rkl-11600/igt@i915_suspend@basic-s3-without-i915.html
+
+  * igt@kms_chamelium@dp-hpd-fast:
+    - fi-ilk-650:         NOTRUN -> [SKIP][14] ([fdo#109271] / [fdo#111827]) +8 similar issues
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8262/fi-ilk-650/igt@kms_chamelium@dp-hpd-fast.html
+
+  * igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions:
+    - fi-bsw-kefka:       [PASS][15] -> [FAIL][16] ([i915#6298])
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7102/fi-bsw-kefka/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions.html
+   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8262/fi-bsw-kefka/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [fdo#111827]: https://bugs.freedesktop.org/show_bug.cgi?id=111827
+  [i915#1982]: https://gitlab.freedesktop.org/drm/intel/issues/1982
+  [i915#3546]: https://gitlab.freedesktop.org/drm/intel/issues/3546
+  [i915#4312]: https://gitlab.freedesktop.org/drm/intel/issues/4312
+  [i915#4817]: https://gitlab.freedesktop.org/drm/intel/issues/4817
+  [i915#5334]: https://gitlab.freedesktop.org/drm/intel/issues/5334
+  [i915#6298]: https://gitlab.freedesktop.org/drm/intel/issues/6298
+  [i915#6367]: https://gitlab.freedesktop.org/drm/intel/issues/6367
+  [i915#6997]: https://gitlab.freedesktop.org/drm/intel/issues/6997
+  [i915#7554]: https://gitlab.freedesktop.org/drm/intel/issues/7554
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_7102 -> IGTPW_8262
+
+  CI-20190529: 20190529
+  CI_DRM_12521: 584eb294ab7b1273c5ef505a33f2a5d89c877fcd @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_8262: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8262/index.html
+  IGT_7102: bacfdc84a9c02556c5441deb21e3a3f18a07347d @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8262/index.html
+
+--===============7671723298901181066==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>lib/igt_draw: Change MOCS settings for MTL (rev6)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/111958/">https://patchwork.freedesktop.org/series/111958/</a></td></tr>
+<tr><td><b>State:</b></td><td>failure</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8262/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8262/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_7102 -&gt; IGTPW_8262</h1>
+<h2>Summary</h2>
+<p><strong>FAILURE</strong></p>
+<p>Serious unknown changes coming with IGTPW_8262 absolutely need to be<br />
+  verified manually.</p>
+<p>If you think the reported changes have nothing to do with the changes<br />
+  introduced in IGTPW_8262, please notify your bug team to allow them<br />
+  to document this new failure mode, which will reduce false positives in CI.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8262/index.html</p>
+<h2>Participating hosts (44 -&gt; 43)</h2>
+<p>Additional (1): fi-ilk-650 <br />
+  Missing    (2): fi-skl-6700k2 fi-pnv-d510 </p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in IGTPW_8262:</p>
+<h3>IGT changes</h3>
+<h4>Possible regressions</h4>
+<ul>
+<li>igt@i915_selftest@live@gt_lrc:<ul>
+<li>fi-rkl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7102/fi-rkl-guc/igt@i915_selftest@live@gt_lrc.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8262/fi-rkl-guc/igt@i915_selftest@live@gt_lrc.html">INCOMPLETE</a></li>
+</ul>
+</li>
+</ul>
+<h4>Suppressed</h4>
+<p>The following results come from untrusted machines, tests, or statuses.<br />
+  They do not affect the overall result.</p>
+<ul>
+<li>
+<p>igt@kms_frontbuffer_tracking@basic:</p>
+<ul>
+<li>
+<p>{bat-dg2-11}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7102/bat-dg2-11/igt@kms_frontbuffer_tracking@basic.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8262/bat-dg2-11/igt@kms_frontbuffer_tracking@basic.html">FAIL</a></p>
+</li>
+<li>
+<p>{bat-dg2-9}:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7102/bat-dg2-9/igt@kms_frontbuffer_tracking@basic.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8262/bat-dg2-9/igt@kms_frontbuffer_tracking@basic.html">FAIL</a></p>
+</li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_8262 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@i915_pm_rpm@basic-pci-d3-state:</p>
+<ul>
+<li>fi-ilk-650:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8262/fi-ilk-650/igt@i915_pm_rpm@basic-pci-d3-state.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +20 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_pm_rpm@module-reload:</p>
+<ul>
+<li>fi-kbl-soraka:      <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7102/fi-kbl-soraka/igt@i915_pm_rpm@module-reload.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8262/fi-kbl-soraka/igt@i915_pm_rpm@module-reload.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1982">i915#1982</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@gt_heartbeat:</p>
+<ul>
+<li>fi-kbl-soraka:      <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7102/fi-kbl-soraka/igt@i915_selftest@live@gt_heartbeat.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8262/fi-kbl-soraka/igt@i915_selftest@live@gt_heartbeat.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5334">i915#5334</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_suspend@basic-s3-without-i915:</p>
+<ul>
+<li>fi-rkl-11600:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7102/fi-rkl-11600/igt@i915_suspend@basic-s3-without-i915.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8262/fi-rkl-11600/igt@i915_suspend@basic-s3-without-i915.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4817">i915#4817</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_chamelium@dp-hpd-fast:</p>
+<ul>
+<li>fi-ilk-650:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8262/fi-ilk-650/igt@kms_chamelium@dp-hpd-fast.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://bugs.freedesktop.org/show_bug.cgi?id=111827">fdo#111827</a>) +8 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions:</p>
+<ul>
+<li>fi-bsw-kefka:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7102/fi-bsw-kefka/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8262/fi-bsw-kefka/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6298">i915#6298</a>)</li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_7102 -&gt; IGTPW_8262</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_12521: 584eb294ab7b1273c5ef505a33f2a5d89c877fcd @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_8262: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8262/index.html<br />
+  IGT_7102: bacfdc84a9c02556c5441deb21e3a3f18a07347d @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============7671723298901181066==--
