@@ -1,26 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 762E010E57F
- for <igt-dev@lists.freedesktop.org>; Thu, 22 Dec 2022 20:28:50 +0000 (UTC)
-Date: Thu, 22 Dec 2022 15:28:39 -0500
-From: Rodrigo Vivi <rodrigo.vivi@intel.com>
-To: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
-Message-ID: <Y6S99xokHDs484QF@intel.com>
-References: <20221119020023.3376-1-ashutosh.dixit@intel.com>
- <4b9229ee-baa0-c146-adff-425f36d95eaf@linux.intel.com>
- <87pmdew6l6.wl-ashutosh.dixit@intel.com>
- <c90ded5b-f24f-781a-0d09-bf38a3a9770e@linux.intel.com>
- <87sfhf7trw.wl-ashutosh.dixit@intel.com>
- <d3d29b9a-3e9b-967a-47ca-f157d32d6652@linux.intel.com>
- <Y5yRSFY09ZzbTCkS@intel.com>
- <874jtupwwl.wl-ashutosh.dixit@intel.com>
- <cc8b219d-808d-151a-260b-c3992970f5cc@linux.intel.com>
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <cc8b219d-808d-151a-260b-c3992970f5cc@linux.intel.com>
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9AD5910E18A
+ for <igt-dev@lists.freedesktop.org>; Thu, 22 Dec 2022 22:54:59 +0000 (UTC)
+From: Matthew Brost <matthew.brost@intel.com>
+To: <igt-dev@lists.freedesktop.org>
+Date: Thu, 22 Dec 2022 14:47:46 -0800
+Message-Id: <20221222224747.34894-1-matthew.brost@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/perf_pmu: Compare against
- requested freq in frequency subtest
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [RFC PATCH 0/1] Initial Xe test suite
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,309 +17,89 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Mon, Dec 19, 2022 at 08:46:59AM +0000, Tvrtko Ursulin wrote:
-> 
-> On 17/12/2022 02:49, Dixit, Ashutosh wrote:
-> > On Fri, 16 Dec 2022 07:39:52 -0800, Rodrigo Vivi wrote:
-> > > On Fri, Dec 16, 2022 at 09:37:31AM +0000, Tvrtko Ursulin wrote:
-> > > > 
-> > > > On 16/12/2022 06:21, Dixit, Ashutosh wrote:
-> > > > > On Thu, 24 Nov 2022 04:42:08 -0800, Tvrtko Ursulin wrote:
-> > > > > > 
-> > > > > > On 23/11/2022 06:03, Dixit, Ashutosh wrote:
-> > > > > > > On Mon, 21 Nov 2022 01:09:55 -0800, Tvrtko Ursulin wrote:
-> > > > > > > > 
-> > > > > > > 
-> > > > > 
-> > > > > Hi Tvrtko,
-> > > > > 
-> > > > > Sorry for the delay in replying on this. We are discussing this but still
-> > > > > no conclusion. I have replied what I can below, will update again after I
-> > > > > know more. Wanted to send a reply before disappearing for the
-> > > > > holidays. Please see below.
-> > > > > 
-> > > > > > > Hi Tvrtko,
-> > > > > > > 
-> > > > > > > I am only offering an overall clarification below first, not answering all
-> > > > > > > of your points for now.
-> > > > > > > 
-> > > > > > > > 
-> > > > > > > > On 19/11/2022 02:00, Ashutosh Dixit wrote:
-> > > > > > > > > With SLPC, even when we set the same min and max freq's, the requested and
-> > > > > > > > > actual freq's can differ from the min/max freq set. For example "efficient
-> > > > > > > > > freq" (when in effect) can override set min/max freq. In general FW is the
-> > > > > > > > > final arbiter in determining freq and can override set values.
-> > > > > > > > > 
-> > > > > > > > > Therefore in igt@perf_pmu@frequency subtest, compare the requested freq
-> > > > > > > > > reported by PMU not against the set freq's but against the requested freq
-> > > > > > > > > reported in sysfs. Also add a delay after setting freq's to account for
-> > > > > > > > > messaging delays in setting freq's in GuC.
-> > > > > > > > > 
-> > > > > > > > > v2: Introduce a 100 ms delay after setting freq
-> > > > > > > > > v3: Update commit message, code identical to v2
-> > > > > > > > > 
-> > > > > > > > > Bug: https://gitlab.freedesktop.org/drm/intel/-/issues/6806
-> > > > > > > > > Cc: Vinay Belgaumkar <vinay.belgaumkar@intel.com>
-> > > > > > > > > Cc: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
-> > > > > > > > > Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
-> > > > > > > > > ---
-> > > > > > > > >      tests/i915/perf_pmu.c | 23 +++++++++++++++--------
-> > > > > > > > >      1 file changed, 15 insertions(+), 8 deletions(-)
-> > > > > > > > > 
-> > > > > > > > > diff --git a/tests/i915/perf_pmu.c b/tests/i915/perf_pmu.c
-> > > > > > > > > index f363db2ba13..02f6ae989b1 100644
-> > > > > > > > > --- a/tests/i915/perf_pmu.c
-> > > > > > > > > +++ b/tests/i915/perf_pmu.c
-> > > > > > > > > @@ -1543,10 +1543,13 @@ test_interrupts_sync(int gem_fd)
-> > > > > > > > > 	igt_assert_lte(target, busy);
-> > > > > > > > >      }
-> > > > > > > > >      +/* Wait for GuC SLPC freq changes to take effect */
-> > > > > > > > > +#define wait_freq_set()		usleep(100000)
-> > > > > > > > 
-> > > > > > > > A future task of maybe adding a drop_caches flag to wait for this?
-> > > > > > > > 
-> > > > > > > > Alternatively, if we have a sysfs or debugfs file which reflects the value
-> > > > > > > > once GuC has processed it, keep reading it until it is updated? Even if to
-> > > > > > > > something other than it was before the write, to handle the inability to
-> > > > > > > > set the exact requested frequency sometimes?
-> > > > > > > > > 
-> > > > > > > > > +
-> > > > > > > > >      static void
-> > > > > > > > >      test_frequency(int gem_fd)
-> > > > > > > > >      {
-> > > > > > > > > -	uint32_t min_freq, max_freq, boost_freq;
-> > > > > > > > > +	uint32_t min_freq, max_freq, boost_freq, min_req, max_req;
-> > > > > > > > > 	uint64_t val[2], start[2], slept;
-> > > > > > > > > 	double min[2], max[2];
-> > > > > > > > > 	igt_spin_t *spin;
-> > > > > > > > > @@ -1572,10 +1575,11 @@ test_frequency(int gem_fd)
-> > > > > > > > > 	 * Set GPU to min frequency and read PMU counters.
-> > > > > > > > > 	 */
-> > > > > > > > > 	igt_require(igt_sysfs_set_u32(sysfs, "gt_min_freq_mhz", min_freq));
-> > > > > > > > > -	igt_require(igt_sysfs_get_u32(sysfs, "gt_min_freq_mhz") == min_freq);
-> > > > > > > > > 	igt_require(igt_sysfs_set_u32(sysfs, "gt_max_freq_mhz", min_freq));
-> > > > > > > > > -	igt_require(igt_sysfs_get_u32(sysfs, "gt_max_freq_mhz") == min_freq);
-> > > > > > > > > 	igt_require(igt_sysfs_set_u32(sysfs, "gt_boost_freq_mhz", min_freq));
-> > > > > > > > > +	wait_freq_set();
-> > > > > > > > > +	igt_require(igt_sysfs_get_u32(sysfs, "gt_min_freq_mhz") == min_freq);
-> > > > > > > > > +	igt_require(igt_sysfs_get_u32(sysfs, "gt_max_freq_mhz") == min_freq);
-> > > > > > > > > 	igt_require(igt_sysfs_get_u32(sysfs, "gt_boost_freq_mhz") == min_freq);
-> > > > > > > > > 		gem_quiescent_gpu(gem_fd); /* Idle to be sure the change takes
-> > > > > > > > > effect */
-> > > > > > > > > @@ -1587,6 +1591,7 @@ test_frequency(int gem_fd)
-> > > > > > > > > 		min[0] = 1e9*(val[0] - start[0]) / slept;
-> > > > > > > > > 	min[1] = 1e9*(val[1] - start[1]) / slept;
-> > > > > > > > > +	min_req = igt_sysfs_get_u32(sysfs, "gt_cur_freq_mhz");
-> > > > > > > > 
-> > > > > > > > This really leaves a bad taste for me still, sorry. First of all, it may
-> > > > > > > > make it more palatable if readback was immediately after wait_freq_set(),
-> > > > > > > > or as part of it. Otherwise it seems like even more confused test and sysfs
-> > > > > > > > ABI.
-> > > > > > > > 
-> > > > > > > > Did we close on my question of whether we can make readback of
-> > > > > > > > gt_max_freq_mhz actually represent the real max? Correct me please if I got
-> > > > > > > > confused - with min freq checking here we write max=300 and get 350? If so
-> > > > > > > > can we make gt_max_freq_mhz return 350 after the write of 300? Or return an
-> > > > > > > > error?
-> > > > > > > 
-> > > > > > > Did you read Vinay's email on v1 here:
-> > > > > > > 
-> > > > > > > https://patchwork.freedesktop.org/patch/510304/?series=110574&rev=1#comment_921571
-> > > > > > > 
-> > > > > > > As Vinay says, SLPC is requesting an entirely different freq (the effecient
-> > > > > > > freq rather than the set 'min == max freq') and no amount of waiting will
-> > > > > > > result in the requested freq being the same as the set 'min == max
-> > > > > > > freq'. Also the efficient freq cannot be controlled from user space.
-> > > > > > 
-> > > > > > Why is that not a break in our ABI? What is the point in allowing users to
-> > > > > > write into this field if the desired value can be silently ignored?
-> > > > > 
-> > > > > Yes, this is in discussion. FW is doing this and we need to see if FW can
-> > > > > be made to obey the i915 ABI. IMHO what matters is performance per watt and
-> > > > > if the ABI has to be tossed so be it. I will keep this list posted about
-> > > > > what happens here. Merging any patches for these issues (GL #6806 and
-> > > > > #6786) is blocked till the ABI breakage issue is resolved one way or
-> > > > > another.
-> > > > 
-> > > > Two thoughts here, one has been mentioned before.
-> > > > 
-> > > > New one is that performance per watt perhaps does not matter (is not a
-> > > > primary concern at least) for use cases where "users" (for some definition)
-> > > > tweak the min/max in sysfs. Presumably in those cases user wants control,
-> > > > for some reason, so as long as it is safe and within the limits why not give
-> > > > it to them.
-> > > > 
-> > > > Same argument from a different angle - what is the use case for allowing
-> > > > min/max control which does not really do what it says on the tin?
-> > > > 
-> > > > Old thought is this - if SLPC refuses to be controlled using our existing
-> > > > controls then we could just say -ENODEV on attempts to modify them. Whether
-> > > > for any input value, or some, depending on what SLPC can support (or wants
-> > > > to support).
-> > > 
-> > > The problem is not just	SLPC. The freq is ultimately decided by PCODE and it
-> > > has sudo and all the rights to disrespect what drivers (including SLPC as a
-> > > a driver from PCODE perspective) are requesting.
-> > > 
-> > > > 
-> > > > Important to note I am primarily focusing on the min freq here, which AFAIR
-> > > > we concluded can behave that user writes in 300, but SLPC decides it will
-> > > > only go as low as 350.
-> > > 
-> > > The other caveat here with the efficient freq is that it is dynamic and PCODE
-> > > decides it with runtime conditions. It may start with 300, then move to 350,
-> > > then back to 300. i915 is only stashing the initial value.
-> > > 
-> > > We could potentially update our rpe everytime any freq control is
-> > > touched.
-> > 
-> > We thought of doing this but two points:
-> > 
-> > 1. i915 now reads the same register as GuC for rpe but I never see the
-> >     value in this register change.
-> > 2. Even if we could know the real rpe, the freq's might be set before a
-> >     workload start running and rpe might change after the workload starts
-> >     running. So knowing rpe before the workload might not be very useful.
-> > 
-> > I am of the opposite opinion that anyway the previous kernel ABI is
-> > probably now irrecoverably bust, so we should give FW free reign and stop
-> > disabling efficient freq the way we do now when min_freq < rpe_freq.
-> 
-> We have to answer the question of why we need to keep exposing the sysfs
-> controls if they don't/can't/won't do what they say on the tin. Could we
-> make a break with DG2 for instance? Some use cases might suffer but it's
-> probably better than having them think it does what they think it does, or
-> file bugs when it does not.
+Initial Xe test suite for new Xe Intel GPU driver [1]. All major features of the
+Xe uAPI and all internal code paths should have some basic coverage. Before
+these new tests are upstreamed proper commit messages for each test will be
+included plus kerneldoc describing what each test is testing and the
+methodology. For the time being we are just including 1 large patch.
 
-That's a good question. But if we have no control at all people will still
-file requests for something our hardware and low level firmwares cannot promise.
+Cheers,
+Matthew Brost
 
-There are many folks who run important/critical experiments using these
-interfaces at the same time they are monitoring throttle conditions and all.
+[1] https://patchwork.freedesktop.org/series/112188/
 
-> 
-> Regards,
-> 
-> Tvrtko
-> 
-> > 
-> > Cheers.
-> > --
-> > Ashutosh
-> > 
-> > > Just to highlight how bad this is, I've seen cases where rpe in runtime
-> > > goes below the minimal fused freq (our rpn).
-> > > 
-> > > > Because that is different from the existing, should
-> > > > be well known, situation where we can write a max which cannot be achieved
-> > > > due thermal throttling.
-> > > 
-> > > yeap, usually when things got disrespected by PCODE there will be some thermal
-> > > throttling information. But I have seen cases where this indicators simply do
-> > > not exist. What complicate the api expectation to a very bad level.
-> > > 
-> > > > 
-> > > > Perhaps we need a table, or a summary of some kind, which explains the
-> > > > possible behaviours for both min and max settings.
-> > > 
-> > > This is probably a good idea. At least document everything and what and when
-> > > things can be disrespected, etc...
-> > > 
-> > > (and update our rpe info dynamically)
-> > > 
-> > > > 
-> > > > > > > (So in the example above min and max are set to 300 MHz and SLPC is
-> > > > > > > requesting efficient freq which is 350 or 400 MHz. So min and max values
-> > > > > > > are correct at 300 MHz and requested/actual freq will show 350/400 MHz).
-> > > > > > > 
-> > > > > > > Let me also explain what happens in GuC FW when we change min/max freq:
-> > > > > > > * i915 receives min/max freq from sysfs and sends a message to GuC to
-> > > > > > >      change min/max freq.
-> > > > > > > * The message itself might be queued behind other messages in the host to
-> > > > > > >      GuC queue. i915 is still blocked in the sysfs handler.
-> > > > > > > * Now when GuC receives the message interrupt, in its top-half handler it
-> > > > > > >      validates the freq parameters and sends a message back to host saying the
-> > > > > > >      freq change has been accepted. But min/max freq is actually changed later
-> > > > > > >      in the bottom-half handler in GuC FW. So the top half only validates the
-> > > > > > >      freq value.
-> > > > > > > * When i915 receives the message from GuC top half, the sysfs handler
-> > > > > > >      unblocks and starts reflecting the new min/max freq value.
-> > > > > > > 
-> > > > > > > So the delay for the new min/max freq values to take effect is between
-> > > > > > > returning from the sysfs handler and when the min/max freq are really set
-> > > > > > > in GuC bottom half (an indeterminate possibly large amount of time if GuC
-> > > > > > > is busy).
-> > > > > > 
-> > > > > > Do we have a drop_caches flag which would force waiting of idle GuC, which
-> > > > > > would cover the bottom half as well? Could we or should we add it if not?
-> > > > > > Would beat the usleep approach..
-> > > > > 
-> > > > > Agree, waiting for GuC to idle would do it, but not sure "how" to do it. As
-> > > > > I said there is no notification after the bottom half is done applying the
-> > > > > freq settings. We may need to schedule something after the freq setting
-> > > > > host to guc command and wait for that to be done. A little bit out of my
-> > > > > depth on this, let me know if you have any ideas here. I'll ask the GuC
-> > > > > guys too. Currently we don't have a drop_caches flag for this.
-> > > > 
-> > > > Okay, I was wondering if DROP_IDLE would do it, but perhaps this bottom half
-> > > > can run independently from those flows so it was just a thought, not a
-> > > > claim.
-> > > > 
-> > > > > > > So as you see this introduces an indeterminacy due to to GuC interface not
-> > > > > > > being synchronous. If this needs to be fixed, it needs to be fixed in GuC
-> > > > > > > FW rather than waiting etc. in i915. GuC needs to implement another
-> > > > > > > notification to host /after/ the min/max freq change has been applied in
-> > > > > > > its bottom half. Doing this is not a priority for the GuC team at this
-> > > > > > > point.
-> > > > > > 
-> > > > > > Is there a method for querying the real min from GuC, which would maybe
-> > > > > > work after waiting for GuC to idle?
-> > > > > 
-> > > > > Will find out about this too. Afaik, at present querying the real min from
-> > > > > GuC is not possible. As soon as the top half has completed the freq
-> > > > > settings are updated so querying will return the new settings even though
-> > > > > they might not have been applied by the bottom half yet.
-> > > > 
-> > > > And it will return the written value, or the real one? Going back to the 300
-> > > > written in, 350 actual min freq example. Presumably 300 and 350 SLPC picks
-> > > > is completely invisible to i915 via the FW interface?
-> > > > 
-> > > > > > > However, this bug is not due to these delays but due to GuC requesting the
-> > > > > > > efficient freq instead of the set 'min == max freq' as mentioned above.
-> > > > > > > 
-> > > > > > > If all these delays are confusing we can revert to v1 of the patch:
-> > > > > > > 
-> > > > > > > https://patchwork.freedesktop.org/patch/510304/?series=110574&rev=1
-> > > > > > > 
-> > > > > > > v1 is simple and does not introduce these delays but just reads the
-> > > > > > > requested freq from sysfs after the 500 ms PMU measurement but while the
-> > > > > > > spinner is still running (which we do in v3 too). Without load SLPC will
-> > > > > > > only request RPn so to compare with PMU measurement we must read the
-> > > > > > > requested freq from sysfs with the spinner load. v1 is sufficient to fix
-> > > > > > > the bug but I thought to be completely safe it is better to add
-> > > > > > > wait_freq_set() after changing min/max freq (and hence v3).
-> > > > > > > 
-> > > > > > > I hope this clarifies things somewhat. If not please let me know.
-> > > > > > 
-> > > > > > It clarifies a large chunk thank you.
-> > > > > > 
-> > > > > > Another question which you missed is why is it needed for the max mode?
-> > > > > > There we allow a 15% error (more than 5% default). Is that not enough with
-> > > > > > SLPC?
-> > > > > 
-> > > > > Yes I think you are right, should not be needed for the max mode. The real
-> > > > > issue is that efficient freq can exceed the max freq set but I think that
-> > > > > should not be an issue if the max is RP0.
-> > > > 
-> > > > Ah okay, so SLPC not respecting max same as with min. I think the question
-> > > > of what is the use case for min/max controls in the SLPC world is the one to
-> > > > answer then.
-> > > > 
-> > > > Regards,
-> > > > 
-> > > > Tvrtko
+Matthew Brost (1):
+  Xe: Introduce initial tests for the new Intel Xe GPU driver.
+
+ include/drm-uapi/xe_drm.h       |  786 +++++++++++++++
+ lib/drmtest.c                   |    3 +
+ lib/drmtest.h                   |    1 +
+ lib/meson.build                 |    4 +
+ lib/xe/xe_compute.c             |  327 +++++++
+ lib/xe/xe_compute.h             |   93 ++
+ lib/xe/xe_ioctl.c               |  441 +++++++++
+ lib/xe/xe_ioctl.h               |  107 +++
+ lib/xe/xe_query.c               |  267 ++++++
+ lib/xe/xe_query.h               |   76 ++
+ lib/xe/xe_spin.c                |  157 +++
+ lib/xe/xe_spin.h                |   66 ++
+ meson.build                     |    8 +
+ tests/meson.build               |    1 +
+ tests/xe/meson.build            |   30 +
+ tests/xe/xe_compute.c           |  130 +++
+ tests/xe/xe_dma_buf_sync.c      |  226 +++++
+ tests/xe/xe_evict.c             |  619 ++++++++++++
+ tests/xe/xe_exec_balancer.c     |  620 ++++++++++++
+ tests/xe/xe_exec_basic.c        |  294 ++++++
+ tests/xe/xe_exec_compute_mode.c |  303 ++++++
+ tests/xe/xe_exec_fault_mode.c   |  471 +++++++++
+ tests/xe/xe_exec_reset.c        |  806 ++++++++++++++++
+ tests/xe/xe_exec_threads.c      | 1148 ++++++++++++++++++++++
+ tests/xe/xe_guc_pc.c            |  424 +++++++++
+ tests/xe/xe_huc_copy.c          |  187 ++++
+ tests/xe/xe_live_ktest.c        |   17 +
+ tests/xe/xe_mmap.c              |   57 ++
+ tests/xe/xe_pm.c                |  384 ++++++++
+ tests/xe/xe_prime_self_import.c |  462 +++++++++
+ tests/xe/xe_query.c             |  431 +++++++++
+ tests/xe/xe_vm.c                | 1577 +++++++++++++++++++++++++++++++
+ tests/xe/xe_waitfence.c         |   88 ++
+ tools/meson.build               |    1 +
+ tools/xe_reg.c                  |  366 +++++++
+ 35 files changed, 10978 insertions(+)
+ create mode 100644 include/drm-uapi/xe_drm.h
+ create mode 100644 lib/xe/xe_compute.c
+ create mode 100644 lib/xe/xe_compute.h
+ create mode 100644 lib/xe/xe_ioctl.c
+ create mode 100644 lib/xe/xe_ioctl.h
+ create mode 100644 lib/xe/xe_query.c
+ create mode 100644 lib/xe/xe_query.h
+ create mode 100644 lib/xe/xe_spin.c
+ create mode 100644 lib/xe/xe_spin.h
+ create mode 100644 tests/xe/meson.build
+ create mode 100644 tests/xe/xe_compute.c
+ create mode 100644 tests/xe/xe_dma_buf_sync.c
+ create mode 100644 tests/xe/xe_evict.c
+ create mode 100644 tests/xe/xe_exec_balancer.c
+ create mode 100644 tests/xe/xe_exec_basic.c
+ create mode 100644 tests/xe/xe_exec_compute_mode.c
+ create mode 100644 tests/xe/xe_exec_fault_mode.c
+ create mode 100644 tests/xe/xe_exec_reset.c
+ create mode 100644 tests/xe/xe_exec_threads.c
+ create mode 100644 tests/xe/xe_guc_pc.c
+ create mode 100644 tests/xe/xe_huc_copy.c
+ create mode 100644 tests/xe/xe_live_ktest.c
+ create mode 100644 tests/xe/xe_mmap.c
+ create mode 100644 tests/xe/xe_pm.c
+ create mode 100644 tests/xe/xe_prime_self_import.c
+ create mode 100644 tests/xe/xe_query.c
+ create mode 100644 tests/xe/xe_vm.c
+ create mode 100644 tests/xe/xe_waitfence.c
+ create mode 100644 tools/xe_reg.c
+
+-- 
+2.37.3
