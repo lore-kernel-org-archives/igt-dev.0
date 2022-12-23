@@ -1,20 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 745F910E187
- for <igt-dev@lists.freedesktop.org>; Fri, 23 Dec 2022 11:39:52 +0000 (UTC)
-Message-ID: <2d79c3d0-a812-d603-38a0-a662990795f7@intel.com>
-Date: Fri, 23 Dec 2022 17:09:34 +0530
-To: Swati Sharma <swati2.sharma@intel.com>, <igt-dev@lists.freedesktop.org>
-References: <20221125115808.13394-1-swati2.sharma@intel.com>
- <20221125115808.13394-4-swati2.sharma@intel.com>
-Content-Language: en-US
-From: "Nautiyal, Ankit K" <ankit.k.nautiyal@intel.com>
-In-Reply-To: <20221125115808.13394-4-swati2.sharma@intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/alternative;
+ boundary="===============8946942576672367563=="
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t 3/6] tests/i915/kms_dsc: Enable
- validation for VDSC YCbCr420
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Karolina Stolarek" <karolina.stolarek@intel.com>
+Date: Fri, 23 Dec 2022 12:04:11 -0000
+Message-ID: <167179705128.30341.6920682223338657394@emeril.freedesktop.org>
+References: <cover.1671793169.git.karolina.stolarek@intel.com>
+In-Reply-To: <cover.1671793169.git.karolina.stolarek@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgSW50cm9k?=
+ =?utf-8?q?uce_blt=5Fcmd=5Finfo_struct_=28rev2=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,338 +17,218 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Swati,
+--===============8946942576672367563==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-This looks better now. Few suggestions/comments inline:
+== Series Details ==
 
-On 11/25/2022 5:28 PM, Swati Sharma wrote:
-> Existing i-g-t is extended to enable validation for VDSC YCbCr420.
-> If a mode is supported in both RGB and YCbCr420 output formats by the
-> sink, i915 driver policy is to try RGB first and fall back to YCbCr420, if
-> mode cannot be shown using RGB. To test YCbCr420, we need a debugfs
-> entry (force_dsc_ycbcr420) to force this output format; so that YCbCr420 code
-> gets executed.
->  From i-g-t, we have set this debugfs entry. However, before setting
-> debugfs entry, we have checked capability i.e. YCbCr420 is supported by
-> both platform (D14+) and sink.
-> Also, all the modes doesn't support both YCbCr420 and RGB formats; so if
-> sink and platform supports YCbCr420 we will do try commit with each mode
-> till we get a successful commit.
->
-> v2: -used is_dsc_ycbcr420_supported() (Ankit)
->      -handled try-commit correctly (Ankit)
->      -instead of flag use enum for output formats (Ankit)
->
-> Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
-> ---
->   tests/i915/kms_dsc.c | 195 ++++++++++++++++++++++++++++++++-----------
->   1 file changed, 147 insertions(+), 48 deletions(-)
->
-> diff --git a/tests/i915/kms_dsc.c b/tests/i915/kms_dsc.c
-> index 6fef764de..6a3eecdb4 100644
-> --- a/tests/i915/kms_dsc.c
-> +++ b/tests/i915/kms_dsc.c
-> @@ -53,6 +53,11 @@ enum dsc_test_type {
->   	TEST_DSC_BPC
->   };
->   
-> +enum dsc_output_format {
-> +	DSC_FORMAT_RGB444,
-> +	DSC_FORMAT_YCBCR420
-> +};
-> +
->   typedef struct {
->   	int drm_fd;
->   	uint32_t devid;
-> @@ -66,7 +71,10 @@ typedef struct {
->   } data_t;
->   
->   bool force_dsc_en_orig;
-> +bool force_dsc_ycbcr420_en_orig;
->   int force_dsc_restore_fd = -1;
-> +int force_dsc_ycbcr420_restore_fd = -1;
-> +static int count = 0;
->   
->   const struct {
->   	const int format;
-> @@ -107,6 +115,16 @@ static void force_dsc_enable_bpc(data_t *data)
->   	igt_assert_f(ret > 0, "forcing input dsc bpc debugfs_write failed\n");
->   }
->   
-> +static void force_dsc_ycbcr420_enable(data_t *data)
-> +{
-> +	int ret;
-> +
-> +	igt_debug("Forcing DSC YCbCr420 on %s\n", data->output->name);
-> +	ret = igt_force_dsc_ycbcr420_enable(data->drm_fd,
-> +					    data->output->name);
-> +	igt_assert_f(ret > 0, "forcing dsc ycbcr420 debugfs_write failed\n");
-> +}
-> +
->   static void save_force_dsc_en(data_t *data)
->   {
->   	force_dsc_en_orig =
-> @@ -130,9 +148,34 @@ static void restore_force_dsc_en(void)
->   	force_dsc_restore_fd = -1;
->   }
->   
-> +static void save_force_dsc_ycbcr420_en(data_t *data)
-> +{
-> +	force_dsc_ycbcr420_en_orig =
-> +		igt_is_force_dsc_ycbcr420_enabled(data->drm_fd,
-> +						  data->output->name);
-> +	force_dsc_ycbcr420_restore_fd =
-> +		igt_get_dsc_ycbcr420_debugfs_fd(data->drm_fd,
-> +						data->output->name);
-> +	igt_assert(force_dsc_ycbcr420_restore_fd >= 0);
-> +}
-> +
-> +static void restore_force_dsc_ycbcr420_en(void)
-> +{
-> +	if (force_dsc_ycbcr420_restore_fd < 0)
-> +		return;
-> +
-> +	igt_debug("Restoring DSC YCbCr420 enable\n");
-> +	igt_assert(write(force_dsc_ycbcr420_restore_fd, force_dsc_ycbcr420_en_orig ? "1" : "0", 1) == 1);
-> +
-> +	close(force_dsc_ycbcr420_restore_fd);
-> +	force_dsc_ycbcr420_restore_fd = -1;
-> +}
-> +
-> +
->   static void kms_dsc_exit_handler(int sig)
->   {
->   	restore_force_dsc_en();
-> +	restore_force_dsc_ycbcr420_en();
->   }
->   
->   static drmModeModeInfo *get_highres_mode(igt_output_t *output)
-> @@ -147,6 +190,20 @@ static drmModeModeInfo *get_highres_mode(igt_output_t *output)
->   	return highest_mode;
->   }
->   
-> +static drmModeModeInfo *get_next_mode(igt_output_t *output)
-> +{
-> +	drmModeConnector *connector = output->config.connector;
-> +	drmModeModeInfo *next_mode = NULL;
-> +
-> +	for (int i = count; i < connector->count_modes; i++) {
-> +		next_mode = &connector->modes[i];
-> +		count ++;
+Series: Introduce blt_cmd_info struct (rev2)
+URL   : https://patchwork.freedesktop.org/series/112055/
+State : success
 
-No space before the unary increment operator.
+== Summary ==
+
+CI Bug Log - changes from CI_DRM_12524 -> IGTPW_8270
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8270/index.html
+
+Participating hosts (45 -> 44)
+------------------------------
+
+  Missing    (1): fi-kbl-soraka 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_8270 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@i915_selftest@live@mman:
+    - fi-rkl-guc:         [PASS][1] -> [TIMEOUT][2] ([i915#6794])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12524/fi-rkl-guc/igt@i915_selftest@live@mman.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8270/fi-rkl-guc/igt@i915_selftest@live@mman.html
+
+  
+#### Possible fixes ####
+
+  * igt@gem_exec_gttfill@basic:
+    - fi-pnv-d510:        [FAIL][3] ([i915#7229]) -> [PASS][4]
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12524/fi-pnv-d510/igt@gem_exec_gttfill@basic.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8270/fi-pnv-d510/igt@gem_exec_gttfill@basic.html
+
+  * igt@i915_selftest@live@migrate:
+    - bat-adlp-4:         [DMESG-FAIL][5] ([i915#7699]) -> [PASS][6]
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12524/bat-adlp-4/igt@i915_selftest@live@migrate.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8270/bat-adlp-4/igt@i915_selftest@live@migrate.html
+
+  * igt@i915_selftest@live@mman:
+    - {bat-rpls-1}:       [TIMEOUT][7] ([i915#6794]) -> [PASS][8]
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12524/bat-rpls-1/igt@i915_selftest@live@mman.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8270/bat-rpls-1/igt@i915_selftest@live@mman.html
+
+  * igt@i915_selftest@live@slpc:
+    - {bat-adln-1}:       [DMESG-FAIL][9] ([i915#6997]) -> [PASS][10]
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12524/bat-adln-1/igt@i915_selftest@live@slpc.html
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8270/bat-adln-1/igt@i915_selftest@live@slpc.html
+
+  * igt@i915_selftest@live@workarounds:
+    - {bat-rpls-1}:       [DMESG-WARN][11] -> [PASS][12]
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12524/bat-rpls-1/igt@i915_selftest@live@workarounds.html
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8270/bat-rpls-1/igt@i915_selftest@live@workarounds.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [i915#4312]: https://gitlab.freedesktop.org/drm/intel/issues/4312
+  [i915#4983]: https://gitlab.freedesktop.org/drm/intel/issues/4983
+  [i915#5153]: https://gitlab.freedesktop.org/drm/intel/issues/5153
+  [i915#6106]: https://gitlab.freedesktop.org/drm/intel/issues/6106
+  [i915#6794]: https://gitlab.freedesktop.org/drm/intel/issues/6794
+  [i915#6997]: https://gitlab.freedesktop.org/drm/intel/issues/6997
+  [i915#7229]: https://gitlab.freedesktop.org/drm/intel/issues/7229
+  [i915#7351]: https://gitlab.freedesktop.org/drm/intel/issues/7351
+  [i915#7699]: https://gitlab.freedesktop.org/drm/intel/issues/7699
 
 
-> +		break;
-> +	}
-> +
-> +	return next_mode;
-> +}
-> +
->   static bool check_dsc_on_connector(data_t *data)
->   {
->   	igt_output_t *output = data->output;
-> @@ -167,6 +224,19 @@ static bool check_dsc_on_connector(data_t *data)
->   	return true;
->   }
->   
-> +static bool is_dsc_ycbcr420_supported(data_t *data)
-> +{
-> +	igt_output_t *output = data->output;
-> +
-> +	if (!igt_is_dsc_ycbcr420_supported(data->drm_fd, output->name)) {
-> +		igt_debug("DSC YCbCr420 not supported on connector %s\n",
-> +			  output->name);
-> +		return false;
-> +	}
-> +
-> +	return true;
-> +}
-> +
->   static bool check_big_joiner_pipe_constraint(data_t *data)
->   {
->   	igt_output_t *output = data->output;
-> @@ -224,75 +294,100 @@ static void test_cleanup(data_t *data)
->   
->   /* re-probe connectors and do a modeset with DSC */
->   static void update_display(data_t *data, enum dsc_test_type test_type,
-> -			   unsigned int plane_format)
-> +			   unsigned int plane_format, enum dsc_output_format output_format)
->   {
-> +	int ret;
->   	bool enabled;
->   	igt_plane_t *primary;
->   	drmModeModeInfo *mode;
-> +	bool test_complete = false;
->   	igt_output_t *output = data->output;
->   	igt_display_t *display = &data->display;
->   
-> -	/* sanitize the state before starting the subtest */
-> -	igt_display_reset(display);
-> -	igt_display_commit(display);
-> +	count = 0;
-> +	while (!test_complete) {
-> +		/* sanitize the state before starting the subtest */
-> +		igt_display_reset(display);
-> +		igt_display_commit(display);
->   
-> -	igt_debug("DSC is supported on %s\n", data->output->name);
-> -	save_force_dsc_en(data);
-> -	force_dsc_enable(data);
-> +		igt_debug("DSC is supported on %s\n", data->output->name);
-> +		save_force_dsc_en(data);
-> +		force_dsc_enable(data);
->   
-> -	if (test_type == TEST_DSC_BPC) {
-> -		igt_debug("Trying to set input BPC to %d\n", data->input_bpc);
-> -		force_dsc_enable_bpc(data);
-> -	}
-> +		if (output_format == DSC_FORMAT_YCBCR420) {
-> +			igt_debug("DSC YCbCr420 is supported on %s\n", data->output->name);
-> +			save_force_dsc_ycbcr420_en(data);
-> +			force_dsc_ycbcr420_enable(data);
-> +		}
->   
-> -	igt_output_set_pipe(output, data->pipe);
-> +		if (test_type == TEST_DSC_BPC) {
-> +			igt_debug("Trying to set input BPC to %d\n", data->input_bpc);
-> +			force_dsc_enable_bpc(data);
-> +		}
->   
-> -	mode = get_highres_mode(output);
-> -	igt_require(mode != NULL);
-> -	igt_output_override_mode(output, mode);
-> +		igt_output_set_pipe(output, data->pipe);
->   
-> -	primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
-> +		if (output_format == DSC_FORMAT_YCBCR420)
-> +			mode = get_next_mode(output);
+Build changes
+-------------
 
-If we pass the count, or to be precise the current mode index, we can 
-avoid having a global count.
+  * CI: CI-20190529 -> None
+  * IGT: IGT_7102 -> IGTPW_8270
+
+  CI-20190529: 20190529
+  CI_DRM_12524: a29956c69a562e85ef8657e39382bc207a339941 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_8270: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8270/index.html
+  IGT_7102: bacfdc84a9c02556c5441deb21e3a3f18a07347d @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
 
 
-> +		else
-> +			mode = get_highres_mode(output);
->   
-> -	igt_skip_on(!igt_plane_has_format_mod(primary, plane_format,
-> -		    DRM_FORMAT_MOD_LINEAR));
-> +		igt_require(mode != NULL);
-> +		igt_output_override_mode(output, mode);
->   
-> -	igt_create_pattern_fb(data->drm_fd,
-> -			      mode->hdisplay,
-> -			      mode->vdisplay,
-> -			      plane_format,
-> -			      DRM_FORMAT_MOD_LINEAR,
-> -			      &data->fb_test_pattern);
-> +		primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
->   
-> -	igt_plane_set_fb(primary, &data->fb_test_pattern);
-> -	igt_display_commit(display);
-> +		igt_skip_on(!igt_plane_has_format_mod(primary, plane_format,
-> +			    DRM_FORMAT_MOD_LINEAR));
->   
-> -	/* until we have CRC check support, manually check if RGB test
-> -	 * pattern has no corruption.
-> -	 */
-> -	manual("RGB test pattern without corruption");
-> +		igt_create_pattern_fb(data->drm_fd,
-> +				      mode->hdisplay,
-> +				      mode->vdisplay,
-> +				      plane_format,
-> +				      DRM_FORMAT_MOD_LINEAR,
-> +				      &data->fb_test_pattern);
->   
-> -	enabled = igt_is_dsc_enabled(data->drm_fd, output->name);
-> -	igt_info("Current mode is: %dx%d @%dHz -- DSC is: %s\n",
-> -				mode->hdisplay,
-> -				mode->vdisplay,
-> -				mode->vrefresh,
-> -				enabled ? "ON" : "OFF");
-> +		igt_plane_set_fb(primary, &data->fb_test_pattern);
-> +		ret = igt_display_try_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
-> +		if (ret == 0) {
-> +			igt_display_commit(display);
-> +			test_complete = true;
-> +		} else if (output_format == DSC_FORMAT_YCBCR420) {
-> +			continue;
-> +		}
->   
-> -	restore_force_dsc_en();
-> -	igt_debug("Reset compression BPC\n");
-> -	data->input_bpc = 0;
-> -	force_dsc_enable_bpc(data);
-> +		igt_assert_eq(ret, 0);
-> +
-> +		/* until we have CRC check support, manually check if RGB test
-> +		 * pattern has no corruption.
-> +		 */
-> +		manual("RGB test pattern without corruption");
-> +
-> +		enabled = igt_is_dsc_enabled(data->drm_fd, output->name);
-> +		igt_info("Current mode is: %dx%d @%dHz -- DSC is: %s\n",
-> +					mode->hdisplay,
-> +					mode->vdisplay,
-> +					mode->vrefresh,
-> +					enabled ? "ON" : "OFF");
+Testlist changes
+----------------
 
-I think we can print the output_format with which DSC was used here
++igt@gem_exercise_blt@fast-copy
++igt@gem_exercise_blt@fast-copy-emit
+-igt@kms_plane_scaling@max-source-size
 
-Thanks & Regards,
+== Logs ==
 
-Ankit
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8270/index.html
 
-> +
-> +		restore_force_dsc_en();
-> +		if (output_format == DSC_FORMAT_YCBCR420)
-> +			restore_force_dsc_ycbcr420_en();
-> +		igt_debug("Reset compression BPC\n");
-> +		data->input_bpc = 0;
-> +		force_dsc_enable_bpc(data);
->   
-> -	igt_assert_f(enabled,
-> -		     "Default DSC enable failed on connector: %s pipe: %s\n",
-> -		     output->name,
-> -		     kmstest_pipe_name(data->pipe));
-> +		igt_assert_f(enabled,
-> +			    "Default DSC enable failed on connector: %s pipe: %s\n",
-> +			    output->name,
-> +			    kmstest_pipe_name(data->pipe));
->   
-> -	test_cleanup(data);
-> +		test_cleanup(data);
-> +	}
->   }
->   
->   static void test_dsc(data_t *data, enum dsc_test_type test_type, int bpc,
-> -		     unsigned int plane_format)
-> +		     unsigned int plane_format, enum dsc_output_format output_format)
->   {
->   	igt_display_t *display = &data->display;
->   	igt_output_t *output;
-> @@ -322,14 +417,18 @@ static void test_dsc(data_t *data, enum dsc_test_type test_type, int bpc,
->   			snprintf(name, sizeof(name), "-%s", igt_format_str(plane_format));
->   
->   		igt_dynamic_f("pipe-%s-%s%s",  kmstest_pipe_name(data->pipe), data->output->name, name)
-> -			update_display(data, test_type, plane_format);
-> +			update_display(data, test_type, plane_format, output_format);
->   	}
->   }
->   
->   static void run_test(data_t *data, enum dsc_test_type test_type, int bpc,
->   		     unsigned int plane_format)
->   {
-> -	test_dsc(data, test_type, bpc, plane_format);
-> +	test_dsc(data, test_type, bpc, plane_format, DSC_FORMAT_RGB444);
-> +
-> +	/* YCbCr420 DSC is supported on display version 14+ */
-> +	if ((data->disp_ver >= 14) && (is_dsc_ycbcr420_supported(data)))
-> +		test_dsc(data, test_type, bpc, plane_format, DSC_FORMAT_YCBCR420);
->   }
->   
->   igt_main
+--===============8946942576672367563==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Introduce blt_cmd_info struct (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/112055/">https://patchwork.freedesktop.org/series/112055/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8270/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8270/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_12524 -&gt; IGTPW_8270</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8270/index.html</p>
+<h2>Participating hosts (45 -&gt; 44)</h2>
+<p>Missing    (1): fi-kbl-soraka </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_8270 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>igt@i915_selftest@live@mman:<ul>
+<li>fi-rkl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12524/fi-rkl-guc/igt@i915_selftest@live@mman.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8270/fi-rkl-guc/igt@i915_selftest@live@mman.html">TIMEOUT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6794">i915#6794</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@gem_exec_gttfill@basic:</p>
+<ul>
+<li>fi-pnv-d510:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12524/fi-pnv-d510/igt@gem_exec_gttfill@basic.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7229">i915#7229</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8270/fi-pnv-d510/igt@gem_exec_gttfill@basic.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@migrate:</p>
+<ul>
+<li>bat-adlp-4:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12524/bat-adlp-4/igt@i915_selftest@live@migrate.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7699">i915#7699</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8270/bat-adlp-4/igt@i915_selftest@live@migrate.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@mman:</p>
+<ul>
+<li>{bat-rpls-1}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12524/bat-rpls-1/igt@i915_selftest@live@mman.html">TIMEOUT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6794">i915#6794</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8270/bat-rpls-1/igt@i915_selftest@live@mman.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@slpc:</p>
+<ul>
+<li>{bat-adln-1}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12524/bat-adln-1/igt@i915_selftest@live@slpc.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6997">i915#6997</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8270/bat-adln-1/igt@i915_selftest@live@slpc.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@workarounds:</p>
+<ul>
+<li>{bat-rpls-1}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12524/bat-rpls-1/igt@i915_selftest@live@workarounds.html">DMESG-WARN</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8270/bat-rpls-1/igt@i915_selftest@live@workarounds.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_7102 -&gt; IGTPW_8270</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_12524: a29956c69a562e85ef8657e39382bc207a339941 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_8270: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8270/index.html<br />
+  IGT_7102: bacfdc84a9c02556c5441deb21e3a3f18a07347d @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+<h2>Testlist changes</h2>
+<p>+igt@gem_exercise_blt@fast-copy<br />
++igt@gem_exercise_blt@fast-copy-emit<br />
+-igt@kms_plane_scaling@max-source-size</p>
+
+</body>
+</html>
+
+--===============8946942576672367563==--
