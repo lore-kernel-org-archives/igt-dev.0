@@ -1,15 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============2113725507643081805=="
+Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 265F210E638
+ for <igt-dev@lists.freedesktop.org>; Fri, 23 Dec 2022 11:14:19 +0000 (UTC)
+From: Karolina Stolarek <karolina.stolarek@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Fri, 23 Dec 2022 12:13:51 +0100
+Message-Id: <bf604dd1a93aca467b0b5d9dc908dad4304702c1.1671793169.git.karolina.stolarek@intel.com>
+In-Reply-To: <cover.1671793169.git.karolina.stolarek@intel.com>
+References: <cover.1671793169.git.karolina.stolarek@intel.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Swati Sharma" <swati2.sharma@intel.com>
-Date: Fri, 23 Dec 2022 11:04:21 -0000
-Message-ID: <167179346115.30342.11746560507766719778@emeril.freedesktop.org>
-References: <20221223102739.2900-1-swati2.sharma@intel.com>
-In-Reply-To: <20221223102739.2900-1-swati2.sharma@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
- =?utf-8?q?kms=5Fplane=5Fscaling=3A_Add_test_to_validate_max_source_size?=
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t v2 6/6] tests/gem_exercise_blt: Add
+ fast-copy-emit test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,205 +19,254 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============2113725507643081805==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Add a subtest where two fast copy commands are executed within the
+single batch buffer.
 
-== Series Details ==
+Signed-off-by: Karolina Stolarek <karolina.stolarek@intel.com>
+---
+ tests/i915/gem_exercise_blt.c | 190 ++++++++++++++++++++++++++++++++--
+ 1 file changed, 184 insertions(+), 6 deletions(-)
 
-Series: tests/kms_plane_scaling: Add test to validate max source size
-URL   : https://patchwork.freedesktop.org/series/112206/
-State : success
-
-== Summary ==
-
-CI Bug Log - changes from CI_DRM_12524 -> IGTPW_8269
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8269/index.html
-
-Participating hosts (45 -> 45)
-------------------------------
-
-  No changes in participating hosts
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_8269 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@gem_exec_suspend@basic-s3@smem:
-    - bat-adlp-4:         [PASS][1] -> [DMESG-WARN][2] ([i915#2867])
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12524/bat-adlp-4/igt@gem_exec_suspend@basic-s3@smem.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8269/bat-adlp-4/igt@gem_exec_suspend@basic-s3@smem.html
-
-  * igt@i915_selftest@live@execlists:
-    - fi-kbl-soraka:      [PASS][3] -> [INCOMPLETE][4] ([i915#7156])
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12524/fi-kbl-soraka/igt@i915_selftest@live@execlists.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8269/fi-kbl-soraka/igt@i915_selftest@live@execlists.html
-
-  
-#### Possible fixes ####
-
-  * igt@i915_selftest@live@migrate:
-    - bat-adlp-4:         [DMESG-FAIL][5] ([i915#7699]) -> [PASS][6]
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12524/bat-adlp-4/igt@i915_selftest@live@migrate.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8269/bat-adlp-4/igt@i915_selftest@live@migrate.html
-
-  * igt@i915_selftest@live@mman:
-    - {bat-rpls-1}:       [TIMEOUT][7] ([i915#6794]) -> [PASS][8]
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12524/bat-rpls-1/igt@i915_selftest@live@mman.html
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8269/bat-rpls-1/igt@i915_selftest@live@mman.html
-
-  * igt@i915_selftest@live@workarounds:
-    - {bat-rpls-1}:       [DMESG-WARN][9] -> [PASS][10]
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12524/bat-rpls-1/igt@i915_selftest@live@workarounds.html
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8269/bat-rpls-1/igt@i915_selftest@live@workarounds.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [i915#2867]: https://gitlab.freedesktop.org/drm/intel/issues/2867
-  [i915#3546]: https://gitlab.freedesktop.org/drm/intel/issues/3546
-  [i915#4312]: https://gitlab.freedesktop.org/drm/intel/issues/4312
-  [i915#4983]: https://gitlab.freedesktop.org/drm/intel/issues/4983
-  [i915#6794]: https://gitlab.freedesktop.org/drm/intel/issues/6794
-  [i915#6816]: https://gitlab.freedesktop.org/drm/intel/issues/6816
-  [i915#7156]: https://gitlab.freedesktop.org/drm/intel/issues/7156
-  [i915#7336]: https://gitlab.freedesktop.org/drm/intel/issues/7336
-  [i915#7699]: https://gitlab.freedesktop.org/drm/intel/issues/7699
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_7102 -> IGTPW_8269
-
-  CI-20190529: 20190529
-  CI_DRM_12524: a29956c69a562e85ef8657e39382bc207a339941 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_8269: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8269/index.html
-  IGT_7102: bacfdc84a9c02556c5441deb21e3a3f18a07347d @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-
-Testlist changes
-----------------
-
-+igt@kms_plane_scaling@max-source-size
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8269/index.html
-
---===============2113725507643081805==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/kms_plane_scaling: Add test to validate max source size</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/112206/">https://patchwork.freedesktop.org/series/112206/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8269/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8269/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from CI_DRM_12524 -&gt; IGTPW_8269</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8269/index.html</p>
-<h2>Participating hosts (45 -&gt; 45)</h2>
-<p>No changes in participating hosts</p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_8269 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@gem_exec_suspend@basic-s3@smem:</p>
-<ul>
-<li>bat-adlp-4:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12524/bat-adlp-4/igt@gem_exec_suspend@basic-s3@smem.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8269/bat-adlp-4/igt@gem_exec_suspend@basic-s3@smem.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2867">i915#2867</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@execlists:</p>
-<ul>
-<li>fi-kbl-soraka:      <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12524/fi-kbl-soraka/igt@i915_selftest@live@execlists.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8269/fi-kbl-soraka/igt@i915_selftest@live@execlists.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7156">i915#7156</a>)</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@i915_selftest@live@migrate:</p>
-<ul>
-<li>bat-adlp-4:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12524/bat-adlp-4/igt@i915_selftest@live@migrate.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7699">i915#7699</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8269/bat-adlp-4/igt@i915_selftest@live@migrate.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@mman:</p>
-<ul>
-<li>{bat-rpls-1}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12524/bat-rpls-1/igt@i915_selftest@live@mman.html">TIMEOUT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6794">i915#6794</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8269/bat-rpls-1/igt@i915_selftest@live@mman.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@workarounds:</p>
-<ul>
-<li>{bat-rpls-1}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12524/bat-rpls-1/igt@i915_selftest@live@workarounds.html">DMESG-WARN</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8269/bat-rpls-1/igt@i915_selftest@live@workarounds.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_7102 -&gt; IGTPW_8269</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_12524: a29956c69a562e85ef8657e39382bc207a339941 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_8269: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8269/index.html<br />
-  IGT_7102: bacfdc84a9c02556c5441deb21e3a3f18a07347d @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-<h2>Testlist changes</h2>
-<p>+igt@kms_plane_scaling@max-source-size</p>
-
-</body>
-</html>
-
---===============2113725507643081805==--
+diff --git a/tests/i915/gem_exercise_blt.c b/tests/i915/gem_exercise_blt.c
+index 67a8b660..b8bfc436 100644
+--- a/tests/i915/gem_exercise_blt.c
++++ b/tests/i915/gem_exercise_blt.c
+@@ -37,6 +37,146 @@ static struct param {
+ 	if (param.write_png) \
+ 		blt_surface_to_png((fd), (id), (name), (obj), (w), (h)); } while (0)
+ 
++struct blt_fast_copy_data {
++	int i915;
++	struct blt_copy_object src;
++	struct blt_copy_object mid;
++	struct blt_copy_object dst;
++
++	struct blt_copy_batch bb;
++	enum blt_color_depth color_depth;
++
++	/* debug stuff */
++	bool print_bb;
++};
++
++static int fast_copy_one_bb(int i915,
++			    const intel_ctx_t *ctx,
++			    const struct intel_execution_engine2 *e,
++			    uint64_t ahnd,
++			    const struct blt_fast_copy_data *blt)
++{
++	struct drm_i915_gem_execbuffer2 execbuf = {};
++	struct drm_i915_gem_exec_object2 obj[4] = {};
++	struct blt_copy_data blt_tmp;
++	uint64_t src_offset, mid_offset, dst_offset, bb_offset, alignment;
++	uint64_t bb_pos = 0;
++	uint32_t flags;
++	int ret;
++
++	alignment = gem_detect_safe_alignment(i915);
++
++	src_offset = get_offset(ahnd, blt->src.handle, blt->src.size, alignment);
++	mid_offset = get_offset(ahnd, blt->mid.handle, blt->mid.size, alignment);
++	dst_offset = get_offset(ahnd, blt->dst.handle, blt->dst.size, alignment);
++	bb_offset = get_offset(ahnd, blt->bb.handle, blt->bb.size, alignment);
++
++	/* First blit */
++	memset(&blt_tmp, 0, sizeof(blt_tmp));
++	blt_tmp.src = blt->src;
++	blt_tmp.dst = blt->mid;
++	blt_tmp.bb = blt->bb;
++	blt_tmp.color_depth = blt->color_depth;
++	blt_tmp.print_bb = blt->print_bb;
++	bb_pos = emit_blt_fast_copy(i915, ahnd, &blt_tmp, bb_pos, false);
++
++	/* Second blit */
++	memset(&blt_tmp, 0, sizeof(blt_tmp));
++	blt_tmp.src = blt->mid;
++	blt_tmp.dst = blt->dst;
++	blt_tmp.bb = blt->bb;
++	blt_tmp.color_depth = blt->color_depth;
++	blt_tmp.print_bb = blt->print_bb;
++	bb_pos = emit_blt_fast_copy(i915, ahnd, &blt_tmp, bb_pos, true);
++
++	flags = EXEC_OBJECT_PINNED | EXEC_OBJECT_SUPPORTS_48B_ADDRESS;
++
++	obj[0].handle = blt->src.handle;
++	obj[0].offset = CANONICAL(src_offset);
++	obj[0].flags = flags;
++
++	obj[1].handle = blt->mid.handle;
++	obj[1].offset = CANONICAL(mid_offset);
++	obj[1].flags = flags | EXEC_OBJECT_WRITE;
++
++	obj[2].handle = blt->dst.handle;
++	obj[2].offset = CANONICAL(dst_offset);
++	obj[2].flags = flags;
++
++	obj[3].handle = blt->bb.handle;
++	obj[3].offset = CANONICAL(bb_offset);
++	obj[3].flags = flags;
++
++	execbuf.buffer_count = 4;
++	execbuf.buffers_ptr = to_user_pointer(obj);
++	execbuf.rsvd1 = ctx ? ctx->id : 0;
++	execbuf.flags = e ? e->flags : I915_EXEC_BLT;
++	ret = __gem_execbuf(i915, &execbuf);
++
++	gem_sync(i915, blt->bb.handle);
++
++	return ret;
++}
++
++static void fast_copy_emit(int i915, const intel_ctx_t *ctx,
++			   const struct intel_execution_engine2 *e,
++			   uint32_t region1, uint32_t region2,
++			   enum blt_tiling_type mid_tiling)
++{
++	struct blt_fast_copy_data blt = {};
++	struct blt_copy_object *src, *mid, *dst;
++	const uint32_t bpp = 32;
++	uint64_t bb_size = 4096;
++	uint64_t ahnd = intel_allocator_open_full(i915, ctx->id, 0, 0,
++						  INTEL_ALLOCATOR_SIMPLE,
++						  ALLOC_STRATEGY_LOW_TO_HIGH, 0);
++	uint32_t bb, width = param.width, height = param.height;
++	int result;
++
++	igt_assert(__gem_create_in_memory_regions(i915, &bb, &bb_size, region1) == 0);
++
++	src = blt_create_object(i915, region1, width, height, bpp, 0,
++				T_LINEAR, COMPRESSION_DISABLED, 0, true);
++	mid = blt_create_object(i915, region2, width, height, bpp, 0,
++				mid_tiling, COMPRESSION_DISABLED, 0, true);
++	dst = blt_create_object(i915, region1, width, height, bpp, 0,
++				T_LINEAR, COMPRESSION_DISABLED, 0, true);
++	igt_assert(src->size == dst->size);
++
++	PRINT_SURFACE_INFO("src", src);
++	PRINT_SURFACE_INFO("mid", mid);
++	PRINT_SURFACE_INFO("dst", dst);
++
++	blt_surface_fill_rect(i915, src, width, height);
++	WRITE_PNG(i915, mid_tiling, "src", src, width, height);
++
++	memset(&blt, 0, sizeof(blt));
++	blt.color_depth = CD_32bit;
++	blt.print_bb = param.print_bb;
++	blt_set_copy_object(&blt.src, src);
++	blt_set_copy_object(&blt.mid, mid);
++	blt_set_copy_object(&blt.dst, dst);
++	blt_set_batch(&blt.bb, bb, bb_size, region1);
++
++	fast_copy_one_bb(i915, ctx, e, ahnd, &blt);
++	gem_sync(i915, blt.dst.handle);
++
++	WRITE_PNG(i915, mid_tiling, "mid", &blt.mid, width, height);
++	WRITE_PNG(i915, mid_tiling, "dst", &blt.dst, width, height);
++
++	result = memcmp(src->ptr, blt.dst.ptr, src->size);
++
++	blt_destroy_object(i915, src);
++	blt_destroy_object(i915, mid);
++	blt_destroy_object(i915, dst);
++	gem_close(i915, bb);
++	put_ahnd(ahnd);
++
++	munmap(&bb, bb_size);
++
++	igt_assert_f(!result, "source and destination surfaces differs!\n");
++}
++
+ static void fast_copy(int i915, const intel_ctx_t *ctx,
+ 		      const struct intel_execution_engine2 *e,
+ 		      uint32_t region1, uint32_t region2,
+@@ -102,12 +242,42 @@ static void fast_copy(int i915, const intel_ctx_t *ctx,
+ 	igt_assert_f(!result, "source and destination surfaces differs!\n");
+ }
+ 
++enum fast_copy_func {
++	FAST_COPY,
++	FAST_COPY_EMIT
++};
++
++static char
++	*full_subtest_str(char *regtxt, enum blt_tiling_type tiling,
++			  enum fast_copy_func func)
++{
++	const char *multi_str = "emit";
++	char const *tile_str = blt_tiling_name(tiling);
++	char *name;
++	uint32_t len, sub_len;
++
++	len = strlen(regtxt) + strlen(tile_str) + strlen(multi_str) + 2;
++	name = malloc(len * sizeof(char));
++	igt_assert(name);
++
++	sub_len = snprintf(name, len, "%s-%s", tile_str, regtxt);
++
++	if (func == FAST_COPY_EMIT)
++		snprintf(name + sub_len, len, "-%s", multi_str);
++
++	return name;
++}
++
+ static void fast_copy_test(int i915,
+ 			   const intel_ctx_t *ctx,
+-			   struct igt_collection *set)
++			   struct igt_collection *set,
++			   enum fast_copy_func func)
+ {
+ 	struct igt_collection *regions;
+ 	const struct intel_execution_engine2 *e;
++	void (*copy_func)(int i915, const intel_ctx_t *ctx,
++			  const struct intel_execution_engine2 *e,
++			  uint32_t r1, uint32_t r2, enum blt_tiling_type tiling);
+ 	int tiling;
+ 
+ 	for_each_tiling(tiling) {
+@@ -119,20 +289,23 @@ static void fast_copy_test(int i915,
+ 				continue;
+ 			for_each_variation_r(regions, 2, set) {
+ 				uint32_t region1, region2;
+-				char *regtxt;
++				char *regtxt, *test_name;
+ 
+ 				region1 = igt_collection_get_value(regions, 0);
+ 				region2 = igt_collection_get_value(regions, 1);
++
++				copy_func = (func == FAST_COPY) ? fast_copy : fast_copy_emit;
+ 				regtxt = memregion_dynamic_subtest_name(regions);
++				test_name = full_subtest_str(regtxt, tiling, func);
+ 
+-				igt_dynamic_f("%s-%s",
+-					      blt_tiling_name(tiling), regtxt) {
+-					fast_copy(i915, ctx, e,
++				igt_dynamic_f("%s", test_name) {
++					copy_func(i915, ctx, e,
+ 						  region1, region2,
+ 						  tiling);
+ 				}
+ 
+ 				free(regtxt);
++				free(test_name);
+ 			}
+ 		}
+ 	}
+@@ -206,7 +379,12 @@ igt_main_args("b:pst:W:H:", NULL, help_str, opt_handler, NULL)
+ 
+ 	igt_describe("Check fast-copy blit");
+ 	igt_subtest_with_dynamic("fast-copy") {
+-		fast_copy_test(i915, ctx, set);
++		fast_copy_test(i915, ctx, set, FAST_COPY);
++	}
++
++	igt_describe("Check multiple fast-copy in one batch");
++	igt_subtest_with_dynamic("fast-copy-emit") {
++		fast_copy_test(i915, ctx, set, FAST_COPY_EMIT);
+ 	}
+ 
+ 	igt_fixture {
+-- 
+2.25.1
