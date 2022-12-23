@@ -1,27 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0F8F210E660
- for <igt-dev@lists.freedesktop.org>; Fri, 23 Dec 2022 15:39:52 +0000 (UTC)
-Date: Fri, 23 Dec 2022 10:39:29 -0500
-From: Rodrigo Vivi <rodrigo.vivi@intel.com>
-To: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
-Message-ID: <Y6XLsY8neYPjAhyM@intel.com>
-References: <4b9229ee-baa0-c146-adff-425f36d95eaf@linux.intel.com>
- <87pmdew6l6.wl-ashutosh.dixit@intel.com>
- <c90ded5b-f24f-781a-0d09-bf38a3a9770e@linux.intel.com>
- <87sfhf7trw.wl-ashutosh.dixit@intel.com>
- <d3d29b9a-3e9b-967a-47ca-f157d32d6652@linux.intel.com>
- <Y5yRSFY09ZzbTCkS@intel.com>
- <874jtupwwl.wl-ashutosh.dixit@intel.com>
- <cc8b219d-808d-151a-260b-c3992970f5cc@linux.intel.com>
- <Y6S99xokHDs484QF@intel.com>
- <61b209ce-cc68-b998-733e-42b06e9d378e@linux.intel.com>
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <61b209ce-cc68-b998-733e-42b06e9d378e@linux.intel.com>
+Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 07E2510E25D
+ for <igt-dev@lists.freedesktop.org>; Fri, 23 Dec 2022 21:45:56 +0000 (UTC)
+From: =?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>
+To: Melissa Wen <mwen@igalia.com>,
+ =?UTF-8?q?Andr=C3=A9=20Almeida?= <andrealmeid@igalia.com>,
+ Emma Anholt <emma@anholt.net>, Maxime Ripard <maxime@cerno.tech>
+Date: Fri, 23 Dec 2022 18:44:33 -0300
+Message-Id: <20221223214433.31547-1-mcanal@igalia.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/perf_pmu: Compare against
- requested freq in frequency subtest
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t 0/2] Tests for V3D/VC4 Mmap BO IOCTLs
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -34,233 +24,28 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Fri, Dec 23, 2022 at 09:22:53AM +0000, Tvrtko Ursulin wrote:
-> 
-> On 22/12/2022 20:28, Rodrigo Vivi wrote:
-> > On Mon, Dec 19, 2022 at 08:46:59AM +0000, Tvrtko Ursulin wrote:
-> > > 
-> > > On 17/12/2022 02:49, Dixit, Ashutosh wrote:
-> > > > On Fri, 16 Dec 2022 07:39:52 -0800, Rodrigo Vivi wrote:
-> > > > > On Fri, Dec 16, 2022 at 09:37:31AM +0000, Tvrtko Ursulin wrote:
-> > > > > > 
-> > > > > > On 16/12/2022 06:21, Dixit, Ashutosh wrote:
-> > > > > > > On Thu, 24 Nov 2022 04:42:08 -0800, Tvrtko Ursulin wrote:
-> > > > > > > > 
-> > > > > > > > On 23/11/2022 06:03, Dixit, Ashutosh wrote:
-> > > > > > > > > On Mon, 21 Nov 2022 01:09:55 -0800, Tvrtko Ursulin wrote:
-> > > > > > > > > > 
-> > > > > > > > > 
-> > > > > > > 
-> > > > > > > Hi Tvrtko,
-> > > > > > > 
-> > > > > > > Sorry for the delay in replying on this. We are discussing this but still
-> > > > > > > no conclusion. I have replied what I can below, will update again after I
-> > > > > > > know more. Wanted to send a reply before disappearing for the
-> > > > > > > holidays. Please see below.
-> > > > > > > 
-> > > > > > > > > Hi Tvrtko,
-> > > > > > > > > 
-> > > > > > > > > I am only offering an overall clarification below first, not answering all
-> > > > > > > > > of your points for now.
-> > > > > > > > > 
-> > > > > > > > > > 
-> > > > > > > > > > On 19/11/2022 02:00, Ashutosh Dixit wrote:
-> > > > > > > > > > > With SLPC, even when we set the same min and max freq's, the requested and
-> > > > > > > > > > > actual freq's can differ from the min/max freq set. For example "efficient
-> > > > > > > > > > > freq" (when in effect) can override set min/max freq. In general FW is the
-> > > > > > > > > > > final arbiter in determining freq and can override set values.
-> > > > > > > > > > > 
-> > > > > > > > > > > Therefore in igt@perf_pmu@frequency subtest, compare the requested freq
-> > > > > > > > > > > reported by PMU not against the set freq's but against the requested freq
-> > > > > > > > > > > reported in sysfs. Also add a delay after setting freq's to account for
-> > > > > > > > > > > messaging delays in setting freq's in GuC.
-> > > > > > > > > > > 
-> > > > > > > > > > > v2: Introduce a 100 ms delay after setting freq
-> > > > > > > > > > > v3: Update commit message, code identical to v2
-> > > > > > > > > > > 
-> > > > > > > > > > > Bug: https://gitlab.freedesktop.org/drm/intel/-/issues/6806
-> > > > > > > > > > > Cc: Vinay Belgaumkar <vinay.belgaumkar@intel.com>
-> > > > > > > > > > > Cc: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
-> > > > > > > > > > > Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
-> > > > > > > > > > > ---
-> > > > > > > > > > >       tests/i915/perf_pmu.c | 23 +++++++++++++++--------
-> > > > > > > > > > >       1 file changed, 15 insertions(+), 8 deletions(-)
-> > > > > > > > > > > 
-> > > > > > > > > > > diff --git a/tests/i915/perf_pmu.c b/tests/i915/perf_pmu.c
-> > > > > > > > > > > index f363db2ba13..02f6ae989b1 100644
-> > > > > > > > > > > --- a/tests/i915/perf_pmu.c
-> > > > > > > > > > > +++ b/tests/i915/perf_pmu.c
-> > > > > > > > > > > @@ -1543,10 +1543,13 @@ test_interrupts_sync(int gem_fd)
-> > > > > > > > > > > 	igt_assert_lte(target, busy);
-> > > > > > > > > > >       }
-> > > > > > > > > > >       +/* Wait for GuC SLPC freq changes to take effect */
-> > > > > > > > > > > +#define wait_freq_set()		usleep(100000)
-> > > > > > > > > > 
-> > > > > > > > > > A future task of maybe adding a drop_caches flag to wait for this?
-> > > > > > > > > > 
-> > > > > > > > > > Alternatively, if we have a sysfs or debugfs file which reflects the value
-> > > > > > > > > > once GuC has processed it, keep reading it until it is updated? Even if to
-> > > > > > > > > > something other than it was before the write, to handle the inability to
-> > > > > > > > > > set the exact requested frequency sometimes?
-> > > > > > > > > > > 
-> > > > > > > > > > > +
-> > > > > > > > > > >       static void
-> > > > > > > > > > >       test_frequency(int gem_fd)
-> > > > > > > > > > >       {
-> > > > > > > > > > > -	uint32_t min_freq, max_freq, boost_freq;
-> > > > > > > > > > > +	uint32_t min_freq, max_freq, boost_freq, min_req, max_req;
-> > > > > > > > > > > 	uint64_t val[2], start[2], slept;
-> > > > > > > > > > > 	double min[2], max[2];
-> > > > > > > > > > > 	igt_spin_t *spin;
-> > > > > > > > > > > @@ -1572,10 +1575,11 @@ test_frequency(int gem_fd)
-> > > > > > > > > > > 	 * Set GPU to min frequency and read PMU counters.
-> > > > > > > > > > > 	 */
-> > > > > > > > > > > 	igt_require(igt_sysfs_set_u32(sysfs, "gt_min_freq_mhz", min_freq));
-> > > > > > > > > > > -	igt_require(igt_sysfs_get_u32(sysfs, "gt_min_freq_mhz") == min_freq);
-> > > > > > > > > > > 	igt_require(igt_sysfs_set_u32(sysfs, "gt_max_freq_mhz", min_freq));
-> > > > > > > > > > > -	igt_require(igt_sysfs_get_u32(sysfs, "gt_max_freq_mhz") == min_freq);
-> > > > > > > > > > > 	igt_require(igt_sysfs_set_u32(sysfs, "gt_boost_freq_mhz", min_freq));
-> > > > > > > > > > > +	wait_freq_set();
-> > > > > > > > > > > +	igt_require(igt_sysfs_get_u32(sysfs, "gt_min_freq_mhz") == min_freq);
-> > > > > > > > > > > +	igt_require(igt_sysfs_get_u32(sysfs, "gt_max_freq_mhz") == min_freq);
-> > > > > > > > > > > 	igt_require(igt_sysfs_get_u32(sysfs, "gt_boost_freq_mhz") == min_freq);
-> > > > > > > > > > > 		gem_quiescent_gpu(gem_fd); /* Idle to be sure the change takes
-> > > > > > > > > > > effect */
-> > > > > > > > > > > @@ -1587,6 +1591,7 @@ test_frequency(int gem_fd)
-> > > > > > > > > > > 		min[0] = 1e9*(val[0] - start[0]) / slept;
-> > > > > > > > > > > 	min[1] = 1e9*(val[1] - start[1]) / slept;
-> > > > > > > > > > > +	min_req = igt_sysfs_get_u32(sysfs, "gt_cur_freq_mhz");
-> > > > > > > > > > 
-> > > > > > > > > > This really leaves a bad taste for me still, sorry. First of all, it may
-> > > > > > > > > > make it more palatable if readback was immediately after wait_freq_set(),
-> > > > > > > > > > or as part of it. Otherwise it seems like even more confused test and sysfs
-> > > > > > > > > > ABI.
-> > > > > > > > > > 
-> > > > > > > > > > Did we close on my question of whether we can make readback of
-> > > > > > > > > > gt_max_freq_mhz actually represent the real max? Correct me please if I got
-> > > > > > > > > > confused - with min freq checking here we write max=300 and get 350? If so
-> > > > > > > > > > can we make gt_max_freq_mhz return 350 after the write of 300? Or return an
-> > > > > > > > > > error?
-> > > > > > > > > 
-> > > > > > > > > Did you read Vinay's email on v1 here:
-> > > > > > > > > 
-> > > > > > > > > https://patchwork.freedesktop.org/patch/510304/?series=110574&rev=1#comment_921571
-> > > > > > > > > 
-> > > > > > > > > As Vinay says, SLPC is requesting an entirely different freq (the effecient
-> > > > > > > > > freq rather than the set 'min == max freq') and no amount of waiting will
-> > > > > > > > > result in the requested freq being the same as the set 'min == max
-> > > > > > > > > freq'. Also the efficient freq cannot be controlled from user space.
-> > > > > > > > 
-> > > > > > > > Why is that not a break in our ABI? What is the point in allowing users to
-> > > > > > > > write into this field if the desired value can be silently ignored?
-> > > > > > > 
-> > > > > > > Yes, this is in discussion. FW is doing this and we need to see if FW can
-> > > > > > > be made to obey the i915 ABI. IMHO what matters is performance per watt and
-> > > > > > > if the ABI has to be tossed so be it. I will keep this list posted about
-> > > > > > > what happens here. Merging any patches for these issues (GL #6806 and
-> > > > > > > #6786) is blocked till the ABI breakage issue is resolved one way or
-> > > > > > > another.
-> > > > > > 
-> > > > > > Two thoughts here, one has been mentioned before.
-> > > > > > 
-> > > > > > New one is that performance per watt perhaps does not matter (is not a
-> > > > > > primary concern at least) for use cases where "users" (for some definition)
-> > > > > > tweak the min/max in sysfs. Presumably in those cases user wants control,
-> > > > > > for some reason, so as long as it is safe and within the limits why not give
-> > > > > > it to them.
-> > > > > > 
-> > > > > > Same argument from a different angle - what is the use case for allowing
-> > > > > > min/max control which does not really do what it says on the tin?
-> > > > > > 
-> > > > > > Old thought is this - if SLPC refuses to be controlled using our existing
-> > > > > > controls then we could just say -ENODEV on attempts to modify them. Whether
-> > > > > > for any input value, or some, depending on what SLPC can support (or wants
-> > > > > > to support).
-> > > > > 
-> > > > > The problem is not just	SLPC. The freq is ultimately decided by PCODE and it
-> > > > > has sudo and all the rights to disrespect what drivers (including SLPC as a
-> > > > > a driver from PCODE perspective) are requesting.
-> > > > > 
-> > > > > > 
-> > > > > > Important to note I am primarily focusing on the min freq here, which AFAIR
-> > > > > > we concluded can behave that user writes in 300, but SLPC decides it will
-> > > > > > only go as low as 350.
-> > > > > 
-> > > > > The other caveat here with the efficient freq is that it is dynamic and PCODE
-> > > > > decides it with runtime conditions. It may start with 300, then move to 350,
-> > > > > then back to 300. i915 is only stashing the initial value.
-> > > > > 
-> > > > > We could potentially update our rpe everytime any freq control is
-> > > > > touched.
-> > > > 
-> > > > We thought of doing this but two points:
-> > > > 
-> > > > 1. i915 now reads the same register as GuC for rpe but I never see the
-> > > >      value in this register change.
-> > > > 2. Even if we could know the real rpe, the freq's might be set before a
-> > > >      workload start running and rpe might change after the workload starts
-> > > >      running. So knowing rpe before the workload might not be very useful.
-> > > > 
-> > > > I am of the opposite opinion that anyway the previous kernel ABI is
-> > > > probably now irrecoverably bust, so we should give FW free reign and stop
-> > > > disabling efficient freq the way we do now when min_freq < rpe_freq.
-> > > 
-> > > We have to answer the question of why we need to keep exposing the sysfs
-> > > controls if they don't/can't/won't do what they say on the tin. Could we
-> > > make a break with DG2 for instance? Some use cases might suffer but it's
-> > > probably better than having them think it does what they think it does, or
-> > > file bugs when it does not.
-> > 
-> > That's a good question. But if we have no control at all people will still
-> > file requests for something our hardware and low level firmwares cannot promise.
-> > 
-> > There are many folks who run important/critical experiments using these
-> > interfaces at the same time they are monitoring throttle conditions and all.
-> 
-> Aren't the two paragraphs a bit in contradiction? Important and critical
-> experiments using controls which are not doing what they think they are.
+Currently, the Mmap BO IOCTL is not completely covered by the existing tests:
+V3D only tests invalid BO handlers and VC4 doesn't have tests for this IOCTL.
+Therefore, create tests for the Mmap BO IOCTL for the V3D and VC4. For both
+drivers, the sub-tests will test invalid parameters and also the consistency
+of newly mapped BOs.
 
-Well, not really.
+Best Regards,
+- Maíra Canal
 
-Most of the times it will work. We just don't have a warranty.
-We have some indications when this were disrespected like the throttle_reasons.
+Maíra Canal (2):
+  tests/v3d_mmap: Improve tests from V3D's Mmap BO IOCTL
+  tests/vc4_mmap: Create test for VC4's Mmap BO IOCTL
 
-Those limited times doesn't exclude the importance of the usage.
+ lib/igt_v3d.c             |  2 ++
+ lib/igt_vc4.c             |  2 ++
+ tests/v3d/v3d_mmap.c      | 34 ++++++++++++++++++++++++
+ tests/v3d_ci/v3d.testlist |  2 ++
+ tests/vc4/meson.build     |  1 +
+ tests/vc4/vc4_mmap.c      | 55 +++++++++++++++++++++++++++++++++++++++
+ tests/vc4_ci/vc4.testlist |  2 ++
+ 7 files changed, 98 insertions(+)
+ create mode 100644 tests/vc4/vc4_mmap.c
 
-> 
-> I don't claim I know for what all use cases do they get used. I *think*
-> there was one in the media transcoding world one where people wanted truly
-> fixed frequency so they can compare like-for-like between something.
-> 
-> So bah.. but okay for the perf_pmu changes, how about instead of this:
-> 
-> rpN = read RPn from sysfs
-> set_min_freq(rpN)
-> sleep
-> real_min = read actual from sysfs
-> actual = sample pmu for t
-> assert real_min is actual
-> 
-> We do this:
-> 
-> rpN = read RPn from sysfs
-> set_min_freq(rpN)
-> sleep
-> fw_min = read actual from sysfs
-> set_min_freq(fw_min)
-> sleep
-> actual = sample pmu for t
-> assert fw_min is actual
-> 
-> That's a tiny difference which both "documents" and verifies that even if we
-> cannot set the min to RPn, firmware will somewhat consistently (stable)
-> respect the minimum it prefers.
-> 
-> Is that somewhat acceptable?
-
-yeap, this sounds a better approach for a sane test.
-
-> 
-> Regards,
-> 
-> Tvrtko
+-- 
+2.38.1
