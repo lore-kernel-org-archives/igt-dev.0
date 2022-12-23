@@ -1,20 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 55DE210E260
- for <igt-dev@lists.freedesktop.org>; Fri, 23 Dec 2022 21:46:16 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2B87710E25D
+ for <igt-dev@lists.freedesktop.org>; Fri, 23 Dec 2022 21:46:38 +0000 (UTC)
 From: =?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>
 To: Melissa Wen <mwen@igalia.com>,
  =?UTF-8?q?Andr=C3=A9=20Almeida?= <andrealmeid@igalia.com>,
  Emma Anholt <emma@anholt.net>, Maxime Ripard <maxime@cerno.tech>
-Date: Fri, 23 Dec 2022 18:44:35 -0300
-Message-Id: <20221223214433.31547-2-mcanal@igalia.com>
+Date: Fri, 23 Dec 2022 18:44:37 -0300
+Message-Id: <20221223214433.31547-3-mcanal@igalia.com>
 In-Reply-To: <20221223214433.31547-1-mcanal@igalia.com>
 References: <20221223214433.31547-1-mcanal@igalia.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 1/2] tests/v3d_mmap: Improve tests from
- V3D's Mmap BO IOCTL
+Subject: [igt-dev] [PATCH i-g-t 2/2] tests/vc4_mmap: Create test for VC4's
+ Mmap BO IOCTL
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,98 +27,118 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-The current tests for the V3D's Mmap IOCTL don't cover all the
-possible invalid parameters on drm_v3d_mmap_bo. Therefore, add a
-subtest to make sure that flags on drm_v3d_mmap_bo is zero and also
-add a subtest to test the read/write coherency of a newly mapped bo.
-Moreover, also adds a check to assure that the mmap's offset is a
-multiple of the page size as returned by sysconf(_SC_PAGE_SIZE).
+Add two igt_subtests for DRM_IOCTL_VC4_MMAP_BO, which tests the possible
+invalid parameters for the IOCTL and also the read/write coherency of a
+newly mapped bo. Moreover, also adds a check to assure that the mmap's
+offset is a multiple of the page size as returned by sysconf(_SC_PAGE_SIZE).
 
 Signed-off-by: Maíra Canal <mcanal@igalia.com>
 ---
- lib/igt_v3d.c             |  2 ++
- tests/v3d/v3d_mmap.c      | 34 ++++++++++++++++++++++++++++++++++
- tests/v3d_ci/v3d.testlist |  2 ++
- 3 files changed, 38 insertions(+)
+ lib/igt_vc4.c             |  2 ++
+ tests/vc4/meson.build     |  1 +
+ tests/vc4/vc4_mmap.c      | 55 +++++++++++++++++++++++++++++++++++++++
+ tests/vc4_ci/vc4.testlist |  2 ++
+ 4 files changed, 60 insertions(+)
+ create mode 100644 tests/vc4/vc4_mmap.c
 
-diff --git a/lib/igt_v3d.c b/lib/igt_v3d.c
-index 5aa583da..68d11d7f 100644
---- a/lib/igt_v3d.c
-+++ b/lib/igt_v3d.c
-@@ -108,6 +108,8 @@ igt_v3d_mmap_bo(int fd, uint32_t handle, uint32_t size, unsigned prot)
+diff --git a/lib/igt_vc4.c b/lib/igt_vc4.c
+index 91f7f4b5..6b6ad16c 100644
+--- a/lib/igt_vc4.c
++++ b/lib/igt_vc4.c
+@@ -138,6 +138,8 @@ igt_vc4_mmap_bo(int fd, uint32_t handle, uint32_t size, unsigned prot)
  
- 	do_ioctl(fd, DRM_IOCTL_V3D_MMAP_BO, &mmap_bo);
+ 	do_ioctl(fd, DRM_IOCTL_VC4_MMAP_BO, &mmap_bo);
  
 +	igt_assert_eq(mmap_bo.offset % sysconf(_SC_PAGE_SIZE), 0);
 +
  	ptr = mmap(0, size, prot, MAP_SHARED, fd, mmap_bo.offset);
  	if (ptr == MAP_FAILED)
  		return NULL;
-diff --git a/tests/v3d/v3d_mmap.c b/tests/v3d/v3d_mmap.c
-index 5e2385bd..8c822663 100644
---- a/tests/v3d/v3d_mmap.c
-+++ b/tests/v3d/v3d_mmap.c
-@@ -33,6 +33,14 @@ igt_main
- 	igt_fixture
- 		fd = drm_open_driver(DRIVER_V3D);
- 
-+	igt_describe("Make sure that flags is equal to zero.");
-+	igt_subtest("mmap-bad-flags") {
-+		struct drm_v3d_mmap_bo get = {
-+			.flags = 1,
-+		};
-+		do_ioctl_err(fd, DRM_IOCTL_V3D_MMAP_BO, &get, EINVAL);
+diff --git a/tests/vc4/meson.build b/tests/vc4/meson.build
+index 76e6f16c..518f6043 100644
+--- a/tests/vc4/meson.build
++++ b/tests/vc4/meson.build
+@@ -3,6 +3,7 @@ vc4_progs = [
+ 	'vc4_dmabuf_poll',
+ 	'vc4_label_bo',
+ 	'vc4_lookup_fail',
++	'vc4_mmap',
+ 	'vc4_perfmon',
+ 	'vc4_purgeable_bo',
+ 	'vc4_tiling',
+diff --git a/tests/vc4/vc4_mmap.c b/tests/vc4/vc4_mmap.c
+new file mode 100644
+index 00000000..8666edf2
+--- /dev/null
++++ b/tests/vc4/vc4_mmap.c
+@@ -0,0 +1,55 @@
++// SPDX-License-Identifier: MIT
++/*
++ * Copyright © 2022 Igalia S.L.
++ */
++
++#include "igt.h"
++#include "igt_vc4.h"
++
++IGT_TEST_DESCRIPTION("Tests for the VC4's mmap IOCTL");
++
++igt_main
++{
++	int fd;
++
++	igt_fixture {
++		fd = drm_open_driver(DRIVER_VC4);
++		igt_require(igt_vc4_is_v3d(fd));
 +	}
 +
- 	igt_describe("Make sure an invalid BO cannot be mapped.");
- 	igt_subtest("mmap-bad-handle") {
- 		struct drm_v3d_mmap_bo get = {
-@@ -41,6 +49,32 @@ igt_main
- 		do_ioctl_err(fd, DRM_IOCTL_V3D_MMAP_BO, &get, ENOENT);
- 	}
- 
++	igt_describe("Make sure an invalid BO cannot be mapped.");
++	igt_subtest("mmap-bad-handle") {
++		struct drm_vc4_mmap_bo get = {
++			.handle = 0xd0d0d0d0,
++		};
++		do_ioctl_err(fd, DRM_IOCTL_VC4_MMAP_BO, &get, EINVAL);
++	}
++
 +	igt_describe("Test basics of newly mapped bo like default content, write and read "
 +		     "coherency, mapping existence after gem_close and unmapping.");
 +	igt_subtest("mmap-bo") {
-+		struct v3d_bo *bo = igt_v3d_create_bo(fd, PAGE_SIZE);
++		int handle = igt_vc4_create_bo(fd, PAGE_SIZE);
++		uint32_t *map = igt_vc4_mmap_bo(fd, handle, PAGE_SIZE, PROT_READ | PROT_WRITE);
 +		uint8_t expected[PAGE_SIZE];
 +
-+		igt_v3d_bo_mmap(fd, bo);
 +
 +		/* Testing contents of newly created objects. */
 +		memset(expected, 0, sizeof(expected));
-+		igt_assert_eq(memcmp(bo->map, expected, sizeof(expected)), 0);
++		igt_assert_eq(memcmp(map, expected, sizeof(expected)), 0);
 +
 +		/* Testing coherency of writes and mmap reads. */
-+		memset(bo->map, 0xd0, PAGE_SIZE);
++		memset(map, 0xd0, PAGE_SIZE);
 +		memset(expected, 0xd0, PAGE_SIZE);
-+		igt_assert_eq(memcmp(expected, bo->map, sizeof(expected)), 0);
++		igt_assert_eq(memcmp(expected, map, sizeof(expected)), 0);
 +
 +		/* Testing that mapping stays after close */
-+		gem_close(fd, bo->handle);
-+		igt_assert_eq(memcmp(expected, bo->map, sizeof(expected)), 0);
++		gem_close(fd, handle);
++		igt_assert_eq(memcmp(expected, map, sizeof(expected)), 0);
 +
 +		/* Testing unmapping */
-+		munmap(bo->map, PAGE_SIZE);
-+		free(bo);
++		munmap(map, PAGE_SIZE);
 +	}
 +
- 	igt_fixture
- 		close(fd);
- }
-diff --git a/tests/v3d_ci/v3d.testlist b/tests/v3d_ci/v3d.testlist
-index 64359fb7..ce8c4f6c 100644
---- a/tests/v3d_ci/v3d.testlist
-+++ b/tests/v3d_ci/v3d.testlist
-@@ -7,7 +7,9 @@ igt@v3d/v3d_get_bo_offset@get-bad-handle
- igt@v3d/v3d_get_param@base-params
- igt@v3d/v3d_get_param@get-bad-param
- igt@v3d/v3d_get_param@get-bad-flags
-+igt@v3d/v3d_mmap@mmap-bad-flags
- igt@v3d/v3d_mmap@mmap-bad-handle
-+igt@v3d/v3d_mmap@mmap-bo
- igt@v3d/v3d_perfmon@create-perfmon-0
- igt@v3d/v3d_perfmon@create-perfmon-exceed
- igt@v3d/v3d_perfmon@create-perfmon-invalid-counters
++	igt_fixture
++		close(fd);
++}
+diff --git a/tests/vc4_ci/vc4.testlist b/tests/vc4_ci/vc4.testlist
+index 1b41538e..889d0035 100644
+--- a/tests/vc4_ci/vc4.testlist
++++ b/tests/vc4_ci/vc4.testlist
+@@ -8,6 +8,8 @@ igt@vc4/vc4_label_bo@set-bad-handle
+ igt@vc4/vc4_label_bo@set-bad-name
+ igt@vc4/vc4_label_bo@set-kernel-name
+ igt@vc4/vc4_lookup_fail@bad-color-write
++igt@vc4/vc4_mmap@mmap-bad-handle
++igt@vc4/vc4_mmap@mmap-bo
+ igt@vc4/vc4_perfmon@create-perfmon-0
+ igt@vc4/vc4_perfmon@create-perfmon-exceed
+ igt@vc4/vc4_perfmon@create-perfmon-invalid-events
 -- 
 2.38.1
