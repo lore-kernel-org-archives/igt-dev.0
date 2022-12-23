@@ -1,27 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E532310E62E
- for <igt-dev@lists.freedesktop.org>; Fri, 23 Dec 2022 09:23:01 +0000 (UTC)
-Message-ID: <61b209ce-cc68-b998-733e-42b06e9d378e@linux.intel.com>
-Date: Fri, 23 Dec 2022 09:22:53 +0000
+Content-Type: multipart/alternative;
+ boundary="===============1241676611121132607=="
 MIME-Version: 1.0
-Content-Language: en-US
-To: Rodrigo Vivi <rodrigo.vivi@intel.com>
-References: <20221119020023.3376-1-ashutosh.dixit@intel.com>
- <4b9229ee-baa0-c146-adff-425f36d95eaf@linux.intel.com>
- <87pmdew6l6.wl-ashutosh.dixit@intel.com>
- <c90ded5b-f24f-781a-0d09-bf38a3a9770e@linux.intel.com>
- <87sfhf7trw.wl-ashutosh.dixit@intel.com>
- <d3d29b9a-3e9b-967a-47ca-f157d32d6652@linux.intel.com>
- <Y5yRSFY09ZzbTCkS@intel.com> <874jtupwwl.wl-ashutosh.dixit@intel.com>
- <cc8b219d-808d-151a-260b-c3992970f5cc@linux.intel.com>
- <Y6S99xokHDs484QF@intel.com>
-From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
-In-Reply-To: <Y6S99xokHDs484QF@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/perf_pmu: Compare against
- requested freq in frequency subtest
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Bhanuprakash Modem" <bhanuprakash.modem@intel.com>
+Date: Fri, 23 Dec 2022 09:29:05 -0000
+Message-ID: <167178774503.30344.15426349140778011467@emeril.freedesktop.org>
+References: <20221115170855.196572-1-bhanuprakash.modem@intel.com>
+In-Reply-To: <20221115170855.196572-1-bhanuprakash.modem@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgQWRkIElH?=
+ =?utf-8?q?T_support_for_Bigjoiner_=28rev12=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -29,226 +17,268 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
+--===============1241676611121132607==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-On 22/12/2022 20:28, Rodrigo Vivi wrote:
-> On Mon, Dec 19, 2022 at 08:46:59AM +0000, Tvrtko Ursulin wrote:
->>
->> On 17/12/2022 02:49, Dixit, Ashutosh wrote:
->>> On Fri, 16 Dec 2022 07:39:52 -0800, Rodrigo Vivi wrote:
->>>> On Fri, Dec 16, 2022 at 09:37:31AM +0000, Tvrtko Ursulin wrote:
->>>>>
->>>>> On 16/12/2022 06:21, Dixit, Ashutosh wrote:
->>>>>> On Thu, 24 Nov 2022 04:42:08 -0800, Tvrtko Ursulin wrote:
->>>>>>>
->>>>>>> On 23/11/2022 06:03, Dixit, Ashutosh wrote:
->>>>>>>> On Mon, 21 Nov 2022 01:09:55 -0800, Tvrtko Ursulin wrote:
->>>>>>>>>
->>>>>>>>
->>>>>>
->>>>>> Hi Tvrtko,
->>>>>>
->>>>>> Sorry for the delay in replying on this. We are discussing this but still
->>>>>> no conclusion. I have replied what I can below, will update again after I
->>>>>> know more. Wanted to send a reply before disappearing for the
->>>>>> holidays. Please see below.
->>>>>>
->>>>>>>> Hi Tvrtko,
->>>>>>>>
->>>>>>>> I am only offering an overall clarification below first, not answering all
->>>>>>>> of your points for now.
->>>>>>>>
->>>>>>>>>
->>>>>>>>> On 19/11/2022 02:00, Ashutosh Dixit wrote:
->>>>>>>>>> With SLPC, even when we set the same min and max freq's, the requested and
->>>>>>>>>> actual freq's can differ from the min/max freq set. For example "efficient
->>>>>>>>>> freq" (when in effect) can override set min/max freq. In general FW is the
->>>>>>>>>> final arbiter in determining freq and can override set values.
->>>>>>>>>>
->>>>>>>>>> Therefore in igt@perf_pmu@frequency subtest, compare the requested freq
->>>>>>>>>> reported by PMU not against the set freq's but against the requested freq
->>>>>>>>>> reported in sysfs. Also add a delay after setting freq's to account for
->>>>>>>>>> messaging delays in setting freq's in GuC.
->>>>>>>>>>
->>>>>>>>>> v2: Introduce a 100 ms delay after setting freq
->>>>>>>>>> v3: Update commit message, code identical to v2
->>>>>>>>>>
->>>>>>>>>> Bug: https://gitlab.freedesktop.org/drm/intel/-/issues/6806
->>>>>>>>>> Cc: Vinay Belgaumkar <vinay.belgaumkar@intel.com>
->>>>>>>>>> Cc: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
->>>>>>>>>> Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
->>>>>>>>>> ---
->>>>>>>>>>       tests/i915/perf_pmu.c | 23 +++++++++++++++--------
->>>>>>>>>>       1 file changed, 15 insertions(+), 8 deletions(-)
->>>>>>>>>>
->>>>>>>>>> diff --git a/tests/i915/perf_pmu.c b/tests/i915/perf_pmu.c
->>>>>>>>>> index f363db2ba13..02f6ae989b1 100644
->>>>>>>>>> --- a/tests/i915/perf_pmu.c
->>>>>>>>>> +++ b/tests/i915/perf_pmu.c
->>>>>>>>>> @@ -1543,10 +1543,13 @@ test_interrupts_sync(int gem_fd)
->>>>>>>>>> 	igt_assert_lte(target, busy);
->>>>>>>>>>       }
->>>>>>>>>>       +/* Wait for GuC SLPC freq changes to take effect */
->>>>>>>>>> +#define wait_freq_set()		usleep(100000)
->>>>>>>>>
->>>>>>>>> A future task of maybe adding a drop_caches flag to wait for this?
->>>>>>>>>
->>>>>>>>> Alternatively, if we have a sysfs or debugfs file which reflects the value
->>>>>>>>> once GuC has processed it, keep reading it until it is updated? Even if to
->>>>>>>>> something other than it was before the write, to handle the inability to
->>>>>>>>> set the exact requested frequency sometimes?
->>>>>>>>>>
->>>>>>>>>> +
->>>>>>>>>>       static void
->>>>>>>>>>       test_frequency(int gem_fd)
->>>>>>>>>>       {
->>>>>>>>>> -	uint32_t min_freq, max_freq, boost_freq;
->>>>>>>>>> +	uint32_t min_freq, max_freq, boost_freq, min_req, max_req;
->>>>>>>>>> 	uint64_t val[2], start[2], slept;
->>>>>>>>>> 	double min[2], max[2];
->>>>>>>>>> 	igt_spin_t *spin;
->>>>>>>>>> @@ -1572,10 +1575,11 @@ test_frequency(int gem_fd)
->>>>>>>>>> 	 * Set GPU to min frequency and read PMU counters.
->>>>>>>>>> 	 */
->>>>>>>>>> 	igt_require(igt_sysfs_set_u32(sysfs, "gt_min_freq_mhz", min_freq));
->>>>>>>>>> -	igt_require(igt_sysfs_get_u32(sysfs, "gt_min_freq_mhz") == min_freq);
->>>>>>>>>> 	igt_require(igt_sysfs_set_u32(sysfs, "gt_max_freq_mhz", min_freq));
->>>>>>>>>> -	igt_require(igt_sysfs_get_u32(sysfs, "gt_max_freq_mhz") == min_freq);
->>>>>>>>>> 	igt_require(igt_sysfs_set_u32(sysfs, "gt_boost_freq_mhz", min_freq));
->>>>>>>>>> +	wait_freq_set();
->>>>>>>>>> +	igt_require(igt_sysfs_get_u32(sysfs, "gt_min_freq_mhz") == min_freq);
->>>>>>>>>> +	igt_require(igt_sysfs_get_u32(sysfs, "gt_max_freq_mhz") == min_freq);
->>>>>>>>>> 	igt_require(igt_sysfs_get_u32(sysfs, "gt_boost_freq_mhz") == min_freq);
->>>>>>>>>> 		gem_quiescent_gpu(gem_fd); /* Idle to be sure the change takes
->>>>>>>>>> effect */
->>>>>>>>>> @@ -1587,6 +1591,7 @@ test_frequency(int gem_fd)
->>>>>>>>>> 		min[0] = 1e9*(val[0] - start[0]) / slept;
->>>>>>>>>> 	min[1] = 1e9*(val[1] - start[1]) / slept;
->>>>>>>>>> +	min_req = igt_sysfs_get_u32(sysfs, "gt_cur_freq_mhz");
->>>>>>>>>
->>>>>>>>> This really leaves a bad taste for me still, sorry. First of all, it may
->>>>>>>>> make it more palatable if readback was immediately after wait_freq_set(),
->>>>>>>>> or as part of it. Otherwise it seems like even more confused test and sysfs
->>>>>>>>> ABI.
->>>>>>>>>
->>>>>>>>> Did we close on my question of whether we can make readback of
->>>>>>>>> gt_max_freq_mhz actually represent the real max? Correct me please if I got
->>>>>>>>> confused - with min freq checking here we write max=300 and get 350? If so
->>>>>>>>> can we make gt_max_freq_mhz return 350 after the write of 300? Or return an
->>>>>>>>> error?
->>>>>>>>
->>>>>>>> Did you read Vinay's email on v1 here:
->>>>>>>>
->>>>>>>> https://patchwork.freedesktop.org/patch/510304/?series=110574&rev=1#comment_921571
->>>>>>>>
->>>>>>>> As Vinay says, SLPC is requesting an entirely different freq (the effecient
->>>>>>>> freq rather than the set 'min == max freq') and no amount of waiting will
->>>>>>>> result in the requested freq being the same as the set 'min == max
->>>>>>>> freq'. Also the efficient freq cannot be controlled from user space.
->>>>>>>
->>>>>>> Why is that not a break in our ABI? What is the point in allowing users to
->>>>>>> write into this field if the desired value can be silently ignored?
->>>>>>
->>>>>> Yes, this is in discussion. FW is doing this and we need to see if FW can
->>>>>> be made to obey the i915 ABI. IMHO what matters is performance per watt and
->>>>>> if the ABI has to be tossed so be it. I will keep this list posted about
->>>>>> what happens here. Merging any patches for these issues (GL #6806 and
->>>>>> #6786) is blocked till the ABI breakage issue is resolved one way or
->>>>>> another.
->>>>>
->>>>> Two thoughts here, one has been mentioned before.
->>>>>
->>>>> New one is that performance per watt perhaps does not matter (is not a
->>>>> primary concern at least) for use cases where "users" (for some definition)
->>>>> tweak the min/max in sysfs. Presumably in those cases user wants control,
->>>>> for some reason, so as long as it is safe and within the limits why not give
->>>>> it to them.
->>>>>
->>>>> Same argument from a different angle - what is the use case for allowing
->>>>> min/max control which does not really do what it says on the tin?
->>>>>
->>>>> Old thought is this - if SLPC refuses to be controlled using our existing
->>>>> controls then we could just say -ENODEV on attempts to modify them. Whether
->>>>> for any input value, or some, depending on what SLPC can support (or wants
->>>>> to support).
->>>>
->>>> The problem is not just	SLPC. The freq is ultimately decided by PCODE and it
->>>> has sudo and all the rights to disrespect what drivers (including SLPC as a
->>>> a driver from PCODE perspective) are requesting.
->>>>
->>>>>
->>>>> Important to note I am primarily focusing on the min freq here, which AFAIR
->>>>> we concluded can behave that user writes in 300, but SLPC decides it will
->>>>> only go as low as 350.
->>>>
->>>> The other caveat here with the efficient freq is that it is dynamic and PCODE
->>>> decides it with runtime conditions. It may start with 300, then move to 350,
->>>> then back to 300. i915 is only stashing the initial value.
->>>>
->>>> We could potentially update our rpe everytime any freq control is
->>>> touched.
->>>
->>> We thought of doing this but two points:
->>>
->>> 1. i915 now reads the same register as GuC for rpe but I never see the
->>>      value in this register change.
->>> 2. Even if we could know the real rpe, the freq's might be set before a
->>>      workload start running and rpe might change after the workload starts
->>>      running. So knowing rpe before the workload might not be very useful.
->>>
->>> I am of the opposite opinion that anyway the previous kernel ABI is
->>> probably now irrecoverably bust, so we should give FW free reign and stop
->>> disabling efficient freq the way we do now when min_freq < rpe_freq.
->>
->> We have to answer the question of why we need to keep exposing the sysfs
->> controls if they don't/can't/won't do what they say on the tin. Could we
->> make a break with DG2 for instance? Some use cases might suffer but it's
->> probably better than having them think it does what they think it does, or
->> file bugs when it does not.
-> 
-> That's a good question. But if we have no control at all people will still
-> file requests for something our hardware and low level firmwares cannot promise.
-> 
-> There are many folks who run important/critical experiments using these
-> interfaces at the same time they are monitoring throttle conditions and all.
+== Series Details ==
 
-Aren't the two paragraphs a bit in contradiction? Important and critical 
-experiments using controls which are not doing what they think they are.
+Series: Add IGT support for Bigjoiner (rev12)
+URL   : https://patchwork.freedesktop.org/series/108183/
+State : success
 
-I don't claim I know for what all use cases do they get used. I *think* 
-there was one in the media transcoding world one where people wanted 
-truly fixed frequency so they can compare like-for-like between something.
+== Summary ==
 
-So bah.. but okay for the perf_pmu changes, how about instead of this:
+CI Bug Log - changes from CI_DRM_12524 -> IGTPW_8268
+====================================================
 
-rpN = read RPn from sysfs
-set_min_freq(rpN)
-sleep
-real_min = read actual from sysfs
-actual = sample pmu for t
-assert real_min is actual
+Summary
+-------
 
-We do this:
+  **SUCCESS**
 
-rpN = read RPn from sysfs
-set_min_freq(rpN)
-sleep
-fw_min = read actual from sysfs
-set_min_freq(fw_min)
-sleep
-actual = sample pmu for t
-assert fw_min is actual
+  No regressions found.
 
-That's a tiny difference which both "documents" and verifies that even 
-if we cannot set the min to RPn, firmware will somewhat consistently 
-(stable) respect the minimum it prefers.
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8268/index.html
 
-Is that somewhat acceptable?
+Participating hosts (45 -> 46)
+------------------------------
 
-Regards,
+  Additional (1): bat-atsm-1 
 
-Tvrtko
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in IGTPW_8268:
+
+### IGT changes ###
+
+#### Suppressed ####
+
+  The following results come from untrusted machines, tests, or statuses.
+  They do not affect the overall result.
+
+  * igt@gem_exec_suspend@basic-s3@smem:
+    - {bat-dg2-oem1}:     [DMESG-WARN][1] ([i915#5763]) -> [INCOMPLETE][2]
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12524/bat-dg2-oem1/igt@gem_exec_suspend@basic-s3@smem.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8268/bat-dg2-oem1/igt@gem_exec_suspend@basic-s3@smem.html
+
+  
+Known issues
+------------
+
+  Here are the changes found in IGTPW_8268 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@i915_selftest@live@gt_heartbeat:
+    - fi-kbl-soraka:      [PASS][3] -> [DMESG-FAIL][4] ([i915#5334])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12524/fi-kbl-soraka/igt@i915_selftest@live@gt_heartbeat.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8268/fi-kbl-soraka/igt@i915_selftest@live@gt_heartbeat.html
+
+  * igt@i915_selftest@live@late_gt_pm:
+    - fi-kbl-soraka:      [PASS][5] -> [INCOMPLETE][6] ([i915#7640])
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12524/fi-kbl-soraka/igt@i915_selftest@live@late_gt_pm.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8268/fi-kbl-soraka/igt@i915_selftest@live@late_gt_pm.html
+
+  
+#### Possible fixes ####
+
+  * igt@gem_exec_gttfill@basic:
+    - fi-pnv-d510:        [FAIL][7] ([i915#7229]) -> [PASS][8]
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12524/fi-pnv-d510/igt@gem_exec_gttfill@basic.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8268/fi-pnv-d510/igt@gem_exec_gttfill@basic.html
+
+  * igt@i915_selftest@live@migrate:
+    - bat-adlp-4:         [DMESG-FAIL][9] ([i915#7699]) -> [PASS][10]
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12524/bat-adlp-4/igt@i915_selftest@live@migrate.html
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8268/bat-adlp-4/igt@i915_selftest@live@migrate.html
+
+  * igt@i915_selftest@live@mman:
+    - {bat-rpls-1}:       [TIMEOUT][11] ([i915#6794]) -> [PASS][12]
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12524/bat-rpls-1/igt@i915_selftest@live@mman.html
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8268/bat-rpls-1/igt@i915_selftest@live@mman.html
+
+  * igt@i915_selftest@live@workarounds:
+    - {bat-rpls-1}:       [DMESG-WARN][13] -> [PASS][14]
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12524/bat-rpls-1/igt@i915_selftest@live@workarounds.html
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8268/bat-rpls-1/igt@i915_selftest@live@workarounds.html
+
+  * igt@kms_busy@basic@flip:
+    - fi-bsw-n3050:       [SKIP][15] ([fdo#109271]) -> [PASS][16] +1 similar issue
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12524/fi-bsw-n3050/igt@kms_busy@basic@flip.html
+   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8268/fi-bsw-n3050/igt@kms_busy@basic@flip.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [fdo#109295]: https://bugs.freedesktop.org/show_bug.cgi?id=109295
+  [i915#1072]: https://gitlab.freedesktop.org/drm/intel/issues/1072
+  [i915#1836]: https://gitlab.freedesktop.org/drm/intel/issues/1836
+  [i915#2582]: https://gitlab.freedesktop.org/drm/intel/issues/2582
+  [i915#3546]: https://gitlab.freedesktop.org/drm/intel/issues/3546
+  [i915#4077]: https://gitlab.freedesktop.org/drm/intel/issues/4077
+  [i915#4079]: https://gitlab.freedesktop.org/drm/intel/issues/4079
+  [i915#4083]: https://gitlab.freedesktop.org/drm/intel/issues/4083
+  [i915#4312]: https://gitlab.freedesktop.org/drm/intel/issues/4312
+  [i915#4983]: https://gitlab.freedesktop.org/drm/intel/issues/4983
+  [i915#5334]: https://gitlab.freedesktop.org/drm/intel/issues/5334
+  [i915#5763]: https://gitlab.freedesktop.org/drm/intel/issues/5763
+  [i915#6077]: https://gitlab.freedesktop.org/drm/intel/issues/6077
+  [i915#6078]: https://gitlab.freedesktop.org/drm/intel/issues/6078
+  [i915#6093]: https://gitlab.freedesktop.org/drm/intel/issues/6093
+  [i915#6094]: https://gitlab.freedesktop.org/drm/intel/issues/6094
+  [i915#6166]: https://gitlab.freedesktop.org/drm/intel/issues/6166
+  [i915#6311]: https://gitlab.freedesktop.org/drm/intel/issues/6311
+  [i915#6367]: https://gitlab.freedesktop.org/drm/intel/issues/6367
+  [i915#6621]: https://gitlab.freedesktop.org/drm/intel/issues/6621
+  [i915#6645]: https://gitlab.freedesktop.org/drm/intel/issues/6645
+  [i915#6794]: https://gitlab.freedesktop.org/drm/intel/issues/6794
+  [i915#6997]: https://gitlab.freedesktop.org/drm/intel/issues/6997
+  [i915#7229]: https://gitlab.freedesktop.org/drm/intel/issues/7229
+  [i915#7357]: https://gitlab.freedesktop.org/drm/intel/issues/7357
+  [i915#7640]: https://gitlab.freedesktop.org/drm/intel/issues/7640
+  [i915#7699]: https://gitlab.freedesktop.org/drm/intel/issues/7699
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_7102 -> IGTPW_8268
+
+  CI-20190529: 20190529
+  CI_DRM_12524: a29956c69a562e85ef8657e39382bc207a339941 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_8268: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8268/index.html
+  IGT_7102: bacfdc84a9c02556c5441deb21e3a3f18a07347d @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8268/index.html
+
+--===============1241676611121132607==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Add IGT support for Bigjoiner (rev12)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/108183/">https://patchwork.freedesktop.org/series/108183/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8268/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8268/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_12524 -&gt; IGTPW_8268</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8268/index.html</p>
+<h2>Participating hosts (45 -&gt; 46)</h2>
+<p>Additional (1): bat-atsm-1 </p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in IGTPW_8268:</p>
+<h3>IGT changes</h3>
+<h4>Suppressed</h4>
+<p>The following results come from untrusted machines, tests, or statuses.<br />
+  They do not affect the overall result.</p>
+<ul>
+<li>igt@gem_exec_suspend@basic-s3@smem:<ul>
+<li>{bat-dg2-oem1}:     <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12524/bat-dg2-oem1/igt@gem_exec_suspend@basic-s3@smem.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5763">i915#5763</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8268/bat-dg2-oem1/igt@gem_exec_suspend@basic-s3@smem.html">INCOMPLETE</a></li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_8268 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live@gt_heartbeat:</p>
+<ul>
+<li>fi-kbl-soraka:      <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12524/fi-kbl-soraka/igt@i915_selftest@live@gt_heartbeat.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8268/fi-kbl-soraka/igt@i915_selftest@live@gt_heartbeat.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5334">i915#5334</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@late_gt_pm:</p>
+<ul>
+<li>fi-kbl-soraka:      <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12524/fi-kbl-soraka/igt@i915_selftest@live@late_gt_pm.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8268/fi-kbl-soraka/igt@i915_selftest@live@late_gt_pm.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7640">i915#7640</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@gem_exec_gttfill@basic:</p>
+<ul>
+<li>fi-pnv-d510:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12524/fi-pnv-d510/igt@gem_exec_gttfill@basic.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7229">i915#7229</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8268/fi-pnv-d510/igt@gem_exec_gttfill@basic.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@migrate:</p>
+<ul>
+<li>bat-adlp-4:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12524/bat-adlp-4/igt@i915_selftest@live@migrate.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7699">i915#7699</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8268/bat-adlp-4/igt@i915_selftest@live@migrate.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@mman:</p>
+<ul>
+<li>{bat-rpls-1}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12524/bat-rpls-1/igt@i915_selftest@live@mman.html">TIMEOUT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6794">i915#6794</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8268/bat-rpls-1/igt@i915_selftest@live@mman.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@workarounds:</p>
+<ul>
+<li>{bat-rpls-1}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12524/bat-rpls-1/igt@i915_selftest@live@workarounds.html">DMESG-WARN</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8268/bat-rpls-1/igt@i915_selftest@live@workarounds.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@kms_busy@basic@flip:</p>
+<ul>
+<li>fi-bsw-n3050:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12524/fi-bsw-n3050/igt@kms_busy@basic@flip.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8268/fi-bsw-n3050/igt@kms_busy@basic@flip.html">PASS</a> +1 similar issue</li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_7102 -&gt; IGTPW_8268</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_12524: a29956c69a562e85ef8657e39382bc207a339941 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_8268: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8268/index.html<br />
+  IGT_7102: bacfdc84a9c02556c5441deb21e3a3f18a07347d @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============1241676611121132607==--
