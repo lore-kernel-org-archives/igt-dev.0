@@ -1,17 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5D3F310E457
- for <igt-dev@lists.freedesktop.org>; Wed, 21 Dec 2022 15:32:46 +0000 (UTC)
-Date: Wed, 21 Dec 2022 17:33:29 +0200
-From: Petri Latvala <petri.latvala@intel.com>
-To: Jonathan Cavitt <jonathan.cavitt@intel.com>
-Message-ID: <Y6MnSabXeaOlTRKx@platvala-desk.ger.corp.intel.com>
-References: <20221221152024.3789630-1-jonathan.cavitt@intel.com>
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3014110E16A
+ for <igt-dev@lists.freedesktop.org>; Fri, 23 Dec 2022 08:05:25 +0000 (UTC)
+Message-ID: <9a6e5940-9685-37cc-00df-4c7cb2db7fa5@intel.com>
+Date: Fri, 23 Dec 2022 13:35:12 +0530
+Content-Language: en-US
+To: Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
+ <igt-dev@lists.freedesktop.org>
+References: <20221115170855.196572-4-bhanuprakash.modem@intel.com>
+ <20221223062955.2526525-1-bhanuprakash.modem@intel.com>
+From: Karthik B S <karthik.b.s@intel.com>
+In-Reply-To: <20221223062955.2526525-1-bhanuprakash.modem@intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20221221152024.3789630-1-jonathan.cavitt@intel.com>
-Subject: Re: [igt-dev] [PATCH] drm/i915: Enable XE_HP 4Tile support
+Subject: Re: [igt-dev] [i-g-t v6 03/52] tests/kms_async_flips: Add support
+ for Bigjoiner
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,56 +23,48 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org,
- Bommu Krishnaiah <krishnaiah.bommu@intel.com>,
- Telukuntla Sreedhar <sreedhar.telukuntla@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Wed, Dec 21, 2022 at 07:20:25AM -0800, Jonathan Cavitt wrote:
-> Add .has_4tile tag to XE_HP_FEATURES set.
-> Remove duplicate entry from DG2_FEATURES.
-> 
-> Signed-off-by: Jonathan Cavitt <jonathan.cavitt@intel.com>
-> Cc: Bommu Krishnaiah <krishnaiah.bommu@intel.com>
-> Cc: Roper Matthew D <matthew.d.roper@intel.com>
-> Cc: Kempczynski Zbigniew <Zbigniew.Kempczynski@intel.com>
-> Cc: Telukuntla Sreedhar <sreedhar.telukuntla@intel.com>
-> Acked-by: Matt Roper <matthew.d.roper@intel.com>
+
+On 12/23/2022 11:59 AM, Bhanuprakash Modem wrote:
+> This patch will add a check to Skip the subtest if a selected pipe/output
+> combo won't support Bigjoiner or 8K mode.
+>
+> Example:
+> * Pipe-D wont support a mode > 5K
+> * To use 8K mode on a pipe then consecutive pipe must be available & free.
+>
+> V2: - Use updated helper name
+> V3: - Drop unrelated changes
+>
+> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Reviewed-by: Karthik B S <karthik.b.s@intel.com>
 > ---
->  drivers/gpu/drm/i915/i915_pci.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-
-Did you mean to send this to intel-gfx instead?
-
-
--- 
-Petri Latvala
-
-
-
-> 
-> diff --git a/drivers/gpu/drm/i915/i915_pci.c b/drivers/gpu/drm/i915/i915_pci.c
-> index 668e9da52584..7fd74cc28c0a 100644
-> --- a/drivers/gpu/drm/i915/i915_pci.c
-> +++ b/drivers/gpu/drm/i915/i915_pci.c
-> @@ -1017,6 +1017,7 @@ static const struct intel_device_info adl_p_info = {
->  	.has_3d_pipeline = 1, \
->  	.has_64bit_reloc = 1, \
->  	.has_flat_ccs = 1, \
-> +	.has_4tile = 1, \
->  	.has_global_mocs = 1, \
->  	.has_gt_uc = 1, \
->  	.has_llc = 1, \
-> @@ -1061,7 +1062,6 @@ static const struct intel_device_info xehpsdv_info = {
->  	.__runtime.graphics.ip.rel = 55, \
->  	.__runtime.media.ip.rel = 55, \
->  	PLATFORM(INTEL_DG2), \
-> -	.has_4tile = 1, \
->  	.has_64k_pages = 1, \
->  	.has_guc_deprivilege = 1, \
->  	.has_heci_pxp = 1, \
-> -- 
-> 2.25.1
-> 
+>   tests/kms_async_flips.c | 11 +++++++++--
+>   1 file changed, 9 insertions(+), 2 deletions(-)
+>
+> diff --git a/tests/kms_async_flips.c b/tests/kms_async_flips.c
+> index 7cb71f6b..e32ae914 100644
+> --- a/tests/kms_async_flips.c
+> +++ b/tests/kms_async_flips.c
+> @@ -542,9 +542,16 @@ static void run_test(data_t *data, void (*test)(data_t *))
+>   {
+>   	igt_output_t *output;
+>   	enum pipe pipe;
+> +	igt_display_t *display = &data->display;
+> +
+> +	for_each_pipe(display, pipe) {
+> +		for_each_valid_output_on_pipe(display, pipe, output) {
+> +			igt_display_reset(display);
+> +
+> +			igt_output_set_pipe(output, pipe);
+> +			if (!i915_pipe_output_combo_valid(display))
+> +				continue;
+>   
+> -	for_each_pipe(&data->display, pipe) {
+> -		for_each_valid_output_on_pipe(&data->display, pipe, output) {
+>   			igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), output->name) {
+>   				data->output = output;
+>   				data->pipe = pipe;
