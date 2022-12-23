@@ -1,14 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 73C2F10E635
- for <igt-dev@lists.freedesktop.org>; Fri, 23 Dec 2022 11:14:05 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 19A8310E637
+ for <igt-dev@lists.freedesktop.org>; Fri, 23 Dec 2022 11:14:12 +0000 (UTC)
 From: Karolina Stolarek <karolina.stolarek@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Fri, 23 Dec 2022 12:13:45 +0100
-Message-Id: <cover.1671793169.git.karolina.stolarek@intel.com>
+Date: Fri, 23 Dec 2022 12:13:48 +0100
+Message-Id: <aa208f148e62fd724a03ed62e4f50fa424252e3a.1671793169.git.karolina.stolarek@intel.com>
+In-Reply-To: <cover.1671793169.git.karolina.stolarek@intel.com>
+References: <cover.1671793169.git.karolina.stolarek@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v2 0/6] Introduce blt_cmd_info struct
+Subject: [igt-dev] [PATCH i-g-t v2 3/6] lib/i915_blt: Check for Tile-YF in
+ fast_copy
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,79 +23,40 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-This patch series introduces a new way of checking if a specific
-tiling format and/or blitter copy command is supported on
-the current platform. Instead of using functions with hardcoded
-devices, now we store information about available features in
-blt_cmd_info struct, each of the instances connected to the
-intel_device_info definitions.
+In older gens Tile4 is not available, we have Tile-YF instead. Check for
+both tilings when setting up the fast_copy command.
 
-Two patches that follow the introduction of blt_cmd_info and 
-intel_device_info modification are a prep work for the fast
-copy test -- extracting needed functions and updating
-fill_data() to support TileYF (available only for Pre-gen12).
+Signed-off-by: Karolina Stolarek <karolina.stolarek@intel.com>
+---
+ lib/i915/i915_blt.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-In addition to this, the patchset adds two fast copy tests: basic
-fast-copy where two blit copies are done in separate batches and
-fast-copy-emit which uses emit_blt_fast_copy() and manually
-crafts two copies in one batch.
-
-v2 of this series is significantly different from v1, especially
-when it comes to intel_blt_info (formerly blt_tiling) library
-implementation. It has been slimed down, and the API it exposes
-now only deals with blt_cmd_info, not i915. So, for example, if
-one wishes to query for support for fast copy for i915, they
-should use blt_has_fast_copy(i915), exposed by i915_blt library.
-The full list of changes can be found below.
-
-v2:
-  - Add documentation
-  - Rename blt_tiling to intel_blt_info to better capture the
-    nature of the library (Zbigniew)
-  - Rename "can" predicates for blitter commands to use "has"
-    (Kamil)
-  - Add a fast copy test with two copies in the same batch buffer
-  - Add blt_ prefixes to functions extracted from gem_ccs to
-    avoid name clash (Zbigniew/Kamil)
-  - Also move set_object_ext() out from gem_ccs so it can be
-    shared with other tests
-  - Significantly rewrite intel_blt_info library -- now it only
-    exposes blt_cmd_supports_tiling and blt_supports_command
-    and blt_cmd_info definitions that can be used by other
-    blitter libraries like i915_blt.
-  - Split introduction of intel_blt_info and usage of the struct
-    into two commits
-  - Add functions checking fast and block copy support to
-    i915_blt library
-  - Add reference to blt_cmd_info to intel_device_info definitions
-    (Zbigniew)
-  - Update commit messages (Kamil)
-
-Karolina Stolarek (6):
-  i915/lib: Add new library for blitter and tiling formats
-  lib: Update platform definitions with blitter information
-  lib/i915_blt: Check for Tile-YF in fast_copy
-  lib/i915_blt: Add common functions for blt_copy_object
-  tests/gem_exercise_blt: Add fast-copy test
-  tests/gem_exercise_blt: Add fast-copy-emit test
-
- .../igt-gpu-tools/igt-gpu-tools-docs.xml      |   1 +
- lib/i915/i915_blt.c                           | 192 +++++++--
- lib/i915/i915_blt.h                           |  48 ++-
- lib/i915/intel_blt_info.c                     | 241 +++++++++++
- lib/i915/intel_blt_info.h                     |  98 +++++
- lib/intel_chipset.c                           |   1 -
- lib/intel_chipset.h                           |   4 +
- lib/intel_device_info.c                       |  47 +++
- lib/meson.build                               |   1 +
- tests/i915/gem_ccs.c                          | 211 +++-------
- tests/i915/gem_exercise_blt.c                 | 394 ++++++++++++++++++
- tests/i915/gem_lmem_swapping.c                |  81 +---
- tests/meson.build                             |   1 +
- 13 files changed, 1055 insertions(+), 265 deletions(-)
- create mode 100644 lib/i915/intel_blt_info.c
- create mode 100644 lib/i915/intel_blt_info.h
- create mode 100644 tests/i915/gem_exercise_blt.c
-
+diff --git a/lib/i915/i915_blt.c b/lib/i915/i915_blt.c
+index 00cf7470..23ee2218 100644
+--- a/lib/i915/i915_blt.c
++++ b/lib/i915/i915_blt.c
+@@ -327,6 +327,11 @@ static enum blt_aux_mode __aux_mode(const struct blt_copy_object *obj)
+ 	return AM_AUX_NONE;
+ }
+ 
++static bool __new_tile_y_type(enum blt_tiling_type tiling)
++{
++	return tiling == T_TILE4 || tiling == T_YFMAJOR;
++}
++
+ static void fill_data(struct gen12_block_copy_data *data,
+ 		      const struct blt_copy_data *blt,
+ 		      uint64_t src_offset, uint64_t dst_offset,
+@@ -1013,8 +1018,8 @@ uint64_t emit_blt_fast_copy(int i915,
+ 	data.dw01.color_depth = __fast_color_depth(blt->color_depth);
+ 	data.dw01.dst_memory = __memory_type(blt->dst.region);
+ 	data.dw01.src_memory = __memory_type(blt->src.region);
+-	data.dw01.dst_type_y = blt->dst.tiling == T_TILE4 ? 1 : 0;
+-	data.dw01.src_type_y = blt->src.tiling == T_TILE4 ? 1 : 0;
++	data.dw01.dst_type_y = __new_tile_y_type(blt->dst.tiling) ? 1 : 0;
++	data.dw01.src_type_y = __new_tile_y_type(blt->src.tiling) ? 1 : 0;
+ 
+ 	data.dw02.dst_x1 = blt->dst.x1;
+ 	data.dw02.dst_y1 = blt->dst.y1;
 -- 
 2.25.1
