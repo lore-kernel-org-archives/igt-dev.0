@@ -1,15 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9100F10E091
- for <igt-dev@lists.freedesktop.org>; Mon, 26 Dec 2022 10:38:17 +0000 (UTC)
-From: Swati Sharma <swati2.sharma@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Mon, 26 Dec 2022 16:08:38 +0530
-Message-Id: <20221226103838.1761-1-swati2.sharma@intel.com>
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9364610E091
+ for <igt-dev@lists.freedesktop.org>; Mon, 26 Dec 2022 10:59:02 +0000 (UTC)
+From: "Sharma, Ananya" <ananya.sharma@intel.com>
+To: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>,
+ "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+Date: Mon, 26 Dec 2022 10:58:59 +0000
+Message-ID: <CO1PR11MB4834A5C705EA400E36A3F886FDEC9@CO1PR11MB4834.namprd11.prod.outlook.com>
+References: <20221115170855.196572-1-bhanuprakash.modem@intel.com>
+ <20221115170855.196572-44-bhanuprakash.modem@intel.com>
+In-Reply-To: <20221115170855.196572-44-bhanuprakash.modem@intel.com>
+Content-Language: en-US
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t] tests/kms_hdr: Add negative test for
- invalid metadata sizes
+Subject: Re: [igt-dev] [i-g-t v5 43/52] tests/i915/kms_fence_pin_leak: Add
+ support for Bigjoiner
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,84 +27,57 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Negative test is added in which HDR output metadata prop is
-set with invalid sizes.
 
-Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
----
- tests/kms_hdr.c | 32 ++++++++++++++++++++++++++++++++
- 1 file changed, 32 insertions(+)
 
-diff --git a/tests/kms_hdr.c b/tests/kms_hdr.c
-index 655c3e14..629a45a7 100644
---- a/tests/kms_hdr.c
-+++ b/tests/kms_hdr.c
-@@ -50,6 +50,7 @@ enum {
- 	TEST_DPMS = 1 << 1,
- 	TEST_SUSPEND = 1 << 2,
- 	TEST_SWAP = 1 << 3,
-+	TEST_INVALID_METADATA_SIZES = 1 << 4,
- };
- 
- /* BPC connector state. */
-@@ -327,6 +328,18 @@ static void set_hdr_output_metadata(data_t *data,
- 				     meta ? sizeof(*meta) : 0);
- }
- 
-+/* Sets the HDR output metadata prop with invalid size. */
-+static int set_invalid_hdr_output_metadata(data_t *data,
-+					   struct hdr_output_metadata const *meta,
-+					   size_t length)
-+{
-+	igt_output_replace_prop_blob(data->output,
-+				     IGT_CONNECTOR_HDR_OUTPUT_METADATA, meta,
-+				     meta ? length : 0);
+-----Original Message-----
+From: igt-dev <igt-dev-bounces@lists.freedesktop.org> On Behalf Of Bhanupra=
+kash Modem
+Sent: 15 November 2022 22:39
+To: igt-dev@lists.freedesktop.org
+Subject: [igt-dev] [i-g-t v5 43/52] tests/i915/kms_fence_pin_leak: Add supp=
+ort for Bigjoiner
+
+This patch will add a check to Skip the subtest if a selected pipe/output c=
+ombo won't support Bigjoiner or 8K mode.
+
+Example:
+* Pipe-D wont support a mode > 5K
+* To use 8K mode on a pipe then consecutive pipe must be available & free.
+
+V2: - Use updated helper name
+
+Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Reviewed-by: Ananya Sharma <ananya.sharma@intel.com>
+ tests/i915/kms_fence_pin_leak.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
+
+diff --git a/tests/i915/kms_fence_pin_leak.c b/tests/i915/kms_fence_pin_lea=
+k.c index 1972a699..63657a74 100644
+--- a/tests/i915/kms_fence_pin_leak.c
++++ b/tests/i915/kms_fence_pin_leak.c
+@@ -124,6 +124,9 @@ static void run_single_test(data_t *data, enum pipe pip=
+e, igt_output_t *output)
+ 	struct igt_fb fb[2];
+ 	int i;
+=20
++	igt_info("Using (pipe %s + %s) to run the subtest.\n",
++		 kmstest_pipe_name(pipe), igt_output_name(output));
 +
-+	return igt_display_try_commit_atomic(&data->display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
-+}
+ 	igt_output_set_pipe(output, pipe);
+=20
+ 	mode =3D igt_output_get_mode(output);
+@@ -196,6 +199,12 @@ static void run_test(data_t *data)
+ 	enum pipe p;
+=20
+ 	for_each_pipe_with_valid_output(display, p, output) {
++		igt_display_reset(display);
 +
- /* Converts a double to 861-G spec FP format. */
- static uint16_t calc_hdr_float(double val)
- {
-@@ -518,6 +531,19 @@ static void test_static_swap(data_t *data, enum pipe pipe, igt_output_t *output)
- 	igt_remove_fb(data->fd, &afb);
- }
- 
-+static void test_invalid_metadata_sizes(data_t *data, igt_output_t *output)
-+{
-+	struct hdr_output_metadata hdr;
-+	size_t metadata_size = sizeof(&hdr);
++		igt_output_set_pipe(output, p);
++		if (!i915_pipe_output_combo_valid(display))
++			continue;
 +
-+	fill_hdr_output_metadata_st2048(&hdr);
-+
-+	igt_assert_eq(set_invalid_hdr_output_metadata(data, &hdr, 1), -EINVAL);
-+	igt_assert_eq(set_invalid_hdr_output_metadata(data, &hdr, metadata_size + 1), -EINVAL);
-+	igt_assert_eq(set_invalid_hdr_output_metadata(data, &hdr, metadata_size - 1), -EINVAL);
-+	igt_assert_eq(set_invalid_hdr_output_metadata(data, &hdr, metadata_size + sizeof(struct hdr_output_metadata)), -EINVAL);
-+}
-+
- /* Returns true if an output supports HDR metadata property. */
- static bool has_hdr(igt_output_t *output)
- {
-@@ -565,6 +591,8 @@ static void test_hdr(data_t *data, uint32_t flags)
- 						test_static_toggle(data, pipe, output, flags);
- 					if (flags & TEST_SWAP)
- 						test_static_swap(data, pipe, output);
-+					if (flags & TEST_INVALID_METADATA_SIZES)
-+						test_invalid_metadata_sizes(data, output);
- 				}
- 
- 				/* One pipe is enough */
-@@ -613,6 +641,10 @@ igt_main
- 	igt_subtest_with_dynamic("static-swap")
- 		test_hdr(&data, TEST_SWAP);
- 
-+	igt_describe("Tests invalid HDR metadata sizes");
-+	igt_subtest_with_dynamic("invalid-metadata-sizes")
-+		test_hdr(&data, TEST_INVALID_METADATA_SIZES);
-+
- 	igt_fixture {
- 		igt_display_fini(&data.display);
- 		close(data.fd);
--- 
-2.25.1
+ 		run_single_test(data, p, output);
+=20
+ 		return; /* one time ought to be enough */
+--
+2.38.0
