@@ -1,20 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 44E2410E10E
- for <igt-dev@lists.freedesktop.org>; Mon, 26 Dec 2022 14:44:36 +0000 (UTC)
-From: =?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>
-To: Melissa Wen <mwen@igalia.com>,
- =?UTF-8?q?Andr=C3=A9=20Almeida?= <andrealmeid@igalia.com>,
- Petri Latvala <petri.latvala@intel.com>,
- Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-Date: Mon, 26 Dec 2022 11:43:59 -0300
-Message-Id: <20221226144359.237927-1-mcanal@igalia.com>
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BDCF010E144
+ for <igt-dev@lists.freedesktop.org>; Mon, 26 Dec 2022 19:52:12 +0000 (UTC)
+From: "Gupta, Nidhi1" <nidhi1.gupta@intel.com>
+To: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+Date: Mon, 26 Dec 2022 19:52:08 +0000
+Message-ID: <PH7PR11MB6006DC8DB21A30A0E01B16AEC5EC9@PH7PR11MB6006.namprd11.prod.outlook.com>
+References: <20220926031318.17284-1-nidhi1.gupta@intel.com>
+ <1bcfd5924d678818d6c8336198f9adf370f13fed.camel@intel.com>
+In-Reply-To: <1bcfd5924d678818d6c8336198f9adf370f13fed.camel@intel.com>
+Content-Language: en-US
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t] tests/kms_addfb_basic: Avoid open-coded
- expressions
+Subject: Re: [igt-dev] [PATCH i-g-t, v5,
+ 05/52] tests/kms_atomic_interruptible: Add support for Bigjoiner
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,438 +22,100 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Replace open-coded expressions with their equivalents in the IGT
-infrastructure and macros. In particular, replace open-coded
-implementations of do_ioctl() and do_ioctl_err().
-
-Signed-off-by: Maíra Canal <mcanal@igalia.com>
----
- tests/kms_addfb_basic.c | 153 +++++++++++++++++-----------------------
- 1 file changed, 63 insertions(+), 90 deletions(-)
-
-diff --git a/tests/kms_addfb_basic.c b/tests/kms_addfb_basic.c
-index f91153b5..c58783d5 100644
---- a/tests/kms_addfb_basic.c
-+++ b/tests/kms_addfb_basic.c
-@@ -57,18 +57,6 @@ static int legacy_addfb(int fd, struct drm_mode_fb_cmd *arg)
- 	return err;
- }
- 
--static int rmfb(int fd, uint32_t id)
--{
--	int err;
--
--	err = 0;
--	if (igt_ioctl(fd, DRM_IOCTL_MODE_RMFB, &id))
--		err = -errno;
--
--	errno = 0;
--	return err;
--}
--
- static void invalid_tests(int fd)
- {
- 	struct drm_mode_fb_cmd2 f = {};
-@@ -88,8 +76,8 @@ static void invalid_tests(int fd)
- 
- 		f.handles[0] = gem_bo;
- 
--		igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_ADDFB2, &f) == 0);
--		igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_RMFB, &f.fb_id) == 0);
-+		do_ioctl(fd, DRM_IOCTL_MODE_ADDFB2, &f);
-+		do_ioctl(fd, DRM_IOCTL_MODE_RMFB, &f.fb_id);
- 		f.fb_id = 0;
- 	}
- 
-@@ -100,8 +88,7 @@ static void invalid_tests(int fd)
- 		igt_require_fb_modifiers(fd);
- 
- 		f.handles[1] = gem_bo_small;
--		igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_ADDFB2, &f) == -1 &&
--			   errno == EINVAL);
-+		do_ioctl_err(fd, DRM_IOCTL_MODE_ADDFB2, &f, EINVAL);
- 		f.handles[1] = 0;
- 	}
- 
-@@ -110,8 +97,7 @@ static void invalid_tests(int fd)
- 		igt_require_fb_modifiers(fd);
- 
- 		f.pitches[1] = 512;
--		igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_ADDFB2, &f) == -1 &&
--			   errno == EINVAL);
-+		do_ioctl_err(fd, DRM_IOCTL_MODE_ADDFB2, &f, EINVAL);
- 		f.pitches[1] = 0;
- 	}
- 
-@@ -120,8 +106,7 @@ static void invalid_tests(int fd)
- 		igt_require_fb_modifiers(fd);
- 
- 		f.offsets[1] = 512;
--		igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_ADDFB2, &f) == -1 &&
--			   errno == EINVAL);
-+		do_ioctl_err(fd, DRM_IOCTL_MODE_ADDFB2, &f, EINVAL);
- 		f.offsets[1] = 0;
- 	}
- 
-@@ -130,8 +115,7 @@ static void invalid_tests(int fd)
- 		igt_require_fb_modifiers(fd);
- 
- 		f.modifier[1] =  I915_FORMAT_MOD_X_TILED;
--		igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_ADDFB2, &f) == -1 &&
--			   errno == EINVAL);
-+		do_ioctl_err(fd, DRM_IOCTL_MODE_ADDFB2, &f, EINVAL);
- 		f.modifier[1] = 0;
- 	}
- 
-@@ -142,10 +126,10 @@ static void invalid_tests(int fd)
- 		f.flags = 0;
- 		f.modifier[0] = 0;
- 		gem_set_tiling(fd, gem_bo, I915_TILING_X, 512*4);
--		igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_ADDFB2, &f) == 0);
--		igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_RMFB, &f.fb_id) == 0);
-+		do_ioctl(fd, DRM_IOCTL_MODE_ADDFB2, &f);
-+		do_ioctl(fd, DRM_IOCTL_MODE_RMFB, &f.fb_id);
- 		f.fb_id = 0;
--		igt_assert(f.modifier[0] == 0);
-+		igt_assert_eq(f.modifier[0], 0);
- 	}
- 
- 	igt_describe("Check if addfb2 with a system memory gem object "
-@@ -199,7 +183,7 @@ static void invalid_tests(int fd)
- 			igt_debug("{bpp:%d, depth:%d} -> expect:%d\n",
- 				  arg.bpp, arg.depth, known_formats[i].expect);
- 			if (arg.fb_id) {
--				igt_assert_eq(rmfb(fd, arg.fb_id), 0);
-+				do_ioctl(fd, DRM_IOCTL_MODE_RMFB, &arg.fb_id);
- 				arg.fb_id = 0;
- 			}
- 		}
-@@ -236,7 +220,7 @@ static void invalid_tests(int fd)
- 				     "Expected %d with {bpp:%d, depth:%d}, got %d instead\n",
- 				     expect, arg.bpp, arg.depth, err);
- 			if (arg.fb_id) {
--				igt_assert_eq(rmfb(fd, arg.fb_id), 0);
-+				do_ioctl(fd, DRM_IOCTL_MODE_RMFB, &arg.fb_id);
- 				arg.fb_id = 0;
- 			}
- 
-@@ -264,7 +248,7 @@ static void invalid_tests(int fd)
- 				     arg.bpp, arg.depth,
- 				     err);
- 			if (arg.fb_id) {
--				igt_assert_eq(rmfb(fd, arg.fb_id), 0);
-+				do_ioctl(fd, DRM_IOCTL_MODE_RMFB, &arg.fb_id);
- 				arg.fb_id = 0;
- 			}
- 		}
-@@ -298,15 +282,14 @@ static void pitch_tests(int fd)
- 
- 	igt_describe("Test that addfb2 call fails correctly without handle");
- 	igt_subtest("no-handle") {
--		igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_ADDFB2, &f) == -1 &&
--			   errno == EINVAL);
-+		do_ioctl_err(fd, DRM_IOCTL_MODE_ADDFB2, &f, EINVAL);
- 	}
- 
- 	igt_describe("Check if addfb2 call works with given handle");
- 	f.handles[0] = gem_bo;
- 	igt_subtest("basic") {
--		igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_ADDFB2, &f) == 0);
--		igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_RMFB, &f.fb_id) == 0);
-+		do_ioctl(fd, DRM_IOCTL_MODE_ADDFB2, &f);
-+		do_ioctl(fd, DRM_IOCTL_MODE_RMFB, &f.fb_id);
- 		f.fb_id = 0;
- 	}
- 
-@@ -362,8 +345,8 @@ static void tiling_tests(int fd)
- 			igt_require(gem_available_fences(fd) > 0);
- 			f.handles[0] = tiled_x_bo;
- 
--			igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_ADDFB2, &f) == 0);
--			igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_RMFB, &f.fb_id) == 0);
-+			do_ioctl(fd, DRM_IOCTL_MODE_ADDFB2, &f);
-+			do_ioctl(fd, DRM_IOCTL_MODE_RMFB, &f.fb_id);
- 			f.fb_id = 0;
- 		}
- 
-@@ -373,10 +356,10 @@ static void tiling_tests(int fd)
- 			f.handles[0] = gem_bo;
- 
- 			gem_set_tiling(fd, gem_bo, I915_TILING_X, 1024*4);
--			igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_ADDFB2, &f) == 0);
--			igt_assert(__gem_set_tiling(fd, gem_bo, I915_TILING_X, 512*4) == -EBUSY);
--			igt_assert(__gem_set_tiling(fd, gem_bo, I915_TILING_Y, 1024*4) == -EBUSY);
--			igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_RMFB, &f.fb_id) == 0);
-+			do_ioctl(fd, DRM_IOCTL_MODE_ADDFB2, &f);
-+			igt_assert_eq(__gem_set_tiling(fd, gem_bo, I915_TILING_X, 512*4), -EBUSY);
-+			igt_assert_eq(__gem_set_tiling(fd, gem_bo, I915_TILING_Y, 1024*4), -EBUSY);
-+			do_ioctl(fd, DRM_IOCTL_MODE_RMFB, &f.fb_id);
- 			f.fb_id = 0;
- 		}
- 
-@@ -386,8 +369,7 @@ static void tiling_tests(int fd)
- 			igt_require(gem_available_fences(fd) > 0);
- 			f.handles[0] = tiled_x_bo;
- 
--			igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_ADDFB2, &f) == -1 &&
--				   errno == EINVAL);
-+			do_ioctl_err(fd, DRM_IOCTL_MODE_ADDFB2, &f, EINVAL);
- 		}
- 
- 		igt_describe("Test that addfb2 call fails correctly for basic y-tiling test");
-@@ -397,8 +379,7 @@ static void tiling_tests(int fd)
- 			igt_require(gem_available_fences(fd) > 0);
- 			f.handles[0] = tiled_y_bo;
- 
--			igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_ADDFB2, &f) == -1 &&
--				   errno == EINVAL);
-+			do_ioctl_err(fd, DRM_IOCTL_MODE_ADDFB2, &f, EINVAL);
- 		}
- 
- 		igt_fixture {
-@@ -449,15 +430,15 @@ static void size_tests(int fd)
- 
- 	igt_describe("Check if addfb2 call works with max size of buffer object");
- 	igt_subtest("size-max") {
--		igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_ADDFB2, &f) == 0);
--		igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_RMFB, &f.fb_id) == 0);
-+		do_ioctl(fd, DRM_IOCTL_MODE_ADDFB2, &f);
-+		do_ioctl(fd, DRM_IOCTL_MODE_RMFB, &f.fb_id);
- 		f.fb_id = 0;
--		igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_ADDFB2, &f_16) == 0);
--		igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_RMFB, &f_16.fb_id) == 0);
-+		do_ioctl(fd, DRM_IOCTL_MODE_ADDFB2, &f_16);
-+		do_ioctl(fd, DRM_IOCTL_MODE_RMFB, &f_16.fb_id);
- 		f_16.fb_id = 0;
- 		if (igt_display_has_format_mod(&display, DRM_FORMAT_C8, 0)) {
--			igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_ADDFB2, &f_8) == 0);
--			igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_RMFB, &f_8.fb_id) == 0);
-+			do_ioctl(fd, DRM_IOCTL_MODE_ADDFB2, &f_8);
-+			do_ioctl(fd, DRM_IOCTL_MODE_RMFB, &f_8.fb_id);
- 			f_8.fb_id = 0;
- 		}
- 	}
-@@ -467,12 +448,9 @@ static void size_tests(int fd)
- 	f_8.width++;
- 	igt_describe("Test that addfb2 call fails correctly with increased width of fb");
- 	igt_subtest("too-wide") {
--		igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_ADDFB2, &f) == -1 &&
--			   errno == EINVAL);
--		igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_ADDFB2, &f_16) == -1 &&
--			   errno == EINVAL);
--		igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_ADDFB2, &f_8) == -1 &&
--			   errno == EINVAL);
-+		do_ioctl_err(fd, DRM_IOCTL_MODE_ADDFB2, &f, EINVAL);
-+		do_ioctl_err(fd, DRM_IOCTL_MODE_ADDFB2, &f_16, EINVAL);
-+		do_ioctl_err(fd, DRM_IOCTL_MODE_ADDFB2, &f_8, EINVAL);
- 	}
- 	f.width--;
- 	f_16.width--;
-@@ -509,8 +487,8 @@ static void size_tests(int fd)
- 	igt_describe("Check if addfb2 call works for given height");
- 	f.height = 1020;
- 	igt_subtest("small-bo") {
--		igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_ADDFB2, &f) == 0);
--		igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_RMFB, &f.fb_id) == 0);
-+		do_ioctl(fd, DRM_IOCTL_MODE_ADDFB2, &f);
-+		do_ioctl(fd, DRM_IOCTL_MODE_RMFB, &f.fb_id);
- 		f.fb_id = 0;
- 	}
- 
-@@ -519,8 +497,7 @@ static void size_tests(int fd)
- 		igt_require_intel(fd);
- 		igt_require(gem_available_fences(fd) > 0);
- 		gem_set_tiling(fd, gem_bo_small, I915_TILING_X, 1024*4);
--		igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_ADDFB2, &f) == -1 &&
--			   errno == EINVAL);
-+		do_ioctl_err(fd, DRM_IOCTL_MODE_ADDFB2, &f, EINVAL);
- 	}
- 
- 
-@@ -555,7 +532,7 @@ static void addfb25_tests(int fd)
- 		igt_require_fb_modifiers(fd);
- 
- 		f.modifier[0] = I915_FORMAT_MOD_X_TILED;
--		igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_ADDFB2, &f) < 0 && errno == EINVAL);
-+		do_ioctl_err(fd, DRM_IOCTL_MODE_ADDFB2, &f, EINVAL);
- 	}
- 
- 	igt_fixture
-@@ -566,7 +543,7 @@ static void addfb25_tests(int fd)
- 		igt_require_fb_modifiers(fd);
- 
- 		f.modifier[0] = ~0;
--		igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_ADDFB2, &f) < 0 && errno == EINVAL);
-+		do_ioctl_err(fd, DRM_IOCTL_MODE_ADDFB2, &f, EINVAL);
- 	}
- 
- 	igt_subtest_group {
-@@ -580,24 +557,24 @@ static void addfb25_tests(int fd)
- 		igt_describe("Test that addfb2 call fails correctly for irrelevant x-tiling");
- 		igt_subtest("addfb25-x-tiled-mismatch-legacy") {
- 			f.modifier[0] = DRM_FORMAT_MOD_LINEAR;
--			igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_ADDFB2, &f) < 0 && errno == EINVAL);
-+			do_ioctl_err(fd, DRM_IOCTL_MODE_ADDFB2, &f, EINVAL);
- 		}
- 
- 		igt_describe("Check if addfb2 call works for x-tiling");
- 		igt_subtest("addfb25-x-tiled-legacy") {
- 			f.modifier[0] = I915_FORMAT_MOD_X_TILED;
--			igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_ADDFB2, &f) == 0);
--			igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_RMFB, &f.fb_id) == 0);
-+			do_ioctl(fd, DRM_IOCTL_MODE_ADDFB2, &f);
-+			do_ioctl(fd, DRM_IOCTL_MODE_RMFB, &f.fb_id);
- 			f.fb_id = 0;
- 		}
- 
- 		igt_describe("Check if addfb2 call works for relevant combination of tiling and fbs");
- 		igt_subtest("addfb25-framebuffer-vs-set-tiling") {
- 			f.modifier[0] = I915_FORMAT_MOD_X_TILED;
--			igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_ADDFB2, &f) == 0);
--			igt_assert(__gem_set_tiling(fd, gem_bo, I915_TILING_X, 512*4) == -EBUSY);
--			igt_assert(__gem_set_tiling(fd, gem_bo, I915_TILING_Y, 1024*4) == -EBUSY);
--			igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_RMFB, &f.fb_id) == 0);
-+			do_ioctl(fd, DRM_IOCTL_MODE_ADDFB2, &f);
-+			igt_assert_eq(__gem_set_tiling(fd, gem_bo, I915_TILING_X, 512*4), -EBUSY);
-+			igt_assert_eq(__gem_set_tiling(fd, gem_bo, I915_TILING_Y, 1024*4), -EBUSY);
-+			do_ioctl(fd, DRM_IOCTL_MODE_RMFB, &f.fb_id);
- 			f.fb_id = 0;
- 		}
- 	}
-@@ -644,10 +621,10 @@ static void addfb25_ytile(int fd)
- 		igt_require_intel(fd);
- 
- 		f.modifier[0] = I915_FORMAT_MOD_Y_TILED;
--		igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_ADDFB2, &f) ==
--			   addfb_expected_ret(&display, &f));
-+		igt_assert_eq(drmIoctl(fd, DRM_IOCTL_MODE_ADDFB2, &f),
-+			      addfb_expected_ret(&display, &f));
- 		if (!addfb_expected_ret(&display, &f))
--			igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_RMFB, &f.fb_id) == 0);
-+			do_ioctl(fd, DRM_IOCTL_MODE_RMFB, &f.fb_id);
- 		f.fb_id = 0;
- 	}
- 
-@@ -657,10 +634,10 @@ static void addfb25_ytile(int fd)
- 		igt_require_intel(fd);
- 
- 		f.modifier[0] = I915_FORMAT_MOD_Yf_TILED;
--		igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_ADDFB2, &f) ==
--			   addfb_expected_ret(&display, &f));
-+		igt_assert_eq(drmIoctl(fd, DRM_IOCTL_MODE_ADDFB2, &f),
-+			      addfb_expected_ret(&display, &f));
- 		if (!addfb_expected_ret(&display, &f))
--			igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_RMFB, &f.fb_id) == 0);
-+			do_ioctl(fd, DRM_IOCTL_MODE_RMFB, &f.fb_id);
- 		f.fb_id = 0;
- 	}
- 
-@@ -673,7 +650,7 @@ static void addfb25_ytile(int fd)
- 		f.height = 1023;
- 		f.handles[0] = gem_bo_small;
- 		igt_require(addfb_expected_ret(&display, &f) == 0);
--		igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_ADDFB2, &f) < 0 && errno == EINVAL);
-+		do_ioctl_err(fd, DRM_IOCTL_MODE_ADDFB2, &f, EINVAL);
- 		f.fb_id = 0;
- 	}
- 
-@@ -715,10 +692,10 @@ static void addfb25_4tile(int fd)
- 		igt_require_intel(fd);
- 
- 		f.modifier[0] = I915_FORMAT_MOD_4_TILED;
--		igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_ADDFB2, &f) ==
--			   addfb_expected_ret(&display, &f));
-+		igt_assert_eq(drmIoctl(fd, DRM_IOCTL_MODE_ADDFB2, &f),
-+			      addfb_expected_ret(&display, &f));
- 		if (!addfb_expected_ret(&display, &f))
--			igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_RMFB, &f.fb_id) == 0);
-+			do_ioctl(fd, DRM_IOCTL_MODE_RMFB, &f.fb_id);
- 		f.fb_id = 0;
- 	}
- 
-@@ -747,7 +724,7 @@ static void prop_tests(int fd)
- 
- 		f.handles[0] = gem_bo;
- 
--		igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_ADDFB2, &f) == 0);
-+		do_ioctl(fd, DRM_IOCTL_MODE_ADDFB2, &f);
- 	}
- 
- 	get_props.props_ptr = (uintptr_t) &prop;
-@@ -759,16 +736,14 @@ static void prop_tests(int fd)
- 	igt_subtest("invalid-get-prop-any") {
- 		get_props.obj_type = 0; /* DRM_MODE_OBJECT_ANY */
- 
--		igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_OBJ_GETPROPERTIES,
--				    &get_props) == -1 && errno == EINVAL);
-+		do_ioctl_err(fd, DRM_IOCTL_MODE_OBJ_GETPROPERTIES, &get_props, EINVAL);
- 	}
- 
- 	igt_describe("Test that get-properties ioctl call fails correctly for fb mode object");
- 	igt_subtest("invalid-get-prop") {
- 		get_props.obj_type = DRM_MODE_OBJECT_FB;
- 
--		igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_OBJ_GETPROPERTIES,
--				    &get_props) == -1 && errno == EINVAL);
-+		do_ioctl_err(fd, DRM_IOCTL_MODE_OBJ_GETPROPERTIES, &get_props, EINVAL);
- 	}
- 
- 	set_prop.value = 0;
-@@ -779,20 +754,18 @@ static void prop_tests(int fd)
- 	igt_subtest("invalid-set-prop-any") {
- 		set_prop.obj_type = 0; /* DRM_MODE_OBJECT_ANY */
- 
--		igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_OBJ_SETPROPERTY,
--				    &set_prop) == -1 && errno == EINVAL);
-+		do_ioctl_err(fd, DRM_IOCTL_MODE_OBJ_SETPROPERTY, &set_prop, EINVAL);
- 	}
- 
- 	igt_describe("Test that get-properties ioctl call fails correctly for fb mode object");
- 	igt_subtest("invalid-set-prop") {
- 		set_prop.obj_type = DRM_MODE_OBJECT_FB;
- 
--		igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_OBJ_SETPROPERTY,
--				    &set_prop) == -1 && errno == EINVAL);
-+		do_ioctl_err(fd, DRM_IOCTL_MODE_OBJ_SETPROPERTY, &set_prop, EINVAL);
- 	}
- 
- 	igt_fixture
--		igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_RMFB, &f.fb_id) == 0);
-+		do_ioctl(fd, DRM_IOCTL_MODE_RMFB, &f.fb_id);
- 
- }
- 
-@@ -812,7 +785,7 @@ static void master_tests(int fd)
- 
- 		f.handles[0] = gem_bo;
- 
--		igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_ADDFB2, &f) == 0);
-+		do_ioctl(fd, DRM_IOCTL_MODE_ADDFB2, &f);
- 	}
- 
- 	igt_describe("Check that only master can rmfb");
-@@ -823,7 +796,7 @@ static void master_tests(int fd)
- 
- 		master2_fd = drm_open_driver_master(DRIVER_ANY);
- 
--		igt_assert_eq(rmfb(master2_fd, f.fb_id), -ENOENT);
-+		do_ioctl_err(master2_fd, DRM_IOCTL_MODE_RMFB, &f.fb_id, ENOENT);
- 
- 		igt_device_drop_master(master2_fd);
- 		close(master2_fd);
-@@ -832,7 +805,7 @@ static void master_tests(int fd)
- 	}
- 
- 	igt_fixture
--		igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_RMFB, &f.fb_id) == 0);
-+		do_ioctl(fd, DRM_IOCTL_MODE_RMFB, &f.fb_id);
- 
- }
- 
--- 
-2.38.1
+IE9uIFR1ZSwgMjAyMi0xMS0xNSBhdCAwODo0MyArMDUzMCwgQmhhbnVwcmFrYXNoIE1vZGVtIHdy
+b3RlOg0KPlRoaXMgcGF0Y2ggd2lsbCBhZGQgYSBjaGVjayB0byBTa2lwIHRoZSBzdWJ0ZXN0IGlm
+IGEgc2VsZWN0ZWQgcGlwZS9vdXRwdXQNCj5jb21ibyB3b24ndCBzdXBwb3J0IEJpZ2pvaW5lciBv
+ciA4SyBtb2RlLg0KPg0KPkV4YW1wbGU6DQo+KiBQaXBlLUQgd29udCBzdXBwb3J0IGEgbW9kZSA+
+IDVLDQo+KiBUbyB1c2UgOEsgbW9kZSBvbiBhIHBpcGUgdGhlbiBjb25zZWN1dGl2ZSBwaXBlIG11
+c3QgYmUgYXZhaWxhYmxlICYgZnJlZS4NCj4NCj5WMjogLSBVc2UgdXBkYXRlZCBoZWxwZXIgbmFt
+ZQ0KPg0KPlNpZ25lZC1vZmYtYnk6IEJoYW51cHJha2FzaCBNb2RlbSA8YmhhbnVwcmFrYXNoLm1v
+ZGVtQGludGVsLmNvbT4NClJldmlld2VkLWJ5OiBOaWRoaSBHdXB0YSA8bmlkaGkxLmd1cHRhQGlu
+dGVsLmNvbT4gDQotLS0NCiB0ZXN0cy9rbXNfYXRvbWljX2ludGVycnVwdGlibGUuYyB8IDQwICsr
+KysrKysrKysrKysrKysrKysrKysrKysrKysrKysrDQogMSBmaWxlIGNoYW5nZWQsIDQwIGluc2Vy
+dGlvbnMoKykNCj5kaWZmIC0tZ2l0IGEvdGVzdHMva21zX2F0b21pY19pbnRlcnJ1cHRpYmxlLmMg
+Yi90ZXN0cy9rbXNfYXRvbWljX2ludGVycnVwdGlibGUuYw0KPmluZGV4IGY0NjFhMTVjLi43NGIy
+ZTI0NiAxMDA2NDQNCj4tLS0gYS90ZXN0cy9rbXNfYXRvbWljX2ludGVycnVwdGlibGUuYw0KPisr
+KyBiL3Rlc3RzL2ttc19hdG9taWNfaW50ZXJydXB0aWJsZS5jDQo+QEAgLTgyLDExICs4MiwxNSBA
+QCAgc3RhdGljIHZvaWQgcnVuX3BsYW5lX3Rlc3QoaWd0X2Rpc3BsYXlfdCAqZGlzcGxheSwgZW51
+bSBwaXBlIHBpcGUsIGlndF9vdXRwdXRfdA0KPglpZ3RfcGxhbmVfdCAqcHJpbWFyeSwgKnBsYW5l
+Ow0KPglpbnQgYmxvY2s7DQo+DQo+KwlpZ3RfaW5mbygiVXNpbmcgKHBpcGUgJXMgKyAlcykgdG8g
+cnVuIHRoZSBzdWJ0ZXN0LlxuIiwNCj4rCQkga21zdGVzdF9waXBlX25hbWUocGlwZSksIGlndF9v
+dXRwdXRfbmFtZShvdXRwdXQpKTsNCj4rDQo+IAkvKg0KPgkgKiBNYWtlIHN1cmUgd2Ugc3RhcnQg
+d2l0aCBldmVyeXRoaW5nIGRpc2FibGVkIHRvIGZvcmNlIGEgcmVhbCBtb2Rlc2V0Lg0KPiAJICog
+aWd0X2Rpc3BsYXlfcmVxdWlyZSBvbmx5IHNldHMgc3cgc3RhdGUsIGFuZCBhc3N1bWVzIHRoZSBm
+aXJzdCB0ZXN0DQo+IAkgKiBkb2Vzbid0IGNhcmUgYWJvdXQgaHcgc3RhdGUuDQo+IAkgKi8NCj4r
+CWlndF9kaXNwbGF5X3Jlc2V0KGRpc3BsYXkpOw0KPiAJaWd0X2Rpc3BsYXlfY29tbWl0MihkaXNw
+bGF5LCBDT01NSVRfQVRPTUlDKTsNCj4gDQo+IAlpZ3Rfb3V0cHV0X3NldF9waXBlKG91dHB1dCwg
+cGlwZSk7DQo+QEAgLTI2NSw2ICsyNjksMjEgQEAgIHN0YXRpYyB2b2lkIHJ1bl9wbGFuZV90ZXN0
+KGlndF9kaXNwbGF5X3QgKmRpc3BsYXksIGVudW0gcGlwZSBwaXBlLCBpZ3Rfb3V0cHV0X3QNCj4g
+CWlndF9yZW1vdmVfZmIoZGlzcGxheS0+ZHJtX2ZkLCAmZmIpOw0KPiB9DQo+IA0KPitzdGF0aWMg
+Ym9vbCBwaXBlX291dHB1dF9jb21ib192YWxpZChpZ3RfZGlzcGxheV90ICpkaXNwbGF5LA0KPisJ
+CQkJICAgIGVudW0gcGlwZSBwaXBlLCBpZ3Rfb3V0cHV0X3QgKm91dHB1dCkNCj4rew0KPisJYm9v
+bCByZXQgPSB0cnVlOw0KPisNCj4rCWlndF9kaXNwbGF5X3Jlc2V0KGRpc3BsYXkpOw0KPisNCj4r
+CWlndF9vdXRwdXRfc2V0X3BpcGUob3V0cHV0LCBwaXBlKTsNCj4rCWlmICghaTkxNV9waXBlX291
+dHB1dF9jb21ib192YWxpZChkaXNwbGF5KSkNCj4rCQlyZXQgPSBmYWxzZTsNCj4rCWlndF9vdXRw
+dXRfc2V0X3BpcGUob3V0cHV0LCBQSVBFX05PTkUpOw0KPisNCj4rCXJldHVybiByZXQ7DQo+K30N
+Cj4rDQo+aWd0X21haW4NCj57DQo+IAlpZ3RfZGlzcGxheV90IGRpc3BsYXk7DQo+QEAgLTI4Niw2
+ICszMDUsOSBAQCAgaWd0X21haW4NCj4gCWlndF9kZXNjcmliZSgiVGVzdHMgdGhlIGludGVycnVw
+dCBwcm9wZXJ0aWVzIG9mIGxlZ2FjeSBtb2Rlc2V0Iik7DQo+IAlpZ3Rfc3VidGVzdF93aXRoX2R5
+bmFtaWMoImxlZ2FjeS1zZXRtb2RlIikgew0KPiAJCWZvcl9lYWNoX3BpcGVfd2l0aF92YWxpZF9v
+dXRwdXQoJmRpc3BsYXksIHBpcGUsIG91dHB1dCkgew0KPisJCQlpZiAoIXBpcGVfb3V0cHV0X2Nv
+bWJvX3ZhbGlkKCZkaXNwbGF5LCBwaXBlLCBvdXRwdXQpKQ0KPisJCQkJY29udGludWU7DQo+Kw0K
+PiAJCQlpZ3RfZHluYW1pY19mKCIlcy1waXBlLSVzIiwgaWd0X291dHB1dF9uYW1lKG91dHB1dCks
+IGttc3Rlc3RfcGlwZV9uYW1lKHBpcGUpKQ0KPiAJCQkJcnVuX3BsYW5lX3Rlc3QoJmRpc3BsYXks
+IHBpcGUsIG91dHB1dCwgdGVzdF9sZWdhY3lfbW9kZXNldCwgRFJNX1BMQU5FX1RZUEVfUFJJTUFS
+WSk7DQo+IAkJCWJyZWFrOw0KPkBAIC0yOTUsNiArMzE3LDkgQEAgIGlndF9tYWluDQo+IAlpZ3Rf
+ZGVzY3JpYmUoIlRlc3RzIHRoZSBpbnRlcnJ1cHQgcHJvcGVydGllcyBvZiBhdG9taWMgbW9kZXNl
+dCIpOw0KPiAJaWd0X3N1YnRlc3Rfd2l0aF9keW5hbWljKCJhdG9taWMtc2V0bW9kZSIpIHsNCj4g
+CQlmb3JfZWFjaF9waXBlX3dpdGhfdmFsaWRfb3V0cHV0KCZkaXNwbGF5LCBwaXBlLCBvdXRwdXQp
+IHsNCj4rCQkJaWYgKCFwaXBlX291dHB1dF9jb21ib192YWxpZCgmZGlzcGxheSwgcGlwZSwgb3V0
+cHV0KSkNCj4rCQkJCWNvbnRpbnVlOw0KPisNCj4gCQkJaWd0X2R5bmFtaWNfZigiJXMtcGlwZS0l
+cyIsIGlndF9vdXRwdXRfbmFtZShvdXRwdXQpLCBrbXN0ZXN0X3BpcGVfbmFtZShwaXBlKSkNCj4g
+CQkJCXJ1bl9wbGFuZV90ZXN0KCZkaXNwbGF5LCBwaXBlLCBvdXRwdXQsIHRlc3RfYXRvbWljX21v
+ZGVzZXQsIERSTV9QTEFORV9UWVBFX1BSSU1BUlkpOw0KPiAJCQlicmVhazsNCj5AQCAtMzA0LDYg
+KzMyOSw5IEBAICBpZ3RfbWFpbg0KPiAJaWd0X2Rlc2NyaWJlKCJUZXN0cyB0aGUgaW50ZXJydXB0
+IHByb3BlcnRpZXMgZm9yIERQTVMiKTsNCj4gCWlndF9zdWJ0ZXN0X3dpdGhfZHluYW1pYygibGVn
+YWN5LWRwbXMiKSB7DQo+IAkJZm9yX2VhY2hfcGlwZV93aXRoX3ZhbGlkX291dHB1dCgmZGlzcGxh
+eSwgcGlwZSwgb3V0cHV0KSB7DQo+KwkJCWlmICghcGlwZV9vdXRwdXRfY29tYm9fdmFsaWQoJmRp
+c3BsYXksIHBpcGUsIG91dHB1dCkpDQo+KwkJCQljb250aW51ZTsNCj4rDQo+IAkJCWlndF9keW5h
+bWljX2YoIiVzLXBpcGUtJXMiLCBpZ3Rfb3V0cHV0X25hbWUob3V0cHV0KSwga21zdGVzdF9waXBl
+X25hbWUocGlwZSkpDQo+IAkJCQlydW5fcGxhbmVfdGVzdCgmZGlzcGxheSwgcGlwZSwgb3V0cHV0
+LCB0ZXN0X2xlZ2FjeV9kcG1zLCBEUk1fUExBTkVfVFlQRV9QUklNQVJZKTsNCj4gCQkJYnJlYWs7
+DQo+QEAgLTMxMyw2ICszNDEsOSBAQCAgaWd0X21haW4NCj4gCWlndF9kZXNjcmliZSgiVGVzdHMg
+dGhlIGludGVycnVwdCBwcm9wZXJ0aWVzIGZvciBwYWdlZmxpcCIpOw0KPiAJaWd0X3N1YnRlc3Rf
+d2l0aF9keW5hbWljKCJsZWdhY3ktcGFnZWZsaXAiKSB7DQo+IAkJZm9yX2VhY2hfcGlwZV93aXRo
+X3ZhbGlkX291dHB1dCgmZGlzcGxheSwgcGlwZSwgb3V0cHV0KSB7DQo+KwkJCWlmICghcGlwZV9v
+dXRwdXRfY29tYm9fdmFsaWQoJmRpc3BsYXksIHBpcGUsIG91dHB1dCkpDQo+KwkJCQljb250aW51
+ZTsNCj4rDQo+IAkJCWlndF9keW5hbWljX2YoIiVzLXBpcGUtJXMiLCBpZ3Rfb3V0cHV0X25hbWUo
+b3V0cHV0KSwga21zdGVzdF9waXBlX25hbWUocGlwZSkpDQo+IAkJCQlydW5fcGxhbmVfdGVzdCgm
+ZGlzcGxheSwgcGlwZSwgb3V0cHV0LCB0ZXN0X3BhZ2VmbGlwLCBEUk1fUExBTkVfVFlQRV9QUklN
+QVJZKTsNCj4gCQkJYnJlYWs7DQo+QEAgLTMyMiw2ICszNTMsOSBAQCAgaWd0X21haW4NCj4gCWln
+dF9kZXNjcmliZSgiVGVzdHMgdGhlIGludGVycnVwdCBwcm9wZXJ0aWVzIGZvciBjdXJzb3IiKTsN
+Cj4gCWlndF9zdWJ0ZXN0X3dpdGhfZHluYW1pYygibGVnYWN5LWN1cnNvciIpIHsNCj4gCQlmb3Jf
+ZWFjaF9waXBlX3dpdGhfdmFsaWRfb3V0cHV0KCZkaXNwbGF5LCBwaXBlLCBvdXRwdXQpIHsNCj4r
+CQkJaWYgKCFwaXBlX291dHB1dF9jb21ib192YWxpZCgmZGlzcGxheSwgcGlwZSwgb3V0cHV0KSkN
+Cj4rCQkJCWNvbnRpbnVlOw0KPisNCj4gCQkJaWd0X2R5bmFtaWNfZigiJXMtcGlwZS0lcyIsIGln
+dF9vdXRwdXRfbmFtZShvdXRwdXQpLCBrbXN0ZXN0X3BpcGVfbmFtZShwaXBlKSkNCj4gCQkJCXJ1
+bl9wbGFuZV90ZXN0KCZkaXNwbGF5LCBwaXBlLCBvdXRwdXQsIHRlc3Rfc2V0Y3Vyc29yLCBEUk1f
+UExBTkVfVFlQRV9DVVJTT1IpOw0KPiAJCQlicmVhazsNCj5AQCAtMzMxLDYgKzM2NSw5IEBAICBp
+Z3RfbWFpbg0KPiAJaWd0X2Rlc2NyaWJlKCJUZXN0cyB0aGUgaW50ZXJydXB0IHByb3BlcnRpZXMg
+Zm9yIHByaW1hcnkgcGxhbmUiKTsNCj4gCWlndF9zdWJ0ZXN0X3dpdGhfZHluYW1pYygidW5pdmVy
+c2FsLXNldHBsYW5lLXByaW1hcnkiKSB7DQo+IAkJZm9yX2VhY2hfcGlwZV93aXRoX3ZhbGlkX291
+dHB1dCgmZGlzcGxheSwgcGlwZSwgb3V0cHV0KSB7DQo+KwkJCWlmICghcGlwZV9vdXRwdXRfY29t
+Ym9fdmFsaWQoJmRpc3BsYXksIHBpcGUsIG91dHB1dCkpDQo+KwkJCQljb250aW51ZTsNCj4rDQo+
+IAkJCWlndF9keW5hbWljX2YoIiVzLXBpcGUtJXMiLCBpZ3Rfb3V0cHV0X25hbWUob3V0cHV0KSwg
+a21zdGVzdF9waXBlX25hbWUocGlwZSkpDQo+IAkJCQlydW5fcGxhbmVfdGVzdCgmZGlzcGxheSwg
+cGlwZSwgb3V0cHV0LCB0ZXN0X3NldHBsYW5lLCBEUk1fUExBTkVfVFlQRV9QUklNQVJZKTsNCj4g
+CQkJYnJlYWs7DQo+QEAgLTM0MCw2ICszNzcsOSBAQCAgaWd0X21haW4NCj4gCWlndF9kZXNjcmli
+ZSgiVGVzdHMgdGhlIGludGVycnVwdCBwcm9wZXJ0aWVzIGZvciBjdXJzb3IgcGxhbmUiKTsNCj4g
+CWlndF9zdWJ0ZXN0X3dpdGhfZHluYW1pYygidW5pdmVyc2FsLXNldHBsYW5lLWN1cnNvciIpIHsN
+Cj4gCQlmb3JfZWFjaF9waXBlX3dpdGhfdmFsaWRfb3V0cHV0KCZkaXNwbGF5LCBwaXBlLCBvdXRw
+dXQpIHsNCj4rCQkJaWYgKCFwaXBlX291dHB1dF9jb21ib192YWxpZCgmZGlzcGxheSwgcGlwZSwg
+b3V0cHV0KSkNCj4rCQkJCWNvbnRpbnVlOw0KPisNCj4gCQkJaWd0X2R5bmFtaWNfZigiJXMtcGlw
+ZS0lcyIsIGlndF9vdXRwdXRfbmFtZShvdXRwdXQpLCBrbXN0ZXN0X3BpcGVfbmFtZShwaXBlKSkN
+Cj4gCQkJCXJ1bl9wbGFuZV90ZXN0KCZkaXNwbGF5LCBwaXBlLCBvdXRwdXQsIHRlc3Rfc2V0cGxh
+bmUsIERSTV9QTEFORV9UWVBFX0NVUlNPUik7DQo+IAkJCWJyZWFrOw0KDQo=
