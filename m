@@ -1,21 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9364610E091
- for <igt-dev@lists.freedesktop.org>; Mon, 26 Dec 2022 10:59:02 +0000 (UTC)
-From: "Sharma, Ananya" <ananya.sharma@intel.com>
-To: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-Date: Mon, 26 Dec 2022 10:58:59 +0000
-Message-ID: <CO1PR11MB4834A5C705EA400E36A3F886FDEC9@CO1PR11MB4834.namprd11.prod.outlook.com>
-References: <20221115170855.196572-1-bhanuprakash.modem@intel.com>
- <20221115170855.196572-44-bhanuprakash.modem@intel.com>
-In-Reply-To: <20221115170855.196572-44-bhanuprakash.modem@intel.com>
-Content-Language: en-US
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 44E2410E10E
+ for <igt-dev@lists.freedesktop.org>; Mon, 26 Dec 2022 14:44:36 +0000 (UTC)
+From: =?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>
+To: Melissa Wen <mwen@igalia.com>,
+ =?UTF-8?q?Andr=C3=A9=20Almeida?= <andrealmeid@igalia.com>,
+ Petri Latvala <petri.latvala@intel.com>,
+ Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+Date: Mon, 26 Dec 2022 11:43:59 -0300
+Message-Id: <20221226144359.237927-1-mcanal@igalia.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [i-g-t v5 43/52] tests/i915/kms_fence_pin_leak: Add
- support for Bigjoiner
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t] tests/kms_addfb_basic: Avoid open-coded
+ expressions
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,61 +22,438 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
+Replace open-coded expressions with their equivalents in the IGT
+infrastructure and macros. In particular, replace open-coded
+implementations of do_ioctl() and do_ioctl_err().
 
+Signed-off-by: Maíra Canal <mcanal@igalia.com>
+---
+ tests/kms_addfb_basic.c | 153 +++++++++++++++++-----------------------
+ 1 file changed, 63 insertions(+), 90 deletions(-)
 
------Original Message-----
-From: igt-dev <igt-dev-bounces@lists.freedesktop.org> On Behalf Of Bhanupra=
-kash Modem
-Sent: 15 November 2022 22:39
-To: igt-dev@lists.freedesktop.org
-Subject: [igt-dev] [i-g-t v5 43/52] tests/i915/kms_fence_pin_leak: Add supp=
-ort for Bigjoiner
-
-This patch will add a check to Skip the subtest if a selected pipe/output c=
-ombo won't support Bigjoiner or 8K mode.
-
-Example:
-* Pipe-D wont support a mode > 5K
-* To use 8K mode on a pipe then consecutive pipe must be available & free.
-
-V2: - Use updated helper name
-
-Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Reviewed-by: Ananya Sharma <ananya.sharma@intel.com>
- tests/i915/kms_fence_pin_leak.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
-
-diff --git a/tests/i915/kms_fence_pin_leak.c b/tests/i915/kms_fence_pin_lea=
-k.c index 1972a699..63657a74 100644
---- a/tests/i915/kms_fence_pin_leak.c
-+++ b/tests/i915/kms_fence_pin_leak.c
-@@ -124,6 +124,9 @@ static void run_single_test(data_t *data, enum pipe pip=
-e, igt_output_t *output)
- 	struct igt_fb fb[2];
- 	int i;
-=20
-+	igt_info("Using (pipe %s + %s) to run the subtest.\n",
-+		 kmstest_pipe_name(pipe), igt_output_name(output));
-+
- 	igt_output_set_pipe(output, pipe);
-=20
- 	mode =3D igt_output_get_mode(output);
-@@ -196,6 +199,12 @@ static void run_test(data_t *data)
- 	enum pipe p;
-=20
- 	for_each_pipe_with_valid_output(display, p, output) {
-+		igt_display_reset(display);
-+
-+		igt_output_set_pipe(output, p);
-+		if (!i915_pipe_output_combo_valid(display))
-+			continue;
-+
- 		run_single_test(data, p, output);
-=20
- 		return; /* one time ought to be enough */
---
-2.38.0
+diff --git a/tests/kms_addfb_basic.c b/tests/kms_addfb_basic.c
+index f91153b5..c58783d5 100644
+--- a/tests/kms_addfb_basic.c
++++ b/tests/kms_addfb_basic.c
+@@ -57,18 +57,6 @@ static int legacy_addfb(int fd, struct drm_mode_fb_cmd *arg)
+ 	return err;
+ }
+ 
+-static int rmfb(int fd, uint32_t id)
+-{
+-	int err;
+-
+-	err = 0;
+-	if (igt_ioctl(fd, DRM_IOCTL_MODE_RMFB, &id))
+-		err = -errno;
+-
+-	errno = 0;
+-	return err;
+-}
+-
+ static void invalid_tests(int fd)
+ {
+ 	struct drm_mode_fb_cmd2 f = {};
+@@ -88,8 +76,8 @@ static void invalid_tests(int fd)
+ 
+ 		f.handles[0] = gem_bo;
+ 
+-		igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_ADDFB2, &f) == 0);
+-		igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_RMFB, &f.fb_id) == 0);
++		do_ioctl(fd, DRM_IOCTL_MODE_ADDFB2, &f);
++		do_ioctl(fd, DRM_IOCTL_MODE_RMFB, &f.fb_id);
+ 		f.fb_id = 0;
+ 	}
+ 
+@@ -100,8 +88,7 @@ static void invalid_tests(int fd)
+ 		igt_require_fb_modifiers(fd);
+ 
+ 		f.handles[1] = gem_bo_small;
+-		igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_ADDFB2, &f) == -1 &&
+-			   errno == EINVAL);
++		do_ioctl_err(fd, DRM_IOCTL_MODE_ADDFB2, &f, EINVAL);
+ 		f.handles[1] = 0;
+ 	}
+ 
+@@ -110,8 +97,7 @@ static void invalid_tests(int fd)
+ 		igt_require_fb_modifiers(fd);
+ 
+ 		f.pitches[1] = 512;
+-		igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_ADDFB2, &f) == -1 &&
+-			   errno == EINVAL);
++		do_ioctl_err(fd, DRM_IOCTL_MODE_ADDFB2, &f, EINVAL);
+ 		f.pitches[1] = 0;
+ 	}
+ 
+@@ -120,8 +106,7 @@ static void invalid_tests(int fd)
+ 		igt_require_fb_modifiers(fd);
+ 
+ 		f.offsets[1] = 512;
+-		igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_ADDFB2, &f) == -1 &&
+-			   errno == EINVAL);
++		do_ioctl_err(fd, DRM_IOCTL_MODE_ADDFB2, &f, EINVAL);
+ 		f.offsets[1] = 0;
+ 	}
+ 
+@@ -130,8 +115,7 @@ static void invalid_tests(int fd)
+ 		igt_require_fb_modifiers(fd);
+ 
+ 		f.modifier[1] =  I915_FORMAT_MOD_X_TILED;
+-		igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_ADDFB2, &f) == -1 &&
+-			   errno == EINVAL);
++		do_ioctl_err(fd, DRM_IOCTL_MODE_ADDFB2, &f, EINVAL);
+ 		f.modifier[1] = 0;
+ 	}
+ 
+@@ -142,10 +126,10 @@ static void invalid_tests(int fd)
+ 		f.flags = 0;
+ 		f.modifier[0] = 0;
+ 		gem_set_tiling(fd, gem_bo, I915_TILING_X, 512*4);
+-		igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_ADDFB2, &f) == 0);
+-		igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_RMFB, &f.fb_id) == 0);
++		do_ioctl(fd, DRM_IOCTL_MODE_ADDFB2, &f);
++		do_ioctl(fd, DRM_IOCTL_MODE_RMFB, &f.fb_id);
+ 		f.fb_id = 0;
+-		igt_assert(f.modifier[0] == 0);
++		igt_assert_eq(f.modifier[0], 0);
+ 	}
+ 
+ 	igt_describe("Check if addfb2 with a system memory gem object "
+@@ -199,7 +183,7 @@ static void invalid_tests(int fd)
+ 			igt_debug("{bpp:%d, depth:%d} -> expect:%d\n",
+ 				  arg.bpp, arg.depth, known_formats[i].expect);
+ 			if (arg.fb_id) {
+-				igt_assert_eq(rmfb(fd, arg.fb_id), 0);
++				do_ioctl(fd, DRM_IOCTL_MODE_RMFB, &arg.fb_id);
+ 				arg.fb_id = 0;
+ 			}
+ 		}
+@@ -236,7 +220,7 @@ static void invalid_tests(int fd)
+ 				     "Expected %d with {bpp:%d, depth:%d}, got %d instead\n",
+ 				     expect, arg.bpp, arg.depth, err);
+ 			if (arg.fb_id) {
+-				igt_assert_eq(rmfb(fd, arg.fb_id), 0);
++				do_ioctl(fd, DRM_IOCTL_MODE_RMFB, &arg.fb_id);
+ 				arg.fb_id = 0;
+ 			}
+ 
+@@ -264,7 +248,7 @@ static void invalid_tests(int fd)
+ 				     arg.bpp, arg.depth,
+ 				     err);
+ 			if (arg.fb_id) {
+-				igt_assert_eq(rmfb(fd, arg.fb_id), 0);
++				do_ioctl(fd, DRM_IOCTL_MODE_RMFB, &arg.fb_id);
+ 				arg.fb_id = 0;
+ 			}
+ 		}
+@@ -298,15 +282,14 @@ static void pitch_tests(int fd)
+ 
+ 	igt_describe("Test that addfb2 call fails correctly without handle");
+ 	igt_subtest("no-handle") {
+-		igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_ADDFB2, &f) == -1 &&
+-			   errno == EINVAL);
++		do_ioctl_err(fd, DRM_IOCTL_MODE_ADDFB2, &f, EINVAL);
+ 	}
+ 
+ 	igt_describe("Check if addfb2 call works with given handle");
+ 	f.handles[0] = gem_bo;
+ 	igt_subtest("basic") {
+-		igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_ADDFB2, &f) == 0);
+-		igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_RMFB, &f.fb_id) == 0);
++		do_ioctl(fd, DRM_IOCTL_MODE_ADDFB2, &f);
++		do_ioctl(fd, DRM_IOCTL_MODE_RMFB, &f.fb_id);
+ 		f.fb_id = 0;
+ 	}
+ 
+@@ -362,8 +345,8 @@ static void tiling_tests(int fd)
+ 			igt_require(gem_available_fences(fd) > 0);
+ 			f.handles[0] = tiled_x_bo;
+ 
+-			igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_ADDFB2, &f) == 0);
+-			igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_RMFB, &f.fb_id) == 0);
++			do_ioctl(fd, DRM_IOCTL_MODE_ADDFB2, &f);
++			do_ioctl(fd, DRM_IOCTL_MODE_RMFB, &f.fb_id);
+ 			f.fb_id = 0;
+ 		}
+ 
+@@ -373,10 +356,10 @@ static void tiling_tests(int fd)
+ 			f.handles[0] = gem_bo;
+ 
+ 			gem_set_tiling(fd, gem_bo, I915_TILING_X, 1024*4);
+-			igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_ADDFB2, &f) == 0);
+-			igt_assert(__gem_set_tiling(fd, gem_bo, I915_TILING_X, 512*4) == -EBUSY);
+-			igt_assert(__gem_set_tiling(fd, gem_bo, I915_TILING_Y, 1024*4) == -EBUSY);
+-			igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_RMFB, &f.fb_id) == 0);
++			do_ioctl(fd, DRM_IOCTL_MODE_ADDFB2, &f);
++			igt_assert_eq(__gem_set_tiling(fd, gem_bo, I915_TILING_X, 512*4), -EBUSY);
++			igt_assert_eq(__gem_set_tiling(fd, gem_bo, I915_TILING_Y, 1024*4), -EBUSY);
++			do_ioctl(fd, DRM_IOCTL_MODE_RMFB, &f.fb_id);
+ 			f.fb_id = 0;
+ 		}
+ 
+@@ -386,8 +369,7 @@ static void tiling_tests(int fd)
+ 			igt_require(gem_available_fences(fd) > 0);
+ 			f.handles[0] = tiled_x_bo;
+ 
+-			igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_ADDFB2, &f) == -1 &&
+-				   errno == EINVAL);
++			do_ioctl_err(fd, DRM_IOCTL_MODE_ADDFB2, &f, EINVAL);
+ 		}
+ 
+ 		igt_describe("Test that addfb2 call fails correctly for basic y-tiling test");
+@@ -397,8 +379,7 @@ static void tiling_tests(int fd)
+ 			igt_require(gem_available_fences(fd) > 0);
+ 			f.handles[0] = tiled_y_bo;
+ 
+-			igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_ADDFB2, &f) == -1 &&
+-				   errno == EINVAL);
++			do_ioctl_err(fd, DRM_IOCTL_MODE_ADDFB2, &f, EINVAL);
+ 		}
+ 
+ 		igt_fixture {
+@@ -449,15 +430,15 @@ static void size_tests(int fd)
+ 
+ 	igt_describe("Check if addfb2 call works with max size of buffer object");
+ 	igt_subtest("size-max") {
+-		igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_ADDFB2, &f) == 0);
+-		igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_RMFB, &f.fb_id) == 0);
++		do_ioctl(fd, DRM_IOCTL_MODE_ADDFB2, &f);
++		do_ioctl(fd, DRM_IOCTL_MODE_RMFB, &f.fb_id);
+ 		f.fb_id = 0;
+-		igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_ADDFB2, &f_16) == 0);
+-		igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_RMFB, &f_16.fb_id) == 0);
++		do_ioctl(fd, DRM_IOCTL_MODE_ADDFB2, &f_16);
++		do_ioctl(fd, DRM_IOCTL_MODE_RMFB, &f_16.fb_id);
+ 		f_16.fb_id = 0;
+ 		if (igt_display_has_format_mod(&display, DRM_FORMAT_C8, 0)) {
+-			igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_ADDFB2, &f_8) == 0);
+-			igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_RMFB, &f_8.fb_id) == 0);
++			do_ioctl(fd, DRM_IOCTL_MODE_ADDFB2, &f_8);
++			do_ioctl(fd, DRM_IOCTL_MODE_RMFB, &f_8.fb_id);
+ 			f_8.fb_id = 0;
+ 		}
+ 	}
+@@ -467,12 +448,9 @@ static void size_tests(int fd)
+ 	f_8.width++;
+ 	igt_describe("Test that addfb2 call fails correctly with increased width of fb");
+ 	igt_subtest("too-wide") {
+-		igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_ADDFB2, &f) == -1 &&
+-			   errno == EINVAL);
+-		igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_ADDFB2, &f_16) == -1 &&
+-			   errno == EINVAL);
+-		igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_ADDFB2, &f_8) == -1 &&
+-			   errno == EINVAL);
++		do_ioctl_err(fd, DRM_IOCTL_MODE_ADDFB2, &f, EINVAL);
++		do_ioctl_err(fd, DRM_IOCTL_MODE_ADDFB2, &f_16, EINVAL);
++		do_ioctl_err(fd, DRM_IOCTL_MODE_ADDFB2, &f_8, EINVAL);
+ 	}
+ 	f.width--;
+ 	f_16.width--;
+@@ -509,8 +487,8 @@ static void size_tests(int fd)
+ 	igt_describe("Check if addfb2 call works for given height");
+ 	f.height = 1020;
+ 	igt_subtest("small-bo") {
+-		igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_ADDFB2, &f) == 0);
+-		igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_RMFB, &f.fb_id) == 0);
++		do_ioctl(fd, DRM_IOCTL_MODE_ADDFB2, &f);
++		do_ioctl(fd, DRM_IOCTL_MODE_RMFB, &f.fb_id);
+ 		f.fb_id = 0;
+ 	}
+ 
+@@ -519,8 +497,7 @@ static void size_tests(int fd)
+ 		igt_require_intel(fd);
+ 		igt_require(gem_available_fences(fd) > 0);
+ 		gem_set_tiling(fd, gem_bo_small, I915_TILING_X, 1024*4);
+-		igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_ADDFB2, &f) == -1 &&
+-			   errno == EINVAL);
++		do_ioctl_err(fd, DRM_IOCTL_MODE_ADDFB2, &f, EINVAL);
+ 	}
+ 
+ 
+@@ -555,7 +532,7 @@ static void addfb25_tests(int fd)
+ 		igt_require_fb_modifiers(fd);
+ 
+ 		f.modifier[0] = I915_FORMAT_MOD_X_TILED;
+-		igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_ADDFB2, &f) < 0 && errno == EINVAL);
++		do_ioctl_err(fd, DRM_IOCTL_MODE_ADDFB2, &f, EINVAL);
+ 	}
+ 
+ 	igt_fixture
+@@ -566,7 +543,7 @@ static void addfb25_tests(int fd)
+ 		igt_require_fb_modifiers(fd);
+ 
+ 		f.modifier[0] = ~0;
+-		igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_ADDFB2, &f) < 0 && errno == EINVAL);
++		do_ioctl_err(fd, DRM_IOCTL_MODE_ADDFB2, &f, EINVAL);
+ 	}
+ 
+ 	igt_subtest_group {
+@@ -580,24 +557,24 @@ static void addfb25_tests(int fd)
+ 		igt_describe("Test that addfb2 call fails correctly for irrelevant x-tiling");
+ 		igt_subtest("addfb25-x-tiled-mismatch-legacy") {
+ 			f.modifier[0] = DRM_FORMAT_MOD_LINEAR;
+-			igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_ADDFB2, &f) < 0 && errno == EINVAL);
++			do_ioctl_err(fd, DRM_IOCTL_MODE_ADDFB2, &f, EINVAL);
+ 		}
+ 
+ 		igt_describe("Check if addfb2 call works for x-tiling");
+ 		igt_subtest("addfb25-x-tiled-legacy") {
+ 			f.modifier[0] = I915_FORMAT_MOD_X_TILED;
+-			igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_ADDFB2, &f) == 0);
+-			igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_RMFB, &f.fb_id) == 0);
++			do_ioctl(fd, DRM_IOCTL_MODE_ADDFB2, &f);
++			do_ioctl(fd, DRM_IOCTL_MODE_RMFB, &f.fb_id);
+ 			f.fb_id = 0;
+ 		}
+ 
+ 		igt_describe("Check if addfb2 call works for relevant combination of tiling and fbs");
+ 		igt_subtest("addfb25-framebuffer-vs-set-tiling") {
+ 			f.modifier[0] = I915_FORMAT_MOD_X_TILED;
+-			igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_ADDFB2, &f) == 0);
+-			igt_assert(__gem_set_tiling(fd, gem_bo, I915_TILING_X, 512*4) == -EBUSY);
+-			igt_assert(__gem_set_tiling(fd, gem_bo, I915_TILING_Y, 1024*4) == -EBUSY);
+-			igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_RMFB, &f.fb_id) == 0);
++			do_ioctl(fd, DRM_IOCTL_MODE_ADDFB2, &f);
++			igt_assert_eq(__gem_set_tiling(fd, gem_bo, I915_TILING_X, 512*4), -EBUSY);
++			igt_assert_eq(__gem_set_tiling(fd, gem_bo, I915_TILING_Y, 1024*4), -EBUSY);
++			do_ioctl(fd, DRM_IOCTL_MODE_RMFB, &f.fb_id);
+ 			f.fb_id = 0;
+ 		}
+ 	}
+@@ -644,10 +621,10 @@ static void addfb25_ytile(int fd)
+ 		igt_require_intel(fd);
+ 
+ 		f.modifier[0] = I915_FORMAT_MOD_Y_TILED;
+-		igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_ADDFB2, &f) ==
+-			   addfb_expected_ret(&display, &f));
++		igt_assert_eq(drmIoctl(fd, DRM_IOCTL_MODE_ADDFB2, &f),
++			      addfb_expected_ret(&display, &f));
+ 		if (!addfb_expected_ret(&display, &f))
+-			igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_RMFB, &f.fb_id) == 0);
++			do_ioctl(fd, DRM_IOCTL_MODE_RMFB, &f.fb_id);
+ 		f.fb_id = 0;
+ 	}
+ 
+@@ -657,10 +634,10 @@ static void addfb25_ytile(int fd)
+ 		igt_require_intel(fd);
+ 
+ 		f.modifier[0] = I915_FORMAT_MOD_Yf_TILED;
+-		igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_ADDFB2, &f) ==
+-			   addfb_expected_ret(&display, &f));
++		igt_assert_eq(drmIoctl(fd, DRM_IOCTL_MODE_ADDFB2, &f),
++			      addfb_expected_ret(&display, &f));
+ 		if (!addfb_expected_ret(&display, &f))
+-			igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_RMFB, &f.fb_id) == 0);
++			do_ioctl(fd, DRM_IOCTL_MODE_RMFB, &f.fb_id);
+ 		f.fb_id = 0;
+ 	}
+ 
+@@ -673,7 +650,7 @@ static void addfb25_ytile(int fd)
+ 		f.height = 1023;
+ 		f.handles[0] = gem_bo_small;
+ 		igt_require(addfb_expected_ret(&display, &f) == 0);
+-		igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_ADDFB2, &f) < 0 && errno == EINVAL);
++		do_ioctl_err(fd, DRM_IOCTL_MODE_ADDFB2, &f, EINVAL);
+ 		f.fb_id = 0;
+ 	}
+ 
+@@ -715,10 +692,10 @@ static void addfb25_4tile(int fd)
+ 		igt_require_intel(fd);
+ 
+ 		f.modifier[0] = I915_FORMAT_MOD_4_TILED;
+-		igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_ADDFB2, &f) ==
+-			   addfb_expected_ret(&display, &f));
++		igt_assert_eq(drmIoctl(fd, DRM_IOCTL_MODE_ADDFB2, &f),
++			      addfb_expected_ret(&display, &f));
+ 		if (!addfb_expected_ret(&display, &f))
+-			igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_RMFB, &f.fb_id) == 0);
++			do_ioctl(fd, DRM_IOCTL_MODE_RMFB, &f.fb_id);
+ 		f.fb_id = 0;
+ 	}
+ 
+@@ -747,7 +724,7 @@ static void prop_tests(int fd)
+ 
+ 		f.handles[0] = gem_bo;
+ 
+-		igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_ADDFB2, &f) == 0);
++		do_ioctl(fd, DRM_IOCTL_MODE_ADDFB2, &f);
+ 	}
+ 
+ 	get_props.props_ptr = (uintptr_t) &prop;
+@@ -759,16 +736,14 @@ static void prop_tests(int fd)
+ 	igt_subtest("invalid-get-prop-any") {
+ 		get_props.obj_type = 0; /* DRM_MODE_OBJECT_ANY */
+ 
+-		igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_OBJ_GETPROPERTIES,
+-				    &get_props) == -1 && errno == EINVAL);
++		do_ioctl_err(fd, DRM_IOCTL_MODE_OBJ_GETPROPERTIES, &get_props, EINVAL);
+ 	}
+ 
+ 	igt_describe("Test that get-properties ioctl call fails correctly for fb mode object");
+ 	igt_subtest("invalid-get-prop") {
+ 		get_props.obj_type = DRM_MODE_OBJECT_FB;
+ 
+-		igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_OBJ_GETPROPERTIES,
+-				    &get_props) == -1 && errno == EINVAL);
++		do_ioctl_err(fd, DRM_IOCTL_MODE_OBJ_GETPROPERTIES, &get_props, EINVAL);
+ 	}
+ 
+ 	set_prop.value = 0;
+@@ -779,20 +754,18 @@ static void prop_tests(int fd)
+ 	igt_subtest("invalid-set-prop-any") {
+ 		set_prop.obj_type = 0; /* DRM_MODE_OBJECT_ANY */
+ 
+-		igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_OBJ_SETPROPERTY,
+-				    &set_prop) == -1 && errno == EINVAL);
++		do_ioctl_err(fd, DRM_IOCTL_MODE_OBJ_SETPROPERTY, &set_prop, EINVAL);
+ 	}
+ 
+ 	igt_describe("Test that get-properties ioctl call fails correctly for fb mode object");
+ 	igt_subtest("invalid-set-prop") {
+ 		set_prop.obj_type = DRM_MODE_OBJECT_FB;
+ 
+-		igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_OBJ_SETPROPERTY,
+-				    &set_prop) == -1 && errno == EINVAL);
++		do_ioctl_err(fd, DRM_IOCTL_MODE_OBJ_SETPROPERTY, &set_prop, EINVAL);
+ 	}
+ 
+ 	igt_fixture
+-		igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_RMFB, &f.fb_id) == 0);
++		do_ioctl(fd, DRM_IOCTL_MODE_RMFB, &f.fb_id);
+ 
+ }
+ 
+@@ -812,7 +785,7 @@ static void master_tests(int fd)
+ 
+ 		f.handles[0] = gem_bo;
+ 
+-		igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_ADDFB2, &f) == 0);
++		do_ioctl(fd, DRM_IOCTL_MODE_ADDFB2, &f);
+ 	}
+ 
+ 	igt_describe("Check that only master can rmfb");
+@@ -823,7 +796,7 @@ static void master_tests(int fd)
+ 
+ 		master2_fd = drm_open_driver_master(DRIVER_ANY);
+ 
+-		igt_assert_eq(rmfb(master2_fd, f.fb_id), -ENOENT);
++		do_ioctl_err(master2_fd, DRM_IOCTL_MODE_RMFB, &f.fb_id, ENOENT);
+ 
+ 		igt_device_drop_master(master2_fd);
+ 		close(master2_fd);
+@@ -832,7 +805,7 @@ static void master_tests(int fd)
+ 	}
+ 
+ 	igt_fixture
+-		igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_RMFB, &f.fb_id) == 0);
++		do_ioctl(fd, DRM_IOCTL_MODE_RMFB, &f.fb_id);
+ 
+ }
+ 
+-- 
+2.38.1
