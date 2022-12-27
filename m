@@ -1,17 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E895910E2F7
- for <igt-dev@lists.freedesktop.org>; Tue, 27 Dec 2022 08:35:41 +0000 (UTC)
-From: Swati Sharma <swati2.sharma@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Tue, 27 Dec 2022 14:07:41 +0530
-Message-Id: <20221227083741.14644-3-swati2.sharma@intel.com>
-In-Reply-To: <20221227083741.14644-1-swati2.sharma@intel.com>
-References: <20221227083741.14644-1-swati2.sharma@intel.com>
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0E55710E2F7
+ for <igt-dev@lists.freedesktop.org>; Tue, 27 Dec 2022 08:58:16 +0000 (UTC)
+From: "Sharma, Ananya" <ananya.sharma@intel.com>
+To: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+Date: Tue, 27 Dec 2022 08:58:12 +0000
+Message-ID: <CO1PR11MB48345B7C715212511BBF84B5FDED9@CO1PR11MB4834.namprd11.prod.outlook.com>
+References: <20221115170855.196572-1-bhanuprakash.modem@intel.com>
+ <20221115170855.196572-44-bhanuprakash.modem@intel.com>
+In-Reply-To: <20221115170855.196572-44-bhanuprakash.modem@intel.com>
+Content-Language: en-US
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 2/2] tests/kms_hdr: Add negative test to
- enforce HDR on non-HDR panel
+Subject: Re: [igt-dev] [i-g-t v5 43/52] tests/i915/kms_fence_pin_leak: Add
+ support for Bigjoiner
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,68 +26,58 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Negative test is added to ensure HDR is not enabled on non-HDR panel.
-Commit/modeset won't fail. However, in dmesg we can find
-	[drm:drm_hdmi_infoframe_set_hdr_metadata [drm_display_helper]] EOTF Not Supported
+LGTM=20
+Reviewed-by: Ananya Sharma <ananya.sharma@intel.com>
 
-Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
+-----Original Message-----
+From: igt-dev <igt-dev-bounces@lists.freedesktop.org> On Behalf Of Bhanupra=
+kash Modem
+Sent: 15 November 2022 22:39
+To: igt-dev@lists.freedesktop.org
+Subject: [igt-dev] [i-g-t v5 43/52] tests/i915/kms_fence_pin_leak: Add supp=
+ort for Bigjoiner
+
+This patch will add a check to Skip the subtest if a selected pipe/output c=
+ombo won't support Bigjoiner or 8K mode.
+
+Example:
+* Pipe-D wont support a mode > 5K
+* To use 8K mode on a pipe then consecutive pipe must be available & free.
+
+V2: - Use updated helper name
+
+Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/kms_hdr.c | 15 +++++++++++++--
- 1 file changed, 13 insertions(+), 2 deletions(-)
+ tests/i915/kms_fence_pin_leak.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/tests/kms_hdr.c b/tests/kms_hdr.c
-index 629a45a7..18ccfce7 100644
---- a/tests/kms_hdr.c
-+++ b/tests/kms_hdr.c
-@@ -51,6 +51,7 @@ enum {
- 	TEST_SUSPEND = 1 << 2,
- 	TEST_SWAP = 1 << 3,
- 	TEST_INVALID_METADATA_SIZES = 1 << 4,
-+	TEST_INVALID_HDR = 1 << 5,
- };
- 
- /* BPC connector state. */
-@@ -414,6 +415,8 @@ static void test_static_toggle(data_t *data, enum pipe pipe,
- 	set_hdr_output_metadata(data, &hdr);
- 	igt_output_set_prop_value(data->output, IGT_CONNECTOR_MAX_BPC, 10);
- 	igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
-+	if (flags & TEST_INVALID_HDR)
-+		igt_assert_eq(system("dmesg|grep -E \"EOTF Not Supported\""), 0);
- 	igt_assert_output_bpc_equal(data->fd, pipe, output->name, 10);
- 
- 	/* Verify that the CRC are equal after DPMS or suspend. */
-@@ -565,7 +568,11 @@ static void test_hdr(data_t *data, uint32_t flags)
- 		if (!has_max_bpc(output) || !has_hdr(output))
- 			continue;
- 
--		if (!is_panel_hdr(data, output))
-+		/* For negative test, panel should be non-hdr. */
-+		if ((flags & TEST_INVALID_HDR) && is_panel_hdr(data, output))
+diff --git a/tests/i915/kms_fence_pin_leak.c b/tests/i915/kms_fence_pin_lea=
+k.c index 1972a699..63657a74 100644
+--- a/tests/i915/kms_fence_pin_leak.c
++++ b/tests/i915/kms_fence_pin_leak.c
+@@ -124,6 +124,9 @@ static void run_single_test(data_t *data, enum pipe pip=
+e, igt_output_t *output)
+ 	struct igt_fb fb[2];
+ 	int i;
+=20
++	igt_info("Using (pipe %s + %s) to run the subtest.\n",
++		 kmstest_pipe_name(pipe), igt_output_name(output));
++
+ 	igt_output_set_pipe(output, pipe);
+=20
+ 	mode =3D igt_output_get_mode(output);
+@@ -196,6 +199,12 @@ static void run_test(data_t *data)
+ 	enum pipe p;
+=20
+ 	for_each_pipe_with_valid_output(display, p, output) {
++		igt_display_reset(display);
++
++		igt_output_set_pipe(output, p);
++		if (!i915_pipe_output_combo_valid(display))
 +			continue;
 +
-+		if ((flags & ~TEST_INVALID_HDR) && !is_panel_hdr(data, output))
- 			continue;
- 
- 		if (igt_get_output_max_bpc(data->fd, output->name) < 10)
-@@ -587,7 +594,7 @@ static void test_hdr(data_t *data, uint32_t flags)
- 
- 				igt_dynamic_f("pipe-%s-%s",
- 					      kmstest_pipe_name(pipe), output->name) {
--					if (flags & TEST_NONE || flags & TEST_DPMS || flags & TEST_SUSPEND)
-+					if (flags & TEST_NONE || flags & TEST_DPMS || flags & TEST_SUSPEND || flags & TEST_INVALID_HDR)
- 						test_static_toggle(data, pipe, output, flags);
- 					if (flags & TEST_SWAP)
- 						test_static_swap(data, pipe, output);
-@@ -645,6 +652,10 @@ igt_main
- 	igt_subtest_with_dynamic("invalid-metadata-sizes")
- 		test_hdr(&data, TEST_INVALID_METADATA_SIZES);
- 
-+	igt_describe("Test to ensure HDR is not enabled on non-HDR panel");
-+	igt_subtest_with_dynamic("invalid-hdr")
-+		test_hdr(&data, TEST_INVALID_HDR);
-+
- 	igt_fixture {
- 		igt_display_fini(&data.display);
- 		close(data.fd);
--- 
-2.17.1
+ 		run_single_test(data, p, output);
+=20
+ 		return; /* one time ought to be enough */
+--
+2.38.0
