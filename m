@@ -1,21 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1366D10E091
- for <igt-dev@lists.freedesktop.org>; Tue, 27 Dec 2022 07:21:10 +0000 (UTC)
-From: "Sharma, Ananya" <ananya.sharma@intel.com>
-To: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-Date: Tue, 27 Dec 2022 07:21:05 +0000
-Message-ID: <CO1PR11MB48345161FF94FEB1CD82168EFDED9@CO1PR11MB4834.namprd11.prod.outlook.com>
-References: <20221115170855.196572-1-bhanuprakash.modem@intel.com>
- <20221115170855.196572-25-bhanuprakash.modem@intel.com>
-In-Reply-To: <20221115170855.196572-25-bhanuprakash.modem@intel.com>
-Content-Language: en-US
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A289C10E2F8
+ for <igt-dev@lists.freedesktop.org>; Tue, 27 Dec 2022 08:35:41 +0000 (UTC)
+From: Swati Sharma <swati2.sharma@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Tue, 27 Dec 2022 14:07:40 +0530
+Message-Id: <20221227083741.14644-2-swati2.sharma@intel.com>
+In-Reply-To: <20221227083741.14644-1-swati2.sharma@intel.com>
+References: <20221227083741.14644-1-swati2.sharma@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [i-g-t v5 24/52] tests/kms_plane_cursor: Add support
- for Bigjoiner
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t 1/2] tests/kms_hdr: Add negative test for
+ invalid metadata sizes
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,50 +23,84 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
+Negative test is added in which HDR output metadata prop is
+set with invalid sizes.
 
+Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
+---
+ tests/kms_hdr.c | 32 ++++++++++++++++++++++++++++++++
+ 1 file changed, 32 insertions(+)
 
------Original Message-----
-From: igt-dev <igt-dev-bounces@lists.freedesktop.org> On Behalf Of Bhanupra=
-kash Modem
-Sent: 15 November 2022 22:38
-To: igt-dev@lists.freedesktop.org
-Subject: [igt-dev] [i-g-t v5 24/52] tests/kms_plane_cursor: Add support for=
- Bigjoiner
-
-This patch will add a check to Skip the subtest if a selected pipe/output c=
-ombo won't support Bigjoiner or 8K mode.
-
-Example:
-* Pipe-D wont support a mode > 5K
-* To use 8K mode on a pipe then consecutive pipe must be available & free.
-
-V2: - Use updated helper name
-
-Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Reviewed-by: Ananya Sharma <ananya.sharma@intel.com>
-
- tests/kms_plane_cursor.c | 6 ++++++
- 1 file changed, 6 insertions(+)
-
-diff --git a/tests/kms_plane_cursor.c b/tests/kms_plane_cursor.c index 9b27=
-586c..9e317cbf 100644
---- a/tests/kms_plane_cursor.c
-+++ b/tests/kms_plane_cursor.c
-@@ -85,6 +85,12 @@ static void test_init(data_t *data, enum pipe pipe_id, i=
-gt_output_t *output)
- 	data->overlay =3D igt_pipe_get_plane_type(data->pipe, DRM_PLANE_TYPE_OVER=
-LAY);
- 	data->cursor =3D igt_pipe_get_plane_type(data->pipe, DRM_PLANE_TYPE_CURSO=
-R);
-=20
-+	igt_output_set_pipe(data->output, data->pipe_id);
-+	igt_require(i915_pipe_output_combo_valid(display));
+diff --git a/tests/kms_hdr.c b/tests/kms_hdr.c
+index 655c3e14..629a45a7 100644
+--- a/tests/kms_hdr.c
++++ b/tests/kms_hdr.c
+@@ -50,6 +50,7 @@ enum {
+ 	TEST_DPMS = 1 << 1,
+ 	TEST_SUSPEND = 1 << 2,
+ 	TEST_SWAP = 1 << 3,
++	TEST_INVALID_METADATA_SIZES = 1 << 4,
+ };
+ 
+ /* BPC connector state. */
+@@ -327,6 +328,18 @@ static void set_hdr_output_metadata(data_t *data,
+ 				     meta ? sizeof(*meta) : 0);
+ }
+ 
++/* Sets the HDR output metadata prop with invalid size. */
++static int set_invalid_hdr_output_metadata(data_t *data,
++					   struct hdr_output_metadata const *meta,
++					   size_t length)
++{
++	igt_output_replace_prop_blob(data->output,
++				     IGT_CONNECTOR_HDR_OUTPUT_METADATA, meta,
++				     meta ? length : 0);
 +
-+	igt_info("Using (pipe %s + %s) to run the subtest.\n",
-+		 kmstest_pipe_name(data->pipe_id), igt_output_name(data->output));
++	return igt_display_try_commit_atomic(&data->display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
++}
 +
- 	igt_require_pipe_crc(data->drm_fd);
- 	data->pipe_crc =3D igt_pipe_crc_new(data->drm_fd, data->pipe_id,
- 					  IGT_PIPE_CRC_SOURCE_AUTO);
---
-2.38.0
+ /* Converts a double to 861-G spec FP format. */
+ static uint16_t calc_hdr_float(double val)
+ {
+@@ -518,6 +531,19 @@ static void test_static_swap(data_t *data, enum pipe pipe, igt_output_t *output)
+ 	igt_remove_fb(data->fd, &afb);
+ }
+ 
++static void test_invalid_metadata_sizes(data_t *data, igt_output_t *output)
++{
++	struct hdr_output_metadata hdr;
++	size_t metadata_size = sizeof(&hdr);
++
++	fill_hdr_output_metadata_st2048(&hdr);
++
++	igt_assert_eq(set_invalid_hdr_output_metadata(data, &hdr, 1), -EINVAL);
++	igt_assert_eq(set_invalid_hdr_output_metadata(data, &hdr, metadata_size + 1), -EINVAL);
++	igt_assert_eq(set_invalid_hdr_output_metadata(data, &hdr, metadata_size - 1), -EINVAL);
++	igt_assert_eq(set_invalid_hdr_output_metadata(data, &hdr, metadata_size + sizeof(struct hdr_output_metadata)), -EINVAL);
++}
++
+ /* Returns true if an output supports HDR metadata property. */
+ static bool has_hdr(igt_output_t *output)
+ {
+@@ -565,6 +591,8 @@ static void test_hdr(data_t *data, uint32_t flags)
+ 						test_static_toggle(data, pipe, output, flags);
+ 					if (flags & TEST_SWAP)
+ 						test_static_swap(data, pipe, output);
++					if (flags & TEST_INVALID_METADATA_SIZES)
++						test_invalid_metadata_sizes(data, output);
+ 				}
+ 
+ 				/* One pipe is enough */
+@@ -613,6 +641,10 @@ igt_main
+ 	igt_subtest_with_dynamic("static-swap")
+ 		test_hdr(&data, TEST_SWAP);
+ 
++	igt_describe("Tests invalid HDR metadata sizes");
++	igt_subtest_with_dynamic("invalid-metadata-sizes")
++		test_hdr(&data, TEST_INVALID_METADATA_SIZES);
++
+ 	igt_fixture {
+ 		igt_display_fini(&data.display);
+ 		close(data.fd);
+-- 
+2.17.1
