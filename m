@@ -1,17 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 62FD510E02D
- for <igt-dev@lists.freedesktop.org>; Tue, 27 Dec 2022 05:27:36 +0000 (UTC)
-From: "Gupta, Nidhi1" <nidhi1.gupta@intel.com>
-To: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-Date: Tue, 27 Dec 2022 05:27:31 +0000
-Message-ID: <PH7PR11MB600698F43943115166E19407C5ED9@PH7PR11MB6006.namprd11.prod.outlook.com>
-Content-Language: en-US
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 27EC110E02D
+ for <igt-dev@lists.freedesktop.org>; Tue, 27 Dec 2022 06:20:47 +0000 (UTC)
 Content-Type: multipart/alternative;
- boundary="_000_PH7PR11MB600698F43943115166E19407C5ED9PH7PR11MB6006namp_"
+ boundary="------------UUW2OJNdB012G730pIB8zxy0"
+Message-ID: <34bb5e25-3548-21c8-3a39-08777b181541@intel.com>
+Date: Tue, 27 Dec 2022 11:50:36 +0530
+To: Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
+ <igt-dev@lists.freedesktop.org>
+References: <20221115170855.196572-23-bhanuprakash.modem@intel.com>
+ <20221215104039.1517970-1-bhanuprakash.modem@intel.com>
+Content-Language: en-US
+From: Karthik B S <karthik.b.s@intel.com>
+In-Reply-To: <20221215104039.1517970-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [i-g-t v5 05/52] tests/kms_atomic_interruptible: Add
- support for Bigjoiner
+Subject: Re: [igt-dev] [i-g-t v6 22/52] tests/kms_plane: Add support for
+ Bigjoiner
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,761 +27,268 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---_000_PH7PR11MB600698F43943115166E19407C5ED9PH7PR11MB6006namp_
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+--------------UUW2OJNdB012G730pIB8zxy0
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Tue, 2022-11-15 at 08:43 +0530, Bhanuprakash Modem wrote:
 
->This patch will add a check to Skip the subtest if a selected
-
->pipe/output combo won't support Bigjoiner or 8K mode.
-
+On 12/15/2022 4:10 PM, Bhanuprakash Modem wrote:
+> This patch will add a check to Skip the subtest if a selected pipe/output
+> combo won't support Bigjoiner or 8K mode.
 >
-
->Example:
-
->* Pipe-D wont support a mode > 5K
-
->* To use 8K mode on a pipe then consecutive pipe must be available & free.
-
+> Example:
+> * Pipe-D wont support a mode > 5K
+> * To use 8K mode on a pipe then consecutive pipe must be available & free.
 >
-
->V2: - Use updated helper name
-
+> V2: - Use updated helper name
+> V3: - Rebase
 >
+> Signed-off-by: Bhanuprakash Modem<bhanuprakash.modem@intel.com>
+> ---
+>   tests/kms_plane.c | 30 +++++++++++++++++++-----------
+>   1 file changed, 19 insertions(+), 11 deletions(-)
+>
+> diff --git a/tests/kms_plane.c b/tests/kms_plane.c
+> index 164dacf4..a79802f6 100644
+> --- a/tests/kms_plane.c
+> +++ b/tests/kms_plane.c
+> @@ -56,6 +56,7 @@ typedef struct {
+>   typedef struct {
+>   	int drm_fd;
+>   	igt_display_t display;
+> +	igt_output_t *output;
+>   	igt_pipe_crc_t *pipe_crc;
+>   	const color_t *colors;
+>   	int num_colors;
+> @@ -274,11 +275,11 @@ static void
+>   test_plane_position(data_t *data, enum pipe pipe)
+>   {
+>   	int n_planes = data->display.pipes[pipe].n_planes;
+> -	igt_output_t *output;
+> +	igt_output_t *output = data->output;
+>   	igt_crc_t reference_crc;
+>
+> -	output = igt_get_single_output_for_pipe(&data->display, pipe);
+> -	igt_require(output);
+> +	igt_info("Using (pipe %s + %s) to run the subtest.\n",
+> +		 kmstest_pipe_name(pipe), igt_output_name(output));
 
->Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com<mailto:bha=
-nuprakash.modem@intel.com>>
+Hi,
 
-Reviewed-by: Nidhi Gupta <nidhi1.gupta@intel.com<mailto:nidhi1.gupta@intel.=
-com>>
+This igt_info seems redundant here as we already have an igt_info doing 
+the same thing.
 
+	Using (pipe B + HDMI-A-4) to run the subtest.
+	Testing connector HDMI-A-4 using pipe B, mode 1920x1080
+
+>   	test_init(data, pipe);
+>   	test_grab_crc(data, output, pipe, &green, data->flags, &reference_crc);
+> @@ -383,11 +384,11 @@ test_plane_panning(data_t *data, enum pipe pipe)
+>   {
+>   	bool mode_found = false;
+>   	uint64_t mem_size = 0;
+> -	igt_output_t *output;
+> +	igt_output_t *output = data->output;
+>   	igt_crc_t ref_crc;
+>
+> -	output = igt_get_single_output_for_pipe(&data->display, pipe);
+> -	igt_require(output);
+> +	igt_info("Using (pipe %s + %s) to run the subtest.\n",
+> +		 kmstest_pipe_name(pipe), igt_output_name(output));
+Same here.
+>
+>   	test_init(data, pipe);
+>
+> @@ -1076,7 +1077,7 @@ test_pixel_formats(data_t *data, enum pipe pipe)
+>   	igt_plane_t *primary;
+>   	drmModeModeInfo *mode;
+>   	bool result;
+> -	igt_output_t *output;
+> +	igt_output_t *output = data->output;
+>   	igt_plane_t *plane;
+>
+>   	if (data->extended) {
+> @@ -1087,10 +1088,10 @@ test_pixel_formats(data_t *data, enum pipe pipe)
+>   		data->num_colors = ARRAY_SIZE(colors_reduced);
+>   	}
+>
+> -	test_init(data, pipe);
+> +	igt_info("Using (pipe %s + %s) to run the subtest.\n",
+> +		 kmstest_pipe_name(pipe), igt_output_name(output));
+Same here.
+>
+> -	output = igt_get_single_output_for_pipe(&data->display, pipe);
+> -	igt_require(output);
+> +	test_init(data, pipe);
+>
+>   	mode = igt_output_get_mode(output);
+>
+> @@ -1134,7 +1135,14 @@ static void run_test(data_t *data, void (*test)(data_t *, enum pipe))
+>   	enum pipe pipe;
+>   	int count = 0;
+>
+> -	for_each_pipe(&data->display, pipe) {
+> +	for_each_pipe_with_single_output(&data->display, pipe, data->output) {
+> +		igt_display_reset(&data->display);
+> +
+> +		igt_output_set_pipe(data->output, pipe);
+> +		if (!i915_pipe_output_combo_valid(&data->display))
+> +			continue;
+> +
+> +		igt_output_set_pipe(data->output, PIPE_NONE);
+
+With the above igt_info's removed, the patch LGTM.
+
+Reviewed-by: Karthik B S <karthik.b.s@intel.com>
+
+Thanks,
+Karthik.B.S
+>   		igt_dynamic_f("pipe-%s-planes", kmstest_pipe_name(pipe))
+>   			test(data, pipe);
+>
+> --
+> 2.38.1
+>
+--------------UUW2OJNdB012G730pIB8zxy0
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+
+<html><head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  </head>
+  <body>
+    <p><br>
+    </p>
+    <div class="moz-cite-prefix">On 12/15/2022 4:10 PM, Bhanuprakash
+      Modem wrote:<br>
+    </div>
+    <blockquote type="cite" cite="mid:20221215104039.1517970-1-bhanuprakash.modem@intel.com">
+      <pre class="moz-quote-pre" wrap="">This patch will add a check to Skip the subtest if a selected pipe/output
+combo won't support Bigjoiner or 8K mode.
+
+Example:
+* Pipe-D wont support a mode &gt; 5K
+* To use 8K mode on a pipe then consecutive pipe must be available &amp; free.
+
+V2: - Use updated helper name
+V3: - Rebase
+
+Signed-off-by: Bhanuprakash Modem <a class="moz-txt-link-rfc2396E" href="mailto:bhanuprakash.modem@intel.com">&lt;bhanuprakash.modem@intel.com&gt;</a>
 ---
-
-tests/kms_atomic_interruptible.c | 40 ++++++++++++++++++++++++++++++++
-
-1 file changed, 40 insertions(+)
-
->diff --git a/tests/kms_atomic_interruptible.c
-
->b/tests/kms_atomic_interruptible.c
-
->index f461a15c..74b2e246 100644
-
->--- a/tests/kms_atomic_interruptible.c
-
->+++ b/tests/kms_atomic_interruptible.c
-
->@@ -82,11 +82,15 @@  static void run_plane_test(igt_display_t *display, en=
-um pipe pipe, igt_output_t
-
->             igt_plane_t *primary, *plane;
-
->             int block;
-
->
-
->+           igt_info("Using (pipe %s + %s) to run the subtest.\n",
-
->+                          kmstest_pipe_name(pipe), igt_output_name(output=
-));
-
->+
-
->             /*
-
->             * Make sure we start with everything disabled to force a real=
- modeset.
-
->              * igt_display_require only sets sw state, and assumes the fi=
-rst test
-
->              * doesn't care about hw state.
-
->              */
-
->+           igt_display_reset(display);
-
->             igt_display_commit2(display, COMMIT_ATOMIC);
-
->
-
->             igt_output_set_pipe(output, pipe);
-
->@@ -265,6 +269,21 @@  static void run_plane_test(igt_display_t *display, e=
-num pipe pipe, igt_output_t
-
->             igt_remove_fb(display->drm_fd, &fb);
-
-> }
-
->
-
->+static bool pipe_output_combo_valid(igt_display_t *display,
-
->+                                                            enum pipe pip=
-e, igt_output_t *output) {
-
->+           bool ret =3D true;
-
->+
-
->+           igt_display_reset(display);
-
->+
-
->+           igt_output_set_pipe(output, pipe);
-
->+           if (!i915_pipe_output_combo_valid(display))
-
->+                          ret =3D false;
-
->+           igt_output_set_pipe(output, PIPE_NONE);
-
->+
-
->+           return ret;
-
->+}
-
->+
-
->igt_main
-
->{
-
->             igt_display_t display;
-
->@@ -286,6 +305,9 @@  igt_main
-
->             igt_describe("Tests the interrupt properties of legacy modese=
-t");
-
->             igt_subtest_with_dynamic("legacy-setmode") {
-
->                            for_each_pipe_with_valid_output(&display, pipe=
-, output) {
-
->+                                         if (!pipe_output_combo_valid(&di=
-splay, pipe, output))
-
->+                                                        continue;
-
->+
-
->                                           igt_dynamic_f("%s-pipe-%s", igt=
-_output_name(output), kmstest_pipe_name(pipe))
-
->                                                          run_plane_test(&=
-display, pipe, output, test_legacy_modeset, DRM_PLANE_TYPE_PRIMARY);
-
->                                           break;
-
->@@ -295,6 +317,9 @@  igt_main
-
->             igt_describe("Tests the interrupt properties of atomic modese=
-t");
-
->             igt_subtest_with_dynamic("atomic-setmode") {
-
->                            for_each_pipe_with_valid_output(&display, pipe=
-, output) {
-
->+                                         if (!pipe_output_combo_valid(&di=
-splay, pipe, output))
-
->+                                                        continue;
-
->+
-
->                                           igt_dynamic_f("%s-pipe-%s", igt=
-_output_name(output), kmstest_pipe_name(pipe))
-
->                                                          run_plane_test(&=
-display, pipe, output, test_atomic_modeset, DRM_PLANE_TYPE_PRIMARY);
-
->                                           break;
-
->@@ -304,6 +329,9 @@  igt_main
-
->             igt_describe("Tests the interrupt properties for DPMS");
-
->             igt_subtest_with_dynamic("legacy-dpms") {
-
->                            for_each_pipe_with_valid_output(&display, pipe=
-, output) {
-
->+                                         if (!pipe_output_combo_valid(&di=
-splay, pipe, output))
-
->+                                                        continue;
-
->+
-
->                                           igt_dynamic_f("%s-pipe-%s", igt=
-_output_name(output), kmstest_pipe_name(pipe))
-
->                                                          run_plane_test(&=
-display, pipe, output, test_legacy_dpms, DRM_PLANE_TYPE_PRIMARY);
-
->                                           break;
-
->@@ -313,6 +341,9 @@  igt_main
-
->             igt_describe("Tests the interrupt properties for pageflip");
-
->             igt_subtest_with_dynamic("legacy-pageflip") {
-
->                            for_each_pipe_with_valid_output(&display, pipe=
-, output) {
-
->+                                         if (!pipe_output_combo_valid(&di=
-splay, pipe, output))
-
->+                                                        continue;
-
->+
-
->                                           igt_dynamic_f("%s-pipe-%s", igt=
-_output_name(output), kmstest_pipe_name(pipe))
-
->                                                          run_plane_test(&=
-display, pipe, output, test_pageflip, DRM_PLANE_TYPE_PRIMARY);
-
->                                           break;
-
->@@ -322,6 +353,9 @@  igt_main
-
->             igt_describe("Tests the interrupt properties for cursor");
-
->             igt_subtest_with_dynamic("legacy-cursor") {
-
->                            for_each_pipe_with_valid_output(&display, pipe=
-, output) {
-
->+                                         if (!pipe_output_combo_valid(&di=
-splay, pipe, output))
-
->+                                                        continue;
-
->+
-
->                                           igt_dynamic_f("%s-pipe-%s", igt=
-_output_name(output), kmstest_pipe_name(pipe))
-
->                                                          run_plane_test(&=
-display, pipe, output, test_setcursor, DRM_PLANE_TYPE_CURSOR);
-
->                                           break;
-
->@@ -331,6 +365,9 @@  igt_main
-
->             igt_describe("Tests the interrupt properties for primary plan=
-e");
-
->             igt_subtest_with_dynamic("universal-setplane-primary") {
-
->                            for_each_pipe_with_valid_output(&display, pipe=
-, output) {
-
->+                                         if (!pipe_output_combo_valid(&di=
-splay, pipe, output))
-
->+                                                        continue;
-
->+
-
->                                           igt_dynamic_f("%s-pipe-%s", igt=
-_output_name(output), kmstest_pipe_name(pipe))
-
->                                                          run_plane_test(&=
-display, pipe, output, test_setplane, DRM_PLANE_TYPE_PRIMARY);
-
->                                           break;
-
->@@ -340,6 +377,9 @@  igt_main
-
->             igt_describe("Tests the interrupt properties for cursor plane=
-");
-
->             igt_subtest_with_dynamic("universal-setplane-cursor") {
-
->                            for_each_pipe_with_valid_output(&display, pipe=
-, output) {
-
->+                                         if (!pipe_output_combo_valid(&di=
-splay, pipe, output))
-
->+                                                        continue;
-
->+
-
->                                           igt_dynamic_f("%s-pipe-%s", igt=
-_output_name(output), kmstest_pipe_name(pipe))
-
->                                                          run_plane_test(&=
-display, pipe, output, test_setplane, DRM_PLANE_TYPE_CURSOR);
-
->                                           break;
-
---_000_PH7PR11MB600698F43943115166E19407C5ED9PH7PR11MB6006namp_
-Content-Type: text/html; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
-
-<html xmlns:v=3D"urn:schemas-microsoft-com:vml" xmlns:o=3D"urn:schemas-micr=
-osoft-com:office:office" xmlns:w=3D"urn:schemas-microsoft-com:office:word" =
-xmlns:m=3D"http://schemas.microsoft.com/office/2004/12/omml" xmlns=3D"http:=
-//www.w3.org/TR/REC-html40">
-<head>
-<meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3Dus-ascii"=
->
-<meta name=3D"Generator" content=3D"Microsoft Word 15 (filtered medium)">
-<style><!--
-/* Font Definitions */
-@font-face
-	{font-family:"Cambria Math";
-	panose-1:2 4 5 3 5 4 6 3 2 4;}
-@font-face
-	{font-family:Calibri;
-	panose-1:2 15 5 2 2 2 4 3 2 4;}
-/* Style Definitions */
-a:link, span.MsoHyperlink
-	{mso-style-priority:99;
-	color:#0563C1;
-	text-decoration:underline;}
-p.MsoPlainText, li.MsoPlainText, div.MsoPlainText
-	{mso-style-priority:99;
-	mso-style-link:"Plain Text Char";
-	margin:0in;
-	font-size:11.0pt;
-	font-family:"Calibri",sans-serif;}
-span.EmailStyle17
-	{mso-style-type:personal-compose;
-	font-family:"Calibri",sans-serif;
-	color:windowtext;}
-span.PlainTextChar
-	{mso-style-name:"Plain Text Char";
-	mso-style-priority:99;
-	mso-style-link:"Plain Text";
-	font-family:"Calibri",sans-serif;}
-.MsoChpDefault
-	{mso-style-type:export-only;
-	font-family:"Calibri",sans-serif;}
-@page WordSection1
-	{size:8.5in 11.0in;
-	margin:1.0in 1.0in 1.0in 1.0in;}
-div.WordSection1
-	{page:WordSection1;}
---></style><!--[if gte mso 9]><xml>
-<o:shapedefaults v:ext=3D"edit" spidmax=3D"1026" />
-</xml><![endif]--><!--[if gte mso 9]><xml>
-<o:shapelayout v:ext=3D"edit">
-<o:idmap v:ext=3D"edit" data=3D"1" />
-</o:shapelayout></xml><![endif]-->
-</head>
-<body lang=3D"EN-US" link=3D"#0563C1" vlink=3D"#954F72" style=3D"word-wrap:=
-break-word">
-<div class=3D"WordSection1">
-<p class=3D"MsoPlainText">On Tue, 2022-11-15 at 08:43 +0530, Bhanuprakash M=
-odem wrote:<o:p></o:p></p>
-<p class=3D"MsoPlainText">&gt;This patch will add a check to Skip the subte=
-st if a selected
-<o:p></o:p></p>
-<p class=3D"MsoPlainText">&gt;pipe/output combo won't support Bigjoiner or =
-8K mode.<o:p></o:p></p>
-<p class=3D"MsoPlainText">&gt;<o:p>&nbsp;</o:p></p>
-<p class=3D"MsoPlainText">&gt;Example:<o:p></o:p></p>
-<p class=3D"MsoPlainText">&gt;* Pipe-D wont support a mode &gt; 5K<o:p></o:=
-p></p>
-<p class=3D"MsoPlainText">&gt;* To use 8K mode on a pipe then consecutive p=
-ipe must be available &amp; free.<o:p></o:p></p>
-<p class=3D"MsoPlainText">&gt;<o:p>&nbsp;</o:p></p>
-<p class=3D"MsoPlainText">&gt;V2: - Use updated helper name<o:p></o:p></p>
-<p class=3D"MsoPlainText">&gt;<o:p>&nbsp;</o:p></p>
-<p class=3D"MsoPlainText">&gt;Signed-off-by: Bhanuprakash Modem &lt;<a href=
-=3D"mailto:bhanuprakash.modem@intel.com">bhanuprakash.modem@intel.com</a>&g=
-t;<o:p></o:p></p>
-<p class=3D"MsoPlainText">Reviewed-by: Nidhi Gupta &lt;<a href=3D"mailto:ni=
-dhi1.gupta@intel.com">nidhi1.gupta@intel.com</a>&gt;<o:p></o:p></p>
-<p class=3D"MsoPlainText">---<o:p></o:p></p>
-<p class=3D"MsoPlainText">tests/kms_atomic_interruptible.c | 40 +++++++++++=
-+++++++++++++++++++++<o:p></o:p></p>
-<p class=3D"MsoPlainText">1 file changed, 40 insertions(+)<o:p></o:p></p>
-<p class=3D"MsoPlainText">&gt;diff --git a/tests/kms_atomic_interruptible.c=
- <o:p></o:p></p>
-<p class=3D"MsoPlainText">&gt;b/tests/kms_atomic_interruptible.c<o:p></o:p>=
-</p>
-<p class=3D"MsoPlainText">&gt;index f461a15c..74b2e246 100644<o:p></o:p></p=
->
-<p class=3D"MsoPlainText">&gt;--- a/tests/kms_atomic_interruptible.c<o:p></=
-o:p></p>
-<p class=3D"MsoPlainText">&gt;+++ b/tests/kms_atomic_interruptible.c<o:p></=
-o:p></p>
-<p class=3D"MsoPlainText">&gt;@@ -82,11 +82,15 @@&nbsp; static void run_pla=
-ne_test(igt_display_t *display, enum pipe pipe, igt_output_t<o:p></o:p></p>
-<p class=3D"MsoPlainText">&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
-sp;&nbsp;&nbsp;&nbsp;&nbsp; igt_plane_t *primary, *plane;<o:p></o:p></p>
-<p class=3D"MsoPlainText">&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
-sp;&nbsp;&nbsp;&nbsp;&nbsp; int block;<o:p></o:p></p>
-<p class=3D"MsoPlainText">&gt;<o:p>&nbsp;</o:p></p>
-<p class=3D"MsoPlainText">&gt;+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp; igt_info(&quot;Using (pipe %s + %s) to run the subtest.\n&=
-quot;,<o:p></o:p></p>
-<p class=3D"MsoPlainText">&gt;+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
-;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; kmstest_pipe_name(pipe), igt_output_name(ou=
-tput));<o:p></o:p></p>
-<p class=3D"MsoPlainText">&gt;+<o:p></o:p></p>
-<p class=3D"MsoPlainText">&gt; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp; /*<o:p></o:p></p>
-<p class=3D"MsoPlainText">&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
-sp;&nbsp;&nbsp;&nbsp;&nbsp; * Make sure we start with everything disabled t=
-o force a real modeset.<o:p></o:p></p>
-<p class=3D"MsoPlainText">&gt; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp; &nbsp;* igt_display_require only sets sw state, and =
-assumes the first test<o:p></o:p></p>
-<p class=3D"MsoPlainText">&gt; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp; &nbsp;* doesn't care about hw state.<o:p></o:p></p>
-<p class=3D"MsoPlainText">&gt; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp; &nbsp;*/<o:p></o:p></p>
-<p class=3D"MsoPlainText">&gt;+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp; igt_display_reset(display);<o:p></o:p></p>
-<p class=3D"MsoPlainText">&gt; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp; igt_display_commit2(display, COMMIT_ATOMIC);<o:p></o=
-:p></p>
-<p class=3D"MsoPlainText">&gt; <o:p></o:p></p>
-<p class=3D"MsoPlainText">&gt; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp; igt_output_set_pipe(output, pipe);<o:p></o:p></p>
-<p class=3D"MsoPlainText">&gt;@@ -265,6 +269,21 @@&nbsp; static void run_pl=
-ane_test(igt_display_t *display, enum pipe pipe, igt_output_t<o:p></o:p></p=
->
-<p class=3D"MsoPlainText">&gt; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp; igt_remove_fb(display-&gt;drm_fd, &amp;fb);<o:p></o:=
-p></p>
-<p class=3D"MsoPlainText">&gt; }<o:p></o:p></p>
-<p class=3D"MsoPlainText">&gt; <o:p></o:p></p>
-<p class=3D"MsoPlainText">&gt;+static bool pipe_output_combo_valid(igt_disp=
-lay_t *display,<o:p></o:p></p>
-<p class=3D"MsoPlainText">&gt;+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
-;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
-;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&=
-nbsp; enum pipe pipe, igt_output_t *output) {<o:p></o:p></p>
-<p class=3D"MsoPlainText">&gt;+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp; bool ret =3D true;<o:p></o:p></p>
-<p class=3D"MsoPlainText">&gt;+<o:p></o:p></p>
-<p class=3D"MsoPlainText">&gt;+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp; igt_display_reset(display);<o:p></o:p></p>
-<p class=3D"MsoPlainText">&gt;+<o:p></o:p></p>
-<p class=3D"MsoPlainText">&gt;+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp; igt_output_set_pipe(output, pipe);<o:p></o:p></p>
-<p class=3D"MsoPlainText">&gt;+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp; if (!i915_pipe_output_combo_valid(display))<o:p></o:p></p>
-<p class=3D"MsoPlainText">&gt;+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
-;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ret =3D false;<o:p></o:p></p>
-<p class=3D"MsoPlainText">&gt;+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp; igt_output_set_pipe(output, PIPE_NONE);<o:p></o:p></p>
-<p class=3D"MsoPlainText">&gt;+<o:p></o:p></p>
-<p class=3D"MsoPlainText">&gt;+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp; return ret;<o:p></o:p></p>
-<p class=3D"MsoPlainText">&gt;+}<o:p></o:p></p>
-<p class=3D"MsoPlainText">&gt;+<o:p></o:p></p>
-<p class=3D"MsoPlainText">&gt;igt_main<o:p></o:p></p>
-<p class=3D"MsoPlainText">&gt;{<o:p></o:p></p>
-<p class=3D"MsoPlainText">&gt; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp; igt_display_t display;<o:p></o:p></p>
-<p class=3D"MsoPlainText">&gt;@@ -286,6 +305,9 @@&nbsp; igt_main<o:p></o:p>=
-</p>
-<p class=3D"MsoPlainText">&gt; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp; igt_describe(&quot;Tests the interrupt properties of=
- legacy modeset&quot;);<o:p></o:p></p>
-<p class=3D"MsoPlainText">&gt; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp; igt_subtest_with_dynamic(&quot;legacy-setmode&quot;)=
- {<o:p></o:p></p>
-<p class=3D"MsoPlainText">&gt; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
-;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; for_each_pipe_with_valid_output(&amp;=
-display, pipe, output) {<o:p></o:p></p>
-<p class=3D"MsoPlainText">&gt;+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
-;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if (!pipe_output_combo_valid=
-(&amp;display, pipe, output))<o:p></o:p></p>
-<p class=3D"MsoPlainText">&gt;+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
-;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
-;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; continue;<o:p=
-></o:p></p>
-<p class=3D"MsoPlainText">&gt;+<o:p></o:p></p>
-<p class=3D"MsoPlainText">&gt; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
-;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; igt_dynamic_f(&quot;%s=
--pipe-%s&quot;, igt_output_name(output), kmstest_pipe_name(pipe))<o:p></o:p=
-></p>
-<p class=3D"MsoPlainText">&gt; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
-;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
-;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; run_pla=
-ne_test(&amp;display, pipe, output, test_legacy_modeset, DRM_PLANE_TYPE_PRI=
-MARY);<o:p></o:p></p>
-<p class=3D"MsoPlainText">&gt; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
-;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; break;<o:p></o:p></p>
-<p class=3D"MsoPlainText">&gt;@@ -295,6 +317,9 @@&nbsp; igt_main<o:p></o:p>=
-</p>
-<p class=3D"MsoPlainText">&gt; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp; igt_describe(&quot;Tests the interrupt properties of=
- atomic modeset&quot;);<o:p></o:p></p>
-<p class=3D"MsoPlainText">&gt; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp; igt_subtest_with_dynamic(&quot;atomic-setmode&quot;)=
- {<o:p></o:p></p>
-<p class=3D"MsoPlainText">&gt; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
-;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; for_each_pipe_with_valid_output(&amp;=
-display, pipe, output) {<o:p></o:p></p>
-<p class=3D"MsoPlainText">&gt;+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
-;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if (!pipe_output_combo_valid=
-(&amp;display, pipe, output))<o:p></o:p></p>
-<p class=3D"MsoPlainText">&gt;+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
-;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
-;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; continue;<o:p=
-></o:p></p>
-<p class=3D"MsoPlainText">&gt;+<o:p></o:p></p>
-<p class=3D"MsoPlainText">&gt; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
-;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; igt_dynamic_f(&quot;%s=
--pipe-%s&quot;, igt_output_name(output), kmstest_pipe_name(pipe))<o:p></o:p=
-></p>
-<p class=3D"MsoPlainText">&gt; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
-;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
-;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; run_pla=
-ne_test(&amp;display, pipe, output, test_atomic_modeset, DRM_PLANE_TYPE_PRI=
-MARY);<o:p></o:p></p>
-<p class=3D"MsoPlainText">&gt; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
-;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; break;<o:p></o:p></p>
-<p class=3D"MsoPlainText">&gt;@@ -304,6 +329,9 @@&nbsp; igt_main<o:p></o:p>=
-</p>
-<p class=3D"MsoPlainText">&gt; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp; igt_describe(&quot;Tests the interrupt properties fo=
-r DPMS&quot;);<o:p></o:p></p>
-<p class=3D"MsoPlainText">&gt; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp; igt_subtest_with_dynamic(&quot;legacy-dpms&quot;) {<=
-o:p></o:p></p>
-<p class=3D"MsoPlainText">&gt; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
-;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; for_each_pipe_with_valid_output(&amp;=
-display, pipe, output) {<o:p></o:p></p>
-<p class=3D"MsoPlainText">&gt;+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
-;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if (!pipe_output_combo_valid=
-(&amp;display, pipe, output))<o:p></o:p></p>
-<p class=3D"MsoPlainText">&gt;+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
-;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
-;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; continue;<o:p=
-></o:p></p>
-<p class=3D"MsoPlainText">&gt;+<o:p></o:p></p>
-<p class=3D"MsoPlainText">&gt; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
-;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; igt_dynamic_f(&quot;%s=
--pipe-%s&quot;, igt_output_name(output), kmstest_pipe_name(pipe))<o:p></o:p=
-></p>
-<p class=3D"MsoPlainText">&gt; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
-;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbs=
-p;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; run_plane_te=
-st(&amp;display, pipe, output, test_legacy_dpms, DRM_PLANE_TYPE_PRIMARY);<o=
-:p></o:p></p>
-<p class=3D"MsoPlainText">&gt; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
-;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; break;<o:p></o:p></p>
-<p class=3D"MsoPlainText">&gt;@@ -313,6 +341,9 @@&nbsp; igt_main<o:p></o:p>=
-</p>
-<p class=3D"MsoPlainText">&gt; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp; igt_describe(&quot;Tests the interrupt properties fo=
-r pageflip&quot;);<o:p></o:p></p>
-<p class=3D"MsoPlainText">&gt; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp; igt_subtest_with_dynamic(&quot;legacy-pageflip&quot;=
-) {<o:p></o:p></p>
-<p class=3D"MsoPlainText">&gt; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
-;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; for_each_pipe_with_valid_output(&amp;=
-display, pipe, output) {<o:p></o:p></p>
-<p class=3D"MsoPlainText">&gt;+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
-;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if (!pipe_output_combo_valid=
-(&amp;display, pipe, output))<o:p></o:p></p>
-<p class=3D"MsoPlainText">&gt;+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
-;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
-;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; continue;<o:p=
-></o:p></p>
-<p class=3D"MsoPlainText">&gt;+<o:p></o:p></p>
-<p class=3D"MsoPlainText">&gt; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
-;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; igt_dynamic_f(&quot;%s=
--pipe-%s&quot;, igt_output_name(output), kmstest_pipe_name(pipe))<o:p></o:p=
-></p>
-<p class=3D"MsoPlainText">&gt; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
-;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
-;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; run_pla=
-ne_test(&amp;display, pipe, output, test_pageflip, DRM_PLANE_TYPE_PRIMARY);=
-<o:p></o:p></p>
-<p class=3D"MsoPlainText">&gt; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
-;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; break;<o:p></o:p></p>
-<p class=3D"MsoPlainText">&gt;@@ -322,6 +353,9 @@&nbsp; igt_main<o:p></o:p>=
-</p>
-<p class=3D"MsoPlainText">&gt; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp; igt_describe(&quot;Tests the interrupt properties fo=
-r cursor&quot;);<o:p></o:p></p>
-<p class=3D"MsoPlainText">&gt; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp; igt_subtest_with_dynamic(&quot;legacy-cursor&quot;) =
-{<o:p></o:p></p>
-<p class=3D"MsoPlainText">&gt; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
-p;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; for_each_pipe_with_valid_output(&amp;displ=
-ay, pipe, output) {<o:p></o:p></p>
-<p class=3D"MsoPlainText">&gt;+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
-;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if (!pipe_output_combo_valid=
-(&amp;display, pipe, output))<o:p></o:p></p>
-<p class=3D"MsoPlainText">&gt;+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
-;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
-;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; continue;<o:p=
-></o:p></p>
-<p class=3D"MsoPlainText">&gt;+<o:p></o:p></p>
-<p class=3D"MsoPlainText">&gt; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
-;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; igt_dynamic_f(&quot;%s=
--pipe-%s&quot;, igt_output_name(output), kmstest_pipe_name(pipe))<o:p></o:p=
-></p>
-<p class=3D"MsoPlainText">&gt; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
-;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
-;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; run_pla=
-ne_test(&amp;display, pipe, output, test_setcursor, DRM_PLANE_TYPE_CURSOR);=
-<o:p></o:p></p>
-<p class=3D"MsoPlainText">&gt; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
-;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; break;<o:p></o:p></p>
-<p class=3D"MsoPlainText">&gt;@@ -331,6 +365,9 @@&nbsp; igt_main<o:p></o:p>=
-</p>
-<p class=3D"MsoPlainText">&gt; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp; igt_describe(&quot;Tests the interrupt properties fo=
-r primary plane&quot;);<o:p></o:p></p>
-<p class=3D"MsoPlainText">&gt; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp; igt_subtest_with_dynamic(&quot;universal-setplane-pr=
-imary&quot;) {<o:p></o:p></p>
-<p class=3D"MsoPlainText">&gt; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
-;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; for_each_pipe_with_valid_output(&amp;=
-display, pipe, output) {<o:p></o:p></p>
-<p class=3D"MsoPlainText">&gt;+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
-;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if (!pipe_output_combo_valid=
-(&amp;display, pipe, output))<o:p></o:p></p>
-<p class=3D"MsoPlainText">&gt;+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
-;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
-;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; continue;<o:p=
-></o:p></p>
-<p class=3D"MsoPlainText">&gt;+<o:p></o:p></p>
-<p class=3D"MsoPlainText">&gt; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
-;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; igt_dynamic_f(&quot;%s=
--pipe-%s&quot;, igt_output_name(output), kmstest_pipe_name(pipe))<o:p></o:p=
-></p>
-<p class=3D"MsoPlainText">&gt; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
-;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
-;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; run_pla=
-ne_test(&amp;display, pipe, output, test_setplane, DRM_PLANE_TYPE_PRIMARY);=
-<o:p></o:p></p>
-<p class=3D"MsoPlainText">&gt; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
-;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; break;<o:p></o:p></p>
-<p class=3D"MsoPlainText">&gt;@@ -340,6 +377,9 @@&nbsp; igt_main<o:p></o:p>=
-</p>
-<p class=3D"MsoPlainText">&gt; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp; igt_describe(&quot;Tests the interrupt properties fo=
-r cursor plane&quot;);<o:p></o:p></p>
-<p class=3D"MsoPlainText">&gt; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp; igt_subtest_with_dynamic(&quot;universal-setplane-cu=
-rsor&quot;) {<o:p></o:p></p>
-<p class=3D"MsoPlainText">&gt; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
-;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; for_each_pipe_with_valid_output(&amp;=
-display, pipe, output) {<o:p></o:p></p>
-<p class=3D"MsoPlainText">&gt;+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
-;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if (!pipe_output_combo_valid=
-(&amp;display, pipe, output))<o:p></o:p></p>
-<p class=3D"MsoPlainText">&gt;+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
-;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
-;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; continue;<o:p=
-></o:p></p>
-<p class=3D"MsoPlainText">&gt;+<o:p></o:p></p>
-<p class=3D"MsoPlainText">&gt; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
-;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; igt_dynamic_f(&quot;%s=
--pipe-%s&quot;, igt_output_name(output), kmstest_pipe_name(pipe))<o:p></o:p=
-></p>
-<p class=3D"MsoPlainText">&gt; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
-;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
-;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; run_pla=
-ne_test(&amp;display, pipe, output, test_setplane, DRM_PLANE_TYPE_CURSOR);<=
-o:p></o:p></p>
-<p class=3D"MsoPlainText">&gt; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
-;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; break;<o:p></o:p></p>
-</div>
-</body>
+ tests/kms_plane.c | 30 +++++++++++++++++++-----------
+ 1 file changed, 19 insertions(+), 11 deletions(-)
+
+diff --git a/tests/kms_plane.c b/tests/kms_plane.c
+index 164dacf4..a79802f6 100644
+--- a/tests/kms_plane.c
++++ b/tests/kms_plane.c
+@@ -56,6 +56,7 @@ typedef struct {
+ typedef struct {
+ 	int drm_fd;
+ 	igt_display_t display;
++	igt_output_t *output;
+ 	igt_pipe_crc_t *pipe_crc;
+ 	const color_t *colors;
+ 	int num_colors;
+@@ -274,11 +275,11 @@ static void
+ test_plane_position(data_t *data, enum pipe pipe)
+ {
+ 	int n_planes = data-&gt;display.pipes[pipe].n_planes;
+-	igt_output_t *output;
++	igt_output_t *output = data-&gt;output;
+ 	igt_crc_t reference_crc;
+
+-	output = igt_get_single_output_for_pipe(&amp;data-&gt;display, pipe);
+-	igt_require(output);
++	igt_info(&quot;Using (pipe %s + %s) to run the subtest.\n&quot;,
++		 kmstest_pipe_name(pipe), igt_output_name(output));
+</pre>
+    </blockquote>
+    <p>Hi,</p>
+    <p>This igt_info seems redundant here as we already have an igt_info
+      doing the same thing.</p>
+    <pre style="font-family: monospace; margin: 0px; color: rgb(0, 0, 0); font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial;">	Using (pipe B + HDMI-A-4) to run the subtest.
+	Testing connector HDMI-A-4 using pipe B, mode 1920x1080</pre>
+    <p></p>
+    <blockquote type="cite" cite="mid:20221215104039.1517970-1-bhanuprakash.modem@intel.com">
+      <pre class="moz-quote-pre" wrap="">
+ 	test_init(data, pipe);
+ 	test_grab_crc(data, output, pipe, &amp;green, data-&gt;flags, &amp;reference_crc);
+@@ -383,11 +384,11 @@ test_plane_panning(data_t *data, enum pipe pipe)
+ {
+ 	bool mode_found = false;
+ 	uint64_t mem_size = 0;
+-	igt_output_t *output;
++	igt_output_t *output = data-&gt;output;
+ 	igt_crc_t ref_crc;
+
+-	output = igt_get_single_output_for_pipe(&amp;data-&gt;display, pipe);
+-	igt_require(output);
++	igt_info(&quot;Using (pipe %s + %s) to run the subtest.\n&quot;,
++		 kmstest_pipe_name(pipe), igt_output_name(output));</pre>
+    </blockquote>
+    Same here.<br>
+    <blockquote type="cite" cite="mid:20221215104039.1517970-1-bhanuprakash.modem@intel.com">
+      <pre class="moz-quote-pre" wrap="">
+
+ 	test_init(data, pipe);
+
+@@ -1076,7 +1077,7 @@ test_pixel_formats(data_t *data, enum pipe pipe)
+ 	igt_plane_t *primary;
+ 	drmModeModeInfo *mode;
+ 	bool result;
+-	igt_output_t *output;
++	igt_output_t *output = data-&gt;output;
+ 	igt_plane_t *plane;
+
+ 	if (data-&gt;extended) {
+@@ -1087,10 +1088,10 @@ test_pixel_formats(data_t *data, enum pipe pipe)
+ 		data-&gt;num_colors = ARRAY_SIZE(colors_reduced);
+ 	}
+
+-	test_init(data, pipe);
++	igt_info(&quot;Using (pipe %s + %s) to run the subtest.\n&quot;,
++		 kmstest_pipe_name(pipe), igt_output_name(output));</pre>
+    </blockquote>
+    Same here.<br>
+    <blockquote type="cite" cite="mid:20221215104039.1517970-1-bhanuprakash.modem@intel.com">
+      <pre class="moz-quote-pre" wrap="">
+
+-	output = igt_get_single_output_for_pipe(&amp;data-&gt;display, pipe);
+-	igt_require(output);
++	test_init(data, pipe);
+
+ 	mode = igt_output_get_mode(output);
+
+@@ -1134,7 +1135,14 @@ static void run_test(data_t *data, void (*test)(data_t *, enum pipe))
+ 	enum pipe pipe;
+ 	int count = 0;
+
+-	for_each_pipe(&amp;data-&gt;display, pipe) {
++	for_each_pipe_with_single_output(&amp;data-&gt;display, pipe, data-&gt;output) {
++		igt_display_reset(&amp;data-&gt;display);
++
++		igt_output_set_pipe(data-&gt;output, pipe);
++		if (!i915_pipe_output_combo_valid(&amp;data-&gt;display))
++			continue;
++
++		igt_output_set_pipe(data-&gt;output, PIPE_NONE);</pre>
+    </blockquote>
+    <p>With the above igt_info's removed, the patch LGTM.</p>
+    <p>Reviewed-by: Karthik B S <a class="moz-txt-link-rfc2396E" href="mailto:karthik.b.s@intel.com">&lt;karthik.b.s@intel.com&gt;</a></p>
+    Thanks,<br>
+    Karthik.B.S<br>
+    <blockquote type="cite" cite="mid:20221215104039.1517970-1-bhanuprakash.modem@intel.com">
+      <pre class="moz-quote-pre" wrap="">
+ 		igt_dynamic_f(&quot;pipe-%s-planes&quot;, kmstest_pipe_name(pipe))
+ 			test(data, pipe);
+
+--
+2.38.1
+
+</pre>
+    </blockquote>
+  </body>
 </html>
 
---_000_PH7PR11MB600698F43943115166E19407C5ED9PH7PR11MB6006namp_--
+--------------UUW2OJNdB012G730pIB8zxy0--
