@@ -1,21 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C64A510E1BE
- for <igt-dev@lists.freedesktop.org>; Wed, 28 Dec 2022 18:44:19 +0000 (UTC)
-Message-ID: <a4baa256-ef64-58eb-659e-93a3a24027b2@intel.com>
-Date: Thu, 29 Dec 2022 00:13:57 +0530
+Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6B07489E47
+ for <igt-dev@lists.freedesktop.org>; Wed, 28 Dec 2022 22:02:13 +0000 (UTC)
+Date: Wed, 28 Dec 2022 21:01:49 -0100
+From: Melissa Wen <mwen@igalia.com>
+To: =?utf-8?B?TWHDrXJh?= Canal <mcanal@igalia.com>
+Message-ID: <20221228220149.ypin6twisdy6sbvp@mail.igalia.com>
+References: <20221223214433.31547-1-mcanal@igalia.com>
 MIME-Version: 1.0
-Content-Language: en-US
-To: Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
- igt-dev@lists.freedesktop.org
-References: <20221115170855.196572-1-bhanuprakash.modem@intel.com>
- <20221115170855.196572-45-bhanuprakash.modem@intel.com>
-From: Swati Sharma <swati2.sharma@intel.com>
-In-Reply-To: <20221115170855.196572-45-bhanuprakash.modem@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Subject: Re: [igt-dev] [i-g-t v5 44/52] tests/i915/kms_flip_scaled_crc: Add
- support for Bigjoiner
+Content-Type: multipart/signed; micalg=pgp-sha512;
+ protocol="application/pgp-signature"; boundary="bmumtmohlvtoznah"
+Content-Disposition: inline
+In-Reply-To: <20221223214433.31547-1-mcanal@igalia.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 0/2] Tests for V3D/VC4 Mmap BO IOCTLs
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,60 +20,74 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: igt-dev@lists.freedesktop.org, Maxime Ripard <maxime@cerno.tech>,
+ Emma Anholt <emma@anholt.net>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
 
+--bmumtmohlvtoznah
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-On 15-Nov-22 10:38 PM, Bhanuprakash Modem wrote:
-> This patch will add a check to Skip the subtest if a selected pipe/output
-> combo won't support Bigjoiner or 8K mode.
-> 
-> Example:
-> * Pipe-D wont support a mode > 5K
-> * To use 8K mode on a pipe then consecutive pipe must be available & free.
-> 
-> V2: - Use updated helper name
-> 
-> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-> ---
->   tests/i915/kms_flip_scaled_crc.c | 13 ++++++++++++-
->   1 file changed, 12 insertions(+), 1 deletion(-)
-> 
-> diff --git a/tests/i915/kms_flip_scaled_crc.c b/tests/i915/kms_flip_scaled_crc.c
-> index 10465ca7..1b497dcc 100644
-> --- a/tests/i915/kms_flip_scaled_crc.c
-> +++ b/tests/i915/kms_flip_scaled_crc.c
-> @@ -648,8 +648,13 @@ igt_main
->   			for_each_pipe(&data.display, pipe) {
->   				bool found = false;
->   				for_each_valid_output_on_pipe(&data.display, pipe, output) {
-> +					igt_display_reset(&data.display);
-> +
->   					modetoset = find_mode(&data, output);
-> -					if (modetoset) {
-> +					igt_output_set_pipe(output, pipe);
-> +					igt_output_override_mode(output, modetoset);
- >> why we have to override mode here?
-> +
-> +					if (modetoset && i915_pipe_output_combo_valid(&data.display)) {
->   						found = true;
->   						igt_dynamic_f("pipe-%s-valid-mode", kmstest_pipe_name(pipe))
->   							run_tests(&data, index, pipe, output, modetoset);
-> @@ -658,6 +663,12 @@ igt_main
->   				}
->   				if (!found) {
->   					for_each_valid_output_on_pipe(&data.display, pipe, output) {
-> +						igt_display_reset(&data.display);
-> +
-> +						igt_output_set_pipe(output, pipe);
-> +						if (!i915_pipe_output_combo_valid(&data.display))
-> +							continue;
-> +
->   						igt_dynamic_f("pipe-%s-default-mode", kmstest_pipe_name(pipe))
->   							run_tests(&data, index, pipe, output, modetoset);
->   					}
+On 12/23, Ma=EDra Canal wrote:
+> Currently, the Mmap BO IOCTL is not completely covered by the existing te=
+sts:
+> V3D only tests invalid BO handlers and VC4 doesn't have tests for this IO=
+CTL.
+> Therefore, create tests for the Mmap BO IOCTL for the V3D and VC4. For bo=
+th
+> drivers, the sub-tests will test invalid parameters and also the consiste=
+ncy
+> of newly mapped BOs.
+>=20
+> Best Regards,
+> - Ma=EDra Canal
+>=20
+> Ma=EDra Canal (2):
+>   tests/v3d_mmap: Improve tests from V3D's Mmap BO IOCTL
+>   tests/vc4_mmap: Create test for VC4's Mmap BO IOCTL
+Hi Ma=EDra,
 
--- 
-~Swati Sharma
+Just that comment about coherency that doesn't fit well in these tests.
+Otherwise, this series LGTM.
+
+Reviewed-by: Melissa Wen <mwen@igalia.com>
+>=20
+>  lib/igt_v3d.c             |  2 ++
+>  lib/igt_vc4.c             |  2 ++
+>  tests/v3d/v3d_mmap.c      | 34 ++++++++++++++++++++++++
+>  tests/v3d_ci/v3d.testlist |  2 ++
+>  tests/vc4/meson.build     |  1 +
+>  tests/vc4/vc4_mmap.c      | 55 +++++++++++++++++++++++++++++++++++++++
+>  tests/vc4_ci/vc4.testlist |  2 ++
+>  7 files changed, 98 insertions(+)
+>  create mode 100644 tests/vc4/vc4_mmap.c
+>=20
+> --=20
+> 2.38.1
+>=20
+
+--bmumtmohlvtoznah
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEd8WOo/JViG+Tu+XIwqF3j0dLehwFAmOsvMcACgkQwqF3j0dL
+ehzE6xAAmdhlnlapPKqrmTD9lqapvQhj253gb/6jsvFcjVU9QKufgv8i4w67k/oN
+rVpxBnrSAWIhM8bGf+QPYOsRAzmEH0IbDuND/qduZdkYcbNJ0wYuCOrFRzI55qW3
+KSlpMKvRV8z9GUomGt3kUQPRszhXz+ebgNyTmj4StVvkwiBwyx7vCCoyNo3AwIkX
+TOjPr5wfY+fWLK3kiYtyhP7EO/zGW78ZLcvLR6Ys8OrO6GnWoCPPBTZJApW0WAG7
+8hSi3fp2RsuSmh9XZqsTWxqtpb/Zv+ZI+x4laY7x7GdWJmD5DZ9TrVwMn5GNAsvs
+VN9mb4AB0zNsC78GH3d6jqpVVOOkIIwmCiyq+c5yYjaH2ihkB77o86fqQHgdxC+F
+eo+0ToRjEl9XAbA+u/VB2GIbkQk91YTzPQL2Yci+70zJW4JKtAHDF6iCIz+BSIhb
+oW2q3QvRyv26ZmbPit3kSZ1kyskKZL7R2iccvqjBNKCbG4lw3fcVxj2L9G2NPYRa
+p6C/yqHnH6tfXgjypflBdsl84/GDDci7EoOvHeoQ22noTdfmgi1EOL9bAE8PLEAJ
+KMCjjstU5oKTrmOtvAgTvq9yO/R5YuookW5whfKw0s33E/m45zX4x16yIKJ41i6J
+VAed11B3kvr8ZI/qI0jrxdRvct9FeUPmSU37bNgkeGOBUViFIro=
+=7xlG
+-----END PGP SIGNATURE-----
+
+--bmumtmohlvtoznah--
