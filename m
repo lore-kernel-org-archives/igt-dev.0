@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C329E10E37F
- for <igt-dev@lists.freedesktop.org>; Wed, 28 Dec 2022 08:43:21 +0000 (UTC)
-From: Swati Sharma <swati2.sharma@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Wed, 28 Dec 2022 14:13:31 +0530
-Message-Id: <20221228084331.6997-1-swati2.sharma@intel.com>
+Content-Type: multipart/alternative;
+ boundary="===============4319606532418075049=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t] tests/kms_dsc: Add negative test for
- invalid input bpc
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Swati Sharma" <swati2.sharma@intel.com>
+Date: Wed, 28 Dec 2022 09:21:36 -0000
+Message-ID: <167221929645.24092.12382319486677261507@emeril.freedesktop.org>
+References: <20221228084331.6997-1-swati2.sharma@intel.com>
+In-Reply-To: <20221228084331.6997-1-swati2.sharma@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
+ =?utf-8?q?kms=5Fdsc=3A_Add_negative_test_for_invalid_input_bpc?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,107 +17,179 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Negative test is added to check driver behavior with invalid input bpc.
--EINVAL is returned when we try to commit.
+--===============4319606532418075049==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
----
- tests/i915/kms_dsc.c | 33 ++++++++++++++++++++++++---------
- 1 file changed, 24 insertions(+), 9 deletions(-)
+== Series Details ==
 
-diff --git a/tests/i915/kms_dsc.c b/tests/i915/kms_dsc.c
-index 330fc050..172010d2 100644
---- a/tests/i915/kms_dsc.c
-+++ b/tests/i915/kms_dsc.c
-@@ -50,7 +50,8 @@ IGT_TEST_DESCRIPTION("Test to validate display stream compression");
- 
- enum dsc_test_type {
- 	TEST_DSC_BASIC,
--	TEST_DSC_BPC
-+	TEST_DSC_BPC,
-+	TEST_DSC_INVALID_BPC,
- };
- 
- typedef struct {
-@@ -78,6 +79,7 @@ const struct {
- };
- 
- uint32_t bpc_list[] = {12, 10, 8};
-+uint32_t invalid_bpc_list[] = {100, 1};
- 
- static inline void manual(const char *expected)
- {
-@@ -238,7 +240,7 @@ static void update_display(data_t *data, enum dsc_test_type test_type, unsigned
- 	save_force_dsc_en(data);
- 	force_dsc_enable(data);
- 
--	if (test_type == TEST_DSC_BPC) {
-+	if (test_type == TEST_DSC_BPC || test_type == TEST_DSC_INVALID_BPC) {
- 		igt_debug("Trying to set input BPC to %d\n", data->input_bpc);
- 		force_dsc_enable_bpc(data);
- 	}
-@@ -262,7 +264,12 @@ static void update_display(data_t *data, enum dsc_test_type test_type, unsigned
- 			      &data->fb_test_pattern);
- 
- 	igt_plane_set_fb(primary, &data->fb_test_pattern);
--	igt_display_commit(display);
-+	if (test_type == TEST_DSC_INVALID_BPC) {
-+		igt_assert_eq(igt_display_try_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL), -EINVAL);
-+		goto cleanup;
-+	} else {
-+		igt_display_commit(display);
-+	}
- 
- 	/* until we have CRC check support, manually check if RGB test
- 	 * pattern has no corruption.
-@@ -276,15 +283,15 @@ static void update_display(data_t *data, enum dsc_test_type test_type, unsigned
- 				mode->vrefresh,
- 				enabled ? "ON" : "OFF");
- 
--	restore_force_dsc_en();
--	igt_debug("Reset compression BPC\n");
--	data->input_bpc = 0;
--	force_dsc_enable_bpc(data);
--
- 	igt_assert_f(enabled,
- 		     "Default DSC enable failed on connector: %s pipe: %s\n",
- 		     output->name,
- 		     kmstest_pipe_name(data->pipe));
-+cleanup:
-+	restore_force_dsc_en();
-+	igt_debug("Reset compression BPC\n");
-+	data->input_bpc = 0;
-+	force_dsc_enable_bpc(data);
- 
- 	test_cleanup(data);
- }
-@@ -314,7 +321,7 @@ static void test_dsc(data_t *data, enum dsc_test_type test_type, int bpc,
- 		if (!check_big_joiner_pipe_constraint(data))
- 			continue;
- 
--		if (test_type == TEST_DSC_BPC)
-+		if (test_type == TEST_DSC_BPC || test_type == TEST_DSC_INVALID_BPC)
- 			snprintf(name, sizeof(name), "-%dbpc-%s", data->input_bpc, igt_format_str(plane_format));
- 		else
- 			snprintf(name, sizeof(name), "-%s", igt_format_str(plane_format));
-@@ -364,6 +371,14 @@ igt_main
- 			test_dsc(&data, TEST_DSC_BPC, bpc_list[j], DRM_FORMAT_XRGB8888);
- 	}
- 
-+	igt_describe("Tests negative basic display stream compression functionality if supported "
-+		     "by a connector by forcing DSC on all connectors that support it "
-+		     "with wrong input BPC for the connector");
-+	igt_subtest_with_dynamic("dsc-with-invalid-bpc") {
-+		for (int j = 0; j < ARRAY_SIZE(invalid_bpc_list); j++)
-+			test_dsc(&data, TEST_DSC_INVALID_BPC, invalid_bpc_list[j], DRM_FORMAT_XRGB8888);
-+	}
-+
- 	igt_describe("Tests basic display stream compression functionality if supported "
- 		     "by a connector by forcing DSC on all connectors that support it "
- 		     "with certain input BPC for the connector with diff formats");
--- 
-2.25.1
+Series: tests/kms_dsc: Add negative test for invalid input bpc
+URL   : https://patchwork.freedesktop.org/series/112264/
+State : success
+
+== Summary ==
+
+CI Bug Log - changes from IGT_7104 -> IGTPW_8278
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8278/index.html
+
+Participating hosts (42 -> 43)
+------------------------------
+
+  Additional (1): bat-adlm-1 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_8278 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions:
+    - fi-bsw-n3050:       [PASS][1] -> [FAIL][2] ([i915#6298])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7104/fi-bsw-n3050/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8278/fi-bsw-n3050/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions.html
+
+  
+#### Possible fixes ####
+
+  * igt@gem_exec_gttfill@basic:
+    - fi-pnv-d510:        [FAIL][3] ([i915#7229]) -> [PASS][4]
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7104/fi-pnv-d510/igt@gem_exec_gttfill@basic.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8278/fi-pnv-d510/igt@gem_exec_gttfill@basic.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [fdo#109285]: https://bugs.freedesktop.org/show_bug.cgi?id=109285
+  [fdo#111827]: https://bugs.freedesktop.org/show_bug.cgi?id=111827
+  [i915#1072]: https://gitlab.freedesktop.org/drm/intel/issues/1072
+  [i915#1845]: https://gitlab.freedesktop.org/drm/intel/issues/1845
+  [i915#1849]: https://gitlab.freedesktop.org/drm/intel/issues/1849
+  [i915#2582]: https://gitlab.freedesktop.org/drm/intel/issues/2582
+  [i915#3282]: https://gitlab.freedesktop.org/drm/intel/issues/3282
+  [i915#3555]: https://gitlab.freedesktop.org/drm/intel/issues/3555
+  [i915#3637]: https://gitlab.freedesktop.org/drm/intel/issues/3637
+  [i915#3708]: https://gitlab.freedesktop.org/drm/intel/issues/3708
+  [i915#4613]: https://gitlab.freedesktop.org/drm/intel/issues/4613
+  [i915#6298]: https://gitlab.freedesktop.org/drm/intel/issues/6298
+  [i915#6367]: https://gitlab.freedesktop.org/drm/intel/issues/6367
+  [i915#6621]: https://gitlab.freedesktop.org/drm/intel/issues/6621
+  [i915#6997]: https://gitlab.freedesktop.org/drm/intel/issues/6997
+  [i915#7229]: https://gitlab.freedesktop.org/drm/intel/issues/7229
+  [i915#7456]: https://gitlab.freedesktop.org/drm/intel/issues/7456
+  [i915#7561]: https://gitlab.freedesktop.org/drm/intel/issues/7561
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_7104 -> IGTPW_8278
+
+  CI-20190529: 20190529
+  CI_DRM_12526: 34f2552b43d664ce4b76c6e356a57b7835f59c81 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_8278: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8278/index.html
+  IGT_7104: fe5def13049225967770eaaf19ec01ef80e2adc5 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+
+Testlist changes
+----------------
+
++igt@kms_dsc@dsc-with-invalid-bpc
+-igt@kms_multipipe_modeset@basic-8k-resolution-check
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8278/index.html
+
+--===============4319606532418075049==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/kms_dsc: Add negative test for invalid input bpc</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/112264/">https://patchwork.freedesktop.org/series/112264/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8278/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8278/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_7104 -&gt; IGTPW_8278</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8278/index.html</p>
+<h2>Participating hosts (42 -&gt; 43)</h2>
+<p>Additional (1): bat-adlm-1 </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_8278 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions:<ul>
+<li>fi-bsw-n3050:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7104/fi-bsw-n3050/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8278/fi-bsw-n3050/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6298">i915#6298</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@gem_exec_gttfill@basic:<ul>
+<li>fi-pnv-d510:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7104/fi-pnv-d510/igt@gem_exec_gttfill@basic.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7229">i915#7229</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8278/fi-pnv-d510/igt@gem_exec_gttfill@basic.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_7104 -&gt; IGTPW_8278</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_12526: 34f2552b43d664ce4b76c6e356a57b7835f59c81 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_8278: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8278/index.html<br />
+  IGT_7104: fe5def13049225967770eaaf19ec01ef80e2adc5 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+<h2>Testlist changes</h2>
+<p>+igt@kms_dsc@dsc-with-invalid-bpc<br />
+-igt@kms_multipipe_modeset@basic-8k-resolution-check</p>
+
+</body>
+</html>
+
+--===============4319606532418075049==--
