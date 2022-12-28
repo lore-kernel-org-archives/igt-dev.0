@@ -1,21 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5540E10E150
- for <igt-dev@lists.freedesktop.org>; Mon, 26 Dec 2022 20:12:37 +0000 (UTC)
-From: "Gupta, Nidhi1" <nidhi1.gupta@intel.com>
-To: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-Date: Mon, 26 Dec 2022 20:12:32 +0000
-Message-ID: <PH7PR11MB6006BA9D34A2F7C659DEF944C5EC9@PH7PR11MB6006.namprd11.prod.outlook.com>
-References: <20220926031318.17284-1-nidhi1.gupta@intel.com>
- <1bcfd5924d678818d6c8336198f9adf370f13fed.camel@intel.com>
- <PH7PR11MB6006DC8DB21A30A0E01B16AEC5EC9@PH7PR11MB6006.namprd11.prod.outlook.com>
-In-Reply-To: <PH7PR11MB6006DC8DB21A30A0E01B16AEC5EC9@PH7PR11MB6006.namprd11.prod.outlook.com>
-Content-Language: en-US
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B7AF910E3CE
+ for <igt-dev@lists.freedesktop.org>; Wed, 28 Dec 2022 18:30:43 +0000 (UTC)
+Message-ID: <69d486a4-3c81-0999-4762-d2a497b64d54@intel.com>
+Date: Thu, 29 Dec 2022 00:00:19 +0530
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [i-g-t v5 05/52] tests/kms_atomic_interruptible: Add
- support for Bigjoiner
+To: Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
+ igt-dev@lists.freedesktop.org
+References: <20221115170855.196572-1-bhanuprakash.modem@intel.com>
+ <20221115170855.196572-5-bhanuprakash.modem@intel.com>
+Content-Language: en-US
+From: Swati Sharma <swati2.sharma@intel.com>
+In-Reply-To: <20221115170855.196572-5-bhanuprakash.modem@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Subject: Re: [igt-dev] [i-g-t v5 04/52] tests/kms_atomic: Add support for
+ Bigjoiner
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,96 +27,109 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gVHVlLCAyMDIyLTExLTE1IGF0IDA4OjQzICswNTMwLCBCaGFudXByYWthc2ggTW9kZW0gd3Jv
-dGU6DQo+VGhpcyBwYXRjaCB3aWxsIGFkZCBhIGNoZWNrIHRvIFNraXAgdGhlIHN1YnRlc3QgaWYg
-YSBzZWxlY3RlZCANCj5waXBlL291dHB1dCBjb21ibyB3b24ndCBzdXBwb3J0IEJpZ2pvaW5lciBv
-ciA4SyBtb2RlLg0KPg0KPkV4YW1wbGU6DQo+KiBQaXBlLUQgd29udCBzdXBwb3J0IGEgbW9kZSA+
-IDVLDQo+KiBUbyB1c2UgOEsgbW9kZSBvbiBhIHBpcGUgdGhlbiBjb25zZWN1dGl2ZSBwaXBlIG11
-c3QgYmUgYXZhaWxhYmxlICYgZnJlZS4NCj4NCj5WMjogLSBVc2UgdXBkYXRlZCBoZWxwZXIgbmFt
-ZQ0KPg0KPlNpZ25lZC1vZmYtYnk6IEJoYW51cHJha2FzaCBNb2RlbSA8YmhhbnVwcmFrYXNoLm1v
-ZGVtQGludGVsLmNvbT4NClJldmlld2VkLWJ5OiBOaWRoaSBHdXB0YSA8bmlkaGkxLmd1cHRhQGlu
-dGVsLmNvbT4NCi0tLQ0KIHRlc3RzL2ttc19hdG9taWNfaW50ZXJydXB0aWJsZS5jIHwgNDAgKysr
-KysrKysrKysrKysrKysrKysrKysrKysrKysrKysNCiAxIGZpbGUgY2hhbmdlZCwgNDAgaW5zZXJ0
-aW9ucygrKQ0KPmRpZmYgLS1naXQgYS90ZXN0cy9rbXNfYXRvbWljX2ludGVycnVwdGlibGUuYyAN
-Cj5iL3Rlc3RzL2ttc19hdG9taWNfaW50ZXJydXB0aWJsZS5jDQo+aW5kZXggZjQ2MWExNWMuLjc0
-YjJlMjQ2IDEwMDY0NA0KPi0tLSBhL3Rlc3RzL2ttc19hdG9taWNfaW50ZXJydXB0aWJsZS5jDQo+
-KysrIGIvdGVzdHMva21zX2F0b21pY19pbnRlcnJ1cHRpYmxlLmMNCj5AQCAtODIsMTEgKzgyLDE1
-IEBAICBzdGF0aWMgdm9pZCBydW5fcGxhbmVfdGVzdChpZ3RfZGlzcGxheV90ICpkaXNwbGF5LCBl
-bnVtIHBpcGUgcGlwZSwgaWd0X291dHB1dF90DQo+CWlndF9wbGFuZV90ICpwcmltYXJ5LCAqcGxh
-bmU7DQo+CWludCBibG9jazsNCj4NCj4rCWlndF9pbmZvKCJVc2luZyAocGlwZSAlcyArICVzKSB0
-byBydW4gdGhlIHN1YnRlc3QuXG4iLA0KPisJCSBrbXN0ZXN0X3BpcGVfbmFtZShwaXBlKSwgaWd0
-X291dHB1dF9uYW1lKG91dHB1dCkpOw0KPisNCj4gCS8qDQo+CSAqIE1ha2Ugc3VyZSB3ZSBzdGFy
-dCB3aXRoIGV2ZXJ5dGhpbmcgZGlzYWJsZWQgdG8gZm9yY2UgYSByZWFsIG1vZGVzZXQuDQo+IAkg
-KiBpZ3RfZGlzcGxheV9yZXF1aXJlIG9ubHkgc2V0cyBzdyBzdGF0ZSwgYW5kIGFzc3VtZXMgdGhl
-IGZpcnN0IHRlc3QNCj4gCSAqIGRvZXNuJ3QgY2FyZSBhYm91dCBodyBzdGF0ZS4NCj4gCSAqLw0K
-PisJaWd0X2Rpc3BsYXlfcmVzZXQoZGlzcGxheSk7DQo+IAlpZ3RfZGlzcGxheV9jb21taXQyKGRp
-c3BsYXksIENPTU1JVF9BVE9NSUMpOw0KPiANCj4gCWlndF9vdXRwdXRfc2V0X3BpcGUob3V0cHV0
-LCBwaXBlKTsNCj5AQCAtMjY1LDYgKzI2OSwyMSBAQCAgc3RhdGljIHZvaWQgcnVuX3BsYW5lX3Rl
-c3QoaWd0X2Rpc3BsYXlfdCAqZGlzcGxheSwgZW51bSBwaXBlIHBpcGUsIGlndF9vdXRwdXRfdA0K
-PiAJaWd0X3JlbW92ZV9mYihkaXNwbGF5LT5kcm1fZmQsICZmYik7DQo+IH0NCj4gDQo+K3N0YXRp
-YyBib29sIHBpcGVfb3V0cHV0X2NvbWJvX3ZhbGlkKGlndF9kaXNwbGF5X3QgKmRpc3BsYXksDQo+
-KwkJCQkgICAgZW51bSBwaXBlIHBpcGUsIGlndF9vdXRwdXRfdCAqb3V0cHV0KSB7DQo+Kwlib29s
-IHJldCA9IHRydWU7DQo+Kw0KPisJaWd0X2Rpc3BsYXlfcmVzZXQoZGlzcGxheSk7DQo+Kw0KPisJ
-aWd0X291dHB1dF9zZXRfcGlwZShvdXRwdXQsIHBpcGUpOw0KPisJaWYgKCFpOTE1X3BpcGVfb3V0
-cHV0X2NvbWJvX3ZhbGlkKGRpc3BsYXkpKQ0KPisJCXJldCA9IGZhbHNlOw0KPisJaWd0X291dHB1
-dF9zZXRfcGlwZShvdXRwdXQsIFBJUEVfTk9ORSk7DQo+Kw0KPisJcmV0dXJuIHJldDsNCj4rfQ0K
-PisNCj5pZ3RfbWFpbg0KPnsNCj4gCWlndF9kaXNwbGF5X3QgZGlzcGxheTsNCj5AQCAtMjg2LDYg
-KzMwNSw5IEBAICBpZ3RfbWFpbg0KPiAJaWd0X2Rlc2NyaWJlKCJUZXN0cyB0aGUgaW50ZXJydXB0
-IHByb3BlcnRpZXMgb2YgbGVnYWN5IG1vZGVzZXQiKTsNCj4gCWlndF9zdWJ0ZXN0X3dpdGhfZHlu
-YW1pYygibGVnYWN5LXNldG1vZGUiKSB7DQo+IAkJZm9yX2VhY2hfcGlwZV93aXRoX3ZhbGlkX291
-dHB1dCgmZGlzcGxheSwgcGlwZSwgb3V0cHV0KSB7DQo+KwkJCWlmICghcGlwZV9vdXRwdXRfY29t
-Ym9fdmFsaWQoJmRpc3BsYXksIHBpcGUsIG91dHB1dCkpDQo+KwkJCQljb250aW51ZTsNCj4rDQo+
-IAkJCWlndF9keW5hbWljX2YoIiVzLXBpcGUtJXMiLCBpZ3Rfb3V0cHV0X25hbWUob3V0cHV0KSwg
-a21zdGVzdF9waXBlX25hbWUocGlwZSkpDQo+IAkJCQlydW5fcGxhbmVfdGVzdCgmZGlzcGxheSwg
-cGlwZSwgb3V0cHV0LCB0ZXN0X2xlZ2FjeV9tb2Rlc2V0LCBEUk1fUExBTkVfVFlQRV9QUklNQVJZ
-KTsNCj4gCQkJYnJlYWs7DQo+QEAgLTI5NSw2ICszMTcsOSBAQCAgaWd0X21haW4NCj4gCWlndF9k
-ZXNjcmliZSgiVGVzdHMgdGhlIGludGVycnVwdCBwcm9wZXJ0aWVzIG9mIGF0b21pYyBtb2Rlc2V0
-Iik7DQo+IAlpZ3Rfc3VidGVzdF93aXRoX2R5bmFtaWMoImF0b21pYy1zZXRtb2RlIikgew0KPiAJ
-CWZvcl9lYWNoX3BpcGVfd2l0aF92YWxpZF9vdXRwdXQoJmRpc3BsYXksIHBpcGUsIG91dHB1dCkg
-ew0KPisJCQlpZiAoIXBpcGVfb3V0cHV0X2NvbWJvX3ZhbGlkKCZkaXNwbGF5LCBwaXBlLCBvdXRw
-dXQpKQ0KPisJCQkJY29udGludWU7DQo+Kw0KPiAJCQlpZ3RfZHluYW1pY19mKCIlcy1waXBlLSVz
-IiwgaWd0X291dHB1dF9uYW1lKG91dHB1dCksIGttc3Rlc3RfcGlwZV9uYW1lKHBpcGUpKQ0KPiAJ
-CQkJcnVuX3BsYW5lX3Rlc3QoJmRpc3BsYXksIHBpcGUsIG91dHB1dCwgdGVzdF9hdG9taWNfbW9k
-ZXNldCwgRFJNX1BMQU5FX1RZUEVfUFJJTUFSWSk7DQo+IAkJCWJyZWFrOw0KPkBAIC0zMDQsNiAr
-MzI5LDkgQEAgIGlndF9tYWluDQo+IAlpZ3RfZGVzY3JpYmUoIlRlc3RzIHRoZSBpbnRlcnJ1cHQg
-cHJvcGVydGllcyBmb3IgRFBNUyIpOw0KPiAJaWd0X3N1YnRlc3Rfd2l0aF9keW5hbWljKCJsZWdh
-Y3ktZHBtcyIpIHsNCj4gCQlmb3JfZWFjaF9waXBlX3dpdGhfdmFsaWRfb3V0cHV0KCZkaXNwbGF5
-LCBwaXBlLCBvdXRwdXQpIHsNCj4rCQkJaWYgKCFwaXBlX291dHB1dF9jb21ib192YWxpZCgmZGlz
-cGxheSwgcGlwZSwgb3V0cHV0KSkNCj4rCQkJCWNvbnRpbnVlOw0KPisNCj4gCQkJaWd0X2R5bmFt
-aWNfZigiJXMtcGlwZS0lcyIsIGlndF9vdXRwdXRfbmFtZShvdXRwdXQpLCBrbXN0ZXN0X3BpcGVf
-bmFtZShwaXBlKSkNCj4gCQkJCXJ1bl9wbGFuZV90ZXN0KCZkaXNwbGF5LCBwaXBlLCBvdXRwdXQs
-IHRlc3RfbGVnYWN5X2RwbXMsIERSTV9QTEFORV9UWVBFX1BSSU1BUlkpOw0KPiAJCQlicmVhazsN
-Cj5AQCAtMzEzLDYgKzM0MSw5IEBAICBpZ3RfbWFpbg0KPiAJaWd0X2Rlc2NyaWJlKCJUZXN0cyB0
-aGUgaW50ZXJydXB0IHByb3BlcnRpZXMgZm9yIHBhZ2VmbGlwIik7DQo+IAlpZ3Rfc3VidGVzdF93
-aXRoX2R5bmFtaWMoImxlZ2FjeS1wYWdlZmxpcCIpIHsNCj4gCQlmb3JfZWFjaF9waXBlX3dpdGhf
-dmFsaWRfb3V0cHV0KCZkaXNwbGF5LCBwaXBlLCBvdXRwdXQpIHsNCj4rCQkJaWYgKCFwaXBlX291
-dHB1dF9jb21ib192YWxpZCgmZGlzcGxheSwgcGlwZSwgb3V0cHV0KSkNCj4rCQkJCWNvbnRpbnVl
-Ow0KPisNCj4gCQkJaWd0X2R5bmFtaWNfZigiJXMtcGlwZS0lcyIsIGlndF9vdXRwdXRfbmFtZShv
-dXRwdXQpLCBrbXN0ZXN0X3BpcGVfbmFtZShwaXBlKSkNCj4gCQkJCXJ1bl9wbGFuZV90ZXN0KCZk
-aXNwbGF5LCBwaXBlLCBvdXRwdXQsIHRlc3RfcGFnZWZsaXAsIERSTV9QTEFORV9UWVBFX1BSSU1B
-UlkpOw0KPiAJCQlicmVhazsNCj5AQCAtMzIyLDYgKzM1Myw5IEBAICBpZ3RfbWFpbg0KPiAJaWd0
-X2Rlc2NyaWJlKCJUZXN0cyB0aGUgaW50ZXJydXB0IHByb3BlcnRpZXMgZm9yIGN1cnNvciIpOw0K
-PiAJaWd0X3N1YnRlc3Rfd2l0aF9keW5hbWljKCJsZWdhY3ktY3Vyc29yIikgew0KPiAJCWZvcl9l
-YWNoX3BpcGVfd2l0aF92YWxpZF9vdXRwdXQoJmRpc3BsYXksIHBpcGUsIG91dHB1dCkgew0KPisJ
-CQlpZiAoIXBpcGVfb3V0cHV0X2NvbWJvX3ZhbGlkKCZkaXNwbGF5LCBwaXBlLCBvdXRwdXQpKQ0K
-PisJCQkJY29udGludWU7DQo+Kw0KPiAJCQlpZ3RfZHluYW1pY19mKCIlcy1waXBlLSVzIiwgaWd0
-X291dHB1dF9uYW1lKG91dHB1dCksIGttc3Rlc3RfcGlwZV9uYW1lKHBpcGUpKQ0KPiAJCQkJcnVu
-X3BsYW5lX3Rlc3QoJmRpc3BsYXksIHBpcGUsIG91dHB1dCwgdGVzdF9zZXRjdXJzb3IsIERSTV9Q
-TEFORV9UWVBFX0NVUlNPUik7DQo+IAkJCWJyZWFrOw0KPkBAIC0zMzEsNiArMzY1LDkgQEAgIGln
-dF9tYWluDQo+IAlpZ3RfZGVzY3JpYmUoIlRlc3RzIHRoZSBpbnRlcnJ1cHQgcHJvcGVydGllcyBm
-b3IgcHJpbWFyeSBwbGFuZSIpOw0KPiAJaWd0X3N1YnRlc3Rfd2l0aF9keW5hbWljKCJ1bml2ZXJz
-YWwtc2V0cGxhbmUtcHJpbWFyeSIpIHsNCj4gCQlmb3JfZWFjaF9waXBlX3dpdGhfdmFsaWRfb3V0
-cHV0KCZkaXNwbGF5LCBwaXBlLCBvdXRwdXQpIHsNCj4rCQkJaWYgKCFwaXBlX291dHB1dF9jb21i
-b192YWxpZCgmZGlzcGxheSwgcGlwZSwgb3V0cHV0KSkNCj4rCQkJCWNvbnRpbnVlOw0KPisNCj4g
-CQkJaWd0X2R5bmFtaWNfZigiJXMtcGlwZS0lcyIsIGlndF9vdXRwdXRfbmFtZShvdXRwdXQpLCBr
-bXN0ZXN0X3BpcGVfbmFtZShwaXBlKSkNCj4gCQkJCXJ1bl9wbGFuZV90ZXN0KCZkaXNwbGF5LCBw
-aXBlLCBvdXRwdXQsIHRlc3Rfc2V0cGxhbmUsIERSTV9QTEFORV9UWVBFX1BSSU1BUlkpOw0KPiAJ
-CQlicmVhazsNCj5AQCAtMzQwLDYgKzM3Nyw5IEBAICBpZ3RfbWFpbg0KPiAJaWd0X2Rlc2NyaWJl
-KCJUZXN0cyB0aGUgaW50ZXJydXB0IHByb3BlcnRpZXMgZm9yIGN1cnNvciBwbGFuZSIpOw0KPiAJ
-aWd0X3N1YnRlc3Rfd2l0aF9keW5hbWljKCJ1bml2ZXJzYWwtc2V0cGxhbmUtY3Vyc29yIikgew0K
-PiAJCWZvcl9lYWNoX3BpcGVfd2l0aF92YWxpZF9vdXRwdXQoJmRpc3BsYXksIHBpcGUsIG91dHB1
-dCkgew0KPisJCQlpZiAoIXBpcGVfb3V0cHV0X2NvbWJvX3ZhbGlkKCZkaXNwbGF5LCBwaXBlLCBv
-dXRwdXQpKQ0KPisJCQkJY29udGludWU7DQo+Kw0KPiAJCQlpZ3RfZHluYW1pY19mKCIlcy1waXBl
-LSVzIiwgaWd0X291dHB1dF9uYW1lKG91dHB1dCksIGttc3Rlc3RfcGlwZV9uYW1lKHBpcGUpKQ0K
-PiAJCQkJcnVuX3BsYW5lX3Rlc3QoJmRpc3BsYXksIHBpcGUsIG91dHB1dCwgdGVzdF9zZXRwbGFu
-ZSwgRFJNX1BMQU5FX1RZUEVfQ1VSU09SKTsNCj4gCQkJYnJlYWs7DQo=
+Hi Bhanu,
+
+Don't try to do many things in one patch. Create smaller patches. For 
+instance in this patch, only big joiner check should haven been 
+introduced and rest all cleanup should have been separate patch.
+However, for now
+
+Reviewed-by: Swati Sharma <swati2.sharma@intel.com>
+
+On 15-Nov-22 10:38 PM, Bhanuprakash Modem wrote:
+> This patch will add a check to Skip the subtest if a selected pipe/output
+> combo won't support Bigjoiner or 8K mode.
+> 
+> Example:
+> * Pipe-D wont support a mode > 5K
+> * To use 8K mode on a pipe then consecutive pipe must be available & free.
+> 
+> V2: - Use updated helper name
+> 
+> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+> ---
+>   tests/kms_atomic.c | 32 ++++++++++++++++++++++++++++----
+>   1 file changed, 28 insertions(+), 4 deletions(-)
+> 
+> diff --git a/tests/kms_atomic.c b/tests/kms_atomic.c
+> index 2a3fb74b..61117a3f 100644
+> --- a/tests/kms_atomic.c
+> +++ b/tests/kms_atomic.c
+> @@ -1265,6 +1265,10 @@ static void atomic_plane_damage(igt_pipe_t *pipe, igt_plane_t *plane, struct igt
+>   
+>   static void atomic_setup(igt_display_t *display, enum pipe pipe, igt_output_t *output, igt_plane_t *primary, struct igt_fb *fb)
+>   {
+> +	igt_info("Using (pipe %s + %s) to run the subtest.\n",
+> +		 kmstest_pipe_name(pipe), igt_output_name(output));
+> +
+> +	igt_display_reset(display);
+>   	igt_output_set_pipe(output, pipe);
+>   	igt_plane_set_fb(primary, fb);
+>   
+> @@ -1293,6 +1297,7 @@ igt_main
+>   	igt_plane_t *primary = NULL;
+>   	drmModeModeInfo *mode;
+>   	struct igt_fb fb;
+> +	bool valid_config = false;
+>   
+>   	igt_fixture {
+>   		display.drm_fd = drm_open_driver_master(DRIVER_ANY);
+> @@ -1303,8 +1308,16 @@ igt_main
+>   		igt_require(display.is_atomic);
+>   		igt_display_require_output(&display);
+>   
+> -		for_each_pipe_with_valid_output(&display, pipe, output)
+> -			break;
+> +		for_each_pipe_with_valid_output(&display, pipe, output) {
+> +			igt_display_reset(&display);
+> +
+> +			igt_output_set_pipe(output, pipe);
+> +			if (i915_pipe_output_combo_valid(&display)) {
+> +				valid_config = true;
+> +				break;
+> +			}
+> +		}
+> +		igt_require(valid_config);
+>   
+>   		pipe_obj = &display.pipes[pipe];
+>   		primary = igt_pipe_get_plane_type(pipe_obj, DRM_PLANE_TYPE_PRIMARY);
+> @@ -1342,9 +1355,13 @@ igt_main
+>   	igt_subtest("plane-primary-overlay-mutable-zpos") {
+>   		uint32_t format_primary = DRM_FORMAT_ARGB8888;
+>   		uint32_t format_overlay = DRM_FORMAT_ARGB1555;
+> +		igt_plane_t *overlay;
+>   
+> -		igt_plane_t *overlay =
+> -			igt_pipe_get_plane_type(pipe_obj, DRM_PLANE_TYPE_OVERLAY);
+> +		igt_info("Using (pipe %s + %s) to run the subtest.\n",
+> +			 kmstest_pipe_name(pipe), igt_output_name(output));
+> +
+> +		igt_display_reset(&display);
+> +		overlay = igt_pipe_get_plane_type(pipe_obj, DRM_PLANE_TYPE_OVERLAY);
+>   		igt_require(overlay);
+>   
+>   		igt_require(igt_plane_has_prop(primary, IGT_PLANE_ZPOS));
+> @@ -1361,6 +1378,10 @@ igt_main
+>   	igt_describe("Verify the reported zpos property of planes by making sure "\
+>   		     "only higher zpos planes cover the lower zpos ones.");
+>   	igt_subtest("plane-immutable-zpos") {
+> +		igt_info("Using (pipe %s + %s) to run the subtest.\n",
+> +			 kmstest_pipe_name(pipe), igt_output_name(output));
+> +
+> +		igt_display_reset(&display);
+>   		igt_output_set_pipe(output, pipe);
+>   		plane_immutable_zpos(&display, pipe_obj, output);
+>   	}
+> @@ -1370,6 +1391,9 @@ igt_main
+>   	igt_subtest("test-only") {
+>   		atomic_clear(&display, pipe, primary, output);
+>   
+> +		igt_info("Using (pipe %s + %s) to run the subtest.\n",
+> +			 kmstest_pipe_name(pipe), igt_output_name(output));
+> +
+>   		test_only(pipe_obj, primary, output);
+>   	}
+>   
+
+-- 
+~Swati Sharma
