@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9AB4A10E471
- for <igt-dev@lists.freedesktop.org>; Fri, 30 Dec 2022 17:53:16 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5BA4D10E48A
+ for <igt-dev@lists.freedesktop.org>; Fri, 30 Dec 2022 17:53:13 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Fri, 30 Dec 2022 23:18:22 +0530
-Message-Id: <20221230174825.3016716-48-bhanuprakash.modem@intel.com>
+Date: Fri, 30 Dec 2022 23:18:20 +0530
+Message-Id: <20221230174825.3016716-46-bhanuprakash.modem@intel.com>
 In-Reply-To: <20221230174825.3016716-1-bhanuprakash.modem@intel.com>
 References: <20221230174825.3016716-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t v6 47/50] tests/i915/kms_psr2_su: Add support for
- Bigjoiner
+Subject: [igt-dev] [i-g-t v6 45/50] tests/i915/kms_mmap_write_crc: Add
+ support for Bigjoiner
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -33,36 +33,27 @@ Example:
 V2: - Use updated helper name
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Reviewed-by: Jeevan B <jeevan.b@intel.com>
+Reviewed-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
 ---
- tests/i915/kms_psr2_su.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ tests/i915/kms_mmap_write_crc.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/tests/i915/kms_psr2_su.c b/tests/i915/kms_psr2_su.c
-index 84dc30c3..3e0a78f2 100644
---- a/tests/i915/kms_psr2_su.c
-+++ b/tests/i915/kms_psr2_su.c
-@@ -104,7 +104,11 @@ static void setup_output(data_t *data)
- 		if (c->connector_type != DRM_MODE_CONNECTOR_eDP)
- 			continue;
+diff --git a/tests/i915/kms_mmap_write_crc.c b/tests/i915/kms_mmap_write_crc.c
+index 96ddac11..4f7a86bf 100644
+--- a/tests/i915/kms_mmap_write_crc.c
++++ b/tests/i915/kms_mmap_write_crc.c
+@@ -277,6 +277,12 @@ igt_main_args("n", NULL, NULL, opt_handler, NULL)
  
-+		igt_display_reset(display);
- 		igt_output_set_pipe(output, pipe);
-+		if (!i915_pipe_output_combo_valid(display))
-+			continue;
+ 	igt_subtest_with_dynamic("main") {
+ 		for_each_pipe_with_valid_output(&data.display, pipe, output) {
++			igt_display_reset(&data.display);
 +
- 		data->output = output;
- 		data->mode = igt_output_get_mode(output);
- 
-@@ -116,6 +120,9 @@ static void display_init(data_t *data)
- {
- 	igt_display_require(&data->display, data->drm_fd);
- 	setup_output(data);
++			igt_output_set_pipe(output, pipe);
++			if (!i915_pipe_output_combo_valid(&data.display))
++				continue;
 +
-+	igt_require_f(data->output, "No available output found\n");
-+	igt_require_f(data->mode, "No available mode found on %s\n", data->output->name);
- }
- 
- static void display_fini(data_t *data)
+ 			igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe),
+ 				      igt_output_name(output)) {
+ 				data.output = output;
 -- 
 2.39.0
