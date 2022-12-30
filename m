@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 778BC10E47A
- for <igt-dev@lists.freedesktop.org>; Fri, 30 Dec 2022 17:52:26 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 155FB10E47A
+ for <igt-dev@lists.freedesktop.org>; Fri, 30 Dec 2022 17:52:28 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Fri, 30 Dec 2022 23:17:51 +0530
-Message-Id: <20221230174825.3016716-17-bhanuprakash.modem@intel.com>
+Date: Fri, 30 Dec 2022 23:17:52 +0530
+Message-Id: <20221230174825.3016716-18-bhanuprakash.modem@intel.com>
 In-Reply-To: <20221230174825.3016716-1-bhanuprakash.modem@intel.com>
 References: <20221230174825.3016716-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t v6 16/50] tests/kms_flip_event_leak: Add support
- for Bigjoiner
+Subject: [igt-dev] [i-g-t v6 17/50] tests/kms_invalid_mode: Add support for
+ Bigjoiner
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,6 +19,7 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: Nidhi Gupta <nidhi1.gupta@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
@@ -33,41 +34,27 @@ Example:
 V2: - Use updated helper name
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Reviewed-by: Jeevan B <jeevan.b@intel.com>
+Reviewed-by: Nidhi Gupta <nidhi1.gupta@intel.com>
 ---
- tests/kms_flip_event_leak.c | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ tests/kms_invalid_mode.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/tests/kms_flip_event_leak.c b/tests/kms_flip_event_leak.c
-index 56ff2af2..75206ee6 100644
---- a/tests/kms_flip_event_leak.c
-+++ b/tests/kms_flip_event_leak.c
-@@ -48,10 +48,6 @@ static void test(data_t *data, enum pipe pipe, igt_output_t *output)
- 	struct igt_fb fb[2];
- 	int fd, ret;
- 
--	igt_display_reset(&data->display);
--	/* select the pipe we want to use */
--	igt_output_set_pipe(output, pipe);
--
- 	primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
- 	mode = igt_output_get_mode(output);
- 
-@@ -104,9 +100,14 @@ igt_main
- 		igt_display_require_output(&data.display);
- 	}
- 
--
- 	igt_subtest_with_dynamic("basic") {
- 		for_each_pipe_with_valid_output(&data.display, pipe, output) {
-+			igt_display_reset(&data.display);
+diff --git a/tests/kms_invalid_mode.c b/tests/kms_invalid_mode.c
+index 40042d4e..86f529e8 100644
+--- a/tests/kms_invalid_mode.c
++++ b/tests/kms_invalid_mode.c
+@@ -301,6 +301,12 @@ igt_main
+ 	for (int i = 0; i < ARRAY_SIZE(subtests); i++) {
+ 		igt_subtest_with_dynamic(subtests[i].name) {
+ 			for_each_pipe_with_valid_output(&data.display, pipe, output) {
++				igt_display_reset(&data.display);
 +
-+			igt_output_set_pipe(output, pipe);
-+			if (!i915_pipe_output_combo_valid(&data.display))
-+				continue;
++				igt_output_set_pipe(output, pipe);
++				if (!i915_pipe_output_combo_valid(&data.display))
++					continue;
 +
- 			igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), igt_output_name(output)) {
- 				test(&data, pipe, output);
- 			}
+ 				igt_dynamic_f("%s-pipe-%s", igt_output_name(output), kmstest_pipe_name(pipe)) {
+ 					data.output = output;
+ 					data.pipe = pipe;
 -- 
 2.39.0
