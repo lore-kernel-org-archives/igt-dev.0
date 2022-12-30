@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D59F310E06F
- for <igt-dev@lists.freedesktop.org>; Fri, 30 Dec 2022 17:52:02 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8346510E46F
+ for <igt-dev@lists.freedesktop.org>; Fri, 30 Dec 2022 17:52:07 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Fri, 30 Dec 2022 23:17:36 +0530
-Message-Id: <20221230174825.3016716-2-bhanuprakash.modem@intel.com>
+Date: Fri, 30 Dec 2022 23:17:39 +0530
+Message-Id: <20221230174825.3016716-5-bhanuprakash.modem@intel.com>
 In-Reply-To: <20221230174825.3016716-1-bhanuprakash.modem@intel.com>
 References: <20221230174825.3016716-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t v6 01/50] lib/igt_kms: Add a helper for valid
- pipe/output constraint
+Subject: [igt-dev] [i-g-t v6 04/50] tests/kms_atomic: Add support for
+ Bigjoiner
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,118 +19,103 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Petri Latvala <petri.latvala@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add an IGT helper to check the given pipe/output combo is valid to decide
-whether to run/skip the subtest.
+This patch will add a check to Skip the subtest if a selected pipe/output
+combo won't support Bigjoiner or 8K mode.
 
 Example:
-* Pipe-D can't support mode > 5K
+* Pipe-D wont support a mode > 5K
 * To use 8K mode on a pipe then consecutive pipe must be available & free.
-* MSO is supported only on PIPE_A/PIPE_B.
 
-This helper is supposed to be a superset of all constraints of pipe/output
-combo. But as of now, this helper supports only Bigjoiner.
+V2: - Use updated helper name
 
-V2:
-- Rename the helper
-- Add is_i915 constraint
-- Add pre-condition check (igt_output_set_pipe called)
-- Update documentaion
-- Minor cleanup in Bigjoiner helper
-
-Cc: Petri Latvala <petri.latvala@intel.com>
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Reviewed-by: Petri Latvala <petri.latvala@intel.com>
+Reviewed-by: Swati Sharma <swati2.sharma@intel.com>
 ---
- lib/igt_kms.c | 49 ++++++++++++++++++++++++++++++++++++++++++++++---
- lib/igt_kms.h |  1 +
- 2 files changed, 47 insertions(+), 3 deletions(-)
+ tests/kms_atomic.c | 32 ++++++++++++++++++++++++++++----
+ 1 file changed, 28 insertions(+), 4 deletions(-)
 
-diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-index b4a98ae1..17099abe 100644
---- a/lib/igt_kms.c
-+++ b/lib/igt_kms.c
-@@ -5856,6 +5856,7 @@ bool igt_check_bigjoiner_support(igt_display_t *display)
+diff --git a/tests/kms_atomic.c b/tests/kms_atomic.c
+index 2a3fb74b..61117a3f 100644
+--- a/tests/kms_atomic.c
++++ b/tests/kms_atomic.c
+@@ -1265,6 +1265,10 @@ static void atomic_plane_damage(igt_pipe_t *pipe, igt_plane_t *plane, struct igt
+ 
+ static void atomic_setup(igt_display_t *display, enum pipe pipe, igt_output_t *output, igt_plane_t *primary, struct igt_fb *fb)
  {
- 	uint8_t i, total_pipes = 0, pipes_in_use = 0;
- 	enum pipe p;
-+	igt_output_t *output;
- 	struct {
- 		enum pipe idx;
- 		drmModeModeInfo *mode;
-@@ -5869,9 +5870,7 @@ bool igt_check_bigjoiner_support(igt_display_t *display)
- 	 * Get list of pipes in use those were set by igt_output_set_pipe()
- 	 * just before calling this function.
- 	 */
--	for (i = 0 ; i < display->n_outputs; i++) {
--		igt_output_t *output = &display->outputs[i];
--
-+	for_each_connected_output(display, output) {
- 		if (output->pending_pipe == PIPE_NONE)
- 			continue;
++	igt_info("Using (pipe %s + %s) to run the subtest.\n",
++		 kmstest_pipe_name(pipe), igt_output_name(output));
++
++	igt_display_reset(display);
+ 	igt_output_set_pipe(output, pipe);
+ 	igt_plane_set_fb(primary, fb);
  
-@@ -5937,3 +5936,47 @@ bool igt_parse_mode_string(const char *mode_string, drmModeModeInfo *mode)
+@@ -1293,6 +1297,7 @@ igt_main
+ 	igt_plane_t *primary = NULL;
+ 	drmModeModeInfo *mode;
+ 	struct igt_fb fb;
++	bool valid_config = false;
  
- 	return true;
- }
-+
-+/*
-+ * i915_pipe_output_combo_valid:
-+ * @display: a pointer to an #igt_display_t structure
-+ *
-+ * Every individual test must use igt_output_set_pipe() before calling this
-+ * helper, so that this function will get all active pipes from connected
-+ * outputs (i.e. pending_pipe != PIPE_NONE) and check the selected combo is
-+ * valid or not.
-+ *
-+ * This helper is supposed to be a superset of all constraints of pipe/output
-+ * combo.
-+ *
-+ * Example:
-+ *  * Pipe-D can't support mode > 5K
-+ *  * To use 8K mode on a pipe then consecutive pipe must be free.
-+ *  * MSO is supported only on PIPE_A/PIPE_B.
-+ *
-+ * Returns: true if a valid pipe/output mode combo found, else false
-+ */
-+bool i915_pipe_output_combo_valid(igt_display_t *display)
-+{
-+	int combo = 0;
-+	igt_output_t *output;
-+
-+	if (!is_i915_device(display->drm_fd))
-+		return true;
-+
-+	for_each_connected_output(display, output) {
-+		if (output->pending_pipe == PIPE_NONE)
-+			continue;
-+
-+		combo++;
-+	}
-+
-+	igt_assert_f(combo, "At least one pipe/output combo needed.\n");
-+
-+	/*
-+	 * Check the given pipe/output combo is valid for Bigjoiner.
-+	 *
-+	 * TODO: Update this helper to support other features like MSO.
-+	 */
-+	return igt_check_bigjoiner_support(display);
-+}
-diff --git a/lib/igt_kms.h b/lib/igt_kms.h
-index 7a00d204..2c243ef6 100644
---- a/lib/igt_kms.h
-+++ b/lib/igt_kms.h
-@@ -1002,5 +1002,6 @@ bool igt_max_bpc_constraint(igt_display_t *display, enum pipe pipe,
- 		igt_output_t *output, int bpc);
- bool igt_check_bigjoiner_support(igt_display_t *display);
- bool igt_parse_mode_string(const char *mode_string, drmModeModeInfo *mode);
-+bool i915_pipe_output_combo_valid(igt_display_t *display);
+ 	igt_fixture {
+ 		display.drm_fd = drm_open_driver_master(DRIVER_ANY);
+@@ -1303,8 +1308,16 @@ igt_main
+ 		igt_require(display.is_atomic);
+ 		igt_display_require_output(&display);
  
- #endif /* __IGT_KMS_H__ */
+-		for_each_pipe_with_valid_output(&display, pipe, output)
+-			break;
++		for_each_pipe_with_valid_output(&display, pipe, output) {
++			igt_display_reset(&display);
++
++			igt_output_set_pipe(output, pipe);
++			if (i915_pipe_output_combo_valid(&display)) {
++				valid_config = true;
++				break;
++			}
++		}
++		igt_require(valid_config);
+ 
+ 		pipe_obj = &display.pipes[pipe];
+ 		primary = igt_pipe_get_plane_type(pipe_obj, DRM_PLANE_TYPE_PRIMARY);
+@@ -1342,9 +1355,13 @@ igt_main
+ 	igt_subtest("plane-primary-overlay-mutable-zpos") {
+ 		uint32_t format_primary = DRM_FORMAT_ARGB8888;
+ 		uint32_t format_overlay = DRM_FORMAT_ARGB1555;
++		igt_plane_t *overlay;
+ 
+-		igt_plane_t *overlay =
+-			igt_pipe_get_plane_type(pipe_obj, DRM_PLANE_TYPE_OVERLAY);
++		igt_info("Using (pipe %s + %s) to run the subtest.\n",
++			 kmstest_pipe_name(pipe), igt_output_name(output));
++
++		igt_display_reset(&display);
++		overlay = igt_pipe_get_plane_type(pipe_obj, DRM_PLANE_TYPE_OVERLAY);
+ 		igt_require(overlay);
+ 
+ 		igt_require(igt_plane_has_prop(primary, IGT_PLANE_ZPOS));
+@@ -1361,6 +1378,10 @@ igt_main
+ 	igt_describe("Verify the reported zpos property of planes by making sure "\
+ 		     "only higher zpos planes cover the lower zpos ones.");
+ 	igt_subtest("plane-immutable-zpos") {
++		igt_info("Using (pipe %s + %s) to run the subtest.\n",
++			 kmstest_pipe_name(pipe), igt_output_name(output));
++
++		igt_display_reset(&display);
+ 		igt_output_set_pipe(output, pipe);
+ 		plane_immutable_zpos(&display, pipe_obj, output);
+ 	}
+@@ -1370,6 +1391,9 @@ igt_main
+ 	igt_subtest("test-only") {
+ 		atomic_clear(&display, pipe, primary, output);
+ 
++		igt_info("Using (pipe %s + %s) to run the subtest.\n",
++			 kmstest_pipe_name(pipe), igt_output_name(output));
++
+ 		test_only(pipe_obj, primary, output);
+ 	}
+ 
 -- 
 2.39.0
