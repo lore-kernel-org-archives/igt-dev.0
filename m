@@ -1,20 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7D39110E478
- for <igt-dev@lists.freedesktop.org>; Fri, 30 Dec 2022 18:57:26 +0000 (UTC)
-Message-ID: <ba28bfaa-3163-b458-2230-a38159c75425@intel.com>
-Date: Sat, 31 Dec 2022 00:27:21 +0530
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3F94710E081
+ for <igt-dev@lists.freedesktop.org>; Fri, 30 Dec 2022 19:16:11 +0000 (UTC)
+Message-ID: <18b175a2-0c14-3dc2-4c18-3ba03a300370@intel.com>
+Date: Sat, 31 Dec 2022 00:46:04 +0530
 MIME-Version: 1.0
 Content-Language: en-US
-To: "Coelho, Luciano" <luciano.coelho@intel.com>
-References: <20221223102739.2900-1-swati2.sharma@intel.com>
- <23be17762e6c65a5ceebaa4a27d00b566dd9e5a2.camel@intel.com>
+To: bhadanednyaneshwar <dnyaneshwar.bhadane@intel.com>,
+ igt-dev@lists.freedesktop.org
+References: <20221230064638.155300-1-dnyaneshwar.bhadane@intel.com>
 From: Swati Sharma <swati2.sharma@intel.com>
-In-Reply-To: <23be17762e6c65a5ceebaa4a27d00b566dd9e5a2.camel@intel.com>
+In-Reply-To: <20221230064638.155300-1-dnyaneshwar.bhadane@intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_plane_scaling: Add test to
- validate max source size
+Subject: Re: [igt-dev] [i-g-t] tests/kms_cursor_crc: Add Gaurd for MSO eDP
+ for Pipe C and D
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,105 +22,82 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+Cc: chaitanya.kumar.borah@intel.com, suresh.kumar.kurmi@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Thanks Luca for the review comments.
-Will make changes accordingly and float new rev.
 
-On 30-Dec-22 3:56 PM, Coelho, Luciano wrote:
-> On Fri, 2022-12-23 at 15:57 +0530, Swati Sharma wrote:
->>> From: Swati2 Sharma <swati2.sharma@intel.com>
->>>
->>> Test is added for i915 devices to validate max source size.
->>> This test is expected to pass for platforms having
->>> 11 <= display ver < 14 since for these platforms max source
->>> size supported is 5120.
+
+On 30-Dec-22 12:16 PM, bhadanednyaneshwar wrote:
+> MSO eDP is not supported on pipe C and D. Added a test condition
+> to prevent tests from execution on pipe C and D.This condition was
+> missed for cursor-size-change,cursor-alpha-opaque and
+> cursor-alpha-transparent testcases.
 > 
-> This is not entirely true, as we discussed.  For display_ver <= 11, the
-> maximum source and destination sizes are 4K for both width and height.
+> Inside require_cursor_size() checks first for eligiblity to igt commit
+> using test buffer.For MSO eDP, It is fail to commit for pipe C/pipe D
+> and require_cursor_size() return non zero value. So it will skip
+> the dynamic testcase for pipe C and D.
 > 
+> Signed-off-by: bhadanednyaneshwar <dnyaneshwar.bhadane@intel.com>
+> ---
+>   tests/kms_cursor_crc.c | 21 ++++++++++++++++++---
+>   1 file changed, 18 insertions(+), 3 deletions(-)
 > 
->>>   For remaining platforms this test is
->>> expected to fail since max source size supported is 4096.
-> 
-> Maybe it's better to specify the actual values for each platform here
-> (and in a comment in the code).  For the record, these are the values
-> as we discussed:
-> 
-> Before Display Version 11:	Max Source Width:  4K
-> 				Max Source Height: 4K
-> 				Max Dest. Width:   4K
-> 				Max Dest. Height:  4K
-> 
-> Display Version 11:		Max Source Width:  5K
-> 				Max Source Height: 4K
-> 
-> 				Max Dest. Width:   5K
-> 				Max Dest. Height:  4K
-> 
-> 
-> Display Versions 12-13:		Max Source Width:  5K
-> 				Max Source Height: 8K
-> 
-> 				Max Dest. Width:   8K
-> 				Max Dest. Height:  8K
-> 
-> Display Version 14+:		Max Source Width:  4K
-> 				Max Source Height: 8K
-> 				Max Dest. Width:   8K
-> 				Max Dest. Height:  8K
-> 
-> 
->>> In this test, we are creating 4k fb and trying to upscale it to
->>> 5k on a 5k monitor. Platforms having max source size of 5120
->>> will be able to do it, and for remaining platforms its expected
->>> to get -EINVAL.
->>>
->>> Signed-off-by: Swati2 Sharma <swati2.sharma@intel.com>
->>> ---
->>>   tests/kms_plane_scaling.c | 64 +++++++++++++++++++++++++++++++++++++++
->>>   1 file changed, 64 insertions(+)
->>>
->>> diff --git a/tests/kms_plane_scaling.c b/tests/kms_plane_scaling.c
->>> index 4c621cce..170e8c28 100644
->>> --- a/tests/kms_plane_scaling.c
->>> +++ b/tests/kms_plane_scaling.c
-> 
-> [...]
-> 
-> 
->>> @@ -970,6 +1015,25 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
->>>   			}
->>>   		}
->>>   
->>> +		igt_fixture
->>> +			igt_require_f(data.devid, "This test is valid only for i915 devices\n");
->>> +
->>> +		igt_describe("Test for max source size.");
->>> +		igt_subtest_with_dynamic("max-source-size") {
->>> +			for_each_pipe_with_valid_output(&data.display, pipe, output) {
->>> +					drmModeModeInfo *mode;
->>> +
->>> +					mode = igt_output_get_mode(output);
->>> +
->>> +					if (mode->hdisplay < HDISPLAY_5K)
->>> +						continue;
-> 
-> For the record, I discussed this with you (Swati) and there was a
-> misinterpretation of the HAS.  It says "4kto5k->5kto8k not supported"
-> and it was interpreted as if 4k source to 5k destination is not
-> possible, but in fact it means "from anything between 4K to 5K
-> (source) to anything between 5K and 8K (destination) is not supported".
-> 
-> Swati said she's going to update the tests accordingly and send a new
-> version of this patch.
-> 
-> --
-> Cheers,
-> Luca.
+> diff --git a/tests/kms_cursor_crc.c b/tests/kms_cursor_crc.c
+> index 17f294d6..d8fb9c0d 100644
+> --- a/tests/kms_cursor_crc.c
+> +++ b/tests/kms_cursor_crc.c
+> @@ -786,7 +786,12 @@ static void run_tests_on_pipe(data_t *data)
+>   	igt_subtest_with_dynamic("cursor-size-change") {
+>   		for_each_pipe(&data->display, pipe) {
+>   			data->pipe = pipe;
+> -
+> +			create_cursor_fb(data, data->cursor_max_w, data->cursor_max_h);
+ >> Instead of creating cursor_fb in each function, we can have
+igt_fixture {
+	create_cursor_fb(data, data->cursor_max_w, data->cursor_max_h);
+}
+moved up and only have
+if (require_cursor_size()) check in each subtest.
+
+> +			if (require_cursor_size(data, data->cursor_max_w, data->cursor_max_h)) {
+> +				igt_debug("Cursor size %dx%d not supported by driver\n",
+> +					  data->cursor_max_w, data->cursor_max_h);
+> +				continue;
+> +			}
+>   			igt_dynamic_f("pipe-%s-%s",
+>   				      kmstest_pipe_name(pipe),
+>   				      data->output->name)
+> @@ -800,7 +805,12 @@ static void run_tests_on_pipe(data_t *data)
+>   	igt_subtest_with_dynamic("cursor-alpha-opaque") {
+>   		for_each_pipe(&data->display, pipe) {
+>   			data->pipe = pipe;
+> -
+> +			create_cursor_fb(data, data->cursor_max_w, data->cursor_max_h);
+> +			if (require_cursor_size(data, data->cursor_max_w, data->cursor_max_h)) {
+> +				igt_debug("Cursor size %dx%d not supported by driver\n",
+> +					  data->cursor_max_w, data->cursor_max_h);
+> +				continue;
+> +			}
+>   			igt_dynamic_f("pipe-%s-%s",
+>   				      kmstest_pipe_name(pipe),
+>   				      data->output->name)
+> @@ -814,7 +824,12 @@ static void run_tests_on_pipe(data_t *data)
+>   	igt_subtest_with_dynamic("cursor-alpha-transparent") {
+>   		for_each_pipe(&data->display, pipe) {
+>   			data->pipe = pipe;
+> -
+> +			create_cursor_fb(data, data->cursor_max_w, data->cursor_max_h);
+> +			if (require_cursor_size(data, data->cursor_max_w, data->cursor_max_h)) {
+> +				igt_debug("Cursor size %dx%d not supported by driver\n",
+> +					  data->cursor_max_w, data->cursor_max_h);
+> +				continue;
+> +			}
+>   			igt_dynamic_f("pipe-%s-%s",
+>   				      kmstest_pipe_name(pipe),
+>   				      data->output->name)
 
 -- 
 ~Swati Sharma
