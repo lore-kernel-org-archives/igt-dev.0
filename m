@@ -1,22 +1,23 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 60A6E10E0E9
- for <igt-dev@lists.freedesktop.org>; Fri, 30 Dec 2022 14:37:12 +0000 (UTC)
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8C2A810E0E9
+ for <igt-dev@lists.freedesktop.org>; Fri, 30 Dec 2022 14:46:42 +0000 (UTC)
 From: "Gupta, Nidhi1" <nidhi1.gupta@intel.com>
 To: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-Date: Fri, 30 Dec 2022 14:37:09 +0000
-Message-ID: <PH7PR11MB600613588FABB1CFA4620647C5F09@PH7PR11MB6006.namprd11.prod.outlook.com>
+Date: Fri, 30 Dec 2022 14:46:36 +0000
+Message-ID: <PH7PR11MB6006067299F2D7B203850DD5C5F09@PH7PR11MB6006.namprd11.prod.outlook.com>
 References: <PH7PR11MB600698F43943115166E19407C5ED9@PH7PR11MB6006.namprd11.prod.outlook.com>
  <PH7PR11MB6006A34FB1D29D8E300F343AC5F29@PH7PR11MB6006.namprd11.prod.outlook.com>
  <PH7PR11MB60061DAB4F464DB8ACCF4DEDC5F39@PH7PR11MB6006.namprd11.prod.outlook.com>
  <PH7PR11MB6006728F645994B9F19B6925C5F39@PH7PR11MB6006.namprd11.prod.outlook.com>
-In-Reply-To: <PH7PR11MB6006728F645994B9F19B6925C5F39@PH7PR11MB6006.namprd11.prod.outlook.com>
+ <PH7PR11MB600613588FABB1CFA4620647C5F09@PH7PR11MB6006.namprd11.prod.outlook.com>
+In-Reply-To: <PH7PR11MB600613588FABB1CFA4620647C5F09@PH7PR11MB6006.namprd11.prod.outlook.com>
 Content-Language: en-US
 Content-Type: multipart/alternative;
- boundary="_000_PH7PR11MB600613588FABB1CFA4620647C5F09PH7PR11MB6006namp_"
+ boundary="_000_PH7PR11MB6006067299F2D7B203850DD5C5F09PH7PR11MB6006namp_"
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [i-g-t v5 46/52] tests/i915/kms_frontbuffer_tracking:
- Add support for Bigjoiner
+Subject: Re: [igt-dev] [i-g-t v5 18/52] tests/kms_invalid_mode: Add support
+ for Bigjoiner
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,67 +29,83 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---_000_PH7PR11MB600613588FABB1CFA4620647C5F09PH7PR11MB6006namp_
+--_000_PH7PR11MB6006067299F2D7B203850DD5C5F09PH7PR11MB6006namp_
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: quoted-printable
 
 On Tue, 2022-11-15 at 08:43 +0530, Bhanuprakash Modem wrote:
->As many 2x tests are currently running on Pipe-A & B only, those
->tests will always SKIP if there is any 8K supported panel in the
->config. Instead of Skipping the test, add some intelligence to
->the subtest to identify the valid pipe/output combo to execute
->the subtest.
->
->V2: - Use updated helper name
->
->Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
->---
-Reviewed-by: Nidhi Gupta
->tests/i915/kms_frontbuffer_tracking.c | 16 ++++++++++++----
->1 file changed, 12 insertions(+), 4 deletions(-)
->diff --git a/tests/i915/kms_frontbuffer_tracking.c b/tests/i915/kms_frontb=
-uffer_tracking.c
->index 5b47999e..650e14a7 100644
->--- a/tests/i915/kms_frontbuffer_tracking.c
->+++ b/tests/i915/kms_frontbuffer_tracking.c
->@@ -403,15 +403,23 @@  static bool find_connector(bool edp_only, bool pipe=
-_a,
->                            if (pipe_a && pipe !=3D PIPE_A)
->                                           continue;
->
->-                          if (output =3D=3D forbidden_output || pipe =3D=
-=3D forbidden_pipe)
->+                          if (output =3D=3D forbidden_output || pipe =3D=
-=3D forbidden_pipe) {
->+                                         igt_output_set_pipe(output, pipe=
-);
->+                                         igt_output_override_mode(output,=
- connector_get_mode(output));
->+
->                                           continue;
->+                          }
->
->                            if (c->connector_type =3D=3D DRM_MODE_CONNECTO=
-R_eDP && opt.no_edp)
->                                           continue;
->
->-                          *ret_output =3D output;
->-                          *ret_pipe =3D pipe;
->-                          return true;
->+                          igt_output_set_pipe(output, pipe);
->+                          igt_output_override_mode(output, connector_get_=
-mode(output));
->+                          if (i915_pipe_output_combo_valid(&drm.display))=
- {
->+                                         *ret_output =3D output;
->+                                         *ret_pipe =3D pipe;
->+                                         return true;
->+                          }
->             }
->
->             return false;
 
---_000_PH7PR11MB600613588FABB1CFA4620647C5F09PH7PR11MB6006namp_
+>This patch will add a check to Skip the subtest if a selected pipe/output
+
+>combo won't support Bigjoiner or 8K mode.
+
+>
+
+>Example:
+
+>* Pipe-D wont support a mode > 5K
+
+>* To use 8K mode on a pipe then consecutive pipe must be available & free.
+
+>
+
+>V2: - Use updated helper name
+
+>
+
+>Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+
+>---
+
+Reviewed-by: Nidhi Gupta <nidhi1.gupta@intel.com>
+
+> tests/kms_invalid_mode.c | 6 ++++++
+
+> 1 file changed, 6 insertions(+)
+
+>diff --git a/tests/kms_invalid_mode.c b/tests/kms_invalid_mode.c
+
+>index 40042d4e..86f529e8 100644
+
+>--- a/tests/kms_invalid_mode.c
+
+>+++ b/tests/kms_invalid_mode.c
+
+>@@ -301,6 +301,12 @@  igt_main
+
+>             for (int i =3D 0; i < ARRAY_SIZE(subtests); i++) {
+
+>                            igt_subtest_with_dynamic(subtests[i].name) {
+
+>                                           for_each_pipe_with_valid_output=
+(&data.display, pipe, output) {
+
+>+                                                        igt_display_reset=
+(&data.display);
+
+>+
+
+>+                                                        igt_output_set_pi=
+pe(output, pipe);
+
+>+                                                        if (!i915_pipe_ou=
+tput_combo_valid(&data.display))
+
+>+                                                                       co=
+ntinue;
+
+>+
+
+>                                                          igt_dynamic_f("%=
+s-pipe-%s", igt_output_name(output), kmstest_pipe_name(pipe)) {
+
+>                                                                         d=
+ata.output =3D output;
+
+>                                                                         d=
+ata.pipe =3D pipe;
+
+--_000_PH7PR11MB6006067299F2D7B203850DD5C5F09PH7PR11MB6006namp_
 Content-Type: text/html; charset="us-ascii"
 Content-Transfer-Encoding: quoted-printable
 
@@ -109,10 +126,6 @@ xmlns:m=3D"http://schemas.microsoft.com/office/2004/12/omml" xmlns=3D"http:=
 	{font-family:Calibri;
 	panose-1:2 15 5 2 2 2 4 3 2 4;}
 /* Style Definitions */
-p.MsoNormal, li.MsoNormal, div.MsoNormal
-	{margin:0in;
-	font-size:11.0pt;
-	font-family:"Calibri",sans-serif;}
 p.MsoPlainText, li.MsoPlainText, div.MsoPlainText
 	{mso-style-priority:99;
 	mso-style-link:"Plain Text Char";
@@ -148,125 +161,98 @@ break-word">
 <div class=3D"WordSection1">
 <p class=3D"MsoPlainText">On Tue, 2022-11-15 at 08:43 +0530, Bhanuprakash M=
 odem wrote:<o:p></o:p></p>
-<p class=3D"MsoNormal">&gt;As many 2x tests are currently running on Pipe-A=
- &amp; B only, those<o:p></o:p></p>
-<p class=3D"MsoNormal">&gt;tests will always SKIP if there is any 8K suppor=
-ted panel in the<o:p></o:p></p>
-<p class=3D"MsoNormal">&gt;config. Instead of Skipping the test, add some i=
-ntelligence to<o:p></o:p></p>
-<p class=3D"MsoNormal">&gt;the subtest to identify the valid pipe/output co=
-mbo to execute<o:p></o:p></p>
-<p class=3D"MsoNormal">&gt;the subtest.<o:p></o:p></p>
-<p class=3D"MsoNormal">&gt;<o:p>&nbsp;</o:p></p>
-<p class=3D"MsoNormal">&gt;V2: - Use updated helper name<o:p></o:p></p>
-<p class=3D"MsoNormal">&gt;<o:p>&nbsp;</o:p></p>
-<p class=3D"MsoNormal">&gt;Signed-off-by: Bhanuprakash Modem &lt;bhanupraka=
-sh.modem@intel.com&gt;<o:p></o:p></p>
-<p class=3D"MsoNormal">&gt;---<o:p></o:p></p>
-<p class=3D"MsoNormal">Reviewed-by: Nidhi Gupta<o:p></o:p></p>
-<p class=3D"MsoNormal">&gt;tests/i915/kms_frontbuffer_tracking.c | 16 +++++=
-+++++++----<o:p></o:p></p>
-<p class=3D"MsoNormal">&gt;1 file changed, 12 insertions(+), 4 deletions(-)=
-<o:p></o:p></p>
-<p class=3D"MsoNormal">&gt;diff --git a/tests/i915/kms_frontbuffer_tracking=
-.c b/tests/i915/kms_frontbuffer_tracking.c<o:p></o:p></p>
-<p class=3D"MsoNormal">&gt;index 5b47999e..650e14a7 100644<o:p></o:p></p>
-<p class=3D"MsoNormal">&gt;--- a/tests/i915/kms_frontbuffer_tracking.c<o:p>=
-</o:p></p>
-<p class=3D"MsoNormal">&gt;+++ b/tests/i915/kms_frontbuffer_tracking.c<o:p>=
-</o:p></p>
-<p class=3D"MsoNormal">&gt;@@ -403,15 +403,23 @@&nbsp; static bool find_con=
-nector(bool edp_only, bool pipe_a,<o:p></o:p></p>
-<p class=3D"MsoNormal">&gt; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+<p class=3D"MsoPlainText">&gt;This patch will add a check to Skip the subte=
+st if a selected pipe/output<o:p></o:p></p>
+<p class=3D"MsoPlainText">&gt;combo won't support Bigjoiner or 8K mode.<o:p=
+></o:p></p>
+<p class=3D"MsoPlainText">&gt;<o:p>&nbsp;</o:p></p>
+<p class=3D"MsoPlainText">&gt;Example:<o:p></o:p></p>
+<p class=3D"MsoPlainText">&gt;* Pipe-D wont support a mode &gt; 5K<o:p></o:=
+p></p>
+<p class=3D"MsoPlainText">&gt;* To use 8K mode on a pipe then consecutive p=
+ipe must be available &amp; free.<o:p></o:p></p>
+<p class=3D"MsoPlainText">&gt;<o:p>&nbsp;</o:p></p>
+<p class=3D"MsoPlainText">&gt;V2: - Use updated helper name<o:p></o:p></p>
+<p class=3D"MsoPlainText">&gt;<o:p>&nbsp;</o:p></p>
+<p class=3D"MsoPlainText">&gt;Signed-off-by: Bhanuprakash Modem &lt;bhanupr=
+akash.modem@intel.com&gt;<o:p></o:p></p>
+<p class=3D"MsoPlainText">&gt;---<o:p></o:p></p>
+<p class=3D"MsoPlainText">Reviewed-by: Nidhi Gupta &lt;nidhi1.gupta@intel.c=
+om&gt;<o:p></o:p></p>
+<p class=3D"MsoPlainText">&gt; tests/kms_invalid_mode.c | 6 ++++++<o:p></o:=
+p></p>
+<p class=3D"MsoPlainText">&gt; 1 file changed, 6 insertions(+)<o:p></o:p></=
+p>
+<p class=3D"MsoPlainText">&gt;diff --git a/tests/kms_invalid_mode.c b/tests=
+/kms_invalid_mode.c<o:p></o:p></p>
+<p class=3D"MsoPlainText">&gt;index 40042d4e..86f529e8 100644<o:p></o:p></p=
+>
+<p class=3D"MsoPlainText">&gt;--- a/tests/kms_invalid_mode.c<o:p></o:p></p>
+<p class=3D"MsoPlainText">&gt;+++ b/tests/kms_invalid_mode.c<o:p></o:p></p>
+<p class=3D"MsoPlainText">&gt;@@ -301,6 +301,12 @@&nbsp; igt_main<o:p></o:p=
+></p>
+<p class=3D"MsoPlainText">&gt; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp;&nbsp;&nbsp; for (int i =3D 0; i &lt; ARRAY_SIZE(subtests); i++) =
+{<o:p></o:p></p>
+<p class=3D"MsoPlainText">&gt; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; igt_subtest_with_dynamic(subtests[i].=
+name) {<o:p></o:p></p>
+<p class=3D"MsoPlainText">&gt; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
 ;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if (pipe_a &amp;&amp; pipe !=3D PIPE_A)<=
-o:p></o:p></p>
-<p class=3D"MsoNormal">&gt; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; for_each_pipe_with_val=
+id_output(&amp;data.display, pipe, output) {<o:p></o:p></p>
+<p class=3D"MsoPlainText">&gt;+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
 ;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
 bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
-;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; continue;<o:p></o:p></p>
-<p class=3D"MsoNormal">&gt; <o:p></o:p></p>
-<p class=3D"MsoNormal">&gt;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
-;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp;&nbsp; if (output =3D=3D forbidden_output || pipe =3D=
-=3D forbidden_pipe)<o:p></o:p></p>
-<p class=3D"MsoNormal">&gt;+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
-;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp;&nbsp; if (output =3D=3D forbidden_output || pipe =3D=
-=3D forbidden_pipe) {<o:p></o:p></p>
-<p class=3D"MsoNormal">&gt;+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; igt_display_r=
+eset(&amp;data.display);<o:p></o:p></p>
+<p class=3D"MsoPlainText">&gt;+<o:p></o:p></p>
+<p class=3D"MsoPlainText">&gt;+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
 ;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
 bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
-;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; igt_output_set_pipe(output, pip=
-e);<o:p></o:p></p>
-<p class=3D"MsoNormal">&gt;+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; igt_output_se=
+t_pipe(output, pipe);<o:p></o:p></p>
+<p class=3D"MsoPlainText">&gt;+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
 ;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
 bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
-;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; igt_output_override_mode(output=
-, connector_get_mode(output));<o:p></o:p></p>
-<p class=3D"MsoNormal">&gt;+<o:p></o:p></p>
-<p class=3D"MsoNormal">&gt; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if (!i915_pip=
+e_output_combo_valid(&amp;data.display))<o:p></o:p></p>
+<p class=3D"MsoPlainText">&gt;+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
 ;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
 bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
-;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; continue;<o:p></o:p></p>
-<p class=3D"MsoNormal">&gt;+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
-;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp;&nbsp; }<o:p></o:p></p>
-<p class=3D"MsoNormal">&gt; <o:p></o:p></p>
-<p class=3D"MsoNormal">&gt; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
-;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if (c-&gt;connector_type =3D=3D DRM_MODE=
-_CONNECTOR_eDP &amp;&amp; opt.no_edp)<o:p></o:p></p>
-<p class=3D"MsoNormal">&gt; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
 ;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
 bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
-;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; continue;<o:p></o:p></p>
-<p class=3D"MsoNormal">&gt; <o:p></o:p></p>
-<p class=3D"MsoNormal">&gt;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
-;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp;&nbsp; *ret_output =3D output;<o:p></o:p></p>
-<p class=3D"MsoNormal">&gt;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
-;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp;&nbsp; *ret_pipe =3D pipe;<o:p></o:p></p>
-<p class=3D"MsoNormal">&gt;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
-;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp;&nbsp; return true;<o:p></o:p></p>
-<p class=3D"MsoNormal">&gt;+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
-;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp;&nbsp; igt_output_set_pipe(output, pipe);<o:p></o:p><=
-/p>
-<p class=3D"MsoNormal">&gt;+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
-;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp;&nbsp; igt_output_override_mode(output, connector_get=
-_mode(output));<o:p></o:p></p>
-<p class=3D"MsoNormal">&gt;+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
-;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp;&nbsp; if (i915_pipe_output_combo_valid(&amp;drm.disp=
-lay)) {<o:p></o:p></p>
-<p class=3D"MsoNormal">&gt;+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+; continue;<o:p></o:p></p>
+<p class=3D"MsoPlainText">&gt;+<o:p></o:p></p>
+<p class=3D"MsoPlainText">&gt; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
 ;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
 bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
-;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; *ret_output =3D output;<o:p></o=
-:p></p>
-<p class=3D"MsoNormal">&gt;+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; igt_dyn=
+amic_f(&quot;%s-pipe-%s&quot;, igt_output_name(output), kmstest_pipe_name(p=
+ipe)) {<o:p></o:p></p>
+<p class=3D"MsoPlainText">&gt; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
 ;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
 bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
-;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; *ret_pipe =3D pipe;<o:p></o:p><=
-/p>
-<p class=3D"MsoNormal">&gt;+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
 ;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
 bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
-;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; return true;<o:p></o:p></p>
-<p class=3D"MsoNormal">&gt;+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+;&nbsp; data.output =3D output;<o:p></o:p></p>
+<p class=3D"MsoPlainText">&gt; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
 ;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp;&nbsp; }<o:p></o:p></p>
-<p class=3D"MsoNormal">&gt; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
-;&nbsp;&nbsp;&nbsp; }<o:p></o:p></p>
-<p class=3D"MsoNormal">&gt; <o:p></o:p></p>
-<p class=3D"MsoNormal">&gt; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
-;&nbsp;&nbsp;&nbsp; return false;<o:p></o:p></p>
+bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+;&nbsp; data.pipe =3D pipe;<o:p></o:p></p>
 </div>
 </body>
 </html>
 
---_000_PH7PR11MB600613588FABB1CFA4620647C5F09PH7PR11MB6006namp_--
+--_000_PH7PR11MB6006067299F2D7B203850DD5C5F09PH7PR11MB6006namp_--
