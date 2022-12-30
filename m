@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3245210E485
- for <igt-dev@lists.freedesktop.org>; Fri, 30 Dec 2022 17:52:49 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B491410E471
+ for <igt-dev@lists.freedesktop.org>; Fri, 30 Dec 2022 17:52:50 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Fri, 30 Dec 2022 23:18:05 +0530
-Message-Id: <20221230174825.3016716-31-bhanuprakash.modem@intel.com>
+Date: Fri, 30 Dec 2022 23:18:06 +0530
+Message-Id: <20221230174825.3016716-32-bhanuprakash.modem@intel.com>
 In-Reply-To: <20221230174825.3016716-1-bhanuprakash.modem@intel.com>
 References: <20221230174825.3016716-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t v6 30/50] tests/kms_scaling_modes: Add support for
+Subject: [igt-dev] [i-g-t v6 31/50] tests/kms_sequence: Add support for
  Bigjoiner
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -19,6 +19,7 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: Nidhi Gupta <nidhi1.gupta@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
@@ -33,33 +34,27 @@ Example:
 V2: - Use updated helper name
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Reviewed-by: Nidhi Gupta <nidhi1.gupta@intel.com>
 ---
- tests/kms_scaling_modes.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ tests/kms_sequence.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/tests/kms_scaling_modes.c b/tests/kms_scaling_modes.c
-index 039e4a8d..cf637712 100644
---- a/tests/kms_scaling_modes.c
-+++ b/tests/kms_scaling_modes.c
-@@ -93,13 +93,17 @@ static void test_scaling_mode(data_t *data, uint32_t flags)
- 	enum pipe pipe;
- 
- 	for_each_pipe_with_valid_output(display, pipe, output) {
-+		igt_display_reset(display);
+diff --git a/tests/kms_sequence.c b/tests/kms_sequence.c
+index c72857a3..c8a3d6bb 100644
+--- a/tests/kms_sequence.c
++++ b/tests/kms_sequence.c
+@@ -285,6 +285,12 @@ igt_main
+ 				     "drmCrtcQueueSequence");
+ 			igt_subtest_with_dynamic_f("%s-%s", f->name, m->name) {
+ 				for_each_pipe_with_valid_output(&data.display, p, output) {
++					igt_display_reset(&data.display);
 +
- 		if (!has_scaling_mode(output))
- 			continue;
- 
-+		igt_output_set_pipe(output, pipe);
-+		if (!i915_pipe_output_combo_valid(display))
-+			continue;
++					igt_output_set_pipe(output, p);
++					if (!i915_pipe_output_combo_valid(&data.display))
++						continue;
 +
- 		igt_dynamic_f("%s-pipe-%s", output->name, kmstest_pipe_name(pipe))
- 			test_scaling_mode_on_output(display, pipe, output, flags);
--
--		igt_display_reset(display);
- 	}
- }
- 
+ 					igt_dynamic_f("%s-pipe-%s", igt_output_name(output), kmstest_pipe_name(p)) {
+ 						data.pipe = p;
+ 						data.output = output;
 -- 
 2.39.0
