@@ -1,19 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 92BC810E098
- for <igt-dev@lists.freedesktop.org>; Fri, 30 Dec 2022 20:01:20 +0000 (UTC)
-Message-ID: <9641d9f0-fb99-62fc-9865-da14674a8904@intel.com>
-Date: Sat, 31 Dec 2022 01:31:15 +0530
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B2E2C10E098
+ for <igt-dev@lists.freedesktop.org>; Fri, 30 Dec 2022 20:06:45 +0000 (UTC)
+Message-ID: <ee85b614-4430-cae3-fb1c-fc94c39a56fb@intel.com>
+Date: Sat, 31 Dec 2022 01:36:08 +0530
 MIME-Version: 1.0
 Content-Language: en-US
-To: Nidhi Gupta <nidhi1.gupta@intel.com>, igt-dev@lists.freedesktop.org
-References: <20221228023823.30570-1-nidhi1.gupta@intel.com>
+To: Harry Wentland <harry.wentland@amd.com>, igt-dev@lists.freedesktop.org,
+ Bhanuprakash Modem <bhanuprakash.modem@intel.com>, uma.shankar@intel.com
+References: <20221212192425.387971-1-harry.wentland@amd.com>
 From: Swati Sharma <swati2.sharma@intel.com>
-In-Reply-To: <20221228023823.30570-1-nidhi1.gupta@intel.com>
+In-Reply-To: <20221212192425.387971-1-harry.wentland@amd.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_multipipe_modeset: Add
- negative test for multiple display config
+Content-Transfer-Encoding: 8bit
+Subject: Re: [igt-dev] [PATCH 0/2] Add Colorspace tests to kms_hdr
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,178 +21,51 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: Sebastian Wick <sebastian.wick@redhat.com>,
+ Pekka Paalanen <ppaalanen@gmail.com>, Joshua Ashton <joshua@froggi.es>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
+Hi Harry,
 
+First of all, why do you think kms_hdr is the right place to add 
+colorspace tests? Can we have amd specific IGT for the same.
+It seems intel doesn't have any plans in near future to expose this debugfs.
+++Uma ++Bhanu
 
-On 28-Dec-22 8:08 AM, Nidhi Gupta wrote:
-> When 3-4 displays are connceted any platform
-> will only support maximum 5k resolution simulataneously.
+On 13-Dec-22 12:54 AM, Harry Wentland wrote:
+> We've had a Colorspace property on the drm_connector
+> but no IGT tests. These patches add IGT tests for this
+> property. They're currently only enabled on amdgpu with
+> the kernel at [1] but could be enabled for other drivers
+> if those drivers decide to expose a debugfs to read the
+> currently applied colorspace.
 > 
-> If 3 or more displays are connected forcing 8k
-> resolution on all the displays and check if this
-> scenario is handled properly or not.
-
-Each 8K will require 2 pipes. So, at max we can have
-2 8K connected atm.
-What's the idea behind this test?
-
+> [1] https://gitlab.freedesktop.org/hwentland/linux/-/tree/hdr-colorimetry
 > 
-> Signed-off-by: Nidhi Gupta <nidhi1.gupta@intel.com>
-> ---
->   tests/kms_multipipe_modeset.c | 74 ++++++++++++++++++++++++++---------
->   1 file changed, 56 insertions(+), 18 deletions(-)
+> Cc: Pekka Paalanen <ppaalanen@gmail.com>
+> Cc: Sebastian Wick <sebastian.wick@redhat.com>
+> Cc: Vitaly.Prosyak@amd.com
+> Cc: Uma Shankar <uma.shankar@intel.com>
+> Cc: Ville Syrjälä <ville.syrjala@linux.intel.com>
+> Cc: Joshua Ashton <joshua@froggi.es>
+> Cc: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+> Cc: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
+> Cc: Alex Hung <Alex.Hung@amd.com>
 > 
-> diff --git a/tests/kms_multipipe_modeset.c b/tests/kms_multipipe_modeset.c
-> index 1fdfb9a9..46c17235 100644
-> --- a/tests/kms_multipipe_modeset.c
-> +++ b/tests/kms_multipipe_modeset.c
-> @@ -31,10 +31,10 @@ IGT_TEST_DESCRIPTION("Test simultaneous modeset on all the supported pipes");
->   typedef struct {
->   	int drm_fd;
->   	igt_display_t display;
-> -	struct igt_fb fb;
-> +	struct igt_fb fb0, fb1;
->   } data_t;
->   
-> -static void run_test(data_t *data, int valid_outputs)
-> +static void run_test(data_t *data, int valid_outputs, bool resolution)
->   {
->   	igt_output_t *output;
->   	igt_pipe_crc_t *pipe_crcs[IGT_MAX_PIPES] = { 0 };
-> @@ -44,7 +44,8 @@ static void run_test(data_t *data, int valid_outputs)
->   	igt_pipe_t *pipe;
->   	igt_plane_t *plane;
->   	drmModeModeInfo *mode;
-> -	int i = 0;
-> +	drmModeModeInfo *mode1;
-> +	int i = 0, ret = 0;
->   
->   	for_each_connected_output(display, output) {
->   		mode = igt_output_get_mode(output);
-> @@ -57,10 +58,15 @@ static void run_test(data_t *data, int valid_outputs)
->   	}
->   
->   	igt_create_pattern_fb(data->drm_fd, width, height, DRM_FORMAT_XRGB8888,
-> -			      DRM_FORMAT_MOD_LINEAR, &data->fb);
-> +				DRM_FORMAT_MOD_LINEAR, &data->fb0);
-> +	igt_create_pattern_fb(data->drm_fd, 7680, 4320, DRM_FORMAT_XRGB8888,
-> +				DRM_FORMAT_MOD_LINEAR, &data->fb1);
->   
->   	/* Collect reference CRC by Committing individually on all outputs*/
->   	for_each_connected_output(display, output) {
-> +		if (resolution == true)
-> +			break;
-> +
->   		pipe = &display->pipes[i];
->   		plane = igt_pipe_get_plane_type(pipe, DRM_PLANE_TYPE_PRIMARY);
->   
-> @@ -73,8 +79,8 @@ static void run_test(data_t *data, int valid_outputs)
->   		mode = igt_output_get_mode(output);
->   		igt_assert(mode);
->   
-> -		igt_plane_set_fb(plane, &data->fb);
-> -		igt_fb_set_size(&data->fb, plane, mode->hdisplay, mode->vdisplay);
-> +		igt_plane_set_fb(plane, &data->fb0);
-> +		igt_fb_set_size(&data->fb0, plane, mode->hdisplay, mode->vdisplay);
->   		igt_plane_set_size(plane, mode->hdisplay, mode->vdisplay);
->   
->   		igt_display_commit2(display, COMMIT_ATOMIC);
-> @@ -86,6 +92,8 @@ static void run_test(data_t *data, int valid_outputs)
->   	i = 0;
->   	/* Simultaneously commit on all outputs */
->   	for_each_connected_output(display, output) {
-> +		if (resolution == true)
-> +			break;
->   		pipe = &display->pipes[i];
->   		plane = igt_pipe_get_plane_type(pipe, DRM_PLANE_TYPE_PRIMARY);
->   
-> @@ -95,25 +103,50 @@ static void run_test(data_t *data, int valid_outputs)
->   		mode = igt_output_get_mode(output);
->   		igt_assert(mode);
->   
-> -		igt_plane_set_fb(plane, &data->fb);
-> -		igt_fb_set_size(&data->fb, plane, mode->hdisplay, mode->vdisplay);
-> +		igt_plane_set_fb(plane, &data->fb0);
-> +		igt_fb_set_size(&data->fb0, plane, mode->hdisplay, mode->vdisplay);
->   		igt_plane_set_size(plane, mode->hdisplay, mode->vdisplay);
->   		i++;
->   	}
->   
-> -	igt_display_commit2(display, COMMIT_ATOMIC);
-> -
-> -	/* CRC Verification */
-> -	for (i = 0; i < valid_outputs; i++) {
-> -		igt_pipe_crc_collect_crc(pipe_crcs[i], &new_crcs[i]);
-> -		igt_assert_crc_equal(&ref_crcs[i], &new_crcs[i]);
-> +	i = 0;
-> +	/* Simultaneously commit on all outputs with 8k display which should result in fail*/
-> +	for_each_connected_output(display, output) {
-> +		if (resolution == false)
-> +			break;
-> +		pipe = &display->pipes[i];
-> +		plane = igt_pipe_get_plane_type(pipe, DRM_PLANE_TYPE_PRIMARY);
-> +		igt_output_set_pipe(output, i);
-> +		mode = igt_output_get_mode(output);
-> +		igt_skip_on_f(mode->hdisplay < 7680, "No suitable resolution was found\n");
-> +
-> +		mode1->hdisplay = 7680;
-> +		mode1->vdisplay = 4320;
-> +		igt_output_override_mode(output, mode1);
-> +		igt_plane_set_fb(plane, &data->fb1);
-> +		igt_fb_set_size(&data->fb1, plane, mode1->hdisplay, mode1->vdisplay);
-> +		igt_plane_set_size(plane, mode1->hdisplay, mode1->vdisplay);
-> +		i++;
->   	}
->   
-> +	if (resolution == true) {
-> +		igt_skip_on_f(i >= 3, "Displays connected should be more than 2\n");
-> +		ret = igt_display_try_commit2(display, COMMIT_ATOMIC);
-> +		igt_assert(ret == -EINVAL);
-> +	} else {
-> +		igt_display_commit2(display, COMMIT_ATOMIC);
-> +
-> +		/* CRC Verification */
-> +		for (i = 0; i < valid_outputs; i++) {
-> +			igt_pipe_crc_collect_crc(pipe_crcs[i], &new_crcs[i]);
-> +			igt_assert_crc_equal(&ref_crcs[i], &new_crcs[i]);
-> +		}
-> +	}
->   	igt_plane_set_fb(plane, NULL);
-> -	igt_remove_fb(data->drm_fd, &data->fb);
-> +	igt_remove_fb(data->drm_fd, &data->fb0);
->   }
->   
-> -static void test_multipipe(data_t *data, int num_pipes)
-> +static void test_multipipe(data_t *data, int num_pipes, bool resolution)
->   {
->   	igt_output_t *output;
->   	int valid_outputs = 0;
-> @@ -125,7 +158,7 @@ static void test_multipipe(data_t *data, int num_pipes)
->   		      "Number of connected outputs(%d) not equal to the "
->   		      "number of pipes supported(%d)\n", valid_outputs, num_pipes);
->   
-> -	run_test(data, valid_outputs);
-> +	run_test(data, valid_outputs, resolution);
->   }
->   
->   igt_main
-> @@ -147,7 +180,12 @@ igt_main
->   	igt_describe("Verify if simultaneous modesets on all the supported "
->   		     "pipes is successful. Validate using CRC verification");
->   	igt_subtest("basic-max-pipe-crc-check")
-> -		test_multipipe(&data, res->count_crtcs);
-> +		test_multipipe(&data, res->count_crtcs, false);
-> +
-> +	igt_describe("Verify if simulataneous modesets on all the connected"
-> +		     "displays with invalid resolution should fail");
-> +	igt_subtest("basic-8k-resolution-check")
-> +		test_multipipe(&data, res->count_crtcs, true);
->   
->   	igt_fixture {
->   		drmModeFreeResources(res);
+> Harry Wentland (2):
+>    tests/kms_hdr: Add test for output Colorspace
+>    tests/kms_hdr: Add suspend and DPMS Colorspace tests
+> 
+>   lib/igt_kms.c   |  51 ++++++++++++++++
+>   lib/igt_kms.h   |   6 ++
+>   tests/kms_hdr.c | 156 ++++++++++++++++++++++++++++++++++++++++++++++++
+>   3 files changed, 213 insertions(+)
+> 
+> --
+> 2.38.1
+> 
 
 -- 
 ~Swati Sharma
