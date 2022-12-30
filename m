@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1544B10E485
- for <igt-dev@lists.freedesktop.org>; Fri, 30 Dec 2022 17:53:02 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2E7ED10E471
+ for <igt-dev@lists.freedesktop.org>; Fri, 30 Dec 2022 17:52:12 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Fri, 30 Dec 2022 23:18:13 +0530
-Message-Id: <20221230174825.3016716-39-bhanuprakash.modem@intel.com>
+Date: Fri, 30 Dec 2022 23:17:42 +0530
+Message-Id: <20221230174825.3016716-8-bhanuprakash.modem@intel.com>
 In-Reply-To: <20221230174825.3016716-1-bhanuprakash.modem@intel.com>
 References: <20221230174825.3016716-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t v6 38/50] tests/i915/kms_ccs: Add support for
- Bigjoiner
+Subject: [igt-dev] [i-g-t v6 07/50] tests/kms_color_helper: Helper to check
+ Bigjoiner constraint
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,8 +23,8 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-This patch will add a check to Skip the subtest if a selected pipe/output
-combo won't support Bigjoiner or 8K mode.
+Add a helper to Skip the subtest if a selected pipe/output combo
+won't support Bigjoiner or 8K mode.
 
 Example:
 * Pipe-D wont support a mode > 5K
@@ -33,48 +33,45 @@ Example:
 V2: - Use updated helper name
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Reviewed-by: Karthik B S <karthik.b.s@intel.com>
 ---
- tests/i915/kms_ccs.c | 18 +++++++++++++-----
- 1 file changed, 13 insertions(+), 5 deletions(-)
+ tests/kms_color_helper.c | 12 ++++++++++++
+ tests/kms_color_helper.h |  1 +
+ 2 files changed, 13 insertions(+)
 
-diff --git a/tests/i915/kms_ccs.c b/tests/i915/kms_ccs.c
-index 9be3fa25..40f05278 100644
---- a/tests/i915/kms_ccs.c
-+++ b/tests/i915/kms_ccs.c
-@@ -590,12 +590,21 @@ static int test_ccs(data_t *data)
- static void test_output(data_t *data, const int testnum)
+diff --git a/tests/kms_color_helper.c b/tests/kms_color_helper.c
+index 55f3e409..2f9950f8 100644
+--- a/tests/kms_color_helper.c
++++ b/tests/kms_color_helper.c
+@@ -24,6 +24,18 @@
+ 
+ #include "kms_color_helper.h"
+ 
++bool pipe_output_combo_valid(data_t *data, enum pipe pipe)
++{
++	bool ret = true;
++
++	igt_output_set_pipe(data->output, pipe);
++	if (!i915_pipe_output_combo_valid(&data->display))
++		ret = false;
++	igt_output_set_pipe(data->output, PIPE_NONE);
++
++	return ret;
++}
++
+ bool
+ panel_supports_deep_color(int drm_fd, char *output_name)
  {
- 	igt_fixture {
-+		bool found = false;
-+
- 		data->flags = tests[testnum].flags;
+diff --git a/tests/kms_color_helper.h b/tests/kms_color_helper.h
+index f0ae30e3..bfed2fb8 100644
+--- a/tests/kms_color_helper.h
++++ b/tests/kms_color_helper.h
+@@ -69,6 +69,7 @@ typedef struct {
+ 	color_t coeffs[];
+ } gamma_lut_t;
  
--		data->output = igt_get_single_output_for_pipe(&data->display,
--							      data->pipe);
--		igt_require(data->output);
--		igt_output_set_pipe(data->output, data->pipe);
-+		for_each_valid_output_on_pipe(&data->display, data->pipe, data->output) {
-+			igt_display_reset(&data->display);
-+
-+			igt_output_set_pipe(data->output, data->pipe);
-+			if (i915_pipe_output_combo_valid(&data->display)) {
-+				found = true;
-+				break;
-+			}
-+
-+		}
-+		igt_require_f(found, "No valid pipe/output combo found.\n");
- 	}
- 
- 	for (int i = 0; i < ARRAY_SIZE(ccs_modifiers); i++) {
-@@ -611,7 +620,6 @@ static void test_output(data_t *data, const int testnum)
- 		igt_subtest_f("pipe-%s-%s-%s", kmstest_pipe_name(data->pipe),
- 			      tests[testnum].testname, ccs_modifiers[i].str) {
- 			int valid_tests = 0;
--			igt_require(data->output);
- 
- 			if (data->flags == TEST_RANDOM)
- 				igt_info("Testing with seed %d\n", data->seed);
++bool pipe_output_combo_valid(data_t *data, enum pipe pipe);
+ bool panel_supports_deep_color(int fd, char *output_name);
+ uint64_t get_max_bpc(igt_output_t *output);
+ void paint_gradient_rectangles(data_t *data,
 -- 
 2.39.0
