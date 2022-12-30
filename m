@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C6E1B10E47A
- for <igt-dev@lists.freedesktop.org>; Fri, 30 Dec 2022 17:52:29 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 67DE310E46F
+ for <igt-dev@lists.freedesktop.org>; Fri, 30 Dec 2022 17:52:36 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Fri, 30 Dec 2022 23:17:53 +0530
-Message-Id: <20221230174825.3016716-19-bhanuprakash.modem@intel.com>
+Date: Fri, 30 Dec 2022 23:17:57 +0530
+Message-Id: <20221230174825.3016716-23-bhanuprakash.modem@intel.com>
 In-Reply-To: <20221230174825.3016716-1-bhanuprakash.modem@intel.com>
 References: <20221230174825.3016716-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t v6 18/50] tests/kms_lease: Add support for
+Subject: [igt-dev] [i-g-t v6 22/50] tests/kms_plane_cursor: Add support for
  Bigjoiner
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -33,31 +33,27 @@ Example:
 V2: - Use updated helper name
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Reviewed-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
+Reviewed-by: Ananya Sharma <ananya.sharma@intel.com>
 ---
- tests/kms_lease.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ tests/kms_plane_cursor.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/tests/kms_lease.c b/tests/kms_lease.c
-index 67e8d3be..a52d8bfc 100644
---- a/tests/kms_lease.c
-+++ b/tests/kms_lease.c
-@@ -1213,10 +1213,14 @@ igt_main
- 			igt_describe(f->desc);
- 			igt_subtest_with_dynamic_f("%s", f->name) {
- 				for_each_pipe_with_valid_output(display, data.pipe, output) {
-+					igt_display_reset(display);
+diff --git a/tests/kms_plane_cursor.c b/tests/kms_plane_cursor.c
+index 9b27586c..9e317cbf 100644
+--- a/tests/kms_plane_cursor.c
++++ b/tests/kms_plane_cursor.c
+@@ -85,6 +85,12 @@ static void test_init(data_t *data, enum pipe pipe_id, igt_output_t *output)
+ 	data->overlay = igt_pipe_get_plane_type(data->pipe, DRM_PLANE_TYPE_OVERLAY);
+ 	data->cursor = igt_pipe_get_plane_type(data->pipe, DRM_PLANE_TYPE_CURSOR);
+ 
++	igt_output_set_pipe(data->output, data->pipe_id);
++	igt_require(i915_pipe_output_combo_valid(display));
 +
-+					igt_output_set_pipe(output, data.pipe);
-+					if (!i915_pipe_output_combo_valid(display))
-+						continue;
++	igt_info("Using (pipe %s + %s) to run the subtest.\n",
++		 kmstest_pipe_name(data->pipe_id), igt_output_name(data->output));
 +
- 					igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(data.pipe),
- 						      igt_output_name(output)) {
--						igt_display_reset(display);
--						igt_display_commit(display);
- 						data.crtc_id = display->pipes[data.pipe].crtc_id;
- 						data.connector_id = output->id;
- 						data.plane_id =
+ 	igt_require_pipe_crc(data->drm_fd);
+ 	data->pipe_crc = igt_pipe_crc_new(data->drm_fd, data->pipe_id,
+ 					  IGT_PIPE_CRC_SOURCE_AUTO);
 -- 
 2.39.0
