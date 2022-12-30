@@ -1,23 +1,24 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8C2A810E0E9
- for <igt-dev@lists.freedesktop.org>; Fri, 30 Dec 2022 14:46:42 +0000 (UTC)
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1A34F10E0E9
+ for <igt-dev@lists.freedesktop.org>; Fri, 30 Dec 2022 15:28:14 +0000 (UTC)
 From: "Gupta, Nidhi1" <nidhi1.gupta@intel.com>
 To: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-Date: Fri, 30 Dec 2022 14:46:36 +0000
-Message-ID: <PH7PR11MB6006067299F2D7B203850DD5C5F09@PH7PR11MB6006.namprd11.prod.outlook.com>
+Date: Fri, 30 Dec 2022 15:27:26 +0000
+Message-ID: <PH7PR11MB60062C2F089B2C515A683E97C5F09@PH7PR11MB6006.namprd11.prod.outlook.com>
 References: <PH7PR11MB600698F43943115166E19407C5ED9@PH7PR11MB6006.namprd11.prod.outlook.com>
  <PH7PR11MB6006A34FB1D29D8E300F343AC5F29@PH7PR11MB6006.namprd11.prod.outlook.com>
  <PH7PR11MB60061DAB4F464DB8ACCF4DEDC5F39@PH7PR11MB6006.namprd11.prod.outlook.com>
  <PH7PR11MB6006728F645994B9F19B6925C5F39@PH7PR11MB6006.namprd11.prod.outlook.com>
  <PH7PR11MB600613588FABB1CFA4620647C5F09@PH7PR11MB6006.namprd11.prod.outlook.com>
-In-Reply-To: <PH7PR11MB600613588FABB1CFA4620647C5F09@PH7PR11MB6006.namprd11.prod.outlook.com>
+ <PH7PR11MB6006067299F2D7B203850DD5C5F09@PH7PR11MB6006.namprd11.prod.outlook.com>
+In-Reply-To: <PH7PR11MB6006067299F2D7B203850DD5C5F09@PH7PR11MB6006.namprd11.prod.outlook.com>
 Content-Language: en-US
 Content-Type: multipart/alternative;
- boundary="_000_PH7PR11MB6006067299F2D7B203850DD5C5F09PH7PR11MB6006namp_"
+ boundary="_000_PH7PR11MB60062C2F089B2C515A683E97C5F09PH7PR11MB6006namp_"
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [i-g-t v5 18/52] tests/kms_invalid_mode: Add support
- for Bigjoiner
+Subject: Re: [igt-dev] [i-g-t v5 33/52] tests/kms_sequence: Add support for
+ Bigjoiner
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -29,7 +30,7 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---_000_PH7PR11MB6006067299F2D7B203850DD5C5F09PH7PR11MB6006namp_
+--_000_PH7PR11MB60062C2F089B2C515A683E97C5F09PH7PR11MB6006namp_
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: quoted-printable
 
@@ -59,53 +60,55 @@ On Tue, 2022-11-15 at 08:43 +0530, Bhanuprakash Modem wrote:
 
 Reviewed-by: Nidhi Gupta <nidhi1.gupta@intel.com>
 
-> tests/kms_invalid_mode.c | 6 ++++++
+> tests/kms_sequence.c | 6 ++++++
 
 > 1 file changed, 6 insertions(+)
 
->diff --git a/tests/kms_invalid_mode.c b/tests/kms_invalid_mode.c
+>diff --git a/tests/kms_sequence.c b/tests/kms_sequence.c
 
->index 40042d4e..86f529e8 100644
+>index c72857a3..c8a3d6bb 100644
 
->--- a/tests/kms_invalid_mode.c
+>--- a/tests/kms_sequence.c
 
->+++ b/tests/kms_invalid_mode.c
+>+++ b/tests/kms_sequence.c
 
->@@ -301,6 +301,12 @@  igt_main
+>@@ -285,6 +285,12 @@  igt_main
 
->             for (int i =3D 0; i < ARRAY_SIZE(subtests); i++) {
+>                                                               "drmCrtcQue=
+ueSequence");
 
->                            igt_subtest_with_dynamic(subtests[i].name) {
+>                                           igt_subtest_with_dynamic_f("%s-=
+%s", f->name, m->name) {
 
->                                           for_each_pipe_with_valid_output=
-(&data.display, pipe, output) {
+>                                                          for_each_pipe_wi=
+th_valid_output(&data.display, p, output) {
 
->+                                                        igt_display_reset=
-(&data.display);
-
->+
-
->+                                                        igt_output_set_pi=
-pe(output, pipe);
-
->+                                                        if (!i915_pipe_ou=
-tput_combo_valid(&data.display))
-
->+                                                                       co=
-ntinue;
+>+                                                                       ig=
+t_display_reset(&data.display);
 
 >+
 
->                                                          igt_dynamic_f("%=
-s-pipe-%s", igt_output_name(output), kmstest_pipe_name(pipe)) {
+>+                                                                       ig=
+t_output_set_pipe(output, p);
 
->                                                                         d=
-ata.output =3D output;
+>+                                                                       if=
+ (!i915_pipe_output_combo_valid(&data.display))
 
->                                                                         d=
-ata.pipe =3D pipe;
+>+                                                                         =
+             continue;
 
---_000_PH7PR11MB6006067299F2D7B203850DD5C5F09PH7PR11MB6006namp_
+>+
+
+>                                                                         i=
+gt_dynamic_f("%s-pipe-%s", igt_output_name(output), kmstest_pipe_name(p)) {
+
+>                                                                          =
+              data.pipe =3D p;
+
+>                                                                          =
+              data.output =3D output;
+
+--_000_PH7PR11MB60062C2F089B2C515A683E97C5F09PH7PR11MB6006namp_
 Content-Type: text/html; charset="us-ascii"
 Content-Transfer-Encoding: quoted-printable
 
@@ -137,7 +140,7 @@ span.PlainTextChar
 	mso-style-priority:99;
 	mso-style-link:"Plain Text";
 	font-family:"Calibri",sans-serif;}
-span.EmailStyle22
+span.EmailStyle21
 	{mso-style-type:personal-reply;
 	font-family:"Calibri",sans-serif;
 	color:windowtext;}
@@ -179,80 +182,92 @@ akash.modem@intel.com&gt;<o:p></o:p></p>
 <p class=3D"MsoPlainText">&gt;---<o:p></o:p></p>
 <p class=3D"MsoPlainText">Reviewed-by: Nidhi Gupta &lt;nidhi1.gupta@intel.c=
 om&gt;<o:p></o:p></p>
-<p class=3D"MsoPlainText">&gt; tests/kms_invalid_mode.c | 6 ++++++<o:p></o:=
-p></p>
+<p class=3D"MsoPlainText">&gt; tests/kms_sequence.c | 6 ++++++<o:p></o:p></=
+p>
 <p class=3D"MsoPlainText">&gt; 1 file changed, 6 insertions(+)<o:p></o:p></=
 p>
-<p class=3D"MsoPlainText">&gt;diff --git a/tests/kms_invalid_mode.c b/tests=
-/kms_invalid_mode.c<o:p></o:p></p>
-<p class=3D"MsoPlainText">&gt;index 40042d4e..86f529e8 100644<o:p></o:p></p=
+<p class=3D"MsoPlainText">&gt;diff --git a/tests/kms_sequence.c b/tests/kms=
+_sequence.c<o:p></o:p></p>
+<p class=3D"MsoPlainText">&gt;index c72857a3..c8a3d6bb 100644<o:p></o:p></p=
 >
-<p class=3D"MsoPlainText">&gt;--- a/tests/kms_invalid_mode.c<o:p></o:p></p>
-<p class=3D"MsoPlainText">&gt;+++ b/tests/kms_invalid_mode.c<o:p></o:p></p>
-<p class=3D"MsoPlainText">&gt;@@ -301,6 +301,12 @@&nbsp; igt_main<o:p></o:p=
+<p class=3D"MsoPlainText">&gt;--- a/tests/kms_sequence.c<o:p></o:p></p>
+<p class=3D"MsoPlainText">&gt;+++ b/tests/kms_sequence.c<o:p></o:p></p>
+<p class=3D"MsoPlainText">&gt;@@ -285,6 +285,12 @@&nbsp; igt_main<o:p></o:p=
 ></p>
 <p class=3D"MsoPlainText">&gt; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp; for (int i =3D 0; i &lt; ARRAY_SIZE(subtests); i++) =
-{<o:p></o:p></p>
-<p class=3D"MsoPlainText">&gt; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
 bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
-;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; igt_subtest_with_dynamic(subtests[i].=
-name) {<o:p></o:p></p>
+;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&=
+nbsp;&nbsp;&nbsp;&nbsp;&quot;drmCrtcQueueSequence&quot;);<o:p></o:p></p>
 <p class=3D"MsoPlainText">&gt; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
 bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
 ;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; for_each_pipe_with_val=
-id_output(&amp;data.display, pipe, output) {<o:p></o:p></p>
+bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; igt_subtest_with_dynam=
+ic_f(&quot;%s-%s&quot;, f-&gt;name, m-&gt;name) {<o:p></o:p></p>
+<p class=3D"MsoPlainText">&gt; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; for_eac=
+h_pipe_with_valid_output(&amp;data.display, p, output) {<o:p></o:p></p>
 <p class=3D"MsoPlainText">&gt;+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
 bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
 ;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
 bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
-;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; igt_display_r=
-eset(&amp;data.display);<o:p></o:p></p>
+;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+; igt_display_reset(&amp;data.display);<o:p></o:p></p>
 <p class=3D"MsoPlainText">&gt;+<o:p></o:p></p>
 <p class=3D"MsoPlainText">&gt;+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
 bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
 ;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
 bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
-;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; igt_output_se=
-t_pipe(output, pipe);<o:p></o:p></p>
-<p class=3D"MsoPlainText">&gt;+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
 ;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
 bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
-;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if (!i915_pip=
-e_output_combo_valid(&amp;data.display))<o:p></o:p></p>
+; igt_output_set_pipe(output, p);<o:p></o:p></p>
 <p class=3D"MsoPlainText">&gt;+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
 bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
 ;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
 bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
 ;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
 bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
-; continue;<o:p></o:p></p>
+; if (!i915_pipe_output_combo_valid(&amp;data.display))<o:p></o:p></p>
+<p class=3D"MsoPlainText">&gt;+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp;&nbsp; continue;<o:p></o:p></p>
 <p class=3D"MsoPlainText">&gt;+<o:p></o:p></p>
 <p class=3D"MsoPlainText">&gt; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
 bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
 ;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
 bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
-;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; igt_dyn=
-amic_f(&quot;%s-pipe-%s&quot;, igt_output_name(output), kmstest_pipe_name(p=
-ipe)) {<o:p></o:p></p>
+;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+;&nbsp; igt_dynamic_f(&quot;%s-pipe-%s&quot;, igt_output_name(output), kmst=
+est_pipe_name(p)) {<o:p></o:p></p>
 <p class=3D"MsoPlainText">&gt; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
 bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
 ;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
 bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
 ;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
 bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
-;&nbsp; data.output =3D output;<o:p></o:p></p>
+;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp;&nbsp;&nbsp; data.pipe =3D p;<o:p></o:p></p>
 <p class=3D"MsoPlainText">&gt; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
 bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
 ;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
 bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
 ;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
 bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
-;&nbsp; data.pipe =3D pipe;<o:p></o:p></p>
+;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp;&nbsp;&nbsp; data.output =3D output;<o:p></o:p></p>
 </div>
 </body>
 </html>
 
---_000_PH7PR11MB6006067299F2D7B203850DD5C5F09PH7PR11MB6006namp_--
+--_000_PH7PR11MB60062C2F089B2C515A683E97C5F09PH7PR11MB6006namp_--
