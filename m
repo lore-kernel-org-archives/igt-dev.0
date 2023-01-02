@@ -1,19 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B2E2C10E098
- for <igt-dev@lists.freedesktop.org>; Fri, 30 Dec 2022 20:06:45 +0000 (UTC)
-Message-ID: <ee85b614-4430-cae3-fb1c-fc94c39a56fb@intel.com>
-Date: Sat, 31 Dec 2022 01:36:08 +0530
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B58FB10E16D
+ for <igt-dev@lists.freedesktop.org>; Mon,  2 Jan 2023 10:49:13 +0000 (UTC)
+From: Andrzej Hajda <andrzej.hajda@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Mon,  2 Jan 2023 11:49:01 +0100
+Message-Id: <20230102104901.214146-1-andrzej.hajda@intel.com>
+In-Reply-To: <7d276e53-0798-dc64-32be-a20bb4fb84a3@linux.intel.com>
+References: <7d276e53-0798-dc64-32be-a20bb4fb84a3@linux.intel.com>
 MIME-Version: 1.0
-Content-Language: en-US
-To: Harry Wentland <harry.wentland@amd.com>, igt-dev@lists.freedesktop.org,
- Bhanuprakash Modem <bhanuprakash.modem@intel.com>, uma.shankar@intel.com
-References: <20221212192425.387971-1-harry.wentland@amd.com>
-From: Swati Sharma <swati2.sharma@intel.com>
-In-Reply-To: <20221212192425.387971-1-harry.wentland@amd.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Subject: Re: [igt-dev] [PATCH 0/2] Add Colorspace tests to kms_hdr
+Subject: [igt-dev] [PATCH i-g-t] tests/kms_plane_scaling: cleanup
+ framebuffers after test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,51 +19,61 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Sebastian Wick <sebastian.wick@redhat.com>,
- Pekka Paalanen <ppaalanen@gmail.com>, Joshua Ashton <joshua@froggi.es>
+Cc: Matthew Auld <matthew.auld@intel.com>, Nirmoy Das <nirmoy.das@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Harry,
+Framebuffers created by igt_create_*_fb should be removed with
+igt_remove_fb after test finish. Since all this happens inside
+data_t context there is cleanup_fbs helper for it.
 
-First of all, why do you think kms_hdr is the right place to add 
-colorspace tests? Can we have amd specific IGT for the same.
-It seems intel doesn't have any plans in near future to expose this debugfs.
-++Uma ++Bhanu
+Closes: https://gitlab.freedesktop.org/drm/intel/-/issues/7331
+Signed-off-by: Andrzej Hajda <andrzej.hajda@intel.com>
+---
+ tests/kms_plane_scaling.c | 9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
-On 13-Dec-22 12:54 AM, Harry Wentland wrote:
-> We've had a Colorspace property on the drm_connector
-> but no IGT tests. These patches add IGT tests for this
-> property. They're currently only enabled on amdgpu with
-> the kernel at [1] but could be enabled for other drivers
-> if those drivers decide to expose a debugfs to read the
-> currently applied colorspace.
-> 
-> [1] https://gitlab.freedesktop.org/hwentland/linux/-/tree/hdr-colorimetry
-> 
-> Cc: Pekka Paalanen <ppaalanen@gmail.com>
-> Cc: Sebastian Wick <sebastian.wick@redhat.com>
-> Cc: Vitaly.Prosyak@amd.com
-> Cc: Uma Shankar <uma.shankar@intel.com>
-> Cc: Ville Syrjälä <ville.syrjala@linux.intel.com>
-> Cc: Joshua Ashton <joshua@froggi.es>
-> Cc: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-> Cc: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
-> Cc: Alex Hung <Alex.Hung@amd.com>
-> 
-> Harry Wentland (2):
->    tests/kms_hdr: Add test for output Colorspace
->    tests/kms_hdr: Add suspend and DPMS Colorspace tests
-> 
->   lib/igt_kms.c   |  51 ++++++++++++++++
->   lib/igt_kms.h   |   6 ++
->   tests/kms_hdr.c | 156 ++++++++++++++++++++++++++++++++++++++++++++++++
->   3 files changed, 213 insertions(+)
-> 
-> --
-> 2.38.1
-> 
-
+diff --git a/tests/kms_plane_scaling.c b/tests/kms_plane_scaling.c
+index 4c621cce842..887a55e63ff 100644
+--- a/tests/kms_plane_scaling.c
++++ b/tests/kms_plane_scaling.c
+@@ -366,6 +366,7 @@ static void check_scaling_pipe_plane_rot(data_t *d, igt_plane_t *plane,
+ 
+ 	igt_plane_set_fb(plane, NULL);
+ 	igt_plane_set_position(plane, 0, 0);
++	cleanup_fbs(d);
+ 
+ 	igt_skip_on_f(commit_ret == -ERANGE || commit_ret == -EINVAL,
+ 		      "Unsupported scaling factor with fb size %dx%d\n",
+@@ -670,8 +671,7 @@ test_planes_scaling_combo(data_t *d, int w1, int h1, int w2, int h2,
+ 					    test_type);
+ 	}
+ 
+-	igt_remove_fb(display->drm_fd, &d->fb[1]);
+-	igt_remove_fb(display->drm_fd, &d->fb[2]);
++	cleanup_fbs(d);
+ }
+ 
+ static void
+@@ -735,9 +735,7 @@ test_invalid_num_scalers(data_t *d, enum pipe pipe, igt_output_t *output)
+ 	igt_plane_set_fb(plane[0], NULL);
+ 	igt_plane_set_fb(plane[1], NULL);
+ 	igt_plane_set_fb(plane[2], NULL);
+-	igt_remove_fb(display->drm_fd, &d->fb[0]);
+-	igt_remove_fb(display->drm_fd, &d->fb[1]);
+-	igt_remove_fb(display->drm_fd, &d->fb[2]);
++	cleanup_fbs(d);
+ }
+ 
+ static void test_scaler_with_multi_pipe_plane(data_t *d)
+@@ -813,6 +811,7 @@ static void test_scaler_with_multi_pipe_plane(data_t *d)
+ 	igt_plane_set_fb(plane[1], NULL);
+ 	igt_plane_set_fb(plane[2], NULL);
+ 	igt_plane_set_fb(plane[3], NULL);
++	cleanup_fbs(d);
+ 
+ 	igt_skip_on_f(ret1 == -ERANGE || ret1 == -EINVAL ||
+ 		      ret2 == -ERANGE || ret1 == -EINVAL,
 -- 
-~Swati Sharma
+2.34.1
