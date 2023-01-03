@@ -1,16 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8BE1E10E052
- for <igt-dev@lists.freedesktop.org>; Tue,  3 Jan 2023 13:34:28 +0000 (UTC)
-From: Petri Latvala <petri.latvala@intel.com>
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A9BA010E25F
+ for <igt-dev@lists.freedesktop.org>; Tue,  3 Jan 2023 13:44:01 +0000 (UTC)
+Date: Tue, 3 Jan 2023 14:43:56 +0100
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue,  3 Jan 2023 15:30:49 +0200
-Message-Id: <20230103133049.30169-1-petri.latvala@intel.com>
+Message-ID: <Y7QxHDhPXhHx0CyX@kamilkon-desk1>
+References: <20221229155842.2448977-1-andrzej.hajda@intel.com>
+ <167266494637.12726.13825658551659481202@emeril.freedesktop.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t] chamelium: Ignore errors when fetching
- AdapterAllowed
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <167266494637.12726.13825658551659481202@emeril.freedesktop.org>
+Subject: Re: [igt-dev]
+ =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3IgdGVzdHMv?=
+ =?utf-8?q?kms=5Fplane=5Fscaling=3A_remove_fb_after_test_=28rev2=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,37 +22,114 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Petri Latvala <petri.latvala@intel.com>
+Cc: Sai Nandan Yedireswarapu <saix.nandan.yedireswarapu@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Not setting AdapterAllowed in .igtrc should be considered a valid
-configuration. The default value of 'false' from
-g_key_file_get_boolean when the field is missing is exactly what we
-want to use, and storing the missing field error in the 'error'
-variable leads to an error such as
+Hi Sai,
 
-(kms_chamelium:1713) igt_chamelium-WARNING: Failed to read chamelium port ID for DP-3: Key file does not have key “AdapterAllowed” in group “Chamelium:HDMI-A-2”
+On 2023-01-02 at 13:09:06 -0000, Patchwork wrote:
+> == Series Details ==
+> 
+> Series: tests/kms_plane_scaling: remove fb after test (rev2)
+> URL   : https://patchwork.freedesktop.org/series/112291/
+> State : failure
+> 
+> == Summary ==
+> 
+> CI Bug Log - changes from CI_DRM_12536 -> IGTPW_8287
+> ====================================================
+> 
+> Summary
+> -------
+> 
+>   **FAILURE**
+> 
+>   Serious unknown changes coming with IGTPW_8287 absolutely need to be
+>   verified manually.
+>   
+>   If you think the reported changes have nothing to do with the changes
+>   introduced in IGTPW_8287, please notify your bug team to allow them
+>   to document this new failure mode, which will reduce false positives in CI.
+> 
+>   External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8287/index.html
+> 
+> Participating hosts (45 -> 43)
+> ------------------------------
+> 
+>   Missing    (2): fi-snb-2520m fi-pnv-d510 
+> 
+> Possible new issues
+> -------------------
+> 
+>   Here are the unknown changes that may have been introduced in IGTPW_8287:
+> 
+> ### IGT changes ###
+> 
+> #### Possible regressions ####
+> 
+>   * igt@i915_selftest@live@perf:
+>     - fi-kbl-soraka:      [PASS][1] -> [INCOMPLETE][2]
+>    [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12536/fi-kbl-soraka/igt@i915_selftest@live@perf.html
+>    [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8287/fi-kbl-soraka/igt@i915_selftest@live@perf.html
 
-Signed-off-by: Petri Latvala <petri.latvala@intel.com>
-Cc: Ryszard Knop <ryszard.knop@intel.com>
----
- lib/igt_chamelium.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+This is unrelated to change.
 
-diff --git a/lib/igt_chamelium.c b/lib/igt_chamelium.c
-index 79920de1..6506330e 100644
---- a/lib/igt_chamelium.c
-+++ b/lib/igt_chamelium.c
-@@ -2477,7 +2477,7 @@ static bool chamelium_read_port_mappings(struct chamelium *chamelium,
- 		}
- 
- 		port->adapter_allowed = g_key_file_get_boolean(igt_key_file, group,
--		                                               "AdapterAllowed", &error);
-+		                                               "AdapterAllowed", NULL);
- 
- 		for (j = 0;
- 		     j < res->count_connectors && !port->connector_id;
--- 
-2.30.2
+Regards,
+Kamil
+
+> 
+>   
+> Known issues
+> ------------
+> 
+>   Here are the changes found in IGTPW_8287 that come from known issues:
+> 
+> ### IGT changes ###
+> 
+> #### Possible fixes ####
+> 
+>   * igt@i915_module_load@load:
+>     - fi-kbl-soraka:      [DMESG-WARN][3] ([i915#1982]) -> [PASS][4]
+>    [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12536/fi-kbl-soraka/igt@i915_module_load@load.html
+>    [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8287/fi-kbl-soraka/igt@i915_module_load@load.html
+> 
+>   * igt@i915_selftest@live@gt_heartbeat:
+>     - fi-kbl-soraka:      [DMESG-FAIL][5] ([i915#5334]) -> [PASS][6]
+>    [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12536/fi-kbl-soraka/igt@i915_selftest@live@gt_heartbeat.html
+>    [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8287/fi-kbl-soraka/igt@i915_selftest@live@gt_heartbeat.html
+> 
+>   * igt@kms_cursor_legacy@basic-flip-before-cursor@atomic-transitions-varying-size:
+>     - {bat-adlp-9}:       [FAIL][7] ([i915#4289]) -> [PASS][8] +1 similar issue
+>    [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12536/bat-adlp-9/igt@kms_cursor_legacy@basic-flip-before-cursor@atomic-transitions-varying-size.html
+>    [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8287/bat-adlp-9/igt@kms_cursor_legacy@basic-flip-before-cursor@atomic-transitions-varying-size.html
+> 
+>   
+>   {name}: This element is suppressed. This means it is ignored when computing
+>           the status of the difference (SUCCESS, WARNING, or FAILURE).
+> 
+>   [i915#1982]: https://gitlab.freedesktop.org/drm/intel/issues/1982
+>   [i915#3546]: https://gitlab.freedesktop.org/drm/intel/issues/3546
+>   [i915#4289]: https://gitlab.freedesktop.org/drm/intel/issues/4289
+>   [i915#5334]: https://gitlab.freedesktop.org/drm/intel/issues/5334
+>   [i915#5354]: https://gitlab.freedesktop.org/drm/intel/issues/5354
+>   [i915#6257]: https://gitlab.freedesktop.org/drm/intel/issues/6257
+>   [i915#6367]: https://gitlab.freedesktop.org/drm/intel/issues/6367
+>   [i915#6997]: https://gitlab.freedesktop.org/drm/intel/issues/6997
+> 
+> 
+> Build changes
+> -------------
+> 
+>   * CI: CI-20190529 -> None
+>   * IGT: IGT_7105 -> IGTPW_8287
+> 
+>   CI-20190529: 20190529
+>   CI_DRM_12536: 4c18d8b1c2a1f11e99f865f60fbce9fedd3376fc @ git://anongit.freedesktop.org/gfx-ci/linux
+>   IGTPW_8287: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8287/index.html
+>   IGT_7105: 305e8d105abf033cb850d1fb118e5cbfb6c9cd40 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+> 
+> == Logs ==
+> 
+> For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8287/index.html
