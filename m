@@ -1,7 +1,7 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1DB6810E258
- for <igt-dev@lists.freedesktop.org>; Tue,  3 Jan 2023 10:59:36 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5510D10E254
+ for <igt-dev@lists.freedesktop.org>; Tue,  3 Jan 2023 10:59:31 +0000 (UTC)
 From: =?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>
 To: Melissa Wen <mwen@igalia.com>,
  =?UTF-8?q?Andr=C3=A9=20Almeida?= <andrealmeid@igalia.com>,
@@ -11,14 +11,14 @@ To: Melissa Wen <mwen@igalia.com>,
  Tomeu Vizoso <tomeu.vizoso@collabora.com>, Emma Anholt <emma@anholt.net>,
  Jason Ekstrand <jason.ekstrand@collabora.com>,
  Iago Toral Quiroga <itoral@igalia.com>, Rob Clark <robdclark@chromium.org>
-Date: Tue,  3 Jan 2023 07:58:33 -0300
-Message-Id: <20230103105835.604394-4-mcanal@igalia.com>
+Date: Tue,  3 Jan 2023 07:58:31 -0300
+Message-Id: <20230103105835.604394-2-mcanal@igalia.com>
 In-Reply-To: <20230103105835.604394-1-mcanal@igalia.com>
 References: <20230103105835.604394-1-mcanal@igalia.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 3/6] lib/v3d: Introduce the struct v3d_cl_job
+Subject: [igt-dev] [PATCH i-g-t 1/6] lib/v3d: Add V3D packet helpers
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -31,59 +31,28 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Create a struct to encapsulate all the resources needed for a CL
-submission on v3d: it has BOs for tile allocation and tile state and
-command lists for the binner and the render. A CL job submission needs the
-command list (CL) structure, so bring part of the v3dv_cl file [1] for
-IGT use. The v3dv_cl header file was renamed to v3d_cl and it will help
-in emitting commands to the GPU.
-
-[1] https://gitlab.freedesktop.org/mesa/mesa/-/blob/22.3/src/broadcom/vulkan/v3dv_cl.h
+In order to make a valid job submission to V3D, some packet helpers are
+needed. They are responsible for handling the data and packing it
+properly. Moreover, they reuse some of the generic packet helpers from
+Mesa, the bit pack helpers. Therefore, add Mesa V3D's packet helpers for
+IGT use.
 
 Signed-off-by: Maíra Canal <mcanal@igalia.com>
 ---
- lib/igt_v3d.h    |  11 ++++
- lib/v3d/v3d_cl.h | 157 +++++++++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 168 insertions(+)
- create mode 100644 lib/v3d/v3d_cl.h
+ lib/bitpack_helpers.h        |  78 +++++++++++++++++++++++
+ lib/v3d/v3d_packet_helpers.h | 119 +++++++++++++++++++++++++++++++++++
+ 2 files changed, 197 insertions(+)
+ create mode 100644 lib/bitpack_helpers.h
+ create mode 100644 lib/v3d/v3d_packet_helpers.h
 
-diff --git a/lib/igt_v3d.h b/lib/igt_v3d.h
-index 2edb0f03..2533d7c4 100644
---- a/lib/igt_v3d.h
-+++ b/lib/igt_v3d.h
-@@ -28,6 +28,8 @@
- 
- #define PAGE_SIZE 4096
- 
-+struct v3d_cl;
-+
- struct v3d_bo {
- 	int handle;
- 	uint32_t offset;
-@@ -35,6 +37,15 @@ struct v3d_bo {
- 	void *map;
- };
- 
-+struct v3d_cl_job {
-+	struct drm_v3d_submit_cl *submit;
-+	struct v3d_cl *bcl;
-+	struct v3d_cl *rcl;
-+	struct v3d_cl *icl;
-+	struct v3d_bo *tile_alloc;
-+	struct v3d_bo *tile_state;
-+};
-+
- struct v3d_bo *igt_v3d_create_bo(int fd, size_t size);
- void igt_v3d_free_bo(int fd, struct v3d_bo *bo);
- 
-diff --git a/lib/v3d/v3d_cl.h b/lib/v3d/v3d_cl.h
+diff --git a/lib/bitpack_helpers.h b/lib/bitpack_helpers.h
 new file mode 100644
-index 00000000..8a5c53b0
+index 00000000..358b5d64
 --- /dev/null
-+++ b/lib/v3d/v3d_cl.h
-@@ -0,0 +1,157 @@
++++ b/lib/bitpack_helpers.h
+@@ -0,0 +1,78 @@
 +/*
-+ * Copyright © 2019 Raspberry Pi Ltd
++ * Copyright (C) 2016 Intel Corporation
 + *
 + * Permission is hereby granted, free of charge, to any person obtaining a
 + * copy of this software and associated documentation files (the "Software"),
@@ -105,139 +74,185 @@ index 00000000..8a5c53b0
 + * IN THE SOFTWARE.
 + */
 +
-+#ifndef V3D_CL_H
-+#define V3D_CL_H
++#ifndef UTIL_BITPACK_HELPERS_H
++#define UTIL_BITPACK_HELPERS_H
 +
-+#include "v3d_packet_helpers.h"
-+#include "igt_v3d.h"
++#include <math.h>
++#include <stdbool.h>
++#include <stdint.h>
 +
-+/**
-+ * Undefined structure, used for typechecking that you're passing the pointers
-+ * to these functions correctly.
++#ifndef util_bitpack_validate_value
++#define util_bitpack_validate_value(x)
++#endif
++
++/** Set a single bit */
++#define BITFIELD64_BIT(b)      (1ull << (b))
++/** Set all bits up to excluding bit b */
++#define BITFIELD64_MASK(b)      \
++   ((b) == 64 ? (~0ull) : BITFIELD64_BIT(b) - 1)
++
++static inline uint64_t
++util_bitpack_uint(uint64_t v, uint32_t start, __attribute__((unused)) uint32_t end)
++{
++   util_bitpack_validate_value(v);
++   return v << start;
++}
++
++static inline uint64_t
++util_bitpack_sint(int64_t v, uint32_t start, uint32_t end)
++{
++   const int bits = end - start + 1;
++   const uint64_t mask = BITFIELD64_MASK(bits);
++
++   return (v & mask) << start;
++}
++
++static inline uint64_t
++util_bitpack_sfixed(float v, uint32_t start, uint32_t end,
++                    uint32_t fract_bits)
++{
++   const float factor = (1 << fract_bits);
++   const int64_t int_val = llroundf(v * factor);
++   const uint64_t mask = ~0ull >> (64 - (end - start + 1));
++
++   return (int_val & mask) << start;
++}
++
++static inline uint64_t
++util_bitpack_ufixed(float v, uint32_t start, __attribute__((unused)) uint32_t end,
++                    uint32_t fract_bits)
++{
++   const float factor = (1 << fract_bits);
++   const uint64_t uint_val = llroundf(v * factor);
++
++   return uint_val << start;
++}
++
++#endif /* UTIL_BITPACK_HELPERS_H */
+diff --git a/lib/v3d/v3d_packet_helpers.h b/lib/v3d/v3d_packet_helpers.h
+new file mode 100644
+index 00000000..3145333d
+--- /dev/null
++++ b/lib/v3d/v3d_packet_helpers.h
+@@ -0,0 +1,119 @@
++/*
++ * Copyright (C) 2016 Intel Corporation
++ *
++ * Permission is hereby granted, free of charge, to any person obtaining a
++ * copy of this software and associated documentation files (the "Software"),
++ * to deal in the Software without restriction, including without limitation
++ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
++ * and/or sell copies of the Software, and to permit persons to whom the
++ * Software is furnished to do so, subject to the following conditions:
++ *
++ * The above copyright notice and this permission notice (including the next
++ * paragraph) shall be included in all copies or substantial portions of the
++ * Software.
++ *
++ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
++ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
++ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
++ * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
++ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
++ * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
++ * IN THE SOFTWARE.
 + */
-+struct v3d_cl_out;
 +
-+/** A reference to a BO used in the CL packing functions */
-+struct v3d_cl_reloc {
-+   struct v3d_bo *bo;
-+   uint32_t offset;
-+};
++#ifndef MESA_V3D_PACKET_HELPERS_H
++#define MESA_V3D_PACKET_HELPERS_H
 +
-+#define __gen_user_data struct v3d_cl
-+#define __gen_address_type struct v3d_cl_reloc
-+#define __gen_address_offset(reloc) (((reloc)->bo ? (reloc)->bo->offset : 0) + \
-+                                     (reloc)->offset)
-+#define __gen_emit_reloc cl_pack_emit_reloc
-+#define __gen_unpack_address(cl, s, e) __unpack_address(cl, s, e)
++#include <assert.h>
++#include <stdint.h>
 +
-+struct v3d_cl {
-+   void *base;
-+   struct v3d_cl_out *next;
-+   struct v3d_bo *bo;
-+   uint32_t size;
-+};
-+
-+static inline struct v3d_cl_reloc
-+__unpack_address(const uint8_t *cl, uint32_t s, uint32_t e)
-+{
-+    struct v3d_cl_reloc reloc =
-+            { NULL, __gen_unpack_uint(cl, s, e) << (31 - (e - s)) };
-+    return reloc;
-+}
-+
-+static inline uint32_t
-+v3d_cl_offset(struct v3d_cl *cl)
-+{
-+   return (char *)cl->next - (char *)cl->base;
-+}
-+
-+static inline struct v3d_cl_reloc
-+v3d_cl_address(struct v3d_bo *bo, uint32_t offset)
-+{
-+   struct v3d_cl_reloc reloc = {
-+      .bo = bo,
-+      .offset = offset,
-+   };
-+   return reloc;
-+}
-+
-+static inline struct v3d_cl_reloc
-+v3d_cl_get_address(struct v3d_cl *cl)
-+{
-+   return (struct v3d_cl_reloc){ .bo = cl->bo, .offset = v3d_cl_offset(cl) };
-+}
-+
-+static inline struct v3d_cl_out *
-+cl_start(struct v3d_cl *cl)
-+{
-+   return cl->next;
-+}
-+
-+static inline void
-+cl_end(struct v3d_cl *cl, struct v3d_cl_out *next)
-+{
-+   cl->next = next;
-+   assert(v3d_cl_offset(cl) <= cl->size);
-+}
-+
-+static inline void
-+cl_advance(struct v3d_cl_out **cl, uint32_t n)
-+{
-+   (*cl) = (struct v3d_cl_out *)((char *)(*cl) + n);
-+}
-+
-+#define V3DX(x) V3D42_##x
-+#define v3dX(x) V3D42_##x
-+
-+#define cl_packet_header(packet) V3DX(packet ## _header)
-+#define cl_packet_length(packet) V3DX(packet ## _length)
-+#define cl_packet_pack(packet)   V3DX(packet ## _pack)
-+#define cl_packet_struct(packet) V3DX(packet)
-+
-+/* Macro for setting up an emit of a CL struct.  A temporary unpacked struct
-+ * is created, which you get to set fields in of the form:
-+ *
-+ * cl_emit(bcl, FLAT_SHADE_FLAGS, flags) {
-+ *     .flags.flat_shade_flags = 1 << 2,
-+ * }
-+ *
-+ * or default values only can be emitted with just:
-+ *
-+ * cl_emit(bcl, FLAT_SHADE_FLAGS, flags);
-+ *
-+ * The trick here is that we make a for loop that will execute the body
-+ * (either the block or the ';' after the macro invocation) exactly once.
-+ */
-+#define cl_emit(cl, packet, name)                                \
-+        for (struct cl_packet_struct(packet) name = {            \
-+                cl_packet_header(packet)                         \
-+        },                                                       \
-+        *_loop_terminate = &name;                                \
-+        __builtin_expect(_loop_terminate != NULL, 1);            \
-+        ({                                                       \
-+                struct v3d_cl_out *cl_out = cl_start(cl);        \
-+                cl_packet_pack(packet)(cl, (uint8_t *)cl_out, &name); \
-+                cl_advance(&cl_out, cl_packet_length(packet));   \
-+                cl_end(cl, cl_out);                              \
-+                _loop_terminate = NULL;                          \
-+        }))                                                      \
++#include "bitpack_helpers.h"
 +
 +/*
-+ * Helper function called by the XML-generated pack functions for filling in
-+ * an address field in shader records.
-+ *
-+ * Since we have a private address space as of V3D, our BOs can have lifelong
-+ * offsets, and all the kernel needs to know is which BOs need to be paged in
-+ * for this exec.
++ * Copied from Mesa's u_math.h
 + */
-+static inline void
-+cl_pack_emit_reloc(struct v3d_cl *cl, const struct v3d_cl_reloc *reloc)
++union fi {
++   float f;
++   int32_t i;
++   uint32_t ui;
++};
++
++static inline float uif(uint32_t ui)
 +{
-+   /*
-+    * Mock emit reloc, as it is not needed for IGT tests.
-+    */
++   union fi fi;
++   fi.ui = ui;
++   return fi.f;
 +}
 +
-+#endif /* V3D_CL_H */
++static inline unsigned fui(float f)
++{
++   union fi fi;
++   fi.f = f;
++   return fi.ui;
++}
++
++static inline uint64_t
++__gen_unpack_uint(const uint8_t *restrict cl, uint32_t start, uint32_t end)
++{
++   uint64_t val = 0;
++   const int width = end - start + 1;
++   const uint32_t mask = (width == 32 ? ~0 : (1 << width) - 1 );
++
++   for (uint32_t byte = start / 8; byte <= end / 8; byte++) {
++      val |= cl[byte] << ((byte - start / 8) * 8);
++   }
++
++   return (val >> (start % 8)) & mask;
++}
++
++static inline uint64_t
++__gen_unpack_sint(const uint8_t *restrict cl, uint32_t start, uint32_t end)
++{
++   int size = end - start + 1;
++   int64_t val = __gen_unpack_uint(cl, start, end);
++
++   /* Get the sign bit extended. */
++   return (val << (64 - size)) >> (64 - size);
++}
++
++static inline float
++__gen_unpack_sfixed(const uint8_t *restrict cl, uint32_t start, uint32_t end,
++                    uint32_t fractional_size)
++{
++     int32_t bits = __gen_unpack_sint(cl, start, end);
++     return (float)bits / (1 << fractional_size);
++}
++
++static inline float
++__gen_unpack_ufixed(const uint8_t *restrict cl, uint32_t start, uint32_t end,
++                    uint32_t fractional_size)
++{
++     int32_t bits = __gen_unpack_uint(cl, start, end);
++     return (float)bits / (1 << fractional_size);
++}
++
++static inline float
++__gen_unpack_float(const uint8_t *restrict cl, uint32_t start, uint32_t end)
++{
++   struct PACKED { float f; } *f;
++
++   assert(start % 8 == 0);
++   assert(end - start == 31);
++
++   f = (void *)(cl + (start / 8));
++
++   return f->f;
++}
++
++static inline float
++__gen_unpack_f187(const uint8_t *restrict cl, uint32_t start, uint32_t end)
++{
++   uint32_t bits;
++
++   assert(end - start == 15);
++
++   bits = __gen_unpack_uint(cl, start, end);
++   return uif(bits << 16);
++}
++
++#endif
 -- 
 2.38.1
