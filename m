@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2DE0210E3EB
- for <igt-dev@lists.freedesktop.org>; Tue,  3 Jan 2023 17:41:43 +0000 (UTC)
-Date: Tue, 3 Jan 2023 18:41:39 +0100
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Message-ID: <Y7Ro0+SvP+Umahg8@kamilkon-desk1>
-References: <20221230064638.155300-1-dnyaneshwar.bhadane@intel.com>
+Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D5DB110E27A
+ for <igt-dev@lists.freedesktop.org>; Tue,  3 Jan 2023 17:55:47 +0000 (UTC)
+From: =?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>
+To: Melissa Wen <mwen@igalia.com>,
+ =?UTF-8?q?Andr=C3=A9=20Almeida?= <andrealmeid@igalia.com>,
+ Petri Latvala <petri.latvala@intel.com>, Maxime Ripard <maxime@cerno.tech>
+Date: Tue,  3 Jan 2023 14:52:42 -0300
+Message-Id: <20230103175244.958771-1-mcanal@igalia.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20221230064638.155300-1-dnyaneshwar.bhadane@intel.com>
-Subject: Re: [igt-dev] [i-g-t] tests/kms_cursor_crc: Add Gaurd for MSO eDP
- for Pipe C and D
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t v3 0/3] Make sure v3d/vc4 support
+ performance monitors
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,89 +20,48 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: dnyaneshwar.bhadane@intel.com
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi,
+Currently, v3d and vc4 don't check if the driver supports the performance
+monitor feature, which means that the tests are allowed to run even if the
+driver doesn't support the tested feature. Therefore, this series adds checks
+using the GET_PARAM ioctl from both drivers.
 
-one quick nit for you subject (commit description):
+The main difference between the first and the second version of this series is
+the first patch, which reworks the igt_vc4_get_param() function to adopt
+do_ioctl and return the value of the parameter.
 
-tests/kms_cursor_crc: Add Gaurd for MSO eDP for Pipe C and D
---------------------- ^ --^ ------------------- ^
-s/Add/add/
-s/Gaurd/guard/
+The third version of this series only added the description of the
+igt_vc4_get_param() function.
 
-but imho better say explicitly that you skip, so better:
+---
 
-tests/kms_cursor_crc: skip subtests for MSO eDP on pipe C and D
+v1 -> v2:
+- Add "lib/igt_vc4: Rework igt_vc4_get_param()" patch (Melissa Wen).
 
-Regards,
-Kamil
+v2 -> v3:
+- s/the return of/the error code of/ (Kamil Konieczny).
+- Add igt_vc4_get_param() description (Kamil Konieczny).
 
-On 2022-12-30 at 12:16:38 +0530, bhadanednyaneshwar wrote:
-> MSO eDP is not supported on pipe C and D. Added a test condition
-> to prevent tests from execution on pipe C and D.This condition was
-> missed for cursor-size-change,cursor-alpha-opaque and
-> cursor-alpha-transparent testcases.
-> 
-> Inside require_cursor_size() checks first for eligiblity to igt commit
-> using test buffer.For MSO eDP, It is fail to commit for pipe C/pipe D
-> and require_cursor_size() return non zero value. So it will skip
-> the dynamic testcase for pipe C and D.
-> 
-> Signed-off-by: bhadanednyaneshwar <dnyaneshwar.bhadane@intel.com>
-> ---
->  tests/kms_cursor_crc.c | 21 ++++++++++++++++++---
->  1 file changed, 18 insertions(+), 3 deletions(-)
-> 
-> diff --git a/tests/kms_cursor_crc.c b/tests/kms_cursor_crc.c
-> index 17f294d6..d8fb9c0d 100644
-> --- a/tests/kms_cursor_crc.c
-> +++ b/tests/kms_cursor_crc.c
-> @@ -786,7 +786,12 @@ static void run_tests_on_pipe(data_t *data)
->  	igt_subtest_with_dynamic("cursor-size-change") {
->  		for_each_pipe(&data->display, pipe) {
->  			data->pipe = pipe;
-> -
-> +			create_cursor_fb(data, data->cursor_max_w, data->cursor_max_h);
-> +			if (require_cursor_size(data, data->cursor_max_w, data->cursor_max_h)) {
-> +				igt_debug("Cursor size %dx%d not supported by driver\n",
-> +					  data->cursor_max_w, data->cursor_max_h);
-> +				continue;
-> +			}
->  			igt_dynamic_f("pipe-%s-%s",
->  				      kmstest_pipe_name(pipe),
->  				      data->output->name)
-> @@ -800,7 +805,12 @@ static void run_tests_on_pipe(data_t *data)
->  	igt_subtest_with_dynamic("cursor-alpha-opaque") {
->  		for_each_pipe(&data->display, pipe) {
->  			data->pipe = pipe;
-> -
-> +			create_cursor_fb(data, data->cursor_max_w, data->cursor_max_h);
-> +			if (require_cursor_size(data, data->cursor_max_w, data->cursor_max_h)) {
-> +				igt_debug("Cursor size %dx%d not supported by driver\n",
-> +					  data->cursor_max_w, data->cursor_max_h);
-> +				continue;
-> +			}
->  			igt_dynamic_f("pipe-%s-%s",
->  				      kmstest_pipe_name(pipe),
->  				      data->output->name)
-> @@ -814,7 +824,12 @@ static void run_tests_on_pipe(data_t *data)
->  	igt_subtest_with_dynamic("cursor-alpha-transparent") {
->  		for_each_pipe(&data->display, pipe) {
->  			data->pipe = pipe;
-> -
-> +			create_cursor_fb(data, data->cursor_max_w, data->cursor_max_h);
-> +			if (require_cursor_size(data, data->cursor_max_w, data->cursor_max_h)) {
-> +				igt_debug("Cursor size %dx%d not supported by driver\n",
-> +					  data->cursor_max_w, data->cursor_max_h);
-> +				continue;
-> +			}
->  			igt_dynamic_f("pipe-%s-%s",
->  				      kmstest_pipe_name(pipe),
->  				      data->output->name)
-> -- 
-> 2.35.1
-> 
+---
+
+Best Regards,
+- Maíra Canal
+
+Maíra Canal (3):
+  lib/igt_vc4: Rework igt_vc4_get_param()
+  tests/vc4_perfmon: Make sure vc4 supports perfmon
+  tests/v3d_perfmon: Make sure v3d supports perfmon
+
+ lib/igt_vc4.c                | 19 ++++++++++++-------
+ lib/igt_vc4.h                |  2 +-
+ tests/v3d/v3d_perfmon.c      |  4 +++-
+ tests/vc4/vc4_perfmon.c      |  1 +
+ tests/vc4/vc4_purgeable_bo.c |  5 +----
+ 5 files changed, 18 insertions(+), 13 deletions(-)
+
+-- 
+2.38.1
