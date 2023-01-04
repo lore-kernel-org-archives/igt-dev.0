@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AD50B10E5E4
- for <igt-dev@lists.freedesktop.org>; Wed,  4 Jan 2023 17:08:18 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 55E8810E5D0
+ for <igt-dev@lists.freedesktop.org>; Wed,  4 Jan 2023 17:08:23 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Wed,  4 Jan 2023 22:29:57 +0530
-Message-Id: <20230104170023.3355190-26-bhanuprakash.modem@intel.com>
+Date: Wed,  4 Jan 2023 22:29:59 +0530
+Message-Id: <20230104170023.3355190-28-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230104170023.3355190-1-bhanuprakash.modem@intel.com>
 References: <20230104170023.3355190-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t v7 25/51] tests/kms_plane_multiple: Add support
- for Bigjoiner
+Subject: [igt-dev] [i-g-t v7 27/51] tests/kms_prime: Add support for
+ Bigjoiner
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -33,53 +33,36 @@ Example:
 V2: - Use updated helper name
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Reviewed-by: Karthik B S <karthik.b.s@intel.com>
+Reviewed-by: Ananya Sharma <ananya.sharma@intel.com>
 ---
- tests/kms_plane_multiple.c | 15 ++++++++++++---
- 1 file changed, 12 insertions(+), 3 deletions(-)
+ tests/kms_prime.c | 11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
-diff --git a/tests/kms_plane_multiple.c b/tests/kms_plane_multiple.c
-index 75659015..7dd9d586 100644
---- a/tests/kms_plane_multiple.c
-+++ b/tests/kms_plane_multiple.c
-@@ -103,6 +103,7 @@ get_reference_crc(data_t *data, igt_output_t *output, enum pipe pipe,
- 	igt_plane_t *primary;
- 	int ret;
+diff --git a/tests/kms_prime.c b/tests/kms_prime.c
+index ad199915..255fa174 100644
+--- a/tests/kms_prime.c
++++ b/tests/kms_prime.c
+@@ -89,14 +89,17 @@ static igt_output_t *setup_display(int importer_fd, igt_display_t *display,
+ 	bool found = false;
  
-+	igt_display_reset(&data->display);
- 	igt_output_set_pipe(output, pipe);
- 
- 	primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
-@@ -290,6 +291,9 @@ test_plane_position_with_output(data_t *data, enum pipe pipe,
- 	bool loop_forever;
- 	char info[256];
- 
-+	igt_info("Using (pipe %s + %s) to run the subtest.\n",
-+		 kmstest_pipe_name(pipe), igt_output_name(output));
-+
- 	if (opt.iterations == LOOP_FOREVER) {
- 		loop_forever = true;
- 		sprintf(info, "forever");
-@@ -373,12 +377,17 @@ static void run_test(data_t *data, uint64_t modifier)
- {
- 	enum pipe pipe;
- 	igt_output_t *output;
-+	igt_display_t *display = &data->display;
- 
--	if (!igt_display_has_format_mod(&data->display, DRM_FORMAT_XRGB8888, modifier))
-+	if (!igt_display_has_format_mod(display, DRM_FORMAT_XRGB8888, modifier))
- 		return;
- 
--	for_each_pipe_with_valid_output(&data->display, pipe, output) {
--		igt_display_reset(&data->display);
-+	for_each_pipe_with_valid_output(display, pipe, output) {
+ 	for_each_pipe_with_valid_output(display, *pipe, output) {
+-		found = true;
+-		break;
 +		igt_display_reset(display);
 +
-+		igt_output_set_pipe(output, pipe);
-+		if (!i915_pipe_output_combo_valid(display))
-+			continue;
++		igt_output_set_pipe(output, *pipe);
++		if (i915_pipe_output_combo_valid(display)) {
++			found = true;
++			break;
++		}
+ 	}
  
- 		igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), output->name)
- 			test_plane_position(data, pipe, output, modifier);
+ 	igt_require_f(found, "No valid connector/pipe found\n");
+ 
+-	igt_display_reset(display);
+-	igt_output_set_pipe(output, *pipe);
+ 	return output;
+ }
+ 
 -- 
 2.39.0
