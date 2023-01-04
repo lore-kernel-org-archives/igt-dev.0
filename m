@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3332910E5E0
- for <igt-dev@lists.freedesktop.org>; Wed,  4 Jan 2023 17:08:14 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BFAF910E5DF
+ for <igt-dev@lists.freedesktop.org>; Wed,  4 Jan 2023 17:08:13 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Wed,  4 Jan 2023 22:29:52 +0530
-Message-Id: <20230104170023.3355190-21-bhanuprakash.modem@intel.com>
+Date: Wed,  4 Jan 2023 22:29:51 +0530
+Message-Id: <20230104170023.3355190-20-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230104170023.3355190-1-bhanuprakash.modem@intel.com>
 References: <20230104170023.3355190-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t v7 20/51] tests/kms_pipe_crc_basic: Add support
- for Bigjoiner
+Subject: [igt-dev] [i-g-t v7 19/51] tests/kms_lease: Add support for
+ Bigjoiner
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -35,64 +35,29 @@ V2: - Use updated helper name
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 Reviewed-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
 ---
- tests/kms_pipe_crc_basic.c | 24 ++++++++++++++++++++++++
- 1 file changed, 24 insertions(+)
+ tests/kms_lease.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/tests/kms_pipe_crc_basic.c b/tests/kms_pipe_crc_basic.c
-index 91a1b8ab..ffc77eb3 100644
---- a/tests/kms_pipe_crc_basic.c
-+++ b/tests/kms_pipe_crc_basic.c
-@@ -274,6 +274,21 @@ static void test_disable_crc_after_crtc(data_t *data, enum pipe pipe,
- 	igt_remove_fb(data->drm_fd, &data->fb);
- }
- 
-+static bool pipe_output_combo_valid(igt_display_t *display,
-+				    enum pipe pipe, igt_output_t *output)
-+{
-+	bool ret = true;
+diff --git a/tests/kms_lease.c b/tests/kms_lease.c
+index 67e8d3be..a52d8bfc 100644
+--- a/tests/kms_lease.c
++++ b/tests/kms_lease.c
+@@ -1213,10 +1213,14 @@ igt_main
+ 			igt_describe(f->desc);
+ 			igt_subtest_with_dynamic_f("%s", f->name) {
+ 				for_each_pipe_with_valid_output(display, data.pipe, output) {
++					igt_display_reset(display);
 +
-+	igt_display_reset(display);
++					igt_output_set_pipe(output, data.pipe);
++					if (!i915_pipe_output_combo_valid(display))
++						continue;
 +
-+	igt_output_set_pipe(output, pipe);
-+	if (!i915_pipe_output_combo_valid(display))
-+		ret = false;
-+	igt_output_set_pipe(output, PIPE_NONE);
-+
-+	return ret;
-+}
-+
- data_t data = {0, };
- 
- igt_main
-@@ -322,6 +337,9 @@ igt_main
- 		igt_describe(tests[i].desc);
- 		igt_subtest_with_dynamic(tests[i].name) {
- 			for_each_pipe_with_single_output(&data.display, pipe, output) {
-+				if(!pipe_output_combo_valid(&data.display, pipe, output))
-+					continue;
-+
- 				igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), output->name) {
- 					if (tests[i].flags & TEST_SUSPEND) {
- 						test_read_crc(&data, pipe, output, 0);
-@@ -350,6 +368,9 @@ igt_main
- 		     "does not cause issues.");
- 	igt_subtest_with_dynamic("disable-crc-after-crtc") {
- 		for_each_pipe_with_single_output(&data.display, pipe, output) {
-+			if(!pipe_output_combo_valid(&data.display, pipe, output))
-+				continue;
-+
- 			igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), output->name)
- 				test_disable_crc_after_crtc(&data, pipe, output);
- 		}
-@@ -358,6 +379,9 @@ igt_main
- 	igt_describe("Basic sanity check for CRC mismatches");
- 	igt_subtest_with_dynamic("compare-crc-sanitycheck") {
- 		for_each_pipe_with_single_output(&data.display, pipe, output) {
-+			if(!pipe_output_combo_valid(&data.display, pipe, output))
-+				continue;
-+
- 			igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), output->name)
- 				test_compare_crc(&data, pipe, output);
- 		}
+ 					igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(data.pipe),
+ 						      igt_output_name(output)) {
+-						igt_display_reset(display);
+-						igt_display_commit(display);
+ 						data.crtc_id = display->pipes[data.pipe].crtc_id;
+ 						data.connector_id = output->id;
+ 						data.plane_id =
 -- 
 2.39.0
