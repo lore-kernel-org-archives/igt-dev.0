@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 00D3C10E5D3
- for <igt-dev@lists.freedesktop.org>; Wed,  4 Jan 2023 17:08:02 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5665E10E5D0
+ for <igt-dev@lists.freedesktop.org>; Wed,  4 Jan 2023 17:07:59 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Wed,  4 Jan 2023 22:29:41 +0530
-Message-Id: <20230104170023.3355190-10-bhanuprakash.modem@intel.com>
+Date: Wed,  4 Jan 2023 22:29:38 +0530
+Message-Id: <20230104170023.3355190-7-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230104170023.3355190-1-bhanuprakash.modem@intel.com>
 References: <20230104170023.3355190-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t v7 09/51] tests/chamelium/kms_color_chamelium: Add
- support for Bigjoiner
+Subject: [igt-dev] [i-g-t v7 06/51] tests/kms_atomic_transition: Add support
+ for Bigjoiner
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -33,44 +33,113 @@ Example:
 V2: - Use updated helper name
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Reviewed-by: Kunal Joshi <kunal1.joshi@intel.com>
+Reviewed-by: Nidhi Gupta <nidhi1.gupta@intel.com>
 ---
- tests/chamelium/kms_color_chamelium.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ tests/kms_atomic_transition.c | 50 ++++++++++++++++++++++++++++++++---
+ 1 file changed, 46 insertions(+), 4 deletions(-)
 
-diff --git a/tests/chamelium/kms_color_chamelium.c b/tests/chamelium/kms_color_chamelium.c
-index 907f4dd5..b7c84ae4 100644
---- a/tests/chamelium/kms_color_chamelium.c
-+++ b/tests/chamelium/kms_color_chamelium.c
-@@ -458,6 +458,9 @@ run_gamma_degamma_tests_for_pipe(data_t *data, enum pipe p,
- 	data->drm_format = DRM_FORMAT_XRGB8888;
- 	data->mode = igt_output_get_mode(data->output);
+diff --git a/tests/kms_atomic_transition.c b/tests/kms_atomic_transition.c
+index 6d2ebbbf..5285585f 100644
+--- a/tests/kms_atomic_transition.c
++++ b/tests/kms_atomic_transition.c
+@@ -68,6 +68,10 @@ run_primary_test(data_t *data, enum pipe pipe, igt_output_t *output)
+ 	unsigned flags = DRM_MODE_ATOMIC_TEST_ONLY | DRM_MODE_ATOMIC_ALLOW_MODESET;
  
-+	if (!pipe_output_combo_valid(data, p))
-+		return;
+ 	igt_display_reset(&data->display);
 +
- 	igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(p), data->output->name)
- 		igt_assert(test_t(data, data->primary, data->ports[port_idx]));
++	igt_info("Using (pipe %s + %s) to run the subtest.\n",
++		 kmstest_pipe_name(pipe), igt_output_name(output));
++
+ 	igt_output_set_pipe(output, pipe);
+ 	primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
+ 
+@@ -487,6 +491,9 @@ run_transition_test(data_t *data, enum pipe pipe, igt_output_t *output,
+ 	unsigned flags = 0;
+ 	int ret;
+ 
++	igt_info("Using (pipe %s + %s) to run the subtest.\n",
++		 kmstest_pipe_name(pipe), igt_output_name(output));
++
+ 	if (fencing)
+ 		prepare_fencing(data, pipe);
+ 	else
+@@ -753,8 +760,13 @@ static unsigned set_combinations(data_t *data, unsigned mask, struct igt_fb *fb)
+ 			if (output->pending_pipe != PIPE_NONE)
+ 				continue;
+ 
+-			mode = igt_output_get_mode(output);
+-			break;
++			igt_output_set_pipe(output, pipe);
++			if (i915_pipe_output_combo_valid(&data->display)) {
++				mode = igt_output_get_mode(output);
++				break;
++			} else {
++				igt_output_set_pipe(output, PIPE_NONE);
++			}
+ 		}
+ 
+ 		if (!mode)
+@@ -840,8 +852,17 @@ retry:
+ 				continue;
+ 
+ 			igt_output_set_pipe(output, i);
+-			mode = igt_output_get_mode(output);
+-			break;
++			if (i915_pipe_output_combo_valid(&data->display)) {
++				mode = igt_output_get_mode(output);
++
++				igt_info("(pipe %s + %s), mode:",
++					 kmstest_pipe_name(i), igt_output_name(output));
++				kmstest_dump_mode(mode);
++
++				break;
++			} else {
++				igt_output_set_pipe(output, PIPE_NONE);
++			}
+ 		}
+ 
+ 		if (mode) {
+@@ -980,6 +1001,21 @@ static void run_modeset_transition(data_t *data, int requested_outputs, bool non
+ 	igt_remove_fb(data->drm_fd, &data->fbs[1]);
  }
-@@ -493,6 +496,9 @@ run_ctm_tests_for_pipe(data_t *data, enum pipe p,
- 	data->drm_format = DRM_FORMAT_XRGB8888;
- 	data->mode = igt_output_get_mode(data->output);
  
-+	if (!pipe_output_combo_valid(data, p))
-+		return;
++static bool pipe_output_combo_valid(igt_display_t *display,
++				    enum pipe pipe, igt_output_t *output)
++{
++	bool ret = true;
 +
- 	igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(p), data->output->name) {
- 		bool success = false;
- 		int i;
-@@ -538,6 +544,9 @@ run_limited_range_ctm_test_for_pipe(data_t *data, enum pipe p,
- 	data->drm_format = DRM_FORMAT_XRGB8888;
- 	data->mode = igt_output_get_mode(data->output);
++	igt_display_reset(display);
++
++	igt_output_set_pipe(output, pipe);
++	if (!i915_pipe_output_combo_valid(display))
++		ret = false;
++	igt_output_set_pipe(output, PIPE_NONE);
++
++	return ret;
++}
++
+ static int opt_handler(int opt, int opt_index, void *_data)
+ {
+ 	data_t *data = _data;
+@@ -1079,6 +1115,9 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
+ 			if (pipe_count == 2 * count && !data.extended)
+ 				break;
  
-+	if (!pipe_output_combo_valid(data, p))
-+		return;
++			if (!pipe_output_combo_valid(&data.display, pipe, output))
++				continue;
 +
- 	igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(p), data->output->name)
- 		igt_assert(test_t(data, data->primary, data->ports[port_idx]));
- }
+ 			pipe_count++;
+ 			igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), igt_output_name(output))
+ 				run_primary_test(&data, pipe, output);
+@@ -1108,6 +1147,9 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
+ 				if (pipe_count == 2 * count && !data.extended)
+ 					break;
+ 
++				if (!pipe_output_combo_valid(&data.display, pipe, output))
++					continue;
++
+ 				pipe_count++;
+ 				igt_dynamic_f("pipe-%s-%s",
+ 					      kmstest_pipe_name(pipe),
 -- 
 2.39.0
