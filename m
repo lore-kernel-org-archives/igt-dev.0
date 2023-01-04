@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 80A5110E5CD
- for <igt-dev@lists.freedesktop.org>; Wed,  4 Jan 2023 17:07:53 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B298010E5CE
+ for <igt-dev@lists.freedesktop.org>; Wed,  4 Jan 2023 17:07:54 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Wed,  4 Jan 2023 22:29:33 +0530
-Message-Id: <20230104170023.3355190-2-bhanuprakash.modem@intel.com>
+Date: Wed,  4 Jan 2023 22:29:34 +0530
+Message-Id: <20230104170023.3355190-3-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230104170023.3355190-1-bhanuprakash.modem@intel.com>
 References: <20230104170023.3355190-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t v7 01/51] lib/igt_kms: Add a helper for valid
- pipe/output constraint
+Subject: [igt-dev] [i-g-t v7 02/51] lib/igt_kms: Bigjoiner check in max_bpc
+ constraint
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,113 +23,30 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add an IGT helper to check the given pipe/output combo is valid to decide
-whether to run/skip the subtest.
+There is a possibility of commit failure if the selected pipe/output
+won't support Bigjoiner or 8K. So we need to handle this case.
 
-Example:
-* Pipe-D can't support mode > 5K
-* To use 8K mode on a pipe then consecutive pipe must be available & free.
-* MSO is supported only on PIPE_A/PIPE_B.
-
-This helper is supposed to be a superset of all constraints of pipe/output
-combo. But as of now, this helper supports only Bigjoiner.
-
-V2:
-- Rename the helper
-- Add is_i915 constraint
-- Add pre-condition check (igt_output_set_pipe called)
-- Update documentaion
-- Minor cleanup in Bigjoiner helper
-
-Cc: Petri Latvala <petri.latvala@intel.com>
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Reviewed-by: Petri Latvala <petri.latvala@intel.com>
+Reviewed-by:  Swati Sharma <swati2.sharma@intel.com>
 ---
- lib/igt_kms.c | 49 ++++++++++++++++++++++++++++++++++++++++++++++---
- lib/igt_kms.h |  1 +
- 2 files changed, 47 insertions(+), 3 deletions(-)
+ lib/igt_kms.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
 diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-index b4a98ae1..17099abe 100644
+index 17099abe..1fea67a1 100644
 --- a/lib/igt_kms.c
 +++ b/lib/igt_kms.c
-@@ -5856,6 +5856,7 @@ bool igt_check_bigjoiner_support(igt_display_t *display)
- {
- 	uint8_t i, total_pipes = 0, pipes_in_use = 0;
- 	enum pipe p;
-+	igt_output_t *output;
- 	struct {
- 		enum pipe idx;
- 		drmModeModeInfo *mode;
-@@ -5869,9 +5870,7 @@ bool igt_check_bigjoiner_support(igt_display_t *display)
- 	 * Get list of pipes in use those were set by igt_output_set_pipe()
- 	 * just before calling this function.
- 	 */
--	for (i = 0 ; i < display->n_outputs; i++) {
--		igt_output_t *output = &display->outputs[i];
--
-+	for_each_connected_output(display, output) {
- 		if (output->pending_pipe == PIPE_NONE)
- 			continue;
+@@ -5826,6 +5826,11 @@ bool igt_max_bpc_constraint(igt_display_t *display, enum pipe pipe,
  
-@@ -5937,3 +5936,47 @@ bool igt_parse_mode_string(const char *mode_string, drmModeModeInfo *mode)
- 
- 	return true;
- }
+ 	for_each_connector_mode(output) {
+ 		igt_output_override_mode(output, &connector->modes[j__]);
 +
-+/*
-+ * i915_pipe_output_combo_valid:
-+ * @display: a pointer to an #igt_display_t structure
-+ *
-+ * Every individual test must use igt_output_set_pipe() before calling this
-+ * helper, so that this function will get all active pipes from connected
-+ * outputs (i.e. pending_pipe != PIPE_NONE) and check the selected combo is
-+ * valid or not.
-+ *
-+ * This helper is supposed to be a superset of all constraints of pipe/output
-+ * combo.
-+ *
-+ * Example:
-+ *  * Pipe-D can't support mode > 5K
-+ *  * To use 8K mode on a pipe then consecutive pipe must be free.
-+ *  * MSO is supported only on PIPE_A/PIPE_B.
-+ *
-+ * Returns: true if a valid pipe/output mode combo found, else false
-+ */
-+bool i915_pipe_output_combo_valid(igt_display_t *display)
-+{
-+	int combo = 0;
-+	igt_output_t *output;
-+
-+	if (!is_i915_device(display->drm_fd))
-+		return true;
-+
-+	for_each_connected_output(display, output) {
-+		if (output->pending_pipe == PIPE_NONE)
++		if (is_i915_device(display->drm_fd) &&
++		    !igt_check_bigjoiner_support(display))
 +			continue;
 +
-+		combo++;
-+	}
-+
-+	igt_assert_f(combo, "At least one pipe/output combo needed.\n");
-+
-+	/*
-+	 * Check the given pipe/output combo is valid for Bigjoiner.
-+	 *
-+	 * TODO: Update this helper to support other features like MSO.
-+	 */
-+	return igt_check_bigjoiner_support(display);
-+}
-diff --git a/lib/igt_kms.h b/lib/igt_kms.h
-index 7a00d204..2c243ef6 100644
---- a/lib/igt_kms.h
-+++ b/lib/igt_kms.h
-@@ -1002,5 +1002,6 @@ bool igt_max_bpc_constraint(igt_display_t *display, enum pipe pipe,
- 		igt_output_t *output, int bpc);
- bool igt_check_bigjoiner_support(igt_display_t *display);
- bool igt_parse_mode_string(const char *mode_string, drmModeModeInfo *mode);
-+bool i915_pipe_output_combo_valid(igt_display_t *display);
+ 		igt_display_commit2(display, display->is_atomic ? COMMIT_ATOMIC : COMMIT_LEGACY);
  
- #endif /* __IGT_KMS_H__ */
+ 		if (!igt_check_output_bpc_equal(display->drm_fd, pipe,
 -- 
 2.39.0
