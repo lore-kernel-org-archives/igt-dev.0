@@ -1,16 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6786110E1DE
- for <igt-dev@lists.freedesktop.org>; Wed,  4 Jan 2023 13:13:52 +0000 (UTC)
-From: Petri Latvala <petri.latvala@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Wed,  4 Jan 2023 15:10:19 +0200
-Message-Id: <20230104131019.47645-1-petri.latvala@intel.com>
+Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6D1BE10E1E0
+ for <igt-dev@lists.freedesktop.org>; Wed,  4 Jan 2023 13:29:49 +0000 (UTC)
+From: =?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>
+To: Melissa Wen <mwen@igalia.com>,
+ =?UTF-8?q?Andr=C3=A9=20Almeida?= <andrealmeid@igalia.com>,
+ Petri Latvala <petri.latvala@intel.com>,
+ Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Maxime Ripard <maxime@cerno.tech>
+Date: Wed,  4 Jan 2023 10:29:27 -0300
+Message-Id: <20230104132927.346112-1-mcanal@igalia.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v2] chamelium: Handle errors when fetching
- AdapterAllowed
+Subject: [igt-dev] [PATCH i-g-t] tests/vc4_purgeable_bo: Fix conditional
+ assertion
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,49 +22,44 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Petri Latvala <petri.latvala@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Not setting AdapterAllowed in .igtrc should be considered a valid
-configuration. The default value of 'false' from
-g_key_file_get_boolean when the field is missing is exactly what we
-want to use, and storing the missing field error in the 'error'
-variable leads to an error such as
+Currently, the assertion is outside of the conditional block, causing a
+failure in two sub-tests as the return of setjmp() can be 0 or SIGBUS.
+Therefore, create an else hook for the igt_assert(ret == SIGBUS) in
+order to avoid a failure of the tests.
 
-(kms_chamelium:1713) igt_chamelium-WARNING: Failed to read chamelium port ID for DP-3: Key file does not have key “AdapterAllowed” in group “Chamelium:HDMI-A-2”
-
-v2: Check if the field exists first to get syntax validation
-    happening, handle the error accordingly by bailing out (Ryszard)
-
-Signed-off-by: Petri Latvala <petri.latvala@intel.com>
-Cc: Ryszard Knop <ryszard.knop@intel.com>
+Signed-off-by: Maíra Canal <mcanal@igalia.com>
 ---
- lib/igt_chamelium.c | 11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ tests/vc4/vc4_purgeable_bo.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/lib/igt_chamelium.c b/lib/igt_chamelium.c
-index 79920de1..a235f3c8 100644
---- a/lib/igt_chamelium.c
-+++ b/lib/igt_chamelium.c
-@@ -2476,8 +2476,15 @@ static bool chamelium_read_port_mappings(struct chamelium *chamelium,
- 			goto out;
- 		}
- 
--		port->adapter_allowed = g_key_file_get_boolean(igt_key_file, group,
--		                                               "AdapterAllowed", &error);
-+		if (g_key_file_has_key(igt_key_file, group, "AdapterAllowed", NULL)) {
-+			port->adapter_allowed = g_key_file_get_boolean(igt_key_file, group,
-+								       "AdapterAllowed", &error);
-+			if (error) {
-+				igt_warn("Unable to read AdapterAllowed: %s\n", error->message);
-+				ret = false;
-+				goto out;
-+			}
-+		}
- 
- 		for (j = 0;
- 		     j < res->count_connectors && !port->connector_id;
+diff --git a/tests/vc4/vc4_purgeable_bo.c b/tests/vc4/vc4_purgeable_bo.c
+index 676bc1f3..7f24590c 100644
+--- a/tests/vc4/vc4_purgeable_bo.c
++++ b/tests/vc4/vc4_purgeable_bo.c
+@@ -187,7 +187,8 @@ igt_main
+ 		ret = setjmp(jmp);
+ 		if (!ret)
+ 			*map = 0;
+-		igt_assert(ret == SIGBUS);
++		else
++			igt_assert(ret == SIGBUS);
+ 		signal(SIGBUS, SIG_DFL);
+ 		signal(SIGSEGV, SIG_DFL);
+ 		igt_vc4_purgeable_bo(fd, bo->handle, false);
+@@ -230,7 +231,8 @@ igt_main
+ 		ret = setjmp(jmp);
+ 		if (!ret)
+ 			*map = 0;
+-		igt_assert(ret == SIGBUS);
++		else
++			igt_assert(ret == SIGBUS);
+ 		signal(SIGBUS, SIG_DFL);
+ 		signal(SIGSEGV, SIG_DFL);
+ 	}
 -- 
-2.30.2
+2.39.0
