@@ -1,25 +1,23 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5535910E25B
- for <igt-dev@lists.freedesktop.org>; Tue,  3 Jan 2023 10:59:40 +0000 (UTC)
-From: =?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>
-To: Melissa Wen <mwen@igalia.com>,
- =?UTF-8?q?Andr=C3=A9=20Almeida?= <andrealmeid@igalia.com>,
- Petri Latvala <petri.latvala@intel.com>,
- Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Boris Brezillon <boris.brezillon@collabora.com>,
- Tomeu Vizoso <tomeu.vizoso@collabora.com>, Emma Anholt <emma@anholt.net>,
- Jason Ekstrand <jason.ekstrand@collabora.com>,
- Iago Toral Quiroga <itoral@igalia.com>, Rob Clark <robdclark@chromium.org>
-Date: Tue,  3 Jan 2023 07:58:34 -0300
-Message-Id: <20230103105835.604394-5-mcanal@igalia.com>
-In-Reply-To: <20230103105835.604394-1-mcanal@igalia.com>
-References: <20230103105835.604394-1-mcanal@igalia.com>
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 86ED410E082
+ for <igt-dev@lists.freedesktop.org>; Wed,  4 Jan 2023 07:04:18 +0000 (UTC)
+Message-ID: <90c30634-31cb-8c02-a265-bbc754c5b6cd@intel.com>
+Date: Wed, 4 Jan 2023 12:34:13 +0530
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Language: en-US
+To: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>,
+ igt-dev@lists.freedesktop.org
+References: <20221115170855.196572-1-bhanuprakash.modem@intel.com>
+ <20221115170855.196572-42-bhanuprakash.modem@intel.com>
+ <92331c54-3b97-5eb8-d1c0-ff2783f0b356@intel.com>
+ <a8ff2616-a5e5-d02a-75f3-8d0d25adc9f4@intel.com>
+From: Swati Sharma <swati2.sharma@intel.com>
+In-Reply-To: <a8ff2616-a5e5-d02a-75f3-8d0d25adc9f4@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 4/6] lib/v3d: Add a helper to create a noop
- job
+Subject: Re: [igt-dev] [i-g-t v5 41/52] tests/i915/kms_cdclk: Add support
+ for Bigjoiner
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,218 +25,192 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-A noop job is a minimal job that can be used for tests to make sure that the
-scheduler has executed a job and it will make it possible to test V3D
-functionalities, such as the multisync extension. To create a noop job, use
-the V3D packet header to emit CL commands and create a valid submission
-to the GPU.
 
-The IGT's noop job was inspired by Mesa's noop job [1].
 
-[1] https://gitlab.freedesktop.org/mesa/mesa/-/blob/22.3/src/broadcom/vulkan/v3dvx_queue.c
+On 30-Dec-22 11:15 AM, Modem, Bhanuprakash wrote:
+> On Thu-29-12-2022 02:58 pm, Swati Sharma wrote:
+>> Hi Bhanu,
+>>
+>> The intention of cdclk test is to bump cdclk when we have transition
+>> from low resolution to high resolution (this was tested)
+>> Changes done in test_mode_transition_on_all_outputs, you have set
+>> high resolution first followed by low resolution. Why?
+> 
+> I thought, we just need to check the clock by changing the resolution in 
+> any order (high to low (or) high to low).
+> 
+> Also, realized this test is limited to 4K, hence we can drop this patch.
+> 
+> - Bhanu
+> 
+hmm..since we were validating on max 4K res panels in CI. We had 
+restricted test for max 4K res. Now, if tests will be executed on
+8K too; we need to modify test to consider max res. as 8K/4K 
+accordingly. Though this shouldn't be in scope of this change.
+>>
+>> On 15-Nov-22 10:38 PM, Bhanuprakash Modem wrote:
+>>> As many 2x tests are currently running on Pipe-A & B only, those
+>>> tests will always SKIP if there is any 8K supported panel in the
+>>> config. Instead of Skipping the test, add some intelligence to
+>>> the subtest to identify the valid pipe/output combo to execute
+>>> the subtest.
+>>>
+>>> V2: - Use updated helper name
+>>>
+>>> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+>>> ---
+>>>   tests/i915/kms_cdclk.c | 93 +++++++++++++++++++++++-------------------
+>>>   1 file changed, 51 insertions(+), 42 deletions(-)
+>>>
+>>> diff --git a/tests/i915/kms_cdclk.c b/tests/i915/kms_cdclk.c
+>>> index 991a7c50..ce945623 100644
+>>> --- a/tests/i915/kms_cdclk.c
+>>> +++ b/tests/i915/kms_cdclk.c
+>>> @@ -243,20 +243,17 @@ static void 
+>>> test_mode_transition_on_all_outputs(data_t *data)
+>>>       int debugfs_fd = data->debugfs_fd;
+>>>       drmModeModeInfo *mode, *mode_hi, *mode_lo;
+>>>       igt_output_t *output;
+>>> -    int valid_outputs = 0;
+>>>       int cdclk_ref, cdclk_new;
+>>>       uint16_t width = 0, height = 0;
+>>>       struct igt_fb fb;
+>>>       igt_pipe_t *pipe;
+>>>       igt_plane_t *plane;
+>>> -    int i = 0, j = 0;
+>>> +    enum pipe p, active_pipes[IGT_MAX_PIPES];
+>>> +    int i = 0, active_pipe_count = 0;
+>>>       do_cleanup_display(display);
+>>>       igt_display_reset(display);
+>>> -    for_each_connected_output(&data->display, output)
+>>> -        valid_outputs++;
+>>> -
+>>>       for_each_connected_output(display, output) {
+>>>           mode = igt_output_get_mode(output);
+>>>           igt_assert(mode);
+>>> @@ -269,52 +266,59 @@ static void 
+>>> test_mode_transition_on_all_outputs(data_t *data)
+>>>       igt_create_pattern_fb(data->drm_fd, width, height, 
+>>> DRM_FORMAT_XRGB8888,
+>>>                     DRM_FORMAT_MOD_LINEAR, &fb);
+>>> -    i = 0;
+>>> +
+>>>       for_each_connected_output(display, output) {
+>>> -        pipe = &display->pipes[i];
+>>> -        plane = igt_pipe_get_plane_type(pipe, DRM_PLANE_TYPE_PRIMARY);
+>>> +        for_each_pipe(display, p) {
+>>> +            mode = NULL;
+>>> -        mode = NULL;
+>>> +            igt_output_set_pipe(output, p);
+>>> +            mode = igt_output_get_mode(output);
+>>> +            igt_assert(mode);
+>>> -        igt_output_set_pipe(output, i);
+>>> -        mode = igt_output_get_mode(output);
+>>> -        igt_assert(mode);
+>>> +            mode_hi = get_highres_mode(output);
+>>> +            igt_require(mode_hi != NULL);
+>>> +
+>>> +            igt_output_override_mode(output, mode_hi);
+>>> +            if (!i915_pipe_output_combo_valid(display)) {
+>>> +                igt_output_set_pipe(output, PIPE_NONE);
+>>> +                continue;
+>>> +            }
+>>> -        mode_lo = get_lowres_mode(output);
+>>> +            active_pipes[active_pipe_count++] = p;
+>>> +            pipe = &display->pipes[p];
+>>> +            plane = igt_pipe_get_plane_type(pipe, 
+>>> DRM_PLANE_TYPE_PRIMARY);
+>>> +            igt_plane_set_fb(plane, &fb);
+>>> +            igt_fb_set_size(&fb, plane, mode_hi->hdisplay, 
+>>> mode_hi->vdisplay);
+>>> +            igt_plane_set_size(plane, mode_hi->hdisplay, 
+>>> mode_hi->vdisplay);
+>>> -        igt_output_override_mode(output, mode_lo);
+>>> -        igt_plane_set_fb(plane, &fb);
+>>> -        igt_fb_set_size(&fb, plane, mode_lo->hdisplay, 
+>>> mode_lo->vdisplay);
+>>> -        igt_plane_set_size(plane, mode_lo->hdisplay, 
+>>> mode_lo->vdisplay);
+>>> -        i++;
+>>> +            break;
+>>> +        }
+>>>       }
+>>>       igt_display_commit2(display, COMMIT_ATOMIC);
+>>> -    cdclk_ref = get_current_cdclk_freq(debugfs_fd);
+>>> +    cdclk_new = get_current_cdclk_freq(debugfs_fd);
+>>> -    j = 0;
+>>>       for_each_connected_output(display, output) {
+>>> -        pipe = &display->pipes[j];
+>>> -        plane = igt_pipe_get_plane_type(pipe, DRM_PLANE_TYPE_PRIMARY);
+>>> +        for (i = 0; i < active_pipe_count; i++) {
+>>> +            pipe = &display->pipes[active_pipes[i]];
+>>> +            plane = igt_pipe_get_plane_type(pipe, 
+>>> DRM_PLANE_TYPE_PRIMARY);
+>>> -        mode = NULL;
+>>> +            mode = NULL;
+>>> +            igt_output_set_pipe(output, i);
+>>> +            mode = igt_output_get_mode(output);
+>>> +            igt_assert(mode);
+>>> -        igt_output_set_pipe(output, j);
+>>> -        mode = igt_output_get_mode(output);
+>>> -        igt_assert(mode);
+>>> -
+>>> -        mode_hi = get_highres_mode(output);
+>>> -        igt_require(mode_hi != NULL);
+>>> +            mode_lo = get_lowres_mode(output);
+>>> -        igt_output_override_mode(output, mode_hi);
+>>> -        igt_plane_set_fb(plane, &fb);
+>>> -        igt_fb_set_size(&fb, plane, mode_hi->hdisplay, 
+>>> mode_hi->vdisplay);
+>>> -        igt_plane_set_size(plane, mode_hi->hdisplay, 
+>>> mode_hi->vdisplay);
+>>> -        j++;
+>>> +            igt_output_override_mode(output, mode_lo);
+>>> +            igt_plane_set_fb(plane, &fb);
+>>> +            igt_fb_set_size(&fb, plane, mode_lo->hdisplay, 
+>>> mode_lo->vdisplay);
+>>> +            igt_plane_set_size(plane, mode_lo->hdisplay, 
+>>> mode_lo->vdisplay);
+>>> +        }
+>>>       }
+>>>       igt_display_commit2(display, COMMIT_ATOMIC);
+>>> -    cdclk_new = get_current_cdclk_freq(debugfs_fd);
+>>> +    cdclk_ref = get_current_cdclk_freq(debugfs_fd);
+>>>       igt_info("CD clock frequency %d -> %d\n", cdclk_ref, cdclk_new);
+>>>       /* cdclk should bump */
+>>> @@ -332,13 +336,18 @@ static void run_cdclk_test(data_t *data, 
+>>> uint32_t flags)
+>>>       enum pipe pipe;
+>>>       for_each_pipe_with_valid_output(display, pipe, output) {
+>>> -        igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), 
+>>> output->name)
+>>> -            if (igt_pipe_connector_valid(pipe, output)) {
+>>> -                if (flags & TEST_PLANESCALING)
+>>> -                    test_plane_scaling(data, pipe, output);
+>>> -                if (flags & TEST_MODETRANSITION)
+>>> -                    test_mode_transition(data, pipe, output);
+>>> -            }
+>>> +        igt_output_set_pipe(output, pipe);
+>>> +        if (!i915_pipe_output_combo_valid(display)) {
+>>> +            igt_output_set_pipe(output, PIPE_NONE);
+>>> +            continue;
+>>> +        }
+>>> +
+>>> +        igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), 
+>>> output->name) {
+>>> +            if (flags & TEST_PLANESCALING)
+>>> +                test_plane_scaling(data, pipe, output);
+>>> +            if (flags & TEST_MODETRANSITION)
+>>> +                test_mode_transition(data, pipe, output);
+>>> +        }
+>>>       }
+>>>   }
+>>
+> 
 
-Signed-off-by: Maíra Canal <mcanal@igalia.com>
----
- lib/igt_v3d.c | 165 ++++++++++++++++++++++++++++++++++++++++++++++++++
- lib/igt_v3d.h |   3 +
- 2 files changed, 168 insertions(+)
-
-diff --git a/lib/igt_v3d.c b/lib/igt_v3d.c
-index 68d11d7f..0aed1af8 100644
---- a/lib/igt_v3d.c
-+++ b/lib/igt_v3d.c
-@@ -37,6 +37,9 @@
- #include "igt_v3d.h"
- #include "ioctl_wrappers.h"
- 
-+#include "v3d/v3d_cl.h"
-+#include "v3d/v3d_packet.h"
-+
- /**
-  * SECTION:igt_v3d
-  * @short_description: V3D support library
-@@ -159,3 +162,165 @@ void igt_v3d_perfmon_destroy(int fd, uint32_t id)
- 
- 	do_ioctl(fd, DRM_IOCTL_V3D_PERFMON_DESTROY, &destroy);
- }
-+
-+static void v3d_cl_init(int fd, struct v3d_cl **cl)
-+{
-+	struct v3d_bo *bo = igt_v3d_create_bo(fd, PAGE_SIZE);
-+
-+	*cl = calloc(1, sizeof(**cl));
-+
-+	igt_v3d_bo_mmap(fd, bo);
-+
-+	(*cl)->bo = bo;
-+	(*cl)->base = bo->map;
-+	(*cl)->size = bo->size;
-+	(*cl)->next = (*cl)->base;
-+}
-+
-+static void v3d_cl_destroy(int fd, struct v3d_cl *cl)
-+{
-+	igt_v3d_free_bo(fd, cl->bo);
-+	free(cl);
-+}
-+
-+struct v3d_cl_job *igt_v3d_noop_job(int fd)
-+{
-+	struct v3d_cl_job *job;
-+	struct v3d_cl_reloc tile_list_start;
-+	uint32_t *bos;
-+
-+	job = calloc(1, sizeof(*job));
-+
-+	job->tile_alloc = igt_v3d_create_bo(fd, 131 * PAGE_SIZE);
-+	job->tile_state = igt_v3d_create_bo(fd, PAGE_SIZE);
-+
-+	v3d_cl_init(fd, &job->bcl);
-+	v3d_cl_init(fd, &job->rcl);
-+	v3d_cl_init(fd, &job->icl);
-+
-+	cl_emit(job->bcl, NUMBER_OF_LAYERS, config) {
-+		config.number_of_layers = 1;
-+	}
-+
-+	cl_emit(job->bcl, TILE_BINNING_MODE_CFG, config) {
-+		config.width_in_pixels = 1;
-+		config.height_in_pixels = 1;
-+		config.number_of_render_targets = 1;
-+		config.multisample_mode_4x = false;
-+		config.double_buffer_in_non_ms_mode = false;
-+		config.maximum_bpp_of_all_render_targets = V3D_INTERNAL_BPP_32;
-+	}
-+
-+	/* There's definitely nothing in the VCD cache we want. */
-+	cl_emit(job->bcl, FLUSH_VCD_CACHE, bin);
-+
-+	/* "Binning mode lists must have a Start Tile Binning item (6) after
-+	*  any prefix state data before the binning list proper starts."
-+	*/
-+	cl_emit(job->bcl, START_TILE_BINNING, bin);
-+
-+	cl_emit(job->bcl, FLUSH, flush);
-+
-+	cl_emit(job->rcl, TILE_RENDERING_MODE_CFG_COMMON, config) {
-+		config.early_z_disable = true;
-+		config.image_width_pixels = 1;
-+		config.image_height_pixels = 1;
-+		config.number_of_render_targets = 1;
-+		config.multisample_mode_4x = false;
-+		config.maximum_bpp_of_all_render_targets = V3D_INTERNAL_BPP_32;
-+	}
-+
-+	cl_emit(job->rcl, TILE_RENDERING_MODE_CFG_COLOR, rt) {
-+		rt.render_target_0_internal_bpp = V3D_INTERNAL_BPP_32;
-+		rt.render_target_0_internal_type = V3D_INTERNAL_TYPE_8;
-+		rt.render_target_0_clamp = V3D_RENDER_TARGET_CLAMP_NONE;
-+	}
-+
-+	cl_emit(job->rcl, TILE_RENDERING_MODE_CFG_ZS_CLEAR_VALUES, clear) {
-+		clear.z_clear_value = 1.0f;
-+		clear.stencil_clear_value = 0;
-+	};
-+
-+	cl_emit(job->rcl, TILE_LIST_INITIAL_BLOCK_SIZE, init) {
-+		init.use_auto_chained_tile_lists = true;
-+		init.size_of_first_block_in_chained_tile_lists = TILE_ALLOCATION_BLOCK_SIZE_64B;
-+	}
-+
-+	cl_emit(job->rcl, MULTICORE_RENDERING_TILE_LIST_SET_BASE, list) {
-+		list.address = v3d_cl_address(job->tile_alloc, 0);
-+	}
-+
-+	cl_emit(job->rcl, MULTICORE_RENDERING_SUPERTILE_CFG, config) {
-+		config.number_of_bin_tile_lists = 1;
-+		config.total_frame_width_in_tiles = 1;
-+		config.total_frame_height_in_tiles = 1;
-+		config.supertile_width_in_tiles = 1;
-+		config.supertile_height_in_tiles = 1;
-+		config.total_frame_width_in_supertiles = 1;
-+		config.total_frame_height_in_supertiles = 1;
-+	}
-+
-+	tile_list_start = v3d_cl_get_address(job->icl);
-+
-+	cl_emit(job->icl, TILE_COORDINATES_IMPLICIT, coords);
-+
-+	cl_emit(job->icl, END_OF_LOADS, end);
-+
-+	cl_emit(job->icl, BRANCH_TO_IMPLICIT_TILE_LIST, branch);
-+
-+	cl_emit(job->icl, STORE_TILE_BUFFER_GENERAL, store) {
-+		store.buffer_to_store = NONE;
-+	}
-+
-+	cl_emit(job->icl, END_OF_TILE_MARKER, end);
-+
-+	cl_emit(job->icl, RETURN_FROM_SUB_LIST, ret);
-+
-+	cl_emit(job->rcl, START_ADDRESS_OF_GENERIC_TILE_LIST, branch) {
-+		branch.start = tile_list_start;
-+		branch.end = v3d_cl_get_address(job->icl);
-+	}
-+
-+	cl_emit(job->rcl, SUPERTILE_COORDINATES, coords) {
-+		coords.column_number_in_supertiles = 0;
-+		coords.row_number_in_supertiles = 0;
-+	}
-+
-+	cl_emit(job->rcl, END_OF_RENDERING, end);
-+
-+	job->submit = calloc(1, sizeof(*job->submit));
-+
-+	job->submit->bcl_start = job->bcl->bo->offset;
-+	job->submit->bcl_end = job->bcl->bo->offset + v3d_cl_offset(job->bcl);
-+	job->submit->rcl_start = job->rcl->bo->offset;
-+	job->submit->rcl_end = job->rcl->bo->offset + v3d_cl_offset(job->rcl);
-+
-+	job->submit->qma = job->tile_alloc->offset;
-+	job->submit->qms = job->tile_alloc->size;
-+	job->submit->qts = job->tile_state->offset;
-+
-+	job->submit->bo_handle_count = 5;
-+	bos = malloc(sizeof(*bos) * job->submit->bo_handle_count);
-+
-+	bos[0] = job->bcl->bo->handle;
-+	bos[1] = job->tile_alloc->handle;
-+	bos[2] = job->tile_state->handle;
-+	bos[3] = job->rcl->bo->handle;
-+	bos[4] = job->icl->bo->handle;
-+
-+	job->submit->bo_handles = to_user_pointer(bos);
-+
-+	return job;
-+}
-+
-+void igt_v3d_free_cl_job(int fd, struct v3d_cl_job *job)
-+{
-+	free(from_user_pointer(job->submit->bo_handles));
-+	igt_v3d_free_bo(fd, job->tile_alloc);
-+	igt_v3d_free_bo(fd, job->tile_state);
-+	v3d_cl_destroy(fd, job->bcl);
-+	v3d_cl_destroy(fd, job->rcl);
-+	v3d_cl_destroy(fd, job->icl);
-+	free(job->submit);
-+	free(job);
-+}
-diff --git a/lib/igt_v3d.h b/lib/igt_v3d.h
-index 2533d7c4..c3799096 100644
---- a/lib/igt_v3d.h
-+++ b/lib/igt_v3d.h
-@@ -60,4 +60,7 @@ uint32_t igt_v3d_perfmon_create(int fd, uint32_t ncounters, uint8_t *counters);
- void igt_v3d_perfmon_get_values(int fd, uint32_t id);
- void igt_v3d_perfmon_destroy(int fd, uint32_t id);
- 
-+struct v3d_cl_job *igt_v3d_noop_job(int fd);
-+void igt_v3d_free_cl_job(int fd, struct v3d_cl_job *job);
-+
- #endif /* IGT_V3D_H */
 -- 
-2.38.1
+~Swati Sharma
