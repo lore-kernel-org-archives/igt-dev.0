@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 397D810E5F3
- for <igt-dev@lists.freedesktop.org>; Wed,  4 Jan 2023 17:08:43 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0444C10E5F2
+ for <igt-dev@lists.freedesktop.org>; Wed,  4 Jan 2023 17:08:42 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Wed,  4 Jan 2023 22:30:23 +0530
-Message-Id: <20230104170023.3355190-52-bhanuprakash.modem@intel.com>
+Date: Wed,  4 Jan 2023 22:30:22 +0530
+Message-Id: <20230104170023.3355190-51-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230104170023.3355190-1-bhanuprakash.modem@intel.com>
 References: <20230104170023.3355190-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t v7 51/51] tests/i915/kms_pwrite_crc: Add support
- for Bigjoiner
+Subject: [igt-dev] [i-g-t v7 50/51] tests/i915/kms_psr_stress_test: Add
+ support for Bigjoiner
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -31,44 +31,37 @@ Example:
 * To use 8K mode on a pipe then consecutive pipe must be available & free.
 
 V2: - Use updated helper name
-V3: - Fix the usage of pipe & output
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Reviewed-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
+Reviewed-by: Jeevan B <jeevan.b@intel.com>
 ---
- tests/i915/kms_pwrite_crc.c | 12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
+ tests/i915/kms_psr_stress_test.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/tests/i915/kms_pwrite_crc.c b/tests/i915/kms_pwrite_crc.c
-index c84a184d..3278d876 100644
---- a/tests/i915/kms_pwrite_crc.c
-+++ b/tests/i915/kms_pwrite_crc.c
-@@ -110,6 +110,7 @@ static void prepare_crtc(data_t *data)
- 	igt_output_t *output = data->output;
- 	drmModeModeInfo *mode;
+diff --git a/tests/i915/kms_psr_stress_test.c b/tests/i915/kms_psr_stress_test.c
+index daac41d4..26e222a2 100644
+--- a/tests/i915/kms_psr_stress_test.c
++++ b/tests/i915/kms_psr_stress_test.c
+@@ -72,7 +72,13 @@ static void setup_output(data_t *data)
+ 		if (c->connector_type != DRM_MODE_CONNECTOR_eDP)
+ 			continue;
  
-+	igt_display_reset(display);
- 	/* select the pipe we want to use */
- 	igt_output_set_pipe(output, data->pipe);
- 
-@@ -156,12 +157,13 @@ static void cleanup_crtc(data_t *data)
- static void run_test(data_t *data)
- {
- 	igt_display_t *display = &data->display;
--	igt_output_t *output;
--	enum pipe pipe;
- 
--	for_each_pipe_with_valid_output(display, pipe, output) {
--		data->output = output;
--		data->pipe = pipe;
-+	for_each_pipe_with_valid_output(display, data->pipe, data->output) {
 +		igt_display_reset(display);
-+
-+		igt_output_set_pipe(data->output, data->pipe);
-+		if (!i915_pipe_output_combo_valid(display))
+ 		igt_output_set_pipe(output, pipe);
++		if (!i915_pipe_output_combo_valid(display)) {
++			igt_output_set_pipe(output, PIPE_NONE);
 +			continue;
++		}
++
+ 		data->output = output;
+ 		data->mode = igt_output_get_mode(output);
  
- 		prepare_crtc(data);
- 		test(data);
+@@ -374,4 +380,4 @@ igt_main
+ 		close(data.debugfs_fd);
+ 		close(data.drm_fd);
+ 	}
+-}
+\ No newline at end of file
++}
 -- 
 2.39.0
