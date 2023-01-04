@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2464510E5D3
- for <igt-dev@lists.freedesktop.org>; Wed,  4 Jan 2023 17:08:02 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9864A10E5D7
+ for <igt-dev@lists.freedesktop.org>; Wed,  4 Jan 2023 17:08:04 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Wed,  4 Jan 2023 22:29:40 +0530
-Message-Id: <20230104170023.3355190-9-bhanuprakash.modem@intel.com>
+Date: Wed,  4 Jan 2023 22:29:43 +0530
+Message-Id: <20230104170023.3355190-12-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230104170023.3355190-1-bhanuprakash.modem@intel.com>
 References: <20230104170023.3355190-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t v7 08/51] tests/kms_color: Add support for
+Subject: [igt-dev] [i-g-t v7 11/51] tests/kms_concurrent: Add support for
  Bigjoiner
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -33,54 +33,33 @@ Example:
 V2: - Use updated helper name
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Reviewed-by: Kunal Joshi <kunal1.joshi@intel.com>
+Reviewed-by: Nidhi Gupta <nidhi1.gupta@intel.com>
 ---
- tests/kms_color.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ tests/kms_concurrent.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/tests/kms_color.c b/tests/kms_color.c
-index e0c6a8bf..a9bfda81 100644
---- a/tests/kms_color.c
-+++ b/tests/kms_color.c
-@@ -724,9 +724,13 @@ run_gamma_degamma_tests_for_pipe(data_t *data, enum pipe p,
- 	data->drm_format = DRM_FORMAT_XRGB8888;
- 	data->mode = igt_output_get_mode(data->output);
- 
-+	if (!pipe_output_combo_valid(data, p))
-+		goto out;
+diff --git a/tests/kms_concurrent.c b/tests/kms_concurrent.c
+index 6f8ffd4a..e6d61a84 100644
+--- a/tests/kms_concurrent.c
++++ b/tests/kms_concurrent.c
+@@ -330,9 +330,17 @@ run_tests_for_pipe(data_t *data, enum pipe pipe)
+ 	igt_describe("Test atomic mode setting concurrently with multiple planes and screen "
+ 		     "resolution.");
+ 	igt_subtest_with_dynamic_f("pipe-%s", kmstest_pipe_name(pipe)) {
+-		for_each_valid_output_on_pipe(&data->display, pipe, output)
++		for_each_valid_output_on_pipe(&data->display, pipe, output) {
++			igt_display_reset(&data->display);
 +
- 	igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(p), data->output->name)
- 		igt_assert(test_t(data, data->primary));
- 
-+out:
- 	test_cleanup(data);
- }
- 
-@@ -754,6 +758,9 @@ run_ctm_tests_for_pipe(data_t *data, enum pipe p,
- 	data->drm_format = DRM_FORMAT_XRGB8888;
- 	data->mode = igt_output_get_mode(data->output);
- 
-+	if (!pipe_output_combo_valid(data, p))
-+		goto out;
++			igt_output_set_pipe(output, pipe);
++			if (!i915_pipe_output_combo_valid(&data->display))
++				continue;
 +
- 	igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(p), data->output->name) {
- 		bool success = false;
- 		int i;
-@@ -782,6 +789,7 @@ run_ctm_tests_for_pipe(data_t *data, enum pipe p,
- 		igt_assert(success);
++			igt_output_set_pipe(output, PIPE_NONE);
+ 			igt_dynamic_f("%s", igt_output_name(output))
+ 				run_test(data, pipe, output);
++		}
  	}
- 
-+out:
- 	test_cleanup(data);
  }
  
-@@ -822,7 +830,6 @@ run_deep_color_tests_for_pipe(data_t *data, enum pipe p)
- 		igt_display_reset(&data->display);
- 		igt_output_set_prop_value(output, IGT_CONNECTOR_MAX_BPC, 10);
- 		igt_output_set_pipe(output, p);
--		igt_display_commit_atomic(&data->display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
- 
- 		if (is_i915_device(data->drm_fd) &&
- 		    !igt_max_bpc_constraint(&data->display, p, output, 10))
 -- 
 2.39.0
