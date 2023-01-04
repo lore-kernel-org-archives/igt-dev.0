@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8A1BD10E5CE
- for <igt-dev@lists.freedesktop.org>; Wed,  4 Jan 2023 17:08:32 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D839C10E5EC
+ for <igt-dev@lists.freedesktop.org>; Wed,  4 Jan 2023 17:08:35 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Wed,  4 Jan 2023 22:30:08 +0530
-Message-Id: <20230104170023.3355190-37-bhanuprakash.modem@intel.com>
+Date: Wed,  4 Jan 2023 22:30:11 +0530
+Message-Id: <20230104170023.3355190-40-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230104170023.3355190-1-bhanuprakash.modem@intel.com>
 References: <20230104170023.3355190-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t v7 36/51] tests/i915/kms_big_fb: Add support for
+Subject: [igt-dev] [i-g-t v7 39/51] tests/i915/kms_ccs: Add support for
  Bigjoiner
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -33,48 +33,48 @@ Example:
 V2: - Use updated helper name
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Reviewed-by: Jeevan B <jeevan.b@intel.com>
+Reviewed-by: Karthik B S <karthik.b.s@intel.com>
 ---
- tests/i915/kms_big_fb.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ tests/i915/kms_ccs.c | 18 +++++++++++++-----
+ 1 file changed, 13 insertions(+), 5 deletions(-)
 
-diff --git a/tests/i915/kms_big_fb.c b/tests/i915/kms_big_fb.c
-index 0beba0e1..a29a05a2 100644
---- a/tests/i915/kms_big_fb.c
-+++ b/tests/i915/kms_big_fb.c
-@@ -406,6 +406,9 @@ static bool test_pipe(data_t *data)
- 	igt_plane_t *primary;
- 	bool ret = false;
+diff --git a/tests/i915/kms_ccs.c b/tests/i915/kms_ccs.c
+index 9be3fa25..40f05278 100644
+--- a/tests/i915/kms_ccs.c
++++ b/tests/i915/kms_ccs.c
+@@ -590,12 +590,21 @@ static int test_ccs(data_t *data)
+ static void test_output(data_t *data, const int testnum)
+ {
+ 	igt_fixture {
++		bool found = false;
++
+ 		data->flags = tests[testnum].flags;
  
-+	igt_info("Using (pipe %s + %s) to run the subtest.\n",
-+		 kmstest_pipe_name(data->pipe), igt_output_name(data->output));
+-		data->output = igt_get_single_output_for_pipe(&data->display,
+-							      data->pipe);
+-		igt_require(data->output);
+-		igt_output_set_pipe(data->output, data->pipe);
++		for_each_valid_output_on_pipe(&data->display, data->pipe, data->output) {
++			igt_display_reset(&data->display);
 +
- 	if (data->format == DRM_FORMAT_C8 &&
- 	    !igt_pipe_obj_has_prop(&data->display.pipes[data->pipe],
- 				   IGT_CRTC_GAMMA_LUT))
-@@ -481,6 +484,10 @@ max_hw_stride_async_flip_test(data_t *data)
- 	igt_crc_t compare_crc, async_crc;
++			igt_output_set_pipe(data->output, data->pipe);
++			if (i915_pipe_output_combo_valid(&data->display)) {
++				found = true;
++				break;
++			}
++
++		}
++		igt_require_f(found, "No valid pipe/output combo found.\n");
+ 	}
  
- 	igt_require(data->display.is_atomic);
-+
-+	igt_info("Using (pipe %s + %s) to run the subtest.\n",
-+		 kmstest_pipe_name(data->pipe), igt_output_name(data->output));
-+
- 	igt_output_set_pipe(data->output, data->pipe);
+ 	for (int i = 0; i < ARRAY_SIZE(ccs_modifiers); i++) {
+@@ -611,7 +620,6 @@ static void test_output(data_t *data, const int testnum)
+ 		igt_subtest_f("pipe-%s-%s-%s", kmstest_pipe_name(data->pipe),
+ 			      tests[testnum].testname, ccs_modifiers[i].str) {
+ 			int valid_tests = 0;
+-			igt_require(data->output);
  
- 	primary = igt_output_get_plane_type(data->output, DRM_PLANE_TYPE_PRIMARY);
-@@ -592,6 +599,12 @@ static void test_scanout(data_t *data)
- 		    data->format, data->modifier);
- 
- 	for_each_pipe_with_valid_output(&data->display, data->pipe, data->output) {
-+		igt_display_reset(&data->display);
-+
-+		igt_output_set_pipe(data->output, data->pipe);
-+		if (!i915_pipe_output_combo_valid(&data->display))
-+			continue;
-+
- 		if (data->async_flip_test) {
- 			if (max_hw_stride_async_flip_test(data))
- 				return;
+ 			if (data->flags == TEST_RANDOM)
+ 				igt_info("Testing with seed %d\n", data->seed);
 -- 
 2.39.0
