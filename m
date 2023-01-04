@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8AB0410E5DB
- for <igt-dev@lists.freedesktop.org>; Wed,  4 Jan 2023 17:08:10 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BC0C710E5DB
+ for <igt-dev@lists.freedesktop.org>; Wed,  4 Jan 2023 17:08:11 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Wed,  4 Jan 2023 22:29:48 +0530
-Message-Id: <20230104170023.3355190-17-bhanuprakash.modem@intel.com>
+Date: Wed,  4 Jan 2023 22:29:50 +0530
+Message-Id: <20230104170023.3355190-19-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230104170023.3355190-1-bhanuprakash.modem@intel.com>
 References: <20230104170023.3355190-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t v7 16/51] tests/kms_dp_tiled_display: Add support
- for Bigjoiner
+Subject: [igt-dev] [i-g-t v7 18/51] tests/kms_invalid_mode: Add support for
+ Bigjoiner
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -33,22 +33,27 @@ Example:
 V2: - Use updated helper name
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Reviewed-by: Karthik B S <karthik.b.s@intel.com>
+Reviewed-by: Nidhi Gupta <nidhi1.gupta@intel.com>
 ---
- tests/kms_dp_tiled_display.c | 1 +
- 1 file changed, 1 insertion(+)
+ tests/kms_invalid_mode.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/tests/kms_dp_tiled_display.c b/tests/kms_dp_tiled_display.c
-index bb638050..07b803a5 100644
---- a/tests/kms_dp_tiled_display.c
-+++ b/tests/kms_dp_tiled_display.c
-@@ -272,6 +272,7 @@ static void setup_mode(data_t *data)
- 		igt_require(found);
- 		igt_output_override_mode(output, mode);
- 	}
-+	igt_require(i915_pipe_output_combo_valid(data->display));
- 	igt_display_commit_atomic(data->display, DRM_MODE_ATOMIC_ALLOW_MODESET,
- 				  NULL);
- }
+diff --git a/tests/kms_invalid_mode.c b/tests/kms_invalid_mode.c
+index 40042d4e..86f529e8 100644
+--- a/tests/kms_invalid_mode.c
++++ b/tests/kms_invalid_mode.c
+@@ -301,6 +301,12 @@ igt_main
+ 	for (int i = 0; i < ARRAY_SIZE(subtests); i++) {
+ 		igt_subtest_with_dynamic(subtests[i].name) {
+ 			for_each_pipe_with_valid_output(&data.display, pipe, output) {
++				igt_display_reset(&data.display);
++
++				igt_output_set_pipe(output, pipe);
++				if (!i915_pipe_output_combo_valid(&data.display))
++					continue;
++
+ 				igt_dynamic_f("%s-pipe-%s", igt_output_name(output), kmstest_pipe_name(pipe)) {
+ 					data.output = output;
+ 					data.pipe = pipe;
 -- 
 2.39.0
