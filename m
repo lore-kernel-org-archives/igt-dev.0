@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BFAF910E5DF
- for <igt-dev@lists.freedesktop.org>; Wed,  4 Jan 2023 17:08:13 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7228C10E5E0
+ for <igt-dev@lists.freedesktop.org>; Wed,  4 Jan 2023 17:08:15 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Wed,  4 Jan 2023 22:29:51 +0530
-Message-Id: <20230104170023.3355190-20-bhanuprakash.modem@intel.com>
+Date: Wed,  4 Jan 2023 22:29:54 +0530
+Message-Id: <20230104170023.3355190-23-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230104170023.3355190-1-bhanuprakash.modem@intel.com>
 References: <20230104170023.3355190-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t v7 19/51] tests/kms_lease: Add support for
- Bigjoiner
+Subject: [igt-dev] [i-g-t v7 22/51] tests/kms_plane_alpha_blend: Add support
+ for Bigjoiner
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -31,33 +31,40 @@ Example:
 * To use 8K mode on a pipe then consecutive pipe must be available & free.
 
 V2: - Use updated helper name
+V3: - Rebase
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Reviewed-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
+Reviewed-by:  Swati Sharma <swati2.sharma@intel.com>
 ---
- tests/kms_lease.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ tests/kms_plane_alpha_blend.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/tests/kms_lease.c b/tests/kms_lease.c
-index 67e8d3be..a52d8bfc 100644
---- a/tests/kms_lease.c
-+++ b/tests/kms_lease.c
-@@ -1213,10 +1213,14 @@ igt_main
- 			igt_describe(f->desc);
- 			igt_subtest_with_dynamic_f("%s", f->name) {
- 				for_each_pipe_with_valid_output(display, data.pipe, output) {
-+					igt_display_reset(display);
+diff --git a/tests/kms_plane_alpha_blend.c b/tests/kms_plane_alpha_blend.c
+index ccf1d657..1c5ab920 100644
+--- a/tests/kms_plane_alpha_blend.c
++++ b/tests/kms_plane_alpha_blend.c
+@@ -171,9 +171,6 @@ static void prepare_crtc(data_t *data, igt_output_t *output, enum pipe pipe)
+ 	int w, h;
+ 	igt_plane_t *primary = igt_pipe_get_plane_type(&display->pipes[pipe], DRM_PLANE_TYPE_PRIMARY);
+ 
+-	igt_display_reset(display);
+-	igt_output_set_pipe(output, pipe);
+-
+ 	/* create the pipe_crc object for this pipe */
+ 	igt_pipe_crc_free(data->pipe_crc);
+ 	data->pipe_crc = igt_pipe_crc_new(data->gfx_fd, pipe,
+@@ -617,6 +614,12 @@ static void run_subtests(data_t *data)
+ 
+ 		igt_subtest_with_dynamic(subtests[i].name) {
+ 			for_each_pipe_with_single_output(&data->display, pipe, output) {
++				igt_display_reset(&data->display);
 +
-+					igt_output_set_pipe(output, data.pipe);
-+					if (!i915_pipe_output_combo_valid(display))
-+						continue;
++				igt_output_set_pipe(output, pipe);
++				if (!i915_pipe_output_combo_valid(&data->display))
++					continue;
 +
- 					igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(data.pipe),
- 						      igt_output_name(output)) {
--						igt_display_reset(display);
--						igt_display_commit(display);
- 						data.crtc_id = display->pipes[data.pipe].crtc_id;
- 						data.connector_id = output->id;
- 						data.plane_id =
+ 				prepare_crtc(data, output, pipe);
+ 				if (!pipe_check(data, pipe, subtests[i].blend, subtests[i].must_multiply))
+ 					continue;
 -- 
 2.39.0
