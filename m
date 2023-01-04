@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7B75010E5D0
- for <igt-dev@lists.freedesktop.org>; Wed,  4 Jan 2023 17:07:58 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BFE5010E5D2
+ for <igt-dev@lists.freedesktop.org>; Wed,  4 Jan 2023 17:07:59 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Wed,  4 Jan 2023 22:29:37 +0530
-Message-Id: <20230104170023.3355190-6-bhanuprakash.modem@intel.com>
+Date: Wed,  4 Jan 2023 22:29:39 +0530
+Message-Id: <20230104170023.3355190-8-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230104170023.3355190-1-bhanuprakash.modem@intel.com>
 References: <20230104170023.3355190-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t v7 05/51] tests/kms_atomic_interruptible: Add
- support for Bigjoiner
+Subject: [igt-dev] [i-g-t v7 07/51] tests/kms_color_helper: Helper to check
+ Bigjoiner constraint
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,8 +23,8 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-This patch will add a check to Skip the subtest if a selected pipe/output
-combo won't support Bigjoiner or 8K mode.
+Add a helper to Skip the subtest if a selected pipe/output combo
+won't support Bigjoiner or 8K mode.
 
 Example:
 * Pipe-D wont support a mode > 5K
@@ -33,122 +33,46 @@ Example:
 V2: - Use updated helper name
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Reviewed-by: Nidhi Gupta <nidhi1.gupta@intel.com>
+Reviewed-by: Kunal Joshi <kunal1.joshi@intel.com>
 ---
- tests/kms_atomic_interruptible.c | 40 ++++++++++++++++++++++++++++++++
- 1 file changed, 40 insertions(+)
+ tests/kms_color_helper.c | 12 ++++++++++++
+ tests/kms_color_helper.h |  1 +
+ 2 files changed, 13 insertions(+)
 
-diff --git a/tests/kms_atomic_interruptible.c b/tests/kms_atomic_interruptible.c
-index f461a15c..74b2e246 100644
---- a/tests/kms_atomic_interruptible.c
-+++ b/tests/kms_atomic_interruptible.c
-@@ -82,11 +82,15 @@ static void run_plane_test(igt_display_t *display, enum pipe pipe, igt_output_t
- 	igt_plane_t *primary, *plane;
- 	int block;
+diff --git a/tests/kms_color_helper.c b/tests/kms_color_helper.c
+index 55f3e409..2f9950f8 100644
+--- a/tests/kms_color_helper.c
++++ b/tests/kms_color_helper.c
+@@ -24,6 +24,18 @@
  
-+	igt_info("Using (pipe %s + %s) to run the subtest.\n",
-+		 kmstest_pipe_name(pipe), igt_output_name(output));
-+
- 	/*
- 	 * Make sure we start with everything disabled to force a real modeset.
- 	 * igt_display_require only sets sw state, and assumes the first test
- 	 * doesn't care about hw state.
- 	 */
-+	igt_display_reset(display);
- 	igt_display_commit2(display, COMMIT_ATOMIC);
+ #include "kms_color_helper.h"
  
- 	igt_output_set_pipe(output, pipe);
-@@ -265,6 +269,21 @@ static void run_plane_test(igt_display_t *display, enum pipe pipe, igt_output_t
- 	igt_remove_fb(display->drm_fd, &fb);
- }
- 
-+static bool pipe_output_combo_valid(igt_display_t *display,
-+				    enum pipe pipe, igt_output_t *output)
++bool pipe_output_combo_valid(data_t *data, enum pipe pipe)
 +{
 +	bool ret = true;
 +
-+	igt_display_reset(display);
-+
-+	igt_output_set_pipe(output, pipe);
-+	if (!i915_pipe_output_combo_valid(display))
++	igt_output_set_pipe(data->output, pipe);
++	if (!i915_pipe_output_combo_valid(&data->display))
 +		ret = false;
-+	igt_output_set_pipe(output, PIPE_NONE);
++	igt_output_set_pipe(data->output, PIPE_NONE);
 +
 +	return ret;
 +}
 +
- igt_main
+ bool
+ panel_supports_deep_color(int drm_fd, char *output_name)
  {
- 	igt_display_t display;
-@@ -286,6 +305,9 @@ igt_main
- 	igt_describe("Tests the interrupt properties of legacy modeset");
- 	igt_subtest_with_dynamic("legacy-setmode") {
- 		for_each_pipe_with_valid_output(&display, pipe, output) {
-+			if (!pipe_output_combo_valid(&display, pipe, output))
-+				continue;
-+
- 			igt_dynamic_f("%s-pipe-%s", igt_output_name(output), kmstest_pipe_name(pipe))
- 				run_plane_test(&display, pipe, output, test_legacy_modeset, DRM_PLANE_TYPE_PRIMARY);
- 			break;
-@@ -295,6 +317,9 @@ igt_main
- 	igt_describe("Tests the interrupt properties of atomic modeset");
- 	igt_subtest_with_dynamic("atomic-setmode") {
- 		for_each_pipe_with_valid_output(&display, pipe, output) {
-+			if (!pipe_output_combo_valid(&display, pipe, output))
-+				continue;
-+
- 			igt_dynamic_f("%s-pipe-%s", igt_output_name(output), kmstest_pipe_name(pipe))
- 				run_plane_test(&display, pipe, output, test_atomic_modeset, DRM_PLANE_TYPE_PRIMARY);
- 			break;
-@@ -304,6 +329,9 @@ igt_main
- 	igt_describe("Tests the interrupt properties for DPMS");
- 	igt_subtest_with_dynamic("legacy-dpms") {
- 		for_each_pipe_with_valid_output(&display, pipe, output) {
-+			if (!pipe_output_combo_valid(&display, pipe, output))
-+				continue;
-+
- 			igt_dynamic_f("%s-pipe-%s", igt_output_name(output), kmstest_pipe_name(pipe))
- 				run_plane_test(&display, pipe, output, test_legacy_dpms, DRM_PLANE_TYPE_PRIMARY);
- 			break;
-@@ -313,6 +341,9 @@ igt_main
- 	igt_describe("Tests the interrupt properties for pageflip");
- 	igt_subtest_with_dynamic("legacy-pageflip") {
- 		for_each_pipe_with_valid_output(&display, pipe, output) {
-+			if (!pipe_output_combo_valid(&display, pipe, output))
-+				continue;
-+
- 			igt_dynamic_f("%s-pipe-%s", igt_output_name(output), kmstest_pipe_name(pipe))
- 				run_plane_test(&display, pipe, output, test_pageflip, DRM_PLANE_TYPE_PRIMARY);
- 			break;
-@@ -322,6 +353,9 @@ igt_main
- 	igt_describe("Tests the interrupt properties for cursor");
- 	igt_subtest_with_dynamic("legacy-cursor") {
- 		for_each_pipe_with_valid_output(&display, pipe, output) {
-+			if (!pipe_output_combo_valid(&display, pipe, output))
-+				continue;
-+
- 			igt_dynamic_f("%s-pipe-%s", igt_output_name(output), kmstest_pipe_name(pipe))
- 				run_plane_test(&display, pipe, output, test_setcursor, DRM_PLANE_TYPE_CURSOR);
- 			break;
-@@ -331,6 +365,9 @@ igt_main
- 	igt_describe("Tests the interrupt properties for primary plane");
- 	igt_subtest_with_dynamic("universal-setplane-primary") {
- 		for_each_pipe_with_valid_output(&display, pipe, output) {
-+			if (!pipe_output_combo_valid(&display, pipe, output))
-+				continue;
-+
- 			igt_dynamic_f("%s-pipe-%s", igt_output_name(output), kmstest_pipe_name(pipe))
- 				run_plane_test(&display, pipe, output, test_setplane, DRM_PLANE_TYPE_PRIMARY);
- 			break;
-@@ -340,6 +377,9 @@ igt_main
- 	igt_describe("Tests the interrupt properties for cursor plane");
- 	igt_subtest_with_dynamic("universal-setplane-cursor") {
- 		for_each_pipe_with_valid_output(&display, pipe, output) {
-+			if (!pipe_output_combo_valid(&display, pipe, output))
-+				continue;
-+
- 			igt_dynamic_f("%s-pipe-%s", igt_output_name(output), kmstest_pipe_name(pipe))
- 				run_plane_test(&display, pipe, output, test_setplane, DRM_PLANE_TYPE_CURSOR);
- 			break;
+diff --git a/tests/kms_color_helper.h b/tests/kms_color_helper.h
+index f0ae30e3..bfed2fb8 100644
+--- a/tests/kms_color_helper.h
++++ b/tests/kms_color_helper.h
+@@ -69,6 +69,7 @@ typedef struct {
+ 	color_t coeffs[];
+ } gamma_lut_t;
+ 
++bool pipe_output_combo_valid(data_t *data, enum pipe pipe);
+ bool panel_supports_deep_color(int fd, char *output_name);
+ uint64_t get_max_bpc(igt_output_t *output);
+ void paint_gradient_rectangles(data_t *data,
 -- 
 2.39.0
