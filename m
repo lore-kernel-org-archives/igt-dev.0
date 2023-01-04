@@ -1,21 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id EF7BF10E0EB
- for <igt-dev@lists.freedesktop.org>; Wed,  4 Jan 2023 14:30:42 +0000 (UTC)
-From: "Knop, Ryszard" <ryszard.knop@intel.com>
-To: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Latvala,
- Petri" <petri.latvala@intel.com>
-Date: Wed, 4 Jan 2023 14:30:22 +0000
-Message-ID: <00cc234020e95d3430443d9b3fcab6b0a53ee948.camel@intel.com>
-References: <20230104131019.47645-1-petri.latvala@intel.com>
-In-Reply-To: <20230104131019.47645-1-petri.latvala@intel.com>
-Content-Language: en-US
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <2F009B264952B24A8B3498D113F4A0C6@namprd11.prod.outlook.com>
-Content-Transfer-Encoding: base64
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D4BDD10E5CD
+ for <igt-dev@lists.freedesktop.org>; Wed,  4 Jan 2023 17:07:51 +0000 (UTC)
+From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Wed,  4 Jan 2023 22:29:32 +0530
+Message-Id: <20230104170023.3355190-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t v2] chamelium: Handle errors when
- fetching AdapterAllowed
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [i-g-t v7 00/51] Add IGT support for Bigjoiner
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,35 +20,125 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-TEdUTQ0KDQpSZXZpZXdlZC1ieTogUnlzemFyZCBLbm9wIDxyeXN6YXJkLmtub3BAaW50ZWwuY29t
-Pg0KDQpPbiBXZWQsIDIwMjMtMDEtMDQgYXQgMTU6MTAgKzAyMDAsIFBldHJpIExhdHZhbGEgd3Jv
-dGU6DQo+IE5vdCBzZXR0aW5nIEFkYXB0ZXJBbGxvd2VkIGluIC5pZ3RyYyBzaG91bGQgYmUgY29u
-c2lkZXJlZCBhIHZhbGlkDQo+IGNvbmZpZ3VyYXRpb24uIFRoZSBkZWZhdWx0IHZhbHVlIG9mICdm
-YWxzZScgZnJvbQ0KPiBnX2tleV9maWxlX2dldF9ib29sZWFuIHdoZW4gdGhlIGZpZWxkIGlzIG1p
-c3NpbmcgaXMgZXhhY3RseSB3aGF0IHdlDQo+IHdhbnQgdG8gdXNlLCBhbmQgc3RvcmluZyB0aGUg
-bWlzc2luZyBmaWVsZCBlcnJvciBpbiB0aGUgJ2Vycm9yJw0KPiB2YXJpYWJsZSBsZWFkcyB0byBh
-biBlcnJvciBzdWNoIGFzDQo+IA0KPiAoa21zX2NoYW1lbGl1bToxNzEzKSBpZ3RfY2hhbWVsaXVt
-LVdBUk5JTkc6IEZhaWxlZCB0byByZWFkIGNoYW1lbGl1bSBwb3J0IElEIGZvciBEUC0zOiBLZXkg
-ZmlsZSBkb2VzIG5vdCBoYXZlIGtleSDigJxBZGFwdGVyQWxsb3dlZOKAnSBpbiBncm91cCDigJxD
-aGFtZWxpdW06SERNSS1BLTLigJ0NCj4gDQo+IHYyOiBDaGVjayBpZiB0aGUgZmllbGQgZXhpc3Rz
-IGZpcnN0IHRvIGdldCBzeW50YXggdmFsaWRhdGlvbg0KPiAgICAgaGFwcGVuaW5nLCBoYW5kbGUg
-dGhlIGVycm9yIGFjY29yZGluZ2x5IGJ5IGJhaWxpbmcgb3V0IChSeXN6YXJkKQ0KPiANCj4gU2ln
-bmVkLW9mZi1ieTogUGV0cmkgTGF0dmFsYSA8cGV0cmkubGF0dmFsYUBpbnRlbC5jb20+DQo+IENj
-OiBSeXN6YXJkIEtub3AgPHJ5c3phcmQua25vcEBpbnRlbC5jb20+DQo+IC0tLQ0KPiAgbGliL2ln
-dF9jaGFtZWxpdW0uYyB8IDExICsrKysrKysrKy0tDQo+ICAxIGZpbGUgY2hhbmdlZCwgOSBpbnNl
-cnRpb25zKCspLCAyIGRlbGV0aW9ucygtKQ0KPiANCj4gZGlmZiAtLWdpdCBhL2xpYi9pZ3RfY2hh
-bWVsaXVtLmMgYi9saWIvaWd0X2NoYW1lbGl1bS5jDQo+IGluZGV4IDc5OTIwZGUxLi5hMjM1ZjNj
-OCAxMDA2NDQNCj4gLS0tIGEvbGliL2lndF9jaGFtZWxpdW0uYw0KPiArKysgYi9saWIvaWd0X2No
-YW1lbGl1bS5jDQo+IEBAIC0yNDc2LDggKzI0NzYsMTUgQEAgc3RhdGljIGJvb2wgY2hhbWVsaXVt
-X3JlYWRfcG9ydF9tYXBwaW5ncyhzdHJ1Y3QgY2hhbWVsaXVtICpjaGFtZWxpdW0sDQo+ICAJCQln
-b3RvIG91dDsNCj4gIAkJfQ0KPiAgDQo+IC0JCXBvcnQtPmFkYXB0ZXJfYWxsb3dlZCA9IGdfa2V5
-X2ZpbGVfZ2V0X2Jvb2xlYW4oaWd0X2tleV9maWxlLCBncm91cCwNCj4gLQkJICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAiQWRhcHRlckFsbG93ZWQiLCAmZXJy
-b3IpOw0KPiArCQlpZiAoZ19rZXlfZmlsZV9oYXNfa2V5KGlndF9rZXlfZmlsZSwgZ3JvdXAsICJB
-ZGFwdGVyQWxsb3dlZCIsIE5VTEwpKSB7DQo+ICsJCQlwb3J0LT5hZGFwdGVyX2FsbG93ZWQgPSBn
-X2tleV9maWxlX2dldF9ib29sZWFuKGlndF9rZXlfZmlsZSwgZ3JvdXAsDQo+ICsJCQkJCQkJCSAg
-ICAgICAiQWRhcHRlckFsbG93ZWQiLCAmZXJyb3IpOw0KPiArCQkJaWYgKGVycm9yKSB7DQo+ICsJ
-CQkJaWd0X3dhcm4oIlVuYWJsZSB0byByZWFkIEFkYXB0ZXJBbGxvd2VkOiAlc1xuIiwgZXJyb3It
-Pm1lc3NhZ2UpOw0KPiArCQkJCXJldCA9IGZhbHNlOw0KPiArCQkJCWdvdG8gb3V0Ow0KPiArCQkJ
-fQ0KPiArCQl9DQo+ICANCj4gIAkJZm9yIChqID0gMDsNCj4gIAkJICAgICBqIDwgcmVzLT5jb3Vu
-dF9jb25uZWN0b3JzICYmICFwb3J0LT5jb25uZWN0b3JfaWQ7DQoNCg==
+Add IGT support for bigjoiner:
+* Pipe-D won't support mode > 5K
+* To use 8K mode on a pipe then consecutive pipe must be available & free.
+
+V2: - Rebase
+V3: - Optimizations in helper
+V4, V5: - Rebase
+V6: - Drop kms_content_protection & kms_multipipe_modeset
+    - Fix kms_cdclk
+V7: - Add kms_content_protection
+
+Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+
+Bhanuprakash Modem (51):
+  lib/igt_kms: Add a helper for valid pipe/output constraint
+  lib/igt_kms: Bigjoiner check in max_bpc constraint
+  tests/kms_async_flips: Add support for Bigjoiner
+  tests/kms_atomic: Add support for Bigjoiner
+  tests/kms_atomic_interruptible: Add support for Bigjoiner
+  tests/kms_atomic_transition: Add support for Bigjoiner
+  tests/kms_color_helper: Helper to check Bigjoiner constraint
+  tests/kms_color: Add support for Bigjoiner
+  tests/chamelium/kms_color_chamelium: Add support for Bigjoiner
+  tests/kms_content_protection: Add support for Bigjoiner
+  tests/kms_concurrent: Add support for Bigjoiner
+  tests/kms_cursor_crc: Add support for Bigjoiner
+  tests/kms_cursor_edge_walk: Add support for Bigjoiner
+  tests/kms_cursor_legacy: Add support for Bigjoiner
+  tests/kms_display_modes: Add support for Bigjoiner
+  tests/kms_dp_tiled_display: Add support for Bigjoiner
+  tests/kms_flip_event_leak: Add support for Bigjoiner
+  tests/kms_invalid_mode: Add support for Bigjoiner
+  tests/kms_lease: Add support for Bigjoiner
+  tests/kms_pipe_crc_basic: Add support for Bigjoiner
+  tests/kms_plane: Add support for Bigjoiner
+  tests/kms_plane_alpha_blend: Add support for Bigjoiner
+  tests/kms_plane_cursor: Add support for Bigjoiner
+  tests/kms_plane_lowres: Add support for Bigjoiner
+  tests/kms_plane_multiple: Add support for Bigjoiner
+  tests/kms_plane_scaling: Add support for Bigjoiner
+  tests/kms_prime: Add support for Bigjoiner
+  tests/kms_properties: Add support for Bigjoiner
+  tests/kms_rmfb: Add support for Bigjoiner
+  tests/kms_rotation_crc: Add support for Bigjoiner
+  tests/kms_scaling_modes: Add support for Bigjoiner
+  tests/kms_sequence: Add support for Bigjoiner
+  tests/kms_universal_plane: Add support for Bigjoiner
+  tests/kms_vblank: Add support for Bigjoiner
+  tests/kms_vrr: Add support for Bigjoiner
+  tests/i915/kms_big_fb: Add support for Bigjoiner
+  tests/i915/kms_big_joiner: Negative tests for Bigjoiner
+  tests/i915/kms_busy: Add support for Bigjoiner
+  tests/i915/kms_ccs: Add support for Bigjoiner
+  tests/i915/kms_cdclk: Add support for Bigjoiner
+  tests/i915/kms_draw_crc: Add support for Bigjoiner
+  tests/i915/kms_fence_pin_leak: Add support for Bigjoiner
+  tests/i915/kms_flip_scaled_crc: Add support for Bigjoiner
+  tests/i915/kms_flip_tiling: Add support for Bigjoiner
+  tests/i915/kms_frontbuffer_tracking: Add support for Bigjoiner
+  tests/i915/kms_mmap_write_crc: Add support for Bigjoiner
+  tests/i915/kms_psr2_sf: Add support for Bigjoiner
+  tests/i915/kms_psr2_su: Add support for Bigjoiner
+  tests/i915/kms_psr: Add support for Bigjoiner
+  tests/i915/kms_psr_stress_test: Add support for Bigjoiner
+  tests/i915/kms_pwrite_crc: Add support for Bigjoiner
+
+ lib/igt_kms.c                         |  54 ++++++-
+ lib/igt_kms.h                         |   1 +
+ tests/chamelium/kms_color_chamelium.c |   9 ++
+ tests/i915/kms_big_fb.c               |  13 ++
+ tests/i915/kms_big_joiner.c           | 187 ++++++++++------------
+ tests/i915/kms_busy.c                 | 106 ++++++++-----
+ tests/i915/kms_ccs.c                  |  18 ++-
+ tests/i915/kms_cdclk.c                |  31 ++--
+ tests/i915/kms_draw_crc.c             |  10 +-
+ tests/i915/kms_fence_pin_leak.c       |   9 ++
+ tests/i915/kms_flip_scaled_crc.c      |  14 +-
+ tests/i915/kms_flip_tiling.c          |   4 +
+ tests/i915/kms_frontbuffer_tracking.c |  16 +-
+ tests/i915/kms_mmap_write_crc.c       |   6 +
+ tests/i915/kms_psr.c                  |   4 +
+ tests/i915/kms_psr2_sf.c              |   7 +
+ tests/i915/kms_psr2_su.c              |   7 +
+ tests/i915/kms_psr_stress_test.c      |   8 +-
+ tests/i915/kms_pwrite_crc.c           |  12 +-
+ tests/kms_async_flips.c               |  11 +-
+ tests/kms_atomic.c                    |  32 +++-
+ tests/kms_atomic_interruptible.c      |  40 +++++
+ tests/kms_atomic_transition.c         |  50 +++++-
+ tests/kms_color.c                     |   9 +-
+ tests/kms_color_helper.c              |  12 ++
+ tests/kms_color_helper.h              |   1 +
+ tests/kms_concurrent.c                |  10 +-
+ tests/kms_content_protection.c        |   6 +-
+ tests/kms_cursor_crc.c                |  43 ++++-
+ tests/kms_cursor_edge_walk.c          |   6 +
+ tests/kms_cursor_legacy.c             | 202 +++++++++++++++---------
+ tests/kms_display_modes.c             | 104 +++++++-----
+ tests/kms_dp_tiled_display.c          |   1 +
+ tests/kms_flip_event_leak.c           |  11 +-
+ tests/kms_invalid_mode.c              |   6 +
+ tests/kms_lease.c                     |   8 +-
+ tests/kms_pipe_crc_basic.c            |  24 +++
+ tests/kms_plane.c                     |  30 ++--
+ tests/kms_plane_alpha_blend.c         |   9 +-
+ tests/kms_plane_cursor.c              |   6 +
+ tests/kms_plane_lowres.c              |   3 +
+ tests/kms_plane_multiple.c            |  15 +-
+ tests/kms_plane_scaling.c             | 218 +++++++++++++++++---------
+ tests/kms_prime.c                     |  11 +-
+ tests/kms_properties.c                |  18 +++
+ tests/kms_rmfb.c                      |  10 +-
+ tests/kms_rotation_crc.c              |  25 ++-
+ tests/kms_scaling_modes.c             |   8 +-
+ tests/kms_sequence.c                  |   6 +
+ tests/kms_universal_plane.c           |  94 +++++++++--
+ tests/kms_vblank.c                    |  54 ++++++-
+ tests/kms_vrr.c                       |   6 +
+ 52 files changed, 1175 insertions(+), 430 deletions(-)
+
+--
+2.39.0
