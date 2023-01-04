@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A64EA10E5D8
- for <igt-dev@lists.freedesktop.org>; Wed,  4 Jan 2023 17:08:07 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6743110E5D3
+ for <igt-dev@lists.freedesktop.org>; Wed,  4 Jan 2023 17:08:03 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Wed,  4 Jan 2023 22:29:45 +0530
-Message-Id: <20230104170023.3355190-14-bhanuprakash.modem@intel.com>
+Date: Wed,  4 Jan 2023 22:29:42 +0530
+Message-Id: <20230104170023.3355190-11-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230104170023.3355190-1-bhanuprakash.modem@intel.com>
 References: <20230104170023.3355190-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t v7 13/51] tests/kms_cursor_edge_walk: Add support
- for Bigjoiner
+Subject: [igt-dev] [i-g-t v7 10/51] tests/kms_content_protection: Add
+ support for Bigjoiner
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -30,30 +30,34 @@ Example:
 * Pipe-D wont support a mode > 5K
 * To use 8K mode on a pipe then consecutive pipe must be available & free.
 
-V2: - Use updated helper name
-
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Reviewed-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
 ---
- tests/kms_cursor_edge_walk.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ tests/kms_content_protection.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/tests/kms_cursor_edge_walk.c b/tests/kms_cursor_edge_walk.c
-index e653b9ab..86b880d8 100644
---- a/tests/kms_cursor_edge_walk.c
-+++ b/tests/kms_cursor_edge_walk.c
-@@ -351,6 +351,12 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
- 						data.curh = data.curw;
- 						igt_require(data.curw <= max_curw && data.curh <= max_curh);
+diff --git a/tests/kms_content_protection.c b/tests/kms_content_protection.c
+index aa28b7bf..638e1301 100644
+--- a/tests/kms_content_protection.c
++++ b/tests/kms_content_protection.c
+@@ -174,7 +174,6 @@ static void modeset_with_fb(const enum pipe pipe, igt_output_t *output,
+ 	igt_plane_t *primary;
  
-+						igt_display_reset(&data.display);
-+						igt_output_set_pipe(data.output, data.pipe);
-+						if (!i915_pipe_output_combo_valid(&data.display))
-+							continue;
+ 	mode = igt_output_get_mode(output);
+-	igt_output_set_pipe(output, pipe);
+ 
+ 	primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
+ 	igt_plane_set_fb(primary, &data.red);
+@@ -502,6 +501,11 @@ test_content_protection(enum igt_commit_style s, int content_type)
+ 				continue;
+ 
+ 			igt_display_reset(display);
 +
-+						igt_output_set_pipe(data.output, PIPE_NONE);
- 						igt_dynamic_f("pipe-%s-%s-%dx%d",
- 							      kmstest_pipe_name(data.pipe),
- 							      data.output->name,
++			igt_output_set_pipe(output, pipe);
++			if (!i915_pipe_output_combo_valid(display))
++				continue;
++
+ 			modeset_with_fb(pipe, output, s);
+ 
+ 			if (!output_hdcp_capable(output, content_type))
 -- 
 2.39.0
