@@ -1,20 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6D1BE10E1E0
- for <igt-dev@lists.freedesktop.org>; Wed,  4 Jan 2023 13:29:49 +0000 (UTC)
-From: =?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>
-To: Melissa Wen <mwen@igalia.com>,
- =?UTF-8?q?Andr=C3=A9=20Almeida?= <andrealmeid@igalia.com>,
- Petri Latvala <petri.latvala@intel.com>,
- Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Maxime Ripard <maxime@cerno.tech>
-Date: Wed,  4 Jan 2023 10:29:27 -0300
-Message-Id: <20230104132927.346112-1-mcanal@igalia.com>
+Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EF7BF10E0EB
+ for <igt-dev@lists.freedesktop.org>; Wed,  4 Jan 2023 14:30:42 +0000 (UTC)
+From: "Knop, Ryszard" <ryszard.knop@intel.com>
+To: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Latvala,
+ Petri" <petri.latvala@intel.com>
+Date: Wed, 4 Jan 2023 14:30:22 +0000
+Message-ID: <00cc234020e95d3430443d9b3fcab6b0a53ee948.camel@intel.com>
+References: <20230104131019.47645-1-petri.latvala@intel.com>
+In-Reply-To: <20230104131019.47645-1-petri.latvala@intel.com>
+Content-Language: en-US
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <2F009B264952B24A8B3498D113F4A0C6@namprd11.prod.outlook.com>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t] tests/vc4_purgeable_bo: Fix conditional
- assertion
+Subject: Re: [igt-dev] [PATCH i-g-t v2] chamelium: Handle errors when
+ fetching AdapterAllowed
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,44 +23,39 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Currently, the assertion is outside of the conditional block, causing a
-failure in two sub-tests as the return of setjmp() can be 0 or SIGBUS.
-Therefore, create an else hook for the igt_assert(ret == SIGBUS) in
-order to avoid a failure of the tests.
-
-Signed-off-by: Maíra Canal <mcanal@igalia.com>
----
- tests/vc4/vc4_purgeable_bo.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
-
-diff --git a/tests/vc4/vc4_purgeable_bo.c b/tests/vc4/vc4_purgeable_bo.c
-index 676bc1f3..7f24590c 100644
---- a/tests/vc4/vc4_purgeable_bo.c
-+++ b/tests/vc4/vc4_purgeable_bo.c
-@@ -187,7 +187,8 @@ igt_main
- 		ret = setjmp(jmp);
- 		if (!ret)
- 			*map = 0;
--		igt_assert(ret == SIGBUS);
-+		else
-+			igt_assert(ret == SIGBUS);
- 		signal(SIGBUS, SIG_DFL);
- 		signal(SIGSEGV, SIG_DFL);
- 		igt_vc4_purgeable_bo(fd, bo->handle, false);
-@@ -230,7 +231,8 @@ igt_main
- 		ret = setjmp(jmp);
- 		if (!ret)
- 			*map = 0;
--		igt_assert(ret == SIGBUS);
-+		else
-+			igt_assert(ret == SIGBUS);
- 		signal(SIGBUS, SIG_DFL);
- 		signal(SIGSEGV, SIG_DFL);
- 	}
--- 
-2.39.0
+TEdUTQ0KDQpSZXZpZXdlZC1ieTogUnlzemFyZCBLbm9wIDxyeXN6YXJkLmtub3BAaW50ZWwuY29t
+Pg0KDQpPbiBXZWQsIDIwMjMtMDEtMDQgYXQgMTU6MTAgKzAyMDAsIFBldHJpIExhdHZhbGEgd3Jv
+dGU6DQo+IE5vdCBzZXR0aW5nIEFkYXB0ZXJBbGxvd2VkIGluIC5pZ3RyYyBzaG91bGQgYmUgY29u
+c2lkZXJlZCBhIHZhbGlkDQo+IGNvbmZpZ3VyYXRpb24uIFRoZSBkZWZhdWx0IHZhbHVlIG9mICdm
+YWxzZScgZnJvbQ0KPiBnX2tleV9maWxlX2dldF9ib29sZWFuIHdoZW4gdGhlIGZpZWxkIGlzIG1p
+c3NpbmcgaXMgZXhhY3RseSB3aGF0IHdlDQo+IHdhbnQgdG8gdXNlLCBhbmQgc3RvcmluZyB0aGUg
+bWlzc2luZyBmaWVsZCBlcnJvciBpbiB0aGUgJ2Vycm9yJw0KPiB2YXJpYWJsZSBsZWFkcyB0byBh
+biBlcnJvciBzdWNoIGFzDQo+IA0KPiAoa21zX2NoYW1lbGl1bToxNzEzKSBpZ3RfY2hhbWVsaXVt
+LVdBUk5JTkc6IEZhaWxlZCB0byByZWFkIGNoYW1lbGl1bSBwb3J0IElEIGZvciBEUC0zOiBLZXkg
+ZmlsZSBkb2VzIG5vdCBoYXZlIGtleSDigJxBZGFwdGVyQWxsb3dlZOKAnSBpbiBncm91cCDigJxD
+aGFtZWxpdW06SERNSS1BLTLigJ0NCj4gDQo+IHYyOiBDaGVjayBpZiB0aGUgZmllbGQgZXhpc3Rz
+IGZpcnN0IHRvIGdldCBzeW50YXggdmFsaWRhdGlvbg0KPiAgICAgaGFwcGVuaW5nLCBoYW5kbGUg
+dGhlIGVycm9yIGFjY29yZGluZ2x5IGJ5IGJhaWxpbmcgb3V0IChSeXN6YXJkKQ0KPiANCj4gU2ln
+bmVkLW9mZi1ieTogUGV0cmkgTGF0dmFsYSA8cGV0cmkubGF0dmFsYUBpbnRlbC5jb20+DQo+IENj
+OiBSeXN6YXJkIEtub3AgPHJ5c3phcmQua25vcEBpbnRlbC5jb20+DQo+IC0tLQ0KPiAgbGliL2ln
+dF9jaGFtZWxpdW0uYyB8IDExICsrKysrKysrKy0tDQo+ICAxIGZpbGUgY2hhbmdlZCwgOSBpbnNl
+cnRpb25zKCspLCAyIGRlbGV0aW9ucygtKQ0KPiANCj4gZGlmZiAtLWdpdCBhL2xpYi9pZ3RfY2hh
+bWVsaXVtLmMgYi9saWIvaWd0X2NoYW1lbGl1bS5jDQo+IGluZGV4IDc5OTIwZGUxLi5hMjM1ZjNj
+OCAxMDA2NDQNCj4gLS0tIGEvbGliL2lndF9jaGFtZWxpdW0uYw0KPiArKysgYi9saWIvaWd0X2No
+YW1lbGl1bS5jDQo+IEBAIC0yNDc2LDggKzI0NzYsMTUgQEAgc3RhdGljIGJvb2wgY2hhbWVsaXVt
+X3JlYWRfcG9ydF9tYXBwaW5ncyhzdHJ1Y3QgY2hhbWVsaXVtICpjaGFtZWxpdW0sDQo+ICAJCQln
+b3RvIG91dDsNCj4gIAkJfQ0KPiAgDQo+IC0JCXBvcnQtPmFkYXB0ZXJfYWxsb3dlZCA9IGdfa2V5
+X2ZpbGVfZ2V0X2Jvb2xlYW4oaWd0X2tleV9maWxlLCBncm91cCwNCj4gLQkJICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAiQWRhcHRlckFsbG93ZWQiLCAmZXJy
+b3IpOw0KPiArCQlpZiAoZ19rZXlfZmlsZV9oYXNfa2V5KGlndF9rZXlfZmlsZSwgZ3JvdXAsICJB
+ZGFwdGVyQWxsb3dlZCIsIE5VTEwpKSB7DQo+ICsJCQlwb3J0LT5hZGFwdGVyX2FsbG93ZWQgPSBn
+X2tleV9maWxlX2dldF9ib29sZWFuKGlndF9rZXlfZmlsZSwgZ3JvdXAsDQo+ICsJCQkJCQkJCSAg
+ICAgICAiQWRhcHRlckFsbG93ZWQiLCAmZXJyb3IpOw0KPiArCQkJaWYgKGVycm9yKSB7DQo+ICsJ
+CQkJaWd0X3dhcm4oIlVuYWJsZSB0byByZWFkIEFkYXB0ZXJBbGxvd2VkOiAlc1xuIiwgZXJyb3It
+Pm1lc3NhZ2UpOw0KPiArCQkJCXJldCA9IGZhbHNlOw0KPiArCQkJCWdvdG8gb3V0Ow0KPiArCQkJ
+fQ0KPiArCQl9DQo+ICANCj4gIAkJZm9yIChqID0gMDsNCj4gIAkJICAgICBqIDwgcmVzLT5jb3Vu
+dF9jb25uZWN0b3JzICYmICFwb3J0LT5jb25uZWN0b3JfaWQ7DQoNCg==
