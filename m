@@ -1,17 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A3D2B10E0DD
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 29A6510E0C9
  for <igt-dev@lists.freedesktop.org>; Thu,  5 Jan 2023 04:41:49 +0000 (UTC)
 From: Ashutosh Dixit <ashutosh.dixit@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Wed,  4 Jan 2023 20:41:44 -0800
-Message-Id: <20230105044144.3982688-4-ashutosh.dixit@intel.com>
-In-Reply-To: <20230105044144.3982688-1-ashutosh.dixit@intel.com>
-References: <20230105044144.3982688-1-ashutosh.dixit@intel.com>
+Date: Wed,  4 Jan 2023 20:41:41 -0800
+Message-Id: <20230105044144.3982688-1-ashutosh.dixit@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 3/3] HAX: Add gem_ctx_freq@sysfs and
- perf_pmu@frequency to fast-feedback.testlist
+Subject: [igt-dev] [PATCH i-g-t 0/3] Fix PMU freq verification with SLPC
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,38 +20,32 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-CI ONLY, PLEASE DON'T REVIEW
+With SLPC, even when we set the same min and max freq's, the requested and
+actual freq's can differ from the min/max freq set. For example "efficient
+freq" (when in effect) can override set min/max freq. In general FW is the
+final arbiter in determining freq and can override set values.
 
-Try to repro GL #6806 nad #6786 because these could not be reproduced
-locally. Also, the only DG2 machines these are reproducing on are in
-drm-tip CI and not in trybot so sorry, not sending this patch to trybot.
+Therefore compare the requested freq reported by PMU not against the set
+freq's but against the requested freq reported in sysfs.
+
+v2: Remove v1 patches which need to be redone. In v2 just add failing tests
+    to BAT testlist to try to repro the failures
+v3: Add modified v1 patches with minimal changes which are expected to fix
+    the two issues
 
 Bug: https://gitlab.freedesktop.org/drm/intel/-/issues/6806
 Bug: https://gitlab.freedesktop.org/drm/intel/-/issues/6786
-Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
----
- tests/intel-ci/fast-feedback.testlist | 2 ++
- 1 file changed, 2 insertions(+)
 
-diff --git a/tests/intel-ci/fast-feedback.testlist b/tests/intel-ci/fast-feedback.testlist
-index 88c90221e5a..723bb9af3b1 100644
---- a/tests/intel-ci/fast-feedback.testlist
-+++ b/tests/intel-ci/fast-feedback.testlist
-@@ -19,6 +19,7 @@ igt@gem_close_race@basic-threads
- igt@gem_ctx_create@basic
- igt@gem_ctx_create@basic-files
- igt@gem_ctx_exec@basic
-+igt@gem_ctx_freq@sysfs
- igt@gem_exec_basic@basic
- igt@gem_exec_create@basic
- igt@gem_exec_fence@basic-busy
-@@ -128,6 +129,7 @@ igt@i915_pm_backlight@basic-brightness
- igt@i915_pm_rpm@basic-pci-d3-state
- igt@i915_pm_rpm@basic-rte
- igt@i915_pm_rps@basic-api
-+igt@perf_pmu@frequency
- igt@prime_self_import@basic-llseek-bad
- igt@prime_self_import@basic-llseek-size
- igt@prime_self_import@basic-with_fd_dup
+Ashutosh Dixit (3):
+  tests/perf_pmu: Compare against requested freq in frequency subtest
+  tests/gem_ctx_freq: Compare against requested freq
+  HAX: Add gem_ctx_freq@sysfs and perf_pmu@frequency to
+    fast-feedback.testlist
+
+ tests/i915/gem_ctx_freq.c             | 18 ++++++++++--------
+ tests/i915/perf_pmu.c                 |  5 +++--
+ tests/intel-ci/fast-feedback.testlist |  2 ++
+ 3 files changed, 15 insertions(+), 10 deletions(-)
+
 -- 
 2.38.0
