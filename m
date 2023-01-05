@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from NAM02-SN1-obe.outbound.protection.outlook.com
- (mail-sn1nam02on2061.outbound.protection.outlook.com [40.107.96.61])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A6D8110E488
- for <igt-dev@lists.freedesktop.org>; Thu,  5 Jan 2023 00:53:33 +0000 (UTC)
+Received: from NAM11-DM6-obe.outbound.protection.outlook.com
+ (mail-dm6nam11on2085.outbound.protection.outlook.com [40.107.223.85])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6DF6710E488
+ for <igt-dev@lists.freedesktop.org>; Thu,  5 Jan 2023 00:53:34 +0000 (UTC)
 From: <vitaly.prosyak@amd.com>
 To: <igt-dev@lists.freedesktop.org>
-Date: Wed, 4 Jan 2023 19:53:18 -0500
-Message-ID: <20230105005320.157831-2-vitaly.prosyak@amd.com>
+Date: Wed, 4 Jan 2023 19:53:19 -0500
+Message-ID: <20230105005320.157831-3-vitaly.prosyak@amd.com>
 In-Reply-To: <20230105005320.157831-1-vitaly.prosyak@amd.com>
 References: <20230105005320.157831-1-vitaly.prosyak@amd.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-Subject: [igt-dev] [PATCH 2/4] lib/amdgpu: move function to another file
+Subject: [igt-dev] [PATCH 3/4] lib/amdgpu: add cp dma helper functions
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,263 +28,535 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Vitaly Prosyak <vitaly.prosyak@amd.com>
 
-No functional change just cosmetic.
-Move function amdgpu_open_devices to the shared file
-since other tests will also use it.
+CP DMA tests are executed between GTT and VRAM of a single chip
+and also between separate ASICs.
+
+ Port cp dma tests from drm_lib with the following improvements:
+ - remove many global variables which restrict scalability and readability
+ - reuse memory allocation helpers vs new helpers as in the original test
+ - use helper structs to reduce the number of parameters in functions.
 
 Signed-off-by: Vitaly Prosyak <vitaly.prosyak@amd.com>
 ---
- lib/amdgpu/amd_ip_blocks.c  | 94 ++++++++++++++++++++++++++++++++++---
- lib/amdgpu/amd_ip_blocks.h  |  5 ++
- lib/amdgpu/amd_pci_unplug.c | 69 ---------------------------
- lib/amdgpu/amd_pci_unplug.h |  3 +-
- 4 files changed, 93 insertions(+), 78 deletions(-)
+ lib/amdgpu/amd_cp_dma.c | 446 ++++++++++++++++++++++++++++++++++++++++
+ lib/amdgpu/amd_cp_dma.h |  41 ++++
+ lib/meson.build         |   3 +-
+ 3 files changed, 489 insertions(+), 1 deletion(-)
+ create mode 100644 lib/amdgpu/amd_cp_dma.c
+ create mode 100644 lib/amdgpu/amd_cp_dma.h
 
-diff --git a/lib/amdgpu/amd_ip_blocks.c b/lib/amdgpu/amd_ip_blocks.c
-index 3331c40bd..ce1bddffc 100644
---- a/lib/amdgpu/amd_ip_blocks.c
-+++ b/lib/amdgpu/amd_ip_blocks.c
-@@ -22,6 +22,8 @@
-  *
-  *
-  */
-+#include <fcntl.h>
+diff --git a/lib/amdgpu/amd_cp_dma.c b/lib/amdgpu/amd_cp_dma.c
+new file mode 100644
+index 000000000..265cffa4c
+--- /dev/null
++++ b/lib/amdgpu/amd_cp_dma.c
+@@ -0,0 +1,446 @@
++/* SPDX-License-Identifier: MIT
++ * Copyright 2023 Advanced Micro Devices, Inc.
++ *
++ * Permission is hereby granted, free of charge, to any person obtaining a
++ * copy of this software and associated documentation files (the "Software"),
++ * to deal in the Software without restriction, including without limitation
++ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
++ * and/or sell copies of the Software, and to permit persons to whom the
++ * Software is furnished to do so, subject to the following conditions:
++ *
++ * The above copyright notice and this permission notice shall be included in
++ * all copies or substantial portions of the Software.
++ *
++ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
++ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
++ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
++ * THE COPYRIGHT HOLDER(S) OR AUTHOR(S) BE LIABLE FOR ANY CLAIM, DAMAGES OR
++ * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
++ * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
++ * OTHER DEALINGS IN THE SOFTWARE.
++ *
++*/
++#include <unistd.h>
++#include <amdgpu.h>
++#include "amdgpu_drm.h"
++#include "amd_memory.h"
++#include "amd_cp_dma.h"
 +
- #include "amd_memory.h"
- #include "amd_ip_blocks.h"
- #include "amd_PM4.h"
-@@ -616,21 +618,30 @@ int setup_amdgpu_ip_blocks(uint32_t major, uint32_t minor, struct amdgpu_gpu_inf
- 		igt_info("amdgpu: unknown (family_id, chip_external_rev): (%u, %u)\n",
- 			 amdinfo->family_id, amdinfo->chip_external_rev);
- 		return -1;
-+	} else {
-+		igt_info("amdgpu: %s (family_id, chip_external_rev): (%u, %u)\n",
-+				info->name, amdinfo->family_id, amdinfo->chip_external_rev);
- 	}
- 
--	if (info->family >= CHIP_SIENNA_CICHLID)
-+	if (info->family >= CHIP_SIENNA_CICHLID) {
- 		info->chip_class = GFX10_3;
--	else if (info->family >= CHIP_NAVI10)
-+		igt_info("amdgpu: chip_class GFX10_3\n");
-+	} else if (info->family >= CHIP_NAVI10) {
- 		info->chip_class = GFX10;
--	else if (info->family >= CHIP_VEGA10)
-+		igt_info("amdgpu: chip_class GFX10\n");
-+	} else if (info->family >= CHIP_VEGA10) {
- 		info->chip_class = GFX9;
--	else if (info->family >= CHIP_TONGA)
-+		igt_info("amdgpu: chip_class GFX9\n");
-+	} else if (info->family >= CHIP_TONGA) {
- 		info->chip_class = GFX8;
--	else if (info->family >= CHIP_BONAIRE)
-+		igt_info("amdgpu: chip_class GFX8\n");
-+	} else if (info->family >= CHIP_BONAIRE) {
- 		info->chip_class = GFX7;
--	else if (info->family >= CHIP_TAHITI)
-+		igt_info("amdgpu: chip_class GFX7\n");
-+	} else if (info->family >= CHIP_TAHITI) {
- 		info->chip_class = GFX6;
--	else {
-+		igt_info("amdgpu: chip_class GFX6\n");
-+	} else {
- 		igt_info("amdgpu: Unknown family.\n");
- 		return -1;
- 	}
-@@ -663,3 +674,72 @@ int setup_amdgpu_ip_blocks(uint32_t major, uint32_t minor, struct amdgpu_gpu_inf
- 
- 	return 0;
- }
 +
-+int
-+amdgpu_open_devices(bool open_render_node, int  max_cards_supported, int drm_amdgpu_fds[])
++#define IB_SIZE 4096
++#define MAX_RESOURCES 3
++
++#define DMA_SIZE 4097 
++#define DMA_DATA_BYTE 0xea
++#define DMA_SIZE_MAX (1<<26)
++
++struct amdgpu_cp_dma_bo {
++	amdgpu_bo_handle buf_handle;
++	amdgpu_va_handle va_handle;
++	uint64_t gpu_va;
++	uint64_t size;
++};
++
++struct amdgpu_cp_dma_ib {
++	amdgpu_bo_handle ib_handle;
++	uint32_t *ib_cpu;
++	uint64_t ib_mc_address;
++	amdgpu_va_handle ib_va_handle;
++};
++
++struct amdgpu_cp_dma_contex {
++	amdgpu_bo_handle resources[MAX_RESOURCES];
++	unsigned num_resources;
++	uint32_t num_dword;
++	uint8_t *reference_data;
++};
++
++static int
++import_dma_buf_to_bo(amdgpu_device_handle dev, int dmabuf_fd,
++					 struct amdgpu_cp_dma_bo *bo)
 +{
-+	drmDevicePtr devices[MAX_CARDS_SUPPORTED];
-+	int i;
-+	int drm_node;
-+	int amd_index = 0;
-+	int drm_count;
-+	int fd;
-+	drmVersionPtr version;
++	amdgpu_va_handle va_handle;
++	uint64_t vmc_addr;
++	int r;
++	struct amdgpu_bo_import_result bo_import_result = {};
 +
-+	for (i = 0; i < max_cards_supported && i < MAX_CARDS_SUPPORTED; i++)
-+		drm_amdgpu_fds[i] = -1;
++	r = amdgpu_bo_import(dev, amdgpu_bo_handle_type_dma_buf_fd,
++			dmabuf_fd, &bo_import_result);
++	if (r)
++		goto error_bo_import;
 +
-+	drm_count = drmGetDevices2(0, devices, MAX_CARDS_SUPPORTED);
++	r = amdgpu_va_range_alloc(dev, amdgpu_gpu_va_range_general,
++				bo_import_result.alloc_size, 0, 0,
++				&vmc_addr, &va_handle, 0);
++	if (r)
++		goto error_va_alloc;
 +
-+	if (drm_count < 0) {
-+		fprintf(stderr, "drmGetDevices2() returned an error %d\n", drm_count);
-+		return 0;
-+	}
++	r = amdgpu_bo_va_op(bo_import_result.buf_handle, 0,
++			bo_import_result.alloc_size, vmc_addr,
++			AMDGPU_VM_PAGE_READABLE | AMDGPU_VM_PAGE_WRITEABLE |
++			AMDGPU_VM_PAGE_EXECUTABLE,
++			AMDGPU_VA_OP_MAP);
++	if (r)
++		goto error_va_map;
 +
-+	for (i = 0; i < drm_count; i++) {
-+		/* If this is not PCI device, skip*/
-+		if (devices[i]->bustype != DRM_BUS_PCI)
-+			continue;
++	bo->buf_handle = bo_import_result.buf_handle;
++	bo->va_handle = va_handle;
++	bo->gpu_va = vmc_addr;
++	bo->size = bo_import_result.alloc_size;
 +
-+		/* If this is not AMD GPU vender ID, skip*/
-+		if (devices[i]->deviceinfo.pci->vendor_id != 0x1002)
-+			continue;
++	return 0;
 +
-+		if (open_render_node)
-+			drm_node = DRM_NODE_RENDER;
-+		else
-+			drm_node = DRM_NODE_PRIMARY;
++error_va_map:
++	amdgpu_bo_va_op(bo_import_result.buf_handle, 0,
++			bo_import_result.alloc_size, vmc_addr, 0, AMDGPU_VA_OP_UNMAP);
 +
-+		fd = -1;
-+		if (devices[i]->available_nodes & 1 << drm_node)
-+			fd = open(
-+				devices[i]->nodes[drm_node],
-+				O_RDWR | O_CLOEXEC);
++error_va_alloc:
++	amdgpu_va_range_free(va_handle);
 +
-+		/* This node is not available. */
-+		if (fd < 0) continue;
++error_bo_import:
++	amdgpu_bo_free(bo_import_result.buf_handle);
 +
-+		version = drmGetVersion(fd);
-+		if (!version) {
-+			fprintf(stderr, "Warning: Cannot get version for %s." "Error is %s\n",
-+				devices[i]->nodes[drm_node], strerror(errno));
-+			close(fd);
-+			continue;
-+		}
-+
-+		if (strcmp(version->name, "amdgpu")) {
-+			/* This is not AMDGPU driver, skip.*/
-+			drmFreeVersion(version);
-+			close(fd);
-+			continue;
-+		}
-+
-+		drmFreeVersion(version);
-+
-+		drm_amdgpu_fds[amd_index] = fd;
-+		amd_index++;
-+	}
-+
-+	drmFreeDevices(devices, drm_count);
-+	return amd_index;
++	return r;
 +}
-diff --git a/lib/amdgpu/amd_ip_blocks.h b/lib/amdgpu/amd_ip_blocks.h
-index 908aacde0..b3620c00f 100644
---- a/lib/amdgpu/amd_ip_blocks.h
-+++ b/lib/amdgpu/amd_ip_blocks.h
-@@ -27,6 +27,8 @@
- 
- #include "amd_registers.h"
- 
-+#define MAX_CARDS_SUPPORTED 4
 +
- enum amd_ip_block_type {
- 	AMD_IP_GFX,
- 	AMD_IP_COMPUTE,
-@@ -136,4 +138,7 @@ struct amdgpu_cmd_base* get_cmd_base(void);
- 
- void free_cmd_base(struct amdgpu_cmd_base *base);
- 
++static int
++free_bo(struct amdgpu_cp_dma_bo bo)
++{
++	int r;
++	r = amdgpu_bo_va_op(bo.buf_handle, 0, bo.size, bo.gpu_va, 0, AMDGPU_VA_OP_UNMAP);
++	igt_assert_eq(r, 0);
++
++	r = amdgpu_va_range_free(bo.va_handle);
++	igt_assert_eq(r, 0);
++
++	r = amdgpu_bo_free(bo.buf_handle);
++	igt_assert_eq(r, 0);
++
++	return r;
++}
++
++static int
++submit_and_sync(amdgpu_device_handle device_handle, unsigned ip_type,
++		  amdgpu_context_handle context_handle, uint64_t ib_mc_address,
++		  struct amdgpu_cp_dma_contex *dma_contex)
++{
++	struct amdgpu_cs_request ibs_request = {0};
++	struct amdgpu_cs_ib_info ib_info = {0};
++	struct amdgpu_cs_fence fence_status = {0};
++	uint32_t expired;
++	int r;
++
++	r = amdgpu_bo_list_create(device_handle,
++			dma_contex->num_resources, dma_contex->resources,
++			NULL, &ibs_request.resources);
++	igt_assert_eq(r, 0);
++
++	ib_info.ib_mc_address = ib_mc_address;
++	ib_info.size = dma_contex->num_dword;
++
++	ibs_request.ip_type = ip_type;
++	ibs_request.number_of_ibs = 1;
++	ibs_request.ibs = &ib_info;
++	ibs_request.fence_info.handle = NULL;
++
++	r = amdgpu_cs_submit(context_handle, 0, &ibs_request, 1);
++	igt_assert_eq(r, 0);
++
++	r = amdgpu_bo_list_destroy(ibs_request.resources);
++	igt_assert_eq(r, 0);
++
++	fence_status.context = context_handle;
++	fence_status.ip_type = ip_type;
++	fence_status.fence = ibs_request.seq_no;
++
++	r = amdgpu_cs_query_fence_status(&fence_status, AMDGPU_TIMEOUT_INFINITE,
++									 0, &expired);
++	return r;
++}
++
++static void
++cp_dma_cmd(const struct amdgpu_cp_dma_ib *ib, struct amdgpu_cp_dma_contex *dma_contex,
++	     const struct amdgpu_cp_dma_bo *src_bo, const struct amdgpu_cp_dma_bo *dst_bo)
++{
++	/* TODO use spec defines */
++	ib->ib_cpu[0] = 0xc0055000;
++	ib->ib_cpu[1] = 0x80000000;
++	ib->ib_cpu[2] = src_bo->gpu_va & 0x00000000ffffffff;
++	ib->ib_cpu[3] = (src_bo->gpu_va & 0xffffffff00000000) >> 32;
++	ib->ib_cpu[4] = dst_bo->gpu_va & 0x00000000ffffffff;
++	ib->ib_cpu[5] = (dst_bo->gpu_va & 0xffffffff00000000) >> 32;
++	// size is read from the lower 26bits. 
++	ib->ib_cpu[6] = ((1 << 26) - 1) & DMA_SIZE;
++	ib->ib_cpu[7] = 0xffff1000;
++
++	dma_contex->num_dword = 8;
++
++	dma_contex->resources[0] = src_bo->buf_handle;
++	dma_contex->resources[1] = dst_bo->buf_handle;
++	dma_contex->resources[2] = ib->ib_handle;
++	dma_contex->num_resources = 3;
++}
++
++static int
++amdgpu_cp_dma(amdgpu_device_handle device_handle, unsigned ip_type, amdgpu_context_handle context_handle,
++		const struct amdgpu_cp_dma_ib *ib, struct amdgpu_cp_dma_contex *dma_contex,
++		uint32_t src_heap, uint32_t dst_heap)
++{
++	int r;
++	struct amdgpu_cp_dma_bo src_bo = {0};
++	struct amdgpu_cp_dma_bo dst_bo = {0};
++	void *src_bo_cpu;
++	void *dst_bo_cpu;
++
++	/* allocate the src bo, set its data to DMA_DATA_BYTE */
++	src_bo.buf_handle = gpu_mem_alloc(device_handle, DMA_SIZE, 4096,
++			src_heap, AMDGPU_GEM_CREATE_CPU_ACCESS_REQUIRED, &src_bo.gpu_va, &src_bo.va_handle);
++
++	r = amdgpu_bo_cpu_map(src_bo.buf_handle, (void **)&src_bo_cpu);
++	igt_assert_eq(r, 0);
++	memset(src_bo_cpu, DMA_DATA_BYTE, DMA_SIZE);
++
++	r = amdgpu_bo_cpu_unmap(src_bo.buf_handle);
++	igt_assert_eq(r, 0);
++
++	/* allocate the dst bo and clear its content to all 0 */
++	dst_bo.buf_handle = gpu_mem_alloc(device_handle, DMA_SIZE, 4096,
++			dst_heap, AMDGPU_GEM_CREATE_CPU_ACCESS_REQUIRED, &dst_bo.gpu_va, &dst_bo.va_handle);
++
++	r = amdgpu_bo_cpu_map(dst_bo.buf_handle, (void **)&dst_bo_cpu);
++	igt_assert_eq(r, 0);
++
++	memset(dst_bo_cpu, 0, DMA_SIZE);
++
++	/* record CP DMA command and dispatch the command */
++	cp_dma_cmd(ib, dma_contex, &src_bo, &dst_bo);
++
++	r = submit_and_sync(device_handle, ip_type, context_handle, ib->ib_mc_address ,dma_contex);
++	igt_assert_eq(r, 0);
++
++	/* verify the dst bo is filled with DMA_DATA_BYTE */
++	r = memcmp(dst_bo_cpu, dma_contex->reference_data, DMA_SIZE);
++	igt_assert_eq(r, 0);
++
++	r = amdgpu_bo_cpu_unmap(dst_bo.buf_handle);
++	igt_assert_eq(r, 0);
++
++	r = free_bo(src_bo);
++	igt_assert_eq(r, 0);
++
++	r = free_bo(dst_bo);
++	igt_assert_eq(r, 0);
++
++	return r;
++}
++
++static int
++amdgpu_cp_dma_p2p(amdgpu_device_handle device_handle,
++		    amdgpu_device_handle exporting_device_handle,
++		    unsigned ip_type, amdgpu_context_handle context_handle,
++		    uint32_t src_heap, uint32_t dst_heap,
++		    const struct amdgpu_cp_dma_ib *ib, struct amdgpu_cp_dma_contex *dma_contex)
++{
++	int r;
++	struct amdgpu_cp_dma_bo exported_bo = {0};
++	int dma_buf_fd;
++	int dma_buf_fd_dup;
++	struct amdgpu_cp_dma_bo src_bo = {0};
++	struct amdgpu_cp_dma_bo imported_dst_bo = {0};
++
++	void *exported_bo_cpu;
++	void *src_bo_cpu;
++
++	/* allocate a bo on the peer device and export it to dma-buf */
++	exported_bo.buf_handle = gpu_mem_alloc(exporting_device_handle, DMA_SIZE, 4096,
++			src_heap, AMDGPU_GEM_CREATE_CPU_ACCESS_REQUIRED, &exported_bo.gpu_va, &exported_bo.va_handle);
++
++	/* map the exported bo and clear its content to 0 */
++	r = amdgpu_bo_cpu_map(exported_bo.buf_handle, (void **)&exported_bo_cpu);
++	igt_assert_eq(r, 0);
++	memset(exported_bo_cpu, 0, DMA_SIZE);
++
++	r = amdgpu_bo_export(exported_bo.buf_handle,
++			amdgpu_bo_handle_type_dma_buf_fd, (uint32_t*)&dma_buf_fd);
++	igt_assert_eq(r, 0);
++
++    // According to amdgpu_drm:
++	// "Buffer must be "imported" only using new "fd"
++	// (different from one used by "exporter")"
++	dma_buf_fd_dup = dup(dma_buf_fd);
++	r = close(dma_buf_fd);
++	igt_assert_eq(r, 0);
++
++	/* import the dma-buf to the executing device, imported bo is the DMA destination */
++	r = import_dma_buf_to_bo(device_handle, dma_buf_fd_dup, &imported_dst_bo);
++	igt_assert_eq(r, 0);
++
++	r = close(dma_buf_fd_dup);
++	igt_assert_eq(r, 0);
++
++	r = amdgpu_cs_ctx_create(device_handle, &context_handle);
++	/* allocate the src bo and set its content to DMA_DATA_BYTE */
++
++	src_bo.buf_handle = gpu_mem_alloc(device_handle, DMA_SIZE, 4096,
++			dst_heap, AMDGPU_GEM_CREATE_CPU_ACCESS_REQUIRED, &src_bo.gpu_va, &src_bo.va_handle);
++
++	igt_assert_eq(r, 0);
++
++	r = amdgpu_bo_cpu_map(src_bo.buf_handle, (void **)&src_bo_cpu);
++	igt_assert_eq(r, 0);
++
++	memset(src_bo_cpu, DMA_DATA_BYTE, DMA_SIZE);
++
++	r = amdgpu_bo_cpu_unmap(src_bo.buf_handle);
++	igt_assert_eq(r, 0);
++
++	/* record CP DMA command and dispatch the command */
++	cp_dma_cmd(ib, dma_contex, &src_bo, &imported_dst_bo);
++
++	r = submit_and_sync(device_handle, ip_type, context_handle, ib->ib_mc_address ,dma_contex);
++
++	igt_assert_eq(r, 0);
++
++	/* verify the exported_bo_cpu is filled with DMA_DATA_BYTE */
++	r = memcmp(exported_bo_cpu, dma_contex->reference_data, DMA_SIZE);
++	igt_assert_eq(r, 0);
++
++	r = amdgpu_bo_cpu_unmap(exported_bo.buf_handle);
++	igt_assert_eq(r, 0);
++
++	r = free_bo(exported_bo);
++	igt_assert_eq(r, 0);
++
++	r = free_bo(imported_dst_bo);
++	igt_assert_eq(r, 0);
++
++	r = free_bo(src_bo);
++	igt_assert_eq(r, 0);
++
++	return r;
++}
++
++static int
++amdgpu_cp_dma_misc(amdgpu_device_handle device_handle, unsigned ip_type,
++		     uint32_t src_heap, uint32_t dst_heap)
++{
++	amdgpu_context_handle context_handle;
++	struct amdgpu_cp_dma_contex dma_contex = {};
++	struct amdgpu_cp_dma_ib dma_ib = {};
++	int r;
++
++	r = amdgpu_cs_ctx_create(device_handle, &context_handle);
++	igt_assert_eq(r, 0);
++	r = amdgpu_bo_alloc_and_map(device_handle, IB_SIZE, 4096,
++					AMDGPU_GEM_DOMAIN_GTT, 0,
++					&dma_ib.ib_handle, (void**)&dma_ib.ib_cpu,
++					&dma_ib.ib_mc_address, &dma_ib.ib_va_handle);
++	igt_assert_eq(r, 0);
++
++	dma_contex.reference_data = (uint8_t*)malloc(DMA_SIZE);
++	memset(dma_contex.reference_data, DMA_DATA_BYTE, DMA_SIZE);
++
++	r = amdgpu_cp_dma(device_handle, ip_type, context_handle, &dma_ib,
++					  &dma_contex, src_heap, dst_heap);
++	igt_assert_eq(r, 0);
++
++ 	amdgpu_cs_ctx_free(context_handle);
++ 	free(dma_contex.reference_data);
++ 	amdgpu_bo_unmap_and_free(dma_ib.ib_handle, dma_ib.ib_va_handle,
++ 							 dma_ib.ib_mc_address, IB_SIZE);
++
++	return r;
++}
++
++static int
++amdgpu_cp_dma_misc_p2p(amdgpu_device_handle device_handle,
++			 amdgpu_device_handle exporting_device_handle,
++			 unsigned ip_type,
++			 uint32_t src_heap, uint32_t dst_heap)
++{
++	amdgpu_context_handle context_handle;
++	struct amdgpu_cp_dma_contex dma_contex = {};
++	struct amdgpu_cp_dma_ib dma_ib = {};
++	int r;
++
++	/* create context */
++	r = amdgpu_cs_ctx_create(device_handle, &context_handle);
++	igt_assert_eq(r, 0);
++
++	/* init dma_ib */
++	r = amdgpu_bo_alloc_and_map(device_handle, IB_SIZE, 4096,
++					AMDGPU_GEM_DOMAIN_GTT, 0,
++					&dma_ib.ib_handle, (void**)&dma_ib.ib_cpu,
++					&dma_ib.ib_mc_address, &dma_ib.ib_va_handle);
++	igt_assert_eq(r, 0);
++
++	/* init dma context */
++	dma_contex.reference_data = (uint8_t*)malloc(DMA_SIZE);
++	memset(dma_contex.reference_data, DMA_DATA_BYTE, DMA_SIZE);
++
++	r = amdgpu_cp_dma_p2p(device_handle, exporting_device_handle, ip_type, context_handle,
++						  src_heap, dst_heap, &dma_ib, &dma_contex);
++	igt_assert_eq(r, 0);
++
++ 	amdgpu_cs_ctx_free(context_handle);
++ 	free(dma_contex.reference_data);
++ 	amdgpu_bo_unmap_and_free(dma_ib.ib_handle, dma_ib.ib_va_handle,
++ 							 dma_ib.ib_mc_address, IB_SIZE);
++
++	return r;
++}
++
++bool
++amdgpu_cp_dma_misc_is_supported(const struct amdgpu_gpu_info *gpu_info)
++{
++	/* why this restiction is here? */
++	/*if (!(gpu_info->family_id >= AMDGPU_FAMILY_AI &&
++			gpu_info->family_id <= AMDGPU_FAMILY_NV)) {
++		return false;
++	}*/
++	return true;
++}
++
++bool
++asic_is_gfx_pipe_removed(const struct amdgpu_gpu_info *gpu_info)
++{
++	int chip_id;
++
++	if (gpu_info->family_id != AMDGPU_FAMILY_AI)
++		return false;
++
++	chip_id = gpu_info->chip_external_rev - gpu_info->chip_rev;
++
++	switch(chip_id) {
++	/* Arcturus */
++	case 0x32:
++	/* Aldebaran */
++	case 0x3c:
++		return true; /* the gfx pipe is removed */
++	}
++	return false;
++}
++
++bool
++amdgpu_cp_dma_misc_p2p_is_supported(const struct amdgpu_gpu_info *gpu_info)
++{
++	bool ret = amdgpu_cp_dma_misc_is_supported(gpu_info);
++	return ret;
++}
++
++
 +int
-+amdgpu_open_devices(bool open_render_node, int  max_cards_supported, int drm_amdgpu_fds[]);
++amdgpu_cp_dma_generic(amdgpu_device_handle device_handle,
++					  amdgpu_device_handle exporting_device_handle, unsigned ip_type,
++					  uint32_t src_heap, uint32_t dst_heap)
++{
++	int r;
++	if (exporting_device_handle != NULL )
++		r = amdgpu_cp_dma_misc_p2p( device_handle, exporting_device_handle,
++									ip_type, src_heap, dst_heap);
++	else
++		amdgpu_cp_dma_misc(device_handle, ip_type, src_heap, dst_heap);
 +
- #endif
-diff --git a/lib/amdgpu/amd_pci_unplug.c b/lib/amdgpu/amd_pci_unplug.c
-index 28b3ae393..078398b5e 100644
---- a/lib/amdgpu/amd_pci_unplug.c
-+++ b/lib/amdgpu/amd_pci_unplug.c
-@@ -21,7 +21,6 @@
-  *
- */
- #include <linux/limits.h>
--#include <sys/types.h>
- #include <fcntl.h>
- #include <sys/stat.h>
- #include <pthread.h>
-@@ -35,74 +34,6 @@
- #include "xalloc.h"
- #include "amd_ip_blocks.h"
++	return r;
++}
++
+diff --git a/lib/amdgpu/amd_cp_dma.h b/lib/amdgpu/amd_cp_dma.h
+new file mode 100644
+index 000000000..3d7826d6c
+--- /dev/null
++++ b/lib/amdgpu/amd_cp_dma.h
+@@ -0,0 +1,41 @@
++/* SPDX-License-Identifier: MIT
++ * Copyright 2022 Advanced Micro Devices, Inc.
++ *
++ * Permission is hereby granted, free of charge, to any person obtaining a
++ * copy of this software and associated documentation files (the "Software"),
++ * to deal in the Software without restriction, including without limitation
++ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
++ * and/or sell copies of the Software, and to permit persons to whom the
++ * Software is furnished to do so, subject to the following conditions:
++ *
++ * The above copyright notice and this permission notice shall be included in
++ * all copies or substantial portions of the Software.
++ *
++ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
++ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
++ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
++ * THE COPYRIGHT HOLDER(S) OR AUTHOR(S) BE LIABLE FOR ANY CLAIM, DAMAGES OR
++ * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
++ * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
++ * OTHER DEALINGS IN THE SOFTWARE.
++ *
++*/
++
++#ifndef __AMD_CP_DMA_H__
++#define __AMD_CP_DMA_H__
++
++int
++amdgpu_cp_dma_generic(amdgpu_device_handle device_handle,
++			amdgpu_device_handle exporting_device_handle, unsigned ip_type,
++			uint32_t src_heap, uint32_t dst_heap);
++
++bool
++amdgpu_cp_dma_misc_is_supported(const struct amdgpu_gpu_info *gpu_info);
++
++bool
++amdgpu_cp_dma_misc_p2p_is_supported(const struct amdgpu_gpu_info *gpu_info);
++
++bool
++asic_is_gfx_pipe_removed(const struct amdgpu_gpu_info *gpu_info);
++
++#endif
+diff --git a/lib/meson.build b/lib/meson.build
+index c79e3e952..cc7846869 100644
+--- a/lib/meson.build
++++ b/lib/meson.build
+@@ -138,7 +138,8 @@ if libdrm_amdgpu.found()
+ 		'amdgpu/amd_dispatch.c',
+ 		'amdgpu/amd_deadlock_helpers.c',
+ 		'amdgpu/amd_pci_unplug.c',
+-		'amdgpu/xalloc.h'
++		'amdgpu/xalloc.h',
++		'amdgpu/amd_cp_dma.c'
+ 	]
+ endif
  
--static int
--amdgpu_open_devices(bool open_render_node, int  max_cards_supported, int drm_amdgpu_fds[])
--{
--	drmDevicePtr devices[MAX_CARDS_SUPPORTED];
--	int i;
--	int drm_node;
--	int amd_index = 0;
--	int drm_count;
--	int fd;
--	drmVersionPtr version;
--
--	for (i = 0; i < max_cards_supported && i < MAX_CARDS_SUPPORTED; i++)
--		drm_amdgpu_fds[i] = -1;
--
--	drm_count = drmGetDevices2(0, devices, MAX_CARDS_SUPPORTED);
--
--	if (drm_count < 0) {
--		fprintf(stderr, "drmGetDevices2() returned an error %d\n", drm_count);
--		return 0;
--	}
--
--	for (i = 0; i < drm_count; i++) {
--		/* If this is not PCI device, skip*/
--		if (devices[i]->bustype != DRM_BUS_PCI)
--			continue;
--
--		/* If this is not AMD GPU vender ID, skip*/
--		if (devices[i]->deviceinfo.pci->vendor_id != 0x1002)
--			continue;
--
--		if (open_render_node)
--			drm_node = DRM_NODE_RENDER;
--		else
--			drm_node = DRM_NODE_PRIMARY;
--
--		fd = -1;
--		if (devices[i]->available_nodes & 1 << drm_node)
--			fd = open(
--				devices[i]->nodes[drm_node],
--				O_RDWR | O_CLOEXEC);
--
--		/* This node is not available. */
--		if (fd < 0) continue;
--
--		version = drmGetVersion(fd);
--		if (!version) {
--			fprintf(stderr, "Warning: Cannot get version for %s." "Error is %s\n",
--				devices[i]->nodes[drm_node], strerror(errno));
--			close(fd);
--			continue;
--		}
--
--		if (strcmp(version->name, "amdgpu")) {
--			/* This is not AMDGPU driver, skip.*/
--			drmFreeVersion(version);
--			close(fd);
--			continue;
--		}
--
--		drmFreeVersion(version);
--
--		drm_amdgpu_fds[amd_index] = fd;
--		amd_index++;
--	}
--
--	drmFreeDevices(devices, drm_count);
--	return amd_index;
--}
- static bool
- amdgpu_node_is_drm(int maj, int min)
- {
-diff --git a/lib/amdgpu/amd_pci_unplug.h b/lib/amdgpu/amd_pci_unplug.h
-index 509b6ec4c..35d4dce3a 100644
---- a/lib/amdgpu/amd_pci_unplug.h
-+++ b/lib/amdgpu/amd_pci_unplug.h
-@@ -26,8 +26,7 @@
- 
- #include <amdgpu.h>
- #include <amdgpu_drm.h>
--
--#define MAX_CARDS_SUPPORTED 4
-+#include "amd_ip_blocks.h"
- 
- struct amd_pci_unplug_setup {
- 	uint32_t  major_version_req;
 -- 
 2.25.1
