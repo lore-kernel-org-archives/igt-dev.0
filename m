@@ -1,21 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 157E210E6C1
- for <igt-dev@lists.freedesktop.org>; Thu,  5 Jan 2023 08:07:52 +0000 (UTC)
-From: "Bhadane, Dnyaneshwar" <dnyaneshwar.bhadane@intel.com>
-To: "juhapekka.heikkila@gmail.com" <juhapekka.heikkila@gmail.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-Date: Thu, 5 Jan 2023 08:07:41 +0000
-Message-ID: <IA1PR11MB62669405C3727310EC0C8EF0E2FA9@IA1PR11MB6266.namprd11.prod.outlook.com>
-References: <20221230064638.155300-1-dnyaneshwar.bhadane@intel.com>
- <7883e380-4454-11c8-154d-0a0c6b5baf14@gmail.com>
-In-Reply-To: <7883e380-4454-11c8-154d-0a0c6b5baf14@gmail.com>
+Received: from NAM11-DM6-obe.outbound.protection.outlook.com
+ (mail-dm6nam11on2085.outbound.protection.outlook.com [40.107.223.85])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8C69510E6D0
+ for <igt-dev@lists.freedesktop.org>; Thu,  5 Jan 2023 09:22:28 +0000 (UTC)
+Message-ID: <ec0a6ca8-0d5f-0de9-ba2f-92af421fafec@amd.com>
+Date: Thu, 5 Jan 2023 10:22:19 +0100
 Content-Language: en-US
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+To: vitaly.prosyak@amd.com, igt-dev@lists.freedesktop.org
+References: <20230105005320.157831-1-vitaly.prosyak@amd.com>
+From: =?UTF-8?Q?Christian_K=c3=b6nig?= <christian.koenig@amd.com>
+In-Reply-To: <20230105005320.157831-1-vitaly.prosyak@amd.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [i-g-t] tests/kms_cursor_crc: Add Gaurd for MSO eDP
- for Pipe C and D
+Subject: Re: [igt-dev] [PATCH 1/4] lib/amdgpu: rename function parameter
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,79 +21,77 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: "Borah, Chaitanya Kumar" <chaitanya.kumar.borah@intel.com>, "Kurmi,
- Suresh Kumar" <suresh.kumar.kurmi@intel.com>
+Cc: alexander.deucher@amd.com, pierre-eric.pelloux-prayer@amd.com,
+ jiadong.zhu@amd.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-SGkgSnVoYS1QZWtrYSwNCg0KPiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPiBGcm9tOiBK
-dWhhLVBla2thIEhlaWtraWxhIDxqdWhhcGVra2EuaGVpa2tpbGFAZ21haWwuY29tPg0KPiBTZW50
-OiBXZWRuZXNkYXksIEphbnVhcnkgNCwgMjAyMyAxMjowMSBBTQ0KPiBUbzogQmhhZGFuZSwgRG55
-YW5lc2h3YXIgPGRueWFuZXNod2FyLmJoYWRhbmVAaW50ZWwuY29tPjsgaWd0LQ0KPiBkZXZAbGlz
-dHMuZnJlZWRlc2t0b3Aub3JnDQo+IENjOiBLdXJtaSwgU3VyZXNoIEt1bWFyIDxzdXJlc2gua3Vt
-YXIua3VybWlAaW50ZWwuY29tPjsgQm9yYWgsIENoYWl0YW55YQ0KPiBLdW1hciA8Y2hhaXRhbnlh
-Lmt1bWFyLmJvcmFoQGludGVsLmNvbT4NCj4gU3ViamVjdDogUmU6IFtpZ3QtZGV2XSBbaS1nLXRd
-IHRlc3RzL2ttc19jdXJzb3JfY3JjOiBBZGQgR2F1cmQgZm9yIE1TTyBlRFAgZm9yDQo+IFBpcGUg
-QyBhbmQgRA0KPiANCj4gSGkgRG55YW5lc2h3YXIsDQo+IA0KPiBPbiAzMC4xMi4yMDIyIDguNDYs
-IGJoYWRhbmVkbnlhbmVzaHdhciB3cm90ZToNCj4gPiBNU08gZURQIGlzIG5vdCBzdXBwb3J0ZWQg
-b24gcGlwZSBDIGFuZCBELiBBZGRlZCBhIHRlc3QgY29uZGl0aW9uIHRvDQo+ID4gcHJldmVudCB0
-ZXN0cyBmcm9tIGV4ZWN1dGlvbiBvbiBwaXBlIEMgYW5kIEQuVGhpcyBjb25kaXRpb24gd2FzIG1p
-c3NlZA0KPiA+IGZvciBjdXJzb3Itc2l6ZS1jaGFuZ2UsY3Vyc29yLWFscGhhLW9wYXF1ZSBhbmQN
-Cj4gPiBjdXJzb3ItYWxwaGEtdHJhbnNwYXJlbnQgdGVzdGNhc2VzLg0KPiA+DQo+ID4gSW5zaWRl
-IHJlcXVpcmVfY3Vyc29yX3NpemUoKSBjaGVja3MgZmlyc3QgZm9yIGVsaWdpYmxpdHkgdG8gaWd0
-IGNvbW1pdA0KPiA+IHVzaW5nIHRlc3QgYnVmZmVyLkZvciBNU08gZURQLCBJdCBpcyBmYWlsIHRv
-IGNvbW1pdCBmb3IgcGlwZSBDL3BpcGUgRA0KPiA+IGFuZCByZXF1aXJlX2N1cnNvcl9zaXplKCkg
-cmV0dXJuIG5vbiB6ZXJvIHZhbHVlLiBTbyBpdCB3aWxsIHNraXAgdGhlDQo+ID4gZHluYW1pYyB0
-ZXN0Y2FzZSBmb3IgcGlwZSBDIGFuZCBELg0KPiA+DQo+ID4gU2lnbmVkLW9mZi1ieTogYmhhZGFu
-ZWRueWFuZXNod2FyIDxkbnlhbmVzaHdhci5iaGFkYW5lQGludGVsLmNvbT4NCj4gPiAtLS0NCj4g
-PiAgIHRlc3RzL2ttc19jdXJzb3JfY3JjLmMgfCAyMSArKysrKysrKysrKysrKysrKystLS0NCj4g
-PiAgIDEgZmlsZSBjaGFuZ2VkLCAxOCBpbnNlcnRpb25zKCspLCAzIGRlbGV0aW9ucygtKQ0KPiA+
-DQo+ID4gZGlmZiAtLWdpdCBhL3Rlc3RzL2ttc19jdXJzb3JfY3JjLmMgYi90ZXN0cy9rbXNfY3Vy
-c29yX2NyYy5jIGluZGV4DQo+ID4gMTdmMjk0ZDYuLmQ4ZmI5YzBkIDEwMDY0NA0KPiA+IC0tLSBh
-L3Rlc3RzL2ttc19jdXJzb3JfY3JjLmMNCj4gPiArKysgYi90ZXN0cy9rbXNfY3Vyc29yX2NyYy5j
-DQo+ID4gQEAgLTc4Niw3ICs3ODYsMTIgQEAgc3RhdGljIHZvaWQgcnVuX3Rlc3RzX29uX3BpcGUo
-ZGF0YV90ICpkYXRhKQ0KPiA+ICAgCWlndF9zdWJ0ZXN0X3dpdGhfZHluYW1pYygiY3Vyc29yLXNp
-emUtY2hhbmdlIikgew0KPiA+ICAgCQlmb3JfZWFjaF9waXBlKCZkYXRhLT5kaXNwbGF5LCBwaXBl
-KSB7DQo+ID4gICAJCQlkYXRhLT5waXBlID0gcGlwZTsNCj4gPiAtDQo+ID4gKwkJCWNyZWF0ZV9j
-dXJzb3JfZmIoZGF0YSwgZGF0YS0+Y3Vyc29yX21heF93LCBkYXRhLQ0KPiA+Y3Vyc29yX21heF9o
-KTsNCj4gPiArCQkJaWYgKHJlcXVpcmVfY3Vyc29yX3NpemUoZGF0YSwgZGF0YS0+Y3Vyc29yX21h
-eF93LA0KPiBkYXRhLT5jdXJzb3JfbWF4X2gpKSB7DQo+ID4gKwkJCQlpZ3RfZGVidWcoIkN1cnNv
-ciBzaXplICVkeCVkIG5vdCBzdXBwb3J0ZWQNCj4gYnkgZHJpdmVyXG4iLA0KPiA+ICsJCQkJCSAg
-ZGF0YS0+Y3Vyc29yX21heF93LCBkYXRhLQ0KPiA+Y3Vyc29yX21heF9oKTsNCj4gPiArCQkJCWNv
-bnRpbnVlOw0KPiA+ICsJCQl9DQo+IA0KPiBXb3VsZCBpdCB3b3JrIGlmIGluc3RlYWQgb2YgYWJv
-dmUgY2hlY2tpbmcgeW91IHdvdWxkIHVzZQ0KPiBpZ3RfcGlwZV9jb25uZWN0b3JfdmFsaWQoLi4p
-PyBpZ3RfcGlwZV9jb25uZWN0b3JfdmFsaWQgaXMgdXNpbmcgYml0cyBjb21pbmcNCj4gZnJvbSBl
-bmNvZGVyIHNvIEkgdGhpbmsgaXQgbWlnaHQgd29yayBmb3IgdGhpcyBjYXNlIGFuZCBpdCB3b3Vs
-ZCBiZSBtdWNoIGZhc3Rlcg0KPiB0byBjaGVjay4NCj4gDQo+IC9KdWhhLVBla2thDQoNCldlIGhh
-dmUgY2hlY2tlZCB3aXRoIGlndF9waXBlX2Nvbm5lY3Rvcl92YWxpZCgpIGFuZCBpdCBpcyB3b3Jr
-aW5nIGZpbmUgZm9yIHRoZSB0ZXN0Y2FzZXMuDQpXZSBhcmUgYWJsZSBza2lwIHRoZSBwaXBlcyB0
-aGF0IGFyZSBub3QgdmFsaWQgb24gRFJNX01PREVfQ09OTkVDVEVEIGluIG91dHB1dCBjb25maWcN
-CmNvbm5lY3Rpb24uIEkgd2lsbCB1cGRhdGUgdGhpcyBwYXRjaCBhY2NvcmRpbmcgaWd0X3BpcGVf
-Y29ubmVjdG9yX3ZhbGlkKCkgY2hlY2suDQpUaGFua3MgeW91IGZvciB0aGUgc3VnZ2VzdGlvbi4N
-Cg0KPiANCj4gPiAgIAkJCWlndF9keW5hbWljX2YoInBpcGUtJXMtJXMiLA0KPiA+ICAgCQkJCSAg
-ICAgIGttc3Rlc3RfcGlwZV9uYW1lKHBpcGUpLA0KPiA+ICAgCQkJCSAgICAgIGRhdGEtPm91dHB1
-dC0+bmFtZSkNCj4gPiBAQCAtODAwLDcgKzgwNSwxMiBAQCBzdGF0aWMgdm9pZCBydW5fdGVzdHNf
-b25fcGlwZShkYXRhX3QgKmRhdGEpDQo+ID4gICAJaWd0X3N1YnRlc3Rfd2l0aF9keW5hbWljKCJj
-dXJzb3ItYWxwaGEtb3BhcXVlIikgew0KPiA+ICAgCQlmb3JfZWFjaF9waXBlKCZkYXRhLT5kaXNw
-bGF5LCBwaXBlKSB7DQo+ID4gICAJCQlkYXRhLT5waXBlID0gcGlwZTsNCj4gPiAtDQo+ID4gKwkJ
-CWNyZWF0ZV9jdXJzb3JfZmIoZGF0YSwgZGF0YS0+Y3Vyc29yX21heF93LCBkYXRhLQ0KPiA+Y3Vy
-c29yX21heF9oKTsNCj4gPiArCQkJaWYgKHJlcXVpcmVfY3Vyc29yX3NpemUoZGF0YSwgZGF0YS0+
-Y3Vyc29yX21heF93LA0KPiBkYXRhLT5jdXJzb3JfbWF4X2gpKSB7DQo+ID4gKwkJCQlpZ3RfZGVi
-dWcoIkN1cnNvciBzaXplICVkeCVkIG5vdCBzdXBwb3J0ZWQNCj4gYnkgZHJpdmVyXG4iLA0KPiA+
-ICsJCQkJCSAgZGF0YS0+Y3Vyc29yX21heF93LCBkYXRhLQ0KPiA+Y3Vyc29yX21heF9oKTsNCj4g
-PiArCQkJCWNvbnRpbnVlOw0KPiA+ICsJCQl9DQo+ID4gICAJCQlpZ3RfZHluYW1pY19mKCJwaXBl
-LSVzLSVzIiwNCj4gPiAgIAkJCQkgICAgICBrbXN0ZXN0X3BpcGVfbmFtZShwaXBlKSwNCj4gPiAg
-IAkJCQkgICAgICBkYXRhLT5vdXRwdXQtPm5hbWUpDQo+ID4gQEAgLTgxNCw3ICs4MjQsMTIgQEAg
-c3RhdGljIHZvaWQgcnVuX3Rlc3RzX29uX3BpcGUoZGF0YV90ICpkYXRhKQ0KPiA+ICAgCWlndF9z
-dWJ0ZXN0X3dpdGhfZHluYW1pYygiY3Vyc29yLWFscGhhLXRyYW5zcGFyZW50Iikgew0KPiA+ICAg
-CQlmb3JfZWFjaF9waXBlKCZkYXRhLT5kaXNwbGF5LCBwaXBlKSB7DQo+ID4gICAJCQlkYXRhLT5w
-aXBlID0gcGlwZTsNCj4gPiAtDQo+ID4gKwkJCWNyZWF0ZV9jdXJzb3JfZmIoZGF0YSwgZGF0YS0+
-Y3Vyc29yX21heF93LCBkYXRhLQ0KPiA+Y3Vyc29yX21heF9oKTsNCj4gPiArCQkJaWYgKHJlcXVp
-cmVfY3Vyc29yX3NpemUoZGF0YSwgZGF0YS0+Y3Vyc29yX21heF93LA0KPiBkYXRhLT5jdXJzb3Jf
-bWF4X2gpKSB7DQo+ID4gKwkJCQlpZ3RfZGVidWcoIkN1cnNvciBzaXplICVkeCVkIG5vdCBzdXBw
-b3J0ZWQNCj4gYnkgZHJpdmVyXG4iLA0KPiA+ICsJCQkJCSAgZGF0YS0+Y3Vyc29yX21heF93LCBk
-YXRhLQ0KPiA+Y3Vyc29yX21heF9oKTsNCj4gPiArCQkJCWNvbnRpbnVlOw0KPiA+ICsJCQl9DQo+
-ID4gICAJCQlpZ3RfZHluYW1pY19mKCJwaXBlLSVzLSVzIiwNCj4gPiAgIAkJCQkgICAgICBrbXN0
-ZXN0X3BpcGVfbmFtZShwaXBlKSwNCj4gPiAgIAkJCQkgICAgICBkYXRhLT5vdXRwdXQtPm5hbWUp
-DQoNCg==
+Reviewed-by: Christian König <christian.koenig@amd.com> for patch #1 and #2.
+
+Acked-by: Christian König <christian.koenig@amd.com> fro patch #3 and #4.
+
+Thanks,
+Christian.
+
+Am 05.01.23 um 01:53 schrieb vitaly.prosyak@amd.com:
+> From: Vitaly Prosyak <vitaly.prosyak@amd.com>
+>
+> No functional change just cosmetic.
+> Rename flags parameter to alloc_flags for clarity.
+> There are mapping flags.
+>
+> Signed-off-by: Vitaly Prosyak <vitaly.prosyak@amd.com>
+> ---
+>   lib/amdgpu/amd_memory.c | 10 ++++------
+>   lib/amdgpu/amd_memory.h |  2 +-
+>   2 files changed, 5 insertions(+), 7 deletions(-)
+>
+> diff --git a/lib/amdgpu/amd_memory.c b/lib/amdgpu/amd_memory.c
+> index 0aa400ac8..e3432a954 100644
+> --- a/lib/amdgpu/amd_memory.c
+> +++ b/lib/amdgpu/amd_memory.c
+> @@ -41,7 +41,7 @@
+>   				      uint64_t size,
+>   				      uint64_t alignment,
+>   				      uint32_t type,
+> -				      uint64_t flags,
+> +				      uint64_t alloc_flags,
+>   				      uint64_t *vmc_addr,
+>   				      amdgpu_va_handle *va_handle)
+>   {
+> @@ -49,7 +49,7 @@
+>   		.alloc_size = size,
+>   		.phys_alignment = alignment,
+>   		.preferred_heap = type,
+> -		.flags = flags,
+> +		.flags = alloc_flags,
+>   	};
+>   	amdgpu_bo_handle buf_handle;
+>   	int r;
+> @@ -57,10 +57,8 @@
+>   	r = amdgpu_bo_alloc(device_handle, &req, &buf_handle);
+>   	igt_assert_eq(r, 0);
+>   
+> -	r = amdgpu_va_range_alloc(device_handle,
+> -				  amdgpu_gpu_va_range_general,
+> -				  size, alignment, 0, vmc_addr,
+> -				  va_handle, 0);
+> +	r = amdgpu_va_range_alloc(device_handle, amdgpu_gpu_va_range_general,
+> +				   size, alignment, 0, vmc_addr, va_handle, 0);
+>   	igt_assert_eq(r, 0);
+>   
+>   	r = amdgpu_bo_va_op(buf_handle, 0, size, *vmc_addr, 0, AMDGPU_VA_OP_MAP);
+> diff --git a/lib/amdgpu/amd_memory.h b/lib/amdgpu/amd_memory.h
+> index 77fd099b0..a06f88923 100644
+> --- a/lib/amdgpu/amd_memory.h
+> +++ b/lib/amdgpu/amd_memory.h
+> @@ -35,7 +35,7 @@ gpu_mem_alloc(amdgpu_device_handle device_handle,
+>   				      uint64_t size,
+>   				      uint64_t alignment,
+>   				      uint32_t type,
+> -				      uint64_t flags,
+> +				      uint64_t alloc_flags,
+>   				      uint64_t *vmc_addr,
+>   				      amdgpu_va_handle *va_handle);
+>   int
