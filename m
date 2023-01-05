@@ -1,17 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E7DBB10E2B5
- for <igt-dev@lists.freedesktop.org>; Wed, 11 Jan 2023 15:57:54 +0000 (UTC)
-Date: Wed, 11 Jan 2023 16:57:50 +0100
-From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
-To: Matthew Brost <matthew.brost@intel.com>
-Message-ID: <20230111165750.2610fc0c@maurocar-mobl2>
-In-Reply-To: <20221222224747.34894-1-matthew.brost@intel.com>
-References: <20221222224747.34894-1-matthew.brost@intel.com>
+Received: from NAM12-BN8-obe.outbound.protection.outlook.com
+ (mail-bn8nam12on2078.outbound.protection.outlook.com [40.107.237.78])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 89D1110E48A
+ for <igt-dev@lists.freedesktop.org>; Thu,  5 Jan 2023 00:53:34 +0000 (UTC)
+From: <vitaly.prosyak@amd.com>
+To: <igt-dev@lists.freedesktop.org>
+Date: Wed, 4 Jan 2023 19:53:17 -0500
+Message-ID: <20230105005320.157831-1-vitaly.prosyak@amd.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Subject: Re: [igt-dev] [RFC PATCH 0/1] Initial Xe test suite
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+Subject: [igt-dev] [PATCH 1/4] lib/amdgpu: rename function parameter
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,74 +18,71 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org
+Cc: alexander.deucher@amd.com, pierre-eric.pelloux-prayer@amd.com,
+ jiadong.zhu@amd.com, christian.koenig@amd.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Matthew,
+From: Vitaly Prosyak <vitaly.prosyak@amd.com>
 
-On Thu, 22 Dec 2022 14:47:46 -0800
-Matthew Brost <matthew.brost@intel.com> wrote:
+No functional change just cosmetic.
+Rename flags parameter to alloc_flags for clarity.
+There are mapping flags.
 
-> Initial Xe test suite for new Xe Intel GPU driver [1]. All major features of the
-> Xe uAPI and all internal code paths should have some basic coverage. Before
-> these new tests are upstreamed proper commit messages for each test will be
-> included plus kerneldoc describing what each test is testing and the
-> methodology. For the time being we are just including 1 large patch.
+Signed-off-by: Vitaly Prosyak <vitaly.prosyak@amd.com>
+---
+ lib/amdgpu/amd_memory.c | 10 ++++------
+ lib/amdgpu/amd_memory.h |  2 +-
+ 2 files changed, 5 insertions(+), 7 deletions(-)
 
-I pinged some reviewers to take a look on those changes. The feedback
-I got is that, in order to make easier to reviews, the best would be
-if you could split this patch into a series...
-> 
-> Cheers,
-> Matthew Brost
-> 
-> [1] https://patchwork.freedesktop.org/series/112188/
-> 
-> Matthew Brost (1):
->   Xe: Introduce initial tests for the new Intel Xe GPU driver.
-> 
->  include/drm-uapi/xe_drm.h       |  786 +++++++++++++++
->  lib/drmtest.c                   |    3 +
->  lib/drmtest.h                   |    1 +
->  lib/meson.build                 |    4 +
->  lib/xe/xe_compute.c             |  327 +++++++
->  lib/xe/xe_compute.h             |   93 ++
->  lib/xe/xe_ioctl.c               |  441 +++++++++
->  lib/xe/xe_ioctl.h               |  107 +++
->  lib/xe/xe_query.c               |  267 ++++++
->  lib/xe/xe_query.h               |   76 ++
->  lib/xe/xe_spin.c                |  157 +++
->  lib/xe/xe_spin.h                |   66 ++
-
-placing the library changes first...
-
->  meson.build                     |    8 +
->  tests/meson.build               |    1 +
->  tests/xe/meson.build            |   30 +
->  tests/xe/xe_compute.c           |  130 +++
->  tests/xe/xe_dma_buf_sync.c      |  226 +++++
->  tests/xe/xe_evict.c             |  619 ++++++++++++
->  tests/xe/xe_exec_balancer.c     |  620 ++++++++++++
->  tests/xe/xe_exec_basic.c        |  294 ++++++
->  tests/xe/xe_exec_compute_mode.c |  303 ++++++
->  tests/xe/xe_exec_fault_mode.c   |  471 +++++++++
->  tests/xe/xe_exec_reset.c        |  806 ++++++++++++++++
->  tests/xe/xe_exec_threads.c      | 1148 ++++++++++++++++++++++
->  tests/xe/xe_guc_pc.c            |  424 +++++++++
->  tests/xe/xe_huc_copy.c          |  187 ++++
->  tests/xe/xe_live_ktest.c        |   17 +
->  tests/xe/xe_mmap.c              |   57 ++
->  tests/xe/xe_pm.c                |  384 ++++++++
->  tests/xe/xe_prime_self_import.c |  462 +++++++++
->  tests/xe/xe_query.c             |  431 +++++++++
->  tests/xe/xe_vm.c                | 1577 +++++++++++++++++++++++++++++++
->  tests/xe/xe_waitfence.c         |   88 ++
-
-And then the tests, broken per area. This way, developers more
-experienced with some features (guc, mmap, vma, dma_buf, fences, ...) could
-better review such changes.
-
-Regards,
-Mauro
+diff --git a/lib/amdgpu/amd_memory.c b/lib/amdgpu/amd_memory.c
+index 0aa400ac8..e3432a954 100644
+--- a/lib/amdgpu/amd_memory.c
++++ b/lib/amdgpu/amd_memory.c
+@@ -41,7 +41,7 @@
+ 				      uint64_t size,
+ 				      uint64_t alignment,
+ 				      uint32_t type,
+-				      uint64_t flags,
++				      uint64_t alloc_flags,
+ 				      uint64_t *vmc_addr,
+ 				      amdgpu_va_handle *va_handle)
+ {
+@@ -49,7 +49,7 @@
+ 		.alloc_size = size,
+ 		.phys_alignment = alignment,
+ 		.preferred_heap = type,
+-		.flags = flags,
++		.flags = alloc_flags,
+ 	};
+ 	amdgpu_bo_handle buf_handle;
+ 	int r;
+@@ -57,10 +57,8 @@
+ 	r = amdgpu_bo_alloc(device_handle, &req, &buf_handle);
+ 	igt_assert_eq(r, 0);
+ 
+-	r = amdgpu_va_range_alloc(device_handle,
+-				  amdgpu_gpu_va_range_general,
+-				  size, alignment, 0, vmc_addr,
+-				  va_handle, 0);
++	r = amdgpu_va_range_alloc(device_handle, amdgpu_gpu_va_range_general,
++				   size, alignment, 0, vmc_addr, va_handle, 0);
+ 	igt_assert_eq(r, 0);
+ 
+ 	r = amdgpu_bo_va_op(buf_handle, 0, size, *vmc_addr, 0, AMDGPU_VA_OP_MAP);
+diff --git a/lib/amdgpu/amd_memory.h b/lib/amdgpu/amd_memory.h
+index 77fd099b0..a06f88923 100644
+--- a/lib/amdgpu/amd_memory.h
++++ b/lib/amdgpu/amd_memory.h
+@@ -35,7 +35,7 @@ gpu_mem_alloc(amdgpu_device_handle device_handle,
+ 				      uint64_t size,
+ 				      uint64_t alignment,
+ 				      uint32_t type,
+-				      uint64_t flags,
++				      uint64_t alloc_flags,
+ 				      uint64_t *vmc_addr,
+ 				      amdgpu_va_handle *va_handle);
+ int
+-- 
+2.25.1
