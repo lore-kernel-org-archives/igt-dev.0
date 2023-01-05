@@ -1,15 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A042B10E7F5
- for <igt-dev@lists.freedesktop.org>; Thu,  5 Jan 2023 19:11:15 +0000 (UTC)
-From: Alan Previn <alan.previn.teres.alexis@intel.com>
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2980F10E129
+ for <igt-dev@lists.freedesktop.org>; Thu,  5 Jan 2023 19:25:41 +0000 (UTC)
+Date: Thu, 5 Jan 2023 20:25:37 +0100
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Thu,  5 Jan 2023 11:11:11 -0800
-Message-Id: <20230105191111.1157494-1-alan.previn.teres.alexis@intel.com>
+Message-ID: <Y7ckMWc1+FKR3F3j@kamilkon-desk1>
+References: <20221221114213.2913884-1-petri.latvala@intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 1/1] tests/i915/pxp: Always use igt helper
- to get the render function
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20221221114213.2913884-1-petri.latvala@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t v4] runner: Correctly handle abort
+ before first test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,199 +20,171 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Alan Previn <alan.previn.teres.alexis@intel.com>
+Cc: Petri Latvala <petri.latvala@intel.com>,
+ Chris Wilson <chris@chris-wilson.co.uk>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-In preparation for future HW and be consistent with other tests,
-add a local helper code to use igt's helper to get the render
-function ptr. While here, remove unncessary local variables.
+Hi Petri,
 
-Signed-off-by: Alan Previn <alan.previn.teres.alexis@intel.com>
----
- tests/i915/gem_pxp.c | 55 ++++++++++++++++++++++++--------------------
- 1 file changed, 30 insertions(+), 25 deletions(-)
+small nits, see below.
 
-diff --git a/tests/i915/gem_pxp.c b/tests/i915/gem_pxp.c
-index 41043df9..8c141ddd 100644
---- a/tests/i915/gem_pxp.c
-+++ b/tests/i915/gem_pxp.c
-@@ -306,6 +306,11 @@ static void test_ctx_mod_protected_to_all_invalid(int i915)
- 	gem_context_destroy(i915, ctx);
- }
- 
-+static igt_render_copyfunc_t get_copy_func(int i915)
-+{
-+	return igt_get_render_copyfunc(intel_get_drm_devid(i915));
-+}
-+
- static void fill_bo_content(int i915, uint32_t bo, uint32_t size, uint32_t initcolor)
- {
- 	uint32_t *ptr, *ptrtmp;
-@@ -441,15 +446,15 @@ static uint32_t alloc_and_fill_dest_buff(int i915, bool protected, uint32_t size
- 
- static void test_render_baseline(int i915)
- {
-+	igt_render_copyfunc_t render_copy;
- 	uint32_t ctx, srcbo, dstbo;
- 	struct intel_buf *srcbuf, *dstbuf;
- 	struct buf_ops *bops;
- 	struct intel_bb *ibb;
--	uint32_t devid;
- 	int ret;
- 
--	devid = intel_get_drm_devid(i915);
--	igt_assert(devid);
-+	render_copy = get_copy_func(i915);
-+	igt_assert(render_copy);
- 
- 	bops = buf_ops_create(i915);
- 	igt_assert(bops);
-@@ -468,7 +473,7 @@ static void test_render_baseline(int i915)
- 	srcbuf = intel_buf_create_using_handle(bops, srcbo, TSTSURF_WIDTH, TSTSURF_HEIGHT,
- 					       TSTSURF_BYTESPP*8, 0, I915_TILING_NONE, 0);
- 
--	gen12_render_copyfunc(ibb, srcbuf, 0, 0, TSTSURF_WIDTH, TSTSURF_HEIGHT, dstbuf, 0, 0);
-+	render_copy(ibb, srcbuf, 0, 0, TSTSURF_WIDTH, TSTSURF_HEIGHT, dstbuf, 0, 0);
- 	gem_sync(i915, dstbo);
- 
- 	assert_bo_content_check(i915, dstbo, COMPARE_COLOR_READIBLE,
-@@ -485,15 +490,15 @@ static void test_render_baseline(int i915)
- 
- static void __test_render_pxp_src_to_protdest(int i915, uint32_t *outpixels, int outsize)
- {
-+	igt_render_copyfunc_t render_copy;
- 	uint32_t ctx, srcbo, dstbo;
- 	struct intel_buf *srcbuf, *dstbuf;
- 	struct buf_ops *bops;
- 	struct intel_bb *ibb;
--	uint32_t devid;
- 	int ret;
- 
--	devid = intel_get_drm_devid(i915);
--	igt_assert(devid);
-+	render_copy = get_copy_func(i915);
-+	igt_assert(render_copy);
- 
- 	bops = buf_ops_create(i915);
- 	igt_assert(bops);
-@@ -519,7 +524,7 @@ static void __test_render_pxp_src_to_protdest(int i915, uint32_t *outpixels, int
- 	srcbuf = intel_buf_create_using_handle(bops, srcbo, TSTSURF_WIDTH, TSTSURF_HEIGHT,
- 						TSTSURF_BYTESPP*8, 0, I915_TILING_NONE, 0);
- 
--	gen12_render_copyfunc(ibb, srcbuf, 0, 0, TSTSURF_WIDTH, TSTSURF_HEIGHT, dstbuf, 0, 0);
-+	render_copy(ibb, srcbuf, 0, 0, TSTSURF_WIDTH, TSTSURF_HEIGHT, dstbuf, 0, 0);
- 	gem_sync(i915, dstbo);
- 
- 	assert_bo_content_check(i915, dstbo, COMPARE_COLOR_UNREADIBLE,
-@@ -545,16 +550,16 @@ static void test_render_pxp_src_to_protdest(int i915)
- 
- static void test_render_pxp_protsrc_to_protdest(int i915)
- {
-+	igt_render_copyfunc_t render_copy;
- 	uint32_t ctx, srcbo, dstbo, dstbo2;
- 	struct intel_buf *srcbuf, *dstbuf, *dstbuf2;
- 	struct buf_ops *bops;
- 	struct intel_bb *ibb;
--	uint32_t devid;
- 	int ret;
- 	uint32_t encrypted[TSTSURF_SIZE/TSTSURF_BYTESPP];
- 
--	devid = intel_get_drm_devid(i915);
--	igt_assert(devid);
-+	render_copy = get_copy_func(i915);
-+	igt_assert(render_copy);
- 
- 	bops = buf_ops_create(i915);
- 	igt_assert(bops);
-@@ -580,7 +585,7 @@ static void test_render_pxp_protsrc_to_protdest(int i915)
- 	srcbuf = intel_buf_create_using_handle(bops, srcbo, TSTSURF_WIDTH, TSTSURF_HEIGHT,
- 						TSTSURF_BYTESPP*8, 0, I915_TILING_NONE, 0);
- 
--	gen12_render_copyfunc(ibb, srcbuf, 0, 0, TSTSURF_WIDTH, TSTSURF_HEIGHT, dstbuf, 0, 0);
-+	render_copy(ibb, srcbuf, 0, 0, TSTSURF_WIDTH, TSTSURF_HEIGHT, dstbuf, 0, 0);
- 	gem_sync(i915, dstbo);
- 
- 	assert_bo_content_check(i915, dstbo, COMPARE_COLOR_UNREADIBLE,
-@@ -605,7 +610,7 @@ static void test_render_pxp_protsrc_to_protdest(int i915)
- 
- 	intel_bb_set_pxp(ibb, true, DISPLAY_APPTYPE, I915_PROTECTED_CONTENT_DEFAULT_SESSION);
- 
--	gen12_render_copyfunc(ibb, dstbuf, 0, 0, TSTSURF_WIDTH, TSTSURF_HEIGHT, dstbuf2, 0, 0);
-+	render_copy(ibb, dstbuf, 0, 0, TSTSURF_WIDTH, TSTSURF_HEIGHT, dstbuf2, 0, 0);
- 	gem_sync(i915, dstbo2);
- 
- 	assert_bo_content_check(i915, dstbo2, COMPARE_BUFFER_READIBLE,
-@@ -622,8 +627,9 @@ static void test_render_pxp_protsrc_to_protdest(int i915)
- 	buf_ops_destroy(bops);
- }
- 
--static void test_pxp_dmabuffshare_refcnt(void)
-+static void test_pxp_dmabuffshare_refcnt(int i915)
- {
-+	igt_render_copyfunc_t render_copy;
- 	uint32_t ctx[2], sbo[2], dbo[2];
- 	struct intel_buf *sbuf[2], *dbuf[2];
- 	struct buf_ops *bops[2];
-@@ -631,6 +637,9 @@ static void test_pxp_dmabuffshare_refcnt(void)
- 	int fd[2], dmabuf_fd = 0, ret, n, num_matches = 0;
- 	uint32_t encrypted[2][TSTSURF_SIZE/TSTSURF_BYTESPP];
- 
-+	render_copy = get_copy_func(i915);
-+	igt_assert(render_copy);
-+
- 	/* First, create the client driver handles and
- 	 * protected dest buffer (is exported via dma-buff
- 	 * from first handle and imported to the second).
-@@ -673,8 +682,8 @@ static void test_pxp_dmabuffshare_refcnt(void)
- 							TSTSURF_HEIGHT, TSTSURF_BYTESPP*8, 0,
- 							I915_TILING_NONE, 0);
- 
--		gen12_render_copyfunc(ibb[n], sbuf[n], 0, 0, TSTSURF_WIDTH, TSTSURF_HEIGHT,
--				      dbuf[n], 0, 0);
-+		render_copy(ibb[n], sbuf[n], 0, 0, TSTSURF_WIDTH, TSTSURF_HEIGHT,
-+			    dbuf[n], 0, 0);
- 		gem_sync(fd[n], dbo[n]);
- 
- 		assert_bo_content_check(fd[n], dbo[n], COMPARE_COLOR_UNREADIBLE, TSTSURF_SIZE,
-@@ -1011,14 +1020,10 @@ static void setup_protected_fb(int i915, int width, int height, igt_fb_t *fb, ui
- 	struct intel_buf *srcbuf, *dstbuf;
- 	struct buf_ops *bops;
- 	struct intel_bb *ibb;
--	uint32_t devid;
--	igt_render_copyfunc_t rendercopy;
--
--	devid = intel_get_drm_devid(i915);
--	igt_assert(devid);
-+	igt_render_copyfunc_t render_copy;
- 
--	rendercopy = igt_get_render_copyfunc(devid);
--	igt_assert(rendercopy);
-+	render_copy = get_copy_func(i915);
-+	igt_assert(render_copy);
- 
- 	bops = buf_ops_create(i915);
- 	igt_assert(bops);
-@@ -1058,7 +1063,7 @@ static void setup_protected_fb(int i915, int width, int height, igt_fb_t *fb, ui
- 	ibb->pxp.apptype = DISPLAY_APPTYPE;
- 	ibb->pxp.appid = I915_PROTECTED_CONTENT_DEFAULT_SESSION;
- 
--	gen12_render_copyfunc(ibb, srcbuf, 0, 0, fb->width, fb->height, dstbuf, 0, 0);
-+	render_copy(ibb, srcbuf, 0, 0, fb->width, fb->height, dstbuf, 0, 0);
- 
- 	gem_sync(i915, fb->gem_handle);
- 	assert_bo_content_check(i915, fb->gem_handle, COMPARE_COLOR_UNREADIBLE, fb->size,
-@@ -1229,7 +1234,7 @@ igt_main
- 		igt_subtest("protected-encrypted-src-copy-not-readible")
- 			test_render_pxp_protsrc_to_protdest(i915);
- 		igt_subtest("dmabuf-shared-protected-dst-is-context-refcounted")
--			test_pxp_dmabuffshare_refcnt();
-+			test_pxp_dmabuffshare_refcnt(i915);
- 	}
- 	igt_subtest_group {
- 		igt_fixture {
+On 2022-12-21 at 13:42:13 +0200, Petri Latvala wrote:
+> Don't leave the execution in a "please resume me" state if bootup
+> causes an abort condition. Especially handle the case of abort on
+> bootup when resuming correctly, so that it doesn't attempt to run a
+> test on a tainted kernel if we've explicitly configured the runner to
+> not execute when there's a taint.
+> 
+> v2: Fudge the results directory instead to get the desired results:
+>     runner exits with nonzero, and resuming exits with "all done" instead
+>     of executing anything.
+> 
+> v3: Use faccessat instead of open+close, use less magic strings,
+>     remember to close fds (Chris)
+> 
+> v4: Use GRACEFUL_EXITCODE in monitor_output, remove the 'resuming'
+>     field (why was it a double?!). (Ryszard)
+>     Stop trying to execute if all tests are already run, to avoid a
+>     crash in environment validation.
+> 
+> Signed-off-by: Petri Latvala <petri.latvala@intel.com>
+> Cc: Arkadiusz Hiler <arek@hiler.eu>
+> Cc: Chris Wilson <chris@chris-wilson.co.uk>
+> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> Cc: Ryszard Knop <ryszard.knop@intel.com>
+> ---
+>  runner/executor.c | 57 ++++++++++++++++++++++++++++++++++++++++++++---
+>  1 file changed, 54 insertions(+), 3 deletions(-)
+> 
+> diff --git a/runner/executor.c b/runner/executor.c
+> index d2253082..e954c23e 100644
+> --- a/runner/executor.c
+> +++ b/runner/executor.c
+> @@ -37,6 +37,7 @@
+>  
+>  #define KMSG_HEADER "[IGT] "
+>  #define KMSG_WARN 4
+> +#define GRACEFUL_EXITCODE -SIGHUP
+>  
+>  static struct {
+>  	int *fds;
+> @@ -1249,7 +1250,7 @@ static int monitor_output(pid_t child,
+>  					} else {
+>  						dprintf(outputs[_F_JOURNAL], "%s%d (%.3fs)\n",
+----------------------------------------------------------------------------------- ^
+Maybe instead of %.3fs just put here 0.0s ?
 
-base-commit: db10a19b94d1d7ae5ba62eb48d52c47ccb27766f
--- 
-2.39.0
+>  							EXECUTOR_EXIT,
+> -							-SIGHUP, 0.0);
+> +							GRACEFUL_EXITCODE, 0.0);
+-------------------------------------------------------------------------- ^
+Then you can drop 0.0 here.
+
+>  						if (settings->sync)
+>  							fdatasync(outputs[_F_JOURNAL]);
+>  					}
+> @@ -1720,6 +1721,41 @@ out_dirfd:
+>  	return result;
+>  }
+>  
+> +static void fill_results_directory_with_notruns(struct job_list *list,
+> +						int resdirfd)
+> +{
+> +	int outputs[_F_LAST];
+> +	char name[32];
+> +	int dirfd;
+> +	size_t i;
+> +
+> +	for (i = 0; i < list->size; i++) {
+> +		snprintf(name, sizeof(name), "%zd", i);
+> +
+> +		if (faccessat(resdirfd, name, F_OK, 0) == 0)
+> +			continue;
+> +
+> +		mkdirat(resdirfd, name, 0777);
+> +		dirfd = openat(resdirfd, name, O_DIRECTORY | O_RDONLY);
+> +		if (dirfd < 0) {
+> +			errf("Error accessing individual test result directory\n");
+> +			return;
+> +		}
+> +
+> +		if (!open_output_files(dirfd, outputs, true)) {
+> +			errf("Error opening output files\n");
+> +			close(dirfd);
+> +			return;
+> +		}
+> +
+> +		dprintf(outputs[_F_OUT], "Forced notrun result because of abort condition on bootup\n");
+> +		dprintf(outputs[_F_JOURNAL], "%s%d (%.3fs)\n", EXECUTOR_EXIT, GRACEFUL_EXITCODE, 0.0);
+--------------------------------------------------- ^ ------------------------------------------ ^
+Same here, you can just put here 0.0s instead.
+
+> +
+> +		close_outputs(outputs);
+> +		close(dirfd);
+> +	}
+> +}
+> +
+>  static int remove_file(int dirfd, const char *name)
+>  {
+>  	return unlinkat(dirfd, name, 0) && errno != ENOENT;
+> @@ -1845,7 +1881,6 @@ bool initialize_execute_state_from_resume(int dirfd,
+>  	clear_settings(settings);
+>  	free_job_list(list);
+>  	memset(state, 0, sizeof(*state));
+> -	state->resuming = true;
+
+It's not used anywhere so remove it from header.
+
+With that fixed you can add my r-b,
+
+Regards,
+Kamil
+
+>  
+>  	if (!read_settings_from_dir(settings, dirfd) ||
+>  	    !read_job_list(list, dirfd)) {
+> @@ -2183,6 +2218,11 @@ bool execute(struct execute_state *state,
+>  		return true;
+>  	}
+>  
+> +	if (state->next >= job_list->size) {
+> +		outf("All tests already executed.\n");
+> +		return true;
+> +	}
+> +
+>  	igt_list_for_each_entry(env_var, &settings->env_vars, link) {
+>  		setenv(env_var->key, env_var->value, 1);
+>  	}
+> @@ -2271,7 +2311,7 @@ bool execute(struct execute_state *state,
+>  	close(unamefd);
+>  
+>  	/* Check if we're already in abort-state at bootup */
+> -	if (!state->resuming) {
+> +	{
+>  		char *reason;
+>  
+>  		if ((reason = need_to_abort(settings)) != NULL) {
+> @@ -2280,6 +2320,17 @@ bool execute(struct execute_state *state,
+>  			free(reason);
+>  			free(nexttest);
+>  
+> +			/*
+> +			 * If an abort condition happened at bootup,
+> +			 * assume that it happens on every boot,
+> +			 * making this test execution impossible.
+> +			 * Write stuff to the results directory
+> +			 * indicating this so resuming immediately
+> +			 * finishes instead of getting stuck in an
+> +			 * infinite reboot loop.
+> +			 */
+> +			fill_results_directory_with_notruns(job_list, resdirfd);
+> +
+>  			status = false;
+>  
+>  			goto end;
+> -- 
+> 2.30.2
+> 
