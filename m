@@ -1,23 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from NAM10-BN7-obe.outbound.protection.outlook.com
- (mail-bn7nam10on2047.outbound.protection.outlook.com [40.107.92.47])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6C60910E82B
- for <igt-dev@lists.freedesktop.org>; Fri,  6 Jan 2023 02:55:57 +0000 (UTC)
-Message-ID: <ebbe2a57-0ce6-c62d-5e3c-f63776a63e5c@amd.com>
-Date: Thu, 5 Jan 2023 21:55:43 -0500
-Content-Language: en-US
-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org, Vitaly Prosyak <vitaly.prosyak@amd.com>,
- =?UTF-8?Q?Christian_K=c3=b6nig?= <christian.koenig@amd.com>
-References: <20230105005320.157831-1-vitaly.prosyak@amd.com>
- <20230105005320.157831-2-vitaly.prosyak@amd.com>
- <Y7b5saKiOFwigjmg@kamilkon-desk1>
-From: vitaly prosyak <vprosyak@amd.com>
-In-Reply-To: <Y7b5saKiOFwigjmg@kamilkon-desk1>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/alternative;
+ boundary="===============0901636544307520902=="
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH 2/4] lib/amdgpu: move function to another file
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: vitaly.prosyak@amd.com
+Date: Fri, 06 Jan 2023 03:26:30 -0000
+Message-ID: <167297559052.25043.9198411000718704859@emeril.freedesktop.org>
+References: <20230106024812.102077-1-vitaly.prosyak@amd.com>
+In-Reply-To: <20230106024812.102077-1-vitaly.prosyak@amd.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3Igc2VyaWVz?=
+ =?utf-8?q?_starting_with_=5B1/4=5D_lib/amdgpu=3A_rename_function_paramete?=
+ =?utf-8?q?r?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,316 +18,231 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Kamil,
+--===============0901636544307520902==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Thanks for the review!
+== Series Details ==
 
-I believe all your suggestions are addressed : 
-https://patchwork.freedesktop.org/series/112465/
+Series: series starting with [1/4] lib/amdgpu: rename function parameter
+URL   : https://patchwork.freedesktop.org/series/112465/
+State : success
 
-All 4 patches validated with  ./scripts/checkpatch.pl
+== Summary ==
 
-Thanks, Vitaly
+CI Bug Log - changes from CI_DRM_12550 -> IGTPW_8307
+====================================================
 
-On 2023-01-05 11:24, Kamil Konieczny wrote:
-> Hi Vitaly,
->
-> On 2023-01-04 at 19:53:18 -0500, vitaly.prosyak@amd.com wrote:
->> From: Vitaly Prosyak <vitaly.prosyak@amd.com>
->>
->> No functional change just cosmetic.
-> Please do not mix in adding some debug printing with code moving.
->
->> Move function amdgpu_open_devices to the shared file
->> since other tests will also use it.
->>
->> Signed-off-by: Vitaly Prosyak <vitaly.prosyak@amd.com>
->> ---
->>   lib/amdgpu/amd_ip_blocks.c  | 94 ++++++++++++++++++++++++++++++++++---
->>   lib/amdgpu/amd_ip_blocks.h  |  5 ++
->>   lib/amdgpu/amd_pci_unplug.c | 69 ---------------------------
->>   lib/amdgpu/amd_pci_unplug.h |  3 +-
->>   4 files changed, 93 insertions(+), 78 deletions(-)
->>
->> diff --git a/lib/amdgpu/amd_ip_blocks.c b/lib/amdgpu/amd_ip_blocks.c
->> index 3331c40bd..ce1bddffc 100644
->> --- a/lib/amdgpu/amd_ip_blocks.c
->> +++ b/lib/amdgpu/amd_ip_blocks.c
->> @@ -22,6 +22,8 @@
->>    *
->>    *
->>    */
->> +#include <fcntl.h>
->> +
->>   #include "amd_memory.h"
->>   #include "amd_ip_blocks.h"
->>   #include "amd_PM4.h"
->> @@ -616,21 +618,30 @@ int setup_amdgpu_ip_blocks(uint32_t major, uint32_t minor, struct amdgpu_gpu_inf
->>   		igt_info("amdgpu: unknown (family_id, chip_external_rev): (%u, %u)\n",
->>   			 amdinfo->family_id, amdinfo->chip_external_rev);
->>   		return -1;
->> +	} else {
->> +		igt_info("amdgpu: %s (family_id, chip_external_rev): (%u, %u)\n",
->> +				info->name, amdinfo->family_id, amdinfo->chip_external_rev);
->>   	}
->>   
->> -	if (info->family >= CHIP_SIENNA_CICHLID)
->> +	if (info->family >= CHIP_SIENNA_CICHLID) {
->>   		info->chip_class = GFX10_3;
->> -	else if (info->family >= CHIP_NAVI10)
->> +		igt_info("amdgpu: chip_class GFX10_3\n");
-> --------------- ^
-> Do you really want that at every function use ? Maybe better
-> to use igt_debug and have separate function for printing ?
->
->> +	} else if (info->family >= CHIP_NAVI10) {
->>   		info->chip_class = GFX10;
->> -	else if (info->family >= CHIP_VEGA10)
->> +		igt_info("amdgpu: chip_class GFX10\n");
->> +	} else if (info->family >= CHIP_VEGA10) {
->>   		info->chip_class = GFX9;
->> -	else if (info->family >= CHIP_TONGA)
->> +		igt_info("amdgpu: chip_class GFX9\n");
->> +	} else if (info->family >= CHIP_TONGA) {
->>   		info->chip_class = GFX8;
->> -	else if (info->family >= CHIP_BONAIRE)
->> +		igt_info("amdgpu: chip_class GFX8\n");
->> +	} else if (info->family >= CHIP_BONAIRE) {
->>   		info->chip_class = GFX7;
->> -	else if (info->family >= CHIP_TAHITI)
->> +		igt_info("amdgpu: chip_class GFX7\n");
->> +	} else if (info->family >= CHIP_TAHITI) {
->>   		info->chip_class = GFX6;
->> -	else {
->> +		igt_info("amdgpu: chip_class GFX6\n");
->> +	} else {
->>   		igt_info("amdgpu: Unknown family.\n");
-> Here you can print detailed info.
->
->>   		return -1;
->>   	}
->> @@ -663,3 +674,72 @@ int setup_amdgpu_ip_blocks(uint32_t major, uint32_t minor, struct amdgpu_gpu_inf
->>   
->>   	return 0;
->>   }
->> +
-> Please write description of each new library function.
->
->> +int
->> +amdgpu_open_devices(bool open_render_node, int  max_cards_supported, int drm_amdgpu_fds[])
->> +{
->> +	drmDevicePtr devices[MAX_CARDS_SUPPORTED];
->> +	int i;
->> +	int drm_node;
->> +	int amd_index = 0;
->> +	int drm_count;
->> +	int fd;
->> +	drmVersionPtr version;
->> +
->> +	for (i = 0; i < max_cards_supported && i < MAX_CARDS_SUPPORTED; i++)
->> +		drm_amdgpu_fds[i] = -1;
->> +
->> +	drm_count = drmGetDevices2(0, devices, MAX_CARDS_SUPPORTED);
->> +
->> +	if (drm_count < 0) {
->> +		fprintf(stderr, "drmGetDevices2() returned an error %d\n", drm_count);
-> --------------- ^
-> We have igt_info() and igt_debug() messages, please use them.
->
->> +		return 0;
->> +	}
->> +
->> +	for (i = 0; i < drm_count; i++) {
->> +		/* If this is not PCI device, skip*/
->> +		if (devices[i]->bustype != DRM_BUS_PCI)
->> +			continue;
->> +
->> +		/* If this is not AMD GPU vender ID, skip*/
->> +		if (devices[i]->deviceinfo.pci->vendor_id != 0x1002)
->> +			continue;
->> +
->> +		if (open_render_node)
->> +			drm_node = DRM_NODE_RENDER;
->> +		else
->> +			drm_node = DRM_NODE_PRIMARY;
->> +
->> +		fd = -1;
->> +		if (devices[i]->available_nodes & 1 << drm_node)
->> +			fd = open(
->> +				devices[i]->nodes[drm_node],
->> +				O_RDWR | O_CLOEXEC);
->> +
->> +		/* This node is not available. */
->> +		if (fd < 0) continue;
-> --------------------------- ^
-> This should be at line below.
->
->> +
->> +		version = drmGetVersion(fd);
->> +		if (!version) {
->> +			fprintf(stderr, "Warning: Cannot get version for %s." "Error is %s\n",
-> ---------------------------------------------------------------------------- ^^
-> Did you mean putting this at line below ?
->
-> Please use checkpatch script from linux kernel before sending
-> patches, it can find some problems with formatting and spelling.
->
-> If that was in original code then mention that corrections in
-> patch message.
->
->> +				devices[i]->nodes[drm_node], strerror(errno));
->> +			close(fd);
->> +			continue;
->> +		}
->> +
->> +		if (strcmp(version->name, "amdgpu")) {
->> +			/* This is not AMDGPU driver, skip.*/
->> +			drmFreeVersion(version);
->> +			close(fd);
->> +			continue;
->> +		}
->> +
->> +		drmFreeVersion(version);
->> +
->> +		drm_amdgpu_fds[amd_index] = fd;
->> +		amd_index++;
->> +	}
->> +
->> +	drmFreeDevices(devices, drm_count);
->> +	return amd_index;
->> +}
->> diff --git a/lib/amdgpu/amd_ip_blocks.h b/lib/amdgpu/amd_ip_blocks.h
->> index 908aacde0..b3620c00f 100644
->> --- a/lib/amdgpu/amd_ip_blocks.h
->> +++ b/lib/amdgpu/amd_ip_blocks.h
->> @@ -27,6 +27,8 @@
->>   
->>   #include "amd_registers.h"
->>   
->> +#define MAX_CARDS_SUPPORTED 4
->> +
->>   enum amd_ip_block_type {
->>   	AMD_IP_GFX,
->>   	AMD_IP_COMPUTE,
->> @@ -136,4 +138,7 @@ struct amdgpu_cmd_base* get_cmd_base(void);
->>   
->>   void free_cmd_base(struct amdgpu_cmd_base *base);
->>   
->> +int
->> +amdgpu_open_devices(bool open_render_node, int  max_cards_supported, int drm_amdgpu_fds[]);
-> ------------------------------------------------ ^^
-> Two spaces, one is enough.
->
-> Regards,
-> Kamil
->
->> +
->>   #endif
->> diff --git a/lib/amdgpu/amd_pci_unplug.c b/lib/amdgpu/amd_pci_unplug.c
->> index 28b3ae393..078398b5e 100644
->> --- a/lib/amdgpu/amd_pci_unplug.c
->> +++ b/lib/amdgpu/amd_pci_unplug.c
->> @@ -21,7 +21,6 @@
->>    *
->>   */
->>   #include <linux/limits.h>
->> -#include <sys/types.h>
->>   #include <fcntl.h>
->>   #include <sys/stat.h>
->>   #include <pthread.h>
->> @@ -35,74 +34,6 @@
->>   #include "xalloc.h"
->>   #include "amd_ip_blocks.h"
->>   
->> -static int
->> -amdgpu_open_devices(bool open_render_node, int  max_cards_supported, int drm_amdgpu_fds[])
->> -{
->> -	drmDevicePtr devices[MAX_CARDS_SUPPORTED];
->> -	int i;
->> -	int drm_node;
->> -	int amd_index = 0;
->> -	int drm_count;
->> -	int fd;
->> -	drmVersionPtr version;
->> -
->> -	for (i = 0; i < max_cards_supported && i < MAX_CARDS_SUPPORTED; i++)
->> -		drm_amdgpu_fds[i] = -1;
->> -
->> -	drm_count = drmGetDevices2(0, devices, MAX_CARDS_SUPPORTED);
->> -
->> -	if (drm_count < 0) {
->> -		fprintf(stderr, "drmGetDevices2() returned an error %d\n", drm_count);
->> -		return 0;
->> -	}
->> -
->> -	for (i = 0; i < drm_count; i++) {
->> -		/* If this is not PCI device, skip*/
->> -		if (devices[i]->bustype != DRM_BUS_PCI)
->> -			continue;
->> -
->> -		/* If this is not AMD GPU vender ID, skip*/
->> -		if (devices[i]->deviceinfo.pci->vendor_id != 0x1002)
->> -			continue;
->> -
->> -		if (open_render_node)
->> -			drm_node = DRM_NODE_RENDER;
->> -		else
->> -			drm_node = DRM_NODE_PRIMARY;
->> -
->> -		fd = -1;
->> -		if (devices[i]->available_nodes & 1 << drm_node)
->> -			fd = open(
->> -				devices[i]->nodes[drm_node],
->> -				O_RDWR | O_CLOEXEC);
->> -
->> -		/* This node is not available. */
->> -		if (fd < 0) continue;
->> -
->> -		version = drmGetVersion(fd);
->> -		if (!version) {
->> -			fprintf(stderr, "Warning: Cannot get version for %s." "Error is %s\n",
->> -				devices[i]->nodes[drm_node], strerror(errno));
->> -			close(fd);
->> -			continue;
->> -		}
->> -
->> -		if (strcmp(version->name, "amdgpu")) {
->> -			/* This is not AMDGPU driver, skip.*/
->> -			drmFreeVersion(version);
->> -			close(fd);
->> -			continue;
->> -		}
->> -
->> -		drmFreeVersion(version);
->> -
->> -		drm_amdgpu_fds[amd_index] = fd;
->> -		amd_index++;
->> -	}
->> -
->> -	drmFreeDevices(devices, drm_count);
->> -	return amd_index;
->> -}
->>   static bool
->>   amdgpu_node_is_drm(int maj, int min)
->>   {
->> diff --git a/lib/amdgpu/amd_pci_unplug.h b/lib/amdgpu/amd_pci_unplug.h
->> index 509b6ec4c..35d4dce3a 100644
->> --- a/lib/amdgpu/amd_pci_unplug.h
->> +++ b/lib/amdgpu/amd_pci_unplug.h
->> @@ -26,8 +26,7 @@
->>   
->>   #include <amdgpu.h>
->>   #include <amdgpu_drm.h>
->> -
->> -#define MAX_CARDS_SUPPORTED 4
->> +#include "amd_ip_blocks.h"
->>   
->>   struct amd_pci_unplug_setup {
->>   	uint32_t  major_version_req;
->> -- 
->> 2.25.1
->>
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8307/index.html
+
+Participating hosts (43 -> 42)
+------------------------------
+
+  Additional (1): fi-bsw-kefka 
+  Missing    (2): fi-rkl-11600 fi-snb-2520m 
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in IGTPW_8307:
+
+### IGT changes ###
+
+#### Suppressed ####
+
+  The following results come from untrusted machines, tests, or statuses.
+  They do not affect the overall result.
+
+  * igt@i915_module_load@load:
+    - {bat-atsm-1}:       [PASS][1] -> [INCOMPLETE][2]
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12550/bat-atsm-1/igt@i915_module_load@load.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8307/bat-atsm-1/igt@i915_module_load@load.html
+
+  
+Known issues
+------------
+
+  Here are the changes found in IGTPW_8307 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@kms_chamelium@hdmi-hpd-fast:
+    - fi-bsw-kefka:       NOTRUN -> [SKIP][3] ([fdo#109271] / [fdo#111827]) +8 similar issues
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8307/fi-bsw-kefka/igt@kms_chamelium@hdmi-hpd-fast.html
+
+  * igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions-varying-size:
+    - fi-bsw-n3050:       [PASS][4] -> [FAIL][5] ([i915#6298])
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12550/fi-bsw-n3050/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions-varying-size.html
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8307/fi-bsw-n3050/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions-varying-size.html
+
+  * igt@prime_vgem@basic-fence-flip:
+    - fi-bsw-kefka:       NOTRUN -> [SKIP][6] ([fdo#109271]) +17 similar issues
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8307/fi-bsw-kefka/igt@prime_vgem@basic-fence-flip.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_pm_rpm@basic-rte:
+    - {bat-adln-1}:       [DMESG-WARN][7] ([i915#7077]) -> [PASS][8]
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12550/bat-adln-1/igt@i915_pm_rpm@basic-rte.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8307/bat-adln-1/igt@i915_pm_rpm@basic-rte.html
+
+  * igt@i915_selftest@live@workarounds:
+    - {bat-rpls-1}:       [INCOMPLETE][9] -> [PASS][10]
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12550/bat-rpls-1/igt@i915_selftest@live@workarounds.html
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8307/bat-rpls-1/igt@i915_selftest@live@workarounds.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [fdo#109295]: https://bugs.freedesktop.org/show_bug.cgi?id=109295
+  [fdo#111827]: https://bugs.freedesktop.org/show_bug.cgi?id=111827
+  [i915#3291]: https://gitlab.freedesktop.org/drm/intel/issues/3291
+  [i915#3301]: https://gitlab.freedesktop.org/drm/intel/issues/3301
+  [i915#4312]: https://gitlab.freedesktop.org/drm/intel/issues/4312
+  [i915#4613]: https://gitlab.freedesktop.org/drm/intel/issues/4613
+  [i915#4983]: https://gitlab.freedesktop.org/drm/intel/issues/4983
+  [i915#6298]: https://gitlab.freedesktop.org/drm/intel/issues/6298
+  [i915#6621]: https://gitlab.freedesktop.org/drm/intel/issues/6621
+  [i915#6997]: https://gitlab.freedesktop.org/drm/intel/issues/6997
+  [i915#7077]: https://gitlab.freedesktop.org/drm/intel/issues/7077
+  [i915#7359]: https://gitlab.freedesktop.org/drm/intel/issues/7359
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_7110 -> IGTPW_8307
+
+  CI-20190529: 20190529
+  CI_DRM_12550: f604441f326ba242fc0b0f86dc2468863d204c97 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_8307: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8307/index.html
+  IGT_7110: db10a19b94d1d7ae5ba62eb48d52c47ccb27766f @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8307/index.html
+
+--===============0901636544307520902==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>series starting with [1/4] lib/amdgpu: rename function parameter</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/112465/">https://patchwork.freedesktop.org/series/112465/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8307/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8307/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_12550 -&gt; IGTPW_8307</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8307/index.html</p>
+<h2>Participating hosts (43 -&gt; 42)</h2>
+<p>Additional (1): fi-bsw-kefka <br />
+  Missing    (2): fi-rkl-11600 fi-snb-2520m </p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in IGTPW_8307:</p>
+<h3>IGT changes</h3>
+<h4>Suppressed</h4>
+<p>The following results come from untrusted machines, tests, or statuses.<br />
+  They do not affect the overall result.</p>
+<ul>
+<li>igt@i915_module_load@load:<ul>
+<li>{bat-atsm-1}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12550/bat-atsm-1/igt@i915_module_load@load.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8307/bat-atsm-1/igt@i915_module_load@load.html">INCOMPLETE</a></li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_8307 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@kms_chamelium@hdmi-hpd-fast:</p>
+<ul>
+<li>fi-bsw-kefka:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8307/fi-bsw-kefka/igt@kms_chamelium@hdmi-hpd-fast.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://bugs.freedesktop.org/show_bug.cgi?id=111827">fdo#111827</a>) +8 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions-varying-size:</p>
+<ul>
+<li>fi-bsw-n3050:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12550/fi-bsw-n3050/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions-varying-size.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8307/fi-bsw-n3050/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions-varying-size.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6298">i915#6298</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@prime_vgem@basic-fence-flip:</p>
+<ul>
+<li>fi-bsw-kefka:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8307/fi-bsw-kefka/igt@prime_vgem@basic-fence-flip.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +17 similar issues</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@i915_pm_rpm@basic-rte:</p>
+<ul>
+<li>{bat-adln-1}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12550/bat-adln-1/igt@i915_pm_rpm@basic-rte.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7077">i915#7077</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8307/bat-adln-1/igt@i915_pm_rpm@basic-rte.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@workarounds:</p>
+<ul>
+<li>{bat-rpls-1}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12550/bat-rpls-1/igt@i915_selftest@live@workarounds.html">INCOMPLETE</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8307/bat-rpls-1/igt@i915_selftest@live@workarounds.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_7110 -&gt; IGTPW_8307</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_12550: f604441f326ba242fc0b0f86dc2468863d204c97 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_8307: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8307/index.html<br />
+  IGT_7110: db10a19b94d1d7ae5ba62eb48d52c47ccb27766f @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============0901636544307520902==--
