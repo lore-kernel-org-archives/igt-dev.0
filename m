@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 788C810E186
- for <igt-dev@lists.freedesktop.org>; Sat,  7 Jan 2023 13:46:11 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B83E210E2E9
+ for <igt-dev@lists.freedesktop.org>; Sat,  7 Jan 2023 13:46:10 +0000 (UTC)
 From: Alaa Emad <aemad@igalia.com>
 To: igt-dev@lists.freedesktop.org
-Date: Sat,  7 Jan 2023 15:45:55 +0200
-Message-Id: <e1013260f86fe0c37aaada5b9d4e34b69f12eeb1.1673098992.git.aemad@igalia.com>
+Date: Sat,  7 Jan 2023 15:45:54 +0200
+Message-Id: <2674f94e4fa36818ef621bb4b6c25aa5a3ac75e6.1673098992.git.aemad@igalia.com>
 In-Reply-To: <cover.1673098992.git.aemad@igalia.com>
 References: <cover.1673098992.git.aemad@igalia.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH RFC i-g-t v2 4/8] tests/kms_universal_plane:
- decouple verification of setup plane FB's while CRTC is disabled
+Subject: [igt-dev] [PATCH RFC i-g-t v2 3/8] tests/kms_universal_plane:
+ decouple verification of re-enabling primary plane
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,25 +24,24 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-decouple verification of setup plane FB's while CRTC is disabled in a separated subtests
+decouple verification of re-enable primary plane in a separated subtests
 to be able to run it individually, creating the function.
 
 Signed-off-by: Alaa Emad <aemad@igalia.com>
 ---
- tests/kms_universal_plane.c | 94 +++++++++++++++++++++++++++++++++++++
- 1 file changed, 94 insertions(+)
+ tests/kms_universal_plane.c | 68 +++++++++++++++++++++++++++++++++++++
+ 1 file changed, 68 insertions(+)
 
 diff --git a/tests/kms_universal_plane.c b/tests/kms_universal_plane.c
-index 96ce201b..99fc2b92 100644
+index 4d032d5c..96ce201b 100644
 --- a/tests/kms_universal_plane.c
 +++ b/tests/kms_universal_plane.c
-@@ -300,6 +300,94 @@ test_re_enable_primary_with_blue(data_t *data, enum pipe pipe, igt_output_t *out
+@@ -237,6 +237,68 @@ test_disable_primary_red_sprite(data_t *data, enum pipe pipe, igt_output_t *outp
  	functional_test_fini(&test, output);
  }
  
-+
 +static void
-+test_universal_api_with_crtc_off(data_t *data, enum pipe pipe, igt_output_t *output)
++test_re_enable_primary_with_blue(data_t *data, enum pipe pipe, igt_output_t *output)
 +{
 +	functional_test_t test = { .data = data };
 +	igt_display_t *display = &data->display;
@@ -87,59 +86,34 @@ index 96ce201b..99fc2b92 100644
 +	igt_display_commit2(display, COMMIT_LEGACY);
 +	igt_pipe_crc_collect_crc(test.pipe_crc, &test.crc_2);
 +
-+	/* Step 7: Legacy API's, yellow primary, no sprite */
-+	igt_plane_set_fb(primary, &test.yellow_fb);
-+	igt_plane_set_fb(sprite, NULL);
-+	igt_display_commit2(display, COMMIT_LEGACY);
-+
-+	/* Step 8: Disable CRTC */
 +	igt_plane_set_fb(primary, NULL);
-+	igt_display_commit2(display, COMMIT_LEGACY);
++	igt_display_commit2(display, COMMIT_UNIVERSAL);
 +
-+	/* Step 9: Universal API's with crtc off:
-+	 *  - red sprite
-+	 *  - multiple primary fb's, ending in blue
-+	 */
-+	igt_plane_set_fb(sprite, &test.red_fb);
-+	igt_display_commit2(display, COMMIT_UNIVERSAL);
-+	igt_plane_set_fb(primary, &test.yellow_fb);
-+	igt_display_commit2(display, COMMIT_UNIVERSAL);
-+	igt_plane_set_fb(primary, &test.black_fb);
-+	igt_display_commit2(display, COMMIT_UNIVERSAL);
++	/* Step 6: Universal API's, re-enable primary with blue (CRC 6) */
 +	igt_plane_set_fb(primary, &test.blue_fb);
 +	igt_display_commit2(display, COMMIT_UNIVERSAL);
++	igt_pipe_crc_collect_crc(test.pipe_crc, &test.crc_6);
 +
-+	/* Step 10: Enable crtc (fb = -1), take CRC (CRC 7) */
-+	igt_assert(drmModeSetCrtc(data->drm_fd, output->config.crtc->crtc_id, -1,
-+				  0, 0, &output->config.connector->connector_id,
-+				  1, test.mode) == 0);
-+	igt_pipe_crc_collect_crc(test.pipe_crc, &test.crc_7);
-+	
-+	/*
-+	 * We should be able to setup plane FB's while CRTC is disabled and
-+	 * then have them pop up correctly when the CRTC is re-enabled.
-+	 */
-+	igt_assert_crc_equal(&test.crc_2, &test.crc_7);
-+
++	/* Re-enabling primary should return to blue properly */
++	igt_assert_crc_equal(&test.crc_2, &test.crc_6);
 +
 +	igt_plane_set_fb(primary, NULL);
 +	igt_plane_set_fb(sprite, NULL);
 +
 +	functional_test_fini(&test, output);
 +}
-+
+ 
  /*
   * Universal plane functional testing.
-  *   - Black primary plane via traditional interfaces, red sprite, grab CRC:1.
-@@ -988,6 +1076,12 @@ run_tests_for_pipe(data_t *data, enum pipe pipe)
+@@ -920,6 +982,12 @@ run_tests_for_pipe(data_t *data, enum pipe pipe)
  		for_each_valid_output_on_pipe(&data->display, pipe, output)
- 			test_re_enable_primary_with_blue(data, pipe, output);
+ 			test_disable_primary_red_sprite(data, pipe, output);
  
 +	igt_describe("Check the switching between different primary plane fbs with CRTC off");
-+	igt_subtest_f("universal-api-with-crtc-off-%s",
++	igt_subtest_f("re-enable-primary-with-blue-%s",
 +		      kmstest_pipe_name(pipe))
 +		for_each_valid_output_on_pipe(&data->display, pipe, output)
-+			test_universal_api_with_crtc_off(data, pipe, output);
++			test_re_enable_primary_with_blue(data, pipe, output);
 +
  	igt_describe("Check the switching between different primary plane fbs with CRTC off");
  	igt_subtest_f("universal-plane-pipe-%s-functional",
