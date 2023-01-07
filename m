@@ -1,17 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B83E210E2E9
- for <igt-dev@lists.freedesktop.org>; Sat,  7 Jan 2023 13:46:10 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A45C810E2EC
+ for <igt-dev@lists.freedesktop.org>; Sat,  7 Jan 2023 13:46:14 +0000 (UTC)
 From: Alaa Emad <aemad@igalia.com>
 To: igt-dev@lists.freedesktop.org
-Date: Sat,  7 Jan 2023 15:45:54 +0200
-Message-Id: <2674f94e4fa36818ef621bb4b6c25aa5a3ac75e6.1673098992.git.aemad@igalia.com>
+Date: Sat,  7 Jan 2023 15:45:58 +0200
+Message-Id: <e13e9ddefc7aaa22eb8b14be1eeed7944e4eeb58.1673098992.git.aemad@igalia.com>
 In-Reply-To: <cover.1673098992.git.aemad@igalia.com>
 References: <cover.1673098992.git.aemad@igalia.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH RFC i-g-t v2 3/8] tests/kms_universal_plane:
- decouple verification of re-enabling primary plane
+Subject: [igt-dev] [PATCH RFC i-g-t v2 7/8] tests/kms_universal_plane:
+ decouple verification of ablity to explicitly disable an already
+ implicitly-disabled primary plane
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,26 +25,27 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-decouple verification of re-enable primary plane in a separated subtests
-to be able to run it individually, creating the function.
+decouple verification of ablity to explicitly disable an already implicitly-disabled primary plane
+in a separated subtests to be able to run it individually, creating the function.
 
 Signed-off-by: Alaa Emad <aemad@igalia.com>
 ---
- tests/kms_universal_plane.c | 68 +++++++++++++++++++++++++++++++++++++
- 1 file changed, 68 insertions(+)
+ tests/kms_universal_plane.c | 94 +++++++++++++++++++++++++++++++++++++
+ 1 file changed, 94 insertions(+)
 
 diff --git a/tests/kms_universal_plane.c b/tests/kms_universal_plane.c
-index 4d032d5c..96ce201b 100644
+index c513eff9..743ccbc6 100644
 --- a/tests/kms_universal_plane.c
 +++ b/tests/kms_universal_plane.c
-@@ -237,6 +237,68 @@ test_disable_primary_red_sprite(data_t *data, enum pipe pipe, igt_output_t *outp
+@@ -546,6 +546,94 @@ test_set_primary_completely_offscreen(data_t *data, enum pipe pipe, igt_output_t
  	functional_test_fini(&test, output);
  }
  
++//SUCCESS on VKMS and i915
 +static void
-+test_re_enable_primary_with_blue(data_t *data, enum pipe pipe, igt_output_t *output)
++test_explicitly_disable_primary(data_t *data, enum pipe pipe, igt_output_t *output)
 +{
-+	functional_test_t test = { .data = data };
++	functional_test_t test = {.data = data};
 +	igt_display_t *display = &data->display;
 +	igt_plane_t *primary, *sprite;
 +	int num_primary = 0, num_cursor = 0;
@@ -52,7 +54,7 @@ index 4d032d5c..96ce201b 100644
 +	igt_require_pipe(display, pipe);
 +
 +	igt_info("Testing connector %s using pipe %s\n", igt_output_name(output),
-+		 kmstest_pipe_name(pipe));
++			 kmstest_pipe_name(pipe));
 +
 +	functional_test_init(&test, output, pipe);
 +
@@ -73,50 +75,75 @@ index 4d032d5c..96ce201b 100644
 +
 +	primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
 +	sprite = igt_output_get_plane_type(output, DRM_PLANE_TYPE_OVERLAY);
-+	if (!sprite) {
++	if (!sprite)
++	{
 +		functional_test_fini(&test, output);
 +		igt_skip("No sprite plane available\n");
 +	}
 +
 +	igt_plane_set_position(sprite, 100, 100);
 +
-+	/* Step 2: Legacy API', blue primary, red sprite (CRC 2) */
++	/* Step 3: Legacy API's, yellow primary (CRC 3) */
++	igt_plane_set_fb(primary, &test.yellow_fb);
++	igt_display_commit2(display, COMMIT_LEGACY);
++	igt_pipe_crc_collect_crc(test.pipe_crc, &test.crc_3);
++
++	/* Step 4: Universal API's, blue primary, red sprite (CRC 4) */
++	igt_plane_set_fb(primary, &test.blue_fb);
++	igt_plane_set_fb(sprite, &test.red_fb);
++	igt_display_commit2(display, COMMIT_UNIVERSAL);
++	igt_pipe_crc_collect_crc(test.pipe_crc, &test.crc_4);
++
++	/* Step 5: Universal API's, disable primary plane (CRC 5) */
++	if (!is_amdgpu_device(data->drm_fd)) {
++		igt_plane_set_fb(primary, NULL);
++		igt_display_commit2(display, COMMIT_UNIVERSAL);
++		igt_pipe_crc_collect_crc(test.pipe_crc, &test.crc_5);
++	}
++
++	/*
++	 * Step 15: Explicitly disable primary after it's already been
++	 * implicitly disabled (CRC 10).
++	 */
++	if (!is_amdgpu_device(data->drm_fd)) {
++		igt_plane_set_fb(primary, NULL);
++		igt_display_commit2(display, COMMIT_UNIVERSAL);
++		igt_pipe_crc_collect_crc(test.pipe_crc, &test.crc_10);
++	}
++
++	/* Step 16: Legacy API's, blue primary, red sprite */
 +	igt_plane_set_fb(primary, &test.blue_fb);
 +	igt_plane_set_fb(sprite, &test.red_fb);
 +	igt_display_commit2(display, COMMIT_LEGACY);
-+	igt_pipe_crc_collect_crc(test.pipe_crc, &test.crc_2);
 +
-+	igt_plane_set_fb(primary, NULL);
-+	igt_display_commit2(display, COMMIT_UNIVERSAL);
-+
-+	/* Step 6: Universal API's, re-enable primary with blue (CRC 6) */
-+	igt_plane_set_fb(primary, &test.blue_fb);
-+	igt_display_commit2(display, COMMIT_UNIVERSAL);
-+	igt_pipe_crc_collect_crc(test.pipe_crc, &test.crc_6);
-+
-+	/* Re-enabling primary should return to blue properly */
-+	igt_assert_crc_equal(&test.crc_2, &test.crc_6);
++	/*
++	 * We should be able to explicitly disable an already
++	 * implicitly-disabled primary plane
++	 */
++	igt_assert_crc_equal(&test.crc_5, &test.crc_10);
 +
 +	igt_plane_set_fb(primary, NULL);
 +	igt_plane_set_fb(sprite, NULL);
 +
 +	functional_test_fini(&test, output);
 +}
- 
++
++
  /*
   * Universal plane functional testing.
-@@ -920,6 +982,12 @@ run_tests_for_pipe(data_t *data, enum pipe pipe)
+  *   - Black primary plane via traditional interfaces, red sprite, grab CRC:1.
+@@ -1251,6 +1339,12 @@ run_tests_for_pipe(data_t *data, enum pipe pipe)
+ 		      kmstest_pipe_name(pipe))
  		for_each_valid_output_on_pipe(&data->display, pipe, output)
- 			test_disable_primary_red_sprite(data, pipe, output);
- 
+ 			test_set_primary_completely_offscreen(data, pipe, output);
++	
 +	igt_describe("Check the switching between different primary plane fbs with CRTC off");
-+	igt_subtest_f("re-enable-primary-with-blue-%s",
++	igt_subtest_f("explicitly-disable-primary-%s",
 +		      kmstest_pipe_name(pipe))
 +		for_each_valid_output_on_pipe(&data->display, pipe, output)
-+			test_re_enable_primary_with_blue(data, pipe, output);
-+
++			test_explicitly_disable_primary(data, pipe, output);
+ 
  	igt_describe("Check the switching between different primary plane fbs with CRTC off");
  	igt_subtest_f("universal-plane-pipe-%s-functional",
- 		      kmstest_pipe_name(pipe))
 -- 
 2.34.1
