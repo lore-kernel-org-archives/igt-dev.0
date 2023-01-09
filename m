@@ -1,19 +1,27 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 384F410E471
- for <igt-dev@lists.freedesktop.org>; Mon,  9 Jan 2023 19:33:44 +0000 (UTC)
-From: "Cavitt, Jonathan" <jonathan.cavitt@intel.com>
-To: "Cavitt, Jonathan" <jonathan.cavitt@intel.com>
-Date: Mon, 9 Jan 2023 19:33:37 +0000
-Message-ID: <CH0PR11MB544498FA5DA0A8F0427C2935E5FE9@CH0PR11MB5444.namprd11.prod.outlook.com>
-References: <20230109192536.3395428-1-jonathan.cavitt@intel.com>
-In-Reply-To: <20230109192536.3395428-1-jonathan.cavitt@intel.com>
-Content-Language: en-US
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4306D10E081
+ for <igt-dev@lists.freedesktop.org>; Mon,  9 Jan 2023 21:02:00 +0000 (UTC)
+Date: Mon, 9 Jan 2023 16:01:47 -0500
+From: Rodrigo Vivi <rodrigo.vivi@intel.com>
+To: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
+Message-ID: <Y7yAu64uiie3vICi@intel.com>
+References: <Y5yRSFY09ZzbTCkS@intel.com>
+ <874jtupwwl.wl-ashutosh.dixit@intel.com>
+ <cc8b219d-808d-151a-260b-c3992970f5cc@linux.intel.com>
+ <Y6S99xokHDs484QF@intel.com>
+ <61b209ce-cc68-b998-733e-42b06e9d378e@linux.intel.com>
+ <Y6XLsY8neYPjAhyM@intel.com>
+ <875ydkfzat.wl-ashutosh.dixit@intel.com>
+ <Y7iAphC7z75VdNHx@intel.com>
+ <6f58ca5b-3626-3f8b-affb-bf3a82e9d544@intel.com>
+ <87zgave42v.wl-ashutosh.dixit@intel.com>
 Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+Content-Disposition: inline
+In-Reply-To: <87zgave42v.wl-ashutosh.dixit@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t] lib/igt_kmod: Allow some leeway in
- igt_kmod_unload_r
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/perf_pmu: Compare against
+ requested freq in frequency subtest
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,118 +29,332 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
------Original Message-----
-From: Cavitt, Jonathan <jonathan.cavitt@intel.com>=20
-Sent: Monday, January 9, 2023 11:26 AM
-To: igt-dev@lists.freedesktop.org
-Cc: Dutt, Sudeep <sudeep.dutt@intel.com>; Cavitt, Jonathan <jonathan.cavitt=
-@intel.com>
-Subject: [PATCH i-g-t] lib/igt_kmod: Allow some leeway in igt_kmod_unload_r
->=20
-> kmod_module_remove_module occasionally returns EAGAIN for mei_gsc
-> in the setup of some gem_lmem_swapping subtests.  Just because
-> EAGAIN is returned doesn't mean the module is lost and unable to
-> be unloaded.  Try again some number of times (currently 10) before
+On Fri, Jan 06, 2023 at 01:38:32PM -0800, Dixit, Ashutosh wrote:
+> On Fri, 06 Jan 2023 12:39:27 -0800, Belgaumkar, Vinay wrote:
+> > On 1/6/2023 12:12 PM, Rodrigo Vivi wrote:
+> > > On Thu, Jan 05, 2023 at 01:26:34PM -0800, Dixit, Ashutosh wrote:
+> > >> On Fri, 23 Dec 2022 07:39:29 -0800, Rodrigo Vivi wrote:
+> > >>> On Fri, Dec 23, 2022 at 09:22:53AM +0000, Tvrtko Ursulin wrote:
+> > >>>> On 22/12/2022 20:28, Rodrigo Vivi wrote:
+> > >>>>> On Mon, Dec 19, 2022 at 08:46:59AM +0000, Tvrtko Ursulin wrote:
+> > >>>>>> On 17/12/2022 02:49, Dixit, Ashutosh wrote:
+> > >>>>>>> On Fri, 16 Dec 2022 07:39:52 -0800, Rodrigo Vivi wrote:
+> > >>>>>>>> On Fri, Dec 16, 2022 at 09:37:31AM +0000, Tvrtko Ursulin wrote:
+> > >>>>>>>>> On 16/12/2022 06:21, Dixit, Ashutosh wrote:
+> > >>>>>>>>>> On Thu, 24 Nov 2022 04:42:08 -0800, Tvrtko Ursulin wrote:
+> > >>>>>>>>>>> On 23/11/2022 06:03, Dixit, Ashutosh wrote:
+> > >>>>>>>>>>>> On Mon, 21 Nov 2022 01:09:55 -0800, Tvrtko Ursulin wrote:
+> > >>>>>>>>>> Hi Tvrtko,
+> > >>>>>>>>>>
+> > >>>>>>>>>> Sorry for the delay in replying on this. We are discussing this but still
+> > >>>>>>>>>> no conclusion. I have replied what I can below, will update again after I
+> > >>>>>>>>>> know more. Wanted to send a reply before disappearing for the
+> > >>>>>>>>>> holidays. Please see below.
+> > >>>>>>>>>>
+> > >>>>>>>>>>>> Hi Tvrtko,
+> > >>>>>>>>>>>>
+> > >>>>>>>>>>>> I am only offering an overall clarification below first, not answering all
+> > >>>>>>>>>>>> of your points for now.
+> > >>>>>>>>>>>>
+> > >>>>>>>>>>>>> On 19/11/2022 02:00, Ashutosh Dixit wrote:
+> > >>>>>>>>>>>>>> With SLPC, even when we set the same min and max freq's, the requested and
+> > >>>>>>>>>>>>>> actual freq's can differ from the min/max freq set. For example "efficient
+> > >>>>>>>>>>>>>> freq" (when in effect) can override set min/max freq. In general FW is the
+> > >>>>>>>>>>>>>> final arbiter in determining freq and can override set values.
+> > >>>>>>>>>>>>>>
+> > >>>>>>>>>>>>>> Therefore in igt@perf_pmu@frequency subtest, compare the requested freq
+> > >>>>>>>>>>>>>> reported by PMU not against the set freq's but against the requested freq
+> > >>>>>>>>>>>>>> reported in sysfs. Also add a delay after setting freq's to account for
+> > >>>>>>>>>>>>>> messaging delays in setting freq's in GuC.
+> > >>>>>>>>>>>>>>
+> > >>>>>>>>>>>>>> v2: Introduce a 100 ms delay after setting freq
+> > >>>>>>>>>>>>>> v3: Update commit message, code identical to v2
+> > >>>>>>>>>>>>>>
+> > >>>>>>>>>>>>>> Bug: https://gitlab.freedesktop.org/drm/intel/-/issues/6806
+> > >>>>>>>>>>>>>> Cc: Vinay Belgaumkar <vinay.belgaumkar@intel.com>
+> > >>>>>>>>>>>>>> Cc: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
+> > >>>>>>>>>>>>>> Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
+> > >>>>>>>>>>>>>> ---
+> > >>>>>>>>>>>>>>        tests/i915/perf_pmu.c | 23 +++++++++++++++--------
+> > >>>>>>>>>>>>>>        1 file changed, 15 insertions(+), 8 deletions(-)
+> > >>>>>>>>>>>>>>
+> > >>>>>>>>>>>>>> diff --git a/tests/i915/perf_pmu.c b/tests/i915/perf_pmu.c
+> > >>>>>>>>>>>>>> index f363db2ba13..02f6ae989b1 100644
+> > >>>>>>>>>>>>>> --- a/tests/i915/perf_pmu.c
+> > >>>>>>>>>>>>>> +++ b/tests/i915/perf_pmu.c
+> > >>>>>>>>>>>>>> @@ -1543,10 +1543,13 @@ test_interrupts_sync(int gem_fd)
+> > >>>>>>>>>>>>>>		igt_assert_lte(target, busy);
+> > >>>>>>>>>>>>>>        }
+> > >>>>>>>>>>>>>>        +/* Wait for GuC SLPC freq changes to take effect */
+> > >>>>>>>>>>>>>> +#define wait_freq_set()		usleep(100000)
+> > >>>>>>>>>>>>> A future task of maybe adding a drop_caches flag to wait for this?
+> > >>>>>>>>>>>>>
+> > >>>>>>>>>>>>> Alternatively, if we have a sysfs or debugfs file which reflects the value
+> > >>>>>>>>>>>>> once GuC has processed it, keep reading it until it is updated? Even if to
+> > >>>>>>>>>>>>> something other than it was before the write, to handle the inability to
+> > >>>>>>>>>>>>> set the exact requested frequency sometimes?
+> > >>>>>>>>>>>>>> +
+> > >>>>>>>>>>>>>>        static void
+> > >>>>>>>>>>>>>>        test_frequency(int gem_fd)
+> > >>>>>>>>>>>>>>        {
+> > >>>>>>>>>>>>>> -	uint32_t min_freq, max_freq, boost_freq;
+> > >>>>>>>>>>>>>> +	uint32_t min_freq, max_freq, boost_freq, min_req, max_req;
+> > >>>>>>>>>>>>>>		uint64_t val[2], start[2], slept;
+> > >>>>>>>>>>>>>>		double min[2], max[2];
+> > >>>>>>>>>>>>>>		igt_spin_t *spin;
+> > >>>>>>>>>>>>>> @@ -1572,10 +1575,11 @@ test_frequency(int gem_fd)
+> > >>>>>>>>>>>>>>		 * Set GPU to min frequency and read PMU counters.
+> > >>>>>>>>>>>>>>		 */
+> > >>>>>>>>>>>>>>		igt_require(igt_sysfs_set_u32(sysfs, "gt_min_freq_mhz", min_freq));
+> > >>>>>>>>>>>>>> -	igt_require(igt_sysfs_get_u32(sysfs, "gt_min_freq_mhz") == min_freq);
+> > >>>>>>>>>>>>>>		igt_require(igt_sysfs_set_u32(sysfs, "gt_max_freq_mhz", min_freq));
+> > >>>>>>>>>>>>>> -	igt_require(igt_sysfs_get_u32(sysfs, "gt_max_freq_mhz") == min_freq);
+> > >>>>>>>>>>>>>>		igt_require(igt_sysfs_set_u32(sysfs, "gt_boost_freq_mhz", min_freq));
+> > >>>>>>>>>>>>>> +	wait_freq_set();
+> > >>>>>>>>>>>>>> +	igt_require(igt_sysfs_get_u32(sysfs, "gt_min_freq_mhz") == min_freq);
+> > >>>>>>>>>>>>>> +	igt_require(igt_sysfs_get_u32(sysfs, "gt_max_freq_mhz") == min_freq);
+> > >>>>>>>>>>>>>>		igt_require(igt_sysfs_get_u32(sysfs, "gt_boost_freq_mhz") == min_freq);
+> > >>>>>>>>>>>>>>			gem_quiescent_gpu(gem_fd); /* Idle to be sure the change takes
+> > >>>>>>>>>>>>>> effect */
+> > >>>>>>>>>>>>>> @@ -1587,6 +1591,7 @@ test_frequency(int gem_fd)
+> > >>>>>>>>>>>>>>			min[0] = 1e9*(val[0] - start[0]) / slept;
+> > >>>>>>>>>>>>>>		min[1] = 1e9*(val[1] - start[1]) / slept;
+> > >>>>>>>>>>>>>> +	min_req = igt_sysfs_get_u32(sysfs, "gt_cur_freq_mhz");
+> > >>>>>>>>>>>>> This really leaves a bad taste for me still, sorry. First of all, it may
+> > >>>>>>>>>>>>> make it more palatable if readback was immediately after wait_freq_set(),
+> > >>>>>>>>>>>>> or as part of it. Otherwise it seems like even more confused test and sysfs
+> > >>>>>>>>>>>>> ABI.
+> > >>>>>>>>>>>>>
+> > >>>>>>>>>>>>> Did we close on my question of whether we can make readback of
+> > >>>>>>>>>>>>> gt_max_freq_mhz actually represent the real max? Correct me please if I got
+> > >>>>>>>>>>>>> confused - with min freq checking here we write max=300 and get 350? If so
+> > >>>>>>>>>>>>> can we make gt_max_freq_mhz return 350 after the write of 300? Or return an
+> > >>>>>>>>>>>>> error?
+> > >>>>>>>>>>>> Did you read Vinay's email on v1 here:
+> > >>>>>>>>>>>>
+> > >>>>>>>>>>>> https://patchwork.freedesktop.org/patch/510304/?series=110574&rev=1#comment_921571
+> > >>>>>>>>>>>>
+> > >>>>>>>>>>>> As Vinay says, SLPC is requesting an entirely different freq (the effecient
+> > >>>>>>>>>>>> freq rather than the set 'min == max freq') and no amount of waiting will
+> > >>>>>>>>>>>> result in the requested freq being the same as the set 'min == max
+> > >>>>>>>>>>>> freq'. Also the efficient freq cannot be controlled from user space.
+> > >>>>>>>>>>> Why is that not a break in our ABI? What is the point in allowing users to
+> > >>>>>>>>>>> write into this field if the desired value can be silently ignored?
+> > >>>>>>>>>> Yes, this is in discussion. FW is doing this and we need to see if FW can
+> > >>>>>>>>>> be made to obey the i915 ABI. IMHO what matters is performance per watt and
+> > >>>>>>>>>> if the ABI has to be tossed so be it. I will keep this list posted about
+> > >>>>>>>>>> what happens here. Merging any patches for these issues (GL #6806 and
+> > >>>>>>>>>> #6786) is blocked till the ABI breakage issue is resolved one way or
+> > >>>>>>>>>> another.
+> > >>>>>>>>> Two thoughts here, one has been mentioned before.
+> > >>>>>>>>>
+> > >>>>>>>>> New one is that performance per watt perhaps does not matter (is not a
+> > >>>>>>>>> primary concern at least) for use cases where "users" (for some definition)
+> > >>>>>>>>> tweak the min/max in sysfs. Presumably in those cases user wants control,
+> > >>>>>>>>> for some reason, so as long as it is safe and within the limits why not give
+> > >>>>>>>>> it to them.
+> > >>>>>>>>>
+> > >>>>>>>>> Same argument from a different angle - what is the use case for allowing
+> > >>>>>>>>> min/max control which does not really do what it says on the tin?
+> > >>>>>>>>>
+> > >>>>>>>>> Old thought is this - if SLPC refuses to be controlled using our existing
+> > >>>>>>>>> controls then we could just say -ENODEV on attempts to modify them. Whether
+> > >>>>>>>>> for any input value, or some, depending on what SLPC can support (or wants
+> > >>>>>>>>> to support).
+> > >>>>>>>> The problem is not just	SLPC. The freq is ultimately decided by PCODE and it
+> > >>>>>>>> has sudo and all the rights to disrespect what drivers (including SLPC as a
+> > >>>>>>>> a driver from PCODE perspective) are requesting.
+> > >>>>>>>>
+> > >>>>>>>>> Important to note I am primarily focusing on the min freq here, which AFAIR
+> > >>>>>>>>> we concluded can behave that user writes in 300, but SLPC decides it will
+> > >>>>>>>>> only go as low as 350.
+> > >>>>>>>> The other caveat here with the efficient freq is that it is dynamic and PCODE
+> > >>>>>>>> decides it with runtime conditions. It may start with 300, then move to 350,
+> > >>>>>>>> then back to 300. i915 is only stashing the initial value.
+> > >>>>>>>>
+> > >>>>>>>> We could potentially update our rpe everytime any freq control is
+> > >>>>>>>> touched.
+> > >>>>>>> We thought of doing this but two points:
+> > >>>>>>>
+> > >>>>>>> 1. i915 now reads the same register as GuC for rpe but I never see the
+> > >>>>>>>       value in this register change.
+> > >>>>>>> 2. Even if we could know the real rpe, the freq's might be set before a
+> > >>>>>>>       workload start running and rpe might change after the workload starts
+> > >>>>>>>       running. So knowing rpe before the workload might not be very useful.
+> > >>>>>>>
+> > >>>>>>> I am of the opposite opinion that anyway the previous kernel ABI is
+> > >>>>>>> probably now irrecoverably bust, so we should give FW free reign and stop
+> > >>>>>>> disabling efficient freq the way we do now when min_freq < rpe_freq.
+> > >>>>>> We have to answer the question of why we need to keep exposing the sysfs
+> > >>>>>> controls if they don't/can't/won't do what they say on the tin. Could we
+> > >>>>>> make a break with DG2 for instance? Some use cases might suffer but it's
+> > >>>>>> probably better than having them think it does what they think it does, or
+> > >>>>>> file bugs when it does not.
+> > >>>>> That's a good question. But if we have no control at all people will still
+> > >>>>> file requests for something our hardware and low level firmwares cannot promise.
+> > >>>>>
+> > >>>>> There are many folks who run important/critical experiments using these
+> > >>>>> interfaces at the same time they are monitoring throttle conditions and all.
+> > >>>> Aren't the two paragraphs a bit in contradiction? Important and critical
+> > >>>> experiments using controls which are not doing what they think they are.
+> > >>> Well, not really.
+> > >>>
+> > >>> Most of the times it will work. We just don't have a warranty.
+> > >> I think it would help for the user to know when it will work and when it
+> > >> will not.
+> > > Yeap. But mostly this lays on improving our throttle reasons infra.
+> > >
+> > > I'm also wondering now if upon freq reads if we also couldn't internally
+> > > check the throttle reason and put a debug message?!
+> > >
+> > >>> We have some indications when this were disrespected like the
+> > >>> throttle_reasons.
+> > >> There is no indication related to rpe_freq in throttle_reasons, isn't it?
+> > > no.
+> > >
+> > >>> Those limited times doesn't exclude the importance of the usage.
+> > >>>
+> > >>>> I don't claim I know for what all use cases do they get used. I *think*
+> > >>>> there was one in the media transcoding world one where people wanted truly
+> > >>>> fixed frequency so they can compare like-for-like between something.
+> > >>>>
+> > >>>> So bah.. but okay for the perf_pmu changes, how about instead of this:
+> > >>>>
+> > >>>> rpN = read RPn from sysfs
+> > >>>> set_min_freq(rpN)
+> > >>>> sleep
+> > >>>> real_min = read actual from sysfs
+> > >>>> actual = sample pmu for t
+> > >>>> assert real_min is actual
+> > >>>>
+> > >>>> We do this:
+> > >>>>
+> > >>>> rpN = read RPn from sysfs
+> > >>>> set_min_freq(rpN)
+> > >>>> sleep
+> > >>>> fw_min = read actual from sysfs
+> > >>>> set_min_freq(fw_min)
+> > >>>> sleep
+> > >>>> actual = sample pmu for t
+> > >>>> assert fw_min is actual
+> > >>>>
+> > >>>> That's a tiny difference which both "documents" and verifies that even if we
+> > >>>> cannot set the min to RPn, firmware will somewhat consistently (stable)
+> > >>>> respect the minimum it prefers.
+> > >> Note it's not the min but the max freq which is not honored.
+> > >>
+> > >>>> Is that somewhat acceptable?
+> > >>> yeap, this sounds a better approach for a sane test.
+> > >> We talked with the GuC guys and learnt a few things:
+> > >>
+> > >> * PCODE continuously calculates and updates the current RPe (efficient
+> > >>    freq) value
+> > >> * GuC samples the RPe values from PCODE every 1 ms and uses these to
+> > >>    request operating freq. So the requested freq is always set by GuC but
+> > >>    can be overridden say in cases of thermal throttling etc.
+> > >> * GuC ignores the max freq and directly uses RPe freq when requesting an
+> > >>    operating freq. This is beacuse RPe is supposedly more efficient that a
+> > >>    lower max freq.
+> > >> * GuC does have a separate control to ignore RPe entirely.
+> > >> * Regarding the delays I added in the patch, some time back GuC FW was
+> > >>    changed to move setting min/max freq's to the top half. As a result the
+> > >>    delays are no longer required.
+> > >>
+> > >> The most recent version the patches in light of above points are here:
+> > >>
+> > >> https://patchwork.freedesktop.org/series/111282/#rev3
+> > >>
+> > >> (The patches are similar to Tvrtko's first (rather than the second)
+> > >> pseudo-code above).
+> > >>
+> > >> These patches improve things but even with these patches unfortunately
+> > >> there are still sporadic failures. For example:
+> > >>
+> > >> Original failure:
+> > >> * https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8303/bat-dg2-11/igt@perf_pmu@frequency.html
+> > >> * RPn 300 MHz, PMU measures 397 MHz
+> > >>
+> > >> New failure:
+> > >> * https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8304/bat-dg2-11/igt@perf_pmu@frequency.html
+> > >> * PMU measures 371 MHz, requested freq measured after PMU measurement 400 MHz
+> > >>
+> > >> So these sporadic failures seems to be due to dynamically changing RPe.
+> > > Yes, they are.
+> > >
+> > >> It may be possible to get rid of the failures by either increasing the
+> > >> tolerance or sampling the requested freq sysfs more often (rather than just
+> > >> once after the PMU measurement) though maybe it's too much.
+> > > On Xe driver I workarounded it by 'constantly' updating our cached rpe.
+> > > By constantly I mean whenever anyone is touching (reading or writing) any
+> > > frequency.
+> > >
+> > > However I'm aware that this can be racy. Specially for the PMU cases or
+> > > with some out of band checks.
+> 
+> Consider 2 cases:
+> 
+> 1. We start a spinner load and then update min/max freq
+> 2. We update min/max freq first and then start spinner load
+> 
+> Doing the above, we likely pick up the correct (RPe) freq being used for
+> case 1 but not for case 2. And even for case 1 RPe might be dynamically
+> changing.
 
-Just noticed it's actually 20 times in the code.  I'll fix this before conf=
-irming the final
-push if this change is accepted.
--Jonathan Cavitt
+Indeed. It is racy no matter how you look at it. 1 component deciding and
+2 other reading and using to take decisions without any lock.
 
-> giving up.
->=20
-> Retries will occur for -EBUSY and -EAGAIN, as these imply the
-> system is waiting for the target module can simply be waited for.
-> All other errors exit immediately, but as the context for each
-> error informs their relative severity, no warnings will be issued.
->=20
-> References: VLK-30287, VLK-39629
->=20
-> Signed-off-by: Jonathan Cavitt <jonathan.cavitt@intel.com>
-> CC: Stuart Summers <stuart.summers@intel.com>
-> CC: Sandeep Kumar Parupalli <sandeep.kumar.parupalli@intel.com>
-> CC: Chris Wilson <chris.p.wilson@linux.intel.com>
-> Reviewed-by: Chris Wilson <chris.p.wilson@linux.intel.com>
-> ---
->  lib/igt_kmod.c | 41 ++++++++++++++++++++++++++++++++++++++---
->  1 file changed, 38 insertions(+), 3 deletions(-)
->=20
-> diff --git a/lib/igt_kmod.c b/lib/igt_kmod.c
-> index 17090110c..c840f9a17 100644
-> --- a/lib/igt_kmod.c
-> +++ b/lib/igt_kmod.c
-> @@ -253,8 +253,11 @@ out:
-> =20
->  static int igt_kmod_unload_r(struct kmod_module *kmod, unsigned int flag=
-s)
->  {
-> +#define MAX_TRIES	20
-> +#define SLEEP_DURATION	500000
->  	struct kmod_list *holders, *pos;
-> -	int err =3D 0;
-> +	int err, tries;
-> +	const char *mod_name =3D kmod_module_get_name(kmod);
-> =20
->  	holders =3D kmod_module_get_holders(kmod);
->  	kmod_list_foreach(pos, holders) {
-> @@ -269,7 +272,6 @@ static int igt_kmod_unload_r(struct kmod_module *kmod=
-, unsigned int flags)
->  		return err;
-> =20
->  	if (igt_kmod_is_loading(kmod)) {
-> -		const char *mod_name =3D kmod_module_get_name(kmod);
->  		igt_debug("%s still initializing\n", mod_name);
->  		err =3D igt_wait(!igt_kmod_is_loading(kmod), 10000, 100);
->  		if (err < 0) {
-> @@ -279,7 +281,40 @@ static int igt_kmod_unload_r(struct kmod_module *kmo=
-d, unsigned int flags)
->  		}
->  	}
-> =20
-> -	return kmod_module_remove_module(kmod, flags);
-> +	for (tries =3D 0; tries < MAX_TRIES; tries++) {
-> +		bool loop =3D false;
-> +
-> +		err =3D kmod_module_remove_module(kmod, flags);
-> +
-> +		/* Only loop in the following cases */
-> +		switch (err) {
-> +		case -EBUSY:
-> +		case -EAGAIN:
-> +			/* Waiting for module to be available */
-> +			loop =3D true;
-> +			break;
-> +		default:
-> +			break;
-> +                }
-> +		if (!loop)
-> +			break;
-> +
-> +		igt_debug("Module %s failed to unload with err: %d on attempt: %i\n",
-> +			  mod_name, err, tries + 1);
-> +
-> +		usleep(SLEEP_DURATION);
-> +	}
-> +
-> +	if (err =3D=3D -ENOENT)
-> +		igt_debug("Module %s could not be found.  Skipping.\n", mod_name);
-> +	else if (err)
-> +		igt_info("Module %s failed to unload with err: %d after ~%.1fms\n",
-> +			 mod_name, err, SLEEP_DURATION*tries/1000.);
-> +	else if (tries)
-> +		igt_info("Module %s unload took ~%.1fms over %i attempts\n",
-> +			 mod_name, SLEEP_DURATION*tries/1000., tries + 1);
-> +
-> +	return err;
->  }
-> =20
->  /**
-> --=20
-> 2.25.1
->=20
->=20
+> 
+> > >> So the best way to fix such sporadic failures seems to be to expose a
+> > >> 'rpe_enable' sysfs to turn off RPe for such tests/usages where strict
+> > >> userspace control of freq limits is required.
+> > >>
+> > >> @Rodrigo Vivi: so we need to see if we can make this uapi change and then
+> > >> go from there I think.
+> > > I believe this is the most sane option right now. We need to document this
+> > > well and have test cases for both.
+> > Either that, or we turn off efficient frequency when user updates max
+> > frequency as well (similar to what we do for min).
+> 
+> I think I disagree here, turning off RPe will affect PnP. I think we should
+> have explicit disable of RPe when that is needed and should actually remove
+> RPe disable when min is updated. Basically IMO the idea should be to
+> provide the best PnP and then tailor the ABI for the best PnP.
+
+We don't have any api problem when rpe is enabled but min <= rpe < max.
+So Vinay is wondering if we can get this scenario to enable the rpe in guc
+we don't need to create another api. Then on any read or write we would check
+this condition and decide on the efficient enabled or not.
+
+But as I told, it is racy anyway.
+
+So, in the end if we don't disable rpe we don't have how to guarantee the freq
+stable freq api. But if we disable we have the pnp impact. If we try any magic
+it will be racy.
+
+I'm tending to agree with Ashutosh and that adding the rpe_enabled is the best
+option. But document that very well. And yes, update the cached actual rpe anytime
+that we try to read that.
+
+> 
+> > >
+> > > Probably this plus the constant update of the cached RPe.
+> >
+> > Caching might be easier if GuC does the same. It can update the task state
+> > data with the new value for everyone else to read.
+> 
+> i915 will either need to read the register or read the task state from
+> GuC. You mean reading the task state is more efficient than reading the
+> register?
+
+oh, indeed... we can remove the cache and read from pcode directly anytime
+we need that. Safer indeed.
+
+> 
+> Thanks.
+> --
+> Ashutosh
