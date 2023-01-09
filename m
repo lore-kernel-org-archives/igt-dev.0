@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 23A5E10E39F
- for <igt-dev@lists.freedesktop.org>; Mon,  9 Jan 2023 10:04:27 +0000 (UTC)
-From: Petri Latvala <petri.latvala@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Mon,  9 Jan 2023 11:56:31 +0200
-Message-Id: <20230109095631.142221-1-petri.latvala@intel.com>
+Content-Type: multipart/alternative;
+ boundary="===============4591526677240790344=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v5] runner: Correctly handle abort before
- first test
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Petri Latvala" <petri.latvala@intel.com>
+Date: Mon, 09 Jan 2023 11:02:20 -0000
+Message-ID: <167326214039.18426.7928356189192142818@emeril.freedesktop.org>
+References: <20230109095631.142221-1-petri.latvala@intel.com>
+In-Reply-To: <20230109095631.142221-1-petri.latvala@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3IgcnVubmVy?=
+ =?utf-8?q?=3A_Correctly_handle_abort_before_first_test_=28rev5=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,170 +17,239 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Petri Latvala <petri.latvala@intel.com>,
- Chris Wilson <chris@chris-wilson.co.uk>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Don't leave the execution in a "please resume me" state if bootup
-causes an abort condition. Especially handle the case of abort on
-bootup when resuming correctly, so that it doesn't attempt to run a
-test on a tainted kernel if we've explicitly configured the runner to
-not execute when there's a taint.
+--===============4591526677240790344==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-v2: Fudge the results directory instead to get the desired results:
-    runner exits with nonzero, and resuming exits with "all done" instead
-    of executing anything.
+== Series Details ==
 
-v3: Use faccessat instead of open+close, use less magic strings,
-    remember to close fds (Chris)
+Series: runner: Correctly handle abort before first test (rev5)
+URL   : https://patchwork.freedesktop.org/series/96659/
+State : failure
 
-v4: Use GRACEFUL_EXITCODE in monitor_output, remove the 'resuming'
-    field (why was it a double?!). (Ryszard)
-    Stop trying to execute if all tests are already run, to avoid a
-    crash in environment validation.
+== Summary ==
 
-v5: Remember to git add so the 'resuming' field really gets
-    removed. (Kamil)
-    Use 0.000 in the printf format directly instead of formatting 0.0
-    to %.3f. (Kamil)
+CI Bug Log - changes from CI_DRM_12556 -> IGTPW_8314
+====================================================
 
-Signed-off-by: Petri Latvala <petri.latvala@intel.com>
-Cc: Arkadiusz Hiler <arek@hiler.eu>
-Cc: Chris Wilson <chris@chris-wilson.co.uk>
-Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Cc: Ryszard Knop <ryszard.knop@intel.com>
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
----
- runner/executor.c | 59 +++++++++++++++++++++++++++++++++++++++++++----
- runner/executor.h |  1 -
- 2 files changed, 55 insertions(+), 5 deletions(-)
+Summary
+-------
 
-diff --git a/runner/executor.c b/runner/executor.c
-index d2253082..9d3623b4 100644
---- a/runner/executor.c
-+++ b/runner/executor.c
-@@ -37,6 +37,7 @@
- 
- #define KMSG_HEADER "[IGT] "
- #define KMSG_WARN 4
-+#define GRACEFUL_EXITCODE -SIGHUP
- 
- static struct {
- 	int *fds;
-@@ -1247,9 +1248,9 @@ static int monitor_output(pid_t child,
- 						write_packet_with_canary(outputs[_F_SOCKET], override, settings->sync);
- 						free(override);
- 					} else {
--						dprintf(outputs[_F_JOURNAL], "%s%d (%.3fs)\n",
-+						dprintf(outputs[_F_JOURNAL], "%s%d (0.000s)\n",
- 							EXECUTOR_EXIT,
--							-SIGHUP, 0.0);
-+							GRACEFUL_EXITCODE);
- 						if (settings->sync)
- 							fdatasync(outputs[_F_JOURNAL]);
- 					}
-@@ -1720,6 +1721,41 @@ out_dirfd:
- 	return result;
- }
- 
-+static void fill_results_directory_with_notruns(struct job_list *list,
-+						int resdirfd)
-+{
-+	int outputs[_F_LAST];
-+	char name[32];
-+	int dirfd;
-+	size_t i;
-+
-+	for (i = 0; i < list->size; i++) {
-+		snprintf(name, sizeof(name), "%zd", i);
-+
-+		if (faccessat(resdirfd, name, F_OK, 0) == 0)
-+			continue;
-+
-+		mkdirat(resdirfd, name, 0777);
-+		dirfd = openat(resdirfd, name, O_DIRECTORY | O_RDONLY);
-+		if (dirfd < 0) {
-+			errf("Error accessing individual test result directory\n");
-+			return;
-+		}
-+
-+		if (!open_output_files(dirfd, outputs, true)) {
-+			errf("Error opening output files\n");
-+			close(dirfd);
-+			return;
-+		}
-+
-+		dprintf(outputs[_F_OUT], "Forced notrun result because of abort condition on bootup\n");
-+		dprintf(outputs[_F_JOURNAL], "%s%d (0.000s)\n", EXECUTOR_EXIT, GRACEFUL_EXITCODE);
-+
-+		close_outputs(outputs);
-+		close(dirfd);
-+	}
-+}
-+
- static int remove_file(int dirfd, const char *name)
- {
- 	return unlinkat(dirfd, name, 0) && errno != ENOENT;
-@@ -1845,7 +1881,6 @@ bool initialize_execute_state_from_resume(int dirfd,
- 	clear_settings(settings);
- 	free_job_list(list);
- 	memset(state, 0, sizeof(*state));
--	state->resuming = true;
- 
- 	if (!read_settings_from_dir(settings, dirfd) ||
- 	    !read_job_list(list, dirfd)) {
-@@ -2183,6 +2218,11 @@ bool execute(struct execute_state *state,
- 		return true;
- 	}
- 
-+	if (state->next >= job_list->size) {
-+		outf("All tests already executed.\n");
-+		return true;
-+	}
-+
- 	igt_list_for_each_entry(env_var, &settings->env_vars, link) {
- 		setenv(env_var->key, env_var->value, 1);
- 	}
-@@ -2271,7 +2311,7 @@ bool execute(struct execute_state *state,
- 	close(unamefd);
- 
- 	/* Check if we're already in abort-state at bootup */
--	if (!state->resuming) {
-+	{
- 		char *reason;
- 
- 		if ((reason = need_to_abort(settings)) != NULL) {
-@@ -2280,6 +2320,17 @@ bool execute(struct execute_state *state,
- 			free(reason);
- 			free(nexttest);
- 
-+			/*
-+			 * If an abort condition happened at bootup,
-+			 * assume that it happens on every boot,
-+			 * making this test execution impossible.
-+			 * Write stuff to the results directory
-+			 * indicating this so resuming immediately
-+			 * finishes instead of getting stuck in an
-+			 * infinite reboot loop.
-+			 */
-+			fill_results_directory_with_notruns(job_list, resdirfd);
-+
- 			status = false;
- 
- 			goto end;
-diff --git a/runner/executor.h b/runner/executor.h
-index 31f4ac16..ab6a0c17 100644
---- a/runner/executor.h
-+++ b/runner/executor.h
-@@ -13,7 +13,6 @@ struct execute_state
- 	 * > 0 : Timeout in use, time left.
- 	 */
- 	double time_left;
--	double resuming;
- 	bool dry;
- };
- 
--- 
-2.30.2
+  **FAILURE**
+
+  Serious unknown changes coming with IGTPW_8314 absolutely need to be
+  verified manually.
+  
+  If you think the reported changes have nothing to do with the changes
+  introduced in IGTPW_8314, please notify your bug team to allow them
+  to document this new failure mode, which will reduce false positives in CI.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8314/index.html
+
+Participating hosts (39 -> 39)
+------------------------------
+
+  Additional (1): bat-rpls-2 
+  Missing    (1): fi-snb-2520m 
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in IGTPW_8314:
+
+### IGT changes ###
+
+#### Possible regressions ####
+
+  * igt@gem_exec_suspend@basic-s3@smem:
+    - fi-rkl-11600:       NOTRUN -> [INCOMPLETE][1]
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8314/fi-rkl-11600/igt@gem_exec_suspend@basic-s3@smem.html
+
+  
+Known issues
+------------
+
+  Here are the changes found in IGTPW_8314 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@i915_selftest@live@gt_heartbeat:
+    - fi-apl-guc:         [PASS][2] -> [DMESG-FAIL][3] ([i915#5334])
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12556/fi-apl-guc/igt@i915_selftest@live@gt_heartbeat.html
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8314/fi-apl-guc/igt@i915_selftest@live@gt_heartbeat.html
+
+  * igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions-varying-size:
+    - fi-bsw-n3050:       [PASS][4] -> [FAIL][5] ([i915#6298])
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12556/fi-bsw-n3050/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions-varying-size.html
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8314/fi-bsw-n3050/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions-varying-size.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_selftest@live@gt_lrc:
+    - {bat-rpls-1}:       [INCOMPLETE][6] ([i915#4983]) -> [PASS][7]
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12556/bat-rpls-1/igt@i915_selftest@live@gt_lrc.html
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8314/bat-rpls-1/igt@i915_selftest@live@gt_lrc.html
+
+  
+#### Warnings ####
+
+  * igt@i915_suspend@basic-s3-without-i915:
+    - fi-rkl-11600:       [INCOMPLETE][8] ([i915#4817]) -> [FAIL][9] ([fdo#103375])
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12556/fi-rkl-11600/igt@i915_suspend@basic-s3-without-i915.html
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8314/fi-rkl-11600/igt@i915_suspend@basic-s3-without-i915.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [fdo#103375]: https://bugs.freedesktop.org/show_bug.cgi?id=103375
+  [fdo#109285]: https://bugs.freedesktop.org/show_bug.cgi?id=109285
+  [fdo#109295]: https://bugs.freedesktop.org/show_bug.cgi?id=109295
+  [fdo#111827]: https://bugs.freedesktop.org/show_bug.cgi?id=111827
+  [i915#1072]: https://gitlab.freedesktop.org/drm/intel/issues/1072
+  [i915#1845]: https://gitlab.freedesktop.org/drm/intel/issues/1845
+  [i915#1849]: https://gitlab.freedesktop.org/drm/intel/issues/1849
+  [i915#2582]: https://gitlab.freedesktop.org/drm/intel/issues/2582
+  [i915#3282]: https://gitlab.freedesktop.org/drm/intel/issues/3282
+  [i915#3555]: https://gitlab.freedesktop.org/drm/intel/issues/3555
+  [i915#3637]: https://gitlab.freedesktop.org/drm/intel/issues/3637
+  [i915#3708]: https://gitlab.freedesktop.org/drm/intel/issues/3708
+  [i915#4258]: https://gitlab.freedesktop.org/drm/intel/issues/4258
+  [i915#4312]: https://gitlab.freedesktop.org/drm/intel/issues/4312
+  [i915#4613]: https://gitlab.freedesktop.org/drm/intel/issues/4613
+  [i915#4817]: https://gitlab.freedesktop.org/drm/intel/issues/4817
+  [i915#4983]: https://gitlab.freedesktop.org/drm/intel/issues/4983
+  [i915#5334]: https://gitlab.freedesktop.org/drm/intel/issues/5334
+  [i915#6298]: https://gitlab.freedesktop.org/drm/intel/issues/6298
+  [i915#6367]: https://gitlab.freedesktop.org/drm/intel/issues/6367
+  [i915#6621]: https://gitlab.freedesktop.org/drm/intel/issues/6621
+  [i915#6687]: https://gitlab.freedesktop.org/drm/intel/issues/6687
+  [i915#6794]: https://gitlab.freedesktop.org/drm/intel/issues/6794
+  [i915#7456]: https://gitlab.freedesktop.org/drm/intel/issues/7456
+  [i915#7561]: https://gitlab.freedesktop.org/drm/intel/issues/7561
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_7110 -> IGTPW_8314
+
+  CI-20190529: 20190529
+  CI_DRM_12556: ac04152253dccfb02dcedfa0c57443122cf79314 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_8314: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8314/index.html
+  IGT_7110: db10a19b94d1d7ae5ba62eb48d52c47ccb27766f @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8314/index.html
+
+--===============4591526677240790344==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>runner: Correctly handle abort before first test (rev5)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/96659/">https://patchwork.freedesktop.org/series/96659/</a></td></tr>
+<tr><td><b>State:</b></td><td>failure</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8314/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8314/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_12556 -&gt; IGTPW_8314</h1>
+<h2>Summary</h2>
+<p><strong>FAILURE</strong></p>
+<p>Serious unknown changes coming with IGTPW_8314 absolutely need to be<br />
+  verified manually.</p>
+<p>If you think the reported changes have nothing to do with the changes<br />
+  introduced in IGTPW_8314, please notify your bug team to allow them<br />
+  to document this new failure mode, which will reduce false positives in CI.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8314/index.html</p>
+<h2>Participating hosts (39 -&gt; 39)</h2>
+<p>Additional (1): bat-rpls-2 <br />
+  Missing    (1): fi-snb-2520m </p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in IGTPW_8314:</p>
+<h3>IGT changes</h3>
+<h4>Possible regressions</h4>
+<ul>
+<li>igt@gem_exec_suspend@basic-s3@smem:<ul>
+<li>fi-rkl-11600:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8314/fi-rkl-11600/igt@gem_exec_suspend@basic-s3@smem.html">INCOMPLETE</a></li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_8314 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live@gt_heartbeat:</p>
+<ul>
+<li>fi-apl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12556/fi-apl-guc/igt@i915_selftest@live@gt_heartbeat.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8314/fi-apl-guc/igt@i915_selftest@live@gt_heartbeat.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5334">i915#5334</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions-varying-size:</p>
+<ul>
+<li>fi-bsw-n3050:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12556/fi-bsw-n3050/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions-varying-size.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8314/fi-bsw-n3050/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions-varying-size.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6298">i915#6298</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@i915_selftest@live@gt_lrc:<ul>
+<li>{bat-rpls-1}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12556/bat-rpls-1/igt@i915_selftest@live@gt_lrc.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4983">i915#4983</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8314/bat-rpls-1/igt@i915_selftest@live@gt_lrc.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<h4>Warnings</h4>
+<ul>
+<li>igt@i915_suspend@basic-s3-without-i915:<ul>
+<li>fi-rkl-11600:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12556/fi-rkl-11600/igt@i915_suspend@basic-s3-without-i915.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4817">i915#4817</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8314/fi-rkl-11600/igt@i915_suspend@basic-s3-without-i915.html">FAIL</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=103375">fdo#103375</a>)</li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_7110 -&gt; IGTPW_8314</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_12556: ac04152253dccfb02dcedfa0c57443122cf79314 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_8314: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8314/index.html<br />
+  IGT_7110: db10a19b94d1d7ae5ba62eb48d52c47ccb27766f @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============4591526677240790344==--
