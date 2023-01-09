@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E4F4010E4AA
- for <igt-dev@lists.freedesktop.org>; Mon,  9 Jan 2023 15:27:10 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5CF2910E4A9
+ for <igt-dev@lists.freedesktop.org>; Mon,  9 Jan 2023 15:27:19 +0000 (UTC)
 From: Swati Sharma <swati2.sharma@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Mon,  9 Jan 2023 20:58:26 +0530
-Message-Id: <20230109152832.3310-4-swati2.sharma@intel.com>
+Date: Mon,  9 Jan 2023 20:58:27 +0530
+Message-Id: <20230109152832.3310-5-swati2.sharma@intel.com>
 In-Reply-To: <20230109152832.3310-1-swati2.sharma@intel.com>
 References: <20230109152832.3310-1-swati2.sharma@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 3/8] lib/dsc: Add helpers for VDSC YCbCr420
- debugfs entry
+Subject: [igt-dev] [PATCH i-g-t 4/8] tests/i915/kms_dsc: Prep work for
+ extending val support for VDSC YCbCr420
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,102 +24,124 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Helper functions are added for getting/setting VDSC YCbCr420 debugfs entry.
+Functions are modified to accommodate changes for VDSC YCbCr420.
 
 Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
 ---
- lib/igt_dsc.c | 67 +++++++++++++++++++++++++++++++++++++++++++++++++++
- lib/igt_dsc.h |  4 +++
- 2 files changed, 71 insertions(+)
+ tests/i915/kms_dsc.c        | 20 ++++++++++++++------
+ tests/i915/kms_dsc_helper.c |  4 ++--
+ tests/i915/kms_dsc_helper.h |  1 +
+ 3 files changed, 17 insertions(+), 8 deletions(-)
 
-diff --git a/lib/igt_dsc.c b/lib/igt_dsc.c
-index 2d54c1ce5..d02c364aa 100644
---- a/lib/igt_dsc.c
-+++ b/lib/igt_dsc.c
-@@ -149,3 +149,70 @@ int igt_get_dsc_debugfs_fd(int drmfd, char *connector_name)
- 
- 	return openat(igt_debugfs_dir(drmfd), file_name, O_WRONLY);
+diff --git a/tests/i915/kms_dsc.c b/tests/i915/kms_dsc.c
+index 0db6cc2ef..f264d37a7 100644
+--- a/tests/i915/kms_dsc.c
++++ b/tests/i915/kms_dsc.c
+@@ -96,7 +96,8 @@ static void test_cleanup(data_t *data)
  }
-+
-+static
-+bool check_dsc_ycbcr420_debugfs(int drmfd, char *connector_name,
-+                                const char *check_str)
-+{
-+	char file_name[128] = {0};
-+	char buf[512];
-+
-+	sprintf(file_name, "%s/i915_dsc_ycbcr420", connector_name);
-+
-+	igt_debugfs_read(drmfd, file_name, buf);
-+
-+	return strstr(buf, check_str);
-+}
-+
-+/*
-+ * igt_is_dsc_ycbcr420_supported:
-+ * @drmfd: A drm file descriptor
-+ * @connector_name: Name of the libdrm connector we're going to use
-+ *
-+ * Returns: True if DSC YCbCr420 is supported for the given connector, false otherwise.
-+ */
-+bool igt_is_dsc_ycbcr420_supported(int drmfd, char *connector_name)
-+{
-+	return check_dsc_debugfs(drmfd, connector_name, "DSC_YCBCR420_Sink_Support: yes");
-+}
-+
-+/*
-+ * igt_is_force_dsc_ycbcr420_enabled:
-+ * @drmfd: A drm file descriptor
-+ * @connector_name: Name of the libdrm connector we're going to use
-+ *
-+ * Returns: True if DSC YCbCr420 is force enabled (via debugfs) for the given connector,
-+ * false otherwise.
-+ */
-+bool igt_is_force_dsc_ycbcr420_enabled(int drmfd, char *connector_name)
-+{
-+	return check_dsc_ycbcr420_debugfs(drmfd, connector_name, "Force_DSC_YCBCR420_Enable: yes");
-+}
-+
-+/*
-+ * igt_force_dsc_ycbcr420_enable:
-+ * @drmfd: A drm file descriptor
-+ * @connector_name: Name of the libdrm connector we're going to use
-+ *
-+ * Returns: 1 on success or negative error code, in case of failure.
-+ */
-+int igt_force_dsc_ycbcr420_enable(int drmfd, char *connector_name)
-+{
-+	return write_dsc_debugfs(drmfd, connector_name, "i915_dsc_ycbcr420", "1");
-+}
-+
-+/*
-+ * igt_get_dsc_ycbcr420_debugfs_fd:
-+ * @drmfd: A drm file descriptor
-+ * @connector_name: Name of the libdrm connector we're going to use
-+ *
-+ * Returns: fd of the DSC YCbCr420 debugfs for the given connector, else returns -1.
-+ */
-+int igt_get_dsc_ycbcr420_debugfs_fd(int drmfd, char *connector_name)
-+{
-+	char file_name[128] = {0};
-+
-+	sprintf(file_name, "%s/i915_dsc_ycbcr420", connector_name);
-+
-+	return openat(igt_debugfs_dir(drmfd), file_name, O_WRONLY);
-+}
-diff --git a/lib/igt_dsc.h b/lib/igt_dsc.h
-index 047db42eb..eeb4593be 100644
---- a/lib/igt_dsc.h
-+++ b/lib/igt_dsc.h
-@@ -33,5 +33,9 @@ bool igt_is_force_dsc_enabled(int drmfd, char *connector_name);
- int igt_force_dsc_enable(int drmfd, char *connector_name);
- int igt_force_dsc_enable_bpc(int drmfd, char *connector_name, int bpc);
- int igt_get_dsc_debugfs_fd(int drmfd, char *connector_name);
-+bool igt_is_dsc_ycbcr420_supported(int drmfd, char *connector_name);
-+bool igt_is_force_dsc_ycbcr420_enabled(int drmfd, char *connector_name);
-+int igt_force_dsc_ycbcr420_enable(int drmfd, char *connector_name);
-+int igt_get_dsc_ycbcr420_debugfs_fd(int drmfd, char *connector_name);
  
- #endif
+ /* re-probe connectors and do a modeset with DSC */
+-static void update_display(data_t *data, enum dsc_test_type test_type, unsigned int plane_format)
++static void update_display(data_t *data, enum dsc_test_type test_type,
++			   unsigned int plane_format)
+ {
+ 	bool enabled;
+ 	igt_plane_t *primary;
+@@ -198,6 +199,12 @@ static void test_dsc(data_t *data, enum dsc_test_type test_type, int bpc,
+ 	}
+ }
+ 
++static void run_test(data_t *data, enum dsc_test_type test_type, int bpc,
++		     unsigned int plane_format)
++{
++	test_dsc(data, test_type, bpc, plane_format);
++}
++
+ igt_main
+ {
+ 	data_t data = {};
+@@ -206,11 +213,12 @@ igt_main
+ 	igt_fixture {
+ 		data.drm_fd = drm_open_driver_master(DRIVER_INTEL);
+ 		data.devid = intel_get_drm_devid(data.drm_fd);
++		data.disp_ver = intel_display_ver(data.devid);
+ 		kmstest_set_vt_graphics_mode();
+ 		igt_install_exit_handler(kms_dsc_exit_handler);
+ 		igt_display_require(&data.display, data.drm_fd);
+ 		igt_display_require_output(&data.display);
+-		igt_require(intel_display_ver(data.devid) >= 11);
++		igt_require(data.disp_ver >= 11);
+ 		data.n_pipes = 0;
+ 		for_each_pipe(&data.display, i)
+ 			data.n_pipes++;
+@@ -220,14 +228,14 @@ igt_main
+ 		     "by a connector by forcing DSC on all connectors that support it "
+ 		     "with default parameters");
+ 	igt_subtest_with_dynamic("basic-dsc")
+-			test_dsc(&data, TEST_DSC_BASIC, 0, DRM_FORMAT_XRGB8888);
++			run_test(&data, TEST_DSC_BASIC, 0, DRM_FORMAT_XRGB8888);
+ 
+ 	igt_describe("Tests basic display stream compression functionality if supported "
+ 		     "by a connector by forcing DSC on all connectors that support it "
+ 		     "with default parameters and creating fb with diff formats");
+ 	igt_subtest_with_dynamic("dsc-with-formats") {
+ 		for (int k = 0; k < ARRAY_SIZE(format_list); k++)
+-			test_dsc(&data, TEST_DSC_BASIC, 0, format_list[k].format);
++			run_test(&data, TEST_DSC_BASIC, 0, format_list[k].format);
+ 	}
+ 
+ 	igt_describe("Tests basic display stream compression functionality if supported "
+@@ -235,7 +243,7 @@ igt_main
+ 		     "with certain input BPC for the connector");
+ 	igt_subtest_with_dynamic("dsc-with-bpc") {
+ 		for (int j = 0; j < ARRAY_SIZE(bpc_list); j++)
+-			test_dsc(&data, TEST_DSC_BPC, bpc_list[j], DRM_FORMAT_XRGB8888);
++			run_test(&data, TEST_DSC_BPC, bpc_list[j], DRM_FORMAT_XRGB8888);
+ 	}
+ 
+ 	igt_describe("Tests basic display stream compression functionality if supported "
+@@ -244,7 +252,7 @@ igt_main
+ 	igt_subtest_with_dynamic("dsc-with-bpc-formats") {
+ 		for (int j = 0; j < ARRAY_SIZE(bpc_list); j++) {
+ 			for (int k = 0; k < ARRAY_SIZE(format_list); k++) {
+-				test_dsc(&data, TEST_DSC_BPC, bpc_list[j], format_list[k].format);
++				run_test(&data, TEST_DSC_BPC, bpc_list[j], format_list[k].format);
+ 			}
+ 		}
+ 	}
+diff --git a/tests/i915/kms_dsc_helper.c b/tests/i915/kms_dsc_helper.c
+index 183a31457..7b75be82e 100644
+--- a/tests/i915/kms_dsc_helper.c
++++ b/tests/i915/kms_dsc_helper.c
+@@ -39,7 +39,7 @@ void force_dsc_enable(data_t *data)
+ 	igt_debug("Forcing DSC enable on %s\n", data->output->name);
+ 	ret = igt_force_dsc_enable(data->drm_fd,
+ 				   data->output->name);
+-	igt_assert_f(ret > 0, "debugfs_write failed");
++	igt_assert_f(ret > 0, "forcing dsc enable debugfs_write failed\n");
+ }
+ 
+ void force_dsc_enable_bpc(data_t *data)
+@@ -51,7 +51,7 @@ void force_dsc_enable_bpc(data_t *data)
+ 	ret = igt_force_dsc_enable_bpc(data->drm_fd,
+ 				       data->output->name,
+ 				       data->input_bpc);
+-	igt_assert_f(ret > 0, "debugfs_write failed");
++	igt_assert_f(ret > 0, "forcing input dsc bpc debugfs_write failed\n");
+ }
+ 
+ void save_force_dsc_en(data_t *data)
+diff --git a/tests/i915/kms_dsc_helper.h b/tests/i915/kms_dsc_helper.h
+index 0d93f7369..cfca2ed98 100644
+--- a/tests/i915/kms_dsc_helper.h
++++ b/tests/i915/kms_dsc_helper.h
+@@ -50,6 +50,7 @@ typedef struct {
+ 	igt_output_t *output;
+ 	int input_bpc;
+ 	int n_pipes;
++	int disp_ver;
+ 	enum pipe pipe;
+ } data_t;
+ 
 -- 
 2.25.1
