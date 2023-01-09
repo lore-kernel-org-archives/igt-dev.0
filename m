@@ -1,16 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 74AAA10E4AE
- for <igt-dev@lists.freedesktop.org>; Mon,  9 Jan 2023 15:27:26 +0000 (UTC)
-From: Swati Sharma <swati2.sharma@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Mon,  9 Jan 2023 20:58:31 +0530
-Message-Id: <20230109152832.3310-9-swati2.sharma@intel.com>
-In-Reply-To: <20230109152832.3310-1-swati2.sharma@intel.com>
-References: <20230109152832.3310-1-swati2.sharma@intel.com>
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 806B010E43B
+ for <igt-dev@lists.freedesktop.org>; Mon,  9 Jan 2023 15:38:44 +0000 (UTC)
+Date: Mon, 9 Jan 2023 16:38:23 +0100
+From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+To: Karolina Stolarek <karolina.stolarek@intel.com>
+Message-ID: <20230109153823.i6c63lwxpo5fwmkz@zkempczy-mobl2>
+References: <cover.1671793169.git.karolina.stolarek@intel.com>
+ <bf604dd1a93aca467b0b5d9dc908dad4304702c1.1671793169.git.karolina.stolarek@intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 8/8] tests/i915/kms_dsc: Add test summary
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <bf604dd1a93aca467b0b5d9dc908dad4304702c1.1671793169.git.karolina.stolarek@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t v2 6/6] tests/gem_exercise_blt: Add
+ fast-copy-emit test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,40 +21,267 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: petri.latvala@intel.com
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add test summary giving overall view of what all is being validated
-in the test.
+On Fri, Dec 23, 2022 at 12:13:51PM +0100, Karolina Stolarek wrote:
+> Add a subtest where two fast copy commands are executed within the
+> single batch buffer.
+> 
+> Signed-off-by: Karolina Stolarek <karolina.stolarek@intel.com>
+> ---
+>  tests/i915/gem_exercise_blt.c | 190 ++++++++++++++++++++++++++++++++--
+>  1 file changed, 184 insertions(+), 6 deletions(-)
+> 
+> diff --git a/tests/i915/gem_exercise_blt.c b/tests/i915/gem_exercise_blt.c
+> index 67a8b660..b8bfc436 100644
+> --- a/tests/i915/gem_exercise_blt.c
+> +++ b/tests/i915/gem_exercise_blt.c
+> @@ -37,6 +37,146 @@ static struct param {
+>  	if (param.write_png) \
+>  		blt_surface_to_png((fd), (id), (name), (obj), (w), (h)); } while (0)
+>  
+> +struct blt_fast_copy_data {
+> +	int i915;
+> +	struct blt_copy_object src;
+> +	struct blt_copy_object mid;
+> +	struct blt_copy_object dst;
+> +
+> +	struct blt_copy_batch bb;
+> +	enum blt_color_depth color_depth;
+> +
+> +	/* debug stuff */
+> +	bool print_bb;
+> +};
+> +
+> +static int fast_copy_one_bb(int i915,
+> +			    const intel_ctx_t *ctx,
+> +			    const struct intel_execution_engine2 *e,
+> +			    uint64_t ahnd,
+> +			    const struct blt_fast_copy_data *blt)
+> +{
+> +	struct drm_i915_gem_execbuffer2 execbuf = {};
+> +	struct drm_i915_gem_exec_object2 obj[4] = {};
+> +	struct blt_copy_data blt_tmp;
+> +	uint64_t src_offset, mid_offset, dst_offset, bb_offset, alignment;
+> +	uint64_t bb_pos = 0;
+> +	uint32_t flags;
+> +	int ret;
+> +
+> +	alignment = gem_detect_safe_alignment(i915);
+> +
+> +	src_offset = get_offset(ahnd, blt->src.handle, blt->src.size, alignment);
+> +	mid_offset = get_offset(ahnd, blt->mid.handle, blt->mid.size, alignment);
+> +	dst_offset = get_offset(ahnd, blt->dst.handle, blt->dst.size, alignment);
+> +	bb_offset = get_offset(ahnd, blt->bb.handle, blt->bb.size, alignment);
+> +
+> +	/* First blit */
+> +	memset(&blt_tmp, 0, sizeof(blt_tmp));
+> +	blt_tmp.src = blt->src;
+> +	blt_tmp.dst = blt->mid;
+> +	blt_tmp.bb = blt->bb;
+> +	blt_tmp.color_depth = blt->color_depth;
+> +	blt_tmp.print_bb = blt->print_bb;
+> +	bb_pos = emit_blt_fast_copy(i915, ahnd, &blt_tmp, bb_pos, false);
+> +
+> +	/* Second blit */
+> +	memset(&blt_tmp, 0, sizeof(blt_tmp));
+> +	blt_tmp.src = blt->mid;
+> +	blt_tmp.dst = blt->dst;
+> +	blt_tmp.bb = blt->bb;
+> +	blt_tmp.color_depth = blt->color_depth;
+> +	blt_tmp.print_bb = blt->print_bb;
+> +	bb_pos = emit_blt_fast_copy(i915, ahnd, &blt_tmp, bb_pos, true);
 
-Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
----
- tests/i915/kms_dsc.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+Pipelined blits? Nice!
 
-diff --git a/tests/i915/kms_dsc.c b/tests/i915/kms_dsc.c
-index 963d9f008..892c07b86 100644
---- a/tests/i915/kms_dsc.c
-+++ b/tests/i915/kms_dsc.c
-@@ -34,6 +34,17 @@
- 
- IGT_TEST_DESCRIPTION("Test to validate display stream compression");
- 
-+/*
-+ * i915 driver supports DSC1.1 from gen11+. To validate DSC, we have
-+ * different scenarios
-+ * (i) basic modeset (ii) input bpc (iii) formats (iv) fractional bpp
-+ * These tests will check for basic DSC support by the connector and
-+ * few other gen specific constraints. Fractional bpp got introduced
-+ * with DSC1.2 from MTL. By default, tests will get executed on RGB444
-+ * output format. However, if sink and platform supports YCBCR420, all the
-+ * tests will get executed with this format too.
-+ */
-+
- enum dsc_test_type {
- 	TEST_DSC_BASIC,
- 	TEST_DSC_BPC,
--- 
-2.25.1
+> +
+> +	flags = EXEC_OBJECT_PINNED | EXEC_OBJECT_SUPPORTS_48B_ADDRESS;
+> +
+> +	obj[0].handle = blt->src.handle;
+> +	obj[0].offset = CANONICAL(src_offset);
+> +	obj[0].flags = flags;
+> +
+> +	obj[1].handle = blt->mid.handle;
+> +	obj[1].offset = CANONICAL(mid_offset);
+> +	obj[1].flags = flags | EXEC_OBJECT_WRITE;
+> +
+> +	obj[2].handle = blt->dst.handle;
+> +	obj[2].offset = CANONICAL(dst_offset);
+> +	obj[2].flags = flags;
+> +
+> +	obj[3].handle = blt->bb.handle;
+> +	obj[3].offset = CANONICAL(bb_offset);
+> +	obj[3].flags = flags;
+> +
+> +	execbuf.buffer_count = 4;
+> +	execbuf.buffers_ptr = to_user_pointer(obj);
+> +	execbuf.rsvd1 = ctx ? ctx->id : 0;
+> +	execbuf.flags = e ? e->flags : I915_EXEC_BLT;
+> +	ret = __gem_execbuf(i915, &execbuf);
+> +
+> +	gem_sync(i915, blt->bb.handle);
+> +
+> +	return ret;
+> +}
+> +
+> +static void fast_copy_emit(int i915, const intel_ctx_t *ctx,
+> +			   const struct intel_execution_engine2 *e,
+> +			   uint32_t region1, uint32_t region2,
+> +			   enum blt_tiling_type mid_tiling)
+> +{
+> +	struct blt_fast_copy_data blt = {};
+> +	struct blt_copy_object *src, *mid, *dst;
+> +	const uint32_t bpp = 32;
+> +	uint64_t bb_size = 4096;
+> +	uint64_t ahnd = intel_allocator_open_full(i915, ctx->id, 0, 0,
+> +						  INTEL_ALLOCATOR_SIMPLE,
+> +						  ALLOC_STRATEGY_LOW_TO_HIGH, 0);
+> +	uint32_t bb, width = param.width, height = param.height;
+> +	int result;
+> +
+> +	igt_assert(__gem_create_in_memory_regions(i915, &bb, &bb_size, region1) == 0);
+> +
+> +	src = blt_create_object(i915, region1, width, height, bpp, 0,
+> +				T_LINEAR, COMPRESSION_DISABLED, 0, true);
+> +	mid = blt_create_object(i915, region2, width, height, bpp, 0,
+> +				mid_tiling, COMPRESSION_DISABLED, 0, true);
+> +	dst = blt_create_object(i915, region1, width, height, bpp, 0,
+> +				T_LINEAR, COMPRESSION_DISABLED, 0, true);
+> +	igt_assert(src->size == dst->size);
+> +
+> +	PRINT_SURFACE_INFO("src", src);
+> +	PRINT_SURFACE_INFO("mid", mid);
+> +	PRINT_SURFACE_INFO("dst", dst);
+> +
+> +	blt_surface_fill_rect(i915, src, width, height);
+> +	WRITE_PNG(i915, mid_tiling, "src", src, width, height);
+> +
+> +	memset(&blt, 0, sizeof(blt));
+> +	blt.color_depth = CD_32bit;
+> +	blt.print_bb = param.print_bb;
+> +	blt_set_copy_object(&blt.src, src);
+> +	blt_set_copy_object(&blt.mid, mid);
+> +	blt_set_copy_object(&blt.dst, dst);
+> +	blt_set_batch(&blt.bb, bb, bb_size, region1);
+> +
+> +	fast_copy_one_bb(i915, ctx, e, ahnd, &blt);
+> +	gem_sync(i915, blt.dst.handle);
+> +
+> +	WRITE_PNG(i915, mid_tiling, "mid", &blt.mid, width, height);
+> +	WRITE_PNG(i915, mid_tiling, "dst", &blt.dst, width, height);
+> +
+> +	result = memcmp(src->ptr, blt.dst.ptr, src->size);
+> +
+> +	blt_destroy_object(i915, src);
+> +	blt_destroy_object(i915, mid);
+> +	blt_destroy_object(i915, dst);
+> +	gem_close(i915, bb);
+> +	put_ahnd(ahnd);
+> +
+> +	munmap(&bb, bb_size);
+> +
+> +	igt_assert_f(!result, "source and destination surfaces differs!\n");
+> +}
+> +
+>  static void fast_copy(int i915, const intel_ctx_t *ctx,
+>  		      const struct intel_execution_engine2 *e,
+>  		      uint32_t region1, uint32_t region2,
+> @@ -102,12 +242,42 @@ static void fast_copy(int i915, const intel_ctx_t *ctx,
+>  	igt_assert_f(!result, "source and destination surfaces differs!\n");
+>  }
+>  
+> +enum fast_copy_func {
+> +	FAST_COPY,
+> +	FAST_COPY_EMIT
+> +};
+> +
+> +static char
+> +	*full_subtest_str(char *regtxt, enum blt_tiling_type tiling,
+> +			  enum fast_copy_func func)
+> +{
+> +	const char *multi_str = "emit";
+> +	char const *tile_str = blt_tiling_name(tiling);
+> +	char *name;
+> +	uint32_t len, sub_len;
+> +
+> +	len = strlen(regtxt) + strlen(tile_str) + strlen(multi_str) + 2;
+
+Similar to other patch - looks overengineered. Maybe asprintf() will help
+you to avoid calling strlen().
+
+--
+Zbigniew
+
+> +	name = malloc(len * sizeof(char));
+> +	igt_assert(name);
+> +
+> +	sub_len = snprintf(name, len, "%s-%s", tile_str, regtxt);
+> +
+> +	if (func == FAST_COPY_EMIT)
+> +		snprintf(name + sub_len, len, "-%s", multi_str);
+> +
+> +	return name;
+> +}
+> +
+>  static void fast_copy_test(int i915,
+>  			   const intel_ctx_t *ctx,
+> -			   struct igt_collection *set)
+> +			   struct igt_collection *set,
+> +			   enum fast_copy_func func)
+>  {
+>  	struct igt_collection *regions;
+>  	const struct intel_execution_engine2 *e;
+> +	void (*copy_func)(int i915, const intel_ctx_t *ctx,
+> +			  const struct intel_execution_engine2 *e,
+> +			  uint32_t r1, uint32_t r2, enum blt_tiling_type tiling);
+>  	int tiling;
+>  
+>  	for_each_tiling(tiling) {
+> @@ -119,20 +289,23 @@ static void fast_copy_test(int i915,
+>  				continue;
+>  			for_each_variation_r(regions, 2, set) {
+>  				uint32_t region1, region2;
+> -				char *regtxt;
+> +				char *regtxt, *test_name;
+>  
+>  				region1 = igt_collection_get_value(regions, 0);
+>  				region2 = igt_collection_get_value(regions, 1);
+> +
+> +				copy_func = (func == FAST_COPY) ? fast_copy : fast_copy_emit;
+>  				regtxt = memregion_dynamic_subtest_name(regions);
+> +				test_name = full_subtest_str(regtxt, tiling, func);
+>  
+> -				igt_dynamic_f("%s-%s",
+> -					      blt_tiling_name(tiling), regtxt) {
+> -					fast_copy(i915, ctx, e,
+> +				igt_dynamic_f("%s", test_name) {
+> +					copy_func(i915, ctx, e,
+>  						  region1, region2,
+>  						  tiling);
+>  				}
+>  
+>  				free(regtxt);
+> +				free(test_name);
+>  			}
+>  		}
+>  	}
+> @@ -206,7 +379,12 @@ igt_main_args("b:pst:W:H:", NULL, help_str, opt_handler, NULL)
+>  
+>  	igt_describe("Check fast-copy blit");
+>  	igt_subtest_with_dynamic("fast-copy") {
+> -		fast_copy_test(i915, ctx, set);
+> +		fast_copy_test(i915, ctx, set, FAST_COPY);
+> +	}
+> +
+> +	igt_describe("Check multiple fast-copy in one batch");
+> +	igt_subtest_with_dynamic("fast-copy-emit") {
+> +		fast_copy_test(i915, ctx, set, FAST_COPY_EMIT);
+>  	}
+>  
+>  	igt_fixture {
+> -- 
+> 2.25.1
+> 
