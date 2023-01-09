@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: text/plain; charset="utf-8"
+Content-Type: multipart/alternative;
+ boundary="===============2017099179647767463=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Swati Sharma" <swati2.sharma@intel.com>
-Date: Mon, 09 Jan 2023 18:04:20 -0000
-Message-ID: <167328746032.18427.11284461282488763814@emeril.freedesktop.org>
-References: <20230109152832.3310-1-swati2.sharma@intel.com>
-In-Reply-To: <20230109152832.3310-1-swati2.sharma@intel.com>
-Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_V?=
- =?utf-8?q?DSC_YCbCr420_+_Fractional_BPP_=28rev2=29?=
+To: "Nidhi Gupta" <nidhi1.gupta@intel.com>
+Date: Mon, 09 Jan 2023 18:04:46 -0000
+Message-ID: <167328748686.18428.5772606305886548705@emeril.freedesktop.org>
+References: <20230109134046.85340-1-nidhi1.gupta@intel.com>
+In-Reply-To: <20230109134046.85340-1-nidhi1.gupta@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgTW9kaWZp?=
+ =?utf-8?q?ed_few_kms_tests_to_reduce_execution_time?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,237 +23,177 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
+--===============2017099179647767463==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
 == Series Details ==
 
-Series: VDSC YCbCr420 + Fractional BPP (rev2)
-URL   : https://patchwork.freedesktop.org/series/111342/
-State : warning
+Series: Modified few kms tests to reduce execution time
+URL   : https://patchwork.freedesktop.org/series/112555/
+State : success
 
 == Summary ==
 
-Pipeline status: FAILED.
+CI Bug Log - changes from CI_DRM_12559 -> IGTPW_8317
+====================================================
 
-see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/779506 for the overview.
+Summary
+-------
 
-build:tests-debian-meson has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/34374699):
-  /usr/include/xf86drmMode.h:533:2: error: unknown type name ‘uint32_t’
-    uint32_t lessees[0];
-    ^~~~~~~~
-  /usr/include/xf86drmMode.h:539:2: error: unknown type name ‘uint32_t’
-    uint32_t count;
-    ^~~~~~~~
-  /usr/include/xf86drmMode.h:540:2: error: unknown type name ‘uint32_t’
-    uint32_t objects[0];
-    ^~~~~~~~
-  /usr/include/xf86drmMode.h:545:39: error: unknown type name ‘uint32_t’; did you mean ‘intptr_t’?
-   extern int drmModeRevokeLease(int fd, uint32_t lessee_id);
-                                         ^~~~~~~~
-                                         intptr_t
-  ninja: build stopped: subcommand failed.
-  section_end:1673287401:step_script
-  section_start:1673287401:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1673287402:cleanup_file_variables
-  ERROR: Job failed: exit code 1
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8317/index.html
+
+Participating hosts (38 -> 37)
+------------------------------
+
+  Missing    (1): fi-snb-2520m 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_8317 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@i915_selftest@live@gt_lrc:
+    - fi-rkl-guc:         [PASS][1] -> [INCOMPLETE][2] ([i915#4983])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12559/fi-rkl-guc/igt@i915_selftest@live@gt_lrc.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8317/fi-rkl-guc/igt@i915_selftest@live@gt_lrc.html
+
+  * igt@kms_setmode@basic-clone-single-crtc:
+    - fi-snb-2600:        NOTRUN -> [SKIP][3] ([fdo#109271])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8317/fi-snb-2600/igt@kms_setmode@basic-clone-single-crtc.html
+
   
+#### Possible fixes ####
 
-build:tests-debian-meson-arm64 has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/34374702):
-  /usr/include/xf86drmMode.h:533:2: error: unknown type name ‘uint32_t’
-    uint32_t lessees[0];
-    ^~~~~~~~
-  /usr/include/xf86drmMode.h:539:2: error: unknown type name ‘uint32_t’
-    uint32_t count;
-    ^~~~~~~~
-  /usr/include/xf86drmMode.h:540:2: error: unknown type name ‘uint32_t’
-    uint32_t objects[0];
-    ^~~~~~~~
-  /usr/include/xf86drmMode.h:545:39: error: unknown type name ‘uint32_t’; did you mean ‘intptr_t’?
-   extern int drmModeRevokeLease(int fd, uint32_t lessee_id);
-                                         ^~~~~~~~
-                                         intptr_t
-  ninja: build stopped: subcommand failed.
-  section_end:1673287413:step_script
-  section_start:1673287413:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1673287414:cleanup_file_variables
-  ERROR: Job failed: exit code 1
+  * igt@gem_exec_gttfill@basic:
+    - fi-pnv-d510:        [FAIL][4] ([i915#7229]) -> [PASS][5]
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12559/fi-pnv-d510/igt@gem_exec_gttfill@basic.html
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8317/fi-pnv-d510/igt@gem_exec_gttfill@basic.html
+
+  * igt@i915_selftest@live@slpc:
+    - {bat-rpls-1}:       [DMESG-FAIL][6] ([i915#6367]) -> [PASS][7]
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12559/bat-rpls-1/igt@i915_selftest@live@slpc.html
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8317/bat-rpls-1/igt@i915_selftest@live@slpc.html
+
   
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
 
-build:tests-debian-meson-armhf has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/34374701):
-  /usr/include/xf86drmMode.h:533:2: error: unknown type name ‘uint32_t’
-    uint32_t lessees[0];
-    ^~~~~~~~
-  /usr/include/xf86drmMode.h:539:2: error: unknown type name ‘uint32_t’
-    uint32_t count;
-    ^~~~~~~~
-  /usr/include/xf86drmMode.h:540:2: error: unknown type name ‘uint32_t’
-    uint32_t objects[0];
-    ^~~~~~~~
-  /usr/include/xf86drmMode.h:545:39: error: unknown type name ‘uint32_t’; did you mean ‘intptr_t’?
-   extern int drmModeRevokeLease(int fd, uint32_t lessee_id);
-                                         ^~~~~~~~
-                                         intptr_t
-  ninja: build stopped: subcommand failed.
-  section_end:1673287413:step_script
-  section_start:1673287413:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1673287414:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-  
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [i915#4983]: https://gitlab.freedesktop.org/drm/intel/issues/4983
+  [i915#6367]: https://gitlab.freedesktop.org/drm/intel/issues/6367
+  [i915#6997]: https://gitlab.freedesktop.org/drm/intel/issues/6997
+  [i915#7077]: https://gitlab.freedesktop.org/drm/intel/issues/7077
+  [i915#7229]: https://gitlab.freedesktop.org/drm/intel/issues/7229
+  [i915#7359]: https://gitlab.freedesktop.org/drm/intel/issues/7359
 
-build:tests-debian-meson-mips has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/34374703):
-  /usr/include/xf86drmMode.h:533:2: error: unknown type name ‘uint32_t’
-    uint32_t lessees[0];
-    ^~~~~~~~
-  /usr/include/xf86drmMode.h:539:2: error: unknown type name ‘uint32_t’
-    uint32_t count;
-    ^~~~~~~~
-  /usr/include/xf86drmMode.h:540:2: error: unknown type name ‘uint32_t’
-    uint32_t objects[0];
-    ^~~~~~~~
-  /usr/include/xf86drmMode.h:545:39: error: unknown type name ‘uint32_t’; did you mean ‘intptr_t’?
-   extern int drmModeRevokeLease(int fd, uint32_t lessee_id);
-                                         ^~~~~~~~
-                                         intptr_t
-  ninja: build stopped: subcommand failed.
-  section_end:1673287423:step_script
-  section_start:1673287423:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1673287423:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-  
 
-build:tests-debian-minimal has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/34374700):
-  /usr/include/xf86drmMode.h:533:2: error: unknown type name ‘uint32_t’
-    uint32_t lessees[0];
-    ^~~~~~~~
-  /usr/include/xf86drmMode.h:539:2: error: unknown type name ‘uint32_t’
-    uint32_t count;
-    ^~~~~~~~
-  /usr/include/xf86drmMode.h:540:2: error: unknown type name ‘uint32_t’
-    uint32_t objects[0];
-    ^~~~~~~~
-  /usr/include/xf86drmMode.h:545:39: error: unknown type name ‘uint32_t’; did you mean ‘intptr_t’?
-   extern int drmModeRevokeLease(int fd, uint32_t lessee_id);
-                                         ^~~~~~~~
-                                         intptr_t
-  ninja: build stopped: subcommand failed.
-  section_end:1673287405:step_script
-  section_start:1673287405:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1673287406:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-  
+Build changes
+-------------
 
-build:tests-fedora has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/34374694):
-        |  ^~~~~~~~
-  /usr/include/xf86drmMode.h:533:2: error: unknown type name ‘uint32_t’
-    533 |  uint32_t lessees[0];
-        |  ^~~~~~~~
-  /usr/include/xf86drmMode.h:539:2: error: unknown type name ‘uint32_t’
-    539 |  uint32_t count;
-        |  ^~~~~~~~
-  /usr/include/xf86drmMode.h:540:2: error: unknown type name ‘uint32_t’
-    540 |  uint32_t objects[0];
-        |  ^~~~~~~~
-  /usr/include/xf86drmMode.h:545:39: error: unknown type name ‘uint32_t’
-    545 | extern int drmModeRevokeLease(int fd, uint32_t lessee_id);
-        |                                       ^~~~~~~~
-  ninja: build stopped: subcommand failed.
-  section_end:1673287363:step_script
-  section_start:1673287363:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1673287364:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-  
+  * CI: CI-20190529 -> None
+  * IGT: IGT_7113 -> IGTPW_8317
 
-build:tests-fedora-clang has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/34374698):
-          uint32_t bpp;
-          ^
-  /usr/include/xf86drmMode.h:221:2: error: unknown type name 'uint32_t'
-          uint32_t depth;
-          ^
-  /usr/include/xf86drmMode.h:223:2: error: unknown type name 'uint32_t'
-          uint32_t handle;
-          ^
-  /usr/include/xf86drmMode.h:229:2: error: unknown type name 'uint32_t'
-          uint32_t id;
-          ^
-  fatal error: too many errors emitted, stopping now [-ferror-limit=]
-  20 errors generated.
-  ninja: build stopped: subcommand failed.
-  section_end:1673287385:step_script
-  section_start:1673287385:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1673287386:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-  
-
-build:tests-fedora-no-libdrm-nouveau has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/34374697):
-        |  ^~~~~~~~
-  /usr/include/xf86drmMode.h:533:2: error: unknown type name ‘uint32_t’
-    533 |  uint32_t lessees[0];
-        |  ^~~~~~~~
-  /usr/include/xf86drmMode.h:539:2: error: unknown type name ‘uint32_t’
-    539 |  uint32_t count;
-        |  ^~~~~~~~
-  /usr/include/xf86drmMode.h:540:2: error: unknown type name ‘uint32_t’
-    540 |  uint32_t objects[0];
-        |  ^~~~~~~~
-  /usr/include/xf86drmMode.h:545:39: error: unknown type name ‘uint32_t’
-    545 | extern int drmModeRevokeLease(int fd, uint32_t lessee_id);
-        |                                       ^~~~~~~~
-  ninja: build stopped: subcommand failed.
-  section_end:1673287380:step_script
-  section_start:1673287380:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1673287381:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-  
-
-build:tests-fedora-no-libunwind has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/34374695):
-        |  ^~~~~~~~
-  /usr/include/xf86drmMode.h:533:2: error: unknown type name ‘uint32_t’
-    533 |  uint32_t lessees[0];
-        |  ^~~~~~~~
-  /usr/include/xf86drmMode.h:539:2: error: unknown type name ‘uint32_t’
-    539 |  uint32_t count;
-        |  ^~~~~~~~
-  /usr/include/xf86drmMode.h:540:2: error: unknown type name ‘uint32_t’
-    540 |  uint32_t objects[0];
-        |  ^~~~~~~~
-  /usr/include/xf86drmMode.h:545:39: error: unknown type name ‘uint32_t’
-    545 | extern int drmModeRevokeLease(int fd, uint32_t lessee_id);
-        |                                       ^~~~~~~~
-  ninja: build stopped: subcommand failed.
-  section_end:1673287365:step_script
-  section_start:1673287365:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1673287366:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-  
-
-build:tests-fedora-oldest-meson has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/34374696):
-        |  ^~~~~~~~
-  /usr/include/xf86drmMode.h:533:2: error: unknown type name ‘uint32_t’
-    533 |  uint32_t lessees[0];
-        |  ^~~~~~~~
-  /usr/include/xf86drmMode.h:539:2: error: unknown type name ‘uint32_t’
-    539 |  uint32_t count;
-        |  ^~~~~~~~
-  /usr/include/xf86drmMode.h:540:2: error: unknown type name ‘uint32_t’
-    540 |  uint32_t objects[0];
-        |  ^~~~~~~~
-  /usr/include/xf86drmMode.h:545:39: error: unknown type name ‘uint32_t’
-    545 | extern int drmModeRevokeLease(int fd, uint32_t lessee_id);
-        |                                       ^~~~~~~~
-  ninja: build stopped: subcommand failed.
-  section_end:1673287375:step_script
-  section_start:1673287375:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1673287376:cleanup_file_variables
-  ERROR: Job failed: exit code 1
+  CI-20190529: 20190529
+  CI_DRM_12559: b4a7d5ac8957c0b894b81d125b15b1ff45eaf5b2 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_8317: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8317/index.html
+  IGT_7113: 15562e123ee6ed88163c7da2ef330dfe9bbd16a5 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
 
 == Logs ==
 
-For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/779506
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8317/index.html
+
+--===============2017099179647767463==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Modified few kms tests to reduce execution time</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/112555/">https://patchwork.freedesktop.org/series/112555/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8317/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8317/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_12559 -&gt; IGTPW_8317</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8317/index.html</p>
+<h2>Participating hosts (38 -&gt; 37)</h2>
+<p>Missing    (1): fi-snb-2520m </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_8317 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live@gt_lrc:</p>
+<ul>
+<li>fi-rkl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12559/fi-rkl-guc/igt@i915_selftest@live@gt_lrc.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8317/fi-rkl-guc/igt@i915_selftest@live@gt_lrc.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4983">i915#4983</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_setmode@basic-clone-single-crtc:</p>
+<ul>
+<li>fi-snb-2600:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8317/fi-snb-2600/igt@kms_setmode@basic-clone-single-crtc.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@gem_exec_gttfill@basic:</p>
+<ul>
+<li>fi-pnv-d510:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12559/fi-pnv-d510/igt@gem_exec_gttfill@basic.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7229">i915#7229</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8317/fi-pnv-d510/igt@gem_exec_gttfill@basic.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@slpc:</p>
+<ul>
+<li>{bat-rpls-1}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12559/bat-rpls-1/igt@i915_selftest@live@slpc.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6367">i915#6367</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8317/bat-rpls-1/igt@i915_selftest@live@slpc.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_7113 -&gt; IGTPW_8317</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_12559: b4a7d5ac8957c0b894b81d125b15b1ff45eaf5b2 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_8317: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8317/index.html<br />
+  IGT_7113: 15562e123ee6ed88163c7da2ef330dfe9bbd16a5 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============2017099179647767463==--
