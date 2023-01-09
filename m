@@ -1,15 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============5046034130652114366=="
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 02E7C10E413
+ for <igt-dev@lists.freedesktop.org>; Mon,  9 Jan 2023 12:49:59 +0000 (UTC)
+Date: Mon, 9 Jan 2023 13:49:55 +0100
+From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+To: Karolina Stolarek <karolina.stolarek@intel.com>
+Message-ID: <20230109124955.zzdpjhmtoflfl26t@zkempczy-mobl2>
+References: <cover.1671793169.git.karolina.stolarek@intel.com>
+ <0be583247c6af1d4eff85c62791b75f0ff3f5001.1671793169.git.karolina.stolarek@intel.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Anshuman Gupta" <anshuman.gupta@intel.com>
-Date: Mon, 09 Jan 2023 12:43:47 -0000
-Message-ID: <167326822732.18426.10105022811826103983@emeril.freedesktop.org>
-References: <20230109120205.2259410-1-anshuman.gupta@intel.com>
-In-Reply-To: <20230109120205.2259410-1-anshuman.gupta@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgUENJIFdB?=
- =?utf-8?q?RM=5FRESET_IGT?=
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <0be583247c6af1d4eff85c62791b75f0ff3f5001.1671793169.git.karolina.stolarek@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t v2 1/6] i915/lib: Add new library for
+ blitter and tiling formats
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,247 +22,646 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============5046034130652114366==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+On Fri, Dec 23, 2022 at 12:13:46PM +0100, Karolina Stolarek wrote:
+> Add structs to describe what blitter commands and tiling formats
+> are supported per platform. Add a generic functions that check
+> if a specific blitter command or tiling format is supported.
+> Move blt_tiling enum to the newely created library and update
+> its definition. Update i915_blt and block copy tests to reflect
+> that change.
+> 
+> Signed-off-by: Karolina Stolarek <karolina.stolarek@intel.com>
+> ---
+>  .../igt-gpu-tools/igt-gpu-tools-docs.xml      |   1 +
+>  lib/i915/i915_blt.c                           |  31 +--
+>  lib/i915/i915_blt.h                           |  14 +-
+>  lib/i915/intel_blt_info.c                     | 241 ++++++++++++++++++
+>  lib/i915/intel_blt_info.h                     |  98 +++++++
+>  lib/meson.build                               |   1 +
+>  tests/i915/gem_ccs.c                          |  15 +-
+>  tests/i915/gem_lmem_swapping.c                |   2 +-
+>  8 files changed, 360 insertions(+), 43 deletions(-)
+>  create mode 100644 lib/i915/intel_blt_info.c
+>  create mode 100644 lib/i915/intel_blt_info.h
+> 
+> diff --git a/docs/reference/igt-gpu-tools/igt-gpu-tools-docs.xml b/docs/reference/igt-gpu-tools/igt-gpu-tools-docs.xml
+> index 102c8a89..24ee17fc 100644
+> --- a/docs/reference/igt-gpu-tools/igt-gpu-tools-docs.xml
+> +++ b/docs/reference/igt-gpu-tools/igt-gpu-tools-docs.xml
+> @@ -59,6 +59,7 @@
+>    </chapter>
+>    <chapter>
+>      <title>igt/i915 API Reference</title>
+> +    <xi:include href="xml/intel_blt_info.xml"/>
+>      <xi:include href="xml/gem_create.xml"/>
+>      <xi:include href="xml/gem_context.xml"/>
+>      <xi:include href="xml/gem_engine_topology.xml"/>
+> diff --git a/lib/i915/i915_blt.c b/lib/i915/i915_blt.c
+> index 54193565..6db135d1 100644
+> --- a/lib/i915/i915_blt.c
+> +++ b/lib/i915/i915_blt.c
+> @@ -217,7 +217,7 @@ bool blt_supports_compression(int i915)
+>   * Returns:
+>   * true if it does, false otherwise.
+>   */
+> -bool blt_supports_tiling(int i915, enum blt_tiling tiling)
+> +bool blt_supports_tiling(int i915, enum blt_tiling_type tiling)
+>  {
+>  	uint32_t devid = intel_get_drm_devid(i915);
+>  
+> @@ -238,28 +238,7 @@ bool blt_supports_tiling(int i915, enum blt_tiling tiling)
+>  	return true;
+>  }
+>  
+> -/**
+> - * blt_tiling_name:
+> - * @tiling: tiling id
+> - *
+> - * Returns:
+> - * name of @tiling passed. Useful to build test names.
+> - */
+> -const char *blt_tiling_name(enum blt_tiling tiling)
+> -{
+> -	switch (tiling) {
+> -	case T_LINEAR: return "linear";
+> -	case T_XMAJOR: return "xmajor";
+> -	case T_YMAJOR: return "ymajor";
+> -	case T_TILE4:  return "tile4";
+> -	case T_TILE64: return "tile64";
+> -	}
+> -
+> -	igt_warn("invalid tiling passed: %d\n", tiling);
+> -	return NULL;
+> -}
+> -
+> -static int __block_tiling(enum blt_tiling tiling)
+> +static int __block_tiling(enum blt_tiling_type tiling)
+>  {
+>  	switch (tiling) {
+>  	case T_LINEAR: return 0;
+> @@ -267,6 +246,9 @@ static int __block_tiling(enum blt_tiling tiling)
+>  	case T_YMAJOR: return 1;
+>  	case T_TILE4:  return 2;
+>  	case T_TILE64: return 3;
+> +	/* type only supported in gen9 fast copy */
+> +	case T_YFMAJOR:
+> +		break;
+>  	}
+>  
+>  	igt_warn("invalid tiling passed: %d\n", tiling);
+> @@ -891,13 +873,14 @@ struct gen12_fast_copy_data {
+>  	} dw09;
+>  };
+>  
+> -static int __fast_tiling(enum blt_tiling tiling)
+> +static int __fast_tiling(enum blt_tiling_type tiling)
+>  {
+>  	switch (tiling) {
+>  	case T_LINEAR: return 0;
+>  	case T_XMAJOR: return 1;
+>  	case T_YMAJOR: return 2;
+>  	case T_TILE4:  return 2;
+> +	case T_YFMAJOR: return 2;
+>  	case T_TILE64: return 3;
+>  	}
+>  	return 0;
+> diff --git a/lib/i915/i915_blt.h b/lib/i915/i915_blt.h
+> index 34db9bb9..8fa480b8 100644
+> --- a/lib/i915/i915_blt.h
+> +++ b/lib/i915/i915_blt.h
+> @@ -47,6 +47,7 @@
+>  #include <malloc.h>
+>  #include "drm.h"
+>  #include "igt.h"
+> +#include "intel_blt_info.h"
+>  
+>  #define CCS_RATIO 256
+>  
+> @@ -59,14 +60,6 @@ enum blt_color_depth {
+>  	CD_128bit,
+>  };
+>  
+> -enum blt_tiling {
+> -	T_LINEAR,
+> -	T_XMAJOR,
+> -	T_YMAJOR,
+> -	T_TILE4,
+> -	T_TILE64,
+> -};
+> -
+>  enum blt_compression {
+>  	COMPRESSION_DISABLED,
+>  	COMPRESSION_ENABLED,
+> @@ -83,7 +76,7 @@ struct blt_copy_object {
+>  	uint32_t region;
+>  	uint64_t size;
+>  	uint8_t mocs;
+> -	enum blt_tiling tiling;
+> +	enum blt_tiling_type tiling;
+>  	enum blt_compression compression;  /* BC only */
+>  	enum blt_compression_type compression_type; /* BC only */
+>  	uint32_t pitch;
+> @@ -165,8 +158,7 @@ struct blt_ctrl_surf_copy_data {
+>  };
+>  
+>  bool blt_supports_compression(int i915);
+> -bool blt_supports_tiling(int i915, enum blt_tiling tiling);
+> -const char *blt_tiling_name(enum blt_tiling tiling);
+> +bool blt_supports_tiling(int i915, enum blt_tiling_type tiling);
+>  
+>  uint64_t emit_blt_block_copy(int i915,
+>  			     uint64_t ahnd,
+> diff --git a/lib/i915/intel_blt_info.c b/lib/i915/intel_blt_info.c
+> new file mode 100644
+> index 00000000..2f54d1b4
+> --- /dev/null
+> +++ b/lib/i915/intel_blt_info.c
+> @@ -0,0 +1,241 @@
+> +// SPDX-License-Identifier: MIT
+> +/*
+> + * Copyright © 2022 Intel Corporation
+> + */
+> +
+> +#include "intel_blt_info.h"
+> +
+> +#define BLT_STR_MAX 200
+> +#define TILE_STR_MAX 60
+> +#define T_MAX_SHIFT 6
 
-== Series Details ==
+I think you can remove this define adding T_TILING_MAX in enum blt_tiling_type.
 
-Series: PCI WARM_RESET IGT
-URL   : https://patchwork.freedesktop.org/series/112550/
-State : success
+> +
+> +#define BLT_INFO(_cmd, _tiling)  { \
+> +		.blt_cmd_type = _cmd, \
+> +		.supported_tiling = _tiling \
+> +	}
+> +
+> +static const struct blt_tiling_info src_copy = BLT_INFO(SRC_COPY, T_LINEAR);
+> +static const struct blt_tiling_info
+> +		pre_gen8_xy_src_copy = BLT_INFO(XY_SRC_COPY, T_LINEAR | T_XMAJOR);
 
-== Summary ==
+I wondered to have enum blt_tiling_type incrementing without gaps to introduce
 
-CI Bug Log - changes from CI_DRM_12556 -> IGTPW_8316
-====================================================
+#define BLT_MASK(x) (1 << (x))
 
-Summary
--------
+then:
 
-  **SUCCESS**
+static const struct blt_tiling_info
+		pre_gen8_xy_src_copy = BLT_INFO(XY_SRC_COPY, 
+					        BLT_MASK(T_LINEAR) |
+						BLT_MASK(T_XMAJOR));
 
-  No regressions found.
+and so on. Initialization is not too comfortable but it is in .c file,
+so it is encapsulated here.
 
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8316/index.html
+> +static const struct blt_tiling_info
+> +		gen8_xy_src_copy = BLT_INFO(XY_SRC_COPY,
+> +					    T_LINEAR | T_XMAJOR | T_YMAJOR);
+> +static const struct blt_tiling_info
+> +		gen11_xy_fast_copy = BLT_INFO(XY_FAST_COPY,
+> +					      T_LINEAR | T_YMAJOR |
+> +					      T_YFMAJOR | T_TILE64);
+> +static const struct blt_tiling_info
+> +		gen12_xy_fast_copy = BLT_INFO(XY_FAST_COPY,
+> +					      T_LINEAR | T_YMAJOR |
+> +					      T_TILE4 | T_TILE64);
+> +static const struct blt_tiling_info
+> +		dg2_xy_fast_copy = BLT_INFO(XY_FAST_COPY,
+> +					    T_LINEAR | T_XMAJOR |
+> +					    T_TILE4 | T_TILE64);
+> +static const struct blt_tiling_info
+> +		atsm_xy_fast_copy = BLT_INFO(XY_FAST_COPY,
+> +					     T_LINEAR | T_TILE4 |
+> +					     T_TILE64);
+> +static const struct blt_tiling_info
+> +		gen12_xy_block_copy = BLT_INFO(XY_BLOCK_COPY,
+> +					       T_LINEAR | T_YMAJOR);
+> +static const struct blt_tiling_info
+> +		dg2_xy_block_copy = BLT_INFO(XY_BLOCK_COPY,
+> +					     T_LINEAR | T_XMAJOR |
+> +					     T_TILE4 | T_TILE64);
+> +static const struct blt_tiling_info
+> +		atsm_xy_block_copy = BLT_INFO(XY_BLOCK_COPY,
+> +					      T_LINEAR | T_XMAJOR |
+> +					      T_TILE4 | T_TILE64);
+> +
+> +const struct blt_cmd_info pre_gen8_blt_info = {
+> +	.supported_tiling = {
+> +		[SRC_COPY] = &src_copy,
+> +		[XY_SRC_COPY] = &pre_gen8_xy_src_copy
+> +	}
+> +};
+> +
+> +const struct blt_cmd_info gen8_blt_info = {
+> +	.supported_tiling = {
+> +		[XY_SRC_COPY] = &gen8_xy_src_copy,
+> +	}
+> +};
+> +
+> +const struct blt_cmd_info gen11_blt_info = {
+> +	.supported_tiling = {
+> +		[XY_SRC_COPY] = &gen8_xy_src_copy,
+> +		[XY_FAST_COPY] = &gen11_xy_fast_copy,
+> +	}
+> +};
+> +
+> +const struct blt_cmd_info gen12_blt_info = {
+> +	.supported_tiling = {
+> +		[XY_SRC_COPY] = &gen8_xy_src_copy,
+> +		[XY_FAST_COPY] = &gen12_xy_fast_copy,
+> +		[XY_BLOCK_COPY] = &gen12_xy_block_copy,
+> +	}
+> +};
+> +
+> +const struct blt_cmd_info gen12_dg2_blt_info = {
+> +	.supported_tiling = {
+> +		[XY_SRC_COPY] = &gen8_xy_src_copy,
+> +		[XY_FAST_COPY] = &dg2_xy_fast_copy,
+> +		[XY_BLOCK_COPY] = &dg2_xy_block_copy,
+> +	}
+> +};
+> +
+> +const struct blt_cmd_info gen12_atsm_blt_info = {
+> +	.supported_tiling = {
+> +		[XY_SRC_COPY] = &gen8_xy_src_copy,
+> +		[XY_FAST_COPY] = &atsm_xy_fast_copy,
+> +		[XY_BLOCK_COPY] = &atsm_xy_block_copy,
+> +	}
+> +};
 
-Participating hosts (39 -> 39)
-------------------------------
-
-  Additional (2): fi-kbl-soraka bat-rpls-2 
-  Missing    (2): fi-snb-2520m bat-adlp-4 
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_8316 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@gem_exec_gttfill@basic:
-    - fi-kbl-soraka:      NOTRUN -> [SKIP][1] ([fdo#109271]) +7 similar issues
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8316/fi-kbl-soraka/igt@gem_exec_gttfill@basic.html
-
-  * igt@gem_huc_copy@huc-copy:
-    - fi-kbl-soraka:      NOTRUN -> [SKIP][2] ([fdo#109271] / [i915#2190])
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8316/fi-kbl-soraka/igt@gem_huc_copy@huc-copy.html
-
-  * igt@gem_lmem_swapping@basic:
-    - fi-kbl-soraka:      NOTRUN -> [SKIP][3] ([fdo#109271] / [i915#4613]) +3 similar issues
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8316/fi-kbl-soraka/igt@gem_lmem_swapping@basic.html
-
-  * igt@i915_module_load@reload:
-    - fi-kbl-soraka:      NOTRUN -> [DMESG-WARN][4] ([i915#1982])
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8316/fi-kbl-soraka/igt@i915_module_load@reload.html
-
-  * igt@i915_selftest@live@gt_pm:
-    - fi-kbl-soraka:      NOTRUN -> [DMESG-FAIL][5] ([i915#1886])
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8316/fi-kbl-soraka/igt@i915_selftest@live@gt_pm.html
-
-  * igt@i915_selftest@live@perf:
-    - fi-kbl-soraka:      NOTRUN -> [INCOMPLETE][6] ([i915#1886])
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8316/fi-kbl-soraka/igt@i915_selftest@live@perf.html
-
-  * igt@kms_chamelium@hdmi-hpd-fast:
-    - fi-kbl-soraka:      NOTRUN -> [SKIP][7] ([fdo#109271] / [fdo#111827]) +7 similar issues
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8316/fi-kbl-soraka/igt@kms_chamelium@hdmi-hpd-fast.html
-
-  
-#### Possible fixes ####
-
-  * igt@i915_selftest@live@gt_lrc:
-    - {bat-rpls-1}:       [INCOMPLETE][8] ([i915#4983]) -> [PASS][9]
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12556/bat-rpls-1/igt@i915_selftest@live@gt_lrc.html
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8316/bat-rpls-1/igt@i915_selftest@live@gt_lrc.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
-  [fdo#109285]: https://bugs.freedesktop.org/show_bug.cgi?id=109285
-  [fdo#109295]: https://bugs.freedesktop.org/show_bug.cgi?id=109295
-  [fdo#111827]: https://bugs.freedesktop.org/show_bug.cgi?id=111827
-  [i915#1072]: https://gitlab.freedesktop.org/drm/intel/issues/1072
-  [i915#1845]: https://gitlab.freedesktop.org/drm/intel/issues/1845
-  [i915#1849]: https://gitlab.freedesktop.org/drm/intel/issues/1849
-  [i915#1886]: https://gitlab.freedesktop.org/drm/intel/issues/1886
-  [i915#1982]: https://gitlab.freedesktop.org/drm/intel/issues/1982
-  [i915#2190]: https://gitlab.freedesktop.org/drm/intel/issues/2190
-  [i915#2582]: https://gitlab.freedesktop.org/drm/intel/issues/2582
-  [i915#3282]: https://gitlab.freedesktop.org/drm/intel/issues/3282
-  [i915#3555]: https://gitlab.freedesktop.org/drm/intel/issues/3555
-  [i915#3637]: https://gitlab.freedesktop.org/drm/intel/issues/3637
-  [i915#3708]: https://gitlab.freedesktop.org/drm/intel/issues/3708
-  [i915#4258]: https://gitlab.freedesktop.org/drm/intel/issues/4258
-  [i915#4312]: https://gitlab.freedesktop.org/drm/intel/issues/4312
-  [i915#4613]: https://gitlab.freedesktop.org/drm/intel/issues/4613
-  [i915#4983]: https://gitlab.freedesktop.org/drm/intel/issues/4983
-  [i915#6367]: https://gitlab.freedesktop.org/drm/intel/issues/6367
-  [i915#6621]: https://gitlab.freedesktop.org/drm/intel/issues/6621
-  [i915#6997]: https://gitlab.freedesktop.org/drm/intel/issues/6997
-  [i915#7359]: https://gitlab.freedesktop.org/drm/intel/issues/7359
-  [i915#7456]: https://gitlab.freedesktop.org/drm/intel/issues/7456
-  [i915#7561]: https://gitlab.freedesktop.org/drm/intel/issues/7561
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_7110 -> IGTPW_8316
-
-  CI-20190529: 20190529
-  CI_DRM_12556: ac04152253dccfb02dcedfa0c57443122cf79314 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_8316: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8316/index.html
-  IGT_7110: db10a19b94d1d7ae5ba62eb48d52c47ccb27766f @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+This looks good, we can individually configure supported blt
+instructions.
 
 
-Testlist changes
-----------------
+> +
+> +/**
+> + * blt_tiling_name:
+> + * @tiling: tiling id
+> + *
+> + * Returns:
+> + * name of @tiling passed. Useful to build test names.
+> + */
+> +const char *blt_tiling_name(enum blt_tiling_type tiling)
+> +{
+> +	switch (tiling) {
+> +	case T_LINEAR: return "linear";
+> +	case T_XMAJOR: return "xmajor";
+> +	case T_YMAJOR: return "ymajor";
+> +	case T_TILE4:  return "tile4";
+> +	case T_TILE64: return "tile64";
+> +	case T_YFMAJOR: return "yfmajor";
+> +	default: return NULL;
+> +	}
+> +}
+> +
+> +/**
+> + * blt_supports_command:
+> + * @info: Blitter command info struct
+> + * @cmd: Blitter command enum
+> + *
+> + * Checks if @info has an entry of supported tiling formats for @cmd command.
+> + *
+> + * Returns: true if it does, false otherwise
+> + */
+> +bool blt_supports_command(const struct blt_cmd_info *info,
+> +			  enum blt_cmd_type cmd)
+> +{
+> +	igt_require_f(info, "No config found for the platform\n");
+> +
+> +	return info->supported_tiling[cmd];
+> +}
+> +
+> +/**
+> + * blt_cmd_supports_tiling:
+> + * @info: Blitter command info struct
+> + * @cmd: Blitter command enum
+> + * @tiling: tiling format enum
+> + *
+> + * Checks if a @cmd entry of @info lists @tiling. It also returns false if
+> + * no information about the command is stored.
+> + *
+> + * Returns: true if it does, false otherwise
+> + */
+> +bool blt_cmd_supports_tiling(const struct blt_cmd_info *info,
+> +			     enum blt_cmd_type cmd,
+> +			     enum blt_tiling_type tiling)
+> +{
+> +	struct blt_tiling_info const *tile_config;
+> +
+> +	if (!info)
+> +		return false;
+> +
+> +	tile_config = info->supported_tiling[cmd];
+> +
+> +	/* no config means no support for that tiling */
+> +	if (!tile_config)
+> +		return false;
+> +
+> +	return tile_config->supported_tiling & tiling;
+> +}
+> +
+> +static const char *blt_cmd_name(enum blt_cmd_type cmd)
+> +{
+> +	switch (cmd) {
+> +	case SRC_COPY: return "SRC_COPY_BLT";
+> +	case XY_SRC_COPY: return "XY_SRC_COPY_BLT";
+> +	case XY_FAST_COPY: return "XY_FAST_COPY_BLT";
+> +	case XY_BLOCK_COPY: return "XY_BLOCK_COPY_BLT";
+> +	default: return NULL;
+> +	}
+> +}
+> +
+> +/* Info dump functions */
+> +
+> +static void append_tile(uint32_t tile, char *tile_str)
+> +{
+> +	char const *tile_name;
+> +
+> +	if (tile) {
+> +		tile_name = blt_tiling_name(tile);
+> +		snprintf(tile_str + strlen(tile_str), strlen(tile_name) + 2, "%s ", tile_name);
+> +	}
+> +}
+> +
+> +static void get_tiling_info(struct blt_cmd_info const *info, enum blt_cmd_type type, char *tile_str)
+> +{
+> +	uint32_t mask;
+> +	struct blt_tiling_info const *tiling = info->supported_tiling[type];
+> +
+> +	if (tiling) {
+> +		for (int i = 0; i < T_MAX_SHIFT; i++) {
+> +			mask = 1 << i;
+> +			append_tile(tiling->supported_tiling & mask, tile_str);
+> +		}
+> +	}
+> +
+> +	tile_str[strlen(tile_str) - 1] = '\0';
+> +}
+> +
+> +/**
+> + * dump_devid_blt_info:
+> + * @info: pointer to the Blitter command info struct
+> + *
+> + * Prints a list of supported commands with available tiling formats.
+> + *
+> + */
+> +void blt_dump_blt_cmd_info(struct blt_cmd_info const *info)
+> +{
+> +	char tiling_str[TILE_STR_MAX];
+> +	char ln_str[BLT_STR_MAX];
+> +	char const *blt_type_str;
+> +	const char *ln_intro = "  * ";
+> +
+> +	if (!info) {
+> +		igt_warn("No config available\n");
+> +		return;
+> +	}
+> +
+> +	igt_info("Supported blitter commands:\n");
+> +
+> +	for (int cmd = 0; cmd < __MAX_CMD; cmd++) {
+> +		if (info->supported_tiling[cmd]) {
+> +			memset(ln_str, '\0', sizeof(char) * BLT_STR_MAX);
+> +			memset(tiling_str, '\0', sizeof(char) * TILE_STR_MAX);
+> +
+> +			blt_type_str = blt_cmd_name(cmd);
+> +
+> +			snprintf(ln_str,
+> +				 strlen(ln_intro) + strlen(blt_type_str) + 1,
+> +				 "%s%s", ln_intro, blt_type_str);
+> +
+> +			get_tiling_info(info, cmd, tiling_str);
+> +
+> +			snprintf(ln_str + strlen(ln_str),
+> +				 strlen(tiling_str) + 5,
+> +				 " [%s]", tiling_str);
+> +
+> +			igt_info("%s\n", ln_str);
+> +		}
+> +	}
+> +}
 
-+igt@device_reset@unbind-warm-reset-rebind
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8316/index.html
-
---===============5046034130652114366==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Looks a little bit overengineered, can't you just use asprintf()?
 
 
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
 
+> +
+> diff --git a/lib/i915/intel_blt_info.h b/lib/i915/intel_blt_info.h
+> new file mode 100644
+> index 00000000..39fa5448
+> --- /dev/null
+> +++ b/lib/i915/intel_blt_info.h
+> @@ -0,0 +1,98 @@
+> +/* SPDX-License-Identifier: MIT */
+> +/*
+> + * Copyright © 2022 Intel Corporation
+> + */
+> +
+> +#ifndef BLT_TILING_H
+> +#define BLT_TILING_H
+> +
+> +#include <stdbool.h>
+> +#include <stddef.h>
+> +#include <stdint.h>
+> +#include "igt_core.h"
+> +
+> +/**
+> + * SECTION:intel_blt_info
+> + * @short_description: blitter library to query for available commands and tiling formats
+> + * @title: Intel blitter info
+> + * @include: intel_blt_info.h
+> + *
+> + * # Introduction
+> + *
+> + * When we do a blitter copy, a number of different tiling formats can be used.
+> + * The list of available formats and commands varies between generations, in
+> + * some cases even within the generation (e.g. block copy tiling formats offered
+> + * by TGL vs DG2). Such information is required by different tests, so it's
+> + * beneficial to store it in one place – in intel_blt_info, a blitter library
+> + * that describes available commands with a list of supported tiling formats.
+> + * They are encapsulated in static `blt_cmd_info` instances, each of them
+> + * defined per generation or platforms.
+> + *
+> + * Tiling formats here are described by blt_tiling_type enum, which consists of
+> + * bit flags, that can be combined:
+> + * `.supported_tiling = T_LINEAR | T_XMAJOR | T_YMAJOR`
+> + *
+> + * Because of their non-linear nature, it is recommended to use
+> + * #for_each_tiling() macro when writing tests that iterate over tiling formats.
+> + *
+> + * # Usage
+> + *
+> + * - blt_supports_command(info, cmd) - checks if a blt_cmd_type instance has an
+> + *				       entry for the command
+> + * - blt_cmd_supports_tiling(info, cmd, tiling) - checks if a tiling format is
+> + *						  supported by the command. Can
+> + *						  also handle the case when the
+> + *						  command is not available on
+> + *						  the platform.
+> + *
+> + * These general checks can be wrapped in a command or tiling specific
+> + * check, provided by other libraries.
+> + *
+> + */
+> +
+> +enum blt_tiling_type {
+> +	T_LINEAR  = (1),
+> +	T_XMAJOR  = (1 << 1),
+> +	T_YMAJOR  = (1 << 2),
+> +	T_TILE4   = (1 << 3),
+> +	T_TILE64  = (1 << 4),
+> +	T_YFMAJOR = (1 << 5),
+> +};
 
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>PCI WARM_RESET IGT</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/112550/">https://patchwork.freedesktop.org/series/112550/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
+What I don't like here is sparse enum. I would just want to have contigues 
+values and hide the implementation in bits to .c file.
 
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8316/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8316/index.html</a></td></tr>
+--
+Zbigniew
 
-</table>
-
-
-    <h1>CI Bug Log - changes from CI_DRM_12556 -&gt; IGTPW_8316</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8316/index.html</p>
-<h2>Participating hosts (39 -&gt; 39)</h2>
-<p>Additional (2): fi-kbl-soraka bat-rpls-2 <br />
-  Missing    (2): fi-snb-2520m bat-adlp-4 </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_8316 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@gem_exec_gttfill@basic:</p>
-<ul>
-<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8316/fi-kbl-soraka/igt@gem_exec_gttfill@basic.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +7 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_huc_copy@huc-copy:</p>
-<ul>
-<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8316/fi-kbl-soraka/igt@gem_huc_copy@huc-copy.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2190">i915#2190</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_lmem_swapping@basic:</p>
-<ul>
-<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8316/fi-kbl-soraka/igt@gem_lmem_swapping@basic.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4613">i915#4613</a>) +3 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_module_load@reload:</p>
-<ul>
-<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8316/fi-kbl-soraka/igt@i915_module_load@reload.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1982">i915#1982</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@gt_pm:</p>
-<ul>
-<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8316/fi-kbl-soraka/igt@i915_selftest@live@gt_pm.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1886">i915#1886</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@perf:</p>
-<ul>
-<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8316/fi-kbl-soraka/igt@i915_selftest@live@perf.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1886">i915#1886</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_chamelium@hdmi-hpd-fast:</p>
-<ul>
-<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8316/fi-kbl-soraka/igt@kms_chamelium@hdmi-hpd-fast.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://bugs.freedesktop.org/show_bug.cgi?id=111827">fdo#111827</a>) +7 similar issues</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>igt@i915_selftest@live@gt_lrc:<ul>
-<li>{bat-rpls-1}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12556/bat-rpls-1/igt@i915_selftest@live@gt_lrc.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4983">i915#4983</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8316/bat-rpls-1/igt@i915_selftest@live@gt_lrc.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_7110 -&gt; IGTPW_8316</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_12556: ac04152253dccfb02dcedfa0c57443122cf79314 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_8316: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8316/index.html<br />
-  IGT_7110: db10a19b94d1d7ae5ba62eb48d52c47ccb27766f @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-<h2>Testlist changes</h2>
-<p>+igt@device_reset@unbind-warm-reset-rebind</p>
-
-</body>
-</html>
-
---===============5046034130652114366==--
+> +
+> +enum blt_cmd_type {
+> +	SRC_COPY,
+> +	XY_SRC_COPY,
+> +	XY_FAST_COPY,
+> +	XY_BLOCK_COPY,
+> +	__MAX_CMD
+> +};
+> +
+> +struct blt_tiling_info {
+> +	enum blt_cmd_type blt_cmd_type;
+> +	uint32_t supported_tiling;
+> +};
+> +
+> +struct blt_cmd_info {
+> +	struct blt_tiling_info const *supported_tiling[__MAX_CMD];
+> +};
+> +
+> +const struct blt_cmd_info pre_gen8_blt_info;
+> +const struct blt_cmd_info gen8_blt_info;
+> +const struct blt_cmd_info gen11_blt_info;
+> +const struct blt_cmd_info gen12_blt_info;
+> +const struct blt_cmd_info gen12_dg2_blt_info;
+> +const struct blt_cmd_info gen12_atsm_blt_info;
+> +
+> +#define for_each_tiling(__tiling) \
+> +	for (__tiling = T_LINEAR; __tiling <= T_YFMAJOR; __tiling = __tiling << 1)
+> +
+> +bool blt_supports_command(const struct blt_cmd_info *info,
+> +			  enum blt_cmd_type cmd);
+> +bool blt_cmd_supports_tiling(const struct blt_cmd_info *info,
+> +			     enum blt_cmd_type cmd,
+> +			     enum blt_tiling_type tiling);
+> +
+> +void blt_dump_blt_cmd_info(struct blt_cmd_info const *info);
+> +const char *blt_tiling_name(enum blt_tiling_type tiling);
+> +
+> +#endif // BLT_TILING_H
+> diff --git a/lib/meson.build b/lib/meson.build
+> index c79e3e95..2b2dbbca 100644
+> --- a/lib/meson.build
+> +++ b/lib/meson.build
+> @@ -11,6 +11,7 @@ lib_sources = [
+>  	'i915/gem_ring.c',
+>  	'i915/gem_mman.c',
+>  	'i915/gem_vm.c',
+> +	'i915/intel_blt_info.c',
+>  	'i915/intel_decode.c',
+>  	'i915/intel_memory_region.c',
+>  	'i915/intel_mocs.c',
+> diff --git a/tests/i915/gem_ccs.c b/tests/i915/gem_ccs.c
+> index 751f65e6..ed60b81c 100644
+> --- a/tests/i915/gem_ccs.c
+> +++ b/tests/i915/gem_ccs.c
+> @@ -46,7 +46,7 @@ struct test_config {
+>  
+>  static void set_object(struct blt_copy_object *obj,
+>  		       uint32_t handle, uint64_t size, uint32_t region,
+> -		       uint8_t mocs, enum blt_tiling tiling,
+> +		       uint8_t mocs, enum blt_tiling_type tiling,
+>  		       enum blt_compression compression,
+>  		       enum blt_compression_type compression_type)
+>  {
+> @@ -108,7 +108,7 @@ static void set_surf_object(struct blt_ctrl_surf_copy_object *obj,
+>  static struct blt_copy_object *
+>  create_object(int i915, uint32_t region,
+>  	      uint32_t width, uint32_t height, uint32_t bpp, uint8_t mocs,
+> -	      enum blt_tiling tiling,
+> +	      enum blt_tiling_type tiling,
+>  	      enum blt_compression compression,
+>  	      enum blt_compression_type compression_type,
+>  	      bool create_mapping)
+> @@ -374,7 +374,7 @@ static void block_copy(int i915,
+>  		       const intel_ctx_t *ctx,
+>  		       const struct intel_execution_engine2 *e,
+>  		       uint32_t region1, uint32_t region2,
+> -		       enum blt_tiling mid_tiling,
+> +		       enum blt_tiling_type mid_tiling,
+>  		       const struct test_config *config)
+>  {
+>  	struct blt_copy_data blt = {};
+> @@ -492,7 +492,7 @@ static void block_multicopy(int i915,
+>  			    const intel_ctx_t *ctx,
+>  			    const struct intel_execution_engine2 *e,
+>  			    uint32_t region1, uint32_t region2,
+> -			    enum blt_tiling mid_tiling,
+> +			    enum blt_tiling_type mid_tiling,
+>  			    const struct test_config *config)
+>  {
+>  	struct blt_copy3_data blt3 = {};
+> @@ -581,7 +581,7 @@ static const struct {
+>  	const char *suffix;
+>  	void (*copyfn)(int, const intel_ctx_t *,
+>  		       const struct intel_execution_engine2 *,
+> -		       uint32_t, uint32_t, enum blt_tiling,
+> +		       uint32_t, uint32_t, enum blt_tiling_type,
+>  		       const struct test_config *);
+>  } copyfns[] = {
+>  	[BLOCK_COPY] = { "", block_copy },
+> @@ -596,6 +596,7 @@ static void block_copy_test(int i915,
+>  {
+>  	struct igt_collection *regions;
+>  	const struct intel_execution_engine2 *e;
+> +	int tiling;
+>  
+>  	if (config->compression && !blt_supports_compression(i915))
+>  		return;
+> @@ -603,7 +604,7 @@ static void block_copy_test(int i915,
+>  	if (config->inplace && !config->compression)
+>  		return;
+>  
+> -	for (int tiling = T_LINEAR; tiling <= T_TILE64; tiling++) {
+> +	for_each_tiling(tiling) {
+>  		if (!blt_supports_tiling(i915, tiling) ||
+>  		    (param.tiling >= 0 && param.tiling != tiling))
+>  			continue;
+> @@ -663,7 +664,7 @@ static int opt_handler(int opt, int opt_index, void *data)
+>  		igt_debug("Print surface info: %d\n", param.print_surface_info);
+>  		break;
+>  	case 't':
+> -		param.tiling = atoi(optarg);
+> +		param.tiling = 1 << atoi(optarg);
+>  		igt_debug("Tiling: %d\n", param.tiling);
+>  		break;
+>  	case 'W':
+> diff --git a/tests/i915/gem_lmem_swapping.c b/tests/i915/gem_lmem_swapping.c
+> index 75121d41..9388d4de 100644
+> --- a/tests/i915/gem_lmem_swapping.c
+> +++ b/tests/i915/gem_lmem_swapping.c
+> @@ -78,7 +78,7 @@ struct object {
+>  
+>  static void set_object(struct blt_copy_object *obj,
+>  		       uint32_t handle, uint64_t size, uint32_t region,
+> -		       uint8_t mocs, enum blt_tiling tiling,
+> +		       uint8_t mocs, enum blt_tiling_type tiling,
+>  		       enum blt_compression compression,
+>  		       enum blt_compression_type compression_type)
+>  {
+> -- 
+> 2.25.1
+> 
