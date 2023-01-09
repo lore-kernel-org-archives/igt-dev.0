@@ -1,17 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A7BE110E3FE
- for <igt-dev@lists.freedesktop.org>; Mon,  9 Jan 2023 12:02:19 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A94D010E3FD
+ for <igt-dev@lists.freedesktop.org>; Mon,  9 Jan 2023 12:02:21 +0000 (UTC)
 From: Anshuman Gupta <anshuman.gupta@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Mon,  9 Jan 2023 17:32:04 +0530
-Message-Id: <20230109120205.2259410-2-anshuman.gupta@intel.com>
+Date: Mon,  9 Jan 2023 17:32:05 +0530
+Message-Id: <20230109120205.2259410-3-anshuman.gupta@intel.com>
 In-Reply-To: <20230109120205.2259410-1-anshuman.gupta@intel.com>
 References: <20230109120205.2259410-1-anshuman.gupta@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 1/2] test/device_reset: Rename device_fds to
- device_data
+Subject: [igt-dev] [PATCH i-g-t 2/2] tests/device_reset: Add warm_reset test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,101 +23,137 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-We need to encapsulate the the struct pci_device to device_fds
-structure, which is a general helper data structure.
-Rename its accordingly to device_data.
-It will be used to encapsulate root port to support
-warm reset IGT Test.
+Adding gfx card root port warm reset support
+by triggering secondary bus reset on root port.
 
 Signed-off-by: Anshuman Gupta <anshuman.gupta@intel.com>
 ---
- tests/device_reset.c | 18 +++++++++---------
- 1 file changed, 9 insertions(+), 9 deletions(-)
+ lib/igt_pci.c        | 28 ++++++++++++++++++++++++++++
+ lib/igt_pci.h        |  5 +++++
+ tests/device_reset.c | 18 +++++++++++++++---
+ 3 files changed, 48 insertions(+), 3 deletions(-)
 
+diff --git a/lib/igt_pci.c b/lib/igt_pci.c
+index 61aaf939d1..3940a0ee1e 100644
+--- a/lib/igt_pci.c
++++ b/lib/igt_pci.c
+@@ -51,3 +51,31 @@ int find_pci_cap_offset(struct pci_device *dev, enum pci_cap_id cap_id)
+ {
+ 	return find_pci_cap_offset_at(dev, cap_id, PCI_CAPS_START);
+ }
++
++/**
++ * igt_pci_bridge_warm_reset:
++ * @dev: pci bridge device
++ *
++ * return:
++ * true on success otherwise false.
++ */
++bool igt_pci_bridge_warm_reset(struct pci_device *dev)
++{
++	uint8_t header_type;
++	uint16_t bridge_ctl;
++
++	if (pci_device_cfg_read_u8(dev, &header_type, PCI_HEADER_TYPE))
++		return false;
++
++	igt_assert_f((header_type & 0x7f) == 1, "PCI device is not a Bridge\n");
++
++	if (pci_device_cfg_read_u16(dev, &bridge_ctl, PCI_TYPE_1_HEADER_BRIDGE_CTL))
++		return false;
++
++	bridge_ctl |=  PCI_TYPE_1_SEC_BUS_RESET;
++
++	if (pci_device_cfg_write_u16(dev, bridge_ctl, PCI_TYPE_1_HEADER_BRIDGE_CTL))
++		return false;
++
++	return true;
++}
+diff --git a/lib/igt_pci.h b/lib/igt_pci.h
+index 92b9cc3929..f755e4baab 100644
+--- a/lib/igt_pci.h
++++ b/lib/igt_pci.h
+@@ -12,6 +12,10 @@
+ /* forward declaration */
+ struct pci_device;
+ 
++#define PCI_HEADER_TYPE 0xe
++#define PCI_TYPE_1_HEADER_BRIDGE_CTL 0x3e
++#define  PCI_TYPE_1_SEC_BUS_RESET (1 << 6)
++
+ #define PCI_TYPE0_1_HEADER_SIZE 0x40
+ #define PCI_CAPS_START 0x34
+ #define PCI_CFG_SPACE_SIZE 0x100
+@@ -24,5 +28,6 @@ enum pci_cap_id {
+ #define  PCI_SLOT_PWR_CTRL_PRESENT (1 << 1)
+ 
+ int find_pci_cap_offset(struct pci_device *dev, enum pci_cap_id cap_id);
++bool igt_pci_bridge_warm_reset(struct pci_device *dev);
+ 
+ #endif
 diff --git a/tests/device_reset.c b/tests/device_reset.c
-index 39ee8dca9f..fe26030783 100644
+index fe26030783..cbb5bef443 100644
 --- a/tests/device_reset.c
 +++ b/tests/device_reset.c
-@@ -30,7 +30,7 @@ enum reset {
-  * Helper structure containing file descriptors
-  * and bus address related to tested device
-  */
--struct device_fds {
-+struct device_data {
- 	struct {
- 		int dev;
- 		int dev_dir;
-@@ -157,7 +157,7 @@ static char *device_sysfs_path(int fd, char *path)
- 	return realpath(sysfs, path);
- }
+@@ -22,8 +22,9 @@ IGT_TEST_DESCRIPTION("Examine behavior of a driver on device sysfs reset");
+ #define DEV_BUS_ADDR_LEN 13 /* addr has form 0000:00:00.0 */
  
--static void init_device_fds(struct device_fds *dev)
-+static void init_device_fds(struct device_data *dev)
- {
- 	char dev_path[PATH_MAX];
- 	char *addr_pos;
-@@ -210,7 +210,7 @@ static int close_if_opened(int *fd)
- 	return rc;
- }
+ enum reset {
+-	COLD_RESET,
+-	FLR_RESET
++	FLR_RESET,
++	WARM_RESET,
++	COLD_RESET
+ };
  
--static void cleanup_device_fds(struct device_fds *dev)
-+static void cleanup_device_fds(struct device_data *dev)
- {
- 	igt_ignore_warn(close_if_opened(&dev->fds.dev));
- 	igt_ignore_warn(close_if_opened(&dev->fds.dev_dir));
-@@ -283,7 +283,7 @@ static bool is_sysfs_cold_reset_supported(int slot_fd)
- }
+ /**
+@@ -39,6 +40,7 @@ struct device_data {
+ 	} fds;
+ 	char dev_bus_addr[DEV_BUS_ADDR_LEN];
+ 	bool snd_unload;
++	struct pci_device *root;
+ };
  
- /* Unbind the driver from the device */
--static void driver_unbind(struct device_fds *dev)
-+static void driver_unbind(struct device_data *dev)
- {
- 	/**
- 	 * FIXME: Unbinding the i915 driver on affected platforms with
-@@ -319,7 +319,7 @@ static void driver_unbind(struct device_fds *dev)
- }
+ static int __open_sysfs_dir(int fd, const char* path)
+@@ -336,6 +338,8 @@ static void initiate_device_reset(struct device_data *dev, enum reset type)
  
- /* Re-bind the driver to the device */
--static void driver_bind(struct device_fds *dev)
-+static void driver_bind(struct device_data *dev)
- {
- 	igt_debug("rebind the driver to the device\n");
- 	igt_abort_on_f(!igt_sysfs_set(dev->fds.drv_dir, "bind",
-@@ -330,7 +330,7 @@ static void driver_bind(struct device_fds *dev)
- }
- 
- /* Initiate device reset */
--static void initiate_device_reset(struct device_fds *dev, enum reset type)
-+static void initiate_device_reset(struct device_data *dev, enum reset type)
- {
- 	igt_debug("reset device\n");
- 
-@@ -358,7 +358,7 @@ static bool is_i915_wedged(int i915)
-  * @dev: structure with device descriptor, if descriptor equals -1
-  * 	 the device is reopened
-  */
--static void healthcheck(struct device_fds *dev)
-+static void healthcheck(struct device_data *dev)
- {
- 	if (dev->fds.dev == -1) {
- 		/* refresh device list */
-@@ -390,7 +390,7 @@ static void set_device_filter(const char* dev_path)
- 	igt_assert_eq(igt_device_filter_add(filter), 1);
- }
- 
--static void unbind_reset_rebind(struct device_fds *dev, enum reset type)
-+static void unbind_reset_rebind(struct device_data *dev, enum reset type)
- {
- 	igt_debug("close the device\n");
- 	close_if_opened(&dev->fds.dev);
-@@ -404,7 +404,7 @@ static void unbind_reset_rebind(struct device_fds *dev, enum reset type)
+ 	if (type == FLR_RESET) {
+ 		igt_assert(igt_sysfs_set(dev->fds.dev_dir, "reset", "1"));
++	} else if (type == WARM_RESET) {
++		igt_assert(igt_pci_bridge_warm_reset(dev->root));
+ 	} else if (type == COLD_RESET) {
+ 		igt_assert(igt_sysfs_set(dev->fds.slot_dir, "power", "0"));
+ 		igt_assert(!igt_sysfs_get_boolean(dev->fds.slot_dir, "power"));
+@@ -404,7 +408,7 @@ static void unbind_reset_rebind(struct device_data *dev, enum reset type)
  
  igt_main
  {
--	struct device_fds dev = { .fds = {-1, -1, -1}, .dev_bus_addr = {0}, };
-+	struct device_data dev = { .fds = {-1, -1, -1}, .dev_bus_addr = {0}, };
+-	struct device_data dev = { .fds = {-1, -1, -1}, .dev_bus_addr = {0}, };
++	struct device_data dev = { .fds = {-1, -1, -1}, .dev_bus_addr = {0}, .root = NULL};
  
  	igt_fixture {
  		char dev_path[PATH_MAX];
+@@ -417,6 +421,7 @@ igt_main
+ 		set_device_filter(dev_path);
+ 
+ 		igt_skip_on(!is_sysfs_reset_supported(dev.fds.dev));
++		dev.root = igt_device_get_pci_root_port(dev.fds.dev);
+ 	}
+ 
+ 	igt_describe("Unbinds driver from device, initiates reset"
+@@ -432,6 +437,13 @@ igt_main
+ 		healthcheck(&dev);
+ 	}
+ 
++	igt_describe("Unbinds driver from device, initiates warm reset"
++		     " then rebinds driver to device");
++	igt_subtest("unbind-warm-reset-rebind") {
++		unbind_reset_rebind(&dev, WARM_RESET);
++		healthcheck(&dev);
++	}
++
+ 	igt_subtest_group {
+ 		igt_fixture {
+ 			igt_skip_on_f(dev.fds.slot_dir < 0, "Gfx Card does not support any "
 -- 
 2.25.1
