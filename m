@@ -1,21 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from NAM04-BN8-obe.outbound.protection.outlook.com
- (mail-bn8nam04on2083.outbound.protection.outlook.com [40.107.100.83])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8859310E299
- for <igt-dev@lists.freedesktop.org>; Mon,  9 Jan 2023 16:25:50 +0000 (UTC)
-Message-ID: <268247cc-bf9c-f80d-baa7-a83147d8036c@amd.com>
-Date: Mon, 9 Jan 2023 11:25:44 -0500
-Content-Language: en-US
-To: Swati Sharma <swati2.sharma@intel.com>, igt-dev@lists.freedesktop.org,
- Bhanuprakash Modem <bhanuprakash.modem@intel.com>, uma.shankar@intel.com
-References: <20221212192425.387971-1-harry.wentland@amd.com>
- <ee85b614-4430-cae3-fb1c-fc94c39a56fb@intel.com>
-From: Harry Wentland <harry.wentland@amd.com>
-In-Reply-To: <ee85b614-4430-cae3-fb1c-fc94c39a56fb@intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH 0/2] Add Colorspace tests to kms_hdr
+Content-Transfer-Encoding: 8bit
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Swati Sharma" <swati2.sharma@intel.com>
+Date: Mon, 09 Jan 2023 18:04:20 -0000
+Message-ID: <167328746032.18427.11284461282488763814@emeril.freedesktop.org>
+References: <20230109152832.3310-1-swati2.sharma@intel.com>
+In-Reply-To: <20230109152832.3310-1-swati2.sharma@intel.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_V?=
+ =?utf-8?q?DSC_YCbCr420_+_Fractional_BPP_=28rev2=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,61 +17,243 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Sebastian Wick <sebastian.wick@redhat.com>,
- Pekka Paalanen <ppaalanen@gmail.com>, Joshua Ashton <joshua@froggi.es>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
+== Series Details ==
 
+Series: VDSC YCbCr420 + Fractional BPP (rev2)
+URL   : https://patchwork.freedesktop.org/series/111342/
+State : warning
 
-On 12/30/22 15:06, Swati Sharma wrote:
-> Hi Harry,
-> 
-> First of all, why do you think kms_hdr is the right place to add colorspace tests? Can we have amd specific IGT for the same.
-> It seems intel doesn't have any plans in near future to expose this debugfs.
-> ++Uma ++Bhanu
-> 
+== Summary ==
 
-kms_hdr includes the max_bpc tests added by Intel a while back. Colorspace
-is similar. Both are mainly required for HDR.
+Pipeline status: FAILED.
 
-This property and the test is generic in principle but I have not had a
-chance to look more closely at the i915 driver to see how it should report
-the current colorspace. It should be a straightforward change for an
-i915 engineer.
+see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/779506 for the overview.
 
-Harry
+build:tests-debian-meson has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/34374699):
+  /usr/include/xf86drmMode.h:533:2: error: unknown type name ‘uint32_t’
+    uint32_t lessees[0];
+    ^~~~~~~~
+  /usr/include/xf86drmMode.h:539:2: error: unknown type name ‘uint32_t’
+    uint32_t count;
+    ^~~~~~~~
+  /usr/include/xf86drmMode.h:540:2: error: unknown type name ‘uint32_t’
+    uint32_t objects[0];
+    ^~~~~~~~
+  /usr/include/xf86drmMode.h:545:39: error: unknown type name ‘uint32_t’; did you mean ‘intptr_t’?
+   extern int drmModeRevokeLease(int fd, uint32_t lessee_id);
+                                         ^~~~~~~~
+                                         intptr_t
+  ninja: build stopped: subcommand failed.
+  section_end:1673287401:step_script
+  section_start:1673287401:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1673287402:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
 
-> On 13-Dec-22 12:54 AM, Harry Wentland wrote:
->> We've had a Colorspace property on the drm_connector
->> but no IGT tests. These patches add IGT tests for this
->> property. They're currently only enabled on amdgpu with
->> the kernel at [1] but could be enabled for other drivers
->> if those drivers decide to expose a debugfs to read the
->> currently applied colorspace.
->>
->> [1] https://gitlab.freedesktop.org/hwentland/linux/-/tree/hdr-colorimetry>>>
->> Cc: Pekka Paalanen <ppaalanen@gmail.com>
->> Cc: Sebastian Wick <sebastian.wick@redhat.com>
->> Cc: Vitaly.Prosyak@amd.com
->> Cc: Uma Shankar <uma.shankar@intel.com>
->> Cc: Ville Syrjälä <ville.syrjala@linux.intel.com>
->> Cc: Joshua Ashton <joshua@froggi.es>
->> Cc: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
->> Cc: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
->> Cc: Alex Hung <Alex.Hung@amd.com>
->>
->> Harry Wentland (2):
->>    tests/kms_hdr: Add test for output Colorspace
->>    tests/kms_hdr: Add suspend and DPMS Colorspace tests
->>
->>   lib/igt_kms.c   |  51 ++++++++++++++++
->>   lib/igt_kms.h   |   6 ++
->>   tests/kms_hdr.c | 156 ++++++++++++++++++++++++++++++++++++++++++++++++
->>   3 files changed, 213 insertions(+)
->>
->> -- 
->> 2.38.1
->>
-> 
+build:tests-debian-meson-arm64 has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/34374702):
+  /usr/include/xf86drmMode.h:533:2: error: unknown type name ‘uint32_t’
+    uint32_t lessees[0];
+    ^~~~~~~~
+  /usr/include/xf86drmMode.h:539:2: error: unknown type name ‘uint32_t’
+    uint32_t count;
+    ^~~~~~~~
+  /usr/include/xf86drmMode.h:540:2: error: unknown type name ‘uint32_t’
+    uint32_t objects[0];
+    ^~~~~~~~
+  /usr/include/xf86drmMode.h:545:39: error: unknown type name ‘uint32_t’; did you mean ‘intptr_t’?
+   extern int drmModeRevokeLease(int fd, uint32_t lessee_id);
+                                         ^~~~~~~~
+                                         intptr_t
+  ninja: build stopped: subcommand failed.
+  section_end:1673287413:step_script
+  section_start:1673287413:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1673287414:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
+
+build:tests-debian-meson-armhf has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/34374701):
+  /usr/include/xf86drmMode.h:533:2: error: unknown type name ‘uint32_t’
+    uint32_t lessees[0];
+    ^~~~~~~~
+  /usr/include/xf86drmMode.h:539:2: error: unknown type name ‘uint32_t’
+    uint32_t count;
+    ^~~~~~~~
+  /usr/include/xf86drmMode.h:540:2: error: unknown type name ‘uint32_t’
+    uint32_t objects[0];
+    ^~~~~~~~
+  /usr/include/xf86drmMode.h:545:39: error: unknown type name ‘uint32_t’; did you mean ‘intptr_t’?
+   extern int drmModeRevokeLease(int fd, uint32_t lessee_id);
+                                         ^~~~~~~~
+                                         intptr_t
+  ninja: build stopped: subcommand failed.
+  section_end:1673287413:step_script
+  section_start:1673287413:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1673287414:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
+
+build:tests-debian-meson-mips has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/34374703):
+  /usr/include/xf86drmMode.h:533:2: error: unknown type name ‘uint32_t’
+    uint32_t lessees[0];
+    ^~~~~~~~
+  /usr/include/xf86drmMode.h:539:2: error: unknown type name ‘uint32_t’
+    uint32_t count;
+    ^~~~~~~~
+  /usr/include/xf86drmMode.h:540:2: error: unknown type name ‘uint32_t’
+    uint32_t objects[0];
+    ^~~~~~~~
+  /usr/include/xf86drmMode.h:545:39: error: unknown type name ‘uint32_t’; did you mean ‘intptr_t’?
+   extern int drmModeRevokeLease(int fd, uint32_t lessee_id);
+                                         ^~~~~~~~
+                                         intptr_t
+  ninja: build stopped: subcommand failed.
+  section_end:1673287423:step_script
+  section_start:1673287423:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1673287423:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
+
+build:tests-debian-minimal has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/34374700):
+  /usr/include/xf86drmMode.h:533:2: error: unknown type name ‘uint32_t’
+    uint32_t lessees[0];
+    ^~~~~~~~
+  /usr/include/xf86drmMode.h:539:2: error: unknown type name ‘uint32_t’
+    uint32_t count;
+    ^~~~~~~~
+  /usr/include/xf86drmMode.h:540:2: error: unknown type name ‘uint32_t’
+    uint32_t objects[0];
+    ^~~~~~~~
+  /usr/include/xf86drmMode.h:545:39: error: unknown type name ‘uint32_t’; did you mean ‘intptr_t’?
+   extern int drmModeRevokeLease(int fd, uint32_t lessee_id);
+                                         ^~~~~~~~
+                                         intptr_t
+  ninja: build stopped: subcommand failed.
+  section_end:1673287405:step_script
+  section_start:1673287405:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1673287406:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
+
+build:tests-fedora has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/34374694):
+        |  ^~~~~~~~
+  /usr/include/xf86drmMode.h:533:2: error: unknown type name ‘uint32_t’
+    533 |  uint32_t lessees[0];
+        |  ^~~~~~~~
+  /usr/include/xf86drmMode.h:539:2: error: unknown type name ‘uint32_t’
+    539 |  uint32_t count;
+        |  ^~~~~~~~
+  /usr/include/xf86drmMode.h:540:2: error: unknown type name ‘uint32_t’
+    540 |  uint32_t objects[0];
+        |  ^~~~~~~~
+  /usr/include/xf86drmMode.h:545:39: error: unknown type name ‘uint32_t’
+    545 | extern int drmModeRevokeLease(int fd, uint32_t lessee_id);
+        |                                       ^~~~~~~~
+  ninja: build stopped: subcommand failed.
+  section_end:1673287363:step_script
+  section_start:1673287363:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1673287364:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
+
+build:tests-fedora-clang has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/34374698):
+          uint32_t bpp;
+          ^
+  /usr/include/xf86drmMode.h:221:2: error: unknown type name 'uint32_t'
+          uint32_t depth;
+          ^
+  /usr/include/xf86drmMode.h:223:2: error: unknown type name 'uint32_t'
+          uint32_t handle;
+          ^
+  /usr/include/xf86drmMode.h:229:2: error: unknown type name 'uint32_t'
+          uint32_t id;
+          ^
+  fatal error: too many errors emitted, stopping now [-ferror-limit=]
+  20 errors generated.
+  ninja: build stopped: subcommand failed.
+  section_end:1673287385:step_script
+  section_start:1673287385:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1673287386:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
+
+build:tests-fedora-no-libdrm-nouveau has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/34374697):
+        |  ^~~~~~~~
+  /usr/include/xf86drmMode.h:533:2: error: unknown type name ‘uint32_t’
+    533 |  uint32_t lessees[0];
+        |  ^~~~~~~~
+  /usr/include/xf86drmMode.h:539:2: error: unknown type name ‘uint32_t’
+    539 |  uint32_t count;
+        |  ^~~~~~~~
+  /usr/include/xf86drmMode.h:540:2: error: unknown type name ‘uint32_t’
+    540 |  uint32_t objects[0];
+        |  ^~~~~~~~
+  /usr/include/xf86drmMode.h:545:39: error: unknown type name ‘uint32_t’
+    545 | extern int drmModeRevokeLease(int fd, uint32_t lessee_id);
+        |                                       ^~~~~~~~
+  ninja: build stopped: subcommand failed.
+  section_end:1673287380:step_script
+  section_start:1673287380:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1673287381:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
+
+build:tests-fedora-no-libunwind has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/34374695):
+        |  ^~~~~~~~
+  /usr/include/xf86drmMode.h:533:2: error: unknown type name ‘uint32_t’
+    533 |  uint32_t lessees[0];
+        |  ^~~~~~~~
+  /usr/include/xf86drmMode.h:539:2: error: unknown type name ‘uint32_t’
+    539 |  uint32_t count;
+        |  ^~~~~~~~
+  /usr/include/xf86drmMode.h:540:2: error: unknown type name ‘uint32_t’
+    540 |  uint32_t objects[0];
+        |  ^~~~~~~~
+  /usr/include/xf86drmMode.h:545:39: error: unknown type name ‘uint32_t’
+    545 | extern int drmModeRevokeLease(int fd, uint32_t lessee_id);
+        |                                       ^~~~~~~~
+  ninja: build stopped: subcommand failed.
+  section_end:1673287365:step_script
+  section_start:1673287365:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1673287366:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
+
+build:tests-fedora-oldest-meson has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/34374696):
+        |  ^~~~~~~~
+  /usr/include/xf86drmMode.h:533:2: error: unknown type name ‘uint32_t’
+    533 |  uint32_t lessees[0];
+        |  ^~~~~~~~
+  /usr/include/xf86drmMode.h:539:2: error: unknown type name ‘uint32_t’
+    539 |  uint32_t count;
+        |  ^~~~~~~~
+  /usr/include/xf86drmMode.h:540:2: error: unknown type name ‘uint32_t’
+    540 |  uint32_t objects[0];
+        |  ^~~~~~~~
+  /usr/include/xf86drmMode.h:545:39: error: unknown type name ‘uint32_t’
+    545 | extern int drmModeRevokeLease(int fd, uint32_t lessee_id);
+        |                                       ^~~~~~~~
+  ninja: build stopped: subcommand failed.
+  section_end:1673287375:step_script
+  section_start:1673287375:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1673287376:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+
+== Logs ==
+
+For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/779506
