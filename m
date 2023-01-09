@@ -1,16 +1,22 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============6572151402893846407=="
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C9E4D10E39F
+ for <igt-dev@lists.freedesktop.org>; Mon,  9 Jan 2023 09:53:14 +0000 (UTC)
+Date: Mon, 9 Jan 2023 11:49:46 +0200
+From: Petri Latvala <petri.latvala@intel.com>
+To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ igt-dev@lists.freedesktop.org, Arkadiusz Hiler <arek@hiler.eu>,
+ Chris Wilson <chris@chris-wilson.co.uk>,
+ Ryszard Knop <ryszard.knop@intel.com>
+Message-ID: <Y7vjOjcCsUlnmA0D@platvala-desk.ger.corp.intel.com>
+References: <20221221114213.2913884-1-petri.latvala@intel.com>
+ <Y7ckMWc1+FKR3F3j@kamilkon-desk1>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Dnyaneshwar Bhadane" <dnyaneshwar.bhadane@intel.com>
-Date: Mon, 09 Jan 2023 07:52:03 -0000
-Message-ID: <167325072345.18427.6877943529104844491@emeril.freedesktop.org>
-References: <20221230064638.155300-1-dnyaneshwar.bhadane@intel.com>
-In-Reply-To: <20221230064638.155300-1-dnyaneshwar.bhadane@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
- =?utf-8?q?kms=5Fcursor=5Fcrc=3A_Add_Gaurd_for_MSO_eDP_for_Pipe_C_and_D_?=
- =?utf-8?b?KHJldjMp?=
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Y7ckMWc1+FKR3F3j@kamilkon-desk1>
+Subject: Re: [igt-dev] [PATCH i-g-t v4] runner: Correctly handle abort
+ before first test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,314 +24,178 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============6572151402893846407==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+On Thu, Jan 05, 2023 at 08:25:37PM +0100, Kamil Konieczny wrote:
+> Hi Petri,
+> 
+> small nits, see below.
+> 
+> On 2022-12-21 at 13:42:13 +0200, Petri Latvala wrote:
+> > Don't leave the execution in a "please resume me" state if bootup
+> > causes an abort condition. Especially handle the case of abort on
+> > bootup when resuming correctly, so that it doesn't attempt to run a
+> > test on a tainted kernel if we've explicitly configured the runner to
+> > not execute when there's a taint.
+> > 
+> > v2: Fudge the results directory instead to get the desired results:
+> >     runner exits with nonzero, and resuming exits with "all done" instead
+> >     of executing anything.
+> > 
+> > v3: Use faccessat instead of open+close, use less magic strings,
+> >     remember to close fds (Chris)
+> > 
+> > v4: Use GRACEFUL_EXITCODE in monitor_output, remove the 'resuming'
+> >     field (why was it a double?!). (Ryszard)
+> >     Stop trying to execute if all tests are already run, to avoid a
+> >     crash in environment validation.
+> > 
+> > Signed-off-by: Petri Latvala <petri.latvala@intel.com>
+> > Cc: Arkadiusz Hiler <arek@hiler.eu>
+> > Cc: Chris Wilson <chris@chris-wilson.co.uk>
+> > Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> > Cc: Ryszard Knop <ryszard.knop@intel.com>
+> > ---
+> >  runner/executor.c | 57 ++++++++++++++++++++++++++++++++++++++++++++---
+> >  1 file changed, 54 insertions(+), 3 deletions(-)
+> > 
+> > diff --git a/runner/executor.c b/runner/executor.c
+> > index d2253082..e954c23e 100644
+> > --- a/runner/executor.c
+> > +++ b/runner/executor.c
+> > @@ -37,6 +37,7 @@
+> >  
+> >  #define KMSG_HEADER "[IGT] "
+> >  #define KMSG_WARN 4
+> > +#define GRACEFUL_EXITCODE -SIGHUP
+> >  
+> >  static struct {
+> >  	int *fds;
+> > @@ -1249,7 +1250,7 @@ static int monitor_output(pid_t child,
+> >  					} else {
+> >  						dprintf(outputs[_F_JOURNAL], "%s%d (%.3fs)\n",
+> ----------------------------------------------------------------------------------- ^
+> Maybe instead of %.3fs just put here 0.0s ?
+> 
+> >  							EXECUTOR_EXIT,
+> > -							-SIGHUP, 0.0);
+> > +							GRACEFUL_EXITCODE, 0.0);
+> -------------------------------------------------------------------------- ^
+> Then you can drop 0.0 here.
+> 
+> >  						if (settings->sync)
+> >  							fdatasync(outputs[_F_JOURNAL]);
+> >  					}
+> > @@ -1720,6 +1721,41 @@ out_dirfd:
+> >  	return result;
+> >  }
+> >  
+> > +static void fill_results_directory_with_notruns(struct job_list *list,
+> > +						int resdirfd)
+> > +{
+> > +	int outputs[_F_LAST];
+> > +	char name[32];
+> > +	int dirfd;
+> > +	size_t i;
+> > +
+> > +	for (i = 0; i < list->size; i++) {
+> > +		snprintf(name, sizeof(name), "%zd", i);
+> > +
+> > +		if (faccessat(resdirfd, name, F_OK, 0) == 0)
+> > +			continue;
+> > +
+> > +		mkdirat(resdirfd, name, 0777);
+> > +		dirfd = openat(resdirfd, name, O_DIRECTORY | O_RDONLY);
+> > +		if (dirfd < 0) {
+> > +			errf("Error accessing individual test result directory\n");
+> > +			return;
+> > +		}
+> > +
+> > +		if (!open_output_files(dirfd, outputs, true)) {
+> > +			errf("Error opening output files\n");
+> > +			close(dirfd);
+> > +			return;
+> > +		}
+> > +
+> > +		dprintf(outputs[_F_OUT], "Forced notrun result because of abort condition on bootup\n");
+> > +		dprintf(outputs[_F_JOURNAL], "%s%d (%.3fs)\n", EXECUTOR_EXIT, GRACEFUL_EXITCODE, 0.0);
+> --------------------------------------------------- ^ ------------------------------------------ ^
+> Same here, you can just put here 0.0s instead.
+> 
+> > +
+> > +		close_outputs(outputs);
+> > +		close(dirfd);
+> > +	}
+> > +}
+> > +
+> >  static int remove_file(int dirfd, const char *name)
+> >  {
+> >  	return unlinkat(dirfd, name, 0) && errno != ENOENT;
+> > @@ -1845,7 +1881,6 @@ bool initialize_execute_state_from_resume(int dirfd,
+> >  	clear_settings(settings);
+> >  	free_job_list(list);
+> >  	memset(state, 0, sizeof(*state));
+> > -	state->resuming = true;
+> 
+> It's not used anywhere so remove it from header.
 
-== Series Details ==
-
-Series: tests/kms_cursor_crc: Add Gaurd for MSO eDP for Pipe C and D (rev3)
-URL   : https://patchwork.freedesktop.org/series/112305/
-State : success
-
-== Summary ==
-
-CI Bug Log - changes from CI_DRM_12556 -> IGTPW_8313
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8313/index.html
-
-Participating hosts (39 -> 39)
-------------------------------
-
-  Additional (2): fi-kbl-soraka bat-rpls-2 
-  Missing    (2): fi-bsw-kefka fi-snb-2520m 
-
-Possible new issues
--------------------
-
-  Here are the unknown changes that may have been introduced in IGTPW_8313:
-
-### IGT changes ###
-
-#### Suppressed ####
-
-  The following results come from untrusted machines, tests, or statuses.
-  They do not affect the overall result.
-
-  * igt@gem_exec_suspend@basic-s0@smem:
-    - {bat-rpls-1}:       NOTRUN -> [DMESG-WARN][1]
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8313/bat-rpls-1/igt@gem_exec_suspend@basic-s0@smem.html
-
-  * igt@i915_module_load@load:
-    - {bat-dg2-8}:        [PASS][2] -> [FAIL][3]
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12556/bat-dg2-8/igt@i915_module_load@load.html
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8313/bat-dg2-8/igt@i915_module_load@load.html
-
-  
-Known issues
-------------
-
-  Here are the changes found in IGTPW_8313 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@gem_exec_gttfill@basic:
-    - fi-kbl-soraka:      NOTRUN -> [SKIP][4] ([fdo#109271]) +7 similar issues
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8313/fi-kbl-soraka/igt@gem_exec_gttfill@basic.html
-    - fi-pnv-d510:        [PASS][5] -> [FAIL][6] ([i915#7229])
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12556/fi-pnv-d510/igt@gem_exec_gttfill@basic.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8313/fi-pnv-d510/igt@gem_exec_gttfill@basic.html
-
-  * igt@gem_huc_copy@huc-copy:
-    - fi-kbl-soraka:      NOTRUN -> [SKIP][7] ([fdo#109271] / [i915#2190])
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8313/fi-kbl-soraka/igt@gem_huc_copy@huc-copy.html
-
-  * igt@gem_lmem_swapping@basic:
-    - fi-kbl-soraka:      NOTRUN -> [SKIP][8] ([fdo#109271] / [i915#4613]) +3 similar issues
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8313/fi-kbl-soraka/igt@gem_lmem_swapping@basic.html
-
-  * igt@i915_selftest@live@execlists:
-    - fi-bsw-n3050:       [PASS][9] -> [INCOMPLETE][10] ([i915#6972])
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12556/fi-bsw-n3050/igt@i915_selftest@live@execlists.html
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8313/fi-bsw-n3050/igt@i915_selftest@live@execlists.html
-    - fi-bsw-nick:        [PASS][11] -> [INCOMPLETE][12] ([i915#6972])
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12556/fi-bsw-nick/igt@i915_selftest@live@execlists.html
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8313/fi-bsw-nick/igt@i915_selftest@live@execlists.html
-
-  * igt@i915_selftest@live@gt_heartbeat:
-    - fi-kbl-soraka:      NOTRUN -> [DMESG-FAIL][13] ([i915#5334])
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8313/fi-kbl-soraka/igt@i915_selftest@live@gt_heartbeat.html
-
-  * igt@i915_selftest@live@gt_pm:
-    - fi-kbl-soraka:      NOTRUN -> [DMESG-FAIL][14] ([i915#1886])
-   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8313/fi-kbl-soraka/igt@i915_selftest@live@gt_pm.html
-
-  * igt@kms_chamelium@hdmi-hpd-fast:
-    - fi-kbl-soraka:      NOTRUN -> [SKIP][15] ([fdo#109271] / [fdo#111827]) +7 similar issues
-   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8313/fi-kbl-soraka/igt@kms_chamelium@hdmi-hpd-fast.html
-
-  * igt@runner@aborted:
-    - fi-bsw-n3050:       NOTRUN -> [FAIL][16] ([fdo#109271] / [i915#4312])
-   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8313/fi-bsw-n3050/igt@runner@aborted.html
-    - fi-bsw-nick:        NOTRUN -> [FAIL][17] ([fdo#109271] / [i915#4312])
-   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8313/fi-bsw-nick/igt@runner@aborted.html
-
-  
-#### Possible fixes ####
-
-  * igt@i915_selftest@live@gt_lrc:
-    - {bat-rpls-1}:       [INCOMPLETE][18] ([i915#4983]) -> [PASS][19]
-   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12556/bat-rpls-1/igt@i915_selftest@live@gt_lrc.html
-   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8313/bat-rpls-1/igt@i915_selftest@live@gt_lrc.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
-  [fdo#109285]: https://bugs.freedesktop.org/show_bug.cgi?id=109285
-  [fdo#109295]: https://bugs.freedesktop.org/show_bug.cgi?id=109295
-  [fdo#111827]: https://bugs.freedesktop.org/show_bug.cgi?id=111827
-  [i915#1072]: https://gitlab.freedesktop.org/drm/intel/issues/1072
-  [i915#1845]: https://gitlab.freedesktop.org/drm/intel/issues/1845
-  [i915#1849]: https://gitlab.freedesktop.org/drm/intel/issues/1849
-  [i915#1886]: https://gitlab.freedesktop.org/drm/intel/issues/1886
-  [i915#2190]: https://gitlab.freedesktop.org/drm/intel/issues/2190
-  [i915#2582]: https://gitlab.freedesktop.org/drm/intel/issues/2582
-  [i915#3282]: https://gitlab.freedesktop.org/drm/intel/issues/3282
-  [i915#3555]: https://gitlab.freedesktop.org/drm/intel/issues/3555
-  [i915#3637]: https://gitlab.freedesktop.org/drm/intel/issues/3637
-  [i915#3708]: https://gitlab.freedesktop.org/drm/intel/issues/3708
-  [i915#4312]: https://gitlab.freedesktop.org/drm/intel/issues/4312
-  [i915#4613]: https://gitlab.freedesktop.org/drm/intel/issues/4613
-  [i915#4983]: https://gitlab.freedesktop.org/drm/intel/issues/4983
-  [i915#5334]: https://gitlab.freedesktop.org/drm/intel/issues/5334
-  [i915#6367]: https://gitlab.freedesktop.org/drm/intel/issues/6367
-  [i915#6621]: https://gitlab.freedesktop.org/drm/intel/issues/6621
-  [i915#6972]: https://gitlab.freedesktop.org/drm/intel/issues/6972
-  [i915#7229]: https://gitlab.freedesktop.org/drm/intel/issues/7229
-  [i915#7456]: https://gitlab.freedesktop.org/drm/intel/issues/7456
-  [i915#7561]: https://gitlab.freedesktop.org/drm/intel/issues/7561
+I in fact did remove it! But then I forgot to git add...
 
 
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_7110 -> IGTPW_8313
-
-  CI-20190529: 20190529
-  CI_DRM_12556: ac04152253dccfb02dcedfa0c57443122cf79314 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_8313: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8313/index.html
-  IGT_7110: db10a19b94d1d7ae5ba62eb48d52c47ccb27766f @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8313/index.html
-
---===============6572151402893846407==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+-- 
+Petri Latvala
 
 
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/kms_cursor_crc: Add Gaurd for MSO eDP for Pipe C and D (rev3)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/112305/">https://patchwork.freedesktop.org/series/112305/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8313/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8313/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from CI_DRM_12556 -&gt; IGTPW_8313</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8313/index.html</p>
-<h2>Participating hosts (39 -&gt; 39)</h2>
-<p>Additional (2): fi-kbl-soraka bat-rpls-2 <br />
-  Missing    (2): fi-bsw-kefka fi-snb-2520m </p>
-<h2>Possible new issues</h2>
-<p>Here are the unknown changes that may have been introduced in IGTPW_8313:</p>
-<h3>IGT changes</h3>
-<h4>Suppressed</h4>
-<p>The following results come from untrusted machines, tests, or statuses.<br />
-  They do not affect the overall result.</p>
-<ul>
-<li>
-<p>igt@gem_exec_suspend@basic-s0@smem:</p>
-<ul>
-<li>{bat-rpls-1}:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8313/bat-rpls-1/igt@gem_exec_suspend@basic-s0@smem.html">DMESG-WARN</a></li>
-</ul>
-</li>
-<li>
-<p>igt@i915_module_load@load:</p>
-<ul>
-<li>{bat-dg2-8}:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12556/bat-dg2-8/igt@i915_module_load@load.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8313/bat-dg2-8/igt@i915_module_load@load.html">FAIL</a></li>
-</ul>
-</li>
-</ul>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_8313 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@gem_exec_gttfill@basic:</p>
-<ul>
-<li>
-<p>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8313/fi-kbl-soraka/igt@gem_exec_gttfill@basic.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +7 similar issues</p>
-</li>
-<li>
-<p>fi-pnv-d510:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12556/fi-pnv-d510/igt@gem_exec_gttfill@basic.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8313/fi-pnv-d510/igt@gem_exec_gttfill@basic.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7229">i915#7229</a>)</p>
-</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_huc_copy@huc-copy:</p>
-<ul>
-<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8313/fi-kbl-soraka/igt@gem_huc_copy@huc-copy.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2190">i915#2190</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_lmem_swapping@basic:</p>
-<ul>
-<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8313/fi-kbl-soraka/igt@gem_lmem_swapping@basic.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4613">i915#4613</a>) +3 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@execlists:</p>
-<ul>
-<li>
-<p>fi-bsw-n3050:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12556/fi-bsw-n3050/igt@i915_selftest@live@execlists.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8313/fi-bsw-n3050/igt@i915_selftest@live@execlists.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6972">i915#6972</a>)</p>
-</li>
-<li>
-<p>fi-bsw-nick:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12556/fi-bsw-nick/igt@i915_selftest@live@execlists.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8313/fi-bsw-nick/igt@i915_selftest@live@execlists.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6972">i915#6972</a>)</p>
-</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@gt_heartbeat:</p>
-<ul>
-<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8313/fi-kbl-soraka/igt@i915_selftest@live@gt_heartbeat.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5334">i915#5334</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@gt_pm:</p>
-<ul>
-<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8313/fi-kbl-soraka/igt@i915_selftest@live@gt_pm.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1886">i915#1886</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_chamelium@hdmi-hpd-fast:</p>
-<ul>
-<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8313/fi-kbl-soraka/igt@kms_chamelium@hdmi-hpd-fast.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://bugs.freedesktop.org/show_bug.cgi?id=111827">fdo#111827</a>) +7 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@runner@aborted:</p>
-<ul>
-<li>
-<p>fi-bsw-n3050:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8313/fi-bsw-n3050/igt@runner@aborted.html">FAIL</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4312">i915#4312</a>)</p>
-</li>
-<li>
-<p>fi-bsw-nick:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8313/fi-bsw-nick/igt@runner@aborted.html">FAIL</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4312">i915#4312</a>)</p>
-</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>igt@i915_selftest@live@gt_lrc:<ul>
-<li>{bat-rpls-1}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12556/bat-rpls-1/igt@i915_selftest@live@gt_lrc.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4983">i915#4983</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8313/bat-rpls-1/igt@i915_selftest@live@gt_lrc.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_7110 -&gt; IGTPW_8313</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_12556: ac04152253dccfb02dcedfa0c57443122cf79314 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_8313: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8313/index.html<br />
-  IGT_7110: db10a19b94d1d7ae5ba62eb48d52c47ccb27766f @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-
-</body>
-</html>
-
---===============6572151402893846407==--
+> 
+> With that fixed you can add my r-b,
+> 
+> Regards,
+> Kamil
+> 
+> >  
+> >  	if (!read_settings_from_dir(settings, dirfd) ||
+> >  	    !read_job_list(list, dirfd)) {
+> > @@ -2183,6 +2218,11 @@ bool execute(struct execute_state *state,
+> >  		return true;
+> >  	}
+> >  
+> > +	if (state->next >= job_list->size) {
+> > +		outf("All tests already executed.\n");
+> > +		return true;
+> > +	}
+> > +
+> >  	igt_list_for_each_entry(env_var, &settings->env_vars, link) {
+> >  		setenv(env_var->key, env_var->value, 1);
+> >  	}
+> > @@ -2271,7 +2311,7 @@ bool execute(struct execute_state *state,
+> >  	close(unamefd);
+> >  
+> >  	/* Check if we're already in abort-state at bootup */
+> > -	if (!state->resuming) {
+> > +	{
+> >  		char *reason;
+> >  
+> >  		if ((reason = need_to_abort(settings)) != NULL) {
+> > @@ -2280,6 +2320,17 @@ bool execute(struct execute_state *state,
+> >  			free(reason);
+> >  			free(nexttest);
+> >  
+> > +			/*
+> > +			 * If an abort condition happened at bootup,
+> > +			 * assume that it happens on every boot,
+> > +			 * making this test execution impossible.
+> > +			 * Write stuff to the results directory
+> > +			 * indicating this so resuming immediately
+> > +			 * finishes instead of getting stuck in an
+> > +			 * infinite reboot loop.
+> > +			 */
+> > +			fill_results_directory_with_notruns(job_list, resdirfd);
+> > +
+> >  			status = false;
+> >  
+> >  			goto end;
+> > -- 
+> > 2.30.2
+> > 
