@@ -1,18 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-lj1-x236.google.com (mail-lj1-x236.google.com
- [IPv6:2a00:1450:4864:20::236])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6FA4310E62A
- for <igt-dev@lists.freedesktop.org>; Tue, 10 Jan 2023 17:01:42 +0000 (UTC)
-Received: by mail-lj1-x236.google.com with SMTP id e13so13231366ljn.0
- for <igt-dev@lists.freedesktop.org>; Tue, 10 Jan 2023 09:01:42 -0800 (PST)
-From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-To: igt-dev@lists.freedesktop.org
-Date: Tue, 10 Jan 2023 19:01:32 +0200
-Message-Id: <20230110170132.13192-1-juhapekka.heikkila@gmail.com>
+Received: from NAM12-BN8-obe.outbound.protection.outlook.com
+ (mail-bn8nam12on2085.outbound.protection.outlook.com [40.107.237.85])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 660DF10E18C
+ for <igt-dev@lists.freedesktop.org>; Tue, 10 Jan 2023 18:29:50 +0000 (UTC)
+Message-ID: <f23c7ed6-b82b-84f4-919f-c25dc45aa48a@amd.com>
+Date: Tue, 10 Jan 2023 11:29:44 -0700
+To: Alaa Emad <aemad@igalia.com>, igt-dev@lists.freedesktop.org
+References: <cover.1673098992.git.aemad@igalia.com>
+Content-Language: en-US
+From: Alex Hung <alex.hung@amd.com>
+In-Reply-To: <cover.1673098992.git.aemad@igalia.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t] tests/kms_plane_alpha_blend: stop crc
- generation before asserting
+Subject: Re: [igt-dev] [PATCH RFC i-g-t v2 0/8] tests/kms_universal_plane:
+ divide `functional_test_pipe` to mini-subtests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,48 +22,87 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: petri.latvala@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Stop crc generation on basic alpha test before asserting to avoid messages
-about crc buffer overflow.
 
-Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
----
- tests/kms_plane_alpha_blend.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
 
-diff --git a/tests/kms_plane_alpha_blend.c b/tests/kms_plane_alpha_blend.c
-index ccf1d6579..38272ccb3 100644
---- a/tests/kms_plane_alpha_blend.c
-+++ b/tests/kms_plane_alpha_blend.c
-@@ -263,19 +263,23 @@ static void basic_alpha(data_t *data, enum pipe pipe, igt_plane_t *plane)
- 		igt_plane_set_prop_value(plane, IGT_PLANE_ALPHA, i | (i << 8));
- 		igt_display_commit2(display, COMMIT_ATOMIC);
- 
- 		igt_pipe_crc_get_current(display->drm_fd, data->pipe_crc, &crc);
--		igt_assert_crc_equal(&ref_crc, &crc);
-+		if (!igt_check_crc_equal(&ref_crc, &crc) && !igt_skip_crc_compare) {
-+			igt_pipe_crc_stop(data->pipe_crc);
-+
-+			igt_assert_f(false, "crc mismatch with plane alpha value %d\n",
-+				     i | (i << 8));
-+		}
- 	}
- 
- 	/* And test alpha = 0, should give same CRC, but doesn't on some i915 platforms. */
- 	igt_plane_set_prop_value(plane, IGT_PLANE_ALPHA, 0);
- 	igt_display_commit2(display, COMMIT_ATOMIC);
- 
- 	igt_pipe_crc_get_current(display->drm_fd, data->pipe_crc, &crc);
--	igt_assert_crc_equal(&ref_crc, &crc);
--
- 	igt_pipe_crc_stop(data->pipe_crc);
-+	igt_assert_crc_equal(&ref_crc, &crc);
- }
- 
- static void argb_opaque(data_t *data, enum pipe pipe, igt_plane_t *plane)
- {
--- 
-2.39.0
+On 2023-01-07 06:45, Alaa Emad wrote:
+> Divide the `functional_test_pipe` test into seven subtests based on CRC
+> comparisons because this will make it easier to debug the test and help
+> in detecting the failure.
+> 
+> First 7 patches decouple each subtest and run it individually keeping
+> `functional_test_pipe' test as it is. After making sure that each
+> subtest can run individually with the expected result on both vkms and i915
+> drivers, improve the test by creating `run_functional_test_pipe` and
+> call all subtests from it and call `run_functional_test_pipe` in
+> `igt_main`.
+> 
+> -------
+> changes in v2:
+> 	add is_amdgpu_device() guard.
+> Alaa Emad (8):
+>    tests/kms_universal_plane: decouple verification of legacy and atomic
+>      api
+>    tests/kms_universal_plane: decouple verification of disabling primary
+>      plane
+>    tests/kms_universal_plane: decouple verification of re-enabling
+>      primary plane
+>    tests/kms_universal_plane: decouple verification of setup plane FB's
+>      while CRTC is disabled
+>    tests/kms_universal_plane: decouple verification of ablity to modeset
+>      with the primary plane off
+>    tests/kms_universal_plane: decouple verification of ablity to move the
+>      primary plane completely
+>    tests/kms_universal_plane: decouple verification of ablity to
+>      explicitly disable an already implicitly-disabled primary plane
+>    tests/kms_universal_plane: create the run_functional_test_pipe and
+>      call all tests from it
+> 
+>   tests/kms_universal_plane.c | 412 ++++++++++++++++++++++++------------
+>   1 file changed, 272 insertions(+), 140 deletions(-)
+> 
+Hi Alaa,
+
+There are trailing spaces in some patches (1, 4, 5, 7, 8):
+
+$ git am 
+RFC-i-g-t-v2-1-8-tests-kms_universal_plane-decouple-verification-of-legacy-and-atomic-api.patch
+Applying: tests/kms_universal_plane: decouple verification of legacy and 
+atomic api
+.git/rebase-apply/patch:82: trailing whitespace.
+	
+$ git am 
+RFC-i-g-t-v2-4-8-tests-kms_universal_plane-decouple-verification-of-setup-plane-FB-s-while-CRTC-is-disabled.patch
+Applying: tests/kms_universal_plane: decouple verification of setup 
+plane FB's while CRTC is disabled
+.git/rebase-apply/patch:87: trailing whitespace.
+
+$ git am 
+RFC-i-g-t-v2-5-8-tests-kms_universal_plane-decouple-verification-of-ablity-to-modeset-with-the-primary-plane-off.patch
+Applying: tests/kms_universal_plane: decouple verification of ablity to 
+modeset with the primary plane off
+.git/rebase-apply/patch:93: trailing whitespace.
+
+$ git am 
+RFC-i-g-t-v2-7-8-tests-kms_universal_plane-decouple-verification-of-ablity-to-explicitly-disable-an-already-implicitly-disabled-primary-plane.patch
+Applying: tests/kms_universal_plane: decouple verification of ablity to 
+explicitly disable an already implicitly-disabled primary plane
+.git/rebase-apply/patch:108: trailing whitespace.
+
+$ git am 
+RFC-i-g-t-v2-8-8-tests-kms_universal_plane-create-the-run_functional_test_pipe-and-call-all-tests-from-it.patch
+Applying: tests/kms_universal_plane: create the run_functional_test_pipe 
+and call all tests from it
+.git/rebase-apply/patch:57: trailing whitespace.
+	
+.git/rebase-apply/patch:646: trailing whitespace.
+	
+.git/rebase-apply/patch:771: trailing whitespace.
+		igt_subtest_group {	
+.git/rebase-apply/patch:786: trailing whitespace.
+					
+.git/rebase-apply/patch:800: trailing whitespace.
