@@ -1,21 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 90FD510E541
- for <igt-dev@lists.freedesktop.org>; Tue, 10 Jan 2023 06:55:19 +0000 (UTC)
-Message-ID: <f180f27e-ab30-0069-4f9d-1444b8c589e2@intel.com>
-Date: Tue, 10 Jan 2023 07:55:08 +0100
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0D70F10E543
+ for <igt-dev@lists.freedesktop.org>; Tue, 10 Jan 2023 06:58:03 +0000 (UTC)
+Message-ID: <251c5a2c-0117-7408-ad08-035b12667a55@intel.com>
+Date: Tue, 10 Jan 2023 07:57:53 +0100
 Content-Language: en-US
 To: =?UTF-8?Q?Zbigniew_Kempczy=c5=84ski?= <zbigniew.kempczynski@intel.com>
 References: <cover.1671793169.git.karolina.stolarek@intel.com>
- <0be583247c6af1d4eff85c62791b75f0ff3f5001.1671793169.git.karolina.stolarek@intel.com>
- <20230109124955.zzdpjhmtoflfl26t@zkempczy-mobl2>
+ <bf604dd1a93aca467b0b5d9dc908dad4304702c1.1671793169.git.karolina.stolarek@intel.com>
+ <20230109153823.i6c63lwxpo5fwmkz@zkempczy-mobl2>
 From: Karolina Stolarek <karolina.stolarek@intel.com>
-In-Reply-To: <20230109124955.zzdpjhmtoflfl26t@zkempczy-mobl2>
+In-Reply-To: <20230109153823.i6c63lwxpo5fwmkz@zkempczy-mobl2>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t v2 1/6] i915/lib: Add new library for
- blitter and tiling formats
+Subject: Re: [igt-dev] [PATCH i-g-t v2 6/6] tests/gem_exercise_blt: Add
+ fast-copy-emit test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,665 +28,272 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Zbigniew,
 
-Thank you very much for your review.
 
-On 09.01.2023 13:49, Zbigniew Kempczyński wrote:
-> On Fri, Dec 23, 2022 at 12:13:46PM +0100, Karolina Stolarek wrote:
->> Add structs to describe what blitter commands and tiling formats
->> are supported per platform. Add a generic functions that check
->> if a specific blitter command or tiling format is supported.
->> Move blt_tiling enum to the newely created library and update
->> its definition. Update i915_blt and block copy tests to reflect
->> that change.
+On 09.01.2023 16:38, Zbigniew Kempczyński wrote:
+> On Fri, Dec 23, 2022 at 12:13:51PM +0100, Karolina Stolarek wrote:
+>> Add a subtest where two fast copy commands are executed within the
+>> single batch buffer.
 >>
 >> Signed-off-by: Karolina Stolarek <karolina.stolarek@intel.com>
 >> ---
->>   .../igt-gpu-tools/igt-gpu-tools-docs.xml      |   1 +
->>   lib/i915/i915_blt.c                           |  31 +--
->>   lib/i915/i915_blt.h                           |  14 +-
->>   lib/i915/intel_blt_info.c                     | 241 ++++++++++++++++++
->>   lib/i915/intel_blt_info.h                     |  98 +++++++
->>   lib/meson.build                               |   1 +
->>   tests/i915/gem_ccs.c                          |  15 +-
->>   tests/i915/gem_lmem_swapping.c                |   2 +-
->>   8 files changed, 360 insertions(+), 43 deletions(-)
->>   create mode 100644 lib/i915/intel_blt_info.c
->>   create mode 100644 lib/i915/intel_blt_info.h
+>>   tests/i915/gem_exercise_blt.c | 190 ++++++++++++++++++++++++++++++++--
+>>   1 file changed, 184 insertions(+), 6 deletions(-)
 >>
->> diff --git a/docs/reference/igt-gpu-tools/igt-gpu-tools-docs.xml b/docs/reference/igt-gpu-tools/igt-gpu-tools-docs.xml
->> index 102c8a89..24ee17fc 100644
->> --- a/docs/reference/igt-gpu-tools/igt-gpu-tools-docs.xml
->> +++ b/docs/reference/igt-gpu-tools/igt-gpu-tools-docs.xml
->> @@ -59,6 +59,7 @@
->>     </chapter>
->>     <chapter>
->>       <title>igt/i915 API Reference</title>
->> +    <xi:include href="xml/intel_blt_info.xml"/>
->>       <xi:include href="xml/gem_create.xml"/>
->>       <xi:include href="xml/gem_context.xml"/>
->>       <xi:include href="xml/gem_engine_topology.xml"/>
->> diff --git a/lib/i915/i915_blt.c b/lib/i915/i915_blt.c
->> index 54193565..6db135d1 100644
->> --- a/lib/i915/i915_blt.c
->> +++ b/lib/i915/i915_blt.c
->> @@ -217,7 +217,7 @@ bool blt_supports_compression(int i915)
->>    * Returns:
->>    * true if it does, false otherwise.
->>    */
->> -bool blt_supports_tiling(int i915, enum blt_tiling tiling)
->> +bool blt_supports_tiling(int i915, enum blt_tiling_type tiling)
->>   {
->>   	uint32_t devid = intel_get_drm_devid(i915);
+>> diff --git a/tests/i915/gem_exercise_blt.c b/tests/i915/gem_exercise_blt.c
+>> index 67a8b660..b8bfc436 100644
+>> --- a/tests/i915/gem_exercise_blt.c
+>> +++ b/tests/i915/gem_exercise_blt.c
+>> @@ -37,6 +37,146 @@ static struct param {
+>>   	if (param.write_png) \
+>>   		blt_surface_to_png((fd), (id), (name), (obj), (w), (h)); } while (0)
 >>   
->> @@ -238,28 +238,7 @@ bool blt_supports_tiling(int i915, enum blt_tiling tiling)
->>   	return true;
+>> +struct blt_fast_copy_data {
+>> +	int i915;
+>> +	struct blt_copy_object src;
+>> +	struct blt_copy_object mid;
+>> +	struct blt_copy_object dst;
+>> +
+>> +	struct blt_copy_batch bb;
+>> +	enum blt_color_depth color_depth;
+>> +
+>> +	/* debug stuff */
+>> +	bool print_bb;
+>> +};
+>> +
+>> +static int fast_copy_one_bb(int i915,
+>> +			    const intel_ctx_t *ctx,
+>> +			    const struct intel_execution_engine2 *e,
+>> +			    uint64_t ahnd,
+>> +			    const struct blt_fast_copy_data *blt)
+>> +{
+>> +	struct drm_i915_gem_execbuffer2 execbuf = {};
+>> +	struct drm_i915_gem_exec_object2 obj[4] = {};
+>> +	struct blt_copy_data blt_tmp;
+>> +	uint64_t src_offset, mid_offset, dst_offset, bb_offset, alignment;
+>> +	uint64_t bb_pos = 0;
+>> +	uint32_t flags;
+>> +	int ret;
+>> +
+>> +	alignment = gem_detect_safe_alignment(i915);
+>> +
+>> +	src_offset = get_offset(ahnd, blt->src.handle, blt->src.size, alignment);
+>> +	mid_offset = get_offset(ahnd, blt->mid.handle, blt->mid.size, alignment);
+>> +	dst_offset = get_offset(ahnd, blt->dst.handle, blt->dst.size, alignment);
+>> +	bb_offset = get_offset(ahnd, blt->bb.handle, blt->bb.size, alignment);
+>> +
+>> +	/* First blit */
+>> +	memset(&blt_tmp, 0, sizeof(blt_tmp));
+>> +	blt_tmp.src = blt->src;
+>> +	blt_tmp.dst = blt->mid;
+>> +	blt_tmp.bb = blt->bb;
+>> +	blt_tmp.color_depth = blt->color_depth;
+>> +	blt_tmp.print_bb = blt->print_bb;
+>> +	bb_pos = emit_blt_fast_copy(i915, ahnd, &blt_tmp, bb_pos, false);
+>> +
+>> +	/* Second blit */
+>> +	memset(&blt_tmp, 0, sizeof(blt_tmp));
+>> +	blt_tmp.src = blt->mid;
+>> +	blt_tmp.dst = blt->dst;
+>> +	blt_tmp.bb = blt->bb;
+>> +	blt_tmp.color_depth = blt->color_depth;
+>> +	blt_tmp.print_bb = blt->print_bb;
+>> +	bb_pos = emit_blt_fast_copy(i915, ahnd, &blt_tmp, bb_pos, true);
+> 
+> Pipelined blits? Nice!
+> 
+>> +
+>> +	flags = EXEC_OBJECT_PINNED | EXEC_OBJECT_SUPPORTS_48B_ADDRESS;
+>> +
+>> +	obj[0].handle = blt->src.handle;
+>> +	obj[0].offset = CANONICAL(src_offset);
+>> +	obj[0].flags = flags;
+>> +
+>> +	obj[1].handle = blt->mid.handle;
+>> +	obj[1].offset = CANONICAL(mid_offset);
+>> +	obj[1].flags = flags | EXEC_OBJECT_WRITE;
+>> +
+>> +	obj[2].handle = blt->dst.handle;
+>> +	obj[2].offset = CANONICAL(dst_offset);
+>> +	obj[2].flags = flags;
+>> +
+>> +	obj[3].handle = blt->bb.handle;
+>> +	obj[3].offset = CANONICAL(bb_offset);
+>> +	obj[3].flags = flags;
+>> +
+>> +	execbuf.buffer_count = 4;
+>> +	execbuf.buffers_ptr = to_user_pointer(obj);
+>> +	execbuf.rsvd1 = ctx ? ctx->id : 0;
+>> +	execbuf.flags = e ? e->flags : I915_EXEC_BLT;
+>> +	ret = __gem_execbuf(i915, &execbuf);
+>> +
+>> +	gem_sync(i915, blt->bb.handle);
+>> +
+>> +	return ret;
+>> +}
+>> +
+>> +static void fast_copy_emit(int i915, const intel_ctx_t *ctx,
+>> +			   const struct intel_execution_engine2 *e,
+>> +			   uint32_t region1, uint32_t region2,
+>> +			   enum blt_tiling_type mid_tiling)
+>> +{
+>> +	struct blt_fast_copy_data blt = {};
+>> +	struct blt_copy_object *src, *mid, *dst;
+>> +	const uint32_t bpp = 32;
+>> +	uint64_t bb_size = 4096;
+>> +	uint64_t ahnd = intel_allocator_open_full(i915, ctx->id, 0, 0,
+>> +						  INTEL_ALLOCATOR_SIMPLE,
+>> +						  ALLOC_STRATEGY_LOW_TO_HIGH, 0);
+>> +	uint32_t bb, width = param.width, height = param.height;
+>> +	int result;
+>> +
+>> +	igt_assert(__gem_create_in_memory_regions(i915, &bb, &bb_size, region1) == 0);
+>> +
+>> +	src = blt_create_object(i915, region1, width, height, bpp, 0,
+>> +				T_LINEAR, COMPRESSION_DISABLED, 0, true);
+>> +	mid = blt_create_object(i915, region2, width, height, bpp, 0,
+>> +				mid_tiling, COMPRESSION_DISABLED, 0, true);
+>> +	dst = blt_create_object(i915, region1, width, height, bpp, 0,
+>> +				T_LINEAR, COMPRESSION_DISABLED, 0, true);
+>> +	igt_assert(src->size == dst->size);
+>> +
+>> +	PRINT_SURFACE_INFO("src", src);
+>> +	PRINT_SURFACE_INFO("mid", mid);
+>> +	PRINT_SURFACE_INFO("dst", dst);
+>> +
+>> +	blt_surface_fill_rect(i915, src, width, height);
+>> +	WRITE_PNG(i915, mid_tiling, "src", src, width, height);
+>> +
+>> +	memset(&blt, 0, sizeof(blt));
+>> +	blt.color_depth = CD_32bit;
+>> +	blt.print_bb = param.print_bb;
+>> +	blt_set_copy_object(&blt.src, src);
+>> +	blt_set_copy_object(&blt.mid, mid);
+>> +	blt_set_copy_object(&blt.dst, dst);
+>> +	blt_set_batch(&blt.bb, bb, bb_size, region1);
+>> +
+>> +	fast_copy_one_bb(i915, ctx, e, ahnd, &blt);
+>> +	gem_sync(i915, blt.dst.handle);
+>> +
+>> +	WRITE_PNG(i915, mid_tiling, "mid", &blt.mid, width, height);
+>> +	WRITE_PNG(i915, mid_tiling, "dst", &blt.dst, width, height);
+>> +
+>> +	result = memcmp(src->ptr, blt.dst.ptr, src->size);
+>> +
+>> +	blt_destroy_object(i915, src);
+>> +	blt_destroy_object(i915, mid);
+>> +	blt_destroy_object(i915, dst);
+>> +	gem_close(i915, bb);
+>> +	put_ahnd(ahnd);
+>> +
+>> +	munmap(&bb, bb_size);
+>> +
+>> +	igt_assert_f(!result, "source and destination surfaces differs!\n");
+>> +}
+>> +
+>>   static void fast_copy(int i915, const intel_ctx_t *ctx,
+>>   		      const struct intel_execution_engine2 *e,
+>>   		      uint32_t region1, uint32_t region2,
+>> @@ -102,12 +242,42 @@ static void fast_copy(int i915, const intel_ctx_t *ctx,
+>>   	igt_assert_f(!result, "source and destination surfaces differs!\n");
 >>   }
 >>   
->> -/**
->> - * blt_tiling_name:
->> - * @tiling: tiling id
->> - *
->> - * Returns:
->> - * name of @tiling passed. Useful to build test names.
->> - */
->> -const char *blt_tiling_name(enum blt_tiling tiling)
->> -{
->> -	switch (tiling) {
->> -	case T_LINEAR: return "linear";
->> -	case T_XMAJOR: return "xmajor";
->> -	case T_YMAJOR: return "ymajor";
->> -	case T_TILE4:  return "tile4";
->> -	case T_TILE64: return "tile64";
->> -	}
->> -
->> -	igt_warn("invalid tiling passed: %d\n", tiling);
->> -	return NULL;
->> -}
->> -
->> -static int __block_tiling(enum blt_tiling tiling)
->> +static int __block_tiling(enum blt_tiling_type tiling)
->>   {
->>   	switch (tiling) {
->>   	case T_LINEAR: return 0;
->> @@ -267,6 +246,9 @@ static int __block_tiling(enum blt_tiling tiling)
->>   	case T_YMAJOR: return 1;
->>   	case T_TILE4:  return 2;
->>   	case T_TILE64: return 3;
->> +	/* type only supported in gen9 fast copy */
->> +	case T_YFMAJOR:
->> +		break;
->>   	}
->>   
->>   	igt_warn("invalid tiling passed: %d\n", tiling);
->> @@ -891,13 +873,14 @@ struct gen12_fast_copy_data {
->>   	} dw09;
->>   };
->>   
->> -static int __fast_tiling(enum blt_tiling tiling)
->> +static int __fast_tiling(enum blt_tiling_type tiling)
->>   {
->>   	switch (tiling) {
->>   	case T_LINEAR: return 0;
->>   	case T_XMAJOR: return 1;
->>   	case T_YMAJOR: return 2;
->>   	case T_TILE4:  return 2;
->> +	case T_YFMAJOR: return 2;
->>   	case T_TILE64: return 3;
->>   	}
->>   	return 0;
->> diff --git a/lib/i915/i915_blt.h b/lib/i915/i915_blt.h
->> index 34db9bb9..8fa480b8 100644
->> --- a/lib/i915/i915_blt.h
->> +++ b/lib/i915/i915_blt.h
->> @@ -47,6 +47,7 @@
->>   #include <malloc.h>
->>   #include "drm.h"
->>   #include "igt.h"
->> +#include "intel_blt_info.h"
->>   
->>   #define CCS_RATIO 256
->>   
->> @@ -59,14 +60,6 @@ enum blt_color_depth {
->>   	CD_128bit,
->>   };
->>   
->> -enum blt_tiling {
->> -	T_LINEAR,
->> -	T_XMAJOR,
->> -	T_YMAJOR,
->> -	T_TILE4,
->> -	T_TILE64,
->> -};
->> -
->>   enum blt_compression {
->>   	COMPRESSION_DISABLED,
->>   	COMPRESSION_ENABLED,
->> @@ -83,7 +76,7 @@ struct blt_copy_object {
->>   	uint32_t region;
->>   	uint64_t size;
->>   	uint8_t mocs;
->> -	enum blt_tiling tiling;
->> +	enum blt_tiling_type tiling;
->>   	enum blt_compression compression;  /* BC only */
->>   	enum blt_compression_type compression_type; /* BC only */
->>   	uint32_t pitch;
->> @@ -165,8 +158,7 @@ struct blt_ctrl_surf_copy_data {
->>   };
->>   
->>   bool blt_supports_compression(int i915);
->> -bool blt_supports_tiling(int i915, enum blt_tiling tiling);
->> -const char *blt_tiling_name(enum blt_tiling tiling);
->> +bool blt_supports_tiling(int i915, enum blt_tiling_type tiling);
->>   
->>   uint64_t emit_blt_block_copy(int i915,
->>   			     uint64_t ahnd,
->> diff --git a/lib/i915/intel_blt_info.c b/lib/i915/intel_blt_info.c
->> new file mode 100644
->> index 00000000..2f54d1b4
->> --- /dev/null
->> +++ b/lib/i915/intel_blt_info.c
->> @@ -0,0 +1,241 @@
->> +// SPDX-License-Identifier: MIT
->> +/*
->> + * Copyright © 2022 Intel Corporation
->> + */
->> +
->> +#include "intel_blt_info.h"
->> +
->> +#define BLT_STR_MAX 200
->> +#define TILE_STR_MAX 60
->> +#define T_MAX_SHIFT 6
-> 
-> I think you can remove this define adding T_TILING_MAX in enum blt_tiling_type.
-
-Yeah, not sure why I didn't do it after updating the commands enum
-
-> 
->> +
->> +#define BLT_INFO(_cmd, _tiling)  { \
->> +		.blt_cmd_type = _cmd, \
->> +		.supported_tiling = _tiling \
->> +	}
->> +
->> +static const struct blt_tiling_info src_copy = BLT_INFO(SRC_COPY, T_LINEAR);
->> +static const struct blt_tiling_info
->> +		pre_gen8_xy_src_copy = BLT_INFO(XY_SRC_COPY, T_LINEAR | T_XMAJOR);
-> 
-> I wondered to have enum blt_tiling_type incrementing without gaps to introduce
-> 
-> #define BLT_MASK(x) (1 << (x))
-
-I believe we have BIT(x) defined in intel_chipset.h, so I'll use it 
-instead. Thanks for your suggestion!
-
-> 
-> then:
-> 
-> static const struct blt_tiling_info
-> 		pre_gen8_xy_src_copy = BLT_INFO(XY_SRC_COPY,
-> 					        BLT_MASK(T_LINEAR) |
-> 						BLT_MASK(T_XMAJOR));
-> 
-> and so on. Initialization is not too comfortable but it is in .c file,
-> so it is encapsulated here.
-> 
->> +static const struct blt_tiling_info
->> +		gen8_xy_src_copy = BLT_INFO(XY_SRC_COPY,
->> +					    T_LINEAR | T_XMAJOR | T_YMAJOR);
->> +static const struct blt_tiling_info
->> +		gen11_xy_fast_copy = BLT_INFO(XY_FAST_COPY,
->> +					      T_LINEAR | T_YMAJOR |
->> +					      T_YFMAJOR | T_TILE64);
->> +static const struct blt_tiling_info
->> +		gen12_xy_fast_copy = BLT_INFO(XY_FAST_COPY,
->> +					      T_LINEAR | T_YMAJOR |
->> +					      T_TILE4 | T_TILE64);
->> +static const struct blt_tiling_info
->> +		dg2_xy_fast_copy = BLT_INFO(XY_FAST_COPY,
->> +					    T_LINEAR | T_XMAJOR |
->> +					    T_TILE4 | T_TILE64);
->> +static const struct blt_tiling_info
->> +		atsm_xy_fast_copy = BLT_INFO(XY_FAST_COPY,
->> +					     T_LINEAR | T_TILE4 |
->> +					     T_TILE64);
->> +static const struct blt_tiling_info
->> +		gen12_xy_block_copy = BLT_INFO(XY_BLOCK_COPY,
->> +					       T_LINEAR | T_YMAJOR);
->> +static const struct blt_tiling_info
->> +		dg2_xy_block_copy = BLT_INFO(XY_BLOCK_COPY,
->> +					     T_LINEAR | T_XMAJOR |
->> +					     T_TILE4 | T_TILE64);
->> +static const struct blt_tiling_info
->> +		atsm_xy_block_copy = BLT_INFO(XY_BLOCK_COPY,
->> +					      T_LINEAR | T_XMAJOR |
->> +					      T_TILE4 | T_TILE64);
->> +
->> +const struct blt_cmd_info pre_gen8_blt_info = {
->> +	.supported_tiling = {
->> +		[SRC_COPY] = &src_copy,
->> +		[XY_SRC_COPY] = &pre_gen8_xy_src_copy
->> +	}
+>> +enum fast_copy_func {
+>> +	FAST_COPY,
+>> +	FAST_COPY_EMIT
 >> +};
 >> +
->> +const struct blt_cmd_info gen8_blt_info = {
->> +	.supported_tiling = {
->> +		[XY_SRC_COPY] = &gen8_xy_src_copy,
->> +	}
->> +};
+>> +static char
+>> +	*full_subtest_str(char *regtxt, enum blt_tiling_type tiling,
+>> +			  enum fast_copy_func func)
+>> +{
+>> +	const char *multi_str = "emit";
+>> +	char const *tile_str = blt_tiling_name(tiling);
+>> +	char *name;
+>> +	uint32_t len, sub_len;
 >> +
->> +const struct blt_cmd_info gen11_blt_info = {
->> +	.supported_tiling = {
->> +		[XY_SRC_COPY] = &gen8_xy_src_copy,
->> +		[XY_FAST_COPY] = &gen11_xy_fast_copy,
->> +	}
->> +};
->> +
->> +const struct blt_cmd_info gen12_blt_info = {
->> +	.supported_tiling = {
->> +		[XY_SRC_COPY] = &gen8_xy_src_copy,
->> +		[XY_FAST_COPY] = &gen12_xy_fast_copy,
->> +		[XY_BLOCK_COPY] = &gen12_xy_block_copy,
->> +	}
->> +};
->> +
->> +const struct blt_cmd_info gen12_dg2_blt_info = {
->> +	.supported_tiling = {
->> +		[XY_SRC_COPY] = &gen8_xy_src_copy,
->> +		[XY_FAST_COPY] = &dg2_xy_fast_copy,
->> +		[XY_BLOCK_COPY] = &dg2_xy_block_copy,
->> +	}
->> +};
->> +
->> +const struct blt_cmd_info gen12_atsm_blt_info = {
->> +	.supported_tiling = {
->> +		[XY_SRC_COPY] = &gen8_xy_src_copy,
->> +		[XY_FAST_COPY] = &atsm_xy_fast_copy,
->> +		[XY_BLOCK_COPY] = &atsm_xy_block_copy,
->> +	}
->> +};
+>> +	len = strlen(regtxt) + strlen(tile_str) + strlen(multi_str) + 2;
 > 
-> This looks good, we can individually configure supported blt
-> instructions.
-> 
-> 
->> +
->> +/**
->> + * blt_tiling_name:
->> + * @tiling: tiling id
->> + *
->> + * Returns:
->> + * name of @tiling passed. Useful to build test names.
->> + */
->> +const char *blt_tiling_name(enum blt_tiling_type tiling)
->> +{
->> +	switch (tiling) {
->> +	case T_LINEAR: return "linear";
->> +	case T_XMAJOR: return "xmajor";
->> +	case T_YMAJOR: return "ymajor";
->> +	case T_TILE4:  return "tile4";
->> +	case T_TILE64: return "tile64";
->> +	case T_YFMAJOR: return "yfmajor";
->> +	default: return NULL;
->> +	}
->> +}
->> +
->> +/**
->> + * blt_supports_command:
->> + * @info: Blitter command info struct
->> + * @cmd: Blitter command enum
->> + *
->> + * Checks if @info has an entry of supported tiling formats for @cmd command.
->> + *
->> + * Returns: true if it does, false otherwise
->> + */
->> +bool blt_supports_command(const struct blt_cmd_info *info,
->> +			  enum blt_cmd_type cmd)
->> +{
->> +	igt_require_f(info, "No config found for the platform\n");
->> +
->> +	return info->supported_tiling[cmd];
->> +}
->> +
->> +/**
->> + * blt_cmd_supports_tiling:
->> + * @info: Blitter command info struct
->> + * @cmd: Blitter command enum
->> + * @tiling: tiling format enum
->> + *
->> + * Checks if a @cmd entry of @info lists @tiling. It also returns false if
->> + * no information about the command is stored.
->> + *
->> + * Returns: true if it does, false otherwise
->> + */
->> +bool blt_cmd_supports_tiling(const struct blt_cmd_info *info,
->> +			     enum blt_cmd_type cmd,
->> +			     enum blt_tiling_type tiling)
->> +{
->> +	struct blt_tiling_info const *tile_config;
->> +
->> +	if (!info)
->> +		return false;
->> +
->> +	tile_config = info->supported_tiling[cmd];
->> +
->> +	/* no config means no support for that tiling */
->> +	if (!tile_config)
->> +		return false;
->> +
->> +	return tile_config->supported_tiling & tiling;
->> +}
->> +
->> +static const char *blt_cmd_name(enum blt_cmd_type cmd)
->> +{
->> +	switch (cmd) {
->> +	case SRC_COPY: return "SRC_COPY_BLT";
->> +	case XY_SRC_COPY: return "XY_SRC_COPY_BLT";
->> +	case XY_FAST_COPY: return "XY_FAST_COPY_BLT";
->> +	case XY_BLOCK_COPY: return "XY_BLOCK_COPY_BLT";
->> +	default: return NULL;
->> +	}
->> +}
->> +
->> +/* Info dump functions */
->> +
->> +static void append_tile(uint32_t tile, char *tile_str)
->> +{
->> +	char const *tile_name;
->> +
->> +	if (tile) {
->> +		tile_name = blt_tiling_name(tile);
->> +		snprintf(tile_str + strlen(tile_str), strlen(tile_name) + 2, "%s ", tile_name);
->> +	}
->> +}
->> +
->> +static void get_tiling_info(struct blt_cmd_info const *info, enum blt_cmd_type type, char *tile_str)
->> +{
->> +	uint32_t mask;
->> +	struct blt_tiling_info const *tiling = info->supported_tiling[type];
->> +
->> +	if (tiling) {
->> +		for (int i = 0; i < T_MAX_SHIFT; i++) {
->> +			mask = 1 << i;
->> +			append_tile(tiling->supported_tiling & mask, tile_str);
->> +		}
->> +	}
->> +
->> +	tile_str[strlen(tile_str) - 1] = '\0';
->> +}
->> +
->> +/**
->> + * dump_devid_blt_info:
->> + * @info: pointer to the Blitter command info struct
->> + *
->> + * Prints a list of supported commands with available tiling formats.
->> + *
->> + */
->> +void blt_dump_blt_cmd_info(struct blt_cmd_info const *info)
->> +{
->> +	char tiling_str[TILE_STR_MAX];
->> +	char ln_str[BLT_STR_MAX];
->> +	char const *blt_type_str;
->> +	const char *ln_intro = "  * ";
->> +
->> +	if (!info) {
->> +		igt_warn("No config available\n");
->> +		return;
->> +	}
->> +
->> +	igt_info("Supported blitter commands:\n");
->> +
->> +	for (int cmd = 0; cmd < __MAX_CMD; cmd++) {
->> +		if (info->supported_tiling[cmd]) {
->> +			memset(ln_str, '\0', sizeof(char) * BLT_STR_MAX);
->> +			memset(tiling_str, '\0', sizeof(char) * TILE_STR_MAX);
->> +
->> +			blt_type_str = blt_cmd_name(cmd);
->> +
->> +			snprintf(ln_str,
->> +				 strlen(ln_intro) + strlen(blt_type_str) + 1,
->> +				 "%s%s", ln_intro, blt_type_str);
->> +
->> +			get_tiling_info(info, cmd, tiling_str);
->> +
->> +			snprintf(ln_str + strlen(ln_str),
->> +				 strlen(tiling_str) + 5,
->> +				 " [%s]", tiling_str);
->> +
->> +			igt_info("%s\n", ln_str);
->> +		}
->> +	}
->> +}
-> 
-> Looks a little bit overengineered, can't you just use asprintf()?
+> Similar to other patch - looks overengineered. Maybe asprintf() will help
+> you to avoid calling strlen().
 
-Well, probably because I haven't used it before ;) Sounds reasonable, 
-thanks.
+Yeah, I just didn't know how to do it better at that time. I'll give 
+asprintf() a try.
 
-> 
-> 
-> 
->> +
->> diff --git a/lib/i915/intel_blt_info.h b/lib/i915/intel_blt_info.h
->> new file mode 100644
->> index 00000000..39fa5448
->> --- /dev/null
->> +++ b/lib/i915/intel_blt_info.h
->> @@ -0,0 +1,98 @@
->> +/* SPDX-License-Identifier: MIT */
->> +/*
->> + * Copyright © 2022 Intel Corporation
->> + */
->> +
->> +#ifndef BLT_TILING_H
->> +#define BLT_TILING_H
->> +
->> +#include <stdbool.h>
->> +#include <stddef.h>
->> +#include <stdint.h>
->> +#include "igt_core.h"
->> +
->> +/**
->> + * SECTION:intel_blt_info
->> + * @short_description: blitter library to query for available commands and tiling formats
->> + * @title: Intel blitter info
->> + * @include: intel_blt_info.h
->> + *
->> + * # Introduction
->> + *
->> + * When we do a blitter copy, a number of different tiling formats can be used.
->> + * The list of available formats and commands varies between generations, in
->> + * some cases even within the generation (e.g. block copy tiling formats offered
->> + * by TGL vs DG2). Such information is required by different tests, so it's
->> + * beneficial to store it in one place – in intel_blt_info, a blitter library
->> + * that describes available commands with a list of supported tiling formats.
->> + * They are encapsulated in static `blt_cmd_info` instances, each of them
->> + * defined per generation or platforms.
->> + *
->> + * Tiling formats here are described by blt_tiling_type enum, which consists of
->> + * bit flags, that can be combined:
->> + * `.supported_tiling = T_LINEAR | T_XMAJOR | T_YMAJOR`
->> + *
->> + * Because of their non-linear nature, it is recommended to use
->> + * #for_each_tiling() macro when writing tests that iterate over tiling formats.
->> + *
->> + * # Usage
->> + *
->> + * - blt_supports_command(info, cmd) - checks if a blt_cmd_type instance has an
->> + *				       entry for the command
->> + * - blt_cmd_supports_tiling(info, cmd, tiling) - checks if a tiling format is
->> + *						  supported by the command. Can
->> + *						  also handle the case when the
->> + *						  command is not available on
->> + *						  the platform.
->> + *
->> + * These general checks can be wrapped in a command or tiling specific
->> + * check, provided by other libraries.
->> + *
->> + */
->> +
->> +enum blt_tiling_type {
->> +	T_LINEAR  = (1),
->> +	T_XMAJOR  = (1 << 1),
->> +	T_YMAJOR  = (1 << 2),
->> +	T_TILE4   = (1 << 3),
->> +	T_TILE64  = (1 << 4),
->> +	T_YFMAJOR = (1 << 5),
->> +};
-> 
-> What I don't like here is sparse enum. I would just want to have contigues
-> values and hide the implementation in bits to .c file.
-
-I see now how bug-prone such enum is... The initialization part with 
-BIT(X) isn't perfect either, but still, it's better. T_LINEAR is going 
-to be 0 here.
-
-All the best,
+Many thanks,
 Karolina
 
 > 
 > --
 > Zbigniew
 > 
+>> +	name = malloc(len * sizeof(char));
+>> +	igt_assert(name);
 >> +
->> +enum blt_cmd_type {
->> +	SRC_COPY,
->> +	XY_SRC_COPY,
->> +	XY_FAST_COPY,
->> +	XY_BLOCK_COPY,
->> +	__MAX_CMD
->> +};
+>> +	sub_len = snprintf(name, len, "%s-%s", tile_str, regtxt);
 >> +
->> +struct blt_tiling_info {
->> +	enum blt_cmd_type blt_cmd_type;
->> +	uint32_t supported_tiling;
->> +};
+>> +	if (func == FAST_COPY_EMIT)
+>> +		snprintf(name + sub_len, len, "-%s", multi_str);
 >> +
->> +struct blt_cmd_info {
->> +	struct blt_tiling_info const *supported_tiling[__MAX_CMD];
->> +};
+>> +	return name;
+>> +}
 >> +
->> +const struct blt_cmd_info pre_gen8_blt_info;
->> +const struct blt_cmd_info gen8_blt_info;
->> +const struct blt_cmd_info gen11_blt_info;
->> +const struct blt_cmd_info gen12_blt_info;
->> +const struct blt_cmd_info gen12_dg2_blt_info;
->> +const struct blt_cmd_info gen12_atsm_blt_info;
->> +
->> +#define for_each_tiling(__tiling) \
->> +	for (__tiling = T_LINEAR; __tiling <= T_YFMAJOR; __tiling = __tiling << 1)
->> +
->> +bool blt_supports_command(const struct blt_cmd_info *info,
->> +			  enum blt_cmd_type cmd);
->> +bool blt_cmd_supports_tiling(const struct blt_cmd_info *info,
->> +			     enum blt_cmd_type cmd,
->> +			     enum blt_tiling_type tiling);
->> +
->> +void blt_dump_blt_cmd_info(struct blt_cmd_info const *info);
->> +const char *blt_tiling_name(enum blt_tiling_type tiling);
->> +
->> +#endif // BLT_TILING_H
->> diff --git a/lib/meson.build b/lib/meson.build
->> index c79e3e95..2b2dbbca 100644
->> --- a/lib/meson.build
->> +++ b/lib/meson.build
->> @@ -11,6 +11,7 @@ lib_sources = [
->>   	'i915/gem_ring.c',
->>   	'i915/gem_mman.c',
->>   	'i915/gem_vm.c',
->> +	'i915/intel_blt_info.c',
->>   	'i915/intel_decode.c',
->>   	'i915/intel_memory_region.c',
->>   	'i915/intel_mocs.c',
->> diff --git a/tests/i915/gem_ccs.c b/tests/i915/gem_ccs.c
->> index 751f65e6..ed60b81c 100644
->> --- a/tests/i915/gem_ccs.c
->> +++ b/tests/i915/gem_ccs.c
->> @@ -46,7 +46,7 @@ struct test_config {
->>   
->>   static void set_object(struct blt_copy_object *obj,
->>   		       uint32_t handle, uint64_t size, uint32_t region,
->> -		       uint8_t mocs, enum blt_tiling tiling,
->> +		       uint8_t mocs, enum blt_tiling_type tiling,
->>   		       enum blt_compression compression,
->>   		       enum blt_compression_type compression_type)
->>   {
->> @@ -108,7 +108,7 @@ static void set_surf_object(struct blt_ctrl_surf_copy_object *obj,
->>   static struct blt_copy_object *
->>   create_object(int i915, uint32_t region,
->>   	      uint32_t width, uint32_t height, uint32_t bpp, uint8_t mocs,
->> -	      enum blt_tiling tiling,
->> +	      enum blt_tiling_type tiling,
->>   	      enum blt_compression compression,
->>   	      enum blt_compression_type compression_type,
->>   	      bool create_mapping)
->> @@ -374,7 +374,7 @@ static void block_copy(int i915,
->>   		       const intel_ctx_t *ctx,
->>   		       const struct intel_execution_engine2 *e,
->>   		       uint32_t region1, uint32_t region2,
->> -		       enum blt_tiling mid_tiling,
->> +		       enum blt_tiling_type mid_tiling,
->>   		       const struct test_config *config)
->>   {
->>   	struct blt_copy_data blt = {};
->> @@ -492,7 +492,7 @@ static void block_multicopy(int i915,
->>   			    const intel_ctx_t *ctx,
->>   			    const struct intel_execution_engine2 *e,
->>   			    uint32_t region1, uint32_t region2,
->> -			    enum blt_tiling mid_tiling,
->> +			    enum blt_tiling_type mid_tiling,
->>   			    const struct test_config *config)
->>   {
->>   	struct blt_copy3_data blt3 = {};
->> @@ -581,7 +581,7 @@ static const struct {
->>   	const char *suffix;
->>   	void (*copyfn)(int, const intel_ctx_t *,
->>   		       const struct intel_execution_engine2 *,
->> -		       uint32_t, uint32_t, enum blt_tiling,
->> +		       uint32_t, uint32_t, enum blt_tiling_type,
->>   		       const struct test_config *);
->>   } copyfns[] = {
->>   	[BLOCK_COPY] = { "", block_copy },
->> @@ -596,6 +596,7 @@ static void block_copy_test(int i915,
+>>   static void fast_copy_test(int i915,
+>>   			   const intel_ctx_t *ctx,
+>> -			   struct igt_collection *set)
+>> +			   struct igt_collection *set,
+>> +			   enum fast_copy_func func)
 >>   {
 >>   	struct igt_collection *regions;
 >>   	const struct intel_execution_engine2 *e;
->> +	int tiling;
+>> +	void (*copy_func)(int i915, const intel_ctx_t *ctx,
+>> +			  const struct intel_execution_engine2 *e,
+>> +			  uint32_t r1, uint32_t r2, enum blt_tiling_type tiling);
+>>   	int tiling;
 >>   
->>   	if (config->compression && !blt_supports_compression(i915))
->>   		return;
->> @@ -603,7 +604,7 @@ static void block_copy_test(int i915,
->>   	if (config->inplace && !config->compression)
->>   		return;
+>>   	for_each_tiling(tiling) {
+>> @@ -119,20 +289,23 @@ static void fast_copy_test(int i915,
+>>   				continue;
+>>   			for_each_variation_r(regions, 2, set) {
+>>   				uint32_t region1, region2;
+>> -				char *regtxt;
+>> +				char *regtxt, *test_name;
 >>   
->> -	for (int tiling = T_LINEAR; tiling <= T_TILE64; tiling++) {
->> +	for_each_tiling(tiling) {
->>   		if (!blt_supports_tiling(i915, tiling) ||
->>   		    (param.tiling >= 0 && param.tiling != tiling))
->>   			continue;
->> @@ -663,7 +664,7 @@ static int opt_handler(int opt, int opt_index, void *data)
->>   		igt_debug("Print surface info: %d\n", param.print_surface_info);
->>   		break;
->>   	case 't':
->> -		param.tiling = atoi(optarg);
->> +		param.tiling = 1 << atoi(optarg);
->>   		igt_debug("Tiling: %d\n", param.tiling);
->>   		break;
->>   	case 'W':
->> diff --git a/tests/i915/gem_lmem_swapping.c b/tests/i915/gem_lmem_swapping.c
->> index 75121d41..9388d4de 100644
->> --- a/tests/i915/gem_lmem_swapping.c
->> +++ b/tests/i915/gem_lmem_swapping.c
->> @@ -78,7 +78,7 @@ struct object {
+>>   				region1 = igt_collection_get_value(regions, 0);
+>>   				region2 = igt_collection_get_value(regions, 1);
+>> +
+>> +				copy_func = (func == FAST_COPY) ? fast_copy : fast_copy_emit;
+>>   				regtxt = memregion_dynamic_subtest_name(regions);
+>> +				test_name = full_subtest_str(regtxt, tiling, func);
 >>   
->>   static void set_object(struct blt_copy_object *obj,
->>   		       uint32_t handle, uint64_t size, uint32_t region,
->> -		       uint8_t mocs, enum blt_tiling tiling,
->> +		       uint8_t mocs, enum blt_tiling_type tiling,
->>   		       enum blt_compression compression,
->>   		       enum blt_compression_type compression_type)
->>   {
+>> -				igt_dynamic_f("%s-%s",
+>> -					      blt_tiling_name(tiling), regtxt) {
+>> -					fast_copy(i915, ctx, e,
+>> +				igt_dynamic_f("%s", test_name) {
+>> +					copy_func(i915, ctx, e,
+>>   						  region1, region2,
+>>   						  tiling);
+>>   				}
+>>   
+>>   				free(regtxt);
+>> +				free(test_name);
+>>   			}
+>>   		}
+>>   	}
+>> @@ -206,7 +379,12 @@ igt_main_args("b:pst:W:H:", NULL, help_str, opt_handler, NULL)
+>>   
+>>   	igt_describe("Check fast-copy blit");
+>>   	igt_subtest_with_dynamic("fast-copy") {
+>> -		fast_copy_test(i915, ctx, set);
+>> +		fast_copy_test(i915, ctx, set, FAST_COPY);
+>> +	}
+>> +
+>> +	igt_describe("Check multiple fast-copy in one batch");
+>> +	igt_subtest_with_dynamic("fast-copy-emit") {
+>> +		fast_copy_test(i915, ctx, set, FAST_COPY_EMIT);
+>>   	}
+>>   
+>>   	igt_fixture {
 >> -- 
 >> 2.25.1
 >>
