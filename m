@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B98CF10E7E3
- for <igt-dev@lists.freedesktop.org>; Wed, 11 Jan 2023 18:12:21 +0000 (UTC)
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2596A10E7DC
+ for <igt-dev@lists.freedesktop.org>; Wed, 11 Jan 2023 18:12:24 +0000 (UTC)
 From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Wed, 11 Jan 2023 19:12:03 +0100
-Message-Id: <20230111181205.55997-2-zbigniew.kempczynski@intel.com>
+Date: Wed, 11 Jan 2023 19:12:04 +0100
+Message-Id: <20230111181205.55997-3-zbigniew.kempczynski@intel.com>
 In-Reply-To: <20230111181205.55997-1-zbigniew.kempczynski@intel.com>
 References: <20230111181205.55997-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 1/3] lib/intel_allocator: Fix alignment
- variable used in debug path
+Subject: [igt-dev] [PATCH i-g-t 2/3] lib/igt_dummyload: Don't assume
+ dependency object size
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,27 +24,46 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-During work on allocator I've missed alignment was replaced by
-default_alignment what makes a compilation error when debug path
-is enabled.
+Most of the tests use page size for dependency object so spinner
+had this value hardcoded as a default. But there're exceptions
+where dependency object is bigger and for softpin path we need to
+allow pass this size to properly acquire offsets from the allocator.
 
 Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 ---
- lib/intel_allocator.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ lib/igt_dummyload.c | 4 +++-
+ lib/igt_dummyload.h | 1 +
+ 2 files changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/lib/intel_allocator.c b/lib/intel_allocator.c
-index 060a65ce18..2b08dd5996 100644
---- a/lib/intel_allocator.c
-+++ b/lib/intel_allocator.c
-@@ -351,7 +351,7 @@ static struct allocator *allocator_open(int fd, uint32_t ctx, uint32_t vm,
- 			   "default alignment: 0x%llx "
- 			   "not found, creating one\n",
- 			   fd, ctx, vm, (long long) start, (long long) end,
--			   (long long) alignment);
-+			   (long long) default_alignment);
- 		ial = intel_allocator_create(fd, start, end, allocator_type,
- 					     allocator_strategy,
- 					     default_alignment);
+diff --git a/lib/igt_dummyload.c b/lib/igt_dummyload.c
+index 17ae21f567..5f3c6b10c7 100644
+--- a/lib/igt_dummyload.c
++++ b/lib/igt_dummyload.c
+@@ -186,10 +186,12 @@ emit_recursive_batch(igt_spin_t *spin,
+ 	addr += BATCH_SIZE;
+ 
+ 	if (opts->dependency) {
++		uint64_t dep_size = opts->dependency_size ?: BATCH_SIZE;
++
+ 		igt_assert(!(opts->flags & IGT_SPIN_POLL_RUN));
+ 		if (ahnd)
+ 			addr_scratch = intel_allocator_alloc_with_strategy(ahnd, opts->dependency,
+-									   BATCH_SIZE, 0,
++									   dep_size, 0,
+ 									   ALLOC_STRATEGY_LOW_TO_HIGH);
+ 		else
+ 			addr_scratch = addr;
+diff --git a/lib/igt_dummyload.h b/lib/igt_dummyload.h
+index b33507971b..b247ab02b2 100644
+--- a/lib/igt_dummyload.h
++++ b/lib/igt_dummyload.h
+@@ -49,6 +49,7 @@ typedef struct igt_spin_factory {
+ 	uint32_t ctx_id;
+ 	const intel_ctx_t *ctx;
+ 	uint32_t dependency;
++	uint64_t dependency_size;
+ 	unsigned int engine;
+ 	unsigned int flags;
+ 	int fence;
 -- 
 2.34.1
