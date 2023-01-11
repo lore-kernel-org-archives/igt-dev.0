@@ -1,18 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A76F210E6FD
- for <igt-dev@lists.freedesktop.org>; Wed, 11 Jan 2023 10:26:47 +0000 (UTC)
-From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Wed, 11 Jan 2023 11:26:33 +0100
-Message-Id: <20230111102633.27518-3-zbigniew.kempczynski@intel.com>
-In-Reply-To: <20230111102633.27518-1-zbigniew.kempczynski@intel.com>
-References: <20230111102633.27518-1-zbigniew.kempczynski@intel.com>
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A34C010E70D
+ for <igt-dev@lists.freedesktop.org>; Wed, 11 Jan 2023 11:24:15 +0000 (UTC)
+From: "Shankar, Uma" <uma.shankar@intel.com>
+To: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>,
+ "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+Date: Wed, 11 Jan 2023 11:24:07 +0000
+Message-ID: <DM4PR11MB636034EC67055BFBE5DBC95DF4FC9@DM4PR11MB6360.namprd11.prod.outlook.com>
+References: <20230110170132.13192-1-juhapekka.heikkila@gmail.com>
+In-Reply-To: <20230110170132.13192-1-juhapekka.heikkila@gmail.com>
+Content-Language: en-US
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 2/2] i915/gem_mmap_offset: Avoid FPE in
- calculating npages to clear
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_plane_alpha_blend: stop crc
+ generation before asserting
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,36 +26,66 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add a small delay (ala gem_create/clear) to busywait when we run out of
-pages to allocate, avoid the FPE and continue on a bit later once the
-other threads have released some pages of their own.
 
-Fixes: https://gitlab.freedesktop.org/drm/intel/-/issues/7788
 
-Signed-off-by: Chris Wilson <chris.p.wilson@linux.intel.com>
-Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
----
- tests/i915/gem_mmap_offset.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+> -----Original Message-----
+> From: igt-dev <igt-dev-bounces@lists.freedesktop.org> On Behalf Of Juha-P=
+ekka
+> Heikkila
+> Sent: Tuesday, January 10, 2023 10:32 PM
+> To: igt-dev@lists.freedesktop.org
+> Subject: [igt-dev] [PATCH i-g-t] tests/kms_plane_alpha_blend: stop crc ge=
+neration
+> before asserting
+>=20
+> Stop crc generation on basic alpha test before asserting to avoid message=
+s about crc
+> buffer overflow.
 
-diff --git a/tests/i915/gem_mmap_offset.c b/tests/i915/gem_mmap_offset.c
-index b38b7edae3..962fc1b739 100644
---- a/tests/i915/gem_mmap_offset.c
-+++ b/tests/i915/gem_mmap_offset.c
-@@ -673,8 +673,13 @@ static uint64_t get_npages(_Atomic(uint64_t) *global, uint64_t npages)
- 
- 	max = *global;
- 	do {
-+		while (max < 16) {
-+			usleep(10);
-+			max = *global;
-+		}
-+
- 		old = max;
--		try = 1 + npages % (max / 2);
-+		try = 1 + npages % (max / 2 - 1);
- 		max -= try;
- 	} while ((max = atomic_compare_swap_u64(global, old, max)) != old);
- 
--- 
-2.34.1
+Looks good to me.
+Reviewed-by: Uma Shankar <uma.shankar@intel.com>
+
+> Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+> ---
+>  tests/kms_plane_alpha_blend.c | 10 +++++++---
+>  1 file changed, 7 insertions(+), 3 deletions(-)
+>=20
+> diff --git a/tests/kms_plane_alpha_blend.c b/tests/kms_plane_alpha_blend.=
+c index
+> ccf1d6579..38272ccb3 100644
+> --- a/tests/kms_plane_alpha_blend.c
+> +++ b/tests/kms_plane_alpha_blend.c
+> @@ -263,19 +263,23 @@ static void basic_alpha(data_t *data, enum pipe pip=
+e,
+> igt_plane_t *plane)
+>  		igt_plane_set_prop_value(plane, IGT_PLANE_ALPHA, i | (i << 8));
+>  		igt_display_commit2(display, COMMIT_ATOMIC);
+>=20
+>  		igt_pipe_crc_get_current(display->drm_fd, data->pipe_crc, &crc);
+> -		igt_assert_crc_equal(&ref_crc, &crc);
+> +		if (!igt_check_crc_equal(&ref_crc, &crc) && !igt_skip_crc_compare)
+> {
+> +			igt_pipe_crc_stop(data->pipe_crc);
+> +
+> +			igt_assert_f(false, "crc mismatch with plane alpha value
+> %d\n",
+> +				     i | (i << 8));
+> +		}
+>  	}
+>=20
+>  	/* And test alpha =3D 0, should give same CRC, but doesn't on some i915
+> platforms. */
+>  	igt_plane_set_prop_value(plane, IGT_PLANE_ALPHA, 0);
+>  	igt_display_commit2(display, COMMIT_ATOMIC);
+>=20
+>  	igt_pipe_crc_get_current(display->drm_fd, data->pipe_crc, &crc);
+> -	igt_assert_crc_equal(&ref_crc, &crc);
+> -
+>  	igt_pipe_crc_stop(data->pipe_crc);
+> +	igt_assert_crc_equal(&ref_crc, &crc);
+>  }
+>=20
+>  static void argb_opaque(data_t *data, enum pipe pipe, igt_plane_t *plane=
+)  {
+> --
+> 2.39.0
