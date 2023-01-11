@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2596A10E7DC
- for <igt-dev@lists.freedesktop.org>; Wed, 11 Jan 2023 18:12:24 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EBBD510E79B
+ for <igt-dev@lists.freedesktop.org>; Wed, 11 Jan 2023 18:12:26 +0000 (UTC)
 From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Wed, 11 Jan 2023 19:12:04 +0100
-Message-Id: <20230111181205.55997-3-zbigniew.kempczynski@intel.com>
+Date: Wed, 11 Jan 2023 19:12:05 +0100
+Message-Id: <20230111181205.55997-4-zbigniew.kempczynski@intel.com>
 In-Reply-To: <20230111181205.55997-1-zbigniew.kempczynski@intel.com>
 References: <20230111181205.55997-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 2/3] lib/igt_dummyload: Don't assume
- dependency object size
+Subject: [igt-dev] [PATCH i-g-t 3/3] tests/kms_cursor_legacy: Add dependency
+ size for spinner creation
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,46 +24,30 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Most of the tests use page size for dependency object so spinner
-had this value hardcoded as a default. But there're exceptions
-where dependency object is bigger and for softpin path we need to
-allow pass this size to properly acquire offsets from the allocator.
+Fix the bug where lack of information about dependency object size
+during spinner creation may lead to object overlapping and failing
+with ENOSPC.
+
+Fixes: https://gitlab.freedesktop.org/drm/intel/-/issues/7681
 
 Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 ---
- lib/igt_dummyload.c | 4 +++-
- lib/igt_dummyload.h | 1 +
- 2 files changed, 4 insertions(+), 1 deletion(-)
+ tests/kms_cursor_legacy.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/lib/igt_dummyload.c b/lib/igt_dummyload.c
-index 17ae21f567..5f3c6b10c7 100644
---- a/lib/igt_dummyload.c
-+++ b/lib/igt_dummyload.c
-@@ -186,10 +186,12 @@ emit_recursive_batch(igt_spin_t *spin,
- 	addr += BATCH_SIZE;
+diff --git a/tests/kms_cursor_legacy.c b/tests/kms_cursor_legacy.c
+index 6b75e98cb8..f1e55906a0 100644
+--- a/tests/kms_cursor_legacy.c
++++ b/tests/kms_cursor_legacy.c
+@@ -1471,7 +1471,8 @@ static void flip_vs_cursor_busy_crc(igt_display_t *display, bool atomic)
  
- 	if (opts->dependency) {
-+		uint64_t dep_size = opts->dependency_size ?: BATCH_SIZE;
-+
- 		igt_assert(!(opts->flags & IGT_SPIN_POLL_RUN));
- 		if (ahnd)
- 			addr_scratch = intel_allocator_alloc_with_strategy(ahnd, opts->dependency,
--									   BATCH_SIZE, 0,
-+									   dep_size, 0,
- 									   ALLOC_STRATEGY_LOW_TO_HIGH);
- 		else
- 			addr_scratch = addr;
-diff --git a/lib/igt_dummyload.h b/lib/igt_dummyload.h
-index b33507971b..b247ab02b2 100644
---- a/lib/igt_dummyload.h
-+++ b/lib/igt_dummyload.h
-@@ -49,6 +49,7 @@ typedef struct igt_spin_factory {
- 	uint32_t ctx_id;
- 	const intel_ctx_t *ctx;
- 	uint32_t dependency;
-+	uint64_t dependency_size;
- 	unsigned int engine;
- 	unsigned int flags;
- 	int fence;
+ 		spin = igt_spin_new(display->drm_fd,
+ 				    .ahnd = ahnd,
+-				    .dependency = fb_info[1].gem_handle);
++				    .dependency = fb_info[1].gem_handle,
++				    .dependency_size = fb_info[1].size);
+ 
+ 		vblank_start = kmstest_get_vblank(display->drm_fd, pipe, DRM_VBLANK_NEXTONMISS);
+ 
 -- 
 2.34.1
