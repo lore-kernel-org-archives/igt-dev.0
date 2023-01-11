@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 41F1E10E53F
- for <igt-dev@lists.freedesktop.org>; Wed, 11 Jan 2023 10:26:44 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A76F210E6FD
+ for <igt-dev@lists.freedesktop.org>; Wed, 11 Jan 2023 10:26:47 +0000 (UTC)
 From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Wed, 11 Jan 2023 11:26:32 +0100
-Message-Id: <20230111102633.27518-2-zbigniew.kempczynski@intel.com>
+Date: Wed, 11 Jan 2023 11:26:33 +0100
+Message-Id: <20230111102633.27518-3-zbigniew.kempczynski@intel.com>
 In-Reply-To: <20230111102633.27518-1-zbigniew.kempczynski@intel.com>
 References: <20230111102633.27518-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 1/2] i915/gem_mmap_offset: Check mapping
- availability
+Subject: [igt-dev] [PATCH i-g-t 2/2] i915/gem_mmap_offset: Avoid FPE in
+ calculating npages to clear
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,9 +24,11 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-When we pass invalid handles to GEM_MMAP_OFFSET ioctl we should check
-return error code only for supported mapping types. Use real handle
-to verify kernel supports such mapping type.
+Add a small delay (ala gem_create/clear) to busywait when we run out of
+pages to allocate, avoid the FPE and continue on a bit later once the
+other threads have released some pages of their own.
+
+Fixes: https://gitlab.freedesktop.org/drm/intel/-/issues/7788
 
 Signed-off-by: Chris Wilson <chris.p.wilson@linux.intel.com>
 Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
@@ -35,27 +37,23 @@ Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
  1 file changed, 6 insertions(+), 1 deletion(-)
 
 diff --git a/tests/i915/gem_mmap_offset.c b/tests/i915/gem_mmap_offset.c
-index b27920de2e..b38b7edae3 100644
+index b38b7edae3..962fc1b739 100644
 --- a/tests/i915/gem_mmap_offset.c
 +++ b/tests/i915/gem_mmap_offset.c
-@@ -190,12 +190,17 @@ static void bad_object(int i915)
- 	for (; i >= 0; i--) {
- 		for_each_mmap_offset_type(i915, t) {
- 			struct drm_i915_gem_mmap_offset arg = {
--				.handle = handles[i],
-+				.handle = real_handle,
- 				.flags = t->type,
- 			};
+@@ -673,8 +673,13 @@ static uint64_t get_npages(_Atomic(uint64_t) *global, uint64_t npages)
  
-+			if (mmap_offset_ioctl(i915, &arg))
-+				continue;
+ 	max = *global;
+ 	do {
++		while (max < 16) {
++			usleep(10);
++			max = *global;
++		}
 +
- 			igt_debug("Trying MMAP IOCTL[%s] with handle %x\n",
- 				  t->name, handles[i]);
-+
-+			arg.handle = handles[i];
- 			igt_assert_eq(mmap_offset_ioctl(i915, &arg),
- 				      -ENOENT);
- 		}
+ 		old = max;
+-		try = 1 + npages % (max / 2);
++		try = 1 + npages % (max / 2 - 1);
+ 		max -= try;
+ 	} while ((max = atomic_compare_swap_u64(global, old, max)) != old);
+ 
 -- 
 2.34.1
