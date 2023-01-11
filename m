@@ -1,20 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 65CB110E79F
- for <igt-dev@lists.freedesktop.org>; Wed, 11 Jan 2023 16:46:07 +0000 (UTC)
-Date: Wed, 11 Jan 2023 17:46:03 +0100
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 512D010E7AC
+ for <igt-dev@lists.freedesktop.org>; Wed, 11 Jan 2023 17:13:15 +0000 (UTC)
+Date: Wed, 11 Jan 2023 18:11:27 +0100
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Message-ID: <20230111164603.3qm7t7zbun5qpnkx@kamilkon-desk1>
-References: <20230111102633.27518-1-zbigniew.kempczynski@intel.com>
- <20230111102633.27518-2-zbigniew.kempczynski@intel.com>
+Message-ID: <20230111171127.glzhu2slv45aejzk@kamilkon-desk1>
+References: <20230111080809.136425-1-mohammed.thasleem@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230111102633.27518-2-zbigniew.kempczynski@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 1/2] i915/gem_mmap_offset: Check mapping
- availability
+In-Reply-To: <20230111080809.136425-1-mohammed.thasleem@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/i915/i915_pm_dc: Fixed dc6-dpms
+ test description
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,48 +20,42 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Chris Wilson <chris.p.wilson@linux.intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On 2023-01-11 at 11:26:32 +0100, Zbigniew Kempczyński wrote:
-> When we pass invalid handles to GEM_MMAP_OFFSET ioctl we should check
-> return error code only for supported mapping types. Use real handle
-> to verify kernel supports such mapping type.
+Hi,
+
+On 2023-01-11 at 13:38:09 +0530, Mohammed Thasleem wrote:
+> Corrected typo in dc6-dpms test discription.
 > 
-> Signed-off-by: Chris Wilson <chris.p.wilson@linux.intel.com>
-> Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+> Signed-off-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
 
 Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
+btw this should go with HAX and no tests running as it only
+changes description.
+
+Regards,
+Kamil
+
 > ---
->  tests/i915/gem_mmap_offset.c | 7 ++++++-
->  1 file changed, 6 insertions(+), 1 deletion(-)
+>  tests/i915/i915_pm_dc.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> diff --git a/tests/i915/gem_mmap_offset.c b/tests/i915/gem_mmap_offset.c
-> index b27920de2e..b38b7edae3 100644
-> --- a/tests/i915/gem_mmap_offset.c
-> +++ b/tests/i915/gem_mmap_offset.c
-> @@ -190,12 +190,17 @@ static void bad_object(int i915)
->  	for (; i >= 0; i--) {
->  		for_each_mmap_offset_type(i915, t) {
->  			struct drm_i915_gem_mmap_offset arg = {
-> -				.handle = handles[i],
-> +				.handle = real_handle,
->  				.flags = t->type,
->  			};
+> diff --git a/tests/i915/i915_pm_dc.c b/tests/i915/i915_pm_dc.c
+> index ba49d014..36c50667 100644
+> --- a/tests/i915/i915_pm_dc.c
+> +++ b/tests/i915/i915_pm_dc.c
+> @@ -552,7 +552,7 @@ igt_main
+>  		test_dc_state_dpms(&data, CHECK_DC5);
+>  	}
 >  
-> +			if (mmap_offset_ioctl(i915, &arg))
-> +				continue;
-> +
->  			igt_debug("Trying MMAP IOCTL[%s] with handle %x\n",
->  				  t->name, handles[i]);
-> +
-> +			arg.handle = handles[i];
->  			igt_assert_eq(mmap_offset_ioctl(i915, &arg),
->  				      -ENOENT);
->  		}
+> -	igt_describe("This test validates display engine entry to DC5 state "
+> +	igt_describe("This test validates display engine entry to DC6 state "
+>  		     "while all connectors's DPMS property set to OFF");
+>  	igt_subtest("dc6-dpms") {
+>  		igt_require_f(igt_pm_pc8_plus_residencies_enabled(data.msr_fd),
 > -- 
-> 2.34.1
+> 2.25.1
 > 
