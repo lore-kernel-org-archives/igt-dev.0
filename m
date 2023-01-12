@@ -1,22 +1,22 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 311B410E33D
- for <igt-dev@lists.freedesktop.org>; Thu, 12 Jan 2023 19:39:08 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 48AD010E346
+ for <igt-dev@lists.freedesktop.org>; Thu, 12 Jan 2023 19:39:11 +0000 (UTC)
 From: =?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>
 To: Melissa Wen <mwen@igalia.com>,
  =?UTF-8?q?Andr=C3=A9=20Almeida?= <andrealmeid@igalia.com>,
  Petri Latvala <petri.latvala@intel.com>,
  Kamil Konieczny <kamil.konieczny@linux.intel.com>,
  Maxime Ripard <maxime@cerno.tech>
-Date: Thu, 12 Jan 2023 16:37:41 -0300
-Message-Id: <20230112193741.55630-4-mcanal@igalia.com>
+Date: Thu, 12 Jan 2023 16:37:42 -0300
+Message-Id: <20230112193741.55630-5-mcanal@igalia.com>
 In-Reply-To: <20230112193741.55630-1-mcanal@igalia.com>
 References: <20230112193741.55630-1-mcanal@igalia.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v5 3/4] lib/igt_v3d: Rework
- igt_v3d_get_param()
+Subject: [igt-dev] [PATCH i-g-t v5 4/4] tests/v3d_perfmon: Make sure v3d
+ supports perfmon
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -29,48 +29,32 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Instead of assuming that igt_v3d_get_param() will succeed, allow the
-ioctl to fail and return 0. This way, it will be possible to check if the
-kernel has the capabilities needed by the test by checking if the return
-of the igt_v3d_get_param() function is different than zero.
+Performance Monitors for the v3d were introduced in Linux 5.15, so a check
+if v3d supports Performance Monitors is essential to assure that the tests
+will perform correctly. Therefore, check if v3d has perfmon support before
+running the tests.
 
+Reviewed-by: Melissa Wen <mwen@igalia.com>
 Signed-off-by: Maíra Canal <mcanal@igalia.com>
 ---
- lib/igt_v3d.c | 15 ++++++++++++++-
- 1 file changed, 14 insertions(+), 1 deletion(-)
+ tests/v3d/v3d_perfmon.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/lib/igt_v3d.c b/lib/igt_v3d.c
-index 68d11d7f..5d112416 100644
---- a/lib/igt_v3d.c
-+++ b/lib/igt_v3d.c
-@@ -86,14 +86,27 @@ igt_v3d_get_bo_offset(int fd, uint32_t handle)
- 	return get.offset;
- }
- 
-+/**
-+ * igt_v3d_get_param:
-+ * @fd: device file descriptor
-+ * @param: v3d parameter
-+ *
-+ * This wraps the GET_PARAM ioctl.
-+ *
-+ * Returns the current value of the parameter. If the parameter is
-+ * invalid, returns 0.
-+ */
- uint32_t
- igt_v3d_get_param(int fd, enum drm_v3d_param param)
+diff --git a/tests/v3d/v3d_perfmon.c b/tests/v3d/v3d_perfmon.c
+index bf983dbf..3f55ddb1 100644
+--- a/tests/v3d/v3d_perfmon.c
++++ b/tests/v3d/v3d_perfmon.c
+@@ -12,8 +12,10 @@ igt_main
  {
- 	struct drm_v3d_get_param get = {
- 		.param = param,
- 	};
-+	int ret;
+ 	int fd;
  
--	do_ioctl(fd, DRM_IOCTL_V3D_GET_PARAM, &get);
-+	ret = igt_ioctl(fd, DRM_IOCTL_V3D_GET_PARAM, &get);
-+	if (ret)
-+		return 0;
+-	igt_fixture
++	igt_fixture {
+ 		fd = drm_open_driver(DRIVER_V3D);
++		igt_require(igt_v3d_get_param(fd, DRM_V3D_PARAM_SUPPORTS_PERFMON));
++	}
  
- 	return get.value;
- }
+ 	igt_describe("Make sure a perfmon cannot be created with zero counters.");
+ 	igt_subtest("create-perfmon-0") {
 -- 
 2.39.0
