@@ -1,22 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E43C810E8F4
- for <igt-dev@lists.freedesktop.org>; Thu, 12 Jan 2023 14:01:27 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 12B0D10E8F5
+ for <igt-dev@lists.freedesktop.org>; Thu, 12 Jan 2023 14:01:28 +0000 (UTC)
 From: =?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>
 To: Melissa Wen <mwen@igalia.com>,
  =?UTF-8?q?Andr=C3=A9=20Almeida?= <andrealmeid@igalia.com>,
  Petri Latvala <petri.latvala@intel.com>,
  Kamil Konieczny <kamil.konieczny@linux.intel.com>,
  Maxime Ripard <maxime@cerno.tech>
-Date: Thu, 12 Jan 2023 11:00:52 -0300
-Message-Id: <20230112140054.36590-2-mcanal@igalia.com>
-In-Reply-To: <20230112140054.36590-1-mcanal@igalia.com>
-References: <20230112140054.36590-1-mcanal@igalia.com>
+Date: Thu, 12 Jan 2023 11:00:51 -0300
+Message-Id: <20230112140054.36590-1-mcanal@igalia.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v4 1/3] lib/igt_v3d: Rework
- igt_v3d_get_param()
+Subject: [igt-dev] [PATCH i-g-t v4 0/3] Make sure v3d/vc4 support
+ performance monitors
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -29,35 +27,46 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Instead of assuming that igt_v3d_get_param() will succeed, allow the
-ioctl to fail and return 0. This way, it will be possible to check if the
-kernel has the capabilities needed by the test by checking if the return
-of the igt_v3d_get_param() function is different than zero.
+Currently, v3d and vc4 don't check if the driver supports the performance
+monitor feature, which means that the tests are allowed to run even if the
+driver doesn't support the tested feature. Therefore, this series adds checks
+using the GET_PARAM ioctl from both drivers.
 
-Signed-off-by: Maíra Canal <mcanal@igalia.com>
+The main difference of this series is the introduction of the patch
+"lib/igt_v3d: Rework igt_v3d_get_param()", which will allow the tests to skip
+instead of fail. Before v3d was using do_ioctl(), so when the parameter was
+invalid, the test would fail instead of skipping.
+
+Best Regards,
+- Maíra Canal
+
 ---
- lib/igt_v3d.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/lib/igt_v3d.c b/lib/igt_v3d.c
-index 68d11d7f..28d1ab6b 100644
---- a/lib/igt_v3d.c
-+++ b/lib/igt_v3d.c
-@@ -89,11 +89,14 @@ igt_v3d_get_bo_offset(int fd, uint32_t handle)
- uint32_t
- igt_v3d_get_param(int fd, enum drm_v3d_param param)
- {
-+	int ret;
- 	struct drm_v3d_get_param get = {
- 		.param = param,
- 	};
- 
--	do_ioctl(fd, DRM_IOCTL_V3D_GET_PARAM, &get);
-+	ret = igt_ioctl(fd, DRM_IOCTL_V3D_GET_PARAM, &get);
-+	if (ret)
-+		return 0;
- 
- 	return get.value;
- }
+v1 -> v2:
+- Add "lib/igt_vc4: Rework igt_vc4_get_param()" patch (Melissa Wen).
+
+v2 -> v3:
+- s/the return of/the error code of/ (Kamil Konieczny).
+- Add igt_vc4_get_param() description (Kamil Konieczny).
+
+v3 -> v4:
+- Make sure that the test will skip instead of fail.
+- Add "lib/igt_v3d: Rework igt_v3d_get_param()".
+
+---
+
+Best Regards,
+- Maíra Canal
+
+Maíra Canal (3):
+  lib/igt_v3d: Rework igt_v3d_get_param()
+  tests/v3d_perfmon: Make sure v3d supports perfmon
+  tests/vc4_perfmon: Make sure vc4 supports perfmon
+
+ lib/igt_v3d.c           | 5 ++++-
+ tests/v3d/v3d_perfmon.c | 4 +++-
+ tests/vc4/vc4_perfmon.c | 5 +++++
+ 3 files changed, 12 insertions(+), 2 deletions(-)
+
 -- 
 2.39.0
