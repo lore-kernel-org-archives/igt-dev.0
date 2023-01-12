@@ -1,20 +1,22 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0B6B810E2FD
- for <igt-dev@lists.freedesktop.org>; Thu, 12 Jan 2023 13:07:50 +0000 (UTC)
-Date: Thu, 12 Jan 2023 14:07:47 +0100
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Message-ID: <20230112130747.72yljcdzqkxcsxjd@kamilkon-desk1>
-References: <20230111181205.55997-1-zbigniew.kempczynski@intel.com>
- <20230111181205.55997-4-zbigniew.kempczynski@intel.com>
+Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B135410E8E1
+ for <igt-dev@lists.freedesktop.org>; Thu, 12 Jan 2023 13:16:30 +0000 (UTC)
+From: =?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>
+To: Melissa Wen <mwen@igalia.com>,
+ =?UTF-8?q?Andr=C3=A9=20Almeida?= <andrealmeid@igalia.com>,
+ Petri Latvala <petri.latvala@intel.com>,
+ Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Boris Brezillon <boris.brezillon@collabora.com>,
+ Tomeu Vizoso <tomeu.vizoso@collabora.com>, Emma Anholt <emma@anholt.net>,
+ Jason Ekstrand <jason.ekstrand@collabora.com>,
+ Iago Toral Quiroga <itoral@igalia.com>, Rob Clark <robdclark@chromium.org>
+Date: Thu, 12 Jan 2023 10:15:28 -0300
+Message-Id: <20230112131534.29777-1-mcanal@igalia.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230111181205.55997-4-zbigniew.kempczynski@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 3/3] tests/kms_cursor_legacy: Add
- dependency size for spinner creation
+Subject: [igt-dev] [PATCH i-g-t v2 0/6] V3D Job Submission Tests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,39 +24,61 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On 2023-01-11 at 19:12:05 +0100, Zbigniew Kempczyński wrote:
-> Fix the bug where lack of information about dependency object size
-> during spinner creation may lead to object overlapping and failing
-> with ENOSPC.
-> 
-> Fixes: https://gitlab.freedesktop.org/drm/intel/-/issues/7681
-> 
-> Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+Currently, the V3D tests don't cover the job submission feature of the driver.
+Therefore, create tests for DRM_IOCTL_V3D_SUBMIT_CL, an ioctl for submitting
+commands to the 3D engine. In order to develop the tests, it was necessary to
+bring some Mesa structures to IGT. Those structures have the definitions needed
+for the creation of an acceptable packet that can be sent to the GPU.
 
-https://patchwork.freedesktop.org/series/112687/
+So, patches 1-3 add the Mesa structures needed for the tests and also create a
+struct to manage a CL job, the struct v3d_cl_job. Patch 4 introduces a helper
+function to submit a minimal job to the GPU, which will be useful for the tests.
+The minimal job will use the Mesa structures to produce a minimal valid packet.
+Finally, patches 5-6 include new tests in the V3D test suite for
+DRM_IOCTL_V3D_WAIT_BO and DRM_IOCTL_V3D_SUBMIT_CL. The tests for the Wait BO
+IOCTL depend on the submission of a job, so they are included in this series.
 
-> ---
->  tests/kms_cursor_legacy.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
-> 
-> diff --git a/tests/kms_cursor_legacy.c b/tests/kms_cursor_legacy.c
-> index 6b75e98cb8..f1e55906a0 100644
-> --- a/tests/kms_cursor_legacy.c
-> +++ b/tests/kms_cursor_legacy.c
-> @@ -1471,7 +1471,8 @@ static void flip_vs_cursor_busy_crc(igt_display_t *display, bool atomic)
->  
->  		spin = igt_spin_new(display->drm_fd,
->  				    .ahnd = ahnd,
-> -				    .dependency = fb_info[1].gem_handle);
-> +				    .dependency = fb_info[1].gem_handle,
-> +				    .dependency_size = fb_info[1].size);
->  
->  		vblank_start = kmstest_get_vblank(display->drm_fd, pipe, DRM_VBLANK_NEXTONMISS);
->  
-> -- 
-> 2.34.1
-> 
+v1 -> v2: 
+
+- s/flags different than zero/invalid flags (Melissa Wen).
+- s/simple/single (Melissa Wen).
+- Add tests for valid flags that depends on the drivers caps (Melissa Wen).
+- Add "valid-multisync-submission" test (Melissa Wen).
+- s/multisync out-sync/multiple out-syncs (Melissa Wen).
+
+Best Regards,
+- Maíra Canal
+
+Maíra Canal (6):
+  lib/v3d: Add V3D packet helpers
+  lib/v3d: Add V3D packet description
+  lib/v3d: Introduce the struct v3d_cl_job
+  lib/v3d: Add a helper to create a noop job
+  tests/v3d_wait_bo: Create test for V3D's Wait BO IOCTL
+  tests/v3d_submit_cl: Create test for V3D's Submit CL IOCTL
+
+ lib/bitpack_helpers.h        |   78 +
+ lib/igt_v3d.c                |  182 ++
+ lib/igt_v3d.h                |   18 +
+ lib/v3d/v3d_cl.h             |  157 ++
+ lib/v3d/v3d_packet.h         | 5164 ++++++++++++++++++++++++++++++++++
+ lib/v3d/v3d_packet_helpers.h |  119 +
+ tests/v3d/meson.build        |    2 +
+ tests/v3d/v3d_submit_cl.c    |  375 +++
+ tests/v3d/v3d_wait_bo.c      |  127 +
+ tests/v3d_ci/v3d.testlist    |   28 +
+ 10 files changed, 6250 insertions(+)
+ create mode 100644 lib/bitpack_helpers.h
+ create mode 100644 lib/v3d/v3d_cl.h
+ create mode 100644 lib/v3d/v3d_packet.h
+ create mode 100644 lib/v3d/v3d_packet_helpers.h
+ create mode 100644 tests/v3d/v3d_submit_cl.c
+ create mode 100644 tests/v3d/v3d_wait_bo.c
+
+-- 
+2.39.0
