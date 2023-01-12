@@ -1,15 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1BEB410E195
- for <igt-dev@lists.freedesktop.org>; Thu, 12 Jan 2023 10:57:05 +0000 (UTC)
-From: Dnyaneshwar Bhadane <dnyaneshwar.bhadane@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Thu, 12 Jan 2023 16:27:02 +0530
-Message-Id: <20230112105702.19502-1-dnyaneshwar.bhadane@intel.com>
+From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
+To: igt-dev@lists.freedesktop.org,
+	Intel-gfx@lists.freedesktop.org
+Date: Thu, 12 Jan 2023 17:47:26 +0000
+Message-Id: <20230112174730.1101192-1-tvrtko.ursulin@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t] tests/kms_cursor_crc: skip pipe on invalid
- connector in cursor size test
+Subject: [igt-dev] [PATCH i-g-t 0/4] Some intel_gpu_top tweaks
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,69 +14,28 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: suresh.kumar.kurmi@intel.com, dnyaneshwar.bhadane@intel.com,
- juha-pekka.heikkila@intel.com
+Cc: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Only the valid pipe connector combination reach to the igt commit.
-Cursor max-size test will not affect existing flow as only skip
-for invalid connector.
-For cursor-dpms and cursor-suspend not require to check require_cursor_size
-becuase the cursor height and width used from drm capablities.
+From: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 
-Signed-off-by: Dnyaneshwar Bhadane <dnyaneshwar.bhadane@intel.com>
+Mostly by popular demand from
+https://gitlab.freedesktop.org/drm/igt-gpu-tools/-/issues/109, although for
+some of these changes I'd like some second opinions. For instance is it user
+friendly to change the default aggregation mode for stdout and JSON output?
 
----
- tests/kms_cursor_crc.c | 21 +++++++++++++++------
- 1 file changed, 15 insertions(+), 6 deletions(-)
+Tvrtko Ursulin (4):
+  intel_gpu_top: Fix man page formatting
+  intel_gpu_top: Automatically enclose JSON output into brackets
+  intel_gpu_top: Add command line switch to start in physical engine
+    mode
+  intel_gpu_top: Aggregate engine classes in all output modes
 
-diff --git a/tests/kms_cursor_crc.c b/tests/kms_cursor_crc.c
-index d5a4b30b..4ab4c005 100644
---- a/tests/kms_cursor_crc.c
-+++ b/tests/kms_cursor_crc.c
-@@ -752,6 +752,13 @@ static void run_size_tests(data_t *data, int w, int h)
- 			for_each_pipe(&data->display, pipe) {
- 				data->pipe = pipe;
- 
-+				if(!igt_pipe_connector_valid(pipe, data->output)) {
-+					igt_debug("Invalid connector on pipe-%s-%s\n",
-+						kmstest_pipe_name(pipe),
-+						data->output->name);
-+					continue;
-+				}
-+
- 				if (require_cursor_size(data, w, h)) {
- 					igt_info("Cursor size %dx%d not supported by driver\n", w, h);
- 					continue;
-@@ -854,9 +861,10 @@ static void run_tests_on_pipe(data_t *data)
- 			data->pipe = pipe;
- 			data->flags = TEST_DPMS;
- 
--			if (require_cursor_size(data, data->cursor_max_w, data->cursor_max_h)) {
--				igt_debug("Cursor size %dx%d not supported by driver\n",
--					  data->cursor_max_w, data->cursor_max_h);
-+			if(!igt_pipe_connector_valid(pipe, data->output)) {
-+				igt_debug("Invalid connector on pipe-%s-%s\n",
-+					kmstest_pipe_name(pipe),
-+					data->output->name);
- 				continue;
- 			}
- 
-@@ -875,9 +883,10 @@ static void run_tests_on_pipe(data_t *data)
- 			data->pipe = pipe;
- 			data->flags = TEST_SUSPEND;
- 
--			if (require_cursor_size(data, data->cursor_max_w, data->cursor_max_h)) {
--				igt_debug("Cursor size %dx%d not supported by driver\n",
--					  data->cursor_max_w, data->cursor_max_h);
-+			if(!igt_pipe_connector_valid(pipe, data->output)) {
-+				igt_debug("Invalid connector on pipe-%s-%s\n",
-+					kmstest_pipe_name(pipe),
-+					data->output->name);
- 				continue;
- 			}
- 
+ man/intel_gpu_top.rst | 20 ++++++++++++--------
+ tools/intel_gpu_top.c | 16 ++++++++++++++--
+ 2 files changed, 26 insertions(+), 10 deletions(-)
+
 -- 
-2.35.1
+2.34.1
