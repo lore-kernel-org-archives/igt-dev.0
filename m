@@ -1,22 +1,22 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 20A2D10E345
- for <igt-dev@lists.freedesktop.org>; Thu, 12 Jan 2023 19:39:07 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 311B410E33D
+ for <igt-dev@lists.freedesktop.org>; Thu, 12 Jan 2023 19:39:08 +0000 (UTC)
 From: =?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>
 To: Melissa Wen <mwen@igalia.com>,
  =?UTF-8?q?Andr=C3=A9=20Almeida?= <andrealmeid@igalia.com>,
  Petri Latvala <petri.latvala@intel.com>,
  Kamil Konieczny <kamil.konieczny@linux.intel.com>,
  Maxime Ripard <maxime@cerno.tech>
-Date: Thu, 12 Jan 2023 16:37:39 -0300
-Message-Id: <20230112193741.55630-2-mcanal@igalia.com>
+Date: Thu, 12 Jan 2023 16:37:41 -0300
+Message-Id: <20230112193741.55630-4-mcanal@igalia.com>
 In-Reply-To: <20230112193741.55630-1-mcanal@igalia.com>
 References: <20230112193741.55630-1-mcanal@igalia.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v5 1/4] lib/igt_vc4: Rework
- igt_vc4_get_param()
+Subject: [igt-dev] [PATCH i-g-t v5 3/4] lib/igt_v3d: Rework
+ igt_v3d_get_param()
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -29,83 +29,48 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Instead of returning the error code of the DRM_IOCTL_VC4_GET_PARAM ioctl,
-make igt_vc4_get_param() return the value of the parameter, considering
-that the current return is not being used and the value of the parameter
-is being used. If an invalid parameter is passed to the ioctl, return 0.
+Instead of assuming that igt_v3d_get_param() will succeed, allow the
+ioctl to fail and return 0. This way, it will be possible to check if the
+kernel has the capabilities needed by the test by checking if the return
+of the igt_v3d_get_param() function is different than zero.
 
 Signed-off-by: Maíra Canal <mcanal@igalia.com>
 ---
- lib/igt_vc4.c                | 17 +++++++++++++----
- lib/igt_vc4.h                |  2 +-
- tests/vc4/vc4_purgeable_bo.c |  5 +----
- 3 files changed, 15 insertions(+), 9 deletions(-)
+ lib/igt_v3d.c | 15 ++++++++++++++-
+ 1 file changed, 14 insertions(+), 1 deletion(-)
 
-diff --git a/lib/igt_vc4.c b/lib/igt_vc4.c
-index 6b6ad16c..3ec8a2c4 100644
---- a/lib/igt_vc4.c
-+++ b/lib/igt_vc4.c
-@@ -168,7 +168,17 @@ uint64_t igt_vc4_get_tiling(int fd, uint32_t handle)
- 	return get.modifier;
+diff --git a/lib/igt_v3d.c b/lib/igt_v3d.c
+index 68d11d7f..5d112416 100644
+--- a/lib/igt_v3d.c
++++ b/lib/igt_v3d.c
+@@ -86,14 +86,27 @@ igt_v3d_get_bo_offset(int fd, uint32_t handle)
+ 	return get.offset;
  }
  
--int igt_vc4_get_param(int fd, uint32_t param, uint64_t *val)
 +/**
-+ * igt_vc4_get_param:
++ * igt_v3d_get_param:
 + * @fd: device file descriptor
-+ * @param: vc4 parameter
++ * @param: v3d parameter
 + *
 + * This wraps the GET_PARAM ioctl.
 + *
 + * Returns the current value of the parameter. If the parameter is
 + * invalid, returns 0.
 + */
-+uint64_t igt_vc4_get_param(int fd, uint32_t param)
+ uint32_t
+ igt_v3d_get_param(int fd, enum drm_v3d_param param)
  {
- 	struct drm_vc4_get_param arg = {
+ 	struct drm_v3d_get_param get = {
  		.param = param,
-@@ -177,10 +187,9 @@ int igt_vc4_get_param(int fd, uint32_t param, uint64_t *val)
+ 	};
++	int ret;
  
- 	ret = igt_ioctl(fd, DRM_IOCTL_VC4_GET_PARAM, &arg);
- 	if (ret)
--		return ret;
+-	do_ioctl(fd, DRM_IOCTL_V3D_GET_PARAM, &get);
++	ret = igt_ioctl(fd, DRM_IOCTL_V3D_GET_PARAM, &get);
++	if (ret)
 +		return 0;
  
--	*val = arg.value;
--	return 0;
-+	return arg.value;
+ 	return get.value;
  }
- 
- bool igt_vc4_purgeable_bo(int fd, int handle, bool purgeable)
-diff --git a/lib/igt_vc4.h b/lib/igt_vc4.h
-index 384d7d6e..4c08f175 100644
---- a/lib/igt_vc4.h
-+++ b/lib/igt_vc4.h
-@@ -31,7 +31,7 @@
- uint32_t igt_vc4_get_cleared_bo(int fd, size_t size, uint32_t clearval);
- int igt_vc4_create_bo(int fd, size_t size);
- void *igt_vc4_mmap_bo(int fd, uint32_t handle, uint32_t size, unsigned prot);
--int igt_vc4_get_param(int fd, uint32_t param, uint64_t *val);
-+uint64_t igt_vc4_get_param(int fd, uint32_t param);
- bool igt_vc4_purgeable_bo(int fd, int handle, bool purgeable);
- bool igt_vc4_is_tiled(uint64_t modifier);
- bool igt_vc4_is_v3d(int fd);
-diff --git a/tests/vc4/vc4_purgeable_bo.c b/tests/vc4/vc4_purgeable_bo.c
-index 676bc1f3..27771012 100644
---- a/tests/vc4/vc4_purgeable_bo.c
-+++ b/tests/vc4/vc4_purgeable_bo.c
-@@ -102,11 +102,8 @@ igt_main
- 	int fd, ret;
- 
- 	igt_fixture {
--		uint64_t val = 0;
--
- 		fd = drm_open_driver(DRIVER_VC4);
--		igt_vc4_get_param(fd, DRM_VC4_PARAM_SUPPORTS_MADVISE, &val);
--		igt_require(val);
-+		igt_require(igt_vc4_get_param(fd, DRM_VC4_PARAM_SUPPORTS_MADVISE));
- 		IGT_INIT_LIST_HEAD(&list);
- 	}
- 
 -- 
 2.39.0
