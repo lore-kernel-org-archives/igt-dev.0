@@ -1,21 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3300010E8F5
- for <igt-dev@lists.freedesktop.org>; Thu, 12 Jan 2023 14:01:28 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EFDDB10E8FA
+ for <igt-dev@lists.freedesktop.org>; Thu, 12 Jan 2023 14:01:31 +0000 (UTC)
 From: =?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>
 To: Melissa Wen <mwen@igalia.com>,
  =?UTF-8?q?Andr=C3=A9=20Almeida?= <andrealmeid@igalia.com>,
  Petri Latvala <petri.latvala@intel.com>,
  Kamil Konieczny <kamil.konieczny@linux.intel.com>,
  Maxime Ripard <maxime@cerno.tech>
-Date: Thu, 12 Jan 2023 11:00:53 -0300
-Message-Id: <20230112140054.36590-3-mcanal@igalia.com>
+Date: Thu, 12 Jan 2023 11:00:54 -0300
+Message-Id: <20230112140054.36590-4-mcanal@igalia.com>
 In-Reply-To: <20230112140054.36590-1-mcanal@igalia.com>
 References: <20230112140054.36590-1-mcanal@igalia.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v4 2/3] tests/v3d_perfmon: Make sure v3d
+Subject: [igt-dev] [PATCH i-g-t v4 3/3] tests/vc4_perfmon: Make sure vc4
  supports perfmon
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -29,32 +29,33 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Performance Monitors for the v3d were introduced in Linux 5.15, so a check
-if v3d supports Performance Monitors is essential to assure that the tests
-will perform correctly. Therefore, check if v3d has perfmon support before
-running the tests.
+Performance Monitors for the vc4 were introduced in Linux 4.17, so a
+check if vc4 supports Performance Monitors is essential to assure that
+the tests will perform correctly. Therefore, check if vc4 has
+perfmon support before running the tests.
 
-Reviewed-by: Melissa Wen <mwen@igalia.com>
 Signed-off-by: Maíra Canal <mcanal@igalia.com>
 ---
- tests/v3d/v3d_perfmon.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ tests/vc4/vc4_perfmon.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/tests/v3d/v3d_perfmon.c b/tests/v3d/v3d_perfmon.c
-index bf983dbf..3f55ddb1 100644
---- a/tests/v3d/v3d_perfmon.c
-+++ b/tests/v3d/v3d_perfmon.c
-@@ -12,8 +12,10 @@ igt_main
- {
+diff --git a/tests/vc4/vc4_perfmon.c b/tests/vc4/vc4_perfmon.c
+index 30186519..22a2d033 100644
+--- a/tests/vc4/vc4_perfmon.c
++++ b/tests/vc4/vc4_perfmon.c
+@@ -13,8 +13,13 @@ igt_main
  	int fd;
  
--	igt_fixture
-+	igt_fixture {
- 		fd = drm_open_driver(DRIVER_V3D);
-+		igt_require(igt_v3d_get_param(fd, DRM_V3D_PARAM_SUPPORTS_PERFMON));
-+	}
+ 	igt_fixture {
++		uint64_t val = 0;
++
+ 		fd = drm_open_driver(DRIVER_VC4);
+ 		igt_require(igt_vc4_is_v3d(fd));
++
++		igt_vc4_get_param(fd, DRM_VC4_PARAM_SUPPORTS_PERFMON, &val);
++		igt_require(val);
+ 	}
  
  	igt_describe("Make sure a perfmon cannot be created with zero counters.");
- 	igt_subtest("create-perfmon-0") {
 -- 
 2.39.0
