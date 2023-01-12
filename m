@@ -1,20 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A51E610E8DB
- for <igt-dev@lists.freedesktop.org>; Thu, 12 Jan 2023 12:17:48 +0000 (UTC)
-Date: Thu, 12 Jan 2023 13:17:44 +0100
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6879210E8DC
+ for <igt-dev@lists.freedesktop.org>; Thu, 12 Jan 2023 12:18:49 +0000 (UTC)
+Date: Thu, 12 Jan 2023 13:18:45 +0100
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Message-ID: <20230112121744.6roilgbdbslkmooa@kamilkon-desk1>
+Message-ID: <20230112121845.jkywsaw6qb76xvnj@kamilkon-desk1>
 References: <20230111181205.55997-1-zbigniew.kempczynski@intel.com>
- <20230111181205.55997-2-zbigniew.kempczynski@intel.com>
+ <20230111181205.55997-3-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230111181205.55997-2-zbigniew.kempczynski@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 1/3] lib/intel_allocator: Fix alignment
- variable used in debug path
+In-Reply-To: <20230111181205.55997-3-zbigniew.kempczynski@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 2/3] lib/igt_dummyload: Don't assume
+ dependency object size
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,32 +26,51 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On 2023-01-11 at 19:12:03 +0100, Zbigniew Kempczyński wrote:
-> During work on allocator I've missed alignment was replaced by
-> default_alignment what makes a compilation error when debug path
-> is enabled.
+On 2023-01-11 at 19:12:04 +0100, Zbigniew Kempczyński wrote:
+> Most of the tests use page size for dependency object so spinner
+> had this value hardcoded as a default. But there're exceptions
+> where dependency object is bigger and for softpin path we need to
+> allow pass this size to properly acquire offsets from the allocator.
 > 
 > Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 
 Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
 > ---
->  lib/intel_allocator.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>  lib/igt_dummyload.c | 4 +++-
+>  lib/igt_dummyload.h | 1 +
+>  2 files changed, 4 insertions(+), 1 deletion(-)
 > 
-> diff --git a/lib/intel_allocator.c b/lib/intel_allocator.c
-> index 060a65ce18..2b08dd5996 100644
-> --- a/lib/intel_allocator.c
-> +++ b/lib/intel_allocator.c
-> @@ -351,7 +351,7 @@ static struct allocator *allocator_open(int fd, uint32_t ctx, uint32_t vm,
->  			   "default alignment: 0x%llx "
->  			   "not found, creating one\n",
->  			   fd, ctx, vm, (long long) start, (long long) end,
-> -			   (long long) alignment);
-> +			   (long long) default_alignment);
->  		ial = intel_allocator_create(fd, start, end, allocator_type,
->  					     allocator_strategy,
->  					     default_alignment);
+> diff --git a/lib/igt_dummyload.c b/lib/igt_dummyload.c
+> index 17ae21f567..5f3c6b10c7 100644
+> --- a/lib/igt_dummyload.c
+> +++ b/lib/igt_dummyload.c
+> @@ -186,10 +186,12 @@ emit_recursive_batch(igt_spin_t *spin,
+>  	addr += BATCH_SIZE;
+>  
+>  	if (opts->dependency) {
+> +		uint64_t dep_size = opts->dependency_size ?: BATCH_SIZE;
+> +
+>  		igt_assert(!(opts->flags & IGT_SPIN_POLL_RUN));
+>  		if (ahnd)
+>  			addr_scratch = intel_allocator_alloc_with_strategy(ahnd, opts->dependency,
+> -									   BATCH_SIZE, 0,
+> +									   dep_size, 0,
+>  									   ALLOC_STRATEGY_LOW_TO_HIGH);
+>  		else
+>  			addr_scratch = addr;
+> diff --git a/lib/igt_dummyload.h b/lib/igt_dummyload.h
+> index b33507971b..b247ab02b2 100644
+> --- a/lib/igt_dummyload.h
+> +++ b/lib/igt_dummyload.h
+> @@ -49,6 +49,7 @@ typedef struct igt_spin_factory {
+>  	uint32_t ctx_id;
+>  	const intel_ctx_t *ctx;
+>  	uint32_t dependency;
+> +	uint64_t dependency_size;
+>  	unsigned int engine;
+>  	unsigned int flags;
+>  	int fence;
 > -- 
 > 2.34.1
 > 
