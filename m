@@ -1,21 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2949910E9FD
- for <igt-dev@lists.freedesktop.org>; Fri, 13 Jan 2023 14:27:45 +0000 (UTC)
-Message-ID: <a0689b87-9d95-6520-ff86-3f47e744a7ce@intel.com>
-Date: Fri, 13 Jan 2023 14:27:39 +0000
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C9F8310EA2F
+ for <igt-dev@lists.freedesktop.org>; Fri, 13 Jan 2023 15:24:47 +0000 (UTC)
+Date: Fri, 13 Jan 2023 16:24:41 +0100
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Message-ID: <20230113152441.ihngzqklinn4eke6@kamilkon-desk1>
+References: <20230112131534.29777-1-mcanal@igalia.com>
+ <20230112131534.29777-2-mcanal@igalia.com>
 MIME-Version: 1.0
-Content-Language: en-GB
-To: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>,
- igt-dev@lists.freedesktop.org
-References: <20221212231254.2303-1-niranjana.vishwanathapura@intel.com>
- <20221212231254.2303-20-niranjana.vishwanathapura@intel.com>
-From: Matthew Auld <matthew.auld@intel.com>
-In-Reply-To: <20221212231254.2303-20-niranjana.vishwanathapura@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Subject: Re: [igt-dev] [PATCH i-g-t v9 19/19] tests/i915/vm_bind: Add
- userptr invalidation test
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20230112131534.29777-2-mcanal@igalia.com>
+Subject: Re: [igt-dev] [PATCH i-g-t v2 1/6] lib/v3d: Add V3D packet helpers
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,127 +21,250 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: tvrtko.ursulin@intel.com, thomas.hellstrom@intel.com,
- daniel.vetter@intel.com, petri.latvala@intel.com
+Cc: Rob Clark <robdclark@chromium.org>, Petri Latvala <petri.latvala@intel.com>,
+ Tomeu Vizoso <tomeu.vizoso@collabora.com>,
+ Jason Ekstrand <jason.ekstrand@collabora.com>,
+ Iago Toral Quiroga <itoral@igalia.com>, Emma Anholt <emma@anholt.net>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On 12/12/2022 23:12, Niranjana Vishwanathapura wrote:
-> Add vma-merge-execbuf3 subtest to gem_userptr_blits to
-> validate userptr invalidations with VM_BIND+execbuf3.
+Hi Maíra,
+
+On 2023-01-12 at 10:15:29 -0300, Maíra Canal wrote:
+> In order to make a valid job submission to V3D, some packet helpers are
+> needed. They are responsible for handling the data and packing it
+> properly. Moreover, they reuse some of the generic packet helpers from
+> Mesa, the bit pack helpers. Therefore, add Mesa V3D's packet helpers for
+> IGT use.
 > 
-> NOTE:
-> The test is derived from vma-merge subtest. There is a known
-> fence timeout issue with vma-merge subtest which the
-> vma-merge-execbuf3 inherits, but the test still passes none
-> the less validates userptr invalidation of persistent mappings
-> and rebinding the same in the subsequent submission.
-> 
-> Signed-off-by: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
+> Reviewed-by: Melissa Wen <mwen@igalia.com>
+> Signed-off-by: Maíra Canal <mcanal@igalia.com>
 > ---
->   tests/i915/gem_userptr_blits.c | 71 ++++++++++++++++++++++++++++++++++
->   1 file changed, 71 insertions(+)
+>  lib/bitpack_helpers.h        |  78 +++++++++++++++++++++++
+>  lib/v3d/v3d_packet_helpers.h | 119 +++++++++++++++++++++++++++++++++++
+>  2 files changed, 197 insertions(+)
+>  create mode 100644 lib/bitpack_helpers.h
+>  create mode 100644 lib/v3d/v3d_packet_helpers.h
 > 
-> diff --git a/tests/i915/gem_userptr_blits.c b/tests/i915/gem_userptr_blits.c
-> index 698508669..0ec54bd21 100644
-> --- a/tests/i915/gem_userptr_blits.c
-> +++ b/tests/i915/gem_userptr_blits.c
-> @@ -60,7 +60,10 @@
->   
->   #include "i915/gem.h"
->   #include "i915/gem_create.h"
-> +#include "i915/gem_vm.h"
-> +#include "i915/i915_vm_bind.h"
->   #include "igt.h"
-> +#include "igt_syncobj.h"
->   #include "igt_sysfs.h"
->   #include "igt_types.h"
->   #include "sw_sync.h"
-> @@ -740,6 +743,69 @@ static void test_vma_merge(int i915)
->   	put_ahnd(ahnd);
->   }
->   
-> +static void test_vma_merge_execbuf3(int i915)
+> diff --git a/lib/bitpack_helpers.h b/lib/bitpack_helpers.h
+> new file mode 100644
+> index 00000000..358b5d64
+> --- /dev/null
+> +++ b/lib/bitpack_helpers.h
+> @@ -0,0 +1,78 @@
+> +/*
+
+Please use SPDX licence here.
+
+> + * Copyright (C) 2016 Intel Corporation
+> + *
+> + * Permission is hereby granted, free of charge, to any person obtaining a
+> + * copy of this software and associated documentation files (the "Software"),
+> + * to deal in the Software without restriction, including without limitation
+> + * the rights to use, copy, modify, merge, publish, distribute, sublicense,
+> + * and/or sell copies of the Software, and to permit persons to whom the
+> + * Software is furnished to do so, subject to the following conditions:
+> + *
+> + * The above copyright notice and this permission notice (including the next
+> + * paragraph) shall be included in all copies or substantial portions of the
+> + * Software.
+> + *
+> + * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+> + * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+> + * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
+> + * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+> + * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+> + * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
+> + * IN THE SOFTWARE.
+> + */
+> +
+> +#ifndef UTIL_BITPACK_HELPERS_H
+> +#define UTIL_BITPACK_HELPERS_H
+> +
+> +#include <math.h>
+> +#include <stdbool.h>
+> +#include <stdint.h>
+> +
+> +#ifndef util_bitpack_validate_value
+> +#define util_bitpack_validate_value(x)
+> +#endif
+> +
+> +/** Set a single bit */
+> +#define BITFIELD64_BIT(b)      (1ull << (b))
+> +/** Set all bits up to excluding bit b */
+> +#define BITFIELD64_MASK(b)      \
+> +   ((b) == 64 ? (~0ull) : BITFIELD64_BIT(b) - 1)
+> +
+> +static inline uint64_t
+> +util_bitpack_uint(uint64_t v, uint32_t start, __attribute__((unused)) uint32_t end)
 > +{
-> +	struct drm_i915_gem_context_param param = {
-> +		.param = I915_CONTEXT_PARAM_RECOVERABLE,
-> +		.value = 0,
-> +	};
-> +	const size_t sz = 2 * hugepagesize();
-> +	uint32_t handle, vm_id;
-> +	const intel_ctx_t *ctx;
-> +	igt_spin_t *spin;
-> +	uint64_t ahnd;
-> +	void *addr;
-> +
-> +	vm_id = gem_vm_create_in_vm_bind_mode(i915);
-> +	ctx = intel_ctx_create_all_physical(i915);
-> +	param.ctx_id = ctx->id;
-> +	gem_context_set_param(i915, &param);
-> +	gem_context_set_vm(i915, ctx->id, vm_id);
-> +	(void)gem_context_get_vm(i915, ctx->id);
-> +
-> +	ahnd = get_simple_ahnd(i915, ctx->id);
-> +	igt_require(ahnd);
-> +	addr = mmap(NULL, sz, PROT_READ | PROT_WRITE,
-> +		    MAP_SHARED | MAP_ANONYMOUS, -1, 0);
-> +
-> +	gem_userptr(i915, addr + sz / 2, 4096, 0, userptr_flags, &handle);
-> +
-> +	spin = igt_spin_new(i915, .ctx = ctx, .vm_id = vm_id,
-> +			    .ahnd = ahnd, .dependency = handle,
-> +			    .flags = IGT_SPIN_EXECBUF3);
-> +
-> +	for (size_t x = 0; x < sz; x += 4096) {
-> +		if (x == sz / 2)
-> +			continue;
-> +
-> +		igt_assert(mmap(addr + x, 4096, PROT_READ | PROT_WRITE,
-> +				MAP_FIXED | MAP_SHARED | MAP_ANON, -1, 0) !=
-> +			   MAP_FAILED);
-> +	}
-> +
-> +	igt_spin_end(spin);
-> +	igt_spin_reset(spin);
-> +	igt_assert(syncobj_timeline_wait(i915, spin->out_syncobj, NULL, spin->nengines,
-> +					 gettime_ns() + (2 * NSEC_PER_SEC),
-> +					 DRM_SYNCOBJ_WAIT_FLAGS_WAIT_FOR_SUBMIT, NULL));
-> +
-> +	/* Another submission will cause rebind of invalidated mappings */
-> +	gem_execbuf3(i915, &spin->execbuf3);
-> +	igt_spin_end(spin);
-> +	igt_assert(syncobj_timeline_wait(i915, &spin->out_syncobj[spin->nengines - 1],
-> +					 NULL, 1, gettime_ns() + (2 * NSEC_PER_SEC),
-> +					 DRM_SYNCOBJ_WAIT_FLAGS_WAIT_FOR_SUBMIT, NULL));
-> +	gem_close(i915, handle);
-> +
-> +	munmap(addr, sz);
-> +
-> +	igt_spin_free(i915, spin);
-> +	put_ahnd(ahnd);
-> +
-> +	intel_ctx_destroy(i915, ctx);
-> +	gem_vm_destroy(i915, vm_id);
+> +   util_bitpack_validate_value(v);
+> +   return v << start;
 > +}
 > +
->   static void test_huge_split(int i915)
->   {
->   	const size_t sz = 2 * hugepagesize();
-> @@ -2628,6 +2694,11 @@ igt_main_args("c:", NULL, help_str, opt_handler, NULL)
->   		igt_subtest("vma-merge")
->   			test_vma_merge(fd);
->   
-> +		igt_subtest("vma-merge-execbuf3") {
-
-I guess needs test description somewhere, since this is new subtest.
-
-Reviewed-by: Matthew Auld <matthew.auld@intel.com>
-
-> +			igt_require(i915_vm_bind_version(fd) == 1);
-> +			test_vma_merge_execbuf3(fd);
-> +		}
+> +static inline uint64_t
+> +util_bitpack_sint(int64_t v, uint32_t start, uint32_t end)
+> +{
+> +   const int bits = end - start + 1;
+> +   const uint64_t mask = BITFIELD64_MASK(bits);
 > +
->   		igt_subtest("huge-split")
->   			test_huge_split(fd);
->   	}
+> +   return (v & mask) << start;
+> +}
+> +
+> +static inline uint64_t
+> +util_bitpack_sfixed(float v, uint32_t start, uint32_t end,
+> +                    uint32_t fract_bits)
+> +{
+> +   const float factor = (1 << fract_bits);
+> +   const int64_t int_val = llroundf(v * factor);
+> +   const uint64_t mask = ~0ull >> (64 - (end - start + 1));
+> +
+> +   return (int_val & mask) << start;
+> +}
+> +
+> +static inline uint64_t
+> +util_bitpack_ufixed(float v, uint32_t start, __attribute__((unused)) uint32_t end,
+> +                    uint32_t fract_bits)
+> +{
+> +   const float factor = (1 << fract_bits);
+> +   const uint64_t uint_val = llroundf(v * factor);
+> +
+> +   return uint_val << start;
+> +}
+> +
+> +#endif /* UTIL_BITPACK_HELPERS_H */
+> diff --git a/lib/v3d/v3d_packet_helpers.h b/lib/v3d/v3d_packet_helpers.h
+> new file mode 100644
+> index 00000000..3145333d
+> --- /dev/null
+> +++ b/lib/v3d/v3d_packet_helpers.h
+> @@ -0,0 +1,119 @@
+> +/*
+
+Same here.
+
+Regards,
+Kamil
+
+> + * Copyright (C) 2016 Intel Corporation
+> + *
+> + * Permission is hereby granted, free of charge, to any person obtaining a
+> + * copy of this software and associated documentation files (the "Software"),
+> + * to deal in the Software without restriction, including without limitation
+> + * the rights to use, copy, modify, merge, publish, distribute, sublicense,
+> + * and/or sell copies of the Software, and to permit persons to whom the
+> + * Software is furnished to do so, subject to the following conditions:
+> + *
+> + * The above copyright notice and this permission notice (including the next
+> + * paragraph) shall be included in all copies or substantial portions of the
+> + * Software.
+> + *
+> + * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+> + * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+> + * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
+> + * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+> + * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+> + * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
+> + * IN THE SOFTWARE.
+> + */
+> +
+> +#ifndef MESA_V3D_PACKET_HELPERS_H
+> +#define MESA_V3D_PACKET_HELPERS_H
+> +
+> +#include <assert.h>
+> +#include <stdint.h>
+> +
+> +#include "bitpack_helpers.h"
+> +
+> +/*
+> + * Copied from Mesa's u_math.h
+> + */
+> +union fi {
+> +   float f;
+> +   int32_t i;
+> +   uint32_t ui;
+> +};
+> +
+> +static inline float uif(uint32_t ui)
+> +{
+> +   union fi fi;
+> +   fi.ui = ui;
+> +   return fi.f;
+> +}
+> +
+> +static inline unsigned fui(float f)
+> +{
+> +   union fi fi;
+> +   fi.f = f;
+> +   return fi.ui;
+> +}
+> +
+> +static inline uint64_t
+> +__gen_unpack_uint(const uint8_t *restrict cl, uint32_t start, uint32_t end)
+> +{
+> +   uint64_t val = 0;
+> +   const int width = end - start + 1;
+> +   const uint32_t mask = (width == 32 ? ~0 : (1 << width) - 1 );
+> +
+> +   for (uint32_t byte = start / 8; byte <= end / 8; byte++) {
+> +      val |= cl[byte] << ((byte - start / 8) * 8);
+> +   }
+> +
+> +   return (val >> (start % 8)) & mask;
+> +}
+> +
+> +static inline uint64_t
+> +__gen_unpack_sint(const uint8_t *restrict cl, uint32_t start, uint32_t end)
+> +{
+> +   int size = end - start + 1;
+> +   int64_t val = __gen_unpack_uint(cl, start, end);
+> +
+> +   /* Get the sign bit extended. */
+> +   return (val << (64 - size)) >> (64 - size);
+> +}
+> +
+> +static inline float
+> +__gen_unpack_sfixed(const uint8_t *restrict cl, uint32_t start, uint32_t end,
+> +                    uint32_t fractional_size)
+> +{
+> +     int32_t bits = __gen_unpack_sint(cl, start, end);
+> +     return (float)bits / (1 << fractional_size);
+> +}
+> +
+> +static inline float
+> +__gen_unpack_ufixed(const uint8_t *restrict cl, uint32_t start, uint32_t end,
+> +                    uint32_t fractional_size)
+> +{
+> +     int32_t bits = __gen_unpack_uint(cl, start, end);
+> +     return (float)bits / (1 << fractional_size);
+> +}
+> +
+> +static inline float
+> +__gen_unpack_float(const uint8_t *restrict cl, uint32_t start, uint32_t end)
+> +{
+> +   struct PACKED { float f; } *f;
+> +
+> +   assert(start % 8 == 0);
+> +   assert(end - start == 31);
+> +
+> +   f = (void *)(cl + (start / 8));
+> +
+> +   return f->f;
+> +}
+> +
+> +static inline float
+> +__gen_unpack_f187(const uint8_t *restrict cl, uint32_t start, uint32_t end)
+> +{
+> +   uint32_t bits;
+> +
+> +   assert(end - start == 15);
+> +
+> +   bits = __gen_unpack_uint(cl, start, end);
+> +   return uif(bits << 16);
+> +}
+> +
+> +#endif
+> -- 
+> 2.39.0
+> 
