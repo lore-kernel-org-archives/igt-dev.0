@@ -1,11 +1,11 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C6D8310E9EF
- for <igt-dev@lists.freedesktop.org>; Fri, 13 Jan 2023 11:30:42 +0000 (UTC)
-Date: Fri, 13 Jan 2023 12:30:38 +0100
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CE27510E9F0
+ for <igt-dev@lists.freedesktop.org>; Fri, 13 Jan 2023 11:32:07 +0000 (UTC)
+Date: Fri, 13 Jan 2023 12:32:03 +0100
 From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 To: Jeevan B <jeevan.b@intel.com>
-Message-ID: <20230113113038.w45bo3s2gg333l6g@zkempczy-mobl2>
+Message-ID: <20230113113203.fjm6vccpmr4rifsw@zkempczy-mobl2>
 References: <20230113091041.27032-1-jeevan.b@intel.com>
  <20230113091041.27032-3-jeevan.b@intel.com>
 MIME-Version: 1.0
@@ -28,6 +28,13 @@ List-ID: <igt-dev@lists.freedesktop.org>
 On Fri, Jan 13, 2023 at 02:40:41PM +0530, Jeevan B wrote:
 > On MTL, we want the table entry labelled "UC (GO:Mem)"
 > which has index 5.  This means that the MOCS value is 10.
+
+I've noticed this is patch 2/2, I think it should be 1/2
+(define MTL mocs case), then use it in the test.
+
+--
+Zbigniew
+
 > 
 > Signed-off-by: Jeevan B <jeevan.b@intel.com>
 > ---
@@ -54,13 +61,6 @@ On Fri, Jan 13, 2023 at 02:40:41PM +0530, Jeevan B wrote:
 > -	if (IS_DG1(devid)) {
 > -		mocs->uc_index = DG1_MOCS_UC_IDX;
 > -		mocs->wb_index = DG1_MOCS_WB_IDX;
-
-Is this reorder necessary? I would just add MTL else if condition
-(unless you'll convince me it makes sense).
-
---
-Zbigniew
-
 > +	if (IS_METEORLAKE(devid)) {
 > +		mocs->uc_index = MTL_MOCS_UC_IDX;
 > +		mocs->wb_index = MTL_MOCS_WB_IDX;
