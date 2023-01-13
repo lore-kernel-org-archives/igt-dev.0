@@ -1,18 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CE27510E9F0
- for <igt-dev@lists.freedesktop.org>; Fri, 13 Jan 2023 11:32:07 +0000 (UTC)
-Date: Fri, 13 Jan 2023 12:32:03 +0100
+Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3C9B110E9EF
+ for <igt-dev@lists.freedesktop.org>; Fri, 13 Jan 2023 11:32:51 +0000 (UTC)
+Date: Fri, 13 Jan 2023 12:32:46 +0100
 From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 To: Jeevan B <jeevan.b@intel.com>
-Message-ID: <20230113113203.fjm6vccpmr4rifsw@zkempczy-mobl2>
+Message-ID: <20230113113246.fc6y4eo6oyez5ndd@zkempczy-mobl2>
 References: <20230113091041.27032-1-jeevan.b@intel.com>
- <20230113091041.27032-3-jeevan.b@intel.com>
+ <20230113091041.27032-2-jeevan.b@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20230113091041.27032-3-jeevan.b@intel.com>
-Subject: Re: [igt-dev] [PATCH 2/2] lib/igt_draw: Add MOCS values for MTL
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20230113091041.27032-2-jeevan.b@intel.com>
+Subject: Re: [igt-dev] [PATCH 1/2] lib/igt_draw: Use intel_get_uc_mocs to
+ get MOCS value
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,55 +27,43 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Fri, Jan 13, 2023 at 02:40:41PM +0530, Jeevan B wrote:
-> On MTL, we want the table entry labelled "UC (GO:Mem)"
-> which has index 5.  This means that the MOCS value is 10.
+On Fri, Jan 13, 2023 at 02:40:40PM +0530, Jeevan B wrote:
+> Use intel_get_uc_mocs instead of hardcoding to get table entry.
+> 
+> Signed-off-by: Jeevan B <jeevan.b@intel.com>
 
-I've noticed this is patch 2/2, I think it should be 1/2
-(define MTL mocs case), then use it in the test.
+This should be patch 2/2. With this fixed:
+
+Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 
 --
 Zbigniew
 
-> 
-> Signed-off-by: Jeevan B <jeevan.b@intel.com>
 > ---
->  lib/i915/intel_mocs.c | 12 ++++++++----
->  1 file changed, 8 insertions(+), 4 deletions(-)
+>  lib/igt_draw.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
 > 
-> diff --git a/lib/i915/intel_mocs.c b/lib/i915/intel_mocs.c
-> index df541ab0..95f0fbde 100644
-> --- a/lib/i915/intel_mocs.c
-> +++ b/lib/i915/intel_mocs.c
-> @@ -11,6 +11,8 @@
->  #define DG1_MOCS_WB_IDX				5
->  #define DG2_MOCS_UC_IDX				1
->  #define DG2_MOCS_WB_IDX				3
-> +#define MTL_MOCS_UC_IDX				5
-> +#define MTL_MOCS_WB_IDX				10
->  #define GEN12_MOCS_UC_IDX			3
->  #define GEN12_MOCS_WB_IDX			2
->  #define XY_BLOCK_COPY_BLT_MOCS_SHIFT		21
-> @@ -32,13 +34,15 @@ static void get_mocs_index(int fd, struct drm_i915_mocs_index *mocs)
->  	 * This helper function is providing current UC as well
->  	 * as WB MOCS index based on platform.
->  	 */
-> -	if (IS_DG1(devid)) {
-> -		mocs->uc_index = DG1_MOCS_UC_IDX;
-> -		mocs->wb_index = DG1_MOCS_WB_IDX;
-> +	if (IS_METEORLAKE(devid)) {
-> +		mocs->uc_index = MTL_MOCS_UC_IDX;
-> +		mocs->wb_index = MTL_MOCS_WB_IDX;
->  	} else if (IS_DG2(devid)) {
->  		mocs->uc_index = DG2_MOCS_UC_IDX;
->  		mocs->wb_index = DG2_MOCS_WB_IDX;
-> -
-> +	} else if (IS_DG1(devid)) {
-> +		mocs->uc_index = DG1_MOCS_UC_IDX;
-> +		mocs->wb_index = DG1_MOCS_WB_IDX;
->  	} else if (IS_GEN12(devid)) {
->  		mocs->uc_index = GEN12_MOCS_UC_IDX;
->  		mocs->wb_index = GEN12_MOCS_WB_IDX;
+> diff --git a/lib/igt_draw.c b/lib/igt_draw.c
+> index 975d65cd..bfe9cd50 100644
+> --- a/lib/igt_draw.c
+> +++ b/lib/igt_draw.c
+> @@ -36,6 +36,7 @@
+>  #include "i830_reg.h"
+>  #include "i915/gem_create.h"
+>  #include "i915/gem_mman.h"
+> +#include "i915/intel_mocs.h"
+>  
+>  #ifndef PAGE_ALIGN
+>  #ifndef PAGE_SIZE
+> @@ -703,7 +704,7 @@ static void draw_rect_blt(int fd, struct cmd_data *cmd_data,
+>  
+>  		intel_bb_out(ibb, XY_FAST_COLOR_BLT | blt_cmd_depth);
+>  		/* DG2 MOCS entry 2 is "UC - Non-Coherent; GO:Memory" */
+> -		intel_bb_out(ibb, blt_cmd_tiling | 2 << 21 | (pitch-1));
+> +		intel_bb_out(ibb, blt_cmd_tiling | intel_get_uc_mocs(fd) << 21 | (pitch-1));
+>  		intel_bb_out(ibb, (rect->y << 16) | rect->x);
+>  		intel_bb_out(ibb, ((rect->y + rect->h) << 16) | (rect->x + rect->w));
+>  		intel_bb_emit_reloc_fenced(ibb, dst->handle, 0,
 > -- 
 > 2.19.1
 > 
