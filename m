@@ -1,7 +1,7 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5C13410EAA5
- for <igt-dev@lists.freedesktop.org>; Fri, 13 Jan 2023 19:00:45 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 90E4C10EA9F
+ for <igt-dev@lists.freedesktop.org>; Fri, 13 Jan 2023 19:00:49 +0000 (UTC)
 From: =?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>
 To: Melissa Wen <mwen@igalia.com>,
  =?UTF-8?q?Andr=C3=A9=20Almeida?= <andrealmeid@igalia.com>,
@@ -10,15 +10,15 @@ To: Melissa Wen <mwen@igalia.com>,
  Boris Brezillon <boris.brezillon@collabora.com>,
  Tomeu Vizoso <tomeu.vizoso@collabora.com>, Emma Anholt <emma@anholt.net>,
  Iago Toral Quiroga <itoral@igalia.com>, Rob Clark <robdclark@chromium.org>
-Date: Fri, 13 Jan 2023 16:00:01 -0300
-Message-Id: <20230113190002.617853-6-mcanal@igalia.com>
+Date: Fri, 13 Jan 2023 16:00:02 -0300
+Message-Id: <20230113190002.617853-7-mcanal@igalia.com>
 In-Reply-To: <20230113190002.617853-1-mcanal@igalia.com>
 References: <20230113190002.617853-1-mcanal@igalia.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v3 5/6] tests/v3d_wait_bo: Create test for
- V3D's Wait BO IOCTL
+Subject: [igt-dev] [PATCH i-g-t v3 6/6] tests/v3d_submit_cl: Create test for
+ V3D's Submit CL IOCTL
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -31,73 +31,73 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add nine igt_subtests for the DRM_IOCTL_V3D_WAIT_BO, which ensures
-that improper parameters return an errno and tests timeouts for used
-and unused BOs. In order to create used BOs, it submits a noop job and
-evaluates V3D's job BOs.
+Add eighteen igt_subtests for the DRM_IOCTL_V3D_SUBMIT_CL, which ensures
+that improper parameters return an errno and test multisync and simple
+sync abilities. For most of the subtests, the noop job is the base of
+the submission, as it is one of the simplest jobs possible, allowing it
+to test the synchronization abilities of the V3D.
 
 Reviewed-by: Melissa Wen <mwen@igalia.com>
 Signed-off-by: Maíra Canal <mcanal@igalia.com>
 ---
- lib/igt_v3d.c             |   9 +++
+ lib/igt_v3d.c             |   8 +
  lib/igt_v3d.h             |   2 +
  tests/v3d/meson.build     |   1 +
- tests/v3d/v3d_wait_bo.c   | 127 ++++++++++++++++++++++++++++++++++++++
- tests/v3d_ci/v3d.testlist |   9 +++
- 5 files changed, 148 insertions(+)
- create mode 100644 tests/v3d/v3d_wait_bo.c
+ tests/v3d/v3d_submit_cl.c | 375 ++++++++++++++++++++++++++++++++++++++
+ tests/v3d_ci/v3d.testlist |  19 ++
+ 5 files changed, 405 insertions(+)
+ create mode 100644 tests/v3d/v3d_submit_cl.c
 
 diff --git a/lib/igt_v3d.c b/lib/igt_v3d.c
-index 0aed1af8..1ac55ea8 100644
+index 1ac55ea8..cc8f410d 100644
 --- a/lib/igt_v3d.c
 +++ b/lib/igt_v3d.c
-@@ -127,6 +127,15 @@ void igt_v3d_bo_mmap(int fd, struct v3d_bo *bo)
- 	igt_assert(bo->map);
+@@ -172,6 +172,14 @@ void igt_v3d_perfmon_destroy(int fd, uint32_t id)
+ 	do_ioctl(fd, DRM_IOCTL_V3D_PERFMON_DESTROY, &destroy);
  }
  
-+void igt_v3d_wait_bo(int fd, struct v3d_bo *bo, uint64_t timeout_ns)
++void igt_v3d_set_multisync(struct drm_v3d_multi_sync *ms, enum v3d_queue wait_stage)
 +{
-+	struct drm_v3d_wait_bo arg = {
-+		.handle = bo->handle,
-+		.timeout_ns = timeout_ns
-+	};
-+	do_ioctl(fd, DRM_IOCTL_V3D_WAIT_BO, &arg);
++	ms->base.next = to_user_pointer(NULL);
++	ms->base.id = DRM_V3D_EXT_ID_MULTI_SYNC;
++	ms->base.flags = 0;
++	ms->wait_stage = wait_stage;
 +}
 +
- uint32_t igt_v3d_perfmon_create(int fd, uint32_t ncounters, uint8_t *counters)
+ static void v3d_cl_init(int fd, struct v3d_cl **cl)
  {
- 	struct drm_v3d_perfmon_create create = {
+ 	struct v3d_bo *bo = igt_v3d_create_bo(fd, PAGE_SIZE);
 diff --git a/lib/igt_v3d.h b/lib/igt_v3d.h
-index c3799096..af2c9c2f 100644
+index af2c9c2f..2cf7fbd8 100644
 --- a/lib/igt_v3d.h
 +++ b/lib/igt_v3d.h
-@@ -56,6 +56,8 @@ void *igt_v3d_mmap_bo(int fd, uint32_t handle, uint32_t size, unsigned prot);
- 
- void igt_v3d_bo_mmap(int fd, struct v3d_bo *bo);
- 
-+void igt_v3d_wait_bo(int fd, struct v3d_bo *bo, uint64_t timeout_ns);
-+
- uint32_t igt_v3d_perfmon_create(int fd, uint32_t ncounters, uint8_t *counters);
+@@ -62,6 +62,8 @@ uint32_t igt_v3d_perfmon_create(int fd, uint32_t ncounters, uint8_t *counters);
  void igt_v3d_perfmon_get_values(int fd, uint32_t id);
  void igt_v3d_perfmon_destroy(int fd, uint32_t id);
+ 
++void igt_v3d_set_multisync(struct drm_v3d_multi_sync *ms, enum v3d_queue wait_stage);
++
+ struct v3d_cl_job *igt_v3d_noop_job(int fd);
+ void igt_v3d_free_cl_job(int fd, struct v3d_cl_job *job);
+ 
 diff --git a/tests/v3d/meson.build b/tests/v3d/meson.build
-index 07badc49..7b4257f9 100644
+index 7b4257f9..be92fd66 100644
 --- a/tests/v3d/meson.build
 +++ b/tests/v3d/meson.build
-@@ -4,6 +4,7 @@ v3d_progs = [
+@@ -3,6 +3,7 @@ v3d_progs = [
+ 	'v3d_get_bo_offset',
  	'v3d_get_param',
  	'v3d_mmap',
++	'v3d_submit_cl',
  	'v3d_perfmon',
-+	'v3d_wait_bo',
+ 	'v3d_wait_bo',
  ]
- 
- foreach prog : v3d_progs
-diff --git a/tests/v3d/v3d_wait_bo.c b/tests/v3d/v3d_wait_bo.c
+diff --git a/tests/v3d/v3d_submit_cl.c b/tests/v3d/v3d_submit_cl.c
 new file mode 100644
-index 00000000..9e51b6a0
+index 00000000..f982e943
 --- /dev/null
-+++ b/tests/v3d/v3d_wait_bo.c
-@@ -0,0 +1,127 @@
++++ b/tests/v3d/v3d_submit_cl.c
+@@ -0,0 +1,375 @@
 +// SPDX-License-Identifier: MIT
 +/*
 + * Copyright © 2022 Igalia S.L.
@@ -105,142 +105,403 @@ index 00000000..9e51b6a0
 +
 +#include "igt.h"
 +#include "igt_v3d.h"
-+#include "v3d/v3d_cl.h"
++#include "igt_syncobj.h"
 +
-+IGT_TEST_DESCRIPTION("Tests for the V3D's Wait BO IOCTL");
++/* One tenth of a second */
++#define SHORT_TIME_NSEC 100000000ull
 +
-+static void test_used_bo(int fd, struct v3d_bo *bo, uint64_t timeout)
++#define NSECS_PER_SEC 1000000000ull
++
++static uint64_t
++gettime_ns(void)
 +{
-+	struct drm_v3d_wait_bo arg = {
-+		.timeout_ns = timeout,
-+		.handle = bo->handle,
-+	};
-+	int ret;
++	struct timespec current;
++	clock_gettime(CLOCK_MONOTONIC, &current);
++	return (uint64_t)current.tv_sec * NSECS_PER_SEC + current.tv_nsec;
++}
 +
-+	ret = igt_ioctl(fd, DRM_IOCTL_V3D_WAIT_BO, &arg);
-+
-+	if (ret == -1 && errno == ETIME)
-+		igt_debug("Timeout triggered\n");
-+	igt_assert(ret == 0 || (ret == -1 && errno == ETIME));
++static uint64_t
++short_timeout(void)
++{
++	return gettime_ns() + SHORT_TIME_NSEC;
 +}
 +
 +igt_main
 +{
 +	int fd;
-+	struct v3d_bo *bo;
 +
-+	igt_fixture {
++	igt_fixture
 +		fd = drm_open_driver(DRIVER_V3D);
-+		bo = igt_v3d_create_bo(fd, PAGE_SIZE);
-+	}
 +
-+	igt_describe("Make sure it cannot wait on an invalid BO.");
-+	igt_subtest("bad-bo") {
-+		struct drm_v3d_wait_bo arg = {
-+			.handle = bo->handle + 1,
-+			.timeout_ns = 0,
-+		};
-+		do_ioctl_err(fd, DRM_IOCTL_V3D_WAIT_BO, &arg, EINVAL);
-+	}
-+
-+	igt_describe("Make sure the pad is zero.");
++	igt_describe("Make sure a submission cannot be accepted with a pad different than zero.");
 +	igt_subtest("bad-pad") {
-+		struct drm_v3d_wait_bo arg = {
-+			.pad = 1,
-+			.handle = bo->handle,
-+			.timeout_ns = 0,
++		struct drm_v3d_submit_cl submit = {
++			.pad = 1
 +		};
-+		do_ioctl_err(fd, DRM_IOCTL_V3D_WAIT_BO, &arg, EINVAL);
++		do_ioctl_err(fd, DRM_IOCTL_V3D_SUBMIT_CL, &submit, EINVAL);
 +	}
 +
-+	igt_describe("Wait on an unused BO for 0 ns.");
-+	igt_subtest("unused-bo-0ns")
-+		igt_v3d_wait_bo(fd, bo, 0);
-+
-+	igt_describe("Wait on an unused BO for 1 ns.");
-+	igt_subtest("unused-bo-1ns")
-+		igt_v3d_wait_bo(fd, bo, 1);
-+
-+	igt_describe("Wait on a newly mapped BO for 0 ns.");
-+	igt_subtest("map-bo-0ns") {
-+		igt_v3d_bo_mmap(fd, bo);
-+		igt_v3d_wait_bo(fd, bo, 0);
-+		munmap(bo->map, bo->size);
++	igt_describe("Make sure a submission cannot be accepted with invalid flags.");
++	igt_subtest("bad-flag") {
++		struct drm_v3d_submit_cl submit = {
++			.flags = 0xaa
++		};
++		do_ioctl_err(fd, DRM_IOCTL_V3D_SUBMIT_CL, &submit, EINVAL);
 +	}
 +
-+	igt_describe("Wait on a newly mapped BO for 1 ns.");
-+	igt_subtest("map-bo-1ns") {
-+		igt_v3d_bo_mmap(fd, bo);
-+		igt_v3d_wait_bo(fd, bo, 1);
-+		munmap(bo->map, bo->size);
++	igt_describe("Make sure a submission cannot be accepted if the extensions handle is invalid.");
++	igt_subtest("bad-extension") {
++		struct drm_v3d_submit_cl submit = {
++			.flags = DRM_V3D_SUBMIT_EXTENSION,
++			.extensions = 0ULL
++		};
++		do_ioctl_err(fd, DRM_IOCTL_V3D_SUBMIT_CL, &submit, EINVAL);
 +	}
 +
-+	igt_describe("Wait for BOs used for a noop job for 0 ns.");
-+	igt_subtest("used-bo-0ns") {
++	igt_describe("Make sure a submission cannot be accepted if the BO handle is invalid.");
++	igt_subtest("bad-bo") {
++		struct v3d_cl_job *job = igt_v3d_noop_job(fd);
++
++		job->submit->bo_handles = 0ULL;
++		job->submit->bo_handle_count = 1;
++
++		do_ioctl_err(fd, DRM_IOCTL_V3D_SUBMIT_CL, job->submit, EFAULT);
++		igt_v3d_free_cl_job(fd, job);
++	}
++
++	igt_describe("Make sure a submission cannot be accepted if the perfmon id is invalid.");
++	igt_subtest("bad-perfmon") {
++		struct v3d_cl_job *job = igt_v3d_noop_job(fd);
++
++		igt_require(igt_v3d_get_param(fd, DRM_V3D_PARAM_SUPPORTS_PERFMON));
++
++		job->submit->perfmon_id = 1;
++
++		do_ioctl_err(fd, DRM_IOCTL_V3D_SUBMIT_CL, job->submit, ENOENT);
++		igt_v3d_free_cl_job(fd, job);
++	}
++
++	igt_describe("Make sure a submission cannot be accepted if the in-sync is not signaled.");
++	igt_subtest("bad-in-sync") {
++		struct v3d_cl_job *job = igt_v3d_noop_job(fd);
++
++		job->submit->in_sync_rcl = syncobj_create(fd, 0);
++
++		do_ioctl_err(fd, DRM_IOCTL_V3D_SUBMIT_CL, job->submit, EINVAL);
++		igt_v3d_free_cl_job(fd, job);
++	}
++
++	igt_describe("Make sure that the multisync pad is zero.");
++	igt_subtest("bad-multisync-pad") {
++		struct drm_v3d_multi_sync ms = { };
++		struct v3d_cl_job *job = igt_v3d_noop_job(fd);
++
++		igt_require(igt_v3d_get_param(fd, DRM_V3D_PARAM_SUPPORTS_MULTISYNC_EXT));
++
++		ms.pad = 1;
++
++		job->submit->flags = DRM_V3D_SUBMIT_EXTENSION;
++		job->submit->extensions = to_user_pointer(&ms);
++
++		do_ioctl_err(fd, DRM_IOCTL_V3D_SUBMIT_CL, job->submit, EINVAL);
++		igt_v3d_free_cl_job(fd, job);
++	}
++
++	igt_describe("Make sure that the multisync extension id exists.");
++	igt_subtest("bad-multisync-extension") {
++		struct drm_v3d_multi_sync ms = { };
++		struct v3d_cl_job *job = igt_v3d_noop_job(fd);
++
++		igt_require(igt_v3d_get_param(fd, DRM_V3D_PARAM_SUPPORTS_MULTISYNC_EXT));
++
++		ms.base.id = 0;
++
++		job->submit->flags = DRM_V3D_SUBMIT_EXTENSION;
++		job->submit->extensions = to_user_pointer(&ms);
++
++		do_ioctl_err(fd, DRM_IOCTL_V3D_SUBMIT_CL, job->submit, EINVAL);
++		igt_v3d_free_cl_job(fd, job);
++	}
++
++	igt_describe("Make sure that the multisync out-sync is valid.");
++	igt_subtest("bad-multisync-out-sync") {
++		struct drm_v3d_multi_sync ms = { };
++		struct v3d_cl_job *job = igt_v3d_noop_job(fd);
++
++		igt_require(igt_v3d_get_param(fd, DRM_V3D_PARAM_SUPPORTS_MULTISYNC_EXT));
++
++		igt_v3d_set_multisync(&ms, V3D_RENDER);
++
++		ms.out_sync_count = 1;
++		ms.out_syncs = 0ULL;
++
++		job->submit->flags = DRM_V3D_SUBMIT_EXTENSION;
++		job->submit->extensions = to_user_pointer(&ms);
++
++		do_ioctl_err(fd, DRM_IOCTL_V3D_SUBMIT_CL, job->submit, EFAULT);
++		igt_v3d_free_cl_job(fd, job);
++	}
++
++	igt_describe("Make sure that the multisync in-sync is valid.");
++	igt_subtest("bad-multisync-in-sync") {
++		struct drm_v3d_multi_sync ms = { };
++		struct v3d_cl_job *job = igt_v3d_noop_job(fd);
++
++		igt_require(igt_v3d_get_param(fd, DRM_V3D_PARAM_SUPPORTS_MULTISYNC_EXT));
++
++		igt_v3d_set_multisync(&ms, V3D_RENDER);
++
++		ms.in_sync_count = 1;
++		ms.in_syncs = 0ULL;
++
++		job->submit->flags = DRM_V3D_SUBMIT_EXTENSION;
++		job->submit->extensions = to_user_pointer(&ms);
++
++		do_ioctl_err(fd, DRM_IOCTL_V3D_SUBMIT_CL, job->submit, EFAULT);
++		igt_v3d_free_cl_job(fd, job);
++	}
++
++	igt_describe("Test a valid submission without syncobj.");
++	igt_subtest("valid-submission") {
 +		struct v3d_cl_job *job = igt_v3d_noop_job(fd);
 +
 +		do_ioctl(fd, DRM_IOCTL_V3D_SUBMIT_CL, job->submit);
++		igt_v3d_free_cl_job(fd, job);
++	}
 +
-+		test_used_bo(fd, job->tile_alloc, 0);
-+		test_used_bo(fd, job->tile_state, 0);
-+		test_used_bo(fd, job->bcl->bo, 0);
-+		test_used_bo(fd, job->rcl->bo, 0);
-+		test_used_bo(fd, job->icl->bo, 0);
++	igt_describe("Test a valid submission with a single out-sync.");
++	igt_subtest("single-out-sync") {
++		struct v3d_cl_job *job = igt_v3d_noop_job(fd);
++
++		job->submit->out_sync = syncobj_create(fd, DRM_SYNCOBJ_CREATE_SIGNALED);
++
++		do_ioctl(fd, DRM_IOCTL_V3D_SUBMIT_CL, job->submit);
++		igt_assert(syncobj_wait(fd, &job->submit->out_sync, 1,
++			   INT64_MAX, 0, NULL));
++		igt_v3d_free_cl_job(fd, job);
++	}
++
++	igt_describe("Test a valid submission with a single in-sync.");
++	igt_subtest("single-in-sync") {
++		struct v3d_cl_job *job1 = igt_v3d_noop_job(fd);
++		struct v3d_cl_job *job2 = igt_v3d_noop_job(fd);
++		uint32_t out_sync;
++
++		out_sync = syncobj_create(fd, 0);
++
++		job1->submit->in_sync_rcl = out_sync;
++		do_ioctl_err(fd, DRM_IOCTL_V3D_SUBMIT_CL, job1->submit, EINVAL);
++
++		job2->submit->out_sync = out_sync;
++		do_ioctl(fd, DRM_IOCTL_V3D_SUBMIT_CL, job2->submit);
++
++		igt_assert(syncobj_wait(fd, &job2->submit->out_sync, 1,
++					INT64_MAX, 0, NULL));
++
++		job1->submit->in_sync_rcl = out_sync;
++		job1->submit->out_sync = syncobj_create(fd, DRM_SYNCOBJ_CREATE_SIGNALED);
++		do_ioctl(fd, DRM_IOCTL_V3D_SUBMIT_CL, job1->submit);
++
++		igt_assert(syncobj_wait(fd, &job1->submit->out_sync, 1,
++					INT64_MAX, 0, NULL));
++
++		igt_v3d_free_cl_job(fd, job1);
++		igt_v3d_free_cl_job(fd, job2);
++	}
++
++	igt_describe("Test a valid submission with flush cache.");
++	igt_subtest("simple-flush-cache") {
++		struct v3d_cl_job *job = igt_v3d_noop_job(fd);
++
++		job->submit->flags = DRM_V3D_SUBMIT_CL_FLUSH_CACHE;
++
++		if (!igt_v3d_get_param(fd, DRM_V3D_PARAM_SUPPORTS_CACHE_FLUSH)) {
++			do_ioctl_err(fd, DRM_IOCTL_V3D_SUBMIT_CL, &job->submit, EINVAL);
++		} else {
++			job->submit->out_sync = syncobj_create(fd, DRM_SYNCOBJ_CREATE_SIGNALED);
++
++			do_ioctl(fd, DRM_IOCTL_V3D_SUBMIT_CL, job->submit);
++			igt_assert(syncobj_wait(fd, &job->submit->out_sync, 1,
++				   INT64_MAX, 0, NULL));
++		}
 +
 +		igt_v3d_free_cl_job(fd, job);
 +	}
 +
-+	igt_describe("Wait for BOs used for a noop job for 1 ns.");
-+	igt_subtest("used-bo-1ns") {
++	igt_describe("Test a valid submission with a multisync without syncobjs.");
++	igt_subtest("valid-multisync-submission") {
++		struct drm_v3d_multi_sync ms = { };
 +		struct v3d_cl_job *job = igt_v3d_noop_job(fd);
 +
-+		do_ioctl(fd, DRM_IOCTL_V3D_SUBMIT_CL, job->submit);
++		job->submit->flags = DRM_V3D_SUBMIT_EXTENSION;
 +
-+		test_used_bo(fd, job->tile_alloc, 1);
-+		test_used_bo(fd, job->tile_state, 1);
-+		test_used_bo(fd, job->bcl->bo, 1);
-+		test_used_bo(fd, job->rcl->bo, 1);
-+		test_used_bo(fd, job->icl->bo, 1);
++		if (!igt_v3d_get_param(fd, DRM_V3D_PARAM_SUPPORTS_MULTISYNC_EXT)) {
++			do_ioctl_err(fd, DRM_IOCTL_V3D_SUBMIT_CL, &job->submit, EINVAL);
++		} else {
++			igt_v3d_set_multisync(&ms, V3D_RENDER);
++			job->submit->extensions = to_user_pointer(&ms);
++
++			do_ioctl(fd, DRM_IOCTL_V3D_SUBMIT_CL, job->submit);
++		}
 +
 +		igt_v3d_free_cl_job(fd, job);
 +	}
 +
-+	igt_describe("Wait for BOs used for a noop job for a long amount of time.");
-+	igt_subtest("used-bo") {
++	igt_describe("Test a valid submission with a multiple out-syncs.");
++	igt_subtest("multisync-out-syncs") {
++		struct drm_v3d_multi_sync ms = { };
 +		struct v3d_cl_job *job = igt_v3d_noop_job(fd);
++		struct drm_v3d_sem *out_syncs;
++		int i;
++
++		igt_require(igt_v3d_get_param(fd, DRM_V3D_PARAM_SUPPORTS_MULTISYNC_EXT));
++
++		igt_v3d_set_multisync(&ms, V3D_RENDER);
++		ms.out_sync_count = 4;
++
++		out_syncs = malloc(ms.out_sync_count * sizeof(*out_syncs));
++		for (i = 0; i < ms.out_sync_count; i++)
++			out_syncs[i].handle = syncobj_create(fd, DRM_SYNCOBJ_CREATE_SIGNALED);
++
++		ms.out_syncs = to_user_pointer(out_syncs);
++
++		job->submit->flags = DRM_V3D_SUBMIT_EXTENSION;
++		job->submit->extensions = to_user_pointer(&ms);
 +
 +		do_ioctl(fd, DRM_IOCTL_V3D_SUBMIT_CL, job->submit);
-+
-+		igt_v3d_wait_bo(fd, job->tile_alloc, INT64_MAX);
-+		igt_v3d_wait_bo(fd, job->tile_state, INT64_MAX);
-+		igt_v3d_wait_bo(fd, job->bcl->bo, INT64_MAX);
-+		igt_v3d_wait_bo(fd, job->rcl->bo, INT64_MAX);
-+		igt_v3d_wait_bo(fd, job->icl->bo, INT64_MAX);
++		for (i = 0; i < ms.out_sync_count; i++)
++			igt_assert(syncobj_wait(fd, &out_syncs[i].handle, 1, INT64_MAX, 0, NULL));
 +
 +		igt_v3d_free_cl_job(fd, job);
++		free(out_syncs);
 +	}
 +
-+	igt_fixture {
-+		igt_v3d_free_bo(fd, bo);
++	igt_describe("Make sure that the multisync extension is preferred over the single syncobjs.");
++	igt_subtest("multi-and-single-sync") {
++		struct drm_v3d_multi_sync ms = { };
++		struct v3d_cl_job *job = igt_v3d_noop_job(fd);
++		struct drm_v3d_sem *out_syncs;
++		int i;
++
++		igt_require(igt_v3d_get_param(fd, DRM_V3D_PARAM_SUPPORTS_MULTISYNC_EXT));
++
++		igt_v3d_set_multisync(&ms, V3D_RENDER);
++		ms.out_sync_count = 1;
++
++		out_syncs = malloc(ms.out_sync_count * sizeof(*out_syncs));
++		for (i = 0; i < ms.out_sync_count; i++)
++			out_syncs[i].handle = syncobj_create(fd, DRM_SYNCOBJ_CREATE_SIGNALED);
++
++		ms.out_syncs = to_user_pointer(out_syncs);
++
++		job->submit->flags = DRM_V3D_SUBMIT_EXTENSION;
++		job->submit->extensions = to_user_pointer(&ms);
++
++		job->submit->out_sync = syncobj_create(fd, 0);
++
++		do_ioctl(fd, DRM_IOCTL_V3D_SUBMIT_CL, job->submit);
++		for (i = 0; i < ms.out_sync_count; i++)
++			igt_assert(syncobj_wait(fd, &out_syncs[i].handle, 1, INT64_MAX, 0, NULL));
++
++		/*
++		 * The multisync extension should be prioritized over the single syncobjs.
++		 * So, the job->submit->out_sync should stay not signaled.
++		 */
++		igt_assert_eq(syncobj_wait_err(fd, &job->submit->out_sync, 1, INT64_MAX, 0), -EINVAL);
++
++		igt_v3d_free_cl_job(fd, job);
++		free(out_syncs);
++	}
++
++	igt_describe("Test the implicit order of the submission to the CL queue.");
++	igt_subtest("multiple-job-submission") {
++		const uint32_t num_jobs = 10;
++		struct v3d_cl_job **jobs = NULL;
++		int i;
++
++		jobs = malloc(num_jobs * sizeof(*jobs));
++
++		for (i = 0; i < num_jobs; i++) {
++			jobs[i] = igt_v3d_noop_job(fd);
++			jobs[i]->submit->out_sync = syncobj_create(fd, DRM_SYNCOBJ_CREATE_SIGNALED);
++		}
++
++		for (i = 0; i < num_jobs; i++)
++			do_ioctl(fd, DRM_IOCTL_V3D_SUBMIT_CL, jobs[i]->submit);
++
++		igt_assert(syncobj_wait(fd, &jobs[num_jobs - 1]->submit->out_sync, 1, short_timeout(), 0, NULL));
++
++		/*
++		 * If the last job is signaled, then all the previous jobs should
++		 * already signaled, to assure the implicit synchronization.
++		 */
++		for (i = 0; i < num_jobs; i++) {
++			igt_assert(syncobj_wait(fd, &jobs[i]->submit->out_sync, 1, 0, 0, NULL));
++			igt_v3d_free_cl_job(fd, jobs[i]);
++		}
++
++		free(jobs);
++	}
++
++	igt_describe("Test the coherency of creation/destruction of a perfmon attached to a job.");
++	igt_subtest("job-perfmon") {
++		uint8_t counters[] = { V3D_PERFCNT_L2T_TMU_READS,
++				       V3D_PERFCNT_L2T_CLE_READS,
++				       V3D_PERFCNT_L2T_VCD_READS,
++				       V3D_PERFCNT_L2T_TMUCFG_READS };
++		struct v3d_cl_job *job = igt_v3d_noop_job(fd);
++		uint32_t id;
++
++		igt_require(igt_v3d_get_param(fd, DRM_V3D_PARAM_SUPPORTS_PERFMON));
++
++		id = igt_v3d_perfmon_create(fd, ARRAY_SIZE(counters), counters);
++
++		job->submit->out_sync = syncobj_create(fd, DRM_SYNCOBJ_CREATE_SIGNALED);
++		job->submit->perfmon_id = id;
++
++		do_ioctl(fd, DRM_IOCTL_V3D_SUBMIT_CL, job->submit);
++		igt_assert(syncobj_wait(fd, &job->submit->out_sync, 1,
++					INT64_MAX, 0, NULL));
++		igt_v3d_perfmon_get_values(fd, job->submit->perfmon_id);
++
++		igt_v3d_free_cl_job(fd, job);
++
++		igt_v3d_perfmon_get_values(fd, id);
++		igt_v3d_perfmon_destroy(fd, id);
++	}
++
++	igt_fixture
 +		close(fd);
-+	}
 +}
 diff --git a/tests/v3d_ci/v3d.testlist b/tests/v3d_ci/v3d.testlist
-index ce8c4f6c..54d28ce5 100644
+index 54d28ce5..80e99831 100644
 --- a/tests/v3d_ci/v3d.testlist
 +++ b/tests/v3d_ci/v3d.testlist
-@@ -21,3 +21,12 @@ igt@v3d/v3d_perfmon@get-values-invalid-pointer
- igt@v3d/v3d_perfmon@get-values-valid-perfmon
- igt@v3d/v3d_perfmon@destroy-invalid-perfmon
- igt@v3d/v3d_perfmon@destroy-valid-perfmon
-+igt@v3d/v3d_wait_bo@bad-bo
-+igt@v3d/v3d_wait_bo@bad-pad
-+igt@v3d/v3d_wait_bo@unused-bo-0ns
-+igt@v3d/v3d_wait_bo@unused-bo-1ns
-+igt@v3d/v3d_wait_bo@map-bo-0ns
-+igt@v3d/v3d_wait_bo@map-bo-1ns
-+igt@v3d/v3d_wait_bo@used-bo-0ns
-+igt@v3d/v3d_wait_bo@used-bo-1ns
-+igt@v3d/v3d_wait_bo@used-bo
+@@ -10,6 +10,25 @@ igt@v3d/v3d_get_param@get-bad-flags
+ igt@v3d/v3d_mmap@mmap-bad-flags
+ igt@v3d/v3d_mmap@mmap-bad-handle
+ igt@v3d/v3d_mmap@mmap-bo
++igt@v3d/v3d_submit_cl@bad-pad
++igt@v3d/v3d_submit_cl@bad-flag
++igt@v3d/v3d_submit_cl@bad-extension
++igt@v3d/v3d_submit_cl@bad-bo
++igt@v3d/v3d_submit_cl@bad-perfmon
++igt@v3d/v3d_submit_cl@bad-in-sync
++igt@v3d/v3d_submit_cl@bad-multisync-pad
++igt@v3d/v3d_submit_cl@bad-multisync-extension
++igt@v3d/v3d_submit_cl@bad-multisync-out-sync
++igt@v3d/v3d_submit_cl@bad-multisync-in-sync
++igt@v3d/v3d_submit_cl@valid-submission
++igt@v3d/v3d_submit_cl@single-out-sync
++igt@v3d/v3d_submit_cl@single-in-sync
++igt@v3d/v3d_submit_cl@simple-flush-cache
++igt@v3d/v3d_submit_cl@valid-multisync-submission
++igt@v3d/v3d_submit_cl@multiple-job-submission
++igt@v3d/v3d_submit_cl@multisync-out-syncs
++igt@v3d/v3d_submit_cl@multi-and-single-sync
++igt@v3d/v3d_submit_cl@job-perfmon
+ igt@v3d/v3d_perfmon@create-perfmon-0
+ igt@v3d/v3d_perfmon@create-perfmon-exceed
+ igt@v3d/v3d_perfmon@create-perfmon-invalid-counters
 -- 
 2.39.0
