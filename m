@@ -1,15 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2ABEA10E10D
- for <igt-dev@lists.freedesktop.org>; Fri, 13 Jan 2023 06:21:43 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id AEBBD10E10D
+ for <igt-dev@lists.freedesktop.org>; Fri, 13 Jan 2023 06:21:44 +0000 (UTC)
 From: Jeevan B <jeevan.b@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Fri, 13 Jan 2023 11:52:31 +0530
-Message-Id: <20230113062233.14750-1-jeevan.b@intel.com>
+Date: Fri, 13 Jan 2023 11:52:32 +0530
+Message-Id: <20230113062233.14750-2-jeevan.b@intel.com>
+In-Reply-To: <20230113062233.14750-1-jeevan.b@intel.com>
+References: <20230113062233.14750-1-jeevan.b@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 0/2] lib/igt_draw: Change MOCS settings for
- MTL
+Subject: [igt-dev] [PATCH i-g-t 1/2] lib/igt_draw: Use intel_get_uc_mocs to
+ get MOCS value
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,21 +24,25 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On MTL, we want the table entry labelled "UC (GO:Mem)"
-which has index 5.  This means that the MOCS value is 10.
+Use intel_get_uc_mocs instead of hardcoding to get table entry.
 
-v2: Add define for MOCS settings. (Lucas)
-v3: Extending get_mocs_index and using get_mocs_index
-    to get mocs val. (Zbigniew)
-v4: Spliting the patches as Fix and MTL changes.
+Signed-off-by: Jeevan B <jeevan.b@intel.com>
+---
+ lib/igt_draw.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Jeevan B (2):
-  lib/igt_draw: Use intel_get_uc_mocs to get MOCS value
-  lib/igt_draw: Add MOCS values for MTL
-
- lib/i915/intel_mocs.c | 12 ++++++++----
- lib/igt_draw.c        |  2 +-
- 2 files changed, 9 insertions(+), 5 deletions(-)
-
+diff --git a/lib/igt_draw.c b/lib/igt_draw.c
+index 975d65cd..d8f4596a 100644
+--- a/lib/igt_draw.c
++++ b/lib/igt_draw.c
+@@ -703,7 +703,7 @@ static void draw_rect_blt(int fd, struct cmd_data *cmd_data,
+ 
+ 		intel_bb_out(ibb, XY_FAST_COLOR_BLT | blt_cmd_depth);
+ 		/* DG2 MOCS entry 2 is "UC - Non-Coherent; GO:Memory" */
+-		intel_bb_out(ibb, blt_cmd_tiling | 2 << 21 | (pitch-1));
++		intel_bb_out(ibb, blt_cmd_tiling | intel_get_uc_mocs(fd) << 21 | (pitch-1));
+ 		intel_bb_out(ibb, (rect->y << 16) | rect->x);
+ 		intel_bb_out(ibb, ((rect->y + rect->h) << 16) | (rect->x + rect->w));
+ 		intel_bb_emit_reloc_fenced(ibb, dst->handle, 0,
 -- 
 2.19.1
