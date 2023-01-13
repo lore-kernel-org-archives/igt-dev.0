@@ -1,15 +1,24 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0EBB010E234
- for <igt-dev@lists.freedesktop.org>; Sat, 14 Jan 2023 05:04:20 +0000 (UTC)
-From: Ashutosh Dixit <ashutosh.dixit@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Fri, 13 Jan 2023 21:04:15 -0800
-Message-Id: <20230114050415.554933-1-ashutosh.dixit@intel.com>
+Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4357310EA9E
+ for <igt-dev@lists.freedesktop.org>; Fri, 13 Jan 2023 19:00:36 +0000 (UTC)
+From: =?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>
+To: Melissa Wen <mwen@igalia.com>,
+ =?UTF-8?q?Andr=C3=A9=20Almeida?= <andrealmeid@igalia.com>,
+ Petri Latvala <petri.latvala@intel.com>,
+ Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Boris Brezillon <boris.brezillon@collabora.com>,
+ Tomeu Vizoso <tomeu.vizoso@collabora.com>, Emma Anholt <emma@anholt.net>,
+ Iago Toral Quiroga <itoral@igalia.com>, Rob Clark <robdclark@chromium.org>
+Date: Fri, 13 Jan 2023 15:59:59 -0300
+Message-Id: <20230113190002.617853-4-mcanal@igalia.com>
+In-Reply-To: <20230113190002.617853-1-mcanal@igalia.com>
+References: <20230113190002.617853-1-mcanal@igalia.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t] i915/i915_hwmon: Measure dGfx power with
- hwmon
+Subject: [igt-dev] [PATCH i-g-t v3 3/6] lib/v3d: Introduce the struct
+ v3d_cl_job
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,82 +26,201 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Badal Nilawar <badal.nilawar@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-In several instances (e.g. when investigating GPU power limits) it is very
-useful to be able to measure GPU power easily. Since we already have all
-ingridients for doing so, add a couple of hwmon tests to measure dGfx power
-when idle and power under load.
+Create a struct to encapsulate all the resources needed for a CL
+submission on v3d: it has BOs for tile allocation and tile state and
+command lists for the binner and the render. A CL job submission needs the
+command list (CL) structure, so bring part of the v3dv_cl file [1] for
+IGT use. The v3dv_cl header file was renamed to v3d_cl and it will help
+in emitting commands to the GPU.
 
-Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
+[1] https://gitlab.freedesktop.org/mesa/mesa/-/blob/22.3/src/broadcom/vulkan/v3dv_cl.h
+
+Reviewed-by: Melissa Wen <mwen@igalia.com>
+Signed-off-by: Maíra Canal <mcanal@igalia.com>
 ---
- tests/i915/i915_hwmon.c | 39 +++++++++++++++++++++++++++++++++++++++
- 1 file changed, 39 insertions(+)
+ lib/igt_v3d.h    |  11 ++++
+ lib/v3d/v3d_cl.h | 139 +++++++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 150 insertions(+)
+ create mode 100644 lib/v3d/v3d_cl.h
 
-diff --git a/tests/i915/i915_hwmon.c b/tests/i915/i915_hwmon.c
-index 6d9937e99dc..111a589bd91 100644
---- a/tests/i915/i915_hwmon.c
-+++ b/tests/i915/i915_hwmon.c
-@@ -6,11 +6,40 @@
- #include <dirent.h>
- #include <sys/stat.h>
- #include "igt.h"
-+#include "i915/gem.h"
-+#include "igt_power.h"
- #include "igt_hwmon.h"
- #include "igt_sysfs.h"
+diff --git a/lib/igt_v3d.h b/lib/igt_v3d.h
+index 2edb0f03..2533d7c4 100644
+--- a/lib/igt_v3d.h
++++ b/lib/igt_v3d.h
+@@ -28,6 +28,8 @@
  
- IGT_TEST_DESCRIPTION("Tests for i915 hwmon");
+ #define PAGE_SIZE 4096
  
-+static void hwmon_power(int i915, bool load)
++struct v3d_cl;
++
+ struct v3d_bo {
+ 	int handle;
+ 	uint32_t offset;
+@@ -35,6 +37,15 @@ struct v3d_bo {
+ 	void *map;
+ };
+ 
++struct v3d_cl_job {
++	struct drm_v3d_submit_cl *submit;
++	struct v3d_cl *bcl;
++	struct v3d_cl *rcl;
++	struct v3d_cl *icl;
++	struct v3d_bo *tile_alloc;
++	struct v3d_bo *tile_state;
++};
++
+ struct v3d_bo *igt_v3d_create_bo(int fd, size_t size);
+ void igt_v3d_free_bo(int fd, struct v3d_bo *bo);
+ 
+diff --git a/lib/v3d/v3d_cl.h b/lib/v3d/v3d_cl.h
+new file mode 100644
+index 00000000..1e6ffcf7
+--- /dev/null
++++ b/lib/v3d/v3d_cl.h
+@@ -0,0 +1,139 @@
++// SPDX-License-Identifier: MIT
++/*
++ * Copyright © 2019 Raspberry Pi Ltd
++ */
++
++#ifndef V3D_CL_H
++#define V3D_CL_H
++
++#include "v3d_packet_helpers.h"
++#include "igt_v3d.h"
++
++/**
++ * Undefined structure, used for typechecking that you're passing the pointers
++ * to these functions correctly.
++ */
++struct v3d_cl_out;
++
++/** A reference to a BO used in the CL packing functions */
++struct v3d_cl_reloc {
++   struct v3d_bo *bo;
++   uint32_t offset;
++};
++
++#define __gen_user_data struct v3d_cl
++#define __gen_address_type struct v3d_cl_reloc
++#define __gen_address_offset(reloc) (((reloc)->bo ? (reloc)->bo->offset : 0) + \
++                                     (reloc)->offset)
++#define __gen_emit_reloc cl_pack_emit_reloc
++#define __gen_unpack_address(cl, s, e) __unpack_address(cl, s, e)
++
++struct v3d_cl {
++   void *base;
++   struct v3d_cl_out *next;
++   struct v3d_bo *bo;
++   uint32_t size;
++};
++
++static inline struct v3d_cl_reloc
++__unpack_address(const uint8_t *cl, uint32_t s, uint32_t e)
 +{
-+	const intel_ctx_t *ctx = intel_ctx_create_all_physical(i915);
-+	struct power_sample sample[2];
-+	int sleep_duration_sec = 3;
-+	struct igt_power gpu;
-+	igt_spin_t *spin;
-+
-+	gem_quiescent_gpu(i915);
-+	if (load) {
-+		spin = igt_spin_new(i915, .ctx = ctx, .engine = ALL_ENGINES,
-+				    .flags = IGT_SPIN_POLL_RUN);
-+		/* Wait till at least one spinner starts */
-+		igt_spin_busywait_until_started(spin);
-+	}
-+
-+	igt_assert(!igt_power_open(i915, &gpu, "gpu"));
-+	igt_power_get_energy(&gpu, &sample[0]);
-+	usleep(sleep_duration_sec * USEC_PER_SEC);
-+	igt_power_get_energy(&gpu, &sample[1]);
-+	igt_info("Measured power: %g mW\n", igt_power_get_mW(&gpu, &sample[0], &sample[1]));
-+
-+	igt_power_close(&gpu);
-+	igt_free_spins(i915);
-+	intel_ctx_destroy(i915, ctx);
++    struct v3d_cl_reloc reloc =
++            { NULL, __gen_unpack_uint(cl, s, e) << (31 - (e - s)) };
++    return reloc;
 +}
 +
- static void hwmon_read(int hwm)
- {
- 	struct dirent *de;
-@@ -81,6 +110,16 @@ igt_main
- 		hwmon_write(hwm);
- 	}
- 
-+	igt_describe("Measure idle power using hwmon");
-+	igt_subtest("hwmon-power-idle") {
-+		hwmon_power(fd, false);
-+	}
++static inline uint32_t
++v3d_cl_offset(struct v3d_cl *cl)
++{
++   return (char *)cl->next - (char *)cl->base;
++}
 +
-+	igt_describe("Measure power with load using hwmon");
-+	igt_subtest("hwmon-power-busy") {
-+		hwmon_power(fd, true);
-+	}
++static inline struct v3d_cl_reloc
++v3d_cl_address(struct v3d_bo *bo, uint32_t offset)
++{
++   struct v3d_cl_reloc reloc = {
++      .bo = bo,
++      .offset = offset,
++   };
++   return reloc;
++}
 +
- 	igt_fixture {
- 		close(hwm);
- 		close(fd);
++static inline struct v3d_cl_reloc
++v3d_cl_get_address(struct v3d_cl *cl)
++{
++   return (struct v3d_cl_reloc){ .bo = cl->bo, .offset = v3d_cl_offset(cl) };
++}
++
++static inline struct v3d_cl_out *
++cl_start(struct v3d_cl *cl)
++{
++   return cl->next;
++}
++
++static inline void
++cl_end(struct v3d_cl *cl, struct v3d_cl_out *next)
++{
++   cl->next = next;
++   assert(v3d_cl_offset(cl) <= cl->size);
++}
++
++static inline void
++cl_advance(struct v3d_cl_out **cl, uint32_t n)
++{
++   (*cl) = (struct v3d_cl_out *)((char *)(*cl) + n);
++}
++
++#define V3DX(x) V3D42_##x
++#define v3dX(x) V3D42_##x
++
++#define cl_packet_header(packet) V3DX(packet ## _header)
++#define cl_packet_length(packet) V3DX(packet ## _length)
++#define cl_packet_pack(packet)   V3DX(packet ## _pack)
++#define cl_packet_struct(packet) V3DX(packet)
++
++/* Macro for setting up an emit of a CL struct.  A temporary unpacked struct
++ * is created, which you get to set fields in of the form:
++ *
++ * cl_emit(bcl, FLAT_SHADE_FLAGS, flags) {
++ *     .flags.flat_shade_flags = 1 << 2,
++ * }
++ *
++ * or default values only can be emitted with just:
++ *
++ * cl_emit(bcl, FLAT_SHADE_FLAGS, flags);
++ *
++ * The trick here is that we make a for loop that will execute the body
++ * (either the block or the ';' after the macro invocation) exactly once.
++ */
++#define cl_emit(cl, packet, name)                                \
++        for (struct cl_packet_struct(packet) name = {            \
++                cl_packet_header(packet)                         \
++        },                                                       \
++        *_loop_terminate = &name;                                \
++        __builtin_expect(_loop_terminate != NULL, 1);            \
++        ({                                                       \
++                struct v3d_cl_out *cl_out = cl_start(cl);        \
++                cl_packet_pack(packet)(cl, (uint8_t *)cl_out, &name); \
++                cl_advance(&cl_out, cl_packet_length(packet));   \
++                cl_end(cl, cl_out);                              \
++                _loop_terminate = NULL;                          \
++        }))                                                      \
++
++/*
++ * Helper function called by the XML-generated pack functions for filling in
++ * an address field in shader records.
++ *
++ * Since we have a private address space as of V3D, our BOs can have lifelong
++ * offsets, and all the kernel needs to know is which BOs need to be paged in
++ * for this exec.
++ */
++static inline void
++cl_pack_emit_reloc(struct v3d_cl *cl, const struct v3d_cl_reloc *reloc)
++{
++   /*
++    * Mock emit reloc, as it is not needed for IGT tests.
++    */
++}
++
++#endif /* V3D_CL_H */
 -- 
-2.38.0
+2.39.0
