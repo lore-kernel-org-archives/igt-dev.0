@@ -1,17 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AEBBD10E10D
- for <igt-dev@lists.freedesktop.org>; Fri, 13 Jan 2023 06:21:44 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 731FC10E1E1
+ for <igt-dev@lists.freedesktop.org>; Fri, 13 Jan 2023 06:21:47 +0000 (UTC)
 From: Jeevan B <jeevan.b@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Fri, 13 Jan 2023 11:52:32 +0530
-Message-Id: <20230113062233.14750-2-jeevan.b@intel.com>
+Date: Fri, 13 Jan 2023 11:52:33 +0530
+Message-Id: <20230113062233.14750-3-jeevan.b@intel.com>
 In-Reply-To: <20230113062233.14750-1-jeevan.b@intel.com>
 References: <20230113062233.14750-1-jeevan.b@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 1/2] lib/igt_draw: Use intel_get_uc_mocs to
- get MOCS value
+Subject: [igt-dev] [PATCH i-g-t 2/2] lib/igt_draw: Add MOCS values for MTL
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,25 +23,46 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Use intel_get_uc_mocs instead of hardcoding to get table entry.
+On MTL, we want the table entry labelled "UC (GO:Mem)"
+which has index 5.  This means that the MOCS value is 10.
 
 Signed-off-by: Jeevan B <jeevan.b@intel.com>
 ---
- lib/igt_draw.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ lib/i915/intel_mocs.c | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
-diff --git a/lib/igt_draw.c b/lib/igt_draw.c
-index 975d65cd..d8f4596a 100644
---- a/lib/igt_draw.c
-+++ b/lib/igt_draw.c
-@@ -703,7 +703,7 @@ static void draw_rect_blt(int fd, struct cmd_data *cmd_data,
- 
- 		intel_bb_out(ibb, XY_FAST_COLOR_BLT | blt_cmd_depth);
- 		/* DG2 MOCS entry 2 is "UC - Non-Coherent; GO:Memory" */
--		intel_bb_out(ibb, blt_cmd_tiling | 2 << 21 | (pitch-1));
-+		intel_bb_out(ibb, blt_cmd_tiling | intel_get_uc_mocs(fd) << 21 | (pitch-1));
- 		intel_bb_out(ibb, (rect->y << 16) | rect->x);
- 		intel_bb_out(ibb, ((rect->y + rect->h) << 16) | (rect->x + rect->w));
- 		intel_bb_emit_reloc_fenced(ibb, dst->handle, 0,
+diff --git a/lib/i915/intel_mocs.c b/lib/i915/intel_mocs.c
+index df541ab0..95f0fbde 100644
+--- a/lib/i915/intel_mocs.c
++++ b/lib/i915/intel_mocs.c
+@@ -11,6 +11,8 @@
+ #define DG1_MOCS_WB_IDX				5
+ #define DG2_MOCS_UC_IDX				1
+ #define DG2_MOCS_WB_IDX				3
++#define MTL_MOCS_UC_IDX				5
++#define MTL_MOCS_WB_IDX				10
+ #define GEN12_MOCS_UC_IDX			3
+ #define GEN12_MOCS_WB_IDX			2
+ #define XY_BLOCK_COPY_BLT_MOCS_SHIFT		21
+@@ -32,13 +34,15 @@ static void get_mocs_index(int fd, struct drm_i915_mocs_index *mocs)
+ 	 * This helper function is providing current UC as well
+ 	 * as WB MOCS index based on platform.
+ 	 */
+-	if (IS_DG1(devid)) {
+-		mocs->uc_index = DG1_MOCS_UC_IDX;
+-		mocs->wb_index = DG1_MOCS_WB_IDX;
++	if (IS_METEORLAKE(devid)) {
++		mocs->uc_index = MTL_MOCS_UC_IDX;
++		mocs->wb_index = MTL_MOCS_WB_IDX;
+ 	} else if (IS_DG2(devid)) {
+ 		mocs->uc_index = DG2_MOCS_UC_IDX;
+ 		mocs->wb_index = DG2_MOCS_WB_IDX;
+-
++	} else if (IS_DG1(devid)) {
++		mocs->uc_index = DG1_MOCS_UC_IDX;
++		mocs->wb_index = DG1_MOCS_WB_IDX;
+ 	} else if (IS_GEN12(devid)) {
+ 		mocs->uc_index = GEN12_MOCS_UC_IDX;
+ 		mocs->wb_index = GEN12_MOCS_WB_IDX;
 -- 
 2.19.1
