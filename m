@@ -1,21 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8976210EA8C
- for <igt-dev@lists.freedesktop.org>; Fri, 13 Jan 2023 19:00:31 +0000 (UTC)
-From: =?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>
-To: Melissa Wen <mwen@igalia.com>,
- =?UTF-8?q?Andr=C3=A9=20Almeida?= <andrealmeid@igalia.com>,
- Petri Latvala <petri.latvala@intel.com>,
- Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Boris Brezillon <boris.brezillon@collabora.com>,
- Tomeu Vizoso <tomeu.vizoso@collabora.com>, Emma Anholt <emma@anholt.net>,
- Iago Toral Quiroga <itoral@igalia.com>, Rob Clark <robdclark@chromium.org>
-Date: Fri, 13 Jan 2023 15:59:56 -0300
-Message-Id: <20230113190002.617853-1-mcanal@igalia.com>
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0EBB010E234
+ for <igt-dev@lists.freedesktop.org>; Sat, 14 Jan 2023 05:04:20 +0000 (UTC)
+From: Ashutosh Dixit <ashutosh.dixit@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Fri, 13 Jan 2023 21:04:15 -0800
+Message-Id: <20230114050415.554933-1-ashutosh.dixit@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v3 0/6] V3D Job Submission Tests
+Subject: [igt-dev] [PATCH i-g-t] i915/i915_hwmon: Measure dGfx power with
+ hwmon
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,65 +17,82 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org
+Cc: Badal Nilawar <badal.nilawar@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Currently, the V3D tests don't cover the job submission feature of the driver.
-Therefore, create tests for DRM_IOCTL_V3D_SUBMIT_CL, an ioctl for submitting
-commands to the 3D engine. In order to develop the tests, it was necessary to
-bring some Mesa structures to IGT. Those structures have the definitions needed
-for the creation of an acceptable packet that can be sent to the GPU.
+In several instances (e.g. when investigating GPU power limits) it is very
+useful to be able to measure GPU power easily. Since we already have all
+ingridients for doing so, add a couple of hwmon tests to measure dGfx power
+when idle and power under load.
 
-So, patches 1-3 add the Mesa structures needed for the tests and also create a
-struct to manage a CL job, the struct v3d_cl_job. Patch 4 introduces a helper
-function to submit a minimal job to the GPU, which will be useful for the tests.
-The minimal job will use the Mesa structures to produce a minimal valid packet.
-Finally, patches 5-6 include new tests in the V3D test suite for
-DRM_IOCTL_V3D_WAIT_BO and DRM_IOCTL_V3D_SUBMIT_CL. The tests for the Wait BO
-IOCTL depend on the submission of a job, so they are included in this series.
+Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
+---
+ tests/i915/i915_hwmon.c | 39 +++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 39 insertions(+)
 
-v1 -> v2: 
-
-- s/flags different than zero/invalid flags (Melissa Wen).
-- s/simple/single (Melissa Wen).
-- Add tests for valid flags that depends on the drivers caps (Melissa Wen).
-- Add "valid-multisync-submission" test (Melissa Wen).
-- s/multisync out-sync/multiple out-syncs (Melissa Wen).
-
-v2 -> v3:
-
-- Use SPDX license (Kamil Konieczny).
-
-Best Regards,
-- Maíra Canal
-
-Maíra Canal (6):
-  lib/v3d: Add V3D packet helpers
-  lib/v3d: Add V3D packet description
-  lib/v3d: Introduce the struct v3d_cl_job
-  lib/v3d: Add a helper to create a noop job
-  tests/v3d_wait_bo: Create test for V3D's Wait BO IOCTL
-  tests/v3d_submit_cl: Create test for V3D's Submit CL IOCTL
-
- lib/bitpack_helpers.h        |   60 +
- lib/igt_v3d.c                |  182 ++
- lib/igt_v3d.h                |   18 +
- lib/v3d/v3d_cl.h             |  139 +
- lib/v3d/v3d_packet.h         | 5164 ++++++++++++++++++++++++++++++++++
- lib/v3d/v3d_packet_helpers.h |  101 +
- tests/v3d/meson.build        |    2 +
- tests/v3d/v3d_submit_cl.c    |  375 +++
- tests/v3d/v3d_wait_bo.c      |  127 +
- tests/v3d_ci/v3d.testlist    |   28 +
- 10 files changed, 6196 insertions(+)
- create mode 100644 lib/bitpack_helpers.h
- create mode 100644 lib/v3d/v3d_cl.h
- create mode 100644 lib/v3d/v3d_packet.h
- create mode 100644 lib/v3d/v3d_packet_helpers.h
- create mode 100644 tests/v3d/v3d_submit_cl.c
- create mode 100644 tests/v3d/v3d_wait_bo.c
-
+diff --git a/tests/i915/i915_hwmon.c b/tests/i915/i915_hwmon.c
+index 6d9937e99dc..111a589bd91 100644
+--- a/tests/i915/i915_hwmon.c
++++ b/tests/i915/i915_hwmon.c
+@@ -6,11 +6,40 @@
+ #include <dirent.h>
+ #include <sys/stat.h>
+ #include "igt.h"
++#include "i915/gem.h"
++#include "igt_power.h"
+ #include "igt_hwmon.h"
+ #include "igt_sysfs.h"
+ 
+ IGT_TEST_DESCRIPTION("Tests for i915 hwmon");
+ 
++static void hwmon_power(int i915, bool load)
++{
++	const intel_ctx_t *ctx = intel_ctx_create_all_physical(i915);
++	struct power_sample sample[2];
++	int sleep_duration_sec = 3;
++	struct igt_power gpu;
++	igt_spin_t *spin;
++
++	gem_quiescent_gpu(i915);
++	if (load) {
++		spin = igt_spin_new(i915, .ctx = ctx, .engine = ALL_ENGINES,
++				    .flags = IGT_SPIN_POLL_RUN);
++		/* Wait till at least one spinner starts */
++		igt_spin_busywait_until_started(spin);
++	}
++
++	igt_assert(!igt_power_open(i915, &gpu, "gpu"));
++	igt_power_get_energy(&gpu, &sample[0]);
++	usleep(sleep_duration_sec * USEC_PER_SEC);
++	igt_power_get_energy(&gpu, &sample[1]);
++	igt_info("Measured power: %g mW\n", igt_power_get_mW(&gpu, &sample[0], &sample[1]));
++
++	igt_power_close(&gpu);
++	igt_free_spins(i915);
++	intel_ctx_destroy(i915, ctx);
++}
++
+ static void hwmon_read(int hwm)
+ {
+ 	struct dirent *de;
+@@ -81,6 +110,16 @@ igt_main
+ 		hwmon_write(hwm);
+ 	}
+ 
++	igt_describe("Measure idle power using hwmon");
++	igt_subtest("hwmon-power-idle") {
++		hwmon_power(fd, false);
++	}
++
++	igt_describe("Measure power with load using hwmon");
++	igt_subtest("hwmon-power-busy") {
++		hwmon_power(fd, true);
++	}
++
+ 	igt_fixture {
+ 		close(hwm);
+ 		close(fd);
 -- 
-2.39.0
+2.38.0
