@@ -1,22 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 07BE310E038
- for <igt-dev@lists.freedesktop.org>; Fri, 13 Jan 2023 08:32:01 +0000 (UTC)
-From: "Hogander, Jouni" <jouni.hogander@intel.com>
-To: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Sharma,
- Swati2" <swati2.sharma@intel.com>
-Date: Fri, 13 Jan 2023 08:31:33 +0000
-Message-ID: <c88708090251c2d0656355faa33ddea207d2b58c.camel@intel.com>
-References: <20230112073537.27890-1-swati2.sharma@intel.com>
- <20230112073537.27890-7-swati2.sharma@intel.com>
-In-Reply-To: <20230112073537.27890-7-swati2.sharma@intel.com>
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9D0CB10E296
+ for <igt-dev@lists.freedesktop.org>; Mon, 16 Jan 2023 06:42:42 +0000 (UTC)
+From: "Bhadane, Dnyaneshwar" <dnyaneshwar.bhadane@intel.com>
+To: =?iso-8859-1?Q?Ville_Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
+Date: Mon, 16 Jan 2023 06:42:37 +0000
+Message-ID: <IA1PR11MB6266EA7F413938CAE8CBE29BE2C19@IA1PR11MB6266.namprd11.prod.outlook.com>
+References: <20230112105702.19502-1-dnyaneshwar.bhadane@intel.com>
+ <Y7/+4sEWGELI2unz@intel.com>
+In-Reply-To: <Y7/+4sEWGELI2unz@intel.com>
 Content-Language: en-US
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <E84F2F54BCC26245AFD1570E1699364A@namprd11.prod.outlook.com>
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t v4 6/8] lib/dsc: Add helpers for VDSC
- Fractional BPP debugfs entry
+Subject: Re: [igt-dev] [i-g-t] tests/kms_cursor_crc: skip pipe on invalid
+ connector in cursor size test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,99 +22,115 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Heikkila,
+ Juha-pekka" <juha-pekka.heikkila@intel.com>, "Kurmi,
+ Suresh Kumar" <suresh.kumar.kurmi@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-SGVsbG8gU3dhdGkuIE9uZSBpbmxpbmUgY29tbWVudCBiZWxvdy4gU29ycnkgZm9yIG1pc3Npbmcg
-aXQgb24gZmlyc3QNCnJvdW5kLg0KDQpPbiBUaHUsIDIwMjMtMDEtMTIgYXQgMTM6MDUgKzA1MzAs
-IFN3YXRpIFNoYXJtYSB3cm90ZToNCj4gSGVscGVyIGZ1bmN0aW9ucyBhcmUgYWRkZWQgZm9yIGdl
-dHRpbmcvc2V0dGluZyBWRFNDIEZyYWN0aW9uYWwgQlBQDQo+IGRlYnVnZnMgZW50cnkuDQo+IA0K
-PiB2MjogLWltcHJvdmVkIGZ1bmMgZGVzY3JpcHRpb24gKEFua2l0KQ0KPiDCoMKgwqAgLWluY3Jl
-YXNlZCBidWZmIHNpemUgKEFua2l0KQ0KPiDCoMKgwqAgLWFzc2VydGVkIGJwcF9wcmVjIChBbmtp
-dCkNCj4gDQo+IFNpZ25lZC1vZmYtYnk6IFN3YXRpIFNoYXJtYSA8c3dhdGkyLnNoYXJtYUBpbnRl
-bC5jb20+DQo+IC0tLQ0KPiDCoGxpYi9pZ3RfZHNjLmMgfCA4NA0KPiArKysrKysrKysrKysrKysr
-KysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysNCj4gwqBsaWIvaWd0X2RzYy5oIHzC
-oCA1ICsrKw0KPiDCoDIgZmlsZXMgY2hhbmdlZCwgODkgaW5zZXJ0aW9ucygrKQ0KPiANCj4gZGlm
-ZiAtLWdpdCBhL2xpYi9pZ3RfZHNjLmMgYi9saWIvaWd0X2RzYy5jDQo+IGluZGV4IDI2OWQ1NzRl
-OS4uZTVlNjdhNDY5IDEwMDY0NA0KPiAtLS0gYS9saWIvaWd0X2RzYy5jDQo+ICsrKyBiL2xpYi9p
-Z3RfZHNjLmMNCj4gQEAgLTE5OCwzICsxOTgsODcgQEAgaW50IGlndF9nZXRfZHNjX3ljYmNyNDIw
-X2RlYnVnZnNfZmQoaW50IGRybWZkLA0KPiBjaGFyICpjb25uZWN0b3JfbmFtZSkNCj4gwqANCj4g
-wqDCoMKgwqDCoMKgwqDCoHJldHVybiBvcGVuYXQoaWd0X2RlYnVnZnNfZGlyKGRybWZkKSwgZmls
-ZV9uYW1lLCBPX1dST05MWSk7DQo+IMKgfQ0KPiArDQo+ICtzdGF0aWMNCj4gK2Jvb2wgY2hlY2tf
-ZHNjX2ZyYWN0aW9uYWxfYnBwX2RlYnVnZnMoaW50IGRybWZkLCBjaGFyDQo+ICpjb25uZWN0b3Jf
-bmFtZSwNCj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBjb25zdCBjaGFyICpjaGVja19zdHIpDQo+ICt7DQo+
-ICvCoMKgwqDCoMKgwqDCoGNoYXIgZmlsZV9uYW1lWzEyOF0gPSB7MH07DQo+ICvCoMKgwqDCoMKg
-wqDCoGNoYXIgYnVmWzUxMl07DQo+ICsNCj4gK8KgwqDCoMKgwqDCoMKgc3ByaW50ZihmaWxlX25h
-bWUsICIlcy9pOTE1X2RzY19mcmFjdGlvbmFsX2JwcCIsDQo+IGNvbm5lY3Rvcl9uYW1lKTsNCj4g
-Kw0KPiArwqDCoMKgwqDCoMKgwqBpZ3RfZGVidWdmc19yZWFkKGRybWZkLCBmaWxlX25hbWUsIGJ1
-Zik7DQo+ICsNCj4gK8KgwqDCoMKgwqDCoMKgcmV0dXJuIHN0cnN0cihidWYsIGNoZWNrX3N0cik7
-DQo+ICt9DQo+ICsNCj4gKy8qDQo+ICsgKiBpZ3RfZ2V0X2RzY19mcmFjdGlvbmFsX2JwcF9zdXBw
-b3J0ZWQ6DQo+ICsgKiBAZHJtZmQ6IEEgZHJtIGZpbGUgZGVzY3JpcHRvcg0KPiArICogQGNvbm5l
-Y3Rvcl9uYW1lOiBOYW1lIG9mIHRoZSBsaWJkcm0gY29ubmVjdG9yIHdlJ3JlIGdvaW5nIHRvIHVz
-ZQ0KPiArICoNCj4gKyAqIFJldHVybnM6IFRoZSBkc2Mgc2luayBicHAgcHJlY2lzaW9uLg0KPiAr
-ICrCoMKgwqDCoMKgwqDCoMKgIFByZWNpc2lvbiB2YWx1ZSBvZg0KPiArICrCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgMTYgPT4gMS8xNg0K
-PiArICrCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgOMKgID0+IDEvOA0KPiArICrCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgMcKgID0+IGZyYWN0aW9uYWwgYnBwIG5vdCBzdXBwb3J0
-ZWQNCj4gKyAqLw0KPiAraW50IGlndF9nZXRfZHNjX2ZyYWN0aW9uYWxfYnBwX3N1cHBvcnRlZChp
-bnQgZHJtZmQsIGNoYXINCj4gKmNvbm5lY3Rvcl9uYW1lKQ0KPiArew0KPiArwqDCoMKgwqDCoMKg
-wqBjaGFyIGZpbGVfbmFtZVsxMjhdID0gezB9Ow0KPiArwqDCoMKgwqDCoMKgwqBjaGFyIGJ1Zls1
-MTJdOw0KPiArwqDCoMKgwqDCoMKgwqBjaGFyICpzdGFydF9sb2M7DQo+ICvCoMKgwqDCoMKgwqDC
-oGludCBicHBfcHJlYzsNCj4gKw0KPiArwqDCoMKgwqDCoMKgwqBzcHJpbnRmKGZpbGVfbmFtZSwg
-IiVzL2k5MTVfZHNjX2ZlY19zdXBwb3J0IiwNCj4gY29ubmVjdG9yX25hbWUpOw0KPiArwqDCoMKg
-wqDCoMKgwqBpZ3RfZGVidWdmc19yZWFkKGRybWZkLCBmaWxlX25hbWUsIGJ1Zik7DQo+ICsNCj4g
-K8KgwqDCoMKgwqDCoMKgaWd0X2Fzc2VydChzdGFydF9sb2MgPSBzdHJzdHIoYnVmLCAiRFNDX1Np
-bmtfQlBQX1ByZWNpc2lvbjoNCj4gIikpOw0KPiArwqDCoMKgwqDCoMKgwqBpZ3RfYXNzZXJ0X2Vx
-KHNzY2FuZihzdGFydF9sb2MsICJEU0NfU2lua19CUFBfUHJlY2lzaW9uOiAlZCIsDQo+ICZicHBf
-cHJlYyksIDEpOw0KPiArwqDCoMKgwqDCoMKgwqBpZ3RfYXNzZXJ0KGJwcF9wcmVjID4gMCk7DQo+
-ICsNCj4gK8KgwqDCoMKgwqDCoMKgcmV0dXJuIGJwcF9wcmVjOw0KPiArfQ0KPiArDQo+ICsvKg0K
-PiArICogaWd0X2lzX2ZvcmNlX2RzY19mcmFjdGlvbmFsX2JwcF9lbmFibGVkOg0KPiArICogQGRy
-bWZkOiBBIGRybSBmaWxlIGRlc2NyaXB0b3INCj4gKyAqIEBjb25uZWN0b3JfbmFtZTogTmFtZSBv
-ZiB0aGUgbGliZHJtIGNvbm5lY3RvciB3ZSdyZSBnb2luZyB0byB1c2UNCj4gKyAqDQo+ICsgKiBS
-ZXR1cm5zOiBUcnVlIGlmIERTQyBGcmFjdGlvbmFsIEJQUCBpcyBmb3JjZSBlbmFibGVkICh2aWEN
-Cj4gZGVidWdmcykgZm9yIHRoZSBnaXZlbiBjb25uZWN0b3IsDQo+ICsgKiBmYWxzZSBvdGhlcndp
-c2UuDQo+ICsgKi8NCj4gK2Jvb2wgaWd0X2lzX2ZvcmNlX2RzY19mcmFjdGlvbmFsX2JwcF9lbmFi
-bGVkKGludCBkcm1mZCwgY2hhcg0KPiAqY29ubmVjdG9yX25hbWUpDQo+ICt7DQo+ICvCoMKgwqDC
-oMKgwqDCoHJldHVybiBjaGVja19kc2NfZnJhY3Rpb25hbF9icHBfZGVidWdmcyhkcm1mZCwNCj4g
-Y29ubmVjdG9yX25hbWUsICJGb3JjZV9EU0NfRnJhY3Rpb25hbF9CUFBfRW5hYmxlOiB5ZXMiKTsN
-Cj4gK30NCj4gKw0KPiArLyoNCj4gKyAqIGlndF9mb3JjZV9kc2NfZnJhY3Rpb25hbF9icHBfZW5h
-YmxlOg0KPiArICogQGRybWZkOiBBIGRybSBmaWxlIGRlc2NyaXB0b3INCj4gKyAqIEBjb25uZWN0
-b3JfbmFtZTogTmFtZSBvZiB0aGUgbGliZHJtIGNvbm5lY3RvciB3ZSdyZSBnb2luZyB0byB1c2UN
-Cj4gKyAqDQo+ICsgKiBSZXR1cm5zOiAxIG9uIHN1Y2Nlc3Mgb3IgbmVnYXRpdmUgZXJyb3IgY29k
-ZSwgaW4gY2FzZSBvZiBmYWlsdXJlLg0KDQowID0gc3VjY2Vzcy4NCg0KPiArICovDQo+ICtpbnQg
-aWd0X2ZvcmNlX2RzY19mcmFjdGlvbmFsX2JwcF9lbmFibGUoaW50IGRybWZkLCBjaGFyDQo+ICpj
-b25uZWN0b3JfbmFtZSkNCj4gK3sNCj4gK8KgwqDCoMKgwqDCoMKgcmV0dXJuIHdyaXRlX2RzY19k
-ZWJ1Z2ZzKGRybWZkLCBjb25uZWN0b3JfbmFtZSwNCj4gImk5MTVfZHNjX2ZyYWN0aW9uYWxfYnBw
-IiwgIjEiKTsNCj4gK30NCj4gKw0KPiArLyoNCj4gKyAqIGlndF9nZXRfZHNjX2ZyYWN0aW9uYWxf
-YnBwX2RlYnVnZnNfZmQ6DQo+ICsgKiBAZHJtZmQ6IEEgZHJtIGZpbGUgZGVzY3JpcHRvcg0KPiAr
-ICogQGNvbm5lY3Rvcl9uYW1lOiBOYW1lIG9mIHRoZSBsaWJkcm0gY29ubmVjdG9yIHdlJ3JlIGdv
-aW5nIHRvIHVzZQ0KPiArICoNCj4gKyAqIFJldHVybnM6IGZkIG9mIHRoZSBEU0MgRnJhY3Rpb25h
-bCBCUFAgZGVidWdmcyBmb3IgdGhlIGdpdmVuDQo+IGNvbm5lY3RvciwNCj4gKyAqIGVsc2UgcmV0
-dXJucyAtMS4NCj4gKyAqLw0KPiAraW50IGlndF9nZXRfZHNjX2ZyYWN0aW9uYWxfYnBwX2RlYnVn
-ZnNfZmQoaW50IGRybWZkLCBjaGFyDQo+ICpjb25uZWN0b3JfbmFtZSkNCj4gK3sNCj4gK8KgwqDC
-oMKgwqDCoMKgY2hhciBmaWxlX25hbWVbMTI4XSA9IHswfTsNCj4gKw0KPiArwqDCoMKgwqDCoMKg
-wqBzcHJpbnRmKGZpbGVfbmFtZSwgIiVzL2k5MTVfZHNjX2ZyYWN0aW9uYWxfYnBwIiwNCj4gY29u
-bmVjdG9yX25hbWUpOw0KPiArDQo+ICvCoMKgwqDCoMKgwqDCoHJldHVybiBvcGVuYXQoaWd0X2Rl
-YnVnZnNfZGlyKGRybWZkKSwgZmlsZV9uYW1lLCBPX1dST05MWSk7DQo+ICt9DQo+IGRpZmYgLS1n
-aXQgYS9saWIvaWd0X2RzYy5oIGIvbGliL2lndF9kc2MuaA0KPiBpbmRleCBlMmIwMzlmNDIuLjdk
-Yzk1ODQwNiAxMDA2NDQNCj4gLS0tIGEvbGliL2lndF9kc2MuaA0KPiArKysgYi9saWIvaWd0X2Rz
-Yy5oDQo+IEBAIC03LDYgKzcsNyBAQA0KPiDCoCNkZWZpbmUgSUdUX0RTQ19IDQo+IMKgDQo+IMKg
-I2luY2x1ZGUgImlndF9mYi5oIg0KPiArI2luY2x1ZGUgImlndF9jb3JlLmgiDQo+IMKgDQo+IMKg
-Ym9vbCBpZ3RfaXNfZHNjX3N1cHBvcnRlZChpbnQgZHJtZmQsIGNoYXIgKmNvbm5lY3Rvcl9uYW1l
-KTsNCj4gwqBib29sIGlndF9pc19mZWNfc3VwcG9ydGVkKGludCBkcm1mZCwgY2hhciAqY29ubmVj
-dG9yX25hbWUpOw0KPiBAQCAtMTksNSArMjAsOSBAQCBib29sIGlndF9pc19kc2NfeWNiY3I0MjBf
-c3VwcG9ydGVkKGludCBkcm1mZCwgY2hhcg0KPiAqY29ubmVjdG9yX25hbWUpOw0KPiDCoGJvb2wg
-aWd0X2lzX2ZvcmNlX2RzY195Y2JjcjQyMF9lbmFibGVkKGludCBkcm1mZCwgY2hhcg0KPiAqY29u
-bmVjdG9yX25hbWUpOw0KPiDCoGludCBpZ3RfZm9yY2VfZHNjX3ljYmNyNDIwX2VuYWJsZShpbnQg
-ZHJtZmQsIGNoYXIgKmNvbm5lY3Rvcl9uYW1lKTsNCj4gwqBpbnQgaWd0X2dldF9kc2NfeWNiY3I0
-MjBfZGVidWdmc19mZChpbnQgZHJtZmQsIGNoYXINCj4gKmNvbm5lY3Rvcl9uYW1lKTsNCj4gK2lu
-dCBpZ3RfZ2V0X2RzY19mcmFjdGlvbmFsX2JwcF9zdXBwb3J0ZWQoaW50IGRybWZkLCBjaGFyDQo+
-ICpjb25uZWN0b3JfbmFtZSk7DQo+ICtib29sIGlndF9pc19mb3JjZV9kc2NfZnJhY3Rpb25hbF9i
-cHBfZW5hYmxlZChpbnQgZHJtZmQsIGNoYXINCj4gKmNvbm5lY3Rvcl9uYW1lKTsNCj4gK2ludCBp
-Z3RfZm9yY2VfZHNjX2ZyYWN0aW9uYWxfYnBwX2VuYWJsZShpbnQgZHJtZmQsIGNoYXINCj4gKmNv
-bm5lY3Rvcl9uYW1lKTsNCj4gK2ludCBpZ3RfZ2V0X2RzY19mcmFjdGlvbmFsX2JwcF9kZWJ1Z2Zz
-X2ZkKGludCBkcm1mZCwgY2hhcg0KPiAqY29ubmVjdG9yX25hbWUpOw0KPiDCoA0KPiDCoCNlbmRp
-Zg0KDQo=
+Hi Ville,
+
+> -----Original Message-----
+> From: Ville Syrj=E4l=E4 <ville.syrjala@linux.intel.com>
+> Sent: Thursday, January 12, 2023 6:07 PM
+> To: Bhadane, Dnyaneshwar <dnyaneshwar.bhadane@intel.com>
+> Cc: igt-dev@lists.freedesktop.org; Kurmi, Suresh Kumar
+> <suresh.kumar.kurmi@intel.com>; Heikkila, Juha-pekka <juha-
+> pekka.heikkila@intel.com>
+> Subject: Re: [igt-dev] [i-g-t] tests/kms_cursor_crc: skip pipe on invalid
+> connector in cursor size test
+>=20
+> On Thu, Jan 12, 2023 at 04:27:02PM +0530, Dnyaneshwar Bhadane wrote:
+> > Only the valid pipe connector combination reach to the igt commit.
+> > Cursor max-size test will not affect existing flow as only skip for
+> > invalid connector.
+> > For cursor-dpms and cursor-suspend not require to check
+> > require_cursor_size becuase the cursor height and width used from drm
+> capablities.
+> >
+> > Signed-off-by: Dnyaneshwar Bhadane
+> <dnyaneshwar.bhadane@intel.com>
+> >
+> > ---
+> >  tests/kms_cursor_crc.c | 21 +++++++++++++++------
+> >  1 file changed, 15 insertions(+), 6 deletions(-)
+> >
+> > diff --git a/tests/kms_cursor_crc.c b/tests/kms_cursor_crc.c index
+> > d5a4b30b..4ab4c005 100644
+> > --- a/tests/kms_cursor_crc.c
+> > +++ b/tests/kms_cursor_crc.c
+> > @@ -752,6 +752,13 @@ static void run_size_tests(data_t *data, int w, in=
+t
+> h)
+> >  			for_each_pipe(&data->display, pipe) {
+> >  				data->pipe =3D pipe;
+> >
+> > +				if(!igt_pipe_connector_valid(pipe, data-
+> >output)) {
+>=20
+> Isn't there a for_each_something() that does all of that?
+
+Yes, I found for_each_pipe_with_valid_output()  and this macro loop checks =
+for the invalid connectors on=20
+each pipe. I will update the code using for_each_pipe_with_valid_output().=
+=20
+Thanks for the suggestion.
+
+Dnyaneshwar Bhadane,
+Intel
+
+>=20
+> > +					igt_debug("Invalid connector on
+> pipe-%s-%s\n",
+> > +						kmstest_pipe_name(pipe),
+> > +						data->output->name);
+> > +					continue;
+> > +				}
+> > +
+> >  				if (require_cursor_size(data, w, h)) {
+> >  					igt_info("Cursor size %dx%d not
+> supported by driver\n", w, h);
+> >  					continue;
+> > @@ -854,9 +861,10 @@ static void run_tests_on_pipe(data_t *data)
+> >  			data->pipe =3D pipe;
+> >  			data->flags =3D TEST_DPMS;
+> >
+> > -			if (require_cursor_size(data, data->cursor_max_w,
+> data->cursor_max_h)) {
+> > -				igt_debug("Cursor size %dx%d not supported
+> by driver\n",
+> > -					  data->cursor_max_w, data-
+> >cursor_max_h);
+> > +			if(!igt_pipe_connector_valid(pipe, data->output)) {
+> > +				igt_debug("Invalid connector on pipe-%s-
+> %s\n",
+> > +					kmstest_pipe_name(pipe),
+> > +					data->output->name);
+> >  				continue;
+> >  			}
+> >
+> > @@ -875,9 +883,10 @@ static void run_tests_on_pipe(data_t *data)
+> >  			data->pipe =3D pipe;
+> >  			data->flags =3D TEST_SUSPEND;
+> >
+> > -			if (require_cursor_size(data, data->cursor_max_w,
+> data->cursor_max_h)) {
+> > -				igt_debug("Cursor size %dx%d not supported
+> by driver\n",
+> > -					  data->cursor_max_w, data-
+> >cursor_max_h);
+> > +			if(!igt_pipe_connector_valid(pipe, data->output)) {
+> > +				igt_debug("Invalid connector on pipe-%s-
+> %s\n",
+> > +					kmstest_pipe_name(pipe),
+> > +					data->output->name);
+> >  				continue;
+> >  			}
+> >
+> > --
+> > 2.35.1
+>=20
+> --
+> Ville Syrj=E4l=E4
+> Intel
