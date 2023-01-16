@@ -1,19 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7349610E49C
- for <igt-dev@lists.freedesktop.org>; Mon, 16 Jan 2023 19:10:32 +0000 (UTC)
-Date: Mon, 16 Jan 2023 20:10:30 +0100
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 639E510E49D
+ for <igt-dev@lists.freedesktop.org>; Mon, 16 Jan 2023 19:15:14 +0000 (UTC)
+Date: Mon, 16 Jan 2023 20:15:11 +0100
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Message-ID: <20230116191030.3nde5gi3tavhqttq@kamilkon-desk1>
-References: <20230114194910.53526-1-zbigniew.kempczynski@intel.com>
+Message-ID: <20230116191511.pvke5kkdn7hyiadu@kamilkon-desk1>
+References: <20230113091041.27032-1-jeevan.b@intel.com>
+ <20230113091041.27032-2-jeevan.b@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230114194910.53526-1-zbigniew.kempczynski@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t] i915/gem_ccs: Remove race in creating
- batch buffers
+In-Reply-To: <20230113091041.27032-2-jeevan.b@intel.com>
+Subject: Re: [igt-dev] [PATCH 1/2] lib/igt_draw: Use intel_get_uc_mocs to
+ get MOCS value
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,176 +21,51 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: lucas.demarchi@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Zbigniew,
+Hi,
 
-On 2023-01-14 at 20:49:10 +0100, Zbigniew Kempczyński wrote:
-> Creating buffers from pool allows achieve pipelined execution easier -
----------------------------------------------------------------------- ^
-Maybe just ',' (comma) instead of '-' ?
-
-> returned buffer is not active from driver point of view. Unfortunately
-> buffer should be created before use, otherwise we can hit the race.
+On 2023-01-13 at 14:40:40 +0530, Jeevan B wrote:
+> Use intel_get_uc_mocs instead of hardcoding to get table entry.
 > 
-> In the test in rare cases batch created for ctrl-surf from pool was
-> immediate executed and not active so batch created for block-copy had
-> same handle. Problem occurred when block-copy was executed immediately
-> after surf-copy without stalls - both batches used same handle,
--------------------------------- ^
-Maybe s/-/and/ ?
-
-> so latter just overwrites instructions of previous one.
-> 
-> Instead of using buffer pool we create two separate batches - one for
-------------------------------------------------------------- ^
-Same here s/-/,/
-
-> surf-copy and second for block-copy. This will remove the buffer
-> creation race from the pool. Additionally add surface compare diff
------------------------------- ^
-> grouped by 8x8 blocks of pixels.
-
-This is rather compare used in dumping difference, original compare
-is still memcmp. Maybe put this into new paragraph ?
-
-> 
-> Fixes: https://gitlab.freedesktop.org/drm/intel/-/issues/6683
-> 
-> Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> Signed-off-by: Jeevan B <jeevan.b@intel.com>
 > ---
->  tests/i915/gem_ccs.c | 69 +++++++++++++++++++++++++++++++++++++++-----
->  1 file changed, 61 insertions(+), 8 deletions(-)
+>  lib/igt_draw.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
 > 
-> diff --git a/tests/i915/gem_ccs.c b/tests/i915/gem_ccs.c
-> index 751f65e63d..ad2ef0cb41 100644
-> --- a/tests/i915/gem_ccs.c
-> +++ b/tests/i915/gem_ccs.c
-> @@ -158,6 +158,54 @@ static void set_blt_object(struct blt_copy_object *obj,
->  	if (param.write_png) \
->  		blt_surface_to_png((fd), (id), (name), (obj), (w), (h)); } while (0)
+> diff --git a/lib/igt_draw.c b/lib/igt_draw.c
+> index 975d65cd..bfe9cd50 100644
+> --- a/lib/igt_draw.c
+> +++ b/lib/igt_draw.c
+> @@ -36,6 +36,7 @@
+>  #include "i830_reg.h"
+>  #include "i915/gem_create.h"
+>  #include "i915/gem_mman.h"
+> +#include "i915/intel_mocs.h"
 >  
-> +static int compare_nxn(const struct blt_copy_object *surf1,
-> +		       const struct blt_copy_object *surf2,
-> +		       int xsize, int ysize, int bx, int by)
-> +{
-> +	int x, y, corrupted;
-> +	uint32_t pos, px1, px2;
-> +
-> +	corrupted = 0;
-> +	for (y = 0; y < ysize; y++) {
-> +		for (x = 0; x < xsize; x++) {
-> +			pos = bx * xsize + by * ysize * surf1->pitch / 4;
-> +			pos += x + y * surf1->pitch / 4;
-> +			px1 = surf1->ptr[pos];
-> +			px2 = surf2->ptr[pos];
-> +			if (px1 != px2)
-> +				corrupted++;
-> +		}
-> +	}
-> +
-> +	return corrupted;
-> +}
-> +
-> +static void dump_corruption_info(const struct blt_copy_object *surf1,
-> +				 const struct blt_copy_object *surf2)
-> +{
-> +	const int xsize = 8, ysize = 8;
-> +	int w, h, bx, by, corrupted;
-> +
-> +	igt_assert(surf1->x1 == surf2->x1 && surf1->x2 == surf2->x2);
-> +	igt_assert(surf1->y1 == surf2->y1 && surf1->y2 == surf2->y2);
-> +	w = surf1->x2;
-> +	h = surf1->y2;
-> +
-> +	igt_info("dump corruption - width: %d, height: %d, sizex: %x, sizey: %x\n",
-> +		 surf1->x2, surf1->y2, xsize, ysize);
-> +
-> +	for (by = 0; by < h / ysize; by++) {
-> +		for (bx = 0; bx < w / xsize; bx++) {
-> +			corrupted = compare_nxn(surf1, surf2, xsize, ysize, bx, by);
-> +			if (corrupted == 0)
-> +				igt_info(".");
-> +			else
-> +				igt_info("%c", '0' + corrupted);
-> +		}
-> +		igt_info("\n");
-> +	}
-> +}
-> +
->  static void surf_copy(int i915,
->  		      const intel_ctx_t *ctx,
->  		      const struct intel_execution_engine2 *e,
-> @@ -170,7 +218,7 @@ static void surf_copy(int i915,
->  	struct blt_copy_data blt = {};
->  	struct blt_block_copy_data_ext ext = {};
->  	struct blt_ctrl_surf_copy_data surf = {};
-> -	uint32_t bb, ccs, ccs2, *ccsmap, *ccsmap2;
-> +	uint32_t bb1, bb2, ccs, ccs2, *ccsmap, *ccsmap2;
->  	uint64_t bb_size, ccssize = mid->size / CCS_RATIO;
->  	uint32_t *ccscopy;
->  	uint8_t uc_mocs = intel_get_uc_mocs(i915);
-> @@ -178,8 +226,6 @@ static void surf_copy(int i915,
+>  #ifndef PAGE_ALIGN
+>  #ifndef PAGE_SIZE
+> @@ -703,7 +704,7 @@ static void draw_rect_blt(int fd, struct cmd_data *cmd_data,
 >  
->  	igt_assert(mid->compression);
->  	ccscopy = (uint32_t *) malloc(ccssize);
-> -	bb_size = 4096;
-> -	bb = gem_create_from_pool(i915, &bb_size, REGION_SMEM);
->  	ccs = gem_create(i915, ccssize);
->  	ccs2 = gem_create(i915, ccssize);
->  
-> @@ -189,7 +235,9 @@ static void surf_copy(int i915,
->  			uc_mocs, INDIRECT_ACCESS);
->  	set_surf_object(&surf.dst, ccs, REGION_SMEM, ccssize,
->  			uc_mocs, DIRECT_ACCESS);
-> -	set_batch(&surf.bb, bb, bb_size, REGION_SMEM);
-> +	bb_size = 4096;
-> +	igt_assert_eq(__gem_create(i915, &bb_size, &bb1), 0);
-> +	set_batch(&surf.bb, bb1, bb_size, REGION_SMEM);
->  	blt_ctrl_surf_copy(i915, ctx, e, ahnd, &surf);
->  	gem_sync(i915, surf.dst.handle);
->  
-> @@ -240,9 +288,8 @@ static void surf_copy(int i915,
->  	set_blt_object(&blt.dst, dst);
->  	set_object_ext(&ext.src, mid->compression_type, mid->x2, mid->y2, SURFACE_TYPE_2D);
->  	set_object_ext(&ext.dst, 0, dst->x2, dst->y2, SURFACE_TYPE_2D);
-> -	bb_size = 4096;
-> -	bb = gem_create_from_pool(i915, &bb_size, REGION_SMEM);
-> -	set_batch(&blt.bb, bb, bb_size, REGION_SMEM);
-> +	igt_assert_eq(__gem_create(i915, &bb_size, &bb2), 0);
-> +	set_batch(&blt.bb, bb2, bb_size, REGION_SMEM);
->  	blt_block_copy(i915, ctx, e, ahnd, &blt, &ext);
->  	gem_sync(i915, blt.dst.handle);
->  	WRITE_PNG(i915, run_id, "corrupted", &blt.dst, dst->x2, dst->y2);
-> @@ -257,10 +304,16 @@ static void surf_copy(int i915,
->  	gem_sync(i915, blt.dst.handle);
->  	WRITE_PNG(i915, run_id, "corrected", &blt.dst, dst->x2, dst->y2);
->  	result = memcmp(src->ptr, dst->ptr, src->size);
-> -	igt_assert(result == 0);
-> +	if (result)
-> +		dump_corruption_info(src, dst);
->  
->  	munmap(ccsmap, ccssize);
->  	gem_close(i915, ccs);
-> +	gem_close(i915, ccs2);
-> +	gem_close(i915, bb1);
-> +	gem_close(i915, bb2);
-> +
-> +	igt_assert_f(result == 0, "Surface after retrieving ccs data is not correct\n");
+>  		intel_bb_out(ibb, XY_FAST_COLOR_BLT | blt_cmd_depth);
+>  		/* DG2 MOCS entry 2 is "UC - Non-Coherent; GO:Memory" */
+---------------- ^
+Please remove this old comment from here as after change it will
+start working for DG1 and other archs.
 
-Looks like logic slightly changed here ? Maybe it is worth for description.
-
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Btw this is independent from 2/2 and imho should be first.
 
 Regards,
-Kamil
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
->  }
->  
->  struct blt_copy3_data {
+> -		intel_bb_out(ibb, blt_cmd_tiling | 2 << 21 | (pitch-1));
+> +		intel_bb_out(ibb, blt_cmd_tiling | intel_get_uc_mocs(fd) << 21 | (pitch-1));
+>  		intel_bb_out(ibb, (rect->y << 16) | rect->x);
+>  		intel_bb_out(ibb, ((rect->y + rect->h) << 16) | (rect->x + rect->w));
+>  		intel_bb_emit_reloc_fenced(ibb, dst->handle, 0,
 > -- 
-> 2.34.1
+> 2.19.1
 > 
