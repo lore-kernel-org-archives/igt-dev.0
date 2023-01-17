@@ -1,20 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from farmhouse.coelho.fi (paleale.coelho.fi [176.9.41.70])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5CD8C10E2E1
- for <igt-dev@lists.freedesktop.org>; Tue, 17 Jan 2023 21:14:01 +0000 (UTC)
-Message-ID: <9170d2eb9dc14fd75ff725dd9d81d39e65dc9835.camel@coelho.fi>
-From: Luca Coelho <luca@coelho.fi>
-To: juhapekka.heikkila@gmail.com, igt-dev@lists.freedesktop.org
-Date: Tue, 17 Jan 2023 23:13:57 +0200
-In-Reply-To: <6ec7408d-7916-32e4-ff90-d02518b015c5@gmail.com>
-References: <20230116203923.6292-1-juhapekka.heikkila@gmail.com>
- <00de8b4c21589dde63708d0ae6226f6ccf172156.camel@coelho.fi>
- <6ec7408d-7916-32e4-ff90-d02518b015c5@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 922EA10E1D0
+ for <igt-dev@lists.freedesktop.org>; Tue, 17 Jan 2023 22:03:47 +0000 (UTC)
+From: =?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>
+To: Melissa Wen <mwen@igalia.com>,
+ =?UTF-8?q?Andr=C3=A9=20Almeida?= <andrealmeid@igalia.com>,
+ Petri Latvala <petri.latvala@intel.com>,
+ Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Rodrigo Siqueira <rodrigosiqueiramelo@gmail.com>
+Date: Tue, 17 Jan 2023 19:03:22 -0300
+Message-Id: <20230117220322.231405-1-mcanal@igalia.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t v2] tests/kms_plane_scaling: add invalid
- parameter tests
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t] tests/vkms: Create a testlist to the vkms
+ DRM driver
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,119 +22,289 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Tue, 2023-01-17 at 23:03 +0200, Juha-Pekka Heikkila wrote:
-> Hi Luca, thanks for looking into this.
->=20
-> On 17.1.2023 14.29, Luca Coelho wrote:
-> > On Mon, 2023-01-16 at 22:39 +0200, Juha-Pekka Heikkila wrote:
-> > > Add skeleton for adding invalid parameter tests and add two tests whi=
-ch are
-> > > expected to return -EINVAL or -ERANGE
-> > >=20
-> > > Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-> > > ---
-> >=20
-> > Looks good! Though I have a few nitpicks and/or questions below.
-> >=20
-> >=20
-> > >   tests/kms_plane_scaling.c | 73 ++++++++++++++++++++++++++++++++++++=
-+++
-> > >   1 file changed, 73 insertions(+)
-> > >=20
-> > > diff --git a/tests/kms_plane_scaling.c b/tests/kms_plane_scaling.c
-> > > index 887a55e63..4ec660bc9 100644
-> > > --- a/tests/kms_plane_scaling.c
-> > > +++ b/tests/kms_plane_scaling.c
-> > > @@ -819,6 +819,77 @@ static void test_scaler_with_multi_pipe_plane(da=
-ta_t *d)
-> > >   	igt_assert_eq(ret1 && ret2, 0);
-> > >   }
-> > >  =20
-> > > +static void invalid_parameter_tests(data_t *d) {
-> > > +	enum pipe pipe =3D PIPE_A;
-> > > +	igt_output_t *output;
-> > > +	igt_fb_t fb;
-> > > +	igt_plane_t* plane;
-> > > +	int32_t rval;
-> >=20
-> > I'm not sure what the conventions are, but AFAICT
-> > igt_display_try_commit2() is defined as returning int, and all the
-> > other ret values in the code here are using "int ret".  Wouldn't it be
-> > better for consistency?
->=20
-> Yea, I guess it is better to call int as int.
->=20
-> >=20
-> >=20
-> > > +
-> > > +	const struct {
-> > > +		const char* testname;
-> > > +		uint32_t planesize[2];
-> > > +		struct {
-> > > +			enum igt_atomic_plane_properties prop;
-> > > +			uint32_t value;
-> > > +		} params[8];
-> > > +	} paramtests[] =3D {
-> > > +		{
-> > > +			.testname =3D "less-than-1-height-src",
-> > > +			.planesize =3D {256, 8},
-> > > +			.params =3D {{IGT_PLANE_SRC_H, IGT_FIXED(0, 30) }, {~0}}
-> > > +		},
-> > > +		{
-> > > +			.testname =3D "less-than-1-width-src",
-> > > +			.planesize =3D {8, 256},
-> > > +			.params =3D {{IGT_PLANE_SRC_W, IGT_FIXED(0, 30) }, {~0}}
-> > > +		},
-> > > +	};
-> >=20
-> > Why are these defined as locals? Wouldn't it be better to make them
-> > global, if not for more readability, at least for consistency?
->=20
-> Not sure why should these be global? On igt tests you'll see similar=20
-> structures both global and local, for example kms_cursor_crc or=20
-> kms_rotation_crc has similar tables defined locally but on kms_ccs I=20
-> moved test defining table from local to global because it was needed to=
-=20
-> be accessed globally. Usually I try to avoid putting things global when=
-=20
-> not needed.
+The vkms DRM driver is a software-only model of a KMS driver and its
+development is highly based on the current status of the IGT tests. So,
+create a list of the tests that are supported by the vkms DRM driver, in
+order to have a baseline of the tests that should pass when using vkms.
 
-Well, you're making them constant, so it really makes no difference in
-practice, because it will end up in the same text_section in memory as
-if you had defined them as global consts outside the function.
+This way, it will easier to track regressions on the vkms DRM driver, as
+the testlist for the driver will be publicly available.
 
-I was just thinking that it would be a bit easier to read if you had
-them outside the function.  But if there is common precedent for doing
-this, who am I to say otherwise? =F0=9F=98=89
+Signed-off-by: Maíra Canal <mcanal@igalia.com>
+---
+ tests/vkms_ci/README        |  20 ++++
+ tests/vkms_ci/vkms.testlist | 231 ++++++++++++++++++++++++++++++++++++
+ 2 files changed, 251 insertions(+)
+ create mode 100644 tests/vkms_ci/README
+ create mode 100644 tests/vkms_ci/vkms.testlist
 
-
-> > > +
-> > > +	igt_fixture {
-> > > +		output =3D igt_get_single_output_for_pipe(&d->display, pipe);
-> > > +		igt_require(output);
-> > > +
-> > > +		igt_output_set_pipe(output, pipe);
-> > > +		plane =3D igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY=
-);
-> > > +
-> > > +		igt_create_fb(d->drm_fd, 256, 256,
-> > > +			DRM_FORMAT_XRGB8888,
-> > > +			DRM_FORMAT_MOD_NONE,
-> > > +			&fb);
-> > > +	}
-> > > +
-> > > +	igt_subtest_group {
-> >=20
-> > Why do you need a group with a single subtest?
->=20
-> This was forgotten here :) I earlier had those fixtures inside group but=
-=20
-> then reshaped and moved them around a bit.
-
---
-Cheers,
-Luca.
+diff --git a/tests/vkms_ci/README b/tests/vkms_ci/README
+new file mode 100644
+index 00000000..4b0265bf
+--- /dev/null
++++ b/tests/vkms_ci/README
+@@ -0,0 +1,20 @@
++This directory contains test lists to be used for vkms's DRM support. The files
++are passed to piglit with the --test-list|-T parameter directly.
++
++The test lists are contained in the IGT repository for several
++reasons:
++
++- The lists stay synchronized with the IGT codebase.
++- Public availability. Kernel developers can see what tests are run,
++  and can see what changes are done to the set, when, and why.
++- Keep track of the features implemented by the vkms DRM driver.
++
++=============
++vkms.testlist
++=============
++
++This test list is meant as a general test suite for the vkms DRM driver,
++gathering all must-pass tests for the driver.
++
++As more features are implemented to the vkms DRM driver, the correspondent
++tests should be added to this list.
+diff --git a/tests/vkms_ci/vkms.testlist b/tests/vkms_ci/vkms.testlist
+new file mode 100644
+index 00000000..9065d318
+--- /dev/null
++++ b/tests/vkms_ci/vkms.testlist
+@@ -0,0 +1,231 @@
++igt@kms_atomic@atomic-invalid-params
++igt@kms_atomic@crtc-invalid-params
++igt@kms_atomic@plane-cursor-legacy
++igt@kms_atomic@plane-immutable-zpos
++igt@kms_atomic@plane-invalid-params
++igt@kms_atomic@plane-primary-legacy
++igt@kms_atomic@test-only
++igt@kms_atomic_transition@modeset-transition
++igt@kms_atomic_transition@modeset-transition-fencing
++igt@kms_atomic_transition@modeset-transition-nonblocking
++igt@kms_atomic_transition@modeset-transition-nonblocking-fencing
++igt@kms_atomic_transition@plane-all-modeset-transition
++igt@kms_atomic_transition@plane-all-transition
++igt@kms_atomic_transition@plane-all-transition-nonblocking
++igt@kms_atomic_transition@plane-primary-toggle-with-vblank-wait
++igt@kms_atomic_transition@plane-use-after-nonblocking-unbind
++igt@kms_bw@linear-tiling-1-displays-1920x1080p
++igt@kms_bw@linear-tiling-1-displays-2560x1440p
++igt@kms_bw@linear-tiling-1-displays-3840x2160p
++igt@kms_bw@linear-tiling-2-displays-1920x1080p
++igt@kms_bw@linear-tiling-2-displays-2560x1440p
++igt@kms_bw@linear-tiling-2-displays-3840x2160p
++igt@kms_concurrent@pipe-a
++igt@kms_cursor_crc@cursor-alpha-opaque
++igt@kms_cursor_crc@cursor-alpha-transparent
++igt@kms_cursor_crc@cursor-dpms
++igt@kms_cursor_crc@cursor-offscreen-128x128
++igt@kms_cursor_crc@cursor-offscreen-128x42
++igt@kms_cursor_crc@cursor-offscreen-256x256
++igt@kms_cursor_crc@cursor-offscreen-256x85
++igt@kms_cursor_crc@cursor-offscreen-32x10
++igt@kms_cursor_crc@cursor-offscreen-32x32
++igt@kms_cursor_crc@cursor-offscreen-512x170
++igt@kms_cursor_crc@cursor-offscreen-512x512
++igt@kms_cursor_crc@cursor-offscreen-64x21
++igt@kms_cursor_crc@cursor-offscreen-64x64
++igt@kms_cursor_crc@cursor-onscreen-128x128
++igt@kms_cursor_crc@cursor-onscreen-128x42
++igt@kms_cursor_crc@cursor-onscreen-256x256
++igt@kms_cursor_crc@cursor-onscreen-256x85
++igt@kms_cursor_crc@cursor-onscreen-32x10
++igt@kms_cursor_crc@cursor-onscreen-32x32
++igt@kms_cursor_crc@cursor-onscreen-512x170
++igt@kms_cursor_crc@cursor-onscreen-512x512
++igt@kms_cursor_crc@cursor-onscreen-64x21
++igt@kms_cursor_crc@cursor-onscreen-64x64
++igt@kms_cursor_crc@cursor-random-128x128
++igt@kms_cursor_crc@cursor-random-128x42
++igt@kms_cursor_crc@cursor-random-256x256
++igt@kms_cursor_crc@cursor-random-256x85
++igt@kms_cursor_crc@cursor-random-32x10
++igt@kms_cursor_crc@cursor-random-32x32
++igt@kms_cursor_crc@cursor-random-512x170
++igt@kms_cursor_crc@cursor-random-512x512
++igt@kms_cursor_crc@cursor-random-64x21
++igt@kms_cursor_crc@cursor-random-64x64
++igt@kms_cursor_crc@cursor-rapid-movement-128x128
++igt@kms_cursor_crc@cursor-rapid-movement-128x42
++igt@kms_cursor_crc@cursor-rapid-movement-256x256
++igt@kms_cursor_crc@cursor-rapid-movement-256x85
++igt@kms_cursor_crc@cursor-rapid-movement-32x10
++igt@kms_cursor_crc@cursor-rapid-movement-32x32
++igt@kms_cursor_crc@cursor-rapid-movement-512x170
++igt@kms_cursor_crc@cursor-rapid-movement-512x512
++igt@kms_cursor_crc@cursor-rapid-movement-64x21
++igt@kms_cursor_crc@cursor-rapid-movement-64x64
++igt@kms_cursor_crc@cursor-size-change
++igt@kms_cursor_crc@cursor-sliding-128x128
++igt@kms_cursor_crc@cursor-sliding-128x42
++igt@kms_cursor_crc@cursor-sliding-256x256
++igt@kms_cursor_crc@cursor-sliding-256x85
++igt@kms_cursor_crc@cursor-sliding-32x10
++igt@kms_cursor_crc@cursor-sliding-32x32
++igt@kms_cursor_crc@cursor-sliding-512x170
++igt@kms_cursor_crc@cursor-sliding-512x512
++igt@kms_cursor_crc@cursor-sliding-64x21
++igt@kms_cursor_crc@cursor-sliding-64x64
++igt@kms_cursor_crc@cursor-suspend
++igt@kms_cursor_edge_walk@left-edge
++igt@kms_cursor_edge_walk@right-edge
++igt@kms_cursor_edge_walk@top-bottom
++igt@kms_cursor_edge_walk@top-edge
++igt@kms_flip@absolute-wf_vblank
++igt@kms_flip@absolute-wf_vblank-interruptible
++igt@kms_flip@basic-flip-vs-dpms
++igt@kms_flip@basic-flip-vs-modeset
++igt@kms_flip@basic-flip-vs-wf_vblank
++igt@kms_flip@basic-plain-flip
++igt@kms_flip@blocking-absolute-wf_vblank
++igt@kms_flip@blocking-absolute-wf_vblank-interruptible
++igt@kms_flip@blocking-wf_vblank
++igt@kms_flip@busy-flip
++igt@kms_flip@dpms-off-confusion
++igt@kms_flip@dpms-off-confusion-interruptible
++igt@kms_flip@dpms-vs-vblank-race
++igt@kms_flip@dpms-vs-vblank-race-interruptible
++igt@kms_flip@flip-vs-absolute-wf_vblank
++igt@kms_flip@flip-vs-absolute-wf_vblank-interruptible
++igt@kms_flip@flip-vs-blocking-wf-vblank
++igt@kms_flip@flip-vs-dpms-off-vs-modeset
++igt@kms_flip@flip-vs-dpms-off-vs-modeset-interruptible
++igt@kms_flip@flip-vs-expired-vblank
++igt@kms_flip@flip-vs-expired-vblank-interruptible
++igt@kms_flip@flip-vs-panning
++igt@kms_flip@flip-vs-panning-interruptible
++igt@kms_flip@flip-vs-rmfb
++igt@kms_flip@flip-vs-rmfb-interruptible
++igt@kms_flip@flip-vs-suspend
++igt@kms_flip@flip-vs-suspend-interruptible
++igt@kms_flip@flip-vs-wf_vblank-interruptible
++igt@kms_flip@modeset-vs-vblank-race
++igt@kms_flip@modeset-vs-vblank-race-interruptible
++igt@kms_flip@nonblocking-read
++igt@kms_flip@nonexisting-fb
++igt@kms_flip@nonexisting-fb-interruptible
++igt@kms_flip@plain-flip-fb-recreate
++igt@kms_flip@plain-flip-fb-recreate-interruptible
++igt@kms_flip@plain-flip-interruptible
++igt@kms_flip@plain-flip-ts-check
++igt@kms_flip@plain-flip-ts-check-interruptible
++igt@kms_flip@single-buffer-flip-vs-dpms-off-vs-modeset
++igt@kms_flip@single-buffer-flip-vs-dpms-off-vs-modeset-interruptible
++igt@kms_flip@wf_vblank-ts-check
++igt@kms_flip@wf_vblank-ts-check-interruptible
++igt@kms_flip_event_leak@basic
++igt@kms_getfb@getfb-addfb-different-handles
++igt@kms_getfb@getfb-handle-closed
++igt@kms_getfb@getfb-handle-not-fb
++igt@kms_getfb@getfb-handle-protection
++igt@kms_getfb@getfb-handle-valid
++igt@kms_getfb@getfb-handle-zero
++igt@kms_getfb@getfb-repeated-different-handles
++igt@kms_getfb@getfb2-handle-closed
++igt@kms_getfb@getfb2-handle-not-fb
++igt@kms_getfb@getfb2-handle-protection
++igt@kms_getfb@getfb2-handle-zero
++igt@kms_getfb@getfb2-into-addfb2
++igt@kms_lease@cursor_implicit_plane
++igt@kms_lease@empty_lease
++igt@kms_lease@implicit-plane-lease
++igt@kms_lease@invalid-create-leases
++igt@kms_lease@lease-uevent
++igt@kms_lease@lease_again
++igt@kms_lease@lease_get
++igt@kms_lease@lease_invalid_connector
++igt@kms_lease@lease_invalid_crtc
++igt@kms_lease@lease_invalid_plane
++igt@kms_lease@lease_revoke
++igt@kms_lease@lessee_list
++igt@kms_lease@master-vs-lease
++igt@kms_lease@multimaster-lease
++igt@kms_lease@page_flip_implicit_plane
++igt@kms_lease@possible-crtcs-filtering
++igt@kms_lease@setcrtc_implicit_plane
++igt@kms_lease@simple_lease
++igt@kms_multipipe_modeset@basic-max-pipe-crc-check
++igt@kms_pipe_crc_basic@bad-source
++igt@kms_pipe_crc_basic@compare-crc-sanitycheck
++igt@kms_pipe_crc_basic@disable-crc-after-crtc
++igt@kms_pipe_crc_basic@nonblocking-crc
++igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence
++igt@kms_pipe_crc_basic@read-crc
++igt@kms_pipe_crc_basic@read-crc-frame-sequence
++igt@kms_pipe_crc_basic@suspend-read-crc
++igt@kms_plane@plane-panning-bottom-right
++igt@kms_plane@plane-panning-bottom-right-suspend
++igt@kms_plane@plane-panning-top-left
++igt@kms_plane@plane-position-covered
++igt@kms_plane@plane-position-hole
++igt@kms_plane@plane-position-hole-dpms
++igt@kms_plane_multiple@tiling-none
++igt@kms_plane_scaling@planes-downscale-factor-0-25
++igt@kms_plane_scaling@planes-downscale-factor-0-5
++igt@kms_plane_scaling@planes-downscale-factor-0-75
++igt@kms_plane_scaling@planes-scaler-unity-scaling
++igt@kms_plane_scaling@planes-unity-scaling-downscale-factor-0-25
++igt@kms_plane_scaling@planes-unity-scaling-downscale-factor-0-5
++igt@kms_plane_scaling@planes-unity-scaling-downscale-factor-0-75
++igt@kms_plane_scaling@planes-upscale-20x20
++igt@kms_plane_scaling@planes-upscale-20x20-downscale-factor-0-25
++igt@kms_plane_scaling@planes-upscale-20x20-downscale-factor-0-5
++igt@kms_plane_scaling@planes-upscale-20x20-downscale-factor-0-75
++igt@kms_plane_scaling@planes-upscale-factor-0-25
++igt@kms_plane_scaling@planes-upscale-factor-0-25-downscale-factor-0-25
++igt@kms_plane_scaling@planes-upscale-factor-0-25-downscale-factor-0-5
++igt@kms_plane_scaling@planes-upscale-factor-0-25-downscale-factor-0-75
++igt@kms_prop_blob@basic
++igt@kms_prop_blob@blob-multiple
++igt@kms_prop_blob@blob-prop-core
++igt@kms_prop_blob@blob-prop-lifetime
++igt@kms_prop_blob@blob-prop-validate
++igt@kms_prop_blob@invalid-get-prop
++igt@kms_prop_blob@invalid-get-prop-any
++igt@kms_prop_blob@invalid-set-prop
++igt@kms_prop_blob@invalid-set-prop-any
++igt@kms_properties@connector-properties-atomic
++igt@kms_properties@connector-properties-legacy
++igt@kms_properties@crtc-properties-atomic
++igt@kms_properties@crtc-properties-legacy
++igt@kms_properties@get_properties-sanity-atomic
++igt@kms_properties@get_properties-sanity-non-atomic
++igt@kms_properties@invalid-properties-atomic
++igt@kms_properties@invalid-properties-legacy
++igt@kms_properties@plane-properties-atomic
++igt@kms_properties@plane-properties-legacy
++igt@kms_rmfb@close-fd
++igt@kms_rmfb@rmfb-ioctl
++igt@kms_sequence@get-busy
++igt@kms_sequence@get-forked
++igt@kms_sequence@get-forked-busy
++igt@kms_sequence@get-idle
++igt@kms_sequence@queue-busy
++igt@kms_sequence@queue-idle
++igt@kms_vblank@crtc-id
++igt@kms_vblank@invalid
++igt@kms_vblank@pipe-a-accuracy-idle
++igt@kms_vblank@pipe-a-query-busy
++igt@kms_vblank@pipe-a-query-forked
++igt@kms_vblank@pipe-a-query-forked-busy
++igt@kms_vblank@pipe-a-query-idle
++igt@kms_vblank@pipe-a-ts-continuation-dpms-suspend
++igt@kms_vblank@pipe-a-ts-continuation-idle
++igt@kms_vblank@pipe-a-ts-continuation-suspend
++igt@kms_vblank@pipe-a-wait-busy
++igt@kms_vblank@pipe-a-wait-forked
++igt@kms_vblank@pipe-a-wait-forked-busy
++igt@kms_vblank@pipe-a-wait-idle
++igt@kms_writeback@writeback-check-output
++igt@kms_writeback@writeback-fb-id
++igt@kms_writeback@writeback-invalid-parameters
++igt@kms_writeback@writeback-pixel-formats
+-- 
+2.39.0
