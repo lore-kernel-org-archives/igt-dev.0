@@ -1,19 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D119610E300
- for <igt-dev@lists.freedesktop.org>; Tue, 17 Jan 2023 17:56:34 +0000 (UTC)
-From: "Cavitt, Jonathan" <jonathan.cavitt@intel.com>
-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Date: Tue, 17 Jan 2023 17:56:24 +0000
-Message-ID: <CH0PR11MB54445DB4E2090B76A2B38983E5C69@CH0PR11MB5444.namprd11.prod.outlook.com>
-References: <20230109192536.3395428-1-jonathan.cavitt@intel.com>
- <20230117160630.rwfqgh2nclrjgwlf@kamilkon-desk1>
-In-Reply-To: <20230117160630.rwfqgh2nclrjgwlf@kamilkon-desk1>
-Content-Language: en-US
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8ED7D10E2FC
+ for <igt-dev@lists.freedesktop.org>; Tue, 17 Jan 2023 18:08:07 +0000 (UTC)
+From: Jonathan Cavitt <jonathan.cavitt@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Tue, 17 Jan 2023 10:03:34 -0800
+Message-Id: <20230117180334.473201-1-jonathan.cavitt@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t] lib/igt_kmod: Allow some leeway in
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t] lib/igt_kmod: Allow some leeway in
  igt_kmod_unload_r
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -22,123 +17,89 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: "Parupalli, Sandeep Kumar" <sandeep.kumar.parupalli@intel.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>,
- Chris Wilson <chris.p.wilson@linux.intel.com>
+Cc: chris.p.wilson@linux.intel.com, jonathan.cavitt@intel.com,
+ sandeep.kumar.parupalli@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-LS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCkZyb206IEthbWlsIEtvbmllY3pueSA8a2FtaWwu
-a29uaWVjem55QGxpbnV4LmludGVsLmNvbT4gDQpTZW50OiBUdWVzZGF5LCBKYW51YXJ5IDE3LCAy
-MDIzIDg6MDcgQU0NClRvOiBpZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZw0KQ2M6IENhdml0
-dCwgSm9uYXRoYW4gPGpvbmF0aGFuLmNhdml0dEBpbnRlbC5jb20+OyBTdW1tZXJzLCBTdHVhcnQg
-PHN0dWFydC5zdW1tZXJzQGludGVsLmNvbT47IFBhcnVwYWxsaSwgU2FuZGVlcCBLdW1hciA8c2Fu
-ZGVlcC5rdW1hci5wYXJ1cGFsbGlAaW50ZWwuY29tPjsgQ2hyaXMgV2lsc29uIDxjaHJpcy5wLndp
-bHNvbkBsaW51eC5pbnRlbC5jb20+DQpTdWJqZWN0OiBSZTogW2lndC1kZXZdIFtQQVRDSCBpLWct
-dF0gbGliL2lndF9rbW9kOiBBbGxvdyBzb21lIGxlZXdheSBpbiBpZ3Rfa21vZF91bmxvYWRfcg0K
-PiANCj4gSGkgSm9uYXRoYW4sDQo+IA0KPiBPbiAyMDIzLTAxLTA5IGF0IDExOjI1OjM2IC0wODAw
-LCBKb25hdGhhbiBDYXZpdHQgd3JvdGU6DQo+ID4ga21vZF9tb2R1bGVfcmVtb3ZlX21vZHVsZSBv
-Y2Nhc2lvbmFsbHkgcmV0dXJucyBFQUdBSU4gZm9yIG1laV9nc2MNCj4gPiBpbiB0aGUgc2V0dXAg
-b2Ygc29tZSBnZW1fbG1lbV9zd2FwcGluZyBzdWJ0ZXN0cy4gIEp1c3QgYmVjYXVzZQ0KPiA+IEVB
-R0FJTiBpcyByZXR1cm5lZCBkb2Vzbid0IG1lYW4gdGhlIG1vZHVsZSBpcyBsb3N0IGFuZCB1bmFi
-bGUgdG8NCj4gPiBiZSB1bmxvYWRlZC4gIFRyeSBhZ2FpbiBzb21lIG51bWJlciBvZiB0aW1lcyAo
-Y3VycmVudGx5IDEwKSBiZWZvcmUNCj4gPiBnaXZpbmcgdXAuDQo+ID4gDQo+ID4gUmV0cmllcyB3
-aWxsIG9jY3VyIGZvciAtRUJVU1kgYW5kIC1FQUdBSU4sIGFzIHRoZXNlIGltcGx5IHRoZQ0KPiA+
-IHN5c3RlbSBpcyB3YWl0aW5nIGZvciB0aGUgdGFyZ2V0IG1vZHVsZSBjYW4gc2ltcGx5IGJlIHdh
-aXRlZCBmb3IuDQo+ID4gQWxsIG90aGVyIGVycm9ycyBleGl0IGltbWVkaWF0ZWx5LCBidXQgYXMg
-dGhlIGNvbnRleHQgZm9yIGVhY2gNCj4gPiBlcnJvciBpbmZvcm1zIHRoZWlyIHJlbGF0aXZlIHNl
-dmVyaXR5LCBubyB3YXJuaW5ncyB3aWxsIGJlIGlzc3VlZC4NCj4gPiANCj4gPiBSZWZlcmVuY2Vz
-OiBWTEstMzAyODcsIFZMSy0zOTYyOQ0KPiAtIF4gLS0tLS0tLS0tIF4NCj4gUGxlYXNlIHJlbW92
-ZSBhbnkgcmVmcyBub3QgcmVhY2hhYmxlIGZyb20gaW50ZXJuZXQuDQo+IA0KPiA+IA0KPiA+IFNp
-Z25lZC1vZmYtYnk6IEpvbmF0aGFuIENhdml0dCA8am9uYXRoYW4uY2F2aXR0QGludGVsLmNvbT4N
-Cj4gPiBDQzogU3R1YXJ0IFN1bW1lcnMgPHN0dWFydC5zdW1tZXJzQGludGVsLmNvbT4NCj4gPiBD
-QzogU2FuZGVlcCBLdW1hciBQYXJ1cGFsbGkgPHNhbmRlZXAua3VtYXIucGFydXBhbGxpQGludGVs
-LmNvbT4NCj4gPiBDQzogQ2hyaXMgV2lsc29uIDxjaHJpcy5wLndpbHNvbkBsaW51eC5pbnRlbC5j
-b20+DQo+ID4gUmV2aWV3ZWQtYnk6IENocmlzIFdpbHNvbiA8Y2hyaXMucC53aWxzb25AbGludXgu
-aW50ZWwuY29tPg0KPiA+IC0tLQ0KPiA+ICBsaWIvaWd0X2ttb2QuYyB8IDQxICsrKysrKysrKysr
-KysrKysrKysrKysrKysrKysrKysrKysrKysrLS0tDQo+ID4gIDEgZmlsZSBjaGFuZ2VkLCAzOCBp
-bnNlcnRpb25zKCspLCAzIGRlbGV0aW9ucygtKQ0KPiA+IA0KPiA+IGRpZmYgLS1naXQgYS9saWIv
-aWd0X2ttb2QuYyBiL2xpYi9pZ3Rfa21vZC5jDQo+ID4gaW5kZXggMTcwOTAxMTBjLi5jODQwZjlh
-MTcgMTAwNjQ0DQo+ID4gLS0tIGEvbGliL2lndF9rbW9kLmMNCj4gPiArKysgYi9saWIvaWd0X2tt
-b2QuYw0KPiA+IEBAIC0yNTMsOCArMjUzLDExIEBAIG91dDoNCj4gPiAgDQo+ID4gIHN0YXRpYyBp
-bnQgaWd0X2ttb2RfdW5sb2FkX3Ioc3RydWN0IGttb2RfbW9kdWxlICprbW9kLCB1bnNpZ25lZCBp
-bnQgZmxhZ3MpDQo+ID4gIHsNCj4gPiArI2RlZmluZSBNQVhfVFJJRVMJMjANCj4gPiArI2RlZmlu
-ZSBTTEVFUF9EVVJBVElPTgk1MDAwMDANCj4gPiAgCXN0cnVjdCBrbW9kX2xpc3QgKmhvbGRlcnMs
-ICpwb3M7DQo+ID4gLQlpbnQgZXJyID0gMDsNCj4gPiArCWludCBlcnIsIHRyaWVzOw0KPiA+ICsJ
-Y29uc3QgY2hhciAqbW9kX25hbWUgPSBrbW9kX21vZHVsZV9nZXRfbmFtZShrbW9kKTsNCj4gPiAg
-DQo+ID4gIAlob2xkZXJzID0ga21vZF9tb2R1bGVfZ2V0X2hvbGRlcnMoa21vZCk7DQo+ID4gIAlr
-bW9kX2xpc3RfZm9yZWFjaChwb3MsIGhvbGRlcnMpIHsNCj4gPiBAQCAtMjY5LDcgKzI3Miw2IEBA
-IHN0YXRpYyBpbnQgaWd0X2ttb2RfdW5sb2FkX3Ioc3RydWN0IGttb2RfbW9kdWxlICprbW9kLCB1
-bnNpZ25lZCBpbnQgZmxhZ3MpDQo+ID4gIAkJcmV0dXJuIGVycjsNCj4gPiAgDQo+ID4gIAlpZiAo
-aWd0X2ttb2RfaXNfbG9hZGluZyhrbW9kKSkgew0KPiA+IC0JCWNvbnN0IGNoYXIgKm1vZF9uYW1l
-ID0ga21vZF9tb2R1bGVfZ2V0X25hbWUoa21vZCk7DQo+IA0KPiBQbGVhc2UgZGVzY3JpYmUgdGhp
-cyBjaGFuZ2UsIGl0IGxvb2tzIHVucmVsYXRlZC4NCg0KVGhlIGRlYnVnL2luZm8gbWVzc2FnZXMg
-YXQgdGhlIGVuZCBvZiB0aGlzIGZ1bmN0aW9uIHByaW50IHRoZSBtb2RfbmFtZSwgc28gd2UgbmVl
-ZCB0byBpbml0aWFsaXplIGl0IGF0IHRoZQ0Kc3RhcnQgb2YgdGhlIHRlc3QsIHJhdGhlciB0aGFu
-IGp1c3Qgd2hlbiBpZ3Rfa21vZF9pc19sb2FkaW5nLg0KDQo+IA0KPiA+ICAJCWlndF9kZWJ1Zygi
-JXMgc3RpbGwgaW5pdGlhbGl6aW5nXG4iLCBtb2RfbmFtZSk7DQo+ID4gIAkJZXJyID0gaWd0X3dh
-aXQoIWlndF9rbW9kX2lzX2xvYWRpbmcoa21vZCksIDEwMDAwLCAxMDApOw0KPiA+ICAJCWlmIChl
-cnIgPCAwKSB7DQo+ID4gQEAgLTI3OSw3ICsyODEsNDAgQEAgc3RhdGljIGludCBpZ3Rfa21vZF91
-bmxvYWRfcihzdHJ1Y3Qga21vZF9tb2R1bGUgKmttb2QsIHVuc2lnbmVkIGludCBmbGFncykNCj4g
-PiAgCQl9DQo+ID4gIAl9DQo+ID4gIA0KPiA+IC0JcmV0dXJuIGttb2RfbW9kdWxlX3JlbW92ZV9t
-b2R1bGUoa21vZCwgZmxhZ3MpOw0KPiA+ICsJZm9yICh0cmllcyA9IDA7IHRyaWVzIDwgTUFYX1RS
-SUVTOyB0cmllcysrKSB7DQo+ID4gKwkJYm9vbCBsb29wID0gZmFsc2U7DQo+ID4gKw0KPiA+ICsJ
-CWVyciA9IGttb2RfbW9kdWxlX3JlbW92ZV9tb2R1bGUoa21vZCwgZmxhZ3MpOw0KPiA+ICsNCj4g
-PiArCQkvKiBPbmx5IGxvb3AgaW4gdGhlIGZvbGxvd2luZyBjYXNlcyAqLw0KPiA+ICsJCXN3aXRj
-aCAoZXJyKSB7DQo+ID4gKwkJY2FzZSAtRUJVU1k6DQo+ID4gKwkJY2FzZSAtRUFHQUlOOg0KPiA+
-ICsJCQkvKiBXYWl0aW5nIGZvciBtb2R1bGUgdG8gYmUgYXZhaWxhYmxlICovDQo+ID4gKwkJCWxv
-b3AgPSB0cnVlOw0KPiA+ICsJCQlicmVhazsNCj4gPiArCQlkZWZhdWx0Og0KPiA+ICsJCQlicmVh
-azsNCj4gPiArICAgICAgICAgICAgICAgIH0NCj4gPiArCQlpZiAoIWxvb3ApDQo+ID4gKwkJCWJy
-ZWFrOw0KPiANCj4gTWF5IHlvdSB0dXJuIHN3aXRjaCBpbnRvIGlmKCkgPyBOb3cgaXQgbG9va3Mg
-Y29udm9sdXRlZC4NCg0KVGhpcyB3YXMgZGVzaWduZWQgdG8gYmUgZWFzaWx5IGV4dGVuZGFibGUg
-Zm9yIGFkZGl0aW9uYWwgY2FzZXMgd2hlcmUgd2Ugd2FudCB0byB3YWl0IGZvcg0Ka21vZF9tb2R1
-bGVfcmVtb3ZlX21vZHVsZSB0byBzdWNjZWVkLCBvciBpZiBjZXJ0YWluIG90aGVyIGVycm9yIGNh
-c2VzIG5lZWRlZA0KYWRkaXRpb25hbCBtYW5hZ2VtZW50LiAgSSdsbCBjaGFuZ2UgaXQgb3ZlciB0
-byB0aGlzOg0KDQoJCWxvb3AgPSBlcnIgPT0gLUVCVVNZIHx8IGVyciA9PSAtRUFHQUlOOw0KDQpJ
-IGRvbid0IGZvcmVzZWUgdGhpcyBjb25kaXRpb24gbmVlZGluZyB0byBiZSBleHRlbmRlZCwgYnV0
-IGlmIGl0IGRvZXMsIHRoaXMgbGluZSBtaWdodCBnZXQNCmN1bWJlcnNvbWVseSBsYXJnZS4NCg0K
-PiANCj4gPiArDQo+ID4gKwkJaWd0X2RlYnVnKCJNb2R1bGUgJXMgZmFpbGVkIHRvIHVubG9hZCB3
-aXRoIGVycjogJWQgb24gYXR0ZW1wdDogJWlcbiIsDQo+ID4gKwkJCSAgbW9kX25hbWUsIGVyciwg
-dHJpZXMgKyAxKTsNCj4gPiArDQo+ID4gKwkJdXNsZWVwKFNMRUVQX0RVUkFUSU9OKTsNCj4gPiAr
-CX0NCj4gPiArDQo+ID4gKwlpZiAoZXJyID09IC1FTk9FTlQpDQo+ID4gKwkJaWd0X2RlYnVnKCJN
-b2R1bGUgJXMgY291bGQgbm90IGJlIGZvdW5kLiAgU2tpcHBpbmcuXG4iLCBtb2RfbmFtZSk7DQo+
-IC0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0g
-Xl5eXl5eXl5eXg0KPiBQbGVhc2UgcmVtb3ZlIC8gIFNraXBwaW5nLi8sIHlvdSBwcmludCBkZWJ1
-Z3MgYW5kIHlvdSB3aWxsIG5vdA0KPiBkZWNpZGUgd2hhdCBjYWxsZXIgd2lsbCBkby4NCj4gDQo+
-IE9uZSBtb3JlIGVycm9yIHdvdWxkIGJlIGlmIGRyaXZlciBpcyBjb21waWxlZCBpbiwgc28gaXQN
-Cj4ganVzdCBjYW4gbm90IGJlIHJlbW92ZWQgKHdpbGwgaXQgYmUgLUVOT1RTVVAgPykuDQoNCkFs
-bCBvdGhlciBlcnJvcnMgc2hvdWxkIGJlIGNhdWdodCBiZWxvdy4gIFdlIGp1c3QgZG9uJ3QgaW5m
-b3JtIG9uIC1FTk9FTlQgYmVjYXVzZQ0KdGhhdCdzIGFuIGV4cGVjdGVkIGNvbmRpdGlvbiBmb3Ig
-YnVpbHRpbnMgd2Ugd29uJ3QgYmUgZml4aW5nLCBzbyB3ZSBpc3N1ZSBhbiBpZ3RfZGVidWcNCmlu
-c3RlYWQuICBJbiBvdGhlciB3b3Jkcywgd2UgZG9uJ3QgaW5mb3JtIHRoZSB1c2VyIG9mIC1FTk9F
-TlQgZXJyb3JzIGJlY2F1c2UgdGhlDQpkZXNpcmVkIGVuZCByZXN1bHQgZm9yIHRoZSB1c2VyIGlz
-IHN0aWxsIGFjaGlldmVkIChtb2R1bGUgWCBpcyBub3QgbG9hZGVkKS4gIEJ5DQpjb21wYXJpc29u
-LCBpdCBzb3VuZHMgbGlrZSB0aGUgLUVOT1RTVVAgY2FzZSBrZWVwcyB0aGUgbW9kdWxlIGxvYWRl
-ZCwgc28gd2Ugc2hvdWxkDQpwcm9iYWJseSBpbmZvcm0gdGhlIHVzZXIgdGhlIG1vZHVsZSBkaWQg
-bm90IHVubG9hZC4NCg0KSWYgdGhpcyBpcyBpbmNvcnJlY3QsIGFuZCAtRU5PVFNVUCBpcyBpbiB0
-aGUgc2FtZSBjbGFzcyBvZiBlcnJvciBhcyAtRU5PRU5ULCBJIGNhbiBhZGQNCnRoYXQgdG8gdGhl
-IHNldCBvZiBlcnJvcnMgd2UgZG9uJ3QgZGlyZWN0bHkgaW5mb3JtIG9uLg0KDQo+IA0KPiA+ICsJ
-ZWxzZSBpZiAoZXJyKQ0KPiA+ICsJCWlndF9pbmZvKCJNb2R1bGUgJXMgZmFpbGVkIHRvIHVubG9h
-ZCB3aXRoIGVycjogJWQgYWZ0ZXIgfiUuMWZtc1xuIiwNCj4gLS0tLS0tLS0tLS0tLS0tIF4NCj4g
-UGxlYXNlIG1ha2UgdGhlbSBhbGwgaW50byBpZ3RfaW5mbyBvciBpZ3RfZGVidWcuDQoNCkV2ZXJ5
-IGVycm9yIG90aGVyIHRoYW4gLUVOT0VOVCAoZm9yIHJlYXNvbnMgZXhwbGFpbmVkIGFib3ZlKSBp
-cyBhIGdlbnVpbmUgaXNzdWUNCnRoYXQgc2hvdWxkIGJlIHdhcm5lZCBvbiwgYnV0IGlzc3Vpbmcg
-YSBmdWxsIHdhcm5pbmcgaXNuJ3QgZGVzaXJhYmxlIGluIG1vc3QgY2FzZXMsDQpzbyB3ZSBzaW1w
-bHkgaW5mb3JtIGluc3RlYWQuICBXZSBjYW5ub3QgaGlkZSB0aGVzZSBpc3N1ZXMgYmVoaW5kIGln
-dF9kZWJ1Zy4NCg0KQWRkaXRpb25hbGx5LCBiZWxvdywgdGhlIG1vZHVsZSB0YWtpbmcgbW9yZSB0
-aGFuIG9uZSBhdHRlbXB0IHRvIHVubG9hZCBpcyBhDQpnZW51aW5lIGlzc3VlIHRoZSB1c2VyIHNo
-b3VsZCBiZSBtYWRlIHByaXZ5IHRvLCBzbyB3ZSBzaG91bGRuJ3QgaGlkZSBpdA0KYmVoaW5kIGln
-dF9kZWJ1ZyBlaXRoZXIuDQoNCkl0IHdhcyBhcmd1ZWQgdG8gbWUgaW4gdGhlIHBhc3QgdGhhdCB3
-ZSBjb3VsZCBqdXN0IHJlbW92ZSB0aGUgLUVOT0VOVCBpZ3RfZGVidWcNCnN0YXRlbWVudCBlbnRp
-cmVseS4gIEknbGwgZG8gdGhhdCBhbmQgc2VlIGhvdyB0aGF0J3MgcmVjZWl2ZWQsIGFuZCBpZiBp
-dCdzIHJlY2VpdmVkDQpwb3NpdGl2ZWx5LCB0aGUgcmVhc29uIGZvciB3aHkgaWd0X2RlYnVnIGlz
-IHVzZWQgaW4gdGhlIC1FTk9FTlQgY2FzZSBhbmQgbm93aGVyZQ0KZWxzZSBpcyBhIG1vb3QgZGlz
-dGluY3Rpb24uDQotSm9uYXRoYW4gQ2F2aXR0DQoNCj4gDQo+ID4gKwkJCSBtb2RfbmFtZSwgZXJy
-LCBTTEVFUF9EVVJBVElPTip0cmllcy8xMDAwLik7DQo+ID4gKwllbHNlIGlmICh0cmllcykNCj4g
-PiArCQlpZ3RfaW5mbygiTW9kdWxlICVzIHVubG9hZCB0b29rIH4lLjFmbXMgb3ZlciAlaSBhdHRl
-bXB0c1xuIiwNCj4gLS0tLS0tLS0tLS0tLS0tIF4NCj4gU2FtZSBoZXJlLCBwbGVhc2UgYmUgY29u
-c2lzdGVudC4NCj4gDQo+IFJlZ2FyZHMsDQo+IEthbWlsDQo+IA0KPiA+ICsJCQkgbW9kX25hbWUs
-IFNMRUVQX0RVUkFUSU9OKnRyaWVzLzEwMDAuLCB0cmllcyArIDEpOw0KPiA+ICsNCj4gPiArCXJl
-dHVybiBlcnI7DQo+ID4gIH0NCj4gPiAgDQo+ID4gIC8qKg0KPiA+IC0tIA0KPiA+IDIuMjUuMQ0K
-PiA+IA0KPiANCg==
+kmod_module_remove_module occasionally returns EAGAIN for mei_gsc
+in the setup of some gem_lmem_swapping subtests.  Just because
+EAGAIN is returned doesn't mean the module is lost and unable to
+be unloaded.  Try again some number of times (currently 10) before
+giving up.
+
+Retries will occur for -EBUSY and -EAGAIN, as these imply the
+system is waiting for the target module can simply be waited for.
+All other errors exit immediately, but as the context for each
+error informs their relative severity, no warnings will be issued.
+
+Signed-off-by: Jonathan Cavitt <jonathan.cavitt@intel.com>
+CC: Stuart Summers <stuart.summers@intel.com>
+CC: Sandeep Kumar Parupalli <sandeep.kumar.parupalli@intel.com>
+CC: Chris Wilson <chris.p.wilson@linux.intel.com>
+Reviewed-by: Chris Wilson <chris.p.wilson@linux.intel.com>
+---
+ lib/igt_kmod.c | 32 +++++++++++++++++++++++++++++---
+ 1 file changed, 29 insertions(+), 3 deletions(-)
+
+diff --git a/lib/igt_kmod.c b/lib/igt_kmod.c
+index 17090110c..10c79b740 100644
+--- a/lib/igt_kmod.c
++++ b/lib/igt_kmod.c
+@@ -253,8 +253,11 @@ out:
+ 
+ static int igt_kmod_unload_r(struct kmod_module *kmod, unsigned int flags)
+ {
++#define MAX_TRIES	20
++#define SLEEP_DURATION	500000
+ 	struct kmod_list *holders, *pos;
+-	int err = 0;
++	int err, tries;
++	const char *mod_name = kmod_module_get_name(kmod);
+ 
+ 	holders = kmod_module_get_holders(kmod);
+ 	kmod_list_foreach(pos, holders) {
+@@ -269,7 +272,6 @@ static int igt_kmod_unload_r(struct kmod_module *kmod, unsigned int flags)
+ 		return err;
+ 
+ 	if (igt_kmod_is_loading(kmod)) {
+-		const char *mod_name = kmod_module_get_name(kmod);
+ 		igt_debug("%s still initializing\n", mod_name);
+ 		err = igt_wait(!igt_kmod_is_loading(kmod), 10000, 100);
+ 		if (err < 0) {
+@@ -279,7 +281,31 @@ static int igt_kmod_unload_r(struct kmod_module *kmod, unsigned int flags)
+ 		}
+ 	}
+ 
+-	return kmod_module_remove_module(kmod, flags);
++	for (tries = 0; tries < MAX_TRIES; tries++) {
++		bool loop = false;
++
++		err = kmod_module_remove_module(kmod, flags);
++
++		/* Only loop in the following cases */
++		loop = err == -EBUSY || err == -EAGAIN;
++
++		if (!loop)
++			break;
++
++		igt_debug("Module %s failed to unload with err: %d on attempt: %i\n",
++			  mod_name, err, tries + 1);
++
++		usleep(SLEEP_DURATION);
++	}
++
++	if (err && err != -ENOENT)
++		igt_info("Module %s failed to unload with err: %d after ~%.1fms\n",
++			 mod_name, err, SLEEP_DURATION*tries/1000.);
++	else if (tries)
++		igt_info("Module %s unload took ~%.1fms over %i attempts\n",
++			 mod_name, SLEEP_DURATION*tries/1000., tries + 1);
++
++	return err;
+ }
+ 
+ /**
+-- 
+2.25.1
