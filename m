@@ -1,20 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 922EA10E1D0
- for <igt-dev@lists.freedesktop.org>; Tue, 17 Jan 2023 22:03:47 +0000 (UTC)
-From: =?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>
-To: Melissa Wen <mwen@igalia.com>,
- =?UTF-8?q?Andr=C3=A9=20Almeida?= <andrealmeid@igalia.com>,
- Petri Latvala <petri.latvala@intel.com>,
- Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Rodrigo Siqueira <rodrigosiqueiramelo@gmail.com>
-Date: Tue, 17 Jan 2023 19:03:22 -0300
-Message-Id: <20230117220322.231405-1-mcanal@igalia.com>
+Content-Type: multipart/alternative;
+ boundary="===============1668042598108315850=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t] tests/vkms: Create a testlist to the vkms
- DRM driver
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: =?utf-8?q?Ma=C3=ADra_Canal?= <mcanal@igalia.com>
+Date: Tue, 17 Jan 2023 22:43:47 -0000
+Message-ID: <167399542783.21230.13274117526653279475@emeril.freedesktop.org>
+References: <20230117220322.231405-1-mcanal@igalia.com>
+In-Reply-To: <20230117220322.231405-1-mcanal@igalia.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
+ =?utf-8?q?vkms=3A_Create_a_testlist_to_the_vkms_DRM_driver?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,289 +17,243 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-The vkms DRM driver is a software-only model of a KMS driver and its
-development is highly based on the current status of the IGT tests. So,
-create a list of the tests that are supported by the vkms DRM driver, in
-order to have a baseline of the tests that should pass when using vkms.
+--===============1668042598108315850==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-This way, it will easier to track regressions on the vkms DRM driver, as
-the testlist for the driver will be publicly available.
+== Series Details ==
 
-Signed-off-by: Maíra Canal <mcanal@igalia.com>
----
- tests/vkms_ci/README        |  20 ++++
- tests/vkms_ci/vkms.testlist | 231 ++++++++++++++++++++++++++++++++++++
- 2 files changed, 251 insertions(+)
- create mode 100644 tests/vkms_ci/README
- create mode 100644 tests/vkms_ci/vkms.testlist
+Series: tests/vkms: Create a testlist to the vkms DRM driver
+URL   : https://patchwork.freedesktop.org/series/112972/
+State : success
 
-diff --git a/tests/vkms_ci/README b/tests/vkms_ci/README
-new file mode 100644
-index 00000000..4b0265bf
---- /dev/null
-+++ b/tests/vkms_ci/README
-@@ -0,0 +1,20 @@
-+This directory contains test lists to be used for vkms's DRM support. The files
-+are passed to piglit with the --test-list|-T parameter directly.
-+
-+The test lists are contained in the IGT repository for several
-+reasons:
-+
-+- The lists stay synchronized with the IGT codebase.
-+- Public availability. Kernel developers can see what tests are run,
-+  and can see what changes are done to the set, when, and why.
-+- Keep track of the features implemented by the vkms DRM driver.
-+
-+=============
-+vkms.testlist
-+=============
-+
-+This test list is meant as a general test suite for the vkms DRM driver,
-+gathering all must-pass tests for the driver.
-+
-+As more features are implemented to the vkms DRM driver, the correspondent
-+tests should be added to this list.
-diff --git a/tests/vkms_ci/vkms.testlist b/tests/vkms_ci/vkms.testlist
-new file mode 100644
-index 00000000..9065d318
---- /dev/null
-+++ b/tests/vkms_ci/vkms.testlist
-@@ -0,0 +1,231 @@
-+igt@kms_atomic@atomic-invalid-params
-+igt@kms_atomic@crtc-invalid-params
-+igt@kms_atomic@plane-cursor-legacy
-+igt@kms_atomic@plane-immutable-zpos
-+igt@kms_atomic@plane-invalid-params
-+igt@kms_atomic@plane-primary-legacy
-+igt@kms_atomic@test-only
-+igt@kms_atomic_transition@modeset-transition
-+igt@kms_atomic_transition@modeset-transition-fencing
-+igt@kms_atomic_transition@modeset-transition-nonblocking
-+igt@kms_atomic_transition@modeset-transition-nonblocking-fencing
-+igt@kms_atomic_transition@plane-all-modeset-transition
-+igt@kms_atomic_transition@plane-all-transition
-+igt@kms_atomic_transition@plane-all-transition-nonblocking
-+igt@kms_atomic_transition@plane-primary-toggle-with-vblank-wait
-+igt@kms_atomic_transition@plane-use-after-nonblocking-unbind
-+igt@kms_bw@linear-tiling-1-displays-1920x1080p
-+igt@kms_bw@linear-tiling-1-displays-2560x1440p
-+igt@kms_bw@linear-tiling-1-displays-3840x2160p
-+igt@kms_bw@linear-tiling-2-displays-1920x1080p
-+igt@kms_bw@linear-tiling-2-displays-2560x1440p
-+igt@kms_bw@linear-tiling-2-displays-3840x2160p
-+igt@kms_concurrent@pipe-a
-+igt@kms_cursor_crc@cursor-alpha-opaque
-+igt@kms_cursor_crc@cursor-alpha-transparent
-+igt@kms_cursor_crc@cursor-dpms
-+igt@kms_cursor_crc@cursor-offscreen-128x128
-+igt@kms_cursor_crc@cursor-offscreen-128x42
-+igt@kms_cursor_crc@cursor-offscreen-256x256
-+igt@kms_cursor_crc@cursor-offscreen-256x85
-+igt@kms_cursor_crc@cursor-offscreen-32x10
-+igt@kms_cursor_crc@cursor-offscreen-32x32
-+igt@kms_cursor_crc@cursor-offscreen-512x170
-+igt@kms_cursor_crc@cursor-offscreen-512x512
-+igt@kms_cursor_crc@cursor-offscreen-64x21
-+igt@kms_cursor_crc@cursor-offscreen-64x64
-+igt@kms_cursor_crc@cursor-onscreen-128x128
-+igt@kms_cursor_crc@cursor-onscreen-128x42
-+igt@kms_cursor_crc@cursor-onscreen-256x256
-+igt@kms_cursor_crc@cursor-onscreen-256x85
-+igt@kms_cursor_crc@cursor-onscreen-32x10
-+igt@kms_cursor_crc@cursor-onscreen-32x32
-+igt@kms_cursor_crc@cursor-onscreen-512x170
-+igt@kms_cursor_crc@cursor-onscreen-512x512
-+igt@kms_cursor_crc@cursor-onscreen-64x21
-+igt@kms_cursor_crc@cursor-onscreen-64x64
-+igt@kms_cursor_crc@cursor-random-128x128
-+igt@kms_cursor_crc@cursor-random-128x42
-+igt@kms_cursor_crc@cursor-random-256x256
-+igt@kms_cursor_crc@cursor-random-256x85
-+igt@kms_cursor_crc@cursor-random-32x10
-+igt@kms_cursor_crc@cursor-random-32x32
-+igt@kms_cursor_crc@cursor-random-512x170
-+igt@kms_cursor_crc@cursor-random-512x512
-+igt@kms_cursor_crc@cursor-random-64x21
-+igt@kms_cursor_crc@cursor-random-64x64
-+igt@kms_cursor_crc@cursor-rapid-movement-128x128
-+igt@kms_cursor_crc@cursor-rapid-movement-128x42
-+igt@kms_cursor_crc@cursor-rapid-movement-256x256
-+igt@kms_cursor_crc@cursor-rapid-movement-256x85
-+igt@kms_cursor_crc@cursor-rapid-movement-32x10
-+igt@kms_cursor_crc@cursor-rapid-movement-32x32
-+igt@kms_cursor_crc@cursor-rapid-movement-512x170
-+igt@kms_cursor_crc@cursor-rapid-movement-512x512
-+igt@kms_cursor_crc@cursor-rapid-movement-64x21
-+igt@kms_cursor_crc@cursor-rapid-movement-64x64
-+igt@kms_cursor_crc@cursor-size-change
-+igt@kms_cursor_crc@cursor-sliding-128x128
-+igt@kms_cursor_crc@cursor-sliding-128x42
-+igt@kms_cursor_crc@cursor-sliding-256x256
-+igt@kms_cursor_crc@cursor-sliding-256x85
-+igt@kms_cursor_crc@cursor-sliding-32x10
-+igt@kms_cursor_crc@cursor-sliding-32x32
-+igt@kms_cursor_crc@cursor-sliding-512x170
-+igt@kms_cursor_crc@cursor-sliding-512x512
-+igt@kms_cursor_crc@cursor-sliding-64x21
-+igt@kms_cursor_crc@cursor-sliding-64x64
-+igt@kms_cursor_crc@cursor-suspend
-+igt@kms_cursor_edge_walk@left-edge
-+igt@kms_cursor_edge_walk@right-edge
-+igt@kms_cursor_edge_walk@top-bottom
-+igt@kms_cursor_edge_walk@top-edge
-+igt@kms_flip@absolute-wf_vblank
-+igt@kms_flip@absolute-wf_vblank-interruptible
-+igt@kms_flip@basic-flip-vs-dpms
-+igt@kms_flip@basic-flip-vs-modeset
-+igt@kms_flip@basic-flip-vs-wf_vblank
-+igt@kms_flip@basic-plain-flip
-+igt@kms_flip@blocking-absolute-wf_vblank
-+igt@kms_flip@blocking-absolute-wf_vblank-interruptible
-+igt@kms_flip@blocking-wf_vblank
-+igt@kms_flip@busy-flip
-+igt@kms_flip@dpms-off-confusion
-+igt@kms_flip@dpms-off-confusion-interruptible
-+igt@kms_flip@dpms-vs-vblank-race
-+igt@kms_flip@dpms-vs-vblank-race-interruptible
-+igt@kms_flip@flip-vs-absolute-wf_vblank
-+igt@kms_flip@flip-vs-absolute-wf_vblank-interruptible
-+igt@kms_flip@flip-vs-blocking-wf-vblank
-+igt@kms_flip@flip-vs-dpms-off-vs-modeset
-+igt@kms_flip@flip-vs-dpms-off-vs-modeset-interruptible
-+igt@kms_flip@flip-vs-expired-vblank
-+igt@kms_flip@flip-vs-expired-vblank-interruptible
-+igt@kms_flip@flip-vs-panning
-+igt@kms_flip@flip-vs-panning-interruptible
-+igt@kms_flip@flip-vs-rmfb
-+igt@kms_flip@flip-vs-rmfb-interruptible
-+igt@kms_flip@flip-vs-suspend
-+igt@kms_flip@flip-vs-suspend-interruptible
-+igt@kms_flip@flip-vs-wf_vblank-interruptible
-+igt@kms_flip@modeset-vs-vblank-race
-+igt@kms_flip@modeset-vs-vblank-race-interruptible
-+igt@kms_flip@nonblocking-read
-+igt@kms_flip@nonexisting-fb
-+igt@kms_flip@nonexisting-fb-interruptible
-+igt@kms_flip@plain-flip-fb-recreate
-+igt@kms_flip@plain-flip-fb-recreate-interruptible
-+igt@kms_flip@plain-flip-interruptible
-+igt@kms_flip@plain-flip-ts-check
-+igt@kms_flip@plain-flip-ts-check-interruptible
-+igt@kms_flip@single-buffer-flip-vs-dpms-off-vs-modeset
-+igt@kms_flip@single-buffer-flip-vs-dpms-off-vs-modeset-interruptible
-+igt@kms_flip@wf_vblank-ts-check
-+igt@kms_flip@wf_vblank-ts-check-interruptible
-+igt@kms_flip_event_leak@basic
-+igt@kms_getfb@getfb-addfb-different-handles
-+igt@kms_getfb@getfb-handle-closed
-+igt@kms_getfb@getfb-handle-not-fb
-+igt@kms_getfb@getfb-handle-protection
-+igt@kms_getfb@getfb-handle-valid
-+igt@kms_getfb@getfb-handle-zero
-+igt@kms_getfb@getfb-repeated-different-handles
-+igt@kms_getfb@getfb2-handle-closed
-+igt@kms_getfb@getfb2-handle-not-fb
-+igt@kms_getfb@getfb2-handle-protection
-+igt@kms_getfb@getfb2-handle-zero
-+igt@kms_getfb@getfb2-into-addfb2
-+igt@kms_lease@cursor_implicit_plane
-+igt@kms_lease@empty_lease
-+igt@kms_lease@implicit-plane-lease
-+igt@kms_lease@invalid-create-leases
-+igt@kms_lease@lease-uevent
-+igt@kms_lease@lease_again
-+igt@kms_lease@lease_get
-+igt@kms_lease@lease_invalid_connector
-+igt@kms_lease@lease_invalid_crtc
-+igt@kms_lease@lease_invalid_plane
-+igt@kms_lease@lease_revoke
-+igt@kms_lease@lessee_list
-+igt@kms_lease@master-vs-lease
-+igt@kms_lease@multimaster-lease
-+igt@kms_lease@page_flip_implicit_plane
-+igt@kms_lease@possible-crtcs-filtering
-+igt@kms_lease@setcrtc_implicit_plane
-+igt@kms_lease@simple_lease
-+igt@kms_multipipe_modeset@basic-max-pipe-crc-check
-+igt@kms_pipe_crc_basic@bad-source
-+igt@kms_pipe_crc_basic@compare-crc-sanitycheck
-+igt@kms_pipe_crc_basic@disable-crc-after-crtc
-+igt@kms_pipe_crc_basic@nonblocking-crc
-+igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence
-+igt@kms_pipe_crc_basic@read-crc
-+igt@kms_pipe_crc_basic@read-crc-frame-sequence
-+igt@kms_pipe_crc_basic@suspend-read-crc
-+igt@kms_plane@plane-panning-bottom-right
-+igt@kms_plane@plane-panning-bottom-right-suspend
-+igt@kms_plane@plane-panning-top-left
-+igt@kms_plane@plane-position-covered
-+igt@kms_plane@plane-position-hole
-+igt@kms_plane@plane-position-hole-dpms
-+igt@kms_plane_multiple@tiling-none
-+igt@kms_plane_scaling@planes-downscale-factor-0-25
-+igt@kms_plane_scaling@planes-downscale-factor-0-5
-+igt@kms_plane_scaling@planes-downscale-factor-0-75
-+igt@kms_plane_scaling@planes-scaler-unity-scaling
-+igt@kms_plane_scaling@planes-unity-scaling-downscale-factor-0-25
-+igt@kms_plane_scaling@planes-unity-scaling-downscale-factor-0-5
-+igt@kms_plane_scaling@planes-unity-scaling-downscale-factor-0-75
-+igt@kms_plane_scaling@planes-upscale-20x20
-+igt@kms_plane_scaling@planes-upscale-20x20-downscale-factor-0-25
-+igt@kms_plane_scaling@planes-upscale-20x20-downscale-factor-0-5
-+igt@kms_plane_scaling@planes-upscale-20x20-downscale-factor-0-75
-+igt@kms_plane_scaling@planes-upscale-factor-0-25
-+igt@kms_plane_scaling@planes-upscale-factor-0-25-downscale-factor-0-25
-+igt@kms_plane_scaling@planes-upscale-factor-0-25-downscale-factor-0-5
-+igt@kms_plane_scaling@planes-upscale-factor-0-25-downscale-factor-0-75
-+igt@kms_prop_blob@basic
-+igt@kms_prop_blob@blob-multiple
-+igt@kms_prop_blob@blob-prop-core
-+igt@kms_prop_blob@blob-prop-lifetime
-+igt@kms_prop_blob@blob-prop-validate
-+igt@kms_prop_blob@invalid-get-prop
-+igt@kms_prop_blob@invalid-get-prop-any
-+igt@kms_prop_blob@invalid-set-prop
-+igt@kms_prop_blob@invalid-set-prop-any
-+igt@kms_properties@connector-properties-atomic
-+igt@kms_properties@connector-properties-legacy
-+igt@kms_properties@crtc-properties-atomic
-+igt@kms_properties@crtc-properties-legacy
-+igt@kms_properties@get_properties-sanity-atomic
-+igt@kms_properties@get_properties-sanity-non-atomic
-+igt@kms_properties@invalid-properties-atomic
-+igt@kms_properties@invalid-properties-legacy
-+igt@kms_properties@plane-properties-atomic
-+igt@kms_properties@plane-properties-legacy
-+igt@kms_rmfb@close-fd
-+igt@kms_rmfb@rmfb-ioctl
-+igt@kms_sequence@get-busy
-+igt@kms_sequence@get-forked
-+igt@kms_sequence@get-forked-busy
-+igt@kms_sequence@get-idle
-+igt@kms_sequence@queue-busy
-+igt@kms_sequence@queue-idle
-+igt@kms_vblank@crtc-id
-+igt@kms_vblank@invalid
-+igt@kms_vblank@pipe-a-accuracy-idle
-+igt@kms_vblank@pipe-a-query-busy
-+igt@kms_vblank@pipe-a-query-forked
-+igt@kms_vblank@pipe-a-query-forked-busy
-+igt@kms_vblank@pipe-a-query-idle
-+igt@kms_vblank@pipe-a-ts-continuation-dpms-suspend
-+igt@kms_vblank@pipe-a-ts-continuation-idle
-+igt@kms_vblank@pipe-a-ts-continuation-suspend
-+igt@kms_vblank@pipe-a-wait-busy
-+igt@kms_vblank@pipe-a-wait-forked
-+igt@kms_vblank@pipe-a-wait-forked-busy
-+igt@kms_vblank@pipe-a-wait-idle
-+igt@kms_writeback@writeback-check-output
-+igt@kms_writeback@writeback-fb-id
-+igt@kms_writeback@writeback-invalid-parameters
-+igt@kms_writeback@writeback-pixel-formats
--- 
-2.39.0
+== Summary ==
+
+CI Bug Log - changes from CI_DRM_12594 -> IGTPW_8356
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8356/index.html
+
+Participating hosts (42 -> 43)
+------------------------------
+
+  Additional (2): bat-rpls-2 fi-skl-6700k2 
+  Missing    (1): fi-snb-2520m 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_8356 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@gem_huc_copy@huc-copy:
+    - fi-skl-6700k2:      NOTRUN -> [SKIP][1] ([fdo#109271] / [i915#2190])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8356/fi-skl-6700k2/igt@gem_huc_copy@huc-copy.html
+
+  * igt@gem_lmem_swapping@parallel-random-engines:
+    - fi-skl-6700k2:      NOTRUN -> [SKIP][2] ([fdo#109271] / [i915#4613]) +3 similar issues
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8356/fi-skl-6700k2/igt@gem_lmem_swapping@parallel-random-engines.html
+
+  * igt@prime_vgem@basic-userptr:
+    - fi-skl-6700k2:      NOTRUN -> [SKIP][3] ([fdo#109271]) +14 similar issues
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8356/fi-skl-6700k2/igt@prime_vgem@basic-userptr.html
+
+  
+#### Possible fixes ####
+
+  * igt@gem_exec_gttfill@basic:
+    - fi-pnv-d510:        [FAIL][4] ([i915#7229]) -> [PASS][5]
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12594/fi-pnv-d510/igt@gem_exec_gttfill@basic.html
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8356/fi-pnv-d510/igt@gem_exec_gttfill@basic.html
+
+  * igt@gem_exec_suspend@basic-s3@smem:
+    - {bat-rplp-1}:       [DMESG-WARN][6] ([i915#2867]) -> [PASS][7]
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12594/bat-rplp-1/igt@gem_exec_suspend@basic-s3@smem.html
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8356/bat-rplp-1/igt@gem_exec_suspend@basic-s3@smem.html
+
+  * igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions:
+    - fi-bsw-n3050:       [FAIL][8] ([i915#6298]) -> [PASS][9]
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12594/fi-bsw-n3050/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions.html
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8356/fi-bsw-n3050/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions.html
+
+  * igt@kms_pipe_crc_basic@suspend-read-crc@pipe-b-lvds-1:
+    - fi-ctg-p8600:       [FAIL][10] ([fdo#103375]) -> [PASS][11]
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12594/fi-ctg-p8600/igt@kms_pipe_crc_basic@suspend-read-crc@pipe-b-lvds-1.html
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8356/fi-ctg-p8600/igt@kms_pipe_crc_basic@suspend-read-crc@pipe-b-lvds-1.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [fdo#103375]: https://bugs.freedesktop.org/show_bug.cgi?id=103375
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [fdo#109285]: https://bugs.freedesktop.org/show_bug.cgi?id=109285
+  [fdo#109295]: https://bugs.freedesktop.org/show_bug.cgi?id=109295
+  [i915#1072]: https://gitlab.freedesktop.org/drm/intel/issues/1072
+  [i915#1845]: https://gitlab.freedesktop.org/drm/intel/issues/1845
+  [i915#1849]: https://gitlab.freedesktop.org/drm/intel/issues/1849
+  [i915#2190]: https://gitlab.freedesktop.org/drm/intel/issues/2190
+  [i915#2582]: https://gitlab.freedesktop.org/drm/intel/issues/2582
+  [i915#2867]: https://gitlab.freedesktop.org/drm/intel/issues/2867
+  [i915#3282]: https://gitlab.freedesktop.org/drm/intel/issues/3282
+  [i915#3555]: https://gitlab.freedesktop.org/drm/intel/issues/3555
+  [i915#3637]: https://gitlab.freedesktop.org/drm/intel/issues/3637
+  [i915#3708]: https://gitlab.freedesktop.org/drm/intel/issues/3708
+  [i915#4258]: https://gitlab.freedesktop.org/drm/intel/issues/4258
+  [i915#4613]: https://gitlab.freedesktop.org/drm/intel/issues/4613
+  [i915#6298]: https://gitlab.freedesktop.org/drm/intel/issues/6298
+  [i915#6367]: https://gitlab.freedesktop.org/drm/intel/issues/6367
+  [i915#6621]: https://gitlab.freedesktop.org/drm/intel/issues/6621
+  [i915#7229]: https://gitlab.freedesktop.org/drm/intel/issues/7229
+  [i915#7456]: https://gitlab.freedesktop.org/drm/intel/issues/7456
+  [i915#7561]: https://gitlab.freedesktop.org/drm/intel/issues/7561
+  [i915#7699]: https://gitlab.freedesktop.org/drm/intel/issues/7699
+  [i915#7828]: https://gitlab.freedesktop.org/drm/intel/issues/7828
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_7121 -> IGTPW_8356
+
+  CI-20190529: 20190529
+  CI_DRM_12594: 5cec9cff5436577179bab7b52de0465ba169691a @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_8356: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8356/index.html
+  IGT_7121: aa16e81259f59734230d441905b9d0f605e4a4b5 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+
+Testlist changes
+----------------
+
+-igt@i915_power@gpu-busy
+-igt@i915_power@gpu-idle
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8356/index.html
+
+--===============1668042598108315850==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/vkms: Create a testlist to the vkms DRM driver</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/112972/">https://patchwork.freedesktop.org/series/112972/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8356/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8356/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_12594 -&gt; IGTPW_8356</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8356/index.html</p>
+<h2>Participating hosts (42 -&gt; 43)</h2>
+<p>Additional (2): bat-rpls-2 fi-skl-6700k2 <br />
+  Missing    (1): fi-snb-2520m </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_8356 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@gem_huc_copy@huc-copy:</p>
+<ul>
+<li>fi-skl-6700k2:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8356/fi-skl-6700k2/igt@gem_huc_copy@huc-copy.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2190">i915#2190</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_lmem_swapping@parallel-random-engines:</p>
+<ul>
+<li>fi-skl-6700k2:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8356/fi-skl-6700k2/igt@gem_lmem_swapping@parallel-random-engines.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4613">i915#4613</a>) +3 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@prime_vgem@basic-userptr:</p>
+<ul>
+<li>fi-skl-6700k2:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8356/fi-skl-6700k2/igt@prime_vgem@basic-userptr.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +14 similar issues</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@gem_exec_gttfill@basic:</p>
+<ul>
+<li>fi-pnv-d510:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12594/fi-pnv-d510/igt@gem_exec_gttfill@basic.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7229">i915#7229</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8356/fi-pnv-d510/igt@gem_exec_gttfill@basic.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@gem_exec_suspend@basic-s3@smem:</p>
+<ul>
+<li>{bat-rplp-1}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12594/bat-rplp-1/igt@gem_exec_suspend@basic-s3@smem.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2867">i915#2867</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8356/bat-rplp-1/igt@gem_exec_suspend@basic-s3@smem.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions:</p>
+<ul>
+<li>fi-bsw-n3050:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12594/fi-bsw-n3050/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6298">i915#6298</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8356/fi-bsw-n3050/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@suspend-read-crc@pipe-b-lvds-1:</p>
+<ul>
+<li>fi-ctg-p8600:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12594/fi-ctg-p8600/igt@kms_pipe_crc_basic@suspend-read-crc@pipe-b-lvds-1.html">FAIL</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=103375">fdo#103375</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8356/fi-ctg-p8600/igt@kms_pipe_crc_basic@suspend-read-crc@pipe-b-lvds-1.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_7121 -&gt; IGTPW_8356</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_12594: 5cec9cff5436577179bab7b52de0465ba169691a @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_8356: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8356/index.html<br />
+  IGT_7121: aa16e81259f59734230d441905b9d0f605e4a4b5 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+<h2>Testlist changes</h2>
+<p>-igt@i915_power@gpu-busy<br />
+-igt@i915_power@gpu-idle</p>
+
+</body>
+</html>
+
+--===============1668042598108315850==--
