@@ -1,26 +1,26 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 97E6610E547
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3DFA710E546
  for <igt-dev@lists.freedesktop.org>; Tue, 17 Jan 2023 14:06:21 +0000 (UTC)
 Received: from linux.intel.com (maurocar-mobl2.ger.corp.intel.com
  [10.252.27.93])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by linux.intel.com (Postfix) with ESMTPS id C70B3580E26
+ by linux.intel.com (Postfix) with ESMTPS id 9F747580DE4
  for <igt-dev@lists.freedesktop.org>; Tue, 17 Jan 2023 06:06:19 -0800 (PST)
 Received: from maurocar by linux.intel.com with local (Exim 4.96)
- (envelope-from <mauro.chehab@linux.intel.com>) id 1pHmbR-00Ba1b-2k
+ (envelope-from <mauro.chehab@linux.intel.com>) id 1pHmbR-00Ba1H-2Q
  for igt-dev@lists.freedesktop.org; Tue, 17 Jan 2023 15:06:17 +0100
 From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 17 Jan 2023 15:06:07 +0100
-Message-Id: <20230117140607.2759816-13-mauro.chehab@linux.intel.com>
+Date: Tue, 17 Jan 2023 15:06:02 +0100
+Message-Id: <20230117140607.2759816-8-mauro.chehab@linux.intel.com>
 In-Reply-To: <20230117140607.2759816-1-mauro.chehab@linux.intel.com>
 References: <20230117140607.2759816-1-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 12/12] code_cov_parse_info: add support for
- filtering Xe driver data
+Subject: [igt-dev] [PATCH i-g-t 07/12] code_cov_parse_info: add support for
+ compressed files
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -34,81 +34,144 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Mauro Carvalho Chehab <mchehab@kernel.org>
 
-Just like it does for i915, add an option to get code coverage
-data from Xe driver.
-
-For now, it won't be taking DRM core stuff into account; just
-the Xe driver code itself.
+Code coverage files are big. Add support for read/write gzipped
+files, in order to save I/O, and, depending on the disk, speeding
+up the tool.
 
 Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 ---
- scripts/code_cov_parse_info | 25 +++++++++++++++++++++++++
- 1 file changed, 25 insertions(+)
+ scripts/code_cov_parse_info | 56 ++++++++++++++++++++++++++-----------
+ 1 file changed, 40 insertions(+), 16 deletions(-)
+ mode change 100644 => 100755 scripts/code_cov_parse_info
 
 diff --git a/scripts/code_cov_parse_info b/scripts/code_cov_parse_info
-index 2c3283cc1119..d133ef1a18d4 100755
+old mode 100644
+new mode 100755
+index 80a9f1c25540..d38ee9ee6a69
 --- a/scripts/code_cov_parse_info
 +++ b/scripts/code_cov_parse_info
-@@ -1387,6 +1387,7 @@ my $branch_filters;
- my $show_files;
- my $show_lines;
- my $only_i915;
-+my $only_xe;
- my $only_drm;
- my $check_branches;
+@@ -6,6 +6,8 @@ use Getopt::Long;
+ BEGIN { $Pod::Usage::Formatter = 'Pod::Text::Termcap'; }
+ use Pod::Usage;
+ use Pod::Man;
++use IO::File;
++use IO::Zlib;
  
-@@ -1399,6 +1400,7 @@ GetOptions(
- 	"verbose|v" => \$verbose,
- 	"ignore-unused|ignore_unused" => \$ignore_unused,
- 	"only-i915|only_i915" => \$only_i915,
-+	"only-xe|only_xe" => \$only_xe,
- 	"only-drm|only_drm" => \$only_drm,
- 	"func-filters|f=s" => \$func_filters,
- 	"include-func=s" => \@func_include_regexes,
-@@ -1448,6 +1450,14 @@ if ($only_i915) {
- 	push @src_include_regexes, "drm/vgem";
+ my $prefix = qr ".*?(linux)\w*/";
+ 
+@@ -340,8 +342,14 @@ sub read_json($)
+ 	}
+ 
+ 	# Read JSON data
+-	open IN, $file or die "can't open $file";
+-	while (<IN>) {
++	my $fh;
++	if ($file =~ m/\.gz$/) {
++		$fh = IO::Zlib->new($file, "rb") or die "can't open $file";
++	} else {
++		$fh = IO::File->new($file) or die "can't open $file";
++	}
++	print "reading $file...\n" if ($verbose);
++	while (<$fh>) {
+ 		my $json = eval {
+ 			Cpanel::JSON::XS::decode_json($_)
+ 		};
+@@ -361,7 +369,7 @@ sub read_json($)
+ 			die "Unknown JSON format on file $file\n";
+ 		}
+ 	}
+-	close IN;
++	$fh->close() or die "Failed to close file $file";
  }
  
-+if ($only_xe) {
-+	# Please keep in sync with the documentation
-+	push @src_exclude_regexes, "selftest";
-+	push @src_include_regexes, "drm/xe";
-+#	push @src_include_regexes, "drm/ttm";
-+#	push @src_include_regexes, "drm/vgem";
-+}
-+
- if ($only_drm) {
- 	# Please keep in sync with the documentation
- 	push @src_exclude_regexes, "trace.*\.h\$";
-@@ -1493,7 +1503,9 @@ foreach my $f (@ARGV) {
+ sub read_info($)
+@@ -376,11 +384,16 @@ sub read_info($)
  
- 	if ($gen_report) {
- 		$f =~ s,.*/,,;
-+		$f =~ s/\.gz$//;
- 		$f =~ s/\.info$//;
-+		$f =~ s/\.json$//;
+ 	# First step: parse data
  
- 		gen_stats();
+-	print "reading $file...\n" if ($verbose);
+-	open IN, $file or die "can't open $file";
+ 	# For details on .info file format, see "man geninfo"
+ 	# http://ltp.sourceforge.net/coverage/lcov/geninfo.1.php
+-	while (<IN>) {
++	my $fh;
++	if ($file =~ m/\.gz$/) {
++		$fh = IO::Zlib->new($file, "rb") or die "can't open $file";
++	} else {
++		$fh = IO::File->new($file) or die "can't open $file";
++	}
++	print "reading $file...\n" if ($verbose);
++	while (<$fh>) {
+ 		# TN:<test name>
+ 		if (m/^TN:(.*)/) {
+ 			if ($1 ne $cur_test) {
+@@ -571,7 +584,7 @@ sub read_info($)
+ 		printf("Warning: invalid line: $_");
+ 	}
  
-@@ -1694,6 +1706,19 @@ Excluding files that match:
+-	close IN or die;
++	$fh->close() or die "Failed to close file $file";
+ }
  
- 	- selftest
+ sub sort_where($$)
+@@ -601,9 +614,15 @@ sub write_json_file($)
+ 		Cpanel::JSON::XS::encode_json(\%record)
+ 	};
  
-+=item B<--only-xe> or B<--only_xe>
-+
-+Filters out C files and headers outside drm core and drm/i915.
-+
-+E. g. code coverage results will include only the files that that match
-+the following regular expressions:
-+
-+	- drm/xe/
-+
-+Excluding files that match:
-+
-+	- selftest
-+
- =item B<--func-filters>  B<[filter's file]> or B<-f>  B<[filter's file]>
+-	open OUT, ">$fname" or die "Can't open $fname";
+-	print OUT $data or die "Failed to write to $fname";
+-	close OUT or die "Failed to close to $fname";
++	if ($fname =~ m/\.gz$/) {
++		my $fh = IO::Zlib->new($fname, "wb") or die "can't open $fname";
++		print $fh $data or die "Failed to write to $fname";
++		$fh->close or die "Failed to write to $fname";
++	} else {
++		open OUT, ">$fname" or die "Can't open $fname";
++		print OUT $data or die "Failed to write to $fname";
++		close OUT or die "Failed to close to $fname";
++	}
+ }
  
- Use a file containing regular expressions (regex) to filter functions.
+ sub write_info_file($)
+@@ -650,12 +669,17 @@ sub write_info_file($)
+ 				$data .= "BRDA:$ln,0,$i,$taken\n";
+ 			}
+ 		}
+-
+ 		$data .= "end_of_record\n";
+ 	}
+-	open OUT, ">$fname" or die "Can't open $fname";
+-	print OUT $data or die "Failed to write to $fname";
+-	close OUT or die "Failed to close to $fname";
++	if ($fname =~ m/\.gz$/) {
++		my $fh = IO::Zlib->new($fname, "wb") or die "can't open $fname";
++		print $fh $data or die "Failed to write to $fname";
++		$fh->close or die "Failed to write to $fname";
++	} else {
++		open OUT, ">$fname" or die "Can't open $fname";
++		print OUT $data or die "Failed to write to $fname";
++		close OUT or die "Failed to close to $fname";
++	}
+ }
+ 
+ sub print_code_coverage($$$)
+@@ -1346,7 +1370,7 @@ if ($ignore_unused) {
+ }
+ 
+ foreach my $f (@ARGV) {
+-	if ($f =~ /.json$/) {
++	if ($f =~ /\.json(\.gz)?$/) {
+ 		read_json($f);
+ 	} else {
+ 		read_info($f);
+@@ -1425,7 +1449,7 @@ if ($show_files) {
+ }
+ 
+ if ($output_file) {
+-	if ($output_file =~ /.json$/) {
++	if ($output_file =~ /.json(.gz)?$/) {
+ 		write_json_file($output_file);
+ 	} else {
+ 		write_info_file($output_file);
 -- 
 2.39.0
