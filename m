@@ -1,26 +1,26 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CAA4410E546
- for <igt-dev@lists.freedesktop.org>; Tue, 17 Jan 2023 14:06:20 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B359010E548
+ for <igt-dev@lists.freedesktop.org>; Tue, 17 Jan 2023 14:06:21 +0000 (UTC)
 Received: from linux.intel.com (maurocar-mobl2.ger.corp.intel.com
  [10.252.27.93])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by linux.intel.com (Postfix) with ESMTPS id 93482580DD6
+ by linux.intel.com (Postfix) with ESMTPS id BC055580E1F
  for <igt-dev@lists.freedesktop.org>; Tue, 17 Jan 2023 06:06:19 -0800 (PST)
 Received: from maurocar by linux.intel.com with local (Exim 4.96)
- (envelope-from <mauro.chehab@linux.intel.com>) id 1pHmbR-00Ba10-26
+ (envelope-from <mauro.chehab@linux.intel.com>) id 1pHmbR-00Ba1T-2c
  for igt-dev@lists.freedesktop.org; Tue, 17 Jan 2023 15:06:17 +0100
 From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 17 Jan 2023 15:05:57 +0100
-Message-Id: <20230117140607.2759816-3-mauro.chehab@linux.intel.com>
+Date: Tue, 17 Jan 2023 15:06:05 +0100
+Message-Id: <20230117140607.2759816-11-mauro.chehab@linux.intel.com>
 In-Reply-To: <20230117140607.2759816-1-mauro.chehab@linux.intel.com>
 References: <20230117140607.2759816-1-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 02/12] code_cov_parse_info: do some renames
- to make it more coherent
+Subject: [igt-dev] [PATCH i-g-t 10/12] code_cov_parse_info: filter out
+ branches from headers by default
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -34,148 +34,86 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Mauro Carvalho Chehab <mchehab@kernel.org>
 
-Let the regex array to be clearer about include regexes, and
-coherent with exclude ones.
-
-While here, also rename the file exclude check function, to
-have a name closer to its functions counterpart.
-
-No functional changes.
+It is really tricky to handle branches on header files at the Linux
+Kernel. Filter them out by default, allowing the user to override it.
 
 Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 ---
- scripts/code_cov_parse_info | 38 ++++++++++++++++++-------------------
- 1 file changed, 19 insertions(+), 19 deletions(-)
+ scripts/code_cov_parse_info | 34 ++++++++++++++++++++++++++++++++++
+ 1 file changed, 34 insertions(+)
 
 diff --git a/scripts/code_cov_parse_info b/scripts/code_cov_parse_info
-index 1498bd09cdba..d3739211b68a 100755
+index 5a6a4a407359..4aed3d67bd98 100755
 --- a/scripts/code_cov_parse_info
 +++ b/scripts/code_cov_parse_info
-@@ -18,10 +18,10 @@ my %all_line;
- my %used_source;
- my %record;
- my %files;
--my @func_regexes;
-+my @func_include_regexes;
- my @func_exclude_regexes;
- my %test_names;
--my @src_regexes;
-+my @src_include_regexes;
+@@ -27,6 +27,7 @@ my @src_include_regexes;
  my @src_exclude_regexes;
+ my $can_filter_lines = 1;
+ my $ignore_lines_without_functions = 1;
++my $ignore_branches_on_headers = 1;
  
  my $verbose = 0;
-@@ -30,7 +30,7 @@ my $skip_func = 0;
+ my $ignore_unused = 0;
+@@ -182,6 +183,10 @@ sub parse_json_gcov_v1($$)
+ 			}
+ 			$all_line{$source}{$ln} += $line_ref->{'count'};
  
- sub is_function_excluded($)
- {
--	return 0 if (!@func_regexes && !@func_exclude_regexes);
-+	return 0 if (!@func_include_regexes && !@func_exclude_regexes);
++			if ($ignore_branches_on_headers) {
++				next if ($source =~ m/.h$/);
++			}
++
+ 			my $i = 0;
+ 			for my $branch_ref (@{$line_ref->{'branches'}}) {
+ 				my $where = sprintf "%d,%d,%d", $ln, 0, $i;
+@@ -527,6 +532,10 @@ sub read_info($)
+ 			my $branch = $3;
+ 			my $taken = $4;
  
- 	my $func = shift;
- 
-@@ -38,28 +38,28 @@ sub is_function_excluded($)
- 		return 1 if ($func =~ m/$r/);
- 	}
- 
--	return 0 if (!@func_regexes);
-+	return 0 if (!@func_include_regexes);
- 
--	foreach my $r (@func_regexes) {
-+	foreach my $r (@func_include_regexes) {
- 		return 0 if ($func =~ m/$r/);
- 	}
- 
- 	return 1;
- }
- 
--sub filter_file($)
-+sub is_file_excluded($)
- {
- 	my $s = shift;
- 
--	return 0 if (!@src_regexes && !@src_exclude_regexes);
-+	return 0 if (!@src_include_regexes && !@src_exclude_regexes);
- 
- 	foreach my $r (@src_exclude_regexes) {
- 		return 1 if ($s =~ m/$r/);
- 	}
- 
--	return 0 if (!@src_regexes);
-+	return 0 if (!@src_include_regexes);
- 
--	foreach my $r (@src_regexes) {
-+	foreach my $r (@src_include_regexes) {
- 		return 0 if ($s =~ m/$r/);
- 	}
- 
-@@ -107,7 +107,7 @@ sub parse_info_data($)
- 			$files{$source} = 1;
- 
- 			# Just ignore files explictly set as such
--			$ignore = filter_file($source);
-+			$ignore = is_file_excluded($source);
- 			next;
- 		}
- 
-@@ -189,7 +189,7 @@ sub parse_info_data($)
- 
- 		# Ignore DA/BRDA that aren't associated with functions
- 		# Those are present on header files (maybe defines?)
--		next if (@func_regexes && !$has_func);
-+		next if (@func_include_regexes && !$has_func);
- 
- 		# FNF:<number of functions found>
- 		if (m/^FNF:(-?\d+)/) {
-@@ -899,10 +899,10 @@ GetOptions(
- 	"only-i915|only_i915" => \$only_i915,
- 	"only-drm|only_drm" => \$only_drm,
- 	"func-filters|f=s" => \$func_filters,
--	"include-func=s" => \@func_regexes,
-+	"include-func=s" => \@func_include_regexes,
- 	"exclude-func=s" => \@func_exclude_regexes,
- 	"source-filters|S=s" => \$src_filters,
--	"include-source=s" => \@src_regexes,
-+	"include-source=s" => \@src_include_regexes,
++			if ($ignore_branches_on_headers) {
++				next if ($source =~ m/.h$/);
++			}
++
+ 			if ($block != 0) {
+ 				print "Warning: unexpected block $block at line $.\n";
+ 			}
+@@ -1314,6 +1323,7 @@ GetOptions(
+ 	"include-source=s" => \@src_include_regexes,
  	"exclude-source=s" => \@src_exclude_regexes,
+ 	"ignore-lines-without-functions!" => \$ignore_lines_without_functions,
++	"ignore-branches-on-headers!" => \$ignore_branches_on_headers,
  	"show-files|show_files" => \$show_files,
  	"show-lines|show_lines" => \$show_lines,
-@@ -935,9 +935,9 @@ my $str;
- if ($only_i915) {
- 	# Please keep in sync with the documentation
- 	push @src_exclude_regexes, "selftest";
--	push @src_regexes, "drm/i915";
--	push @src_regexes, "drm/ttm";
--	push @src_regexes, "drm/vgem";
-+	push @src_include_regexes, "drm/i915";
-+	push @src_include_regexes, "drm/ttm";
-+	push @src_include_regexes, "drm/vgem";
- }
+ 	"report|r=s" => \$gen_report,
+@@ -1708,6 +1718,30 @@ Use B<--no-ignore-lines-without-functions> to disable it.
+ Disables filtering out branches that are not associated with any functions
+ inside the source file, but were imported via includes.
  
- if ($only_drm) {
-@@ -946,21 +946,21 @@ if ($only_drm) {
- 	push @src_exclude_regexes, "^/drm/";
- }
++See B<--ignore-lines-without-functions> for more details.
++
++=item B<--ignore-branches-on-headers>
++
++Branches on header files are really tricky to parse, as they depend
++on how gcc optimizes the output code. That's specially hard to use on
++Linux Kernel, as there are lots of complex macros that can be optimized
++on different ways. There are even some cases where the same macro sometimes
++have zero branches, while on other cases it can contain dozen ones.
++
++When this option is selected, all branches inside header files will be
++ignored.
++
++Please notice that this is enabled by default.
++
++Use B<--no-ignore-branches-on-headers> to disable this filter, preserving
++data from all branches.
++
++=item B<--no-ignore-branches-on-headers>
++
++Disables filtering out branches that are inside header files.
++
++See B<--ignore-branches-on-headers> for more details.
++
+ =back
  
--$str = open_filter_file($func_filters, \@func_regexes, \@func_exclude_regexes);
-+$str = open_filter_file($func_filters, \@func_include_regexes, \@func_exclude_regexes);
- if ($str) {
- 	$filter_str .= "," if ($filter_str ne "");
- 	$filter_str .= " function regex ($str)";
- 	$has_filter = 1;
- }
- 
--$str = open_filter_file($src_filters, \@src_regexes, \@src_exclude_regexes);
-+$str = open_filter_file($src_filters, \@src_include_regexes, \@src_exclude_regexes);
- if ($str) {
- 	$filter_str .= "," if ($filter_str ne "");
- 	$filter_str .= " source regex ($str)";
- 	$has_filter = 1;
- }
- 
--$ignore_unused = 1 if (@func_regexes || @func_exclude_regexes);
-+$ignore_unused = 1 if (@func_include_regexes || @func_exclude_regexes);
- 
- if ($ignore_unused) {
- 	$filter_str .= "," if ($filter_str ne "");
+ =item B<--show-files> or B<--show_files>
 -- 
 2.39.0
