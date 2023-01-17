@@ -1,26 +1,26 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9E91A10E2FD
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CAA4410E546
  for <igt-dev@lists.freedesktop.org>; Tue, 17 Jan 2023 14:06:20 +0000 (UTC)
 Received: from linux.intel.com (maurocar-mobl2.ger.corp.intel.com
  [10.252.27.93])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by linux.intel.com (Postfix) with ESMTPS id 8BA7D5805CB
+ by linux.intel.com (Postfix) with ESMTPS id 93482580DD6
  for <igt-dev@lists.freedesktop.org>; Tue, 17 Jan 2023 06:06:19 -0800 (PST)
 Received: from maurocar by linux.intel.com with local (Exim 4.96)
- (envelope-from <mauro.chehab@linux.intel.com>) id 1pHmbR-00Ba16-2E
+ (envelope-from <mauro.chehab@linux.intel.com>) id 1pHmbR-00Ba10-26
  for igt-dev@lists.freedesktop.org; Tue, 17 Jan 2023 15:06:17 +0100
 From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 17 Jan 2023 15:05:59 +0100
-Message-Id: <20230117140607.2759816-5-mauro.chehab@linux.intel.com>
+Date: Tue, 17 Jan 2023 15:05:57 +0100
+Message-Id: <20230117140607.2759816-3-mauro.chehab@linux.intel.com>
 In-Reply-To: <20230117140607.2759816-1-mauro.chehab@linux.intel.com>
 References: <20230117140607.2759816-1-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 04/12] code_cov_parse_info: better handle
- include regexes
+Subject: [igt-dev] [PATCH i-g-t 02/12] code_cov_parse_info: do some renames
+ to make it more coherent
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -34,107 +34,148 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Mauro Carvalho Chehab <mchehab@kernel.org>
 
-When there are both exclude and include regexes, the include ones
-may be overriding the more generic excluded ones. So, handle them
-first.
+Let the regex array to be clearer about include regexes, and
+coherent with exclude ones.
+
+While here, also rename the file exclude check function, to
+have a name closer to its functions counterpart.
+
+No functional changes.
 
 Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 ---
- scripts/code_cov_parse_info | 38 ++++++++++++++++++++-----------------
- 1 file changed, 21 insertions(+), 17 deletions(-)
+ scripts/code_cov_parse_info | 38 ++++++++++++++++++-------------------
+ 1 file changed, 19 insertions(+), 19 deletions(-)
 
 diff --git a/scripts/code_cov_parse_info b/scripts/code_cov_parse_info
-index ef44229983b6..3a503423861d 100755
+index 1498bd09cdba..d3739211b68a 100755
 --- a/scripts/code_cov_parse_info
 +++ b/scripts/code_cov_parse_info
-@@ -34,17 +34,24 @@ sub is_function_excluded($)
+@@ -18,10 +18,10 @@ my %all_line;
+ my %used_source;
+ my %record;
+ my %files;
+-my @func_regexes;
++my @func_include_regexes;
+ my @func_exclude_regexes;
+ my %test_names;
+-my @src_regexes;
++my @src_include_regexes;
+ my @src_exclude_regexes;
+ 
+ my $verbose = 0;
+@@ -30,7 +30,7 @@ my $skip_func = 0;
+ 
+ sub is_function_excluded($)
+ {
+-	return 0 if (!@func_regexes && !@func_exclude_regexes);
++	return 0 if (!@func_include_regexes && !@func_exclude_regexes);
  
  	my $func = shift;
  
-+	# Handle includes first, as, when there are both include and exclude
-+	# includes should take preference, as they can be overriding exclude
-+	# rules
-+	foreach my $r (@func_include_regexes) {
-+	    return 0 if ($func =~ m/$r/);
-+	}
-+
- 	foreach my $r (@func_exclude_regexes) {
+@@ -38,28 +38,28 @@ sub is_function_excluded($)
  		return 1 if ($func =~ m/$r/);
  	}
  
--	return 0 if (!@func_include_regexes);
--
--	foreach my $r (@func_include_regexes) {
--		return 0 if ($func =~ m/$r/);
-+	# If there are no exclude regexes, only include functions that are
-+	# explicitly included.
-+	if ($#func_exclude_regexes == 0) {
-+		return 1;
+-	return 0 if (!@func_regexes);
++	return 0 if (!@func_include_regexes);
+ 
+-	foreach my $r (@func_regexes) {
++	foreach my $r (@func_include_regexes) {
+ 		return 0 if ($func =~ m/$r/);
  	}
  
--	return 1;
-+	return 0;
+ 	return 1;
  }
  
- sub is_file_excluded($)
-@@ -1193,9 +1200,10 @@ Each line at B<[filter's file]> may contain a new regex:
+-sub filter_file($)
++sub is_file_excluded($)
+ {
+ 	my $s = shift;
  
- =back
+-	return 0 if (!@src_regexes && !@src_exclude_regexes);
++	return 0 if (!@src_include_regexes && !@src_exclude_regexes);
  
--When both include and exclude regexes are found, exclude regexes are
--applied first and any functions that don't match the include regular
--expressions from the B<[filter's file]> will be ignored.
-+Include regexes are handled first, as they can override an exclude regex.
-+
-+When just include regexes are used, any functions that don't match the
-+include regular expressions from the B<[filter's file]> will be ignored.
+ 	foreach my $r (@src_exclude_regexes) {
+ 		return 1 if ($s =~ m/$r/);
+ 	}
  
- Please notice that, when this filter is used, B<--ignore-unused> will be
- automaticaly enabled, as the final goal is to report per-function usage.
-@@ -1204,7 +1212,8 @@ automaticaly enabled, as the final goal is to report per-function usage.
+-	return 0 if (!@src_regexes);
++	return 0 if (!@src_include_regexes);
  
- Include B<regex> to the function filter. Can be used multiple times.
+-	foreach my $r (@src_regexes) {
++	foreach my $r (@src_include_regexes) {
+ 		return 0 if ($s =~ m/$r/);
+ 	}
  
--When used together with B<--func-filters>, regexes here are handled first.
-+When used together with B<--func-filters> or B<--exclude-func>, regexes
-+here are handled first.
+@@ -107,7 +107,7 @@ sub parse_info_data($)
+ 			$files{$source} = 1;
  
- Please notice that, when this filter is used, B<--ignore-unused> will be
- automaticaly enabled, as the final goal is to report per-function usage.
-@@ -1213,8 +1222,6 @@ automaticaly enabled, as the final goal is to report per-function usage.
+ 			# Just ignore files explictly set as such
+-			$ignore = filter_file($source);
++			$ignore = is_file_excluded($source);
+ 			next;
+ 		}
  
- Include B<regex> to the function filter. Can be used multiple times.
+@@ -189,7 +189,7 @@ sub parse_info_data($)
  
--When used together with B<--func-filters>, regexes here are handled first.
--
- Please notice that, when this filter is used, B<--ignore-unused> will be
- automaticaly enabled, as the final goal is to report per-function usage.
+ 		# Ignore DA/BRDA that aren't associated with functions
+ 		# Those are present on header files (maybe defines?)
+-		next if (@func_regexes && !$has_func);
++		next if (@func_include_regexes && !$has_func);
  
-@@ -1244,22 +1251,19 @@ Each line at B<[filter's file]> may contain a new regex:
+ 		# FNF:<number of functions found>
+ 		if (m/^FNF:(-?\d+)/) {
+@@ -899,10 +899,10 @@ GetOptions(
+ 	"only-i915|only_i915" => \$only_i915,
+ 	"only-drm|only_drm" => \$only_drm,
+ 	"func-filters|f=s" => \$func_filters,
+-	"include-func=s" => \@func_regexes,
++	"include-func=s" => \@func_include_regexes,
+ 	"exclude-func=s" => \@func_exclude_regexes,
+ 	"source-filters|S=s" => \$src_filters,
+-	"include-source=s" => \@src_regexes,
++	"include-source=s" => \@src_include_regexes,
+ 	"exclude-source=s" => \@src_exclude_regexes,
+ 	"show-files|show_files" => \$show_files,
+ 	"show-lines|show_lines" => \$show_lines,
+@@ -935,9 +935,9 @@ my $str;
+ if ($only_i915) {
+ 	# Please keep in sync with the documentation
+ 	push @src_exclude_regexes, "selftest";
+-	push @src_regexes, "drm/i915";
+-	push @src_regexes, "drm/ttm";
+-	push @src_regexes, "drm/vgem";
++	push @src_include_regexes, "drm/i915";
++	push @src_include_regexes, "drm/ttm";
++	push @src_include_regexes, "drm/vgem";
+ }
  
- =back
+ if ($only_drm) {
+@@ -946,21 +946,21 @@ if ($only_drm) {
+ 	push @src_exclude_regexes, "^/drm/";
+ }
  
--When both include and exclude regexes are found, exclude regexes are
--applied first and any functions that don't match the include regular
--expressions from the B<[filter's file]> will be ignored.
-+Include regexes are handled first, as they can override an exclude regex.
+-$str = open_filter_file($func_filters, \@func_regexes, \@func_exclude_regexes);
++$str = open_filter_file($func_filters, \@func_include_regexes, \@func_exclude_regexes);
+ if ($str) {
+ 	$filter_str .= "," if ($filter_str ne "");
+ 	$filter_str .= " function regex ($str)";
+ 	$has_filter = 1;
+ }
  
- =item B<--include-src> B<regex>
+-$str = open_filter_file($src_filters, \@src_regexes, \@src_exclude_regexes);
++$str = open_filter_file($src_filters, \@src_include_regexes, \@src_exclude_regexes);
+ if ($str) {
+ 	$filter_str .= "," if ($filter_str ne "");
+ 	$filter_str .= " source regex ($str)";
+ 	$has_filter = 1;
+ }
  
- Include B<regex> to the sources filter. Can be used multiple times.
+-$ignore_unused = 1 if (@func_regexes || @func_exclude_regexes);
++$ignore_unused = 1 if (@func_include_regexes || @func_exclude_regexes);
  
--When used together with B<--src-filters>, regexes here are handled first.
-+When used together with B<--src-filters> and B<--exclude-src>, regexes
-+here are handled first.
- 
- =item B<--exclude-src> B<regex>
- 
- Include B<regex> to the sources filter. Can be used multiple times.
- 
--When used together with B<--src-filters>, regexes here are handled first.
--
- =item B<--ignore-unused> or B<--ignore_unused>
- 
- Filters out unused C files and headers from the code coverage results.
+ if ($ignore_unused) {
+ 	$filter_str .= "," if ($filter_str ne "");
 -- 
 2.39.0
