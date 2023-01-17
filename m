@@ -1,18 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 806B010E43B
- for <igt-dev@lists.freedesktop.org>; Mon,  9 Jan 2023 15:38:44 +0000 (UTC)
-Date: Mon, 9 Jan 2023 16:38:23 +0100
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id F29F910E2D7
+ for <igt-dev@lists.freedesktop.org>; Tue, 17 Jan 2023 07:28:49 +0000 (UTC)
+Date: Tue, 17 Jan 2023 08:28:46 +0100
 From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 To: Karolina Stolarek <karolina.stolarek@intel.com>
-Message-ID: <20230109153823.i6c63lwxpo5fwmkz@zkempczy-mobl2>
-References: <cover.1671793169.git.karolina.stolarek@intel.com>
- <bf604dd1a93aca467b0b5d9dc908dad4304702c1.1671793169.git.karolina.stolarek@intel.com>
+Message-ID: <20230117072846.lxvxm5jzmxi2ewpi@zkempczy-mobl2>
+References: <cover.1673426099.git.karolina.stolarek@intel.com>
+ <a7d110261efe9f183df9e19ebe56333c2b907711.1673426099.git.karolina.stolarek@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <bf604dd1a93aca467b0b5d9dc908dad4304702c1.1671793169.git.karolina.stolarek@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t v2 6/6] tests/gem_exercise_blt: Add
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <a7d110261efe9f183df9e19ebe56333c2b907711.1673426099.git.karolina.stolarek@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t v3 6/6] tests/gem_exercise_blt: Add
  fast-copy-emit test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -26,17 +27,17 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Fri, Dec 23, 2022 at 12:13:51PM +0100, Karolina Stolarek wrote:
+On Wed, Jan 11, 2023 at 09:44:18AM +0100, Karolina Stolarek wrote:
 > Add a subtest where two fast copy commands are executed within the
 > single batch buffer.
 > 
 > Signed-off-by: Karolina Stolarek <karolina.stolarek@intel.com>
 > ---
->  tests/i915/gem_exercise_blt.c | 190 ++++++++++++++++++++++++++++++++--
->  1 file changed, 184 insertions(+), 6 deletions(-)
+>  tests/i915/gem_exercise_blt.c | 184 ++++++++++++++++++++++++++++++++--
+>  1 file changed, 178 insertions(+), 6 deletions(-)
 > 
 > diff --git a/tests/i915/gem_exercise_blt.c b/tests/i915/gem_exercise_blt.c
-> index 67a8b660..b8bfc436 100644
+> index b2f8d902..b6121f1e 100644
 > --- a/tests/i915/gem_exercise_blt.c
 > +++ b/tests/i915/gem_exercise_blt.c
 > @@ -37,6 +37,146 @@ static struct param {
@@ -94,9 +95,6 @@ On Fri, Dec 23, 2022 at 12:13:51PM +0100, Karolina Stolarek wrote:
 > +	blt_tmp.color_depth = blt->color_depth;
 > +	blt_tmp.print_bb = blt->print_bb;
 > +	bb_pos = emit_blt_fast_copy(i915, ahnd, &blt_tmp, bb_pos, true);
-
-Pipelined blits? Nice!
-
 > +
 > +	flags = EXEC_OBJECT_PINNED | EXEC_OBJECT_SUPPORTS_48B_ADDRESS;
 > +
@@ -111,6 +109,16 @@ Pipelined blits? Nice!
 > +	obj[2].handle = blt->dst.handle;
 > +	obj[2].offset = CANONICAL(dst_offset);
 > +	obj[2].flags = flags;
+
+EXEC_OBJECT_WRITE should be for dst, not for mid.  
+
+Other things are ok, with above fixed:
+
+Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+
+--
+Zbigniew
+
 > +
 > +	obj[3].handle = blt->bb.handle;
 > +	obj[3].offset = CANONICAL(bb_offset);
@@ -189,7 +197,7 @@ Pipelined blits? Nice!
 >  static void fast_copy(int i915, const intel_ctx_t *ctx,
 >  		      const struct intel_execution_engine2 *e,
 >  		      uint32_t region1, uint32_t region2,
-> @@ -102,12 +242,42 @@ static void fast_copy(int i915, const intel_ctx_t *ctx,
+> @@ -101,12 +241,36 @@ static void fast_copy(int i915, const intel_ctx_t *ctx,
 >  	igt_assert_f(!result, "source and destination surfaces differs!\n");
 >  }
 >  
@@ -202,26 +210,13 @@ Pipelined blits? Nice!
 > +	*full_subtest_str(char *regtxt, enum blt_tiling_type tiling,
 > +			  enum fast_copy_func func)
 > +{
-> +	const char *multi_str = "emit";
-> +	char const *tile_str = blt_tiling_name(tiling);
 > +	char *name;
-> +	uint32_t len, sub_len;
+> +	uint32_t len;
 > +
-> +	len = strlen(regtxt) + strlen(tile_str) + strlen(multi_str) + 2;
-
-Similar to other patch - looks overengineered. Maybe asprintf() will help
-you to avoid calling strlen().
-
---
-Zbigniew
-
-> +	name = malloc(len * sizeof(char));
-> +	igt_assert(name);
+> +	len = asprintf(&name, "%s-%s%s", blt_tiling_name(tiling), regtxt,
+> +		       func == FAST_COPY_EMIT ? "-emit" : "");
 > +
-> +	sub_len = snprintf(name, len, "%s-%s", tile_str, regtxt);
-> +
-> +	if (func == FAST_COPY_EMIT)
-> +		snprintf(name + sub_len, len, "-%s", multi_str);
+> +	igt_assert_f(len >= 0, "asprintf failed!\n");
 > +
 > +	return name;
 > +}
@@ -240,7 +235,7 @@ Zbigniew
 >  	int tiling;
 >  
 >  	for_each_tiling(tiling) {
-> @@ -119,20 +289,23 @@ static void fast_copy_test(int i915,
+> @@ -118,20 +282,23 @@ static void fast_copy_test(int i915,
 >  				continue;
 >  			for_each_variation_r(regions, 2, set) {
 >  				uint32_t region1, region2;
@@ -268,7 +263,7 @@ Zbigniew
 >  			}
 >  		}
 >  	}
-> @@ -206,7 +379,12 @@ igt_main_args("b:pst:W:H:", NULL, help_str, opt_handler, NULL)
+> @@ -205,7 +372,12 @@ igt_main_args("b:pst:W:H:", NULL, help_str, opt_handler, NULL)
 >  
 >  	igt_describe("Check fast-copy blit");
 >  	igt_subtest_with_dynamic("fast-copy") {
