@@ -1,17 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9FBFE10E68D
- for <igt-dev@lists.freedesktop.org>; Wed, 18 Jan 2023 07:13:59 +0000 (UTC)
-From: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Tue, 17 Jan 2023 23:13:36 -0800
-Message-Id: <20230118071350.17498-6-niranjana.vishwanathapura@intel.com>
-In-Reply-To: <20230118071350.17498-1-niranjana.vishwanathapura@intel.com>
-References: <20230118071350.17498-1-niranjana.vishwanathapura@intel.com>
+Content-Type: multipart/alternative;
+ boundary="===============0161783926976862910=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v10 05/19] lib/vm_bind: Add vm_bind mode
- support for VM
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: =?utf-8?q?Zbigniew_Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Date: Tue, 17 Jan 2023 15:53:35 -0000
+Message-ID: <167397081511.21232.2503380350891750159@emeril.freedesktop.org>
+References: <20230117144923.59940-1-zbigniew.kempczynski@intel.com>
+In-Reply-To: <20230117144923.59940-1-zbigniew.kempczynski@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgaTkxNS9n?=
+ =?utf-8?q?em=5Fcreate=3A_Ensure_newly_created_handles_are_not_reusing_sam?=
+ =?utf-8?q?e_offset?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,145 +18,141 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: tvrtko.ursulin@intel.com, thomas.hellstrom@intel.com,
- matthew.auld@intel.com, daniel.vetter@intel.com, petri.latvala@intel.com
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add required library interfaces to create VM in
-vm_bind mode and assign the VM to a context.
+--===============0161783926976862910==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Reviewed-by: Matthew Auld <matthew.auld@intel.com>
-Signed-off-by: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
----
- lib/i915/gem_context.c | 24 ++++++++++++++++++++++++
- lib/i915/gem_context.h |  3 +++
- lib/i915/gem_vm.c      | 31 ++++++++++++++++++++++++++-----
- lib/i915/gem_vm.h      |  3 ++-
- 4 files changed, 55 insertions(+), 6 deletions(-)
+== Series Details ==
 
-diff --git a/lib/i915/gem_context.c b/lib/i915/gem_context.c
-index fe989a8d1..2d06b4198 100644
---- a/lib/i915/gem_context.c
-+++ b/lib/i915/gem_context.c
-@@ -517,3 +517,27 @@ uint32_t gem_context_create_for_class(int i915,
- 	*count = i;
- 	return p.ctx_id;
- }
-+
-+uint32_t gem_context_get_vm(int fd, uint32_t ctx_id)
-+{
-+	struct drm_i915_gem_context_param p = {
-+		.param = I915_CONTEXT_PARAM_VM,
-+		.ctx_id = ctx_id,
-+	};
-+
-+	gem_context_get_param(fd, &p);
-+	igt_assert(p.value);
-+
-+	return p.value;
-+}
-+
-+void gem_context_set_vm(int fd, uint32_t ctx_id, uint32_t vm_id)
-+{
-+	struct drm_i915_gem_context_param p = {
-+		.param = I915_CONTEXT_PARAM_VM,
-+		.ctx_id = ctx_id,
-+		.value = vm_id,
-+	};
-+
-+	gem_context_set_param(fd, &p);
-+}
-diff --git a/lib/i915/gem_context.h b/lib/i915/gem_context.h
-index 505d55724..2a2247fe1 100644
---- a/lib/i915/gem_context.h
-+++ b/lib/i915/gem_context.h
-@@ -63,4 +63,7 @@ void gem_context_set_persistence(int i915, uint32_t ctx, bool state);
- 
- bool gem_context_has_engine(int fd, uint32_t ctx, uint64_t engine);
- 
-+uint32_t gem_context_get_vm(int fd, uint32_t ctx_id);
-+void gem_context_set_vm(int fd, uint32_t ctx_id, uint32_t vm_id);
-+
- #endif /* GEM_CONTEXT_H */
-diff --git a/lib/i915/gem_vm.c b/lib/i915/gem_vm.c
-index 9a022a56c..ee3c65d06 100644
---- a/lib/i915/gem_vm.c
-+++ b/lib/i915/gem_vm.c
-@@ -48,7 +48,7 @@ bool gem_has_vm(int i915)
- {
- 	uint32_t vm_id = 0;
- 
--	__gem_vm_create(i915, &vm_id);
-+	__gem_vm_create(i915, 0, &vm_id);
- 	if (vm_id)
- 		gem_vm_destroy(i915, vm_id);
- 
-@@ -67,9 +67,9 @@ void gem_require_vm(int i915)
- 	igt_require(gem_has_vm(i915));
- }
- 
--int __gem_vm_create(int i915, uint32_t *vm_id)
-+int __gem_vm_create(int i915, uint32_t flags, uint32_t *vm_id)
- {
--       struct drm_i915_gem_vm_control ctl = {};
-+       struct drm_i915_gem_vm_control ctl = { .flags = flags };
-        int err = 0;
- 
-        if (igt_ioctl(i915, DRM_IOCTL_I915_GEM_VM_CREATE, &ctl) == 0) {
-@@ -88,7 +88,8 @@ int __gem_vm_create(int i915, uint32_t *vm_id)
-  * @i915: open i915 drm file descriptor
-  *
-  * This wraps the VM_CREATE ioctl, which is used to allocate a new
-- * address space for use with GEM contexts.
-+ * address space for use with GEM contexts, with legacy execbuff
-+ * method of binding.
-  *
-  * Returns: The id of the allocated address space.
-  */
-@@ -96,7 +97,27 @@ uint32_t gem_vm_create(int i915)
- {
- 	uint32_t vm_id;
- 
--	igt_assert_eq(__gem_vm_create(i915, &vm_id), 0);
-+	igt_assert_eq(__gem_vm_create(i915, 0, &vm_id), 0);
-+	igt_assert(vm_id != 0);
-+
-+	return vm_id;
-+}
-+
-+/**
-+ * gem_vm_create_in_vm_bind_mode:
-+ * @i915: open i915 drm file descriptor
-+ *
-+ * This wraps the VM_CREATE ioctl with I915_VM_CREATE_FLAGS_USE_VM_BIND,
-+ * flag which is used to allocate a new address space for use with GEM contexts
-+ * with vm_bind mode of binding.
-+ *
-+ * Returns: The id of the allocated address space.
-+ */
-+uint32_t gem_vm_create_in_vm_bind_mode(int i915)
-+{
-+	uint32_t vm_id;
-+
-+	igt_assert_eq(__gem_vm_create(i915, I915_VM_CREATE_FLAGS_USE_VM_BIND, &vm_id), 0);
- 	igt_assert(vm_id != 0);
- 
- 	return vm_id;
-diff --git a/lib/i915/gem_vm.h b/lib/i915/gem_vm.h
-index acbb663e6..6cf46d887 100644
---- a/lib/i915/gem_vm.h
-+++ b/lib/i915/gem_vm.h
-@@ -31,7 +31,8 @@ bool gem_has_vm(int i915);
- void gem_require_vm(int i915);
- 
- uint32_t gem_vm_create(int i915);
--int __gem_vm_create(int i915, uint32_t *vm_id);
-+uint32_t gem_vm_create_in_vm_bind_mode(int i915);
-+int __gem_vm_create(int i915, uint32_t flags, uint32_t *vm_id);
- 
- void gem_vm_destroy(int i915, uint32_t vm_id);
- int __gem_vm_destroy(int i915, uint32_t vm_id);
--- 
-2.21.0.rc0.32.g243a4c7e27
+Series: i915/gem_create: Ensure newly created handles are not reusing same offset
+URL   : https://patchwork.freedesktop.org/series/112934/
+State : success
+
+== Summary ==
+
+CI Bug Log - changes from CI_DRM_12591 -> IGTPW_8353
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8353/index.html
+
+Participating hosts (46 -> 44)
+------------------------------
+
+  Missing    (2): fi-kbl-soraka fi-snb-2520m 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_8353 that come from known issues:
+
+### IGT changes ###
+
+#### Possible fixes ####
+
+  * igt@i915_selftest@live@reset:
+    - {bat-rpls-2}:       [DMESG-FAIL][1] ([i915#4983]) -> [PASS][2]
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12591/bat-rpls-2/igt@i915_selftest@live@reset.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8353/bat-rpls-2/igt@i915_selftest@live@reset.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [i915#1845]: https://gitlab.freedesktop.org/drm/intel/issues/1845
+  [i915#4258]: https://gitlab.freedesktop.org/drm/intel/issues/4258
+  [i915#4983]: https://gitlab.freedesktop.org/drm/intel/issues/4983
+  [i915#6367]: https://gitlab.freedesktop.org/drm/intel/issues/6367
+  [i915#7828]: https://gitlab.freedesktop.org/drm/intel/issues/7828
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_7121 -> IGTPW_8353
+
+  CI-20190529: 20190529
+  CI_DRM_12591: 9c2ef68ea047683a5fd67d2eccc15888407fe6ef @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_8353: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8353/index.html
+  IGT_7121: aa16e81259f59734230d441905b9d0f605e4a4b5 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8353/index.html
+
+--===============0161783926976862910==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>i915/gem_create: Ensure newly created handles are not reusing same offset</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/112934/">https://patchwork.freedesktop.org/series/112934/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8353/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8353/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_12591 -&gt; IGTPW_8353</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8353/index.html</p>
+<h2>Participating hosts (46 -&gt; 44)</h2>
+<p>Missing    (2): fi-kbl-soraka fi-snb-2520m </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_8353 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@i915_selftest@live@reset:<ul>
+<li>{bat-rpls-2}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12591/bat-rpls-2/igt@i915_selftest@live@reset.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4983">i915#4983</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8353/bat-rpls-2/igt@i915_selftest@live@reset.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_7121 -&gt; IGTPW_8353</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_12591: 9c2ef68ea047683a5fd67d2eccc15888407fe6ef @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_8353: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8353/index.html<br />
+  IGT_7121: aa16e81259f59734230d441905b9d0f605e4a4b5 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============0161783926976862910==--
