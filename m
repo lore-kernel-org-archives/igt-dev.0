@@ -1,26 +1,26 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E9BDE10E2FD
+ by gabe.freedesktop.org (Postfix) with ESMTPS id F1C5A10E546
  for <igt-dev@lists.freedesktop.org>; Tue, 17 Jan 2023 14:06:21 +0000 (UTC)
 Received: from linux.intel.com (maurocar-mobl2.ger.corp.intel.com
  [10.252.27.93])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by linux.intel.com (Postfix) with ESMTPS id D1804580E0C
+ by linux.intel.com (Postfix) with ESMTPS id E69FA5805CB
  for <igt-dev@lists.freedesktop.org>; Tue, 17 Jan 2023 06:06:19 -0800 (PST)
 Received: from maurocar by linux.intel.com with local (Exim 4.96)
- (envelope-from <mauro.chehab@linux.intel.com>) id 1pHmbR-00Ba1D-2M
+ (envelope-from <mauro.chehab@linux.intel.com>) id 1pHmbR-00Ba1X-2h
  for igt-dev@lists.freedesktop.org; Tue, 17 Jan 2023 15:06:17 +0100
 From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 17 Jan 2023 15:06:01 +0100
-Message-Id: <20230117140607.2759816-7-mauro.chehab@linux.intel.com>
+Date: Tue, 17 Jan 2023 15:06:06 +0100
+Message-Id: <20230117140607.2759816-12-mauro.chehab@linux.intel.com>
 In-Reply-To: <20230117140607.2759816-1-mauro.chehab@linux.intel.com>
 References: <20230117140607.2759816-1-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 06/12] code_cov_parse_info: add support for
- parsing JSON files
+Subject: [igt-dev] [PATCH i-g-t 11/12] code_cov_parse_info: add support for
+ filtering branches
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -34,653 +34,390 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Mauro Carvalho Chehab <mchehab@kernel.org>
 
-Currently, the tool supports only info files, provided by
-lcov tool. While this works, the info output lacks support to
-properly identify what function is related to branches and
-lines. Such limitation doesn't exist with json. So, add
-support for parsing it.
+Add support for passing regexes to be used to filter branches.
 
 Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 ---
- scripts/code_cov_parse_info | 441 ++++++++++++++++++++++++++++++------
- 1 file changed, 366 insertions(+), 75 deletions(-)
- mode change 100755 => 100644 scripts/code_cov_parse_info
+ scripts/code_cov_parse_info | 178 ++++++++++++++++++++++++++++++++----
+ 1 file changed, 159 insertions(+), 19 deletions(-)
 
 diff --git a/scripts/code_cov_parse_info b/scripts/code_cov_parse_info
-old mode 100755
-new mode 100644
-index 3982dbd513c4..80a9f1c25540
+index 4aed3d67bd98..2c3283cc1119 100755
 --- a/scripts/code_cov_parse_info
 +++ b/scripts/code_cov_parse_info
-@@ -28,6 +28,16 @@ my $verbose = 0;
- my $ignore_unused = 0;
- my $skip_func = 0;
+@@ -22,12 +22,16 @@ my %record;
+ my %files;
+ my @func_include_regexes;
+ my @func_exclude_regexes;
++my @branch_include_regexes;
++my @branch_exclude_regexes;
+ my %test_names;
+ my @src_include_regexes;
+ my @src_exclude_regexes;
++my $source_dir = ".";
+ my $can_filter_lines = 1;
+ my $ignore_lines_without_functions = 1;
+ my $ignore_branches_on_headers = 1;
++my $has_branch_filter;
  
-+my $has_json_support = eval {
-+	require Cpanel::JSON::XS;
-+	Cpanel::JSON::XS->import(qw(decode_json));
-+	1;
-+};
+ my $verbose = 0;
+ my $ignore_unused = 0;
+@@ -88,6 +92,32 @@ sub is_file_excluded($)
+ 	return 1;
+ }
+ 
++sub is_branch_excluded($)
++{
++	return 0 if (!@branch_include_regexes && !@branch_exclude_regexes);
 +
-+if (!$has_json_support) {
-+	print "Warning: System doesn't have Cpanel::JSON::XS. Can't use gcov directly.\n";
++	my $branch = shift;
++
++	# Handle includes first, as, when there are both include and exclude
++	# includes should take preference, as they can be overriding exclude
++	# rules
++	foreach my $r (@branch_include_regexes) {
++	    return 0 if ($branch =~ m/$r/);
++	}
++
++	foreach my $r (@branch_exclude_regexes) {
++		return 1 if ($branch =~ m/$r/);
++	}
++
++	# If there are no exclude regexes, only include branches that are
++	# explicitly included.
++	if ($#branch_exclude_regexes == 0) {
++		return 1;
++	}
++
++	return 0;
 +}
 +
- sub is_function_excluded($)
- {
- 	return 0 if (!@func_include_regexes && !@func_exclude_regexes);
-@@ -76,7 +86,285 @@ sub is_file_excluded($)
  # Use something that comes before any real function
  my $before_sf = "!!!!";
  
--sub parse_info_data($)
-+sub parse_json_gcov_v1($$)
-+{
-+	my $file = shift;
-+	my $json = shift;
-+
-+	my $was_used = 0;
-+	my $has_func = 0;
-+	my $ignore = 0;
-+
-+	my $cur_test = $file;
-+	$cur_test =~ s#^.*/##;
-+	$cur_test =~ s#\.json$##;
-+	$test_names{$cur_test} = 1;
-+
-+	# Store the common JSON data into the record
-+	for my $key (keys %$json) {
-+		next if ($key eq "files");
-+		next if ($key eq "functions");
-+		next if ($key eq "lines");
-+		# Store any extra data
-+		$record{$key} = $json->{$key};
-+	}
-+	# Store test name at the record
-+	$record{tests}{$cur_test} = 1;
-+
-+	for my $file_ref (@{$json->{'files'}}) {
-+		my $source = $file_ref->{'file'};
-+
-+		$files{$source} = 1;
-+		next if is_file_excluded($source);
-+
-+		# Parse functions
-+		for my $func_ref (@{$file_ref->{'functions'}}) {
-+			my $func = $func_ref->{'name'};
-+
-+			next if is_function_excluded($func);
-+
-+			# Negative gcov results are possible, as reported at:
-+			# https://gcc.gnu.org/bugzilla/show_bug.cgi?id=67937
-+			# Lcov ignores those. So, let's do the same here.
-+			$func_ref->{'execution_count'} = 0 if ($func_ref->{'execution_count'} < 0);
-+
-+			# Store the record
-+			for my $key (keys %$func_ref) {
-+				if ($key eq "execution_count") {
-+					$record{files}{$source}{func}{$func}{$key} += $func_ref->{$key};
-+				} else {
-+					$record{files}{$source}{func}{$func}{$key} = $func_ref->{$key};
-+				}
-+			}
-+
-+			$all_func{$func}{$source}->{ln} = $func_ref->{'start_line'};
-+			$all_func{$func}{$source}->{end_ln} = $func_ref->{'end_line'};
-+
-+			if ($func_ref->{'execution_count'} > 0) {
-+				$used_func{$func}{$source}->{count} += $func_ref->{'execution_count'};
-+				$was_used = 1;
-+			}
-+		}
-+		next if ($ignore_unused && !$was_used);
-+		$used_source{$source} = 1;
-+
-+		# Parse lines and branches
-+		for my $line_ref (@{$file_ref->{'lines'}}) {
-+			my $ln = $line_ref->{'line_number'};
-+
-+			# Negative gcov results are possible, as reported at:
-+			# https://gcc.gnu.org/bugzilla/show_bug.cgi?id=67937
-+			# Lcov ignores those. So, let's do the same here.
-+			$line_ref->{'count'} = 0 if ($line_ref->{'count'} < 0);
-+
-+			my $func = $line_ref->{'function_name'};
-+			if (!$func) {
-+				# Ignore DA/BRDA that aren't associated with
-+				# functions. Those are present on header files
-+				# (maybe defines?)
-+				next if (@func_include_regexes);
-+
-+				# Otherwise place them in separate
-+				$func = $before_sf;
-+			} else {
-+				next if is_function_excluded($func);
-+			}
-+
-+			# Store the record
-+			for my $key (keys %$line_ref) {
-+				next if ($key eq "line_number");
-+
-+				# Branches will be handled in separate
-+				next if ($key eq "branches");
-+				if ($key eq "count") {
-+					$record{files}{$source}{line}{$ln}{$key} += $line_ref->{$key};
-+				} else {
-+					$record{files}{$source}{line}{$ln}{$key} = $line_ref->{$key};
-+				}
-+			}
-+			$all_line{$source}{$ln} += $line_ref->{'count'};
-+
-+			my $i = 0;
-+			for my $branch_ref (@{$line_ref->{'branches'}}) {
-+				my $taken = $branch_ref->{'count'};
-+				my $where = sprintf "%d,%d,%d", $ln, 0, $i;
-+
-+				# Negative gcov results are possible, as
-+				# reported at:
-+				# https://gcc.gnu.org/bugzilla/show_bug.cgi?id=67937
-+				# Lcov ignores those. So, let's do the same
-+				# here.
-+				$branch_ref->{'count'} = 0 if ($branch_ref->{'count'} < 0);
-+
-+				for my $key (keys %$branch_ref) {
-+					if ($key eq "count") {
-+						$record{files}{$source}{line}{$ln}{branches}[$i]{$key} += $branch_ref->{$key};
-+					} else {
-+						$record{files}{$source}{line}{$ln}{branches}[$i]{$key} = $branch_ref->{$key};
-+					}
-+				}
-+
-+				$all_branch{$source}{$where}{count} += $taken;
-+				$i++;
-+			}
-+			if (!defined($record{files}{$source}{line}{$ln}{branches})) {
-+				@{$record{files}{$source}{line}{$ln}{branches}} = ();
-+			}
-+		}
-+	}
-+
-+	# As the record was changed, we need to use a different format name
-+	$record{format_version} = "parse_info v1.0";
-+}
-+
-+sub parse_json_internal_format_v1($$)
-+{
-+	my $file = shift;
-+	my $json = shift;
-+
-+	my $was_used = 0;
-+	my $has_func = 0;
-+	my $ignore = 0;
-+
-+	# Store the common JSON data into the record
-+	for my $key (keys %$json) {
-+		next if ($key eq "files");
-+		next if ($key eq "functions");
-+		next if ($key eq "lines");
-+		# Store any extra data
-+		$record{$key} = $json->{$key};
-+	}
-+
-+	for my $test (keys %{$json->{'tests'}}) {
-+		$test_names{$test} = 1;
-+	}
-+
-+	for my $source (keys %{$json->{'files'}}) {
-+		$files{$source} = 1;
-+		next if is_file_excluded($source);
-+
-+		my $file_ref = \%{$json->{'files'}{$source}};
-+
-+		# Parse functions
-+		for my $func (keys %{$file_ref->{func}}) {
-+			next if is_function_excluded($func);
-+
-+			my $func_ref = \%{$file_ref->{func}{$func}};
-+
-+			# Store the record
-+			for my $key (keys %$func_ref) {
-+				if ($key eq "execution_count") {
-+					$record{files}{$source}{func}{$func}{$key} += $func_ref->{$key};
-+				} else {
-+					$record{files}{$source}{func}{$func}{$key} = $func_ref->{$key};
-+				}
-+			}
-+
-+			$all_func{$func}{$source}->{ln} = $func_ref->{'start_line'};
-+			$all_func{$func}{$source}->{end_ln} = $func_ref->{'end_line'};
-+
-+			if ($func_ref->{'execution_count'} > 0) {
-+				$used_func{$func}{$source}->{count} += $func_ref->{'execution_count'};
-+				$was_used = 1;
-+			}
-+		}
-+		next if ($ignore_unused && !$was_used);
-+		$used_source{$source} = 1;
-+
-+		# Parse lines and branches
-+		for my $ln (keys %{$file_ref->{line}}) {
-+			my $line_ref = \%{$file_ref->{line}{$ln}};
-+			my $func = $line_ref->{'function_name'};
-+			if (!$func) {
-+				# Ignore DA/BRDA that aren't associated with
-+				# functions. Those are present on header files
-+				# (maybe defines?)
-+				next if (@func_include_regexes);
-+
-+				# Otherwise place them in separate
-+				$func = $before_sf;
-+			} else {
-+				next if is_function_excluded($func);
-+			}
-+
-+			# Store the record
-+			for my $key (keys %$line_ref) {
-+				next if ($key eq "line_number");
-+
-+				# Branches will be handled in separate
-+				next if ($key eq "branches");
-+				if ($key eq "count") {
-+					$record{files}{$source}{line}{$ln}{$key} += $line_ref->{$key};
-+				} else {
-+					$record{files}{$source}{line}{$ln}{$key} = $line_ref->{$key};
-+				}
-+			}
-+			$all_line{$source}{$ln} += $line_ref->{'count'};
-+
-+			my $i = 0;
-+			for my $branch_ref (@{$line_ref->{'branches'}}) {
-+				my $taken = $branch_ref->{'count'};
-+				my $where = sprintf "%d,%d,%d", $ln, 0, $i;
-+
-+				# Negative gcov results are possible, as
-+				# reported at:
-+				# https://gcc.gnu.org/bugzilla/show_bug.cgi?id=67937
-+				# Lcov ignores those. So, let's do the same
-+				# here.
-+				$branch_ref->{'count'} = 0 if ($branch_ref->{'count'} < 0);
-+
-+				for my $key (keys %$branch_ref) {
-+					if ($key eq "count") {
-+						$record{files}{$source}{line}{$ln}{branches}[$i]{$key} += $branch_ref->{$key};
-+					} else {
-+						$record{files}{$source}{line}{$ln}{branches}[$i]{$key} = $branch_ref->{$key};
-+					}
-+				}
-+
-+				$all_branch{$source}{$where}{count} += $taken;
-+				$i++;
-+			}
-+			if (!defined($record{files}{$source}{line}{$ln}{branches})) {
-+				@{$record{files}{$source}{line}{$ln}{branches}} = ();
-+			}
-+		}
-+	}
-+}
-+
-+sub read_json($)
-+{
-+	my $file = shift;
-+
-+	if (!$has_json_support) {
-+		die "Can't parse json as system doesn't have Cpanel::JSON::XS.\n";
-+	}
-+
-+	# Read JSON data
-+	open IN, $file or die "can't open $file";
-+	while (<IN>) {
-+		my $json = eval {
-+			Cpanel::JSON::XS::decode_json($_)
-+		};
-+
-+		if (!$json) {
-+			printf "Failed to parse file $file, line $.\n";
-+			next;
-+		}
-+		if ($json->{'format_version'} eq '1') {
-+			parse_json_gcov_v1($file, $json);
-+		} elsif ($json->{'format_version'} eq 'parse_info v1.0') {
-+			parse_json_internal_format_v1($file, $json);
-+		} else {
-+			if ($json->{'format_version'}) {
-+				die "Can't parse JSON version %d on file $file\n", $json->{'format_version'};
-+			}
-+			die "Unknown JSON format on file $file\n";
-+		}
-+	}
-+	close IN;
-+}
-+
-+sub read_info($)
- {
+@@ -96,7 +126,6 @@ sub parse_json_gcov_v1($$)
  	my $file = shift;
- 	my $was_used = 0;
-@@ -98,6 +386,7 @@ sub parse_info_data($)
- 			if ($1 ne $cur_test) {
- 				$cur_test = $1;
- 				$test_names{$cur_test} = 1;
-+				$record{tests}{$cur_test} = 1;
+ 	my $json = shift;
+ 
+-	my $was_used = 0;
+ 	my $has_func = 0;
+ 	my $ignore = 0;
+ 
+@@ -116,8 +145,10 @@ sub parse_json_gcov_v1($$)
+ 	# Store test name at the record
+ 	$record{tests}{$cur_test} = 1;
+ 
++	my %cached;
+ 	for my $file_ref (@{$json->{'files'}}) {
+ 		my $source = $file_ref->{'file'};
++		my $was_used = 0;
+ 
+ 		$files{$source} = 1;
+ 		next if is_file_excluded($source);
+@@ -150,8 +181,6 @@ sub parse_json_gcov_v1($$)
+ 				$was_used = 1;
  			}
- 			$source = $before_sf;
- 			$func = $before_sf;
-@@ -158,7 +447,7 @@ sub parse_info_data($)
- 
- 			$skip_func = 0;
- 
--			$record{$source}{$func}{fn} = $ln;
-+			$record{files}{$source}{func}{$func}{start_line} = $ln;
- 			$all_func{$func}{$source}->{ln} = $ln;
- 			next;
  		}
-@@ -186,7 +475,7 @@ sub parse_info_data($)
- 			$skip_func = 0;
- 			$was_used = 1;
+-		next if ($ignore_unused && !$was_used);
+-		$used_source{$source} = 1;
  
--			$record{$source}{$func}{fnda} += $count;
-+			$record{files}{$source}{func}{$func}{execution_count} += $count;
- 			$used_func{$func}{$source}->{count} += $count;
- 			next;
- 		}
-@@ -200,15 +489,10 @@ sub parse_info_data($)
+ 		# Parse lines and branches
+ 		for my $line_ref (@{$file_ref->{'lines'}}) {
+@@ -191,12 +220,32 @@ sub parse_json_gcov_v1($$)
+ 			for my $branch_ref (@{$line_ref->{'branches'}}) {
+ 				my $where = sprintf "%d,%d,%d", $ln, 0, $i;
  
- 		# FNF:<number of functions found>
- 		if (m/^FNF:(-?\d+)/) {
--			$record{$source}{$func}{fnf} = $1;
- 			next;
- 		}
- 		# FNH:<number of function hit>
- 		if (m/^FNH:(-?\d+)/) {
--			my $hits = $1;
--			if (!defined($record{$source}{$func}{fnh}) || $record{$source}{$func}{fnh} < $hits) {
--				$record{$source}{$func}{fnh} = $hits;
--			}
- 			next;
- 		}
- 
-@@ -221,6 +505,10 @@ sub parse_info_data($)
- 			my $branch = $3;
- 			my $taken = $4;
- 
-+			if ($block != 0) {
-+				print "Warning: unexpected block $block at line $.\n";
-+			}
++				# Filter out branches
++				if ($has_branch_filter) {
++					if (!$cached{$source}) {
++						open IN, "$source_dir/$source" || die "File $source_dir/$source not found. Can't filter branches\n";
++						push @{$cached{$source}}, <IN>;
++						close IN;
++					}
++					my $nlines = scalar(@{$cached{$source}});
++					if ($ln > $nlines) {
++						die "$source:$ln line is bigger than the number of lines at the file ($nlines lines)\n";
++						return;
++					}
++					next if (is_branch_excluded($cached{$source}[$ln - 1]));
++				}
 +
- 			my $where = "$ln,$block,$branch";
- 
- 			$taken = 0 if ($taken eq '-');
-@@ -232,22 +520,17 @@ sub parse_info_data($)
- 
- 			$was_used = 1 if ($taken > 0);
- 
--			$record{$source}{$func}{brda}{$where} += $taken;
--			$all_branch{$source}{"$where"} += $taken;
-+			$record{files}{$source}{line}{$ln}{branches}[$branch]{count} += $taken;
-+			$all_branch{$source}{$where}{count} += $taken;
- 			next;
- 		}
- 
- 		# BRF:<number of branches found>
- 		if (m/^BRF:(-?\d+)/) {
--			$record{$source}{$func}{brf} = $1;
- 			next;
- 		}
- 		# BRH:<number of branches hit>
- 		if (m/^BRH:(-?\d+)/) {
--			my $hits = $1;
--			if (!defined($record{$source}{$func}{brh}) || $record{$source}{$func}{brh} < $hits) {
--				$record{$source}{$func}{brh} = $hits;
--			}
- 			next;
- 		}
- 
-@@ -265,23 +548,23 @@ sub parse_info_data($)
- 
- 			$was_used = 1 if ($count > 0);
- 
--			$record{$source}{$func}{da}{$ln} += $count;
--			$all_line{$source}{"$ln"} += $count;
-+			$record{files}{$source}{line}{$ln}{count} += $count;
-+			if (!defined($record{files}{$source}{line}{$ln}{branches})) {
-+				@{$record{files}{$source}{line}{$ln}{branches}} = ();
-+			}
+ 				if ($func eq $before_sf) {
+ 					# Ignore DA/BRDA that aren't associated with
+ 					# functions. Those are present on header files
+ 					# (maybe defines?)
+ 					next if ($ignore_lines_without_functions);
 +
-+			$all_line{$source}{$ln} += $count;
++					# Otherwise place them in separate
++					$func = $before_sf;
+ 				} else {
++					next if is_function_excluded($func);
 +
- 			next;
+ 					$all_branch{$source}{$where}{func} = $func;
+ 				}
+ 
+@@ -216,6 +265,7 @@ sub parse_json_gcov_v1($$)
+ 				}
+ 
+ 				$all_branch{$source}{$where}{count} += $branch_ref->{'count'};
++				$was_used = 1 if ($branch_ref->{'count'} > 0);
+ 
+ 				$i++;
+ 			}
+@@ -223,6 +273,8 @@ sub parse_json_gcov_v1($$)
+ 				@{$record{files}{$source}{line}{$ln}{branches}} = ();
+ 			}
  		}
- 
- 		# LF:<number of instrumented lines>
- 		if (m/^LF:(-?\d+)/) {
--			$record{$source}{$func}{lf} = $1;
- 			next;
- 		}
- 
- 		# LH:<number of lines with a non-zero execution count>
- 		if (m/^LH:(-?\d+)/) {
--			my $hits = $1;
--			if (!defined($record{$source}{$func}{lh}) || $record{$source}{$func}{lh} < $hits) {
--				$record{$source}{$func}{lh} = $hits;
--			}
- 			next;
- 		}
- 
-@@ -306,74 +589,73 @@ sub sort_where($$)
- 	return $a[2] <=> $b[2];
- }
- 
--sub write_filtered_file($)
-+sub write_json_file($)
- {
--	my $filter = shift;
-+	my $fname = shift;
- 
--	my $filtered = "";
-+	if (!$has_json_support) {
-+		die "Can't parse json as system doesn't have Cpanel::JSON::XS.\n";
-+	}
-+
-+	my $data = eval {
-+		Cpanel::JSON::XS::encode_json(\%record)
-+	};
-+
-+	open OUT, ">$fname" or die "Can't open $fname";
-+	print OUT $data or die "Failed to write to $fname";
-+	close OUT or die "Failed to close to $fname";
-+}
-+
-+sub write_info_file($)
-+{
-+	my $fname = shift;
-+	my $data = "";
- 
- 	if ($title eq "") {
- 		foreach my $testname(sort keys %test_names) {
--			$filtered .= "TN:$testname\n";
-+			$data .= "TN:$testname\n";
- 		}
- 	} else {
--		$filtered .= "TN:$title\n";
-+		$data .= "TN:$title\n";
++		next if ($ignore_unused && !$was_used);
++		$used_source{$source} = 1;
  	}
  
--	# Generates filtered data
--	foreach my $source(sort keys %record) {
-+	# Fills $data with the contents to be stored at the file
-+	foreach my $source(sort keys %{$record{files}}) {
- 		next if (!$used_source{$source});
+ 	# As the record was changed, we need to use a different format name
+@@ -234,9 +286,9 @@ sub parse_json_internal_format_v1($$)
+ 	my $file = shift;
+ 	my $json = shift;
  
- 		if ($source ne $before_sf) {
--			$filtered .= "SF:$source\n";
-+			$data .= "SF:$source\n";
- 		}
+-	my $was_used = 0;
+ 	my $has_func = 0;
+ 	my $ignore = 0;
++	my %cached;
  
--		foreach my $func(sort keys %{ $record{$source} }) {
-+		foreach my $func(sort keys %{ $record{files}{$source}{func} }) {
- 			if ($func ne $before_sf) {
- 				my $fn;
- 				my $fnda;
+ 	# Store the common JSON data into the record
+ 	for my $key (keys %$json) {
+@@ -253,6 +305,8 @@ sub parse_json_internal_format_v1($$)
  
--				if (defined($record{$source}{$func}{fn})) {
--					$filtered .= "FN:" . $record{$source}{$func}{fn} . ",$func\n";
--				}
--				if (defined($record{$source}{$func}{fnda})) {
--					$filtered .= "FNDA:" . $record{$source}{$func}{fnda} . ",$func\n";
-+				if (defined($record{files}{$source}{func}{$func}{start_line})) {
-+					$data .= "FN:" . $record{files}{$source}{func}{$func}{start_line} . ",$func\n";
- 				}
--				if ($record{$source}{fnf}) {
--					$filtered .= "FNF:". $record{$source}{$func}{fnf} ."\n";
-+				if (defined($record{files}{$source}{func}{$func}{execution_count})) {
-+					$data .= "FNDA:" . $record{files}{$source}{func}{$func}{execution_count} . ",$func\n";
- 				}
--				if ($record{$source}{fnh}) {
--					$filtered .= "FNH:". $record{$source}{$func}{fnh} ."\n";
--				}
--			}
- 
--			foreach my $ln(sort { $a <=> $b } keys %{ $record{$source}{$func}{da} }) {
--				$filtered .= "DA:$ln," . $record{$source}{$func}{da}{$ln} . "\n";
- 			}
--			foreach my $where(sort sort_where keys %{ $record{$source}{$func}{brda} }) {
--				my $taken = $record{$source}{$func}{brda}{$where};
-+		}
+ 	for my $source (keys %{$json->{'files'}}) {
+ 		$files{$source} = 1;
++		my $was_used = 0;
 +
-+		foreach my $ln(sort { $a <=> $b } keys %{ $record{files}{$source}{line} }) {
-+			$data .= "DA:$ln," . $record{files}{$source}{line}{$ln}{count} . "\n";
-+			for (my $i = 0; $i < scalar @{$record{files}{$source}{line}{$ln}{branches}}; $i++) {
-+				my $taken = $record{files}{$source}{line}{$ln}{branches}[$i]{count};
+ 		next if is_file_excluded($source);
+ 
+ 		my $file_ref = \%{$json->{'files'}{$source}};
+@@ -280,8 +334,6 @@ sub parse_json_internal_format_v1($$)
+ 				$was_used = 1;
+ 			}
+ 		}
+-		next if ($ignore_unused && !$was_used);
+-		$used_source{$source} = 1;
+ 
+ 		# Parse lines and branches
+ 		for my $ln (keys %{$file_ref->{line}}) {
+@@ -313,19 +365,33 @@ sub parse_json_internal_format_v1($$)
+ 			}
+ 			$all_line{$source}{$ln} += $line_ref->{'count'};
+ 
++			if ($ignore_branches_on_headers) {
++				next if ($source =~ m/.h$/);
++			}
++
+ 			my $i = 0;
+ 			for my $branch_ref (@{$line_ref->{'branches'}}) {
+ 				my $taken = $branch_ref->{'count'};
+ 				my $where = sprintf "%d,%d,%d", $ln, 0, $i;
+ 
+-				# Negative gcov results are possible, as
+-				# reported at:
+-				# https://gcc.gnu.org/bugzilla/show_bug.cgi?id=67937
+-				# Lcov ignores those. So, let's do the same
+-				# here.
+-				$branch_ref->{'count'} = 0 if ($branch_ref->{'count'} < 0);
++
++				# Filter out branches
++				if ($has_branch_filter) {
++					if (!$cached{$source}) {
++						open IN, "$source_dir/$source" || die "File $source_dir/$source not found. Can't filter branches\n";
++						push @{$cached{$source}}, <IN>;
++						close IN;
++					}
++					my $nlines = scalar(@{$cached{$source}});
++					if ($ln > $nlines) {
++						die "$source:$ln line is bigger than the number of lines at the file ($nlines lines)\n";
++						return;
++					}
++					next if (is_branch_excluded($cached{$source}[$ln - 1]));
++				}
+ 
+ 				for my $key (keys %$branch_ref) {
++					next if (!$record{files}{$source}{line}{$ln}{branches});
+ 					if ($key eq "count") {
+ 						$record{files}{$source}{line}{$ln}{branches}[$i]{$key} += $branch_ref->{$key};
+ 					} else {
+@@ -334,12 +400,15 @@ sub parse_json_internal_format_v1($$)
+ 				}
+ 
+ 				$all_branch{$source}{$where}{count} += $taken;
++				$was_used = 1 if ($taken > 0);
+ 				$i++;
+ 			}
+ 			if (!defined($record{files}{$source}{line}{$ln}{branches})) {
+ 				@{$record{files}{$source}{line}{$ln}{branches}} = ();
+ 			}
+ 		}
++		next if ($ignore_unused && !$was_used);
++		$used_source{$source} = 1;
+ 	}
+ }
+ 
+@@ -391,6 +460,7 @@ sub read_info($)
+ 	my $source = $before_sf;
+ 	my $func = $before_sf;
+ 	my $cur_test = "";
++	my %cached;
+ 
+ 	# Info files don't contain functions for lines. So, they can't
+ 	# be used to filter lines and branches used inside functions.
+@@ -536,6 +606,22 @@ sub read_info($)
+ 				next if ($source =~ m/.h$/);
+ 			}
+ 
++			# Filter out branches
++			if ($has_branch_filter) {
++				if (!$cached{$source}) {
++					open IN, "$source_dir/$source" || die "File $source_dir/$source not found. Can't filter branches\n";
++					push @{$cached{$source}}, <IN>;
++					close IN;
++				}
++				my $nlines = scalar(@{$cached{$source}});
++				die "File $source_dir/$source not found or it is empty. Can't filter branches\n" if (!$nlines);
++				if ($ln > $nlines) {
++					die "$source:$ln line is bigger than the number of lines at the file ($nlines lines)\n";
++					return;
++				}
++				next if (is_branch_excluded($cached{$source}[$ln - 1]));
++			}
++
+ 			if ($block != 0) {
+ 				print "Warning: unexpected block $block at line $.\n";
+ 			}
+@@ -681,6 +767,7 @@ sub write_info_file($)
+ 
+ 		foreach my $ln(sort { $a <=> $b } keys %{ $record{files}{$source}{line} }) {
+ 			$data .= "DA:$ln," . $record{files}{$source}{line}{$ln}{count} . "\n";
++			next if (!$record{files}{$source}{line}{$ln}{branches});
+ 			for (my $i = 0; $i < scalar @{$record{files}{$source}{line}{$ln}{branches}}; $i++) {
+ 				my $taken = $record{files}{$source}{line}{$ln}{branches}[$i]{count};
  				$taken = "-" if (!$taken);
--				$filtered .= "BRDA:$where,$taken\n";
--			}
--			if ($record{$source}{$func}{brf}) {
--				$filtered .= "BRF:". $record{$source}{$func}{brf} ."\n";
--			}
--			if ($record{$source}{$func}{brh}) {
--				$filtered .= "BRH:". $record{$source}{$func}{brh} ."\n";
--			}
--			if ($record{$source}{$func}{lf}) {
--				$filtered .= "LF:". $record{$source}{$func}{lf} ."\n";
--			}
--			if ($record{$source}{$func}{lh}) {
--				$filtered .= "LH:". $record{$source}{$func}{lh} ."\n";
-+				$data .= "BRDA:$ln,0,$i,$taken\n";
- 			}
- 		}
+@@ -793,7 +880,7 @@ sub gen_stats()
  
--		$filtered .= "end_of_record\n";
-+		$data .= "end_of_record\n";
- 	}
--	open OUT, ">$filter" or die "Can't open $filter";
--	print OUT $filtered or die "Failed to write to $filter";
--	close OUT or die "Failed to close to $filter";
-+	open OUT, ">$fname" or die "Can't open $fname";
-+	print OUT $data or die "Failed to write to $fname";
-+	close OUT or die "Failed to close to $fname";
+ 	# per-file coverage stats
+ 	$stats{"all_files"} = scalar keys(%files);
+-	$stats{"filtered_files"} = scalar keys(%record);
++	$stats{"filtered_files"} = scalar keys(%{$record{files}});
+ 	$stats{"used_files"} = scalar keys(%used_source);
  }
  
- sub print_code_coverage($$$)
-@@ -463,7 +745,7 @@ sub gen_stats()
+@@ -1218,11 +1305,8 @@ sub generate_report($)
+ 	close OUT;
+ }
  
- 		foreach my $where (keys(%{$all_branch{$source}})) {
- 			$stats{"branch_count"}++;
--			$stats{"branch_reached"}++ if ($all_branch{$source}{$where} != 0);
-+			$stats{"branch_reached"}++ if ($all_branch{$source}{$where}{count} != 0);
- 		}
- 	}
- 
-@@ -622,7 +904,7 @@ sub generate_report($)
- 		}
- 		foreach my $source (keys(%{$report{$f}{"all_branch"}})) {
- 			foreach my $where (keys(%{$report{$f}{"all_branch"}{$source}})) {
--				$all_branch{$source}{"$where"} += $report{$f}{"all_branch"}{$source}{$where};
-+				$all_branch{$source}{"$where"}{count} += $report{$f}{"all_branch"}{$source}{$where}{count};
- 			}
- 		}
- 		for my $source(keys(%{$report{$f}{"files"}})) {
-@@ -902,7 +1184,7 @@ sub check_source_branches()
- 
- 		my @lines;
- 		foreach my $where (sort keys %{$all_branch{$source}}) {
--			my $taken = $all_branch{$source}{$where};
-+			my $taken = $all_branch{$source}{$where}{count};
- 			next if ($taken > 0);
- 
- 			next if !($where =~ m/^(-?\d+),(-?\d+),(-?\d+)/);
-@@ -913,13 +1195,14 @@ sub check_source_branches()
- 			$branch = $3;
- 
- 			if (!@lines) {
--				open IN, "$source";
-+				open IN, "$source" || die "File $source not found. Can't check branches\n";
- 				@lines = <IN>;
- 				close IN;
- 			}
- 
- 			if ($ln >= $#lines) {
--				print "Error: $ln is bigger than $#lines. Can't print branch!\n";
-+				die "$source:$ln line is bigger than the number of lines at the file ($#lines lines)\n";
-+				return;
- 			}
- 
- 			my $func = $all_branch{$source}{$where}{func};
-@@ -971,7 +1254,7 @@ sub check_source_branches()
- my $print_used;
- my $print_unused;
- my $stat;
--my $filter;
-+my $output_file;
- my $help;
+-sub check_source_branches($)
++sub check_source_branches()
+ {
+-	my $source_dir = shift;
+-	my $cached = "";
+-
+ 	foreach my $source (sort keys(%all_branch)) {
+ 		next if (!$used_source{$source});
+ 		next if (is_file_excluded($source));
+@@ -1299,12 +1383,12 @@ my $help;
  my $man;
  my $func_filters;
-@@ -986,7 +1269,7 @@ GetOptions(
+ my $src_filters;
++my $branch_filters;
+ my $show_files;
+ my $show_lines;
+ my $only_i915;
+ my $only_drm;
+ my $check_branches;
+-my $source_dir = ".";
+ 
+ GetOptions(
  	"print-coverage|print_coverage|print|p" => \$print_used,
- 	"print-unused|u" => \$print_unused,
- 	"stat|statistics" => \$stat,
--	"output|o=s" => \$filter,
-+	"output|o=s" => \$output_file,
- 	"verbose|v" => \$verbose,
- 	"ignore-unused|ignore_unused" => \$ignore_unused,
- 	"only-i915|only_i915" => \$only_i915,
-@@ -1018,9 +1301,9 @@ if ($#ARGV < 0) {
+@@ -1319,6 +1403,9 @@ GetOptions(
+ 	"func-filters|f=s" => \$func_filters,
+ 	"include-func=s" => \@func_include_regexes,
+ 	"exclude-func=s" => \@func_exclude_regexes,
++	"branch-filters|f=s" => \$branch_filters,
++	"include-branch=s" => \@branch_include_regexes,
++	"exclude-branch=s" => \@branch_exclude_regexes,
+ 	"source-filters|S=s" => \$src_filters,
+ 	"include-source=s" => \@src_include_regexes,
+ 	"exclude-source=s" => \@src_exclude_regexes,
+@@ -1381,6 +1468,14 @@ if ($str) {
+ 	$has_filter = 1;
  }
  
- # At least one action should be specified
--pod2usage(1) if (!$print_used && !$filter && !$stat && !$print_unused && !$gen_report && !$check_branches);
-+pod2usage(1) if (!$print_used && !$output_file && !$stat && !$print_unused && !$gen_report && !$check_branches);
++$str = open_filter_file($branch_filters, \@branch_include_regexes, \@branch_exclude_regexes);
++if ($str) {
++	$filter_str .= "," if ($filter_str ne "");
++	$filter_str .= " branch regex ($str)";
++	$has_filter = 1;
++	$has_branch_filter = 1;
++}
++
+ $ignore_unused = 1 if (@func_include_regexes || @func_exclude_regexes);
  
--pod2usage(1) if ($gen_report && ($print_used || $filter || $stat || $print_unused));
-+pod2usage(1) if ($gen_report && ($print_used || $output_file || $stat || $print_unused));
+ if ($ignore_unused) {
+@@ -1432,7 +1527,7 @@ gen_stats();
  
- my $filter_str = "";
- my $has_filter;
-@@ -1063,7 +1346,11 @@ if ($ignore_unused) {
+ 
+ if ($check_branches) {
+-	check_source_branches($source_dir);
++	check_source_branches();
  }
  
- foreach my $f (@ARGV) {
--	parse_info_data($f);
-+	if ($f =~ /.json$/) {
-+		read_json($f);
-+	} else {
-+		read_info($f);
-+	}
+ die "Nothing counted. Wrong input files?" if (!$stats{"all_files"});
+@@ -1647,6 +1742,51 @@ Include B<regex> to the function filter. Can be used multiple times.
+ Please notice that, when this filter is used, B<--ignore-unused> will be
+ automaticaly enabled, as the final goal is to report per-function usage.
  
- 	if ($gen_report) {
- 		$f =~ s,.*/,,;
-@@ -1137,8 +1424,12 @@ if ($show_files) {
- 	}
- }
++=item B<--branch-filters>  B<[filter's file]> or B<-f>  B<[filter's file]>
++
++Use a file containing regular expressions (regex) to filter branches.
++
++Each line at B<[filter's file]> may contain a new regex:
++
++=over 4
++
++- Blank lines and lines starting with B<#> will be ignored;
++
++- Each line of the file will be handled as a new regex;
++
++- If B<+regex> is used, the filter will include B<regex> to the matches;
++
++- If B<-regex> is used, the filter will exclude B<regex> from the matches;
++
++- If the line doesn't start with neither B<+> nor B<->, containing just
++  B<regex>, the filter will include B<regex> to the matches.
++
++- Any whitespace/tab before or after B<regex> will be ignored.
++
++=back
++
++Include regexes are handled first, as they can override an exclude regex.
++
++When just include regexes are used, any branches that don't match the
++include regular expressions from the B<[filter's file]> will be ignored.
++
++=item B<--include-branch> B<regex>
++
++Include B<regex> to the branch filter. Can be used multiple times.
++
++When used together with B<--branch-filters> or B<--exclude-branch>, regexes
++here are handled first.
++
++Please notice that, when this filter is used, B<--ignore-unused> will be
++automaticaly enabled, as the final goal is to report per-branch usage.
++
++=item B<--exclude-branch> B<regex>
++
++Include B<regex> to the branchtion filter. Can be used multiple times.
++
++Please notice that, when this filter is used, B<--ignore-unused> will be
++automaticaly enabled, as the final goal is to report per-branch usage.
++
+ =item B<--source-filters>  B<[filter's file]> or B<-S>  B<[filter's file]>
  
--if ($filter) {
--	write_filtered_file($filter);
-+if ($output_file) {
-+	if ($output_file =~ /.json$/) {
-+		write_json_file($output_file);
-+	} else {
-+		write_info_file($output_file);
-+	}
- }
- 
- __END__
+ Use a file containing regular expressions to filter source files.
 -- 
 2.39.0
