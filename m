@@ -1,18 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id EFE9510E491
- for <igt-dev@lists.freedesktop.org>; Tue, 17 Jan 2023 10:39:49 +0000 (UTC)
-From: Karolina Stolarek <karolina.stolarek@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Tue, 17 Jan 2023 11:39:28 +0100
-Message-Id: <5d50b01fa325fdbb215b14d66e56f6644a9f0c05.1673951674.git.karolina.stolarek@intel.com>
-In-Reply-To: <cover.1673951674.git.karolina.stolarek@intel.com>
-References: <cover.1673951674.git.karolina.stolarek@intel.com>
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 83D0C10E491
+ for <igt-dev@lists.freedesktop.org>; Tue, 17 Jan 2023 10:51:38 +0000 (UTC)
+Message-ID: <9b1ee1d5-8446-1045-0566-af69147a4918@linux.intel.com>
+Date: Tue, 17 Jan 2023 11:51:34 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Language: en-US
+To: Karolina Stolarek <karolina.stolarek@intel.com>,
+ igt-dev@lists.freedesktop.org
+References: <cover.1673951674.git.karolina.stolarek@intel.com>
+From: "Das, Nirmoy" <nirmoy.das@linux.intel.com>
+In-Reply-To: <cover.1673951674.git.karolina.stolarek@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v5 6/6] tests/gem_exercise_blt: Add
- fast-copy-emit test
+Subject: Re: [igt-dev] [PATCH i-g-t v5 0/6] Introduce blt_cmd_info struct
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,245 +25,91 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add a subtest where two fast copy commands are executed within the
-single batch buffer.
 
-Signed-off-by: Karolina Stolarek <karolina.stolarek@intel.com>
-Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
----
- tests/i915/gem_exercise_blt.c | 184 ++++++++++++++++++++++++++++++++--
- 1 file changed, 178 insertions(+), 6 deletions(-)
+On 1/17/2023 11:39 AM, Karolina Stolarek wrote:
+> This patch series introduces a new way of checking if a specific
+> tiling format and/or blitter copy command is supported on
+> the current platform. Instead of using functions with hardcoded
+> devices, now we store information about available features in
+> blt_cmd_info struct, each of the instances connected to the
+> intel_device_info definitions.
 
-diff --git a/tests/i915/gem_exercise_blt.c b/tests/i915/gem_exercise_blt.c
-index b2f8d902..5dccc22d 100644
---- a/tests/i915/gem_exercise_blt.c
-+++ b/tests/i915/gem_exercise_blt.c
-@@ -37,6 +37,146 @@ static struct param {
- 	if (param.write_png) \
- 		blt_surface_to_png((fd), (id), (name), (obj), (w), (h)); } while (0)
- 
-+struct blt_fast_copy_data {
-+	int i915;
-+	struct blt_copy_object src;
-+	struct blt_copy_object mid;
-+	struct blt_copy_object dst;
-+
-+	struct blt_copy_batch bb;
-+	enum blt_color_depth color_depth;
-+
-+	/* debug stuff */
-+	bool print_bb;
-+};
-+
-+static int fast_copy_one_bb(int i915,
-+			    const intel_ctx_t *ctx,
-+			    const struct intel_execution_engine2 *e,
-+			    uint64_t ahnd,
-+			    const struct blt_fast_copy_data *blt)
-+{
-+	struct drm_i915_gem_execbuffer2 execbuf = {};
-+	struct drm_i915_gem_exec_object2 obj[4] = {};
-+	struct blt_copy_data blt_tmp;
-+	uint64_t src_offset, mid_offset, dst_offset, bb_offset, alignment;
-+	uint64_t bb_pos = 0;
-+	uint32_t flags;
-+	int ret;
-+
-+	alignment = gem_detect_safe_alignment(i915);
-+
-+	src_offset = get_offset(ahnd, blt->src.handle, blt->src.size, alignment);
-+	mid_offset = get_offset(ahnd, blt->mid.handle, blt->mid.size, alignment);
-+	dst_offset = get_offset(ahnd, blt->dst.handle, blt->dst.size, alignment);
-+	bb_offset = get_offset(ahnd, blt->bb.handle, blt->bb.size, alignment);
-+
-+	/* First blit */
-+	memset(&blt_tmp, 0, sizeof(blt_tmp));
-+	blt_tmp.src = blt->src;
-+	blt_tmp.dst = blt->mid;
-+	blt_tmp.bb = blt->bb;
-+	blt_tmp.color_depth = blt->color_depth;
-+	blt_tmp.print_bb = blt->print_bb;
-+	bb_pos = emit_blt_fast_copy(i915, ahnd, &blt_tmp, bb_pos, false);
-+
-+	/* Second blit */
-+	memset(&blt_tmp, 0, sizeof(blt_tmp));
-+	blt_tmp.src = blt->mid;
-+	blt_tmp.dst = blt->dst;
-+	blt_tmp.bb = blt->bb;
-+	blt_tmp.color_depth = blt->color_depth;
-+	blt_tmp.print_bb = blt->print_bb;
-+	bb_pos = emit_blt_fast_copy(i915, ahnd, &blt_tmp, bb_pos, true);
-+
-+	flags = EXEC_OBJECT_PINNED | EXEC_OBJECT_SUPPORTS_48B_ADDRESS;
-+
-+	obj[0].handle = blt->src.handle;
-+	obj[0].offset = CANONICAL(src_offset);
-+	obj[0].flags = flags;
-+
-+	obj[1].handle = blt->mid.handle;
-+	obj[1].offset = CANONICAL(mid_offset);
-+	obj[1].flags = flags;
-+
-+	obj[2].handle = blt->dst.handle;
-+	obj[2].offset = CANONICAL(dst_offset);
-+	obj[2].flags = flags | EXEC_OBJECT_WRITE;
-+
-+	obj[3].handle = blt->bb.handle;
-+	obj[3].offset = CANONICAL(bb_offset);
-+	obj[3].flags = flags;
-+
-+	execbuf.buffer_count = 4;
-+	execbuf.buffers_ptr = to_user_pointer(obj);
-+	execbuf.rsvd1 = ctx ? ctx->id : 0;
-+	execbuf.flags = e ? e->flags : I915_EXEC_BLT;
-+	ret = __gem_execbuf(i915, &execbuf);
-+
-+	gem_sync(i915, blt->bb.handle);
-+
-+	return ret;
-+}
-+
-+static void fast_copy_emit(int i915, const intel_ctx_t *ctx,
-+			   const struct intel_execution_engine2 *e,
-+			   uint32_t region1, uint32_t region2,
-+			   enum blt_tiling_type mid_tiling)
-+{
-+	struct blt_fast_copy_data blt = {};
-+	struct blt_copy_object *src, *mid, *dst;
-+	const uint32_t bpp = 32;
-+	uint64_t bb_size = 4096;
-+	uint64_t ahnd = intel_allocator_open_full(i915, ctx->id, 0, 0,
-+						  INTEL_ALLOCATOR_SIMPLE,
-+						  ALLOC_STRATEGY_LOW_TO_HIGH, 0);
-+	uint32_t bb, width = param.width, height = param.height;
-+	int result;
-+
-+	igt_assert(__gem_create_in_memory_regions(i915, &bb, &bb_size, region1) == 0);
-+
-+	src = blt_create_object(i915, region1, width, height, bpp, 0,
-+				T_LINEAR, COMPRESSION_DISABLED, 0, true);
-+	mid = blt_create_object(i915, region2, width, height, bpp, 0,
-+				mid_tiling, COMPRESSION_DISABLED, 0, true);
-+	dst = blt_create_object(i915, region1, width, height, bpp, 0,
-+				T_LINEAR, COMPRESSION_DISABLED, 0, true);
-+	igt_assert(src->size == dst->size);
-+
-+	PRINT_SURFACE_INFO("src", src);
-+	PRINT_SURFACE_INFO("mid", mid);
-+	PRINT_SURFACE_INFO("dst", dst);
-+
-+	blt_surface_fill_rect(i915, src, width, height);
-+	WRITE_PNG(i915, mid_tiling, "src", src, width, height);
-+
-+	memset(&blt, 0, sizeof(blt));
-+	blt.color_depth = CD_32bit;
-+	blt.print_bb = param.print_bb;
-+	blt_set_copy_object(&blt.src, src);
-+	blt_set_copy_object(&blt.mid, mid);
-+	blt_set_copy_object(&blt.dst, dst);
-+	blt_set_batch(&blt.bb, bb, bb_size, region1);
-+
-+	fast_copy_one_bb(i915, ctx, e, ahnd, &blt);
-+	gem_sync(i915, blt.dst.handle);
-+
-+	WRITE_PNG(i915, mid_tiling, "mid", &blt.mid, width, height);
-+	WRITE_PNG(i915, mid_tiling, "dst", &blt.dst, width, height);
-+
-+	result = memcmp(src->ptr, blt.dst.ptr, src->size);
-+
-+	blt_destroy_object(i915, src);
-+	blt_destroy_object(i915, mid);
-+	blt_destroy_object(i915, dst);
-+	gem_close(i915, bb);
-+	put_ahnd(ahnd);
-+
-+	munmap(&bb, bb_size);
-+
-+	igt_assert_f(!result, "source and destination surfaces differs!\n");
-+}
-+
- static void fast_copy(int i915, const intel_ctx_t *ctx,
- 		      const struct intel_execution_engine2 *e,
- 		      uint32_t region1, uint32_t region2,
-@@ -101,12 +241,36 @@ static void fast_copy(int i915, const intel_ctx_t *ctx,
- 	igt_assert_f(!result, "source and destination surfaces differs!\n");
- }
- 
-+enum fast_copy_func {
-+	FAST_COPY,
-+	FAST_COPY_EMIT
-+};
-+
-+static char
-+	*full_subtest_str(char *regtxt, enum blt_tiling_type tiling,
-+			  enum fast_copy_func func)
-+{
-+	char *name;
-+	uint32_t len;
-+
-+	len = asprintf(&name, "%s-%s%s", blt_tiling_name(tiling), regtxt,
-+		       func == FAST_COPY_EMIT ? "-emit" : "");
-+
-+	igt_assert_f(len >= 0, "asprintf failed!\n");
-+
-+	return name;
-+}
-+
- static void fast_copy_test(int i915,
- 			   const intel_ctx_t *ctx,
--			   struct igt_collection *set)
-+			   struct igt_collection *set,
-+			   enum fast_copy_func func)
- {
- 	struct igt_collection *regions;
- 	const struct intel_execution_engine2 *e;
-+	void (*copy_func)(int i915, const intel_ctx_t *ctx,
-+			  const struct intel_execution_engine2 *e,
-+			  uint32_t r1, uint32_t r2, enum blt_tiling_type tiling);
- 	int tiling;
- 
- 	for_each_tiling(tiling) {
-@@ -118,20 +282,23 @@ static void fast_copy_test(int i915,
- 				continue;
- 			for_each_variation_r(regions, 2, set) {
- 				uint32_t region1, region2;
--				char *regtxt;
-+				char *regtxt, *test_name;
- 
- 				region1 = igt_collection_get_value(regions, 0);
- 				region2 = igt_collection_get_value(regions, 1);
-+
-+				copy_func = (func == FAST_COPY) ? fast_copy : fast_copy_emit;
- 				regtxt = memregion_dynamic_subtest_name(regions);
-+				test_name = full_subtest_str(regtxt, tiling, func);
- 
--				igt_dynamic_f("%s-%s",
--					      blt_tiling_name(tiling), regtxt) {
--					fast_copy(i915, ctx, e,
-+				igt_dynamic_f("%s", test_name) {
-+					copy_func(i915, ctx, e,
- 						  region1, region2,
- 						  tiling);
- 				}
- 
- 				free(regtxt);
-+				free(test_name);
- 			}
- 		}
- 	}
-@@ -205,7 +372,12 @@ igt_main_args("b:pst:W:H:", NULL, help_str, opt_handler, NULL)
- 
- 	igt_describe("Check fast-copy blit");
- 	igt_subtest_with_dynamic("fast-copy") {
--		fast_copy_test(i915, ctx, set);
-+		fast_copy_test(i915, ctx, set, FAST_COPY);
-+	}
-+
-+	igt_describe("Check multiple fast-copy in one batch");
-+	igt_subtest_with_dynamic("fast-copy-emit") {
-+		fast_copy_test(i915, ctx, set, FAST_COPY_EMIT);
- 	}
- 
- 	igt_fixture {
--- 
-2.25.1
+Thanks for doing this, I am not expert in this topic but overall code 
+good to me and  this functionality
+
+will be very useful.
+
+Acked-by: Nirmoy Das <nirmoy.das@intel.com for the series.
+
+
+
+>
+> Two patches that follow the introduction of blt_cmd_info and
+> intel_device_info modification are a prep work for the fast
+> copy test -- extracting needed functions and updating
+> fill_data() to support TileYF (available only for Pre-gen12).
+>
+> In addition to this, the patchset adds two fast copy tests: basic
+> fast-copy where two blit copies are done in separate batches, and
+> fast-copy-emit which uses emit_blt_fast_copy() and manually
+> crafts two copies in one batch.
+>
+> v5:
+>    - Rebase, fix conflict in gem_ccs.c
+>
+> v4:
+>    - Move the inclusion of igt_core.h to intel_blt_info.c
+>      (Kamil/Petri)
+>    - Rename __MAX_TILING and __MAX_CMD so they are blitter-specific
+>      (Kamil)
+>    - Use BIT() macro from intel_chipset.h (Zbigniew)
+>    - Check for empty blt_tiling_info in tiling_info(), and warn
+>      about it
+>    - Change blt_cmd_info declarations in intel_blt_info. Add a
+>      separate file for their definitions (intel_tiling_info.c).
+>      Update lib/mason.build to reflect that change (Zbigniew)
+>    - Remove definitions for ATS-M, as we can reuse dg2's (Zbigniew)
+>    - Add EXEC_OBJECT_WRITE flag for dest in fast-copy-emit subtest
+>      (Zbigniew)
+>
+> v3:
+>    - Rewrite blt_tiling_type to be contiguous (Zbigniew, Kamil)
+>    - Add BLT_BIT macro to create bit flags during .supported_tiling
+>      field initialization (Zbigniew)
+>    - Undo accidental line deletion in intel_chipset.c (Kamil)
+>    - Add __TILING_MAX to blt_tiling_type (Zbigniew)
+>    - Use asprintf when creating strings of subtest and PNG files
+>      names (Zbigniew)
+>    - Delete a duplicate WRITE_PNG call in fast_copy test (Zbigniew)
+>    - Update documentation
+>    - Update year in copyright headers
+>
+>
+>
+> Karolina Stolarek (6):
+>    i915/lib: Add new library for blitter and tiling formats
+>    lib: Update platform definitions with blitter information
+>    lib/i915_blt: Check for Tile-YF in fast_copy
+>    lib/i915_blt: Add common functions for blt_copy_object
+>    tests/gem_exercise_blt: Add fast-copy test
+>    tests/gem_exercise_blt: Add fast-copy-emit test
+>
+>   .../igt-gpu-tools/igt-gpu-tools-docs.xml      |   1 +
+>   lib/i915/i915_blt.c                           | 195 +++++++--
+>   lib/i915/i915_blt.h                           |  48 ++-
+>   lib/i915/intel_blt_info.c                     | 156 +++++++
+>   lib/i915/intel_blt_info.h                     |  93 +++++
+>   lib/i915/intel_tiling_info.c                  |  87 ++++
+>   lib/intel_chipset.h                           |   4 +
+>   lib/intel_device_info.c                       |  47 +++
+>   lib/meson.build                               |  14 +-
+>   tests/i915/gem_ccs.c                          | 209 +++-------
+>   tests/i915/gem_exercise_blt.c                 | 387 ++++++++++++++++++
+>   tests/i915/gem_lmem_swapping.c                |  81 +---
+>   tests/meson.build                             |   1 +
+>   13 files changed, 1058 insertions(+), 265 deletions(-)
+>   create mode 100644 lib/i915/intel_blt_info.c
+>   create mode 100644 lib/i915/intel_blt_info.h
+>   create mode 100644 lib/i915/intel_tiling_info.c
+>   create mode 100644 tests/i915/gem_exercise_blt.c
+>
