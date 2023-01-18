@@ -1,20 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id F365410E815
- for <igt-dev@lists.freedesktop.org>; Wed, 18 Jan 2023 19:57:03 +0000 (UTC)
-From: "Cavitt, Jonathan" <jonathan.cavitt@intel.com>
-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Date: Wed, 18 Jan 2023 19:56:53 +0000
-Message-ID: <CH0PR11MB5444CE35377E0D7685AD749FE5C79@CH0PR11MB5444.namprd11.prod.outlook.com>
-References: <20230118160631.737700-1-jonathan.cavitt@intel.com>
- <20230118193206.rp7rrlx6u3adgei3@kamilkon-desk1>
-In-Reply-To: <20230118193206.rp7rrlx6u3adgei3@kamilkon-desk1>
-Content-Language: en-US
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 78F9610E817
+ for <igt-dev@lists.freedesktop.org>; Wed, 18 Jan 2023 19:57:17 +0000 (UTC)
+Date: Wed, 18 Jan 2023 20:57:13 +0100
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Message-ID: <20230118195713.cx7dzf6bjqnevrh6@kamilkon-desk1>
+References: <20230118145757.14070-1-mohammed.thasleem@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t] lib/igt_kmod: Allow some leeway in
- igt_kmod_unload_r
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20230118145757.14070-1-mohammed.thasleem@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t] lib/igt_kms: Fixed the usage of
+ Dereferencing of null pointer
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,87 +20,45 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: "Parupalli, Sandeep Kumar" <sandeep.kumar.parupalli@intel.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>,
- "chris.p.wilson@linux.intel.com" <chris.p.wilson@linux.intel.com>
+Cc: petri.latvala@intel.com, kamil.konieczny@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-LS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCkZyb206IEthbWlsIEtvbmllY3pueSA8a2FtaWwu
-a29uaWVjem55QGxpbnV4LmludGVsLmNvbT4gDQpTZW50OiBXZWRuZXNkYXksIEphbnVhcnkgMTgs
-IDIwMjMgMTE6MzIgQU0NClRvOiBpZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZw0KQ2M6IGNo
-cmlzLnAud2lsc29uQGxpbnV4LmludGVsLmNvbTsgQ2F2aXR0LCBKb25hdGhhbiA8am9uYXRoYW4u
-Y2F2aXR0QGludGVsLmNvbT47IFBhcnVwYWxsaSwgU2FuZGVlcCBLdW1hciA8c2FuZGVlcC5rdW1h
-ci5wYXJ1cGFsbGlAaW50ZWwuY29tPg0KU3ViamVjdDogUmU6IFtpZ3QtZGV2XSBbUEFUQ0ggaS1n
-LXRdIGxpYi9pZ3Rfa21vZDogQWxsb3cgc29tZSBsZWV3YXkgaW4gaWd0X2ttb2RfdW5sb2FkX3IN
-Cj4gDQo+IEhpIEpvbmF0aGFuLA0KPiANCj4gT24gMjAyMy0wMS0xOCBhdCAwODowNjozMSAtMDgw
-MCwgSm9uYXRoYW4gQ2F2aXR0IHdyb3RlOg0KPiA+IGttb2RfbW9kdWxlX3JlbW92ZV9tb2R1bGUg
-b2NjYXNpb25hbGx5IHJldHVybnMgRUFHQUlOIGZvciBtZWlfZ3NjDQo+ID4gaW4gdGhlIHNldHVw
-IG9mIHNvbWUgZ2VtX2xtZW1fc3dhcHBpbmcgc3VidGVzdHMuICBKdXN0IGJlY2F1c2UNCj4gPiBF
-QUdBSU4gaXMgcmV0dXJuZWQgZG9lc24ndCBtZWFuIHRoZSBtb2R1bGUgaXMgbG9zdCBhbmQgdW5h
-YmxlIHRvDQo+ID4gYmUgdW5sb2FkZWQuICBUcnkgYWdhaW4gc29tZSBudW1iZXIgb2YgdGltZXMg
-KGN1cnJlbnRseSAyMCkgYmVmb3JlDQo+ID4gZ2l2aW5nIHVwLg0KPiA+IA0KPiA+IFJldHJpZXMg
-d2lsbCBvY2N1ciBmb3IgLUVCVVNZIGFuZCAtRUFHQUlOLCBhcyB0aGVzZSBpbXBseSB0aGUNCj4g
-PiBzeXN0ZW0gaXMgd2FpdGluZyBmb3IgdGhlIHRhcmdldCBtb2R1bGUgY2FuIHNpbXBseSBiZSB3
-YWl0ZWQgZm9yLg0KPiA+IEFsbCBvdGhlciBlcnJvcnMgZXhpdCBpbW1lZGlhdGVseSwgYnV0IGFz
-IHRoZSBjb250ZXh0IGZvciBlYWNoDQo+ID4gZXJyb3IgaW5mb3JtcyB0aGVpciByZWxhdGl2ZSBz
-ZXZlcml0eSwgbm8gd2FybmluZ3Mgd2lsbCBiZSBpc3N1ZWQuDQo+ID4gDQo+ID4gU2lnbmVkLW9m
-Zi1ieTogSm9uYXRoYW4gQ2F2aXR0IDxqb25hdGhhbi5jYXZpdHRAaW50ZWwuY29tPg0KPiA+IEND
-OiBTdHVhcnQgU3VtbWVycyA8c3R1YXJ0LnN1bW1lcnNAaW50ZWwuY29tPg0KPiA+IENDOiBTYW5k
-ZWVwIEt1bWFyIFBhcnVwYWxsaSA8c2FuZGVlcC5rdW1hci5wYXJ1cGFsbGlAaW50ZWwuY29tPg0K
-PiA+IENDOiBDaHJpcyBXaWxzb24gPGNocmlzLnAud2lsc29uQGxpbnV4LmludGVsLmNvbT4NCj4g
-PiBSZXZpZXdlZC1ieTogQ2hyaXMgV2lsc29uIDxjaHJpcy5wLndpbHNvbkBsaW51eC5pbnRlbC5j
-b20+DQo+ID4gLS0tDQo+ID4gIGxpYi9pZ3Rfa21vZC5jIHwgMzUgKysrKysrKysrKysrKysrKysr
-KysrKysrKysrKysrKystLS0NCj4gPiAgMSBmaWxlIGNoYW5nZWQsIDMyIGluc2VydGlvbnMoKyks
-IDMgZGVsZXRpb25zKC0pDQo+ID4gDQo+ID4gZGlmZiAtLWdpdCBhL2xpYi9pZ3Rfa21vZC5jIGIv
-bGliL2lndF9rbW9kLmMNCj4gPiBpbmRleCAxNzA5MDExMGMuLjRhYTUzMjBkMCAxMDA2NDQNCj4g
-PiAtLS0gYS9saWIvaWd0X2ttb2QuYw0KPiA+ICsrKyBiL2xpYi9pZ3Rfa21vZC5jDQo+ID4gQEAg
-LTI1Myw4ICsyNTMsMTEgQEAgb3V0Og0KPiA+ICANCj4gPiAgc3RhdGljIGludCBpZ3Rfa21vZF91
-bmxvYWRfcihzdHJ1Y3Qga21vZF9tb2R1bGUgKmttb2QsIHVuc2lnbmVkIGludCBmbGFncykNCj4g
-PiAgew0KPiA+ICsjZGVmaW5lIE1BWF9UUklFUwkyMA0KPiA+ICsjZGVmaW5lIFNMRUVQX0RVUkFU
-SU9OCTUwMDAwMA0KPiA+ICAJc3RydWN0IGttb2RfbGlzdCAqaG9sZGVycywgKnBvczsNCj4gPiAt
-CWludCBlcnIgPSAwOw0KPiA+ICsJaW50IGVyciwgdHJpZXM7DQo+ID4gKwljb25zdCBjaGFyICpt
-b2RfbmFtZSA9IGttb2RfbW9kdWxlX2dldF9uYW1lKGttb2QpOw0KPiA+ICANCj4gPiAgCWhvbGRl
-cnMgPSBrbW9kX21vZHVsZV9nZXRfaG9sZGVycyhrbW9kKTsNCj4gPiAgCWttb2RfbGlzdF9mb3Jl
-YWNoKHBvcywgaG9sZGVycykgew0KPiA+IEBAIC0yNjksNyArMjcyLDYgQEAgc3RhdGljIGludCBp
-Z3Rfa21vZF91bmxvYWRfcihzdHJ1Y3Qga21vZF9tb2R1bGUgKmttb2QsIHVuc2lnbmVkIGludCBm
-bGFncykNCj4gPiAgCQlyZXR1cm4gZXJyOw0KPiA+ICANCj4gPiAgCWlmIChpZ3Rfa21vZF9pc19s
-b2FkaW5nKGttb2QpKSB7DQo+ID4gLQkJY29uc3QgY2hhciAqbW9kX25hbWUgPSBrbW9kX21vZHVs
-ZV9nZXRfbmFtZShrbW9kKTsNCj4gPiAgCQlpZ3RfZGVidWcoIiVzIHN0aWxsIGluaXRpYWxpemlu
-Z1xuIiwgbW9kX25hbWUpOw0KPiA+ICAJCWVyciA9IGlndF93YWl0KCFpZ3Rfa21vZF9pc19sb2Fk
-aW5nKGttb2QpLCAxMDAwMCwgMTAwKTsNCj4gPiAgCQlpZiAoZXJyIDwgMCkgew0KPiA+IEBAIC0y
-NzksNyArMjgxLDM0IEBAIHN0YXRpYyBpbnQgaWd0X2ttb2RfdW5sb2FkX3Ioc3RydWN0IGttb2Rf
-bW9kdWxlICprbW9kLCB1bnNpZ25lZCBpbnQgZmxhZ3MpDQo+ID4gIAkJfQ0KPiA+ICAJfQ0KPiA+
-ICANCj4gPiAtCXJldHVybiBrbW9kX21vZHVsZV9yZW1vdmVfbW9kdWxlKGttb2QsIGZsYWdzKTsN
-Cj4gPiArCWZvciAodHJpZXMgPSAwOyB0cmllcyA8IE1BWF9UUklFUzsgdHJpZXMrKykgew0KPiA+
-ICsJCWVyciA9IGttb2RfbW9kdWxlX3JlbW92ZV9tb2R1bGUoa21vZCwgZmxhZ3MpOw0KPiA+ICsN
-Cj4gPiArCQkvKiBPbmx5IGxvb3AgaW4gdGhlIGZvbGxvd2luZyBjYXNlcyAqLw0KPiA+ICsJCWlm
-IChlcnIgIT0gLUVCVVNZICYmIGVyciAhPSAtRUFHQUlOKQ0KPiA+ICsJCQlicmVhazsNCj4gPiAr
-DQo+ID4gKwkJaWd0X2RlYnVnKCJNb2R1bGUgJXMgZmFpbGVkIHRvIHVubG9hZCB3aXRoIGVycjog
-JWQgb24gYXR0ZW1wdDogJWlcbiIsDQo+ID4gKwkJCSAgbW9kX25hbWUsIGVyciwgdHJpZXMgKyAx
-KTsNCj4gPiArDQo+ID4gKwkJaWYgKE1BWF9UUklFUyAtIHRyaWVzIC0gMSkNCj4gLS0tLS0tLS0t
-LS0tLS0tLS0tIF4NCj4gVGhpcyBzaG91bGQgYmUgdHJpZXMgPCBNQVhfVFJJRVMgLSAxDQoNCkkn
-bSB1c2luZyAidHJpZXMgIT0gTUFYX1RSSUVTIC0gMSIsIHdoaWNoIHNob3VsZCBhbHNvIHdvcmsg
-YXMgbG9uZyBhcyB0aGUgZm9yLWxvb3AgZG9lc24ndCBzb21laG93IG92ZXJmbG93Lg0KSGVyZSwg
-dGhlIHR3byBhcmUgbG9naWNhbGx5IGVxdWl2YWxlbnQ6DQoNCnRyaWVzICE9IE1BWF9UUklFUyAt
-IDENCnRyaWVzIC0gdHJpZXMgIT0gTUFYX1RSSUVTIC0gMSAtIHRyaWVzDQowICE9IE1BWF9UUklF
-UyAtIHRyaWVzIC0gMQ0KDQouLi4gSSdsbCBjbGVhbiBpdCB1cCBmb3IgY2xhcml0eS4uLg0KDQo+
-IA0KPiA+ICsJCQl1c2xlZXAoU0xFRVBfRFVSQVRJT04pOw0KPiA+ICsJfQ0KPiA+ICsNCj4gPiAr
-CWlmIChlcnIgPT0gLUVOT0VOVCkNCj4gPiArCQlpZ3RfZGVidWcoIk1vZHVsZSAlcyBjb3VsZCBu
-b3QgYmUgZm91bmQgb3IgZG9lcyBub3QgZXhpc3QuIGVycjogJWRcbiIsDQo+ID4gKwkJCSAgbW9k
-X25hbWUsIGVycik7DQo+ID4gKwllbHNlIGlmIChlcnIgPT0gLUVOT1RTVVApDQo+ID4gKwkJaWd0
-X2RlYnVnKCJNb2R1bGUgJXMgY2Fubm90IGJlIHVubG9hZGVkLiBlcnI6ICVkXG4iLA0KPiA+ICsJ
-CQkgIG1vZF9uYW1lLCBlcnIpOw0KPiA+ICsJZWxzZSBpZiAoZXJyKQ0KPiA+ICsJCWlndF9kZWJ1
-ZygiTW9kdWxlICVzIGZhaWxlZCB0byB1bmxvYWQgd2l0aCBlcnI6ICVkIGFmdGVyIH4lLjFmbXNc
-biIsDQo+ID4gKwkJCSAgbW9kX25hbWUsIGVyciwgU0xFRVBfRFVSQVRJT04qdHJpZXMvMTAwMC4p
-Ow0KPiA+ICsJZWxzZSBpZiAodHJpZXMpDQo+ID4gKwkJaWd0X2RlYnVnKCJNb2R1bGUgJXMgdW5s
-b2FkIHRvb2sgfiUuMWZtcyBvdmVyICVpIGF0dGVtcHRzXG4iLA0KPiA+ICsJCQkgIG1vZF9uYW1l
-LCBTTEVFUF9EVVJBVElPTip0cmllcy8xMDAwLiwgdHJpZXMgKyAxKTsNCj4gDQo+IFdoYXQgYWJv
-dXQgb25lIGZpbmFsIGVsc2Ugd2l0aCBpZ3RfZGVidWcgYWJvdXQgc3VjY2VzcyBhdCBmaXJzdCB0
-cnkgPw0KDQpHZW5lcmFsbHkgc3BlYWtpbmcsIHNob3VsZCB3ZSByZWFsbHkgYmUgcHJpbnRpbmcg
-ZGVidWcgaW5mb3JtYXRpb24gd2hlbiBhDQpmdW5jdGlvbiBiZWhhdmVzIGFzIGludGVuZGVkPyAg
-SSBkb24ndCBiZWxpZXZlIHNvLCBidXQgaWYgeW91IHdhbnQgbWUgdG8gYWRkDQp0aGF0IGRlYnVn
-IG1lc3NhZ2UgdGhlcmUgSSdsbCBkbyBpdC4NCi1Kb25hdGhhbiBDYXZpdHQNCg0KPiANCj4gUmVn
-YXJkcywNCj4gS2FtaWwNCj4gDQo+ID4gKw0KPiA+ICsJcmV0dXJuIGVycjsNCj4gPiAgfQ0KPiA+
-ICANCj4gPiAgLyoqDQo+ID4gLS0gDQo+ID4gMi4yNS4xDQo+ID4gDQo+IA0K
+On 2023-01-18 at 20:27:57 +0530, Mohammed Thasleem wrote:
+> Fixed the usage of Dereferencing of null pointer to avoid crash.
+-------------------- ^
+Please make it lowercase, s/D/d/
+
+Correct it also in your Subject.
+
+> 
+> Signed-off-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
+> ---
+>  lib/igt_kms.c | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/lib/igt_kms.c b/lib/igt_kms.c
+> index b4a98ae1..b3334b3a 100644
+> --- a/lib/igt_kms.c
+> +++ b/lib/igt_kms.c
+> @@ -1941,6 +1941,7 @@ kmstest_get_property(int drm_fd, uint32_t object_id, uint32_t object_type,
+>  	int i;
+>  
+>  	proplist = drmModeObjectGetProperties(drm_fd, object_id, object_type);
+> +	igt_require(proplist);
+------- ^
+imho just return false here, so
+
+	if (!proplist)
+		return false;
+
+Regards,
+Kamil
+
+>  	for (i = 0; i < proplist->count_props; i++) {
+>  		_prop = drmModeGetProperty(drm_fd, proplist->props[i]);
+>  		if (!_prop)
+> -- 
+> 2.25.1
+> 
