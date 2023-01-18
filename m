@@ -1,18 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C75B710E6AA
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E132310E6AF
  for <igt-dev@lists.freedesktop.org>; Wed, 18 Jan 2023 07:13:59 +0000 (UTC)
 From: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 17 Jan 2023 23:13:37 -0800
-Message-Id: <20230118071350.17498-7-niranjana.vishwanathapura@intel.com>
+Date: Tue, 17 Jan 2023 23:13:38 -0800
+Message-Id: <20230118071350.17498-8-niranjana.vishwanathapura@intel.com>
 In-Reply-To: <20230118071350.17498-1-niranjana.vishwanathapura@intel.com>
 References: <20230118071350.17498-1-niranjana.vishwanathapura@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v10 06/19] lib/vm_bind: Add vm_bind specific
- library functions
+Subject: [igt-dev] [PATCH i-g-t v10 07/19] lib/vm_bind: Add
+ __prime_handle_to_fd()
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,121 +25,190 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add vm_bind specific library interfaces.
+Make __prime_handle_to_fd() as a library interface as VM_BIND
+functionality will also be using it.
 
-v2: Add flags field
+v2: Rename prime_handle_to_fd_no_assert() to __prime_handle_to_fd()
 
 Reviewed-by: Matthew Auld <matthew.auld@intel.com>
 Signed-off-by: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
 ---
- lib/i915/i915_vm_bind.c | 62 +++++++++++++++++++++++++++++++++++++++++
- lib/i915/i915_vm_bind.h | 16 +++++++++++
- lib/meson.build         |  1 +
- 3 files changed, 79 insertions(+)
- create mode 100644 lib/i915/i915_vm_bind.c
- create mode 100644 lib/i915/i915_vm_bind.h
+ lib/ioctl_wrappers.c    | 39 +++++++++++++++++++++++++++++++++------
+ lib/ioctl_wrappers.h    |  1 +
+ tests/i915/gem_pwrite.c | 16 +---------------
+ tests/prime_mmap.c      | 26 ++++----------------------
+ 4 files changed, 39 insertions(+), 43 deletions(-)
 
-diff --git a/lib/i915/i915_vm_bind.c b/lib/i915/i915_vm_bind.c
-new file mode 100644
-index 000000000..201912b49
---- /dev/null
-+++ b/lib/i915/i915_vm_bind.c
-@@ -0,0 +1,62 @@
-+// SPDX-License-Identifier: MIT
-+/*
-+ * Copyright © 2022 Intel Corporation
+diff --git a/lib/ioctl_wrappers.c b/lib/ioctl_wrappers.c
+index 9ce875470..33ccb31dd 100644
+--- a/lib/ioctl_wrappers.c
++++ b/lib/ioctl_wrappers.c
+@@ -1122,28 +1122,55 @@ void gem_require_mocs_registers(int fd)
+ /* prime */
+ 
+ /**
+- * prime_handle_to_fd:
++ * __prime_handle_to_fd:
+  * @fd: open i915 drm file descriptor
+  * @handle: file-private gem buffer object handle
++ * @flags: DRM_IOCTL_PRIME_HANDLE_TO_FD ioctl flags
++ * @fd_out: place holder for output file handle
+  *
+  * This wraps the PRIME_HANDLE_TO_FD ioctl, which is used to export a gem buffer
+  * object into a global (i.e. potentially cross-device) dma-buf file-descriptor
+  * handle.
+  *
+- * Returns: The created dma-buf fd handle.
++ * Returns: 0 on success, error otherwise. Upon success, it returns
++ *          the created dma-buf fd handle in fd_out.
+  */
+-int prime_handle_to_fd(int fd, uint32_t handle)
++int __prime_handle_to_fd(int fd, uint32_t handle, int flags, int *fd_out)
+ {
+ 	struct drm_prime_handle args;
++	int ret;
+ 
+ 	memset(&args, 0, sizeof(args));
+ 	args.handle = handle;
+-	args.flags = DRM_CLOEXEC;
++	args.flags = flags;
+ 	args.fd = -1;
+ 
+-	do_ioctl(fd, DRM_IOCTL_PRIME_HANDLE_TO_FD, &args);
++	ret = drmIoctl(fd, DRM_IOCTL_PRIME_HANDLE_TO_FD, &args);
++	if (ret)
++		ret = -errno;
++	*fd_out = args.fd;
+ 
+-	return args.fd;
++	return ret;
++}
++
++/**
++ * prime_handle_to_fd:
++ * @fd: open i915 drm file descriptor
++ * @handle: file-private gem buffer object handle
++ *
++ * This wraps the PRIME_HANDLE_TO_FD ioctl, which is used to export a gem buffer
++ * object into a global (i.e. potentially cross-device) dma-buf file-descriptor
++ * handle. It asserts that ioctl succeeds.
++ *
++ * Returns: The created dma-buf fd handle.
 + */
-+
-+#include <errno.h>
-+#include <string.h>
-+#include <sys/ioctl.h>
-+
-+#include "ioctl_wrappers.h"
-+#include "i915_drm.h"
-+#include "i915_drm_local.h"
-+#include "i915_vm_bind.h"
-+
-+void i915_vm_bind(int i915, uint32_t vm_id, uint64_t va, uint32_t handle,
-+		  uint64_t offset, uint64_t length, uint64_t flags,
-+		  uint32_t syncobj, uint64_t fence_value)
++int prime_handle_to_fd(int fd, uint32_t handle)
 +{
-+	struct drm_i915_gem_vm_bind bind;
++	int dmabuf;
 +
-+	memset(&bind, 0, sizeof(bind));
-+	bind.vm_id = vm_id;
-+	bind.handle = handle;
-+	bind.start = va;
-+	bind.offset = offset;
-+	bind.length = length;
-+	bind.flags = flags;
-+	if (syncobj) {
-+		bind.fence.handle = syncobj;
-+		bind.fence.value = fence_value;
-+		bind.fence.flags = I915_TIMELINE_FENCE_SIGNAL;
-+	}
++	igt_assert_eq(__prime_handle_to_fd(fd, handle, DRM_CLOEXEC, &dmabuf), 0);
 +
-+	gem_vm_bind(i915, &bind);
-+}
-+
-+void i915_vm_unbind(int i915, uint32_t vm_id, uint64_t va, uint64_t length)
-+{
-+	struct drm_i915_gem_vm_unbind unbind;
-+
-+	memset(&unbind, 0, sizeof(unbind));
-+	unbind.vm_id = vm_id;
-+	unbind.start = va;
-+	unbind.length = length;
-+
-+	gem_vm_unbind(i915, &unbind);
-+}
-+
-+int i915_vm_bind_version(int i915)
-+{
-+	struct drm_i915_getparam gp;
-+	int value = 0;
-+
-+	memset(&gp, 0, sizeof(gp));
-+	gp.param = I915_PARAM_VM_BIND_VERSION;
-+	gp.value = &value;
-+
-+	ioctl(i915, DRM_IOCTL_I915_GETPARAM, &gp, sizeof(gp));
-+	errno = 0;
-+
-+	return value;
-+}
-diff --git a/lib/i915/i915_vm_bind.h b/lib/i915/i915_vm_bind.h
-new file mode 100644
-index 000000000..b11142cc8
---- /dev/null
-+++ b/lib/i915/i915_vm_bind.h
-@@ -0,0 +1,16 @@
-+/* SPDX-License-Identifier: MIT */
-+/*
-+ * Copyright © 2022 Intel Corporation
-+ */
-+#ifndef _I915_VM_BIND_H_
-+#define _I915_VM_BIND_H_
-+
-+#include <stdint.h>
-+
-+void i915_vm_bind(int i915, uint32_t vm_id, uint64_t va, uint32_t handle,
-+		  uint64_t offset, uint64_t length, uint64_t flags,
-+		  uint32_t syncobj, uint64_t fence_value);
-+void i915_vm_unbind(int i915, uint32_t vm_id, uint64_t va, uint64_t length);
-+int i915_vm_bind_version(int i915);
-+
-+#endif /* _I915_VM_BIND_ */
-diff --git a/lib/meson.build b/lib/meson.build
-index cc7846869..ce7adf464 100644
---- a/lib/meson.build
-+++ b/lib/meson.build
-@@ -16,6 +16,7 @@ lib_sources = [
- 	'i915/intel_mocs.c',
- 	'i915/i915_blt.c',
- 	'i915/i915_crc.c',
-+	'i915/i915_vm_bind.c',
- 	'igt_collection.c',
- 	'igt_color_encoding.c',
- 	'igt_crc.c',
++	return dmabuf;
+ }
+ 
+ /**
+diff --git a/lib/ioctl_wrappers.h b/lib/ioctl_wrappers.h
+index 50e2139f5..cab890d29 100644
+--- a/lib/ioctl_wrappers.h
++++ b/lib/ioctl_wrappers.h
+@@ -138,6 +138,7 @@ struct local_dma_buf_sync {
+ #define LOCAL_DMA_BUF_BASE 'b'
+ #define LOCAL_DMA_BUF_IOCTL_SYNC _IOW(LOCAL_DMA_BUF_BASE, 0, struct local_dma_buf_sync)
+ 
++int __prime_handle_to_fd(int fd, uint32_t handle, int flags, int *fd_out);
+ int prime_handle_to_fd(int fd, uint32_t handle);
+ #ifndef DRM_RDWR
+ #define DRM_RDWR O_RDWR
+diff --git a/tests/i915/gem_pwrite.c b/tests/i915/gem_pwrite.c
+index 6e3f833cd..f4fe069ca 100644
+--- a/tests/i915/gem_pwrite.c
++++ b/tests/i915/gem_pwrite.c
+@@ -293,19 +293,6 @@ struct ufd_thread {
+ 	int err;
+ };
+ 
+-static int __prime_handle_to_fd(int fd, uint32_t handle)
+-{
+-	struct drm_prime_handle args;
+-
+-	memset(&args, 0, sizeof(args));
+-	args.handle = handle;
+-	args.flags = DRM_CLOEXEC;
+-	args.fd = -1;
+-
+-	ioctl(fd, DRM_IOCTL_PRIME_HANDLE_TO_FD, &args);
+-	return args.fd;
+-}
+-
+ static uint32_t dmabuf_create_handle(int i915, int vgem)
+ {
+ 	struct vgem_bo scratch;
+@@ -317,8 +304,7 @@ static uint32_t dmabuf_create_handle(int i915, int vgem)
+ 	scratch.bpp = 32;
+ 	vgem_create(vgem, &scratch);
+ 
+-	dmabuf = __prime_handle_to_fd(vgem, scratch.handle);
+-	if (dmabuf < 0)
++	if (__prime_handle_to_fd(vgem, scratch.handle, DRM_CLOEXEC, &dmabuf))
+ 		return 0;
+ 
+ 	handle = prime_fd_to_handle(i915, dmabuf);
+diff --git a/tests/prime_mmap.c b/tests/prime_mmap.c
+index bc19f68c9..432e85763 100644
+--- a/tests/prime_mmap.c
++++ b/tests/prime_mmap.c
+@@ -298,24 +298,6 @@ test_dup(uint32_t region, uint64_t size)
+ 	close (dma_buf_fd);
+ }
+ 
+-/* Used for error case testing to avoid wrapper */
+-static int prime_handle_to_fd_no_assert(uint32_t handle, int flags, int *fd_out)
+-{
+-	struct drm_prime_handle args;
+-	int ret;
+-
+-	args.handle = handle;
+-	args.flags = flags;
+-	args.fd = -1;
+-
+-	ret = drmIoctl(fd, DRM_IOCTL_PRIME_HANDLE_TO_FD, &args);
+-	if (ret)
+-		ret = errno;
+-	*fd_out = args.fd;
+-
+-	return ret;
+-}
+-
+ static bool has_userptr(void)
+ {
+ 	uint32_t handle = 0;
+@@ -346,9 +328,9 @@ test_userptr(uint32_t region, uint64_t size)
+ 	gem_userptr(fd, (uint32_t *)ptr, size, 0, 0, &handle);
+ 
+ 	/* export userptr */
+-	ret = prime_handle_to_fd_no_assert(handle, DRM_CLOEXEC, &dma_buf_fd);
++	ret = __prime_handle_to_fd(fd, handle, DRM_CLOEXEC, &dma_buf_fd);
+ 	if (ret) {
+-		igt_assert(ret == EINVAL || ret == ENODEV);
++		igt_assert(ret == -EINVAL || ret == -ENODEV);
+ 		goto free_userptr;
+ 	} else {
+ 		igt_assert_eq(ret, 0);
+@@ -376,7 +358,7 @@ test_errors(uint32_t region, uint64_t size)
+ 	/* Test for invalid flags */
+ 	igt_assert(__gem_create_in_memory_regions(fd, &handle, &size, region) == 0);
+ 	for (i = 0; i < ARRAY_SIZE(invalid_flags); i++) {
+-		prime_handle_to_fd_no_assert(handle, invalid_flags[i], &dma_buf_fd);
++		__prime_handle_to_fd(fd, handle, invalid_flags[i], &dma_buf_fd);
+ 		igt_assert_eq(errno, EINVAL);
+ 		errno = 0;
+ 	}
+@@ -386,7 +368,7 @@ test_errors(uint32_t region, uint64_t size)
+ 	igt_assert(__gem_create_in_memory_regions(fd, &handle, &size, region) == 0);
+ 	fill_bo(handle, size);
+ 	gem_close(fd, handle);
+-	prime_handle_to_fd_no_assert(handle, DRM_CLOEXEC, &dma_buf_fd);
++	__prime_handle_to_fd(fd, handle, DRM_CLOEXEC, &dma_buf_fd);
+ 	igt_assert(dma_buf_fd == -1 && errno == ENOENT);
+ 	errno = 0;
+ 
 -- 
 2.21.0.rc0.32.g243a4c7e27
