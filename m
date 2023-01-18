@@ -1,20 +1,22 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8014C10E68C
- for <igt-dev@lists.freedesktop.org>; Wed, 18 Jan 2023 06:47:58 +0000 (UTC)
-Message-ID: <c096ad55-495b-106c-8e61-147f8d0d659d@intel.com>
-Date: Wed, 18 Jan 2023 12:17:44 +0530
-To: Mohammed Thasleem <mohammed.thasleem@intel.com>,
- <igt-dev@lists.freedesktop.org>
-References: <20230117080507.127924-1-mohammed.thasleem@intel.com>
-Content-Language: en-US
-From: Karthik B S <karthik.b.s@intel.com>
-In-Reply-To: <20230117080507.127924-1-mohammed.thasleem@intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1262510E1E2
+ for <igt-dev@lists.freedesktop.org>; Wed, 18 Jan 2023 07:13:09 +0000 (UTC)
+Date: Tue, 17 Jan 2023 23:12:58 -0800
+From: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
+To: Matthew Auld <matthew.auld@intel.com>
+Message-ID: <Y8eb+qzZJGnxpKje@nvishwa1-DESK>
+References: <20221212231254.2303-1-niranjana.vishwanathapura@intel.com>
+ <20221212231254.2303-16-niranjana.vishwanathapura@intel.com>
+ <f3a82c92-368b-d209-5696-7538c232e597@intel.com>
+ <Y8eRE/qj/JPHUlAu@nvishwa1-DESK>
+Content-Type: text/plain; charset="iso-8859-1"; format=flowed
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <Y8eRE/qj/JPHUlAu@nvishwa1-DESK>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_lease: close mcl.fd when
- drmModeSetCrtc fails
+Subject: Re: [igt-dev] [PATCH i-g-t v9 15/19] tests/i915/vm_bind: Add
+ i915_capture library routines
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,60 +24,284 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: igt-dev@lists.freedesktop.org, daniel.vetter@intel.com,
+ thomas.hellstrom@intel.com, petri.latvala@intel.com, tvrtko.ursulin@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-
-On 1/17/2023 1:35 PM, Mohammed Thasleem wrote:
-> Close mcl.fd when drmModeSetCrtc retuns fail and it will
-> unblock the resources for other subtests execution with
-> out fail.
-
-Hi,
-
-The second part of the message is a little unclear. Could you please 
-update this.
-
+On Tue, Jan 17, 2023 at 10:26:27PM -0800, Niranjana Vishwanathapura wrote:
+>On Fri, Jan 13, 2023 at 10:06:14AM +0000, Matthew Auld wrote:
+>>On 12/12/2022 23:12, Niranjana Vishwanathapura wrote:
+>>>In preparation of i915_vm_bind_capture test, move some common
+>>>capture decode routines to library for code sharing.
+>>>
+>>>Signed-off-by: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
+>>>---
+>>> lib/i915/i915_capture.c       | 96 +++++++++++++++++++++++++++++++++++
+>>> lib/i915/i915_capture.h       | 14 +++++
+>>> lib/meson.build               |  1 +
+>>> tests/i915/gem_exec_capture.c | 88 +-------------------------------
+>>> 4 files changed, 112 insertions(+), 87 deletions(-)
+>>> create mode 100644 lib/i915/i915_capture.c
+>>> create mode 100644 lib/i915/i915_capture.h
+>>>
+>>>diff --git a/lib/i915/i915_capture.c b/lib/i915/i915_capture.c
+>>>new file mode 100644
+>>>index 000000000..7430c9256
+>>>--- /dev/null
+>>>+++ b/lib/i915/i915_capture.c
+>>>@@ -0,0 +1,96 @@
+>>>+// SPDX-License-Identifier: MIT
+>>>+/*
+>>>+ * Copyright © 2022 Intel Corporation
+>>>+ */
+>>>+
+>>>+#include <stdlib.h>
+>>>+#include <string.h>
+>>>+#include <zlib.h>
+>>>+
+>>>+#include "i915_capture.h"
+>>>+
+>>>+static unsigned long zlib_inflate(uint32_t **ptr, unsigned long len)
+>>>+{
+>>>+	struct z_stream_s zstream;
+>>>+	void *out;
+>>>+
+>>>+	memset(&zstream, 0, sizeof(zstream));
+>>>+
+>>>+	zstream.next_in = (unsigned char *)*ptr;
+>>>+	zstream.avail_in = 4*len;
+>>>+
+>>>+	if (inflateInit(&zstream) != Z_OK)
+>>>+		return 0;
+>>>+
+>>>+	out = malloc(128*4096); /* approximate obj size */
+>>>+	zstream.next_out = out;
+>>>+	zstream.avail_out = 128*4096;
+>>>+
+>>>+	do {
+>>>+		switch (inflate(&zstream, Z_SYNC_FLUSH)) {
+>>>+		case Z_STREAM_END:
+>>>+			goto end;
+>>>+		case Z_OK:
+>>>+			break;
+>>>+		default:
+>>>+			inflateEnd(&zstream);
+>>>+			return 0;
+>>>+		}
+>>>+
+>>>+		if (zstream.avail_out)
+>>>+			break;
+>>>+
+>>>+		out = realloc(out, 2*zstream.total_out);
+>>>+		if (out == NULL) {
+>>>+			inflateEnd(&zstream);
+>>>+			return 0;
+>>>+		}
+>>>+
+>>>+		zstream.next_out = (unsigned char *)out + zstream.total_out;
+>>>+		zstream.avail_out = zstream.total_out;
+>>>+	} while (1);
+>>>+end:
+>>>+	inflateEnd(&zstream);
+>>>+	free(*ptr);
+>>>+	*ptr = out;
+>>>+	return zstream.total_out / 4;
+>>>+}
+>>>+
+>>>+unsigned long
+>>>+ascii85_decode(char *in, uint32_t **out, bool inflate, char **end)
+>>
+>>Since this is in lib, AFAIK needs some doc.
+>>
 >
-> Signed-off-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
-> ---
->   tests/kms_lease.c | 11 ++++++++---
->   1 file changed, 8 insertions(+), 3 deletions(-)
+>Ok, will add.
 >
-> diff --git a/tests/kms_lease.c b/tests/kms_lease.c
-> index 67e8d3be..c1cf8567 100644
-> --- a/tests/kms_lease.c
-> +++ b/tests/kms_lease.c
-> @@ -317,6 +317,7 @@ static void setcrtc_implicit_plane(data_t *data)
->   	struct drm_mode_create_lease mcl;
->   	drmModePlaneRes *plane_resources;
->   	uint32_t wrong_plane_id = 0;
-> +	int ret = 0;
->   	igt_output_t *output =
->   		connector_id_to_output(&data->master.display,
->   				       data->connector_id);
-> @@ -351,10 +352,14 @@ static void setcrtc_implicit_plane(data_t *data)
->   	/* sanity check */
->   	do_or_die(drmModeSetCrtc(data->master.fd, data->crtc_id, -1,
->   				 0, 0, object_ids, 1, mode));
-> -	do_or_die(drmModeSetCrtc(mcl.fd, data->crtc_id, -1,
-> -				 0, 0, object_ids, 1, mode));
-> -	close(mcl.fd);
-> +	ret = drmModeSetCrtc(mcl.fd, data->crtc_id, -1, 0, 0, object_ids,
-> +			     1, mode);
-> +	if (ret) {
-'if' here looks redundant?
-> +		close(mcl.fd);
-> +		igt_assert_eq(ret, 0);
-> +	}
->   
-> +	close(mcl.fd);
 
-This also can be removed once the 'if' condition above is removed.
+Also, I found tools/intel_error_decode also duplicates these funcitons.
+Will update to use the library routine instead.
 
-Thanks,
-Karthik.B.S
->   	object_ids[mcl.object_count++] = wrong_plane_id;
->   	do_or_die(create_lease(data->master.fd, &mcl));
->   
+Niranjana
+
+>>Otherwise,
+>>Reviewed-by: Matthew Auld <matthew.auld@intel.com>
+>>
+>
+>Thanks,
+>Niranjana
+>
+>>>+{
+>>>+	unsigned long len = 0, size = 1024;
+>>>+
+>>>+	*out = realloc(*out, sizeof(uint32_t)*size);
+>>>+	if (*out == NULL)
+>>>+		return 0;
+>>>+
+>>>+	while (*in >= '!' && *in <= 'z') {
+>>>+		uint32_t v = 0;
+>>>+
+>>>+		if (len == size) {
+>>>+			size *= 2;
+>>>+			*out = realloc(*out, sizeof(uint32_t)*size);
+>>>+			if (*out == NULL)
+>>>+				return 0;
+>>>+		}
+>>>+
+>>>+		if (*in == 'z') {
+>>>+			in++;
+>>>+		} else {
+>>>+			v += in[0] - 33; v *= 85;
+>>>+			v += in[1] - 33; v *= 85;
+>>>+			v += in[2] - 33; v *= 85;
+>>>+			v += in[3] - 33; v *= 85;
+>>>+			v += in[4] - 33;
+>>>+			in += 5;
+>>>+		}
+>>>+		(*out)[len++] = v;
+>>>+	}
+>>>+	*end = in;
+>>>+
+>>>+	if (!inflate)
+>>>+		return len;
+>>>+
+>>>+	return zlib_inflate(out, len);
+>>>+}
+>>>diff --git a/lib/i915/i915_capture.h b/lib/i915/i915_capture.h
+>>>new file mode 100644
+>>>index 000000000..26481b8e4
+>>>--- /dev/null
+>>>+++ b/lib/i915/i915_capture.h
+>>>@@ -0,0 +1,14 @@
+>>>+/* SPDX-License-Identifier: MIT */
+>>>+/*
+>>>+ * Copyright © 2022 Intel Corporation
+>>>+ */
+>>>+#ifndef _I915_CAPTURE_H_
+>>>+#define _I915_CAPTURE_H_
+>>>+
+>>>+#include <stdbool.h>
+>>>+#include <stdint.h>
+>>>+
+>>>+unsigned long
+>>>+ascii85_decode(char *in, uint32_t **out, bool inflate, char **end);
+>>>+
+>>>+#endif /* _I915_CAPTURE_ */
+>>>diff --git a/lib/meson.build b/lib/meson.build
+>>>index a01482c38..9d353da16 100644
+>>>--- a/lib/meson.build
+>>>+++ b/lib/meson.build
+>>>@@ -14,6 +14,7 @@ lib_sources = [
+>>> 	'i915/intel_memory_region.c',
+>>> 	'i915/intel_mocs.c',
+>>> 	'i915/i915_blt.c',
+>>>+	'i915/i915_capture.c',
+>>> 	'i915/i915_crc.c',
+>>> 	'i915/i915_vm_bind.c',
+>>> 	'igt_collection.c',
+>>>diff --git a/tests/i915/gem_exec_capture.c b/tests/i915/gem_exec_capture.c
+>>>index 2db58266f..f8f8d1ece 100644
+>>>--- a/tests/i915/gem_exec_capture.c
+>>>+++ b/tests/i915/gem_exec_capture.c
+>>>@@ -22,10 +22,10 @@
+>>>  */
+>>> #include <sys/poll.h>
+>>>-#include <zlib.h>
+>>> #include <sched.h>
+>>> #include "i915/gem.h"
+>>>+#include "i915/i915_capture.h"
+>>> #include "i915/gem_create.h"
+>>> #include "igt.h"
+>>> #include "igt_device.h"
+>>>@@ -42,92 +42,6 @@ struct offset {
+>>> 	bool found;
+>>> };
+>>>-static unsigned long zlib_inflate(uint32_t **ptr, unsigned long len)
+>>>-{
+>>>-	struct z_stream_s zstream;
+>>>-	void *out;
+>>>-
+>>>-	memset(&zstream, 0, sizeof(zstream));
+>>>-
+>>>-	zstream.next_in = (unsigned char *)*ptr;
+>>>-	zstream.avail_in = 4*len;
+>>>-
+>>>-	if (inflateInit(&zstream) != Z_OK)
+>>>-		return 0;
+>>>-
+>>>-	out = malloc(128*4096); /* approximate obj size */
+>>>-	zstream.next_out = out;
+>>>-	zstream.avail_out = 128*4096;
+>>>-
+>>>-	do {
+>>>-		switch (inflate(&zstream, Z_SYNC_FLUSH)) {
+>>>-		case Z_STREAM_END:
+>>>-			goto end;
+>>>-		case Z_OK:
+>>>-			break;
+>>>-		default:
+>>>-			inflateEnd(&zstream);
+>>>-			return 0;
+>>>-		}
+>>>-
+>>>-		if (zstream.avail_out)
+>>>-			break;
+>>>-
+>>>-		out = realloc(out, 2*zstream.total_out);
+>>>-		if (out == NULL) {
+>>>-			inflateEnd(&zstream);
+>>>-			return 0;
+>>>-		}
+>>>-
+>>>-		zstream.next_out = (unsigned char *)out + zstream.total_out;
+>>>-		zstream.avail_out = zstream.total_out;
+>>>-	} while (1);
+>>>-end:
+>>>-	inflateEnd(&zstream);
+>>>-	free(*ptr);
+>>>-	*ptr = out;
+>>>-	return zstream.total_out / 4;
+>>>-}
+>>>-
+>>>-static unsigned long
+>>>-ascii85_decode(char *in, uint32_t **out, bool inflate, char **end)
+>>>-{
+>>>-	unsigned long len = 0, size = 1024;
+>>>-
+>>>-	*out = realloc(*out, sizeof(uint32_t)*size);
+>>>-	if (*out == NULL)
+>>>-		return 0;
+>>>-
+>>>-	while (*in >= '!' && *in <= 'z') {
+>>>-		uint32_t v = 0;
+>>>-
+>>>-		if (len == size) {
+>>>-			size *= 2;
+>>>-			*out = realloc(*out, sizeof(uint32_t)*size);
+>>>-			if (*out == NULL)
+>>>-				return 0;
+>>>-		}
+>>>-
+>>>-		if (*in == 'z') {
+>>>-			in++;
+>>>-		} else {
+>>>-			v += in[0] - 33; v *= 85;
+>>>-			v += in[1] - 33; v *= 85;
+>>>-			v += in[2] - 33; v *= 85;
+>>>-			v += in[3] - 33; v *= 85;
+>>>-			v += in[4] - 33;
+>>>-			in += 5;
+>>>-		}
+>>>-		(*out)[len++] = v;
+>>>-	}
+>>>-	*end = in;
+>>>-
+>>>-	if (!inflate)
+>>>-		return len;
+>>>-
+>>>-	return zlib_inflate(out, len);
+>>>-}
+>>>-
+>>> static int check_error_state(int dir, struct offset *obj_offsets, int obj_count,
+>>> 			     uint64_t obj_size, bool incremental)
+>>> {
