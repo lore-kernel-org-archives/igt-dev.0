@@ -1,22 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0B89710E628
- for <igt-dev@lists.freedesktop.org>; Wed, 18 Jan 2023 10:12:58 +0000 (UTC)
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0355210E0D5
+ for <igt-dev@lists.freedesktop.org>; Wed, 18 Jan 2023 10:15:55 +0000 (UTC)
 From: "B, Jeevan" <jeevan.b@intel.com>
-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-Date: Wed, 18 Jan 2023 10:12:54 +0000
-Message-ID: <DM4PR11MB63121D5BDADC693EA11AAE1990C79@DM4PR11MB6312.namprd11.prod.outlook.com>
+To: "Kempczynski, Zbigniew" <zbigniew.kempczynski@intel.com>
+Date: Wed, 18 Jan 2023 10:15:51 +0000
+Message-ID: <DM4PR11MB6312641E3BD858B5C1B975EA90C79@DM4PR11MB6312.namprd11.prod.outlook.com>
 References: <20230113091041.27032-1-jeevan.b@intel.com>
- <20230113091041.27032-2-jeevan.b@intel.com>
- <20230116191511.pvke5kkdn7hyiadu@kamilkon-desk1>
-In-Reply-To: <20230116191511.pvke5kkdn7hyiadu@kamilkon-desk1>
+ <20230113091041.27032-3-jeevan.b@intel.com>
+ <20230113113038.w45bo3s2gg333l6g@zkempczy-mobl2>
+In-Reply-To: <20230113113038.w45bo3s2gg333l6g@zkempczy-mobl2>
 Content-Language: en-US
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH 1/2] lib/igt_draw: Use intel_get_uc_mocs to
- get MOCS value
+Subject: Re: [igt-dev] [PATCH 2/2] lib/igt_draw: Add MOCS values for MTL
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,45 +22,85 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: "De Marchi,
- Lucas" <lucas.demarchi@intel.com>
+Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "De
+ Marchi, Lucas" <lucas.demarchi@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-PiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPiBGcm9tOiBLYW1pbCBLb25pZWN6bnkgPGth
-bWlsLmtvbmllY3pueUBsaW51eC5pbnRlbC5jb20+DQo+IFNlbnQ6IFR1ZXNkYXksIEphbnVhcnkg
-MTcsIDIwMjMgMTI6NDUgQU0NCj4gVG86IGlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnDQo+
-IENjOiBCLCBKZWV2YW4gPGplZXZhbi5iQGludGVsLmNvbT47IEtlbXBjenluc2tpLCBaYmlnbmll
-dw0KPiA8emJpZ25pZXcua2VtcGN6eW5za2lAaW50ZWwuY29tPjsgRGUgTWFyY2hpLCBMdWNhcw0K
-PiA8bHVjYXMuZGVtYXJjaGlAaW50ZWwuY29tPjsga2FtaWwua29uaWVjem55QGxpbnV4LmludGVs
-LmNvbQ0KPiBTdWJqZWN0OiBSZTogW1BBVENIIDEvMl0gbGliL2lndF9kcmF3OiBVc2UgaW50ZWxf
-Z2V0X3VjX21vY3MgdG8gZ2V0IE1PQ1MNCj4gdmFsdWUNCj4gDQo+IEhpLA0KPiANCj4gT24gMjAy
-My0wMS0xMyBhdCAxNDo0MDo0MCArMDUzMCwgSmVldmFuIEIgd3JvdGU6DQo+ID4gVXNlIGludGVs
-X2dldF91Y19tb2NzIGluc3RlYWQgb2YgaGFyZGNvZGluZyB0byBnZXQgdGFibGUgZW50cnkuDQo+
-ID4NCj4gPiBTaWduZWQtb2ZmLWJ5OiBKZWV2YW4gQiA8amVldmFuLmJAaW50ZWwuY29tPg0KPiA+
-IC0tLQ0KPiA+ICBsaWIvaWd0X2RyYXcuYyB8IDMgKystDQo+ID4gIDEgZmlsZSBjaGFuZ2VkLCAy
-IGluc2VydGlvbnMoKyksIDEgZGVsZXRpb24oLSkNCj4gPg0KPiA+IGRpZmYgLS1naXQgYS9saWIv
-aWd0X2RyYXcuYyBiL2xpYi9pZ3RfZHJhdy5jIGluZGV4IDk3NWQ2NWNkLi5iZmU5Y2Q1MA0KPiA+
-IDEwMDY0NA0KPiA+IC0tLSBhL2xpYi9pZ3RfZHJhdy5jDQo+ID4gKysrIGIvbGliL2lndF9kcmF3
-LmMNCj4gPiBAQCAtMzYsNiArMzYsNyBAQA0KPiA+ICAjaW5jbHVkZSAiaTgzMF9yZWcuaCINCj4g
-PiAgI2luY2x1ZGUgImk5MTUvZ2VtX2NyZWF0ZS5oIg0KPiA+ICAjaW5jbHVkZSAiaTkxNS9nZW1f
-bW1hbi5oIg0KPiA+ICsjaW5jbHVkZSAiaTkxNS9pbnRlbF9tb2NzLmgiDQo+ID4NCj4gPiAgI2lm
-bmRlZiBQQUdFX0FMSUdODQo+ID4gICNpZm5kZWYgUEFHRV9TSVpFDQo+ID4gQEAgLTcwMyw3ICs3
-MDQsNyBAQCBzdGF0aWMgdm9pZCBkcmF3X3JlY3RfYmx0KGludCBmZCwgc3RydWN0IGNtZF9kYXRh
-DQo+ID4gKmNtZF9kYXRhLA0KPiA+DQo+ID4gIAkJaW50ZWxfYmJfb3V0KGliYiwgWFlfRkFTVF9D
-T0xPUl9CTFQgfCBibHRfY21kX2RlcHRoKTsNCj4gPiAgCQkvKiBERzIgTU9DUyBlbnRyeSAyIGlz
-ICJVQyAtIE5vbi1Db2hlcmVudDsgR086TWVtb3J5IiAqLw0KPiAtLS0tLS0tLS0tLS0tLS0tIF4N
-Cj4gUGxlYXNlIHJlbW92ZSB0aGlzIG9sZCBjb21tZW50IGZyb20gaGVyZSBhcyBhZnRlciBjaGFu
-Z2UgaXQgd2lsbCBzdGFydCB3b3JraW5nDQo+IGZvciBERzEgYW5kIG90aGVyIGFyY2hzLg0KPiAN
-Cj4gQnR3IHRoaXMgaXMgaW5kZXBlbmRlbnQgZnJvbSAyLzIgYW5kIGltaG8gc2hvdWxkIGJlIGZp
-cnN0Lg0KDQoNCkhpLCANCg0KSSBhZ3JlZSB3aXRoIEthbWlsLCBUaGlzIHBhdGNoIHNob3VsZCBi
-ZSAxLzIuIA0KDQpUaGFua3MgDQpKZWV2YW4gQiANCg0KPiANCj4gUmVnYXJkcywNCj4gUmV2aWV3
-ZWQtYnk6IEthbWlsIEtvbmllY3pueSA8a2FtaWwua29uaWVjem55QGxpbnV4LmludGVsLmNvbT4N
-Cj4gDQo+ID4gLQkJaW50ZWxfYmJfb3V0KGliYiwgYmx0X2NtZF90aWxpbmcgfCAyIDw8IDIxIHwg
-KHBpdGNoLTEpKTsNCj4gPiArCQlpbnRlbF9iYl9vdXQoaWJiLCBibHRfY21kX3RpbGluZyB8IGlu
-dGVsX2dldF91Y19tb2NzKGZkKSA8PCAyMQ0KPiB8DQo+ID4gKyhwaXRjaC0xKSk7DQo+ID4gIAkJ
-aW50ZWxfYmJfb3V0KGliYiwgKHJlY3QtPnkgPDwgMTYpIHwgcmVjdC0+eCk7DQo+ID4gIAkJaW50
-ZWxfYmJfb3V0KGliYiwgKChyZWN0LT55ICsgcmVjdC0+aCkgPDwgMTYpIHwgKHJlY3QtPnggKyBy
-ZWN0LQ0KPiA+dykpOw0KPiA+ICAJCWludGVsX2JiX2VtaXRfcmVsb2NfZmVuY2VkKGliYiwgZHN0
-LT5oYW5kbGUsIDAsDQo+ID4gLS0NCj4gPiAyLjE5LjENCj4gPg0K
+
+
+> -----Original Message-----
+> From: Kempczynski, Zbigniew <zbigniew.kempczynski@intel.com>
+> Sent: Friday, January 13, 2023 5:01 PM
+> To: B, Jeevan <jeevan.b@intel.com>
+> Cc: igt-dev@lists.freedesktop.org; De Marchi, Lucas
+> <lucas.demarchi@intel.com>; kamil.konieczny@linux.intel.com
+> Subject: Re: [PATCH 2/2] lib/igt_draw: Add MOCS values for MTL
+>=20
+> On Fri, Jan 13, 2023 at 02:40:41PM +0530, Jeevan B wrote:
+> > On MTL, we want the table entry labelled "UC (GO:Mem)"
+> > which has index 5.  This means that the MOCS value is 10.
+> >
+> > Signed-off-by: Jeevan B <jeevan.b@intel.com>
+> > ---
+> >  lib/i915/intel_mocs.c | 12 ++++++++----
+> >  1 file changed, 8 insertions(+), 4 deletions(-)
+> >
+> > diff --git a/lib/i915/intel_mocs.c b/lib/i915/intel_mocs.c index
+> > df541ab0..95f0fbde 100644
+> > --- a/lib/i915/intel_mocs.c
+> > +++ b/lib/i915/intel_mocs.c
+> > @@ -11,6 +11,8 @@
+> >  #define DG1_MOCS_WB_IDX				5
+> >  #define DG2_MOCS_UC_IDX				1
+> >  #define DG2_MOCS_WB_IDX				3
+> > +#define MTL_MOCS_UC_IDX				5
+> > +#define MTL_MOCS_WB_IDX				10
+> >  #define GEN12_MOCS_UC_IDX			3
+> >  #define GEN12_MOCS_WB_IDX			2
+> >  #define XY_BLOCK_COPY_BLT_MOCS_SHIFT		21
+> > @@ -32,13 +34,15 @@ static void get_mocs_index(int fd, struct
+> drm_i915_mocs_index *mocs)
+> >  	 * This helper function is providing current UC as well
+> >  	 * as WB MOCS index based on platform.
+> >  	 */
+> > -	if (IS_DG1(devid)) {
+> > -		mocs->uc_index =3D DG1_MOCS_UC_IDX;
+> > -		mocs->wb_index =3D DG1_MOCS_WB_IDX;
+>=20
+> Is this reorder necessary? I would just add MTL else if condition (unless=
+ you'll
+> convince me it makes sense).
+>=20
+> --
+> Zbigniew
+Hi Zbigniew,=20
+
+convention is latest platform first,=20
+MTL
+DG2
+DG1
+GEN12
+So I have reordered.=20
+
+Thanks=20
+Jeevan B=20
+
+>=20
+> > +	if (IS_METEORLAKE(devid)) {
+> > +		mocs->uc_index =3D MTL_MOCS_UC_IDX;
+> > +		mocs->wb_index =3D MTL_MOCS_WB_IDX;
+> >  	} else if (IS_DG2(devid)) {
+> >  		mocs->uc_index =3D DG2_MOCS_UC_IDX;
+> >  		mocs->wb_index =3D DG2_MOCS_WB_IDX;
+> > -
+> > +	} else if (IS_DG1(devid)) {
+> > +		mocs->uc_index =3D DG1_MOCS_UC_IDX;
+> > +		mocs->wb_index =3D DG1_MOCS_WB_IDX;
+> >  	} else if (IS_GEN12(devid)) {
+> >  		mocs->uc_index =3D GEN12_MOCS_UC_IDX;
+> >  		mocs->wb_index =3D GEN12_MOCS_WB_IDX;
+> > --
+> > 2.19.1
+> >
