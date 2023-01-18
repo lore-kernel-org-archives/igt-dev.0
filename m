@@ -1,19 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id EE4C710E65F
- for <igt-dev@lists.freedesktop.org>; Wed, 18 Jan 2023 11:30:31 +0000 (UTC)
-Date: Wed, 18 Jan 2023 13:27:20 +0200
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6D99510E729
+ for <igt-dev@lists.freedesktop.org>; Wed, 18 Jan 2023 12:30:12 +0000 (UTC)
 From: Petri Latvala <petri.latvala@intel.com>
-To: =?iso-8859-1?Q?Ma=EDra?= Canal <mcanal@igalia.com>
-Message-ID: <Y8fXmNuzjYOW5qfu@platvala-desk.ger.corp.intel.com>
-References: <20230117220322.231405-1-mcanal@igalia.com>
+To: igt-dev@lists.freedesktop.org
+Date: Wed, 18 Jan 2023 14:26:50 +0200
+Message-Id: <20230118122650.307123-1-petri.latvala@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230117220322.231405-1-mcanal@igalia.com>
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/vkms: Create a testlist to the
- vkms DRM driver
+Subject: [igt-dev] [PATCH i-g-t v2] lib/igt_debugfs: Fixup docs
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,313 +16,164 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org
+Cc: Petri Latvala <petri.latvala@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Tue, Jan 17, 2023 at 07:03:22PM -0300, Maíra Canal wrote:
-> The vkms DRM driver is a software-only model of a KMS driver and its
-> development is highly based on the current status of the IGT tests. So,
-> create a list of the tests that are supported by the vkms DRM driver, in
-> order to have a baseline of the tests that should pass when using vkms.
-> 
-> This way, it will easier to track regressions on the vkms DRM driver, as
-> the testlist for the driver will be publicly available.
-> 
-> Signed-off-by: Maíra Canal <mcanal@igalia.com>
-> ---
->  tests/vkms_ci/README        |  20 ++++
->  tests/vkms_ci/vkms.testlist | 231 ++++++++++++++++++++++++++++++++++++
->  2 files changed, 251 insertions(+)
->  create mode 100644 tests/vkms_ci/README
->  create mode 100644 tests/vkms_ci/vkms.testlist
-> 
-> diff --git a/tests/vkms_ci/README b/tests/vkms_ci/README
-> new file mode 100644
-> index 00000000..4b0265bf
-> --- /dev/null
-> +++ b/tests/vkms_ci/README
-> @@ -0,0 +1,20 @@
-> +This directory contains test lists to be used for vkms's DRM support. The files
-> +are passed to piglit with the --test-list|-T parameter directly.
-> +
-> +The test lists are contained in the IGT repository for several
-> +reasons:
-> +
-> +- The lists stay synchronized with the IGT codebase.
-> +- Public availability. Kernel developers can see what tests are run,
-> +  and can see what changes are done to the set, when, and why.
-> +- Keep track of the features implemented by the vkms DRM driver.
+When IGT was made multi-device-aware, various functions had the device
+fd parameter added, but that didn't get added to documentation.
 
-Is this text copied from intel-ci's README? Note to self: Change the
-preamble in there...
+Also clean a couple of typos.
 
-I don't know how you guys are running tests on vkms, but if you're
-using piglit to launch tests, please consider using igt_runner
-instead. As for the patch, please make that
+v2: Rebase, CRC code moved to a different file
 
- are passed to igt_runner/piglit with the --test-list parameter directly.
+Signed-off-by: Petri Latvala <petri.latvala@intel.com>
+Cc: Arkadiusz Hiler <arek@hiler.eu>
+Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+---
+ lib/igt_debugfs.c  | 14 ++++++++++++--
+ lib/igt_pipe_crc.c |  5 ++++-
+ 2 files changed, 16 insertions(+), 3 deletions(-)
 
-
-Another consideration, if you plan to use "ninja install" tarballs for
-deployment the testlist needs to be installed. See
-tests/intel-ci/meson.build for examples of that.
-
-With or without the above suggestions, this is
-Acked-by: Petri Latvala <petri.latvala@intel.com>
-
-
+diff --git a/lib/igt_debugfs.c b/lib/igt_debugfs.c
+index 85d350d3..6de178d6 100644
+--- a/lib/igt_debugfs.c
++++ b/lib/igt_debugfs.c
+@@ -220,7 +220,7 @@ int igt_debugfs_dir(int device)
+ /**
+  * igt_debugfs_connector_dir:
+  * @device: fd of the device
+- * @conn_name: conenctor name
++ * @conn_name: connector name
+  * @mode: mode bits as used by open()
+  *
+  * This opens the debugfs directory corresponding to connector on the device
+@@ -267,6 +267,7 @@ int igt_debugfs_pipe_dir(int device, int pipe, int mode)
+ 
+ /**
+  * igt_debugfs_open:
++ * @device: fd of the device
+  * @filename: name of the debugfs node to open
+  * @mode: mode bits as used by open()
+  *
+@@ -314,6 +315,7 @@ bool igt_debugfs_exists(int device, const char *filename, int mode)
+ 
+ /**
+  * igt_debugfs_simple_read:
++ * @dir: fd of the debugfs directory
+  * @filename: file name
+  * @buf: buffer where the contents will be stored, allocated by the caller
+  * @size: size of the buffer
+@@ -323,7 +325,7 @@ bool igt_debugfs_exists(int device, const char *filename, int mode)
+  * first argument.
+  *
+  * Returns:
+- * -errorno on failure or bytes read on success
++ * -errno on failure or bytes read on success
+  */
+ int igt_debugfs_simple_read(int dir, const char *filename, char *buf, int size)
+ {
+@@ -340,6 +342,7 @@ int igt_debugfs_simple_read(int dir, const char *filename, char *buf, int size)
+ 
+ /**
+  * __igt_debugfs_read:
++ * @fd: fd of the device
+  * @filename: file name
+  * @buf: buffer where the contents will be stored, allocated by the caller
+  * @size: size of the buffer
+@@ -375,6 +378,7 @@ void __igt_debugfs_write(int fd, const char *filename, const char *buf, int size
+ 
+ /**
+  * igt_debugfs_search:
++ * @device: fd of the device
+  * @filename: file name
+  * @substring: string to search for in @filename
+  *
+@@ -419,6 +423,7 @@ static void igt_hpd_storm_exit_handler(int sig)
+ 
+ /**
+  * igt_hpd_storm_set_threshold:
++ * @drm_fd: fd of the device
+  * @threshold: How many hotplugs per second required to trigger an HPD storm,
+  * or 0 to disable storm detection.
+  *
+@@ -449,6 +454,7 @@ void igt_hpd_storm_set_threshold(int drm_fd, unsigned int threshold)
+ 
+ /**
+  * igt_hpd_storm_reset:
++ * @drm_fd: fd of the device
+  *
+  * Convienence helper to reset HPD storm detection to it's default settings.
+  * If hotplug detection was disabled on any ports due to an HPD storm, it will
+@@ -476,6 +482,7 @@ void igt_hpd_storm_reset(int drm_fd)
+ 
+ /**
+  * igt_hpd_storm_detected:
++ * @drm_fd: fd of the device
+  *
+  * Checks whether or not i915 has detected an HPD interrupt storm on any of the
+  * system's ports.
+@@ -515,6 +522,7 @@ bool igt_hpd_storm_detected(int drm_fd)
+ 
+ /**
+  * igt_require_hpd_storm_ctl:
++ * @drm_fd: fd of the device
+  *
+  * Skips the current test if the system does not have HPD storm detection.
+  *
+@@ -553,6 +561,7 @@ void igt_reset_fifo_underrun_reporting(int drm_fd)
+ 
+ /**
+  * igt_drop_caches_has:
++ * @drm_fd: fd of the device
+  * @val: bitmask for DROP_* values
+  *
+  * This queries the debugfs to see if it supports the full set of desired
+@@ -573,6 +582,7 @@ bool igt_drop_caches_has(int drm_fd, uint64_t val)
+ 
+ /**
+  * igt_drop_caches_set:
++ * @drm_fd: fd of the device
+  * @val: bitmask for DROP_* values
+  *
+  * This calls the debugfs interface the drm/i915 GEM driver exposes to drop or
+diff --git a/lib/igt_pipe_crc.c b/lib/igt_pipe_crc.c
+index 12e89461..866bf288 100644
+--- a/lib/igt_pipe_crc.c
++++ b/lib/igt_pipe_crc.c
+@@ -195,6 +195,7 @@ struct _igt_pipe_crc {
+ 
+ /**
+  * igt_require_pipe_crc:
++ * @fd: fd of the device
+  *
+  * Convenience helper to check whether pipe CRC capturing is supported by the
+  * kernel. Uses igt_skip to automatically skip the test/subtest if this isn't
+@@ -251,6 +252,7 @@ pipe_crc_new(int fd, enum pipe pipe, const char *source, int flags)
+ 
+ /**
+  * igt_pipe_crc_new:
++ * @fd: fd of the device
+  * @pipe: display pipe to use as source
+  * @source: CRC tap point to use as source
+  *
+@@ -269,6 +271,7 @@ igt_pipe_crc_new(int fd, enum pipe pipe, const char *source)
+ 
+ /**
+  * igt_pipe_crc_new_nonblock:
++ * @fd: fd of the device
+  * @pipe: display pipe to use as source
+  * @source: CRC tap point to use as source
+  *
+@@ -518,7 +521,7 @@ void igt_pipe_crc_get_single(igt_pipe_crc_t *pipe_crc, igt_crc_t *crc)
+ 
+ /**
+  * igt_pipe_crc_get_current:
+- * @drm_fd: Pointer to drm fd for vblank counter
++ * @drm_fd: drm device fd for vblank counter
+  * @pipe_crc: pipe CRC object
+  * @vblank: frame counter value we're looking for
+  * @crc: buffer pointer for the captured CRC value
 -- 
-Petri Latvala
-
-> +
-> +=============
-> +vkms.testlist
-> +=============
-> +
-> +This test list is meant as a general test suite for the vkms DRM driver,
-> +gathering all must-pass tests for the driver.
-> +
-> +As more features are implemented to the vkms DRM driver, the correspondent
-> +tests should be added to this list.
-> diff --git a/tests/vkms_ci/vkms.testlist b/tests/vkms_ci/vkms.testlist
-> new file mode 100644
-> index 00000000..9065d318
-> --- /dev/null
-> +++ b/tests/vkms_ci/vkms.testlist
-> @@ -0,0 +1,231 @@
-> +igt@kms_atomic@atomic-invalid-params
-> +igt@kms_atomic@crtc-invalid-params
-> +igt@kms_atomic@plane-cursor-legacy
-> +igt@kms_atomic@plane-immutable-zpos
-> +igt@kms_atomic@plane-invalid-params
-> +igt@kms_atomic@plane-primary-legacy
-> +igt@kms_atomic@test-only
-> +igt@kms_atomic_transition@modeset-transition
-> +igt@kms_atomic_transition@modeset-transition-fencing
-> +igt@kms_atomic_transition@modeset-transition-nonblocking
-> +igt@kms_atomic_transition@modeset-transition-nonblocking-fencing
-> +igt@kms_atomic_transition@plane-all-modeset-transition
-> +igt@kms_atomic_transition@plane-all-transition
-> +igt@kms_atomic_transition@plane-all-transition-nonblocking
-> +igt@kms_atomic_transition@plane-primary-toggle-with-vblank-wait
-> +igt@kms_atomic_transition@plane-use-after-nonblocking-unbind
-> +igt@kms_bw@linear-tiling-1-displays-1920x1080p
-> +igt@kms_bw@linear-tiling-1-displays-2560x1440p
-> +igt@kms_bw@linear-tiling-1-displays-3840x2160p
-> +igt@kms_bw@linear-tiling-2-displays-1920x1080p
-> +igt@kms_bw@linear-tiling-2-displays-2560x1440p
-> +igt@kms_bw@linear-tiling-2-displays-3840x2160p
-> +igt@kms_concurrent@pipe-a
-> +igt@kms_cursor_crc@cursor-alpha-opaque
-> +igt@kms_cursor_crc@cursor-alpha-transparent
-> +igt@kms_cursor_crc@cursor-dpms
-> +igt@kms_cursor_crc@cursor-offscreen-128x128
-> +igt@kms_cursor_crc@cursor-offscreen-128x42
-> +igt@kms_cursor_crc@cursor-offscreen-256x256
-> +igt@kms_cursor_crc@cursor-offscreen-256x85
-> +igt@kms_cursor_crc@cursor-offscreen-32x10
-> +igt@kms_cursor_crc@cursor-offscreen-32x32
-> +igt@kms_cursor_crc@cursor-offscreen-512x170
-> +igt@kms_cursor_crc@cursor-offscreen-512x512
-> +igt@kms_cursor_crc@cursor-offscreen-64x21
-> +igt@kms_cursor_crc@cursor-offscreen-64x64
-> +igt@kms_cursor_crc@cursor-onscreen-128x128
-> +igt@kms_cursor_crc@cursor-onscreen-128x42
-> +igt@kms_cursor_crc@cursor-onscreen-256x256
-> +igt@kms_cursor_crc@cursor-onscreen-256x85
-> +igt@kms_cursor_crc@cursor-onscreen-32x10
-> +igt@kms_cursor_crc@cursor-onscreen-32x32
-> +igt@kms_cursor_crc@cursor-onscreen-512x170
-> +igt@kms_cursor_crc@cursor-onscreen-512x512
-> +igt@kms_cursor_crc@cursor-onscreen-64x21
-> +igt@kms_cursor_crc@cursor-onscreen-64x64
-> +igt@kms_cursor_crc@cursor-random-128x128
-> +igt@kms_cursor_crc@cursor-random-128x42
-> +igt@kms_cursor_crc@cursor-random-256x256
-> +igt@kms_cursor_crc@cursor-random-256x85
-> +igt@kms_cursor_crc@cursor-random-32x10
-> +igt@kms_cursor_crc@cursor-random-32x32
-> +igt@kms_cursor_crc@cursor-random-512x170
-> +igt@kms_cursor_crc@cursor-random-512x512
-> +igt@kms_cursor_crc@cursor-random-64x21
-> +igt@kms_cursor_crc@cursor-random-64x64
-> +igt@kms_cursor_crc@cursor-rapid-movement-128x128
-> +igt@kms_cursor_crc@cursor-rapid-movement-128x42
-> +igt@kms_cursor_crc@cursor-rapid-movement-256x256
-> +igt@kms_cursor_crc@cursor-rapid-movement-256x85
-> +igt@kms_cursor_crc@cursor-rapid-movement-32x10
-> +igt@kms_cursor_crc@cursor-rapid-movement-32x32
-> +igt@kms_cursor_crc@cursor-rapid-movement-512x170
-> +igt@kms_cursor_crc@cursor-rapid-movement-512x512
-> +igt@kms_cursor_crc@cursor-rapid-movement-64x21
-> +igt@kms_cursor_crc@cursor-rapid-movement-64x64
-> +igt@kms_cursor_crc@cursor-size-change
-> +igt@kms_cursor_crc@cursor-sliding-128x128
-> +igt@kms_cursor_crc@cursor-sliding-128x42
-> +igt@kms_cursor_crc@cursor-sliding-256x256
-> +igt@kms_cursor_crc@cursor-sliding-256x85
-> +igt@kms_cursor_crc@cursor-sliding-32x10
-> +igt@kms_cursor_crc@cursor-sliding-32x32
-> +igt@kms_cursor_crc@cursor-sliding-512x170
-> +igt@kms_cursor_crc@cursor-sliding-512x512
-> +igt@kms_cursor_crc@cursor-sliding-64x21
-> +igt@kms_cursor_crc@cursor-sliding-64x64
-> +igt@kms_cursor_crc@cursor-suspend
-> +igt@kms_cursor_edge_walk@left-edge
-> +igt@kms_cursor_edge_walk@right-edge
-> +igt@kms_cursor_edge_walk@top-bottom
-> +igt@kms_cursor_edge_walk@top-edge
-> +igt@kms_flip@absolute-wf_vblank
-> +igt@kms_flip@absolute-wf_vblank-interruptible
-> +igt@kms_flip@basic-flip-vs-dpms
-> +igt@kms_flip@basic-flip-vs-modeset
-> +igt@kms_flip@basic-flip-vs-wf_vblank
-> +igt@kms_flip@basic-plain-flip
-> +igt@kms_flip@blocking-absolute-wf_vblank
-> +igt@kms_flip@blocking-absolute-wf_vblank-interruptible
-> +igt@kms_flip@blocking-wf_vblank
-> +igt@kms_flip@busy-flip
-> +igt@kms_flip@dpms-off-confusion
-> +igt@kms_flip@dpms-off-confusion-interruptible
-> +igt@kms_flip@dpms-vs-vblank-race
-> +igt@kms_flip@dpms-vs-vblank-race-interruptible
-> +igt@kms_flip@flip-vs-absolute-wf_vblank
-> +igt@kms_flip@flip-vs-absolute-wf_vblank-interruptible
-> +igt@kms_flip@flip-vs-blocking-wf-vblank
-> +igt@kms_flip@flip-vs-dpms-off-vs-modeset
-> +igt@kms_flip@flip-vs-dpms-off-vs-modeset-interruptible
-> +igt@kms_flip@flip-vs-expired-vblank
-> +igt@kms_flip@flip-vs-expired-vblank-interruptible
-> +igt@kms_flip@flip-vs-panning
-> +igt@kms_flip@flip-vs-panning-interruptible
-> +igt@kms_flip@flip-vs-rmfb
-> +igt@kms_flip@flip-vs-rmfb-interruptible
-> +igt@kms_flip@flip-vs-suspend
-> +igt@kms_flip@flip-vs-suspend-interruptible
-> +igt@kms_flip@flip-vs-wf_vblank-interruptible
-> +igt@kms_flip@modeset-vs-vblank-race
-> +igt@kms_flip@modeset-vs-vblank-race-interruptible
-> +igt@kms_flip@nonblocking-read
-> +igt@kms_flip@nonexisting-fb
-> +igt@kms_flip@nonexisting-fb-interruptible
-> +igt@kms_flip@plain-flip-fb-recreate
-> +igt@kms_flip@plain-flip-fb-recreate-interruptible
-> +igt@kms_flip@plain-flip-interruptible
-> +igt@kms_flip@plain-flip-ts-check
-> +igt@kms_flip@plain-flip-ts-check-interruptible
-> +igt@kms_flip@single-buffer-flip-vs-dpms-off-vs-modeset
-> +igt@kms_flip@single-buffer-flip-vs-dpms-off-vs-modeset-interruptible
-> +igt@kms_flip@wf_vblank-ts-check
-> +igt@kms_flip@wf_vblank-ts-check-interruptible
-> +igt@kms_flip_event_leak@basic
-> +igt@kms_getfb@getfb-addfb-different-handles
-> +igt@kms_getfb@getfb-handle-closed
-> +igt@kms_getfb@getfb-handle-not-fb
-> +igt@kms_getfb@getfb-handle-protection
-> +igt@kms_getfb@getfb-handle-valid
-> +igt@kms_getfb@getfb-handle-zero
-> +igt@kms_getfb@getfb-repeated-different-handles
-> +igt@kms_getfb@getfb2-handle-closed
-> +igt@kms_getfb@getfb2-handle-not-fb
-> +igt@kms_getfb@getfb2-handle-protection
-> +igt@kms_getfb@getfb2-handle-zero
-> +igt@kms_getfb@getfb2-into-addfb2
-> +igt@kms_lease@cursor_implicit_plane
-> +igt@kms_lease@empty_lease
-> +igt@kms_lease@implicit-plane-lease
-> +igt@kms_lease@invalid-create-leases
-> +igt@kms_lease@lease-uevent
-> +igt@kms_lease@lease_again
-> +igt@kms_lease@lease_get
-> +igt@kms_lease@lease_invalid_connector
-> +igt@kms_lease@lease_invalid_crtc
-> +igt@kms_lease@lease_invalid_plane
-> +igt@kms_lease@lease_revoke
-> +igt@kms_lease@lessee_list
-> +igt@kms_lease@master-vs-lease
-> +igt@kms_lease@multimaster-lease
-> +igt@kms_lease@page_flip_implicit_plane
-> +igt@kms_lease@possible-crtcs-filtering
-> +igt@kms_lease@setcrtc_implicit_plane
-> +igt@kms_lease@simple_lease
-> +igt@kms_multipipe_modeset@basic-max-pipe-crc-check
-> +igt@kms_pipe_crc_basic@bad-source
-> +igt@kms_pipe_crc_basic@compare-crc-sanitycheck
-> +igt@kms_pipe_crc_basic@disable-crc-after-crtc
-> +igt@kms_pipe_crc_basic@nonblocking-crc
-> +igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence
-> +igt@kms_pipe_crc_basic@read-crc
-> +igt@kms_pipe_crc_basic@read-crc-frame-sequence
-> +igt@kms_pipe_crc_basic@suspend-read-crc
-> +igt@kms_plane@plane-panning-bottom-right
-> +igt@kms_plane@plane-panning-bottom-right-suspend
-> +igt@kms_plane@plane-panning-top-left
-> +igt@kms_plane@plane-position-covered
-> +igt@kms_plane@plane-position-hole
-> +igt@kms_plane@plane-position-hole-dpms
-> +igt@kms_plane_multiple@tiling-none
-> +igt@kms_plane_scaling@planes-downscale-factor-0-25
-> +igt@kms_plane_scaling@planes-downscale-factor-0-5
-> +igt@kms_plane_scaling@planes-downscale-factor-0-75
-> +igt@kms_plane_scaling@planes-scaler-unity-scaling
-> +igt@kms_plane_scaling@planes-unity-scaling-downscale-factor-0-25
-> +igt@kms_plane_scaling@planes-unity-scaling-downscale-factor-0-5
-> +igt@kms_plane_scaling@planes-unity-scaling-downscale-factor-0-75
-> +igt@kms_plane_scaling@planes-upscale-20x20
-> +igt@kms_plane_scaling@planes-upscale-20x20-downscale-factor-0-25
-> +igt@kms_plane_scaling@planes-upscale-20x20-downscale-factor-0-5
-> +igt@kms_plane_scaling@planes-upscale-20x20-downscale-factor-0-75
-> +igt@kms_plane_scaling@planes-upscale-factor-0-25
-> +igt@kms_plane_scaling@planes-upscale-factor-0-25-downscale-factor-0-25
-> +igt@kms_plane_scaling@planes-upscale-factor-0-25-downscale-factor-0-5
-> +igt@kms_plane_scaling@planes-upscale-factor-0-25-downscale-factor-0-75
-> +igt@kms_prop_blob@basic
-> +igt@kms_prop_blob@blob-multiple
-> +igt@kms_prop_blob@blob-prop-core
-> +igt@kms_prop_blob@blob-prop-lifetime
-> +igt@kms_prop_blob@blob-prop-validate
-> +igt@kms_prop_blob@invalid-get-prop
-> +igt@kms_prop_blob@invalid-get-prop-any
-> +igt@kms_prop_blob@invalid-set-prop
-> +igt@kms_prop_blob@invalid-set-prop-any
-> +igt@kms_properties@connector-properties-atomic
-> +igt@kms_properties@connector-properties-legacy
-> +igt@kms_properties@crtc-properties-atomic
-> +igt@kms_properties@crtc-properties-legacy
-> +igt@kms_properties@get_properties-sanity-atomic
-> +igt@kms_properties@get_properties-sanity-non-atomic
-> +igt@kms_properties@invalid-properties-atomic
-> +igt@kms_properties@invalid-properties-legacy
-> +igt@kms_properties@plane-properties-atomic
-> +igt@kms_properties@plane-properties-legacy
-> +igt@kms_rmfb@close-fd
-> +igt@kms_rmfb@rmfb-ioctl
-> +igt@kms_sequence@get-busy
-> +igt@kms_sequence@get-forked
-> +igt@kms_sequence@get-forked-busy
-> +igt@kms_sequence@get-idle
-> +igt@kms_sequence@queue-busy
-> +igt@kms_sequence@queue-idle
-> +igt@kms_vblank@crtc-id
-> +igt@kms_vblank@invalid
-> +igt@kms_vblank@pipe-a-accuracy-idle
-> +igt@kms_vblank@pipe-a-query-busy
-> +igt@kms_vblank@pipe-a-query-forked
-> +igt@kms_vblank@pipe-a-query-forked-busy
-> +igt@kms_vblank@pipe-a-query-idle
-> +igt@kms_vblank@pipe-a-ts-continuation-dpms-suspend
-> +igt@kms_vblank@pipe-a-ts-continuation-idle
-> +igt@kms_vblank@pipe-a-ts-continuation-suspend
-> +igt@kms_vblank@pipe-a-wait-busy
-> +igt@kms_vblank@pipe-a-wait-forked
-> +igt@kms_vblank@pipe-a-wait-forked-busy
-> +igt@kms_vblank@pipe-a-wait-idle
-> +igt@kms_writeback@writeback-check-output
-> +igt@kms_writeback@writeback-fb-id
-> +igt@kms_writeback@writeback-invalid-parameters
-> +igt@kms_writeback@writeback-pixel-formats
-> -- 
-> 2.39.0
-> 
+2.30.2
