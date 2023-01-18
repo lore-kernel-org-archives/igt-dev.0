@@ -1,17 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 00A4010E1E2
- for <igt-dev@lists.freedesktop.org>; Wed, 18 Jan 2023 07:13:58 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C75B710E6AA
+ for <igt-dev@lists.freedesktop.org>; Wed, 18 Jan 2023 07:13:59 +0000 (UTC)
 From: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 17 Jan 2023 23:13:33 -0800
-Message-Id: <20230118071350.17498-3-niranjana.vishwanathapura@intel.com>
+Date: Tue, 17 Jan 2023 23:13:37 -0800
+Message-Id: <20230118071350.17498-7-niranjana.vishwanathapura@intel.com>
 In-Reply-To: <20230118071350.17498-1-niranjana.vishwanathapura@intel.com>
 References: <20230118071350.17498-1-niranjana.vishwanathapura@intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v10 02/19] lib/i915: Move common syncobj
- functions to library
+Subject: [igt-dev] [PATCH i-g-t v10 06/19] lib/vm_bind: Add vm_bind specific
+ library functions
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,150 +26,121 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-In preparation for the VM_BIND tests, move some syncobj functions
-to the library.
+Add vm_bind specific library interfaces.
+
+v2: Add flags field
 
 Reviewed-by: Matthew Auld <matthew.auld@intel.com>
 Signed-off-by: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
 ---
- lib/igt_syncobj.c           | 21 +++++++++++++++++++++
- lib/igt_syncobj.h           |  9 +++++++++
- tests/i915/gem_exec_fence.c | 21 ---------------------
- tests/syncobj_timeline.c    |  8 --------
- tests/syncobj_wait.c        |  8 --------
- 5 files changed, 30 insertions(+), 37 deletions(-)
+ lib/i915/i915_vm_bind.c | 62 +++++++++++++++++++++++++++++++++++++++++
+ lib/i915/i915_vm_bind.h | 16 +++++++++++
+ lib/meson.build         |  1 +
+ 3 files changed, 79 insertions(+)
+ create mode 100644 lib/i915/i915_vm_bind.c
+ create mode 100644 lib/i915/i915_vm_bind.h
 
-diff --git a/lib/igt_syncobj.c b/lib/igt_syncobj.c
-index a24ed10b7..5280c272e 100644
---- a/lib/igt_syncobj.c
-+++ b/lib/igt_syncobj.c
-@@ -22,6 +22,7 @@
-  */
- 
- #include <errno.h>
-+#include <sys/poll.h>
- #include <xf86drm.h>
- 
- #include "igt.h"
-@@ -543,3 +544,23 @@ syncobj_timeline_to_timeline(int fd,
- 					 timeline_dst, point_dst,
- 					 timeline_src, point_src, 0), 0);
- }
-+
-+/**
-+ * syncobj_busy:
-+ * @fd: The DRM file descriptor
-+ * @handle: The handle to the syncobj to check
-+ * Check if a syncobj is busy.
+diff --git a/lib/i915/i915_vm_bind.c b/lib/i915/i915_vm_bind.c
+new file mode 100644
+index 000000000..201912b49
+--- /dev/null
++++ b/lib/i915/i915_vm_bind.c
+@@ -0,0 +1,62 @@
++// SPDX-License-Identifier: MIT
++/*
++ * Copyright © 2022 Intel Corporation
 + */
-+bool
-+syncobj_busy(int fd, uint32_t handle)
++
++#include <errno.h>
++#include <string.h>
++#include <sys/ioctl.h>
++
++#include "ioctl_wrappers.h"
++#include "i915_drm.h"
++#include "i915_drm_local.h"
++#include "i915_vm_bind.h"
++
++void i915_vm_bind(int i915, uint32_t vm_id, uint64_t va, uint32_t handle,
++		  uint64_t offset, uint64_t length, uint64_t flags,
++		  uint32_t syncobj, uint64_t fence_value)
 +{
-+	bool result;
-+	int sf;
++	struct drm_i915_gem_vm_bind bind;
 +
-+	sf = syncobj_handle_to_fd(fd, handle,
-+				  DRM_SYNCOBJ_HANDLE_TO_FD_FLAGS_EXPORT_SYNC_FILE);
-+	result = poll(&(struct pollfd){sf, POLLIN}, 1, 0) == 0;
-+	close(sf);
++	memset(&bind, 0, sizeof(bind));
++	bind.vm_id = vm_id;
++	bind.handle = handle;
++	bind.start = va;
++	bind.offset = offset;
++	bind.length = length;
++	bind.flags = flags;
++	if (syncobj) {
++		bind.fence.handle = syncobj;
++		bind.fence.value = fence_value;
++		bind.fence.flags = I915_TIMELINE_FENCE_SIGNAL;
++	}
 +
-+	return result;
++	gem_vm_bind(i915, &bind);
 +}
-diff --git a/lib/igt_syncobj.h b/lib/igt_syncobj.h
-index e6725671d..8a1480a97 100644
---- a/lib/igt_syncobj.h
-+++ b/lib/igt_syncobj.h
-@@ -65,5 +65,14 @@ void syncobj_timeline_to_timeline(int fd,
- 				  uint64_t timeline_src, uint32_t point_src);
- void syncobj_timeline_signal(int fd, uint32_t *handles, uint64_t *points,
- 			     uint32_t count);
-+bool syncobj_busy(int fd, uint32_t handle);
 +
-+/* Used along with syncobj_timeline_wait() */
-+static inline uint64_t gettime_ns(void)
++void i915_vm_unbind(int i915, uint32_t vm_id, uint64_t va, uint64_t length)
 +{
-+	struct timespec current;
-+	clock_gettime(CLOCK_MONOTONIC, &current);
-+	return (uint64_t)current.tv_sec * NSEC_PER_SEC + current.tv_nsec;
++	struct drm_i915_gem_vm_unbind unbind;
++
++	memset(&unbind, 0, sizeof(unbind));
++	unbind.vm_id = vm_id;
++	unbind.start = va;
++	unbind.length = length;
++
++	gem_vm_unbind(i915, &unbind);
 +}
- 
- #endif /* IGT_SYNCOBJ_H */
-diff --git a/tests/i915/gem_exec_fence.c b/tests/i915/gem_exec_fence.c
-index 6bf1cdb57..2c43fd291 100644
---- a/tests/i915/gem_exec_fence.c
-+++ b/tests/i915/gem_exec_fence.c
-@@ -1110,19 +1110,6 @@ static uint32_t syncobj_import(int fd, int syncobj)
- 	return syncobj_fd_to_handle(fd, syncobj, 0);
- }
- 
--static bool syncobj_busy(int fd, uint32_t handle)
--{
--	bool result;
--	int sf;
--
--	sf = syncobj_handle_to_fd(fd, handle,
--				  DRM_SYNCOBJ_HANDLE_TO_FD_FLAGS_EXPORT_SYNC_FILE);
--	result = poll(&(struct pollfd){sf, POLLIN}, 1, 0) == 0;
--	close(sf);
--
--	return result;
--}
--
- static void test_syncobj_unused_fence(int fd)
- {
- 	const uint32_t bbe = MI_BATCH_BUFFER_END;
-@@ -1916,14 +1903,6 @@ static void test_syncobj_timeline_invalid_flags(int fd)
- 	syncobj_destroy(fd, fence.handle);
- }
- 
--static uint64_t
--gettime_ns(void)
--{
--	struct timespec current;
--	clock_gettime(CLOCK_MONOTONIC, &current);
--	return (uint64_t)current.tv_sec * NSEC_PER_SEC + current.tv_nsec;
--}
--
- static const char *test_syncobj_timeline_signal_desc =
- 	"Verifies proper signaling of a timeline syncobj through execbuf";
- static void test_syncobj_timeline_signal(int fd)
-diff --git a/tests/syncobj_timeline.c b/tests/syncobj_timeline.c
-index 7f5ff6f6c..352b0fa40 100644
---- a/tests/syncobj_timeline.c
-+++ b/tests/syncobj_timeline.c
-@@ -38,14 +38,6 @@ IGT_TEST_DESCRIPTION("Tests for the drm timeline sync object API");
- 
- #define NSECS_PER_SEC 1000000000ull
- 
--static uint64_t
--gettime_ns(void)
--{
--	struct timespec current;
--	clock_gettime(CLOCK_MONOTONIC, &current);
--	return (uint64_t)current.tv_sec * NSECS_PER_SEC + current.tv_nsec;
--}
--
- static void
- sleep_nsec(uint64_t time_nsec)
- {
-diff --git a/tests/syncobj_wait.c b/tests/syncobj_wait.c
-index 427b6b119..3415c78f8 100644
---- a/tests/syncobj_wait.c
-+++ b/tests/syncobj_wait.c
-@@ -38,14 +38,6 @@ IGT_TEST_DESCRIPTION("Tests for the drm sync object wait API");
- 
- #define NSECS_PER_SEC 1000000000ull
- 
--static uint64_t
--gettime_ns(void)
--{
--	struct timespec current;
--	clock_gettime(CLOCK_MONOTONIC, &current);
--	return (uint64_t)current.tv_sec * NSECS_PER_SEC + current.tv_nsec;
--}
--
- static void
- sleep_nsec(uint64_t time_nsec)
- {
++
++int i915_vm_bind_version(int i915)
++{
++	struct drm_i915_getparam gp;
++	int value = 0;
++
++	memset(&gp, 0, sizeof(gp));
++	gp.param = I915_PARAM_VM_BIND_VERSION;
++	gp.value = &value;
++
++	ioctl(i915, DRM_IOCTL_I915_GETPARAM, &gp, sizeof(gp));
++	errno = 0;
++
++	return value;
++}
+diff --git a/lib/i915/i915_vm_bind.h b/lib/i915/i915_vm_bind.h
+new file mode 100644
+index 000000000..b11142cc8
+--- /dev/null
++++ b/lib/i915/i915_vm_bind.h
+@@ -0,0 +1,16 @@
++/* SPDX-License-Identifier: MIT */
++/*
++ * Copyright © 2022 Intel Corporation
++ */
++#ifndef _I915_VM_BIND_H_
++#define _I915_VM_BIND_H_
++
++#include <stdint.h>
++
++void i915_vm_bind(int i915, uint32_t vm_id, uint64_t va, uint32_t handle,
++		  uint64_t offset, uint64_t length, uint64_t flags,
++		  uint32_t syncobj, uint64_t fence_value);
++void i915_vm_unbind(int i915, uint32_t vm_id, uint64_t va, uint64_t length);
++int i915_vm_bind_version(int i915);
++
++#endif /* _I915_VM_BIND_ */
+diff --git a/lib/meson.build b/lib/meson.build
+index cc7846869..ce7adf464 100644
+--- a/lib/meson.build
++++ b/lib/meson.build
+@@ -16,6 +16,7 @@ lib_sources = [
+ 	'i915/intel_mocs.c',
+ 	'i915/i915_blt.c',
+ 	'i915/i915_crc.c',
++	'i915/i915_vm_bind.c',
+ 	'igt_collection.c',
+ 	'igt_color_encoding.c',
+ 	'igt_crc.c',
 -- 
 2.21.0.rc0.32.g243a4c7e27
