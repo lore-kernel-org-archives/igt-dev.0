@@ -1,21 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E58D010E1D8
- for <igt-dev@lists.freedesktop.org>; Wed, 18 Jan 2023 06:26:43 +0000 (UTC)
-Date: Tue, 17 Jan 2023 22:26:27 -0800
-From: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
-To: Matthew Auld <matthew.auld@intel.com>
-Message-ID: <Y8eRE/qj/JPHUlAu@nvishwa1-DESK>
-References: <20221212231254.2303-1-niranjana.vishwanathapura@intel.com>
- <20221212231254.2303-16-niranjana.vishwanathapura@intel.com>
- <f3a82c92-368b-d209-5696-7538c232e597@intel.com>
-Content-Type: text/plain; charset="iso-8859-1"; format=flowed
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <f3a82c92-368b-d209-5696-7538c232e597@intel.com>
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3AAE510E6B1
+ for <igt-dev@lists.freedesktop.org>; Wed, 18 Jan 2023 06:31:08 +0000 (UTC)
+From: "Gupta, Anshuman" <anshuman.gupta@intel.com>
+To: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>,
+ "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+Date: Wed, 18 Jan 2023 06:30:58 +0000
+Message-ID: <CY5PR11MB621110BD11315EEA8F6F69BC95C79@CY5PR11MB6211.namprd11.prod.outlook.com>
+References: <20230117190317.17728-1-ashutosh.dixit@intel.com>
+In-Reply-To: <20230117190317.17728-1-ashutosh.dixit@intel.com>
+Content-Language: en-US
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t v9 15/19] tests/i915/vm_bind: Add
- i915_capture library routines
+Subject: Re: [igt-dev] [PATCH i-g-t] i915/i915_power: Measure GPU idle/busy
+ power
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,277 +22,65 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: tvrtko.ursulin@intel.com, igt-dev@lists.freedesktop.org,
- thomas.hellstrom@intel.com, daniel.vetter@intel.com, petri.latvala@intel.com
+Cc: "Nilawar, Badal" <badal.nilawar@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Fri, Jan 13, 2023 at 10:06:14AM +0000, Matthew Auld wrote:
->On 12/12/2022 23:12, Niranjana Vishwanathapura wrote:
->>In preparation of i915_vm_bind_capture test, move some common
->>capture decode routines to library for code sharing.
->>
->>Signed-off-by: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
->>---
->>  lib/i915/i915_capture.c       | 96 +++++++++++++++++++++++++++++++++++
->>  lib/i915/i915_capture.h       | 14 +++++
->>  lib/meson.build               |  1 +
->>  tests/i915/gem_exec_capture.c | 88 +-------------------------------
->>  4 files changed, 112 insertions(+), 87 deletions(-)
->>  create mode 100644 lib/i915/i915_capture.c
->>  create mode 100644 lib/i915/i915_capture.h
->>
->>diff --git a/lib/i915/i915_capture.c b/lib/i915/i915_capture.c
->>new file mode 100644
->>index 000000000..7430c9256
->>--- /dev/null
->>+++ b/lib/i915/i915_capture.c
->>@@ -0,0 +1,96 @@
->>+// SPDX-License-Identifier: MIT
->>+/*
->>+ * Copyright © 2022 Intel Corporation
->>+ */
->>+
->>+#include <stdlib.h>
->>+#include <string.h>
->>+#include <zlib.h>
->>+
->>+#include "i915_capture.h"
->>+
->>+static unsigned long zlib_inflate(uint32_t **ptr, unsigned long len)
->>+{
->>+	struct z_stream_s zstream;
->>+	void *out;
->>+
->>+	memset(&zstream, 0, sizeof(zstream));
->>+
->>+	zstream.next_in = (unsigned char *)*ptr;
->>+	zstream.avail_in = 4*len;
->>+
->>+	if (inflateInit(&zstream) != Z_OK)
->>+		return 0;
->>+
->>+	out = malloc(128*4096); /* approximate obj size */
->>+	zstream.next_out = out;
->>+	zstream.avail_out = 128*4096;
->>+
->>+	do {
->>+		switch (inflate(&zstream, Z_SYNC_FLUSH)) {
->>+		case Z_STREAM_END:
->>+			goto end;
->>+		case Z_OK:
->>+			break;
->>+		default:
->>+			inflateEnd(&zstream);
->>+			return 0;
->>+		}
->>+
->>+		if (zstream.avail_out)
->>+			break;
->>+
->>+		out = realloc(out, 2*zstream.total_out);
->>+		if (out == NULL) {
->>+			inflateEnd(&zstream);
->>+			return 0;
->>+		}
->>+
->>+		zstream.next_out = (unsigned char *)out + zstream.total_out;
->>+		zstream.avail_out = zstream.total_out;
->>+	} while (1);
->>+end:
->>+	inflateEnd(&zstream);
->>+	free(*ptr);
->>+	*ptr = out;
->>+	return zstream.total_out / 4;
->>+}
->>+
->>+unsigned long
->>+ascii85_decode(char *in, uint32_t **out, bool inflate, char **end)
->
->Since this is in lib, AFAIK needs some doc.
->
-
-Ok, will add.
-
->Otherwise,
->Reviewed-by: Matthew Auld <matthew.auld@intel.com>
->
-
-Thanks,
-Niranjana
-
->>+{
->>+	unsigned long len = 0, size = 1024;
->>+
->>+	*out = realloc(*out, sizeof(uint32_t)*size);
->>+	if (*out == NULL)
->>+		return 0;
->>+
->>+	while (*in >= '!' && *in <= 'z') {
->>+		uint32_t v = 0;
->>+
->>+		if (len == size) {
->>+			size *= 2;
->>+			*out = realloc(*out, sizeof(uint32_t)*size);
->>+			if (*out == NULL)
->>+				return 0;
->>+		}
->>+
->>+		if (*in == 'z') {
->>+			in++;
->>+		} else {
->>+			v += in[0] - 33; v *= 85;
->>+			v += in[1] - 33; v *= 85;
->>+			v += in[2] - 33; v *= 85;
->>+			v += in[3] - 33; v *= 85;
->>+			v += in[4] - 33;
->>+			in += 5;
->>+		}
->>+		(*out)[len++] = v;
->>+	}
->>+	*end = in;
->>+
->>+	if (!inflate)
->>+		return len;
->>+
->>+	return zlib_inflate(out, len);
->>+}
->>diff --git a/lib/i915/i915_capture.h b/lib/i915/i915_capture.h
->>new file mode 100644
->>index 000000000..26481b8e4
->>--- /dev/null
->>+++ b/lib/i915/i915_capture.h
->>@@ -0,0 +1,14 @@
->>+/* SPDX-License-Identifier: MIT */
->>+/*
->>+ * Copyright © 2022 Intel Corporation
->>+ */
->>+#ifndef _I915_CAPTURE_H_
->>+#define _I915_CAPTURE_H_
->>+
->>+#include <stdbool.h>
->>+#include <stdint.h>
->>+
->>+unsigned long
->>+ascii85_decode(char *in, uint32_t **out, bool inflate, char **end);
->>+
->>+#endif /* _I915_CAPTURE_ */
->>diff --git a/lib/meson.build b/lib/meson.build
->>index a01482c38..9d353da16 100644
->>--- a/lib/meson.build
->>+++ b/lib/meson.build
->>@@ -14,6 +14,7 @@ lib_sources = [
->>  	'i915/intel_memory_region.c',
->>  	'i915/intel_mocs.c',
->>  	'i915/i915_blt.c',
->>+	'i915/i915_capture.c',
->>  	'i915/i915_crc.c',
->>  	'i915/i915_vm_bind.c',
->>  	'igt_collection.c',
->>diff --git a/tests/i915/gem_exec_capture.c b/tests/i915/gem_exec_capture.c
->>index 2db58266f..f8f8d1ece 100644
->>--- a/tests/i915/gem_exec_capture.c
->>+++ b/tests/i915/gem_exec_capture.c
->>@@ -22,10 +22,10 @@
->>   */
->>  #include <sys/poll.h>
->>-#include <zlib.h>
->>  #include <sched.h>
->>  #include "i915/gem.h"
->>+#include "i915/i915_capture.h"
->>  #include "i915/gem_create.h"
->>  #include "igt.h"
->>  #include "igt_device.h"
->>@@ -42,92 +42,6 @@ struct offset {
->>  	bool found;
->>  };
->>-static unsigned long zlib_inflate(uint32_t **ptr, unsigned long len)
->>-{
->>-	struct z_stream_s zstream;
->>-	void *out;
->>-
->>-	memset(&zstream, 0, sizeof(zstream));
->>-
->>-	zstream.next_in = (unsigned char *)*ptr;
->>-	zstream.avail_in = 4*len;
->>-
->>-	if (inflateInit(&zstream) != Z_OK)
->>-		return 0;
->>-
->>-	out = malloc(128*4096); /* approximate obj size */
->>-	zstream.next_out = out;
->>-	zstream.avail_out = 128*4096;
->>-
->>-	do {
->>-		switch (inflate(&zstream, Z_SYNC_FLUSH)) {
->>-		case Z_STREAM_END:
->>-			goto end;
->>-		case Z_OK:
->>-			break;
->>-		default:
->>-			inflateEnd(&zstream);
->>-			return 0;
->>-		}
->>-
->>-		if (zstream.avail_out)
->>-			break;
->>-
->>-		out = realloc(out, 2*zstream.total_out);
->>-		if (out == NULL) {
->>-			inflateEnd(&zstream);
->>-			return 0;
->>-		}
->>-
->>-		zstream.next_out = (unsigned char *)out + zstream.total_out;
->>-		zstream.avail_out = zstream.total_out;
->>-	} while (1);
->>-end:
->>-	inflateEnd(&zstream);
->>-	free(*ptr);
->>-	*ptr = out;
->>-	return zstream.total_out / 4;
->>-}
->>-
->>-static unsigned long
->>-ascii85_decode(char *in, uint32_t **out, bool inflate, char **end)
->>-{
->>-	unsigned long len = 0, size = 1024;
->>-
->>-	*out = realloc(*out, sizeof(uint32_t)*size);
->>-	if (*out == NULL)
->>-		return 0;
->>-
->>-	while (*in >= '!' && *in <= 'z') {
->>-		uint32_t v = 0;
->>-
->>-		if (len == size) {
->>-			size *= 2;
->>-			*out = realloc(*out, sizeof(uint32_t)*size);
->>-			if (*out == NULL)
->>-				return 0;
->>-		}
->>-
->>-		if (*in == 'z') {
->>-			in++;
->>-		} else {
->>-			v += in[0] - 33; v *= 85;
->>-			v += in[1] - 33; v *= 85;
->>-			v += in[2] - 33; v *= 85;
->>-			v += in[3] - 33; v *= 85;
->>-			v += in[4] - 33;
->>-			in += 5;
->>-		}
->>-		(*out)[len++] = v;
->>-	}
->>-	*end = in;
->>-
->>-	if (!inflate)
->>-		return len;
->>-
->>-	return zlib_inflate(out, len);
->>-}
->>-
->>  static int check_error_state(int dir, struct offset *obj_offsets, int obj_count,
->>  			     uint64_t obj_size, bool incremental)
->>  {
+DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogRGl4aXQsIEFzaHV0b3No
+IDxhc2h1dG9zaC5kaXhpdEBpbnRlbC5jb20+DQo+IFNlbnQ6IFdlZG5lc2RheSwgSmFudWFyeSAx
+OCwgMjAyMyAxMjozMyBBTQ0KPiBUbzogaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcNCj4g
+Q2M6IE5pbGF3YXIsIEJhZGFsIDxiYWRhbC5uaWxhd2FyQGludGVsLmNvbT47IFRhdXJvLCBSaWFu
+YQ0KPiA8cmlhbmEudGF1cm9AaW50ZWwuY29tPjsgR3VwdGEsIEFuc2h1bWFuIDxhbnNodW1hbi5n
+dXB0YUBpbnRlbC5jb20+Ow0KPiBFd2lucywgSm9uIDxqb24uZXdpbnNAaW50ZWwuY29tPg0KPiBT
+dWJqZWN0OiBbUEFUQ0ggaS1nLXRdIGk5MTUvaTkxNV9wb3dlcjogTWVhc3VyZSBHUFUgaWRsZS9i
+dXN5IHBvd2VyDQo+IA0KPiBJbiBzZXZlcmFsIGluc3RhbmNlcyAoZS5nLiB3aGVuIGludmVzdGln
+YXRpbmcgR1BVIHBvd2VyIGxpbWl0cykgaXQgaXMgdmVyeQ0KPiB1c2VmdWwgdG8gYmUgYWJsZSB0
+byBtZWFzdXJlIEdQVSBwb3dlciBlYXNpbHkuIFNpbmNlIHdlIGFscmVhZHkgaGF2ZSBhbGwNCj4g
+aW5ncmVkaWVudHMgZm9yIGRvaW5nIHNvLCBhZGQgYSBjb3VwbGUgb2YgdGVzdHMgdG8gbWVhc3Vy
+ZSBHUFUgcG93ZXIgd2hlbg0KPiBpZGxlIGFuZCBwb3dlciB1bmRlciBsb2FkLg0KPiANCj4gU2ln
+bmVkLW9mZi1ieTogQXNodXRvc2ggRGl4aXQgPGFzaHV0b3NoLmRpeGl0QGludGVsLmNvbT4NCj4g
+LS0tDQo+ICB0ZXN0cy9pOTE1L2k5MTVfcG93ZXIuYyB8IDYwDQo+ICsrKysrKysrKysrKysrKysr
+KysrKysrKysrKysrKysrKysrKysrKysrDQo+ICB0ZXN0cy9tZXNvbi5idWlsZCAgICAgICB8ICAx
+ICsNCj4gIDIgZmlsZXMgY2hhbmdlZCwgNjEgaW5zZXJ0aW9ucygrKQ0KPiAgY3JlYXRlIG1vZGUg
+MTAwNjQ0IHRlc3RzL2k5MTUvaTkxNV9wb3dlci5jDQo+IA0KPiBkaWZmIC0tZ2l0IGEvdGVzdHMv
+aTkxNS9pOTE1X3Bvd2VyLmMgYi90ZXN0cy9pOTE1L2k5MTVfcG93ZXIuYyBuZXcgZmlsZSBtb2Rl
+DQo+IDEwMDY0NCBpbmRleCAwMDAwMDAwMDAwMC4uNzRjNWE0YmE0YWYNCj4gLS0tIC9kZXYvbnVs
+bA0KPiArKysgYi90ZXN0cy9pOTE1L2k5MTVfcG93ZXIuYw0KPiBAQCAtMCwwICsxLDYwIEBADQo+
+ICsvLyBTUERYLUxpY2Vuc2UtSWRlbnRpZmllcjogTUlUDQo+ICsvKg0KPiArICogQ29weXJpZ2h0
+IMKpIDIwMjIgSW50ZWwgQ29ycG9yYXRpb24NCj4gKyAqLw0KPiArDQo+ICsjaW5jbHVkZSAiaWd0
+LmgiDQo+ICsjaW5jbHVkZSAiaTkxNS9nZW0uaCINCj4gKyNpbmNsdWRlICJpZ3RfcG93ZXIuaCIN
+Cj4gKw0KPiArSUdUX1RFU1RfREVTQ1JJUFRJT04oImk5MTUgcG93ZXIgbWVhc3VyZW1lbnQvdGVz
+dHMiKTsNCj4gKw0KPiArc3RhdGljIHZvaWQgbWVhc3VyZV9wb3dlcihpbnQgaTkxNSwgY29uc3Qg
+Y2hhciAqZG9tYWluLCBib29sIGxvYWQpIHsNCj4gKwljb25zdCBpbnRlbF9jdHhfdCAqY3R4ID0g
+aW50ZWxfY3R4X2NyZWF0ZV9hbGxfcGh5c2ljYWwoaTkxNSk7DQo+ICsJc3RydWN0IHBvd2VyX3Nh
+bXBsZSBzYW1wbGVbMl07DQo+ICsJaW50IHNsZWVwX2R1cmF0aW9uX3NlYyA9IDM7DQo+ICsJc3Ry
+dWN0IGlndF9wb3dlciBwd3I7DQo+ICsJaWd0X3NwaW5fdCAqc3BpbjsNCj4gKw0KPiArCWdlbV9x
+dWllc2NlbnRfZ3B1KGk5MTUpOw0KPiArCWlmIChsb2FkKSB7DQo+ICsJCXNwaW4gPSBpZ3Rfc3Bp
+bl9uZXcoaTkxNSwgLmN0eCA9IGN0eCwgLmVuZ2luZSA9IEFMTF9FTkdJTkVTLA0KPiArCQkJCSAg
+ICAuZmxhZ3MgPSBJR1RfU1BJTl9QT0xMX1JVTik7DQo+ICsJCS8qIFdhaXQgdGlsbCBhdCBsZWFz
+dCBvbmUgc3Bpbm5lciBzdGFydHMgKi8NCj4gKwkJaWd0X3NwaW5fYnVzeXdhaXRfdW50aWxfc3Rh
+cnRlZChzcGluKTsNCj4gKwl9DQo+ICsNCj4gKwlpZ3RfcmVxdWlyZSghaWd0X3Bvd2VyX29wZW4o
+aTkxNSwgJnB3ciwgZG9tYWluKSk7DQo+ICsJaWd0X3Bvd2VyX2dldF9lbmVyZ3koJnB3ciwgJnNh
+bXBsZVswXSk7DQo+ICsJdXNsZWVwKHNsZWVwX2R1cmF0aW9uX3NlYyAqIFVTRUNfUEVSX1NFQyk7
+DQo+ICsJaWd0X3Bvd2VyX2dldF9lbmVyZ3koJnB3ciwgJnNhbXBsZVsxXSk7DQo+ICsJaWd0X2lu
+Zm8oIk1lYXN1cmVkIHBvd2VyOiAlZyBtV1xuIiwgaWd0X3Bvd2VyX2dldF9tVygmcHdyLA0KPiAm
+c2FtcGxlWzBdLA0KPiArJnNhbXBsZVsxXSkpOw0KQXJlIHdlIHRlc3RpbmcgYW55dGhpbmcgaGVy
+ZSwgaWYgbm90IHRoZW4gZG9uJ3QgY2FsbCBpdCBhIHRlc3QsIGJldHRlciB0byBtb3ZlIGl0IHVu
+ZGVyIHRvb2xzLg0KVGhhbmtzLA0KQW5zaHVtYW4gR3VwdGEuDQo+ICsNCj4gKwlpZ3RfcG93ZXJf
+Y2xvc2UoJnB3cik7DQo+ICsJaWd0X2ZyZWVfc3BpbnMoaTkxNSk7DQo+ICsJaW50ZWxfY3R4X2Rl
+c3Ryb3koaTkxNSwgY3R4KTsNCj4gK30NCj4gKw0KPiAraWd0X21haW4NCj4gK3sNCj4gKwlpbnQg
+aTkxNTsNCj4gKw0KPiArCWlndF9maXh0dXJlIHsNCj4gKwkJaTkxNSA9IGRybV9vcGVuX2RyaXZl
+cl9tYXN0ZXIoRFJJVkVSX0lOVEVMKTsNCj4gKwl9DQo+ICsNCj4gKwlpZ3RfZGVzY3JpYmUoIk1l
+YXN1cmUgaWRsZSBncHUgcG93ZXIiKTsNCj4gKwlpZ3Rfc3VidGVzdCgiZ3B1LWlkbGUiKSB7DQo+
+ICsJCW1lYXN1cmVfcG93ZXIoaTkxNSwgImdwdSIsIGZhbHNlKTsNCj4gKwl9DQo+ICsNCj4gKwlp
+Z3RfZGVzY3JpYmUoIk1lYXN1cmUgZ3B1IHBvd2VyIHdpdGggbG9hZCIpOw0KPiArCWlndF9zdWJ0
+ZXN0KCJncHUtYnVzeSIpIHsNCj4gKwkJbWVhc3VyZV9wb3dlcihpOTE1LCAiZ3B1IiwgdHJ1ZSk7
+DQo+ICsJfQ0KPiArDQo+ICsJaWd0X2ZpeHR1cmUgew0KPiArCQljbG9zZShpOTE1KTsNCj4gKwl9
+DQo+ICt9DQo+IGRpZmYgLS1naXQgYS90ZXN0cy9tZXNvbi5idWlsZCBiL3Rlc3RzL21lc29uLmJ1
+aWxkIGluZGV4DQo+IGUyMGE4NjQwMzViLi5lMGY0MWU5ZTZhMSAxMDA2NDQNCj4gLS0tIGEvdGVz
+dHMvbWVzb24uYnVpbGQNCj4gKysrIGIvdGVzdHMvbWVzb24uYnVpbGQNCj4gQEAgLTIxMiw2ICsy
+MTIsNyBAQCBpOTE1X3Byb2dzID0gWw0KPiAgCSdpOTE1X3BtX2RjJywNCj4gIAknaTkxNV9wbV9y
+cHMnLA0KPiAgCSdpOTE1X3BtX3NzZXUnLA0KPiArCSdpOTE1X3Bvd2VyJywNCj4gIAknaTkxNV9x
+dWVyeScsDQo+ICAJJ2k5MTVfc2VsZnRlc3QnLA0KPiAgCSdpOTE1X3N1c3BlbmQnLA0KPiAtLQ0K
+PiAyLjM4LjANCg0K
