@@ -1,18 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5A04C10E6EA
- for <igt-dev@lists.freedesktop.org>; Wed, 18 Jan 2023 09:07:06 +0000 (UTC)
-From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Wed, 18 Jan 2023 10:06:40 +0100
-Message-Id: <20230118090640.10659-8-zbigniew.kempczynski@intel.com>
-In-Reply-To: <20230118090640.10659-1-zbigniew.kempczynski@intel.com>
-References: <20230118090640.10659-1-zbigniew.kempczynski@intel.com>
+Message-ID: <a369e472-6f67-0013-8ab1-246493a45e29@linux.intel.com>
+Date: Wed, 18 Jan 2023 10:33:10 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 7/7] HAX: Run gem_exercise_blt on all gens
- to verify skip correctness
+Content-Language: en-US
+To: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>,
+ igt-dev@lists.freedesktop.org, Intel-gfx@lists.freedesktop.org
+References: <20221222100403.256775-1-tvrtko.ursulin@linux.intel.com>
+From: "Das, Nirmoy" <nirmoy.das@linux.intel.com>
+In-Reply-To: <20221222100403.256775-1-tvrtko.ursulin@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/gem_mmap_gtt: add test
+ mmap_closed_bo
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,196 +23,103 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
----
- tests/intel-ci/fast-feedback.testlist | 180 +-------------------------
- 1 file changed, 3 insertions(+), 177 deletions(-)
 
-diff --git a/tests/intel-ci/fast-feedback.testlist b/tests/intel-ci/fast-feedback.testlist
-index 4188e97375..8b0eac4933 100644
---- a/tests/intel-ci/fast-feedback.testlist
-+++ b/tests/intel-ci/fast-feedback.testlist
-@@ -1,178 +1,4 @@
--# Try to load the driver if it's not available yet.
--igt@i915_module_load@load
-+igt@gem_exercise_blt@fast-copy
-+igt@gem_exercise_blt@fast-copy-emit
-+igt@meta_test@fail-result
- 
--# Keep alphabetically sorted by default
--igt@core_auth@basic-auth
--igt@debugfs_test@read_all_entries
--igt@debugfs_test@basic-hwmon
--igt@fbdev@eof
--igt@fbdev@info
--igt@fbdev@nullptr
--igt@fbdev@read
--igt@fbdev@write
--igt@gem_basic@bad-close
--igt@gem_basic@create-close
--igt@gem_basic@create-fd-close
--igt@gem_busy@busy@all-engines
--igt@gem_close_race@basic-process
--igt@gem_close_race@basic-threads
--igt@gem_ctx_create@basic
--igt@gem_ctx_create@basic-files
--igt@gem_ctx_exec@basic
--igt@gem_exec_basic@basic
--igt@gem_exec_create@basic
--igt@gem_exec_fence@basic-busy
--igt@gem_exec_fence@basic-wait
--igt@gem_exec_fence@basic-await
--igt@gem_exec_fence@nb-await
--igt@gem_exec_gttfill@basic
--igt@gem_exec_parallel@engines
--igt@gem_exec_store@basic
--igt@gem_flink_basic@bad-flink
--igt@gem_flink_basic@bad-open
--igt@gem_flink_basic@basic
--igt@gem_flink_basic@double-flink
--igt@gem_flink_basic@flink-lifetime
--igt@gem_huc_copy@huc-copy
--igt@gem_linear_blits@basic
--igt@gem_mmap@basic
--igt@gem_mmap_gtt@basic
--igt@gem_render_linear_blits@basic
--igt@gem_render_tiled_blits@basic
--igt@gem_ringfill@basic-all
--igt@gem_softpin@allocator-basic
--igt@gem_softpin@allocator-basic-reserve
--igt@gem_softpin@safe-alignment
--igt@gem_sync@basic-all
--igt@gem_sync@basic-each
--igt@gem_tiled_blits@basic
--igt@gem_tiled_fence_blits@basic
--igt@gem_tiled_pread_basic
--igt@gem_wait@busy@all-engines
--igt@gem_wait@wait@all-engines
--igt@i915_getparams_basic@basic-eu-total
--igt@i915_getparams_basic@basic-subslice-total
--igt@i915_hangman@error-state-basic
--igt@i915_pciid
--igt@kms_addfb_basic@addfb25-bad-modifier
--igt@kms_addfb_basic@addfb25-framebuffer-vs-set-tiling
--igt@kms_addfb_basic@addfb25-modifier-no-flag
--igt@kms_addfb_basic@addfb25-x-tiled-legacy
--igt@kms_addfb_basic@addfb25-x-tiled-mismatch-legacy
--igt@kms_addfb_basic@addfb25-yf-tiled-legacy
--igt@kms_addfb_basic@addfb25-y-tiled-legacy
--igt@kms_addfb_basic@addfb25-y-tiled-small-legacy
--igt@kms_addfb_basic@bad-pitch-0
--igt@kms_addfb_basic@bad-pitch-1024
--igt@kms_addfb_basic@bad-pitch-128
--igt@kms_addfb_basic@bad-pitch-256
--igt@kms_addfb_basic@bad-pitch-32
--igt@kms_addfb_basic@bad-pitch-63
--igt@kms_addfb_basic@bad-pitch-65536
--igt@kms_addfb_basic@bad-pitch-999
--igt@kms_addfb_basic@basic
--igt@kms_addfb_basic@basic-x-tiled-legacy
--igt@kms_addfb_basic@basic-y-tiled-legacy
--igt@kms_addfb_basic@bo-too-small
--igt@kms_addfb_basic@bo-too-small-due-to-tiling
--igt@kms_addfb_basic@clobberred-modifier
--igt@kms_addfb_basic@framebuffer-vs-set-tiling
--igt@kms_addfb_basic@invalid-get-prop
--igt@kms_addfb_basic@invalid-get-prop-any
--igt@kms_addfb_basic@invalid-set-prop
--igt@kms_addfb_basic@invalid-set-prop-any
--igt@kms_addfb_basic@no-handle
--igt@kms_addfb_basic@size-max
--igt@kms_addfb_basic@small-bo
--igt@kms_addfb_basic@tile-pitch-mismatch
--igt@kms_addfb_basic@too-high
--igt@kms_addfb_basic@too-wide
--igt@kms_addfb_basic@unused-handle
--igt@kms_addfb_basic@unused-modifier
--igt@kms_addfb_basic@unused-offsets
--igt@kms_addfb_basic@unused-pitches
--igt@kms_busy@basic
--igt@kms_chamelium_hpd@dp-hpd-fast
--igt@kms_chamelium_edid@dp-edid-read
--igt@kms_chamelium_frames@dp-crc-fast
--igt@kms_chamelium_hpd@hdmi-hpd-fast
--igt@kms_chamelium_edid@hdmi-edid-read
--igt@kms_chamelium_frames@hdmi-crc-fast
--igt@kms_chamelium_hpd@vga-hpd-fast
--igt@kms_chamelium_edid@vga-edid-read
--igt@kms_prop_blob@basic
--igt@kms_cursor_legacy@basic-busy-flip-before-cursor
--igt@kms_cursor_legacy@basic-flip-after-cursor
--igt@kms_cursor_legacy@basic-flip-before-cursor
--igt@kms_flip@basic-flip-vs-dpms
--igt@kms_flip@basic-flip-vs-modeset
--igt@kms_flip@basic-flip-vs-wf_vblank
--igt@kms_flip@basic-plain-flip
--igt@kms_force_connector_basic@force-connector-state
--igt@kms_force_connector_basic@force-edid
--igt@kms_force_connector_basic@force-load-detect
--igt@kms_force_connector_basic@prune-stale-modes
--igt@kms_frontbuffer_tracking@basic
--igt@kms_pipe_crc_basic@compare-crc-sanitycheck
--igt@kms_pipe_crc_basic@hang-read-crc
--igt@kms_pipe_crc_basic@nonblocking-crc
--igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence
--igt@kms_pipe_crc_basic@read-crc
--igt@kms_pipe_crc_basic@read-crc-frame-sequence
--igt@kms_psr@primary_page_flip
--igt@kms_psr@cursor_plane_move
--igt@kms_psr@sprite_plane_onoff
--igt@kms_psr@primary_mmap_gtt
--igt@kms_setmode@basic-clone-single-crtc
--igt@i915_pm_backlight@basic-brightness
--igt@i915_pm_rpm@basic-pci-d3-state
--igt@i915_pm_rpm@basic-rte
--igt@i915_pm_rps@basic-api
--igt@prime_self_import@basic-llseek-bad
--igt@prime_self_import@basic-llseek-size
--igt@prime_self_import@basic-with_fd_dup
--igt@prime_self_import@basic-with_one_bo
--igt@prime_self_import@basic-with_one_bo_two_files
--igt@prime_self_import@basic-with_two_bos
--igt@prime_vgem@basic-fence-flip
--igt@prime_vgem@basic-fence-mmap
--igt@prime_vgem@basic-fence-read
--igt@prime_vgem@basic-gtt
--igt@prime_vgem@basic-read
--igt@prime_vgem@basic-write
--igt@prime_vgem@basic-userptr
--igt@vgem_basic@setversion
--igt@vgem_basic@create
--igt@vgem_basic@debugfs
--igt@vgem_basic@dmabuf-export
--igt@vgem_basic@dmabuf-fence
--igt@vgem_basic@dmabuf-fence-before
--igt@vgem_basic@dmabuf-mmap
--igt@vgem_basic@mmap
--igt@vgem_basic@second-client
--igt@vgem_basic@sysfs
--
--# All tests that do module unloading and reloading are executed last.
--# They will sometimes reveal issues of earlier tests leaving the
--# driver in a broken state that is not otherwise noticed in that test.
--
--igt@core_hotunplug@unbind-rebind
--igt@vgem_basic@unload
--igt@i915_module_load@reload
--igt@gem_lmem_swapping@basic
--igt@gem_lmem_swapping@parallel-random-engines
--igt@gem_lmem_swapping@random-engines
--igt@gem_lmem_swapping@verify-random
--igt@i915_pm_rpm@module-reload
--
--# Kernel selftests
--igt@i915_selftest@live
--igt@dmabuf@all-tests
--
--# System wide suspend tests
--igt@i915_suspend@basic-s2idle-without-i915
--igt@i915_suspend@basic-s3-without-i915
--igt@gem_exec_suspend@basic-s0
--igt@gem_exec_suspend@basic-s3
--igt@kms_chamelium_hpd@common-hpd-after-suspend
--igt@kms_pipe_crc_basic@suspend-read-crc
--- 
-2.34.1
+On 12/22/2022 11:04 AM, Tvrtko Ursulin wrote:
+> From: Chuansheng Liu <chuansheng.liu@intel.com>
+>
+> Recently we figured out one memory leak in i915 driver when running
+> below alike test:
+>
+> create_bo
+> gem_mmap_gtt bo
+> gem_mmap_gtt bo twice
+> close_bo
+>
+> then the memory leak is detected. More details can be referred in
+> https://patchwork.freedesktop.org/patch/475802/?series=100532&rev=2
+>
+> For detecting such issue, this test case mmap_closed_bo is created,
+> it will close the bo with keeping one mmap, then second mmap the bo,
+> in normal situation, we expect second mmap failure with EACCESS. But
+> it will succeed if driver has the vm_node allowance leak.
+>
+> V2: (Tvrtko) some variable placement and comments tuning.
+> V3: (Tvrtko) Using igt_drop_caches_set(fd, DROP_FREED) directly.
+> v4: [tursulin] Fixed a conflict, added igt_describe.
+>
+> Cc: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+> Signed-off-by: Chuansheng Liu <chuansheng.liu@intel.com>
+> Reviewed-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+> Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+Reviewed-by: Nirmoy Das <nirmoy.das@intel.com>
+> ---
+>   tests/i915/gem_mmap_gtt.c | 49 +++++++++++++++++++++++++++++++++++++++
+>   1 file changed, 49 insertions(+)
+>
+> diff --git a/tests/i915/gem_mmap_gtt.c b/tests/i915/gem_mmap_gtt.c
+> index c14ab50eeee7..68f5e8412af6 100644
+> --- a/tests/i915/gem_mmap_gtt.c
+> +++ b/tests/i915/gem_mmap_gtt.c
+> @@ -320,6 +320,52 @@ test_wc(int fd)
+>   		     5*gtt_writes/256., 5*cpu_writes/256.);
+>   }
+>   
+> +static void mmap_closed_bo(int fd)
+> +{
+> +	int loop = 0;
+> +
+> +	while (loop++ < 2) {
+> +		struct drm_i915_gem_mmap_gtt mmap_arg;
+> +		void *p1, *p2;
+> +		int i = loop;
+> +
+> +		memset(&mmap_arg, 0, sizeof(mmap_arg));
+> +		mmap_arg.handle = gem_create(fd, OBJECT_SIZE);
+> +		igt_assert(mmap_arg.handle);
+> +
+> +		while (i--) {
+> +			/*
+> +			 * Get mmap offset by calling GEM_MMAP_GTT one or multiple times in
+> +			 * order to try to provoke a memory leak in the driver.
+> +			 */
+> +			do_ioctl(fd, DRM_IOCTL_I915_GEM_MMAP_GTT, &mmap_arg);
+> +		}
+> +
+> +		p1 = mmap64(0, OBJECT_SIZE, PROT_READ | PROT_WRITE,
+> +			MAP_SHARED, fd, mmap_arg.offset);
+> +		igt_assert(p1 != MAP_FAILED);
+> +
+> +		gem_close(fd, mmap_arg.handle);
+> +
+> +		/*
+> +		 * Drop the freed objects for consistent 2nd mmap result.
+> +		 */
+> +		igt_drop_caches_set(fd, DROP_FREED);
+> +
+> +		p2 = mmap64(0, OBJECT_SIZE, PROT_READ | PROT_WRITE,
+> +			MAP_SHARED, fd, mmap_arg.offset);
+> +
+> +		munmap(p1, OBJECT_SIZE);
+> +
+> +		/*
+> +		 * we expect mmapping p2 would fail, otherwise the driver
+> +		 * may not clean up the allowance of vm_node, it would
+> +		 * cause memory leak.
+> +		 */
+> +		igt_assert(p2 == MAP_FAILED);
+> +	}
+> +}
+> +
+>   static int mmap_gtt_version(int i915)
+>   {
+>   	int val = 0;
+> @@ -1315,6 +1361,9 @@ igt_main
+>   		     "writes into it from another GTT mmapped.");
+>   	igt_subtest("basic-write-gtt")
+>   		test_write_gtt(fd);
+> +	igt_describe("Check mmap of a closed handle is rejected.");
+> +	igt_subtest("mmap-closed-bo")
+> +		mmap_closed_bo(fd);
+>   	igt_describe("Inspect a GTT mmap using ptrace().");
+>   	igt_subtest("ptrace")
+>   		test_ptrace(fd);
