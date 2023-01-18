@@ -1,20 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3AAE510E6B1
- for <igt-dev@lists.freedesktop.org>; Wed, 18 Jan 2023 06:31:08 +0000 (UTC)
-From: "Gupta, Anshuman" <anshuman.gupta@intel.com>
-To: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-Date: Wed, 18 Jan 2023 06:30:58 +0000
-Message-ID: <CY5PR11MB621110BD11315EEA8F6F69BC95C79@CY5PR11MB6211.namprd11.prod.outlook.com>
-References: <20230117190317.17728-1-ashutosh.dixit@intel.com>
-In-Reply-To: <20230117190317.17728-1-ashutosh.dixit@intel.com>
-Content-Language: en-US
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1501710E1DD
+ for <igt-dev@lists.freedesktop.org>; Wed, 18 Jan 2023 06:34:21 +0000 (UTC)
+Date: Tue, 17 Jan 2023 22:34:11 -0800
+From: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
+To: Matthew Auld <matthew.auld@intel.com>
+Message-ID: <Y8eS4/a09K8lzloi@nvishwa1-DESK>
+References: <20221212231254.2303-1-niranjana.vishwanathapura@intel.com>
+ <20221212231254.2303-18-niranjana.vishwanathapura@intel.com>
+ <a945875f-1a3a-0df6-799b-d160d66a2028@intel.com>
+Content-Type: text/plain; charset="us-ascii"; format=flowed
+Content-Disposition: inline
+In-Reply-To: <a945875f-1a3a-0df6-799b-d160d66a2028@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t] i915/i915_power: Measure GPU idle/busy
- power
+Subject: Re: [igt-dev] [PATCH i-g-t v9 17/19] lib/vm_bind: Add execbuf3
+ support to igt_spin_factory
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,65 +22,382 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: "Nilawar, Badal" <badal.nilawar@intel.com>
+Cc: tvrtko.ursulin@intel.com, igt-dev@lists.freedesktop.org,
+ thomas.hellstrom@intel.com, daniel.vetter@intel.com, petri.latvala@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogRGl4aXQsIEFzaHV0b3No
-IDxhc2h1dG9zaC5kaXhpdEBpbnRlbC5jb20+DQo+IFNlbnQ6IFdlZG5lc2RheSwgSmFudWFyeSAx
-OCwgMjAyMyAxMjozMyBBTQ0KPiBUbzogaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcNCj4g
-Q2M6IE5pbGF3YXIsIEJhZGFsIDxiYWRhbC5uaWxhd2FyQGludGVsLmNvbT47IFRhdXJvLCBSaWFu
-YQ0KPiA8cmlhbmEudGF1cm9AaW50ZWwuY29tPjsgR3VwdGEsIEFuc2h1bWFuIDxhbnNodW1hbi5n
-dXB0YUBpbnRlbC5jb20+Ow0KPiBFd2lucywgSm9uIDxqb24uZXdpbnNAaW50ZWwuY29tPg0KPiBT
-dWJqZWN0OiBbUEFUQ0ggaS1nLXRdIGk5MTUvaTkxNV9wb3dlcjogTWVhc3VyZSBHUFUgaWRsZS9i
-dXN5IHBvd2VyDQo+IA0KPiBJbiBzZXZlcmFsIGluc3RhbmNlcyAoZS5nLiB3aGVuIGludmVzdGln
-YXRpbmcgR1BVIHBvd2VyIGxpbWl0cykgaXQgaXMgdmVyeQ0KPiB1c2VmdWwgdG8gYmUgYWJsZSB0
-byBtZWFzdXJlIEdQVSBwb3dlciBlYXNpbHkuIFNpbmNlIHdlIGFscmVhZHkgaGF2ZSBhbGwNCj4g
-aW5ncmVkaWVudHMgZm9yIGRvaW5nIHNvLCBhZGQgYSBjb3VwbGUgb2YgdGVzdHMgdG8gbWVhc3Vy
-ZSBHUFUgcG93ZXIgd2hlbg0KPiBpZGxlIGFuZCBwb3dlciB1bmRlciBsb2FkLg0KPiANCj4gU2ln
-bmVkLW9mZi1ieTogQXNodXRvc2ggRGl4aXQgPGFzaHV0b3NoLmRpeGl0QGludGVsLmNvbT4NCj4g
-LS0tDQo+ICB0ZXN0cy9pOTE1L2k5MTVfcG93ZXIuYyB8IDYwDQo+ICsrKysrKysrKysrKysrKysr
-KysrKysrKysrKysrKysrKysrKysrKysrDQo+ICB0ZXN0cy9tZXNvbi5idWlsZCAgICAgICB8ICAx
-ICsNCj4gIDIgZmlsZXMgY2hhbmdlZCwgNjEgaW5zZXJ0aW9ucygrKQ0KPiAgY3JlYXRlIG1vZGUg
-MTAwNjQ0IHRlc3RzL2k5MTUvaTkxNV9wb3dlci5jDQo+IA0KPiBkaWZmIC0tZ2l0IGEvdGVzdHMv
-aTkxNS9pOTE1X3Bvd2VyLmMgYi90ZXN0cy9pOTE1L2k5MTVfcG93ZXIuYyBuZXcgZmlsZSBtb2Rl
-DQo+IDEwMDY0NCBpbmRleCAwMDAwMDAwMDAwMC4uNzRjNWE0YmE0YWYNCj4gLS0tIC9kZXYvbnVs
-bA0KPiArKysgYi90ZXN0cy9pOTE1L2k5MTVfcG93ZXIuYw0KPiBAQCAtMCwwICsxLDYwIEBADQo+
-ICsvLyBTUERYLUxpY2Vuc2UtSWRlbnRpZmllcjogTUlUDQo+ICsvKg0KPiArICogQ29weXJpZ2h0
-IMKpIDIwMjIgSW50ZWwgQ29ycG9yYXRpb24NCj4gKyAqLw0KPiArDQo+ICsjaW5jbHVkZSAiaWd0
-LmgiDQo+ICsjaW5jbHVkZSAiaTkxNS9nZW0uaCINCj4gKyNpbmNsdWRlICJpZ3RfcG93ZXIuaCIN
-Cj4gKw0KPiArSUdUX1RFU1RfREVTQ1JJUFRJT04oImk5MTUgcG93ZXIgbWVhc3VyZW1lbnQvdGVz
-dHMiKTsNCj4gKw0KPiArc3RhdGljIHZvaWQgbWVhc3VyZV9wb3dlcihpbnQgaTkxNSwgY29uc3Qg
-Y2hhciAqZG9tYWluLCBib29sIGxvYWQpIHsNCj4gKwljb25zdCBpbnRlbF9jdHhfdCAqY3R4ID0g
-aW50ZWxfY3R4X2NyZWF0ZV9hbGxfcGh5c2ljYWwoaTkxNSk7DQo+ICsJc3RydWN0IHBvd2VyX3Nh
-bXBsZSBzYW1wbGVbMl07DQo+ICsJaW50IHNsZWVwX2R1cmF0aW9uX3NlYyA9IDM7DQo+ICsJc3Ry
-dWN0IGlndF9wb3dlciBwd3I7DQo+ICsJaWd0X3NwaW5fdCAqc3BpbjsNCj4gKw0KPiArCWdlbV9x
-dWllc2NlbnRfZ3B1KGk5MTUpOw0KPiArCWlmIChsb2FkKSB7DQo+ICsJCXNwaW4gPSBpZ3Rfc3Bp
-bl9uZXcoaTkxNSwgLmN0eCA9IGN0eCwgLmVuZ2luZSA9IEFMTF9FTkdJTkVTLA0KPiArCQkJCSAg
-ICAuZmxhZ3MgPSBJR1RfU1BJTl9QT0xMX1JVTik7DQo+ICsJCS8qIFdhaXQgdGlsbCBhdCBsZWFz
-dCBvbmUgc3Bpbm5lciBzdGFydHMgKi8NCj4gKwkJaWd0X3NwaW5fYnVzeXdhaXRfdW50aWxfc3Rh
-cnRlZChzcGluKTsNCj4gKwl9DQo+ICsNCj4gKwlpZ3RfcmVxdWlyZSghaWd0X3Bvd2VyX29wZW4o
-aTkxNSwgJnB3ciwgZG9tYWluKSk7DQo+ICsJaWd0X3Bvd2VyX2dldF9lbmVyZ3koJnB3ciwgJnNh
-bXBsZVswXSk7DQo+ICsJdXNsZWVwKHNsZWVwX2R1cmF0aW9uX3NlYyAqIFVTRUNfUEVSX1NFQyk7
-DQo+ICsJaWd0X3Bvd2VyX2dldF9lbmVyZ3koJnB3ciwgJnNhbXBsZVsxXSk7DQo+ICsJaWd0X2lu
-Zm8oIk1lYXN1cmVkIHBvd2VyOiAlZyBtV1xuIiwgaWd0X3Bvd2VyX2dldF9tVygmcHdyLA0KPiAm
-c2FtcGxlWzBdLA0KPiArJnNhbXBsZVsxXSkpOw0KQXJlIHdlIHRlc3RpbmcgYW55dGhpbmcgaGVy
-ZSwgaWYgbm90IHRoZW4gZG9uJ3QgY2FsbCBpdCBhIHRlc3QsIGJldHRlciB0byBtb3ZlIGl0IHVu
-ZGVyIHRvb2xzLg0KVGhhbmtzLA0KQW5zaHVtYW4gR3VwdGEuDQo+ICsNCj4gKwlpZ3RfcG93ZXJf
-Y2xvc2UoJnB3cik7DQo+ICsJaWd0X2ZyZWVfc3BpbnMoaTkxNSk7DQo+ICsJaW50ZWxfY3R4X2Rl
-c3Ryb3koaTkxNSwgY3R4KTsNCj4gK30NCj4gKw0KPiAraWd0X21haW4NCj4gK3sNCj4gKwlpbnQg
-aTkxNTsNCj4gKw0KPiArCWlndF9maXh0dXJlIHsNCj4gKwkJaTkxNSA9IGRybV9vcGVuX2RyaXZl
-cl9tYXN0ZXIoRFJJVkVSX0lOVEVMKTsNCj4gKwl9DQo+ICsNCj4gKwlpZ3RfZGVzY3JpYmUoIk1l
-YXN1cmUgaWRsZSBncHUgcG93ZXIiKTsNCj4gKwlpZ3Rfc3VidGVzdCgiZ3B1LWlkbGUiKSB7DQo+
-ICsJCW1lYXN1cmVfcG93ZXIoaTkxNSwgImdwdSIsIGZhbHNlKTsNCj4gKwl9DQo+ICsNCj4gKwlp
-Z3RfZGVzY3JpYmUoIk1lYXN1cmUgZ3B1IHBvd2VyIHdpdGggbG9hZCIpOw0KPiArCWlndF9zdWJ0
-ZXN0KCJncHUtYnVzeSIpIHsNCj4gKwkJbWVhc3VyZV9wb3dlcihpOTE1LCAiZ3B1IiwgdHJ1ZSk7
-DQo+ICsJfQ0KPiArDQo+ICsJaWd0X2ZpeHR1cmUgew0KPiArCQljbG9zZShpOTE1KTsNCj4gKwl9
-DQo+ICt9DQo+IGRpZmYgLS1naXQgYS90ZXN0cy9tZXNvbi5idWlsZCBiL3Rlc3RzL21lc29uLmJ1
-aWxkIGluZGV4DQo+IGUyMGE4NjQwMzViLi5lMGY0MWU5ZTZhMSAxMDA2NDQNCj4gLS0tIGEvdGVz
-dHMvbWVzb24uYnVpbGQNCj4gKysrIGIvdGVzdHMvbWVzb24uYnVpbGQNCj4gQEAgLTIxMiw2ICsy
-MTIsNyBAQCBpOTE1X3Byb2dzID0gWw0KPiAgCSdpOTE1X3BtX2RjJywNCj4gIAknaTkxNV9wbV9y
-cHMnLA0KPiAgCSdpOTE1X3BtX3NzZXUnLA0KPiArCSdpOTE1X3Bvd2VyJywNCj4gIAknaTkxNV9x
-dWVyeScsDQo+ICAJJ2k5MTVfc2VsZnRlc3QnLA0KPiAgCSdpOTE1X3N1c3BlbmQnLA0KPiAtLQ0K
-PiAyLjM4LjANCg0K
+On Fri, Jan 13, 2023 at 11:38:53AM +0000, Matthew Auld wrote:
+>On 12/12/2022 23:12, Niranjana Vishwanathapura wrote:
+>>In preparation of some VM_BIND+execbuf3 related tests,
+>>Add execbuf3 support to igt_spin_factory.
+>>
+>>Only add the required support which can be expanded as needed
+>>in the future.
+>
+>Would it make sense to explicitly reject/assert anything that is not 
+>currently supported? Is it just a case of rejecting some flags/modes, 
+>or is it more complicated? Just to make it more obvious to future 
+>users what is expected to work?
+>
+
+The emit_recursive_batch_execbuf3() already have some asserts to reject
+unsupported flags or modes. I will add IGT_SPIN_SOFTDEP to it which is
+not supported.
+
+>Reviewed-by: Matthew Auld <matthew.auld@intel.com>
+>
+
+Thanks,
+Niranjana
+
+>>
+>>Signed-off-by: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
+>>---
+>>  lib/igt_dummyload.c | 245 ++++++++++++++++++++++++++++++++++++++++++--
+>>  lib/igt_dummyload.h |   8 ++
+>>  2 files changed, 246 insertions(+), 7 deletions(-)
+>>
+>>diff --git a/lib/igt_dummyload.c b/lib/igt_dummyload.c
+>>index 17ae21f56..869002b8d 100644
+>>--- a/lib/igt_dummyload.c
+>>+++ b/lib/igt_dummyload.c
+>>@@ -35,11 +35,13 @@
+>>  #include "i915/gem_engine_topology.h"
+>>  #include "i915/gem_mman.h"
+>>  #include "i915/gem_submission.h"
+>>+#include "i915/i915_vm_bind.h"
+>>  #include "igt_aux.h"
+>>  #include "igt_core.h"
+>>  #include "igt_device.h"
+>>  #include "igt_dummyload.h"
+>>  #include "igt_gt.h"
+>>+#include "igt_syncobj.h"
+>>  #include "igt_vgem.h"
+>>  #include "intel_allocator.h"
+>>  #include "intel_chipset.h"
+>>@@ -424,6 +426,214 @@ emit_recursive_batch(igt_spin_t *spin,
+>>  	return fence_fd;
+>>  }
+>>+static int
+>>+emit_recursive_batch_execbuf3(igt_spin_t *spin, int fd,
+>>+			      const struct igt_spin_factory *opts)
+>>+{
+>>+#define SCRATCH 0
+>>+#define BATCH IGT_SPIN_BATCH
+>>+	const unsigned int devid = intel_get_drm_devid(fd);
+>>+	uint64_t addr, addr_scratch, ahnd = opts->ahnd;
+>>+	struct drm_i915_gem_timeline_fence *out_fence;
+>>+	const unsigned int gen = intel_gen(devid);
+>>+	struct drm_i915_gem_execbuffer3 *execbuf3;
+>>+	struct drm_i915_gem_exec_object2 *obj;
+>>+	unsigned int flags[GEM_MAX_ENGINES];
+>>+	uint64_t presumed_offset, delta;
+>>+	unsigned int nengine;
+>>+	int fence_fd = -1;
+>>+	uint32_t *cs;
+>>+	int i;
+>>+
+>>+	igt_assert(ahnd);
+>>+	igt_assert(i915_vm_bind_version(fd) == 1);
+>>+	igt_assert(!(opts->flags & (IGT_SPIN_FENCE_OUT | IGT_SPIN_FENCE_IN |
+>>+				    IGT_SPIN_FENCE_SUBMIT)));
+>>+	igt_assert(!(opts->ctx && opts->ctx_id));
+>>+
+>>+	execbuf3 = memset(&spin->execbuf3, 0, sizeof(spin->execbuf3));
+>>+	execbuf3->ctx_id = opts->ctx ? opts->ctx->id : opts->ctx_id;
+>>+	obj = memset(spin->obj, 0, sizeof(spin->obj));
+>>+
+>>+	nengine = 0;
+>>+	if (opts->engine == ALL_ENGINES) {
+>>+		struct intel_execution_engine2 *engine;
+>>+
+>>+		igt_assert(opts->ctx);
+>>+		for_each_ctx_engine(fd, opts->ctx, engine) {
+>>+			if (opts->flags & IGT_SPIN_POLL_RUN &&
+>>+			    !gem_class_can_store_dword(fd, engine->class))
+>>+				continue;
+>>+
+>>+			flags[nengine++] = engine->flags;
+>>+		}
+>>+	} else {
+>>+		flags[nengine++] = opts->engine;
+>>+	}
+>>+	igt_require(nengine);
+>>+	spin->nengines = nengine;
+>>+
+>>+	obj[BATCH].handle =
+>>+		handle_create(fd, BATCH_SIZE, opts->flags, &spin->batch);
+>>+	if (!spin->batch) {
+>>+		spin->batch = gem_mmap__device_coherent(fd, obj[BATCH].handle,
+>>+						  0, BATCH_SIZE, PROT_WRITE);
+>>+		gem_set_domain(fd, obj[BATCH].handle,
+>>+			       I915_GEM_DOMAIN_GTT, I915_GEM_DOMAIN_GTT);
+>>+	}
+>>+	cs = spin->batch;
+>>+
+>>+	addr = intel_allocator_alloc_with_strategy(ahnd, obj[BATCH].handle,
+>>+						   BATCH_SIZE, 0,
+>>+						   ALLOC_STRATEGY_LOW_TO_HIGH);
+>>+	obj[BATCH].offset = CANONICAL(addr);
+>>+	i915_vm_bind(fd, opts->vm_id, obj[BATCH].offset, obj[BATCH].handle, 0, BATCH_SIZE, 0, 0, 0);
+>>+
+>>+	execbuf3->batch_address = obj[BATCH].offset;
+>>+	addr += BATCH_SIZE;
+>>+
+>>+	if (opts->dependency) {
+>>+		igt_assert(!(opts->flags & IGT_SPIN_POLL_RUN));
+>>+		addr_scratch = intel_allocator_alloc_with_strategy(ahnd, opts->dependency,
+>>+								   BATCH_SIZE, 0,
+>>+								   ALLOC_STRATEGY_LOW_TO_HIGH);
+>>+
+>>+		obj[SCRATCH].handle = opts->dependency;
+>>+		obj[SCRATCH].offset = CANONICAL(addr_scratch);
+>>+		i915_vm_bind(fd, opts->vm_id, obj[SCRATCH].offset, obj[SCRATCH].handle, 0, BATCH_SIZE, 0, 0, 0);
+>>+	} else if (opts->flags & IGT_SPIN_POLL_RUN) {
+>>+		igt_assert(!opts->dependency);
+>>+
+>>+		spin->poll_handle =
+>>+			handle_create(fd, 4096, opts->flags, &spin->poll);
+>>+		obj[SCRATCH].handle = spin->poll_handle;
+>>+
+>>+		if (!spin->poll) {
+>>+			if (__gem_set_caching(fd, spin->poll_handle,
+>>+					      I915_CACHING_CACHED) == 0)
+>>+				spin->poll = gem_mmap__cpu(fd, spin->poll_handle,
+>>+							   0, 4096,
+>>+							   PROT_READ | PROT_WRITE);
+>>+			else
+>>+				spin->poll = gem_mmap__device_coherent(fd,
+>>+								       spin->poll_handle,
+>>+								       0, 4096,
+>>+								       PROT_READ | PROT_WRITE);
+>>+		}
+>>+
+>>+		addr = intel_allocator_alloc_with_strategy(ahnd,
+>>+							   spin->poll_handle,
+>>+							   BATCH_SIZE * 3, 0,
+>>+							   ALLOC_STRATEGY_LOW_TO_HIGH);
+>>+		addr += 4096; /* guard page */
+>>+		obj[SCRATCH].offset = CANONICAL(addr);
+>>+		i915_vm_bind(fd, opts->vm_id, obj[SCRATCH].offset, obj[SCRATCH].handle, 0, 4096, 0, 0, 0);
+>>+		addr += 4096;
+>>+
+>>+		igt_assert_eq(spin->poll[SPIN_POLL_START_IDX], 0);
+>>+
+>>+		presumed_offset = obj[SCRATCH].offset;
+>>+		delta = sizeof(uint32_t) * SPIN_POLL_START_IDX;
+>>+
+>>+		*cs++ = MI_STORE_DWORD_IMM | (gen < 6 ? 1 << 22 : 0);
+>>+
+>>+		if (gen >= 8) {
+>>+			*cs++ = presumed_offset + delta;
+>>+			*cs++ = (presumed_offset + delta) >> 32;
+>>+		}
+>>+
+>>+		*cs++ = 1;
+>>+	}
+>>+
+>>+	spin->handle = obj[BATCH].handle;
+>>+
+>>+	igt_assert_lt(cs - spin->batch, LOOP_START_OFFSET / sizeof(*cs));
+>>+	spin->condition = spin->batch + LOOP_START_OFFSET / sizeof(*cs);
+>>+	cs = spin->condition;
+>>+
+>>+	/* Allow ourselves to be preempted */
+>>+	if (!(opts->flags & IGT_SPIN_NO_PREEMPTION))
+>>+		*cs++ = MI_ARB_CHK;
+>>+	if (opts->flags & IGT_SPIN_INVALID_CS) {
+>>+		igt_assert(opts->ctx);
+>>+		if (!gem_engine_has_cmdparser(fd, &opts->ctx->cfg, opts->engine))
+>>+			*cs++ = 0xdeadbeef;
+>>+	}
+>>+
+>>+	/* Pad with a few nops so that we do not completely hog the system.
+>>+	 *
+>>+	 * Part of the attraction of using a recursive batch is that it is
+>>+	 * hard on the system (executing the "function" call is apparently
+>>+	 * quite expensive). However, the GPU may hog the entire system for
+>>+	 * a few minutes, preventing even NMI. Quite why this is so is unclear,
+>>+	 * but presumably it relates to the PM_INTRMSK workaround on gen6/gen7.
+>>+	 * If we give the system a break by having the GPU execute a few nops
+>>+	 * between function calls, that appears enough to keep SNB out of
+>>+	 * trouble. See https://bugs.freedesktop.org/show_bug.cgi?id=102262
+>>+	 */
+>>+	if (!(opts->flags & IGT_SPIN_FAST))
+>>+		cs += 960;
+>>+
+>>+	/*
+>>+	 * When using a cmdparser, the batch is copied into a read only location
+>>+	 * and validated. We are then unable to alter the executing batch,
+>>+	 * breaking the older *spin->condition = MI_BB_END termination.
+>>+	 * Instead we can use a conditional MI_BB_END here that looks at
+>>+	 * the user's copy of the batch and terminates when they modified it,
+>>+	 * no matter how they modify it (from either the GPU or CPU).
+>>+	 *
+>>+	 * On Sandybridge+ the comparison is a strict greater-than:
+>>+	 * if the value at spin->condition is greater than BB_END,
+>>+	 * we loop back to the beginning.
+>>+	 * Beginning with Kabylake, we can select the comparison mode
+>>+	 * and loop back to the beginning if spin->condition != BB_END
+>>+	 * (using 5 << 12).
+>>+	 * For simplicity, we try to stick to a one-size fits all.
+>>+	 */
+>>+	spin->condition = spin->batch + BATCH_SIZE / sizeof(*spin->batch) - 2;
+>>+	spin->condition[0] = 0xffffffff;
+>>+	spin->condition[1] = 0xffffffff;
+>>+
+>>+	presumed_offset = obj[BATCH].offset;
+>>+	delta = (spin->condition - spin->batch) * sizeof(*cs);
+>>+	igt_assert(delta < 4096);
+>>+
+>>+	*cs++ = MI_COND_BATCH_BUFFER_END | MI_DO_COMPARE | 2;
+>>+	*cs++ = MI_BATCH_BUFFER_END;
+>>+	*cs++ = presumed_offset + delta;
+>>+	*cs++ = presumed_offset >> 32;
+>>+
+>>+	/* recurse */
+>>+	presumed_offset = obj[BATCH].offset;
+>>+	delta = LOOP_START_OFFSET;
+>>+
+>>+	if (gen >= 8) {
+>>+		*cs++ = MI_BATCH_BUFFER_START | 1 << 8 | 1;
+>>+		*cs++ = presumed_offset + delta;
+>>+		*cs++ = (presumed_offset + delta) >> 32;
+>>+	}
+>>+
+>>+	out_fence = memset(&spin->exec3_out_syncobj, 0, sizeof(*out_fence));
+>>+	out_fence->flags = I915_TIMELINE_FENCE_SIGNAL;
+>>+	execbuf3->fence_count = 1;
+>>+	for (i = 0; i < nengine; i++) {
+>>+		spin->out_syncobj[i] = syncobj_create(fd, 0);
+>>+		out_fence->handle = spin->out_syncobj[i];
+>>+
+>>+		execbuf3->engine_idx = flags[i];
+>>+		execbuf3->timeline_fences = to_user_pointer(out_fence);
+>>+
+>>+		gem_execbuf3(fd, execbuf3);
+>>+	}
+>>+
+>>+	igt_assert_lt(cs - spin->batch, BATCH_SIZE / sizeof(*cs));
+>>+
+>>+	spin->cmd_precondition = *spin->condition;
+>>+	spin->opts = *opts;
+>>+
+>>+	return fence_fd;
+>>+}
+>>+
+>>  static igt_spin_t *
+>>  spin_create(int fd, const struct igt_spin_factory *opts)
+>>  {
+>>@@ -433,8 +643,10 @@ spin_create(int fd, const struct igt_spin_factory *opts)
+>>  	igt_assert(spin);
+>>  	spin->timerfd = -1;
+>>-	spin->out_fence = emit_recursive_batch(spin, fd, opts);
+>>-
+>>+	if (opts->flags & IGT_SPIN_EXECBUF3)
+>>+		emit_recursive_batch_execbuf3(spin, fd, opts);
+>>+	else
+>>+		spin->out_fence = emit_recursive_batch(spin, fd, opts);
+>>  	pthread_mutex_lock(&list_lock);
+>>  	igt_list_add(&spin->link, &spin_list);
+>>  	pthread_mutex_unlock(&list_lock);
+>>@@ -464,6 +676,7 @@ igt_spin_t *
+>>  igt_spin_factory(int fd, const struct igt_spin_factory *opts)
+>>  {
+>>  	igt_spin_t *spin;
+>>+	int i = 0;
+>>  	if ((opts->flags & IGT_SPIN_POLL_RUN) && opts->engine != ALL_ENGINES) {
+>>  		unsigned int class;
+>>@@ -481,11 +694,17 @@ igt_spin_factory(int fd, const struct igt_spin_factory *opts)
+>>  	spin = spin_create(fd, opts);
+>>-	if (!(opts->flags & IGT_SPIN_INVALID_CS)) {
+>>-		/*
+>>-		 * When injecting invalid CS into the batch, the spinner may
+>>-		 * be killed immediately -- i.e. may already be completed!
+>>-		 */
+>>+	/*
+>>+	 * When injecting invalid CS into the batch, the spinner may
+>>+	 * be killed immediately -- i.e. may already be completed!
+>>+	 */
+>>+	if (opts->flags & IGT_SPIN_INVALID_CS)
+>>+		return spin;
+>>+
+>>+	if (opts->flags & IGT_SPIN_EXECBUF3) {
+>>+		while (spin->out_syncobj[i])
+>>+			igt_assert(syncobj_busy(fd, spin->out_syncobj[i++]));
+>>+	} else {
+>>  		igt_assert(gem_bo_busy(fd, spin->handle));
+>>  		if (opts->flags & IGT_SPIN_FENCE_OUT) {
+>>  			struct pollfd pfd = { spin->out_fence, POLLIN };
+>>@@ -595,6 +814,8 @@ void igt_spin_end(igt_spin_t *spin)
+>>  static void __igt_spin_free(int fd, igt_spin_t *spin)
+>>  {
+>>+	int i = 0;
+>>+
+>>  	if (spin->timerfd >= 0) {
+>>  		pthread_cancel(spin->timer_thread);
+>>  		igt_assert(pthread_join(spin->timer_thread, NULL) == 0);
+>>@@ -608,6 +829,10 @@ static void __igt_spin_free(int fd, igt_spin_t *spin)
+>>  	if (spin->batch)
+>>  		gem_munmap(spin->batch, BATCH_SIZE);
+>>+	if ((spin->poll_handle || spin->opts.dependency) &&
+>>+	    (spin->opts.flags & IGT_SPIN_EXECBUF3))
+>>+		i915_vm_unbind(fd, spin->opts.vm_id, spin->obj[SCRATCH].offset, 4096);
+>>+
+>>  	if (spin->poll_handle) {
+>>  		gem_close(fd, spin->poll_handle);
+>>  		if (spin->opts.ahnd)
+>>@@ -615,6 +840,9 @@ static void __igt_spin_free(int fd, igt_spin_t *spin)
+>>  	}
+>>  	if (spin->handle) {
+>>+		if (spin->opts.flags & IGT_SPIN_EXECBUF3)
+>>+			i915_vm_unbind(fd, spin->opts.vm_id, spin->obj[BATCH].offset, BATCH_SIZE);
+>>+
+>>  		gem_close(fd, spin->handle);
+>>  		if (spin->opts.ahnd)
+>>  			intel_allocator_free(spin->opts.ahnd, spin->handle);
+>>@@ -623,6 +851,9 @@ static void __igt_spin_free(int fd, igt_spin_t *spin)
+>>  	if (spin->out_fence >= 0)
+>>  		close(spin->out_fence);
+>>+	while (spin->out_syncobj[i])
+>>+		syncobj_destroy(fd, spin->out_syncobj[i++]);
+>>+
+>>  	free(spin);
+>>  }
+>>diff --git a/lib/igt_dummyload.h b/lib/igt_dummyload.h
+>>index b33507971..aacd61dc3 100644
+>>--- a/lib/igt_dummyload.h
+>>+++ b/lib/igt_dummyload.h
+>>@@ -31,6 +31,7 @@
+>>  #include "igt_core.h"
+>>  #include "igt_list.h"
+>>  #include "i915_drm.h"
+>>+#include "i915/i915_drm_local.h"
+>>  #include "intel_ctx.h"
+>>@@ -48,6 +49,7 @@
+>>  typedef struct igt_spin_factory {
+>>  	uint32_t ctx_id;
+>>  	const intel_ctx_t *ctx;
+>>+	uint32_t vm_id;
+>>  	uint32_t dependency;
+>>  	unsigned int engine;
+>>  	unsigned int flags;
+>>@@ -78,6 +80,11 @@ typedef struct igt_spin {
+>>  #define IGT_SPIN_BATCH   1
+>>  	struct drm_i915_gem_execbuffer2 execbuf;
+>>+	struct drm_i915_gem_execbuffer3 execbuf3;
+>>+	uint32_t out_syncobj[GEM_MAX_ENGINES];
+>>+	struct drm_i915_gem_timeline_fence exec3_out_syncobj;
+>>+	unsigned int nengines;
+>>+
+>>  	unsigned int flags;
+>>  #define SPIN_CLFLUSH (1 << 0)
+>>@@ -94,6 +101,7 @@ typedef struct igt_spin {
+>>  #define IGT_SPIN_INVALID_CS    (1 << 6)
+>>  #define IGT_SPIN_USERPTR       (1 << 7)
+>>  #define IGT_SPIN_SOFTDEP       (1 << 8)
+>>+#define IGT_SPIN_EXECBUF3      (1 << 9)
+>>  igt_spin_t *
+>>  __igt_spin_factory(int fd, const igt_spin_factory_t *opts);
