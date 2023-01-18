@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8E27910E6AF
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E57B510E68D
  for <igt-dev@lists.freedesktop.org>; Wed, 18 Jan 2023 07:14:00 +0000 (UTC)
 From: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 17 Jan 2023 23:13:45 -0800
-Message-Id: <20230118071350.17498-15-niranjana.vishwanathapura@intel.com>
+Date: Tue, 17 Jan 2023 23:13:50 -0800
+Message-Id: <20230118071350.17498-20-niranjana.vishwanathapura@intel.com>
 In-Reply-To: <20230118071350.17498-1-niranjana.vishwanathapura@intel.com>
 References: <20230118071350.17498-1-niranjana.vishwanathapura@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v10 14/19] tests/i915/vm_bind: Add
- gem_shrink@vm_bind* subtests
+Subject: [igt-dev] [PATCH i-g-t v10 19/19] tests/i915/vm_bind: Add userptr
+ invalidation test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,150 +25,121 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add VM_BIND shrinker subtests.
+Add vma-merge-execbuf3 subtest to gem_userptr_blits to
+validate userptr invalidations with VM_BIND+execbuf3.
 
-v2: Do not blacklist vm_bind tests, add vm_bind_version assert
-v3: Use syncobj library functions
+NOTE:
+The test is derived from vma-merge subtest. There is a known
+fence timeout issue with vma-merge subtest which the
+vma-merge-execbuf3 inherits, but the test still passes none
+the less validates userptr invalidation of persistent mappings
+and rebinding the same in the subsequent submission.
+
+v2: Add subtest description
 
 Reviewed-by: Matthew Auld <matthew.auld@intel.com>
 Signed-off-by: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
 ---
- tests/i915/gem_shrink.c      | 63 ++++++++++++++++++++++++++++++++++--
- tests/intel-ci/blacklist.txt |  2 +-
- 2 files changed, 62 insertions(+), 3 deletions(-)
+ tests/i915/gem_userptr_blits.c | 72 ++++++++++++++++++++++++++++++++++
+ 1 file changed, 72 insertions(+)
 
-diff --git a/tests/i915/gem_shrink.c b/tests/i915/gem_shrink.c
-index 380d2c846..f969d58b2 100644
---- a/tests/i915/gem_shrink.c
-+++ b/tests/i915/gem_shrink.c
-@@ -29,10 +29,13 @@
+diff --git a/tests/i915/gem_userptr_blits.c b/tests/i915/gem_userptr_blits.c
+index 698508669..eae798b5e 100644
+--- a/tests/i915/gem_userptr_blits.c
++++ b/tests/i915/gem_userptr_blits.c
+@@ -60,7 +60,10 @@
  
  #include "i915/gem.h"
  #include "i915/gem_create.h"
 +#include "i915/gem_vm.h"
 +#include "i915/i915_vm_bind.h"
  #include "igt.h"
- #include "igt_gt.h"
- #include "igt_debugfs.h"
- #include "igt_sysfs.h"
 +#include "igt_syncobj.h"
- 
- #ifndef MADV_FREE
- #define MADV_FREE 8
-@@ -229,6 +232,55 @@ static void hang(int fd, uint64_t alloc)
- 	munmap(obj, obj_size);
+ #include "igt_sysfs.h"
+ #include "igt_types.h"
+ #include "sw_sync.h"
+@@ -740,6 +743,69 @@ static void test_vma_merge(int i915)
+ 	put_ahnd(ahnd);
  }
  
-+#define BATCH_VA	0xc0000000
-+static void vm_bind(int fd, uint64_t alloc)
++static void test_vma_merge_execbuf3(int i915)
 +{
-+	struct drm_i915_gem_timeline_fence exec_fence = { };
 +	struct drm_i915_gem_context_param param = {
 +		.param = I915_CONTEXT_PARAM_RECOVERABLE,
 +		.value = 0,
 +	};
-+	const uint32_t bbe = MI_BATCH_BUFFER_END;
-+	struct drm_i915_gem_execbuffer3 execbuf3;
-+	uint32_t vm_id, handle, exec_syncobj;
-+	struct intel_engine_data engines;
++	const size_t sz = 2 * hugepagesize();
++	uint32_t handle, vm_id;
 +	const intel_ctx_t *ctx;
-+	uint64_t fence_value = 0;
++	igt_spin_t *spin;
++	uint64_t ahnd;
++	void *addr;
 +
-+	vm_id = gem_vm_create_in_vm_bind_mode(fd);
-+	ctx = intel_ctx_create_all_physical(fd);
++	vm_id = gem_vm_create_in_vm_bind_mode(i915);
++	ctx = intel_ctx_create_all_physical(i915);
 +	param.ctx_id = ctx->id;
-+	gem_context_set_param(fd, &param);
-+	gem_context_set_vm(fd, ctx->id, vm_id);
-+	(void)gem_context_get_vm(fd, ctx->id);
-+	engines = intel_engine_list_for_ctx_cfg(fd, &ctx->cfg);
++	gem_context_set_param(i915, &param);
++	gem_context_set_vm(i915, ctx->id, vm_id);
++	(void)gem_context_get_vm(i915, ctx->id);
 +
-+	handle = gem_create(fd, alloc);
-+	gem_write(fd, handle, 0, &bbe, sizeof(bbe));
-+	i915_vm_bind(fd, vm_id, BATCH_VA, handle, 0, alloc, 0, 0, 0);
++	ahnd = get_simple_ahnd(i915, ctx->id);
++	igt_require(ahnd);
++	addr = mmap(NULL, sz, PROT_READ | PROT_WRITE,
++		    MAP_SHARED | MAP_ANONYMOUS, -1, 0);
 +
-+	exec_syncobj = syncobj_create(fd, 0);
-+	exec_fence.handle = exec_syncobj;
-+	exec_fence.flags = I915_TIMELINE_FENCE_SIGNAL;
++	gem_userptr(i915, addr + sz / 2, 4096, 0, userptr_flags, &handle);
 +
-+	memset(&execbuf3, 0, sizeof(execbuf3));
-+	execbuf3.ctx_id = ctx->id;
-+	execbuf3.engine_idx = engines.engines[0].flags;
-+	execbuf3.batch_address = BATCH_VA;
-+	execbuf3.fence_count = 1;
-+	execbuf3.timeline_fences = to_user_pointer(&exec_fence);
++	spin = igt_spin_new(i915, .ctx = ctx, .vm_id = vm_id,
++			    .ahnd = ahnd, .dependency = handle,
++			    .flags = IGT_SPIN_EXECBUF3);
 +
-+	gem_execbuf3(fd, &execbuf3);
++	for (size_t x = 0; x < sz; x += 4096) {
++		if (x == sz / 2)
++			continue;
 +
-+	igt_assert(syncobj_timeline_wait(fd, &exec_syncobj, &fence_value, 1,
++		igt_assert(mmap(addr + x, 4096, PROT_READ | PROT_WRITE,
++				MAP_FIXED | MAP_SHARED | MAP_ANON, -1, 0) !=
++			   MAP_FAILED);
++	}
++
++	igt_spin_end(spin);
++	igt_spin_reset(spin);
++	igt_assert(syncobj_timeline_wait(i915, spin->out_syncobj, NULL, spin->nengines,
 +					 gettime_ns() + (2 * NSEC_PER_SEC),
 +					 DRM_SYNCOBJ_WAIT_FLAGS_WAIT_FOR_SUBMIT, NULL));
-+	gem_madvise(fd, handle, I915_MADV_DONTNEED);
 +
-+	syncobj_destroy(fd, exec_syncobj);
-+	intel_ctx_destroy(fd, ctx);
++	/* Another submission will cause rebind of invalidated mappings */
++	gem_execbuf3(i915, &spin->execbuf3);
++	igt_spin_end(spin);
++	igt_assert(syncobj_timeline_wait(i915, &spin->out_syncobj[spin->nengines - 1],
++					 NULL, 1, gettime_ns() + (2 * NSEC_PER_SEC),
++					 DRM_SYNCOBJ_WAIT_FLAGS_WAIT_FOR_SUBMIT, NULL));
++	gem_close(i915, handle);
++
++	munmap(addr, sz);
++
++	igt_spin_free(i915, spin);
++	put_ahnd(ahnd);
++
++	intel_ctx_destroy(i915, ctx);
++	gem_vm_destroy(i915, vm_id);
 +}
 +
- static void userptr(int fd, uint64_t alloc, unsigned int flags)
- #define UDIRTY (1 << 0)
+ static void test_huge_split(int i915)
  {
-@@ -418,6 +470,7 @@ igt_main
- 		{ "execbufN", execbufN },
- 		{ "execbufX", execbufX },
- 		{ "hang", hang },
-+		{ "vm_bind", vm_bind },
- 		{ NULL },
- 	};
- 	const struct mode {
-@@ -433,11 +486,11 @@ igt_main
- 	};
- 	uint64_t alloc_size = 0;
- 	int num_processes = 0;
-+	int fd;
+ 	const size_t sz = 2 * hugepagesize();
+@@ -2628,6 +2694,12 @@ igt_main_args("c:", NULL, help_str, opt_handler, NULL)
+ 		igt_subtest("vma-merge")
+ 			test_vma_merge(fd);
  
- 	igt_fixture {
- 		const int ncpus = sysconf(_SC_NPROCESSORS_ONLN);
- 		uint64_t mem_size = igt_get_total_ram_mb();
--		int fd;
- 
- 		fd = drm_open_driver(DRIVER_INTEL);
- 		igt_require_gem(fd);
-@@ -456,7 +509,6 @@ igt_main
- 			 num_processes, alloc_size);
- 
- 		alloc_size <<= 20;
--		close(fd);
- 	}
- 
- 	igt_subtest("reclaim")
-@@ -467,9 +519,16 @@ igt_main
- 			igt_subtest_f("%s%s", t->name, m->suffix) {
- 				igt_require_memory(num_processes, alloc_size,
- 						   CHECK_SWAP | CHECK_RAM);
-+				if (!strcmp(t->name, "vm_bind"))
-+					igt_require(i915_vm_bind_version(fd) == 1);
++		igt_describe("Validate userptr invalidation handling with execbuf3");
++		igt_subtest("vma-merge-execbuf3") {
++			igt_require(i915_vm_bind_version(fd) == 1);
++			test_vma_merge_execbuf3(fd);
++		}
 +
- 				run_test(num_processes, alloc_size,
- 					 t->func, m->flags);
- 			}
- 		}
+ 		igt_subtest("huge-split")
+ 			test_huge_split(fd);
  	}
-+
-+	igt_fixture {
-+		close(fd);
-+	}
- }
-diff --git a/tests/intel-ci/blacklist.txt b/tests/intel-ci/blacklist.txt
-index 6e5cc4366..fff5c5060 100644
---- a/tests/intel-ci/blacklist.txt
-+++ b/tests/intel-ci/blacklist.txt
-@@ -47,7 +47,7 @@ igt@gem_render_linear_blits@(?!.*basic).*
- igt@gem_render_tiled_blits@(?!.*basic).*
- igt@gem_reset_stats(@.*)?
- igt@gem_ringfill@(?!.*basic).*
--igt@gem_shrink@(?!reclaim$).*
-+igt@gem_shrink@(get|pwrite|pread|mmap|execbuf|hang|vm_bind-oom)*.*
- igt@gem_softpin@.*(hang|S4).*
- igt@gem_streaming_writes(@.*)?
- igt@gem_sync@(?!.*basic).*
 -- 
 2.21.0.rc0.32.g243a4c7e27
