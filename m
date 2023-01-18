@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C17A010E68D
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 00A4010E1E2
  for <igt-dev@lists.freedesktop.org>; Wed, 18 Jan 2023 07:13:58 +0000 (UTC)
 From: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 17 Jan 2023 23:13:32 -0800
-Message-Id: <20230118071350.17498-2-niranjana.vishwanathapura@intel.com>
+Date: Tue, 17 Jan 2023 23:13:33 -0800
+Message-Id: <20230118071350.17498-3-niranjana.vishwanathapura@intel.com>
 In-Reply-To: <20230118071350.17498-1-niranjana.vishwanathapura@intel.com>
 References: <20230118071350.17498-1-niranjana.vishwanathapura@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v10 01/19] lib/i915: memory region
- gtt_alignment support
+Subject: [igt-dev] [PATCH i-g-t v10 02/19] lib/i915: Move common syncobj
+ functions to library
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,58 +25,150 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Update library to include gtt_alignment field to support
-platforms with 64K device memory pages.
-
-v2: Do not pull in gtt_alignment uapi
+In preparation for the VM_BIND tests, move some syncobj functions
+to the library.
 
 Reviewed-by: Matthew Auld <matthew.auld@intel.com>
 Signed-off-by: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
 ---
- lib/i915/intel_memory_region.c | 6 ++++++
- lib/i915/intel_memory_region.h | 1 +
- lib/intel_chipset.h            | 2 ++
- 3 files changed, 9 insertions(+)
+ lib/igt_syncobj.c           | 21 +++++++++++++++++++++
+ lib/igt_syncobj.h           |  9 +++++++++
+ tests/i915/gem_exec_fence.c | 21 ---------------------
+ tests/syncobj_timeline.c    |  8 --------
+ tests/syncobj_wait.c        |  8 --------
+ 5 files changed, 30 insertions(+), 37 deletions(-)
 
-diff --git a/lib/i915/intel_memory_region.c b/lib/i915/intel_memory_region.c
-index 84e1bceb3..964962ebb 100644
---- a/lib/i915/intel_memory_region.c
-+++ b/lib/i915/intel_memory_region.c
-@@ -948,6 +948,12 @@ struct gem_memory_region *__gem_get_memory_regions(int i915)
- 		if (r->size == -1ull)
- 			r->size = igt_get_avail_ram_mb() << 20;
+diff --git a/lib/igt_syncobj.c b/lib/igt_syncobj.c
+index a24ed10b7..5280c272e 100644
+--- a/lib/igt_syncobj.c
++++ b/lib/igt_syncobj.c
+@@ -22,6 +22,7 @@
+  */
  
-+		if (HAS_64K_PAGES(intel_get_drm_devid(i915)) &&
-+		    r->ci.memory_class == I915_MEMORY_CLASS_DEVICE)
-+			r->gtt_alignment = 16 * PAGE_SIZE;
-+		else
-+			r->gtt_alignment = PAGE_SIZE;
+ #include <errno.h>
++#include <sys/poll.h>
+ #include <xf86drm.h>
+ 
+ #include "igt.h"
+@@ -543,3 +544,23 @@ syncobj_timeline_to_timeline(int fd,
+ 					 timeline_dst, point_dst,
+ 					 timeline_src, point_src, 0), 0);
+ }
 +
- 		asprintf(&r->name, "%s%d",
- 			 region_repr(&r->ci), r->ci.memory_instance);
- 
-diff --git a/lib/i915/intel_memory_region.h b/lib/i915/intel_memory_region.h
-index 425bda0ec..84abb95b1 100644
---- a/lib/i915/intel_memory_region.h
-+++ b/lib/i915/intel_memory_region.h
-@@ -174,6 +174,7 @@ struct gem_memory_region {
- 	char *name;
- 
- 	struct drm_i915_gem_memory_class_instance ci;
-+	uint64_t gtt_alignment;
- 	uint64_t size;
- 	uint64_t cpu_size;
- };
-diff --git a/lib/intel_chipset.h b/lib/intel_chipset.h
-index 9b39472ad..0d825d42c 100644
---- a/lib/intel_chipset.h
-+++ b/lib/intel_chipset.h
-@@ -227,4 +227,6 @@ void intel_check_pch(void);
- 
- #define HAS_FLATCCS(devid)	(intel_get_device_info(devid)->has_flatccs)
- 
-+#define HAS_64K_PAGES(devid)	(IS_DG2(devid))
++/**
++ * syncobj_busy:
++ * @fd: The DRM file descriptor
++ * @handle: The handle to the syncobj to check
++ * Check if a syncobj is busy.
++ */
++bool
++syncobj_busy(int fd, uint32_t handle)
++{
++	bool result;
++	int sf;
 +
- #endif /* _INTEL_CHIPSET_H */
++	sf = syncobj_handle_to_fd(fd, handle,
++				  DRM_SYNCOBJ_HANDLE_TO_FD_FLAGS_EXPORT_SYNC_FILE);
++	result = poll(&(struct pollfd){sf, POLLIN}, 1, 0) == 0;
++	close(sf);
++
++	return result;
++}
+diff --git a/lib/igt_syncobj.h b/lib/igt_syncobj.h
+index e6725671d..8a1480a97 100644
+--- a/lib/igt_syncobj.h
++++ b/lib/igt_syncobj.h
+@@ -65,5 +65,14 @@ void syncobj_timeline_to_timeline(int fd,
+ 				  uint64_t timeline_src, uint32_t point_src);
+ void syncobj_timeline_signal(int fd, uint32_t *handles, uint64_t *points,
+ 			     uint32_t count);
++bool syncobj_busy(int fd, uint32_t handle);
++
++/* Used along with syncobj_timeline_wait() */
++static inline uint64_t gettime_ns(void)
++{
++	struct timespec current;
++	clock_gettime(CLOCK_MONOTONIC, &current);
++	return (uint64_t)current.tv_sec * NSEC_PER_SEC + current.tv_nsec;
++}
+ 
+ #endif /* IGT_SYNCOBJ_H */
+diff --git a/tests/i915/gem_exec_fence.c b/tests/i915/gem_exec_fence.c
+index 6bf1cdb57..2c43fd291 100644
+--- a/tests/i915/gem_exec_fence.c
++++ b/tests/i915/gem_exec_fence.c
+@@ -1110,19 +1110,6 @@ static uint32_t syncobj_import(int fd, int syncobj)
+ 	return syncobj_fd_to_handle(fd, syncobj, 0);
+ }
+ 
+-static bool syncobj_busy(int fd, uint32_t handle)
+-{
+-	bool result;
+-	int sf;
+-
+-	sf = syncobj_handle_to_fd(fd, handle,
+-				  DRM_SYNCOBJ_HANDLE_TO_FD_FLAGS_EXPORT_SYNC_FILE);
+-	result = poll(&(struct pollfd){sf, POLLIN}, 1, 0) == 0;
+-	close(sf);
+-
+-	return result;
+-}
+-
+ static void test_syncobj_unused_fence(int fd)
+ {
+ 	const uint32_t bbe = MI_BATCH_BUFFER_END;
+@@ -1916,14 +1903,6 @@ static void test_syncobj_timeline_invalid_flags(int fd)
+ 	syncobj_destroy(fd, fence.handle);
+ }
+ 
+-static uint64_t
+-gettime_ns(void)
+-{
+-	struct timespec current;
+-	clock_gettime(CLOCK_MONOTONIC, &current);
+-	return (uint64_t)current.tv_sec * NSEC_PER_SEC + current.tv_nsec;
+-}
+-
+ static const char *test_syncobj_timeline_signal_desc =
+ 	"Verifies proper signaling of a timeline syncobj through execbuf";
+ static void test_syncobj_timeline_signal(int fd)
+diff --git a/tests/syncobj_timeline.c b/tests/syncobj_timeline.c
+index 7f5ff6f6c..352b0fa40 100644
+--- a/tests/syncobj_timeline.c
++++ b/tests/syncobj_timeline.c
+@@ -38,14 +38,6 @@ IGT_TEST_DESCRIPTION("Tests for the drm timeline sync object API");
+ 
+ #define NSECS_PER_SEC 1000000000ull
+ 
+-static uint64_t
+-gettime_ns(void)
+-{
+-	struct timespec current;
+-	clock_gettime(CLOCK_MONOTONIC, &current);
+-	return (uint64_t)current.tv_sec * NSECS_PER_SEC + current.tv_nsec;
+-}
+-
+ static void
+ sleep_nsec(uint64_t time_nsec)
+ {
+diff --git a/tests/syncobj_wait.c b/tests/syncobj_wait.c
+index 427b6b119..3415c78f8 100644
+--- a/tests/syncobj_wait.c
++++ b/tests/syncobj_wait.c
+@@ -38,14 +38,6 @@ IGT_TEST_DESCRIPTION("Tests for the drm sync object wait API");
+ 
+ #define NSECS_PER_SEC 1000000000ull
+ 
+-static uint64_t
+-gettime_ns(void)
+-{
+-	struct timespec current;
+-	clock_gettime(CLOCK_MONOTONIC, &current);
+-	return (uint64_t)current.tv_sec * NSECS_PER_SEC + current.tv_nsec;
+-}
+-
+ static void
+ sleep_nsec(uint64_t time_nsec)
+ {
 -- 
 2.21.0.rc0.32.g243a4c7e27
