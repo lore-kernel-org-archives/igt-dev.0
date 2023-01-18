@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BA6BE10E6B4
- for <igt-dev@lists.freedesktop.org>; Wed, 18 Jan 2023 07:14:00 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2C58F10E68D
+ for <igt-dev@lists.freedesktop.org>; Wed, 18 Jan 2023 07:13:59 +0000 (UTC)
 From: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 17 Jan 2023 23:13:48 -0800
-Message-Id: <20230118071350.17498-18-niranjana.vishwanathapura@intel.com>
+Date: Tue, 17 Jan 2023 23:13:34 -0800
+Message-Id: <20230118071350.17498-4-niranjana.vishwanathapura@intel.com>
 In-Reply-To: <20230118071350.17498-1-niranjana.vishwanathapura@intel.com>
 References: <20230118071350.17498-1-niranjana.vishwanathapura@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v10 17/19] lib/vm_bind: Add execbuf3 support
- to igt_spin_factory
+Subject: [igt-dev] [PATCH i-g-t v10 03/19] lib/vm_bind: import uapi
+ definitions
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,377 +25,348 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-In preparation of some VM_BIND+execbuf3 related tests,
-Add execbuf3 support to igt_spin_factory.
+Import required VM_BIND kernel uapi definitions.
 
-Only add the required support which can be expanded as needed
-in the future.
+DRM_I915_GEM_VM_BIND/UNBIND ioctls allows UMD to bind/unbind GEM
+buffer objects (BOs) or sections of a BOs at specified GPU virtual
+addresses on a specified address space (VM). Multiple mappings can map
+to the same physical pages of an object (aliasing). These mappings (also
+referred to as persistent mappings) will be persistent across multiple
+GPU submissions (execbuf calls) issued by the UMD, without user having
+to provide a list of all required mappings during each submission (as
+required by older execbuf mode).
 
-v2: Assert if unsupported flag IGT_SPIN_SOFTDEP is used
+The new execbuf3 ioctl (I915_GEM_EXECBUFFER3) will only work in vm_bind
+mode. The vm_bind mode only works with this new execbuf3 ioctl.
+
+v2: Move vm_bind uapi definitions to i915_drm-local.h
+    Define HAS_64K_PAGES()
+    Pull in uapi updates
+v3: Remove HAS_64K_PAGES()
+v4: Import reserved field changes in vm_bind/unbind structures.
+v5: Import I915_GEM_VM_BIND_CAPTURE
+v6: Import uapi documentation
 
 Reviewed-by: Matthew Auld <matthew.auld@intel.com>
 Signed-off-by: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
 ---
- lib/igt_dummyload.c | 245 ++++++++++++++++++++++++++++++++++++++++++--
- lib/igt_dummyload.h |   8 ++
- 2 files changed, 246 insertions(+), 7 deletions(-)
+ lib/i915/i915_drm_local.h | 304 ++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 304 insertions(+)
 
-diff --git a/lib/igt_dummyload.c b/lib/igt_dummyload.c
-index 5f3c6b10c..4823c8b35 100644
---- a/lib/igt_dummyload.c
-+++ b/lib/igt_dummyload.c
-@@ -35,11 +35,13 @@
- #include "i915/gem_engine_topology.h"
- #include "i915/gem_mman.h"
- #include "i915/gem_submission.h"
-+#include "i915/i915_vm_bind.h"
- #include "igt_aux.h"
- #include "igt_core.h"
- #include "igt_device.h"
- #include "igt_dummyload.h"
- #include "igt_gt.h"
-+#include "igt_syncobj.h"
- #include "igt_vgem.h"
- #include "intel_allocator.h"
- #include "intel_chipset.h"
-@@ -426,6 +428,214 @@ emit_recursive_batch(igt_spin_t *spin,
- 	return fence_fd;
- }
+diff --git a/lib/i915/i915_drm_local.h b/lib/i915/i915_drm_local.h
+index 9a2273c4e..a6ee8d90e 100644
+--- a/lib/i915/i915_drm_local.h
++++ b/lib/i915/i915_drm_local.h
+@@ -23,6 +23,310 @@ extern "C" {
  
-+static int
-+emit_recursive_batch_execbuf3(igt_spin_t *spin, int fd,
-+			      const struct igt_spin_factory *opts)
-+{
-+#define SCRATCH 0
-+#define BATCH IGT_SPIN_BATCH
-+	const unsigned int devid = intel_get_drm_devid(fd);
-+	uint64_t addr, addr_scratch, ahnd = opts->ahnd;
-+	struct drm_i915_gem_timeline_fence *out_fence;
-+	const unsigned int gen = intel_gen(devid);
-+	struct drm_i915_gem_execbuffer3 *execbuf3;
-+	struct drm_i915_gem_exec_object2 *obj;
-+	unsigned int flags[GEM_MAX_ENGINES];
-+	uint64_t presumed_offset, delta;
-+	unsigned int nengine;
-+	int fence_fd = -1;
-+	uint32_t *cs;
-+	int i;
+ #define DRM_I915_QUERY_GEOMETRY_SUBSLICES      6
+ 
++/*
++ * Signal to the kernel that the object will need to be accessed via
++ * the CPU.
++ *
++ * Only valid when placing objects in I915_MEMORY_CLASS_DEVICE, and only
++ * strictly required on platforms where only some of the device memory
++ * is directly visible or mappable through the CPU, like on DG2+.
++ *
++ * One of the placements MUST also be I915_MEMORY_CLASS_SYSTEM, to
++ * ensure we can always spill the allocation to system memory, if we
++ * can't place the object in the mappable part of
++ * I915_MEMORY_CLASS_DEVICE.
++ *
++ * Without this hint, the kernel will assume that non-mappable
++ * I915_MEMORY_CLASS_DEVICE is preferred for this object. Note that the
++ * kernel can still migrate the object to the mappable part, as a last
++ * resort, if userspace ever CPU faults this object, but this might be
++ * expensive, and so ideally should be avoided.
++ */
++#define I915_GEM_CREATE_EXT_FLAG_NEEDS_CPU_ACCESS (1 << 0)
 +
-+	igt_assert(ahnd);
-+	igt_assert(i915_vm_bind_version(fd) == 1);
-+	igt_assert(!(opts->flags & (IGT_SPIN_FENCE_OUT | IGT_SPIN_FENCE_IN |
-+				    IGT_SPIN_FENCE_SUBMIT | IGT_SPIN_SOFTDEP)));
-+	igt_assert(!(opts->ctx && opts->ctx_id));
++#define DRM_I915_GEM_VM_BIND		0x3d
++#define DRM_I915_GEM_VM_UNBIND		0x3e
++#define DRM_I915_GEM_EXECBUFFER3	0x3f
 +
-+	execbuf3 = memset(&spin->execbuf3, 0, sizeof(spin->execbuf3));
-+	execbuf3->ctx_id = opts->ctx ? opts->ctx->id : opts->ctx_id;
-+	obj = memset(spin->obj, 0, sizeof(spin->obj));
++#define DRM_IOCTL_I915_GEM_VM_BIND	DRM_IOWR(DRM_COMMAND_BASE + DRM_I915_GEM_VM_BIND, struct drm_i915_gem_vm_bind)
++#define DRM_IOCTL_I915_GEM_VM_UNBIND	DRM_IOWR(DRM_COMMAND_BASE + DRM_I915_GEM_VM_UNBIND, struct drm_i915_gem_vm_unbind)
++#define DRM_IOCTL_I915_GEM_EXECBUFFER3  DRM_IOWR(DRM_COMMAND_BASE + DRM_I915_GEM_EXECBUFFER3, struct drm_i915_gem_execbuffer3)
 +
-+	nengine = 0;
-+	if (opts->engine == ALL_ENGINES) {
-+		struct intel_execution_engine2 *engine;
++/*
++ * VM_BIND feature version supported.
++ *
++ * The following versions of VM_BIND have been defined:
++ *
++ * 0: No VM_BIND support.
++ *
++ * 1: In VM_UNBIND calls, the UMD must specify the exact mappings created
++ *    previously with VM_BIND, the ioctl will not support unbinding multiple
++ *    mappings or splitting them. Similarly, VM_BIND calls will not replace
++ *    any existing mappings.
++ *
++ * See struct drm_i915_gem_vm_bind and struct drm_i915_gem_vm_unbind.
++ */
++#define I915_PARAM_VM_BIND_VERSION	58
 +
-+		igt_assert(opts->ctx);
-+		for_each_ctx_engine(fd, opts->ctx, engine) {
-+			if (opts->flags & IGT_SPIN_POLL_RUN &&
-+			    !gem_class_can_store_dword(fd, engine->class))
-+				continue;
++#define DRM_I915_GEM_EXECBUFFER3_EXT_TIMELINE_FENCES 0
 +
-+			flags[nengine++] = engine->flags;
-+		}
-+	} else {
-+		flags[nengine++] = opts->engine;
-+	}
-+	igt_require(nengine);
-+	spin->nengines = nengine;
++/**
++ * struct drm_i915_gem_timeline_fence - An input or output timeline fence.
++ *
++ * The operation will wait for input fence to signal.
++ *
++ * The returned output fence will be signaled after the completion of the
++ * operation.
++ */
++struct drm_i915_gem_timeline_fence {
++	/** @handle: User's handle for a drm_syncobj to wait on or signal. */
++	__u32 handle;
 +
-+	obj[BATCH].handle =
-+		handle_create(fd, BATCH_SIZE, opts->flags, &spin->batch);
-+	if (!spin->batch) {
-+		spin->batch = gem_mmap__device_coherent(fd, obj[BATCH].handle,
-+						  0, BATCH_SIZE, PROT_WRITE);
-+		gem_set_domain(fd, obj[BATCH].handle,
-+			       I915_GEM_DOMAIN_GTT, I915_GEM_DOMAIN_GTT);
-+	}
-+	cs = spin->batch;
-+
-+	addr = intel_allocator_alloc_with_strategy(ahnd, obj[BATCH].handle,
-+						   BATCH_SIZE, 0,
-+						   ALLOC_STRATEGY_LOW_TO_HIGH);
-+	obj[BATCH].offset = CANONICAL(addr);
-+	i915_vm_bind(fd, opts->vm_id, obj[BATCH].offset, obj[BATCH].handle, 0, BATCH_SIZE, 0, 0, 0);
-+
-+	execbuf3->batch_address = obj[BATCH].offset;
-+	addr += BATCH_SIZE;
-+
-+	if (opts->dependency) {
-+		igt_assert(!(opts->flags & IGT_SPIN_POLL_RUN));
-+		addr_scratch = intel_allocator_alloc_with_strategy(ahnd, opts->dependency,
-+								   BATCH_SIZE, 0,
-+								   ALLOC_STRATEGY_LOW_TO_HIGH);
-+
-+		obj[SCRATCH].handle = opts->dependency;
-+		obj[SCRATCH].offset = CANONICAL(addr_scratch);
-+		i915_vm_bind(fd, opts->vm_id, obj[SCRATCH].offset, obj[SCRATCH].handle, 0, BATCH_SIZE, 0, 0, 0);
-+	} else if (opts->flags & IGT_SPIN_POLL_RUN) {
-+		igt_assert(!opts->dependency);
-+
-+		spin->poll_handle =
-+			handle_create(fd, 4096, opts->flags, &spin->poll);
-+		obj[SCRATCH].handle = spin->poll_handle;
-+
-+		if (!spin->poll) {
-+			if (__gem_set_caching(fd, spin->poll_handle,
-+					      I915_CACHING_CACHED) == 0)
-+				spin->poll = gem_mmap__cpu(fd, spin->poll_handle,
-+							   0, 4096,
-+							   PROT_READ | PROT_WRITE);
-+			else
-+				spin->poll = gem_mmap__device_coherent(fd,
-+								       spin->poll_handle,
-+								       0, 4096,
-+								       PROT_READ | PROT_WRITE);
-+		}
-+
-+		addr = intel_allocator_alloc_with_strategy(ahnd,
-+							   spin->poll_handle,
-+							   BATCH_SIZE * 3, 0,
-+							   ALLOC_STRATEGY_LOW_TO_HIGH);
-+		addr += 4096; /* guard page */
-+		obj[SCRATCH].offset = CANONICAL(addr);
-+		i915_vm_bind(fd, opts->vm_id, obj[SCRATCH].offset, obj[SCRATCH].handle, 0, 4096, 0, 0, 0);
-+		addr += 4096;
-+
-+		igt_assert_eq(spin->poll[SPIN_POLL_START_IDX], 0);
-+
-+		presumed_offset = obj[SCRATCH].offset;
-+		delta = sizeof(uint32_t) * SPIN_POLL_START_IDX;
-+
-+		*cs++ = MI_STORE_DWORD_IMM | (gen < 6 ? 1 << 22 : 0);
-+
-+		if (gen >= 8) {
-+			*cs++ = presumed_offset + delta;
-+			*cs++ = (presumed_offset + delta) >> 32;
-+		}
-+
-+		*cs++ = 1;
-+	}
-+
-+	spin->handle = obj[BATCH].handle;
-+
-+	igt_assert_lt(cs - spin->batch, LOOP_START_OFFSET / sizeof(*cs));
-+	spin->condition = spin->batch + LOOP_START_OFFSET / sizeof(*cs);
-+	cs = spin->condition;
-+
-+	/* Allow ourselves to be preempted */
-+	if (!(opts->flags & IGT_SPIN_NO_PREEMPTION))
-+		*cs++ = MI_ARB_CHK;
-+	if (opts->flags & IGT_SPIN_INVALID_CS) {
-+		igt_assert(opts->ctx);
-+		if (!gem_engine_has_cmdparser(fd, &opts->ctx->cfg, opts->engine))
-+			*cs++ = 0xdeadbeef;
-+	}
-+
-+	/* Pad with a few nops so that we do not completely hog the system.
++	/**
++	 * @flags: Supported flags are:
 +	 *
-+	 * Part of the attraction of using a recursive batch is that it is
-+	 * hard on the system (executing the "function" call is apparently
-+	 * quite expensive). However, the GPU may hog the entire system for
-+	 * a few minutes, preventing even NMI. Quite why this is so is unclear,
-+	 * but presumably it relates to the PM_INTRMSK workaround on gen6/gen7.
-+	 * If we give the system a break by having the GPU execute a few nops
-+	 * between function calls, that appears enough to keep SNB out of
-+	 * trouble. See https://bugs.freedesktop.org/show_bug.cgi?id=102262
-+	 */
-+	if (!(opts->flags & IGT_SPIN_FAST))
-+		cs += 960;
-+
-+	/*
-+	 * When using a cmdparser, the batch is copied into a read only location
-+	 * and validated. We are then unable to alter the executing batch,
-+	 * breaking the older *spin->condition = MI_BB_END termination.
-+	 * Instead we can use a conditional MI_BB_END here that looks at
-+	 * the user's copy of the batch and terminates when they modified it,
-+	 * no matter how they modify it (from either the GPU or CPU).
++	 * I915_TIMELINE_FENCE_WAIT:
++	 * Wait for the input fence before the operation.
 +	 *
-+	 * On Sandybridge+ the comparison is a strict greater-than:
-+	 * if the value at spin->condition is greater than BB_END,
-+	 * we loop back to the beginning.
-+	 * Beginning with Kabylake, we can select the comparison mode
-+	 * and loop back to the beginning if spin->condition != BB_END
-+	 * (using 5 << 12).
-+	 * For simplicity, we try to stick to a one-size fits all.
++	 * I915_TIMELINE_FENCE_SIGNAL:
++	 * Return operation completion fence as output.
 +	 */
-+	spin->condition = spin->batch + BATCH_SIZE / sizeof(*spin->batch) - 2;
-+	spin->condition[0] = 0xffffffff;
-+	spin->condition[1] = 0xffffffff;
++	__u32 flags;
++#define I915_TIMELINE_FENCE_WAIT            (1 << 0)
++#define I915_TIMELINE_FENCE_SIGNAL          (1 << 1)
++#define __I915_TIMELINE_FENCE_UNKNOWN_FLAGS (-(I915_TIMELINE_FENCE_SIGNAL << 1))
 +
-+	presumed_offset = obj[BATCH].offset;
-+	delta = (spin->condition - spin->batch) * sizeof(*cs);
-+	igt_assert(delta < 4096);
-+
-+	*cs++ = MI_COND_BATCH_BUFFER_END | MI_DO_COMPARE | 2;
-+	*cs++ = MI_BATCH_BUFFER_END;
-+	*cs++ = presumed_offset + delta;
-+	*cs++ = presumed_offset >> 32;
-+
-+	/* recurse */
-+	presumed_offset = obj[BATCH].offset;
-+	delta = LOOP_START_OFFSET;
-+
-+	if (gen >= 8) {
-+		*cs++ = MI_BATCH_BUFFER_START | 1 << 8 | 1;
-+		*cs++ = presumed_offset + delta;
-+		*cs++ = (presumed_offset + delta) >> 32;
-+	}
-+
-+	out_fence = memset(&spin->exec3_out_syncobj, 0, sizeof(*out_fence));
-+	out_fence->flags = I915_TIMELINE_FENCE_SIGNAL;
-+	execbuf3->fence_count = 1;
-+	for (i = 0; i < nengine; i++) {
-+		spin->out_syncobj[i] = syncobj_create(fd, 0);
-+		out_fence->handle = spin->out_syncobj[i];
-+
-+		execbuf3->engine_idx = flags[i];
-+		execbuf3->timeline_fences = to_user_pointer(out_fence);
-+
-+		gem_execbuf3(fd, execbuf3);
-+	}
-+
-+	igt_assert_lt(cs - spin->batch, BATCH_SIZE / sizeof(*cs));
-+
-+	spin->cmd_precondition = *spin->condition;
-+	spin->opts = *opts;
-+
-+	return fence_fd;
-+}
-+
- static igt_spin_t *
- spin_create(int fd, const struct igt_spin_factory *opts)
- {
-@@ -435,8 +645,10 @@ spin_create(int fd, const struct igt_spin_factory *opts)
- 	igt_assert(spin);
- 
- 	spin->timerfd = -1;
--	spin->out_fence = emit_recursive_batch(spin, fd, opts);
--
-+	if (opts->flags & IGT_SPIN_EXECBUF3)
-+		emit_recursive_batch_execbuf3(spin, fd, opts);
-+	else
-+		spin->out_fence = emit_recursive_batch(spin, fd, opts);
- 	pthread_mutex_lock(&list_lock);
- 	igt_list_add(&spin->link, &spin_list);
- 	pthread_mutex_unlock(&list_lock);
-@@ -466,6 +678,7 @@ igt_spin_t *
- igt_spin_factory(int fd, const struct igt_spin_factory *opts)
- {
- 	igt_spin_t *spin;
-+	int i = 0;
- 
- 	if ((opts->flags & IGT_SPIN_POLL_RUN) && opts->engine != ALL_ENGINES) {
- 		unsigned int class;
-@@ -483,11 +696,17 @@ igt_spin_factory(int fd, const struct igt_spin_factory *opts)
- 
- 	spin = spin_create(fd, opts);
- 
--	if (!(opts->flags & IGT_SPIN_INVALID_CS)) {
--		/*
--		 * When injecting invalid CS into the batch, the spinner may
--		 * be killed immediately -- i.e. may already be completed!
--		 */
-+	/*
-+	 * When injecting invalid CS into the batch, the spinner may
-+	 * be killed immediately -- i.e. may already be completed!
++	/**
++	 * @value: A point in the timeline.
++	 * Value must be 0 for a binary drm_syncobj. A Value of 0 for a
++	 * timeline drm_syncobj is invalid as it turns a drm_syncobj into a
++	 * binary one.
 +	 */
-+	if (opts->flags & IGT_SPIN_INVALID_CS)
-+		return spin;
++	__u64 value;
++};
 +
-+	if (opts->flags & IGT_SPIN_EXECBUF3) {
-+		while (spin->out_syncobj[i])
-+			igt_assert(syncobj_busy(fd, spin->out_syncobj[i++]));
-+	} else {
- 		igt_assert(gem_bo_busy(fd, spin->handle));
- 		if (opts->flags & IGT_SPIN_FENCE_OUT) {
- 			struct pollfd pfd = { spin->out_fence, POLLIN };
-@@ -597,6 +816,8 @@ void igt_spin_end(igt_spin_t *spin)
- 
- static void __igt_spin_free(int fd, igt_spin_t *spin)
- {
-+	int i = 0;
++/**
++ * struct drm_i915_gem_execbuffer3 - Structure for DRM_I915_GEM_EXECBUFFER3
++ * ioctl.
++ *
++ * DRM_I915_GEM_EXECBUFFER3 ioctl only works in VM_BIND mode and VM_BIND mode
++ * only works with this ioctl for submission.
++ * See I915_VM_CREATE_FLAGS_USE_VM_BIND.
++ */
++struct drm_i915_gem_execbuffer3 {
++	/**
++	 * @ctx_id: Context id
++	 *
++	 * Only contexts with user engine map are allowed.
++	 */
++	__u32 ctx_id;
 +
- 	if (spin->timerfd >= 0) {
- 		pthread_cancel(spin->timer_thread);
- 		igt_assert(pthread_join(spin->timer_thread, NULL) == 0);
-@@ -610,6 +831,10 @@ static void __igt_spin_free(int fd, igt_spin_t *spin)
- 	if (spin->batch)
- 		gem_munmap(spin->batch, BATCH_SIZE);
- 
-+	if ((spin->poll_handle || spin->opts.dependency) &&
-+	    (spin->opts.flags & IGT_SPIN_EXECBUF3))
-+		i915_vm_unbind(fd, spin->opts.vm_id, spin->obj[SCRATCH].offset, 4096);
++	/**
++	 * @engine_idx: Engine index
++	 *
++	 * An index in the user engine map of the context specified by @ctx_id.
++	 */
++	__u32 engine_idx;
 +
- 	if (spin->poll_handle) {
- 		gem_close(fd, spin->poll_handle);
- 		if (spin->opts.ahnd)
-@@ -617,6 +842,9 @@ static void __igt_spin_free(int fd, igt_spin_t *spin)
- 	}
- 
- 	if (spin->handle) {
-+		if (spin->opts.flags & IGT_SPIN_EXECBUF3)
-+			i915_vm_unbind(fd, spin->opts.vm_id, spin->obj[BATCH].offset, BATCH_SIZE);
++	/**
++	 * @batch_address: Batch gpu virtual address/es.
++	 *
++	 * For normal submission, it is the gpu virtual address of the batch
++	 * buffer. For parallel submission, it is a pointer to an array of
++	 * batch buffer gpu virtual addresses with array size equal to the
++	 * number of (parallel) engines involved in that submission (See
++	 * struct i915_context_engines_parallel_submit).
++	 */
++	__u64 batch_address;
 +
- 		gem_close(fd, spin->handle);
- 		if (spin->opts.ahnd)
- 			intel_allocator_free(spin->opts.ahnd, spin->handle);
-@@ -625,6 +853,9 @@ static void __igt_spin_free(int fd, igt_spin_t *spin)
- 	if (spin->out_fence >= 0)
- 		close(spin->out_fence);
- 
-+	while (spin->out_syncobj[i])
-+		syncobj_destroy(fd, spin->out_syncobj[i++]);
++	/** @flags: Currently reserved, MBZ */
++	__u64 flags;
++#define __I915_EXEC3_UNKNOWN_FLAGS (~0ull)
 +
- 	free(spin);
++	/** @fence_count: Number of fences in @timeline_fences array. */
++	__u64 fence_count;
++
++	/**
++	 * @timeline_fences: Pointer to an array of timeline fences.
++	 *
++	 * Timeline fences are of format struct drm_i915_gem_timeline_fence.
++	 */
++	__u64 timeline_fences;
++
++	/** @rsvd: Reserved, MBZ */
++	__u64 rsvd;
++
++	/**
++	 * @extensions: Zero-terminated chain of extensions.
++	 *
++	 * For future extensions. See struct i915_user_extension.
++	 */
++	__u64 extensions;
++};
++
++/*
++ * If I915_VM_CREATE_FLAGS_USE_VM_BIND flag is set, VM created will work in
++ * VM_BIND mode
++ */
++#define I915_VM_CREATE_FLAGS_USE_VM_BIND	(1u << 0)
++
++/*
++ * For I915_GEM_CREATE_EXT_VM_PRIVATE usage see
++ * struct drm_i915_gem_create_ext_vm_private.
++ */
++#define I915_GEM_CREATE_EXT_VM_PRIVATE 2
++
++/**
++ * struct drm_i915_gem_create_ext_vm_private - Extension to make the object
++ * private to the specified VM.
++ *
++ * See struct drm_i915_gem_create_ext.
++ *
++ * By default, BOs can be mapped on multiple VMs and can also be dma-buf
++ * exported. Hence these BOs are referred to as Shared BOs.
++ * During each execbuf3 submission, the request fence must be added to the
++ * dma-resv fence list of all shared BOs mapped on the VM.
++ *
++ * Unlike Shared BOs, these VM private BOs can only be mapped on the VM they
++ * are private to and can't be dma-buf exported. All private BOs of a VM share
++ * the dma-resv object. Hence during each execbuf3 submission, they need only
++ * one dma-resv fence list updated. Thus, the fast path (where required
++ * mappings are already bound) submission latency is O(1) w.r.t the number of
++ * VM private BOs.
++ */
++struct drm_i915_gem_create_ext_vm_private {
++	/** @base: Extension link. See struct i915_user_extension. */
++	struct i915_user_extension base;
++
++	/** @vm_id: Id of the VM to which Object is private */
++	__u32 vm_id;
++
++	/** @rsvd: Reserved, MBZ */
++	__u32 rsvd;
++};
++
++/**
++ * struct drm_i915_gem_vm_bind - VA to object mapping to bind.
++ *
++ * This structure is passed to VM_BIND ioctl and specifies the mapping of GPU
++ * virtual address (VA) range to the section of an object that should be bound
++ * in the device page table of the specified address space (VM).
++ * The VA range specified must be unique (ie., not currently bound) and can
++ * be mapped to whole object or a section of the object (partial binding).
++ * Multiple VA mappings can be created to the same section of the object
++ * (aliasing).
++ *
++ * The @start, @offset and @length must be 4K page aligned. However the DG2
++ * and XEHPSDV has 64K page size for device local memory and has compact page
++ * table. On those platforms, for binding device local-memory objects, the
++ * @start, @offset and @length must be 64K aligned.
++ *
++ * Error code -EINVAL will be returned if @start, @offset and @length are not
++ * properly aligned. In version 1 (See I915_PARAM_VM_BIND_VERSION), error code
++ * -ENOSPC will be returned if the VA range specified can't be reserved.
++ *
++ * VM_BIND/UNBIND ioctl calls executed on different CPU threads concurrently
++ * are not ordered. Furthermore, parts of the VM_BIND operation can be done
++ * asynchronously, if valid @fence is specified.
++ */
++struct drm_i915_gem_vm_bind {
++	/** @vm_id: VM (address space) id to bind */
++	__u32 vm_id;
++
++	/** @handle: Object handle */
++	__u32 handle;
++
++	/** @start: Virtual Address start to bind */
++	__u64 start;
++
++	/** @offset: Offset in object to bind */
++	__u64 offset;
++
++	/** @length: Length of mapping to bind */
++	__u64 length;
++
++	/**
++	 * @flags: Supported flags are:
++	 *
++	 * I915_GEM_VM_BIND_CAPTURE:
++	 * Capture this mapping in the dump upon GPU error.
++	 * CONFIG_DRM_I915_CAPTURE_ERROR should be enabled for valid capture.
++	 *
++	 * Note that @fence carries its own flags.
++	 */
++	__u64 flags;
++#define I915_GEM_VM_BIND_CAPTURE           (1ull << 0)
++#define __I915_GEM_VM_BIND_UNKNOWN_FLAGS   (-(I915_GEM_VM_BIND_CAPTURE << 1))
++
++	/** @rsvd: Reserved, MBZ */
++	__u64 rsvd[2];
++
++	/**
++	 * @fence: Timeline fence for bind completion signaling.
++	 *
++	 * Timeline fence is of format struct drm_i915_gem_timeline_fence.
++	 *
++	 * It is an out fence, hence using I915_TIMELINE_FENCE_WAIT flag
++	 * is invalid, and an error will be returned.
++	 *
++	 * If I915_TIMELINE_FENCE_SIGNAL flag is not set, then out fence
++	 * is not requested and binding is completed synchronously.
++	 */
++	struct drm_i915_gem_timeline_fence fence;
++
++	/**
++	 * @extensions: Zero-terminated chain of extensions.
++	 *
++	 * For future extensions. See struct i915_user_extension.
++	 */
++	__u64 extensions;
++};
++
++/**
++ * struct drm_i915_gem_vm_unbind - VA to object mapping to unbind.
++ *
++ * This structure is passed to VM_UNBIND ioctl and specifies the GPU virtual
++ * address (VA) range that should be unbound from the device page table of the
++ * specified address space (VM). VM_UNBIND will force unbind the specified
++ * range from device page table without waiting for any GPU job to complete.
++ * It is UMDs responsibility to ensure the mapping is no longer in use before
++ * calling VM_UNBIND.
++ *
++ * If the specified mapping is not found, the ioctl will simply return without
++ * any error.
++ *
++ * VM_BIND/UNBIND ioctl calls executed on different CPU threads concurrently
++ * are not ordered. Furthermore, parts of the VM_UNBIND operation can be done
++ * asynchronously.
++ */
++struct drm_i915_gem_vm_unbind {
++	/** @vm_id: VM (address space) id to bind */
++	__u32 vm_id;
++
++	/** @pad: padding, MBZ */
++	__u32 pad;
++
++	/** @start: Virtual Address start to unbind */
++	__u64 start;
++
++	/** @length: Length of mapping to unbind */
++	__u64 length;
++
++	/** @flags: Currently reserved, MBZ. */
++	__u64 flags;
++#define __I915_GEM_VM_UNBIND_UNKNOWN_FLAGS (~0ull)
++
++	/** @rsvd: Reserved, MBZ */
++	__u64 rsvd[2];
++
++	/**
++	 * @extensions: Zero-terminated chain of extensions.
++	 *
++	 * For future extensions. See struct i915_user_extension.
++	 */
++	__u64 extensions;
++};
++
+ #if defined(__cplusplus)
  }
- 
-diff --git a/lib/igt_dummyload.h b/lib/igt_dummyload.h
-index b247ab02b..4420daa2e 100644
---- a/lib/igt_dummyload.h
-+++ b/lib/igt_dummyload.h
-@@ -31,6 +31,7 @@
- #include "igt_core.h"
- #include "igt_list.h"
- #include "i915_drm.h"
-+#include "i915/i915_drm_local.h"
- #include "intel_ctx.h"
- 
- 
-@@ -48,6 +49,7 @@
- typedef struct igt_spin_factory {
- 	uint32_t ctx_id;
- 	const intel_ctx_t *ctx;
-+	uint32_t vm_id;
- 	uint32_t dependency;
- 	uint64_t dependency_size;
- 	unsigned int engine;
-@@ -79,6 +81,11 @@ typedef struct igt_spin {
- #define IGT_SPIN_BATCH   1
- 	struct drm_i915_gem_execbuffer2 execbuf;
- 
-+	struct drm_i915_gem_execbuffer3 execbuf3;
-+	uint32_t out_syncobj[GEM_MAX_ENGINES];
-+	struct drm_i915_gem_timeline_fence exec3_out_syncobj;
-+	unsigned int nengines;
-+
- 	unsigned int flags;
- #define SPIN_CLFLUSH (1 << 0)
- 
-@@ -95,6 +102,7 @@ typedef struct igt_spin {
- #define IGT_SPIN_INVALID_CS    (1 << 6)
- #define IGT_SPIN_USERPTR       (1 << 7)
- #define IGT_SPIN_SOFTDEP       (1 << 8)
-+#define IGT_SPIN_EXECBUF3      (1 << 9)
- 
- igt_spin_t *
- __igt_spin_factory(int fd, const igt_spin_factory_t *opts);
+ #endif
 -- 
 2.21.0.rc0.32.g243a4c7e27
