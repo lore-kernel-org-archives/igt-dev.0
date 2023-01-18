@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: text/plain; charset="utf-8"
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5475B10E817
+ for <igt-dev@lists.freedesktop.org>; Wed, 18 Jan 2023 20:08:20 +0000 (UTC)
+From: Jonathan Cavitt <jonathan.cavitt@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Wed, 18 Jan 2023 12:03:44 -0800
+Message-Id: <20230118200344.795326-1-jonathan.cavitt@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Swati Sharma" <swati2.sharma@intel.com>
-Date: Wed, 18 Jan 2023 20:02:48 -0000
-Message-ID: <167407216845.3605.16498663996117255542@emeril.freedesktop.org>
-References: <20230118165017.32078-1-swati2.sharma@intel.com>
-In-Reply-To: <20230118165017.32078-1-swati2.sharma@intel.com>
-Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_t?=
- =?utf-8?q?ests/i915/kms=5Fdsc=3A_Reorg?=
+Subject: [igt-dev] [PATCH i-g-t] lib/igt_kmod: Allow some leeway in
+ igt_kmod_unload_r
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,243 +17,94 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
+Cc: chris.p.wilson@linux.intel.com, jonathan.cavitt@intel.com,
+ sandeep.kumar.parupalli@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-== Series Details ==
+kmod_module_remove_module occasionally returns EAGAIN for mei_gsc
+in the setup of some gem_lmem_swapping subtests.  Just because
+EAGAIN is returned doesn't mean the module is lost and unable to
+be unloaded.  Try again some number of times (currently 20) before
+giving up.
 
-Series: tests/i915/kms_dsc: Reorg
-URL   : https://patchwork.freedesktop.org/series/113045/
-State : warning
+Retries will occur for -EBUSY and -EAGAIN, as these imply the
+system is waiting for the target module can simply be waited for.
+All other errors exit immediately, but as the context for each
+error informs their relative severity, no warnings will be issued.
 
-== Summary ==
+Signed-off-by: Jonathan Cavitt <jonathan.cavitt@intel.com>
+CC: Stuart Summers <stuart.summers@intel.com>
+CC: Sandeep Kumar Parupalli <sandeep.kumar.parupalli@intel.com>
+CC: Chris Wilson <chris.p.wilson@linux.intel.com>
+Reviewed-by: Chris Wilson <chris.p.wilson@linux.intel.com>
+---
+ lib/igt_kmod.c | 37 ++++++++++++++++++++++++++++++++++---
+ 1 file changed, 34 insertions(+), 3 deletions(-)
 
-Pipeline status: FAILED.
-
-see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/787232 for the overview.
-
-build:tests-debian-meson has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/34974416):
-  /usr/include/xf86drmMode.h:533:2: error: unknown type name ‘uint32_t’
-    uint32_t lessees[0];
-    ^~~~~~~~
-  /usr/include/xf86drmMode.h:539:2: error: unknown type name ‘uint32_t’
-    uint32_t count;
-    ^~~~~~~~
-  /usr/include/xf86drmMode.h:540:2: error: unknown type name ‘uint32_t’
-    uint32_t objects[0];
-    ^~~~~~~~
-  /usr/include/xf86drmMode.h:545:39: error: unknown type name ‘uint32_t’; did you mean ‘intptr_t’?
-   extern int drmModeRevokeLease(int fd, uint32_t lessee_id);
-                                         ^~~~~~~~
-                                         intptr_t
-  ninja: build stopped: subcommand failed.
-  section_end:1674072018:step_script
-  section_start:1674072018:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1674072018:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-  
-
-build:tests-debian-meson-arm64 has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/34974419):
-  /usr/include/xf86drmMode.h:533:2: error: unknown type name ‘uint32_t’
-    uint32_t lessees[0];
-    ^~~~~~~~
-  /usr/include/xf86drmMode.h:539:2: error: unknown type name ‘uint32_t’
-    uint32_t count;
-    ^~~~~~~~
-  /usr/include/xf86drmMode.h:540:2: error: unknown type name ‘uint32_t’
-    uint32_t objects[0];
-    ^~~~~~~~
-  /usr/include/xf86drmMode.h:545:39: error: unknown type name ‘uint32_t’; did you mean ‘intptr_t’?
-   extern int drmModeRevokeLease(int fd, uint32_t lessee_id);
-                                         ^~~~~~~~
-                                         intptr_t
-  ninja: build stopped: subcommand failed.
-  section_end:1674072034:step_script
-  section_start:1674072034:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1674072035:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-  
-
-build:tests-debian-meson-armhf has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/34974418):
-  /usr/include/xf86drmMode.h:533:2: error: unknown type name ‘uint32_t’
-    uint32_t lessees[0];
-    ^~~~~~~~
-  /usr/include/xf86drmMode.h:539:2: error: unknown type name ‘uint32_t’
-    uint32_t count;
-    ^~~~~~~~
-  /usr/include/xf86drmMode.h:540:2: error: unknown type name ‘uint32_t’
-    uint32_t objects[0];
-    ^~~~~~~~
-  /usr/include/xf86drmMode.h:545:39: error: unknown type name ‘uint32_t’; did you mean ‘intptr_t’?
-   extern int drmModeRevokeLease(int fd, uint32_t lessee_id);
-                                         ^~~~~~~~
-                                         intptr_t
-  ninja: build stopped: subcommand failed.
-  section_end:1674072031:step_script
-  section_start:1674072031:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1674072031:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-  
-
-build:tests-debian-meson-mips has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/34974420):
-  /usr/include/xf86drmMode.h:533:2: error: unknown type name ‘uint32_t’
-    uint32_t lessees[0];
-    ^~~~~~~~
-  /usr/include/xf86drmMode.h:539:2: error: unknown type name ‘uint32_t’
-    uint32_t count;
-    ^~~~~~~~
-  /usr/include/xf86drmMode.h:540:2: error: unknown type name ‘uint32_t’
-    uint32_t objects[0];
-    ^~~~~~~~
-  /usr/include/xf86drmMode.h:545:39: error: unknown type name ‘uint32_t’; did you mean ‘intptr_t’?
-   extern int drmModeRevokeLease(int fd, uint32_t lessee_id);
-                                         ^~~~~~~~
-                                         intptr_t
-  ninja: build stopped: subcommand failed.
-  section_end:1674072032:step_script
-  section_start:1674072032:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1674072033:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-  
-
-build:tests-debian-minimal has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/34974417):
-  /usr/include/xf86drmMode.h:533:2: error: unknown type name ‘uint32_t’
-    uint32_t lessees[0];
-    ^~~~~~~~
-  /usr/include/xf86drmMode.h:539:2: error: unknown type name ‘uint32_t’
-    uint32_t count;
-    ^~~~~~~~
-  /usr/include/xf86drmMode.h:540:2: error: unknown type name ‘uint32_t’
-    uint32_t objects[0];
-    ^~~~~~~~
-  /usr/include/xf86drmMode.h:545:39: error: unknown type name ‘uint32_t’; did you mean ‘intptr_t’?
-   extern int drmModeRevokeLease(int fd, uint32_t lessee_id);
-                                         ^~~~~~~~
-                                         intptr_t
-  ninja: build stopped: subcommand failed.
-  section_end:1674072017:step_script
-  section_start:1674072017:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1674072017:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-  
-
-build:tests-fedora has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/34974411):
-        |  ^~~~~~~~
-  /usr/include/xf86drmMode.h:533:2: error: unknown type name ‘uint32_t’
-    533 |  uint32_t lessees[0];
-        |  ^~~~~~~~
-  /usr/include/xf86drmMode.h:539:2: error: unknown type name ‘uint32_t’
-    539 |  uint32_t count;
-        |  ^~~~~~~~
-  /usr/include/xf86drmMode.h:540:2: error: unknown type name ‘uint32_t’
-    540 |  uint32_t objects[0];
-        |  ^~~~~~~~
-  /usr/include/xf86drmMode.h:545:39: error: unknown type name ‘uint32_t’
-    545 | extern int drmModeRevokeLease(int fd, uint32_t lessee_id);
-        |                                       ^~~~~~~~
-  ninja: build stopped: subcommand failed.
-  section_end:1674072018:step_script
-  section_start:1674072018:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1674072020:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-  
-
-build:tests-fedora-clang has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/34974415):
-          uint32_t bpp;
-          ^
-  /usr/include/xf86drmMode.h:221:2: error: unknown type name 'uint32_t'
-          uint32_t depth;
-          ^
-  /usr/include/xf86drmMode.h:223:2: error: unknown type name 'uint32_t'
-          uint32_t handle;
-          ^
-  /usr/include/xf86drmMode.h:229:2: error: unknown type name 'uint32_t'
-          uint32_t id;
-          ^
-  fatal error: too many errors emitted, stopping now [-ferror-limit=]
-  20 errors generated.
-  ninja: build stopped: subcommand failed.
-  section_end:1674072021:step_script
-  section_start:1674072021:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1674072021:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-  
-
-build:tests-fedora-no-libdrm-nouveau has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/34974414):
-        |  ^~~~~~~~
-  /usr/include/xf86drmMode.h:533:2: error: unknown type name ‘uint32_t’
-    533 |  uint32_t lessees[0];
-        |  ^~~~~~~~
-  /usr/include/xf86drmMode.h:539:2: error: unknown type name ‘uint32_t’
-    539 |  uint32_t count;
-        |  ^~~~~~~~
-  /usr/include/xf86drmMode.h:540:2: error: unknown type name ‘uint32_t’
-    540 |  uint32_t objects[0];
-        |  ^~~~~~~~
-  /usr/include/xf86drmMode.h:545:39: error: unknown type name ‘uint32_t’
-    545 | extern int drmModeRevokeLease(int fd, uint32_t lessee_id);
-        |                                       ^~~~~~~~
-  ninja: build stopped: subcommand failed.
-  section_end:1674072019:step_script
-  section_start:1674072019:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1674072020:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-  
-
-build:tests-fedora-no-libunwind has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/34974412):
-        |  ^~~~~~~~
-  /usr/include/xf86drmMode.h:533:2: error: unknown type name ‘uint32_t’
-    533 |  uint32_t lessees[0];
-        |  ^~~~~~~~
-  /usr/include/xf86drmMode.h:539:2: error: unknown type name ‘uint32_t’
-    539 |  uint32_t count;
-        |  ^~~~~~~~
-  /usr/include/xf86drmMode.h:540:2: error: unknown type name ‘uint32_t’
-    540 |  uint32_t objects[0];
-        |  ^~~~~~~~
-  /usr/include/xf86drmMode.h:545:39: error: unknown type name ‘uint32_t’
-    545 | extern int drmModeRevokeLease(int fd, uint32_t lessee_id);
-        |                                       ^~~~~~~~
-  ninja: build stopped: subcommand failed.
-  section_end:1674072020:step_script
-  section_start:1674072020:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1674072021:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-  
-
-build:tests-fedora-oldest-meson has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/34974413):
-        |  ^~~~~~~~
-  /usr/include/xf86drmMode.h:533:2: error: unknown type name ‘uint32_t’
-    533 |  uint32_t lessees[0];
-        |  ^~~~~~~~
-  /usr/include/xf86drmMode.h:539:2: error: unknown type name ‘uint32_t’
-    539 |  uint32_t count;
-        |  ^~~~~~~~
-  /usr/include/xf86drmMode.h:540:2: error: unknown type name ‘uint32_t’
-    540 |  uint32_t objects[0];
-        |  ^~~~~~~~
-  /usr/include/xf86drmMode.h:545:39: error: unknown type name ‘uint32_t’
-    545 | extern int drmModeRevokeLease(int fd, uint32_t lessee_id);
-        |                                       ^~~~~~~~
-  ninja: build stopped: subcommand failed.
-  section_end:1674072018:step_script
-  section_start:1674072018:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1674072018:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-
-== Logs ==
-
-For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/787232
+diff --git a/lib/igt_kmod.c b/lib/igt_kmod.c
+index 17090110c..75f1a1035 100644
+--- a/lib/igt_kmod.c
++++ b/lib/igt_kmod.c
+@@ -253,8 +253,11 @@ out:
+ 
+ static int igt_kmod_unload_r(struct kmod_module *kmod, unsigned int flags)
+ {
++#define MAX_TRIES	20
++#define SLEEP_DURATION	500000
+ 	struct kmod_list *holders, *pos;
+-	int err = 0;
++	int err, tries;
++	const char *mod_name = kmod_module_get_name(kmod);
+ 
+ 	holders = kmod_module_get_holders(kmod);
+ 	kmod_list_foreach(pos, holders) {
+@@ -269,7 +272,6 @@ static int igt_kmod_unload_r(struct kmod_module *kmod, unsigned int flags)
+ 		return err;
+ 
+ 	if (igt_kmod_is_loading(kmod)) {
+-		const char *mod_name = kmod_module_get_name(kmod);
+ 		igt_debug("%s still initializing\n", mod_name);
+ 		err = igt_wait(!igt_kmod_is_loading(kmod), 10000, 100);
+ 		if (err < 0) {
+@@ -279,7 +281,36 @@ static int igt_kmod_unload_r(struct kmod_module *kmod, unsigned int flags)
+ 		}
+ 	}
+ 
+-	return kmod_module_remove_module(kmod, flags);
++	for (tries = 0; tries < MAX_TRIES; tries++) {
++		err = kmod_module_remove_module(kmod, flags);
++
++		/* Only loop in the following cases */
++		if (err != -EBUSY && err != -EAGAIN)
++			break;
++
++		igt_debug("Module %s failed to unload with err: %d on attempt: %i\n",
++			  mod_name, err, tries + 1);
++
++		if (tries < MAX_TRIES - 1)
++			usleep(SLEEP_DURATION);
++	}
++
++	if (err == -ENOENT)
++		igt_debug("Module %s could not be found or does not exist. err: %d\n",
++			  mod_name, err);
++	else if (err == -ENOTSUP)
++		igt_debug("Module %s cannot be unloaded. err: %d\n",
++			  mod_name, err);
++	else if (err)
++		igt_debug("Module %s failed to unload with err: %d after ~%.1fms\n",
++			  mod_name, err, SLEEP_DURATION*tries/1000.);
++	else if (tries)
++		igt_debug("Module %s unload took ~%.1fms over %i attempts\n",
++			  mod_name, SLEEP_DURATION*tries/1000., tries + 1);
++	else
++		igt_debug("Module %s unloaded immediately\n", mod_name);
++
++	return err;
+ }
+ 
+ /**
+-- 
+2.25.1
