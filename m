@@ -1,17 +1,22 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Message-ID: <a369e472-6f67-0013-8ab1-246493a45e29@linux.intel.com>
-Date: Wed, 18 Jan 2023 10:33:10 +0100
-MIME-Version: 1.0
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0B89710E628
+ for <igt-dev@lists.freedesktop.org>; Wed, 18 Jan 2023 10:12:58 +0000 (UTC)
+From: "B, Jeevan" <jeevan.b@intel.com>
+To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+Date: Wed, 18 Jan 2023 10:12:54 +0000
+Message-ID: <DM4PR11MB63121D5BDADC693EA11AAE1990C79@DM4PR11MB6312.namprd11.prod.outlook.com>
+References: <20230113091041.27032-1-jeevan.b@intel.com>
+ <20230113091041.27032-2-jeevan.b@intel.com>
+ <20230116191511.pvke5kkdn7hyiadu@kamilkon-desk1>
+In-Reply-To: <20230116191511.pvke5kkdn7hyiadu@kamilkon-desk1>
 Content-Language: en-US
-To: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>,
- igt-dev@lists.freedesktop.org, Intel-gfx@lists.freedesktop.org
-References: <20221222100403.256775-1-tvrtko.ursulin@linux.intel.com>
-From: "Das, Nirmoy" <nirmoy.das@linux.intel.com>
-In-Reply-To: <20221222100403.256775-1-tvrtko.ursulin@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/gem_mmap_gtt: add test
- mmap_closed_bo
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Subject: Re: [igt-dev] [PATCH 1/2] lib/igt_draw: Use intel_get_uc_mocs to
+ get MOCS value
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,107 +24,45 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: "De Marchi,
+ Lucas" <lucas.demarchi@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-
-On 12/22/2022 11:04 AM, Tvrtko Ursulin wrote:
-> From: Chuansheng Liu <chuansheng.liu@intel.com>
->
-> Recently we figured out one memory leak in i915 driver when running
-> below alike test:
->
-> create_bo
-> gem_mmap_gtt bo
-> gem_mmap_gtt bo twice
-> close_bo
->
-> then the memory leak is detected. More details can be referred in
-> https://patchwork.freedesktop.org/patch/475802/?series=100532&rev=2
->
-> For detecting such issue, this test case mmap_closed_bo is created,
-> it will close the bo with keeping one mmap, then second mmap the bo,
-> in normal situation, we expect second mmap failure with EACCESS. But
-> it will succeed if driver has the vm_node allowance leak.
->
-> V2: (Tvrtko) some variable placement and comments tuning.
-> V3: (Tvrtko) Using igt_drop_caches_set(fd, DROP_FREED) directly.
-> v4: [tursulin] Fixed a conflict, added igt_describe.
->
-> Cc: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
-> Signed-off-by: Chuansheng Liu <chuansheng.liu@intel.com>
-> Reviewed-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
-> Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
-Reviewed-by: Nirmoy Das <nirmoy.das@intel.com>
-> ---
->   tests/i915/gem_mmap_gtt.c | 49 +++++++++++++++++++++++++++++++++++++++
->   1 file changed, 49 insertions(+)
->
-> diff --git a/tests/i915/gem_mmap_gtt.c b/tests/i915/gem_mmap_gtt.c
-> index c14ab50eeee7..68f5e8412af6 100644
-> --- a/tests/i915/gem_mmap_gtt.c
-> +++ b/tests/i915/gem_mmap_gtt.c
-> @@ -320,6 +320,52 @@ test_wc(int fd)
->   		     5*gtt_writes/256., 5*cpu_writes/256.);
->   }
->   
-> +static void mmap_closed_bo(int fd)
-> +{
-> +	int loop = 0;
-> +
-> +	while (loop++ < 2) {
-> +		struct drm_i915_gem_mmap_gtt mmap_arg;
-> +		void *p1, *p2;
-> +		int i = loop;
-> +
-> +		memset(&mmap_arg, 0, sizeof(mmap_arg));
-> +		mmap_arg.handle = gem_create(fd, OBJECT_SIZE);
-> +		igt_assert(mmap_arg.handle);
-> +
-> +		while (i--) {
-> +			/*
-> +			 * Get mmap offset by calling GEM_MMAP_GTT one or multiple times in
-> +			 * order to try to provoke a memory leak in the driver.
-> +			 */
-> +			do_ioctl(fd, DRM_IOCTL_I915_GEM_MMAP_GTT, &mmap_arg);
-> +		}
-> +
-> +		p1 = mmap64(0, OBJECT_SIZE, PROT_READ | PROT_WRITE,
-> +			MAP_SHARED, fd, mmap_arg.offset);
-> +		igt_assert(p1 != MAP_FAILED);
-> +
-> +		gem_close(fd, mmap_arg.handle);
-> +
-> +		/*
-> +		 * Drop the freed objects for consistent 2nd mmap result.
-> +		 */
-> +		igt_drop_caches_set(fd, DROP_FREED);
-> +
-> +		p2 = mmap64(0, OBJECT_SIZE, PROT_READ | PROT_WRITE,
-> +			MAP_SHARED, fd, mmap_arg.offset);
-> +
-> +		munmap(p1, OBJECT_SIZE);
-> +
-> +		/*
-> +		 * we expect mmapping p2 would fail, otherwise the driver
-> +		 * may not clean up the allowance of vm_node, it would
-> +		 * cause memory leak.
-> +		 */
-> +		igt_assert(p2 == MAP_FAILED);
-> +	}
-> +}
-> +
->   static int mmap_gtt_version(int i915)
->   {
->   	int val = 0;
-> @@ -1315,6 +1361,9 @@ igt_main
->   		     "writes into it from another GTT mmapped.");
->   	igt_subtest("basic-write-gtt")
->   		test_write_gtt(fd);
-> +	igt_describe("Check mmap of a closed handle is rejected.");
-> +	igt_subtest("mmap-closed-bo")
-> +		mmap_closed_bo(fd);
->   	igt_describe("Inspect a GTT mmap using ptrace().");
->   	igt_subtest("ptrace")
->   		test_ptrace(fd);
+PiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPiBGcm9tOiBLYW1pbCBLb25pZWN6bnkgPGth
+bWlsLmtvbmllY3pueUBsaW51eC5pbnRlbC5jb20+DQo+IFNlbnQ6IFR1ZXNkYXksIEphbnVhcnkg
+MTcsIDIwMjMgMTI6NDUgQU0NCj4gVG86IGlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnDQo+
+IENjOiBCLCBKZWV2YW4gPGplZXZhbi5iQGludGVsLmNvbT47IEtlbXBjenluc2tpLCBaYmlnbmll
+dw0KPiA8emJpZ25pZXcua2VtcGN6eW5za2lAaW50ZWwuY29tPjsgRGUgTWFyY2hpLCBMdWNhcw0K
+PiA8bHVjYXMuZGVtYXJjaGlAaW50ZWwuY29tPjsga2FtaWwua29uaWVjem55QGxpbnV4LmludGVs
+LmNvbQ0KPiBTdWJqZWN0OiBSZTogW1BBVENIIDEvMl0gbGliL2lndF9kcmF3OiBVc2UgaW50ZWxf
+Z2V0X3VjX21vY3MgdG8gZ2V0IE1PQ1MNCj4gdmFsdWUNCj4gDQo+IEhpLA0KPiANCj4gT24gMjAy
+My0wMS0xMyBhdCAxNDo0MDo0MCArMDUzMCwgSmVldmFuIEIgd3JvdGU6DQo+ID4gVXNlIGludGVs
+X2dldF91Y19tb2NzIGluc3RlYWQgb2YgaGFyZGNvZGluZyB0byBnZXQgdGFibGUgZW50cnkuDQo+
+ID4NCj4gPiBTaWduZWQtb2ZmLWJ5OiBKZWV2YW4gQiA8amVldmFuLmJAaW50ZWwuY29tPg0KPiA+
+IC0tLQ0KPiA+ICBsaWIvaWd0X2RyYXcuYyB8IDMgKystDQo+ID4gIDEgZmlsZSBjaGFuZ2VkLCAy
+IGluc2VydGlvbnMoKyksIDEgZGVsZXRpb24oLSkNCj4gPg0KPiA+IGRpZmYgLS1naXQgYS9saWIv
+aWd0X2RyYXcuYyBiL2xpYi9pZ3RfZHJhdy5jIGluZGV4IDk3NWQ2NWNkLi5iZmU5Y2Q1MA0KPiA+
+IDEwMDY0NA0KPiA+IC0tLSBhL2xpYi9pZ3RfZHJhdy5jDQo+ID4gKysrIGIvbGliL2lndF9kcmF3
+LmMNCj4gPiBAQCAtMzYsNiArMzYsNyBAQA0KPiA+ICAjaW5jbHVkZSAiaTgzMF9yZWcuaCINCj4g
+PiAgI2luY2x1ZGUgImk5MTUvZ2VtX2NyZWF0ZS5oIg0KPiA+ICAjaW5jbHVkZSAiaTkxNS9nZW1f
+bW1hbi5oIg0KPiA+ICsjaW5jbHVkZSAiaTkxNS9pbnRlbF9tb2NzLmgiDQo+ID4NCj4gPiAgI2lm
+bmRlZiBQQUdFX0FMSUdODQo+ID4gICNpZm5kZWYgUEFHRV9TSVpFDQo+ID4gQEAgLTcwMyw3ICs3
+MDQsNyBAQCBzdGF0aWMgdm9pZCBkcmF3X3JlY3RfYmx0KGludCBmZCwgc3RydWN0IGNtZF9kYXRh
+DQo+ID4gKmNtZF9kYXRhLA0KPiA+DQo+ID4gIAkJaW50ZWxfYmJfb3V0KGliYiwgWFlfRkFTVF9D
+T0xPUl9CTFQgfCBibHRfY21kX2RlcHRoKTsNCj4gPiAgCQkvKiBERzIgTU9DUyBlbnRyeSAyIGlz
+ICJVQyAtIE5vbi1Db2hlcmVudDsgR086TWVtb3J5IiAqLw0KPiAtLS0tLS0tLS0tLS0tLS0tIF4N
+Cj4gUGxlYXNlIHJlbW92ZSB0aGlzIG9sZCBjb21tZW50IGZyb20gaGVyZSBhcyBhZnRlciBjaGFu
+Z2UgaXQgd2lsbCBzdGFydCB3b3JraW5nDQo+IGZvciBERzEgYW5kIG90aGVyIGFyY2hzLg0KPiAN
+Cj4gQnR3IHRoaXMgaXMgaW5kZXBlbmRlbnQgZnJvbSAyLzIgYW5kIGltaG8gc2hvdWxkIGJlIGZp
+cnN0Lg0KDQoNCkhpLCANCg0KSSBhZ3JlZSB3aXRoIEthbWlsLCBUaGlzIHBhdGNoIHNob3VsZCBi
+ZSAxLzIuIA0KDQpUaGFua3MgDQpKZWV2YW4gQiANCg0KPiANCj4gUmVnYXJkcywNCj4gUmV2aWV3
+ZWQtYnk6IEthbWlsIEtvbmllY3pueSA8a2FtaWwua29uaWVjem55QGxpbnV4LmludGVsLmNvbT4N
+Cj4gDQo+ID4gLQkJaW50ZWxfYmJfb3V0KGliYiwgYmx0X2NtZF90aWxpbmcgfCAyIDw8IDIxIHwg
+KHBpdGNoLTEpKTsNCj4gPiArCQlpbnRlbF9iYl9vdXQoaWJiLCBibHRfY21kX3RpbGluZyB8IGlu
+dGVsX2dldF91Y19tb2NzKGZkKSA8PCAyMQ0KPiB8DQo+ID4gKyhwaXRjaC0xKSk7DQo+ID4gIAkJ
+aW50ZWxfYmJfb3V0KGliYiwgKHJlY3QtPnkgPDwgMTYpIHwgcmVjdC0+eCk7DQo+ID4gIAkJaW50
+ZWxfYmJfb3V0KGliYiwgKChyZWN0LT55ICsgcmVjdC0+aCkgPDwgMTYpIHwgKHJlY3QtPnggKyBy
+ZWN0LQ0KPiA+dykpOw0KPiA+ICAJCWludGVsX2JiX2VtaXRfcmVsb2NfZmVuY2VkKGliYiwgZHN0
+LT5oYW5kbGUsIDAsDQo+ID4gLS0NCj4gPiAyLjE5LjENCj4gPg0K
