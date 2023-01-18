@@ -1,15 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3F14E10E775
- for <igt-dev@lists.freedesktop.org>; Wed, 18 Jan 2023 16:12:39 +0000 (UTC)
-From: Jonathan Cavitt <jonathan.cavitt@intel.com>
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B25B010E78F
+ for <igt-dev@lists.freedesktop.org>; Wed, 18 Jan 2023 16:27:10 +0000 (UTC)
+From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Wed, 18 Jan 2023 08:06:31 -0800
-Message-Id: <20230118160631.737700-1-jonathan.cavitt@intel.com>
+Date: Wed, 18 Jan 2023 21:53:01 +0530
+Message-Id: <20230118162301.222158-1-bhanuprakash.modem@intel.com>
+In-Reply-To: <20230104170023.3355190-13-bhanuprakash.modem@intel.com>
+References: <20230104170023.3355190-13-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t] lib/igt_kmod: Allow some leeway in
- igt_kmod_unload_r
+Subject: [igt-dev] [i-g-t v8 12/51] tests/kms_cursor_crc: Add support for
+ Bigjoiner
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,92 +19,150 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: chris.p.wilson@linux.intel.com, jonathan.cavitt@intel.com,
- sandeep.kumar.parupalli@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-kmod_module_remove_module occasionally returns EAGAIN for mei_gsc
-in the setup of some gem_lmem_swapping subtests.  Just because
-EAGAIN is returned doesn't mean the module is lost and unable to
-be unloaded.  Try again some number of times (currently 20) before
-giving up.
+This patch will add a check to Skip the subtest if a selected pipe/output
+combo won't support Bigjoiner or 8K mode.
 
-Retries will occur for -EBUSY and -EAGAIN, as these imply the
-system is waiting for the target module can simply be waited for.
-All other errors exit immediately, but as the context for each
-error informs their relative severity, no warnings will be issued.
+Example:
+* Pipe-D wont support a mode > 5K
+* To use 8K mode on a pipe then consecutive pipe must be available & free.
 
-Signed-off-by: Jonathan Cavitt <jonathan.cavitt@intel.com>
-CC: Stuart Summers <stuart.summers@intel.com>
-CC: Sandeep Kumar Parupalli <sandeep.kumar.parupalli@intel.com>
-CC: Chris Wilson <chris.p.wilson@linux.intel.com>
-Reviewed-by: Chris Wilson <chris.p.wilson@linux.intel.com>
+V2: - Use updated helper name
+
+Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Reviewed-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
 ---
- lib/igt_kmod.c | 35 ++++++++++++++++++++++++++++++++---
- 1 file changed, 32 insertions(+), 3 deletions(-)
+ tests/kms_cursor_crc.c | 52 +++++++++++++++++++++++++++++++++---------
+ 1 file changed, 41 insertions(+), 11 deletions(-)
 
-diff --git a/lib/igt_kmod.c b/lib/igt_kmod.c
-index 17090110c..4aa5320d0 100644
---- a/lib/igt_kmod.c
-+++ b/lib/igt_kmod.c
-@@ -253,8 +253,11 @@ out:
- 
- static int igt_kmod_unload_r(struct kmod_module *kmod, unsigned int flags)
- {
-+#define MAX_TRIES	20
-+#define SLEEP_DURATION	500000
- 	struct kmod_list *holders, *pos;
--	int err = 0;
-+	int err, tries;
-+	const char *mod_name = kmod_module_get_name(kmod);
- 
- 	holders = kmod_module_get_holders(kmod);
- 	kmod_list_foreach(pos, holders) {
-@@ -269,7 +272,6 @@ static int igt_kmod_unload_r(struct kmod_module *kmod, unsigned int flags)
- 		return err;
- 
- 	if (igt_kmod_is_loading(kmod)) {
--		const char *mod_name = kmod_module_get_name(kmod);
- 		igt_debug("%s still initializing\n", mod_name);
- 		err = igt_wait(!igt_kmod_is_loading(kmod), 10000, 100);
- 		if (err < 0) {
-@@ -279,7 +281,34 @@ static int igt_kmod_unload_r(struct kmod_module *kmod, unsigned int flags)
- 		}
- 	}
- 
--	return kmod_module_remove_module(kmod, flags);
-+	for (tries = 0; tries < MAX_TRIES; tries++) {
-+		err = kmod_module_remove_module(kmod, flags);
-+
-+		/* Only loop in the following cases */
-+		if (err != -EBUSY && err != -EAGAIN)
-+			break;
-+
-+		igt_debug("Module %s failed to unload with err: %d on attempt: %i\n",
-+			  mod_name, err, tries + 1);
-+
-+		if (MAX_TRIES - tries - 1)
-+			usleep(SLEEP_DURATION);
-+	}
-+
-+	if (err == -ENOENT)
-+		igt_debug("Module %s could not be found or does not exist. err: %d\n",
-+			  mod_name, err);
-+	else if (err == -ENOTSUP)
-+		igt_debug("Module %s cannot be unloaded. err: %d\n",
-+			  mod_name, err);
-+	else if (err)
-+		igt_debug("Module %s failed to unload with err: %d after ~%.1fms\n",
-+			  mod_name, err, SLEEP_DURATION*tries/1000.);
-+	else if (tries)
-+		igt_debug("Module %s unload took ~%.1fms over %i attempts\n",
-+			  mod_name, SLEEP_DURATION*tries/1000., tries + 1);
-+
-+	return err;
+diff --git a/tests/kms_cursor_crc.c b/tests/kms_cursor_crc.c
+index d5a4b30b..f67a2040 100644
+--- a/tests/kms_cursor_crc.c
++++ b/tests/kms_cursor_crc.c
+@@ -700,6 +700,29 @@ static void test_rapid_movement(data_t *data)
+ 	igt_assert_lt(usec, 0.9 * 400 * 1000000 / data->refresh);
  }
  
- /**
++static bool valid_pipe_output_combo(data_t *data)
++{
++	bool ret = false;
++	igt_display_t *display = &data->display;
++
++	igt_display_reset(display);
++
++	for_each_valid_output_on_pipe(display, data->pipe, data->output) {
++		igt_output_set_pipe(data->output, data->pipe);
++
++		if (!i915_pipe_output_combo_valid(display)) {
++			igt_output_set_pipe(data->output, PIPE_NONE);
++			continue;
++		}
++
++		ret = true;
++		break;
++	}
++	igt_output_set_pipe(data->output, PIPE_NONE);
++
++	return ret;
++}
++
+ static void run_size_tests(data_t *data, int w, int h)
+ {
+ 	enum pipe pipe;
+@@ -749,9 +772,12 @@ static void run_size_tests(data_t *data, int w, int h)
+ 				}
+ 			}
+ 
+-			for_each_pipe(&data->display, pipe) {
++			for_each_pipe_with_single_output(&data->display, pipe, data->output) {
+ 				data->pipe = pipe;
+ 
++				if (!valid_pipe_output_combo(data))
++					continue;
++
+ 				if (require_cursor_size(data, w, h)) {
+ 					igt_info("Cursor size %dx%d not supported by driver\n", w, h);
+ 					continue;
+@@ -774,8 +800,6 @@ static void run_tests_on_pipe(data_t *data)
+ 	int cursor_size;
+ 
+ 	igt_fixture {
+-		data->output = igt_get_single_output_for_pipe(&data->display, pipe);
+-		igt_require(data->output);
+ 		data->alpha = 1.0;
+ 		data->flags = 0;
+ 	}
+@@ -784,10 +808,10 @@ static void run_tests_on_pipe(data_t *data)
+ 		     "flight to smaller ones to see that the size is applied "
+ 		     "correctly.");
+ 	igt_subtest_with_dynamic("cursor-size-change") {
+-		for_each_pipe(&data->display, pipe) {
++		for_each_pipe_with_single_output(&data->display, pipe, data->output) {
+ 			data->pipe = pipe;
+ 
+-			if(!igt_pipe_connector_valid(pipe, data->output)) {
++			if (!valid_pipe_output_combo(data)) {
+ 				igt_debug("Invalid connector on pipe-%s-%s",
+ 				      kmstest_pipe_name(pipe),
+ 				      data->output->name);
+@@ -805,10 +829,10 @@ static void run_tests_on_pipe(data_t *data)
+ 	igt_describe("Validates the composition of a fully opaque cursor "
+ 		     "plane, i.e., alpha channel equal to 1.0.");
+ 	igt_subtest_with_dynamic("cursor-alpha-opaque") {
+-		for_each_pipe(&data->display, pipe) {
++		for_each_pipe_with_single_output(&data->display, pipe, data->output) {
+ 			data->pipe = pipe;
+ 
+-			if(!igt_pipe_connector_valid(pipe, data->output)) {
++			if (!valid_pipe_output_combo(data)) {
+ 				igt_debug("Invalid connector on pipe-%s-%s",
+ 				      kmstest_pipe_name(pipe),
+ 				      data->output->name);
+@@ -826,10 +850,10 @@ static void run_tests_on_pipe(data_t *data)
+ 	igt_describe("Validates the composition of a fully transparent cursor "
+ 		     "plane, i.e., alpha channel equal to 0.0.");
+ 	igt_subtest_with_dynamic("cursor-alpha-transparent") {
+-		for_each_pipe(&data->display, pipe) {
++		for_each_pipe_with_single_output(&data->display, pipe, data->output) {
+ 			data->pipe = pipe;
+ 
+-			if(!igt_pipe_connector_valid(pipe, data->output)) {
++			if (!valid_pipe_output_combo(data)) {
+ 				igt_debug("Invalid connector on pipe-%s-%s",
+ 				      kmstest_pipe_name(pipe),
+ 				      data->output->name);
+@@ -850,10 +874,13 @@ static void run_tests_on_pipe(data_t *data)
+ 
+ 	igt_describe("Check random placement of a cursor with DPMS.");
+ 	igt_subtest_with_dynamic("cursor-dpms") {
+-		for_each_pipe(&data->display, pipe) {
++		for_each_pipe_with_single_output(&data->display, pipe, data->output) {
+ 			data->pipe = pipe;
+ 			data->flags = TEST_DPMS;
+ 
++			if (!valid_pipe_output_combo(data))
++				continue;
++
+ 			if (require_cursor_size(data, data->cursor_max_w, data->cursor_max_h)) {
+ 				igt_debug("Cursor size %dx%d not supported by driver\n",
+ 					  data->cursor_max_w, data->cursor_max_h);
+@@ -871,10 +898,13 @@ static void run_tests_on_pipe(data_t *data)
+ 
+ 	igt_describe("Check random placement of a cursor with suspend.");
+ 	igt_subtest_with_dynamic("cursor-suspend") {
+-		for_each_pipe(&data->display, pipe) {
++		for_each_pipe_with_single_output(&data->display, pipe, data->output) {
+ 			data->pipe = pipe;
+ 			data->flags = TEST_SUSPEND;
+ 
++			if (!valid_pipe_output_combo(data))
++				continue;
++
+ 			if (require_cursor_size(data, data->cursor_max_w, data->cursor_max_h)) {
+ 				igt_debug("Cursor size %dx%d not supported by driver\n",
+ 					  data->cursor_max_w, data->cursor_max_h);
 -- 
-2.25.1
+2.39.0
