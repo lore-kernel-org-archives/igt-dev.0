@@ -1,21 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1A08010E978
- for <igt-dev@lists.freedesktop.org>; Thu, 19 Jan 2023 15:07:22 +0000 (UTC)
-Date: Thu, 19 Jan 2023 17:03:18 +0200
-From: Petri Latvala <petri.latvala@intel.com>
-To: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Message-ID: <Y8lbtpudO1KJkiBP@platvala-desk.ger.corp.intel.com>
-References: <20230118131018.3733-1-nirmoy.das@intel.com>
- <992d303c-93c4-df49-80e0-ed74943afe4b@linux.intel.com>
- <20230119140740.qo33va2z4fhkxfed@zkempczy-mobl2>
+Content-Type: multipart/alternative;
+ boundary="===============6579846566215035595=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230119140740.qo33va2z4fhkxfed@zkempczy-mobl2>
-Subject: Re: [igt-dev] [PATCH i-g-t] i915/gem_(linear,
- tiled)_blits: Randomise buffer contents
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: =?utf-8?q?Zbigniew_Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Date: Thu, 19 Jan 2023 15:36:12 -0000
+Message-ID: <167414257231.24700.2255120280256267888@emeril.freedesktop.org>
+References: <20230119142929.127976-1-zbigniew.kempczynski@intel.com>
+In-Reply-To: <20230119142929.127976-1-zbigniew.kempczynski@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgaTkxNS9n?=
+ =?utf-8?q?em=5Fccs=3A_Use_extended_block-copy_on_MTL?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,152 +17,219 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org, Chris Wilson <chris.p.wilson@intel.com>,
- Nirmoy Das <nirmoy.das@intel.com>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Thu, Jan 19, 2023 at 03:07:40PM +0100, Zbigniew Kempczyński wrote:
-> On Wed, Jan 18, 2023 at 02:11:49PM +0100, Das, Nirmoy wrote:
-> > 
-> > On 1/18/2023 2:10 PM, Nirmoy Das wrote:
-> > > From: Chris Wilson <chris.p.wilson@intel.com>
-> > > 
-> > > Currently, we use an incrementing value for the buffer contents,
-> > > starting the next buffer from the final value of the last. This means
-> > > that the value of corresponding dwords between two buffers is offset
-> > > by a single bit. In order to differentiate between an error in copying
-> > > between two buffers from single bit memory errors, we need to randomise
-> > > the offset between those two buffers.
-> > > 
-> > > Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> > > Signed-off-by: Chris Wilson <chris.p.wilson@intel.com>
-> > > Signed-off-by: Nirmoy Das <nirmoy.das@intel.com>
-> > Reviewed-by: Nirmoy Das <nirmoy.das@intel.com>
-> 
-> Is this allowed - I mean giving r-b to own s-b? I understand you're 
-> upstreaming this patch but I'm not sure is acceptable.
+--===============6579846566215035595==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-It's fine. S-o-b just means you have the right to submit it for
-contribution.
+== Series Details ==
+
+Series: i915/gem_ccs: Use extended block-copy on MTL
+URL   : https://patchwork.freedesktop.org/series/113095/
+State : success
+
+== Summary ==
+
+CI Bug Log - changes from CI_DRM_12613 -> IGTPW_8374
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8374/index.html
+
+Participating hosts (38 -> 35)
+------------------------------
+
+  Missing    (3): fi-kbl-soraka fi-ilk-650 fi-snb-2520m 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_8374 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@gem_exec_gttfill@basic:
+    - fi-pnv-d510:        [PASS][1] -> [FAIL][2] ([i915#7229])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12613/fi-pnv-d510/igt@gem_exec_gttfill@basic.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8374/fi-pnv-d510/igt@gem_exec_gttfill@basic.html
+
+  * igt@gem_lmem_swapping@basic:
+    - fi-apl-guc:         NOTRUN -> [SKIP][3] ([fdo#109271] / [i915#4613]) +3 similar issues
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8374/fi-apl-guc/igt@gem_lmem_swapping@basic.html
+
+  * igt@kms_chamelium_hpd@common-hpd-after-suspend:
+    - fi-apl-guc:         NOTRUN -> [SKIP][4] ([fdo#109271]) +1 similar issue
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8374/fi-apl-guc/igt@kms_chamelium_hpd@common-hpd-after-suspend.html
+
+  * igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions-varying-size:
+    - fi-bsw-kefka:       [PASS][5] -> [FAIL][6] ([i915#6298])
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12613/fi-bsw-kefka/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions-varying-size.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8374/fi-bsw-kefka/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions-varying-size.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_selftest@live@migrate:
+    - {bat-adlp-6}:       [DMESG-FAIL][7] ([i915#7699]) -> [PASS][8]
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12613/bat-adlp-6/igt@i915_selftest@live@migrate.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8374/bat-adlp-6/igt@i915_selftest@live@migrate.html
+
+  * igt@kms_pipe_crc_basic@suspend-read-crc@pipe-c-dp-3:
+    - {bat-dg2-9}:        [FAIL][9] -> [PASS][10]
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12613/bat-dg2-9/igt@kms_pipe_crc_basic@suspend-read-crc@pipe-c-dp-3.html
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8374/bat-dg2-9/igt@kms_pipe_crc_basic@suspend-read-crc@pipe-c-dp-3.html
+
+  * igt@prime_self_import@basic-with_one_bo_two_files:
+    - fi-apl-guc:         [DMESG-WARN][11] -> [PASS][12]
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12613/fi-apl-guc/igt@prime_self_import@basic-with_one_bo_two_files.html
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8374/fi-apl-guc/igt@prime_self_import@basic-with_one_bo_two_files.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [i915#3546]: https://gitlab.freedesktop.org/drm/intel/issues/3546
+  [i915#4312]: https://gitlab.freedesktop.org/drm/intel/issues/4312
+  [i915#4613]: https://gitlab.freedesktop.org/drm/intel/issues/4613
+  [i915#4983]: https://gitlab.freedesktop.org/drm/intel/issues/4983
+  [i915#5354]: https://gitlab.freedesktop.org/drm/intel/issues/5354
+  [i915#6298]: https://gitlab.freedesktop.org/drm/intel/issues/6298
+  [i915#6367]: https://gitlab.freedesktop.org/drm/intel/issues/6367
+  [i915#6997]: https://gitlab.freedesktop.org/drm/intel/issues/6997
+  [i915#7229]: https://gitlab.freedesktop.org/drm/intel/issues/7229
+  [i915#7699]: https://gitlab.freedesktop.org/drm/intel/issues/7699
 
 
--- 
-Petri Latvala
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_7126 -> IGTPW_8374
+
+  CI-20190529: 20190529
+  CI_DRM_12613: c79a53a6143abdc789b46eb24cd7ce00924be491 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_8374: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8374/index.html
+  IGT_7126: 3aa9364a1e478010aba0d3dfe9183486560ecc60 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8374/index.html
+
+--===============6579846566215035595==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
 
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
 
-> 
-> --
-> Zbigniew
-> 
-> > > ---
-> > >   tests/i915/gem_linear_blits.c        | 7 ++-----
-> > >   tests/i915/gem_render_linear_blits.c | 8 +++++---
-> > >   tests/i915/gem_render_tiled_blits.c  | 8 +++++---
-> > >   tests/i915/gem_tiled_blits.c         | 6 ++----
-> > >   4 files changed, 14 insertions(+), 15 deletions(-)
-> > > 
-> > > diff --git a/tests/i915/gem_linear_blits.c b/tests/i915/gem_linear_blits.c
-> > > index d02751be9..fac25095f 100644
-> > > --- a/tests/i915/gem_linear_blits.c
-> > > +++ b/tests/i915/gem_linear_blits.c
-> > > @@ -184,7 +184,6 @@ static void run_test(int fd, int count, bool do_relocs)
-> > >   {
-> > >   	uint32_t *handle, *start_val;
-> > >   	uint64_t *offset, ahnd;
-> > > -	uint32_t start = 0;
-> > >   	int i;
-> > >   	ahnd = intel_allocator_open(fd, 0, do_relocs ?
-> > > @@ -197,13 +196,11 @@ static void run_test(int fd, int count, bool do_relocs)
-> > >   	start_val = handle + count;
-> > >   	for (i = 0; i < count; i++) {
-> > > -		handle[i] = create_bo(fd, start);
-> > > +		start_val[i] = rand();
-> > > +		handle[i] = create_bo(fd, start_val[i]);
-> > >   		offset[i] = intel_allocator_alloc(ahnd, handle[i],
-> > >   						  sizeof(linear), ALIGNMENT);
-> > > -
-> > > -		start_val[i] = start;
-> > > -		start += 1024 * 1024 / 4;
-> > >   	}
-> > >   	for (i = 0; i < count; i++) {
-> > > diff --git a/tests/i915/gem_render_linear_blits.c b/tests/i915/gem_render_linear_blits.c
-> > > index d40593c64..c2f2c0788 100644
-> > > --- a/tests/i915/gem_render_linear_blits.c
-> > > +++ b/tests/i915/gem_render_linear_blits.c
-> > > @@ -79,7 +79,6 @@ static void run_test (int fd, int count)
-> > >   	struct intel_bb *ibb;
-> > >   	uint32_t *start_val;
-> > >   	struct intel_buf *bufs;
-> > > -	uint32_t start = 0;
-> > >   	int i, j;
-> > >   	render_copy = igt_get_render_copyfunc(intel_get_drm_devid(fd));
-> > > @@ -92,11 +91,14 @@ static void run_test (int fd, int count)
-> > >   	start_val = malloc(sizeof(*start_val)*count);
-> > >   	for (i = 0; i < count; i++) {
-> > > +		uint32_t val;
-> > > +
-> > >   		intel_buf_init(bops, &bufs[i], WIDTH, HEIGHT, 32, 0,
-> > >   			       I915_TILING_NONE, I915_COMPRESSION_NONE);
-> > > -		start_val[i] = start;
-> > > +		val = rand();
-> > > +		start_val[i] = val;
-> > >   		for (j = 0; j < WIDTH*HEIGHT; j++)
-> > > -			linear[j] = start++;
-> > > +			linear[j] = val++;
-> > >   		gem_write(fd, bufs[i].handle, 0, linear, sizeof(linear));
-> > >   	}
-> > > diff --git a/tests/i915/gem_render_tiled_blits.c b/tests/i915/gem_render_tiled_blits.c
-> > > index 52d67b768..eae06a332 100644
-> > > --- a/tests/i915/gem_render_tiled_blits.c
-> > > +++ b/tests/i915/gem_render_tiled_blits.c
-> > > @@ -97,7 +97,6 @@ static void run_test (int fd, int count)
-> > >   	struct intel_bb *ibb;
-> > >   	uint32_t *start_val;
-> > >   	struct intel_buf *bufs;
-> > > -	uint32_t start = 0;
-> > >   	int i, j;
-> > >   	uint32_t devid;
-> > > @@ -127,18 +126,21 @@ static void run_test (int fd, int count)
-> > >   	for (i = 0; i < count; i++) {
-> > >   		uint32_t tiling = I915_TILING_X + (random() & 1);
-> > > +		uint32_t val;
-> > >   		uint32_t *ptr;
-> > >   		intel_buf_init(bops, &bufs[i], WIDTH, HEIGHT, 32, 0,
-> > >   			       tiling, I915_COMPRESSION_NONE);
-> > > -		start_val[i] = start;
-> > >   		ptr = gem_mmap__gtt(fd, bufs[i].handle,
-> > >   				    bufs[i].surface[0].size, PROT_WRITE);
-> > >   		gem_set_domain(fd, bufs[i].handle,
-> > >   			       I915_GEM_DOMAIN_GTT, I915_GEM_DOMAIN_GTT);
-> > > +
-> > > +		val = rand();
-> > > +		start_val[i] = val;
-> > >   		for (j = 0; j < WIDTH*HEIGHT; j++)
-> > > -			ptr[j] = start++;
-> > > +			ptr[j] = val++;
-> > >   		munmap(ptr, bufs[i].surface[0].size);
-> > >   	}
-> > > diff --git a/tests/i915/gem_tiled_blits.c b/tests/i915/gem_tiled_blits.c
-> > > index cc44d0f10..5e7ed0c4e 100644
-> > > --- a/tests/i915/gem_tiled_blits.c
-> > > +++ b/tests/i915/gem_tiled_blits.c
-> > > @@ -128,7 +128,6 @@ static void run_test(int fd, int count)
-> > >   	struct buf_ops *bops;
-> > >   	struct intel_buf **bo;
-> > >   	uint32_t *bo_start_val;
-> > > -	uint32_t start = 0;
-> > >   	int i;
-> > >   	bops = buf_ops_create(fd);
-> > > @@ -138,9 +137,8 @@ static void run_test(int fd, int count)
-> > >   	bo_start_val = malloc(sizeof(uint32_t)*count);
-> > >   	for (i = 0; i < count; i++) {
-> > > -		bo[i] = create_bo(bops, ibb, start);
-> > > -		bo_start_val[i] = start;
-> > > -		start += 1024 * 1024 / 4;
-> > > +		bo_start_val[i] = rand();
-> > > +		bo[i] = create_bo(bops, ibb, bo_start_val[i]);
-> > >   	}
-> > >   	for (i = 0; i < count + 1; i++) {
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>i915/gem_ccs: Use extended block-copy on MTL</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/113095/">https://patchwork.freedesktop.org/series/113095/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8374/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8374/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_12613 -&gt; IGTPW_8374</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8374/index.html</p>
+<h2>Participating hosts (38 -&gt; 35)</h2>
+<p>Missing    (3): fi-kbl-soraka fi-ilk-650 fi-snb-2520m </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_8374 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@gem_exec_gttfill@basic:</p>
+<ul>
+<li>fi-pnv-d510:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12613/fi-pnv-d510/igt@gem_exec_gttfill@basic.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8374/fi-pnv-d510/igt@gem_exec_gttfill@basic.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7229">i915#7229</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_lmem_swapping@basic:</p>
+<ul>
+<li>fi-apl-guc:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8374/fi-apl-guc/igt@gem_lmem_swapping@basic.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4613">i915#4613</a>) +3 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_chamelium_hpd@common-hpd-after-suspend:</p>
+<ul>
+<li>fi-apl-guc:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8374/fi-apl-guc/igt@kms_chamelium_hpd@common-hpd-after-suspend.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +1 similar issue</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions-varying-size:</p>
+<ul>
+<li>fi-bsw-kefka:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12613/fi-bsw-kefka/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions-varying-size.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8374/fi-bsw-kefka/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions-varying-size.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6298">i915#6298</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live@migrate:</p>
+<ul>
+<li>{bat-adlp-6}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12613/bat-adlp-6/igt@i915_selftest@live@migrate.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7699">i915#7699</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8374/bat-adlp-6/igt@i915_selftest@live@migrate.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@suspend-read-crc@pipe-c-dp-3:</p>
+<ul>
+<li>{bat-dg2-9}:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12613/bat-dg2-9/igt@kms_pipe_crc_basic@suspend-read-crc@pipe-c-dp-3.html">FAIL</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8374/bat-dg2-9/igt@kms_pipe_crc_basic@suspend-read-crc@pipe-c-dp-3.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@prime_self_import@basic-with_one_bo_two_files:</p>
+<ul>
+<li>fi-apl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12613/fi-apl-guc/igt@prime_self_import@basic-with_one_bo_two_files.html">DMESG-WARN</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8374/fi-apl-guc/igt@prime_self_import@basic-with_one_bo_two_files.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_7126 -&gt; IGTPW_8374</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_12613: c79a53a6143abdc789b46eb24cd7ce00924be491 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_8374: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8374/index.html<br />
+  IGT_7126: 3aa9364a1e478010aba0d3dfe9183486560ecc60 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============6579846566215035595==--
