@@ -1,21 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 99C1E10E069
- for <igt-dev@lists.freedesktop.org>; Thu, 19 Jan 2023 12:08:12 +0000 (UTC)
-From: "Govindapillai, Vinod" <vinod.govindapillai@intel.com>
-To: "Thasleem, Mohammed" <mohammed.thasleem@intel.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-Date: Thu, 19 Jan 2023 12:08:07 +0000
-Message-ID: <65dcbdf87d2895fe9d14fca5e85bd664727a9cff.camel@intel.com>
-References: <20230117085055.128552-1-mohammed.thasleem@intel.com>
-In-Reply-To: <20230117085055.128552-1-mohammed.thasleem@intel.com>
-Content-Language: en-US
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <33E6001F78E9AD47B2B8EF64FC03C1C8@namprd11.prod.outlook.com>
-Content-Transfer-Encoding: base64
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 17E6B10E080
+ for <igt-dev@lists.freedesktop.org>; Thu, 19 Jan 2023 14:08:00 +0000 (UTC)
+Date: Thu, 19 Jan 2023 15:07:40 +0100
+From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+To: "Das, Nirmoy" <nirmoy.das@linux.intel.com>
+Message-ID: <20230119140740.qo33va2z4fhkxfed@zkempczy-mobl2>
+References: <20230118131018.3733-1-nirmoy.das@intel.com>
+ <992d303c-93c4-df49-80e0-ed74943afe4b@linux.intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH RFC i-g-t] [RFC] tests/i915/i915_pm_dc: Add
- DC6 test for mtl
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <992d303c-93c4-df49-80e0-ed74943afe4b@linux.intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t] i915/gem_(linear,
+ tiled)_blits: Randomise buffer contents
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,80 +21,141 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: igt-dev@lists.freedesktop.org, Chris Wilson <chris.p.wilson@intel.com>,
+ Nirmoy Das <nirmoy.das@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gVHVlLCAyMDIzLTAxLTE3IGF0IDE0OjIwICswNTMwLCBNb2hhbW1lZCBUaGFzbGVlbSB3cm90
-ZToKPiBUaGUgZmxvdyBmb3IgREM2IHZhbGlkYXRpb24gaGFzIGNoYW5nZWQgZm9yIE1UTC4KPiBE
-QzYgc3RhdGUgYWNoaWV2ZWQgYmFzZWQgb24gUEtHQzEwIGVudHJ5Lgo+IFRoaXMgdGVzdCB2YWxp
-ZGF0ZXMgUEtHQzEwIGVudHJ5IGFuZCBjb25maXJtIERDNiBhY2hpZXZlZC4KPiAKPiBTaWduZWQt
-b2ZmLWJ5OiBNb2hhbW1lZCBUaGFzbGVlbSA8bW9oYW1tZWQudGhhc2xlZW1AaW50ZWwuY29tPgo+
-IC0tLQo+IMKgdGVzdHMvaTkxNS9pOTE1X3BtX2RjLmMgfCAzOSArKysrKysrKysrKysrKysrKysr
-KysrKysrKysrKysrKysrKysrKy0KPiDCoDEgZmlsZSBjaGFuZ2VkLCAzOCBpbnNlcnRpb25zKCsp
-LCAxIGRlbGV0aW9uKC0pCj4gCj4gZGlmZiAtLWdpdCBhL3Rlc3RzL2k5MTUvaTkxNV9wbV9kYy5j
-IGIvdGVzdHMvaTkxNS9pOTE1X3BtX2RjLmMKPiBpbmRleCBiYTQ5ZDAxNC4uYzMwMjY5YTYgMTAw
-NjQ0Cj4gLS0tIGEvdGVzdHMvaTkxNS9pOTE1X3BtX2RjLmMKPiArKysgYi90ZXN0cy9pOTE1L2k5
-MTVfcG1fZGMuYwo+IEBAIC00NSw2ICs0NSw3IEBACj4gwqAjZGVmaW5lIFBXUl9ET01BSU5fSU5G
-TyAiaTkxNV9wb3dlcl9kb21haW5faW5mbyIKPiDCoCNkZWZpbmUgUlBNX1NUQVRVUyAiaTkxNV9y
-dW50aW1lX3BtX3N0YXR1cyIKPiDCoCNkZWZpbmUgS01TX0hFTFBFUiAiL3N5cy9tb2R1bGUvZHJt
-X2ttc19oZWxwZXIvcGFyYW1ldGVycy8iCj4gKyNkZWZpbmUgUEFDS0FHRV9TVEFURV9QQVRIICIv
-c3lzL2tlcm5lbC9kZWJ1Zy9wbWNfY29yZS8iCj4gwqAjZGVmaW5lIEtNU19QT0xMX0RJU0FCTEUg
-MAo+IMKgI2RlZmluZSBEQzlfUkVTRVRTX0RDX0NPVU5URVJTKGRldmlkKSAoIShJU19ERzEoZGV2
-aWQpIHx8IElTX0RHMihkZXZpZCkpKQo+IMKgCj4gQEAgLTYwLDYgKzYxLDggQEAgdHlwZWRlZiBz
-dHJ1Y3Qgewo+IMKgwqDCoMKgwqDCoMKgwqBpbnQgZHJtX2ZkOwo+IMKgwqDCoMKgwqDCoMKgwqBp
-bnQgbXNyX2ZkOwo+IMKgwqDCoMKgwqDCoMKgwqBpbnQgZGVidWdmc19mZDsKPiArwqDCoMKgwqDC
-oMKgwqBpbnQgcG1jX2ZkOwo+ICvCoMKgwqDCoMKgwqDCoHVpbnQzMl90IHZlcjsKPiDCoMKgwqDC
-oMKgwqDCoMKgdWludDMyX3QgZGV2aWQ7Cj4gwqDCoMKgwqDCoMKgwqDCoGNoYXIgKmRlYnVnZnNf
-ZHVtcDsKPiDCoMKgwqDCoMKgwqDCoMKgaWd0X2Rpc3BsYXlfdCBkaXNwbGF5Owo+IEBAIC00ODUs
-NiArNDg4LDM2IEBAIHN0YXRpYyB2b2lkIHRlc3RfZGM5X2RwbXMoZGF0YV90ICpkYXRhKQo+IMKg
-wqDCoMKgwqDCoMKgwqBzZXR1cF9kYzlfZHBtcyhkYXRhLCBkY190YXJnZXQpOwo+IMKgfQo+IMKg
-Cj4gK3N0YXRpYyB1bnNpZ25lZCBpbnQgcmVhZF9wazEwX3ZhbHVlKGludCBwbWNfZmQpCj4gK3sK
-PiArwqDCoMKgwqDCoMKgwqBjaGFyIGJ1Zls0MDk2XTsKPiArwqDCoMKgwqDCoMKgwqBjaGFyICpz
-dHI7Cj4gKwo+ICvCoMKgwqDCoMKgwqDCoGlndF9yZXF1aXJlKChwbWNfZmQgPSBvcGVuKFBBQ0tB
-R0VfU1RBVEVfUEFUSCwgT19SRE9OTFkpKSA+PSAwKTsKPiArCj4gK8KgwqDCoMKgwqDCoMKgaWd0
-X2RlYnVnZnNfc2ltcGxlX3JlYWQocG1jX2ZkLCAicGFja2FnZV9jc3RhdGVfc2hvdyIsCj4gK8Kg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgYnVmLCBzaXplb2YoYnVmKSk7Cj4gK8KgwqDCoMKgwqDCoMKgaWd0X3NraXBfb25fZighc3Ry
-c3RyKGJ1ZiwgIlBhY2thZ2UgQzEwIiksCj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqAgIlBLMTAgd2lsbCBiZSBub3Qgc3VwcG9ydGVkLlxuIik7Cj4gK8KgwqDCoMKg
-wqDCoMKgc3RyID0gc3Ryc3RyKGJ1ZiwgIlBhY2thZ2UgQzEwIik7Cj4gK8KgwqDCoMKgwqDCoMKg
-aWd0X2Fzc2VydF9mKHN0ciwgIlBLMTAgdmFsdWUgbm90IGF2YWlsYWJsZVxuIik7Cj4gKwo+ICvC
-oMKgwqDCoMKgwqDCoHJldHVybiBnZXRfZGNfY291bnRlcihzdHIpOwo+ICt9Cj4gKwo+ICtzdGF0
-aWMgdm9pZCB0ZXN0X3BrMTBfZHBtcyhkYXRhX3QgKmRhdGEpCj4gK3sKPiArwqDCoMKgwqDCoMKg
-wqB1bnNpZ25lZCBpbnQgdGltZW91dF9zZWMgPSAzMDsKPiArwqDCoMKgwqDCoMKgwqB1bnNpZ25l
-ZCBpbnQgcHJldl92YWx1ZSA9IDAsIGN1cl92YWx1ZSA9IDA7Cj4gKwo+ICvCoMKgwqDCoMKgwqDC
-oHByZXZfdmFsdWUgPSByZWFkX3BrMTBfdmFsdWUoZGF0YS0+cG1jX2ZkKTsKPiArwqDCoMKgwqDC
-oMKgwqBkcG1zX29mZihkYXRhKTsKPiArwqDCoMKgwqDCoMKgwqBpZ3Rfd2FpdCgoY3VyX3ZhbHVl
-ID0gcmVhZF9wazEwX3ZhbHVlKGRhdGEtPnBtY19mZCkpLAo+ICvCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoCB0aW1lb3V0X3NlYyAqIDEwMDAsIDEwMCk7Cj4gK8KgwqDCoMKgwqDCoMKg
-aWd0X2Fzc2VydF9mKGN1cl92YWx1ZSA+IHByZXZfdmFsdWUsICJQSzEwIGlzIG5vdCBhY2hpZWl2
-ZWQuXG4iKTsKPiArwqDCoMKgwqDCoMKgwqBkcG1zX29uKGRhdGEpOwo+ICt9Cj4gKwo+IMKgc3Rh
-dGljIHZvaWQga21zX3BvbGxfc3RhdGVfcmVzdG9yZShpbnQgc2lnKQo+IMKgewo+IMKgwqDCoMKg
-wqDCoMKgwqBpbnQgc3lzZnNfZmQ7Cj4gQEAgLTUwNiw2ICs1MzksNyBAQCBpZ3RfbWFpbgo+IMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgaWd0X3JlcXVpcmUoZGF0YS5kZWJ1Z2ZzX2Zk
-ICE9IC0xKTsKPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGttc3Rlc3Rfc2V0X3Z0
-X2dyYXBoaWNzX21vZGUoKTsKPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGRhdGEu
-ZGV2aWQgPSBpbnRlbF9nZXRfZHJtX2RldmlkKGRhdGEuZHJtX2ZkKTsKSGkgVGhhc2xlZW0sCgo+
-ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBkYXRhLnZlciA9IGludGVsX2Rpc3BsYXlf
-dmVyKGRhdGEuZGV2aWQpOwoKQXMgdGhpcyBpcyB1c2VkIG9ubHkgYmVsb3cgdG8gY2hlY2sgdGhl
-IGRpc3BsYXkgdmVyc2lvbiwgd29uZGVyIGlmIHlvdSBuZWVkIHRvIHN0b3JlIHRvIGRhdGEhCgo+
-IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgaWd0X3BtX2VuYWJsZV9zYXRhX2xpbmtf
-cG93ZXJfbWFuYWdlbWVudCgpOwo+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgaWd0
-X3JlcXVpcmUoaWd0X3NldHVwX3J1bnRpbWVfcG0oZGF0YS5kcm1fZmQpKTsKPiDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoGlndF9yZXF1aXJlKGlndF9wbV9kbWNfbG9hZGVkKGRhdGEu
-ZGVidWdmc19mZCkpOwo+IEBAIC01NTcsNyArNTkxLDEwIEBAIGlndF9tYWluCj4gwqDCoMKgwqDC
-oMKgwqDCoGlndF9zdWJ0ZXN0KCJkYzYtZHBtcyIpIHsKPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoGlndF9yZXF1aXJlX2YoaWd0X3BtX3BjOF9wbHVzX3Jlc2lkZW5jaWVzX2VuYWJs
-ZWQoZGF0YS5tc3JfZmQpLAo+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqAgIlBDOCsgcmVzaWRlbmNpZXMgbm90IHN1cHBvcnRlZFxuIik7
-Cj4gLcKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoHRlc3RfZGNfc3RhdGVfZHBtcygmZGF0
-YSwgQ0hFQ0tfREM2KTsKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgaWYgKGRhdGEu
-dmVyID09IDE0KQoKCkFuZCBpcyB0aGlzIGNoYW5nZSByZWxhdGVkIHRvIGRjNiB2IFBLR0MxMCwg
-c3BlY2lmaWMgdG8gTVRMIG9yIGFsbCBkaXNwbGF5X3ZlcnNpb25zID49IDE0PyAKCkJSClZpbm9k
-Cgo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgdGVzdF9w
-azEwX2RwbXMoJmRhdGEpOwo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBlbHNlCj4g
-K8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqB0ZXN0X2RjX3N0
-YXRlX2RwbXMoJmRhdGEsIENIRUNLX0RDNik7Cj4gwqDCoMKgwqDCoMKgwqDCoH0KPiDCoAo+IMKg
-wqDCoMKgwqDCoMKgwqBpZ3RfZGVzY3JpYmUoIlRoaXMgdGVzdCB2YWxpZGF0ZXMgZGlzcGxheSBl
-bmdpbmUgZW50cnkgdG8gREM5IHN0YXRlIik7Cgo=
+On Wed, Jan 18, 2023 at 02:11:49PM +0100, Das, Nirmoy wrote:
+> 
+> On 1/18/2023 2:10 PM, Nirmoy Das wrote:
+> > From: Chris Wilson <chris.p.wilson@intel.com>
+> > 
+> > Currently, we use an incrementing value for the buffer contents,
+> > starting the next buffer from the final value of the last. This means
+> > that the value of corresponding dwords between two buffers is offset
+> > by a single bit. In order to differentiate between an error in copying
+> > between two buffers from single bit memory errors, we need to randomise
+> > the offset between those two buffers.
+> > 
+> > Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> > Signed-off-by: Chris Wilson <chris.p.wilson@intel.com>
+> > Signed-off-by: Nirmoy Das <nirmoy.das@intel.com>
+> Reviewed-by: Nirmoy Das <nirmoy.das@intel.com>
+
+Is this allowed - I mean giving r-b to own s-b? I understand you're 
+upstreaming this patch but I'm not sure is acceptable.
+
+--
+Zbigniew
+
+> > ---
+> >   tests/i915/gem_linear_blits.c        | 7 ++-----
+> >   tests/i915/gem_render_linear_blits.c | 8 +++++---
+> >   tests/i915/gem_render_tiled_blits.c  | 8 +++++---
+> >   tests/i915/gem_tiled_blits.c         | 6 ++----
+> >   4 files changed, 14 insertions(+), 15 deletions(-)
+> > 
+> > diff --git a/tests/i915/gem_linear_blits.c b/tests/i915/gem_linear_blits.c
+> > index d02751be9..fac25095f 100644
+> > --- a/tests/i915/gem_linear_blits.c
+> > +++ b/tests/i915/gem_linear_blits.c
+> > @@ -184,7 +184,6 @@ static void run_test(int fd, int count, bool do_relocs)
+> >   {
+> >   	uint32_t *handle, *start_val;
+> >   	uint64_t *offset, ahnd;
+> > -	uint32_t start = 0;
+> >   	int i;
+> >   	ahnd = intel_allocator_open(fd, 0, do_relocs ?
+> > @@ -197,13 +196,11 @@ static void run_test(int fd, int count, bool do_relocs)
+> >   	start_val = handle + count;
+> >   	for (i = 0; i < count; i++) {
+> > -		handle[i] = create_bo(fd, start);
+> > +		start_val[i] = rand();
+> > +		handle[i] = create_bo(fd, start_val[i]);
+> >   		offset[i] = intel_allocator_alloc(ahnd, handle[i],
+> >   						  sizeof(linear), ALIGNMENT);
+> > -
+> > -		start_val[i] = start;
+> > -		start += 1024 * 1024 / 4;
+> >   	}
+> >   	for (i = 0; i < count; i++) {
+> > diff --git a/tests/i915/gem_render_linear_blits.c b/tests/i915/gem_render_linear_blits.c
+> > index d40593c64..c2f2c0788 100644
+> > --- a/tests/i915/gem_render_linear_blits.c
+> > +++ b/tests/i915/gem_render_linear_blits.c
+> > @@ -79,7 +79,6 @@ static void run_test (int fd, int count)
+> >   	struct intel_bb *ibb;
+> >   	uint32_t *start_val;
+> >   	struct intel_buf *bufs;
+> > -	uint32_t start = 0;
+> >   	int i, j;
+> >   	render_copy = igt_get_render_copyfunc(intel_get_drm_devid(fd));
+> > @@ -92,11 +91,14 @@ static void run_test (int fd, int count)
+> >   	start_val = malloc(sizeof(*start_val)*count);
+> >   	for (i = 0; i < count; i++) {
+> > +		uint32_t val;
+> > +
+> >   		intel_buf_init(bops, &bufs[i], WIDTH, HEIGHT, 32, 0,
+> >   			       I915_TILING_NONE, I915_COMPRESSION_NONE);
+> > -		start_val[i] = start;
+> > +		val = rand();
+> > +		start_val[i] = val;
+> >   		for (j = 0; j < WIDTH*HEIGHT; j++)
+> > -			linear[j] = start++;
+> > +			linear[j] = val++;
+> >   		gem_write(fd, bufs[i].handle, 0, linear, sizeof(linear));
+> >   	}
+> > diff --git a/tests/i915/gem_render_tiled_blits.c b/tests/i915/gem_render_tiled_blits.c
+> > index 52d67b768..eae06a332 100644
+> > --- a/tests/i915/gem_render_tiled_blits.c
+> > +++ b/tests/i915/gem_render_tiled_blits.c
+> > @@ -97,7 +97,6 @@ static void run_test (int fd, int count)
+> >   	struct intel_bb *ibb;
+> >   	uint32_t *start_val;
+> >   	struct intel_buf *bufs;
+> > -	uint32_t start = 0;
+> >   	int i, j;
+> >   	uint32_t devid;
+> > @@ -127,18 +126,21 @@ static void run_test (int fd, int count)
+> >   	for (i = 0; i < count; i++) {
+> >   		uint32_t tiling = I915_TILING_X + (random() & 1);
+> > +		uint32_t val;
+> >   		uint32_t *ptr;
+> >   		intel_buf_init(bops, &bufs[i], WIDTH, HEIGHT, 32, 0,
+> >   			       tiling, I915_COMPRESSION_NONE);
+> > -		start_val[i] = start;
+> >   		ptr = gem_mmap__gtt(fd, bufs[i].handle,
+> >   				    bufs[i].surface[0].size, PROT_WRITE);
+> >   		gem_set_domain(fd, bufs[i].handle,
+> >   			       I915_GEM_DOMAIN_GTT, I915_GEM_DOMAIN_GTT);
+> > +
+> > +		val = rand();
+> > +		start_val[i] = val;
+> >   		for (j = 0; j < WIDTH*HEIGHT; j++)
+> > -			ptr[j] = start++;
+> > +			ptr[j] = val++;
+> >   		munmap(ptr, bufs[i].surface[0].size);
+> >   	}
+> > diff --git a/tests/i915/gem_tiled_blits.c b/tests/i915/gem_tiled_blits.c
+> > index cc44d0f10..5e7ed0c4e 100644
+> > --- a/tests/i915/gem_tiled_blits.c
+> > +++ b/tests/i915/gem_tiled_blits.c
+> > @@ -128,7 +128,6 @@ static void run_test(int fd, int count)
+> >   	struct buf_ops *bops;
+> >   	struct intel_buf **bo;
+> >   	uint32_t *bo_start_val;
+> > -	uint32_t start = 0;
+> >   	int i;
+> >   	bops = buf_ops_create(fd);
+> > @@ -138,9 +137,8 @@ static void run_test(int fd, int count)
+> >   	bo_start_val = malloc(sizeof(uint32_t)*count);
+> >   	for (i = 0; i < count; i++) {
+> > -		bo[i] = create_bo(bops, ibb, start);
+> > -		bo_start_val[i] = start;
+> > -		start += 1024 * 1024 / 4;
+> > +		bo_start_val[i] = rand();
+> > +		bo[i] = create_bo(bops, ibb, bo_start_val[i]);
+> >   	}
+> >   	for (i = 0; i < count + 1; i++) {
