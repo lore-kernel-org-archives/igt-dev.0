@@ -1,20 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A19E210EA04
- for <igt-dev@lists.freedesktop.org>; Fri, 20 Jan 2023 11:08:41 +0000 (UTC)
-Date: Fri, 20 Jan 2023 12:08:36 +0100
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 75EB410EA04
+ for <igt-dev@lists.freedesktop.org>; Fri, 20 Jan 2023 11:10:44 +0000 (UTC)
+Date: Fri, 20 Jan 2023 12:10:40 +0100
 From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 To: Karolina Stolarek <karolina.stolarek@intel.com>
-Message-ID: <20230120110836.6ibqkik3ni7cr2l2@zkempczy-mobl2>
+Message-ID: <20230120111040.7iqddvmzy27jpiyv@zkempczy-mobl2>
 References: <cover.1674208534.git.karolina.stolarek@intel.com>
- <de7c559274989b8971c5a447d6c42e1ee87323b6.1674208534.git.karolina.stolarek@intel.com>
+ <959b5a5302d5b728e8725b5635f564299ea39ced.1674208534.git.karolina.stolarek@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <de7c559274989b8971c5a447d6c42e1ee87323b6.1674208534.git.karolina.stolarek@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t v7 4/9] i915/lib: Add new library for
- blitter and tiling formats
+In-Reply-To: <959b5a5302d5b728e8725b5635f564299ea39ced.1674208534.git.karolina.stolarek@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t v7 5/9] lib/intel_device_info: Update
+ platform definitions with blitter information
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,12 +27,12 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Fri, Jan 20, 2023 at 11:14:04AM +0100, Karolina Stolarek wrote:
-> Add structs to describe what blitter commands and tiling formats
-> are supported per platform. Move blt_tiling enum to the newly
-> created library and update its definition.
+On Fri, Jan 20, 2023 at 11:14:05AM +0100, Karolina Stolarek wrote:
+> Update entries in intel_device_info to store information on
+> supported blitter commands and tiling formats. Add a function
+> to return tiling information for a device.
 
-LGTM,
+Looks almost ok, I don't see MTL update. With this added:
 
 Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 
@@ -42,219 +42,290 @@ Zbigniew
 > 
 > Signed-off-by: Karolina Stolarek <karolina.stolarek@intel.com>
 > ---
->  lib/i915/i915_blt.h          | 10 +---
->  lib/i915/intel_tiling_info.c | 88 ++++++++++++++++++++++++++++++++++++
->  lib/i915/intel_tiling_info.h | 47 +++++++++++++++++++
->  lib/meson.build              |  5 +-
->  4 files changed, 140 insertions(+), 10 deletions(-)
->  create mode 100644 lib/i915/intel_tiling_info.c
->  create mode 100644 lib/i915/intel_tiling_info.h
+>  lib/intel_chipset.h     |  4 ++++
+>  lib/intel_device_info.c | 47 +++++++++++++++++++++++++++++++++++++++++
+>  2 files changed, 51 insertions(+)
 > 
-> diff --git a/lib/i915/i915_blt.h b/lib/i915/i915_blt.h
-> index bc375aba..9837dcac 100644
-> --- a/lib/i915/i915_blt.h
-> +++ b/lib/i915/i915_blt.h
-> @@ -47,6 +47,7 @@
->  #include <malloc.h>
->  #include "drm.h"
->  #include "igt.h"
-> +#include "intel_tiling_info.h"
+> diff --git a/lib/intel_chipset.h b/lib/intel_chipset.h
+> index 9b39472a..cceca929 100644
+> --- a/lib/intel_chipset.h
+> +++ b/lib/intel_chipset.h
+> @@ -31,6 +31,8 @@
+>  #include <pciaccess.h>
+>  #include <stdbool.h>
 >  
->  #define CCS_RATIO 256
->  
-> @@ -59,15 +60,6 @@ enum blt_color_depth {
->  	CD_128bit,
->  };
->  
-> -enum blt_tiling_type {
-> -	T_LINEAR,
-> -	T_XMAJOR,
-> -	T_YMAJOR,
-> -	T_TILE4,
-> -	T_TILE64,
-> -	T_YFMAJOR,
-> -};
-> -
->  enum blt_compression {
->  	COMPRESSION_DISABLED,
->  	COMPRESSION_ENABLED,
-> diff --git a/lib/i915/intel_tiling_info.c b/lib/i915/intel_tiling_info.c
-> new file mode 100644
-> index 00000000..ab1d21d9
-> --- /dev/null
-> +++ b/lib/i915/intel_tiling_info.c
-> @@ -0,0 +1,88 @@
-> +// SPDX-License-Identifier: MIT
-> +/*
-> + * Copyright © 2023 Intel Corporation
-> + */
-> +
-> +#include <stdint.h>
-> +#include "intel_chipset.h"
 > +#include "i915/intel_tiling_info.h"
 > +
-> +#define BLT_INFO(_cmd, _tiling)  { \
-> +		.blt_cmd_type = _cmd, \
-> +		.supported_tiling = _tiling \
-> +	}
-> +
-> +static const struct blt_tiling_info src_copy = BLT_INFO(SRC_COPY, BIT(T_LINEAR));
-> +static const struct blt_tiling_info
-> +		pre_gen8_xy_src_copy = BLT_INFO(XY_SRC_COPY,
-> +						BIT(T_LINEAR) |
-> +						BIT(T_XMAJOR));
-> +static const struct blt_tiling_info
-> +		gen8_xy_src_copy = BLT_INFO(XY_SRC_COPY,
-> +					    BIT(T_LINEAR) |
-> +					    BIT(T_XMAJOR) |
-> +					    BIT(T_YMAJOR));
-> +static const struct blt_tiling_info
-> +		gen11_xy_fast_copy = BLT_INFO(XY_FAST_COPY,
-> +					      BIT(T_LINEAR)  |
-> +					      BIT(T_YMAJOR)  |
-> +					      BIT(T_YFMAJOR) |
-> +					      BIT(T_TILE64));
-> +static const struct blt_tiling_info
-> +		gen12_xy_fast_copy = BLT_INFO(XY_FAST_COPY,
-> +					      BIT(T_LINEAR) |
-> +					      BIT(T_YMAJOR) |
-> +					      BIT(T_TILE4)  |
-> +					      BIT(T_TILE64));
-> +static const struct blt_tiling_info
-> +		dg2_xy_fast_copy = BLT_INFO(XY_FAST_COPY,
-> +					    BIT(T_LINEAR) |
-> +					    BIT(T_XMAJOR) |
-> +					    BIT(T_TILE4)  |
-> +					    BIT(T_TILE64));
-> +static const struct blt_tiling_info
-> +		gen12_xy_block_copy = BLT_INFO(XY_BLOCK_COPY,
-> +					       BIT(T_LINEAR) |
-> +					       BIT(T_YMAJOR));
-> +static const struct blt_tiling_info
-> +		dg2_xy_block_copy = BLT_INFO(XY_BLOCK_COPY,
-> +					     BIT(T_LINEAR) |
-> +					     BIT(T_XMAJOR) |
-> +					     BIT(T_TILE4)  |
-> +					     BIT(T_TILE64));
-> +
-> +const struct blt_cmd_info pre_gen8_blt_info = {
-> +	.supported_cmds = {
-> +		[SRC_COPY] = &src_copy,
-> +		[XY_SRC_COPY] = &pre_gen8_xy_src_copy
-> +	}
-> +};
-> +
-> +const struct blt_cmd_info gen8_blt_info = {
-> +	.supported_cmds = {
-> +		[XY_SRC_COPY] = &gen8_xy_src_copy,
-> +	}
-> +};
-> +
-> +const struct blt_cmd_info gen11_blt_info = {
-> +	.supported_cmds = {
-> +		[XY_SRC_COPY] = &gen8_xy_src_copy,
-> +		[XY_FAST_COPY] = &gen11_xy_fast_copy,
-> +	}
-> +};
-> +
-> +const struct blt_cmd_info gen12_blt_info = {
-> +	.supported_cmds = {
-> +		[XY_SRC_COPY] = &gen8_xy_src_copy,
-> +		[XY_FAST_COPY] = &gen12_xy_fast_copy,
-> +		[XY_BLOCK_COPY] = &gen12_xy_block_copy,
-> +	}
-> +};
-> +
-> +const struct blt_cmd_info gen12_dg2_blt_info = {
-> +	.supported_cmds = {
-> +		[XY_SRC_COPY] = &gen8_xy_src_copy,
-> +		[XY_FAST_COPY] = &dg2_xy_fast_copy,
-> +		[XY_BLOCK_COPY] = &dg2_xy_block_copy,
-> +	}
-> +};
-> diff --git a/lib/i915/intel_tiling_info.h b/lib/i915/intel_tiling_info.h
-> new file mode 100644
-> index 00000000..21ed8761
-> --- /dev/null
-> +++ b/lib/i915/intel_tiling_info.h
-> @@ -0,0 +1,47 @@
-> +/* SPDX-License-Identifier: MIT */
-> +/*
-> + * Copyright © 2022 Intel Corporation
+>  #define BIT(x) (1ul <<(x))
+>  
+>  struct pci_device *intel_get_pci_device(void);
+> @@ -86,11 +88,13 @@ struct intel_device_info {
+>  	bool is_alderlake_p : 1;
+>  	bool is_alderlake_n : 1;
+>  	bool is_meteorlake : 1;
+> +	const struct blt_cmd_info *blt_tiling;
+>  	const char *codename;
+>  };
+>  
+>  const struct intel_device_info *intel_get_device_info(uint16_t devid) __attribute__((pure));
+>  
+> +const struct blt_cmd_info *intel_get_blt_info(uint16_t devid) __attribute__((pure));
+>  unsigned intel_gen(uint16_t devid) __attribute__((pure));
+>  unsigned intel_graphics_ver(uint16_t devid) __attribute__((pure));
+>  unsigned intel_display_ver(uint16_t devid) __attribute__((pure));
+> diff --git a/lib/intel_device_info.c b/lib/intel_device_info.c
+> index 68dd17ee..f1233ee0 100644
+> --- a/lib/intel_device_info.c
+> +++ b/lib/intel_device_info.c
+> @@ -145,6 +145,7 @@ static const struct intel_device_info intel_sandybridge_info = {
+>  	.graphics_ver = 6,
+>  	.display_ver = 6,
+>  	.is_sandybridge = true,
+> +	.blt_tiling = &pre_gen8_blt_info,
+>  	.codename = "sandybridge"
+>  };
+>  static const struct intel_device_info intel_sandybridge_m_info = {
+> @@ -152,6 +153,7 @@ static const struct intel_device_info intel_sandybridge_m_info = {
+>  	.display_ver = 6,
+>  	.is_mobile = true,
+>  	.is_sandybridge = true,
+> +	.blt_tiling = &pre_gen8_blt_info,
+>  	.codename = "sandybridge"
+>  };
+>  
+> @@ -159,6 +161,7 @@ static const struct intel_device_info intel_ivybridge_info = {
+>  	.graphics_ver = 7,
+>  	.display_ver = 7,
+>  	.is_ivybridge = true,
+> +	.blt_tiling = &pre_gen8_blt_info,
+>  	.codename = "ivybridge"
+>  };
+>  static const struct intel_device_info intel_ivybridge_m_info = {
+> @@ -166,6 +169,7 @@ static const struct intel_device_info intel_ivybridge_m_info = {
+>  	.display_ver = 7,
+>  	.is_mobile = true,
+>  	.is_ivybridge = true,
+> +	.blt_tiling = &pre_gen8_blt_info,
+>  	.codename = "ivybridge"
+>  };
+>  
+> @@ -173,6 +177,7 @@ static const struct intel_device_info intel_valleyview_info = {
+>  	.graphics_ver = 7,
+>  	.display_ver = 7,
+>  	.is_valleyview = true,
+> +	.blt_tiling = &pre_gen8_blt_info,
+>  	.codename = "valleyview"
+>  };
+>  
+> @@ -180,6 +185,7 @@ static const struct intel_device_info intel_valleyview_info = {
+>  	.graphics_ver = 7, \
+>  	.display_ver = 7, \
+>  	.is_haswell = true, \
+> +	.blt_tiling = &pre_gen8_blt_info, \
+>  	.codename = "haswell"
+>  
+>  static const struct intel_device_info intel_haswell_gt1_info = {
+> @@ -201,6 +207,7 @@ static const struct intel_device_info intel_haswell_gt3_info = {
+>  	.graphics_ver = 8, \
+>  	.display_ver = 8, \
+>  	.is_broadwell = true, \
+> +	.blt_tiling = &gen8_blt_info, \
+>  	.codename = "broadwell"
+>  
+>  static const struct intel_device_info intel_broadwell_gt1_info = {
+> @@ -226,12 +233,14 @@ static const struct intel_device_info intel_cherryview_info = {
+>  	.graphics_ver = 8,
+>  	.display_ver = 8,
+>  	.is_cherryview = true,
+> +	.blt_tiling = &gen8_blt_info,
+>  	.codename = "cherryview"
+>  };
+>  
+>  #define SKYLAKE_FIELDS \
+>  	.graphics_ver = 9, \
+>  	.display_ver = 9, \
+> +	.blt_tiling = &gen11_blt_info, \
+>  	.codename = "skylake", \
+>  	.is_skylake = true
+>  
+> @@ -259,6 +268,7 @@ static const struct intel_device_info intel_broxton_info = {
+>  	.graphics_ver = 9,
+>  	.display_ver = 9,
+>  	.is_broxton = true,
+> +	.blt_tiling = &gen11_blt_info,
+>  	.codename = "broxton"
+>  };
+>  
+> @@ -266,6 +276,7 @@ static const struct intel_device_info intel_broxton_info = {
+>  	.graphics_ver = 9, \
+>  	.display_ver = 9, \
+>  	.is_kabylake = true, \
+> +	.blt_tiling = &gen11_blt_info, \
+>  	.codename = "kabylake"
+>  
+>  static const struct intel_device_info intel_kabylake_gt1_info = {
+> @@ -292,6 +303,7 @@ static const struct intel_device_info intel_geminilake_info = {
+>  	.graphics_ver = 9,
+>  	.display_ver = 9,
+>  	.is_geminilake = true,
+> +	.blt_tiling = &gen11_blt_info,
+>  	.codename = "geminilake"
+>  };
+>  
+> @@ -299,6 +311,7 @@ static const struct intel_device_info intel_geminilake_info = {
+>  	.graphics_ver = 9, \
+>  	.display_ver = 9, \
+>  	.is_coffeelake = true, \
+> +	.blt_tiling = &gen11_blt_info, \
+>  	.codename = "coffeelake"
+>  
+>  static const struct intel_device_info intel_coffeelake_gt1_info = {
+> @@ -320,6 +333,7 @@ static const struct intel_device_info intel_coffeelake_gt3_info = {
+>  	.graphics_ver = 9, \
+>  	.display_ver = 9, \
+>  	.is_cometlake = true, \
+> +	.blt_tiling = &gen11_blt_info, \
+>  	.codename = "cometlake"
+>  
+>  static const struct intel_device_info intel_cometlake_gt1_info = {
+> @@ -336,6 +350,7 @@ static const struct intel_device_info intel_cannonlake_info = {
+>  	.graphics_ver = 10,
+>  	.display_ver = 10,
+>  	.is_cannonlake = true,
+> +	.blt_tiling = &gen11_blt_info,
+>  	.codename = "cannonlake"
+>  };
+>  
+> @@ -343,6 +358,7 @@ static const struct intel_device_info intel_icelake_info = {
+>  	.graphics_ver = 11,
+>  	.display_ver = 11,
+>  	.is_icelake = true,
+> +	.blt_tiling = &gen11_blt_info,
+>  	.codename = "icelake"
+>  };
+>  
+> @@ -350,6 +366,7 @@ static const struct intel_device_info intel_elkhartlake_info = {
+>  	.graphics_ver = 11,
+>  	.display_ver = 11,
+>  	.is_elkhartlake = true,
+> +	.blt_tiling = &gen11_blt_info,
+>  	.codename = "elkhartlake"
+>  };
+>  
+> @@ -357,6 +374,7 @@ static const struct intel_device_info intel_jasperlake_info = {
+>  	.graphics_ver = 11,
+>  	.display_ver = 11,
+>  	.is_jasperlake = true,
+> +	.blt_tiling = &gen11_blt_info,
+>  	.codename = "jasperlake"
+>  };
+>  
+> @@ -364,6 +382,7 @@ static const struct intel_device_info intel_tigerlake_gt1_info = {
+>  	.graphics_ver = 12,
+>  	.display_ver = 12,
+>  	.is_tigerlake = true,
+> +	.blt_tiling = &gen12_blt_info,
+>  	.codename = "tigerlake",
+>  	.gt = 1,
+>  };
+> @@ -372,6 +391,7 @@ static const struct intel_device_info intel_tigerlake_gt2_info = {
+>  	.graphics_ver = 12,
+>  	.display_ver = 12,
+>  	.is_tigerlake = true,
+> +	.blt_tiling = &gen12_blt_info,
+>  	.codename = "tigerlake",
+>  	.gt = 2,
+>  };
+> @@ -380,6 +400,7 @@ static const struct intel_device_info intel_rocketlake_info = {
+>  	.graphics_ver = 12,
+>  	.display_ver = 12,
+>  	.is_rocketlake = true,
+> +	.blt_tiling = &gen12_blt_info,
+>  	.codename = "rocketlake"
+>  };
+>  
+> @@ -388,6 +409,7 @@ static const struct intel_device_info intel_dg1_info = {
+>  	.graphics_rel = 10,
+>  	.display_ver = 12,
+>  	.is_dg1 = true,
+> +	.blt_tiling = &gen12_blt_info,
+>  	.codename = "dg1"
+>  };
+>  
+> @@ -398,6 +420,7 @@ static const struct intel_device_info intel_dg2_info = {
+>  	.has_4tile = true,
+>  	.is_dg2 = true,
+>  	.codename = "dg2",
+> +	.blt_tiling = &gen12_dg2_blt_info,
+>  	.has_flatccs = true,
+>  };
+>  
+> @@ -405,6 +428,7 @@ static const struct intel_device_info intel_alderlake_s_info = {
+>  	.graphics_ver = 12,
+>  	.display_ver = 12,
+>  	.is_alderlake_s = true,
+> +	.blt_tiling = &gen12_blt_info,
+>  	.codename = "alderlake_s"
+>  };
+>  
+> @@ -412,6 +436,7 @@ static const struct intel_device_info intel_raptorlake_s_info = {
+>  	.graphics_ver = 12,
+>  	.display_ver = 12,
+>  	.is_raptorlake_s = true,
+> +	.blt_tiling = &gen12_blt_info,
+>  	.codename = "raptorlake_s"
+>  };
+>  
+> @@ -419,6 +444,7 @@ static const struct intel_device_info intel_alderlake_p_info = {
+>  	.graphics_ver = 12,
+>  	.display_ver = 13,
+>  	.is_alderlake_p = true,
+> +	.blt_tiling = &gen12_blt_info,
+>  	.codename = "alderlake_p"
+>  };
+>  
+> @@ -426,6 +452,7 @@ static const struct intel_device_info intel_alderlake_n_info = {
+>  	.graphics_ver = 12,
+>  	.display_ver = 13,
+>  	.is_alderlake_n = true,
+> +	.blt_tiling = &gen12_blt_info,
+>  	.codename = "alderlake_n"
+>  };
+>  
+> @@ -436,6 +463,7 @@ static const struct intel_device_info intel_ats_m_info = {
+>  	.is_dg2 = true,
+>  	.has_4tile = true,
+>  	.codename = "ats_m",
+> +	.blt_tiling = &gen12_dg2_blt_info,
+>  	.has_flatccs = true,
+>  };
+>  
+> @@ -583,6 +611,25 @@ out:
+>  	return cache;
+>  }
+>  
+> +/**
+> + * intel_get_blt_info:
+> + * @devid: pci device id
+> + *
+> + * Looks up information on blitter commands and tiling formats supported
+> + * by the device.
+> + *
+> + * Returns:
+> + * The associated blt_cmd_info, NULL if no such information is found
 > + */
+> +const struct blt_cmd_info *intel_get_blt_info(uint16_t devid)
+> +{
+> +	const struct intel_device_info *dev_info;
 > +
-> +#ifndef __INTEL_TILING_INFO_H
-> +#define __INTEL_TILING_INFO_H
+> +	dev_info = intel_get_device_info(devid);
 > +
-> +#include <stdint.h>
+> +	return dev_info->blt_tiling;
+> +}
 > +
-> +enum blt_tiling_type {
-> +	T_LINEAR,
-> +	T_XMAJOR,
-> +	T_YMAJOR,
-> +	T_TILE4,
-> +	T_TILE64,
-> +	T_YFMAJOR,
-> +	__BLT_MAX_TILING
-> +};
-> +
-> +enum blt_cmd_type {
-> +	SRC_COPY,
-> +	XY_SRC_COPY,
-> +	XY_FAST_COPY,
-> +	XY_BLOCK_COPY,
-> +	__BLT_MAX_CMD
-> +};
-> +
-> +struct blt_tiling_info {
-> +	enum blt_cmd_type blt_cmd_type;
-> +	uint32_t supported_tiling;
-> +};
-> +
-> +struct blt_cmd_info {
-> +	struct blt_tiling_info const *supported_cmds[__BLT_MAX_CMD];
-> +};
-> +
-> +extern const struct blt_cmd_info pre_gen8_blt_info;
-> +extern const struct blt_cmd_info gen8_blt_info;
-> +extern const struct blt_cmd_info gen11_blt_info;
-> +extern const struct blt_cmd_info gen12_blt_info;
-> +extern const struct blt_cmd_info gen12_dg2_blt_info;
-> +
-> +#define for_each_tiling(__tiling) \
-> +	for (__tiling = T_LINEAR; __tiling < __BLT_MAX_TILING; __tiling++)
-> +
-> +#endif
-> diff --git a/lib/meson.build b/lib/meson.build
-> index cc784686..22069440 100644
-> --- a/lib/meson.build
-> +++ b/lib/meson.build
-> @@ -14,6 +14,7 @@ lib_sources = [
->  	'i915/intel_decode.c',
->  	'i915/intel_memory_region.c',
->  	'i915/intel_mocs.c',
-> +	'i915/intel_tiling_info.c',
->  	'i915/i915_blt.c',
->  	'i915/i915_crc.c',
->  	'igt_collection.c',
-> @@ -216,7 +217,8 @@ igt_deps = [ lib_igt ] + lib_deps
->  
->  lin_igt_chipset_build = static_library('igt_chipset',
->                                         ['intel_chipset.c',
-> -                                        'intel_device_info.c'],
-> +					'intel_device_info.c',
-> +					'i915/intel_tiling_info.c'],
->                                         include_directories : inc)
->  
->  lib_igt_chipset = declare_dependency(link_with : lin_igt_chipset_build,
-> @@ -239,6 +241,7 @@ lib_igt_device_scan_build = static_library('igt_device_scan',
->  	'igt_list.c',
->  	'igt_tools_stub.c',
->  	'intel_device_info.c',
-> +	'i915/intel_tiling_info.c',
->  	],
->  	dependencies : scan_dep,
->  	include_directories : inc)
+>  /**
+>   * intel_gen:
+>   * @devid: pci device id
 > -- 
 > 2.25.1
 > 
