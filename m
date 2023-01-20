@@ -1,17 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3C4A010E033
- for <igt-dev@lists.freedesktop.org>; Fri, 20 Jan 2023 13:41:41 +0000 (UTC)
-From: Mohammed Thasleem <mohammed.thasleem@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Fri, 20 Jan 2023 19:05:40 +0530
-Message-Id: <20230120133540.58340-1-mohammed.thasleem@intel.com>
-In-Reply-To: <20230120123639.57140-1-mohammed.thasleem@intel.com>
-References: <20230120123639.57140-1-mohammed.thasleem@intel.com>
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v3] lib/igt_kms: Fixed the usage of
- dereferencing of null pointer
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Mohammed Thasleem" <mohammed.thasleem@intel.com>
+Date: Fri, 20 Jan 2023 13:45:27 -0000
+Message-ID: <167422232734.22913.7126225109293758110@emeril.freedesktop.org>
+References: <20230120123639.57140-1-mohammed.thasleem@intel.com>
+In-Reply-To: <20230120123639.57140-1-mohammed.thasleem@intel.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_l?=
+ =?utf-8?q?ib/igt=5Fkms=3A_Fixed_the_usage_of_Dereferencing_of_null_pointe?=
+ =?utf-8?q?r_=28rev3=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,35 +18,243 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: petri.latvala@intel.com
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Fixed the usage of dereferencing of null pointer to avoid crash.
+== Series Details ==
 
-v2: Removed igt_require and return false if proplist empty. (Kamil)
+Series: lib/igt_kms: Fixed the usage of Dereferencing of null pointer (rev3)
+URL   : https://patchwork.freedesktop.org/series/113032/
+State : warning
 
-v3: Corrected commit msg and description. (Kamil)
+== Summary ==
 
-Signed-off-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
----
- lib/igt_kms.c | 3 +++
- 1 file changed, 3 insertions(+)
+Pipeline status: FAILED.
 
-diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-index b4a98ae1..6a0c5ac2 100644
---- a/lib/igt_kms.c
-+++ b/lib/igt_kms.c
-@@ -1941,6 +1941,9 @@ kmstest_get_property(int drm_fd, uint32_t object_id, uint32_t object_type,
- 	int i;
- 
- 	proplist = drmModeObjectGetProperties(drm_fd, object_id, object_type);
-+	if (!proplist)
-+		return false;
-+
- 	for (i = 0; i < proplist->count_props; i++) {
- 		_prop = drmModeGetProperty(drm_fd, proplist->props[i]);
- 		if (!_prop)
--- 
-2.25.1
+see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/788784 for the overview.
+
+build:tests-debian-meson has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/35098459):
+  /usr/include/xf86drmMode.h:533:2: error: unknown type name ‘uint32_t’
+    uint32_t lessees[0];
+    ^~~~~~~~
+  /usr/include/xf86drmMode.h:539:2: error: unknown type name ‘uint32_t’
+    uint32_t count;
+    ^~~~~~~~
+  /usr/include/xf86drmMode.h:540:2: error: unknown type name ‘uint32_t’
+    uint32_t objects[0];
+    ^~~~~~~~
+  /usr/include/xf86drmMode.h:545:39: error: unknown type name ‘uint32_t’; did you mean ‘intptr_t’?
+   extern int drmModeRevokeLease(int fd, uint32_t lessee_id);
+                                         ^~~~~~~~
+                                         intptr_t
+  ninja: build stopped: subcommand failed.
+  section_end:1674222208:step_script
+  section_start:1674222208:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1674222210:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
+
+build:tests-debian-meson-arm64 has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/35098462):
+  /usr/include/xf86drmMode.h:533:2: error: unknown type name ‘uint32_t’
+    uint32_t lessees[0];
+    ^~~~~~~~
+  /usr/include/xf86drmMode.h:539:2: error: unknown type name ‘uint32_t’
+    uint32_t count;
+    ^~~~~~~~
+  /usr/include/xf86drmMode.h:540:2: error: unknown type name ‘uint32_t’
+    uint32_t objects[0];
+    ^~~~~~~~
+  /usr/include/xf86drmMode.h:545:39: error: unknown type name ‘uint32_t’; did you mean ‘intptr_t’?
+   extern int drmModeRevokeLease(int fd, uint32_t lessee_id);
+                                         ^~~~~~~~
+                                         intptr_t
+  ninja: build stopped: subcommand failed.
+  section_end:1674222209:step_script
+  section_start:1674222209:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1674222210:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
+
+build:tests-debian-meson-armhf has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/35098461):
+  /usr/include/xf86drmMode.h:533:2: error: unknown type name ‘uint32_t’
+    uint32_t lessees[0];
+    ^~~~~~~~
+  /usr/include/xf86drmMode.h:539:2: error: unknown type name ‘uint32_t’
+    uint32_t count;
+    ^~~~~~~~
+  /usr/include/xf86drmMode.h:540:2: error: unknown type name ‘uint32_t’
+    uint32_t objects[0];
+    ^~~~~~~~
+  /usr/include/xf86drmMode.h:545:39: error: unknown type name ‘uint32_t’; did you mean ‘intptr_t’?
+   extern int drmModeRevokeLease(int fd, uint32_t lessee_id);
+                                         ^~~~~~~~
+                                         intptr_t
+  ninja: build stopped: subcommand failed.
+  section_end:1674222205:step_script
+  section_start:1674222205:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1674222206:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
+
+build:tests-debian-meson-mips has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/35098463):
+  /usr/include/xf86drmMode.h:533:2: error: unknown type name ‘uint32_t’
+    uint32_t lessees[0];
+    ^~~~~~~~
+  /usr/include/xf86drmMode.h:539:2: error: unknown type name ‘uint32_t’
+    uint32_t count;
+    ^~~~~~~~
+  /usr/include/xf86drmMode.h:540:2: error: unknown type name ‘uint32_t’
+    uint32_t objects[0];
+    ^~~~~~~~
+  /usr/include/xf86drmMode.h:545:39: error: unknown type name ‘uint32_t’; did you mean ‘intptr_t’?
+   extern int drmModeRevokeLease(int fd, uint32_t lessee_id);
+                                         ^~~~~~~~
+                                         intptr_t
+  ninja: build stopped: subcommand failed.
+  section_end:1674222204:step_script
+  section_start:1674222204:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1674222205:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
+
+build:tests-debian-minimal has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/35098460):
+  /usr/include/xf86drmMode.h:533:2: error: unknown type name ‘uint32_t’
+    uint32_t lessees[0];
+    ^~~~~~~~
+  /usr/include/xf86drmMode.h:539:2: error: unknown type name ‘uint32_t’
+    uint32_t count;
+    ^~~~~~~~
+  /usr/include/xf86drmMode.h:540:2: error: unknown type name ‘uint32_t’
+    uint32_t objects[0];
+    ^~~~~~~~
+  /usr/include/xf86drmMode.h:545:39: error: unknown type name ‘uint32_t’; did you mean ‘intptr_t’?
+   extern int drmModeRevokeLease(int fd, uint32_t lessee_id);
+                                         ^~~~~~~~
+                                         intptr_t
+  ninja: build stopped: subcommand failed.
+  section_end:1674222203:step_script
+  section_start:1674222203:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1674222204:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
+
+build:tests-fedora has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/35098454):
+        |  ^~~~~~~~
+  /usr/include/xf86drmMode.h:533:2: error: unknown type name ‘uint32_t’
+    533 |  uint32_t lessees[0];
+        |  ^~~~~~~~
+  /usr/include/xf86drmMode.h:539:2: error: unknown type name ‘uint32_t’
+    539 |  uint32_t count;
+        |  ^~~~~~~~
+  /usr/include/xf86drmMode.h:540:2: error: unknown type name ‘uint32_t’
+    540 |  uint32_t objects[0];
+        |  ^~~~~~~~
+  /usr/include/xf86drmMode.h:545:39: error: unknown type name ‘uint32_t’
+    545 | extern int drmModeRevokeLease(int fd, uint32_t lessee_id);
+        |                                       ^~~~~~~~
+  ninja: build stopped: subcommand failed.
+  section_end:1674222207:step_script
+  section_start:1674222207:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1674222208:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
+
+build:tests-fedora-clang has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/35098458):
+          uint32_t bpp;
+          ^
+  /usr/include/xf86drmMode.h:221:2: error: unknown type name 'uint32_t'
+          uint32_t depth;
+          ^
+  /usr/include/xf86drmMode.h:223:2: error: unknown type name 'uint32_t'
+          uint32_t handle;
+          ^
+  /usr/include/xf86drmMode.h:229:2: error: unknown type name 'uint32_t'
+          uint32_t id;
+          ^
+  fatal error: too many errors emitted, stopping now [-ferror-limit=]
+  20 errors generated.
+  ninja: build stopped: subcommand failed.
+  section_end:1674222208:step_script
+  section_start:1674222208:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1674222209:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
+
+build:tests-fedora-no-libdrm-nouveau has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/35098457):
+        |  ^~~~~~~~
+  /usr/include/xf86drmMode.h:533:2: error: unknown type name ‘uint32_t’
+    533 |  uint32_t lessees[0];
+        |  ^~~~~~~~
+  /usr/include/xf86drmMode.h:539:2: error: unknown type name ‘uint32_t’
+    539 |  uint32_t count;
+        |  ^~~~~~~~
+  /usr/include/xf86drmMode.h:540:2: error: unknown type name ‘uint32_t’
+    540 |  uint32_t objects[0];
+        |  ^~~~~~~~
+  /usr/include/xf86drmMode.h:545:39: error: unknown type name ‘uint32_t’
+    545 | extern int drmModeRevokeLease(int fd, uint32_t lessee_id);
+        |                                       ^~~~~~~~
+  ninja: build stopped: subcommand failed.
+  section_end:1674222207:step_script
+  section_start:1674222207:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1674222208:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
+
+build:tests-fedora-no-libunwind has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/35098455):
+        |  ^~~~~~~~
+  /usr/include/xf86drmMode.h:533:2: error: unknown type name ‘uint32_t’
+    533 |  uint32_t lessees[0];
+        |  ^~~~~~~~
+  /usr/include/xf86drmMode.h:539:2: error: unknown type name ‘uint32_t’
+    539 |  uint32_t count;
+        |  ^~~~~~~~
+  /usr/include/xf86drmMode.h:540:2: error: unknown type name ‘uint32_t’
+    540 |  uint32_t objects[0];
+        |  ^~~~~~~~
+  /usr/include/xf86drmMode.h:545:39: error: unknown type name ‘uint32_t’
+    545 | extern int drmModeRevokeLease(int fd, uint32_t lessee_id);
+        |                                       ^~~~~~~~
+  ninja: build stopped: subcommand failed.
+  section_end:1674222206:step_script
+  section_start:1674222206:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1674222207:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
+
+build:tests-fedora-oldest-meson has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/35098456):
+        |  ^~~~~~~~
+  /usr/include/xf86drmMode.h:533:2: error: unknown type name ‘uint32_t’
+    533 |  uint32_t lessees[0];
+        |  ^~~~~~~~
+  /usr/include/xf86drmMode.h:539:2: error: unknown type name ‘uint32_t’
+    539 |  uint32_t count;
+        |  ^~~~~~~~
+  /usr/include/xf86drmMode.h:540:2: error: unknown type name ‘uint32_t’
+    540 |  uint32_t objects[0];
+        |  ^~~~~~~~
+  /usr/include/xf86drmMode.h:545:39: error: unknown type name ‘uint32_t’
+    545 | extern int drmModeRevokeLease(int fd, uint32_t lessee_id);
+        |                                       ^~~~~~~~
+  ninja: build stopped: subcommand failed.
+  section_end:1674222204:step_script
+  section_start:1674222204:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1674222204:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+
+== Logs ==
+
+For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/788784
