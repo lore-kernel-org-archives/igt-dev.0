@@ -1,20 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id F2E7010E14A
- for <igt-dev@lists.freedesktop.org>; Thu, 26 Jan 2023 09:00:18 +0000 (UTC)
-Date: Thu, 26 Jan 2023 10:00:11 +0100
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Message-ID: <20230126090011.4xi46i5pr7lk5hky@kamilkon-desk1>
-References: <20230112193741.55630-1-mcanal@igalia.com>
- <20230112193741.55630-4-mcanal@igalia.com>
+Message-ID: <46f7db49-eb5c-515f-b450-75cac53d770e@linux.intel.com>
+Date: Fri, 20 Jan 2023 15:29:43 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Content-Language: en-US
+To: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>,
+ igt-dev@lists.freedesktop.org, Intel-gfx@lists.freedesktop.org
+References: <20230119155428.3260937-1-tvrtko.ursulin@linux.intel.com>
+From: "Das, Nirmoy" <nirmoy.das@linux.intel.com>
+In-Reply-To: <20230119155428.3260937-1-tvrtko.ursulin@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230112193741.55630-4-mcanal@igalia.com>
-Subject: Re: [igt-dev] [PATCH i-g-t v5 3/4] lib/igt_v3d: Rework
- igt_v3d_get_param()
+Subject: Re: [igt-dev] [Intel-gfx] [PATCH i-g-t] intel_gpu_top: Fix cleanup
+ on old kernels / unsupported GPU
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,53 +23,69 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On 2023-01-12 at 16:37:41 -0300, Maíra Canal wrote:
-> Instead of assuming that igt_v3d_get_param() will succeed, allow the
-> ioctl to fail and return 0. This way, it will be possible to check if the
-> kernel has the capabilities needed by the test by checking if the return
-> of the igt_v3d_get_param() function is different than zero.
-> 
-> Signed-off-by: Maíra Canal <mcanal@igalia.com>
+Hi Tvrtko,
 
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-
+On 1/19/2023 4:54 PM, Tvrtko Ursulin wrote:
+> From: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+>
+> Avoid trying to dereference null engines on exit when there are either
+> none which are supported, or kernel does not have i915 PMU support.
+>
+> Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 > ---
->  lib/igt_v3d.c | 15 ++++++++++++++-
->  1 file changed, 14 insertions(+), 1 deletion(-)
-> 
-> diff --git a/lib/igt_v3d.c b/lib/igt_v3d.c
-> index 68d11d7f..5d112416 100644
-> --- a/lib/igt_v3d.c
-> +++ b/lib/igt_v3d.c
-> @@ -86,14 +86,27 @@ igt_v3d_get_bo_offset(int fd, uint32_t handle)
->  	return get.offset;
->  }
->  
-> +/**
-> + * igt_v3d_get_param:
-> + * @fd: device file descriptor
-> + * @param: v3d parameter
-> + *
-> + * This wraps the GET_PARAM ioctl.
-> + *
-> + * Returns the current value of the parameter. If the parameter is
-> + * invalid, returns 0.
-> + */
->  uint32_t
->  igt_v3d_get_param(int fd, enum drm_v3d_param param)
->  {
->  	struct drm_v3d_get_param get = {
->  		.param = param,
->  	};
-> +	int ret;
->  
-> -	do_ioctl(fd, DRM_IOCTL_V3D_GET_PARAM, &get);
-> +	ret = igt_ioctl(fd, DRM_IOCTL_V3D_GET_PARAM, &get);
-> +	if (ret)
-> +		return 0;
->  
->  	return get.value;
->  }
-> -- 
-> 2.39.0
-> 
+>   tools/intel_gpu_top.c | 10 +++++++---
+>   1 file changed, 7 insertions(+), 3 deletions(-)
+>
+> diff --git a/tools/intel_gpu_top.c b/tools/intel_gpu_top.c
+> index 7aa233570463..517dc2995d26 100644
+> --- a/tools/intel_gpu_top.c
+> +++ b/tools/intel_gpu_top.c
+> @@ -448,6 +448,9 @@ static void free_engines(struct engines *engines)
+>   	};
+>   	unsigned int i;
+>   
+> +	if (!engines)
+> +		return;
+> +
+
+
+This check should happen before the  struct pmu_counter free_list 
+generation.
+
+
+Regards,
+
+Nirmoy
+
+>   	for (pmu = &free_list[0]; *pmu; pmu++) {
+>   		if ((*pmu)->present)
+>   			free((char *)(*pmu)->units);
+> @@ -2568,7 +2571,7 @@ int main(int argc, char **argv)
+>   			"Failed to detect engines! (%s)\n(Kernel 4.16 or newer is required for i915 PMU support.)\n",
+>   			strerror(errno));
+>   		ret = EXIT_FAILURE;
+> -		goto err;
+> +		goto err_engines;
+>   	}
+>   
+>   	ret = pmu_init(engines);
+> @@ -2585,7 +2588,7 @@ int main(int argc, char **argv)
+>   "More information can be found at 'Perf events and tool security' document:\n"
+>   "https://www.kernel.org/doc/html/latest/admin-guide/perf-security.html\n");
+>   		ret = EXIT_FAILURE;
+> -		goto err;
+> +		goto err_pmu;
+>   	}
+>   
+>   	ret = EXIT_SUCCESS;
+> @@ -2699,8 +2702,9 @@ int main(int argc, char **argv)
+>   		free_clients(clients);
+>   
+>   	free(codename);
+> -err:
+> +err_pmu:
+>   	free_engines(engines);
+> +err_engines:
+>   	free(pmu_device);
+>   exit:
+>   	igt_devices_free();
