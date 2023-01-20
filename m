@@ -1,20 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 30912890BB
- for <igt-dev@lists.freedesktop.org>; Fri, 20 Jan 2023 15:45:32 +0000 (UTC)
-Message-ID: <9b0f24fd-5a46-d695-859b-4cccfe63b6bd@intel.com>
-Date: Fri, 20 Jan 2023 15:45:27 +0000
+Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8F90D10EAA5
+ for <igt-dev@lists.freedesktop.org>; Fri, 20 Jan 2023 16:10:03 +0000 (UTC)
+Message-ID: <77a5b9bb-6951-0cf7-fd19-09c0cff19601@intel.com>
+Date: Fri, 20 Jan 2023 21:39:57 +0530
 MIME-Version: 1.0
-To: Nirmoy Das <nirmoy.das@intel.com>, igt-dev@lists.freedesktop.org
-References: <20230120100750.24122-1-nirmoy.das@intel.com>
- <20230120100750.24122-2-nirmoy.das@intel.com>
-Content-Language: en-GB
-From: Matthew Auld <matthew.auld@intel.com>
-In-Reply-To: <20230120100750.24122-2-nirmoy.das@intel.com>
+Content-Language: en-US
+To: Petri Latvala <petri.latvala@intel.com>
+References: <20230120144500.29821-1-swati2.sharma@intel.com>
+ <Y8qpngjAz2oYS76B@platvala-desk.ger.corp.intel.com>
+ <Y8qz8KK5DsFHW3Oe@platvala-desk.ger.corp.intel.com>
+From: Swati Sharma <swati2.sharma@intel.com>
+In-Reply-To: <Y8qz8KK5DsFHW3Oe@platvala-desk.ger.corp.intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Subject: Re: [igt-dev] [PATCH i-g-t 2/2] test/i915/gem_eio: Skip suspend
- test on smallbar machine
+Subject: Re: [igt-dev] [PATCH i-g-t] Revert VDSC lib changes
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,41 +22,37 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On 20/01/2023 10:07, Nirmoy Das wrote:
-> Suspending machine requires backing up gem objects to
-> system memory. CPU non-visible lmem objects can only be
-> backed up with the help of GPU on a smallbar device and if
-> the gpu is wedged then such backup action will fail with -EIO.
+On 20-Jan-23 9:02 PM, Petri Latvala wrote:
+> On Fri, Jan 20, 2023 at 04:47:58PM +0200, Petri Latvala wrote:
+>> On Fri, Jan 20, 2023 at 08:15:00PM +0530, Swati Sharma wrote:
+>>> This reverts
+>>>      commit 2a611c37bd170763052bf6c17aa2d48cf09a63c1
+>>>      commit 65202cbc6109f17cf786a95947f4ee9223aec6b8
+>>>      commit b6984b946ba66f6bb0452b223fe188429ddeab34
+>>>      commit bbc2a5ceadb656552c5bcf95a19ce2b292a78128
+>>>
+>>> Series broke git pipeline, revert above commits.
+>>>
+>>> Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
+>>
+>> The ultimate root cause is gitlab CI using Debian buster and thus
+>> libdrm 2.4.97. Until that's changed (soon) #include <stddef.h> and
+>> maybe some others need to be liberally applied all around.
+>>
+>> Thanks for the quick revert.
+>>
+>> Acked-by: Petri Latvala <petri.latvala@intel.com>
 > 
-> This test sets the gpu to wedge state before suspending the
-> machine which will always fail on smallbar machine.
+> Gitlab pipeline for this series was a success, go ahead and merge.
+
+Done.
 > 
-> References: https://gitlab.freedesktop.org/drm/intel/-/issues/7896
-> Signed-off-by: Nirmoy Das <nirmoy.das@intel.com>
-
-For the series,
-Reviewed-by: Matthew Auld <matthew.auld@intel.com>
-
-I guess this would also fail on full-bar, if there were some userspace 
-lmem objects allocated during the test (due to ccs).
-
-> ---
->   tests/i915/gem_eio.c | 1 +
->   1 file changed, 1 insertion(+)
 > 
-> diff --git a/tests/i915/gem_eio.c b/tests/i915/gem_eio.c
-> index 70e82b811..8dbaa7a75 100644
-> --- a/tests/i915/gem_eio.c
-> +++ b/tests/i915/gem_eio.c
-> @@ -500,6 +500,7 @@ static void test_wait(int fd, unsigned int flags, unsigned int wait)
->   
->   static void test_suspend(int fd, int state)
->   {
-> +	igt_require(!gem_has_smallbar(fd));
->   	/* Do a suspend first so that we don't skip inside the test */
->   	igt_system_suspend_autoresume(state, SUSPEND_TEST_DEVICES);
->   
+
+-- 
+~Swati Sharma
