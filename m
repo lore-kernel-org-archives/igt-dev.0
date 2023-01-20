@@ -1,20 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8F90D10EAA5
- for <igt-dev@lists.freedesktop.org>; Fri, 20 Jan 2023 16:10:03 +0000 (UTC)
-Message-ID: <77a5b9bb-6951-0cf7-fd19-09c0cff19601@intel.com>
-Date: Fri, 20 Jan 2023 21:39:57 +0530
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C32CA10E370
+ for <igt-dev@lists.freedesktop.org>; Fri, 20 Jan 2023 16:38:44 +0000 (UTC)
+From: Ashutosh Dixit <ashutosh.dixit@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Fri, 20 Jan 2023 08:38:31 -0800
+Message-Id: <20230120163831.229411-1-ashutosh.dixit@intel.com>
 MIME-Version: 1.0
-Content-Language: en-US
-To: Petri Latvala <petri.latvala@intel.com>
-References: <20230120144500.29821-1-swati2.sharma@intel.com>
- <Y8qpngjAz2oYS76B@platvala-desk.ger.corp.intel.com>
- <Y8qz8KK5DsFHW3Oe@platvala-desk.ger.corp.intel.com>
-From: Swati Sharma <swati2.sharma@intel.com>
-In-Reply-To: <Y8qz8KK5DsFHW3Oe@platvala-desk.ger.corp.intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Subject: Re: [igt-dev] [PATCH i-g-t] Revert VDSC lib changes
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t] tools/intel_gpu_power: Intel GPU idle/busy
+ power measurement
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,37 +18,118 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org
+Cc: Badal Nilawar <badal.nilawar@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On 20-Jan-23 9:02 PM, Petri Latvala wrote:
-> On Fri, Jan 20, 2023 at 04:47:58PM +0200, Petri Latvala wrote:
->> On Fri, Jan 20, 2023 at 08:15:00PM +0530, Swati Sharma wrote:
->>> This reverts
->>>      commit 2a611c37bd170763052bf6c17aa2d48cf09a63c1
->>>      commit 65202cbc6109f17cf786a95947f4ee9223aec6b8
->>>      commit b6984b946ba66f6bb0452b223fe188429ddeab34
->>>      commit bbc2a5ceadb656552c5bcf95a19ce2b292a78128
->>>
->>> Series broke git pipeline, revert above commits.
->>>
->>> Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
->>
->> The ultimate root cause is gitlab CI using Debian buster and thus
->> libdrm 2.4.97. Until that's changed (soon) #include <stddef.h> and
->> maybe some others need to be liberally applied all around.
->>
->> Thanks for the quick revert.
->>
->> Acked-by: Petri Latvala <petri.latvala@intel.com>
-> 
-> Gitlab pipeline for this series was a success, go ahead and merge.
+In several instances (e.g. when investigating GPU power limits) it is very
+useful to be able to measure GPU power easily. Since we already have all
+ingredients for doing so, add a tool to measure Intel GPU power when idle
+and power under load.
 
-Done.
-> 
-> 
+v2: Use softpin/allocator (Riana)
 
+Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
+---
+ tools/intel_gpu_power.c | 76 +++++++++++++++++++++++++++++++++++++++++
+ tools/meson.build       |  1 +
+ 2 files changed, 77 insertions(+)
+ create mode 100644 tools/intel_gpu_power.c
+
+diff --git a/tools/intel_gpu_power.c b/tools/intel_gpu_power.c
+new file mode 100644
+index 00000000000..d9e71581707
+--- /dev/null
++++ b/tools/intel_gpu_power.c
+@@ -0,0 +1,76 @@
++// SPDX-License-Identifier: MIT
++/*
++ * Copyright © 2022 Intel Corporation
++ */
++
++#include "igt.h"
++#include "i915/gem.h"
++#include "igt_power.h"
++
++static int measure_power(int i915, const char *domain, bool load)
++{
++	const intel_ctx_t *ctx = intel_ctx_create_all_physical(i915);
++	uint64_t ahnd = get_reloc_ahnd(i915, ctx->id);
++	int ret, sleep_duration_sec = 2;
++	struct power_sample sample[2];
++	struct igt_power pwr;
++	igt_spin_t *spin;
++
++	gem_quiescent_gpu(i915);
++	if (load) {
++		spin = igt_spin_new(i915, .ahnd = ahnd, .ctx = ctx,
++				    .engine = ALL_ENGINES,
++				    .flags = IGT_SPIN_POLL_RUN);
++		/* Wait till at least one spinner starts */
++		igt_spin_busywait_until_started(spin);
++	}
++
++	ret = igt_power_open(i915, &pwr, domain);
++	if (ret)
++		return ret;
++	igt_power_get_energy(&pwr, &sample[0]);
++	usleep(sleep_duration_sec * USEC_PER_SEC);
++	igt_power_get_energy(&pwr, &sample[1]);
++	igt_info("Measured power: %g mW\n", igt_power_get_mW(&pwr, &sample[0], &sample[1]));
++
++	igt_power_close(&pwr);
++	igt_free_spins(i915);
++	put_ahnd(ahnd);
++	intel_ctx_destroy(i915, ctx);
++
++	return 0;
++}
++
++static void usage(const char *name)
++{
++	igt_info("Usage: %s [options]\n", name);
++	igt_info("-i/--idle  Measure idle power\n");
++	igt_info("-b/--busy  Measure power under load\n");
++}
++
++int main(int argc, char *argv[])
++{
++	int i915 = drm_open_driver_master(DRIVER_INTEL);
++	static struct option long_options[] = {
++		{"idle", 0, 0, 'i'},
++		{"busy", 0, 0, 'b'},
++		{ 0, 0, 0, 0 }
++	};
++	int opt = getopt_long(argc, argv, "ib", long_options, NULL);
++	int ret = 0;
++
++	switch (opt) {
++	case 'i':
++		ret = measure_power(i915, "gpu", false);
++		break;
++	case 'b':
++		ret = measure_power(i915, "gpu", true);
++		break;
++	default:
++		usage(argv[0]);
++		break;
++	}
++
++	close(i915);
++	return ret;
++}
+diff --git a/tools/meson.build b/tools/meson.build
+index d2defec8703..4bbbd993cac 100644
+--- a/tools/meson.build
++++ b/tools/meson.build
+@@ -22,6 +22,7 @@ tools_progs = [
+ 	'intel_error_decode',
+ 	'intel_forcewaked',
+ 	'intel_gpu_frequency',
++	'intel_gpu_power',
+ 	'intel_firmware_decode',
+ 	'intel_framebuffer_dump',
+ 	'intel_gpu_time',
 -- 
-~Swati Sharma
+2.38.0
