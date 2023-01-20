@@ -1,19 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0FC0710EA03
- for <igt-dev@lists.freedesktop.org>; Fri, 20 Jan 2023 10:15:08 +0000 (UTC)
-Message-ID: <6dd731fd-2e80-ea02-0dd4-ffdc26586643@intel.com>
-Date: Fri, 20 Jan 2023 11:14:44 +0100
+Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DD0B210EA03
+ for <igt-dev@lists.freedesktop.org>; Fri, 20 Jan 2023 10:44:53 +0000 (UTC)
+From: "Hogander, Jouni" <jouni.hogander@intel.com>
+To: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Sharma,
+ Swati2" <swati2.sharma@intel.com>
+Date: Fri, 20 Jan 2023 10:44:41 +0000
+Message-ID: <9e96815d2b88bf839b4bb4cdefd0847e6a282821.camel@intel.com>
+References: <20230119092530.3780-1-swati2.sharma@intel.com>
+In-Reply-To: <20230119092530.3780-1-swati2.sharma@intel.com>
 Content-Language: en-US
-To: <igt-dev@lists.freedesktop.org>
-References: <20230120100750.24122-1-nirmoy.das@intel.com>
-From: "Das, Nirmoy" <nirmoy.das@intel.com>
-In-Reply-To: <20230120100750.24122-1-nirmoy.das@intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <ADAC1D45E9E2994797D5D98BAE9004BE@namprd11.prod.outlook.com>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t 1/2] lib/i915/intel_memory_region: Add
- gem_has_smallbar
+Subject: Re: [igt-dev] [v3 0/4] tests/i915/kms_dsc: Reorg
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,78 +22,36 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: matthew.auld@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-
-On 1/20/2023 11:07 AM, Nirmoy Das wrote:
-> Add gem_has_smallbar() to detect a device with smallbar.
->
-> Signed-off-by: Nirmoy Das <nirmoy.das@intel.com>
-> ---
->   lib/i915/intel_memory_region.c | 32 ++++++++++++++++++++++++++++++++
->   lib/i915/intel_memory_region.h |  1 +
->   2 files changed, 33 insertions(+)
->
-> diff --git a/lib/i915/intel_memory_region.c b/lib/i915/intel_memory_region.c
-> index 84e1bceb3..655720819 100644
-> --- a/lib/i915/intel_memory_region.c
-> +++ b/lib/i915/intel_memory_region.c
-> @@ -183,6 +183,38 @@ bool gem_has_lmem(int fd)
->   	return gem_get_lmem_region_count(fd) > 0;
->   }
->   
-> +/**
-> + * gem_has_smallbar:
-> + * @fd: open i915 drm file descriptor
-> + *
-> + * Helper function to check if the device comes with small-bar.
-> + *
-> + * Returns: True if at least one lmem region was found.
-
-
-oops left over from gem_has_lmem() I will wait for reviews before 
-resending it.
-
-> + */
-> +bool gem_has_smallbar(int fd)
-> +{
-> +	struct drm_i915_query_memory_regions *info;
-> +	struct drm_i915_memory_region_info *rf;
-> +	bool ret = false;
-> +
-> +	info = gem_get_query_memory_regions(fd);
-> +	igt_assert(info);
-> +
-> +	for (int i = 0; i < info->num_regions; i++) {
-> +		rf = &info->regions[i];
-> +		if (rf->region.memory_class == I915_MEMORY_CLASS_DEVICE) {
-> +			if (rf->probed_size > rf->probed_cpu_visible_size) {
-> +				ret = true;
-> +				break;
-> +			}
-> +		}
-> +	}
-> +	free(info);
-> +
-> +	return ret;
-> +}
-> +
-> +
->   /* A version of gem_create_in_memory_region_list which can be allowed to
->      fail so that the object creation can be retried */
->   int __gem_create_in_memory_region_list(int fd, uint32_t *handle, uint64_t *size, uint32_t flags,
-> diff --git a/lib/i915/intel_memory_region.h b/lib/i915/intel_memory_region.h
-> index 425bda0ec..9e24bd8fb 100644
-> --- a/lib/i915/intel_memory_region.h
-> +++ b/lib/i915/intel_memory_region.h
-> @@ -62,6 +62,7 @@ struct drm_i915_query_memory_regions *gem_get_query_memory_regions(int fd);
->   unsigned int gem_get_lmem_region_count(int fd);
->   
->   bool gem_has_lmem(int fd);
-> +bool gem_has_smallbar(int fd);
->   
->   int __gem_create_in_memory_region_list(int fd, uint32_t *handle, uint64_t *size, uint32_t flags,
->   				       const struct drm_i915_gem_memory_class_instance *mem_regions,
+T24gVGh1LCAyMDIzLTAxLTE5IGF0IDE0OjU1ICswNTMwLCBTd2F0aSBTaGFybWEgd3JvdGU6DQo+
+IEluIHRoaXMgcGF0Y2ggc2VyaWVzLCBoZWxwZXIgZnVuY3Rpb25zIGZvciBrbXNfZHNjDQo+IGFy
+ZSBpbnRyb3VkdWNlZCB3aGljaCB3aWxsIHJlZHVjZSBjb2RlIGR1cGxpY2F0aW9uDQo+IHdoaWxl
+IGNyZWF0aW5nIGRzYyBjb25jdXJyZW50IHRlc3RzIChlZzogUFNSKQ0KPiANCj4gVGhpcyBpcyBz
+cGxpdCBmcm9tIGh0dHBzOi8vcGF0Y2h3b3JrLmZyZWVkZXNrdG9wLm9yZy9zZXJpZXMvMTExMzQy
+Lw0KPiBzaW5jZSBZQ0JDUjQyMCBEU0MgcmVxdWlyZWQgZHJpdmVyK2lndCBjaGFuZ2VzLg0KPiAN
+Cj4gQWxzbywgZmV3IG90aGVyIHRyaXZpYWwgY2hhbmdlcyBhcmUgZG9uZS4NCg0KRm9yIHRoZSB3
+aG9sZSBzZXQ6DQoNClJldmlld2VkLWJ5OiBKb3VuaSBIw7ZnYW5kZXIgPGpvdW5pLmhvZ2FuZGVy
+QGludGVsLmNvbT4NCj4gDQoNCj4gU3dhdGkgU2hhcm1hICg0KToNCj4gwqAgbGliL2RzYzogTW92
+ZSBWRFNDIGZ1bmN0aW9ucyB0byBzZXBhcmF0ZSBsaWIgZmlsZQ0KPiDCoCBNb3ZlIHdyYXBwZXIg
+ZnVuY3Rpb25zIGZyb20ga21zX2RzYyB0byBrbXNfZHNjX2hlbHBlcg0KPiDCoCB0ZXN0cy9pOTE1
+L2ttc19kc2M6IEFkZCBkaXNwX3ZlciBhcyBzdHJ1Y3QgZGF0YV90IG1lbWJlcg0KPiDCoCB0ZXN0
+cy9pOTE1L2ttc19kc2NfaGVscGVyOiBJbXByb3ZlIGZvcm1hdCBzdHJpbmcNCj4gDQo+IMKgbGli
+L2lndC5owqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIHzCoMKgIDEgKw0KPiDC
+oGxpYi9pZ3RfZHNjLmPCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIHwgMTMzICsrKysrKysr
+KysrKysrKysrKysrKysrKysrKysrKysrKysNCj4gwqBsaWIvaWd0X2RzYy5owqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoCB8wqAgMTkgKysrKysNCj4gwqBsaWIvaWd0X2ttcy5jwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoCB8IDEyNyAtLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0NCj4gwqBsaWIvaWd0X2ttcy5owqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCB8wqAgMTAg
+LS0tDQo+IMKgbGliL21lc29uLmJ1aWxkwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIHzCoMKgIDEg
+Kw0KPiDCoHRlc3RzL2k5MTUva21zX2RzYy5jwqDCoMKgwqDCoMKgwqAgfCAxMzcgKysrKy0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQ0KPiAtLQ0KPiDCoHRlc3RzL2k5MTUva21zX2RzY19o
+ZWxwZXIuYyB8wqAgOTkgKysrKysrKysrKysrKysrKysrKysrKysrKysNCj4gwqB0ZXN0cy9pOTE1
+L2ttc19kc2NfaGVscGVyLmggfMKgIDM1ICsrKysrKysrKw0KPiDCoHRlc3RzL21lc29uLmJ1aWxk
+wqDCoMKgwqDCoMKgwqDCoMKgwqAgfMKgwqAgOSArKy0NCj4gwqAxMCBmaWxlcyBjaGFuZ2VkLCAz
+MDggaW5zZXJ0aW9ucygrKSwgMjYzIGRlbGV0aW9ucygtKQ0KPiDCoGNyZWF0ZSBtb2RlIDEwMDY0
+NCBsaWIvaWd0X2RzYy5jDQo+IMKgY3JlYXRlIG1vZGUgMTAwNjQ0IGxpYi9pZ3RfZHNjLmgNCj4g
+wqBjcmVhdGUgbW9kZSAxMDA2NDQgdGVzdHMvaTkxNS9rbXNfZHNjX2hlbHBlci5jDQo+IMKgY3Jl
+YXRlIG1vZGUgMTAwNjQ0IHRlc3RzL2k5MTUva21zX2RzY19oZWxwZXIuaA0KPiANCg0K
