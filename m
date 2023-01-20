@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id F080610E136
- for <igt-dev@lists.freedesktop.org>; Fri, 20 Jan 2023 17:39:13 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CB4EE10E136
+ for <igt-dev@lists.freedesktop.org>; Fri, 20 Jan 2023 17:39:15 +0000 (UTC)
 From: Swati Sharma <swati2.sharma@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Fri, 20 Jan 2023 23:11:17 +0530
-Message-Id: <20230120174119.3937-4-swati2.sharma@intel.com>
+Date: Fri, 20 Jan 2023 23:11:18 +0530
+Message-Id: <20230120174119.3937-5-swati2.sharma@intel.com>
 In-Reply-To: <20230120174119.3937-1-swati2.sharma@intel.com>
 References: <20230120174119.3937-1-swati2.sharma@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 3/5] tests/i915/kms_dsc: Add disp_ver as
- struct data_t member
+Subject: [igt-dev] [PATCH i-g-t 4/5] tests/i915/kms_dsc_helper: Improve
+ format string
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,40 +23,34 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-disp_ver is added as struct data_t member. This is required
-since features like fractional BPP and DSC YCBCR420 are
-getting introduced from MTL+ and we need disp_ver check.
+Make format string more specific.
 
 Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
 ---
- tests/i915/kms_dsc.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ tests/i915/kms_dsc_helper.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/tests/i915/kms_dsc.c b/tests/i915/kms_dsc.c
-index 22239122..8f32ae95 100644
---- a/tests/i915/kms_dsc.c
-+++ b/tests/i915/kms_dsc.c
-@@ -47,6 +47,7 @@ typedef struct {
- 	igt_output_t *output;
- 	int input_bpc;
- 	int n_pipes;
-+	int disp_ver;
- 	enum pipe pipe;
- } data_t;
+diff --git a/tests/i915/kms_dsc_helper.c b/tests/i915/kms_dsc_helper.c
+index 535061a7..a80f3d78 100644
+--- a/tests/i915/kms_dsc_helper.c
++++ b/tests/i915/kms_dsc_helper.c
+@@ -14,7 +14,7 @@ void force_dsc_enable(int drmfd, igt_output_t *output)
  
-@@ -217,11 +218,12 @@ igt_main
- 	igt_fixture {
- 		data.drm_fd = drm_open_driver_master(DRIVER_INTEL);
- 		data.devid = intel_get_drm_devid(data.drm_fd);
-+		data.disp_ver = intel_display_ver(data.devid);
- 		kmstest_set_vt_graphics_mode();
- 		igt_install_exit_handler(kms_dsc_exit_handler);
- 		igt_display_require(&data.display, data.drm_fd);
- 		igt_display_require_output(&data.display);
--		igt_require(intel_display_ver(data.devid) >= 11);
-+		igt_require(data.disp_ver >= 11);
- 		data.n_pipes = 0;
- 		for_each_pipe(&data.display, i)
- 			data.n_pipes++;
+ 	igt_debug("Forcing DSC enable on %s\n", output->name);
+ 	ret = igt_force_dsc_enable(drmfd, output->name);
+-	igt_assert_f(ret > 0, "debugfs_write failed");
++	igt_assert_f(ret > 0, "forcing dsc enable debugfs_write failed\n");
+ }
+ 
+ void force_dsc_enable_bpc(int drmfd, igt_output_t *output, int input_bpc)
+@@ -24,7 +24,7 @@ void force_dsc_enable_bpc(int drmfd, igt_output_t *output, int input_bpc)
+ 	igt_debug("Forcing input DSC BPC to %d on %s\n",
+ 		  input_bpc, output->name);
+ 	ret = igt_force_dsc_enable_bpc(drmfd, output->name, input_bpc);
+-	igt_assert_f(ret > 0, "debugfs_write failed");
++	igt_assert_f(ret > 0, "forcing input dsc bpc debugfs_write failed\n");
+ }
+ 
+ void save_force_dsc_en(int drmfd, igt_output_t *output)
 -- 
 2.25.1
