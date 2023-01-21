@@ -1,24 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1208810E10A
- for <igt-dev@lists.freedesktop.org>; Sat, 21 Jan 2023 05:28:49 +0000 (UTC)
-Message-ID: <ab1a4f9a-05f5-4590-2f3d-35a45c71bf51@intel.com>
-Date: Sat, 21 Jan 2023 10:58:44 +0530
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A2C8110E119
+ for <igt-dev@lists.freedesktop.org>; Sat, 21 Jan 2023 05:42:08 +0000 (UTC)
+From: Ashutosh Dixit <ashutosh.dixit@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Fri, 20 Jan 2023 21:41:52 -0800
+Message-Id: <20230121054153.410979-2-ashutosh.dixit@intel.com>
+In-Reply-To: <20230121054153.410979-1-ashutosh.dixit@intel.com>
+References: <20230121054153.410979-1-ashutosh.dixit@intel.com>
 MIME-Version: 1.0
-Content-Language: en-US
-To: "Hogander, Jouni" <jouni.hogander@intel.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-References: <20230112073537.27890-1-swati2.sharma@intel.com>
- <20230112073537.27890-4-swati2.sharma@intel.com>
- <e905e151fc0bb6c67f034752a7c428040c66ff47.camel@intel.com>
- <cd098a3b-adeb-8a77-17e9-8bc82543c750@intel.com>
- <c8bee171603f926096dd99e6369c78dc3f97f367.camel@intel.com>
-From: Swati Sharma <swati2.sharma@intel.com>
-In-Reply-To: <c8bee171603f926096dd99e6369c78dc3f97f367.camel@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 8bit
-Subject: Re: [igt-dev] [PATCH i-g-t v4 3/8] lib/dsc: Add helpers for VDSC
- YCbCr420 debugfs entry
+Subject: [igt-dev] [PATCH i-g-t 1/2] i915/i915_power: Sanity check power
+ measurement
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,40 +20,111 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: Badal Nilawar <badal.nilawar@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On 20-Jan-23 4:32 PM, Hogander, Jouni wrote:
-> On Wed, 2023-01-18 at 22:06 +0530, Swati Sharma wrote:
->>
->>
->> On 13-Jan-23 1:47 PM, Hogander, Jouni wrote:
->>>> + * Returns: 1 on success or negative error code, in case of
->>>> failure.
->>> 0 is usually success, < 0 is error. This is also in coding style
->>> document. I see igt_force_dsc_enable is also using 1. Maybe you
->>> should
->>> fix that as well in a separate patch.
->>>    
->> This ret value is returned from igt_sysfs_write() which returns the
->> number of bytes written, or -errno on error.
->>
->> I guess we can't change this.
->>
-> 
-> No, igt_sysfs_write is logical. It returns bytes written or < 0 on
-> error. What you could do is to check ret value of igt_sysfs_write and
-> return 0 if igt_sysfs_write succeeded.
+Add a test to sanity check power measurement on integrated/discrete by
+requiring power under load to be > 0 and >= idle power.
 
-ohh, okay got it.
-Will make those changes. Thanks!
+Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
+---
+ tests/i915/i915_power.c | 73 +++++++++++++++++++++++++++++++++++++++++
+ tests/meson.build       |  1 +
+ 2 files changed, 74 insertions(+)
+ create mode 100644 tests/i915/i915_power.c
 
-> 
-> BR,
-> 
-> Jouni Högander
-> 
-
+diff --git a/tests/i915/i915_power.c b/tests/i915/i915_power.c
+new file mode 100644
+index 00000000000..e7d5c32f1af
+--- /dev/null
++++ b/tests/i915/i915_power.c
+@@ -0,0 +1,73 @@
++// SPDX-License-Identifier: MIT
++/*
++ * Copyright © 2022 Intel Corporation
++ */
++
++#include "igt.h"
++#include "i915/gem.h"
++#include "igt_power.h"
++
++IGT_TEST_DESCRIPTION("i915 power measurement tests");
++
++static double power(int i915, const char *domain, bool load)
++{
++	const intel_ctx_t *ctx = intel_ctx_create_all_physical(i915);
++	uint64_t ahnd = get_reloc_ahnd(i915, ctx->id);
++	struct power_sample sample[2];
++	int sleep_duration_sec = 2;
++	struct igt_power pwr;
++	igt_spin_t *spin;
++	double mW;
++
++	gem_quiescent_gpu(i915);
++	if (load) {
++		spin = igt_spin_new(i915, .ahnd = ahnd, .ctx = ctx,
++				    .engine = ALL_ENGINES,
++				    .flags = IGT_SPIN_POLL_RUN);
++		/* Wait till at least one spinner starts */
++		igt_spin_busywait_until_started(spin);
++	}
++
++	igt_require(!igt_power_open(i915, &pwr, domain));
++	igt_power_get_energy(&pwr, &sample[0]);
++	usleep(sleep_duration_sec * USEC_PER_SEC);
++	igt_power_get_energy(&pwr, &sample[1]);
++
++	mW = igt_power_get_mW(&pwr, &sample[0], &sample[1]);
++	igt_info("Domain: %s, Load: %d, Measured power: %g mW\n", domain, load, mW);
++
++	igt_power_close(&pwr);
++	igt_free_spins(i915);
++	put_ahnd(ahnd);
++	intel_ctx_destroy(i915, ctx);
++
++	return mW;
++}
++
++static void sanity(int i915, const char *domain)
++{
++	double idle, busy;
++
++	idle = power(i915, domain, false);
++	busy = power(i915, domain, true);
++
++	igt_assert(busy > 0 && busy >= idle);
++}
++
++igt_main
++{
++	int i915;
++
++	igt_fixture {
++		i915 = drm_open_driver_master(DRIVER_INTEL);
++	}
++
++	igt_describe("Sanity check power measurement");
++	igt_subtest("sanity") {
++		sanity(i915, "gpu");
++	}
++
++	igt_fixture {
++		close(i915);
++	}
++}
+diff --git a/tests/meson.build b/tests/meson.build
+index e20a864035b..e0f41e9e6a1 100644
+--- a/tests/meson.build
++++ b/tests/meson.build
+@@ -212,6 +212,7 @@ i915_progs = [
+ 	'i915_pm_dc',
+ 	'i915_pm_rps',
+ 	'i915_pm_sseu',
++	'i915_power',
+ 	'i915_query',
+ 	'i915_selftest',
+ 	'i915_suspend',
 -- 
-~Swati Sharma
+2.38.0
