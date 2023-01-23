@@ -1,15 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6386310E4C9
- for <igt-dev@lists.freedesktop.org>; Mon, 23 Jan 2023 15:17:18 +0000 (UTC)
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CAFAA10E4CC
+ for <igt-dev@lists.freedesktop.org>; Mon, 23 Jan 2023 15:31:41 +0000 (UTC)
+From: Dnyaneshwar Bhadane <dnyaneshwar.bhadane@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Mon, 23 Jan 2023 16:17:11 +0100
-Message-Id: <20230123151711.94167-1-kamil.konieczny@linux.intel.com>
+Date: Mon, 23 Jan 2023 21:00:50 +0530
+Message-Id: <20230123153050.113763-1-dnyaneshwar.bhadane@intel.com>
+In-Reply-To: <20230112105702.19502-1-dnyaneshwar.bhadane@intel.com>
+References: <20230112105702.19502-1-dnyaneshwar.bhadane@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v2] tests/prime_vgem: fix test listing
- problem
+Subject: [igt-dev] [i-g-t,
+ v3] tests/kms_cursor_crc: skip pipe on invalid connector in cursor
+ size test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,59 +20,110 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Petri Latvala <petri.latvala@intel.com>
+Cc: suresh.kumar.kurmi@intel.com, dnyaneshwar.bhadane@intel.com,
+ juha-pekka.heikkila@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Move call to function with possible usage of card fd inside
-fixture, as uses of fd are allowed inside fixtures or subtests.
-This may eliminate problem when using --list-subtests option,
-depending on implementation it can assert like:
+Only the valid pipe connector combination reach to the igt commit.
+Cursor max-size test will not affect existing flow as only skip
+for invalid connector.
+For cursor-dpms and cursor-suspend not require to check require_cursor_size
+becuase the cursor height and width used from drm capablities.
 
-sudo build/tests/prime_vgem --list-subtests
-...
-coherency-blt
-(prime_vgem:259195) intel_ctx-CRITICAL: Test assertion failure function intel_ctx_create_all_physical, file ../lib/intel_ctx.c:344:
-(prime_vgem:259195) intel_ctx-CRITICAL: Failed assertion: err == 0
-(prime_vgem:259195) intel_ctx-CRITICAL: error: -9 != 0
-Test prime_vgem failed.
+--v3
+- Added for_each_pipe_valid_connector() to check for valid connection.
+- initialize pipe with default 0/PIPE_A suggestion from Petri.
 
-v2: improve commit messages and use fixtures for create and
-  destroy of context (Petri)
+Signed-off-by: Dnyaneshwar Bhadane <dnyaneshwar.bhadane@intel.com>
 
-Reported-by: Petri Latvala <petri.latvala@intel.com>
-Cc: Petri Latvala <petri.latvala@intel.com>
-Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 ---
- tests/prime_vgem.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ lib/igt_kms.h          | 15 +++++++++++++++
+ tests/kms_cursor_crc.c | 18 ++++--------------
+ 2 files changed, 19 insertions(+), 14 deletions(-)
 
-diff --git a/tests/prime_vgem.c b/tests/prime_vgem.c
-index f876e748..06be273c 100644
---- a/tests/prime_vgem.c
-+++ b/tests/prime_vgem.c
-@@ -1093,7 +1093,10 @@ static void test_each_engine(const char *name, int vgem, int i915,
- 					unsigned int flags))
- {
- 	const struct intel_execution_engine2 *e;
--	const intel_ctx_t *ctx = intel_ctx_create_all_physical(i915);
-+	const intel_ctx_t *ctx;
-+
-+	igt_fixture
-+		ctx = intel_ctx_create_all_physical(i915);
+diff --git a/lib/igt_kms.h b/lib/igt_kms.h
+index be5482e0..5daa751a 100644
+--- a/lib/igt_kms.h
++++ b/lib/igt_kms.h
+@@ -534,6 +534,21 @@ static inline bool igt_output_is_connected(igt_output_t *output)
  
- 	igt_subtest_with_dynamic(name) {
- 		for_each_ctx_engine(i915, ctx, e) {
-@@ -1110,7 +1113,8 @@ static void test_each_engine(const char *name, int vgem, int i915,
- 		}
- 	}
- 
--	intel_ctx_destroy(i915, ctx);
-+	igt_fixture
-+		intel_ctx_destroy(i915, ctx);
+ 	return false;
  }
++/**
++ * for_each_pipe_valid_connector:
++ * @display: a pointer to an #igt_display_t structure
++ * @pipe: from pipe to iterate.
++ * @output: #igt_output_t to check.
++ *
++ * It loop over the all the pipe and check for the given 
++ * @output/@pipe can be used together.
++ * 
++ */
++#define for_each_pipe_valid_connector(display, pipe, output) \
++	for_each_pipe_static(pipe) \
++		for_each_if ((((display)->pipes[(pipe)].enabled) && \
++				igt_pipe_connector_valid((pipe), (output))))
++
  
- igt_main
+ /**
+  * igt_pipe_connector_valid:
+diff --git a/tests/kms_cursor_crc.c b/tests/kms_cursor_crc.c
+index d5a4b30b..0394768b 100644
+--- a/tests/kms_cursor_crc.c
++++ b/tests/kms_cursor_crc.c
+@@ -749,7 +749,7 @@ static void run_size_tests(data_t *data, int w, int h)
+ 				}
+ 			}
+ 
+-			for_each_pipe(&data->display, pipe) {
++			for_each_pipe_valid_connector(&data->display, pipe, data->output) {
+ 				data->pipe = pipe;
+ 
+ 				if (require_cursor_size(data, w, h)) {
+@@ -772,7 +772,7 @@ static void run_tests_on_pipe(data_t *data)
+ {
+ 	enum pipe pipe;
+ 	int cursor_size;
+-
++	pipe = PIPE_A;
+ 	igt_fixture {
+ 		data->output = igt_get_single_output_for_pipe(&data->display, pipe);
+ 		igt_require(data->output);
+@@ -850,15 +850,10 @@ static void run_tests_on_pipe(data_t *data)
+ 
+ 	igt_describe("Check random placement of a cursor with DPMS.");
+ 	igt_subtest_with_dynamic("cursor-dpms") {
+-		for_each_pipe(&data->display, pipe) {
++		for_each_pipe_valid_connector(&data->display, pipe, data->output) {
+ 			data->pipe = pipe;
+ 			data->flags = TEST_DPMS;
+ 
+-			if (require_cursor_size(data, data->cursor_max_w, data->cursor_max_h)) {
+-				igt_debug("Cursor size %dx%d not supported by driver\n",
+-					  data->cursor_max_w, data->cursor_max_h);
+-				continue;
+-			}
+ 
+ 			igt_dynamic_f("pipe-%s-%s",
+ 				      kmstest_pipe_name(pipe),
+@@ -871,15 +866,10 @@ static void run_tests_on_pipe(data_t *data)
+ 
+ 	igt_describe("Check random placement of a cursor with suspend.");
+ 	igt_subtest_with_dynamic("cursor-suspend") {
+-		for_each_pipe(&data->display, pipe) {
++		for_each_pipe_valid_connector(&data->display, pipe, data->output) {
+ 			data->pipe = pipe;
+ 			data->flags = TEST_SUSPEND;
+ 
+-			if (require_cursor_size(data, data->cursor_max_w, data->cursor_max_h)) {
+-				igt_debug("Cursor size %dx%d not supported by driver\n",
+-					  data->cursor_max_w, data->cursor_max_h);
+-				continue;
+-			}
+ 
+ 			igt_dynamic_f("pipe-%s-%s",
+ 				      kmstest_pipe_name(pipe),
 -- 
-2.37.2
+2.35.1
