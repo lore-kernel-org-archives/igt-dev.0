@@ -1,18 +1,24 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Message-ID: <3d3c7982-5ad3-d5a7-0574-ec1b9848dd2a@linux.intel.com>
-Date: Mon, 23 Jan 2023 10:24:07 +0000
-MIME-Version: 1.0
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EC82910E1E4
+ for <igt-dev@lists.freedesktop.org>; Mon, 23 Jan 2023 10:40:09 +0000 (UTC)
+From: "Bhadane, Dnyaneshwar" <dnyaneshwar.bhadane@intel.com>
+To: "Latvala, Petri" <petri.latvala@intel.com>
+Date: Mon, 23 Jan 2023 10:39:58 +0000
+Message-ID: <IA1PR11MB6266D4879659EA141C3A1374E2C89@IA1PR11MB6266.namprd11.prod.outlook.com>
+References: <20230112105702.19502-1-dnyaneshwar.bhadane@intel.com>
+ <20230116143219.35162-1-dnyaneshwar.bhadane@intel.com>
+ <Y8ViU7I39gikmC1R@platvala-desk.ger.corp.intel.com>
+ <IA1PR11MB62663403CD7637504A3C84D2E2C89@IA1PR11MB6266.namprd11.prod.outlook.com>
+ <Y85eMPbBB7qQEziU@platvala-desk.ger.corp.intel.com>
+In-Reply-To: <Y85eMPbBB7qQEziU@platvala-desk.ger.corp.intel.com>
 Content-Language: en-US
-To: "Das, Nirmoy" <nirmoy.das@linux.intel.com>,
- igt-dev@lists.freedesktop.org, Intel-gfx@lists.freedesktop.org
-References: <20230119155428.3260937-1-tvrtko.ursulin@linux.intel.com>
- <46f7db49-eb5c-515f-b450-75cac53d770e@linux.intel.com>
-From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
-In-Reply-To: <46f7db49-eb5c-515f-b450-75cac53d770e@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Subject: Re: [igt-dev] [Intel-gfx] [PATCH i-g-t] intel_gpu_top: Fix cleanup
- on old kernels / unsupported GPU
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Subject: Re: [igt-dev] [PATCH] [i-g-t,
+ v2] tests/kms_cursor_crc: skip pipe on invalid connector in cursor
+ size test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,81 +26,134 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Heikkila,
+ Juha-pekka" <juha-pekka.heikkila@intel.com>, "Kurmi,
+ Suresh Kumar" <suresh.kumar.kurmi@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
 
-On 20/01/2023 14:29, Das, Nirmoy wrote:
-> Hi Tvrtko,
-> 
-> On 1/19/2023 4:54 PM, Tvrtko Ursulin wrote:
->> From: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
->>
->> Avoid trying to dereference null engines on exit when there are either
->> none which are supported, or kernel does not have i915 PMU support.
->>
->> Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
->> ---
->>   tools/intel_gpu_top.c | 10 +++++++---
->>   1 file changed, 7 insertions(+), 3 deletions(-)
->>
->> diff --git a/tools/intel_gpu_top.c b/tools/intel_gpu_top.c
->> index 7aa233570463..517dc2995d26 100644
->> --- a/tools/intel_gpu_top.c
->> +++ b/tools/intel_gpu_top.c
->> @@ -448,6 +448,9 @@ static void free_engines(struct engines *engines)
->>       };
->>       unsigned int i;
->> +    if (!engines)
->> +        return;
->> +
-> 
-> 
-> This check should happen before the  struct pmu_counter free_list 
-> generation.
 
-I could, but it doesn't have to, not sure what reasons for should you 
-have in mind?
+> -----Original Message-----
+> From: Latvala, Petri <petri.latvala@intel.com>
+> Sent: Monday, January 23, 2023 3:45 PM
+> To: Bhadane, Dnyaneshwar <dnyaneshwar.bhadane@intel.com>
+> Cc: igt-dev@lists.freedesktop.org; Kurmi, Suresh Kumar
+> <suresh.kumar.kurmi@intel.com>; Heikkila, Juha-pekka <juha-
+> pekka.heikkila@intel.com>; Sharma, Swati2 <swati2.sharma@intel.com>;
+> Modem, Bhanuprakash <bhanuprakash.modem@intel.com>
+> Subject: Re: [igt-dev] [PATCH] [i-g-t, v2] tests/kms_cursor_crc: skip pip=
+e on
+> invalid connector in cursor size test
+>=20
+> On Mon, Jan 23, 2023 at 11:58:44AM +0200, Bhadane, Dnyaneshwar wrote:
+> > Hello Petri,
+> > > -----Original Message-----
+> > > From: Latvala, Petri <petri.latvala@intel.com>
+> > > Sent: Monday, January 16, 2023 8:12 PM
+> > > To: Bhadane, Dnyaneshwar <dnyaneshwar.bhadane@intel.com>
+> > > Cc: igt-dev@lists.freedesktop.org; Kurmi, Suresh Kumar
+> > > <suresh.kumar.kurmi@intel.com>; Heikkila, Juha-pekka <juha-
+> > > pekka.heikkila@intel.com>
+> > > Subject: Re: [igt-dev] [PATCH] [i-g-t, v2] tests/kms_cursor_crc:
+> > > skip pipe on invalid connector in cursor size test
+> > >
+> > > On Mon, Jan 16, 2023 at 08:02:19PM +0530, Dnyaneshwar Bhadane wrote:
+> > > > Only the valid pipe connector combination reach to the igt commit.
+> > > > Cursor max-size test will not affect existing flow as only skip
+> > > > for invalid connector.
+> > > > For cursor-dpms and cursor-suspend not require to check
+> > > > require_cursor_size becuase the cursor height and width used from
+> > > > drm
+> > > capablities.
+> > > >
+> > > > --v2
+> > > > - Used for_each_pipe_with_single_output() to iterate for valid
+> > > > pipe and
+> > > output.
+> > > >
+> > > > Signed-off-by: Dnyaneshwar Bhadane <dnyaneshwar.bhadane@intel.com>
+> > > > ---
+> > > >  tests/kms_cursor_crc.c | 16 +++-------------
+> > > >  1 file changed, 3 insertions(+), 13 deletions(-)
+> > > >
+> > > > diff --git a/tests/kms_cursor_crc.c b/tests/kms_cursor_crc.c index
+> > > > d5a4b30b..a4afcff3 100644
+> > > > --- a/tests/kms_cursor_crc.c
+> > > > +++ b/tests/kms_cursor_crc.c
+> > > > @@ -749,7 +749,7 @@ static void run_size_tests(data_t *data, int w,=
+ int
+> h)
+> > > >  				}
+> > > >  			}
+> > > >
+> > > > -			for_each_pipe(&data->display, pipe) {
+> > > > +			for_each_pipe_with_single_output(&data->display,
+> > > pipe,
+> > > > +data->output) {
+> > > >  				data->pipe =3D pipe;
+> > > >
+> > > >  				if (require_cursor_size(data, w, h)) { @@ -
+> > > 850,15 +850,10 @@
+> > > > static void run_tests_on_pipe(data_t *data)
+> > > >
+> > > >  	igt_describe("Check random placement of a cursor with DPMS.");
+> > > >  	igt_subtest_with_dynamic("cursor-dpms") {
+> > > > -		for_each_pipe(&data->display, pipe) {
+> > > > +		for_each_pipe_with_single_output(&data->display, pipe,
+> > > > +data->output) {
+> > > >  			data->pipe =3D pipe;
+> > > >  			data->flags =3D TEST_DPMS;
+> > > >
+> > > > -			if (require_cursor_size(data, data->cursor_max_w,
+> > > data->cursor_max_h)) {
+> > > > -				igt_debug("Cursor size %dx%d not supported by
+> > > driver\n",
+> > > > -					  data->cursor_max_w, data-
+> > > >cursor_max_h);
+> > > > -				continue;
+> > > > -			}
+> > > >
+> > > >  			igt_dynamic_f("pipe-%s-%s",
+> > > >  				      kmstest_pipe_name(pipe), @@ -871,15
+> +866,10 @@ static
+> > > > void run_tests_on_pipe(data_t *data)
+> > > >
+> > > >  	igt_describe("Check random placement of a cursor with suspend.");
+> > > >  	igt_subtest_with_dynamic("cursor-suspend") {
+> > > > -		for_each_pipe(&data->display, pipe) {
+> > > > +		for_each_pipe_with_single_output(&data->display, pipe,
+> > > > +data->output) {
+> > > >  			data->pipe =3D pipe;
+> > > >  			data->flags =3D TEST_SUSPEND;
+> > > >
+> > > > -			if (require_cursor_size(data, data->cursor_max_w,
+> > > data->cursor_max_h)) {
+> > > > -				igt_debug("Cursor size %dx%d not supported by
+> > > driver\n",
+> > > > -					  data->cursor_max_w, data-
+> > > >cursor_max_h);
+> > > > -				continue;
+> > > > -			}
+> > >
+> > >
+> > > These will effectively overwrite whatever data->output was set to in
+> > > the fixture in run_tests_on_pipe. But, how did that fixture ever work=
+?
+> > > That fixture leaves 'pipe' variable uninitialized and then finds an
+> > > output for that pipe?
+> > >
+> > The pipe variable is default taking value 0 as it enum.
+>=20
+> It's accidentally 0, because CI builds with the default of
+> buildtype=3Ddebugoptimized. It's an automatic variable, not a global.
 
-Regards,
+Agreed, Since it declared as enum type so it default value is 0. I am assig=
+ning it=20
+with pipe "PIPE_A" constant which infers to 0 as enum value.
 
-Tvrtko
-
-> 
-> Regards,
-> 
-> Nirmoy
-> 
->>       for (pmu = &free_list[0]; *pmu; pmu++) {
->>           if ((*pmu)->present)
->>               free((char *)(*pmu)->units);
->> @@ -2568,7 +2571,7 @@ int main(int argc, char **argv)
->>               "Failed to detect engines! (%s)\n(Kernel 4.16 or newer 
->> is required for i915 PMU support.)\n",
->>               strerror(errno));
->>           ret = EXIT_FAILURE;
->> -        goto err;
->> +        goto err_engines;
->>       }
->>       ret = pmu_init(engines);
->> @@ -2585,7 +2588,7 @@ int main(int argc, char **argv)
->>   "More information can be found at 'Perf events and tool security' 
->> document:\n"
->>   
->> "https://www.kernel.org/doc/html/latest/admin-guide/perf-security.html\n");
->>           ret = EXIT_FAILURE;
->> -        goto err;
->> +        goto err_pmu;
->>       }
->>       ret = EXIT_SUCCESS;
->> @@ -2699,8 +2702,9 @@ int main(int argc, char **argv)
->>           free_clients(clients);
->>       free(codename);
->> -err:
->> +err_pmu:
->>       free_engines(engines);
->> +err_engines:
->>       free(pmu_device);
->>   exit:
->>       igt_devices_free();
+>=20
+>=20
+> --
+> Petri Latvala
