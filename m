@@ -1,19 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 462FD10E1E4
- for <igt-dev@lists.freedesktop.org>; Mon, 23 Jan 2023 10:40:58 +0000 (UTC)
-Date: Mon, 23 Jan 2023 11:40:54 +0100
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id AC9C110E33C
+ for <igt-dev@lists.freedesktop.org>; Mon, 23 Jan 2023 10:52:47 +0000 (UTC)
+From: Karolina Stolarek <karolina.stolarek@intel.com>
 To: igt-dev@lists.freedesktop.org
-Message-ID: <20230123104054.ytmldcjpctwqetsj@kamilkon-desk1>
-References: <20230120123639.57140-1-mohammed.thasleem@intel.com>
- <20230120133540.58340-1-mohammed.thasleem@intel.com>
+Date: Mon, 23 Jan 2023 11:52:41 +0100
+Message-Id: <cover.1674469729.git.karolina.stolarek@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20230120133540.58340-1-mohammed.thasleem@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t v3] lib/igt_kms: Fixed the usage of
- dereferencing of null pointer
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t 0/2] lib/i915_blt: Minor blt_create_object
+ refactoring
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,35 +21,23 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On 2023-01-20 at 19:05:40 +0530, Mohammed Thasleem wrote:
-> Fixed the usage of dereferencing of null pointer to avoid crash.
-> 
-> v2: Removed igt_require and return false if proplist empty. (Kamil)
-> 
-> v3: Corrected commit msg and description. (Kamil)
-> 
-> Signed-off-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
+The series consists of two patches. The first one removes
+"create_mapping" param  in blt_create_object() param that seems
+to not be used by the tests. The second one attempts to slightly
+split up the creation of copy objects for fast and block copy.
+Fast copy doesn't provide compression-backed copy, so we shouldn't
+have to pass compression information when creating an object.
 
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Karolina Stolarek (2):
+  lib/i915_blt: Remove create_mapping flag from blt_create_object
+  lib/i915_blt: Split up blt_copy_object functions
 
-> ---
->  lib/igt_kms.c | 3 +++
->  1 file changed, 3 insertions(+)
-> 
-> diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-> index b4a98ae1..6a0c5ac2 100644
-> --- a/lib/igt_kms.c
-> +++ b/lib/igt_kms.c
-> @@ -1941,6 +1941,9 @@ kmstest_get_property(int drm_fd, uint32_t object_id, uint32_t object_type,
->  	int i;
->  
->  	proplist = drmModeObjectGetProperties(drm_fd, object_id, object_type);
-> +	if (!proplist)
-> +		return false;
-> +
->  	for (i = 0; i < proplist->count_props; i++) {
->  		_prop = drmModeGetProperty(drm_fd, proplist->props[i]);
->  		if (!_prop)
-> -- 
-> 2.25.1
-> 
+ lib/i915/i915_blt.c            | 94 ++++++++++++++++++++++++----------
+ lib/i915/i915_blt.h            | 30 ++++++-----
+ tests/i915/gem_ccs.c           | 39 +++++++-------
+ tests/i915/gem_exercise_blt.c  | 18 +++----
+ tests/i915/gem_lmem_swapping.c | 13 ++---
+ 5 files changed, 117 insertions(+), 77 deletions(-)
+
+-- 
+2.25.1
