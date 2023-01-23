@@ -1,18 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CAFAA10E4CC
- for <igt-dev@lists.freedesktop.org>; Mon, 23 Jan 2023 15:31:41 +0000 (UTC)
-From: Dnyaneshwar Bhadane <dnyaneshwar.bhadane@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Mon, 23 Jan 2023 21:00:50 +0530
-Message-Id: <20230123153050.113763-1-dnyaneshwar.bhadane@intel.com>
-In-Reply-To: <20230112105702.19502-1-dnyaneshwar.bhadane@intel.com>
-References: <20230112105702.19502-1-dnyaneshwar.bhadane@intel.com>
-MIME-Version: 1.0
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E977110E4D7
+ for <igt-dev@lists.freedesktop.org>; Mon, 23 Jan 2023 15:45:22 +0000 (UTC)
+Message-ID: <257cb532-adef-26f1-72f4-2c836ce1eea6@intel.com>
+Date: Mon, 23 Jan 2023 16:45:12 +0100
+Content-Language: en-US
+To: Andrzej Hajda <andrzej.hajda@intel.com>, <igt-dev@lists.freedesktop.org>
+References: <20230120100750.24122-1-nirmoy.das@intel.com>
+ <629d1ce2-a644-1b26-9264-b048b90e68b1@intel.com>
+From: "Das, Nirmoy" <nirmoy.das@intel.com>
+In-Reply-To: <629d1ce2-a644-1b26-9264-b048b90e68b1@intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t,
- v3] tests/kms_cursor_crc: skip pipe on invalid connector in cursor
- size test
+MIME-Version: 1.0
+Subject: Re: [igt-dev] [PATCH i-g-t 1/2] lib/i915/intel_memory_region: Add
+ gem_has_smallbar
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,110 +22,98 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: suresh.kumar.kurmi@intel.com, dnyaneshwar.bhadane@intel.com,
- juha-pekka.heikkila@intel.com
+Cc: matthew.auld@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Only the valid pipe connector combination reach to the igt commit.
-Cursor max-size test will not affect existing flow as only skip
-for invalid connector.
-For cursor-dpms and cursor-suspend not require to check require_cursor_size
-becuase the cursor height and width used from drm capablities.
 
---v3
-- Added for_each_pipe_valid_connector() to check for valid connection.
-- initialize pipe with default 0/PIPE_A suggestion from Petri.
+On 1/23/2023 4:16 PM, Andrzej Hajda wrote:
+>
+>
+> On 20.01.2023 11:07, Nirmoy Das wrote:
+>> Add gem_has_smallbar() to detect a device with smallbar.
+>>
+>> Signed-off-by: Nirmoy Das <nirmoy.das@intel.com>
+>> ---
+>>   lib/i915/intel_memory_region.c | 32 ++++++++++++++++++++++++++++++++
+>>   lib/i915/intel_memory_region.h |  1 +
+>>   2 files changed, 33 insertions(+)
+>>
+>> diff --git a/lib/i915/intel_memory_region.c 
+>> b/lib/i915/intel_memory_region.c
+>> index 84e1bceb3..655720819 100644
+>> --- a/lib/i915/intel_memory_region.c
+>> +++ b/lib/i915/intel_memory_region.c
+>> @@ -183,6 +183,38 @@ bool gem_has_lmem(int fd)
+>>       return gem_get_lmem_region_count(fd) > 0;
+>>   }
+>>   +/**
+>> + * gem_has_smallbar:
+>> + * @fd: open i915 drm file descriptor
+>> + *
+>> + * Helper function to check if the device comes with small-bar.
+>> + *
+>> + * Returns: True if at least one lmem region was found.
+>> + */
+>> +bool gem_has_smallbar(int fd)
+>> +{
+>> +    struct drm_i915_query_memory_regions *info;
+>> +    struct drm_i915_memory_region_info *rf;
+>> +    bool ret = false;
+>> +
+>> +    info = gem_get_query_memory_regions(fd);
+>> +    igt_assert(info);
+>> +
+>> +    for (int i = 0; i < info->num_regions; i++) {
+>> +        rf = &info->regions[i];
+>> +        if (rf->region.memory_class == I915_MEMORY_CLASS_DEVICE) {
+>> +            if (rf->probed_size > rf->probed_cpu_visible_size) {
+>> +                ret = true;
+>> +                break;
+>> +            }
+>> +        }
+>> +    }
+>> +    free(info);
+>
+> Why not for_each_memory_region ?
 
-Signed-off-by: Dnyaneshwar Bhadane <dnyaneshwar.bhadane@intel.com>
 
----
- lib/igt_kms.h          | 15 +++++++++++++++
- tests/kms_cursor_crc.c | 18 ++++--------------
- 2 files changed, 19 insertions(+), 14 deletions(-)
+No particular reason, it is inspired by existing code from the same 
+file.  for_each_memory_region() though calls into 
+gem_get_query_memory_regions() eventually.
 
-diff --git a/lib/igt_kms.h b/lib/igt_kms.h
-index be5482e0..5daa751a 100644
---- a/lib/igt_kms.h
-+++ b/lib/igt_kms.h
-@@ -534,6 +534,21 @@ static inline bool igt_output_is_connected(igt_output_t *output)
- 
- 	return false;
- }
-+/**
-+ * for_each_pipe_valid_connector:
-+ * @display: a pointer to an #igt_display_t structure
-+ * @pipe: from pipe to iterate.
-+ * @output: #igt_output_t to check.
-+ *
-+ * It loop over the all the pipe and check for the given 
-+ * @output/@pipe can be used together.
-+ * 
-+ */
-+#define for_each_pipe_valid_connector(display, pipe, output) \
-+	for_each_pipe_static(pipe) \
-+		for_each_if ((((display)->pipes[(pipe)].enabled) && \
-+				igt_pipe_connector_valid((pipe), (output))))
-+
- 
- /**
-  * igt_pipe_connector_valid:
-diff --git a/tests/kms_cursor_crc.c b/tests/kms_cursor_crc.c
-index d5a4b30b..0394768b 100644
---- a/tests/kms_cursor_crc.c
-+++ b/tests/kms_cursor_crc.c
-@@ -749,7 +749,7 @@ static void run_size_tests(data_t *data, int w, int h)
- 				}
- 			}
- 
--			for_each_pipe(&data->display, pipe) {
-+			for_each_pipe_valid_connector(&data->display, pipe, data->output) {
- 				data->pipe = pipe;
- 
- 				if (require_cursor_size(data, w, h)) {
-@@ -772,7 +772,7 @@ static void run_tests_on_pipe(data_t *data)
- {
- 	enum pipe pipe;
- 	int cursor_size;
--
-+	pipe = PIPE_A;
- 	igt_fixture {
- 		data->output = igt_get_single_output_for_pipe(&data->display, pipe);
- 		igt_require(data->output);
-@@ -850,15 +850,10 @@ static void run_tests_on_pipe(data_t *data)
- 
- 	igt_describe("Check random placement of a cursor with DPMS.");
- 	igt_subtest_with_dynamic("cursor-dpms") {
--		for_each_pipe(&data->display, pipe) {
-+		for_each_pipe_valid_connector(&data->display, pipe, data->output) {
- 			data->pipe = pipe;
- 			data->flags = TEST_DPMS;
- 
--			if (require_cursor_size(data, data->cursor_max_w, data->cursor_max_h)) {
--				igt_debug("Cursor size %dx%d not supported by driver\n",
--					  data->cursor_max_w, data->cursor_max_h);
--				continue;
--			}
- 
- 			igt_dynamic_f("pipe-%s-%s",
- 				      kmstest_pipe_name(pipe),
-@@ -871,15 +866,10 @@ static void run_tests_on_pipe(data_t *data)
- 
- 	igt_describe("Check random placement of a cursor with suspend.");
- 	igt_subtest_with_dynamic("cursor-suspend") {
--		for_each_pipe(&data->display, pipe) {
-+		for_each_pipe_valid_connector(&data->display, pipe, data->output) {
- 			data->pipe = pipe;
- 			data->flags = TEST_SUSPEND;
- 
--			if (require_cursor_size(data, data->cursor_max_w, data->cursor_max_h)) {
--				igt_debug("Cursor size %dx%d not supported by driver\n",
--					  data->cursor_max_w, data->cursor_max_h);
--				continue;
--			}
- 
- 			igt_dynamic_f("pipe-%s-%s",
- 				      kmstest_pipe_name(pipe),
--- 
-2.35.1
+
+Regards,
+
+Nirmoy
+
+>
+> Regards
+> Andrzej
+>
+>> +
+>> +    return ret;
+>> +}
+>> +
+>> +
+>>   /* A version of gem_create_in_memory_region_list which can be 
+>> allowed to
+>>      fail so that the object creation can be retried */
+>>   int __gem_create_in_memory_region_list(int fd, uint32_t *handle, 
+>> uint64_t *size, uint32_t flags,
+>> diff --git a/lib/i915/intel_memory_region.h 
+>> b/lib/i915/intel_memory_region.h
+>> index 425bda0ec..9e24bd8fb 100644
+>> --- a/lib/i915/intel_memory_region.h
+>> +++ b/lib/i915/intel_memory_region.h
+>> @@ -62,6 +62,7 @@ struct drm_i915_query_memory_regions 
+>> *gem_get_query_memory_regions(int fd);
+>>   unsigned int gem_get_lmem_region_count(int fd);
+>>     bool gem_has_lmem(int fd);
+>> +bool gem_has_smallbar(int fd);
+>>     int __gem_create_in_memory_region_list(int fd, uint32_t *handle, 
+>> uint64_t *size, uint32_t flags,
+>>                          const struct 
+>> drm_i915_gem_memory_class_instance *mem_regions,
+>
