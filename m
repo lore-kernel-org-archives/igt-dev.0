@@ -1,21 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4231310E33C
- for <igt-dev@lists.freedesktop.org>; Mon, 23 Jan 2023 10:40:15 +0000 (UTC)
-Date: Mon, 23 Jan 2023 12:37:07 +0200
-From: Petri Latvala <petri.latvala@intel.com>
-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org, Swati Sharma <swati2.sharma@intel.com>
-Message-ID: <Y85jU+LmXJ+P+on1@platvala-desk.ger.corp.intel.com>
-References: <20230120174119.3937-1-swati2.sharma@intel.com>
- <20230120174119.3937-6-swati2.sharma@intel.com>
- <20230120181243.oysvrqxat3vs7gzh@kamilkon-desk1>
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 462FD10E1E4
+ for <igt-dev@lists.freedesktop.org>; Mon, 23 Jan 2023 10:40:58 +0000 (UTC)
+Date: Mon, 23 Jan 2023 11:40:54 +0100
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Message-ID: <20230123104054.ytmldcjpctwqetsj@kamilkon-desk1>
+References: <20230120123639.57140-1-mohammed.thasleem@intel.com>
+ <20230120133540.58340-1-mohammed.thasleem@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20230120181243.oysvrqxat3vs7gzh@kamilkon-desk1>
-Subject: Re: [igt-dev] [PATCH i-g-t 5/5] lib/igt_fb: add missing include in
- header
+In-Reply-To: <20230120133540.58340-1-mohammed.thasleem@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t v3] lib/igt_kms: Fixed the usage of
+ dereferencing of null pointer
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,13 +25,35 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Fri, Jan 20, 2023 at 07:12:43PM +0100, Kamil Konieczny wrote:
-> Petri: there is also no [igt-dev] in subject ?
+On 2023-01-20 at 19:05:40 +0530, Mohammed Thasleem wrote:
+> Fixed the usage of dereferencing of null pointer to avoid crash.
 > 
+> v2: Removed igt_require and return false if proplist empty. (Kamil)
+> 
+> v3: Corrected commit msg and description. (Kamil)
+> 
+> Signed-off-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
 
-Because you received the mail by Cc. [igt-dev] is added by the mailing
-list, it's never added by hand.
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
-
--- 
-Petri Latvala
+> ---
+>  lib/igt_kms.c | 3 +++
+>  1 file changed, 3 insertions(+)
+> 
+> diff --git a/lib/igt_kms.c b/lib/igt_kms.c
+> index b4a98ae1..6a0c5ac2 100644
+> --- a/lib/igt_kms.c
+> +++ b/lib/igt_kms.c
+> @@ -1941,6 +1941,9 @@ kmstest_get_property(int drm_fd, uint32_t object_id, uint32_t object_type,
+>  	int i;
+>  
+>  	proplist = drmModeObjectGetProperties(drm_fd, object_id, object_type);
+> +	if (!proplist)
+> +		return false;
+> +
+>  	for (i = 0; i < proplist->count_props; i++) {
+>  		_prop = drmModeGetProperty(drm_fd, proplist->props[i]);
+>  		if (!_prop)
+> -- 
+> 2.25.1
+> 
