@@ -1,18 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Message-ID: <96c657de-e29e-e234-66e5-14ab96060f5a@linux.intel.com>
-Date: Mon, 23 Jan 2023 12:13:42 +0100
+Message-ID: <e77bdca1-6871-bbdc-7e93-9fac83d3d27a@linux.intel.com>
+Date: Mon, 23 Jan 2023 12:15:44 +0100
 MIME-Version: 1.0
 Content-Language: en-US
-From: "Das, Nirmoy" <nirmoy.das@linux.intel.com>
 To: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>,
  igt-dev@lists.freedesktop.org, Intel-gfx@lists.freedesktop.org
 References: <20230119155428.3260937-1-tvrtko.ursulin@linux.intel.com>
- <46f7db49-eb5c-515f-b450-75cac53d770e@linux.intel.com>
- <3d3c7982-5ad3-d5a7-0574-ec1b9848dd2a@linux.intel.com>
- <fbf23b72-224b-d411-b121-e1e8334198d1@linux.intel.com>
-In-Reply-To: <fbf23b72-224b-d411-b121-e1e8334198d1@linux.intel.com>
+From: "Das, Nirmoy" <nirmoy.das@linux.intel.com>
+In-Reply-To: <20230119155428.3260937-1-tvrtko.ursulin@linux.intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 Subject: Re: [igt-dev] [Intel-gfx] [PATCH i-g-t] intel_gpu_top: Fix cleanup
  on old kernels / unsupported GPU
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
@@ -27,113 +24,58 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
 
-On 1/23/2023 12:09 PM, Das, Nirmoy wrote:
-> Hi Tvrtko,
+On 1/19/2023 4:54 PM, Tvrtko Ursulin wrote:
+> From: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 >
-> On 1/23/2023 11:24 AM, Tvrtko Ursulin wrote:
->>
->> On 20/01/2023 14:29, Das, Nirmoy wrote:
->>> Hi Tvrtko,
->>>
->>> On 1/19/2023 4:54 PM, Tvrtko Ursulin wrote:
->>>> From: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
->>>>
->>>> Avoid trying to dereference null engines on exit when there are either
->>>> none which are supported, or kernel does not have i915 PMU support.
->>>>
->>>> Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
->>>> ---
->>>>   tools/intel_gpu_top.c | 10 +++++++---
->>>>   1 file changed, 7 insertions(+), 3 deletions(-)
->>>>
->>>> diff --git a/tools/intel_gpu_top.c b/tools/intel_gpu_top.c
->>>> index 7aa233570463..517dc2995d26 100644
->>>> --- a/tools/intel_gpu_top.c
->>>> +++ b/tools/intel_gpu_top.c
->>>> @@ -448,6 +448,9 @@ static void free_engines(struct engines *engines)
->>>>       };
->>>>       unsigned int i;
->>>> +    if (!engines)
->>>> +        return;
->>>> +
->>>
->>>
->>> This check should happen before the  struct pmu_counter free_list 
->>> generation.
->>
->> I could, but it doesn't have to, not sure what reasons for should you 
->> have in mind?
+> Avoid trying to dereference null engines on exit when there are either
+> none which are supported, or kernel does not have i915 PMU support.
 >
-> In my tree, I see:
+> Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+Acked-by: Nirmoy Das <nirmoy.das@intel.com>
+> ---
+>   tools/intel_gpu_top.c | 10 +++++++---
+>   1 file changed, 7 insertions(+), 3 deletions(-)
 >
-> "
->
-> static void free_engines(struct engines *engines)
->
-> {
->         struct pmu_counter **pmu, *free_list[] = {
->                 &engines->r_gpu,
->                 &engines->r_pkg,
->                 &engines->imc_reads,
->                 &engines->imc_writes,
->                 NULL
->         };
->
->         unsigned int i;
->
-> "
->
-> Maybe I am missing something here, wouldn't those dereferences of 
-> "engines" segfault if the engines  is NULL.
-
-
-Ah never mind it shouldn't matter.
-
->
->
-> Regards,
->
-> Nirmoy
->
->>
->> Regards,
->>
->> Tvrtko
->>
->>>
->>> Regards,
->>>
->>> Nirmoy
->>>
->>>>       for (pmu = &free_list[0]; *pmu; pmu++) {
->>>>           if ((*pmu)->present)
->>>>               free((char *)(*pmu)->units);
->>>> @@ -2568,7 +2571,7 @@ int main(int argc, char **argv)
->>>>               "Failed to detect engines! (%s)\n(Kernel 4.16 or 
->>>> newer is required for i915 PMU support.)\n",
->>>>               strerror(errno));
->>>>           ret = EXIT_FAILURE;
->>>> -        goto err;
->>>> +        goto err_engines;
->>>>       }
->>>>       ret = pmu_init(engines);
->>>> @@ -2585,7 +2588,7 @@ int main(int argc, char **argv)
->>>>   "More information can be found at 'Perf events and tool security' 
->>>> document:\n"
->>>> "https://www.kernel.org/doc/html/latest/admin-guide/perf-security.html\n"); 
->>>>
->>>>           ret = EXIT_FAILURE;
->>>> -        goto err;
->>>> +        goto err_pmu;
->>>>       }
->>>>       ret = EXIT_SUCCESS;
->>>> @@ -2699,8 +2702,9 @@ int main(int argc, char **argv)
->>>>           free_clients(clients);
->>>>       free(codename);
->>>> -err:
->>>> +err_pmu:
->>>>       free_engines(engines);
->>>> +err_engines:
->>>>       free(pmu_device);
->>>>   exit:
->>>>       igt_devices_free();
+> diff --git a/tools/intel_gpu_top.c b/tools/intel_gpu_top.c
+> index 7aa233570463..517dc2995d26 100644
+> --- a/tools/intel_gpu_top.c
+> +++ b/tools/intel_gpu_top.c
+> @@ -448,6 +448,9 @@ static void free_engines(struct engines *engines)
+>   	};
+>   	unsigned int i;
+>   
+> +	if (!engines)
+> +		return;
+> +
+>   	for (pmu = &free_list[0]; *pmu; pmu++) {
+>   		if ((*pmu)->present)
+>   			free((char *)(*pmu)->units);
+> @@ -2568,7 +2571,7 @@ int main(int argc, char **argv)
+>   			"Failed to detect engines! (%s)\n(Kernel 4.16 or newer is required for i915 PMU support.)\n",
+>   			strerror(errno));
+>   		ret = EXIT_FAILURE;
+> -		goto err;
+> +		goto err_engines;
+>   	}
+>   
+>   	ret = pmu_init(engines);
+> @@ -2585,7 +2588,7 @@ int main(int argc, char **argv)
+>   "More information can be found at 'Perf events and tool security' document:\n"
+>   "https://www.kernel.org/doc/html/latest/admin-guide/perf-security.html\n");
+>   		ret = EXIT_FAILURE;
+> -		goto err;
+> +		goto err_pmu;
+>   	}
+>   
+>   	ret = EXIT_SUCCESS;
+> @@ -2699,8 +2702,9 @@ int main(int argc, char **argv)
+>   		free_clients(clients);
+>   
+>   	free(codename);
+> -err:
+> +err_pmu:
+>   	free_engines(engines);
+> +err_engines:
+>   	free(pmu_device);
+>   exit:
+>   	igt_devices_free();
