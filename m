@@ -1,23 +1,22 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0D59510E1A5
- for <igt-dev@lists.freedesktop.org>; Mon, 23 Jan 2023 05:46:27 +0000 (UTC)
-Message-ID: <da82dcc9-2d27-4a16-46a8-349277f2108b@intel.com>
-Date: Mon, 23 Jan 2023 11:16:08 +0530
-To: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-References: <20230117190317.17728-1-ashutosh.dixit@intel.com>
- <CY5PR11MB621110BD11315EEA8F6F69BC95C79@CY5PR11MB6211.namprd11.prod.outlook.com>
- <bddffb35-4a95-58c5-473d-5904fb1dfc84@intel.com>
- <87o7qvurlo.wl-ashutosh.dixit@intel.com>
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C4B2E10E1E1
+ for <igt-dev@lists.freedesktop.org>; Mon, 23 Jan 2023 09:58:48 +0000 (UTC)
+From: "Bhadane, Dnyaneshwar" <dnyaneshwar.bhadane@intel.com>
+To: "Latvala, Petri" <petri.latvala@intel.com>
+Date: Mon, 23 Jan 2023 09:58:44 +0000
+Message-ID: <IA1PR11MB62663403CD7637504A3C84D2E2C89@IA1PR11MB6266.namprd11.prod.outlook.com>
+References: <20230112105702.19502-1-dnyaneshwar.bhadane@intel.com>
+ <20230116143219.35162-1-dnyaneshwar.bhadane@intel.com>
+ <Y8ViU7I39gikmC1R@platvala-desk.ger.corp.intel.com>
+In-Reply-To: <Y8ViU7I39gikmC1R@platvala-desk.ger.corp.intel.com>
 Content-Language: en-US
-From: "Tauro, Riana" <riana.tauro@intel.com>
-In-Reply-To: <87o7qvurlo.wl-ashutosh.dixit@intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t] i915/i915_power: Measure GPU idle/busy
- power
+Subject: Re: [igt-dev] [PATCH] [i-g-t,
+ v2] tests/kms_cursor_crc: skip pipe on invalid connector in cursor
+ size test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,70 +24,121 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: "Nilawar, Badal" <badal.nilawar@intel.com>
+Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Heikkila,
+ Juha-pekka" <juha-pekka.heikkila@intel.com>, "Kurmi,
+ Suresh Kumar" <suresh.kumar.kurmi@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
+Hello Petri,
+> -----Original Message-----
+> From: Latvala, Petri <petri.latvala@intel.com>
+> Sent: Monday, January 16, 2023 8:12 PM
+> To: Bhadane, Dnyaneshwar <dnyaneshwar.bhadane@intel.com>
+> Cc: igt-dev@lists.freedesktop.org; Kurmi, Suresh Kumar
+> <suresh.kumar.kurmi@intel.com>; Heikkila, Juha-pekka <juha-
+> pekka.heikkila@intel.com>
+> Subject: Re: [igt-dev] [PATCH] [i-g-t, v2] tests/kms_cursor_crc: skip pip=
+e on
+> invalid connector in cursor size test
+>=20
+> On Mon, Jan 16, 2023 at 08:02:19PM +0530, Dnyaneshwar Bhadane wrote:
+> > Only the valid pipe connector combination reach to the igt commit.
+> > Cursor max-size test will not affect existing flow as only skip for
+> > invalid connector.
+> > For cursor-dpms and cursor-suspend not require to check
+> > require_cursor_size becuase the cursor height and width used from drm
+> capablities.
+> >
+> > --v2
+> > - Used for_each_pipe_with_single_output() to iterate for valid pipe and
+> output.
+> >
+> > Signed-off-by: Dnyaneshwar Bhadane <dnyaneshwar.bhadane@intel.com>
+> > ---
+> >  tests/kms_cursor_crc.c | 16 +++-------------
+> >  1 file changed, 3 insertions(+), 13 deletions(-)
+> >
+> > diff --git a/tests/kms_cursor_crc.c b/tests/kms_cursor_crc.c index
+> > d5a4b30b..a4afcff3 100644
+> > --- a/tests/kms_cursor_crc.c
+> > +++ b/tests/kms_cursor_crc.c
+> > @@ -749,7 +749,7 @@ static void run_size_tests(data_t *data, int w, int=
+ h)
+> >  				}
+> >  			}
+> >
+> > -			for_each_pipe(&data->display, pipe) {
+> > +			for_each_pipe_with_single_output(&data->display,
+> pipe,
+> > +data->output) {
+> >  				data->pipe =3D pipe;
+> >
+> >  				if (require_cursor_size(data, w, h)) { @@ -
+> 850,15 +850,10 @@
+> > static void run_tests_on_pipe(data_t *data)
+> >
+> >  	igt_describe("Check random placement of a cursor with DPMS.");
+> >  	igt_subtest_with_dynamic("cursor-dpms") {
+> > -		for_each_pipe(&data->display, pipe) {
+> > +		for_each_pipe_with_single_output(&data->display, pipe,
+> > +data->output) {
+> >  			data->pipe =3D pipe;
+> >  			data->flags =3D TEST_DPMS;
+> >
+> > -			if (require_cursor_size(data, data->cursor_max_w,
+> data->cursor_max_h)) {
+> > -				igt_debug("Cursor size %dx%d not supported by
+> driver\n",
+> > -					  data->cursor_max_w, data-
+> >cursor_max_h);
+> > -				continue;
+> > -			}
+> >
+> >  			igt_dynamic_f("pipe-%s-%s",
+> >  				      kmstest_pipe_name(pipe),
+> > @@ -871,15 +866,10 @@ static void run_tests_on_pipe(data_t *data)
+> >
+> >  	igt_describe("Check random placement of a cursor with suspend.");
+> >  	igt_subtest_with_dynamic("cursor-suspend") {
+> > -		for_each_pipe(&data->display, pipe) {
+> > +		for_each_pipe_with_single_output(&data->display, pipe,
+> > +data->output) {
+> >  			data->pipe =3D pipe;
+> >  			data->flags =3D TEST_SUSPEND;
+> >
+> > -			if (require_cursor_size(data, data->cursor_max_w,
+> data->cursor_max_h)) {
+> > -				igt_debug("Cursor size %dx%d not supported by
+> driver\n",
+> > -					  data->cursor_max_w, data-
+> >cursor_max_h);
+> > -				continue;
+> > -			}
+>=20
+>=20
+> These will effectively overwrite whatever data->output was set to in the =
+fixture
+> in run_tests_on_pipe. But, how did that fixture ever work?
+> That fixture leaves 'pipe' variable uninitialized and then finds an outpu=
+t for that
+> pipe?
+>=20
+The pipe variable is default taking value 0 as it enum. To save the testcas=
+e time,
+the kms_cursor_crc testcases has written for one output even multiple outpu=
+t=20
+are connected to it so it will select first possible output.
 
+Rewriting the new micro that will not override the existing data->output.
+Means no need to recalculate as it is already assigned in the fixture.
 
-On 1/19/2023 9:02 AM, Dixit, Ashutosh wrote:
-> On Tue, 17 Jan 2023 23:22:46 -0800, Tauro, Riana wrote:
->>
->> Hi Ashutosh
->>
-> 
-> Hi Riana,
-> 
->> Energy measurement when idle and with workload is also a part of rc6-idle
->> test.  Why do we need new tests?
-> 
-> We want to be able to measure max/peak power.
-> 
-> rc6-idle has this:
-> 
-> static void bg_load()
-> {
-> 	...
-> 		/* aim for ~1% busy */
-> 
-> Therefore it measures this:
-> 
-> [adixit@DUT1220-DG2SVC igt-gpu-tools]$ sudo ./build/tests/i915_pm_rc6_residency --r rc6-idle
-> IGT-Version: 1.27-g369bb6fb0f (x86_64) (Linux: 5.15.47+ x86_64)
-> Opened device: /dev/dri/card0
-> Starting subtest: rc6-idle
-> Starting dynamic subtest: gt0-rcs0
-> Total energy used while idle: 85825.3mJ (28606.5mW)
-> Total energy used for normal: 86731.6mJ (28908.6mW)
-> Total energy used for boost: 86992.8mJ (28995.8mW)
-> Total energy used for once: 86677.9mJ (28890.5mW)
-> Dynamic subtest gt0-rcs0: SUCCESS (12.235s)
-> 
-> The new test measures this:
-> 
-> [adixit@DUT1220-DG2SVC igt-gpu-tools]$ sudo ./build/tests/i915_power
-> IGT-Version: 1.27-g369bb6fb0f (x86_64) (Linux: 5.15.47+ x86_64)
-> Opened device: /dev/dri/card0
-> Starting subtest: gpu-idle
-> Measured power: 28535.5 mW
-> Subtest gpu-idle: SUCCESS (3.002s)
-> Starting subtest: gpu-busy
-> Measured power: 50331.9 mW
-> Subtest gpu-busy: SUCCESS (3.008s)
-> 
-> So you can see rc6-idle basically measures idle power (28 W instead of 50
-> W), not power under load.
-> 
-> Other tests such as gem_exec_schedule also have igt_require etc. which skip
-> in all sorts of situations. That is why I was forced to write these simple
-> new tests.
-
-Hi Ashutosh
-
-Thanks for the clarification.
-
-Riana
-> Thanks.
+Dnyaneshwar Bhadane
+Intel.
+> Either way that fetching of an output in that fixture needs to be removed=
+ if it's
+> done in the subtests instead.
+>=20
 > --
-> Ashutosh
+> Petri Latvala
