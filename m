@@ -1,16 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============4969505971445382459=="
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C0D9710E54F
+ for <igt-dev@lists.freedesktop.org>; Mon, 23 Jan 2023 19:53:10 +0000 (UTC)
+Message-ID: <ee1a994a-9b72-05d7-fd49-0109b22593df@intel.com>
+Date: Mon, 23 Jan 2023 20:53:06 +0100
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Dnyaneshwar Bhadane" <dnyaneshwar.bhadane@intel.com>
-Date: Mon, 23 Jan 2023 17:12:48 -0000
-Message-ID: <167449396835.346.13317169356400557568@emeril.freedesktop.org>
-References: <20230112105702.19502-1-dnyaneshwar.bhadane@intel.com>
-In-Reply-To: <20230112105702.19502-1-dnyaneshwar.bhadane@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
- =?utf-8?q?kms=5Fcursor=5Fcrc=3A_skip_pipe_on_invalid_connector_in_cursor_?=
- =?utf-8?q?size_test_=28rev3=29?=
+Content-Language: en-US
+To: "Das, Nirmoy" <nirmoy.das@intel.com>, igt-dev@lists.freedesktop.org
+References: <20230120100750.24122-1-nirmoy.das@intel.com>
+ <629d1ce2-a644-1b26-9264-b048b90e68b1@intel.com>
+ <257cb532-adef-26f1-72f4-2c836ce1eea6@intel.com>
+From: Andrzej Hajda <andrzej.hajda@intel.com>
+In-Reply-To: <257cb532-adef-26f1-72f4-2c836ce1eea6@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Subject: Re: [igt-dev] [PATCH i-g-t 1/2] lib/i915/intel_memory_region: Add
+ gem_has_smallbar
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,228 +23,122 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
+Cc: matthew.auld@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============4969505971445382459==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-== Series Details ==
-
-Series: tests/kms_cursor_crc: skip pipe on invalid connector in cursor size test (rev3)
-URL   : https://patchwork.freedesktop.org/series/112730/
-State : success
-
-== Summary ==
-
-CI Bug Log - changes from CI_DRM_12623 -> IGTPW_8395
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8395/index.html
-
-Participating hosts (38 -> 37)
-------------------------------
-
-  Missing    (1): fi-snb-2520m 
-
-Possible new issues
--------------------
-
-  Here are the unknown changes that may have been introduced in IGTPW_8395:
-
-### IGT changes ###
-
-#### Suppressed ####
-
-  The following results come from untrusted machines, tests, or statuses.
-  They do not affect the overall result.
-
-  * igt@i915_selftest@live@workarounds:
-    - {bat-rplp-1}:       [PASS][1] -> [INCOMPLETE][2]
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12623/bat-rplp-1/igt@i915_selftest@live@workarounds.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8395/bat-rplp-1/igt@i915_selftest@live@workarounds.html
-
-  
-Known issues
-------------
-
-  Here are the changes found in IGTPW_8395 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@fbdev@write:
-    - fi-blb-e6850:       [PASS][3] -> [SKIP][4] ([fdo#109271]) +4 similar issues
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12623/fi-blb-e6850/igt@fbdev@write.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8395/fi-blb-e6850/igt@fbdev@write.html
-
-  * igt@kms_pipe_crc_basic@suspend-read-crc@pipe-b-lvds-1:
-    - fi-ctg-p8600:       [PASS][5] -> [FAIL][6] ([fdo#103375])
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12623/fi-ctg-p8600/igt@kms_pipe_crc_basic@suspend-read-crc@pipe-b-lvds-1.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8395/fi-ctg-p8600/igt@kms_pipe_crc_basic@suspend-read-crc@pipe-b-lvds-1.html
-
-  
-#### Possible fixes ####
-
-  * igt@gem_exec_suspend@basic-s3@smem:
-    - {bat-adlm-1}:       [DMESG-WARN][7] ([i915#2867]) -> [PASS][8]
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12623/bat-adlm-1/igt@gem_exec_suspend@basic-s3@smem.html
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8395/bat-adlm-1/igt@gem_exec_suspend@basic-s3@smem.html
-
-  * igt@i915_selftest@live@requests:
-    - {bat-adls-5}:       [INCOMPLETE][9] -> [PASS][10]
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12623/bat-adls-5/igt@i915_selftest@live@requests.html
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8395/bat-adls-5/igt@i915_selftest@live@requests.html
-
-  * igt@i915_selftest@live@reset:
-    - {bat-rpls-1}:       [DMESG-WARN][11] ([i915#7794]) -> [PASS][12]
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12623/bat-rpls-1/igt@i915_selftest@live@reset.html
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8395/bat-rpls-1/igt@i915_selftest@live@reset.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [fdo#103375]: https://bugs.freedesktop.org/show_bug.cgi?id=103375
-  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
-  [i915#2867]: https://gitlab.freedesktop.org/drm/intel/issues/2867
-  [i915#4817]: https://gitlab.freedesktop.org/drm/intel/issues/4817
-  [i915#5354]: https://gitlab.freedesktop.org/drm/intel/issues/5354
-  [i915#5591]: https://gitlab.freedesktop.org/drm/intel/issues/5591
-  [i915#6367]: https://gitlab.freedesktop.org/drm/intel/issues/6367
-  [i915#6997]: https://gitlab.freedesktop.org/drm/intel/issues/6997
-  [i915#7443]: https://gitlab.freedesktop.org/drm/intel/issues/7443
-  [i915#7794]: https://gitlab.freedesktop.org/drm/intel/issues/7794
 
 
-Build changes
--------------
+On 23.01.2023 16:45, Das, Nirmoy wrote:
+>
+> On 1/23/2023 4:16 PM, Andrzej Hajda wrote:
+>>
+>>
+>> On 20.01.2023 11:07, Nirmoy Das wrote:
+>>> Add gem_has_smallbar() to detect a device with smallbar.
+>>>
+>>> Signed-off-by: Nirmoy Das <nirmoy.das@intel.com>
+>>> ---
+>>>   lib/i915/intel_memory_region.c | 32 ++++++++++++++++++++++++++++++++
+>>>   lib/i915/intel_memory_region.h |  1 +
+>>>   2 files changed, 33 insertions(+)
+>>>
+>>> diff --git a/lib/i915/intel_memory_region.c 
+>>> b/lib/i915/intel_memory_region.c
+>>> index 84e1bceb3..655720819 100644
+>>> --- a/lib/i915/intel_memory_region.c
+>>> +++ b/lib/i915/intel_memory_region.c
+>>> @@ -183,6 +183,38 @@ bool gem_has_lmem(int fd)
+>>>       return gem_get_lmem_region_count(fd) > 0;
+>>>   }
+>>>   +/**
+>>> + * gem_has_smallbar:
+>>> + * @fd: open i915 drm file descriptor
+>>> + *
+>>> + * Helper function to check if the device comes with small-bar.
+>>> + *
+>>> + * Returns: True if at least one lmem region was found.
+>>> + */
+>>> +bool gem_has_smallbar(int fd)
+>>> +{
+>>> +    struct drm_i915_query_memory_regions *info;
+>>> +    struct drm_i915_memory_region_info *rf;
+>>> +    bool ret = false;
+>>> +
+>>> +    info = gem_get_query_memory_regions(fd);
+>>> +    igt_assert(info);
+>>> +
+>>> +    for (int i = 0; i < info->num_regions; i++) {
+>>> +        rf = &info->regions[i];
+>>> +        if (rf->region.memory_class == I915_MEMORY_CLASS_DEVICE) {
+>>> +            if (rf->probed_size > rf->probed_cpu_visible_size) {
+>>> +                ret = true;
+>>> +                break;
+>>> +            }
+>>> +        }
+>>> +    }
+>>> +    free(info);
+>>
+>> Why not for_each_memory_region ?
+>
+>
+> No particular reason, it is inspired by existing code from the same 
+> file.  for_each_memory_region() though calls into 
+> gem_get_query_memory_regions() eventually.
 
-  * CI: CI-20190529 -> None
-  * IGT: IGT_7134 -> IGTPW_8395
+I though it could be shorter, sth like:
+bool gem_has_smallbar(int fd)
+{
+     bool ret;
 
-  CI-20190529: 20190529
-  CI_DRM_12623: ff401c1779568bf043b176c69424fdef96a03754 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_8395: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8395/index.html
-  IGT_7134: 61b8c0a0c8a9611c47749c0b1a262843892cccd7 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+     for_each_memory_region(r, fd)
+         if (r->ci.memory_class == I915_MEMORY_CLASS_DEVICE && r->size > 
+r->cpu_size)
+             ret = true;
+     return ret;
+}
 
-== Logs ==
+Apparently 'break' leaks memory, so it is not so perfect :)
+Up to you.
 
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8395/index.html
+Reviewed-by: Andrzej Hajda <andrzej.hajda@intel.com>
 
---===============4969505971445382459==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Regards
+Andrzej
 
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/kms_cursor_crc: skip pipe on invalid connector in cursor size test (rev3)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/112730/">https://patchwork.freedesktop.org/series/112730/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8395/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8395/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from CI_DRM_12623 -&gt; IGTPW_8395</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8395/index.html</p>
-<h2>Participating hosts (38 -&gt; 37)</h2>
-<p>Missing    (1): fi-snb-2520m </p>
-<h2>Possible new issues</h2>
-<p>Here are the unknown changes that may have been introduced in IGTPW_8395:</p>
-<h3>IGT changes</h3>
-<h4>Suppressed</h4>
-<p>The following results come from untrusted machines, tests, or statuses.<br />
-  They do not affect the overall result.</p>
-<ul>
-<li>igt@i915_selftest@live@workarounds:<ul>
-<li>{bat-rplp-1}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12623/bat-rplp-1/igt@i915_selftest@live@workarounds.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8395/bat-rplp-1/igt@i915_selftest@live@workarounds.html">INCOMPLETE</a></li>
-</ul>
-</li>
-</ul>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_8395 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@fbdev@write:</p>
-<ul>
-<li>fi-blb-e6850:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12623/fi-blb-e6850/igt@fbdev@write.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8395/fi-blb-e6850/igt@fbdev@write.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +4 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pipe_crc_basic@suspend-read-crc@pipe-b-lvds-1:</p>
-<ul>
-<li>fi-ctg-p8600:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12623/fi-ctg-p8600/igt@kms_pipe_crc_basic@suspend-read-crc@pipe-b-lvds-1.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8395/fi-ctg-p8600/igt@kms_pipe_crc_basic@suspend-read-crc@pipe-b-lvds-1.html">FAIL</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=103375">fdo#103375</a>)</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@gem_exec_suspend@basic-s3@smem:</p>
-<ul>
-<li>{bat-adlm-1}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12623/bat-adlm-1/igt@gem_exec_suspend@basic-s3@smem.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2867">i915#2867</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8395/bat-adlm-1/igt@gem_exec_suspend@basic-s3@smem.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@requests:</p>
-<ul>
-<li>{bat-adls-5}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12623/bat-adls-5/igt@i915_selftest@live@requests.html">INCOMPLETE</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8395/bat-adls-5/igt@i915_selftest@live@requests.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@reset:</p>
-<ul>
-<li>{bat-rpls-1}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12623/bat-rpls-1/igt@i915_selftest@live@reset.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7794">i915#7794</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8395/bat-rpls-1/igt@i915_selftest@live@reset.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_7134 -&gt; IGTPW_8395</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_12623: ff401c1779568bf043b176c69424fdef96a03754 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_8395: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8395/index.html<br />
-  IGT_7134: 61b8c0a0c8a9611c47749c0b1a262843892cccd7 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-
-</body>
-</html>
-
---===============4969505971445382459==--
+>
+>
+> Regards,
+>
+> Nirmoy
+>
+>>
+>> Regards
+>> Andrzej
+>>
+>>> +
+>>> +    return ret;
+>>> +}
+>>> +
+>>> +
+>>>   /* A version of gem_create_in_memory_region_list which can be 
+>>> allowed to
+>>>      fail so that the object creation can be retried */
+>>>   int __gem_create_in_memory_region_list(int fd, uint32_t *handle, 
+>>> uint64_t *size, uint32_t flags,
+>>> diff --git a/lib/i915/intel_memory_region.h 
+>>> b/lib/i915/intel_memory_region.h
+>>> index 425bda0ec..9e24bd8fb 100644
+>>> --- a/lib/i915/intel_memory_region.h
+>>> +++ b/lib/i915/intel_memory_region.h
+>>> @@ -62,6 +62,7 @@ struct drm_i915_query_memory_regions 
+>>> *gem_get_query_memory_regions(int fd);
+>>>   unsigned int gem_get_lmem_region_count(int fd);
+>>>     bool gem_has_lmem(int fd);
+>>> +bool gem_has_smallbar(int fd);
+>>>     int __gem_create_in_memory_region_list(int fd, uint32_t *handle, 
+>>> uint64_t *size, uint32_t flags,
+>>>                          const struct 
+>>> drm_i915_gem_memory_class_instance *mem_regions,
+>>
