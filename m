@@ -1,17 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DDB4E10E33C
- for <igt-dev@lists.freedesktop.org>; Mon, 23 Jan 2023 10:54:47 +0000 (UTC)
-From: Nirmoy Das <nirmoy.das@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Mon, 23 Jan 2023 11:54:39 +0100
-Message-Id: <20230123105439.11804-2-nirmoy.das@intel.com>
-In-Reply-To: <20230123105439.11804-1-nirmoy.das@intel.com>
-References: <20230123105439.11804-1-nirmoy.das@intel.com>
+Message-ID: <96c657de-e29e-e234-66e5-14ab96060f5a@linux.intel.com>
+Date: Mon, 23 Jan 2023 12:13:42 +0100
 MIME-Version: 1.0
+Content-Language: en-US
+From: "Das, Nirmoy" <nirmoy.das@linux.intel.com>
+To: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>,
+ igt-dev@lists.freedesktop.org, Intel-gfx@lists.freedesktop.org
+References: <20230119155428.3260937-1-tvrtko.ursulin@linux.intel.com>
+ <46f7db49-eb5c-515f-b450-75cac53d770e@linux.intel.com>
+ <3d3c7982-5ad3-d5a7-0574-ec1b9848dd2a@linux.intel.com>
+ <fbf23b72-224b-d411-b121-e1e8334198d1@linux.intel.com>
+In-Reply-To: <fbf23b72-224b-d411-b121-e1e8334198d1@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 2/2] test/i915/gem_eio: Skip suspend test on
- smallbar machine
+Subject: Re: [igt-dev] [Intel-gfx] [PATCH i-g-t] intel_gpu_top: Fix cleanup
+ on old kernels / unsupported GPU
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,37 +22,118 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Matthew Auld <matthew.auld@intel.com>, Nirmoy Das <nirmoy.das@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Suspending machine requires backing up gem objects to
-system memory. CPU non-visible lmem objects can only be
-backed up with the help of GPU on a smallbar device and if
-the gpu is wedged then such backup action will fail with -EIO.
 
-This test sets the gpu to wedge state before suspending the
-machine which will always fail on smallbar machine.
+On 1/23/2023 12:09 PM, Das, Nirmoy wrote:
+> Hi Tvrtko,
+>
+> On 1/23/2023 11:24 AM, Tvrtko Ursulin wrote:
+>>
+>> On 20/01/2023 14:29, Das, Nirmoy wrote:
+>>> Hi Tvrtko,
+>>>
+>>> On 1/19/2023 4:54 PM, Tvrtko Ursulin wrote:
+>>>> From: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+>>>>
+>>>> Avoid trying to dereference null engines on exit when there are either
+>>>> none which are supported, or kernel does not have i915 PMU support.
+>>>>
+>>>> Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+>>>> ---
+>>>>   tools/intel_gpu_top.c | 10 +++++++---
+>>>>   1 file changed, 7 insertions(+), 3 deletions(-)
+>>>>
+>>>> diff --git a/tools/intel_gpu_top.c b/tools/intel_gpu_top.c
+>>>> index 7aa233570463..517dc2995d26 100644
+>>>> --- a/tools/intel_gpu_top.c
+>>>> +++ b/tools/intel_gpu_top.c
+>>>> @@ -448,6 +448,9 @@ static void free_engines(struct engines *engines)
+>>>>       };
+>>>>       unsigned int i;
+>>>> +    if (!engines)
+>>>> +        return;
+>>>> +
+>>>
+>>>
+>>> This check should happen before the  struct pmu_counter free_list 
+>>> generation.
+>>
+>> I could, but it doesn't have to, not sure what reasons for should you 
+>> have in mind?
+>
+> In my tree, I see:
+>
+> "
+>
+> static void free_engines(struct engines *engines)
+>
+> {
+>         struct pmu_counter **pmu, *free_list[] = {
+>                 &engines->r_gpu,
+>                 &engines->r_pkg,
+>                 &engines->imc_reads,
+>                 &engines->imc_writes,
+>                 NULL
+>         };
+>
+>         unsigned int i;
+>
+> "
+>
+> Maybe I am missing something here, wouldn't those dereferences of 
+> "engines" segfault if the engines  is NULL.
 
-References: https://gitlab.freedesktop.org/drm/intel/-/issues/7896
-Signed-off-by: Nirmoy Das <nirmoy.das@intel.com>
-Reviewed-by: Matthew Auld <matthew.auld@intel.com>
----
- tests/i915/gem_eio.c | 1 +
- 1 file changed, 1 insertion(+)
 
-diff --git a/tests/i915/gem_eio.c b/tests/i915/gem_eio.c
-index 70e82b811..8dbaa7a75 100644
---- a/tests/i915/gem_eio.c
-+++ b/tests/i915/gem_eio.c
-@@ -500,6 +500,7 @@ static void test_wait(int fd, unsigned int flags, unsigned int wait)
- 
- static void test_suspend(int fd, int state)
- {
-+	igt_require(!gem_has_smallbar(fd));
- 	/* Do a suspend first so that we don't skip inside the test */
- 	igt_system_suspend_autoresume(state, SUSPEND_TEST_DEVICES);
- 
--- 
-2.39.0
+Ah never mind it shouldn't matter.
+
+>
+>
+> Regards,
+>
+> Nirmoy
+>
+>>
+>> Regards,
+>>
+>> Tvrtko
+>>
+>>>
+>>> Regards,
+>>>
+>>> Nirmoy
+>>>
+>>>>       for (pmu = &free_list[0]; *pmu; pmu++) {
+>>>>           if ((*pmu)->present)
+>>>>               free((char *)(*pmu)->units);
+>>>> @@ -2568,7 +2571,7 @@ int main(int argc, char **argv)
+>>>>               "Failed to detect engines! (%s)\n(Kernel 4.16 or 
+>>>> newer is required for i915 PMU support.)\n",
+>>>>               strerror(errno));
+>>>>           ret = EXIT_FAILURE;
+>>>> -        goto err;
+>>>> +        goto err_engines;
+>>>>       }
+>>>>       ret = pmu_init(engines);
+>>>> @@ -2585,7 +2588,7 @@ int main(int argc, char **argv)
+>>>>   "More information can be found at 'Perf events and tool security' 
+>>>> document:\n"
+>>>> "https://www.kernel.org/doc/html/latest/admin-guide/perf-security.html\n"); 
+>>>>
+>>>>           ret = EXIT_FAILURE;
+>>>> -        goto err;
+>>>> +        goto err_pmu;
+>>>>       }
+>>>>       ret = EXIT_SUCCESS;
+>>>> @@ -2699,8 +2702,9 @@ int main(int argc, char **argv)
+>>>>           free_clients(clients);
+>>>>       free(codename);
+>>>> -err:
+>>>> +err_pmu:
+>>>>       free_engines(engines);
+>>>> +err_engines:
+>>>>       free(pmu_device);
+>>>>   exit:
+>>>>       igt_devices_free();
