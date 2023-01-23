@@ -1,19 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2E23610E4C9
- for <igt-dev@lists.freedesktop.org>; Mon, 23 Jan 2023 15:16:24 +0000 (UTC)
-Message-ID: <629d1ce2-a644-1b26-9264-b048b90e68b1@intel.com>
-Date: Mon, 23 Jan 2023 16:16:20 +0100
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6386310E4C9
+ for <igt-dev@lists.freedesktop.org>; Mon, 23 Jan 2023 15:17:18 +0000 (UTC)
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Mon, 23 Jan 2023 16:17:11 +0100
+Message-Id: <20230123151711.94167-1-kamil.konieczny@linux.intel.com>
 MIME-Version: 1.0
-Content-Language: en-US
-To: Nirmoy Das <nirmoy.das@intel.com>, igt-dev@lists.freedesktop.org
-References: <20230120100750.24122-1-nirmoy.das@intel.com>
-From: Andrzej Hajda <andrzej.hajda@intel.com>
-In-Reply-To: <20230120100750.24122-1-nirmoy.das@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Subject: Re: [igt-dev] [PATCH i-g-t 1/2] lib/i915/intel_memory_region: Add
- gem_has_smallbar
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t v2] tests/prime_vgem: fix test listing
+ problem
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,80 +17,59 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: matthew.auld@intel.com
+Cc: Petri Latvala <petri.latvala@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
+Move call to function with possible usage of card fd inside
+fixture, as uses of fd are allowed inside fixtures or subtests.
+This may eliminate problem when using --list-subtests option,
+depending on implementation it can assert like:
 
+sudo build/tests/prime_vgem --list-subtests
+...
+coherency-blt
+(prime_vgem:259195) intel_ctx-CRITICAL: Test assertion failure function intel_ctx_create_all_physical, file ../lib/intel_ctx.c:344:
+(prime_vgem:259195) intel_ctx-CRITICAL: Failed assertion: err == 0
+(prime_vgem:259195) intel_ctx-CRITICAL: error: -9 != 0
+Test prime_vgem failed.
 
-On 20.01.2023 11:07, Nirmoy Das wrote:
-> Add gem_has_smallbar() to detect a device with smallbar.
->
-> Signed-off-by: Nirmoy Das <nirmoy.das@intel.com>
-> ---
->   lib/i915/intel_memory_region.c | 32 ++++++++++++++++++++++++++++++++
->   lib/i915/intel_memory_region.h |  1 +
->   2 files changed, 33 insertions(+)
->
-> diff --git a/lib/i915/intel_memory_region.c b/lib/i915/intel_memory_region.c
-> index 84e1bceb3..655720819 100644
-> --- a/lib/i915/intel_memory_region.c
-> +++ b/lib/i915/intel_memory_region.c
-> @@ -183,6 +183,38 @@ bool gem_has_lmem(int fd)
->   	return gem_get_lmem_region_count(fd) > 0;
->   }
->   
-> +/**
-> + * gem_has_smallbar:
-> + * @fd: open i915 drm file descriptor
-> + *
-> + * Helper function to check if the device comes with small-bar.
-> + *
-> + * Returns: True if at least one lmem region was found.
-> + */
-> +bool gem_has_smallbar(int fd)
-> +{
-> +	struct drm_i915_query_memory_regions *info;
-> +	struct drm_i915_memory_region_info *rf;
-> +	bool ret = false;
-> +
-> +	info = gem_get_query_memory_regions(fd);
-> +	igt_assert(info);
-> +
-> +	for (int i = 0; i < info->num_regions; i++) {
-> +		rf = &info->regions[i];
-> +		if (rf->region.memory_class == I915_MEMORY_CLASS_DEVICE) {
-> +			if (rf->probed_size > rf->probed_cpu_visible_size) {
-> +				ret = true;
-> +				break;
-> +			}
-> +		}
-> +	}
-> +	free(info);
+v2: improve commit messages and use fixtures for create and
+  destroy of context (Petri)
 
-Why not for_each_memory_region ?
+Reported-by: Petri Latvala <petri.latvala@intel.com>
+Cc: Petri Latvala <petri.latvala@intel.com>
+Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+---
+ tests/prime_vgem.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-Regards
-Andrzej
-
-> +
-> +	return ret;
-> +}
-> +
-> +
->   /* A version of gem_create_in_memory_region_list which can be allowed to
->      fail so that the object creation can be retried */
->   int __gem_create_in_memory_region_list(int fd, uint32_t *handle, uint64_t *size, uint32_t flags,
-> diff --git a/lib/i915/intel_memory_region.h b/lib/i915/intel_memory_region.h
-> index 425bda0ec..9e24bd8fb 100644
-> --- a/lib/i915/intel_memory_region.h
-> +++ b/lib/i915/intel_memory_region.h
-> @@ -62,6 +62,7 @@ struct drm_i915_query_memory_regions *gem_get_query_memory_regions(int fd);
->   unsigned int gem_get_lmem_region_count(int fd);
->   
->   bool gem_has_lmem(int fd);
-> +bool gem_has_smallbar(int fd);
->   
->   int __gem_create_in_memory_region_list(int fd, uint32_t *handle, uint64_t *size, uint32_t flags,
->   				       const struct drm_i915_gem_memory_class_instance *mem_regions,
+diff --git a/tests/prime_vgem.c b/tests/prime_vgem.c
+index f876e748..06be273c 100644
+--- a/tests/prime_vgem.c
++++ b/tests/prime_vgem.c
+@@ -1093,7 +1093,10 @@ static void test_each_engine(const char *name, int vgem, int i915,
+ 					unsigned int flags))
+ {
+ 	const struct intel_execution_engine2 *e;
+-	const intel_ctx_t *ctx = intel_ctx_create_all_physical(i915);
++	const intel_ctx_t *ctx;
++
++	igt_fixture
++		ctx = intel_ctx_create_all_physical(i915);
+ 
+ 	igt_subtest_with_dynamic(name) {
+ 		for_each_ctx_engine(i915, ctx, e) {
+@@ -1110,7 +1113,8 @@ static void test_each_engine(const char *name, int vgem, int i915,
+ 		}
+ 	}
+ 
+-	intel_ctx_destroy(i915, ctx);
++	igt_fixture
++		intel_ctx_destroy(i915, ctx);
+ }
+ 
+ igt_main
+-- 
+2.37.2
