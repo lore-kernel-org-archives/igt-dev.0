@@ -1,22 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4DAB110E689
- for <igt-dev@lists.freedesktop.org>; Tue, 24 Jan 2023 13:40:10 +0000 (UTC)
-Message-ID: <6a93df77-0507-7b36-63b5-90f4d06272e6@intel.com>
-Date: Tue, 24 Jan 2023 19:09:19 +0530
-Content-Language: en-US
-To: Dnyaneshwar Bhadane <dnyaneshwar.bhadane@intel.com>,
- <igt-dev@lists.freedesktop.org>
-References: <20230112105702.19502-1-dnyaneshwar.bhadane@intel.com>
- <20230124130325.13163-1-dnyaneshwar.bhadane@intel.com>
-From: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
-In-Reply-To: <20230124130325.13163-1-dnyaneshwar.bhadane@intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
+Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 022BC10E6AD
+ for <igt-dev@lists.freedesktop.org>; Tue, 24 Jan 2023 15:24:13 +0000 (UTC)
+Date: Tue, 24 Jan 2023 17:24:07 +0200
+From: Imre Deak <imre.deak@intel.com>
+To: Mohammed Thasleem <mohammed.thasleem@intel.com>
+Message-ID: <Y8/4F8Z9Q8nRZoV5@ideak-desk.fi.intel.com>
+References: <20221220135734.6354-1-mohammed.thasleem@intel.com>
+ <20220630055734.7624-1-mohammed.thasleem@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [i-g-t,
- v4] tests/kms_cursor_crc: skip pipe on invalid connector in cursor
- size test
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220630055734.7624-1-mohammed.thasleem@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/i915/i915_pm_dc : Check DC5 state
+ with externel active panel
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,152 +21,117 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: juha-pekka.heikkila@intel.com, suresh.kumar.kurmi@intel.com
+Reply-To: imre.deak@intel.com
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-
-
-On Tue-24-01-2023 06:33 pm, Dnyaneshwar Bhadane wrote:
-> Only the valid pipe connector combination reach to the igt commit.
-> Cursor max-size test will not affect existing flow as only skip
-> for invalid connector.
-> For cursor-dpms and cursor-suspend not require to check require_cursor_size
-> becuase the cursor height and width used from drm capablities.
+On Thu, Jun 30, 2022 at 11:27:34AM +0530, Mohammed Thasleem wrote:
+> This test validates negative scenario of DC5 state by keeping
+> all connectors's DPMS property set to ON.
 > 
-
-Please fix/update the commit subject & message according to the changes 
-you made in this patch.
-
-> --v4
-> - Used for_each_pipe_with_single_output [Bhanuprakash]
-> - Removed usless assigment to date->output in igt_fixture
-> - Removed igt_pipe_connector_valid(),It is already verified in the loop macro
-
-Also, please add the revision history (v1 to v3) to the commit message.
-
-With above changes, this patch is
-Reviewed-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-
-- Bhanu
-
+> v2: Added function to check externel panel and skip test if not found.
+> v3: Moved check_external_panel inside igt_require_f and removed
+>     igt_skip_on_f.
 > 
-> Signed-off-by: Dnyaneshwar Bhadane <dnyaneshwar.bhadane@intel.com>
-> 
+> Signed-off-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
 > ---
->   tests/kms_cursor_crc.c | 47 ++++++------------------------------------
->   1 file changed, 6 insertions(+), 41 deletions(-)
+>  tests/i915/i915_pm_dc.c | 45 +++++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 45 insertions(+)
 > 
-> diff --git a/tests/kms_cursor_crc.c b/tests/kms_cursor_crc.c
-> index d5a4b30b..0b5aac30 100644
-> --- a/tests/kms_cursor_crc.c
-> +++ b/tests/kms_cursor_crc.c
-> @@ -749,7 +749,7 @@ static void run_size_tests(data_t *data, int w, int h)
->   				}
->   			}
->   
-> -			for_each_pipe(&data->display, pipe) {
-> +			for_each_pipe_with_single_output(&data->display, pipe, data->output) {
->   				data->pipe = pipe;
->   
->   				if (require_cursor_size(data, w, h)) {
-> @@ -774,8 +774,6 @@ static void run_tests_on_pipe(data_t *data)
->   	int cursor_size;
->   
->   	igt_fixture {
-> -		data->output = igt_get_single_output_for_pipe(&data->display, pipe);
-> -		igt_require(data->output);
->   		data->alpha = 1.0;
->   		data->flags = 0;
->   	}
-> @@ -784,16 +782,9 @@ static void run_tests_on_pipe(data_t *data)
->   		     "flight to smaller ones to see that the size is applied "
->   		     "correctly.");
->   	igt_subtest_with_dynamic("cursor-size-change") {
-> -		for_each_pipe(&data->display, pipe) {
-> +		for_each_pipe_with_single_output(&data->display, pipe, data->output) {
->   			data->pipe = pipe;
->   
-> -			if(!igt_pipe_connector_valid(pipe, data->output)) {
-> -				igt_debug("Invalid connector on pipe-%s-%s",
-> -				      kmstest_pipe_name(pipe),
-> -				      data->output->name);
-> -				continue;
-> -			}
-> -
->   			igt_dynamic_f("pipe-%s-%s",
->   				      kmstest_pipe_name(pipe),
->   				      data->output->name)
-> @@ -805,16 +796,9 @@ static void run_tests_on_pipe(data_t *data)
->   	igt_describe("Validates the composition of a fully opaque cursor "
->   		     "plane, i.e., alpha channel equal to 1.0.");
->   	igt_subtest_with_dynamic("cursor-alpha-opaque") {
-> -		for_each_pipe(&data->display, pipe) {
-> +		for_each_pipe_with_single_output(&data->display, pipe, data->output) {
->   			data->pipe = pipe;
->   
-> -			if(!igt_pipe_connector_valid(pipe, data->output)) {
-> -				igt_debug("Invalid connector on pipe-%s-%s",
-> -				      kmstest_pipe_name(pipe),
-> -				      data->output->name);
-> -				continue;
-> -			}
-> -
->   			igt_dynamic_f("pipe-%s-%s",
->   				      kmstest_pipe_name(pipe),
->   				      data->output->name)
-> @@ -826,16 +810,9 @@ static void run_tests_on_pipe(data_t *data)
->   	igt_describe("Validates the composition of a fully transparent cursor "
->   		     "plane, i.e., alpha channel equal to 0.0.");
->   	igt_subtest_with_dynamic("cursor-alpha-transparent") {
-> -		for_each_pipe(&data->display, pipe) {
-> +		for_each_pipe_with_single_output(&data->display, pipe, data->output) {
->   			data->pipe = pipe;
->   
-> -			if(!igt_pipe_connector_valid(pipe, data->output)) {
-> -				igt_debug("Invalid connector on pipe-%s-%s",
-> -				      kmstest_pipe_name(pipe),
-> -				      data->output->name);
-> -				continue;
-> -			}
-> -
->   			igt_dynamic_f("pipe-%s-%s",
->   				      kmstest_pipe_name(pipe),
->   				      data->output->name)
-> @@ -850,16 +827,10 @@ static void run_tests_on_pipe(data_t *data)
->   
->   	igt_describe("Check random placement of a cursor with DPMS.");
->   	igt_subtest_with_dynamic("cursor-dpms") {
-> -		for_each_pipe(&data->display, pipe) {
-> +		for_each_pipe_with_single_output(&data->display, pipe, data->output) {
->   			data->pipe = pipe;
->   			data->flags = TEST_DPMS;
->   
-> -			if (require_cursor_size(data, data->cursor_max_w, data->cursor_max_h)) {
-> -				igt_debug("Cursor size %dx%d not supported by driver\n",
-> -					  data->cursor_max_w, data->cursor_max_h);
-> -				continue;
-> -			}
-> -
->   			igt_dynamic_f("pipe-%s-%s",
->   				      kmstest_pipe_name(pipe),
->   				      data->output->name)
-> @@ -871,16 +842,10 @@ static void run_tests_on_pipe(data_t *data)
->   
->   	igt_describe("Check random placement of a cursor with suspend.");
->   	igt_subtest_with_dynamic("cursor-suspend") {
-> -		for_each_pipe(&data->display, pipe) {
-> +		for_each_pipe_with_single_output(&data->display, pipe, data->output) {
->   			data->pipe = pipe;
->   			data->flags = TEST_SUSPEND;
->   
-> -			if (require_cursor_size(data, data->cursor_max_w, data->cursor_max_h)) {
-> -				igt_debug("Cursor size %dx%d not supported by driver\n",
-> -					  data->cursor_max_w, data->cursor_max_h);
-> -				continue;
-> -			}
-> -
->   			igt_dynamic_f("pipe-%s-%s",
->   				      kmstest_pipe_name(pipe),
->   				      data->output->name)
+> diff --git a/tests/i915/i915_pm_dc.c b/tests/i915/i915_pm_dc.c
+> index ba49d014..e29f9eb8 100644
+> --- a/tests/i915/i915_pm_dc.c
+> +++ b/tests/i915/i915_pm_dc.c
+> @@ -246,6 +246,13 @@ static void check_dc_counter(data_t *data, int dc_flag, uint32_t prev_dc_count)
+>  		     data->debugfs_dump = igt_sysfs_get(data->debugfs_fd, PWR_DOMAIN_INFO));
+>  }
+>  
+> +static void check_dc_counter_negative(data_t *data, int dc_flag, uint32_t prev_dc_count)
+> +{
+> +	igt_assert_f(!dc_state_wait_entry(data->debugfs_fd, dc_flag, prev_dc_count),
+> +			"%s state is achieved\n%s:\n%s\n", dc_state_name(dc_flag), PWR_DOMAIN_INFO,
+> +			data->debugfs_dump = igt_sysfs_get(data->debugfs_fd, PWR_DOMAIN_INFO));
+> +}
+> +
+>  static void setup_videoplayback(data_t *data)
+>  {
+>  	color_t red_green_blue[] = {
+> @@ -411,6 +418,18 @@ static void test_dc_state_dpms(data_t *data, int dc_flag)
+>  	cleanup_dc_dpms(data);
+>  }
+>  
+> +static void test_dc_state_dpms_negative(data_t *data, int dc_flag)
+> +{
+> +	uint32_t dc_counter;
+> +
+> +	require_dc_counter(data->debugfs_fd, dc_flag);
+> +	setup_dc_dpms(data);
+> +	dc_counter = read_dc_counter(data->debugfs_fd, dc_flag);
+> +	dpms_on(data);
+> +	check_dc_counter_negative(data, dc_flag, dc_counter);
+> +	cleanup_dc_dpms(data);
+> +}
+> +
+>  static bool support_dc6(int debugfs_fd)
+>  {
+>  	char buf[4096];
+> @@ -485,6 +504,23 @@ static void test_dc9_dpms(data_t *data)
+>  	setup_dc9_dpms(data, dc_target);
+>  }
+>  
+> +static int check_external_panel(igt_display_t *display)
+
+The function will also count outputs like DSI, LVDS, so would be better
+to call it something like has_panels_without_dc_support().
+
+> +{
+> +	igt_output_t *output = NULL;
+
+No need to init the above.
+
+> +	int external_panel = 0;
+> +
+> +	for_each_connected_output(display, output) {
+> +		drmModeConnectorPtr c = output->config.connector;
+> +
+> +		if (c->connector_type != DRM_MODE_CONNECTOR_eDP &&
+> +		    c->connection == DRM_MODE_CONNECTED) {
+
+The above will iterate through connectors that are in the connected
+state, so no need to check that here. This single line branch doesn't
+need to be enclosed in {}.
+
+With the above nits fixed, looks ok to me:
+Reviewed-by: Imre Deak <imre.deak@intel.com>
+
+> +			external_panel++;
+> +		}
+> +	}
+> +
+> +	return external_panel;
+> +}
+> +
+>  static void kms_poll_state_restore(int sig)
+>  {
+>  	int sysfs_fd;
+> @@ -552,6 +588,15 @@ igt_main
+>  		test_dc_state_dpms(&data, CHECK_DC5);
+>  	}
+>  
+> +	igt_describe("This test validates negative scenario of DC5 display "
+> +		     "engine entry to DC5 state while all connectors's DPMS "
+> +		     "property set to ON");
+> +	igt_subtest("dc5-dpms-negative") {
+> +		igt_require_f(check_external_panel(&data.display),
+> +			      "External panel not detected, skip execution\n");
+> +		test_dc_state_dpms_negative(&data, CHECK_DC5);
+> +	}
+> +
+>  	igt_describe("This test validates display engine entry to DC5 state "
+>  		     "while all connectors's DPMS property set to OFF");
+>  	igt_subtest("dc6-dpms") {
+> -- 
+> 2.25.1
+> 
