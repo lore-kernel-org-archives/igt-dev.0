@@ -1,20 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D6D5910E661
- for <igt-dev@lists.freedesktop.org>; Tue, 24 Jan 2023 10:47:51 +0000 (UTC)
-From: "Hogander, Jouni" <jouni.hogander@intel.com>
-To: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Sharma,
- Swati2" <swati2.sharma@intel.com>
-Date: Tue, 24 Jan 2023 10:47:26 +0000
-Message-ID: <def29359dff009a21a53dfd8d7f08dd3fce93d25.camel@intel.com>
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 21F1289C29
+ for <igt-dev@lists.freedesktop.org>; Tue, 24 Jan 2023 10:51:59 +0000 (UTC)
+Message-ID: <7ca1eac1-d3ac-3f98-1fa9-2bccd87e1394@intel.com>
+Date: Tue, 24 Jan 2023 16:21:53 +0530
+MIME-Version: 1.0
+To: "Hogander, Jouni" <jouni.hogander@intel.com>,
+ "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
 References: <20230124065152.19747-1-swati2.sharma@intel.com>
  <20230124065152.19747-4-swati2.sharma@intel.com>
-In-Reply-To: <20230124065152.19747-4-swati2.sharma@intel.com>
+ <def29359dff009a21a53dfd8d7f08dd3fce93d25.camel@intel.com>
 Content-Language: en-US
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <0060F5A2FD67AF42ACDF822D6F9E054A@namprd11.prod.outlook.com>
-Content-Transfer-Encoding: base64
-MIME-Version: 1.0
+From: Swati Sharma <swati2.sharma@intel.com>
+In-Reply-To: <def29359dff009a21a53dfd8d7f08dd3fce93d25.camel@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 Subject: Re: [igt-dev] [PATCH i-g-t 3/5] tests/i915/kms_dsc: Remove
  pointless struct
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
@@ -28,47 +28,73 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gVHVlLCAyMDIzLTAxLTI0IGF0IDEyOjIxICswNTMwLCBTd2F0aSBTaGFybWEgd3JvdGU6Cj4g
-QXJyYXkgY2FuIGJlIHVzZWQgZm9yIHBsYW5lX2Zvcm1hdC4gVXNlIHRoYXQgYW5kIHJlbW92ZQo+
-IHN0cnVjdC4KPiAKPiBTaWduZWQtb2ZmLWJ5OiBTd2F0aSBTaGFybWEgPHN3YXRpMi5zaGFybWFA
-aW50ZWwuY29tPgo+IC0tLQo+IMKgdGVzdHMvaTkxNS9rbXNfZHNjLmMgfCAxNSArKystLS0tLS0t
-LS0tLS0KPiDCoDEgZmlsZSBjaGFuZ2VkLCAzIGluc2VydGlvbnMoKyksIDEyIGRlbGV0aW9ucygt
-KQo+IAo+IGRpZmYgLS1naXQgYS90ZXN0cy9pOTE1L2ttc19kc2MuYyBiL3Rlc3RzL2k5MTUva21z
-X2RzYy5jCj4gaW5kZXggYWY5NDY2NTE4Li42MmRmODc2MzYgMTAwNjQ0Cj4gLS0tIGEvdGVzdHMv
-aTkxNS9rbXNfZHNjLmMKPiArKysgYi90ZXN0cy9pOTE1L2ttc19kc2MuYwo+IEBAIC01MiwxNiAr
-NTIsNyBAQCB0eXBlZGVmIHN0cnVjdCB7Cj4gwqDCoMKgwqDCoMKgwqDCoGVudW0gcGlwZSBwaXBl
-Owo+IMKgfSBkYXRhX3Q7Cj4gwqAKPiAtY29uc3Qgc3RydWN0IHsKPiAtwqDCoMKgwqDCoMKgwqBj
-b25zdCBpbnQgZm9ybWF0Owo+IC3CoMKgwqDCoMKgwqDCoGNvbnN0IGNoYXIgZm9ybWF0X3N0clsy
-MF07Cj4gLX0gZm9ybWF0X2xpc3RbXSA9IHsKPiAtwqDCoMKgwqDCoMKgwqB7RFJNX0ZPUk1BVF9Y
-WVVWODg4OCwgIlhZVVY4ODg4In0sCj4gLcKgwqDCoMKgwqDCoMKge0RSTV9GT1JNQVRfWFJHQjIx
-MDEwMTAsICJYUkdCMjEwMTAxMCJ9LAo+IC3CoMKgwqDCoMKgwqDCoHtEUk1fRk9STUFUX1hSR0Ix
-NjE2MTYxNkYsICJYUkdCMTYxNjE2MTZGIn0sCj4gLcKgwqDCoMKgwqDCoMKge0RSTV9GT1JNQVRf
-WVVZViwgIllVWVYifSwKPiAtfTsKPiAtCj4gK2ludCBmb3JtYXRfbGlzdFtdID3CoCB7RFJNX0ZP
-Uk1BVF9YWVVWODg4OCwgRFJNX0ZPUk1BVF9YUkdCMjEwMTAxMCwKPiBEUk1fRk9STUFUX1hSR0Ix
-NjE2MTYxNkYsIERSTV9GT1JNQVRfWVVZVn07Cj4gwqB1aW50MzJfdCBicGNfbGlzdFtdID0gezEy
-LCAxMCwgOH07CgpJIHRoaW5rIGZvcm1hdF9saXN0IHNob3VsZCBiZSBzdGF0aWMuIE5vdCBtYXR0
-ZXIgb2YgdGhpcyBwYXRjaCwgYnV0Cm1heWJlIHlvdSBjb3VsZCBjaGFuZ2UgYnBjX2xpc3QgYXMg
-YSBzdGF0aWMgdG9vLgoKPiDCoAo+IMKgc3RhdGljIGlubGluZSB2b2lkIG1hbnVhbChjb25zdCBj
-aGFyICpleHBlY3RlZCkKPiBAQCAtMjQyLDcgKzIzMyw3IEBAIGlndF9tYWluCj4gwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCAid2l0aCBkZWZhdWx0IHBhcmFtZXRlcnMg
-YW5kIGNyZWF0aW5nIGZiIHdpdGgKPiBkaWZmIGZvcm1hdHMiKTsKPiDCoMKgwqDCoMKgwqDCoMKg
-aWd0X3N1YnRlc3Rfd2l0aF9keW5hbWljKCJkc2Mtd2l0aC1mb3JtYXRzIikgewo+IMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgZm9yIChpbnQgayA9IDA7IGsgPCBBUlJBWV9TSVpFKGZv
-cm1hdF9saXN0KTsgaysrKQo+IC3CoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgdGVzdF9kc2MoJmRhdGEsIFRFU1RfRFNDX0JBU0lDLCAwLAo+IGZvcm1hdF9saXN0
-W2tdLmZvcm1hdCk7Cj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqB0ZXN0X2RzYygmZGF0YSwgVEVTVF9EU0NfQkFTSUMsIDAsCj4gZm9ybWF0X2xpc3Rba10p
-Owo+IMKgwqDCoMKgwqDCoMKgwqB9Cj4gwqAKPiDCoMKgwqDCoMKgwqDCoMKgaWd0X2Rlc2NyaWJl
-KCJUZXN0cyBiYXNpYyBkaXNwbGF5IHN0cmVhbSBjb21wcmVzc2lvbgo+IGZ1bmN0aW9uYWxpdHkg
-aWYgc3VwcG9ydGVkICIKPiBAQCAtMjU5LDcgKzI1MCw3IEBAIGlndF9tYWluCj4gwqDCoMKgwqDC
-oMKgwqDCoGlndF9zdWJ0ZXN0X3dpdGhfZHluYW1pYygiZHNjLXdpdGgtYnBjLWZvcm1hdHMiKSB7
-Cj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBmb3IgKGludCBqID0gMDsgaiA8IEFS
-UkFZX1NJWkUoYnBjX2xpc3QpOyBqKyspIHsKPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqBmb3IgKGludCBrID0gMDsgayA8IEFSUkFZX1NJWkUoZm9ybWF0
-X2xpc3QpOwo+IGsrKykgewo+IC3CoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoHRlc3RfZHNjKCZkYXRhLCBURVNUX0RTQ19CUEMsCj4g
-YnBjX2xpc3Rbal0sIGZvcm1hdF9saXN0W2tdLmZvcm1hdCk7Cj4gK8KgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgdGVzdF9kc2MoJmRh
-dGEsIFRFU1RfRFNDX0JQQywKPiBicGNfbGlzdFtqXSwgZm9ybWF0X2xpc3Rba10pOwo+IMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoH0KPiDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoH0KPiDCoMKgwqDCoMKgwqDCoMKgfQoK
+
+
+On 24-Jan-23 4:17 PM, Hogander, Jouni wrote:
+> On Tue, 2023-01-24 at 12:21 +0530, Swati Sharma wrote:
+>> Array can be used for plane_format. Use that and remove
+>> struct.
+>>
+>> Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
+>> ---
+>>   tests/i915/kms_dsc.c | 15 +++------------
+>>   1 file changed, 3 insertions(+), 12 deletions(-)
+>>
+>> diff --git a/tests/i915/kms_dsc.c b/tests/i915/kms_dsc.c
+>> index af9466518..62df87636 100644
+>> --- a/tests/i915/kms_dsc.c
+>> +++ b/tests/i915/kms_dsc.c
+>> @@ -52,16 +52,7 @@ typedef struct {
+>>          enum pipe pipe;
+>>   } data_t;
+>>   
+>> -const struct {
+>> -       const int format;
+>> -       const char format_str[20];
+>> -} format_list[] = {
+>> -       {DRM_FORMAT_XYUV8888, "XYUV8888"},
+>> -       {DRM_FORMAT_XRGB2101010, "XRGB2101010"},
+>> -       {DRM_FORMAT_XRGB16161616F, "XRGB16161616F"},
+>> -       {DRM_FORMAT_YUYV, "YUYV"},
+>> -};
+>> -
+>> +int format_list[] =  {DRM_FORMAT_XYUV8888, DRM_FORMAT_XRGB2101010,
+>> DRM_FORMAT_XRGB16161616F, DRM_FORMAT_YUYV};
+>>   uint32_t bpc_list[] = {12, 10, 8};
+> 
+> I think format_list should be static. Not matter of this patch, but
+> maybe you could change bpc_list as a static too.
+> 
+Right, will make that change.
+
+>>   
+>>   static inline void manual(const char *expected)
+>> @@ -242,7 +233,7 @@ igt_main
+>>                       "with default parameters and creating fb with
+>> diff formats");
+>>          igt_subtest_with_dynamic("dsc-with-formats") {
+>>                  for (int k = 0; k < ARRAY_SIZE(format_list); k++)
+>> -                       test_dsc(&data, TEST_DSC_BASIC, 0,
+>> format_list[k].format);
+>> +                       test_dsc(&data, TEST_DSC_BASIC, 0,
+>> format_list[k]);
+>>          }
+>>   
+>>          igt_describe("Tests basic display stream compression
+>> functionality if supported "
+>> @@ -259,7 +250,7 @@ igt_main
+>>          igt_subtest_with_dynamic("dsc-with-bpc-formats") {
+>>                  for (int j = 0; j < ARRAY_SIZE(bpc_list); j++) {
+>>                          for (int k = 0; k < ARRAY_SIZE(format_list);
+>> k++) {
+>> -                               test_dsc(&data, TEST_DSC_BPC,
+>> bpc_list[j], format_list[k].format);
+>> +                               test_dsc(&data, TEST_DSC_BPC,
+>> bpc_list[j], format_list[k]);
+>>                          }
+>>                  }
+>>          }
+> 
+
+-- 
+~Swati Sharma
