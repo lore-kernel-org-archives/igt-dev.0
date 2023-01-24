@@ -1,20 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C987489C29
- for <igt-dev@lists.freedesktop.org>; Tue, 24 Jan 2023 10:53:49 +0000 (UTC)
-From: "Hogander, Jouni" <jouni.hogander@intel.com>
-To: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Sharma,
- Swati2" <swati2.sharma@intel.com>
-Date: Tue, 24 Jan 2023 10:53:43 +0000
-Message-ID: <7aa881b2d134409be0149dca267423d22cff5ec3.camel@intel.com>
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0DC7610E66B
+ for <igt-dev@lists.freedesktop.org>; Tue, 24 Jan 2023 11:32:36 +0000 (UTC)
+Message-ID: <e5a7b6a1-e4b7-4646-be0a-7a8fc5b17c69@intel.com>
+Date: Tue, 24 Jan 2023 17:02:29 +0530
+MIME-Version: 1.0
+To: "Hogander, Jouni" <jouni.hogander@intel.com>,
+ "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
 References: <20230124065152.19747-1-swati2.sharma@intel.com>
  <20230124065152.19747-6-swati2.sharma@intel.com>
-In-Reply-To: <20230124065152.19747-6-swati2.sharma@intel.com>
+ <7aa881b2d134409be0149dca267423d22cff5ec3.camel@intel.com>
 Content-Language: en-US
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <836D082AD9E07045831B4CD2E3AC2A00@namprd11.prod.outlook.com>
-Content-Transfer-Encoding: base64
-MIME-Version: 1.0
+From: Swati Sharma <swati2.sharma@intel.com>
+In-Reply-To: <7aa881b2d134409be0149dca267423d22cff5ec3.camel@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 Subject: Re: [igt-dev] [PATCH i-g-t 5/5] tests/i915/kms_dsc: Enable
  validation for VDSC output formats
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
@@ -28,345 +28,459 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gVHVlLCAyMDIzLTAxLTI0IGF0IDEyOjIxICswNTMwLCBTd2F0aSBTaGFybWEgd3JvdGU6Cj4g
-RXhpc3RpbmcgaS1nLXQgaXMgZXh0ZW5kZWQgdG8gZW5hYmxlIHZhbGlkYXRpb24gZm9yIFZEU0Mg
-b3V0cHV0Cj4gZm9ybWF0cy4gT3V0cHV0Cj4gZm9ybWF0IGlzIHNlbGVjdGVkIGFzIHBlciBkcml2
-ZXIgcG9saWN5LiBGb3IgZXg6IElmIGEgbW9kZSBpcwo+IHN1cHBvcnRlZAo+IGluIGJvdGggUkdC
-IGFuZCBZQ2JDcjQyMCBvdXRwdXQgZm9ybWF0cyBieSB0aGUgc2luaywgaTkxNSBkcml2ZXIKPiBw
-b2xpY3kgaXMKPiB0byB0cnkgUkdCIGZpcnN0IGFuZCBmYWxsIGJhY2sgdG8gWUNiQ3I0MjAsIGlm
-IG1vZGUgY2Fubm90IGJlIHNob3duCj4gdXNpbmcgUkdCLgo+IAo+IFRvIHRlc3QgRFNDIG91dHB1
-dCBmb3JtYXQsIGEgZGVidWdmcyBlbnRyeSBpcyBjcmVhdGVkIHRvIGZvcmNlIHRoaXMKPiBvdXRw
-dXQgZm9ybWF0Lgo+IEhvd2V2ZXIsIGJlZm9yZSBzZXR0aW5nIGRlYnVnZnMgZW50cnksIHdlIGhh
-dmUgY2hlY2tlZCBjYXBhYmlsaXR5Cj4gaS5lLiBvdXRwdXQKPiBmb3JtYXQgaXMgc3VwcG9ydGVk
-IGJ5IGJvdGggcGxhdGZvcm0gYW5kIHNpbmsuCj4gCj4gQWxzbywgZWFjaCBtb2RlIGRvZXNuJ3Qg
-c3VwcG9ydCBhbGwgb3V0cHV0IGZvcm1hdHM7IHNvIGlmIGJvdGggc2luawo+IGFuZCBwbGF0Zm9y
-bQo+IHN1cHBvcnQgYW4gb3V0cHV0IGZvcm1hdCwgd2Ugd2lsbCBkbyBhIHRyeSBjb21taXQgd2l0
-aCBlYWNoIG1vZGUgdGlsbAo+IHdlIGdldCBhCj4gc3VjY2Vzc2Z1bCBjb21taXQuCj4gCj4gdjI6
-IC11c2VkIGlzX2RzY195Y2JjcjQyMF9zdXBwb3J0ZWQoKSAoQW5raXQpCj4gwqDCoMKgIC1oYW5k
-bGVkIHRyeS1jb21taXQgY29ycmVjdGx5IChBbmtpdCkKPiDCoMKgwqAgLWluc3RlYWQgb2YgZmxh
-ZyB1c2UgZW51bSBmb3Igb3V0cHV0IGZvcm1hdHMgKEFua2l0KQo+IHYzOiAtaW5zdGVhZCBvZiBn
-bG9iYWwgY291bnQsIHBhc3MgY291bnQgYXMgcGFyYSAoQW5raXQpCj4gwqDCoMKgIC1wcmludCBv
-dXRwdXQgZm9ybWF0IChBbmtpdCkKPiB2NDogLW9wdGltaXplZCB3aGlsZSBsb29wIChKb3VuaSkK
-PiDCoMKgwqAgLXVzZWQgb25seSB0cnkgY29tbWl0IChKb3VuaSkKPiDCoMKgwqAgLWZpeGVkIGdl
-dF9uZXh0X21vZGUoKSAoSm91bmkpCj4gdjU6IC1tYWRlIGdlbmVyaWMgdGVzdCB0byB2YWxpZGF0
-ZSBhbGwgb3V0cHV0IGZvcm1hdHMgKEphbmkgTikKPiAKPiBTaWduZWQtb2ZmLWJ5OiBTd2F0aSBT
-aGFybWEgPHN3YXRpMi5zaGFybWFAaW50ZWwuY29tPgo+IC0tLQo+IMKgbGliL2lndF9rbXMuY8Kg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgfMKgIDIwICsrKysrKysKPiDCoGxpYi9pZ3Rfa21z
-LmjCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIHzCoMKgIDEgKwo+IMKgdGVzdHMvaTkxNS9r
-bXNfZHNjLmPCoMKgwqDCoMKgwqDCoCB8IDEwMyArKysrKysrKysrKysrKysrKysrKysrKysrKysr
-Ky0tLS0tCj4gLS0KPiDCoHRlc3RzL2k5MTUva21zX2RzY19oZWxwZXIuYyB8wqAgMzYgKysrKysr
-KysrKysrKwo+IMKgdGVzdHMvaTkxNS9rbXNfZHNjX2hlbHBlci5oIHzCoMKgIDQgKysKPiDCoDUg
-ZmlsZXMgY2hhbmdlZCwgMTQ0IGluc2VydGlvbnMoKyksIDIwIGRlbGV0aW9ucygtKQo+IAo+IGRp
-ZmYgLS1naXQgYS9saWIvaWd0X2ttcy5jIGIvbGliL2lndF9rbXMuYwo+IGluZGV4IDMxZTZkZmRh
-MC4uYmJkY2Y5N2YxIDEwMDY0NAo+IC0tLSBhL2xpYi9pZ3Rfa21zLmMKPiArKysgYi9saWIvaWd0
-X2ttcy5jCj4gQEAgLTk2Niw2ICs5NjYsMjYgQEAgY29uc3QgY2hhciAqa21zdGVzdF9zY2FsaW5n
-X2ZpbHRlcl9zdHIoaW50Cj4gZmlsdGVyKQo+IMKgwqDCoMKgwqDCoMKgwqByZXR1cm4gZmluZF90
-eXBlX25hbWUoc2NhbGluZ19maWx0ZXJfbmFtZXMsIGZpbHRlcik7Cj4gwqB9Cj4gwqAKPiArc3Rh
-dGljIGNvbnN0IHN0cnVjdCB0eXBlX25hbWUgZHNjX291dHB1dF9mb3JtYXRfbmFtZXNbXSA9IHsK
-PiArwqDCoMKgwqDCoMKgwqB7IERTQ19GT1JNQVRfREVGQVVMVCwgIkRFRkFVTFQiIH0sCj4gK8Kg
-wqDCoMKgwqDCoMKgeyBEU0NfRk9STUFUX1JHQiwgIlJHQiIgfSwKPiArwqDCoMKgwqDCoMKgwqB7
-IERTQ19GT1JNQVRfWUNCQ1I0MjAsICJZQ0JDUjQyMCIgfSwKPiArwqDCoMKgwqDCoMKgwqB7IERT
-Q19GT1JNQVRfWUNCQ1I0MjIsICJZQ0JDUjQyMiIgfSwKPiArwqDCoMKgwqDCoMKgwqB7IERTQ19G
-T1JNQVRfWUNCQ1I0NDQsICJZQ0JDUjQ0NCIgfSwKPiArwqDCoMKgwqDCoMKgwqB7fQo+ICt9Owo+
-ICsKPiArLyoqCj4gKyAqIGttc3Rlc3RfZHNjX291dHB1dF9mb3JtYXRfc3RyOgo+ICsgKiBAb3V0
-cHV0X2Zvcm1hdDogRFNDX0ZPUk1BVF8qIG91dHB1dCBmb3JtYXQgdmFsdWUKPiArICoKPiArICog
-UmV0dXJuczogQSBzdHJpbmcgcmVwcmVzZW50aW5nIHRoZSBvdXRwdXQgZm9ybWF0IEBvdXRwdXQg
-Zm9ybWF0Lgo+ICsgKi8KPiArY29uc3QgY2hhciAqa21zdGVzdF9kc2Nfb3V0cHV0X2Zvcm1hdF9z
-dHIoaW50IG91dHB1dF9mb3JtYXQpCj4gK3sKPiArwqDCoMKgwqDCoMKgwqByZXR1cm4gZmluZF90
-eXBlX25hbWUoZHNjX291dHB1dF9mb3JtYXRfbmFtZXMsCj4gb3V0cHV0X2Zvcm1hdCk7Cj4gK30K
-PiArCj4gwqBzdGF0aWMgY29uc3Qgc3RydWN0IHR5cGVfbmFtZSBjb25uZWN0b3JfdHlwZV9uYW1l
-c1tdID0gewo+IMKgwqDCoMKgwqDCoMKgwqB7IERSTV9NT0RFX0NPTk5FQ1RPUl9Vbmtub3duLCAi
-VW5rbm93biIgfSwKPiDCoMKgwqDCoMKgwqDCoMKgeyBEUk1fTU9ERV9DT05ORUNUT1JfVkdBLCAi
-VkdBIiB9LAo+IGRpZmYgLS1naXQgYS9saWIvaWd0X2ttcy5oIGIvbGliL2lndF9rbXMuaAo+IGlu
-ZGV4IGQ2NzdkMzlmOS4uNWI0ODQwOWY0IDEwMDY0NAo+IC0tLSBhL2xpYi9pZ3Rfa21zLmgKPiAr
-KysgYi9saWIvaWd0X2ttcy5oCj4gQEAgLTExOCw2ICsxMTgsNyBAQCBjb25zdCBjaGFyICprbXN0
-ZXN0X2VuY29kZXJfdHlwZV9zdHIoaW50IHR5cGUpOwo+IMKgY29uc3QgY2hhciAqa21zdGVzdF9j
-b25uZWN0b3Jfc3RhdHVzX3N0cihpbnQgc3RhdHVzKTsKPiDCoGNvbnN0IGNoYXIgKmttc3Rlc3Rf
-Y29ubmVjdG9yX3R5cGVfc3RyKGludCB0eXBlKTsKPiDCoGNvbnN0IGNoYXIgKmttc3Rlc3Rfc2Nh
-bGluZ19maWx0ZXJfc3RyKGludCBmaWx0ZXIpOwo+ICtjb25zdCBjaGFyICprbXN0ZXN0X2RzY19v
-dXRwdXRfZm9ybWF0X3N0cihpbnQgb3V0cHV0X2Zvcm1hdCk7Cj4gwqAKPiDCoHZvaWQga21zdGVz
-dF9kdW1wX21vZGUoZHJtTW9kZU1vZGVJbmZvICptb2RlKTsKPiDCoCNkZWZpbmUgTUFYX0hESVNQ
-TEFZX1BFUl9QSVBFIDUxMjAKPiBkaWZmIC0tZ2l0IGEvdGVzdHMvaTkxNS9rbXNfZHNjLmMgYi90
-ZXN0cy9pOTE1L2ttc19kc2MuYwo+IGluZGV4IDYyZGY4NzYzNi4uOTlhZWI3ZGRjIDEwMDY0NAo+
-IC0tLSBhL3Rlc3RzL2k5MTUva21zX2RzYy5jCj4gKysrIGIvdGVzdHMvaTkxNS9rbXNfZHNjLmMK
-PiBAQCAtMzYsNyArMzYsOCBAQCBJR1RfVEVTVF9ERVNDUklQVElPTigiVGVzdCB0byB2YWxpZGF0
-ZSBkaXNwbGF5Cj4gc3RyZWFtIGNvbXByZXNzaW9uIik7Cj4gwqAKPiDCoGVudW0gZHNjX3Rlc3Rf
-dHlwZSB7Cj4gwqDCoMKgwqDCoMKgwqDCoFRFU1RfRFNDX0JBU0lDLAo+IC3CoMKgwqDCoMKgwqDC
-oFRFU1RfRFNDX0JQQwo+ICvCoMKgwqDCoMKgwqDCoFRFU1RfRFNDX0JQQywKPiArwqDCoMKgwqDC
-oMKgwqBURVNUX0RTQ19PVVRQVVRfRk9STUFUCj4gwqB9Owo+IMKgCj4gwqB0eXBlZGVmIHN0cnVj
-dCB7Cj4gQEAgLTQ0LDYgKzQ1LDcgQEAgdHlwZWRlZiBzdHJ1Y3Qgewo+IMKgwqDCoMKgwqDCoMKg
-wqB1aW50MzJfdCBkZXZpZDsKPiDCoMKgwqDCoMKgwqDCoMKgaWd0X2Rpc3BsYXlfdCBkaXNwbGF5
-Owo+IMKgwqDCoMKgwqDCoMKgwqBzdHJ1Y3QgaWd0X2ZiIGZiX3Rlc3RfcGF0dGVybjsKPiArwqDC
-oMKgwqDCoMKgwqBlbnVtIGRzY19vdXRwdXRfZm9ybWF0IG91dHB1dF9mb3JtYXQ7Cj4gwqDCoMKg
-wqDCoMKgwqDCoHVuc2lnbmVkIGludCBwbGFuZV9mb3JtYXQ7Cj4gwqDCoMKgwqDCoMKgwqDCoGln
-dF9vdXRwdXRfdCAqb3V0cHV0Owo+IMKgwqDCoMKgwqDCoMKgwqBpbnQgaW5wdXRfYnBjOwo+IEBA
-IC01Miw2ICs1NCw3IEBAIHR5cGVkZWYgc3RydWN0IHsKPiDCoMKgwqDCoMKgwqDCoMKgZW51bSBw
-aXBlIHBpcGU7Cj4gwqB9IGRhdGFfdDsKPiDCoAo+ICtpbnQgb3V0cHV0X2Zvcm1hdF9saXN0W10g
-PSB7RFNDX0ZPUk1BVF9ERUZBVUxULCBEU0NfRk9STUFUX1JHQiwKPiBEU0NfRk9STUFUX1lDQkNS
-NDIwLCBEU0NfRk9STUFUX1lDQkNSNDQ0fTsKCnN0YXRpYwoKPiDCoGludCBmb3JtYXRfbGlzdFtd
-ID3CoCB7RFJNX0ZPUk1BVF9YWVVWODg4OCwgRFJNX0ZPUk1BVF9YUkdCMjEwMTAxMCwKPiBEUk1f
-Rk9STUFUX1hSR0IxNjE2MTYxNkYsIERSTV9GT1JNQVRfWVVZVn07Cj4gwqB1aW50MzJfdCBicGNf
-bGlzdFtdID0gezEyLCAxMCwgOH07Cj4gwqAKPiBAQCAtNzIsNiArNzUsMTcgQEAgc3RhdGljIGRy
-bU1vZGVNb2RlSW5mbwo+ICpnZXRfaGlnaHJlc19tb2RlKGlndF9vdXRwdXRfdCAqb3V0cHV0KQo+
-IMKgwqDCoMKgwqDCoMKgwqByZXR1cm4gaGlnaGVzdF9tb2RlOwo+IMKgfQo+IMKgCj4gK3N0YXRp
-YyBkcm1Nb2RlTW9kZUluZm8gKmdldF9uZXh0X21vZGUoaWd0X291dHB1dF90ICpvdXRwdXQsIGlu
-dAo+IGluZGV4KQo+ICt7Cj4gK8KgwqDCoMKgwqDCoMKgZHJtTW9kZUNvbm5lY3RvciAqY29ubmVj
-dG9yID0gb3V0cHV0LT5jb25maWcuY29ubmVjdG9yOwo+ICvCoMKgwqDCoMKgwqDCoGRybU1vZGVN
-b2RlSW5mbyAqbmV4dF9tb2RlID0gTlVMTDsKPiArCj4gK8KgwqDCoMKgwqDCoMKgaWYgKGluZGV4
-IDwgY29ubmVjdG9yLT5jb3VudF9tb2RlcykKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgbmV4dF9tb2RlID0gJmNvbm5lY3Rvci0+bW9kZXNbaW5kZXhdOwo+ICsKPiArwqDCoMKgwqDC
-oMKgwqByZXR1cm4gbmV4dF9tb2RlOwo+ICt9Cj4gKwo+IMKgc3RhdGljIGJvb2wgY2hlY2tfYmln
-X2pvaW5lcl9waXBlX2NvbnN0cmFpbnQoZGF0YV90ICpkYXRhKQo+IMKgewo+IMKgwqDCoMKgwqDC
-oMKgwqBpZ3Rfb3V0cHV0X3QgKm91dHB1dCA9IGRhdGEtPm91dHB1dDsKPiBAQCAtMTAyLDcgKzEx
-Niw5IEBAIHN0YXRpYyB2b2lkIHRlc3RfY2xlYW51cChkYXRhX3QgKmRhdGEpCj4gwqAvKiByZS1w
-cm9iZSBjb25uZWN0b3JzIGFuZCBkbyBhIG1vZGVzZXQgd2l0aCBEU0MgKi8KPiDCoHN0YXRpYyB2
-b2lkIHVwZGF0ZV9kaXNwbGF5KGRhdGFfdCAqZGF0YSwgZW51bSBkc2NfdGVzdF90eXBlCj4gdGVz
-dF90eXBlKQo+IMKgewo+ICvCoMKgwqDCoMKgwqDCoGludCByZXQ7Cj4gwqDCoMKgwqDCoMKgwqDC
-oGJvb2wgZW5hYmxlZDsKPiArwqDCoMKgwqDCoMKgwqBpbnQgaW5kZXggPSAwOwo+IMKgwqDCoMKg
-wqDCoMKgwqBpZ3RfcGxhbmVfdCAqcHJpbWFyeTsKPiDCoMKgwqDCoMKgwqDCoMKgZHJtTW9kZU1v
-ZGVJbmZvICptb2RlOwo+IMKgwqDCoMKgwqDCoMKgwqBpZ3Rfb3V0cHV0X3QgKm91dHB1dCA9IGRh
-dGEtPm91dHB1dDsKPiBAQCAtMTIxLDI2ICsxMzcsNDcgQEAgc3RhdGljIHZvaWQgdXBkYXRlX2Rp
-c3BsYXkoZGF0YV90ICpkYXRhLCBlbnVtCj4gZHNjX3Rlc3RfdHlwZSB0ZXN0X3R5cGUpCj4gwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBmb3JjZV9kc2NfZW5hYmxlX2JwYyhkYXRhLT5k
-cm1fZmQsIGRhdGEtPm91dHB1dCwKPiBkYXRhLT5pbnB1dF9icGMpOwo+IMKgwqDCoMKgwqDCoMKg
-wqB9Cj4gwqAKPiAtwqDCoMKgwqDCoMKgwqBpZ3Rfb3V0cHV0X3NldF9waXBlKG91dHB1dCwgZGF0
-YS0+cGlwZSk7Cj4gLQo+IC3CoMKgwqDCoMKgwqDCoG1vZGUgPSBnZXRfaGlnaHJlc19tb2RlKG91
-dHB1dCk7Cj4gLcKgwqDCoMKgwqDCoMKgaWd0X3JlcXVpcmUobW9kZSAhPSBOVUxMKTsKPiAtwqDC
-oMKgwqDCoMKgwqBpZ3Rfb3V0cHV0X292ZXJyaWRlX21vZGUob3V0cHV0LCBtb2RlKTsKPiArwqDC
-oMKgwqDCoMKgwqBpZiAodGVzdF90eXBlID09IFRFU1RfRFNDX09VVFBVVF9GT1JNQVQpIHsKPiAr
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgaWd0X2RlYnVnKCJUcnlpbmcgdG8gc2V0IERT
-QyAlcyBvdXRwdXQgZm9ybWF0XG4iLAo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoCBrbXN0ZXN0X2RzY19vdXRwdXRfZm9ybWF0X3N0cihkYXRhLQo+
-ID5vdXRwdXRfZm9ybWF0KSk7Cj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGZvcmNl
-X2RzY19vdXRwdXRfZm9ybWF0KGRhdGEtPmRybV9mZCwgZGF0YS0+b3V0cHV0LAo+IGRhdGEtPm91
-dHB1dF9mb3JtYXQpOwo+ICvCoMKgwqDCoMKgwqDCoH0KPiDCoAo+ICvCoMKgwqDCoMKgwqDCoGln
-dF9vdXRwdXRfc2V0X3BpcGUob3V0cHV0LCBkYXRhLT5waXBlKTsKPiDCoMKgwqDCoMKgwqDCoMKg
-cHJpbWFyeSA9IGlndF9vdXRwdXRfZ2V0X3BsYW5lX3R5cGUob3V0cHV0LAo+IERSTV9QTEFORV9U
-WVBFX1BSSU1BUlkpOwo+IMKgCj4gwqDCoMKgwqDCoMKgwqDCoGlndF9za2lwX29uKCFpZ3RfcGxh
-bmVfaGFzX2Zvcm1hdF9tb2QocHJpbWFyeSwgZGF0YS0KPiA+cGxhbmVfZm9ybWF0LAo+IMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIERSTV9GT1JNQVRfTU9EX0xJTkVBUikp
-Owo+IMKgCj4gLcKgwqDCoMKgwqDCoMKgaWd0X2NyZWF0ZV9wYXR0ZXJuX2ZiKGRhdGEtPmRybV9m
-ZCwKPiAtwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqAgbW9kZS0+aGRpc3BsYXksCj4gLcKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIG1vZGUtPnZkaXNwbGF5LAo+IC3CoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBkYXRhLT5wbGFuZV9m
-b3JtYXQsCj4gLcKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgIERSTV9GT1JNQVRfTU9EX0xJTkVBUiwKPiAtwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgJmRhdGEtPmZiX3Rlc3RfcGF0dGVy
-bik7Cj4gK8KgwqDCoMKgwqDCoMKgZG8gewo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqBpZiAoZGF0YS0+b3V0cHV0X2Zvcm1hdCA9PSBEU0NfRk9STUFUX0RFRkFVTFQpIHsKPiArwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoG1vZGUgPSBnZXRfaGln
-aHJlc19tb2RlKG91dHB1dCk7Cj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoH0gZWxz
-ZSB7Cj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBtb2Rl
-ID0gZ2V0X25leHRfbW9kZShvdXRwdXQsIGluZGV4KTsKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGluZGV4Kys7Cj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoH0KPiDCoAo+IC3CoMKgwqDCoMKgwqDCoGlndF9wbGFuZV9zZXRfZmIocHJpbWFy
-eSwgJmRhdGEtPmZiX3Rlc3RfcGF0dGVybik7Cj4gLcKgwqDCoMKgwqDCoMKgaWd0X2Rpc3BsYXlf
-Y29tbWl0KGRpc3BsYXkpOwo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBpZ3RfcmVx
-dWlyZShtb2RlICE9IE5VTEwpOwo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBpZ3Rf
-b3V0cHV0X292ZXJyaWRlX21vZGUob3V0cHV0LCBtb2RlKTsKPiArCj4gK8KgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoGlndF9jcmVhdGVfcGF0dGVybl9mYihkYXRhLT5kcm1fZmQsCj4gK8Kg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoCBtb2RlLT5oZGlzcGxheSwKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIG1vZGUtPnZk
-aXNwbGF5LAo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgZGF0YS0+cGxhbmVfZm9ybWF0LAo+ICvCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqAgRFJNX0ZPUk1BVF9NT0RfTElORUFSLAo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgJmRhdGEt
-PmZiX3Rlc3RfcGF0dGVybik7Cj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGlndF9w
-bGFuZV9zZXRfZmIocHJpbWFyeSwgJmRhdGEtPmZiX3Rlc3RfcGF0dGVybik7Cj4gKwo+ICvCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqByZXQgPSBpZ3RfZGlzcGxheV90cnlfY29tbWl0X2F0
-b21pYyhkaXNwbGF5LAo+IERSTV9NT0RFX0FUT01JQ19BTExPV19NT0RFU0VULCBOVUxMKTsKPiAr
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgaWYgKGRhdGEtPm91dHB1dF9mb3JtYXQgIT0g
-RFNDX0ZPUk1BVF9ERUZBVUxUICYmIHJldAo+ICE9IDApIHsKPiArwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGlndF9yZW1vdmVfZmIoZGF0YS0+ZHJtX2ZkLCAm
-ZGF0YS0KPiA+ZmJfdGVzdF9wYXR0ZXJuKTsKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBjb250aW51ZTsKPiArwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgfSBlbHNlIHsKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBicmVhazsKPiArwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgfQo+ICvCoMKgwqDCoMKgwqDCoH0gd2hpbGUoMSk7Cj4gKwo+
-ICvCoMKgwqDCoMKgwqDCoGlndF9hc3NlcnRfZXEocmV0LCAwKTsKPiDCoAo+IMKgwqDCoMKgwqDC
-oMKgwqAvKiB1bnRpbCB3ZSBoYXZlIENSQyBjaGVjayBzdXBwb3J0LCBtYW51YWxseSBjaGVjayBp
-ZiBSR0IKPiB0ZXN0Cj4gwqDCoMKgwqDCoMKgwqDCoCAqIHBhdHRlcm4gaGFzIG5vIGNvcnJ1cHRp
-b24uCj4gQEAgLTE1NSwxMCArMTkyLDE1IEBAIHN0YXRpYyB2b2lkIHVwZGF0ZV9kaXNwbGF5KGRh
-dGFfdCAqZGF0YSwgZW51bQo+IGRzY190ZXN0X3R5cGUgdGVzdF90eXBlKQo+IMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBlbmFi
-bGVkID8gIk9OIiA6ICJPRkYiKTsKPiDCoAo+IMKgwqDCoMKgwqDCoMKgwqByZXN0b3JlX2ZvcmNl
-X2RzY19lbigpOwo+IC3CoMKgwqDCoMKgwqDCoGlndF9kZWJ1ZygiUmVzZXQgY29tcHJlc3Npb24g
-QlBDXG4iKTsKPiArCj4gK8KgwqDCoMKgwqDCoMKgaWd0X2RlYnVnKCJSZXNldCBpbnB1dCBCUENc
-biIpOwo+IMKgwqDCoMKgwqDCoMKgwqBkYXRhLT5pbnB1dF9icGMgPSAwOwo+IMKgwqDCoMKgwqDC
-oMKgwqBmb3JjZV9kc2NfZW5hYmxlX2JwYyhkYXRhLT5kcm1fZmQsIGRhdGEtPm91dHB1dCwgZGF0
-YS0KPiA+aW5wdXRfYnBjKTsKPiDCoAo+ICvCoMKgwqDCoMKgwqDCoGlndF9kZWJ1ZygiUmVzZXQg
-RFNDIG91dHB1dCBmb3JtYXRcbiIpOwo+ICvCoMKgwqDCoMKgwqDCoGRhdGEtPm91dHB1dF9mb3Jt
-YXQgPSBEU0NfRk9STUFUX0RFRkFVTFQ7Cj4gK8KgwqDCoMKgwqDCoMKgZm9yY2VfZHNjX291dHB1
-dF9mb3JtYXQoZGF0YS0+ZHJtX2ZkLCBkYXRhLT5vdXRwdXQsIGRhdGEtCj4gPm91dHB1dF9mb3Jt
-YXQpOwo+ICsKPiDCoMKgwqDCoMKgwqDCoMKgaWd0X2Fzc2VydF9mKGVuYWJsZWQsCj4gwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCAiRGVmYXVsdCBEU0MgZW5hYmxlIGZh
-aWxlZCBvbiBjb25uZWN0b3I6ICVzCj4gcGlwZTogJXNcbiIsCj4gwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBvdXRwdXQtPm5hbWUsCj4gQEAgLTE2OCw3ICsyMTAsNyBA
-QCBzdGF0aWMgdm9pZCB1cGRhdGVfZGlzcGxheShkYXRhX3QgKmRhdGEsIGVudW0KPiBkc2NfdGVz
-dF90eXBlIHRlc3RfdHlwZSkKPiDCoH0KPiDCoAo+IMKgc3RhdGljIHZvaWQgdGVzdF9kc2MoZGF0
-YV90ICpkYXRhLCBlbnVtIGRzY190ZXN0X3R5cGUgdGVzdF90eXBlLCBpbnQKPiBicGMsCj4gLcKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIHVuc2lnbmVkIGludCBwbGFuZV9m
-b3JtYXQpCj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIHVuc2lnbmVk
-IGludCBwbGFuZV9mb3JtYXQsIGVudW0KPiBkc2Nfb3V0cHV0X2Zvcm1hdCBvdXRwdXRfZm9ybWF0
-KQo+IMKgewo+IMKgwqDCoMKgwqDCoMKgwqBpZ3RfZGlzcGxheV90ICpkaXNwbGF5ID0gJmRhdGEt
-PmRpc3BsYXk7Cj4gwqDCoMKgwqDCoMKgwqDCoGlndF9vdXRwdXRfdCAqb3V0cHV0Owo+IEBAIC0x
-NzYsNiArMjE4LDcgQEAgc3RhdGljIHZvaWQgdGVzdF9kc2MoZGF0YV90ICpkYXRhLCBlbnVtCj4g
-ZHNjX3Rlc3RfdHlwZSB0ZXN0X3R5cGUsIGludCBicGMsCj4gwqDCoMKgwqDCoMKgwqDCoGVudW0g
-cGlwZSBwaXBlOwo+IMKgCj4gwqDCoMKgwqDCoMKgwqDCoGZvcl9lYWNoX3BpcGVfd2l0aF92YWxp
-ZF9vdXRwdXQoZGlzcGxheSwgcGlwZSwgb3V0cHV0KSB7Cj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoGRhdGEtPm91dHB1dF9mb3JtYXQgPSBvdXRwdXRfZm9ybWF0Owo+IMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgZGF0YS0+cGxhbmVfZm9ybWF0ID0gcGxhbmVfZm9ybWF0
-Owo+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgZGF0YS0+aW5wdXRfYnBjID0gYnBj
-Owo+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgZGF0YS0+b3V0cHV0ID0gb3V0cHV0
-Owo+IEBAIC0xODQsNiArMjI3LDEwIEBAIHN0YXRpYyB2b2lkIHRlc3RfZHNjKGRhdGFfdCAqZGF0
-YSwgZW51bQo+IGRzY190ZXN0X3R5cGUgdGVzdF90eXBlLCBpbnQgYnBjLAo+IMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgaWYgKCFjaGVja19kc2Nfb25fY29ubmVjdG9yKGRhdGEtPmRy
-bV9mZCwgZGF0YS0KPiA+b3V0cHV0KSkKPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqBjb250aW51ZTsKPiDCoAo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqBpZiAoIWlzX2RzY19vdXRwdXRfZm9ybWF0X3N1cHBvcnRlZChkYXRhLT5kcm1fZmQs
-Cj4gZGF0YS0+ZGlzcF92ZXIsCj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqAgZGF0YS0+b3V0cHV0LAo+IGRhdGEtPm91dHB1dF9mb3JtYXQpKQo+ICvCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgY29udGludWU7Cj4gKwo+IMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgaWYgKCFjaGVja19nZW4xMV9kcF9jb25zdHJh
-aW50KGRhdGEtPmRybV9mZCwgZGF0YS0KPiA+b3V0cHV0LCBkYXRhLT5waXBlKSkKPiDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBjb250aW51ZTsKPiDCoAo+
-IEBAIC0xOTUsNiArMjQyLDkgQEAgc3RhdGljIHZvaWQgdGVzdF9kc2MoZGF0YV90ICpkYXRhLCBl
-bnVtCj4gZHNjX3Rlc3RfdHlwZSB0ZXN0X3R5cGUsIGludCBicGMsCj4gwqAKPiDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoGlmICh0ZXN0X3R5cGUgPT0gVEVTVF9EU0NfQlBDKQo+IMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoHNucHJpbnRmKG5h
-bWUsIHNpemVvZihuYW1lKSwgIi0lZGJwYy0lcyIsCj4gZGF0YS0+aW5wdXRfYnBjLCBpZ3RfZm9y
-bWF0X3N0cihkYXRhLT5wbGFuZV9mb3JtYXQpKTsKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgZWxzZSBpZiAodGVzdF90eXBlID09IFRFU1RfRFNDX09VVFBVVF9GT1JNQVQpCj4gK8Kg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBzbnByaW50ZihuYW1l
-LCBzaXplb2YobmFtZSksICItJXMtJXMiLAo+IGttc3Rlc3RfZHNjX291dHB1dF9mb3JtYXRfc3Ry
-KGRhdGEtPm91dHB1dF9mb3JtYXQpLAo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoAo+IGlndF9mb3JtYXRfc3RyKGRhdGEt
-PnBsYW5lX2Zvcm1hdCkpOwo+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgZWxzZQo+
-IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoHNucHJpbnRm
-KG5hbWUsIHNpemVvZihuYW1lKSwgIi0lcyIsCj4gaWd0X2Zvcm1hdF9zdHIoZGF0YS0+cGxhbmVf
-Zm9ybWF0KSk7Cj4gwqAKPiBAQCAtMjI2LDE0ICsyNzYsMTYgQEAgaWd0X21haW4KPiDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgICJieSBhIGNvbm5lY3RvciBieSBmb3Jj
-aW5nIERTQyBvbiBhbGwgY29ubmVjdG9ycwo+IHRoYXQgc3VwcG9ydCBpdCAiCj4gwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCAid2l0aCBkZWZhdWx0IHBhcmFtZXRlcnMi
-KTsKPiDCoMKgwqDCoMKgwqDCoMKgaWd0X3N1YnRlc3Rfd2l0aF9keW5hbWljKCJiYXNpYy1kc2Mi
-KQo+IC3CoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgdGVzdF9k
-c2MoJmRhdGEsIFRFU1RfRFNDX0JBU0lDLCAwLAo+IERSTV9GT1JNQVRfWFJHQjg4ODgpOwo+ICvC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgdGVzdF9kc2MoJmRh
-dGEsIFRFU1RfRFNDX0JBU0lDLCAwLAo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBEUk1fRk9STUFUX1hSR0I4ODg4LAo+IERT
-Q19GT1JNQVRfREVGQVVMVCk7Cj4gwqAKPiDCoMKgwqDCoMKgwqDCoMKgaWd0X2Rlc2NyaWJlKCJU
-ZXN0cyBiYXNpYyBkaXNwbGF5IHN0cmVhbSBjb21wcmVzc2lvbgo+IGZ1bmN0aW9uYWxpdHkgaWYg
-c3VwcG9ydGVkICIKPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgICJi
-eSBhIGNvbm5lY3RvciBieSBmb3JjaW5nIERTQyBvbiBhbGwgY29ubmVjdG9ycwo+IHRoYXQgc3Vw
-cG9ydCBpdCAiCj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCAid2l0
-aCBkZWZhdWx0IHBhcmFtZXRlcnMgYW5kIGNyZWF0aW5nIGZiIHdpdGgKPiBkaWZmIGZvcm1hdHMi
-KTsKPiDCoMKgwqDCoMKgwqDCoMKgaWd0X3N1YnRlc3Rfd2l0aF9keW5hbWljKCJkc2Mtd2l0aC1m
-b3JtYXRzIikgewo+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgZm9yIChpbnQgayA9
-IDA7IGsgPCBBUlJBWV9TSVpFKGZvcm1hdF9saXN0KTsgaysrKQo+IC3CoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgdGVzdF9kc2MoJmRhdGEsIFRFU1RfRFNDX0JB
-U0lDLCAwLAo+IGZvcm1hdF9saXN0W2tdKTsKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoHRlc3RfZHNjKCZkYXRhLCBURVNUX0RTQ19CQVNJQywgMCwKPiAr
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqAgZm9ybWF0X2xpc3Rba10sIERTQ19GT1JNQVRfREVGQVVMVCk7Cj4gwqDCoMKgwqDCoMKg
-wqDCoH0KPiDCoAo+IMKgwqDCoMKgwqDCoMKgwqBpZ3RfZGVzY3JpYmUoIlRlc3RzIGJhc2ljIGRp
-c3BsYXkgc3RyZWFtIGNvbXByZXNzaW9uCj4gZnVuY3Rpb25hbGl0eSBpZiBzdXBwb3J0ZWQgIgo+
-IEBAIC0yNDEsNyArMjkzLDggQEAgaWd0X21haW4KPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgICJ3aXRoIGNlcnRhaW4gaW5wdXQgQlBDIGZvciB0aGUgY29ubmVjdG9y
-Iik7Cj4gwqDCoMKgwqDCoMKgwqDCoGlndF9zdWJ0ZXN0X3dpdGhfZHluYW1pYygiZHNjLXdpdGgt
-YnBjIikgewo+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgZm9yIChpbnQgaiA9IDA7
-IGogPCBBUlJBWV9TSVpFKGJwY19saXN0KTsgaisrKQo+IC3CoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgdGVzdF9kc2MoJmRhdGEsIFRFU1RfRFNDX0JQQywgYnBj
-X2xpc3Rbal0sCj4gRFJNX0ZPUk1BVF9YUkdCODg4OCk7Cj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqB0ZXN0X2RzYygmZGF0YSwgVEVTVF9EU0NfQlBDLCBi
-cGNfbGlzdFtqXSwKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqAgRFJNX0ZPUk1BVF9YUkdCODg4OCwKPiBEU0NfRk9STUFUX0RF
-RkFVTFQpOwo+IMKgwqDCoMKgwqDCoMKgwqB9Cj4gwqAKPiDCoMKgwqDCoMKgwqDCoMKgaWd0X2Rl
-c2NyaWJlKCJUZXN0cyBiYXNpYyBkaXNwbGF5IHN0cmVhbSBjb21wcmVzc2lvbgo+IGZ1bmN0aW9u
-YWxpdHkgaWYgc3VwcG9ydGVkICIKPiBAQCAtMjUwLDExICszMDMsMjEgQEAgaWd0X21haW4KPiDC
-oMKgwqDCoMKgwqDCoMKgaWd0X3N1YnRlc3Rfd2l0aF9keW5hbWljKCJkc2Mtd2l0aC1icGMtZm9y
-bWF0cyIpIHsKPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGZvciAoaW50IGogPSAw
-OyBqIDwgQVJSQVlfU0laRShicGNfbGlzdCk7IGorKykgewo+IMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGZvciAoaW50IGsgPSAwOyBrIDwgQVJSQVlfU0la
-RShmb3JtYXRfbGlzdCk7Cj4gaysrKSB7Cj4gLcKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgdGVzdF9kc2MoJmRhdGEsIFRFU1RfRFND
-X0JQQywKPiBicGNfbGlzdFtqXSwgZm9ybWF0X2xpc3Rba10pOwo+ICvCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoHRlc3RfZHNjKCZk
-YXRhLCBURVNUX0RTQ19CUEMsCj4gYnBjX2xpc3Rbal0sCj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgZm9ybWF0X2xpc3Rba10s
-IERTQ19GT1JNQVRfREVGQVVMVCk7Cj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgfQo+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgfQo+IMKg
-wqDCoMKgwqDCoMKgwqB9Cj4gwqAKPiArwqDCoMKgwqDCoMKgwqBpZ3RfZGVzY3JpYmUoIlRlc3Rz
-IGJhc2ljIGRpc3BsYXkgc3RyZWFtIGNvbXByZXNzaW9uCj4gZnVuY3Rpb25hbGl0eSBpZiBzdXBw
-b3J0ZWQgIgo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCAiYnkgYSBj
-b25uZWN0b3IgYnkgZm9yY2luZyBEU0MgYW5kIG91dHB1dCBmb3JtYXQKPiBvbiBhbGwgY29ubmVj
-dG9ycyAiCj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgICJ0aGF0IHN1
-cHBvcnQgaXQiKTsKPiArwqDCoMKgwqDCoMKgwqBpZ3Rfc3VidGVzdF93aXRoX2R5bmFtaWMoImRz
-Yy13aXRoLW91dHB1dC1mb3JtYXRzIikgewo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqBmb3IgKGludCBrID0gMDsgayA8IEFSUkFZX1NJWkUob3V0cHV0X2Zvcm1hdF9saXN0KTsKPiBr
-KyspCj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqB0ZXN0
-X2RzYygmZGF0YSwgVEVTVF9EU0NfT1VUUFVUX0ZPUk1BVCwgMCwKPiBEUk1fRk9STUFUX1hSR0I4
-ODg4LAo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoCBvdXRwdXRfZm9ybWF0X2xpc3Rba10pOwo+ICvCoMKgwqDCoMKgwqDCoH0K
-PiArCj4gwqDCoMKgwqDCoMKgwqDCoGlndF9maXh0dXJlIHsKPiDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoGlndF9kaXNwbGF5X2ZpbmkoJmRhdGEuZGlzcGxheSk7Cj4gwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBjbG9zZShkYXRhLmRybV9mZCk7Cj4gZGlmZiAtLWdpdCBh
-L3Rlc3RzL2k5MTUva21zX2RzY19oZWxwZXIuYwo+IGIvdGVzdHMvaTkxNS9rbXNfZHNjX2hlbHBl
-ci5jCj4gaW5kZXggZTJjMjc4YzdhLi5jNzBiN2FhZTggMTAwNjQ0Cj4gLS0tIGEvdGVzdHMvaTkx
-NS9rbXNfZHNjX2hlbHBlci5jCj4gKysrIGIvdGVzdHMvaTkxNS9rbXNfZHNjX2hlbHBlci5jCj4g
-QEAgLTk3LDMgKzk3LDM5IEBAIGJvb2wgY2hlY2tfZ2VuMTFfYnBjX2NvbnN0cmFpbnQoaW50IGRy
-bWZkLAo+IGlndF9vdXRwdXRfdCAqb3V0cHV0LCBpbnQgaW5wdXRfYnBjKQo+IMKgCj4gwqDCoMKg
-wqDCoMKgwqDCoHJldHVybiB0cnVlOwo+IMKgfQo+ICsKPiArdm9pZCBmb3JjZV9kc2Nfb3V0cHV0
-X2Zvcm1hdChpbnQgZHJtZmQsIGlndF9vdXRwdXRfdCAqb3V0cHV0LAo+ICvCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgZW51bSBkc2Nfb3V0cHV0
-X2Zvcm1hdCBvdXRwdXRfZm9ybWF0KQo+ICt7Cj4gK8KgwqDCoMKgwqDCoMKgaW50IHJldDsKPiAr
-Cj4gK8KgwqDCoMKgwqDCoMKgaWd0X2RlYnVnKCJGb3JjaW5nIERTQyAlcyBvdXRwdXQgZm9ybWF0
-IG9uICVzXG4iLAo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBrbXN0ZXN0X2Rz
-Y19vdXRwdXRfZm9ybWF0X3N0cihvdXRwdXRfZm9ybWF0KSwKPiBvdXRwdXQtPm5hbWUpOwo+ICvC
-oMKgwqDCoMKgwqDCoHJldCA9IGlndF9mb3JjZV9kc2Nfb3V0cHV0X2Zvcm1hdChkcm1mZCwgb3V0
-cHV0LT5uYW1lLAo+IG91dHB1dF9mb3JtYXQpOwo+ICvCoMKgwqDCoMKgwqDCoGlndF9hc3NlcnRf
-ZihyZXQgPiAwLCAiZm9yY2luZyBkc2Mgb3V0cHV0IGZvcm1hdAo+IGRlYnVnZnNfd3JpdGUgZmFp
-bGVkXG4iKTsKCklzbid0IGl0ICFyZXQgb3IgcmV0ID09IDAgYXMgeW91IGRpZCBlYXJsaWVyPwoK
-PiArfQo+ICsKPiArLyogWUNiQ3I0MjAgRFNDIGlzIHN1cHBvcnRlZCBvbiBkaXNwbGF5IHZlcnNp
-b24gMTQrIHdpdGggRFNDMS4yYSAqLwo+ICtzdGF0aWMgYm9vbCBpc19kc2Nfb3V0cHV0X2Zvcm1h
-dF9zdXBwb3J0ZWRfYnlfcGxhdGZvcm0oaW50IGRpc3BfdmVyLAo+IGVudW0gZHNjX291dHB1dF9m
-b3JtYXQgb3V0cHV0X2Zvcm1hdCkKPiArewo+ICvCoMKgwqDCoMKgwqDCoGlmIChkaXNwX3ZlciA8
-IDE0ICYmIG91dHB1dF9mb3JtYXQgPT0gRFNDX0ZPUk1BVF9ZQ0JDUjQyMCkgewo+ICvCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBpZ3RfZGVidWcoIk91cHV0IGZvcm1hdCBEU0MgWUNCQ1I0
-MjAgc3VwcG9ydGVkIG9uCj4gRDE0KyBwbGF0Zm9ybXNcbiIpOwo+ICvCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqByZXR1cm4gZmFsc2U7Cj4gK8KgwqDCoMKgwqDCoMKgfQo+ICsKPiArwqDC
-oMKgwqDCoMKgwqByZXR1cm4gdHJ1ZTsKPiArfQo+ICsKPiArYm9vbCBpc19kc2Nfb3V0cHV0X2Zv
-cm1hdF9zdXBwb3J0ZWQoaW50IGRpc3BfdmVyLCBpbnQgZHJtZmQsCj4gaWd0X291dHB1dF90ICpv
-dXRwdXQsCj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgIGVudW0gZHNjX291dHB1dF9mb3JtYXQKPiBvdXRwdXRfZm9y
-bWF0KQo+ICt7Cj4gK8KgwqDCoMKgwqDCoMKgaWYgKCEoaWd0X2lzX2RzY19vdXRwdXRfZm9ybWF0
-X3N1cHBvcnRlZF9ieV9zaW5rKGRybWZkLAo+IG91dHB1dC0+bmFtZSwgb3V0cHV0X2Zvcm1hdCkp
-ICYmCj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqAgKGlzX2RzY19vdXRwdXRfZm9ybWF0X3N1cHBv
-cnRlZF9ieV9wbGF0Zm9ybShkaXNwX3ZlciwKPiBvdXRwdXRfZm9ybWF0KSkpIHsKPiArwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIGlndF9kZWJ1ZygiRFNDICVzIG91dHB1dCBm
-b3JtYXQgbm90IHN1cHBvcnRlZCBvbgo+IGNvbm5lY3RvciAlc1xuIiwKPiArwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoAo+IGttc3Rlc3Rf
-ZHNjX291dHB1dF9mb3JtYXRfc3RyKG91dHB1dF9mb3JtYXQpLAo+ICvCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIG91dHB1dC0+bmFtZSk7
-Cj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqByZXR1cm4g
-ZmFsc2U7Cj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoH0KPiArCj4gK8KgwqDCoMKg
-wqDCoMKgcmV0dXJuIHRydWU7Cj4gK30KPiBkaWZmIC0tZ2l0IGEvdGVzdHMvaTkxNS9rbXNfZHNj
-X2hlbHBlci5oCj4gYi90ZXN0cy9pOTE1L2ttc19kc2NfaGVscGVyLmgKPiBpbmRleCBmZTQ3OWRh
-YzQuLjI0NDI5M2NkMCAxMDA2NDQKPiAtLS0gYS90ZXN0cy9pOTE1L2ttc19kc2NfaGVscGVyLmgK
-PiArKysgYi90ZXN0cy9pOTE1L2ttc19kc2NfaGVscGVyLmgKPiBAQCAtMzEsNSArMzEsOSBAQCB2
-b2lkIGttc19kc2NfZXhpdF9oYW5kbGVyKGludCBzaWcpOwo+IMKgYm9vbCBjaGVja19kc2Nfb25f
-Y29ubmVjdG9yKGludCBkcm1mZCwgaWd0X291dHB1dF90ICpvdXRwdXQpOwo+IMKgYm9vbCBjaGVj
-a19nZW4xMV9kcF9jb25zdHJhaW50KGludCBkcm1mZCwgaWd0X291dHB1dF90ICpvdXRwdXQsIGVu
-dW0KPiBwaXBlIHBpcGUpOwo+IMKgYm9vbCBjaGVja19nZW4xMV9icGNfY29uc3RyYWludChpbnQg
-ZHJtZmQsIGlndF9vdXRwdXRfdCAqb3V0cHV0LCBpbnQKPiBpbnB1dF9icGMpOwo+ICt2b2lkIGZv
-cmNlX2RzY19vdXRwdXRfZm9ybWF0KGludCBkcm1mZCwgaWd0X291dHB1dF90ICpvdXRwdXQsCj4g
-K8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBl
-bnVtIGRzY19vdXRwdXRfZm9ybWF0IG91dHB1dF9mb3JtYXQpOwo+ICtib29sIGlzX2RzY19vdXRw
-dXRfZm9ybWF0X3N1cHBvcnRlZChpbnQgZGlzcF92ZXIsIGludCBkcm1mZCwKPiBpZ3Rfb3V0cHV0
-X3QgKm91dHB1dCwKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgZW51bSBkc2Nfb3V0cHV0X2Zvcm1hdAo+IG91dHB1
-dF9mb3JtYXQpOwo+IMKgCj4gwqAjZW5kaWYKCg==
+
+
+On 24-Jan-23 4:23 PM, Hogander, Jouni wrote:
+> On Tue, 2023-01-24 at 12:21 +0530, Swati Sharma wrote:
+>> Existing i-g-t is extended to enable validation for VDSC output
+>> formats. Output
+>> format is selected as per driver policy. For ex: If a mode is
+>> supported
+>> in both RGB and YCbCr420 output formats by the sink, i915 driver
+>> policy is
+>> to try RGB first and fall back to YCbCr420, if mode cannot be shown
+>> using RGB.
+>>
+>> To test DSC output format, a debugfs entry is created to force this
+>> output format.
+>> However, before setting debugfs entry, we have checked capability
+>> i.e. output
+>> format is supported by both platform and sink.
+>>
+>> Also, each mode doesn't support all output formats; so if both sink
+>> and platform
+>> support an output format, we will do a try commit with each mode till
+>> we get a
+>> successful commit.
+>>
+>> v2: -used is_dsc_ycbcr420_supported() (Ankit)
+>>      -handled try-commit correctly (Ankit)
+>>      -instead of flag use enum for output formats (Ankit)
+>> v3: -instead of global count, pass count as para (Ankit)
+>>      -print output format (Ankit)
+>> v4: -optimized while loop (Jouni)
+>>      -used only try commit (Jouni)
+>>      -fixed get_next_mode() (Jouni)
+>> v5: -made generic test to validate all output formats (Jani N)
+>>
+>> Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
+>> ---
+>>   lib/igt_kms.c               |  20 +++++++
+>>   lib/igt_kms.h               |   1 +
+>>   tests/i915/kms_dsc.c        | 103 +++++++++++++++++++++++++++++-----
+>> --
+>>   tests/i915/kms_dsc_helper.c |  36 +++++++++++++
+>>   tests/i915/kms_dsc_helper.h |   4 ++
+>>   5 files changed, 144 insertions(+), 20 deletions(-)
+>>
+>> diff --git a/lib/igt_kms.c b/lib/igt_kms.c
+>> index 31e6dfda0..bbdcf97f1 100644
+>> --- a/lib/igt_kms.c
+>> +++ b/lib/igt_kms.c
+>> @@ -966,6 +966,26 @@ const char *kmstest_scaling_filter_str(int
+>> filter)
+>>          return find_type_name(scaling_filter_names, filter);
+>>   }
+>>   
+>> +static const struct type_name dsc_output_format_names[] = {
+>> +       { DSC_FORMAT_DEFAULT, "DEFAULT" },
+>> +       { DSC_FORMAT_RGB, "RGB" },
+>> +       { DSC_FORMAT_YCBCR420, "YCBCR420" },
+>> +       { DSC_FORMAT_YCBCR422, "YCBCR422" },
+>> +       { DSC_FORMAT_YCBCR444, "YCBCR444" },
+>> +       {}
+>> +};
+>> +
+>> +/**
+>> + * kmstest_dsc_output_format_str:
+>> + * @output_format: DSC_FORMAT_* output format value
+>> + *
+>> + * Returns: A string representing the output format @output format.
+>> + */
+>> +const char *kmstest_dsc_output_format_str(int output_format)
+>> +{
+>> +       return find_type_name(dsc_output_format_names,
+>> output_format);
+>> +}
+>> +
+>>   static const struct type_name connector_type_names[] = {
+>>          { DRM_MODE_CONNECTOR_Unknown, "Unknown" },
+>>          { DRM_MODE_CONNECTOR_VGA, "VGA" },
+>> diff --git a/lib/igt_kms.h b/lib/igt_kms.h
+>> index d677d39f9..5b48409f4 100644
+>> --- a/lib/igt_kms.h
+>> +++ b/lib/igt_kms.h
+>> @@ -118,6 +118,7 @@ const char *kmstest_encoder_type_str(int type);
+>>   const char *kmstest_connector_status_str(int status);
+>>   const char *kmstest_connector_type_str(int type);
+>>   const char *kmstest_scaling_filter_str(int filter);
+>> +const char *kmstest_dsc_output_format_str(int output_format);
+>>   
+>>   void kmstest_dump_mode(drmModeModeInfo *mode);
+>>   #define MAX_HDISPLAY_PER_PIPE 5120
+>> diff --git a/tests/i915/kms_dsc.c b/tests/i915/kms_dsc.c
+>> index 62df87636..99aeb7ddc 100644
+>> --- a/tests/i915/kms_dsc.c
+>> +++ b/tests/i915/kms_dsc.c
+>> @@ -36,7 +36,8 @@ IGT_TEST_DESCRIPTION("Test to validate display
+>> stream compression");
+>>   
+>>   enum dsc_test_type {
+>>          TEST_DSC_BASIC,
+>> -       TEST_DSC_BPC
+>> +       TEST_DSC_BPC,
+>> +       TEST_DSC_OUTPUT_FORMAT
+>>   };
+>>   
+>>   typedef struct {
+>> @@ -44,6 +45,7 @@ typedef struct {
+>>          uint32_t devid;
+>>          igt_display_t display;
+>>          struct igt_fb fb_test_pattern;
+>> +       enum dsc_output_format output_format;
+>>          unsigned int plane_format;
+>>          igt_output_t *output;
+>>          int input_bpc;
+>> @@ -52,6 +54,7 @@ typedef struct {
+>>          enum pipe pipe;
+>>   } data_t;
+>>   
+>> +int output_format_list[] = {DSC_FORMAT_DEFAULT, DSC_FORMAT_RGB,
+>> DSC_FORMAT_YCBCR420, DSC_FORMAT_YCBCR444};
+> 
+> static
+> 
+>>   int format_list[] =  {DRM_FORMAT_XYUV8888, DRM_FORMAT_XRGB2101010,
+>> DRM_FORMAT_XRGB16161616F, DRM_FORMAT_YUYV};
+>>   uint32_t bpc_list[] = {12, 10, 8};
+>>   
+>> @@ -72,6 +75,17 @@ static drmModeModeInfo
+>> *get_highres_mode(igt_output_t *output)
+>>          return highest_mode;
+>>   }
+>>   
+>> +static drmModeModeInfo *get_next_mode(igt_output_t *output, int
+>> index)
+>> +{
+>> +       drmModeConnector *connector = output->config.connector;
+>> +       drmModeModeInfo *next_mode = NULL;
+>> +
+>> +       if (index < connector->count_modes)
+>> +               next_mode = &connector->modes[index];
+>> +
+>> +       return next_mode;
+>> +}
+>> +
+>>   static bool check_big_joiner_pipe_constraint(data_t *data)
+>>   {
+>>          igt_output_t *output = data->output;
+>> @@ -102,7 +116,9 @@ static void test_cleanup(data_t *data)
+>>   /* re-probe connectors and do a modeset with DSC */
+>>   static void update_display(data_t *data, enum dsc_test_type
+>> test_type)
+>>   {
+>> +       int ret;
+>>          bool enabled;
+>> +       int index = 0;
+>>          igt_plane_t *primary;
+>>          drmModeModeInfo *mode;
+>>          igt_output_t *output = data->output;
+>> @@ -121,26 +137,47 @@ static void update_display(data_t *data, enum
+>> dsc_test_type test_type)
+>>                  force_dsc_enable_bpc(data->drm_fd, data->output,
+>> data->input_bpc);
+>>          }
+>>   
+>> -       igt_output_set_pipe(output, data->pipe);
+>> -
+>> -       mode = get_highres_mode(output);
+>> -       igt_require(mode != NULL);
+>> -       igt_output_override_mode(output, mode);
+>> +       if (test_type == TEST_DSC_OUTPUT_FORMAT) {
+>> +               igt_debug("Trying to set DSC %s output format\n",
+>> +                          kmstest_dsc_output_format_str(data-
+>>> output_format));
+>> +               force_dsc_output_format(data->drm_fd, data->output,
+>> data->output_format);
+>> +       }
+>>   
+>> +       igt_output_set_pipe(output, data->pipe);
+>>          primary = igt_output_get_plane_type(output,
+>> DRM_PLANE_TYPE_PRIMARY);
+>>   
+>>          igt_skip_on(!igt_plane_has_format_mod(primary, data-
+>>> plane_format,
+>>                      DRM_FORMAT_MOD_LINEAR));
+>>   
+>> -       igt_create_pattern_fb(data->drm_fd,
+>> -                             mode->hdisplay,
+>> -                             mode->vdisplay,
+>> -                             data->plane_format,
+>> -                             DRM_FORMAT_MOD_LINEAR,
+>> -                             &data->fb_test_pattern);
+>> +       do {
+>> +               if (data->output_format == DSC_FORMAT_DEFAULT) {
+>> +                       mode = get_highres_mode(output);
+>> +               } else {
+>> +                       mode = get_next_mode(output, index);
+>> +                       index++;
+>> +               }
+>>   
+>> -       igt_plane_set_fb(primary, &data->fb_test_pattern);
+>> -       igt_display_commit(display);
+>> +               igt_require(mode != NULL);
+>> +               igt_output_override_mode(output, mode);
+>> +
+>> +               igt_create_pattern_fb(data->drm_fd,
+>> +                                     mode->hdisplay,
+>> +                                     mode->vdisplay,
+>> +                                     data->plane_format,
+>> +                                     DRM_FORMAT_MOD_LINEAR,
+>> +                                     &data->fb_test_pattern);
+>> +               igt_plane_set_fb(primary, &data->fb_test_pattern);
+>> +
+>> +               ret = igt_display_try_commit_atomic(display,
+>> DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
+>> +               if (data->output_format != DSC_FORMAT_DEFAULT && ret
+>> != 0) {
+>> +                       igt_remove_fb(data->drm_fd, &data-
+>>> fb_test_pattern);
+>> +                               continue;
+>> +               } else {
+>> +                               break;
+>> +               }
+>> +       } while(1);
+>> +
+>> +       igt_assert_eq(ret, 0);
+>>   
+>>          /* until we have CRC check support, manually check if RGB
+>> test
+>>           * pattern has no corruption.
+>> @@ -155,10 +192,15 @@ static void update_display(data_t *data, enum
+>> dsc_test_type test_type)
+>>                                  enabled ? "ON" : "OFF");
+>>   
+>>          restore_force_dsc_en();
+>> -       igt_debug("Reset compression BPC\n");
+>> +
+>> +       igt_debug("Reset input BPC\n");
+>>          data->input_bpc = 0;
+>>          force_dsc_enable_bpc(data->drm_fd, data->output, data-
+>>> input_bpc);
+>>   
+>> +       igt_debug("Reset DSC output format\n");
+>> +       data->output_format = DSC_FORMAT_DEFAULT;
+>> +       force_dsc_output_format(data->drm_fd, data->output, data-
+>>> output_format);
+>> +
+>>          igt_assert_f(enabled,
+>>                       "Default DSC enable failed on connector: %s
+>> pipe: %s\n",
+>>                       output->name,
+>> @@ -168,7 +210,7 @@ static void update_display(data_t *data, enum
+>> dsc_test_type test_type)
+>>   }
+>>   
+>>   static void test_dsc(data_t *data, enum dsc_test_type test_type, int
+>> bpc,
+>> -                    unsigned int plane_format)
+>> +                    unsigned int plane_format, enum
+>> dsc_output_format output_format)
+>>   {
+>>          igt_display_t *display = &data->display;
+>>          igt_output_t *output;
+>> @@ -176,6 +218,7 @@ static void test_dsc(data_t *data, enum
+>> dsc_test_type test_type, int bpc,
+>>          enum pipe pipe;
+>>   
+>>          for_each_pipe_with_valid_output(display, pipe, output) {
+>> +               data->output_format = output_format;
+>>                  data->plane_format = plane_format;
+>>                  data->input_bpc = bpc;
+>>                  data->output = output;
+>> @@ -184,6 +227,10 @@ static void test_dsc(data_t *data, enum
+>> dsc_test_type test_type, int bpc,
+>>                  if (!check_dsc_on_connector(data->drm_fd, data-
+>>> output))
+>>                          continue;
+>>   
+>> +               if (!is_dsc_output_format_supported(data->drm_fd,
+>> data->disp_ver,
+>> +                                                   data->output,
+>> data->output_format))
+>> +                       continue;
+>> +
+>>                  if (!check_gen11_dp_constraint(data->drm_fd, data-
+>>> output, data->pipe))
+>>                          continue;
+>>   
+>> @@ -195,6 +242,9 @@ static void test_dsc(data_t *data, enum
+>> dsc_test_type test_type, int bpc,
+>>   
+>>                  if (test_type == TEST_DSC_BPC)
+>>                          snprintf(name, sizeof(name), "-%dbpc-%s",
+>> data->input_bpc, igt_format_str(data->plane_format));
+>> +               else if (test_type == TEST_DSC_OUTPUT_FORMAT)
+>> +                       snprintf(name, sizeof(name), "-%s-%s",
+>> kmstest_dsc_output_format_str(data->output_format),
+>> +
+>> igt_format_str(data->plane_format));
+>>                  else
+>>                          snprintf(name, sizeof(name), "-%s",
+>> igt_format_str(data->plane_format));
+>>   
+>> @@ -226,14 +276,16 @@ igt_main
+>>                       "by a connector by forcing DSC on all connectors
+>> that support it "
+>>                       "with default parameters");
+>>          igt_subtest_with_dynamic("basic-dsc")
+>> -                       test_dsc(&data, TEST_DSC_BASIC, 0,
+>> DRM_FORMAT_XRGB8888);
+>> +                       test_dsc(&data, TEST_DSC_BASIC, 0,
+>> +                                DRM_FORMAT_XRGB8888,
+>> DSC_FORMAT_DEFAULT);
+>>   
+>>          igt_describe("Tests basic display stream compression
+>> functionality if supported "
+>>                       "by a connector by forcing DSC on all connectors
+>> that support it "
+>>                       "with default parameters and creating fb with
+>> diff formats");
+>>          igt_subtest_with_dynamic("dsc-with-formats") {
+>>                  for (int k = 0; k < ARRAY_SIZE(format_list); k++)
+>> -                       test_dsc(&data, TEST_DSC_BASIC, 0,
+>> format_list[k]);
+>> +                       test_dsc(&data, TEST_DSC_BASIC, 0,
+>> +                                format_list[k], DSC_FORMAT_DEFAULT);
+>>          }
+>>   
+>>          igt_describe("Tests basic display stream compression
+>> functionality if supported "
+>> @@ -241,7 +293,8 @@ igt_main
+>>                       "with certain input BPC for the connector");
+>>          igt_subtest_with_dynamic("dsc-with-bpc") {
+>>                  for (int j = 0; j < ARRAY_SIZE(bpc_list); j++)
+>> -                       test_dsc(&data, TEST_DSC_BPC, bpc_list[j],
+>> DRM_FORMAT_XRGB8888);
+>> +                       test_dsc(&data, TEST_DSC_BPC, bpc_list[j],
+>> +                                DRM_FORMAT_XRGB8888,
+>> DSC_FORMAT_DEFAULT);
+>>          }
+>>   
+>>          igt_describe("Tests basic display stream compression
+>> functionality if supported "
+>> @@ -250,11 +303,21 @@ igt_main
+>>          igt_subtest_with_dynamic("dsc-with-bpc-formats") {
+>>                  for (int j = 0; j < ARRAY_SIZE(bpc_list); j++) {
+>>                          for (int k = 0; k < ARRAY_SIZE(format_list);
+>> k++) {
+>> -                               test_dsc(&data, TEST_DSC_BPC,
+>> bpc_list[j], format_list[k]);
+>> +                               test_dsc(&data, TEST_DSC_BPC,
+>> bpc_list[j],
+>> +                               format_list[k], DSC_FORMAT_DEFAULT);
+>>                          }
+>>                  }
+>>          }
+>>   
+>> +       igt_describe("Tests basic display stream compression
+>> functionality if supported "
+>> +                    "by a connector by forcing DSC and output format
+>> on all connectors "
+>> +                    "that support it");
+>> +       igt_subtest_with_dynamic("dsc-with-output-formats") {
+>> +               for (int k = 0; k < ARRAY_SIZE(output_format_list);
+>> k++)
+>> +                       test_dsc(&data, TEST_DSC_OUTPUT_FORMAT, 0,
+>> DRM_FORMAT_XRGB8888,
+>> +                                output_format_list[k]);
+>> +       }
+>> +
+>>          igt_fixture {
+>>                  igt_display_fini(&data.display);
+>>                  close(data.drm_fd);
+>> diff --git a/tests/i915/kms_dsc_helper.c
+>> b/tests/i915/kms_dsc_helper.c
+>> index e2c278c7a..c70b7aae8 100644
+>> --- a/tests/i915/kms_dsc_helper.c
+>> +++ b/tests/i915/kms_dsc_helper.c
+>> @@ -97,3 +97,39 @@ bool check_gen11_bpc_constraint(int drmfd,
+>> igt_output_t *output, int input_bpc)
+>>   
+>>          return true;
+>>   }
+>> +
+>> +void force_dsc_output_format(int drmfd, igt_output_t *output,
+>> +                            enum dsc_output_format output_format)
+>> +{
+>> +       int ret;
+>> +
+>> +       igt_debug("Forcing DSC %s output format on %s\n",
+>> +                 kmstest_dsc_output_format_str(output_format),
+>> output->name);
+>> +       ret = igt_force_dsc_output_format(drmfd, output->name,
+>> output_format);
+>> +       igt_assert_f(ret > 0, "forcing dsc output format
+>> debugfs_write failed\n");
+> 
+> Isn't it !ret or ret == 0 as you did earlier?
+
+Yes, it should be changed. Missed by mistake.
+> 
+>> +}
+>> +
+>> +/* YCbCr420 DSC is supported on display version 14+ with DSC1.2a */
+>> +static bool is_dsc_output_format_supported_by_platform(int disp_ver,
+>> enum dsc_output_format output_format)
+>> +{
+>> +       if (disp_ver < 14 && output_format == DSC_FORMAT_YCBCR420) {
+>> +               igt_debug("Ouput format DSC YCBCR420 supported on
+>> D14+ platforms\n");
+>> +               return false;
+>> +       }
+>> +
+>> +       return true;
+>> +}
+>> +
+>> +bool is_dsc_output_format_supported(int disp_ver, int drmfd,
+>> igt_output_t *output,
+>> +                                   enum dsc_output_format
+>> output_format)
+>> +{
+>> +       if (!(igt_is_dsc_output_format_supported_by_sink(drmfd,
+>> output->name, output_format)) &&
+>> +            (is_dsc_output_format_supported_by_platform(disp_ver,
+>> output_format))) {
+>> +                   igt_debug("DSC %s output format not supported on
+>> connector %s\n",
+>> +
+>> kmstest_dsc_output_format_str(output_format),
+>> +                              output->name);
+>> +                       return false;
+>> +               }
+>> +
+>> +       return true;
+>> +}
+>> diff --git a/tests/i915/kms_dsc_helper.h
+>> b/tests/i915/kms_dsc_helper.h
+>> index fe479dac4..244293cd0 100644
+>> --- a/tests/i915/kms_dsc_helper.h
+>> +++ b/tests/i915/kms_dsc_helper.h
+>> @@ -31,5 +31,9 @@ void kms_dsc_exit_handler(int sig);
+>>   bool check_dsc_on_connector(int drmfd, igt_output_t *output);
+>>   bool check_gen11_dp_constraint(int drmfd, igt_output_t *output, enum
+>> pipe pipe);
+>>   bool check_gen11_bpc_constraint(int drmfd, igt_output_t *output, int
+>> input_bpc);
+>> +void force_dsc_output_format(int drmfd, igt_output_t *output,
+>> +                            enum dsc_output_format output_format);
+>> +bool is_dsc_output_format_supported(int disp_ver, int drmfd,
+>> igt_output_t *output,
+>> +                                   enum dsc_output_format
+>> output_format);
+>>   
+>>   #endif
+> 
+
+-- 
+~Swati Sharma
