@@ -1,15 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Content-Type: multipart/alternative;
- boundary="===============3277449487643757528=="
+ boundary="===============7644402942212778211=="
 MIME-Version: 1.0
 From: Patchwork <patchwork@emeril.freedesktop.org>
-To: =?utf-8?q?Jouni_H=C3=B6gander?= <jouni.hogander@intel.com>
-Date: Wed, 25 Jan 2023 14:25:52 -0000
-Message-ID: <167465675238.5513.14942307988450639980@emeril.freedesktop.org>
-References: <20230125090742.1599761-1-jouni.hogander@intel.com>
-In-Reply-To: <20230125090742.1599761-1-jouni.hogander@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgUHNyMiBk?=
- =?utf-8?q?sc_testcases?=
+To: "Dnyaneshwar Bhadane" <dnyaneshwar.bhadane@intel.com>
+Date: Wed, 25 Jan 2023 16:44:53 -0000
+Message-ID: <167466509375.5513.11685788388646912638@emeril.freedesktop.org>
+References: <20230112105702.19502-1-dnyaneshwar.bhadane@intel.com>
+In-Reply-To: <20230112105702.19502-1-dnyaneshwar.bhadane@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
+ =?utf-8?q?kms=5Fcursor=5Fcrc=3A_skip_pipe_on_invalid_connector_in_cursor_?=
+ =?utf-8?q?size_test_=28rev5=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,20 +24,20 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============3277449487643757528==
+--===============7644402942212778211==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 
 == Series Details ==
 
-Series: Psr2 dsc testcases
-URL   : https://patchwork.freedesktop.org/series/113308/
+Series: tests/kms_cursor_crc: skip pipe on invalid connector in cursor size test (rev5)
+URL   : https://patchwork.freedesktop.org/series/112730/
 State : success
 
 == Summary ==
 
-CI Bug Log - changes from CI_DRM_12635 -> IGTPW_8401
+CI Bug Log - changes from CI_DRM_12637 -> IGTPW_8402
 ====================================================
 
 Summary
@@ -46,38 +47,37 @@ Summary
 
   No regressions found.
 
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8401/index.html
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8402/index.html
 
-Participating hosts (36 -> 36)
+Participating hosts (38 -> 39)
 ------------------------------
 
   Additional (1): bat-atsm-1 
-  Missing    (1): fi-kbl-soraka 
 
 Known issues
 ------------
 
-  Here are the changes found in IGTPW_8401 that come from known issues:
+  Here are the changes found in IGTPW_8402 that come from known issues:
 
 ### IGT changes ###
 
-#### Issues hit ####
+#### Possible fixes ####
 
-  * igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions-varying-size:
-    - fi-bsw-n3050:       [PASS][1] -> [FAIL][2] ([i915#6298])
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12635/fi-bsw-n3050/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions-varying-size.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8401/fi-bsw-n3050/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions-varying-size.html
+  * igt@fbdev@write:
+    - fi-blb-e6850:       [SKIP][1] ([fdo#109271]) -> [PASS][2] +4 similar issues
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12637/fi-blb-e6850/igt@fbdev@write.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8402/fi-blb-e6850/igt@fbdev@write.html
 
-  * igt@kms_pipe_crc_basic@suspend-read-crc@pipe-d-hdmi-a-2:
-    - bat-dg1-6:          [PASS][3] -> [FAIL][4] ([fdo#103375]) +1 similar issue
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12635/bat-dg1-6/igt@kms_pipe_crc_basic@suspend-read-crc@pipe-d-hdmi-a-2.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8401/bat-dg1-6/igt@kms_pipe_crc_basic@suspend-read-crc@pipe-d-hdmi-a-2.html
+  * igt@i915_selftest@live@slpc:
+    - {bat-rpls-1}:       [DMESG-FAIL][3] ([i915#6367]) -> [PASS][4]
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12637/bat-rpls-1/igt@i915_selftest@live@slpc.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8402/bat-rpls-1/igt@i915_selftest@live@slpc.html
 
   
   {name}: This element is suppressed. This means it is ignored when computing
           the status of the difference (SUCCESS, WARNING, or FAILURE).
 
-  [fdo#103375]: https://bugs.freedesktop.org/show_bug.cgi?id=103375
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
   [fdo#109295]: https://bugs.freedesktop.org/show_bug.cgi?id=109295
   [i915#1072]: https://gitlab.freedesktop.org/drm/intel/issues/1072
   [i915#1836]: https://gitlab.freedesktop.org/drm/intel/issues/1836
@@ -86,42 +86,37 @@ Known issues
   [i915#4077]: https://gitlab.freedesktop.org/drm/intel/issues/4077
   [i915#4079]: https://gitlab.freedesktop.org/drm/intel/issues/4079
   [i915#4083]: https://gitlab.freedesktop.org/drm/intel/issues/4083
-  [i915#4983]: https://gitlab.freedesktop.org/drm/intel/issues/4983
-  [i915#5354]: https://gitlab.freedesktop.org/drm/intel/issues/5354
+  [i915#4137]: https://gitlab.freedesktop.org/drm/intel/issues/4137
   [i915#6077]: https://gitlab.freedesktop.org/drm/intel/issues/6077
   [i915#6078]: https://gitlab.freedesktop.org/drm/intel/issues/6078
   [i915#6093]: https://gitlab.freedesktop.org/drm/intel/issues/6093
   [i915#6094]: https://gitlab.freedesktop.org/drm/intel/issues/6094
   [i915#6166]: https://gitlab.freedesktop.org/drm/intel/issues/6166
-  [i915#6298]: https://gitlab.freedesktop.org/drm/intel/issues/6298
   [i915#6311]: https://gitlab.freedesktop.org/drm/intel/issues/6311
+  [i915#6367]: https://gitlab.freedesktop.org/drm/intel/issues/6367
   [i915#6621]: https://gitlab.freedesktop.org/drm/intel/issues/6621
   [i915#6645]: https://gitlab.freedesktop.org/drm/intel/issues/6645
+  [i915#6997]: https://gitlab.freedesktop.org/drm/intel/issues/6997
   [i915#7357]: https://gitlab.freedesktop.org/drm/intel/issues/7357
+  [i915#7852]: https://gitlab.freedesktop.org/drm/intel/issues/7852
 
 
 Build changes
 -------------
 
   * CI: CI-20190529 -> None
-  * IGT: IGT_7136 -> IGTPW_8401
+  * IGT: IGT_7136 -> IGTPW_8402
 
   CI-20190529: 20190529
-  CI_DRM_12635: 479665dac7e36fbde1a1c7aab8fd0b1dfec208ab @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_8401: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8401/index.html
+  CI_DRM_12637: df92ff7bd978b87b2a77856c0cb9a89d40ab7516 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_8402: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8402/index.html
   IGT_7136: 31b6af91747ad8c705399c9006cdb81cb1864146 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-
-Testlist changes
-----------------
-
--igt@perf_pmu@pmu-read
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8401/index.html
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8402/index.html
 
---===============3277449487643757528==
+--===============7644402942212778211==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -141,38 +136,37 @@ Content-Transfer-Encoding: 7bit
 
 <b>Patch Details</b>
 <table>
-<tr><td><b>Series:</b></td><td>Psr2 dsc testcases</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/113308/">https://patchwork.freedesktop.org/series/113308/</a></td></tr>
+<tr><td><b>Series:</b></td><td>tests/kms_cursor_crc: skip pipe on invalid connector in cursor size test (rev5)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/112730/">https://patchwork.freedesktop.org/series/112730/</a></td></tr>
 <tr><td><b>State:</b></td><td>success</td></tr>
 
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8401/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8401/index.html</a></td></tr>
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8402/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8402/index.html</a></td></tr>
 
 </table>
 
 
-    <h1>CI Bug Log - changes from CI_DRM_12635 -&gt; IGTPW_8401</h1>
+    <h1>CI Bug Log - changes from CI_DRM_12637 -&gt; IGTPW_8402</h1>
 <h2>Summary</h2>
 <p><strong>SUCCESS</strong></p>
 <p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8401/index.html</p>
-<h2>Participating hosts (36 -&gt; 36)</h2>
-<p>Additional (1): bat-atsm-1 <br />
-  Missing    (1): fi-kbl-soraka </p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8402/index.html</p>
+<h2>Participating hosts (38 -&gt; 39)</h2>
+<p>Additional (1): bat-atsm-1 </p>
 <h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_8401 that come from known issues:</p>
+<p>Here are the changes found in IGTPW_8402 that come from known issues:</p>
 <h3>IGT changes</h3>
-<h4>Issues hit</h4>
+<h4>Possible fixes</h4>
 <ul>
 <li>
-<p>igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions-varying-size:</p>
+<p>igt@fbdev@write:</p>
 <ul>
-<li>fi-bsw-n3050:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12635/fi-bsw-n3050/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions-varying-size.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8401/fi-bsw-n3050/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions-varying-size.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6298">i915#6298</a>)</li>
+<li>fi-blb-e6850:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12637/fi-blb-e6850/igt@fbdev@write.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8402/fi-blb-e6850/igt@fbdev@write.html">PASS</a> +4 similar issues</li>
 </ul>
 </li>
 <li>
-<p>igt@kms_pipe_crc_basic@suspend-read-crc@pipe-d-hdmi-a-2:</p>
+<p>igt@i915_selftest@live@slpc:</p>
 <ul>
-<li>bat-dg1-6:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12635/bat-dg1-6/igt@kms_pipe_crc_basic@suspend-read-crc@pipe-d-hdmi-a-2.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8401/bat-dg1-6/igt@kms_pipe_crc_basic@suspend-read-crc@pipe-d-hdmi-a-2.html">FAIL</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=103375">fdo#103375</a>) +1 similar issue</li>
+<li>{bat-rpls-1}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12637/bat-rpls-1/igt@i915_selftest@live@slpc.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6367">i915#6367</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8402/bat-rpls-1/igt@i915_selftest@live@slpc.html">PASS</a></li>
 </ul>
 </li>
 </ul>
@@ -181,16 +175,14 @@ Content-Transfer-Encoding: 7bit
 <h2>Build changes</h2>
 <ul>
 <li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_7136 -&gt; IGTPW_8401</li>
+<li>IGT: IGT_7136 -&gt; IGTPW_8402</li>
 </ul>
 <p>CI-20190529: 20190529<br />
-  CI_DRM_12635: 479665dac7e36fbde1a1c7aab8fd0b1dfec208ab @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_8401: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8401/index.html<br />
+  CI_DRM_12637: df92ff7bd978b87b2a77856c0cb9a89d40ab7516 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_8402: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8402/index.html<br />
   IGT_7136: 31b6af91747ad8c705399c9006cdb81cb1864146 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-<h2>Testlist changes</h2>
-<p>-igt@perf_pmu@pmu-read</p>
 
 </body>
 </html>
 
---===============3277449487643757528==--
+--===============7644402942212778211==--
