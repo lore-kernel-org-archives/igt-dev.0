@@ -1,22 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4AC0A10E74B
- for <igt-dev@lists.freedesktop.org>; Wed, 25 Jan 2023 09:40:23 +0000 (UTC)
-Date: Wed, 25 Jan 2023 10:40:18 +0100
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7673E10E0EE
+ for <igt-dev@lists.freedesktop.org>; Wed, 25 Jan 2023 10:49:16 +0000 (UTC)
+From: Dnyaneshwar Bhadane <dnyaneshwar.bhadane@intel.com>
 To: igt-dev@lists.freedesktop.org
-Message-ID: <20230125094018.rqgl6ggmfksqw3ge@kamilkon-desk1>
-References: <20230121054153.410979-1-ashutosh.dixit@intel.com>
- <20230121054153.410979-2-ashutosh.dixit@intel.com>
- <20230124170023.uxpgwmec635djm7t@kamilkon-desk1>
- <87lelrlslc.wl-ashutosh.dixit@intel.com>
+Date: Wed, 25 Jan 2023 16:19:16 +0530
+Message-Id: <20230125104916.37626-1-dnyaneshwar.bhadane@intel.com>
+In-Reply-To: <20230112105702.19502-1-dnyaneshwar.bhadane@intel.com>
+References: <20230112105702.19502-1-dnyaneshwar.bhadane@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <87lelrlslc.wl-ashutosh.dixit@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 1/2] i915/i915_power: Sanity check power
- measurement
+Subject: [igt-dev] [i-g-t, v5] tests/kms_cursor_crc:
+ s/for_each_pipe/for_each_pipe_with_single_output/
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,166 +19,155 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Badal Nilawar <badal.nilawar@intel.com>
+Cc: suresh.kumar.kurmi@intel.com, dnyaneshwar.bhadane@intel.com,
+ juha-pekka.heikkila@intel.com, chaitanya.kumar.borah@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi,
+Changed all testcase to loop over the valid pipe and output connector
+combination using for_each_pipe_with_single_output instead of for_each_pipe.
+Removed igt_pipe_connector_valid as it is already checked in the above
+mentioned loop macro.
+Removed redundant assigment in igt_fixture for data->output.
 
-On 2023-01-24 at 10:01:35 -0800, Dixit, Ashutosh wrote:
-> On Tue, 24 Jan 2023 09:00:23 -0800, Kamil Konieczny wrote:
-> >
-> > Hi Ashutosh,
-> >
-> > one nit, see below.
-> 
-> Hi Kamil,
-> 
-> >
-> > On 2023-01-20 at 21:41:52 -0800, Ashutosh Dixit wrote:
-> > > Add a test to sanity check power measurement on integrated/discrete by
-> > > requiring power under load to be > 0 and >= idle power.
-> > >
-> > > Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
-> > > ---
-> > >  tests/i915/i915_power.c | 73 +++++++++++++++++++++++++++++++++++++++++
-> > >  tests/meson.build       |  1 +
-> > >  2 files changed, 74 insertions(+)
-> > >  create mode 100644 tests/i915/i915_power.c
-> > >
-> > > diff --git a/tests/i915/i915_power.c b/tests/i915/i915_power.c
-> > > new file mode 100644
-> > > index 00000000000..e7d5c32f1af
-> > > --- /dev/null
-> > > +++ b/tests/i915/i915_power.c
-> > > @@ -0,0 +1,73 @@
-> > > +// SPDX-License-Identifier: MIT
-> > > +/*
-> > > + * Copyright © 2022 Intel Corporation
-> > > + */
-> > > +
-> > > +#include "igt.h"
-> > > +#include "i915/gem.h"
-> > > +#include "igt_power.h"
-> > > +
-> > > +IGT_TEST_DESCRIPTION("i915 power measurement tests");
-> > > +
-> > > +static double power(int i915, const char *domain, bool load)
--------------------------------------------------------- ^
-Maybe re-organize you test code and put this into sanity() function
-along with igt_require, context and spinner creation ?
+--v1
+- Remove cursor size check from the cursor_dpms and cursor_suspend.
 
-imho this function should be simple and it should return only
-power consumed.
+--v2
+- Used for_each_pipe_with_single_output() to iterate for valid pipe and 
+output [Ville]
 
-> > > +{
-> > > +	const intel_ctx_t *ctx = intel_ctx_create_all_physical(i915);
-> > > +	uint64_t ahnd = get_reloc_ahnd(i915, ctx->id);
-> > > +	struct power_sample sample[2];
-> > > +	int sleep_duration_sec = 2;
--------------------------------- ^
-imho make it define or const
+--v3
+- Added for_each_pipe_valid_connector() to check for valid connection.
+- pipe variable should initilize with default 0, [Petri]
 
-> > > +	struct igt_power pwr;
-> > > +	igt_spin_t *spin;
-> > > +	double mW;
-> > > +
-> > > +	gem_quiescent_gpu(i915);
-> > > +	if (load) {
-> > > +		spin = igt_spin_new(i915, .ahnd = ahnd, .ctx = ctx,
-> > > +				    .engine = ALL_ENGINES,
-> > > +				    .flags = IGT_SPIN_POLL_RUN);
-> > > +		/* Wait till at least one spinner starts */
-> > > +		igt_spin_busywait_until_started(spin);
-> > > +	}
-> > > +
-> > > +	igt_require(!igt_power_open(i915, &pwr, domain));
-> >
-> > Please move this before igt_spin_new,
-> 
-> Sure, I can move this to the top of the function.
-> 
-> > also rewrite this so you will free context before
-> 
-> Sorry, before what? I don't want to free the context before igt_free_spins
-> because that requires context persistence which is not fully supported on
-> GuC based systems.
-> 
-> > or move context creation to igt_fixture and give it as param for this
-> > function.
-> 
-> Here I consider the context internal to the power measurement so I prefer
-> to keep it in this function.
-> 
-> But if you explain the reason why you are asking for these changes maybe I
-> can figure out what to do.
-> 
-> Do you just want to create the context after igt_require?
+--v4
+- Used for_each_pipe_with_single_output [Bhanuprakash]
+- Removed unused assigment to date->output in igt_fixture
+- Removed igt_pipe_connector_valid(),It is already verified in the loop macro
 
-Yes this is what I mean, context and spinner should be created
-after check(s) for skip.
+--v5
+- fixed commit messege.
 
-> > > +	igt_power_get_energy(&pwr, &sample[0]);
-> > > +	usleep(sleep_duration_sec * USEC_PER_SEC);
-> > > +	igt_power_get_energy(&pwr, &sample[1]);
-> > > +
-> > > +	mW = igt_power_get_mW(&pwr, &sample[0], &sample[1]);
-> > > +	igt_info("Domain: %s, Load: %d, Measured power: %g mW\n", domain, load, mW);
+Signed-off-by: Dnyaneshwar Bhadane <dnyaneshwar.bhadane@intel.com>
+Reviewed-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 
-This print will be better placed in sanity() function.
+---
+ tests/kms_cursor_crc.c | 47 ++++++------------------------------------
+ 1 file changed, 6 insertions(+), 41 deletions(-)
 
-Regards,
-Kamil
-
-> > > +
-> > > +	igt_power_close(&pwr);
-> > > +	igt_free_spins(i915);
-> > > +	put_ahnd(ahnd);
-> > > +	intel_ctx_destroy(i915, ctx);
-> > > +
-> > > +	return mW;
-> > > +}
-> > > +
-> > > +static void sanity(int i915, const char *domain)
-> > > +{
-> > > +	double idle, busy;
-> > > +
-> > > +	idle = power(i915, domain, false);
-> > > +	busy = power(i915, domain, true);
-> > > +
-> > > +	igt_assert(busy > 0 && busy >= idle);
-> > > +}
-> > > +
-> > > +igt_main
-> > > +{
-> > > +	int i915;
-> > > +
-> > > +	igt_fixture {
-> > > +		i915 = drm_open_driver_master(DRIVER_INTEL);
-> > > +	}
-> > > +
-> > > +	igt_describe("Sanity check power measurement");
-> > > +	igt_subtest("sanity") {
-> > > +		sanity(i915, "gpu");
-> > > +	}
-> > > +
-> > > +	igt_fixture {
-> > > +		close(i915);
-> > > +	}
-> > > +}
-> > > diff --git a/tests/meson.build b/tests/meson.build
-> > > index e20a864035b..e0f41e9e6a1 100644
-> > > --- a/tests/meson.build
-> > > +++ b/tests/meson.build
-> > > @@ -212,6 +212,7 @@ i915_progs = [
-> > >	'i915_pm_dc',
-> > >	'i915_pm_rps',
-> > >	'i915_pm_sseu',
-> > > +	'i915_power',
-> > >	'i915_query',
-> > >	'i915_selftest',
-> > >	'i915_suspend',
-> > > --
-> > > 2.38.0
-> > >
+diff --git a/tests/kms_cursor_crc.c b/tests/kms_cursor_crc.c
+index d5a4b30b..0b5aac30 100644
+--- a/tests/kms_cursor_crc.c
++++ b/tests/kms_cursor_crc.c
+@@ -749,7 +749,7 @@ static void run_size_tests(data_t *data, int w, int h)
+ 				}
+ 			}
+ 
+-			for_each_pipe(&data->display, pipe) {
++			for_each_pipe_with_single_output(&data->display, pipe, data->output) {
+ 				data->pipe = pipe;
+ 
+ 				if (require_cursor_size(data, w, h)) {
+@@ -774,8 +774,6 @@ static void run_tests_on_pipe(data_t *data)
+ 	int cursor_size;
+ 
+ 	igt_fixture {
+-		data->output = igt_get_single_output_for_pipe(&data->display, pipe);
+-		igt_require(data->output);
+ 		data->alpha = 1.0;
+ 		data->flags = 0;
+ 	}
+@@ -784,16 +782,9 @@ static void run_tests_on_pipe(data_t *data)
+ 		     "flight to smaller ones to see that the size is applied "
+ 		     "correctly.");
+ 	igt_subtest_with_dynamic("cursor-size-change") {
+-		for_each_pipe(&data->display, pipe) {
++		for_each_pipe_with_single_output(&data->display, pipe, data->output) {
+ 			data->pipe = pipe;
+ 
+-			if(!igt_pipe_connector_valid(pipe, data->output)) {
+-				igt_debug("Invalid connector on pipe-%s-%s",
+-				      kmstest_pipe_name(pipe),
+-				      data->output->name);
+-				continue;
+-			}
+-
+ 			igt_dynamic_f("pipe-%s-%s",
+ 				      kmstest_pipe_name(pipe),
+ 				      data->output->name)
+@@ -805,16 +796,9 @@ static void run_tests_on_pipe(data_t *data)
+ 	igt_describe("Validates the composition of a fully opaque cursor "
+ 		     "plane, i.e., alpha channel equal to 1.0.");
+ 	igt_subtest_with_dynamic("cursor-alpha-opaque") {
+-		for_each_pipe(&data->display, pipe) {
++		for_each_pipe_with_single_output(&data->display, pipe, data->output) {
+ 			data->pipe = pipe;
+ 
+-			if(!igt_pipe_connector_valid(pipe, data->output)) {
+-				igt_debug("Invalid connector on pipe-%s-%s",
+-				      kmstest_pipe_name(pipe),
+-				      data->output->name);
+-				continue;
+-			}
+-
+ 			igt_dynamic_f("pipe-%s-%s",
+ 				      kmstest_pipe_name(pipe),
+ 				      data->output->name)
+@@ -826,16 +810,9 @@ static void run_tests_on_pipe(data_t *data)
+ 	igt_describe("Validates the composition of a fully transparent cursor "
+ 		     "plane, i.e., alpha channel equal to 0.0.");
+ 	igt_subtest_with_dynamic("cursor-alpha-transparent") {
+-		for_each_pipe(&data->display, pipe) {
++		for_each_pipe_with_single_output(&data->display, pipe, data->output) {
+ 			data->pipe = pipe;
+ 
+-			if(!igt_pipe_connector_valid(pipe, data->output)) {
+-				igt_debug("Invalid connector on pipe-%s-%s",
+-				      kmstest_pipe_name(pipe),
+-				      data->output->name);
+-				continue;
+-			}
+-
+ 			igt_dynamic_f("pipe-%s-%s",
+ 				      kmstest_pipe_name(pipe),
+ 				      data->output->name)
+@@ -850,16 +827,10 @@ static void run_tests_on_pipe(data_t *data)
+ 
+ 	igt_describe("Check random placement of a cursor with DPMS.");
+ 	igt_subtest_with_dynamic("cursor-dpms") {
+-		for_each_pipe(&data->display, pipe) {
++		for_each_pipe_with_single_output(&data->display, pipe, data->output) {
+ 			data->pipe = pipe;
+ 			data->flags = TEST_DPMS;
+ 
+-			if (require_cursor_size(data, data->cursor_max_w, data->cursor_max_h)) {
+-				igt_debug("Cursor size %dx%d not supported by driver\n",
+-					  data->cursor_max_w, data->cursor_max_h);
+-				continue;
+-			}
+-
+ 			igt_dynamic_f("pipe-%s-%s",
+ 				      kmstest_pipe_name(pipe),
+ 				      data->output->name)
+@@ -871,16 +842,10 @@ static void run_tests_on_pipe(data_t *data)
+ 
+ 	igt_describe("Check random placement of a cursor with suspend.");
+ 	igt_subtest_with_dynamic("cursor-suspend") {
+-		for_each_pipe(&data->display, pipe) {
++		for_each_pipe_with_single_output(&data->display, pipe, data->output) {
+ 			data->pipe = pipe;
+ 			data->flags = TEST_SUSPEND;
+ 
+-			if (require_cursor_size(data, data->cursor_max_w, data->cursor_max_h)) {
+-				igt_debug("Cursor size %dx%d not supported by driver\n",
+-					  data->cursor_max_w, data->cursor_max_h);
+-				continue;
+-			}
+-
+ 			igt_dynamic_f("pipe-%s-%s",
+ 				      kmstest_pipe_name(pipe),
+ 				      data->output->name)
+-- 
+2.35.1
