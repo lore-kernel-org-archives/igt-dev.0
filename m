@@ -1,15 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============1347900480342953367=="
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 72C2410E7C0
+ for <igt-dev@lists.freedesktop.org>; Wed, 25 Jan 2023 14:19:03 +0000 (UTC)
+Date: Wed, 25 Jan 2023 15:18:59 +0100
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Message-ID: <20230125141859.btrbroaix7gxogkv@kamilkon-desk1>
+References: <20230117140607.2759816-1-mauro.chehab@linux.intel.com>
+ <20230117140607.2759816-7-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Riana Tauro" <riana.tauro@intel.com>
-Date: Wed, 25 Jan 2023 13:47:24 -0000
-Message-ID: <167465444464.5512.1520385444021638385@emeril.freedesktop.org>
-References: <20230125071544.1550738-1-riana.tauro@intel.com>
-In-Reply-To: <20230125071544.1550738-1-riana.tauro@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLklHVDogZmFpbHVyZSBmb3IgdGVzdHMv?=
- =?utf-8?q?i915/perf=5Fpmu=3A_Add_a_basic_perf=5Fpmu_test?=
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20230117140607.2759816-7-mauro.chehab@linux.intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 06/12] code_cov_parse_info: add support
+ for parsing JSON files
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,774 +21,667 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============1347900480342953367==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-== Series Details ==
-
-Series: tests/i915/perf_pmu: Add a basic perf_pmu test
-URL   : https://patchwork.freedesktop.org/series/113303/
-State : failure
-
-== Summary ==
-
-CI Bug Log - changes from CI_DRM_12631_full -> IGTPW_8400_full
-====================================================
-
-Summary
--------
-
-  **FAILURE**
-
-  Serious unknown changes coming with IGTPW_8400_full absolutely need to be
-  verified manually.
-  
-  If you think the reported changes have nothing to do with the changes
-  introduced in IGTPW_8400_full, please notify your bug team to allow them
-  to document this new failure mode, which will reduce false positives in CI.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8400/index.html
-
-Participating hosts (12 -> 10)
-------------------------------
-
-  Missing    (2): pig-skl-6260u pig-kbl-iris 
-
-Possible new issues
--------------------
-
-  Here are the unknown changes that may have been introduced in IGTPW_8400_full:
-
-### IGT changes ###
-
-#### Possible regressions ####
-
-  * igt@i915_pm_rpm@modeset-non-lpsp-stress:
-    - shard-apl:          [PASS][1] -> [TIMEOUT][2]
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12631/shard-apl6/igt@i915_pm_rpm@modeset-non-lpsp-stress.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8400/shard-apl6/igt@i915_pm_rpm@modeset-non-lpsp-stress.html
-
-  
-New tests
----------
-
-  New tests have been introduced between CI_DRM_12631_full and IGTPW_8400_full:
-
-### New IGT tests (1) ###
-
-  * igt@perf_pmu@pmu-read:
-    - Statuses : 6 pass(s)
-    - Exec time: [0.0] s
-
-  
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_8400_full that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@gen9_exec_parse@allowed-all:
-    - shard-apl:          [PASS][3] -> [DMESG-WARN][4] ([i915#5566] / [i915#716])
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12631/shard-apl7/igt@gen9_exec_parse@allowed-all.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8400/shard-apl1/igt@gen9_exec_parse@allowed-all.html
-
-  * igt@i915_pm_rps@engine-order:
-    - shard-apl:          [PASS][5] -> [FAIL][6] ([i915#6537])
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12631/shard-apl7/igt@i915_pm_rps@engine-order.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8400/shard-apl2/igt@i915_pm_rps@engine-order.html
-
-  * igt@kms_vblank@pipe-c-query-busy-hang:
-    - shard-snb:          NOTRUN -> [SKIP][7] ([fdo#109271]) +15 similar issues
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8400/shard-snb7/igt@kms_vblank@pipe-c-query-busy-hang.html
-
-  * igt@perf@oa-exponents:
-    - shard-glk:          [PASS][8] -> [INCOMPLETE][9] ([i915#5213])
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12631/shard-glk9/igt@perf@oa-exponents.html
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8400/shard-glk6/igt@perf@oa-exponents.html
-
-  * igt@runner@aborted:
-    - shard-apl:          NOTRUN -> [FAIL][10] ([fdo#109271] / [i915#4312])
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8400/shard-apl1/igt@runner@aborted.html
-    - shard-glk:          NOTRUN -> [FAIL][11] ([i915#4312])
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8400/shard-glk6/igt@runner@aborted.html
-
-  * igt@sysfs_timeslice_duration@timeout@vecs0:
-    - shard-apl:          [PASS][12] -> [FAIL][13] ([i915#1755])
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12631/shard-apl2/igt@sysfs_timeslice_duration@timeout@vecs0.html
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8400/shard-apl1/igt@sysfs_timeslice_duration@timeout@vecs0.html
-
-  
-#### Possible fixes ####
-
-  * igt@api_intel_bb@object-reloc-keep-cache:
-    - {shard-rkl}:        [SKIP][14] ([i915#3281]) -> [PASS][15] +3 similar issues
-   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12631/shard-rkl-4/igt@api_intel_bb@object-reloc-keep-cache.html
-   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8400/shard-rkl-5/igt@api_intel_bb@object-reloc-keep-cache.html
-
-  * igt@drm_fdinfo@most-busy-idle-check-all@rcs0:
-    - {shard-rkl}:        [FAIL][16] ([i915#7742]) -> [PASS][17]
-   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12631/shard-rkl-3/igt@drm_fdinfo@most-busy-idle-check-all@rcs0.html
-   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8400/shard-rkl-2/igt@drm_fdinfo@most-busy-idle-check-all@rcs0.html
-
-  * igt@fbdev@write:
-    - {shard-rkl}:        [SKIP][18] ([i915#2582]) -> [PASS][19]
-   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12631/shard-rkl-2/igt@fbdev@write.html
-   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8400/shard-rkl-6/igt@fbdev@write.html
-
-  * igt@gem_eio@reset-stress:
-    - {shard-dg1}:        [FAIL][20] ([i915#5784]) -> [PASS][21]
-   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12631/shard-dg1-14/igt@gem_eio@reset-stress.html
-   [21]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8400/shard-dg1-12/igt@gem_eio@reset-stress.html
-
-  * igt@gem_eio@suspend:
-    - {shard-rkl}:        [FAIL][22] ([i915#7052]) -> [PASS][23]
-   [22]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12631/shard-rkl-4/igt@gem_eio@suspend.html
-   [23]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8400/shard-rkl-2/igt@gem_eio@suspend.html
-
-  * igt@gem_exec_fair@basic-deadline:
-    - {shard-rkl}:        [FAIL][24] ([i915#2846]) -> [PASS][25]
-   [24]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12631/shard-rkl-2/igt@gem_exec_fair@basic-deadline.html
-   [25]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8400/shard-rkl-3/igt@gem_exec_fair@basic-deadline.html
-    - shard-glk:          [FAIL][26] ([i915#2846]) -> [PASS][27]
-   [26]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12631/shard-glk8/igt@gem_exec_fair@basic-deadline.html
-   [27]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8400/shard-glk8/igt@gem_exec_fair@basic-deadline.html
-
-  * igt@gem_exec_fair@basic-none@rcs0:
-    - shard-glk:          [FAIL][28] ([i915#2842]) -> [PASS][29] +1 similar issue
-   [28]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12631/shard-glk5/igt@gem_exec_fair@basic-none@rcs0.html
-   [29]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8400/shard-glk5/igt@gem_exec_fair@basic-none@rcs0.html
-
-  * igt@gem_exec_fair@basic-pace-solo@rcs0:
-    - {shard-rkl}:        [FAIL][30] ([i915#2842]) -> [PASS][31]
-   [30]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12631/shard-rkl-3/igt@gem_exec_fair@basic-pace-solo@rcs0.html
-   [31]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8400/shard-rkl-5/igt@gem_exec_fair@basic-pace-solo@rcs0.html
-
-  * igt@gem_exec_schedule@semaphore-power:
-    - {shard-rkl}:        [SKIP][32] ([i915#7276]) -> [PASS][33]
-   [32]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12631/shard-rkl-2/igt@gem_exec_schedule@semaphore-power.html
-   [33]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8400/shard-rkl-5/igt@gem_exec_schedule@semaphore-power.html
-
-  * igt@gem_partial_pwrite_pread@reads:
-    - {shard-rkl}:        [SKIP][34] ([i915#3282]) -> [PASS][35] +3 similar issues
-   [34]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12631/shard-rkl-6/igt@gem_partial_pwrite_pread@reads.html
-   [35]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8400/shard-rkl-5/igt@gem_partial_pwrite_pread@reads.html
-
-  * igt@gen9_exec_parse@valid-registers:
-    - {shard-rkl}:        [SKIP][36] ([i915#2527]) -> [PASS][37]
-   [36]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12631/shard-rkl-4/igt@gen9_exec_parse@valid-registers.html
-   [37]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8400/shard-rkl-5/igt@gen9_exec_parse@valid-registers.html
-
-  * igt@i915_pm_dc@dc6-dpms:
-    - {shard-rkl}:        [SKIP][38] ([i915#3361]) -> [PASS][39]
-   [38]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12631/shard-rkl-5/igt@i915_pm_dc@dc6-dpms.html
-   [39]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8400/shard-rkl-1/igt@i915_pm_dc@dc6-dpms.html
-    - {shard-tglu}:       [FAIL][40] ([i915#3989] / [i915#454]) -> [PASS][41]
-   [40]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12631/shard-tglu-7/igt@i915_pm_dc@dc6-dpms.html
-   [41]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8400/shard-tglu-2/igt@i915_pm_dc@dc6-dpms.html
-
-  * igt@i915_pm_rpm@dpms-lpsp:
-    - {shard-rkl}:        [SKIP][42] ([i915#1397]) -> [PASS][43]
-   [42]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12631/shard-rkl-1/igt@i915_pm_rpm@dpms-lpsp.html
-   [43]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8400/shard-rkl-6/igt@i915_pm_rpm@dpms-lpsp.html
-
-  * igt@i915_pm_sseu@full-enable:
-    - {shard-rkl}:        [SKIP][44] ([i915#4387]) -> [PASS][45]
-   [44]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12631/shard-rkl-1/igt@i915_pm_sseu@full-enable.html
-   [45]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8400/shard-rkl-5/igt@i915_pm_sseu@full-enable.html
-
-  * igt@i915_selftest@mock@sanitycheck:
-    - shard-snb:          [SKIP][46] ([fdo#109271]) -> [PASS][47]
-   [46]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12631/shard-snb5/igt@i915_selftest@mock@sanitycheck.html
-   [47]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8400/shard-snb2/igt@i915_selftest@mock@sanitycheck.html
-
-  * igt@kms_atomic@atomic_plane_damage:
-    - {shard-rkl}:        [SKIP][48] ([i915#4098]) -> [PASS][49]
-   [48]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12631/shard-rkl-3/igt@kms_atomic@atomic_plane_damage.html
-   [49]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8400/shard-rkl-6/igt@kms_atomic@atomic_plane_damage.html
-
-  * igt@kms_big_fb@y-tiled-max-hw-stride-64bpp-rotate-0-hflip-async-flip:
-    - {shard-rkl}:        [SKIP][50] ([i915#1845] / [i915#4098]) -> [PASS][51] +18 similar issues
-   [50]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12631/shard-rkl-4/igt@kms_big_fb@y-tiled-max-hw-stride-64bpp-rotate-0-hflip-async-flip.html
-   [51]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8400/shard-rkl-6/igt@kms_big_fb@y-tiled-max-hw-stride-64bpp-rotate-0-hflip-async-flip.html
-
-  * igt@kms_cursor_legacy@flip-vs-cursor-crc-atomic:
-    - {shard-tglu}:       [SKIP][52] ([i915#1845]) -> [PASS][53] +1 similar issue
-   [52]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12631/shard-tglu-6/igt@kms_cursor_legacy@flip-vs-cursor-crc-atomic.html
-   [53]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8400/shard-tglu-3/igt@kms_cursor_legacy@flip-vs-cursor-crc-atomic.html
-
-  * igt@kms_cursor_legacy@flip-vs-cursor@atomic-transitions:
-    - shard-apl:          [FAIL][54] ([i915#2346]) -> [PASS][55]
-   [54]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12631/shard-apl6/igt@kms_cursor_legacy@flip-vs-cursor@atomic-transitions.html
-   [55]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8400/shard-apl2/igt@kms_cursor_legacy@flip-vs-cursor@atomic-transitions.html
-
-  * igt@kms_fbcon_fbt@psr:
-    - {shard-rkl}:        [SKIP][56] ([i915#3955]) -> [PASS][57]
-   [56]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12631/shard-rkl-3/igt@kms_fbcon_fbt@psr.html
-   [57]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8400/shard-rkl-6/igt@kms_fbcon_fbt@psr.html
-
-  * igt@kms_flip@flip-vs-expired-vblank-interruptible@b-hdmi-a1:
-    - shard-glk:          [FAIL][58] ([i915#79]) -> [PASS][59]
-   [58]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12631/shard-glk1/igt@kms_flip@flip-vs-expired-vblank-interruptible@b-hdmi-a1.html
-   [59]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8400/shard-glk5/igt@kms_flip@flip-vs-expired-vblank-interruptible@b-hdmi-a1.html
-
-  * igt@kms_frontbuffer_tracking@fbc-1p-primscrn-pri-indfb-draw-pwrite:
-    - {shard-rkl}:        [SKIP][60] ([i915#1849] / [i915#4098]) -> [PASS][61] +12 similar issues
-   [60]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12631/shard-rkl-2/igt@kms_frontbuffer_tracking@fbc-1p-primscrn-pri-indfb-draw-pwrite.html
-   [61]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8400/shard-rkl-6/igt@kms_frontbuffer_tracking@fbc-1p-primscrn-pri-indfb-draw-pwrite.html
-
-  * igt@kms_plane@pixel-format-source-clamping@pipe-b-planes:
-    - {shard-tglu}:       [SKIP][62] ([i915#1849] / [i915#3558]) -> [PASS][63] +3 similar issues
-   [62]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12631/shard-tglu-6/igt@kms_plane@pixel-format-source-clamping@pipe-b-planes.html
-   [63]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8400/shard-tglu-3/igt@kms_plane@pixel-format-source-clamping@pipe-b-planes.html
-
-  * igt@kms_properties@crtc-properties-atomic:
-    - {shard-tglu}:       [SKIP][64] ([i915#1849]) -> [PASS][65] +1 similar issue
-   [64]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12631/shard-tglu-6/igt@kms_properties@crtc-properties-atomic.html
-   [65]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8400/shard-tglu-1/igt@kms_properties@crtc-properties-atomic.html
-
-  * igt@kms_psr@sprite_mmap_gtt:
-    - {shard-rkl}:        [SKIP][66] ([i915#1072]) -> [PASS][67] +1 similar issue
-   [66]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12631/shard-rkl-1/igt@kms_psr@sprite_mmap_gtt.html
-   [67]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8400/shard-rkl-6/igt@kms_psr@sprite_mmap_gtt.html
-
-  * igt@kms_universal_plane@universal-plane-pageflip-windowed-pipe-a:
-    - {shard-tglu}:       [SKIP][68] ([fdo#109274]) -> [PASS][69]
-   [68]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12631/shard-tglu-6/igt@kms_universal_plane@universal-plane-pageflip-windowed-pipe-a.html
-   [69]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8400/shard-tglu-5/igt@kms_universal_plane@universal-plane-pageflip-windowed-pipe-a.html
-
-  * igt@kms_vblank@pipe-b-ts-continuation-idle:
-    - {shard-tglu}:       [SKIP][70] ([i915#7651]) -> [PASS][71] +1 similar issue
-   [70]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12631/shard-tglu-6/igt@kms_vblank@pipe-b-ts-continuation-idle.html
-   [71]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8400/shard-tglu-1/igt@kms_vblank@pipe-b-ts-continuation-idle.html
-
-  * igt@perf@gen12-mi-rpc:
-    - {shard-rkl}:        [SKIP][72] ([fdo#109289]) -> [PASS][73] +1 similar issue
-   [72]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12631/shard-rkl-5/igt@perf@gen12-mi-rpc.html
-   [73]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8400/shard-rkl-1/igt@perf@gen12-mi-rpc.html
-
-  * igt@perf@polling:
-    - {shard-rkl}:        [FAIL][74] ([i915#7756]) -> [PASS][75]
-   [74]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12631/shard-rkl-1/igt@perf@polling.html
-   [75]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8400/shard-rkl-2/igt@perf@polling.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [IGT#2]: https://gitlab.freedesktop.org/drm/igt-gpu-tools/issues/2
-  [fdo#103375]: https://bugs.freedesktop.org/show_bug.cgi?id=103375
-  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
-  [fdo#109274]: https://bugs.freedesktop.org/show_bug.cgi?id=109274
-  [fdo#109280]: https://bugs.freedesktop.org/show_bug.cgi?id=109280
-  [fdo#109283]: https://bugs.freedesktop.org/show_bug.cgi?id=109283
-  [fdo#109289]: https://bugs.freedesktop.org/show_bug.cgi?id=109289
-  [fdo#109295]: https://bugs.freedesktop.org/show_bug.cgi?id=109295
-  [fdo#109303]: https://bugs.freedesktop.org/show_bug.cgi?id=109303
-  [fdo#109308]: https://bugs.freedesktop.org/show_bug.cgi?id=109308
-  [fdo#109309]: https://bugs.freedesktop.org/show_bug.cgi?id=109309
-  [fdo#109312]: https://bugs.freedesktop.org/show_bug.cgi?id=109312
-  [fdo#109313]: https://bugs.freedesktop.org/show_bug.cgi?id=109313
-  [fdo#109315]: https://bugs.freedesktop.org/show_bug.cgi?id=109315
-  [fdo#109506]: https://bugs.freedesktop.org/show_bug.cgi?id=109506
-  [fdo#109642]: https://bugs.freedesktop.org/show_bug.cgi?id=109642
-  [fdo#110189]: https://bugs.freedesktop.org/show_bug.cgi?id=110189
-  [fdo#110542]: https://bugs.freedesktop.org/show_bug.cgi?id=110542
-  [fdo#110723]: https://bugs.freedesktop.org/show_bug.cgi?id=110723
-  [fdo#111068]: https://bugs.freedesktop.org/show_bug.cgi?id=111068
-  [fdo#111614]: https://bugs.freedesktop.org/show_bug.cgi?id=111614
-  [fdo#111615]: https://bugs.freedesktop.org/show_bug.cgi?id=111615
-  [fdo#111644]: https://bugs.freedesktop.org/show_bug.cgi?id=111644
-  [fdo#111656]: https://bugs.freedesktop.org/show_bug.cgi?id=111656
-  [fdo#111825]: https://bugs.freedesktop.org/show_bug.cgi?id=111825
-  [fdo#111827]: https://bugs.freedesktop.org/show_bug.cgi?id=111827
-  [fdo#112054]: https://bugs.freedesktop.org/show_bug.cgi?id=112054
-  [fdo#112283]: https://bugs.freedesktop.org/show_bug.cgi?id=112283
-  [i915#1072]: https://gitlab.freedesktop.org/drm/intel/issues/1072
-  [i915#1257]: https://gitlab.freedesktop.org/drm/intel/issues/1257
-  [i915#132]: https://gitlab.freedesktop.org/drm/intel/issues/132
-  [i915#1397]: https://gitlab.freedesktop.org/drm/intel/issues/1397
-  [i915#1722]: https://gitlab.freedesktop.org/drm/intel/issues/1722
-  [i915#1755]: https://gitlab.freedesktop.org/drm/intel/issues/1755
-  [i915#1769]: https://gitlab.freedesktop.org/drm/intel/issues/1769
-  [i915#1825]: https://gitlab.freedesktop.org/drm/intel/issues/1825
-  [i915#1839]: https://gitlab.freedesktop.org/drm/intel/issues/1839
-  [i915#1845]: https://gitlab.freedesktop.org/drm/intel/issues/1845
-  [i915#1849]: https://gitlab.freedesktop.org/drm/intel/issues/1849
-  [i915#1902]: https://gitlab.freedesktop.org/drm/intel/issues/1902
-  [i915#1937]: https://gitlab.freedesktop.org/drm/intel/issues/1937
-  [i915#2190]: https://gitlab.freedesktop.org/drm/intel/issues/2190
-  [i915#2346]: https://gitlab.freedesktop.org/drm/intel/issues/2346
-  [i915#2433]: https://gitlab.freedesktop.org/drm/intel/issues/2433
-  [i915#2434]: https://gitlab.freedesktop.org/drm/intel/issues/2434
-  [i915#2437]: https://gitlab.freedesktop.org/drm/intel/issues/2437
-  [i915#2527]: https://gitlab.freedesktop.org/drm/intel/issues/2527
-  [i915#2575]: https://gitlab.freedesktop.org/drm/intel/issues/2575
-  [i915#2582]: https://gitlab.freedesktop.org/drm/intel/issues/2582
-  [i915#2587]: https://gitlab.freedesktop.org/drm/intel/issues/2587
-  [i915#2658]: https://gitlab.freedesktop.org/drm/intel/issues/2658
-  [i915#2672]: https://gitlab.freedesktop.org/drm/intel/issues/2672
-  [i915#2681]: https://gitlab.freedesktop.org/drm/intel/issues/2681
-  [i915#2705]: https://gitlab.freedesktop.org/drm/intel/issues/2705
-  [i915#280]: https://gitlab.freedesktop.org/drm/intel/issues/280
-  [i915#284]: https://gitlab.freedesktop.org/drm/intel/issues/284
-  [i915#2842]: https://gitlab.freedesktop.org/drm/intel/issues/2842
-  [i915#2846]: https://gitlab.freedesktop.org/drm/intel/issues/2846
-  [i915#2856]: https://gitlab.freedesktop.org/drm/intel/issues/2856
-  [i915#2920]: https://gitlab.freedesktop.org/drm/intel/issues/2920
-  [i915#3116]: https://gitlab.freedesktop.org/drm/intel/issues/3116
-  [i915#315]: https://gitlab.freedesktop.org/drm/intel/issues/315
-  [i915#3281]: https://gitlab.freedesktop.org/drm/intel/issues/3281
-  [i915#3282]: https://gitlab.freedesktop.org/drm/intel/issues/3282
-  [i915#3291]: https://gitlab.freedesktop.org/drm/intel/issues/3291
-  [i915#3297]: https://gitlab.freedesktop.org/drm/intel/issues/3297
-  [i915#3299]: https://gitlab.freedesktop.org/drm/intel/issues/3299
-  [i915#3301]: https://gitlab.freedesktop.org/drm/intel/issues/3301
-  [i915#3323]: https://gitlab.freedesktop.org/drm/intel/issues/3323
-  [i915#3359]: https://gitlab.freedesktop.org/drm/intel/issues/3359
-  [i915#3361]: https://gitlab.freedesktop.org/drm/intel/issues/3361
-  [i915#3458]: https://gitlab.freedesktop.org/drm/intel/issues/3458
-  [i915#3539]: https://gitlab.freedesktop.org/drm/intel/issues/3539
-  [i915#3546]: https://gitlab.freedesktop.org/drm/intel/issues/3546
-  [i915#3555]: https://gitlab.freedesktop.org/drm/intel/issues/3555
-  [i915#3558]: https://gitlab.freedesktop.org/drm/intel/issues/3558
-  [i915#3637]: https://gitlab.freedesktop.org/drm/intel/issues/3637
-  [i915#3638]: https://gitlab.freedesktop.org/drm/intel/issues/3638
-  [i915#3689]: https://gitlab.freedesktop.org/drm/intel/issues/3689
-  [i915#3708]: https://gitlab.freedesktop.org/drm/intel/issues/3708
-  [i915#3734]: https://gitlab.freedesktop.org/drm/intel/issues/3734
-  [i915#3742]: https://gitlab.freedesktop.org/drm/intel/issues/3742
-  [i915#3886]: https://gitlab.freedesktop.org/drm/intel/issues/3886
-  [i915#3952]: https://gitlab.freedesktop.org/drm/intel/issues/3952
-  [i915#3955]: https://gitlab.freedesktop.org/drm/intel/issues/3955
-  [i915#3966]: https://gitlab.freedesktop.org/drm/intel/issues/3966
-  [i915#3989]: https://gitlab.freedesktop.org/drm/intel/issues/3989
-  [i915#404]: https://gitlab.freedesktop.org/drm/intel/issues/404
-  [i915#4070]: https://gitlab.freedesktop.org/drm/intel/issues/4070
-  [i915#4077]: https://gitlab.freedesktop.org/drm/intel/issues/4077
-  [i915#4078]: https://gitlab.freedesktop.org/drm/intel/issues/4078
-  [i915#4079]: https://gitlab.freedesktop.org/drm/intel/issues/4079
-  [i915#4083]: https://gitlab.freedesktop.org/drm/intel/issues/4083
-  [i915#4098]: https://gitlab.freedesktop.org/drm/intel/issues/4098
-  [i915#4103]: https://gitlab.freedesktop.org/drm/intel/issues/4103
-  [i915#4212]: https://gitlab.freedesktop.org/drm/intel/issues/4212
-  [i915#4215]: https://gitlab.freedesktop.org/drm/intel/issues/4215
-  [i915#426]: https://gitlab.freedesktop.org/drm/intel/issues/426
-  [i915#4270]: https://gitlab.freedesktop.org/drm/intel/issues/4270
-  [i915#4275]: https://gitlab.freedesktop.org/drm/intel/issues/4275
-  [i915#4312]: https://gitlab.freedesktop.org/drm/intel/issues/4312
-  [i915#433]: https://gitlab.freedesktop.org/drm/intel/issues/433
-  [i915#4349]: https://gitlab.freedesktop.org/drm/intel/issues/4349
-  [i915#4387]: https://gitlab.freedesktop.org/drm/intel/issues/4387
-  [i915#4391]: https://gitlab.freedesktop.org/drm/intel/issues/4391
-  [i915#4538]: https://gitlab.freedesktop.org/drm/intel/issues/4538
-  [i915#454]: https://gitlab.freedesktop.org/drm/intel/issues/454
-  [i915#4565]: https://gitlab.freedesktop.org/drm/intel/issues/4565
-  [i915#4613]: https://gitlab.freedesktop.org/drm/intel/issues/4613
-  [i915#4767]: https://gitlab.freedesktop.org/drm/intel/issues/4767
-  [i915#4771]: https://gitlab.freedesktop.org/drm/intel/issues/4771
-  [i915#4812]: https://gitlab.freedesktop.org/drm/intel/issues/4812
-  [i915#4833]: https://gitlab.freedesktop.org/drm/intel/issues/4833
-  [i915#4852]: https://gitlab.freedesktop.org/drm/intel/issues/4852
-  [i915#4859]: https://gitlab.freedesktop.org/drm/intel/issues/4859
-  [i915#4860]: https://gitlab.freedesktop.org/drm/intel/issues/4860
-  [i915#4873]: https://gitlab.freedesktop.org/drm/intel/issues/4873
-  [i915#4880]: https://gitlab.freedesktop.org/drm/intel/issues/4880
-  [i915#4884]: https://gitlab.freedesktop.org/drm/intel/issues/4884
-  [i915#4958]: https://gitlab.freedesktop.org/drm/intel/issues/4958
-  [i915#5122]: https://gitlab.freedesktop.org/drm/intel/issues/5122
-  [i915#5176]: https://gitlab.freedesktop.org/drm/intel/issues/5176
-  [i915#5213]: https://gitlab.freedesktop.org/drm/intel/issues/5213
-  [i915#5235]: https://gitlab.freedesktop.org/drm/intel/issues/5235
-  [i915#5286]: https://gitlab.freedesktop.org/drm/intel/issues/5286
-  [i915#5288]: https://gitlab.freedesktop.org/drm/intel/issues/5288
-  [i915#5289]: https://gitlab.freedesktop.org/drm/intel/issues/5289
-  [i915#5325]: https://gitlab.freedesktop.org/drm/intel/issues/5325
-  [i915#533]: https://gitlab.freedesktop.org/drm/intel/issues/533
-  [i915#5461]: https://gitlab.freedesktop.org/drm/intel/issues/5461
-  [i915#5563]: https://gitlab.freedesktop.org/drm/intel/issues/5563
-  [i915#5566]: https://gitlab.freedesktop.org/drm/intel/issues/5566
-  [i915#5784]: https://gitlab.freedesktop.org/drm/intel/issues/5784
-  [i915#6095]: https://gitlab.freedesktop.org/drm/intel/issues/6095
-  [i915#6227]: https://gitlab.freedesktop.org/drm/intel/issues/6227
-  [i915#6230]: https://gitlab.freedesktop.org/drm/intel/issues/6230
-  [i915#6245]: https://gitlab.freedesktop.org/drm/intel/issues/6245
-  [i915#6247]: https://gitlab.freedesktop.org/drm/intel/issues/6247
-  [i915#6248]: https://gitlab.freedesktop.org/drm/intel/issues/6248
-  [i915#6268]: https://gitlab.freedesktop.org/drm/intel/issues/6268
-  [i915#6301]: https://gitlab.freedesktop.org/drm/intel/issues/6301
-  [i915#6412]: https://gitlab.freedesktop.org/drm/intel/issues/6412
-  [i915#6433]: https://gitlab.freedesktop.org/drm/intel/issues/6433
-  [i915#6493]: https://gitlab.freedesktop.org/drm/intel/issues/6493
-  [i915#6497]: https://gitlab.freedesktop.org/drm/intel/issues/6497
-  [i915#6524]: https://gitlab.freedesktop.org/drm/intel/issues/6524
-  [i915#6537]: https://gitlab.freedesktop.org/drm/intel/issues/6537
-  [i915#658]: https://gitlab.freedesktop.org/drm/intel/issues/658
-  [i915#6590]: https://gitlab.freedesktop.org/drm/intel/issues/6590
-  [i915#6621]: https://gitlab.freedesktop.org/drm/intel/issues/6621
-  [i915#6768]: https://gitlab.freedesktop.org/drm/intel/issues/6768
-  [i915#6944]: https://gitlab.freedesktop.org/drm/intel/issues/6944
-  [i915#6946]: https://gitlab.freedesktop.org/drm/intel/issues/6946
-  [i915#6953]: https://gitlab.freedesktop.org/drm/intel/issues/6953
-  [i915#7037]: https://gitlab.freedesktop.org/drm/intel/issues/7037
-  [i915#7052]: https://gitlab.freedesktop.org/drm/intel/issues/7052
-  [i915#7116]: https://gitlab.freedesktop.org/drm/intel/issues/7116
-  [i915#7118]: https://gitlab.freedesktop.org/drm/intel/issues/7118
-  [i915#7128]: https://gitlab.freedesktop.org/drm/intel/issues/7128
-  [i915#716]: https://gitlab.freedesktop.org/drm/intel/issues/716
-  [i915#7276]: https://gitlab.freedesktop.org/drm/intel/issues/7276
-  [i915#7294]: https://gitlab.freedesktop.org/drm/intel/issues/7294
-  [i915#7561]: https://gitlab.freedesktop.org/drm/intel/issues/7561
-  [i915#7582]: https://gitlab.freedesktop.org/drm/intel/issues/7582
-  [i915#7651]: https://gitlab.freedesktop.org/drm/intel/issues/7651
-  [i915#7697]: https://gitlab.freedesktop.org/drm/intel/issues/7697
-  [i915#7701]: https://gitlab.freedesktop.org/drm/intel/issues/7701
-  [i915#7707]: https://gitlab.freedesktop.org/drm/intel/issues/7707
-  [i915#7711]: https://gitlab.freedesktop.org/drm/intel/issues/7711
-  [i915#7742]: https://gitlab.freedesktop.org/drm/intel/issues/7742
-  [i915#7756]: https://gitlab.freedesktop.org/drm/intel/issues/7756
-  [i915#7828]: https://gitlab.freedesktop.org/drm/intel/issues/7828
-  [i915#79]: https://gitlab.freedesktop.org/drm/intel/issues/79
-  [i915#7949]: https://gitlab.freedesktop.org/drm/intel/issues/7949
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_7136 -> IGTPW_8400
-  * Piglit: piglit_4509 -> None
-
-  CI-20190529: 20190529
-  CI_DRM_12631: 6bcfacd291ed6ff1ff50a295f970c98d54eabe05 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_8400: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8400/index.html
-  IGT_7136: 31b6af91747ad8c705399c9006cdb81cb1864146 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  piglit_4509: fdc5a4ca11124ab8413c7988896eec4c97336694 @ git://anongit.freedesktop.org/piglit
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8400/index.html
-
---===============1347900480342953367==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/i915/perf_pmu: Add a basic perf_pmu test</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/113303/">https://patchwork.freedesktop.org/series/113303/</a></td></tr>
-<tr><td><b>State:</b></td><td>failure</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8400/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8400/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from CI_DRM_12631_full -&gt; IGTPW_8400_full</h1>
-<h2>Summary</h2>
-<p><strong>FAILURE</strong></p>
-<p>Serious unknown changes coming with IGTPW_8400_full absolutely need to be<br />
-  verified manually.</p>
-<p>If you think the reported changes have nothing to do with the changes<br />
-  introduced in IGTPW_8400_full, please notify your bug team to allow them<br />
-  to document this new failure mode, which will reduce false positives in CI.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8400/index.html</p>
-<h2>Participating hosts (12 -&gt; 10)</h2>
-<p>Missing    (2): pig-skl-6260u pig-kbl-iris </p>
-<h2>Possible new issues</h2>
-<p>Here are the unknown changes that may have been introduced in IGTPW_8400_full:</p>
-<h3>IGT changes</h3>
-<h4>Possible regressions</h4>
-<ul>
-<li>igt@i915_pm_rpm@modeset-non-lpsp-stress:<ul>
-<li>shard-apl:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12631/shard-apl6/igt@i915_pm_rpm@modeset-non-lpsp-stress.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8400/shard-apl6/igt@i915_pm_rpm@modeset-non-lpsp-stress.html">TIMEOUT</a></li>
-</ul>
-</li>
-</ul>
-<h2>New tests</h2>
-<p>New tests have been introduced between CI_DRM_12631_full and IGTPW_8400_full:</p>
-<h3>New IGT tests (1)</h3>
-<ul>
-<li>igt@perf_pmu@pmu-read:<ul>
-<li>Statuses : 6 pass(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-</ul>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_8400_full that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@gen9_exec_parse@allowed-all:</p>
-<ul>
-<li>shard-apl:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12631/shard-apl7/igt@gen9_exec_parse@allowed-all.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8400/shard-apl1/igt@gen9_exec_parse@allowed-all.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5566">i915#5566</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/716">i915#716</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_pm_rps@engine-order:</p>
-<ul>
-<li>shard-apl:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12631/shard-apl7/igt@i915_pm_rps@engine-order.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8400/shard-apl2/igt@i915_pm_rps@engine-order.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6537">i915#6537</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_vblank@pipe-c-query-busy-hang:</p>
-<ul>
-<li>shard-snb:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8400/shard-snb7/igt@kms_vblank@pipe-c-query-busy-hang.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +15 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@perf@oa-exponents:</p>
-<ul>
-<li>shard-glk:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12631/shard-glk9/igt@perf@oa-exponents.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8400/shard-glk6/igt@perf@oa-exponents.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5213">i915#5213</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@runner@aborted:</p>
-<ul>
-<li>
-<p>shard-apl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8400/shard-apl1/igt@runner@aborted.html">FAIL</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4312">i915#4312</a>)</p>
-</li>
-<li>
-<p>shard-glk:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8400/shard-glk6/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4312">i915#4312</a>)</p>
-</li>
-</ul>
-</li>
-<li>
-<p>igt@sysfs_timeslice_duration@timeout@vecs0:</p>
-<ul>
-<li>shard-apl:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12631/shard-apl2/igt@sysfs_timeslice_duration@timeout@vecs0.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8400/shard-apl1/igt@sysfs_timeslice_duration@timeout@vecs0.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1755">i915#1755</a>)</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@api_intel_bb@object-reloc-keep-cache:</p>
-<ul>
-<li>{shard-rkl}:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12631/shard-rkl-4/igt@api_intel_bb@object-reloc-keep-cache.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3281">i915#3281</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8400/shard-rkl-5/igt@api_intel_bb@object-reloc-keep-cache.html">PASS</a> +3 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@drm_fdinfo@most-busy-idle-check-all@rcs0:</p>
-<ul>
-<li>{shard-rkl}:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12631/shard-rkl-3/igt@drm_fdinfo@most-busy-idle-check-all@rcs0.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7742">i915#7742</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8400/shard-rkl-2/igt@drm_fdinfo@most-busy-idle-check-all@rcs0.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@fbdev@write:</p>
-<ul>
-<li>{shard-rkl}:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12631/shard-rkl-2/igt@fbdev@write.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2582">i915#2582</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8400/shard-rkl-6/igt@fbdev@write.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@gem_eio@reset-stress:</p>
-<ul>
-<li>{shard-dg1}:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12631/shard-dg1-14/igt@gem_eio@reset-stress.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5784">i915#5784</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8400/shard-dg1-12/igt@gem_eio@reset-stress.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@gem_eio@suspend:</p>
-<ul>
-<li>{shard-rkl}:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12631/shard-rkl-4/igt@gem_eio@suspend.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7052">i915#7052</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8400/shard-rkl-2/igt@gem_eio@suspend.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@gem_exec_fair@basic-deadline:</p>
-<ul>
-<li>
-<p>{shard-rkl}:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12631/shard-rkl-2/igt@gem_exec_fair@basic-deadline.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2846">i915#2846</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8400/shard-rkl-3/igt@gem_exec_fair@basic-deadline.html">PASS</a></p>
-</li>
-<li>
-<p>shard-glk:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12631/shard-glk8/igt@gem_exec_fair@basic-deadline.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2846">i915#2846</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8400/shard-glk8/igt@gem_exec_fair@basic-deadline.html">PASS</a></p>
-</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_exec_fair@basic-none@rcs0:</p>
-<ul>
-<li>shard-glk:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12631/shard-glk5/igt@gem_exec_fair@basic-none@rcs0.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2842">i915#2842</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8400/shard-glk5/igt@gem_exec_fair@basic-none@rcs0.html">PASS</a> +1 similar issue</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_exec_fair@basic-pace-solo@rcs0:</p>
-<ul>
-<li>{shard-rkl}:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12631/shard-rkl-3/igt@gem_exec_fair@basic-pace-solo@rcs0.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2842">i915#2842</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8400/shard-rkl-5/igt@gem_exec_fair@basic-pace-solo@rcs0.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@gem_exec_schedule@semaphore-power:</p>
-<ul>
-<li>{shard-rkl}:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12631/shard-rkl-2/igt@gem_exec_schedule@semaphore-power.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7276">i915#7276</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8400/shard-rkl-5/igt@gem_exec_schedule@semaphore-power.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@gem_partial_pwrite_pread@reads:</p>
-<ul>
-<li>{shard-rkl}:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12631/shard-rkl-6/igt@gem_partial_pwrite_pread@reads.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3282">i915#3282</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8400/shard-rkl-5/igt@gem_partial_pwrite_pread@reads.html">PASS</a> +3 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@gen9_exec_parse@valid-registers:</p>
-<ul>
-<li>{shard-rkl}:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12631/shard-rkl-4/igt@gen9_exec_parse@valid-registers.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2527">i915#2527</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8400/shard-rkl-5/igt@gen9_exec_parse@valid-registers.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@i915_pm_dc@dc6-dpms:</p>
-<ul>
-<li>
-<p>{shard-rkl}:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12631/shard-rkl-5/igt@i915_pm_dc@dc6-dpms.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3361">i915#3361</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8400/shard-rkl-1/igt@i915_pm_dc@dc6-dpms.html">PASS</a></p>
-</li>
-<li>
-<p>{shard-tglu}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12631/shard-tglu-7/igt@i915_pm_dc@dc6-dpms.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3989">i915#3989</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/454">i915#454</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8400/shard-tglu-2/igt@i915_pm_dc@dc6-dpms.html">PASS</a></p>
-</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_pm_rpm@dpms-lpsp:</p>
-<ul>
-<li>{shard-rkl}:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12631/shard-rkl-1/igt@i915_pm_rpm@dpms-lpsp.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1397">i915#1397</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8400/shard-rkl-6/igt@i915_pm_rpm@dpms-lpsp.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@i915_pm_sseu@full-enable:</p>
-<ul>
-<li>{shard-rkl}:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12631/shard-rkl-1/igt@i915_pm_sseu@full-enable.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4387">i915#4387</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8400/shard-rkl-5/igt@i915_pm_sseu@full-enable.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@mock@sanitycheck:</p>
-<ul>
-<li>shard-snb:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12631/shard-snb5/igt@i915_selftest@mock@sanitycheck.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8400/shard-snb2/igt@i915_selftest@mock@sanitycheck.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@kms_atomic@atomic_plane_damage:</p>
-<ul>
-<li>{shard-rkl}:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12631/shard-rkl-3/igt@kms_atomic@atomic_plane_damage.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4098">i915#4098</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8400/shard-rkl-6/igt@kms_atomic@atomic_plane_damage.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@kms_big_fb@y-tiled-max-hw-stride-64bpp-rotate-0-hflip-async-flip:</p>
-<ul>
-<li>{shard-rkl}:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12631/shard-rkl-4/igt@kms_big_fb@y-tiled-max-hw-stride-64bpp-rotate-0-hflip-async-flip.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1845">i915#1845</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4098">i915#4098</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8400/shard-rkl-6/igt@kms_big_fb@y-tiled-max-hw-stride-64bpp-rotate-0-hflip-async-flip.html">PASS</a> +18 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_cursor_legacy@flip-vs-cursor-crc-atomic:</p>
-<ul>
-<li>{shard-tglu}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12631/shard-tglu-6/igt@kms_cursor_legacy@flip-vs-cursor-crc-atomic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1845">i915#1845</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8400/shard-tglu-3/igt@kms_cursor_legacy@flip-vs-cursor-crc-atomic.html">PASS</a> +1 similar issue</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_cursor_legacy@flip-vs-cursor@atomic-transitions:</p>
-<ul>
-<li>shard-apl:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12631/shard-apl6/igt@kms_cursor_legacy@flip-vs-cursor@atomic-transitions.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2346">i915#2346</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8400/shard-apl2/igt@kms_cursor_legacy@flip-vs-cursor@atomic-transitions.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@kms_fbcon_fbt@psr:</p>
-<ul>
-<li>{shard-rkl}:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12631/shard-rkl-3/igt@kms_fbcon_fbt@psr.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3955">i915#3955</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8400/shard-rkl-6/igt@kms_fbcon_fbt@psr.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@kms_flip@flip-vs-expired-vblank-interruptible@b-hdmi-a1:</p>
-<ul>
-<li>shard-glk:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12631/shard-glk1/igt@kms_flip@flip-vs-expired-vblank-interruptible@b-hdmi-a1.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/79">i915#79</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8400/shard-glk5/igt@kms_flip@flip-vs-expired-vblank-interruptible@b-hdmi-a1.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@kms_frontbuffer_tracking@fbc-1p-primscrn-pri-indfb-draw-pwrite:</p>
-<ul>
-<li>{shard-rkl}:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12631/shard-rkl-2/igt@kms_frontbuffer_tracking@fbc-1p-primscrn-pri-indfb-draw-pwrite.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1849">i915#1849</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4098">i915#4098</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8400/shard-rkl-6/igt@kms_frontbuffer_tracking@fbc-1p-primscrn-pri-indfb-draw-pwrite.html">PASS</a> +12 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_plane@pixel-format-source-clamping@pipe-b-planes:</p>
-<ul>
-<li>{shard-tglu}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12631/shard-tglu-6/igt@kms_plane@pixel-format-source-clamping@pipe-b-planes.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1849">i915#1849</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3558">i915#3558</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8400/shard-tglu-3/igt@kms_plane@pixel-format-source-clamping@pipe-b-planes.html">PASS</a> +3 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_properties@crtc-properties-atomic:</p>
-<ul>
-<li>{shard-tglu}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12631/shard-tglu-6/igt@kms_properties@crtc-properties-atomic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1849">i915#1849</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8400/shard-tglu-1/igt@kms_properties@crtc-properties-atomic.html">PASS</a> +1 similar issue</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr@sprite_mmap_gtt:</p>
-<ul>
-<li>{shard-rkl}:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12631/shard-rkl-1/igt@kms_psr@sprite_mmap_gtt.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1072">i915#1072</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8400/shard-rkl-6/igt@kms_psr@sprite_mmap_gtt.html">PASS</a> +1 similar issue</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_universal_plane@universal-plane-pageflip-windowed-pipe-a:</p>
-<ul>
-<li>{shard-tglu}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12631/shard-tglu-6/igt@kms_universal_plane@universal-plane-pageflip-windowed-pipe-a.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109274">fdo#109274</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8400/shard-tglu-5/igt@kms_universal_plane@universal-plane-pageflip-windowed-pipe-a.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@kms_vblank@pipe-b-ts-continuation-idle:</p>
-<ul>
-<li>{shard-tglu}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12631/shard-tglu-6/igt@kms_vblank@pipe-b-ts-continuation-idle.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7651">i915#7651</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8400/shard-tglu-1/igt@kms_vblank@pipe-b-ts-continuation-idle.html">PASS</a> +1 similar issue</li>
-</ul>
-</li>
-<li>
-<p>igt@perf@gen12-mi-rpc:</p>
-<ul>
-<li>{shard-rkl}:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12631/shard-rkl-5/igt@perf@gen12-mi-rpc.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109289">fdo#109289</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8400/shard-rkl-1/igt@perf@gen12-mi-rpc.html">PASS</a> +1 similar issue</li>
-</ul>
-</li>
-<li>
-<p>igt@perf@polling:</p>
-<ul>
-<li>{shard-rkl}:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12631/shard-rkl-1/igt@perf@polling.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7756">i915#7756</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8400/shard-rkl-2/igt@perf@polling.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_7136 -&gt; IGTPW_8400</li>
-<li>Piglit: piglit_4509 -&gt; None</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_12631: 6bcfacd291ed6ff1ff50a295f970c98d54eabe05 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_8400: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8400/index.html<br />
-  IGT_7136: 31b6af91747ad8c705399c9006cdb81cb1864146 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  piglit_4509: fdc5a4ca11124ab8413c7988896eec4c97336694 @ git://anongit.freedesktop.org/piglit</p>
-
-</body>
-</html>
-
---===============1347900480342953367==--
+On 2023-01-17 at 15:06:01 +0100, Mauro Carvalho Chehab wrote:
+> From: Mauro Carvalho Chehab <mchehab@kernel.org>
+> 
+> Currently, the tool supports only info files, provided by
+> lcov tool. While this works, the info output lacks support to
+> properly identify what function is related to branches and
+> lines. Such limitation doesn't exist with json. So, add
+----------------------------------------------- ^^^
+s/. So,/ so /
+
+> support for parsing it.
+> 
+> Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+
+Acked-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+
+> ---
+>  scripts/code_cov_parse_info | 441 ++++++++++++++++++++++++++++++------
+>  1 file changed, 366 insertions(+), 75 deletions(-)
+>  mode change 100755 => 100644 scripts/code_cov_parse_info
+> 
+> diff --git a/scripts/code_cov_parse_info b/scripts/code_cov_parse_info
+> old mode 100755
+> new mode 100644
+> index 3982dbd513c4..80a9f1c25540
+> --- a/scripts/code_cov_parse_info
+> +++ b/scripts/code_cov_parse_info
+> @@ -28,6 +28,16 @@ my $verbose = 0;
+>  my $ignore_unused = 0;
+>  my $skip_func = 0;
+>  
+> +my $has_json_support = eval {
+> +	require Cpanel::JSON::XS;
+> +	Cpanel::JSON::XS->import(qw(decode_json));
+> +	1;
+> +};
+> +
+> +if (!$has_json_support) {
+> +	print "Warning: System doesn't have Cpanel::JSON::XS. Can't use gcov directly.\n";
+> +}
+> +
+>  sub is_function_excluded($)
+>  {
+>  	return 0 if (!@func_include_regexes && !@func_exclude_regexes);
+> @@ -76,7 +86,285 @@ sub is_file_excluded($)
+>  # Use something that comes before any real function
+>  my $before_sf = "!!!!";
+>  
+> -sub parse_info_data($)
+> +sub parse_json_gcov_v1($$)
+> +{
+> +	my $file = shift;
+> +	my $json = shift;
+> +
+> +	my $was_used = 0;
+> +	my $has_func = 0;
+> +	my $ignore = 0;
+> +
+> +	my $cur_test = $file;
+> +	$cur_test =~ s#^.*/##;
+> +	$cur_test =~ s#\.json$##;
+> +	$test_names{$cur_test} = 1;
+> +
+> +	# Store the common JSON data into the record
+> +	for my $key (keys %$json) {
+> +		next if ($key eq "files");
+> +		next if ($key eq "functions");
+> +		next if ($key eq "lines");
+> +		# Store any extra data
+> +		$record{$key} = $json->{$key};
+> +	}
+> +	# Store test name at the record
+> +	$record{tests}{$cur_test} = 1;
+> +
+> +	for my $file_ref (@{$json->{'files'}}) {
+> +		my $source = $file_ref->{'file'};
+> +
+> +		$files{$source} = 1;
+> +		next if is_file_excluded($source);
+> +
+> +		# Parse functions
+> +		for my $func_ref (@{$file_ref->{'functions'}}) {
+> +			my $func = $func_ref->{'name'};
+> +
+> +			next if is_function_excluded($func);
+> +
+> +			# Negative gcov results are possible, as reported at:
+> +			# https://gcc.gnu.org/bugzilla/show_bug.cgi?id=67937
+> +			# Lcov ignores those. So, let's do the same here.
+> +			$func_ref->{'execution_count'} = 0 if ($func_ref->{'execution_count'} < 0);
+> +
+> +			# Store the record
+> +			for my $key (keys %$func_ref) {
+> +				if ($key eq "execution_count") {
+> +					$record{files}{$source}{func}{$func}{$key} += $func_ref->{$key};
+> +				} else {
+> +					$record{files}{$source}{func}{$func}{$key} = $func_ref->{$key};
+> +				}
+> +			}
+> +
+> +			$all_func{$func}{$source}->{ln} = $func_ref->{'start_line'};
+> +			$all_func{$func}{$source}->{end_ln} = $func_ref->{'end_line'};
+> +
+> +			if ($func_ref->{'execution_count'} > 0) {
+> +				$used_func{$func}{$source}->{count} += $func_ref->{'execution_count'};
+> +				$was_used = 1;
+> +			}
+> +		}
+> +		next if ($ignore_unused && !$was_used);
+> +		$used_source{$source} = 1;
+> +
+> +		# Parse lines and branches
+> +		for my $line_ref (@{$file_ref->{'lines'}}) {
+> +			my $ln = $line_ref->{'line_number'};
+> +
+> +			# Negative gcov results are possible, as reported at:
+> +			# https://gcc.gnu.org/bugzilla/show_bug.cgi?id=67937
+> +			# Lcov ignores those. So, let's do the same here.
+> +			$line_ref->{'count'} = 0 if ($line_ref->{'count'} < 0);
+> +
+> +			my $func = $line_ref->{'function_name'};
+> +			if (!$func) {
+> +				# Ignore DA/BRDA that aren't associated with
+> +				# functions. Those are present on header files
+> +				# (maybe defines?)
+> +				next if (@func_include_regexes);
+> +
+> +				# Otherwise place them in separate
+> +				$func = $before_sf;
+> +			} else {
+> +				next if is_function_excluded($func);
+> +			}
+> +
+> +			# Store the record
+> +			for my $key (keys %$line_ref) {
+> +				next if ($key eq "line_number");
+> +
+> +				# Branches will be handled in separate
+> +				next if ($key eq "branches");
+> +				if ($key eq "count") {
+> +					$record{files}{$source}{line}{$ln}{$key} += $line_ref->{$key};
+> +				} else {
+> +					$record{files}{$source}{line}{$ln}{$key} = $line_ref->{$key};
+> +				}
+> +			}
+> +			$all_line{$source}{$ln} += $line_ref->{'count'};
+> +
+> +			my $i = 0;
+> +			for my $branch_ref (@{$line_ref->{'branches'}}) {
+> +				my $taken = $branch_ref->{'count'};
+> +				my $where = sprintf "%d,%d,%d", $ln, 0, $i;
+> +
+> +				# Negative gcov results are possible, as
+> +				# reported at:
+> +				# https://gcc.gnu.org/bugzilla/show_bug.cgi?id=67937
+> +				# Lcov ignores those. So, let's do the same
+> +				# here.
+> +				$branch_ref->{'count'} = 0 if ($branch_ref->{'count'} < 0);
+> +
+> +				for my $key (keys %$branch_ref) {
+> +					if ($key eq "count") {
+> +						$record{files}{$source}{line}{$ln}{branches}[$i]{$key} += $branch_ref->{$key};
+> +					} else {
+> +						$record{files}{$source}{line}{$ln}{branches}[$i]{$key} = $branch_ref->{$key};
+> +					}
+> +				}
+> +
+> +				$all_branch{$source}{$where}{count} += $taken;
+> +				$i++;
+> +			}
+> +			if (!defined($record{files}{$source}{line}{$ln}{branches})) {
+> +				@{$record{files}{$source}{line}{$ln}{branches}} = ();
+> +			}
+> +		}
+> +	}
+> +
+> +	# As the record was changed, we need to use a different format name
+> +	$record{format_version} = "parse_info v1.0";
+> +}
+> +
+> +sub parse_json_internal_format_v1($$)
+> +{
+> +	my $file = shift;
+> +	my $json = shift;
+> +
+> +	my $was_used = 0;
+> +	my $has_func = 0;
+> +	my $ignore = 0;
+> +
+> +	# Store the common JSON data into the record
+> +	for my $key (keys %$json) {
+> +		next if ($key eq "files");
+> +		next if ($key eq "functions");
+> +		next if ($key eq "lines");
+> +		# Store any extra data
+> +		$record{$key} = $json->{$key};
+> +	}
+> +
+> +	for my $test (keys %{$json->{'tests'}}) {
+> +		$test_names{$test} = 1;
+> +	}
+> +
+> +	for my $source (keys %{$json->{'files'}}) {
+> +		$files{$source} = 1;
+> +		next if is_file_excluded($source);
+> +
+> +		my $file_ref = \%{$json->{'files'}{$source}};
+> +
+> +		# Parse functions
+> +		for my $func (keys %{$file_ref->{func}}) {
+> +			next if is_function_excluded($func);
+> +
+> +			my $func_ref = \%{$file_ref->{func}{$func}};
+> +
+> +			# Store the record
+> +			for my $key (keys %$func_ref) {
+> +				if ($key eq "execution_count") {
+> +					$record{files}{$source}{func}{$func}{$key} += $func_ref->{$key};
+> +				} else {
+> +					$record{files}{$source}{func}{$func}{$key} = $func_ref->{$key};
+> +				}
+> +			}
+> +
+> +			$all_func{$func}{$source}->{ln} = $func_ref->{'start_line'};
+> +			$all_func{$func}{$source}->{end_ln} = $func_ref->{'end_line'};
+> +
+> +			if ($func_ref->{'execution_count'} > 0) {
+> +				$used_func{$func}{$source}->{count} += $func_ref->{'execution_count'};
+> +				$was_used = 1;
+> +			}
+> +		}
+> +		next if ($ignore_unused && !$was_used);
+> +		$used_source{$source} = 1;
+> +
+> +		# Parse lines and branches
+> +		for my $ln (keys %{$file_ref->{line}}) {
+> +			my $line_ref = \%{$file_ref->{line}{$ln}};
+> +			my $func = $line_ref->{'function_name'};
+> +			if (!$func) {
+> +				# Ignore DA/BRDA that aren't associated with
+> +				# functions. Those are present on header files
+> +				# (maybe defines?)
+> +				next if (@func_include_regexes);
+> +
+> +				# Otherwise place them in separate
+> +				$func = $before_sf;
+> +			} else {
+> +				next if is_function_excluded($func);
+> +			}
+> +
+> +			# Store the record
+> +			for my $key (keys %$line_ref) {
+> +				next if ($key eq "line_number");
+> +
+> +				# Branches will be handled in separate
+> +				next if ($key eq "branches");
+> +				if ($key eq "count") {
+> +					$record{files}{$source}{line}{$ln}{$key} += $line_ref->{$key};
+> +				} else {
+> +					$record{files}{$source}{line}{$ln}{$key} = $line_ref->{$key};
+> +				}
+> +			}
+> +			$all_line{$source}{$ln} += $line_ref->{'count'};
+> +
+> +			my $i = 0;
+> +			for my $branch_ref (@{$line_ref->{'branches'}}) {
+> +				my $taken = $branch_ref->{'count'};
+> +				my $where = sprintf "%d,%d,%d", $ln, 0, $i;
+> +
+> +				# Negative gcov results are possible, as
+> +				# reported at:
+> +				# https://gcc.gnu.org/bugzilla/show_bug.cgi?id=67937
+> +				# Lcov ignores those. So, let's do the same
+> +				# here.
+> +				$branch_ref->{'count'} = 0 if ($branch_ref->{'count'} < 0);
+> +
+> +				for my $key (keys %$branch_ref) {
+> +					if ($key eq "count") {
+> +						$record{files}{$source}{line}{$ln}{branches}[$i]{$key} += $branch_ref->{$key};
+> +					} else {
+> +						$record{files}{$source}{line}{$ln}{branches}[$i]{$key} = $branch_ref->{$key};
+> +					}
+> +				}
+> +
+> +				$all_branch{$source}{$where}{count} += $taken;
+> +				$i++;
+> +			}
+> +			if (!defined($record{files}{$source}{line}{$ln}{branches})) {
+> +				@{$record{files}{$source}{line}{$ln}{branches}} = ();
+> +			}
+> +		}
+> +	}
+> +}
+> +
+> +sub read_json($)
+> +{
+> +	my $file = shift;
+> +
+> +	if (!$has_json_support) {
+> +		die "Can't parse json as system doesn't have Cpanel::JSON::XS.\n";
+> +	}
+> +
+> +	# Read JSON data
+> +	open IN, $file or die "can't open $file";
+> +	while (<IN>) {
+> +		my $json = eval {
+> +			Cpanel::JSON::XS::decode_json($_)
+> +		};
+> +
+> +		if (!$json) {
+> +			printf "Failed to parse file $file, line $.\n";
+> +			next;
+> +		}
+> +		if ($json->{'format_version'} eq '1') {
+> +			parse_json_gcov_v1($file, $json);
+> +		} elsif ($json->{'format_version'} eq 'parse_info v1.0') {
+> +			parse_json_internal_format_v1($file, $json);
+> +		} else {
+> +			if ($json->{'format_version'}) {
+> +				die "Can't parse JSON version %d on file $file\n", $json->{'format_version'};
+> +			}
+> +			die "Unknown JSON format on file $file\n";
+> +		}
+> +	}
+> +	close IN;
+> +}
+> +
+> +sub read_info($)
+>  {
+>  	my $file = shift;
+>  	my $was_used = 0;
+> @@ -98,6 +386,7 @@ sub parse_info_data($)
+>  			if ($1 ne $cur_test) {
+>  				$cur_test = $1;
+>  				$test_names{$cur_test} = 1;
+> +				$record{tests}{$cur_test} = 1;
+>  			}
+>  			$source = $before_sf;
+>  			$func = $before_sf;
+> @@ -158,7 +447,7 @@ sub parse_info_data($)
+>  
+>  			$skip_func = 0;
+>  
+> -			$record{$source}{$func}{fn} = $ln;
+> +			$record{files}{$source}{func}{$func}{start_line} = $ln;
+>  			$all_func{$func}{$source}->{ln} = $ln;
+>  			next;
+>  		}
+> @@ -186,7 +475,7 @@ sub parse_info_data($)
+>  			$skip_func = 0;
+>  			$was_used = 1;
+>  
+> -			$record{$source}{$func}{fnda} += $count;
+> +			$record{files}{$source}{func}{$func}{execution_count} += $count;
+>  			$used_func{$func}{$source}->{count} += $count;
+>  			next;
+>  		}
+> @@ -200,15 +489,10 @@ sub parse_info_data($)
+>  
+>  		# FNF:<number of functions found>
+>  		if (m/^FNF:(-?\d+)/) {
+> -			$record{$source}{$func}{fnf} = $1;
+>  			next;
+>  		}
+>  		# FNH:<number of function hit>
+>  		if (m/^FNH:(-?\d+)/) {
+> -			my $hits = $1;
+> -			if (!defined($record{$source}{$func}{fnh}) || $record{$source}{$func}{fnh} < $hits) {
+> -				$record{$source}{$func}{fnh} = $hits;
+> -			}
+>  			next;
+>  		}
+>  
+> @@ -221,6 +505,10 @@ sub parse_info_data($)
+>  			my $branch = $3;
+>  			my $taken = $4;
+>  
+> +			if ($block != 0) {
+> +				print "Warning: unexpected block $block at line $.\n";
+> +			}
+> +
+>  			my $where = "$ln,$block,$branch";
+>  
+>  			$taken = 0 if ($taken eq '-');
+> @@ -232,22 +520,17 @@ sub parse_info_data($)
+>  
+>  			$was_used = 1 if ($taken > 0);
+>  
+> -			$record{$source}{$func}{brda}{$where} += $taken;
+> -			$all_branch{$source}{"$where"} += $taken;
+> +			$record{files}{$source}{line}{$ln}{branches}[$branch]{count} += $taken;
+> +			$all_branch{$source}{$where}{count} += $taken;
+>  			next;
+>  		}
+>  
+>  		# BRF:<number of branches found>
+>  		if (m/^BRF:(-?\d+)/) {
+> -			$record{$source}{$func}{brf} = $1;
+>  			next;
+>  		}
+>  		# BRH:<number of branches hit>
+>  		if (m/^BRH:(-?\d+)/) {
+> -			my $hits = $1;
+> -			if (!defined($record{$source}{$func}{brh}) || $record{$source}{$func}{brh} < $hits) {
+> -				$record{$source}{$func}{brh} = $hits;
+> -			}
+>  			next;
+>  		}
+>  
+> @@ -265,23 +548,23 @@ sub parse_info_data($)
+>  
+>  			$was_used = 1 if ($count > 0);
+>  
+> -			$record{$source}{$func}{da}{$ln} += $count;
+> -			$all_line{$source}{"$ln"} += $count;
+> +			$record{files}{$source}{line}{$ln}{count} += $count;
+> +			if (!defined($record{files}{$source}{line}{$ln}{branches})) {
+> +				@{$record{files}{$source}{line}{$ln}{branches}} = ();
+> +			}
+> +
+> +			$all_line{$source}{$ln} += $count;
+> +
+>  			next;
+>  		}
+>  
+>  		# LF:<number of instrumented lines>
+>  		if (m/^LF:(-?\d+)/) {
+> -			$record{$source}{$func}{lf} = $1;
+>  			next;
+>  		}
+>  
+>  		# LH:<number of lines with a non-zero execution count>
+>  		if (m/^LH:(-?\d+)/) {
+> -			my $hits = $1;
+> -			if (!defined($record{$source}{$func}{lh}) || $record{$source}{$func}{lh} < $hits) {
+> -				$record{$source}{$func}{lh} = $hits;
+> -			}
+>  			next;
+>  		}
+>  
+> @@ -306,74 +589,73 @@ sub sort_where($$)
+>  	return $a[2] <=> $b[2];
+>  }
+>  
+> -sub write_filtered_file($)
+> +sub write_json_file($)
+>  {
+> -	my $filter = shift;
+> +	my $fname = shift;
+>  
+> -	my $filtered = "";
+> +	if (!$has_json_support) {
+> +		die "Can't parse json as system doesn't have Cpanel::JSON::XS.\n";
+> +	}
+> +
+> +	my $data = eval {
+> +		Cpanel::JSON::XS::encode_json(\%record)
+> +	};
+> +
+> +	open OUT, ">$fname" or die "Can't open $fname";
+> +	print OUT $data or die "Failed to write to $fname";
+> +	close OUT or die "Failed to close to $fname";
+> +}
+> +
+> +sub write_info_file($)
+> +{
+> +	my $fname = shift;
+> +	my $data = "";
+>  
+>  	if ($title eq "") {
+>  		foreach my $testname(sort keys %test_names) {
+> -			$filtered .= "TN:$testname\n";
+> +			$data .= "TN:$testname\n";
+>  		}
+>  	} else {
+> -		$filtered .= "TN:$title\n";
+> +		$data .= "TN:$title\n";
+>  	}
+>  
+> -	# Generates filtered data
+> -	foreach my $source(sort keys %record) {
+> +	# Fills $data with the contents to be stored at the file
+> +	foreach my $source(sort keys %{$record{files}}) {
+>  		next if (!$used_source{$source});
+>  
+>  		if ($source ne $before_sf) {
+> -			$filtered .= "SF:$source\n";
+> +			$data .= "SF:$source\n";
+>  		}
+>  
+> -		foreach my $func(sort keys %{ $record{$source} }) {
+> +		foreach my $func(sort keys %{ $record{files}{$source}{func} }) {
+>  			if ($func ne $before_sf) {
+>  				my $fn;
+>  				my $fnda;
+>  
+> -				if (defined($record{$source}{$func}{fn})) {
+> -					$filtered .= "FN:" . $record{$source}{$func}{fn} . ",$func\n";
+> -				}
+> -				if (defined($record{$source}{$func}{fnda})) {
+> -					$filtered .= "FNDA:" . $record{$source}{$func}{fnda} . ",$func\n";
+> +				if (defined($record{files}{$source}{func}{$func}{start_line})) {
+> +					$data .= "FN:" . $record{files}{$source}{func}{$func}{start_line} . ",$func\n";
+>  				}
+> -				if ($record{$source}{fnf}) {
+> -					$filtered .= "FNF:". $record{$source}{$func}{fnf} ."\n";
+> +				if (defined($record{files}{$source}{func}{$func}{execution_count})) {
+> +					$data .= "FNDA:" . $record{files}{$source}{func}{$func}{execution_count} . ",$func\n";
+>  				}
+> -				if ($record{$source}{fnh}) {
+> -					$filtered .= "FNH:". $record{$source}{$func}{fnh} ."\n";
+> -				}
+> -			}
+>  
+> -			foreach my $ln(sort { $a <=> $b } keys %{ $record{$source}{$func}{da} }) {
+> -				$filtered .= "DA:$ln," . $record{$source}{$func}{da}{$ln} . "\n";
+>  			}
+> -			foreach my $where(sort sort_where keys %{ $record{$source}{$func}{brda} }) {
+> -				my $taken = $record{$source}{$func}{brda}{$where};
+> +		}
+> +
+> +		foreach my $ln(sort { $a <=> $b } keys %{ $record{files}{$source}{line} }) {
+> +			$data .= "DA:$ln," . $record{files}{$source}{line}{$ln}{count} . "\n";
+> +			for (my $i = 0; $i < scalar @{$record{files}{$source}{line}{$ln}{branches}}; $i++) {
+> +				my $taken = $record{files}{$source}{line}{$ln}{branches}[$i]{count};
+>  				$taken = "-" if (!$taken);
+> -				$filtered .= "BRDA:$where,$taken\n";
+> -			}
+> -			if ($record{$source}{$func}{brf}) {
+> -				$filtered .= "BRF:". $record{$source}{$func}{brf} ."\n";
+> -			}
+> -			if ($record{$source}{$func}{brh}) {
+> -				$filtered .= "BRH:". $record{$source}{$func}{brh} ."\n";
+> -			}
+> -			if ($record{$source}{$func}{lf}) {
+> -				$filtered .= "LF:". $record{$source}{$func}{lf} ."\n";
+> -			}
+> -			if ($record{$source}{$func}{lh}) {
+> -				$filtered .= "LH:". $record{$source}{$func}{lh} ."\n";
+> +				$data .= "BRDA:$ln,0,$i,$taken\n";
+>  			}
+>  		}
+>  
+> -		$filtered .= "end_of_record\n";
+> +		$data .= "end_of_record\n";
+>  	}
+> -	open OUT, ">$filter" or die "Can't open $filter";
+> -	print OUT $filtered or die "Failed to write to $filter";
+> -	close OUT or die "Failed to close to $filter";
+> +	open OUT, ">$fname" or die "Can't open $fname";
+> +	print OUT $data or die "Failed to write to $fname";
+> +	close OUT or die "Failed to close to $fname";
+>  }
+>  
+>  sub print_code_coverage($$$)
+> @@ -463,7 +745,7 @@ sub gen_stats()
+>  
+>  		foreach my $where (keys(%{$all_branch{$source}})) {
+>  			$stats{"branch_count"}++;
+> -			$stats{"branch_reached"}++ if ($all_branch{$source}{$where} != 0);
+> +			$stats{"branch_reached"}++ if ($all_branch{$source}{$where}{count} != 0);
+>  		}
+>  	}
+>  
+> @@ -622,7 +904,7 @@ sub generate_report($)
+>  		}
+>  		foreach my $source (keys(%{$report{$f}{"all_branch"}})) {
+>  			foreach my $where (keys(%{$report{$f}{"all_branch"}{$source}})) {
+> -				$all_branch{$source}{"$where"} += $report{$f}{"all_branch"}{$source}{$where};
+> +				$all_branch{$source}{"$where"}{count} += $report{$f}{"all_branch"}{$source}{$where}{count};
+>  			}
+>  		}
+>  		for my $source(keys(%{$report{$f}{"files"}})) {
+> @@ -902,7 +1184,7 @@ sub check_source_branches()
+>  
+>  		my @lines;
+>  		foreach my $where (sort keys %{$all_branch{$source}}) {
+> -			my $taken = $all_branch{$source}{$where};
+> +			my $taken = $all_branch{$source}{$where}{count};
+>  			next if ($taken > 0);
+>  
+>  			next if !($where =~ m/^(-?\d+),(-?\d+),(-?\d+)/);
+> @@ -913,13 +1195,14 @@ sub check_source_branches()
+>  			$branch = $3;
+>  
+>  			if (!@lines) {
+> -				open IN, "$source";
+> +				open IN, "$source" || die "File $source not found. Can't check branches\n";
+>  				@lines = <IN>;
+>  				close IN;
+>  			}
+>  
+>  			if ($ln >= $#lines) {
+> -				print "Error: $ln is bigger than $#lines. Can't print branch!\n";
+> +				die "$source:$ln line is bigger than the number of lines at the file ($#lines lines)\n";
+> +				return;
+>  			}
+>  
+>  			my $func = $all_branch{$source}{$where}{func};
+> @@ -971,7 +1254,7 @@ sub check_source_branches()
+>  my $print_used;
+>  my $print_unused;
+>  my $stat;
+> -my $filter;
+> +my $output_file;
+>  my $help;
+>  my $man;
+>  my $func_filters;
+> @@ -986,7 +1269,7 @@ GetOptions(
+>  	"print-coverage|print_coverage|print|p" => \$print_used,
+>  	"print-unused|u" => \$print_unused,
+>  	"stat|statistics" => \$stat,
+> -	"output|o=s" => \$filter,
+> +	"output|o=s" => \$output_file,
+>  	"verbose|v" => \$verbose,
+>  	"ignore-unused|ignore_unused" => \$ignore_unused,
+>  	"only-i915|only_i915" => \$only_i915,
+> @@ -1018,9 +1301,9 @@ if ($#ARGV < 0) {
+>  }
+>  
+>  # At least one action should be specified
+> -pod2usage(1) if (!$print_used && !$filter && !$stat && !$print_unused && !$gen_report && !$check_branches);
+> +pod2usage(1) if (!$print_used && !$output_file && !$stat && !$print_unused && !$gen_report && !$check_branches);
+>  
+> -pod2usage(1) if ($gen_report && ($print_used || $filter || $stat || $print_unused));
+> +pod2usage(1) if ($gen_report && ($print_used || $output_file || $stat || $print_unused));
+>  
+>  my $filter_str = "";
+>  my $has_filter;
+> @@ -1063,7 +1346,11 @@ if ($ignore_unused) {
+>  }
+>  
+>  foreach my $f (@ARGV) {
+> -	parse_info_data($f);
+> +	if ($f =~ /.json$/) {
+> +		read_json($f);
+> +	} else {
+> +		read_info($f);
+> +	}
+>  
+>  	if ($gen_report) {
+>  		$f =~ s,.*/,,;
+> @@ -1137,8 +1424,12 @@ if ($show_files) {
+>  	}
+>  }
+>  
+> -if ($filter) {
+> -	write_filtered_file($filter);
+> +if ($output_file) {
+> +	if ($output_file =~ /.json$/) {
+> +		write_json_file($output_file);
+> +	} else {
+> +		write_info_file($output_file);
+> +	}
+>  }
+>  
+>  __END__
+> -- 
+> 2.39.0
+> 
