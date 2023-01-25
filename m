@@ -1,17 +1,23 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id EFA4210E77F
- for <igt-dev@lists.freedesktop.org>; Wed, 25 Jan 2023 11:03:43 +0000 (UTC)
-From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Wed, 25 Jan 2023 12:03:29 +0100
-Message-Id: <20230125110329.41260-3-zbigniew.kempczynski@intel.com>
-In-Reply-To: <20230125110329.41260-1-zbigniew.kempczynski@intel.com>
-References: <20230125110329.41260-1-zbigniew.kempczynski@intel.com>
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DB14D10E7B6
+ for <igt-dev@lists.freedesktop.org>; Wed, 25 Jan 2023 12:18:57 +0000 (UTC)
+From: "Gupta, Anshuman" <anshuman.gupta@intel.com>
+To: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
+Date: Wed, 25 Jan 2023 12:18:51 +0000
+Message-ID: <CY5PR11MB6211EED8136BF4C659ADC4A095CE9@CY5PR11MB6211.namprd11.prod.outlook.com>
+References: <20230109120205.2259410-1-anshuman.gupta@intel.com>
+ <20230109120205.2259410-3-anshuman.gupta@intel.com>
+ <9e10dbb2-eaf3-6bbe-7461-b34fe818fbd9@intel.com>
+ <CY5PR11MB6211BFC6A04AFB32F7F528C495FF9@CY5PR11MB6211.namprd11.prod.outlook.com>
+ <87h6wyay7p.wl-ashutosh.dixit@intel.com>
+In-Reply-To: <87h6wyay7p.wl-ashutosh.dixit@intel.com>
+Content-Language: en-US
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 2/2] HAX: exercise gem_tiled_fence_blits only
+Subject: Re: [igt-dev] [PATCH i-g-t 2/2] tests/device_reset: Add warm_reset
+ test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,199 +25,85 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Nilawar,
+ Badal" <badal.nilawar@intel.com>, "Vivi, Rodrigo" <rodrigo.vivi@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
----
- tests/intel-ci/fast-feedback.testlist | 176 +-------------------------
- 1 file changed, 2 insertions(+), 174 deletions(-)
 
-diff --git a/tests/intel-ci/fast-feedback.testlist b/tests/intel-ci/fast-feedback.testlist
-index 4188e97375..313808b174 100644
---- a/tests/intel-ci/fast-feedback.testlist
-+++ b/tests/intel-ci/fast-feedback.testlist
-@@ -1,178 +1,6 @@
- # Try to load the driver if it's not available yet.
--igt@i915_module_load@load
- 
--# Keep alphabetically sorted by default
--igt@core_auth@basic-auth
--igt@debugfs_test@read_all_entries
--igt@debugfs_test@basic-hwmon
--igt@fbdev@eof
--igt@fbdev@info
--igt@fbdev@nullptr
--igt@fbdev@read
--igt@fbdev@write
--igt@gem_basic@bad-close
--igt@gem_basic@create-close
--igt@gem_basic@create-fd-close
--igt@gem_busy@busy@all-engines
--igt@gem_close_race@basic-process
--igt@gem_close_race@basic-threads
--igt@gem_ctx_create@basic
--igt@gem_ctx_create@basic-files
--igt@gem_ctx_exec@basic
--igt@gem_exec_basic@basic
--igt@gem_exec_create@basic
--igt@gem_exec_fence@basic-busy
--igt@gem_exec_fence@basic-wait
--igt@gem_exec_fence@basic-await
--igt@gem_exec_fence@nb-await
--igt@gem_exec_gttfill@basic
--igt@gem_exec_parallel@engines
--igt@gem_exec_store@basic
--igt@gem_flink_basic@bad-flink
--igt@gem_flink_basic@bad-open
--igt@gem_flink_basic@basic
--igt@gem_flink_basic@double-flink
--igt@gem_flink_basic@flink-lifetime
--igt@gem_huc_copy@huc-copy
--igt@gem_linear_blits@basic
--igt@gem_mmap@basic
--igt@gem_mmap_gtt@basic
--igt@gem_render_linear_blits@basic
--igt@gem_render_tiled_blits@basic
--igt@gem_ringfill@basic-all
--igt@gem_softpin@allocator-basic
--igt@gem_softpin@allocator-basic-reserve
--igt@gem_softpin@safe-alignment
--igt@gem_sync@basic-all
--igt@gem_sync@basic-each
--igt@gem_tiled_blits@basic
- igt@gem_tiled_fence_blits@basic
--igt@gem_tiled_pread_basic
--igt@gem_wait@busy@all-engines
--igt@gem_wait@wait@all-engines
--igt@i915_getparams_basic@basic-eu-total
--igt@i915_getparams_basic@basic-subslice-total
--igt@i915_hangman@error-state-basic
--igt@i915_pciid
--igt@kms_addfb_basic@addfb25-bad-modifier
--igt@kms_addfb_basic@addfb25-framebuffer-vs-set-tiling
--igt@kms_addfb_basic@addfb25-modifier-no-flag
--igt@kms_addfb_basic@addfb25-x-tiled-legacy
--igt@kms_addfb_basic@addfb25-x-tiled-mismatch-legacy
--igt@kms_addfb_basic@addfb25-yf-tiled-legacy
--igt@kms_addfb_basic@addfb25-y-tiled-legacy
--igt@kms_addfb_basic@addfb25-y-tiled-small-legacy
--igt@kms_addfb_basic@bad-pitch-0
--igt@kms_addfb_basic@bad-pitch-1024
--igt@kms_addfb_basic@bad-pitch-128
--igt@kms_addfb_basic@bad-pitch-256
--igt@kms_addfb_basic@bad-pitch-32
--igt@kms_addfb_basic@bad-pitch-63
--igt@kms_addfb_basic@bad-pitch-65536
--igt@kms_addfb_basic@bad-pitch-999
--igt@kms_addfb_basic@basic
--igt@kms_addfb_basic@basic-x-tiled-legacy
--igt@kms_addfb_basic@basic-y-tiled-legacy
--igt@kms_addfb_basic@bo-too-small
--igt@kms_addfb_basic@bo-too-small-due-to-tiling
--igt@kms_addfb_basic@clobberred-modifier
--igt@kms_addfb_basic@framebuffer-vs-set-tiling
--igt@kms_addfb_basic@invalid-get-prop
--igt@kms_addfb_basic@invalid-get-prop-any
--igt@kms_addfb_basic@invalid-set-prop
--igt@kms_addfb_basic@invalid-set-prop-any
--igt@kms_addfb_basic@no-handle
--igt@kms_addfb_basic@size-max
--igt@kms_addfb_basic@small-bo
--igt@kms_addfb_basic@tile-pitch-mismatch
--igt@kms_addfb_basic@too-high
--igt@kms_addfb_basic@too-wide
--igt@kms_addfb_basic@unused-handle
--igt@kms_addfb_basic@unused-modifier
--igt@kms_addfb_basic@unused-offsets
--igt@kms_addfb_basic@unused-pitches
--igt@kms_busy@basic
--igt@kms_chamelium_hpd@dp-hpd-fast
--igt@kms_chamelium_edid@dp-edid-read
--igt@kms_chamelium_frames@dp-crc-fast
--igt@kms_chamelium_hpd@hdmi-hpd-fast
--igt@kms_chamelium_edid@hdmi-edid-read
--igt@kms_chamelium_frames@hdmi-crc-fast
--igt@kms_chamelium_hpd@vga-hpd-fast
--igt@kms_chamelium_edid@vga-edid-read
--igt@kms_prop_blob@basic
--igt@kms_cursor_legacy@basic-busy-flip-before-cursor
--igt@kms_cursor_legacy@basic-flip-after-cursor
--igt@kms_cursor_legacy@basic-flip-before-cursor
--igt@kms_flip@basic-flip-vs-dpms
--igt@kms_flip@basic-flip-vs-modeset
--igt@kms_flip@basic-flip-vs-wf_vblank
--igt@kms_flip@basic-plain-flip
--igt@kms_force_connector_basic@force-connector-state
--igt@kms_force_connector_basic@force-edid
--igt@kms_force_connector_basic@force-load-detect
--igt@kms_force_connector_basic@prune-stale-modes
--igt@kms_frontbuffer_tracking@basic
--igt@kms_pipe_crc_basic@compare-crc-sanitycheck
--igt@kms_pipe_crc_basic@hang-read-crc
--igt@kms_pipe_crc_basic@nonblocking-crc
--igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence
--igt@kms_pipe_crc_basic@read-crc
--igt@kms_pipe_crc_basic@read-crc-frame-sequence
--igt@kms_psr@primary_page_flip
--igt@kms_psr@cursor_plane_move
--igt@kms_psr@sprite_plane_onoff
--igt@kms_psr@primary_mmap_gtt
--igt@kms_setmode@basic-clone-single-crtc
--igt@i915_pm_backlight@basic-brightness
--igt@i915_pm_rpm@basic-pci-d3-state
--igt@i915_pm_rpm@basic-rte
--igt@i915_pm_rps@basic-api
--igt@prime_self_import@basic-llseek-bad
--igt@prime_self_import@basic-llseek-size
--igt@prime_self_import@basic-with_fd_dup
--igt@prime_self_import@basic-with_one_bo
--igt@prime_self_import@basic-with_one_bo_two_files
--igt@prime_self_import@basic-with_two_bos
--igt@prime_vgem@basic-fence-flip
--igt@prime_vgem@basic-fence-mmap
--igt@prime_vgem@basic-fence-read
--igt@prime_vgem@basic-gtt
--igt@prime_vgem@basic-read
--igt@prime_vgem@basic-write
--igt@prime_vgem@basic-userptr
--igt@vgem_basic@setversion
--igt@vgem_basic@create
--igt@vgem_basic@debugfs
--igt@vgem_basic@dmabuf-export
--igt@vgem_basic@dmabuf-fence
--igt@vgem_basic@dmabuf-fence-before
--igt@vgem_basic@dmabuf-mmap
--igt@vgem_basic@mmap
--igt@vgem_basic@second-client
--igt@vgem_basic@sysfs
-+igt@gem_tiled_fence_blits@normal
- 
--# All tests that do module unloading and reloading are executed last.
--# They will sometimes reveal issues of earlier tests leaving the
--# driver in a broken state that is not otherwise noticed in that test.
--
--igt@core_hotunplug@unbind-rebind
--igt@vgem_basic@unload
--igt@i915_module_load@reload
--igt@gem_lmem_swapping@basic
--igt@gem_lmem_swapping@parallel-random-engines
--igt@gem_lmem_swapping@random-engines
--igt@gem_lmem_swapping@verify-random
--igt@i915_pm_rpm@module-reload
--
--# Kernel selftests
--igt@i915_selftest@live
--igt@dmabuf@all-tests
--
--# System wide suspend tests
--igt@i915_suspend@basic-s2idle-without-i915
--igt@i915_suspend@basic-s3-without-i915
--igt@gem_exec_suspend@basic-s0
--igt@gem_exec_suspend@basic-s3
--igt@kms_chamelium_hpd@common-hpd-after-suspend
--igt@kms_pipe_crc_basic@suspend-read-crc
-+igt@meta_test@fail-result
--- 
-2.34.1
+
+> -----Original Message-----
+> From: Dixit, Ashutosh <ashutosh.dixit@intel.com>
+> Sent: Wednesday, January 11, 2023 2:45 AM
+> To: Gupta, Anshuman <anshuman.gupta@intel.com>
+> Cc: Tauro, Riana <riana.tauro@intel.com>; igt-dev@lists.freedesktop.org;
+> Iddamsetty, Aravind <aravind.iddamsetty@intel.com>; Nilawar, Badal
+> <badal.nilawar@intel.com>; Vivi, Rodrigo <rodrigo.vivi@intel.com>
+> Subject: Re: [PATCH i-g-t 2/2] tests/device_reset: Add warm_reset test
+>=20
+> On Tue, 10 Jan 2023 06:14:37 -0800, Gupta, Anshuman wrote:
+> > > On 1/9/2023 5:32 PM, Anshuman Gupta wrote:
+> > > > +bool igt_pci_bridge_warm_reset(struct pci_device *dev) {
+> > > > +	uint8_t header_type;
+> > > > +	uint16_t bridge_ctl;
+> > > > +
+> > > > +	if (pci_device_cfg_read_u8(dev, &header_type, PCI_HEADER_TYPE))
+> > > > +		return false;
+> > > > +
+> > > > +	igt_assert_f((header_type & 0x7f) =3D=3D 1, "PCI device is not a
+> > > > +Bridge\n");
+> > > > +
+> > > > +	if (pci_device_cfg_read_u16(dev, &bridge_ctl,
+> > > PCI_TYPE_1_HEADER_BRIDGE_CTL))
+> > > > +		return false;
+> > > > +
+> > > > +	bridge_ctl |=3D  PCI_TYPE_1_SEC_BUS_RESET;
+> > > > +
+> > > > +	if (pci_device_cfg_write_u16(dev, bridge_ctl,
+> > > PCI_TYPE_1_HEADER_BRIDGE_CTL))
+> > > > +		return false;
+> > > > +
+> > >
+> > >
+> > > The pci code adds a minimum reset duration (Trst) delay after setting=
+ the bit.
+> > > Do we need to add the same here?
+> > > https://elixir.bootlin.com/linux/latest/source/drivers/pci/pci.c#L50
+> > > 45
+> > Thanks for review.
+> > Will add delay of 2ms to keep parity with the kernel.
+> > >
+> > > Is restoring sequence not necessary?
+> > I think driver has the responsibility of restoring.
+> > I am not sure about if IGT needs to restore it.
+> > The test itself has sequence of unbind and bind, so driver should resto=
+re it.
+>=20
+> Hmm, not too sure about this stuff but looks like we should follow the en=
+tire
+> sequence in the kernel function pci_reset_secondary_bus()? Thanks Riana f=
+or
+> pointing out.
+I was looking to the kernel source code , it seems by using /sys/bus/pvi/de=
+vices/$bdf/reset and /sys/bus/pvi/devices/$bdf/reset_method
+sysfs we can trigger bus reset i.e warm reset. So we don't need to reinvent=
+ the wheel in IGT. So dropping the patch series.
+Br,
+Anshuman Gupta.=20
+>=20
+> > > > @@ -417,6 +421,7 @@ igt_main
+> > > >			set_device_filter(dev_path);
+> > > >
+> > > >			igt_skip_on(!is_sysfs_reset_supported(dev.fds.dev));
+> > > > +		dev.root =3D igt_device_get_pci_root_port(dev.fds.dev);
+>=20
+> Also is SBR done on the root port or the upstream bridge, in case there i=
+s a
+> bridge in the middle (between the root port and the device/bus)? In which=
+ case
+> this should be pci_device_get_parent_bridge()?
+>=20
+> Thanks.
+> --
+> Ashutosh
