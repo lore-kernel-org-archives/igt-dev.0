@@ -1,18 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5E84110E77D
- for <igt-dev@lists.freedesktop.org>; Wed, 25 Jan 2023 11:03:41 +0000 (UTC)
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EFA4210E77F
+ for <igt-dev@lists.freedesktop.org>; Wed, 25 Jan 2023 11:03:43 +0000 (UTC)
 From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Wed, 25 Jan 2023 12:03:28 +0100
-Message-Id: <20230125110329.41260-2-zbigniew.kempczynski@intel.com>
+Date: Wed, 25 Jan 2023 12:03:29 +0100
+Message-Id: <20230125110329.41260-3-zbigniew.kempczynski@intel.com>
 In-Reply-To: <20230125110329.41260-1-zbigniew.kempczynski@intel.com>
 References: <20230125110329.41260-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 1/2] i915/gem_tiled_fence_blits: Fix
- softpinned version of the test
+Subject: [igt-dev] [PATCH i-g-t 2/2] HAX: exercise gem_tiled_fence_blits only
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,136 +23,195 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Working with larger set on mappable apperture for softpinned version
-of the test we might hit situation buffers randomly taken to blit
-might overlap. Since reloc allocator is keeping offset per handle
-only thing we can do is to pick another pair of buffers until we get
-two non-overlapping ones.
-
-Due to extremely long execution time on RKL I've limited number
-of cores used to blit and verify buffer contents to four. It seems
-ggtt mapping is very slow on this platform comparing to older gens
-(Skylake for example).
-
-Fixes: https://gitlab.freedesktop.org/drm/intel/-/issues/7675
-
 Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 ---
- tests/i915/gem_tiled_fence_blits.c | 46 ++++++++++++++++++++++++------
- 1 file changed, 37 insertions(+), 9 deletions(-)
+ tests/intel-ci/fast-feedback.testlist | 176 +-------------------------
+ 1 file changed, 2 insertions(+), 174 deletions(-)
 
-diff --git a/tests/i915/gem_tiled_fence_blits.c b/tests/i915/gem_tiled_fence_blits.c
-index 1c621d1e3a..8c8f13202a 100644
---- a/tests/i915/gem_tiled_fence_blits.c
-+++ b/tests/i915/gem_tiled_fence_blits.c
-@@ -154,22 +154,29 @@ static void run_test(int fd, int count, uint64_t end)
- 	uint32_t *src_order, *dst_order;
- 	uint32_t *bo, *bo_start_val;
- 	uint32_t start = 0;
--	uint64_t ahnd = 0;
-+	uint64_t ahnd = 0, ahndbb = 0;
+diff --git a/tests/intel-ci/fast-feedback.testlist b/tests/intel-ci/fast-feedback.testlist
+index 4188e97375..313808b174 100644
+--- a/tests/intel-ci/fast-feedback.testlist
++++ b/tests/intel-ci/fast-feedback.testlist
+@@ -1,178 +1,6 @@
+ # Try to load the driver if it's not available yet.
+-igt@i915_module_load@load
  
--	if (!gem_has_relocations(fd))
-+	if (!gem_has_relocations(fd)) {
- 		ahnd = intel_allocator_open_full(fd, 0, 0, end,
- 						 INTEL_ALLOCATOR_RELOC,
- 						 ALLOC_STRATEGY_LOW_TO_HIGH, 0);
-+
-+		/* Use separated vm range for bb */
-+		ahndbb = intel_allocator_open_full(fd, 1, end, 0,
-+						   INTEL_ALLOCATOR_RELOC,
-+						   ALLOC_STRATEGY_LOW_TO_HIGH, 0);
-+	}
-+
- 	memset(reloc, 0, sizeof(reloc));
- 	memset(obj, 0, sizeof(obj));
- 	obj[0].flags = EXEC_OBJECT_NEEDS_FENCE;
- 	obj[1].flags = EXEC_OBJECT_NEEDS_FENCE;
- 	obj[2].handle = gem_create(fd, 4096);
--	obj[2].offset = get_offset(ahnd, obj[2].handle, 4096, 0);
-+	obj[2].offset = get_offset(ahndbb, obj[2].handle, 4096, 0);
- 	if (ahnd) {
- 		obj[0].flags |= EXEC_OBJECT_PINNED | EXEC_OBJECT_WRITE;
- 		obj[1].flags |= EXEC_OBJECT_PINNED;
--		obj[2].flags |= EXEC_OBJECT_PINNED;
-+		obj[2].flags |= EXEC_OBJECT_PINNED | EXEC_OBJECT_SUPPORTS_48B_ADDRESS;
- 	}
- 	obj[2].relocs_ptr = to_user_pointer(reloc);
- 	obj[2].relocation_count = !ahnd ? ARRAY_SIZE(reloc) : 0;
-@@ -206,6 +213,7 @@ static void run_test(int fd, int count, uint64_t end)
- 		for (int i = 0; i < count; i++) {
- 			int src = src_order[i];
- 			int dst = dst_order[i];
-+			int ret;
+-# Keep alphabetically sorted by default
+-igt@core_auth@basic-auth
+-igt@debugfs_test@read_all_entries
+-igt@debugfs_test@basic-hwmon
+-igt@fbdev@eof
+-igt@fbdev@info
+-igt@fbdev@nullptr
+-igt@fbdev@read
+-igt@fbdev@write
+-igt@gem_basic@bad-close
+-igt@gem_basic@create-close
+-igt@gem_basic@create-fd-close
+-igt@gem_busy@busy@all-engines
+-igt@gem_close_race@basic-process
+-igt@gem_close_race@basic-threads
+-igt@gem_ctx_create@basic
+-igt@gem_ctx_create@basic-files
+-igt@gem_ctx_exec@basic
+-igt@gem_exec_basic@basic
+-igt@gem_exec_create@basic
+-igt@gem_exec_fence@basic-busy
+-igt@gem_exec_fence@basic-wait
+-igt@gem_exec_fence@basic-await
+-igt@gem_exec_fence@nb-await
+-igt@gem_exec_gttfill@basic
+-igt@gem_exec_parallel@engines
+-igt@gem_exec_store@basic
+-igt@gem_flink_basic@bad-flink
+-igt@gem_flink_basic@bad-open
+-igt@gem_flink_basic@basic
+-igt@gem_flink_basic@double-flink
+-igt@gem_flink_basic@flink-lifetime
+-igt@gem_huc_copy@huc-copy
+-igt@gem_linear_blits@basic
+-igt@gem_mmap@basic
+-igt@gem_mmap_gtt@basic
+-igt@gem_render_linear_blits@basic
+-igt@gem_render_tiled_blits@basic
+-igt@gem_ringfill@basic-all
+-igt@gem_softpin@allocator-basic
+-igt@gem_softpin@allocator-basic-reserve
+-igt@gem_softpin@safe-alignment
+-igt@gem_sync@basic-all
+-igt@gem_sync@basic-each
+-igt@gem_tiled_blits@basic
+ igt@gem_tiled_fence_blits@basic
+-igt@gem_tiled_pread_basic
+-igt@gem_wait@busy@all-engines
+-igt@gem_wait@wait@all-engines
+-igt@i915_getparams_basic@basic-eu-total
+-igt@i915_getparams_basic@basic-subslice-total
+-igt@i915_hangman@error-state-basic
+-igt@i915_pciid
+-igt@kms_addfb_basic@addfb25-bad-modifier
+-igt@kms_addfb_basic@addfb25-framebuffer-vs-set-tiling
+-igt@kms_addfb_basic@addfb25-modifier-no-flag
+-igt@kms_addfb_basic@addfb25-x-tiled-legacy
+-igt@kms_addfb_basic@addfb25-x-tiled-mismatch-legacy
+-igt@kms_addfb_basic@addfb25-yf-tiled-legacy
+-igt@kms_addfb_basic@addfb25-y-tiled-legacy
+-igt@kms_addfb_basic@addfb25-y-tiled-small-legacy
+-igt@kms_addfb_basic@bad-pitch-0
+-igt@kms_addfb_basic@bad-pitch-1024
+-igt@kms_addfb_basic@bad-pitch-128
+-igt@kms_addfb_basic@bad-pitch-256
+-igt@kms_addfb_basic@bad-pitch-32
+-igt@kms_addfb_basic@bad-pitch-63
+-igt@kms_addfb_basic@bad-pitch-65536
+-igt@kms_addfb_basic@bad-pitch-999
+-igt@kms_addfb_basic@basic
+-igt@kms_addfb_basic@basic-x-tiled-legacy
+-igt@kms_addfb_basic@basic-y-tiled-legacy
+-igt@kms_addfb_basic@bo-too-small
+-igt@kms_addfb_basic@bo-too-small-due-to-tiling
+-igt@kms_addfb_basic@clobberred-modifier
+-igt@kms_addfb_basic@framebuffer-vs-set-tiling
+-igt@kms_addfb_basic@invalid-get-prop
+-igt@kms_addfb_basic@invalid-get-prop-any
+-igt@kms_addfb_basic@invalid-set-prop
+-igt@kms_addfb_basic@invalid-set-prop-any
+-igt@kms_addfb_basic@no-handle
+-igt@kms_addfb_basic@size-max
+-igt@kms_addfb_basic@small-bo
+-igt@kms_addfb_basic@tile-pitch-mismatch
+-igt@kms_addfb_basic@too-high
+-igt@kms_addfb_basic@too-wide
+-igt@kms_addfb_basic@unused-handle
+-igt@kms_addfb_basic@unused-modifier
+-igt@kms_addfb_basic@unused-offsets
+-igt@kms_addfb_basic@unused-pitches
+-igt@kms_busy@basic
+-igt@kms_chamelium_hpd@dp-hpd-fast
+-igt@kms_chamelium_edid@dp-edid-read
+-igt@kms_chamelium_frames@dp-crc-fast
+-igt@kms_chamelium_hpd@hdmi-hpd-fast
+-igt@kms_chamelium_edid@hdmi-edid-read
+-igt@kms_chamelium_frames@hdmi-crc-fast
+-igt@kms_chamelium_hpd@vga-hpd-fast
+-igt@kms_chamelium_edid@vga-edid-read
+-igt@kms_prop_blob@basic
+-igt@kms_cursor_legacy@basic-busy-flip-before-cursor
+-igt@kms_cursor_legacy@basic-flip-after-cursor
+-igt@kms_cursor_legacy@basic-flip-before-cursor
+-igt@kms_flip@basic-flip-vs-dpms
+-igt@kms_flip@basic-flip-vs-modeset
+-igt@kms_flip@basic-flip-vs-wf_vblank
+-igt@kms_flip@basic-plain-flip
+-igt@kms_force_connector_basic@force-connector-state
+-igt@kms_force_connector_basic@force-edid
+-igt@kms_force_connector_basic@force-load-detect
+-igt@kms_force_connector_basic@prune-stale-modes
+-igt@kms_frontbuffer_tracking@basic
+-igt@kms_pipe_crc_basic@compare-crc-sanitycheck
+-igt@kms_pipe_crc_basic@hang-read-crc
+-igt@kms_pipe_crc_basic@nonblocking-crc
+-igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence
+-igt@kms_pipe_crc_basic@read-crc
+-igt@kms_pipe_crc_basic@read-crc-frame-sequence
+-igt@kms_psr@primary_page_flip
+-igt@kms_psr@cursor_plane_move
+-igt@kms_psr@sprite_plane_onoff
+-igt@kms_psr@primary_mmap_gtt
+-igt@kms_setmode@basic-clone-single-crtc
+-igt@i915_pm_backlight@basic-brightness
+-igt@i915_pm_rpm@basic-pci-d3-state
+-igt@i915_pm_rpm@basic-rte
+-igt@i915_pm_rps@basic-api
+-igt@prime_self_import@basic-llseek-bad
+-igt@prime_self_import@basic-llseek-size
+-igt@prime_self_import@basic-with_fd_dup
+-igt@prime_self_import@basic-with_one_bo
+-igt@prime_self_import@basic-with_one_bo_two_files
+-igt@prime_self_import@basic-with_two_bos
+-igt@prime_vgem@basic-fence-flip
+-igt@prime_vgem@basic-fence-mmap
+-igt@prime_vgem@basic-fence-read
+-igt@prime_vgem@basic-gtt
+-igt@prime_vgem@basic-read
+-igt@prime_vgem@basic-write
+-igt@prime_vgem@basic-userptr
+-igt@vgem_basic@setversion
+-igt@vgem_basic@create
+-igt@vgem_basic@debugfs
+-igt@vgem_basic@dmabuf-export
+-igt@vgem_basic@dmabuf-fence
+-igt@vgem_basic@dmabuf-fence-before
+-igt@vgem_basic@dmabuf-mmap
+-igt@vgem_basic@mmap
+-igt@vgem_basic@second-client
+-igt@vgem_basic@sysfs
++igt@gem_tiled_fence_blits@normal
  
- 			if (src == dst)
- 				continue;
-@@ -218,19 +226,33 @@ static void run_test(int fd, int count, uint64_t end)
- 						sizeof(linear), 0);
- 				obj[1].offset = get_offset(ahnd, obj[1].handle,
- 						sizeof(linear), 0);
--				obj[2].offset = get_offset(ahnd, obj[2].handle,
-+				obj[2].offset = get_offset(ahndbb, obj[2].handle,
- 						4096, 0);
- 				update_batch(fd, obj[2].handle, reloc,
- 					     obj[0].offset, obj[1].offset);
- 			}
- 
--			gem_execbuf(fd, &eb);
--			if (ahnd) {
-+			ret = __gem_execbuf(fd, &eb);
-+
-+			/*
-+			 * 1. For relocations execbuf must succeed.
-+			 * 2. For softpinning we might hit situation two buffers
-+			 * would overlap (buffers picked to blit are randomized
-+			 * and we use more buffers aperture can hold).
-+			 * For such situation (ENOSPC) we just repeat pick
-+			 * and execute.
-+			 */
-+			if (!ahnd) {
-+				igt_assert_eq(ret, 0);
-+			} else {
-+				igt_assert(ret == 0 || ret == -ENOSPC);
- 				gem_close(fd, obj[2].handle);
-+				put_offset(ahndbb, obj[2].handle);
- 				obj[2].handle = gem_create(fd, 4096);
- 			}
- 
--			bo_start_val[dst] = bo_start_val[src];
-+			if (!ret)
-+				bo_start_val[dst] = bo_start_val[src];
- 		}
- 	}
- 
-@@ -242,13 +264,18 @@ static void run_test(int fd, int count, uint64_t end)
- 
- 	gem_close(fd, obj[2].handle);
- 	put_ahnd(ahnd);
-+	put_ahnd(ahndbb);
- }
- 
- #define MAX_32b ((1ull << 32) - 4096)
- 
- igt_main
- {
--	const int ncpus = sysconf(_SC_NPROCESSORS_ONLN);
-+	/*
-+	 * For machines with many cpu cores buffer verification can take
-+	 * almost minute, limitation to 4 cores keeps this time in seconds.
-+	 */
-+	const int ncpus = min_t(int, sysconf(_SC_NPROCESSORS_ONLN), 4);
- 	uint64_t count = 0, end;
- 	int fd;
- 
-@@ -263,6 +290,7 @@ igt_main
- 			count = MAX_32b;
- 		end = count;
- 		count = 3 + count / (1024 * 1024);
-+
- 		igt_require(count > 1);
- 		igt_require_memory(count, 1024 * 1024 , CHECK_RAM);
- 
+-# All tests that do module unloading and reloading are executed last.
+-# They will sometimes reveal issues of earlier tests leaving the
+-# driver in a broken state that is not otherwise noticed in that test.
+-
+-igt@core_hotunplug@unbind-rebind
+-igt@vgem_basic@unload
+-igt@i915_module_load@reload
+-igt@gem_lmem_swapping@basic
+-igt@gem_lmem_swapping@parallel-random-engines
+-igt@gem_lmem_swapping@random-engines
+-igt@gem_lmem_swapping@verify-random
+-igt@i915_pm_rpm@module-reload
+-
+-# Kernel selftests
+-igt@i915_selftest@live
+-igt@dmabuf@all-tests
+-
+-# System wide suspend tests
+-igt@i915_suspend@basic-s2idle-without-i915
+-igt@i915_suspend@basic-s3-without-i915
+-igt@gem_exec_suspend@basic-s0
+-igt@gem_exec_suspend@basic-s3
+-igt@kms_chamelium_hpd@common-hpd-after-suspend
+-igt@kms_pipe_crc_basic@suspend-read-crc
++igt@meta_test@fail-result
 -- 
 2.34.1
