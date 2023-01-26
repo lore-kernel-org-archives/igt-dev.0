@@ -1,21 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Message-ID: <ec09497f-f3fb-a34b-d6a4-c9763a7ba385@linux.intel.com>
-Date: Thu, 26 Jan 2023 16:10:37 +0000
+Date: Thu, 26 Jan 2023 18:02:09 +0100
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Message-ID: <20230126170209.5a5dqpqktal6jrjc@kamilkon-desk1>
+References: <20221111155844.3290531-1-tvrtko.ursulin@linux.intel.com>
 MIME-Version: 1.0
-Content-Language: en-US
-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
- Tvrtko Ursulin <tvrtko.ursulin@intel.com>,
- Eero Tamminen <eero.t.tamminen@intel.com>
-References: <20230112174730.1101192-1-tvrtko.ursulin@linux.intel.com>
- <20230112174730.1101192-3-tvrtko.ursulin@linux.intel.com>
- <20230126154124.hlcokp3b62d3ncvv@kamilkon-desk1>
-From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
-In-Reply-To: <20230126154124.hlcokp3b62d3ncvv@kamilkon-desk1>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Subject: Re: [igt-dev] [Intel-gfx] [PATCH i-g-t 2/4] intel_gpu_top:
- Automatically enclose JSON output into brackets
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20221111155844.3290531-1-tvrtko.ursulin@linux.intel.com>
+Subject: Re: [igt-dev] [Intel-gfx] [PATCH i-g-t 0/8] Vendor agnostic gputop
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,76 +17,101 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: intel-gfx@lists.freedesktop.org, Petri Latvala <petri.latvala@intel.com>,
+ Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
+Hi,
 
-On 26/01/2023 15:41, Kamil Konieczny wrote:
-> On 2023-01-12 at 17:47:28 +0000, Tvrtko Ursulin wrote:
->> From: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
->>
->> Parsers need the whole output enclosed into square brackets so every
->> period sample becomes an array element.
->>
->> So far we have been suggesting this in the man page but we can trivially
->> make the tool output that itself.
->>
->> Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
->> Cc: Eero Tamminen <eero.t.tamminen@intel.com>
-> 
-> Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+please rebase and resend, also please change commit subject to start
+with lib: or lib/[name of lib changed]: rest od commit description
 
-Disclaimer with this one is that I am not really sure if it is a good 
-idea. How people might use the JSON output and if this helps or harms 
-them I mean, I have no idea.
+For example, in 3/8 instead of
+libdrmclients: Record client drm minor
+write:
+lib/igt_drm_clients: Record client drm minor
+
+If there are more lib changes, use "lib: " alone, for example
+in your 2/8 patch,
+libdrmfdinfo: Allow specifying custom engine map
+write:
+lib: Allow specifying custom engine map
+
++Cc Petri and Zbyszek
 
 Regards,
+Kamil
 
-Tvrtko
-
->> ---
->>   man/intel_gpu_top.rst | 2 +-
->>   tools/intel_gpu_top.c | 6 ++++++
->>   2 files changed, 7 insertions(+), 1 deletion(-)
->>
->> diff --git a/man/intel_gpu_top.rst b/man/intel_gpu_top.rst
->> index b0c95446a011..3317e04816b4 100644
->> --- a/man/intel_gpu_top.rst
->> +++ b/man/intel_gpu_top.rst
->> @@ -85,7 +85,7 @@ Filter types: ::
->>   JSON OUTPUT
->>   ===========
->>   
->> -To parse the JSON as output by the tool the consumer should wrap its entirety into square brackets ([ ]). This will make each sample point a JSON array element and will avoid "Multiple root elements" JSON validation error.
->> +JSON output will be correctly terminated when the tool cleanly exits, otherwise one square bracket needs to be added before parsing.
->>   
->>   LIMITATIONS
->>   ===========
->> diff --git a/tools/intel_gpu_top.c b/tools/intel_gpu_top.c
->> index 6de8a164fcff..c4d98de4fe31 100644
->> --- a/tools/intel_gpu_top.c
->> +++ b/tools/intel_gpu_top.c
->> @@ -2597,6 +2597,9 @@ int main(int argc, char **argv)
->>   	scan_clients(clients, false);
->>   	codename = igt_device_get_pretty_name(&card, false);
->>   
->> +	if (output_mode == JSON)
->> +		printf("[\n");
->> +
->>   	while (!stop_top) {
->>   		struct clients *disp_clients;
->>   		bool consumed = false;
->> @@ -2683,6 +2686,9 @@ int main(int argc, char **argv)
->>   			usleep(period_us);
->>   	}
->>   
->> +	if (output_mode == JSON)
->> +		printf("]\n");
->> +
->>   	if (clients)
->>   		free_clients(clients);
->>   
->> -- 
->> 2.34.1
->>
+On 2022-11-11 at 15:58:36 +0000, Tvrtko Ursulin wrote:
+> From: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+> 
+> This is a pile of patches which implements a rudimentary vendor agnostic gputop
+> tool based of the new DRM spec as documented in
+> Documentation/gpu/drm-usage-stats.rst.
+> 
+> First part of the series is code refactoring which should be reasonably stable.
+> I've tested it all while working on it both against intel_gpu_top and gputop.
+> 
+> Last patch is the actual tool itself. It works but it is rather rudimentary
+> which is hopefully good enough for a start.
+> 
+> Fundamental difference between intel_gpu_top and gputop is that the former is
+> centered around a single card and only shows processes belonging to it. Gputop
+> on the other hand has an idea to show all processes with DRM file descriptors
+> open and sort them into groups per card. It also makes no effort to provide
+> sorting modes, well any interactivity, or any pretty names for GPUs or engines.
+> 
+> It looks like this:
+> ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+> DRM minor 0
+>     PID               NAME    render       copy       video
+>     3816          kwin_x11 |███▎      ||          ||          ||          |
+>     3523              Xorg |▊         ||          ||          ||          |
+>  1120449               mpv |          ||          ||▋         ||          |
+>  1120529          glxgears |▋         ||          ||          ||          |
+>  1120449               mpv |▍         ||          ||          ||          |
+>     3860       plasmashell |▏         ||          ||          ||          |
+>     4764           krunner |          ||          ||          ||          |
+>   575206            chrome |          ||          ||          ||          |
+>   833481           firefox |          ||          ||          ||          |
+>   892924       thunderbird |          ||          ||          ||          |
+> ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+> 
+> I did test it as well with two cards and confirmed that too works.
+> 
+> Rob Clark also tested it with a patch which exports the respective data from the
+> msm driver and confirmed it works fine. Christian König tested it with in
+> progress patches for amdgpu and that worked as well.
+> 
+> v2:
+>  * Fixed SPDX headers and added a bunch of code comments/docs throughout.
+> 
+> Tvrtko Ursulin (8):
+>   lib: Extract igt_drm_clients from intel_gpu_top
+>   libdrmfdinfo: Allow specifying custom engine map
+>   libdrmclients: Record client drm minor
+>   libdrmclient: Support multiple DRM cards
+>   libdrmfdinfo: Track largest engine index
+>   libdrmclient/intel_gpu_top: Decouple hardcoded engine assumptions
+>   libdrmclient: Enforce client status sort order in the library
+>   gputop: Basic vendor agnostic GPU top tool
+> 
+>  lib/igt_drm_clients.c   | 503 +++++++++++++++++++++++++++++
+>  lib/igt_drm_clients.h   |  87 ++++++
+>  lib/igt_drm_fdinfo.c    |  50 ++-
+>  lib/igt_drm_fdinfo.h    |  16 +-
+>  lib/meson.build         |   8 +
+>  tests/i915/drm_fdinfo.c |  19 +-
+>  tools/gputop.c          | 260 +++++++++++++++
+>  tools/intel_gpu_top.c   | 677 +++++++++++-----------------------------
+>  tools/meson.build       |   7 +-
+>  9 files changed, 1113 insertions(+), 514 deletions(-)
+>  create mode 100644 lib/igt_drm_clients.c
+>  create mode 100644 lib/igt_drm_clients.h
+>  create mode 100644 tools/gputop.c
+> 
+> -- 
+> 2.34.1
+> 
