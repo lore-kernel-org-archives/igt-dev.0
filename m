@@ -1,15 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DF1A610E2BF
- for <igt-dev@lists.freedesktop.org>; Thu, 26 Jan 2023 10:57:19 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5EB2C10E2BF
+ for <igt-dev@lists.freedesktop.org>; Thu, 26 Jan 2023 10:57:20 +0000 (UTC)
 From: Petri Latvala <petri.latvala@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Thu, 26 Jan 2023 12:53:35 +0200
-Message-Id: <20230126105338.419418-1-petri.latvala@intel.com>
+Date: Thu, 26 Jan 2023 12:53:36 +0200
+Message-Id: <20230126105338.419418-2-petri.latvala@intel.com>
+In-Reply-To: <20230126105338.419418-1-petri.latvala@intel.com>
+References: <20230126105338.419418-1-petri.latvala@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 0/3] runner: Using 'abort' as test result
- instead of a separate test
+Subject: [igt-dev] [PATCH i-g-t 1/3] runner: Don't override more results
+ than requested
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,36 +24,40 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-If a test caused an abort condition to trigger, a pseudoresult
-"igt@runner@aborted" would be generated, detailing which test caused
-the condition. That was implemented in a simpler world where there
-were no dynamic subtests and CI systems (i915-CI in particular) didn't
-have much test resuming happening.
+When processing a resultoverride packet, the override is supposed to
+apply only to the most recent subtest or dynamic subtest. Properly
+clear the override so only those results get overridden.
 
-The generated pseudoresult was completely unable to point to a
-particular dynamic subtest if the executed subtest had any, and there
-could inherently be only one of them. When combined with the fact that
-the pseudoresult doesn't have logs that could be used to automatically
-point to particular bug reports, that made results filtering by
-CIBugLog difficult.
+Signed-off-by: Petri Latvala <petri.latvala@intel.com>
+Cc: Arkadiusz Hiler <arek@hiler.eu>
+Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+---
+ runner/resultgen.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-With socket communications it's easier to inject information "in
-between" test's logs and result overriding is designed into the
-system. Thus, when using socket communications, this patch series will
-make the abort-condition-causing test's result 'abort' instead of
-using that pseudoresult.
-
-The flow becomes a little bit messier with monitor_output() gaining
-more and more out-parameters but those can be cleaned later.
-
-Petri Latvala (3):
-  runner: Don't override more results than requested
-  runner: Refactor abort-checking to a helper function
-  runner: Use 'abort' as result if a test caused an abort
-
- runner/executor.c  | 121 +++++++++++++++++++++++++++++++++++++++------
- runner/resultgen.c |   6 +++
- 2 files changed, 111 insertions(+), 16 deletions(-)
-
+diff --git a/runner/resultgen.c b/runner/resultgen.c
+index 596de786..b00bb6ba 100644
+--- a/runner/resultgen.c
++++ b/runner/resultgen.c
+@@ -1540,6 +1540,9 @@ static bool comms_handle_subtest_start(const struct runnerpacket *packet,
+ 		/* Subtest starting message is not in logs with socket comms, inject it manually */
+ 		comms_inject_subtest_start_log(context, STARTING_SUBTEST, helper.subteststart.name);
+ 
++		free(context->subtestresult);
++		context->subtestresult = NULL;
++
+ 		break;
+ 	default:
+ 		assert(false); /* unreachable */
+@@ -1669,6 +1672,9 @@ static bool comms_handle_dynamic_subtest_start(const struct runnerpacket *packet
+ 		/* Dynamic subtest starting message is not in logs with socket comms, inject it manually */
+ 		comms_inject_subtest_start_log(context, STARTING_DYNAMIC_SUBTEST, helper.dynamicsubteststart.name);
+ 
++		free(context->dynamicsubtestresult);
++		context->dynamicsubtestresult = NULL;
++
+ 		break;
+ 	default:
+ 		assert(false); /* unreachable */
 -- 
 2.30.2
