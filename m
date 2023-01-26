@@ -1,15 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Date: Thu, 26 Jan 2023 18:02:09 +0100
+Date: Thu, 26 Jan 2023 18:08:23 +0100
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Message-ID: <20230126170209.5a5dqpqktal6jrjc@kamilkon-desk1>
-References: <20221111155844.3290531-1-tvrtko.ursulin@linux.intel.com>
+Message-ID: <20230126170823.2cbgkn2ffksfyomj@kamilkon-desk1>
+References: <20230112174730.1101192-1-tvrtko.ursulin@linux.intel.com>
+ <20230112174730.1101192-2-tvrtko.ursulin@linux.intel.com>
+ <20230126153938.3iotcb52eawnwbcl@kamilkon-desk1>
+ <e3b0efd8-7e4a-9bdf-4725-128c4637e806@linux.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20221111155844.3290531-1-tvrtko.ursulin@linux.intel.com>
-Subject: Re: [igt-dev] [Intel-gfx] [PATCH i-g-t 0/8] Vendor agnostic gputop
+In-Reply-To: <e3b0efd8-7e4a-9bdf-4725-128c4637e806@linux.intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 1/4] intel_gpu_top: Fix man page
+ formatting
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,101 +20,70 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: intel-gfx@lists.freedesktop.org, Petri Latvala <petri.latvala@intel.com>,
- Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+Cc: Intel-gfx@lists.freedesktop.org, Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
 Hi,
 
-please rebase and resend, also please change commit subject to start
-with lib: or lib/[name of lib changed]: rest od commit description
+On 2023-01-26 at 16:09:29 +0000, Tvrtko Ursulin wrote:
+> 
+> On 26/01/2023 15:39, Kamil Konieczny wrote:
+> > On 2023-01-12 at 17:47:27 +0000, Tvrtko Ursulin wrote:
+> > > From: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+> > > 
+> > > New lines are not respected when rst2man generates the page so try to work
+> > > around that by followin advice from the Internet.
+> > > 
+> > > Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+> > 
+> > Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> 
+> Thanks! Later I noticed there is one more thing which currently renders
+> badly, this line:
+> 
+>   -o <file path | ->
+> 
+> Are you okay with re-review if I can fix that one too and respin?
 
-For example, in 3/8 instead of
-libdrmclients: Record client drm minor
-write:
-lib/igt_drm_clients: Record client drm minor
-
-If there are more lib changes, use "lib: " alone, for example
-in your 2/8 patch,
-libdrmfdinfo: Allow specifying custom engine map
-write:
-lib: Allow specifying custom engine map
-
-+Cc Petri and Zbyszek
+Yes, no problem, I can review respin.
 
 Regards,
 Kamil
 
-On 2022-11-11 at 15:58:36 +0000, Tvrtko Ursulin wrote:
-> From: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 > 
-> This is a pile of patches which implements a rudimentary vendor agnostic gputop
-> tool based of the new DRM spec as documented in
-> Documentation/gpu/drm-usage-stats.rst.
+> Regards,
 > 
-> First part of the series is code refactoring which should be reasonably stable.
-> I've tested it all while working on it both against intel_gpu_top and gputop.
+> Tvrtko
 > 
-> Last patch is the actual tool itself. It works but it is rather rudimentary
-> which is hopefully good enough for a start.
-> 
-> Fundamental difference between intel_gpu_top and gputop is that the former is
-> centered around a single card and only shows processes belonging to it. Gputop
-> on the other hand has an idea to show all processes with DRM file descriptors
-> open and sort them into groups per card. It also makes no effort to provide
-> sorting modes, well any interactivity, or any pretty names for GPUs or engines.
-> 
-> It looks like this:
-> ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-> DRM minor 0
->     PID               NAME    render       copy       video
->     3816          kwin_x11 |███▎      ||          ||          ||          |
->     3523              Xorg |▊         ||          ||          ||          |
->  1120449               mpv |          ||          ||▋         ||          |
->  1120529          glxgears |▋         ||          ||          ||          |
->  1120449               mpv |▍         ||          ||          ||          |
->     3860       plasmashell |▏         ||          ||          ||          |
->     4764           krunner |          ||          ||          ||          |
->   575206            chrome |          ||          ||          ||          |
->   833481           firefox |          ||          ||          ||          |
->   892924       thunderbird |          ||          ||          ||          |
-> ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-> 
-> I did test it as well with two cards and confirmed that too works.
-> 
-> Rob Clark also tested it with a patch which exports the respective data from the
-> msm driver and confirmed it works fine. Christian König tested it with in
-> progress patches for amdgpu and that worked as well.
-> 
-> v2:
->  * Fixed SPDX headers and added a bunch of code comments/docs throughout.
-> 
-> Tvrtko Ursulin (8):
->   lib: Extract igt_drm_clients from intel_gpu_top
->   libdrmfdinfo: Allow specifying custom engine map
->   libdrmclients: Record client drm minor
->   libdrmclient: Support multiple DRM cards
->   libdrmfdinfo: Track largest engine index
->   libdrmclient/intel_gpu_top: Decouple hardcoded engine assumptions
->   libdrmclient: Enforce client status sort order in the library
->   gputop: Basic vendor agnostic GPU top tool
-> 
->  lib/igt_drm_clients.c   | 503 +++++++++++++++++++++++++++++
->  lib/igt_drm_clients.h   |  87 ++++++
->  lib/igt_drm_fdinfo.c    |  50 ++-
->  lib/igt_drm_fdinfo.h    |  16 +-
->  lib/meson.build         |   8 +
->  tests/i915/drm_fdinfo.c |  19 +-
->  tools/gputop.c          | 260 +++++++++++++++
->  tools/intel_gpu_top.c   | 677 +++++++++++-----------------------------
->  tools/meson.build       |   7 +-
->  9 files changed, 1113 insertions(+), 514 deletions(-)
->  create mode 100644 lib/igt_drm_clients.c
->  create mode 100644 lib/igt_drm_clients.h
->  create mode 100644 tools/gputop.c
-> 
-> -- 
-> 2.34.1
-> 
+> > > ---
+> > >   man/intel_gpu_top.rst | 15 ++++++++-------
+> > >   1 file changed, 8 insertions(+), 7 deletions(-)
+> > > 
+> > > diff --git a/man/intel_gpu_top.rst b/man/intel_gpu_top.rst
+> > > index 748c7740c800..b0c95446a011 100644
+> > > --- a/man/intel_gpu_top.rst
+> > > +++ b/man/intel_gpu_top.rst
+> > > @@ -53,13 +53,14 @@ RUNTIME CONTROL
+> > >   Supported keys:
+> > > -    'q'    Exit from the tool.
+> > > -    'h'    Show interactive help.
+> > > -    '1'    Toggle between aggregated engine class and physical engine mode.
+> > > -    'n'    Toggle display of numeric client busyness overlay.
+> > > -    's'    Toggle between sort modes (runtime, total runtime, pid, client id).
+> > > -    'i'    Toggle display of clients which used no GPU time.
+> > > -    'H'    Toggle between per PID aggregation and individual clients.
+> > > +|
+> > > +|    'q'    Exit from the tool.
+> > > +|    'h'    Show interactive help.
+> > > +|    '1'    Toggle between aggregated engine class and physical engine mode.
+> > > +|    'n'    Toggle display of numeric client busyness overlay.
+> > > +|    's'    Toggle between sort modes (runtime, total runtime, pid, client id).
+> > > +|    'i'    Toggle display of clients which used no GPU time.
+> > > +|    'H'    Toggle between per PID aggregation and individual clients.
+> > >   DEVICE SELECTION
+> > >   ================
+> > > -- 
+> > > 2.34.1
+> > > 
