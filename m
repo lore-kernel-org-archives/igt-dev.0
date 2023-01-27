@@ -1,16 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============9106838056133615192=="
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 677CC10E190
+ for <igt-dev@lists.freedesktop.org>; Fri, 27 Jan 2023 16:08:17 +0000 (UTC)
+From: Ashutosh Dixit <ashutosh.dixit@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Fri, 27 Jan 2023 08:08:12 -0800
+Message-Id: <20230127160813.139460-2-ashutosh.dixit@intel.com>
+In-Reply-To: <20230127160813.139460-1-ashutosh.dixit@intel.com>
+References: <20230127160813.139460-1-ashutosh.dixit@intel.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Mohammed Thasleem" <mohammed.thasleem@intel.com>
-Date: Fri, 27 Jan 2023 15:21:21 -0000
-Message-ID: <167483288128.18993.10883064754911058757@emeril.freedesktop.org>
-References: <20221216191124.27930-1-mohammed.thasleem@intel.com>
-In-Reply-To: <20221216191124.27930-1-mohammed.thasleem@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
- =?utf-8?q?i915/i915=5Fpm=5Fdc_=3A_Check_DC5_state_with_externel_active_pa?=
- =?utf-8?q?nel_=28rev5=29?=
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t 1/2] i915/i915_power: Sanity check power
+ measurement
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,211 +20,111 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============9106838056133615192==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Add a test to sanity check power measurement on integrated/discrete by
+requiring power under load to be > 0 and >= idle power.
 
-== Series Details ==
+v2: Code reorganization (Kamil K)
+v3: More code reorganization (Kamil K)
 
-Series: tests/i915/i915_pm_dc : Check DC5 state with externel active panel (rev5)
-URL   : https://patchwork.freedesktop.org/series/112025/
-State : success
+Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
+Reviewed-by: Riana Tauro <riana.tauro@intel.com>
+---
+ tests/i915/i915_power.c | 70 +++++++++++++++++++++++++++++++++++++++++
+ tests/meson.build       |  1 +
+ 2 files changed, 71 insertions(+)
+ create mode 100644 tests/i915/i915_power.c
 
-== Summary ==
-
-CI Bug Log - changes from CI_DRM_12655 -> IGTPW_8411
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8411/index.html
-
-Participating hosts (25 -> 24)
-------------------------------
-
-  Missing    (1): fi-snb-2520m 
-
-Possible new issues
--------------------
-
-  Here are the unknown changes that may have been introduced in IGTPW_8411:
-
-### IGT changes ###
-
-#### Suppressed ####
-
-  The following results come from untrusted machines, tests, or statuses.
-  They do not affect the overall result.
-
-  * igt@gem_exec_suspend@basic-s0@smem:
-    - {bat-rpls-1}:       NOTRUN -> [ABORT][1]
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8411/bat-rpls-1/igt@gem_exec_suspend@basic-s0@smem.html
-
-  
-Known issues
-------------
-
-  Here are the changes found in IGTPW_8411 that come from known issues:
-
-### IGT changes ###
-
-#### Possible fixes ####
-
-  * igt@i915_selftest@live@gt_heartbeat:
-    - fi-cfl-8109u:       [DMESG-FAIL][2] ([i915#5334]) -> [PASS][3]
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12655/fi-cfl-8109u/igt@i915_selftest@live@gt_heartbeat.html
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8411/fi-cfl-8109u/igt@i915_selftest@live@gt_heartbeat.html
-
-  * igt@i915_selftest@live@requests:
-    - {bat-rpls-1}:       [ABORT][4] -> [PASS][5]
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12655/bat-rpls-1/igt@i915_selftest@live@requests.html
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8411/bat-rpls-1/igt@i915_selftest@live@requests.html
-    - {bat-adlp-6}:       [ABORT][6] -> [PASS][7]
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12655/bat-adlp-6/igt@i915_selftest@live@requests.html
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8411/bat-adlp-6/igt@i915_selftest@live@requests.html
-
-  * igt@i915_selftest@live@workarounds:
-    - {bat-rplp-1}:       [INCOMPLETE][8] -> [PASS][9]
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12655/bat-rplp-1/igt@i915_selftest@live@workarounds.html
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8411/bat-rplp-1/igt@i915_selftest@live@workarounds.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [i915#4258]: https://gitlab.freedesktop.org/drm/intel/issues/4258
-  [i915#5334]: https://gitlab.freedesktop.org/drm/intel/issues/5334
-  [i915#5354]: https://gitlab.freedesktop.org/drm/intel/issues/5354
-  [i915#6367]: https://gitlab.freedesktop.org/drm/intel/issues/6367
-  [i915#6997]: https://gitlab.freedesktop.org/drm/intel/issues/6997
-  [i915#7828]: https://gitlab.freedesktop.org/drm/intel/issues/7828
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_7139 -> IGTPW_8411
-
-  CI-20190529: 20190529
-  CI_DRM_12655: d9b0bc4a0e9edfcbf171e09d3743b7186cd801f7 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_8411: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8411/index.html
-  IGT_7139: 1e2fdea2a5547aba6d8595b7ac1c5e4543e90f2f @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-
-Testlist changes
-----------------
-
-+igt@i915_pm_dc@dc5-dpms-negative
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8411/index.html
-
---===============9106838056133615192==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/i915/i915_pm_dc : Check DC5 state with externel active panel (rev5)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/112025/">https://patchwork.freedesktop.org/series/112025/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8411/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8411/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from CI_DRM_12655 -&gt; IGTPW_8411</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8411/index.html</p>
-<h2>Participating hosts (25 -&gt; 24)</h2>
-<p>Missing    (1): fi-snb-2520m </p>
-<h2>Possible new issues</h2>
-<p>Here are the unknown changes that may have been introduced in IGTPW_8411:</p>
-<h3>IGT changes</h3>
-<h4>Suppressed</h4>
-<p>The following results come from untrusted machines, tests, or statuses.<br />
-  They do not affect the overall result.</p>
-<ul>
-<li>igt@gem_exec_suspend@basic-s0@smem:<ul>
-<li>{bat-rpls-1}:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8411/bat-rpls-1/igt@gem_exec_suspend@basic-s0@smem.html">ABORT</a></li>
-</ul>
-</li>
-</ul>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_8411 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@i915_selftest@live@gt_heartbeat:</p>
-<ul>
-<li>fi-cfl-8109u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12655/fi-cfl-8109u/igt@i915_selftest@live@gt_heartbeat.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5334">i915#5334</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8411/fi-cfl-8109u/igt@i915_selftest@live@gt_heartbeat.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@requests:</p>
-<ul>
-<li>
-<p>{bat-rpls-1}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12655/bat-rpls-1/igt@i915_selftest@live@requests.html">ABORT</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8411/bat-rpls-1/igt@i915_selftest@live@requests.html">PASS</a></p>
-</li>
-<li>
-<p>{bat-adlp-6}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12655/bat-adlp-6/igt@i915_selftest@live@requests.html">ABORT</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8411/bat-adlp-6/igt@i915_selftest@live@requests.html">PASS</a></p>
-</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@workarounds:</p>
-<ul>
-<li>{bat-rplp-1}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12655/bat-rplp-1/igt@i915_selftest@live@workarounds.html">INCOMPLETE</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8411/bat-rplp-1/igt@i915_selftest@live@workarounds.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_7139 -&gt; IGTPW_8411</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_12655: d9b0bc4a0e9edfcbf171e09d3743b7186cd801f7 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_8411: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8411/index.html<br />
-  IGT_7139: 1e2fdea2a5547aba6d8595b7ac1c5e4543e90f2f @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-<h2>Testlist changes</h2>
-<p>+igt@i915_pm_dc@dc5-dpms-negative</p>
-
-</body>
-</html>
-
---===============9106838056133615192==--
+diff --git a/tests/i915/i915_power.c b/tests/i915/i915_power.c
+new file mode 100644
+index 00000000000..533cf769b54
+--- /dev/null
++++ b/tests/i915/i915_power.c
+@@ -0,0 +1,70 @@
++// SPDX-License-Identifier: MIT
++/*
++ * Copyright © 2023 Intel Corporation
++ */
++
++#include "igt.h"
++#include "i915/gem.h"
++#include "igt_power.h"
++
++IGT_TEST_DESCRIPTION("i915 power measurement tests");
++
++static double measure_power(struct igt_power *pwr, int sleep_duration_sec)
++{
++	struct power_sample sample[2];
++
++	igt_power_get_energy(pwr, &sample[0]);
++	usleep(sleep_duration_sec * USEC_PER_SEC);
++	igt_power_get_energy(pwr, &sample[1]);
++
++	return igt_power_get_mW(pwr, &sample[0], &sample[1]);
++}
++
++static void sanity(int i915)
++{
++	const intel_ctx_t *ctx;
++	struct igt_power pwr;
++	double idle, busy;
++	igt_spin_t *spin;
++	uint64_t ahnd;
++
++	/* Idle power */
++	igt_require(!igt_power_open(i915, &pwr, "gpu"));
++	gem_quiescent_gpu(i915);
++	idle = measure_power(&pwr, 2);
++
++	/* Busy power */
++	ctx = intel_ctx_create_all_physical(i915);
++	ahnd = get_reloc_ahnd(i915, ctx->id);
++	spin = igt_spin_new(i915, .ahnd = ahnd, .ctx = ctx,
++			    .engine = ALL_ENGINES,
++			    .flags = IGT_SPIN_POLL_RUN);
++	/* Wait till at least one spinner starts */
++	igt_spin_busywait_until_started(spin);
++	busy = measure_power(&pwr, 2);
++	igt_free_spins(i915);
++	put_ahnd(ahnd);
++	intel_ctx_destroy(i915, ctx);
++	igt_power_close(&pwr);
++
++	igt_info("Measured power: idle: %g mW, busy: %g mW\n", idle, busy);
++	igt_assert(idle >= 0 && busy > 0 && busy > idle);
++}
++
++igt_main
++{
++	int i915;
++
++	igt_fixture {
++		i915 = drm_open_driver_master(DRIVER_INTEL);
++	}
++
++	igt_describe("Sanity check gpu power measurement");
++	igt_subtest("sanity") {
++		sanity(i915);
++	}
++
++	igt_fixture {
++		close(i915);
++	}
++}
+diff --git a/tests/meson.build b/tests/meson.build
+index cce9d89e1c8..d93a07c9ed6 100644
+--- a/tests/meson.build
++++ b/tests/meson.build
+@@ -213,6 +213,7 @@ i915_progs = [
+ 	'i915_pm_dc',
+ 	'i915_pm_rps',
+ 	'i915_pm_sseu',
++	'i915_power',
+ 	'i915_query',
+ 	'i915_selftest',
+ 	'i915_suspend',
+-- 
+2.38.0
