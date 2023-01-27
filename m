@@ -1,18 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Message-ID: <c66a95c2-374b-e6d6-b828-8c9147f98a0b@linux.intel.com>
-Date: Fri, 27 Jan 2023 11:53:38 +0000
+Content-Type: multipart/alternative;
+ boundary="===============2106725675458605324=="
 MIME-Version: 1.0
-Content-Language: en-US
-To: Petri Latvala <petri.latvala@intel.com>
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Tvrtko Ursulin" <tvrtko.ursulin@linux.intel.com>
+Date: Fri, 27 Jan 2023 12:16:56 -0000
+Message-ID: <167482181699.18991.16248560190501515992@emeril.freedesktop.org>
 References: <20230127111241.3624629-1-tvrtko.ursulin@linux.intel.com>
- <20230127111241.3624629-7-tvrtko.ursulin@linux.intel.com>
- <Y9O3+wLrQNr/pyNf@platvala-desk.ger.corp.intel.com>
-From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
-In-Reply-To: <Y9O3+wLrQNr/pyNf@platvala-desk.ger.corp.intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Subject: Re: [igt-dev] [PATCH i-g-t 6/6] lib/igt_device_scan: Improve Intel
- discrete GPU selection
+In-Reply-To: <20230127111241.3624629-1-tvrtko.ursulin@linux.intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgQXNzb3J0?=
+ =?utf-8?q?ed_intel=5Fgpu=5Ftop_improvements?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,72 +17,153 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org, Intel-gfx@lists.freedesktop.org,
- Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
+--===============2106725675458605324==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-On 27/01/2023 11:39, Petri Latvala wrote:
-> On Fri, Jan 27, 2023 at 11:12:41AM +0000, Tvrtko Ursulin wrote:
->> From: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
->>
->> Now that DRM subsystem can contain PCI cards with the vendor set to Intel
->> but they are not Intel GPUs, we need a better selection logic than looking
->> at the vendor. Use the driver name instead.
->>
->> Caveat that the driver key was on a blacklist so far, and although I can't
->> imagine it can be slow to probe, this is something to double check.
->>
->> Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
->> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
->> Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
->> ---
->>   lib/igt_device_scan.c | 7 +++++--
->>   1 file changed, 5 insertions(+), 2 deletions(-)
->>
->> diff --git a/lib/igt_device_scan.c b/lib/igt_device_scan.c
->> index ed128d24dd10..8b767eed202d 100644
->> --- a/lib/igt_device_scan.c
->> +++ b/lib/igt_device_scan.c
->> @@ -237,6 +237,7 @@ struct igt_device {
->>   	char *vendor;
->>   	char *device;
->>   	char *pci_slot_name;
->> +	char *driver;
->>   	int gpu_index; /* For more than one GPU with same vendor and device. */
->>   
->>   	char *codename; /* For grouping by codename */
->> @@ -440,7 +441,6 @@ static bool is_on_blacklist(const char *what)
->>   				      "resource3", "resource4", "resource5",
->>   				      "resource0_wc", "resource1_wc", "resource2_wc",
->>   				      "resource3_wc", "resource4_wc", "resource5_wc",
->> -				      "driver",
->>   				      "uevent", NULL};
->>   	const char *key;
->>   	int i = 0;
->> @@ -662,6 +662,8 @@ static struct igt_device *igt_device_new_from_udev(struct udev_device *dev)
->>   		get_pci_vendor_device(idev, &vendor, &device);
->>   		idev->codename = __pci_codename(vendor, device);
->>   		idev->dev_type = __pci_devtype(vendor, device, idev->pci_slot_name);
->> +		idev->driver = strdup_nullsafe(get_attr(idev, "driver"));
->> +		igt_assert(idev->driver);
->>   	}
->>   
->>   	return idev;
->> @@ -776,7 +778,7 @@ static bool __find_first_i915_card(struct igt_device_card *card, bool discrete)
->>   
->>   	igt_list_for_each_entry(dev, &igt_devs.all, link) {
->>   
->> -		if (!is_pci_subsystem(dev) || !is_vendor_matched(dev, "intel"))
->> +		if (!is_pci_subsystem(dev) || strcmp(dev->driver, "i915"))
-> 
-> Is this the time to prepare for that other driver as well?
+== Series Details ==
 
-Ha, didn't think of that TBH, but AFAICT this patch will work for that 
-case too, no?
+Series: Assorted intel_gpu_top improvements
+URL   : https://patchwork.freedesktop.org/series/113427/
+State : success
 
-Regards,
+== Summary ==
 
-Tvrtko
+CI Bug Log - changes from IGT_7138 -> IGTPW_8410
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8410/index.html
+
+Participating hosts (25 -> 24)
+------------------------------
+
+  Missing    (1): fi-snb-2520m 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_8410 that come from known issues:
+
+### IGT changes ###
+
+#### Possible fixes ####
+
+  * igt@i915_selftest@live@gt_heartbeat:
+    - fi-apl-guc:         [DMESG-FAIL][1] ([i915#5334]) -> [PASS][2]
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7138/fi-apl-guc/igt@i915_selftest@live@gt_heartbeat.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8410/fi-apl-guc/igt@i915_selftest@live@gt_heartbeat.html
+
+  * igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions-varying-size:
+    - fi-bsw-n3050:       [FAIL][3] ([i915#6298]) -> [PASS][4]
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7138/fi-bsw-n3050/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions-varying-size.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8410/fi-bsw-n3050/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions-varying-size.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [i915#5334]: https://gitlab.freedesktop.org/drm/intel/issues/5334
+  [i915#6298]: https://gitlab.freedesktop.org/drm/intel/issues/6298
+  [i915#6367]: https://gitlab.freedesktop.org/drm/intel/issues/6367
+  [i915#6997]: https://gitlab.freedesktop.org/drm/intel/issues/6997
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_7138 -> IGTPW_8410
+
+  CI-20190529: 20190529
+  CI_DRM_12654: a2c772f5e02e24678456b5e66384de742110e1a2 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_8410: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8410/index.html
+  IGT_7138: deb0f27cf03856eb699cd3d7c94b8be86a974fb8 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8410/index.html
+
+--===============2106725675458605324==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Assorted intel_gpu_top improvements</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/113427/">https://patchwork.freedesktop.org/series/113427/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8410/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8410/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_7138 -&gt; IGTPW_8410</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8410/index.html</p>
+<h2>Participating hosts (25 -&gt; 24)</h2>
+<p>Missing    (1): fi-snb-2520m </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_8410 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live@gt_heartbeat:</p>
+<ul>
+<li>fi-apl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7138/fi-apl-guc/igt@i915_selftest@live@gt_heartbeat.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5334">i915#5334</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8410/fi-apl-guc/igt@i915_selftest@live@gt_heartbeat.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions-varying-size:</p>
+<ul>
+<li>fi-bsw-n3050:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7138/fi-bsw-n3050/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions-varying-size.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6298">i915#6298</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8410/fi-bsw-n3050/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions-varying-size.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_7138 -&gt; IGTPW_8410</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_12654: a2c772f5e02e24678456b5e66384de742110e1a2 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_8410: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8410/index.html<br />
+  IGT_7138: deb0f27cf03856eb699cd3d7c94b8be86a974fb8 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============2106725675458605324==--
