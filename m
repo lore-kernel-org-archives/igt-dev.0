@@ -1,20 +1,24 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7AF4A10E9AD
- for <igt-dev@lists.freedesktop.org>; Fri, 27 Jan 2023 16:46:05 +0000 (UTC)
-Date: Fri, 27 Jan 2023 17:46:03 +0100
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2825310E9AD
+ for <igt-dev@lists.freedesktop.org>; Fri, 27 Jan 2023 16:51:54 +0000 (UTC)
+Date: Fri, 27 Jan 2023 17:51:52 +0100
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Message-ID: <20230127164603.ckc3cn2p2ecmgcua@kamilkon-desk1>
-References: <20230127160813.139460-1-ashutosh.dixit@intel.com>
- <20230127160813.139460-2-ashutosh.dixit@intel.com>
+To: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+Message-ID: <20230127165152.gdoyddmv6qpcozil@kamilkon-desk1>
+References: <20221129172718.151773-1-zack@kde.org>
+ <20221129172718.151773-4-zack@kde.org>
+ <20230126181733.5lgq2rq43gqy5qd2@kamilkon-desk1>
+ <3ea9b093fc7ff70788c035a74f065c1b6075c478.camel@vmware.com>
+ <20230127142959.4reppn45zao3e6wc@kamilkon-desk1>
+ <Y9PhNFGrtjrZNdze@platvala-desk.ger.corp.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230127160813.139460-2-ashutosh.dixit@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 1/2] i915/i915_power: Sanity check power
- measurement
+In-Reply-To: <Y9PhNFGrtjrZNdze@platvala-desk.ger.corp.intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 3/3] igt: Switch warning to an info when
+ not using i915
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,132 +26,70 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: Martin Krastev <krastevm@vmware.com>, Michael Banack <banackm@vmware.com>,
+ Maaz Mombasawala <mombasawalam@vmware.com>,
+ Petri Latvala <petri.latvala@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Ashutosh,
+Hi Zack,
 
-looks much better, few small nits left, see below.
-
-On 2023-01-27 at 08:08:12 -0800, Ashutosh Dixit wrote:
-> Add a test to sanity check power measurement on integrated/discrete by
-> requiring power under load to be > 0 and >= idle power.
+On 2023-01-27 at 16:35:32 +0200, Petri Latvala wrote:
+> On Fri, Jan 27, 2023 at 03:29:59PM +0100, Kamil Konieczny wrote:
+> > Hi Zack,
+> > 
+> > On 2023-01-26 at 19:11:18 +0000, Zack Rusin wrote:
+> > > On Thu, 2023-01-26 at 19:17 +0100, Kamil Konieczny wrote:
+> > > > !! External Email
+> > > > 
+> > > > Hi Zack,
+> > > > 
+> > > > On 2022-11-29 at 12:27:18 -0500, Zack Rusin wrote:
+> > > > > From: Zack Rusin <zackr@vmware.com>
+> > > > > 
+> > > > > Because igt always tries to load i915 driver first for DRIVER_ANY every
+> > > > > test using DRIVER_ANY on anything but i915 starts by printing a warning
+> > > > > that i915 couldn't be loaded.
+> > > > > Lets switch it to a general info line because it makes it hard to spot
+> > > > > actual warnings when every subtest starts by warning about not being
+> > > > > able to load i915.
+> > > > > 
+> > > > > Signed-off-by: Zack Rusin <zackr@vmware.com>
+> > > > > ---
+> > > > >  lib/igt_kmod.c | 2 +-
+> > > > >  1 file changed, 1 insertion(+), 1 deletion(-)
+> > > > > 
+> > > > > diff --git a/lib/igt_kmod.c b/lib/igt_kmod.c
+> > > > > index bcf7dfeb..74924b5f 100644
+> > > > > --- a/lib/igt_kmod.c
+> > > > > +++ b/lib/igt_kmod.c
+> > > > > @@ -389,7 +389,7 @@ igt_i915_driver_load(const char *opts)
+> > > > 
+> > > > This is i915 driver load so maybe we should find a way to not
+> > > > call this function ?
+> > > 
+> > > That'd be fine, how would you do that? IGT has a number of tests (the core ones)
+> > > that use DRIVER_ANY for load the first available driver. Unless we explicitly
+> > > exclude i915 from running those tests, or reorder the enum to try i915 after all the
+> > > other options then it's not a trivial fix. We'd need to do add proper pci device id
+> > > matching to always use the correct driver, which would be great, but is probably a
+> > > little out of scope for this change.
+> > > 
+> > > z
+> > 
+> > You can use IGT_DEVICE= or --device to restrict tests to your HW.
 > 
-> v2: Code reorganization (Kamil K)
-> v3: More code reorganization (Kamil K)
 > 
-> Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
-> Reviewed-by: Riana Tauro <riana.tauro@intel.com>
-> ---
->  tests/i915/i915_power.c | 70 +++++++++++++++++++++++++++++++++++++++++
->  tests/meson.build       |  1 +
->  2 files changed, 71 insertions(+)
->  create mode 100644 tests/i915/i915_power.c
+> The driver load is going to happen anyway, device matching happens after that.
 > 
-> diff --git a/tests/i915/i915_power.c b/tests/i915/i915_power.c
-> new file mode 100644
-> index 00000000000..533cf769b54
-> --- /dev/null
-> +++ b/tests/i915/i915_power.c
-> @@ -0,0 +1,70 @@
-> +// SPDX-License-Identifier: MIT
-> +/*
-> + * Copyright © 2023 Intel Corporation
-> + */
-> +
-> +#include "igt.h"
-> +#include "i915/gem.h"
-> +#include "igt_power.h"
-> +
-> +IGT_TEST_DESCRIPTION("i915 power measurement tests");
-> +
-> +static double measure_power(struct igt_power *pwr, int sleep_duration_sec)
------------------------------------------------------ ^
-unsigned int
+> I think at this point we have better tools to catch issues loading
+> i915, and this warn is added in 2016.
+> 
+> Acked-by: Petri Latvala <petri.latvala@intel.com>
 
-> +{
-> +	struct power_sample sample[2];
-> +
-> +	igt_power_get_energy(pwr, &sample[0]);
-> +	usleep(sleep_duration_sec * USEC_PER_SEC);
-> +	igt_power_get_energy(pwr, &sample[1]);
-> +
-> +	return igt_power_get_mW(pwr, &sample[0], &sample[1]);
-> +}
-> +
-> +static void sanity(int i915)
-> +{
-> +	const intel_ctx_t *ctx;
-> +	struct igt_power pwr;
-> +	double idle, busy;
-> +	igt_spin_t *spin;
-> +	uint64_t ahnd;
-> +
-> +	/* Idle power */
-> +	igt_require(!igt_power_open(i915, &pwr, "gpu"));
-> +	gem_quiescent_gpu(i915);
-> +	idle = measure_power(&pwr, 2);
----------------------------------- ^
+Please send this as separate patch with Petri a-b,
+it can be merged as is.
 
-> +
-> +	/* Busy power */
-> +	ctx = intel_ctx_create_all_physical(i915);
-> +	ahnd = get_reloc_ahnd(i915, ctx->id);
-> +	spin = igt_spin_new(i915, .ahnd = ahnd, .ctx = ctx,
-> +			    .engine = ALL_ENGINES,
-> +			    .flags = IGT_SPIN_POLL_RUN);
-> +	/* Wait till at least one spinner starts */
-> +	igt_spin_busywait_until_started(spin);
-> +	busy = measure_power(&pwr, 2);
----------------------------------- ^
-Make it define or const as you are using it twice and this
-should be the same.
-
-With that fixed:
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-
---
+Regards,
 Kamil
-
-> +	igt_free_spins(i915);
-> +	put_ahnd(ahnd);
-> +	intel_ctx_destroy(i915, ctx);
-> +	igt_power_close(&pwr);
-> +
-> +	igt_info("Measured power: idle: %g mW, busy: %g mW\n", idle, busy);
-> +	igt_assert(idle >= 0 && busy > 0 && busy > idle);
-> +}
-> +
-> +igt_main
-> +{
-> +	int i915;
-> +
-> +	igt_fixture {
-> +		i915 = drm_open_driver_master(DRIVER_INTEL);
-> +	}
-> +
-> +	igt_describe("Sanity check gpu power measurement");
-> +	igt_subtest("sanity") {
-> +		sanity(i915);
-> +	}
-> +
-> +	igt_fixture {
-> +		close(i915);
-> +	}
-> +}
-> diff --git a/tests/meson.build b/tests/meson.build
-> index cce9d89e1c8..d93a07c9ed6 100644
-> --- a/tests/meson.build
-> +++ b/tests/meson.build
-> @@ -213,6 +213,7 @@ i915_progs = [
->  	'i915_pm_dc',
->  	'i915_pm_rps',
->  	'i915_pm_sseu',
-> +	'i915_power',
->  	'i915_query',
->  	'i915_selftest',
->  	'i915_suspend',
-> -- 
-> 2.38.0
-> 
