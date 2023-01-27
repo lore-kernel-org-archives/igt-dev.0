@@ -1,27 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BDECD10E477
- for <igt-dev@lists.freedesktop.org>; Fri, 27 Jan 2023 14:38:45 +0000 (UTC)
-Date: Fri, 27 Jan 2023 16:35:32 +0200
-From: Petri Latvala <petri.latvala@intel.com>
-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>,
- Zack Rusin <zackr@vmware.com>, Martin Krastev <krastevm@vmware.com>,
- Maaz Mombasawala <mombasawalam@vmware.com>,
- Michael Banack <banackm@vmware.com>
-Message-ID: <Y9PhNFGrtjrZNdze@platvala-desk.ger.corp.intel.com>
-References: <20221129172718.151773-1-zack@kde.org>
- <20221129172718.151773-4-zack@kde.org>
- <20230126181733.5lgq2rq43gqy5qd2@kamilkon-desk1>
- <3ea9b093fc7ff70788c035a74f065c1b6075c478.camel@vmware.com>
- <20230127142959.4reppn45zao3e6wc@kamilkon-desk1>
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4EBAF10E971
+ for <igt-dev@lists.freedesktop.org>; Fri, 27 Jan 2023 14:44:50 +0000 (UTC)
+From: Mohammed Thasleem <mohammed.thasleem@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Fri, 27 Jan 2023 20:08:48 +0530
+Message-Id: <20230127143848.11884-1-mohammed.thasleem@intel.com>
+In-Reply-To: <20221220135734.6354-1-mohammed.thasleem@intel.com>
+References: <20221220135734.6354-1-mohammed.thasleem@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230127142959.4reppn45zao3e6wc@kamilkon-desk1>
-Subject: Re: [igt-dev] [PATCH i-g-t 3/3] igt: Switch warning to an info when
- not using i915
+Subject: [igt-dev] [PATCH i-g-t] tests/i915/i915_pm_dc : Check DC5 state
+ with externel active panel
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -33,54 +23,98 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Fri, Jan 27, 2023 at 03:29:59PM +0100, Kamil Konieczny wrote:
-> Hi Zack,
-> 
-> On 2023-01-26 at 19:11:18 +0000, Zack Rusin wrote:
-> > On Thu, 2023-01-26 at 19:17 +0100, Kamil Konieczny wrote:
-> > > !! External Email
-> > > 
-> > > Hi Zack,
-> > > 
-> > > On 2022-11-29 at 12:27:18 -0500, Zack Rusin wrote:
-> > > > From: Zack Rusin <zackr@vmware.com>
-> > > > 
-> > > > Because igt always tries to load i915 driver first for DRIVER_ANY every
-> > > > test using DRIVER_ANY on anything but i915 starts by printing a warning
-> > > > that i915 couldn't be loaded.
-> > > > Lets switch it to a general info line because it makes it hard to spot
-> > > > actual warnings when every subtest starts by warning about not being
-> > > > able to load i915.
-> > > > 
-> > > > Signed-off-by: Zack Rusin <zackr@vmware.com>
-> > > > ---
-> > > >  lib/igt_kmod.c | 2 +-
-> > > >  1 file changed, 1 insertion(+), 1 deletion(-)
-> > > > 
-> > > > diff --git a/lib/igt_kmod.c b/lib/igt_kmod.c
-> > > > index bcf7dfeb..74924b5f 100644
-> > > > --- a/lib/igt_kmod.c
-> > > > +++ b/lib/igt_kmod.c
-> > > > @@ -389,7 +389,7 @@ igt_i915_driver_load(const char *opts)
-> > > 
-> > > This is i915 driver load so maybe we should find a way to not
-> > > call this function ?
-> > 
-> > That'd be fine, how would you do that? IGT has a number of tests (the core ones)
-> > that use DRIVER_ANY for load the first available driver. Unless we explicitly
-> > exclude i915 from running those tests, or reorder the enum to try i915 after all the
-> > other options then it's not a trivial fix. We'd need to do add proper pci device id
-> > matching to always use the correct driver, which would be great, but is probably a
-> > little out of scope for this change.
-> > 
-> > z
-> 
-> You can use IGT_DEVICE= or --device to restrict tests to your HW.
+This test validates negative scenario of DC5 state by keeping
+all connectors's DPMS property set to ON.
 
+v2: Added function to check externel panel and skip test if not found.
 
-The driver load is going to happen anyway, device matching happens after that.
+v3: Moved check_external_panel inside igt_require_f and removed
+    igt_skip_on_f. (Swati)
 
-I think at this point we have better tools to catch issues loading
-i915, and this warn is added in 2016.
+v4: Renamed function name check_external_panel with
+    has_panels_without_dc_support.
+    Removed both DRM_MODE_CONNECTED check and init for output. (Imre)
 
-Acked-by: Petri Latvala <petri.latvala@intel.com>
+Signed-off-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
+Reviewed-by: Imre Deak <imre.deak@intel.com>
+---
+ tests/i915/i915_pm_dc.c | 43 +++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 43 insertions(+)
+
+diff --git a/tests/i915/i915_pm_dc.c b/tests/i915/i915_pm_dc.c
+index 36c50667..bf6a0df5 100644
+--- a/tests/i915/i915_pm_dc.c
++++ b/tests/i915/i915_pm_dc.c
+@@ -246,6 +246,13 @@ static void check_dc_counter(data_t *data, int dc_flag, uint32_t prev_dc_count)
+ 		     data->debugfs_dump = igt_sysfs_get(data->debugfs_fd, PWR_DOMAIN_INFO));
+ }
+ 
++static void check_dc_counter_negative(data_t *data, int dc_flag, uint32_t prev_dc_count)
++{
++	igt_assert_f(!dc_state_wait_entry(data->debugfs_fd, dc_flag, prev_dc_count),
++			"%s state is achieved\n%s:\n%s\n", dc_state_name(dc_flag), PWR_DOMAIN_INFO,
++			data->debugfs_dump = igt_sysfs_get(data->debugfs_fd, PWR_DOMAIN_INFO));
++}
++
+ static void setup_videoplayback(data_t *data)
+ {
+ 	color_t red_green_blue[] = {
+@@ -411,6 +418,18 @@ static void test_dc_state_dpms(data_t *data, int dc_flag)
+ 	cleanup_dc_dpms(data);
+ }
+ 
++static void test_dc_state_dpms_negative(data_t *data, int dc_flag)
++{
++	uint32_t dc_counter;
++
++	require_dc_counter(data->debugfs_fd, dc_flag);
++	setup_dc_dpms(data);
++	dc_counter = read_dc_counter(data->debugfs_fd, dc_flag);
++	dpms_on(data);
++	check_dc_counter_negative(data, dc_flag, dc_counter);
++	cleanup_dc_dpms(data);
++}
++
+ static bool support_dc6(int debugfs_fd)
+ {
+ 	char buf[4096];
+@@ -485,6 +504,21 @@ static void test_dc9_dpms(data_t *data)
+ 	setup_dc9_dpms(data, dc_target);
+ }
+ 
++static int has_panels_without_dc_support(igt_display_t *display)
++{
++	igt_output_t *output;
++	int external_panel = 0;
++
++	for_each_connected_output(display, output) {
++		drmModeConnectorPtr c = output->config.connector;
++
++		if (c->connector_type != DRM_MODE_CONNECTOR_eDP)
++			external_panel++;
++	}
++
++	return external_panel;
++}
++
+ static void kms_poll_state_restore(int sig)
+ {
+ 	int sysfs_fd;
+@@ -552,6 +586,15 @@ igt_main
+ 		test_dc_state_dpms(&data, CHECK_DC5);
+ 	}
+ 
++	igt_describe("This test validates negative scenario of DC5 display "
++		     "engine entry to DC5 state while all connectors's DPMS "
++		     "property set to ON");
++	igt_subtest("dc5-dpms-negative") {
++		igt_require_f(has_panels_without_dc_support(&data.display),
++			      "External panel not detected, skip execution\n");
++		test_dc_state_dpms_negative(&data, CHECK_DC5);
++	}
++
+ 	igt_describe("This test validates display engine entry to DC6 state "
+ 		     "while all connectors's DPMS property set to OFF");
+ 	igt_subtest("dc6-dpms") {
+-- 
+2.25.1
