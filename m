@@ -1,16 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 752C210E2B9
- for <igt-dev@lists.freedesktop.org>; Thu, 26 Jan 2023 20:57:44 +0000 (UTC)
-From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Thu, 26 Jan 2023 21:57:35 +0100
-Message-Id: <20230126205735.325701-1-zbigniew.kempczynski@intel.com>
+Message-ID: <10880dfa-f53b-0224-c339-fd3d9c867ecd@linux.intel.com>
+Date: Fri, 27 Jan 2023 13:41:20 +0000
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Language: en-US
+To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ igt-dev@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
+ Tvrtko Ursulin <tvrtko.ursulin@intel.com>,
+ Petri Latvala <petri.latvala@intel.com>,
+ =?UTF-8?Q?Zbigniew_Kempczy=c5=84ski?= <zbigniew.kempczynski@intel.com>
+References: <20221111155844.3290531-1-tvrtko.ursulin@linux.intel.com>
+ <20230126170209.5a5dqpqktal6jrjc@kamilkon-desk1>
+From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
+In-Reply-To: <20230126170209.5a5dqpqktal6jrjc@kamilkon-desk1>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t] i915/gem_tiled_fence_blits: Fix softpinned
- version of the test
+Subject: Re: [igt-dev] [Intel-gfx] [PATCH i-g-t 0/8] Vendor agnostic gputop
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,151 +26,111 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Working with larger set on mappable apperture for softpinned version
-of the test we might hit situation buffers randomly taken to blit
-might overlap. Since reloc allocator is keeping offset per handle
-only thing we can do is to pick another pair of buffers until we get
-two non-overlapping ones.
 
-Due to extremely long execution time on RKL I've limited number
-of cores used to blit and verify buffer contents to four. It seems
-ggtt mapping is very slow on this platform comparing to older gens
-(Skylake for example).
+On 26/01/2023 17:02, Kamil Konieczny wrote:
+> Hi,
+> 
+> please rebase and resend, also please change commit subject to start
+> with lib: or lib/[name of lib changed]: rest od commit description
 
-Fixes: https://gitlab.freedesktop.org/drm/intel/-/issues/7675
+Series should still apply as is so I don't think there is need to 
+re-send. It will only conflict if I get to merge the "Assorted 
+intel_gpu_top improvements" series first, in which case I can resend.
 
-v2: Improve logging (number of repeats and ncpus - Kamil)
+> For example, in 3/8 instead of
+> libdrmclients: Record client drm minor
+> write:
+> lib/igt_drm_clients: Record client drm minor
+> 
+> If there are more lib changes, use "lib: " alone, for example
+> in your 2/8 patch,
+> libdrmfdinfo: Allow specifying custom engine map
+> write:
+> lib: Allow specifying custom engine map
 
-Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
----
- tests/i915/gem_tiled_fence_blits.c | 56 ++++++++++++++++++++++++------
- 1 file changed, 46 insertions(+), 10 deletions(-)
+Again, if you agree there is no need to spam the list with a re-send 
+yet, review can continue against this version, and I will note to change 
+the above patch prefixes while doing the other changes the review is 
+bound to trigger.
 
-diff --git a/tests/i915/gem_tiled_fence_blits.c b/tests/i915/gem_tiled_fence_blits.c
-index 1c621d1e3a..a3a0221d62 100644
---- a/tests/i915/gem_tiled_fence_blits.c
-+++ b/tests/i915/gem_tiled_fence_blits.c
-@@ -154,22 +154,30 @@ static void run_test(int fd, int count, uint64_t end)
- 	uint32_t *src_order, *dst_order;
- 	uint32_t *bo, *bo_start_val;
- 	uint32_t start = 0;
--	uint64_t ahnd = 0;
-+	uint64_t ahnd = 0, ahndbb = 0;
-+	unsigned int repeat = 0;
- 
--	if (!gem_has_relocations(fd))
-+	if (!gem_has_relocations(fd)) {
- 		ahnd = intel_allocator_open_full(fd, 0, 0, end,
- 						 INTEL_ALLOCATOR_RELOC,
- 						 ALLOC_STRATEGY_LOW_TO_HIGH, 0);
-+
-+		/* Use separated vm range for bb */
-+		ahndbb = intel_allocator_open_full(fd, 1, end, 0,
-+						   INTEL_ALLOCATOR_RELOC,
-+						   ALLOC_STRATEGY_LOW_TO_HIGH, 0);
-+	}
-+
- 	memset(reloc, 0, sizeof(reloc));
- 	memset(obj, 0, sizeof(obj));
- 	obj[0].flags = EXEC_OBJECT_NEEDS_FENCE;
- 	obj[1].flags = EXEC_OBJECT_NEEDS_FENCE;
- 	obj[2].handle = gem_create(fd, 4096);
--	obj[2].offset = get_offset(ahnd, obj[2].handle, 4096, 0);
-+	obj[2].offset = get_offset(ahndbb, obj[2].handle, 4096, 0);
- 	if (ahnd) {
- 		obj[0].flags |= EXEC_OBJECT_PINNED | EXEC_OBJECT_WRITE;
- 		obj[1].flags |= EXEC_OBJECT_PINNED;
--		obj[2].flags |= EXEC_OBJECT_PINNED;
-+		obj[2].flags |= EXEC_OBJECT_PINNED | EXEC_OBJECT_SUPPORTS_48B_ADDRESS;
- 	}
- 	obj[2].relocs_ptr = to_user_pointer(reloc);
- 	obj[2].relocation_count = !ahnd ? ARRAY_SIZE(reloc) : 0;
-@@ -206,6 +214,7 @@ static void run_test(int fd, int count, uint64_t end)
- 		for (int i = 0; i < count; i++) {
- 			int src = src_order[i];
- 			int dst = dst_order[i];
-+			int ret;
- 
- 			if (src == dst)
- 				continue;
-@@ -218,22 +227,43 @@ static void run_test(int fd, int count, uint64_t end)
- 						sizeof(linear), 0);
- 				obj[1].offset = get_offset(ahnd, obj[1].handle,
- 						sizeof(linear), 0);
--				obj[2].offset = get_offset(ahnd, obj[2].handle,
-+				obj[2].offset = get_offset(ahndbb, obj[2].handle,
- 						4096, 0);
- 				update_batch(fd, obj[2].handle, reloc,
- 					     obj[0].offset, obj[1].offset);
- 			}
- 
--			gem_execbuf(fd, &eb);
--			if (ahnd) {
-+			ret = __gem_execbuf(fd, &eb);
-+
-+			/*
-+			 * 1. For relocations execbuf must succeed.
-+			 * 2. For softpinning we might hit situation two buffers
-+			 * would overlap (buffers picked to blit are randomized
-+			 * and we use more buffers aperture can hold).
-+			 * For such situation (ENOSPC) we just repeat pick
-+			 * and execute.
-+			 */
-+			if (!ahnd) {
-+				igt_assert_eq(ret, 0);
-+			} else {
-+				igt_assert(ret == 0 || ret == -ENOSPC);
- 				gem_close(fd, obj[2].handle);
-+				put_offset(ahndbb, obj[2].handle);
- 				obj[2].handle = gem_create(fd, 4096);
-+
-+				if (ret == -ENOSPC)
-+					repeat++;
- 			}
- 
--			bo_start_val[dst] = bo_start_val[src];
-+			if (!ret)
-+				bo_start_val[dst] = bo_start_val[src];
- 		}
- 	}
- 
-+	if (repeat)
-+		igt_debug("Number of overlapping blits (repeated): %u, pid: %d\n",
-+			  repeat, getpid());
-+
- 	for (int i = 0; i < count; i++) {
- 		check_bo(fd, bo[i], bo_start_val[i]);
- 		gem_close(fd, bo[i]);
-@@ -242,13 +272,18 @@ static void run_test(int fd, int count, uint64_t end)
- 
- 	gem_close(fd, obj[2].handle);
- 	put_ahnd(ahnd);
-+	put_ahnd(ahndbb);
- }
- 
- #define MAX_32b ((1ull << 32) - 4096)
- 
- igt_main
- {
--	const int ncpus = sysconf(_SC_NPROCESSORS_ONLN);
-+	/*
-+	 * For machines with many cpu cores buffer verification can take
-+	 * almost minute, limitation to 4 cores keeps this time in seconds.
-+	 */
-+	const int ncpus = min_t(int, sysconf(_SC_NPROCESSORS_ONLN), 4);
- 	uint64_t count = 0, end;
- 	int fd;
- 
-@@ -266,7 +301,8 @@ igt_main
- 		igt_require(count > 1);
- 		igt_require_memory(count, 1024 * 1024 , CHECK_RAM);
- 
--		igt_debug("Using %'"PRIu64" 1MiB buffers\n", count);
-+		igt_debug("Using %'"PRIu64" 1MiB buffers on ncpus: %d\n",
-+			  count, ncpus);
- 		count = (count + ncpus - 1) / ncpus;
- 	}
- 
--- 
-2.34.1
+Regards,
+
+Tvrtko
+
+> 
+> +Cc Petri and Zbyszek
+> 
+> Regards,
+> Kamil
+> 
+> On 2022-11-11 at 15:58:36 +0000, Tvrtko Ursulin wrote:
+>> From: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+>>
+>> This is a pile of patches which implements a rudimentary vendor agnostic gputop
+>> tool based of the new DRM spec as documented in
+>> Documentation/gpu/drm-usage-stats.rst.
+>>
+>> First part of the series is code refactoring which should be reasonably stable.
+>> I've tested it all while working on it both against intel_gpu_top and gputop.
+>>
+>> Last patch is the actual tool itself. It works but it is rather rudimentary
+>> which is hopefully good enough for a start.
+>>
+>> Fundamental difference between intel_gpu_top and gputop is that the former is
+>> centered around a single card and only shows processes belonging to it. Gputop
+>> on the other hand has an idea to show all processes with DRM file descriptors
+>> open and sort them into groups per card. It also makes no effort to provide
+>> sorting modes, well any interactivity, or any pretty names for GPUs or engines.
+>>
+>> It looks like this:
+>> ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+>> DRM minor 0
+>>      PID               NAME    render       copy       video
+>>      3816          kwin_x11 |███▎      ||          ||          ||          |
+>>      3523              Xorg |▊         ||          ||          ||          |
+>>   1120449               mpv |          ||          ||▋         ||          |
+>>   1120529          glxgears |▋         ||          ||          ||          |
+>>   1120449               mpv |▍         ||          ||          ||          |
+>>      3860       plasmashell |▏         ||          ||          ||          |
+>>      4764           krunner |          ||          ||          ||          |
+>>    575206            chrome |          ||          ||          ||          |
+>>    833481           firefox |          ||          ||          ||          |
+>>    892924       thunderbird |          ||          ||          ||          |
+>> ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+>>
+>> I did test it as well with two cards and confirmed that too works.
+>>
+>> Rob Clark also tested it with a patch which exports the respective data from the
+>> msm driver and confirmed it works fine. Christian König tested it with in
+>> progress patches for amdgpu and that worked as well.
+>>
+>> v2:
+>>   * Fixed SPDX headers and added a bunch of code comments/docs throughout.
+>>
+>> Tvrtko Ursulin (8):
+>>    lib: Extract igt_drm_clients from intel_gpu_top
+>>    libdrmfdinfo: Allow specifying custom engine map
+>>    libdrmclients: Record client drm minor
+>>    libdrmclient: Support multiple DRM cards
+>>    libdrmfdinfo: Track largest engine index
+>>    libdrmclient/intel_gpu_top: Decouple hardcoded engine assumptions
+>>    libdrmclient: Enforce client status sort order in the library
+>>    gputop: Basic vendor agnostic GPU top tool
+>>
+>>   lib/igt_drm_clients.c   | 503 +++++++++++++++++++++++++++++
+>>   lib/igt_drm_clients.h   |  87 ++++++
+>>   lib/igt_drm_fdinfo.c    |  50 ++-
+>>   lib/igt_drm_fdinfo.h    |  16 +-
+>>   lib/meson.build         |   8 +
+>>   tests/i915/drm_fdinfo.c |  19 +-
+>>   tools/gputop.c          | 260 +++++++++++++++
+>>   tools/intel_gpu_top.c   | 677 +++++++++++-----------------------------
+>>   tools/meson.build       |   7 +-
+>>   9 files changed, 1113 insertions(+), 514 deletions(-)
+>>   create mode 100644 lib/igt_drm_clients.c
+>>   create mode 100644 lib/igt_drm_clients.h
+>>   create mode 100644 tools/gputop.c
+>>
+>> -- 
+>> 2.34.1
+>>
