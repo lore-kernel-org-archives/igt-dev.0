@@ -1,17 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 90E1510E181
- for <igt-dev@lists.freedesktop.org>; Fri, 27 Jan 2023 16:08:17 +0000 (UTC)
-From: Ashutosh Dixit <ashutosh.dixit@intel.com>
+Date: Fri, 27 Jan 2023 17:10:52 +0100
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Fri, 27 Jan 2023 08:08:13 -0800
-Message-Id: <20230127160813.139460-3-ashutosh.dixit@intel.com>
-In-Reply-To: <20230127160813.139460-1-ashutosh.dixit@intel.com>
-References: <20230127160813.139460-1-ashutosh.dixit@intel.com>
+Message-ID: <20230127161052.thz5q2sqxtge2cwn@kamilkon-desk1>
+References: <20230127111241.3624629-1-tvrtko.ursulin@linux.intel.com>
+ <20230127111241.3624629-6-tvrtko.ursulin@linux.intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 2/2] HAX: Add i915_power@sanity to
- fast-feedback.testlist
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20230127111241.3624629-6-tvrtko.ursulin@linux.intel.com>
+Subject: Re: [igt-dev] [Intel-gfx] [PATCH i-g-t 5/6] intel_gpu_top: Fix
+ cleanup on old kernels / unsupported GPU
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,28 +18,119 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: intel-gfx@lists.freedesktop.org, Nirmoy Das <nirmoy.das@intel.com>,
+ Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-CI.
+Hi Tvrtko,
 
-Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
----
- tests/intel-ci/fast-feedback.testlist | 1 +
- 1 file changed, 1 insertion(+)
+On 2023-01-27 at 11:12:40 +0000, Tvrtko Ursulin wrote:
+> From: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+> 
+> Avoid trying to dereference null engines on exit when there are either
+> none which are supported, or kernel does not have i915 PMU support.
+> 
+> Also fix a memory leak on the same failure path just so Valgrind runs are
+> quite.
+> 
+> v2:
+>  * Fix a memory leak in the same failure mode too.
 
-diff --git a/tests/intel-ci/fast-feedback.testlist b/tests/intel-ci/fast-feedback.testlist
-index 4188e97375d..a266c316db9 100644
---- a/tests/intel-ci/fast-feedback.testlist
-+++ b/tests/intel-ci/fast-feedback.testlist
-@@ -128,6 +128,7 @@ igt@i915_pm_backlight@basic-brightness
- igt@i915_pm_rpm@basic-pci-d3-state
- igt@i915_pm_rpm@basic-rte
- igt@i915_pm_rps@basic-api
-+igt@i915_power@sanity
- igt@prime_self_import@basic-llseek-bad
- igt@prime_self_import@basic-llseek-size
- igt@prime_self_import@basic-with_fd_dup
--- 
-2.38.0
+Please rebase, patch do not apply.
+
+> 
+> Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+> Acked-by: Nirmoy Das <nirmoy.das@intel.com> # v1
+-------------------------------------------- ^^^^^
+Delete this.
+
+Rest looks good,
+
+Regards,
+Kamil
+
+> ---
+>  tools/intel_gpu_top.c | 21 ++++++++++++++-------
+>  1 file changed, 14 insertions(+), 7 deletions(-)
+> 
+> diff --git a/tools/intel_gpu_top.c b/tools/intel_gpu_top.c
+> index 7aa233570463..0a1de41b3374 100644
+> --- a/tools/intel_gpu_top.c
+> +++ b/tools/intel_gpu_top.c
+> @@ -340,7 +340,7 @@ static struct engines *discover_engines(char *device)
+>  
+>  	d = opendir(sysfs_root);
+>  	if (!d)
+> -		return NULL;
+> +		goto err;
+>  
+>  	while ((dent = readdir(d)) != NULL) {
+>  		const char *endswith = "-busy";
+> @@ -423,10 +423,8 @@ static struct engines *discover_engines(char *device)
+>  	}
+>  
+>  	if (ret) {
+> -		free(engines);
+>  		errno = ret;
+> -
+> -		return NULL;
+> +		goto err;
+>  	}
+>  
+>  	qsort(engine_ptr(engines, 0), engines->num_engines,
+> @@ -435,6 +433,11 @@ static struct engines *discover_engines(char *device)
+>  	engines->root = d;
+>  
+>  	return engines;
+> +
+> +err:
+> +	free(engines);
+> +
+> +	return NULL;
+>  }
+>  
+>  static void free_engines(struct engines *engines)
+> @@ -448,6 +451,9 @@ static void free_engines(struct engines *engines)
+>  	};
+>  	unsigned int i;
+>  
+> +	if (!engines)
+> +		return;
+> +
+>  	for (pmu = &free_list[0]; *pmu; pmu++) {
+>  		if ((*pmu)->present)
+>  			free((char *)(*pmu)->units);
+> @@ -2568,7 +2574,7 @@ int main(int argc, char **argv)
+>  			"Failed to detect engines! (%s)\n(Kernel 4.16 or newer is required for i915 PMU support.)\n",
+>  			strerror(errno));
+>  		ret = EXIT_FAILURE;
+> -		goto err;
+> +		goto err_engines;
+>  	}
+>  
+>  	ret = pmu_init(engines);
+> @@ -2585,7 +2591,7 @@ int main(int argc, char **argv)
+>  "More information can be found at 'Perf events and tool security' document:\n"
+>  "https://www.kernel.org/doc/html/latest/admin-guide/perf-security.html\n");
+>  		ret = EXIT_FAILURE;
+> -		goto err;
+> +		goto err_pmu;
+>  	}
+>  
+>  	ret = EXIT_SUCCESS;
+> @@ -2699,8 +2705,9 @@ int main(int argc, char **argv)
+>  		free_clients(clients);
+>  
+>  	free(codename);
+> -err:
+> +err_pmu:
+>  	free_engines(engines);
+> +err_engines:
+>  	free(pmu_device);
+>  exit:
+>  	igt_devices_free();
+> -- 
+> 2.34.1
+> 
