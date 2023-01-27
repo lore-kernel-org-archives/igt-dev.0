@@ -2,14 +2,15 @@ Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
 To: igt-dev@lists.freedesktop.org,
 	Intel-gfx@lists.freedesktop.org
-Date: Fri, 27 Jan 2023 11:12:40 +0000
-Message-Id: <20230127111241.3624629-6-tvrtko.ursulin@linux.intel.com>
+Date: Fri, 27 Jan 2023 11:12:41 +0000
+Message-Id: <20230127111241.3624629-7-tvrtko.ursulin@linux.intel.com>
 In-Reply-To: <20230127111241.3624629-1-tvrtko.ursulin@linux.intel.com>
 References: <20230127111241.3624629-1-tvrtko.ursulin@linux.intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 5/6] intel_gpu_top: Fix cleanup on old
- kernels / unsupported GPU
+Subject: [igt-dev] [PATCH i-g-t 6/6] lib/igt_device_scan: Improve Intel
+ discrete GPU selection
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,104 +18,72 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Nirmoy Das <nirmoy.das@intel.com>,
- Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+Cc: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 
-Avoid trying to dereference null engines on exit when there are either
-none which are supported, or kernel does not have i915 PMU support.
+Now that DRM subsystem can contain PCI cards with the vendor set to Intel
+but they are not Intel GPUs, we need a better selection logic than looking
+at the vendor. Use the driver name instead.
 
-Also fix a memory leak on the same failure path just so Valgrind runs are
-quite.
-
-v2:
- * Fix a memory leak in the same failure mode too.
+Caveat that the driver key was on a blacklist so far, and although I can't
+imagine it can be slow to probe, this is something to double check.
 
 Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
-Acked-by: Nirmoy Das <nirmoy.das@intel.com> # v1
+Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 ---
- tools/intel_gpu_top.c | 21 ++++++++++++++-------
- 1 file changed, 14 insertions(+), 7 deletions(-)
+ lib/igt_device_scan.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/tools/intel_gpu_top.c b/tools/intel_gpu_top.c
-index 7aa233570463..0a1de41b3374 100644
---- a/tools/intel_gpu_top.c
-+++ b/tools/intel_gpu_top.c
-@@ -340,7 +340,7 @@ static struct engines *discover_engines(char *device)
+diff --git a/lib/igt_device_scan.c b/lib/igt_device_scan.c
+index ed128d24dd10..8b767eed202d 100644
+--- a/lib/igt_device_scan.c
++++ b/lib/igt_device_scan.c
+@@ -237,6 +237,7 @@ struct igt_device {
+ 	char *vendor;
+ 	char *device;
+ 	char *pci_slot_name;
++	char *driver;
+ 	int gpu_index; /* For more than one GPU with same vendor and device. */
  
- 	d = opendir(sysfs_root);
- 	if (!d)
--		return NULL;
-+		goto err;
- 
- 	while ((dent = readdir(d)) != NULL) {
- 		const char *endswith = "-busy";
-@@ -423,10 +423,8 @@ static struct engines *discover_engines(char *device)
+ 	char *codename; /* For grouping by codename */
+@@ -440,7 +441,6 @@ static bool is_on_blacklist(const char *what)
+ 				      "resource3", "resource4", "resource5",
+ 				      "resource0_wc", "resource1_wc", "resource2_wc",
+ 				      "resource3_wc", "resource4_wc", "resource5_wc",
+-				      "driver",
+ 				      "uevent", NULL};
+ 	const char *key;
+ 	int i = 0;
+@@ -662,6 +662,8 @@ static struct igt_device *igt_device_new_from_udev(struct udev_device *dev)
+ 		get_pci_vendor_device(idev, &vendor, &device);
+ 		idev->codename = __pci_codename(vendor, device);
+ 		idev->dev_type = __pci_devtype(vendor, device, idev->pci_slot_name);
++		idev->driver = strdup_nullsafe(get_attr(idev, "driver"));
++		igt_assert(idev->driver);
  	}
  
- 	if (ret) {
--		free(engines);
- 		errno = ret;
--
--		return NULL;
-+		goto err;
- 	}
+ 	return idev;
+@@ -776,7 +778,7 @@ static bool __find_first_i915_card(struct igt_device_card *card, bool discrete)
  
- 	qsort(engine_ptr(engines, 0), engines->num_engines,
-@@ -435,6 +433,11 @@ static struct engines *discover_engines(char *device)
- 	engines->root = d;
+ 	igt_list_for_each_entry(dev, &igt_devs.all, link) {
  
- 	return engines;
-+
-+err:
-+	free(engines);
-+
-+	return NULL;
- }
+-		if (!is_pci_subsystem(dev) || !is_vendor_matched(dev, "intel"))
++		if (!is_pci_subsystem(dev) || strcmp(dev->driver, "i915"))
+ 			continue;
  
- static void free_engines(struct engines *engines)
-@@ -448,6 +451,9 @@ static void free_engines(struct engines *engines)
- 	};
- 	unsigned int i;
- 
-+	if (!engines)
-+		return;
-+
- 	for (pmu = &free_list[0]; *pmu; pmu++) {
- 		if ((*pmu)->present)
- 			free((char *)(*pmu)->units);
-@@ -2568,7 +2574,7 @@ int main(int argc, char **argv)
- 			"Failed to detect engines! (%s)\n(Kernel 4.16 or newer is required for i915 PMU support.)\n",
- 			strerror(errno));
- 		ret = EXIT_FAILURE;
--		goto err;
-+		goto err_engines;
- 	}
- 
- 	ret = pmu_init(engines);
-@@ -2585,7 +2591,7 @@ int main(int argc, char **argv)
- "More information can be found at 'Perf events and tool security' document:\n"
- "https://www.kernel.org/doc/html/latest/admin-guide/perf-security.html\n");
- 		ret = EXIT_FAILURE;
--		goto err;
-+		goto err_pmu;
- 	}
- 
- 	ret = EXIT_SUCCESS;
-@@ -2699,8 +2705,9 @@ int main(int argc, char **argv)
- 		free_clients(clients);
- 
- 	free(codename);
--err:
-+err_pmu:
- 	free_engines(engines);
-+err_engines:
- 	free(pmu_device);
- exit:
- 	igt_devices_free();
+ 		cmp = strncmp(dev->pci_slot_name, INTEGRATED_I915_GPU_PCI_ID,
+@@ -1023,6 +1025,7 @@ static void igt_device_free(struct igt_device *dev)
+ 	free(dev->drm_render);
+ 	free(dev->vendor);
+ 	free(dev->device);
++	free(dev->driver);
+ 	free(dev->pci_slot_name);
+ 	g_hash_table_destroy(dev->attrs_ht);
+ 	g_hash_table_destroy(dev->props_ht);
 -- 
 2.34.1
