@@ -1,19 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Date: Mon, 30 Jan 2023 17:51:50 +0100
+Date: Mon, 30 Jan 2023 17:54:28 +0100
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org, Intel-gfx@lists.freedesktop.org
-Message-ID: <20230130165150.g27kknrh7yy45flq@kamilkon-desk1>
+To: igt-dev@lists.freedesktop.org, intel-gfx@lists.freedesktop.org
+Message-ID: <20230130165428.ulsf7zc24bquu55x@kamilkon-desk1>
 References: <20230127111241.3624629-1-tvrtko.ursulin@linux.intel.com>
- <20230127111241.3624629-7-tvrtko.ursulin@linux.intel.com>
- <20230127161727.oeyjjbt32jn27zgj@kamilkon-desk1>
- <aa70698a-040d-aa8b-6a01-9d11ac4759bc@linux.intel.com>
+ <20230127111241.3624629-6-tvrtko.ursulin@linux.intel.com>
+ <20230127161052.thz5q2sqxtge2cwn@kamilkon-desk1>
+ <facc58f1-ec41-67bc-3cb2-a15965b7a27d@linux.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <aa70698a-040d-aa8b-6a01-9d11ac4759bc@linux.intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 6/6] lib/igt_device_scan: Improve Intel
- discrete GPU selection
+In-Reply-To: <facc58f1-ec41-67bc-3cb2-a15965b7a27d@linux.intel.com>
+Subject: Re: [igt-dev] [Intel-gfx] [PATCH i-g-t 5/6] intel_gpu_top: Fix
+ cleanup on old kernels / unsupported GPU
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,104 +20,130 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+Cc: Nirmoy Das <nirmoy.das@intel.com>,
+ Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
 Hi,
 
-On 2023-01-30 at 11:04:07 +0000, Tvrtko Ursulin wrote:
+On 2023-01-30 at 10:55:42 +0000, Tvrtko Ursulin wrote:
 > 
-> On 27/01/2023 16:17, Kamil Konieczny wrote:
+> On 27/01/2023 16:10, Kamil Konieczny wrote:
 > > Hi Tvrtko,
 > > 
-> > On 2023-01-27 at 11:12:41 +0000, Tvrtko Ursulin wrote:
+> > On 2023-01-27 at 11:12:40 +0000, Tvrtko Ursulin wrote:
 > > > From: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 > > > 
-> > > Now that DRM subsystem can contain PCI cards with the vendor set to Intel
-> > > but they are not Intel GPUs, we need a better selection logic than looking
-> > > at the vendor. Use the driver name instead.
+> > > Avoid trying to dereference null engines on exit when there are either
+> > > none which are supported, or kernel does not have i915 PMU support.
 > > > 
-> > > Caveat that the driver key was on a blacklist so far, and although I can't
-> > > imagine it can be slow to probe, this is something to double check.
+> > > Also fix a memory leak on the same failure path just so Valgrind runs are
+> > > quite.
 > > > 
+> > > v2:
+> > >   * Fix a memory leak in the same failure mode too.
+> > 
+> > Please rebase, patch do not apply.
+> 
+> Hm how, CI applied it fine. Maybe you mean as standalone? There is the same
+> patch here:
+> https://patchwork.freedesktop.org/patch/519751/?series=113096&rev=2
+> 
 > > > Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
-> > > Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> > > Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-> > 
-> > Please send this as separate patch, not in this series.
+> > > Acked-by: Nirmoy Das <nirmoy.das@intel.com> # v1
+> > -------------------------------------------- ^^^^^
+> > Delete this.
 > 
-> Yeah I was lazy and wanting to save time so okay.
-> 
-
-Well maybe next time, I already merged your series without 5/6,
-that one were merged some time ago.
-
-Regards,
-Kamil
-
-> > > ---
-> > >   lib/igt_device_scan.c | 7 +++++--
-> > >   1 file changed, 5 insertions(+), 2 deletions(-)
-> > > 
-> > > diff --git a/lib/igt_device_scan.c b/lib/igt_device_scan.c
-> > > index ed128d24dd10..8b767eed202d 100644
-> > > --- a/lib/igt_device_scan.c
-> > > +++ b/lib/igt_device_scan.c
-> > > @@ -237,6 +237,7 @@ struct igt_device {
-> > >   	char *vendor;
-> > >   	char *device;
-> > >   	char *pci_slot_name;
-> > > +	char *driver;
-> > >   	int gpu_index; /* For more than one GPU with same vendor and device. */
-> > >   	char *codename; /* For grouping by codename */
-> > > @@ -440,7 +441,6 @@ static bool is_on_blacklist(const char *what)
-> > >   				      "resource3", "resource4", "resource5",
-> > >   				      "resource0_wc", "resource1_wc", "resource2_wc",
-> > >   				      "resource3_wc", "resource4_wc", "resource5_wc",
-> > > -				      "driver",
-> > >   				      "uevent", NULL};
-> > >   	const char *key;
-> > >   	int i = 0;
-> > > @@ -662,6 +662,8 @@ static struct igt_device *igt_device_new_from_udev(struct udev_device *dev)
-> > >   		get_pci_vendor_device(idev, &vendor, &device);
-> > >   		idev->codename = __pci_codename(vendor, device);
-> > >   		idev->dev_type = __pci_devtype(vendor, device, idev->pci_slot_name);
-> > > +		idev->driver = strdup_nullsafe(get_attr(idev, "driver"));
-> > > +		igt_assert(idev->driver);
-> > >   	}
-> > >   	return idev;
-> > > @@ -776,7 +778,7 @@ static bool __find_first_i915_card(struct igt_device_card *card, bool discrete)
-> > >   	igt_list_for_each_entry(dev, &igt_devs.all, link) {
-> > > -		if (!is_pci_subsystem(dev) || !is_vendor_matched(dev, "intel"))
-> > > +		if (!is_pci_subsystem(dev) || strcmp(dev->driver, "i915"))
-> > 
-> > Put the comment here why it can be problematic to relay on driver name.
-> 
-> Function name being __find_first_*i915*_card is IMO enough so it feels any
-> comment to the same effect would be redundant.
-> 
-> Hm if anything igt_device_find_integrated_card should be renamed..
+> I can do that only if Nirmoy agrees. ;)
 > 
 > Regards,
 > 
 > Tvrtko
+
+It is already too late, that was merged some time ago and got
+into git history so nothing can be done now.
+
+Regards,
+Kamil
+
 > 
+> > Rest looks good,
 > > 
 > > Regards,
 > > Kamil
 > > 
-> > >   			continue;
-> > >   		cmp = strncmp(dev->pci_slot_name, INTEGRATED_I915_GPU_PCI_ID,
-> > > @@ -1023,6 +1025,7 @@ static void igt_device_free(struct igt_device *dev)
-> > >   	free(dev->drm_render);
-> > >   	free(dev->vendor);
-> > >   	free(dev->device);
-> > > +	free(dev->driver);
-> > >   	free(dev->pci_slot_name);
-> > >   	g_hash_table_destroy(dev->attrs_ht);
-> > >   	g_hash_table_destroy(dev->props_ht);
+> > > ---
+> > >   tools/intel_gpu_top.c | 21 ++++++++++++++-------
+> > >   1 file changed, 14 insertions(+), 7 deletions(-)
+> > > 
+> > > diff --git a/tools/intel_gpu_top.c b/tools/intel_gpu_top.c
+> > > index 7aa233570463..0a1de41b3374 100644
+> > > --- a/tools/intel_gpu_top.c
+> > > +++ b/tools/intel_gpu_top.c
+> > > @@ -340,7 +340,7 @@ static struct engines *discover_engines(char *device)
+> > >   	d = opendir(sysfs_root);
+> > >   	if (!d)
+> > > -		return NULL;
+> > > +		goto err;
+> > >   	while ((dent = readdir(d)) != NULL) {
+> > >   		const char *endswith = "-busy";
+> > > @@ -423,10 +423,8 @@ static struct engines *discover_engines(char *device)
+> > >   	}
+> > >   	if (ret) {
+> > > -		free(engines);
+> > >   		errno = ret;
+> > > -
+> > > -		return NULL;
+> > > +		goto err;
+> > >   	}
+> > >   	qsort(engine_ptr(engines, 0), engines->num_engines,
+> > > @@ -435,6 +433,11 @@ static struct engines *discover_engines(char *device)
+> > >   	engines->root = d;
+> > >   	return engines;
+> > > +
+> > > +err:
+> > > +	free(engines);
+> > > +
+> > > +	return NULL;
+> > >   }
+> > >   static void free_engines(struct engines *engines)
+> > > @@ -448,6 +451,9 @@ static void free_engines(struct engines *engines)
+> > >   	};
+> > >   	unsigned int i;
+> > > +	if (!engines)
+> > > +		return;
+> > > +
+> > >   	for (pmu = &free_list[0]; *pmu; pmu++) {
+> > >   		if ((*pmu)->present)
+> > >   			free((char *)(*pmu)->units);
+> > > @@ -2568,7 +2574,7 @@ int main(int argc, char **argv)
+> > >   			"Failed to detect engines! (%s)\n(Kernel 4.16 or newer is required for i915 PMU support.)\n",
+> > >   			strerror(errno));
+> > >   		ret = EXIT_FAILURE;
+> > > -		goto err;
+> > > +		goto err_engines;
+> > >   	}
+> > >   	ret = pmu_init(engines);
+> > > @@ -2585,7 +2591,7 @@ int main(int argc, char **argv)
+> > >   "More information can be found at 'Perf events and tool security' document:\n"
+> > >   "https://www.kernel.org/doc/html/latest/admin-guide/perf-security.html\n");
+> > >   		ret = EXIT_FAILURE;
+> > > -		goto err;
+> > > +		goto err_pmu;
+> > >   	}
+> > >   	ret = EXIT_SUCCESS;
+> > > @@ -2699,8 +2705,9 @@ int main(int argc, char **argv)
+> > >   		free_clients(clients);
+> > >   	free(codename);
+> > > -err:
+> > > +err_pmu:
+> > >   	free_engines(engines);
+> > > +err_engines:
+> > >   	free(pmu_device);
+> > >   exit:
+> > >   	igt_devices_free();
 > > > -- 
 > > > 2.34.1
 > > > 
