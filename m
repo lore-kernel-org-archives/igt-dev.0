@@ -1,21 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E666E10E148
- for <igt-dev@lists.freedesktop.org>; Mon, 30 Jan 2023 08:21:38 +0000 (UTC)
-Message-ID: <2ab35ef4-c027-99c5-721f-95b845cd0620@intel.com>
-Date: Mon, 30 Jan 2023 09:21:09 +0100
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9E66410E18B
+ for <igt-dev@lists.freedesktop.org>; Mon, 30 Jan 2023 09:12:41 +0000 (UTC)
+From: "B, Jeevan" <jeevan.b@intel.com>
+To: "Hogander, Jouni" <jouni.hogander@intel.com>,
+ "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+Date: Mon, 30 Jan 2023 09:12:37 +0000
+Message-ID: <DM4PR11MB63125DE2891C1B410F7B7A9890D39@DM4PR11MB6312.namprd11.prod.outlook.com>
+References: <20230125090742.1599761-1-jouni.hogander@intel.com>
+ <20230125090742.1599761-2-jouni.hogander@intel.com>
+In-Reply-To: <20230125090742.1599761-2-jouni.hogander@intel.com>
 Content-Language: en-US
-To: =?UTF-8?Q?Zbigniew_Kempczy=c5=84ski?= <zbigniew.kempczynski@intel.com>
-References: <cover.1674469729.git.karolina.stolarek@intel.com>
- <e5566d38c432c8ab1608700569f6804b97fa15c4.1674469729.git.karolina.stolarek@intel.com>
- <20230126121350.kdyvqhcr477izj5e@zkempczy-mobl2>
-From: Karolina Stolarek <karolina.stolarek@intel.com>
-In-Reply-To: <20230126121350.kdyvqhcr477izj5e@zkempczy-mobl2>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t 2/2] lib/i915_blt: Split up
- blt_copy_object functions
+Subject: Re: [igt-dev] [PATCH i-g-t 1/2] tests/i915/kms_psr2_sf: Some
+ cleanups after
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,369 +23,212 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi,
-
-On 26.01.2023 13:13, Zbigniew Kempczyński wrote:
-> On Mon, Jan 23, 2023 at 11:52:43AM +0100, Karolina Stolarek wrote:
->> Add dedicated functions to set and create blt_copy_object depending on
->> the copy type. Extract the common path so it can be called both in fast
->> and block copy setup. Move mocs field in blt_copy_object so it's next
->> to the compression-specific fields.
->>
->> Signed-off-by: Karolina Stolarek <karolina.stolarek@intel.com>
->> ---
->>   lib/i915/i915_blt.c            | 92 ++++++++++++++++++++++++----------
->>   lib/i915/i915_blt.h            | 29 +++++++----
->>   tests/i915/gem_ccs.c           | 39 +++++++-------
->>   tests/i915/gem_exercise_blt.c  | 18 +++----
->>   tests/i915/gem_lmem_swapping.c | 13 ++---
->>   5 files changed, 117 insertions(+), 74 deletions(-)
->>
->> diff --git a/lib/i915/i915_blt.c b/lib/i915/i915_blt.c
->> index 3e64efeb..979c7161 100644
->> --- a/lib/i915/i915_blt.c
->> +++ b/lib/i915/i915_blt.c
->> @@ -1214,12 +1214,29 @@ void blt_set_batch(struct blt_copy_batch *batch,
->>   	batch->region = region;
->>   }
->>   
->> -struct blt_copy_object *
->> -blt_create_object(int i915, uint32_t region,
->> -		  uint32_t width, uint32_t height, uint32_t bpp, uint8_t mocs,
->> -		  enum blt_tiling_type tiling,
->> -		  enum blt_compression compression,
->> -		  enum blt_compression_type compression_type)
->> +static void blt_set_object_common(struct blt_copy_object *obj,
->> +				  uint32_t handle, uint64_t size,
->> +				  uint32_t region, enum blt_tiling_type tiling)
->> +{
->> +	obj->handle = handle;
->> +	obj->size = size;
->> +	obj->region = region;
->> +	obj->tiling = tiling;
->> +}
->> +
->> +static void blt_set_object_compression(struct blt_copy_object *obj, uint8_t mocs,
->> +				       enum blt_compression compression,
->> +				       enum blt_compression_type compression_type)
->> +{
->> +	obj->mocs = mocs;
->> +	obj->compression = compression;
->> +	obj->compression_type = compression_type;
->> +}
->> +
->> +static struct blt_copy_object *
->> +blt_create_object_common(int i915, uint32_t region, uint32_t width,
->> +			 uint32_t height, uint32_t bpp,
->> +			 enum blt_tiling_type tiling)
-> 
-> This should be public. We assume above fields are common to all
-> supported commands we have (block-copy, fast-copy, etc), so user
-> can call this generic function and it should work for all
-> blit instructions. That means that you should fill mocs here even
-> if user didn't explicitly passed this value.
-> 
-> Rename this to blt_create_object(), I don't think _common suffix
-> is really necessary here.
-
-But this means we'd have blt_create_block_copy and blt_create_object, as 
-it wouldn't make sense to also have blt_create_fast_object. Having a 
-special treatment of block-copy would make things confusing.
-
-The best option would be to have blt_create_fast_object and call it 
-inside blt_create_block_object. It'd would be fine by the user, maybe 
-slightly confusing for people who maintain the lib, but it should be 
-alright.
-
-I think we should separate the commands, even if they use the same 
-struct underneath.
-
-Thanks,
-Karolina
-> --
-> Zbigniew
-> 
->>   {
->>   	struct blt_copy_object *obj;
->>   	uint64_t size = width * height * bpp / 8;
->> @@ -1228,20 +1245,58 @@ blt_create_object(int i915, uint32_t region,
->>   
->>   	obj = calloc(1, sizeof(*obj));
->>   
->> -	obj->size = size;
->>   	igt_assert(__gem_create_in_memory_regions(i915, &handle,
->>   						  &size, region) == 0);
->> +	obj->ptr = gem_mmap__device_coherent(i915, handle, 0, size,
->> +					     PROT_READ | PROT_WRITE);
->> +	obj->size = size;
->>   
->> -	blt_set_object(obj, handle, size, region, mocs, tiling,
->> -		       compression, compression_type);
->> +	blt_set_object_common(obj, handle, size, region, tiling);
->>   	blt_set_geom(obj, stride, 0, 0, width, height, 0, 0);
->>   
->> -	obj->ptr = gem_mmap__device_coherent(i915, handle, 0, size,
->> -					     PROT_READ | PROT_WRITE);
->> +	return obj;
->> +}
->> +
->> +struct blt_copy_object *
->> +blt_create_block_object(int i915, uint32_t region,
->> +			uint32_t width, uint32_t height, uint32_t bpp,
->> +			uint8_t mocs, enum blt_tiling_type tiling,
->> +			enum blt_compression compression,
->> +			enum blt_compression_type compression_type)
-> a> +{
->> +	struct blt_copy_object *obj;
->> +
->> +	obj = blt_create_object_common(i915, region, width, height, bpp, tiling);
->> +	blt_set_object_compression(obj, mocs, compression, compression_type);
->>   
->>   	return obj;
->>   }
->>   
->> +struct blt_copy_object *
->> +blt_create_fast_object(int i915, uint32_t region, uint32_t width,
->> +		       uint32_t height, uint32_t bpp,
->> +		       enum blt_tiling_type tiling)
->> +{
->> +	return blt_create_object_common(i915, region, width, height, bpp, tiling);
->> +}
->> +
->> +void blt_set_block_object(struct blt_copy_object *obj,
->> +			  uint32_t handle, uint64_t size, uint32_t region,
->> +			  uint8_t mocs, enum blt_tiling_type tiling,
->> +			  enum blt_compression compression,
->> +			  enum blt_compression_type compression_type)
->> +{
->> +	blt_set_object_common(obj, handle, size, region, tiling);
->> +	blt_set_object_compression(obj, mocs, compression, compression_type);
->> +}
->> +
->> +void blt_set_fast_object(struct blt_copy_object *obj,
->> +			 uint32_t handle, uint64_t size,
->> +			 uint32_t region, enum blt_tiling_type tiling)
->> +{
->> +	blt_set_object_common(obj, handle, size, region, tiling);
->> +}
->> +
->>   void blt_destroy_object(int i915, struct blt_copy_object *obj)
->>   {
->>   	if (obj->ptr)
->> @@ -1251,21 +1306,6 @@ void blt_destroy_object(int i915, struct blt_copy_object *obj)
->>   	free(obj);
->>   }
->>   
->> -void blt_set_object(struct blt_copy_object *obj,
->> -		    uint32_t handle, uint64_t size, uint32_t region,
->> -		    uint8_t mocs, enum blt_tiling_type tiling,
->> -		    enum blt_compression compression,
->> -		    enum blt_compression_type compression_type)
->> -{
->> -	obj->handle = handle;
->> -	obj->size = size;
->> -	obj->region = region;
->> -	obj->mocs = mocs;
->> -	obj->tiling = tiling;
->> -	obj->compression = compression;
->> -	obj->compression_type = compression_type;
->> -}
->> -
->>   void blt_set_object_ext(struct blt_block_copy_object_ext *obj,
->>   			uint8_t compression_format,
->>   			uint16_t surface_width, uint16_t surface_height,
->> diff --git a/lib/i915/i915_blt.h b/lib/i915/i915_blt.h
->> index eaf4cc1f..1bd29c8c 100644
->> --- a/lib/i915/i915_blt.h
->> +++ b/lib/i915/i915_blt.h
->> @@ -75,8 +75,8 @@ struct blt_copy_object {
->>   	uint32_t handle;
->>   	uint32_t region;
->>   	uint64_t size;
->> -	uint8_t mocs;
->>   	enum blt_tiling_type tiling;
->> +	uint8_t mocs; /* BC only */
->>   	enum blt_compression compression;  /* BC only */
->>   	enum blt_compression_type compression_type; /* BC only */
->>   	uint32_t pitch;
->> @@ -214,17 +214,24 @@ void blt_set_batch(struct blt_copy_batch *batch,
->>   		   uint32_t handle, uint64_t size, uint32_t region);
->>   
->>   struct blt_copy_object *
->> -blt_create_object(int i915, uint32_t region,
->> -		  uint32_t width, uint32_t height, uint32_t bpp, uint8_t mocs,
->> -		  enum blt_tiling_type tiling,
->> -		  enum blt_compression compression,
->> -		  enum blt_compression_type compression_type);
->> +blt_create_block_object(int i915, uint32_t region,
->> +			uint32_t width, uint32_t height, uint32_t bpp,
->> +			uint8_t mocs, enum blt_tiling_type tiling,
->> +			enum blt_compression compression,
->> +			enum blt_compression_type compression_type);
->> +struct blt_copy_object *
->> +blt_create_fast_object(int i915, uint32_t region,
->> +		       uint32_t width, uint32_t height, uint32_t bpp,
->> +		       enum blt_tiling_type tiling);
->>   void blt_destroy_object(int i915, struct blt_copy_object *obj);
->> -void blt_set_object(struct blt_copy_object *obj,
->> -		    uint32_t handle, uint64_t size, uint32_t region,
->> -		    uint8_t mocs, enum blt_tiling_type tiling,
->> -		    enum blt_compression compression,
->> -		    enum blt_compression_type compression_type);
->> +void blt_set_block_object(struct blt_copy_object *obj,
->> +			  uint32_t handle, uint64_t size, uint32_t region,
->> +			  uint8_t mocs, enum blt_tiling_type tiling,
->> +			  enum blt_compression compression,
->> +			  enum blt_compression_type compression_type);
->> +void blt_set_fast_object(struct blt_copy_object *obj,
->> +			 uint32_t handle, uint64_t size, uint32_t region,
->> +			 enum blt_tiling_type tiling);
->>   void blt_set_object_ext(struct blt_block_copy_object_ext *obj,
->>   			uint8_t compression_format,
->>   			uint16_t surface_width, uint16_t surface_height,
->> diff --git a/tests/i915/gem_ccs.c b/tests/i915/gem_ccs.c
->> index b7a32673..7e16c792 100644
->> --- a/tests/i915/gem_ccs.c
->> +++ b/tests/i915/gem_ccs.c
->> @@ -360,12 +360,12 @@ static void block_copy(int i915,
->>   	if (!blt_supports_compression(i915) && !IS_METEORLAKE(devid))
->>   		pext = NULL;
->>   
->> -	src = blt_create_object(i915, region1, width, height, bpp, uc_mocs,
->> -				T_LINEAR, COMPRESSION_DISABLED, comp_type);
->> -	mid = blt_create_object(i915, mid_region, width, height, bpp, uc_mocs,
->> -				mid_tiling, mid_compression, comp_type);
->> -	dst = blt_create_object(i915, region1, width, height, bpp, uc_mocs,
->> -				T_LINEAR, COMPRESSION_DISABLED, comp_type);
->> +	src = blt_create_block_object(i915, region1, width, height, bpp, uc_mocs,
->> +				      T_LINEAR, COMPRESSION_DISABLED, comp_type);
->> +	mid = blt_create_block_object(i915, mid_region, width, height, bpp, uc_mocs,
->> +				      mid_tiling, mid_compression, comp_type);
->> +	dst = blt_create_block_object(i915, region1, width, height, bpp, uc_mocs,
->> +				      T_LINEAR, COMPRESSION_DISABLED, comp_type);
->>   	igt_assert(src->size == dst->size);
->>   	PRINT_SURFACE_INFO("src", src);
->>   	PRINT_SURFACE_INFO("mid", mid);
->> @@ -428,8 +428,9 @@ static void block_copy(int i915,
->>   	blt_set_object_ext(&ext.src, mid_compression_format, width, height, SURFACE_TYPE_2D);
->>   	blt_set_object_ext(&ext.dst, 0, width, height, SURFACE_TYPE_2D);
->>   	if (config->inplace) {
->> -		blt_set_object(&blt.dst, mid->handle, dst->size, mid->region, 0,
->> -			       T_LINEAR, COMPRESSION_DISABLED, comp_type);
->> +		blt_set_block_object(&blt.dst, mid->handle, dst->size,
->> +				     mid->region, 0, T_LINEAR,
->> +				     COMPRESSION_DISABLED, comp_type);
->>   		blt.dst.ptr = mid->ptr;
->>   	}
->>   
->> @@ -476,14 +477,14 @@ static void block_multicopy(int i915,
->>   	if (!blt_supports_compression(i915))
->>   		pext3 = NULL;
->>   
->> -	src = blt_create_object(i915, region1, width, height, bpp, uc_mocs,
->> -				T_LINEAR, COMPRESSION_DISABLED, comp_type);
->> -	mid = blt_create_object(i915, mid_region, width, height, bpp, uc_mocs,
->> -				mid_tiling, mid_compression, comp_type);
->> -	dst = blt_create_object(i915, region1, width, height, bpp, uc_mocs,
->> -				mid_tiling, COMPRESSION_DISABLED, comp_type);
->> -	final = blt_create_object(i915, region1, width, height, bpp, uc_mocs,
->> -				  T_LINEAR, COMPRESSION_DISABLED, comp_type);
->> +	src = blt_create_block_object(i915, region1, width, height, bpp, uc_mocs,
->> +				      T_LINEAR, COMPRESSION_DISABLED, comp_type);
->> +	mid = blt_create_block_object(i915, mid_region, width, height, bpp,
->> +				      uc_mocs, mid_tiling, mid_compression, comp_type);
->> +	dst = blt_create_block_object(i915, region1, width, height, bpp, uc_mocs,
->> +				      mid_tiling, COMPRESSION_DISABLED, comp_type);
->> +	final = blt_create_block_object(i915, region1, width, height, bpp, uc_mocs,
->> +					T_LINEAR, COMPRESSION_DISABLED, comp_type);
->>   	igt_assert(src->size == dst->size);
->>   	PRINT_SURFACE_INFO("src", src);
->>   	PRINT_SURFACE_INFO("mid", mid);
->> @@ -501,9 +502,9 @@ static void block_multicopy(int i915,
->>   	blt_set_copy_object(&blt3.final, final);
->>   
->>   	if (config->inplace) {
->> -		blt_set_object(&blt3.dst, mid->handle, dst->size, mid->region,
->> -			       mid->mocs, mid_tiling, COMPRESSION_DISABLED,
->> -			       comp_type);
->> +		blt_set_block_object(&blt3.dst, mid->handle, dst->size,
->> +				     mid->region, mid->mocs, mid_tiling,
->> +				     COMPRESSION_DISABLED, comp_type);
->>   		blt3.dst.ptr = mid->ptr;
->>   	}
->>   
->> diff --git a/tests/i915/gem_exercise_blt.c b/tests/i915/gem_exercise_blt.c
->> index b1123356..5b7178df 100644
->> --- a/tests/i915/gem_exercise_blt.c
->> +++ b/tests/i915/gem_exercise_blt.c
->> @@ -135,12 +135,9 @@ static void fast_copy_emit(int i915, const intel_ctx_t *ctx,
->>   
->>   	igt_assert(__gem_create_in_memory_regions(i915, &bb, &bb_size, region1) == 0);
->>   
->> -	src = blt_create_object(i915, region1, width, height, bpp, 0,
->> -				T_LINEAR, COMPRESSION_DISABLED, 0);
->> -	mid = blt_create_object(i915, region2, width, height, bpp, 0,
->> -				mid_tiling, COMPRESSION_DISABLED, 0);
->> -	dst = blt_create_object(i915, region1, width, height, bpp, 0,
->> -				T_LINEAR, COMPRESSION_DISABLED, 0);
->> +	src = blt_create_fast_object(i915, region1, width, height, bpp, T_LINEAR);
->> +	mid = blt_create_fast_object(i915, region2, width, height, bpp, mid_tiling);
->> +	dst = blt_create_fast_object(i915, region1, width, height, bpp, T_LINEAR);
->>   	igt_assert(src->size == dst->size);
->>   
->>   	PRINT_SURFACE_INFO("src", src);
->> @@ -195,12 +192,9 @@ static void fast_copy(int i915, const intel_ctx_t *ctx,
->>   
->>   	igt_assert(__gem_create_in_memory_regions(i915, &bb, &bb_size, region1) == 0);
->>   
->> -	src = blt_create_object(i915, region1, width, height, bpp, 0,
->> -				T_LINEAR, COMPRESSION_DISABLED, 0);
->> -	mid = blt_create_object(i915, region2, width, height, bpp, 0,
->> -				mid_tiling, COMPRESSION_DISABLED, 0);
->> -	dst = blt_create_object(i915, region1, width, height, bpp, 0,
->> -				T_LINEAR, COMPRESSION_DISABLED, 0);
->> +	src = blt_create_fast_object(i915, region1, width, height, bpp, T_LINEAR);
->> +	mid = blt_create_fast_object(i915, region2, width, height, bpp, mid_tiling);
->> +	dst = blt_create_fast_object(i915, region1, width, height, bpp, T_LINEAR);
->>   	igt_assert(src->size == dst->size);
->>   
->>   	blt_surface_fill_rect(i915, src, width, height);
->> diff --git a/tests/i915/gem_lmem_swapping.c b/tests/i915/gem_lmem_swapping.c
->> index 55b044ec..3a6308ed 100644
->> --- a/tests/i915/gem_lmem_swapping.c
->> +++ b/tests/i915/gem_lmem_swapping.c
->> @@ -317,9 +317,9 @@ static void __do_evict(int i915,
->>   
->>   		tmp->handle = gem_create_in_memory_regions(i915, params->size.max,
->>   				   INTEL_MEMORY_REGION_ID(I915_SYSTEM_MEMORY, 0));
->> -		blt_set_object(tmp, tmp->handle, params->size.max,
->> -			       INTEL_MEMORY_REGION_ID(I915_SYSTEM_MEMORY, 0),
->> -			       intel_get_uc_mocs(i915), T_LINEAR,
->> +		blt_set_block_object(tmp, tmp->handle, params->size.max,
->> +				     INTEL_MEMORY_REGION_ID(I915_SYSTEM_MEMORY, 0),
->> +				     intel_get_uc_mocs(i915), T_LINEAR,
->>   			       COMPRESSION_DISABLED, COMPRESSION_TYPE_3D);
->>   		blt_set_geom(tmp, stride, 0, 0, width, height, 0, 0);
->>   	}
->> @@ -348,9 +348,10 @@ static void __do_evict(int i915,
->>   
->>   			obj->blt_obj = calloc(1, sizeof(*obj->blt_obj));
->>   			igt_assert(obj->blt_obj);
->> -			blt_set_object(obj->blt_obj, obj->handle, obj->size, region_id,
->> -				       intel_get_uc_mocs(i915), T_LINEAR,
->> -				       COMPRESSION_ENABLED, COMPRESSION_TYPE_3D);
->> +			blt_set_block_object(obj->blt_obj, obj->handle, obj->size,
->> +					     region_id, intel_get_uc_mocs(i915),
->> +					     T_LINEAR, COMPRESSION_ENABLED,
->> +					     COMPRESSION_TYPE_3D);
->>   			blt_set_geom(obj->blt_obj, stride, 0, 0, width, height, 0, 0);
->>   			init_object_ccs(i915, obj, tmp, rand(), blt_ctx,
->>   					region_id, ahnd);
->> -- 
->> 2.25.1
->>
+TEdUTS4NCg0KUmV2aWV3ZWQtYnk6IEplZXZhbiBCIDxqZWV2YW4uYkBpbnRlbC5jb20+DQoNCj4g
+LS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogSG9nYW5kZXIsIEpvdW5pIDxqb3Vu
+aS5ob2dhbmRlckBpbnRlbC5jb20+DQo+IFNlbnQ6IFdlZG5lc2RheSwgSmFudWFyeSAyNSwgMjAy
+MyAyOjM4IFBNDQo+IFRvOiBpZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZw0KPiBDYzogSG9n
+YW5kZXIsIEpvdW5pIDxqb3VuaS5ob2dhbmRlckBpbnRlbC5jb20+OyBCLCBKZWV2YW4NCj4gPGpl
+ZXZhbi5iQGludGVsLmNvbT47IFNoYXJtYSwgU3dhdGkyIDxzd2F0aTIuc2hhcm1hQGludGVsLmNv
+bT4NCj4gU3ViamVjdDogW1BBVENIIGktZy10IDEvMl0gdGVzdHMvaTkxNS9rbXNfcHNyMl9zZjog
+U29tZSBjbGVhbnVwcyBhZnRlcg0KPiANCj4gSGFuZGxlIHNldHRpbmcgb3V0cHV0IGZvciBwaXBl
+IGluIHByZXBhcmUgYW5kIHJlbW92ZSBzZXBhcmF0ZSBzZXR1cF9vdXRwdXQuDQo+IENhcnJ5IGFs
+bCB0ZXN0IHBhcmFtZXRlcnMgaW4gZGF0YSBzdHJ1Y3R1cmUNCj4gDQo+IENjOiBKZWV2YW4gQiA8
+amVldmFuLmJAaW50ZWwuY29tPg0KPiBDYzogU3dhdGkgU2hhcm1hIDxzd2F0aTIuc2hhcm1hQGlu
+dGVsLmNvbT4NCj4gU2lnbmVkLW9mZi1ieTogSm91bmkgSMO2Z2FuZGVyIDxqb3VuaS5ob2dhbmRl
+ckBpbnRlbC5jb20+DQo+IC0tLQ0KPiAgdGVzdHMvaTkxNS9rbXNfcHNyMl9zZi5jIHwgMTQ1ICsr
+KysrKysrKysrKysrKysrKy0tLS0tLS0tLS0tLS0tLS0tLS0tLQ0KPiAgMSBmaWxlIGNoYW5nZWQs
+IDY4IGluc2VydGlvbnMoKyksIDc3IGRlbGV0aW9ucygtKQ0KPiANCj4gZGlmZiAtLWdpdCBhL3Rl
+c3RzL2k5MTUva21zX3BzcjJfc2YuYyBiL3Rlc3RzL2k5MTUva21zX3BzcjJfc2YuYyBpbmRleA0K
+PiBjZmRlNmNmYy4uMDc4ODg0YWMgMTAwNjQ0DQo+IC0tLSBhL3Rlc3RzL2k5MTUva21zX3BzcjJf
+c2YuYw0KPiArKysgYi90ZXN0cy9pOTE1L2ttc19wc3IyX3NmLmMNCj4gQEAgLTg1LDYgKzg1LDcg
+QEAgdHlwZWRlZiBzdHJ1Y3Qgew0KPiAgCWNhaXJvX3QgKmNyOw0KPiAgCXVpbnQzMl90IHNjcmVl
+bl9jaGFuZ2VzOw0KPiAgCWludCBjdXJfeCwgY3VyX3k7DQo+ICsJZW51bSBwaXBlIHBpcGU7DQo+
+ICB9IGRhdGFfdDsNCj4gDQo+ICBzdGF0aWMgY29uc3QgY2hhciAqb3Bfc3RyKGVudW0gb3BlcmF0
+aW9ucyBvcCkgQEAgLTEwMywzMCArMTA0LDEwIEBAIHN0YXRpYw0KPiBjb25zdCBjaGFyICpvcF9z
+dHIoZW51bSBvcGVyYXRpb25zIG9wKQ0KPiAgCXJldHVybiBuYW1lW29wXTsNCj4gIH0NCj4gDQo+
+IC1zdGF0aWMgdm9pZCBzZXR1cF9vdXRwdXQoZGF0YV90ICpkYXRhKQ0KPiAtew0KPiAtCWlndF9k
+aXNwbGF5X3QgKmRpc3BsYXkgPSAmZGF0YS0+ZGlzcGxheTsNCj4gLQlpZ3Rfb3V0cHV0X3QgKm91
+dHB1dDsNCj4gLQllbnVtIHBpcGUgcGlwZTsNCj4gLQ0KPiAtCWZvcl9lYWNoX3BpcGVfd2l0aF92
+YWxpZF9vdXRwdXQoZGlzcGxheSwgcGlwZSwgb3V0cHV0KSB7DQo+IC0JCWRybU1vZGVDb25uZWN0
+b3JQdHIgYyA9IG91dHB1dC0+Y29uZmlnLmNvbm5lY3RvcjsNCj4gLQ0KPiAtCQlpZiAoYy0+Y29u
+bmVjdG9yX3R5cGUgIT0gRFJNX01PREVfQ09OTkVDVE9SX2VEUCkNCj4gLQkJCWNvbnRpbnVlOw0K
+PiAtDQo+IC0JCWlndF9vdXRwdXRfc2V0X3BpcGUob3V0cHV0LCBwaXBlKTsNCj4gLQkJZGF0YS0+
+b3V0cHV0ID0gb3V0cHV0Ow0KPiAtCQlkYXRhLT5tb2RlID0gaWd0X291dHB1dF9nZXRfbW9kZShv
+dXRwdXQpOw0KPiAtDQo+IC0JCXJldHVybjsNCj4gLQl9DQo+IC19DQo+IC0NCj4gIHN0YXRpYyB2
+b2lkIGRpc3BsYXlfaW5pdChkYXRhX3QgKmRhdGEpDQo+ICB7DQo+ICAJaWd0X2Rpc3BsYXlfcmVx
+dWlyZSgmZGF0YS0+ZGlzcGxheSwgZGF0YS0+ZHJtX2ZkKTsNCj4gLQlzZXR1cF9vdXRwdXQoZGF0
+YSk7DQo+ICsJaWd0X2Rpc3BsYXlfcmVzZXQoJmRhdGEtPmRpc3BsYXkpOw0KPiAgfQ0KPiANCj4g
+IHN0YXRpYyB2b2lkIGRpc3BsYXlfZmluaShkYXRhX3QgKmRhdGEpDQo+IEBAIC0yMzcsMTEgKzIx
+OCwxNSBAQCBzdGF0aWMgdm9pZCBwbGFuZV9tb3ZlX3NldHVwX3NxdWFyZShkYXRhX3QgKmRhdGEs
+DQo+IGlndF9mYl90ICpmYiwgdWludDMyX3QgaCwNCj4gIAlzZXRfY2xpcCgmZGF0YS0+cGxhbmVf
+bW92ZV9jbGlwLCB4LCB5LCBTUVVBUkVfU0laRSwgU1FVQVJFX1NJWkUpOyAgfQ0KPiANCj4gLXN0
+YXRpYyB2b2lkIHByZXBhcmUoZGF0YV90ICpkYXRhLCBpZ3Rfb3V0cHV0X3QgKm91dHB1dCkNCj4g
+K3N0YXRpYyB2b2lkIHByZXBhcmUoZGF0YV90ICpkYXRhKQ0KPiAgew0KPiArCWlndF9vdXRwdXRf
+dCAqb3V0cHV0ID0gZGF0YS0+b3V0cHV0Ow0KPiAgCWlndF9wbGFuZV90ICpwcmltYXJ5LCAqc3By
+aXRlID0gTlVMTCwgKmN1cnNvciA9IE5VTEw7DQo+ICAJaW50IGZiX3csIGZiX2gsIHgsIHksIHZp
+ZXdfdywgdmlld19oOw0KPiANCj4gKwlpZ3Rfb3V0cHV0X3NldF9waXBlKG91dHB1dCwgZGF0YS0+
+cGlwZSk7DQo+ICsJZGF0YS0+bW9kZSA9IGlndF9vdXRwdXRfZ2V0X21vZGUob3V0cHV0KTsNCj4g
+Kw0KPiAgCWlmIChkYXRhLT5iaWdfZmJfdGVzdCkgew0KPiAgCQlmYl93ID0gZGF0YS0+YmlnX2Zi
+X3dpZHRoOw0KPiAgCQlmYl9oID0gZGF0YS0+YmlnX2ZiX2hlaWdodDsNCj4gQEAgLTgwOCw4ICs3
+OTMsOSBAQCBzdGF0aWMgdm9pZCBydW4oZGF0YV90ICpkYXRhKQ0KPiAgCX0NCj4gIH0NCj4gDQo+
+IC1zdGF0aWMgdm9pZCBjbGVhbnVwKGRhdGFfdCAqZGF0YSwgaWd0X291dHB1dF90ICpvdXRwdXQp
+DQo+ICtzdGF0aWMgdm9pZCBjbGVhbnVwKGRhdGFfdCAqZGF0YSkNCj4gIHsNCj4gKwlpZ3Rfb3V0
+cHV0X3QgKm91dHB1dCA9IGRhdGEtPm91dHB1dDsNCj4gIAlpZ3RfcGxhbmVfdCAqcHJpbWFyeTsN
+Cj4gIAlpZ3RfcGxhbmVfdCAqc3ByaXRlOw0KPiANCj4gQEAgLTgzOCwyMCArODI0LDEzIEBAIHN0
+YXRpYyB2b2lkIGNsZWFudXAoZGF0YV90ICpkYXRhLCBpZ3Rfb3V0cHV0X3QNCj4gKm91dHB1dCkN
+Cj4gIAlpZ3RfcmVtb3ZlX2ZiKGRhdGEtPmRybV9mZCwgJmRhdGEtPmZiX3Rlc3QpOyAgfQ0KPiAN
+Cj4gLXN0YXRpYyBpbnQgY2hlY2tfcHNyMl9zdXBwb3J0KGRhdGFfdCAqZGF0YSwgZW51bSBwaXBl
+IHBpcGUpDQo+ICtzdGF0aWMgaW50IGNoZWNrX3BzcjJfc3VwcG9ydChkYXRhX3QgKmRhdGEpDQo+
+ICB7DQo+ICAJaW50IHN0YXR1czsNCj4gDQo+IC0JaWd0X291dHB1dF90ICpvdXRwdXQ7DQo+IC0J
+aWd0X2Rpc3BsYXlfdCAqZGlzcGxheSA9ICZkYXRhLT5kaXNwbGF5Ow0KPiAtDQo+IC0JaWd0X2Rp
+c3BsYXlfcmVzZXQoZGlzcGxheSk7DQo+IC0Jb3V0cHV0ID0gZGF0YS0+b3V0cHV0Ow0KPiAtCWln
+dF9vdXRwdXRfc2V0X3BpcGUob3V0cHV0LCBwaXBlKTsNCj4gLQ0KPiAtCXByZXBhcmUoZGF0YSwg
+b3V0cHV0KTsNCj4gKwlwcmVwYXJlKGRhdGEpOw0KPiAgCXN0YXR1cyA9IHBzcl93YWl0X2VudHJ5
+KGRhdGEtPmRlYnVnZnNfZmQsIFBTUl9NT0RFXzIpOw0KPiAtCWNsZWFudXAoZGF0YSwgb3V0cHV0
+KTsNCj4gKwljbGVhbnVwKGRhdGEpOw0KPiANCj4gIAlyZXR1cm4gc3RhdHVzOw0KPiAgfQ0KPiBA
+QCAtODYxLDcgKzg0MCw2IEBAIGlndF9tYWluDQo+ICAJZGF0YV90IGRhdGEgPSB7fTsNCj4gIAlp
+Z3Rfb3V0cHV0X3QgKm91dHB1dHNbSUdUX01BWF9QSVBFUyAqIElHVF9NQVhfUElQRVNdOw0KPiAg
+CWludCBpLCBqOw0KPiAtCWVudW0gcGlwZSBwaXBlOw0KPiAgCWludCBwaXBlc1tJR1RfTUFYX1BJ
+UEVTICogSUdUX01BWF9QSVBFU107DQo+ICAJaW50IG5fcGlwZXMgPSAwOw0KPiANCj4gQEAgLTg5
+OCw5ICs4NzYsOSBAQCBpZ3RfbWFpbg0KPiAgCQlpZ3RfcmVxdWlyZV9mKHBzcjJfc2VsZWN0aXZl
+X2ZldGNoX2NoZWNrKGRhdGEuZGVidWdmc19mZCksDQo+ICAJCQkgICAgICAiUFNSMiBzZWxlY3Rp
+dmUgZmV0Y2ggbm90IGVuYWJsZWRcbiIpOw0KPiANCj4gLQkJZm9yX2VhY2hfcGlwZV93aXRoX3Zh
+bGlkX291dHB1dCgmZGF0YS5kaXNwbGF5LCBwaXBlLA0KPiBkYXRhLm91dHB1dCkgew0KPiAtCQkJ
+aWYgKGNoZWNrX3BzcjJfc3VwcG9ydCgmZGF0YSwgcGlwZSkpIHsNCj4gLQkJCQlwaXBlc1tuX3Bp
+cGVzXSA9IHBpcGU7DQo+ICsJCWZvcl9lYWNoX3BpcGVfd2l0aF92YWxpZF9vdXRwdXQoJmRhdGEu
+ZGlzcGxheSwgZGF0YS5waXBlLA0KPiBkYXRhLm91dHB1dCkgew0KPiArCQkJaWYgKGNoZWNrX3Bz
+cjJfc3VwcG9ydCgmZGF0YSkpIHsNCj4gKwkJCQlwaXBlc1tuX3BpcGVzXSA9IGRhdGEucGlwZTsN
+Cj4gIAkJCQlvdXRwdXRzW25fcGlwZXNdID0gZGF0YS5vdXRwdXQ7DQo+ICAJCQkJbl9waXBlcysr
+Ow0KPiAgCQkJfQ0KPiBAQCAtOTEzLDEzICs4OTEsMTQgQEAgaWd0X21haW4NCj4gIAkJZm9yIChp
+ID0gMDsgaSA8IG5fcGlwZXM7IGkrKykgew0KPiAgCQkJaWd0X2R5bmFtaWNfZigicGlwZS0lcy0l
+cyIsDQo+IGttc3Rlc3RfcGlwZV9uYW1lKHBpcGVzW2ldKSwNCj4gIAkJCQkJaWd0X291dHB1dF9u
+YW1lKG91dHB1dHNbaV0pKSB7DQo+IC0JCQkJaWd0X291dHB1dF9zZXRfcGlwZShvdXRwdXRzW2ld
+LCBwaXBlc1tpXSk7DQo+ICsJCQkJZGF0YS5waXBlID0gcGlwZXNbaV07DQo+ICsJCQkJZGF0YS5v
+dXRwdXQgPSBvdXRwdXRzW2ldOw0KPiAgCQkJCWZvciAoaiA9IDE7IGogPD0gTUFYX0RBTUFHRV9B
+UkVBUzsgaisrKSB7DQo+ICAJCQkJCWRhdGEuZGFtYWdlX2FyZWFfY291bnQgPSBqOw0KPiAgCQkJ
+CQlkYXRhLnRlc3RfcGxhbmVfaWQgPQ0KPiBEUk1fUExBTkVfVFlQRV9QUklNQVJZOw0KPiAtCQkJ
+CQlwcmVwYXJlKCZkYXRhLCBvdXRwdXRzW2ldKTsNCj4gKwkJCQkJcHJlcGFyZSgmZGF0YSk7DQo+
+ICAJCQkJCXJ1bigmZGF0YSk7DQo+IC0JCQkJCWNsZWFudXAoJmRhdGEsIG91dHB1dHNbaV0pOw0K
+PiArCQkJCQljbGVhbnVwKCZkYXRhKTsNCj4gIAkJCQl9DQo+ICAJCQl9DQo+ICAJCX0NCj4gQEAg
+LTkzMiwxMyArOTExLDE0IEBAIGlndF9tYWluDQo+ICAJCWZvciAoaSA9IDA7IGkgPCBuX3BpcGVz
+OyBpKyspIHsNCj4gIAkJCWlndF9keW5hbWljX2YoInBpcGUtJXMtJXMiLA0KPiBrbXN0ZXN0X3Bp
+cGVfbmFtZShwaXBlc1tpXSksDQo+ICAJCQkJCWlndF9vdXRwdXRfbmFtZShvdXRwdXRzW2ldKSkg
+ew0KPiAtCQkJCWlndF9vdXRwdXRfc2V0X3BpcGUob3V0cHV0c1tpXSwgcGlwZXNbaV0pOw0KPiAr
+CQkJCWRhdGEucGlwZSA9IHBpcGVzW2ldOw0KPiArCQkJCWRhdGEub3V0cHV0ID0gb3V0cHV0c1tp
+XTsNCj4gIAkJCQlmb3IgKGogPSAxOyBqIDw9IE1BWF9EQU1BR0VfQVJFQVM7IGorKykgew0KPiAg
+CQkJCQlkYXRhLmRhbWFnZV9hcmVhX2NvdW50ID0gajsNCj4gIAkJCQkJZGF0YS50ZXN0X3BsYW5l
+X2lkID0NCj4gRFJNX1BMQU5FX1RZUEVfUFJJTUFSWTsNCj4gLQkJCQkJcHJlcGFyZSgmZGF0YSwg
+b3V0cHV0c1tpXSk7DQo+ICsJCQkJCXByZXBhcmUoJmRhdGEpOw0KPiAgCQkJCQlydW4oJmRhdGEp
+Ow0KPiAtCQkJCQljbGVhbnVwKCZkYXRhLCBvdXRwdXRzW2ldKTsNCj4gKwkJCQkJY2xlYW51cCgm
+ZGF0YSk7DQo+ICAJCQkJfQ0KPiAgCQkJfQ0KPiAgCQl9DQo+IEBAIC05NTEsMTMgKzkzMSwxNCBA
+QCBpZ3RfbWFpbg0KPiAgCQlmb3IgKGkgPSAwOyBpIDwgbl9waXBlczsgaSsrKSB7DQo+ICAJCQlp
+Z3RfZHluYW1pY19mKCJwaXBlLSVzLSVzIiwNCj4ga21zdGVzdF9waXBlX25hbWUocGlwZXNbaV0p
+LA0KPiAgCQkJCQlpZ3Rfb3V0cHV0X25hbWUob3V0cHV0c1tpXSkpIHsNCj4gLQkJCQlpZ3Rfb3V0
+cHV0X3NldF9waXBlKG91dHB1dHNbaV0sIHBpcGVzW2ldKTsNCj4gKwkJCQlkYXRhLnBpcGUgPSBw
+aXBlc1tpXTsNCj4gKwkJCQlkYXRhLm91dHB1dCA9IG91dHB1dHNbaV07DQo+ICAJCQkJZm9yIChq
+ID0gMTsgaiA8PSBNQVhfREFNQUdFX0FSRUFTOyBqKyspIHsNCj4gIAkJCQkJZGF0YS5kYW1hZ2Vf
+YXJlYV9jb3VudCA9IGo7DQo+ICAJCQkJCWRhdGEudGVzdF9wbGFuZV9pZCA9DQo+IERSTV9QTEFO
+RV9UWVBFX09WRVJMQVk7DQo+IC0JCQkJCXByZXBhcmUoJmRhdGEsIG91dHB1dHNbaV0pOw0KPiAr
+CQkJCQlwcmVwYXJlKCZkYXRhKTsNCj4gIAkJCQkJcnVuKCZkYXRhKTsNCj4gLQkJCQkJY2xlYW51
+cCgmZGF0YSwgb3V0cHV0c1tpXSk7DQo+ICsJCQkJCWNsZWFudXAoJmRhdGEpOw0KPiAgCQkJCX0N
+Cj4gIAkJCX0NCj4gIAkJfQ0KPiBAQCAtOTcwLDExICs5NTEsMTIgQEAgaWd0X21haW4NCj4gIAkJ
+Zm9yIChpID0gMDsgaSA8IG5fcGlwZXM7IGkrKykgew0KPiAgCQkJaWd0X2R5bmFtaWNfZigicGlw
+ZS0lcy0lcyIsDQo+IGttc3Rlc3RfcGlwZV9uYW1lKHBpcGVzW2ldKSwNCj4gIAkJCQkJaWd0X291
+dHB1dF9uYW1lKG91dHB1dHNbaV0pKSB7DQo+IC0JCQkJaWd0X291dHB1dF9zZXRfcGlwZShvdXRw
+dXRzW2ldLCBwaXBlc1tpXSk7DQo+ICsJCQkJZGF0YS5waXBlID0gcGlwZXNbaV07DQo+ICsJCQkJ
+ZGF0YS5vdXRwdXQgPSBvdXRwdXRzW2ldOw0KPiAgCQkJCWRhdGEudGVzdF9wbGFuZV9pZCA9DQo+
+IERSTV9QTEFORV9UWVBFX0NVUlNPUjsNCj4gLQkJCQlwcmVwYXJlKCZkYXRhLCBvdXRwdXRzW2ld
+KTsNCj4gKwkJCQlwcmVwYXJlKCZkYXRhKTsNCj4gIAkJCQlydW4oJmRhdGEpOw0KPiAtCQkJCWNs
+ZWFudXAoJmRhdGEsIG91dHB1dHNbaV0pOw0KPiArCQkJCWNsZWFudXAoJmRhdGEpOw0KPiAgCQkJ
+fQ0KPiAgCQl9DQo+ICAJfQ0KPiBAQCAtOTg1LDExICs5NjcsMTIgQEAgaWd0X21haW4NCj4gIAkJ
+Zm9yIChpID0gMDsgaSA8IG5fcGlwZXM7IGkrKykgew0KPiAgCQkJaWd0X2R5bmFtaWNfZigicGlw
+ZS0lcy0lcyIsDQo+IGttc3Rlc3RfcGlwZV9uYW1lKHBpcGVzW2ldKSwNCj4gIAkJCQkJaWd0X291
+dHB1dF9uYW1lKG91dHB1dHNbaV0pKSB7DQo+IC0JCQkJaWd0X291dHB1dF9zZXRfcGlwZShvdXRw
+dXRzW2ldLCBwaXBlc1tpXSk7DQo+ICsJCQkJZGF0YS5waXBlID0gcGlwZXNbaV07DQo+ICsJCQkJ
+ZGF0YS5vdXRwdXQgPSBvdXRwdXRzW2ldOw0KPiAgCQkJCWRhdGEudGVzdF9wbGFuZV9pZCA9DQo+
+IERSTV9QTEFORV9UWVBFX0NVUlNPUjsNCj4gLQkJCQlwcmVwYXJlKCZkYXRhLCBvdXRwdXRzW2ld
+KTsNCj4gKwkJCQlwcmVwYXJlKCZkYXRhKTsNCj4gIAkJCQlydW4oJmRhdGEpOw0KPiAtCQkJCWNs
+ZWFudXAoJmRhdGEsIG91dHB1dHNbaV0pOw0KPiArCQkJCWNsZWFudXAoJmRhdGEpOw0KPiAgCQkJ
+fQ0KPiAgCQl9DQo+ICAJfQ0KPiBAQCAtMTAwMCwxMSArOTgzLDEyIEBAIGlndF9tYWluDQo+ICAJ
+CWZvciAoaSA9IDA7IGkgPCBuX3BpcGVzOyBpKyspIHsNCj4gIAkJCWlndF9keW5hbWljX2YoInBp
+cGUtJXMtJXMiLA0KPiBrbXN0ZXN0X3BpcGVfbmFtZShwaXBlc1tpXSksDQo+ICAJCQkJCWlndF9v
+dXRwdXRfbmFtZShvdXRwdXRzW2ldKSkgew0KPiAtCQkJCWlndF9vdXRwdXRfc2V0X3BpcGUob3V0
+cHV0c1tpXSwgcGlwZXNbaV0pOw0KPiArCQkJCWRhdGEucGlwZSA9IHBpcGVzW2ldOw0KPiArCQkJ
+CWRhdGEub3V0cHV0ID0gb3V0cHV0c1tpXTsNCj4gIAkJCQlkYXRhLnRlc3RfcGxhbmVfaWQgPQ0K
+PiBEUk1fUExBTkVfVFlQRV9DVVJTT1I7DQo+IC0JCQkJcHJlcGFyZSgmZGF0YSwgb3V0cHV0c1tp
+XSk7DQo+ICsJCQkJcHJlcGFyZSgmZGF0YSk7DQo+ICAJCQkJcnVuKCZkYXRhKTsNCj4gLQkJCQlj
+bGVhbnVwKCZkYXRhLCBvdXRwdXRzW2ldKTsNCj4gKwkJCQljbGVhbnVwKCZkYXRhKTsNCj4gIAkJ
+CX0NCj4gIAkJfQ0KPiAgCX0NCj4gQEAgLTEwMTUsMTEgKzk5OSwxMiBAQCBpZ3RfbWFpbg0KPiAg
+CQlmb3IgKGkgPSAwOyBpIDwgbl9waXBlczsgaSsrKSB7DQo+ICAJCQlpZ3RfZHluYW1pY19mKCJw
+aXBlLSVzLSVzIiwNCj4ga21zdGVzdF9waXBlX25hbWUocGlwZXNbaV0pLA0KPiAgCQkJCQlpZ3Rf
+b3V0cHV0X25hbWUob3V0cHV0c1tpXSkpIHsNCj4gLQkJCQlpZ3Rfb3V0cHV0X3NldF9waXBlKG91
+dHB1dHNbaV0sIHBpcGVzW2ldKTsNCj4gKwkJCQlkYXRhLnBpcGUgPSBwaXBlc1tpXTsNCj4gKwkJ
+CQlkYXRhLm91dHB1dCA9IG91dHB1dHNbaV07DQo+ICAJCQkJZGF0YS50ZXN0X3BsYW5lX2lkID0N
+Cj4gRFJNX1BMQU5FX1RZUEVfQ1VSU09SOw0KPiAtCQkJCXByZXBhcmUoJmRhdGEsIG91dHB1dHNb
+aV0pOw0KPiArCQkJCXByZXBhcmUoJmRhdGEpOw0KPiAgCQkJCXJ1bigmZGF0YSk7DQo+IC0JCQkJ
+Y2xlYW51cCgmZGF0YSwgb3V0cHV0c1tpXSk7DQo+ICsJCQkJY2xlYW51cCgmZGF0YSk7DQo+ICAJ
+CQl9DQo+ICAJCX0NCj4gIAl9DQo+IEBAIC0xMDMyLDEzICsxMDE3LDE0IEBAIGlndF9tYWluDQo+
+ICAJCWZvciAoaSA9IDA7IGkgPCBuX3BpcGVzOyBpKyspIHsNCj4gIAkJCWlndF9keW5hbWljX2Yo
+InBpcGUtJXMtJXMiLA0KPiBrbXN0ZXN0X3BpcGVfbmFtZShwaXBlc1tpXSksDQo+ICAJCQkJCWln
+dF9vdXRwdXRfbmFtZShvdXRwdXRzW2ldKSkgew0KPiAtCQkJCWlndF9vdXRwdXRfc2V0X3BpcGUo
+b3V0cHV0c1tpXSwgcGlwZXNbaV0pOw0KPiArCQkJCWRhdGEucGlwZSA9IHBpcGVzW2ldOw0KPiAr
+CQkJCWRhdGEub3V0cHV0ID0gb3V0cHV0c1tpXTsNCj4gIAkJCQlmb3IgKGogPSBQT1NfVE9QX0xF
+RlQ7IGogPD0NCj4gUE9TX0JPVFRPTV9SSUdIVCA7IGorKykgew0KPiAgCQkJCQlkYXRhLnBvcyA9
+IGo7DQo+ICAJCQkJCWRhdGEudGVzdF9wbGFuZV9pZCA9DQo+IERSTV9QTEFORV9UWVBFX09WRVJM
+QVk7DQo+IC0JCQkJCXByZXBhcmUoJmRhdGEsIG91dHB1dHNbaV0pOw0KPiArCQkJCQlwcmVwYXJl
+KCZkYXRhKTsNCj4gIAkJCQkJcnVuKCZkYXRhKTsNCj4gLQkJCQkJY2xlYW51cCgmZGF0YSwgb3V0
+cHV0c1tpXSk7DQo+ICsJCQkJCWNsZWFudXAoJmRhdGEpOw0KPiAgCQkJCX0NCj4gIAkJCX0NCj4g
+IAkJfQ0KPiBAQCAtMTA1MCwxMSArMTAzNiwxMiBAQCBpZ3RfbWFpbg0KPiAgCQlmb3IgKGkgPSAw
+OyBpIDwgbl9waXBlczsgaSsrKSB7DQo+ICAJCQlpZ3RfZHluYW1pY19mKCJwaXBlLSVzLSVzIiwN
+Cj4ga21zdGVzdF9waXBlX25hbWUocGlwZXNbaV0pLA0KPiAgCQkJCQlpZ3Rfb3V0cHV0X25hbWUo
+b3V0cHV0c1tpXSkpIHsNCj4gLQkJCQlpZ3Rfb3V0cHV0X3NldF9waXBlKG91dHB1dHNbaV0sIHBp
+cGVzW2ldKTsNCj4gKwkJCQlkYXRhLnBpcGUgPSBwaXBlc1tpXTsNCj4gKwkJCQlkYXRhLm91dHB1
+dCA9IG91dHB1dHNbaV07DQo+ICAJCQkJZGF0YS50ZXN0X3BsYW5lX2lkID0NCj4gRFJNX1BMQU5F
+X1RZUEVfT1ZFUkxBWTsNCj4gLQkJCQlwcmVwYXJlKCZkYXRhLCBvdXRwdXRzW2ldKTsNCj4gKwkJ
+CQlwcmVwYXJlKCZkYXRhKTsNCj4gIAkJCQlydW4oJmRhdGEpOw0KPiAtCQkJCWNsZWFudXAoJmRh
+dGEsIG91dHB1dHNbaV0pOw0KPiArCQkJCWNsZWFudXAoJmRhdGEpOw0KPiAgCQkJfQ0KPiAgCQl9
+DQo+ICAJfQ0KPiBAQCAtMTA2NSwxMSArMTA1MiwxMiBAQCBpZ3RfbWFpbg0KPiAgCQlmb3IgKGkg
+PSAwOyBpIDwgbl9waXBlczsgaSsrKSB7DQo+ICAJCQlpZ3RfZHluYW1pY19mKCJwaXBlLSVzLSVz
+IiwNCj4ga21zdGVzdF9waXBlX25hbWUocGlwZXNbaV0pLA0KPiAgCQkJCQlpZ3Rfb3V0cHV0X25h
+bWUob3V0cHV0c1tpXSkpIHsNCj4gLQkJCQlpZ3Rfb3V0cHV0X3NldF9waXBlKG91dHB1dHNbaV0s
+IHBpcGVzW2ldKTsNCj4gKwkJCQlkYXRhLnBpcGUgPSBwaXBlc1tpXTsNCj4gKwkJCQlkYXRhLm91
+dHB1dCA9IG91dHB1dHNbaV07DQo+ICAJCQkJZGF0YS50ZXN0X3BsYW5lX2lkID0NCj4gRFJNX1BM
+QU5FX1RZUEVfT1ZFUkxBWTsNCj4gLQkJCQlwcmVwYXJlKCZkYXRhLCBvdXRwdXRzW2ldKTsNCj4g
+KwkJCQlwcmVwYXJlKCZkYXRhKTsNCj4gIAkJCQlydW4oJmRhdGEpOw0KPiAtCQkJCWNsZWFudXAo
+JmRhdGEsIG91dHB1dHNbaV0pOw0KPiArCQkJCWNsZWFudXAoJmRhdGEpOw0KPiAgCQkJfQ0KPiAg
+CQl9DQo+ICAJfQ0KPiBAQCAtMTA4MCwxMSArMTA2OCwxMiBAQCBpZ3RfbWFpbg0KPiAgCQlmb3Ig
+KGkgPSAwOyBpIDwgbl9waXBlczsgaSsrKSB7DQo+ICAJCQlpZ3RfZHluYW1pY19mKCJwaXBlLSVz
+LSVzIiwNCj4ga21zdGVzdF9waXBlX25hbWUocGlwZXNbaV0pLA0KPiAgCQkJCQlpZ3Rfb3V0cHV0
+X25hbWUob3V0cHV0c1tpXSkpIHsNCj4gLQkJCQlpZ3Rfb3V0cHV0X3NldF9waXBlKG91dHB1dHNb
+aV0sIHBpcGVzW2ldKTsNCj4gKwkJCQlkYXRhLnBpcGUgPSBwaXBlc1tpXTsNCj4gKwkJCQlkYXRh
+Lm91dHB1dCA9IG91dHB1dHNbaV07DQo+ICAJCQkJZGF0YS50ZXN0X3BsYW5lX2lkID0NCj4gRFJN
+X1BMQU5FX1RZUEVfT1ZFUkxBWTsNCj4gLQkJCQlwcmVwYXJlKCZkYXRhLCBvdXRwdXRzW2ldKTsN
+Cj4gKwkJCQlwcmVwYXJlKCZkYXRhKTsNCj4gIAkJCQlydW4oJmRhdGEpOw0KPiAtCQkJCWNsZWFu
+dXAoJmRhdGEsIG91dHB1dHNbaV0pOw0KPiArCQkJCWNsZWFudXAoJmRhdGEpOw0KPiAgCQkJfQ0K
+PiAgCQl9DQo+ICAJfQ0KPiBAQCAtMTA5NywxMyArMTA4NiwxNCBAQCBpZ3RfbWFpbg0KPiAgCQlm
+b3IgKGkgPSAwOyBpIDwgbl9waXBlczsgaSsrKSB7DQo+ICAJCQlpZ3RfZHluYW1pY19mKCJwaXBl
+LSVzLSVzIiwNCj4ga21zdGVzdF9waXBlX25hbWUocGlwZXNbaV0pLA0KPiAgCQkJCQlpZ3Rfb3V0
+cHV0X25hbWUob3V0cHV0c1tpXSkpIHsNCj4gLQkJCQlpZ3Rfb3V0cHV0X3NldF9waXBlKG91dHB1
+dHNbaV0sIHBpcGVzW2ldKTsNCj4gKwkJCQlkYXRhLnBpcGUgPSBwaXBlc1tpXTsNCj4gKwkJCQlk
+YXRhLm91dHB1dCA9IG91dHB1dHNbaV07DQo+ICAJCQkJZm9yIChqID0gMTsgaiA8PSBNQVhfREFN
+QUdFX0FSRUFTOyBqKyspIHsNCj4gIAkJCQkJZGF0YS5kYW1hZ2VfYXJlYV9jb3VudCA9IGo7DQo+
+ICAJCQkJCWRhdGEudGVzdF9wbGFuZV9pZCA9DQo+IERSTV9QTEFORV9UWVBFX1BSSU1BUlk7DQo+
+IC0JCQkJCXByZXBhcmUoJmRhdGEsIG91dHB1dHNbaV0pOw0KPiArCQkJCQlwcmVwYXJlKCZkYXRh
+KTsNCj4gIAkJCQkJcnVuKCZkYXRhKTsNCj4gLQkJCQkJY2xlYW51cCgmZGF0YSwgb3V0cHV0c1tp
+XSk7DQo+ICsJCQkJCWNsZWFudXAoJmRhdGEpOw0KPiAgCQkJCX0NCj4gIAkJCX0NCj4gIAkJfQ0K
+PiBAQCAtMTExOSwxMyArMTEwOSwxNCBAQCBpZ3RfbWFpbg0KPiAgCWlndF9zdWJ0ZXN0X3dpdGhf
+ZHluYW1pY19mKCJvdmVybGF5LSVzLXNmIiwgb3Bfc3RyKGRhdGEub3ApKSB7DQo+ICAJCWZvciAo
+aSA9IDA7IGkgPCBuX3BpcGVzOyBpKyspIHsNCj4gIAkJCWlndF9keW5hbWljX2YoInBpcGUtJXMt
+JXMiLA0KPiBrbXN0ZXN0X3BpcGVfbmFtZShwaXBlc1tpXSksDQo+IC0JCQkJCWlndF9vdXRwdXRf
+bmFtZShvdXRwdXRzW2ldKSkgew0KPiAtCQkJCWlndF9vdXRwdXRfc2V0X3BpcGUob3V0cHV0c1tp
+XSwgcGlwZXNbaV0pOw0KPiArCQkJCSAgICAgIGlndF9vdXRwdXRfbmFtZShvdXRwdXRzW2ldKSkg
+ew0KPiArCQkJCWRhdGEucGlwZSA9IHBpcGVzW2ldOw0KPiArCQkJCWRhdGEub3V0cHV0ID0gb3V0
+cHV0c1tpXTsNCj4gIAkJCQlkYXRhLmRhbWFnZV9hcmVhX2NvdW50ID0gMTsNCj4gIAkJCQlkYXRh
+LnRlc3RfcGxhbmVfaWQgPQ0KPiBEUk1fUExBTkVfVFlQRV9PVkVSTEFZOw0KPiAtCQkJCXByZXBh
+cmUoJmRhdGEsIG91dHB1dHNbaV0pOw0KPiArCQkJCXByZXBhcmUoJmRhdGEpOw0KPiAgCQkJCXJ1
+bigmZGF0YSk7DQo+IC0JCQkJY2xlYW51cCgmZGF0YSwgb3V0cHV0c1tpXSk7DQo+ICsJCQkJY2xl
+YW51cCgmZGF0YSk7DQo+ICAJCQl9DQo+ICAJCX0NCj4gIAl9DQo+IC0tDQo+IDIuMzQuMQ0KDQo=
