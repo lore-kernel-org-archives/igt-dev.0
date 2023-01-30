@@ -1,19 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6794010E0C5
- for <igt-dev@lists.freedesktop.org>; Mon, 30 Jan 2023 07:25:55 +0000 (UTC)
-Message-ID: <77adcb31-1c0e-cc20-1d47-36105b6c10c5@intel.com>
-Date: Mon, 30 Jan 2023 12:55:43 +0530
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D5F1410E0CF
+ for <igt-dev@lists.freedesktop.org>; Mon, 30 Jan 2023 08:10:21 +0000 (UTC)
+Message-ID: <60dfaf80-8a48-d887-8586-40f8250e3def@intel.com>
+Date: Mon, 30 Jan 2023 09:10:10 +0100
 Content-Language: en-US
-To: Swati Sharma <swati2.sharma@intel.com>, <igt-dev@lists.freedesktop.org>
-References: <20230104111101.6831-1-swati2.sharma@intel.com>
-From: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
-In-Reply-To: <20230104111101.6831-1-swati2.sharma@intel.com>
+To: =?UTF-8?Q?Zbigniew_Kempczy=c5=84ski?= <zbigniew.kempczynski@intel.com>
+References: <cover.1674469729.git.karolina.stolarek@intel.com>
+ <9583a3ed0f8e373e447553726f41313a49e91279.1674469729.git.karolina.stolarek@intel.com>
+ <20230126120049.cwrq4fym3fovgexu@zkempczy-mobl2>
+From: Karolina Stolarek <karolina.stolarek@intel.com>
+In-Reply-To: <20230126120049.cwrq4fym3fovgexu@zkempczy-mobl2>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t v3] tests/kms_vblank: Convert test to
- dynamic
+Subject: Re: [igt-dev] [PATCH i-g-t 1/2] lib/i915_blt: Remove create_mapping
+ flag from blt_create_object
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,288 +23,159 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Swati,
+Hi Zbigniew,
 
-On Wed-04-01-2023 04:41 pm, Swati Sharma wrote:
-> Convert existing subtests to dynamic subtests at pipe/output level.
+Sorry for my late response, the email got stuck in my inbox.
+
+On 26.01.2023 13:00, Zbigniew Kempczyński wrote:
+> On Mon, Jan 23, 2023 at 11:52:42AM +0100, Karolina Stolarek wrote:
+>> In the tests we have, we always set create_mapping flag to true, as we
+>> wish to create memory mappings when creating blitter copy objects. As
+>> this is the only use case, we can delete the flag and just create a
+>> mapping.
+>>
+>> Cc: Zbigniew Kempczynski <zbigniew.kempczynski@intel.com>
+>> Signed-off-by: Karolina Stolarek <karolina.stolarek@intel.com>
+>> ---
+>>   lib/i915/i915_blt.c           |  8 +++-----
+>>   lib/i915/i915_blt.h           |  3 +--
+>>   tests/i915/gem_ccs.c          | 14 +++++++-------
+>>   tests/i915/gem_exercise_blt.c | 12 ++++++------
+>>   4 files changed, 17 insertions(+), 20 deletions(-)
+>>
+>> diff --git a/lib/i915/i915_blt.c b/lib/i915/i915_blt.c
+>> index bbfb6ffc..3e64efeb 100644
+>> --- a/lib/i915/i915_blt.c
+>> +++ b/lib/i915/i915_blt.c
+>> @@ -1219,8 +1219,7 @@ blt_create_object(int i915, uint32_t region,
+>>   		  uint32_t width, uint32_t height, uint32_t bpp, uint8_t mocs,
+>>   		  enum blt_tiling_type tiling,
+>>   		  enum blt_compression compression,
+>> -		  enum blt_compression_type compression_type,
+>> -		  bool create_mapping)
+>> +		  enum blt_compression_type compression_type)
 > 
-> v2: -Remove redundant debug prints
->      -Convert all subtests into dynamic
-> v3: -Use pipe & output from struct data_t
+> In this case I would like to keep create_mapping flag. gem_ccs and
+> gem_exercise_blt use this mapping but if you someone would like
+> to reuse blt_create_object() without creation additional mapping
+> lack of this argument enforces creating object in the test.
+
+Hm, but in the majority of cases we'd like to create a new object. From 
+the API point of view, we could introduce another function to do it. The 
+list of parameters is already quite long here.
+
+Thanks,
+Karolina
+
 > 
-> Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
-> ---
->   tests/kms_vblank.c | 159 +++++++++++++++++++++------------------------
->   1 file changed, 73 insertions(+), 86 deletions(-)
+> --
+> Zbigniew
 > 
-> diff --git a/tests/kms_vblank.c b/tests/kms_vblank.c
-> index 5bd3fefe1..df89f23c1 100644
-> --- a/tests/kms_vblank.c
-> +++ b/tests/kms_vblank.c
-> @@ -21,11 +21,6 @@
->    * IN THE SOFTWARE.
->    */
->   
-> -/** @file kms_vblank.c
-> - *
-> - * This is a test of performance of drmWaitVblank.
-> - */
-> -
->   #include "igt.h"
->   #include <stdlib.h>
->   #include <stdio.h>
-> @@ -41,7 +36,7 @@
->   
->   #include <drm.h>
->   
-> -IGT_TEST_DESCRIPTION("Test speed of WaitVblank.");
-> +IGT_TEST_DESCRIPTION("This is a test of performance of drmWaitVblank.");
->   
->   typedef struct {
->   	igt_display_t display;
-> @@ -125,10 +120,6 @@ static void run_test(data_t *data, void (*testfunc)(data_t *, int, int))
->   	if (data->flags & RPM)
->   		igt_require(igt_setup_runtime_pm(fd));
->   
-> -	igt_info("Beginning %s on pipe %s, connector %s\n",
-> -		 igt_subtest_name(), kmstest_pipe_name(data->pipe),
-> -		 igt_output_name(output));
-> -
->   	if (!(data->flags & NOHANG)) {
->   		ahnd = get_reloc_ahnd(fd, 0);
->   		hang = igt_hang_ring_with_ahnd(fd, I915_EXEC_DEFAULT, ahnd);
-> @@ -166,9 +157,6 @@ static void run_test(data_t *data, void (*testfunc)(data_t *, int, int))
->   	if (!(data->flags & NOHANG))
->   		igt_post_hang_ring(fd, hang);
->   
-> -	igt_info("\n%s on pipe %s, connector %s: PASSED\n\n",
-> -		 igt_subtest_name(), kmstest_pipe_name(data->pipe), igt_output_name(output));
-> -
->   	put_ahnd(ahnd);
->   
->   	/* cleanup what prepare_crtc() has done */
-> @@ -178,54 +166,51 @@ static void run_test(data_t *data, void (*testfunc)(data_t *, int, int))
->   static void crtc_id_subtest(data_t *data, int fd)
->   {
->   	igt_display_t *display = &data->display;
-> -	igt_output_t *output;
-> -	enum pipe p;
-> -
-> -	for_each_pipe_with_valid_output(display, p, output) {
-> -		struct drm_event_vblank buf;
-> -		const uint32_t pipe_id_flag = kmstest_get_vbl_flag(p);
-> -		unsigned crtc_id, expected_crtc_id;
-> -		uint64_t val;
-> -		union drm_wait_vblank vbl;
-> -
-> -		crtc_id = display->pipes[p].crtc_id;
-> -		if (drmGetCap(display->drm_fd, DRM_CAP_CRTC_IN_VBLANK_EVENT, &val) == 0)
-> -			expected_crtc_id = crtc_id;
-> -		else
-> -			expected_crtc_id = 0;
-> +	enum pipe p = data->pipe;
-> +	igt_output_t *output = data->output;
-> +	struct drm_event_vblank buf;
-> +	const uint32_t pipe_id_flag = kmstest_get_vbl_flag(p);
-> +	unsigned crtc_id, expected_crtc_id;
-> +	uint64_t val;
-> +	union drm_wait_vblank vbl;
->   
-> -		data->pipe = p;
-> -		prepare_crtc(data, fd, output);
-> +	crtc_id = display->pipes[p].crtc_id;
-> +	if (drmGetCap(display->drm_fd, DRM_CAP_CRTC_IN_VBLANK_EVENT, &val) == 0)
-> +		expected_crtc_id = crtc_id;
-> +	else
-> +		expected_crtc_id = 0;
->   
-> -		memset(&vbl, 0, sizeof(vbl));
-> -		vbl.request.type = DRM_VBLANK_RELATIVE | DRM_VBLANK_EVENT;
-> -		vbl.request.type |= pipe_id_flag;
-> -		vbl.request.sequence = 1;
-> -		igt_assert_eq(wait_vblank(fd, &vbl), 0);
-> +	data->pipe = p;
-
-Please drop this, data->pipe is already updated.
-
-> +	prepare_crtc(data, fd, output);
->   
-> -		igt_assert_eq(read(fd, &buf, sizeof(buf)), sizeof(buf));
-> -		igt_assert_eq(buf.crtc_id, expected_crtc_id);
-> +	memset(&vbl, 0, sizeof(vbl));
-> +	vbl.request.type = DRM_VBLANK_RELATIVE | DRM_VBLANK_EVENT;
-> +	vbl.request.type |= pipe_id_flag;
-> +	vbl.request.sequence = 1;
-> +	igt_assert_eq(wait_vblank(fd, &vbl), 0);
->   
-> -		do_or_die(drmModePageFlip(fd, crtc_id,
-> -					  data->primary_fb.fb_id,
-> -					  DRM_MODE_PAGE_FLIP_EVENT, NULL));
-> +	igt_assert_eq(read(fd, &buf, sizeof(buf)), sizeof(buf));
-> +	igt_assert_eq(buf.crtc_id, expected_crtc_id);
->   
-> -		igt_assert_eq(read(fd, &buf, sizeof(buf)), sizeof(buf));
-> -		igt_assert_eq(buf.crtc_id, expected_crtc_id);
-> +	do_or_die(drmModePageFlip(fd, crtc_id,
-> +				  data->primary_fb.fb_id,
-> +				  DRM_MODE_PAGE_FLIP_EVENT, NULL));
->   
-> -		if (display->is_atomic) {
-> -			igt_plane_t *primary = igt_output_get_plane(output, 0);
-> +	igt_assert_eq(read(fd, &buf, sizeof(buf)), sizeof(buf));
-> +	igt_assert_eq(buf.crtc_id, expected_crtc_id);
->   
-> -			igt_plane_set_fb(primary, &data->primary_fb);
-> -			igt_display_commit_atomic(display, DRM_MODE_PAGE_FLIP_EVENT, NULL);
-> +	if (display->is_atomic) {
-> +		igt_plane_t *primary = igt_output_get_plane(output, 0);
->   
-> -			igt_assert_eq(read(fd, &buf, sizeof(buf)), sizeof(buf));
-> -			igt_assert_eq(buf.crtc_id, expected_crtc_id);
-> -		}
-> +		igt_plane_set_fb(primary, &data->primary_fb);
-> +		igt_display_commit_atomic(display, DRM_MODE_PAGE_FLIP_EVENT, NULL);
->   
-> -		cleanup_crtc(data, fd, output);
-> -		return;
-> +		igt_assert_eq(read(fd, &buf, sizeof(buf)), sizeof(buf));
-> +		igt_assert_eq(buf.crtc_id, expected_crtc_id);
->   	}
-> +
-> +	cleanup_crtc(data, fd, output);
-> +	return;
->   }
->   
->   static void accuracy(data_t *data, int fd, int nchildren)
-> @@ -403,8 +388,10 @@ static void vblank_ts_cont(data_t *data, int fd, int nchildren)
->   			estimated_vblanks, seq2, seq1 + estimated_vblanks);
->   }
->   
-> -static void run_subtests_for_pipe(data_t *data)
-> +static void run_subtests(data_t *data)
->   {
-> +	enum pipe p;
-> +
->   	const struct {
->   		const char *name;
->   		void (*func)(data_t *, int, int);
-> @@ -437,21 +424,19 @@ static void run_subtests_for_pipe(data_t *data)
->   		{ }
->   	}, *m;
->   
-> -	igt_fixture
-> -		igt_display_require_output_on_pipe(&data->display, data->pipe);
-> -
->   	for (f = funcs; f->name; f++) {
->   		for (m = modes; m->name; m++) {
->   			if (m->flags & ~(f->valid | NOHANG))
->   				continue;
->   
-> -			igt_describe("Check if test run while hanging by introducing NOHANG flag");
-> -			igt_subtest_f("pipe-%s-%s-%s",
-> -				      kmstest_pipe_name(data->pipe),
-> -				      f->name, m->name) {
-> -				for_each_valid_output_on_pipe(&data->display, data->pipe, data->output) {
-> -					data->flags = m->flags | NOHANG;
-> -					run_test(data, f->func);
-> +			igt_describe("Check if test run while hanging by introducing NOHANG flag.");
-> +			igt_subtest_with_dynamic_f("%s-%s", f->name, m->name) {
-> +				for_each_pipe_with_valid_output(&data->display, p, data->output) {
---------------------------------------------------------------------------------^
-We can directly use data->pipe here instead of using p.
-
-Also, is it overkill to use for_each_pipe_with_valid_output() as it'll 
-iterate all possible pipe/output combinations? Is it possible to use 
-for_each_pipe_with_single_output()?
-
-- Bhanu
-
-> +					igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(p), data->output->name) {
-> +						data->pipe = p;
-> +						data->flags = m->flags | NOHANG;
-> +						run_test(data, f->func);
-> +					}
->   				}
->   			}
->   
-> @@ -459,16 +444,16 @@ static void run_subtests_for_pipe(data_t *data)
->   			if (f->valid & NOHANG || m->flags & NOHANG)
->   				continue;
->   
-> -			igt_describe("check if injected hang is working properly");
-> -			igt_subtest_f("pipe-%s-%s-%s-hang",
-> -				      kmstest_pipe_name(data->pipe),
-> -				      f->name, m->name) {
-> +			igt_describe("Check if injected hang is working properly.");
-> +			igt_subtest_with_dynamic_f("%s-%s-hang", f->name, m->name) {
->   				igt_hang_t hang;
-> -
->   				hang = igt_allow_hang(data->display.drm_fd, 0, 0);
-> -				for_each_valid_output_on_pipe(&data->display, data->pipe, data->output) {
-> -					data->flags = m->flags;
-> -					run_test(data, f->func);
-> +				for_each_pipe_with_valid_output(&data->display, p, data->output) {
-> +					igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(p), data->output->name) {
-> +						data->pipe = p;
-> +						data->flags = m->flags;
-> +						run_test(data, f->func);
-> +					}
->   				}
->   				igt_disallow_hang(data->display.drm_fd, hang);
->   			}
-> @@ -480,14 +465,8 @@ static void invalid_subtest(data_t *data, int fd)
->   {
->   	union drm_wait_vblank vbl;
->   	unsigned long valid_flags;
-> -	igt_display_t* display = &data->display;
-> -	enum pipe pipe = 0;
-> -	igt_output_t* output = igt_get_single_output_for_pipe(display, pipe);
-> -
-> -	data->pipe = pipe;
-> -	data->output = output;
-> -	igt_output_set_pipe(output, pipe);
-> -	igt_display_require_output_on_pipe(display, pipe);
-> +	igt_output_t *output = data->output;
-> +
->   	prepare_crtc(data, fd, output);
->   
->   	/* First check all is well with a simple query */
-> @@ -540,18 +519,26 @@ igt_main
->   	}
->   
->   	igt_describe("Negative test for vblank request");
-> -	igt_subtest("invalid")
-> -		invalid_subtest(&data, fd);
-> +	igt_subtest_with_dynamic("invalid") {
-> +		for_each_pipe_with_valid_output(&data.display, data.pipe, data.output) {
-> +			igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(data.pipe), data.output->name)
-> +				invalid_subtest(&data, fd);
-> +			break;
-> +		}
-> +	}
->   
-> -	igt_describe("check the Vblank and flip events works with given crtc id");
-> -	igt_subtest("crtc-id")
-> -		crtc_id_subtest(&data, fd);
-> +	igt_describe("Test to check if vblank and flip events works with given crtc id");
-> +	igt_subtest_with_dynamic("crtc-id") {
-> +		for_each_pipe_with_valid_output(&data.display, data.pipe, data.output) {
-> +			igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(data.pipe), data.output->name)
-> +				crtc_id_subtest(&data, fd);
-> +		}
-> +	}
->   
-> -	for_each_pipe_static(data.pipe)
-> -		igt_subtest_group
-> -			run_subtests_for_pipe(&data);
-> +	run_subtests(&data);
->   
->   	igt_fixture {
-> +		igt_display_fini(&data.display);
->   		close(fd);
->   	}
->   }
+>>   {
+>>   	struct blt_copy_object *obj;
+>>   	uint64_t size = width * height * bpp / 8;
+>> @@ -1237,9 +1236,8 @@ blt_create_object(int i915, uint32_t region,
+>>   		       compression, compression_type);
+>>   	blt_set_geom(obj, stride, 0, 0, width, height, 0, 0);
+>>   
+>> -	if (create_mapping)
+>> -		obj->ptr = gem_mmap__device_coherent(i915, handle, 0, size,
+>> -						     PROT_READ | PROT_WRITE);
+>> +	obj->ptr = gem_mmap__device_coherent(i915, handle, 0, size,
+>> +					     PROT_READ | PROT_WRITE);
+>>   
+>>   	return obj;
+>>   }
+>> diff --git a/lib/i915/i915_blt.h b/lib/i915/i915_blt.h
+>> index 299dff8e..eaf4cc1f 100644
+>> --- a/lib/i915/i915_blt.h
+>> +++ b/lib/i915/i915_blt.h
+>> @@ -218,8 +218,7 @@ blt_create_object(int i915, uint32_t region,
+>>   		  uint32_t width, uint32_t height, uint32_t bpp, uint8_t mocs,
+>>   		  enum blt_tiling_type tiling,
+>>   		  enum blt_compression compression,
+>> -		  enum blt_compression_type compression_type,
+>> -		  bool create_mapping);
+>> +		  enum blt_compression_type compression_type);
+>>   void blt_destroy_object(int i915, struct blt_copy_object *obj);
+>>   void blt_set_object(struct blt_copy_object *obj,
+>>   		    uint32_t handle, uint64_t size, uint32_t region,
+>> diff --git a/tests/i915/gem_ccs.c b/tests/i915/gem_ccs.c
+>> index f629f664..b7a32673 100644
+>> --- a/tests/i915/gem_ccs.c
+>> +++ b/tests/i915/gem_ccs.c
+>> @@ -361,11 +361,11 @@ static void block_copy(int i915,
+>>   		pext = NULL;
+>>   
+>>   	src = blt_create_object(i915, region1, width, height, bpp, uc_mocs,
+>> -				T_LINEAR, COMPRESSION_DISABLED, comp_type, true);
+>> +				T_LINEAR, COMPRESSION_DISABLED, comp_type);
+>>   	mid = blt_create_object(i915, mid_region, width, height, bpp, uc_mocs,
+>> -				mid_tiling, mid_compression, comp_type, true);
+>> +				mid_tiling, mid_compression, comp_type);
+>>   	dst = blt_create_object(i915, region1, width, height, bpp, uc_mocs,
+>> -				T_LINEAR, COMPRESSION_DISABLED, comp_type, true);
+>> +				T_LINEAR, COMPRESSION_DISABLED, comp_type);
+>>   	igt_assert(src->size == dst->size);
+>>   	PRINT_SURFACE_INFO("src", src);
+>>   	PRINT_SURFACE_INFO("mid", mid);
+>> @@ -477,13 +477,13 @@ static void block_multicopy(int i915,
+>>   		pext3 = NULL;
+>>   
+>>   	src = blt_create_object(i915, region1, width, height, bpp, uc_mocs,
+>> -				T_LINEAR, COMPRESSION_DISABLED, comp_type, true);
+>> +				T_LINEAR, COMPRESSION_DISABLED, comp_type);
+>>   	mid = blt_create_object(i915, mid_region, width, height, bpp, uc_mocs,
+>> -				mid_tiling, mid_compression, comp_type, true);
+>> +				mid_tiling, mid_compression, comp_type);
+>>   	dst = blt_create_object(i915, region1, width, height, bpp, uc_mocs,
+>> -				mid_tiling, COMPRESSION_DISABLED, comp_type, true);
+>> +				mid_tiling, COMPRESSION_DISABLED, comp_type);
+>>   	final = blt_create_object(i915, region1, width, height, bpp, uc_mocs,
+>> -				  T_LINEAR, COMPRESSION_DISABLED, comp_type, true);
+>> +				  T_LINEAR, COMPRESSION_DISABLED, comp_type);
+>>   	igt_assert(src->size == dst->size);
+>>   	PRINT_SURFACE_INFO("src", src);
+>>   	PRINT_SURFACE_INFO("mid", mid);
+>> diff --git a/tests/i915/gem_exercise_blt.c b/tests/i915/gem_exercise_blt.c
+>> index 02c54f85..b1123356 100644
+>> --- a/tests/i915/gem_exercise_blt.c
+>> +++ b/tests/i915/gem_exercise_blt.c
+>> @@ -136,11 +136,11 @@ static void fast_copy_emit(int i915, const intel_ctx_t *ctx,
+>>   	igt_assert(__gem_create_in_memory_regions(i915, &bb, &bb_size, region1) == 0);
+>>   
+>>   	src = blt_create_object(i915, region1, width, height, bpp, 0,
+>> -				T_LINEAR, COMPRESSION_DISABLED, 0, true);
+>> +				T_LINEAR, COMPRESSION_DISABLED, 0);
+>>   	mid = blt_create_object(i915, region2, width, height, bpp, 0,
+>> -				mid_tiling, COMPRESSION_DISABLED, 0, true);
+>> +				mid_tiling, COMPRESSION_DISABLED, 0);
+>>   	dst = blt_create_object(i915, region1, width, height, bpp, 0,
+>> -				T_LINEAR, COMPRESSION_DISABLED, 0, true);
+>> +				T_LINEAR, COMPRESSION_DISABLED, 0);
+>>   	igt_assert(src->size == dst->size);
+>>   
+>>   	PRINT_SURFACE_INFO("src", src);
+>> @@ -196,11 +196,11 @@ static void fast_copy(int i915, const intel_ctx_t *ctx,
+>>   	igt_assert(__gem_create_in_memory_regions(i915, &bb, &bb_size, region1) == 0);
+>>   
+>>   	src = blt_create_object(i915, region1, width, height, bpp, 0,
+>> -				T_LINEAR, COMPRESSION_DISABLED, 0, true);
+>> +				T_LINEAR, COMPRESSION_DISABLED, 0);
+>>   	mid = blt_create_object(i915, region2, width, height, bpp, 0,
+>> -				mid_tiling, COMPRESSION_DISABLED, 0, true);
+>> +				mid_tiling, COMPRESSION_DISABLED, 0);
+>>   	dst = blt_create_object(i915, region1, width, height, bpp, 0,
+>> -				T_LINEAR, COMPRESSION_DISABLED, 0, true);
+>> +				T_LINEAR, COMPRESSION_DISABLED, 0);
+>>   	igt_assert(src->size == dst->size);
+>>   
+>>   	blt_surface_fill_rect(i915, src, width, height);
+>> -- 
+>> 2.25.1
+>>
