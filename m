@@ -2,14 +2,15 @@ Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
 To: igt-dev@lists.freedesktop.org,
 	Intel-gfx@lists.freedesktop.org
-Date: Tue, 31 Jan 2023 11:32:35 +0000
-Message-Id: <20230131113237.3707217-7-tvrtko.ursulin@linux.intel.com>
+Date: Tue, 31 Jan 2023 11:32:37 +0000
+Message-Id: <20230131113237.3707217-9-tvrtko.ursulin@linux.intel.com>
 In-Reply-To: <20230131113237.3707217-1-tvrtko.ursulin@linux.intel.com>
 References: <20230131113237.3707217-1-tvrtko.ursulin@linux.intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 6/8] lib/igt_drm_clients: Decouple hardcoded
- engine assumptions
+Subject: [igt-dev] [PATCH i-g-t 8/8] gputop: Basic vendor agnostic GPU top
+ tool
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,455 +18,318 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+Cc: Rob Clark <robdclark@chromium.org>,
+ =?UTF-8?q?Christian=20K=C3=B6nig?= <ckoenig.leichtzumerken@gmail.com>,
+ =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+ Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 
-Intel_gpu_top gets it's main engine configuration data via PMU probe and
-uses that for per client view as well. Furthemore code so far assumed only
-clients belonging from a single DRM card would be tracked in a single
-clients list.
+Rudimentary vendor agnostic example of how lib_igt_drm_clients can be used
+to display a sorted by card and usage list of processes using GPUs.
 
-Break this inter-dependency by moving the engine data to be per client and
-also have libdrmclient probe the engine configuration independently using
-the previously added libdrmfdinfo facilities.
+Borrows a bit of code from intel_gpu_top but for now omits the fancy
+features like interactive functionality, card selection, client
+aggregation, sort modes, JSON output  and pretty engine names. Also no
+support for global GPU or system metrics.
+
+On the other hand it shows clients from all DRM cards which
+intel_gpu_top does not do.
 
 Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+Cc: Rob Clark <robdclark@chromium.org>
+Cc: Christian König <ckoenig.leichtzumerken@gmail.com>
+Acked-by: Christian König <christian.koenig@amd.com>
 ---
- lib/igt_drm_clients.c |  38 +++++++++++--
- lib/igt_drm_clients.h |  14 ++---
- tools/intel_gpu_top.c | 127 +++++++++++++++++++++++++++++++-----------
- 3 files changed, 134 insertions(+), 45 deletions(-)
+ tools/gputop.c    | 260 ++++++++++++++++++++++++++++++++++++++++++++++
+ tools/meson.build |   5 +
+ 2 files changed, 265 insertions(+)
+ create mode 100644 tools/gputop.c
 
-diff --git a/lib/igt_drm_clients.c b/lib/igt_drm_clients.c
-index e11c8b18188f..d507c07fec87 100644
---- a/lib/igt_drm_clients.c
-+++ b/lib/igt_drm_clients.c
-@@ -97,7 +97,7 @@ igt_drm_client_update(struct igt_drm_client *c, unsigned int pid, char *name,
- 	c->last_runtime = 0;
- 	c->total_runtime = 0;
- 
--	for (i = 0; i < c->clients->num_classes; i++) {
-+	for (i = 0; i <= c->engines->max_engine_id; i++) {
- 		assert(i < ARRAY_SIZE(info->busy));
- 
- 		if (info->busy[i] < c->last[i])
-@@ -119,6 +119,7 @@ igt_drm_client_add(struct igt_drm_clients *clients,
- 		   unsigned int pid, char *name, unsigned int drm_minor)
- {
- 	struct igt_drm_client *c;
-+	unsigned int i;
- 
- 	assert(!igt_drm_clients_find(clients, IGT_DRM_CLIENT_ALIVE,
- 				     drm_minor, info->id));
-@@ -144,8 +145,28 @@ igt_drm_client_add(struct igt_drm_clients *clients,
- 	c->id = info->id;
- 	c->drm_minor = drm_minor;
- 	c->clients = clients;
--	c->val = calloc(clients->num_classes, sizeof(c->val));
--	c->last = calloc(clients->num_classes, sizeof(c->last));
-+	c->engines = malloc(sizeof(*c->engines));
-+	assert(c->engines);
-+	memset(c->engines, 0, sizeof(*c->engines));
-+	c->engines->capacity = calloc(info->last_engine_index + 1,
-+				      sizeof(*c->engines->capacity));
-+	assert(c->engines->capacity);
-+	c->engines->names = calloc(info->last_engine_index + 1,
-+				   sizeof(*c->engines->names));
-+	assert(c->engines->names);
+diff --git a/tools/gputop.c b/tools/gputop.c
+new file mode 100644
+index 000000000000..d259cac1ab17
+--- /dev/null
++++ b/tools/gputop.c
+@@ -0,0 +1,260 @@
++// SPDX-License-Identifier: MIT
++/*
++ * Copyright © 2022 Intel Corporation
++ */
 +
-+	for (i = 0; i <= info->last_engine_index; i++) {
-+		if (!info->capacity[i])
-+			continue;
++#include <assert.h>
++#include <ctype.h>
++#include <dirent.h>
++#include <errno.h>
++#include <fcntl.h>
++#include <inttypes.h>
++#include <limits.h>
++#include <locale.h>
++#include <math.h>
++#include <poll.h>
++#include <signal.h>
++#include <stdint.h>
++#include <stdio.h>
++#include <stdlib.h>
++#include <string.h>
++#include <sys/ioctl.h>
++#include <sys/stat.h>
++#include <sys/types.h>
++#include <unistd.h>
++#include <termios.h>
++#include <sys/sysmacros.h>
++#include <stdbool.h>
 +
-+		c->engines->capacity[i] = info->capacity[i];
-+		c->engines->names[i] = strdup(info->names[i]);
-+		assert(c->engines->names[i]);
-+		c->engines->num_engines++;
-+		c->engines->max_engine_id = i;
-+	}
-+	c->val = calloc(c->engines->max_engine_id + 1, sizeof(c->val));
-+	c->last = calloc(c->engines->max_engine_id + 1, sizeof(c->last));
- 	assert(c->val && c->last);
- 
- 	igt_drm_client_update(c, pid, name, info);
-@@ -154,6 +175,15 @@ igt_drm_client_add(struct igt_drm_clients *clients,
- static
- void igt_drm_client_free(struct igt_drm_client *c, bool clear)
- {
++#include "igt_drm_clients.h"
++#include "igt_drm_fdinfo.h"
++
++static const char *bars[] = { " ", "▏", "▎", "▍", "▌", "▋", "▊", "▉", "█" };
++
++static void n_spaces(const unsigned int n)
++{
 +	unsigned int i;
 +
-+	if (c->engines) {
-+		for (i = 0; i <= c->engines->max_engine_id; i++)
-+			free(c->engines->names[i]);
-+		free(c->engines->capacity);
-+		free(c->engines->names);
-+	}
-+	free(c->engines);
- 	free(c->val);
- 	free(c->last);
- 
-@@ -323,7 +353,7 @@ static bool is_drm_fd(int fd_dir, const char *name, unsigned int *minor)
-  *
-  * If @name_map is not provided engine names will be auto-detected (this is
-  * less performant) and indices will correspond with auto-detected names as
-- * listed int clients->engine_class[].
-+ * listed int clients->engines->names[].
-  */
- struct igt_drm_clients *
- igt_drm_clients_scan(struct igt_drm_clients *clients,
-diff --git a/lib/igt_drm_clients.h b/lib/igt_drm_clients.h
-index ffa219c9c9fd..0a903b431eaa 100644
---- a/lib/igt_drm_clients.h
-+++ b/lib/igt_drm_clients.h
-@@ -31,10 +31,12 @@ enum igt_drm_client_status {
- 	IGT_DRM_CLIENT_PROBE
- };
- 
--struct igt_drm_client_engine_class {
--	unsigned int engine_class;
--	const char *name;
--	unsigned int num_engines;
-+struct igt_drm_client_engines {
-+	unsigned int num_engines; /* Number of discovered active engines. */
-+	unsigned int max_engine_id; /* Largest engine index discovered.
-+				       (Can differ from num_engines - 1 when using the engine map facility.) */
-+	unsigned int *capacity; /* Array of engine capacities as parsed from fdinfo. */
-+	char **names; /* Array of engine names, either auto-detected or from the passed in engine map. */
- };
- 
- struct igt_drm_clients;
-@@ -43,6 +45,7 @@ struct igt_drm_client {
- 	struct igt_drm_clients *clients; /* Owning list. */
- 
- 	enum igt_drm_client_status status;
-+	struct igt_drm_client_engines *engines; /* Engines used by this client, to map with busynees data. */
- 	unsigned int id; /* DRM client id from fdinfo. */
- 	unsigned int drm_minor; /* DRM minor of this client. */
- 	unsigned int pid; /* PID which has this DRM fd open. */
-@@ -59,9 +62,6 @@ struct igt_drm_clients {
- 	unsigned int num_clients;
- 	unsigned int active_clients;
- 
--	unsigned int num_classes;
--	struct igt_drm_client_engine_class *engine_class;
--
- 	void *private_data;
- 
- 	struct igt_drm_client *client; /* Must be last. */
-diff --git a/tools/intel_gpu_top.c b/tools/intel_gpu_top.c
-index 2fb9f9b757d5..e64523df48e4 100644
---- a/tools/intel_gpu_top.c
-+++ b/tools/intel_gpu_top.c
-@@ -66,6 +66,12 @@ struct pmu_counter {
- 	bool present;
- };
- 
-+struct engine_class {
-+	unsigned int engine_class;
-+	const char *name;
-+	unsigned int num_engines;
-+};
++	for (i = 0; i < n; i++)
++		putchar(' ');
++}
 +
- struct engine {
- 	const char *name;
- 	char *display_name;
-@@ -84,7 +90,7 @@ struct engine {
- struct engines {
- 	unsigned int num_engines;
- 	unsigned int num_classes;
--	struct igt_drm_client_engine_class *class;
-+	struct engine_class *class;
- 	unsigned int num_counters;
- 	DIR *root;
- 	int fd;
-@@ -116,6 +122,11 @@ struct engines {
- 
- };
- 
-+struct intel_clients {
-+	const char *pci_slot;
-+	struct igt_drm_client_engines classes;
-+};
++static void print_percentage_bar(double percent, int max_len)
++{
++	int bar_len, i, len = max_len - 2;
++	const int w = 8;
 +
- static struct termios termios_orig;
- 
- __attribute__((format(scanf,3,4)))
-@@ -769,9 +780,8 @@ static struct igt_drm_clients *display_clients(struct igt_drm_clients *clients)
- 	ac = calloc(clients->num_clients, sizeof(*c));
- 	assert(ac);
- 
--	aggregated->num_classes = clients->num_classes;
--	aggregated->engine_class = clients->engine_class;
- 	aggregated->private_data = clients->private_data;
++	assert(max_len > 0);
 +
- 	aggregated->client = ac;
- 
- 	igt_for_each_drm_client(clients, c, tmp) {
-@@ -792,7 +802,8 @@ static struct igt_drm_clients *display_clients(struct igt_drm_clients *clients)
- 			ac->pid = c->pid;
- 			strcpy(ac->name, c->name);
- 			strcpy(ac->print_name, c->print_name);
--			ac->val = calloc(clients->num_classes,
-+			ac->engines = c->engines;
-+			ac->val = calloc(c->engines->max_engine_id + 1,
- 					 sizeof(ac->val[0]));
- 			assert(ac->val);
- 			ac->samples = 1;
-@@ -807,7 +818,7 @@ static struct igt_drm_clients *display_clients(struct igt_drm_clients *clients)
- 		ac->total_runtime += c->total_runtime;
- 		ac->last_runtime += c->last_runtime;
- 
--		for (i = 0; i < clients->num_classes; i++)
-+		for (i = 0; i <= c->engines->max_engine_id; i++)
- 			ac->val[i] += c->val[i];
- 	}
- 
-@@ -828,7 +839,7 @@ static void free_display_clients(struct igt_drm_clients *clients)
- 	/*
- 	 * Don't call igt_drm_clients_free or igt_drm_client_free since
- 	 * "display" clients are not proper clients and have un-initialized
--	 * fields which we don't want the library to try and free.
-+	 * or borrowed fields which we don't want the library to try and free.
- 	 */
- 	igt_for_each_drm_client(clients, c, tmp)
- 		free(c->val);
-@@ -1540,15 +1551,15 @@ print_engines_footer(struct engines *engines, double t,
- 
- static int class_cmp(const void *_a, const void *_b)
- {
--	const struct igt_drm_client_engine_class *a = _a;
--	const struct igt_drm_client_engine_class *b = _b;
-+	const struct engine_class *a = _a;
-+	const struct engine_class *b = _b;
- 
- 	return a->engine_class - b->engine_class;
- }
- 
- static void init_engine_classes(struct engines *engines)
- {
--	struct igt_drm_client_engine_class *classes;
-+	struct engine_class *classes;
- 	unsigned int i, num;
- 	int max = -1;
- 
-@@ -1720,6 +1731,8 @@ static int
- print_clients_header(struct igt_drm_clients *clients, int lines,
- 		     int con_w, int con_h, int *class_w)
- {
-+	struct intel_clients *iclients = clients->private_data;
++	bar_len = ceil(w * percent * len / 100.0);
++	if (bar_len > w * len)
++		bar_len = w * len;
 +
- 	if (output_mode == INTERACTIVE) {
- 		const char *pidname = "   PID              NAME ";
- 		unsigned int num_active = 0;
-@@ -1734,25 +1747,25 @@ print_clients_header(struct igt_drm_clients *clients, int lines,
- 		if (lines++ >= con_h || len >= con_w)
- 			return lines;
- 
--		if (clients->num_classes) {
-+		if (iclients->classes.num_engines) {
- 			unsigned int i;
- 			int width;
- 
--			for (i = 0; i < clients->num_classes; i++) {
--				if (clients->engine_class[i].num_engines)
-+			for (i = 0; i <= iclients->classes.max_engine_id; i++) {
-+				if (iclients->classes.capacity[i])
- 					num_active++;
- 			}
- 
- 			*class_w = width = (con_w - len) / num_active;
- 
--			for (i = 0; i < clients->num_classes; i++) {
--				const char *name = clients->engine_class[i].name;
-+			for (i = 0; i <= iclients->classes.max_engine_id; i++) {
-+				const char *name = iclients->classes.names[i];
- 				int name_len = strlen(name);
- 				int pad = (width - name_len) / 2;
- 				int spaces = width - pad - name_len;
- 
--				if (!clients->engine_class[i].num_engines)
--					continue; /* Assert in the ideal world. */
-+				if (!iclients->classes.capacity[i])
-+					continue;
- 
- 				if (pad < 0 || spaces < 0)
- 					continue;
-@@ -1767,7 +1780,7 @@ print_clients_header(struct igt_drm_clients *clients, int lines,
- 		n_spaces(con_w - len);
- 		printf("\033[0m\n");
- 	} else {
--		if (clients->num_classes)
-+		if (iclients->classes.num_engines)
- 			pops->open_struct("clients");
- 	}
- 
-@@ -1782,6 +1795,7 @@ print_client(struct igt_drm_client *c, struct engines *engines, double t, int li
- 	     int con_w, int con_h, unsigned int period_us, int *class_w)
- {
- 	struct igt_drm_clients *clients = c->clients;
-+	struct intel_clients *iclients = clients->private_data;
- 	unsigned int i;
- 
- 	if (output_mode == INTERACTIVE) {
-@@ -1792,14 +1806,16 @@ print_client(struct igt_drm_client *c, struct engines *engines, double t, int li
- 
- 		printf("%6u %17s ", c->pid, c->print_name);
- 
--		for (i = 0; c->samples > 1 && i < clients->num_classes; i++) {
-+		for (i = 0;
-+		     c->samples > 1 && i <= iclients->classes.max_engine_id;
-+		     i++) {
- 			double pct;
- 
--			if (!clients->engine_class[i].num_engines)
--				continue; /* Assert in the ideal world. */
-+			if (!iclients->classes.capacity[i])
++	putchar('|');
++
++	for (i = bar_len; i >= w; i -= w)
++		printf("%s", bars[w]);
++	if (i)
++		printf("%s", bars[i]);
++
++	len -= (bar_len + (w - 1)) / w;
++	n_spaces(len);
++
++	putchar('|');
++}
++
++static int
++print_client_header(struct igt_drm_client *c, int lines, int con_w, int con_h,
++		    int *engine_w)
++{
++	const char *pidname = "    PID               NAME ";
++	int ret, len = strlen(pidname);
++
++	if (lines++ >= con_h || len >= con_w)
++		return lines;
++	printf("\033[7m");
++	ret = printf("DRM minor %u", c->drm_minor);
++	n_spaces(con_w - ret);
++
++	if (lines++ >= con_h)
++		return lines;
++	printf("\n%s", pidname);
++
++	if (c->engines->num_engines) {
++		unsigned int i;
++		int width;
++
++		*engine_w = width = (con_w - len) / c->engines->num_engines;
++
++		for (i = 0; i <= c->engines->max_engine_id; i++) {
++			const char *name = c->engines->names[i];
++			int name_len = strlen(name);
++			int pad = (width - name_len) / 2;
++			int spaces = width - pad - name_len;
++
++			if (!name)
 +				continue;
- 
- 			pct = (double)c->val[i] / period_us / 1e3 * 100 /
--			      clients->engine_class[i].num_engines;
-+			      iclients->classes.capacity[i];
- 
- 			/*
- 			 * Guard against possible time-drift between sampling
-@@ -1827,11 +1843,11 @@ print_client(struct igt_drm_client *c, struct engines *engines, double t, int li
- 		if (c->samples > 1) {
- 			pops->open_struct("engine-classes");
- 
--			for (i = 0; i < clients->num_classes; i++) {
-+			for (i = 0; i <= iclients->classes.max_engine_id; i++) {
- 				double pct;
- 
- 				snprintf(buf, sizeof(buf), "%s",
--					clients->engine_class[i].name);
-+					 iclients->classes.names[i]);
- 				pops->open_struct(buf);
- 
- 				pct = (double)c->val[i] / period_us / 1e3 * 100;
-@@ -1860,7 +1876,9 @@ print_clients_footer(struct igt_drm_clients *clients, double t,
- 		if (lines++ < con_h)
- 			printf("\n");
- 	} else {
--		if (clients->num_classes)
-+		struct intel_clients *iclients = clients->private_data;
 +
-+		if (iclients->classes.num_engines)
- 			pops->close_struct();
- 	}
- 
-@@ -2077,14 +2095,54 @@ static void show_help_screen(void)
- static bool client_match(const struct igt_drm_clients *clients,
- 			 const struct drm_client_fdinfo *info)
- {
-+	struct intel_clients *iclients = clients->private_data;
++			if (pad < 0 || spaces < 0)
++				continue;
 +
- 	if (strcmp(info->driver, "i915"))
- 		return false;
--	if (strcmp(info->pdev, clients->private_data))
-+	if (strcmp(info->pdev, iclients->pci_slot))
- 		return false;
- 
- 	return true;
- }
- 
-+static void
-+intel_init_clients(struct intel_clients *iclients,
-+		   const struct igt_device_card *card, struct engines *engines)
++			n_spaces(pad);
++			printf("%s", name);
++			n_spaces(spaces);
++			len += pad + name_len + spaces;
++		}
++	}
++
++	n_spaces(con_w - len);
++	printf("\033[0m\n");
++
++	return lines;
++}
++
++
++static bool
++newheader(const struct igt_drm_client *c, const struct igt_drm_client *pc)
++{
++	return !pc || c->drm_minor != pc->drm_minor;
++}
++
++static int
++print_client(struct igt_drm_client *c, struct igt_drm_client **prevc,
++	     double t, int lines, int con_w, int con_h,
++	     unsigned int period_us, int *engine_w)
 +{
 +	unsigned int i;
 +
-+	iclients->pci_slot = strdup(card->pci_slot_name[0] ?
-+				    card->pci_slot_name : IGPU_PCI);
-+	assert(iclients->pci_slot);
++	/* Filter out idle clients. */
++	if (!c->total_runtime || c->samples < 2)
++		return lines;
 +
-+	iclients->classes.num_engines = engines->num_classes;
-+	iclients->classes.max_engine_id = engines->num_classes - 1;
++	/* Print header when moving to a different DRM card. */
++	if (newheader(c, *prevc)) {
++		lines = print_client_header(c, lines, con_w, con_h, engine_w);
++		if (lines >= con_h)
++			return lines;
++	}
 +
-+	iclients->classes.capacity = calloc(engines->num_classes,
-+					    sizeof(*iclients->classes.capacity));
-+	assert(iclients->classes.capacity);
-+	iclients->classes.names = calloc(engines->num_classes,
-+					 sizeof(*iclients->classes.names));
-+	assert(iclients->classes.names);
++	*prevc = c;
 +
-+	for (i = 0; i < engines->num_classes; i++) {
-+		if (!engines->class[i].num_engines)
++	printf("%8u %17s ", c->pid, c->print_name);
++	lines++;
++
++	for (i = 0; c->samples > 1 && i <= c->engines->max_engine_id; i++) {
++		double pct;
++
++		if (!c->engines->capacity[i])
 +			continue;
 +
-+		iclients->classes.num_engines++;
-+		iclients->classes.max_engine_id = i;
-+		iclients->classes.capacity[i] = engines->class[i].num_engines;
-+		iclients->classes.names[i] = strdup(engines->class[i].name);
++		pct = (double)c->val[i] / period_us / 1e3 * 100 /
++		      c->engines->capacity[i];
++
++		/*
++		 * Guard against fluctuations between our scanning period and
++		 * GPU times as exported by the kernel in fdinfo.
++		 */
++		if (pct > 100.0)
++			pct = 100.0;
++
++		print_percentage_bar(pct, *engine_w);
 +	}
++
++	putchar('\n');
++
++	return lines;
 +}
 +
-+static void intel_free_clients(struct intel_clients *iclients)
++static int
++__client_id_cmp(const struct igt_drm_client *a,
++		const struct igt_drm_client *b)
 +{
-+	free((void *)iclients->pci_slot);
-+	free(iclients->classes.capacity);
-+	free(iclients->classes.names);
++	if (a->id > b->id)
++		return 1;
++	else if (a->id < b->id)
++		return -1;
++	else
++		return 0;
 +}
 +
- int main(int argc, char **argv)
- {
- 	unsigned int period_us = DEFAULT_PERIOD_MS * 1000;
-@@ -2097,6 +2155,7 @@ int main(int argc, char **argv)
- 		"compute",
- 	};
- 	bool physical_engines = false;
-+	struct intel_clients iclients;
- 	int con_w = -1, con_h = -1;
- 	char *output_path = NULL;
- 	struct engines *engines;
-@@ -2211,6 +2270,8 @@ int main(int argc, char **argv)
- 	else
- 		pmu_device = strdup("i915");
- 
-+	codename = igt_device_get_pretty_name(&card, false);
++static int client_cmp(const void *_a, const void *_b, void *unused)
++{
++	const struct igt_drm_client *a = _a;
++	const struct igt_drm_client *b = _b;
++	long val_a, val_b;
 +
- 	engines = discover_engines(pmu_device);
- 	if (!engines) {
- 		fprintf(stderr,
-@@ -2239,20 +2300,16 @@ int main(int argc, char **argv)
- 
- 	ret = EXIT_SUCCESS;
- 
--	if (has_drm_fdinfo(&card))
--		clients = igt_drm_clients_init(strdup(card.pci_slot_name[0] ?
--						      card.pci_slot_name :
--						      IGPU_PCI));
- 	init_engine_classes(engines);
--	if (clients) {
--		clients->num_classes = engines->num_classes;
--		clients->engine_class = engines->class;
++	/* DRM cards into consecutive buckets first. */
++	val_a = a->drm_minor;
++	val_b = b->drm_minor;
++	if (val_a > val_b)
++		return 1;
++	else if (val_b > val_a)
++		return -1;
 +
-+	if (has_drm_fdinfo(&card)) {
-+		intel_init_clients(&iclients, &card, engines);
-+		clients = igt_drm_clients_init(&iclients);
- 	}
- 
- 	pmu_sample(engines);
- 	igt_drm_clients_scan(clients, client_match, engine_map,
- 			     ARRAY_SIZE(engine_map));
--	codename = igt_device_get_pretty_name(&card, false);
- 
- 	if (output_mode == JSON)
- 		printf("[\n");
-@@ -2350,8 +2407,10 @@ int main(int argc, char **argv)
- 	if (output_mode == JSON)
- 		printf("]\n");
- 
--	if (clients)
-+	if (clients) {
- 		igt_drm_clients_free(clients);
-+		intel_free_clients(&iclients);
++	/*
++	 * Within buckets sort by last sampling period aggregated runtime, with
++	 * client id as a tie-breaker.
++	 */
++	val_a = a->last_runtime;
++	val_b = b->last_runtime;
++	if (val_a == val_b)
++		return __client_id_cmp(a, b);
++	else if (val_b > val_a)
++		return 1;
++	else
++		return -1;
++
++}
++
++int main(int argc, char **argv)
++{
++	unsigned int period_us = 2e6;
++	struct igt_drm_clients *clients = NULL;
++	int con_w = -1, con_h = -1;
++
++	clients = igt_drm_clients_init(NULL);
++	if (!clients)
++		exit(1);
++
++	igt_drm_clients_scan(clients, NULL, NULL, 0);
++
++	for (;;) {
++		struct igt_drm_client *c, *prevc = NULL;
++		int i, engine_w = 0, lines = 0;
++		struct winsize ws;
++
++		if (ioctl(0, TIOCGWINSZ, &ws) != -1) {
++			con_w = ws.ws_col;
++			con_h = ws.ws_row;
++			if (con_w == 0 && con_h == 0) {
++				/* Serial console. */
++				con_w = 80;
++				con_h = 24;
++			}
++		}
++
++		igt_drm_clients_scan(clients, NULL, NULL, 0);
++		igt_drm_clients_sort(clients, client_cmp);
++
++		printf("\033[H\033[J");
++
++		igt_for_each_drm_client(clients, c, i) {
++			assert(c->status != IGT_DRM_CLIENT_PROBE);
++			if (c->status != IGT_DRM_CLIENT_ALIVE)
++				break; /* Active clients are first in the array. */
++
++			lines = print_client(c, &prevc, (double)period_us / 1e6,
++					     lines, con_w, con_h, period_us,
++					     &engine_w);
++			if (lines >= con_h)
++				break;
++		}
++
++		if (lines++ < con_h)
++			printf("\n");
++
++		usleep(period_us);
 +	}
++
++	return 0;
++}
+diff --git a/tools/meson.build b/tools/meson.build
+index c6194fd15daa..0a3973dee90d 100644
+--- a/tools/meson.build
++++ b/tools/meson.build
+@@ -65,6 +65,11 @@ if libudev.found()
+ 		   install : true)
+ endif
  
- 	free(codename);
- err_pmu:
++executable('gputop', 'gputop.c',
++           install : true,
++           install_rpath : bindir_rpathdir,
++           dependencies : [lib_igt_drm_clients,lib_igt_drm_fdinfo,math])
++
+ intel_l3_parity_src = [ 'intel_l3_parity.c', 'intel_l3_udev_listener.c' ]
+ executable('intel_l3_parity', sources : intel_l3_parity_src,
+ 	   dependencies : tool_deps,
 -- 
 2.34.1
