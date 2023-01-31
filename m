@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5E8A410E353
- for <igt-dev@lists.freedesktop.org>; Tue, 31 Jan 2023 13:31:27 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id AE98D10E34E
+ for <igt-dev@lists.freedesktop.org>; Tue, 31 Jan 2023 13:31:25 +0000 (UTC)
 From: Nidhi Gupta <nidhi1.gupta@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 31 Jan 2023 19:06:57 +0530
-Message-Id: <20230131133658.21970-7-nidhi1.gupta@intel.com>
+Date: Tue, 31 Jan 2023 19:06:56 +0530
+Message-Id: <20230131133658.21970-6-nidhi1.gupta@intel.com>
 In-Reply-To: <20230131133658.21970-1-nidhi1.gupta@intel.com>
 References: <20230131133658.21970-1-nidhi1.gupta@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH v3 6/7] tests/kms_plane_scaling: Limit the
- execution to two pipes/planes
+Subject: [igt-dev] [PATCH v3 5/7] tests/kms_plane_cursor: Limit the
+ execution to two pipes
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,95 +26,33 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 
-As the execution is taking more time, limit the execution of
-clipping-clamping-[rotation | pixel-formats] tests to two (first
-& last) pipes and two (first & last) planes.
+As the execution is taking more time, limit the execution to two (first
+& last) pipes. This patch will ignores the cursor size of 256, since it
+is causing simics crash.
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 Signed-off-by: Nidhi Gupta <nidhi1.gupta@intel.com>
 ---
- tests/kms_plane_scaling.c | 47 +++++++++++++++++++++++++++++++++++++++
- 1 file changed, 47 insertions(+)
+ tests/kms_plane_cursor.c | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
-diff --git a/tests/kms_plane_scaling.c b/tests/kms_plane_scaling.c
-index 887a55e6..c32ea9d4 100644
---- a/tests/kms_plane_scaling.c
-+++ b/tests/kms_plane_scaling.c
-@@ -485,6 +485,8 @@ static void test_scaler_with_rotation_pipe(data_t *d,
- 	unsigned format = DRM_FORMAT_XRGB8888;
- 	uint64_t modifier = DRM_FORMAT_MOD_LINEAR;
- 	igt_plane_t *plane;
-+	int first_plane = -1;
-+	int last_plane = -1;
- 
- 	cleanup_crtc(d);
- 
-@@ -494,6 +496,19 @@ static void test_scaler_with_rotation_pipe(data_t *d,
- 		if (plane->type == DRM_PLANE_TYPE_CURSOR)
- 			continue;
- 
-+		if (first_plane < 0)
-+			first_plane = j__;
-+
-+		last_plane = j__;
-+	}
-+
-+	for_each_plane_on_pipe(display, pipe, plane) {
-+		if (plane->type == DRM_PLANE_TYPE_CURSOR)
-+			continue;
-+
-+		if (!d->extended && j__ != first_plane && j__ != last_plane)
-+			continue;
-+
- 		for (int i = 0; i < ARRAY_SIZE(rotations); i++) {
- 			igt_rotation_t rot = rotations[i];
- 
-@@ -514,17 +529,32 @@ static void test_scaler_with_pixel_format_pipe(data_t *d, int width, int height,
- 	igt_display_t *display = &d->display;
- 	uint64_t modifier = DRM_FORMAT_MOD_LINEAR;
- 	igt_plane_t *plane;
-+	int first_plane = -1;
-+	int last_plane = -1;
- 
- 	cleanup_crtc(d);
- 
- 	igt_output_set_pipe(output, pipe);
- 
-+	for_each_plane_on_pipe(display, pipe, plane) {
-+		if (plane->type == DRM_PLANE_TYPE_CURSOR)
-+			continue;
-+
-+		if (first_plane < 0)
-+			first_plane = j__;
-+
-+		last_plane = j__;
-+	}
-+
- 	for_each_plane_on_pipe(display, pipe, plane) {
- 		struct igt_vec tested_formats;
- 
- 		if (plane->type == DRM_PLANE_TYPE_CURSOR)
- 			continue;
- 
-+		if (!d->extended && j__ != first_plane && j__ != last_plane)
-+			continue;
-+
- 		igt_vec_init(&tested_formats, sizeof(uint32_t));
- 
- 		for (int j = 0; j < plane->drm_plane->count_formats; j++) {
-@@ -845,6 +875,8 @@ static data_t data;
- igt_main_args("", long_opts, help_str, opt_handler, &data)
- {
- 	enum pipe pipe;
+diff --git a/tests/kms_plane_cursor.c b/tests/kms_plane_cursor.c
+index 9b27586c..9a94849a 100644
+--- a/tests/kms_plane_cursor.c
++++ b/tests/kms_plane_cursor.c
+@@ -277,6 +277,8 @@ igt_main
+ 		  "Tests atomic cursor positioning on primary plane and overlay plane "
+ 		  "with buffer larger than viewport used for display" },
+ 	};
 +	enum pipe active_pipes[IGT_MAX_PIPES];
 +	uint32_t last_pipe = 0;
  
  	igt_fixture {
- 		data.drm_fd = drm_open_driver_master(DRIVER_ANY);
-@@ -852,6 +884,11 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
- 		data.devid = is_i915_device(data.drm_fd) ?
- 			intel_get_drm_devid(data.drm_fd) : 0;
+ 		int ret;
+@@ -293,6 +295,11 @@ igt_main
+ 		igt_display_require(&data.display, data.drm_fd);
  		igt_require(data.display.is_atomic);
+ 		igt_display_require_output(&data.display);
 +
 +		/* Get active pipes. */
 +		for_each_pipe(&data.display, pipe)
@@ -122,30 +60,26 @@ index 887a55e6..c32ea9d4 100644
 +		last_pipe--;
  	}
  
- 	igt_subtest_group {
-@@ -916,6 +953,11 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
- 			for_each_pipe_with_single_output(&data.display, pipe, output) {
- 				drmModeModeInfo *mode;
+ 	for (i = 0; i < ARRAY_SIZE(tests); i++) {
+@@ -304,11 +311,19 @@ igt_main
+ 							     DRM_PLANE_TYPE_OVERLAY))
+ 					continue;
  
 +				if (igt_run_in_simulation() &&
 +				    pipe != active_pipes[0] &&
 +				    pipe != active_pipes[last_pipe])
 +					continue;
 +
- 				mode = igt_output_get_mode(output);
+ 				test_init(&data, pipe, output);
  
- 				igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), igt_output_name(output))
-@@ -929,6 +971,11 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
- 			for_each_pipe_with_single_output(&data.display, pipe, output) {
- 				drmModeModeInfo *mode;
+ 				for (j = 0; j < ARRAY_SIZE(cursor_sizes); j++) {
+ 					int size = cursor_sizes[j];
  
-+				if (igt_run_in_simulation() &&
-+				    pipe != active_pipes[0] &&
-+				    pipe != active_pipes[last_pipe])
-+					continue;
++					if (igt_run_in_simulation() && size >= 256)
++						continue;
 +
- 				mode = igt_output_get_mode(output);
- 
- 				igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), igt_output_name(output))
+ 					igt_dynamic_f("pipe-%s-%s-size-%d",
+ 						      kmstest_pipe_name(pipe),
+ 						      igt_output_name(output),
 -- 
 2.39.0
