@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
-To: igt-dev@lists.freedesktop.org,
-	Intel-gfx@lists.freedesktop.org
-Date: Tue, 31 Jan 2023 11:32:37 +0000
-Message-Id: <20230131113237.3707217-9-tvrtko.ursulin@linux.intel.com>
-In-Reply-To: <20230131113237.3707217-1-tvrtko.ursulin@linux.intel.com>
-References: <20230131113237.3707217-1-tvrtko.ursulin@linux.intel.com>
+Date: Tue, 31 Jan 2023 12:59:10 +0100
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+Message-ID: <20230131115910.rk4yyli7i7rbvqee@kamilkon-desk1>
+References: <20230131091731.5892-1-janusz.krzysztofik@linux.intel.com>
+ <20230131091731.5892-2-janusz.krzysztofik@linux.intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 8/8] gputop: Basic vendor agnostic GPU top
- tool
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20230131091731.5892-2-janusz.krzysztofik@linux.intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 1/2] i915/perf: Stress opening of new
+ perf streams against existing contexts
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,318 +18,127 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Rob Clark <robdclark@chromium.org>,
- =?UTF-8?q?Christian=20K=C3=B6nig?= <ckoenig.leichtzumerken@gmail.com>,
- =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
- Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+Cc: intel-gfx@lists.freedesktop.org, igt-dev@lists.freedesktop.org,
+ Chris Wilson <chris.p.wilson@linux.intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+Hi,
 
-Rudimentary vendor agnostic example of how lib_igt_drm_clients can be used
-to display a sorted by card and usage list of processes using GPUs.
+On 2023-01-31 at 10:17:30 +0100, Janusz Krzysztofik wrote:
+> From: Chris Wilson <chris.p.wilson@linux.intel.com>
+> 
+> Try opening the perf stream while there is a flurry of activity on the
+> system, both new and old contexts. This will exercise the ability of the
+> driver to modify those contexts to work with perf.
+> 
+> References: https://gitlab.freedesktop.org/drm/intel/-/issues/6333
+> Signed-off-by: Chris Wilson <chris.p.wilson@linux.intel.com>
+> Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+> Cc: Andi Shyti <andi.shyti@linux.intel.com>
+> ---
+>  tests/i915/perf.c | 74 +++++++++++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 74 insertions(+)
+> 
+> diff --git a/tests/i915/perf.c b/tests/i915/perf.c
+> index dd1f1ac399..e33cacc443 100644
+> --- a/tests/i915/perf.c
+> +++ b/tests/i915/perf.c
+> @@ -4885,6 +4885,71 @@ test_whitelisted_registers_userspace_config(void)
+>  	i915_perf_remove_config(drm_fd, config_id);
+>  }
+>  
+> +static void test_open_race(const struct intel_execution_engine2 *e, int timeout)
+> +{
+> +	int *done;
+> +
+> +	done = mmap(0, 4096, PROT_WRITE, MAP_SHARED | MAP_ANON, -1, 0);
+> +	igt_assert(done != MAP_FAILED);
+> +
+> +	igt_fork(child, 1) {
+> +		uint64_t properties[] = {
+> +			DRM_I915_PERF_PROP_SAMPLE_OA, true,
+> +			DRM_I915_PERF_PROP_OA_METRICS_SET, test_set->perf_oa_metrics_set,
+> +			DRM_I915_PERF_PROP_OA_FORMAT, test_set->perf_oa_format,
+> +			DRM_I915_PERF_PROP_OA_EXPONENT, oa_exp_1_millisec,
+> +		};
+> +		struct drm_i915_perf_open_param param = {
+> +			.flags = I915_PERF_FLAG_FD_CLOEXEC,
+> +			.num_properties = sizeof(properties) / 16,
+> +			.properties_ptr = to_user_pointer(properties),
+> +		};
+> +		unsigned long count = 0;
+> +
+> +		do {
+> +			__perf_close(__perf_open(drm_fd, &param, false));
+> +			count++;
+> +		} while (!READ_ONCE(*done));
+> +
+> +		igt_info("Completed %lu cycles\n", count);
+> +	}
+> +
+> +	for (int persistence = 0; persistence <= 1; persistence++) {
+> +		igt_fork(child, sysconf(_SC_NPROCESSORS_ONLN)) {
+> +			int i915 = gem_reopen_driver(drm_fd);
+> +
+> +			do {
+> +				igt_spin_t *spin;
+> +				uint64_t ahnd;
+> +				uint32_t ctx;
+> +
+> +				ctx = gem_context_create_for_engine(i915, e->class, e->instance);
+> +				gem_context_set_persistence(i915, ctx, persistence);
+> +
+> +				spin = __igt_spin_new(i915, ctx, .ahnd = ahnd);
+> +				for (int i = random() % 7; i--; ) {
+> +					if (random() & 1) {
+> +						igt_spin_end(spin);
+> +						gem_sync(i915, spin->handle);
+> +						igt_spin_reset(spin);
+> +					}
+> +					gem_execbuf(i915, &spin->execbuf);
+> +				}
+> +
+> +				gem_context_destroy(i915, ctx);
+> +				igt_spin_free(i915, spin);
+> +				put_ahnd(ahnd);
+> +			} while (!READ_ONCE(*done));
+> +		}
+> +	}
+> +
+> +	sleep(timeout);
+> +	*done = 1;
+> +	igt_waitchildren();
+> +
+> +	munmap(done, 4096);
+> +}
+> +
+>  static unsigned
+>  read_i915_module_ref(void)
+>  {
+> @@ -5259,6 +5324,15 @@ igt_main
+>  	igt_subtest("whitelisted-registers-userspace-config")
+>  		test_whitelisted_registers_userspace_config();
+>  
 
-Borrows a bit of code from intel_gpu_top but for now omits the fancy
-features like interactive functionality, card selection, client
-aggregation, sort modes, JSON output  and pretty engine names. Also no
-support for global GPU or system metrics.
+Please add description to new test.
 
-On the other hand it shows clients from all DRM cards which
-intel_gpu_top does not do.
+Regards,
+Kamil
 
-Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
-Cc: Rob Clark <robdclark@chromium.org>
-Cc: Christian König <ckoenig.leichtzumerken@gmail.com>
-Acked-by: Christian König <christian.koenig@amd.com>
----
- tools/gputop.c    | 260 ++++++++++++++++++++++++++++++++++++++++++++++
- tools/meson.build |   5 +
- 2 files changed, 265 insertions(+)
- create mode 100644 tools/gputop.c
-
-diff --git a/tools/gputop.c b/tools/gputop.c
-new file mode 100644
-index 000000000000..d259cac1ab17
---- /dev/null
-+++ b/tools/gputop.c
-@@ -0,0 +1,260 @@
-+// SPDX-License-Identifier: MIT
-+/*
-+ * Copyright © 2022 Intel Corporation
-+ */
-+
-+#include <assert.h>
-+#include <ctype.h>
-+#include <dirent.h>
-+#include <errno.h>
-+#include <fcntl.h>
-+#include <inttypes.h>
-+#include <limits.h>
-+#include <locale.h>
-+#include <math.h>
-+#include <poll.h>
-+#include <signal.h>
-+#include <stdint.h>
-+#include <stdio.h>
-+#include <stdlib.h>
-+#include <string.h>
-+#include <sys/ioctl.h>
-+#include <sys/stat.h>
-+#include <sys/types.h>
-+#include <unistd.h>
-+#include <termios.h>
-+#include <sys/sysmacros.h>
-+#include <stdbool.h>
-+
-+#include "igt_drm_clients.h"
-+#include "igt_drm_fdinfo.h"
-+
-+static const char *bars[] = { " ", "▏", "▎", "▍", "▌", "▋", "▊", "▉", "█" };
-+
-+static void n_spaces(const unsigned int n)
-+{
-+	unsigned int i;
-+
-+	for (i = 0; i < n; i++)
-+		putchar(' ');
-+}
-+
-+static void print_percentage_bar(double percent, int max_len)
-+{
-+	int bar_len, i, len = max_len - 2;
-+	const int w = 8;
-+
-+	assert(max_len > 0);
-+
-+	bar_len = ceil(w * percent * len / 100.0);
-+	if (bar_len > w * len)
-+		bar_len = w * len;
-+
-+	putchar('|');
-+
-+	for (i = bar_len; i >= w; i -= w)
-+		printf("%s", bars[w]);
-+	if (i)
-+		printf("%s", bars[i]);
-+
-+	len -= (bar_len + (w - 1)) / w;
-+	n_spaces(len);
-+
-+	putchar('|');
-+}
-+
-+static int
-+print_client_header(struct igt_drm_client *c, int lines, int con_w, int con_h,
-+		    int *engine_w)
-+{
-+	const char *pidname = "    PID               NAME ";
-+	int ret, len = strlen(pidname);
-+
-+	if (lines++ >= con_h || len >= con_w)
-+		return lines;
-+	printf("\033[7m");
-+	ret = printf("DRM minor %u", c->drm_minor);
-+	n_spaces(con_w - ret);
-+
-+	if (lines++ >= con_h)
-+		return lines;
-+	printf("\n%s", pidname);
-+
-+	if (c->engines->num_engines) {
-+		unsigned int i;
-+		int width;
-+
-+		*engine_w = width = (con_w - len) / c->engines->num_engines;
-+
-+		for (i = 0; i <= c->engines->max_engine_id; i++) {
-+			const char *name = c->engines->names[i];
-+			int name_len = strlen(name);
-+			int pad = (width - name_len) / 2;
-+			int spaces = width - pad - name_len;
-+
-+			if (!name)
-+				continue;
-+
-+			if (pad < 0 || spaces < 0)
-+				continue;
-+
-+			n_spaces(pad);
-+			printf("%s", name);
-+			n_spaces(spaces);
-+			len += pad + name_len + spaces;
-+		}
-+	}
-+
-+	n_spaces(con_w - len);
-+	printf("\033[0m\n");
-+
-+	return lines;
-+}
-+
-+
-+static bool
-+newheader(const struct igt_drm_client *c, const struct igt_drm_client *pc)
-+{
-+	return !pc || c->drm_minor != pc->drm_minor;
-+}
-+
-+static int
-+print_client(struct igt_drm_client *c, struct igt_drm_client **prevc,
-+	     double t, int lines, int con_w, int con_h,
-+	     unsigned int period_us, int *engine_w)
-+{
-+	unsigned int i;
-+
-+	/* Filter out idle clients. */
-+	if (!c->total_runtime || c->samples < 2)
-+		return lines;
-+
-+	/* Print header when moving to a different DRM card. */
-+	if (newheader(c, *prevc)) {
-+		lines = print_client_header(c, lines, con_w, con_h, engine_w);
-+		if (lines >= con_h)
-+			return lines;
-+	}
-+
-+	*prevc = c;
-+
-+	printf("%8u %17s ", c->pid, c->print_name);
-+	lines++;
-+
-+	for (i = 0; c->samples > 1 && i <= c->engines->max_engine_id; i++) {
-+		double pct;
-+
-+		if (!c->engines->capacity[i])
-+			continue;
-+
-+		pct = (double)c->val[i] / period_us / 1e3 * 100 /
-+		      c->engines->capacity[i];
-+
-+		/*
-+		 * Guard against fluctuations between our scanning period and
-+		 * GPU times as exported by the kernel in fdinfo.
-+		 */
-+		if (pct > 100.0)
-+			pct = 100.0;
-+
-+		print_percentage_bar(pct, *engine_w);
-+	}
-+
-+	putchar('\n');
-+
-+	return lines;
-+}
-+
-+static int
-+__client_id_cmp(const struct igt_drm_client *a,
-+		const struct igt_drm_client *b)
-+{
-+	if (a->id > b->id)
-+		return 1;
-+	else if (a->id < b->id)
-+		return -1;
-+	else
-+		return 0;
-+}
-+
-+static int client_cmp(const void *_a, const void *_b, void *unused)
-+{
-+	const struct igt_drm_client *a = _a;
-+	const struct igt_drm_client *b = _b;
-+	long val_a, val_b;
-+
-+	/* DRM cards into consecutive buckets first. */
-+	val_a = a->drm_minor;
-+	val_b = b->drm_minor;
-+	if (val_a > val_b)
-+		return 1;
-+	else if (val_b > val_a)
-+		return -1;
-+
-+	/*
-+	 * Within buckets sort by last sampling period aggregated runtime, with
-+	 * client id as a tie-breaker.
-+	 */
-+	val_a = a->last_runtime;
-+	val_b = b->last_runtime;
-+	if (val_a == val_b)
-+		return __client_id_cmp(a, b);
-+	else if (val_b > val_a)
-+		return 1;
-+	else
-+		return -1;
-+
-+}
-+
-+int main(int argc, char **argv)
-+{
-+	unsigned int period_us = 2e6;
-+	struct igt_drm_clients *clients = NULL;
-+	int con_w = -1, con_h = -1;
-+
-+	clients = igt_drm_clients_init(NULL);
-+	if (!clients)
-+		exit(1);
-+
-+	igt_drm_clients_scan(clients, NULL, NULL, 0);
-+
-+	for (;;) {
-+		struct igt_drm_client *c, *prevc = NULL;
-+		int i, engine_w = 0, lines = 0;
-+		struct winsize ws;
-+
-+		if (ioctl(0, TIOCGWINSZ, &ws) != -1) {
-+			con_w = ws.ws_col;
-+			con_h = ws.ws_row;
-+			if (con_w == 0 && con_h == 0) {
-+				/* Serial console. */
-+				con_w = 80;
-+				con_h = 24;
-+			}
-+		}
-+
-+		igt_drm_clients_scan(clients, NULL, NULL, 0);
-+		igt_drm_clients_sort(clients, client_cmp);
-+
-+		printf("\033[H\033[J");
-+
-+		igt_for_each_drm_client(clients, c, i) {
-+			assert(c->status != IGT_DRM_CLIENT_PROBE);
-+			if (c->status != IGT_DRM_CLIENT_ALIVE)
-+				break; /* Active clients are first in the array. */
-+
-+			lines = print_client(c, &prevc, (double)period_us / 1e6,
-+					     lines, con_w, con_h, period_us,
-+					     &engine_w);
-+			if (lines >= con_h)
-+				break;
-+		}
-+
-+		if (lines++ < con_h)
-+			printf("\n");
-+
-+		usleep(period_us);
-+	}
-+
-+	return 0;
-+}
-diff --git a/tools/meson.build b/tools/meson.build
-index c6194fd15daa..0a3973dee90d 100644
---- a/tools/meson.build
-+++ b/tools/meson.build
-@@ -65,6 +65,11 @@ if libudev.found()
- 		   install : true)
- endif
- 
-+executable('gputop', 'gputop.c',
-+           install : true,
-+           install_rpath : bindir_rpathdir,
-+           dependencies : [lib_igt_drm_clients,lib_igt_drm_fdinfo,math])
-+
- intel_l3_parity_src = [ 'intel_l3_parity.c', 'intel_l3_udev_listener.c' ]
- executable('intel_l3_parity', sources : intel_l3_parity_src,
- 	   dependencies : tool_deps,
--- 
-2.34.1
+> +	igt_subtest_with_dynamic("open-race") {
+> +		const struct intel_execution_engine2 *e;
+> +
+> +		for_each_physical_engine(drm_fd, e)
+> +			if (e->class == I915_ENGINE_CLASS_RENDER)
+> +				igt_dynamic_f("%s", e->name)
+> +					test_open_race(e, 5);
+> +	}
+> +
+>  	igt_fixture {
+>  		/* leave sysctl options in their default state... */
+>  		write_u64_file("/proc/sys/dev/i915/oa_max_sample_rate", 100000);
+> -- 
+> 2.25.1
+> 
