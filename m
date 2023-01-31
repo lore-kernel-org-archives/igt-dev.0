@@ -1,18 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AF54010E339
- for <igt-dev@lists.freedesktop.org>; Tue, 31 Jan 2023 12:07:09 +0000 (UTC)
-From: Ville Syrjala <ville.syrjala@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Tue, 31 Jan 2023 14:06:46 +0200
-Message-Id: <20230131120646.27434-7-ville.syrjala@linux.intel.com>
-In-Reply-To: <20230131120646.27434-1-ville.syrjala@linux.intel.com>
-References: <20230131120646.27434-1-ville.syrjala@linux.intel.com>
+Content-Type: multipart/alternative;
+ boundary="===============4291151952443317936=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 6/6] tests/kms_async_flips: Test all
- modifiers
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Tvrtko Ursulin" <tvrtko.ursulin@linux.intel.com>
+Date: Tue, 31 Jan 2023 12:14:09 -0000
+Message-ID: <167516724941.5939.3890584461907679895@emeril.freedesktop.org>
+References: <20230131113237.3707217-1-tvrtko.ursulin@linux.intel.com>
+In-Reply-To: <20230131113237.3707217-1-tvrtko.ursulin@linux.intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgVmVuZG9y?=
+ =?utf-8?q?_agnostic_gputop_=28rev5=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,162 +17,203 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Arun R Murthy <arun.r.murthy@intel.com>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Ville Syrjälä <ville.syrjala@linux.intel.com>
+--===============4291151952443317936==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Run the basic async flip test for all modifiers reported
-by the plane (for the XRGB8888 format). The driver may not
-support async flip with all modifiers so we allow this to fail.
+== Series Details ==
 
-TODO: probably shuould add an even more basic subtest that
-      makes sure the driver accepts async flips with a least
-      one format/modifier combo, if it advertises async flip
-      support
+Series: Vendor agnostic gputop (rev5)
+URL   : https://patchwork.freedesktop.org/series/102175/
+State : success
 
-Cc: Arun R Murthy <arun.r.murthy@intel.com>
-Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
----
- tests/kms_async_flips.c | 54 +++++++++++++++++++++++++++++++++--------
- 1 file changed, 44 insertions(+), 10 deletions(-)
+== Summary ==
 
-diff --git a/tests/kms_async_flips.c b/tests/kms_async_flips.c
-index 58740f6ab702..387fcff2f32c 100644
---- a/tests/kms_async_flips.c
-+++ b/tests/kms_async_flips.c
-@@ -53,6 +53,8 @@ typedef struct {
- 	igt_output_t *output;
- 	unsigned long flip_timestamp_us;
- 	double flip_interval;
-+	uint64_t modifier;
-+	igt_plane_t *plane;
- 	igt_pipe_crc_t *pipe_crc;
- 	igt_crc_t ref_crc;
- 	int flip_count;
-@@ -61,6 +63,7 @@ typedef struct {
- 	bool extended;
- 	enum pipe pipe;
- 	bool alternate_sync_async;
-+	bool allow_fail;
- } data_t;
- 
- static void flip_handler(int fd_, unsigned int sequence, unsigned int tv_sec,
-@@ -133,7 +136,7 @@ static void make_fb(data_t *data, struct igt_fb *fb,
- 	rec_width = width / (ARRAY_SIZE(data->bufs) * 2);
- 
- 	igt_create_color_fb(data->drm_fd, width, height, DRM_FORMAT_XRGB8888,
--			    default_modifier(data), 0.0, 0.0, 0.5, fb);
-+			    data->modifier, 0.0, 0.0, 0.5, fb);
- 
- 	cr = igt_get_cairo_ctx(data->drm_fd, fb);
- 	igt_paint_color_rand(cr, rec_width * 2 + rec_width * index, 0, rec_width, height);
-@@ -159,24 +162,26 @@ static void test_init(data_t *data)
- 	data->refresh_rate = mode->vrefresh;
- 
- 	igt_output_set_pipe(data->output, data->pipe);
-+
-+	data->plane = igt_output_get_plane_type(data->output, DRM_PLANE_TYPE_PRIMARY);
- }
- 
- static void test_init_fbs(data_t *data)
- {
- 	int i;
- 	uint32_t width, height;
--	igt_plane_t *plane;
- 	static uint32_t prev_output_id;
-+	static uint64_t prev_modifier;
- 	drmModeModeInfo *mode;
- 
- 	mode = igt_output_get_mode(data->output);
- 	width = mode->hdisplay;
- 	height = mode->vdisplay;
- 
--	plane = igt_output_get_plane_type(data->output, DRM_PLANE_TYPE_PRIMARY);
--
--	if (prev_output_id != data->output->id) {
-+	if (prev_output_id != data->output->id ||
-+	    prev_modifier != data->modifier) {
- 		prev_output_id = data->output->id;
-+		prev_modifier = data->modifier;
- 
- 		if (data->bufs[0].fb_id) {
- 			for (i = 0; i < ARRAY_SIZE(data->bufs); i++)
-@@ -187,8 +192,8 @@ static void test_init_fbs(data_t *data)
- 			make_fb(data, &data->bufs[i], width, height, i);
- 	}
- 
--	igt_plane_set_fb(plane, &data->bufs[0]);
--	igt_plane_set_size(plane, width, height);
-+	igt_plane_set_fb(data->plane, &data->bufs[0]);
-+	igt_plane_set_size(data->plane, width, height);
- 
- 	igt_display_commit2(&data->display, data->display.is_atomic ? COMMIT_ATOMIC : COMMIT_LEGACY);
- }
-@@ -243,8 +248,10 @@ static void test_async_flip(data_t *data)
- 		ret = drmModePageFlip(data->drm_fd, data->crtc_id,
- 				      data->bufs[frame % 4].fb_id,
- 				      flags, data);
--
--		igt_assert(ret == 0);
-+		if (frame == 1 && data->allow_fail)
-+			igt_skip_on(ret == -EINVAL);
-+		else
-+			igt_assert(ret == 0);
- 
- 		wait_flip_event(data);
- 
-@@ -545,6 +552,9 @@ static void run_test(data_t *data, void (*test)(data_t *))
- 	for_each_pipe_with_valid_output(&data->display, data->pipe, data->output) {
- 		test_init(data);
- 
-+		data->allow_fail = false;
-+		data->modifier = default_modifier(data);
-+
- 		igt_dynamic_f("pipe-%s", kmstest_pipe_name(data->pipe)) {
- 			test_init_fbs(data);
- 			test(data);
-@@ -555,6 +565,30 @@ static void run_test(data_t *data, void (*test)(data_t *))
- 	}
- }
- 
-+static void run_test_with_modifiers(data_t *data, void (*test)(data_t *))
-+{
-+	for_each_pipe_with_valid_output(&data->display, data->pipe, data->output) {
-+		test_init(data);
-+
-+		for (int i = 0; i < data->plane->format_mod_count; i++) {
-+			if (data->plane->formats[i] != DRM_FORMAT_XRGB8888)
-+				continue;
-+
-+			data->allow_fail = true;
-+			data->modifier = data->plane->modifiers[i];
-+
-+			igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(data->pipe),
-+				      igt_fb_modifier_name(data->modifier)) {
-+				test_init_fbs(data);
-+				test(data);
-+			}
-+		}
-+
-+		if (!data->extended)
-+			break;
-+	}
-+}
-+
- static int opt_handler(int opt, int opt_index, void *_data)
- {
- 	data_t *data = _data;
-@@ -595,7 +629,7 @@ igt_main_args("e", NULL, help_str, opt_handler, &data)
- 		igt_describe("Wait for page flip events in between successive asynchronous flips");
- 		igt_subtest_with_dynamic("async-flip-with-page-flip-events") {
- 			data.alternate_sync_async = false;
--			run_test(&data, test_async_flip);
-+			run_test_with_modifiers(&data, test_async_flip);
- 		}
- 
- 		igt_describe("Alternate between sync and async flips");
--- 
-2.39.1
+CI Bug Log - changes from CI_DRM_12672 -> IGTPW_8420
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8420/index.html
+
+Participating hosts (26 -> 25)
+------------------------------
+
+  Missing    (1): fi-snb-2520m 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_8420 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions-varying-size:
+    - fi-bsw-n3050:       [PASS][1] -> [FAIL][2] ([i915#6298])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12672/fi-bsw-n3050/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions-varying-size.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8420/fi-bsw-n3050/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions-varying-size.html
+
+  
+#### Possible fixes ####
+
+  * igt@fbdev@write:
+    - fi-blb-e6850:       [SKIP][3] ([fdo#109271]) -> [PASS][4] +4 similar issues
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12672/fi-blb-e6850/igt@fbdev@write.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8420/fi-blb-e6850/igt@fbdev@write.html
+
+  * igt@i915_pm_rpm@basic-rte:
+    - {bat-adlp-6}:       [ABORT][5] ([i915#7977]) -> [PASS][6]
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12672/bat-adlp-6/igt@i915_pm_rpm@basic-rte.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8420/bat-adlp-6/igt@i915_pm_rpm@basic-rte.html
+
+  * igt@i915_selftest@live@hangcheck:
+    - {bat-dg2-8}:        [ABORT][7] -> [PASS][8]
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12672/bat-dg2-8/igt@i915_selftest@live@hangcheck.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8420/bat-dg2-8/igt@i915_selftest@live@hangcheck.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [fdo#109295]: https://bugs.freedesktop.org/show_bug.cgi?id=109295
+  [i915#3291]: https://gitlab.freedesktop.org/drm/intel/issues/3291
+  [i915#3301]: https://gitlab.freedesktop.org/drm/intel/issues/3301
+  [i915#3708]: https://gitlab.freedesktop.org/drm/intel/issues/3708
+  [i915#4613]: https://gitlab.freedesktop.org/drm/intel/issues/4613
+  [i915#4983]: https://gitlab.freedesktop.org/drm/intel/issues/4983
+  [i915#5354]: https://gitlab.freedesktop.org/drm/intel/issues/5354
+  [i915#6298]: https://gitlab.freedesktop.org/drm/intel/issues/6298
+  [i915#6311]: https://gitlab.freedesktop.org/drm/intel/issues/6311
+  [i915#6367]: https://gitlab.freedesktop.org/drm/intel/issues/6367
+  [i915#6621]: https://gitlab.freedesktop.org/drm/intel/issues/6621
+  [i915#6645]: https://gitlab.freedesktop.org/drm/intel/issues/6645
+  [i915#6997]: https://gitlab.freedesktop.org/drm/intel/issues/6997
+  [i915#7359]: https://gitlab.freedesktop.org/drm/intel/issues/7359
+  [i915#7828]: https://gitlab.freedesktop.org/drm/intel/issues/7828
+  [i915#7913]: https://gitlab.freedesktop.org/drm/intel/issues/7913
+  [i915#7977]: https://gitlab.freedesktop.org/drm/intel/issues/7977
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_7143 -> IGTPW_8420
+
+  CI-20190529: 20190529
+  CI_DRM_12672: df5c31e78609626a1278ad79305cd408f403ceac @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_8420: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8420/index.html
+  IGT_7143: c7b12dcc460fc2348e1fa7f4dcb791bb82e29e44 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+
+Testlist changes
+----------------
+
+-igt@perf@barrier-race
+-igt@perf@open-race
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8420/index.html
+
+--===============4291151952443317936==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Vendor agnostic gputop (rev5)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/102175/">https://patchwork.freedesktop.org/series/102175/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8420/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8420/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_12672 -&gt; IGTPW_8420</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8420/index.html</p>
+<h2>Participating hosts (26 -&gt; 25)</h2>
+<p>Missing    (1): fi-snb-2520m </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_8420 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions-varying-size:<ul>
+<li>fi-bsw-n3050:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12672/fi-bsw-n3050/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions-varying-size.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8420/fi-bsw-n3050/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions-varying-size.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6298">i915#6298</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@fbdev@write:</p>
+<ul>
+<li>fi-blb-e6850:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12672/fi-blb-e6850/igt@fbdev@write.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8420/fi-blb-e6850/igt@fbdev@write.html">PASS</a> +4 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_pm_rpm@basic-rte:</p>
+<ul>
+<li>{bat-adlp-6}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12672/bat-adlp-6/igt@i915_pm_rpm@basic-rte.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7977">i915#7977</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8420/bat-adlp-6/igt@i915_pm_rpm@basic-rte.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@hangcheck:</p>
+<ul>
+<li>{bat-dg2-8}:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12672/bat-dg2-8/igt@i915_selftest@live@hangcheck.html">ABORT</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8420/bat-dg2-8/igt@i915_selftest@live@hangcheck.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_7143 -&gt; IGTPW_8420</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_12672: df5c31e78609626a1278ad79305cd408f403ceac @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_8420: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8420/index.html<br />
+  IGT_7143: c7b12dcc460fc2348e1fa7f4dcb791bb82e29e44 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+<h2>Testlist changes</h2>
+<p>-igt@perf@barrier-race<br />
+-igt@perf@open-race</p>
+
+</body>
+</html>
+
+--===============4291151952443317936==--
