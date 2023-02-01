@@ -1,17 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-il1-x12c.google.com (mail-il1-x12c.google.com
- [IPv6:2607:f8b0:4864:20::12c])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D059910E11A
- for <igt-dev@lists.freedesktop.org>; Wed,  1 Feb 2023 18:12:19 +0000 (UTC)
-Received: by mail-il1-x12c.google.com with SMTP id l15so4431172ilj.5
- for <igt-dev@lists.freedesktop.org>; Wed, 01 Feb 2023 10:12:19 -0800 (PST)
-From: Mark Yacoub <markyacoub@chromium.org>
-To: igt-dev@lists.freedesktop.org
-Date: Wed,  1 Feb 2023 13:12:15 -0500
-Message-Id: <20230201181215.30500-1-markyacoub@google.com>
+Content-Type: multipart/alternative;
+ boundary="===============6611115344694459361=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH] Chamelium: Get Chamelium Logs on RPC failure.
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Riana Tauro" <riana.tauro@intel.com>
+Date: Wed, 01 Feb 2023 05:12:56 -0000
+Message-ID: <167522837607.25551.11302912466639823105@emeril.freedesktop.org>
+References: <20230201043903.1847377-1-riana.tauro@intel.com>
+In-Reply-To: <20230201043903.1847377-1-riana.tauro@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
+ =?utf-8?q?i915/perf=5Fpmu=3A_Add_a_basic_perf=5Fpmu_test_=28rev2=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,125 +17,207 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: petri.latvala@intel.com, ihf@google.com, amstan@chromium.org,
- seanpaul@chromium.org, matthewtlam@google.com, markyacoub@google.com,
- khaled.almahallawy@intel.com
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Mark Yacoub <markyacoub@chromium.org>
+--===============6611115344694459361==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-[Why]
-Currently, Chamelium acts like a black box, we can't tell what is going on there when a failure occur. Seeing its logs will allow us to debug better.
+== Series Details ==
 
-[How]
-On chamelium_rpc failure, print out the logs in debug so it wouldn't clutter good tests.
+Series: tests/i915/perf_pmu: Add a basic perf_pmu test (rev2)
+URL   : https://patchwork.freedesktop.org/series/113303/
+State : success
 
-Signed-off-by: Mark Yacoub <markyacoub@chromium.org>
----
- lib/igt_chamelium.c                    | 38 ++++++++++++++++++++++++--
- lib/igt_chamelium.h                    |  1 +
- tests/chamelium/kms_chamelium_helper.c |  5 ++++
- 3 files changed, 41 insertions(+), 3 deletions(-)
+== Summary ==
 
-diff --git a/lib/igt_chamelium.c b/lib/igt_chamelium.c
-index a235f3c8..65531671 100644
---- a/lib/igt_chamelium.c
-+++ b/lib/igt_chamelium.c
-@@ -658,6 +658,8 @@ static xmlrpc_value *chamelium_rpc(struct chamelium *chamelium,
- 	xmlrpc_value *res;
- 	va_list va_args;
- 	int fsm_trials_left = 5;
-+	bool did_fault_occur = false;
-+	char fault_string[1024];
- 
- 	if (strcmp(method_name, "CaptureVideo") == 0
- 	    || strcmp(method_name, "StartCapturingVideo") == 0) {
-@@ -680,9 +682,23 @@ static xmlrpc_value *chamelium_rpc(struct chamelium *chamelium,
- 					 format_str, va_args);
- 		va_end(va_args);
- 	}
--	igt_assert_f(!chamelium->env.fault_occurred,
--		     "Chamelium RPC call[%s] failed: %s\n", method_name,
--		     chamelium->env.fault_string);
-+
-+	did_fault_occur = chamelium->env.fault_occurred;
-+	if (did_fault_occur) {
-+		// Save the fault string before getting the logs which will
-+		// clear the string if it is works.
-+		strncpy(fault_string, chamelium->env.fault_string, 1024);
-+		// To avoid recursive calls for logs, don't call for logs if we
-+		// fail on getting the logs.
-+		if (strcmp(method_name, "GetChameleondLogs") != 0) {
-+			char *logs = chamelium_get_logs(chamelium);
-+			igt_debug("CHAMELIUM LOGS:\n%s\n", logs);
-+			free(logs);
-+		}
-+	}
-+
-+	igt_assert_f(!did_fault_occur, "Chamelium RPC call [%s] failed: %s\n",
-+		     method_name, fault_string);
- 
- 	return res;
- }
-@@ -737,6 +753,22 @@ void chamelium_assert_reachable(struct chamelium *chamelium, int timeout)
- 		     "Couldn't connect to Chamelium for %ds", timeout);
- }
- 
-+char *chamelium_get_logs(struct chamelium *chamelium)
-+{
-+	xmlrpc_value *res;
-+	const char *logs = NULL;
-+
-+	igt_debug(
-+		"Calling GetChameleondLogs - Logs returned are from the last time "
-+		"this was called.\n");
-+
-+	res = chamelium_rpc(chamelium, NULL, "GetChameleondLogs", "(s)", "IGT");
-+	xmlrpc_read_string(&chamelium->env, res, &logs);
-+	xmlrpc_DECREF(res);
-+
-+	return logs;
-+}
-+
- /**
-  * chamelium_plug:
-  * @chamelium: The Chamelium instance to use
-diff --git a/lib/igt_chamelium.h b/lib/igt_chamelium.h
-index d979de4a..e9096519 100644
---- a/lib/igt_chamelium.h
-+++ b/lib/igt_chamelium.h
-@@ -159,6 +159,7 @@ chamelium_reset_state(igt_display_t *display,
- 
- bool chamelium_wait_reachable(struct chamelium *chamelium, int timeout);
- void chamelium_assert_reachable(struct chamelium *chamelium, int timeout);
-+char *chamelium_get_logs(struct chamelium *chamelium);
- void chamelium_plug(struct chamelium *chamelium, struct chamelium_port *port);
- void chamelium_unplug(struct chamelium *chamelium, struct chamelium_port *port);
- bool chamelium_is_plugged(struct chamelium *chamelium,
-diff --git a/tests/chamelium/kms_chamelium_helper.c b/tests/chamelium/kms_chamelium_helper.c
-index 197d29be..f44cbec2 100644
---- a/tests/chamelium/kms_chamelium_helper.c
-+++ b/tests/chamelium/kms_chamelium_helper.c
-@@ -24,6 +24,7 @@
-  *    Lyude Paul <lyude@redhat.com>
-  */
- 
-+#include "igt_chamelium.h"
- #include "igt_edid.h"
- #include "kms_chamelium_helper.h"
- 
-@@ -47,6 +48,10 @@ void chamelium_init_test(chamelium_data_t *data)
- 	/* we need to initalize chamelium after igt_display_require */
- 	data->chamelium = chamelium_init(data->drm_fd, &data->display);
- 	igt_require(data->chamelium);
-+	// Get the logs so we can reset the chamelium logs at this cursor.
-+	// The logs are then retrieved when any call fails so we can debug
-+	// chamelium if needed.
-+	free(chamelium_get_logs(data->chamelium));
- 
- 	data->ports = chamelium_get_ports(data->chamelium, &data->port_count);
- 
--- 
-2.39.1.456.gfc5497dd1b-goog
+CI Bug Log - changes from CI_DRM_12676 -> IGTPW_8423
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8423/index.html
+
+Participating hosts (27 -> 25)
+------------------------------
+
+  Missing    (2): fi-kbl-soraka fi-snb-2520m 
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in IGTPW_8423:
+
+### IGT changes ###
+
+#### Suppressed ####
+
+  The following results come from untrusted machines, tests, or statuses.
+  They do not affect the overall result.
+
+  * igt@i915_pm_rpm@module-reload:
+    - {bat-adln-1}:       [PASS][1] -> [FAIL][2]
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12676/bat-adln-1/igt@i915_pm_rpm@module-reload.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8423/bat-adln-1/igt@i915_pm_rpm@module-reload.html
+
+  * igt@i915_selftest@live@gt_heartbeat:
+    - {bat-adln-1}:       [PASS][3] -> [DMESG-WARN][4] +16 similar issues
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12676/bat-adln-1/igt@i915_selftest@live@gt_heartbeat.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8423/bat-adln-1/igt@i915_selftest@live@gt_heartbeat.html
+
+  
+Known issues
+------------
+
+  Here are the changes found in IGTPW_8423 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions-varying-size:
+    - fi-bsw-n3050:       [PASS][5] -> [FAIL][6] ([i915#6298])
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12676/fi-bsw-n3050/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions-varying-size.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8423/fi-bsw-n3050/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions-varying-size.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_selftest@live@hangcheck:
+    - {bat-dg2-11}:       [ABORT][7] ([i915#7913]) -> [PASS][8]
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12676/bat-dg2-11/igt@i915_selftest@live@hangcheck.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8423/bat-dg2-11/igt@i915_selftest@live@hangcheck.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [i915#4983]: https://gitlab.freedesktop.org/drm/intel/issues/4983
+  [i915#5354]: https://gitlab.freedesktop.org/drm/intel/issues/5354
+  [i915#6298]: https://gitlab.freedesktop.org/drm/intel/issues/6298
+  [i915#7828]: https://gitlab.freedesktop.org/drm/intel/issues/7828
+  [i915#7913]: https://gitlab.freedesktop.org/drm/intel/issues/7913
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_7143 -> IGTPW_8423
+
+  CI-20190529: 20190529
+  CI_DRM_12676: 3775348312c45a69754d1ed47103a2c62ae18485 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_8423: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8423/index.html
+  IGT_7143: c7b12dcc460fc2348e1fa7f4dcb791bb82e29e44 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+
+Testlist changes
+----------------
+
++igt@perf_pmu@pmu-read
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8423/index.html
+
+--===============6611115344694459361==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/i915/perf_pmu: Add a basic perf_pmu test (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/113303/">https://patchwork.freedesktop.org/series/113303/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8423/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8423/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_12676 -&gt; IGTPW_8423</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8423/index.html</p>
+<h2>Participating hosts (27 -&gt; 25)</h2>
+<p>Missing    (2): fi-kbl-soraka fi-snb-2520m </p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in IGTPW_8423:</p>
+<h3>IGT changes</h3>
+<h4>Suppressed</h4>
+<p>The following results come from untrusted machines, tests, or statuses.<br />
+  They do not affect the overall result.</p>
+<ul>
+<li>
+<p>igt@i915_pm_rpm@module-reload:</p>
+<ul>
+<li>{bat-adln-1}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12676/bat-adln-1/igt@i915_pm_rpm@module-reload.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8423/bat-adln-1/igt@i915_pm_rpm@module-reload.html">FAIL</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@gt_heartbeat:</p>
+<ul>
+<li>{bat-adln-1}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12676/bat-adln-1/igt@i915_selftest@live@gt_heartbeat.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8423/bat-adln-1/igt@i915_selftest@live@gt_heartbeat.html">DMESG-WARN</a> +16 similar issues</li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_8423 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions-varying-size:<ul>
+<li>fi-bsw-n3050:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12676/fi-bsw-n3050/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions-varying-size.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8423/fi-bsw-n3050/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions-varying-size.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6298">i915#6298</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@i915_selftest@live@hangcheck:<ul>
+<li>{bat-dg2-11}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12676/bat-dg2-11/igt@i915_selftest@live@hangcheck.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7913">i915#7913</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8423/bat-dg2-11/igt@i915_selftest@live@hangcheck.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_7143 -&gt; IGTPW_8423</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_12676: 3775348312c45a69754d1ed47103a2c62ae18485 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_8423: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8423/index.html<br />
+  IGT_7143: c7b12dcc460fc2348e1fa7f4dcb791bb82e29e44 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+<h2>Testlist changes</h2>
+<p>+igt@perf_pmu@pmu-read</p>
+
+</body>
+</html>
+
+--===============6611115344694459361==--
