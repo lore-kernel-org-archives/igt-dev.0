@@ -1,15 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5722E10E10F
- for <igt-dev@lists.freedesktop.org>; Wed,  1 Feb 2023 04:40:57 +0000 (UTC)
-From: Riana Tauro <riana.tauro@intel.com>
+Received: from mail-il1-x12c.google.com (mail-il1-x12c.google.com
+ [IPv6:2607:f8b0:4864:20::12c])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D059910E11A
+ for <igt-dev@lists.freedesktop.org>; Wed,  1 Feb 2023 18:12:19 +0000 (UTC)
+Received: by mail-il1-x12c.google.com with SMTP id l15so4431172ilj.5
+ for <igt-dev@lists.freedesktop.org>; Wed, 01 Feb 2023 10:12:19 -0800 (PST)
+From: Mark Yacoub <markyacoub@chromium.org>
 To: igt-dev@lists.freedesktop.org
-Date: Wed,  1 Feb 2023 10:09:03 +0530
-Message-Id: <20230201043903.1847377-1-riana.tauro@intel.com>
+Date: Wed,  1 Feb 2023 13:12:15 -0500
+Message-Id: <20230201181215.30500-1-markyacoub@google.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v2] tests/i915/perf_pmu: Add a basic
- perf_pmu test
+Subject: [igt-dev] [PATCH] Chamelium: Get Chamelium Logs on RPC failure.
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,113 +19,125 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: tvrtko.ursulin@intel.com
+Cc: petri.latvala@intel.com, ihf@google.com, amstan@chromium.org,
+ seanpaul@chromium.org, matthewtlam@google.com, markyacoub@google.com,
+ khaled.almahallawy@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-add a test that verifies the i915 pmu directory and
-reads all the events
+From: Mark Yacoub <markyacoub@chromium.org>
 
-v2 : use igt_assert_eq instead of igt_assert
-     check errno after loop (Umesh)
+[Why]
+Currently, Chamelium acts like a black box, we can't tell what is going on there when a failure occur. Seeing its logs will allow us to debug better.
 
-Signed-off-by: Riana Tauro <riana.tauro@intel.com>
+[How]
+On chamelium_rpc failure, print out the logs in debug so it wouldn't clutter good tests.
+
+Signed-off-by: Mark Yacoub <markyacoub@chromium.org>
 ---
- lib/igt_perf.c        | 11 +++++++++++
- lib/igt_perf.h        |  1 +
- tests/i915/perf_pmu.c | 32 ++++++++++++++++++++++++++++++++
- 3 files changed, 44 insertions(+)
+ lib/igt_chamelium.c                    | 38 ++++++++++++++++++++++++--
+ lib/igt_chamelium.h                    |  1 +
+ tests/chamelium/kms_chamelium_helper.c |  5 ++++
+ 3 files changed, 41 insertions(+), 3 deletions(-)
 
-diff --git a/lib/igt_perf.c b/lib/igt_perf.c
-index 11c91c5f..ffe078ad 100644
---- a/lib/igt_perf.c
-+++ b/lib/igt_perf.c
-@@ -1,5 +1,6 @@
- #include <errno.h>
- #include <fcntl.h>
-+#include <limits.h>
- #include <stdint.h>
- #include <stdlib.h>
- #include <string.h>
-@@ -98,6 +99,16 @@ uint64_t igt_perf_type_id(const char *device)
- 	return strtoull(buf, NULL, 0);
- }
+diff --git a/lib/igt_chamelium.c b/lib/igt_chamelium.c
+index a235f3c8..65531671 100644
+--- a/lib/igt_chamelium.c
++++ b/lib/igt_chamelium.c
+@@ -658,6 +658,8 @@ static xmlrpc_value *chamelium_rpc(struct chamelium *chamelium,
+ 	xmlrpc_value *res;
+ 	va_list va_args;
+ 	int fsm_trials_left = 5;
++	bool did_fault_occur = false;
++	char fault_string[1024];
  
-+int igt_perf_events_dir(int i915)
-+{
-+	char buf[80];
-+	char path[PATH_MAX];
+ 	if (strcmp(method_name, "CaptureVideo") == 0
+ 	    || strcmp(method_name, "StartCapturingVideo") == 0) {
+@@ -680,9 +682,23 @@ static xmlrpc_value *chamelium_rpc(struct chamelium *chamelium,
+ 					 format_str, va_args);
+ 		va_end(va_args);
+ 	}
+-	igt_assert_f(!chamelium->env.fault_occurred,
+-		     "Chamelium RPC call[%s] failed: %s\n", method_name,
+-		     chamelium->env.fault_string);
 +
-+	i915_perf_device(i915, buf, sizeof(buf));
-+	snprintf(path, sizeof(path), "/sys/bus/event_source/devices/%s/events", buf);
-+	return open(path, O_RDONLY);
-+}
-+
- static int
- _perf_open(uint64_t type, uint64_t config, int group, uint64_t format)
- {
-diff --git a/lib/igt_perf.h b/lib/igt_perf.h
-index 672bfea6..4d86e31a 100644
---- a/lib/igt_perf.h
-+++ b/lib/igt_perf.h
-@@ -54,6 +54,7 @@ perf_event_open(struct perf_event_attr *attr,
- }
- 
- uint64_t igt_perf_type_id(const char *device);
-+int igt_perf_events_dir(int i915);
- int igt_perf_open(uint64_t type, uint64_t config);
- int igt_perf_open_group(uint64_t type, uint64_t config, int group);
- 
-diff --git a/tests/i915/perf_pmu.c b/tests/i915/perf_pmu.c
-index f363db2b..c1779fc9 100644
---- a/tests/i915/perf_pmu.c
-+++ b/tests/i915/perf_pmu.c
-@@ -2132,6 +2132,34 @@ static void test_unload(unsigned int num_engines)
- 	igt_assert_eq(__igt_i915_driver_unload(NULL), 0);
- }
- 
-+static void pmu_read(int i915)
-+{
-+	char val[128];
-+	int pmu_fd;
-+	struct dirent *de;
-+	DIR *dir;
-+
-+	pmu_fd = igt_perf_events_dir(i915);
-+	igt_require(pmu_fd >= 0);
-+
-+	dir = fdopendir(dup(pmu_fd));
-+	igt_assert(dir);
-+	rewinddir(dir);
-+
-+	errno = 0;
-+	while ((de = readdir(dir))) {
-+		if (de->d_type != DT_REG)
-+			continue;
-+
-+		igt_assert_eq(igt_sysfs_scanf(pmu_fd, de->d_name, "%127s", val), 1);
-+		igt_debug("'%s': %s\n", de->d_name, val);
++	did_fault_occur = chamelium->env.fault_occurred;
++	if (did_fault_occur) {
++		// Save the fault string before getting the logs which will
++		// clear the string if it is works.
++		strncpy(fault_string, chamelium->env.fault_string, 1024);
++		// To avoid recursive calls for logs, don't call for logs if we
++		// fail on getting the logs.
++		if (strcmp(method_name, "GetChameleondLogs") != 0) {
++			char *logs = chamelium_get_logs(chamelium);
++			igt_debug("CHAMELIUM LOGS:\n%s\n", logs);
++			free(logs);
++		}
 +	}
 +
-+	igt_assert_eq(errno, 0);
-+	closedir(dir);
-+	close(pmu_fd);
++	igt_assert_f(!did_fault_occur, "Chamelium RPC call [%s] failed: %s\n",
++		     method_name, fault_string);
+ 
+ 	return res;
+ }
+@@ -737,6 +753,22 @@ void chamelium_assert_reachable(struct chamelium *chamelium, int timeout)
+ 		     "Couldn't connect to Chamelium for %ds", timeout);
+ }
+ 
++char *chamelium_get_logs(struct chamelium *chamelium)
++{
++	xmlrpc_value *res;
++	const char *logs = NULL;
++
++	igt_debug(
++		"Calling GetChameleondLogs - Logs returned are from the last time "
++		"this was called.\n");
++
++	res = chamelium_rpc(chamelium, NULL, "GetChameleondLogs", "(s)", "IGT");
++	xmlrpc_read_string(&chamelium->env, res, &logs);
++	xmlrpc_DECREF(res);
++
++	return logs;
 +}
 +
- #define test_each_engine(T, i915, ctx, e) \
- 	igt_subtest_with_dynamic(T) for_each_ctx_engine(i915, ctx, e) \
- 		igt_dynamic_f("%s", e->name)
-@@ -2167,6 +2195,10 @@ igt_main
- 		igt_require(num_engines);
- 	}
+ /**
+  * chamelium_plug:
+  * @chamelium: The Chamelium instance to use
+diff --git a/lib/igt_chamelium.h b/lib/igt_chamelium.h
+index d979de4a..e9096519 100644
+--- a/lib/igt_chamelium.h
++++ b/lib/igt_chamelium.h
+@@ -159,6 +159,7 @@ chamelium_reset_state(igt_display_t *display,
  
-+	igt_describe("Verify i915 pmu dir exists and read all events");
-+	igt_subtest("pmu-read")
-+		pmu_read(fd);
-+
- 	/**
- 	 * Test invalid access via perf API is rejected.
- 	 */
+ bool chamelium_wait_reachable(struct chamelium *chamelium, int timeout);
+ void chamelium_assert_reachable(struct chamelium *chamelium, int timeout);
++char *chamelium_get_logs(struct chamelium *chamelium);
+ void chamelium_plug(struct chamelium *chamelium, struct chamelium_port *port);
+ void chamelium_unplug(struct chamelium *chamelium, struct chamelium_port *port);
+ bool chamelium_is_plugged(struct chamelium *chamelium,
+diff --git a/tests/chamelium/kms_chamelium_helper.c b/tests/chamelium/kms_chamelium_helper.c
+index 197d29be..f44cbec2 100644
+--- a/tests/chamelium/kms_chamelium_helper.c
++++ b/tests/chamelium/kms_chamelium_helper.c
+@@ -24,6 +24,7 @@
+  *    Lyude Paul <lyude@redhat.com>
+  */
+ 
++#include "igt_chamelium.h"
+ #include "igt_edid.h"
+ #include "kms_chamelium_helper.h"
+ 
+@@ -47,6 +48,10 @@ void chamelium_init_test(chamelium_data_t *data)
+ 	/* we need to initalize chamelium after igt_display_require */
+ 	data->chamelium = chamelium_init(data->drm_fd, &data->display);
+ 	igt_require(data->chamelium);
++	// Get the logs so we can reset the chamelium logs at this cursor.
++	// The logs are then retrieved when any call fails so we can debug
++	// chamelium if needed.
++	free(chamelium_get_logs(data->chamelium));
+ 
+ 	data->ports = chamelium_get_ports(data->chamelium, &data->port_count);
+ 
 -- 
-2.39.0
+2.39.1.456.gfc5497dd1b-goog
