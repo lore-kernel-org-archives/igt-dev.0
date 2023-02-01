@@ -1,21 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 80B0310E3E2
- for <igt-dev@lists.freedesktop.org>; Wed,  1 Feb 2023 10:27:51 +0000 (UTC)
-Message-ID: <b738cafd-7d2e-487c-c20a-4ddaf5bf0f24@intel.com>
-Date: Wed, 1 Feb 2023 15:57:46 +0530
+Content-Type: multipart/alternative;
+ boundary="===============6753544162137075843=="
 MIME-Version: 1.0
-To: =?UTF-8?Q?Jouni_H=c3=b6gander?= <jouni.hogander@intel.com>,
- igt-dev@lists.freedesktop.org
-References: <20230125090742.1599761-1-jouni.hogander@intel.com>
- <20230125090742.1599761-3-jouni.hogander@intel.com>
-Content-Language: en-US
-From: Swati Sharma <swati2.sharma@intel.com>
-In-Reply-To: <20230125090742.1599761-3-jouni.hogander@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Subject: Re: [igt-dev] [PATCH i-g-t 2/2] kms_psr2_sf: Add dynamic subtests
- which use DSC feature
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Mohammed Thasleem" <mohammed.thasleem@intel.com>
+Date: Wed, 01 Feb 2023 10:44:28 -0000
+Message-ID: <167524826836.25551.1881599189853984366@emeril.freedesktop.org>
+References: <20230117080507.127924-1-mohammed.thasleem@intel.com>
+In-Reply-To: <20230117080507.127924-1-mohammed.thasleem@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
+ =?utf-8?q?kms=5Flease=3A_close_mcl=2Efd_when_drmModeSetCrtc_fails_=28rev4?=
+ =?utf-8?q?=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,550 +18,150 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Jouni,
+--===============6753544162137075843==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Changes look good. Few things to mention here:
-1. DSC is supported from gen11+ platforms (though h/w supports from 
-gen10 but our driver has support from gen11+)
-Should we add that restriction?
-2. Are we doing manual inspection to check if pattern has no corruption?
-3. We aren't using igt_is_dsc_enabled() to verify if DSC got enabled or not.
+== Series Details ==
 
-On 25-Jan-23 2:37 PM, Jouni Högander wrote:
-> Add mechanism to add coexisting features with selective fetch
-> and add dynamic subtests for DSC as coexisting feature.
-> 
-> Cc: Jeevan B <jeevan.b@intel.com>
-> Cc: Swati Sharma <swati2.sharma@intel.com>
-> Signed-off-by: Jouni Högander <jouni.hogander@intel.com>
-> ---
->   tests/i915/kms_psr2_sf.c | 331 ++++++++++++++++++++++++++-------------
->   tests/meson.build        |   9 +-
->   2 files changed, 232 insertions(+), 108 deletions(-)
-> 
-> diff --git a/tests/i915/kms_psr2_sf.c b/tests/i915/kms_psr2_sf.c
-> index 078884ac..cb965989 100644
-> --- a/tests/i915/kms_psr2_sf.c
-> +++ b/tests/i915/kms_psr2_sf.c
-> @@ -25,6 +25,7 @@
->   #include "igt.h"
->   #include "igt_sysfs.h"
->   #include "igt_psr.h"
-> +#include "kms_dsc_helper.h"
->   #include <errno.h>
->   #include <stdbool.h>
->   #include <stdio.h>
-> @@ -86,6 +87,13 @@ typedef struct {
->   	uint32_t screen_changes;
->   	int cur_x, cur_y;
->   	enum pipe pipe;
-> +	bool force_dsc_en_orig;
-> +	int force_dsc_restore_fd;
-> +	enum {
-> +		FEATURE_NONE  = 0,
-> +		FEATURE_DSC   = 1,
-> +		FEATURE_COUNT = 2,
-> +	} coexist_feature;
->   } data_t;
->   
->   static const char *op_str(enum operations op)
-> @@ -104,6 +112,18 @@ static const char *op_str(enum operations op)
->   	return name[op];
->   }
->   
-> +static const char *coexist_feature_str(int coexist_feature)
-> +{
-> +	switch (coexist_feature) {
-> +	case FEATURE_NONE:
-> +		return "";
-> +	case FEATURE_DSC:
-> +		return "-dsc";
-> +	default:
-> +		igt_assert(false);
-> +	}
-> +}
-> +
->   static void display_init(data_t *data)
->   {
->   	igt_display_require(&data->display, data->drm_fd);
-> @@ -224,9 +244,17 @@ static void prepare(data_t *data)
->   	igt_plane_t *primary, *sprite = NULL, *cursor = NULL;
->   	int fb_w, fb_h, x, y, view_w, view_h;
->   
-> -	igt_output_set_pipe(output, data->pipe);
->   	data->mode = igt_output_get_mode(output);
->   
-> +	if (data->coexist_feature & FEATURE_DSC) {
-> +		save_force_dsc_en(data->drm_fd, output);
-> +		force_dsc_enable(data->drm_fd, output);
-> +		igt_output_set_pipe(output, PIPE_NONE);
-> +		igt_display_commit2(&data->display, COMMIT_ATOMIC);
-> +	}
-> +
-> +	igt_output_set_pipe(output, data->pipe);
-> +
->   	if (data->big_fb_test) {
->   		fb_w = data->big_fb_width;
->   		fb_h = data->big_fb_height;
-> @@ -816,6 +844,11 @@ static void cleanup(data_t *data)
->   		igt_plane_set_fb(sprite, NULL);
->   	}
->   
-> +	if (data->coexist_feature & FEATURE_DSC) {
-> +		restore_force_dsc_en();
-> +		igt_output_set_pipe(output, PIPE_NONE);
-> +	}
-> +
->   	igt_display_commit2(&data->display, COMMIT_ATOMIC);
->   
->   	igt_remove_fb(data->drm_fd, &data->fb_primary);
-> @@ -839,9 +872,10 @@ igt_main
->   {
->   	data_t data = {};
->   	igt_output_t *outputs[IGT_MAX_PIPES * IGT_MAX_PIPES];
-> -	int i, j;
-> +	int i, j, k;
->   	int pipes[IGT_MAX_PIPES * IGT_MAX_PIPES];
->   	int n_pipes = 0;
-> +	int coexist_features[IGT_MAX_PIPES * IGT_MAX_PIPES];
->   
->   	igt_fixture {
->   		drmModeResPtr res;
-> @@ -877,9 +911,14 @@ igt_main
->   			      "PSR2 selective fetch not enabled\n");
->   
->   		for_each_pipe_with_valid_output(&data.display, data.pipe, data.output) {
-> +			coexist_features[n_pipes] = 0;
->   			if (check_psr2_support(&data)) {
->   				pipes[n_pipes] = data.pipe;
->   				outputs[n_pipes] = data.output;
-> +
-> +				if (check_dsc_on_connector(data.drm_fd, data.output))
-> +					coexist_features[n_pipes] |= FEATURE_DSC;
-> +
->   				n_pipes++;
->   			}
->   		}
-> @@ -889,16 +928,22 @@ igt_main
->   	igt_describe("Test that selective fetch works on primary plane");
->   	igt_subtest_with_dynamic_f("primary-%s-sf-dmg-area", op_str(data.op)) {
->   		for (i = 0; i < n_pipes; i++) {
-> -			igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipes[i]),
-> -					igt_output_name(outputs[i])) {
-> -				data.pipe = pipes[i];
-> -				data.output = outputs[i];
-> -				for (j = 1; j <= MAX_DAMAGE_AREAS; j++) {
-> -					data.damage_area_count = j;
-> +			for (j = FEATURE_NONE; j < FEATURE_COUNT; j++) {
-> +				if (j != FEATURE_NONE && !(coexist_features[i] & j))
-> +					continue;
-> +				igt_dynamic_f("pipe-%s-%s%s", kmstest_pipe_name(pipes[i]),
-> +					      igt_output_name(outputs[i]),
-> +					      coexist_feature_str(j)) {
-> +					data.pipe = pipes[i];
-> +					data.output = outputs[i];
->   					data.test_plane_id = DRM_PLANE_TYPE_PRIMARY;
-> -					prepare(&data);
-> -					run(&data);
-> -					cleanup(&data);
-> +					data.coexist_feature = j;
-> +					for (k = 1; k <= MAX_DAMAGE_AREAS; k++) {
-> +						data.damage_area_count = k;
-> +						prepare(&data);
-> +						run(&data);
-> +						cleanup(&data);
-> +					}
->   				}
->   			}
->   		}
-> @@ -909,16 +954,22 @@ igt_main
->   	igt_describe("Test that selective fetch works on primary plane with big fb");
->   	igt_subtest_with_dynamic_f("primary-%s-sf-dmg-area-big-fb", op_str(data.op)) {
->   		for (i = 0; i < n_pipes; i++) {
-> -			igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipes[i]),
-> -					igt_output_name(outputs[i])) {
-> -				data.pipe = pipes[i];
-> -				data.output = outputs[i];
-> -				for (j = 1; j <= MAX_DAMAGE_AREAS; j++) {
-> -					data.damage_area_count = j;
-> +			for (j = FEATURE_NONE; j < FEATURE_COUNT; j++) {
-> +				if (j != FEATURE_NONE && !(coexist_features[i] & j))
-> +					continue;
-> +				igt_dynamic_f("pipe-%s-%s%s", kmstest_pipe_name(pipes[i]),
-> +					      igt_output_name(outputs[i]),
-> +					      coexist_feature_str(j)) {
-> +					data.pipe = pipes[i];
-> +					data.output = outputs[i];
->   					data.test_plane_id = DRM_PLANE_TYPE_PRIMARY;
-> -					prepare(&data);
-> -					run(&data);
-> -					cleanup(&data);
-> +					data.coexist_feature = j;
-> +					for (k = 1; k <= MAX_DAMAGE_AREAS; k++) {
-> +						data.damage_area_count = k;
-> +						prepare(&data);
-> +						run(&data);
-> +						cleanup(&data);
-> +					}
->   				}
->   			}
->   		}
-> @@ -929,16 +980,22 @@ igt_main
->   	igt_describe("Test that selective fetch works on overlay plane");
->   	igt_subtest_with_dynamic_f("overlay-%s-sf-dmg-area", op_str(data.op)) {
->   		for (i = 0; i < n_pipes; i++) {
-> -			igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipes[i]),
-> -					igt_output_name(outputs[i])) {
-> -				data.pipe = pipes[i];
-> -				data.output = outputs[i];
-> -				for (j = 1; j <= MAX_DAMAGE_AREAS; j++) {
-> -					data.damage_area_count = j;
-> +			for (j = FEATURE_NONE; j < FEATURE_COUNT; j++) {
-> +				if (j != FEATURE_NONE && !(coexist_features[i] & j))
-> +					continue;
-> +				igt_dynamic_f("pipe-%s-%s%s", kmstest_pipe_name(pipes[i]),
-> +					      igt_output_name(outputs[i]),
-> +					      coexist_feature_str(j)) {
-> +					data.pipe = pipes[i];
-> +					data.output = outputs[i];
->   					data.test_plane_id = DRM_PLANE_TYPE_OVERLAY;
-> -					prepare(&data);
-> -					run(&data);
-> -					cleanup(&data);
-> +					data.coexist_feature = j;
-> +					for (k = 1; k <= MAX_DAMAGE_AREAS; k++) {
-> +						data.damage_area_count = k;
-> +						prepare(&data);
-> +						run(&data);
-> +						cleanup(&data);
-> +					}
->   				}
->   			}
->   		}
-> @@ -949,14 +1006,20 @@ igt_main
->   	igt_describe("Test that selective fetch works on cursor plane");
->   	igt_subtest_with_dynamic_f("cursor-%s-sf", op_str(data.op)) {
->   		for (i = 0; i < n_pipes; i++) {
-> -			igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipes[i]),
-> -					igt_output_name(outputs[i])) {
-> -				data.pipe = pipes[i];
-> -				data.output = outputs[i];
-> -				data.test_plane_id = DRM_PLANE_TYPE_CURSOR;
-> -				prepare(&data);
-> -				run(&data);
-> -				cleanup(&data);
-> +			for (j = FEATURE_NONE; j < FEATURE_COUNT; j++) {
-> +				if (j != FEATURE_NONE && !(coexist_features[i] & j))
-> +					continue;
-> +				igt_dynamic_f("pipe-%s-%s%s", kmstest_pipe_name(pipes[i]),
-> +					      igt_output_name(outputs[i]),
-> +					      coexist_feature_str(j)) {
-> +					data.pipe = pipes[i];
-> +					data.output = outputs[i];
-> +					data.test_plane_id = DRM_PLANE_TYPE_CURSOR;
-> +					data.coexist_feature = j;
-> +					prepare(&data);
-> +					run(&data);
-> +					cleanup(&data);
-> +				}
->   			}
->   		}
->   	}
-> @@ -965,14 +1028,20 @@ igt_main
->   	igt_describe("Test that selective fetch works on moving cursor plane (no update)");
->   	igt_subtest_with_dynamic_f("cursor-%s-sf", op_str(data.op)) {
->   		for (i = 0; i < n_pipes; i++) {
-> -			igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipes[i]),
-> -					igt_output_name(outputs[i])) {
-> -				data.pipe = pipes[i];
-> -				data.output = outputs[i];
-> -				data.test_plane_id = DRM_PLANE_TYPE_CURSOR;
-> -				prepare(&data);
-> -				run(&data);
-> -				cleanup(&data);
-> +			for (j = FEATURE_NONE; j < FEATURE_COUNT; j++) {
-> +				if (j != FEATURE_NONE && !(coexist_features[i] & j))
-> +					continue;
-> +				igt_dynamic_f("pipe-%s-%s%s", kmstest_pipe_name(pipes[i]),
-> +					      igt_output_name(outputs[i]),
-> +					      coexist_feature_str(j)) {
-> +					data.pipe = pipes[i];
-> +					data.output = outputs[i];
-> +					data.test_plane_id = DRM_PLANE_TYPE_CURSOR;
-> +					data.coexist_feature = j;
-> +					prepare(&data);
-> +					run(&data);
-> +					cleanup(&data);
-> +				}
->   			}
->   		}
->   	}
-> @@ -981,14 +1050,20 @@ igt_main
->   	igt_describe("Test that selective fetch works on moving cursor plane exceeding partially visible area (no update)");
->   	igt_subtest_with_dynamic_f("cursor-%s-sf", op_str(data.op)) {
->   		for (i = 0; i < n_pipes; i++) {
-> -			igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipes[i]),
-> -					igt_output_name(outputs[i])) {
-> -				data.pipe = pipes[i];
-> -				data.output = outputs[i];
-> -				data.test_plane_id = DRM_PLANE_TYPE_CURSOR;
-> -				prepare(&data);
-> -				run(&data);
-> -				cleanup(&data);
-> +			for (j = FEATURE_NONE; j < FEATURE_COUNT; j++) {
-> +				if (j != FEATURE_NONE && !(coexist_features[i] & j))
-> +					continue;
-> +				igt_dynamic_f("pipe-%s-%s%s", kmstest_pipe_name(pipes[i]),
-> +					      igt_output_name(outputs[i]),
-> +					      coexist_feature_str(j)) {
-> +					data.pipe = pipes[i];
-> +					data.output = outputs[i];
-> +					data.test_plane_id = DRM_PLANE_TYPE_CURSOR;
-> +					data.coexist_feature = j;
-> +					prepare(&data);
-> +					run(&data);
-> +					cleanup(&data);
-> +				}
->   			}
->   		}
->   	}
-> @@ -997,14 +1072,20 @@ igt_main
->   	igt_describe("Test that selective fetch works on moving cursor plane exceeding fully visible area (no update)");
->   	igt_subtest_with_dynamic_f("cursor-%s-sf", op_str(data.op)) {
->   		for (i = 0; i < n_pipes; i++) {
-> -			igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipes[i]),
-> -					igt_output_name(outputs[i])) {
-> -				data.pipe = pipes[i];
-> -				data.output = outputs[i];
-> -				data.test_plane_id = DRM_PLANE_TYPE_CURSOR;
-> -				prepare(&data);
-> -				run(&data);
-> -				cleanup(&data);
-> +			for (j = FEATURE_NONE; j < FEATURE_COUNT; j++) {
-> +				if (j != FEATURE_NONE && !(coexist_features[i] & j))
-> +					continue;
-> +				igt_dynamic_f("pipe-%s-%s%s", kmstest_pipe_name(pipes[i]),
-> +					      igt_output_name(outputs[i]),
-> +					      coexist_feature_str(j)) {
-> +					data.pipe = pipes[i];
-> +					data.output = outputs[i];
-> +					data.test_plane_id = DRM_PLANE_TYPE_CURSOR;
-> +					data.coexist_feature = j;
-> +					prepare(&data);
-> +					run(&data);
-> +					cleanup(&data);
-> +				}
->   			}
->   		}
->   	}
-> @@ -1015,16 +1096,22 @@ igt_main
->   	igt_describe("Test that selective fetch works on moving overlay plane");
->   	igt_subtest_with_dynamic_f("%s-sf-dmg-area", op_str(data.op)) {
->   		for (i = 0; i < n_pipes; i++) {
-> -			igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipes[i]),
-> -					igt_output_name(outputs[i])) {
-> -				data.pipe = pipes[i];
-> -				data.output = outputs[i];
-> -				for (j = POS_TOP_LEFT; j <= POS_BOTTOM_RIGHT ; j++) {
-> -					data.pos = j;
-> +			for (j = FEATURE_NONE; j < FEATURE_COUNT; j++) {
-> +				if (j != FEATURE_NONE && !(coexist_features[i] & j))
-> +					continue;
-> +				igt_dynamic_f("pipe-%s-%s%s", kmstest_pipe_name(pipes[i]),
-> +					      igt_output_name(outputs[i]),
-> +					      coexist_feature_str(j)) {
-> +					data.pipe = pipes[i];
-> +					data.output = outputs[i];
->   					data.test_plane_id = DRM_PLANE_TYPE_OVERLAY;
-> -					prepare(&data);
-> -					run(&data);
-> -					cleanup(&data);
-> +					data.coexist_feature = j;
-> +					for (k = POS_TOP_LEFT; k <= POS_BOTTOM_RIGHT ; k++) {
-> +						data.pos = k;
-> +						prepare(&data);
-> +						run(&data);
-> +						cleanup(&data);
-> +					}
->   				}
->   			}
->   		}
-> @@ -1034,14 +1121,20 @@ igt_main
->   	igt_describe("Test that selective fetch works on moving overlay plane (no update)");
->   	igt_subtest_with_dynamic_f("overlay-%s-sf", op_str(data.op)) {
->   		for (i = 0; i < n_pipes; i++) {
-> -			igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipes[i]),
-> -					igt_output_name(outputs[i])) {
-> +			for (j = FEATURE_NONE; j < FEATURE_COUNT; j++) {
-> +				if (j != FEATURE_NONE && !(coexist_features[i] & j))
-> +					continue;
-> +				igt_dynamic_f("pipe-%s-%s%s", kmstest_pipe_name(pipes[i]),
-> +					      igt_output_name(outputs[i]),
-> +					      coexist_feature_str(j)) {
->   				data.pipe = pipes[i];
->   				data.output = outputs[i];
->   				data.test_plane_id = DRM_PLANE_TYPE_OVERLAY;
-> +				data.coexist_feature = j;
->   				prepare(&data);
->   				run(&data);
->   				cleanup(&data);
-> +				}
->   			}
->   		}
->   	}
-> @@ -1050,14 +1143,20 @@ igt_main
->   	igt_describe("Test that selective fetch works on moving overlay plane partially exceeding visible area (no update)");
->   	igt_subtest_with_dynamic_f("overlay-%s-sf", op_str(data.op)) {
->   		for (i = 0; i < n_pipes; i++) {
-> -			igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipes[i]),
-> -					igt_output_name(outputs[i])) {
-> -				data.pipe = pipes[i];
-> -				data.output = outputs[i];
-> -				data.test_plane_id = DRM_PLANE_TYPE_OVERLAY;
-> -				prepare(&data);
-> -				run(&data);
-> -				cleanup(&data);
-> +			for (j = FEATURE_NONE; j < FEATURE_COUNT; j++) {
-> +				if (j != FEATURE_NONE && !(coexist_features[i] & j))
-> +					continue;
-> +				igt_dynamic_f("pipe-%s-%s%s", kmstest_pipe_name(pipes[i]),
-> +					      igt_output_name(outputs[i]),
-> +					      coexist_feature_str(j)) {
-> +					data.pipe = pipes[i];
-> +					data.output = outputs[i];
-> +					data.test_plane_id = DRM_PLANE_TYPE_OVERLAY;
-> +					data.coexist_feature = j;
-> +					prepare(&data);
-> +					run(&data);
-> +					cleanup(&data);
-> +				}
->   			}
->   		}
->   	}
-> @@ -1066,14 +1165,20 @@ igt_main
->   	igt_describe("Test that selective fetch works on moving overlay plane fully exceeding visible area (no update)");
->   	igt_subtest_with_dynamic_f("overlay-%s-sf", op_str(data.op)) {
->   		for (i = 0; i < n_pipes; i++) {
-> -			igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipes[i]),
-> -					igt_output_name(outputs[i])) {
-> -				data.pipe = pipes[i];
-> -				data.output = outputs[i];
-> -				data.test_plane_id = DRM_PLANE_TYPE_OVERLAY;
-> -				prepare(&data);
-> -				run(&data);
-> -				cleanup(&data);
-> +			for (j = FEATURE_NONE; j < FEATURE_COUNT; j++) {
-> +				if (j != FEATURE_NONE && !(coexist_features[i] & j))
-> +					continue;
-> +				igt_dynamic_f("pipe-%s-%s%s", kmstest_pipe_name(pipes[i]),
-> +					      igt_output_name(outputs[i]),
-> +					      coexist_feature_str(j)) {
-> +					data.pipe = pipes[i];
-> +					data.output = outputs[i];
-> +					data.test_plane_id = DRM_PLANE_TYPE_OVERLAY;
-> +					data.coexist_feature = j;
-> +					prepare(&data);
-> +					run(&data);
-> +					cleanup(&data);
-> +				}
->   			}
->   		}
->   	}
-> @@ -1084,16 +1189,22 @@ igt_main
->   		     "with blended overlay plane");
->   	igt_subtest_with_dynamic_f("%s-sf-dmg-area", op_str(data.op)) {
->   		for (i = 0; i < n_pipes; i++) {
-> -			igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipes[i]),
-> -					igt_output_name(outputs[i])) {
-> -				data.pipe = pipes[i];
-> -				data.output = outputs[i];
-> -				for (j = 1; j <= MAX_DAMAGE_AREAS; j++) {
-> -					data.damage_area_count = j;
-> -					data.test_plane_id = DRM_PLANE_TYPE_PRIMARY;
-> -					prepare(&data);
-> -					run(&data);
-> -					cleanup(&data);
-> +			for (j = FEATURE_NONE; j < FEATURE_COUNT; j++) {
-> +				if (j != FEATURE_NONE && !(coexist_features[i] & j))
-> +					continue;
-> +				igt_dynamic_f("pipe-%s-%s%s", kmstest_pipe_name(pipes[i]),
-> +					      igt_output_name(outputs[i]),
-> +					      coexist_feature_str(j)) {
-> +					data.pipe = pipes[i];
-> +					data.output = outputs[i];
-> +					for (k = 1; k <= MAX_DAMAGE_AREAS; k++) {
-> +						data.damage_area_count = k;
-> +						data.test_plane_id = DRM_PLANE_TYPE_PRIMARY;
-> +						data.coexist_feature = j;
-> +						prepare(&data);
-> +						run(&data);
-> +						cleanup(&data);
-> +					}
->   				}
->   			}
->   		}
-> @@ -1108,15 +1219,21 @@ igt_main
->   	igt_describe("Test that selective fetch works on overlay plane");
->   	igt_subtest_with_dynamic_f("overlay-%s-sf", op_str(data.op)) {
->   		for (i = 0; i < n_pipes; i++) {
-> -			igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipes[i]),
-> -				      igt_output_name(outputs[i])) {
-> -				data.pipe = pipes[i];
-> -				data.output = outputs[i];
-> -				data.damage_area_count = 1;
-> -				data.test_plane_id = DRM_PLANE_TYPE_OVERLAY;
-> -				prepare(&data);
-> -				run(&data);
-> -				cleanup(&data);
-> +			for (j = FEATURE_NONE; j < FEATURE_COUNT; j++) {
-> +				if (j != FEATURE_NONE && !(coexist_features[i] & j))
-> +					continue;
-> +				igt_dynamic_f("pipe-%s-%s%s", kmstest_pipe_name(pipes[i]),
-> +					      igt_output_name(outputs[i]),
-> +					      coexist_feature_str(j)) {
-> +					data.pipe = pipes[i];
-> +					data.output = outputs[i];
-> +					data.damage_area_count = 1;
-> +					data.test_plane_id = DRM_PLANE_TYPE_OVERLAY;
-> +					data.coexist_feature = j;
-> +					prepare(&data);
-> +					run(&data);
-> +					cleanup(&data);
-> +				}
->   			}
->   		}
->   	}
-> diff --git a/tests/meson.build b/tests/meson.build
-> index cce9d89e..da8a4204 100644
-> --- a/tests/meson.build
-> +++ b/tests/meson.build
-> @@ -232,7 +232,6 @@ i915_progs = [
->   	'kms_pipe_b_c_ivb',
->   	'kms_psr',
->   	'kms_psr2_su',
-> -	'kms_psr2_sf',
->   	'kms_psr_stress_test',
->   	'kms_pwrite_crc',
->   	'sysfs_defaults',
-> @@ -435,6 +434,14 @@ test_executables += executable('kms_dsc',
->   	   install : true)
->   test_list += 'kms_dsc'
->   
-> +test_executables += executable('kms_psr2_sf',
-> +	   [ join_paths('i915', 'kms_psr2_sf.c'), join_paths ('i915', 'kms_dsc_helper.c')],
-> +	   dependencies : test_deps,
-> +	   install_dir : libexecdir,
-> +	   install_rpath : libexecdir_rpathdir,
-> +	   install : true)
-> +test_list += 'kms_psr2_sf'
-> +
->   if chamelium.found()
->          test_executables += executable('kms_chamelium_color',
->                                [ 'chamelium/kms_chamelium_color.c', 'kms_color_helper.c' ],
+Series: tests/kms_lease: close mcl.fd when drmModeSetCrtc fails (rev4)
+URL   : https://patchwork.freedesktop.org/series/112914/
+State : success
 
--- 
-~Swati Sharma
+== Summary ==
+
+CI Bug Log - changes from CI_DRM_12676 -> IGTPW_8424
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8424/index.html
+
+Participating hosts (27 -> 25)
+------------------------------
+
+  Missing    (2): fi-kbl-soraka fi-snb-2520m 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_8424 that come from known issues:
+
+### IGT changes ###
+
+#### Possible fixes ####
+
+  * igt@i915_selftest@live@hangcheck:
+    - {bat-dg2-11}:       [ABORT][1] ([i915#7913]) -> [PASS][2]
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12676/bat-dg2-11/igt@i915_selftest@live@hangcheck.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8424/bat-dg2-11/igt@i915_selftest@live@hangcheck.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [i915#4983]: https://gitlab.freedesktop.org/drm/intel/issues/4983
+  [i915#5354]: https://gitlab.freedesktop.org/drm/intel/issues/5354
+  [i915#7699]: https://gitlab.freedesktop.org/drm/intel/issues/7699
+  [i915#7828]: https://gitlab.freedesktop.org/drm/intel/issues/7828
+  [i915#7913]: https://gitlab.freedesktop.org/drm/intel/issues/7913
+  [i915#7996]: https://gitlab.freedesktop.org/drm/intel/issues/7996
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_7143 -> IGTPW_8424
+
+  CI-20190529: 20190529
+  CI_DRM_12676: 3775348312c45a69754d1ed47103a2c62ae18485 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_8424: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8424/index.html
+  IGT_7143: c7b12dcc460fc2348e1fa7f4dcb791bb82e29e44 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+
+Testlist changes
+----------------
+
+-igt@perf_pmu@pmu-read
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8424/index.html
+
+--===============6753544162137075843==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/kms_lease: close mcl.fd when drmModeSetCrtc fails (rev4)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/112914/">https://patchwork.freedesktop.org/series/112914/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8424/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8424/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_12676 -&gt; IGTPW_8424</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8424/index.html</p>
+<h2>Participating hosts (27 -&gt; 25)</h2>
+<p>Missing    (2): fi-kbl-soraka fi-snb-2520m </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_8424 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@i915_selftest@live@hangcheck:<ul>
+<li>{bat-dg2-11}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12676/bat-dg2-11/igt@i915_selftest@live@hangcheck.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7913">i915#7913</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8424/bat-dg2-11/igt@i915_selftest@live@hangcheck.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_7143 -&gt; IGTPW_8424</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_12676: 3775348312c45a69754d1ed47103a2c62ae18485 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_8424: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8424/index.html<br />
+  IGT_7143: c7b12dcc460fc2348e1fa7f4dcb791bb82e29e44 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+<h2>Testlist changes</h2>
+<p>-igt@perf_pmu@pmu-read</p>
+
+</body>
+</html>
+
+--===============6753544162137075843==--
