@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1FAA810E467
- for <igt-dev@lists.freedesktop.org>; Thu,  2 Feb 2023 07:19:18 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6C78C10E459
+ for <igt-dev@lists.freedesktop.org>; Thu,  2 Feb 2023 07:19:14 +0000 (UTC)
 From: Swati Sharma <swati2.sharma@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Thu,  2 Feb 2023 12:51:20 +0530
-Message-Id: <20230202072121.26153-6-swati2.sharma@intel.com>
+Date: Thu,  2 Feb 2023 12:51:18 +0530
+Message-Id: <20230202072121.26153-4-swati2.sharma@intel.com>
 In-Reply-To: <20230202072121.26153-1-swati2.sharma@intel.com>
 References: <20230202072121.26153-1-swati2.sharma@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v2 5/6] lib/dsc: Add helpers for VDSC output
- format debugfs entry
+Subject: [igt-dev] [PATCH i-g-t v2 3/6] tests/i915/kms_dsc: Remove pointless
+ struct
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,110 +23,55 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Helper functions are added for VDSC output format debugfs entry.
+Array can be used for plane_format. Use that and remove
+struct.
+
+v2: -make format list static (Jouni)
 
 Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
 ---
- lib/igt_dsc.c | 49 +++++++++++++++++++++++++++++++++++++++++++++++++
- lib/igt_dsc.h |  5 +++++
- lib/igt_kms.h |  6 ++++++
- 3 files changed, 60 insertions(+)
+ tests/i915/kms_dsc.c | 15 +++------------
+ 1 file changed, 3 insertions(+), 12 deletions(-)
 
-diff --git a/lib/igt_dsc.c b/lib/igt_dsc.c
-index 64dd6b29a..1f6d33291 100644
---- a/lib/igt_dsc.c
-+++ b/lib/igt_dsc.c
-@@ -134,3 +134,52 @@ int igt_get_dsc_debugfs_fd(int drmfd, char *connector_name)
+diff --git a/tests/i915/kms_dsc.c b/tests/i915/kms_dsc.c
+index af9466518..0f048e575 100644
+--- a/tests/i915/kms_dsc.c
++++ b/tests/i915/kms_dsc.c
+@@ -52,16 +52,7 @@ typedef struct {
+ 	enum pipe pipe;
+ } data_t;
  
- 	return openat(igt_debugfs_dir(drmfd), file_name, O_WRONLY);
- }
-+
-+/*
-+ * igt_is_dsc_output_format_supported_by_sink:
-+ * @drmfd: A drm file descriptor
-+ * @connector_name: Name of the libdrm connector we're going to use
-+ * @output_format: Output format
-+ *
-+ * Returns: True if DSC output format is supported for the given connector,
-+ * false otherwise.
-+ */
-+bool igt_is_dsc_output_format_supported_by_sink(int drmfd, char *connector_name,
-+						enum dsc_output_format output_format)
-+{
-+	const char *check_str = "OUTPUTFORMATNOTFOUND";
-+
-+	switch(output_format) {
-+	case DSC_FORMAT_RGB:
-+		check_str = "RGB: yes";
-+		break;
-+	case DSC_FORMAT_YCBCR420:
-+		check_str = "YCBCR420: yes";
-+		break;
-+	case DSC_FORMAT_YCBCR444:
-+		check_str = "YCBCR444: yes";
-+		break;
-+	default:
-+		break;
-+	}
-+
-+	return check_dsc_debugfs(drmfd, connector_name, check_str);
-+}
-+
-+/*
-+ * igt_force_dsc_output_format:
-+ * @drmfd: A drm file descriptor
-+ * @connector_name: Name of the libdrm connector we're going to use
-+ * @output_format: Output format
-+ *
-+ * Returns: 0 on success or negative error code, in case of failure.
-+ */
-+int igt_force_dsc_output_format(int drmfd, char *connector_name,
-+				enum dsc_output_format output_format)
-+{
-+	char buf[20] = {0};
-+
-+	sprintf(buf, "%d", output_format);
-+
-+	return write_dsc_debugfs(drmfd, connector_name, "i915_dsc_output_format", buf);
-+}
-diff --git a/lib/igt_dsc.h b/lib/igt_dsc.h
-index 291c2cdea..9608aad44 100644
---- a/lib/igt_dsc.h
-+++ b/lib/igt_dsc.h
-@@ -7,6 +7,7 @@
- #define IGT_DSC_H
+-const struct {
+-	const int format;
+-	const char format_str[20];
+-} format_list[] = {
+-	{DRM_FORMAT_XYUV8888, "XYUV8888"},
+-	{DRM_FORMAT_XRGB2101010, "XRGB2101010"},
+-	{DRM_FORMAT_XRGB16161616F, "XRGB16161616F"},
+-	{DRM_FORMAT_YUYV, "YUYV"},
+-};
+-
++static int format_list[] =  {DRM_FORMAT_XYUV8888, DRM_FORMAT_XRGB2101010, DRM_FORMAT_XRGB16161616F, DRM_FORMAT_YUYV};
+ uint32_t bpc_list[] = {12, 10, 8};
  
- #include "igt_fb.h"
-+#include "igt_kms.h"
+ static inline void manual(const char *expected)
+@@ -242,7 +233,7 @@ igt_main
+ 		     "with default parameters and creating fb with diff formats");
+ 	igt_subtest_with_dynamic("dsc-with-formats") {
+ 		for (int k = 0; k < ARRAY_SIZE(format_list); k++)
+-			test_dsc(&data, TEST_DSC_BASIC, 0, format_list[k].format);
++			test_dsc(&data, TEST_DSC_BASIC, 0, format_list[k]);
+ 	}
  
- bool igt_is_dsc_supported(int drmfd, char *connector_name);
- bool igt_is_fec_supported(int drmfd, char *connector_name);
-@@ -15,5 +16,9 @@ bool igt_is_force_dsc_enabled(int drmfd, char *connector_name);
- int igt_force_dsc_enable(int drmfd, char *connector_name);
- int igt_force_dsc_enable_bpc(int drmfd, char *connector_name, int bpc);
- int igt_get_dsc_debugfs_fd(int drmfd, char *connector_name);
-+bool igt_is_dsc_output_format_supported_by_sink(int drmfd, char *connector_name,
-+						enum dsc_output_format output_format);
-+int igt_force_dsc_output_format(int drmfd, char *connector_name,
-+				enum dsc_output_format output_format);
- 
- #endif
-diff --git a/lib/igt_kms.h b/lib/igt_kms.h
-index be5482e08..9f5bef170 100644
---- a/lib/igt_kms.h
-+++ b/lib/igt_kms.h
-@@ -106,6 +106,12 @@ enum igt_custom_edid_type {
-  */
- #define kmstest_port_name(port) ((port) + 'A')
- 
-+enum dsc_output_format {
-+	DSC_FORMAT_RGB = 0,
-+	DSC_FORMAT_YCBCR420,
-+	DSC_FORMAT_YCBCR444
-+};
-+
- const char *kmstest_encoder_type_str(int type);
- const char *kmstest_connector_status_str(int status);
- const char *kmstest_connector_type_str(int type);
+ 	igt_describe("Tests basic display stream compression functionality if supported "
+@@ -259,7 +250,7 @@ igt_main
+ 	igt_subtest_with_dynamic("dsc-with-bpc-formats") {
+ 		for (int j = 0; j < ARRAY_SIZE(bpc_list); j++) {
+ 			for (int k = 0; k < ARRAY_SIZE(format_list); k++) {
+-				test_dsc(&data, TEST_DSC_BPC, bpc_list[j], format_list[k].format);
++				test_dsc(&data, TEST_DSC_BPC, bpc_list[j], format_list[k]);
+ 			}
+ 		}
+ 	}
 -- 
 2.25.1
