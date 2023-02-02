@@ -1,17 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-io1-xd2a.google.com (mail-io1-xd2a.google.com
- [IPv6:2607:f8b0:4864:20::d2a])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 454D210E5BA
- for <igt-dev@lists.freedesktop.org>; Thu,  2 Feb 2023 18:01:46 +0000 (UTC)
-Received: by mail-io1-xd2a.google.com with SMTP id w24so1039609iow.13
- for <igt-dev@lists.freedesktop.org>; Thu, 02 Feb 2023 10:01:46 -0800 (PST)
-From: Mark Yacoub <markyacoub@chromium.org>
-To: igt-dev@lists.freedesktop.org
-Date: Thu,  2 Feb 2023 13:01:39 -0500
-Message-Id: <20230202180139.3528829-1-markyacoub@google.com>
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9E95510E5DD
+ for <igt-dev@lists.freedesktop.org>; Thu,  2 Feb 2023 18:32:18 +0000 (UTC)
+From: "Shankar, Uma" <uma.shankar@intel.com>
+To: "Sharma, Swati2" <swati2.sharma@intel.com>,
+ "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+Date: Thu, 2 Feb 2023 18:31:49 +0000
+Message-ID: <DM4PR11MB63606D3F16B6C2CE7DAFB1ECF4D69@DM4PR11MB6360.namprd11.prod.outlook.com>
+References: <20221226103838.1761-1-swati2.sharma@intel.com>
+In-Reply-To: <20221226103838.1761-1-swati2.sharma@intel.com>
+Content-Language: en-US
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH v3] Chamelium: Get Chamelium Logs on RPC failure
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_hdr: Add negative test for
+ invalid metadata sizes
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,159 +22,113 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: amstan@chromium.org, ihf@google.com, seanpaul@chromium.org,
- markyacoub@google.com, khaled.almahallawy@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Mark Yacoub <markyacoub@chromium.org>
 
-[Why]
-Currently, Chamelium acts like a black box, we can't tell what
-is going on there when a failure occur. Seeing its logs will
-allow us to debug better.
 
-[How]
-On chamelium_rpc failure, print out the logs in debug so it
-wouldn't clutter good tests.
+> -----Original Message-----
+> From: igt-dev <igt-dev-bounces@lists.freedesktop.org> On Behalf Of Swati =
+Sharma
+> Sent: Monday, December 26, 2022 4:09 PM
+> To: igt-dev@lists.freedesktop.org
+> Subject: [igt-dev] [PATCH i-g-t] tests/kms_hdr: Add negative test for inv=
+alid
+> metadata sizes
+>=20
+> Negative test is added in which HDR output metadata prop is set with inva=
+lid sizes.
+>=20
+> Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
+> ---
+>  tests/kms_hdr.c | 32 ++++++++++++++++++++++++++++++++
+>  1 file changed, 32 insertions(+)
+>=20
+> diff --git a/tests/kms_hdr.c b/tests/kms_hdr.c index 655c3e14..629a45a7 1=
+00644
+> --- a/tests/kms_hdr.c
+> +++ b/tests/kms_hdr.c
+> @@ -50,6 +50,7 @@ enum {
+>  	TEST_DPMS =3D 1 << 1,
+>  	TEST_SUSPEND =3D 1 << 2,
+>  	TEST_SWAP =3D 1 << 3,
+> +	TEST_INVALID_METADATA_SIZES =3D 1 << 4,
+>  };
+>=20
+>  /* BPC connector state. */
+> @@ -327,6 +328,18 @@ static void set_hdr_output_metadata(data_t *data,
+>  				     meta ? sizeof(*meta) : 0);
+>  }
+>=20
+> +/* Sets the HDR output metadata prop with invalid size. */ static int
+> +set_invalid_hdr_output_metadata(data_t *data,
+> +					   struct hdr_output_metadata const
+> *meta,
+> +					   size_t length)
+> +{
+> +	igt_output_replace_prop_blob(data->output,
+> +				     IGT_CONNECTOR_HDR_OUTPUT_METADATA,
+> meta,
+> +				     meta ? length : 0);
+> +
+> +	return igt_display_try_commit_atomic(&data->display,
+> +DRM_MODE_ATOMIC_ALLOW_MODESET, NULL); }
+> +
+>  /* Converts a double to 861-G spec FP format. */  static uint16_t
+> calc_hdr_float(double val)  { @@ -518,6 +531,19 @@ static void
+> test_static_swap(data_t *data, enum pipe pipe, igt_output_t *output)
+>  	igt_remove_fb(data->fd, &afb);
+>  }
+>=20
+> +static void test_invalid_metadata_sizes(data_t *data, igt_output_t
+> +*output) {
+> +	struct hdr_output_metadata hdr;
+> +	size_t metadata_size =3D sizeof(&hdr);
+> +
+> +	fill_hdr_output_metadata_st2048(&hdr);
+> +
+> +	igt_assert_eq(set_invalid_hdr_output_metadata(data, &hdr, 1), -EINVAL);
+> +	igt_assert_eq(set_invalid_hdr_output_metadata(data, &hdr, metadata_size
+> + 1), -EINVAL);
+> +	igt_assert_eq(set_invalid_hdr_output_metadata(data, &hdr, metadata_size
+> - 1), -EINVAL);
+> +	igt_assert_eq(set_invalid_hdr_output_metadata(data, &hdr,
+> +metadata_size + sizeof(struct hdr_output_metadata)), -EINVAL);=20
 
-v2:
-- Added missing #includes
-v3:
-- C-style comments (Kamil Konieczny)
-- Cut commit messages to 65 char tops (Kamil Konieczny)
+I guess 2 invalid sizes should be enough. Other that that, looks good to me=
+.
+Reviewed-by: Uma Shankar <uma.shankar@intel.com>
 
-Signed-off-by: Mark Yacoub <markyacoub@chromium.org>
----
- lib/igt_chamelium.c                    | 50 ++++++++++++++++++++++++--
- lib/igt_chamelium.h                    |  1 +
- tests/chamelium/kms_chamelium_helper.c | 18 ++++++++++
- 3 files changed, 66 insertions(+), 3 deletions(-)
-
-diff --git a/lib/igt_chamelium.c b/lib/igt_chamelium.c
-index a235f3c8..bac6fb76 100644
---- a/lib/igt_chamelium.c
-+++ b/lib/igt_chamelium.c
-@@ -658,6 +658,8 @@ static xmlrpc_value *chamelium_rpc(struct chamelium *chamelium,
- 	xmlrpc_value *res;
- 	va_list va_args;
- 	int fsm_trials_left = 5;
-+	bool did_fault_occur = false;
-+	char fault_string[1024];
- 
- 	if (strcmp(method_name, "CaptureVideo") == 0
- 	    || strcmp(method_name, "StartCapturingVideo") == 0) {
-@@ -680,9 +682,28 @@ static xmlrpc_value *chamelium_rpc(struct chamelium *chamelium,
- 					 format_str, va_args);
- 		va_end(va_args);
- 	}
--	igt_assert_f(!chamelium->env.fault_occurred,
--		     "Chamelium RPC call[%s] failed: %s\n", method_name,
--		     chamelium->env.fault_string);
-+
-+	did_fault_occur = chamelium->env.fault_occurred;
-+	if (did_fault_occur) {
-+		/*
-+		 * Save the fault string before getting the logs which will
-+		 * clear the string if it is works.
-+		 */
-+		strncpy(fault_string, chamelium->env.fault_string, 1024);
-+		/*
-+		 * We call GetChameleondLogs on an xmlrpc failure. Let's not
-+		 * call it when the xmlrpc failure is for GetChameleondLogs
-+		 * itself as this can cause a recursive behavior.
-+		 */
-+		if (strcmp(method_name, "GetChameleondLogs") != 0) {
-+			char *logs = chamelium_get_logs(chamelium);
-+			igt_debug("CHAMELIUM LOGS:\n%s\n", logs);
-+			free(logs);
-+		}
-+	}
-+
-+	igt_assert_f(!did_fault_occur, "Chamelium RPC call [%s] failed: %s\n",
-+		     method_name, fault_string);
- 
- 	return res;
- }
-@@ -737,6 +758,29 @@ void chamelium_assert_reachable(struct chamelium *chamelium, int timeout)
- 		     "Couldn't connect to Chamelium for %ds", timeout);
- }
- 
-+/**
-+ * chamelium_get_logs - Get the logs from the chamelium daemon
-+ * @chamelium: The Chamelium instance to use
-+ *
-+ * Returns: The logs from the last time this was called.
-+ */
-+
-+char *chamelium_get_logs(struct chamelium *chamelium)
-+{
-+	xmlrpc_value *res;
-+	const char *logs = NULL;
-+
-+	igt_debug(
-+		"Calling GetChameleondLogs - Logs returned are from the last time "
-+		"this was called.\n");
-+
-+	res = chamelium_rpc(chamelium, NULL, "GetChameleondLogs", "(s)", "IGT");
-+	xmlrpc_read_string(&chamelium->env, res, &logs);
-+	xmlrpc_DECREF(res);
-+
-+	return logs;
-+}
-+
- /**
-  * chamelium_plug:
-  * @chamelium: The Chamelium instance to use
-diff --git a/lib/igt_chamelium.h b/lib/igt_chamelium.h
-index d979de4a..e9096519 100644
---- a/lib/igt_chamelium.h
-+++ b/lib/igt_chamelium.h
-@@ -159,6 +159,7 @@ chamelium_reset_state(igt_display_t *display,
- 
- bool chamelium_wait_reachable(struct chamelium *chamelium, int timeout);
- void chamelium_assert_reachable(struct chamelium *chamelium, int timeout);
-+char *chamelium_get_logs(struct chamelium *chamelium);
- void chamelium_plug(struct chamelium *chamelium, struct chamelium_port *port);
- void chamelium_unplug(struct chamelium *chamelium, struct chamelium_port *port);
- bool chamelium_is_plugged(struct chamelium *chamelium,
-diff --git a/tests/chamelium/kms_chamelium_helper.c b/tests/chamelium/kms_chamelium_helper.c
-index 197d29be..54f8ebfc 100644
---- a/tests/chamelium/kms_chamelium_helper.c
-+++ b/tests/chamelium/kms_chamelium_helper.c
-@@ -24,7 +24,19 @@
-  *    Lyude Paul <lyude@redhat.com>
-  */
- 
-+#include <fcntl.h>
-+#include <stdint.h>
-+#include <string.h>
-+#include <stdatomic.h>
-+#include <xf86drmMode.h>
-+
-+#include "config.h"
-+#include "igt.h"
-+#include "igt_chamelium.h"
- #include "igt_edid.h"
-+#include "igt_eld.h"
-+#include "igt_vc4.h"
-+#include "igt_infoframe.h"
- #include "kms_chamelium_helper.h"
- 
- void chamelium_init_test(chamelium_data_t *data)
-@@ -47,6 +59,12 @@ void chamelium_init_test(chamelium_data_t *data)
- 	/* we need to initalize chamelium after igt_display_require */
- 	data->chamelium = chamelium_init(data->drm_fd, &data->display);
- 	igt_require(data->chamelium);
-+	/*
-+	 * Get the logs so we can reset the chamelium logs at this cursor.
-+	 * The logs are then retrieved when any call fails so we can debug
-+	 * chamelium if needed.
-+	 */
-+	free(chamelium_get_logs(data->chamelium));
- 
- 	data->ports = chamelium_get_ports(data->chamelium, &data->port_count);
- 
--- 
-2.39.1.519.gcb327c4b5f-goog
+}
+> +
+>  /* Returns true if an output supports HDR metadata property. */  static =
+bool
+> has_hdr(igt_output_t *output)  { @@ -565,6 +591,8 @@ static void test_hdr=
+(data_t
+> *data, uint32_t flags)
+>  						test_static_toggle(data, pipe,
+> output, flags);
+>  					if (flags & TEST_SWAP)
+>  						test_static_swap(data, pipe,
+> output);
+> +					if (flags &
+> TEST_INVALID_METADATA_SIZES)
+> +						test_invalid_metadata_sizes(data,
+> output);
+>  				}
+>=20
+>  				/* One pipe is enough */
+> @@ -613,6 +641,10 @@ igt_main
+>  	igt_subtest_with_dynamic("static-swap")
+>  		test_hdr(&data, TEST_SWAP);
+>=20
+> +	igt_describe("Tests invalid HDR metadata sizes");
+> +	igt_subtest_with_dynamic("invalid-metadata-sizes")
+> +		test_hdr(&data, TEST_INVALID_METADATA_SIZES);
+> +
+>  	igt_fixture {
+>  		igt_display_fini(&data.display);
+>  		close(data.fd);
+> --
+> 2.25.1
