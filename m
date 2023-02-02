@@ -1,15 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: text/plain; charset="utf-8"
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2C4E110E2E1
+ for <igt-dev@lists.freedesktop.org>; Thu,  2 Feb 2023 05:55:31 +0000 (UTC)
+From: Nidhi Gupta <nidhi1.gupta@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Thu,  2 Feb 2023 11:31:15 +0530
+Message-Id: <20230202060115.29259-1-nidhi1.gupta@intel.com>
+In-Reply-To: <20230202051509.28983-5-nidhi1.gupta@intel.com>
+References: <20230202051509.28983-5-nidhi1.gupta@intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Nidhi Gupta" <nidhi1.gupta@intel.com>
-Date: Thu, 02 Feb 2023 05:51:20 -0000
-Message-ID: <167531708058.11113.11652311931890359248@emeril.freedesktop.org>
-References: <20230202051509.28983-1-nidhi1.gupta@intel.com>
-In-Reply-To: <20230202051509.28983-1-nidhi1.gupta@intel.com>
-Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_L?=
- =?utf-8?q?imit_the_execution_to_few_pipes/planes_=28rev2=29?=
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH v5 4/7] tests/kms_plane_alpha_blend: Limit the
+ execution to single pipe & two planes
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,67 +19,118 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-== Series Details ==
+From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 
-Series: Limit the execution to few pipes/planes (rev2)
-URL   : https://patchwork.freedesktop.org/series/113526/
-State : warning
+As the execution is taking more time, limit the execution to single pipe
+and two (first & last) planes.
 
-== Summary ==
+Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+---
+ tests/kms_plane_alpha_blend.c | 49 ++++++++++++++++++++++++++++++++---
+ 1 file changed, 46 insertions(+), 3 deletions(-)
 
-Pipeline status: FAILED.
-
-see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/798663 for the overview.
-
-test:ninja-test has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/35743918):
-  342/346 assembler test/rnde-intsrc              OK       0.02 s 
-  343/346 assembler test/rndz                     OK       0.02 s 
-  344/346 assembler test/lzd                      OK       0.03 s 
-  345/346 assembler test/not                      OK       0.02 s 
-  346/346 assembler test/immediate                OK       0.01 s 
-  
-  Ok:                  341
-  Expected Fail:         4
-  Fail:                  1
-  Unexpected Pass:       0
-  Skipped:               0
-  Timeout:               0
-  
-  Full log written to /builds/gfx-ci/igt-ci-tags/build/meson-logs/testlog.txt
-  section_end:1675316692:step_script
-  section_start:1675316692:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1675316692:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-  
-
-test:ninja-test-clang has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/35744141):
-  342/346 assembler test/rnde-intsrc              OK       0.04 s 
-  343/346 assembler test/rndz                     OK       0.02 s 
-  344/346 assembler test/lzd                      OK       0.03 s 
-  345/346 assembler test/not                      OK       0.03 s 
-  346/346 assembler test/immediate                OK       0.03 s 
-  
-  Ok:                  341
-  Expected Fail:         4
-  Fail:                  1
-  Unexpected Pass:       0
-  Skipped:               0
-  Timeout:               0
-  
-  Full log written to /builds/gfx-ci/igt-ci-tags/build/meson-logs/testlog.txt
-  section_end:1675316871:step_script
-  section_start:1675316871:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1675316872:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-
-== Logs ==
-
-For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/798663
+diff --git a/tests/kms_plane_alpha_blend.c b/tests/kms_plane_alpha_blend.c
+index 38272ccb..6f68bfb0 100644
+--- a/tests/kms_plane_alpha_blend.c
++++ b/tests/kms_plane_alpha_blend.c
+@@ -26,6 +26,8 @@
+ 
+ #include "igt.h"
+ 
++static bool extended = false;
++
+ IGT_TEST_DESCRIPTION("Test plane alpha and blending mode properties");
+ 
+ typedef struct {
+@@ -482,8 +484,10 @@ static void run_test_on_pipe_planes(data_t *data, enum pipe pipe, igt_output_t *
+ {
+ 	igt_display_t *display = &data->display;
+ 	igt_plane_t *plane;
++	int first_plane = -1;
++	int last_plane = -1;
+ 
+-	for_each_plane_on_pipe(display, pipe, plane) {
++	for_each_plane_on_pipe(&data->display, pipe, plane) {
+ 		if (!igt_plane_has_prop(plane, IGT_PLANE_ALPHA))
+ 			continue;
+ 
+@@ -496,6 +500,19 @@ static void run_test_on_pipe_planes(data_t *data, enum pipe pipe, igt_output_t *
+ 		if (must_multiply && !has_multiplied_alpha(data, plane))
+ 			continue;
+ 
++		if (first_plane < 0)
++			first_plane = j__;
++
++		last_plane = j__;
++	}
++
++	for_each_plane_on_pipe(&data->display, pipe, plane) {
++		if (igt_run_in_simulation() &&
++		    j__ != first_plane && j__ != last_plane)
++			continue;
++
++		/* reset plane alpha properties between each plane */
++		reset_alpha(display, pipe);
+ 		igt_info("Testing plane %u\n", plane->index);
+ 		test(data, pipe, plane);
+ 		igt_plane_set_fb(plane, NULL);
+@@ -615,25 +632,51 @@ static void run_subtests(data_t *data)
+ {
+ 	igt_output_t *output;
+ 	enum pipe pipe;
++	enum pipe active_pipes[IGT_MAX_PIPES];
++	uint32_t last_pipe = 0;
++
++	/* Get active pipes. */
++	for_each_pipe(&data->display, pipe)
++		active_pipes[last_pipe++] = pipe;
++	last_pipe--;
+ 
+ 	for (int i = 0; i < ARRAY_SIZE(subtests); i++) {
+ 		igt_describe_f("%s\n", subtests[i].desc);
+ 
+ 		igt_subtest_with_dynamic(subtests[i].name) {
+ 			for_each_pipe_with_single_output(&data->display, pipe, output) {
++				if (igt_run_in_simulation() && !extended &&
++				    pipe != active_pipes[0] &&
++				    pipe != active_pipes[last_pipe])
++					continue;
+ 				prepare_crtc(data, output, pipe);
+ 				if (!pipe_check(data, pipe, subtests[i].blend, subtests[i].must_multiply))
+ 					continue;
+ 
+ 				igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), output->name)
+ 					run_test_on_pipe_planes(data, pipe, output, subtests[i].blend,
+-								subtests[i].must_multiply, subtests[i].test);
+ 			}
+ 		}
+ 	}
+ }
+ 
+-igt_main
++static int opt_handler(int opt, int opt_index, void *_data)
++{
++	switch (opt) {
++		case 'e':
++			extended = true;
++			break;
++		default:
++			return IGT_OPT_HANDLER_ERROR;
++	}
++
++	return IGT_OPT_HANDLER_SUCCESS;
++}
++
++const char *help_str =
++	"  -e \tExtended tests.\n";
++
++igt_main_args("e", NULL, help_str, opt_handler, NULL)
+ {
+ 	data_t data = {};
+ 
+-- 
+2.39.0
