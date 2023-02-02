@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 16CF610E1D0
- for <igt-dev@lists.freedesktop.org>; Thu,  2 Feb 2023 05:09:28 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5031F10E1D3
+ for <igt-dev@lists.freedesktop.org>; Thu,  2 Feb 2023 05:09:29 +0000 (UTC)
 From: Nidhi Gupta <nidhi1.gupta@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Thu,  2 Feb 2023 10:45:03 +0530
-Message-Id: <20230202051509.28983-2-nidhi1.gupta@intel.com>
+Date: Thu,  2 Feb 2023 10:45:04 +0530
+Message-Id: <20230202051509.28983-3-nidhi1.gupta@intel.com>
 In-Reply-To: <20230202051509.28983-1-nidhi1.gupta@intel.com>
 References: <20230202051509.28983-1-nidhi1.gupta@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH v4 1/7] tests/i915/kms_draw_crc: Ignore RGB565 &
- XRGB2101010 formats on simulation
+Subject: [igt-dev] [PATCH v4 2/7] tests/kms_async_flips: Limit the execution
+ to single pipe
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,48 +26,44 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 
-As RGB565 and XRGB2101010 formats are bit slow in pre-si, we can
-ignore to improve the execution time.
+As the execution is taking more time, limit the execution to single
+pipe.
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 Signed-off-by: Nidhi Gupta <nidhi1.gupta@intel.com>
 ---
- tests/i915/kms_draw_crc.c | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+ tests/kms_async_flips.c | 18 ++++++++----------
+ 1 file changed, 8 insertions(+), 10 deletions(-)
 
-diff --git a/tests/i915/kms_draw_crc.c b/tests/i915/kms_draw_crc.c
-index c2ac4721..64e2e820 100644
---- a/tests/i915/kms_draw_crc.c
-+++ b/tests/i915/kms_draw_crc.c
-@@ -290,10 +290,19 @@ igt_main
- 		     "with different modifiers, DRM_FORMATS, DRAW_METHODS.");
- 	igt_subtest_with_dynamic("draw-method") {
- 		for (format_idx = 0; format_idx < ARRAY_SIZE(formats); format_idx++) {
-+			/* 10-bit formats are bit slow, ignore in pre-si. */
-+			if (igt_run_in_simulation() &&
-+			    (formats[format_idx] == DRM_FORMAT_XRGB2101010 ||
-+			    formats[format_idx] == DRM_FORMAT_RGB565))
-+				continue;
-+
- 			for (method = 0; method < IGT_DRAW_METHOD_COUNT; method++) {
- 				for (modifier_idx = 0; modifier_idx < ARRAY_SIZE(modifiers); modifier_idx++) {
- 					modifier = modifiers[modifier_idx];
+diff --git a/tests/kms_async_flips.c b/tests/kms_async_flips.c
+index 7cb71f6b..d516e3e2 100644
+--- a/tests/kms_async_flips.c
++++ b/tests/kms_async_flips.c
+@@ -543,17 +543,15 @@ static void run_test(data_t *data, void (*test)(data_t *))
+ 	igt_output_t *output;
+ 	enum pipe pipe;
  
-+					if (!igt_display_has_format_mod(&display, formats[format_idx], modifier))
-+						continue;
-+
- 					if (method == IGT_DRAW_MMAP_WC && !gem_mmap__has_wc(drm_fd))
- 						continue;
- 
-@@ -301,9 +310,6 @@ igt_main
- 					    !gem_has_mappable_ggtt(drm_fd))
- 						continue;
- 
--					if (!igt_display_has_format_mod(&display, formats[format_idx], modifier))
--						continue;
+-	for_each_pipe(&data->display, pipe) {
+-		for_each_valid_output_on_pipe(&data->display, pipe, output) {
+-			igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), output->name) {
+-				data->output = output;
+-				data->pipe = pipe;
+-				test(data);
+-			}
 -
- 					igt_dynamic_f("%s-%s-%s",
- 						      format_str(format_idx),
- 						      igt_draw_get_method_name(method),
+-			if (!data->extended)
+-				break;
++	for_each_pipe_with_valid_output(&data->display, pipe, output) {
++		igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), output->name) {
++			data->output = output;
++			data->pipe = pipe;
++			test(data);
+ 		}
++
++		if (!data->extended)
++			break;
+ 	}
+ }
+ 
 -- 
 2.39.0
