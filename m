@@ -1,14 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Content-Type: multipart/alternative;
- boundary="===============1101518936796097497=="
+ boundary="===============3217431424085608947=="
 MIME-Version: 1.0
 From: Patchwork <patchwork@emeril.freedesktop.org>
 To: "Mark Yacoub" <markyacoub@chromium.org>
-Date: Thu, 02 Feb 2023 05:33:38 -0000
-Message-ID: <167531601809.11114.3043821100129362726@emeril.freedesktop.org>
+Date: Thu, 02 Feb 2023 05:30:11 -0000
+Message-ID: <167531581139.11115.2457354714399595624@emeril.freedesktop.org>
 References: <20230201232207.3332996-1-markyacoub@google.com>
 In-Reply-To: <20230201232207.3332996-1-markyacoub@google.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgQ2hhbWVs?=
+Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3IgQ2hhbWVs?=
  =?utf-8?q?ium=3A_Get_Chamelium_Logs_on_RPC_failure=2E_=28rev2=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -23,7 +23,7 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============1101518936796097497==
+--===============3217431424085608947==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -32,7 +32,7 @@ Content-Transfer-Encoding: 7bit
 
 Series: Chamelium: Get Chamelium Logs on RPC failure. (rev2)
 URL   : https://patchwork.freedesktop.org/series/113567/
-State : success
+State : failure
 
 == Summary ==
 
@@ -42,9 +42,14 @@ CI Bug Log - changes from CI_DRM_12681 -> IGTPW_8429
 Summary
 -------
 
-  **SUCCESS**
+  **FAILURE**
 
-  No regressions found.
+  Serious unknown changes coming with IGTPW_8429 absolutely need to be
+  verified manually.
+  
+  If you think the reported changes have nothing to do with the changes
+  introduced in IGTPW_8429, please notify your bug team to allow them
+  to document this new failure mode, which will reduce false positives in CI.
 
   External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8429/index.html
 
@@ -61,15 +66,23 @@ Possible new issues
 
 ### IGT changes ###
 
+#### Possible regressions ####
+
+  * igt@kms_chamelium_hpd@common-hpd-after-suspend:
+    - fi-kbl-7567u:       [PASS][1] -> [FAIL][2]
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12681/fi-kbl-7567u/igt@kms_chamelium_hpd@common-hpd-after-suspend.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8429/fi-kbl-7567u/igt@kms_chamelium_hpd@common-hpd-after-suspend.html
+
+  
 #### Suppressed ####
 
   The following results come from untrusted machines, tests, or statuses.
   They do not affect the overall result.
 
   * igt@i915_selftest@live@slpc:
-    - {bat-rpls-1}:       [DMESG-FAIL][1] ([i915#7996]) -> [DMESG-FAIL][2]
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12681/bat-rpls-1/igt@i915_selftest@live@slpc.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8429/bat-rpls-1/igt@i915_selftest@live@slpc.html
+    - {bat-rpls-1}:       [DMESG-FAIL][3] ([i915#7996]) -> [DMESG-FAIL][4]
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12681/bat-rpls-1/igt@i915_selftest@live@slpc.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8429/bat-rpls-1/igt@i915_selftest@live@slpc.html
 
   
 Known issues
@@ -82,47 +95,47 @@ Known issues
 #### Issues hit ####
 
   * igt@fbdev@write:
-    - fi-blb-e6850:       [PASS][3] -> [SKIP][4] ([fdo#109271]) +4 similar issues
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12681/fi-blb-e6850/igt@fbdev@write.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8429/fi-blb-e6850/igt@fbdev@write.html
+    - fi-blb-e6850:       [PASS][5] -> [SKIP][6] ([fdo#109271]) +4 similar issues
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12681/fi-blb-e6850/igt@fbdev@write.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8429/fi-blb-e6850/igt@fbdev@write.html
 
   * igt@gem_lmem_swapping@basic:
-    - fi-apl-guc:         NOTRUN -> [SKIP][5] ([fdo#109271] / [i915#4613]) +3 similar issues
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8429/fi-apl-guc/igt@gem_lmem_swapping@basic.html
+    - fi-apl-guc:         NOTRUN -> [SKIP][7] ([fdo#109271] / [i915#4613]) +3 similar issues
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8429/fi-apl-guc/igt@gem_lmem_swapping@basic.html
 
   * igt@i915_selftest@live@gt_heartbeat:
-    - fi-apl-guc:         NOTRUN -> [DMESG-FAIL][6] ([i915#5334])
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8429/fi-apl-guc/igt@i915_selftest@live@gt_heartbeat.html
+    - fi-apl-guc:         NOTRUN -> [DMESG-FAIL][8] ([i915#5334])
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8429/fi-apl-guc/igt@i915_selftest@live@gt_heartbeat.html
 
   * igt@kms_chamelium_frames@hdmi-crc-fast:
-    - fi-kbl-7567u:       [PASS][7] -> [FAIL][8] ([i915#8005]) +3 similar issues
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12681/fi-kbl-7567u/igt@kms_chamelium_frames@hdmi-crc-fast.html
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8429/fi-kbl-7567u/igt@kms_chamelium_frames@hdmi-crc-fast.html
+    - fi-kbl-7567u:       [PASS][9] -> [FAIL][10] ([i915#8005]) +2 similar issues
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12681/fi-kbl-7567u/igt@kms_chamelium_frames@hdmi-crc-fast.html
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8429/fi-kbl-7567u/igt@kms_chamelium_frames@hdmi-crc-fast.html
 
   * igt@kms_chamelium_hpd@vga-hpd-fast:
-    - fi-apl-guc:         NOTRUN -> [SKIP][9] ([fdo#109271]) +21 similar issues
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8429/fi-apl-guc/igt@kms_chamelium_hpd@vga-hpd-fast.html
+    - fi-apl-guc:         NOTRUN -> [SKIP][11] ([fdo#109271]) +21 similar issues
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8429/fi-apl-guc/igt@kms_chamelium_hpd@vga-hpd-fast.html
 
   
 #### Possible fixes ####
 
   * igt@gem_exec_suspend@basic-s0@smem:
-    - {bat-rpls-1}:       [ABORT][10] ([i915#6311] / [i915#7359]) -> [PASS][11]
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12681/bat-rpls-1/igt@gem_exec_suspend@basic-s0@smem.html
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8429/bat-rpls-1/igt@gem_exec_suspend@basic-s0@smem.html
+    - {bat-rpls-1}:       [ABORT][12] ([i915#6311] / [i915#7359]) -> [PASS][13]
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12681/bat-rpls-1/igt@gem_exec_suspend@basic-s0@smem.html
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8429/bat-rpls-1/igt@gem_exec_suspend@basic-s0@smem.html
 
   * igt@i915_selftest@live@gt_pm:
-    - {bat-rpls-2}:       [DMESG-FAIL][12] ([i915#4258]) -> [PASS][13]
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12681/bat-rpls-2/igt@i915_selftest@live@gt_pm.html
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8429/bat-rpls-2/igt@i915_selftest@live@gt_pm.html
+    - {bat-rpls-2}:       [DMESG-FAIL][14] ([i915#4258]) -> [PASS][15]
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12681/bat-rpls-2/igt@i915_selftest@live@gt_pm.html
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8429/bat-rpls-2/igt@i915_selftest@live@gt_pm.html
 
   
 #### Warnings ####
 
   * igt@kms_chamelium_hpd@vga-hpd-fast:
-    - fi-kbl-7567u:       [SKIP][14] ([fdo#109271]) -> [FAIL][15] ([i915#8005]) +4 similar issues
-   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12681/fi-kbl-7567u/igt@kms_chamelium_hpd@vga-hpd-fast.html
-   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8429/fi-kbl-7567u/igt@kms_chamelium_hpd@vga-hpd-fast.html
+    - fi-kbl-7567u:       [SKIP][16] ([fdo#109271]) -> [FAIL][17] ([i915#8005]) +4 similar issues
+   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12681/fi-kbl-7567u/igt@kms_chamelium_hpd@vga-hpd-fast.html
+   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8429/fi-kbl-7567u/igt@kms_chamelium_hpd@vga-hpd-fast.html
 
   
   {name}: This element is suppressed. This means it is ignored when computing
@@ -155,7 +168,7 @@ Build changes
 
 For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8429/index.html
 
---===============1101518936796097497==
+--===============3217431424085608947==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -177,7 +190,7 @@ Content-Transfer-Encoding: 7bit
 <table>
 <tr><td><b>Series:</b></td><td>Chamelium: Get Chamelium Logs on RPC failure. (rev2)</td></tr>
 <tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/113567/">https://patchwork.freedesktop.org/series/113567/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
+<tr><td><b>State:</b></td><td>failure</td></tr>
 
     <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8429/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8429/index.html</a></td></tr>
 
@@ -186,8 +199,12 @@ Content-Transfer-Encoding: 7bit
 
     <h1>CI Bug Log - changes from CI_DRM_12681 -&gt; IGTPW_8429</h1>
 <h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
+<p><strong>FAILURE</strong></p>
+<p>Serious unknown changes coming with IGTPW_8429 absolutely need to be<br />
+  verified manually.</p>
+<p>If you think the reported changes have nothing to do with the changes<br />
+  introduced in IGTPW_8429, please notify your bug team to allow them<br />
+  to document this new failure mode, which will reduce false positives in CI.</p>
 <p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8429/index.html</p>
 <h2>Participating hosts (25 -&gt; 25)</h2>
 <p>Additional (1): fi-apl-guc <br />
@@ -195,6 +212,13 @@ Content-Transfer-Encoding: 7bit
 <h2>Possible new issues</h2>
 <p>Here are the unknown changes that may have been introduced in IGTPW_8429:</p>
 <h3>IGT changes</h3>
+<h4>Possible regressions</h4>
+<ul>
+<li>igt@kms_chamelium_hpd@common-hpd-after-suspend:<ul>
+<li>fi-kbl-7567u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12681/fi-kbl-7567u/igt@kms_chamelium_hpd@common-hpd-after-suspend.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8429/fi-kbl-7567u/igt@kms_chamelium_hpd@common-hpd-after-suspend.html">FAIL</a></li>
+</ul>
+</li>
+</ul>
 <h4>Suppressed</h4>
 <p>The following results come from untrusted machines, tests, or statuses.<br />
   They do not affect the overall result.</p>
@@ -230,7 +254,7 @@ Content-Transfer-Encoding: 7bit
 <li>
 <p>igt@kms_chamelium_frames@hdmi-crc-fast:</p>
 <ul>
-<li>fi-kbl-7567u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12681/fi-kbl-7567u/igt@kms_chamelium_frames@hdmi-crc-fast.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8429/fi-kbl-7567u/igt@kms_chamelium_frames@hdmi-crc-fast.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/8005">i915#8005</a>) +3 similar issues</li>
+<li>fi-kbl-7567u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12681/fi-kbl-7567u/igt@kms_chamelium_frames@hdmi-crc-fast.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8429/fi-kbl-7567u/igt@kms_chamelium_frames@hdmi-crc-fast.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/8005">i915#8005</a>) +2 similar issues</li>
 </ul>
 </li>
 <li>
@@ -277,4 +301,4 @@ Content-Transfer-Encoding: 7bit
 </body>
 </html>
 
---===============1101518936796097497==--
+--===============3217431424085608947==--
