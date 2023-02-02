@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8275910E2EC
- for <igt-dev@lists.freedesktop.org>; Thu,  2 Feb 2023 05:09:31 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8E35310E1D3
+ for <igt-dev@lists.freedesktop.org>; Thu,  2 Feb 2023 05:09:30 +0000 (UTC)
 From: Nidhi Gupta <nidhi1.gupta@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Thu,  2 Feb 2023 10:45:06 +0530
-Message-Id: <20230202051509.28983-5-nidhi1.gupta@intel.com>
+Date: Thu,  2 Feb 2023 10:45:05 +0530
+Message-Id: <20230202051509.28983-4-nidhi1.gupta@intel.com>
 In-Reply-To: <20230202051509.28983-1-nidhi1.gupta@intel.com>
 References: <20230202051509.28983-1-nidhi1.gupta@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH v4 4/7] tests/kms_plane_alpha_blend: Limit the
- execution to single pipe & two planes
+Subject: [igt-dev] [PATCH v4 3/7] tests/kms_pipe_crc_basic: Limit the
+ execution to two pipes
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,100 +19,37 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: Nidhi Gupta <nidhi1.gupta@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 
-As the execution is taking more time, limit the execution to single pipe
-and two (first & last) planes.
+As the execution is taking more time, limit the execution to two (first
+& last) pipes.
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Signed-off-by: Nidhi Gupta <nidhi1.gupta@intel.com>
 ---
- tests/kms_plane_alpha_blend.c | 51 +++++++++++++++++++++++++++++++++--
- 1 file changed, 49 insertions(+), 2 deletions(-)
+ tests/kms_pipe_crc_basic.c | 41 +++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 40 insertions(+), 1 deletion(-)
 
-diff --git a/tests/kms_plane_alpha_blend.c b/tests/kms_plane_alpha_blend.c
-index 38272ccb..dc943721 100644
---- a/tests/kms_plane_alpha_blend.c
-+++ b/tests/kms_plane_alpha_blend.c
-@@ -26,6 +26,8 @@
- 
- #include "igt.h"
+diff --git a/tests/kms_pipe_crc_basic.c b/tests/kms_pipe_crc_basic.c
+index 91a1b8ab..97b97863 100644
+--- a/tests/kms_pipe_crc_basic.c
++++ b/tests/kms_pipe_crc_basic.c
+@@ -30,6 +30,7 @@
+ #include <string.h>
+ #include <fcntl.h>
  
 +static bool extended = false;
-+
- IGT_TEST_DESCRIPTION("Test plane alpha and blending mode properties");
  
  typedef struct {
-@@ -482,8 +484,10 @@ static void run_test_on_pipe_planes(data_t *data, enum pipe pipe, igt_output_t *
- {
- 	igt_display_t *display = &data->display;
- 	igt_plane_t *plane;
-+	int first_plane = -1;
-+	int last_plane = -1;
+ 	int drm_fd;
+@@ -276,7 +277,23 @@ static void test_disable_crc_after_crtc(data_t *data, enum pipe pipe,
  
--	for_each_plane_on_pipe(display, pipe, plane) {
-+	for_each_plane_on_pipe(&data->display, pipe, plane) {
- 		if (!igt_plane_has_prop(plane, IGT_PLANE_ALPHA))
- 			continue;
- 
-@@ -496,6 +500,19 @@ static void run_test_on_pipe_planes(data_t *data, enum pipe pipe, igt_output_t *
- 		if (must_multiply && !has_multiplied_alpha(data, plane))
- 			continue;
- 
-+		if (first_plane < 0)
-+			first_plane = j__;
-+
-+		last_plane = j__;
-+	}
-+
-+	for_each_plane_on_pipe(&data->display, pipe, plane) {
-+		if (igt_run_in_simulation() &&
-+		    j__ != first_plane && j__ != last_plane)
-+			continue;
-+
-+		/* reset plane alpha properties between each plane */
-+		reset_alpha(display, pipe);
- 		igt_info("Testing plane %u\n", plane->index);
- 		test(data, pipe, plane);
- 		igt_plane_set_fb(plane, NULL);
-@@ -615,12 +632,23 @@ static void run_subtests(data_t *data)
- {
- 	igt_output_t *output;
- 	enum pipe pipe;
-+	enum pipe active_pipes[IGT_MAX_PIPES];
-+	uint32_t last_pipe = 0;
-+
-+	/* Get active pipes. */
-+	for_each_pipe(&data->display, pipe)
-+		active_pipes[last_pipe++] = pipe;
-+	last_pipe--;
- 
- 	for (int i = 0; i < ARRAY_SIZE(subtests); i++) {
- 		igt_describe_f("%s\n", subtests[i].desc);
- 
- 		igt_subtest_with_dynamic(subtests[i].name) {
- 			for_each_pipe_with_single_output(&data->display, pipe, output) {
-+				if (igt_run_in_simulation() && !extended &&
-+				    pipe != active_pipes[0] &&
-+				    pipe != active_pipes[last_pipe])
-+					continue;
- 				prepare_crtc(data, output, pipe);
- 				if (!pipe_check(data, pipe, subtests[i].blend, subtests[i].must_multiply))
- 					continue;
-@@ -628,12 +656,31 @@ static void run_subtests(data_t *data)
- 				igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), output->name)
- 					run_test_on_pipe_planes(data, pipe, output, subtests[i].blend,
- 								subtests[i].must_multiply, subtests[i].test);
-+
-+				if (igt_run_in_simulation())
-+					break;
- 			}
- 		}
- 	}
- }
+ data_t data = {0, };
  
 -igt_main
 +static int opt_handler(int opt, int opt_index, void *_data)
@@ -133,7 +70,64 @@ index 38272ccb..dc943721 100644
 +
 +igt_main_args("e", NULL, help_str, opt_handler, NULL)
  {
- 	data_t data = {};
+ 	enum pipe pipe;
+ 	igt_output_t *output;
+@@ -298,6 +315,8 @@ igt_main
+ 		{ "hang-read-crc", TEST_HANG,
+ 			"Hang test for pipe CRC read." },
+ 	};
++	enum pipe active_pipes[IGT_MAX_PIPES];
++	uint32_t last_pipe = 0;
+ 	int i;
  
+ 	igt_fixture {
+@@ -312,6 +331,11 @@ igt_main
+ 		igt_require_pipe_crc(data.drm_fd);
+ 
+ 		data.debugfs = igt_debugfs_dir(data.drm_fd);
++
++		/* Get active pipes. */
++		for_each_pipe(&data.display, pipe)
++			active_pipes[last_pipe++] = pipe;
++		last_pipe--;
+ 	}
+ 
+ 	igt_describe("Tests error handling when the bad source is set.");
+@@ -322,6 +346,11 @@ igt_main
+ 		igt_describe(tests[i].desc);
+ 		igt_subtest_with_dynamic(tests[i].name) {
+ 			for_each_pipe_with_single_output(&data.display, pipe, output) {
++				if (igt_run_in_simulation() && !extended &&
++				    pipe != active_pipes[0] &&
++				    pipe != active_pipes[last_pipe])
++					continue;
++
+ 				igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), output->name) {
+ 					if (tests[i].flags & TEST_SUSPEND) {
+ 						test_read_crc(&data, pipe, output, 0);
+@@ -350,6 +379,11 @@ igt_main
+ 		     "does not cause issues.");
+ 	igt_subtest_with_dynamic("disable-crc-after-crtc") {
+ 		for_each_pipe_with_single_output(&data.display, pipe, output) {
++			if (igt_run_in_simulation() && !extended &&
++			    pipe != active_pipes[0] &&
++			    pipe != active_pipes[last_pipe])
++				continue;
++
+ 			igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), output->name)
+ 				test_disable_crc_after_crtc(&data, pipe, output);
+ 		}
+@@ -358,6 +392,11 @@ igt_main
+ 	igt_describe("Basic sanity check for CRC mismatches");
+ 	igt_subtest_with_dynamic("compare-crc-sanitycheck") {
+ 		for_each_pipe_with_single_output(&data.display, pipe, output) {
++			if (igt_run_in_simulation() && !extended &&
++			    pipe != active_pipes[0] &&
++			    pipe != active_pipes[last_pipe])
++				continue;
++
+ 			igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), output->name)
+ 				test_compare_crc(&data, pipe, output);
+ 		}
 -- 
 2.39.0
