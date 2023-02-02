@@ -1,22 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B96EA10E1C7
- for <igt-dev@lists.freedesktop.org>; Thu,  2 Feb 2023 12:24:57 +0000 (UTC)
-From: "Murthy, Arun R" <arun.r.murthy@intel.com>
-To: =?iso-8859-1?Q?Ville_Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
-Date: Thu, 2 Feb 2023 12:24:32 +0000
-Message-ID: <DM6PR11MB31776E461B069D252010C09BBAD69@DM6PR11MB3177.namprd11.prod.outlook.com>
-References: <20230131120646.27434-1-ville.syrjala@linux.intel.com>
- <20230131120646.27434-7-ville.syrjala@linux.intel.com>
- <DM6PR11MB3177FB4C74D129995D9FB495BAD69@DM6PR11MB3177.namprd11.prod.outlook.com>
- <Y9upad7eN8P5eQvh@intel.com>
-In-Reply-To: <Y9upad7eN8P5eQvh@intel.com>
-Content-Language: en-US
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: multipart/alternative;
+ boundary="===============4400647325591820028=="
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t 6/6] tests/kms_async_flips: Test all
- modifiers
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: =?utf-8?q?Ma=C3=ADra_Canal?= <mcanal@igalia.com>
+Date: Thu, 02 Feb 2023 12:30:10 -0000
+Message-ID: <167534101065.11115.10830894844529627931@emeril.freedesktop.org>
+References: <20230202114248.255312-1-mcanal@igalia.com>
+In-Reply-To: <20230202114248.255312-1-mcanal@igalia.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
+ =?utf-8?q?vkms=3A_Create_a_testlist_to_the_vkms_DRM_driver_=28rev2=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,230 +17,169 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-> -----Original Message-----
-> From: Ville Syrj=E4l=E4 <ville.syrjala@linux.intel.com>
-> Sent: Thursday, February 2, 2023 5:46 PM
-> To: Murthy, Arun R <arun.r.murthy@intel.com>
-> Cc: igt-dev@lists.freedesktop.org
-> Subject: Re: [PATCH i-g-t 6/6] tests/kms_async_flips: Test all modifiers
->=20
-> On Thu, Feb 02, 2023 at 11:23:09AM +0000, Murthy, Arun R wrote:
-> > > -----Original Message-----
-> > > From: Ville Syrjala <ville.syrjala@linux.intel.com>
-> > > Sent: Tuesday, January 31, 2023 5:37 PM
-> > > To: igt-dev@lists.freedesktop.org
-> > > Cc: Murthy, Arun R <arun.r.murthy@intel.com>
-> > > Subject: [PATCH i-g-t 6/6] tests/kms_async_flips: Test all modifiers
-> > >
-> > > From: Ville Syrj=E4l=E4 <ville.syrjala@linux.intel.com>
-> > >
-> > > Run the basic async flip test for all modifiers reported by the
-> > > plane (for the
-> > > XRGB8888 format). The driver may not support async flip with all
-> > > modifiers so we allow this to fail.
-> >
-> > Support for adding X-tile and linear for all platforms is being added
-> > as sub-test in https://patchwork.freedesktop.org/series/103137/
-> >
-> > >
-> > > TODO: probably shuould add an even more basic subtest that
-> > >       makes sure the driver accepts async flips with a least
-> > >       one format/modifier combo, if it advertises async flip
-> > >       support
-> > >
-> > > Cc: Arun R Murthy <arun.r.murthy@intel.com>
-> > > Signed-off-by: Ville Syrj=E4l=E4 <ville.syrjala@linux.intel.com>
-> > > ---
-> > >  tests/kms_async_flips.c | 54
-> > > +++++++++++++++++++++++++++++++++--------
-> > >  1 file changed, 44 insertions(+), 10 deletions(-)
-> > >
-> > > diff --git a/tests/kms_async_flips.c b/tests/kms_async_flips.c index
-> > > 58740f6ab702..387fcff2f32c 100644
-> > > --- a/tests/kms_async_flips.c
-> > > +++ b/tests/kms_async_flips.c
-> > > @@ -53,6 +53,8 @@ typedef struct {
-> > >  	igt_output_t *output;
-> > >  	unsigned long flip_timestamp_us;
-> > >  	double flip_interval;
-> > > +	uint64_t modifier;
-> > > +	igt_plane_t *plane;
-> > >  	igt_pipe_crc_t *pipe_crc;
-> > >  	igt_crc_t ref_crc;
-> > >  	int flip_count;
-> > > @@ -61,6 +63,7 @@ typedef struct {
-> > >  	bool extended;
-> > >  	enum pipe pipe;
-> > >  	bool alternate_sync_async;
-> > > +	bool allow_fail;
-> > >  } data_t;
-> > >
-> > >  static void flip_handler(int fd_, unsigned int sequence, unsigned
-> > > int tv_sec, @@ -133,7 +136,7 @@ static void make_fb(data_t *data,
-> struct igt_fb *fb,
-> > >  	rec_width =3D width / (ARRAY_SIZE(data->bufs) * 2);
-> > >
-> > >  	igt_create_color_fb(data->drm_fd, width, height,
-> > > DRM_FORMAT_XRGB8888,
-> > > -			    default_modifier(data), 0.0, 0.0, 0.5, fb);
-> > > +			    data->modifier, 0.0, 0.0, 0.5, fb);
-> > >
-> > >  	cr =3D igt_get_cairo_ctx(data->drm_fd, fb);
-> > >  	igt_paint_color_rand(cr, rec_width * 2 + rec_width * index, 0,
-> > > rec_width, height); @@ -159,24 +162,26 @@ static void
-> > > test_init(data_t
-> > > *data)
-> > >  	data->refresh_rate =3D mode->vrefresh;
-> > >
-> > >  	igt_output_set_pipe(data->output, data->pipe);
-> > > +
-> > > +	data->plane =3D igt_output_get_plane_type(data->output,
-> > > +DRM_PLANE_TYPE_PRIMARY);
-> > >  }
-> > >
-> > >  static void test_init_fbs(data_t *data)  {
-> > >  	int i;
-> > >  	uint32_t width, height;
-> > > -	igt_plane_t *plane;
-> > >  	static uint32_t prev_output_id;
-> > > +	static uint64_t prev_modifier;
-> > >  	drmModeModeInfo *mode;
-> > >
-> > >  	mode =3D igt_output_get_mode(data->output);
-> > >  	width =3D mode->hdisplay;
-> > >  	height =3D mode->vdisplay;
-> > >
-> > > -	plane =3D igt_output_get_plane_type(data->output,
-> > > DRM_PLANE_TYPE_PRIMARY);
-> > > -
-> > > -	if (prev_output_id !=3D data->output->id) {
-> > > +	if (prev_output_id !=3D data->output->id ||
-> > > +	    prev_modifier !=3D data->modifier) {
-> > >  		prev_output_id =3D data->output->id;
-> > > +		prev_modifier =3D data->modifier;
-> > >
-> > >  		if (data->bufs[0].fb_id) {
-> > >  			for (i =3D 0; i < ARRAY_SIZE(data->bufs); i++) @@ -187,8
-> > > +192,8 @@ static void test_init_fbs(data_t *data)
-> > >  			make_fb(data, &data->bufs[i], width, height, i);
-> > >  	}
-> > >
-> > > -	igt_plane_set_fb(plane, &data->bufs[0]);
-> > > -	igt_plane_set_size(plane, width, height);
-> > > +	igt_plane_set_fb(data->plane, &data->bufs[0]);
-> > > +	igt_plane_set_size(data->plane, width, height);
-> > >
-> > >  	igt_display_commit2(&data->display, data->display.is_atomic ?
-> > > COMMIT_ATOMIC : COMMIT_LEGACY);  } @@ -243,8 +248,10 @@ static
-> void
-> > > test_async_flip(data_t *data)
-> > >  		ret =3D drmModePageFlip(data->drm_fd, data->crtc_id,
-> > >  				      data->bufs[frame % 4].fb_id,
-> > >  				      flags, data);
-> > > -
-> > > -		igt_assert(ret =3D=3D 0);
-> > > +		if (frame =3D=3D 1 && data->allow_fail)
-> > > +			igt_skip_on(ret =3D=3D -EINVAL);
-> > > +		else
-> > > +			igt_assert(ret =3D=3D 0);
-> > >
-> > >  		wait_flip_event(data);
-> > >
-> > > @@ -545,6 +552,9 @@ static void run_test(data_t *data, void
-> > > (*test)(data_t
-> > > *))
-> > >  	for_each_pipe_with_valid_output(&data->display, data->pipe, data-
-> > > >output) {
-> > >  		test_init(data);
-> > >
-> > > +		data->allow_fail =3D false;
-> > > +		data->modifier =3D default_modifier(data);
-> > > +
-> > >  		igt_dynamic_f("pipe-%s", kmstest_pipe_name(data->pipe)) {
-> > >  			test_init_fbs(data);
-> > >  			test(data);
-> > > @@ -555,6 +565,30 @@ static void run_test(data_t *data, void
-> > > (*test)(data_t *))
-> > >  	}
-> > >  }
-> > >
-> > > +static void run_test_with_modifiers(data_t *data, void
-> > > +(*test)(data_t
-> > > +*)) {
-> > > +	for_each_pipe_with_valid_output(&data->display, data->pipe, data-
-> > > >output) {
-> > > +		test_init(data);
-> > > +
-> > > +		for (int i =3D 0; i < data->plane->format_mod_count; i++) {
-> > > +			if (data->plane->formats[i] !=3D
-> > > DRM_FORMAT_XRGB8888)
-> > > +				continue;
-> > > +
-> > > +			data->allow_fail =3D true;
-> > If the modifier is supported by the platform and there is a failure wit=
-h a
-> bug in driver/hardware, aren't we falsely reporting here?
->=20
-> There is no way to query what is supported by the hw/driver, so we just h=
-ave
-> to try them all and accept that not all may succeed.
-Yes that right!
-Failing for particular modifier not supported would be better than allowing=
- to escape a failure.
-Moreover exceptions can be added for platforms not supporting a particular =
-modifier.
-Maybe a proper way of handling the error might be required.
+--===============4400647325591820028==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Thanks and Regards,
-Arun R Murthy
--------------------
-> As mentioned earlier it would be nice it we have a basic subtest to confi=
-rm
-> that at least one of the modifier/format combos works when the driver
-> advertises async flip support.
->=20
-> >
-> > Thanks and Regards,
-> > Arun R Murthy
-> > --------------------
-> > > +			data->modifier =3D data->plane->modifiers[i];
-> > > +
-> > > +			igt_dynamic_f("pipe-%s-%s",
-> > > kmstest_pipe_name(data->pipe),
-> > > +				      igt_fb_modifier_name(data->modifier)) {
-> > > +				test_init_fbs(data);
-> > > +				test(data);
-> > > +			}
-> > > +		}
-> > > +
-> > > +		if (!data->extended)
-> > > +			break;
-> > > +	}
-> > > +}
-> > > +
-> > >  static int opt_handler(int opt, int opt_index, void *_data)  {
-> > >  	data_t *data =3D _data;
-> > > @@ -595,7 +629,7 @@ igt_main_args("e", NULL, help_str, opt_handler,
-> > > &data)
-> > >  		igt_describe("Wait for page flip events in between successive
-> > > asynchronous flips");
-> > >  		igt_subtest_with_dynamic("async-flip-with-page-flip-events")
-> > > {
-> > >  			data.alternate_sync_async =3D false;
-> > > -			run_test(&data, test_async_flip);
-> > > +			run_test_with_modifiers(&data, test_async_flip);
-> > >  		}
-> > >
-> > >  		igt_describe("Alternate between sync and async flips");
-> > > --
-> > > 2.39.1
-> >
->=20
-> --
-> Ville Syrj=E4l=E4
-> Intel
+== Series Details ==
+
+Series: tests/vkms: Create a testlist to the vkms DRM driver (rev2)
+URL   : https://patchwork.freedesktop.org/series/112972/
+State : success
+
+== Summary ==
+
+CI Bug Log - changes from CI_DRM_12682 -> IGTPW_8434
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8434/index.html
+
+Participating hosts (27 -> 26)
+------------------------------
+
+  Missing    (1): fi-snb-2520m 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_8434 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions-varying-size:
+    - fi-bsw-n3050:       [PASS][1] -> [FAIL][2] ([i915#6298])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12682/fi-bsw-n3050/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions-varying-size.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8434/fi-bsw-n3050/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions-varying-size.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_pm_rpm@module-reload:
+    - bat-dg1-6:          [SKIP][3] ([i915#7855]) -> [PASS][4]
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12682/bat-dg1-6/igt@i915_pm_rpm@module-reload.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8434/bat-dg1-6/igt@i915_pm_rpm@module-reload.html
+
+  * igt@kms_pipe_crc_basic@suspend-read-crc@pipe-d-hdmi-a-3:
+    - {bat-dg2-11}:       [INCOMPLETE][5] ([i915#7908]) -> [PASS][6]
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12682/bat-dg2-11/igt@kms_pipe_crc_basic@suspend-read-crc@pipe-d-hdmi-a-3.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8434/bat-dg2-11/igt@kms_pipe_crc_basic@suspend-read-crc@pipe-d-hdmi-a-3.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [i915#4983]: https://gitlab.freedesktop.org/drm/intel/issues/4983
+  [i915#6298]: https://gitlab.freedesktop.org/drm/intel/issues/6298
+  [i915#7855]: https://gitlab.freedesktop.org/drm/intel/issues/7855
+  [i915#7908]: https://gitlab.freedesktop.org/drm/intel/issues/7908
+  [i915#7977]: https://gitlab.freedesktop.org/drm/intel/issues/7977
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_7144 -> IGTPW_8434
+
+  CI-20190529: 20190529
+  CI_DRM_12682: b0ddd08fba5c065cdc402a3be6cc6eb3340a7996 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_8434: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8434/index.html
+  IGT_7144: cda71bf809b981a646270963d6b1ccee4fd4643b @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8434/index.html
+
+--===============4400647325591820028==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/vkms: Create a testlist to the vkms DRM driver (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/112972/">https://patchwork.freedesktop.org/series/112972/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8434/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8434/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_12682 -&gt; IGTPW_8434</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8434/index.html</p>
+<h2>Participating hosts (27 -&gt; 26)</h2>
+<p>Missing    (1): fi-snb-2520m </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_8434 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions-varying-size:<ul>
+<li>fi-bsw-n3050:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12682/fi-bsw-n3050/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions-varying-size.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8434/fi-bsw-n3050/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions-varying-size.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6298">i915#6298</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@i915_pm_rpm@module-reload:</p>
+<ul>
+<li>bat-dg1-6:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12682/bat-dg1-6/igt@i915_pm_rpm@module-reload.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7855">i915#7855</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8434/bat-dg1-6/igt@i915_pm_rpm@module-reload.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@suspend-read-crc@pipe-d-hdmi-a-3:</p>
+<ul>
+<li>{bat-dg2-11}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12682/bat-dg2-11/igt@kms_pipe_crc_basic@suspend-read-crc@pipe-d-hdmi-a-3.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7908">i915#7908</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8434/bat-dg2-11/igt@kms_pipe_crc_basic@suspend-read-crc@pipe-d-hdmi-a-3.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_7144 -&gt; IGTPW_8434</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_12682: b0ddd08fba5c065cdc402a3be6cc6eb3340a7996 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_8434: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8434/index.html<br />
+  IGT_7144: cda71bf809b981a646270963d6b1ccee4fd4643b @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============4400647325591820028==--
