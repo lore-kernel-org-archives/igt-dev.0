@@ -1,18 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9925610E4D2
- for <igt-dev@lists.freedesktop.org>; Thu,  2 Feb 2023 10:38:49 +0000 (UTC)
-Date: Thu, 2 Feb 2023 11:38:44 +0100
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Mark Yacoub <markyacoub@chromium.org>
-Message-ID: <20230202103844.ht2gevng222jluwo@kamilkon-desk1>
-References: <20230201232207.3332996-1-markyacoub@google.com>
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 677BE10E4D5
+ for <igt-dev@lists.freedesktop.org>; Thu,  2 Feb 2023 10:52:28 +0000 (UTC)
+From: "Hogander, Jouni" <jouni.hogander@intel.com>
+To: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Sharma,
+ Swati2" <swati2.sharma@intel.com>
+Date: Thu, 2 Feb 2023 10:52:24 +0000
+Message-ID: <bb717e27b3fdcea17ca83e9b23b4809f41275516.camel@intel.com>
+References: <20230202072121.26153-1-swati2.sharma@intel.com>
+In-Reply-To: <20230202072121.26153-1-swati2.sharma@intel.com>
+Content-Language: en-US
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <746F7B8BF2FDC940BFE9F82A389A2525@namprd11.prod.outlook.com>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20230201232207.3332996-1-markyacoub@google.com>
-Subject: Re: [igt-dev] [PATCH v2] Chamelium: Get Chamelium Logs on RPC
- failure.
+Subject: Re: [igt-dev] [PATCH i-g-t v2 0/6] Enable VDSC output formats
+ validation
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,184 +23,33 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: petri.latvala@intel.com, ihf@google.com, amstan@chromium.org,
- igt-dev@lists.freedesktop.org, seanpaul@chromium.org,
- khaled.almahallawy@intel.com, markyacoub@google.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Mark,
-
-please remove end dot from subject: line,
-
-Chamelium: Get Chamelium Logs on RPC failure.
-------------------------------------------- ^
-There is no need for final dot there.
-
-Please also note that Petri has new e-mail address
-Petri Latvala <adrinael@adrinael.net>
-
-On 2023-02-01 at 18:22:07 -0500, Mark Yacoub wrote:
-> From: Mark Yacoub <markyacoub@chromium.org>
-> 
-> [Why]
-> Currently, Chamelium acts like a black box, we can't tell what is going on there when a failure occur. Seeing its logs will allow us to debug better.
---------------------------------------------------------------- ^
-Keep this line at most 75 chars long and for discussion on ML it
-is even better to keep it 65 chars long, so split it and reformat.
-
-> 
-> [How]
-> On chamelium_rpc failure, print out the logs in debug so it wouldn't clutter good tests.
------------------------------------------------------------- ^
-Same here, split line.
-
-> 
-> v2:
-> - Added missing #includes
-> 
-> Signed-off-by: Mark Yacoub <markyacoub@chromium.org>
-> ---
->  lib/igt_chamelium.c                    | 38 ++++++++++++++++++++++++--
->  lib/igt_chamelium.h                    |  1 +
->  tests/chamelium/kms_chamelium_helper.c | 16 +++++++++++
->  3 files changed, 52 insertions(+), 3 deletions(-)
-> 
-> diff --git a/lib/igt_chamelium.c b/lib/igt_chamelium.c
-> index a235f3c8..65531671 100644
-> --- a/lib/igt_chamelium.c
-> +++ b/lib/igt_chamelium.c
-> @@ -658,6 +658,8 @@ static xmlrpc_value *chamelium_rpc(struct chamelium *chamelium,
->  	xmlrpc_value *res;
->  	va_list va_args;
->  	int fsm_trials_left = 5;
-> +	bool did_fault_occur = false;
-> +	char fault_string[1024];
->  
->  	if (strcmp(method_name, "CaptureVideo") == 0
->  	    || strcmp(method_name, "StartCapturingVideo") == 0) {
-> @@ -680,9 +682,23 @@ static xmlrpc_value *chamelium_rpc(struct chamelium *chamelium,
->  					 format_str, va_args);
->  		va_end(va_args);
->  	}
-> -	igt_assert_f(!chamelium->env.fault_occurred,
-> -		     "Chamelium RPC call[%s] failed: %s\n", method_name,
-> -		     chamelium->env.fault_string);
-> +
-> +	did_fault_occur = chamelium->env.fault_occurred;
-> +	if (did_fault_occur) {
-> +		// Save the fault string before getting the logs which will
-> +		// clear the string if it is works.
-
-Comments should use /* */ like:
-/*
- * This is multiline comment about
- * code.
- */
-
-> +		strncpy(fault_string, chamelium->env.fault_string, 1024);
-> +		// To avoid recursive calls for logs, don't call for logs if we
-> +		// fail on getting the logs.
-
-I do not get this, maybe just tell here:
-		/* Avoid recursive calls for logs */
-
-> +		if (strcmp(method_name, "GetChameleondLogs") != 0) {
-> +			char *logs = chamelium_get_logs(chamelium);
-> +			igt_debug("CHAMELIUM LOGS:\n%s\n", logs);
-> +			free(logs);
-> +		}
-> +	}
-> +
-> +	igt_assert_f(!did_fault_occur, "Chamelium RPC call [%s] failed: %s\n",
-> +		     method_name, fault_string);
->  
->  	return res;
->  }
-> @@ -737,6 +753,22 @@ void chamelium_assert_reachable(struct chamelium *chamelium, int timeout)
->  		     "Couldn't connect to Chamelium for %ds", timeout);
->  }
->  
-
-Put description here, all public library functions need to be
-described. Something to consider is to review this lib and
-adding missing descriptions (if there are any).
-
-> +char *chamelium_get_logs(struct chamelium *chamelium)
-> +{
-> +	xmlrpc_value *res;
-> +	const char *logs = NULL;
-> +
-> +	igt_debug(
-> +		"Calling GetChameleondLogs - Logs returned are from the last time "
-> +		"this was called.\n");
-> +
-> +	res = chamelium_rpc(chamelium, NULL, "GetChameleondLogs", "(s)", "IGT");
-> +	xmlrpc_read_string(&chamelium->env, res, &logs);
-> +	xmlrpc_DECREF(res);
-> +
-> +	return logs;
-> +}
-> +
->  /**
->   * chamelium_plug:
->   * @chamelium: The Chamelium instance to use
-> diff --git a/lib/igt_chamelium.h b/lib/igt_chamelium.h
-> index d979de4a..e9096519 100644
-> --- a/lib/igt_chamelium.h
-> +++ b/lib/igt_chamelium.h
-> @@ -159,6 +159,7 @@ chamelium_reset_state(igt_display_t *display,
->  
->  bool chamelium_wait_reachable(struct chamelium *chamelium, int timeout);
->  void chamelium_assert_reachable(struct chamelium *chamelium, int timeout);
-> +char *chamelium_get_logs(struct chamelium *chamelium);
->  void chamelium_plug(struct chamelium *chamelium, struct chamelium_port *port);
->  void chamelium_unplug(struct chamelium *chamelium, struct chamelium_port *port);
->  bool chamelium_is_plugged(struct chamelium *chamelium,
-> diff --git a/tests/chamelium/kms_chamelium_helper.c b/tests/chamelium/kms_chamelium_helper.c
-> index 197d29be..bc32329c 100644
-> --- a/tests/chamelium/kms_chamelium_helper.c
-> +++ b/tests/chamelium/kms_chamelium_helper.c
-> @@ -24,7 +24,19 @@
->   *    Lyude Paul <lyude@redhat.com>
->   */
->  
-> +#include <fcntl.h>
-> +#include <stdint.h>
-> +#include <string.h>
-> +#include <stdatomic.h>
-> +#include <xf86drmMode.h>
-> +
-> +#include "config.h"
-> +#include "igt.h"
-> +#include "igt_chamelium.h"
->  #include "igt_edid.h"
-> +#include "igt_eld.h"
-> +#include "igt_vc4.h"
-> +#include "igt_infoframe.h"
->  #include "kms_chamelium_helper.h"
->  
->  void chamelium_init_test(chamelium_data_t *data)
-> @@ -47,6 +59,10 @@ void chamelium_init_test(chamelium_data_t *data)
->  	/* we need to initalize chamelium after igt_display_require */
->  	data->chamelium = chamelium_init(data->drm_fd, &data->display);
->  	igt_require(data->chamelium);
-> +	// Get the logs so we can reset the chamelium logs at this cursor.
-------- ^
-> +	// The logs are then retrieved when any call fails so we can debug
-------- ^
-> +	// chamelium if needed.
-------- ^
-Same here, turn this into /* */ comment.
-
-Regards,
-Kamil
-
-> +	free(chamelium_get_logs(data->chamelium));
->  
->  	data->ports = chamelium_get_ports(data->chamelium, &data->port_count);
->  
-> -- 
-> 2.39.1.456.gfc5497dd1b-goog
-> 
+T24gVGh1LCAyMDIzLTAyLTAyIGF0IDEyOjUxICswNTMwLCBTd2F0aSBTaGFybWEgd3JvdGU6DQo+
+IFRoaXMgc2VyaWVzIGlzIHNwbGl0IGZyb20NCj4gaHR0cHM6Ly9wYXRjaHdvcmsuZnJlZWRlc2t0
+b3Aub3JnL3Nlcmllcy8xMTEzNDIvDQo+IA0KPiBJbml0aWFsIGRzYyBsaWIgcmVsYXRlZCBjaGFu
+Z2VzIGdvdCBtZXJnZWQuIFJlY2VpdmVkIHJldmlldw0KPiBjb21tZW50cyBvbiBkcml2ZXIgZGVi
+dWdmcyBZQ0JDUjQyMCBjaGFuZ2VzLCB0byBtYWtlIGRlYnVnZnMNCj4gZW50cnkgZ2VuZXJpYyBz
+byB0aGF0IGFsbCBzdXBwb3J0ZWQgb3V0cHV0IGZvcm1hdHMgY2FuIGJlDQo+IHZhbGlkYXRlZC4N
+Cj4gDQo+IEluIHRoaXMgc2VyaWVzLCByZXZpZXcgY29tbWVudHMgZnJvbSBhYm92ZSBQVyBhcmUg
+YWRkcmVzc2VkLg0KPiBBbG9uZywgd2l0aCB0aGF0IGNoYW5nZXMgYXJlIGRvbmUgdG8gbWFrZSB0
+ZXN0IGdlbmVyaWMgdG8NCj4gdmFsaWRhdGUgYWxsIHN1cHBvcnRlZCBkc2MgZm9ybWF0cy4NCg0K
+Rm9yIHRoZSB3aG9sZSBzZXQ6DQoNClJldmlld2VkLWJ5OiBKb3VuaSBIw7ZnYW5kZXIgPGpvdW5p
+LmhvZ2FuZGVyQGludGVsLmNvbT4NCg0KPiANCj4gU3dhdGkgU2hhcm1hICg2KToNCj4gwqAgbGli
+L2RzYzogRml4IHJldHVybiB2YWx1ZQ0KPiDCoCB0ZXN0cy9pOTE1L2ttc19kc2M6IEFkZCBwbGFu
+ZV9mb3JtYXQgYXMgc3RydWN0IGRhdGFfdCBtZW1iZXINCj4gwqAgdGVzdHMvaTkxNS9rbXNfZHNj
+OiBSZW1vdmUgcG9pbnRsZXNzIHN0cnVjdA0KPiDCoCB0ZXN0cy9pOTE1L2ttc19kc2M6IE1ha2Ug
+YnBjX2xpc3Qgc3RhdGljDQo+IMKgIGxpYi9kc2M6IEFkZCBoZWxwZXJzIGZvciBWRFNDIG91dHB1
+dCBmb3JtYXQgZGVidWdmcyBlbnRyeQ0KPiDCoCB0ZXN0cy9pOTE1L2ttc19kc2M6IEVuYWJsZSB2
+YWxpZGF0aW9uIGZvciBWRFNDIG91dHB1dCBmb3JtYXRzDQo+IA0KPiDCoGxpYi9pZ3RfZHNjLmPC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIHzCoCA1NiArKysrKysrKysrKysrKystDQo+IMKg
+bGliL2lndF9kc2MuaMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgfMKgwqAgNSArKw0KPiDC
+oGxpYi9pZ3Rfa21zLmPCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIHzCoCAxOCArKysrKw0K
+PiDCoGxpYi9pZ3Rfa21zLmjCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIHzCoMKgIDcgKysN
+Cj4gwqB0ZXN0cy9pOTE1L2ttc19kc2MuY8KgwqDCoMKgwqDCoMKgIHwgMTI4ICsrKysrKysrKysr
+KysrKysrKysrKysrKysrLS0tLS0tLS0NCj4gLS0NCj4gwqB0ZXN0cy9pOTE1L2ttc19kc2NfaGVs
+cGVyLmMgfMKgIDQwICsrKysrKysrKystDQo+IMKgdGVzdHMvaTkxNS9rbXNfZHNjX2hlbHBlci5o
+IHzCoMKgIDQgKysNCj4gwqA3IGZpbGVzIGNoYW5nZWQsIDIxOCBpbnNlcnRpb25zKCspLCA0MCBk
+ZWxldGlvbnMoLSkNCj4gDQoNCg==
