@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5031F10E1D3
- for <igt-dev@lists.freedesktop.org>; Thu,  2 Feb 2023 05:09:29 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8275910E2EC
+ for <igt-dev@lists.freedesktop.org>; Thu,  2 Feb 2023 05:09:31 +0000 (UTC)
 From: Nidhi Gupta <nidhi1.gupta@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Thu,  2 Feb 2023 10:45:04 +0530
-Message-Id: <20230202051509.28983-3-nidhi1.gupta@intel.com>
+Date: Thu,  2 Feb 2023 10:45:06 +0530
+Message-Id: <20230202051509.28983-5-nidhi1.gupta@intel.com>
 In-Reply-To: <20230202051509.28983-1-nidhi1.gupta@intel.com>
 References: <20230202051509.28983-1-nidhi1.gupta@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH v4 2/7] tests/kms_async_flips: Limit the execution
- to single pipe
+Subject: [igt-dev] [PATCH v4 4/7] tests/kms_plane_alpha_blend: Limit the
+ execution to single pipe & two planes
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,51 +19,121 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Nidhi Gupta <nidhi1.gupta@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 
-As the execution is taking more time, limit the execution to single
-pipe.
+As the execution is taking more time, limit the execution to single pipe
+and two (first & last) planes.
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Signed-off-by: Nidhi Gupta <nidhi1.gupta@intel.com>
 ---
- tests/kms_async_flips.c | 18 ++++++++----------
- 1 file changed, 8 insertions(+), 10 deletions(-)
+ tests/kms_plane_alpha_blend.c | 51 +++++++++++++++++++++++++++++++++--
+ 1 file changed, 49 insertions(+), 2 deletions(-)
 
-diff --git a/tests/kms_async_flips.c b/tests/kms_async_flips.c
-index 7cb71f6b..d516e3e2 100644
---- a/tests/kms_async_flips.c
-+++ b/tests/kms_async_flips.c
-@@ -543,17 +543,15 @@ static void run_test(data_t *data, void (*test)(data_t *))
+diff --git a/tests/kms_plane_alpha_blend.c b/tests/kms_plane_alpha_blend.c
+index 38272ccb..dc943721 100644
+--- a/tests/kms_plane_alpha_blend.c
++++ b/tests/kms_plane_alpha_blend.c
+@@ -26,6 +26,8 @@
+ 
+ #include "igt.h"
+ 
++static bool extended = false;
++
+ IGT_TEST_DESCRIPTION("Test plane alpha and blending mode properties");
+ 
+ typedef struct {
+@@ -482,8 +484,10 @@ static void run_test_on_pipe_planes(data_t *data, enum pipe pipe, igt_output_t *
+ {
+ 	igt_display_t *display = &data->display;
+ 	igt_plane_t *plane;
++	int first_plane = -1;
++	int last_plane = -1;
+ 
+-	for_each_plane_on_pipe(display, pipe, plane) {
++	for_each_plane_on_pipe(&data->display, pipe, plane) {
+ 		if (!igt_plane_has_prop(plane, IGT_PLANE_ALPHA))
+ 			continue;
+ 
+@@ -496,6 +500,19 @@ static void run_test_on_pipe_planes(data_t *data, enum pipe pipe, igt_output_t *
+ 		if (must_multiply && !has_multiplied_alpha(data, plane))
+ 			continue;
+ 
++		if (first_plane < 0)
++			first_plane = j__;
++
++		last_plane = j__;
++	}
++
++	for_each_plane_on_pipe(&data->display, pipe, plane) {
++		if (igt_run_in_simulation() &&
++		    j__ != first_plane && j__ != last_plane)
++			continue;
++
++		/* reset plane alpha properties between each plane */
++		reset_alpha(display, pipe);
+ 		igt_info("Testing plane %u\n", plane->index);
+ 		test(data, pipe, plane);
+ 		igt_plane_set_fb(plane, NULL);
+@@ -615,12 +632,23 @@ static void run_subtests(data_t *data)
+ {
  	igt_output_t *output;
  	enum pipe pipe;
- 
--	for_each_pipe(&data->display, pipe) {
--		for_each_valid_output_on_pipe(&data->display, pipe, output) {
--			igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), output->name) {
--				data->output = output;
--				data->pipe = pipe;
--				test(data);
--			}
--
--			if (!data->extended)
--				break;
-+	for_each_pipe_with_valid_output(&data->display, pipe, output) {
-+		igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), output->name) {
-+			data->output = output;
-+			data->pipe = pipe;
-+			test(data);
- 		}
++	enum pipe active_pipes[IGT_MAX_PIPES];
++	uint32_t last_pipe = 0;
 +
-+		if (!data->extended)
-+			break;
++	/* Get active pipes. */
++	for_each_pipe(&data->display, pipe)
++		active_pipes[last_pipe++] = pipe;
++	last_pipe--;
+ 
+ 	for (int i = 0; i < ARRAY_SIZE(subtests); i++) {
+ 		igt_describe_f("%s\n", subtests[i].desc);
+ 
+ 		igt_subtest_with_dynamic(subtests[i].name) {
+ 			for_each_pipe_with_single_output(&data->display, pipe, output) {
++				if (igt_run_in_simulation() && !extended &&
++				    pipe != active_pipes[0] &&
++				    pipe != active_pipes[last_pipe])
++					continue;
+ 				prepare_crtc(data, output, pipe);
+ 				if (!pipe_check(data, pipe, subtests[i].blend, subtests[i].must_multiply))
+ 					continue;
+@@ -628,12 +656,31 @@ static void run_subtests(data_t *data)
+ 				igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), output->name)
+ 					run_test_on_pipe_planes(data, pipe, output, subtests[i].blend,
+ 								subtests[i].must_multiply, subtests[i].test);
++
++				if (igt_run_in_simulation())
++					break;
+ 			}
+ 		}
  	}
  }
+ 
+-igt_main
++static int opt_handler(int opt, int opt_index, void *_data)
++{
++	switch (opt) {
++		case 'e':
++			extended = true;
++			break;
++		default:
++			return IGT_OPT_HANDLER_ERROR;
++	}
++
++	return IGT_OPT_HANDLER_SUCCESS;
++}
++
++const char *help_str =
++	"  -e \tExtended tests.\n";
++
++igt_main_args("e", NULL, help_str, opt_handler, NULL)
+ {
+ 	data_t data = {};
  
 -- 
 2.39.0
