@@ -1,16 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============6152503461299833290=="
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B66FB10E1B1
+ for <igt-dev@lists.freedesktop.org>; Thu,  2 Feb 2023 15:01:00 +0000 (UTC)
+Date: Thu, 2 Feb 2023 16:00:53 +0100
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Message-ID: <20230202150053.5xnn6juv2xatklhf@kamilkon-desk1>
+References: <20230202060115.29259-1-nidhi1.gupta@intel.com>
+ <20230202070044.29881-1-nidhi1.gupta@intel.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Karolina Stolarek" <karolina.stolarek@intel.com>
-Date: Thu, 02 Feb 2023 13:04:24 -0000
-Message-ID: <167534306425.11114.10159132093858875274@emeril.freedesktop.org>
-References: <20230202114959.77568-1-karolina.stolarek@intel.com>
-In-Reply-To: <20230202114959.77568-1-karolina.stolarek@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgbGliL2lu?=
- =?utf-8?q?tel=5Ftiling=5Finfo=3A_Add_flags_field_to_describe_command_prop?=
- =?utf-8?q?erties?=
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20230202070044.29881-1-nidhi1.gupta@intel.com>
+Subject: Re: [igt-dev] [PATCH v5 4/7] tests/kms_plane_alpha_blend: Limit the
+ execution to single pipe & two planes
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,182 +21,136 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
+Cc: Nidhi Gupta <nidhi1.gupta@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============6152503461299833290==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Hi,
 
-== Series Details ==
+On 2023-02-02 at 12:30:44 +0530, Nidhi Gupta wrote:
+> From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+> 
+> As the execution is taking more time, limit the execution to single pipe
+> and two (first & last) planes.
+> 
 
-Series: lib/intel_tiling_info: Add flags field to describe command properties
-URL   : https://patchwork.freedesktop.org/series/113595/
-State : success
+This is version 5, please put here description of your changes.
 
-== Summary ==
+> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+> ---
+>  tests/kms_plane_alpha_blend.c | 48 +++++++++++++++++++++++++++++++++--
+>  1 file changed, 46 insertions(+), 2 deletions(-)
+> 
+> diff --git a/tests/kms_plane_alpha_blend.c b/tests/kms_plane_alpha_blend.c
+> index 38272ccb..39d321bf 100644
+> --- a/tests/kms_plane_alpha_blend.c
+> +++ b/tests/kms_plane_alpha_blend.c
+> @@ -26,6 +26,8 @@
+>  
+>  #include "igt.h"
+>  
+> +static bool extended = false;
+> +
+>  IGT_TEST_DESCRIPTION("Test plane alpha and blending mode properties");
+>  
+>  typedef struct {
+> @@ -482,8 +484,10 @@ static void run_test_on_pipe_planes(data_t *data, enum pipe pipe, igt_output_t *
+>  {
+>  	igt_display_t *display = &data->display;
+>  	igt_plane_t *plane;
+> +	int first_plane = -1;
+> +	int last_plane = -1;
+>  
+> -	for_each_plane_on_pipe(display, pipe, plane) {
+> +	for_each_plane_on_pipe(&data->display, pipe, plane) {
+>  		if (!igt_plane_has_prop(plane, IGT_PLANE_ALPHA))
+>  			continue;
+>  
+> @@ -496,6 +500,19 @@ static void run_test_on_pipe_planes(data_t *data, enum pipe pipe, igt_output_t *
+>  		if (must_multiply && !has_multiplied_alpha(data, plane))
+>  			continue;
+>  
+> +		if (first_plane < 0)
+> +			first_plane = j__;
+> +
+> +		last_plane = j__;
+> +	}
+> +
+> +	for_each_plane_on_pipe(&data->display, pipe, plane) {
+> +		if (igt_run_in_simulation() &&
+> +		    j__ != first_plane && j__ != last_plane)
+> +			continue;
+> +
+> +		/* reset plane alpha properties between each plane */
+> +		reset_alpha(display, pipe);
+>  		igt_info("Testing plane %u\n", plane->index);
+>  		test(data, pipe, plane);
+>  		igt_plane_set_fb(plane, NULL);
+> @@ -615,12 +632,23 @@ static void run_subtests(data_t *data)
+>  {
+>  	igt_output_t *output;
+>  	enum pipe pipe;
+> +	enum pipe active_pipes[IGT_MAX_PIPES];
+> +	uint32_t last_pipe = 0;
+> +
+> +	/* Get active pipes. */
+> +	for_each_pipe(&data->display, pipe)
 
-CI Bug Log - changes from CI_DRM_12682 -> IGTPW_8435
-====================================================
+You cannot do this here, init this inside igt_fixture.
+GitLab warns you that there is error, you may check it yourself with:
 
-Summary
--------
+./kms_plane_alpha_blend --list-subtests
 
-  **SUCCESS**
+> +		active_pipes[last_pipe++] = pipe;
+> +	last_pipe--;
+>  
+>  	for (int i = 0; i < ARRAY_SIZE(subtests); i++) {
+>  		igt_describe_f("%s\n", subtests[i].desc);
+>  
+>  		igt_subtest_with_dynamic(subtests[i].name) {
+>  			for_each_pipe_with_single_output(&data->display, pipe, output) {
+> +				if (igt_run_in_simulation() && !extended &&
+> +				    pipe != active_pipes[0] &&
+> +				    pipe != active_pipes[last_pipe])
 
-  No regressions found.
+The same code is repeated here and below, maybe create new function
+and make it one-liner here ? For example:
+				if (limit_on_simulation(data))
+					continue;
 
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8435/index.html
+Regards,
+Kamil
 
-Participating hosts (27 -> 26)
-------------------------------
-
-  Missing    (1): fi-snb-2520m 
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_8435 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@i915_selftest@live@execlists:
-    - fi-kbl-soraka:      NOTRUN -> [INCOMPLETE][1] ([i915#7156])
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8435/fi-kbl-soraka/igt@i915_selftest@live@execlists.html
-
-  
-#### Possible fixes ####
-
-  * igt@i915_pm_rpm@module-reload:
-    - bat-dg1-6:          [SKIP][2] ([i915#7855]) -> [PASS][3]
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12682/bat-dg1-6/igt@i915_pm_rpm@module-reload.html
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8435/bat-dg1-6/igt@i915_pm_rpm@module-reload.html
-
-  * igt@i915_selftest@live@hangcheck:
-    - fi-kbl-soraka:      [INCOMPLETE][4] ([i915#7913]) -> [PASS][5]
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12682/fi-kbl-soraka/igt@i915_selftest@live@hangcheck.html
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8435/fi-kbl-soraka/igt@i915_selftest@live@hangcheck.html
-
-  * igt@kms_pipe_crc_basic@suspend-read-crc@pipe-d-hdmi-a-3:
-    - {bat-dg2-11}:       [INCOMPLETE][6] ([i915#7908]) -> [PASS][7]
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12682/bat-dg2-11/igt@kms_pipe_crc_basic@suspend-read-crc@pipe-d-hdmi-a-3.html
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8435/bat-dg2-11/igt@kms_pipe_crc_basic@suspend-read-crc@pipe-d-hdmi-a-3.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [i915#4983]: https://gitlab.freedesktop.org/drm/intel/issues/4983
-  [i915#6367]: https://gitlab.freedesktop.org/drm/intel/issues/6367
-  [i915#6997]: https://gitlab.freedesktop.org/drm/intel/issues/6997
-  [i915#7156]: https://gitlab.freedesktop.org/drm/intel/issues/7156
-  [i915#7855]: https://gitlab.freedesktop.org/drm/intel/issues/7855
-  [i915#7908]: https://gitlab.freedesktop.org/drm/intel/issues/7908
-  [i915#7913]: https://gitlab.freedesktop.org/drm/intel/issues/7913
-  [i915#7996]: https://gitlab.freedesktop.org/drm/intel/issues/7996
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_7144 -> IGTPW_8435
-
-  CI-20190529: 20190529
-  CI_DRM_12682: b0ddd08fba5c065cdc402a3be6cc6eb3340a7996 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_8435: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8435/index.html
-  IGT_7144: cda71bf809b981a646270963d6b1ccee4fd4643b @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8435/index.html
-
---===============6152503461299833290==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>lib/intel_tiling_info: Add flags field to describe command properties</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/113595/">https://patchwork.freedesktop.org/series/113595/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8435/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8435/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from CI_DRM_12682 -&gt; IGTPW_8435</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8435/index.html</p>
-<h2>Participating hosts (27 -&gt; 26)</h2>
-<p>Missing    (1): fi-snb-2520m </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_8435 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>igt@i915_selftest@live@execlists:<ul>
-<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8435/fi-kbl-soraka/igt@i915_selftest@live@execlists.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7156">i915#7156</a>)</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@i915_pm_rpm@module-reload:</p>
-<ul>
-<li>bat-dg1-6:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12682/bat-dg1-6/igt@i915_pm_rpm@module-reload.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7855">i915#7855</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8435/bat-dg1-6/igt@i915_pm_rpm@module-reload.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@hangcheck:</p>
-<ul>
-<li>fi-kbl-soraka:      <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12682/fi-kbl-soraka/igt@i915_selftest@live@hangcheck.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7913">i915#7913</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8435/fi-kbl-soraka/igt@i915_selftest@live@hangcheck.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pipe_crc_basic@suspend-read-crc@pipe-d-hdmi-a-3:</p>
-<ul>
-<li>{bat-dg2-11}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12682/bat-dg2-11/igt@kms_pipe_crc_basic@suspend-read-crc@pipe-d-hdmi-a-3.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7908">i915#7908</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8435/bat-dg2-11/igt@kms_pipe_crc_basic@suspend-read-crc@pipe-d-hdmi-a-3.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_7144 -&gt; IGTPW_8435</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_12682: b0ddd08fba5c065cdc402a3be6cc6eb3340a7996 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_8435: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8435/index.html<br />
-  IGT_7144: cda71bf809b981a646270963d6b1ccee4fd4643b @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-
-</body>
-</html>
-
---===============6152503461299833290==--
+> +					continue;
+>  				prepare_crtc(data, output, pipe);
+>  				if (!pipe_check(data, pipe, subtests[i].blend, subtests[i].must_multiply))
+>  					continue;
+> @@ -633,7 +661,23 @@ static void run_subtests(data_t *data)
+>  	}
+>  }
+>  
+> -igt_main
+> +static int opt_handler(int opt, int opt_index, void *_data)
+> +{
+> +	switch (opt) {
+> +		case 'e':
+> +			extended = true;
+> +			break;
+> +		default:
+> +			return IGT_OPT_HANDLER_ERROR;
+> +	}
+> +
+> +	return IGT_OPT_HANDLER_SUCCESS;
+> +}
+> +
+> +const char *help_str =
+> +	"  -e \tExtended tests.\n";
+> +
+> +igt_main_args("e", NULL, help_str, opt_handler, NULL)
+>  {
+>  	data_t data = {};
+>  
+> -- 
+> 2.39.0
+> 
