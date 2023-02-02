@@ -1,18 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8F4A710E20B
- for <igt-dev@lists.freedesktop.org>; Thu,  2 Feb 2023 11:43:50 +0000 (UTC)
-From: =?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>
-To: Melissa Wen <mwen@igalia.com>, Petri Latvala <petri.latvala@intel.com>,
- Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Rodrigo Siqueira <rodrigosiqueiramelo@gmail.com>
-Date: Thu,  2 Feb 2023 08:42:49 -0300
-Message-Id: <20230202114248.255312-1-mcanal@igalia.com>
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B2B8210E17C
+ for <igt-dev@lists.freedesktop.org>; Thu,  2 Feb 2023 11:50:24 +0000 (UTC)
+From: Karolina Stolarek <karolina.stolarek@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Thu,  2 Feb 2023 12:49:59 +0100
+Message-Id: <20230202114959.77568-1-karolina.stolarek@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v2] tests/vkms: Create a testlist to the
- vkms DRM driver
+Subject: [igt-dev] [PATCH i-g-t] lib/intel_tiling_info: Add flags field to
+ describe command properties
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,298 +17,297 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-The vkms DRM driver is a software-only model of a KMS driver and its
-development is highly based on the current status of the IGT tests. So,
-create a list of the tests that are supported by the vkms DRM driver, in
-order to have a baseline of the tests that should pass when using vkms.
+Blitter commands may have different properties depending on the
+platform. Add a new field to blt_tiling_info struct to describe
+properties of the commands. Update definitions of block-copy on
+DG2 and beyond to show the differences. Add helpers that check
+if a platform uses an extended version of the block-copy command
+or supports compression. Update gem_ccs test to use these
+functions.
 
-This way, it will easier to track regressions on the vkms DRM driver, as
-the testlist for the driver will be publicly available.
-
-Acked-by: Petri Latvala <petri.latvala@intel.com>
-Signed-off-by: Maíra Canal <mcanal@igalia.com>
+Signed-off-by: Karolina Stolarek <karolina.stolarek@intel.com>
 ---
+ lib/i915/i915_blt.c          | 89 +++++++++++++++++++++++++++++-------
+ lib/i915/i915_blt.h          | 10 +++-
+ lib/i915/intel_tiling_info.c | 28 +++++++++---
+ lib/i915/intel_tiling_info.h |  4 ++
+ tests/i915/gem_ccs.c         |  7 ++-
+ 5 files changed, 111 insertions(+), 27 deletions(-)
 
-v1 -> v2:
-
-* Add igt_runner to README (Petri Latvala).
-* Add Petri Latvala's Acked-by.
-
----
- tests/vkms_ci/README        |  21 ++++
- tests/vkms_ci/vkms.testlist | 231 ++++++++++++++++++++++++++++++++++++
- 2 files changed, 252 insertions(+)
- create mode 100644 tests/vkms_ci/README
- create mode 100644 tests/vkms_ci/vkms.testlist
-
-diff --git a/tests/vkms_ci/README b/tests/vkms_ci/README
-new file mode 100644
-index 00000000..74a59ae8
---- /dev/null
-+++ b/tests/vkms_ci/README
-@@ -0,0 +1,21 @@
-+This directory contains test lists to be used for vkms's DRM support.
-+The files are passed to igt_runner/piglit with the --test-list parameter
-+directly.
+diff --git a/lib/i915/i915_blt.c b/lib/i915/i915_blt.c
+index bbfb6ffc..bda9ea5f 100644
+--- a/lib/i915/i915_blt.c
++++ b/lib/i915/i915_blt.c
+@@ -191,23 +191,22 @@ struct gen12_block_copy_data_ext {
+ 	} dw21;
+ };
+ 
+-/**
+- * blt_supports_compression:
+- * @i915: drm fd
+- *
+- * Function checks if HW supports flatccs compression in blitter commands
+- * on @i915 device.
+- *
+- * Returns:
+- * true if it does, false otherwise.
+- */
+-bool blt_supports_compression(int i915)
++static bool device_supports_compression(int i915)
+ {
+ 	uint32_t devid = intel_get_drm_devid(i915);
+ 
+ 	return HAS_FLATCCS(devid);
+ }
+ 
++static const struct blt_tiling_info *blt_get_tiling_info(const struct blt_cmd_info *info,
++							 enum blt_cmd_type cmd)
++{
++	if (!info)
++		return NULL;
 +
-+The test lists are contained in the IGT repository for several
-+reasons:
++	return info->supported_cmds[cmd];
++}
 +
-+- The lists stay synchronized with the IGT codebase.
-+- Public availability. Kernel developers can see what tests are run,
-+  and can see what changes are done to the set, when, and why.
-+- Keep track of the features implemented by the vkms DRM driver.
+ /**
+  * blt_supports_command:
+  * @info: Blitter command info struct
+@@ -222,7 +221,7 @@ bool blt_supports_command(const struct blt_cmd_info *info,
+ {
+ 	igt_require_f(info, "No config found for the platform\n");
+ 
+-	return info->supported_cmds[cmd];
++	return blt_get_tiling_info(info, cmd);
+ }
+ 
+ /**
+@@ -242,10 +241,7 @@ bool blt_cmd_supports_tiling(const struct blt_cmd_info *info,
+ {
+ 	struct blt_tiling_info const *tile_config;
+ 
+-	if (!info)
+-		return false;
+-
+-	tile_config = info->supported_cmds[cmd];
++	tile_config = blt_get_tiling_info(info, cmd);
+ 
+ 	/* no config means no support for that tiling */
+ 	if (!tile_config)
+@@ -254,6 +250,32 @@ bool blt_cmd_supports_tiling(const struct blt_cmd_info *info,
+ 	return tile_config->supported_tiling & BIT(tiling);
+ }
+ 
++/**
++ * blt_cmd_has_property:
++ * @info: Blitter command info struct
++ * @cmd: Blitter command enum
++ * @flag: property flag
++ *
++ * Checks if a @cmd entry of @info has @flag property. The properties can be
++ * freely combined, but the function will return true for platforms for which
++ * all properties defined in the bit flag are present. The function returns
++ * false if no information about the command is stored.
++ *
++ * Returns: true if it does, false otherwise
++ */
++bool blt_cmd_has_property(const struct blt_cmd_info *info,
++			  enum blt_cmd_type cmd, uint32_t flag)
++{
++	struct blt_tiling_info const *tile_config;
 +
-+=============
-+vkms.testlist
-+=============
++	tile_config = blt_get_tiling_info(info, cmd);
 +
-+This test list is meant as a general test suite for the vkms DRM driver,
-+gathering all must-pass tests for the driver.
++	if (!tile_config)
++		return false;
 +
-+As more features are implemented to the vkms DRM driver, the correspondent
-+tests should be added to this list.
-diff --git a/tests/vkms_ci/vkms.testlist b/tests/vkms_ci/vkms.testlist
-new file mode 100644
-index 00000000..9065d318
---- /dev/null
-+++ b/tests/vkms_ci/vkms.testlist
-@@ -0,0 +1,231 @@
-+igt@kms_atomic@atomic-invalid-params
-+igt@kms_atomic@crtc-invalid-params
-+igt@kms_atomic@plane-cursor-legacy
-+igt@kms_atomic@plane-immutable-zpos
-+igt@kms_atomic@plane-invalid-params
-+igt@kms_atomic@plane-primary-legacy
-+igt@kms_atomic@test-only
-+igt@kms_atomic_transition@modeset-transition
-+igt@kms_atomic_transition@modeset-transition-fencing
-+igt@kms_atomic_transition@modeset-transition-nonblocking
-+igt@kms_atomic_transition@modeset-transition-nonblocking-fencing
-+igt@kms_atomic_transition@plane-all-modeset-transition
-+igt@kms_atomic_transition@plane-all-transition
-+igt@kms_atomic_transition@plane-all-transition-nonblocking
-+igt@kms_atomic_transition@plane-primary-toggle-with-vblank-wait
-+igt@kms_atomic_transition@plane-use-after-nonblocking-unbind
-+igt@kms_bw@linear-tiling-1-displays-1920x1080p
-+igt@kms_bw@linear-tiling-1-displays-2560x1440p
-+igt@kms_bw@linear-tiling-1-displays-3840x2160p
-+igt@kms_bw@linear-tiling-2-displays-1920x1080p
-+igt@kms_bw@linear-tiling-2-displays-2560x1440p
-+igt@kms_bw@linear-tiling-2-displays-3840x2160p
-+igt@kms_concurrent@pipe-a
-+igt@kms_cursor_crc@cursor-alpha-opaque
-+igt@kms_cursor_crc@cursor-alpha-transparent
-+igt@kms_cursor_crc@cursor-dpms
-+igt@kms_cursor_crc@cursor-offscreen-128x128
-+igt@kms_cursor_crc@cursor-offscreen-128x42
-+igt@kms_cursor_crc@cursor-offscreen-256x256
-+igt@kms_cursor_crc@cursor-offscreen-256x85
-+igt@kms_cursor_crc@cursor-offscreen-32x10
-+igt@kms_cursor_crc@cursor-offscreen-32x32
-+igt@kms_cursor_crc@cursor-offscreen-512x170
-+igt@kms_cursor_crc@cursor-offscreen-512x512
-+igt@kms_cursor_crc@cursor-offscreen-64x21
-+igt@kms_cursor_crc@cursor-offscreen-64x64
-+igt@kms_cursor_crc@cursor-onscreen-128x128
-+igt@kms_cursor_crc@cursor-onscreen-128x42
-+igt@kms_cursor_crc@cursor-onscreen-256x256
-+igt@kms_cursor_crc@cursor-onscreen-256x85
-+igt@kms_cursor_crc@cursor-onscreen-32x10
-+igt@kms_cursor_crc@cursor-onscreen-32x32
-+igt@kms_cursor_crc@cursor-onscreen-512x170
-+igt@kms_cursor_crc@cursor-onscreen-512x512
-+igt@kms_cursor_crc@cursor-onscreen-64x21
-+igt@kms_cursor_crc@cursor-onscreen-64x64
-+igt@kms_cursor_crc@cursor-random-128x128
-+igt@kms_cursor_crc@cursor-random-128x42
-+igt@kms_cursor_crc@cursor-random-256x256
-+igt@kms_cursor_crc@cursor-random-256x85
-+igt@kms_cursor_crc@cursor-random-32x10
-+igt@kms_cursor_crc@cursor-random-32x32
-+igt@kms_cursor_crc@cursor-random-512x170
-+igt@kms_cursor_crc@cursor-random-512x512
-+igt@kms_cursor_crc@cursor-random-64x21
-+igt@kms_cursor_crc@cursor-random-64x64
-+igt@kms_cursor_crc@cursor-rapid-movement-128x128
-+igt@kms_cursor_crc@cursor-rapid-movement-128x42
-+igt@kms_cursor_crc@cursor-rapid-movement-256x256
-+igt@kms_cursor_crc@cursor-rapid-movement-256x85
-+igt@kms_cursor_crc@cursor-rapid-movement-32x10
-+igt@kms_cursor_crc@cursor-rapid-movement-32x32
-+igt@kms_cursor_crc@cursor-rapid-movement-512x170
-+igt@kms_cursor_crc@cursor-rapid-movement-512x512
-+igt@kms_cursor_crc@cursor-rapid-movement-64x21
-+igt@kms_cursor_crc@cursor-rapid-movement-64x64
-+igt@kms_cursor_crc@cursor-size-change
-+igt@kms_cursor_crc@cursor-sliding-128x128
-+igt@kms_cursor_crc@cursor-sliding-128x42
-+igt@kms_cursor_crc@cursor-sliding-256x256
-+igt@kms_cursor_crc@cursor-sliding-256x85
-+igt@kms_cursor_crc@cursor-sliding-32x10
-+igt@kms_cursor_crc@cursor-sliding-32x32
-+igt@kms_cursor_crc@cursor-sliding-512x170
-+igt@kms_cursor_crc@cursor-sliding-512x512
-+igt@kms_cursor_crc@cursor-sliding-64x21
-+igt@kms_cursor_crc@cursor-sliding-64x64
-+igt@kms_cursor_crc@cursor-suspend
-+igt@kms_cursor_edge_walk@left-edge
-+igt@kms_cursor_edge_walk@right-edge
-+igt@kms_cursor_edge_walk@top-bottom
-+igt@kms_cursor_edge_walk@top-edge
-+igt@kms_flip@absolute-wf_vblank
-+igt@kms_flip@absolute-wf_vblank-interruptible
-+igt@kms_flip@basic-flip-vs-dpms
-+igt@kms_flip@basic-flip-vs-modeset
-+igt@kms_flip@basic-flip-vs-wf_vblank
-+igt@kms_flip@basic-plain-flip
-+igt@kms_flip@blocking-absolute-wf_vblank
-+igt@kms_flip@blocking-absolute-wf_vblank-interruptible
-+igt@kms_flip@blocking-wf_vblank
-+igt@kms_flip@busy-flip
-+igt@kms_flip@dpms-off-confusion
-+igt@kms_flip@dpms-off-confusion-interruptible
-+igt@kms_flip@dpms-vs-vblank-race
-+igt@kms_flip@dpms-vs-vblank-race-interruptible
-+igt@kms_flip@flip-vs-absolute-wf_vblank
-+igt@kms_flip@flip-vs-absolute-wf_vblank-interruptible
-+igt@kms_flip@flip-vs-blocking-wf-vblank
-+igt@kms_flip@flip-vs-dpms-off-vs-modeset
-+igt@kms_flip@flip-vs-dpms-off-vs-modeset-interruptible
-+igt@kms_flip@flip-vs-expired-vblank
-+igt@kms_flip@flip-vs-expired-vblank-interruptible
-+igt@kms_flip@flip-vs-panning
-+igt@kms_flip@flip-vs-panning-interruptible
-+igt@kms_flip@flip-vs-rmfb
-+igt@kms_flip@flip-vs-rmfb-interruptible
-+igt@kms_flip@flip-vs-suspend
-+igt@kms_flip@flip-vs-suspend-interruptible
-+igt@kms_flip@flip-vs-wf_vblank-interruptible
-+igt@kms_flip@modeset-vs-vblank-race
-+igt@kms_flip@modeset-vs-vblank-race-interruptible
-+igt@kms_flip@nonblocking-read
-+igt@kms_flip@nonexisting-fb
-+igt@kms_flip@nonexisting-fb-interruptible
-+igt@kms_flip@plain-flip-fb-recreate
-+igt@kms_flip@plain-flip-fb-recreate-interruptible
-+igt@kms_flip@plain-flip-interruptible
-+igt@kms_flip@plain-flip-ts-check
-+igt@kms_flip@plain-flip-ts-check-interruptible
-+igt@kms_flip@single-buffer-flip-vs-dpms-off-vs-modeset
-+igt@kms_flip@single-buffer-flip-vs-dpms-off-vs-modeset-interruptible
-+igt@kms_flip@wf_vblank-ts-check
-+igt@kms_flip@wf_vblank-ts-check-interruptible
-+igt@kms_flip_event_leak@basic
-+igt@kms_getfb@getfb-addfb-different-handles
-+igt@kms_getfb@getfb-handle-closed
-+igt@kms_getfb@getfb-handle-not-fb
-+igt@kms_getfb@getfb-handle-protection
-+igt@kms_getfb@getfb-handle-valid
-+igt@kms_getfb@getfb-handle-zero
-+igt@kms_getfb@getfb-repeated-different-handles
-+igt@kms_getfb@getfb2-handle-closed
-+igt@kms_getfb@getfb2-handle-not-fb
-+igt@kms_getfb@getfb2-handle-protection
-+igt@kms_getfb@getfb2-handle-zero
-+igt@kms_getfb@getfb2-into-addfb2
-+igt@kms_lease@cursor_implicit_plane
-+igt@kms_lease@empty_lease
-+igt@kms_lease@implicit-plane-lease
-+igt@kms_lease@invalid-create-leases
-+igt@kms_lease@lease-uevent
-+igt@kms_lease@lease_again
-+igt@kms_lease@lease_get
-+igt@kms_lease@lease_invalid_connector
-+igt@kms_lease@lease_invalid_crtc
-+igt@kms_lease@lease_invalid_plane
-+igt@kms_lease@lease_revoke
-+igt@kms_lease@lessee_list
-+igt@kms_lease@master-vs-lease
-+igt@kms_lease@multimaster-lease
-+igt@kms_lease@page_flip_implicit_plane
-+igt@kms_lease@possible-crtcs-filtering
-+igt@kms_lease@setcrtc_implicit_plane
-+igt@kms_lease@simple_lease
-+igt@kms_multipipe_modeset@basic-max-pipe-crc-check
-+igt@kms_pipe_crc_basic@bad-source
-+igt@kms_pipe_crc_basic@compare-crc-sanitycheck
-+igt@kms_pipe_crc_basic@disable-crc-after-crtc
-+igt@kms_pipe_crc_basic@nonblocking-crc
-+igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence
-+igt@kms_pipe_crc_basic@read-crc
-+igt@kms_pipe_crc_basic@read-crc-frame-sequence
-+igt@kms_pipe_crc_basic@suspend-read-crc
-+igt@kms_plane@plane-panning-bottom-right
-+igt@kms_plane@plane-panning-bottom-right-suspend
-+igt@kms_plane@plane-panning-top-left
-+igt@kms_plane@plane-position-covered
-+igt@kms_plane@plane-position-hole
-+igt@kms_plane@plane-position-hole-dpms
-+igt@kms_plane_multiple@tiling-none
-+igt@kms_plane_scaling@planes-downscale-factor-0-25
-+igt@kms_plane_scaling@planes-downscale-factor-0-5
-+igt@kms_plane_scaling@planes-downscale-factor-0-75
-+igt@kms_plane_scaling@planes-scaler-unity-scaling
-+igt@kms_plane_scaling@planes-unity-scaling-downscale-factor-0-25
-+igt@kms_plane_scaling@planes-unity-scaling-downscale-factor-0-5
-+igt@kms_plane_scaling@planes-unity-scaling-downscale-factor-0-75
-+igt@kms_plane_scaling@planes-upscale-20x20
-+igt@kms_plane_scaling@planes-upscale-20x20-downscale-factor-0-25
-+igt@kms_plane_scaling@planes-upscale-20x20-downscale-factor-0-5
-+igt@kms_plane_scaling@planes-upscale-20x20-downscale-factor-0-75
-+igt@kms_plane_scaling@planes-upscale-factor-0-25
-+igt@kms_plane_scaling@planes-upscale-factor-0-25-downscale-factor-0-25
-+igt@kms_plane_scaling@planes-upscale-factor-0-25-downscale-factor-0-5
-+igt@kms_plane_scaling@planes-upscale-factor-0-25-downscale-factor-0-75
-+igt@kms_prop_blob@basic
-+igt@kms_prop_blob@blob-multiple
-+igt@kms_prop_blob@blob-prop-core
-+igt@kms_prop_blob@blob-prop-lifetime
-+igt@kms_prop_blob@blob-prop-validate
-+igt@kms_prop_blob@invalid-get-prop
-+igt@kms_prop_blob@invalid-get-prop-any
-+igt@kms_prop_blob@invalid-set-prop
-+igt@kms_prop_blob@invalid-set-prop-any
-+igt@kms_properties@connector-properties-atomic
-+igt@kms_properties@connector-properties-legacy
-+igt@kms_properties@crtc-properties-atomic
-+igt@kms_properties@crtc-properties-legacy
-+igt@kms_properties@get_properties-sanity-atomic
-+igt@kms_properties@get_properties-sanity-non-atomic
-+igt@kms_properties@invalid-properties-atomic
-+igt@kms_properties@invalid-properties-legacy
-+igt@kms_properties@plane-properties-atomic
-+igt@kms_properties@plane-properties-legacy
-+igt@kms_rmfb@close-fd
-+igt@kms_rmfb@rmfb-ioctl
-+igt@kms_sequence@get-busy
-+igt@kms_sequence@get-forked
-+igt@kms_sequence@get-forked-busy
-+igt@kms_sequence@get-idle
-+igt@kms_sequence@queue-busy
-+igt@kms_sequence@queue-idle
-+igt@kms_vblank@crtc-id
-+igt@kms_vblank@invalid
-+igt@kms_vblank@pipe-a-accuracy-idle
-+igt@kms_vblank@pipe-a-query-busy
-+igt@kms_vblank@pipe-a-query-forked
-+igt@kms_vblank@pipe-a-query-forked-busy
-+igt@kms_vblank@pipe-a-query-idle
-+igt@kms_vblank@pipe-a-ts-continuation-dpms-suspend
-+igt@kms_vblank@pipe-a-ts-continuation-idle
-+igt@kms_vblank@pipe-a-ts-continuation-suspend
-+igt@kms_vblank@pipe-a-wait-busy
-+igt@kms_vblank@pipe-a-wait-forked
-+igt@kms_vblank@pipe-a-wait-forked-busy
-+igt@kms_vblank@pipe-a-wait-idle
-+igt@kms_writeback@writeback-check-output
-+igt@kms_writeback@writeback-fb-id
-+igt@kms_writeback@writeback-invalid-parameters
-+igt@kms_writeback@writeback-pixel-formats
++	return tile_config->flags & flag;
++}
++
+ /**
+  * blt_has_block_copy
+  * @i915: drm fd
+@@ -320,6 +342,41 @@ bool blt_block_copy_supports_tiling(int i915, enum blt_tiling_type tiling)
+ 	return blt_cmd_supports_tiling(blt_info, XY_BLOCK_COPY, tiling);
+ }
+ 
++/**
++ * blt_block_copy_supports_compression
++ * @i915: drm fd
++ *
++ * Check if block copy provided by @i915 device supports compression.
++ *
++ * Returns:
++ * true if it does, false otherwise.
++ */
++bool blt_block_copy_supports_compression(int i915)
++{
++	const struct blt_cmd_info *blt_info = GET_BLT_INFO(i915);
++
++	return device_supports_compression(i915) &&
++	       blt_cmd_has_property(blt_info, XY_BLOCK_COPY,
++				    BLT_CMD_SUPPORTS_COMPRESSION);
++}
++
++/**
++ * blt_uses_extended_block_copy
++ * @i915: drm fd
++ *
++ * Check if block copy provided by @i915 device uses an extended version
++ * of the command.
++ *
++ * Returns:
++ * true if it does, false otherwise.
++ */
++bool blt_uses_extended_block_copy(int i915)
++{
++	const struct blt_cmd_info *blt_info = GET_BLT_INFO(i915);
++
++	return blt_cmd_has_property(blt_info, XY_BLOCK_COPY, BLT_CMD_EXTENDED);
++}
++
+ /**
+  * blt_tiling_name:
+  * @tiling: tiling id
+diff --git a/lib/i915/i915_blt.h b/lib/i915/i915_blt.h
+index 299dff8e..14885db3 100644
+--- a/lib/i915/i915_blt.h
++++ b/lib/i915/i915_blt.h
+@@ -157,16 +157,24 @@ struct blt_ctrl_surf_copy_data {
+ 	bool print_bb;
+ };
+ 
+-bool blt_supports_compression(int i915);
+ bool blt_supports_command(const struct blt_cmd_info *info,
+ 			  enum blt_cmd_type cmd);
+ bool blt_cmd_supports_tiling(const struct blt_cmd_info *info,
+ 			     enum blt_cmd_type cmd,
+ 			     enum blt_tiling_type tiling);
++bool blt_cmd_has_property(const struct blt_cmd_info *info,
++			  enum blt_cmd_type cmd,
++			  uint32_t flag);
++
+ bool blt_has_block_copy(int i915);
+ bool blt_has_fast_copy(int i915);
++
+ bool blt_fast_copy_supports_tiling(int i915, enum blt_tiling_type tiling);
+ bool blt_block_copy_supports_tiling(int i915, enum blt_tiling_type tiling);
++
++bool blt_block_copy_supports_compression(int i915);
++bool blt_uses_extended_block_copy(int i915);
++
+ const char *blt_tiling_name(enum blt_tiling_type tiling);
+ 
+ uint64_t emit_blt_block_copy(int i915,
+diff --git a/lib/i915/intel_tiling_info.c b/lib/i915/intel_tiling_info.c
+index fc388919..1dcf17c2 100644
+--- a/lib/i915/intel_tiling_info.c
++++ b/lib/i915/intel_tiling_info.c
+@@ -12,6 +12,12 @@
+ 		.supported_tiling = _tiling \
+ 	}
+ 
++#define BLT_INFO_EXT(_cmd, _tiling, _flags) { \
++		.blt_cmd_type = _cmd, \
++		.supported_tiling = _tiling, \
++		.flags = _flags \
++	}
++
+ static const struct blt_tiling_info src_copy = BLT_INFO(SRC_COPY, BIT(T_LINEAR));
+ static const struct blt_tiling_info
+ 		pre_gen8_xy_src_copy = BLT_INFO(XY_SRC_COPY,
+@@ -44,12 +50,22 @@ static const struct blt_tiling_info
+ 		gen12_xy_block_copy = BLT_INFO(XY_BLOCK_COPY,
+ 					       BIT(T_LINEAR) |
+ 					       BIT(T_YMAJOR));
++
++#define DG2_SUPPORTED_TILING \
++	(BIT(T_LINEAR) | \
++	 BIT(T_XMAJOR) | \
++	 BIT(T_TILE4)  | \
++	 BIT(T_TILE64))
++
++#define DG2_BLOCK_COPY_INFO(_flags) \
++	BLT_INFO_EXT(XY_BLOCK_COPY, DG2_SUPPORTED_TILING, (_flags))
++
++static const struct blt_tiling_info
++		dg2_xy_block_copy = DG2_BLOCK_COPY_INFO(BLT_CMD_EXTENDED |
++							BLT_CMD_SUPPORTS_COMPRESSION);
++
+ static const struct blt_tiling_info
+-		dg2_xy_block_copy = BLT_INFO(XY_BLOCK_COPY,
+-					     BIT(T_LINEAR) |
+-					     BIT(T_XMAJOR) |
+-					     BIT(T_TILE4)  |
+-					     BIT(T_TILE64));
++		mtl_xy_block_copy = DG2_BLOCK_COPY_INFO(BLT_CMD_EXTENDED);
+ 
+ const struct blt_cmd_info pre_gen8_blt_info = {
+ 	.supported_cmds = {
+@@ -90,6 +106,6 @@ const struct blt_cmd_info gen12_dg2_blt_info = {
+ const struct blt_cmd_info gen12_mtl_blt_info = {
+ 	.supported_cmds = {
+ 		[XY_FAST_COPY] = &dg2_xy_fast_copy,
+-		[XY_BLOCK_COPY] = &dg2_xy_block_copy
++		[XY_BLOCK_COPY] = &mtl_xy_block_copy
+ 	}
+ };
+diff --git a/lib/i915/intel_tiling_info.h b/lib/i915/intel_tiling_info.h
+index bb655103..a6288f49 100644
+--- a/lib/i915/intel_tiling_info.h
++++ b/lib/i915/intel_tiling_info.h
+@@ -29,6 +29,10 @@ enum blt_cmd_type {
+ struct blt_tiling_info {
+ 	enum blt_cmd_type blt_cmd_type;
+ 	uint32_t supported_tiling;
++
++	uint32_t flags;
++#define BLT_CMD_EXTENDED		(1 << 0)
++#define BLT_CMD_SUPPORTS_COMPRESSION	(1 << 1)
+ };
+ 
+ struct blt_cmd_info {
+diff --git a/tests/i915/gem_ccs.c b/tests/i915/gem_ccs.c
+index a24c8e1f..b7e8bda7 100644
+--- a/tests/i915/gem_ccs.c
++++ b/tests/i915/gem_ccs.c
+@@ -346,7 +346,6 @@ static void block_copy(int i915,
+ 	uint32_t run_id = mid_tiling;
+ 	uint32_t mid_region = region2, bb;
+ 	uint32_t width = param.width, height = param.height;
+-	uint32_t devid = intel_get_drm_devid(i915);
+ 	enum blt_compression mid_compression = config->compression;
+ 	int mid_compression_format = param.compression_format;
+ 	enum blt_compression_type comp_type = COMPRESSION_TYPE_3D;
+@@ -355,7 +354,7 @@ static void block_copy(int i915,
+ 
+ 	igt_assert(__gem_create_in_memory_regions(i915, &bb, &bb_size, region1) == 0);
+ 
+-	if (!blt_supports_compression(i915) && !IS_METEORLAKE(devid))
++	if (!blt_uses_extended_block_copy(i915))
+ 		pext = NULL;
+ 
+ 	src = blt_create_object(i915, region1, width, height, bpp, uc_mocs,
+@@ -470,7 +469,7 @@ static void block_multicopy(int i915,
+ 
+ 	igt_assert(__gem_create_in_memory_regions(i915, &bb, &bb_size, region1) == 0);
+ 
+-	if (!blt_supports_compression(i915))
++	if (!blt_uses_extended_block_copy(i915))
+ 		pext3 = NULL;
+ 
+ 	src = blt_create_object(i915, region1, width, height, bpp, uc_mocs,
+@@ -557,7 +556,7 @@ static void block_copy_test(int i915,
+ 	const struct intel_execution_engine2 *e;
+ 	int tiling;
+ 
+-	if (config->compression && !blt_supports_compression(i915))
++	if (config->compression && !blt_block_copy_supports_compression(i915))
+ 		return;
+ 
+ 	if (config->inplace && !config->compression)
 -- 
-2.39.1
+2.25.1
