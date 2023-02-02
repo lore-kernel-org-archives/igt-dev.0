@@ -1,15 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B2B8210E17C
- for <igt-dev@lists.freedesktop.org>; Thu,  2 Feb 2023 11:50:24 +0000 (UTC)
-From: Karolina Stolarek <karolina.stolarek@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Thu,  2 Feb 2023 12:49:59 +0100
-Message-Id: <20230202114959.77568-1-karolina.stolarek@intel.com>
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2297E10E4F2
+ for <igt-dev@lists.freedesktop.org>; Thu,  2 Feb 2023 12:15:41 +0000 (UTC)
+Date: Thu, 2 Feb 2023 14:15:37 +0200
+From: Ville =?iso-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
+To: "Murthy, Arun R" <arun.r.murthy@intel.com>
+Message-ID: <Y9upad7eN8P5eQvh@intel.com>
+References: <20230131120646.27434-1-ville.syrjala@linux.intel.com>
+ <20230131120646.27434-7-ville.syrjala@linux.intel.com>
+ <DM6PR11MB3177FB4C74D129995D9FB495BAD69@DM6PR11MB3177.namprd11.prod.outlook.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t] lib/intel_tiling_info: Add flags field to
- describe command properties
+In-Reply-To: <DM6PR11MB3177FB4C74D129995D9FB495BAD69@DM6PR11MB3177.namprd11.prod.outlook.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 6/6] tests/kms_async_flips: Test all
+ modifiers
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,297 +23,201 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Blitter commands may have different properties depending on the
-platform. Add a new field to blt_tiling_info struct to describe
-properties of the commands. Update definitions of block-copy on
-DG2 and beyond to show the differences. Add helpers that check
-if a platform uses an extended version of the block-copy command
-or supports compression. Update gem_ccs test to use these
-functions.
+On Thu, Feb 02, 2023 at 11:23:09AM +0000, Murthy, Arun R wrote:
+> > -----Original Message-----
+> > From: Ville Syrjala <ville.syrjala@linux.intel.com>
+> > Sent: Tuesday, January 31, 2023 5:37 PM
+> > To: igt-dev@lists.freedesktop.org
+> > Cc: Murthy, Arun R <arun.r.murthy@intel.com>
+> > Subject: [PATCH i-g-t 6/6] tests/kms_async_flips: Test all modifiers
+> > 
+> > From: Ville Syrjälä <ville.syrjala@linux.intel.com>
+> > 
+> > Run the basic async flip test for all modifiers reported by the plane (for the
+> > XRGB8888 format). The driver may not support async flip with all modifiers
+> > so we allow this to fail.
+> 
+> Support for adding X-tile and linear for all platforms is being added as sub-test in https://patchwork.freedesktop.org/series/103137/
+> 
+> > 
+> > TODO: probably shuould add an even more basic subtest that
+> >       makes sure the driver accepts async flips with a least
+> >       one format/modifier combo, if it advertises async flip
+> >       support
+> > 
+> > Cc: Arun R Murthy <arun.r.murthy@intel.com>
+> > Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+> > ---
+> >  tests/kms_async_flips.c | 54 +++++++++++++++++++++++++++++++++--------
+> >  1 file changed, 44 insertions(+), 10 deletions(-)
+> > 
+> > diff --git a/tests/kms_async_flips.c b/tests/kms_async_flips.c index
+> > 58740f6ab702..387fcff2f32c 100644
+> > --- a/tests/kms_async_flips.c
+> > +++ b/tests/kms_async_flips.c
+> > @@ -53,6 +53,8 @@ typedef struct {
+> >  	igt_output_t *output;
+> >  	unsigned long flip_timestamp_us;
+> >  	double flip_interval;
+> > +	uint64_t modifier;
+> > +	igt_plane_t *plane;
+> >  	igt_pipe_crc_t *pipe_crc;
+> >  	igt_crc_t ref_crc;
+> >  	int flip_count;
+> > @@ -61,6 +63,7 @@ typedef struct {
+> >  	bool extended;
+> >  	enum pipe pipe;
+> >  	bool alternate_sync_async;
+> > +	bool allow_fail;
+> >  } data_t;
+> > 
+> >  static void flip_handler(int fd_, unsigned int sequence, unsigned int tv_sec,
+> > @@ -133,7 +136,7 @@ static void make_fb(data_t *data, struct igt_fb *fb,
+> >  	rec_width = width / (ARRAY_SIZE(data->bufs) * 2);
+> > 
+> >  	igt_create_color_fb(data->drm_fd, width, height,
+> > DRM_FORMAT_XRGB8888,
+> > -			    default_modifier(data), 0.0, 0.0, 0.5, fb);
+> > +			    data->modifier, 0.0, 0.0, 0.5, fb);
+> > 
+> >  	cr = igt_get_cairo_ctx(data->drm_fd, fb);
+> >  	igt_paint_color_rand(cr, rec_width * 2 + rec_width * index, 0,
+> > rec_width, height); @@ -159,24 +162,26 @@ static void test_init(data_t
+> > *data)
+> >  	data->refresh_rate = mode->vrefresh;
+> > 
+> >  	igt_output_set_pipe(data->output, data->pipe);
+> > +
+> > +	data->plane = igt_output_get_plane_type(data->output,
+> > +DRM_PLANE_TYPE_PRIMARY);
+> >  }
+> > 
+> >  static void test_init_fbs(data_t *data)  {
+> >  	int i;
+> >  	uint32_t width, height;
+> > -	igt_plane_t *plane;
+> >  	static uint32_t prev_output_id;
+> > +	static uint64_t prev_modifier;
+> >  	drmModeModeInfo *mode;
+> > 
+> >  	mode = igt_output_get_mode(data->output);
+> >  	width = mode->hdisplay;
+> >  	height = mode->vdisplay;
+> > 
+> > -	plane = igt_output_get_plane_type(data->output,
+> > DRM_PLANE_TYPE_PRIMARY);
+> > -
+> > -	if (prev_output_id != data->output->id) {
+> > +	if (prev_output_id != data->output->id ||
+> > +	    prev_modifier != data->modifier) {
+> >  		prev_output_id = data->output->id;
+> > +		prev_modifier = data->modifier;
+> > 
+> >  		if (data->bufs[0].fb_id) {
+> >  			for (i = 0; i < ARRAY_SIZE(data->bufs); i++) @@ -187,8
+> > +192,8 @@ static void test_init_fbs(data_t *data)
+> >  			make_fb(data, &data->bufs[i], width, height, i);
+> >  	}
+> > 
+> > -	igt_plane_set_fb(plane, &data->bufs[0]);
+> > -	igt_plane_set_size(plane, width, height);
+> > +	igt_plane_set_fb(data->plane, &data->bufs[0]);
+> > +	igt_plane_set_size(data->plane, width, height);
+> > 
+> >  	igt_display_commit2(&data->display, data->display.is_atomic ?
+> > COMMIT_ATOMIC : COMMIT_LEGACY);  } @@ -243,8 +248,10 @@ static void
+> > test_async_flip(data_t *data)
+> >  		ret = drmModePageFlip(data->drm_fd, data->crtc_id,
+> >  				      data->bufs[frame % 4].fb_id,
+> >  				      flags, data);
+> > -
+> > -		igt_assert(ret == 0);
+> > +		if (frame == 1 && data->allow_fail)
+> > +			igt_skip_on(ret == -EINVAL);
+> > +		else
+> > +			igt_assert(ret == 0);
+> > 
+> >  		wait_flip_event(data);
+> > 
+> > @@ -545,6 +552,9 @@ static void run_test(data_t *data, void (*test)(data_t
+> > *))
+> >  	for_each_pipe_with_valid_output(&data->display, data->pipe, data-
+> > >output) {
+> >  		test_init(data);
+> > 
+> > +		data->allow_fail = false;
+> > +		data->modifier = default_modifier(data);
+> > +
+> >  		igt_dynamic_f("pipe-%s", kmstest_pipe_name(data->pipe)) {
+> >  			test_init_fbs(data);
+> >  			test(data);
+> > @@ -555,6 +565,30 @@ static void run_test(data_t *data, void
+> > (*test)(data_t *))
+> >  	}
+> >  }
+> > 
+> > +static void run_test_with_modifiers(data_t *data, void (*test)(data_t
+> > +*)) {
+> > +	for_each_pipe_with_valid_output(&data->display, data->pipe, data-
+> > >output) {
+> > +		test_init(data);
+> > +
+> > +		for (int i = 0; i < data->plane->format_mod_count; i++) {
+> > +			if (data->plane->formats[i] !=
+> > DRM_FORMAT_XRGB8888)
+> > +				continue;
+> > +
+> > +			data->allow_fail = true;
+> If the modifier is supported by the platform and there is a failure with a bug in driver/hardware, aren't we falsely reporting here?
 
-Signed-off-by: Karolina Stolarek <karolina.stolarek@intel.com>
----
- lib/i915/i915_blt.c          | 89 +++++++++++++++++++++++++++++-------
- lib/i915/i915_blt.h          | 10 +++-
- lib/i915/intel_tiling_info.c | 28 +++++++++---
- lib/i915/intel_tiling_info.h |  4 ++
- tests/i915/gem_ccs.c         |  7 ++-
- 5 files changed, 111 insertions(+), 27 deletions(-)
+There is no way to query what is supported by the hw/driver, so
+we just have to try them all and accept that not all may succeed.
+As mentioned earlier it would be nice it we have a basic subtest to
+confirm that at least one of the modifier/format combos works
+when the driver advertises async flip support.
 
-diff --git a/lib/i915/i915_blt.c b/lib/i915/i915_blt.c
-index bbfb6ffc..bda9ea5f 100644
---- a/lib/i915/i915_blt.c
-+++ b/lib/i915/i915_blt.c
-@@ -191,23 +191,22 @@ struct gen12_block_copy_data_ext {
- 	} dw21;
- };
- 
--/**
-- * blt_supports_compression:
-- * @i915: drm fd
-- *
-- * Function checks if HW supports flatccs compression in blitter commands
-- * on @i915 device.
-- *
-- * Returns:
-- * true if it does, false otherwise.
-- */
--bool blt_supports_compression(int i915)
-+static bool device_supports_compression(int i915)
- {
- 	uint32_t devid = intel_get_drm_devid(i915);
- 
- 	return HAS_FLATCCS(devid);
- }
- 
-+static const struct blt_tiling_info *blt_get_tiling_info(const struct blt_cmd_info *info,
-+							 enum blt_cmd_type cmd)
-+{
-+	if (!info)
-+		return NULL;
-+
-+	return info->supported_cmds[cmd];
-+}
-+
- /**
-  * blt_supports_command:
-  * @info: Blitter command info struct
-@@ -222,7 +221,7 @@ bool blt_supports_command(const struct blt_cmd_info *info,
- {
- 	igt_require_f(info, "No config found for the platform\n");
- 
--	return info->supported_cmds[cmd];
-+	return blt_get_tiling_info(info, cmd);
- }
- 
- /**
-@@ -242,10 +241,7 @@ bool blt_cmd_supports_tiling(const struct blt_cmd_info *info,
- {
- 	struct blt_tiling_info const *tile_config;
- 
--	if (!info)
--		return false;
--
--	tile_config = info->supported_cmds[cmd];
-+	tile_config = blt_get_tiling_info(info, cmd);
- 
- 	/* no config means no support for that tiling */
- 	if (!tile_config)
-@@ -254,6 +250,32 @@ bool blt_cmd_supports_tiling(const struct blt_cmd_info *info,
- 	return tile_config->supported_tiling & BIT(tiling);
- }
- 
-+/**
-+ * blt_cmd_has_property:
-+ * @info: Blitter command info struct
-+ * @cmd: Blitter command enum
-+ * @flag: property flag
-+ *
-+ * Checks if a @cmd entry of @info has @flag property. The properties can be
-+ * freely combined, but the function will return true for platforms for which
-+ * all properties defined in the bit flag are present. The function returns
-+ * false if no information about the command is stored.
-+ *
-+ * Returns: true if it does, false otherwise
-+ */
-+bool blt_cmd_has_property(const struct blt_cmd_info *info,
-+			  enum blt_cmd_type cmd, uint32_t flag)
-+{
-+	struct blt_tiling_info const *tile_config;
-+
-+	tile_config = blt_get_tiling_info(info, cmd);
-+
-+	if (!tile_config)
-+		return false;
-+
-+	return tile_config->flags & flag;
-+}
-+
- /**
-  * blt_has_block_copy
-  * @i915: drm fd
-@@ -320,6 +342,41 @@ bool blt_block_copy_supports_tiling(int i915, enum blt_tiling_type tiling)
- 	return blt_cmd_supports_tiling(blt_info, XY_BLOCK_COPY, tiling);
- }
- 
-+/**
-+ * blt_block_copy_supports_compression
-+ * @i915: drm fd
-+ *
-+ * Check if block copy provided by @i915 device supports compression.
-+ *
-+ * Returns:
-+ * true if it does, false otherwise.
-+ */
-+bool blt_block_copy_supports_compression(int i915)
-+{
-+	const struct blt_cmd_info *blt_info = GET_BLT_INFO(i915);
-+
-+	return device_supports_compression(i915) &&
-+	       blt_cmd_has_property(blt_info, XY_BLOCK_COPY,
-+				    BLT_CMD_SUPPORTS_COMPRESSION);
-+}
-+
-+/**
-+ * blt_uses_extended_block_copy
-+ * @i915: drm fd
-+ *
-+ * Check if block copy provided by @i915 device uses an extended version
-+ * of the command.
-+ *
-+ * Returns:
-+ * true if it does, false otherwise.
-+ */
-+bool blt_uses_extended_block_copy(int i915)
-+{
-+	const struct blt_cmd_info *blt_info = GET_BLT_INFO(i915);
-+
-+	return blt_cmd_has_property(blt_info, XY_BLOCK_COPY, BLT_CMD_EXTENDED);
-+}
-+
- /**
-  * blt_tiling_name:
-  * @tiling: tiling id
-diff --git a/lib/i915/i915_blt.h b/lib/i915/i915_blt.h
-index 299dff8e..14885db3 100644
---- a/lib/i915/i915_blt.h
-+++ b/lib/i915/i915_blt.h
-@@ -157,16 +157,24 @@ struct blt_ctrl_surf_copy_data {
- 	bool print_bb;
- };
- 
--bool blt_supports_compression(int i915);
- bool blt_supports_command(const struct blt_cmd_info *info,
- 			  enum blt_cmd_type cmd);
- bool blt_cmd_supports_tiling(const struct blt_cmd_info *info,
- 			     enum blt_cmd_type cmd,
- 			     enum blt_tiling_type tiling);
-+bool blt_cmd_has_property(const struct blt_cmd_info *info,
-+			  enum blt_cmd_type cmd,
-+			  uint32_t flag);
-+
- bool blt_has_block_copy(int i915);
- bool blt_has_fast_copy(int i915);
-+
- bool blt_fast_copy_supports_tiling(int i915, enum blt_tiling_type tiling);
- bool blt_block_copy_supports_tiling(int i915, enum blt_tiling_type tiling);
-+
-+bool blt_block_copy_supports_compression(int i915);
-+bool blt_uses_extended_block_copy(int i915);
-+
- const char *blt_tiling_name(enum blt_tiling_type tiling);
- 
- uint64_t emit_blt_block_copy(int i915,
-diff --git a/lib/i915/intel_tiling_info.c b/lib/i915/intel_tiling_info.c
-index fc388919..1dcf17c2 100644
---- a/lib/i915/intel_tiling_info.c
-+++ b/lib/i915/intel_tiling_info.c
-@@ -12,6 +12,12 @@
- 		.supported_tiling = _tiling \
- 	}
- 
-+#define BLT_INFO_EXT(_cmd, _tiling, _flags) { \
-+		.blt_cmd_type = _cmd, \
-+		.supported_tiling = _tiling, \
-+		.flags = _flags \
-+	}
-+
- static const struct blt_tiling_info src_copy = BLT_INFO(SRC_COPY, BIT(T_LINEAR));
- static const struct blt_tiling_info
- 		pre_gen8_xy_src_copy = BLT_INFO(XY_SRC_COPY,
-@@ -44,12 +50,22 @@ static const struct blt_tiling_info
- 		gen12_xy_block_copy = BLT_INFO(XY_BLOCK_COPY,
- 					       BIT(T_LINEAR) |
- 					       BIT(T_YMAJOR));
-+
-+#define DG2_SUPPORTED_TILING \
-+	(BIT(T_LINEAR) | \
-+	 BIT(T_XMAJOR) | \
-+	 BIT(T_TILE4)  | \
-+	 BIT(T_TILE64))
-+
-+#define DG2_BLOCK_COPY_INFO(_flags) \
-+	BLT_INFO_EXT(XY_BLOCK_COPY, DG2_SUPPORTED_TILING, (_flags))
-+
-+static const struct blt_tiling_info
-+		dg2_xy_block_copy = DG2_BLOCK_COPY_INFO(BLT_CMD_EXTENDED |
-+							BLT_CMD_SUPPORTS_COMPRESSION);
-+
- static const struct blt_tiling_info
--		dg2_xy_block_copy = BLT_INFO(XY_BLOCK_COPY,
--					     BIT(T_LINEAR) |
--					     BIT(T_XMAJOR) |
--					     BIT(T_TILE4)  |
--					     BIT(T_TILE64));
-+		mtl_xy_block_copy = DG2_BLOCK_COPY_INFO(BLT_CMD_EXTENDED);
- 
- const struct blt_cmd_info pre_gen8_blt_info = {
- 	.supported_cmds = {
-@@ -90,6 +106,6 @@ const struct blt_cmd_info gen12_dg2_blt_info = {
- const struct blt_cmd_info gen12_mtl_blt_info = {
- 	.supported_cmds = {
- 		[XY_FAST_COPY] = &dg2_xy_fast_copy,
--		[XY_BLOCK_COPY] = &dg2_xy_block_copy
-+		[XY_BLOCK_COPY] = &mtl_xy_block_copy
- 	}
- };
-diff --git a/lib/i915/intel_tiling_info.h b/lib/i915/intel_tiling_info.h
-index bb655103..a6288f49 100644
---- a/lib/i915/intel_tiling_info.h
-+++ b/lib/i915/intel_tiling_info.h
-@@ -29,6 +29,10 @@ enum blt_cmd_type {
- struct blt_tiling_info {
- 	enum blt_cmd_type blt_cmd_type;
- 	uint32_t supported_tiling;
-+
-+	uint32_t flags;
-+#define BLT_CMD_EXTENDED		(1 << 0)
-+#define BLT_CMD_SUPPORTS_COMPRESSION	(1 << 1)
- };
- 
- struct blt_cmd_info {
-diff --git a/tests/i915/gem_ccs.c b/tests/i915/gem_ccs.c
-index a24c8e1f..b7e8bda7 100644
---- a/tests/i915/gem_ccs.c
-+++ b/tests/i915/gem_ccs.c
-@@ -346,7 +346,6 @@ static void block_copy(int i915,
- 	uint32_t run_id = mid_tiling;
- 	uint32_t mid_region = region2, bb;
- 	uint32_t width = param.width, height = param.height;
--	uint32_t devid = intel_get_drm_devid(i915);
- 	enum blt_compression mid_compression = config->compression;
- 	int mid_compression_format = param.compression_format;
- 	enum blt_compression_type comp_type = COMPRESSION_TYPE_3D;
-@@ -355,7 +354,7 @@ static void block_copy(int i915,
- 
- 	igt_assert(__gem_create_in_memory_regions(i915, &bb, &bb_size, region1) == 0);
- 
--	if (!blt_supports_compression(i915) && !IS_METEORLAKE(devid))
-+	if (!blt_uses_extended_block_copy(i915))
- 		pext = NULL;
- 
- 	src = blt_create_object(i915, region1, width, height, bpp, uc_mocs,
-@@ -470,7 +469,7 @@ static void block_multicopy(int i915,
- 
- 	igt_assert(__gem_create_in_memory_regions(i915, &bb, &bb_size, region1) == 0);
- 
--	if (!blt_supports_compression(i915))
-+	if (!blt_uses_extended_block_copy(i915))
- 		pext3 = NULL;
- 
- 	src = blt_create_object(i915, region1, width, height, bpp, uc_mocs,
-@@ -557,7 +556,7 @@ static void block_copy_test(int i915,
- 	const struct intel_execution_engine2 *e;
- 	int tiling;
- 
--	if (config->compression && !blt_supports_compression(i915))
-+	if (config->compression && !blt_block_copy_supports_compression(i915))
- 		return;
- 
- 	if (config->inplace && !config->compression)
+> 
+> Thanks and Regards,
+> Arun R Murthy
+> --------------------
+> > +			data->modifier = data->plane->modifiers[i];
+> > +
+> > +			igt_dynamic_f("pipe-%s-%s",
+> > kmstest_pipe_name(data->pipe),
+> > +				      igt_fb_modifier_name(data->modifier)) {
+> > +				test_init_fbs(data);
+> > +				test(data);
+> > +			}
+> > +		}
+> > +
+> > +		if (!data->extended)
+> > +			break;
+> > +	}
+> > +}
+> > +
+> >  static int opt_handler(int opt, int opt_index, void *_data)  {
+> >  	data_t *data = _data;
+> > @@ -595,7 +629,7 @@ igt_main_args("e", NULL, help_str, opt_handler,
+> > &data)
+> >  		igt_describe("Wait for page flip events in between successive
+> > asynchronous flips");
+> >  		igt_subtest_with_dynamic("async-flip-with-page-flip-events")
+> > {
+> >  			data.alternate_sync_async = false;
+> > -			run_test(&data, test_async_flip);
+> > +			run_test_with_modifiers(&data, test_async_flip);
+> >  		}
+> > 
+> >  		igt_describe("Alternate between sync and async flips");
+> > --
+> > 2.39.1
+> 
+
 -- 
-2.25.1
+Ville Syrjälä
+Intel
