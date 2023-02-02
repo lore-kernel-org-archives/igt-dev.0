@@ -1,23 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5CCE810E497
- for <igt-dev@lists.freedesktop.org>; Thu,  2 Feb 2023 08:39:02 +0000 (UTC)
-Date: Thu, 2 Feb 2023 09:38:57 +0100
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org,
- Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Message-ID: <20230202083857.m67gkm4sewb27gpb@zkempczy-mobl2>
-References: <20230201132657.575932-1-zbigniew.kempczynski@intel.com>
- <20230201132657.575932-3-zbigniew.kempczynski@intel.com>
- <20230201154441.keb4xwtafvsxkqgq@kamilkon-desk1>
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5006210E4AE
+ for <igt-dev@lists.freedesktop.org>; Thu,  2 Feb 2023 09:30:00 +0000 (UTC)
+Date: Thu, 2 Feb 2023 11:27:38 +0200
+From: Ville =?iso-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
+To: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
+Message-ID: <Y9uCCp/eouIXyzOx@intel.com>
+References: <20230131120646.27434-1-ville.syrjala@linux.intel.com>
+ <20230131120646.27434-5-ville.syrjala@linux.intel.com>
+ <61922555-cfbf-e8bb-7b70-e047e98afc25@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230201154441.keb4xwtafvsxkqgq@kamilkon-desk1>
-Subject: Re: [igt-dev] [PATCH i-g-t 2/2] lib/i915_crc: Use graphics version
- to determine ALU SHL/SHR caps
+In-Reply-To: <61922555-cfbf-e8bb-7b70-e047e98afc25@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 4/6] tests/kms_async_flips: Run the test
+ only once per pipe
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,51 +23,69 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: igt-dev@lists.freedesktop.org, Arun R Murthy <arun.r.murthy@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Wed, Feb 01, 2023 at 04:44:41PM +0100, Kamil Konieczny wrote:
-> On 2023-02-01 at 14:26:57 +0100, Zbigniew Kempczy≈Ñski wrote:
-> > Start supporting crc calculations on platforms which contains necessary
-> > ALU instructions.
+On Tue, Jan 31, 2023 at 05:51:22PM +0530, Modem, Bhanuprakash wrote:
+> Hi Ville,
 > 
-> Something to consider in future: maybe we can add to i915 library new
-> function has_alu_shl_shr(devid) ?
-
-Thank you for the review. I pushed the series.
-
-Regarding has_alu_shl_shr() - I think it is worth to add if there will
-be more users of it. At the moment only crc calculation uses this.
-
---
-Zbigniew
-
-> 
+> On Tue-31-01-2023 05:36 pm, Ville Syrjala wrote:
+> > From: Ville Syrj‰l‰ <ville.syrjala@linux.intel.com>
 > > 
-> > Signed-off-by: Zbigniew Kempczy≈Ñski <zbigniew.kempczynski@intel.com>
-> > Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> 
-> Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> 
-> --
-> Kamil
-> 
+> > No real reason to iterate over all the outputs here. Just
+> > do the test once per pipe.
+> > 
+> > Cc: Arun R Murthy <arun.r.murthy@intel.com>
+> > Signed-off-by: Ville Syrj‰l‰ <ville.syrjala@linux.intel.com>
 > > ---
-> >  lib/i915/i915_crc.c | 2 +-
-> >  1 file changed, 1 insertion(+), 1 deletion(-)
+> >   tests/kms_async_flips.c | 18 +++++-------------
+> >   1 file changed, 5 insertions(+), 13 deletions(-)
 > > 
-> > diff --git a/lib/i915/i915_crc.c b/lib/i915/i915_crc.c
-> > index cdd3cef6df..7d68f8e5c4 100644
-> > --- a/lib/i915/i915_crc.c
-> > +++ b/lib/i915/i915_crc.c
-> > @@ -295,5 +295,5 @@ bool supports_i915_crc32(int i915)
-> >  {
-> >  	uint16_t devid = intel_get_drm_devid(i915);
-> >  
-> > -	return IS_DG2(devid);
-> > +	return intel_graphics_ver(devid) > IP_VER(12, 50);
-> >  }
-> > -- 
-> > 2.34.1
-> > 
+> > diff --git a/tests/kms_async_flips.c b/tests/kms_async_flips.c
+> > index f8c97e029c59..54611f66350d 100644
+> > --- a/tests/kms_async_flips.c
+> > +++ b/tests/kms_async_flips.c
+> > @@ -544,20 +544,12 @@ static void test_crc(data_t *data)
+> >   
+> >   static void run_test(data_t *data, void (*test)(data_t *))
+> >   {
+> > -	igt_output_t *output;
+> > -	enum pipe pipe;
+> > +	for_each_pipe_with_valid_output(&data->display, data->pipe, data->output) {
+> 
+> If data->extended is true, it'll iterate over all outputs. Maybe we can 
+> use for_each_pipe_with_single_output() to run test once per pipe.
+
+Hmm. After further thought it might still be nice to iterate all
+outputs, in case we have output specific stuff (eg. PSR) that
+could affect the behaviour or async flips. In which case I suppose
+we need to keep including the output name in the test name.
+
+> 
+> - Bhanu
+> 
+> > +		igt_dynamic_f("pipe-%s", kmstest_pipe_name(data->pipe))
+> > +			test(data);
+> >   
+> > -	for_each_pipe(&data->display, pipe) {
+> > -		for_each_valid_output_on_pipe(&data->display, pipe, output) {
+> > -			igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), output->name) {
+> > -				data->output = output;
+> > -				data->pipe = pipe;
+> > -				test(data);
+> > -			}
+> > -
+> > -			if (!data->extended)
+> > -				break;
+> > -		}
+> > +		if (!data->extended)
+> > +			break;
+> >   	}
+> >   }
+> >   
+
+-- 
+Ville Syrj‰l‰
+Intel
