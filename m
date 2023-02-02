@@ -1,20 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 52F3910E4D2
- for <igt-dev@lists.freedesktop.org>; Thu,  2 Feb 2023 10:33:44 +0000 (UTC)
-Message-ID: <4abf2cc2-ad97-bb46-4880-196cf6cf7eb1@intel.com>
-Date: Thu, 2 Feb 2023 16:03:28 +0530
-To: Nidhi Gupta <nidhi1.gupta@intel.com>, <igt-dev@lists.freedesktop.org>
-References: <20230202051509.28983-1-nidhi1.gupta@intel.com>
- <20230202051509.28983-4-nidhi1.gupta@intel.com>
-Content-Language: en-US
-From: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
-In-Reply-To: <20230202051509.28983-4-nidhi1.gupta@intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9925610E4D2
+ for <igt-dev@lists.freedesktop.org>; Thu,  2 Feb 2023 10:38:49 +0000 (UTC)
+Date: Thu, 2 Feb 2023 11:38:44 +0100
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: Mark Yacoub <markyacoub@chromium.org>
+Message-ID: <20230202103844.ht2gevng222jluwo@kamilkon-desk1>
+References: <20230201232207.3332996-1-markyacoub@google.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH v4 3/7] tests/kms_pipe_crc_basic: Limit the
- execution to two pipes
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20230201232207.3332996-1-markyacoub@google.com>
+Subject: Re: [igt-dev] [PATCH v2] Chamelium: Get Chamelium Logs on RPC
+ failure.
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,126 +20,184 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: petri.latvala@intel.com, ihf@google.com, amstan@chromium.org,
+ igt-dev@lists.freedesktop.org, seanpaul@chromium.org,
+ khaled.almahallawy@intel.com, markyacoub@google.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Nidhi,
+Hi Mark,
 
-On Thu-02-02-2023 10:45 am, Nidhi Gupta wrote:
-> From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+please remove end dot from subject: line,
+
+Chamelium: Get Chamelium Logs on RPC failure.
+------------------------------------------- ^
+There is no need for final dot there.
+
+Please also note that Petri has new e-mail address
+Petri Latvala <adrinael@adrinael.net>
+
+On 2023-02-01 at 18:22:07 -0500, Mark Yacoub wrote:
+> From: Mark Yacoub <markyacoub@chromium.org>
 > 
-> As the execution is taking more time, limit the execution to two (first
-> & last) pipes.
-
-Please mention about this optimization is for simulation only and no 
-impact on real hardware.
+> [Why]
+> Currently, Chamelium acts like a black box, we can't tell what is going on there when a failure occur. Seeing its logs will allow us to debug better.
+--------------------------------------------------------------- ^
+Keep this line at most 75 chars long and for discussion on ML it
+is even better to keep it 65 chars long, so split it and reformat.
 
 > 
-> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-> Signed-off-by: Nidhi Gupta <nidhi1.gupta@intel.com>
+> [How]
+> On chamelium_rpc failure, print out the logs in debug so it wouldn't clutter good tests.
+------------------------------------------------------------ ^
+Same here, split line.
+
+> 
+> v2:
+> - Added missing #includes
+> 
+> Signed-off-by: Mark Yacoub <markyacoub@chromium.org>
 > ---
->   tests/kms_pipe_crc_basic.c | 41 +++++++++++++++++++++++++++++++++++++-
->   1 file changed, 40 insertions(+), 1 deletion(-)
+>  lib/igt_chamelium.c                    | 38 ++++++++++++++++++++++++--
+>  lib/igt_chamelium.h                    |  1 +
+>  tests/chamelium/kms_chamelium_helper.c | 16 +++++++++++
+>  3 files changed, 52 insertions(+), 3 deletions(-)
 > 
-> diff --git a/tests/kms_pipe_crc_basic.c b/tests/kms_pipe_crc_basic.c
-> index 91a1b8ab..97b97863 100644
-> --- a/tests/kms_pipe_crc_basic.c
-> +++ b/tests/kms_pipe_crc_basic.c
-> @@ -30,6 +30,7 @@
->   #include <string.h>
->   #include <fcntl.h>
->   
-> +static bool extended = false;
->   
->   typedef struct {
->   	int drm_fd;
-> @@ -276,7 +277,23 @@ static void test_disable_crc_after_crtc(data_t *data, enum pipe pipe,
->   
->   data_t data = {0, };
->   
-> -igt_main
-> +static int opt_handler(int opt, int opt_index, void *_data)
-> +{
-> +	switch (opt) {
-> +		case 'e':
-> +			extended = true;
-> +			break;
-> +		default:
-> +			return IGT_OPT_HANDLER_ERROR;
+> diff --git a/lib/igt_chamelium.c b/lib/igt_chamelium.c
+> index a235f3c8..65531671 100644
+> --- a/lib/igt_chamelium.c
+> +++ b/lib/igt_chamelium.c
+> @@ -658,6 +658,8 @@ static xmlrpc_value *chamelium_rpc(struct chamelium *chamelium,
+>  	xmlrpc_value *res;
+>  	va_list va_args;
+>  	int fsm_trials_left = 5;
+> +	bool did_fault_occur = false;
+> +	char fault_string[1024];
+>  
+>  	if (strcmp(method_name, "CaptureVideo") == 0
+>  	    || strcmp(method_name, "StartCapturingVideo") == 0) {
+> @@ -680,9 +682,23 @@ static xmlrpc_value *chamelium_rpc(struct chamelium *chamelium,
+>  					 format_str, va_args);
+>  		va_end(va_args);
+>  	}
+> -	igt_assert_f(!chamelium->env.fault_occurred,
+> -		     "Chamelium RPC call[%s] failed: %s\n", method_name,
+> -		     chamelium->env.fault_string);
+> +
+> +	did_fault_occur = chamelium->env.fault_occurred;
+> +	if (did_fault_occur) {
+> +		// Save the fault string before getting the logs which will
+> +		// clear the string if it is works.
+
+Comments should use /* */ like:
+/*
+ * This is multiline comment about
+ * code.
+ */
+
+> +		strncpy(fault_string, chamelium->env.fault_string, 1024);
+> +		// To avoid recursive calls for logs, don't call for logs if we
+> +		// fail on getting the logs.
+
+I do not get this, maybe just tell here:
+		/* Avoid recursive calls for logs */
+
+> +		if (strcmp(method_name, "GetChameleondLogs") != 0) {
+> +			char *logs = chamelium_get_logs(chamelium);
+> +			igt_debug("CHAMELIUM LOGS:\n%s\n", logs);
+> +			free(logs);
+> +		}
 > +	}
 > +
-> +	return IGT_OPT_HANDLER_SUCCESS;
+> +	igt_assert_f(!did_fault_occur, "Chamelium RPC call [%s] failed: %s\n",
+> +		     method_name, fault_string);
+>  
+>  	return res;
+>  }
+> @@ -737,6 +753,22 @@ void chamelium_assert_reachable(struct chamelium *chamelium, int timeout)
+>  		     "Couldn't connect to Chamelium for %ds", timeout);
+>  }
+>  
+
+Put description here, all public library functions need to be
+described. Something to consider is to review this lib and
+adding missing descriptions (if there are any).
+
+> +char *chamelium_get_logs(struct chamelium *chamelium)
+> +{
+> +	xmlrpc_value *res;
+> +	const char *logs = NULL;
+> +
+> +	igt_debug(
+> +		"Calling GetChameleondLogs - Logs returned are from the last time "
+> +		"this was called.\n");
+> +
+> +	res = chamelium_rpc(chamelium, NULL, "GetChameleondLogs", "(s)", "IGT");
+> +	xmlrpc_read_string(&chamelium->env, res, &logs);
+> +	xmlrpc_DECREF(res);
+> +
+> +	return logs;
 > +}
 > +
-> +const char *help_str =
-> +	"  -e \tExtended tests.\n";
+>  /**
+>   * chamelium_plug:
+>   * @chamelium: The Chamelium instance to use
+> diff --git a/lib/igt_chamelium.h b/lib/igt_chamelium.h
+> index d979de4a..e9096519 100644
+> --- a/lib/igt_chamelium.h
+> +++ b/lib/igt_chamelium.h
+> @@ -159,6 +159,7 @@ chamelium_reset_state(igt_display_t *display,
+>  
+>  bool chamelium_wait_reachable(struct chamelium *chamelium, int timeout);
+>  void chamelium_assert_reachable(struct chamelium *chamelium, int timeout);
+> +char *chamelium_get_logs(struct chamelium *chamelium);
+>  void chamelium_plug(struct chamelium *chamelium, struct chamelium_port *port);
+>  void chamelium_unplug(struct chamelium *chamelium, struct chamelium_port *port);
+>  bool chamelium_is_plugged(struct chamelium *chamelium,
+> diff --git a/tests/chamelium/kms_chamelium_helper.c b/tests/chamelium/kms_chamelium_helper.c
+> index 197d29be..bc32329c 100644
+> --- a/tests/chamelium/kms_chamelium_helper.c
+> +++ b/tests/chamelium/kms_chamelium_helper.c
+> @@ -24,7 +24,19 @@
+>   *    Lyude Paul <lyude@redhat.com>
+>   */
+>  
+> +#include <fcntl.h>
+> +#include <stdint.h>
+> +#include <string.h>
+> +#include <stdatomic.h>
+> +#include <xf86drmMode.h>
+> +
+> +#include "config.h"
+> +#include "igt.h"
+> +#include "igt_chamelium.h"
+>  #include "igt_edid.h"
+> +#include "igt_eld.h"
+> +#include "igt_vc4.h"
+> +#include "igt_infoframe.h"
+>  #include "kms_chamelium_helper.h"
+>  
+>  void chamelium_init_test(chamelium_data_t *data)
+> @@ -47,6 +59,10 @@ void chamelium_init_test(chamelium_data_t *data)
+>  	/* we need to initalize chamelium after igt_display_require */
+>  	data->chamelium = chamelium_init(data->drm_fd, &data->display);
+>  	igt_require(data->chamelium);
+> +	// Get the logs so we can reset the chamelium logs at this cursor.
+------- ^
+> +	// The logs are then retrieved when any call fails so we can debug
+------- ^
+> +	// chamelium if needed.
+------- ^
+Same here, turn this into /* */ comment.
 
-Please mention about this flag in commit message.
+Regards,
+Kamil
 
-These comments are applicable for all patches in this series.
-
-- Bhanu
-
-> +
-> +igt_main_args("e", NULL, help_str, opt_handler, NULL)
->   {
->   	enum pipe pipe;
->   	igt_output_t *output;
-> @@ -298,6 +315,8 @@ igt_main
->   		{ "hang-read-crc", TEST_HANG,
->   			"Hang test for pipe CRC read." },
->   	};
-> +	enum pipe active_pipes[IGT_MAX_PIPES];
-> +	uint32_t last_pipe = 0;
->   	int i;
->   
->   	igt_fixture {
-> @@ -312,6 +331,11 @@ igt_main
->   		igt_require_pipe_crc(data.drm_fd);
->   
->   		data.debugfs = igt_debugfs_dir(data.drm_fd);
-> +
-> +		/* Get active pipes. */
-> +		for_each_pipe(&data.display, pipe)
-> +			active_pipes[last_pipe++] = pipe;
-> +		last_pipe--;
->   	}
->   
->   	igt_describe("Tests error handling when the bad source is set.");
-> @@ -322,6 +346,11 @@ igt_main
->   		igt_describe(tests[i].desc);
->   		igt_subtest_with_dynamic(tests[i].name) {
->   			for_each_pipe_with_single_output(&data.display, pipe, output) {
-> +				if (igt_run_in_simulation() && !extended &&
-> +				    pipe != active_pipes[0] &&
-> +				    pipe != active_pipes[last_pipe])
-> +					continue;
-> +
->   				igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), output->name) {
->   					if (tests[i].flags & TEST_SUSPEND) {
->   						test_read_crc(&data, pipe, output, 0);
-> @@ -350,6 +379,11 @@ igt_main
->   		     "does not cause issues.");
->   	igt_subtest_with_dynamic("disable-crc-after-crtc") {
->   		for_each_pipe_with_single_output(&data.display, pipe, output) {
-> +			if (igt_run_in_simulation() && !extended &&
-> +			    pipe != active_pipes[0] &&
-> +			    pipe != active_pipes[last_pipe])
-> +				continue;
-> +
->   			igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), output->name)
->   				test_disable_crc_after_crtc(&data, pipe, output);
->   		}
-> @@ -358,6 +392,11 @@ igt_main
->   	igt_describe("Basic sanity check for CRC mismatches");
->   	igt_subtest_with_dynamic("compare-crc-sanitycheck") {
->   		for_each_pipe_with_single_output(&data.display, pipe, output) {
-> +			if (igt_run_in_simulation() && !extended &&
-> +			    pipe != active_pipes[0] &&
-> +			    pipe != active_pipes[last_pipe])
-> +				continue;
-> +
->   			igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), output->name)
->   				test_compare_crc(&data, pipe, output);
->   		}
+> +	free(chamelium_get_logs(data->chamelium));
+>  
+>  	data->ports = chamelium_get_ports(data->chamelium, &data->port_count);
+>  
+> -- 
+> 2.39.1.456.gfc5497dd1b-goog
+> 
