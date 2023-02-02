@@ -1,21 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C358810E008
- for <igt-dev@lists.freedesktop.org>; Thu,  2 Feb 2023 11:24:41 +0000 (UTC)
-From: "Murthy, Arun R" <arun.r.murthy@intel.com>
-To: Ville Syrjala <ville.syrjala@linux.intel.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-Date: Thu, 2 Feb 2023 11:24:34 +0000
-Message-ID: <DM6PR11MB3177E0C75E1B6B335CC02082BAD69@DM6PR11MB3177.namprd11.prod.outlook.com>
-References: <20230131120646.27434-1-ville.syrjala@linux.intel.com>
- <20230131120646.27434-4-ville.syrjala@linux.intel.com>
-In-Reply-To: <20230131120646.27434-4-ville.syrjala@linux.intel.com>
-Content-Language: en-US
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A957010E2F9
+ for <igt-dev@lists.freedesktop.org>; Thu,  2 Feb 2023 07:19:12 +0000 (UTC)
+From: Swati Sharma <swati2.sharma@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Thu,  2 Feb 2023 12:51:17 +0530
+Message-Id: <20230202072121.26153-3-swati2.sharma@intel.com>
+In-Reply-To: <20230202072121.26153-1-swati2.sharma@intel.com>
+References: <20230202072121.26153-1-swati2.sharma@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t 3/6] tests/kms_async_flips: Ger rid of
- i915 specific fb creation
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t v2 2/6] tests/i915/kms_dsc: Add plane_format
+ as struct data_t member
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,45 +23,74 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-PiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPiBGcm9tOiBWaWxsZSBTeXJqYWxhIDx2aWxs
-ZS5zeXJqYWxhQGxpbnV4LmludGVsLmNvbT4NCj4gU2VudDogVHVlc2RheSwgSmFudWFyeSAzMSwg
-MjAyMyA1OjM3IFBNDQo+IFRvOiBpZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZw0KPiBDYzog
-TXVydGh5LCBBcnVuIFIgPGFydW4uci5tdXJ0aHlAaW50ZWwuY29tPg0KPiBTdWJqZWN0OiBbUEFU
-Q0ggaS1nLXQgMy82XSB0ZXN0cy9rbXNfYXN5bmNfZmxpcHM6IEdlciByaWQgb2YgaTkxNSBzcGVj
-aWZpYyBmYg0KPiBjcmVhdGlvbg0KPiANCj4gRnJvbTogVmlsbGUgU3lyasOkbMOkIDx2aWxsZS5z
-eXJqYWxhQGxpbnV4LmludGVsLmNvbT4NCj4gDQo+IE5vIGlkZWEgd2h5IHRoZSB0ZXN0IHdhbnRz
-IHRvIGNyZWF0ZSB0aGUgZmIgZGlmZmVyZW50bHkgYmV0d2VlbiBpOTE1IHZzLg0KPiBvdGhlcnMu
-IFVuaWZ5IGl0Lg0KPiANCg0KVGhpcyBpcyBhbHJlYWR5IGhhbmRsZWQgYXMgcGFydCBvZiB0aGUg
-cGF0Y2ggaHR0cHM6Ly9wYXRjaHdvcmsuZnJlZWRlc2t0b3Aub3JnL3Nlcmllcy8xMDMxMzcvDQpI
-ZXJlIHN1YnRlc3RzIGhhdmUgYmVlbiBhZGRlZCBhbmQgcGxhdGZvcm0gc3BlY2lmaWMgY3JlYXRp
-b24gb2YgZmIgaXMgcmVtb3ZlZC4NCg0KVGhhbmtzIGFuZCBSZWdhcmRzLA0KQXJ1biBSIE11cnRo
-eQ0KLS0tLS0tLS0tLS0tLS0tLS0tLS0NCg0KPiBDYzogQXJ1biBSIE11cnRoeSA8YXJ1bi5yLm11
-cnRoeUBpbnRlbC5jb20+DQo+IFNpZ25lZC1vZmYtYnk6IFZpbGxlIFN5cmrDpGzDpCA8dmlsbGUu
-c3lyamFsYUBsaW51eC5pbnRlbC5jb20+DQo+IC0tLQ0KPiAgdGVzdHMva21zX2FzeW5jX2ZsaXBz
-LmMgfCAxOSArKysrKysrKysrKy0tLS0tLS0tDQo+ICAxIGZpbGUgY2hhbmdlZCwgMTEgaW5zZXJ0
-aW9ucygrKSwgOCBkZWxldGlvbnMoLSkNCj4gDQo+IGRpZmYgLS1naXQgYS90ZXN0cy9rbXNfYXN5
-bmNfZmxpcHMuYyBiL3Rlc3RzL2ttc19hc3luY19mbGlwcy5jIGluZGV4DQo+IDU1YmUwYmQ4NzRh
-ZC4uZjhjOTdlMDI5YzU5IDEwMDY0NA0KPiAtLS0gYS90ZXN0cy9rbXNfYXN5bmNfZmxpcHMuYw0K
-PiArKysgYi90ZXN0cy9rbXNfYXN5bmNfZmxpcHMuYw0KPiBAQCAtMTE1LDYgKzExNSwxNSBAQCBz
-dGF0aWMgdm9pZCB3YWl0X2ZsaXBfZXZlbnQoZGF0YV90ICpkYXRhKQ0KPiAgCX0NCj4gIH0NCj4g
-DQo+ICtzdGF0aWMgdWludDY0X3QgZGVmYXVsdF9tb2RpZmllcihkYXRhX3QgKmRhdGEpIHsNCj4g
-KwlpZiAoaWd0X2Rpc3BsYXlfaGFzX2Zvcm1hdF9tb2QoJmRhdGEtPmRpc3BsYXksDQo+IERSTV9G
-T1JNQVRfWFJHQjg4ODgsDQo+ICsJCQkJICAgICAgIEk5MTVfRk9STUFUX01PRF9YX1RJTEVEKSkN
-Cj4gKwkJcmV0dXJuIEk5MTVfRk9STUFUX01PRF9YX1RJTEVEOw0KPiArCWVsc2UNCj4gKwkJcmV0
-dXJuIERSTV9GT1JNQVRfTU9EX0xJTkVBUjsNCj4gK30NCj4gKw0KPiAgc3RhdGljIHZvaWQgbWFr
-ZV9mYihkYXRhX3QgKmRhdGEsIHN0cnVjdCBpZ3RfZmIgKmZiLA0KPiAgCQkgICAgdWludDMyX3Qg
-d2lkdGgsIHVpbnQzMl90IGhlaWdodCwgaW50IGluZGV4KSAgeyBAQCAtMTIzLDE0DQo+ICsxMzIs
-OCBAQCBzdGF0aWMgdm9pZCBtYWtlX2ZiKGRhdGFfdCAqZGF0YSwgc3RydWN0IGlndF9mYiAqZmIs
-DQo+IA0KPiAgCXJlY193aWR0aCA9IHdpZHRoIC8gKEFSUkFZX1NJWkUoZGF0YS0+YnVmcykgKiAy
-KTsNCj4gDQo+IC0JaWYgKGlzX2k5MTVfZGV2aWNlKGRhdGEtPmRybV9mZCkpIHsNCj4gLQkJaWd0
-X2NyZWF0ZV9mYihkYXRhLT5kcm1fZmQsIHdpZHRoLCBoZWlnaHQsDQo+IERSTV9GT1JNQVRfWFJH
-Qjg4ODgsDQo+IC0JCQkgICAgICBJOTE1X0ZPUk1BVF9NT0RfWF9USUxFRCwgZmIpOw0KPiAtCQlp
-Z3RfZHJhd19maWxsX2ZiKGRhdGEtPmRybV9mZCwgZmIsIDB4ODgpOw0KPiAtCX0gZWxzZSB7DQo+
-IC0JCWlndF9jcmVhdGVfY29sb3JfZmIoZGF0YS0+ZHJtX2ZkLCB3aWR0aCwgaGVpZ2h0LA0KPiBE
-Uk1fRk9STUFUX1hSR0I4ODg4LA0KPiAtCQkJCSAgICBEUk1fRk9STUFUX01PRF9MSU5FQVIsIDAu
-MCwgMC4wLCAwLjUsDQo+IGZiKTsNCj4gLQl9DQo+ICsJaWd0X2NyZWF0ZV9jb2xvcl9mYihkYXRh
-LT5kcm1fZmQsIHdpZHRoLCBoZWlnaHQsDQo+IERSTV9GT1JNQVRfWFJHQjg4ODgsDQo+ICsJCQkg
-ICAgZGVmYXVsdF9tb2RpZmllcihkYXRhKSwgMC4wLCAwLjAsIDAuNSwgZmIpOw0KPiANCj4gIAlj
-ciA9IGlndF9nZXRfY2Fpcm9fY3R4KGRhdGEtPmRybV9mZCwgZmIpOw0KPiAgCWlndF9wYWludF9j
-b2xvcl9yYW5kKGNyLCByZWNfd2lkdGggKiAyICsgcmVjX3dpZHRoICogaW5kZXgsIDAsDQo+IHJl
-Y193aWR0aCwgaGVpZ2h0KTsNCj4gLS0NCj4gMi4zOS4xDQoNCg==
+plane_format is added as struct data_t member. Also, corresponding
+changes are done to accommodate this change.
+
+Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
+---
+ tests/i915/kms_dsc.c | 14 ++++++++------
+ 1 file changed, 8 insertions(+), 6 deletions(-)
+
+diff --git a/tests/i915/kms_dsc.c b/tests/i915/kms_dsc.c
+index 8f32ae950..af9466518 100644
+--- a/tests/i915/kms_dsc.c
++++ b/tests/i915/kms_dsc.c
+@@ -44,6 +44,7 @@ typedef struct {
+ 	uint32_t devid;
+ 	igt_display_t display;
+ 	struct igt_fb fb_test_pattern;
++	unsigned int plane_format;
+ 	igt_output_t *output;
+ 	int input_bpc;
+ 	int n_pipes;
+@@ -108,7 +109,7 @@ static void test_cleanup(data_t *data)
+ }
+ 
+ /* re-probe connectors and do a modeset with DSC */
+-static void update_display(data_t *data, enum dsc_test_type test_type, unsigned int plane_format)
++static void update_display(data_t *data, enum dsc_test_type test_type)
+ {
+ 	bool enabled;
+ 	igt_plane_t *primary;
+@@ -137,13 +138,13 @@ static void update_display(data_t *data, enum dsc_test_type test_type, unsigned
+ 
+ 	primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
+ 
+-	igt_skip_on(!igt_plane_has_format_mod(primary, plane_format,
++	igt_skip_on(!igt_plane_has_format_mod(primary, data->plane_format,
+ 		    DRM_FORMAT_MOD_LINEAR));
+ 
+ 	igt_create_pattern_fb(data->drm_fd,
+ 			      mode->hdisplay,
+ 			      mode->vdisplay,
+-			      plane_format,
++			      data->plane_format,
+ 			      DRM_FORMAT_MOD_LINEAR,
+ 			      &data->fb_test_pattern);
+ 
+@@ -184,6 +185,7 @@ static void test_dsc(data_t *data, enum dsc_test_type test_type, int bpc,
+ 	enum pipe pipe;
+ 
+ 	for_each_pipe_with_valid_output(display, pipe, output) {
++		data->plane_format = plane_format;
+ 		data->input_bpc = bpc;
+ 		data->output = output;
+ 		data->pipe = pipe;
+@@ -201,12 +203,12 @@ static void test_dsc(data_t *data, enum dsc_test_type test_type, int bpc,
+ 			continue;
+ 
+ 		if (test_type == TEST_DSC_BPC)
+-			snprintf(name, sizeof(name), "-%dbpc-%s", data->input_bpc, igt_format_str(plane_format));
++			snprintf(name, sizeof(name), "-%dbpc-%s", data->input_bpc, igt_format_str(data->plane_format));
+ 		else
+-			snprintf(name, sizeof(name), "-%s", igt_format_str(plane_format));
++			snprintf(name, sizeof(name), "-%s", igt_format_str(data->plane_format));
+ 
+ 		igt_dynamic_f("pipe-%s-%s%s",  kmstest_pipe_name(data->pipe), data->output->name, name)
+-			update_display(data, test_type, plane_format);
++			update_display(data, test_type);
+ 	}
+ }
+ 
+-- 
+2.25.1
