@@ -1,17 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2C4E110E2E1
- for <igt-dev@lists.freedesktop.org>; Thu,  2 Feb 2023 05:55:31 +0000 (UTC)
-From: Nidhi Gupta <nidhi1.gupta@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Thu,  2 Feb 2023 11:31:15 +0530
-Message-Id: <20230202060115.29259-1-nidhi1.gupta@intel.com>
-In-Reply-To: <20230202051509.28983-5-nidhi1.gupta@intel.com>
-References: <20230202051509.28983-5-nidhi1.gupta@intel.com>
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH v5 4/7] tests/kms_plane_alpha_blend: Limit the
- execution to single pipe & two planes
+Content-Transfer-Encoding: quoted-printable
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Nidhi Gupta" <nidhi1.gupta@intel.com>
+Date: Thu, 02 Feb 2023 06:00:39 -0000
+Message-ID: <167531763965.11116.4348507613146772911@emeril.freedesktop.org>
+References: <20230202051509.28983-1-nidhi1.gupta@intel.com>
+In-Reply-To: <20230202051509.28983-1-nidhi1.gupta@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJVSUxEOiBmYWlsdXJlIGZvciBMaW1p?=
+ =?utf-8?q?t_the_execution_to_few_pipes/planes_=28rev3=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,118 +17,106 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+=3D=3D Series Details =3D=3D
 
-As the execution is taking more time, limit the execution to single pipe
-and two (first & last) planes.
+Series: Limit the execution to few pipes/planes (rev3)
+URL   : https://patchwork.freedesktop.org/series/113526/
+State : failure
 
-Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
----
- tests/kms_plane_alpha_blend.c | 49 ++++++++++++++++++++++++++++++++---
- 1 file changed, 46 insertions(+), 3 deletions(-)
+=3D=3D Summary =3D=3D
 
-diff --git a/tests/kms_plane_alpha_blend.c b/tests/kms_plane_alpha_blend.c
-index 38272ccb..6f68bfb0 100644
---- a/tests/kms_plane_alpha_blend.c
-+++ b/tests/kms_plane_alpha_blend.c
-@@ -26,6 +26,8 @@
- 
- #include "igt.h"
- 
-+static bool extended = false;
-+
- IGT_TEST_DESCRIPTION("Test plane alpha and blending mode properties");
- 
- typedef struct {
-@@ -482,8 +484,10 @@ static void run_test_on_pipe_planes(data_t *data, enum pipe pipe, igt_output_t *
- {
- 	igt_display_t *display = &data->display;
- 	igt_plane_t *plane;
-+	int first_plane = -1;
-+	int last_plane = -1;
- 
--	for_each_plane_on_pipe(display, pipe, plane) {
-+	for_each_plane_on_pipe(&data->display, pipe, plane) {
- 		if (!igt_plane_has_prop(plane, IGT_PLANE_ALPHA))
- 			continue;
- 
-@@ -496,6 +500,19 @@ static void run_test_on_pipe_planes(data_t *data, enum pipe pipe, igt_output_t *
- 		if (must_multiply && !has_multiplied_alpha(data, plane))
- 			continue;
- 
-+		if (first_plane < 0)
-+			first_plane = j__;
-+
-+		last_plane = j__;
-+	}
-+
-+	for_each_plane_on_pipe(&data->display, pipe, plane) {
-+		if (igt_run_in_simulation() &&
-+		    j__ != first_plane && j__ != last_plane)
-+			continue;
-+
-+		/* reset plane alpha properties between each plane */
-+		reset_alpha(display, pipe);
- 		igt_info("Testing plane %u\n", plane->index);
- 		test(data, pipe, plane);
- 		igt_plane_set_fb(plane, NULL);
-@@ -615,25 +632,51 @@ static void run_subtests(data_t *data)
- {
- 	igt_output_t *output;
- 	enum pipe pipe;
-+	enum pipe active_pipes[IGT_MAX_PIPES];
-+	uint32_t last_pipe = 0;
-+
-+	/* Get active pipes. */
-+	for_each_pipe(&data->display, pipe)
-+		active_pipes[last_pipe++] = pipe;
-+	last_pipe--;
- 
- 	for (int i = 0; i < ARRAY_SIZE(subtests); i++) {
- 		igt_describe_f("%s\n", subtests[i].desc);
- 
- 		igt_subtest_with_dynamic(subtests[i].name) {
- 			for_each_pipe_with_single_output(&data->display, pipe, output) {
-+				if (igt_run_in_simulation() && !extended &&
-+				    pipe != active_pipes[0] &&
-+				    pipe != active_pipes[last_pipe])
-+					continue;
- 				prepare_crtc(data, output, pipe);
- 				if (!pipe_check(data, pipe, subtests[i].blend, subtests[i].must_multiply))
- 					continue;
- 
- 				igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), output->name)
- 					run_test_on_pipe_planes(data, pipe, output, subtests[i].blend,
--								subtests[i].must_multiply, subtests[i].test);
- 			}
- 		}
- 	}
- }
- 
--igt_main
-+static int opt_handler(int opt, int opt_index, void *_data)
-+{
-+	switch (opt) {
-+		case 'e':
-+			extended = true;
-+			break;
-+		default:
-+			return IGT_OPT_HANDLER_ERROR;
-+	}
-+
-+	return IGT_OPT_HANDLER_SUCCESS;
-+}
-+
-+const char *help_str =
-+	"  -e \tExtended tests.\n";
-+
-+igt_main_args("e", NULL, help_str, opt_handler, NULL)
- {
- 	data_t data = {};
- 
--- 
-2.39.0
+IGT patchset build failed on latest successful build
+c7b12dcc460fc2348e1fa7f4dcb791bb82e29e44 lib/igt_device_scan: Improve Intel=
+ discrete GPU selection
+
+[282/1021] Linking target tests/core_setmaster_vs_auth.
+[283/1021] Linking target tests/debugfs_test.
+[284/1021] Linking target tests/dmabuf.
+[285/1021] Linking target tests/dmabuf_sync_file.
+[286/1021] Linking target tests/device_reset.
+[287/1021] Linking target tests/drm_buddy.
+[288/1021] Linking target tests/drm_mm.
+[289/1021] Linking target tests/drm_read.
+[290/1021] Linking target tests/fbdev.
+[291/1021] Linking target tests/feature_discovery.
+[292/1021] Linking target tests/kms_3d.
+[293/1021] Linking target tests/kms_atomic.
+[294/1021] Linking target tests/kms_addfb_basic.
+[295/1021] Linking target tests/kms_async_flips.
+[296/1021] Linking target tests/kms_atomic_interruptible.
+[297/1021] Linking target tests/kms_atomic_transition.
+[298/1021] Linking target tests/kms_bw.
+[299/1021] Linking target tests/kms_concurrent.
+[300/1021] Linking target tests/kms_content_protection.
+[301/1021] Linking target tests/kms_cursor_crc.
+[302/1021] Linking target tests/kms_cursor_edge_walk.
+[303/1021] Linking target tests/kms_cursor_legacy.
+[304/1021] Linking target tests/kms_display_modes.
+[305/1021] Linking target tests/kms_dither.
+[306/1021] Linking target tests/kms_dp_aux_dev.
+[307/1021] Linking target tests/kms_dp_tiled_display.
+[308/1021] Linking target tests/kms_flip_event_leak.
+[309/1021] Linking target tests/kms_flip.
+[310/1021] Linking target tests/kms_getfb.
+[311/1021] Linking target tests/kms_force_connector_basic.
+[312/1021] Compiling C object 'tests/59830eb@@kms_plane_alpha_blend@exe/kms=
+_plane_alpha_blend.c.o'.
+FAILED: tests/59830eb@@kms_plane_alpha_blend@exe/kms_plane_alpha_blend.c.o =
+
+cc -Itests/59830eb@@kms_plane_alpha_blend@exe -Itests -I../../../usr/src/ig=
+t-gpu-tools/tests -I../../../usr/src/igt-gpu-tools/include/drm-uapi -I../..=
+/../usr/src/igt-gpu-tools/include/linux-uapi -Ilib -I../../../usr/src/igt-g=
+pu-tools/lib -I../../../usr/src/igt-gpu-tools/lib/stubs/syscalls -I. -I../.=
+./../usr/src/igt-gpu-tools/ -I/usr/include/cairo -I/usr/include/glib-2.0 -I=
+/usr/lib/x86_64-linux-gnu/glib-2.0/include -I/usr/include/pixman-1 -I/usr/i=
+nclude/uuid -I/usr/include/freetype2 -I/usr/include/libpng16 -I/usr/include=
+/libdrm -I/usr/include/x86_64-linux-gnu -I/usr/include/valgrind -I/usr/incl=
+ude -fdiagnostics-color=3Dalways -pipe -D_FILE_OFFSET_BITS=3D64 -Wall -Winv=
+alid-pch -Wextra -std=3Dgnu11 -O2 -g -D_GNU_SOURCE -include config.h -D_FOR=
+TIFY_SOURCE=3D2 -Wbad-function-cast -Wdeclaration-after-statement -Wformat=
+=3D2 -Wimplicit-fallthrough=3D0 -Wlogical-op -Wmissing-declarations -Wmissi=
+ng-format-attribute -Wmissing-noreturn -Wmissing-prototypes -Wnested-extern=
+s -Wold-style-definition -Wpointer-arith -Wredundant-decls -Wshadow -Wstric=
+t-prototypes -Wuninitialized -Wunused -Wno-clobbered -Wno-maybe-uninitializ=
+ed -Wno-missing-field-initializers -Wno-pointer-arith -Wno-address-of-packe=
+d-member -Wno-sign-compare -Wno-type-limits -Wno-unused-parameter -Wno-unus=
+ed-result -Werror=3Daddress -Werror=3Darray-bounds -Werror=3Dimplicit -Werr=
+or=3Dinit-self -Werror=3Dint-to-pointer-cast -Werror=3Dmain -Werror=3Dmissi=
+ng-braces -Werror=3Dnonnull -Werror=3Dpointer-to-int-cast -Werror=3Dreturn-=
+type -Werror=3Dsequence-point -Werror=3Dtrigraphs -Werror=3Dwrite-strings -=
+fno-builtin-malloc -fno-builtin-calloc -pthread -MD -MQ 'tests/59830eb@@kms=
+_plane_alpha_blend@exe/kms_plane_alpha_blend.c.o' -MF 'tests/59830eb@@kms_p=
+lane_alpha_blend@exe/kms_plane_alpha_blend.c.o.d' -o 'tests/59830eb@@kms_pl=
+ane_alpha_blend@exe/kms_plane_alpha_blend.c.o' -c ../../../usr/src/igt-gpu-=
+tools/tests/kms_plane_alpha_blend.c
+../../../usr/src/igt-gpu-tools/tests/kms_plane_alpha_blend.c: In function =
+=E2=80=98run_subtests=E2=80=99:
+../../../usr/src/igt-gpu-tools/tests/kms_plane_alpha_blend.c:658:4: error: =
+expected expression before =E2=80=98}=E2=80=99 token
+  658 |    }
+      |    ^
+../../../usr/src/igt-gpu-tools/tests/kms_plane_alpha_blend.c:657:6: error: =
+too few arguments to function =E2=80=98run_test_on_pipe_planes=E2=80=99
+  657 |      run_test_on_pipe_planes(data, pipe, output, subtests[i].blend,
+      |      ^~~~~~~~~~~~~~~~~~~~~~~
+../../../usr/src/igt-gpu-tools/tests/kms_plane_alpha_blend.c:481:13: note: =
+declared here
+  481 | static void run_test_on_pipe_planes(data_t *data, enum pipe pipe, i=
+gt_output_t *output,
+      |             ^~~~~~~~~~~~~~~~~~~~~~~
+../../../usr/src/igt-gpu-tools/tests/kms_plane_alpha_blend.c:657:68: error:=
+ expected =E2=80=98;=E2=80=99 before =E2=80=98}=E2=80=99 token
+  657 |      run_test_on_pipe_planes(data, pipe, output, subtests[i].blend,
+      |                                                                    ^
+      |                                                                    ;
+  658 |    }
+      |    ~                                                               =
+=20
+ninja: build stopped: subcommand failed.
+
