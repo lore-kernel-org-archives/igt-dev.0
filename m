@@ -1,21 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9761C10E7A8
- for <igt-dev@lists.freedesktop.org>; Fri,  3 Feb 2023 14:45:12 +0000 (UTC)
-Date: Fri, 3 Feb 2023 15:45:08 +0100
-From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
-To: Jani Nikula <jani.nikula@linux.intel.com>
-Message-ID: <20230203154508.0ee405b9@maurocar-mobl2>
-In-Reply-To: <87r0v6zxki.fsf@intel.com>
-References: <20230203082650.2454081-1-mauro.chehab@linux.intel.com>
- <20230203082650.2454081-2-mauro.chehab@linux.intel.com>
- <874js311zb.fsf@intel.com> <20230203123729.7f32fd8f@maurocar-mobl2>
- <87r0v6zxki.fsf@intel.com>
+Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 49A8310E047
+ for <igt-dev@lists.freedesktop.org>; Thu,  2 Feb 2023 18:39:53 +0000 (UTC)
+From: "Shankar, Uma" <uma.shankar@intel.com>
+To: "Sharma, Swati2" <swati2.sharma@intel.com>,
+ "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+Date: Thu, 2 Feb 2023 18:39:38 +0000
+Message-ID: <DM4PR11MB6360BFC2E0ABDFFCC0E55499F4D69@DM4PR11MB6360.namprd11.prod.outlook.com>
+References: <20221227083741.14644-1-swati2.sharma@intel.com>
+ <20221227083741.14644-3-swati2.sharma@intel.com>
+In-Reply-To: <20221227083741.14644-3-swati2.sharma@intel.com>
+Content-Language: en-US
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Subject: Re: [igt-dev] [PATCH i-g-t 1/1] scripts: add a parser to produce
- documentation from Kernel C file metatags
+Subject: Re: [igt-dev] [PATCH i-g-t 2/2] tests/kms_hdr: Add negative test to
+ enforce HDR on non-HDR panel
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,64 +23,96 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Fri, 03 Feb 2023 15:29:49 +0200
-Jani Nikula <jani.nikula@linux.intel.com> wrote:
-
-> >> The script alone isn't enough; how do you bolt this into other
-> >> documentation? More ad hoc scripting like
-> >> docs/reference/igt-gpu-tools/{generate_description_xml.py,generate_programs_xml.sh}?  
-> >
-> > No need. This script could be called to produce, let's say, Xe documentation by adding
-> > a target at tests/xe/meson.build that would do something similar to:
-> >
-> > 	${SRCDIR}/scripts/igt-doc ${SRCDIR}/tests/xe/*.c > ${DESTDIR}/docs/xe_tests.rst
-> >
-> > And CI would be running:
-> >
-> > 	${SRCDIR}/scripts/igt-doc ${SRCDIR}/tests/xe/*.c --check  
-> 
-> I think we have different ideas of what it means to *nicely* integrate
-
-No matter what solution used, some rules are needed at meson.build to
-produce documentation. One of the requirements is to have a way to validate
-if the documents are updated.
-
-So, it needs to be something that:
-
-1. it is easy to be parsed;
-2. it is easy for developers to write;
-3. it is embedded at the C file that contains the tests.
-
-Anything different than that will lead into the documentation gaps
-that we currently have.
-
-See, if you pick a couple of random IGT test files:
-
-	$ for i in $(seq 1 10); do find tests/ -name "*.c" | shuf -n 1; done
-
-I doubt you'll be able to quickly discover details on what each
-test does (what the test does, what platforms are supported, what it is
-required to run them, etc), even if you write a script to parse it.
-You'll probably spend some time to find the documentation, and that's if 
-they're available and updated.
-
-By having comments inside the code like what it is proposed on this
-patch, you can get them with a simple command:
-
-	$ grep -A10 -E "\* TEST\b" $(find tests/ -name "*.c")
 
 
-Assuming that we place the documentation embedded in a C file, it
-means that meson.build will require some addition any way by running
-some executable. As meson was built exactly with the purpose of
-executing external programs (mesa, gcc, etc), calling an external
-program seems *nicely integrated* to me.
+> -----Original Message-----
+> From: igt-dev <igt-dev-bounces@lists.freedesktop.org> On Behalf Of Swati =
+Sharma
+> Sent: Tuesday, December 27, 2022 2:08 PM
+> To: igt-dev@lists.freedesktop.org
+> Subject: [igt-dev] [PATCH i-g-t 2/2] tests/kms_hdr: Add negative test to =
+enforce HDR
+> on non-HDR panel
+>=20
+> Negative test is added to ensure HDR is not enabled on non-HDR panel.
+> Commit/modeset won't fail. However, in dmesg we can find
+> 	[drm:drm_hdmi_infoframe_set_hdr_metadata [drm_display_helper]] EOTF
+> Not Supported
 
-Regards,
-Mauro
+Hmm, not very ideal to rely on kernel message. But no major objection,
+Looks ok to me.
 
+Reviewed-by: Uma Shankar <uma.shankar@intel.com>
+
+> Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
+> ---
+>  tests/kms_hdr.c | 15 +++++++++++++--
+>  1 file changed, 13 insertions(+), 2 deletions(-)
+>=20
+> diff --git a/tests/kms_hdr.c b/tests/kms_hdr.c index 629a45a7..18ccfce7 1=
+00644
+> --- a/tests/kms_hdr.c
+> +++ b/tests/kms_hdr.c
+> @@ -51,6 +51,7 @@ enum {
+>  	TEST_SUSPEND =3D 1 << 2,
+>  	TEST_SWAP =3D 1 << 3,
+>  	TEST_INVALID_METADATA_SIZES =3D 1 << 4,
+> +	TEST_INVALID_HDR =3D 1 << 5,
+>  };
+>=20
+>  /* BPC connector state. */
+> @@ -414,6 +415,8 @@ static void test_static_toggle(data_t *data, enum pip=
+e pipe,
+>  	set_hdr_output_metadata(data, &hdr);
+>  	igt_output_set_prop_value(data->output, IGT_CONNECTOR_MAX_BPC, 10);
+>  	igt_display_commit_atomic(display,
+> DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
+> +	if (flags & TEST_INVALID_HDR)
+> +		igt_assert_eq(system("dmesg|grep -E \"EOTF Not Supported\""), 0);
+>  	igt_assert_output_bpc_equal(data->fd, pipe, output->name, 10);
+>=20
+>  	/* Verify that the CRC are equal after DPMS or suspend. */ @@ -565,7
+> +568,11 @@ static void test_hdr(data_t *data, uint32_t flags)
+>  		if (!has_max_bpc(output) || !has_hdr(output))
+>  			continue;
+>=20
+> -		if (!is_panel_hdr(data, output))
+> +		/* For negative test, panel should be non-hdr. */
+> +		if ((flags & TEST_INVALID_HDR) && is_panel_hdr(data, output))
+> +			continue;
+> +
+> +		if ((flags & ~TEST_INVALID_HDR) && !is_panel_hdr(data, output))
+>  			continue;
+>=20
+>  		if (igt_get_output_max_bpc(data->fd, output->name) < 10) @@ -
+> 587,7 +594,7 @@ static void test_hdr(data_t *data, uint32_t flags)
+>=20
+>  				igt_dynamic_f("pipe-%s-%s",
+>  					      kmstest_pipe_name(pipe), output-
+> >name) {
+> -					if (flags & TEST_NONE || flags &
+> TEST_DPMS || flags & TEST_SUSPEND)
+> +					if (flags & TEST_NONE || flags &
+> TEST_DPMS || flags & TEST_SUSPEND
+> +|| flags & TEST_INVALID_HDR)
+>  						test_static_toggle(data, pipe,
+> output, flags);
+>  					if (flags & TEST_SWAP)
+>  						test_static_swap(data, pipe,
+> output); @@ -645,6 +652,10 @@ igt_main
+>  	igt_subtest_with_dynamic("invalid-metadata-sizes")
+>  		test_hdr(&data, TEST_INVALID_METADATA_SIZES);
+>=20
+> +	igt_describe("Test to ensure HDR is not enabled on non-HDR panel");
+> +	igt_subtest_with_dynamic("invalid-hdr")
+> +		test_hdr(&data, TEST_INVALID_HDR);
+> +
+>  	igt_fixture {
+>  		igt_display_fini(&data.display);
+>  		close(data.fd);
+> --
+> 2.17.1
