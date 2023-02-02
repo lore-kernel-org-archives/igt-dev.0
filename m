@@ -1,17 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DA56810E1B7
- for <igt-dev@lists.freedesktop.org>; Thu,  2 Feb 2023 06:54:58 +0000 (UTC)
-From: Nidhi Gupta <nidhi1.gupta@intel.com>
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BFA1D10E1B7
+ for <igt-dev@lists.freedesktop.org>; Thu,  2 Feb 2023 07:19:10 +0000 (UTC)
+From: Swati Sharma <swati2.sharma@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Thu,  2 Feb 2023 12:30:44 +0530
-Message-Id: <20230202070044.29881-1-nidhi1.gupta@intel.com>
-In-Reply-To: <20230202060115.29259-1-nidhi1.gupta@intel.com>
-References: <20230202060115.29259-1-nidhi1.gupta@intel.com>
+Date: Thu,  2 Feb 2023 12:51:16 +0530
+Message-Id: <20230202072121.26153-2-swati2.sharma@intel.com>
+In-Reply-To: <20230202072121.26153-1-swati2.sharma@intel.com>
+References: <20230202072121.26153-1-swati2.sharma@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH v5 4/7] tests/kms_plane_alpha_blend: Limit the
- execution to single pipe & two planes
+Subject: [igt-dev] [PATCH i-g-t v2 1/6] lib/dsc: Fix return value
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,109 +22,67 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+0 is usually success, < 0 is error. Fix that.
 
-As the execution is taking more time, limit the execution to single pipe
-and two (first & last) planes.
-
-Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
 ---
- tests/kms_plane_alpha_blend.c | 48 +++++++++++++++++++++++++++++++++--
- 1 file changed, 46 insertions(+), 2 deletions(-)
+ lib/igt_dsc.c               | 7 +++++--
+ tests/i915/kms_dsc_helper.c | 4 ++--
+ 2 files changed, 7 insertions(+), 4 deletions(-)
 
-diff --git a/tests/kms_plane_alpha_blend.c b/tests/kms_plane_alpha_blend.c
-index 38272ccb..39d321bf 100644
---- a/tests/kms_plane_alpha_blend.c
-+++ b/tests/kms_plane_alpha_blend.c
-@@ -26,6 +26,8 @@
+diff --git a/lib/igt_dsc.c b/lib/igt_dsc.c
+index 25dcb5840..64dd6b29a 100644
+--- a/lib/igt_dsc.c
++++ b/lib/igt_dsc.c
+@@ -35,6 +35,9 @@ static int write_dsc_debugfs(int drmfd, char *connector_name, const char *file_n
  
- #include "igt.h"
+ 	close(debugfs_fd);
  
-+static bool extended = false;
++	if (ret > 0)
++		return 0;
 +
- IGT_TEST_DESCRIPTION("Test plane alpha and blending mode properties");
- 
- typedef struct {
-@@ -482,8 +484,10 @@ static void run_test_on_pipe_planes(data_t *data, enum pipe pipe, igt_output_t *
- {
- 	igt_display_t *display = &data->display;
- 	igt_plane_t *plane;
-+	int first_plane = -1;
-+	int last_plane = -1;
- 
--	for_each_plane_on_pipe(display, pipe, plane) {
-+	for_each_plane_on_pipe(&data->display, pipe, plane) {
- 		if (!igt_plane_has_prop(plane, IGT_PLANE_ALPHA))
- 			continue;
- 
-@@ -496,6 +500,19 @@ static void run_test_on_pipe_planes(data_t *data, enum pipe pipe, igt_output_t *
- 		if (must_multiply && !has_multiplied_alpha(data, plane))
- 			continue;
- 
-+		if (first_plane < 0)
-+			first_plane = j__;
-+
-+		last_plane = j__;
-+	}
-+
-+	for_each_plane_on_pipe(&data->display, pipe, plane) {
-+		if (igt_run_in_simulation() &&
-+		    j__ != first_plane && j__ != last_plane)
-+			continue;
-+
-+		/* reset plane alpha properties between each plane */
-+		reset_alpha(display, pipe);
- 		igt_info("Testing plane %u\n", plane->index);
- 		test(data, pipe, plane);
- 		igt_plane_set_fb(plane, NULL);
-@@ -615,12 +632,23 @@ static void run_subtests(data_t *data)
- {
- 	igt_output_t *output;
- 	enum pipe pipe;
-+	enum pipe active_pipes[IGT_MAX_PIPES];
-+	uint32_t last_pipe = 0;
-+
-+	/* Get active pipes. */
-+	for_each_pipe(&data->display, pipe)
-+		active_pipes[last_pipe++] = pipe;
-+	last_pipe--;
- 
- 	for (int i = 0; i < ARRAY_SIZE(subtests); i++) {
- 		igt_describe_f("%s\n", subtests[i].desc);
- 
- 		igt_subtest_with_dynamic(subtests[i].name) {
- 			for_each_pipe_with_single_output(&data->display, pipe, output) {
-+				if (igt_run_in_simulation() && !extended &&
-+				    pipe != active_pipes[0] &&
-+				    pipe != active_pipes[last_pipe])
-+					continue;
- 				prepare_crtc(data, output, pipe);
- 				if (!pipe_check(data, pipe, subtests[i].blend, subtests[i].must_multiply))
- 					continue;
-@@ -633,7 +661,23 @@ static void run_subtests(data_t *data)
- 	}
+ 	return ret;
  }
  
--igt_main
-+static int opt_handler(int opt, int opt_index, void *_data)
-+{
-+	switch (opt) {
-+		case 'e':
-+			extended = true;
-+			break;
-+		default:
-+			return IGT_OPT_HANDLER_ERROR;
-+	}
-+
-+	return IGT_OPT_HANDLER_SUCCESS;
-+}
-+
-+const char *help_str =
-+	"  -e \tExtended tests.\n";
-+
-+igt_main_args("e", NULL, help_str, opt_handler, NULL)
+@@ -92,7 +95,7 @@ bool igt_is_force_dsc_enabled(int drmfd, char *connector_name)
+  * @drmfd: A drm file descriptor
+  * @connector_name: Name of the libdrm connector we're going to use
+  *
+- * Returns: 1 on success or negative error code, in case of failure.
++ * Returns: 0 on success or negative error code, in case of failure.
+  */
+ int igt_force_dsc_enable(int drmfd, char *connector_name)
  {
- 	data_t data = {};
+@@ -105,7 +108,7 @@ int igt_force_dsc_enable(int drmfd, char *connector_name)
+  * @connector_name: Name of the libdrm connector we're going to use
+  * @bpc: Input BPC
+  *
+- * Returns: No. of bytes written or negative error code, in case of failure.
++ * Returns: 0 on success or negative error code, in case of failure.
+  */
+ int igt_force_dsc_enable_bpc(int drmfd, char *connector_name, int bpc)
+ {
+diff --git a/tests/i915/kms_dsc_helper.c b/tests/i915/kms_dsc_helper.c
+index a80f3d787..e2c278c7a 100644
+--- a/tests/i915/kms_dsc_helper.c
++++ b/tests/i915/kms_dsc_helper.c
+@@ -14,7 +14,7 @@ void force_dsc_enable(int drmfd, igt_output_t *output)
  
+ 	igt_debug("Forcing DSC enable on %s\n", output->name);
+ 	ret = igt_force_dsc_enable(drmfd, output->name);
+-	igt_assert_f(ret > 0, "forcing dsc enable debugfs_write failed\n");
++	igt_assert_f(ret == 0, "forcing dsc enable debugfs_write failed\n");
+ }
+ 
+ void force_dsc_enable_bpc(int drmfd, igt_output_t *output, int input_bpc)
+@@ -24,7 +24,7 @@ void force_dsc_enable_bpc(int drmfd, igt_output_t *output, int input_bpc)
+ 	igt_debug("Forcing input DSC BPC to %d on %s\n",
+ 		  input_bpc, output->name);
+ 	ret = igt_force_dsc_enable_bpc(drmfd, output->name, input_bpc);
+-	igt_assert_f(ret > 0, "forcing input dsc bpc debugfs_write failed\n");
++	igt_assert_f(ret == 0, "forcing input dsc bpc debugfs_write failed\n");
+ }
+ 
+ void save_force_dsc_en(int drmfd, igt_output_t *output)
 -- 
-2.39.0
+2.25.1
