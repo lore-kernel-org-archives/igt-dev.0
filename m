@@ -1,17 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 12A3810E459
- for <igt-dev@lists.freedesktop.org>; Thu,  2 Feb 2023 05:09:34 +0000 (UTC)
-From: Nidhi Gupta <nidhi1.gupta@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Thu,  2 Feb 2023 10:45:08 +0530
-Message-Id: <20230202051509.28983-7-nidhi1.gupta@intel.com>
-In-Reply-To: <20230202051509.28983-1-nidhi1.gupta@intel.com>
-References: <20230202051509.28983-1-nidhi1.gupta@intel.com>
+Content-Type: multipart/alternative;
+ boundary="===============1101518936796097497=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH v4 6/7] tests/kms_plane_scaling: Limit the
- execution to two pipes/planes
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Mark Yacoub" <markyacoub@chromium.org>
+Date: Thu, 02 Feb 2023 05:33:38 -0000
+Message-ID: <167531601809.11114.3043821100129362726@emeril.freedesktop.org>
+References: <20230201232207.3332996-1-markyacoub@google.com>
+In-Reply-To: <20230201232207.3332996-1-markyacoub@google.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgQ2hhbWVs?=
+ =?utf-8?q?ium=3A_Get_Chamelium_Logs_on_RPC_failure=2E_=28rev2=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,133 +17,264 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Nidhi Gupta <nidhi1.gupta@intel.com>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+--===============1101518936796097497==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-As the execution is taking more time, limit the execution of
-clipping-clamping-[rotation | pixel-formats] tests to two (first
-& last) pipes and two (first & last) planes.
+== Series Details ==
 
-Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Signed-off-by: Nidhi Gupta <nidhi1.gupta@intel.com>
----
- tests/kms_plane_scaling.c | 47 +++++++++++++++++++++++++++++++++++++++
- 1 file changed, 47 insertions(+)
+Series: Chamelium: Get Chamelium Logs on RPC failure. (rev2)
+URL   : https://patchwork.freedesktop.org/series/113567/
+State : success
 
-diff --git a/tests/kms_plane_scaling.c b/tests/kms_plane_scaling.c
-index 887a55e6..c32ea9d4 100644
---- a/tests/kms_plane_scaling.c
-+++ b/tests/kms_plane_scaling.c
-@@ -485,6 +485,8 @@ static void test_scaler_with_rotation_pipe(data_t *d,
- 	unsigned format = DRM_FORMAT_XRGB8888;
- 	uint64_t modifier = DRM_FORMAT_MOD_LINEAR;
- 	igt_plane_t *plane;
-+	int first_plane = -1;
-+	int last_plane = -1;
- 
- 	cleanup_crtc(d);
- 
-@@ -494,6 +496,19 @@ static void test_scaler_with_rotation_pipe(data_t *d,
- 		if (plane->type == DRM_PLANE_TYPE_CURSOR)
- 			continue;
- 
-+		if (first_plane < 0)
-+			first_plane = j__;
-+
-+		last_plane = j__;
-+	}
-+
-+	for_each_plane_on_pipe(display, pipe, plane) {
-+		if (plane->type == DRM_PLANE_TYPE_CURSOR)
-+			continue;
-+
-+		if (!d->extended && j__ != first_plane && j__ != last_plane)
-+			continue;
-+
- 		for (int i = 0; i < ARRAY_SIZE(rotations); i++) {
- 			igt_rotation_t rot = rotations[i];
- 
-@@ -514,17 +529,32 @@ static void test_scaler_with_pixel_format_pipe(data_t *d, int width, int height,
- 	igt_display_t *display = &d->display;
- 	uint64_t modifier = DRM_FORMAT_MOD_LINEAR;
- 	igt_plane_t *plane;
-+	int first_plane = -1;
-+	int last_plane = -1;
- 
- 	cleanup_crtc(d);
- 
- 	igt_output_set_pipe(output, pipe);
- 
-+	for_each_plane_on_pipe(display, pipe, plane) {
-+		if (plane->type == DRM_PLANE_TYPE_CURSOR)
-+			continue;
-+
-+		if (first_plane < 0)
-+			first_plane = j__;
-+
-+		last_plane = j__;
-+	}
-+
- 	for_each_plane_on_pipe(display, pipe, plane) {
- 		struct igt_vec tested_formats;
- 
- 		if (plane->type == DRM_PLANE_TYPE_CURSOR)
- 			continue;
- 
-+		if (!d->extended && j__ != first_plane && j__ != last_plane)
-+			continue;
-+
- 		igt_vec_init(&tested_formats, sizeof(uint32_t));
- 
- 		for (int j = 0; j < plane->drm_plane->count_formats; j++) {
-@@ -845,6 +875,8 @@ static data_t data;
- igt_main_args("", long_opts, help_str, opt_handler, &data)
- {
- 	enum pipe pipe;
-+	enum pipe active_pipes[IGT_MAX_PIPES];
-+	uint32_t last_pipe = 0;
- 
- 	igt_fixture {
- 		data.drm_fd = drm_open_driver_master(DRIVER_ANY);
-@@ -852,6 +884,11 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
- 		data.devid = is_i915_device(data.drm_fd) ?
- 			intel_get_drm_devid(data.drm_fd) : 0;
- 		igt_require(data.display.is_atomic);
-+
-+		/* Get active pipes. */
-+		for_each_pipe(&data.display, pipe)
-+			active_pipes[last_pipe++] = pipe;
-+		last_pipe--;
- 	}
- 
- 	igt_subtest_group {
-@@ -916,6 +953,11 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
- 			for_each_pipe_with_single_output(&data.display, pipe, output) {
- 				drmModeModeInfo *mode;
- 
-+				if (igt_run_in_simulation() &&
-+				    pipe != active_pipes[0] &&
-+				    pipe != active_pipes[last_pipe])
-+					continue;
-+
- 				mode = igt_output_get_mode(output);
- 
- 				igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), igt_output_name(output))
-@@ -929,6 +971,11 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
- 			for_each_pipe_with_single_output(&data.display, pipe, output) {
- 				drmModeModeInfo *mode;
- 
-+				if (igt_run_in_simulation() &&
-+				    pipe != active_pipes[0] &&
-+				    pipe != active_pipes[last_pipe])
-+					continue;
-+
- 				mode = igt_output_get_mode(output);
- 
- 				igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), igt_output_name(output))
--- 
-2.39.0
+== Summary ==
+
+CI Bug Log - changes from CI_DRM_12681 -> IGTPW_8429
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8429/index.html
+
+Participating hosts (25 -> 25)
+------------------------------
+
+  Additional (1): fi-apl-guc 
+  Missing    (1): fi-snb-2520m 
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in IGTPW_8429:
+
+### IGT changes ###
+
+#### Suppressed ####
+
+  The following results come from untrusted machines, tests, or statuses.
+  They do not affect the overall result.
+
+  * igt@i915_selftest@live@slpc:
+    - {bat-rpls-1}:       [DMESG-FAIL][1] ([i915#7996]) -> [DMESG-FAIL][2]
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12681/bat-rpls-1/igt@i915_selftest@live@slpc.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8429/bat-rpls-1/igt@i915_selftest@live@slpc.html
+
+  
+Known issues
+------------
+
+  Here are the changes found in IGTPW_8429 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@fbdev@write:
+    - fi-blb-e6850:       [PASS][3] -> [SKIP][4] ([fdo#109271]) +4 similar issues
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12681/fi-blb-e6850/igt@fbdev@write.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8429/fi-blb-e6850/igt@fbdev@write.html
+
+  * igt@gem_lmem_swapping@basic:
+    - fi-apl-guc:         NOTRUN -> [SKIP][5] ([fdo#109271] / [i915#4613]) +3 similar issues
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8429/fi-apl-guc/igt@gem_lmem_swapping@basic.html
+
+  * igt@i915_selftest@live@gt_heartbeat:
+    - fi-apl-guc:         NOTRUN -> [DMESG-FAIL][6] ([i915#5334])
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8429/fi-apl-guc/igt@i915_selftest@live@gt_heartbeat.html
+
+  * igt@kms_chamelium_frames@hdmi-crc-fast:
+    - fi-kbl-7567u:       [PASS][7] -> [FAIL][8] ([i915#8005]) +3 similar issues
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12681/fi-kbl-7567u/igt@kms_chamelium_frames@hdmi-crc-fast.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8429/fi-kbl-7567u/igt@kms_chamelium_frames@hdmi-crc-fast.html
+
+  * igt@kms_chamelium_hpd@vga-hpd-fast:
+    - fi-apl-guc:         NOTRUN -> [SKIP][9] ([fdo#109271]) +21 similar issues
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8429/fi-apl-guc/igt@kms_chamelium_hpd@vga-hpd-fast.html
+
+  
+#### Possible fixes ####
+
+  * igt@gem_exec_suspend@basic-s0@smem:
+    - {bat-rpls-1}:       [ABORT][10] ([i915#6311] / [i915#7359]) -> [PASS][11]
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12681/bat-rpls-1/igt@gem_exec_suspend@basic-s0@smem.html
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8429/bat-rpls-1/igt@gem_exec_suspend@basic-s0@smem.html
+
+  * igt@i915_selftest@live@gt_pm:
+    - {bat-rpls-2}:       [DMESG-FAIL][12] ([i915#4258]) -> [PASS][13]
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12681/bat-rpls-2/igt@i915_selftest@live@gt_pm.html
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8429/bat-rpls-2/igt@i915_selftest@live@gt_pm.html
+
+  
+#### Warnings ####
+
+  * igt@kms_chamelium_hpd@vga-hpd-fast:
+    - fi-kbl-7567u:       [SKIP][14] ([fdo#109271]) -> [FAIL][15] ([i915#8005]) +4 similar issues
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12681/fi-kbl-7567u/igt@kms_chamelium_hpd@vga-hpd-fast.html
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8429/fi-kbl-7567u/igt@kms_chamelium_hpd@vga-hpd-fast.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [i915#4258]: https://gitlab.freedesktop.org/drm/intel/issues/4258
+  [i915#4613]: https://gitlab.freedesktop.org/drm/intel/issues/4613
+  [i915#4983]: https://gitlab.freedesktop.org/drm/intel/issues/4983
+  [i915#5334]: https://gitlab.freedesktop.org/drm/intel/issues/5334
+  [i915#6311]: https://gitlab.freedesktop.org/drm/intel/issues/6311
+  [i915#7359]: https://gitlab.freedesktop.org/drm/intel/issues/7359
+  [i915#7978]: https://gitlab.freedesktop.org/drm/intel/issues/7978
+  [i915#7996]: https://gitlab.freedesktop.org/drm/intel/issues/7996
+  [i915#8005]: https://gitlab.freedesktop.org/drm/intel/issues/8005
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_7143 -> IGTPW_8429
+
+  CI-20190529: 20190529
+  CI_DRM_12681: 8ee2ec597aa4b8331124bf852432c2ca2fd7b8d1 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_8429: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8429/index.html
+  IGT_7143: c7b12dcc460fc2348e1fa7f4dcb791bb82e29e44 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8429/index.html
+
+--===============1101518936796097497==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Chamelium: Get Chamelium Logs on RPC failure. (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/113567/">https://patchwork.freedesktop.org/series/113567/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8429/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8429/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_12681 -&gt; IGTPW_8429</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8429/index.html</p>
+<h2>Participating hosts (25 -&gt; 25)</h2>
+<p>Additional (1): fi-apl-guc <br />
+  Missing    (1): fi-snb-2520m </p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in IGTPW_8429:</p>
+<h3>IGT changes</h3>
+<h4>Suppressed</h4>
+<p>The following results come from untrusted machines, tests, or statuses.<br />
+  They do not affect the overall result.</p>
+<ul>
+<li>igt@i915_selftest@live@slpc:<ul>
+<li>{bat-rpls-1}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12681/bat-rpls-1/igt@i915_selftest@live@slpc.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7996">i915#7996</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8429/bat-rpls-1/igt@i915_selftest@live@slpc.html">DMESG-FAIL</a></li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_8429 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@fbdev@write:</p>
+<ul>
+<li>fi-blb-e6850:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12681/fi-blb-e6850/igt@fbdev@write.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8429/fi-blb-e6850/igt@fbdev@write.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +4 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_lmem_swapping@basic:</p>
+<ul>
+<li>fi-apl-guc:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8429/fi-apl-guc/igt@gem_lmem_swapping@basic.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4613">i915#4613</a>) +3 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@gt_heartbeat:</p>
+<ul>
+<li>fi-apl-guc:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8429/fi-apl-guc/igt@i915_selftest@live@gt_heartbeat.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5334">i915#5334</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_chamelium_frames@hdmi-crc-fast:</p>
+<ul>
+<li>fi-kbl-7567u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12681/fi-kbl-7567u/igt@kms_chamelium_frames@hdmi-crc-fast.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8429/fi-kbl-7567u/igt@kms_chamelium_frames@hdmi-crc-fast.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/8005">i915#8005</a>) +3 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_chamelium_hpd@vga-hpd-fast:</p>
+<ul>
+<li>fi-apl-guc:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8429/fi-apl-guc/igt@kms_chamelium_hpd@vga-hpd-fast.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +21 similar issues</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@gem_exec_suspend@basic-s0@smem:</p>
+<ul>
+<li>{bat-rpls-1}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12681/bat-rpls-1/igt@gem_exec_suspend@basic-s0@smem.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6311">i915#6311</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7359">i915#7359</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8429/bat-rpls-1/igt@gem_exec_suspend@basic-s0@smem.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@gt_pm:</p>
+<ul>
+<li>{bat-rpls-2}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12681/bat-rpls-2/igt@i915_selftest@live@gt_pm.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4258">i915#4258</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8429/bat-rpls-2/igt@i915_selftest@live@gt_pm.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<h4>Warnings</h4>
+<ul>
+<li>igt@kms_chamelium_hpd@vga-hpd-fast:<ul>
+<li>fi-kbl-7567u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12681/fi-kbl-7567u/igt@kms_chamelium_hpd@vga-hpd-fast.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8429/fi-kbl-7567u/igt@kms_chamelium_hpd@vga-hpd-fast.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/8005">i915#8005</a>) +4 similar issues</li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_7143 -&gt; IGTPW_8429</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_12681: 8ee2ec597aa4b8331124bf852432c2ca2fd7b8d1 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_8429: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8429/index.html<br />
+  IGT_7143: c7b12dcc460fc2348e1fa7f4dcb791bb82e29e44 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============1101518936796097497==--
