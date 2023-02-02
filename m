@@ -1,11 +1,11 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Content-Type: multipart/alternative;
- boundary="===============2885654611817401402=="
+ boundary="===============5063052410022448872=="
 MIME-Version: 1.0
 From: Patchwork <patchwork@emeril.freedesktop.org>
 To: "Mark Yacoub" <markyacoub@chromium.org>
-Date: Thu, 02 Feb 2023 04:25:24 -0000
-Message-ID: <167531192400.11115.15291681867908969537@emeril.freedesktop.org>
+Date: Thu, 02 Feb 2023 04:44:38 -0000
+Message-ID: <167531307844.11114.14266069610346156084@emeril.freedesktop.org>
 References: <20230201232207.3332996-1-markyacoub@google.com>
 In-Reply-To: <20230201232207.3332996-1-markyacoub@google.com>
 Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3IgQ2hhbWVs?=
@@ -23,7 +23,7 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============2885654611817401402==
+--===============5063052410022448872==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -68,10 +68,10 @@ Possible new issues
 
 #### Possible regressions ####
 
-  * igt@kms_chamelium_frames@hdmi-crc-fast:
-    - fi-kbl-7567u:       [PASS][1] -> [FAIL][2] +3 similar issues
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12681/fi-kbl-7567u/igt@kms_chamelium_frames@hdmi-crc-fast.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8429/fi-kbl-7567u/igt@kms_chamelium_frames@hdmi-crc-fast.html
+  * igt@kms_chamelium_hpd@hdmi-hpd-fast:
+    - fi-kbl-7567u:       [PASS][1] -> [FAIL][2] +2 similar issues
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12681/fi-kbl-7567u/igt@kms_chamelium_hpd@hdmi-hpd-fast.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8429/fi-kbl-7567u/igt@kms_chamelium_hpd@hdmi-hpd-fast.html
 
   
 #### Warnings ####
@@ -115,22 +115,27 @@ Known issues
     - fi-apl-guc:         NOTRUN -> [DMESG-FAIL][10] ([i915#5334])
    [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8429/fi-apl-guc/igt@i915_selftest@live@gt_heartbeat.html
 
+  * igt@kms_chamelium_frames@hdmi-crc-fast:
+    - fi-kbl-7567u:       [PASS][11] -> [FAIL][12] ([i915#8005])
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12681/fi-kbl-7567u/igt@kms_chamelium_frames@hdmi-crc-fast.html
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8429/fi-kbl-7567u/igt@kms_chamelium_frames@hdmi-crc-fast.html
+
   * igt@kms_chamelium_hpd@vga-hpd-fast:
-    - fi-apl-guc:         NOTRUN -> [SKIP][11] ([fdo#109271]) +21 similar issues
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8429/fi-apl-guc/igt@kms_chamelium_hpd@vga-hpd-fast.html
+    - fi-apl-guc:         NOTRUN -> [SKIP][13] ([fdo#109271]) +21 similar issues
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8429/fi-apl-guc/igt@kms_chamelium_hpd@vga-hpd-fast.html
 
   
 #### Possible fixes ####
 
   * igt@gem_exec_suspend@basic-s0@smem:
-    - {bat-rpls-1}:       [ABORT][12] ([i915#6311] / [i915#7359]) -> [PASS][13]
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12681/bat-rpls-1/igt@gem_exec_suspend@basic-s0@smem.html
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8429/bat-rpls-1/igt@gem_exec_suspend@basic-s0@smem.html
+    - {bat-rpls-1}:       [ABORT][14] ([i915#6311] / [i915#7359]) -> [PASS][15]
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12681/bat-rpls-1/igt@gem_exec_suspend@basic-s0@smem.html
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8429/bat-rpls-1/igt@gem_exec_suspend@basic-s0@smem.html
 
   * igt@i915_selftest@live@gt_pm:
-    - {bat-rpls-2}:       [DMESG-FAIL][14] ([i915#4258]) -> [PASS][15]
-   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12681/bat-rpls-2/igt@i915_selftest@live@gt_pm.html
-   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8429/bat-rpls-2/igt@i915_selftest@live@gt_pm.html
+    - {bat-rpls-2}:       [DMESG-FAIL][16] ([i915#4258]) -> [PASS][17]
+   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12681/bat-rpls-2/igt@i915_selftest@live@gt_pm.html
+   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8429/bat-rpls-2/igt@i915_selftest@live@gt_pm.html
 
   
   {name}: This element is suppressed. This means it is ignored when computing
@@ -145,6 +150,7 @@ Known issues
   [i915#7359]: https://gitlab.freedesktop.org/drm/intel/issues/7359
   [i915#7978]: https://gitlab.freedesktop.org/drm/intel/issues/7978
   [i915#7996]: https://gitlab.freedesktop.org/drm/intel/issues/7996
+  [i915#8005]: https://gitlab.freedesktop.org/drm/intel/issues/8005
 
 
 Build changes
@@ -162,7 +168,7 @@ Build changes
 
 For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8429/index.html
 
---===============2885654611817401402==
+--===============5063052410022448872==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -208,8 +214,8 @@ Content-Transfer-Encoding: 7bit
 <h3>IGT changes</h3>
 <h4>Possible regressions</h4>
 <ul>
-<li>igt@kms_chamelium_frames@hdmi-crc-fast:<ul>
-<li>fi-kbl-7567u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12681/fi-kbl-7567u/igt@kms_chamelium_frames@hdmi-crc-fast.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8429/fi-kbl-7567u/igt@kms_chamelium_frames@hdmi-crc-fast.html">FAIL</a> +3 similar issues</li>
+<li>igt@kms_chamelium_hpd@hdmi-hpd-fast:<ul>
+<li>fi-kbl-7567u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12681/fi-kbl-7567u/igt@kms_chamelium_hpd@hdmi-hpd-fast.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8429/fi-kbl-7567u/igt@kms_chamelium_hpd@hdmi-hpd-fast.html">FAIL</a> +2 similar issues</li>
 </ul>
 </li>
 </ul>
@@ -253,6 +259,12 @@ Content-Transfer-Encoding: 7bit
 </ul>
 </li>
 <li>
+<p>igt@kms_chamelium_frames@hdmi-crc-fast:</p>
+<ul>
+<li>fi-kbl-7567u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12681/fi-kbl-7567u/igt@kms_chamelium_frames@hdmi-crc-fast.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8429/fi-kbl-7567u/igt@kms_chamelium_frames@hdmi-crc-fast.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/8005">i915#8005</a>)</li>
+</ul>
+</li>
+<li>
 <p>igt@kms_chamelium_hpd@vga-hpd-fast:</p>
 <ul>
 <li>fi-apl-guc:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8429/fi-apl-guc/igt@kms_chamelium_hpd@vga-hpd-fast.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +21 similar issues</li>
@@ -289,4 +301,4 @@ Content-Transfer-Encoding: 7bit
 </body>
 </html>
 
---===============2885654611817401402==--
+--===============5063052410022448872==--
