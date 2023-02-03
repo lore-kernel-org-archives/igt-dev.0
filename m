@@ -1,14 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
-To: igt-dev@lists.freedesktop.org,
-	Intel-gfx@lists.freedesktop.org
-Date: Fri,  3 Feb 2023 11:16:35 +0000
-Message-Id: <20230203111636.4138202-3-tvrtko.ursulin@linux.intel.com>
-In-Reply-To: <20230203111636.4138202-1-tvrtko.ursulin@linux.intel.com>
+Date: Fri, 3 Feb 2023 13:22:55 +0200
+From: Ville =?iso-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
+To: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
+Message-ID: <Y9zuj8TH6QSF/e/D@intel.com>
 References: <20230203111636.4138202-1-tvrtko.ursulin@linux.intel.com>
+ <20230203111636.4138202-4-tvrtko.ursulin@linux.intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 2/3] intel_gpu_top: Rename STDOUT to TEXT
+In-Reply-To: <20230203111636.4138202-4-tvrtko.ursulin@linux.intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 3/3] intel_gpu_top: Add CVS output format
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -16,148 +18,193 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Caleb Callaway <caleb.callaway@intel.com>,
+Cc: igt-dev@lists.freedesktop.org, Intel-gfx@lists.freedesktop.org,
+ Caleb Callaway <caleb.callaway@intel.com>,
  Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+On Fri, Feb 03, 2023 at 11:16:36AM +0000, Tvrtko Ursulin wrote:
+> From: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+> 
+> Add CVS output mode.
 
-Internal cleanup only - the name text is more accurate given the output
-can also go to a file.
+Should that be csv?
 
-Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
-Cc: Caleb Callaway <caleb.callaway@intel.com>
----
- tools/intel_gpu_top.c | 54 +++++++++++++++++++++----------------------
- 1 file changed, 26 insertions(+), 28 deletions(-)
+> 
+> Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+> Cc: Caleb Callaway <caleb.callaway@intel.com>
+> ---
+>  man/intel_gpu_top.rst |  3 ++
+>  tools/intel_gpu_top.c | 78 +++++++++++++++++++++++++++++++++++++++++--
+>  2 files changed, 78 insertions(+), 3 deletions(-)
+> 
+> diff --git a/man/intel_gpu_top.rst b/man/intel_gpu_top.rst
+> index 69834756b81e..77228277b9bf 100644
+> --- a/man/intel_gpu_top.rst
+> +++ b/man/intel_gpu_top.rst
+> @@ -31,6 +31,9 @@ OPTIONS
+>  -h
+>      Show help text.
+>  
+> +-c
+> +    Output CVS formatted data.
+> +
+>  -J
+>      Output JSON formatted data.
+>  
+> diff --git a/tools/intel_gpu_top.c b/tools/intel_gpu_top.c
+> index a980cc7043dc..4c425ca027e3 100644
+> --- a/tools/intel_gpu_top.c
+> +++ b/tools/intel_gpu_top.c
+> @@ -1268,6 +1268,7 @@ usage(const char *appname)
+>  		"\n"
+>  		"\tThe following parameters are optional:\n\n"
+>  		"\t[-h]            Show this help text.\n"
+> +		"\t[-c]            Output CVS formatted data.\n"
+>  		"\t[-J]            Output JSON formatted data.\n"
+>  		"\t[-l]            List plain text data.\n"
+>  		"\t[-o <file|->]   Output to specified file or '-' for standard out.\n"
+> @@ -1283,6 +1284,7 @@ usage(const char *appname)
+>  static enum {
+>  	INTERACTIVE,
+>  	TEXT,
+> +	CVS,
+>  	JSON
+>  } output_mode;
+>  
+> @@ -1457,6 +1459,22 @@ text_add_member(const struct cnt_group *parent, struct cnt_item *item,
+>  	return len > 0 ? len : 0;
+>  }
+>  
+> +static unsigned int
+> +cvs_add_member(const struct cnt_group *parent, struct cnt_item *item,
+> +	       unsigned int headers)
+> +{
+> +	int len = 0;
+> +
+> +	if (headers)
+> +		fprintf(out, "%s %s", parent->display_name, item->unit);
+> +	else
+> +		len = fprintf(out, "%f",
+> +			      pmu_calc(&item->pmu->val, item->d, item->t,
+> +				       item->s));
+> +
+> +	return len > 0 ? len : 0;
+> +}
+> +
+>  static void
+>  term_open_struct(const char *name)
+>  {
+> @@ -1540,6 +1558,46 @@ print_group(struct cnt_group *grp, unsigned int headers)
+>  	return consumed;
+>  }
+>  
+> +static unsigned int cvs_count, prev_cvs_count;
+> +
+> +static void cvs_close_struct(void)
+> +{
+> +	assert(text_level > 0);
+> +	if (--text_level == 0) {
+> +		cvs_count = prev_cvs_count = 0;
+> +		text_lines++;
+> +		fputs("\n", out);
+> +		fflush(out);
+> +	}
+> +}
+> +
+> +static bool
+> +cvs_print_group(struct cnt_group *grp, unsigned int headers)
+> +{
+> +	unsigned int consumed = 0;
+> +	struct cnt_item *item;
+> +
+> +	if (!present_in_group(grp))
+> +		return false;
+> +
+> +	text_open_struct(grp->name);
+> +
+> +	for (item = grp->items; item->name; item++) {
+> +		if (!item->pmu || !item->pmu->present)
+> +			continue;
+> +
+> +		if (cvs_count != prev_cvs_count)
+> +			fprintf(out, ",");
+> +		prev_cvs_count = cvs_count++;
+> +
+> +		consumed += cvs_add_member(grp, item, headers);
+> +	}
+> +
+> +	cvs_close_struct();
+> +
+> +	return consumed;
+> +}
+> +
+>  static bool
+>  term_print_group(struct cnt_group *grp, unsigned int headers)
+>  {
+> @@ -1570,6 +1628,13 @@ static const struct print_operations text_pops = {
+>  	.print_group = print_group,
+>  };
+>  
+> +static const struct print_operations cvs_pops = {
+> +	.open_struct = text_open_struct,
+> +	.close_struct = cvs_close_struct,
+> +	.add_member = cvs_add_member,
+> +	.print_group = cvs_print_group,
+> +};
+> +
+>  static const struct print_operations term_pops = {
+>  	.open_struct = term_open_struct,
+>  	.close_struct = term_close_struct,
+> @@ -1582,11 +1647,12 @@ static bool print_groups(struct cnt_group **groups)
+>  	static bool headers_printed = false;
+>  	bool print_data = true;
+>  
+> -	if (output_mode == TEXT &&
+> +	if ((output_mode == TEXT || output_mode == CVS) &&
+>  	    (text_header_repeat || !headers_printed)) {
+> +		const unsigned int header_lines = output_mode == TEXT ? 2 : 1;
+>  		unsigned int headers = text_lines % TEXT_HEADER_REPEAT + 1;
+>  
+> -		if (headers == 1 || headers == 2)
+> +		if (headers > 0 && headers <= header_lines)
+>  			for (struct cnt_group **grp = groups; *grp; grp++)
+>  				print_data = pops->print_group(*grp, headers);
+>  
+> @@ -2469,7 +2535,7 @@ int main(int argc, char **argv)
+>  	char *codename = NULL;
+>  
+>  	/* Parse options */
+> -	while ((ch = getopt(argc, argv, "o:s:d:pJLlh")) != -1) {
+> +	while ((ch = getopt(argc, argv, "o:s:d:pcJLlh")) != -1) {
+>  		switch (ch) {
+>  		case 'o':
+>  			output_path = optarg;
+> @@ -2483,6 +2549,9 @@ int main(int argc, char **argv)
+>  		case 'p':
+>  			physical_engines = true;
+>  			break;
+> +		case 'c':
+> +			output_mode = CVS;
+> +			break;
+>  		case 'J':
+>  			output_mode = JSON;
+>  			break;
+> @@ -2532,6 +2601,9 @@ int main(int argc, char **argv)
+>  	case TEXT:
+>  		pops = &text_pops;
+>  		break;
+> +	case CVS:
+> +		pops = &cvs_pops;
+> +		break;
+>  	case JSON:
+>  		pops = &json_pops;
+>  		break;
+> -- 
+> 2.34.1
 
-diff --git a/tools/intel_gpu_top.c b/tools/intel_gpu_top.c
-index e2a7f4753099..a980cc7043dc 100644
---- a/tools/intel_gpu_top.c
-+++ b/tools/intel_gpu_top.c
-@@ -1282,7 +1282,7 @@ usage(const char *appname)
- 
- static enum {
- 	INTERACTIVE,
--	STDOUT,
-+	TEXT,
- 	JSON
- } output_mode;
- 
-@@ -1387,33 +1387,31 @@ json_add_member(const struct cnt_group *parent, struct cnt_item *item,
- 	return 1;
- }
- 
--static unsigned int stdout_level;
-+static unsigned int text_level;
- 
--#define STDOUT_HEADER_REPEAT 20
--static unsigned int stdout_lines = STDOUT_HEADER_REPEAT;
--static bool stdout_header_repeat;
-+#define TEXT_HEADER_REPEAT 20
-+static unsigned int text_lines = TEXT_HEADER_REPEAT;
-+static bool text_header_repeat;
- 
--static void
--stdout_open_struct(const char *name)
-+static void text_open_struct(const char *name)
- {
--	stdout_level++;
--	assert(stdout_level > 0);
-+	text_level++;
-+	assert(text_level > 0);
- }
- 
--static void
--stdout_close_struct(void)
-+static void text_close_struct(void)
- {
--	assert(stdout_level > 0);
--	if (--stdout_level == 0) {
--		stdout_lines++;
-+	assert(text_level > 0);
-+	if (--text_level == 0) {
-+		text_lines++;
- 		fputs("\n", out);
- 		fflush(out);
- 	}
- }
- 
- static unsigned int
--stdout_add_member(const struct cnt_group *parent, struct cnt_item *item,
--		  unsigned int headers)
-+text_add_member(const struct cnt_group *parent, struct cnt_item *item,
-+		unsigned int headers)
- {
- 	unsigned int fmt_tot = item->fmt_width + (item->fmt_precision ? 1 : 0);
- 	char buf[fmt_tot + 1];
-@@ -1565,10 +1563,10 @@ static const struct print_operations json_pops = {
- 	.print_group = print_group,
- };
- 
--static const struct print_operations stdout_pops = {
--	.open_struct = stdout_open_struct,
--	.close_struct = stdout_close_struct,
--	.add_member = stdout_add_member,
-+static const struct print_operations text_pops = {
-+	.open_struct = text_open_struct,
-+	.close_struct = text_close_struct,
-+	.add_member = text_add_member,
- 	.print_group = print_group,
- };
- 
-@@ -1584,9 +1582,9 @@ static bool print_groups(struct cnt_group **groups)
- 	static bool headers_printed = false;
- 	bool print_data = true;
- 
--	if (output_mode == STDOUT &&
--	    (stdout_header_repeat || !headers_printed)) {
--		unsigned int headers = stdout_lines % STDOUT_HEADER_REPEAT + 1;
-+	if (output_mode == TEXT &&
-+	    (text_header_repeat || !headers_printed)) {
-+		unsigned int headers = text_lines % TEXT_HEADER_REPEAT + 1;
- 
- 		if (headers == 1 || headers == 2)
- 			for (struct cnt_group **grp = groups; *grp; grp++)
-@@ -2492,7 +2490,7 @@ int main(int argc, char **argv)
- 			list_device = true;
- 			break;
- 		case 'l':
--			output_mode = STDOUT;
-+			output_mode = TEXT;
- 			break;
- 		case 'h':
- 			usage(argv[0]);
-@@ -2505,7 +2503,7 @@ int main(int argc, char **argv)
- 	}
- 
- 	if (output_mode == INTERACTIVE && (output_path || isatty(1) != 1))
--		output_mode = STDOUT;
-+		output_mode = TEXT;
- 
- 	if (output_path && strcmp(output_path, "-")) {
- 		out = fopen(output_path, "w");
-@@ -2519,7 +2517,7 @@ int main(int argc, char **argv)
- 		out = stdout;
- 	}
- 
--	stdout_header_repeat = output_mode == STDOUT && isatty(fileno(out));
-+	text_header_repeat = output_mode == TEXT && isatty(fileno(out));
- 
- 	if (signal(SIGINT, sigint_handler) == SIG_ERR)
- 		fprintf(stderr, "Failed to install signal handler!\n");
-@@ -2531,8 +2529,8 @@ int main(int argc, char **argv)
- 		pops = &term_pops;
- 		interactive_stdin();
- 		break;
--	case STDOUT:
--		pops = &stdout_pops;
-+	case TEXT:
-+		pops = &text_pops;
- 		break;
- 	case JSON:
- 		pops = &json_pops;
 -- 
-2.34.1
+Ville Syrjälä
+Intel
