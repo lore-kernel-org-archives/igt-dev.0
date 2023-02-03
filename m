@@ -1,22 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 369F710E0E6
- for <igt-dev@lists.freedesktop.org>; Mon,  6 Feb 2023 05:26:05 +0000 (UTC)
-Message-ID: <bfb35eec-a882-7794-7e12-2f7097104762@intel.com>
-Date: Mon, 6 Feb 2023 10:55:51 +0530
-To: "Nautiyal, Ankit K" <ankit.k.nautiyal@intel.com>, Nidhi Gupta
- <nidhi1.gupta@intel.com>, <igt-dev@lists.freedesktop.org>
-References: <20230131133658.21970-1-nidhi1.gupta@intel.com>
- <20230131133658.21970-4-nidhi1.gupta@intel.com>
- <52d23cd1-742d-2504-ed60-91f840687777@intel.com>
-Content-Language: en-US
-From: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
-In-Reply-To: <52d23cd1-742d-2504-ed60-91f840687777@intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
+Date: Fri, 3 Feb 2023 11:21:38 -0800
+From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+To: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+Message-ID: <Y91ews5O6nHf+2EX@orsosgc001.jf.intel.com>
+References: <20230131091731.5892-1-janusz.krzysztofik@linux.intel.com>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Disposition: inline
+In-Reply-To: <20230131091731.5892-1-janusz.krzysztofik@linux.intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH v3 3/7] tests/kms_pipe_crc_basic: Limit the
- execution to two pipes
+Subject: Re: [igt-dev] [PATCH i-g-t 0/2] tests/i915/perf: Add stress / race
+ exercises
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,140 +17,36 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: igt-dev@lists.freedesktop.org, intel-gfx@lists.freedesktop.org, Chris
+ Wilson <chris.p.wilson@linux.intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Ankit,
+On Tue, Jan 31, 2023 at 10:17:29AM +0100, Janusz Krzysztofik wrote:
+>Users reported oopses on list corruptions when using i915 perf with a
+>number of concurrently running graphics applications.  That indicates we
+>are currently missing some important tests for such scenarios.  Cover
+>that gap.
 
-On Mon-06-02-2023 10:10 am, Nautiyal, Ankit K wrote:
-> The help str can mention that option -e stands for execution on all pipes.
-> 
-> Also, there are tests that are restricted to 2 pipes only even on real 
-> hardware, and have -e cmdline parameter to run on all pipes.
-> 
-> Should we just limit to 2 pipes by default, and drop is_simulation?
+Any bug ids that were filed for the issue? Also what were the parameters 
+passed to perf OA when the issues were reported? This could help 
+actually root cause the issue and have a test closer to the actual use 
+case.
 
-Intention of this patch is to restrict the execution on simulation as it 
-is taking more time to execute which is causing CI timeout.
-
-I don't see any value added to CI if we limit the execution to two pipes 
-on real hardware. Since it is taking just few seconds to complete the 
-execution.
-
-Here we have a latest patch [1] where we mentioned about the option -e
-
-[1]: https://patchwork.freedesktop.org/series/113635/
-
-- Bhanu
-
-> 
-> Regards,
-> 
-> Ankit
-> 
-> 
-> On 1/31/2023 7:06 PM, Nidhi Gupta wrote:
->> From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
->>
->> As the execution is taking more time, limit the execution to two (first
->> & last) pipes.
->>
->> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
->> Signed-off-by: Nidhi Gupta <nidhi1.gupta@intel.com>
->> ---
->>   tests/kms_pipe_crc_basic.c | 41 +++++++++++++++++++++++++++++++++++++-
->>   1 file changed, 40 insertions(+), 1 deletion(-)
->>
->> diff --git a/tests/kms_pipe_crc_basic.c b/tests/kms_pipe_crc_basic.c
->> index 91a1b8ab..97b97863 100644
->> --- a/tests/kms_pipe_crc_basic.c
->> +++ b/tests/kms_pipe_crc_basic.c
->> @@ -30,6 +30,7 @@
->>   #include <string.h>
->>   #include <fcntl.h>
->> +static bool extended = false;
->>   typedef struct {
->>       int drm_fd;
->> @@ -276,7 +277,23 @@ static void test_disable_crc_after_crtc(data_t 
->> *data, enum pipe pipe,
->>   data_t data = {0, };
->> -igt_main
->> +static int opt_handler(int opt, int opt_index, void *_data)
->> +{
->> +    switch (opt) {
->> +        case 'e':
->> +            extended = true;
->> +            break;
->> +        default:
->> +            return IGT_OPT_HANDLER_ERROR;
->> +    }
->> +
->> +    return IGT_OPT_HANDLER_SUCCESS;
->> +}
->> +
->> +const char *help_str =
->> +    "  -e \tExtended tests.\n";
->> +
->> +igt_main_args("e", NULL, help_str, opt_handler, NULL)
->>   {
->>       enum pipe pipe;
->>       igt_output_t *output;
->> @@ -298,6 +315,8 @@ igt_main
->>           { "hang-read-crc", TEST_HANG,
->>               "Hang test for pipe CRC read." },
->>       };
->> +    enum pipe active_pipes[IGT_MAX_PIPES];
->> +    uint32_t last_pipe = 0;
->>       int i;
->>       igt_fixture {
->> @@ -312,6 +331,11 @@ igt_main
->>           igt_require_pipe_crc(data.drm_fd);
->>           data.debugfs = igt_debugfs_dir(data.drm_fd);
->> +
->> +        /* Get active pipes. */
->> +        for_each_pipe(&data.display, pipe)
->> +            active_pipes[last_pipe++] = pipe;
->> +        last_pipe--;
->>       }
->>       igt_describe("Tests error handling when the bad source is set.");
->> @@ -322,6 +346,11 @@ igt_main
->>           igt_describe(tests[i].desc);
->>           igt_subtest_with_dynamic(tests[i].name) {
->>               for_each_pipe_with_single_output(&data.display, pipe, 
->> output) {
->> +                if (igt_run_in_simulation() && !extended &&
->> +                    pipe != active_pipes[0] &&
->> +                    pipe != active_pipes[last_pipe])
->> +                    continue;
->> +
->>                   igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), 
->> output->name) {
->>                       if (tests[i].flags & TEST_SUSPEND) {
->>                           test_read_crc(&data, pipe, output, 0);
->> @@ -350,6 +379,11 @@ igt_main
->>                "does not cause issues.");
->>       igt_subtest_with_dynamic("disable-crc-after-crtc") {
->>           for_each_pipe_with_single_output(&data.display, pipe, output) {
->> +            if (igt_run_in_simulation() && !extended &&
->> +                pipe != active_pipes[0] &&
->> +                pipe != active_pipes[last_pipe])
->> +                continue;
->> +
->>               igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), 
->> output->name)
->>                   test_disable_crc_after_crtc(&data, pipe, output);
->>           }
->> @@ -358,6 +392,11 @@ igt_main
->>       igt_describe("Basic sanity check for CRC mismatches");
->>       igt_subtest_with_dynamic("compare-crc-sanitycheck") {
->>           for_each_pipe_with_single_output(&data.display, pipe, output) {
->> +            if (igt_run_in_simulation() && !extended &&
->> +                pipe != active_pipes[0] &&
->> +                pipe != active_pipes[last_pipe])
->> +                continue;
->> +
->>               igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), 
->> output->name)
->>                   test_compare_crc(&data, pipe, output);
->>           }
+Regards,
+Umesh
+>
+>Chris Wilson (1):
+>  i915/perf: Stress opening of new perf streams against existing
+>    contexts
+>
+>Janusz Krzysztofik (1):
+>  tests/i915/perf: Exercise barrier race
+>
+> tests/i915/perf.c | 111 ++++++++++++++++++++++++++++++++++++++++++++++
+> 1 file changed, 111 insertions(+)
+>
+>-- 
+>2.25.1
+>
