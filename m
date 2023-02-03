@@ -1,15 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DF52110E186
- for <igt-dev@lists.freedesktop.org>; Fri,  3 Feb 2023 08:37:14 +0000 (UTC)
-From: Nidhi Gupta <nidhi1.gupta@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Fri,  3 Feb 2023 14:12:52 +0530
-Message-Id: <20230203084252.2417-1-nidhi1.gupta@intel.com>
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1937F10E189
+ for <igt-dev@lists.freedesktop.org>; Fri,  3 Feb 2023 09:07:51 +0000 (UTC)
+Date: Fri, 3 Feb 2023 10:07:46 +0100
+From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+To: Karolina Stolarek <karolina.stolarek@intel.com>
+Message-ID: <20230203090746.m3wazw3wqs57yml3@zkempczy-mobl2>
+References: <20230202114959.77568-1-karolina.stolarek@intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t] tests/kms_pipe_crc_basic: Limit the
- execution to two pipes
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230202114959.77568-1-karolina.stolarek@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t] lib/intel_tiling_info: Add flags field
+ to describe command properties
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,129 +20,345 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Nidhi Gupta <nidhi1.gupta@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+On Thu, Feb 02, 2023 at 12:49:59PM +0100, Karolina Stolarek wrote:
+> Blitter commands may have different properties depending on the
+> platform. Add a new field to blt_tiling_info struct to describe
+> properties of the commands. Update definitions of block-copy on
+> DG2 and beyond to show the differences. Add helpers that check
+> if a platform uses an extended version of the block-copy command
+> or supports compression. Update gem_ccs test to use these
+> functions.
+> 
+> Signed-off-by: Karolina Stolarek <karolina.stolarek@intel.com>
+> ---
+>  lib/i915/i915_blt.c          | 89 +++++++++++++++++++++++++++++-------
+>  lib/i915/i915_blt.h          | 10 +++-
+>  lib/i915/intel_tiling_info.c | 28 +++++++++---
+>  lib/i915/intel_tiling_info.h |  4 ++
+>  tests/i915/gem_ccs.c         |  7 ++-
+>  5 files changed, 111 insertions(+), 27 deletions(-)
+> 
+> diff --git a/lib/i915/i915_blt.c b/lib/i915/i915_blt.c
+> index bbfb6ffc..bda9ea5f 100644
+> --- a/lib/i915/i915_blt.c
+> +++ b/lib/i915/i915_blt.c
+> @@ -191,23 +191,22 @@ struct gen12_block_copy_data_ext {
+>  	} dw21;
+>  };
+>  
+> -/**
+> - * blt_supports_compression:
+> - * @i915: drm fd
+> - *
+> - * Function checks if HW supports flatccs compression in blitter commands
+> - * on @i915 device.
+> - *
+> - * Returns:
+> - * true if it does, false otherwise.
+> - */
+> -bool blt_supports_compression(int i915)
+> +static bool device_supports_compression(int i915)
+>  {
+>  	uint32_t devid = intel_get_drm_devid(i915);
+>  
+>  	return HAS_FLATCCS(devid);
+>  }
 
-As the test execution is taking more time on simulation, limit the
-execution to two (first & last) pipes. This optimization is for
-simulation only and hence there will be no impact on real hardware.
+If you're introduce compression flag this function is superfluous.
 
-This patch will also provide an option (command line flag '-e') to
-execute on all pipes.
+>  
+> +static const struct blt_tiling_info *blt_get_tiling_info(const struct blt_cmd_info *info,
+> +							 enum blt_cmd_type cmd)
+> +{
+> +	if (!info)
+> +		return NULL;
+> +
+> +	return info->supported_cmds[cmd];
 
-Example: ./kms_pipe_crc_basic -e --run-subtest read-crc
+Prototype of the function and what it returns is very confusing.
 
-V2: - Edited commit message (Bhanu)
-V3: - New function for simulation constraints (Kamil)
-    - Update commit message (Bhanu)
+I'm not sure is blt_tiling_info name picked luckily. Looking at above
+we should rename it and pick some other name, like blt_cmd_desc or sth.
 
-Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Signed-off-by: Nidhi Gupta <nidhi1.gupta@intel.com>
----
- tests/kms_pipe_crc_basic.c | 45 +++++++++++++++++++++++++++++++++++++-
- 1 file changed, 44 insertions(+), 1 deletion(-)
+> +}
+> +
+>  /**
+>   * blt_supports_command:
+>   * @info: Blitter command info struct
+> @@ -222,7 +221,7 @@ bool blt_supports_command(const struct blt_cmd_info *info,
+>  {
+>  	igt_require_f(info, "No config found for the platform\n");
+>  
+> -	return info->supported_cmds[cmd];
+> +	return blt_get_tiling_info(info, cmd);
 
-diff --git a/tests/kms_pipe_crc_basic.c b/tests/kms_pipe_crc_basic.c
-index 91a1b8ab..376b9498 100644
---- a/tests/kms_pipe_crc_basic.c
-+++ b/tests/kms_pipe_crc_basic.c
-@@ -30,6 +30,9 @@
- #include <string.h>
- #include <fcntl.h>
- 
-+static bool extended = false;
-+static enum pipe active_pipes[IGT_MAX_PIPES];
-+static uint32_t last_pipe = 0;
- 
- typedef struct {
- 	int drm_fd;
-@@ -46,6 +49,16 @@ static struct {
- 	{ .r = 0.0, .g = 1.0, .b = 1.0 },
- };
- 
-+static bool simulation_constraint(enum pipe pipe)
-+{
-+	if (igt_run_in_simulation() && !extended &&
-+	    pipe != active_pipes[0] &&
-+	    pipe != active_pipes[last_pipe])
-+		return true;
-+
-+	return false;
-+}
-+
- static void test_bad_source(data_t *data)
- {
- 	errno = 0;
-@@ -276,7 +289,23 @@ static void test_disable_crc_after_crtc(data_t *data, enum pipe pipe,
- 
- data_t data = {0, };
- 
--igt_main
-+static int opt_handler(int opt, int opt_index, void *_data)
-+{
-+	switch (opt) {
-+		case 'e':
-+			extended = true;
-+			break;
-+		default:
-+			return IGT_OPT_HANDLER_ERROR;
-+	}
-+
-+	return IGT_OPT_HANDLER_SUCCESS;
-+}
-+
-+const char *help_str =
-+	"  -e \tExtended tests.\n";
-+
-+igt_main_args("e", NULL, help_str, opt_handler, NULL)
- {
- 	enum pipe pipe;
- 	igt_output_t *output;
-@@ -312,6 +341,11 @@ igt_main
- 		igt_require_pipe_crc(data.drm_fd);
- 
- 		data.debugfs = igt_debugfs_dir(data.drm_fd);
-+
-+		/* Get active pipes. */
-+		for_each_pipe(&data.display, pipe)
-+			active_pipes[last_pipe++] = pipe;
-+		last_pipe--;
- 	}
- 
- 	igt_describe("Tests error handling when the bad source is set.");
-@@ -322,6 +356,9 @@ igt_main
- 		igt_describe(tests[i].desc);
- 		igt_subtest_with_dynamic(tests[i].name) {
- 			for_each_pipe_with_single_output(&data.display, pipe, output) {
-+				if (simulation_constraint(pipe))
-+					continue;
-+
- 				igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), output->name) {
- 					if (tests[i].flags & TEST_SUSPEND) {
- 						test_read_crc(&data, pipe, output, 0);
-@@ -350,6 +387,9 @@ igt_main
- 		     "does not cause issues.");
- 	igt_subtest_with_dynamic("disable-crc-after-crtc") {
- 		for_each_pipe_with_single_output(&data.display, pipe, output) {
-+			if (simulation_constraint(pipe))
-+				continue;
-+
- 			igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), output->name)
- 				test_disable_crc_after_crtc(&data, pipe, output);
- 		}
-@@ -358,6 +398,9 @@ igt_main
- 	igt_describe("Basic sanity check for CRC mismatches");
- 	igt_subtest_with_dynamic("compare-crc-sanitycheck") {
- 		for_each_pipe_with_single_output(&data.display, pipe, output) {
-+			if (simulation_constraint(pipe))
-+				continue;
-+
- 			igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), output->name)
- 				test_compare_crc(&data, pipe, output);
- 		}
--- 
-2.39.0
+Same here.
+
+>  }
+>  
+>  /**
+> @@ -242,10 +241,7 @@ bool blt_cmd_supports_tiling(const struct blt_cmd_info *info,
+>  {
+>  	struct blt_tiling_info const *tile_config;
+>  
+> -	if (!info)
+> -		return false;
+> -
+> -	tile_config = info->supported_cmds[cmd];
+> +	tile_config = blt_get_tiling_info(info, cmd);
+>  
+>  	/* no config means no support for that tiling */
+>  	if (!tile_config)
+> @@ -254,6 +250,32 @@ bool blt_cmd_supports_tiling(const struct blt_cmd_info *info,
+>  	return tile_config->supported_tiling & BIT(tiling);
+>  }
+>  
+> +/**
+> + * blt_cmd_has_property:
+> + * @info: Blitter command info struct
+> + * @cmd: Blitter command enum
+> + * @flag: property flag
+> + *
+> + * Checks if a @cmd entry of @info has @flag property. The properties can be
+> + * freely combined, but the function will return true for platforms for which
+> + * all properties defined in the bit flag are present. The function returns
+> + * false if no information about the command is stored.
+> + *
+> + * Returns: true if it does, false otherwise
+> + */
+> +bool blt_cmd_has_property(const struct blt_cmd_info *info,
+> +			  enum blt_cmd_type cmd, uint32_t flag)
+> +{
+> +	struct blt_tiling_info const *tile_config;
+> +
+> +	tile_config = blt_get_tiling_info(info, cmd);
+
+	cmd_desc = blt_get_cmd_desc(info, cmd);
+
+	?
+
+> +
+> +	if (!tile_config)
+> +		return false;
+> +
+> +	return tile_config->flags & flag;
+> +}
+> +
+>  /**
+>   * blt_has_block_copy
+>   * @i915: drm fd
+> @@ -320,6 +342,41 @@ bool blt_block_copy_supports_tiling(int i915, enum blt_tiling_type tiling)
+>  	return blt_cmd_supports_tiling(blt_info, XY_BLOCK_COPY, tiling);
+>  }
+>  
+> +/**
+> + * blt_block_copy_supports_compression
+> + * @i915: drm fd
+> + *
+> + * Check if block copy provided by @i915 device supports compression.
+> + *
+> + * Returns:
+> + * true if it does, false otherwise.
+> + */
+> +bool blt_block_copy_supports_compression(int i915)
+> +{
+> +	const struct blt_cmd_info *blt_info = GET_BLT_INFO(i915);
+> +
+> +	return device_supports_compression(i915) &&
+> +	       blt_cmd_has_property(blt_info, XY_BLOCK_COPY,
+> +				    BLT_CMD_SUPPORTS_COMPRESSION);
+
+Imo checking flag is enough.
+
+> +}
+> +
+> +/**
+> + * blt_uses_extended_block_copy
+> + * @i915: drm fd
+> + *
+> + * Check if block copy provided by @i915 device uses an extended version
+> + * of the command.
+> + *
+> + * Returns:
+> + * true if it does, false otherwise.
+> + */
+> +bool blt_uses_extended_block_copy(int i915)
+> +{
+> +	const struct blt_cmd_info *blt_info = GET_BLT_INFO(i915);
+> +
+> +	return blt_cmd_has_property(blt_info, XY_BLOCK_COPY, BLT_CMD_EXTENDED);
+> +}
+> +
+>  /**
+>   * blt_tiling_name:
+>   * @tiling: tiling id
+> diff --git a/lib/i915/i915_blt.h b/lib/i915/i915_blt.h
+> index 299dff8e..14885db3 100644
+> --- a/lib/i915/i915_blt.h
+> +++ b/lib/i915/i915_blt.h
+> @@ -157,16 +157,24 @@ struct blt_ctrl_surf_copy_data {
+>  	bool print_bb;
+>  };
+>  
+> -bool blt_supports_compression(int i915);
+>  bool blt_supports_command(const struct blt_cmd_info *info,
+>  			  enum blt_cmd_type cmd);
+>  bool blt_cmd_supports_tiling(const struct blt_cmd_info *info,
+>  			     enum blt_cmd_type cmd,
+>  			     enum blt_tiling_type tiling);
+> +bool blt_cmd_has_property(const struct blt_cmd_info *info,
+> +			  enum blt_cmd_type cmd,
+> +			  uint32_t flag);
+> +
+>  bool blt_has_block_copy(int i915);
+>  bool blt_has_fast_copy(int i915);
+> +
+>  bool blt_fast_copy_supports_tiling(int i915, enum blt_tiling_type tiling);
+>  bool blt_block_copy_supports_tiling(int i915, enum blt_tiling_type tiling);
+> +
+> +bool blt_block_copy_supports_compression(int i915);
+> +bool blt_uses_extended_block_copy(int i915);
+> +
+>  const char *blt_tiling_name(enum blt_tiling_type tiling);
+>  
+>  uint64_t emit_blt_block_copy(int i915,
+> diff --git a/lib/i915/intel_tiling_info.c b/lib/i915/intel_tiling_info.c
+> index fc388919..1dcf17c2 100644
+> --- a/lib/i915/intel_tiling_info.c
+> +++ b/lib/i915/intel_tiling_info.c
+> @@ -12,6 +12,12 @@
+>  		.supported_tiling = _tiling \
+>  	}
+>  
+> +#define BLT_INFO_EXT(_cmd, _tiling, _flags) { \
+> +		.blt_cmd_type = _cmd, \
+> +		.supported_tiling = _tiling, \
+> +		.flags = _flags \
+> +	}
+> +
+>  static const struct blt_tiling_info src_copy = BLT_INFO(SRC_COPY, BIT(T_LINEAR));
+>  static const struct blt_tiling_info
+>  		pre_gen8_xy_src_copy = BLT_INFO(XY_SRC_COPY,
+> @@ -44,12 +50,22 @@ static const struct blt_tiling_info
+>  		gen12_xy_block_copy = BLT_INFO(XY_BLOCK_COPY,
+>  					       BIT(T_LINEAR) |
+>  					       BIT(T_YMAJOR));
+> +
+> +#define DG2_SUPPORTED_TILING \
+> +	(BIT(T_LINEAR) | \
+> +	 BIT(T_XMAJOR) | \
+> +	 BIT(T_TILE4)  | \
+> +	 BIT(T_TILE64))
+> +
+> +#define DG2_BLOCK_COPY_INFO(_flags) \
+> +	BLT_INFO_EXT(XY_BLOCK_COPY, DG2_SUPPORTED_TILING, (_flags))
+
+Don't introduce above two macros, just use this directly below.
+It will be more consistent.
+
+> +
+> +static const struct blt_tiling_info
+> +		dg2_xy_block_copy = DG2_BLOCK_COPY_INFO(BLT_CMD_EXTENDED |
+> +							BLT_CMD_SUPPORTS_COMPRESSION);
+> +
+... dg2_xy_block_copy = BLT_CMD_DESC_EXT(XY_BLOCK_COPY,
+					 BIT(T_LINEAR) | ...,
+					 BLT_CMD_EXTENDED |
+					 BLT_CMD_SUPPORT_COMPRESSION);
+
+>  static const struct blt_tiling_info
+> -		dg2_xy_block_copy = BLT_INFO(XY_BLOCK_COPY,
+> -					     BIT(T_LINEAR) |
+> -					     BIT(T_XMAJOR) |
+> -					     BIT(T_TILE4)  |
+> -					     BIT(T_TILE64));
+
+This looks better imo.,
+
+> +		mtl_xy_block_copy = DG2_BLOCK_COPY_INFO(BLT_CMD_EXTENDED);
+>  
+>  const struct blt_cmd_info pre_gen8_blt_info = {
+>  	.supported_cmds = {
+> @@ -90,6 +106,6 @@ const struct blt_cmd_info gen12_dg2_blt_info = {
+>  const struct blt_cmd_info gen12_mtl_blt_info = {
+>  	.supported_cmds = {
+>  		[XY_FAST_COPY] = &dg2_xy_fast_copy,
+> -		[XY_BLOCK_COPY] = &dg2_xy_block_copy
+> +		[XY_BLOCK_COPY] = &mtl_xy_block_copy
+>  	}
+>  };
+> diff --git a/lib/i915/intel_tiling_info.h b/lib/i915/intel_tiling_info.h
+> index bb655103..a6288f49 100644
+> --- a/lib/i915/intel_tiling_info.h
+> +++ b/lib/i915/intel_tiling_info.h
+> @@ -29,6 +29,10 @@ enum blt_cmd_type {
+>  struct blt_tiling_info {
+>  	enum blt_cmd_type blt_cmd_type;
+>  	uint32_t supported_tiling;
+> +
+> +	uint32_t flags;
+> +#define BLT_CMD_EXTENDED		(1 << 0)
+> +#define BLT_CMD_SUPPORTS_COMPRESSION	(1 << 1)
+
+Consider rename to blt_cmd_desc, keeping tiling and flags here
+started to be confusing with blt_tiling_info.
+
+>  };
+>  
+>  struct blt_cmd_info {
+> diff --git a/tests/i915/gem_ccs.c b/tests/i915/gem_ccs.c
+> index a24c8e1f..b7e8bda7 100644
+> --- a/tests/i915/gem_ccs.c
+> +++ b/tests/i915/gem_ccs.c
+> @@ -346,7 +346,6 @@ static void block_copy(int i915,
+>  	uint32_t run_id = mid_tiling;
+>  	uint32_t mid_region = region2, bb;
+>  	uint32_t width = param.width, height = param.height;
+> -	uint32_t devid = intel_get_drm_devid(i915);
+>  	enum blt_compression mid_compression = config->compression;
+>  	int mid_compression_format = param.compression_format;
+>  	enum blt_compression_type comp_type = COMPRESSION_TYPE_3D;
+> @@ -355,7 +354,7 @@ static void block_copy(int i915,
+>  
+>  	igt_assert(__gem_create_in_memory_regions(i915, &bb, &bb_size, region1) == 0);
+>  
+> -	if (!blt_supports_compression(i915) && !IS_METEORLAKE(devid))
+> +	if (!blt_uses_extended_block_copy(i915))
+>  		pext = NULL;
+
+Direction is ok, but we need to clean up the names imo with this
+series. And split this because one patch contains few logically
+separated changes.
+
+--
+Zbigniew
+
+
+>  
+>  	src = blt_create_object(i915, region1, width, height, bpp, uc_mocs,
+> @@ -470,7 +469,7 @@ static void block_multicopy(int i915,
+>  
+>  	igt_assert(__gem_create_in_memory_regions(i915, &bb, &bb_size, region1) == 0);
+>  
+> -	if (!blt_supports_compression(i915))
+> +	if (!blt_uses_extended_block_copy(i915))
+>  		pext3 = NULL;
+>  
+>  	src = blt_create_object(i915, region1, width, height, bpp, uc_mocs,
+> @@ -557,7 +556,7 @@ static void block_copy_test(int i915,
+>  	const struct intel_execution_engine2 *e;
+>  	int tiling;
+>  
+> -	if (config->compression && !blt_supports_compression(i915))
+> +	if (config->compression && !blt_block_copy_supports_compression(i915))
+>  		return;
+>  
+>  	if (config->inplace && !config->compression)
+> -- 
+> 2.25.1
+> 
