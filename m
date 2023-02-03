@@ -1,23 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 41AED10E785
- for <igt-dev@lists.freedesktop.org>; Fri,  3 Feb 2023 12:32:05 +0000 (UTC)
-Date: Fri, 3 Feb 2023 14:32:01 +0200
-From: Ville =?iso-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
-To: "Murthy, Arun R" <arun.r.murthy@intel.com>
-Message-ID: <Y9z+wX/4/1UqT5Ev@intel.com>
-References: <20230131120646.27434-1-ville.syrjala@linux.intel.com>
- <20230131120646.27434-7-ville.syrjala@linux.intel.com>
- <DM6PR11MB3177FB4C74D129995D9FB495BAD69@DM6PR11MB3177.namprd11.prod.outlook.com>
- <Y9upad7eN8P5eQvh@intel.com>
- <DM6PR11MB31776E461B069D252010C09BBAD69@DM6PR11MB3177.namprd11.prod.outlook.com>
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 182E910E788
+ for <igt-dev@lists.freedesktop.org>; Fri,  3 Feb 2023 12:39:49 +0000 (UTC)
+Date: Fri, 3 Feb 2023 13:39:44 +0100
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Message-ID: <20230203123944.5ykzd7gofvn2p4kj@kamilkon-desk1>
+References: <20230202072121.26153-1-swati2.sharma@intel.com>
+ <20230202072121.26153-6-swati2.sharma@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <DM6PR11MB31776E461B069D252010C09BBAD69@DM6PR11MB3177.namprd11.prod.outlook.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 6/6] tests/kms_async_flips: Test all
- modifiers
+In-Reply-To: <20230202072121.26153-6-swati2.sharma@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t v2 5/6] lib/dsc: Add helpers for VDSC
+ output format debugfs entry
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,189 +21,137 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Thu, Feb 02, 2023 at 12:24:32PM +0000, Murthy, Arun R wrote:
-> > -----Original Message-----
-> > From: Ville Syrjälä <ville.syrjala@linux.intel.com>
-> > Sent: Thursday, February 2, 2023 5:46 PM
-> > To: Murthy, Arun R <arun.r.murthy@intel.com>
-> > Cc: igt-dev@lists.freedesktop.org
-> > Subject: Re: [PATCH i-g-t 6/6] tests/kms_async_flips: Test all modifiers
-> > 
-> > On Thu, Feb 02, 2023 at 11:23:09AM +0000, Murthy, Arun R wrote:
-> > > > -----Original Message-----
-> > > > From: Ville Syrjala <ville.syrjala@linux.intel.com>
-> > > > Sent: Tuesday, January 31, 2023 5:37 PM
-> > > > To: igt-dev@lists.freedesktop.org
-> > > > Cc: Murthy, Arun R <arun.r.murthy@intel.com>
-> > > > Subject: [PATCH i-g-t 6/6] tests/kms_async_flips: Test all modifiers
-> > > >
-> > > > From: Ville Syrjälä <ville.syrjala@linux.intel.com>
-> > > >
-> > > > Run the basic async flip test for all modifiers reported by the
-> > > > plane (for the
-> > > > XRGB8888 format). The driver may not support async flip with all
-> > > > modifiers so we allow this to fail.
-> > >
-> > > Support for adding X-tile and linear for all platforms is being added
-> > > as sub-test in https://patchwork.freedesktop.org/series/103137/
-> > >
-> > > >
-> > > > TODO: probably shuould add an even more basic subtest that
-> > > >       makes sure the driver accepts async flips with a least
-> > > >       one format/modifier combo, if it advertises async flip
-> > > >       support
-> > > >
-> > > > Cc: Arun R Murthy <arun.r.murthy@intel.com>
-> > > > Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
-> > > > ---
-> > > >  tests/kms_async_flips.c | 54
-> > > > +++++++++++++++++++++++++++++++++--------
-> > > >  1 file changed, 44 insertions(+), 10 deletions(-)
-> > > >
-> > > > diff --git a/tests/kms_async_flips.c b/tests/kms_async_flips.c index
-> > > > 58740f6ab702..387fcff2f32c 100644
-> > > > --- a/tests/kms_async_flips.c
-> > > > +++ b/tests/kms_async_flips.c
-> > > > @@ -53,6 +53,8 @@ typedef struct {
-> > > >  	igt_output_t *output;
-> > > >  	unsigned long flip_timestamp_us;
-> > > >  	double flip_interval;
-> > > > +	uint64_t modifier;
-> > > > +	igt_plane_t *plane;
-> > > >  	igt_pipe_crc_t *pipe_crc;
-> > > >  	igt_crc_t ref_crc;
-> > > >  	int flip_count;
-> > > > @@ -61,6 +63,7 @@ typedef struct {
-> > > >  	bool extended;
-> > > >  	enum pipe pipe;
-> > > >  	bool alternate_sync_async;
-> > > > +	bool allow_fail;
-> > > >  } data_t;
-> > > >
-> > > >  static void flip_handler(int fd_, unsigned int sequence, unsigned
-> > > > int tv_sec, @@ -133,7 +136,7 @@ static void make_fb(data_t *data,
-> > struct igt_fb *fb,
-> > > >  	rec_width = width / (ARRAY_SIZE(data->bufs) * 2);
-> > > >
-> > > >  	igt_create_color_fb(data->drm_fd, width, height,
-> > > > DRM_FORMAT_XRGB8888,
-> > > > -			    default_modifier(data), 0.0, 0.0, 0.5, fb);
-> > > > +			    data->modifier, 0.0, 0.0, 0.5, fb);
-> > > >
-> > > >  	cr = igt_get_cairo_ctx(data->drm_fd, fb);
-> > > >  	igt_paint_color_rand(cr, rec_width * 2 + rec_width * index, 0,
-> > > > rec_width, height); @@ -159,24 +162,26 @@ static void
-> > > > test_init(data_t
-> > > > *data)
-> > > >  	data->refresh_rate = mode->vrefresh;
-> > > >
-> > > >  	igt_output_set_pipe(data->output, data->pipe);
-> > > > +
-> > > > +	data->plane = igt_output_get_plane_type(data->output,
-> > > > +DRM_PLANE_TYPE_PRIMARY);
-> > > >  }
-> > > >
-> > > >  static void test_init_fbs(data_t *data)  {
-> > > >  	int i;
-> > > >  	uint32_t width, height;
-> > > > -	igt_plane_t *plane;
-> > > >  	static uint32_t prev_output_id;
-> > > > +	static uint64_t prev_modifier;
-> > > >  	drmModeModeInfo *mode;
-> > > >
-> > > >  	mode = igt_output_get_mode(data->output);
-> > > >  	width = mode->hdisplay;
-> > > >  	height = mode->vdisplay;
-> > > >
-> > > > -	plane = igt_output_get_plane_type(data->output,
-> > > > DRM_PLANE_TYPE_PRIMARY);
-> > > > -
-> > > > -	if (prev_output_id != data->output->id) {
-> > > > +	if (prev_output_id != data->output->id ||
-> > > > +	    prev_modifier != data->modifier) {
-> > > >  		prev_output_id = data->output->id;
-> > > > +		prev_modifier = data->modifier;
-> > > >
-> > > >  		if (data->bufs[0].fb_id) {
-> > > >  			for (i = 0; i < ARRAY_SIZE(data->bufs); i++) @@ -187,8
-> > > > +192,8 @@ static void test_init_fbs(data_t *data)
-> > > >  			make_fb(data, &data->bufs[i], width, height, i);
-> > > >  	}
-> > > >
-> > > > -	igt_plane_set_fb(plane, &data->bufs[0]);
-> > > > -	igt_plane_set_size(plane, width, height);
-> > > > +	igt_plane_set_fb(data->plane, &data->bufs[0]);
-> > > > +	igt_plane_set_size(data->plane, width, height);
-> > > >
-> > > >  	igt_display_commit2(&data->display, data->display.is_atomic ?
-> > > > COMMIT_ATOMIC : COMMIT_LEGACY);  } @@ -243,8 +248,10 @@ static
-> > void
-> > > > test_async_flip(data_t *data)
-> > > >  		ret = drmModePageFlip(data->drm_fd, data->crtc_id,
-> > > >  				      data->bufs[frame % 4].fb_id,
-> > > >  				      flags, data);
-> > > > -
-> > > > -		igt_assert(ret == 0);
-> > > > +		if (frame == 1 && data->allow_fail)
-> > > > +			igt_skip_on(ret == -EINVAL);
-> > > > +		else
-> > > > +			igt_assert(ret == 0);
-> > > >
-> > > >  		wait_flip_event(data);
-> > > >
-> > > > @@ -545,6 +552,9 @@ static void run_test(data_t *data, void
-> > > > (*test)(data_t
-> > > > *))
-> > > >  	for_each_pipe_with_valid_output(&data->display, data->pipe, data-
-> > > > >output) {
-> > > >  		test_init(data);
-> > > >
-> > > > +		data->allow_fail = false;
-> > > > +		data->modifier = default_modifier(data);
-> > > > +
-> > > >  		igt_dynamic_f("pipe-%s", kmstest_pipe_name(data->pipe)) {
-> > > >  			test_init_fbs(data);
-> > > >  			test(data);
-> > > > @@ -555,6 +565,30 @@ static void run_test(data_t *data, void
-> > > > (*test)(data_t *))
-> > > >  	}
-> > > >  }
-> > > >
-> > > > +static void run_test_with_modifiers(data_t *data, void
-> > > > +(*test)(data_t
-> > > > +*)) {
-> > > > +	for_each_pipe_with_valid_output(&data->display, data->pipe, data-
-> > > > >output) {
-> > > > +		test_init(data);
-> > > > +
-> > > > +		for (int i = 0; i < data->plane->format_mod_count; i++) {
-> > > > +			if (data->plane->formats[i] !=
-> > > > DRM_FORMAT_XRGB8888)
-> > > > +				continue;
-> > > > +
-> > > > +			data->allow_fail = true;
-> > > If the modifier is supported by the platform and there is a failure with a
-> > bug in driver/hardware, aren't we falsely reporting here?
-> > 
-> > There is no way to query what is supported by the hw/driver, so we just have
-> > to try them all and accept that not all may succeed.
-> Yes that right!
-> Failing for particular modifier not supported would be better than allowing to escape a failure.
+Hi Swati,
 
-It will skip, which if fine IMO.
+On 2023-02-02 at 12:51:20 +0530, Swati Sharma wrote:
+> Helper functions are added for VDSC output format debugfs entry.
+> 
+> Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
+> ---
+>  lib/igt_dsc.c | 49 +++++++++++++++++++++++++++++++++++++++++++++++++
+>  lib/igt_dsc.h |  5 +++++
+>  lib/igt_kms.h |  6 ++++++
+>  3 files changed, 60 insertions(+)
+> 
+> diff --git a/lib/igt_dsc.c b/lib/igt_dsc.c
+> index 64dd6b29a..1f6d33291 100644
+> --- a/lib/igt_dsc.c
+> +++ b/lib/igt_dsc.c
+> @@ -134,3 +134,52 @@ int igt_get_dsc_debugfs_fd(int drmfd, char *connector_name)
+>  
+>  	return openat(igt_debugfs_dir(drmfd), file_name, O_WRONLY);
+>  }
+> +
+> +/*
+--- ^
+Descriptions should start with two stars, so it should look like:
 
-> Moreover exceptions can be added for platforms not supporting a particular modifier.
-> Maybe a proper way of handling the error might be required.
+/**
+ * igt_is_dsc_output_format_supported_by_sink:
 
-Adding i915 speicifc platform checks into the test means
-we'll have to potentially touch this test for every new
-platform. Which isn't a good thing.
+> + * igt_is_dsc_output_format_supported_by_sink:
+> + * @drmfd: A drm file descriptor
+> + * @connector_name: Name of the libdrm connector we're going to use
+> + * @output_format: Output format
+> + *
+> + * Returns: True if DSC output format is supported for the given connector,
+> + * false otherwise.
+> + */
+> +bool igt_is_dsc_output_format_supported_by_sink(int drmfd, char *connector_name,
+> +						enum dsc_output_format output_format)
+> +{
+> +	const char *check_str = "OUTPUTFORMATNOTFOUND";
+> +
+> +	switch(output_format) {
+--------------^
+Put space after "switch" and before opening "(":
+	switch (output_format) {
 
--- 
-Ville Syrjälä
-Intel
+Please use checkpatch script from Linux kernel sources, it can help
+you catch such errors.
+
+> +	case DSC_FORMAT_RGB:
+> +		check_str = "RGB: yes";
+> +		break;
+> +	case DSC_FORMAT_YCBCR420:
+> +		check_str = "YCBCR420: yes";
+> +		break;
+> +	case DSC_FORMAT_YCBCR444:
+> +		check_str = "YCBCR444: yes";
+> +		break;
+> +	default:
+> +		break;
+> +	}
+> +
+> +	return check_dsc_debugfs(drmfd, connector_name, check_str);
+> +}
+> +
+> +/*
+--- ^
+Same here, two stars.
+
+Regards,
+Kamil
+
+> + * igt_force_dsc_output_format:
+> + * @drmfd: A drm file descriptor
+> + * @connector_name: Name of the libdrm connector we're going to use
+> + * @output_format: Output format
+> + *
+> + * Returns: 0 on success or negative error code, in case of failure.
+> + */
+> +int igt_force_dsc_output_format(int drmfd, char *connector_name,
+> +				enum dsc_output_format output_format)
+> +{
+> +	char buf[20] = {0};
+> +
+> +	sprintf(buf, "%d", output_format);
+> +
+> +	return write_dsc_debugfs(drmfd, connector_name, "i915_dsc_output_format", buf);
+> +}
+> diff --git a/lib/igt_dsc.h b/lib/igt_dsc.h
+> index 291c2cdea..9608aad44 100644
+> --- a/lib/igt_dsc.h
+> +++ b/lib/igt_dsc.h
+> @@ -7,6 +7,7 @@
+>  #define IGT_DSC_H
+>  
+>  #include "igt_fb.h"
+> +#include "igt_kms.h"
+>  
+>  bool igt_is_dsc_supported(int drmfd, char *connector_name);
+>  bool igt_is_fec_supported(int drmfd, char *connector_name);
+> @@ -15,5 +16,9 @@ bool igt_is_force_dsc_enabled(int drmfd, char *connector_name);
+>  int igt_force_dsc_enable(int drmfd, char *connector_name);
+>  int igt_force_dsc_enable_bpc(int drmfd, char *connector_name, int bpc);
+>  int igt_get_dsc_debugfs_fd(int drmfd, char *connector_name);
+> +bool igt_is_dsc_output_format_supported_by_sink(int drmfd, char *connector_name,
+> +						enum dsc_output_format output_format);
+> +int igt_force_dsc_output_format(int drmfd, char *connector_name,
+> +				enum dsc_output_format output_format);
+>  
+>  #endif
+> diff --git a/lib/igt_kms.h b/lib/igt_kms.h
+> index be5482e08..9f5bef170 100644
+> --- a/lib/igt_kms.h
+> +++ b/lib/igt_kms.h
+> @@ -106,6 +106,12 @@ enum igt_custom_edid_type {
+>   */
+>  #define kmstest_port_name(port) ((port) + 'A')
+>  
+> +enum dsc_output_format {
+> +	DSC_FORMAT_RGB = 0,
+> +	DSC_FORMAT_YCBCR420,
+> +	DSC_FORMAT_YCBCR444
+> +};
+> +
+>  const char *kmstest_encoder_type_str(int type);
+>  const char *kmstest_connector_status_str(int status);
+>  const char *kmstest_connector_type_str(int type);
+> -- 
+> 2.25.1
+> 
