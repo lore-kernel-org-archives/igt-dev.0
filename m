@@ -2,8 +2,8 @@ Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
 To: igt-dev@lists.freedesktop.org,
 	Intel-gfx@lists.freedesktop.org
-Date: Fri,  3 Feb 2023 11:30:05 +0000
-Message-Id: <20230203113005.4138939-1-tvrtko.ursulin@linux.intel.com>
+Date: Fri,  3 Feb 2023 11:31:19 +0000
+Message-Id: <20230203113119.4139041-1-tvrtko.ursulin@linux.intel.com>
 In-Reply-To: <20230203111636.4138202-4-tvrtko.ursulin@linux.intel.com>
 References: <20230203111636.4138202-4-tvrtko.ursulin@linux.intel.com>
 MIME-Version: 1.0
@@ -34,7 +34,7 @@ Cc: Caleb Callaway <caleb.callaway@intel.com>
  2 files changed, 78 insertions(+), 3 deletions(-)
 
 diff --git a/man/intel_gpu_top.rst b/man/intel_gpu_top.rst
-index 69834756b81e..77228277b9bf 100644
+index 69834756b81e..2d041457a95e 100644
 --- a/man/intel_gpu_top.rst
 +++ b/man/intel_gpu_top.rst
 @@ -31,6 +31,9 @@ OPTIONS
@@ -42,7 +42,7 @@ index 69834756b81e..77228277b9bf 100644
      Show help text.
  
 +-c
-+    Output CVS formatted data.
++    Output CSV formatted data.
 +
  -J
      Output JSON formatted data.
