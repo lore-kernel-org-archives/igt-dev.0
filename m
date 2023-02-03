@@ -1,15 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============0621410645221865021=="
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id F24EA10E04B
+ for <igt-dev@lists.freedesktop.org>; Fri,  3 Feb 2023 14:16:53 +0000 (UTC)
+Date: Fri, 3 Feb 2023 15:16:29 +0100
+From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
+To: Jani Nikula <jani.nikula@linux.intel.com>
+Message-ID: <20230203151629.08c9ede5@maurocar-mobl2>
+In-Reply-To: <87tu02zxt2.fsf@intel.com>
+References: <20230203082650.2454081-1-mauro.chehab@linux.intel.com>
+ <20230203082650.2454081-2-mauro.chehab@linux.intel.com>
+ <Y9ze++qjDfKudq0P@adrinael.net>
+ <20230203121346.1c991030@maurocar-mobl2> <87tu02zxt2.fsf@intel.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Swati Sharma" <swati2.sharma@intel.com>
-Date: Fri, 03 Feb 2023 13:51:32 -0000
-Message-ID: <167543229260.8764.12872497916134566232@emeril.freedesktop.org>
-References: <20230203110431.21248-1-swati2.sharma@intel.com>
-In-Reply-To: <20230203110431.21248-1-swati2.sharma@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
- =?utf-8?q?i915/kms=5Fdsc=3A_Rename_subtest?=
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Subject: Re: [igt-dev] [PATCH i-g-t 1/1] scripts: add a parser to produce
+ documentation from Kernel C file metatags
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,212 +23,107 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============0621410645221865021==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+On Fri, 03 Feb 2023 15:24:41 +0200
+Jani Nikula <jani.nikula@linux.intel.com> wrote:
 
-== Series Details ==
+> On Fri, 03 Feb 2023, Mauro Carvalho Chehab <mauro.chehab@linux.intel.com> wrote:
+> > On Fri, 3 Feb 2023 12:16:27 +0200
+> > Petri Latvala <adrinael@adrinael.net> wrote:
+> >  
+> >> On Fri, Feb 03, 2023 at 09:26:50AM +0100, Mauro Carvalho Chehab wrote:  
+> >> > From: Mauro Carvalho Chehab <mchehab@kernel.org>
+> >> > 
+> >> > On a similar approach to Kernel's kernel-doc script, add a parser
+> >> > that will produce documentation from special-purpose documentation
+> >> > tags inside IGT tests.
+> >> > 
+> >> > Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+> >> > ---
+> >> >  scripts/igt-doc | 647 ++++++++++++++++++++++++++++++++++++++++++++++++
+> >> >  1 file changed, 647 insertions(+)
+> >> >  create mode 100755 scripts/igt-doc
+> >> > 
+> >> > diff --git a/scripts/igt-doc b/scripts/igt-doc
+> >> > new file mode 100755
+> >> > index 000000000000..3ed2be144e61
+> >> > --- /dev/null
+> >> > +++ b/scripts/igt-doc
+> >> > @@ -0,0 +1,647 @@
+> >> > +#!/usr/bin/env perl    
+> >> 
+> >> 
+> >> When you talked about this beforehand, you talked about using
+> >> Python. Does this need to be a perl script? I mean, it's from kernel,
+> >> I understand that, but I'll be completely unable to review perl code
+> >> myself =(  
+> >
+> > No, I didn't talk about writing it in Python. There are a couple of
+> > reasons why I opted to use Perl:
+> >
+> > 1. kernel-doc script is in perl too. It probably makes sense to also
+> >    add support the Kernel itself for test-related tags, in order to be
+> >    able to document KUnit tests. By using the same language, it is 
+> >    easier to place automation there too;  
+> 
+> I don't think kernel-doc the script is a good argument here. On the
+> contrary, it should be an example of what not to do. It only exists as a
+> perl script because of legacy, and nothing else.
+> 
+> > 2. We have already perl scripts inside IGT (see code_cov_parse_info);  
+> 
+> Which you added, and nobody else has touched since. Just saying.
 
-Series: tests/i915/kms_dsc: Rename subtest
-URL   : https://patchwork.freedesktop.org/series/113643/
-State : success
+So what? The same applies to almost all Python scripts there as well:
 
-== Summary ==
+	$ for i in $(find . -name *.py); do echo -n "$i author(s):"; echo $(git log --pretty="%an" $i|sort|uniq); done
+	./.gitlab-ci/list_undocumented_tests.py author(s):Arkadiusz Hiler
+	./lib/i915/shaders/converter.py author(s):Katarzyna Dec
+	./lib/i915/perf-configs/perf-equations-codegen.py author(s):Lionel Landwerlin
+	./lib/i915/perf-configs/oa_guid_registry.py author(s):Lionel Landwerlin
+	./lib/i915/perf-configs/codegen.py author(s):Arkadiusz Hiler Lionel Landwerlin
+	./lib/i915/perf-configs/update-guids.py author(s):Lionel Landwerlin
+	./lib/i915/perf-configs/mdapi-xml-convert.py author(s):Lionel Landwerlin
+	./lib/i915/perf-configs/perf-registers-codegen.py author(s):Lionel Landwerlin
+	./lib/i915/perf-configs/perf-metricset-codegen.py author(s):Lionel Landwerlin
+	./docs/reference/igt-gpu-tools/generate_description_xml.py author(s):Arkadiusz Hiler
+	./scripts/quick-testlist.py author(s):Thomas Wood
+	./scripts/convert_itp.py author(s):Ben Widawsky
+	./scripts/throttle.py author(s):Chris Wilson
 
-CI Bug Log - changes from CI_DRM_12690 -> IGTPW_8443
-====================================================
+The script had reviewers, so I'm not the only one working with perl.
 
-Summary
--------
+> > 3. Perl APIs are *a lot* more stable than Python; scripts written
+> >    a long time ago still runs OK without changes. Python, on the other
+> >    hand, keeps deprecating their APIs or changing them on non-compatible
+> >    ways from time to time, requiring more maintainance efforts just due
+> >    to its API changes.
+> >
+> > 4. I believe that each programmer should pick its own poison, writing
+> >    stuff using the environments they're more comfortable with. 
+> >    I'm not a Python programmer. I can probably review and write basic
+> >    changes on it, but writing something new there, using dictionaries
+> >    on an optimized code [1] is something that it would require a lot
+> >    of time from my side.  
+> 
+> The above holds if you're working alone in a silo. IGT is above all a
+> team effort, and you need to consider the overall productivity of the
+> team, and the team's ability to maintain the code. Who's going to step
+> up if you're not there to do it? Are they going to have to rewrite the
+> whole thing in some other language?
 
-  **SUCCESS**
+Frankly, I don't mind if anyone wants to write it on any other language,
+or use some already-existing tool.
 
-  No regressions found.
+We're diverting from the issue: we need to have proper documentation
+and a way to validate if the documentation is outdated.
 
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8443/index.html
+That is the scope of this patch: to add a way to do that. If you have
+a better solution, feel free to send the patches.
 
-Participating hosts (27 -> 26)
-------------------------------
-
-  Missing    (1): fi-snb-2520m 
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_8443 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions-varying-size:
-    - fi-bsw-n3050:       [PASS][1] -> [FAIL][2] ([i915#6298])
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12690/fi-bsw-n3050/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions-varying-size.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8443/fi-bsw-n3050/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions-varying-size.html
-
-  
-#### Possible fixes ####
-
-  * igt@i915_module_load@load:
-    - {bat-dg2-8}:        [ABORT][3] -> [PASS][4]
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12690/bat-dg2-8/igt@i915_module_load@load.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8443/bat-dg2-8/igt@i915_module_load@load.html
-
-  * igt@i915_selftest@live@reset:
-    - {bat-rpls-2}:       [ABORT][5] ([i915#4983]) -> [PASS][6]
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12690/bat-rpls-2/igt@i915_selftest@live@reset.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8443/bat-rpls-2/igt@i915_selftest@live@reset.html
-
-  * igt@i915_selftest@live@slpc:
-    - {bat-rpls-1}:       [DMESG-FAIL][7] ([i915#6367] / [i915#7996]) -> [PASS][8]
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12690/bat-rpls-1/igt@i915_selftest@live@slpc.html
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8443/bat-rpls-1/igt@i915_selftest@live@slpc.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [fdo#109285]: https://bugs.freedesktop.org/show_bug.cgi?id=109285
-  [i915#1072]: https://gitlab.freedesktop.org/drm/intel/issues/1072
-  [i915#1845]: https://gitlab.freedesktop.org/drm/intel/issues/1845
-  [i915#2582]: https://gitlab.freedesktop.org/drm/intel/issues/2582
-  [i915#3291]: https://gitlab.freedesktop.org/drm/intel/issues/3291
-  [i915#3555]: https://gitlab.freedesktop.org/drm/intel/issues/3555
-  [i915#3708]: https://gitlab.freedesktop.org/drm/intel/issues/3708
-  [i915#4077]: https://gitlab.freedesktop.org/drm/intel/issues/4077
-  [i915#4079]: https://gitlab.freedesktop.org/drm/intel/issues/4079
-  [i915#4083]: https://gitlab.freedesktop.org/drm/intel/issues/4083
-  [i915#4137]: https://gitlab.freedesktop.org/drm/intel/issues/4137
-  [i915#4212]: https://gitlab.freedesktop.org/drm/intel/issues/4212
-  [i915#4215]: https://gitlab.freedesktop.org/drm/intel/issues/4215
-  [i915#4579]: https://gitlab.freedesktop.org/drm/intel/issues/4579
-  [i915#4873]: https://gitlab.freedesktop.org/drm/intel/issues/4873
-  [i915#4983]: https://gitlab.freedesktop.org/drm/intel/issues/4983
-  [i915#5190]: https://gitlab.freedesktop.org/drm/intel/issues/5190
-  [i915#5274]: https://gitlab.freedesktop.org/drm/intel/issues/5274
-  [i915#5354]: https://gitlab.freedesktop.org/drm/intel/issues/5354
-  [i915#6298]: https://gitlab.freedesktop.org/drm/intel/issues/6298
-  [i915#6367]: https://gitlab.freedesktop.org/drm/intel/issues/6367
-  [i915#6621]: https://gitlab.freedesktop.org/drm/intel/issues/6621
-  [i915#6645]: https://gitlab.freedesktop.org/drm/intel/issues/6645
-  [i915#6997]: https://gitlab.freedesktop.org/drm/intel/issues/6997
-  [i915#7561]: https://gitlab.freedesktop.org/drm/intel/issues/7561
-  [i915#7828]: https://gitlab.freedesktop.org/drm/intel/issues/7828
-  [i915#7996]: https://gitlab.freedesktop.org/drm/intel/issues/7996
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_7148 -> IGTPW_8443
-
-  CI-20190529: 20190529
-  CI_DRM_12690: 0708011e51e2a737da8ada3e50d7ebb2a559606b @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_8443: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8443/index.html
-  IGT_7148: ee8e31cf39c44d3fdbd04d8db239f8a815f86121 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-
-Testlist changes
-----------------
-
-+igt@kms_dsc@dsc-basic
--igt@kms_dsc@basic-dsc
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8443/index.html
-
---===============0621410645221865021==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/i915/kms_dsc: Rename subtest</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/113643/">https://patchwork.freedesktop.org/series/113643/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8443/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8443/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from CI_DRM_12690 -&gt; IGTPW_8443</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8443/index.html</p>
-<h2>Participating hosts (27 -&gt; 26)</h2>
-<p>Missing    (1): fi-snb-2520m </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_8443 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions-varying-size:<ul>
-<li>fi-bsw-n3050:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12690/fi-bsw-n3050/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions-varying-size.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8443/fi-bsw-n3050/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions-varying-size.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6298">i915#6298</a>)</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@i915_module_load@load:</p>
-<ul>
-<li>{bat-dg2-8}:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12690/bat-dg2-8/igt@i915_module_load@load.html">ABORT</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8443/bat-dg2-8/igt@i915_module_load@load.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@reset:</p>
-<ul>
-<li>{bat-rpls-2}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12690/bat-rpls-2/igt@i915_selftest@live@reset.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4983">i915#4983</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8443/bat-rpls-2/igt@i915_selftest@live@reset.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@slpc:</p>
-<ul>
-<li>{bat-rpls-1}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12690/bat-rpls-1/igt@i915_selftest@live@slpc.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6367">i915#6367</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7996">i915#7996</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8443/bat-rpls-1/igt@i915_selftest@live@slpc.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_7148 -&gt; IGTPW_8443</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_12690: 0708011e51e2a737da8ada3e50d7ebb2a559606b @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_8443: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8443/index.html<br />
-  IGT_7148: ee8e31cf39c44d3fdbd04d8db239f8a815f86121 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-<h2>Testlist changes</h2>
-<p>+igt@kms_dsc@dsc-basic<br />
--igt@kms_dsc@basic-dsc</p>
-
-</body>
-</html>
-
---===============0621410645221865021==--
+Regards,
+Mauro
