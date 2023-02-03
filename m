@@ -1,14 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
-To: igt-dev@lists.freedesktop.org,
-	Intel-gfx@lists.freedesktop.org
-Date: Fri,  3 Feb 2023 11:31:19 +0000
-Message-Id: <20230203113119.4139041-1-tvrtko.ursulin@linux.intel.com>
-In-Reply-To: <20230203111636.4138202-4-tvrtko.ursulin@linux.intel.com>
-References: <20230203111636.4138202-4-tvrtko.ursulin@linux.intel.com>
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6455E10E771
+ for <igt-dev@lists.freedesktop.org>; Fri,  3 Feb 2023 11:37:33 +0000 (UTC)
+Date: Fri, 3 Feb 2023 12:37:29 +0100
+From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
+To: Jani Nikula <jani.nikula@linux.intel.com>
+Message-ID: <20230203123729.7f32fd8f@maurocar-mobl2>
+In-Reply-To: <874js311zb.fsf@intel.com>
+References: <20230203082650.2454081-1-mauro.chehab@linux.intel.com>
+ <20230203082650.2454081-2-mauro.chehab@linux.intel.com>
+ <874js311zb.fsf@intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 3/3] intel_gpu_top: Add CSV output format
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Subject: Re: [igt-dev] [PATCH i-g-t 1/1] scripts: add a parser to produce
+ documentation from Kernel C file metatags
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -16,184 +22,69 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Caleb Callaway <caleb.callaway@intel.com>,
- Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+On Fri, 03 Feb 2023 12:23:52 +0200
+Jani Nikula <jani.nikula@linux.intel.com> wrote:
 
-Add CSV output mode.
+> On Fri, 03 Feb 2023, Mauro Carvalho Chehab <mauro.chehab@linux.intel.com> wrote:
+> > From: Mauro Carvalho Chehab <mchehab@kernel.org>
+> >
+> > On a similar approach to Kernel's kernel-doc script, add a parser
+> > that will produce documentation from special-purpose documentation
+> > tags inside IGT tests.  
+> 
+> kernel-doc is really not a great model to duplicate elsewhere.
 
-Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
-Cc: Caleb Callaway <caleb.callaway@intel.com>
----
- man/intel_gpu_top.rst |  3 ++
- tools/intel_gpu_top.c | 78 +++++++++++++++++++++++++++++++++++++++++--
- 2 files changed, 78 insertions(+), 3 deletions(-)
+Why not? Kernel has been succeed keeping its interfaces documented. Ok,
+there would be other alternatives to be used, but the main point is really
+to keep the documentation as close as possible to the source code, in a
+parseable way. 
 
-diff --git a/man/intel_gpu_top.rst b/man/intel_gpu_top.rst
-index 69834756b81e..2d041457a95e 100644
---- a/man/intel_gpu_top.rst
-+++ b/man/intel_gpu_top.rst
-@@ -31,6 +31,9 @@ OPTIONS
- -h
-     Show help text.
- 
-+-c
-+    Output CSV formatted data.
-+
- -J
-     Output JSON formatted data.
- 
-diff --git a/tools/intel_gpu_top.c b/tools/intel_gpu_top.c
-index a980cc7043dc..2e1365959d8b 100644
---- a/tools/intel_gpu_top.c
-+++ b/tools/intel_gpu_top.c
-@@ -1268,6 +1268,7 @@ usage(const char *appname)
- 		"\n"
- 		"\tThe following parameters are optional:\n\n"
- 		"\t[-h]            Show this help text.\n"
-+		"\t[-c]            Output CSV formatted data.\n"
- 		"\t[-J]            Output JSON formatted data.\n"
- 		"\t[-l]            List plain text data.\n"
- 		"\t[-o <file|->]   Output to specified file or '-' for standard out.\n"
-@@ -1283,6 +1284,7 @@ usage(const char *appname)
- static enum {
- 	INTERACTIVE,
- 	TEXT,
-+	CSV,
- 	JSON
- } output_mode;
- 
-@@ -1457,6 +1459,22 @@ text_add_member(const struct cnt_group *parent, struct cnt_item *item,
- 	return len > 0 ? len : 0;
- }
- 
-+static unsigned int
-+csv_add_member(const struct cnt_group *parent, struct cnt_item *item,
-+	       unsigned int headers)
-+{
-+	int len = 0;
-+
-+	if (headers)
-+		fprintf(out, "%s %s", parent->display_name, item->unit);
-+	else
-+		len = fprintf(out, "%f",
-+			      pmu_calc(&item->pmu->val, item->d, item->t,
-+				       item->s));
-+
-+	return len > 0 ? len : 0;
-+}
-+
- static void
- term_open_struct(const char *name)
- {
-@@ -1540,6 +1558,46 @@ print_group(struct cnt_group *grp, unsigned int headers)
- 	return consumed;
- }
- 
-+static unsigned int csv_count, prev_csv_count;
-+
-+static void csv_close_struct(void)
-+{
-+	assert(text_level > 0);
-+	if (--text_level == 0) {
-+		csv_count = prev_csv_count = 0;
-+		text_lines++;
-+		fputs("\n", out);
-+		fflush(out);
-+	}
-+}
-+
-+static bool
-+csv_print_group(struct cnt_group *grp, unsigned int headers)
-+{
-+	unsigned int consumed = 0;
-+	struct cnt_item *item;
-+
-+	if (!present_in_group(grp))
-+		return false;
-+
-+	text_open_struct(grp->name);
-+
-+	for (item = grp->items; item->name; item++) {
-+		if (!item->pmu || !item->pmu->present)
-+			continue;
-+
-+		if (csv_count != prev_csv_count)
-+			fprintf(out, ",");
-+		prev_csv_count = csv_count++;
-+
-+		consumed += csv_add_member(grp, item, headers);
-+	}
-+
-+	csv_close_struct();
-+
-+	return consumed;
-+}
-+
- static bool
- term_print_group(struct cnt_group *grp, unsigned int headers)
- {
-@@ -1570,6 +1628,13 @@ static const struct print_operations text_pops = {
- 	.print_group = print_group,
- };
- 
-+static const struct print_operations csv_pops = {
-+	.open_struct = text_open_struct,
-+	.close_struct = csv_close_struct,
-+	.add_member = csv_add_member,
-+	.print_group = csv_print_group,
-+};
-+
- static const struct print_operations term_pops = {
- 	.open_struct = term_open_struct,
- 	.close_struct = term_close_struct,
-@@ -1582,11 +1647,12 @@ static bool print_groups(struct cnt_group **groups)
- 	static bool headers_printed = false;
- 	bool print_data = true;
- 
--	if (output_mode == TEXT &&
-+	if ((output_mode == TEXT || output_mode == CSV) &&
- 	    (text_header_repeat || !headers_printed)) {
-+		const unsigned int header_lines = output_mode == TEXT ? 2 : 1;
- 		unsigned int headers = text_lines % TEXT_HEADER_REPEAT + 1;
- 
--		if (headers == 1 || headers == 2)
-+		if (headers > 0 && headers <= header_lines)
- 			for (struct cnt_group **grp = groups; *grp; grp++)
- 				print_data = pops->print_group(*grp, headers);
- 
-@@ -2469,7 +2535,7 @@ int main(int argc, char **argv)
- 	char *codename = NULL;
- 
- 	/* Parse options */
--	while ((ch = getopt(argc, argv, "o:s:d:pJLlh")) != -1) {
-+	while ((ch = getopt(argc, argv, "o:s:d:pcJLlh")) != -1) {
- 		switch (ch) {
- 		case 'o':
- 			output_path = optarg;
-@@ -2483,6 +2549,9 @@ int main(int argc, char **argv)
- 		case 'p':
- 			physical_engines = true;
- 			break;
-+		case 'c':
-+			output_mode = CSV;
-+			break;
- 		case 'J':
- 			output_mode = JSON;
- 			break;
-@@ -2532,6 +2601,9 @@ int main(int argc, char **argv)
- 	case TEXT:
- 		pops = &text_pops;
- 		break;
-+	case CSV:
-+		pops = &csv_pops;
-+		break;
- 	case JSON:
- 		pops = &json_pops;
- 		break;
--- 
-2.34.1
+> Why hand craft another C parser? There's a cost to maintaining this, and
+> it's not helped by the choice of implementation language.
+
+There is always a cost of maintaining documentation, and a cost of not
+having them.
+
+One of the biggest costs we have is related to the time for CI to run
+IGT tests. The more tests we add, the higher the costs increase. That's
+by far the most relevant cost here.
+
+Right now, there are tests written several years ago, that people don't
+have a clear idea why they're doing, and if they should belong to a
+basic acceptance criteria or if some other tests are already covering
+the functionality of them. So, multiple tests for the same feature could
+end being running as part of the test plans, increasing the costs of
+running such tests (energy costs, machine costs, etc).
+
+Having test plans documenting what's inside each test file allows to
+decide what of those tests make sense to run for each new patch added
+to the tree, and what of those are there just to cover some borderline
+cases and won't need to be run every time.
+
+> The script alone isn't enough; how do you bolt this into other
+> documentation? More ad hoc scripting like
+> docs/reference/igt-gpu-tools/{generate_description_xml.py,generate_programs_xml.sh}?
+
+No need. This script could be called to produce, let's say, Xe documentation by adding
+a target at tests/xe/meson.build that would do something similar to:
+
+	${SRCDIR}/scripts/igt-doc ${SRCDIR}/tests/xe/*.c > ${DESTDIR}/docs/xe_tests.rst
+
+And CI would be running:
+
+	${SRCDIR}/scripts/igt-doc ${SRCDIR}/tests/xe/*.c --check
+
+In order to verify if all the tests inside a given directory (in this 
+example, tests/xe) are documented.
+
+With such automation in place, if someone writes a new test or subtest
+and forgets to update the test description, CI could return warning
+messages, asking the developer to fill in the gaps.
+
+Regards,
+Mauro
