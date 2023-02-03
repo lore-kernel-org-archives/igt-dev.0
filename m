@@ -1,20 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9E95510E5DD
- for <igt-dev@lists.freedesktop.org>; Thu,  2 Feb 2023 18:32:18 +0000 (UTC)
-From: "Shankar, Uma" <uma.shankar@intel.com>
-To: "Sharma, Swati2" <swati2.sharma@intel.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-Date: Thu, 2 Feb 2023 18:31:49 +0000
-Message-ID: <DM4PR11MB63606D3F16B6C2CE7DAFB1ECF4D69@DM4PR11MB6360.namprd11.prod.outlook.com>
-References: <20221226103838.1761-1-swati2.sharma@intel.com>
-In-Reply-To: <20221226103838.1761-1-swati2.sharma@intel.com>
-Content-Language: en-US
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9761C10E7A8
+ for <igt-dev@lists.freedesktop.org>; Fri,  3 Feb 2023 14:45:12 +0000 (UTC)
+Date: Fri, 3 Feb 2023 15:45:08 +0100
+From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
+To: Jani Nikula <jani.nikula@linux.intel.com>
+Message-ID: <20230203154508.0ee405b9@maurocar-mobl2>
+In-Reply-To: <87r0v6zxki.fsf@intel.com>
+References: <20230203082650.2454081-1-mauro.chehab@linux.intel.com>
+ <20230203082650.2454081-2-mauro.chehab@linux.intel.com>
+ <874js311zb.fsf@intel.com> <20230203123729.7f32fd8f@maurocar-mobl2>
+ <87r0v6zxki.fsf@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_hdr: Add negative test for
- invalid metadata sizes
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Subject: Re: [igt-dev] [PATCH i-g-t 1/1] scripts: add a parser to produce
+ documentation from Kernel C file metatags
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,113 +23,64 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
+On Fri, 03 Feb 2023 15:29:49 +0200
+Jani Nikula <jani.nikula@linux.intel.com> wrote:
+
+> >> The script alone isn't enough; how do you bolt this into other
+> >> documentation? More ad hoc scripting like
+> >> docs/reference/igt-gpu-tools/{generate_description_xml.py,generate_programs_xml.sh}?  
+> >
+> > No need. This script could be called to produce, let's say, Xe documentation by adding
+> > a target at tests/xe/meson.build that would do something similar to:
+> >
+> > 	${SRCDIR}/scripts/igt-doc ${SRCDIR}/tests/xe/*.c > ${DESTDIR}/docs/xe_tests.rst
+> >
+> > And CI would be running:
+> >
+> > 	${SRCDIR}/scripts/igt-doc ${SRCDIR}/tests/xe/*.c --check  
+> 
+> I think we have different ideas of what it means to *nicely* integrate
+
+No matter what solution used, some rules are needed at meson.build to
+produce documentation. One of the requirements is to have a way to validate
+if the documents are updated.
+
+So, it needs to be something that:
+
+1. it is easy to be parsed;
+2. it is easy for developers to write;
+3. it is embedded at the C file that contains the tests.
+
+Anything different than that will lead into the documentation gaps
+that we currently have.
+
+See, if you pick a couple of random IGT test files:
+
+	$ for i in $(seq 1 10); do find tests/ -name "*.c" | shuf -n 1; done
+
+I doubt you'll be able to quickly discover details on what each
+test does (what the test does, what platforms are supported, what it is
+required to run them, etc), even if you write a script to parse it.
+You'll probably spend some time to find the documentation, and that's if 
+they're available and updated.
+
+By having comments inside the code like what it is proposed on this
+patch, you can get them with a simple command:
+
+	$ grep -A10 -E "\* TEST\b" $(find tests/ -name "*.c")
 
 
-> -----Original Message-----
-> From: igt-dev <igt-dev-bounces@lists.freedesktop.org> On Behalf Of Swati =
-Sharma
-> Sent: Monday, December 26, 2022 4:09 PM
-> To: igt-dev@lists.freedesktop.org
-> Subject: [igt-dev] [PATCH i-g-t] tests/kms_hdr: Add negative test for inv=
-alid
-> metadata sizes
->=20
-> Negative test is added in which HDR output metadata prop is set with inva=
-lid sizes.
->=20
-> Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
-> ---
->  tests/kms_hdr.c | 32 ++++++++++++++++++++++++++++++++
->  1 file changed, 32 insertions(+)
->=20
-> diff --git a/tests/kms_hdr.c b/tests/kms_hdr.c index 655c3e14..629a45a7 1=
-00644
-> --- a/tests/kms_hdr.c
-> +++ b/tests/kms_hdr.c
-> @@ -50,6 +50,7 @@ enum {
->  	TEST_DPMS =3D 1 << 1,
->  	TEST_SUSPEND =3D 1 << 2,
->  	TEST_SWAP =3D 1 << 3,
-> +	TEST_INVALID_METADATA_SIZES =3D 1 << 4,
->  };
->=20
->  /* BPC connector state. */
-> @@ -327,6 +328,18 @@ static void set_hdr_output_metadata(data_t *data,
->  				     meta ? sizeof(*meta) : 0);
->  }
->=20
-> +/* Sets the HDR output metadata prop with invalid size. */ static int
-> +set_invalid_hdr_output_metadata(data_t *data,
-> +					   struct hdr_output_metadata const
-> *meta,
-> +					   size_t length)
-> +{
-> +	igt_output_replace_prop_blob(data->output,
-> +				     IGT_CONNECTOR_HDR_OUTPUT_METADATA,
-> meta,
-> +				     meta ? length : 0);
-> +
-> +	return igt_display_try_commit_atomic(&data->display,
-> +DRM_MODE_ATOMIC_ALLOW_MODESET, NULL); }
-> +
->  /* Converts a double to 861-G spec FP format. */  static uint16_t
-> calc_hdr_float(double val)  { @@ -518,6 +531,19 @@ static void
-> test_static_swap(data_t *data, enum pipe pipe, igt_output_t *output)
->  	igt_remove_fb(data->fd, &afb);
->  }
->=20
-> +static void test_invalid_metadata_sizes(data_t *data, igt_output_t
-> +*output) {
-> +	struct hdr_output_metadata hdr;
-> +	size_t metadata_size =3D sizeof(&hdr);
-> +
-> +	fill_hdr_output_metadata_st2048(&hdr);
-> +
-> +	igt_assert_eq(set_invalid_hdr_output_metadata(data, &hdr, 1), -EINVAL);
-> +	igt_assert_eq(set_invalid_hdr_output_metadata(data, &hdr, metadata_size
-> + 1), -EINVAL);
-> +	igt_assert_eq(set_invalid_hdr_output_metadata(data, &hdr, metadata_size
-> - 1), -EINVAL);
-> +	igt_assert_eq(set_invalid_hdr_output_metadata(data, &hdr,
-> +metadata_size + sizeof(struct hdr_output_metadata)), -EINVAL);=20
+Assuming that we place the documentation embedded in a C file, it
+means that meson.build will require some addition any way by running
+some executable. As meson was built exactly with the purpose of
+executing external programs (mesa, gcc, etc), calling an external
+program seems *nicely integrated* to me.
 
-I guess 2 invalid sizes should be enough. Other that that, looks good to me=
-.
-Reviewed-by: Uma Shankar <uma.shankar@intel.com>
+Regards,
+Mauro
 
-}
-> +
->  /* Returns true if an output supports HDR metadata property. */  static =
-bool
-> has_hdr(igt_output_t *output)  { @@ -565,6 +591,8 @@ static void test_hdr=
-(data_t
-> *data, uint32_t flags)
->  						test_static_toggle(data, pipe,
-> output, flags);
->  					if (flags & TEST_SWAP)
->  						test_static_swap(data, pipe,
-> output);
-> +					if (flags &
-> TEST_INVALID_METADATA_SIZES)
-> +						test_invalid_metadata_sizes(data,
-> output);
->  				}
->=20
->  				/* One pipe is enough */
-> @@ -613,6 +641,10 @@ igt_main
->  	igt_subtest_with_dynamic("static-swap")
->  		test_hdr(&data, TEST_SWAP);
->=20
-> +	igt_describe("Tests invalid HDR metadata sizes");
-> +	igt_subtest_with_dynamic("invalid-metadata-sizes")
-> +		test_hdr(&data, TEST_INVALID_METADATA_SIZES);
-> +
->  	igt_fixture {
->  		igt_display_fini(&data.display);
->  		close(data.fd);
-> --
-> 2.25.1
