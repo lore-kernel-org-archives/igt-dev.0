@@ -1,19 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 182E910E788
- for <igt-dev@lists.freedesktop.org>; Fri,  3 Feb 2023 12:39:49 +0000 (UTC)
-Date: Fri, 3 Feb 2023 13:39:44 +0100
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Message-ID: <20230203123944.5ykzd7gofvn2p4kj@kamilkon-desk1>
-References: <20230202072121.26153-1-swati2.sharma@intel.com>
- <20230202072121.26153-6-swati2.sharma@intel.com>
+Content-Type: multipart/alternative;
+ boundary="===============3302663022578504909=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20230202072121.26153-6-swati2.sharma@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t v2 5/6] lib/dsc: Add helpers for VDSC
- output format debugfs entry
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Bhanuprakash Modem" <bhanuprakash.modem@intel.com>
+Date: Fri, 03 Feb 2023 13:08:01 -0000
+Message-ID: <167542968120.8765.2042879309782649608@emeril.freedesktop.org>
+References: <20230202051509.28983-1-nidhi1.gupta@intel.com>
+In-Reply-To: <20230202051509.28983-1-nidhi1.gupta@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgTGltaXQg?=
+ =?utf-8?q?the_execution_to_few_pipes/planes_=28rev6=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,137 +17,197 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Swati,
+--===============3302663022578504909==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-On 2023-02-02 at 12:51:20 +0530, Swati Sharma wrote:
-> Helper functions are added for VDSC output format debugfs entry.
-> 
-> Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
-> ---
->  lib/igt_dsc.c | 49 +++++++++++++++++++++++++++++++++++++++++++++++++
->  lib/igt_dsc.h |  5 +++++
->  lib/igt_kms.h |  6 ++++++
->  3 files changed, 60 insertions(+)
-> 
-> diff --git a/lib/igt_dsc.c b/lib/igt_dsc.c
-> index 64dd6b29a..1f6d33291 100644
-> --- a/lib/igt_dsc.c
-> +++ b/lib/igt_dsc.c
-> @@ -134,3 +134,52 @@ int igt_get_dsc_debugfs_fd(int drmfd, char *connector_name)
->  
->  	return openat(igt_debugfs_dir(drmfd), file_name, O_WRONLY);
->  }
-> +
-> +/*
---- ^
-Descriptions should start with two stars, so it should look like:
+== Series Details ==
 
-/**
- * igt_is_dsc_output_format_supported_by_sink:
+Series: Limit the execution to few pipes/planes (rev6)
+URL   : https://patchwork.freedesktop.org/series/113526/
+State : success
 
-> + * igt_is_dsc_output_format_supported_by_sink:
-> + * @drmfd: A drm file descriptor
-> + * @connector_name: Name of the libdrm connector we're going to use
-> + * @output_format: Output format
-> + *
-> + * Returns: True if DSC output format is supported for the given connector,
-> + * false otherwise.
-> + */
-> +bool igt_is_dsc_output_format_supported_by_sink(int drmfd, char *connector_name,
-> +						enum dsc_output_format output_format)
-> +{
-> +	const char *check_str = "OUTPUTFORMATNOTFOUND";
-> +
-> +	switch(output_format) {
---------------^
-Put space after "switch" and before opening "(":
-	switch (output_format) {
+== Summary ==
 
-Please use checkpatch script from Linux kernel sources, it can help
-you catch such errors.
+CI Bug Log - changes from IGT_7146 -> IGTPW_8439
+====================================================
 
-> +	case DSC_FORMAT_RGB:
-> +		check_str = "RGB: yes";
-> +		break;
-> +	case DSC_FORMAT_YCBCR420:
-> +		check_str = "YCBCR420: yes";
-> +		break;
-> +	case DSC_FORMAT_YCBCR444:
-> +		check_str = "YCBCR444: yes";
-> +		break;
-> +	default:
-> +		break;
-> +	}
-> +
-> +	return check_dsc_debugfs(drmfd, connector_name, check_str);
-> +}
-> +
-> +/*
---- ^
-Same here, two stars.
+Summary
+-------
 
-Regards,
-Kamil
+  **SUCCESS**
 
-> + * igt_force_dsc_output_format:
-> + * @drmfd: A drm file descriptor
-> + * @connector_name: Name of the libdrm connector we're going to use
-> + * @output_format: Output format
-> + *
-> + * Returns: 0 on success or negative error code, in case of failure.
-> + */
-> +int igt_force_dsc_output_format(int drmfd, char *connector_name,
-> +				enum dsc_output_format output_format)
-> +{
-> +	char buf[20] = {0};
-> +
-> +	sprintf(buf, "%d", output_format);
-> +
-> +	return write_dsc_debugfs(drmfd, connector_name, "i915_dsc_output_format", buf);
-> +}
-> diff --git a/lib/igt_dsc.h b/lib/igt_dsc.h
-> index 291c2cdea..9608aad44 100644
-> --- a/lib/igt_dsc.h
-> +++ b/lib/igt_dsc.h
-> @@ -7,6 +7,7 @@
->  #define IGT_DSC_H
->  
->  #include "igt_fb.h"
-> +#include "igt_kms.h"
->  
->  bool igt_is_dsc_supported(int drmfd, char *connector_name);
->  bool igt_is_fec_supported(int drmfd, char *connector_name);
-> @@ -15,5 +16,9 @@ bool igt_is_force_dsc_enabled(int drmfd, char *connector_name);
->  int igt_force_dsc_enable(int drmfd, char *connector_name);
->  int igt_force_dsc_enable_bpc(int drmfd, char *connector_name, int bpc);
->  int igt_get_dsc_debugfs_fd(int drmfd, char *connector_name);
-> +bool igt_is_dsc_output_format_supported_by_sink(int drmfd, char *connector_name,
-> +						enum dsc_output_format output_format);
-> +int igt_force_dsc_output_format(int drmfd, char *connector_name,
-> +				enum dsc_output_format output_format);
->  
->  #endif
-> diff --git a/lib/igt_kms.h b/lib/igt_kms.h
-> index be5482e08..9f5bef170 100644
-> --- a/lib/igt_kms.h
-> +++ b/lib/igt_kms.h
-> @@ -106,6 +106,12 @@ enum igt_custom_edid_type {
->   */
->  #define kmstest_port_name(port) ((port) + 'A')
->  
-> +enum dsc_output_format {
-> +	DSC_FORMAT_RGB = 0,
-> +	DSC_FORMAT_YCBCR420,
-> +	DSC_FORMAT_YCBCR444
-> +};
-> +
->  const char *kmstest_encoder_type_str(int type);
->  const char *kmstest_connector_status_str(int status);
->  const char *kmstest_connector_type_str(int type);
-> -- 
-> 2.25.1
-> 
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8439/index.html
+
+Participating hosts (25 -> 25)
+------------------------------
+
+  Additional (1): fi-blb-e6850 
+  Missing    (1): fi-snb-2520m 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_8439 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@i915_pm_rpm@module-reload:
+    - fi-blb-e6850:       NOTRUN -> [SKIP][1] ([fdo#109271]) +51 similar issues
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8439/fi-blb-e6850/igt@i915_pm_rpm@module-reload.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_selftest@live@gt_heartbeat:
+    - {bat-jsl-1}:        [DMESG-FAIL][2] ([i915#5334]) -> [PASS][3]
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7146/bat-jsl-1/igt@i915_selftest@live@gt_heartbeat.html
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8439/bat-jsl-1/igt@i915_selftest@live@gt_heartbeat.html
+
+  * igt@i915_selftest@live@reset:
+    - {bat-rpls-2}:       [ABORT][4] ([i915#4983]) -> [PASS][5]
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7146/bat-rpls-2/igt@i915_selftest@live@reset.html
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8439/bat-rpls-2/igt@i915_selftest@live@reset.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [i915#1845]: https://gitlab.freedesktop.org/drm/intel/issues/1845
+  [i915#4983]: https://gitlab.freedesktop.org/drm/intel/issues/4983
+  [i915#5334]: https://gitlab.freedesktop.org/drm/intel/issues/5334
+  [i915#5354]: https://gitlab.freedesktop.org/drm/intel/issues/5354
+  [i915#6997]: https://gitlab.freedesktop.org/drm/intel/issues/6997
+  [i915#7699]: https://gitlab.freedesktop.org/drm/intel/issues/7699
+  [i915#7828]: https://gitlab.freedesktop.org/drm/intel/issues/7828
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_7146 -> IGTPW_8439
+
+  CI-20190529: 20190529
+  CI_DRM_12688: 9fcffc218abe16fc5fbfca231fda6a7218661eb6 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_8439: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8439/index.html
+  IGT_7146: cfb2b835a2d688f123c9ffe5ecc7148e19e30e39 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+
+Testlist changes
+----------------
+
+-igt@kms_plane_alpha_blend@alpha-7efc
+-igt@kms_plane_alpha_blend@alpha-basic
+-igt@kms_plane_alpha_blend@alpha-opaque-fb
+-igt@kms_plane_alpha_blend@alpha-transparent-fb
+-igt@kms_plane_alpha_blend@constant-alpha-max
+-igt@kms_plane_alpha_blend@constant-alpha-mid
+-igt@kms_plane_alpha_blend@constant-alpha-min
+-igt@kms_plane_alpha_blend@coverage-7efc
+-igt@kms_plane_alpha_blend@coverage-vs-premult-vs-constant
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8439/index.html
+
+--===============3302663022578504909==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Limit the execution to few pipes/planes (rev6)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/113526/">https://patchwork.freedesktop.org/series/113526/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8439/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8439/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_7146 -&gt; IGTPW_8439</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8439/index.html</p>
+<h2>Participating hosts (25 -&gt; 25)</h2>
+<p>Additional (1): fi-blb-e6850 <br />
+  Missing    (1): fi-snb-2520m </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_8439 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>igt@i915_pm_rpm@module-reload:<ul>
+<li>fi-blb-e6850:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8439/fi-blb-e6850/igt@i915_pm_rpm@module-reload.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +51 similar issues</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live@gt_heartbeat:</p>
+<ul>
+<li>{bat-jsl-1}:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7146/bat-jsl-1/igt@i915_selftest@live@gt_heartbeat.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5334">i915#5334</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8439/bat-jsl-1/igt@i915_selftest@live@gt_heartbeat.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@reset:</p>
+<ul>
+<li>{bat-rpls-2}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7146/bat-rpls-2/igt@i915_selftest@live@reset.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4983">i915#4983</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8439/bat-rpls-2/igt@i915_selftest@live@reset.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_7146 -&gt; IGTPW_8439</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_12688: 9fcffc218abe16fc5fbfca231fda6a7218661eb6 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_8439: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8439/index.html<br />
+  IGT_7146: cfb2b835a2d688f123c9ffe5ecc7148e19e30e39 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+<h2>Testlist changes</h2>
+<p>-igt@kms_plane_alpha_blend@alpha-7efc<br />
+-igt@kms_plane_alpha_blend@alpha-basic<br />
+-igt@kms_plane_alpha_blend@alpha-opaque-fb<br />
+-igt@kms_plane_alpha_blend@alpha-transparent-fb<br />
+-igt@kms_plane_alpha_blend@constant-alpha-max<br />
+-igt@kms_plane_alpha_blend@constant-alpha-mid<br />
+-igt@kms_plane_alpha_blend@constant-alpha-min<br />
+-igt@kms_plane_alpha_blend@coverage-7efc<br />
+-igt@kms_plane_alpha_blend@coverage-vs-premult-vs-constant</p>
+
+</body>
+</html>
+
+--===============3302663022578504909==--
