@@ -1,15 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============3011655216373833195=="
+From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
+To: igt-dev@lists.freedesktop.org,
+	Intel-gfx@lists.freedesktop.org
+Date: Fri,  3 Feb 2023 11:16:35 +0000
+Message-Id: <20230203111636.4138202-3-tvrtko.ursulin@linux.intel.com>
+In-Reply-To: <20230203111636.4138202-1-tvrtko.ursulin@linux.intel.com>
+References: <20230203111636.4138202-1-tvrtko.ursulin@linux.intel.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Bhanuprakash Modem" <bhanuprakash.modem@intel.com>
-Date: Fri, 03 Feb 2023 12:40:18 -0000
-Message-ID: <167542801819.8763.14687560844775221448@emeril.freedesktop.org>
-References: <20230202051509.28983-1-nidhi1.gupta@intel.com>
-In-Reply-To: <20230202051509.28983-1-nidhi1.gupta@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgTGltaXQg?=
- =?utf-8?q?the_execution_to_few_pipes/planes_=28rev5=29?=
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t 2/3] intel_gpu_top: Rename STDOUT to TEXT
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,210 +16,148 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
+Cc: Caleb Callaway <caleb.callaway@intel.com>,
+ Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============3011655216373833195==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+From: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 
-== Series Details ==
+Internal cleanup only - the name text is more accurate given the output
+can also go to a file.
 
-Series: Limit the execution to few pipes/planes (rev5)
-URL   : https://patchwork.freedesktop.org/series/113526/
-State : success
+Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+Cc: Caleb Callaway <caleb.callaway@intel.com>
+---
+ tools/intel_gpu_top.c | 54 +++++++++++++++++++++----------------------
+ 1 file changed, 26 insertions(+), 28 deletions(-)
 
-== Summary ==
-
-CI Bug Log - changes from CI_DRM_12687 -> IGTPW_8438
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8438/index.html
-
-Participating hosts (26 -> 25)
-------------------------------
-
-  Missing    (1): fi-snb-2520m 
-
-Possible new issues
--------------------
-
-  Here are the unknown changes that may have been introduced in IGTPW_8438:
-
-### IGT changes ###
-
-#### Suppressed ####
-
-  The following results come from untrusted machines, tests, or statuses.
-  They do not affect the overall result.
-
-  * igt@i915_selftest@live@perf:
-    - {bat-adln-1}:       [PASS][1] -> [DMESG-WARN][2] +7 similar issues
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12687/bat-adln-1/igt@i915_selftest@live@perf.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8438/bat-adln-1/igt@i915_selftest@live@perf.html
-
-  
-Known issues
-------------
-
-  Here are the changes found in IGTPW_8438 that come from known issues:
-
-### IGT changes ###
-
-#### Possible fixes ####
-
-  * igt@gem_exec_suspend@basic-s3@smem:
-    - {bat-adlp-9}:       [DMESG-WARN][3] -> [PASS][4]
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12687/bat-adlp-9/igt@gem_exec_suspend@basic-s3@smem.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8438/bat-adlp-9/igt@gem_exec_suspend@basic-s3@smem.html
-
-  * igt@i915_selftest@live@reset:
-    - {bat-rpls-2}:       [ABORT][5] ([i915#4983]) -> [PASS][6]
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12687/bat-rpls-2/igt@i915_selftest@live@reset.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8438/bat-rpls-2/igt@i915_selftest@live@reset.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [i915#1845]: https://gitlab.freedesktop.org/drm/intel/issues/1845
-  [i915#4983]: https://gitlab.freedesktop.org/drm/intel/issues/4983
-  [i915#5354]: https://gitlab.freedesktop.org/drm/intel/issues/5354
-  [i915#6311]: https://gitlab.freedesktop.org/drm/intel/issues/6311
-  [i915#6367]: https://gitlab.freedesktop.org/drm/intel/issues/6367
-  [i915#7359]: https://gitlab.freedesktop.org/drm/intel/issues/7359
-  [i915#7828]: https://gitlab.freedesktop.org/drm/intel/issues/7828
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_7144 -> IGTPW_8438
-
-  CI-20190529: 20190529
-  CI_DRM_12687: ff418364c6746ffa6863f147e587eeb792181fe5 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_8438: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8438/index.html
-  IGT_7144: cda71bf809b981a646270963d6b1ccee4fd4643b @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-
-Testlist changes
-----------------
-
--igt@kms_plane_alpha_blend@alpha-7efc
--igt@kms_plane_alpha_blend@alpha-basic
--igt@kms_plane_alpha_blend@alpha-opaque-fb
--igt@kms_plane_alpha_blend@alpha-transparent-fb
--igt@kms_plane_alpha_blend@constant-alpha-max
--igt@kms_plane_alpha_blend@constant-alpha-mid
--igt@kms_plane_alpha_blend@constant-alpha-min
--igt@kms_plane_alpha_blend@coverage-7efc
--igt@kms_plane_alpha_blend@coverage-vs-premult-vs-constant
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8438/index.html
-
---===============3011655216373833195==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>Limit the execution to few pipes/planes (rev5)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/113526/">https://patchwork.freedesktop.org/series/113526/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8438/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8438/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from CI_DRM_12687 -&gt; IGTPW_8438</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8438/index.html</p>
-<h2>Participating hosts (26 -&gt; 25)</h2>
-<p>Missing    (1): fi-snb-2520m </p>
-<h2>Possible new issues</h2>
-<p>Here are the unknown changes that may have been introduced in IGTPW_8438:</p>
-<h3>IGT changes</h3>
-<h4>Suppressed</h4>
-<p>The following results come from untrusted machines, tests, or statuses.<br />
-  They do not affect the overall result.</p>
-<ul>
-<li>igt@i915_selftest@live@perf:<ul>
-<li>{bat-adln-1}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12687/bat-adln-1/igt@i915_selftest@live@perf.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8438/bat-adln-1/igt@i915_selftest@live@perf.html">DMESG-WARN</a> +7 similar issues</li>
-</ul>
-</li>
-</ul>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_8438 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@gem_exec_suspend@basic-s3@smem:</p>
-<ul>
-<li>{bat-adlp-9}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12687/bat-adlp-9/igt@gem_exec_suspend@basic-s3@smem.html">DMESG-WARN</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8438/bat-adlp-9/igt@gem_exec_suspend@basic-s3@smem.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@reset:</p>
-<ul>
-<li>{bat-rpls-2}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12687/bat-rpls-2/igt@i915_selftest@live@reset.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4983">i915#4983</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8438/bat-rpls-2/igt@i915_selftest@live@reset.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_7144 -&gt; IGTPW_8438</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_12687: ff418364c6746ffa6863f147e587eeb792181fe5 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_8438: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8438/index.html<br />
-  IGT_7144: cda71bf809b981a646270963d6b1ccee4fd4643b @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-<h2>Testlist changes</h2>
-<p>-igt@kms_plane_alpha_blend@alpha-7efc<br />
--igt@kms_plane_alpha_blend@alpha-basic<br />
--igt@kms_plane_alpha_blend@alpha-opaque-fb<br />
--igt@kms_plane_alpha_blend@alpha-transparent-fb<br />
--igt@kms_plane_alpha_blend@constant-alpha-max<br />
--igt@kms_plane_alpha_blend@constant-alpha-mid<br />
--igt@kms_plane_alpha_blend@constant-alpha-min<br />
--igt@kms_plane_alpha_blend@coverage-7efc<br />
--igt@kms_plane_alpha_blend@coverage-vs-premult-vs-constant</p>
-
-</body>
-</html>
-
---===============3011655216373833195==--
+diff --git a/tools/intel_gpu_top.c b/tools/intel_gpu_top.c
+index e2a7f4753099..a980cc7043dc 100644
+--- a/tools/intel_gpu_top.c
++++ b/tools/intel_gpu_top.c
+@@ -1282,7 +1282,7 @@ usage(const char *appname)
+ 
+ static enum {
+ 	INTERACTIVE,
+-	STDOUT,
++	TEXT,
+ 	JSON
+ } output_mode;
+ 
+@@ -1387,33 +1387,31 @@ json_add_member(const struct cnt_group *parent, struct cnt_item *item,
+ 	return 1;
+ }
+ 
+-static unsigned int stdout_level;
++static unsigned int text_level;
+ 
+-#define STDOUT_HEADER_REPEAT 20
+-static unsigned int stdout_lines = STDOUT_HEADER_REPEAT;
+-static bool stdout_header_repeat;
++#define TEXT_HEADER_REPEAT 20
++static unsigned int text_lines = TEXT_HEADER_REPEAT;
++static bool text_header_repeat;
+ 
+-static void
+-stdout_open_struct(const char *name)
++static void text_open_struct(const char *name)
+ {
+-	stdout_level++;
+-	assert(stdout_level > 0);
++	text_level++;
++	assert(text_level > 0);
+ }
+ 
+-static void
+-stdout_close_struct(void)
++static void text_close_struct(void)
+ {
+-	assert(stdout_level > 0);
+-	if (--stdout_level == 0) {
+-		stdout_lines++;
++	assert(text_level > 0);
++	if (--text_level == 0) {
++		text_lines++;
+ 		fputs("\n", out);
+ 		fflush(out);
+ 	}
+ }
+ 
+ static unsigned int
+-stdout_add_member(const struct cnt_group *parent, struct cnt_item *item,
+-		  unsigned int headers)
++text_add_member(const struct cnt_group *parent, struct cnt_item *item,
++		unsigned int headers)
+ {
+ 	unsigned int fmt_tot = item->fmt_width + (item->fmt_precision ? 1 : 0);
+ 	char buf[fmt_tot + 1];
+@@ -1565,10 +1563,10 @@ static const struct print_operations json_pops = {
+ 	.print_group = print_group,
+ };
+ 
+-static const struct print_operations stdout_pops = {
+-	.open_struct = stdout_open_struct,
+-	.close_struct = stdout_close_struct,
+-	.add_member = stdout_add_member,
++static const struct print_operations text_pops = {
++	.open_struct = text_open_struct,
++	.close_struct = text_close_struct,
++	.add_member = text_add_member,
+ 	.print_group = print_group,
+ };
+ 
+@@ -1584,9 +1582,9 @@ static bool print_groups(struct cnt_group **groups)
+ 	static bool headers_printed = false;
+ 	bool print_data = true;
+ 
+-	if (output_mode == STDOUT &&
+-	    (stdout_header_repeat || !headers_printed)) {
+-		unsigned int headers = stdout_lines % STDOUT_HEADER_REPEAT + 1;
++	if (output_mode == TEXT &&
++	    (text_header_repeat || !headers_printed)) {
++		unsigned int headers = text_lines % TEXT_HEADER_REPEAT + 1;
+ 
+ 		if (headers == 1 || headers == 2)
+ 			for (struct cnt_group **grp = groups; *grp; grp++)
+@@ -2492,7 +2490,7 @@ int main(int argc, char **argv)
+ 			list_device = true;
+ 			break;
+ 		case 'l':
+-			output_mode = STDOUT;
++			output_mode = TEXT;
+ 			break;
+ 		case 'h':
+ 			usage(argv[0]);
+@@ -2505,7 +2503,7 @@ int main(int argc, char **argv)
+ 	}
+ 
+ 	if (output_mode == INTERACTIVE && (output_path || isatty(1) != 1))
+-		output_mode = STDOUT;
++		output_mode = TEXT;
+ 
+ 	if (output_path && strcmp(output_path, "-")) {
+ 		out = fopen(output_path, "w");
+@@ -2519,7 +2517,7 @@ int main(int argc, char **argv)
+ 		out = stdout;
+ 	}
+ 
+-	stdout_header_repeat = output_mode == STDOUT && isatty(fileno(out));
++	text_header_repeat = output_mode == TEXT && isatty(fileno(out));
+ 
+ 	if (signal(SIGINT, sigint_handler) == SIG_ERR)
+ 		fprintf(stderr, "Failed to install signal handler!\n");
+@@ -2531,8 +2529,8 @@ int main(int argc, char **argv)
+ 		pops = &term_pops;
+ 		interactive_stdin();
+ 		break;
+-	case STDOUT:
+-		pops = &stdout_pops;
++	case TEXT:
++		pops = &text_pops;
+ 		break;
+ 	case JSON:
+ 		pops = &json_pops;
+-- 
+2.34.1
