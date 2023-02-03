@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: text/plain; charset="utf-8"
+Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0B35310E71A
+ for <igt-dev@lists.freedesktop.org>; Fri,  3 Feb 2023 07:59:03 +0000 (UTC)
+From: =?UTF-8?q?Jouni=20H=C3=B6gander?= <jouni.hogander@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Fri,  3 Feb 2023 09:58:04 +0200
+Message-Id: <20230203075806.1589164-1-jouni.hogander@intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Bhanuprakash Modem" <bhanuprakash.modem@intel.com>
-Date: Fri, 03 Feb 2023 07:16:14 -0000
-Message-ID: <167540857497.8766.15587490647841981040@emeril.freedesktop.org>
-References: <20230202051509.28983-1-nidhi1.gupta@intel.com>
-In-Reply-To: <20230202051509.28983-1-nidhi1.gupta@intel.com>
-Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_L?=
- =?utf-8?q?imit_the_execution_to_few_pipes/planes_=28rev6=29?=
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t v2 0/2] Psr2 dsc testcases
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,67 +17,25 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-== Series Details ==
+This patch set is doing some cleanup to kms_psr2_sf testcases and adding
+mechanism to stress other features with PSR2. It is utilizing this new
+mechanism for testing DSC with PSR2.
 
-Series: Limit the execution to few pipes/planes (rev6)
-URL   : https://patchwork.freedesktop.org/series/113526/
-State : warning
+v2:
+ - check dsc is enabled
+ - remove unused variables
 
-== Summary ==
+Jouni Högander (2):
+  tests/i915/kms_psr2_sf: Some cleanups after
+  kms_psr2_sf: Add dynamic subtests which use DSC feature
 
-Pipeline status: FAILED.
+ tests/i915/kms_psr2_sf.c | 370 +++++++++++++++++++++++++--------------
+ tests/meson.build        |   9 +-
+ 2 files changed, 248 insertions(+), 131 deletions(-)
 
-see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/799787 for the overview.
-
-test:ninja-test has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/35832075):
-  342/346 assembler test/rnde-intsrc              OK       0.03 s 
-  343/346 assembler test/rndz                     OK       0.02 s 
-  344/346 assembler test/lzd                      OK       0.03 s 
-  345/346 assembler test/not                      OK       0.02 s 
-  346/346 assembler test/immediate                OK       0.02 s 
-  
-  Ok:                  341
-  Expected Fail:         4
-  Fail:                  1
-  Unexpected Pass:       0
-  Skipped:               0
-  Timeout:               0
-  
-  Full log written to /builds/gfx-ci/igt-ci-tags/build/meson-logs/testlog.txt
-  section_end:1675408096:step_script
-  section_start:1675408096:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1675408096:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-  
-
-test:ninja-test-clang has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/35832077):
-  342/346 assembler test/rnde-intsrc              OK       0.03 s 
-  343/346 assembler test/rndz                     OK       0.04 s 
-  344/346 assembler test/lzd                      OK       0.02 s 
-  345/346 assembler test/not                      OK       0.02 s 
-  346/346 assembler test/immediate                OK       0.02 s 
-  
-  Ok:                  341
-  Expected Fail:         4
-  Fail:                  1
-  Unexpected Pass:       0
-  Skipped:               0
-  Timeout:               0
-  
-  Full log written to /builds/gfx-ci/igt-ci-tags/build/meson-logs/testlog.txt
-  section_end:1675408275:step_script
-  section_start:1675408275:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1675408276:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-
-== Logs ==
-
-For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/799787
+-- 
+2.34.1
