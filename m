@@ -1,21 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3B3E610E71E
- for <igt-dev@lists.freedesktop.org>; Fri,  3 Feb 2023 06:29:55 +0000 (UTC)
-Message-ID: <1e9d4cdd-1f76-08ee-45cc-6a80e6ae3abd@intel.com>
-Date: Fri, 3 Feb 2023 11:59:50 +0530
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Language: en-US
-To: Mohammed Thasleem <mohammed.thasleem@intel.com>,
- igt-dev@lists.freedesktop.org
-References: <20221220135734.6354-1-mohammed.thasleem@intel.com>
- <20230127143848.11884-1-mohammed.thasleem@intel.com>
-From: Swati Sharma <swati2.sharma@intel.com>
-In-Reply-To: <20230127143848.11884-1-mohammed.thasleem@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/i915/i915_pm_dc : Check DC5 state
- with externel active panel
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Bhanuprakash Modem" <bhanuprakash.modem@intel.com>
+Date: Fri, 03 Feb 2023 07:16:14 -0000
+Message-ID: <167540857497.8766.15587490647841981040@emeril.freedesktop.org>
+References: <20230202051509.28983-1-nidhi1.gupta@intel.com>
+In-Reply-To: <20230202051509.28983-1-nidhi1.gupta@intel.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_L?=
+ =?utf-8?q?imit_the_execution_to_few_pipes/planes_=28rev6=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,106 +17,67 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Thanks for the patch and review. Pushed.
+== Series Details ==
 
-On 27-Jan-23 8:08 PM, Mohammed Thasleem wrote:
-> This test validates negative scenario of DC5 state by keeping
-> all connectors's DPMS property set to ON.
-> 
-> v2: Added function to check externel panel and skip test if not found.
-> 
-> v3: Moved check_external_panel inside igt_require_f and removed
->      igt_skip_on_f. (Swati)
-> 
-> v4: Renamed function name check_external_panel with
->      has_panels_without_dc_support.
->      Removed both DRM_MODE_CONNECTED check and init for output. (Imre)
-> 
-> Signed-off-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
-> Reviewed-by: Imre Deak <imre.deak@intel.com>
-> ---
->   tests/i915/i915_pm_dc.c | 43 +++++++++++++++++++++++++++++++++++++++++
->   1 file changed, 43 insertions(+)
-> 
-> diff --git a/tests/i915/i915_pm_dc.c b/tests/i915/i915_pm_dc.c
-> index 36c50667..bf6a0df5 100644
-> --- a/tests/i915/i915_pm_dc.c
-> +++ b/tests/i915/i915_pm_dc.c
-> @@ -246,6 +246,13 @@ static void check_dc_counter(data_t *data, int dc_flag, uint32_t prev_dc_count)
->   		     data->debugfs_dump = igt_sysfs_get(data->debugfs_fd, PWR_DOMAIN_INFO));
->   }
->   
-> +static void check_dc_counter_negative(data_t *data, int dc_flag, uint32_t prev_dc_count)
-> +{
-> +	igt_assert_f(!dc_state_wait_entry(data->debugfs_fd, dc_flag, prev_dc_count),
-> +			"%s state is achieved\n%s:\n%s\n", dc_state_name(dc_flag), PWR_DOMAIN_INFO,
-> +			data->debugfs_dump = igt_sysfs_get(data->debugfs_fd, PWR_DOMAIN_INFO));
-> +}
-> +
->   static void setup_videoplayback(data_t *data)
->   {
->   	color_t red_green_blue[] = {
-> @@ -411,6 +418,18 @@ static void test_dc_state_dpms(data_t *data, int dc_flag)
->   	cleanup_dc_dpms(data);
->   }
->   
-> +static void test_dc_state_dpms_negative(data_t *data, int dc_flag)
-> +{
-> +	uint32_t dc_counter;
-> +
-> +	require_dc_counter(data->debugfs_fd, dc_flag);
-> +	setup_dc_dpms(data);
-> +	dc_counter = read_dc_counter(data->debugfs_fd, dc_flag);
-> +	dpms_on(data);
-> +	check_dc_counter_negative(data, dc_flag, dc_counter);
-> +	cleanup_dc_dpms(data);
-> +}
-> +
->   static bool support_dc6(int debugfs_fd)
->   {
->   	char buf[4096];
-> @@ -485,6 +504,21 @@ static void test_dc9_dpms(data_t *data)
->   	setup_dc9_dpms(data, dc_target);
->   }
->   
-> +static int has_panels_without_dc_support(igt_display_t *display)
-> +{
-> +	igt_output_t *output;
-> +	int external_panel = 0;
-> +
-> +	for_each_connected_output(display, output) {
-> +		drmModeConnectorPtr c = output->config.connector;
-> +
-> +		if (c->connector_type != DRM_MODE_CONNECTOR_eDP)
-> +			external_panel++;
-> +	}
-> +
-> +	return external_panel;
-> +}
-> +
->   static void kms_poll_state_restore(int sig)
->   {
->   	int sysfs_fd;
-> @@ -552,6 +586,15 @@ igt_main
->   		test_dc_state_dpms(&data, CHECK_DC5);
->   	}
->   
-> +	igt_describe("This test validates negative scenario of DC5 display "
-> +		     "engine entry to DC5 state while all connectors's DPMS "
-> +		     "property set to ON");
-> +	igt_subtest("dc5-dpms-negative") {
-> +		igt_require_f(has_panels_without_dc_support(&data.display),
-> +			      "External panel not detected, skip execution\n");
-> +		test_dc_state_dpms_negative(&data, CHECK_DC5);
-> +	}
-> +
->   	igt_describe("This test validates display engine entry to DC6 state "
->   		     "while all connectors's DPMS property set to OFF");
->   	igt_subtest("dc6-dpms") {
+Series: Limit the execution to few pipes/planes (rev6)
+URL   : https://patchwork.freedesktop.org/series/113526/
+State : warning
 
--- 
-~Swati Sharma
+== Summary ==
+
+Pipeline status: FAILED.
+
+see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/799787 for the overview.
+
+test:ninja-test has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/35832075):
+  342/346 assembler test/rnde-intsrc              OK       0.03 s 
+  343/346 assembler test/rndz                     OK       0.02 s 
+  344/346 assembler test/lzd                      OK       0.03 s 
+  345/346 assembler test/not                      OK       0.02 s 
+  346/346 assembler test/immediate                OK       0.02 s 
+  
+  Ok:                  341
+  Expected Fail:         4
+  Fail:                  1
+  Unexpected Pass:       0
+  Skipped:               0
+  Timeout:               0
+  
+  Full log written to /builds/gfx-ci/igt-ci-tags/build/meson-logs/testlog.txt
+  section_end:1675408096:step_script
+  section_start:1675408096:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1675408096:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
+
+test:ninja-test-clang has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/35832077):
+  342/346 assembler test/rnde-intsrc              OK       0.03 s 
+  343/346 assembler test/rndz                     OK       0.04 s 
+  344/346 assembler test/lzd                      OK       0.02 s 
+  345/346 assembler test/not                      OK       0.02 s 
+  346/346 assembler test/immediate                OK       0.02 s 
+  
+  Ok:                  341
+  Expected Fail:         4
+  Fail:                  1
+  Unexpected Pass:       0
+  Skipped:               0
+  Timeout:               0
+  
+  Full log written to /builds/gfx-ci/igt-ci-tags/build/meson-logs/testlog.txt
+  section_end:1675408275:step_script
+  section_start:1675408275:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1675408276:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+
+== Logs ==
+
+For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/799787
