@@ -1,26 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-io1-xd30.google.com (mail-io1-xd30.google.com
- [IPv6:2607:f8b0:4864:20::d30])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 22A6510E733
- for <igt-dev@lists.freedesktop.org>; Fri,  3 Feb 2023 10:12:17 +0000 (UTC)
-Received: by mail-io1-xd30.google.com with SMTP id k13so1800351iob.9
- for <igt-dev@lists.freedesktop.org>; Fri, 03 Feb 2023 02:12:17 -0800 (PST)
-Date: Fri, 3 Feb 2023 12:12:14 +0200
-From: Petri Latvala <adrinael@adrinael.net>
-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org,
- Mark Yacoub <markyacoub@chromium.org>, bhanuprakash.modem@intel.com,
- khaled.almahallawy@intel.com, seanpaul@chromium.org,
- markyacoub@google.com, ihf@google.com, amstan@chromium.org
-Message-ID: <Y9zd/o/VEjUKjzRQ@adrinael.net>
-References: <20230202180139.3528829-1-markyacoub@google.com>
- <20230203091925.wz5yotewdeofsto2@kamilkon-desk1>
+Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6C8DA10E754
+ for <igt-dev@lists.freedesktop.org>; Fri,  3 Feb 2023 10:33:59 +0000 (UTC)
+Message-ID: <6a8e5f5d-cd30-46b9-6c99-94411628c700@intel.com>
+Date: Fri, 3 Feb 2023 11:33:43 +0100
+Content-Language: en-US
+To: =?UTF-8?Q?Zbigniew_Kempczy=c5=84ski?= <zbigniew.kempczynski@intel.com>
+References: <20230202114959.77568-1-karolina.stolarek@intel.com>
+ <20230203090746.m3wazw3wqs57yml3@zkempczy-mobl2>
+From: Karolina Stolarek <karolina.stolarek@intel.com>
+In-Reply-To: <20230203090746.m3wazw3wqs57yml3@zkempczy-mobl2>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230203091925.wz5yotewdeofsto2@kamilkon-desk1>
-Subject: Re: [igt-dev] [PATCH v3] Chamelium: Get Chamelium Logs on RPC
- failure
+Subject: Re: [igt-dev] [PATCH i-g-t] lib/intel_tiling_info: Add flags field
+ to describe command properties
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,171 +22,372 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Fri, Feb 03, 2023 at 10:19:25AM +0100, Kamil Konieczny wrote:
-> On 2023-02-02 at 13:01:39 -0500, Mark Yacoub wrote:
-> > From: Mark Yacoub <markyacoub@chromium.org>
-> > 
-> > [Why]
-> > Currently, Chamelium acts like a black box, we can't tell what
-> > is going on there when a failure occur. Seeing its logs will
-> > allow us to debug better.
-> > 
-> > [How]
-> > On chamelium_rpc failure, print out the logs in debug so it
-> > wouldn't clutter good tests.
-> > 
-> > v2:
-> > - Added missing #includes
-> > v3:
-> > - C-style comments (Kamil Konieczny)
-> > - Cut commit messages to 65 char tops (Kamil Konieczny)
-> > 
-> > Signed-off-by: Mark Yacoub <markyacoub@chromium.org>
+On 03.02.2023 10:07, Zbigniew Kempczyński wrote:
+> On Thu, Feb 02, 2023 at 12:49:59PM +0100, Karolina Stolarek wrote:
+>> Blitter commands may have different properties depending on the
+>> platform. Add a new field to blt_tiling_info struct to describe
+>> properties of the commands. Update definitions of block-copy on
+>> DG2 and beyond to show the differences. Add helpers that check
+>> if a platform uses an extended version of the block-copy command
+>> or supports compression. Update gem_ccs test to use these
+>> functions.
+>>
+>> Signed-off-by: Karolina Stolarek <karolina.stolarek@intel.com>
+>> ---
+>>   lib/i915/i915_blt.c          | 89 +++++++++++++++++++++++++++++-------
+>>   lib/i915/i915_blt.h          | 10 +++-
+>>   lib/i915/intel_tiling_info.c | 28 +++++++++---
+>>   lib/i915/intel_tiling_info.h |  4 ++
+>>   tests/i915/gem_ccs.c         |  7 ++-
+>>   5 files changed, 111 insertions(+), 27 deletions(-)
+>>
+>> diff --git a/lib/i915/i915_blt.c b/lib/i915/i915_blt.c
+>> index bbfb6ffc..bda9ea5f 100644
+>> --- a/lib/i915/i915_blt.c
+>> +++ b/lib/i915/i915_blt.c
+>> @@ -191,23 +191,22 @@ struct gen12_block_copy_data_ext {
+>>   	} dw21;
+>>   };
+>>   
+>> -/**
+>> - * blt_supports_compression:
+>> - * @i915: drm fd
+>> - *
+>> - * Function checks if HW supports flatccs compression in blitter commands
+>> - * on @i915 device.
+>> - *
+>> - * Returns:
+>> - * true if it does, false otherwise.
+>> - */
+>> -bool blt_supports_compression(int i915)
+>> +static bool device_supports_compression(int i915)
+>>   {
+>>   	uint32_t devid = intel_get_drm_devid(i915);
+>>   
+>>   	return HAS_FLATCCS(devid);
+>>   }
 > 
-> Acked-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> If you're introduce compression flag this function is superfluous.
 
-NAK from me, there's a very fatal error, see my reply in v1 thread.
-
-
--- 
-Petri Latvala
-
+We might be missing some information in the tiling library, and doing 
+this check will help us in seeing the gaps.
 
 > 
-> > ---
-> >  lib/igt_chamelium.c                    | 50 ++++++++++++++++++++++++--
-> >  lib/igt_chamelium.h                    |  1 +
-> >  tests/chamelium/kms_chamelium_helper.c | 18 ++++++++++
-> >  3 files changed, 66 insertions(+), 3 deletions(-)
-> > 
-> > diff --git a/lib/igt_chamelium.c b/lib/igt_chamelium.c
-> > index a235f3c8..bac6fb76 100644
-> > --- a/lib/igt_chamelium.c
-> > +++ b/lib/igt_chamelium.c
-> > @@ -658,6 +658,8 @@ static xmlrpc_value *chamelium_rpc(struct chamelium *chamelium,
-> >  	xmlrpc_value *res;
-> >  	va_list va_args;
-> >  	int fsm_trials_left = 5;
-> > +	bool did_fault_occur = false;
-> > +	char fault_string[1024];
-> >  
-> >  	if (strcmp(method_name, "CaptureVideo") == 0
-> >  	    || strcmp(method_name, "StartCapturingVideo") == 0) {
-> > @@ -680,9 +682,28 @@ static xmlrpc_value *chamelium_rpc(struct chamelium *chamelium,
-> >  					 format_str, va_args);
-> >  		va_end(va_args);
-> >  	}
-> > -	igt_assert_f(!chamelium->env.fault_occurred,
-> > -		     "Chamelium RPC call[%s] failed: %s\n", method_name,
-> > -		     chamelium->env.fault_string);
-> > +
-> > +	did_fault_occur = chamelium->env.fault_occurred;
-> > +	if (did_fault_occur) {
-> > +		/*
-> > +		 * Save the fault string before getting the logs which will
-> > +		 * clear the string if it is works.
-> > +		 */
-> > +		strncpy(fault_string, chamelium->env.fault_string, 1024);
-> > +		/*
-> > +		 * We call GetChameleondLogs on an xmlrpc failure. Let's not
-> > +		 * call it when the xmlrpc failure is for GetChameleondLogs
-> > +		 * itself as this can cause a recursive behavior.
-> > +		 */
-> > +		if (strcmp(method_name, "GetChameleondLogs") != 0) {
-> > +			char *logs = chamelium_get_logs(chamelium);
-> > +			igt_debug("CHAMELIUM LOGS:\n%s\n", logs);
-> > +			free(logs);
-> > +		}
-> > +	}
-> > +
-> > +	igt_assert_f(!did_fault_occur, "Chamelium RPC call [%s] failed: %s\n",
-> > +		     method_name, fault_string);
-> >  
-> >  	return res;
-> >  }
-> > @@ -737,6 +758,29 @@ void chamelium_assert_reachable(struct chamelium *chamelium, int timeout)
-> >  		     "Couldn't connect to Chamelium for %ds", timeout);
-> >  }
-> >  
-> > +/**
-> > + * chamelium_get_logs - Get the logs from the chamelium daemon
-> > + * @chamelium: The Chamelium instance to use
-> > + *
-> > + * Returns: The logs from the last time this was called.
-> > + */
-> > +
-> > +char *chamelium_get_logs(struct chamelium *chamelium)
-> > +{
-> > +	xmlrpc_value *res;
-> > +	const char *logs = NULL;
-> > +
-> > +	igt_debug(
-> > +		"Calling GetChameleondLogs - Logs returned are from the last time "
-> > +		"this was called.\n");
-> > +
-> > +	res = chamelium_rpc(chamelium, NULL, "GetChameleondLogs", "(s)", "IGT");
-> > +	xmlrpc_read_string(&chamelium->env, res, &logs);
-> > +	xmlrpc_DECREF(res);
-> > +
-> > +	return logs;
-> > +}
-> > +
-> >  /**
-> >   * chamelium_plug:
-> >   * @chamelium: The Chamelium instance to use
-> > diff --git a/lib/igt_chamelium.h b/lib/igt_chamelium.h
-> > index d979de4a..e9096519 100644
-> > --- a/lib/igt_chamelium.h
-> > +++ b/lib/igt_chamelium.h
-> > @@ -159,6 +159,7 @@ chamelium_reset_state(igt_display_t *display,
-> >  
-> >  bool chamelium_wait_reachable(struct chamelium *chamelium, int timeout);
-> >  void chamelium_assert_reachable(struct chamelium *chamelium, int timeout);
-> > +char *chamelium_get_logs(struct chamelium *chamelium);
-> >  void chamelium_plug(struct chamelium *chamelium, struct chamelium_port *port);
-> >  void chamelium_unplug(struct chamelium *chamelium, struct chamelium_port *port);
-> >  bool chamelium_is_plugged(struct chamelium *chamelium,
-> > diff --git a/tests/chamelium/kms_chamelium_helper.c b/tests/chamelium/kms_chamelium_helper.c
-> > index 197d29be..54f8ebfc 100644
-> > --- a/tests/chamelium/kms_chamelium_helper.c
-> > +++ b/tests/chamelium/kms_chamelium_helper.c
-> > @@ -24,7 +24,19 @@
-> >   *    Lyude Paul <lyude@redhat.com>
-> >   */
-> >  
-> > +#include <fcntl.h>
-> > +#include <stdint.h>
-> > +#include <string.h>
-> > +#include <stdatomic.h>
-> > +#include <xf86drmMode.h>
-> > +
-> > +#include "config.h"
-> > +#include "igt.h"
-> > +#include "igt_chamelium.h"
-> >  #include "igt_edid.h"
-> > +#include "igt_eld.h"
-> > +#include "igt_vc4.h"
-> > +#include "igt_infoframe.h"
-> >  #include "kms_chamelium_helper.h"
-> >  
-> >  void chamelium_init_test(chamelium_data_t *data)
-> > @@ -47,6 +59,12 @@ void chamelium_init_test(chamelium_data_t *data)
-> >  	/* we need to initalize chamelium after igt_display_require */
-> >  	data->chamelium = chamelium_init(data->drm_fd, &data->display);
-> >  	igt_require(data->chamelium);
-> > +	/*
-> > +	 * Get the logs so we can reset the chamelium logs at this cursor.
-> > +	 * The logs are then retrieved when any call fails so we can debug
-> > +	 * chamelium if needed.
-> > +	 */
-> > +	free(chamelium_get_logs(data->chamelium));
-> >  
-> >  	data->ports = chamelium_get_ports(data->chamelium, &data->port_count);
-> >  
-> > -- 
-> > 2.39.1.519.gcb327c4b5f-goog
-> > 
+>>   
+>> +static const struct blt_tiling_info *blt_get_tiling_info(const struct blt_cmd_info *info,
+>> +							 enum blt_cmd_type cmd)
+>> +{
+>> +	if (!info)
+>> +		return NULL;
+>> +
+>> +	return info->supported_cmds[cmd];
+> 
+> Prototype of the function and what it returns is very confusing.
+
+I believe you meant the struct name. I just extracted a "getter" that I 
+used in blt_supports_command and blt_cmd_supports tiling functions.
+
+> 
+> I'm not sure is blt_tiling_info name picked luckily. Looking at above
+> we should rename it and pick some other name, like blt_cmd_desc or sth.
+
+It stick during the review and I thought you accepted it as it is. 
+blt_cmd_desc is not informative enough, but I'll have a think about the 
+name.
+
+> 
+>> +}
+>> +
+>>   /**
+>>    * blt_supports_command:
+>>    * @info: Blitter command info struct
+>> @@ -222,7 +221,7 @@ bool blt_supports_command(const struct blt_cmd_info *info,
+>>   {
+>>   	igt_require_f(info, "No config found for the platform\n");
+>>   
+>> -	return info->supported_cmds[cmd];
+>> +	return blt_get_tiling_info(info, cmd);
+> 
+> Same here.
+> 
+>>   }
+>>   
+>>   /**
+>> @@ -242,10 +241,7 @@ bool blt_cmd_supports_tiling(const struct blt_cmd_info *info,
+>>   {
+>>   	struct blt_tiling_info const *tile_config;
+>>   
+>> -	if (!info)
+>> -		return false;
+>> -
+>> -	tile_config = info->supported_cmds[cmd];
+>> +	tile_config = blt_get_tiling_info(info, cmd);
+>>   
+>>   	/* no config means no support for that tiling */
+>>   	if (!tile_config)
+>> @@ -254,6 +250,32 @@ bool blt_cmd_supports_tiling(const struct blt_cmd_info *info,
+>>   	return tile_config->supported_tiling & BIT(tiling);
+>>   }
+>>   
+>> +/**
+>> + * blt_cmd_has_property:
+>> + * @info: Blitter command info struct
+>> + * @cmd: Blitter command enum
+>> + * @flag: property flag
+>> + *
+>> + * Checks if a @cmd entry of @info has @flag property. The properties can be
+>> + * freely combined, but the function will return true for platforms for which
+>> + * all properties defined in the bit flag are present. The function returns
+>> + * false if no information about the command is stored.
+>> + *
+>> + * Returns: true if it does, false otherwise
+>> + */
+>> +bool blt_cmd_has_property(const struct blt_cmd_info *info,
+>> +			  enum blt_cmd_type cmd, uint32_t flag)
+>> +{
+>> +	struct blt_tiling_info const *tile_config;
+>> +
+>> +	tile_config = blt_get_tiling_info(info, cmd);
+> 
+> 	cmd_desc = blt_get_cmd_desc(info, cmd);
+> 
+> 	?
+> 
+>> +
+>> +	if (!tile_config)
+>> +		return false;
+>> +
+>> +	return tile_config->flags & flag;
+>> +}
+>> +
+>>   /**
+>>    * blt_has_block_copy
+>>    * @i915: drm fd
+>> @@ -320,6 +342,41 @@ bool blt_block_copy_supports_tiling(int i915, enum blt_tiling_type tiling)
+>>   	return blt_cmd_supports_tiling(blt_info, XY_BLOCK_COPY, tiling);
+>>   }
+>>   
+>> +/**
+>> + * blt_block_copy_supports_compression
+>> + * @i915: drm fd
+>> + *
+>> + * Check if block copy provided by @i915 device supports compression.
+>> + *
+>> + * Returns:
+>> + * true if it does, false otherwise.
+>> + */
+>> +bool blt_block_copy_supports_compression(int i915)
+>> +{
+>> +	const struct blt_cmd_info *blt_info = GET_BLT_INFO(i915);
+>> +
+>> +	return device_supports_compression(i915) &&
+>> +	       blt_cmd_has_property(blt_info, XY_BLOCK_COPY,
+>> +				    BLT_CMD_SUPPORTS_COMPRESSION);
+> 
+> Imo checking flag is enough.
+ >
+> 
+>> +}
+>> +
+>> +/**
+>> + * blt_uses_extended_block_copy
+>> + * @i915: drm fd
+>> + *
+>> + * Check if block copy provided by @i915 device uses an extended version
+>> + * of the command.
+>> + *
+>> + * Returns:
+>> + * true if it does, false otherwise.
+>> + */
+>> +bool blt_uses_extended_block_copy(int i915)
+>> +{
+>> +	const struct blt_cmd_info *blt_info = GET_BLT_INFO(i915);
+>> +
+>> +	return blt_cmd_has_property(blt_info, XY_BLOCK_COPY, BLT_CMD_EXTENDED);
+>> +}
+>> +
+>>   /**
+>>    * blt_tiling_name:
+>>    * @tiling: tiling id
+>> diff --git a/lib/i915/i915_blt.h b/lib/i915/i915_blt.h
+>> index 299dff8e..14885db3 100644
+>> --- a/lib/i915/i915_blt.h
+>> +++ b/lib/i915/i915_blt.h
+>> @@ -157,16 +157,24 @@ struct blt_ctrl_surf_copy_data {
+>>   	bool print_bb;
+>>   };
+>>   
+>> -bool blt_supports_compression(int i915);
+>>   bool blt_supports_command(const struct blt_cmd_info *info,
+>>   			  enum blt_cmd_type cmd);
+>>   bool blt_cmd_supports_tiling(const struct blt_cmd_info *info,
+>>   			     enum blt_cmd_type cmd,
+>>   			     enum blt_tiling_type tiling);
+>> +bool blt_cmd_has_property(const struct blt_cmd_info *info,
+>> +			  enum blt_cmd_type cmd,
+>> +			  uint32_t flag);
+>> +
+>>   bool blt_has_block_copy(int i915);
+>>   bool blt_has_fast_copy(int i915);
+>> +
+>>   bool blt_fast_copy_supports_tiling(int i915, enum blt_tiling_type tiling);
+>>   bool blt_block_copy_supports_tiling(int i915, enum blt_tiling_type tiling);
+>> +
+>> +bool blt_block_copy_supports_compression(int i915);
+>> +bool blt_uses_extended_block_copy(int i915);
+>> +
+>>   const char *blt_tiling_name(enum blt_tiling_type tiling);
+>>   
+>>   uint64_t emit_blt_block_copy(int i915,
+>> diff --git a/lib/i915/intel_tiling_info.c b/lib/i915/intel_tiling_info.c
+>> index fc388919..1dcf17c2 100644
+>> --- a/lib/i915/intel_tiling_info.c
+>> +++ b/lib/i915/intel_tiling_info.c
+>> @@ -12,6 +12,12 @@
+>>   		.supported_tiling = _tiling \
+>>   	}
+>>   
+>> +#define BLT_INFO_EXT(_cmd, _tiling, _flags) { \
+>> +		.blt_cmd_type = _cmd, \
+>> +		.supported_tiling = _tiling, \
+>> +		.flags = _flags \
+>> +	}
+>> +
+>>   static const struct blt_tiling_info src_copy = BLT_INFO(SRC_COPY, BIT(T_LINEAR));
+>>   static const struct blt_tiling_info
+>>   		pre_gen8_xy_src_copy = BLT_INFO(XY_SRC_COPY,
+>> @@ -44,12 +50,22 @@ static const struct blt_tiling_info
+>>   		gen12_xy_block_copy = BLT_INFO(XY_BLOCK_COPY,
+>>   					       BIT(T_LINEAR) |
+>>   					       BIT(T_YMAJOR));
+>> +
+>> +#define DG2_SUPPORTED_TILING \
+>> +	(BIT(T_LINEAR) | \
+>> +	 BIT(T_XMAJOR) | \
+>> +	 BIT(T_TILE4)  | \
+>> +	 BIT(T_TILE64))
+>> +
+>> +#define DG2_BLOCK_COPY_INFO(_flags) \
+>> +	BLT_INFO_EXT(XY_BLOCK_COPY, DG2_SUPPORTED_TILING, (_flags))
+> 
+> Don't introduce above two macros, just use this directly below.
+> It will be more consistent.
+> 
+>> +
+>> +static const struct blt_tiling_info
+>> +		dg2_xy_block_copy = DG2_BLOCK_COPY_INFO(BLT_CMD_EXTENDED |
+>> +							BLT_CMD_SUPPORTS_COMPRESSION);
+>> +
+> ... dg2_xy_block_copy = BLT_CMD_DESC_EXT(XY_BLOCK_COPY,
+> 					 BIT(T_LINEAR) | ...,
+> 					 BLT_CMD_EXTENDED |
+> 					 BLT_CMD_SUPPORT_COMPRESSION);
+I'd at least macro the tilings to avoid repetition.
+
+> 
+>>   static const struct blt_tiling_info
+>> -		dg2_xy_block_copy = BLT_INFO(XY_BLOCK_COPY,
+>> -					     BIT(T_LINEAR) |
+>> -					     BIT(T_XMAJOR) |
+>> -					     BIT(T_TILE4)  |
+>> -					     BIT(T_TILE64));
+> 
+> This looks better imo.,
+> 
+>> +		mtl_xy_block_copy = DG2_BLOCK_COPY_INFO(BLT_CMD_EXTENDED);
+>>   
+>>   const struct blt_cmd_info pre_gen8_blt_info = {
+>>   	.supported_cmds = {
+>> @@ -90,6 +106,6 @@ const struct blt_cmd_info gen12_dg2_blt_info = {
+>>   const struct blt_cmd_info gen12_mtl_blt_info = {
+>>   	.supported_cmds = {
+>>   		[XY_FAST_COPY] = &dg2_xy_fast_copy,
+>> -		[XY_BLOCK_COPY] = &dg2_xy_block_copy
+>> +		[XY_BLOCK_COPY] = &mtl_xy_block_copy
+>>   	}
+>>   };
+>> diff --git a/lib/i915/intel_tiling_info.h b/lib/i915/intel_tiling_info.h
+>> index bb655103..a6288f49 100644
+>> --- a/lib/i915/intel_tiling_info.h
+>> +++ b/lib/i915/intel_tiling_info.h
+>> @@ -29,6 +29,10 @@ enum blt_cmd_type {
+>>   struct blt_tiling_info {
+>>   	enum blt_cmd_type blt_cmd_type;
+>>   	uint32_t supported_tiling;
+>> +
+>> +	uint32_t flags;
+>> +#define BLT_CMD_EXTENDED		(1 << 0)
+>> +#define BLT_CMD_SUPPORTS_COMPRESSION	(1 << 1)
+> 
+> Consider rename to blt_cmd_desc, keeping tiling and flags here
+> started to be confusing with blt_tiling_info.
+
+Then what would be the name for the main struct?
+
+> 
+>>   };
+>>   
+>>   struct blt_cmd_info {
+>> diff --git a/tests/i915/gem_ccs.c b/tests/i915/gem_ccs.c
+>> index a24c8e1f..b7e8bda7 100644
+>> --- a/tests/i915/gem_ccs.c
+>> +++ b/tests/i915/gem_ccs.c
+>> @@ -346,7 +346,6 @@ static void block_copy(int i915,
+>>   	uint32_t run_id = mid_tiling;
+>>   	uint32_t mid_region = region2, bb;
+>>   	uint32_t width = param.width, height = param.height;
+>> -	uint32_t devid = intel_get_drm_devid(i915);
+>>   	enum blt_compression mid_compression = config->compression;
+>>   	int mid_compression_format = param.compression_format;
+>>   	enum blt_compression_type comp_type = COMPRESSION_TYPE_3D;
+>> @@ -355,7 +354,7 @@ static void block_copy(int i915,
+>>   
+>>   	igt_assert(__gem_create_in_memory_regions(i915, &bb, &bb_size, region1) == 0);
+>>   
+>> -	if (!blt_supports_compression(i915) && !IS_METEORLAKE(devid))
+>> +	if (!blt_uses_extended_block_copy(i915))
+>>   		pext = NULL;
+> 
+> Direction is ok, but we need to clean up the names imo with this
+> series. And split this because one patch contains few logically
+> separated changes.
+
+That would require keeping blt_supports_compression() function for a bit 
+to split this up. Are you ok with that approach?
+
+Thanks,
+Karolina
+
+> 
+> --
+> Zbigniew
+> 
+> 
+>>   
+>>   	src = blt_create_object(i915, region1, width, height, bpp, uc_mocs,
+>> @@ -470,7 +469,7 @@ static void block_multicopy(int i915,
+>>   
+>>   	igt_assert(__gem_create_in_memory_regions(i915, &bb, &bb_size, region1) == 0);
+>>   
+>> -	if (!blt_supports_compression(i915))
+>> +	if (!blt_uses_extended_block_copy(i915))
+>>   		pext3 = NULL;
+>>   
+>>   	src = blt_create_object(i915, region1, width, height, bpp, uc_mocs,
+>> @@ -557,7 +556,7 @@ static void block_copy_test(int i915,
+>>   	const struct intel_execution_engine2 *e;
+>>   	int tiling;
+>>   
+>> -	if (config->compression && !blt_supports_compression(i915))
+>> +	if (config->compression && !blt_block_copy_supports_compression(i915))
+>>   		return;
+>>   
+>>   	if (config->inplace && !config->compression)
+>> -- 
+>> 2.25.1
+>>
