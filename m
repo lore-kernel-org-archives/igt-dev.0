@@ -1,25 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-wm1-x32d.google.com (mail-wm1-x32d.google.com
- [IPv6:2a00:1450:4864:20::32d])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7BD3510E439
- for <igt-dev@lists.freedesktop.org>; Mon,  6 Feb 2023 20:41:33 +0000 (UTC)
-Received: by mail-wm1-x32d.google.com with SMTP id
- bg13-20020a05600c3c8d00b003d9712b29d2so11763435wmb.2
- for <igt-dev@lists.freedesktop.org>; Mon, 06 Feb 2023 12:41:33 -0800 (PST)
+Received: from mail-wm1-x332.google.com (mail-wm1-x332.google.com
+ [IPv6:2a00:1450:4864:20::332])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6A89089F38
+ for <igt-dev@lists.freedesktop.org>; Mon,  6 Feb 2023 20:46:45 +0000 (UTC)
+Received: by mail-wm1-x332.google.com with SMTP id
+ f47-20020a05600c492f00b003dc584a7b7eso11754449wmp.3
+ for <igt-dev@lists.freedesktop.org>; Mon, 06 Feb 2023 12:46:45 -0800 (PST)
 MIME-Version: 1.0
 References: <20230202180139.3528829-1-markyacoub@google.com>
  <20230203165748.250937-1-markyacoub@google.com>
- <20230206171844.cxzvw5x36fdietko@kamilkon-desk1>
-In-Reply-To: <20230206171844.cxzvw5x36fdietko@kamilkon-desk1>
+ <CAHNYxRw1b5yZ5ZtBU08fmzuD1RykoZX+GAA0mk+7LL=X+gCAFQ@mail.gmail.com>
+In-Reply-To: <CAHNYxRw1b5yZ5ZtBU08fmzuD1RykoZX+GAA0mk+7LL=X+gCAFQ@mail.gmail.com>
 From: Mark Yacoub <markyacoub@chromium.org>
-Date: Mon, 6 Feb 2023 15:41:21 -0500
-Message-ID: <CAJUqKUojFgqOLXONVivLnH8=9J98AVFf5fz8+N3pbFMNT_5sMw@mail.gmail.com>
-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org,
- Mark Yacoub <markyacoub@chromium.org>, adrinael@adrinael.net,
- bhanuprakash.modem@intel.com, khaled.almahallawy@intel.com,
- seanpaul@chromium.org, markyacoub@google.com, ihf@google.com,
- amstan@chromium.org
+Date: Mon, 6 Feb 2023 15:46:33 -0500
+Message-ID: <CAJUqKUoxJOApiCdUEAi5vrNRDwAtFj984MDkC8kWXPHpgfyrWQ@mail.gmail.com>
+To: Alexandru M Stan <amstan@chromium.org>
 Content-Type: text/plain; charset="UTF-8"
 Subject: Re: [igt-dev] [PATCH v4] Chamelium: Get Chamelium Logs on RPC
  failure
@@ -30,16 +25,16 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: ihf@google.com, igt-dev@lists.freedesktop.org, seanpaul@chromium.org,
+ markyacoub@google.com, khaled.almahallawy@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Mon, Feb 6, 2023 at 12:18 PM Kamil Konieczny
-<kamil.konieczny@linux.intel.com> wrote:
+On Mon, Feb 6, 2023 at 1:16 PM Alexandru M Stan <amstan@chromium.org> wrote:
 >
-> Hi Mark,
->
-> On 2023-02-03 at 11:57:48 -0500, Mark Yacoub wrote:
+> On Fri, Feb 3, 2023 at 8:57 AM Mark Yacoub <markyacoub@chromium.org> wrote:
+> >
 > > From: Mark Yacoub <markyacoub@chromium.org>
 > >
 > > [Why]
@@ -58,6 +53,11 @@ On Mon, Feb 6, 2023 at 12:18 PM Kamil Konieczny
 > > - Cut commit messages to 65 char tops (Kamil Konieczny)
 > > v4:
 > > - Don't get the logs if it's not a cv3 (Petri)
+> No, logs getting should have nothing to do if it's a cv3 or not.
+>
+> There's no reason why cv2 can't get this API too.
+>
+It looks like at least some Chamelium 2 don't support this function.
 > >
 > > Signed-off-by: Mark Yacoub <markyacoub@chromium.org>
 > > ---
@@ -71,78 +71,86 @@ On Mon, Feb 6, 2023 at 12:18 PM Kamil Konieczny
 > > --- a/lib/igt_chamelium.c
 > > +++ b/lib/igt_chamelium.c
 > > @@ -129,6 +129,8 @@ struct chamelium {
-> >       struct igt_list_head edids;
-> >       struct chamelium_port ports[CHAMELIUM_MAX_PORTS];
-> >       int port_count;
-> > +     // Chamelium V3 requires some work arounds and has some extra functionalities. This keeps things safe.
-> > +     bool is_cv3;
+> >         struct igt_list_head edids;
+> >         struct chamelium_port ports[CHAMELIUM_MAX_PORTS];
+> >         int port_count;
+> > +       // Chamelium V3 requires some work arounds and has some extra functionalities. This keeps things safe.
+> > +       bool is_cv3;
 > >  };
 > >
 > >  bool igt_chamelium_allow_fsm_handling = true;
 > > @@ -447,6 +449,9 @@ chamelium_wait_for_conn_status_change(igt_display_t *display,
-> >               usleep(50000);
-> >       }
+> >                 usleep(50000);
+> >         }
 > >
-> > +     /* If we timeout, it means Chamelium didn't respond on time. Print its logs*/
-> > +     igt_debug("Timeout. Chamelium logs:\n%s\n", chamelium_get_logs(chamelium));
+> > +       /* If we timeout, it means Chamelium didn't respond on time. Print its logs*/
+> > +       igt_debug("Timeout. Chamelium logs:\n%s\n", chamelium_get_logs(chamelium));
 > > +
-> >       igt_assert_f(false, "Timed out waiting for %s to get %s\n",
-> >                                chamelium_port_get_name(port),
-> >                                kmstest_connector_status_str(status));
+> >         igt_assert_f(false, "Timed out waiting for %s to get %s\n",
+> >                                  chamelium_port_get_name(port),
+> >                                  kmstest_connector_status_str(status));
 > > @@ -658,6 +663,8 @@ static xmlrpc_value *chamelium_rpc(struct chamelium *chamelium,
-> >       xmlrpc_value *res;
-> >       va_list va_args;
-> >       int fsm_trials_left = 5;
-> > +     bool did_fault_occur = false;
-> > +     char fault_string[1024];
+> >         xmlrpc_value *res;
+> >         va_list va_args;
+> >         int fsm_trials_left = 5;
+> > +       bool did_fault_occur = false;
+> > +       char fault_string[1024];
 > >
-> >       if (strcmp(method_name, "CaptureVideo") == 0
-> >           || strcmp(method_name, "StartCapturingVideo") == 0) {
+> >         if (strcmp(method_name, "CaptureVideo") == 0
+> >             || strcmp(method_name, "StartCapturingVideo") == 0) {
 > > @@ -680,9 +687,35 @@ static xmlrpc_value *chamelium_rpc(struct chamelium *chamelium,
-> >                                        format_str, va_args);
-> >               va_end(va_args);
-> >       }
-> > -     igt_assert_f(!chamelium->env.fault_occurred,
-> > -                  "Chamelium RPC call[%s] failed: %s\n", method_name,
-> > -                  chamelium->env.fault_string);
+> >                                          format_str, va_args);
+> >                 va_end(va_args);
+> >         }
+> > -       igt_assert_f(!chamelium->env.fault_occurred,
+> > -                    "Chamelium RPC call[%s] failed: %s\n", method_name,
+> > -                    chamelium->env.fault_string);
 > > +
-> > +     did_fault_occur = chamelium->env.fault_occurred;
-> > +     if (did_fault_occur) {
-> > +             /*
-> > +              * Save the fault string before getting the logs which will
-> > +              * clear the string if it is works.
-> > +              */
-> > +             strncpy(fault_string, chamelium->env.fault_string, 1024);
-> > +
-> > +             if (strcmp(method_name, "GetChameleondLogs") == 0) {
-> > +                     did_fault_occur = false;
-> > +                     igt_debug("Failed to get chamelium logs: %s\n", fault_string);
-> > +                     igt_debug("Sometimes this happens at the beginning of the test when the logs haven't "
-> > +                     "been cleared for a while and the XMLRPC lib can't consume it all. "
-> > +                     "Regardless, we shouldn't fail on failing to get the logs.\n");
-> > +             /*
-> > +              * We call GetChameleondLogs on an xmlrpc failure. Let's not
-> > +              * call it when the xmlrpc failure is for GetChameleondLogs
-> > +              * itself as this can cause a recursive behavior.
-> > +              */
+> > +       did_fault_occur = chamelium->env.fault_occurred;
+> > +       if (did_fault_occur) {
+> Please gather logs for every test invocation regardless of if
+> fault_occured. I have seen some recent tests happily claiming that
+> things passed ;) but that was not the case. It's still useful to have
+> logs for debugging when that happens. It's also useful to see what a
+> normal invocation of the test looks like.
 >
-> This comment should be after if (strcmp...), please also align it.
->
-done
-> > +             } else {
-> > +                     char *logs = chamelium_get_logs(chamelium);
-> > +                     igt_debug("CHAMELIUM LOGS:\n%s\n", logs);
-> > +                     free(logs);
-> > +             }
-> > +     }
+If tests claim to pass but they should not, then we should improve our
+igt_assert and catch expected failure. These sound like flawed tests.
+Please let me know where this is required and we can send a patch to
+catch expected failures.
+Otherwise, not sure if we should spit out the full logs on the screen
+on every test, this can spam the output.
+> > +               /*
+> > +                * Save the fault string before getting the logs which will
+> > +                * clear the string if it is works.
+> > +                */
+> > +               strncpy(fault_string, chamelium->env.fault_string, 1024);
 > > +
-> > +     igt_assert_f(!did_fault_occur, "Chamelium RPC call [%s] failed: %s\n",
-> > +                  method_name, fault_string);
+> > +               if (strcmp(method_name, "GetChameleondLogs") == 0) {
+> > +                       did_fault_occur = false;
+> > +                       igt_debug("Failed to get chamelium logs: %s\n", fault_string);
+> > +                       igt_debug("Sometimes this happens at the beginning of the test when the logs haven't "
+> > +                       "been cleared for a while and the XMLRPC lib can't consume it all. "
+> > +                       "Regardless, we shouldn't fail on failing to get the logs.\n");
+> > +               /*
+> > +                * We call GetChameleondLogs on an xmlrpc failure. Let's not
+> > +                * call it when the xmlrpc failure is for GetChameleondLogs
+> > +                * itself as this can cause a recursive behavior.
+> > +                */
+> > +               } else {
+> > +                       char *logs = chamelium_get_logs(chamelium);
+> > +                       igt_debug("CHAMELIUM LOGS:\n%s\n", logs);
+> > +                       free(logs);
+> > +               }
+> > +       }
+> > +
+> > +       igt_assert_f(!did_fault_occur, "Chamelium RPC call [%s] failed: %s\n",
+> > +                    method_name, fault_string);
 > >
-> >       return res;
+> >         return res;
 > >  }
 > > @@ -737,6 +770,34 @@ void chamelium_assert_reachable(struct chamelium *chamelium, int timeout)
-> >                    "Couldn't connect to Chamelium for %ds", timeout);
+> >                      "Couldn't connect to Chamelium for %ds", timeout);
 > >  }
 > >
 > > +/**
@@ -154,30 +162,28 @@ done
 > > +
 > > +const char *chamelium_get_logs(struct chamelium *chamelium)
 > > +{
-> > +     xmlrpc_value *res;
-> > +     const char *logs = NULL;
+> > +       xmlrpc_value *res;
+> > +       const char *logs = NULL;
 > > +
-> > +     if (!chamelium->is_cv3) {
-> > +             igt_debug("Chamelium is not a Cv3, not calling GetChameleondLogs\n");
-> > +             return NULL;
-> > +     }
-> > +
-> > +     igt_debug(
-> > +             "Calling GetChameleondLogs - Logs returned are from the last time "
+> > +       if (!chamelium->is_cv3) {
+> Please just call GetChameleondLogs all the time, if you get the
+> obvious NotImplementedError, you just return, recording the error
+> somewhere.
 >
-> Please move this to above line, so
->         igt_debug("Your message ..."
->                   " continued\n");
->
->
-done
-> > +             "this was called.\n");
+I believe Petri did not like this so it was changed accordingly.
+> > +               igt_debug("Chamelium is not a Cv3, not calling GetChameleondLogs\n");
+> > +               return NULL;
+> > +       }
 > > +
-> > +     res = chamelium_rpc(chamelium, NULL, "GetChameleondLogs", "(s)", "IGT");
-> > +     xmlrpc_read_string(&chamelium->env, res, &logs);
-> > +     xmlrpc_DECREF(res);
+> > +       igt_debug(
+> > +               "Calling GetChameleondLogs - Logs returned are from the last time "
+> > +               "this was called.\n");
 > > +
-> > +     return logs;
+> > +       res = chamelium_rpc(chamelium, NULL, "GetChameleondLogs", "(s)", "IGT");
+> > +       xmlrpc_read_string(&chamelium->env, res, &logs);
+> > +       xmlrpc_DECREF(res);
+> > +
+> > +       return logs;
 > > +}
 > > +
 > >  /**
@@ -185,40 +191,32 @@ done
 > >   * @chamelium: The Chamelium instance to use
 > > @@ -2890,6 +2951,7 @@ struct chamelium *chamelium_init(int drm_fd, igt_display_t *display)
 > >  {
-> >       struct chamelium *chamelium = chamelium_init_rpc_only();
-> >       bool mismatching_ports_found = false;
-> > +     int port_ids[CHAMELIUM_MAX_PORTS];
+> >         struct chamelium *chamelium = chamelium_init_rpc_only();
+> >         bool mismatching_ports_found = false;
+> > +       int port_ids[CHAMELIUM_MAX_PORTS];
 > >
-> >       if (chamelium == NULL)
-> >               return NULL;
+> >         if (chamelium == NULL)
+> >                 return NULL;
 > > @@ -2958,6 +3020,11 @@ struct chamelium *chamelium_init(int drm_fd, igt_display_t *display)
-> >        * the outputs to grab all supported connectors.*/
-> >       igt_display_reset_outputs(display);
+> >          * the outputs to grab all supported connectors.*/
+> >         igt_display_reset_outputs(display);
 > >
-> > +     if (chamelium_get_video_ports(chamelium, port_ids) <= 0)
-> > +             goto error;
-> > +     // Chamelium V3 port IDs start with 0, while V2 port IDs start with 1.
-> ------- ^
-> Please use C-style comment /* Your comment here */.
+> > +       if (chamelium_get_video_ports(chamelium, port_ids) <= 0)
+> > +               goto error;
+> > +       // Chamelium V3 port IDs start with 0, while V2 port IDs start with 1.
+> Please don't, there should be absolutely no reason that you need to
+> keep track of this, and even if you did, some random implementation
+> difference is not the proper way to do this.
 >
-done
-> > +     chamelium->is_cv3 = port_ids[0] == 0;
+> Prefer feature detection. Same spirit as
+> https://developer.mozilla.org/en-US/docs/Web/HTTP/Browser_detection_using_the_user_agent
 >
-> How is start number of video port related to rpc daemon ?
->
-Unfortunately, chamelium doesn't advertise its version, but we need a
-way to distinguish between v2 and v3 as they're both in use for the
-time being.
-One way we did this in a different place is to use the fact that their
-port IDs are different. the first port on v2 is 1 while it's 0 on v3.
-There is another place where we're using the same idea.
-> Regards,
-> Kamil
->
+ditto
+> > +       chamelium->is_cv3 = port_ids[0] == 0;
 > > +
-> >       return chamelium;
+> >         return chamelium;
 > >  error:
-> >       close(chamelium->drm_fd);
+> >         close(chamelium->drm_fd);
 > > diff --git a/lib/igt_chamelium.h b/lib/igt_chamelium.h
 > > index d979de4a..159c75ec 100644
 > > --- a/lib/igt_chamelium.h
@@ -256,18 +254,23 @@ There is another place where we're using the same idea.
 > >
 > >  void chamelium_init_test(chamelium_data_t *data)
 > > @@ -47,6 +59,12 @@ void chamelium_init_test(chamelium_data_t *data)
-> >       /* we need to initalize chamelium after igt_display_require */
-> >       data->chamelium = chamelium_init(data->drm_fd, &data->display);
-> >       igt_require(data->chamelium);
-> > +     /*
-> > +      * Get the logs so we can reset the chamelium logs at this cursor.
-> > +      * The logs are then retrieved when any call fails so we can debug
-> > +      * chamelium if needed.
-> > +      */
-> > +     free(chamelium_get_logs(data->chamelium));
+> >         /* we need to initalize chamelium after igt_display_require */
+> >         data->chamelium = chamelium_init(data->drm_fd, &data->display);
+> >         igt_require(data->chamelium);
+> > +       /*
+> > +        * Get the logs so we can reset the chamelium logs at this cursor.
+> > +        * The logs are then retrieved when any call fails so we can debug
+> > +        * chamelium if needed.
+> > +        */
+> > +       free(chamelium_get_logs(data->chamelium));
 > >
-> >       data->ports = chamelium_get_ports(data->chamelium, &data->port_count);
+> >         data->ports = chamelium_get_ports(data->chamelium, &data->port_count);
 > >
 > > --
 > > 2.39.1.519.gcb327c4b5f-goog
 > >
+>
+> NAK from me (chameleond author for v3), needs more polishing and doing
+> things the right way.
+>
+> Alexandru Stan (amstan)
