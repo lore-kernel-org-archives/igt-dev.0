@@ -1,22 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 23CDD10E32E
- for <igt-dev@lists.freedesktop.org>; Mon,  6 Feb 2023 08:53:50 +0000 (UTC)
-From: "Govindapillai, Vinod" <vinod.govindapillai@intel.com>
-To: "ville.syrjala@linux.intel.com" <ville.syrjala@linux.intel.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-Date: Mon, 6 Feb 2023 08:53:28 +0000
-Message-ID: <2fde9e57bd1aeda9953c36895f69c937647a4fb5.camel@intel.com>
-References: <20230125045522.18169-1-ville.syrjala@linux.intel.com>
- <20230125045522.18169-6-ville.syrjala@linux.intel.com>
-In-Reply-To: <20230125045522.18169-6-ville.syrjala@linux.intel.com>
-Content-Language: en-US
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <000D473FC31A9346AFF02B6DCCC8AE5B@namprd11.prod.outlook.com>
-Content-Transfer-Encoding: base64
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DC08C10E32E
+ for <igt-dev@lists.freedesktop.org>; Mon,  6 Feb 2023 08:55:05 +0000 (UTC)
+Message-ID: <14f24e64-da17-9f76-9bfe-8d735b7885df@intel.com>
+Date: Mon, 6 Feb 2023 14:24:57 +0530
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t 06/10] tools/intel_watermark: Decode
- plane enable bits for ilk-bdw
+Content-Language: en-US
+To: Nidhi Gupta <nidhi1.gupta@intel.com>, igt-dev@lists.freedesktop.org
+References: <20230203084252.2417-1-nidhi1.gupta@intel.com>
+From: Swati Sharma <swati2.sharma@intel.com>
+In-Reply-To: <20230203084252.2417-1-nidhi1.gupta@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_pipe_crc_basic: Limit the
+ execution to two pipes
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,132 +25,147 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gV2VkLCAyMDIzLTAxLTI1IGF0IDA2OjU1ICswMjAwLCBWaWxsZSBTeXJqYWxhIHdyb3RlOgo+
-IEZyb206IFZpbGxlIFN5cmrDpGzDpCA8dmlsbGUuc3lyamFsYUBsaW51eC5pbnRlbC5jb20+Cj4g
-Cj4gS25vd2luZyB3aGljaCBwbGFuZXMgYXJlIGFjdHVhbGx5IGVuYWJsZWQgaXMgc29tZXdoYXQg
-cmVsZXZhbnQKPiB3aGVuIGRlYnVnZ2luZyB3YXRlcm1hcmtzLiBEdW1wIHRoYXQgaW5mb3JtYXRp
-b24uCj4gCj4gU2lnbmVkLW9mZi1ieTogVmlsbGUgU3lyasOkbMOkIDx2aWxsZS5zeXJqYWxhQGxp
-bnV4LmludGVsLmNvbT4KPiAtLS0KPiDCoHRvb2xzL2ludGVsX3dhdGVybWFyay5jIHwgNjAgKysr
-KysrKysrKysrKysrKysrKysrKysrKysrKysrLS0tLS0tLS0tLS0KPiDCoDEgZmlsZSBjaGFuZ2Vk
-LCA0NSBpbnNlcnRpb25zKCspLCAxNSBkZWxldGlvbnMoLSkKClJldmlld2VkLWJ5OiBWaW5vZCBH
-b3ZpbmRhcGlsbGFpIDx2aW5vZC5nb3ZpbmRhcGlsbGFpQGludGVsLmNvbT4KCj4gCj4gZGlmZiAt
-LWdpdCBhL3Rvb2xzL2ludGVsX3dhdGVybWFyay5jIGIvdG9vbHMvaW50ZWxfd2F0ZXJtYXJrLmMK
-PiBpbmRleCAxOTM3MmRiNDUwNmIuLjY2ZTc2ZTBkZDNlZiAxMDA2NDQKPiAtLS0gYS90b29scy9p
-bnRlbF93YXRlcm1hcmsuYwo+ICsrKyBiL3Rvb2xzL2ludGVsX3dhdGVybWFyay5jCj4gQEAgLTkz
-LDEwICs5MywxMyBAQCBzdGF0aWMgY29uc3QgY2hhciAqIGNvbnN0IHBsYW5lX25hbWVbXSA9IHsK
-PiDCoMKgwqDCoMKgwqDCoMKgTkFNRShTUFJfRiksCj4gwqB9Owo+IMKgCj4gK3N0cnVjdCBpbGtf
-cGxhbmUgewo+ICvCoMKgwqDCoMKgwqDCoGJvb2wgZW5hYmxlZCwgdHJpY2tsZV9mZWVkX2RpczsK
-PiArfTsKPiArCj4gwqBzdHJ1Y3QgaWxrX3dtX2xldmVsIHsKPiDCoMKgwqDCoMKgwqDCoMKgaW50
-IHByaW1hcnksIHNwcml0ZSwgY3Vyc29yLCBsYXRlbmN5LCBmYmM7Cj4gwqDCoMKgwqDCoMKgwqDC
-oGJvb2wgZW5hYmxlZCwgc3ByaXRlX2VuYWJsZWQ7Cj4gLcKgwqDCoMKgwqDCoMKgYm9vbCBwcmlt
-YXJ5X3RyaWNrbGVfZmVlZF9kaXMsIHNwcml0ZV90cmlja2xlX2ZlZWRfZGlzOwo+IMKgfTsKPiDC
-oAo+IMKgc3RydWN0IGlsa193bSB7Cj4gQEAgLTYwNCwxMyArNjA3LDE1IEBAIHN0YXRpYyB2b2lk
-IGlsa193bV9kdW1wKHZvaWQpCj4gwqDCoMKgwqDCoMKgwqDCoHN0cnVjdCBpbnRlbF9tbWlvX2Rh
-dGEgbW1pb19kYXRhOwo+IMKgwqDCoMKgwqDCoMKgwqBpbnQgaTsKPiDCoMKgwqDCoMKgwqDCoMKg
-dWludDMyX3QgZHNwY250clszXTsKPiAtwqDCoMKgwqDCoMKgwqB1aW50MzJfdCBzcGNudHJbM107
-Cj4gK8KgwqDCoMKgwqDCoMKgdWludDMyX3Qgc3ByY250clszXTsKPiArwqDCoMKgwqDCoMKgwqB1
-aW50MzJfdCBjdXJjbnRyWzNdOwo+IMKgwqDCoMKgwqDCoMKgwqB1aW50MzJfdCB3bV9waXBlWzNd
-Owo+IMKgwqDCoMKgwqDCoMKgwqB1aW50MzJfdCB3bV9saW5ldGltZVszXTsKPiDCoMKgwqDCoMKg
-wqDCoMKgdWludDMyX3Qgd21fbHBbM107Cj4gwqDCoMKgwqDCoMKgwqDCoHVpbnQzMl90IHdtX2xw
-X3NwclszXTsKPiDCoMKgwqDCoMKgwqDCoMKgdWludDMyX3QgYXJiX2N0bCwgYXJiX2N0bDIsIHdt
-X21pc2MgPSAwOwo+IMKgwqDCoMKgwqDCoMKgwqBpbnQgbnVtX3BpcGVzID0gaW50ZWxfZ2VuKGRl
-dmlkKSA+PSA3ID8gMyA6IDI7Cj4gK8KgwqDCoMKgwqDCoMKgc3RydWN0IGlsa19wbGFuZSBwcmlt
-YXJ5WzNdID0ge30sIHNwcml0ZVszXSA9IHt9LCBjdXJzb3JbM10gPSB7fTsKPiDCoMKgwqDCoMKg
-wqDCoMKgc3RydWN0IGlsa193bSB3bSA9IHt9Owo+IMKgCj4gwqDCoMKgwqDCoMKgwqDCoGludGVs
-X3JlZ2lzdGVyX2FjY2Vzc19pbml0KCZtbWlvX2RhdGEsIGludGVsX2dldF9wY2lfZGV2aWNlKCks
-IDAsIC0xKTsKPiBAQCAtNjE4LDkgKzYyMywxMyBAQCBzdGF0aWMgdm9pZCBpbGtfd21fZHVtcCh2
-b2lkKQo+IMKgwqDCoMKgwqDCoMKgwqBmb3IgKGkgPSAwOyBpIDwgbnVtX3BpcGVzOyBpKyspIHsK
-PiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGRzcGNudHJbaV0gPSByZWFkX3JlZygw
-eDcwMTgwICsgaSAqIDB4MTAwMCk7Cj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBp
-ZiAoaW50ZWxfZ2VuKGRldmlkKSA+PSA3KQo+IC3CoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgc3BjbnRyW2ldID0gcmVhZF9yZWcoMHg3MDI4MCArIGkgKiAweDEw
-MDApOwo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgc3By
-Y250cltpXSA9IHJlYWRfcmVnKDB4NzAyODAgKyBpICogMHgxMDAwKTsKPiDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoGVsc2UKPiAtwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoHNwY250cltpXSA9IHJlYWRfcmVnKDB4NzIxODAgKyBpICogMHgxMDAw
-KTsKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoHNwcmNu
-dHJbaV0gPSByZWFkX3JlZygweDcyMTgwICsgaSAqIDB4MTAwMCk7Cj4gK8KgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoGlmIChpbnRlbF9nZW4oZGV2aWQpID49IDcpCj4gK8KgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBjdXJjbnRyW2ldID0gcmVhZF9yZWco
-MHg3MDA4MCArIGkgKiAweDEwMDApOwo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBl
-bHNlCj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBjdXJj
-bnRyW2ldID0gcmVhZF9yZWcoMHg3MDA4MCArIGkgKiAweDQwKTsKPiDCoMKgwqDCoMKgwqDCoMKg
-fQo+IMKgCj4gwqDCoMKgwqDCoMKgwqDCoHdtX3BpcGVbMF0gPSByZWFkX3JlZygweDQ1MTAwKTsK
-PiBAQCAtNjQ5LDYgKzY1OCwxMiBAQCBzdGF0aWMgdm9pZCBpbGtfd21fZHVtcCh2b2lkKQo+IMKg
-wqDCoMKgwqDCoMKgwqBpZiAoSVNfQlJPQURXRUxMKGRldmlkKSB8fCBJU19IQVNXRUxMKGRldmlk
-KSkKPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoHdtX21pc2MgPSByZWFkX3JlZygw
-eDQ1MjYwKTsKPiDCoAo+ICvCoMKgwqDCoMKgwqDCoGZvciAoaSA9IDA7IGkgPCBudW1fcGlwZXM7
-IGkrKykgewo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBwcmludGYoIsKgwqDCoCBE
-U1BDTlRSXyVjID0gMHglMDh4XG4iLCBwaXBlX25hbWUoaSksIGRzcGNudHJbaV0pOwo+ICvCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBwcmludGYoIsKgwqDCoCBTUFJDTlRSXyVjID0gMHgl
-MDh4XG4iLCBwaXBlX25hbWUoaSksIHNwcmNudHJbaV0pOwo+ICvCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqBwcmludGYoIsKgwqDCoCBDVVJDTlRSXyVjID0gMHglMDh4XG4iLCBwaXBlX25h
-bWUoaSksIGN1cmNudHJbaV0pOwo+ICvCoMKgwqDCoMKgwqDCoH0KPiArCj4gwqDCoMKgwqDCoMKg
-wqDCoGZvciAoaSA9IDA7IGkgPCBudW1fcGlwZXM7IGkrKykKPiDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoHByaW50ZigiwqDCoMKgIFdNX1BJUEVfJWMgPSAweCUwOHhcbiIsIHBpcGVf
-bmFtZShpKSwgd21fcGlwZVtpXSk7Cj4gwqDCoMKgwqDCoMKgwqDCoGlmIChJU19CUk9BRFdFTEwo
-ZGV2aWQpIHx8IElTX0hBU1dFTEwoZGV2aWQpKSB7Cj4gQEAgLTY2OCw2ICs2ODMsMjEgQEAgc3Rh
-dGljIHZvaWQgaWxrX3dtX2R1bXAodm9pZCkKPiDCoMKgwqDCoMKgwqDCoMKgaWYgKElTX0JST0FE
-V0VMTChkZXZpZCkgfHwgSVNfSEFTV0VMTChkZXZpZCkpCj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqBwcmludGYoIsKgwqDCoMKgwqAgV01fTUlTQyA9IDB4JTA4eFxuIiwgd21fbWlz
-Yyk7Cj4gwqAKPiArwqDCoMKgwqDCoMKgwqBmb3IgKGkgPSAwIDsgaSA8IG51bV9waXBlczsgaSsr
-KSB7Cj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoHByaW1hcnlbaV0uZW5hYmxlZCA9
-IFJFR19ERUNPREUxKGRzcGNudHJbaV0sIDMxLCAxKTsKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgc3ByaXRlW2ldLmVuYWJsZWQgPSBSRUdfREVDT0RFMShzcHJjbnRyW2ldLCAzMSwg
-MSk7Cj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGN1cnNvcltpXS5lbmFibGVkID0g
-UkVHX0RFQ09ERTEoY3VyY250cltpXSwgMCwgMykgfHwKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoFJFR19ERUNPREUxKGN1cmNudHJbaV0sIDUsIDEpOwo+
-ICsKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgcHJpbWFyeVtpXS50cmlja2xlX2Zl
-ZWRfZGlzID0gUkVHX0RFQ09ERTEoZHNwY250cltpXSwgMTQsIDEpOwo+ICsKPiArwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgaWYgKElTX0dFTjUoZGV2aWQpKQo+ICvCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgY29udGludWU7Cj4gKwo+ICvCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBzcHJpdGVbaV0udHJpY2tsZV9mZWVkX2RpcyA9IFJFR19E
-RUNPREUxKHNwcmNudHJbaV0sIDE0LCAxKTsKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgY3Vyc29yW2ldLnRyaWNrbGVfZmVlZF9kaXMgPSBSRUdfREVDT0RFMShjdXJjbnRyW2ldLCAx
-NCwgMSk7Cj4gK8KgwqDCoMKgwqDCoMKgfQo+ICsKPiDCoMKgwqDCoMKgwqDCoMKgZm9yIChpID0g
-MCA7IGkgPCBudW1fcGlwZXM7IGkrKykgewo+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgd20ucGlwZVtpXS5wcmltYXJ5ID0gUkVHX0RFQ09ERTEod21fcGlwZVtpXSwgMTYsIDgpOwo+
-IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgd20ucGlwZVtpXS5zcHJpdGUgPSBSRUdf
-REVDT0RFMSh3bV9waXBlW2ldLCA4LCA4KTsKPiBAQCAtNjc3LDEyICs3MDcsNiBAQCBzdGF0aWMg
-dm9pZCBpbGtfd21fZHVtcCh2b2lkKQo+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoHdtLmxpbmV0aW1lW2ldLmxpbmV0aW1lID0gUkVHX0RFQ09ERTEod21f
-bGluZXRpbWVbaV0sIDAsIDkpOwo+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoHdtLmxpbmV0aW1lW2ldLmlwcyA9IFJFR19ERUNPREUxKHdtX2xpbmV0aW1l
-W2ldLCAxNiwgOSk7Cj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqB9Cj4gLQo+IC3C
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqB3bS5waXBlW2ldLnByaW1hcnlfdHJpY2tsZV9m
-ZWVkX2RpcyA9Cj4gLcKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqBSRUdfREVDT0RFMShkc3BjbnRyW2ldLCAxNCwgMSk7Cj4gLcKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoGlmICghSVNfR0VONShkZXZpZCkpCj4gLcKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqB3bS5waXBlW2ldLnNwcml0ZV90cmlja2xlX2ZlZWRfZGlz
-ID0KPiAtwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqBSRUdfREVDT0RFMShzcGNudHJbaV0sIDE0LCAxKTsKPiDCoMKgwqDCoMKgwqDC
-oMKgfQo+IMKgCj4gwqDCoMKgwqDCoMKgwqDCoGZvciAoaSA9IDA7IGkgPCAzOyBpKyspIHsKPiBA
-QCAtNzMzLDExICs3NTcsMTcgQEAgc3RhdGljIHZvaWQgaWxrX3dtX2R1bXAodm9pZCkKPiDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoH0KPiDCoMKgwqDCoMKgwqDCoMKgfQo+IMKgwqDC
-oMKgwqDCoMKgwqBmb3IgKGkgPSAwOyBpIDwgbnVtX3BpcGVzOyBpKyspIHsKPiAtwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgcHJpbnRmKCJQcmltYXJ5ICVjIHRyaWNrbGUgZmVlZCA9ICVz
-XG4iLAo+IC3CoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgcGlwZV9u
-YW1lKGkpLCBlbmRpcyghd20ucGlwZVtpXS5wcmltYXJ5X3RyaWNrbGVfZmVlZF9kaXMpKTsKPiAt
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgaWYgKCFJU19HRU41KGRldmlkKSkKPiAtwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoHByaW50ZigiU3ByaXRl
-ICVjIHRyaWNrbGUgZmVlZCA9ICVzXG4iLAo+IC3CoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIHBpcGVfbmFtZShpKSwgZW5kaXMoIXdtLnBp
-cGVbaV0uc3ByaXRlX3RyaWNrbGVfZmVlZF9kaXMpKTsKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgcHJpbnRmKCJQcmltYXJ5ICVjOiAlcywgdHJpY2tsZSBmZWVkID0gJXNcbiIsCj4g
-K8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBwaXBlX25hbWUoaSks
-IGVuZGlzKHByaW1hcnlbaV0uZW5hYmxlZCksCj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoCBlbmRpcyghcHJpbWFyeVtpXS50cmlja2xlX2ZlZWRfZGlzKSk7Cj4g
-K8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoHByaW50ZigiU3ByaXRlICVjOiAlcywgdHJp
-Y2tsZSBmZWVkID0gJXNcbiIsCj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoCBwaXBlX25hbWUoaSksIGVuZGlzKHNwcml0ZVtpXS5lbmFibGVkKSwKPiArwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIElTX0dFTjUoZGV2aWQpID8gIm4v
-YSIgOgo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgZW5kaXMo
-IXNwcml0ZVtpXS50cmlja2xlX2ZlZWRfZGlzKSk7Cj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoHByaW50ZigiQ3Vyc29yICVjOiAlcywgdHJpY2tsZSBmZWVkID0gJXNcbiIsCj4gK8Kg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBwaXBlX25hbWUoaSksIGVu
-ZGlzKGN1cnNvcltpXS5lbmFibGVkKSwKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgIElTX0dFTjUoZGV2aWQpID8gIm4vYSIgOgo+ICvCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgZW5kaXMoIWN1cnNvcltpXS50cmlja2xlX2ZlZWRf
-ZGlzKSk7Cj4gwqDCoMKgwqDCoMKgwqDCoH0KPiDCoMKgwqDCoMKgwqDCoMKgaWYgKElTX0JST0FE
-V0VMTChkZXZpZCkgfHwgSVNfSEFTV0VMTChkZXZpZCkpIHsKPiDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoHByaW50ZigiRERCIHBhcnRpdGlvbmluZyA9ICVzXG4iLAoK
+Hi Nidhi,
+
+Checkpatch is throwing following errors. Please fix.
+
+ERROR: do not initialise statics to false
+#42: FILE: tests/kms_pipe_crc_basic.c:33:
++static bool extended = false;
+
+ERROR: do not initialise statics to 0
+#44: FILE: tests/kms_pipe_crc_basic.c:35:
++static uint32_t last_pipe = 0;
+
+ERROR: switch and case should be at the same indent
+#72: FILE: tests/kms_pipe_crc_basic.c:294:
++       switch (opt) {
++               case 'e':
+[...]
++               default:
+
+total: 3 errors, 0 warnings, 87 lines checked
+
+On 03-Feb-23 2:12 PM, Nidhi Gupta wrote:
+> From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+> 
+> As the test execution is taking more time on simulation, limit the
+> execution to two (first & last) pipes. This optimization is for
+> simulation only and hence there will be no impact on real hardware.
+> 
+> This patch will also provide an option (command line flag '-e') to
+> execute on all pipes.
+> 
+> Example: ./kms_pipe_crc_basic -e --run-subtest read-crc
+> 
+> V2: - Edited commit message (Bhanu)
+> V3: - New function for simulation constraints (Kamil)
+>      - Update commit message (Bhanu)
+> 
+> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+> Signed-off-by: Nidhi Gupta <nidhi1.gupta@intel.com>
+> ---
+>   tests/kms_pipe_crc_basic.c | 45 +++++++++++++++++++++++++++++++++++++-
+>   1 file changed, 44 insertions(+), 1 deletion(-)
+> 
+> diff --git a/tests/kms_pipe_crc_basic.c b/tests/kms_pipe_crc_basic.c
+> index 91a1b8ab..376b9498 100644
+> --- a/tests/kms_pipe_crc_basic.c
+> +++ b/tests/kms_pipe_crc_basic.c
+> @@ -30,6 +30,9 @@
+>   #include <string.h>
+>   #include <fcntl.h>
+>   
+> +static bool extended = false;
+> +static enum pipe active_pipes[IGT_MAX_PIPES];
+> +static uint32_t last_pipe = 0;
+>   
+>   typedef struct {
+>   	int drm_fd;
+> @@ -46,6 +49,16 @@ static struct {
+>   	{ .r = 0.0, .g = 1.0, .b = 1.0 },
+>   };
+>   
+> +static bool simulation_constraint(enum pipe pipe)
+> +{
+> +	if (igt_run_in_simulation() && !extended &&
+> +	    pipe != active_pipes[0] &&
+> +	    pipe != active_pipes[last_pipe])
+> +		return true;
+> +
+> +	return false;
+> +}
+> +
+>   static void test_bad_source(data_t *data)
+>   {
+>   	errno = 0;
+> @@ -276,7 +289,23 @@ static void test_disable_crc_after_crtc(data_t *data, enum pipe pipe,
+>   
+>   data_t data = {0, };
+>   
+> -igt_main
+> +static int opt_handler(int opt, int opt_index, void *_data)
+> +{
+> +	switch (opt) {
+> +		case 'e':
+> +			extended = true;
+> +			break;
+> +		default:
+> +			return IGT_OPT_HANDLER_ERROR;
+> +	}
+> +
+> +	return IGT_OPT_HANDLER_SUCCESS;
+> +}
+> +
+> +const char *help_str =
+> +	"  -e \tExtended tests.\n";
+> +
+> +igt_main_args("e", NULL, help_str, opt_handler, NULL)
+>   {
+>   	enum pipe pipe;
+>   	igt_output_t *output;
+> @@ -312,6 +341,11 @@ igt_main
+>   		igt_require_pipe_crc(data.drm_fd);
+>   
+>   		data.debugfs = igt_debugfs_dir(data.drm_fd);
+> +
+> +		/* Get active pipes. */
+> +		for_each_pipe(&data.display, pipe)
+> +			active_pipes[last_pipe++] = pipe;
+> +		last_pipe--;
+>   	}
+>   
+>   	igt_describe("Tests error handling when the bad source is set.");
+> @@ -322,6 +356,9 @@ igt_main
+>   		igt_describe(tests[i].desc);
+>   		igt_subtest_with_dynamic(tests[i].name) {
+>   			for_each_pipe_with_single_output(&data.display, pipe, output) {
+> +				if (simulation_constraint(pipe))
+> +					continue;
+> +
+>   				igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), output->name) {
+>   					if (tests[i].flags & TEST_SUSPEND) {
+>   						test_read_crc(&data, pipe, output, 0);
+> @@ -350,6 +387,9 @@ igt_main
+>   		     "does not cause issues.");
+>   	igt_subtest_with_dynamic("disable-crc-after-crtc") {
+>   		for_each_pipe_with_single_output(&data.display, pipe, output) {
+> +			if (simulation_constraint(pipe))
+> +				continue;
+> +
+>   			igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), output->name)
+>   				test_disable_crc_after_crtc(&data, pipe, output);
+>   		}
+> @@ -358,6 +398,9 @@ igt_main
+>   	igt_describe("Basic sanity check for CRC mismatches");
+>   	igt_subtest_with_dynamic("compare-crc-sanitycheck") {
+>   		for_each_pipe_with_single_output(&data.display, pipe, output) {
+> +			if (simulation_constraint(pipe))
+> +				continue;
+> +
+>   			igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), output->name)
+>   				test_compare_crc(&data, pipe, output);
+>   		}
+
+-- 
+~Swati Sharma
