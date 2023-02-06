@@ -1,18 +1,22 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BDA7F10E8B0
- for <igt-dev@lists.freedesktop.org>; Fri,  3 Feb 2023 19:20:26 +0000 (UTC)
-Date: Fri, 3 Feb 2023 11:20:00 -0800
-From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
-To: Riana Tauro <riana.tauro@intel.com>
-Message-ID: <Y91eYOfdMN3PIRdB@orsosgc001.jf.intel.com>
-References: <20230201043903.1847377-1-riana.tauro@intel.com>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Disposition: inline
-In-Reply-To: <20230201043903.1847377-1-riana.tauro@intel.com>
+Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 369F710E0E6
+ for <igt-dev@lists.freedesktop.org>; Mon,  6 Feb 2023 05:26:05 +0000 (UTC)
+Message-ID: <bfb35eec-a882-7794-7e12-2f7097104762@intel.com>
+Date: Mon, 6 Feb 2023 10:55:51 +0530
+To: "Nautiyal, Ankit K" <ankit.k.nautiyal@intel.com>, Nidhi Gupta
+ <nidhi1.gupta@intel.com>, <igt-dev@lists.freedesktop.org>
+References: <20230131133658.21970-1-nidhi1.gupta@intel.com>
+ <20230131133658.21970-4-nidhi1.gupta@intel.com>
+ <52d23cd1-742d-2504-ed60-91f840687777@intel.com>
+Content-Language: en-US
+From: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
+In-Reply-To: <52d23cd1-742d-2504-ed60-91f840687777@intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t v2] tests/i915/perf_pmu: Add a basic
- perf_pmu test
+Subject: Re: [igt-dev] [PATCH v3 3/7] tests/kms_pipe_crc_basic: Limit the
+ execution to two pipes
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,121 +24,140 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org, tvrtko.ursulin@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Wed, Feb 01, 2023 at 10:09:03AM +0530, Riana Tauro wrote:
->add a test that verifies the i915 pmu directory and
->reads all the events
->
->v2 : use igt_assert_eq instead of igt_assert
->     check errno after loop (Umesh)
->
->Signed-off-by: Riana Tauro <riana.tauro@intel.com>
+Hi Ankit,
 
-lgtm,
+On Mon-06-02-2023 10:10 am, Nautiyal, Ankit K wrote:
+> The help str can mention that option -e stands for execution on all pipes.
+> 
+> Also, there are tests that are restricted to 2 pipes only even on real 
+> hardware, and have -e cmdline parameter to run on all pipes.
+> 
+> Should we just limit to 2 pipes by default, and drop is_simulation?
 
-Reviewed-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+Intention of this patch is to restrict the execution on simulation as it 
+is taking more time to execute which is causing CI timeout.
 
+I don't see any value added to CI if we limit the execution to two pipes 
+on real hardware. Since it is taking just few seconds to complete the 
+execution.
 
->---
-> lib/igt_perf.c        | 11 +++++++++++
-> lib/igt_perf.h        |  1 +
-> tests/i915/perf_pmu.c | 32 ++++++++++++++++++++++++++++++++
-> 3 files changed, 44 insertions(+)
->
->diff --git a/lib/igt_perf.c b/lib/igt_perf.c
->index 11c91c5f..ffe078ad 100644
->--- a/lib/igt_perf.c
->+++ b/lib/igt_perf.c
->@@ -1,5 +1,6 @@
-> #include <errno.h>
-> #include <fcntl.h>
->+#include <limits.h>
-> #include <stdint.h>
-> #include <stdlib.h>
-> #include <string.h>
->@@ -98,6 +99,16 @@ uint64_t igt_perf_type_id(const char *device)
-> 	return strtoull(buf, NULL, 0);
-> }
->
->+int igt_perf_events_dir(int i915)
->+{
->+	char buf[80];
->+	char path[PATH_MAX];
->+
->+	i915_perf_device(i915, buf, sizeof(buf));
->+	snprintf(path, sizeof(path), "/sys/bus/event_source/devices/%s/events", buf);
->+	return open(path, O_RDONLY);
->+}
->+
-> static int
-> _perf_open(uint64_t type, uint64_t config, int group, uint64_t format)
-> {
->diff --git a/lib/igt_perf.h b/lib/igt_perf.h
->index 672bfea6..4d86e31a 100644
->--- a/lib/igt_perf.h
->+++ b/lib/igt_perf.h
->@@ -54,6 +54,7 @@ perf_event_open(struct perf_event_attr *attr,
-> }
->
-> uint64_t igt_perf_type_id(const char *device);
->+int igt_perf_events_dir(int i915);
-> int igt_perf_open(uint64_t type, uint64_t config);
-> int igt_perf_open_group(uint64_t type, uint64_t config, int group);
->
->diff --git a/tests/i915/perf_pmu.c b/tests/i915/perf_pmu.c
->index f363db2b..c1779fc9 100644
->--- a/tests/i915/perf_pmu.c
->+++ b/tests/i915/perf_pmu.c
->@@ -2132,6 +2132,34 @@ static void test_unload(unsigned int num_engines)
-> 	igt_assert_eq(__igt_i915_driver_unload(NULL), 0);
-> }
->
->+static void pmu_read(int i915)
->+{
->+	char val[128];
->+	int pmu_fd;
->+	struct dirent *de;
->+	DIR *dir;
->+
->+	pmu_fd = igt_perf_events_dir(i915);
->+	igt_require(pmu_fd >= 0);
->+
->+	dir = fdopendir(dup(pmu_fd));
->+	igt_assert(dir);
->+	rewinddir(dir);
->+
->+	errno = 0;
->+	while ((de = readdir(dir))) {
->+		if (de->d_type != DT_REG)
->+			continue;
->+
->+		igt_assert_eq(igt_sysfs_scanf(pmu_fd, de->d_name, "%127s", val), 1);
->+		igt_debug("'%s': %s\n", de->d_name, val);
->+	}
->+
->+	igt_assert_eq(errno, 0);
->+	closedir(dir);
->+	close(pmu_fd);
->+}
->+
-> #define test_each_engine(T, i915, ctx, e) \
-> 	igt_subtest_with_dynamic(T) for_each_ctx_engine(i915, ctx, e) \
-> 		igt_dynamic_f("%s", e->name)
->@@ -2167,6 +2195,10 @@ igt_main
-> 		igt_require(num_engines);
-> 	}
->
->+	igt_describe("Verify i915 pmu dir exists and read all events");
->+	igt_subtest("pmu-read")
->+		pmu_read(fd);
->+
-> 	/**
-> 	 * Test invalid access via perf API is rejected.
-> 	 */
->-- 
->2.39.0
->
+Here we have a latest patch [1] where we mentioned about the option -e
+
+[1]: https://patchwork.freedesktop.org/series/113635/
+
+- Bhanu
+
+> 
+> Regards,
+> 
+> Ankit
+> 
+> 
+> On 1/31/2023 7:06 PM, Nidhi Gupta wrote:
+>> From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+>>
+>> As the execution is taking more time, limit the execution to two (first
+>> & last) pipes.
+>>
+>> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+>> Signed-off-by: Nidhi Gupta <nidhi1.gupta@intel.com>
+>> ---
+>>   tests/kms_pipe_crc_basic.c | 41 +++++++++++++++++++++++++++++++++++++-
+>>   1 file changed, 40 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/tests/kms_pipe_crc_basic.c b/tests/kms_pipe_crc_basic.c
+>> index 91a1b8ab..97b97863 100644
+>> --- a/tests/kms_pipe_crc_basic.c
+>> +++ b/tests/kms_pipe_crc_basic.c
+>> @@ -30,6 +30,7 @@
+>>   #include <string.h>
+>>   #include <fcntl.h>
+>> +static bool extended = false;
+>>   typedef struct {
+>>       int drm_fd;
+>> @@ -276,7 +277,23 @@ static void test_disable_crc_after_crtc(data_t 
+>> *data, enum pipe pipe,
+>>   data_t data = {0, };
+>> -igt_main
+>> +static int opt_handler(int opt, int opt_index, void *_data)
+>> +{
+>> +    switch (opt) {
+>> +        case 'e':
+>> +            extended = true;
+>> +            break;
+>> +        default:
+>> +            return IGT_OPT_HANDLER_ERROR;
+>> +    }
+>> +
+>> +    return IGT_OPT_HANDLER_SUCCESS;
+>> +}
+>> +
+>> +const char *help_str =
+>> +    "  -e \tExtended tests.\n";
+>> +
+>> +igt_main_args("e", NULL, help_str, opt_handler, NULL)
+>>   {
+>>       enum pipe pipe;
+>>       igt_output_t *output;
+>> @@ -298,6 +315,8 @@ igt_main
+>>           { "hang-read-crc", TEST_HANG,
+>>               "Hang test for pipe CRC read." },
+>>       };
+>> +    enum pipe active_pipes[IGT_MAX_PIPES];
+>> +    uint32_t last_pipe = 0;
+>>       int i;
+>>       igt_fixture {
+>> @@ -312,6 +331,11 @@ igt_main
+>>           igt_require_pipe_crc(data.drm_fd);
+>>           data.debugfs = igt_debugfs_dir(data.drm_fd);
+>> +
+>> +        /* Get active pipes. */
+>> +        for_each_pipe(&data.display, pipe)
+>> +            active_pipes[last_pipe++] = pipe;
+>> +        last_pipe--;
+>>       }
+>>       igt_describe("Tests error handling when the bad source is set.");
+>> @@ -322,6 +346,11 @@ igt_main
+>>           igt_describe(tests[i].desc);
+>>           igt_subtest_with_dynamic(tests[i].name) {
+>>               for_each_pipe_with_single_output(&data.display, pipe, 
+>> output) {
+>> +                if (igt_run_in_simulation() && !extended &&
+>> +                    pipe != active_pipes[0] &&
+>> +                    pipe != active_pipes[last_pipe])
+>> +                    continue;
+>> +
+>>                   igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), 
+>> output->name) {
+>>                       if (tests[i].flags & TEST_SUSPEND) {
+>>                           test_read_crc(&data, pipe, output, 0);
+>> @@ -350,6 +379,11 @@ igt_main
+>>                "does not cause issues.");
+>>       igt_subtest_with_dynamic("disable-crc-after-crtc") {
+>>           for_each_pipe_with_single_output(&data.display, pipe, output) {
+>> +            if (igt_run_in_simulation() && !extended &&
+>> +                pipe != active_pipes[0] &&
+>> +                pipe != active_pipes[last_pipe])
+>> +                continue;
+>> +
+>>               igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), 
+>> output->name)
+>>                   test_disable_crc_after_crtc(&data, pipe, output);
+>>           }
+>> @@ -358,6 +392,11 @@ igt_main
+>>       igt_describe("Basic sanity check for CRC mismatches");
+>>       igt_subtest_with_dynamic("compare-crc-sanitycheck") {
+>>           for_each_pipe_with_single_output(&data.display, pipe, output) {
+>> +            if (igt_run_in_simulation() && !extended &&
+>> +                pipe != active_pipes[0] &&
+>> +                pipe != active_pipes[last_pipe])
+>> +                continue;
+>> +
+>>               igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), 
+>> output->name)
+>>                   test_compare_crc(&data, pipe, output);
+>>           }
