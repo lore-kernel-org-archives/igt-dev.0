@@ -1,21 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 92C6E10E12D
- for <igt-dev@lists.freedesktop.org>; Fri, 10 Feb 2023 08:19:12 +0000 (UTC)
-Message-ID: <c10f5522-64e4-b4b8-6fbe-72fac1b33f9e@intel.com>
-Date: Fri, 10 Feb 2023 13:48:58 +0530
-Content-Language: en-US
-To: Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
- <igt-dev@lists.freedesktop.org>
-References: <20230210042419.1744563-1-bhanuprakash.modem@intel.com>
- <20230210042419.1744563-2-bhanuprakash.modem@intel.com>
-From: Karthik B S <karthik.b.s@intel.com>
-In-Reply-To: <20230210042419.1744563-2-bhanuprakash.modem@intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/alternative;
+ boundary="===============0965039288378791423=="
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [i-g-t 2/2] tests/kms_cursor_edge_walk: Limit the
- execution to two pipes
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Swati Sharma" <swati2.sharma@intel.com>
+Date: Mon, 06 Feb 2023 07:14:40 -0000
+Message-ID: <167566768048.27493.10084905014279564547@emeril.freedesktop.org>
+References: <20230206064018.23932-1-swati2.sharma@intel.com>
+In-Reply-To: <20230206064018.23932-1-swati2.sharma@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
+ =?utf-8?q?kms=5Fplane=5Fscaling=3A_Add_downscaling+upscaling_tests?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,98 +17,177 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Nidhi Gupta <nidhi1.gupta@intel.com>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
+--===============0965039288378791423==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-On 2/10/2023 9:54 AM, Bhanuprakash Modem wrote:
-> To optimize the test execution time, limit the execution to
-> two (first & last) pipes. This patch will also provide an
-> option (command line flag '--extended') to execute on all
-> pipes.
->
-> Example:
-> ./kms_cursor_edge_walk --extended --run-subtest 64x64-left-edge
->
-> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-> Signed-off-by: Nidhi Gupta <nidhi1.gupta@intel.com>
-Reviewed-by: Karthik B S <karthik.b.s@intel.com>
-> ---
->   tests/kms_cursor_edge_walk.c | 22 +++++++++++++++++++++-
->   1 file changed, 21 insertions(+), 1 deletion(-)
->
-> diff --git a/tests/kms_cursor_edge_walk.c b/tests/kms_cursor_edge_walk.c
-> index 96812776c..304c0ea8f 100644
-> --- a/tests/kms_cursor_edge_walk.c
-> +++ b/tests/kms_cursor_edge_walk.c
-> @@ -60,6 +60,10 @@ enum {
->   	EDGE_BOTTOM = 0x8,
->   };
->   
-> +static bool extended;
-> +static enum pipe active_pipes[IGT_MAX_PIPES];
-> +static uint32_t last_pipe;
-> +
->   static void create_cursor_fb(data_t *data, int cur_w, int cur_h)
->   {
->   	cairo_t *cr;
-> @@ -284,6 +288,9 @@ static int opt_handler(int opt, int opt_index, void *_data)
->   	case 'd':
->   		data->disable = true;
->   		break;
-> +	case 'e':
-> +		extended = true;
-> +		break;
->   	case 'j':
->   		data->jump = true;
->   		break;
-> @@ -300,12 +307,14 @@ static const struct option long_opts[] = {
->   	{ .name = "colored", .val = 'c' },
->   	{ .name = "disable", .val = 'd'},
->   	{ .name = "jump", .val = 'j' },
-> +	{ .name = "extended", .val = 'e'},
->   	{}
->   };
->   static const char *help_str =
->   	"  --colored\t\tUse a colored cursor (disables CRC checks)\n"
->   	"  --disable\t\tDisable the cursor between each step\n"
-> -	"  --jump\t\tJump the cursor to middle of the screen between each step)\n";
-> +	"  --jump\t\tJump the cursor to middle of the screen between each step)\n"
-> +	"  --extended\t\tRun on all pipes.(Default it will Run only two pipes)\n";
->   
->   igt_main_args("", long_opts, help_str, opt_handler, &data)
->   {
-> @@ -322,6 +331,7 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
->   
->   	igt_fixture {
->   		int ret;
-> +		enum pipe pipe;
->   
->   		data.drm_fd = drm_open_driver_master(DRIVER_ANY);
->   
-> @@ -340,6 +350,12 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
->   
->   		igt_display_require(&data.display, data.drm_fd);
->   		igt_display_require_output(&data.display);
-> +
-> +		/* Get active pipes. */
-> +		last_pipe = 0;
-> +		for_each_pipe(&data.display, pipe)
-> +			active_pipes[last_pipe++] = pipe;
-> +		last_pipe--;
->   	}
->   
->   	for (i = 0; i < ARRAY_SIZE(tests); i++) {
-> @@ -353,6 +369,10 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
->   			igt_subtest_with_dynamic_f("%dx%d-%s", data.curw,
->   						   data.curh, tests[i].name) {
->   				for_each_pipe_with_single_output(&data.display, data.pipe, data.output) {
-> +					if (!extended && data.pipe != active_pipes[0] &&
-> +					    data.pipe != active_pipes[last_pipe])
-> +						continue;
-> +
->   					igt_dynamic_f("pipe-%s-%s",
->   						      kmstest_pipe_name(data.pipe),
->   						      data.output->name)
+== Series Details ==
+
+Series: tests/kms_plane_scaling: Add downscaling+upscaling tests
+URL   : https://patchwork.freedesktop.org/series/113692/
+State : success
+
+== Summary ==
+
+CI Bug Log - changes from CI_DRM_12697 -> IGTPW_8448
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8448/index.html
+
+Participating hosts (26 -> 25)
+------------------------------
+
+  Missing    (1): fi-snb-2520m 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_8448 that come from known issues:
+
+### IGT changes ###
+
+#### Possible fixes ####
+
+  * igt@i915_selftest@live@gt_heartbeat:
+    - {bat-jsl-3}:        [DMESG-FAIL][1] ([i915#5334]) -> [PASS][2]
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12697/bat-jsl-3/igt@i915_selftest@live@gt_heartbeat.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8448/bat-jsl-3/igt@i915_selftest@live@gt_heartbeat.html
+
+  * igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions:
+    - fi-bsw-n3050:       [FAIL][3] ([i915#6298]) -> [PASS][4]
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12697/fi-bsw-n3050/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8448/fi-bsw-n3050/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [i915#5334]: https://gitlab.freedesktop.org/drm/intel/issues/5334
+  [i915#6298]: https://gitlab.freedesktop.org/drm/intel/issues/6298
+  [i915#6997]: https://gitlab.freedesktop.org/drm/intel/issues/6997
+  [i915#7932]: https://gitlab.freedesktop.org/drm/intel/issues/7932
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_7149 -> IGTPW_8448
+
+  CI-20190529: 20190529
+  CI_DRM_12697: 36bc05063652a1bb1a8c00c19c39281dc7ecf015 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_8448: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8448/index.html
+  IGT_7149: 1c7ea154b625e1fb826f1519b816b4256dd10b62 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+
+Testlist changes
+----------------
+
++igt@kms_plane_scaling@planes-downscale-factor-0-5-unity-scaling
++igt@kms_plane_scaling@planes-downscale-factor-0-5-upscale-0-25
++igt@kms_plane_scaling@planes-downscale-factor-0-5-upscale-20x20
++igt@kms_plane_scaling@planes-downscale-factor-0-25-unity-scaling
++igt@kms_plane_scaling@planes-downscale-factor-0-25-upscale-0-25
++igt@kms_plane_scaling@planes-downscale-factor-0-25-upscale-20x20
++igt@kms_plane_scaling@planes-downscale-factor-0-75-unity-scaling
++igt@kms_plane_scaling@planes-downscale-factor-0-75-upscale-0-25
++igt@kms_plane_scaling@planes-downscale-factor-0-75-upscale-20x20
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8448/index.html
+
+--===============0965039288378791423==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/kms_plane_scaling: Add downscaling+upscaling tests</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/113692/">https://patchwork.freedesktop.org/series/113692/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8448/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8448/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_12697 -&gt; IGTPW_8448</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8448/index.html</p>
+<h2>Participating hosts (26 -&gt; 25)</h2>
+<p>Missing    (1): fi-snb-2520m </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_8448 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live@gt_heartbeat:</p>
+<ul>
+<li>{bat-jsl-3}:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12697/bat-jsl-3/igt@i915_selftest@live@gt_heartbeat.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5334">i915#5334</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8448/bat-jsl-3/igt@i915_selftest@live@gt_heartbeat.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions:</p>
+<ul>
+<li>fi-bsw-n3050:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12697/fi-bsw-n3050/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6298">i915#6298</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8448/fi-bsw-n3050/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_7149 -&gt; IGTPW_8448</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_12697: 36bc05063652a1bb1a8c00c19c39281dc7ecf015 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_8448: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8448/index.html<br />
+  IGT_7149: 1c7ea154b625e1fb826f1519b816b4256dd10b62 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+<h2>Testlist changes</h2>
+<p>+igt@kms_plane_scaling@planes-downscale-factor-0-5-unity-scaling<br />
++igt@kms_plane_scaling@planes-downscale-factor-0-5-upscale-0-25<br />
++igt@kms_plane_scaling@planes-downscale-factor-0-5-upscale-20x20<br />
++igt@kms_plane_scaling@planes-downscale-factor-0-25-unity-scaling<br />
++igt@kms_plane_scaling@planes-downscale-factor-0-25-upscale-0-25<br />
++igt@kms_plane_scaling@planes-downscale-factor-0-25-upscale-20x20<br />
++igt@kms_plane_scaling@planes-downscale-factor-0-75-unity-scaling<br />
++igt@kms_plane_scaling@planes-downscale-factor-0-75-upscale-0-25<br />
++igt@kms_plane_scaling@planes-downscale-factor-0-75-upscale-20x20</p>
+
+</body>
+</html>
+
+--===============0965039288378791423==--
