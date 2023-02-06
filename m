@@ -1,19 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Date: Mon, 6 Feb 2023 15:04:29 +0100
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Message-ID: <20230206140429.z7e5i5ed6mz3xkew@kamilkon-desk1>
-References: <20230131113237.3707217-1-tvrtko.ursulin@linux.intel.com>
- <20230131113237.3707217-9-tvrtko.ursulin@linux.intel.com>
- <20230203164224.6y3qx4yztt7hd5cu@kamilkon-desk1>
- <0edf920f-0ba8-2aa7-6b52-07facb400b3f@linux.intel.com>
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8271410E412
+ for <igt-dev@lists.freedesktop.org>; Mon,  6 Feb 2023 16:12:34 +0000 (UTC)
+Message-ID: <9a2707a7-2449-eb38-3b0d-20d96a5a7460@intel.com>
+Date: Mon, 6 Feb 2023 21:42:28 +0530
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <0edf920f-0ba8-2aa7-6b52-07facb400b3f@linux.intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 8/8] gputop: Basic vendor agnostic GPU
- top tool
+Content-Language: en-US
+To: Nidhi Gupta <nidhi1.gupta@intel.com>, igt-dev@lists.freedesktop.org
+References: <20230206102030.14055-1-nidhi1.gupta@intel.com>
+From: Swati Sharma <swati2.sharma@intel.com>
+In-Reply-To: <20230206102030.14055-1-nidhi1.gupta@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Subject: Re: [igt-dev] [PATCH i-g-t v4] tests/kms_pipe_crc_basic: Limit the
+ execution to two pipes
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,85 +21,143 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Rob Clark <robdclark@chromium.org>,
- Tvrtko Ursulin <tvrtko.ursulin@intel.com>,
- Christian =?utf-8?B?S8O2bmln?= <ckoenig.leichtzumerken@gmail.com>,
- Intel-gfx@lists.freedesktop.org,
- Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Tvrtko,
+Patch LGTM.
 
-On 2023-02-06 at 09:19:02 +0000, Tvrtko Ursulin wrote:
-> 
-> On 03/02/2023 16:42, Kamil Konieczny wrote:
-> > Hi Tvrtko,
-> > 
-> > On 2023-01-31 at 11:32:37 +0000, Tvrtko Ursulin wrote:
-> > > From: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
-> > > 
-> > > Rudimentary vendor agnostic example of how lib_igt_drm_clients can be used
-> > > to display a sorted by card and usage list of processes using GPUs.
-> > > 
-> > > Borrows a bit of code from intel_gpu_top but for now omits the fancy
-> > > features like interactive functionality, card selection, client
-> > > aggregation, sort modes, JSON output  and pretty engine names. Also no
-> > > support for global GPU or system metrics.
-> > > 
-> > > On the other hand it shows clients from all DRM cards which
-> > > intel_gpu_top does not do.
-> > > 
-> > > Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
-> > > Cc: Rob Clark <robdclark@chromium.org>
-> > > Cc: Christian König <ckoenig.leichtzumerken@gmail.com>
-> > > Acked-by: Christian König <christian.koenig@amd.com>
-> > 
-> > I run it with:
-> > # ./gputop
-> > 
-> > but it do not work on my Skylake card, I see no output,
-> > kernel 5.19.0-29-generic, ubuntu 22.10
-> 
-> Odd, 5.19 should have the support. Intel_gpu_top works - it is showing the
-> individual clients?
+Reviewed-by: Swati Sharma <swati2.sharma@intel.com>
 
-There is no display nor any gpu app running, when I run some igt tests
-then it does sometimes prints some activity. Intel_gpu_top works and
-shows headers and zero activity so it mislead me.
+On 06-Feb-23 3:50 PM, Nidhi Gupta wrote:
+> From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+> 
+> As the test execution is taking more time on simulation, limit the
+> execution to two (first & last) pipes. This optimization is for
+> simulation only and hence there will be no impact on real hardware.
+> 
+> This patch will also provide an option (command line flag '-e') to
+> execute on all pipes.
+> 
+> Example: ./kms_pipe_crc_basic -e --run-subtest read-crc
+> 
+> V2: - Edited commit message (Bhanu)
+> V3: - New function for simulation constraints (Kamil)
+>      - Update commit message (Bhanu)
+> v4: -Fix checkpatch errors (Swati)
+> 
+> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+> Signed-off-by: Nidhi Gupta <nidhi1.gupta@intel.com>
+> ---
+>   tests/kms_pipe_crc_basic.c | 46 +++++++++++++++++++++++++++++++++++++-
+>   1 file changed, 45 insertions(+), 1 deletion(-)
+> 
+> diff --git a/tests/kms_pipe_crc_basic.c b/tests/kms_pipe_crc_basic.c
+> index 91a1b8ab..b0b8665b 100644
+> --- a/tests/kms_pipe_crc_basic.c
+> +++ b/tests/kms_pipe_crc_basic.c
+> @@ -30,6 +30,9 @@
+>   #include <string.h>
+>   #include <fcntl.h>
+>   
+> +static bool extended;
+> +static enum pipe active_pipes[IGT_MAX_PIPES];
+> +static uint32_t last_pipe;
+>   
+>   typedef struct {
+>   	int drm_fd;
+> @@ -46,6 +49,16 @@ static struct {
+>   	{ .r = 0.0, .g = 1.0, .b = 1.0 },
+>   };
+>   
+> +static bool simulation_constraint(enum pipe pipe)
+> +{
+> +	if (igt_run_in_simulation() && !extended &&
+> +	    pipe != active_pipes[0] &&
+> +	    pipe != active_pipes[last_pipe])
+> +		return true;
+> +
+> +	return false;
+> +}
+> +
+>   static void test_bad_source(data_t *data)
+>   {
+>   	errno = 0;
+> @@ -276,7 +289,23 @@ static void test_disable_crc_after_crtc(data_t *data, enum pipe pipe,
+>   
+>   data_t data = {0, };
+>   
+> -igt_main
+> +static int opt_handler(int opt, int opt_index, void *_data)
+> +{
+> +	switch (opt) {
+> +	case 'e':
+> +		extended = true;
+> +		break;
+> +	default:
+> +		return IGT_OPT_HANDLER_ERROR;
+> +	}
+> +
+> +	return IGT_OPT_HANDLER_SUCCESS;
+> +}
+> +
+> +const char *help_str =
+> +	"  -e \tExtended tests.\n";
+> +
+> +igt_main_args("e", NULL, help_str, opt_handler, NULL)
+>   {
+>   	enum pipe pipe;
+>   	igt_output_t *output;
+> @@ -299,6 +328,7 @@ igt_main
+>   			"Hang test for pipe CRC read." },
+>   	};
+>   	int i;
+> +	last_pipe = 0;
+>   
+>   	igt_fixture {
+>   		data.drm_fd = drm_open_driver_master(DRIVER_ANY);
+> @@ -312,6 +342,11 @@ igt_main
+>   		igt_require_pipe_crc(data.drm_fd);
+>   
+>   		data.debugfs = igt_debugfs_dir(data.drm_fd);
+> +
+> +		/* Get active pipes. */
+> +		for_each_pipe(&data.display, pipe)
+> +			active_pipes[last_pipe++] = pipe;
+> +		last_pipe--;
+>   	}
+>   
+>   	igt_describe("Tests error handling when the bad source is set.");
+> @@ -322,6 +357,9 @@ igt_main
+>   		igt_describe(tests[i].desc);
+>   		igt_subtest_with_dynamic(tests[i].name) {
+>   			for_each_pipe_with_single_output(&data.display, pipe, output) {
+> +				if (simulation_constraint(pipe))
+> +					continue;
+> +
+>   				igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), output->name) {
+>   					if (tests[i].flags & TEST_SUSPEND) {
+>   						test_read_crc(&data, pipe, output, 0);
+> @@ -350,6 +388,9 @@ igt_main
+>   		     "does not cause issues.");
+>   	igt_subtest_with_dynamic("disable-crc-after-crtc") {
+>   		for_each_pipe_with_single_output(&data.display, pipe, output) {
+> +			if (simulation_constraint(pipe))
+> +				continue;
+> +
+>   			igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), output->name)
+>   				test_disable_crc_after_crtc(&data, pipe, output);
+>   		}
+> @@ -358,6 +399,9 @@ igt_main
+>   	igt_describe("Basic sanity check for CRC mismatches");
+>   	igt_subtest_with_dynamic("compare-crc-sanitycheck") {
+>   		for_each_pipe_with_single_output(&data.display, pipe, output) {
+> +			if (simulation_constraint(pipe))
+> +				continue;
+> +
+>   			igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), output->name)
+>   				test_compare_crc(&data, pipe, output);
+>   		}
 
-> 
-> > 
-> > # ./lsgpu
-> > card0                    Intel Skylake (Gen9)              drm:/dev/dri/card0
-> > └─renderD128                                               drm:/dev/dri/renderD128
-> > 
-> > Please add some options like debug, version, debug with high
-> > verbose level, help. It seems like q or Q do not exit.
-> 
-> As the cover letter hints I was only set out to demonstrate an extremely
-> rudimentary vendor agnostic tool. To quote the cover letter more - "..It
-> also makes no effort to provide sorting modes, well any interactivity, or
-> any pretty names for GPUs or engines..". I have no scope presently to make
-> it better or nicer.
-> 
-> The tool however can serve as a starting point and people had reported it
-> working as-is with a few other drivers, AMD, msm and most recently I believe
-> etnaviv. So perhaps a pool of people to further improve it will be found
-> there in the future.
-> 
-> In summary I think it's worth reviewing so that the common code gets
-> extracted from intel_gpu_top into respective libraries. After that I was
-> hoping other people start contributing further improvements.
-> 
-> Regards,
-> 
-> Tvrtko
-
-I agree it is good starting point, it may have something like overall
-gpu activity, imho something which shows gpu % usage (mem % and power %)
-for all GPUs present.
-
-Regards,
-Kamil
+-- 
+~Swati Sharma
