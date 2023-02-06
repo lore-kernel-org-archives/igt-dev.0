@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8683010E1A3
- for <igt-dev@lists.freedesktop.org>; Mon,  6 Feb 2023 23:32:28 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 21A9C10E1AC
+ for <igt-dev@lists.freedesktop.org>; Mon,  6 Feb 2023 23:32:30 +0000 (UTC)
 From: Nidhi Gupta <nidhi1.gupta@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue,  7 Feb 2023 05:08:09 +0530
-Message-Id: <20230206233810.16696-5-nidhi1.gupta@intel.com>
+Date: Tue,  7 Feb 2023 05:08:10 +0530
+Message-Id: <20230206233810.16696-6-nidhi1.gupta@intel.com>
 In-Reply-To: <20230206233810.16696-1-nidhi1.gupta@intel.com>
 References: <20230206233810.16696-1-nidhi1.gupta@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 4/5] tests/i915/kms_draw_crc: Ignore RGB565
- & XRGB2101010 formats on simulation
+Subject: [igt-dev] [PATCH i-g-t 5/5] tests/i915/kms_frontbuffer_tracking:
+ Reduce the execution time on simulation
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,50 +24,30 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+With IGT_DRAW_RENDER draw method test is taking lot of time to
+complete causing timeout in simulation, to avoid the time out
+skipping IGT_DRAW_METHOD only for simulation
 
-As RGB565 and XRGB2101010 formats are bit slow in pre-si, we can
-ignore to improve the execution time.
-
+Reviewed-by: Karthik B S <karthik.b.s@intel.com>
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 Signed-off-by: Nidhi Gupta <nidhi1.gupta@intel.com>
 ---
- tests/i915/kms_draw_crc.c | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+ tests/i915/kms_frontbuffer_tracking.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/tests/i915/kms_draw_crc.c b/tests/i915/kms_draw_crc.c
-index c2ac4721..64e2e820 100644
---- a/tests/i915/kms_draw_crc.c
-+++ b/tests/i915/kms_draw_crc.c
-@@ -290,10 +290,19 @@ igt_main
- 		     "with different modifiers, DRM_FORMATS, DRAW_METHODS.");
- 	igt_subtest_with_dynamic("draw-method") {
- 		for (format_idx = 0; format_idx < ARRAY_SIZE(formats); format_idx++) {
-+			/* 10-bit formats are bit slow, ignore in pre-si. */
-+			if (igt_run_in_simulation() &&
-+			    (formats[format_idx] == DRM_FORMAT_XRGB2101010 ||
-+			    formats[format_idx] == DRM_FORMAT_RGB565))
-+				continue;
+diff --git a/tests/i915/kms_frontbuffer_tracking.c b/tests/i915/kms_frontbuffer_tracking.c
+index 5b47999e..1d05a916 100644
+--- a/tests/i915/kms_frontbuffer_tracking.c
++++ b/tests/i915/kms_frontbuffer_tracking.c
+@@ -3159,6 +3159,9 @@ static void basic_subtest(const struct test_mode *t)
+ 	fb1 = params->primary.fb;
+ 
+ 	for (r = 0, method = 0; method < IGT_DRAW_METHOD_COUNT; method++) {
++		if (igt_run_in_simulation() && method == IGT_DRAW_RENDER)
++			continue;
 +
- 			for (method = 0; method < IGT_DRAW_METHOD_COUNT; method++) {
- 				for (modifier_idx = 0; modifier_idx < ARRAY_SIZE(modifiers); modifier_idx++) {
- 					modifier = modifiers[modifier_idx];
- 
-+					if (!igt_display_has_format_mod(&display, formats[format_idx], modifier))
-+						continue;
-+
- 					if (method == IGT_DRAW_MMAP_WC && !gem_mmap__has_wc(drm_fd))
- 						continue;
- 
-@@ -301,9 +310,6 @@ igt_main
- 					    !gem_has_mappable_ggtt(drm_fd))
- 						continue;
- 
--					if (!igt_display_has_format_mod(&display, formats[format_idx], modifier))
--						continue;
--
- 					igt_dynamic_f("%s-%s-%s",
- 						      format_str(format_idx),
- 						      igt_draw_get_method_name(method),
+ 		if (method == IGT_DRAW_MMAP_GTT &&
+ 		    !gem_has_mappable_ggtt(drm.fd))
+ 			continue;
 -- 
 2.39.0
