@@ -1,22 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id F0C5910E391
- for <igt-dev@lists.freedesktop.org>; Mon,  6 Feb 2023 11:43:47 +0000 (UTC)
-From: "Govindapillai, Vinod" <vinod.govindapillai@intel.com>
-To: "ville.syrjala@linux.intel.com" <ville.syrjala@linux.intel.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-Date: Mon, 6 Feb 2023 11:43:43 +0000
-Message-ID: <7f19c24ae0143e0844685f6ab21d14e022b1a03a.camel@intel.com>
-References: <20230125045522.18169-1-ville.syrjala@linux.intel.com>
- <20230125045522.18169-4-ville.syrjala@linux.intel.com>
-In-Reply-To: <20230125045522.18169-4-ville.syrjala@linux.intel.com>
-Content-Language: en-US
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <8A03AEA347F6E94E8E017A7239EE42BC@namprd11.prod.outlook.com>
-Content-Transfer-Encoding: base64
+Date: Mon, 6 Feb 2023 15:04:29 +0100
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Message-ID: <20230206140429.z7e5i5ed6mz3xkew@kamilkon-desk1>
+References: <20230131113237.3707217-1-tvrtko.ursulin@linux.intel.com>
+ <20230131113237.3707217-9-tvrtko.ursulin@linux.intel.com>
+ <20230203164224.6y3qx4yztt7hd5cu@kamilkon-desk1>
+ <0edf920f-0ba8-2aa7-6b52-07facb400b3f@linux.intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t 04/10] tools/intel_watermark: Read LP
- usage from FPGA_DBG on ivb
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <0edf920f-0ba8-2aa7-6b52-07facb400b3f@linux.intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 8/8] gputop: Basic vendor agnostic GPU
+ top tool
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,41 +21,85 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: Rob Clark <robdclark@chromium.org>,
+ Tvrtko Ursulin <tvrtko.ursulin@intel.com>,
+ Christian =?utf-8?B?S8O2bmln?= <ckoenig.leichtzumerken@gmail.com>,
+ Intel-gfx@lists.freedesktop.org,
+ Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gV2VkLCAyMDIzLTAxLTI1IGF0IDA2OjU1ICswMjAwLCBWaWxsZSBTeXJqYWxhIHdyb3RlOgo+
-IEZyb206IFZpbGxlIFN5cmrDpGzDpCA8dmlsbGUuc3lyamFsYUBsaW51eC5pbnRlbC5jb20+Cj4g
-Cj4gT24gaXZiIEZQR0FfREJHIGNvbnRhaW5zIHRoZSBzaW1pbGFyIExQIGxldmVsIHN0aWNreSBi
-aXRzIHRoYXQKPiBhcmUgcHJlc2VudCBpbiBXTV9EQkcgb24gaHN3Ky4gTGV0J3MgZHVtcCB0aGVz
-ZSBvdXQuCj4gCj4gU2lnbmVkLW9mZi1ieTogVmlsbGUgU3lyasOkbMOkIDx2aWxsZS5zeXJqYWxh
-QGxpbnV4LmludGVsLmNvbT4KPiAtLS0KClJldmlld2VkLWJ5OiBWaW5vZCBHb3ZpbmRhcGlsbGFp
-IDx2aW5vZC5nb3ZpbmRhcGlsbGFpQGludGVsLmNvbT4KCj4gwqB0b29scy9pbnRlbF93YXRlcm1h
-cmsuYyB8IDE2ICsrKysrKysrKysrKysrKysKPiDCoDEgZmlsZSBjaGFuZ2VkLCAxNiBpbnNlcnRp
-b25zKCspCj4gCj4gZGlmZiAtLWdpdCBhL3Rvb2xzL2ludGVsX3dhdGVybWFyay5jIGIvdG9vbHMv
-aW50ZWxfd2F0ZXJtYXJrLmMKPiBpbmRleCA4NjMyNjFlODIzYTUuLmVhYzQwZTRhNWQxNyAxMDA2
-NDQKPiAtLS0gYS90b29scy9pbnRlbF93YXRlcm1hcmsuYwo+ICsrKyBiL3Rvb2xzL2ludGVsX3dh
-dGVybWFyay5jCj4gQEAgLTc2Myw2ICs3NjMsMjIgQEAgc3RhdGljIHZvaWQgaWxrX3dtX2R1bXAo
-dm9pZCkKPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoHByaW50ZigiXG4iKTsKPiDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoC8qIGNsZWFyIHRoZSBzdGlja3kgYml0cyAq
-Lwo+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgd3JpdGVfcmVnKDB4NDUyODAsIHdt
-X2RiZyk7Cj4gK8KgwqDCoMKgwqDCoMKgfSBlbHNlIGlmIChJU19JVllCUklER0UoZGV2aWQpKSB7
-Cj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoHVpbnQzMl90IGZwZ2FfZGJnOwo+ICsK
-PiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgZnBnYV9kYmcgPSByZWFkX3JlZygweDQy
-MzAwKTsKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgcHJpbnRmKCJGUEdBX0RCRzog
-MHglMDh4XG4iLCBmcGdhX2RiZyk7Cj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoHBy
-aW50ZigiIExQIHVzZWQ6Iik7Cj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGlmIChm
-cGdhX2RiZyAmICgxIDw8IDE4KSkKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoHByaW50ZigiIExQMC41Iik7Cj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoGZvciAoaSA9IDE7IGkgPCA0OyBpKyspIHsKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGlmIChmcGdhX2RiZyAmICgxIDw8ICgxOCtpKSkpCj4g
-K8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgcHJpbnRmKCIgTFAlZCIsIGkpOwo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqB9Cj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoHByaW50ZigiXG4iKTsKPiArwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgLyogY2xlYXIgdGhlIHN0aWNreSBMUCBiaXRzICov
-Cj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGZwZ2FfZGJnICY9IDEgPDwgMjEgfCAx
-IDw8IDIwIHwgMSA8PCAxOSB8IDEgPDwgMTg7Cj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoHdyaXRlX3JlZygweDQyMzAwLCBmcGdhX2RiZyk7Cj4gwqDCoMKgwqDCoMKgwqDCoH0KPiDC
-oAo+IMKgwqDCoMKgwqDCoMKgwqBpbnRlbF9yZWdpc3Rlcl9hY2Nlc3NfZmluaSgmbW1pb19kYXRh
-KTsKCg==
+Hi Tvrtko,
+
+On 2023-02-06 at 09:19:02 +0000, Tvrtko Ursulin wrote:
+> 
+> On 03/02/2023 16:42, Kamil Konieczny wrote:
+> > Hi Tvrtko,
+> > 
+> > On 2023-01-31 at 11:32:37 +0000, Tvrtko Ursulin wrote:
+> > > From: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+> > > 
+> > > Rudimentary vendor agnostic example of how lib_igt_drm_clients can be used
+> > > to display a sorted by card and usage list of processes using GPUs.
+> > > 
+> > > Borrows a bit of code from intel_gpu_top but for now omits the fancy
+> > > features like interactive functionality, card selection, client
+> > > aggregation, sort modes, JSON output  and pretty engine names. Also no
+> > > support for global GPU or system metrics.
+> > > 
+> > > On the other hand it shows clients from all DRM cards which
+> > > intel_gpu_top does not do.
+> > > 
+> > > Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+> > > Cc: Rob Clark <robdclark@chromium.org>
+> > > Cc: Christian König <ckoenig.leichtzumerken@gmail.com>
+> > > Acked-by: Christian König <christian.koenig@amd.com>
+> > 
+> > I run it with:
+> > # ./gputop
+> > 
+> > but it do not work on my Skylake card, I see no output,
+> > kernel 5.19.0-29-generic, ubuntu 22.10
+> 
+> Odd, 5.19 should have the support. Intel_gpu_top works - it is showing the
+> individual clients?
+
+There is no display nor any gpu app running, when I run some igt tests
+then it does sometimes prints some activity. Intel_gpu_top works and
+shows headers and zero activity so it mislead me.
+
+> 
+> > 
+> > # ./lsgpu
+> > card0                    Intel Skylake (Gen9)              drm:/dev/dri/card0
+> > └─renderD128                                               drm:/dev/dri/renderD128
+> > 
+> > Please add some options like debug, version, debug with high
+> > verbose level, help. It seems like q or Q do not exit.
+> 
+> As the cover letter hints I was only set out to demonstrate an extremely
+> rudimentary vendor agnostic tool. To quote the cover letter more - "..It
+> also makes no effort to provide sorting modes, well any interactivity, or
+> any pretty names for GPUs or engines..". I have no scope presently to make
+> it better or nicer.
+> 
+> The tool however can serve as a starting point and people had reported it
+> working as-is with a few other drivers, AMD, msm and most recently I believe
+> etnaviv. So perhaps a pool of people to further improve it will be found
+> there in the future.
+> 
+> In summary I think it's worth reviewing so that the common code gets
+> extracted from intel_gpu_top into respective libraries. After that I was
+> hoping other people start contributing further improvements.
+> 
+> Regards,
+> 
+> Tvrtko
+
+I agree it is good starting point, it may have something like overall
+gpu activity, imho something which shows gpu % usage (mem % and power %)
+for all GPUs present.
+
+Regards,
+Kamil
