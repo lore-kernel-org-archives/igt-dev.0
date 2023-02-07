@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============5511842245915464773=="
+Date: Tue, 7 Feb 2023 14:15:41 +0100
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Message-ID: <20230207131541.dd7rfnqcculxplhe@kamilkon-desk1>
+References: <20230203111636.4138202-1-tvrtko.ursulin@linux.intel.com>
+ <20230203111636.4138202-3-tvrtko.ursulin@linux.intel.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Janusz Krzysztofik" <janusz.krzysztofik@linux.intel.com>
-Date: Tue, 07 Feb 2023 11:38:32 -0000
-Message-ID: <167576991266.13142.11099883449365443010@emeril.freedesktop.org>
-References: <20230207101121.104559-1-janusz.krzysztofik@linux.intel.com>
-In-Reply-To: <20230207101121.104559-1-janusz.krzysztofik@linux.intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3IgaTkxNS9w?=
- =?utf-8?q?erf=3A_Make_=5F=5Fperf=5Fopen=28=29_and_friends_public?=
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20230203111636.4138202-3-tvrtko.ursulin@linux.intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 2/3] intel_gpu_top: Rename STDOUT to TEXT
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,237 +17,154 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
+Cc: Intel-gfx@lists.freedesktop.org, Caleb Callaway <caleb.callaway@intel.com>,
+ Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============5511842245915464773==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+On 2023-02-03 at 11:16:35 +0000, Tvrtko Ursulin wrote:
+> From: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+> 
+> Internal cleanup only - the name text is more accurate given the output
+> can also go to a file.
+> 
+> Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+> Cc: Caleb Callaway <caleb.callaway@intel.com>
 
-== Series Details ==
+Lgtm,
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
-Series: i915/perf: Make __perf_open() and friends public
-URL   : https://patchwork.freedesktop.org/series/113733/
-State : failure
-
-== Summary ==
-
-CI Bug Log - changes from CI_DRM_12708 -> IGTPW_8456
-====================================================
-
-Summary
--------
-
-  **FAILURE**
-
-  Serious unknown changes coming with IGTPW_8456 absolutely need to be
-  verified manually.
-  
-  If you think the reported changes have nothing to do with the changes
-  introduced in IGTPW_8456, please notify your bug team to allow them
-  to document this new failure mode, which will reduce false positives in CI.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8456/index.html
-
-Participating hosts (36 -> 36)
-------------------------------
-
-  Additional (1): bat-atsm-1 
-  Missing    (1): fi-snb-2520m 
-
-Possible new issues
--------------------
-
-  Here are the unknown changes that may have been introduced in IGTPW_8456:
-
-### IGT changes ###
-
-#### Possible regressions ####
-
-  * igt@dmabuf@all-tests@dma_fence:
-    - fi-cfl-8109u:       [PASS][1] -> [DMESG-FAIL][2]
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12708/fi-cfl-8109u/igt@dmabuf@all-tests@dma_fence.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8456/fi-cfl-8109u/igt@dmabuf@all-tests@dma_fence.html
-
-  * igt@dmabuf@all-tests@sanitycheck:
-    - fi-cfl-8109u:       [PASS][3] -> [ABORT][4]
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12708/fi-cfl-8109u/igt@dmabuf@all-tests@sanitycheck.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8456/fi-cfl-8109u/igt@dmabuf@all-tests@sanitycheck.html
-
-  
-Known issues
-------------
-
-  Here are the changes found in IGTPW_8456 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@gem_exec_gttfill@basic:
-    - fi-pnv-d510:        [PASS][5] -> [FAIL][6] ([i915#7229])
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12708/fi-pnv-d510/igt@gem_exec_gttfill@basic.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8456/fi-pnv-d510/igt@gem_exec_gttfill@basic.html
-
-  
-#### Possible fixes ####
-
-  * igt@i915_selftest@live@slpc:
-    - {bat-rpls-1}:       [DMESG-FAIL][7] ([i915#6367]) -> [PASS][8]
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12708/bat-rpls-1/igt@i915_selftest@live@slpc.html
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8456/bat-rpls-1/igt@i915_selftest@live@slpc.html
-
-  * igt@i915_selftest@live@workarounds:
-    - {bat-dg2-11}:       [DMESG-WARN][9] -> [PASS][10]
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12708/bat-dg2-11/igt@i915_selftest@live@workarounds.html
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8456/bat-dg2-11/igt@i915_selftest@live@workarounds.html
-
-  * igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions:
-    - fi-bsw-n3050:       [FAIL][11] ([i915#6298]) -> [PASS][12]
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12708/fi-bsw-n3050/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions.html
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8456/fi-bsw-n3050/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [i915#2582]: https://gitlab.freedesktop.org/drm/intel/issues/2582
-  [i915#4077]: https://gitlab.freedesktop.org/drm/intel/issues/4077
-  [i915#4079]: https://gitlab.freedesktop.org/drm/intel/issues/4079
-  [i915#4083]: https://gitlab.freedesktop.org/drm/intel/issues/4083
-  [i915#4983]: https://gitlab.freedesktop.org/drm/intel/issues/4983
-  [i915#5251]: https://gitlab.freedesktop.org/drm/intel/issues/5251
-  [i915#6298]: https://gitlab.freedesktop.org/drm/intel/issues/6298
-  [i915#6311]: https://gitlab.freedesktop.org/drm/intel/issues/6311
-  [i915#6367]: https://gitlab.freedesktop.org/drm/intel/issues/6367
-  [i915#7229]: https://gitlab.freedesktop.org/drm/intel/issues/7229
-  [i915#7359]: https://gitlab.freedesktop.org/drm/intel/issues/7359
-  [i915#8060]: https://gitlab.freedesktop.org/drm/intel/issues/8060
-  [i915#8062]: https://gitlab.freedesktop.org/drm/intel/issues/8062
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_7153 -> IGTPW_8456
-
-  CI-20190529: 20190529
-  CI_DRM_12708: e9426d9d1eeb72f84725043dd2a9e073d9a6f1d7 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_8456: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8456/index.html
-  IGT_7153: f47f859f13376958a2bd199423b1f0ff53dddbe0 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8456/index.html
-
---===============5511842245915464773==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>i915/perf: Make __perf_open() and friends public</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/113733/">https://patchwork.freedesktop.org/series/113733/</a></td></tr>
-<tr><td><b>State:</b></td><td>failure</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8456/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8456/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from CI_DRM_12708 -&gt; IGTPW_8456</h1>
-<h2>Summary</h2>
-<p><strong>FAILURE</strong></p>
-<p>Serious unknown changes coming with IGTPW_8456 absolutely need to be<br />
-  verified manually.</p>
-<p>If you think the reported changes have nothing to do with the changes<br />
-  introduced in IGTPW_8456, please notify your bug team to allow them<br />
-  to document this new failure mode, which will reduce false positives in CI.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8456/index.html</p>
-<h2>Participating hosts (36 -&gt; 36)</h2>
-<p>Additional (1): bat-atsm-1 <br />
-  Missing    (1): fi-snb-2520m </p>
-<h2>Possible new issues</h2>
-<p>Here are the unknown changes that may have been introduced in IGTPW_8456:</p>
-<h3>IGT changes</h3>
-<h4>Possible regressions</h4>
-<ul>
-<li>
-<p>igt@dmabuf@all-tests@dma_fence:</p>
-<ul>
-<li>fi-cfl-8109u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12708/fi-cfl-8109u/igt@dmabuf@all-tests@dma_fence.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8456/fi-cfl-8109u/igt@dmabuf@all-tests@dma_fence.html">DMESG-FAIL</a></li>
-</ul>
-</li>
-<li>
-<p>igt@dmabuf@all-tests@sanitycheck:</p>
-<ul>
-<li>fi-cfl-8109u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12708/fi-cfl-8109u/igt@dmabuf@all-tests@sanitycheck.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8456/fi-cfl-8109u/igt@dmabuf@all-tests@sanitycheck.html">ABORT</a></li>
-</ul>
-</li>
-</ul>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_8456 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>igt@gem_exec_gttfill@basic:<ul>
-<li>fi-pnv-d510:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12708/fi-pnv-d510/igt@gem_exec_gttfill@basic.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8456/fi-pnv-d510/igt@gem_exec_gttfill@basic.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7229">i915#7229</a>)</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@i915_selftest@live@slpc:</p>
-<ul>
-<li>{bat-rpls-1}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12708/bat-rpls-1/igt@i915_selftest@live@slpc.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6367">i915#6367</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8456/bat-rpls-1/igt@i915_selftest@live@slpc.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@workarounds:</p>
-<ul>
-<li>{bat-dg2-11}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12708/bat-dg2-11/igt@i915_selftest@live@workarounds.html">DMESG-WARN</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8456/bat-dg2-11/igt@i915_selftest@live@workarounds.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions:</p>
-<ul>
-<li>fi-bsw-n3050:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12708/fi-bsw-n3050/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6298">i915#6298</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8456/fi-bsw-n3050/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_7153 -&gt; IGTPW_8456</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_12708: e9426d9d1eeb72f84725043dd2a9e073d9a6f1d7 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_8456: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8456/index.html<br />
-  IGT_7153: f47f859f13376958a2bd199423b1f0ff53dddbe0 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-
-</body>
-</html>
-
---===============5511842245915464773==--
+> ---
+>  tools/intel_gpu_top.c | 54 +++++++++++++++++++++----------------------
+>  1 file changed, 26 insertions(+), 28 deletions(-)
+> 
+> diff --git a/tools/intel_gpu_top.c b/tools/intel_gpu_top.c
+> index e2a7f4753099..a980cc7043dc 100644
+> --- a/tools/intel_gpu_top.c
+> +++ b/tools/intel_gpu_top.c
+> @@ -1282,7 +1282,7 @@ usage(const char *appname)
+>  
+>  static enum {
+>  	INTERACTIVE,
+> -	STDOUT,
+> +	TEXT,
+>  	JSON
+>  } output_mode;
+>  
+> @@ -1387,33 +1387,31 @@ json_add_member(const struct cnt_group *parent, struct cnt_item *item,
+>  	return 1;
+>  }
+>  
+> -static unsigned int stdout_level;
+> +static unsigned int text_level;
+>  
+> -#define STDOUT_HEADER_REPEAT 20
+> -static unsigned int stdout_lines = STDOUT_HEADER_REPEAT;
+> -static bool stdout_header_repeat;
+> +#define TEXT_HEADER_REPEAT 20
+> +static unsigned int text_lines = TEXT_HEADER_REPEAT;
+> +static bool text_header_repeat;
+>  
+> -static void
+> -stdout_open_struct(const char *name)
+> +static void text_open_struct(const char *name)
+>  {
+> -	stdout_level++;
+> -	assert(stdout_level > 0);
+> +	text_level++;
+> +	assert(text_level > 0);
+>  }
+>  
+> -static void
+> -stdout_close_struct(void)
+> +static void text_close_struct(void)
+>  {
+> -	assert(stdout_level > 0);
+> -	if (--stdout_level == 0) {
+> -		stdout_lines++;
+> +	assert(text_level > 0);
+> +	if (--text_level == 0) {
+> +		text_lines++;
+>  		fputs("\n", out);
+>  		fflush(out);
+>  	}
+>  }
+>  
+>  static unsigned int
+> -stdout_add_member(const struct cnt_group *parent, struct cnt_item *item,
+> -		  unsigned int headers)
+> +text_add_member(const struct cnt_group *parent, struct cnt_item *item,
+> +		unsigned int headers)
+>  {
+>  	unsigned int fmt_tot = item->fmt_width + (item->fmt_precision ? 1 : 0);
+>  	char buf[fmt_tot + 1];
+> @@ -1565,10 +1563,10 @@ static const struct print_operations json_pops = {
+>  	.print_group = print_group,
+>  };
+>  
+> -static const struct print_operations stdout_pops = {
+> -	.open_struct = stdout_open_struct,
+> -	.close_struct = stdout_close_struct,
+> -	.add_member = stdout_add_member,
+> +static const struct print_operations text_pops = {
+> +	.open_struct = text_open_struct,
+> +	.close_struct = text_close_struct,
+> +	.add_member = text_add_member,
+>  	.print_group = print_group,
+>  };
+>  
+> @@ -1584,9 +1582,9 @@ static bool print_groups(struct cnt_group **groups)
+>  	static bool headers_printed = false;
+>  	bool print_data = true;
+>  
+> -	if (output_mode == STDOUT &&
+> -	    (stdout_header_repeat || !headers_printed)) {
+> -		unsigned int headers = stdout_lines % STDOUT_HEADER_REPEAT + 1;
+> +	if (output_mode == TEXT &&
+> +	    (text_header_repeat || !headers_printed)) {
+> +		unsigned int headers = text_lines % TEXT_HEADER_REPEAT + 1;
+>  
+>  		if (headers == 1 || headers == 2)
+>  			for (struct cnt_group **grp = groups; *grp; grp++)
+> @@ -2492,7 +2490,7 @@ int main(int argc, char **argv)
+>  			list_device = true;
+>  			break;
+>  		case 'l':
+> -			output_mode = STDOUT;
+> +			output_mode = TEXT;
+>  			break;
+>  		case 'h':
+>  			usage(argv[0]);
+> @@ -2505,7 +2503,7 @@ int main(int argc, char **argv)
+>  	}
+>  
+>  	if (output_mode == INTERACTIVE && (output_path || isatty(1) != 1))
+> -		output_mode = STDOUT;
+> +		output_mode = TEXT;
+>  
+>  	if (output_path && strcmp(output_path, "-")) {
+>  		out = fopen(output_path, "w");
+> @@ -2519,7 +2517,7 @@ int main(int argc, char **argv)
+>  		out = stdout;
+>  	}
+>  
+> -	stdout_header_repeat = output_mode == STDOUT && isatty(fileno(out));
+> +	text_header_repeat = output_mode == TEXT && isatty(fileno(out));
+>  
+>  	if (signal(SIGINT, sigint_handler) == SIG_ERR)
+>  		fprintf(stderr, "Failed to install signal handler!\n");
+> @@ -2531,8 +2529,8 @@ int main(int argc, char **argv)
+>  		pops = &term_pops;
+>  		interactive_stdin();
+>  		break;
+> -	case STDOUT:
+> -		pops = &stdout_pops;
+> +	case TEXT:
+> +		pops = &text_pops;
+>  		break;
+>  	case JSON:
+>  		pops = &json_pops;
+> -- 
+> 2.34.1
+> 
