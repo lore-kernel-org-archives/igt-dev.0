@@ -1,19 +1,22 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8271410E412
- for <igt-dev@lists.freedesktop.org>; Mon,  6 Feb 2023 16:12:34 +0000 (UTC)
-Message-ID: <9a2707a7-2449-eb38-3b0d-20d96a5a7460@intel.com>
-Date: Mon, 6 Feb 2023 21:42:28 +0530
-MIME-Version: 1.0
+Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5131C10E2E2
+ for <igt-dev@lists.freedesktop.org>; Tue,  7 Feb 2023 05:41:34 +0000 (UTC)
+From: "Murthy, Arun R" <arun.r.murthy@intel.com>
+To: =?iso-8859-1?Q?Ville_Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
+Date: Tue, 7 Feb 2023 05:41:27 +0000
+Message-ID: <DM6PR11MB3177256E3FEAB0E1B1D283A1BADB9@DM6PR11MB3177.namprd11.prod.outlook.com>
+References: <20230131120646.27434-1-ville.syrjala@linux.intel.com>
+ <20230131120646.27434-7-ville.syrjala@linux.intel.com>
+ <DM6PR11MB3177FB4C74D129995D9FB495BAD69@DM6PR11MB3177.namprd11.prod.outlook.com>
+ <Y9z+MXbsXHihUbfQ@intel.com>
+In-Reply-To: <Y9z+MXbsXHihUbfQ@intel.com>
 Content-Language: en-US
-To: Nidhi Gupta <nidhi1.gupta@intel.com>, igt-dev@lists.freedesktop.org
-References: <20230206102030.14055-1-nidhi1.gupta@intel.com>
-From: Swati Sharma <swati2.sharma@intel.com>
-In-Reply-To: <20230206102030.14055-1-nidhi1.gupta@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Subject: Re: [igt-dev] [PATCH i-g-t v4] tests/kms_pipe_crc_basic: Limit the
- execution to two pipes
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Subject: Re: [igt-dev] [PATCH i-g-t 6/6] tests/kms_async_flips: Test all
+ modifiers
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,143 +24,50 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Patch LGTM.
+> -----Original Message-----
+> From: Ville Syrj=E4l=E4 <ville.syrjala@linux.intel.com>
+> Sent: Friday, February 3, 2023 6:00 PM
+> To: Murthy, Arun R <arun.r.murthy@intel.com>
+> Cc: igt-dev@lists.freedesktop.org
+> Subject: Re: [PATCH i-g-t 6/6] tests/kms_async_flips: Test all modifiers
+>=20
+> On Thu, Feb 02, 2023 at 11:23:09AM +0000, Murthy, Arun R wrote:
+> > > -----Original Message-----
+> > > From: Ville Syrjala <ville.syrjala@linux.intel.com>
+> > > Sent: Tuesday, January 31, 2023 5:37 PM
+> > > To: igt-dev@lists.freedesktop.org
+> > > Cc: Murthy, Arun R <arun.r.murthy@intel.com>
+> > > Subject: [PATCH i-g-t 6/6] tests/kms_async_flips: Test all modifiers
+> > >
+> > > From: Ville Syrj=E4l=E4 <ville.syrjala@linux.intel.com>
+> > >
+> > > Run the basic async flip test for all modifiers reported by the
+> > > plane (for the
+> > > XRGB8888 format). The driver may not support async flip with all
+> > > modifiers so we allow this to fail.
+> >
+> > Support for adding X-tile and linear for all platforms is being added
+> > as sub-test in https://patchwork.freedesktop.org/series/103137/
+>=20
+> I presume you mean:
+> https://patchwork.freedesktop.org/patch/515577/?series=3D107871&rev=3D11
+>=20
+> That does nothing to get rid of the i915isms, nor does do anything to tes=
+t all
+> the other modifiers (both now and in the future).
+>=20
+Yes it doesn't test on all other modifiers but adds support for x-tiled and=
+ linear.
+Testing all supported modifiers is a good one and have no comments on that.
 
-Reviewed-by: Swati Sharma <swati2.sharma@intel.com>
-
-On 06-Feb-23 3:50 PM, Nidhi Gupta wrote:
-> From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-> 
-> As the test execution is taking more time on simulation, limit the
-> execution to two (first & last) pipes. This optimization is for
-> simulation only and hence there will be no impact on real hardware.
-> 
-> This patch will also provide an option (command line flag '-e') to
-> execute on all pipes.
-> 
-> Example: ./kms_pipe_crc_basic -e --run-subtest read-crc
-> 
-> V2: - Edited commit message (Bhanu)
-> V3: - New function for simulation constraints (Kamil)
->      - Update commit message (Bhanu)
-> v4: -Fix checkpatch errors (Swati)
-> 
-> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-> Signed-off-by: Nidhi Gupta <nidhi1.gupta@intel.com>
-> ---
->   tests/kms_pipe_crc_basic.c | 46 +++++++++++++++++++++++++++++++++++++-
->   1 file changed, 45 insertions(+), 1 deletion(-)
-> 
-> diff --git a/tests/kms_pipe_crc_basic.c b/tests/kms_pipe_crc_basic.c
-> index 91a1b8ab..b0b8665b 100644
-> --- a/tests/kms_pipe_crc_basic.c
-> +++ b/tests/kms_pipe_crc_basic.c
-> @@ -30,6 +30,9 @@
->   #include <string.h>
->   #include <fcntl.h>
->   
-> +static bool extended;
-> +static enum pipe active_pipes[IGT_MAX_PIPES];
-> +static uint32_t last_pipe;
->   
->   typedef struct {
->   	int drm_fd;
-> @@ -46,6 +49,16 @@ static struct {
->   	{ .r = 0.0, .g = 1.0, .b = 1.0 },
->   };
->   
-> +static bool simulation_constraint(enum pipe pipe)
-> +{
-> +	if (igt_run_in_simulation() && !extended &&
-> +	    pipe != active_pipes[0] &&
-> +	    pipe != active_pipes[last_pipe])
-> +		return true;
-> +
-> +	return false;
-> +}
-> +
->   static void test_bad_source(data_t *data)
->   {
->   	errno = 0;
-> @@ -276,7 +289,23 @@ static void test_disable_crc_after_crtc(data_t *data, enum pipe pipe,
->   
->   data_t data = {0, };
->   
-> -igt_main
-> +static int opt_handler(int opt, int opt_index, void *_data)
-> +{
-> +	switch (opt) {
-> +	case 'e':
-> +		extended = true;
-> +		break;
-> +	default:
-> +		return IGT_OPT_HANDLER_ERROR;
-> +	}
-> +
-> +	return IGT_OPT_HANDLER_SUCCESS;
-> +}
-> +
-> +const char *help_str =
-> +	"  -e \tExtended tests.\n";
-> +
-> +igt_main_args("e", NULL, help_str, opt_handler, NULL)
->   {
->   	enum pipe pipe;
->   	igt_output_t *output;
-> @@ -299,6 +328,7 @@ igt_main
->   			"Hang test for pipe CRC read." },
->   	};
->   	int i;
-> +	last_pipe = 0;
->   
->   	igt_fixture {
->   		data.drm_fd = drm_open_driver_master(DRIVER_ANY);
-> @@ -312,6 +342,11 @@ igt_main
->   		igt_require_pipe_crc(data.drm_fd);
->   
->   		data.debugfs = igt_debugfs_dir(data.drm_fd);
-> +
-> +		/* Get active pipes. */
-> +		for_each_pipe(&data.display, pipe)
-> +			active_pipes[last_pipe++] = pipe;
-> +		last_pipe--;
->   	}
->   
->   	igt_describe("Tests error handling when the bad source is set.");
-> @@ -322,6 +357,9 @@ igt_main
->   		igt_describe(tests[i].desc);
->   		igt_subtest_with_dynamic(tests[i].name) {
->   			for_each_pipe_with_single_output(&data.display, pipe, output) {
-> +				if (simulation_constraint(pipe))
-> +					continue;
-> +
->   				igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), output->name) {
->   					if (tests[i].flags & TEST_SUSPEND) {
->   						test_read_crc(&data, pipe, output, 0);
-> @@ -350,6 +388,9 @@ igt_main
->   		     "does not cause issues.");
->   	igt_subtest_with_dynamic("disable-crc-after-crtc") {
->   		for_each_pipe_with_single_output(&data.display, pipe, output) {
-> +			if (simulation_constraint(pipe))
-> +				continue;
-> +
->   			igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), output->name)
->   				test_disable_crc_after_crtc(&data, pipe, output);
->   		}
-> @@ -358,6 +399,9 @@ igt_main
->   	igt_describe("Basic sanity check for CRC mismatches");
->   	igt_subtest_with_dynamic("compare-crc-sanitycheck") {
->   		for_each_pipe_with_single_output(&data.display, pipe, output) {
-> +			if (simulation_constraint(pipe))
-> +				continue;
-> +
->   			igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), output->name)
->   				test_compare_crc(&data, pipe, output);
->   		}
-
--- 
-~Swati Sharma
+Thanks and Regards,
+Arun R Murthy
+-------------------
+> --
+> Ville Syrj=E4l=E4
+> Intel
