@@ -1,33 +1,24 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-ed1-x532.google.com (mail-ed1-x532.google.com
- [IPv6:2a00:1450:4864:20::532])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9572C10E1CA
- for <igt-dev@lists.freedesktop.org>; Tue,  7 Feb 2023 04:19:10 +0000 (UTC)
-Received: by mail-ed1-x532.google.com with SMTP id fi26so13826418edb.7
- for <igt-dev@lists.freedesktop.org>; Mon, 06 Feb 2023 20:19:10 -0800 (PST)
-Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com.
- [209.85.128.54]) by smtp.gmail.com with ESMTPSA id
- u26-20020aa7d55a000000b004a0b0cd2e45sm5872427edr.75.2023.02.06.20.19.06
- for <igt-dev@lists.freedesktop.org>
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 06 Feb 2023 20:19:07 -0800 (PST)
-Received: by mail-wm1-f54.google.com with SMTP id
- k8-20020a05600c1c8800b003dc57ea0dfeso12273665wms.0
- for <igt-dev@lists.freedesktop.org>; Mon, 06 Feb 2023 20:19:06 -0800 (PST)
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EBFA310E2E2
+ for <igt-dev@lists.freedesktop.org>; Tue,  7 Feb 2023 05:49:22 +0000 (UTC)
+From: "Murthy, Arun R" <arun.r.murthy@intel.com>
+To: =?iso-8859-1?Q?Ville_Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
+Date: Tue, 7 Feb 2023 05:49:17 +0000
+Message-ID: <DM6PR11MB3177E83CC31BCC00A717A5A0BADB9@DM6PR11MB3177.namprd11.prod.outlook.com>
+References: <20230131120646.27434-1-ville.syrjala@linux.intel.com>
+ <20230131120646.27434-7-ville.syrjala@linux.intel.com>
+ <DM6PR11MB3177FB4C74D129995D9FB495BAD69@DM6PR11MB3177.namprd11.prod.outlook.com>
+ <Y9upad7eN8P5eQvh@intel.com>
+ <DM6PR11MB31776E461B069D252010C09BBAD69@DM6PR11MB3177.namprd11.prod.outlook.com>
+ <Y9z+wX/4/1UqT5Ev@intel.com>
+In-Reply-To: <Y9z+wX/4/1UqT5Ev@intel.com>
+Content-Language: en-US
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-References: <20230202180139.3528829-1-markyacoub@google.com>
- <20230203165748.250937-1-markyacoub@google.com>
- <CAHNYxRw1b5yZ5ZtBU08fmzuD1RykoZX+GAA0mk+7LL=X+gCAFQ@mail.gmail.com>
- <CAJUqKUoxJOApiCdUEAi5vrNRDwAtFj984MDkC8kWXPHpgfyrWQ@mail.gmail.com>
- <Y+GSnP4NEsBux9oF@adrinael.net>
-In-Reply-To: <Y+GSnP4NEsBux9oF@adrinael.net>
-From: Alexandru M Stan <amstan@chromium.org>
-Date: Mon, 6 Feb 2023 20:18:27 -0800
-Message-ID: <CAHNYxRyfsgO2s2Wr1upwtAP6u7+ds2t3j40twstmA+=MN5jk-w@mail.gmail.com>
-To: Petri Latvala <adrinael@adrinael.net>
-Content-Type: text/plain; charset="UTF-8"
-Subject: Re: [igt-dev] [PATCH v4] Chamelium: Get Chamelium Logs on RPC
- failure
+Subject: Re: [igt-dev] [PATCH i-g-t 6/6] tests/kms_async_flips: Test all
+ modifiers
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -35,313 +26,217 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: ihf@google.com, igt-dev@lists.freedesktop.org, seanpaul@chromium.org,
- markyacoub@google.com, khaled.almahallawy@intel.com
+Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
- Hello Petri
+> -----Original Message-----
+> From: Ville Syrj=E4l=E4 <ville.syrjala@linux.intel.com>
+> Sent: Friday, February 3, 2023 6:02 PM
+> To: Murthy, Arun R <arun.r.murthy@intel.com>
+> Cc: igt-dev@lists.freedesktop.org
+> Subject: Re: [PATCH i-g-t 6/6] tests/kms_async_flips: Test all modifiers
+>=20
+> On Thu, Feb 02, 2023 at 12:24:32PM +0000, Murthy, Arun R wrote:
+> > > -----Original Message-----
+> > > From: Ville Syrj=E4l=E4 <ville.syrjala@linux.intel.com>
+> > > Sent: Thursday, February 2, 2023 5:46 PM
+> > > To: Murthy, Arun R <arun.r.murthy@intel.com>
+> > > Cc: igt-dev@lists.freedesktop.org
+> > > Subject: Re: [PATCH i-g-t 6/6] tests/kms_async_flips: Test all
+> > > modifiers
+> > >
+> > > On Thu, Feb 02, 2023 at 11:23:09AM +0000, Murthy, Arun R wrote:
+> > > > > -----Original Message-----
+> > > > > From: Ville Syrjala <ville.syrjala@linux.intel.com>
+> > > > > Sent: Tuesday, January 31, 2023 5:37 PM
+> > > > > To: igt-dev@lists.freedesktop.org
+> > > > > Cc: Murthy, Arun R <arun.r.murthy@intel.com>
+> > > > > Subject: [PATCH i-g-t 6/6] tests/kms_async_flips: Test all
+> > > > > modifiers
+> > > > >
+> > > > > From: Ville Syrj=E4l=E4 <ville.syrjala@linux.intel.com>
+> > > > >
+> > > > > Run the basic async flip test for all modifiers reported by the
+> > > > > plane (for the
+> > > > > XRGB8888 format). The driver may not support async flip with all
+> > > > > modifiers so we allow this to fail.
+> > > >
+> > > > Support for adding X-tile and linear for all platforms is being
+> > > > added as sub-test in
+> > > > https://patchwork.freedesktop.org/series/103137/
+> > > >
+> > > > >
+> > > > > TODO: probably shuould add an even more basic subtest that
+> > > > >       makes sure the driver accepts async flips with a least
+> > > > >       one format/modifier combo, if it advertises async flip
+> > > > >       support
+> > > > >
+> > > > > Cc: Arun R Murthy <arun.r.murthy@intel.com>
+> > > > > Signed-off-by: Ville Syrj=E4l=E4 <ville.syrjala@linux.intel.com>
+> > > > > ---
+> > > > >  tests/kms_async_flips.c | 54
+> > > > > +++++++++++++++++++++++++++++++++--------
+> > > > >  1 file changed, 44 insertions(+), 10 deletions(-)
+> > > > >
+> > > > > diff --git a/tests/kms_async_flips.c b/tests/kms_async_flips.c
+> > > > > index 58740f6ab702..387fcff2f32c 100644
+> > > > > --- a/tests/kms_async_flips.c
+> > > > > +++ b/tests/kms_async_flips.c
+> > > > > @@ -53,6 +53,8 @@ typedef struct {
+> > > > >  	igt_output_t *output;
+> > > > >  	unsigned long flip_timestamp_us;
+> > > > >  	double flip_interval;
+> > > > > +	uint64_t modifier;
+> > > > > +	igt_plane_t *plane;
+> > > > >  	igt_pipe_crc_t *pipe_crc;
+> > > > >  	igt_crc_t ref_crc;
+> > > > >  	int flip_count;
+> > > > > @@ -61,6 +63,7 @@ typedef struct {
+> > > > >  	bool extended;
+> > > > >  	enum pipe pipe;
+> > > > >  	bool alternate_sync_async;
+> > > > > +	bool allow_fail;
+> > > > >  } data_t;
+> > > > >
+> > > > >  static void flip_handler(int fd_, unsigned int sequence,
+> > > > > unsigned int tv_sec, @@ -133,7 +136,7 @@ static void
+> > > > > make_fb(data_t *data,
+> > > struct igt_fb *fb,
+> > > > >  	rec_width =3D width / (ARRAY_SIZE(data->bufs) * 2);
+> > > > >
+> > > > >  	igt_create_color_fb(data->drm_fd, width, height,
+> > > > > DRM_FORMAT_XRGB8888,
+> > > > > -			    default_modifier(data), 0.0, 0.0, 0.5, fb);
+> > > > > +			    data->modifier, 0.0, 0.0, 0.5, fb);
+> > > > >
+> > > > >  	cr =3D igt_get_cairo_ctx(data->drm_fd, fb);
+> > > > >  	igt_paint_color_rand(cr, rec_width * 2 + rec_width * index, 0,
+> > > > > rec_width, height); @@ -159,24 +162,26 @@ static void
+> > > > > test_init(data_t
+> > > > > *data)
+> > > > >  	data->refresh_rate =3D mode->vrefresh;
+> > > > >
+> > > > >  	igt_output_set_pipe(data->output, data->pipe);
+> > > > > +
+> > > > > +	data->plane =3D igt_output_get_plane_type(data->output,
+> > > > > +DRM_PLANE_TYPE_PRIMARY);
+> > > > >  }
+> > > > >
+> > > > >  static void test_init_fbs(data_t *data)  {
+> > > > >  	int i;
+> > > > >  	uint32_t width, height;
+> > > > > -	igt_plane_t *plane;
+> > > > >  	static uint32_t prev_output_id;
+> > > > > +	static uint64_t prev_modifier;
+> > > > >  	drmModeModeInfo *mode;
+> > > > >
+> > > > >  	mode =3D igt_output_get_mode(data->output);
+> > > > >  	width =3D mode->hdisplay;
+> > > > >  	height =3D mode->vdisplay;
+> > > > >
+> > > > > -	plane =3D igt_output_get_plane_type(data->output,
+> > > > > DRM_PLANE_TYPE_PRIMARY);
+> > > > > -
+> > > > > -	if (prev_output_id !=3D data->output->id) {
+> > > > > +	if (prev_output_id !=3D data->output->id ||
+> > > > > +	    prev_modifier !=3D data->modifier) {
+> > > > >  		prev_output_id =3D data->output->id;
+> > > > > +		prev_modifier =3D data->modifier;
+> > > > >
+> > > > >  		if (data->bufs[0].fb_id) {
+> > > > >  			for (i =3D 0; i < ARRAY_SIZE(data->bufs); i++) @@ -187,8
+> > > > > +192,8 @@ static void test_init_fbs(data_t *data)
+> > > > >  			make_fb(data, &data->bufs[i], width, height, i);
+> > > > >  	}
+> > > > >
+> > > > > -	igt_plane_set_fb(plane, &data->bufs[0]);
+> > > > > -	igt_plane_set_size(plane, width, height);
+> > > > > +	igt_plane_set_fb(data->plane, &data->bufs[0]);
+> > > > > +	igt_plane_set_size(data->plane, width, height);
+> > > > >
+> > > > >  	igt_display_commit2(&data->display, data->display.is_atomic ?
+> > > > > COMMIT_ATOMIC : COMMIT_LEGACY);  } @@ -243,8 +248,10 @@
+> static
+> > > void
+> > > > > test_async_flip(data_t *data)
+> > > > >  		ret =3D drmModePageFlip(data->drm_fd, data->crtc_id,
+> > > > >  				      data->bufs[frame % 4].fb_id,
+> > > > >  				      flags, data);
+> > > > > -
+> > > > > -		igt_assert(ret =3D=3D 0);
+> > > > > +		if (frame =3D=3D 1 && data->allow_fail)
+> > > > > +			igt_skip_on(ret =3D=3D -EINVAL);
+> > > > > +		else
+> > > > > +			igt_assert(ret =3D=3D 0);
+> > > > >
+> > > > >  		wait_flip_event(data);
+> > > > >
+> > > > > @@ -545,6 +552,9 @@ static void run_test(data_t *data, void
+> > > > > (*test)(data_t
+> > > > > *))
+> > > > >  	for_each_pipe_with_valid_output(&data->display, data->pipe,
+> > > > > data-
+> > > > > >output) {
+> > > > >  		test_init(data);
+> > > > >
+> > > > > +		data->allow_fail =3D false;
+> > > > > +		data->modifier =3D default_modifier(data);
+> > > > > +
+> > > > >  		igt_dynamic_f("pipe-%s", kmstest_pipe_name(data->pipe)) {
+> > > > >  			test_init_fbs(data);
+> > > > >  			test(data);
+> > > > > @@ -555,6 +565,30 @@ static void run_test(data_t *data, void
+> > > > > (*test)(data_t *))
+> > > > >  	}
+> > > > >  }
+> > > > >
+> > > > > +static void run_test_with_modifiers(data_t *data, void
+> > > > > +(*test)(data_t
+> > > > > +*)) {
+> > > > > +	for_each_pipe_with_valid_output(&data->display, data-
+> >pipe,
+> > > > > +data-
+> > > > > >output) {
+> > > > > +		test_init(data);
+> > > > > +
+> > > > > +		for (int i =3D 0; i < data->plane->format_mod_count;
+> i++) {
+> > > > > +			if (data->plane->formats[i] !=3D
+> > > > > DRM_FORMAT_XRGB8888)
+> > > > > +				continue;
+> > > > > +
+> > > > > +			data->allow_fail =3D true;
+> > > > If the modifier is supported by the platform and there is a
+> > > > failure with a
+> > > bug in driver/hardware, aren't we falsely reporting here?
+> > >
+> > > There is no way to query what is supported by the hw/driver, so we
+> > > just have to try them all and accept that not all may succeed.
+> > Yes that right!
+> > Failing for particular modifier not supported would be better than allo=
+wing
+> to escape a failure.
+>=20
+> It will skip, which if fine IMO.
+I feel its better to add platform related stuff in config so as to include =
+a particular modifier(Linear) rather than accepting that all may not succee=
+d. Just because a real failure may also loose traction with this.
+I will leave it for others to comment on this.
 
-On Mon, Feb 6, 2023 at 3:52 PM Petri Latvala <adrinael@adrinael.net> wrote:
->
-> On Mon, Feb 06, 2023 at 03:46:33PM -0500, Mark Yacoub wrote:
-> > On Mon, Feb 6, 2023 at 1:16 PM Alexandru M Stan <amstan@chromium.org> wrote:
-> > >
-> > > On Fri, Feb 3, 2023 at 8:57 AM Mark Yacoub <markyacoub@chromium.org> wrote:
-> > > >
-> > > > From: Mark Yacoub <markyacoub@chromium.org>
-> > > >
-> > > > [Why]
-> > > > Currently, Chamelium acts like a black box, we can't tell what
-> > > > is going on there when a failure occur. Seeing its logs will
-> > > > allow us to debug better.
-> > > >
-> > > > [How]
-> > > > On chamelium_rpc failure, print out the logs in debug so it
-> > > > wouldn't clutter good tests.
-> > > >
-> > > > v2:
-> > > > - Added missing #includes
-> > > > v3:
-> > > > - C-style comments (Kamil Konieczny)
-> > > > - Cut commit messages to 65 char tops (Kamil Konieczny)
-> > > > v4:
-> > > > - Don't get the logs if it's not a cv3 (Petri)
-> > > No, logs getting should have nothing to do if it's a cv3 or not.
-> > >
-> > > There's no reason why cv2 can't get this API too.
-> > >
-> > It looks like at least some Chamelium 2 don't support this function.
-> > > >
-> > > > Signed-off-by: Mark Yacoub <markyacoub@chromium.org>
-> > > > ---
-> > > >  lib/igt_chamelium.c                    | 73 ++++++++++++++++++++++++--
-> > > >  lib/igt_chamelium.h                    |  1 +
-> > > >  tests/chamelium/kms_chamelium_helper.c | 18 +++++++
-> > > >  3 files changed, 89 insertions(+), 3 deletions(-)
-> > > >
-> > > > diff --git a/lib/igt_chamelium.c b/lib/igt_chamelium.c
-> > > > index a235f3c8..5cdff70f 100644
-> > > > --- a/lib/igt_chamelium.c
-> > > > +++ b/lib/igt_chamelium.c
-> > > > @@ -129,6 +129,8 @@ struct chamelium {
-> > > >         struct igt_list_head edids;
-> > > >         struct chamelium_port ports[CHAMELIUM_MAX_PORTS];
-> > > >         int port_count;
-> > > > +       // Chamelium V3 requires some work arounds and has some extra functionalities. This keeps things safe.
-> > > > +       bool is_cv3;
-> > > >  };
-> > > >
-> > > >  bool igt_chamelium_allow_fsm_handling = true;
-> > > > @@ -447,6 +449,9 @@ chamelium_wait_for_conn_status_change(igt_display_t *display,
-> > > >                 usleep(50000);
-> > > >         }
-> > > >
-> > > > +       /* If we timeout, it means Chamelium didn't respond on time. Print its logs*/
-> > > > +       igt_debug("Timeout. Chamelium logs:\n%s\n", chamelium_get_logs(chamelium));
-> > > > +
-> > > >         igt_assert_f(false, "Timed out waiting for %s to get %s\n",
-> > > >                                  chamelium_port_get_name(port),
-> > > >                                  kmstest_connector_status_str(status));
-> > > > @@ -658,6 +663,8 @@ static xmlrpc_value *chamelium_rpc(struct chamelium *chamelium,
-> > > >         xmlrpc_value *res;
-> > > >         va_list va_args;
-> > > >         int fsm_trials_left = 5;
-> > > > +       bool did_fault_occur = false;
-> > > > +       char fault_string[1024];
-> > > >
-> > > >         if (strcmp(method_name, "CaptureVideo") == 0
-> > > >             || strcmp(method_name, "StartCapturingVideo") == 0) {
-> > > > @@ -680,9 +687,35 @@ static xmlrpc_value *chamelium_rpc(struct chamelium *chamelium,
-> > > >                                          format_str, va_args);
-> > > >                 va_end(va_args);
-> > > >         }
-> > > > -       igt_assert_f(!chamelium->env.fault_occurred,
-> > > > -                    "Chamelium RPC call[%s] failed: %s\n", method_name,
-> > > > -                    chamelium->env.fault_string);
-> > > > +
-> > > > +       did_fault_occur = chamelium->env.fault_occurred;
-> > > > +       if (did_fault_occur) {
-> > > Please gather logs for every test invocation regardless of if
-> > > fault_occured. I have seen some recent tests happily claiming that
-> > > things passed ;) but that was not the case. It's still useful to have
-> > > logs for debugging when that happens. It's also useful to see what a
-> > > normal invocation of the test looks like.
-> > >
-> > If tests claim to pass but they should not, then we should improve our
-> > igt_assert and catch expected failure. These sound like flawed tests.
-> > Please let me know where this is required and we can send a patch to
-> > catch expected failures.
-> > Otherwise, not sure if we should spit out the full logs on the screen
-> > on every test, this can spam the output.
-> > > > +               /*
-> > > > +                * Save the fault string before getting the logs which will
-> > > > +                * clear the string if it is works.
-> > > > +                */
-> > > > +               strncpy(fault_string, chamelium->env.fault_string, 1024);
-> > > > +
-> > > > +               if (strcmp(method_name, "GetChameleondLogs") == 0) {
-> > > > +                       did_fault_occur = false;
-> > > > +                       igt_debug("Failed to get chamelium logs: %s\n", fault_string);
-> > > > +                       igt_debug("Sometimes this happens at the beginning of the test when the logs haven't "
-> > > > +                       "been cleared for a while and the XMLRPC lib can't consume it all. "
-> > > > +                       "Regardless, we shouldn't fail on failing to get the logs.\n");
-> > > > +               /*
-> > > > +                * We call GetChameleondLogs on an xmlrpc failure. Let's not
-> > > > +                * call it when the xmlrpc failure is for GetChameleondLogs
-> > > > +                * itself as this can cause a recursive behavior.
-> > > > +                */
-> > > > +               } else {
-> > > > +                       char *logs = chamelium_get_logs(chamelium);
-> > > > +                       igt_debug("CHAMELIUM LOGS:\n%s\n", logs);
-> > > > +                       free(logs);
-> > > > +               }
-> > > > +       }
-> > > > +
-> > > > +       igt_assert_f(!did_fault_occur, "Chamelium RPC call [%s] failed: %s\n",
-> > > > +                    method_name, fault_string);
-> > > >
-> > > >         return res;
-> > > >  }
-> > > > @@ -737,6 +770,34 @@ void chamelium_assert_reachable(struct chamelium *chamelium, int timeout)
-> > > >                      "Couldn't connect to Chamelium for %ds", timeout);
-> > > >  }
-> > > >
-> > > > +/**
-> > > > + * chamelium_get_logs - Get the logs from the chamelium daemon
-> > > > + * @chamelium: The Chamelium instance to use
-> > > > + *
-> > > > + * Returns: The logs from the last time this was called.
-> > > > + */
-> > > > +
-> > > > +const char *chamelium_get_logs(struct chamelium *chamelium)
-> > > > +{
-> > > > +       xmlrpc_value *res;
-> > > > +       const char *logs = NULL;
-> > > > +
-> > > > +       if (!chamelium->is_cv3) {
-> > > Please just call GetChameleondLogs all the time, if you get the
-> > > obvious NotImplementedError, you just return, recording the error
-> > > somewhere.
-> > >
-> > I believe Petri did not like this so it was changed accordingly.
->
-> But I advocated for checking whether the method was there by actually
-> checking whether it's there, not by guessing whether it's there based
-> on a heuristic...
->
->
+Thanks and Regards,
+Arun R Murthy
+-------------------
+>=20
+> > Moreover exceptions can be added for platforms not supporting a
+> particular modifier.
+> > Maybe a proper way of handling the error might be required.
+>=20
+> Adding i915 speicifc platform checks into the test means we'll have to
+> potentially touch this test for every new platform. Which isn't a good th=
+ing.
+>=20
 > --
-> Petri Latvala
-
-Thanks, it looks like we agree that we should do the GetChameleondLogs
-method discovery somehow (but without relying on unrelated behavior).
-
-For what it's worth, if you excuse my pythonness (I think you can do
-some of it with your C xmlrpc library), I would consider these pretty
-equivalent (but there are some gotchas in our case):
-
-1. ```
-if hasattr(p,"GetChameleondLogs"):
-    return p.GetChameleondLogs()
-else:
-    # this might never happen, even on cv2
-    return "" # no logs
-```
-
-2. ```
-try:
-    return p.GetChameleondLogs()
-exception Exception as e:
-    print("Error getting logs:", e) # we do want to record that we
-have an error with logs
-    # but still keep going:
-    return "" # no logs
-```
-
-I like the `2.` better since it handles any potential exceptions
-during logs gathering that might happen (including
-NotImplementedError, but also stuff like journalctl failing to read
-chameleond logs kind of errors). `1.` might have been okish too, but
-you're likely to get it as hasattr==True even on chameleon v2 due to
-both v2 and v3 inhereting from this base class's method
-https://chromium.googlesource.com/chromiumos/platform/chameleon/+/refs/heads/main/chameleond/interface.py#19
-
-Yes, for `2.` you should get an extra error saying logs were not
-acquired when using it with a cv2, but test flow should continue just
-as it did before the patch.
-
-Definitely don't do `3.` (which is believe is what v3 of this patch was):```
-    return p.GetChameleondLogs()
-    # any errors here crash the tests
-```
-
-Regards,
-Alexandru Stan (amstan)
-
->
->
-> > > > +               igt_debug("Chamelium is not a Cv3, not calling GetChameleondLogs\n");
-> > > > +               return NULL;
-> > > > +       }
-> > > > +
-> > > > +       igt_debug(
-> > > > +               "Calling GetChameleondLogs - Logs returned are from the last time "
-> > > > +               "this was called.\n");
-> > > > +
-> > > > +       res = chamelium_rpc(chamelium, NULL, "GetChameleondLogs", "(s)", "IGT");
-> > > > +       xmlrpc_read_string(&chamelium->env, res, &logs);
-> > > > +       xmlrpc_DECREF(res);
-> > > > +
-> > > > +       return logs;
-> > > > +}
-> > > > +
-> > > >  /**
-> > > >   * chamelium_plug:
-> > > >   * @chamelium: The Chamelium instance to use
-> > > > @@ -2890,6 +2951,7 @@ struct chamelium *chamelium_init(int drm_fd, igt_display_t *display)
-> > > >  {
-> > > >         struct chamelium *chamelium = chamelium_init_rpc_only();
-> > > >         bool mismatching_ports_found = false;
-> > > > +       int port_ids[CHAMELIUM_MAX_PORTS];
-> > > >
-> > > >         if (chamelium == NULL)
-> > > >                 return NULL;
-> > > > @@ -2958,6 +3020,11 @@ struct chamelium *chamelium_init(int drm_fd, igt_display_t *display)
-> > > >          * the outputs to grab all supported connectors.*/
-> > > >         igt_display_reset_outputs(display);
-> > > >
-> > > > +       if (chamelium_get_video_ports(chamelium, port_ids) <= 0)
-> > > > +               goto error;
-> > > > +       // Chamelium V3 port IDs start with 0, while V2 port IDs start with 1.
-> > > Please don't, there should be absolutely no reason that you need to
-> > > keep track of this, and even if you did, some random implementation
-> > > difference is not the proper way to do this.
-> > >
-> > > Prefer feature detection. Same spirit as
-> > > https://developer.mozilla.org/en-US/docs/Web/HTTP/Browser_detection_using_the_user_agent
-> > >
-> > ditto
-> > > > +       chamelium->is_cv3 = port_ids[0] == 0;
-> > > > +
-> > > >         return chamelium;
-> > > >  error:
-> > > >         close(chamelium->drm_fd);
-> > > > diff --git a/lib/igt_chamelium.h b/lib/igt_chamelium.h
-> > > > index d979de4a..159c75ec 100644
-> > > > --- a/lib/igt_chamelium.h
-> > > > +++ b/lib/igt_chamelium.h
-> > > > @@ -159,6 +159,7 @@ chamelium_reset_state(igt_display_t *display,
-> > > >
-> > > >  bool chamelium_wait_reachable(struct chamelium *chamelium, int timeout);
-> > > >  void chamelium_assert_reachable(struct chamelium *chamelium, int timeout);
-> > > > +const char *chamelium_get_logs(struct chamelium *chamelium);
-> > > >  void chamelium_plug(struct chamelium *chamelium, struct chamelium_port *port);
-> > > >  void chamelium_unplug(struct chamelium *chamelium, struct chamelium_port *port);
-> > > >  bool chamelium_is_plugged(struct chamelium *chamelium,
-> > > > diff --git a/tests/chamelium/kms_chamelium_helper.c b/tests/chamelium/kms_chamelium_helper.c
-> > > > index 197d29be..54f8ebfc 100644
-> > > > --- a/tests/chamelium/kms_chamelium_helper.c
-> > > > +++ b/tests/chamelium/kms_chamelium_helper.c
-> > > > @@ -24,7 +24,19 @@
-> > > >   *    Lyude Paul <lyude@redhat.com>
-> > > >   */
-> > > >
-> > > > +#include <fcntl.h>
-> > > > +#include <stdint.h>
-> > > > +#include <string.h>
-> > > > +#include <stdatomic.h>
-> > > > +#include <xf86drmMode.h>
-> > > > +
-> > > > +#include "config.h"
-> > > > +#include "igt.h"
-> > > > +#include "igt_chamelium.h"
-> > > >  #include "igt_edid.h"
-> > > > +#include "igt_eld.h"
-> > > > +#include "igt_vc4.h"
-> > > > +#include "igt_infoframe.h"
-> > > >  #include "kms_chamelium_helper.h"
-> > > >
-> > > >  void chamelium_init_test(chamelium_data_t *data)
-> > > > @@ -47,6 +59,12 @@ void chamelium_init_test(chamelium_data_t *data)
-> > > >         /* we need to initalize chamelium after igt_display_require */
-> > > >         data->chamelium = chamelium_init(data->drm_fd, &data->display);
-> > > >         igt_require(data->chamelium);
-> > > > +       /*
-> > > > +        * Get the logs so we can reset the chamelium logs at this cursor.
-> > > > +        * The logs are then retrieved when any call fails so we can debug
-> > > > +        * chamelium if needed.
-> > > > +        */
-> > > > +       free(chamelium_get_logs(data->chamelium));
-> > > >
-> > > >         data->ports = chamelium_get_ports(data->chamelium, &data->port_count);
-> > > >
-> > > > --
-> > > > 2.39.1.519.gcb327c4b5f-goog
-> > > >
-> > >
-> > > NAK from me (chameleond author for v3), needs more polishing and doing
-> > > things the right way.
-> > >
-> > > Alexandru Stan (amstan)
+> Ville Syrj=E4l=E4
+> Intel
