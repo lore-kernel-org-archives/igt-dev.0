@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DA1AD10E790
- for <igt-dev@lists.freedesktop.org>; Wed,  8 Feb 2023 13:48:20 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BBD8F10E791
+ for <igt-dev@lists.freedesktop.org>; Wed,  8 Feb 2023 13:48:23 +0000 (UTC)
 From: Karolina Stolarek <karolina.stolarek@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Wed,  8 Feb 2023 14:47:37 +0100
-Message-Id: <8cd64d5a3dc63ff2475d64b4a893b62184519921.1675854161.git.karolina.stolarek@intel.com>
+Date: Wed,  8 Feb 2023 14:47:39 +0100
+Message-Id: <ff169cf93c19269098e19f9c1638d8e53d5f4ac7.1675854161.git.karolina.stolarek@intel.com>
 In-Reply-To: <cover.1675854161.git.karolina.stolarek@intel.com>
 References: <cover.1675854161.git.karolina.stolarek@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v2 4/6] lib/intel_cmds_info: Add flags field
- to describe command properties
+Subject: [igt-dev] [PATCH i-g-t v2 6/6] tests/gem_ccs: Check for extended
+ block-copy and compression support
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,83 +23,96 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Blitter commands may have different properties depending on the
-platform. Add a new field to blt_cmd_info struct to describe
-their properties. Update block-copy definitions for DG2 and MTL
-to use that field.
+Use a helper that checks blitter command flags instead of directly
+checking Flat CCS compression support. Check for extended block-copy
+command when initializing the copy object in block_copy and
+block_multicopy tests.
 
 Signed-off-by: Karolina Stolarek <karolina.stolarek@intel.com>
 ---
- lib/i915/intel_cmds_info.c | 28 ++++++++++++++++++++++------
- lib/i915/intel_cmds_info.h |  4 ++++
- 2 files changed, 26 insertions(+), 6 deletions(-)
+ lib/i915/i915_blt.c  | 17 -----------------
+ lib/i915/i915_blt.h  |  1 -
+ tests/i915/gem_ccs.c |  7 +++----
+ 3 files changed, 3 insertions(+), 22 deletions(-)
 
-diff --git a/lib/i915/intel_cmds_info.c b/lib/i915/intel_cmds_info.c
-index d99b3131..f79a8e86 100644
---- a/lib/i915/intel_cmds_info.c
-+++ b/lib/i915/intel_cmds_info.c
-@@ -12,6 +12,12 @@
- 		.supported_tiling = _tiling \
- 	}
- 
-+#define BLT_INFO_EXT(_cmd, _tiling, _flags)  { \
-+		.blt_cmd_type = _cmd, \
-+		.supported_tiling = _tiling, \
-+		.flags = _flags, \
-+	}
-+
- static const struct blt_cmd_info src_copy = BLT_INFO(SRC_COPY, BIT(T_LINEAR));
- static const struct blt_cmd_info
- 		pre_gen8_xy_src_copy = BLT_INFO(XY_SRC_COPY,
-@@ -45,11 +51,21 @@ static const struct blt_cmd_info
- 					       BIT(T_LINEAR) |
- 					       BIT(T_YMAJOR));
- static const struct blt_cmd_info
--		dg2_xy_block_copy = BLT_INFO(XY_BLOCK_COPY,
--					     BIT(T_LINEAR) |
--					     BIT(T_XMAJOR) |
--					     BIT(T_TILE4)  |
--					     BIT(T_TILE64));
-+		dg2_xy_block_copy = BLT_INFO_EXT(XY_BLOCK_COPY,
-+						 BIT(T_LINEAR) |
-+						 BIT(T_XMAJOR) |
-+						 BIT(T_TILE4)  |
-+						 BIT(T_TILE64),
-+						 BLT_CMD_EXTENDED |
-+						 BLT_CMD_SUPPORTS_COMPRESSION);
-+
-+static const struct blt_cmd_info
-+		mtl_xy_block_copy = BLT_INFO_EXT(XY_BLOCK_COPY,
-+						 BIT(T_LINEAR) |
-+						 BIT(T_XMAJOR) |
-+						 BIT(T_TILE4)  |
-+						 BIT(T_TILE64),
-+						 BLT_CMD_EXTENDED);
- 
- const struct blt_cmds_desc pre_gen8_blt_info = {
- 	.supported_cmds = {
-@@ -90,6 +106,6 @@ const struct blt_cmds_desc gen12_dg2_blt_info = {
- const struct blt_cmds_desc gen12_mtl_blt_info = {
- 	.supported_cmds = {
- 		[XY_FAST_COPY] = &dg2_xy_fast_copy,
--		[XY_BLOCK_COPY] = &dg2_xy_block_copy
-+		[XY_BLOCK_COPY] = &mtl_xy_block_copy
- 	}
- };
-diff --git a/lib/i915/intel_cmds_info.h b/lib/i915/intel_cmds_info.h
-index e86b6dd4..37cfca84 100644
---- a/lib/i915/intel_cmds_info.h
-+++ b/lib/i915/intel_cmds_info.h
-@@ -29,6 +29,10 @@ enum blt_cmd_type {
- struct blt_cmd_info {
- 	enum blt_cmd_type blt_cmd_type;
- 	uint32_t supported_tiling;
-+
-+	uint32_t flags;
-+#define BLT_CMD_EXTENDED               (1 << 0)
-+#define BLT_CMD_SUPPORTS_COMPRESSION   (1 << 1)
+diff --git a/lib/i915/i915_blt.c b/lib/i915/i915_blt.c
+index f85e12ca..766e76f8 100644
+--- a/lib/i915/i915_blt.c
++++ b/lib/i915/i915_blt.c
+@@ -191,23 +191,6 @@ struct gen12_block_copy_data_ext {
+ 	} dw21;
  };
  
- struct blt_cmds_desc {
+-/**
+- * blt_supports_compression:
+- * @i915: drm fd
+- *
+- * Function checks if HW supports flatccs compression in blitter commands
+- * on @i915 device.
+- *
+- * Returns:
+- * true if it does, false otherwise.
+- */
+-bool blt_supports_compression(int i915)
+-{
+-	uint32_t devid = intel_get_drm_devid(i915);
+-
+-	return HAS_FLATCCS(devid);
+-}
+-
+ static const struct blt_cmd_info *blt_get_cmd_info(const struct blt_cmds_desc *blt_info,
+ 						   enum blt_cmd_type cmd)
+ {
+diff --git a/lib/i915/i915_blt.h b/lib/i915/i915_blt.h
+index 23e0609f..add591ea 100644
+--- a/lib/i915/i915_blt.h
++++ b/lib/i915/i915_blt.h
+@@ -157,7 +157,6 @@ struct blt_ctrl_surf_copy_data {
+ 	bool print_bb;
+ };
+ 
+-bool blt_supports_compression(int i915);
+ bool blt_supports_command(const struct blt_cmds_desc *blt_info,
+ 			  enum blt_cmd_type cmd);
+ bool blt_cmd_supports_tiling(const struct blt_cmds_desc *blt_info,
+diff --git a/tests/i915/gem_ccs.c b/tests/i915/gem_ccs.c
+index a24c8e1f..b7e8bda7 100644
+--- a/tests/i915/gem_ccs.c
++++ b/tests/i915/gem_ccs.c
+@@ -346,7 +346,6 @@ static void block_copy(int i915,
+ 	uint32_t run_id = mid_tiling;
+ 	uint32_t mid_region = region2, bb;
+ 	uint32_t width = param.width, height = param.height;
+-	uint32_t devid = intel_get_drm_devid(i915);
+ 	enum blt_compression mid_compression = config->compression;
+ 	int mid_compression_format = param.compression_format;
+ 	enum blt_compression_type comp_type = COMPRESSION_TYPE_3D;
+@@ -355,7 +354,7 @@ static void block_copy(int i915,
+ 
+ 	igt_assert(__gem_create_in_memory_regions(i915, &bb, &bb_size, region1) == 0);
+ 
+-	if (!blt_supports_compression(i915) && !IS_METEORLAKE(devid))
++	if (!blt_uses_extended_block_copy(i915))
+ 		pext = NULL;
+ 
+ 	src = blt_create_object(i915, region1, width, height, bpp, uc_mocs,
+@@ -470,7 +469,7 @@ static void block_multicopy(int i915,
+ 
+ 	igt_assert(__gem_create_in_memory_regions(i915, &bb, &bb_size, region1) == 0);
+ 
+-	if (!blt_supports_compression(i915))
++	if (!blt_uses_extended_block_copy(i915))
+ 		pext3 = NULL;
+ 
+ 	src = blt_create_object(i915, region1, width, height, bpp, uc_mocs,
+@@ -557,7 +556,7 @@ static void block_copy_test(int i915,
+ 	const struct intel_execution_engine2 *e;
+ 	int tiling;
+ 
+-	if (config->compression && !blt_supports_compression(i915))
++	if (config->compression && !blt_block_copy_supports_compression(i915))
+ 		return;
+ 
+ 	if (config->inplace && !config->compression)
 -- 
 2.25.1
