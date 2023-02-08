@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4D13F10E78F
- for <igt-dev@lists.freedesktop.org>; Wed,  8 Feb 2023 13:48:22 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DA1AD10E790
+ for <igt-dev@lists.freedesktop.org>; Wed,  8 Feb 2023 13:48:20 +0000 (UTC)
 From: Karolina Stolarek <karolina.stolarek@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Wed,  8 Feb 2023 14:47:38 +0100
-Message-Id: <8fcbdd60e361172fb3c210d6c15e6c200e36e6b2.1675854161.git.karolina.stolarek@intel.com>
+Date: Wed,  8 Feb 2023 14:47:37 +0100
+Message-Id: <8cd64d5a3dc63ff2475d64b4a893b62184519921.1675854161.git.karolina.stolarek@intel.com>
 In-Reply-To: <cover.1675854161.git.karolina.stolarek@intel.com>
 References: <cover.1675854161.git.karolina.stolarek@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v2 5/6] lib/i915_blt: Add checks for command
- properties
+Subject: [igt-dev] [PATCH i-g-t v2 4/6] lib/intel_cmds_info: Add flags field
+ to describe command properties
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,151 +23,83 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add a predicate that checks if a command has a specific property.
-Introduce helpers that check if a platform uses an extended
-version of the block-copy command or supports compression.
-Group functions together in the header file.
+Blitter commands may have different properties depending on the
+platform. Add a new field to blt_cmd_info struct to describe
+their properties. Update block-copy definitions for DG2 and MTL
+to use that field.
 
 Signed-off-by: Karolina Stolarek <karolina.stolarek@intel.com>
 ---
- lib/i915/i915_blt.c | 73 +++++++++++++++++++++++++++++++++++++++++++--
- lib/i915/i915_blt.h |  8 +++++
- 2 files changed, 79 insertions(+), 2 deletions(-)
+ lib/i915/intel_cmds_info.c | 28 ++++++++++++++++++++++------
+ lib/i915/intel_cmds_info.h |  4 ++++
+ 2 files changed, 26 insertions(+), 6 deletions(-)
 
-diff --git a/lib/i915/i915_blt.c b/lib/i915/i915_blt.c
-index 554905d2..f85e12ca 100644
---- a/lib/i915/i915_blt.c
-+++ b/lib/i915/i915_blt.c
-@@ -208,6 +208,15 @@ bool blt_supports_compression(int i915)
- 	return HAS_FLATCCS(devid);
- }
+diff --git a/lib/i915/intel_cmds_info.c b/lib/i915/intel_cmds_info.c
+index d99b3131..f79a8e86 100644
+--- a/lib/i915/intel_cmds_info.c
++++ b/lib/i915/intel_cmds_info.c
+@@ -12,6 +12,12 @@
+ 		.supported_tiling = _tiling \
+ 	}
  
-+static const struct blt_cmd_info *blt_get_cmd_info(const struct blt_cmds_desc *blt_info,
-+						   enum blt_cmd_type cmd)
-+{
-+	if (!blt_info)
-+		return NULL;
++#define BLT_INFO_EXT(_cmd, _tiling, _flags)  { \
++		.blt_cmd_type = _cmd, \
++		.supported_tiling = _tiling, \
++		.flags = _flags, \
++	}
 +
-+	return blt_info->supported_cmds[cmd];
-+}
+ static const struct blt_cmd_info src_copy = BLT_INFO(SRC_COPY, BIT(T_LINEAR));
+ static const struct blt_cmd_info
+ 		pre_gen8_xy_src_copy = BLT_INFO(XY_SRC_COPY,
+@@ -45,11 +51,21 @@ static const struct blt_cmd_info
+ 					       BIT(T_LINEAR) |
+ 					       BIT(T_YMAJOR));
+ static const struct blt_cmd_info
+-		dg2_xy_block_copy = BLT_INFO(XY_BLOCK_COPY,
+-					     BIT(T_LINEAR) |
+-					     BIT(T_XMAJOR) |
+-					     BIT(T_TILE4)  |
+-					     BIT(T_TILE64));
++		dg2_xy_block_copy = BLT_INFO_EXT(XY_BLOCK_COPY,
++						 BIT(T_LINEAR) |
++						 BIT(T_XMAJOR) |
++						 BIT(T_TILE4)  |
++						 BIT(T_TILE64),
++						 BLT_CMD_EXTENDED |
++						 BLT_CMD_SUPPORTS_COMPRESSION);
 +
- /**
-  * blt_supports_command:
-  * @blt_info: Blitter commands description struct
-@@ -222,7 +231,7 @@ bool blt_supports_command(const struct blt_cmds_desc *blt_info,
- {
- 	igt_require_f(blt_info, "No config found for the platform\n");
++static const struct blt_cmd_info
++		mtl_xy_block_copy = BLT_INFO_EXT(XY_BLOCK_COPY,
++						 BIT(T_LINEAR) |
++						 BIT(T_XMAJOR) |
++						 BIT(T_TILE4)  |
++						 BIT(T_TILE64),
++						 BLT_CMD_EXTENDED);
  
--	return blt_info->supported_cmds[cmd];
-+	return blt_get_cmd_info(blt_info, cmd);
- }
+ const struct blt_cmds_desc pre_gen8_blt_info = {
+ 	.supported_cmds = {
+@@ -90,6 +106,6 @@ const struct blt_cmds_desc gen12_dg2_blt_info = {
+ const struct blt_cmds_desc gen12_mtl_blt_info = {
+ 	.supported_cmds = {
+ 		[XY_FAST_COPY] = &dg2_xy_fast_copy,
+-		[XY_BLOCK_COPY] = &dg2_xy_block_copy
++		[XY_BLOCK_COPY] = &mtl_xy_block_copy
+ 	}
+ };
+diff --git a/lib/i915/intel_cmds_info.h b/lib/i915/intel_cmds_info.h
+index e86b6dd4..37cfca84 100644
+--- a/lib/i915/intel_cmds_info.h
++++ b/lib/i915/intel_cmds_info.h
+@@ -29,6 +29,10 @@ enum blt_cmd_type {
+ struct blt_cmd_info {
+ 	enum blt_cmd_type blt_cmd_type;
+ 	uint32_t supported_tiling;
++
++	uint32_t flags;
++#define BLT_CMD_EXTENDED               (1 << 0)
++#define BLT_CMD_SUPPORTS_COMPRESSION   (1 << 1)
+ };
  
- /**
-@@ -245,7 +254,7 @@ bool blt_cmd_supports_tiling(const struct blt_cmds_desc *blt_info,
- 	if (!blt_info)
- 		return false;
- 
--	cmd_info = blt_info->supported_cmds[cmd];
-+	cmd_info = blt_get_cmd_info(blt_info, cmd);
- 
- 	/* no config means no support for that tiling */
- 	if (!cmd_info)
-@@ -254,6 +263,32 @@ bool blt_cmd_supports_tiling(const struct blt_cmds_desc *blt_info,
- 	return cmd_info->supported_tiling & BIT(tiling);
- }
- 
-+/**
-+ * blt_cmd_has_property:
-+ * @blt_info: Blitter commands description struct
-+ * @cmd: Blitter command enum
-+ * @prop: property flag
-+ *
-+ * Checks if a @cmd entry of @blt_info has @prop property. The properties can
-+ * be freely combined, but the function will return true for platforms for
-+ * which all properties defined in the bit flag are present. The function
-+ * returns false if no information about the command is stored.
-+ *
-+ * Returns: true if it does, false otherwise
-+ */
-+bool blt_cmd_has_property(const struct blt_cmds_desc *blt_info,
-+			  enum blt_cmd_type cmd, uint32_t prop)
-+{
-+	struct blt_cmd_info const *cmd_info;
-+
-+	cmd_info = blt_get_cmd_info(blt_info, cmd);
-+
-+	if (!cmd_info)
-+		return false;
-+
-+	return cmd_info->flags & prop;
-+}
-+
- /**
-  * blt_has_block_copy
-  * @i915: drm fd
-@@ -320,6 +355,40 @@ bool blt_block_copy_supports_tiling(int i915, enum blt_tiling_type tiling)
- 	return blt_cmd_supports_tiling(blt_info, XY_BLOCK_COPY, tiling);
- }
- 
-+/**
-+ * blt_block_copy_supports_compression
-+ * @i915: drm fd
-+ *
-+ * Check if block copy provided by @i915 device supports compression.
-+ *
-+ * Returns:
-+ * true if it does, false otherwise.
-+ */
-+bool blt_block_copy_supports_compression(int i915)
-+{
-+	const struct blt_cmds_desc *blt_info = GET_BLT_INFO(i915);
-+
-+	return blt_cmd_has_property(blt_info, XY_BLOCK_COPY,
-+				    BLT_CMD_SUPPORTS_COMPRESSION);
-+}
-+
-+/**
-+ * blt_uses_extended_block_copy
-+ * @i915: drm fd
-+ *
-+ * Check if block copy provided by @i915 device uses an extended version
-+ * of the command.
-+ *
-+ * Returns:
-+ * true if it does, false otherwise.
-+ */
-+bool blt_uses_extended_block_copy(int i915)
-+{
-+	const struct blt_cmds_desc *blt_info = GET_BLT_INFO(i915);
-+
-+	return blt_cmd_has_property(blt_info, XY_BLOCK_COPY, BLT_CMD_EXTENDED);
-+}
-+
- /**
-  * blt_tiling_name:
-  * @tiling: tiling id
-diff --git a/lib/i915/i915_blt.h b/lib/i915/i915_blt.h
-index 7acf9595..23e0609f 100644
---- a/lib/i915/i915_blt.h
-+++ b/lib/i915/i915_blt.h
-@@ -163,10 +163,18 @@ bool blt_supports_command(const struct blt_cmds_desc *blt_info,
- bool blt_cmd_supports_tiling(const struct blt_cmds_desc *blt_info,
- 			     enum blt_cmd_type cmd,
- 			     enum blt_tiling_type tiling);
-+bool blt_cmd_has_property(const struct blt_cmds_desc *blt_info,
-+			  enum blt_cmd_type cmd,
-+			  uint32_t prop);
-+
- bool blt_has_block_copy(int i915);
- bool blt_has_fast_copy(int i915);
-+
- bool blt_fast_copy_supports_tiling(int i915, enum blt_tiling_type tiling);
- bool blt_block_copy_supports_tiling(int i915, enum blt_tiling_type tiling);
-+bool blt_block_copy_supports_compression(int i915);
-+bool blt_uses_extended_block_copy(int i915);
-+
- const char *blt_tiling_name(enum blt_tiling_type tiling);
- 
- uint64_t emit_blt_block_copy(int i915,
+ struct blt_cmds_desc {
 -- 
 2.25.1
