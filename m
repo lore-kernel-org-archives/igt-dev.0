@@ -1,15 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4271F10E1F9
- for <igt-dev@lists.freedesktop.org>; Wed,  8 Feb 2023 07:07:01 +0000 (UTC)
-From: Nidhi Gupta <nidhi1.gupta@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Wed,  8 Feb 2023 12:42:45 +0530
-Message-Id: <20230208071245.25703-1-nidhi1.gupta@intel.com>
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v3] tests/i915/kms_draw_crc: Ignore RGB565 &
- XRGB2101010 formats on simulation
+Content-Transfer-Encoding: 7bit
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Bhanuprakash Modem" <bhanuprakash.modem@intel.com>
+Date: Wed, 08 Feb 2023 09:36:32 -0000
+Message-ID: <167584899208.387.2272266993899239962@emeril.freedesktop.org>
+References: <20230208091508.1488751-1-bhanuprakash.modem@intel.com>
+In-Reply-To: <20230208091508.1488751-1-bhanuprakash.modem@intel.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_t?=
+ =?utf-8?q?ests/kms=5Fatomic=5Ftransition=3A_Reduce_the_execution_time_on_?=
+ =?utf-8?q?simulation?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,64 +18,45 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Nidhi Gupta <nidhi1.gupta@intel.com>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+== Series Details ==
 
-As RGB565 and XRGB2101010 formats are bit slow in pre-si, we can
-ignore both the formats only on simulation to improve the execution
-time.
-Moved the check weather display support specific format-modifier
-combination before starting dynamic tests, since to
-avoid skip in igt_dynamic().
+Series: tests/kms_atomic_transition: Reduce the execution time on simulation
+URL   : https://patchwork.freedesktop.org/series/113773/
+State : warning
 
-v2: update the skip format condition to
-    (formats[format_idx] != DRM_FORMAT_XRGB8888)
-    (Juha-Pekka)
+== Summary ==
 
-v3: update commit message (Bhanu)
+Pipeline status: FAILED.
 
-Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Signed-off-by: Nidhi Gupta <nidhi1.gupta@intel.com>
----
- tests/i915/kms_draw_crc.c | 11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/803210 for the overview.
 
-diff --git a/tests/i915/kms_draw_crc.c b/tests/i915/kms_draw_crc.c
-index c2ac4721..64d3b937 100644
---- a/tests/i915/kms_draw_crc.c
-+++ b/tests/i915/kms_draw_crc.c
-@@ -290,10 +290,18 @@ igt_main
- 		     "with different modifiers, DRM_FORMATS, DRAW_METHODS.");
- 	igt_subtest_with_dynamic("draw-method") {
- 		for (format_idx = 0; format_idx < ARRAY_SIZE(formats); format_idx++) {
-+			/* 10-bit & 16-bit formats are bit slow, ignore in pre-si. */
-+			if (igt_run_in_simulation() &&
-+			    formats[format_idx] != DRM_FORMAT_XRGB8888)
-+				continue;
-+
- 			for (method = 0; method < IGT_DRAW_METHOD_COUNT; method++) {
- 				for (modifier_idx = 0; modifier_idx < ARRAY_SIZE(modifiers); modifier_idx++) {
- 					modifier = modifiers[modifier_idx];
- 
-+					if (!igt_display_has_format_mod(&display, formats[format_idx], modifier))
-+						continue;
-+
- 					if (method == IGT_DRAW_MMAP_WC && !gem_mmap__has_wc(drm_fd))
- 						continue;
- 
-@@ -301,9 +309,6 @@ igt_main
- 					    !gem_has_mappable_ggtt(drm_fd))
- 						continue;
- 
--					if (!igt_display_has_format_mod(&display, formats[format_idx], modifier))
--						continue;
--
- 					igt_dynamic_f("%s-%s-%s",
- 						      format_str(format_idx),
- 						      igt_draw_get_method_name(method),
--- 
-2.39.0
+containers:igt has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/36052408):
+  6dd4ae01a866b948563f3017cff41c3a33eb395f790297bbd7561c28adcf43fb
+  STEP 3: COPY .gitlab-ci/docker-help.sh /usr/local/bin/docker-help.sh
+  ec27c7af89238a22f14b0e73d11a56bf02771c3824016aa76df95ea798b73681
+  STEP 4: ENV PATH="/opt/igt/bin:${PATH}"
+  2561a8ab02532346d9c3de82bef4ad3d6494cf7c54fd876ac5ff5aa1a188e5e5
+  STEP 5: ENV LD_LIBRARY_PATH="/opt/igt/lib:/opt/igt/lib64:${LD_LIBRARY_PATH}"
+  bb6d72bad943f2237dddf0bdc03661475ac4b058a6fd734b56bd4d290f9b109b
+  STEP 6: ENV IGT_TEST_ROOT="/opt/igt/libexec/igt-gpu-tools"
+  6e116a0ddc2e0c1f5493cb2f39814242a7f848e32cd2d864e8129f86bac11d54
+  STEP 7: CMD docker-help.sh
+  STEP 8: COMMIT registry.freedesktop.org/gfx-ci/igt-ci-tags/igt:commit-c6c6cf2cef8faf85f6ac106eb99bcc6a5693ccf9
+  7ec0f9479c44c94241e7828b6cc0d0c47bfbc595e48e72161a6f0ce093c2deeb
+  Getting image source signatures
+  Error: Error copying image to the remote destination: Error trying to reuse blob sha256:3504a8337d3b7eaabfd338d6a971d02441d28ebef8bd81f730d87f936ed58079 at destination: failed to read from destination repository gfx-ci/igt-ci-tags/igt: 500 (Internal Server Error)
+  section_end:1675848939:step_script
+  section_start:1675848939:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1675848940:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+
+== Logs ==
+
+For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/803210
