@@ -1,15 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9AD9E10E780
- for <igt-dev@lists.freedesktop.org>; Wed,  8 Feb 2023 13:48:14 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6D69B10E78A
+ for <igt-dev@lists.freedesktop.org>; Wed,  8 Feb 2023 13:48:18 +0000 (UTC)
 From: Karolina Stolarek <karolina.stolarek@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Wed,  8 Feb 2023 14:47:33 +0100
-Message-Id: <cover.1675854161.git.karolina.stolarek@intel.com>
+Date: Wed,  8 Feb 2023 14:47:35 +0100
+Message-Id: <05202b362e00bc6bfce13d94779be11e2489dfa7.1675854161.git.karolina.stolarek@intel.com>
+In-Reply-To: <cover.1675854161.git.karolina.stolarek@intel.com>
+References: <cover.1675854161.git.karolina.stolarek@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v2 0/6] Extend and rename intel_tiling_info
- library
+Subject: [igt-dev] [PATCH i-g-t v2 2/6] lib/intel_tiling_info: Rename
+ blt_tiling_info to blt_cmd_info
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,63 +23,115 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-As for now, there is no central place that provides information on
-command properties such as compression support or if the command
-requires any additional setup. It is possible to modify the already
-existing library, intel_tiling_info, and add such information there.
+This struct will store other information on the copy command,
+not just what tiling formats it supports. Change the struct name
+to be more generic.
 
-The series adds a new field to better describe blitter commands,
-which stores bit flags describing properties. Flags defined as a part
-of the series mostly target the block-copy command, as its features
-vary the most between generations. The introduction of the field is
-followed by an update of DG2 and MTL definitions and gem_ccs test.
+Signed-off-by: Karolina Stolarek <karolina.stolarek@intel.com>
+---
+ lib/i915/i915_blt.c          |  8 ++++----
+ lib/i915/intel_tiling_info.c | 16 ++++++++--------
+ lib/i915/intel_tiling_info.h |  4 ++--
+ 3 files changed, 14 insertions(+), 14 deletions(-)
 
-This change means that intel_tiling_info library stores more than
-just information on tiling formats. As keeping a tiling-specific
-name would confuse users, we update the struct names as well as
-the library name itself. Each of the renames happens in a separate
-commit.
-
-To summarize the name update:
-  - intel_tiling_info lib ---> intel_cmds_info lib
-  - blt_cmd_info struct ---> blt_cmds_desc struct
-  - blt_tiling_info struct ---> blt_cmd_info struct
-
-Although the proposed change was expanded so much that it could be
-a standalone series, I decided to label it v2 to link to the work
-I sent as a single patch in [1].
-
-v2:
-  - Rename the library and its structs to better describe what
-    they store
-  - Stop using has_flatccs field when checking if a command
-    can use compression; use blt_cmd_info flags field instead
-  - Update the name of blt_tiling field in intel_device_info,
-    as it describes more than just a list of supported tiling
-    formats
-  - Drop additional macros for DG2 and MTL definitions
-
-[1] - https://patchwork.freedesktop.org/series/113595/
-
-Karolina Stolarek (6):
-  lib/intel_tiling_info: Rename blt_cmd_info to blt_cmds_desc
-  lib/intel_tiling_info: Rename blt_tiling_info to blt_cmd_info
-  lib/i915: Rename intel_tiling_info library
-  lib/intel_cmds_info: Add flags field to describe command properties
-  lib/i915_blt: Add checks for command properties
-  tests/gem_ccs: Check for extended block-copy and compression support
-
- lib/i915/i915_blt.c                           | 112 +++++++++++++-----
- lib/i915/i915_blt.h                           |  15 ++-
- ...{intel_tiling_info.c => intel_cmds_info.c} |  58 +++++----
- ...{intel_tiling_info.h => intel_cmds_info.h} |  22 ++--
- lib/intel_chipset.h                           |   6 +-
- lib/intel_device_info.c                       |  64 +++++-----
- lib/meson.build                               |   6 +-
- tests/i915/gem_ccs.c                          |   7 +-
- 8 files changed, 184 insertions(+), 106 deletions(-)
- rename lib/i915/{intel_tiling_info.c => intel_cmds_info.c} (57%)
- rename lib/i915/{intel_tiling_info.h => intel_cmds_info.h} (53%)
-
+diff --git a/lib/i915/i915_blt.c b/lib/i915/i915_blt.c
+index 32d22720..554905d2 100644
+--- a/lib/i915/i915_blt.c
++++ b/lib/i915/i915_blt.c
+@@ -240,18 +240,18 @@ bool blt_cmd_supports_tiling(const struct blt_cmds_desc *blt_info,
+ 			     enum blt_cmd_type cmd,
+ 			     enum blt_tiling_type tiling)
+ {
+-	struct blt_tiling_info const *tile_config;
++	struct blt_cmd_info const *cmd_info;
+ 
+ 	if (!blt_info)
+ 		return false;
+ 
+-	tile_config = blt_info->supported_cmds[cmd];
++	cmd_info = blt_info->supported_cmds[cmd];
+ 
+ 	/* no config means no support for that tiling */
+-	if (!tile_config)
++	if (!cmd_info)
+ 		return false;
+ 
+-	return tile_config->supported_tiling & BIT(tiling);
++	return cmd_info->supported_tiling & BIT(tiling);
+ }
+ 
+ /**
+diff --git a/lib/i915/intel_tiling_info.c b/lib/i915/intel_tiling_info.c
+index 671b9934..5f785777 100644
+--- a/lib/i915/intel_tiling_info.c
++++ b/lib/i915/intel_tiling_info.c
+@@ -12,39 +12,39 @@
+ 		.supported_tiling = _tiling \
+ 	}
+ 
+-static const struct blt_tiling_info src_copy = BLT_INFO(SRC_COPY, BIT(T_LINEAR));
+-static const struct blt_tiling_info
++static const struct blt_cmd_info src_copy = BLT_INFO(SRC_COPY, BIT(T_LINEAR));
++static const struct blt_cmd_info
+ 		pre_gen8_xy_src_copy = BLT_INFO(XY_SRC_COPY,
+ 						BIT(T_LINEAR) |
+ 						BIT(T_XMAJOR));
+-static const struct blt_tiling_info
++static const struct blt_cmd_info
+ 		gen8_xy_src_copy = BLT_INFO(XY_SRC_COPY,
+ 					    BIT(T_LINEAR) |
+ 					    BIT(T_XMAJOR) |
+ 					    BIT(T_YMAJOR));
+-static const struct blt_tiling_info
++static const struct blt_cmd_info
+ 		gen11_xy_fast_copy = BLT_INFO(XY_FAST_COPY,
+ 					      BIT(T_LINEAR)  |
+ 					      BIT(T_YMAJOR)  |
+ 					      BIT(T_YFMAJOR) |
+ 					      BIT(T_TILE64));
+-static const struct blt_tiling_info
++static const struct blt_cmd_info
+ 		gen12_xy_fast_copy = BLT_INFO(XY_FAST_COPY,
+ 					      BIT(T_LINEAR) |
+ 					      BIT(T_YMAJOR) |
+ 					      BIT(T_TILE4)  |
+ 					      BIT(T_TILE64));
+-static const struct blt_tiling_info
++static const struct blt_cmd_info
+ 		dg2_xy_fast_copy = BLT_INFO(XY_FAST_COPY,
+ 					    BIT(T_LINEAR) |
+ 					    BIT(T_XMAJOR) |
+ 					    BIT(T_TILE4)  |
+ 					    BIT(T_TILE64));
+-static const struct blt_tiling_info
++static const struct blt_cmd_info
+ 		gen12_xy_block_copy = BLT_INFO(XY_BLOCK_COPY,
+ 					       BIT(T_LINEAR) |
+ 					       BIT(T_YMAJOR));
+-static const struct blt_tiling_info
++static const struct blt_cmd_info
+ 		dg2_xy_block_copy = BLT_INFO(XY_BLOCK_COPY,
+ 					     BIT(T_LINEAR) |
+ 					     BIT(T_XMAJOR) |
+diff --git a/lib/i915/intel_tiling_info.h b/lib/i915/intel_tiling_info.h
+index 97fb1ce8..e86b6dd4 100644
+--- a/lib/i915/intel_tiling_info.h
++++ b/lib/i915/intel_tiling_info.h
+@@ -26,13 +26,13 @@ enum blt_cmd_type {
+ 	__BLT_MAX_CMD
+ };
+ 
+-struct blt_tiling_info {
++struct blt_cmd_info {
+ 	enum blt_cmd_type blt_cmd_type;
+ 	uint32_t supported_tiling;
+ };
+ 
+ struct blt_cmds_desc {
+-	struct blt_tiling_info const *supported_cmds[__BLT_MAX_CMD];
++	struct blt_cmd_info const *supported_cmds[__BLT_MAX_CMD];
+ };
+ 
+ extern const struct blt_cmds_desc pre_gen8_blt_info;
 -- 
 2.25.1
