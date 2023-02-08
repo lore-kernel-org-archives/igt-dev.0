@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 54DC910E67F
- for <igt-dev@lists.freedesktop.org>; Wed,  8 Feb 2023 01:54:09 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4D86410E67F
+ for <igt-dev@lists.freedesktop.org>; Wed,  8 Feb 2023 01:54:10 +0000 (UTC)
 From: Nidhi Gupta <nidhi1.gupta@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Wed,  8 Feb 2023 07:29:57 +0530
-Message-Id: <20230208015959.24015-3-nidhi1.gupta@intel.com>
+Date: Wed,  8 Feb 2023 07:29:58 +0530
+Message-Id: <20230208015959.24015-4-nidhi1.gupta@intel.com>
 In-Reply-To: <20230208015959.24015-1-nidhi1.gupta@intel.com>
 References: <20230208015959.24015-1-nidhi1.gupta@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH v2 2/4] tests/kms_plane_alpha_blend: Limit the
- execution to two pipes
+Subject: [igt-dev] [PATCH v2 3/4] tests/kms_color: Limit the execution to
+ two pipes
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -31,69 +31,33 @@ simulation only and hence there will be no impact on real hardware.
 This patch will also provide an option (command line flag '-e') to
 execute on all pipes.
 
-Example: ./kms_plane_alpha_blend -e --run-subtest alpha-7efc
+Example: ./kms_color -e --run-subtest ctm-0-50
 
-V2: Edited commit message (Bhanu)
-V3: New function for simulation constraints (Kamil)
-    Update commit message (Bhanu)
-v4: Restrict the execution only on 2 pipes for
-      real hardware aswell (Ankit)
+v2: Restrict the execution only on 2 pipes for
+    real hardware aswell (Ankit)
 
-Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 Signed-off-by: Nidhi Gupta <nidhi1.gupta@intel.com>
 ---
- tests/kms_plane_alpha_blend.c | 58 +++++++++++++++++++++++++++++++++--
- 1 file changed, 56 insertions(+), 2 deletions(-)
+ tests/kms_color.c | 41 ++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 40 insertions(+), 1 deletion(-)
 
-diff --git a/tests/kms_plane_alpha_blend.c b/tests/kms_plane_alpha_blend.c
-index 38272ccb..7884fc64 100644
---- a/tests/kms_plane_alpha_blend.c
-+++ b/tests/kms_plane_alpha_blend.c
-@@ -28,6 +28,10 @@
+diff --git a/tests/kms_color.c b/tests/kms_color.c
+index e0c6a8bf..ccb1c2c3 100644
+--- a/tests/kms_color.c
++++ b/tests/kms_color.c
+@@ -26,6 +26,10 @@
  
- IGT_TEST_DESCRIPTION("Test plane alpha and blending mode properties");
+ IGT_TEST_DESCRIPTION("Test Color Features at Pipe level");
  
 +static bool extended;
 +static enum pipe active_pipes[IGT_MAX_PIPES];
 +static uint32_t last_pipe;
 +
- typedef struct {
- 	int gfx_fd;
- 	igt_display_t display;
-@@ -482,8 +486,10 @@ static void run_test_on_pipe_planes(data_t *data, enum pipe pipe, igt_output_t *
+ static bool test_pipe_degamma(data_t *data,
+ 			      igt_plane_t *primary)
  {
- 	igt_display_t *display = &data->display;
- 	igt_plane_t *plane;
-+	int first_plane = -1;
-+	int last_plane = -1;
- 
--	for_each_plane_on_pipe(display, pipe, plane) {
-+	for_each_plane_on_pipe(&data->display, pipe, plane) {
- 		if (!igt_plane_has_prop(plane, IGT_PLANE_ALPHA))
- 			continue;
- 
-@@ -496,6 +502,19 @@ static void run_test_on_pipe_planes(data_t *data, enum pipe pipe, igt_output_t *
- 		if (must_multiply && !has_multiplied_alpha(data, plane))
- 			continue;
- 
-+		if (first_plane < 0)
-+			first_plane = j__;
-+
-+		last_plane = j__;
-+	}
-+
-+	for_each_plane_on_pipe(&data->display, pipe, plane) {
-+		if (j__ != first_plane && j__ != last_plane)
-+			continue;
-+
-+		/* reset plane alpha properties between each plane */
-+		reset_alpha(display, pipe);
-+
- 		igt_info("Testing plane %u\n", plane->index);
- 		test(data, pipe, plane);
- 		igt_plane_set_fb(plane, NULL);
-@@ -611,6 +630,16 @@ static bool pipe_check(data_t *data, enum pipe pipe,
- 	}
+@@ -876,6 +880,16 @@ run_deep_color_tests_for_pipe(data_t *data, enum pipe p)
+ 	test_cleanup(data);
  }
  
 +static bool pipe_constraint(enum pipe pipe)
@@ -106,19 +70,19 @@ index 38272ccb..7884fc64 100644
 +	return false;
 +}
 +
- static void run_subtests(data_t *data)
+ static void
+ run_invalid_tests_for_pipe(data_t *data)
  {
- 	igt_output_t *output;
-@@ -621,6 +650,8 @@ static void run_subtests(data_t *data)
- 
- 		igt_subtest_with_dynamic(subtests[i].name) {
- 			for_each_pipe_with_single_output(&data->display, pipe, output) {
+@@ -1020,6 +1034,8 @@ run_tests_for_pipe(data_t *data)
+ 		igt_describe_f("%s", ctm_tests[i].desc);
+ 		igt_subtest_with_dynamic_f("%s", ctm_tests[i].name) {
+ 			for_each_pipe(&data->display, pipe) {
 +				if (pipe_constraint(pipe))
 +					continue;
- 				prepare_crtc(data, output, pipe);
- 				if (!pipe_check(data, pipe, subtests[i].blend, subtests[i].must_multiply))
- 					continue;
-@@ -633,15 +664,38 @@ static void run_subtests(data_t *data)
+ 				run_ctm_tests_for_pipe(data, pipe,
+ 						       ctm_tests[i].colors,
+ 						       ctm_tests[i].ctm,
+@@ -1039,9 +1055,28 @@ run_tests_for_pipe(data_t *data)
  	}
  }
  
@@ -147,16 +111,17 @@ index 38272ccb..7884fc64 100644
 +	last_pipe = 0;
  
  	igt_fixture {
- 		data.gfx_fd = drm_open_driver_master(DRIVER_ANY);
- 		igt_require_pipe_crc(data.gfx_fd);
- 		igt_display_require(&data.display, data.gfx_fd);
- 		igt_require(data.display.is_atomic);
+ 		data.drm_fd = drm_open_driver_master(DRIVER_ANY);
+@@ -1050,6 +1085,10 @@ igt_main
+ 		kmstest_set_vt_graphics_mode();
+ 
+ 		igt_display_require(&data.display, data.drm_fd);
 +		/* Get active pipes. */
 +		for_each_pipe(&data.display, pipe)
 +			active_pipes[last_pipe++] = pipe;
 +		last_pipe--;
  	}
  
- 	run_subtests(&data);
+ 	igt_subtest_group
 -- 
 2.39.0
