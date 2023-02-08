@@ -1,16 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Date: Wed, 8 Feb 2023 13:31:42 +0100
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Message-ID: <20230208123142.zudgou6bjt7qbin4@kamilkon-desk1>
-References: <20230203111636.4138202-1-tvrtko.ursulin@linux.intel.com>
- <20230203111636.4138202-2-tvrtko.ursulin@linux.intel.com>
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E96EE10E0C7
+ for <igt-dev@lists.freedesktop.org>; Wed,  8 Feb 2023 12:49:12 +0000 (UTC)
+Message-ID: <7d54d7b3-d22e-3932-289c-da1e1abfee57@intel.com>
+Date: Wed, 8 Feb 2023 18:18:58 +0530
+Content-Language: en-US
+To: <igt-dev@lists.freedesktop.org>
+References: <20230208071245.25703-1-nidhi1.gupta@intel.com>
+From: "Nautiyal, Ankit K" <ankit.k.nautiyal@intel.com>
+In-Reply-To: <20230208071245.25703-1-nidhi1.gupta@intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20230203111636.4138202-2-tvrtko.ursulin@linux.intel.com>
-Subject: Re: [igt-dev] [Intel-gfx] [PATCH i-g-t 1/3] intel_gpu_top: Do not
- repeat header lines in non-interactive output
+Subject: Re: [igt-dev] [PATCH i-g-t v3] tests/i915/kms_draw_crc: Ignore
+ RGB565 & XRGB2101010 formats on simulation
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,85 +21,66 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Intel-gfx@lists.freedesktop.org, Caleb Callaway <caleb.callaway@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Tvrtko,
+LGTM.
 
-one small nit, see below.
+Reviewed-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
 
-On 2023-02-03 at 11:16:34 +0000, Tvrtko Ursulin wrote:
-> From: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
-> 
-> If output is redirected to a file, or a pipe, lets not repeat the headers
-> because that can usually mean user is trying to parse the data later and
-> so repeated headers are a hindrance.
-> 
-> Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
-> Cc: Caleb Callaway <caleb.callaway@intel.com>
+On 2/8/2023 12:42 PM, Nidhi Gupta wrote:
+> From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+>
+> As RGB565 and XRGB2101010 formats are bit slow in pre-si, we can
+> ignore both the formats only on simulation to improve the execution
+> time.
+> Moved the check weather display support specific format-modifier
+> combination before starting dynamic tests, since to
+> avoid skip in igt_dynamic().
+>
+> v2: update the skip format condition to
+>      (formats[format_idx] != DRM_FORMAT_XRGB8888)
+>      (Juha-Pekka)
+>
+> v3: update commit message (Bhanu)
+>
+> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+> Signed-off-by: Nidhi Gupta <nidhi1.gupta@intel.com>
 > ---
->  tools/intel_gpu_top.c | 19 ++++++++++++++-----
->  1 file changed, 14 insertions(+), 5 deletions(-)
-> 
-> diff --git a/tools/intel_gpu_top.c b/tools/intel_gpu_top.c
-> index 0a1de41b3374..e2a7f4753099 100644
-> --- a/tools/intel_gpu_top.c
-> +++ b/tools/intel_gpu_top.c
-> @@ -1391,6 +1391,7 @@ static unsigned int stdout_level;
->  
->  #define STDOUT_HEADER_REPEAT 20
->  static unsigned int stdout_lines = STDOUT_HEADER_REPEAT;
-> +static bool stdout_header_repeat;
->  
->  static void
->  stdout_open_struct(const char *name)
-> @@ -1580,16 +1581,22 @@ static const struct print_operations term_pops = {
->  
->  static bool print_groups(struct cnt_group **groups)
->  {
-> -	unsigned int headers = stdout_lines % STDOUT_HEADER_REPEAT + 1;
-> +	static bool headers_printed = false;
------------------------------------ ^
-Remove this initialization (use checkpatch from Linux kernel).
-
-Please correct and resend (you can keep my r-b).
-
-Regards,
-Kamil
-
->  	bool print_data = true;
->  
-> -	if (output_mode == STDOUT && (headers == 1 || headers == 2)) {
-> -		for (struct cnt_group **grp = groups; *grp; grp++)
-> -			print_data = pops->print_group(*grp, headers);
-> +	if (output_mode == STDOUT &&
-> +	    (stdout_header_repeat || !headers_printed)) {
-> +		unsigned int headers = stdout_lines % STDOUT_HEADER_REPEAT + 1;
+>   tests/i915/kms_draw_crc.c | 11 ++++++++---
+>   1 file changed, 8 insertions(+), 3 deletions(-)
+>
+> diff --git a/tests/i915/kms_draw_crc.c b/tests/i915/kms_draw_crc.c
+> index c2ac4721..64d3b937 100644
+> --- a/tests/i915/kms_draw_crc.c
+> +++ b/tests/i915/kms_draw_crc.c
+> @@ -290,10 +290,18 @@ igt_main
+>   		     "with different modifiers, DRM_FORMATS, DRAW_METHODS.");
+>   	igt_subtest_with_dynamic("draw-method") {
+>   		for (format_idx = 0; format_idx < ARRAY_SIZE(formats); format_idx++) {
+> +			/* 10-bit & 16-bit formats are bit slow, ignore in pre-si. */
+> +			if (igt_run_in_simulation() &&
+> +			    formats[format_idx] != DRM_FORMAT_XRGB8888)
+> +				continue;
 > +
-> +		if (headers == 1 || headers == 2)
-> +			for (struct cnt_group **grp = groups; *grp; grp++)
-> +				print_data = pops->print_group(*grp, headers);
+>   			for (method = 0; method < IGT_DRAW_METHOD_COUNT; method++) {
+>   				for (modifier_idx = 0; modifier_idx < ARRAY_SIZE(modifiers); modifier_idx++) {
+>   					modifier = modifiers[modifier_idx];
+>   
+> +					if (!igt_display_has_format_mod(&display, formats[format_idx], modifier))
+> +						continue;
 > +
-> +		headers_printed = print_data;
->  	}
->  
->  	for (struct cnt_group **grp = groups; print_data && *grp; grp++)
-> -		pops->print_group(*grp, false);
-> +		pops->print_group(*grp, 0);
->  
->  	return print_data;
->  }
-> @@ -2512,6 +2519,8 @@ int main(int argc, char **argv)
->  		out = stdout;
->  	}
->  
-> +	stdout_header_repeat = output_mode == STDOUT && isatty(fileno(out));
-> +
->  	if (signal(SIGINT, sigint_handler) == SIG_ERR)
->  		fprintf(stderr, "Failed to install signal handler!\n");
->  
-> -- 
-> 2.34.1
-> 
+>   					if (method == IGT_DRAW_MMAP_WC && !gem_mmap__has_wc(drm_fd))
+>   						continue;
+>   
+> @@ -301,9 +309,6 @@ igt_main
+>   					    !gem_has_mappable_ggtt(drm_fd))
+>   						continue;
+>   
+> -					if (!igt_display_has_format_mod(&display, formats[format_idx], modifier))
+> -						continue;
+> -
+>   					igt_dynamic_f("%s-%s-%s",
+>   						      format_str(format_idx),
+>   						      igt_draw_get_method_name(method),
