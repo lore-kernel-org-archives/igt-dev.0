@@ -1,16 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 90D4E10E917
- for <igt-dev@lists.freedesktop.org>; Thu,  9 Feb 2023 06:28:20 +0000 (UTC)
-From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-To: igt-dev@lists.freedesktop.org,
-	karthik.b.s@intel.com
-Date: Thu,  9 Feb 2023 11:53:21 +0530
-Message-Id: <20230209062322.1562797-1-bhanuprakash.modem@intel.com>
+Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BD0D710E6C0
+ for <igt-dev@lists.freedesktop.org>; Wed,  8 Feb 2023 18:22:02 +0000 (UTC)
+From: =?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>
+To: Melissa Wen <mwen@igalia.com>,
+ =?UTF-8?q?Andr=C3=A9=20Almeida?= <andrealmeid@igalia.com>,
+ Petri Latvala <petri.latvala@intel.com>,
+ Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Iago Toral Quiroga <itoral@igalia.com>
+Date: Wed,  8 Feb 2023 15:21:20 -0300
+Message-Id: <20230208182122.187248-1-mcanal@igalia.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t 1/2] tests/kms_atomic_transition: Reduce the
- execution time on simulation
+Subject: [igt-dev] [PATCH i-g-t v2 0/3] V3D Mixed Job Submission Tests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,34 +21,47 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Due to the more number of iterations, "modest-transition" tests are
-getting timed out on pre-si CI. Reducing the number of iterations to
-half can save a lot of execution time.
+Currently, the V3D tests only support CL job submissions, while V3D has also
+capabilities for CSD and TFU jobs. Therefore, create tests for
+DRM_IOCTL_V3D_SUBMIT_CSD, an ioctl for dispatching compute shader jobs to the
+GPU. In order to create a simple CSD job, I hard-coded the pipeline assembly
+shader of an empty shader in order to reproduce a shader and be able to create
+an acceptable packet that can be sent to the GPU.
 
-V2: - Separate patch for cleanup
+So, patch 1 introduces a helper function to submit a minimal CSD job to the GPU,
+which will be useful for the tests. The minimal job will use the pipeline
+assembly shader of an empty shader. Patches 2-3 will include new tests in the
+V3D test suite for DRM_IOCTL_V3D_SUBMIT_CSD and create tests that mix different
+types of jobs, in order to evaluate the synchronization between the two types of
+jobs. 
 
-Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
----
- tests/kms_atomic_transition.c | 3 +++
- 1 file changed, 3 insertions(+)
+v1 -> v2:
 
-diff --git a/tests/kms_atomic_transition.c b/tests/kms_atomic_transition.c
-index 6d2ebbbff..e1b74ac2c 100644
---- a/tests/kms_atomic_transition.c
-+++ b/tests/kms_atomic_transition.c
-@@ -858,6 +858,9 @@ retry:
- 
- 	iter_max = 1 << j;
- 
-+	if (igt_run_in_simulation() && iter_max > 1)
-+		iter_max = iter_max >> 1;
-+
- 	if (igt_display_try_commit_atomic(&data->display,
- 				DRM_MODE_ATOMIC_TEST_ONLY |
- 				DRM_MODE_ATOMIC_ALLOW_MODESET,
+- Add a progress bar to the "threaded-job-submission" sub-test (Melissa Wen).
+- Fix checkpatch issues.
+
+Best Regards,
+- Maíra Canal
+
+Maíra Canal (3):
+  lib/v3d: Add a helper to create a empty shader
+  tests/v3d_submit_csd: Create test for V3D's Submit CSD IOCTL
+  tests/v3d_job_submission: Create tests to mix CL and CSD jobs
+
+ lib/igt_v3d.c                  |  60 ++++++
+ lib/igt_v3d.h                  |  20 ++
+ tests/v3d/meson.build          |   2 +
+ tests/v3d/v3d_job_submission.c | 218 ++++++++++++++++++++
+ tests/v3d/v3d_submit_csd.c     | 362 +++++++++++++++++++++++++++++++++
+ tests/v3d_ci/v3d.testlist      |  21 ++
+ 6 files changed, 683 insertions(+)
+ create mode 100644 tests/v3d/v3d_job_submission.c
+ create mode 100644 tests/v3d/v3d_submit_csd.c
+
 -- 
-2.39.0
+2.39.1
