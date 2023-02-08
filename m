@@ -1,22 +1,22 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C832610E82B
- for <igt-dev@lists.freedesktop.org>; Wed,  8 Feb 2023 18:22:02 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1059310E825
+ for <igt-dev@lists.freedesktop.org>; Wed,  8 Feb 2023 18:22:04 +0000 (UTC)
 From: =?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>
 To: Melissa Wen <mwen@igalia.com>,
  =?UTF-8?q?Andr=C3=A9=20Almeida?= <andrealmeid@igalia.com>,
  Petri Latvala <petri.latvala@intel.com>,
  Kamil Konieczny <kamil.konieczny@linux.intel.com>,
  Iago Toral Quiroga <itoral@igalia.com>
-Date: Wed,  8 Feb 2023 15:21:21 -0300
-Message-Id: <20230208182122.187248-2-mcanal@igalia.com>
+Date: Wed,  8 Feb 2023 15:21:23 -0300
+Message-Id: <20230208182122.187248-4-mcanal@igalia.com>
 In-Reply-To: <20230208182122.187248-1-mcanal@igalia.com>
 References: <20230208182122.187248-1-mcanal@igalia.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v2 1/3] lib/v3d: Add a helper to create a
- empty shader
+Subject: [igt-dev] [PATCH i-g-t v2 3/3] tests/v3d_job_submission: Create
+ tests to mix CL and CSD jobs
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -29,133 +29,269 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-In order to submit a compute dispatch job, a BO must contain the
-assembly shader that corresponds to the job. Therefore, create a helper
-to encapsulate a simple compute dispatch job. This helper sets the
-configurations (cfg) needed for the job and has the assembled instructions
-necessary to process an empty shader, just like the following one:
-
-    #version 310 es
-    layout (local_size_x = 1) in;
-    void main (void) {}
+Add three igt_subtests that combine CL jobs and CSD jobs, to assure the
+proper synchronization of different queues, especially the
+independence between them. Moreover, tests the relationship between
+single syncobjs and multisync using mixed jobs as well.
 
 Reviewed-by: Melissa Wen <mwen@igalia.com>
 Signed-off-by: Maíra Canal <mcanal@igalia.com>
 ---
- lib/igt_v3d.c | 60 +++++++++++++++++++++++++++++++++++++++++++++++++++
- lib/igt_v3d.h | 20 +++++++++++++++++
- 2 files changed, 80 insertions(+)
+ tests/v3d/meson.build          |   1 +
+ tests/v3d/v3d_job_submission.c | 218 +++++++++++++++++++++++++++++++++
+ tests/v3d_ci/v3d.testlist      |   3 +
+ 3 files changed, 222 insertions(+)
+ create mode 100644 tests/v3d/v3d_job_submission.c
 
-diff --git a/lib/igt_v3d.c b/lib/igt_v3d.c
-index 41ea32fc..48ec448e 100644
---- a/lib/igt_v3d.c
-+++ b/lib/igt_v3d.c
-@@ -355,3 +355,63 @@ void igt_v3d_free_cl_job(int fd, struct v3d_cl_job *job)
- 	free(job->submit);
- 	free(job);
- }
+diff --git a/tests/v3d/meson.build b/tests/v3d/meson.build
+index d070fdb5..03b4de61 100644
+--- a/tests/v3d/meson.build
++++ b/tests/v3d/meson.build
+@@ -2,6 +2,7 @@ v3d_progs = [
+ 	'v3d_create_bo',
+ 	'v3d_get_bo_offset',
+ 	'v3d_get_param',
++	'v3d_job_submission',
+ 	'v3d_mmap',
+ 	'v3d_submit_cl',
+ 	'v3d_submit_csd',
+diff --git a/tests/v3d/v3d_job_submission.c b/tests/v3d/v3d_job_submission.c
+new file mode 100644
+index 00000000..0c36629c
+--- /dev/null
++++ b/tests/v3d/v3d_job_submission.c
+@@ -0,0 +1,218 @@
++// SPDX-License-Identifier: MIT
++/*
++ * Copyright © 2022 Igalia S.L.
++ */
 +
-+struct v3d_csd_job *igt_v3d_empty_shader(int fd)
++#include "igt.h"
++#include "igt_v3d.h"
++#include "igt_syncobj.h"
++
++static int fd;
++
++#define NUM_CL_JOBS  1000
++#define NUM_CSD_JOBS 250
++
++static int syncobj_wait_array(uint32_t *handles, uint32_t count)
 +{
-+	struct v3d_csd_job *job;
-+	uint32_t *bos;
++	int i, ret = 0;
 +
-+	/* Reproduce an empty shader */
-+	const uint32_t assembly[] = { 0xbb800000, 0x3c203186,
-+				      0xbb800000, 0x3c003186,
-+				      0xbb800000, 0x3c003186 };
-+	const uint32_t group_count_x = 1, group_count_y = 1, group_count_z = 1;
-+	const uint32_t num_batches = 1, wgs_per_sg = 1, batches_per_sg = 1, wg_size = 1;
++	for (i = 0; i < count; i++) {
++		ret = syncobj_wait_err(fd, &handles[i], 1, INT64_MAX, 0);
++		if (ret)
++			return ret;
++	}
 +
-+	job = calloc(1, sizeof(*job));
-+
-+	job->shader_assembly = igt_v3d_create_bo(fd, PAGE_SIZE);
-+	job->cl = igt_v3d_create_bo(fd, PAGE_SIZE);
-+	job->submit = calloc(1, sizeof(*job->submit));
-+
-+	igt_v3d_bo_mmap(fd, job->shader_assembly);
-+	igt_v3d_bo_mmap(fd, job->cl);
-+
-+	memset(job->shader_assembly->map, 0, sizeof(*job->shader_assembly->map));
-+	memcpy(job->shader_assembly->map, assembly, sizeof(assembly));
-+	memset(job->cl->map, 0, sizeof(*job->cl->map));
-+
-+	job->submit->bo_handle_count = 2;
-+	bos = malloc(sizeof(*bos) * job->submit->bo_handle_count);
-+	bos[0] = job->shader_assembly->handle;
-+	bos[1] = job->cl->handle;
-+
-+	job->submit->bo_handles = to_user_pointer(bos);
-+
-+	job->submit->cfg[0] |= group_count_x << V3D_CSD_CFG012_WG_COUNT_SHIFT;
-+	job->submit->cfg[1] |= group_count_y << V3D_CSD_CFG012_WG_COUNT_SHIFT;
-+	job->submit->cfg[2] |= group_count_z << V3D_CSD_CFG012_WG_COUNT_SHIFT;
-+
-+	job->submit->cfg[3] |= (wgs_per_sg & 0xf) << V3D_CSD_CFG3_WGS_PER_SG_SHIFT;
-+	job->submit->cfg[3] |= (batches_per_sg - 1) << V3D_CSD_CFG3_BATCHES_PER_SG_M1_SHIFT;
-+	job->submit->cfg[3] |= (wg_size & 0xff) << V3D_CSD_CFG3_WG_SIZE_SHIFT;
-+
-+	job->submit->cfg[4] = num_batches - 1;
-+
-+	job->submit->cfg[5] = job->shader_assembly->offset | V3D_CSD_CFG5_PROPAGATE_NANS;
-+	job->submit->cfg[5] |= V3D_CSD_CFG5_SINGLE_SEG;
-+	job->submit->cfg[5] |= V3D_CSD_CFG5_THREADING;
-+
-+	job->submit->cfg[6] = job->cl->offset;
-+
-+	return job;
++	return ret;
 +}
 +
-+void igt_v3d_free_csd_job(int fd, struct v3d_csd_job *job)
++static void *create_cl_jobs(void *args)
 +{
-+	free(from_user_pointer(job->submit->bo_handles));
-+	igt_v3d_free_bo(fd, job->shader_assembly);
-+	igt_v3d_free_bo(fd, job->cl);
-+	free(job->submit);
-+	free(job);
++	struct v3d_cl_job **jobs = args;
++	int i;
++
++	for (i = 0; i < NUM_CL_JOBS; i++) {
++		do_ioctl(fd, DRM_IOCTL_V3D_SUBMIT_CL, jobs[i]->submit);
++		igt_assert(syncobj_wait(fd, &jobs[i]->submit->out_sync, 1,
++					INT64_MAX, 0, NULL));
++	}
++
++	return NULL;
 +}
-diff --git a/lib/igt_v3d.h b/lib/igt_v3d.h
-index 2cf7fbd8..b96a3b43 100644
---- a/lib/igt_v3d.h
-+++ b/lib/igt_v3d.h
-@@ -28,6 +28,17 @@
- 
- #define PAGE_SIZE 4096
- 
-+#define V3D_CSD_CFG012_WG_COUNT_SHIFT 16
-+/* Batches per supergroup minus 1.  8 bits. */
-+#define V3D_CSD_CFG3_BATCHES_PER_SG_M1_SHIFT 12
-+/* Workgroups per supergroup, 0 means 16 */
-+#define V3D_CSD_CFG3_WGS_PER_SG_SHIFT 8
-+#define V3D_CSD_CFG3_WG_SIZE_SHIFT 0
 +
-+#define V3D_CSD_CFG5_PROPAGATE_NANS (1 << 2)
-+#define V3D_CSD_CFG5_SINGLE_SEG (1 << 1)
-+#define V3D_CSD_CFG5_THREADING (1 << 0)
++static void *create_csd_jobs(void *args)
++{
++	struct v3d_csd_job **jobs = args;
++	int i;
 +
- struct v3d_cl;
- 
- struct v3d_bo {
-@@ -46,6 +57,12 @@ struct v3d_cl_job {
- 	struct v3d_bo *tile_state;
- };
- 
-+struct v3d_csd_job {
-+	struct drm_v3d_submit_csd *submit;
-+	struct v3d_bo *shader_assembly;
-+	struct v3d_bo *cl;
-+};
++	for (i = 0; i < NUM_CSD_JOBS; i++) {
++		do_ioctl(fd, DRM_IOCTL_V3D_SUBMIT_CSD, jobs[i]->submit);
++		igt_assert(syncobj_wait(fd, &jobs[i]->submit->out_sync, 1,
++					INT64_MAX, 0, NULL));
++	}
 +
- struct v3d_bo *igt_v3d_create_bo(int fd, size_t size);
- void igt_v3d_free_bo(int fd, struct v3d_bo *bo);
- 
-@@ -67,4 +84,7 @@ void igt_v3d_set_multisync(struct drm_v3d_multi_sync *ms, enum v3d_queue wait_st
- struct v3d_cl_job *igt_v3d_noop_job(int fd);
- void igt_v3d_free_cl_job(int fd, struct v3d_cl_job *job);
- 
-+struct v3d_csd_job *igt_v3d_empty_shader(int fd);
-+void igt_v3d_free_csd_job(int fd, struct v3d_csd_job *job);
++	return NULL;
++}
 +
- #endif /* IGT_V3D_H */
++igt_main
++{
++	igt_fixture {
++		fd = drm_open_driver(DRIVER_V3D);
++		igt_require(igt_v3d_get_param(fd, DRM_V3D_PARAM_SUPPORTS_CSD));
++		igt_require(igt_v3d_get_param(fd, DRM_V3D_PARAM_SUPPORTS_MULTISYNC_EXT));
++	}
++
++	igt_describe("Test if the out-sync of an array of mixed jobs is behaving correctly.");
++	igt_subtest("array-job-submission") {
++		uint32_t handles[4];
++		struct v3d_cl_job *cl_jobs[2];
++		struct v3d_csd_job *csd_jobs[2];
++		int i;
++
++		for (i = 0; i < ARRAY_SIZE(handles); i++)
++			handles[i] = syncobj_create(fd, 0);
++
++		for (i = 0; i < 2; i++) {
++			cl_jobs[i] = igt_v3d_noop_job(fd);
++			csd_jobs[i] = igt_v3d_empty_shader(fd);
++		}
++
++		cl_jobs[0]->submit->out_sync =  handles[0];
++		csd_jobs[0]->submit->out_sync =  handles[1];
++		cl_jobs[1]->submit->out_sync =  handles[2];
++		csd_jobs[1]->submit->out_sync =  handles[3];
++
++		do_ioctl(fd, DRM_IOCTL_V3D_SUBMIT_CL, cl_jobs[0]->submit);
++		igt_assert_eq(syncobj_wait_array(handles, ARRAY_SIZE(handles)), -EINVAL);
++
++		do_ioctl(fd, DRM_IOCTL_V3D_SUBMIT_CSD, csd_jobs[0]->submit);
++		igt_assert_eq(syncobj_wait_array(handles, ARRAY_SIZE(handles)), -EINVAL);
++
++		do_ioctl(fd, DRM_IOCTL_V3D_SUBMIT_CL, cl_jobs[1]->submit);
++		igt_assert_eq(syncobj_wait_array(handles, ARRAY_SIZE(handles)), -EINVAL);
++
++		do_ioctl(fd, DRM_IOCTL_V3D_SUBMIT_CSD, csd_jobs[1]->submit);
++		igt_assert_eq(syncobj_wait_array(handles, ARRAY_SIZE(handles)), 0);
++
++		for (i = 0; i < 2; i++) {
++			igt_v3d_free_cl_job(fd, cl_jobs[i]);
++			igt_v3d_free_csd_job(fd, csd_jobs[i]);
++		}
++	}
++
++	igt_describe("Test if multiple singlesyncs have the same behaviour as one multisync.");
++	igt_subtest("multiple-singlesync-to-multisync") {
++		struct drm_v3d_multi_sync ms = { 0 };
++		uint32_t handles[4];
++		struct v3d_cl_job *cl_jobs[2];
++		struct v3d_csd_job *csd_jobs[2];
++		struct drm_v3d_sem *in_syncs, *out_syncs;
++		int i;
++
++		for (i = 0; i < ARRAY_SIZE(handles); i++)
++			handles[i] = syncobj_create(fd, 0);
++
++		for (i = 0; i < 2; i++) {
++			cl_jobs[i] = igt_v3d_noop_job(fd);
++			csd_jobs[i] = igt_v3d_empty_shader(fd);
++		}
++
++		cl_jobs[0]->submit->out_sync =  handles[0];
++		csd_jobs[0]->submit->out_sync =  handles[1];
++		cl_jobs[1]->submit->out_sync =  handles[2];
++
++		igt_v3d_set_multisync(&ms, V3D_CSD);
++		ms.in_sync_count = 3;
++		ms.out_sync_count = 1;
++
++		in_syncs = malloc(ms.in_sync_count * sizeof(*in_syncs));
++		out_syncs = malloc(ms.out_sync_count * sizeof(*in_syncs));
++
++		for (i = 0; i < ms.in_sync_count; i++)
++			in_syncs[i].handle = handles[i];
++
++		out_syncs[0].handle = handles[3];
++
++		ms.in_syncs = to_user_pointer(in_syncs);
++		ms.out_syncs = to_user_pointer(out_syncs);
++
++		csd_jobs[1]->submit->flags = DRM_V3D_SUBMIT_EXTENSION;
++		csd_jobs[1]->submit->extensions = to_user_pointer(&ms);
++
++		do_ioctl(fd, DRM_IOCTL_V3D_SUBMIT_CL, cl_jobs[0]->submit);
++
++		do_ioctl_err(fd, DRM_IOCTL_V3D_SUBMIT_CSD, csd_jobs[1]->submit, EINVAL);
++		igt_assert_eq(syncobj_wait_array(handles, ARRAY_SIZE(handles)), -EINVAL);
++
++		do_ioctl(fd, DRM_IOCTL_V3D_SUBMIT_CSD, csd_jobs[0]->submit);
++
++		do_ioctl_err(fd, DRM_IOCTL_V3D_SUBMIT_CSD, csd_jobs[1]->submit, EINVAL);
++		igt_assert_eq(syncobj_wait_array(handles, ARRAY_SIZE(handles)), -EINVAL);
++
++		do_ioctl(fd, DRM_IOCTL_V3D_SUBMIT_CL, cl_jobs[1]->submit);
++		igt_assert_eq(syncobj_wait_array(handles, ARRAY_SIZE(handles)), -EINVAL);
++
++		do_ioctl(fd, DRM_IOCTL_V3D_SUBMIT_CSD, csd_jobs[1]->submit);
++		igt_assert_eq(syncobj_wait_array(handles, ARRAY_SIZE(handles)), 0);
++
++		for (i = 0; i < 2; i++) {
++			igt_v3d_free_cl_job(fd, cl_jobs[i]);
++			igt_v3d_free_csd_job(fd, csd_jobs[i]);
++		}
++	}
++
++	igt_describe("Test if all queues are progressing independently.");
++	igt_subtest("threaded-job-submission") {
++		struct v3d_cl_job **cl_jobs = NULL;
++		struct v3d_csd_job **csd_jobs = NULL;
++		pthread_t *threads[2];
++		int i, ret;
++
++		cl_jobs = malloc(NUM_CL_JOBS * sizeof(*cl_jobs));
++		csd_jobs = malloc(NUM_CSD_JOBS * sizeof(*csd_jobs));
++
++		for (i = 0; i < NUM_CL_JOBS; i++) {
++			igt_print_activity();
++
++			cl_jobs[i] = igt_v3d_noop_job(fd);
++			cl_jobs[i]->submit->out_sync = syncobj_create(fd,
++								      DRM_SYNCOBJ_CREATE_SIGNALED);
++		}
++
++		for (i = 0; i < NUM_CSD_JOBS; i++) {
++			igt_print_activity();
++
++			csd_jobs[i] = igt_v3d_empty_shader(fd);
++			csd_jobs[i]->submit->out_sync = syncobj_create(fd,
++								       DRM_SYNCOBJ_CREATE_SIGNALED);
++		}
++
++		for (i = 0; i < ARRAY_SIZE(threads); i++) {
++			threads[i] = malloc(sizeof(*threads[i]));
++			igt_assert(threads[i]);
++		}
++
++		ret = pthread_create(threads[0], NULL, &create_cl_jobs, cl_jobs);
++		igt_assert_eq(ret, 0);
++
++		ret = pthread_create(threads[1], NULL, &create_csd_jobs, csd_jobs);
++		igt_assert_eq(ret, 0);
++
++		for (i = 0; i < ARRAY_SIZE(threads); i++)
++			pthread_join(*threads[i], NULL);
++
++		for (i = 0; i < NUM_CL_JOBS; i++)
++			igt_v3d_free_cl_job(fd, cl_jobs[i]);
++
++		for (i = 0; i < NUM_CSD_JOBS; i++)
++			igt_v3d_free_csd_job(fd, csd_jobs[i]);
++
++		for (i = 0; i < ARRAY_SIZE(threads); i++)
++			free(threads[i]);
++
++		free(cl_jobs);
++		free(csd_jobs);
++	}
++
++	igt_fixture
++		close(fd);
++}
+diff --git a/tests/v3d_ci/v3d.testlist b/tests/v3d_ci/v3d.testlist
+index 5452fd99..106e9cf2 100644
+--- a/tests/v3d_ci/v3d.testlist
++++ b/tests/v3d_ci/v3d.testlist
+@@ -7,6 +7,9 @@ igt@v3d/v3d_get_bo_offset@get-bad-handle
+ igt@v3d/v3d_get_param@base-params
+ igt@v3d/v3d_get_param@get-bad-param
+ igt@v3d/v3d_get_param@get-bad-flags
++igt@v3d/v3d_job_submission@array-job-submission
++igt@v3d/v3d_job_submission@multiple-singlesync-to-multisync
++igt@v3d/v3d_job_submission@threaded-job-submission
+ igt@v3d/v3d_mmap@mmap-bad-flags
+ igt@v3d/v3d_mmap@mmap-bad-handle
+ igt@v3d/v3d_mmap@mmap-bo
 -- 
 2.39.1
