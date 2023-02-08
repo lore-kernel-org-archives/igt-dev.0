@@ -1,21 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A2DE610E077
- for <igt-dev@lists.freedesktop.org>; Wed,  8 Feb 2023 16:37:22 +0000 (UTC)
-Message-ID: <427102eb-b872-c07a-dfa0-2a2024a4d16e@intel.com>
-Date: Wed, 8 Feb 2023 22:07:09 +0530
-To: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>, Nidhi Gupta
- <nidhi1.gupta@intel.com>, <igt-dev@lists.freedesktop.org>
-References: <20230208095619.26743-1-nidhi1.gupta@intel.com>
- <2a3b0056-ae8c-0e02-12ea-f8a7514d4cdd@intel.com>
-Content-Language: en-US
-From: "Nautiyal, Ankit K" <ankit.k.nautiyal@intel.com>
-In-Reply-To: <2a3b0056-ae8c-0e02-12ea-f8a7514d4cdd@intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/alternative;
+ boundary="===============3078236671406323209=="
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_plane_alpha_blend: Limit the
- test execution
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Alan Previn" <alan.previn.teres.alexis@intel.com>
+Date: Wed, 08 Feb 2023 17:47:05 -0000
+Message-ID: <167587842554.386.6747974289107129329@emeril.freedesktop.org>
+References: <20230208062459.1113975-1-alan.previn.teres.alexis@intel.com>
+In-Reply-To: <20230208062459.1113975-1-alan.previn.teres.alexis@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
+ =?utf-8?q?i915/pxp=3A_test=5Fpxp=5Fstale=5Fbuf=5Foptout=5Fexecution_requi?=
+ =?utf-8?q?res_arb_session?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,207 +18,220 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
+--===============3078236671406323209==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-On 2/8/2023 8:52 PM, Modem, Bhanuprakash wrote:
-> Hi Nidhi,
->
-> On Wed-08-02-2023 03:26 pm, Nidhi Gupta wrote:
->> To optimize  the test execution time on hardware and simulation,
->> limit the execution to two (first & last) pipes and 2 planes
->> (first & last).
->>
->> This patch will also provide an option (command line flag '-e') to
->> execute on all pipes and planes.
->>
->> Example: ./kms_plane_alpha_blend -e --run-subtest alpha-7efc
->>
->> V2: Edited commit message (Bhanu)
->> V3: New function for simulation constraints (Kamil)
->>      Update commit message (Bhanu)
->> v4: Restrict the execution only on 2 pipes for
->>      real hardware aswell (Ankit)
->>
->> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
->> Signed-off-by: Nidhi Gupta <nidhi1.gupta@intel.com>
->> ---
->>   tests/kms_plane_alpha_blend.c | 72 ++++++++++++++++++++++++++++++++---
->>   1 file changed, 67 insertions(+), 5 deletions(-)
->>
->> diff --git a/tests/kms_plane_alpha_blend.c 
->> b/tests/kms_plane_alpha_blend.c
->> index 38272ccb..03e9c5b5 100644
->> --- a/tests/kms_plane_alpha_blend.c
->> +++ b/tests/kms_plane_alpha_blend.c
->> @@ -28,6 +28,10 @@
->>     IGT_TEST_DESCRIPTION("Test plane alpha and blending mode 
->> properties");
->>   +static bool extended;
->> +static enum pipe active_pipes[IGT_MAX_PIPES];
->> +static uint32_t last_pipe;
->> +
->>   typedef struct {
->>       int gfx_fd;
->>       igt_display_t display;
->> @@ -482,8 +486,10 @@ static void run_test_on_pipe_planes(data_t 
->> *data, enum pipe pipe, igt_output_t *
->>   {
->>       igt_display_t *display = &data->display;
->>       igt_plane_t *plane;
->> +    int first_plane = -1;
->> +    int last_plane = -1;
->>   -    for_each_plane_on_pipe(display, pipe, plane) {
->> +    for_each_plane_on_pipe(&data->display, pipe, plane) {
->
-> Why this change? We already have a struct display.
->
->>           if (!igt_plane_has_prop(plane, IGT_PLANE_ALPHA))
->>               continue;
->>   @@ -496,9 +502,30 @@ static void run_test_on_pipe_planes(data_t 
->> *data, enum pipe pipe, igt_output_t *
->>           if (must_multiply && !has_multiplied_alpha(data, plane))
->>               continue;
->>   -        igt_info("Testing plane %u\n", plane->index);
->> -        test(data, pipe, plane);
->> -        igt_plane_set_fb(plane, NULL);
->> +        if (first_plane < 0)
->> +            first_plane = j__;
->> +
->> +        last_plane = j__;
->> +
->> +        if (extended) {
->> +            igt_info("Testing plane %u\n", plane->index);
->> +            test(data, pipe, plane);
->> +            igt_plane_set_fb(plane, NULL);
->> +        }
->> +    }
->> +
->> +    if (!extended) {
->> +        for_each_plane_on_pipe(&data->display, pipe, plane) {
->> +            if (j__ != first_plane && j__ != last_plane)
->> +                continue;
->> +
->> +            /* reset plane alpha properties between each plane */
->> +            reset_alpha(display, pipe);
->> +
->> +            igt_info("Testing plane %u\n", plane->index);
->> +            test(data, pipe, plane);
->> +            igt_plane_set_fb(plane, NULL);
->> +        }
->
-> There is no issue with this logic, just for readability purpose how 
-> about below logic?
->
->                 if (must_multiply && !has_multiplied_alpha(data, plane))
->                         continue;
->
-> +               /* Get first & last valid planes. */
-> +               if (first_plane < 0)
-> +                       first_plane = j__;
-> +
-> +               last_plane = j__;
-> +       }
-> +
-> +       for_each_plane_on_pipe(display, pipe, plane) {
-> +               if (!igt_plane_has_prop(plane, IGT_PLANE_ALPHA))
-> +                       continue;
-> +
-> +               if (blend && !igt_plane_has_prop(plane, 
-> IGT_PLANE_PIXEL_BLEND_MODE))
-> +                       continue;
-> +
-> +               /* Reset plane alpha properties between each plane. */
-> +               reset_alpha(display, pipe);
-> +
-> +               if (must_multiply && !has_multiplied_alpha(data, plane))
-> +                       continue;
-> +
-> +               if (!extended && j__ != first_plane && j__ != last_plane)
-> +                       continue;
-> +
->                 igt_info("Testing plane %u\n", plane->index);
->                 test(data, pipe, plane);
->
-> - Bhanu
+== Series Details ==
 
-I agree, this looks more intuitive.
+Series: tests/i915/pxp: test_pxp_stale_buf_optout_execution requires arb session
+URL   : https://patchwork.freedesktop.org/series/113760/
+State : success
+
+== Summary ==
+
+CI Bug Log - changes from CI_DRM_12712 -> IGTPW_8461
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8461/index.html
+
+Participating hosts (38 -> 36)
+------------------------------
+
+  Missing    (2): bat-atsm-1 fi-snb-2520m 
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in IGTPW_8461:
+
+### IGT changes ###
+
+#### Suppressed ####
+
+  The following results come from untrusted machines, tests, or statuses.
+  They do not affect the overall result.
+
+  * igt@i915_selftest@live@reset:
+    - {bat-dg2-11}:       [PASS][1] -> [ABORT][2]
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12712/bat-dg2-11/igt@i915_selftest@live@reset.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8461/bat-dg2-11/igt@i915_selftest@live@reset.html
+
+  
+New tests
+---------
+
+  New tests have been introduced between CI_DRM_12712 and IGTPW_8461:
+
+### New IGT tests (1) ###
+
+  * igt@i915_pm_rpm@module-reload:
+    - Statuses : 31 pass(s) 5 skip(s)
+    - Exec time: [0.0] s
+
+  
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_8461 that come from known issues:
+
+### IGT changes ###
+
+#### Possible fixes ####
+
+  * igt@gem_exec_gttfill@basic:
+    - fi-pnv-d510:        [FAIL][3] ([i915#7229]) -> [PASS][4]
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12712/fi-pnv-d510/igt@gem_exec_gttfill@basic.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8461/fi-pnv-d510/igt@gem_exec_gttfill@basic.html
+
+  * igt@i915_selftest@live@reset:
+    - {bat-rpls-2}:       [ABORT][5] ([i915#4983]) -> [PASS][6]
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12712/bat-rpls-2/igt@i915_selftest@live@reset.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8461/bat-rpls-2/igt@i915_selftest@live@reset.html
+    - {bat-rpls-1}:       [ABORT][7] ([i915#4983]) -> [PASS][8]
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12712/bat-rpls-1/igt@i915_selftest@live@reset.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8461/bat-rpls-1/igt@i915_selftest@live@reset.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [i915#1845]: https://gitlab.freedesktop.org/drm/intel/issues/1845
+  [i915#4983]: https://gitlab.freedesktop.org/drm/intel/issues/4983
+  [i915#5251]: https://gitlab.freedesktop.org/drm/intel/issues/5251
+  [i915#6311]: https://gitlab.freedesktop.org/drm/intel/issues/6311
+  [i915#6367]: https://gitlab.freedesktop.org/drm/intel/issues/6367
+  [i915#6997]: https://gitlab.freedesktop.org/drm/intel/issues/6997
+  [i915#7229]: https://gitlab.freedesktop.org/drm/intel/issues/7229
+  [i915#7699]: https://gitlab.freedesktop.org/drm/intel/issues/7699
+  [i915#7828]: https://gitlab.freedesktop.org/drm/intel/issues/7828
+  [i915#7872]: https://gitlab.freedesktop.org/drm/intel/issues/7872
 
 
->
->>       }
->>         igt_output_set_pipe(output, PIPE_NONE);
->> @@ -611,6 +638,16 @@ static bool pipe_check(data_t *data, enum pipe 
->> pipe,
->>       }
->>   }
->>   +static bool execution_constraint(enum pipe pipe)
->> +{
->> +    if (!extended &&
->> +        pipe != active_pipes[0] &&
->> +        pipe != active_pipes[last_pipe])
->> +        return true;
->> +
->> +    return false;
->> +}
->> +
->>   static void run_subtests(data_t *data)
->>   {
->>       igt_output_t *output;
->> @@ -621,6 +658,8 @@ static void run_subtests(data_t *data)
->>             igt_subtest_with_dynamic(subtests[i].name) {
->> for_each_pipe_with_single_output(&data->display, pipe, output) {
->> +                if (execution_constraint(pipe))
->> +                    continue;
->>                   prepare_crtc(data, output, pipe);
->>                   if (!pipe_check(data, pipe, subtests[i].blend, 
->> subtests[i].must_multiply))
->>                       continue;
->> @@ -633,15 +672,38 @@ static void run_subtests(data_t *data)
->>       }
->>   }
->>   -igt_main
->> +static int opt_handler(int opt, int opt_index, void *_data)
->> +{
->> +    switch (opt) {
->> +    case 'e':
->> +        extended = true;
->> +        break;
->> +    default:
->> +        return IGT_OPT_HANDLER_ERROR;
->> +    }
->> +
->> +    return IGT_OPT_HANDLER_SUCCESS;
->> +}
->> +
->> +const char *help_str =
->> +    "  -e \tExtended tests.\n";
->> +
->> +igt_main_args("e", NULL, help_str, opt_handler, NULL)
->>   {
->>       data_t data = {};
->> +    enum pipe pipe;
+Build changes
+-------------
 
-This declaration can be moved in the fixture block where it is used.
+  * CI: CI-20190529 -> None
+  * IGT: IGT_7153 -> IGTPW_8461
+
+  CI-20190529: 20190529
+  CI_DRM_12712: 579f8b992ea3f5cd11bd803dd0585a7ddb006a13 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_8461: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8461/index.html
+  IGT_7153: f47f859f13376958a2bd199423b1f0ff53dddbe0 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8461/index.html
+
+--===============3078236671406323209==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
 
-Regards,
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
 
-Ankit
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/i915/pxp: test_pxp_stale_buf_optout_execution requires arb session</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/113760/">https://patchwork.freedesktop.org/series/113760/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8461/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8461/index.html</a></td></tr>
+
+</table>
 
 
->> +
->> +    last_pipe = 0;
->>         igt_fixture {
->>           data.gfx_fd = drm_open_driver_master(DRIVER_ANY);
->>           igt_require_pipe_crc(data.gfx_fd);
->>           igt_display_require(&data.display, data.gfx_fd);
->>           igt_require(data.display.is_atomic);
->> +        /* Get active pipes. */
->> +        for_each_pipe(&data.display, pipe)
->> +            active_pipes[last_pipe++] = pipe;
->> +        last_pipe--;
->>       }
->>         run_subtests(&data);
+    <h1>CI Bug Log - changes from CI_DRM_12712 -&gt; IGTPW_8461</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8461/index.html</p>
+<h2>Participating hosts (38 -&gt; 36)</h2>
+<p>Missing    (2): bat-atsm-1 fi-snb-2520m </p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in IGTPW_8461:</p>
+<h3>IGT changes</h3>
+<h4>Suppressed</h4>
+<p>The following results come from untrusted machines, tests, or statuses.<br />
+  They do not affect the overall result.</p>
+<ul>
+<li>igt@i915_selftest@live@reset:<ul>
+<li>{bat-dg2-11}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12712/bat-dg2-11/igt@i915_selftest@live@reset.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8461/bat-dg2-11/igt@i915_selftest@live@reset.html">ABORT</a></li>
+</ul>
+</li>
+</ul>
+<h2>New tests</h2>
+<p>New tests have been introduced between CI_DRM_12712 and IGTPW_8461:</p>
+<h3>New IGT tests (1)</h3>
+<ul>
+<li>igt@i915_pm_rpm@module-reload:<ul>
+<li>Statuses : 31 pass(s) 5 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_8461 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@gem_exec_gttfill@basic:</p>
+<ul>
+<li>fi-pnv-d510:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12712/fi-pnv-d510/igt@gem_exec_gttfill@basic.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7229">i915#7229</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8461/fi-pnv-d510/igt@gem_exec_gttfill@basic.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@reset:</p>
+<ul>
+<li>
+<p>{bat-rpls-2}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12712/bat-rpls-2/igt@i915_selftest@live@reset.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4983">i915#4983</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8461/bat-rpls-2/igt@i915_selftest@live@reset.html">PASS</a></p>
+</li>
+<li>
+<p>{bat-rpls-1}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12712/bat-rpls-1/igt@i915_selftest@live@reset.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4983">i915#4983</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8461/bat-rpls-1/igt@i915_selftest@live@reset.html">PASS</a></p>
+</li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_7153 -&gt; IGTPW_8461</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_12712: 579f8b992ea3f5cd11bd803dd0585a7ddb006a13 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_8461: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8461/index.html<br />
+  IGT_7153: f47f859f13376958a2bd199423b1f0ff53dddbe0 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============3078236671406323209==--
