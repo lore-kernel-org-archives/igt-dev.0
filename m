@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7816710E17C
- for <igt-dev@lists.freedesktop.org>; Wed,  8 Feb 2023 19:22:28 +0000 (UTC)
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2E11389C0D
+ for <igt-dev@lists.freedesktop.org>; Wed,  8 Feb 2023 19:26:49 +0000 (UTC)
 From: Nidhi Gupta <nidhi1.gupta@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Thu,  9 Feb 2023 00:58:19 +0530
-Message-Id: <20230208192819.28899-1-nidhi1.gupta@intel.com>
+Date: Thu,  9 Feb 2023 01:02:33 +0530
+Message-Id: <20230208193233.28940-1-nidhi1.gupta@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Subject: [igt-dev] [PATCH i-g-t v2] tests/kms_plane_alpha_blend: Limit the
- execution to two pipes
+ test execution
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
