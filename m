@@ -1,17 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4D86410E67F
- for <igt-dev@lists.freedesktop.org>; Wed,  8 Feb 2023 01:54:10 +0000 (UTC)
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7833F10E00C
+ for <igt-dev@lists.freedesktop.org>; Wed,  8 Feb 2023 02:11:54 +0000 (UTC)
 From: Nidhi Gupta <nidhi1.gupta@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Wed,  8 Feb 2023 07:29:58 +0530
-Message-Id: <20230208015959.24015-4-nidhi1.gupta@intel.com>
-In-Reply-To: <20230208015959.24015-1-nidhi1.gupta@intel.com>
-References: <20230208015959.24015-1-nidhi1.gupta@intel.com>
+Date: Wed,  8 Feb 2023 07:47:45 +0530
+Message-Id: <20230208021745.24590-1-nidhi1.gupta@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH v2 3/4] tests/kms_color: Limit the execution to
- two pipes
+Subject: [igt-dev] [PATCH i-g-t v2] tests/i915/kms_draw_crc: Ignore RGB565 &
+ XRGB2101010 formats on simulation
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,109 +17,59 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Nidhi Gupta <nidhi1.gupta@intel.com>
+Cc: Nidhi Gupta <nidhi1.gupta@intel.com>, juha-pekka.heikkila@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-As the test execution is taking more time on simulation, limit the
-execution to two (first & last) pipes. This optimization is for
-simulation only and hence there will be no impact on real hardware.
+From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 
-This patch will also provide an option (command line flag '-e') to
-execute on all pipes.
+As RGB565 and XRGB2101010 formats are bit slow in pre-si, we can
+ignore both the formats only on simulation to improve the execution
+time.
 
-Example: ./kms_color -e --run-subtest ctm-0-50
+v2: update the skip format condition to
+    (formats[format_idx] != DRM_FORMAT_XRGB8888)
+    (Juha-Pekka)
 
-v2: Restrict the execution only on 2 pipes for
-    real hardware aswell (Ankit)
-
+Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 Signed-off-by: Nidhi Gupta <nidhi1.gupta@intel.com>
 ---
- tests/kms_color.c | 41 ++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 40 insertions(+), 1 deletion(-)
+ tests/i915/kms_draw_crc.c | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
 
-diff --git a/tests/kms_color.c b/tests/kms_color.c
-index e0c6a8bf..ccb1c2c3 100644
---- a/tests/kms_color.c
-+++ b/tests/kms_color.c
-@@ -26,6 +26,10 @@
- 
- IGT_TEST_DESCRIPTION("Test Color Features at Pipe level");
- 
-+static bool extended;
-+static enum pipe active_pipes[IGT_MAX_PIPES];
-+static uint32_t last_pipe;
+diff --git a/tests/i915/kms_draw_crc.c b/tests/i915/kms_draw_crc.c
+index c2ac4721..64d3b937 100644
+--- a/tests/i915/kms_draw_crc.c
++++ b/tests/i915/kms_draw_crc.c
+@@ -290,10 +290,18 @@ igt_main
+ 		     "with different modifiers, DRM_FORMATS, DRAW_METHODS.");
+ 	igt_subtest_with_dynamic("draw-method") {
+ 		for (format_idx = 0; format_idx < ARRAY_SIZE(formats); format_idx++) {
++			/* 10-bit & 16-bit formats are bit slow, ignore in pre-si. */
++			if (igt_run_in_simulation() &&
++			    formats[format_idx] != DRM_FORMAT_XRGB8888)
++				continue;
 +
- static bool test_pipe_degamma(data_t *data,
- 			      igt_plane_t *primary)
- {
-@@ -876,6 +880,16 @@ run_deep_color_tests_for_pipe(data_t *data, enum pipe p)
- 	test_cleanup(data);
- }
+ 			for (method = 0; method < IGT_DRAW_METHOD_COUNT; method++) {
+ 				for (modifier_idx = 0; modifier_idx < ARRAY_SIZE(modifiers); modifier_idx++) {
+ 					modifier = modifiers[modifier_idx];
  
-+static bool pipe_constraint(enum pipe pipe)
-+{
-+	if (!extended &&
-+	    pipe != active_pipes[0] &&
-+	    pipe != active_pipes[last_pipe])
-+		return true;
++					if (!igt_display_has_format_mod(&display, formats[format_idx], modifier))
++						continue;
 +
-+	return false;
-+}
-+
- static void
- run_invalid_tests_for_pipe(data_t *data)
- {
-@@ -1020,6 +1034,8 @@ run_tests_for_pipe(data_t *data)
- 		igt_describe_f("%s", ctm_tests[i].desc);
- 		igt_subtest_with_dynamic_f("%s", ctm_tests[i].name) {
- 			for_each_pipe(&data->display, pipe) {
-+				if (pipe_constraint(pipe))
-+					continue;
- 				run_ctm_tests_for_pipe(data, pipe,
- 						       ctm_tests[i].colors,
- 						       ctm_tests[i].ctm,
-@@ -1039,9 +1055,28 @@ run_tests_for_pipe(data_t *data)
- 	}
- }
+ 					if (method == IGT_DRAW_MMAP_WC && !gem_mmap__has_wc(drm_fd))
+ 						continue;
  
--igt_main
-+static int opt_handler(int opt, int opt_index, void *_data)
-+{
-+	switch (opt) {
-+	case 'e':
-+		extended = true;
-+		break;
-+	default:
-+		return IGT_OPT_HANDLER_ERROR;
-+	}
-+
-+	return IGT_OPT_HANDLER_SUCCESS;
-+}
-+
-+const char *help_str =
-+	"  -e \tExtended tests.\n";
-+
-+igt_main_args("e", NULL, help_str, opt_handler, NULL)
- {
- 	data_t data = {};
-+	enum pipe pipe;
-+
-+	last_pipe = 0;
+@@ -301,9 +309,6 @@ igt_main
+ 					    !gem_has_mappable_ggtt(drm_fd))
+ 						continue;
  
- 	igt_fixture {
- 		data.drm_fd = drm_open_driver_master(DRIVER_ANY);
-@@ -1050,6 +1085,10 @@ igt_main
- 		kmstest_set_vt_graphics_mode();
- 
- 		igt_display_require(&data.display, data.drm_fd);
-+		/* Get active pipes. */
-+		for_each_pipe(&data.display, pipe)
-+			active_pipes[last_pipe++] = pipe;
-+		last_pipe--;
- 	}
- 
- 	igt_subtest_group
+-					if (!igt_display_has_format_mod(&display, formats[format_idx], modifier))
+-						continue;
+-
+ 					igt_dynamic_f("%s-%s-%s",
+ 						      format_str(format_idx),
+ 						      igt_draw_get_method_name(method),
 -- 
 2.39.0
