@@ -1,18 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2729710EB06
- for <igt-dev@lists.freedesktop.org>; Thu,  9 Feb 2023 14:12:32 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4601810EB06
+ for <igt-dev@lists.freedesktop.org>; Thu,  9 Feb 2023 14:12:36 +0000 (UTC)
 From: Karolina Stolarek <karolina.stolarek@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Thu,  9 Feb 2023 15:12:09 +0100
-Message-Id: <485e84afe40c7801017e68f9f45b84e3a144e7f9.1675950055.git.karolina.stolarek@intel.com>
+Date: Thu,  9 Feb 2023 15:12:12 +0100
+Message-Id: <8710d059f840b38a10f1e0b23861a958d5de6dce.1675950055.git.karolina.stolarek@intel.com>
 In-Reply-To: <cover.1675950055.git.karolina.stolarek@intel.com>
 References: <cover.1675950055.git.karolina.stolarek@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v3 6/9] lib/i915: Rename intel_tiling_info
- library
+Subject: [igt-dev] [PATCH i-g-t v3 9/9] tests/gem_ccs: Check for extended
+ block-copy and compression support
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,111 +23,96 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-The structs here describe the properties of copy commands, not
-just tiling formats they support. Make the library name more
-generic.
+Use a helper that checks blitter command flags instead of directly
+checking Flat CCS compression support. Check for extended block-copy
+command when initializing the copy object in block_copy and
+block_multicopy tests.
 
 Signed-off-by: Karolina Stolarek <karolina.stolarek@intel.com>
 ---
- lib/i915/i915_blt.h                                 | 2 +-
- lib/i915/{intel_tiling_info.c => intel_cmds_info.c} | 2 +-
- lib/i915/{intel_tiling_info.h => intel_cmds_info.h} | 4 ++--
- lib/intel_chipset.h                                 | 2 +-
- lib/meson.build                                     | 6 +++---
- 5 files changed, 8 insertions(+), 8 deletions(-)
- rename lib/i915/{intel_tiling_info.c => intel_cmds_info.c} (98%)
- rename lib/i915/{intel_tiling_info.h => intel_cmds_info.h} (93%)
+ lib/i915/i915_blt.c  | 17 -----------------
+ lib/i915/i915_blt.h  |  1 -
+ tests/i915/gem_ccs.c |  7 +++----
+ 3 files changed, 3 insertions(+), 22 deletions(-)
 
+diff --git a/lib/i915/i915_blt.c b/lib/i915/i915_blt.c
+index 9b32a0e9..63eba4ac 100644
+--- a/lib/i915/i915_blt.c
++++ b/lib/i915/i915_blt.c
+@@ -191,23 +191,6 @@ struct gen12_block_copy_data_ext {
+ 	} dw21;
+ };
+ 
+-/**
+- * blt_supports_compression:
+- * @i915: drm fd
+- *
+- * Function checks if HW supports flatccs compression in blitter commands
+- * on @i915 device.
+- *
+- * Returns:
+- * true if it does, false otherwise.
+- */
+-bool blt_supports_compression(int i915)
+-{
+-	uint32_t devid = intel_get_drm_devid(i915);
+-
+-	return HAS_FLATCCS(devid);
+-}
+-
+ /**
+  * blt_supports_command:
+  * @cmds_info: Copy commands description struct
 diff --git a/lib/i915/i915_blt.h b/lib/i915/i915_blt.h
-index ceafc529..3fe47527 100644
+index 6634533b..c535961e 100644
 --- a/lib/i915/i915_blt.h
 +++ b/lib/i915/i915_blt.h
-@@ -47,7 +47,7 @@
- #include <malloc.h>
- #include "drm.h"
- #include "igt.h"
--#include "intel_tiling_info.h"
-+#include "intel_cmds_info.h"
+@@ -157,7 +157,6 @@ struct blt_ctrl_surf_copy_data {
+ 	bool print_bb;
+ };
  
- #define CCS_RATIO 256
+-bool blt_supports_compression(int i915);
+ bool blt_supports_command(const struct intel_cmds_info *cmds_info,
+ 			  enum blt_cmd_type cmd);
+ bool blt_cmd_supports_tiling(const struct intel_cmds_info *cmds_info,
+diff --git a/tests/i915/gem_ccs.c b/tests/i915/gem_ccs.c
+index a24c8e1f..b7e8bda7 100644
+--- a/tests/i915/gem_ccs.c
++++ b/tests/i915/gem_ccs.c
+@@ -346,7 +346,6 @@ static void block_copy(int i915,
+ 	uint32_t run_id = mid_tiling;
+ 	uint32_t mid_region = region2, bb;
+ 	uint32_t width = param.width, height = param.height;
+-	uint32_t devid = intel_get_drm_devid(i915);
+ 	enum blt_compression mid_compression = config->compression;
+ 	int mid_compression_format = param.compression_format;
+ 	enum blt_compression_type comp_type = COMPRESSION_TYPE_3D;
+@@ -355,7 +354,7 @@ static void block_copy(int i915,
  
-diff --git a/lib/i915/intel_tiling_info.c b/lib/i915/intel_cmds_info.c
-similarity index 98%
-rename from lib/i915/intel_tiling_info.c
-rename to lib/i915/intel_cmds_info.c
-index e869acb3..9fce0351 100644
---- a/lib/i915/intel_tiling_info.c
-+++ b/lib/i915/intel_cmds_info.c
-@@ -5,7 +5,7 @@
+ 	igt_assert(__gem_create_in_memory_regions(i915, &bb, &bb_size, region1) == 0);
  
- #include <stdint.h>
- #include "intel_chipset.h"
--#include "i915/intel_tiling_info.h"
-+#include "i915/intel_cmds_info.h"
+-	if (!blt_supports_compression(i915) && !IS_METEORLAKE(devid))
++	if (!blt_uses_extended_block_copy(i915))
+ 		pext = NULL;
  
- #define BLT_INFO(_cmd, _tiling)  { \
- 		.blt_cmd_type = _cmd, \
-diff --git a/lib/i915/intel_tiling_info.h b/lib/i915/intel_cmds_info.h
-similarity index 93%
-rename from lib/i915/intel_tiling_info.h
-rename to lib/i915/intel_cmds_info.h
-index c7128a43..4fdce343 100644
---- a/lib/i915/intel_tiling_info.h
-+++ b/lib/i915/intel_cmds_info.h
-@@ -3,8 +3,8 @@
-  * Copyright © 2022 Intel Corporation
-  */
+ 	src = blt_create_object(i915, region1, width, height, bpp, uc_mocs,
+@@ -470,7 +469,7 @@ static void block_multicopy(int i915,
  
--#ifndef __INTEL_TILING_INFO_H
--#define __INTEL_TILING_INFO_H
-+#ifndef __INTEL_CMDS_INFO_H
-+#define __INTEL_CMDS_INFO_H
+ 	igt_assert(__gem_create_in_memory_regions(i915, &bb, &bb_size, region1) == 0);
  
- #include <stdint.h>
+-	if (!blt_supports_compression(i915))
++	if (!blt_uses_extended_block_copy(i915))
+ 		pext3 = NULL;
  
-diff --git a/lib/intel_chipset.h b/lib/intel_chipset.h
-index 3de67483..c9762ae6 100644
---- a/lib/intel_chipset.h
-+++ b/lib/intel_chipset.h
-@@ -31,7 +31,7 @@
- #include <pciaccess.h>
- #include <stdbool.h>
+ 	src = blt_create_object(i915, region1, width, height, bpp, uc_mocs,
+@@ -557,7 +556,7 @@ static void block_copy_test(int i915,
+ 	const struct intel_execution_engine2 *e;
+ 	int tiling;
  
--#include "i915/intel_tiling_info.h"
-+#include "i915/intel_cmds_info.h"
+-	if (config->compression && !blt_supports_compression(i915))
++	if (config->compression && !blt_block_copy_supports_compression(i915))
+ 		return;
  
- #define BIT(x) (1ul <<(x))
- 
-diff --git a/lib/meson.build b/lib/meson.build
-index d49b78ca..c5131d9a 100644
---- a/lib/meson.build
-+++ b/lib/meson.build
-@@ -14,7 +14,7 @@ lib_sources = [
- 	'i915/intel_decode.c',
- 	'i915/intel_memory_region.c',
- 	'i915/intel_mocs.c',
--	'i915/intel_tiling_info.c',
-+	'i915/intel_cmds_info.c',
- 	'i915/i915_blt.c',
- 	'i915/i915_crc.c',
- 	'igt_collection.c',
-@@ -219,7 +219,7 @@ igt_deps = [ lib_igt ] + lib_deps
- lin_igt_chipset_build = static_library('igt_chipset',
-                                        ['intel_chipset.c',
- 					'intel_device_info.c',
--					'i915/intel_tiling_info.c'],
-+					'i915/intel_cmds_info.c'],
-                                        include_directories : inc)
- 
- lib_igt_chipset = declare_dependency(link_with : lin_igt_chipset_build,
-@@ -242,7 +242,7 @@ lib_igt_device_scan_build = static_library('igt_device_scan',
- 	'igt_list.c',
- 	'igt_tools_stub.c',
- 	'intel_device_info.c',
--	'i915/intel_tiling_info.c',
-+	'i915/intel_cmds_info.c',
- 	],
- 	dependencies : scan_dep,
- 	include_directories : inc)
+ 	if (config->inplace && !config->compression)
 -- 
 2.25.1
