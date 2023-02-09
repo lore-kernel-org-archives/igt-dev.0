@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============6352814154562647034=="
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 026D310EAFB
+ for <igt-dev@lists.freedesktop.org>; Thu,  9 Feb 2023 14:12:23 +0000 (UTC)
+From: Karolina Stolarek <karolina.stolarek@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Thu,  9 Feb 2023 15:12:03 +0100
+Message-Id: <cover.1675950055.git.karolina.stolarek@intel.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Juha-Pekka Heikkila" <juhapekka.heikkila@gmail.com>
-Date: Thu, 09 Feb 2023 13:05:26 -0000
-Message-ID: <167594792677.20198.12221828653963288595@emeril.freedesktop.org>
-References: <20230209115151.8681-1-juhapekka.heikkila@gmail.com>
-In-Reply-To: <20230209115151.8681-1-juhapekka.heikkila@gmail.com>
-Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3IgdGVzdHMv?=
- =?utf-8?q?kms=5Fplane=5Fscaling=3A_add_invalid_parameter_tests_=28rev3=29?=
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t v3 0/9] Extend and rename intel_tiling_info
+ library
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,278 +17,80 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============6352814154562647034==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+As for now, there is no central place that provides information on
+command properties such as compression support or if the command
+requires any additional setup. It is possible to modify the already
+existing library, intel_tiling_info, and add such information there.
 
-== Series Details ==
+The series adds a new field to better describe blitter commands,
+which stores bit flags describing properties. Flags defined as a part
+of the series mostly target the block-copy command, as its features
+vary the most between generations. The introduction of the field is
+followed by an update of DG2 and MTL definitions and gem_ccs test.
 
-Series: tests/kms_plane_scaling: add invalid parameter tests (rev3)
-URL   : https://patchwork.freedesktop.org/series/112859/
-State : failure
+It was decided that the former blt_cmd_info struct will not only host
+information on command properties, but will also describe non-blitter
+copy commands. Because of this, in v3 we rename related structs,
+functions and variables. To make reviewing easier, the additional
+rename was split into three commits: intel_cmds_info definitions
+update, supported_cmds field rename and intel_cmds_info getter
+rename.
 
-== Summary ==
+The most important name updates are:
+  - intel_tiling_info lib ---> intel_cmds_info lib
+  - blt_cmd_info struct ---> intel_cmds_info struct
+  - blt_tiling_info struct ---> blt_cmd_info struct
 
-CI Bug Log - changes from CI_DRM_12721 -> IGTPW_8476
-====================================================
+v3:
+  - Rename blt_cmds_desc struct to intel_cmds_info
+  - Update ifdef in intel_cmds_info header (it still said TILING)
+  - Move blt_get_cmd_info() helper from i915_blt to the library,
+    make it public
+  - Change supported_cmds field name to blt_cmds, as it only refers
+    to the blitter copy commands
+  - Correct MTL definition
+  - Smaller renames, such as GET_BLT_INFO --> GET_CMDS_INFO
 
-Summary
--------
+v2:
+  - Rename the library and its structs to better describe what
+    they store
+  - Stop using has_flatccs field when checking if a command
+    can use compression; use blt_cmd_info flags field instead
+  - Update the name of blt_tiling field in intel_device_info,
+    as it describes more than just a list of supported tiling
+    formats
+  - Drop additional macros for DG2 and MTL definitions
 
-  **FAILURE**
+Karolina Stolarek (9):
+  lib/intel_tiling_info: Rename blt_cmd_info to intel_cmds_info
+  lib/intel_tiling_info: Update names of commands definitions
+  lib/intel_tiling_info: Update intel_cmds_info field name
+  lib/intel_device_info: Update name for cmds_info getter
+  lib/intel_tiling_info: Rename blt_tiling_info to blt_cmd_info
+  lib/i915: Rename intel_tiling_info library
+  lib/intel_cmds_info: Add flags field to describe command properties
+  lib/i915_blt: Add checks for command properties
+  tests/gem_ccs: Check for extended block-copy and compression support
 
-  Serious unknown changes coming with IGTPW_8476 absolutely need to be
-  verified manually.
-  
-  If you think the reported changes have nothing to do with the changes
-  introduced in IGTPW_8476, please notify your bug team to allow them
-  to document this new failure mode, which will reduce false positives in CI.
+ lib/i915/i915_blt.c          | 121 +++++++++++++++++++++++-----------
+ lib/i915/i915_blt.h          |  15 +++--
+ lib/i915/intel_cmds_info.c   | 122 +++++++++++++++++++++++++++++++++++
+ lib/i915/intel_cmds_info.h   |  55 ++++++++++++++++
+ lib/i915/intel_tiling_info.c |  95 ---------------------------
+ lib/i915/intel_tiling_info.h |  48 --------------
+ lib/intel_chipset.h          |   6 +-
+ lib/intel_device_info.c      |  68 +++++++++----------
+ lib/meson.build              |   6 +-
+ tests/i915/gem_ccs.c         |   7 +-
+ 10 files changed, 313 insertions(+), 230 deletions(-)
+ create mode 100644 lib/i915/intel_cmds_info.c
+ create mode 100644 lib/i915/intel_cmds_info.h
+ delete mode 100644 lib/i915/intel_tiling_info.c
+ delete mode 100644 lib/i915/intel_tiling_info.h
 
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8476/index.html
-
-Participating hosts (37 -> 35)
-------------------------------
-
-  Missing    (2): fi-kbl-soraka fi-snb-2520m 
-
-Possible new issues
--------------------
-
-  Here are the unknown changes that may have been introduced in IGTPW_8476:
-
-### IGT changes ###
-
-#### Possible regressions ####
-
-  * igt@dmabuf@all-tests@dma_fence:
-    - fi-cfl-8109u:       [PASS][1] -> [DMESG-FAIL][2]
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12721/fi-cfl-8109u/igt@dmabuf@all-tests@dma_fence.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8476/fi-cfl-8109u/igt@dmabuf@all-tests@dma_fence.html
-
-  * igt@dmabuf@all-tests@sanitycheck:
-    - fi-cfl-8109u:       [PASS][3] -> [ABORT][4]
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12721/fi-cfl-8109u/igt@dmabuf@all-tests@sanitycheck.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8476/fi-cfl-8109u/igt@dmabuf@all-tests@sanitycheck.html
-
-  
-Known issues
-------------
-
-  Here are the changes found in IGTPW_8476 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@kms_chamelium_hpd@common-hpd-after-suspend:
-    - fi-cfl-guc:         NOTRUN -> [SKIP][5] ([fdo#109271])
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8476/fi-cfl-guc/igt@kms_chamelium_hpd@common-hpd-after-suspend.html
-
-  * igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions-varying-size:
-    - fi-bsw-n3050:       [PASS][6] -> [FAIL][7] ([i915#6298])
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12721/fi-bsw-n3050/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions-varying-size.html
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8476/fi-bsw-n3050/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions-varying-size.html
-
-  
-#### Possible fixes ####
-
-  * igt@dmabuf@all-tests@dma_fence:
-    - fi-cfl-guc:         [DMESG-FAIL][8] -> [PASS][9]
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12721/fi-cfl-guc/igt@dmabuf@all-tests@dma_fence.html
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8476/fi-cfl-guc/igt@dmabuf@all-tests@dma_fence.html
-
-  * igt@dmabuf@all-tests@sanitycheck:
-    - fi-cfl-guc:         [ABORT][10] -> [PASS][11]
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12721/fi-cfl-guc/igt@dmabuf@all-tests@sanitycheck.html
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8476/fi-cfl-guc/igt@dmabuf@all-tests@sanitycheck.html
-
-  * igt@i915_selftest@live@dmabuf:
-    - fi-bsw-nick:        [DMESG-FAIL][12] ([i915#7562] / [i915#7913]) -> [PASS][13]
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12721/fi-bsw-nick/igt@i915_selftest@live@dmabuf.html
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8476/fi-bsw-nick/igt@i915_selftest@live@dmabuf.html
-
-  * igt@i915_selftest@live@gt_heartbeat:
-    - fi-apl-guc:         [DMESG-FAIL][14] ([i915#5334]) -> [PASS][15]
-   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12721/fi-apl-guc/igt@i915_selftest@live@gt_heartbeat.html
-   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8476/fi-apl-guc/igt@i915_selftest@live@gt_heartbeat.html
-
-  * igt@i915_selftest@live@requests:
-    - {bat-rpls-1}:       [ABORT][16] ([i915#4983] / [i915#7911]) -> [PASS][17]
-   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12721/bat-rpls-1/igt@i915_selftest@live@requests.html
-   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8476/bat-rpls-1/igt@i915_selftest@live@requests.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
-  [i915#4983]: https://gitlab.freedesktop.org/drm/intel/issues/4983
-  [i915#5251]: https://gitlab.freedesktop.org/drm/intel/issues/5251
-  [i915#5334]: https://gitlab.freedesktop.org/drm/intel/issues/5334
-  [i915#6298]: https://gitlab.freedesktop.org/drm/intel/issues/6298
-  [i915#6311]: https://gitlab.freedesktop.org/drm/intel/issues/6311
-  [i915#7562]: https://gitlab.freedesktop.org/drm/intel/issues/7562
-  [i915#7609]: https://gitlab.freedesktop.org/drm/intel/issues/7609
-  [i915#7677]: https://gitlab.freedesktop.org/drm/intel/issues/7677
-  [i915#7699]: https://gitlab.freedesktop.org/drm/intel/issues/7699
-  [i915#7911]: https://gitlab.freedesktop.org/drm/intel/issues/7911
-  [i915#7913]: https://gitlab.freedesktop.org/drm/intel/issues/7913
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_7155 -> IGTPW_8476
-
-  CI-20190529: 20190529
-  CI_DRM_12721: e1f9df7a92c1e3da1009afa74dc1d08ef95c3d7c @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_8476: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8476/index.html
-  IGT_7155: 75c508d4e19c65683d4060cb3a772df600aaf23e @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-
-Testlist changes
-----------------
-
-+igt@kms_plane_scaling@invalid-parameters
--igt@gem_ctx_exec@barrier-race
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8476/index.html
-
---===============6352814154562647034==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/kms_plane_scaling: add invalid parameter tests (rev3)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/112859/">https://patchwork.freedesktop.org/series/112859/</a></td></tr>
-<tr><td><b>State:</b></td><td>failure</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8476/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8476/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from CI_DRM_12721 -&gt; IGTPW_8476</h1>
-<h2>Summary</h2>
-<p><strong>FAILURE</strong></p>
-<p>Serious unknown changes coming with IGTPW_8476 absolutely need to be<br />
-  verified manually.</p>
-<p>If you think the reported changes have nothing to do with the changes<br />
-  introduced in IGTPW_8476, please notify your bug team to allow them<br />
-  to document this new failure mode, which will reduce false positives in CI.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8476/index.html</p>
-<h2>Participating hosts (37 -&gt; 35)</h2>
-<p>Missing    (2): fi-kbl-soraka fi-snb-2520m </p>
-<h2>Possible new issues</h2>
-<p>Here are the unknown changes that may have been introduced in IGTPW_8476:</p>
-<h3>IGT changes</h3>
-<h4>Possible regressions</h4>
-<ul>
-<li>
-<p>igt@dmabuf@all-tests@dma_fence:</p>
-<ul>
-<li>fi-cfl-8109u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12721/fi-cfl-8109u/igt@dmabuf@all-tests@dma_fence.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8476/fi-cfl-8109u/igt@dmabuf@all-tests@dma_fence.html">DMESG-FAIL</a></li>
-</ul>
-</li>
-<li>
-<p>igt@dmabuf@all-tests@sanitycheck:</p>
-<ul>
-<li>fi-cfl-8109u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12721/fi-cfl-8109u/igt@dmabuf@all-tests@sanitycheck.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8476/fi-cfl-8109u/igt@dmabuf@all-tests@sanitycheck.html">ABORT</a></li>
-</ul>
-</li>
-</ul>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_8476 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@kms_chamelium_hpd@common-hpd-after-suspend:</p>
-<ul>
-<li>fi-cfl-guc:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8476/fi-cfl-guc/igt@kms_chamelium_hpd@common-hpd-after-suspend.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions-varying-size:</p>
-<ul>
-<li>fi-bsw-n3050:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12721/fi-bsw-n3050/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions-varying-size.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8476/fi-bsw-n3050/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions-varying-size.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6298">i915#6298</a>)</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@dmabuf@all-tests@dma_fence:</p>
-<ul>
-<li>fi-cfl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12721/fi-cfl-guc/igt@dmabuf@all-tests@dma_fence.html">DMESG-FAIL</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8476/fi-cfl-guc/igt@dmabuf@all-tests@dma_fence.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@dmabuf@all-tests@sanitycheck:</p>
-<ul>
-<li>fi-cfl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12721/fi-cfl-guc/igt@dmabuf@all-tests@sanitycheck.html">ABORT</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8476/fi-cfl-guc/igt@dmabuf@all-tests@sanitycheck.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@dmabuf:</p>
-<ul>
-<li>fi-bsw-nick:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12721/fi-bsw-nick/igt@i915_selftest@live@dmabuf.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7562">i915#7562</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7913">i915#7913</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8476/fi-bsw-nick/igt@i915_selftest@live@dmabuf.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@gt_heartbeat:</p>
-<ul>
-<li>fi-apl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12721/fi-apl-guc/igt@i915_selftest@live@gt_heartbeat.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5334">i915#5334</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8476/fi-apl-guc/igt@i915_selftest@live@gt_heartbeat.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@requests:</p>
-<ul>
-<li>{bat-rpls-1}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12721/bat-rpls-1/igt@i915_selftest@live@requests.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4983">i915#4983</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7911">i915#7911</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8476/bat-rpls-1/igt@i915_selftest@live@requests.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_7155 -&gt; IGTPW_8476</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_12721: e1f9df7a92c1e3da1009afa74dc1d08ef95c3d7c @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_8476: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8476/index.html<br />
-  IGT_7155: 75c508d4e19c65683d4060cb3a772df600aaf23e @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-<h2>Testlist changes</h2>
-<p>+igt@kms_plane_scaling@invalid-parameters<br />
--igt@gem_ctx_exec@barrier-race</p>
-
-</body>
-</html>
-
---===============6352814154562647034==--
+-- 
+2.25.1
