@@ -1,26 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5F8F810EA59
- for <igt-dev@lists.freedesktop.org>; Thu,  9 Feb 2023 11:57:20 +0000 (UTC)
-Received: from linux.intel.com (maurocar-mobl2.ger.corp.intel.com
- [10.252.4.104])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by linux.intel.com (Postfix) with ESMTPS id EB5D6580931
- for <igt-dev@lists.freedesktop.org>; Thu,  9 Feb 2023 03:57:18 -0800 (PST)
-Received: from maurocar by linux.intel.com with local (Exim 4.96)
- (envelope-from <mauro.chehab@linux.intel.com>) id 1pQ5YD-00Db5G-0F
- for igt-dev@lists.freedesktop.org; Thu, 09 Feb 2023 12:57:17 +0100
-From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Thu,  9 Feb 2023 12:57:12 +0100
-Message-Id: <20230209115712.3240666-2-mauro.chehab@linux.intel.com>
-In-Reply-To: <20230209115712.3240666-1-mauro.chehab@linux.intel.com>
-References: <20230209115712.3240666-1-mauro.chehab@linux.intel.com>
+Content-Type: multipart/alternative;
+ boundary="===============5241686261646880409=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v2 1/1] scripts:igt-doc.py: add a parser to
- document tests inlined
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Juha-Pekka Heikkila" <juhapekka.heikkila@gmail.com>
+Date: Thu, 09 Feb 2023 15:32:06 -0000
+Message-ID: <167595672673.20198.6642575296636017069@emeril.freedesktop.org>
+References: <20230209115151.8681-1-juhapekka.heikkila@gmail.com>
+In-Reply-To: <20230209115151.8681-1-juhapekka.heikkila@gmail.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
+ =?utf-8?q?kms=5Fplane=5Fscaling=3A_add_invalid_parameter_tests_=28rev5=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,517 +17,394 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Mauro Carvalho Chehab <mchehab@kernel.org>
+--===============5241686261646880409==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Tests need to be documentation, as otherwise its goal will be
-lost with time. Keeping documentation out of the sources is also
-not such a good idea, as they tend to bitrot.
+== Series Details ==
 
-So, add a script to allow keeping the documentation inlined, and
-add tools to verify if the documentation has gaps.
+Series: tests/kms_plane_scaling: add invalid parameter tests (rev5)
+URL   : https://patchwork.freedesktop.org/series/112859/
+State : success
 
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
----
- scripts/igt_doc.py | 487 +++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 487 insertions(+)
- create mode 100755 scripts/igt_doc.py
+== Summary ==
 
-diff --git a/scripts/igt_doc.py b/scripts/igt_doc.py
-new file mode 100755
-index 000000000000..292d99c1ef92
---- /dev/null
-+++ b/scripts/igt_doc.py
-@@ -0,0 +1,487 @@
-+#!/usr/bin/env python3
-+# pylint: disable=C0301,R0914,R0912,R0915
-+# SPDX-License-Identifier: GPL-2.0
-+
-+## Copyright (C) 2023    Intel Corporation                 ##
-+## Author: Mauro Carvalho Chehab <mchehab@kernel.org>      ##
-+##                                                         ##
-+## Allow keeping inlined test documentation and validate   ##
-+## if the documentation is kept updated.                   ##
-+
-+"""Maintain test plan and test implementation documentation on IGT."""
-+
-+import argparse
-+import fileinput
-+import re
-+import subprocess
-+import sys
-+
-+IGT_BUILD_PATH = 'build/'
-+IGT_RUNNER = '/runner/igt_runner'
-+
-+# Fields that mat be inside TEST and SUBTEST macros
-+fields = [
-+    'Category',       # Hardware building block / Software building block / ...
-+    'Sub-category',   # waitfence / dmabuf/ sysfs / debugfs / ...
-+    'Coverered functionality', # basic test / ...
-+    'Test type',      # functionality test / pereformance / stress
-+    'Run type',       # BAT / workarouds / stress / developer-specific / ...
-+    'Issues?',        # Bug tracker issue(s)
-+    'Platforms?',     # all / DG1 / DG2 / TGL / MTL / PVC / ATS-M / ...
-+    'Platform requirements?',  # Any other specific platform requirements
-+    'Depends on',     # some other IGT test, like igt@test@subtes
-+    'Requirements?',  # other non-platform requirements
-+    'Description']    # Description of the test
-+
-+#
-+# Expand subtests
-+#
-+
-+class TestList:
-+    """Parse and handle test lists with test/subtest documentation."""
-+    def __init__(self):
-+        self.doc = {}
-+        self.test_number = 0
-+        self.min_test_prefix = ''
-+
-+    def expand_subtest(self, fname, test_name, test):
-+        """Expand subtest wildcards providing an array with subtests"""
-+        subtest_array = []
-+
-+        for subtest in self.doc[test]["subtest"].keys():
-+            summary = test_name + '@' + self.doc[test]["subtest"][subtest]["Summary"]
-+
-+            if not summary:
-+                continue
-+
-+            num_vars = summary.count('%')
-+
-+            if num_vars == 0:
-+                subtest_dict = {}
-+
-+                # Trivial case: no need to expand anything
-+                subtest_dict["Summary"] = summary
-+
-+                for k in sorted(self.doc[test]["subtest"][subtest].keys()):
-+                    if k == 'Summary':
-+                        continue
-+                    if k == 'arg':
-+                        continue
-+
-+                    if self.doc[test]["subtest"][subtest][k] == self.doc[test][k]:
-+                        continue
-+
-+                    subtest_dict[k] = self.doc[test]["subtest"][subtest][k]
-+                    subtest_array.append(subtest_dict)
-+
-+                continue
-+
-+            # Handle summaries with wildcards
-+
-+            # Convert arguments into an array
-+            arg_array = {}
-+            arg_ref = self.doc[test]["subtest"][subtest]["arg"]
-+
-+            for arg_k in self.doc[test]["arg"][arg_ref].keys():
-+                arg_array[arg_k] = []
-+                if int(arg_k) > num_vars:
-+                    continue
-+
-+                for arg_el in sorted(self.doc[test]["arg"][arg_ref][arg_k].keys()):
-+                    arg_array[arg_k].append(arg_el)
-+
-+            size = len(arg_array)
-+
-+            if size < num_vars:
-+                sys.exit(f"{fname}:subtest {summary} needs {num_vars} arguments but only {size} are defined.")
-+
-+            for j in range(0, num_vars):
-+                if arg_array[j] is None:
-+                    sys.exit(f"{fname}:subtest{summary} needs arg[{j}], but this is not defined.")
-+
-+
-+            # convert numeric wildcards to string ones
-+            summary = re.sub(r'%(d|ld|lld|i|u|lu|llu)','%s', summary)
-+
-+            pos = [ 0 ] * num_vars
-+            args = [ 0 ] * num_vars
-+            arg_map = [ 0 ] * num_vars
-+
-+            while 1:
-+                for j in range(0, num_vars):
-+                    arg_val = arg_array[j][pos[j]]
-+                    args[j] = arg_val
-+
-+                    if arg_val in self.doc[test]["arg"][arg_ref][j]:
-+                        arg_map[j] = self.doc[test]["arg"][arg_ref][j][arg_val]
-+                        if re.match(r"\<.*\>", self.doc[test]["arg"][arg_ref][j][arg_val]):
-+                            args[j] = "<" + arg_val + ">"
-+                    else:
-+                        arg_map[j] = arg_val
-+
-+                arg_summary = summary % tuple(args)
-+
-+                # Store the element
-+                subtest_dict = {}
-+                subtest_dict["Summary"] = arg_summary
-+
-+                for field in sorted(self.doc[test]["subtest"][subtest].keys()):
-+                    if field == 'Summary':
-+                        continue
-+                    if field == 'arg':
-+                        continue
-+
-+                    sub_field = self.doc[test]["subtest"][subtest][field]
-+                    sub_field = re.sub(r"%?\barg\[(\d+)\]", lambda m: arg_map[int(m.group(1)) - 1], sub_field) # pylint: disable=W0640
-+                    if sub_field == self.doc[test][field]:
-+                        continue
-+
-+                    subtest_dict[field] = sub_field
-+
-+                subtest_array.append(subtest_dict)
-+
-+                # Increment variable inside the array
-+                arr_pos = 0
-+                while pos[arr_pos] + 1 >= len(arg_array[arr_pos]):
-+                    pos[arr_pos] = 0
-+                    arr_pos += 1
-+                    if arr_pos >= num_vars:
-+                        break
-+
-+                if arr_pos >= num_vars:
-+                    break
-+
-+                pos[arr_pos] += 1
-+
-+        return subtest_array
-+
-+    #
-+    # ReST print routines
-+    #
-+
-+    def print_test(self):
-+        """Print tests and subtests"""
-+        for test in sorted(self.doc.keys()):
-+            fname = self.doc[test]["File"]
-+
-+            name = re.sub(r'.*tests/', '', fname)
-+            name = re.sub(r'\.[ch]', '', name)
-+            name = "igt@" + name
-+
-+            print(len(name) * '=')
-+            print(name)
-+            print(len(name) * '=')
-+            print()
-+
-+            for field in sorted(self.doc[test].keys()):
-+                if field == "subtest":
-+                    continue
-+                if field == "arg":
-+                    continue
-+
-+                print(f":{field}: {self.doc[test][field]}")
-+
-+            subtest_array = self.expand_subtest(fname, name, test)
-+
-+            for subtest in subtest_array:
-+                print()
-+                print(subtest["Summary"])
-+                print(len(subtest["Summary"]) * '=')
-+                print("")
-+
-+                for field in sorted(subtest.keys()):
-+                    if field == 'Summary':
-+                        continue
-+                    if field == 'arg':
-+                        continue
-+
-+                    print(f":{field}:", subtest[field])
-+
-+                print()
-+
-+            print()
-+            print()
-+
-+    #
-+    # Get a list of subtests
-+    #
-+
-+    def get_subtests(self):
-+        """Return an array with all subtests"""
-+        subtests = []
-+
-+        for test in sorted(self.doc.keys()):
-+            fname = self.doc[test]["File"]
-+
-+            test_name = re.sub(r'.*tests/', '', fname)
-+            test_name = re.sub(r'\.[ch]', '', test_name)
-+            test_name = "igt@" + test_name
-+
-+            subtest_array = self.expand_subtest(fname, test_name, test)
-+
-+            for subtest in subtest_array:
-+                subtests.append(subtest["Summary"])
-+
-+        return subtests
-+
-+    #
-+    # Compare testlists from IGT with the documentation from source code
-+    #
-+    def check_tests(self):
-+        """Compare documented subtests with the IGT test list"""
-+        doc_subtests = sorted(self.get_subtests())
-+
-+        for i in range(0, len(doc_subtests)): # pylint: disable=C0200
-+            doc_subtests[i] = re.sub(r'\<[^\>]+\>', r'\\d+', doc_subtests[i])
-+
-+        # Get a list of tests from
-+        result = subprocess.run([ f"{IGT_BUILD_PATH}/{IGT_RUNNER}",  # pylint: disable=W1510
-+                                "-L", "-t",  self.min_test_prefix,
-+                                f"{IGT_BUILD_PATH}/tests"],
-+                                capture_output = True, text = True)
-+        if result.returncode:
-+            print( result.stdout)
-+            print("Error:", result.stderr)
-+            sys.exit(result.returncode)
-+
-+        run_subtests = sorted(result.stdout.splitlines())
-+
-+        # Compare arrays
-+
-+        run_missing = []
-+        doc_uneeded = []
-+
-+        for doc_test in doc_subtests:
-+            found = False
-+            for run_test in run_subtests:
-+                if re.match(r'^' + doc_test + r'$', run_test):
-+                    found = True
-+                    break
-+            if not found:
-+                doc_uneeded.append(doc_test)
-+
-+        for run_test in run_subtests:
-+            found = False
-+            for doc_test in doc_subtests:
-+                if re.match(r'^' + doc_test + r'$', run_test):
-+                    found = True
-+                    break
-+            if not found:
-+                run_missing.append(run_test)
-+
-+        if doc_uneeded:
-+            print("Unused documentation")
-+            for test_name in doc_uneeded:
-+                print(test_name)
-+
-+        if run_missing:
-+            if doc_uneeded:
-+                print()
-+            print("Missing documentation")
-+            for test_name in run_missing:
-+                print(test_name)
-+
-+    #
-+    # Parse a filename, adding documentation inside the doc dictionary
-+    #
-+
-+    def add_file_documentation(self, fname):
-+        """Adds the contents of test/subtest documentation form a file"""
-+        current_test = None
-+        current_subtest = None
-+
-+        handle_section = ''
-+        current_field = ''
-+        arg_number = 1
-+        cur_arg = -1
-+        cur_arg_element = 0
-+
-+        prefix = re.sub(r'.*tests/', '', filename)
-+        prefix = r'igt\@' + re.sub(r'(.*/).*', r'\1', prefix)
-+
-+        if self.min_test_prefix == '':
-+            self.min_test_prefix = prefix
-+        elif len(prefix) < len(self.min_test_prefix):
-+            self.min_test_prefix = prefix
-+
-+        with open(fname, 'r', encoding='utf8') as handle:
-+            arg_ref = None
-+            current_test = ''
-+            subtest_number = 0
-+
-+            for file_line in handle:
-+                if re.match(r'^\s*\*$', file_line):
-+                    continue
-+
-+                if re.match(r'^\s*\*/$', file_line):
-+                    handle_section = ''
-+                    current_subtest = None
-+                    arg_ref = None
-+                    cur_arg = -1
-+
-+                    continue
-+
-+                if re.match(r'^\s*/\*\*$', file_line):
-+                    handle_section = '1'
-+                    continue
-+
-+                if not handle_section:
-+                    continue
-+
-+                file_line = re.sub(r'^\s*\*\s*', '', file_line)
-+
-+                # Handle only known sections
-+                if handle_section == '1':
-+                    current_field = ''
-+
-+                    # Check if it is a new TEST section
-+                    if (match := re.match(r'^TEST:\s*(.*)', file_line)):
-+                        current_test = self.test_number
-+                        self.test_number += 1
-+
-+                        handle_section = 'test'
-+
-+                        self.doc[current_test] = {}
-+                        self.doc[current_test]["arg"] = {}
-+                        self.doc[current_test]["Summary"] = match.group(1)
-+                        self.doc[current_test]["File"] = fname
-+                        self.doc[current_test]["subtest"] = {}
-+                        current_subtest = None
-+
-+                        continue
-+
-+                # Check if it is a new SUBTEST section
-+                if (match := re.match(r'^SUBTESTS?:\s*(.*)', file_line)):
-+                    current_subtest = subtest_number
-+                    subtest_number += 1
-+
-+                    current_field = ''
-+                    handle_section = 'subtest'
-+
-+                    self.doc[current_test]["subtest"][current_subtest] = {}
-+
-+                    self.doc[current_test]["subtest"][current_subtest]["Summary"] = match.group(1)
-+                    self.doc[current_test]["subtest"][current_subtest]["Description"] = ''
-+
-+                    if not arg_ref:
-+                        arg_ref = arg_number
-+                        arg_number += 1
-+                        self.doc[current_test]["arg"][arg_ref] = {}
-+
-+                    self.doc[current_test]["subtest"][current_subtest]["arg"] = arg_ref
-+
-+                    continue
-+
-+                # It is a known section. Parse its contents
-+                if (match := re.match(field_re, file_line)):
-+                    current_field = match.group(1).lower().capitalize()
-+                    match_val = match.group(2)
-+
-+                    if handle_section == 'test':
-+                        self.doc[current_test][current_field] = match_val
-+                    else:
-+                        self.doc[current_test]["subtest"][current_subtest][current_field] = match_val
-+
-+                    cur_arg = -1
-+
-+                    continue
-+
-+                # Use hashes for arguments to avoid duplication
-+                if (match := re.match(r'arg\[(\d+)\]:\s*(.*)', file_line)):
-+                    current_field = ''
-+                    if arg_ref is None:
-+                        sys.exit(f"{fname}:{fileinput.filelineno()}: arguments should be defined after one or more subtests, at the same comment")
-+
-+                    cur_arg = int(match.group(1)) - 1
-+                    if cur_arg not in self.doc[current_test]["arg"][arg_ref]:
-+                        self.doc[current_test]["arg"][arg_ref][cur_arg] = {}
-+
-+                    cur_arg_element = match.group(2)
-+
-+                    if match.group(2):
-+                        # Should be used only for numeric values
-+                        self.doc[current_test]["arg"][arg_ref][cur_arg][cur_arg_element] = "<" + match.group(2) + ">"
-+
-+                    continue
-+
-+                if (match := re.match(r'\@(\S+):\s*(.*)', file_line)):
-+                    if cur_arg >= 0:
-+                        current_field = ''
-+                        if arg_ref is None:
-+                            sys.exit(f"{fname}:{fileinput.filelineno()}: arguments should be defined after one or more subtests, at the same comment")
-+
-+                        cur_arg_element = match.group(1)
-+                        self.doc[current_test]["arg"][arg_ref][cur_arg][cur_arg_element] = match.group(2)
-+
-+                    else:
-+                        print(f"{fname}: Warning: invalid argument: @%s: %s" %
-+                            (match.group(1), match.group(2)))
-+
-+                    continue
-+
-+                # Handle multi-line field contents
-+                if current_field:
-+                    if (match := re.match(r'\s*(.*)', file_line)):
-+                        if handle_section == 'test':
-+                            self.doc[current_test][current_field] += " " + \
-+                                match.group(1)
-+                        else:
-+                            self.doc[current_test]["subtest"][current_subtest][current_field] += " " + \
-+                                match.group(1)
-+
-+                    continue
-+
-+                # Handle multi-line argument contents
-+                if cur_arg >= 0 and arg_ref is not None:
-+                    if (match := re.match(r'\s*\*?\s*(.*)', file_line)):
-+                        match_val = match.group(1)
-+
-+                        match = re.match(r'^(\<.*)\>$',self.doc[current_test]["arg"][arg_ref][cur_arg][cur_arg_element])
-+                        if match:
-+                            self.doc[current_test]["arg"][arg_ref][cur_arg][cur_arg_element] = match.group(1) + ' ' + match_val + ">"
-+                        else:
-+                            self.doc[current_test]["arg"][arg_ref][cur_arg][cur_arg_element] += ' ' + match_val
-+
-+                    continue
-+
-+#
-+# Main: parse the files and fill %doc struct
-+#
-+
-+parser = argparse.ArgumentParser(description = "Print formatted kernel documentation to stdout.",
-+                                 formatter_class = argparse.ArgumentDefaultsHelpFormatter,
-+                                 epilog = 'If no action specified, assume --rest.')
-+parser.add_argument("--rest", action="store_true",
-+                    help="Generate documentation from the source files, in ReST file format.")
-+parser.add_argument("--show-subtests", action="store_true",
-+                    help="Shows the name of the documented subtests in alphabetical order.")
-+parser.add_argument("--check-testlist", action="store_true",
-+                    help="Compare documentation against IGT runner testlist.")
-+parser.add_argument("--igt-build-path",
-+                    help="Path where the IGT runner is sitting. Used by --check-testlist.",
-+                    default=IGT_BUILD_PATH)
-+parser.add_argument('--files', nargs='+', required=True,
-+                    help="File name(s) to be processed")
-+
-+parse_args = parser.parse_args()
-+
-+field_re = re.compile(r"(" + '|'.join(fields) + r'):\s*(.*)', re.I)
-+
-+tests = TestList()
-+
-+for filename in parse_args.files:
-+    tests.add_file_documentation(filename)
-+
-+RUN = 0
-+if parse_args.show_subtests:
-+    RUN = 1
-+
-+    for sub in tests.get_subtests():
-+        print (sub)
-+
-+if parse_args.check_testlist:
-+    RUN = 1
-+    tests.check_tests()
-+
-+if not RUN or parse_args.rest:
-+    tests.print_test()
--- 
-2.39.0
+CI Bug Log - changes from CI_DRM_12721 -> IGTPW_8479
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8479/index.html
+
+Participating hosts (37 -> 36)
+------------------------------
+
+  Additional (2): bat-atsm-1 bat-dg1-6 
+  Missing    (3): fi-kbl-soraka bat-kbl-2 fi-snb-2520m 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_8479 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@gem_mmap@basic:
+    - bat-dg1-6:          NOTRUN -> [SKIP][1] ([i915#4083])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8479/bat-dg1-6/igt@gem_mmap@basic.html
+
+  * igt@gem_render_tiled_blits@basic:
+    - bat-dg1-6:          NOTRUN -> [SKIP][2] ([i915#4079]) +1 similar issue
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8479/bat-dg1-6/igt@gem_render_tiled_blits@basic.html
+
+  * igt@gem_tiled_fence_blits@basic:
+    - bat-dg1-6:          NOTRUN -> [SKIP][3] ([i915#4077]) +2 similar issues
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8479/bat-dg1-6/igt@gem_tiled_fence_blits@basic.html
+
+  * igt@i915_pm_backlight@basic-brightness:
+    - bat-dg1-6:          NOTRUN -> [SKIP][4] ([i915#7561])
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8479/bat-dg1-6/igt@i915_pm_backlight@basic-brightness.html
+
+  * igt@i915_pm_rps@basic-api:
+    - bat-dg1-6:          NOTRUN -> [SKIP][5] ([i915#6621])
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8479/bat-dg1-6/igt@i915_pm_rps@basic-api.html
+
+  * igt@kms_addfb_basic@basic-y-tiled-legacy:
+    - bat-dg1-6:          NOTRUN -> [SKIP][6] ([i915#4215])
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8479/bat-dg1-6/igt@kms_addfb_basic@basic-y-tiled-legacy.html
+
+  * igt@kms_addfb_basic@tile-pitch-mismatch:
+    - bat-dg1-6:          NOTRUN -> [SKIP][7] ([i915#4212]) +7 similar issues
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8479/bat-dg1-6/igt@kms_addfb_basic@tile-pitch-mismatch.html
+
+  * igt@kms_chamelium_hpd@common-hpd-after-suspend:
+    - bat-dg1-6:          NOTRUN -> [SKIP][8] ([i915#7828]) +8 similar issues
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8479/bat-dg1-6/igt@kms_chamelium_hpd@common-hpd-after-suspend.html
+    - fi-cfl-guc:         NOTRUN -> [SKIP][9] ([fdo#109271])
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8479/fi-cfl-guc/igt@kms_chamelium_hpd@common-hpd-after-suspend.html
+
+  * igt@kms_cursor_legacy@basic-busy-flip-before-cursor:
+    - bat-dg1-6:          NOTRUN -> [SKIP][10] ([i915#4103] / [i915#4213])
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8479/bat-dg1-6/igt@kms_cursor_legacy@basic-busy-flip-before-cursor.html
+
+  * igt@kms_force_connector_basic@force-load-detect:
+    - bat-dg1-6:          NOTRUN -> [SKIP][11] ([fdo#109285])
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8479/bat-dg1-6/igt@kms_force_connector_basic@force-load-detect.html
+
+  * igt@kms_psr@sprite_plane_onoff:
+    - bat-dg1-6:          NOTRUN -> [SKIP][12] ([i915#1072] / [i915#4078]) +3 similar issues
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8479/bat-dg1-6/igt@kms_psr@sprite_plane_onoff.html
+
+  * igt@kms_setmode@basic-clone-single-crtc:
+    - bat-dg1-6:          NOTRUN -> [SKIP][13] ([i915#3555])
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8479/bat-dg1-6/igt@kms_setmode@basic-clone-single-crtc.html
+
+  * igt@prime_vgem@basic-gtt:
+    - bat-dg1-6:          NOTRUN -> [SKIP][14] ([i915#3708] / [i915#4077]) +1 similar issue
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8479/bat-dg1-6/igt@prime_vgem@basic-gtt.html
+
+  * igt@prime_vgem@basic-read:
+    - bat-dg1-6:          NOTRUN -> [SKIP][15] ([i915#3708]) +3 similar issues
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8479/bat-dg1-6/igt@prime_vgem@basic-read.html
+
+  * igt@prime_vgem@basic-userptr:
+    - bat-dg1-6:          NOTRUN -> [SKIP][16] ([i915#3708] / [i915#4873])
+   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8479/bat-dg1-6/igt@prime_vgem@basic-userptr.html
+
+  
+#### Possible fixes ####
+
+  * igt@dmabuf@all-tests@dma_fence:
+    - fi-cfl-guc:         [DMESG-FAIL][17] -> [PASS][18]
+   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12721/fi-cfl-guc/igt@dmabuf@all-tests@dma_fence.html
+   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8479/fi-cfl-guc/igt@dmabuf@all-tests@dma_fence.html
+
+  * igt@dmabuf@all-tests@sanitycheck:
+    - fi-cfl-guc:         [ABORT][19] -> [PASS][20]
+   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12721/fi-cfl-guc/igt@dmabuf@all-tests@sanitycheck.html
+   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8479/fi-cfl-guc/igt@dmabuf@all-tests@sanitycheck.html
+
+  * igt@i915_selftest@live@dmabuf:
+    - fi-bsw-nick:        [DMESG-FAIL][21] ([i915#7562] / [i915#7913]) -> [PASS][22]
+   [21]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12721/fi-bsw-nick/igt@i915_selftest@live@dmabuf.html
+   [22]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8479/fi-bsw-nick/igt@i915_selftest@live@dmabuf.html
+
+  * igt@i915_selftest@live@gt_heartbeat:
+    - fi-apl-guc:         [DMESG-FAIL][23] ([i915#5334]) -> [PASS][24]
+   [23]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12721/fi-apl-guc/igt@i915_selftest@live@gt_heartbeat.html
+   [24]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8479/fi-apl-guc/igt@i915_selftest@live@gt_heartbeat.html
+
+  * igt@i915_selftest@live@requests:
+    - {bat-rpls-1}:       [ABORT][25] ([i915#4983] / [i915#7911]) -> [PASS][26]
+   [25]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12721/bat-rpls-1/igt@i915_selftest@live@requests.html
+   [26]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8479/bat-rpls-1/igt@i915_selftest@live@requests.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [fdo#109285]: https://bugs.freedesktop.org/show_bug.cgi?id=109285
+  [fdo#109295]: https://bugs.freedesktop.org/show_bug.cgi?id=109295
+  [i915#1072]: https://gitlab.freedesktop.org/drm/intel/issues/1072
+  [i915#1836]: https://gitlab.freedesktop.org/drm/intel/issues/1836
+  [i915#2582]: https://gitlab.freedesktop.org/drm/intel/issues/2582
+  [i915#2867]: https://gitlab.freedesktop.org/drm/intel/issues/2867
+  [i915#3555]: https://gitlab.freedesktop.org/drm/intel/issues/3555
+  [i915#3708]: https://gitlab.freedesktop.org/drm/intel/issues/3708
+  [i915#4077]: https://gitlab.freedesktop.org/drm/intel/issues/4077
+  [i915#4078]: https://gitlab.freedesktop.org/drm/intel/issues/4078
+  [i915#4079]: https://gitlab.freedesktop.org/drm/intel/issues/4079
+  [i915#4083]: https://gitlab.freedesktop.org/drm/intel/issues/4083
+  [i915#4103]: https://gitlab.freedesktop.org/drm/intel/issues/4103
+  [i915#4212]: https://gitlab.freedesktop.org/drm/intel/issues/4212
+  [i915#4213]: https://gitlab.freedesktop.org/drm/intel/issues/4213
+  [i915#4215]: https://gitlab.freedesktop.org/drm/intel/issues/4215
+  [i915#4873]: https://gitlab.freedesktop.org/drm/intel/issues/4873
+  [i915#4983]: https://gitlab.freedesktop.org/drm/intel/issues/4983
+  [i915#5334]: https://gitlab.freedesktop.org/drm/intel/issues/5334
+  [i915#6077]: https://gitlab.freedesktop.org/drm/intel/issues/6077
+  [i915#6078]: https://gitlab.freedesktop.org/drm/intel/issues/6078
+  [i915#6093]: https://gitlab.freedesktop.org/drm/intel/issues/6093
+  [i915#6094]: https://gitlab.freedesktop.org/drm/intel/issues/6094
+  [i915#6166]: https://gitlab.freedesktop.org/drm/intel/issues/6166
+  [i915#6311]: https://gitlab.freedesktop.org/drm/intel/issues/6311
+  [i915#6367]: https://gitlab.freedesktop.org/drm/intel/issues/6367
+  [i915#6621]: https://gitlab.freedesktop.org/drm/intel/issues/6621
+  [i915#6645]: https://gitlab.freedesktop.org/drm/intel/issues/6645
+  [i915#6997]: https://gitlab.freedesktop.org/drm/intel/issues/6997
+  [i915#7357]: https://gitlab.freedesktop.org/drm/intel/issues/7357
+  [i915#7359]: https://gitlab.freedesktop.org/drm/intel/issues/7359
+  [i915#7561]: https://gitlab.freedesktop.org/drm/intel/issues/7561
+  [i915#7562]: https://gitlab.freedesktop.org/drm/intel/issues/7562
+  [i915#7699]: https://gitlab.freedesktop.org/drm/intel/issues/7699
+  [i915#7828]: https://gitlab.freedesktop.org/drm/intel/issues/7828
+  [i915#7911]: https://gitlab.freedesktop.org/drm/intel/issues/7911
+  [i915#7913]: https://gitlab.freedesktop.org/drm/intel/issues/7913
+  [i915#7996]: https://gitlab.freedesktop.org/drm/intel/issues/7996
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_7155 -> IGTPW_8479
+
+  CI-20190529: 20190529
+  CI_DRM_12721: e1f9df7a92c1e3da1009afa74dc1d08ef95c3d7c @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_8479: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8479/index.html
+  IGT_7155: 75c508d4e19c65683d4060cb3a772df600aaf23e @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+
+Testlist changes
+----------------
+
++igt@kms_plane_scaling@invalid-parameters
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8479/index.html
+
+--===============5241686261646880409==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/kms_plane_scaling: add invalid parameter tests (rev5)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/112859/">https://patchwork.freedesktop.org/series/112859/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8479/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8479/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_12721 -&gt; IGTPW_8479</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8479/index.html</p>
+<h2>Participating hosts (37 -&gt; 36)</h2>
+<p>Additional (2): bat-atsm-1 bat-dg1-6 <br />
+  Missing    (3): fi-kbl-soraka bat-kbl-2 fi-snb-2520m </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_8479 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@gem_mmap@basic:</p>
+<ul>
+<li>bat-dg1-6:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8479/bat-dg1-6/igt@gem_mmap@basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4083">i915#4083</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_render_tiled_blits@basic:</p>
+<ul>
+<li>bat-dg1-6:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8479/bat-dg1-6/igt@gem_render_tiled_blits@basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4079">i915#4079</a>) +1 similar issue</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_tiled_fence_blits@basic:</p>
+<ul>
+<li>bat-dg1-6:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8479/bat-dg1-6/igt@gem_tiled_fence_blits@basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4077">i915#4077</a>) +2 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_pm_backlight@basic-brightness:</p>
+<ul>
+<li>bat-dg1-6:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8479/bat-dg1-6/igt@i915_pm_backlight@basic-brightness.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7561">i915#7561</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_pm_rps@basic-api:</p>
+<ul>
+<li>bat-dg1-6:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8479/bat-dg1-6/igt@i915_pm_rps@basic-api.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6621">i915#6621</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_addfb_basic@basic-y-tiled-legacy:</p>
+<ul>
+<li>bat-dg1-6:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8479/bat-dg1-6/igt@kms_addfb_basic@basic-y-tiled-legacy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4215">i915#4215</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_addfb_basic@tile-pitch-mismatch:</p>
+<ul>
+<li>bat-dg1-6:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8479/bat-dg1-6/igt@kms_addfb_basic@tile-pitch-mismatch.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4212">i915#4212</a>) +7 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_chamelium_hpd@common-hpd-after-suspend:</p>
+<ul>
+<li>
+<p>bat-dg1-6:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8479/bat-dg1-6/igt@kms_chamelium_hpd@common-hpd-after-suspend.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7828">i915#7828</a>) +8 similar issues</p>
+</li>
+<li>
+<p>fi-cfl-guc:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8479/fi-cfl-guc/igt@kms_chamelium_hpd@common-hpd-after-suspend.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>)</p>
+</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_cursor_legacy@basic-busy-flip-before-cursor:</p>
+<ul>
+<li>bat-dg1-6:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8479/bat-dg1-6/igt@kms_cursor_legacy@basic-busy-flip-before-cursor.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4103">i915#4103</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4213">i915#4213</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_force_connector_basic@force-load-detect:</p>
+<ul>
+<li>bat-dg1-6:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8479/bat-dg1-6/igt@kms_force_connector_basic@force-load-detect.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109285">fdo#109285</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_psr@sprite_plane_onoff:</p>
+<ul>
+<li>bat-dg1-6:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8479/bat-dg1-6/igt@kms_psr@sprite_plane_onoff.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1072">i915#1072</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4078">i915#4078</a>) +3 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_setmode@basic-clone-single-crtc:</p>
+<ul>
+<li>bat-dg1-6:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8479/bat-dg1-6/igt@kms_setmode@basic-clone-single-crtc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3555">i915#3555</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@prime_vgem@basic-gtt:</p>
+<ul>
+<li>bat-dg1-6:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8479/bat-dg1-6/igt@prime_vgem@basic-gtt.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3708">i915#3708</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4077">i915#4077</a>) +1 similar issue</li>
+</ul>
+</li>
+<li>
+<p>igt@prime_vgem@basic-read:</p>
+<ul>
+<li>bat-dg1-6:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8479/bat-dg1-6/igt@prime_vgem@basic-read.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3708">i915#3708</a>) +3 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@prime_vgem@basic-userptr:</p>
+<ul>
+<li>bat-dg1-6:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8479/bat-dg1-6/igt@prime_vgem@basic-userptr.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3708">i915#3708</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4873">i915#4873</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@dmabuf@all-tests@dma_fence:</p>
+<ul>
+<li>fi-cfl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12721/fi-cfl-guc/igt@dmabuf@all-tests@dma_fence.html">DMESG-FAIL</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8479/fi-cfl-guc/igt@dmabuf@all-tests@dma_fence.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@dmabuf@all-tests@sanitycheck:</p>
+<ul>
+<li>fi-cfl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12721/fi-cfl-guc/igt@dmabuf@all-tests@sanitycheck.html">ABORT</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8479/fi-cfl-guc/igt@dmabuf@all-tests@sanitycheck.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@dmabuf:</p>
+<ul>
+<li>fi-bsw-nick:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12721/fi-bsw-nick/igt@i915_selftest@live@dmabuf.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7562">i915#7562</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7913">i915#7913</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8479/fi-bsw-nick/igt@i915_selftest@live@dmabuf.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@gt_heartbeat:</p>
+<ul>
+<li>fi-apl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12721/fi-apl-guc/igt@i915_selftest@live@gt_heartbeat.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5334">i915#5334</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8479/fi-apl-guc/igt@i915_selftest@live@gt_heartbeat.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@requests:</p>
+<ul>
+<li>{bat-rpls-1}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12721/bat-rpls-1/igt@i915_selftest@live@requests.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4983">i915#4983</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7911">i915#7911</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8479/bat-rpls-1/igt@i915_selftest@live@requests.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_7155 -&gt; IGTPW_8479</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_12721: e1f9df7a92c1e3da1009afa74dc1d08ef95c3d7c @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_8479: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8479/index.html<br />
+  IGT_7155: 75c508d4e19c65683d4060cb3a772df600aaf23e @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+<h2>Testlist changes</h2>
+<p>+igt@kms_plane_scaling@invalid-parameters</p>
+
+</body>
+</html>
+
+--===============5241686261646880409==--
