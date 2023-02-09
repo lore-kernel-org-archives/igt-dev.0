@@ -1,21 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 188FE10E26C
- for <igt-dev@lists.freedesktop.org>; Thu,  9 Feb 2023 18:46:19 +0000 (UTC)
-Date: Thu, 9 Feb 2023 10:46:02 -0800
-From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
-To: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-Message-ID: <Y+U/aso25+0NZTh8@orsosgc001.jf.intel.com>
-References: <20230207101121.104559-1-janusz.krzysztofik@linux.intel.com>
- <8288817.T7Z3S40VBb@jkrzyszt-mobl1.ger.corp.intel.com>
- <Y+P5Ln7CUeW0t461@orsosgc001.jf.intel.com>
- <4484531.cEBGB3zze1@jkrzyszt-mobl1.ger.corp.intel.com>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Disposition: inline
-In-Reply-To: <4484531.cEBGB3zze1@jkrzyszt-mobl1.ger.corp.intel.com>
+From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Thu,  9 Feb 2023 20:32:31 +0100
+Message-Id: <20230209193231.57538-1-janusz.krzysztofik@linux.intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t] i915/perf: Make __perf_open() and
- friends public
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t] tests/i915_suspend: Free device list after
+ *-without-i915 subtests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,183 +14,111 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org,
- Chris Wilson <chris.p.wilson@linux.intel.com>
+Cc: intel-gfx@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Thu, Feb 09, 2023 at 10:56:04AM +0100, Janusz Krzysztofik wrote:
->On Wednesday, 8 February 2023 20:34:06 CET Umesh Nerlige Ramappa wrote:
->> On Wed, Feb 08, 2023 at 11:09:23AM +0100, Janusz Krzysztofik wrote:
->> >On Tuesday, 7 February 2023 21:15:26 CET Dixit, Ashutosh wrote:
->> >> On Tue, 07 Feb 2023 12:04:17 -0800, Janusz Krzysztofik wrote:
->> >> >
->> >> > Hi Umesh,
->> >> >
->> >> > On Tuesday, 7 February 2023 20:33:50 CET Umesh Nerlige Ramappa wrote:
->> >> > > On Tue, Feb 07, 2023 at 11:25:00AM -0800, Umesh Nerlige Ramappa
->wrote:
->> >> > > >I wouldn't do this. Please keep the changes local to the specific
->test
->> >> > > >that you implemented in your first rev. While it is a good idea to
->> >> > > >have the some of the perf capabilities in the library, this is way
->too
->> >> > > >much churn to implement a specific test for the original failure.
->> >> > > >Unless multiple IGT subsytems area already dependent on perf APIs to
->> >> > > >implement multiple tests, let's not do this.
->> >> > > >
->> >> > >
->> >> > > Also note that the perf library implemented in IGT is not entirely
->used
->> >> > > by IGT tests alone. The library is also linked to GPUvis software.
->Only
->> >> > > a few pieces of reusable code in the perf library is used by IGT
->tests.
->> >> >
->> >> > Do you think that my changes will break other users?  How?
->> >> >
->> >> > Also, it looks like there are somehow conflicting expectations from
->different
->> >> > reviewers.  Ashutosh wanted the new subtest to be implemented outside
->of i915/
->> >> > perf test.  That's why I proposed to extend the library with open/close
->and
->> >> > related helpers, just to avoid code duplication, and I'm about to
->resend it in
->> >> > series with the new subtest implemented inside gem_ctx_exec.  Now,
->after I
->> >> > submitted this patch for initial review, you say that a specific test
->is not
->> >> > the way to go.  What are you afraid of?
->> >> >
->> >> > Whose expectations should I try to satisfy in order to have a subtest
->accepted
->> >> > and merged?  Or should I just give up and duplicate the code from i915/
->perf in
->> >> > another test?  Or maybe you can have a look at the whole series before
->you
->> >> > decide?
->> >>
->> >> Hi Janusz,
->> >>
->> >> I agree with Umesh. Given that here perf is just being used as a 'dummy
->> >> workload' let's just duplicate the minimal code required for perf
->> >> open/close wherever we are adding the new test. This will keep the real
->> >> perf functionality undisturbed for reasons Umesh cited.
->> >
->> >TBH, I can't see any good justification among those reasons mentioned: "too
->> >much churn", "unless ... already dependent", "not entirely used by IGT
->tests",
->> >"linked to GPUvis software", "only a few pieces of reusable code ... used
->by
->> >IGT" -- which of those justifies duplication of i915 perf code in IGT
->tests?
->>
->> You yourself mentioned that this is not related to perf. It's just that
->> perf uses some code in i915 that does barrier related stuff which helps
->> you to reproduce the issue. Why can't that barrier-related-stuff be
->> implemented in IGT without the use of perf APIs?
->
->Because inside the driver I found no ways to trigger the issue (within a time
->period reasonable from CI perspective) other than calling
->intel_context_prepare_remote_request().  Only perf and gen8 sseu call that
->function.  Out of the two, perf was my choice because:
->- perf matched the user scenario reported as the one that could trigger the
->  bug,
->- we already had some work in progress subtest added to tests/i915/perf.c
->  still before my root cause analysis was completed.
+If any of *-without-i915 subtests fails or skips for any reason, it may
+leave the i915 module unloaded while keeping our device list populated
+with initially collected data.  In a follow up igt_fixture section we then
+try to reopen the device.  If the test has been executed with a device
+filter specified, an attempt to open the device finds a matching entry
+that belongs to the no longer existing device in that initially collected
+device list, fails to stat() it, concludes that's because of the device
+having been already open, and returns an error.
 
-If you know the sequence in perf code that uncovering this issue, why 
-not just add a selftest for this?
+Fix this potentially confusing test result by freeing the potentially
+outdated device list before continuing with drm_open_driver().
 
-Umesh
+While being at it, add a comment that explains why we call
+igt_device_scan() from __igt_device_card_match() but don't force device
+rescan, and emit a debug message if we fail in _is_already_opened() on
+unsuccessful device stat().
 
->
->> If that's a lot of
->> effort and it's quicker to reproduce this issue using perf APIs, then
->> that's fine with me, but keep it outside of perf library
->
->Why?
->(assuming by "it" you mean some useful functions now in tests/i915/perf.c)
->
->> and maybe add a
->> note saying that this test can be improved by figuring out how to do
->> barrier related execution in IGT in future.
->
->I don't understand what you mean by "in IGT" here.  Isn't lib/i915/perf.c "in
->IGT" (a part of IGT)?
->
->> I don't see any
->> justification to modify perf library for an issue that's not even perf
->> related.
->
->Not modify, only extend with a wrapper around DRM_IOCTL_I915_PERF_OPEN and
->helpers it depends on.
->
->Justification why we need to call DRM_IOCTL_I915_PERF_OPEN from some new
->subtests: extend CI coverage over some rarely used processing paths.
->
->Justification why add reusable code to a library: avoid code duplication.
->
->Justification why add it to perf library: no doubt DRM_IOCTL_I915_PERF_OPEN is
->perf related, I believe.
->
->> I believe you also mentioned somewhere that the issue was fixed by some
->> 'unknown' code changes to i915 and you are not able to reproduce
->> it consistently with this test now.
->
->No, I must have missed my point while clarifying things if that's how you've
->read them, sorry.  The issue is reproducible.  CI results from my trybot
->attempt clearly confirm that:
->https://intel-gfx-ci.01.org/tree/drm-tip/TrybotIGT_699/bat-all.html?
->testfilter=barrier-race
->
->Results from preliminary fixes tested with the new IGT subtest on trybot:
->https://intel-gfx-ci.01.org/tree/drm-tip/Trybot_113662v1/bat-all.html?
->testfilter=barrier-race
->
->>
->> I have considered the above factors to suggest that this should not
->> reside in perf library.
->>
->> >Again, do you think that my changes can break other (non-IGT) users?
->> >How?
->>
->> I didn't say that your changes break anything. I was stating that the
->> library code is shared across different tools.
->
->But why do you think that an IGT library shared across different tools can't
->be extended with a few functions needed by IGT tests?
->
->Thanks,
->Janusz
->
->
->>
->> Thanks,
->> Umesh
->>
->> >
->> >Anyway, assuming you are the "owner" of lib/i915/perf.c, in order to
->satisfy
->> >your (still not clear for me) requirements I'm already working on a new
->> >version of my patch, with the i915 perf code duplicated as needed.
->> >
->> >Thanks,
->> >Janusz
->> >
->> >>
->> >> Thanks.
->> >> --
->> >> Ashutosh
->> >>
->> >
->> >
->> >
->> >
->>
->
->
->
->
+Subtest basic-s3-without-i915: FAIL (9.572s)
+(i915_suspend:9050) drmtest-WARNING: card maching filter 0 is already opened
+(i915_suspend:9050) drmtest-CRITICAL: Test abort in function drm_open_driver, file ../lib/drmtest.c:639:
+(i915_suspend:9050) drmtest-CRITICAL: abort condition: fd < 0
+(i915_suspend:9050) drmtest-CRITICAL: Last errno: 2, No such file or directory
+(i915_suspend:9050) drmtest-CRITICAL: No known gpu found for chipset flags 0x1 (intel)
+Test i915_suspend failed.
+**** DEBUG ****
+(i915_suspend:9050) drmtest-DEBUG: Looking for devices to open using filter 0: pci:vendor=intel,device=dg2
+(i915_suspend:9050) drmtest-DEBUG: Filter matched /dev/dri/card0 | /dev/dri/renderD128
+(i915_suspend:9050) drmtest-WARNING: card maching filter 0 is already opened
+(i915_suspend:9050) drmtest-CRITICAL: Test abort in function drm_open_driver, file ../lib/drmtest.c:639:
+(i915_suspend:9050) drmtest-CRITICAL: abort condition: fd < 0
+(i915_suspend:9050) drmtest-CRITICAL: Last errno: 2, No such file or directory
+(i915_suspend:9050) drmtest-CRITICAL: No known gpu found for chipset flags 0x1 (intel)
+(i915_suspend:9050) igt_core-INFO: Stack trace:
+(i915_suspend:9050) igt_core-INFO:   #0 ../lib/igt_core.c:2066 __igt_abort()
+(i915_suspend:9050) igt_core-INFO:   #1 ../lib/drmtest.c:573 drm_open_driver()
+(i915_suspend:9050) igt_core-INFO:   #2 ../tests/i915/i915_suspend.c:258 __igt_unique____real_main245()
+(i915_suspend:9050) igt_core-INFO:   #3 ../tests/i915/i915_suspend.c:245 main()
+(i915_suspend:9050) igt_core-INFO:   #4 ../sysdeps/nptl/libc_start_call_main.h:58 __libc_start_call_main()
+(i915_suspend:9050) igt_core-INFO:   #5 ../csu/libc-start.c:128 __libc_start_main@@GLIBC_2.34()
+(i915_suspend:9050) igt_core-INFO:   #6 [_start+0x2a]
+****  END  ****
+
+Fixes: f7aff600ab16 ("tests/i915/i915_suspend: Disable d3cold_allowed for basic-s2idle-without-i915")
+Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+Cc: Riana Tauro <riana.tauro@intel.com>
+---
+ lib/drmtest.c             |  2 +-
+ lib/igt_device_scan.c     |  4 ++++
+ tests/i915/i915_suspend.c | 10 +++++++++-
+ 3 files changed, 14 insertions(+), 2 deletions(-)
+
+diff --git a/lib/drmtest.c b/lib/drmtest.c
+index 16e80bdfcf..8e2d1ac50b 100644
+--- a/lib/drmtest.c
++++ b/lib/drmtest.c
+@@ -260,7 +260,7 @@ static bool _is_already_opened(const char *path, int as_idx)
+ 	 * we cannot even stat the device, so it's of no use - let's claim it's
+ 	 * already opened
+ 	 */
+-	if (stat(path, &new) != 0)
++	if (igt_debug_on(stat(path, &new) != 0))
+ 		return true;
+ 
+ 	for (int i = 0; i < as_idx; ++i) {
+diff --git a/lib/igt_device_scan.c b/lib/igt_device_scan.c
+index 8b767eed20..ae69ed09f1 100644
+--- a/lib/igt_device_scan.c
++++ b/lib/igt_device_scan.c
+@@ -1918,6 +1918,10 @@ static bool __igt_device_card_match(const char *filter,
+ 		return false;
+ 	memset(card, 0, sizeof(*card));
+ 
++	/*
++	 * Scan devices in case the user hasn't yet,
++	 * but leave a decision on forced rescan on the user side.
++	 */
+ 	igt_devices_scan(false);
+ 
+ 	if (igt_device_filter_apply(filter) == false)
+diff --git a/tests/i915/i915_suspend.c b/tests/i915/i915_suspend.c
+index 815f1c8a2c..c68110476e 100644
+--- a/tests/i915/i915_suspend.c
++++ b/tests/i915/i915_suspend.c
+@@ -253,8 +253,16 @@ igt_main
+ 	igt_subtest("basic-s3-without-i915")
+ 		test_suspend_without_i915(SUSPEND_STATE_S3);
+ 
+-	igt_fixture
++	igt_fixture {
++		/*
++		 * Since above tests may fail leaving the i915 module unloaded,
++		 * force refresh of device list before opening an i915 device
++		 * by cleaning up the current device list, otherwise we can fail
++		 * if we have been called with a device filter specified.
++		 */
++		igt_devices_free();
+ 		fd = drm_open_driver(DRIVER_INTEL);
++	}
+ 
+ 	igt_subtest("fence-restore-tiled2untiled") {
+ 		gem_require_mappable_ggtt(fd);
+-- 
+2.25.1
