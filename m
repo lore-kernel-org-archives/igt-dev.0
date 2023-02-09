@@ -1,16 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 778EA10E0D7
- for <igt-dev@lists.freedesktop.org>; Thu,  9 Feb 2023 10:49:02 +0000 (UTC)
-From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-To: igt-dev@lists.freedesktop.org,
-	karthik.b.s@intel.com
-Date: Thu,  9 Feb 2023 16:14:22 +0530
-Message-Id: <20230209104422.1645753-1-bhanuprakash.modem@intel.com>
+Content-Type: multipart/alternative;
+ boundary="===============4957593819647877324=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t] tests/i915/kms_draw_crc: Create separate subtest
- for each draw method
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Vinod Govindapillai" <vinod.govindapillai@intel.com>
+Date: Thu, 09 Feb 2023 11:01:49 -0000
+Message-ID: <167594050981.20201.10143912768339041863@emeril.freedesktop.org>
+References: <20230209101904.998315-1-vinod.govindapillai@intel.com>
+In-Reply-To: <20230209101904.998315-1-vinod.govindapillai@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3IgSGFuZGxl?=
+ =?utf-8?q?_spurious_HPDs_-_IGT_part?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,65 +17,252 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Instead of clubbing all draw methods, have a separate subtest for
-each draw method.
+--===============4957593819647877324==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Fixes: 9e71c27c6 (tests/i915/kms_draw_crc: Convert tests to dynamic)
-Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
----
- tests/i915/kms_draw_crc.c | 29 ++++++++++-------------------
- 1 file changed, 10 insertions(+), 19 deletions(-)
+== Series Details ==
 
-diff --git a/tests/i915/kms_draw_crc.c b/tests/i915/kms_draw_crc.c
-index 64d3b937e..701de8ecb 100644
---- a/tests/i915/kms_draw_crc.c
-+++ b/tests/i915/kms_draw_crc.c
-@@ -286,32 +286,23 @@ igt_main
- 	igt_fixture
- 		setup_environment();
- 
--	igt_describe("This subtest verfies igt_draw library works "
--		     "with different modifiers, DRM_FORMATS, DRAW_METHODS.");
--	igt_subtest_with_dynamic("draw-method") {
--		for (format_idx = 0; format_idx < ARRAY_SIZE(formats); format_idx++) {
--			/* 10-bit & 16-bit formats are bit slow, ignore in pre-si. */
--			if (igt_run_in_simulation() &&
--			    formats[format_idx] != DRM_FORMAT_XRGB8888)
--				continue;
--
--			for (method = 0; method < IGT_DRAW_METHOD_COUNT; method++) {
-+	for (method = 0; method < IGT_DRAW_METHOD_COUNT; method++) {
-+		igt_describe_f("Verify that igt draw library works for the draw "
-+			       "method (%s) with different modifiers & DRM formats.",
-+			       igt_draw_get_method_name(method));
-+		igt_subtest_with_dynamic_f("draw-method-%s", igt_draw_get_method_name(method)) {
-+			igt_skip_on(method == IGT_DRAW_MMAP_WC && !gem_mmap__has_wc(drm_fd));
-+			igt_skip_on(method == IGT_DRAW_MMAP_GTT && !gem_has_mappable_ggtt(drm_fd));
-+
-+			for (format_idx = 0; format_idx < ARRAY_SIZE(formats); format_idx++) {
- 				for (modifier_idx = 0; modifier_idx < ARRAY_SIZE(modifiers); modifier_idx++) {
- 					modifier = modifiers[modifier_idx];
- 
- 					if (!igt_display_has_format_mod(&display, formats[format_idx], modifier))
- 						continue;
- 
--					if (method == IGT_DRAW_MMAP_WC && !gem_mmap__has_wc(drm_fd))
--						continue;
--
--					if (method == IGT_DRAW_MMAP_GTT &&
--					    !gem_has_mappable_ggtt(drm_fd))
--						continue;
--
--					igt_dynamic_f("%s-%s-%s",
-+					igt_dynamic_f("%s-%s",
- 						      format_str(format_idx),
--						      igt_draw_get_method_name(method),
- 						      modifier_str(modifier_idx))
- 						draw_method_subtest(method, format_idx,
- 								    modifier);
--- 
-2.39.0
+Series: Handle spurious HPDs - IGT part
+URL   : https://patchwork.freedesktop.org/series/113820/
+State : failure
+
+== Summary ==
+
+CI Bug Log - changes from CI_DRM_12721 -> IGTPW_8473
+====================================================
+
+Summary
+-------
+
+  **FAILURE**
+
+  Serious unknown changes coming with IGTPW_8473 absolutely need to be
+  verified manually.
+  
+  If you think the reported changes have nothing to do with the changes
+  introduced in IGTPW_8473, please notify your bug team to allow them
+  to document this new failure mode, which will reduce false positives in CI.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8473/index.html
+
+Participating hosts (37 -> 35)
+------------------------------
+
+  Missing    (2): fi-kbl-soraka fi-snb-2520m 
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in IGTPW_8473:
+
+### IGT changes ###
+
+#### Possible regressions ####
+
+  * igt@i915_selftest@live@late_gt_pm:
+    - fi-glk-j4005:       [PASS][1] -> [ABORT][2]
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12721/fi-glk-j4005/igt@i915_selftest@live@late_gt_pm.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8473/fi-glk-j4005/igt@i915_selftest@live@late_gt_pm.html
+
+  
+Known issues
+------------
+
+  Here are the changes found in IGTPW_8473 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@gem_exec_gttfill@basic:
+    - fi-pnv-d510:        [PASS][3] -> [FAIL][4] ([i915#7229])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12721/fi-pnv-d510/igt@gem_exec_gttfill@basic.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8473/fi-pnv-d510/igt@gem_exec_gttfill@basic.html
+
+  * igt@kms_chamelium_hpd@common-hpd-after-suspend:
+    - fi-cfl-guc:         NOTRUN -> [SKIP][5] ([fdo#109271])
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8473/fi-cfl-guc/igt@kms_chamelium_hpd@common-hpd-after-suspend.html
+
+  
+#### Possible fixes ####
+
+  * igt@dmabuf@all-tests@dma_fence:
+    - fi-cfl-guc:         [DMESG-FAIL][6] -> [PASS][7]
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12721/fi-cfl-guc/igt@dmabuf@all-tests@dma_fence.html
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8473/fi-cfl-guc/igt@dmabuf@all-tests@dma_fence.html
+
+  * igt@dmabuf@all-tests@sanitycheck:
+    - fi-cfl-guc:         [ABORT][8] -> [PASS][9]
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12721/fi-cfl-guc/igt@dmabuf@all-tests@sanitycheck.html
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8473/fi-cfl-guc/igt@dmabuf@all-tests@sanitycheck.html
+
+  * igt@fbdev@write:
+    - fi-blb-e6850:       [SKIP][10] ([fdo#109271]) -> [PASS][11] +4 similar issues
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12721/fi-blb-e6850/igt@fbdev@write.html
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8473/fi-blb-e6850/igt@fbdev@write.html
+
+  * igt@i915_selftest@live@dmabuf:
+    - fi-bsw-nick:        [DMESG-FAIL][12] ([i915#7562] / [i915#7913]) -> [PASS][13]
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12721/fi-bsw-nick/igt@i915_selftest@live@dmabuf.html
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8473/fi-bsw-nick/igt@i915_selftest@live@dmabuf.html
+
+  * igt@i915_selftest@live@gt_heartbeat:
+    - fi-apl-guc:         [DMESG-FAIL][14] ([i915#5334]) -> [PASS][15]
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12721/fi-apl-guc/igt@i915_selftest@live@gt_heartbeat.html
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8473/fi-apl-guc/igt@i915_selftest@live@gt_heartbeat.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [i915#4983]: https://gitlab.freedesktop.org/drm/intel/issues/4983
+  [i915#5334]: https://gitlab.freedesktop.org/drm/intel/issues/5334
+  [i915#7229]: https://gitlab.freedesktop.org/drm/intel/issues/7229
+  [i915#7562]: https://gitlab.freedesktop.org/drm/intel/issues/7562
+  [i915#7911]: https://gitlab.freedesktop.org/drm/intel/issues/7911
+  [i915#7913]: https://gitlab.freedesktop.org/drm/intel/issues/7913
+  [i915#7977]: https://gitlab.freedesktop.org/drm/intel/issues/7977
+  [i915#7981]: https://gitlab.freedesktop.org/drm/intel/issues/7981
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_7155 -> IGTPW_8473
+
+  CI-20190529: 20190529
+  CI_DRM_12721: e1f9df7a92c1e3da1009afa74dc1d08ef95c3d7c @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_8473: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8473/index.html
+  IGT_7155: 75c508d4e19c65683d4060cb3a772df600aaf23e @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8473/index.html
+
+--===============4957593819647877324==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Handle spurious HPDs - IGT part</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/113820/">https://patchwork.freedesktop.org/series/113820/</a></td></tr>
+<tr><td><b>State:</b></td><td>failure</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8473/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8473/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_12721 -&gt; IGTPW_8473</h1>
+<h2>Summary</h2>
+<p><strong>FAILURE</strong></p>
+<p>Serious unknown changes coming with IGTPW_8473 absolutely need to be<br />
+  verified manually.</p>
+<p>If you think the reported changes have nothing to do with the changes<br />
+  introduced in IGTPW_8473, please notify your bug team to allow them<br />
+  to document this new failure mode, which will reduce false positives in CI.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8473/index.html</p>
+<h2>Participating hosts (37 -&gt; 35)</h2>
+<p>Missing    (2): fi-kbl-soraka fi-snb-2520m </p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in IGTPW_8473:</p>
+<h3>IGT changes</h3>
+<h4>Possible regressions</h4>
+<ul>
+<li>igt@i915_selftest@live@late_gt_pm:<ul>
+<li>fi-glk-j4005:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12721/fi-glk-j4005/igt@i915_selftest@live@late_gt_pm.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8473/fi-glk-j4005/igt@i915_selftest@live@late_gt_pm.html">ABORT</a></li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_8473 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@gem_exec_gttfill@basic:</p>
+<ul>
+<li>fi-pnv-d510:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12721/fi-pnv-d510/igt@gem_exec_gttfill@basic.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8473/fi-pnv-d510/igt@gem_exec_gttfill@basic.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7229">i915#7229</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_chamelium_hpd@common-hpd-after-suspend:</p>
+<ul>
+<li>fi-cfl-guc:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8473/fi-cfl-guc/igt@kms_chamelium_hpd@common-hpd-after-suspend.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@dmabuf@all-tests@dma_fence:</p>
+<ul>
+<li>fi-cfl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12721/fi-cfl-guc/igt@dmabuf@all-tests@dma_fence.html">DMESG-FAIL</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8473/fi-cfl-guc/igt@dmabuf@all-tests@dma_fence.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@dmabuf@all-tests@sanitycheck:</p>
+<ul>
+<li>fi-cfl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12721/fi-cfl-guc/igt@dmabuf@all-tests@sanitycheck.html">ABORT</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8473/fi-cfl-guc/igt@dmabuf@all-tests@sanitycheck.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@fbdev@write:</p>
+<ul>
+<li>fi-blb-e6850:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12721/fi-blb-e6850/igt@fbdev@write.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8473/fi-blb-e6850/igt@fbdev@write.html">PASS</a> +4 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@dmabuf:</p>
+<ul>
+<li>fi-bsw-nick:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12721/fi-bsw-nick/igt@i915_selftest@live@dmabuf.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7562">i915#7562</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7913">i915#7913</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8473/fi-bsw-nick/igt@i915_selftest@live@dmabuf.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@gt_heartbeat:</p>
+<ul>
+<li>fi-apl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12721/fi-apl-guc/igt@i915_selftest@live@gt_heartbeat.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5334">i915#5334</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8473/fi-apl-guc/igt@i915_selftest@live@gt_heartbeat.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_7155 -&gt; IGTPW_8473</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_12721: e1f9df7a92c1e3da1009afa74dc1d08ef95c3d7c @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_8473: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8473/index.html<br />
+  IGT_7155: 75c508d4e19c65683d4060cb3a772df600aaf23e @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============4957593819647877324==--
