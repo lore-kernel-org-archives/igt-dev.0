@@ -1,20 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Message-ID: <2825c998-3e11-ccc0-0e0a-ebb874d569fb@linux.intel.com>
-Date: Thu, 9 Feb 2023 08:24:56 +0000
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DB4D410E982
+ for <igt-dev@lists.freedesktop.org>; Thu,  9 Feb 2023 09:56:09 +0000 (UTC)
+From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+To: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+Date: Thu, 09 Feb 2023 10:56:04 +0100
+Message-ID: <4484531.cEBGB3zze1@jkrzyszt-mobl1.ger.corp.intel.com>
+In-Reply-To: <Y+P5Ln7CUeW0t461@orsosgc001.jf.intel.com>
+References: <20230207101121.104559-1-janusz.krzysztofik@linux.intel.com>
+ <8288817.T7Z3S40VBb@jkrzyszt-mobl1.ger.corp.intel.com>
+ <Y+P5Ln7CUeW0t461@orsosgc001.jf.intel.com>
 MIME-Version: 1.0
-Content-Language: en-US
-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org, Intel-gfx@lists.freedesktop.org,
- Caleb Callaway <caleb.callaway@intel.com>
-References: <20230203111636.4138202-1-tvrtko.ursulin@linux.intel.com>
- <20230203111636.4138202-2-tvrtko.ursulin@linux.intel.com>
- <20230208123142.zudgou6bjt7qbin4@kamilkon-desk1>
-From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
-In-Reply-To: <20230208123142.zudgou6bjt7qbin4@kamilkon-desk1>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Subject: Re: [igt-dev] [Intel-gfx] [PATCH i-g-t 1/3] intel_gpu_top: Do not
- repeat header lines in non-interactive output
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
+Subject: Re: [igt-dev] [PATCH i-g-t] i915/perf: Make __perf_open() and
+ friends public
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,54 +22,175 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: igt-dev@lists.freedesktop.org,
+ Chris Wilson <chris.p.wilson@linux.intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-
-On 08/02/2023 12:31, Kamil Konieczny wrote:
-> Hi Tvrtko,
+On Wednesday, 8 February 2023 20:34:06 CET Umesh Nerlige Ramappa wrote:
+> On Wed, Feb 08, 2023 at 11:09:23AM +0100, Janusz Krzysztofik wrote:
+> >On Tuesday, 7 February 2023 21:15:26 CET Dixit, Ashutosh wrote:
+> >> On Tue, 07 Feb 2023 12:04:17 -0800, Janusz Krzysztofik wrote:
+> >> >
+> >> > Hi Umesh,
+> >> >
+> >> > On Tuesday, 7 February 2023 20:33:50 CET Umesh Nerlige Ramappa wrote:
+> >> > > On Tue, Feb 07, 2023 at 11:25:00AM -0800, Umesh Nerlige Ramappa 
+wrote:
+> >> > > >I wouldn't do this. Please keep the changes local to the specific 
+test
+> >> > > >that you implemented in your first rev. While it is a good idea to
+> >> > > >have the some of the perf capabilities in the library, this is way 
+too
+> >> > > >much churn to implement a specific test for the original failure.
+> >> > > >Unless multiple IGT subsytems area already dependent on perf APIs to
+> >> > > >implement multiple tests, let's not do this.
+> >> > > >
+> >> > >
+> >> > > Also note that the perf library implemented in IGT is not entirely 
+used
+> >> > > by IGT tests alone. The library is also linked to GPUvis software. 
+Only
+> >> > > a few pieces of reusable code in the perf library is used by IGT 
+tests.
+> >> >
+> >> > Do you think that my changes will break other users?  How?
+> >> >
+> >> > Also, it looks like there are somehow conflicting expectations from 
+different
+> >> > reviewers.  Ashutosh wanted the new subtest to be implemented outside 
+of i915/
+> >> > perf test.  That's why I proposed to extend the library with open/close 
+and
+> >> > related helpers, just to avoid code duplication, and I'm about to 
+resend it in
+> >> > series with the new subtest implemented inside gem_ctx_exec.  Now, 
+after I
+> >> > submitted this patch for initial review, you say that a specific test 
+is not
+> >> > the way to go.  What are you afraid of?
+> >> >
+> >> > Whose expectations should I try to satisfy in order to have a subtest 
+accepted
+> >> > and merged?  Or should I just give up and duplicate the code from i915/
+perf in
+> >> > another test?  Or maybe you can have a look at the whole series before 
+you
+> >> > decide?
+> >>
+> >> Hi Janusz,
+> >>
+> >> I agree with Umesh. Given that here perf is just being used as a 'dummy
+> >> workload' let's just duplicate the minimal code required for perf
+> >> open/close wherever we are adding the new test. This will keep the real
+> >> perf functionality undisturbed for reasons Umesh cited.
+> >
+> >TBH, I can't see any good justification among those reasons mentioned: "too
+> >much churn", "unless ... already dependent", "not entirely used by IGT 
+tests",
+> >"linked to GPUvis software", "only a few pieces of reusable code ... used 
+by
+> >IGT" -- which of those justifies duplication of i915 perf code in IGT 
+tests?
 > 
-> one small nit, see below.
+> You yourself mentioned that this is not related to perf. It's just that 
+> perf uses some code in i915 that does barrier related stuff which helps 
+> you to reproduce the issue. Why can't that barrier-related-stuff be 
+> implemented in IGT without the use of perf APIs?
+
+Because inside the driver I found no ways to trigger the issue (within a time 
+period reasonable from CI perspective) other than calling
+intel_context_prepare_remote_request().  Only perf and gen8 sseu call that 
+function.  Out of the two, perf was my choice because:
+- perf matched the user scenario reported as the one that could trigger the 
+  bug,
+- we already had some work in progress subtest added to tests/i915/perf.c 
+  still before my root cause analysis was completed.
+
+> If that's a lot of 
+> effort and it's quicker to reproduce this issue using perf APIs, then 
+> that's fine with me, but keep it outside of perf library 
+
+Why?
+(assuming by "it" you mean some useful functions now in tests/i915/perf.c)
+
+> and maybe add a 
+> note saying that this test can be improved by figuring out how to do 
+> barrier related execution in IGT in future. 
+
+I don't understand what you mean by "in IGT" here.  Isn't lib/i915/perf.c "in 
+IGT" (a part of IGT)?
+
+> I don't see any 
+> justification to modify perf library for an issue that's not even perf 
+> related.
+
+Not modify, only extend with a wrapper around DRM_IOCTL_I915_PERF_OPEN and 
+helpers it depends on.
+
+Justification why we need to call DRM_IOCTL_I915_PERF_OPEN from some new 
+subtests: extend CI coverage over some rarely used processing paths.
+
+Justification why add reusable code to a library: avoid code duplication.
+
+Justification why add it to perf library: no doubt DRM_IOCTL_I915_PERF_OPEN is 
+perf related, I believe.
+
+> I believe you also mentioned somewhere that the issue was fixed by some 
+> 'unknown' code changes to i915 and you are not able to reproduce
+> it consistently with this test now.
+
+No, I must have missed my point while clarifying things if that's how you've 
+read them, sorry.  The issue is reproducible.  CI results from my trybot 
+attempt clearly confirm that:
+https://intel-gfx-ci.01.org/tree/drm-tip/TrybotIGT_699/bat-all.html?
+testfilter=barrier-race
+
+Results from preliminary fixes tested with the new IGT subtest on trybot:
+https://intel-gfx-ci.01.org/tree/drm-tip/Trybot_113662v1/bat-all.html?
+testfilter=barrier-race
+
 > 
-> On 2023-02-03 at 11:16:34 +0000, Tvrtko Ursulin wrote:
->> From: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
->>
->> If output is redirected to a file, or a pipe, lets not repeat the headers
->> because that can usually mean user is trying to parse the data later and
->> so repeated headers are a hindrance.
->>
->> Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
->> Cc: Caleb Callaway <caleb.callaway@intel.com>
->> ---
->>   tools/intel_gpu_top.c | 19 ++++++++++++++-----
->>   1 file changed, 14 insertions(+), 5 deletions(-)
->>
->> diff --git a/tools/intel_gpu_top.c b/tools/intel_gpu_top.c
->> index 0a1de41b3374..e2a7f4753099 100644
->> --- a/tools/intel_gpu_top.c
->> +++ b/tools/intel_gpu_top.c
->> @@ -1391,6 +1391,7 @@ static unsigned int stdout_level;
->>   
->>   #define STDOUT_HEADER_REPEAT 20
->>   static unsigned int stdout_lines = STDOUT_HEADER_REPEAT;
->> +static bool stdout_header_repeat;
->>   
->>   static void
->>   stdout_open_struct(const char *name)
->> @@ -1580,16 +1581,22 @@ static const struct print_operations term_pops = {
->>   
->>   static bool print_groups(struct cnt_group **groups)
->>   {
->> -	unsigned int headers = stdout_lines % STDOUT_HEADER_REPEAT + 1;
->> +	static bool headers_printed = false;
-> ----------------------------------- ^
-> Remove this initialization (use checkpatch from Linux kernel).
+> I have considered the above factors to suggest that this should not 
+> reside in perf library.
 > 
-> Please correct and resend (you can keep my r-b).
+> >Again, do you think that my changes can break other (non-IGT) users?  
+> >How?
+> 
+> I didn't say that your changes break anything. I was stating that the 
+> library code is shared across different tools.
 
-Fixed and pushed, thanks for the review!
+But why do you think that an IGT library shared across different tools can't 
+be extended with a few functions needed by IGT tests?
 
-Regards,
+Thanks,
+Janusz
 
-Tvrtko
+
+> 
+> Thanks,
+> Umesh
+> 
+> >
+> >Anyway, assuming you are the "owner" of lib/i915/perf.c, in order to 
+satisfy
+> >your (still not clear for me) requirements I'm already working on a new
+> >version of my patch, with the i915 perf code duplicated as needed.
+> >
+> >Thanks,
+> >Janusz
+> >
+> >>
+> >> Thanks.
+> >> --
+> >> Ashutosh
+> >>
+> >
+> >
+> >
+> >
+> 
+
+
+
