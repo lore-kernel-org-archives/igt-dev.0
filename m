@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DB4D410E982
- for <igt-dev@lists.freedesktop.org>; Thu,  9 Feb 2023 09:56:09 +0000 (UTC)
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C921410E989
+ for <igt-dev@lists.freedesktop.org>; Thu,  9 Feb 2023 10:03:03 +0000 (UTC)
 From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-To: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
-Date: Thu, 09 Feb 2023 10:56:04 +0100
-Message-ID: <4484531.cEBGB3zze1@jkrzyszt-mobl1.ger.corp.intel.com>
-In-Reply-To: <Y+P5Ln7CUeW0t461@orsosgc001.jf.intel.com>
+To: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
+Date: Thu, 09 Feb 2023 11:02:57 +0100
+Message-ID: <13199772.dW097sEU6C@jkrzyszt-mobl1.ger.corp.intel.com>
+In-Reply-To: <87pmajmjuo.wl-ashutosh.dixit@intel.com>
 References: <20230207101121.104559-1-janusz.krzysztofik@linux.intel.com>
- <8288817.T7Z3S40VBb@jkrzyszt-mobl1.ger.corp.intel.com>
- <Y+P5Ln7CUeW0t461@orsosgc001.jf.intel.com>
+ <2132872.irdbgypaU6@jkrzyszt-mobl1.ger.corp.intel.com>
+ <87pmajmjuo.wl-ashutosh.dixit@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7Bit
 Content-Type: text/plain; charset="us-ascii"
@@ -28,164 +28,657 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Wednesday, 8 February 2023 20:34:06 CET Umesh Nerlige Ramappa wrote:
-> On Wed, Feb 08, 2023 at 11:09:23AM +0100, Janusz Krzysztofik wrote:
-> >On Tuesday, 7 February 2023 21:15:26 CET Dixit, Ashutosh wrote:
-> >> On Tue, 07 Feb 2023 12:04:17 -0800, Janusz Krzysztofik wrote:
-> >> >
-> >> > Hi Umesh,
-> >> >
-> >> > On Tuesday, 7 February 2023 20:33:50 CET Umesh Nerlige Ramappa wrote:
-> >> > > On Tue, Feb 07, 2023 at 11:25:00AM -0800, Umesh Nerlige Ramappa 
-wrote:
-> >> > > >I wouldn't do this. Please keep the changes local to the specific 
-test
-> >> > > >that you implemented in your first rev. While it is a good idea to
-> >> > > >have the some of the perf capabilities in the library, this is way 
-too
-> >> > > >much churn to implement a specific test for the original failure.
-> >> > > >Unless multiple IGT subsytems area already dependent on perf APIs to
-> >> > > >implement multiple tests, let's not do this.
-> >> > > >
-> >> > >
-> >> > > Also note that the perf library implemented in IGT is not entirely 
-used
-> >> > > by IGT tests alone. The library is also linked to GPUvis software. 
-Only
-> >> > > a few pieces of reusable code in the perf library is used by IGT 
-tests.
-> >> >
-> >> > Do you think that my changes will break other users?  How?
-> >> >
-> >> > Also, it looks like there are somehow conflicting expectations from 
-different
-> >> > reviewers.  Ashutosh wanted the new subtest to be implemented outside 
-of i915/
-> >> > perf test.  That's why I proposed to extend the library with open/close 
-and
-> >> > related helpers, just to avoid code duplication, and I'm about to 
-resend it in
-> >> > series with the new subtest implemented inside gem_ctx_exec.  Now, 
-after I
-> >> > submitted this patch for initial review, you say that a specific test 
-is not
-> >> > the way to go.  What are you afraid of?
-> >> >
-> >> > Whose expectations should I try to satisfy in order to have a subtest 
-accepted
-> >> > and merged?  Or should I just give up and duplicate the code from i915/
-perf in
-> >> > another test?  Or maybe you can have a look at the whole series before 
-you
-> >> > decide?
-> >>
-> >> Hi Janusz,
-> >>
-> >> I agree with Umesh. Given that here perf is just being used as a 'dummy
-> >> workload' let's just duplicate the minimal code required for perf
-> >> open/close wherever we are adding the new test. This will keep the real
-> >> perf functionality undisturbed for reasons Umesh cited.
+On Thursday, 9 February 2023 07:30:23 CET Dixit, Ashutosh wrote:
+> On Wed, 08 Feb 2023 10:23:07 -0800, Janusz Krzysztofik wrote:
 > >
-> >TBH, I can't see any good justification among those reasons mentioned: "too
-> >much churn", "unless ... already dependent", "not entirely used by IGT 
-tests",
-> >"linked to GPUvis software", "only a few pieces of reusable code ... used 
-by
-> >IGT" -- which of those justifies duplication of i915 perf code in IGT 
-tests?
+> > On Wednesday, 8 February 2023 18:53:11 CET Dixit, Ashutosh wrote:
+> > > On Wed, 08 Feb 2023 06:35:47 -0800, Kamil Konieczny wrote:
+> > > >
+> > > > Hi Umesh,
+> > > >
+> > > > On 2023-02-07 at 11:33:50 -0800, Umesh Nerlige Ramappa wrote:
+> > > > > On Tue, Feb 07, 2023 at 11:25:00AM -0800, Umesh Nerlige Ramappa wrote:
+> > > > > > I wouldn't do this. Please keep the changes local to the specific test
+> > > > > > that you implemented in your first rev. While it is a good idea to have
+> > > > > > the some of the perf capabilities in the library, this is way too much
+> > > > > > churn to implement a specific test for the original failure. Unless
+> > > > > > multiple IGT subsytems area already dependent on perf APIs to implement
+> > > > > > multiple tests, let's not do this.
+> > > > > >
+> > > > >
+> > > > > Also note that the perf library implemented in IGT is not entirely used by
+> > > > > IGT tests alone. The library is also linked to GPUvis software. Only a few
+> > > > > pieces of reusable code in the perf library is used by IGT tests.
+> > > >
+> > > > May you give http(s) link(s) to this software ?
+> > > >
+> > > > I checked https://github.com/mikesart/gpuvis
+> > > > and there is no note about intel igt dependancy.
+> > >
+> > > Hi Kamil,
+> > >
+> > > The connection between IGT and gpuvis is via this:
+> > >
+> > > tools/i915-perf/i915_perf_recorder.c
+> > >
+> > > So the recorder records the metrics/counters in a file and these are then
+> > > fed to gpuvis.
+> >
+> > How are those few proposed functions, required by IGT tests, supposed to break
+> > that functionality?
+> >
+> > > >
+> > > > imho we can have separate i915_perf lib with functions needed by
+> > > > new test but if you are concerned about it we can start with code
+> > > > duplication and refactor later.
+> > >
+> > > Thanks Kamil and Janusz!
+> >
+> > Please understand that's still a negative choice, selected only because of no
+> > answer from you (I mean Umesh and you) to questions like the one above.  We
+> > simply can't afford delays in adding new required subtests because you don't
+> > like us touching tests/i915/perf.c and lib/i915/perf.c for some reason still
+> > not clear to me.  That's why we are forced to use a solution which seem sub-
+> > optimal from our (IGT) POV.
 > 
-> You yourself mentioned that this is not related to perf. It's just that 
-> perf uses some code in i915 that does barrier related stuff which helps 
-> you to reproduce the issue. Why can't that barrier-related-stuff be 
-> implemented in IGT without the use of perf APIs?
-
-Because inside the driver I found no ways to trigger the issue (within a time 
-period reasonable from CI perspective) other than calling
-intel_context_prepare_remote_request().  Only perf and gen8 sseu call that 
-function.  Out of the two, perf was my choice because:
-- perf matched the user scenario reported as the one that could trigger the 
-  bug,
-- we already had some work in progress subtest added to tests/i915/perf.c 
-  still before my root cause analysis was completed.
-
-> If that's a lot of 
-> effort and it's quicker to reproduce this issue using perf APIs, then 
-> that's fine with me, but keep it outside of perf library 
-
-Why?
-(assuming by "it" you mean some useful functions now in tests/i915/perf.c)
-
-> and maybe add a 
-> note saying that this test can be improved by figuring out how to do 
-> barrier related execution in IGT in future. 
-
-I don't understand what you mean by "in IGT" here.  Isn't lib/i915/perf.c "in 
-IGT" (a part of IGT)?
-
-> I don't see any 
-> justification to modify perf library for an issue that's not even perf 
-> related.
-
-Not modify, only extend with a wrapper around DRM_IOCTL_I915_PERF_OPEN and 
-helpers it depends on.
-
-Justification why we need to call DRM_IOCTL_I915_PERF_OPEN from some new 
-subtests: extend CI coverage over some rarely used processing paths.
-
-Justification why add reusable code to a library: avoid code duplication.
-
-Justification why add it to perf library: no doubt DRM_IOCTL_I915_PERF_OPEN is 
-perf related, I believe.
-
-> I believe you also mentioned somewhere that the issue was fixed by some 
-> 'unknown' code changes to i915 and you are not able to reproduce
-> it consistently with this test now.
-
-No, I must have missed my point while clarifying things if that's how you've 
-read them, sorry.  The issue is reproducible.  CI results from my trybot 
-attempt clearly confirm that:
-https://intel-gfx-ci.01.org/tree/drm-tip/TrybotIGT_699/bat-all.html?
-testfilter=barrier-race
-
-Results from preliminary fixes tested with the new IGT subtest on trybot:
-https://intel-gfx-ci.01.org/tree/drm-tip/Trybot_113662v1/bat-all.html?
-testfilter=barrier-race
-
+> Hi Janusz,
 > 
-> I have considered the above factors to suggest that this should not 
-> reside in perf library.
-> 
-> >Again, do you think that my changes can break other (non-IGT) users?  
-> >How?
-> 
-> I didn't say that your changes break anything. I was stating that the 
-> library code is shared across different tools.
+> I think you are mistaken in thinking that any code
 
-But why do you think that an IGT library shared across different tools can't 
-be extended with a few functions needed by IGT tests?
+Let's focus on my proposed code.
+
+> which is shared in a
+> couple of tests can be put in the IGT library. The IGT library functions
+> are more than just shared code.
+> 
+> For example take the function below from your patch:
+> 
+> +int i915_perf_open_for_devid(int drm_fd, uint32_t devid, struct intel_perf *intel_perf, int *pm_fd)
+> +{
+> +       struct intel_perf_metric_set *metric_set = i915_perf_default_set(intel_perf, devid);
+> +       uint64_t oa_exp = i915_perf_max_oa_exponent_for_period_lte(intel_perf, 1000000);
+> +       uint64_t properties[] = {
+> +               DRM_I915_PERF_PROP_SAMPLE_OA, true,
+> +               DRM_I915_PERF_PROP_OA_METRICS_SET, 0,
+> +               DRM_I915_PERF_PROP_OA_FORMAT, 0,
+> +               DRM_I915_PERF_PROP_OA_EXPONENT, oa_exp,
+> +       };
+> +       struct drm_i915_perf_open_param param = {
+> +               .flags = I915_PERF_FLAG_FD_CLOEXEC,
+> +               .num_properties = sizeof(properties) / 16,
+> +               .properties_ptr = to_user_pointer(properties),
+> +       };
+> 
+> This function is setting particular perf_open properties which the perf
+> tests are using. This function should be in the tests, not in the library
+> since another client of the library might want to use different perf_open
+> properties.
+
+Unless there are a couple of clients which don't care much, just expect some 
+reasonable defaults.
+
+I think it's possible to identify a default set of parameters, applicable in 
+cases like use of DRM_IOCTL_I915_PERF_OPEN + close in a loop as a dumb 
+workload.  The point here is that such otherwise useless workload, when added 
+to some IGT tests, could extend their coverage over some otherwise rarely used 
+processing paths inside the driver.
+
+But anyway, why should we duplicate code of functions from tests/i915/perf.c 
+like timebase_scale(), max_oa_exponent_for_period_lte() or (parts of) 
+init_sys_info() in other tests that need them?
+
+Please also note that we didn't discuss what is a good candidate for a library 
+and what is not if I didn't attempt to move the code from tests/i915/perf.c to 
+lib/i915/perf.c in response to your request for not adding my new subtest to 
+the former, which was the most straightforward approach, I believe.
+
+> It is for reasons such as this that we are saying unless we can demonstrate
+> that some functions logically belong in the perf library (which would mean
+> analyzing the different clients of the perf lib) we shouldn't add them to
+> the library. The library is not a place to add just *any* shared code.
+
+Were does a reusable wrapper around DRM_IOCTL_I915_PERF_OPEN and helpers it 
+depends on belong to?
 
 Thanks,
 Janusz
 
-
 > 
-> Thanks,
-> Umesh
+> Thanks.
+> --
+> Ashutosh
+> 
+> 
 > 
 > >
-> >Anyway, assuming you are the "owner" of lib/i915/perf.c, in order to 
-satisfy
-> >your (still not clear for me) requirements I'm already working on a new
-> >version of my patch, with the i915 perf code duplicated as needed.
+> > Thanks,
+> > Janusz
 > >
-> >Thanks,
-> >Janusz
-> >
-> >>
-> >> Thanks.
-> >> --
-> >> Ashutosh
-> >>
+> > >
+> > > >
+> > > > Regards,
+> > > > Kamil
+> > > >
+> > > > >
+> > > > > > Thanks,
+> > > > > > Umesh
+> > > > > >
+> > > > > > On Tue, Feb 07, 2023 at 11:11:21AM +0100, Janusz Krzysztofik wrote:
+> > > > > > > We need new subtests that exercise interaction between i915 perf open/
+> > > > > > > close and other i915 subsystems from the point of view of those other
+> > > > > > > subsystems.  Allow other tests to reuse __perf_open/close() family of
+> > > > > > > functions, now inside i915/perf test, by moving (sharable parts of)
+> > > > > > > them to i915/perf library.
+> > > > > > >
+> > > > > > > Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+> > > > > > > ---
+> > > > > > > lib/i915/perf.c   | 130 ++++++++++++++++++++++++++++++++++++++++++++++
+> > > > > > > lib/i915/perf.h   |  15 ++++++
+> > > > > > > lib/meson.build   |   1 +
+> > > > > > > tests/i915/perf.c | 121 ++++++++++--------------------------------
+> > > > > > > 4 files changed, 174 insertions(+), 93 deletions(-)
+> > > > > > >
+> > > > > > > diff --git a/lib/i915/perf.c b/lib/i915/perf.c
+> > > > > > > index 6c7a192558..e71d637eb5 100644
+> > > > > > > --- a/lib/i915/perf.c
+> > > > > > > +++ b/lib/i915/perf.c
+> > > > > > > @@ -39,7 +39,9 @@
+> > > > > > >
+> > > > > > > #include "i915_pciids.h"
+> > > > > > >
+> > > > > > > +#include "igt_aux.h"
+> > > > > > > #include "intel_chipset.h"
+> > > > > > > +#include "ioctl_wrappers.h"
+> > > > > > > #include "perf.h"
+> > > > > > >
+> > > > > > > #include "i915_perf_metrics_hsw.h"
+> > > > > > > @@ -1008,3 +1010,131 @@ const char *intel_perf_read_report_reason(const struct intel_perf *perf,
+> > > > > > >
+> > > > > > >		return "unknown";
+> > > > > > > }
+> > > > > > > +
+> > > > > > > +uint64_t i915_perf_timebase_scale(struct intel_perf *intel_perf, uint32_t u32_delta)
+> > > > > > > +{
+> > > > > > > +	return ((uint64_t)u32_delta * NSEC_PER_SEC) / intel_perf->devinfo.timestamp_frequency;
+> > > > > > > +}
+> > > > > > > +
+> > > > > > > +/* Returns: the largest OA exponent that will still result in a sampling period
+> > > > > > > + * less than or equal to the given @period.
+> > > > > > > + */
+> > > > > > > +int i915_perf_max_oa_exponent_for_period_lte(struct intel_perf *intel_perf, uint64_t period)
+> > > > > > > +{
+> > > > > > > +	/* NB: timebase_scale() takes a uint32_t and an exponent of 30
+> > > > > > > +	 * would already represent a period of ~3 minutes so there's
+> > > > > > > +	 * really no need to consider higher exponents.
+> > > > > > > +	 */
+> > > > > > > +	for (int i = 0; i < 30; i++) {
+> > > > > > > +		uint64_t oa_period = i915_perf_timebase_scale(intel_perf, 2 << i);
+> > > > > > > +
+> > > > > > > +		if (oa_period > period)
+> > > > > > > +			return max(0, i - 1);
+> > > > > > > +	}
+> > > > > > > +
+> > > > > > > +	igt_assert(!"reached");
+> > > > > > > +	return -1;
+> > > > > > > +}
+> > > > > > > +
+> > > > > > > +struct intel_perf_metric_set *i915_perf_default_set(struct intel_perf *intel_perf, uint32_t devid)
+> > > > > > > +{
+> > > > > > > +	struct intel_perf_metric_set *metric_set = NULL, *metric_set_iter;
+> > > > > > > +	const char *metric_set_name = NULL;
+> > > > > > > +
+> > > > > > > +	igt_assert_neq(devid, 0);
+> > > > > > > +
+> > > > > > > +	/*
+> > > > > > > +	 * We don't have a TestOa metric set for Haswell so use
+> > > > > > > +	 * RenderBasic
+> > > > > > > +	 */
+> > > > > > > +	if (IS_HASWELL(devid))
+> > > > > > > +		metric_set_name = "RenderBasic";
+> > > > > > > +	else
+> > > > > > > +		metric_set_name = "TestOa";
+> > > > > > > +
+> > > > > > > +	igt_list_for_each_entry(metric_set_iter, &intel_perf->metric_sets, link) {
+> > > > > > > +		if (strcmp(metric_set_iter->symbol_name, metric_set_name) == 0) {
+> > > > > > > +			metric_set = metric_set_iter;
+> > > > > > > +			break;
+> > > > > > > +		}
+> > > > > > > +	}
+> > > > > > > +
+> > > > > > > +	return metric_set;
+> > > > > > > +}
+> > > > > > > +
+> > > > > > > +struct intel_perf *i915_perf_init_sys_info(int drm_fd)
+> > > > > > > +{
+> > > > > > > +	struct intel_perf *intel_perf;
+> > > > > > > +
+> > > > > > > +	intel_perf = intel_perf_for_fd(drm_fd);
+> > > > > > > +	if (!intel_perf)
+> > > > > > > +		return NULL;
+> > > > > > > +
+> > > > > > > +	igt_debug("n_eu_slices: %"PRIu64"\n", intel_perf->devinfo.n_eu_slices);
+> > > > > > > +	igt_debug("n_eu_sub_slices: %"PRIu64"\n", intel_perf->devinfo.n_eu_sub_slices);
+> > > > > > > +	igt_debug("n_eus: %"PRIu64"\n", intel_perf->devinfo.n_eus);
+> > > > > > > +	igt_debug("timestamp_frequency = %"PRIu64"\n",
+> > > > > > > +		  intel_perf->devinfo.timestamp_frequency);
+> > > > > > > +	igt_assert_neq(intel_perf->devinfo.timestamp_frequency, 0);
+> > > > > > > +
+> > > > > > > +	intel_perf_load_perf_configs(intel_perf, drm_fd);
+> > > > > > > +
+> > > > > > > +	return intel_perf;
+> > > > > > > +}
+> > > > > > > +
+> > > > > > > +int i915_perf_open(int drm_fd, struct drm_i915_perf_open_param *param, int *pm_fd)
+> > > > > > > +{
+> > > > > > > +	int32_t pm_value = 0;
+> > > > > > > +	int ret;
+> > > > > > > +
+> > > > > > > +	ret = perf_ioctl(drm_fd, DRM_IOCTL_I915_PERF_OPEN, param);
+> > > > > > > +
+> > > > > > > +	igt_assert(ret >= 0);
+> > > > > > > +	errno = 0;
+> > > > > > > +
+> > > > > > > +	if (pm_fd) {
+> > > > > > > +		*pm_fd = open("/dev/cpu_dma_latency", O_RDWR);
+> > > > > > > +		igt_assert(*pm_fd >= 0);
+> > > > > > > +
+> > > > > > > +		igt_assert_eq(write(*pm_fd, &pm_value, sizeof(pm_value)), sizeof(pm_value));
+> > > > > > > +	}
+> > > > > > > +
+> > > > > > > +	return ret;
+> > > > > > > +}
+> > > > > > > +
+> > > > > > > +int i915_perf_open_for_devid(int drm_fd, uint32_t devid, struct intel_perf *intel_perf, int *pm_fd)
+> > > > > > > +{
+> > > > > > > +	struct intel_perf_metric_set *metric_set = i915_perf_default_set(intel_perf, devid);
+> > > > > > > +	uint64_t oa_exp = i915_perf_max_oa_exponent_for_period_lte(intel_perf, 1000000);
+> > > > > > > +	uint64_t properties[] = {
+> > > > > > > +		DRM_I915_PERF_PROP_SAMPLE_OA, true,
+> > > > > > > +		DRM_I915_PERF_PROP_OA_METRICS_SET, 0,
+> > > > > > > +		DRM_I915_PERF_PROP_OA_FORMAT, 0,
+> > > > > > > +		DRM_I915_PERF_PROP_OA_EXPONENT, oa_exp,
+> > > > > > > +	};
+> > > > > > > +	struct drm_i915_perf_open_param param = {
+> > > > > > > +		.flags = I915_PERF_FLAG_FD_CLOEXEC,
+> > > > > > > +		.num_properties = sizeof(properties) / 16,
+> > > > > > > +		.properties_ptr = to_user_pointer(properties),
+> > > > > > > +	};
+> > > > > > > +
+> > > > > > > +	igt_assert(metric_set);
+> > > > > > > +	igt_assert(metric_set->perf_oa_metrics_set);
+> > > > > > > +	igt_assert(oa_exp >= 0);
+> > > > > > > +
+> > > > > > > +	igt_debug("%s metric set UUID = %s\n",
+> > > > > > > +		  metric_set->symbol_name,
+> > > > > > > +		  metric_set->hw_config_guid);
+> > > > > > > +
+> > > > > > > +	properties[3] = metric_set->perf_oa_metrics_set;
+> > > > > > > +	properties[5] = metric_set->perf_oa_format;
+> > > > > > > +
+> > > > > > > +	return i915_perf_open(drm_fd, &param, pm_fd);
+> > > > > > > +}
+> > > > > > > +
+> > > > > > > +void i915_perf_close(int stream_fd, int pm_fd)
+> > > > > > > +{
+> > > > > > > +	close(stream_fd);
+> > > > > > > +	if (pm_fd >= 0)
+> > > > > > > +		close(pm_fd);
+> > > > > > > +}
+> > > > > > > diff --git a/lib/i915/perf.h b/lib/i915/perf.h
+> > > > > > > index e6e60dc997..c9cd28be47 100644
+> > > > > > > --- a/lib/i915/perf.h
+> > > > > > > +++ b/lib/i915/perf.h
+> > > > > > > @@ -351,6 +351,21 @@ uint64_t intel_perf_read_record_timestamp_raw(const struct intel_perf *perf,
+> > > > > > > const char *intel_perf_read_report_reason(const struct intel_perf *perf,
+> > > > > > >						  const struct drm_i915_perf_record_header *record);
+> > > > > > >
+> > > > > > > +uint64_t i915_perf_timebase_scale(struct intel_perf *intel_perf, uint32_t u32_delta);
+> > > > > > > +
+> > > > > > > +int i915_perf_max_oa_exponent_for_period_lte(struct intel_perf *intel_perf, uint64_t period);
+> > > > > > > +
+> > > > > > > +struct intel_perf_metric_set *i915_perf_default_set(struct intel_perf *intel_perf, uint32_t devid);
+> > > > > > > +
+> > > > > > > +struct intel_perf *i915_perf_init_sys_info(int drm_fd);
+> > > > > > > +
+> > > > > > > +struct drm_i915_perf_open_param;
+> > > > > > > +int i915_perf_open(int drm_fd, struct drm_i915_perf_open_param *param, int *pm_fd);
+> > > > > > > +
+> > > > > > > +int i915_perf_open_for_devid(int drm_fd, uint32_t devid, struct intel_perf *intel_perf, int *pm_fd);
+> > > > > > > +
+> > > > > > > +void i915_perf_close(int drm_fd, int pm_fd);
+> > > > > > > +
+> > > > > > > #ifdef __cplusplus
+> > > > > > > };
+> > > > > > > #endif
+> > > > > > > diff --git a/lib/meson.build b/lib/meson.build
+> > > > > > > index d49b78ca1a..e79b31090b 100644
+> > > > > > > --- a/lib/meson.build
+> > > > > > > +++ b/lib/meson.build
+> > > > > > > @@ -258,6 +258,7 @@ lib_igt_drm_fdinfo = declare_dependency(link_with : lib_igt_drm_fdinfo_build,
+> > > > > > >					  include_directories : inc)
+> > > > > > > i915_perf_files = [
+> > > > > > >  'igt_list.c',
+> > > > > > > +  'igt_tools_stub.c',
+> > > > > > >  'i915/perf.c',
+> > > > > > >  'i915/perf_data_reader.c',
+> > > > > > > ]
+> > > > > > > diff --git a/tests/i915/perf.c b/tests/i915/perf.c
+> > > > > > > index dd1f1ac399..a3f59d143b 100644
+> > > > > > > --- a/tests/i915/perf.c
+> > > > > > > +++ b/tests/i915/perf.c
+> > > > > > > @@ -287,21 +287,16 @@ pretty_print_oa_period(uint64_t oa_period_ns)
+> > > > > > > static void
+> > > > > > > __perf_close(int fd)
+> > > > > > > {
+> > > > > > > -	close(fd);
+> > > > > > > +	i915_perf_close(fd, pm_fd);
+> > > > > > >		stream_fd = -1;
+> > > > > > >
+> > > > > > > -	if (pm_fd >= 0) {
+> > > > > > > -		close(pm_fd);
+> > > > > > > +	if (pm_fd >= 0)
+> > > > > > >			pm_fd = -1;
+> > > > > > > -	}
+> > > > > > > }
+> > > > > > >
+> > > > > > > static int
+> > > > > > > __perf_open(int fd, struct drm_i915_perf_open_param *param, bool prevent_pm)
+> > > > > > > {
+> > > > > > > -	int ret;
+> > > > > > > -	int32_t pm_value = 0;
+> > > > > > > -
+> > > > > > >		if (stream_fd >= 0)
+> > > > > > >			__perf_close(stream_fd);
+> > > > > > >		if (pm_fd >= 0) {
+> > > > > > > @@ -309,19 +304,7 @@ __perf_open(int fd, struct drm_i915_perf_open_param *param, bool prevent_pm)
+> > > > > > >			pm_fd = -1;
+> > > > > > >		}
+> > > > > > >
+> > > > > > > -	ret = igt_ioctl(fd, DRM_IOCTL_I915_PERF_OPEN, param);
+> > > > > > > -
+> > > > > > > -	igt_assert(ret >= 0);
+> > > > > > > -	errno = 0;
+> > > > > > > -
+> > > > > > > -	if (prevent_pm) {
+> > > > > > > -		pm_fd = open("/dev/cpu_dma_latency", O_RDWR);
+> > > > > > > -		igt_assert(pm_fd >= 0);
+> > > > > > > -
+> > > > > > > -		igt_assert_eq(write(pm_fd, &pm_value, sizeof(pm_value)), sizeof(pm_value));
+> > > > > > > -	}
+> > > > > > > -
+> > > > > > > -	return ret;
+> > > > > > > +	return i915_perf_open(fd, param, prevent_pm ? &pm_fd : NULL);
+> > > > > > > }
+> > > > > > >
+> > > > > > > static int
+> > > > > > > @@ -465,33 +448,6 @@ cs_timebase_scale(uint32_t u32_delta)
+> > > > > > >		return ((uint64_t)u32_delta * NSEC_PER_SEC) / cs_timestamp_frequency(drm_fd);
+> > > > > > > }
+> > > > > > >
+> > > > > > > -static uint64_t
+> > > > > > > -timebase_scale(uint32_t u32_delta)
+> > > > > > > -{
+> > > > > > > -	return ((uint64_t)u32_delta * NSEC_PER_SEC) / intel_perf->devinfo.timestamp_frequency;
+> > > > > > > -}
+> > > > > > > -
+> > > > > > > -/* Returns: the largest OA exponent that will still result in a sampling period
+> > > > > > > - * less than or equal to the given @period.
+> > > > > > > - */
+> > > > > > > -static int
+> > > > > > > -max_oa_exponent_for_period_lte(uint64_t period)
+> > > > > > > -{
+> > > > > > > -	/* NB: timebase_scale() takes a uint32_t and an exponent of 30
+> > > > > > > -	 * would already represent a period of ~3 minutes so there's
+> > > > > > > -	 * really no need to consider higher exponents.
+> > > > > > > -	 */
+> > > > > > > -	for (int i = 0; i < 30; i++) {
+> > > > > > > -		uint64_t oa_period = timebase_scale(2 << i);
+> > > > > > > -
+> > > > > > > -		if (oa_period > period)
+> > > > > > > -			return max(0, i - 1);
+> > > > > > > -	}
+> > > > > > > -
+> > > > > > > -	igt_assert(!"reached");
+> > > > > > > -	return -1;
+> > > > > > > -}
+> > > > > > > -
+> > > > > > > /* Return: the largest OA exponent that will still result in a sampling
+> > > > > > > * frequency greater than the given @frequency.
+> > > > > > > */
+> > > > > > > @@ -502,7 +458,7 @@ max_oa_exponent_for_freq_gt(uint64_t frequency)
+> > > > > > >
+> > > > > > >		igt_assert_neq(period, 0);
+> > > > > > >
+> > > > > > > -	return max_oa_exponent_for_period_lte(period - 1);
+> > > > > > > +	return i915_perf_max_oa_exponent_for_period_lte(intel_perf, period - 1);
+> > > > > > > }
+> > > > > > >
+> > > > > > > static uint64_t
+> > > > > > > @@ -626,7 +582,7 @@ hsw_sanity_check_render_basic_reports(const uint32_t *oa_report0,
+> > > > > > >					      const uint32_t *oa_report1,
+> > > > > > >					      enum drm_i915_oa_format fmt)
+> > > > > > > {
+> > > > > > > -	uint32_t time_delta = timebase_scale(oa_report1[1] - oa_report0[1]);
+> > > > > > > +	uint32_t time_delta = i915_perf_timebase_scale(intel_perf, oa_report1[1] - oa_report0[1]);
+> > > > > > >		uint32_t clock_delta;
+> > > > > > >		uint32_t max_delta;
+> > > > > > >		struct oa_format format = get_oa_format(fmt);
+> > > > > > > @@ -832,7 +788,7 @@ gen8_sanity_check_test_oa_reports(const uint32_t *oa_report0,
+> > > > > > >					  enum drm_i915_oa_format fmt)
+> > > > > > > {
+> > > > > > >		struct oa_format format = get_oa_format(fmt);
+> > > > > > > -	uint32_t time_delta = timebase_scale(oa_report1[1] - oa_report0[1]);
+> > > > > > > +	uint32_t time_delta = i915_perf_timebase_scale(intel_perf, oa_report1[1] - oa_report0[1]);
+> > > > > > >		uint32_t ticks0 = read_report_ticks(oa_report0, fmt);
+> > > > > > >		uint32_t ticks1 = read_report_ticks(oa_report1, fmt);
+> > > > > > >		uint32_t clock_delta = ticks1 - ticks0;
+> > > > > > > @@ -950,43 +906,22 @@ gen8_sanity_check_test_oa_reports(const uint32_t *oa_report0,
+> > > > > > > static bool
+> > > > > > > init_sys_info(void)
+> > > > > > > {
+> > > > > > > -	const char *test_set_name = NULL;
+> > > > > > > -	struct intel_perf_metric_set *metric_set_iter;
+> > > > > > > -
+> > > > > > >		igt_assert_neq(devid, 0);
+> > > > > > >
+> > > > > > > -	intel_perf = intel_perf_for_fd(drm_fd);
+> > > > > > > +	intel_perf = i915_perf_init_sys_info(drm_fd);
+> > > > > > >		igt_require(intel_perf);
+> > > > > > >
+> > > > > > > -	igt_debug("n_eu_slices: %"PRIu64"\n", intel_perf->devinfo.n_eu_slices);
+> > > > > > > -	igt_debug("n_eu_sub_slices: %"PRIu64"\n", intel_perf->devinfo.n_eu_sub_slices);
+> > > > > > > -	igt_debug("n_eus: %"PRIu64"\n", intel_perf->devinfo.n_eus);
+> > > > > > > -	igt_debug("timestamp_frequency = %"PRIu64"\n",
+> > > > > > > -		  intel_perf->devinfo.timestamp_frequency);
+> > > > > > > -	igt_assert_neq(intel_perf->devinfo.timestamp_frequency, 0);
+> > > > > > > -
+> > > > > > > -	/* We don't have a TestOa metric set for Haswell so use
+> > > > > > > -	 * RenderBasic
+> > > > > > > -	 */
+> > > > > > >		if (IS_HASWELL(devid)) {
+> > > > > > > -		test_set_name = "RenderBasic";
+> > > > > > >			read_report_ticks = hsw_read_report_ticks;
+> > > > > > >			sanity_check_reports = hsw_sanity_check_render_basic_reports;
+> > > > > > >			undefined_a_counters = hsw_undefined_a_counters;
+> > > > > > >		} else {
+> > > > > > > -		test_set_name = "TestOa";
+> > > > > > >			read_report_ticks = gen8_read_report_ticks;
+> > > > > > >			sanity_check_reports = gen8_sanity_check_test_oa_reports;
+> > > > > > >			undefined_a_counters = gen8_undefined_a_counters;
+> > > > > > >		}
+> > > > > > >
+> > > > > > > -	igt_list_for_each_entry(metric_set_iter, &intel_perf->metric_sets, link) {
+> > > > > > > -		if (strcmp(metric_set_iter->symbol_name, test_set_name) == 0) {
+> > > > > > > -			test_set = metric_set_iter;
+> > > > > > > -			break;
+> > > > > > > -		}
+> > > > > > > -	}
+> > > > > > > -
+> > > > > > > +	test_set = i915_perf_default_set(intel_perf, devid);
+> > > > > > >		if (!test_set)
+> > > > > > >			return false;
+> > > > > > >
+> > > > > > > @@ -994,14 +929,12 @@ init_sys_info(void)
+> > > > > > >			  test_set->symbol_name,
+> > > > > > >			  test_set->hw_config_guid);
+> > > > > > >
+> > > > > > > -	intel_perf_load_perf_configs(intel_perf, drm_fd);
+> > > > > > > -
+> > > > > > >		if (test_set->perf_oa_metrics_set == 0) {
+> > > > > > >			igt_debug("Unable to load configurations\n");
+> > > > > > >			return false;
+> > > > > > >		}
+> > > > > > >
+> > > > > > > -	oa_exp_1_millisec = max_oa_exponent_for_period_lte(1000000);
+> > > > > > > +	oa_exp_1_millisec = i915_perf_max_oa_exponent_for_period_lte(intel_perf, 1000000);
+> > > > > > >
+> > > > > > >		return true;
+> > > > > > > }
+> > > > > > > @@ -1911,7 +1844,7 @@ test_low_oa_exponent_permissions(void)
+> > > > > > >
+> > > > > > >		igt_waitchildren();
+> > > > > > >
+> > > > > > > -	oa_period = timebase_scale(2 << ok_exponent);
+> > > > > > > +	oa_period = i915_perf_timebase_scale(intel_perf, 2 << ok_exponent);
+> > > > > > >		oa_freq = NSEC_PER_SEC / oa_period;
+> > > > > > >		write_u64_file("/proc/sys/dev/i915/oa_max_sample_rate", oa_freq - 100);
+> > > > > > >
+> > > > > > > @@ -2003,7 +1936,7 @@ get_time(void)
+> > > > > > > static void
+> > > > > > > test_blocking(uint64_t requested_oa_period, bool set_kernel_hrtimer, uint64_t kernel_hrtimer)
+> > > > > > > {
+> > > > > > > -	int oa_exponent = max_oa_exponent_for_period_lte(requested_oa_period);
+> > > > > > > +	int oa_exponent = i915_perf_max_oa_exponent_for_period_lte(intel_perf, requested_oa_period);
+> > > > > > >		uint64_t oa_period = oa_exponent_to_ns(oa_exponent);
+> > > > > > >		uint64_t properties[] = {
+> > > > > > >			/* Include OA reports in samples */
+> > > > > > > @@ -2162,7 +2095,7 @@ test_blocking(uint64_t requested_oa_period, bool set_kernel_hrtimer, uint64_t ke
+> > > > > > > static void
+> > > > > > > test_polling(uint64_t requested_oa_period, bool set_kernel_hrtimer, uint64_t kernel_hrtimer)
+> > > > > > > {
+> > > > > > > -	int oa_exponent = max_oa_exponent_for_period_lte(requested_oa_period);
+> > > > > > > +	int oa_exponent = i915_perf_max_oa_exponent_for_period_lte(intel_perf, requested_oa_period);
+> > > > > > >		uint64_t oa_period = oa_exponent_to_ns(oa_exponent);
+> > > > > > >		uint64_t properties[] = {
+> > > > > > >			/* Include OA reports in samples */
+> > > > > > > @@ -2358,7 +2291,7 @@ test_polling(uint64_t requested_oa_period, bool set_kernel_hrtimer, uint64_t ker
+> > > > > > >
+> > > > > > > static void test_polling_small_buf(void)
+> > > > > > > {
+> > > > > > > -	int oa_exponent = max_oa_exponent_for_period_lte(40 * 1000); /* 40us */
+> > > > > > > +	int oa_exponent = i915_perf_max_oa_exponent_for_period_lte(intel_perf, 40 * 1000); /* 40us */
+> > > > > > >		uint64_t properties[] = {
+> > > > > > >			/* Include OA reports in samples */
+> > > > > > >			DRM_I915_PERF_PROP_SAMPLE_OA, true,
+> > > > > > > @@ -2461,7 +2394,7 @@ num_valid_reports_captured(struct drm_i915_perf_open_param *param,
+> > > > > > > static void
+> > > > > > > gen12_test_oa_tlb_invalidate(void)
+> > > > > > > {
+> > > > > > > -	int oa_exponent = max_oa_exponent_for_period_lte(30000000);
+> > > > > > > +	int oa_exponent = i915_perf_max_oa_exponent_for_period_lte(intel_perf, 30000000);
+> > > > > > >		uint64_t properties[] = {
+> > > > > > >			DRM_I915_PERF_PROP_SAMPLE_OA, true,
+> > > > > > >
+> > > > > > > @@ -2503,7 +2436,7 @@ static void
+> > > > > > > test_buffer_fill(void)
+> > > > > > > {
+> > > > > > >		/* ~5 micro second period */
+> > > > > > > -	int oa_exponent = max_oa_exponent_for_period_lte(5000);
+> > > > > > > +	int oa_exponent = i915_perf_max_oa_exponent_for_period_lte(intel_perf, 5000);
+> > > > > > >		uint64_t oa_period = oa_exponent_to_ns(oa_exponent);
+> > > > > > >		uint64_t properties[] = {
+> > > > > > >			/* Include OA reports in samples */
+> > > > > > > @@ -2651,7 +2584,7 @@ static void
+> > > > > > > test_non_zero_reason(void)
+> > > > > > > {
+> > > > > > >		/* ~20 micro second period */
+> > > > > > > -	int oa_exponent = max_oa_exponent_for_period_lte(20000);
+> > > > > > > +	int oa_exponent = i915_perf_max_oa_exponent_for_period_lte(intel_perf, 20000);
+> > > > > > >		uint64_t properties[] = {
+> > > > > > >			/* Include OA reports in samples */
+> > > > > > >			DRM_I915_PERF_PROP_SAMPLE_OA, true,
+> > > > > > > @@ -2734,7 +2667,7 @@ static void
+> > > > > > > test_enable_disable(void)
+> > > > > > > {
+> > > > > > >		/* ~5 micro second period */
+> > > > > > > -	int oa_exponent = max_oa_exponent_for_period_lte(5000);
+> > > > > > > +	int oa_exponent = i915_perf_max_oa_exponent_for_period_lte(intel_perf, 5000);
+> > > > > > >		uint64_t oa_period = oa_exponent_to_ns(oa_exponent);
+> > > > > > >		uint64_t properties[] = {
+> > > > > > >			/* Include OA reports in samples */
+> > > > > > > @@ -2885,7 +2818,7 @@ test_enable_disable(void)
+> > > > > > > static void
+> > > > > > > test_short_reads(void)
+> > > > > > > {
+> > > > > > > -	int oa_exponent = max_oa_exponent_for_period_lte(5000);
+> > > > > > > +	int oa_exponent = i915_perf_max_oa_exponent_for_period_lte(intel_perf, 5000);
+> > > > > > >		uint64_t properties[] = {
+> > > > > > >			/* Include OA reports in samples */
+> > > > > > >			DRM_I915_PERF_PROP_SAMPLE_OA, true,
+> > > > > > > @@ -3447,8 +3380,8 @@ hsw_test_single_ctx_counters(void)
+> > > > > > >
+> > > > > > >			/* sanity check that we can pass the delta to timebase_scale */
+> > > > > > >			igt_assert(delta_ts64 < UINT32_MAX);
+> > > > > > > -		delta_oa32_ns = timebase_scale(delta_oa32);
+> > > > > > > -		delta_ts64_ns = timebase_scale(delta_ts64);
+> > > > > > > +		delta_oa32_ns = i915_perf_timebase_scale(intel_perf, delta_oa32);
+> > > > > > > +		delta_ts64_ns = i915_perf_timebase_scale(intel_perf, delta_ts64);
+> > > > > > >
+> > > > > > >			igt_debug("ts32 delta = %u, = %uns\n",
+> > > > > > >				  delta_oa32, (unsigned)delta_oa32_ns);
+> > > > > > > @@ -3498,7 +3431,7 @@ hsw_test_single_ctx_counters(void)
+> > > > > > > static void
+> > > > > > > gen8_test_single_ctx_render_target_writes_a_counter(void)
+> > > > > > > {
+> > > > > > > -	int oa_exponent = max_oa_exponent_for_period_lte(1000000);
+> > > > > > > +	int oa_exponent = i915_perf_max_oa_exponent_for_period_lte(intel_perf, 1000000);
+> > > > > > >		uint64_t properties[] = {
+> > > > > > >			DRM_I915_PERF_PROP_CTX_HANDLE, UINT64_MAX, /* updated below */
+> > > > > > >
+> > > > > > > @@ -3700,8 +3633,8 @@ gen8_test_single_ctx_render_target_writes_a_counter(void)
+> > > > > > >
+> > > > > > >				/* sanity check that we can pass the delta to timebase_scale */
+> > > > > > >				igt_assert(delta_ts64 < UINT32_MAX);
+> > > > > > > -			delta_oa32_ns = timebase_scale(delta_oa32);
+> > > > > > > -			delta_ts64_ns = timebase_scale(delta_ts64);
+> > > > > > > +			delta_oa32_ns = i915_perf_timebase_scale(intel_perf, delta_oa32);
+> > > > > > > +			delta_ts64_ns = i915_perf_timebase_scale(intel_perf, delta_ts64);
+> > > > > > >
+> > > > > > >				igt_debug("oa32 delta = %u, = %uns\n",
+> > > > > > >					  delta_oa32, (unsigned)delta_oa32_ns);
+> > > > > > > @@ -3783,7 +3716,8 @@ gen8_test_single_ctx_render_target_writes_a_counter(void)
+> > > > > > >					{
+> > > > > > >						uint32_t time_delta = report[1] - report0_32[1];
+> > > > > > >
+> > > > > > > -					if (timebase_scale(time_delta) > 1000000000) {
+> > > > > > > +					if (i915_perf_timebase_scale(intel_perf,
+> > > > > > > +								     time_delta) > 1000000000) {
+> > > > > > >							skip_reason = "prior first mi-rpc";
+> > > > > > >						}
+> > > > > > >					}
+> > > > > > > @@ -3791,7 +3725,8 @@ gen8_test_single_ctx_render_target_writes_a_counter(void)
+> > > > > > >					{
+> > > > > > >						uint32_t time_delta = report[1] - report1_32[1];
+> > > > > > >
+> > > > > > > -					if (timebase_scale(time_delta) <= 1000000000) {
+> > > > > > > +					if (i915_perf_timebase_scale(intel_perf,
+> > > > > > > +								     time_delta) <= 1000000000) {
+> > > > > > >							igt_debug("    comes after last MI_RPC (%u)\n",
+> > > > > > >								  report1_32[1]);
+> > > > > > >							report = report1_32;
+> > > > > > > @@ -4164,7 +4099,7 @@ static void gen12_single_ctx_helper(void)
+> > > > > > >
+> > > > > > >		/* Sanity check that we can pass the delta to timebase_scale */
+> > > > > > >		igt_assert(delta_ts64 < UINT32_MAX);
+> > > > > > > -	delta_oa32_ns = timebase_scale(delta_oa32);
+> > > > > > > +	delta_oa32_ns = i915_perf_timebase_scale(intel_perf, delta_oa32);
+> > > > > > >		delta_ts64_ns = cs_timebase_scale(delta_ts64);
+> > > > > > >
+> > > > > > >		igt_debug("oa32 delta = %u, = %uns\n",
+> > > > > > > --
+> > > > > > > 2.25.1
+> > > > > > >
+> > >
 > >
 > >
 > >
