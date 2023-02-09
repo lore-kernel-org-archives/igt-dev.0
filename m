@@ -1,19 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0431610E92C
- for <igt-dev@lists.freedesktop.org>; Thu,  9 Feb 2023 07:52:53 +0000 (UTC)
-Date: Thu, 9 Feb 2023 08:52:50 +0100
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4848410E92C
+ for <igt-dev@lists.freedesktop.org>; Thu,  9 Feb 2023 07:55:40 +0000 (UTC)
+Date: Thu, 9 Feb 2023 08:55:36 +0100
 From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 To: Karolina Stolarek <karolina.stolarek@intel.com>
-Message-ID: <20230209075250.wbbe5hq6sfww2eev@zkempczy-mobl2>
+Message-ID: <20230209075536.u4yzx5mqfljvjpal@zkempczy-mobl2>
 References: <cover.1675854161.git.karolina.stolarek@intel.com>
- <05202b362e00bc6bfce13d94779be11e2489dfa7.1675854161.git.karolina.stolarek@intel.com>
+ <4d94c00f2ae887a4d258e47f8a2026a2091e0496.1675854161.git.karolina.stolarek@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <05202b362e00bc6bfce13d94779be11e2489dfa7.1675854161.git.karolina.stolarek@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t v2 2/6] lib/intel_tiling_info: Rename
- blt_tiling_info to blt_cmd_info
+In-Reply-To: <4d94c00f2ae887a4d258e47f8a2026a2091e0496.1675854161.git.karolina.stolarek@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t v2 3/6] lib/i915: Rename
+ intel_tiling_info library
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,131 +26,110 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Wed, Feb 08, 2023 at 02:47:35PM +0100, Karolina Stolarek wrote:
-> This struct will store other information on the copy command,
-> not just what tiling formats it supports. Change the struct name
-> to be more generic.
+On Wed, Feb 08, 2023 at 02:47:36PM +0100, Karolina Stolarek wrote:
+> The structs here describe the properties of copy commands, not
+> just tiling formats they support. Make the library name more
+> generic.
 > 
 > Signed-off-by: Karolina Stolarek <karolina.stolarek@intel.com>
 > ---
->  lib/i915/i915_blt.c          |  8 ++++----
->  lib/i915/intel_tiling_info.c | 16 ++++++++--------
->  lib/i915/intel_tiling_info.h |  4 ++--
->  3 files changed, 14 insertions(+), 14 deletions(-)
-> 
-> diff --git a/lib/i915/i915_blt.c b/lib/i915/i915_blt.c
-> index 32d22720..554905d2 100644
-> --- a/lib/i915/i915_blt.c
-> +++ b/lib/i915/i915_blt.c
-> @@ -240,18 +240,18 @@ bool blt_cmd_supports_tiling(const struct blt_cmds_desc *blt_info,
->  			     enum blt_cmd_type cmd,
->  			     enum blt_tiling_type tiling)
->  {
-> -	struct blt_tiling_info const *tile_config;
-> +	struct blt_cmd_info const *cmd_info;
->  
->  	if (!blt_info)
->  		return false;
->  
-> -	tile_config = blt_info->supported_cmds[cmd];
-> +	cmd_info = blt_info->supported_cmds[cmd];
->  
->  	/* no config means no support for that tiling */
-> -	if (!tile_config)
-> +	if (!cmd_info)
->  		return false;
->  
-> -	return tile_config->supported_tiling & BIT(tiling);
-> +	return cmd_info->supported_tiling & BIT(tiling);
->  }
->  
->  /**
-> diff --git a/lib/i915/intel_tiling_info.c b/lib/i915/intel_tiling_info.c
-> index 671b9934..5f785777 100644
-> --- a/lib/i915/intel_tiling_info.c
-> +++ b/lib/i915/intel_tiling_info.c
-> @@ -12,39 +12,39 @@
->  		.supported_tiling = _tiling \
->  	}
->  
-> -static const struct blt_tiling_info src_copy = BLT_INFO(SRC_COPY, BIT(T_LINEAR));
-> -static const struct blt_tiling_info
-> +static const struct blt_cmd_info src_copy = BLT_INFO(SRC_COPY, BIT(T_LINEAR));
-> +static const struct blt_cmd_info
->  		pre_gen8_xy_src_copy = BLT_INFO(XY_SRC_COPY,
->  						BIT(T_LINEAR) |
->  						BIT(T_XMAJOR));
-> -static const struct blt_tiling_info
-> +static const struct blt_cmd_info
->  		gen8_xy_src_copy = BLT_INFO(XY_SRC_COPY,
->  					    BIT(T_LINEAR) |
->  					    BIT(T_XMAJOR) |
->  					    BIT(T_YMAJOR));
-> -static const struct blt_tiling_info
-> +static const struct blt_cmd_info
->  		gen11_xy_fast_copy = BLT_INFO(XY_FAST_COPY,
->  					      BIT(T_LINEAR)  |
->  					      BIT(T_YMAJOR)  |
->  					      BIT(T_YFMAJOR) |
->  					      BIT(T_TILE64));
-> -static const struct blt_tiling_info
-> +static const struct blt_cmd_info
->  		gen12_xy_fast_copy = BLT_INFO(XY_FAST_COPY,
->  					      BIT(T_LINEAR) |
->  					      BIT(T_YMAJOR) |
->  					      BIT(T_TILE4)  |
->  					      BIT(T_TILE64));
-> -static const struct blt_tiling_info
-> +static const struct blt_cmd_info
->  		dg2_xy_fast_copy = BLT_INFO(XY_FAST_COPY,
->  					    BIT(T_LINEAR) |
->  					    BIT(T_XMAJOR) |
->  					    BIT(T_TILE4)  |
->  					    BIT(T_TILE64));
-> -static const struct blt_tiling_info
-> +static const struct blt_cmd_info
->  		gen12_xy_block_copy = BLT_INFO(XY_BLOCK_COPY,
->  					       BIT(T_LINEAR) |
->  					       BIT(T_YMAJOR));
-> -static const struct blt_tiling_info
-> +static const struct blt_cmd_info
->  		dg2_xy_block_copy = BLT_INFO(XY_BLOCK_COPY,
->  					     BIT(T_LINEAR) |
->  					     BIT(T_XMAJOR) |
-> diff --git a/lib/i915/intel_tiling_info.h b/lib/i915/intel_tiling_info.h
-> index 97fb1ce8..e86b6dd4 100644
-> --- a/lib/i915/intel_tiling_info.h
-> +++ b/lib/i915/intel_tiling_info.h
-> @@ -26,13 +26,13 @@ enum blt_cmd_type {
->  	__BLT_MAX_CMD
->  };
->  
-> -struct blt_tiling_info {
-> +struct blt_cmd_info {
+>  lib/i915/i915_blt.h                                 | 2 +-
+>  lib/i915/{intel_tiling_info.c => intel_cmds_info.c} | 2 +-
+>  lib/i915/{intel_tiling_info.h => intel_cmds_info.h} | 0
+>  lib/intel_chipset.h                                 | 2 +-
+>  lib/meson.build                                     | 6 +++---
+>  5 files changed, 6 insertions(+), 6 deletions(-)
+>  rename lib/i915/{intel_tiling_info.c => intel_cmds_info.c} (98%)
+>  rename lib/i915/{intel_tiling_info.h => intel_cmds_info.h} (100%)
 
-blt_tiling_info -> blt_cmd_info is ok for me.
+intel_cmds_info is ok so structure I suggested in patch 2/6 should
+rather be named intel_cmds_info instead intel_cmds_desc. But I would
+accept intel_cmds_desc too if you want to keep this name.
 
->  	enum blt_cmd_type blt_cmd_type;
->  	uint32_t supported_tiling;
->  };
->  
->  struct blt_cmds_desc {
-
-This should imo be renamed to intel_cmds_desc.
-
-> -	struct blt_tiling_info const *supported_cmds[__BLT_MAX_CMD];
-> +	struct blt_cmd_info const *supported_cmds[__BLT_MAX_CMD];
-
-Then we can collect more commands (not only blitter here), but
-supported_cmds should be renamed to blt_supported_cmds or simply
-blt_cmds.
+I've noticed here lack of change in intel_cmds_info.h in #ifdef ...
+line. You still keep INTEL_TILING_INFO there.
 
 --
 Zbigniew
 
->  };
+> 
+> diff --git a/lib/i915/i915_blt.h b/lib/i915/i915_blt.h
+> index 6a0c246a..7acf9595 100644
+> --- a/lib/i915/i915_blt.h
+> +++ b/lib/i915/i915_blt.h
+> @@ -47,7 +47,7 @@
+>  #include <malloc.h>
+>  #include "drm.h"
+>  #include "igt.h"
+> -#include "intel_tiling_info.h"
+> +#include "intel_cmds_info.h"
 >  
->  extern const struct blt_cmds_desc pre_gen8_blt_info;
+>  #define CCS_RATIO 256
+>  
+> diff --git a/lib/i915/intel_tiling_info.c b/lib/i915/intel_cmds_info.c
+> similarity index 98%
+> rename from lib/i915/intel_tiling_info.c
+> rename to lib/i915/intel_cmds_info.c
+> index 5f785777..d99b3131 100644
+> --- a/lib/i915/intel_tiling_info.c
+> +++ b/lib/i915/intel_cmds_info.c
+> @@ -5,7 +5,7 @@
+>  
+>  #include <stdint.h>
+>  #include "intel_chipset.h"
+> -#include "i915/intel_tiling_info.h"
+> +#include "i915/intel_cmds_info.h"
+>  
+>  #define BLT_INFO(_cmd, _tiling)  { \
+>  		.blt_cmd_type = _cmd, \
+> diff --git a/lib/i915/intel_tiling_info.h b/lib/i915/intel_cmds_info.h
+> similarity index 100%
+> rename from lib/i915/intel_tiling_info.h
+> rename to lib/i915/intel_cmds_info.h
+> diff --git a/lib/intel_chipset.h b/lib/intel_chipset.h
+> index 2e44de24..a02a84f9 100644
+> --- a/lib/intel_chipset.h
+> +++ b/lib/intel_chipset.h
+> @@ -31,7 +31,7 @@
+>  #include <pciaccess.h>
+>  #include <stdbool.h>
+>  
+> -#include "i915/intel_tiling_info.h"
+> +#include "i915/intel_cmds_info.h"
+>  
+>  #define BIT(x) (1ul <<(x))
+>  
+> diff --git a/lib/meson.build b/lib/meson.build
+> index d49b78ca..c5131d9a 100644
+> --- a/lib/meson.build
+> +++ b/lib/meson.build
+> @@ -14,7 +14,7 @@ lib_sources = [
+>  	'i915/intel_decode.c',
+>  	'i915/intel_memory_region.c',
+>  	'i915/intel_mocs.c',
+> -	'i915/intel_tiling_info.c',
+> +	'i915/intel_cmds_info.c',
+>  	'i915/i915_blt.c',
+>  	'i915/i915_crc.c',
+>  	'igt_collection.c',
+> @@ -219,7 +219,7 @@ igt_deps = [ lib_igt ] + lib_deps
+>  lin_igt_chipset_build = static_library('igt_chipset',
+>                                         ['intel_chipset.c',
+>  					'intel_device_info.c',
+> -					'i915/intel_tiling_info.c'],
+> +					'i915/intel_cmds_info.c'],
+>                                         include_directories : inc)
+>  
+>  lib_igt_chipset = declare_dependency(link_with : lin_igt_chipset_build,
+> @@ -242,7 +242,7 @@ lib_igt_device_scan_build = static_library('igt_device_scan',
+>  	'igt_list.c',
+>  	'igt_tools_stub.c',
+>  	'intel_device_info.c',
+> -	'i915/intel_tiling_info.c',
+> +	'i915/intel_cmds_info.c',
+>  	],
+>  	dependencies : scan_dep,
+>  	include_directories : inc)
 > -- 
 > 2.25.1
 > 
