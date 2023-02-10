@@ -1,18 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B341910E0E0
- for <igt-dev@lists.freedesktop.org>; Fri, 10 Feb 2023 13:22:46 +0000 (UTC)
-Date: Fri, 10 Feb 2023 14:22:42 +0100
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DDE9810ED1E
+ for <igt-dev@lists.freedesktop.org>; Fri, 10 Feb 2023 13:31:18 +0000 (UTC)
+Date: Fri, 10 Feb 2023 14:31:10 +0100
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Message-ID: <20230210132242.4flmtkxe7weiifoh@kamilkon-desk1>
-References: <20230209115151.8681-1-juhapekka.heikkila@gmail.com>
+Message-ID: <20230210133110.dr73u4k2qt2u32xd@kamilkon-desk1>
+References: <20230113124453.196280-1-mcanal@igalia.com>
+ <20230113124453.196280-2-mcanal@igalia.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20230209115151.8681-1-juhapekka.heikkila@gmail.com>
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_plane_scaling: add invalid
- parameter tests
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20230113124453.196280-2-mcanal@igalia.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 1/3] lib/v3d: Add a helper to create a
+ empty shader
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,150 +22,161 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: Rob Clark <robdclark@chromium.org>, Petri Latvala <petri.latvala@intel.com>,
+ Tomeu Vizoso <tomeu.vizoso@collabora.com>,
+ Iago Toral Quiroga <itoral@igalia.com>, Emma Anholt <emma@anholt.net>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Juha-Pekka,
+Hi Maíra,
 
-I have few nits, see below.
+your patchset is almost ready to merge. Few nits left, see below.
 
-On 2023-02-09 at 13:51:51 +0200, Juha-Pekka Heikkila wrote:
-> Add skeleton for adding invalid parameter tests and add
-> two tests which are expected to return -EINVAL or -ERANGE
+On 2023-01-13 at 09:44:51 -0300, Maíra Canal wrote:
+> In order to submit a compute dispatch job, a BO must contain the
+> assembly shader that corresponds to the job. Therefore, create a helper
+> to encapsulate a simple compute dispatch job. This helper sets the
+> configurations (cfg) needed for the job and has the assembled instructions
+> necessary to process an empty shader, just like the following one:
 > 
-> Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+>     #version 310 es
+>     layout (local_size_x = 1) in;
+>     void main (void) {}
+> 
+> Signed-off-by: Maíra Canal <mcanal@igalia.com>
 > ---
->  tests/kms_plane_scaling.c | 71 +++++++++++++++++++++++++++++++++++++++
->  1 file changed, 71 insertions(+)
+>  lib/igt_v3d.c | 60 +++++++++++++++++++++++++++++++++++++++++++++++++++
+>  lib/igt_v3d.h | 20 +++++++++++++++++
+>  2 files changed, 80 insertions(+)
 > 
-> diff --git a/tests/kms_plane_scaling.c b/tests/kms_plane_scaling.c
-> index 887a55e63..30a839f15 100644
-> --- a/tests/kms_plane_scaling.c
-> +++ b/tests/kms_plane_scaling.c
-> @@ -819,6 +819,75 @@ static void test_scaler_with_multi_pipe_plane(data_t *d)
->  	igt_assert_eq(ret1 && ret2, 0);
+> diff --git a/lib/igt_v3d.c b/lib/igt_v3d.c
+> index cc8f410d..dd5ebb6d 100644
+> --- a/lib/igt_v3d.c
+> +++ b/lib/igt_v3d.c
+> @@ -341,3 +341,63 @@ void igt_v3d_free_cl_job(int fd, struct v3d_cl_job *job)
+>  	free(job->submit);
+>  	free(job);
 >  }
->  
-> +static void invalid_parameter_tests(data_t *d) {
-------------------------------------------------- ^
-This brace should be at new line.
-
-> +	enum pipe pipe = PIPE_A;
-> +	igt_output_t *output;
-> +	igt_fb_t fb;
-> +	igt_plane_t* plane;
------------------- ^
-This should be:
-	igt_plane_t *plane;
-
-> +	int rval;
 > +
-> +	const struct {
-> +		const char* testname;
-------------------------- ^
-Same here.
 
-> +		uint32_t planesize[2];
-> +		struct {
-> +			enum igt_atomic_plane_properties prop;
-> +			uint32_t value;
-> +		} params[8];
-> +	} paramtests[] = {
-> +		{
-> +			.testname = "less-than-1-height-src",
-> +			.planesize = {256, 8},
-> +			.params = {{IGT_PLANE_SRC_H, IGT_FIXED(0, 30) }, {~0}}
-> +		},
-> +		{
-> +			.testname = "less-than-1-width-src",
-> +			.planesize = {8, 256},
-> +			.params = {{IGT_PLANE_SRC_W, IGT_FIXED(0, 30) }, {~0}}
-> +		},
-> +	};
+Please describe every public library function, for example
+see at other library for
+/**
+ * @function_name
+ * @parameters
+ *
+ * returns description
+ */
+
+> +struct v3d_csd_job *igt_v3d_empty_shader(int fd)
+> +{
+> +	struct v3d_csd_job *job;
+> +	uint32_t *bos;
 > +
-> +	igt_fixture {
-> +		output = igt_get_single_output_for_pipe(&d->display, pipe);
-> +		igt_require(output);
+> +	/* Reproduce an empty shader */
+> +	const uint32_t assembly[] = { 0xbb800000, 0x3c203186,
+> +				      0xbb800000, 0x3c003186,
+> +				      0xbb800000, 0x3c003186 };
+> +	const uint32_t group_count_x = 1, group_count_y = 1, group_count_z = 1;
+> +	const uint32_t num_batches = 1, wgs_per_sg = 1, batches_per_sg = 1, wg_size = 1;
 > +
-> +		igt_output_set_pipe(output, pipe);
-> +		plane = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
+> +	job = calloc(1, sizeof(*job));
 > +
-> +		igt_create_fb(d->drm_fd, 256, 256,
-> +			DRM_FORMAT_XRGB8888,
-> +			DRM_FORMAT_MOD_NONE,
-> +			&fb);
-> +	}
+> +	job->shader_assembly = igt_v3d_create_bo(fd, PAGE_SIZE);
+> +	job->cl = igt_v3d_create_bo(fd, PAGE_SIZE);
+> +	job->submit = calloc(1, sizeof(*job->submit));
 > +
-> +	igt_describe("test parameters which should not be accepted");
-> +	igt_subtest_with_dynamic("invalid-parameters") {
-> +		for (uint32_t i = 0; i < ARRAY_SIZE(paramtests); i++) {
-> +			igt_dynamic(paramtests[i].testname) {
-> +				igt_plane_set_position(plane, 0, 0);
-> +				igt_plane_set_fb(plane, &fb);
-> +				igt_plane_set_size(plane,
--------------------------------------------------- ^
-If you break line you should align it here.
-
-> +							paramtests[i].planesize[0],
--------------------------------------------------- ^
-Align it.
-
-> +							paramtests[i].planesize[1]);
--------------------------------------------------- ^
-This is correct align.
-
+> +	igt_v3d_bo_mmap(fd, job->shader_assembly);
+> +	igt_v3d_bo_mmap(fd, job->cl);
 > +
+> +	memset(job->shader_assembly->map, 0, sizeof(*job->shader_assembly->map));
+> +	memcpy(job->shader_assembly->map, assembly, sizeof(assembly));
+> +	memset(job->cl->map, 0, sizeof(*job->cl->map));
 > +
-> +				for (uint32_t j = 0; paramtests[i].params[j].prop != ~0; j++)
-> +					igt_plane_set_prop_value(plane,
----------------------------------------------------------------- ^
-
-> +									paramtests[i].params[j].prop,
----------------------------------------------------------------- ^
-Align here.
-
-> +									paramtests[i].params[j].value);
----------------------------------------------------------------- ^
-Align here.
-
+> +	job->submit->bo_handle_count = 2;
+> +	bos = malloc(sizeof(*bos) * job->submit->bo_handle_count);
+> +	bos[0] = job->shader_assembly->handle;
+> +	bos[1] = job->cl->handle;
 > +
-> +				rval = 	igt_display_try_commit2(&d->display, COMMIT_ATOMIC);
--- ^
-Use tabs, no spaces.
+> +	job->submit->bo_handles = to_user_pointer(bos);
+> +
+> +	job->submit->cfg[0] |= group_count_x << V3D_CSD_CFG012_WG_COUNT_SHIFT;
+> +	job->submit->cfg[1] |= group_count_y << V3D_CSD_CFG012_WG_COUNT_SHIFT;
+> +	job->submit->cfg[2] |= group_count_z << V3D_CSD_CFG012_WG_COUNT_SHIFT;
+> +
+> +	job->submit->cfg[3] |= (wgs_per_sg & 0xf) << V3D_CSD_CFG3_WGS_PER_SG_SHIFT;
+> +	job->submit->cfg[3] |= (batches_per_sg - 1) << V3D_CSD_CFG3_BATCHES_PER_SG_M1_SHIFT;
+> +	job->submit->cfg[3] |= (wg_size & 0xff) << V3D_CSD_CFG3_WG_SIZE_SHIFT;
+> +
+> +	job->submit->cfg[4] = num_batches - 1;
+> +
+> +	job->submit->cfg[5] = job->shader_assembly->offset | V3D_CSD_CFG5_PROPAGATE_NANS;
+> +	job->submit->cfg[5] |= V3D_CSD_CFG5_SINGLE_SEG;
+> +	job->submit->cfg[5] |= V3D_CSD_CFG5_THREADING;
+> +
+> +	job->submit->cfg[6] = job->cl->offset;
+> +
+> +	return job;
+> +}
+> +
 
-Please use checkpatch.pl from Linux kernel source to check
-your patches before sending. It may change in future and
-maybe we will have it in our GitLab CI and in patchwork but
-for now please do it yourself.
+Same here, put description.
 
 Regards,
 Kamil
 
-> +
-> +				igt_assert(rval == -EINVAL || rval == -ERANGE);
-> +			}
-> +		}
-> +	}
-> +
-> +	igt_fixture {
-> +		igt_remove_fb(d->drm_fd, &fb);
-> +		igt_output_set_pipe(output, PIPE_NONE);
-> +	}
+> +void igt_v3d_free_csd_job(int fd, struct v3d_csd_job *job)
+> +{
+> +	free(from_user_pointer(job->submit->bo_handles));
+> +	igt_v3d_free_bo(fd, job->shader_assembly);
+> +	igt_v3d_free_bo(fd, job->cl);
+> +	free(job->submit);
+> +	free(job);
 > +}
-> +
->  static int opt_handler(int opt, int opt_index, void *_data)
->  {
->  	data_t *data = _data;
-> @@ -982,6 +1051,8 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
->  	igt_subtest_f("2x-scaler-multi-pipe")
->  		test_scaler_with_multi_pipe_plane(&data);
+> diff --git a/lib/igt_v3d.h b/lib/igt_v3d.h
+> index 2cf7fbd8..b96a3b43 100644
+> --- a/lib/igt_v3d.h
+> +++ b/lib/igt_v3d.h
+> @@ -28,6 +28,17 @@
 >  
-> +	invalid_parameter_tests(&data);
+>  #define PAGE_SIZE 4096
+>  
+> +#define V3D_CSD_CFG012_WG_COUNT_SHIFT 16
+> +/* Batches per supergroup minus 1.  8 bits. */
+> +#define V3D_CSD_CFG3_BATCHES_PER_SG_M1_SHIFT 12
+> +/* Workgroups per supergroup, 0 means 16 */
+> +#define V3D_CSD_CFG3_WGS_PER_SG_SHIFT 8
+> +#define V3D_CSD_CFG3_WG_SIZE_SHIFT 0
 > +
->  	igt_fixture {
->  		igt_display_fini(&data.display);
->  		close(data.drm_fd);
+> +#define V3D_CSD_CFG5_PROPAGATE_NANS (1 << 2)
+> +#define V3D_CSD_CFG5_SINGLE_SEG (1 << 1)
+> +#define V3D_CSD_CFG5_THREADING (1 << 0)
+> +
+>  struct v3d_cl;
+>  
+>  struct v3d_bo {
+> @@ -46,6 +57,12 @@ struct v3d_cl_job {
+>  	struct v3d_bo *tile_state;
+>  };
+>  
+> +struct v3d_csd_job {
+> +	struct drm_v3d_submit_csd *submit;
+> +	struct v3d_bo *shader_assembly;
+> +	struct v3d_bo *cl;
+> +};
+> +
+>  struct v3d_bo *igt_v3d_create_bo(int fd, size_t size);
+>  void igt_v3d_free_bo(int fd, struct v3d_bo *bo);
+>  
+> @@ -67,4 +84,7 @@ void igt_v3d_set_multisync(struct drm_v3d_multi_sync *ms, enum v3d_queue wait_st
+>  struct v3d_cl_job *igt_v3d_noop_job(int fd);
+>  void igt_v3d_free_cl_job(int fd, struct v3d_cl_job *job);
+>  
+> +struct v3d_csd_job *igt_v3d_empty_shader(int fd);
+> +void igt_v3d_free_csd_job(int fd, struct v3d_csd_job *job);
+> +
+>  #endif /* IGT_V3D_H */
 > -- 
 > 2.39.0
 > 
