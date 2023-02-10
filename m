@@ -1,20 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DDE9810ED1E
- for <igt-dev@lists.freedesktop.org>; Fri, 10 Feb 2023 13:31:18 +0000 (UTC)
-Date: Fri, 10 Feb 2023 14:31:10 +0100
+Date: Fri, 10 Feb 2023 15:02:59 +0100
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Message-ID: <20230210133110.dr73u4k2qt2u32xd@kamilkon-desk1>
-References: <20230113124453.196280-1-mcanal@igalia.com>
- <20230113124453.196280-2-mcanal@igalia.com>
+Message-ID: <20230210140259.hhfx7yu3myswrayl@kamilkon-desk1>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230113124453.196280-2-mcanal@igalia.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 1/3] lib/v3d: Add a helper to create a
- empty shader
+In-Reply-To: <20230209193231.57538-1-janusz.krzysztofik@linux.intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/i915_suspend: Free device list
+ after *-without-i915 subtests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,161 +16,125 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Rob Clark <robdclark@chromium.org>, Petri Latvala <petri.latvala@intel.com>,
- Tomeu Vizoso <tomeu.vizoso@collabora.com>,
- Iago Toral Quiroga <itoral@igalia.com>, Emma Anholt <emma@anholt.net>
+Cc: intel-gfx@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Maíra,
+Hi Janusz,
 
-your patchset is almost ready to merge. Few nits left, see below.
+I have one nit, see below.
 
-On 2023-01-13 at 09:44:51 -0300, Maíra Canal wrote:
-> In order to submit a compute dispatch job, a BO must contain the
-> assembly shader that corresponds to the job. Therefore, create a helper
-> to encapsulate a simple compute dispatch job. This helper sets the
-> configurations (cfg) needed for the job and has the assembled instructions
-> necessary to process an empty shader, just like the following one:
+On 2023-02-09 at 20:32:31 +0100, Janusz Krzysztofik wrote:
+> If any of *-without-i915 subtests fails or skips for any reason, it may
+> leave the i915 module unloaded while keeping our device list populated
+> with initially collected data.  In a follow up igt_fixture section we then
+> try to reopen the device.  If the test has been executed with a device
+> filter specified, an attempt to open the device finds a matching entry
+> that belongs to the no longer existing device in that initially collected
+> device list, fails to stat() it, concludes that's because of the device
+> having been already open, and returns an error.
 > 
->     #version 310 es
->     layout (local_size_x = 1) in;
->     void main (void) {}
+> Fix this potentially confusing test result by freeing the potentially
+> outdated device list before continuing with drm_open_driver().
 > 
-> Signed-off-by: Maíra Canal <mcanal@igalia.com>
+> While being at it, add a comment that explains why we call
+> igt_device_scan() from __igt_device_card_match() but don't force device
+> rescan, and emit a debug message if we fail in _is_already_opened() on
+> unsuccessful device stat().
+> 
+> Subtest basic-s3-without-i915: FAIL (9.572s)
+> (i915_suspend:9050) drmtest-WARNING: card maching filter 0 is already opened
+> (i915_suspend:9050) drmtest-CRITICAL: Test abort in function drm_open_driver, file ../lib/drmtest.c:639:
+> (i915_suspend:9050) drmtest-CRITICAL: abort condition: fd < 0
+> (i915_suspend:9050) drmtest-CRITICAL: Last errno: 2, No such file or directory
+> (i915_suspend:9050) drmtest-CRITICAL: No known gpu found for chipset flags 0x1 (intel)
+> Test i915_suspend failed.
+> **** DEBUG ****
+> (i915_suspend:9050) drmtest-DEBUG: Looking for devices to open using filter 0: pci:vendor=intel,device=dg2
+> (i915_suspend:9050) drmtest-DEBUG: Filter matched /dev/dri/card0 | /dev/dri/renderD128
+> (i915_suspend:9050) drmtest-WARNING: card maching filter 0 is already opened
+> (i915_suspend:9050) drmtest-CRITICAL: Test abort in function drm_open_driver, file ../lib/drmtest.c:639:
+> (i915_suspend:9050) drmtest-CRITICAL: abort condition: fd < 0
+> (i915_suspend:9050) drmtest-CRITICAL: Last errno: 2, No such file or directory
+> (i915_suspend:9050) drmtest-CRITICAL: No known gpu found for chipset flags 0x1 (intel)
+> (i915_suspend:9050) igt_core-INFO: Stack trace:
+> (i915_suspend:9050) igt_core-INFO:   #0 ../lib/igt_core.c:2066 __igt_abort()
+> (i915_suspend:9050) igt_core-INFO:   #1 ../lib/drmtest.c:573 drm_open_driver()
+> (i915_suspend:9050) igt_core-INFO:   #2 ../tests/i915/i915_suspend.c:258 __igt_unique____real_main245()
+> (i915_suspend:9050) igt_core-INFO:   #3 ../tests/i915/i915_suspend.c:245 main()
+> (i915_suspend:9050) igt_core-INFO:   #4 ../sysdeps/nptl/libc_start_call_main.h:58 __libc_start_call_main()
+> (i915_suspend:9050) igt_core-INFO:   #5 ../csu/libc-start.c:128 __libc_start_main@@GLIBC_2.34()
+> (i915_suspend:9050) igt_core-INFO:   #6 [_start+0x2a]
+> ****  END  ****
+> 
+> Fixes: f7aff600ab16 ("tests/i915/i915_suspend: Disable d3cold_allowed for basic-s2idle-without-i915")
+> Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+> Cc: Riana Tauro <riana.tauro@intel.com>
 > ---
->  lib/igt_v3d.c | 60 +++++++++++++++++++++++++++++++++++++++++++++++++++
->  lib/igt_v3d.h | 20 +++++++++++++++++
->  2 files changed, 80 insertions(+)
+>  lib/drmtest.c             |  2 +-
+>  lib/igt_device_scan.c     |  4 ++++
+>  tests/i915/i915_suspend.c | 10 +++++++++-
+>  3 files changed, 14 insertions(+), 2 deletions(-)
 > 
-> diff --git a/lib/igt_v3d.c b/lib/igt_v3d.c
-> index cc8f410d..dd5ebb6d 100644
-> --- a/lib/igt_v3d.c
-> +++ b/lib/igt_v3d.c
-> @@ -341,3 +341,63 @@ void igt_v3d_free_cl_job(int fd, struct v3d_cl_job *job)
->  	free(job->submit);
->  	free(job);
->  }
-> +
+> diff --git a/lib/drmtest.c b/lib/drmtest.c
+> index 16e80bdfcf..8e2d1ac50b 100644
+> --- a/lib/drmtest.c
+> +++ b/lib/drmtest.c
+> @@ -260,7 +260,7 @@ static bool _is_already_opened(const char *path, int as_idx)
+>  	 * we cannot even stat the device, so it's of no use - let's claim it's
+>  	 * already opened
+>  	 */
+> -	if (stat(path, &new) != 0)
+> +	if (igt_debug_on(stat(path, &new) != 0))
 
-Please describe every public library function, for example
-see at other library for
-/**
- * @function_name
- * @parameters
- *
- * returns description
- */
+This one looks a little too much, for example it can return -ENOENT
 
-> +struct v3d_csd_job *igt_v3d_empty_shader(int fd)
-> +{
-> +	struct v3d_csd_job *job;
-> +	uint32_t *bos;
-> +
-> +	/* Reproduce an empty shader */
-> +	const uint32_t assembly[] = { 0xbb800000, 0x3c203186,
-> +				      0xbb800000, 0x3c003186,
-> +				      0xbb800000, 0x3c003186 };
-> +	const uint32_t group_count_x = 1, group_count_y = 1, group_count_z = 1;
-> +	const uint32_t num_batches = 1, wgs_per_sg = 1, batches_per_sg = 1, wg_size = 1;
-> +
-> +	job = calloc(1, sizeof(*job));
-> +
-> +	job->shader_assembly = igt_v3d_create_bo(fd, PAGE_SIZE);
-> +	job->cl = igt_v3d_create_bo(fd, PAGE_SIZE);
-> +	job->submit = calloc(1, sizeof(*job->submit));
-> +
-> +	igt_v3d_bo_mmap(fd, job->shader_assembly);
-> +	igt_v3d_bo_mmap(fd, job->cl);
-> +
-> +	memset(job->shader_assembly->map, 0, sizeof(*job->shader_assembly->map));
-> +	memcpy(job->shader_assembly->map, assembly, sizeof(assembly));
-> +	memset(job->cl->map, 0, sizeof(*job->cl->map));
-> +
-> +	job->submit->bo_handle_count = 2;
-> +	bos = malloc(sizeof(*bos) * job->submit->bo_handle_count);
-> +	bos[0] = job->shader_assembly->handle;
-> +	bos[1] = job->cl->handle;
-> +
-> +	job->submit->bo_handles = to_user_pointer(bos);
-> +
-> +	job->submit->cfg[0] |= group_count_x << V3D_CSD_CFG012_WG_COUNT_SHIFT;
-> +	job->submit->cfg[1] |= group_count_y << V3D_CSD_CFG012_WG_COUNT_SHIFT;
-> +	job->submit->cfg[2] |= group_count_z << V3D_CSD_CFG012_WG_COUNT_SHIFT;
-> +
-> +	job->submit->cfg[3] |= (wgs_per_sg & 0xf) << V3D_CSD_CFG3_WGS_PER_SG_SHIFT;
-> +	job->submit->cfg[3] |= (batches_per_sg - 1) << V3D_CSD_CFG3_BATCHES_PER_SG_M1_SHIFT;
-> +	job->submit->cfg[3] |= (wg_size & 0xff) << V3D_CSD_CFG3_WG_SIZE_SHIFT;
-> +
-> +	job->submit->cfg[4] = num_batches - 1;
-> +
-> +	job->submit->cfg[5] = job->shader_assembly->offset | V3D_CSD_CFG5_PROPAGATE_NANS;
-> +	job->submit->cfg[5] |= V3D_CSD_CFG5_SINGLE_SEG;
-> +	job->submit->cfg[5] |= V3D_CSD_CFG5_THREADING;
-> +
-> +	job->submit->cfg[6] = job->cl->offset;
-> +
-> +	return job;
-> +}
-> +
-
-Same here, put description.
+Rest looks ok.
 
 Regards,
 Kamil
 
-> +void igt_v3d_free_csd_job(int fd, struct v3d_csd_job *job)
-> +{
-> +	free(from_user_pointer(job->submit->bo_handles));
-> +	igt_v3d_free_bo(fd, job->shader_assembly);
-> +	igt_v3d_free_bo(fd, job->cl);
-> +	free(job->submit);
-> +	free(job);
-> +}
-> diff --git a/lib/igt_v3d.h b/lib/igt_v3d.h
-> index 2cf7fbd8..b96a3b43 100644
-> --- a/lib/igt_v3d.h
-> +++ b/lib/igt_v3d.h
-> @@ -28,6 +28,17 @@
+>  		return true;
 >  
->  #define PAGE_SIZE 4096
+>  	for (int i = 0; i < as_idx; ++i) {
+> diff --git a/lib/igt_device_scan.c b/lib/igt_device_scan.c
+> index 8b767eed20..ae69ed09f1 100644
+> --- a/lib/igt_device_scan.c
+> +++ b/lib/igt_device_scan.c
+> @@ -1918,6 +1918,10 @@ static bool __igt_device_card_match(const char *filter,
+>  		return false;
+>  	memset(card, 0, sizeof(*card));
 >  
-> +#define V3D_CSD_CFG012_WG_COUNT_SHIFT 16
-> +/* Batches per supergroup minus 1.  8 bits. */
-> +#define V3D_CSD_CFG3_BATCHES_PER_SG_M1_SHIFT 12
-> +/* Workgroups per supergroup, 0 means 16 */
-> +#define V3D_CSD_CFG3_WGS_PER_SG_SHIFT 8
-> +#define V3D_CSD_CFG3_WG_SIZE_SHIFT 0
-> +
-> +#define V3D_CSD_CFG5_PROPAGATE_NANS (1 << 2)
-> +#define V3D_CSD_CFG5_SINGLE_SEG (1 << 1)
-> +#define V3D_CSD_CFG5_THREADING (1 << 0)
-> +
->  struct v3d_cl;
+> +	/*
+> +	 * Scan devices in case the user hasn't yet,
+> +	 * but leave a decision on forced rescan on the user side.
+> +	 */
+>  	igt_devices_scan(false);
 >  
->  struct v3d_bo {
-> @@ -46,6 +57,12 @@ struct v3d_cl_job {
->  	struct v3d_bo *tile_state;
->  };
+>  	if (igt_device_filter_apply(filter) == false)
+> diff --git a/tests/i915/i915_suspend.c b/tests/i915/i915_suspend.c
+> index 815f1c8a2c..c68110476e 100644
+> --- a/tests/i915/i915_suspend.c
+> +++ b/tests/i915/i915_suspend.c
+> @@ -253,8 +253,16 @@ igt_main
+>  	igt_subtest("basic-s3-without-i915")
+>  		test_suspend_without_i915(SUSPEND_STATE_S3);
 >  
-> +struct v3d_csd_job {
-> +	struct drm_v3d_submit_csd *submit;
-> +	struct v3d_bo *shader_assembly;
-> +	struct v3d_bo *cl;
-> +};
-> +
->  struct v3d_bo *igt_v3d_create_bo(int fd, size_t size);
->  void igt_v3d_free_bo(int fd, struct v3d_bo *bo);
+> -	igt_fixture
+> +	igt_fixture {
+> +		/*
+> +		 * Since above tests may fail leaving the i915 module unloaded,
+> +		 * force refresh of device list before opening an i915 device
+> +		 * by cleaning up the current device list, otherwise we can fail
+> +		 * if we have been called with a device filter specified.
+> +		 */
+> +		igt_devices_free();
+>  		fd = drm_open_driver(DRIVER_INTEL);
+> +	}
 >  
-> @@ -67,4 +84,7 @@ void igt_v3d_set_multisync(struct drm_v3d_multi_sync *ms, enum v3d_queue wait_st
->  struct v3d_cl_job *igt_v3d_noop_job(int fd);
->  void igt_v3d_free_cl_job(int fd, struct v3d_cl_job *job);
->  
-> +struct v3d_csd_job *igt_v3d_empty_shader(int fd);
-> +void igt_v3d_free_csd_job(int fd, struct v3d_csd_job *job);
-> +
->  #endif /* IGT_V3D_H */
+>  	igt_subtest("fence-restore-tiled2untiled") {
+>  		gem_require_mappable_ggtt(fd);
 > -- 
-> 2.39.0
+> 2.25.1
 > 
