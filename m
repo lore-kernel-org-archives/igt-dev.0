@@ -1,15 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Fri, 10 Feb 2023 08:53:12 +0100
-Message-ID: <38094681.10thIPus4b@jkrzyszt-mobl1.ger.corp.intel.com>
-In-Reply-To: <20230209115039.34441-1-janusz.krzysztofik@linux.intel.com>
-References: <20230209115039.34441-1-janusz.krzysztofik@linux.intel.com>
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CF33D10E089
+ for <igt-dev@lists.freedesktop.org>; Fri, 10 Feb 2023 08:11:13 +0000 (UTC)
+Message-ID: <e921c4f2-c6cb-11b3-35e2-42c196b12a80@intel.com>
+Date: Fri, 10 Feb 2023 13:40:53 +0530
+To: Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
+ <igt-dev@lists.freedesktop.org>
+References: <20230210042419.1744563-1-bhanuprakash.modem@intel.com>
+Content-Language: en-US
+From: Karthik B S <karthik.b.s@intel.com>
+In-Reply-To: <20230210042419.1744563-1-bhanuprakash.modem@intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
-Subject: Re: [igt-dev] [PATCH i-g-t v2 0/1] tests/i915/perf: Add stress /
- race exercises
+Subject: Re: [igt-dev] [i-g-t 1/2] tests/kms_cursor_edge_walk: Re-org
+ dynamic subtests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,49 +22,59 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: intel-gfx@lists.freedesktop.org,
- Chris Wilson <chris.p.wilson@linux.intel.com>,
- Nirmoy Das <nirmoy.das@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi,
 
-On Thursday, 9 February 2023 12:50:38 CET Janusz Krzysztofik wrote:
-> Users reported oopses on list corruptions when using i915 perf with a
-> number of concurrently running graphics applications.  That indicates we
-> are currently missing some important tests for such scenarios.  Cover
-> that gap.
-> 
-> v2: drop open-race subtest for now, not capable of triggering the user
->     reported bug, but triggering other bugs which I can't see any fixes
->     for queued yet,
->   - move the other new subtest out of tests/i915/perf.c (Ashutosh).
-> 
-> Janusz Krzysztofik (1):
->   tests/gem_ctx_exec: Exercise barrier race
-
-While still waiting for CI results (BAT results don't cover the new subtest) 
-I've collected results from a forced execution of the subtest in BAT scope on 
-trybot: https://patchwork.freedesktop.org/series/113608/#rev2
-
-While working as expected on most platforms, the test failed on some ancient 
-ones instead of skipping.  I've fixed this issue and tested the fix 
-successfully on trybot: https://patchwork.freedesktop.org/series/113608/#rev3
-
-I'm still waiting for your comments, if any, before I submit the fixed 
-version.
-
-Thanks,
-Janusz
-
-> 
->  tests/i915/gem_ctx_exec.c | 123 ++++++++++++++++++++++++++++++++++++++
->  tests/meson.build         |   9 ++-
->  2 files changed, 131 insertions(+), 1 deletion(-)
-> 
-> 
-
-
-
+On 2/10/2023 9:54 AM, Bhanuprakash Modem wrote:
+> Instead of clubbing all dynamic subtests, let's have an individual
+> subtest for each size & type.
+>
+> Fixes: 54ff3199b (tests/kms_cursor_edge_walk: Convert tests to dynamic)
+> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Reviewed-by: Karthik B S <karthik.b.s@intel.com>
+> ---
+>   tests/kms_cursor_edge_walk.c | 28 ++++++++++++++--------------
+>   1 file changed, 14 insertions(+), 14 deletions(-)
+>
+> diff --git a/tests/kms_cursor_edge_walk.c b/tests/kms_cursor_edge_walk.c
+> index e653b9ab9..96812776c 100644
+> --- a/tests/kms_cursor_edge_walk.c
+> +++ b/tests/kms_cursor_edge_walk.c
+> @@ -342,21 +342,21 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
+>   		igt_display_require_output(&data.display);
+>   	}
+>   
+> -	igt_describe("Checking cursor by walking left/right/top/bottom edge of screen");
+> -	igt_subtest_group {
+> -		for (i = 0; i < ARRAY_SIZE(tests); i++) {
+> -			igt_subtest_with_dynamic(tests[i].name) {
+> +	for (i = 0; i < ARRAY_SIZE(tests); i++) {
+> +		for (data.curw = 64; data.curw <= 256; data.curw *= 2) {
+> +			data.curh = data.curw;
+> +			igt_fixture
+> +				igt_require(data.curw <= max_curw && data.curh <= max_curh);
+> +
+> +			igt_describe_f("Checking cursor size %dx%d by walking %s of screen",
+> +					data.curw, data.curh, tests[i].name);
+> +			igt_subtest_with_dynamic_f("%dx%d-%s", data.curw,
+> +						   data.curh, tests[i].name) {
+>   				for_each_pipe_with_single_output(&data.display, data.pipe, data.output) {
+> -					for (data.curw = 64; data.curw <= 256; data.curw *= 2) {
+> -						data.curh = data.curw;
+> -						igt_require(data.curw <= max_curw && data.curh <= max_curh);
+> -
+> -						igt_dynamic_f("pipe-%s-%s-%dx%d",
+> -							      kmstest_pipe_name(data.pipe),
+> -							      data.output->name,
+> -							      data.curw, data.curh)
+> -							test_crtc(&data, tests[i].flags);
+> -					}
+> +					igt_dynamic_f("pipe-%s-%s",
+> +						      kmstest_pipe_name(data.pipe),
+> +						      data.output->name)
+> +						test_crtc(&data, tests[i].flags);
+>   				}
+>   			}
+>   		}
