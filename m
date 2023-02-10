@@ -1,24 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-wr1-x434.google.com (mail-wr1-x434.google.com
- [IPv6:2a00:1450:4864:20::434])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B167910E1AB
- for <igt-dev@lists.freedesktop.org>; Fri, 10 Feb 2023 14:08:00 +0000 (UTC)
-Received: by mail-wr1-x434.google.com with SMTP id h16so5151103wrz.12
- for <igt-dev@lists.freedesktop.org>; Fri, 10 Feb 2023 06:08:00 -0800 (PST)
-Message-ID: <9b4e4265-0e4d-9706-e176-20ff13c0245b@gmail.com>
-Date: Fri, 10 Feb 2023 16:07:52 +0200
-MIME-Version: 1.0
-Content-Language: en-US
+From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
 To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org, Luca Coelho <luca@coelho.fi>
-References: <20230209115151.8681-1-juhapekka.heikkila@gmail.com>
- <20230210132242.4flmtkxe7weiifoh@kamilkon-desk1>
-From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-In-Reply-To: <20230210132242.4flmtkxe7weiifoh@kamilkon-desk1>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_plane_scaling: add invalid
- parameter tests
+ igt-dev@lists.freedesktop.org, Riana Tauro <riana.tauro@intel.com>,
+ Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>,
+ intel-gfx@lists.freedesktop.org
+Date: Fri, 10 Feb 2023 15:21:20 +0100
+Message-ID: <1954569.8hb0ThOEGa@jkrzyszt-mobl1.ger.corp.intel.com>
+In-Reply-To: <20230210140259.hhfx7yu3myswrayl@kamilkon-desk1>
+References: <20230210140259.hhfx7yu3myswrayl@kamilkon-desk1>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/i915_suspend: Free device list
+ after *-without-i915 subtests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,160 +20,144 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: juhapekka.heikkila@gmail.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Kamil,
+On Friday, 10 February 2023 15:02:59 CET Kamil Konieczny wrote:
+> Hi Janusz,
+> 
+> I have one nit, see below.
+> 
+> On 2023-02-09 at 20:32:31 +0100, Janusz Krzysztofik wrote:
+> > If any of *-without-i915 subtests fails or skips for any reason, it may
+> > leave the i915 module unloaded while keeping our device list populated
+> > with initially collected data.  In a follow up igt_fixture section we then
+> > try to reopen the device.  If the test has been executed with a device
+> > filter specified, an attempt to open the device finds a matching entry
+> > that belongs to the no longer existing device in that initially collected
+> > device list, fails to stat() it, concludes that's because of the device
+> > having been already open, and returns an error.
+> > 
+> > Fix this potentially confusing test result by freeing the potentially
+> > outdated device list before continuing with drm_open_driver().
+> > 
+> > While being at it, add a comment that explains why we call
+> > igt_device_scan() from __igt_device_card_match() but don't force device
+> > rescan, and emit a debug message if we fail in _is_already_opened() on
+> > unsuccessful device stat().
+> > 
+> > Subtest basic-s3-without-i915: FAIL (9.572s)
+> > (i915_suspend:9050) drmtest-WARNING: card maching filter 0 is already opened
+> > (i915_suspend:9050) drmtest-CRITICAL: Test abort in function drm_open_driver, file ../lib/drmtest.c:639:
+> > (i915_suspend:9050) drmtest-CRITICAL: abort condition: fd < 0
+> > (i915_suspend:9050) drmtest-CRITICAL: Last errno: 2, No such file or directory
+> > (i915_suspend:9050) drmtest-CRITICAL: No known gpu found for chipset flags 0x1 (intel)
+> > Test i915_suspend failed.
+> > **** DEBUG ****
+> > (i915_suspend:9050) drmtest-DEBUG: Looking for devices to open using filter 0: pci:vendor=intel,device=dg2
+> > (i915_suspend:9050) drmtest-DEBUG: Filter matched /dev/dri/card0 | /dev/dri/renderD128
+> > (i915_suspend:9050) drmtest-WARNING: card maching filter 0 is already opened
+> > (i915_suspend:9050) drmtest-CRITICAL: Test abort in function drm_open_driver, file ../lib/drmtest.c:639:
+> > (i915_suspend:9050) drmtest-CRITICAL: abort condition: fd < 0
+> > (i915_suspend:9050) drmtest-CRITICAL: Last errno: 2, No such file or directory
+> > (i915_suspend:9050) drmtest-CRITICAL: No known gpu found for chipset flags 0x1 (intel)
+> > (i915_suspend:9050) igt_core-INFO: Stack trace:
+> > (i915_suspend:9050) igt_core-INFO:   #0 ../lib/igt_core.c:2066 __igt_abort()
+> > (i915_suspend:9050) igt_core-INFO:   #1 ../lib/drmtest.c:573 drm_open_driver()
+> > (i915_suspend:9050) igt_core-INFO:   #2 ../tests/i915/i915_suspend.c:258 __igt_unique____real_main245()
+> > (i915_suspend:9050) igt_core-INFO:   #3 ../tests/i915/i915_suspend.c:245 main()
+> > (i915_suspend:9050) igt_core-INFO:   #4 ../sysdeps/nptl/libc_start_call_main.h:58 __libc_start_call_main()
+> > (i915_suspend:9050) igt_core-INFO:   #5 ../csu/libc-start.c:128 __libc_start_main@@GLIBC_2.34()
+> > (i915_suspend:9050) igt_core-INFO:   #6 [_start+0x2a]
+> > ****  END  ****
+> > 
+> > Fixes: f7aff600ab16 ("tests/i915/i915_suspend: Disable d3cold_allowed for basic-s2idle-without-i915")
+> > Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+> > Cc: Riana Tauro <riana.tauro@intel.com>
+> > ---
+> >  lib/drmtest.c             |  2 +-
+> >  lib/igt_device_scan.c     |  4 ++++
+> >  tests/i915/i915_suspend.c | 10 +++++++++-
+> >  3 files changed, 14 insertions(+), 2 deletions(-)
+> > 
+> > diff --git a/lib/drmtest.c b/lib/drmtest.c
+> > index 16e80bdfcf..8e2d1ac50b 100644
+> > --- a/lib/drmtest.c
+> > +++ b/lib/drmtest.c
+> > @@ -260,7 +260,7 @@ static bool _is_already_opened(const char *path, int as_idx)
+> >  	 * we cannot even stat the device, so it's of no use - let's claim it's
+> >  	 * already opened
+> >  	 */
+> > -	if (stat(path, &new) != 0)
+> > +	if (igt_debug_on(stat(path, &new) != 0))
+> 
+> This one looks a little too much, for example it can return -ENOENT
 
-I had just pushed this after which I saw your email. :/ While pushing I 
-did fixed most of those you had pointed, that alignment thing did look 
-different in my editor hence missed it.
+I'm not sure what you mean by "too much", and why you think that's wrong.  
+Maybe if you proposed some other approach, more proper in your opinion, not 
+only suggest that something is wrong, than I would be more clear about your 
+point.
 
-/Juha-Pekka
+I've surrounded the comparison of stat() return value against 0 with 
+igt_debug_on().  The only effect of this is that a debug message will be 
+emitted should stat() return an error.  Otherwise this is completely 
+transparent, i.e., this doesn't affect the algorithm in any way.  The purpose 
+of emitting the debug message is to make root cause analysis easier by 
+providing a hint which exit point from _is_already_opened() was followed, IOW, 
+why the device was believed to be open.
 
-On 10.2.2023 15.22, Kamil Konieczny wrote:
-> Hi Juha-Pekka,
+Thanks,
+Janusz
+
+
 > 
-> I have few nits, see below.
-> 
-> On 2023-02-09 at 13:51:51 +0200, Juha-Pekka Heikkila wrote:
->> Add skeleton for adding invalid parameter tests and add
->> two tests which are expected to return -EINVAL or -ERANGE
->>
->> Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
->> ---
->>   tests/kms_plane_scaling.c | 71 +++++++++++++++++++++++++++++++++++++++
->>   1 file changed, 71 insertions(+)
->>
->> diff --git a/tests/kms_plane_scaling.c b/tests/kms_plane_scaling.c
->> index 887a55e63..30a839f15 100644
->> --- a/tests/kms_plane_scaling.c
->> +++ b/tests/kms_plane_scaling.c
->> @@ -819,6 +819,75 @@ static void test_scaler_with_multi_pipe_plane(data_t *d)
->>   	igt_assert_eq(ret1 && ret2, 0);
->>   }
->>   
->> +static void invalid_parameter_tests(data_t *d) {
-> ------------------------------------------------- ^
-> This brace should be at new line.
-> 
->> +	enum pipe pipe = PIPE_A;
->> +	igt_output_t *output;
->> +	igt_fb_t fb;
->> +	igt_plane_t* plane;
-> ------------------ ^
-> This should be:
-> 	igt_plane_t *plane;
-> 
->> +	int rval;
->> +
->> +	const struct {
->> +		const char* testname;
-> ------------------------- ^
-> Same here.
-> 
->> +		uint32_t planesize[2];
->> +		struct {
->> +			enum igt_atomic_plane_properties prop;
->> +			uint32_t value;
->> +		} params[8];
->> +	} paramtests[] = {
->> +		{
->> +			.testname = "less-than-1-height-src",
->> +			.planesize = {256, 8},
->> +			.params = {{IGT_PLANE_SRC_H, IGT_FIXED(0, 30) }, {~0}}
->> +		},
->> +		{
->> +			.testname = "less-than-1-width-src",
->> +			.planesize = {8, 256},
->> +			.params = {{IGT_PLANE_SRC_W, IGT_FIXED(0, 30) }, {~0}}
->> +		},
->> +	};
->> +
->> +	igt_fixture {
->> +		output = igt_get_single_output_for_pipe(&d->display, pipe);
->> +		igt_require(output);
->> +
->> +		igt_output_set_pipe(output, pipe);
->> +		plane = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
->> +
->> +		igt_create_fb(d->drm_fd, 256, 256,
->> +			DRM_FORMAT_XRGB8888,
->> +			DRM_FORMAT_MOD_NONE,
->> +			&fb);
->> +	}
->> +
->> +	igt_describe("test parameters which should not be accepted");
->> +	igt_subtest_with_dynamic("invalid-parameters") {
->> +		for (uint32_t i = 0; i < ARRAY_SIZE(paramtests); i++) {
->> +			igt_dynamic(paramtests[i].testname) {
->> +				igt_plane_set_position(plane, 0, 0);
->> +				igt_plane_set_fb(plane, &fb);
->> +				igt_plane_set_size(plane,
-> -------------------------------------------------- ^
-> If you break line you should align it here.
-> 
->> +							paramtests[i].planesize[0],
-> -------------------------------------------------- ^
-> Align it.
-> 
->> +							paramtests[i].planesize[1]);
-> -------------------------------------------------- ^
-> This is correct align.
-> 
->> +
->> +
->> +				for (uint32_t j = 0; paramtests[i].params[j].prop != ~0; j++)
->> +					igt_plane_set_prop_value(plane,
-> ---------------------------------------------------------------- ^
-> 
->> +									paramtests[i].params[j].prop,
-> ---------------------------------------------------------------- ^
-> Align here.
-> 
->> +									paramtests[i].params[j].value);
-> ---------------------------------------------------------------- ^
-> Align here.
-> 
->> +
->> +				rval = 	igt_display_try_commit2(&d->display, COMMIT_ATOMIC);
-> -- ^
-> Use tabs, no spaces.
-> 
-> Please use checkpatch.pl from Linux kernel source to check
-> your patches before sending. It may change in future and
-> maybe we will have it in our GitLab CI and in patchwork but
-> for now please do it yourself.
+> Rest looks ok.
 > 
 > Regards,
 > Kamil
 > 
->> +
->> +				igt_assert(rval == -EINVAL || rval == -ERANGE);
->> +			}
->> +		}
->> +	}
->> +
->> +	igt_fixture {
->> +		igt_remove_fb(d->drm_fd, &fb);
->> +		igt_output_set_pipe(output, PIPE_NONE);
->> +	}
->> +}
->> +
->>   static int opt_handler(int opt, int opt_index, void *_data)
->>   {
->>   	data_t *data = _data;
->> @@ -982,6 +1051,8 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
->>   	igt_subtest_f("2x-scaler-multi-pipe")
->>   		test_scaler_with_multi_pipe_plane(&data);
->>   
->> +	invalid_parameter_tests(&data);
->> +
->>   	igt_fixture {
->>   		igt_display_fini(&data.display);
->>   		close(data.drm_fd);
->> -- 
->> 2.39.0
->>
+> >  		return true;
+> >  
+> >  	for (int i = 0; i < as_idx; ++i) {
+> > diff --git a/lib/igt_device_scan.c b/lib/igt_device_scan.c
+> > index 8b767eed20..ae69ed09f1 100644
+> > --- a/lib/igt_device_scan.c
+> > +++ b/lib/igt_device_scan.c
+> > @@ -1918,6 +1918,10 @@ static bool __igt_device_card_match(const char *filter,
+> >  		return false;
+> >  	memset(card, 0, sizeof(*card));
+> >  
+> > +	/*
+> > +	 * Scan devices in case the user hasn't yet,
+> > +	 * but leave a decision on forced rescan on the user side.
+> > +	 */
+> >  	igt_devices_scan(false);
+> >  
+> >  	if (igt_device_filter_apply(filter) == false)
+> > diff --git a/tests/i915/i915_suspend.c b/tests/i915/i915_suspend.c
+> > index 815f1c8a2c..c68110476e 100644
+> > --- a/tests/i915/i915_suspend.c
+> > +++ b/tests/i915/i915_suspend.c
+> > @@ -253,8 +253,16 @@ igt_main
+> >  	igt_subtest("basic-s3-without-i915")
+> >  		test_suspend_without_i915(SUSPEND_STATE_S3);
+> >  
+> > -	igt_fixture
+> > +	igt_fixture {
+> > +		/*
+> > +		 * Since above tests may fail leaving the i915 module unloaded,
+> > +		 * force refresh of device list before opening an i915 device
+> > +		 * by cleaning up the current device list, otherwise we can fail
+> > +		 * if we have been called with a device filter specified.
+> > +		 */
+> > +		igt_devices_free();
+> >  		fd = drm_open_driver(DRIVER_INTEL);
+> > +	}
+> >  
+> >  	igt_subtest("fence-restore-tiled2untiled") {
+> >  		gem_require_mappable_ggtt(fd);
+> 
+
+
+
