@@ -1,17 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Date: Fri, 10 Feb 2023 09:24:53 -0800
-From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
-To: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-Message-ID: <Y+Z95YFARrUijh1r@orsosgc001.jf.intel.com>
-References: <20230209115039.34441-1-janusz.krzysztofik@linux.intel.com>
- <20230209115039.34441-2-janusz.krzysztofik@linux.intel.com>
- <Y+Z82anLvt6+l/5Z@orsosgc001.jf.intel.com>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Disposition: inline
-In-Reply-To: <Y+Z82anLvt6+l/5Z@orsosgc001.jf.intel.com>
+Content-Type: multipart/alternative;
+ boundary="===============8137820557198082616=="
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t v2 1/1] tests/gem_ctx_exec: Exercise
- barrier race
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Gupta, Nidhi1" <nidhi1.gupta@intel.com>
+Date: Fri, 10 Feb 2023 17:38:16 -0000
+Message-ID: <167605069686.7874.896753048048013794@emeril.freedesktop.org>
+References: <20230209044219.4498-1-nidhi1.gupta@intel.com>
+In-Reply-To: <20230209044219.4498-1-nidhi1.gupta@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
+ =?utf-8?q?kms=5Fplane=5Falpha=5Fblend=3A_Limit_the_test_execution_=28rev6?=
+ =?utf-8?q?=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,134 +18,189 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org, intel-gfx@lists.freedesktop.org, Chris
- Wilson <chris.p.wilson@linux.intel.com>, Nirmoy Das <nirmoy.das@intel.com>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Fri, Feb 10, 2023 at 09:20:25AM -0800, Umesh Nerlige Ramappa wrote:
->On Thu, Feb 09, 2023 at 12:50:39PM +0100, Janusz Krzysztofik wrote:
->>Users reported oopses on list corruptions when using i915 perf with a
->>number of concurrently running graphics applications.  That indicates we
->>are currently missing some important tests for such scenarios.  Cover
->>that gap.
->>
->>Since root cause analysis pointed out to an issue in barrier processing
->>code, add a new subtest focused on exercising interaction between perf
->>open / close operations, which replace active barriers with perf requests
->>on kernel contexts, and concurrent barrier preallocate / acquire
->>operations performed during context first pin / last unpin.
->>
->>v2: convert to a separate subtest, not a variant of another one (that has
->>   been dropped from the series),
->> - move the subtest out of tests/i915/perf.c (Ashutosh), add it to
->>   tests/i915/gem_ctx_exec.c,
->> - don't touch lib/i915/perf.c (Umesh, Ashutosh), duplicate reused code
->>   from tests/i915/perf.c in tests/i915/gem_ctx_exec.c.
->>
->>References: https://gitlab.freedesktop.org/drm/intel/-/issues/6333
->>Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
->>---
->>tests/i915/gem_ctx_exec.c | 123 ++++++++++++++++++++++++++++++++++++++
->>tests/meson.build         |   9 ++-
->>2 files changed, 131 insertions(+), 1 deletion(-)
->>
->>diff --git a/tests/i915/gem_ctx_exec.c b/tests/i915/gem_ctx_exec.c
->>index 3d94f01db9..97fbc50e97 100644
->>--- a/tests/i915/gem_ctx_exec.c
->>+++ b/tests/i915/gem_ctx_exec.c
->>@@ -42,6 +42,7 @@
->>
->>#include "i915/gem.h"
->>#include "i915/gem_create.h"
->>+#include "i915/perf.h"
->>#include "igt.h"
->>#include "igt_dummyload.h"
->>#include "igt_rand.h"
->>@@ -448,6 +449,115 @@ static void close_race(int i915)
->>	munmap(ctx_id, 4096);
->>}
->>
->>+static uint64_t timebase_scale(struct intel_perf *intel_perf, uint32_t u32_delta)
->>+{
->>+	return ((uint64_t)u32_delta * NSEC_PER_SEC) / intel_perf->devinfo.timestamp_frequency;
->>+}
->>+
->>+/* Returns: the largest OA exponent that will still result in a sampling period
->>+ * less than or equal to the given @period.
->>+ */
->>+static int max_oa_exponent_for_period_lte(struct intel_perf *intel_perf, uint64_t period)
->>+{
->>+	/* NB: timebase_scale() takes a uint32_t and an exponent of 30
->>+	 * would already represent a period of ~3 minutes so there's
->>+	 * really no need to consider higher exponents.
->>+	 */
->>+	for (int i = 0; i < 30; i++) {
->>+		uint64_t oa_period = timebase_scale(intel_perf, 2 << i);
->>+
->>+		if (oa_period > period)
->>+			return max(0, i - 1);
->>+	}
->>+
->>+	igt_assert(!"reached");
->>+	return -1;
->>+}
->>+
->>+static void perf_open_close_loop(int fd, int *done)
->>+{
->>+	struct intel_perf_metric_set *metric_set = NULL, *metric_set_iter;
->>+	struct intel_perf *intel_perf = intel_perf_for_fd(fd);
->>+	uint64_t properties[] = {
->>+		DRM_I915_PERF_PROP_SAMPLE_OA, true,
->>+		DRM_I915_PERF_PROP_OA_METRICS_SET, 0,
->>+		DRM_I915_PERF_PROP_OA_FORMAT, 0,
->>+		DRM_I915_PERF_PROP_OA_EXPONENT, 0,
->>+	};
->>+	struct drm_i915_perf_open_param param = {
->>+		.flags = I915_PERF_FLAG_FD_CLOEXEC,
->
->nit: If you also add I915_PERF_FLAG_DISABLED here, then OA buffer 
->reports will be disabled. This will make sure that the perf API does 
->not enable the OA unit. It will still run the code that you are 
->targeting.
->
->>+		.num_properties = sizeof(properties) / 16,
->>+		.properties_ptr = to_user_pointer(properties),
->>+	};
->>+	uint32_t devid = intel_get_drm_devid(fd);
->>+
->>+	igt_require(intel_perf);
->>+	intel_perf_load_perf_configs(intel_perf, fd);
->>+
->>+	igt_require(devid);
->>+	igt_list_for_each_entry(metric_set_iter, &intel_perf->metric_sets, link) {
->>+		if (!strcmp(metric_set_iter->symbol_name,
->>+			    IS_HASWELL(devid) ? "RenderBasic" : "TestOa")) {
->>+			metric_set = metric_set_iter;
->>+			break;
->>+		}
->>+	}
->>+	igt_require(metric_set);
->>+	igt_require(metric_set->perf_oa_metrics_set);
->>+	properties[3] = metric_set->perf_oa_metrics_set;
->>+	properties[5] = metric_set->perf_oa_format;
->>+
->>+	igt_require(intel_perf->devinfo.timestamp_frequency);
->>+	properties[7] = max_oa_exponent_for_period_lte(intel_perf, 1000);
->
->nit: The result of max_oa_exponent_for_period_lte() can be hard coded 
->here (likely 1 << 5) and you could remove the additional code added 
->for max_oa_exponent_for_period_lte(). This parameter only controls the 
->frequency at which the OA reports are captured into the OA buffer and 
->it has no relation to the barrier related code in perf.
+--===============8137820557198082616==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-My bad. The value would likely be 5. Anyways, it's just a nit.
+== Series Details ==
 
->
->Thanks,
->Umesh
->
->>+
->>+	intel_perf_free(intel_perf);
->...
+Series: tests/kms_plane_alpha_blend: Limit the test execution (rev6)
+URL   : https://patchwork.freedesktop.org/series/113776/
+State : success
+
+== Summary ==
+
+CI Bug Log - changes from IGT_7157 -> IGTPW_8484
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8484/index.html
+
+Participating hosts (39 -> 38)
+------------------------------
+
+  Additional (1): bat-atsm-1 
+  Missing    (2): bat-kbl-2 fi-snb-2520m 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_8484 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions:
+    - fi-bsw-n3050:       [PASS][1] -> [FAIL][2] ([i915#6298])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7157/fi-bsw-n3050/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8484/fi-bsw-n3050/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_selftest@live@slpc:
+    - {bat-rpls-1}:       [DMESG-FAIL][3] ([i915#6367] / [i915#7996]) -> [PASS][4]
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7157/bat-rpls-1/igt@i915_selftest@live@slpc.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8484/bat-rpls-1/igt@i915_selftest@live@slpc.html
+
+  * igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions-varying-size:
+    - fi-bsw-n3050:       [FAIL][5] ([i915#6298]) -> [PASS][6]
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7157/fi-bsw-n3050/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions-varying-size.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8484/fi-bsw-n3050/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions-varying-size.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [fdo#109295]: https://bugs.freedesktop.org/show_bug.cgi?id=109295
+  [i915#1072]: https://gitlab.freedesktop.org/drm/intel/issues/1072
+  [i915#1836]: https://gitlab.freedesktop.org/drm/intel/issues/1836
+  [i915#2582]: https://gitlab.freedesktop.org/drm/intel/issues/2582
+  [i915#4077]: https://gitlab.freedesktop.org/drm/intel/issues/4077
+  [i915#4079]: https://gitlab.freedesktop.org/drm/intel/issues/4079
+  [i915#4083]: https://gitlab.freedesktop.org/drm/intel/issues/4083
+  [i915#4983]: https://gitlab.freedesktop.org/drm/intel/issues/4983
+  [i915#6077]: https://gitlab.freedesktop.org/drm/intel/issues/6077
+  [i915#6078]: https://gitlab.freedesktop.org/drm/intel/issues/6078
+  [i915#6093]: https://gitlab.freedesktop.org/drm/intel/issues/6093
+  [i915#6094]: https://gitlab.freedesktop.org/drm/intel/issues/6094
+  [i915#6166]: https://gitlab.freedesktop.org/drm/intel/issues/6166
+  [i915#6298]: https://gitlab.freedesktop.org/drm/intel/issues/6298
+  [i915#6311]: https://gitlab.freedesktop.org/drm/intel/issues/6311
+  [i915#6367]: https://gitlab.freedesktop.org/drm/intel/issues/6367
+  [i915#6621]: https://gitlab.freedesktop.org/drm/intel/issues/6621
+  [i915#6645]: https://gitlab.freedesktop.org/drm/intel/issues/6645
+  [i915#7357]: https://gitlab.freedesktop.org/drm/intel/issues/7357
+  [i915#7913]: https://gitlab.freedesktop.org/drm/intel/issues/7913
+  [i915#7977]: https://gitlab.freedesktop.org/drm/intel/issues/7977
+  [i915#7981]: https://gitlab.freedesktop.org/drm/intel/issues/7981
+  [i915#7996]: https://gitlab.freedesktop.org/drm/intel/issues/7996
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_7157 -> IGTPW_8484
+
+  CI-20190529: 20190529
+  CI_DRM_12727: 571111c8567d76c5a5ec4641ba771bb1bdd278fc @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_8484: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8484/index.html
+  IGT_7157: 96d12fdc942cee9526a951b377b195ca9c8276b1 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8484/index.html
+
+--===============8137820557198082616==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/kms_plane_alpha_blend: Limit the test execution (rev6)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/113776/">https://patchwork.freedesktop.org/series/113776/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8484/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8484/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_7157 -&gt; IGTPW_8484</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8484/index.html</p>
+<h2>Participating hosts (39 -&gt; 38)</h2>
+<p>Additional (1): bat-atsm-1 <br />
+  Missing    (2): bat-kbl-2 fi-snb-2520m </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_8484 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions:<ul>
+<li>fi-bsw-n3050:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7157/fi-bsw-n3050/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8484/fi-bsw-n3050/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6298">i915#6298</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live@slpc:</p>
+<ul>
+<li>{bat-rpls-1}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7157/bat-rpls-1/igt@i915_selftest@live@slpc.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6367">i915#6367</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7996">i915#7996</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8484/bat-rpls-1/igt@i915_selftest@live@slpc.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions-varying-size:</p>
+<ul>
+<li>fi-bsw-n3050:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7157/fi-bsw-n3050/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions-varying-size.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6298">i915#6298</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8484/fi-bsw-n3050/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions-varying-size.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_7157 -&gt; IGTPW_8484</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_12727: 571111c8567d76c5a5ec4641ba771bb1bdd278fc @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_8484: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8484/index.html<br />
+  IGT_7157: 96d12fdc942cee9526a951b377b195ca9c8276b1 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============8137820557198082616==--
