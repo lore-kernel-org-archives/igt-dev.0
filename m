@@ -1,20 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C3BC710E04A
- for <igt-dev@lists.freedesktop.org>; Fri, 10 Feb 2023 09:16:30 +0000 (UTC)
-Date: Fri, 10 Feb 2023 10:16:26 +0100
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: Karolina Stolarek <karolina.stolarek@intel.com>
-Message-ID: <20230210091405.ufrdgb3gxs5u4g7z@zkempczy-mobl2>
-References: <cover.1675950055.git.karolina.stolarek@intel.com>
- <3a035fa5d3af0cceeca5dad5c7499f1d7f4219d5.1675950055.git.karolina.stolarek@intel.com>
+Date: Fri, 10 Feb 2023 17:18:50 +0100
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: intel-gfx@lists.freedesktop.org, igt-dev@lists.freedesktop.org
+Message-ID: <20230210161850.yowh6au7f4dye3vu@kamilkon-desk1>
+References: <20230210152207.585007-1-tvrtko.ursulin@linux.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <3a035fa5d3af0cceeca5dad5c7499f1d7f4219d5.1675950055.git.karolina.stolarek@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t v3 1/9] lib/intel_tiling_info: Rename
- blt_cmd_info to intel_cmds_info
+In-Reply-To: <20230210152207.585007-1-tvrtko.ursulin@linux.intel.com>
+Subject: Re: [igt-dev] [Intel-gfx] [PATCH i-g-t] intel_gpu_top: Add compute
+ class names
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,550 +17,64 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org
+Cc: Christopher Snowhill <kode54@gmail.com>,
+ Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Thu, Feb 09, 2023 at 03:12:04PM +0100, Karolina Stolarek wrote:
-> The struct stores information on more than just one blitter cmd,
-> so the current name is slightly confusing. Also, we might want
-> to store information on other copy commands, like the one provided
-> by render. Change it to intel_cmds_info to emphasize that it
-> describes available commands on the platform. Change the field
-> name in intel_device_info, as it won't just describe tiling
-> information.
+Hi Tvrtko,
+
+On 2023-02-10 at 15:22:07 +0000, Tvrtko Ursulin wrote:
+> From: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 > 
-> Signed-off-by: Karolina Stolarek <karolina.stolarek@intel.com>
+> No one remembered to add names for the new compute engines.
+
+Actually there was patch:
+https://patchwork.freedesktop.org/series/112674/
+intel_gpu_top: Add display name for compute engine class
+Submitted by Christopher Snowhill on Jan. 11, 2023, 1:22 p.m. 
+
+What prevented me from merge was From: != s-o-b
+
+Christopher Snowhill <kode54@gmail.com> != Christopher Snowhill <chris@kode54.net>
+
+warning from checkpatch.pl but if you think it is minor warn
+you are free to give r-b and to merge that.
+
++cc Christopher
+
+Regards,
+Kamil
+
+> 
+> Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 > ---
->  lib/i915/i915_blt.c          | 36 ++++++++++----------
->  lib/i915/i915_blt.h          |  4 +--
->  lib/i915/intel_tiling_info.c | 12 +++----
->  lib/i915/intel_tiling_info.h | 14 ++++----
->  lib/intel_chipset.h          |  4 +--
->  lib/intel_device_info.c      | 66 ++++++++++++++++++------------------
->  6 files changed, 68 insertions(+), 68 deletions(-)
+>  tools/intel_gpu_top.c | 4 ++++
+>  1 file changed, 4 insertions(+)
 > 
-> diff --git a/lib/i915/i915_blt.c b/lib/i915/i915_blt.c
-> index bbfb6ffc..92860e8d 100644
-> --- a/lib/i915/i915_blt.c
-> +++ b/lib/i915/i915_blt.c
-> @@ -210,42 +210,42 @@ bool blt_supports_compression(int i915)
->  
->  /**
->   * blt_supports_command:
-> - * @info: Blitter command info struct
-> + * @cmds_info: Copy commands description struct
->   * @cmd: Blitter command enum
->   *
-> - * Checks if @info has an entry of supported tiling formats for @cmd command.
-> + * Checks if @cmds_info has an entry of supported tiling formats for @cmd command.
->   *
->   * Returns: true if it does, false otherwise
->   */
-> -bool blt_supports_command(const struct blt_cmd_info *info,
-> +bool blt_supports_command(const struct intel_cmds_info *cmds_info,
->  			  enum blt_cmd_type cmd)
->  {
-> -	igt_require_f(info, "No config found for the platform\n");
-> +	igt_require_f(cmds_info, "No config found for the platform\n");
->  
-> -	return info->supported_cmds[cmd];
-> +	return cmds_info->supported_cmds[cmd];
->  }
->  
->  /**
->   * blt_cmd_supports_tiling:
-> - * @info: Blitter command info struct
-> + * @cmds_info: Copy commands description struct
->   * @cmd: Blitter command enum
->   * @tiling: tiling format enum
->   *
-> - * Checks if a @cmd entry of @info lists @tiling. It also returns false if
-> + * Checks if a @cmd entry of @cmds_info lists @tiling. It also returns false if
->   * no information about the command is stored.
->   *
->   * Returns: true if it does, false otherwise
->   */
-> -bool blt_cmd_supports_tiling(const struct blt_cmd_info *info,
-> +bool blt_cmd_supports_tiling(const struct intel_cmds_info *cmds_info,
->  			     enum blt_cmd_type cmd,
->  			     enum blt_tiling_type tiling)
->  {
->  	struct blt_tiling_info const *tile_config;
->  
-> -	if (!info)
-> +	if (!cmds_info)
->  		return false;
->  
-> -	tile_config = info->supported_cmds[cmd];
-> +	tile_config = cmds_info->supported_cmds[cmd];
->  
->  	/* no config means no support for that tiling */
->  	if (!tile_config)
-> @@ -265,9 +265,9 @@ bool blt_cmd_supports_tiling(const struct blt_cmd_info *info,
->   */
->  bool blt_has_block_copy(int i915)
->  {
-> -	const struct blt_cmd_info *blt_info = GET_BLT_INFO(i915);
-> +	const struct intel_cmds_info *cmds_info = GET_BLT_INFO(i915);
->  
-> -	return blt_supports_command(blt_info, XY_BLOCK_COPY);
-> +	return blt_supports_command(cmds_info, XY_BLOCK_COPY);
->  }
->  
->  /**
-> @@ -281,9 +281,9 @@ bool blt_has_block_copy(int i915)
->   */
->  bool blt_has_fast_copy(int i915)
->  {
-> -	const struct blt_cmd_info *blt_info = GET_BLT_INFO(i915);
-> +	const struct intel_cmds_info *cmds_info = GET_BLT_INFO(i915);
->  
-> -	return blt_supports_command(blt_info, XY_FAST_COPY);
-> +	return blt_supports_command(cmds_info, XY_FAST_COPY);
->  }
->  
->  /**
-> @@ -298,9 +298,9 @@ bool blt_has_fast_copy(int i915)
->   */
->  bool blt_fast_copy_supports_tiling(int i915, enum blt_tiling_type tiling)
->  {
-> -	const struct blt_cmd_info *blt_info = GET_BLT_INFO(i915);
-> +	const struct intel_cmds_info *cmds_info = GET_BLT_INFO(i915);
->  
-> -	return blt_cmd_supports_tiling(blt_info, XY_FAST_COPY, tiling);
-> +	return blt_cmd_supports_tiling(cmds_info, XY_FAST_COPY, tiling);
->  }
->  
->  /**
-> @@ -315,9 +315,9 @@ bool blt_fast_copy_supports_tiling(int i915, enum blt_tiling_type tiling)
->   */
->  bool blt_block_copy_supports_tiling(int i915, enum blt_tiling_type tiling)
->  {
-> -	const struct blt_cmd_info *blt_info = GET_BLT_INFO(i915);
-> +	const struct intel_cmds_info *cmds_info = GET_BLT_INFO(i915);
->  
-> -	return blt_cmd_supports_tiling(blt_info, XY_BLOCK_COPY, tiling);
-> +	return blt_cmd_supports_tiling(cmds_info, XY_BLOCK_COPY, tiling);
->  }
->  
->  /**
-> diff --git a/lib/i915/i915_blt.h b/lib/i915/i915_blt.h
-> index 299dff8e..ceafc529 100644
-> --- a/lib/i915/i915_blt.h
-> +++ b/lib/i915/i915_blt.h
-> @@ -158,9 +158,9 @@ struct blt_ctrl_surf_copy_data {
->  };
->  
->  bool blt_supports_compression(int i915);
-> -bool blt_supports_command(const struct blt_cmd_info *info,
-> +bool blt_supports_command(const struct intel_cmds_info *cmds_info,
->  			  enum blt_cmd_type cmd);
-> -bool blt_cmd_supports_tiling(const struct blt_cmd_info *info,
-> +bool blt_cmd_supports_tiling(const struct intel_cmds_info *cmds_info,
->  			     enum blt_cmd_type cmd,
->  			     enum blt_tiling_type tiling);
->  bool blt_has_block_copy(int i915);
-> diff --git a/lib/i915/intel_tiling_info.c b/lib/i915/intel_tiling_info.c
-> index fc388919..467e4b45 100644
-> --- a/lib/i915/intel_tiling_info.c
-> +++ b/lib/i915/intel_tiling_info.c
-> @@ -51,27 +51,27 @@ static const struct blt_tiling_info
->  					     BIT(T_TILE4)  |
->  					     BIT(T_TILE64));
->  
-> -const struct blt_cmd_info pre_gen8_blt_info = {
-> +const struct intel_cmds_info pre_gen8_blt_info = {
->  	.supported_cmds = {
->  		[SRC_COPY] = &src_copy,
->  		[XY_SRC_COPY] = &pre_gen8_xy_src_copy
+> diff --git a/tools/intel_gpu_top.c b/tools/intel_gpu_top.c
+> index c043c8960dd0..e13e35b71f4b 100644
+> --- a/tools/intel_gpu_top.c
+> +++ b/tools/intel_gpu_top.c
+> @@ -281,6 +281,8 @@ static const char *class_display_name(unsigned int class)
+>  		return "Video";
+>  	case I915_ENGINE_CLASS_VIDEO_ENHANCE:
+>  		return "VideoEnhance";
+> +	case I915_ENGINE_CLASS_COMPUTE:
+> +		return "Compute";
+>  	default:
+>  		return "[unknown]";
 >  	}
->  };
->  
-> -const struct blt_cmd_info gen8_blt_info = {
-> +const struct intel_cmds_info gen8_blt_info = {
->  	.supported_cmds = {
->  		[XY_SRC_COPY] = &gen8_xy_src_copy,
+> @@ -297,6 +299,8 @@ static const char *class_short_name(unsigned int class)
+>  		return "VCS";
+>  	case I915_ENGINE_CLASS_VIDEO_ENHANCE:
+>  		return "VECS";
+> +	case I915_ENGINE_CLASS_COMPUTE:
+> +		return "CCS";
+>  	default:
+>  		return "UNKN";
 >  	}
->  };
->  
-> -const struct blt_cmd_info gen11_blt_info = {
-> +const struct intel_cmds_info gen11_blt_info = {
->  	.supported_cmds = {
->  		[XY_SRC_COPY] = &gen8_xy_src_copy,
->  		[XY_FAST_COPY] = &gen11_xy_fast_copy,
->  	}
->  };
->  
-> -const struct blt_cmd_info gen12_blt_info = {
-> +const struct intel_cmds_info gen12_blt_info = {
->  	.supported_cmds = {
->  		[XY_SRC_COPY] = &gen8_xy_src_copy,
->  		[XY_FAST_COPY] = &gen12_xy_fast_copy,
-> @@ -79,7 +79,7 @@ const struct blt_cmd_info gen12_blt_info = {
->  	}
->  };
->  
-> -const struct blt_cmd_info gen12_dg2_blt_info = {
-> +const struct intel_cmds_info gen12_dg2_blt_info = {
->  	.supported_cmds = {
->  		[XY_SRC_COPY] = &gen8_xy_src_copy,
->  		[XY_FAST_COPY] = &dg2_xy_fast_copy,
-> @@ -87,7 +87,7 @@ const struct blt_cmd_info gen12_dg2_blt_info = {
->  	}
->  };
->  
-> -const struct blt_cmd_info gen12_mtl_blt_info = {
-> +const struct intel_cmds_info gen12_mtl_blt_info = {
->  	.supported_cmds = {
->  		[XY_FAST_COPY] = &dg2_xy_fast_copy,
->  		[XY_BLOCK_COPY] = &dg2_xy_block_copy
-> diff --git a/lib/i915/intel_tiling_info.h b/lib/i915/intel_tiling_info.h
-> index bb655103..2b310f0c 100644
-> --- a/lib/i915/intel_tiling_info.h
-> +++ b/lib/i915/intel_tiling_info.h
-> @@ -31,16 +31,16 @@ struct blt_tiling_info {
->  	uint32_t supported_tiling;
->  };
->  
-> -struct blt_cmd_info {
-> +struct intel_cmds_info {
->  	struct blt_tiling_info const *supported_cmds[__BLT_MAX_CMD];
->  };
->  
-> -extern const struct blt_cmd_info pre_gen8_blt_info;
-> -extern const struct blt_cmd_info gen8_blt_info;
-> -extern const struct blt_cmd_info gen11_blt_info;
-> -extern const struct blt_cmd_info gen12_blt_info;
-> -extern const struct blt_cmd_info gen12_dg2_blt_info;
-> -extern const struct blt_cmd_info gen12_mtl_blt_info;
-> +extern const struct intel_cmds_info pre_gen8_blt_info;
-> +extern const struct intel_cmds_info gen8_blt_info;
-> +extern const struct intel_cmds_info gen11_blt_info;
-> +extern const struct intel_cmds_info gen12_blt_info;
-> +extern const struct intel_cmds_info gen12_dg2_blt_info;
-> +extern const struct intel_cmds_info gen12_mtl_blt_info;
->  
->  #define for_each_tiling(__tiling) \
->  	for (__tiling = T_LINEAR; __tiling < __BLT_MAX_TILING; __tiling++)
-> diff --git a/lib/intel_chipset.h b/lib/intel_chipset.h
-> index cceca929..0ae59adc 100644
-> --- a/lib/intel_chipset.h
-> +++ b/lib/intel_chipset.h
-> @@ -88,13 +88,13 @@ struct intel_device_info {
->  	bool is_alderlake_p : 1;
->  	bool is_alderlake_n : 1;
->  	bool is_meteorlake : 1;
-> -	const struct blt_cmd_info *blt_tiling;
-> +	const struct intel_cmds_info *cmds_info;
->  	const char *codename;
->  };
->  
->  const struct intel_device_info *intel_get_device_info(uint16_t devid) __attribute__((pure));
->  
-> -const struct blt_cmd_info *intel_get_blt_info(uint16_t devid) __attribute__((pure));
-> +const struct intel_cmds_info *intel_get_blt_info(uint16_t devid) __attribute__((pure));
->  unsigned intel_gen(uint16_t devid) __attribute__((pure));
->  unsigned intel_graphics_ver(uint16_t devid) __attribute__((pure));
->  unsigned intel_display_ver(uint16_t devid) __attribute__((pure));
-> diff --git a/lib/intel_device_info.c b/lib/intel_device_info.c
-> index 49e95ac8..a4cfca6a 100644
-> --- a/lib/intel_device_info.c
-> +++ b/lib/intel_device_info.c
-> @@ -145,7 +145,7 @@ static const struct intel_device_info intel_sandybridge_info = {
->  	.graphics_ver = 6,
->  	.display_ver = 6,
->  	.is_sandybridge = true,
-> -	.blt_tiling = &pre_gen8_blt_info,
-> +	.cmds_info = &pre_gen8_blt_info,
->  	.codename = "sandybridge"
->  };
->  static const struct intel_device_info intel_sandybridge_m_info = {
-> @@ -153,7 +153,7 @@ static const struct intel_device_info intel_sandybridge_m_info = {
->  	.display_ver = 6,
->  	.is_mobile = true,
->  	.is_sandybridge = true,
-> -	.blt_tiling = &pre_gen8_blt_info,
-> +	.cmds_info = &pre_gen8_blt_info,
->  	.codename = "sandybridge"
->  };
->  
-> @@ -161,7 +161,7 @@ static const struct intel_device_info intel_ivybridge_info = {
->  	.graphics_ver = 7,
->  	.display_ver = 7,
->  	.is_ivybridge = true,
-> -	.blt_tiling = &pre_gen8_blt_info,
-> +	.cmds_info = &pre_gen8_blt_info,
->  	.codename = "ivybridge"
->  };
->  static const struct intel_device_info intel_ivybridge_m_info = {
-> @@ -169,7 +169,7 @@ static const struct intel_device_info intel_ivybridge_m_info = {
->  	.display_ver = 7,
->  	.is_mobile = true,
->  	.is_ivybridge = true,
-> -	.blt_tiling = &pre_gen8_blt_info,
-> +	.cmds_info = &pre_gen8_blt_info,
->  	.codename = "ivybridge"
->  };
->  
-> @@ -177,7 +177,7 @@ static const struct intel_device_info intel_valleyview_info = {
->  	.graphics_ver = 7,
->  	.display_ver = 7,
->  	.is_valleyview = true,
-> -	.blt_tiling = &pre_gen8_blt_info,
-> +	.cmds_info = &pre_gen8_blt_info,
->  	.codename = "valleyview"
->  };
->  
-> @@ -185,7 +185,7 @@ static const struct intel_device_info intel_valleyview_info = {
->  	.graphics_ver = 7, \
->  	.display_ver = 7, \
->  	.is_haswell = true, \
-> -	.blt_tiling = &pre_gen8_blt_info, \
-> +	.cmds_info = &pre_gen8_blt_info, \
->  	.codename = "haswell"
->  
->  static const struct intel_device_info intel_haswell_gt1_info = {
-> @@ -207,7 +207,7 @@ static const struct intel_device_info intel_haswell_gt3_info = {
->  	.graphics_ver = 8, \
->  	.display_ver = 8, \
->  	.is_broadwell = true, \
-> -	.blt_tiling = &gen8_blt_info, \
-> +	.cmds_info = &gen8_blt_info, \
->  	.codename = "broadwell"
->  
->  static const struct intel_device_info intel_broadwell_gt1_info = {
-> @@ -233,14 +233,14 @@ static const struct intel_device_info intel_cherryview_info = {
->  	.graphics_ver = 8,
->  	.display_ver = 8,
->  	.is_cherryview = true,
-> -	.blt_tiling = &gen8_blt_info,
-> +	.cmds_info = &gen8_blt_info,
->  	.codename = "cherryview"
->  };
->  
->  #define SKYLAKE_FIELDS \
->  	.graphics_ver = 9, \
->  	.display_ver = 9, \
-> -	.blt_tiling = &gen11_blt_info, \
-> +	.cmds_info = &gen11_blt_info, \
->  	.codename = "skylake", \
->  	.is_skylake = true
->  
-> @@ -268,7 +268,7 @@ static const struct intel_device_info intel_broxton_info = {
->  	.graphics_ver = 9,
->  	.display_ver = 9,
->  	.is_broxton = true,
-> -	.blt_tiling = &gen11_blt_info,
-> +	.cmds_info = &gen11_blt_info,
->  	.codename = "broxton"
->  };
->  
-> @@ -276,7 +276,7 @@ static const struct intel_device_info intel_broxton_info = {
->  	.graphics_ver = 9, \
->  	.display_ver = 9, \
->  	.is_kabylake = true, \
-> -	.blt_tiling = &gen11_blt_info, \
-> +	.cmds_info = &gen11_blt_info, \
->  	.codename = "kabylake"
->  
->  static const struct intel_device_info intel_kabylake_gt1_info = {
-> @@ -303,7 +303,7 @@ static const struct intel_device_info intel_geminilake_info = {
->  	.graphics_ver = 9,
->  	.display_ver = 9,
->  	.is_geminilake = true,
-> -	.blt_tiling = &gen11_blt_info,
-> +	.cmds_info = &gen11_blt_info,
->  	.codename = "geminilake"
->  };
->  
-> @@ -311,7 +311,7 @@ static const struct intel_device_info intel_geminilake_info = {
->  	.graphics_ver = 9, \
->  	.display_ver = 9, \
->  	.is_coffeelake = true, \
-> -	.blt_tiling = &gen11_blt_info, \
-> +	.cmds_info = &gen11_blt_info, \
->  	.codename = "coffeelake"
->  
->  static const struct intel_device_info intel_coffeelake_gt1_info = {
-> @@ -333,7 +333,7 @@ static const struct intel_device_info intel_coffeelake_gt3_info = {
->  	.graphics_ver = 9, \
->  	.display_ver = 9, \
->  	.is_cometlake = true, \
-> -	.blt_tiling = &gen11_blt_info, \
-> +	.cmds_info = &gen11_blt_info, \
->  	.codename = "cometlake"
->  
->  static const struct intel_device_info intel_cometlake_gt1_info = {
-> @@ -350,7 +350,7 @@ static const struct intel_device_info intel_cannonlake_info = {
->  	.graphics_ver = 10,
->  	.display_ver = 10,
->  	.is_cannonlake = true,
-> -	.blt_tiling = &gen11_blt_info,
-> +	.cmds_info = &gen11_blt_info,
->  	.codename = "cannonlake"
->  };
->  
-> @@ -358,7 +358,7 @@ static const struct intel_device_info intel_icelake_info = {
->  	.graphics_ver = 11,
->  	.display_ver = 11,
->  	.is_icelake = true,
-> -	.blt_tiling = &gen11_blt_info,
-> +	.cmds_info = &gen11_blt_info,
->  	.codename = "icelake"
->  };
->  
-> @@ -366,7 +366,7 @@ static const struct intel_device_info intel_elkhartlake_info = {
->  	.graphics_ver = 11,
->  	.display_ver = 11,
->  	.is_elkhartlake = true,
-> -	.blt_tiling = &gen11_blt_info,
-> +	.cmds_info = &gen11_blt_info,
->  	.codename = "elkhartlake"
->  };
->  
-> @@ -374,7 +374,7 @@ static const struct intel_device_info intel_jasperlake_info = {
->  	.graphics_ver = 11,
->  	.display_ver = 11,
->  	.is_jasperlake = true,
-> -	.blt_tiling = &gen11_blt_info,
-> +	.cmds_info = &gen11_blt_info,
->  	.codename = "jasperlake"
->  };
->  
-> @@ -382,7 +382,7 @@ static const struct intel_device_info intel_tigerlake_gt1_info = {
->  	.graphics_ver = 12,
->  	.display_ver = 12,
->  	.is_tigerlake = true,
-> -	.blt_tiling = &gen12_blt_info,
-> +	.cmds_info = &gen12_blt_info,
->  	.codename = "tigerlake",
->  	.gt = 1,
->  };
-> @@ -391,7 +391,7 @@ static const struct intel_device_info intel_tigerlake_gt2_info = {
->  	.graphics_ver = 12,
->  	.display_ver = 12,
->  	.is_tigerlake = true,
-> -	.blt_tiling = &gen12_blt_info,
-> +	.cmds_info = &gen12_blt_info,
->  	.codename = "tigerlake",
->  	.gt = 2,
->  };
-> @@ -400,7 +400,7 @@ static const struct intel_device_info intel_rocketlake_info = {
->  	.graphics_ver = 12,
->  	.display_ver = 12,
->  	.is_rocketlake = true,
-> -	.blt_tiling = &gen12_blt_info,
-> +	.cmds_info = &gen12_blt_info,
->  	.codename = "rocketlake"
->  };
->  
-> @@ -409,7 +409,7 @@ static const struct intel_device_info intel_dg1_info = {
->  	.graphics_rel = 10,
->  	.display_ver = 12,
->  	.is_dg1 = true,
-> -	.blt_tiling = &gen12_blt_info,
-> +	.cmds_info = &gen12_blt_info,
->  	.codename = "dg1"
->  };
->  
-> @@ -420,7 +420,7 @@ static const struct intel_device_info intel_dg2_info = {
->  	.has_4tile = true,
->  	.is_dg2 = true,
->  	.codename = "dg2",
-> -	.blt_tiling = &gen12_dg2_blt_info,
-> +	.cmds_info = &gen12_dg2_blt_info,
->  	.has_flatccs = true,
->  };
->  
-> @@ -428,7 +428,7 @@ static const struct intel_device_info intel_alderlake_s_info = {
->  	.graphics_ver = 12,
->  	.display_ver = 12,
->  	.is_alderlake_s = true,
-> -	.blt_tiling = &gen12_blt_info,
-> +	.cmds_info = &gen12_blt_info,
->  	.codename = "alderlake_s"
->  };
->  
-> @@ -436,7 +436,7 @@ static const struct intel_device_info intel_raptorlake_s_info = {
->  	.graphics_ver = 12,
->  	.display_ver = 12,
->  	.is_raptorlake_s = true,
-> -	.blt_tiling = &gen12_blt_info,
-> +	.cmds_info = &gen12_blt_info,
->  	.codename = "raptorlake_s"
->  };
->  
-> @@ -444,7 +444,7 @@ static const struct intel_device_info intel_alderlake_p_info = {
->  	.graphics_ver = 12,
->  	.display_ver = 13,
->  	.is_alderlake_p = true,
-> -	.blt_tiling = &gen12_blt_info,
-> +	.cmds_info = &gen12_blt_info,
->  	.codename = "alderlake_p"
->  };
->  
-> @@ -452,7 +452,7 @@ static const struct intel_device_info intel_alderlake_n_info = {
->  	.graphics_ver = 12,
->  	.display_ver = 13,
->  	.is_alderlake_n = true,
-> -	.blt_tiling = &gen12_blt_info,
-> +	.cmds_info = &gen12_blt_info,
->  	.codename = "alderlake_n"
->  };
->  
-> @@ -463,7 +463,7 @@ static const struct intel_device_info intel_ats_m_info = {
->  	.is_dg2 = true,
->  	.has_4tile = true,
->  	.codename = "ats_m",
-> -	.blt_tiling = &gen12_dg2_blt_info,
-> +	.cmds_info = &gen12_dg2_blt_info,
->  	.has_flatccs = true,
->  };
->  
-> @@ -474,7 +474,7 @@ static const struct intel_device_info intel_meteorlake_info = {
->  	.has_4tile = true,
->  	.is_meteorlake = true,
->  	.codename = "meteorlake",
-> -	.blt_tiling = &gen12_mtl_blt_info
-> +	.cmds_info = &gen12_mtl_blt_info
-
-As you're touching this line add , at the end for the future changes.
-
-With minor nit altered:
-
-Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-
---
-Zbigniew
->  };
->  
->  static const struct pci_id_match intel_device_match[] = {
-> @@ -616,19 +616,19 @@ out:
->   * intel_get_blt_info:
->   * @devid: pci device id
->   *
-> - * Looks up information on blitter commands and tiling formats supported
-> + * Looks up information on copy commands and tiling formats supported
->   * by the device.
->   *
->   * Returns:
-> - * The associated blt_cmd_info, NULL if no such information is found
-> + * The associated intel_cmds_info, NULL if no such information is found
->   */
-> -const struct blt_cmd_info *intel_get_blt_info(uint16_t devid)
-> +const struct intel_cmds_info *intel_get_blt_info(uint16_t devid)
->  {
->  	const struct intel_device_info *dev_info;
->  
->  	dev_info = intel_get_device_info(devid);
->  
-> -	return dev_info->blt_tiling;
-> +	return dev_info->cmds_info;
->  }
->  
->  /**
 > -- 
-> 2.25.1
+> 2.34.1
 > 
