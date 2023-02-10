@@ -1,19 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DB18510E13C
- for <igt-dev@lists.freedesktop.org>; Fri, 10 Feb 2023 09:19:14 +0000 (UTC)
-Date: Fri, 10 Feb 2023 10:19:04 +0100
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 57D1B10E10A
+ for <igt-dev@lists.freedesktop.org>; Fri, 10 Feb 2023 09:20:57 +0000 (UTC)
+Date: Fri, 10 Feb 2023 10:20:53 +0100
 From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 To: Karolina Stolarek <karolina.stolarek@intel.com>
-Message-ID: <20230210091904.w4fcpcv5kjaloc4b@zkempczy-mobl2>
+Message-ID: <20230210092053.vasgvkfcz5ewggyy@zkempczy-mobl2>
 References: <cover.1675950055.git.karolina.stolarek@intel.com>
- <cdb3b7ef5c27efbf753a357ad934c4d69ad947a4.1675950055.git.karolina.stolarek@intel.com>
+ <23aedeff0bff9621829448b7fcc534a07f56646a.1675950055.git.karolina.stolarek@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <cdb3b7ef5c27efbf753a357ad934c4d69ad947a4.1675950055.git.karolina.stolarek@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t v3 3/9] lib/intel_tiling_info: Update
- intel_cmds_info field name
+In-Reply-To: <23aedeff0bff9621829448b7fcc534a07f56646a.1675950055.git.karolina.stolarek@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t v3 4/9] lib/intel_device_info: Update
+ name for cmds_info getter
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,112 +26,110 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Thu, Feb 09, 2023 at 03:12:06PM +0100, Karolina Stolarek wrote:
-> Change supported_cmds field to blt_cmds to show it only describes
-> blitter-specific copy commands.
+On Thu, Feb 09, 2023 at 03:12:07PM +0100, Karolina Stolarek wrote:
+> cmds_info, previously referred as blt_tiling, is not just limited
+> to blitter commands. Keeping such reference in intel_get_blt_info()
+> is misleading and confusing. Update the name of the function,
+> together with the macro that uses it, to make their purpose clear.
 > 
 > Signed-off-by: Karolina Stolarek <karolina.stolarek@intel.com>
 > ---
->  lib/i915/i915_blt.c          |  4 ++--
->  lib/i915/intel_tiling_info.c | 12 ++++++------
->  lib/i915/intel_tiling_info.h |  2 +-
->  3 files changed, 9 insertions(+), 9 deletions(-)
+>  lib/i915/i915_blt.c     | 10 +++++-----
+>  lib/intel_chipset.h     |  2 +-
+>  lib/intel_device_info.c |  4 ++--
+>  3 files changed, 8 insertions(+), 8 deletions(-)
 > 
 > diff --git a/lib/i915/i915_blt.c b/lib/i915/i915_blt.c
-> index 92860e8d..dace57b3 100644
+> index dace57b3..efc280f9 100644
 > --- a/lib/i915/i915_blt.c
 > +++ b/lib/i915/i915_blt.c
-> @@ -222,7 +222,7 @@ bool blt_supports_command(const struct intel_cmds_info *cmds_info,
->  {
->  	igt_require_f(cmds_info, "No config found for the platform\n");
+> @@ -14,7 +14,7 @@
+>  #include "i915_blt.h"
 >  
-> -	return cmds_info->supported_cmds[cmd];
-> +	return cmds_info->blt_cmds[cmd];
+>  #define BITRANGE(start, end) (end - start + 1)
+> -#define GET_BLT_INFO(__fd) intel_get_blt_info(intel_get_drm_devid(__fd))
+> +#define GET_CMDS_INFO(__fd) intel_get_cmds_info(intel_get_drm_devid(__fd))
 
-Squash with 1/9 and 2/9. Keep rb.
+Squash with 1/9, 2/9 and 3/9. Those changes are subject of blt->cmds rename
+and may be introduced in single patch.
 
 --
 Zbigniew
 
+>  
+>  enum blt_special_mode {
+>  	SM_NONE,
+> @@ -265,7 +265,7 @@ bool blt_cmd_supports_tiling(const struct intel_cmds_info *cmds_info,
+>   */
+>  bool blt_has_block_copy(int i915)
+>  {
+> -	const struct intel_cmds_info *cmds_info = GET_BLT_INFO(i915);
+> +	const struct intel_cmds_info *cmds_info = GET_CMDS_INFO(i915);
+>  
+>  	return blt_supports_command(cmds_info, XY_BLOCK_COPY);
+>  }
+> @@ -281,7 +281,7 @@ bool blt_has_block_copy(int i915)
+>   */
+>  bool blt_has_fast_copy(int i915)
+>  {
+> -	const struct intel_cmds_info *cmds_info = GET_BLT_INFO(i915);
+> +	const struct intel_cmds_info *cmds_info = GET_CMDS_INFO(i915);
+>  
+>  	return blt_supports_command(cmds_info, XY_FAST_COPY);
+>  }
+> @@ -298,7 +298,7 @@ bool blt_has_fast_copy(int i915)
+>   */
+>  bool blt_fast_copy_supports_tiling(int i915, enum blt_tiling_type tiling)
+>  {
+> -	const struct intel_cmds_info *cmds_info = GET_BLT_INFO(i915);
+> +	const struct intel_cmds_info *cmds_info = GET_CMDS_INFO(i915);
+>  
+>  	return blt_cmd_supports_tiling(cmds_info, XY_FAST_COPY, tiling);
+>  }
+> @@ -315,7 +315,7 @@ bool blt_fast_copy_supports_tiling(int i915, enum blt_tiling_type tiling)
+>   */
+>  bool blt_block_copy_supports_tiling(int i915, enum blt_tiling_type tiling)
+>  {
+> -	const struct intel_cmds_info *cmds_info = GET_BLT_INFO(i915);
+> +	const struct intel_cmds_info *cmds_info = GET_CMDS_INFO(i915);
+>  
+>  	return blt_cmd_supports_tiling(cmds_info, XY_BLOCK_COPY, tiling);
+>  }
+> diff --git a/lib/intel_chipset.h b/lib/intel_chipset.h
+> index 0ae59adc..3de67483 100644
+> --- a/lib/intel_chipset.h
+> +++ b/lib/intel_chipset.h
+> @@ -94,7 +94,7 @@ struct intel_device_info {
+>  
+>  const struct intel_device_info *intel_get_device_info(uint16_t devid) __attribute__((pure));
+>  
+> -const struct intel_cmds_info *intel_get_blt_info(uint16_t devid) __attribute__((pure));
+> +const struct intel_cmds_info *intel_get_cmds_info(uint16_t devid) __attribute__((pure));
+>  unsigned intel_gen(uint16_t devid) __attribute__((pure));
+>  unsigned intel_graphics_ver(uint16_t devid) __attribute__((pure));
+>  unsigned intel_display_ver(uint16_t devid) __attribute__((pure));
+> diff --git a/lib/intel_device_info.c b/lib/intel_device_info.c
+> index 174e2b6f..2cd93c43 100644
+> --- a/lib/intel_device_info.c
+> +++ b/lib/intel_device_info.c
+> @@ -613,7 +613,7 @@ out:
 >  }
 >  
 >  /**
-> @@ -245,7 +245,7 @@ bool blt_cmd_supports_tiling(const struct intel_cmds_info *cmds_info,
->  	if (!cmds_info)
->  		return false;
+> - * intel_get_blt_info:
+> + * intel_get_cmds_info:
+>   * @devid: pci device id
+>   *
+>   * Looks up information on copy commands and tiling formats supported
+> @@ -622,7 +622,7 @@ out:
+>   * Returns:
+>   * The associated intel_cmds_info, NULL if no such information is found
+>   */
+> -const struct intel_cmds_info *intel_get_blt_info(uint16_t devid)
+> +const struct intel_cmds_info *intel_get_cmds_info(uint16_t devid)
+>  {
+>  	const struct intel_device_info *dev_info;
 >  
-> -	tile_config = cmds_info->supported_cmds[cmd];
-> +	tile_config = cmds_info->blt_cmds[cmd];
->  
->  	/* no config means no support for that tiling */
->  	if (!tile_config)
-> diff --git a/lib/i915/intel_tiling_info.c b/lib/i915/intel_tiling_info.c
-> index 3df23b60..78e1ce16 100644
-> --- a/lib/i915/intel_tiling_info.c
-> +++ b/lib/i915/intel_tiling_info.c
-> @@ -52,27 +52,27 @@ static const struct blt_tiling_info
->  					     BIT(T_TILE64));
->  
->  const struct intel_cmds_info pre_gen8_cmds_info = {
-> -	.supported_cmds = {
-> +	.blt_cmds = {
->  		[SRC_COPY] = &src_copy,
->  		[XY_SRC_COPY] = &pre_gen8_xy_src_copy
->  	}
->  };
->  
->  const struct intel_cmds_info gen8_cmds_info = {
-> -	.supported_cmds = {
-> +	.blt_cmds = {
->  		[XY_SRC_COPY] = &gen8_xy_src_copy,
->  	}
->  };
->  
->  const struct intel_cmds_info gen11_cmds_info = {
-> -	.supported_cmds = {
-> +	.blt_cmds = {
->  		[XY_SRC_COPY] = &gen8_xy_src_copy,
->  		[XY_FAST_COPY] = &gen11_xy_fast_copy,
->  	}
->  };
->  
->  const struct intel_cmds_info gen12_cmds_info = {
-> -	.supported_cmds = {
-> +	.blt_cmds = {
->  		[XY_SRC_COPY] = &gen8_xy_src_copy,
->  		[XY_FAST_COPY] = &gen12_xy_fast_copy,
->  		[XY_BLOCK_COPY] = &gen12_xy_block_copy,
-> @@ -80,7 +80,7 @@ const struct intel_cmds_info gen12_cmds_info = {
->  };
->  
->  const struct intel_cmds_info gen12_dg2_cmds_info = {
-> -	.supported_cmds = {
-> +	.blt_cmds = {
->  		[XY_SRC_COPY] = &gen8_xy_src_copy,
->  		[XY_FAST_COPY] = &dg2_xy_fast_copy,
->  		[XY_BLOCK_COPY] = &dg2_xy_block_copy,
-> @@ -88,7 +88,7 @@ const struct intel_cmds_info gen12_dg2_cmds_info = {
->  };
->  
->  const struct intel_cmds_info gen12_mtl_cmds_info = {
-> -	.supported_cmds = {
-> +	.blt_cmds = {
->  		[XY_FAST_COPY] = &dg2_xy_fast_copy,
->  		[XY_BLOCK_COPY] = &dg2_xy_block_copy
->  	}
-> diff --git a/lib/i915/intel_tiling_info.h b/lib/i915/intel_tiling_info.h
-> index 6854c64b..fa8a9b9d 100644
-> --- a/lib/i915/intel_tiling_info.h
-> +++ b/lib/i915/intel_tiling_info.h
-> @@ -32,7 +32,7 @@ struct blt_tiling_info {
->  };
->  
->  struct intel_cmds_info {
-> -	struct blt_tiling_info const *supported_cmds[__BLT_MAX_CMD];
-> +	struct blt_tiling_info const *blt_cmds[__BLT_MAX_CMD];
->  };
->  
->  extern const struct intel_cmds_info pre_gen8_cmds_info;
 > -- 
 > 2.25.1
 > 
