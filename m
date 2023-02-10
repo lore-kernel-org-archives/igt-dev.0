@@ -1,19 +1,22 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 76FCF10ED9D
- for <igt-dev@lists.freedesktop.org>; Fri, 10 Feb 2023 17:47:08 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id ABEDE10ED9D
+ for <igt-dev@lists.freedesktop.org>; Fri, 10 Feb 2023 17:47:43 +0000 (UTC)
 From: =?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>
 To: Melissa Wen <mwen@igalia.com>,
  =?UTF-8?q?Andr=C3=A9=20Almeida?= <andrealmeid@igalia.com>,
  Petri Latvala <petri.latvala@intel.com>,
  Kamil Konieczny <kamil.konieczny@linux.intel.com>,
  Iago Toral Quiroga <itoral@igalia.com>
-Date: Fri, 10 Feb 2023 14:46:15 -0300
-Message-Id: <20230210174617.552075-1-mcanal@igalia.com>
+Date: Fri, 10 Feb 2023 14:46:17 -0300
+Message-Id: <20230210174617.552075-2-mcanal@igalia.com>
+In-Reply-To: <20230210174617.552075-1-mcanal@igalia.com>
+References: <20230210174617.552075-1-mcanal@igalia.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v3 0/3] V3D Mixed Job Submission Tests
+Subject: [igt-dev] [PATCH i-g-t v3 1/3] lib/v3d: Add a helper to create a
+ empty shader
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,46 +29,148 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Currently, the V3D tests only support CL job submissions, while V3D has also
-capabilities for CSD and TFU jobs. Therefore, create tests for
-DRM_IOCTL_V3D_SUBMIT_CSD, an ioctl for dispatching compute shader jobs to the
-GPU. In order to create a simple CSD job, I hard-coded the pipeline assembly
-shader of an empty shader in order to reproduce a shader and be able to create
-an acceptable packet that can be sent to the GPU.
+In order to submit a compute dispatch job, a BO must contain the
+assembly shader that corresponds to the job. Therefore, create a helper
+to encapsulate a simple compute dispatch job. This helper sets the
+configurations (cfg) needed for the job and has the assembled instructions
+necessary to process an empty shader, just like the following one:
 
-So, patch 1 introduces a helper function to submit a minimal CSD job to the GPU,
-which will be useful for the tests. The minimal job will use the pipeline
-assembly shader of an empty shader. Patches 2-3 will include new tests in the
-V3D test suite for DRM_IOCTL_V3D_SUBMIT_CSD and create tests that mix different
-types of jobs, in order to evaluate the synchronization between the two types of
-jobs. 
+    #version 310 es
+    layout (local_size_x = 1) in;
+    void main (void) {}
 
-v1 -> v2:
+Reviewed-by: Melissa Wen <mwen@igalia.com>
+Signed-off-by: Maíra Canal <mcanal@igalia.com>
+---
+ lib/igt_v3d.c | 75 +++++++++++++++++++++++++++++++++++++++++++++++++++
+ lib/igt_v3d.h | 20 ++++++++++++++
+ 2 files changed, 95 insertions(+)
 
-- Add a progress bar to the "threaded-job-submission" sub-test (Melissa Wen).
-- Fix checkpatch issues.
-
-v2 -> v3:
-
-- Add descriptions to all the public functions added (Kamil Konieczny).
-
-Best Regards,
-- Maíra Canal
-
-Maíra Canal (3):
-  lib/v3d: Add a helper to create a empty shader
-  tests/v3d_submit_csd: Create test for V3D's Submit CSD IOCTL
-  tests/v3d_job_submission: Create tests to mix CL and CSD jobs
-
- lib/igt_v3d.c                  |  75 +++++++
- lib/igt_v3d.h                  |  20 ++
- tests/v3d/meson.build          |   2 +
- tests/v3d/v3d_job_submission.c | 218 ++++++++++++++++++++
- tests/v3d/v3d_submit_csd.c     | 362 +++++++++++++++++++++++++++++++++
- tests/v3d_ci/v3d.testlist      |  21 ++
- 6 files changed, 698 insertions(+)
- create mode 100644 tests/v3d/v3d_job_submission.c
- create mode 100644 tests/v3d/v3d_submit_csd.c
-
+diff --git a/lib/igt_v3d.c b/lib/igt_v3d.c
+index 41ea32fc..11155424 100644
+--- a/lib/igt_v3d.c
++++ b/lib/igt_v3d.c
+@@ -355,3 +355,78 @@ void igt_v3d_free_cl_job(int fd, struct v3d_cl_job *job)
+ 	free(job->submit);
+ 	free(job);
+ }
++
++/**
++ * igt_v3d_empty_shader:
++ * @fd: device file descriptor
++ *
++ * This helper returns a simple compute dispatch job. It sets the
++ * configurations (cfg) needed for the job and has the assembled instructions
++ * necessary to process an empty shader.
++ */
++struct v3d_csd_job *igt_v3d_empty_shader(int fd)
++{
++	struct v3d_csd_job *job;
++	uint32_t *bos;
++
++	/* Reproduce an empty shader */
++	const uint32_t assembly[] = { 0xbb800000, 0x3c203186,
++				      0xbb800000, 0x3c003186,
++				      0xbb800000, 0x3c003186 };
++	const uint32_t group_count_x = 1, group_count_y = 1, group_count_z = 1;
++	const uint32_t num_batches = 1, wgs_per_sg = 1, batches_per_sg = 1, wg_size = 1;
++
++	job = calloc(1, sizeof(*job));
++
++	job->shader_assembly = igt_v3d_create_bo(fd, PAGE_SIZE);
++	job->cl = igt_v3d_create_bo(fd, PAGE_SIZE);
++	job->submit = calloc(1, sizeof(*job->submit));
++
++	igt_v3d_bo_mmap(fd, job->shader_assembly);
++	igt_v3d_bo_mmap(fd, job->cl);
++
++	memset(job->shader_assembly->map, 0, sizeof(*job->shader_assembly->map));
++	memcpy(job->shader_assembly->map, assembly, sizeof(assembly));
++	memset(job->cl->map, 0, sizeof(*job->cl->map));
++
++	job->submit->bo_handle_count = 2;
++	bos = malloc(sizeof(*bos) * job->submit->bo_handle_count);
++	bos[0] = job->shader_assembly->handle;
++	bos[1] = job->cl->handle;
++
++	job->submit->bo_handles = to_user_pointer(bos);
++
++	job->submit->cfg[0] |= group_count_x << V3D_CSD_CFG012_WG_COUNT_SHIFT;
++	job->submit->cfg[1] |= group_count_y << V3D_CSD_CFG012_WG_COUNT_SHIFT;
++	job->submit->cfg[2] |= group_count_z << V3D_CSD_CFG012_WG_COUNT_SHIFT;
++
++	job->submit->cfg[3] |= (wgs_per_sg & 0xf) << V3D_CSD_CFG3_WGS_PER_SG_SHIFT;
++	job->submit->cfg[3] |= (batches_per_sg - 1) << V3D_CSD_CFG3_BATCHES_PER_SG_M1_SHIFT;
++	job->submit->cfg[3] |= (wg_size & 0xff) << V3D_CSD_CFG3_WG_SIZE_SHIFT;
++
++	job->submit->cfg[4] = num_batches - 1;
++
++	job->submit->cfg[5] = job->shader_assembly->offset | V3D_CSD_CFG5_PROPAGATE_NANS;
++	job->submit->cfg[5] |= V3D_CSD_CFG5_SINGLE_SEG;
++	job->submit->cfg[5] |= V3D_CSD_CFG5_THREADING;
++
++	job->submit->cfg[6] = job->cl->offset;
++
++	return job;
++}
++
++/**
++ * igt_v3d_free_csd_job:
++ * @job: a compute shader dispatch job
++ *
++ * This helper frees all the fields of the struct v3d_csd_job and the
++ * alocatted job itself.
++ */
++void igt_v3d_free_csd_job(int fd, struct v3d_csd_job *job)
++{
++	free(from_user_pointer(job->submit->bo_handles));
++	igt_v3d_free_bo(fd, job->shader_assembly);
++	igt_v3d_free_bo(fd, job->cl);
++	free(job->submit);
++	free(job);
++}
+diff --git a/lib/igt_v3d.h b/lib/igt_v3d.h
+index 2cf7fbd8..b96a3b43 100644
+--- a/lib/igt_v3d.h
++++ b/lib/igt_v3d.h
+@@ -28,6 +28,17 @@
+ 
+ #define PAGE_SIZE 4096
+ 
++#define V3D_CSD_CFG012_WG_COUNT_SHIFT 16
++/* Batches per supergroup minus 1.  8 bits. */
++#define V3D_CSD_CFG3_BATCHES_PER_SG_M1_SHIFT 12
++/* Workgroups per supergroup, 0 means 16 */
++#define V3D_CSD_CFG3_WGS_PER_SG_SHIFT 8
++#define V3D_CSD_CFG3_WG_SIZE_SHIFT 0
++
++#define V3D_CSD_CFG5_PROPAGATE_NANS (1 << 2)
++#define V3D_CSD_CFG5_SINGLE_SEG (1 << 1)
++#define V3D_CSD_CFG5_THREADING (1 << 0)
++
+ struct v3d_cl;
+ 
+ struct v3d_bo {
+@@ -46,6 +57,12 @@ struct v3d_cl_job {
+ 	struct v3d_bo *tile_state;
+ };
+ 
++struct v3d_csd_job {
++	struct drm_v3d_submit_csd *submit;
++	struct v3d_bo *shader_assembly;
++	struct v3d_bo *cl;
++};
++
+ struct v3d_bo *igt_v3d_create_bo(int fd, size_t size);
+ void igt_v3d_free_bo(int fd, struct v3d_bo *bo);
+ 
+@@ -67,4 +84,7 @@ void igt_v3d_set_multisync(struct drm_v3d_multi_sync *ms, enum v3d_queue wait_st
+ struct v3d_cl_job *igt_v3d_noop_job(int fd);
+ void igt_v3d_free_cl_job(int fd, struct v3d_cl_job *job);
+ 
++struct v3d_csd_job *igt_v3d_empty_shader(int fd);
++void igt_v3d_free_csd_job(int fd, struct v3d_csd_job *job);
++
+ #endif /* IGT_V3D_H */
 -- 
 2.39.1
