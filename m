@@ -1,20 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7DF1D10EC59
- for <igt-dev@lists.freedesktop.org>; Fri, 10 Feb 2023 04:48:01 +0000 (UTC)
-Message-ID: <c9b321df-70e8-05c8-f76d-3d1e44d29647@intel.com>
-Date: Fri, 10 Feb 2023 10:17:35 +0530
-To: Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
- <igt-dev@lists.freedesktop.org>
-References: <20230209062322.1562797-1-bhanuprakash.modem@intel.com>
-Content-Language: en-US
-From: Karthik B S <karthik.b.s@intel.com>
-In-Reply-To: <20230209062322.1562797-1-bhanuprakash.modem@intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B432C10EC55
+ for <igt-dev@lists.freedesktop.org>; Fri, 10 Feb 2023 04:53:42 +0000 (UTC)
+From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+To: igt-dev@lists.freedesktop.org,
+	karthik.b.s@intel.com
+Date: Fri, 10 Feb 2023 10:19:04 +0530
+Message-Id: <20230210044904.1766729-1-bhanuprakash.modem@intel.com>
+In-Reply-To: <20230209062322.1562797-2-bhanuprakash.modem@intel.com>
+References: <20230209062322.1562797-2-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [i-g-t 1/2] tests/kms_atomic_transition: Reduce the
- execution time on simulation
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [i-g-t V2 2/2] tests/kms_atomic_transition: Test cleanup
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,31 +23,80 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
+As we are using same function for cleanup, no need to do other
+stuff, just return after unsetting the output to pipe.
 
-On 2/9/2023 11:53 AM, Bhanuprakash Modem wrote:
-> Due to the more number of iterations, "modest-transition" tests are
-> getting timed out on pre-si CI. Reducing the number of iterations to
-> half can save a lot of execution time.
->
-> V2: - Separate patch for cleanup
->
-> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Reviewed-by: Karthik B S <karthik.b.s@intel.com>
-> ---
->   tests/kms_atomic_transition.c | 3 +++
->   1 file changed, 3 insertions(+)
->
-> diff --git a/tests/kms_atomic_transition.c b/tests/kms_atomic_transition.c
-> index 6d2ebbbff..e1b74ac2c 100644
-> --- a/tests/kms_atomic_transition.c
-> +++ b/tests/kms_atomic_transition.c
-> @@ -858,6 +858,9 @@ retry:
->   
->   	iter_max = 1 << j;
->   
-> +	if (igt_run_in_simulation() && iter_max > 1)
-> +		iter_max = iter_max >> 1;
-> +
->   	if (igt_display_try_commit_atomic(&data->display,
->   				DRM_MODE_ATOMIC_TEST_ONLY |
->   				DRM_MODE_ATOMIC_ALLOW_MODESET,
+V2: - New helper to unset output to pipe (Karthik)
+
+Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+---
+ tests/kms_atomic_transition.c | 23 ++++++++++++-----------
+ 1 file changed, 12 insertions(+), 11 deletions(-)
+
+diff --git a/tests/kms_atomic_transition.c b/tests/kms_atomic_transition.c
+index e1b74ac2c..64e7e7091 100644
+--- a/tests/kms_atomic_transition.c
++++ b/tests/kms_atomic_transition.c
+@@ -704,15 +704,21 @@ static void commit_display(data_t *data, unsigned event_mask, bool nonblocking)
+ 	igt_reset_timeout();
+ }
+ 
++static void unset_output_pipe(igt_display_t *display)
++{
++	int i;
++
++	for (i = 0; i < display->n_outputs; i++)
++		igt_output_set_pipe(&display->outputs[i], PIPE_NONE);
++}
++
+ static unsigned set_combinations(data_t *data, unsigned mask, struct igt_fb *fb)
+ {
+ 	igt_output_t *output;
+ 	enum pipe pipe;
+ 	unsigned event_mask = 0;
+-	int i;
+ 
+-	for (i = 0; i < data->display.n_outputs; i++)
+-		igt_output_set_pipe(&data->display.outputs[i], PIPE_NONE);
++	unset_output_pipe(&data->display);
+ 
+ 	for_each_pipe(&data->display, pipe) {
+ 		igt_plane_t *plane = igt_pipe_get_plane_type(&data->display.pipes[pipe],
+@@ -806,10 +812,9 @@ static void run_modeset_tests(data_t *data, int howmany, bool nonblocking, bool
+ 	igt_output_t *output;
+ 	uint16_t width = 0, height = 0;
+ 
+-	for (i = 0; i < data->display.n_outputs; i++)
+-		igt_output_set_pipe(&data->display.outputs[i], PIPE_NONE);
+-
+ retry:
++	unset_output_pipe(&data->display);
++
+ 	j = 0;
+ 	for_each_connected_output(&data->display, output) {
+ 		drmModeModeInfo *mode = igt_output_get_mode(output);
+@@ -865,13 +870,9 @@ retry:
+ 				DRM_MODE_ATOMIC_TEST_ONLY |
+ 				DRM_MODE_ATOMIC_ALLOW_MODESET,
+ 				NULL) != 0) {
+-		igt_output_t *out;
+ 		bool found = igt_override_all_active_output_modes_to_fit_bw(&data->display);
+ 		igt_require_f(found, "No valid mode combo found.\n");
+ 
+-		for_each_connected_output(&data->display, out)
+-			igt_output_set_pipe(out, PIPE_NONE);
+-
+ 		goto retry;
+ 	}
+ 	igt_display_commit2(&data->display, COMMIT_ATOMIC);
+@@ -971,7 +972,7 @@ static void run_modeset_transition(data_t *data, int requested_outputs, bool non
+ 		run_modeset_tests(data, requested_outputs, nonblocking, fencing);
+ 
+ 	/* Cleanup */
+-	set_combinations(data, 0, NULL);
++	unset_output_pipe(&data->display);
+ 	igt_display_commit2(&data->display, COMMIT_ATOMIC);
+ 
+ 	if (is_i915_device(data->drm_fd)) {
+-- 
+2.39.0
