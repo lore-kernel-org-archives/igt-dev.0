@@ -1,16 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Date: Mon, 13 Feb 2023 10:51:39 +0100
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-Message-ID: <20230213095139.c5gcznwdf4a5kpgo@zkempczy-mobl2>
-References: <20230209193231.57538-1-janusz.krzysztofik@linux.intel.com>
- <13320072.uLZWGnKmhe@jkrzyszt-mobl1.ger.corp.intel.com>
+Content-Type: multipart/alternative;
+ boundary="===============1037460953710302622=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <13320072.uLZWGnKmhe@jkrzyszt-mobl1.ger.corp.intel.com>
-Subject: Re: [igt-dev] [Intel-gfx] [PATCH i-g-t] tests/i915_suspend: Free
- device list after *-without-i915 subtests
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Janusz Krzysztofik" <janusz.krzysztofik@linux.intel.com>
+Date: Mon, 13 Feb 2023 10:04:30 -0000
+Message-ID: <167628267028.20213.7034161444694618996@emeril.freedesktop.org>
+References: <20230213093132.12763-1-janusz.krzysztofik@linux.intel.com>
+In-Reply-To: <20230213093132.12763-1-janusz.krzysztofik@linux.intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
+ =?utf-8?q?i915/perf=3A_Add_stress_/_race_exercises_=28rev3=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,143 +17,233 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org, intel-gfx@lists.freedesktop.org
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Fri, Feb 10, 2023 at 10:33:21PM +0100, Janusz Krzysztofik wrote:
-> On Thursday, 9 February 2023 20:32:31 CET Janusz Krzysztofik wrote:
-> > If any of *-without-i915 subtests fails or skips for any reason, it may
-> > leave the i915 module unloaded while keeping our device list populated
-> > with initially collected data.  In a follow up igt_fixture section we then
-> > try to reopen the device.  If the test has been executed with a device
-> > filter specified, an attempt to open the device finds a matching entry
-> > that belongs to the no longer existing device in that initially collected
-> > device list, fails to stat() it, concludes that's because of the device
-> > having been already open, and returns an error.
-> > 
-> > Fix this potentially confusing test result by freeing the potentially
-> > outdated device list before continuing with drm_open_driver().
-> 
-> Freeing device list occurred not safe if device scan was not performed before.  
-> I can see 3 potential solutions:
-> 1) force device rescan instead of free before calling drm_open_driver(),
-> 2) teach igt_device_free() to return immediately if the device list has not 
->    been allocated,
-> 3) provide a has_device_list() helper for to be used if not sure before 
->    calling igt_device_free().
-> 
-> Any preferences?
+--===============1037460953710302622==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-I would enforce rescan.
+== Series Details ==
 
-BTW I wonder how it can happen if runner is executing each subtest
-in new process so you're starting from scratch and rescan should be
-executed automatically.
+Series: tests/i915/perf: Add stress / race exercises (rev3)
+URL   : https://patchwork.freedesktop.org/series/113522/
+State : success
 
-Is is the case you're running few tests from the console?
+== Summary ==
 
---
-Zbigniew
+CI Bug Log - changes from IGT_7160 -> IGTPW_8488
+====================================================
+
+Summary
+-------
+
+  **WARNING**
+
+  Minor unknown changes coming with IGTPW_8488 need to be verified
+  manually.
+  
+  If you think the reported changes have nothing to do with the changes
+  introduced in IGTPW_8488, please notify your bug team to allow them
+  to document this new failure mode, which will reduce false positives in CI.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8488/index.html
+
+Participating hosts (39 -> 37)
+------------------------------
+
+  Missing    (2): bat-kbl-2 fi-snb-2520m 
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in IGTPW_8488:
+
+### IGT changes ###
+
+#### Warnings ####
+
+  * igt@i915_suspend@basic-s3-without-i915:
+    - fi-tgl-1115g4:      [INCOMPLETE][1] ([i915#7443]) -> [INCOMPLETE][2]
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7160/fi-tgl-1115g4/igt@i915_suspend@basic-s3-without-i915.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8488/fi-tgl-1115g4/igt@i915_suspend@basic-s3-without-i915.html
+
+  
+Known issues
+------------
+
+  Here are the changes found in IGTPW_8488 that come from known issues:
+
+### IGT changes ###
+
+#### Possible fixes ####
+
+  * igt@gem_exec_gttfill@basic:
+    - fi-pnv-d510:        [FAIL][3] ([i915#7229]) -> [PASS][4]
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7160/fi-pnv-d510/igt@gem_exec_gttfill@basic.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8488/fi-pnv-d510/igt@gem_exec_gttfill@basic.html
+
+  * igt@i915_selftest@live@hangcheck:
+    - {bat-dg1-7}:        [ABORT][5] ([i915#4983]) -> [PASS][6]
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7160/bat-dg1-7/igt@i915_selftest@live@hangcheck.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8488/bat-dg1-7/igt@i915_selftest@live@hangcheck.html
+    - fi-skl-guc:         [DMESG-WARN][7] ([i915#8073]) -> [PASS][8]
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7160/fi-skl-guc/igt@i915_selftest@live@hangcheck.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8488/fi-skl-guc/igt@i915_selftest@live@hangcheck.html
+
+  * igt@i915_selftest@live@migrate:
+    - {bat-dg2-11}:       [DMESG-WARN][9] ([i915#7699]) -> [PASS][10]
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7160/bat-dg2-11/igt@i915_selftest@live@migrate.html
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8488/bat-dg2-11/igt@i915_selftest@live@migrate.html
+
+  * igt@i915_selftest@live@reset:
+    - {bat-rpls-1}:       [ABORT][11] ([i915#4983]) -> [PASS][12]
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7160/bat-rpls-1/igt@i915_selftest@live@reset.html
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8488/bat-rpls-1/igt@i915_selftest@live@reset.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [i915#1845]: https://gitlab.freedesktop.org/drm/intel/issues/1845
+  [i915#3546]: https://gitlab.freedesktop.org/drm/intel/issues/3546
+  [i915#4078]: https://gitlab.freedesktop.org/drm/intel/issues/4078
+  [i915#4983]: https://gitlab.freedesktop.org/drm/intel/issues/4983
+  [i915#6311]: https://gitlab.freedesktop.org/drm/intel/issues/6311
+  [i915#7229]: https://gitlab.freedesktop.org/drm/intel/issues/7229
+  [i915#7359]: https://gitlab.freedesktop.org/drm/intel/issues/7359
+  [i915#7443]: https://gitlab.freedesktop.org/drm/intel/issues/7443
+  [i915#7699]: https://gitlab.freedesktop.org/drm/intel/issues/7699
+  [i915#7828]: https://gitlab.freedesktop.org/drm/intel/issues/7828
+  [i915#7852]: https://gitlab.freedesktop.org/drm/intel/issues/7852
+  [i915#8073]: https://gitlab.freedesktop.org/drm/intel/issues/8073
 
 
-> 
-> Thanks,
-> Janusz
-> 
-> > 
-> > While being at it, add a comment that explains why we call
-> > igt_device_scan() from __igt_device_card_match() but don't force device
-> > rescan, and emit a debug message if we fail in _is_already_opened() on
-> > unsuccessful device stat().
-> > 
-> > Subtest basic-s3-without-i915: FAIL (9.572s)
-> > (i915_suspend:9050) drmtest-WARNING: card maching filter 0 is already opened
-> > (i915_suspend:9050) drmtest-CRITICAL: Test abort in function drm_open_driver, file ../lib/drmtest.c:639:
-> > (i915_suspend:9050) drmtest-CRITICAL: abort condition: fd < 0
-> > (i915_suspend:9050) drmtest-CRITICAL: Last errno: 2, No such file or directory
-> > (i915_suspend:9050) drmtest-CRITICAL: No known gpu found for chipset flags 0x1 (intel)
-> > Test i915_suspend failed.
-> > **** DEBUG ****
-> > (i915_suspend:9050) drmtest-DEBUG: Looking for devices to open using filter 0: pci:vendor=intel,device=dg2
-> > (i915_suspend:9050) drmtest-DEBUG: Filter matched /dev/dri/card0 | /dev/dri/renderD128
-> > (i915_suspend:9050) drmtest-WARNING: card maching filter 0 is already opened
-> > (i915_suspend:9050) drmtest-CRITICAL: Test abort in function drm_open_driver, file ../lib/drmtest.c:639:
-> > (i915_suspend:9050) drmtest-CRITICAL: abort condition: fd < 0
-> > (i915_suspend:9050) drmtest-CRITICAL: Last errno: 2, No such file or directory
-> > (i915_suspend:9050) drmtest-CRITICAL: No known gpu found for chipset flags 0x1 (intel)
-> > (i915_suspend:9050) igt_core-INFO: Stack trace:
-> > (i915_suspend:9050) igt_core-INFO:   #0 ../lib/igt_core.c:2066 __igt_abort()
-> > (i915_suspend:9050) igt_core-INFO:   #1 ../lib/drmtest.c:573 drm_open_driver()
-> > (i915_suspend:9050) igt_core-INFO:   #2 ../tests/i915/i915_suspend.c:258 __igt_unique____real_main245()
-> > (i915_suspend:9050) igt_core-INFO:   #3 ../tests/i915/i915_suspend.c:245 main()
-> > (i915_suspend:9050) igt_core-INFO:   #4 ../sysdeps/nptl/libc_start_call_main.h:58 __libc_start_call_main()
-> > (i915_suspend:9050) igt_core-INFO:   #5 ../csu/libc-start.c:128 __libc_start_main@@GLIBC_2.34()
-> > (i915_suspend:9050) igt_core-INFO:   #6 [_start+0x2a]
-> > ****  END  ****
-> > 
-> > Fixes: f7aff600ab16 ("tests/i915/i915_suspend: Disable d3cold_allowed for basic-s2idle-without-i915")
-> > Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-> > Cc: Riana Tauro <riana.tauro@intel.com>
-> > ---
-> >  lib/drmtest.c             |  2 +-
-> >  lib/igt_device_scan.c     |  4 ++++
-> >  tests/i915/i915_suspend.c | 10 +++++++++-
-> >  3 files changed, 14 insertions(+), 2 deletions(-)
-> > 
-> > diff --git a/lib/drmtest.c b/lib/drmtest.c
-> > index 16e80bdfcf..8e2d1ac50b 100644
-> > --- a/lib/drmtest.c
-> > +++ b/lib/drmtest.c
-> > @@ -260,7 +260,7 @@ static bool _is_already_opened(const char *path, int as_idx)
-> >  	 * we cannot even stat the device, so it's of no use - let's claim it's
-> >  	 * already opened
-> >  	 */
-> > -	if (stat(path, &new) != 0)
-> > +	if (igt_debug_on(stat(path, &new) != 0))
-> >  		return true;
-> >  
-> >  	for (int i = 0; i < as_idx; ++i) {
-> > diff --git a/lib/igt_device_scan.c b/lib/igt_device_scan.c
-> > index 8b767eed20..ae69ed09f1 100644
-> > --- a/lib/igt_device_scan.c
-> > +++ b/lib/igt_device_scan.c
-> > @@ -1918,6 +1918,10 @@ static bool __igt_device_card_match(const char *filter,
-> >  		return false;
-> >  	memset(card, 0, sizeof(*card));
-> >  
-> > +	/*
-> > +	 * Scan devices in case the user hasn't yet,
-> > +	 * but leave a decision on forced rescan on the user side.
-> > +	 */
-> >  	igt_devices_scan(false);
-> >  
-> >  	if (igt_device_filter_apply(filter) == false)
-> > diff --git a/tests/i915/i915_suspend.c b/tests/i915/i915_suspend.c
-> > index 815f1c8a2c..c68110476e 100644
-> > --- a/tests/i915/i915_suspend.c
-> > +++ b/tests/i915/i915_suspend.c
-> > @@ -253,8 +253,16 @@ igt_main
-> >  	igt_subtest("basic-s3-without-i915")
-> >  		test_suspend_without_i915(SUSPEND_STATE_S3);
-> >  
-> > -	igt_fixture
-> > +	igt_fixture {
-> > +		/*
-> > +		 * Since above tests may fail leaving the i915 module unloaded,
-> > +		 * force refresh of device list before opening an i915 device
-> > +		 * by cleaning up the current device list, otherwise we can fail
-> > +		 * if we have been called with a device filter specified.
-> > +		 */
-> > +		igt_devices_free();
-> >  		fd = drm_open_driver(DRIVER_INTEL);
-> > +	}
-> >  
-> >  	igt_subtest("fence-restore-tiled2untiled") {
-> >  		gem_require_mappable_ggtt(fd);
-> > 
-> 
-> 
-> 
-> 
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_7160 -> IGTPW_8488
+
+  CI-20190529: 20190529
+  CI_DRM_12730: c54b5fcf3e686a0abfdd7d6af53e9014c137023a @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_8488: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8488/index.html
+  IGT_7160: 45da871dd2684227e93a2fc002b87dfc58bd5fd9 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+
+Testlist changes
+----------------
+
++igt@gem_barrier_race@remote-request
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8488/index.html
+
+--===============1037460953710302622==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/i915/perf: Add stress / race exercises (rev3)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/113522/">https://patchwork.freedesktop.org/series/113522/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8488/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8488/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_7160 -&gt; IGTPW_8488</h1>
+<h2>Summary</h2>
+<p><strong>WARNING</strong></p>
+<p>Minor unknown changes coming with IGTPW_8488 need to be verified<br />
+  manually.</p>
+<p>If you think the reported changes have nothing to do with the changes<br />
+  introduced in IGTPW_8488, please notify your bug team to allow them<br />
+  to document this new failure mode, which will reduce false positives in CI.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8488/index.html</p>
+<h2>Participating hosts (39 -&gt; 37)</h2>
+<p>Missing    (2): bat-kbl-2 fi-snb-2520m </p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in IGTPW_8488:</p>
+<h3>IGT changes</h3>
+<h4>Warnings</h4>
+<ul>
+<li>igt@i915_suspend@basic-s3-without-i915:<ul>
+<li>fi-tgl-1115g4:      <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7160/fi-tgl-1115g4/igt@i915_suspend@basic-s3-without-i915.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7443">i915#7443</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8488/fi-tgl-1115g4/igt@i915_suspend@basic-s3-without-i915.html">INCOMPLETE</a></li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_8488 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@gem_exec_gttfill@basic:</p>
+<ul>
+<li>fi-pnv-d510:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7160/fi-pnv-d510/igt@gem_exec_gttfill@basic.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7229">i915#7229</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8488/fi-pnv-d510/igt@gem_exec_gttfill@basic.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@hangcheck:</p>
+<ul>
+<li>
+<p>{bat-dg1-7}:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7160/bat-dg1-7/igt@i915_selftest@live@hangcheck.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4983">i915#4983</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8488/bat-dg1-7/igt@i915_selftest@live@hangcheck.html">PASS</a></p>
+</li>
+<li>
+<p>fi-skl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7160/fi-skl-guc/igt@i915_selftest@live@hangcheck.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/8073">i915#8073</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8488/fi-skl-guc/igt@i915_selftest@live@hangcheck.html">PASS</a></p>
+</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@migrate:</p>
+<ul>
+<li>{bat-dg2-11}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7160/bat-dg2-11/igt@i915_selftest@live@migrate.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7699">i915#7699</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8488/bat-dg2-11/igt@i915_selftest@live@migrate.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@reset:</p>
+<ul>
+<li>{bat-rpls-1}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7160/bat-rpls-1/igt@i915_selftest@live@reset.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4983">i915#4983</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8488/bat-rpls-1/igt@i915_selftest@live@reset.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_7160 -&gt; IGTPW_8488</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_12730: c54b5fcf3e686a0abfdd7d6af53e9014c137023a @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_8488: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8488/index.html<br />
+  IGT_7160: 45da871dd2684227e93a2fc002b87dfc58bd5fd9 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+<h2>Testlist changes</h2>
+<p>+igt@gem_barrier_race@remote-request</p>
+
+</body>
+</html>
+
+--===============1037460953710302622==--
