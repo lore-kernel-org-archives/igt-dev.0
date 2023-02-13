@@ -1,22 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2AFFD10E4D3
- for <igt-dev@lists.freedesktop.org>; Mon, 13 Feb 2023 08:44:36 +0000 (UTC)
-Message-ID: <aec94d7e-60a9-199b-36df-04cb56787381@intel.com>
-Date: Mon, 13 Feb 2023 14:14:21 +0530
-Content-Language: en-US
-To: <igt-dev@lists.freedesktop.org>, <saix.nandan.yedireswarapu@intel.com>
-References: <20230212062758.1956925-1-bhanuprakash.modem@intel.com>
- <167618598914.4160.6287683210450910867@emeril.freedesktop.org>
-From: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
-In-Reply-To: <167618598914.4160.6287683210450910867@emeril.freedesktop.org>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
+From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+To: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+Date: Mon, 13 Feb 2023 10:00:49 +0100
+Message-ID: <4806417.31r3eYUQgx@jkrzyszt-mobl1.ger.corp.intel.com>
+In-Reply-To: <Y+Z95YFARrUijh1r@orsosgc001.jf.intel.com>
+References: <20230209115039.34441-1-janusz.krzysztofik@linux.intel.com>
+ <Y+Z82anLvt6+l/5Z@orsosgc001.jf.intel.com>
+ <Y+Z95YFARrUijh1r@orsosgc001.jf.intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev]
- =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3Igc2VyaWVz?=
- =?utf-8?q?_starting_with_=5Bi-g-t=2C1/2=5D_tests/kms=5Fcursor=5Flegacy=3A?=
- =?utf-8?q?_Fix_CI_tiemout_issues?=
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
+Subject: Re: [igt-dev] [PATCH i-g-t v2 1/1] tests/gem_ctx_exec: Exercise
+ barrier race
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,342 +19,151 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: igt-dev@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
+ Chris Wilson <chris.p.wilson@linux.intel.com>,
+ Nirmoy Das <nirmoy.das@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Sai Nandan,
+Hi Umesh,
 
-As this patch renames (reverts) the existing subtests, below Skips are 
-expected. Can you please help to re-report?
+On Friday, 10 February 2023 18:24:53 CET Umesh Nerlige Ramappa wrote:
+> On Fri, Feb 10, 2023 at 09:20:25AM -0800, Umesh Nerlige Ramappa wrote:
+> >On Thu, Feb 09, 2023 at 12:50:39PM +0100, Janusz Krzysztofik wrote:
+> >>Users reported oopses on list corruptions when using i915 perf with a
+> >>number of concurrently running graphics applications.  That indicates we
+> >>are currently missing some important tests for such scenarios.  Cover
+> >>that gap.
+> >>
+> >>Since root cause analysis pointed out to an issue in barrier processing
+> >>code, add a new subtest focused on exercising interaction between perf
+> >>open / close operations, which replace active barriers with perf requests
+> >>on kernel contexts, and concurrent barrier preallocate / acquire
+> >>operations performed during context first pin / last unpin.
+> >>
+> >>v2: convert to a separate subtest, not a variant of another one (that has
+> >>   been dropped from the series),
+> >> - move the subtest out of tests/i915/perf.c (Ashutosh), add it to
+> >>   tests/i915/gem_ctx_exec.c,
+> >> - don't touch lib/i915/perf.c (Umesh, Ashutosh), duplicate reused code
+> >>   from tests/i915/perf.c in tests/i915/gem_ctx_exec.c.
+> >>
+> >>References: https://gitlab.freedesktop.org/drm/intel/-/issues/6333
+> >>Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+> >>---
+> >>tests/i915/gem_ctx_exec.c | 123 ++++++++++++++++++++++++++++++++++++++
+> >>tests/meson.build         |   9 ++-
+> >>2 files changed, 131 insertions(+), 1 deletion(-)
+> >>
+> >>diff --git a/tests/i915/gem_ctx_exec.c b/tests/i915/gem_ctx_exec.c
+> >>index 3d94f01db9..97fbc50e97 100644
+> >>--- a/tests/i915/gem_ctx_exec.c
+> >>+++ b/tests/i915/gem_ctx_exec.c
+> >>@@ -42,6 +42,7 @@
+> >>
+> >>#include "i915/gem.h"
+> >>#include "i915/gem_create.h"
+> >>+#include "i915/perf.h"
+> >>#include "igt.h"
+> >>#include "igt_dummyload.h"
+> >>#include "igt_rand.h"
+> >>@@ -448,6 +449,115 @@ static void close_race(int i915)
+> >>	munmap(ctx_id, 4096);
+> >>}
+> >>
+> >>+static uint64_t timebase_scale(struct intel_perf *intel_perf, uint32_t u32_delta)
+> >>+{
+> >>+	return ((uint64_t)u32_delta * NSEC_PER_SEC) / intel_perf->devinfo.timestamp_frequency;
+> >>+}
+> >>+
+> >>+/* Returns: the largest OA exponent that will still result in a sampling period
+> >>+ * less than or equal to the given @period.
+> >>+ */
+> >>+static int max_oa_exponent_for_period_lte(struct intel_perf *intel_perf, uint64_t period)
+> >>+{
+> >>+	/* NB: timebase_scale() takes a uint32_t and an exponent of 30
+> >>+	 * would already represent a period of ~3 minutes so there's
+> >>+	 * really no need to consider higher exponents.
+> >>+	 */
+> >>+	for (int i = 0; i < 30; i++) {
+> >>+		uint64_t oa_period = timebase_scale(intel_perf, 2 << i);
+> >>+
+> >>+		if (oa_period > period)
+> >>+			return max(0, i - 1);
+> >>+	}
+> >>+
+> >>+	igt_assert(!"reached");
+> >>+	return -1;
+> >>+}
+> >>+
+> >>+static void perf_open_close_loop(int fd, int *done)
+> >>+{
+> >>+	struct intel_perf_metric_set *metric_set = NULL, *metric_set_iter;
+> >>+	struct intel_perf *intel_perf = intel_perf_for_fd(fd);
+> >>+	uint64_t properties[] = {
+> >>+		DRM_I915_PERF_PROP_SAMPLE_OA, true,
+> >>+		DRM_I915_PERF_PROP_OA_METRICS_SET, 0,
+> >>+		DRM_I915_PERF_PROP_OA_FORMAT, 0,
+> >>+		DRM_I915_PERF_PROP_OA_EXPONENT, 0,
+> >>+	};
+> >>+	struct drm_i915_perf_open_param param = {
+> >>+		.flags = I915_PERF_FLAG_FD_CLOEXEC,
+> >
+> >nit: If you also add I915_PERF_FLAG_DISABLED here, then OA buffer 
+> >reports will be disabled. This will make sure that the perf API does 
+> >not enable the OA unit. It will still run the code that you are 
+> >targeting.
 
-- Bhanu
+OK
 
-On Sun-12-02-2023 12:43 pm, Patchwork wrote:
-> *Patch Details*
-> *Series:*	series starting with [i-g-t,1/2] tests/kms_cursor_legacy: Fix 
-> CI tiemout issues
-> *URL:*	https://patchwork.freedesktop.org/series/113923/ 
-> <https://patchwork.freedesktop.org/series/113923/>
-> *State:*	failure
-> *Details:* 
-> https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8487/index.html 
-> <https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8487/index.html>
-> 
-> 
->   CI Bug Log - changes from IGT_7159 -> IGTPW_8487
-> 
-> 
->     Summary
-> 
-> *FAILURE*
-> 
-> Serious unknown changes coming with IGTPW_8487 absolutely need to be
-> verified manually.
-> 
-> If you think the reported changes have nothing to do with the changes
-> introduced in IGTPW_8487, please notify your bug team to allow them
-> to document this new failure mode, which will reduce false positives in CI.
-> 
-> External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8487/index.html
-> 
-> 
->     Participating hosts (40 -> 36)
-> 
-> Missing (4): fi-kbl-soraka bat-kbl-2 bat-atsm-1 fi-snb-2520m
-> 
-> 
->     Possible new issues
-> 
-> Here are the unknown changes that may have been introduced in IGTPW_8487:
-> 
-> 
->       IGT changes
-> 
-> 
->         Possible regressions
-> 
->   *
-> 
->     igt@kms_cursor_legacy@basic-flip-after-cursor-legacy (NEW):
-> 
->       o
-> 
->         {bat-rpls-1}: NOTRUN -> SKIP
->         <https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8487/bat-rpls-1/igt@kms_cursor_legacy@basic-flip-after-cursor-legacy.html> +7 similar issues
-> 
->       o
-> 
->         {bat-dg1-7}: NOTRUN -> SKIP
->         <https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8487/bat-dg1-7/igt@kms_cursor_legacy@basic-flip-after-cursor-legacy.html> +7 similar issues
-> 
->   *
-> 
->     igt@kms_cursor_legacy@basic-flip-after-cursor-varying-size (NEW):
-> 
->       o
-> 
->         {bat-adlm-1}: NOTRUN -> SKIP
->         <https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8487/bat-adlm-1/igt@kms_cursor_legacy@basic-flip-after-cursor-varying-size.html> +7 similar issues
-> 
->       o
-> 
->         fi-tgl-1115g4: NOTRUN -> SKIP
->         <https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8487/fi-tgl-1115g4/igt@kms_cursor_legacy@basic-flip-after-cursor-varying-size.html> +7 similar issues
-> 
->   *
-> 
->     igt@kms_cursor_legacy@basic-flip-before-cursor-atomic (NEW):
-> 
->       o {bat-rpls-2}: NOTRUN -> SKIP
->         <https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8487/bat-rpls-2/igt@kms_cursor_legacy@basic-flip-before-cursor-atomic.html> +7 similar issues
-> 
-> 
->     New tests
-> 
-> New tests have been introduced between IGT_7159 and IGTPW_8487:
-> 
-> 
->       New IGT tests (8)
-> 
->   *
-> 
->     igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic:
-> 
->       o Statuses : 5 pass(s) 30 skip(s)
->       o Exec time: [0.0] s
->   *
-> 
->     igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy:
-> 
->       o Statuses : 6 pass(s) 29 skip(s)
->       o Exec time: [0.0] s
->   *
-> 
->     igt@kms_cursor_legacy@basic-flip-after-cursor-atomic:
-> 
->       o Statuses : 23 pass(s) 12 skip(s)
->       o Exec time: [0.0] s
->   *
-> 
->     igt@kms_cursor_legacy@basic-flip-after-cursor-legacy:
-> 
->       o Statuses : 24 pass(s) 11 skip(s)
->       o Exec time: [0.0] s
->   *
-> 
->     igt@kms_cursor_legacy@basic-flip-after-cursor-varying-size:
-> 
->       o Statuses : 24 pass(s) 11 skip(s)
->       o Exec time: [0.0] s
->   *
-> 
->     igt@kms_cursor_legacy@basic-flip-before-cursor-atomic:
-> 
->       o Statuses : 23 pass(s) 12 skip(s)
->       o Exec time: [0.0] s
->   *
-> 
->     igt@kms_cursor_legacy@basic-flip-before-cursor-legacy:
-> 
->       o Statuses : 24 pass(s) 11 skip(s)
->       o Exec time: [0.0] s
->   *
-> 
->     igt@kms_cursor_legacy@basic-flip-before-cursor-varying-size:
-> 
->       o Statuses : 24 pass(s) 11 skip(s)
->       o Exec time: [0.0] s
-> 
-> 
->     Known issues
-> 
-> Here are the changes found in IGTPW_8487 that come from known issues:
-> 
-> 
->       IGT changes
-> 
-> 
->         Issues hit
-> 
->   *
-> 
->     igt@i915_selftest@live@execlists:
-> 
->       o fi-bsw-n3050: PASS
->         <https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7159/fi-bsw-n3050/igt@i915_selftest@live@execlists.html> -> ABORT <https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8487/fi-bsw-n3050/igt@i915_selftest@live@execlists.html> (i915#7911 <https://gitlab.freedesktop.org/drm/intel/issues/7911>)
->   *
-> 
->     igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic (NEW):
-> 
->       o
-> 
->         fi-glk-j4005: NOTRUN -> SKIP
->         <https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8487/fi-glk-j4005/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic.html> (fdo#109271 <https://bugs.freedesktop.org/show_bug.cgi?id=109271>) +1 similar issue
-> 
->       o
-> 
->         {bat-adlp-9}: NOTRUN -> SKIP
->         <https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8487/bat-adlp-9/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic.html> (i915#4103 <https://gitlab.freedesktop.org/drm/intel/issues/4103>) +1 similar issue
-> 
->       o
-> 
->         fi-skl-guc: NOTRUN -> SKIP
->         <https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8487/fi-skl-guc/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic.html> (fdo#109271 <https://bugs.freedesktop.org/show_bug.cgi?id=109271>) +1 similar issue
-> 
->       o
-> 
->         fi-kbl-7567u: NOTRUN -> SKIP
->         <https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8487/fi-kbl-7567u/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic.html> (fdo#109271 <https://bugs.freedesktop.org/show_bug.cgi?id=109271>) +1 similar issue
-> 
->       o
-> 
->         fi-cfl-8700k: NOTRUN -> SKIP
->         <https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8487/fi-cfl-8700k/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic.html> (fdo#109271 <https://bugs.freedesktop.org/show_bug.cgi?id=109271>) +1 similar issue
-> 
->       o
-> 
->         {bat-adln-1}: NOTRUN -> SKIP
->         <https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8487/bat-adln-1/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic.html> (i915#4213 <https://gitlab.freedesktop.org/drm/intel/issues/4213>) +1 similar issue
-> 
->   *
-> 
->     igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy (NEW):
-> 
->       o
-> 
->         fi-bsw-nick: NOTRUN -> SKIP
->         <https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8487/fi-bsw-nick/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy.html> (fdo#109271 <https://bugs.freedesktop.org/show_bug.cgi?id=109271>) +9 similar issues
-> 
->       o
-> 
->         {bat-rplp-1}: NOTRUN -> SKIP
->         <https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8487/bat-rplp-1/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy.html> (i915#4103 <https://gitlab.freedesktop.org/drm/intel/issues/4103> / i915#4213 <https://gitlab.freedesktop.org/drm/intel/issues/4213>) +1 similar issue
-> 
->       o
-> 
->         fi-rkl-11600: NOTRUN -> SKIP
->         <https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8487/fi-rkl-11600/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy.html> (i915#4103 <https://gitlab.freedesktop.org/drm/intel/issues/4103>) +1 similar issue
-> 
->       o
-> 
->         {bat-adls-5}: NOTRUN -> SKIP
->         <https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8487/bat-adls-5/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy.html> (i915#4103 <https://gitlab.freedesktop.org/drm/intel/issues/4103>) +1 similar issue
-> 
->       o
-> 
->         fi-cfl-guc: NOTRUN -> SKIP
->         <https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8487/fi-cfl-guc/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy.html> (fdo#109271 <https://bugs.freedesktop.org/show_bug.cgi?id=109271>) +1 similar issue
-> 
->       o
-> 
->         {bat-jsl-3}: NOTRUN -> SKIP
->         <https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8487/bat-jsl-3/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy.html> (i915#4103 <https://gitlab.freedesktop.org/drm/intel/issues/4103>) +1 similar issue
-> 
->       o
-> 
->         {bat-dg2-9}: NOTRUN -> SKIP
->         <https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8487/bat-dg2-9/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy.html> (i915#4103 <https://gitlab.freedesktop.org/drm/intel/issues/4103> / i915#4213 <https://gitlab.freedesktop.org/drm/intel/issues/4213>) +1 similar issue
-> 
->       o
-> 
->         fi-cfl-8109u: NOTRUN -> SKIP
->         <https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8487/fi-cfl-8109u/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy.html> (fdo#109271 <https://bugs.freedesktop.org/show_bug.cgi?id=109271>) +1 similar issue
-> 
->       o
-> 
->         {bat-jsl-1}: NOTRUN -> SKIP
->         <https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8487/bat-jsl-1/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy.html> (i915#4103 <https://gitlab.freedesktop.org/drm/intel/issues/4103>) +1 similar issue
-> 
->       o
-> 
->         {bat-adlp-6}: NOTRUN -> SKIP
->         <https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8487/bat-adlp-6/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy.html> (i915#4103 <https://gitlab.freedesktop.org/drm/intel/issues/4103>) +1 similar issue
-> 
->       o
-> 
->         fi-skl-6600u: NOTRUN -> SKIP
->         <https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8487/fi-skl-6600u/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy.html> (fdo#109271 <https://bugs.freedesktop.org/show_bug.cgi?id=109271>) +1 similar issue
-> 
->       o
-> 
->         fi-apl-guc: NOTRUN -> SKIP
->         <https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8487/fi-apl-guc/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy.html> (fdo#109271 <https://bugs.freedesktop.org/show_bug.cgi?id=109271>) +1 similar issue
-> 
->       o
-> 
->         bat-dg1-5: NOTRUN -> SKIP
->         <https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8487/bat-dg1-5/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy.html> (i915#4103 <https://gitlab.freedesktop.org/drm/intel/issues/4103> / i915#4213 <https://gitlab.freedesktop.org/drm/intel/issues/4213>) +1 similar issue
-> 
->   *
-> 
->     igt@kms_cursor_legacy@basic-flip-after-cursor-atomic (NEW):
-> 
->       o fi-pnv-d510: NOTRUN -> SKIP
->         <https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8487/fi-pnv-d510/igt@kms_cursor_legacy@basic-flip-after-cursor-atomic.html> (fdo#109271 <https://bugs.freedesktop.org/show_bug.cgi?id=109271>) +2 similar issues
->   *
-> 
->     igt@kms_cursor_legacy@basic-flip-after-cursor-legacy (NEW):
-> 
->       o fi-blb-e6850: NOTRUN -> SKIP
->         <https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8487/fi-blb-e6850/igt@kms_cursor_legacy@basic-flip-after-cursor-legacy.html> (fdo#109271 <https://bugs.freedesktop.org/show_bug.cgi?id=109271>) +7 similar issues
->   *
-> 
->     igt@kms_cursor_legacy@basic-flip-before-cursor-legacy (NEW):
-> 
->       o
-> 
->         {bat-dg2-11}: NOTRUN -> SKIP
->         <https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8487/bat-dg2-11/igt@kms_cursor_legacy@basic-flip-before-cursor-legacy.html> (i915#5354 <https://gitlab.freedesktop.org/drm/intel/issues/5354>) +7 similar issues
-> 
->       o
-> 
->         fi-kbl-x1275: NOTRUN -> SKIP
->         <https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8487/fi-kbl-x1275/igt@kms_cursor_legacy@basic-flip-before-cursor-legacy.html> (fdo#109271 <https://bugs.freedesktop.org/show_bug.cgi?id=109271>) +7 similar issues
-> 
->   *
-> 
->     igt@kms_cursor_legacy@basic-flip-before-cursor-varying-size (NEW):
-> 
->       o
-> 
->         {bat-dg2-8}: NOTRUN -> SKIP
->         <https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8487/bat-dg2-8/igt@kms_cursor_legacy@basic-flip-before-cursor-varying-size.html> (i915#5354 <https://gitlab.freedesktop.org/drm/intel/issues/5354>) +7 similar issues
-> 
->       o
-> 
->         fi-kbl-guc: NOTRUN -> SKIP
->         <https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8487/fi-kbl-guc/igt@kms_cursor_legacy@basic-flip-before-cursor-varying-size.html> (fdo#109271 <https://bugs.freedesktop.org/show_bug.cgi?id=109271> / i915#1845 <https://gitlab.freedesktop.org/drm/intel/issues/1845>) +7 similar issues
-> 
-> 
->         Possible fixes
-> 
->   *
-> 
->     igt@i915_selftest@live@execlists:
-> 
->       o fi-bsw-nick: ABORT
->         <https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7159/fi-bsw-nick/igt@i915_selftest@live@execlists.html> (i915#7911 <https://gitlab.freedesktop.org/drm/intel/issues/7911> / i915#7913 <https://gitlab.freedesktop.org/drm/intel/issues/7913>) -> PASS <https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8487/fi-bsw-nick/igt@i915_selftest@live@execlists.html>
->   *
-> 
->     igt@kms_pipe_crc_basic@suspend-read-crc@pipe-c-hdmi-a-1:
-> 
->       o fi-rkl-11600: FAIL
->         <https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7159/fi-rkl-11600/igt@kms_pipe_crc_basic@suspend-read-crc@pipe-c-hdmi-a-1.html> (fdo#103375 <https://bugs.freedesktop.org/show_bug.cgi?id=103375>) -> PASS <https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8487/fi-rkl-11600/igt@kms_pipe_crc_basic@suspend-read-crc@pipe-c-hdmi-a-1.html>
-> 
-> {name}: This element is suppressed. This means it is ignored when computing
-> the status of the difference (SUCCESS, WARNING, or FAILURE).
-> 
-> 
->     Build changes
-> 
->   * CI: CI-20190529 -> None
->   * IGT: IGT_7159 -> IGTPW_8487
-> 
-> CI-20190529: 20190529
-> CI_DRM_12730: c54b5fcf3e686a0abfdd7d6af53e9014c137023a @ 
-> git://anongit.freedesktop.org/gfx-ci/linux
-> IGTPW_8487: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8487/index.html
-> IGT_7159: d2ca8db8bf83a19034eee61c11ec01a4e973e0ed @ 
-> https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-> 
+> >
+> >>+		.num_properties = sizeof(properties) / 16,
+> >>+		.properties_ptr = to_user_pointer(properties),
+> >>+	};
+> >>+	uint32_t devid = intel_get_drm_devid(fd);
+> >>+
+> >>+	igt_require(intel_perf);
+> >>+	intel_perf_load_perf_configs(intel_perf, fd);
+> >>+
+> >>+	igt_require(devid);
+> >>+	igt_list_for_each_entry(metric_set_iter, &intel_perf->metric_sets, link) {
+> >>+		if (!strcmp(metric_set_iter->symbol_name,
+> >>+			    IS_HASWELL(devid) ? "RenderBasic" : "TestOa")) {
+> >>+			metric_set = metric_set_iter;
+> >>+			break;
+> >>+		}
+> >>+	}
+> >>+	igt_require(metric_set);
+> >>+	igt_require(metric_set->perf_oa_metrics_set);
+> >>+	properties[3] = metric_set->perf_oa_metrics_set;
+> >>+	properties[5] = metric_set->perf_oa_format;
+> >>+
+> >>+	igt_require(intel_perf->devinfo.timestamp_frequency);
+> >>+	properties[7] = max_oa_exponent_for_period_lte(intel_perf, 1000);
+> >
+> >nit: The result of max_oa_exponent_for_period_lte() can be hard coded 
+> >here (likely 1 << 5) and you could remove the additional code added 
+> >for max_oa_exponent_for_period_lte(). This parameter only controls the 
+> >frequency at which the OA reports are captured into the OA buffer and 
+> >it has no relation to the barrier related code in perf.
+> 
+> My bad. The value would likely be 5. Anyways, it's just a nit.
+
+Thanks for your constructive comments, I'll follow your suggestions.
+
+Thanks,
+Janusz
+
+> 
+> >
+> >Thanks,
+> >Umesh
+> >
+> >>+
+> >>+	intel_perf_free(intel_perf);
+> >...
+> 
+
+
+
