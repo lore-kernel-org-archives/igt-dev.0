@@ -1,24 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-io1-xd31.google.com (mail-io1-xd31.google.com
- [IPv6:2607:f8b0:4864:20::d31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 782B310E7E5
- for <igt-dev@lists.freedesktop.org>; Tue, 14 Feb 2023 06:15:28 +0000 (UTC)
-Received: by mail-io1-xd31.google.com with SMTP id j17so5408598ioa.9
- for <igt-dev@lists.freedesktop.org>; Mon, 13 Feb 2023 22:15:28 -0800 (PST)
-Date: Tue, 14 Feb 2023 08:15:25 +0200
-From: Petri Latvala <adrinael@adrinael.net>
-To: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Message-ID: <Y+sm/Zr9LM8CK0IT@adrinael.net>
-References: <20230209193231.57538-1-janusz.krzysztofik@linux.intel.com>
- <13320072.uLZWGnKmhe@jkrzyszt-mobl1.ger.corp.intel.com>
- <20230213095139.c5gcznwdf4a5kpgo@zkempczy-mobl2>
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 11CC210E0CF
+ for <igt-dev@lists.freedesktop.org>; Tue, 14 Feb 2023 09:57:40 +0000 (UTC)
+From: Vinod Govindapillai <vinod.govindapillai@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Tue, 14 Feb 2023 11:57:22 +0200
+Message-Id: <20230214095724.77881-1-vinod.govindapillai@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230213095139.c5gcznwdf4a5kpgo@zkempczy-mobl2>
-Subject: Re: [igt-dev] [Intel-gfx] [PATCH i-g-t] tests/i915_suspend: Free
- device list after *-without-i915 subtests
+Subject: [igt-dev] [PATCH i-g-t v2 0/2] Handle spurious HPDs - IGT part
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,47 +16,29 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org, intel-gfx@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Mon, Feb 13, 2023 at 10:51:39AM +0100, Zbigniew Kempczyński wrote:
-> On Fri, Feb 10, 2023 at 10:33:21PM +0100, Janusz Krzysztofik wrote:
-> > On Thursday, 9 February 2023 20:32:31 CET Janusz Krzysztofik wrote:
-> > > If any of *-without-i915 subtests fails or skips for any reason, it may
-> > > leave the i915 module unloaded while keeping our device list populated
-> > > with initially collected data.  In a follow up igt_fixture section we then
-> > > try to reopen the device.  If the test has been executed with a device
-> > > filter specified, an attempt to open the device finds a matching entry
-> > > that belongs to the no longer existing device in that initially collected
-> > > device list, fails to stat() it, concludes that's because of the device
-> > > having been already open, and returns an error.
-> > > 
-> > > Fix this potentially confusing test result by freeing the potentially
-> > > outdated device list before continuing with drm_open_driver().
-> > 
-> > Freeing device list occurred not safe if device scan was not performed before.  
-> > I can see 3 potential solutions:
-> > 1) force device rescan instead of free before calling drm_open_driver(),
-> > 2) teach igt_device_free() to return immediately if the device list has not 
-> >    been allocated,
-> > 3) provide a has_device_list() helper for to be used if not sure before 
-> >    calling igt_device_free().
-> > 
-> > Any preferences?
-> 
-> I would enforce rescan.
-> 
-> BTW I wonder how it can happen if runner is executing each subtest
-> in new process so you're starting from scratch and rescan should be
-> executed automatically.
-> 
-> Is is the case you're running few tests from the console?
+Some panels generate spurious HPDs during CI execution causing
+random unexpected failures. There are two parts for handling
+this issue - in driver and in IGT. This is for IGT.
 
-For the record, igt_runner has --multiple-mode where multiple subtests
-are executed in the same exec.
+IGT will set ignore long HPD debugfs entry to ignore long HPDs
+in the driver. And then by force connect the active connectors,
+we can avoid the detect hooks being executed from drm and hence
+avoid random failures. The behavior is controlled using the
+environment variable IGT_KMS_IGNORE_HPD. Set this var in CI
+exections where panels that generate spurioud HPDs are used.
 
+Vinod Govindapillai (2):
+  lib/igt_debugfs: set provision to ignore long HPDs
+  lib/igt_kms: handle spurious HPDs - IGT part
+
+ lib/igt_debugfs.c | 22 ++++++++++++++++++++
+ lib/igt_debugfs.h |  1 +
+ lib/igt_kms.c     | 53 +++++++++++++++++++++++++++++++++++++++++++++--
+ 3 files changed, 74 insertions(+), 2 deletions(-)
 
 -- 
-Petri Latvala
+2.34.1
