@@ -1,16 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Date: Tue, 14 Feb 2023 22:20:10 +0100
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BA14710E9A9
+ for <igt-dev@lists.freedesktop.org>; Tue, 14 Feb 2023 21:33:55 +0000 (UTC)
+Date: Tue, 14 Feb 2023 22:33:46 +0100
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Message-ID: <20230214212010.6qpjrdkcb3fnogjx@kamilkon-desk1>
-References: <20230213093132.12763-1-janusz.krzysztofik@linux.intel.com>
- <20230213093132.12763-2-janusz.krzysztofik@linux.intel.com>
+Message-ID: <20230214213346.fe6f5sky6xvuvt52@kamilkon-desk1>
+References: <20230210174617.552075-1-mcanal@igalia.com>
+ <20230210174617.552075-3-mcanal@igalia.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20230213093132.12763-2-janusz.krzysztofik@linux.intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t v3 1/1] tests: Exercise remote request
- vs barrier handling race
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20230210174617.552075-3-mcanal@igalia.com>
+Subject: Re: [igt-dev] [PATCH i-g-t v3 2/3] tests/v3d_submit_csd: Create
+ test for V3D's Submit CSD IOCTL
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,222 +22,93 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: intel-gfx@lists.freedesktop.org,
- Chris Wilson <chris.p.wilson@linux.intel.com>,
- Nirmoy Das <nirmoy.das@intel.com>
+Cc: Iago Toral Quiroga <itoral@igalia.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Janusz,
+Hi Maíra,
 
-On 2023-02-13 at 10:31:32 +0100, Janusz Krzysztofik wrote:
-> Users reported oopses on list corruptions when using i915 perf with a
-> number of concurrently running graphics applications.  That indicates we
-> are currently missing some important tests for such scenarios.  Cover
-> that gap.
+On 2023-02-10 at 14:46:18 -0300, Maíra Canal wrote:
+> Add eightteen igt_subtests for the DRM_IOCTL_V3D_SUBMIT_CSD, which ensures
+---------- ^
+s/eightteen/eighteen/
+imho you can skip number of tests added, also just s/igt_subtests/subtests/
+ 
+> that improper parameters return an errno and test multisync and
+> single sync abilities. For most of the subtests, the empty shader is the
+> base of the submission, as it is one of the simplest jobs possible,
+> allowing it to test the synchronization abilities of the V3D.
 > 
-> Root cause analysis pointed out to an issue in barrier processing code and
-> its interaction with perf replacing kernel contexts' active barriers with
-> its own requests.
-> 
-> Add a new test intended for exercising intentionally racy barrier tasks
-> list processing and its interaction with other i915 subsystems.  As a
-> first subtest, add one that exercises the interaction of remote requests
-> with barrier tasks list handling, especially barrier preallocate / acquire
-> operations performed during context first pin / last unpin.
-> 
-> The code is partially inspired by Chris Wilson's igt@perf@open-race
-> subtest, which I was not able to get an Ack for from upstream.
-> 
-> v3: don't add the new subtest to gem_ctx_exec which occurred blocklisted,
->     create a new test hosting the new subtest, update commit descripion,
->   - prepare parameters for perf open still in the main thread to avoid
->     test failures on platforms with no perf support (will skip now),
->   - call perf open with OA buffer reports disabled, this will make sure
->     that the perf API doesn't unnecessarily enable the OA unit, while the
->     test still runs the targeted code (Umesh),
->   - replace additional code for OA exponent calculations with a reasonable
->     hardcoded value (Umesh).
-> v2: convert to a separate subtest, not a variant of another one (that has
->     been dropped from the series),
->   - move the subtest out of tests/i915/perf.c (Ashutosh), add it to
->     tests/i915/gem_ctx_exec.c,
->   - don't touch lib/i915/perf.c (Umesh, Ashutosh), duplicate reused code
->     from tests/i915/perf.c in tests/i915/gem_ctx_exec.c.
-> 
-> References: https://gitlab.freedesktop.org/drm/intel/-/issues/6333
-> Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-> Cc: Chris Wilson <chris.p.wilson@intel.com>
-> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
-> Cc: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+> Reviewed-by: Melissa Wen <mwen@igalia.com>
+> Signed-off-by: Maíra Canal <mcanal@igalia.com>
+
+Please note new Petri e-mail: Petri Latvala <adrinael@adrinael.net>
+
 > ---
->  tests/i915/gem_barrier_race.c | 159 ++++++++++++++++++++++++++++++++++
->  tests/meson.build             |   8 ++
->  2 files changed, 167 insertions(+)
->  create mode 100644 tests/i915/gem_barrier_race.c
+>  tests/v3d/meson.build      |   1 +
+>  tests/v3d/v3d_submit_csd.c | 362 +++++++++++++++++++++++++++++++++++++
+>  tests/v3d_ci/v3d.testlist  |  18 ++
+>  3 files changed, 381 insertions(+)
+>  create mode 100644 tests/v3d/v3d_submit_csd.c
 > 
-> diff --git a/tests/i915/gem_barrier_race.c b/tests/i915/gem_barrier_race.c
+> diff --git a/tests/v3d/meson.build b/tests/v3d/meson.build
+> index be92fd66..d070fdb5 100644
+> --- a/tests/v3d/meson.build
+> +++ b/tests/v3d/meson.build
+> @@ -4,6 +4,7 @@ v3d_progs = [
+>  	'v3d_get_param',
+>  	'v3d_mmap',
+>  	'v3d_submit_cl',
+> +	'v3d_submit_csd',
+>  	'v3d_perfmon',
+>  	'v3d_wait_bo',
+>  ]
+> diff --git a/tests/v3d/v3d_submit_csd.c b/tests/v3d/v3d_submit_csd.c
 > new file mode 100644
-> index 0000000000..fd0c7bdf1c
+> index 00000000..256140c8
 > --- /dev/null
-> +++ b/tests/i915/gem_barrier_race.c
-> @@ -0,0 +1,159 @@
+> +++ b/tests/v3d/v3d_submit_csd.c
+> @@ -0,0 +1,362 @@
 > +// SPDX-License-Identifier: MIT
 > +/*
-> + * Copyright(c) 2023 Intel Corporation. All rights reserved.
+> + * Copyright © 2022 Igalia S.L.
 > + */
 > +
-> +#include <stdint.h>
+> +#include "igt.h"
+> +#include "igt_v3d.h"
+> +#include "igt_syncobj.h"
 > +
-> +#include "drmtest.h"
-> +#include "igt_aux.h"
-> +#include "igt_core.h"
-> +#include "igt_gt.h"
-> +#include "intel_chipset.h"
-> +#include "intel_reg.h"
-> +#include "ioctl_wrappers.h"
+> +/* One tenth of a second */
+> +#define SHORT_TIME_NSEC 100000000ull
 > +
-> +#include "i915/gem.h"
-> +#include "i915/gem_create.h"
-> +#include "i915/gem_engine_topology.h"
-> +#include "i915/perf.h"
-> +
-> +IGT_TEST_DESCRIPTION("Exercise barrier tasks list handling and its interation with other i915 subsystems");
------------------------------------------------ ^^^^^^^^^^^^^ --------------^-------------- ^
-s/interation/interaction/
+> +#define NSECS_PER_SEC 1000000000ull
 
-Please make it generic so it will not need to be changed soon,
-for example:
-IGT_TEST_DESCRIPTION("Exercise barrier tasks and its interaction with other subsystems");
+Please put here global description:
+IGT_TEST_DESCRIPTION("Global description of tests in this module");
+
+For example, see:
+https://patchwork.freedesktop.org/patch/522415/?series=113522&rev=3
+
+Btw these are minor corrections, please keep your r-b tag,
+
+Regards,
+Kamil
 
 > +
-> +/* Based on code patterns found in tests/i915/perf.c */
-> +static void perf_open_close_workload(int fd, int *done)
+> +static uint64_t
+> +gettime_ns(void)
 > +{
-> +	struct intel_perf_metric_set *metric_set = NULL, *metric_set_iter;
-> +	struct intel_perf *intel_perf = intel_perf_for_fd(fd);
-> +	uint64_t properties[] = {
-> +		DRM_I915_PERF_PROP_SAMPLE_OA, true,
-> +		DRM_I915_PERF_PROP_OA_METRICS_SET, 0,
-> +		DRM_I915_PERF_PROP_OA_FORMAT, 0,
-> +		DRM_I915_PERF_PROP_OA_EXPONENT, 5,
-> +	};
-> +	struct drm_i915_perf_open_param param = {
-> +		.flags = I915_PERF_FLAG_FD_CLOEXEC | I915_PERF_FLAG_DISABLED,
-> +		.num_properties = sizeof(properties) / 16,
-> +		.properties_ptr = to_user_pointer(properties),
-> +	};
-> +	uint32_t devid = intel_get_drm_devid(fd);
+> +	struct timespec current;
 > +
-> +	igt_require(intel_perf);
-> +	intel_perf_load_perf_configs(intel_perf, fd);
-> +
-> +	igt_require(devid);
-> +	igt_list_for_each_entry(metric_set_iter, &intel_perf->metric_sets, link) {
-> +		if (!strcmp(metric_set_iter->symbol_name,
-> +			    IS_HASWELL(devid) ? "RenderBasic" : "TestOa")) {
-> +			metric_set = metric_set_iter;
-> +			break;
-> +		}
-> +	}
-> +	igt_require(metric_set);
-> +	igt_require(metric_set->perf_oa_metrics_set);
-> +	properties[3] = metric_set->perf_oa_metrics_set;
-> +	properties[5] = metric_set->perf_oa_format;
-> +
-> +	intel_perf_free(intel_perf);
-> +
-> +	igt_fork(child, 1) {
-> +		do {
-> +			int stream = igt_ioctl(fd, DRM_IOCTL_I915_PERF_OPEN, &param);
-> +
-> +			igt_assert_fd(stream);
-> +			close(stream);
-> +
-> +		} while (!READ_ONCE(*done));
-> +	}
+> +	clock_gettime(CLOCK_MONOTONIC, &current);
+> +	return (uint64_t)current.tv_sec * NSECS_PER_SEC + current.tv_nsec;
 > +}
 > +
-> +static void remote_request_workload(int fd, int *done)
--------------- ^
+> +static uint64_t
+> +short_timeout(void)
 > +{
-> +	/*
-> +	 * Use DRM_IOCTL_I915_PERF_OPEN / close as
-> +	 * intel_context_prepare_remote_request() workload
-> +	 */
-> +	perf_open_close_workload(fd, done);
-------- ^
-> +}
-
-These is just calling one function as another name, imho just
-rename perf_open_close_workload() into remote_request_workload()
-
-> +
-> +/* Copied from tests/i915/gem_ctx_exec.c */
-> +static int exec(int fd, uint32_t handle, int ring, int ctx_id)
-> +{
-> +	struct drm_i915_gem_exec_object2 obj = { .handle = handle };
-> +	struct drm_i915_gem_execbuffer2 execbuf = {
-> +		.buffers_ptr = to_user_pointer(&obj),
-> +		.buffer_count = 1,
-> +		.flags = ring,
-> +	};
-> +
-> +	i915_execbuffer2_set_context_id(execbuf, ctx_id);
-> +
-> +	return __gem_execbuf(fd, &execbuf);
-> +}
-> +
-> +static void gem_create_nop_exec_sync_close_loop(int fd, uint64_t engine, int *done)
-> +{
-> +	const uint32_t batch[2] = { 0, MI_BATCH_BUFFER_END };
-> +
-> +	fd = gem_reopen_driver(fd);
-> +
-> +	do {
-> +		uint32_t handle = gem_create(fd, 4096);
-> +
-> +		gem_write(fd, handle, 0, batch, sizeof(batch));
-> +		igt_assert_eq(exec(fd, handle, engine, 0), 0);
-> +
-> +		gem_sync(fd, handle);
-> +		gem_close(fd, handle);
-> +
-> +	} while (!READ_ONCE(*done));
-> +}
-> +
-> +static void intel_context_first_pin_last_unpin_loop(int fd, uint64_t engine, int *done)
--------------- ^
-> +{
-> +	/*
-> +	 * Use gem_create -> gem_write -> gem_execbuf -> gem_sync -> gem_close
-> +	 * as intel context first pin / last unpin intensive workload
-> +	 */
-> +	gem_create_nop_exec_sync_close_loop(fd, engine, done);
-------- ^
-> +}
-
-Same here, just rename original function, maybe make it a little
-shorter and put longer explanations in comments.
-
-> +
-> +static void test_remote_request(int fd, uint64_t engine, unsigned int timeout)
-> +{
-> +	int *done = mmap(0, 4096, PROT_WRITE, MAP_SHARED | MAP_ANON, -1, 0);
-> +
-> +	igt_assert(done != MAP_FAILED);
-> +
-> +	remote_request_workload(fd, done);
-> +
-> +	igt_fork(child, sysconf(_SC_NPROCESSORS_ONLN))
-> +		intel_context_first_pin_last_unpin_loop(fd, engine, done);
-> +
-> +	sleep(timeout);
-> +	*done = 1;
-> +	igt_waitchildren();
-> +	munmap(done, 4096);
+> +	return gettime_ns() + SHORT_TIME_NSEC;
 > +}
 > +
 > +igt_main
@@ -241,47 +116,363 @@ shorter and put longer explanations in comments.
 > +	int fd;
 > +
 > +	igt_fixture {
-> +		fd = drm_open_driver_render(DRIVER_INTEL);
-> +		igt_require_gem(fd);
+> +		fd = drm_open_driver(DRIVER_V3D);
+> +		igt_require(igt_v3d_get_param(fd, DRM_V3D_PARAM_SUPPORTS_CSD));
 > +	}
 > +
-> +	igt_describe("Race intel_context_prepare_remote_request against intel_context_active_acquire/release");
-> +	igt_subtest_with_dynamic("remote-request") {
-> +		struct intel_execution_engine2 *e;
+> +	igt_describe("Make sure a submission cannot be accepted with a pad different than zero.");
+> +	igt_subtest("bad-pad") {
+> +		struct drm_v3d_submit_csd submit = {
+> +			.pad = 1
+> +		};
+> +		do_ioctl_err(fd, DRM_IOCTL_V3D_SUBMIT_CSD, &submit, EINVAL);
+> +	}
 > +
-> +		for_each_physical_engine(fd, e) {
-> +			if (e->class != I915_ENGINE_CLASS_RENDER)
-> +				continue;
+> +	igt_describe("Make sure a submission cannot be accepted with invalid flags.");
+> +	igt_subtest("bad-flag") {
+> +		struct drm_v3d_submit_csd submit = {
+> +			.flags = 0xaa
+> +		};
+> +		do_ioctl_err(fd, DRM_IOCTL_V3D_SUBMIT_CSD, &submit, EINVAL);
+> +	}
 > +
-> +			igt_dynamic(e->name)
-> +				test_remote_request(fd, e->flags, 5);
-
-Do we need all physical engines to be tested ?
-
-Regards,
-Kamil
+> +	igt_describe("Make sure a submission cannot be accepted if the extensions handle "
+> +		     "is invalid.");
+> +	igt_subtest("bad-extension") {
+> +		struct drm_v3d_submit_csd submit = {
+> +			.flags = DRM_V3D_SUBMIT_EXTENSION,
+> +			.extensions = 0ULL
+> +		};
+> +		do_ioctl_err(fd, DRM_IOCTL_V3D_SUBMIT_CSD, &submit, EINVAL);
+> +	}
+> +
+> +	igt_describe("Make sure a submission cannot be accepted if the BO handle is invalid.");
+> +	igt_subtest("bad-bo") {
+> +		struct v3d_csd_job *job = igt_v3d_empty_shader(fd);
+> +
+> +		job->submit->bo_handles = 0ULL;
+> +		job->submit->bo_handle_count = 1;
+> +
+> +		do_ioctl_err(fd, DRM_IOCTL_V3D_SUBMIT_CSD, job->submit, EFAULT);
+> +		igt_v3d_free_csd_job(fd, job);
+> +	}
+> +
+> +	igt_describe("Make sure a submission cannot be accepted if the perfmon id is invalid.");
+> +	igt_subtest("bad-perfmon") {
+> +		struct v3d_csd_job *job = igt_v3d_empty_shader(fd);
+> +
+> +		igt_require(igt_v3d_get_param(fd, DRM_V3D_PARAM_SUPPORTS_PERFMON));
+> +
+> +		job->submit->perfmon_id = 1;
+> +
+> +		do_ioctl_err(fd, DRM_IOCTL_V3D_SUBMIT_CSD, job->submit, ENOENT);
+> +		igt_v3d_free_csd_job(fd, job);
+> +	}
+> +
+> +	igt_describe("Make sure a submission cannot be accepted if the in-sync is not signaled.");
+> +	igt_subtest("bad-in-sync") {
+> +		struct v3d_csd_job *job = igt_v3d_empty_shader(fd);
+> +
+> +		job->submit->in_sync = syncobj_create(fd, 0);
+> +
+> +		do_ioctl_err(fd, DRM_IOCTL_V3D_SUBMIT_CSD, job->submit, EINVAL);
+> +		igt_v3d_free_csd_job(fd, job);
+> +	}
+> +
+> +	igt_describe("Make sure that the multisync pad is zero.");
+> +	igt_subtest("bad-multisync-pad") {
+> +		struct drm_v3d_multi_sync ms = { };
+> +		struct v3d_csd_job *job = igt_v3d_empty_shader(fd);
+> +
+> +		igt_require(igt_v3d_get_param(fd, DRM_V3D_PARAM_SUPPORTS_MULTISYNC_EXT));
+> +
+> +		ms.pad = 1;
+> +
+> +		job->submit->flags = DRM_V3D_SUBMIT_EXTENSION;
+> +		job->submit->extensions = to_user_pointer(&ms);
+> +
+> +		do_ioctl_err(fd, DRM_IOCTL_V3D_SUBMIT_CSD, job->submit, EINVAL);
+> +		igt_v3d_free_csd_job(fd, job);
+> +	}
+> +
+> +	igt_describe("Make sure that the multisync extension id exists.");
+> +	igt_subtest("bad-multisync-extension") {
+> +		struct drm_v3d_multi_sync ms = { };
+> +		struct v3d_csd_job *job = igt_v3d_empty_shader(fd);
+> +
+> +		igt_require(igt_v3d_get_param(fd, DRM_V3D_PARAM_SUPPORTS_MULTISYNC_EXT));
+> +
+> +		ms.base.id = 0;
+> +
+> +		job->submit->flags = DRM_V3D_SUBMIT_EXTENSION;
+> +		job->submit->extensions = to_user_pointer(&ms);
+> +
+> +		do_ioctl_err(fd, DRM_IOCTL_V3D_SUBMIT_CSD, job->submit, EINVAL);
+> +		igt_v3d_free_csd_job(fd, job);
+> +	}
+> +
+> +	igt_describe("Make sure that the multisync out-sync is valid.");
+> +	igt_subtest("bad-multisync-out-sync") {
+> +		struct drm_v3d_multi_sync ms = { };
+> +		struct v3d_csd_job *job = igt_v3d_empty_shader(fd);
+> +
+> +		igt_require(igt_v3d_get_param(fd, DRM_V3D_PARAM_SUPPORTS_MULTISYNC_EXT));
+> +
+> +		igt_v3d_set_multisync(&ms, V3D_CSD);
+> +
+> +		ms.out_sync_count = 1;
+> +		ms.out_syncs = 0ULL;
+> +
+> +		job->submit->flags = DRM_V3D_SUBMIT_EXTENSION;
+> +		job->submit->extensions = to_user_pointer(&ms);
+> +
+> +		do_ioctl_err(fd, DRM_IOCTL_V3D_SUBMIT_CSD, job->submit, EFAULT);
+> +		igt_v3d_free_csd_job(fd, job);
+> +	}
+> +
+> +	igt_describe("Make sure that the multisync in-sync is valid.");
+> +	igt_subtest("bad-multisync-in-sync") {
+> +		struct drm_v3d_multi_sync ms = { };
+> +		struct v3d_csd_job *job = igt_v3d_empty_shader(fd);
+> +
+> +		igt_require(igt_v3d_get_param(fd, DRM_V3D_PARAM_SUPPORTS_MULTISYNC_EXT));
+> +
+> +		igt_v3d_set_multisync(&ms, V3D_CSD);
+> +
+> +		ms.in_sync_count = 1;
+> +		ms.in_syncs = 0ULL;
+> +
+> +		job->submit->flags = DRM_V3D_SUBMIT_EXTENSION;
+> +		job->submit->extensions = to_user_pointer(&ms);
+> +
+> +		do_ioctl_err(fd, DRM_IOCTL_V3D_SUBMIT_CSD, job->submit, EFAULT);
+> +		igt_v3d_free_csd_job(fd, job);
+> +	}
+> +
+> +	igt_describe("Test a valid submission without syncobj.");
+> +	igt_subtest("valid-submission") {
+> +		struct v3d_csd_job *job = igt_v3d_empty_shader(fd);
+> +
+> +		do_ioctl(fd, DRM_IOCTL_V3D_SUBMIT_CSD, job->submit);
+> +		igt_v3d_free_csd_job(fd, job);
+> +	}
+> +
+> +	igt_describe("Test a valid submission with a single out-sync.");
+> +	igt_subtest("single-out-sync") {
+> +		struct v3d_csd_job *job = igt_v3d_empty_shader(fd);
+> +
+> +		job->submit->out_sync = syncobj_create(fd, DRM_SYNCOBJ_CREATE_SIGNALED);
+> +
+> +		do_ioctl(fd, DRM_IOCTL_V3D_SUBMIT_CSD, job->submit);
+> +		igt_assert(syncobj_wait(fd, &job->submit->out_sync, 1, INT64_MAX, 0, NULL));
+> +		igt_v3d_free_csd_job(fd, job);
+> +	}
+> +
+> +	igt_describe("Test a valid submission with a single in-sync.");
+> +	igt_subtest("single-in-sync") {
+> +		struct v3d_csd_job *job1 = igt_v3d_empty_shader(fd);
+> +		struct v3d_csd_job *job2 = igt_v3d_empty_shader(fd);
+> +		uint32_t out_sync;
+> +
+> +		out_sync = syncobj_create(fd, 0);
+> +
+> +		job1->submit->in_sync = out_sync;
+> +		do_ioctl_err(fd, DRM_IOCTL_V3D_SUBMIT_CSD, job1->submit, EINVAL);
+> +
+> +		job2->submit->out_sync = out_sync;
+> +		do_ioctl(fd, DRM_IOCTL_V3D_SUBMIT_CSD, job2->submit);
+> +
+> +		igt_assert(syncobj_wait(fd, &job2->submit->out_sync, 1,
+> +					INT64_MAX, 0, NULL));
+> +
+> +		job1->submit->in_sync = out_sync;
+> +		job1->submit->out_sync = syncobj_create(fd, DRM_SYNCOBJ_CREATE_SIGNALED);
+> +		do_ioctl(fd, DRM_IOCTL_V3D_SUBMIT_CSD, job1->submit);
+> +
+> +		igt_assert(syncobj_wait(fd, &job1->submit->out_sync, 1,
+> +					INT64_MAX, 0, NULL));
+> +
+> +		igt_v3d_free_csd_job(fd, job1);
+> +		igt_v3d_free_csd_job(fd, job2);
+> +	}
+> +
+> +	igt_describe("Test a valid submission with a multisync without syncobjs.");
+> +	igt_subtest("valid-multisync-submission") {
+> +		struct drm_v3d_multi_sync ms = { };
+> +		struct v3d_csd_job *job = igt_v3d_empty_shader(fd);
+> +
+> +		job->submit->flags = DRM_V3D_SUBMIT_EXTENSION;
+> +
+> +		if (!igt_v3d_get_param(fd, DRM_V3D_PARAM_SUPPORTS_MULTISYNC_EXT)) {
+> +			do_ioctl_err(fd, DRM_IOCTL_V3D_SUBMIT_CSD, &job->submit, EINVAL);
+> +		} else {
+> +			igt_v3d_set_multisync(&ms, V3D_CSD);
+> +			job->submit->extensions = to_user_pointer(&ms);
+> +
+> +			do_ioctl(fd, DRM_IOCTL_V3D_SUBMIT_CSD, job->submit);
 > +		}
-> +	}
-> +}
-> diff --git a/tests/meson.build b/tests/meson.build
-> index 6fb1bb86c9..5670712ae8 100644
-> --- a/tests/meson.build
-> +++ b/tests/meson.build
-> @@ -389,6 +389,14 @@ test_executables += executable('i915_pm_rc6_residency',
->  	   install : true)
->  test_list += 'i915_pm_rc6_residency'
->  
-> +test_executables += executable('gem_barrier_race',
-> +	   join_paths('i915', 'gem_barrier_race.c'),
-> +	   dependencies : test_deps + [ lib_igt_i915_perf ],
-> +	   install_dir : libexecdir,
-> +	   install_rpath : libexecdir_rpathdir,
-> +	   install : true)
-> +test_list += 'gem_barrier_race'
 > +
->  test_executables += executable('perf_pmu',
->  	   join_paths('i915', 'perf_pmu.c'),
->  	   dependencies : test_deps + [ lib_igt_perf ],
+> +		igt_v3d_free_csd_job(fd, job);
+> +	}
+> +
+> +	igt_describe("Test a valid submission with a multiple out-syncs.");
+> +	igt_subtest("multisync-out-syncs") {
+> +		struct drm_v3d_multi_sync ms = { };
+> +		struct v3d_csd_job *job = igt_v3d_empty_shader(fd);
+> +		struct drm_v3d_sem *out_syncs;
+> +		int i;
+> +
+> +		igt_require(igt_v3d_get_param(fd, DRM_V3D_PARAM_SUPPORTS_MULTISYNC_EXT));
+> +
+> +		igt_v3d_set_multisync(&ms, V3D_CSD);
+> +		ms.out_sync_count = 4;
+> +
+> +		out_syncs = malloc(ms.out_sync_count * sizeof(*out_syncs));
+> +		for (i = 0; i < ms.out_sync_count; i++)
+> +			out_syncs[i].handle = syncobj_create(fd, DRM_SYNCOBJ_CREATE_SIGNALED);
+> +
+> +		ms.out_syncs = to_user_pointer(out_syncs);
+> +
+> +		job->submit->flags = DRM_V3D_SUBMIT_EXTENSION;
+> +		job->submit->extensions = to_user_pointer(&ms);
+> +
+> +		do_ioctl(fd, DRM_IOCTL_V3D_SUBMIT_CSD, job->submit);
+> +		for (i = 0; i < ms.out_sync_count; i++)
+> +			igt_assert(syncobj_wait(fd, &out_syncs[i].handle, 1, INT64_MAX, 0, NULL));
+> +
+> +		igt_v3d_free_csd_job(fd, job);
+> +		free(out_syncs);
+> +	}
+> +
+> +	igt_describe("Make sure that the multisync extension is preferred over the "
+> +		     "single syncobjs.");
+> +	igt_subtest("multi-and-single-sync") {
+> +		struct drm_v3d_multi_sync ms = { };
+> +		struct v3d_csd_job *job = igt_v3d_empty_shader(fd);
+> +		struct drm_v3d_sem *out_syncs;
+> +		int i;
+> +
+> +		igt_require(igt_v3d_get_param(fd, DRM_V3D_PARAM_SUPPORTS_MULTISYNC_EXT));
+> +
+> +		igt_v3d_set_multisync(&ms, V3D_CSD);
+> +		ms.out_sync_count = 1;
+> +
+> +		out_syncs = malloc(ms.out_sync_count * sizeof(*out_syncs));
+> +		for (i = 0; i < ms.out_sync_count; i++)
+> +			out_syncs[i].handle = syncobj_create(fd, DRM_SYNCOBJ_CREATE_SIGNALED);
+> +
+> +		ms.out_syncs = to_user_pointer(out_syncs);
+> +
+> +		job->submit->flags = DRM_V3D_SUBMIT_EXTENSION;
+> +		job->submit->extensions = to_user_pointer(&ms);
+> +
+> +		job->submit->out_sync = syncobj_create(fd, 0);
+> +
+> +		do_ioctl(fd, DRM_IOCTL_V3D_SUBMIT_CSD, job->submit);
+> +		for (i = 0; i < ms.out_sync_count; i++)
+> +			igt_assert(syncobj_wait(fd, &out_syncs[i].handle, 1, INT64_MAX, 0, NULL));
+> +
+> +		/*
+> +		 * The multisync extension should be prioritized over the single syncobjs.
+> +		 * So, the job->submit->out_sync should stay not signaled.
+> +		 */
+> +		igt_assert_eq(syncobj_wait_err(fd, &job->submit->out_sync, 1, INT64_MAX, 0),
+> +			      -EINVAL);
+> +
+> +		igt_v3d_free_csd_job(fd, job);
+> +		free(out_syncs);
+> +	}
+> +
+> +	igt_describe("Test the implicit order of the submission to the CSD queue.");
+> +	igt_subtest("multiple-job-submission") {
+> +		const uint32_t num_jobs = 10;
+> +		struct v3d_csd_job **jobs = NULL;
+> +		int i;
+> +
+> +		jobs = malloc(num_jobs * sizeof(*jobs));
+> +
+> +		for (i = 0; i < num_jobs; i++) {
+> +			jobs[i] = igt_v3d_empty_shader(fd);
+> +			jobs[i]->submit->out_sync = syncobj_create(fd, DRM_SYNCOBJ_CREATE_SIGNALED);
+> +		}
+> +
+> +		for (i = 0; i < num_jobs; i++)
+> +			do_ioctl(fd, DRM_IOCTL_V3D_SUBMIT_CSD, jobs[i]->submit);
+> +
+> +		igt_assert(syncobj_wait(fd, &jobs[num_jobs - 1]->submit->out_sync, 1,
+> +					short_timeout(), 0, NULL));
+> +
+> +		/*
+> +		 * If the last job is signaled, then all the previous jobs should
+> +		 * already signaled, to assure the implicit synchronization.
+> +		 */
+> +		for (i = 0; i < num_jobs; i++) {
+> +			igt_assert(syncobj_wait(fd, &jobs[i]->submit->out_sync, 1, 0, 0, NULL));
+> +			igt_v3d_free_csd_job(fd, jobs[i]);
+> +		}
+> +
+> +		free(jobs);
+> +	}
+> +
+> +	igt_describe("Test the coherency of creation/destruction of a perfmon attached to a job.");
+> +	igt_subtest("job-perfmon") {
+> +		uint8_t counters[] = { V3D_PERFCNT_L2T_TMU_READS,
+> +				       V3D_PERFCNT_L2T_CLE_READS,
+> +				       V3D_PERFCNT_L2T_VCD_READS,
+> +				       V3D_PERFCNT_L2T_TMUCFG_READS };
+> +		struct v3d_csd_job *job = igt_v3d_empty_shader(fd);
+> +		uint32_t id;
+> +
+> +		igt_require(igt_v3d_get_param(fd, DRM_V3D_PARAM_SUPPORTS_PERFMON));
+> +
+> +		id = igt_v3d_perfmon_create(fd, ARRAY_SIZE(counters), counters);
+> +
+> +		job->submit->out_sync = syncobj_create(fd, DRM_SYNCOBJ_CREATE_SIGNALED);
+> +		job->submit->perfmon_id = id;
+> +
+> +		do_ioctl(fd, DRM_IOCTL_V3D_SUBMIT_CSD, job->submit);
+> +		igt_assert(syncobj_wait(fd, &job->submit->out_sync, 1,
+> +					INT64_MAX, 0, NULL));
+> +		igt_v3d_perfmon_get_values(fd, job->submit->perfmon_id);
+> +
+> +		igt_v3d_free_csd_job(fd, job);
+> +
+> +		igt_v3d_perfmon_get_values(fd, id);
+> +		igt_v3d_perfmon_destroy(fd, id);
+> +	}
+> +
+> +	igt_fixture
+> +		close(fd);
+> +}
+> diff --git a/tests/v3d_ci/v3d.testlist b/tests/v3d_ci/v3d.testlist
+> index 80e99831..5452fd99 100644
+> --- a/tests/v3d_ci/v3d.testlist
+> +++ b/tests/v3d_ci/v3d.testlist
+> @@ -29,6 +29,24 @@ igt@v3d/v3d_submit_cl@multiple-job-submission
+>  igt@v3d/v3d_submit_cl@multisync-out-syncs
+>  igt@v3d/v3d_submit_cl@multi-and-single-sync
+>  igt@v3d/v3d_submit_cl@job-perfmon
+> +igt@v3d/v3d_submit_csd@bad-pad
+> +igt@v3d/v3d_submit_csd@bad-flag
+> +igt@v3d/v3d_submit_csd@bad-extension
+> +igt@v3d/v3d_submit_csd@bad-bo
+> +igt@v3d/v3d_submit_csd@bad-perfmon
+> +igt@v3d/v3d_submit_csd@bad-in-sync
+> +igt@v3d/v3d_submit_csd@bad-multisync-pad
+> +igt@v3d/v3d_submit_csd@bad-multisync-extension
+> +igt@v3d/v3d_submit_csd@bad-multisync-out-sync
+> +igt@v3d/v3d_submit_csd@bad-multisync-in-sync
+> +igt@v3d/v3d_submit_csd@valid-submission
+> +igt@v3d/v3d_submit_csd@single-out-sync
+> +igt@v3d/v3d_submit_csd@single-in-sync
+> +igt@v3d/v3d_submit_csd@valid-multisync-submission
+> +igt@v3d/v3d_submit_csd@multiple-job-submission
+> +igt@v3d/v3d_submit_csd@multisync-out-syncs
+> +igt@v3d/v3d_submit_csd@multi-and-single-sync
+> +igt@v3d/v3d_submit_csd@job-perfmon
+>  igt@v3d/v3d_perfmon@create-perfmon-0
+>  igt@v3d/v3d_perfmon@create-perfmon-exceed
+>  igt@v3d/v3d_perfmon@create-perfmon-invalid-counters
 > -- 
-> 2.25.1
+> 2.39.1
 > 
