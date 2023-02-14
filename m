@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9995510E87F
- for <igt-dev@lists.freedesktop.org>; Tue, 14 Feb 2023 10:56:42 +0000 (UTC)
-From: Mohammed Thasleem <mohammed.thasleem@intel.com>
+Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 002F810E897
+ for <igt-dev@lists.freedesktop.org>; Tue, 14 Feb 2023 11:42:55 +0000 (UTC)
+From: Melissa Wen <mwen@igalia.com>
 To: igt-dev@lists.freedesktop.org
-Date: Mon,  8 Aug 2022 15:06:22 +0530
-Message-Id: <20220808093622.193800-1-mohammed.thasleem@intel.com>
+Date: Tue, 14 Feb 2023 10:42:11 -0100
+Message-Id: <20230214114211.96481-1-mwen@igalia.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t] tests/kms_display_modes: Add check on
- ENOSPC for DP MST config
+Subject: [igt-dev] [PATCH i-g-t] tests/amdgpu/amd_color: check supported
+ color prop before running tests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,71 +17,135 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: kernel-dev@igalia.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Added check on ENOSPC when two moniters connected through MST.
-This will find the connector mode combo that fits into the
-bandwidth when more than one monitor is connected.
+If a DRM CRTC color prop is not advertised, the test should skip instead
+of fail. It currently fits DCE case. The driver doesn't support user
+degamma, therefore, DRM CRTC degamma properties are disabled in the
+kernel driver [1]. Previously the test just fails on DCE because the
+driver advertises degamma props although user degamma isn't supported by
+HW. Now we can just skip the test in case of a missing color prop
+support.
 
-Signed-off-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
+[1] https://lore.kernel.org/dri-devel/20221103184500.14450-1-mwen@igalia.com/
+
+Signed-off-by: Melissa Wen <mwen@igalia.com>
 ---
- tests/kms_display_modes.c | 21 +++++++++++++++++++--
- 1 file changed, 19 insertions(+), 2 deletions(-)
+ tests/amdgpu/amd_color.c | 36 ++++++++++++++++++++++++++----------
+ 1 file changed, 26 insertions(+), 10 deletions(-)
 
-diff --git a/tests/kms_display_modes.c b/tests/kms_display_modes.c
-index e4191811..cbcdc0cc 100644
---- a/tests/kms_display_modes.c
-+++ b/tests/kms_display_modes.c
-@@ -44,6 +44,7 @@ static void run_extendedmode_basic(data_t *data, int pipe1, int pipe2)
- 	igt_pipe_crc_t *pipe_crc[2] = { 0 };
- 	igt_crc_t ref_crc[2], crc[2];
- 	int count = 0, width, height;
-+	int ret;
- 	cairo_t *cr;
+diff --git a/tests/amdgpu/amd_color.c b/tests/amdgpu/amd_color.c
+index defe57bd..2dbc3dfb 100644
+--- a/tests/amdgpu/amd_color.c
++++ b/tests/amdgpu/amd_color.c
+@@ -196,14 +196,6 @@ static void test_init(data_t *data)
  
- 	for_each_connected_output(display, output) {
-@@ -54,6 +55,7 @@ static void run_extendedmode_basic(data_t *data, int pipe1, int pipe2)
- 			break;
+ 	igt_output_set_pipe(data->output, data->pipe_id);
+ 
+-	data->degamma_lut_size =
+-		igt_pipe_obj_get_prop(data->pipe, IGT_CRTC_DEGAMMA_LUT_SIZE);
+-	igt_assert_lt(0, data->degamma_lut_size);
+-
+-	data->regamma_lut_size =
+-		igt_pipe_obj_get_prop(data->pipe, IGT_CRTC_GAMMA_LUT_SIZE);
+-	igt_assert_lt(0, data->regamma_lut_size);
+-
+ 	data->w = data->mode->hdisplay;
+ 	data->h = data->mode->vdisplay;
+ }
+@@ -221,6 +213,8 @@ static void test_fini(data_t *data)
+  * matrix if not passed any. The whole pipe should be in linear bypass mode
+  * when all the matrices are NULL - CRCs for a linear degamma matrix and
+  * a NULL one should match.
++ *
++ * This test skips on DCE because it doesn't support user degamma.
+  */
+ static void test_crtc_linear_degamma(data_t *data)
+ {
+@@ -231,6 +225,12 @@ static void test_crtc_linear_degamma(data_t *data)
+ 
+ 	test_init(data);
+ 
++	igt_require(igt_pipe_obj_has_prop(data->pipe, IGT_CRTC_DEGAMMA_LUT));
++
++	data->degamma_lut_size =
++		igt_pipe_obj_get_prop(data->pipe, IGT_CRTC_DEGAMMA_LUT_SIZE);
++	igt_assert_lt(0, data->degamma_lut_size);
++
+ 	lut_init(&lut_linear, data->degamma_lut_size);
+ 	lut_gen_linear(&lut_linear, 0xffff);
+ 
+@@ -252,6 +252,8 @@ static void test_crtc_linear_degamma(data_t *data)
+ 	igt_pipe_crc_collect_crc(data->pipe_crc, &new_crc);
+ 	igt_assert_crc_equal(&ref_crc, &new_crc);
+ 
++	igt_pipe_obj_replace_prop_blob(data->pipe, IGT_CRTC_DEGAMMA_LUT, NULL, 0);
++
+ 	test_fini(data);
+ 	igt_remove_fb(data->fd, &afb);
+ 	lut_free(&lut_linear);
+@@ -273,6 +275,13 @@ static void test_crtc_linear_regamma(data_t *data)
+ 
+ 	test_init(data);
+ 
++	igt_require(igt_pipe_obj_has_prop(data->pipe, IGT_CRTC_GAMMA_LUT));
++
++
++	data->regamma_lut_size =
++		igt_pipe_obj_get_prop(data->pipe, IGT_CRTC_GAMMA_LUT_SIZE);
++	igt_assert_lt(0, data->regamma_lut_size);
++
+ 	lut_init(&lut_linear, data->regamma_lut_size);
+ 	lut_gen_linear(&lut_linear, 0xffff);
+ 
+@@ -282,7 +291,6 @@ static void test_crtc_linear_regamma(data_t *data)
+ 	/* Draw the reference image. */
+ 	igt_plane_set_fb(data->primary, &afb);
+ 	set_regamma_lut(data, NULL);
+-	set_degamma_lut(data, NULL);
+ 	igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
+ 
+ 	igt_pipe_crc_collect_crc(data->pipe_crc, &ref_crc);
+@@ -294,6 +302,8 @@ static void test_crtc_linear_regamma(data_t *data)
+ 	igt_pipe_crc_collect_crc(data->pipe_crc, &new_crc);
+ 	igt_assert_crc_equal(&ref_crc, &new_crc);
+ 
++	igt_pipe_obj_replace_prop_blob(data->pipe, IGT_CRTC_GAMMA_LUT, NULL, 0);
++
+ 	test_fini(data);
+ 	igt_remove_fb(data->fd, &afb);
+ 	lut_free(&lut_linear);
+@@ -305,7 +315,7 @@ static void test_crtc_linear_regamma(data_t *data)
+  * being CRC level accurate across a full test gradient but most values should
+  * still match.
+  *
+- * This test can't pass on DCE because it doesn't support non-linear degamma.
++ * This test skips on DCE because it doesn't support user degamma.
+  */
+ static void test_crtc_lut_accuracy(data_t *data)
+ {
+@@ -331,6 +341,9 @@ static void test_crtc_lut_accuracy(data_t *data)
+ 
+ 	test_init(data);
+ 
++	igt_require(igt_pipe_obj_has_prop(data->pipe, IGT_CRTC_DEGAMMA_LUT));
++	igt_require(igt_pipe_obj_has_prop(data->pipe, IGT_CRTC_GAMMA_LUT));
++
+ 	lut_init(&lut_degamma, data->degamma_lut_size);
+ 	lut_gen_degamma_srgb(&lut_degamma, 0xffff);
+ 
+@@ -369,6 +382,9 @@ static void test_crtc_lut_accuracy(data_t *data)
+ 		igt_assert_crc_equal(&ref_crc, &new_crc);
  	}
  
-+restart:
- 	igt_output_set_pipe(extended_output[0], pipe1);
- 	igt_output_set_pipe(extended_output[1], pipe2);
- 
-@@ -79,7 +81,23 @@ static void run_extendedmode_basic(data_t *data, int pipe1, int pipe2)
- 	igt_fb_set_size(&fbs[1], plane[1], mode[1]->hdisplay, mode[1]->vdisplay);
- 	igt_plane_set_size(plane[1], mode[1]->hdisplay, mode[1]->vdisplay);
- 
--	igt_display_commit2(display, COMMIT_ATOMIC);
-+	ret = igt_display_try_commit2(display, COMMIT_ATOMIC);
-+	if (ret != 0 && errno == ENOSPC) {
++	igt_pipe_obj_replace_prop_blob(data->pipe, IGT_CRTC_GAMMA_LUT, NULL, 0);
++	igt_pipe_obj_replace_prop_blob(data->pipe, IGT_CRTC_DEGAMMA_LUT, NULL, 0);
 +
-+		bool found = igt_override_all_active_output_modes_to_fit_bw(display);
-+
-+		igt_require_f(found, "No valid mode combo found.\n");
-+
-+		for_each_connected_output(display, output)
-+			igt_output_set_pipe(output, PIPE_NONE);
-+
-+		igt_remove_fb(data->drm_fd, &fbs[0]);
-+		igt_remove_fb(data->drm_fd, &fbs[1]);
-+
-+		goto restart;
-+	}
-+
-+	igt_assert(!ret);
- 
- 	igt_pipe_crc_collect_crc(pipe_crc[0], &ref_crc[0]);
- 	igt_pipe_crc_collect_crc(pipe_crc[1], &ref_crc[1]);
-@@ -101,7 +119,6 @@ static void run_extendedmode_basic(data_t *data, int pipe1, int pipe2)
- 	igt_plane_set_fb(plane[1], &fb);
- 	igt_fb_set_position(&fb, plane[1], mode[0]->hdisplay, 0);
- 	igt_fb_set_size(&fb, plane[1], mode[1]->hdisplay, mode[1]->vdisplay);
--
- 	igt_display_commit2(display, COMMIT_ATOMIC);
- 
- 	igt_pipe_crc_collect_crc(pipe_crc[0], &crc[0]);
+ 	test_fini(data);
+ 	igt_remove_fb(data->fd, &afb);
+ 	lut_free(&lut_regamma);
 -- 
-2.25.1
+2.39.0
