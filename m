@@ -1,15 +1,27 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============1365285004135123793=="
+From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ igt-dev@lists.freedesktop.org,
+ Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>,
+ Petri Latvala <adrinael@adrinael.net>, Arkadiusz Hiler <arek@hiler.eu>,
+ Andi Shyti <andi.shyti@linux.intel.com>,
+ Chris Wilson <chris.p.wilson@linux.intel.com>,
+ Andrzej Hajda <andrzej.hajda@intel.com>,
+ Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>, Nirmoy Das <nirmoy.das@intel.com>,
+ Ashutosh Dixit <ashutosh.dixit@intel.com>,
+ Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>,
+ intel-gfx@lists.freedesktop.org
+Date: Tue, 14 Feb 2023 23:40:38 +0100
+Message-ID: <2215171.iZASKD2KPV@jkrzyszt-mobl1.ger.corp.intel.com>
+In-Reply-To: <20230214212010.6qpjrdkcb3fnogjx@kamilkon-desk1>
+References: <20230213093132.12763-1-janusz.krzysztofik@linux.intel.com>
+ <20230213093132.12763-2-janusz.krzysztofik@linux.intel.com>
+ <20230214212010.6qpjrdkcb3fnogjx@kamilkon-desk1>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Umesh Nerlige Ramappa" <umesh.nerlige.ramappa@intel.com>
-Date: Tue, 14 Feb 2023 21:47:18 -0000
-Message-ID: <167641123863.8398.14489265630594438455@emeril.freedesktop.org>
-References: <20230214210007.2026033-1-umesh.nerlige.ramappa@intel.com>
-In-Reply-To: <20230214210007.2026033-1-umesh.nerlige.ramappa@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgRW5hYmxl?=
- =?utf-8?q?_OAM_support_in_IGT_and_GPUvis?=
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
+Subject: Re: [igt-dev] [PATCH i-g-t v3 1/1] tests: Exercise remote request
+ vs barrier handling race
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,405 +29,304 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============1365285004135123793==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Hi Kamil,
 
-== Series Details ==
+Thanks for review.
 
-Series: Enable OAM support in IGT and GPUvis
-URL   : https://patchwork.freedesktop.org/series/114023/
-State : success
+On Tuesday, 14 February 2023 22:20:10 CET Kamil Konieczny wrote:
+> Hi Janusz,
+> 
+> On 2023-02-13 at 10:31:32 +0100, Janusz Krzysztofik wrote:
+> > Users reported oopses on list corruptions when using i915 perf with a
+> > number of concurrently running graphics applications.  That indicates we
+> > are currently missing some important tests for such scenarios.  Cover
+> > that gap.
+> > 
+> > Root cause analysis pointed out to an issue in barrier processing code and
+> > its interaction with perf replacing kernel contexts' active barriers with
+> > its own requests.
+> > 
+> > Add a new test intended for exercising intentionally racy barrier tasks
+> > list processing and its interaction with other i915 subsystems.  As a
+> > first subtest, add one that exercises the interaction of remote requests
+> > with barrier tasks list handling, especially barrier preallocate / acquire
+> > operations performed during context first pin / last unpin.
+> > 
+> > The code is partially inspired by Chris Wilson's igt@perf@open-race
+> > subtest, which I was not able to get an Ack for from upstream.
+> > 
+> > v3: don't add the new subtest to gem_ctx_exec which occurred blocklisted,
+> >     create a new test hosting the new subtest, update commit descripion,
+> >   - prepare parameters for perf open still in the main thread to avoid
+> >     test failures on platforms with no perf support (will skip now),
+> >   - call perf open with OA buffer reports disabled, this will make sure
+> >     that the perf API doesn't unnecessarily enable the OA unit, while the
+> >     test still runs the targeted code (Umesh),
+> >   - replace additional code for OA exponent calculations with a reasonable
+> >     hardcoded value (Umesh).
+> > v2: convert to a separate subtest, not a variant of another one (that has
+> >     been dropped from the series),
+> >   - move the subtest out of tests/i915/perf.c (Ashutosh), add it to
+> >     tests/i915/gem_ctx_exec.c,
+> >   - don't touch lib/i915/perf.c (Umesh, Ashutosh), duplicate reused code
+> >     from tests/i915/perf.c in tests/i915/gem_ctx_exec.c.
+> > 
+> > References: https://gitlab.freedesktop.org/drm/intel/-/issues/6333
+> > Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+> > Cc: Chris Wilson <chris.p.wilson@intel.com>
+> > Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> > Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
+> > Cc: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+> > ---
+> >  tests/i915/gem_barrier_race.c | 159 ++++++++++++++++++++++++++++++++++
+> >  tests/meson.build             |   8 ++
+> >  2 files changed, 167 insertions(+)
+> >  create mode 100644 tests/i915/gem_barrier_race.c
+> > 
+> > diff --git a/tests/i915/gem_barrier_race.c b/tests/i915/gem_barrier_race.c
+> > new file mode 100644
+> > index 0000000000..fd0c7bdf1c
+> > --- /dev/null
+> > +++ b/tests/i915/gem_barrier_race.c
+> > @@ -0,0 +1,159 @@
+> > +// SPDX-License-Identifier: MIT
+> > +/*
+> > + * Copyright(c) 2023 Intel Corporation. All rights reserved.
+> > + */
+> > +
+> > +#include <stdint.h>
+> > +
+> > +#include "drmtest.h"
+> > +#include "igt_aux.h"
+> > +#include "igt_core.h"
+> > +#include "igt_gt.h"
+> > +#include "intel_chipset.h"
+> > +#include "intel_reg.h"
+> > +#include "ioctl_wrappers.h"
+> > +
+> > +#include "i915/gem.h"
+> > +#include "i915/gem_create.h"
+> > +#include "i915/gem_engine_topology.h"
+> > +#include "i915/perf.h"
+> > +
+> > +IGT_TEST_DESCRIPTION("Exercise barrier tasks list handling and its interation with other i915 subsystems");
+> ----------------------------------------------- ^^^^^^^^^^^^^ --------------^-------------- ^
+> s/interation/interaction/
 
-== Summary ==
+Thanks.
 
-CI Bug Log - changes from CI_DRM_12738 -> IGTPW_8497
-====================================================
+> Please make it generic so it will not need to be changed soon,
+> for example:
+> IGT_TEST_DESCRIPTION("Exercise barrier tasks and its interaction with other subsystems");
 
-Summary
--------
+Since we are not exercising barrier tasks only barriers (the list name is 
+barrier_tasks, while another list is called preallocated_barriers, then 
+"tasks" without "list" may be confusing, I believe), I'll use:
 
-  **SUCCESS**
+IGT_TEST_DESCRIPTION("Exercise barriers and their interaction with other subsystems");
 
-  No regressions found.
+OK?
 
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8497/index.html
+> 
+> > +
+> > +/* Based on code patterns found in tests/i915/perf.c */
+> > +static void perf_open_close_workload(int fd, int *done)
+> > +{
+> > +	struct intel_perf_metric_set *metric_set = NULL, *metric_set_iter;
+> > +	struct intel_perf *intel_perf = intel_perf_for_fd(fd);
+> > +	uint64_t properties[] = {
+> > +		DRM_I915_PERF_PROP_SAMPLE_OA, true,
+> > +		DRM_I915_PERF_PROP_OA_METRICS_SET, 0,
+> > +		DRM_I915_PERF_PROP_OA_FORMAT, 0,
+> > +		DRM_I915_PERF_PROP_OA_EXPONENT, 5,
+> > +	};
+> > +	struct drm_i915_perf_open_param param = {
+> > +		.flags = I915_PERF_FLAG_FD_CLOEXEC | I915_PERF_FLAG_DISABLED,
+> > +		.num_properties = sizeof(properties) / 16,
+> > +		.properties_ptr = to_user_pointer(properties),
+> > +	};
+> > +	uint32_t devid = intel_get_drm_devid(fd);
+> > +
+> > +	igt_require(intel_perf);
+> > +	intel_perf_load_perf_configs(intel_perf, fd);
+> > +
+> > +	igt_require(devid);
+> > +	igt_list_for_each_entry(metric_set_iter, &intel_perf->metric_sets, link) {
+> > +		if (!strcmp(metric_set_iter->symbol_name,
+> > +			    IS_HASWELL(devid) ? "RenderBasic" : "TestOa")) {
+> > +			metric_set = metric_set_iter;
+> > +			break;
+> > +		}
+> > +	}
+> > +	igt_require(metric_set);
+> > +	igt_require(metric_set->perf_oa_metrics_set);
+> > +	properties[3] = metric_set->perf_oa_metrics_set;
+> > +	properties[5] = metric_set->perf_oa_format;
+> > +
+> > +	intel_perf_free(intel_perf);
+> > +
+> > +	igt_fork(child, 1) {
+> > +		do {
+> > +			int stream = igt_ioctl(fd, DRM_IOCTL_I915_PERF_OPEN, &param);
+> > +
+> > +			igt_assert_fd(stream);
+> > +			close(stream);
+> > +
+> > +		} while (!READ_ONCE(*done));
+> > +	}
+> > +}
+> > +
+> > +static void remote_request_workload(int fd, int *done)
+> -------------- ^
+> > +{
+> > +	/*
+> > +	 * Use DRM_IOCTL_I915_PERF_OPEN / close as
+> > +	 * intel_context_prepare_remote_request() workload
+> > +	 */
+> > +	perf_open_close_workload(fd, done);
+> ------- ^
+> > +}
+> 
+> These is just calling one function as another name, imho just
+> rename perf_open_close_workload() into remote_request_workload()
 
-Participating hosts (38 -> 31)
-------------------------------
+The idea was to document the fact that we are using perf open / close 
+specifically as remote request workload, something that we may want to improve 
+if the driver ever provides a more simple way, but of course, I can do this 
+the way you prefer.
 
-  Additional (2): fi-rkl-11600 fi-elk-e7500 
-  Missing    (9): bat-kbl-2 fi-apl-guc fi-snb-2520m fi-glk-j4005 bat-atsm-1 fi-cfl-8109u fi-pnv-d510 bat-rpls-2 fi-bsw-nick 
+> 
+> > +
+> > +/* Copied from tests/i915/gem_ctx_exec.c */
+> > +static int exec(int fd, uint32_t handle, int ring, int ctx_id)
+> > +{
+> > +	struct drm_i915_gem_exec_object2 obj = { .handle = handle };
+> > +	struct drm_i915_gem_execbuffer2 execbuf = {
+> > +		.buffers_ptr = to_user_pointer(&obj),
+> > +		.buffer_count = 1,
+> > +		.flags = ring,
+> > +	};
+> > +
+> > +	i915_execbuffer2_set_context_id(execbuf, ctx_id);
+> > +
+> > +	return __gem_execbuf(fd, &execbuf);
+> > +}
+> > +
+> > +static void gem_create_nop_exec_sync_close_loop(int fd, uint64_t engine, int *done)
+> > +{
+> > +	const uint32_t batch[2] = { 0, MI_BATCH_BUFFER_END };
+> > +
+> > +	fd = gem_reopen_driver(fd);
+> > +
+> > +	do {
+> > +		uint32_t handle = gem_create(fd, 4096);
+> > +
+> > +		gem_write(fd, handle, 0, batch, sizeof(batch));
+> > +		igt_assert_eq(exec(fd, handle, engine, 0), 0);
+> > +
+> > +		gem_sync(fd, handle);
+> > +		gem_close(fd, handle);
+> > +
+> > +	} while (!READ_ONCE(*done));
+> > +}
+> > +
+> > +static void intel_context_first_pin_last_unpin_loop(int fd, uint64_t engine, int *done)
+> -------------- ^
+> > +{
+> > +	/*
+> > +	 * Use gem_create -> gem_write -> gem_execbuf -> gem_sync -> gem_close
+> > +	 * as intel context first pin / last unpin intensive workload
+> > +	 */
+> > +	gem_create_nop_exec_sync_close_loop(fd, engine, done);
+> ------- ^
+> > +}
+> 
+> Same here, just rename original function, maybe make it a little
+> shorter and put longer explanations in comments.
 
-Possible new issues
--------------------
+Same here, but let me ask what you think is missing from comments that you 
+suggest to add longer explanations?
 
-  Here are the unknown changes that may have been introduced in IGTPW_8497:
+> 
+> > +
+> > +static void test_remote_request(int fd, uint64_t engine, unsigned int timeout)
+> > +{
+> > +	int *done = mmap(0, 4096, PROT_WRITE, MAP_SHARED | MAP_ANON, -1, 0);
+> > +
+> > +	igt_assert(done != MAP_FAILED);
+> > +
+> > +	remote_request_workload(fd, done);
+> > +
+> > +	igt_fork(child, sysconf(_SC_NPROCESSORS_ONLN))
+> > +		intel_context_first_pin_last_unpin_loop(fd, engine, done);
+> > +
+> > +	sleep(timeout);
+> > +	*done = 1;
+> > +	igt_waitchildren();
+> > +	munmap(done, 4096);
+> > +}
+> > +
+> > +igt_main
+> > +{
+> > +	int fd;
+> > +
+> > +	igt_fixture {
+> > +		fd = drm_open_driver_render(DRIVER_INTEL);
+> > +		igt_require_gem(fd);
+> > +	}
+> > +
+> > +	igt_describe("Race intel_context_prepare_remote_request against intel_context_active_acquire/release");
+> > +	igt_subtest_with_dynamic("remote-request") {
+> > +		struct intel_execution_engine2 *e;
+> > +
+> > +		for_each_physical_engine(fd, e) {
+> > +			if (e->class != I915_ENGINE_CLASS_RENDER)
+> > +				continue;
+> > +
+> > +			igt_dynamic(e->name)
+> > +				test_remote_request(fd, e->flags, 5);
+> 
+> Do we need all physical engines to be tested ?
 
-### IGT changes ###
+From my point of view, more engines we exercise, better coverage we get.  
+But your priorities may be different.
+If there is more than one render engine available, which one do you propose to 
+select?  A random one?
 
-#### Suppressed ####
-
-  The following results come from untrusted machines, tests, or statuses.
-  They do not affect the overall result.
-
-  * igt@i915_suspend@basic-s2idle-without-i915:
-    - {bat-rpls-1}:       [PASS][1] -> [ABORT][2]
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12738/bat-rpls-1/igt@i915_suspend@basic-s2idle-without-i915.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8497/bat-rpls-1/igt@i915_suspend@basic-s2idle-without-i915.html
-
-  
-Known issues
-------------
-
-  Here are the changes found in IGTPW_8497 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@debugfs_test@basic-hwmon:
-    - fi-rkl-11600:       NOTRUN -> [SKIP][3] ([i915#7456])
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8497/fi-rkl-11600/igt@debugfs_test@basic-hwmon.html
-
-  * igt@gem_huc_copy@huc-copy:
-    - fi-rkl-11600:       NOTRUN -> [SKIP][4] ([i915#2190])
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8497/fi-rkl-11600/igt@gem_huc_copy@huc-copy.html
-
-  * igt@gem_lmem_swapping@parallel-random-engines:
-    - fi-rkl-11600:       NOTRUN -> [SKIP][5] ([i915#4613]) +3 similar issues
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8497/fi-rkl-11600/igt@gem_lmem_swapping@parallel-random-engines.html
-
-  * igt@gem_tiled_pread_basic:
-    - fi-rkl-11600:       NOTRUN -> [SKIP][6] ([i915#3282])
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8497/fi-rkl-11600/igt@gem_tiled_pread_basic.html
-
-  * igt@i915_pm_backlight@basic-brightness:
-    - fi-rkl-11600:       NOTRUN -> [SKIP][7] ([i915#7561])
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8497/fi-rkl-11600/igt@i915_pm_backlight@basic-brightness.html
-
-  * igt@i915_pm_rpm@basic-pci-d3-state:
-    - fi-elk-e7500:       NOTRUN -> [SKIP][8] ([fdo#109271]) +30 similar issues
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8497/fi-elk-e7500/igt@i915_pm_rpm@basic-pci-d3-state.html
-
-  * igt@i915_selftest@live@hangcheck:
-    - fi-skl-guc:         [PASS][9] -> [DMESG-WARN][10] ([i915#8073])
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12738/fi-skl-guc/igt@i915_selftest@live@hangcheck.html
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8497/fi-skl-guc/igt@i915_selftest@live@hangcheck.html
-
-  * igt@kms_chamelium_hpd@dp-hpd-fast:
-    - fi-rkl-11600:       NOTRUN -> [SKIP][11] ([i915#7828]) +8 similar issues
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8497/fi-rkl-11600/igt@kms_chamelium_hpd@dp-hpd-fast.html
-
-  * igt@kms_cursor_legacy@basic-busy-flip-before-cursor:
-    - fi-rkl-11600:       NOTRUN -> [SKIP][12] ([i915#4103])
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8497/fi-rkl-11600/igt@kms_cursor_legacy@basic-busy-flip-before-cursor.html
-
-  * igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions-varying-size:
-    - fi-blb-e6850:       NOTRUN -> [SKIP][13] ([fdo#109271]) +9 similar issues
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8497/fi-blb-e6850/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions-varying-size.html
-
-  * igt@kms_force_connector_basic@force-load-detect:
-    - fi-rkl-11600:       NOTRUN -> [SKIP][14] ([fdo#109285] / [i915#4098])
-   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8497/fi-rkl-11600/igt@kms_force_connector_basic@force-load-detect.html
-
-  * igt@kms_psr@sprite_plane_onoff:
-    - fi-rkl-11600:       NOTRUN -> [SKIP][15] ([i915#1072]) +3 similar issues
-   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8497/fi-rkl-11600/igt@kms_psr@sprite_plane_onoff.html
-
-  * igt@kms_setmode@basic-clone-single-crtc:
-    - fi-rkl-11600:       NOTRUN -> [SKIP][16] ([i915#3555] / [i915#4098])
-   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8497/fi-rkl-11600/igt@kms_setmode@basic-clone-single-crtc.html
-
-  * igt@prime_vgem@basic-read:
-    - fi-rkl-11600:       NOTRUN -> [SKIP][17] ([fdo#109295] / [i915#3291] / [i915#3708]) +2 similar issues
-   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8497/fi-rkl-11600/igt@prime_vgem@basic-read.html
-
-  * igt@prime_vgem@basic-userptr:
-    - fi-rkl-11600:       NOTRUN -> [SKIP][18] ([fdo#109295] / [i915#3301] / [i915#3708])
-   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8497/fi-rkl-11600/igt@prime_vgem@basic-userptr.html
-
-  
-#### Possible fixes ####
-
-  * igt@fbdev@write:
-    - fi-blb-e6850:       [SKIP][19] ([fdo#109271]) -> [PASS][20] +5 similar issues
-   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12738/fi-blb-e6850/igt@fbdev@write.html
-   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8497/fi-blb-e6850/igt@fbdev@write.html
-    - {bat-rpls-1}:       [SKIP][21] ([i915#2582]) -> [PASS][22] +4 similar issues
-   [21]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12738/bat-rpls-1/igt@fbdev@write.html
-   [22]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8497/bat-rpls-1/igt@fbdev@write.html
-
-  * igt@gem_exec_suspend@basic-s3@lmem0:
-    - {bat-dg1-7}:        [FAIL][23] ([fdo#103375]) -> [PASS][24]
-   [23]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12738/bat-dg1-7/igt@gem_exec_suspend@basic-s3@lmem0.html
-   [24]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8497/bat-dg1-7/igt@gem_exec_suspend@basic-s3@lmem0.html
-
-  * igt@kms_frontbuffer_tracking@basic:
-    - {bat-rpls-1}:       [SKIP][25] ([i915#1849]) -> [PASS][26]
-   [25]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12738/bat-rpls-1/igt@kms_frontbuffer_tracking@basic.html
-   [26]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8497/bat-rpls-1/igt@kms_frontbuffer_tracking@basic.html
-
-  * igt@prime_vgem@basic-fence-flip:
-    - {bat-rpls-1}:       [SKIP][27] ([fdo#109295] / [i915#1845] / [i915#3708]) -> [PASS][28]
-   [27]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12738/bat-rpls-1/igt@prime_vgem@basic-fence-flip.html
-   [28]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8497/bat-rpls-1/igt@prime_vgem@basic-fence-flip.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [fdo#103375]: https://bugs.freedesktop.org/show_bug.cgi?id=103375
-  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
-  [fdo#109285]: https://bugs.freedesktop.org/show_bug.cgi?id=109285
-  [fdo#109295]: https://bugs.freedesktop.org/show_bug.cgi?id=109295
-  [i915#1072]: https://gitlab.freedesktop.org/drm/intel/issues/1072
-  [i915#1845]: https://gitlab.freedesktop.org/drm/intel/issues/1845
-  [i915#1849]: https://gitlab.freedesktop.org/drm/intel/issues/1849
-  [i915#2190]: https://gitlab.freedesktop.org/drm/intel/issues/2190
-  [i915#2582]: https://gitlab.freedesktop.org/drm/intel/issues/2582
-  [i915#3282]: https://gitlab.freedesktop.org/drm/intel/issues/3282
-  [i915#3291]: https://gitlab.freedesktop.org/drm/intel/issues/3291
-  [i915#3301]: https://gitlab.freedesktop.org/drm/intel/issues/3301
-  [i915#3555]: https://gitlab.freedesktop.org/drm/intel/issues/3555
-  [i915#3708]: https://gitlab.freedesktop.org/drm/intel/issues/3708
-  [i915#4098]: https://gitlab.freedesktop.org/drm/intel/issues/4098
-  [i915#4103]: https://gitlab.freedesktop.org/drm/intel/issues/4103
-  [i915#4613]: https://gitlab.freedesktop.org/drm/intel/issues/4613
-  [i915#6367]: https://gitlab.freedesktop.org/drm/intel/issues/6367
-  [i915#7456]: https://gitlab.freedesktop.org/drm/intel/issues/7456
-  [i915#7561]: https://gitlab.freedesktop.org/drm/intel/issues/7561
-  [i915#7828]: https://gitlab.freedesktop.org/drm/intel/issues/7828
-  [i915#7996]: https://gitlab.freedesktop.org/drm/intel/issues/7996
-  [i915#8073]: https://gitlab.freedesktop.org/drm/intel/issues/8073
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_7160 -> IGTPW_8497
-
-  CI-20190529: 20190529
-  CI_DRM_12738: aad037693df25f8c83ba6cef9facc8e47c7937c3 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_8497: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8497/index.html
-  IGT_7160: 45da871dd2684227e93a2fc002b87dfc58bd5fd9 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-
-Testlist changes
-----------------
-
-+igt@perf@gen12-gt-concurrent-oa-buffer-read
-+igt@perf@gen12-gt-exclusive-stream-ctx-handle
-+igt@perf@gen12-gt-exclusive-stream-sample-oa
-+igt@perf@gen12-invalid-class-instance
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8497/index.html
-
---===============1365285004135123793==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Thanks,
+Janusz
 
 
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
+> 
+> Regards,
+> Kamil
+> > +		}
+> > +	}
+> > +}
+> > diff --git a/tests/meson.build b/tests/meson.build
+> > index 6fb1bb86c9..5670712ae8 100644
+> > --- a/tests/meson.build
+> > +++ b/tests/meson.build
+> > @@ -389,6 +389,14 @@ test_executables += executable('i915_pm_rc6_residency',
+> >  	   install : true)
+> >  test_list += 'i915_pm_rc6_residency'
+> >  
+> > +test_executables += executable('gem_barrier_race',
+> > +	   join_paths('i915', 'gem_barrier_race.c'),
+> > +	   dependencies : test_deps + [ lib_igt_i915_perf ],
+> > +	   install_dir : libexecdir,
+> > +	   install_rpath : libexecdir_rpathdir,
+> > +	   install : true)
+> > +test_list += 'gem_barrier_race'
+> > +
+> >  test_executables += executable('perf_pmu',
+> >  	   join_paths('i915', 'perf_pmu.c'),
+> >  	   dependencies : test_deps + [ lib_igt_perf ],
+> 
 
 
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>Enable OAM support in IGT and GPUvis</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/114023/">https://patchwork.freedesktop.org/series/114023/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
 
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8497/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8497/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from CI_DRM_12738 -&gt; IGTPW_8497</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8497/index.html</p>
-<h2>Participating hosts (38 -&gt; 31)</h2>
-<p>Additional (2): fi-rkl-11600 fi-elk-e7500 <br />
-  Missing    (9): bat-kbl-2 fi-apl-guc fi-snb-2520m fi-glk-j4005 bat-atsm-1 fi-cfl-8109u fi-pnv-d510 bat-rpls-2 fi-bsw-nick </p>
-<h2>Possible new issues</h2>
-<p>Here are the unknown changes that may have been introduced in IGTPW_8497:</p>
-<h3>IGT changes</h3>
-<h4>Suppressed</h4>
-<p>The following results come from untrusted machines, tests, or statuses.<br />
-  They do not affect the overall result.</p>
-<ul>
-<li>igt@i915_suspend@basic-s2idle-without-i915:<ul>
-<li>{bat-rpls-1}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12738/bat-rpls-1/igt@i915_suspend@basic-s2idle-without-i915.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8497/bat-rpls-1/igt@i915_suspend@basic-s2idle-without-i915.html">ABORT</a></li>
-</ul>
-</li>
-</ul>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_8497 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@debugfs_test@basic-hwmon:</p>
-<ul>
-<li>fi-rkl-11600:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8497/fi-rkl-11600/igt@debugfs_test@basic-hwmon.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7456">i915#7456</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_huc_copy@huc-copy:</p>
-<ul>
-<li>fi-rkl-11600:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8497/fi-rkl-11600/igt@gem_huc_copy@huc-copy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2190">i915#2190</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_lmem_swapping@parallel-random-engines:</p>
-<ul>
-<li>fi-rkl-11600:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8497/fi-rkl-11600/igt@gem_lmem_swapping@parallel-random-engines.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4613">i915#4613</a>) +3 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_tiled_pread_basic:</p>
-<ul>
-<li>fi-rkl-11600:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8497/fi-rkl-11600/igt@gem_tiled_pread_basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3282">i915#3282</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_pm_backlight@basic-brightness:</p>
-<ul>
-<li>fi-rkl-11600:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8497/fi-rkl-11600/igt@i915_pm_backlight@basic-brightness.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7561">i915#7561</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_pm_rpm@basic-pci-d3-state:</p>
-<ul>
-<li>fi-elk-e7500:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8497/fi-elk-e7500/igt@i915_pm_rpm@basic-pci-d3-state.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +30 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@hangcheck:</p>
-<ul>
-<li>fi-skl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12738/fi-skl-guc/igt@i915_selftest@live@hangcheck.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8497/fi-skl-guc/igt@i915_selftest@live@hangcheck.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/8073">i915#8073</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_chamelium_hpd@dp-hpd-fast:</p>
-<ul>
-<li>fi-rkl-11600:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8497/fi-rkl-11600/igt@kms_chamelium_hpd@dp-hpd-fast.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7828">i915#7828</a>) +8 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_cursor_legacy@basic-busy-flip-before-cursor:</p>
-<ul>
-<li>fi-rkl-11600:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8497/fi-rkl-11600/igt@kms_cursor_legacy@basic-busy-flip-before-cursor.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4103">i915#4103</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions-varying-size:</p>
-<ul>
-<li>fi-blb-e6850:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8497/fi-blb-e6850/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions-varying-size.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +9 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_force_connector_basic@force-load-detect:</p>
-<ul>
-<li>fi-rkl-11600:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8497/fi-rkl-11600/igt@kms_force_connector_basic@force-load-detect.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109285">fdo#109285</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4098">i915#4098</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr@sprite_plane_onoff:</p>
-<ul>
-<li>fi-rkl-11600:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8497/fi-rkl-11600/igt@kms_psr@sprite_plane_onoff.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1072">i915#1072</a>) +3 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_setmode@basic-clone-single-crtc:</p>
-<ul>
-<li>fi-rkl-11600:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8497/fi-rkl-11600/igt@kms_setmode@basic-clone-single-crtc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3555">i915#3555</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4098">i915#4098</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@prime_vgem@basic-read:</p>
-<ul>
-<li>fi-rkl-11600:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8497/fi-rkl-11600/igt@prime_vgem@basic-read.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109295">fdo#109295</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3291">i915#3291</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3708">i915#3708</a>) +2 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@prime_vgem@basic-userptr:</p>
-<ul>
-<li>fi-rkl-11600:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8497/fi-rkl-11600/igt@prime_vgem@basic-userptr.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109295">fdo#109295</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3301">i915#3301</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3708">i915#3708</a>)</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@fbdev@write:</p>
-<ul>
-<li>
-<p>fi-blb-e6850:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12738/fi-blb-e6850/igt@fbdev@write.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8497/fi-blb-e6850/igt@fbdev@write.html">PASS</a> +5 similar issues</p>
-</li>
-<li>
-<p>{bat-rpls-1}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12738/bat-rpls-1/igt@fbdev@write.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2582">i915#2582</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8497/bat-rpls-1/igt@fbdev@write.html">PASS</a> +4 similar issues</p>
-</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_exec_suspend@basic-s3@lmem0:</p>
-<ul>
-<li>{bat-dg1-7}:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12738/bat-dg1-7/igt@gem_exec_suspend@basic-s3@lmem0.html">FAIL</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=103375">fdo#103375</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8497/bat-dg1-7/igt@gem_exec_suspend@basic-s3@lmem0.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@kms_frontbuffer_tracking@basic:</p>
-<ul>
-<li>{bat-rpls-1}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12738/bat-rpls-1/igt@kms_frontbuffer_tracking@basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1849">i915#1849</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8497/bat-rpls-1/igt@kms_frontbuffer_tracking@basic.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@prime_vgem@basic-fence-flip:</p>
-<ul>
-<li>{bat-rpls-1}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12738/bat-rpls-1/igt@prime_vgem@basic-fence-flip.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109295">fdo#109295</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/1845">i915#1845</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3708">i915#3708</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8497/bat-rpls-1/igt@prime_vgem@basic-fence-flip.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_7160 -&gt; IGTPW_8497</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_12738: aad037693df25f8c83ba6cef9facc8e47c7937c3 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_8497: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8497/index.html<br />
-  IGT_7160: 45da871dd2684227e93a2fc002b87dfc58bd5fd9 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-<h2>Testlist changes</h2>
-<p>+igt@perf@gen12-gt-concurrent-oa-buffer-read<br />
-+igt@perf@gen12-gt-exclusive-stream-ctx-handle<br />
-+igt@perf@gen12-gt-exclusive-stream-sample-oa<br />
-+igt@perf@gen12-invalid-class-instance</p>
-
-</body>
-</html>
-
---===============1365285004135123793==--
