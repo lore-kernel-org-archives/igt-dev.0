@@ -1,15 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============2321244037712922822=="
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C735510E0F9
+ for <igt-dev@lists.freedesktop.org>; Tue, 14 Feb 2023 21:00:12 +0000 (UTC)
+From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Tue, 14 Feb 2023 12:59:38 -0800
+Message-Id: <20230214210007.2026033-2-umesh.nerlige.ramappa@intel.com>
+In-Reply-To: <20230214210007.2026033-1-umesh.nerlige.ramappa@intel.com>
+References: <20230214210007.2026033-1-umesh.nerlige.ramappa@intel.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Mohammed Thasleem" <mohammed.thasleem@intel.com>
-Date: Tue, 14 Feb 2023 12:20:56 -0000
-Message-ID: <167637725669.8398.4857133577188778259@emeril.freedesktop.org>
-References: <20220808093622.193800-1-mohammed.thasleem@intel.com>
-In-Reply-To: <20220808093622.193800-1-mohammed.thasleem@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3IgdGVzdHMv?=
- =?utf-8?q?kms=5Fdisplay=5Fmodes=3A_Add_check_on_ENOSPC_for_DP_MST_config?=
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH 01/30] i915/perf: Add support for 64-bit OA formats
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,203 +18,129 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
+Cc: Lionel G Landwerlin <lionel.g.landwerlin@linux.intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============2321244037712922822==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Newer gen12 platforms introduced 64 bit OA formats that are used by MTL.
+Add support to parse reports for 64 bit counters.
 
-== Series Details ==
+Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+---
+ tests/i915/perf.c | 58 ++++++++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 57 insertions(+), 1 deletion(-)
 
-Series: tests/kms_display_modes: Add check on ENOSPC for DP MST config
-URL   : https://patchwork.freedesktop.org/series/114000/
-State : failure
-
-== Summary ==
-
-CI Bug Log - changes from CI_DRM_12737 -> IGTPW_8492
-====================================================
-
-Summary
--------
-
-  **FAILURE**
-
-  Serious unknown changes coming with IGTPW_8492 absolutely need to be
-  verified manually.
-  
-  If you think the reported changes have nothing to do with the changes
-  introduced in IGTPW_8492, please notify your bug team to allow them
-  to document this new failure mode, which will reduce false positives in CI.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8492/index.html
-
-Participating hosts (39 -> 37)
-------------------------------
-
-  Missing    (2): bat-kbl-2 fi-snb-2520m 
-
-Possible new issues
--------------------
-
-  Here are the unknown changes that may have been introduced in IGTPW_8492:
-
-### IGT changes ###
-
-#### Possible regressions ####
-
-  * igt@i915_selftest@live@gt_heartbeat:
-    - fi-hsw-4770:        [PASS][1] -> [DMESG-FAIL][2]
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12737/fi-hsw-4770/igt@i915_selftest@live@gt_heartbeat.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8492/fi-hsw-4770/igt@i915_selftest@live@gt_heartbeat.html
-
-  
-Known issues
-------------
-
-  Here are the changes found in IGTPW_8492 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@i915_module_load@load:
-    - fi-cfl-guc:         [PASS][3] -> [ABORT][4] ([i915#8141])
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12737/fi-cfl-guc/igt@i915_module_load@load.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8492/fi-cfl-guc/igt@i915_module_load@load.html
-
-  
-#### Possible fixes ####
-
-  * igt@gem_exec_gttfill@basic:
-    - fi-pnv-d510:        [FAIL][5] ([i915#7229]) -> [PASS][6]
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12737/fi-pnv-d510/igt@gem_exec_gttfill@basic.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8492/fi-pnv-d510/igt@gem_exec_gttfill@basic.html
-
-  * igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions:
-    - fi-bsw-n3050:       [FAIL][7] ([i915#6298]) -> [PASS][8]
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12737/fi-bsw-n3050/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions.html
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8492/fi-bsw-n3050/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [i915#4983]: https://gitlab.freedesktop.org/drm/intel/issues/4983
-  [i915#6298]: https://gitlab.freedesktop.org/drm/intel/issues/6298
-  [i915#7229]: https://gitlab.freedesktop.org/drm/intel/issues/7229
-  [i915#7699]: https://gitlab.freedesktop.org/drm/intel/issues/7699
-  [i915#8141]: https://gitlab.freedesktop.org/drm/intel/issues/8141
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_7160 -> IGTPW_8492
-
-  CI-20190529: 20190529
-  CI_DRM_12737: 5dd4db260f2fb67ae027a64850bc6d21ed91df87 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_8492: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8492/index.html
-  IGT_7160: 45da871dd2684227e93a2fc002b87dfc58bd5fd9 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8492/index.html
-
---===============2321244037712922822==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/kms_display_modes: Add check on ENOSPC for DP MST config</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/114000/">https://patchwork.freedesktop.org/series/114000/</a></td></tr>
-<tr><td><b>State:</b></td><td>failure</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8492/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8492/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from CI_DRM_12737 -&gt; IGTPW_8492</h1>
-<h2>Summary</h2>
-<p><strong>FAILURE</strong></p>
-<p>Serious unknown changes coming with IGTPW_8492 absolutely need to be<br />
-  verified manually.</p>
-<p>If you think the reported changes have nothing to do with the changes<br />
-  introduced in IGTPW_8492, please notify your bug team to allow them<br />
-  to document this new failure mode, which will reduce false positives in CI.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8492/index.html</p>
-<h2>Participating hosts (39 -&gt; 37)</h2>
-<p>Missing    (2): bat-kbl-2 fi-snb-2520m </p>
-<h2>Possible new issues</h2>
-<p>Here are the unknown changes that may have been introduced in IGTPW_8492:</p>
-<h3>IGT changes</h3>
-<h4>Possible regressions</h4>
-<ul>
-<li>igt@i915_selftest@live@gt_heartbeat:<ul>
-<li>fi-hsw-4770:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12737/fi-hsw-4770/igt@i915_selftest@live@gt_heartbeat.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8492/fi-hsw-4770/igt@i915_selftest@live@gt_heartbeat.html">DMESG-FAIL</a></li>
-</ul>
-</li>
-</ul>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_8492 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>igt@i915_module_load@load:<ul>
-<li>fi-cfl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12737/fi-cfl-guc/igt@i915_module_load@load.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8492/fi-cfl-guc/igt@i915_module_load@load.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/8141">i915#8141</a>)</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@gem_exec_gttfill@basic:</p>
-<ul>
-<li>fi-pnv-d510:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12737/fi-pnv-d510/igt@gem_exec_gttfill@basic.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7229">i915#7229</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8492/fi-pnv-d510/igt@gem_exec_gttfill@basic.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions:</p>
-<ul>
-<li>fi-bsw-n3050:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12737/fi-bsw-n3050/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6298">i915#6298</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8492/fi-bsw-n3050/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_7160 -&gt; IGTPW_8492</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_12737: 5dd4db260f2fb67ae027a64850bc6d21ed91df87 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_8492: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8492/index.html<br />
-  IGT_7160: 45da871dd2684227e93a2fc002b87dfc58bd5fd9 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-
-</body>
-</html>
-
---===============2321244037712922822==--
+diff --git a/tests/i915/perf.c b/tests/i915/perf.c
+index dd1f1ac3..c74434fe 100644
+--- a/tests/i915/perf.c
++++ b/tests/i915/perf.c
+@@ -107,6 +107,8 @@ struct oa_format {
+ 	int a40_high_off; /* bytes */
+ 	int a40_low_off;
+ 	int n_a40;
++	int a64_off;
++	int n_a64;
+ 	int a_off;
+ 	int n_a;
+ 	int first_a;
+@@ -720,6 +722,15 @@ gen8_read_40bit_a_counter(const uint32_t *report,
+ 	return a40_low[a_id] | high;
+ }
+ 
++static uint64_t
++xehpsdv_read_64bit_a_counter(const uint32_t *report, enum drm_i915_oa_format fmt, int a_id)
++{
++	struct oa_format format = get_oa_format(fmt);
++	uint64_t *a64 = (uint64_t *)(((uint8_t *)report) + format.a64_off);
++
++	return a64[a_id];
++}
++
+ static uint64_t
+ gen8_40bit_a_delta(uint64_t value0, uint64_t value1)
+ {
+@@ -754,6 +765,19 @@ accumulate_uint40(int a_index,
+ 	*delta += gen8_40bit_a_delta(value0, value1);
+ }
+ 
++static void
++accumulate_uint64(int a_index,
++		  const uint32_t *report0,
++		  const uint32_t *report1,
++		  enum drm_i915_oa_format format,
++		  uint64_t *delta)
++{
++	uint64_t value0 = xehpsdv_read_64bit_a_counter(report0, format, a_index),
++		 value1 = xehpsdv_read_64bit_a_counter(report1, format, a_index);
++
++	*delta += (value1 - value0);
++}
++
+ static void
+ accumulate_reports(struct accumulator *accumulator,
+ 		   uint32_t *start,
+@@ -779,6 +803,11 @@ accumulate_reports(struct accumulator *accumulator,
+ 				  deltas + idx++);
+ 	}
+ 
++	for (int i = 0; i < format.n_a64; i++) {
++		accumulate_uint64(i, start, end, accumulator->format,
++				  deltas + idx++);
++	}
++
+ 	for (int i = 0; i < format.n_a; i++) {
+ 		accumulate_uint32(format.a_off + 4 * i,
+ 				  start, end, deltas + idx++);
+@@ -809,6 +838,9 @@ accumulator_print(struct accumulator *accumulator, const char *title)
+ 
+ 		for (int i = 0; i < format.n_a40; i++)
+ 			igt_debug("\tA%u = %"PRIu64"\n", i, deltas[idx++]);
++
++		for (int i = 0; i < format.n_a64; i++)
++			igt_debug("\tA64_%u = %"PRIu64"\n", i, deltas[idx++]);
+ 	} else {
+ 		igt_debug("\ttime delta = %"PRIu64"\n", deltas[idx++]);
+ 	}
+@@ -865,7 +897,19 @@ gen8_sanity_check_test_oa_reports(const uint32_t *oa_report0,
+ 		if (undefined_a_counters[j])
+ 			continue;
+ 
+-		igt_debug("A%d: delta = %"PRIu64"\n", j, delta);
++		igt_debug("A40_%d: delta = %"PRIu64"\n", j, delta);
++		igt_assert(delta <= max_delta);
++	}
++
++	for (int j = 0; j < format.n_a64; j++) {
++		uint64_t delta = 0;
++
++		accumulate_uint64(j, oa_report0, oa_report1, fmt, &delta);
++
++		if (undefined_a_counters[j])
++			continue;
++
++		igt_debug("A64_%d: delta = %"PRIu64"\n", format.first_a + j, delta);
+ 		igt_assert(delta <= max_delta);
+ 	}
+ 
+@@ -1430,6 +1474,18 @@ print_reports(uint32_t *oa_report0, uint32_t *oa_report1, int fmt)
+ 			  j, value0, value1, delta);
+ 	}
+ 
++	for (int j = 0; j < format.n_a64; j++) {
++		uint64_t value0 = xehpsdv_read_64bit_a_counter(oa_report0, fmt, j);
++		uint64_t value1 = xehpsdv_read_64bit_a_counter(oa_report1, fmt, j);
++		uint64_t delta = value1 - value0;
++
++		if (undefined_a_counters[j])
++			continue;
++
++		igt_debug("A_64%d: 1st = %"PRIu64", 2nd = %"PRIu64", delta = %"PRIu64"\n",
++			  format.first_a + j, value0, value1, delta);
++	}
++
+ 	for (int j = 0; j < format.n_a; j++) {
+ 		uint32_t *a0 = (uint32_t *)(((uint8_t *)oa_report0) +
+ 					    format.a_off);
+-- 
+2.36.1
