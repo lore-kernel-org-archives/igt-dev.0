@@ -1,20 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C8D2910E9B3
- for <igt-dev@lists.freedesktop.org>; Tue, 14 Feb 2023 21:44:36 +0000 (UTC)
-Date: Tue, 14 Feb 2023 22:44:14 +0100
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Message-ID: <20230214214414.y3cnj2q456yrpqgt@kamilkon-desk1>
-References: <20230210174617.552075-1-mcanal@igalia.com>
- <20230210174617.552075-4-mcanal@igalia.com>
+Content-Type: multipart/alternative;
+ boundary="===============1365285004135123793=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230210174617.552075-4-mcanal@igalia.com>
-Subject: Re: [igt-dev] [PATCH i-g-t v3 3/3] tests/v3d_job_submission: Create
- tests to mix CL and CSD jobs
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Umesh Nerlige Ramappa" <umesh.nerlige.ramappa@intel.com>
+Date: Tue, 14 Feb 2023 21:47:18 -0000
+Message-ID: <167641123863.8398.14489265630594438455@emeril.freedesktop.org>
+References: <20230214210007.2026033-1-umesh.nerlige.ramappa@intel.com>
+In-Reply-To: <20230214210007.2026033-1-umesh.nerlige.ramappa@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgRW5hYmxl?=
+ =?utf-8?q?_OAM_support_in_IGT_and_GPUvis?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,293 +17,405 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Iago Toral Quiroga <itoral@igalia.com>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Maíra,
+--===============1365285004135123793==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-On 2023-02-10 at 14:46:19 -0300, Maíra Canal wrote:
-> Add three igt_subtests that combine CL jobs and CSD jobs, to assure the
------------ ^
-s/igt_subtests/subtests/
+== Series Details ==
 
-> proper synchronization of different queues, especially the
-> independence between them. Moreover, tests the relationship between
-> single syncobjs and multisync using mixed jobs as well.
-> 
-> Reviewed-by: Melissa Wen <mwen@igalia.com>
-> Signed-off-by: Maíra Canal <mcanal@igalia.com>
-> ---
->  tests/v3d/meson.build          |   1 +
->  tests/v3d/v3d_job_submission.c | 218 +++++++++++++++++++++++++++++++++
->  tests/v3d_ci/v3d.testlist      |   3 +
->  3 files changed, 222 insertions(+)
->  create mode 100644 tests/v3d/v3d_job_submission.c
-> 
-> diff --git a/tests/v3d/meson.build b/tests/v3d/meson.build
-> index d070fdb5..03b4de61 100644
-> --- a/tests/v3d/meson.build
-> +++ b/tests/v3d/meson.build
-> @@ -2,6 +2,7 @@ v3d_progs = [
->  	'v3d_create_bo',
->  	'v3d_get_bo_offset',
->  	'v3d_get_param',
-> +	'v3d_job_submission',
->  	'v3d_mmap',
->  	'v3d_submit_cl',
->  	'v3d_submit_csd',
-> diff --git a/tests/v3d/v3d_job_submission.c b/tests/v3d/v3d_job_submission.c
-> new file mode 100644
-> index 00000000..0c36629c
-> --- /dev/null
-> +++ b/tests/v3d/v3d_job_submission.c
-> @@ -0,0 +1,218 @@
-> +// SPDX-License-Identifier: MIT
-> +/*
-> + * Copyright © 2022 Igalia S.L.
-> + */
-> +
-> +#include "igt.h"
-> +#include "igt_v3d.h"
-> +#include "igt_syncobj.h"
-> +
-> +static int fd;
-> +
+Series: Enable OAM support in IGT and GPUvis
+URL   : https://patchwork.freedesktop.org/series/114023/
+State : success
 
-Please put here global description:
-IGT_TEST_DESCRIPTION("Global description of tests in this module");
+== Summary ==
 
-Please write comment before defines what CL and CSD mean and
-what is a difference between them.
+CI Bug Log - changes from CI_DRM_12738 -> IGTPW_8497
+====================================================
 
-Btw these are minor corrections, please keep your r-b tag,
+Summary
+-------
 
-Regards,
-Kamil
+  **SUCCESS**
 
-> +#define NUM_CL_JOBS  1000
-> +#define NUM_CSD_JOBS 250
-> +
-> +static int syncobj_wait_array(uint32_t *handles, uint32_t count)
-> +{
-> +	int i, ret = 0;
-> +
-> +	for (i = 0; i < count; i++) {
-> +		ret = syncobj_wait_err(fd, &handles[i], 1, INT64_MAX, 0);
-> +		if (ret)
-> +			return ret;
-> +	}
-> +
-> +	return ret;
-> +}
-> +
-> +static void *create_cl_jobs(void *args)
-> +{
-> +	struct v3d_cl_job **jobs = args;
-> +	int i;
-> +
-> +	for (i = 0; i < NUM_CL_JOBS; i++) {
-> +		do_ioctl(fd, DRM_IOCTL_V3D_SUBMIT_CL, jobs[i]->submit);
-> +		igt_assert(syncobj_wait(fd, &jobs[i]->submit->out_sync, 1,
-> +					INT64_MAX, 0, NULL));
-> +	}
-> +
-> +	return NULL;
-> +}
-> +
-> +static void *create_csd_jobs(void *args)
-> +{
-> +	struct v3d_csd_job **jobs = args;
-> +	int i;
-> +
-> +	for (i = 0; i < NUM_CSD_JOBS; i++) {
-> +		do_ioctl(fd, DRM_IOCTL_V3D_SUBMIT_CSD, jobs[i]->submit);
-> +		igt_assert(syncobj_wait(fd, &jobs[i]->submit->out_sync, 1,
-> +					INT64_MAX, 0, NULL));
-> +	}
-> +
-> +	return NULL;
-> +}
-> +
-> +igt_main
-> +{
-> +	igt_fixture {
-> +		fd = drm_open_driver(DRIVER_V3D);
-> +		igt_require(igt_v3d_get_param(fd, DRM_V3D_PARAM_SUPPORTS_CSD));
-> +		igt_require(igt_v3d_get_param(fd, DRM_V3D_PARAM_SUPPORTS_MULTISYNC_EXT));
-> +	}
-> +
-> +	igt_describe("Test if the out-sync of an array of mixed jobs is behaving correctly.");
-> +	igt_subtest("array-job-submission") {
-> +		uint32_t handles[4];
-> +		struct v3d_cl_job *cl_jobs[2];
-> +		struct v3d_csd_job *csd_jobs[2];
-> +		int i;
-> +
-> +		for (i = 0; i < ARRAY_SIZE(handles); i++)
-> +			handles[i] = syncobj_create(fd, 0);
-> +
-> +		for (i = 0; i < 2; i++) {
-> +			cl_jobs[i] = igt_v3d_noop_job(fd);
-> +			csd_jobs[i] = igt_v3d_empty_shader(fd);
-> +		}
-> +
-> +		cl_jobs[0]->submit->out_sync =  handles[0];
-> +		csd_jobs[0]->submit->out_sync =  handles[1];
-> +		cl_jobs[1]->submit->out_sync =  handles[2];
-> +		csd_jobs[1]->submit->out_sync =  handles[3];
-> +
-> +		do_ioctl(fd, DRM_IOCTL_V3D_SUBMIT_CL, cl_jobs[0]->submit);
-> +		igt_assert_eq(syncobj_wait_array(handles, ARRAY_SIZE(handles)), -EINVAL);
-> +
-> +		do_ioctl(fd, DRM_IOCTL_V3D_SUBMIT_CSD, csd_jobs[0]->submit);
-> +		igt_assert_eq(syncobj_wait_array(handles, ARRAY_SIZE(handles)), -EINVAL);
-> +
-> +		do_ioctl(fd, DRM_IOCTL_V3D_SUBMIT_CL, cl_jobs[1]->submit);
-> +		igt_assert_eq(syncobj_wait_array(handles, ARRAY_SIZE(handles)), -EINVAL);
-> +
-> +		do_ioctl(fd, DRM_IOCTL_V3D_SUBMIT_CSD, csd_jobs[1]->submit);
-> +		igt_assert_eq(syncobj_wait_array(handles, ARRAY_SIZE(handles)), 0);
-> +
-> +		for (i = 0; i < 2; i++) {
-> +			igt_v3d_free_cl_job(fd, cl_jobs[i]);
-> +			igt_v3d_free_csd_job(fd, csd_jobs[i]);
-> +		}
-> +	}
-> +
-> +	igt_describe("Test if multiple singlesyncs have the same behaviour as one multisync.");
-> +	igt_subtest("multiple-singlesync-to-multisync") {
-> +		struct drm_v3d_multi_sync ms = { 0 };
-> +		uint32_t handles[4];
-> +		struct v3d_cl_job *cl_jobs[2];
-> +		struct v3d_csd_job *csd_jobs[2];
-> +		struct drm_v3d_sem *in_syncs, *out_syncs;
-> +		int i;
-> +
-> +		for (i = 0; i < ARRAY_SIZE(handles); i++)
-> +			handles[i] = syncobj_create(fd, 0);
-> +
-> +		for (i = 0; i < 2; i++) {
-> +			cl_jobs[i] = igt_v3d_noop_job(fd);
-> +			csd_jobs[i] = igt_v3d_empty_shader(fd);
-> +		}
-> +
-> +		cl_jobs[0]->submit->out_sync =  handles[0];
-> +		csd_jobs[0]->submit->out_sync =  handles[1];
-> +		cl_jobs[1]->submit->out_sync =  handles[2];
-> +
-> +		igt_v3d_set_multisync(&ms, V3D_CSD);
-> +		ms.in_sync_count = 3;
-> +		ms.out_sync_count = 1;
-> +
-> +		in_syncs = malloc(ms.in_sync_count * sizeof(*in_syncs));
-> +		out_syncs = malloc(ms.out_sync_count * sizeof(*in_syncs));
-> +
-> +		for (i = 0; i < ms.in_sync_count; i++)
-> +			in_syncs[i].handle = handles[i];
-> +
-> +		out_syncs[0].handle = handles[3];
-> +
-> +		ms.in_syncs = to_user_pointer(in_syncs);
-> +		ms.out_syncs = to_user_pointer(out_syncs);
-> +
-> +		csd_jobs[1]->submit->flags = DRM_V3D_SUBMIT_EXTENSION;
-> +		csd_jobs[1]->submit->extensions = to_user_pointer(&ms);
-> +
-> +		do_ioctl(fd, DRM_IOCTL_V3D_SUBMIT_CL, cl_jobs[0]->submit);
-> +
-> +		do_ioctl_err(fd, DRM_IOCTL_V3D_SUBMIT_CSD, csd_jobs[1]->submit, EINVAL);
-> +		igt_assert_eq(syncobj_wait_array(handles, ARRAY_SIZE(handles)), -EINVAL);
-> +
-> +		do_ioctl(fd, DRM_IOCTL_V3D_SUBMIT_CSD, csd_jobs[0]->submit);
-> +
-> +		do_ioctl_err(fd, DRM_IOCTL_V3D_SUBMIT_CSD, csd_jobs[1]->submit, EINVAL);
-> +		igt_assert_eq(syncobj_wait_array(handles, ARRAY_SIZE(handles)), -EINVAL);
-> +
-> +		do_ioctl(fd, DRM_IOCTL_V3D_SUBMIT_CL, cl_jobs[1]->submit);
-> +		igt_assert_eq(syncobj_wait_array(handles, ARRAY_SIZE(handles)), -EINVAL);
-> +
-> +		do_ioctl(fd, DRM_IOCTL_V3D_SUBMIT_CSD, csd_jobs[1]->submit);
-> +		igt_assert_eq(syncobj_wait_array(handles, ARRAY_SIZE(handles)), 0);
-> +
-> +		for (i = 0; i < 2; i++) {
-> +			igt_v3d_free_cl_job(fd, cl_jobs[i]);
-> +			igt_v3d_free_csd_job(fd, csd_jobs[i]);
-> +		}
-> +	}
-> +
-> +	igt_describe("Test if all queues are progressing independently.");
-> +	igt_subtest("threaded-job-submission") {
-> +		struct v3d_cl_job **cl_jobs = NULL;
-> +		struct v3d_csd_job **csd_jobs = NULL;
-> +		pthread_t *threads[2];
-> +		int i, ret;
-> +
-> +		cl_jobs = malloc(NUM_CL_JOBS * sizeof(*cl_jobs));
-> +		csd_jobs = malloc(NUM_CSD_JOBS * sizeof(*csd_jobs));
-> +
-> +		for (i = 0; i < NUM_CL_JOBS; i++) {
-> +			igt_print_activity();
-> +
-> +			cl_jobs[i] = igt_v3d_noop_job(fd);
-> +			cl_jobs[i]->submit->out_sync = syncobj_create(fd,
-> +								      DRM_SYNCOBJ_CREATE_SIGNALED);
-> +		}
-> +
-> +		for (i = 0; i < NUM_CSD_JOBS; i++) {
-> +			igt_print_activity();
-> +
-> +			csd_jobs[i] = igt_v3d_empty_shader(fd);
-> +			csd_jobs[i]->submit->out_sync = syncobj_create(fd,
-> +								       DRM_SYNCOBJ_CREATE_SIGNALED);
-> +		}
-> +
-> +		for (i = 0; i < ARRAY_SIZE(threads); i++) {
-> +			threads[i] = malloc(sizeof(*threads[i]));
-> +			igt_assert(threads[i]);
-> +		}
-> +
-> +		ret = pthread_create(threads[0], NULL, &create_cl_jobs, cl_jobs);
-> +		igt_assert_eq(ret, 0);
-> +
-> +		ret = pthread_create(threads[1], NULL, &create_csd_jobs, csd_jobs);
-> +		igt_assert_eq(ret, 0);
-> +
-> +		for (i = 0; i < ARRAY_SIZE(threads); i++)
-> +			pthread_join(*threads[i], NULL);
-> +
-> +		for (i = 0; i < NUM_CL_JOBS; i++)
-> +			igt_v3d_free_cl_job(fd, cl_jobs[i]);
-> +
-> +		for (i = 0; i < NUM_CSD_JOBS; i++)
-> +			igt_v3d_free_csd_job(fd, csd_jobs[i]);
-> +
-> +		for (i = 0; i < ARRAY_SIZE(threads); i++)
-> +			free(threads[i]);
-> +
-> +		free(cl_jobs);
-> +		free(csd_jobs);
-> +	}
-> +
-> +	igt_fixture
-> +		close(fd);
-> +}
-> diff --git a/tests/v3d_ci/v3d.testlist b/tests/v3d_ci/v3d.testlist
-> index 5452fd99..106e9cf2 100644
-> --- a/tests/v3d_ci/v3d.testlist
-> +++ b/tests/v3d_ci/v3d.testlist
-> @@ -7,6 +7,9 @@ igt@v3d/v3d_get_bo_offset@get-bad-handle
->  igt@v3d/v3d_get_param@base-params
->  igt@v3d/v3d_get_param@get-bad-param
->  igt@v3d/v3d_get_param@get-bad-flags
-> +igt@v3d/v3d_job_submission@array-job-submission
-> +igt@v3d/v3d_job_submission@multiple-singlesync-to-multisync
-> +igt@v3d/v3d_job_submission@threaded-job-submission
->  igt@v3d/v3d_mmap@mmap-bad-flags
->  igt@v3d/v3d_mmap@mmap-bad-handle
->  igt@v3d/v3d_mmap@mmap-bo
-> -- 
-> 2.39.1
-> 
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8497/index.html
+
+Participating hosts (38 -> 31)
+------------------------------
+
+  Additional (2): fi-rkl-11600 fi-elk-e7500 
+  Missing    (9): bat-kbl-2 fi-apl-guc fi-snb-2520m fi-glk-j4005 bat-atsm-1 fi-cfl-8109u fi-pnv-d510 bat-rpls-2 fi-bsw-nick 
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in IGTPW_8497:
+
+### IGT changes ###
+
+#### Suppressed ####
+
+  The following results come from untrusted machines, tests, or statuses.
+  They do not affect the overall result.
+
+  * igt@i915_suspend@basic-s2idle-without-i915:
+    - {bat-rpls-1}:       [PASS][1] -> [ABORT][2]
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12738/bat-rpls-1/igt@i915_suspend@basic-s2idle-without-i915.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8497/bat-rpls-1/igt@i915_suspend@basic-s2idle-without-i915.html
+
+  
+Known issues
+------------
+
+  Here are the changes found in IGTPW_8497 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@debugfs_test@basic-hwmon:
+    - fi-rkl-11600:       NOTRUN -> [SKIP][3] ([i915#7456])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8497/fi-rkl-11600/igt@debugfs_test@basic-hwmon.html
+
+  * igt@gem_huc_copy@huc-copy:
+    - fi-rkl-11600:       NOTRUN -> [SKIP][4] ([i915#2190])
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8497/fi-rkl-11600/igt@gem_huc_copy@huc-copy.html
+
+  * igt@gem_lmem_swapping@parallel-random-engines:
+    - fi-rkl-11600:       NOTRUN -> [SKIP][5] ([i915#4613]) +3 similar issues
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8497/fi-rkl-11600/igt@gem_lmem_swapping@parallel-random-engines.html
+
+  * igt@gem_tiled_pread_basic:
+    - fi-rkl-11600:       NOTRUN -> [SKIP][6] ([i915#3282])
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8497/fi-rkl-11600/igt@gem_tiled_pread_basic.html
+
+  * igt@i915_pm_backlight@basic-brightness:
+    - fi-rkl-11600:       NOTRUN -> [SKIP][7] ([i915#7561])
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8497/fi-rkl-11600/igt@i915_pm_backlight@basic-brightness.html
+
+  * igt@i915_pm_rpm@basic-pci-d3-state:
+    - fi-elk-e7500:       NOTRUN -> [SKIP][8] ([fdo#109271]) +30 similar issues
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8497/fi-elk-e7500/igt@i915_pm_rpm@basic-pci-d3-state.html
+
+  * igt@i915_selftest@live@hangcheck:
+    - fi-skl-guc:         [PASS][9] -> [DMESG-WARN][10] ([i915#8073])
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12738/fi-skl-guc/igt@i915_selftest@live@hangcheck.html
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8497/fi-skl-guc/igt@i915_selftest@live@hangcheck.html
+
+  * igt@kms_chamelium_hpd@dp-hpd-fast:
+    - fi-rkl-11600:       NOTRUN -> [SKIP][11] ([i915#7828]) +8 similar issues
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8497/fi-rkl-11600/igt@kms_chamelium_hpd@dp-hpd-fast.html
+
+  * igt@kms_cursor_legacy@basic-busy-flip-before-cursor:
+    - fi-rkl-11600:       NOTRUN -> [SKIP][12] ([i915#4103])
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8497/fi-rkl-11600/igt@kms_cursor_legacy@basic-busy-flip-before-cursor.html
+
+  * igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions-varying-size:
+    - fi-blb-e6850:       NOTRUN -> [SKIP][13] ([fdo#109271]) +9 similar issues
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8497/fi-blb-e6850/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions-varying-size.html
+
+  * igt@kms_force_connector_basic@force-load-detect:
+    - fi-rkl-11600:       NOTRUN -> [SKIP][14] ([fdo#109285] / [i915#4098])
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8497/fi-rkl-11600/igt@kms_force_connector_basic@force-load-detect.html
+
+  * igt@kms_psr@sprite_plane_onoff:
+    - fi-rkl-11600:       NOTRUN -> [SKIP][15] ([i915#1072]) +3 similar issues
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8497/fi-rkl-11600/igt@kms_psr@sprite_plane_onoff.html
+
+  * igt@kms_setmode@basic-clone-single-crtc:
+    - fi-rkl-11600:       NOTRUN -> [SKIP][16] ([i915#3555] / [i915#4098])
+   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8497/fi-rkl-11600/igt@kms_setmode@basic-clone-single-crtc.html
+
+  * igt@prime_vgem@basic-read:
+    - fi-rkl-11600:       NOTRUN -> [SKIP][17] ([fdo#109295] / [i915#3291] / [i915#3708]) +2 similar issues
+   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8497/fi-rkl-11600/igt@prime_vgem@basic-read.html
+
+  * igt@prime_vgem@basic-userptr:
+    - fi-rkl-11600:       NOTRUN -> [SKIP][18] ([fdo#109295] / [i915#3301] / [i915#3708])
+   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8497/fi-rkl-11600/igt@prime_vgem@basic-userptr.html
+
+  
+#### Possible fixes ####
+
+  * igt@fbdev@write:
+    - fi-blb-e6850:       [SKIP][19] ([fdo#109271]) -> [PASS][20] +5 similar issues
+   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12738/fi-blb-e6850/igt@fbdev@write.html
+   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8497/fi-blb-e6850/igt@fbdev@write.html
+    - {bat-rpls-1}:       [SKIP][21] ([i915#2582]) -> [PASS][22] +4 similar issues
+   [21]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12738/bat-rpls-1/igt@fbdev@write.html
+   [22]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8497/bat-rpls-1/igt@fbdev@write.html
+
+  * igt@gem_exec_suspend@basic-s3@lmem0:
+    - {bat-dg1-7}:        [FAIL][23] ([fdo#103375]) -> [PASS][24]
+   [23]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12738/bat-dg1-7/igt@gem_exec_suspend@basic-s3@lmem0.html
+   [24]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8497/bat-dg1-7/igt@gem_exec_suspend@basic-s3@lmem0.html
+
+  * igt@kms_frontbuffer_tracking@basic:
+    - {bat-rpls-1}:       [SKIP][25] ([i915#1849]) -> [PASS][26]
+   [25]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12738/bat-rpls-1/igt@kms_frontbuffer_tracking@basic.html
+   [26]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8497/bat-rpls-1/igt@kms_frontbuffer_tracking@basic.html
+
+  * igt@prime_vgem@basic-fence-flip:
+    - {bat-rpls-1}:       [SKIP][27] ([fdo#109295] / [i915#1845] / [i915#3708]) -> [PASS][28]
+   [27]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12738/bat-rpls-1/igt@prime_vgem@basic-fence-flip.html
+   [28]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8497/bat-rpls-1/igt@prime_vgem@basic-fence-flip.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [fdo#103375]: https://bugs.freedesktop.org/show_bug.cgi?id=103375
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [fdo#109285]: https://bugs.freedesktop.org/show_bug.cgi?id=109285
+  [fdo#109295]: https://bugs.freedesktop.org/show_bug.cgi?id=109295
+  [i915#1072]: https://gitlab.freedesktop.org/drm/intel/issues/1072
+  [i915#1845]: https://gitlab.freedesktop.org/drm/intel/issues/1845
+  [i915#1849]: https://gitlab.freedesktop.org/drm/intel/issues/1849
+  [i915#2190]: https://gitlab.freedesktop.org/drm/intel/issues/2190
+  [i915#2582]: https://gitlab.freedesktop.org/drm/intel/issues/2582
+  [i915#3282]: https://gitlab.freedesktop.org/drm/intel/issues/3282
+  [i915#3291]: https://gitlab.freedesktop.org/drm/intel/issues/3291
+  [i915#3301]: https://gitlab.freedesktop.org/drm/intel/issues/3301
+  [i915#3555]: https://gitlab.freedesktop.org/drm/intel/issues/3555
+  [i915#3708]: https://gitlab.freedesktop.org/drm/intel/issues/3708
+  [i915#4098]: https://gitlab.freedesktop.org/drm/intel/issues/4098
+  [i915#4103]: https://gitlab.freedesktop.org/drm/intel/issues/4103
+  [i915#4613]: https://gitlab.freedesktop.org/drm/intel/issues/4613
+  [i915#6367]: https://gitlab.freedesktop.org/drm/intel/issues/6367
+  [i915#7456]: https://gitlab.freedesktop.org/drm/intel/issues/7456
+  [i915#7561]: https://gitlab.freedesktop.org/drm/intel/issues/7561
+  [i915#7828]: https://gitlab.freedesktop.org/drm/intel/issues/7828
+  [i915#7996]: https://gitlab.freedesktop.org/drm/intel/issues/7996
+  [i915#8073]: https://gitlab.freedesktop.org/drm/intel/issues/8073
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_7160 -> IGTPW_8497
+
+  CI-20190529: 20190529
+  CI_DRM_12738: aad037693df25f8c83ba6cef9facc8e47c7937c3 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_8497: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8497/index.html
+  IGT_7160: 45da871dd2684227e93a2fc002b87dfc58bd5fd9 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+
+Testlist changes
+----------------
+
++igt@perf@gen12-gt-concurrent-oa-buffer-read
++igt@perf@gen12-gt-exclusive-stream-ctx-handle
++igt@perf@gen12-gt-exclusive-stream-sample-oa
++igt@perf@gen12-invalid-class-instance
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8497/index.html
+
+--===============1365285004135123793==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Enable OAM support in IGT and GPUvis</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/114023/">https://patchwork.freedesktop.org/series/114023/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8497/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8497/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_12738 -&gt; IGTPW_8497</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8497/index.html</p>
+<h2>Participating hosts (38 -&gt; 31)</h2>
+<p>Additional (2): fi-rkl-11600 fi-elk-e7500 <br />
+  Missing    (9): bat-kbl-2 fi-apl-guc fi-snb-2520m fi-glk-j4005 bat-atsm-1 fi-cfl-8109u fi-pnv-d510 bat-rpls-2 fi-bsw-nick </p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in IGTPW_8497:</p>
+<h3>IGT changes</h3>
+<h4>Suppressed</h4>
+<p>The following results come from untrusted machines, tests, or statuses.<br />
+  They do not affect the overall result.</p>
+<ul>
+<li>igt@i915_suspend@basic-s2idle-without-i915:<ul>
+<li>{bat-rpls-1}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12738/bat-rpls-1/igt@i915_suspend@basic-s2idle-without-i915.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8497/bat-rpls-1/igt@i915_suspend@basic-s2idle-without-i915.html">ABORT</a></li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_8497 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@debugfs_test@basic-hwmon:</p>
+<ul>
+<li>fi-rkl-11600:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8497/fi-rkl-11600/igt@debugfs_test@basic-hwmon.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7456">i915#7456</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_huc_copy@huc-copy:</p>
+<ul>
+<li>fi-rkl-11600:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8497/fi-rkl-11600/igt@gem_huc_copy@huc-copy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2190">i915#2190</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_lmem_swapping@parallel-random-engines:</p>
+<ul>
+<li>fi-rkl-11600:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8497/fi-rkl-11600/igt@gem_lmem_swapping@parallel-random-engines.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4613">i915#4613</a>) +3 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_tiled_pread_basic:</p>
+<ul>
+<li>fi-rkl-11600:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8497/fi-rkl-11600/igt@gem_tiled_pread_basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3282">i915#3282</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_pm_backlight@basic-brightness:</p>
+<ul>
+<li>fi-rkl-11600:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8497/fi-rkl-11600/igt@i915_pm_backlight@basic-brightness.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7561">i915#7561</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_pm_rpm@basic-pci-d3-state:</p>
+<ul>
+<li>fi-elk-e7500:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8497/fi-elk-e7500/igt@i915_pm_rpm@basic-pci-d3-state.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +30 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@hangcheck:</p>
+<ul>
+<li>fi-skl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12738/fi-skl-guc/igt@i915_selftest@live@hangcheck.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8497/fi-skl-guc/igt@i915_selftest@live@hangcheck.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/8073">i915#8073</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_chamelium_hpd@dp-hpd-fast:</p>
+<ul>
+<li>fi-rkl-11600:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8497/fi-rkl-11600/igt@kms_chamelium_hpd@dp-hpd-fast.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7828">i915#7828</a>) +8 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_cursor_legacy@basic-busy-flip-before-cursor:</p>
+<ul>
+<li>fi-rkl-11600:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8497/fi-rkl-11600/igt@kms_cursor_legacy@basic-busy-flip-before-cursor.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4103">i915#4103</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions-varying-size:</p>
+<ul>
+<li>fi-blb-e6850:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8497/fi-blb-e6850/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions-varying-size.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +9 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_force_connector_basic@force-load-detect:</p>
+<ul>
+<li>fi-rkl-11600:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8497/fi-rkl-11600/igt@kms_force_connector_basic@force-load-detect.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109285">fdo#109285</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4098">i915#4098</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_psr@sprite_plane_onoff:</p>
+<ul>
+<li>fi-rkl-11600:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8497/fi-rkl-11600/igt@kms_psr@sprite_plane_onoff.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1072">i915#1072</a>) +3 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_setmode@basic-clone-single-crtc:</p>
+<ul>
+<li>fi-rkl-11600:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8497/fi-rkl-11600/igt@kms_setmode@basic-clone-single-crtc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3555">i915#3555</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4098">i915#4098</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@prime_vgem@basic-read:</p>
+<ul>
+<li>fi-rkl-11600:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8497/fi-rkl-11600/igt@prime_vgem@basic-read.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109295">fdo#109295</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3291">i915#3291</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3708">i915#3708</a>) +2 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@prime_vgem@basic-userptr:</p>
+<ul>
+<li>fi-rkl-11600:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8497/fi-rkl-11600/igt@prime_vgem@basic-userptr.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109295">fdo#109295</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3301">i915#3301</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3708">i915#3708</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@fbdev@write:</p>
+<ul>
+<li>
+<p>fi-blb-e6850:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12738/fi-blb-e6850/igt@fbdev@write.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8497/fi-blb-e6850/igt@fbdev@write.html">PASS</a> +5 similar issues</p>
+</li>
+<li>
+<p>{bat-rpls-1}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12738/bat-rpls-1/igt@fbdev@write.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2582">i915#2582</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8497/bat-rpls-1/igt@fbdev@write.html">PASS</a> +4 similar issues</p>
+</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_exec_suspend@basic-s3@lmem0:</p>
+<ul>
+<li>{bat-dg1-7}:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12738/bat-dg1-7/igt@gem_exec_suspend@basic-s3@lmem0.html">FAIL</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=103375">fdo#103375</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8497/bat-dg1-7/igt@gem_exec_suspend@basic-s3@lmem0.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@basic:</p>
+<ul>
+<li>{bat-rpls-1}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12738/bat-rpls-1/igt@kms_frontbuffer_tracking@basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1849">i915#1849</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8497/bat-rpls-1/igt@kms_frontbuffer_tracking@basic.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@prime_vgem@basic-fence-flip:</p>
+<ul>
+<li>{bat-rpls-1}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12738/bat-rpls-1/igt@prime_vgem@basic-fence-flip.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109295">fdo#109295</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/1845">i915#1845</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3708">i915#3708</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8497/bat-rpls-1/igt@prime_vgem@basic-fence-flip.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_7160 -&gt; IGTPW_8497</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_12738: aad037693df25f8c83ba6cef9facc8e47c7937c3 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_8497: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8497/index.html<br />
+  IGT_7160: 45da871dd2684227e93a2fc002b87dfc58bd5fd9 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+<h2>Testlist changes</h2>
+<p>+igt@perf@gen12-gt-concurrent-oa-buffer-read<br />
++igt@perf@gen12-gt-exclusive-stream-ctx-handle<br />
++igt@perf@gen12-gt-exclusive-stream-sample-oa<br />
++igt@perf@gen12-invalid-class-instance</p>
+
+</body>
+</html>
+
+--===============1365285004135123793==--
