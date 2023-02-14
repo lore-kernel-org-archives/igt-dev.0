@@ -1,16 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E34A410E02A
- for <igt-dev@lists.freedesktop.org>; Tue, 14 Feb 2023 21:00:12 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2D3B810E9A4
+ for <igt-dev@lists.freedesktop.org>; Tue, 14 Feb 2023 21:00:15 +0000 (UTC)
 From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 14 Feb 2023 12:59:39 -0800
-Message-Id: <20230214210007.2026033-3-umesh.nerlige.ramappa@intel.com>
+Date: Tue, 14 Feb 2023 12:59:54 -0800
+Message-Id: <20230214210007.2026033-18-umesh.nerlige.ramappa@intel.com>
 In-Reply-To: <20230214210007.2026033-1-umesh.nerlige.ramappa@intel.com>
 References: <20230214210007.2026033-1-umesh.nerlige.ramappa@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH 02/30] i915/perf: Define a default engine for OA
+Subject: [igt-dev] [PATCH 17/30] lib/perf" Set missing metric unit for some
+ counters
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,61 +24,32 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Use a helper to set the default engine for use with OA.
+Some counters do not have units specified, so use 'number' as the unit.
 
 Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 ---
- tests/i915/perf.c | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ lib/i915/perf-configs/mdapi-xml-convert.py | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/tests/i915/perf.c b/tests/i915/perf.c
-index c74434fe..15ffb50e 100644
---- a/tests/i915/perf.c
-+++ b/tests/i915/perf.c
-@@ -228,6 +228,7 @@ static int sysfs = -1;
- static int pm_fd = -1;
- static int stream_fd = -1;
- static uint32_t devid;
-+static struct intel_execution_engine2 default_e2;
+diff --git a/lib/i915/perf-configs/mdapi-xml-convert.py b/lib/i915/perf-configs/mdapi-xml-convert.py
+index 3b7d0663..eee12ad5 100755
+--- a/lib/i915/perf-configs/mdapi-xml-convert.py
++++ b/lib/i915/perf-configs/mdapi-xml-convert.py
+@@ -819,9 +819,14 @@ for arg in args.xml:
+             # XXX Not sure why EU metrics tend to just be bundled under 'gpu'
+             counter.set('mdapi_hw_unit_type', mdapi_counter.get('HWUnitType').lower())
  
- static uint64_t gt_max_freq_mhz = 0;
- static struct intel_perf *intel_perf = NULL;
-@@ -5097,8 +5098,19 @@ static bool has_class_instance(int i915, uint16_t class, uint16_t instance)
- 	return false;
- }
- 
-+static void set_default_engine(const intel_ctx_t *ctx)
-+{
-+	const struct intel_execution_engine2 *e;
++            # Some counters do not have MetricUnits, treat them as number.
++            if mdapi_counter.get('MetricUnits') == None:
++                units = "number"
++            else:
++                units = mdapi_counter.get('MetricUnits').lower()
 +
-+	for_each_ctx_engine(drm_fd, ctx, e)
-+		if (e->class == I915_ENGINE_CLASS_RENDER && e->instance == 0)
-+			default_e2 = *e;
-+}
-+
- igt_main
- {
-+	const intel_ctx_t *ctx;
-+
- 	igt_fixture {
- 		struct stat sb;
- 
-@@ -5136,6 +5148,8 @@ igt_main
- 
- 		igt_require(init_sys_info());
- 
-+		ctx = intel_ctx_create_all_physical(drm_fd);
-+		set_default_engine(ctx);
- 		write_u64_file("/proc/sys/dev/i915/perf_stream_paranoid", 1);
- 		write_u64_file("/proc/sys/dev/i915/oa_max_sample_rate", 100000);
- 
-@@ -5323,6 +5337,7 @@ igt_main
- 		if (intel_perf)
- 			intel_perf_free(intel_perf);
- 
-+		intel_ctx_destroy(drm_fd, ctx);
- 		close(drm_fd);
- 	}
- }
+             # There are counters representing cycle counts that have a semantic
+             # type of 'duration' which doesn't seem to make sense...
+-            units = mdapi_counter.get('MetricUnits').lower()
+             if units == "cycles":
+                 semantic_type = "event"
+             else:
 -- 
 2.36.1
