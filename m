@@ -1,27 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org,
- Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>,
- Petri Latvala <adrinael@adrinael.net>, Arkadiusz Hiler <arek@hiler.eu>,
- Andi Shyti <andi.shyti@linux.intel.com>,
- Chris Wilson <chris.p.wilson@linux.intel.com>,
- Andrzej Hajda <andrzej.hajda@intel.com>,
- Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>, Nirmoy Das <nirmoy.das@intel.com>,
- Ashutosh Dixit <ashutosh.dixit@intel.com>,
- Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>,
- intel-gfx@lists.freedesktop.org
-Date: Tue, 14 Feb 2023 23:40:38 +0100
-Message-ID: <2215171.iZASKD2KPV@jkrzyszt-mobl1.ger.corp.intel.com>
-In-Reply-To: <20230214212010.6qpjrdkcb3fnogjx@kamilkon-desk1>
-References: <20230213093132.12763-1-janusz.krzysztofik@linux.intel.com>
- <20230213093132.12763-2-janusz.krzysztofik@linux.intel.com>
- <20230214212010.6qpjrdkcb3fnogjx@kamilkon-desk1>
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5D39010E9FE
+ for <igt-dev@lists.freedesktop.org>; Wed, 15 Feb 2023 00:46:53 +0000 (UTC)
+From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Tue, 14 Feb 2023 16:46:18 -0800
+Message-Id: <20230215004648.2100655-2-umesh.nerlige.ramappa@intel.com>
+In-Reply-To: <20230215004648.2100655-1-umesh.nerlige.ramappa@intel.com>
+References: <20230215004648.2100655-1-umesh.nerlige.ramappa@intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
-Subject: Re: [igt-dev] [PATCH i-g-t v3 1/1] tests: Exercise remote request
- vs barrier handling race
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t 01/31] i915/perf: Add support for 64-bit OA
+ formats
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -29,304 +19,129 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: Lionel G Landwerlin <lionel.g.landwerlin@linux.intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Kamil,
+Newer gen12 platforms introduced 64 bit OA formats that are used by MTL.
+Add support to parse reports for 64 bit counters.
 
-Thanks for review.
+Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+---
+ tests/i915/perf.c | 58 ++++++++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 57 insertions(+), 1 deletion(-)
 
-On Tuesday, 14 February 2023 22:20:10 CET Kamil Konieczny wrote:
-> Hi Janusz,
-> 
-> On 2023-02-13 at 10:31:32 +0100, Janusz Krzysztofik wrote:
-> > Users reported oopses on list corruptions when using i915 perf with a
-> > number of concurrently running graphics applications.  That indicates we
-> > are currently missing some important tests for such scenarios.  Cover
-> > that gap.
-> > 
-> > Root cause analysis pointed out to an issue in barrier processing code and
-> > its interaction with perf replacing kernel contexts' active barriers with
-> > its own requests.
-> > 
-> > Add a new test intended for exercising intentionally racy barrier tasks
-> > list processing and its interaction with other i915 subsystems.  As a
-> > first subtest, add one that exercises the interaction of remote requests
-> > with barrier tasks list handling, especially barrier preallocate / acquire
-> > operations performed during context first pin / last unpin.
-> > 
-> > The code is partially inspired by Chris Wilson's igt@perf@open-race
-> > subtest, which I was not able to get an Ack for from upstream.
-> > 
-> > v3: don't add the new subtest to gem_ctx_exec which occurred blocklisted,
-> >     create a new test hosting the new subtest, update commit descripion,
-> >   - prepare parameters for perf open still in the main thread to avoid
-> >     test failures on platforms with no perf support (will skip now),
-> >   - call perf open with OA buffer reports disabled, this will make sure
-> >     that the perf API doesn't unnecessarily enable the OA unit, while the
-> >     test still runs the targeted code (Umesh),
-> >   - replace additional code for OA exponent calculations with a reasonable
-> >     hardcoded value (Umesh).
-> > v2: convert to a separate subtest, not a variant of another one (that has
-> >     been dropped from the series),
-> >   - move the subtest out of tests/i915/perf.c (Ashutosh), add it to
-> >     tests/i915/gem_ctx_exec.c,
-> >   - don't touch lib/i915/perf.c (Umesh, Ashutosh), duplicate reused code
-> >     from tests/i915/perf.c in tests/i915/gem_ctx_exec.c.
-> > 
-> > References: https://gitlab.freedesktop.org/drm/intel/-/issues/6333
-> > Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-> > Cc: Chris Wilson <chris.p.wilson@intel.com>
-> > Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> > Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
-> > Cc: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
-> > ---
-> >  tests/i915/gem_barrier_race.c | 159 ++++++++++++++++++++++++++++++++++
-> >  tests/meson.build             |   8 ++
-> >  2 files changed, 167 insertions(+)
-> >  create mode 100644 tests/i915/gem_barrier_race.c
-> > 
-> > diff --git a/tests/i915/gem_barrier_race.c b/tests/i915/gem_barrier_race.c
-> > new file mode 100644
-> > index 0000000000..fd0c7bdf1c
-> > --- /dev/null
-> > +++ b/tests/i915/gem_barrier_race.c
-> > @@ -0,0 +1,159 @@
-> > +// SPDX-License-Identifier: MIT
-> > +/*
-> > + * Copyright(c) 2023 Intel Corporation. All rights reserved.
-> > + */
-> > +
-> > +#include <stdint.h>
-> > +
-> > +#include "drmtest.h"
-> > +#include "igt_aux.h"
-> > +#include "igt_core.h"
-> > +#include "igt_gt.h"
-> > +#include "intel_chipset.h"
-> > +#include "intel_reg.h"
-> > +#include "ioctl_wrappers.h"
-> > +
-> > +#include "i915/gem.h"
-> > +#include "i915/gem_create.h"
-> > +#include "i915/gem_engine_topology.h"
-> > +#include "i915/perf.h"
-> > +
-> > +IGT_TEST_DESCRIPTION("Exercise barrier tasks list handling and its interation with other i915 subsystems");
-> ----------------------------------------------- ^^^^^^^^^^^^^ --------------^-------------- ^
-> s/interation/interaction/
-
-Thanks.
-
-> Please make it generic so it will not need to be changed soon,
-> for example:
-> IGT_TEST_DESCRIPTION("Exercise barrier tasks and its interaction with other subsystems");
-
-Since we are not exercising barrier tasks only barriers (the list name is 
-barrier_tasks, while another list is called preallocated_barriers, then 
-"tasks" without "list" may be confusing, I believe), I'll use:
-
-IGT_TEST_DESCRIPTION("Exercise barriers and their interaction with other subsystems");
-
-OK?
-
-> 
-> > +
-> > +/* Based on code patterns found in tests/i915/perf.c */
-> > +static void perf_open_close_workload(int fd, int *done)
-> > +{
-> > +	struct intel_perf_metric_set *metric_set = NULL, *metric_set_iter;
-> > +	struct intel_perf *intel_perf = intel_perf_for_fd(fd);
-> > +	uint64_t properties[] = {
-> > +		DRM_I915_PERF_PROP_SAMPLE_OA, true,
-> > +		DRM_I915_PERF_PROP_OA_METRICS_SET, 0,
-> > +		DRM_I915_PERF_PROP_OA_FORMAT, 0,
-> > +		DRM_I915_PERF_PROP_OA_EXPONENT, 5,
-> > +	};
-> > +	struct drm_i915_perf_open_param param = {
-> > +		.flags = I915_PERF_FLAG_FD_CLOEXEC | I915_PERF_FLAG_DISABLED,
-> > +		.num_properties = sizeof(properties) / 16,
-> > +		.properties_ptr = to_user_pointer(properties),
-> > +	};
-> > +	uint32_t devid = intel_get_drm_devid(fd);
-> > +
-> > +	igt_require(intel_perf);
-> > +	intel_perf_load_perf_configs(intel_perf, fd);
-> > +
-> > +	igt_require(devid);
-> > +	igt_list_for_each_entry(metric_set_iter, &intel_perf->metric_sets, link) {
-> > +		if (!strcmp(metric_set_iter->symbol_name,
-> > +			    IS_HASWELL(devid) ? "RenderBasic" : "TestOa")) {
-> > +			metric_set = metric_set_iter;
-> > +			break;
-> > +		}
-> > +	}
-> > +	igt_require(metric_set);
-> > +	igt_require(metric_set->perf_oa_metrics_set);
-> > +	properties[3] = metric_set->perf_oa_metrics_set;
-> > +	properties[5] = metric_set->perf_oa_format;
-> > +
-> > +	intel_perf_free(intel_perf);
-> > +
-> > +	igt_fork(child, 1) {
-> > +		do {
-> > +			int stream = igt_ioctl(fd, DRM_IOCTL_I915_PERF_OPEN, &param);
-> > +
-> > +			igt_assert_fd(stream);
-> > +			close(stream);
-> > +
-> > +		} while (!READ_ONCE(*done));
-> > +	}
-> > +}
-> > +
-> > +static void remote_request_workload(int fd, int *done)
-> -------------- ^
-> > +{
-> > +	/*
-> > +	 * Use DRM_IOCTL_I915_PERF_OPEN / close as
-> > +	 * intel_context_prepare_remote_request() workload
-> > +	 */
-> > +	perf_open_close_workload(fd, done);
-> ------- ^
-> > +}
-> 
-> These is just calling one function as another name, imho just
-> rename perf_open_close_workload() into remote_request_workload()
-
-The idea was to document the fact that we are using perf open / close 
-specifically as remote request workload, something that we may want to improve 
-if the driver ever provides a more simple way, but of course, I can do this 
-the way you prefer.
-
-> 
-> > +
-> > +/* Copied from tests/i915/gem_ctx_exec.c */
-> > +static int exec(int fd, uint32_t handle, int ring, int ctx_id)
-> > +{
-> > +	struct drm_i915_gem_exec_object2 obj = { .handle = handle };
-> > +	struct drm_i915_gem_execbuffer2 execbuf = {
-> > +		.buffers_ptr = to_user_pointer(&obj),
-> > +		.buffer_count = 1,
-> > +		.flags = ring,
-> > +	};
-> > +
-> > +	i915_execbuffer2_set_context_id(execbuf, ctx_id);
-> > +
-> > +	return __gem_execbuf(fd, &execbuf);
-> > +}
-> > +
-> > +static void gem_create_nop_exec_sync_close_loop(int fd, uint64_t engine, int *done)
-> > +{
-> > +	const uint32_t batch[2] = { 0, MI_BATCH_BUFFER_END };
-> > +
-> > +	fd = gem_reopen_driver(fd);
-> > +
-> > +	do {
-> > +		uint32_t handle = gem_create(fd, 4096);
-> > +
-> > +		gem_write(fd, handle, 0, batch, sizeof(batch));
-> > +		igt_assert_eq(exec(fd, handle, engine, 0), 0);
-> > +
-> > +		gem_sync(fd, handle);
-> > +		gem_close(fd, handle);
-> > +
-> > +	} while (!READ_ONCE(*done));
-> > +}
-> > +
-> > +static void intel_context_first_pin_last_unpin_loop(int fd, uint64_t engine, int *done)
-> -------------- ^
-> > +{
-> > +	/*
-> > +	 * Use gem_create -> gem_write -> gem_execbuf -> gem_sync -> gem_close
-> > +	 * as intel context first pin / last unpin intensive workload
-> > +	 */
-> > +	gem_create_nop_exec_sync_close_loop(fd, engine, done);
-> ------- ^
-> > +}
-> 
-> Same here, just rename original function, maybe make it a little
-> shorter and put longer explanations in comments.
-
-Same here, but let me ask what you think is missing from comments that you 
-suggest to add longer explanations?
-
-> 
-> > +
-> > +static void test_remote_request(int fd, uint64_t engine, unsigned int timeout)
-> > +{
-> > +	int *done = mmap(0, 4096, PROT_WRITE, MAP_SHARED | MAP_ANON, -1, 0);
-> > +
-> > +	igt_assert(done != MAP_FAILED);
-> > +
-> > +	remote_request_workload(fd, done);
-> > +
-> > +	igt_fork(child, sysconf(_SC_NPROCESSORS_ONLN))
-> > +		intel_context_first_pin_last_unpin_loop(fd, engine, done);
-> > +
-> > +	sleep(timeout);
-> > +	*done = 1;
-> > +	igt_waitchildren();
-> > +	munmap(done, 4096);
-> > +}
-> > +
-> > +igt_main
-> > +{
-> > +	int fd;
-> > +
-> > +	igt_fixture {
-> > +		fd = drm_open_driver_render(DRIVER_INTEL);
-> > +		igt_require_gem(fd);
-> > +	}
-> > +
-> > +	igt_describe("Race intel_context_prepare_remote_request against intel_context_active_acquire/release");
-> > +	igt_subtest_with_dynamic("remote-request") {
-> > +		struct intel_execution_engine2 *e;
-> > +
-> > +		for_each_physical_engine(fd, e) {
-> > +			if (e->class != I915_ENGINE_CLASS_RENDER)
-> > +				continue;
-> > +
-> > +			igt_dynamic(e->name)
-> > +				test_remote_request(fd, e->flags, 5);
-> 
-> Do we need all physical engines to be tested ?
-
-From my point of view, more engines we exercise, better coverage we get.  
-But your priorities may be different.
-If there is more than one render engine available, which one do you propose to 
-select?  A random one?
-
-Thanks,
-Janusz
-
-
-> 
-> Regards,
-> Kamil
-> > +		}
-> > +	}
-> > +}
-> > diff --git a/tests/meson.build b/tests/meson.build
-> > index 6fb1bb86c9..5670712ae8 100644
-> > --- a/tests/meson.build
-> > +++ b/tests/meson.build
-> > @@ -389,6 +389,14 @@ test_executables += executable('i915_pm_rc6_residency',
-> >  	   install : true)
-> >  test_list += 'i915_pm_rc6_residency'
-> >  
-> > +test_executables += executable('gem_barrier_race',
-> > +	   join_paths('i915', 'gem_barrier_race.c'),
-> > +	   dependencies : test_deps + [ lib_igt_i915_perf ],
-> > +	   install_dir : libexecdir,
-> > +	   install_rpath : libexecdir_rpathdir,
-> > +	   install : true)
-> > +test_list += 'gem_barrier_race'
-> > +
-> >  test_executables += executable('perf_pmu',
-> >  	   join_paths('i915', 'perf_pmu.c'),
-> >  	   dependencies : test_deps + [ lib_igt_perf ],
-> 
-
-
-
+diff --git a/tests/i915/perf.c b/tests/i915/perf.c
+index dd1f1ac3..c74434fe 100644
+--- a/tests/i915/perf.c
++++ b/tests/i915/perf.c
+@@ -107,6 +107,8 @@ struct oa_format {
+ 	int a40_high_off; /* bytes */
+ 	int a40_low_off;
+ 	int n_a40;
++	int a64_off;
++	int n_a64;
+ 	int a_off;
+ 	int n_a;
+ 	int first_a;
+@@ -720,6 +722,15 @@ gen8_read_40bit_a_counter(const uint32_t *report,
+ 	return a40_low[a_id] | high;
+ }
+ 
++static uint64_t
++xehpsdv_read_64bit_a_counter(const uint32_t *report, enum drm_i915_oa_format fmt, int a_id)
++{
++	struct oa_format format = get_oa_format(fmt);
++	uint64_t *a64 = (uint64_t *)(((uint8_t *)report) + format.a64_off);
++
++	return a64[a_id];
++}
++
+ static uint64_t
+ gen8_40bit_a_delta(uint64_t value0, uint64_t value1)
+ {
+@@ -754,6 +765,19 @@ accumulate_uint40(int a_index,
+ 	*delta += gen8_40bit_a_delta(value0, value1);
+ }
+ 
++static void
++accumulate_uint64(int a_index,
++		  const uint32_t *report0,
++		  const uint32_t *report1,
++		  enum drm_i915_oa_format format,
++		  uint64_t *delta)
++{
++	uint64_t value0 = xehpsdv_read_64bit_a_counter(report0, format, a_index),
++		 value1 = xehpsdv_read_64bit_a_counter(report1, format, a_index);
++
++	*delta += (value1 - value0);
++}
++
+ static void
+ accumulate_reports(struct accumulator *accumulator,
+ 		   uint32_t *start,
+@@ -779,6 +803,11 @@ accumulate_reports(struct accumulator *accumulator,
+ 				  deltas + idx++);
+ 	}
+ 
++	for (int i = 0; i < format.n_a64; i++) {
++		accumulate_uint64(i, start, end, accumulator->format,
++				  deltas + idx++);
++	}
++
+ 	for (int i = 0; i < format.n_a; i++) {
+ 		accumulate_uint32(format.a_off + 4 * i,
+ 				  start, end, deltas + idx++);
+@@ -809,6 +838,9 @@ accumulator_print(struct accumulator *accumulator, const char *title)
+ 
+ 		for (int i = 0; i < format.n_a40; i++)
+ 			igt_debug("\tA%u = %"PRIu64"\n", i, deltas[idx++]);
++
++		for (int i = 0; i < format.n_a64; i++)
++			igt_debug("\tA64_%u = %"PRIu64"\n", i, deltas[idx++]);
+ 	} else {
+ 		igt_debug("\ttime delta = %"PRIu64"\n", deltas[idx++]);
+ 	}
+@@ -865,7 +897,19 @@ gen8_sanity_check_test_oa_reports(const uint32_t *oa_report0,
+ 		if (undefined_a_counters[j])
+ 			continue;
+ 
+-		igt_debug("A%d: delta = %"PRIu64"\n", j, delta);
++		igt_debug("A40_%d: delta = %"PRIu64"\n", j, delta);
++		igt_assert(delta <= max_delta);
++	}
++
++	for (int j = 0; j < format.n_a64; j++) {
++		uint64_t delta = 0;
++
++		accumulate_uint64(j, oa_report0, oa_report1, fmt, &delta);
++
++		if (undefined_a_counters[j])
++			continue;
++
++		igt_debug("A64_%d: delta = %"PRIu64"\n", format.first_a + j, delta);
+ 		igt_assert(delta <= max_delta);
+ 	}
+ 
+@@ -1430,6 +1474,18 @@ print_reports(uint32_t *oa_report0, uint32_t *oa_report1, int fmt)
+ 			  j, value0, value1, delta);
+ 	}
+ 
++	for (int j = 0; j < format.n_a64; j++) {
++		uint64_t value0 = xehpsdv_read_64bit_a_counter(oa_report0, fmt, j);
++		uint64_t value1 = xehpsdv_read_64bit_a_counter(oa_report1, fmt, j);
++		uint64_t delta = value1 - value0;
++
++		if (undefined_a_counters[j])
++			continue;
++
++		igt_debug("A_64%d: 1st = %"PRIu64", 2nd = %"PRIu64", delta = %"PRIu64"\n",
++			  format.first_a + j, value0, value1, delta);
++	}
++
+ 	for (int j = 0; j < format.n_a; j++) {
+ 		uint32_t *a0 = (uint32_t *)(((uint8_t *)oa_report0) +
+ 					    format.a_off);
+-- 
+2.36.1
