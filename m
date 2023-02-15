@@ -1,22 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D9C0510E06E
- for <igt-dev@lists.freedesktop.org>; Wed, 15 Feb 2023 14:28:10 +0000 (UTC)
-From: =?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>
-To: Melissa Wen <mwen@igalia.com>,
- =?UTF-8?q?Andr=C3=A9=20Almeida?= <andrealmeid@igalia.com>,
- Petri Latvala <adrinael@adrinael.net>,
- Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Iago Toral Quiroga <itoral@igalia.com>
-Date: Wed, 15 Feb 2023 11:27:38 -0300
-Message-Id: <20230215142738.1121229-4-mcanal@igalia.com>
-In-Reply-To: <20230215142738.1121229-1-mcanal@igalia.com>
-References: <20230215142738.1121229-1-mcanal@igalia.com>
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B6B0A10E236
+ for <igt-dev@lists.freedesktop.org>; Wed, 15 Feb 2023 16:50:06 +0000 (UTC)
+From: Swati Sharma <swati2.sharma@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Wed, 15 Feb 2023 22:22:20 +0530
+Message-Id: <20230215165220.15301-1-swati2.sharma@intel.com>
+In-Reply-To: <20230215152123.12883-1-swati2.sharma@intel.com>
+References: <20230215152123.12883-1-swati2.sharma@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v4 3/3] tests/v3d_job_submission: Create
- tests to mix CL and CSD jobs
+Subject: [igt-dev] [PATCH i-g-t 3/3] tests/kms_plane_scaling: Add test to
+ validate max source size
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,279 +19,139 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add three subtests that combine CL jobs and CSD jobs, to assure the
-proper synchronization of different queues, especially the
-independence between them. Moreover, tests the relationship between
-single syncobjs and multisync using mixed jobs as well.
+i915 specific test is added to validate max source size. This
+test is expected to return -EINVAL for platforms where we have
+max source width 4096 whereas it will pass on platforms having
+max source width 5120. We have created fb of size 5120x4320
+(=size of source) and downscaled to 3840x2400(=size of dest).
 
-Reviewed-by: Melissa Wen <mwen@igalia.com>
-Signed-off-by: Maíra Canal <mcanal@igalia.com>
+On MTL(disp_ver=14), in dmesg we can see
+"[drm:skl_update_scaler [i915]] scaler_user index 0.0: src
+5120x4320 dst 3840x2400 size is out of scaler range."
+since max source width supported is 4096.
+whereas same test will pass on ADLP(display_ver=13) since max
+source width  supported is 5120.
+
+Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
 ---
- tests/v3d/meson.build          |   1 +
- tests/v3d/v3d_job_submission.c | 223 +++++++++++++++++++++++++++++++++
- tests/v3d_ci/v3d.testlist      |   3 +
- 3 files changed, 227 insertions(+)
- create mode 100644 tests/v3d/v3d_job_submission.c
+ tests/kms_plane_scaling.c | 94 +++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 94 insertions(+)
 
-diff --git a/tests/v3d/meson.build b/tests/v3d/meson.build
-index d070fdb5..03b4de61 100644
---- a/tests/v3d/meson.build
-+++ b/tests/v3d/meson.build
-@@ -2,6 +2,7 @@ v3d_progs = [
- 	'v3d_create_bo',
- 	'v3d_get_bo_offset',
- 	'v3d_get_param',
-+	'v3d_job_submission',
- 	'v3d_mmap',
- 	'v3d_submit_cl',
- 	'v3d_submit_csd',
-diff --git a/tests/v3d/v3d_job_submission.c b/tests/v3d/v3d_job_submission.c
-new file mode 100644
-index 00000000..d6e415bb
---- /dev/null
-+++ b/tests/v3d/v3d_job_submission.c
-@@ -0,0 +1,223 @@
-+// SPDX-License-Identifier: MIT
+diff --git a/tests/kms_plane_scaling.c b/tests/kms_plane_scaling.c
+index 9737d8645..ae917b202 100644
+--- a/tests/kms_plane_scaling.c
++++ b/tests/kms_plane_scaling.c
+@@ -890,6 +890,95 @@ static void invalid_parameter_tests(data_t *d)
+ 	}
+ }
+ 
 +/*
-+ * Copyright © 2022 Igalia S.L.
++ *	Max source/destination width/height
++ *	for i915 driver.
++ *
++ *	DISPLAY_VER < 11
++ *		max_src_w = 4096
++ *		max_src_h = 4096
++ *		max_dst_w = 4096
++ *		max_dst_h = 4096
++ *
++ *	DISPLAY_VER = 11
++ *		max_src_w = 5120
++ *		max_src_h = 4096
++ *		max_dst_w = 5120
++ *		max_dst_h = 4096
++ *
++ *	DISPLAY_VER = 12-13
++ *		max_src_w = 5120
++ *		max_src_h = 8192
++ *		max_dst_w = 8192
++ *		max_dst_h = 8192
++ *
++ *	DISPLAY_VER = 14
++ *		max_src_w = 4096
++ *		max_src_h = 8192
++ *		max_dst_w = 8192
++ *		max_dst_h = 8192
 + */
 +
-+#include "igt.h"
-+#include "igt_v3d.h"
-+#include "igt_syncobj.h"
-+
-+static int fd;
-+
-+IGT_TEST_DESCRIPTION("Tests that combines Command List (CL) and Compute Shader Dispatch (CSD) jobs.");
-+
-+/* Number of Command List (CL) jobs to be submitted. */
-+#define NUM_CL_JOBS  1000
-+
-+/* Number of Compute Shader Dispatch (CSD) jobs to be submitted. */
-+#define NUM_CSD_JOBS 250
-+
-+static int syncobj_wait_array(uint32_t *handles, uint32_t count)
++static void i915_max_source_size_test(data_t *d)
 +{
-+	int i, ret = 0;
++	enum pipe pipe = PIPE_A;
++	igt_output_t *output;
++	igt_fb_t fb;
++	igt_plane_t *plane;
++	int rval;
 +
-+	for (i = 0; i < count; i++) {
-+		ret = syncobj_wait_err(fd, &handles[i], 1, INT64_MAX, 0);
-+		if (ret)
-+			return ret;
-+	}
++	static const struct invalid_paramtests paramtests[1] = {
++		{
++			.testname = "max-src-size",
++			.planesize = {3840, 2400},
++			.params = {{~0}}
++		},
++	};
 +
-+	return ret;
-+}
-+
-+static void *create_cl_jobs(void *args)
-+{
-+	struct v3d_cl_job **jobs = args;
-+	int i;
-+
-+	for (i = 0; i < NUM_CL_JOBS; i++) {
-+		do_ioctl(fd, DRM_IOCTL_V3D_SUBMIT_CL, jobs[i]->submit);
-+		igt_assert(syncobj_wait(fd, &jobs[i]->submit->out_sync, 1,
-+					INT64_MAX, 0, NULL));
-+	}
-+
-+	return NULL;
-+}
-+
-+static void *create_csd_jobs(void *args)
-+{
-+	struct v3d_csd_job **jobs = args;
-+	int i;
-+
-+	for (i = 0; i < NUM_CSD_JOBS; i++) {
-+		do_ioctl(fd, DRM_IOCTL_V3D_SUBMIT_CSD, jobs[i]->submit);
-+		igt_assert(syncobj_wait(fd, &jobs[i]->submit->out_sync, 1,
-+					INT64_MAX, 0, NULL));
-+	}
-+
-+	return NULL;
-+}
-+
-+igt_main
-+{
 +	igt_fixture {
-+		fd = drm_open_driver(DRIVER_V3D);
-+		igt_require(igt_v3d_get_param(fd, DRM_V3D_PARAM_SUPPORTS_CSD));
-+		igt_require(igt_v3d_get_param(fd, DRM_V3D_PARAM_SUPPORTS_MULTISYNC_EXT));
++		output = igt_get_single_output_for_pipe(&d->display, pipe);
++		igt_require(output);
++
++		igt_output_set_pipe(output, pipe);
++		plane = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
++
++		igt_create_fb(d->drm_fd, 5120, 4320,
++			DRM_FORMAT_XRGB8888,
++			DRM_FORMAT_MOD_NONE,
++			&fb);
 +	}
 +
-+	igt_describe("Test if the out-sync of an array of mixed jobs is behaving correctly.");
-+	igt_subtest("array-job-submission") {
-+		uint32_t handles[4];
-+		struct v3d_cl_job *cl_jobs[2];
-+		struct v3d_csd_job *csd_jobs[2];
-+		int i;
++	igt_describe("test for validating max source size.");
++	igt_subtest_with_dynamic("i915-max-source-size") {
++		for (uint32_t i = 0; i < ARRAY_SIZE(paramtests); i++) {
++			igt_dynamic(paramtests[i].testname) {
++				igt_plane_set_position(plane, 0, 0);
++				igt_plane_set_fb(plane, &fb);
++				igt_plane_set_size(plane,
++							paramtests[i].planesize[0],
++							paramtests[i].planesize[1]);
 +
-+		for (i = 0; i < ARRAY_SIZE(handles); i++)
-+			handles[i] = syncobj_create(fd, 0);
++				for (uint32_t j = 0; paramtests[i].params[j].prop != ~0; j++)
++					igt_plane_set_prop_value(plane,
++								 paramtests[i].params[j].prop,
++								 paramtests[i].params[j].value);
 +
-+		for (i = 0; i < 2; i++) {
-+			cl_jobs[i] = igt_v3d_noop_job(fd);
-+			csd_jobs[i] = igt_v3d_empty_shader(fd);
-+		}
++				rval = igt_display_try_commit2(&d->display, COMMIT_ATOMIC);
 +
-+		cl_jobs[0]->submit->out_sync =  handles[0];
-+		csd_jobs[0]->submit->out_sync =  handles[1];
-+		cl_jobs[1]->submit->out_sync =  handles[2];
-+		csd_jobs[1]->submit->out_sync =  handles[3];
-+
-+		do_ioctl(fd, DRM_IOCTL_V3D_SUBMIT_CL, cl_jobs[0]->submit);
-+		igt_assert_eq(syncobj_wait_array(handles, ARRAY_SIZE(handles)), -EINVAL);
-+
-+		do_ioctl(fd, DRM_IOCTL_V3D_SUBMIT_CSD, csd_jobs[0]->submit);
-+		igt_assert_eq(syncobj_wait_array(handles, ARRAY_SIZE(handles)), -EINVAL);
-+
-+		do_ioctl(fd, DRM_IOCTL_V3D_SUBMIT_CL, cl_jobs[1]->submit);
-+		igt_assert_eq(syncobj_wait_array(handles, ARRAY_SIZE(handles)), -EINVAL);
-+
-+		do_ioctl(fd, DRM_IOCTL_V3D_SUBMIT_CSD, csd_jobs[1]->submit);
-+		igt_assert_eq(syncobj_wait_array(handles, ARRAY_SIZE(handles)), 0);
-+
-+		for (i = 0; i < 2; i++) {
-+			igt_v3d_free_cl_job(fd, cl_jobs[i]);
-+			igt_v3d_free_csd_job(fd, csd_jobs[i]);
++				if (intel_display_ver(d->devid) < 11 || intel_display_ver(d->devid) >= 14)
++					igt_assert(rval == -EINVAL || rval == -ERANGE);
++				else
++					igt_assert_eq(rval, 0);
++			}
 +		}
 +	}
 +
-+	igt_describe("Test if multiple singlesyncs have the same behaviour as one multisync.");
-+	igt_subtest("multiple-singlesync-to-multisync") {
-+		struct drm_v3d_multi_sync ms = { 0 };
-+		uint32_t handles[4];
-+		struct v3d_cl_job *cl_jobs[2];
-+		struct v3d_csd_job *csd_jobs[2];
-+		struct drm_v3d_sem *in_syncs, *out_syncs;
-+		int i;
-+
-+		for (i = 0; i < ARRAY_SIZE(handles); i++)
-+			handles[i] = syncobj_create(fd, 0);
-+
-+		for (i = 0; i < 2; i++) {
-+			cl_jobs[i] = igt_v3d_noop_job(fd);
-+			csd_jobs[i] = igt_v3d_empty_shader(fd);
-+		}
-+
-+		cl_jobs[0]->submit->out_sync =  handles[0];
-+		csd_jobs[0]->submit->out_sync =  handles[1];
-+		cl_jobs[1]->submit->out_sync =  handles[2];
-+
-+		igt_v3d_set_multisync(&ms, V3D_CSD);
-+		ms.in_sync_count = 3;
-+		ms.out_sync_count = 1;
-+
-+		in_syncs = malloc(ms.in_sync_count * sizeof(*in_syncs));
-+		out_syncs = malloc(ms.out_sync_count * sizeof(*in_syncs));
-+
-+		for (i = 0; i < ms.in_sync_count; i++)
-+			in_syncs[i].handle = handles[i];
-+
-+		out_syncs[0].handle = handles[3];
-+
-+		ms.in_syncs = to_user_pointer(in_syncs);
-+		ms.out_syncs = to_user_pointer(out_syncs);
-+
-+		csd_jobs[1]->submit->flags = DRM_V3D_SUBMIT_EXTENSION;
-+		csd_jobs[1]->submit->extensions = to_user_pointer(&ms);
-+
-+		do_ioctl(fd, DRM_IOCTL_V3D_SUBMIT_CL, cl_jobs[0]->submit);
-+
-+		do_ioctl_err(fd, DRM_IOCTL_V3D_SUBMIT_CSD, csd_jobs[1]->submit, EINVAL);
-+		igt_assert_eq(syncobj_wait_array(handles, ARRAY_SIZE(handles)), -EINVAL);
-+
-+		do_ioctl(fd, DRM_IOCTL_V3D_SUBMIT_CSD, csd_jobs[0]->submit);
-+
-+		do_ioctl_err(fd, DRM_IOCTL_V3D_SUBMIT_CSD, csd_jobs[1]->submit, EINVAL);
-+		igt_assert_eq(syncobj_wait_array(handles, ARRAY_SIZE(handles)), -EINVAL);
-+
-+		do_ioctl(fd, DRM_IOCTL_V3D_SUBMIT_CL, cl_jobs[1]->submit);
-+		igt_assert_eq(syncobj_wait_array(handles, ARRAY_SIZE(handles)), -EINVAL);
-+
-+		do_ioctl(fd, DRM_IOCTL_V3D_SUBMIT_CSD, csd_jobs[1]->submit);
-+		igt_assert_eq(syncobj_wait_array(handles, ARRAY_SIZE(handles)), 0);
-+
-+		for (i = 0; i < 2; i++) {
-+			igt_v3d_free_cl_job(fd, cl_jobs[i]);
-+			igt_v3d_free_csd_job(fd, csd_jobs[i]);
-+		}
++	igt_fixture {
++		igt_remove_fb(d->drm_fd, &fb);
++		igt_output_set_pipe(output, PIPE_NONE);
 +	}
-+
-+	igt_describe("Test if all queues are progressing independently.");
-+	igt_subtest("threaded-job-submission") {
-+		struct v3d_cl_job **cl_jobs = NULL;
-+		struct v3d_csd_job **csd_jobs = NULL;
-+		pthread_t *threads[2];
-+		int i, ret;
-+
-+		cl_jobs = malloc(NUM_CL_JOBS * sizeof(*cl_jobs));
-+		csd_jobs = malloc(NUM_CSD_JOBS * sizeof(*csd_jobs));
-+
-+		for (i = 0; i < NUM_CL_JOBS; i++) {
-+			igt_print_activity();
-+
-+			cl_jobs[i] = igt_v3d_noop_job(fd);
-+			cl_jobs[i]->submit->out_sync = syncobj_create(fd,
-+								      DRM_SYNCOBJ_CREATE_SIGNALED);
-+		}
-+
-+		for (i = 0; i < NUM_CSD_JOBS; i++) {
-+			igt_print_activity();
-+
-+			csd_jobs[i] = igt_v3d_empty_shader(fd);
-+			csd_jobs[i]->submit->out_sync = syncobj_create(fd,
-+								       DRM_SYNCOBJ_CREATE_SIGNALED);
-+		}
-+
-+		for (i = 0; i < ARRAY_SIZE(threads); i++) {
-+			threads[i] = malloc(sizeof(*threads[i]));
-+			igt_assert(threads[i]);
-+		}
-+
-+		ret = pthread_create(threads[0], NULL, &create_cl_jobs, cl_jobs);
-+		igt_assert_eq(ret, 0);
-+
-+		ret = pthread_create(threads[1], NULL, &create_csd_jobs, csd_jobs);
-+		igt_assert_eq(ret, 0);
-+
-+		for (i = 0; i < ARRAY_SIZE(threads); i++)
-+			pthread_join(*threads[i], NULL);
-+
-+		for (i = 0; i < NUM_CL_JOBS; i++)
-+			igt_v3d_free_cl_job(fd, cl_jobs[i]);
-+
-+		for (i = 0; i < NUM_CSD_JOBS; i++)
-+			igt_v3d_free_csd_job(fd, csd_jobs[i]);
-+
-+		for (i = 0; i < ARRAY_SIZE(threads); i++)
-+			free(threads[i]);
-+
-+		free(cl_jobs);
-+		free(csd_jobs);
-+	}
-+
-+	igt_fixture
-+		close(fd);
 +}
-diff --git a/tests/v3d_ci/v3d.testlist b/tests/v3d_ci/v3d.testlist
-index 5452fd99..106e9cf2 100644
---- a/tests/v3d_ci/v3d.testlist
-+++ b/tests/v3d_ci/v3d.testlist
-@@ -7,6 +7,9 @@ igt@v3d/v3d_get_bo_offset@get-bad-handle
- igt@v3d/v3d_get_param@base-params
- igt@v3d/v3d_get_param@get-bad-param
- igt@v3d/v3d_get_param@get-bad-flags
-+igt@v3d/v3d_job_submission@array-job-submission
-+igt@v3d/v3d_job_submission@multiple-singlesync-to-multisync
-+igt@v3d/v3d_job_submission@threaded-job-submission
- igt@v3d/v3d_mmap@mmap-bad-flags
- igt@v3d/v3d_mmap@mmap-bad-handle
- igt@v3d/v3d_mmap@mmap-bo
++
+ static int opt_handler(int opt, int opt_index, void *_data)
+ {
+ 	data_t *data = _data;
+@@ -1055,6 +1144,11 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
+ 
+ 	invalid_parameter_tests(&data);
+ 
++	igt_fixture
++		igt_require_f(data.devid, "This test is valid only for i915 devices.\n");
++
++	i915_max_source_size_test(&data);
++
+ 	igt_fixture {
+ 		igt_display_fini(&data.display);
+ 		close(data.drm_fd);
 -- 
-2.39.1
+2.25.1
