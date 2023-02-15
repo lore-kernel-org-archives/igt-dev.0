@@ -1,16 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D613610EA15
- for <igt-dev@lists.freedesktop.org>; Wed, 15 Feb 2023 00:47:03 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8274510EA07
+ for <igt-dev@lists.freedesktop.org>; Wed, 15 Feb 2023 00:46:58 +0000 (UTC)
 From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 14 Feb 2023 16:46:45 -0800
-Message-Id: <20230215004648.2100655-29-umesh.nerlige.ramappa@intel.com>
+Date: Tue, 14 Feb 2023 16:46:41 -0800
+Message-Id: <20230215004648.2100655-25-umesh.nerlige.ramappa@intel.com>
 In-Reply-To: <20230215004648.2100655-1-umesh.nerlige.ramappa@intel.com>
 References: <20230215004648.2100655-1-umesh.nerlige.ramappa@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 28/31] lib/perf: Add support for MPEC format
+Subject: [igt-dev] [PATCH i-g-t 24/31] i915/perf: Run non-zero-reason on
+ media engines as well
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,124 +24,80 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add support in perf library for MPEC formats.
+Enable non-zero-reason test to run on media engines as well.
 
 Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 ---
- lib/i915/perf.c             | 38 +++++++++++++++++++++++++++++++++++++
- lib/i915/perf_data_reader.c | 14 +++++++++-----
- 2 files changed, 47 insertions(+), 5 deletions(-)
+ tests/i915/perf.c | 25 +++++++++++++++----------
+ 1 file changed, 15 insertions(+), 10 deletions(-)
 
-diff --git a/lib/i915/perf.c b/lib/i915/perf.c
-index 24ef3819..d736490b 100644
---- a/lib/i915/perf.c
-+++ b/lib/i915/perf.c
-@@ -915,6 +915,34 @@ void intel_perf_accumulate_reports(struct intel_perf_accumulator *acc,
- 		for (i = 0; i < 61; i++)
- 			accumulate_uint32(start + 3 + i, end + 3 + i, deltas + 1 + i);
- 		break;
-+
-+	case I915_OAM_FORMAT_MPEC8u32_B8_C8: {
-+		const uint64_t *start64 = (const uint64_t *)(record0 + 1);
-+		const uint64_t *end64 = (const uint64_t *)(record1 + 1);
-+
-+		/* 64 bit timestamp */
-+		if (perf->devinfo.oa_timestamp_shift >= 0)
-+			deltas[idx++] += (end64[1] - start64[1]) << perf->devinfo.oa_timestamp_shift;
-+		else
-+			deltas[idx++] += (end64[1] - start64[1]) >> (-perf->devinfo.oa_timestamp_shift);
-+
-+		/* 64 bit clock */
-+		deltas[idx++] = end64[3] - start64[3];
-+
-+		/* 8x 32bit MPEC counters */
-+		for (i = 0; i < 8; i++)
-+			accumulate_uint32(start + 8 + i, end + 8 + i, deltas + idx++);
-+
-+		/* 8x 32bit B counters */
-+		for (i = 0; i < 8; i++)
-+			accumulate_uint32(start + 16 + i, end + 16 + i, deltas + idx++);
-+
-+		/* 8x 32bit C counters */
-+		for (i = 0; i < 8; i++)
-+			accumulate_uint32(start + 24 + i, end + 24 + i, deltas + idx++);
-+
-+		break;
-+		}
- 	default:
- 		assert(0);
- 	}
-@@ -926,6 +954,7 @@ uint64_t intel_perf_read_record_timestamp(const struct intel_perf *perf,
- 					  const struct drm_i915_perf_record_header *record)
- {
-        const uint32_t *report32 = (const uint32_t *)(record + 1);
-+       const uint64_t *report64 = (const uint64_t *)(record + 1);
-        uint64_t ts;
- 
-        switch (metric_set->perf_oa_format) {
-@@ -935,6 +964,10 @@ uint64_t intel_perf_read_record_timestamp(const struct intel_perf *perf,
-                ts = report32[1];
-                break;
- 
-+       case I915_OAM_FORMAT_MPEC8u32_B8_C8:
-+               ts = report64[1];
-+               break;
-+
-        default:
-                assert(0);
-        }
-@@ -952,6 +985,7 @@ uint64_t intel_perf_read_record_timestamp_raw(const struct intel_perf *perf,
- 					  const struct drm_i915_perf_record_header *record)
- {
-        const uint32_t *report32 = (const uint32_t *)(record + 1);
-+       const uint64_t *report64 = (const uint64_t *)(record + 1);
-        uint64_t ts;
- 
-        switch (metric_set->perf_oa_format) {
-@@ -961,6 +995,10 @@ uint64_t intel_perf_read_record_timestamp_raw(const struct intel_perf *perf,
-                ts = report32[1];
-                break;
- 
-+       case I915_OAM_FORMAT_MPEC8u32_B8_C8:
-+               ts = report64[1];
-+               break;
-+
-        default:
-                assert(0);
-        }
-diff --git a/lib/i915/perf_data_reader.c b/lib/i915/perf_data_reader.c
-index 10e78e63..332f530e 100644
---- a/lib/i915/perf_data_reader.c
-+++ b/lib/i915/perf_data_reader.c
-@@ -58,11 +58,15 @@ oa_report_ctx_is_valid(const struct intel_perf_devinfo *devinfo,
- }
- 
- static uint32_t
--oa_report_ctx_id(const struct intel_perf_devinfo *devinfo, const uint8_t *report)
-+oa_report_ctx_id(struct intel_perf_data_reader *reader, const uint8_t *report)
- {
--	if (!oa_report_ctx_is_valid(devinfo, report))
-+	if (!oa_report_ctx_is_valid(&reader->devinfo, report))
- 		return 0xffffffff;
--	return ((const uint32_t *) report)[2];
-+
-+	if (reader->metric_set->perf_oa_format == I915_OAM_FORMAT_MPEC8u32_B8_C8)
-+		return ((const uint32_t *) report)[4];
-+	else
-+		return ((const uint32_t *) report)[2];
+diff --git a/tests/i915/perf.c b/tests/i915/perf.c
+index 15f9202d..2e902d74 100644
+--- a/tests/i915/perf.c
++++ b/tests/i915/perf.c
+@@ -2908,18 +2908,23 @@ test_buffer_fill(const struct intel_execution_engine2 *e)
  }
  
  static void
-@@ -289,8 +293,8 @@ generate_cpu_events(struct intel_perf_data_reader *reader)
- 		start_report = (const uint8_t *) (last_header + 1);
- 		end_report = (const uint8_t *) (current_header + 1);
+-test_non_zero_reason(void)
++test_non_zero_reason(const struct intel_execution_engine2 *e)
+ {
+ 	/* ~20 micro second period */
+ 	int oa_exponent = max_oa_exponent_for_period_lte(20000);
++	struct intel_perf_metric_set *test_set = metric_set(e);
++	uint64_t fmt = test_set->perf_oa_format;
++	size_t report_size = get_oa_format(fmt).size;
+ 	uint64_t properties[] = {
+ 		/* Include OA reports in samples */
+ 		DRM_I915_PERF_PROP_SAMPLE_OA, true,
  
--		last_ctx_id = oa_report_ctx_id(&reader->devinfo, start_report);
--		current_ctx_id = oa_report_ctx_id(&reader->devinfo, end_report);
-+		last_ctx_id = oa_report_ctx_id(reader, start_report);
-+		current_ctx_id = oa_report_ctx_id(reader, end_report);
+ 		/* OA unit configuration */
+-		DRM_I915_PERF_PROP_OA_METRICS_SET, default_test_set->perf_oa_metrics_set,
+-		DRM_I915_PERF_PROP_OA_FORMAT, default_test_set->perf_oa_format,
++		DRM_I915_PERF_PROP_OA_METRICS_SET, test_set->perf_oa_metrics_set,
++		DRM_I915_PERF_PROP_OA_FORMAT, fmt,
+ 		DRM_I915_PERF_PROP_OA_EXPONENT, oa_exponent,
++		DRM_I915_PERF_PROP_OA_ENGINE_CLASS, e->class,
++		DRM_I915_PERF_PROP_OA_ENGINE_INSTANCE, e->instance,
+ 	};
+ 	struct drm_i915_perf_open_param param = {
+ 		.flags = I915_PERF_FLAG_FD_CLOEXEC,
+@@ -2927,7 +2932,7 @@ test_non_zero_reason(void)
+ 		.properties_ptr = to_user_pointer(properties),
+ 	};
+ 	struct drm_i915_perf_record_header *header;
+-	uint32_t buf_size = 3 * 65536 * (256 + sizeof(struct drm_i915_perf_record_header));
++	uint32_t buf_size = 3 * 65536 * (report_size + sizeof(struct drm_i915_perf_record_header));
+ 	uint8_t *buf = malloc(buf_size);
+ 	uint32_t total_len = 0, reports_lost;
+ 	const uint32_t *last_report;
+@@ -2972,10 +2977,9 @@ test_non_zero_reason(void)
  
- 		gpu_ts_start = intel_perf_read_record_timestamp(reader->perf,
- 								reader->metric_set,
+ 			igt_assert_neq(reason, 0);
+ 
+-			if (last_report) {
+-				sanity_check_reports(last_report, report,
+-						     default_test_set->perf_oa_format);
+-			}
++			if (last_report)
++				sanity_check_reports(last_report, report, fmt);
++
+ 			last_report = report;
+ 			break;
+ 		}
+@@ -5797,10 +5801,11 @@ igt_main
+ 			test_buffer_fill(e);
+ 
+ 	igt_describe("Test that reason field in OA reports is never 0 on Gen8+");
+-	igt_subtest("non-zero-reason") {
++	igt_subtest_with_dynamic("non-zero-reason") {
+ 		/* Reason field is only available on Gen8+ */
+ 		igt_require(intel_gen(devid) >= 8);
+-		test_non_zero_reason();
++		__for_random_engine_in_each_group(perf_oa_groups, ctx, e)
++			test_non_zero_reason(e);
+ 	}
+ 
+ 	igt_subtest("disabled-read-error")
 -- 
 2.36.1
