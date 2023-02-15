@@ -1,16 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 03E0F10EA02
- for <igt-dev@lists.freedesktop.org>; Wed, 15 Feb 2023 00:46:55 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C82CB10EA06
+ for <igt-dev@lists.freedesktop.org>; Wed, 15 Feb 2023 00:46:56 +0000 (UTC)
 From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 14 Feb 2023 16:46:29 -0800
-Message-Id: <20230215004648.2100655-13-umesh.nerlige.ramappa@intel.com>
+Date: Tue, 14 Feb 2023 16:46:34 -0800
+Message-Id: <20230215004648.2100655-18-umesh.nerlige.ramappa@intel.com>
 In-Reply-To: <20230215004648.2100655-1-umesh.nerlige.ramappa@intel.com>
 References: <20230215004648.2100655-1-umesh.nerlige.ramappa@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 12/31] i915/perf: Use a helper for OA format
+Subject: [igt-dev] [PATCH i-g-t 17/31] i915/perf: Choose OAM format for
+ media metrics
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,110 +24,89 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Refactor and use a helper for OA format
+If the metric set has OAM format defined, update the generated metrics
+accordingly.
 
 Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 ---
- tests/i915/perf.c | 24 +++++++++++++++---------
- 1 file changed, 15 insertions(+), 9 deletions(-)
+ lib/i915/perf-configs/codegen.py              |  4 +++
+ lib/i915/perf-configs/mdapi-xml-convert.py    |  1 +
+ .../perf-configs/perf-metricset-codegen.py    | 36 ++++++++++++-------
+ 3 files changed, 29 insertions(+), 12 deletions(-)
 
-diff --git a/tests/i915/perf.c b/tests/i915/perf.c
-index add41f7d..90c78929 100644
---- a/tests/i915/perf.c
-+++ b/tests/i915/perf.c
-@@ -670,6 +670,12 @@ oar_unit_default_format(void)
- 	return test_set->perf_oa_format;
- }
+diff --git a/lib/i915/perf-configs/codegen.py b/lib/i915/perf-configs/codegen.py
+index 755142cc..020e76ef 100644
+--- a/lib/i915/perf-configs/codegen.py
++++ b/lib/i915/perf-configs/codegen.py
+@@ -117,6 +117,10 @@ class Set:
+     def underscore_name(self):
+         return self.xml.get('underscore_name')
  
-+static int
-+oa_unit_default_format(void)
-+{
-+	return test_set->perf_oa_format;
-+}
++    @property
++    def oa_format(self):
++        return self.xml.get('oa_format')
 +
- /*
-  * Temporary wrapper to distinguish mappings on !llc platforms,
-  * where it seems cache over GEM_MMAP_OFFSET is not flushed before execution.
-@@ -1913,7 +1919,7 @@ static bool expected_report_timing_delta(uint32_t delta, uint32_t expected_delta
- static void
- test_oa_exponents(const struct intel_execution_engine2 *e)
- {
--	uint64_t fmt = test_set->perf_oa_format;
-+	uint64_t fmt = oa_unit_default_format();
+     def findall(self, path):
+         return self.xml.findall(path)
  
- 	load_helper_init();
- 	load_helper_run(HIGH);
-@@ -2256,7 +2262,7 @@ test_blocking(uint64_t requested_oa_period,
+diff --git a/lib/i915/perf-configs/mdapi-xml-convert.py b/lib/i915/perf-configs/mdapi-xml-convert.py
+index 5c784643..3b7d0663 100755
+--- a/lib/i915/perf-configs/mdapi-xml-convert.py
++++ b/lib/i915/perf-configs/mdapi-xml-convert.py
+@@ -659,6 +659,7 @@ for arg in args.xml:
+         set.set('symbol_name', set_symbol_name)
+         set.set('underscore_name', underscore(mdapi_set.get('SymbolName')))
+         set.set('mdapi_supported_apis', strip_dx_apis(mdapi_set.get('SupportedAPI')))
++        set.set('oa_format', oa_format)
  
- 	ADD_PROPS(props, idx, SAMPLE_OA, true);
- 	ADD_PROPS(props, idx, OA_METRICS_SET, test_set->perf_oa_metrics_set);
--	ADD_PROPS(props, idx, OA_FORMAT, test_set->perf_oa_format);
-+	ADD_PROPS(props, idx, OA_FORMAT, oa_unit_default_format());
- 	ADD_PROPS(props, idx, OA_EXPONENT, oa_exponent);
  
- 	if (has_param_poll_period() && set_kernel_hrtimer)
-@@ -2419,7 +2425,7 @@ test_polling(uint64_t requested_oa_period,
+         # Look at the hardware register config before looking at the counters.
+diff --git a/lib/i915/perf-configs/perf-metricset-codegen.py b/lib/i915/perf-configs/perf-metricset-codegen.py
+index 08351309..8b2c5d7b 100644
+--- a/lib/i915/perf-configs/perf-metricset-codegen.py
++++ b/lib/i915/perf-configs/perf-metricset-codegen.py
+@@ -128,18 +128,30 @@ def generate_metric_sets(args, gen):
  
- 	ADD_PROPS(props, idx, SAMPLE_OA, true);
- 	ADD_PROPS(props, idx, OA_METRICS_SET, test_set->perf_oa_metrics_set);
--	ADD_PROPS(props, idx, OA_FORMAT, test_set->perf_oa_format);
-+	ADD_PROPS(props, idx, OA_FORMAT, oa_unit_default_format());
- 	ADD_PROPS(props, idx, OA_EXPONENT, oa_exponent);
- 
- 	if (has_param_poll_period() && set_kernel_hrtimer)
-@@ -2693,7 +2699,7 @@ gen12_test_oa_tlb_invalidate(const struct intel_execution_engine2 *e)
- 		DRM_I915_PERF_PROP_SAMPLE_OA, true,
- 
- 		DRM_I915_PERF_PROP_OA_METRICS_SET, test_set->perf_oa_metrics_set,
--		DRM_I915_PERF_PROP_OA_FORMAT, test_set->perf_oa_format,
-+		DRM_I915_PERF_PROP_OA_FORMAT, oa_unit_default_format(),
- 		DRM_I915_PERF_PROP_OA_EXPONENT, oa_exponent,
- 		DRM_I915_PERF_PROP_OA_ENGINE_CLASS, e->class,
- 		DRM_I915_PERF_PROP_OA_ENGINE_INSTANCE, e->instance,
-@@ -2736,7 +2742,7 @@ test_buffer_fill(const struct intel_execution_engine2 *e)
- 	/* ~5 micro second period */
- 	int oa_exponent = max_oa_exponent_for_period_lte(5000);
- 	uint64_t oa_period = oa_exponent_to_ns(oa_exponent);
--	uint64_t fmt = test_set->perf_oa_format;
-+	uint64_t fmt = oa_unit_default_format();
- 	uint64_t properties[] = {
- 		/* Include OA reports in samples */
- 		DRM_I915_PERF_PROP_SAMPLE_OA, true,
-@@ -2972,7 +2978,7 @@ test_enable_disable(const struct intel_execution_engine2 *e)
- 	/* ~5 micro second period */
- 	int oa_exponent = max_oa_exponent_for_period_lte(5000);
- 	uint64_t oa_period = oa_exponent_to_ns(oa_exponent);
--	uint64_t fmt = test_set->perf_oa_format;
-+	uint64_t fmt = oa_unit_default_format();
- 	uint64_t properties[] = {
- 		/* Include OA reports in samples */
- 		DRM_I915_PERF_PROP_SAMPLE_OA, true,
-@@ -4567,7 +4573,7 @@ test_stress_open_close(const struct intel_execution_engine2 *e)
- 
- 			/* OA unit configuration */
- 			DRM_I915_PERF_PROP_OA_METRICS_SET, test_set->perf_oa_metrics_set,
--			DRM_I915_PERF_PROP_OA_FORMAT, test_set->perf_oa_format,
-+			DRM_I915_PERF_PROP_OA_FORMAT, oa_unit_default_format(),
- 			DRM_I915_PERF_PROP_OA_EXPONENT, oa_exponent,
- 			DRM_I915_PERF_PROP_OA_ENGINE_CLASS, e->class,
- 			DRM_I915_PERF_PROP_OA_ENGINE_INSTANCE, e->instance,
-@@ -4670,7 +4676,7 @@ test_global_sseu_config_invalid(const struct intel_execution_engine2 *e)
- 
- 		/* OA unit configuration */
- 		DRM_I915_PERF_PROP_OA_METRICS_SET, test_set->perf_oa_metrics_set,
--		DRM_I915_PERF_PROP_OA_FORMAT, test_set->perf_oa_format,
-+		DRM_I915_PERF_PROP_OA_FORMAT, oa_unit_default_format(),
- 		DRM_I915_PERF_PROP_OA_EXPONENT, oa_exp_1_millisec,
- 		DRM_I915_PERF_PROP_GLOBAL_SSEU, to_user_pointer(&sseu_param),
- 		DRM_I915_PERF_PROP_OA_ENGINE_CLASS, e->class,
-@@ -4759,7 +4765,7 @@ test_global_sseu_config(const struct intel_execution_engine2 *e)
- 
- 		/* OA unit configuration */
- 		DRM_I915_PERF_PROP_OA_METRICS_SET, test_set->perf_oa_metrics_set,
--		DRM_I915_PERF_PROP_OA_FORMAT, test_set->perf_oa_format,
-+		DRM_I915_PERF_PROP_OA_FORMAT, oa_unit_default_format(),
- 		DRM_I915_PERF_PROP_OA_EXPONENT, oa_exp_1_millisec,
- 		DRM_I915_PERF_PROP_GLOBAL_SSEU, to_user_pointer(&sseu_param),
- 		DRM_I915_PERF_PROP_OA_ENGINE_CLASS, e->class,
+             """))
+         elif gen.chipset.startswith("acm") or gen.chipset.startswith("mtl"):
+-            c(textwrap.dedent("""\
+-                metric_set->perf_oa_format = I915_OA_FORMAT_A24u40_A14u32_B8_C8;
+-
+-                metric_set->perf_raw_size = 256;
+-                metric_set->gpu_time_offset = 0;
+-                metric_set->gpu_clock_offset = 1;
+-                metric_set->a_offset = 2;
+-                metric_set->b_offset = metric_set->a_offset + 38;
+-                metric_set->c_offset = metric_set->b_offset + 8;
+-                metric_set->perfcnt_offset = metric_set->c_offset + 8;
+-
+-            """))
++            if set.oa_format == "128B_MPEC8_NOA16":
++                c(textwrap.dedent("""\
++                    metric_set->perf_oa_format = I915_OAM_FORMAT_MPEC8u32_B8_C8;
++
++                    metric_set->perf_raw_size = 128;
++                    metric_set->gpu_time_offset = 0;
++                    metric_set->gpu_clock_offset = 1;
++                    metric_set->a_offset = 2;
++                    metric_set->b_offset = metric_set->a_offset + 8;
++                    metric_set->c_offset = metric_set->b_offset + 8;
++                    metric_set->perfcnt_offset = metric_set->c_offset + 8;
++                """))
++            else:
++                c(textwrap.dedent("""\
++                    metric_set->perf_oa_format = I915_OA_FORMAT_A24u40_A14u32_B8_C8;
++
++                    metric_set->perf_raw_size = 256;
++                    metric_set->gpu_time_offset = 0;
++                    metric_set->gpu_clock_offset = 1;
++                    metric_set->a_offset = 2;
++                    metric_set->b_offset = metric_set->a_offset + 38;
++                    metric_set->c_offset = metric_set->b_offset + 8;
++                    metric_set->perfcnt_offset = metric_set->c_offset + 8;
++                """))
+         else:
+             c(textwrap.dedent("""\
+                 metric_set->perf_oa_format = I915_OA_FORMAT_A32u40_A4u32_B8_C8;
 -- 
 2.36.1
