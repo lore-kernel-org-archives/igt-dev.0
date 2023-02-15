@@ -1,17 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 38FDC10EA13
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4B72D10EA14
  for <igt-dev@lists.freedesktop.org>; Wed, 15 Feb 2023 00:47:04 +0000 (UTC)
 From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 14 Feb 2023 16:46:46 -0800
-Message-Id: <20230215004648.2100655-30-umesh.nerlige.ramappa@intel.com>
+Date: Tue, 14 Feb 2023 16:46:47 -0800
+Message-Id: <20230215004648.2100655-31-umesh.nerlige.ramappa@intel.com>
 In-Reply-To: <20230215004648.2100655-1-umesh.nerlige.ramappa@intel.com>
 References: <20230215004648.2100655-1-umesh.nerlige.ramappa@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 29/31] lib/perf: Adjust the GPU timestamp
- for new OA formats
+Subject: [igt-dev] [PATCH i-g-t 30/31] tools/perf: Choose the right card
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,31 +23,56 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-In some OA formats, gpu_ts is a 64 bit value and the right shift can
-result in bit[31] being set. This throws off the correlation and the
-timelines. Apply the mask on gpu_ts as well.
+Choose the right dri card to open for perf recorder.
 
 Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 ---
- lib/i915/perf_data_reader.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ tools/i915-perf/i915_perf_recorder.c | 18 ++++++++----------
+ 1 file changed, 8 insertions(+), 10 deletions(-)
 
-diff --git a/lib/i915/perf_data_reader.c b/lib/i915/perf_data_reader.c
-index 332f530e..2272ae2c 100644
---- a/lib/i915/perf_data_reader.c
-+++ b/lib/i915/perf_data_reader.c
-@@ -216,6 +216,12 @@ correlate_gpu_timestamp(struct intel_perf_data_reader *reader,
- 	uint64_t mask = reader->perf->devinfo.oa_timestamp_mask;
- 	int corr_idx = -1;
+diff --git a/tools/i915-perf/i915_perf_recorder.c b/tools/i915-perf/i915_perf_recorder.c
+index ee8a288d..9337da12 100644
+--- a/tools/i915-perf/i915_perf_recorder.c
++++ b/tools/i915-perf/i915_perf_recorder.c
+@@ -241,10 +241,10 @@ read_device_param(const char *stem, int id, const char *param)
+ }
  
-+	/* On some OA formats, gpu_ts is a 64 bit value and the shift can
-+	 * result in bit[31] being set. This throws off the correlation and the
-+	 * timelines. Apply the mask on gpu_ts as well.
-+	 */
-+	gpu_ts = gpu_ts & mask;
+ static int
+-find_intel_render_node(void)
++find_intel_card_node(void)
+ {
+-	for (int i = 128; i < (128 + 16); i++) {
+-		if (read_device_param("renderD", i, "vendor") == 0x8086)
++	for (int i = 0; i < 128; i++) {
++		if (read_device_param("card", i, "vendor") == 0x8086)
+ 			return i;
+ 	}
+ 
+@@ -273,20 +273,18 @@ open_render_node(uint32_t *devid, int card)
+ 	char *name;
+ 	int ret;
+ 	int fd;
+-	int render;
+ 
+ 	if (card < 0) {
+-		render = find_intel_render_node();
+-		if (render < 0)
++		card = find_intel_card_node();
 +
- 	for (uint32_t i = 0; i < reader->n_correlation_chunks; i++) {
- 		if (gpu_ts >= (reader->correlation_chunks[i].gpu_ts_begin & mask) &&
- 		    gpu_ts <= (reader->correlation_chunks[i].gpu_ts_end & mask)) {
++		if (card < 0)
+ 			return -1;
+-	} else {
+-		render = 128 + card;
+ 	}
+ 
+-	ret = asprintf(&name, "/dev/dri/renderD%u", render);
++	ret = asprintf(&name, "/dev/dri/card%u", card);
+ 	assert(ret != -1);
+ 
+-	*devid = read_device_param("renderD", render, "device");
++	*devid = read_device_param("card", card, "device");
+ 
+ 	fd = open(name, O_RDWR);
+ 	free(name);
 -- 
 2.36.1
