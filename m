@@ -1,17 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D7E5610EB06
- for <igt-dev@lists.freedesktop.org>; Thu,  9 Feb 2023 14:12:34 +0000 (UTC)
-From: Karolina Stolarek <karolina.stolarek@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Thu,  9 Feb 2023 15:12:11 +0100
-Message-Id: <59cf7543448852caa56942bf61538219ec77cd4a.1675950055.git.karolina.stolarek@intel.com>
-In-Reply-To: <cover.1675950055.git.karolina.stolarek@intel.com>
-References: <cover.1675950055.git.karolina.stolarek@intel.com>
+Content-Type: multipart/alternative;
+ boundary="===============8059337654232820690=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v3 8/9] lib/i915_blt: Add checks for command
- properties
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Swati Sharma" <swati2.sharma@intel.com>
+Date: Wed, 15 Feb 2023 17:49:27 -0000
+Message-ID: <167648336701.30603.16368106190283078707@emeril.freedesktop.org>
+References: <20230215165947.15421-1-swati2.sharma@intel.com>
+In-Reply-To: <20230215165947.15421-1-swati2.sharma@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgVmFsaWRh?=
+ =?utf-8?q?te_max_source_size_=28rev2=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,180 +17,322 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add a predicate that checks if a command has a specific property.
-Introduce helpers that check if a platform uses an extended
-version of the block-copy command or supports compression. Add
-a getter for blt_cmd_info to intel_cmds_info library. Group
-functions together in i915_blt header file.
+--===============8059337654232820690==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Signed-off-by: Karolina Stolarek <karolina.stolarek@intel.com>
----
- lib/i915/i915_blt.c        | 64 ++++++++++++++++++++++++++++++++++++--
- lib/i915/i915_blt.h        |  8 +++++
- lib/i915/intel_cmds_info.c | 11 +++++++
- lib/i915/intel_cmds_info.h |  3 ++
- 4 files changed, 84 insertions(+), 2 deletions(-)
+== Series Details ==
 
-diff --git a/lib/i915/i915_blt.c b/lib/i915/i915_blt.c
-index 0ea25d2f..9b32a0e9 100644
---- a/lib/i915/i915_blt.c
-+++ b/lib/i915/i915_blt.c
-@@ -222,7 +222,7 @@ bool blt_supports_command(const struct intel_cmds_info *cmds_info,
- {
- 	igt_require_f(cmds_info, "No config found for the platform\n");
- 
--	return cmds_info->blt_cmds[cmd];
-+	return blt_get_cmd_info(cmds_info, cmd);
- }
- 
- /**
-@@ -245,7 +245,7 @@ bool blt_cmd_supports_tiling(const struct intel_cmds_info *cmds_info,
- 	if (!cmds_info)
- 		return false;
- 
--	cmd_info = cmds_info->blt_cmds[cmd];
-+	cmd_info = blt_get_cmd_info(cmds_info, cmd);
- 
- 	/* no config means no support for that tiling */
- 	if (!cmd_info)
-@@ -254,6 +254,32 @@ bool blt_cmd_supports_tiling(const struct intel_cmds_info *cmds_info,
- 	return cmd_info->supported_tiling & BIT(tiling);
- }
- 
-+/**
-+ * blt_cmd_has_property:
-+ * @cmds_info: Copy commands description struct
-+ * @cmd: Blitter command enum
-+ * @prop: property flag
-+ *
-+ * Checks if a @cmd entry of @cmds_info has @prop property. The properties can
-+ * be freely combined, but the function will return true for platforms for
-+ * which all properties defined in the bit flag are present. The function
-+ * returns false if no information about the command is stored.
-+ *
-+ * Returns: true if it does, false otherwise
-+ */
-+bool blt_cmd_has_property(const struct intel_cmds_info *cmds_info,
-+			  enum blt_cmd_type cmd, uint32_t prop)
-+{
-+	struct blt_cmd_info const *cmd_info;
-+
-+	cmd_info = blt_get_cmd_info(cmds_info, cmd);
-+
-+	if (!cmd_info)
-+		return false;
-+
-+	return cmd_info->flags & prop;
-+}
-+
- /**
-  * blt_has_block_copy
-  * @i915: drm fd
-@@ -320,6 +346,40 @@ bool blt_block_copy_supports_tiling(int i915, enum blt_tiling_type tiling)
- 	return blt_cmd_supports_tiling(cmds_info, XY_BLOCK_COPY, tiling);
- }
- 
-+/**
-+ * blt_block_copy_supports_compression
-+ * @i915: drm fd
-+ *
-+ * Check if block copy provided by @i915 device supports compression.
-+ *
-+ * Returns:
-+ * true if it does, false otherwise.
-+ */
-+bool blt_block_copy_supports_compression(int i915)
-+{
-+	const struct intel_cmds_info *cmds_info = GET_CMDS_INFO(i915);
-+
-+	return blt_cmd_has_property(cmds_info, XY_BLOCK_COPY,
-+				    BLT_CMD_SUPPORTS_COMPRESSION);
-+}
-+
-+/**
-+ * blt_uses_extended_block_copy
-+ * @i915: drm fd
-+ *
-+ * Check if block copy provided by @i915 device uses an extended version
-+ * of the command.
-+ *
-+ * Returns:
-+ * true if it does, false otherwise.
-+ */
-+bool blt_uses_extended_block_copy(int i915)
-+{
-+	const struct intel_cmds_info *cmds_info = GET_CMDS_INFO(i915);
-+
-+	return blt_cmd_has_property(cmds_info, XY_BLOCK_COPY, BLT_CMD_EXTENDED);
-+}
-+
- /**
-  * blt_tiling_name:
-  * @tiling: tiling id
-diff --git a/lib/i915/i915_blt.h b/lib/i915/i915_blt.h
-index 3fe47527..6634533b 100644
---- a/lib/i915/i915_blt.h
-+++ b/lib/i915/i915_blt.h
-@@ -163,10 +163,18 @@ bool blt_supports_command(const struct intel_cmds_info *cmds_info,
- bool blt_cmd_supports_tiling(const struct intel_cmds_info *cmds_info,
- 			     enum blt_cmd_type cmd,
- 			     enum blt_tiling_type tiling);
-+bool blt_cmd_has_property(const struct intel_cmds_info *cmds_info,
-+			  enum blt_cmd_type cmd,
-+			  uint32_t prop);
-+
- bool blt_has_block_copy(int i915);
- bool blt_has_fast_copy(int i915);
-+
- bool blt_fast_copy_supports_tiling(int i915, enum blt_tiling_type tiling);
- bool blt_block_copy_supports_tiling(int i915, enum blt_tiling_type tiling);
-+bool blt_block_copy_supports_compression(int i915);
-+bool blt_uses_extended_block_copy(int i915);
-+
- const char *blt_tiling_name(enum blt_tiling_type tiling);
- 
- uint64_t emit_blt_block_copy(int i915,
-diff --git a/lib/i915/intel_cmds_info.c b/lib/i915/intel_cmds_info.c
-index 59ee0403..2ac6bc2a 100644
---- a/lib/i915/intel_cmds_info.c
-+++ b/lib/i915/intel_cmds_info.c
-@@ -4,6 +4,8 @@
-  */
- 
- #include <stdint.h>
-+#include <stddef.h>
-+
- #include "intel_chipset.h"
- #include "i915/intel_cmds_info.h"
- 
-@@ -109,3 +111,12 @@ const struct intel_cmds_info gen12_mtl_cmds_info = {
- 		[XY_BLOCK_COPY] = &mtl_xy_block_copy,
- 	}
- };
-+
-+const struct blt_cmd_info *blt_get_cmd_info(const struct intel_cmds_info *cmds_info,
-+					    enum blt_cmd_type cmd)
-+{
-+	if (!cmds_info)
-+		return NULL;
-+
-+	return cmds_info->blt_cmds[cmd];
-+}
-diff --git a/lib/i915/intel_cmds_info.h b/lib/i915/intel_cmds_info.h
-index 541727ec..9bf6ecd5 100644
---- a/lib/i915/intel_cmds_info.h
-+++ b/lib/i915/intel_cmds_info.h
-@@ -49,4 +49,7 @@ extern const struct intel_cmds_info gen12_mtl_cmds_info;
- #define for_each_tiling(__tiling) \
- 	for (__tiling = T_LINEAR; __tiling < __BLT_MAX_TILING; __tiling++)
- 
-+const struct blt_cmd_info *blt_get_cmd_info(const struct intel_cmds_info *cmds_info,
-+					    enum blt_cmd_type cmd);
-+
- #endif
--- 
-2.25.1
+Series: Validate max source size (rev2)
+URL   : https://patchwork.freedesktop.org/series/114059/
+State : success
+
+== Summary ==
+
+CI Bug Log - changes from CI_DRM_12744 -> IGTPW_8503
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8503/index.html
+
+Participating hosts (40 -> 39)
+------------------------------
+
+  Additional (1): fi-kbl-soraka 
+  Missing    (2): bat-kbl-2 fi-snb-2520m 
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in IGTPW_8503:
+
+### IGT changes ###
+
+#### Suppressed ####
+
+  The following results come from untrusted machines, tests, or statuses.
+  They do not affect the overall result.
+
+  * igt@i915_suspend@basic-s2idle-without-i915:
+    - {bat-rpls-1}:       [PASS][1] -> [ABORT][2]
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12744/bat-rpls-1/igt@i915_suspend@basic-s2idle-without-i915.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8503/bat-rpls-1/igt@i915_suspend@basic-s2idle-without-i915.html
+
+  
+Known issues
+------------
+
+  Here are the changes found in IGTPW_8503 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@gem_exec_gttfill@basic:
+    - fi-kbl-soraka:      NOTRUN -> [SKIP][3] ([fdo#109271]) +15 similar issues
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8503/fi-kbl-soraka/igt@gem_exec_gttfill@basic.html
+
+  * igt@gem_exec_suspend@basic-s3@smem:
+    - fi-rkl-11600:       [PASS][4] -> [FAIL][5] ([fdo#103375]) +1 similar issue
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12744/fi-rkl-11600/igt@gem_exec_suspend@basic-s3@smem.html
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8503/fi-rkl-11600/igt@gem_exec_suspend@basic-s3@smem.html
+
+  * igt@gem_huc_copy@huc-copy:
+    - fi-kbl-soraka:      NOTRUN -> [SKIP][6] ([fdo#109271] / [i915#2190])
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8503/fi-kbl-soraka/igt@gem_huc_copy@huc-copy.html
+
+  * igt@gem_lmem_swapping@basic:
+    - fi-kbl-soraka:      NOTRUN -> [SKIP][7] ([fdo#109271] / [i915#4613]) +3 similar issues
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8503/fi-kbl-soraka/igt@gem_lmem_swapping@basic.html
+
+  * igt@i915_selftest@live@execlists:
+    - fi-kbl-soraka:      NOTRUN -> [INCOMPLETE][8] ([i915#7913])
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8503/fi-kbl-soraka/igt@i915_selftest@live@execlists.html
+
+  * igt@i915_selftest@live@gt_pm:
+    - fi-kbl-soraka:      NOTRUN -> [DMESG-FAIL][9] ([i915#1886])
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8503/fi-kbl-soraka/igt@i915_selftest@live@gt_pm.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_selftest@live@hangcheck:
+    - fi-skl-guc:         [DMESG-WARN][10] ([i915#8073]) -> [PASS][11]
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12744/fi-skl-guc/igt@i915_selftest@live@hangcheck.html
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8503/fi-skl-guc/igt@i915_selftest@live@hangcheck.html
+
+  * igt@i915_selftest@live@mman:
+    - {bat-rpls-1}:       [TIMEOUT][12] ([i915#6794]) -> [PASS][13]
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12744/bat-rpls-1/igt@i915_selftest@live@mman.html
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8503/bat-rpls-1/igt@i915_selftest@live@mman.html
+
+  * igt@i915_selftest@live@reset:
+    - {bat-rpls-2}:       [ABORT][14] ([i915#4983]) -> [PASS][15]
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12744/bat-rpls-2/igt@i915_selftest@live@reset.html
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8503/bat-rpls-2/igt@i915_selftest@live@reset.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [fdo#103375]: https://bugs.freedesktop.org/show_bug.cgi?id=103375
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [i915#1886]: https://gitlab.freedesktop.org/drm/intel/issues/1886
+  [i915#2190]: https://gitlab.freedesktop.org/drm/intel/issues/2190
+  [i915#3546]: https://gitlab.freedesktop.org/drm/intel/issues/3546
+  [i915#4613]: https://gitlab.freedesktop.org/drm/intel/issues/4613
+  [i915#4983]: https://gitlab.freedesktop.org/drm/intel/issues/4983
+  [i915#6367]: https://gitlab.freedesktop.org/drm/intel/issues/6367
+  [i915#6687]: https://gitlab.freedesktop.org/drm/intel/issues/6687
+  [i915#6794]: https://gitlab.freedesktop.org/drm/intel/issues/6794
+  [i915#6997]: https://gitlab.freedesktop.org/drm/intel/issues/6997
+  [i915#7913]: https://gitlab.freedesktop.org/drm/intel/issues/7913
+  [i915#8073]: https://gitlab.freedesktop.org/drm/intel/issues/8073
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_7160 -> IGTPW_8503
+
+  CI-20190529: 20190529
+  CI_DRM_12744: 2e4cac06e4de01a35626de676b9eeb474ae7ab5d @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_8503: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8503/index.html
+  IGT_7160: 45da871dd2684227e93a2fc002b87dfc58bd5fd9 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+
+Testlist changes
+----------------
+
++igt@kms_plane_scaling@i915-max-source-size
+-igt@v3d/v3d_job_submission@array-job-submission
+-igt@v3d/v3d_job_submission@multiple-singlesync-to-multisync
+-igt@v3d/v3d_job_submission@threaded-job-submission
+-igt@v3d/v3d_submit_csd@bad-bo
+-igt@v3d/v3d_submit_csd@bad-extension
+-igt@v3d/v3d_submit_csd@bad-flag
+-igt@v3d/v3d_submit_csd@bad-in-sync
+-igt@v3d/v3d_submit_csd@bad-multisync-extension
+-igt@v3d/v3d_submit_csd@bad-multisync-in-sync
+-igt@v3d/v3d_submit_csd@bad-multisync-out-sync
+-igt@v3d/v3d_submit_csd@bad-multisync-pad
+-igt@v3d/v3d_submit_csd@bad-pad
+-igt@v3d/v3d_submit_csd@bad-perfmon
+-igt@v3d/v3d_submit_csd@job-perfmon
+-igt@v3d/v3d_submit_csd@multiple-job-submission
+-igt@v3d/v3d_submit_csd@multisync-out-syncs
+-igt@v3d/v3d_submit_csd@multi-and-single-sync
+-igt@v3d/v3d_submit_csd@single-in-sync
+-igt@v3d/v3d_submit_csd@single-out-sync
+-igt@v3d/v3d_submit_csd@valid-multisync-submission
+-igt@v3d/v3d_submit_csd@valid-submission
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8503/index.html
+
+--===============8059337654232820690==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Validate max source size (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/114059/">https://patchwork.freedesktop.org/series/114059/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8503/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8503/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_12744 -&gt; IGTPW_8503</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8503/index.html</p>
+<h2>Participating hosts (40 -&gt; 39)</h2>
+<p>Additional (1): fi-kbl-soraka <br />
+  Missing    (2): bat-kbl-2 fi-snb-2520m </p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in IGTPW_8503:</p>
+<h3>IGT changes</h3>
+<h4>Suppressed</h4>
+<p>The following results come from untrusted machines, tests, or statuses.<br />
+  They do not affect the overall result.</p>
+<ul>
+<li>igt@i915_suspend@basic-s2idle-without-i915:<ul>
+<li>{bat-rpls-1}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12744/bat-rpls-1/igt@i915_suspend@basic-s2idle-without-i915.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8503/bat-rpls-1/igt@i915_suspend@basic-s2idle-without-i915.html">ABORT</a></li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_8503 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@gem_exec_gttfill@basic:</p>
+<ul>
+<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8503/fi-kbl-soraka/igt@gem_exec_gttfill@basic.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +15 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_exec_suspend@basic-s3@smem:</p>
+<ul>
+<li>fi-rkl-11600:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12744/fi-rkl-11600/igt@gem_exec_suspend@basic-s3@smem.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8503/fi-rkl-11600/igt@gem_exec_suspend@basic-s3@smem.html">FAIL</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=103375">fdo#103375</a>) +1 similar issue</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_huc_copy@huc-copy:</p>
+<ul>
+<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8503/fi-kbl-soraka/igt@gem_huc_copy@huc-copy.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2190">i915#2190</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_lmem_swapping@basic:</p>
+<ul>
+<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8503/fi-kbl-soraka/igt@gem_lmem_swapping@basic.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4613">i915#4613</a>) +3 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@execlists:</p>
+<ul>
+<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8503/fi-kbl-soraka/igt@i915_selftest@live@execlists.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7913">i915#7913</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@gt_pm:</p>
+<ul>
+<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8503/fi-kbl-soraka/igt@i915_selftest@live@gt_pm.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1886">i915#1886</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live@hangcheck:</p>
+<ul>
+<li>fi-skl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12744/fi-skl-guc/igt@i915_selftest@live@hangcheck.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/8073">i915#8073</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8503/fi-skl-guc/igt@i915_selftest@live@hangcheck.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@mman:</p>
+<ul>
+<li>{bat-rpls-1}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12744/bat-rpls-1/igt@i915_selftest@live@mman.html">TIMEOUT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6794">i915#6794</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8503/bat-rpls-1/igt@i915_selftest@live@mman.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@reset:</p>
+<ul>
+<li>{bat-rpls-2}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12744/bat-rpls-2/igt@i915_selftest@live@reset.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4983">i915#4983</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8503/bat-rpls-2/igt@i915_selftest@live@reset.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_7160 -&gt; IGTPW_8503</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_12744: 2e4cac06e4de01a35626de676b9eeb474ae7ab5d @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_8503: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8503/index.html<br />
+  IGT_7160: 45da871dd2684227e93a2fc002b87dfc58bd5fd9 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+<h2>Testlist changes</h2>
+<p>+igt@kms_plane_scaling@i915-max-source-size<br />
+-igt@v3d/v3d_job_submission@array-job-submission<br />
+-igt@v3d/v3d_job_submission@multiple-singlesync-to-multisync<br />
+-igt@v3d/v3d_job_submission@threaded-job-submission<br />
+-igt@v3d/v3d_submit_csd@bad-bo<br />
+-igt@v3d/v3d_submit_csd@bad-extension<br />
+-igt@v3d/v3d_submit_csd@bad-flag<br />
+-igt@v3d/v3d_submit_csd@bad-in-sync<br />
+-igt@v3d/v3d_submit_csd@bad-multisync-extension<br />
+-igt@v3d/v3d_submit_csd@bad-multisync-in-sync<br />
+-igt@v3d/v3d_submit_csd@bad-multisync-out-sync<br />
+-igt@v3d/v3d_submit_csd@bad-multisync-pad<br />
+-igt@v3d/v3d_submit_csd@bad-pad<br />
+-igt@v3d/v3d_submit_csd@bad-perfmon<br />
+-igt@v3d/v3d_submit_csd@job-perfmon<br />
+-igt@v3d/v3d_submit_csd@multiple-job-submission<br />
+-igt@v3d/v3d_submit_csd@multisync-out-syncs<br />
+-igt@v3d/v3d_submit_csd@multi-and-single-sync<br />
+-igt@v3d/v3d_submit_csd@single-in-sync<br />
+-igt@v3d/v3d_submit_csd@single-out-sync<br />
+-igt@v3d/v3d_submit_csd@valid-multisync-submission<br />
+-igt@v3d/v3d_submit_csd@valid-submission</p>
+
+</body>
+</html>
+
+--===============8059337654232820690==--
