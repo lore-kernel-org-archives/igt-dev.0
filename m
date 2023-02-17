@@ -1,16 +1,22 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============4398461588105043024=="
+Received: from NAM10-DM6-obe.outbound.protection.outlook.com
+ (mail-dm6nam10on2057.outbound.protection.outlook.com [40.107.93.57])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E6D2610E2F7
+ for <igt-dev@lists.freedesktop.org>; Fri, 17 Feb 2023 20:24:14 +0000 (UTC)
+Message-ID: <9212eb43-3204-79f1-c507-01c1824cebe9@amd.com>
+Date: Fri, 17 Feb 2023 15:24:10 -0500
+Content-Language: en-US
+To: Bhawanpreet Lakha <Bhawanpreet.Lakha@amd.com>,
+ igt-dev@lists.freedesktop.org, rodrigo.siqueira@amd.com,
+ harry.wentland@amd.com, nicholas.kazlauskas@amd.com
+References: <20230213181651.863367-1-Bhawanpreet.Lakha@amd.com>
+From: Leo Li <sunpeng.li@amd.com>
+In-Reply-To: <20230213181651.863367-1-Bhawanpreet.Lakha@amd.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Rob Clark" <robdclark@gmail.com>
-Date: Fri, 17 Feb 2023 19:18:36 -0000
-Message-ID: <167666151651.7018.13207786953053723034@emeril.freedesktop.org>
-References: <20221211195238.120566-1-robdclark@gmail.com>
-In-Reply-To: <20221211195238.120566-1-robdclark@gmail.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3Igc2VyaWVz?=
- =?utf-8?q?_starting_with_=5B1/2=5D_lib=3A_Add_helper_to_wait_and_close_fe?=
- =?utf-8?q?nce_fd_=28rev2=29?=
+Subject: Re: [igt-dev] [PATCH 1/2] amdgpu/amd_plane: Add multi MPO XRGB8888
+ test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,318 +24,238 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============4398461588105043024==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-== Series Details ==
-
-Series: series starting with [1/2] lib: Add helper to wait and close fence fd (rev2)
-URL   : https://patchwork.freedesktop.org/series/111827/
-State : success
-
-== Summary ==
-
-CI Bug Log - changes from IGT_7165 -> IGTPW_8507
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8507/index.html
-
-Participating hosts (38 -> 36)
-------------------------------
-
-  Missing    (2): bat-kbl-2 fi-snb-2520m 
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_8507 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@i915_selftest@live@hangcheck:
-    - bat-dg2-11:         [PASS][1] -> [ABORT][2] ([i915#7913])
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7165/bat-dg2-11/igt@i915_selftest@live@hangcheck.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8507/bat-dg2-11/igt@i915_selftest@live@hangcheck.html
-
-  * igt@i915_selftest@live@migrate:
-    - bat-dg2-11:         [PASS][3] -> [DMESG-WARN][4] ([i915#7699])
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7165/bat-dg2-11/igt@i915_selftest@live@migrate.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8507/bat-dg2-11/igt@i915_selftest@live@migrate.html
-
-  * igt@i915_selftest@live@requests:
-    - bat-rpls-2:         [PASS][5] -> [ABORT][6] ([i915#4983])
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7165/bat-rpls-2/igt@i915_selftest@live@requests.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8507/bat-rpls-2/igt@i915_selftest@live@requests.html
-
-  * igt@kms_chamelium_hpd@common-hpd-after-suspend:
-    - bat-rpls-1:         NOTRUN -> [SKIP][7] ([i915#7828])
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8507/bat-rpls-1/igt@kms_chamelium_hpd@common-hpd-after-suspend.html
-
-  * igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions:
-    - fi-bsw-n3050:       [PASS][8] -> [FAIL][9] ([i915#6298])
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7165/fi-bsw-n3050/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions.html
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8507/fi-bsw-n3050/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions.html
-
-  * igt@kms_pipe_crc_basic@read-crc:
-    - bat-adlp-9:         NOTRUN -> [SKIP][10] ([i915#3546]) +1 similar issue
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8507/bat-adlp-9/igt@kms_pipe_crc_basic@read-crc.html
-
-  * igt@kms_pipe_crc_basic@suspend-read-crc:
-    - bat-rpls-1:         NOTRUN -> [SKIP][11] ([i915#1845])
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8507/bat-rpls-1/igt@kms_pipe_crc_basic@suspend-read-crc.html
-
-  
-#### Possible fixes ####
-
-  * igt@gem_exec_suspend@basic-s3@smem:
-    - bat-rpls-1:         [ABORT][12] ([i915#6687] / [i915#7978]) -> [PASS][13]
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7165/bat-rpls-1/igt@gem_exec_suspend@basic-s3@smem.html
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8507/bat-rpls-1/igt@gem_exec_suspend@basic-s3@smem.html
-
-  * igt@i915_selftest@live@gt_heartbeat:
-    - fi-apl-guc:         [DMESG-FAIL][14] ([i915#5334]) -> [PASS][15]
-   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7165/fi-apl-guc/igt@i915_selftest@live@gt_heartbeat.html
-   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8507/fi-apl-guc/igt@i915_selftest@live@gt_heartbeat.html
-
-  * igt@i915_selftest@live@migrate:
-    - bat-atsm-1:         [DMESG-FAIL][16] ([i915#7699]) -> [PASS][17]
-   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7165/bat-atsm-1/igt@i915_selftest@live@migrate.html
-   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8507/bat-atsm-1/igt@i915_selftest@live@migrate.html
-
-  
-#### Warnings ####
-
-  * igt@i915_selftest@live@slpc:
-    - bat-rpls-1:         [DMESG-FAIL][18] ([i915#6367]) -> [DMESG-FAIL][19] ([i915#6367] / [i915#7996])
-   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7165/bat-rpls-1/igt@i915_selftest@live@slpc.html
-   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8507/bat-rpls-1/igt@i915_selftest@live@slpc.html
-
-  
-  [i915#1845]: https://gitlab.freedesktop.org/drm/intel/issues/1845
-  [i915#3546]: https://gitlab.freedesktop.org/drm/intel/issues/3546
-  [i915#4983]: https://gitlab.freedesktop.org/drm/intel/issues/4983
-  [i915#5334]: https://gitlab.freedesktop.org/drm/intel/issues/5334
-  [i915#6298]: https://gitlab.freedesktop.org/drm/intel/issues/6298
-  [i915#6367]: https://gitlab.freedesktop.org/drm/intel/issues/6367
-  [i915#6687]: https://gitlab.freedesktop.org/drm/intel/issues/6687
-  [i915#7699]: https://gitlab.freedesktop.org/drm/intel/issues/7699
-  [i915#7828]: https://gitlab.freedesktop.org/drm/intel/issues/7828
-  [i915#7913]: https://gitlab.freedesktop.org/drm/intel/issues/7913
-  [i915#7978]: https://gitlab.freedesktop.org/drm/intel/issues/7978
-  [i915#7996]: https://gitlab.freedesktop.org/drm/intel/issues/7996
 
 
-Build changes
--------------
 
-  * CI: CI-20190529 -> None
-  * IGT: IGT_7165 -> IGTPW_8507
+On 2/13/23 13:16, Bhawanpreet Lakha wrote:
+> [Why]
+> Some of our ASICs  support multiple overlay planes, so create
+> a test to test them
+> 
+> [How]
+> Create a plane with two holes and fill them up with 2 overlay planes
+> 
+> Signed-off-by: Bhawanpreet Lakha <Bhawanpreet.Lakha@amd.com>
+> Change-Id: If527d67ead59f64906a97c340845ac423d93a0aa
+> ---
+>   tests/amdgpu/amd_plane.c | 128 ++++++++++++++++++++++++++++++++++++++-
+>   1 file changed, 127 insertions(+), 1 deletion(-)
+> 
+> diff --git a/tests/amdgpu/amd_plane.c b/tests/amdgpu/amd_plane.c
+> index b9eec677..d34cd1d9 100644
+> --- a/tests/amdgpu/amd_plane.c
+> +++ b/tests/amdgpu/amd_plane.c
+> @@ -42,6 +42,7 @@ typedef struct data {
+>           igt_plane_t *primary[MAX_PIPES];
+>           igt_plane_t *cursor[MAX_PIPES];
+>   	igt_plane_t *overlay[MAX_PIPES];
+> +	igt_plane_t *overlay2[MAX_PIPES];
+>           igt_output_t *output[MAX_PIPES];
+>           igt_pipe_t *pipe[MAX_PIPES];
+>           igt_pipe_crc_t *pipe_crc[MAX_PIPES];
+> @@ -144,7 +145,8 @@ static void lut_free(lut_t *lut)
+>   enum test {
+>   	MPO_SINGLE_PAN,
+>   	MPO_MULTI_PAN,
+> -	MPO_SCALE
+> +	MPO_SCALE,
+> +	MPO_MULTI_OVERLAY
+>   };
+>   
+>   static void test_init(data_t *data)
+> @@ -159,6 +161,8 @@ static void test_init(data_t *data)
+>   			data->pipe[i], DRM_PLANE_TYPE_PRIMARY);
+>   		data->overlay[i] = igt_pipe_get_plane_type_index(
+>   			data->pipe[i], DRM_PLANE_TYPE_OVERLAY, 0);
+> +		data->overlay2[i] = igt_pipe_get_plane_type_index(
+> +			data->pipe[i], DRM_PLANE_TYPE_OVERLAY, 1);
+>   		data->cursor[i] = igt_pipe_get_plane_type(
+>   			data->pipe[i], DRM_PLANE_TYPE_CURSOR);
+>   		data->pipe_crc[i] =
+> @@ -252,6 +256,7 @@ struct fbc {
+>   	igt_fb_t ref_primary;
+>   	igt_fb_t test_primary;
+>   	igt_fb_t test_overlay;
+> +	igt_fb_t test_overlay2;
+>   	igt_crc_t ref_crc;
+>   };
+>   
+> @@ -264,6 +269,115 @@ static void set_regamma_lut(data_t *data, lut_t const *lut, int n)
+>   				       size);
+>   }
+>   
+> +/*
+> + * Compares the result of white backgroud with white window with and without MPO
+> + *
+> + * Reference crc:
+> + * Draws a White background of size (pw,ph).
+> + *
+> + * Test crc:
+> + * Draws a White Overlay of size (pw,ph) then creates a cutout of size (w,h) at location (x1, y1) and (x2, y2)
+> + * Draws a White Primary plane of size (w, h) at location (x1,y1) (under the overlay)
+> + * Draws a White Overlay of size (w, h) at location (x2,y2)
+> + *
+> + * NOTE: The reason for using White+White is to speed up the crc (reuse the ref crc for all cases vs taking
+> + * a ref crc per flip)
+> + */
+> +static void test_plane2(data_t *data, int n, int x1, int y1, int x2, int y2, int w, int h, int pw, int ph, struct fbc *fbc){
+> +
+> +	igt_crc_t test_crc;
+> +	igt_display_t *display = &data->display;
+> +
+> +	/* Reference: */
+> +
+> +	igt_plane_set_fb(data->primary[n], &fbc[n].ref_primary);
+> +
+> +	igt_plane_set_position(data->primary[n], 0, 0);
+> +	igt_plane_set_size(data->primary[n], pw, ph);
+> +
+> +	igt_display_commit_atomic(display, 0, 0);
+> +
 
-  CI-20190529: 20190529
-  CI_DRM_12757: 6653ef2d4663783ddec0ce1622ebbb4d47a2747f @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_8507: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8507/index.html
-  IGT_7165: 509e7e63c6377d0fe77d1bd209857fb191f4a84c @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+Should ref_crc be collected here?
 
+> +	/* Test: */
+> +	/* Draw a white overlay with two cutouts at (x1,y1) and (x2,y2) */
+> +	draw_color_alpha(&fbc[n].test_overlay2, 0, 0, pw, ph, 1.0, 1.0, 1.0, 1.0);
+> +	draw_color_alpha(&fbc[n].test_overlay2, x1, y1, w, h, 0.0, 0.0, 0.0, 0.0);
+> +	draw_color_alpha(&fbc[n].test_overlay2, x2, y2, w, h, 0.0, 0.0, 0.0, 0.0);
+> +
+> +	/* Draw a overlay to cover up one hole */
+> +	draw_color_alpha(&fbc[n].test_overlay, 0, 0, pw, ph, 0.0, 0.0, 0.0, 0.0);
+> +	draw_color_alpha(&fbc[n].test_overlay, x2, y2, w, h, 1.0, 1.0, 1.0, 1.0);
+> +
+> +	/* Draw a primary to cover up the other hole */
+> +	draw_color_alpha(&fbc[n].test_primary, 0, 0, w, h, 0.0, 0.0, 0.0, 0.0);
+> +	draw_color_alpha(&fbc[n].test_primary, 0, 0, w, h, 1.0, 1.0, 1.0, 1.0);
+> +
+> +	igt_plane_set_fb(data->primary[n], &fbc[n].test_primary);
+> +	igt_plane_set_fb(data->overlay[n], &fbc[n].test_overlay);
+> +	igt_plane_set_fb(data->overlay2[n], &fbc[n].test_overlay2);
+> +
+> +	/* Move the primary to cover one of the holes*/
+> +	igt_plane_set_position(data->primary[n], x1, y1);
+> +	igt_plane_set_size(data->primary[n], w, h);
+> +
+> +
+> +	igt_display_commit_atomic(display, 0, 0);
+> +	igt_pipe_crc_collect_crc(data->pipe_crc[n], &test_crc);
+> +	igt_plane_set_fb(data->overlay[n], NULL);
+> +	igt_plane_set_fb(data->overlay2[n], NULL);
+> +
+> +	igt_assert_crc_equal(&fbc[n].ref_crc, &test_crc);
+> +
+> +	/* Set window to white, this is to avoid flashing between black/white after each flip */
+> +	draw_color_alpha(&fbc[n].ref_primary, 0, 0, w, h, 1.0, 1.0, 1.0, 1.00);
+> +	igt_plane_set_fb(data->primary[n], &fbc[n].ref_primary);
+> +	igt_plane_set_position(data->primary[n], 0, 0);
+> +	igt_plane_set_size(data->primary[n], pw, ph);
+> +	igt_display_commit_atomic(display, 0, 0);
+> +
+> +
+> +}
+> +
+> +/*
+> + * MPO_MULTI_OVERLAY: This test takes the plane sizes and assigns random position within the screen
+> + *
+> + * The test creates a white screen with 2 cutouts which are to be filled with 2 overlay planes.
+> + * Testing multiple overlay planes
+> + */
+> +static void test_multi_overlay(data_t *data, int display_count, int w, int h, struct fbc *fb)
+> +{
+> +
+> +	int x1,x2,y1,y2;
+> +
+> +	for (int n = 0; n < display_count; n++) {
+> +
+> +		int pw = data->w[n];
+> +		int ph = data->h[n];
+> +
+> +		for (int i = 0; i < 1; i++){
+> +
+> +			if (pw <= w && ph <= h)
+> +				break;
+> +
+> +			srand(time(NULL));
+> +
+> +			/* Generate random x,y positions for two cutouts*/
+> +			x1 = (rand() % (pw-w));
+> +			y1 = (rand() % (ph-h));
+> +
+> +			x2 = (rand() % (pw-w));
+> +			y2 = (rand() % (ph-h));
+> +
 
-Testlist changes
-----------------
+I wonder if using random positions can cause hard-to-reproduce failures.
+Is there something in particular being tested via rand, or can we use a
+fixed set of positions similar to test_cursor_spots() in
+kms_plane_cursor?
 
-+igt@msm_shrink@copy-gpu-8
-+igt@msm_shrink@copy-gpu-32
-+igt@msm_shrink@copy-gpu-madvise-8
-+igt@msm_shrink@copy-gpu-madvise-32
-+igt@msm_shrink@copy-gpu-oom-8
-+igt@msm_shrink@copy-gpu-oom-32
-+igt@msm_shrink@copy-gpu-sanitycheck-8
-+igt@msm_shrink@copy-gpu-sanitycheck-32
-+igt@msm_shrink@copy-mmap-8
-+igt@msm_shrink@copy-mmap-32
-+igt@msm_shrink@copy-mmap-dmabuf-8
-+igt@msm_shrink@copy-mmap-dmabuf-32
-+igt@msm_shrink@copy-mmap-dmabuf-madvise-8
-+igt@msm_shrink@copy-mmap-dmabuf-madvise-32
-+igt@msm_shrink@copy-mmap-dmabuf-oom-8
-+igt@msm_shrink@copy-mmap-dmabuf-oom-32
-+igt@msm_shrink@copy-mmap-dmabuf-sanitycheck-8
-+igt@msm_shrink@copy-mmap-dmabuf-sanitycheck-32
-+igt@msm_shrink@copy-mmap-madvise-8
-+igt@msm_shrink@copy-mmap-madvise-32
-+igt@msm_shrink@copy-mmap-oom-8
-+igt@msm_shrink@copy-mmap-oom-32
-+igt@msm_shrink@copy-mmap-sanitycheck-8
-+igt@msm_shrink@copy-mmap-sanitycheck-32
--igt@kms_dsc@dsc-with-output-formats
+Thanks,
+Leo
 
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8507/index.html
-
---===============4398461588105043024==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>series starting with [1/2] lib: Add helper to wait and close fence fd (rev2)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/111827/">https://patchwork.freedesktop.org/series/111827/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8507/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8507/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from IGT_7165 -&gt; IGTPW_8507</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8507/index.html</p>
-<h2>Participating hosts (38 -&gt; 36)</h2>
-<p>Missing    (2): bat-kbl-2 fi-snb-2520m </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_8507 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@i915_selftest@live@hangcheck:</p>
-<ul>
-<li>bat-dg2-11:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7165/bat-dg2-11/igt@i915_selftest@live@hangcheck.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8507/bat-dg2-11/igt@i915_selftest@live@hangcheck.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7913">i915#7913</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@migrate:</p>
-<ul>
-<li>bat-dg2-11:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7165/bat-dg2-11/igt@i915_selftest@live@migrate.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8507/bat-dg2-11/igt@i915_selftest@live@migrate.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7699">i915#7699</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@requests:</p>
-<ul>
-<li>bat-rpls-2:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7165/bat-rpls-2/igt@i915_selftest@live@requests.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8507/bat-rpls-2/igt@i915_selftest@live@requests.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4983">i915#4983</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_chamelium_hpd@common-hpd-after-suspend:</p>
-<ul>
-<li>bat-rpls-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8507/bat-rpls-1/igt@kms_chamelium_hpd@common-hpd-after-suspend.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7828">i915#7828</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions:</p>
-<ul>
-<li>fi-bsw-n3050:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7165/fi-bsw-n3050/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8507/fi-bsw-n3050/igt@kms_cursor_legacy@basic-busy-flip-before-cursor@atomic-transitions.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6298">i915#6298</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pipe_crc_basic@read-crc:</p>
-<ul>
-<li>bat-adlp-9:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8507/bat-adlp-9/igt@kms_pipe_crc_basic@read-crc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3546">i915#3546</a>) +1 similar issue</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pipe_crc_basic@suspend-read-crc:</p>
-<ul>
-<li>bat-rpls-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8507/bat-rpls-1/igt@kms_pipe_crc_basic@suspend-read-crc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1845">i915#1845</a>)</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@gem_exec_suspend@basic-s3@smem:</p>
-<ul>
-<li>bat-rpls-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7165/bat-rpls-1/igt@gem_exec_suspend@basic-s3@smem.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6687">i915#6687</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7978">i915#7978</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8507/bat-rpls-1/igt@gem_exec_suspend@basic-s3@smem.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@gt_heartbeat:</p>
-<ul>
-<li>fi-apl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7165/fi-apl-guc/igt@i915_selftest@live@gt_heartbeat.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5334">i915#5334</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8507/fi-apl-guc/igt@i915_selftest@live@gt_heartbeat.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@migrate:</p>
-<ul>
-<li>bat-atsm-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7165/bat-atsm-1/igt@i915_selftest@live@migrate.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7699">i915#7699</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8507/bat-atsm-1/igt@i915_selftest@live@migrate.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<h4>Warnings</h4>
-<ul>
-<li>igt@i915_selftest@live@slpc:<ul>
-<li>bat-rpls-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7165/bat-rpls-1/igt@i915_selftest@live@slpc.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6367">i915#6367</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8507/bat-rpls-1/igt@i915_selftest@live@slpc.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6367">i915#6367</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7996">i915#7996</a>)</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_7165 -&gt; IGTPW_8507</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_12757: 6653ef2d4663783ddec0ce1622ebbb4d47a2747f @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_8507: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8507/index.html<br />
-  IGT_7165: 509e7e63c6377d0fe77d1bd209857fb191f4a84c @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-<h2>Testlist changes</h2>
-<p>+igt@msm_shrink@copy-gpu-8<br />
-+igt@msm_shrink@copy-gpu-32<br />
-+igt@msm_shrink@copy-gpu-madvise-8<br />
-+igt@msm_shrink@copy-gpu-madvise-32<br />
-+igt@msm_shrink@copy-gpu-oom-8<br />
-+igt@msm_shrink@copy-gpu-oom-32<br />
-+igt@msm_shrink@copy-gpu-sanitycheck-8<br />
-+igt@msm_shrink@copy-gpu-sanitycheck-32<br />
-+igt@msm_shrink@copy-mmap-8<br />
-+igt@msm_shrink@copy-mmap-32<br />
-+igt@msm_shrink@copy-mmap-dmabuf-8<br />
-+igt@msm_shrink@copy-mmap-dmabuf-32<br />
-+igt@msm_shrink@copy-mmap-dmabuf-madvise-8<br />
-+igt@msm_shrink@copy-mmap-dmabuf-madvise-32<br />
-+igt@msm_shrink@copy-mmap-dmabuf-oom-8<br />
-+igt@msm_shrink@copy-mmap-dmabuf-oom-32<br />
-+igt@msm_shrink@copy-mmap-dmabuf-sanitycheck-8<br />
-+igt@msm_shrink@copy-mmap-dmabuf-sanitycheck-32<br />
-+igt@msm_shrink@copy-mmap-madvise-8<br />
-+igt@msm_shrink@copy-mmap-madvise-32<br />
-+igt@msm_shrink@copy-mmap-oom-8<br />
-+igt@msm_shrink@copy-mmap-oom-32<br />
-+igt@msm_shrink@copy-mmap-sanitycheck-8<br />
-+igt@msm_shrink@copy-mmap-sanitycheck-32<br />
--igt@kms_dsc@dsc-with-output-formats</p>
-
-</body>
-</html>
-
---===============4398461588105043024==--
+> +
+> +			test_plane2(data, n, x1, y1, x2, y2, w,h, pw, ph, fb);
+> +
+> +		}
+> +	}
+> +
+> +	return;
+> +
+> +
+> +}
+> +
+>   /*
+>    * Compares the result of white backgroud with white window with and without MPO
+>    *
+> @@ -467,6 +581,10 @@ static void test_display_mpo(data_t *data, enum test test, uint32_t format, int
+>   
+>   	test_init(data);
+>   
+> +	/* Skip test if we don't have 2 overlay planes */
+> +	if (test == MPO_MULTI_OVERLAY)
+> +		igt_skip_on(!data->overlay2[0]);
+> +
+>   	/* Skip if there is less valid outputs than the required. */
+>   	for_each_connected_output(display, output)
+>   		valid_outputs++;
+> @@ -494,6 +612,7 @@ static void test_display_mpo(data_t *data, enum test test, uint32_t format, int
+>   		igt_create_fb(data->fd, w, h, DRM_FORMAT_XRGB8888, 0, &fb[n].ref_primary);
+>   		igt_create_color_fb(data->fd, w, h, DRM_FORMAT_XRGB8888, 0, 1.0, 1.0, 1.0, &fb[n].ref_primary);
+>   		igt_create_fb(data->fd, w, h, DRM_FORMAT_ARGB8888, 0, &fb[n].test_overlay);
+> +		igt_create_fb(data->fd, w, h, DRM_FORMAT_ARGB8888, 0, &fb[n].test_overlay2);
+>   
+>   		igt_plane_set_fb(data->primary[n], &fb[n].ref_primary);
+>   
+> @@ -520,6 +639,8 @@ static void test_display_mpo(data_t *data, enum test test, uint32_t format, int
+>   
+>   		if (test == MPO_SINGLE_PAN)
+>   			test_panning_1_display(data, display_count, videos[i][0], videos[i][1], fb);
+> +		if (test == MPO_MULTI_OVERLAY)
+> +			test_multi_overlay(data, display_count, videos[i][0], videos[i][1], fb);
+>   		if (test == MPO_MULTI_PAN)
+>   			test_panning_2_display(data, videos[i][0], videos[i][1], fb);
+>   		if(test == MPO_SCALE)
+> @@ -536,6 +657,7 @@ static void test_display_mpo(data_t *data, enum test test, uint32_t format, int
+>   	for (int n = 0; n < display_count; n++) {
+>   		igt_remove_fb(data->fd, &fb[n].ref_primary);
+>   		igt_remove_fb(data->fd, &fb[n].test_overlay);
+> +		igt_remove_fb(data->fd, &fb[n].test_overlay2);
+>   	}
+>   }
+>   /*
+> @@ -798,6 +920,10 @@ igt_main
+>   	igt_subtest("mpo-pan-multi-p010")
+>   		test_display_mpo(&data, MPO_MULTI_PAN, DRM_FORMAT_P010, DISPLAYS_TO_TEST);
+>   
+> +	igt_describe("Multi MPO");
+> +	igt_subtest("multi-mpo")
+> +		test_display_mpo(&data, MPO_MULTI_OVERLAY, DRM_FORMAT_NV12, 1);
+> +
+>   	igt_describe("MPO and scaling RGB primary plane");
+>   	igt_subtest("mpo-scale-rgb")
+>   		test_display_mpo(&data, MPO_SCALE, DRM_FORMAT_XRGB8888, 1);
