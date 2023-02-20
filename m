@@ -1,24 +1,26 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B95F710E635
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E432810E637
  for <igt-dev@lists.freedesktop.org>; Mon, 20 Feb 2023 09:20:11 +0000 (UTC)
 Received: from linux.intel.com (maurocar-mobl2.ger.corp.intel.com
  [10.252.18.139])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by linux.intel.com (Postfix) with ESMTPS id AFAD6580C7C
+ by linux.intel.com (Postfix) with ESMTPS id AE3E7580C25
  for <igt-dev@lists.freedesktop.org>; Mon, 20 Feb 2023 01:20:09 -0800 (PST)
 Received: from maurocar by linux.intel.com with local (Exim 4.96)
- (envelope-from <mauro.chehab@linux.intel.com>) id 1pU2L9-003k5a-21
+ (envelope-from <mauro.chehab@linux.intel.com>) id 1pU2L9-003k5d-2C
  for igt-dev@lists.freedesktop.org; Mon, 20 Feb 2023 10:20:07 +0100
 From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Mon, 20 Feb 2023 10:20:04 +0100
-Message-Id: <20230220092005.890959-1-mauro.chehab@linux.intel.com>
+Date: Mon, 20 Feb 2023 10:20:05 +0100
+Message-Id: <20230220092005.890959-2-mauro.chehab@linux.intel.com>
+In-Reply-To: <20230220092005.890959-1-mauro.chehab@linux.intel.com>
+References: <20230220092005.890959-1-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 0/1] Fix IGT runner error logic when listing
- subtests
+Subject: [igt-dev] [PATCH i-g-t 1/1] runner/job_list: return error on
+ crashes while running --list-subtests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -32,32 +34,52 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Mauro Carvalho Chehab <mchehab@kernel.org>
 
-Patches may end breaking --list-subtests if they, for instance, have a
-pattern like:
+Changes on tests may break --list-subtests, if they, for instance,
+someone adds a code outside igt_subtests that depends on igt_fixture
+to run, causing:
 
-	igt_fixture
-		fd = drm_open_driver(DRIVER);
-	...
-	do_something(fd);
+	Received signal SIGABRT.
+	Stack trace:
+	 #0 [fatal_sig_handler+0x17b]
+	 #1 [__sigaction+0x50]
+	 #2 [__pthread_kill_implementation+0x10c]
+	 #3 [gsignal+0x16]
+	 #4 [abort+0xd7]
+	 #5 [__assert_fail_base.cold+0xf]
+	 #6 [__assert_fail+0x46]
+	 #7 [internal_assert+0xe5]
+	 #8 [igt_fail+0xea]
+	 #9 [__igt_fail_assert+0x10e]
+	 #10 [xe_number_hw_engines+0x6b]
+	 #11 [__igt_unique____real_main1528+0x1ac0]
+	 #12 [main+0x23]
+	 #13 [__libc_start_call_main+0x80]
+	 #14 [__libc_start_main+0x89]
+	 #15 [_start+0x25]
+	Aborted (core dumped)
 
-	igt_subtest("foo")
-		...
-	igt_subtest("bar")
-		...
+IGT runner currently prints the message, but don't ignore the
+error. That prevents scripts to rely on the IGT testlist
+output, as the list will miss subtests.
 
-As any usage of (fd) will cause a crash. As result, currently IGT
-will produce stderror outbut, but will keep executing, producing
-a wrong testlist, as "foo" and "bar" won't be listed.
+So, instead, return an error.
 
-That will also break scripts that would depend on a reliable testlist.
-
-So, return an error on such cases.
-
-Mauro Carvalho Chehab (1):
-  runner/job_list: return error on crashes while running --list-subtests
-
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+---
  runner/job_list.c | 1 +
  1 file changed, 1 insertion(+)
 
+diff --git a/runner/job_list.c b/runner/job_list.c
+index a259b9531a58..e6ea836310fd 100644
+--- a/runner/job_list.c
++++ b/runner/job_list.c
+@@ -130,6 +130,7 @@ static void add_subtests(struct job_list *job_list, struct settings *settings,
+ 		}
+ 	} else {
+ 		fprintf(stderr, "Test binary %s died unexpectedly\n", binary);
++		exit(1);
+ 	}
+ }
+ 
 -- 
 2.39.0
