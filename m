@@ -1,15 +1,22 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============4243496135083658285=="
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C5E1E10E1EA
+ for <igt-dev@lists.freedesktop.org>; Wed, 22 Feb 2023 20:46:09 +0000 (UTC)
+Date: Wed, 22 Feb 2023 21:46:03 +0100
+From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ igt-dev@lists.freedesktop.org,
+ Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Message-ID: <20230222204603.yu5hwigo5nzeojji@zkempczy-mobl2>
+References: <20230221114621.32785-1-zbigniew.kempczynski@intel.com>
+ <20230221114621.32785-2-zbigniew.kempczynski@intel.com>
+ <20230222163537.ou3kp2bu7lg3evug@kamilkon-desk1>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Janusz Krzysztofik" <janusz.krzysztofik@linux.intel.com>
-Date: Tue, 21 Feb 2023 20:40:23 -0000
-Message-ID: <167701202317.16440.7561064325231792890@emeril.freedesktop.org>
-References: <20230220132445.32129-1-janusz.krzysztofik@linux.intel.com>
-In-Reply-To: <20230220132445.32129-1-janusz.krzysztofik@linux.intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLklHVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
- =?utf-8?q?gem=5Fbarrier=5Frace=3A_Extend_support_over_compute_engines?=
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20230222163537.ou3kp2bu7lg3evug@kamilkon-desk1>
+Subject: Re: [igt-dev] [PATCH i-g-t 1/7] lib/xe: Introduce Xe library
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,1273 +24,2013 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============4243496135083658285==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-== Series Details ==
-
-Series: tests/gem_barrier_race: Extend support over compute engines
-URL   : https://patchwork.freedesktop.org/series/114191/
-State : success
-
-== Summary ==
-
-CI Bug Log - changes from CI_DRM_12761_full -> IGTPW_8510_full
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/index.html
-
-Participating hosts (10 -> 11)
-------------------------------
-
-  Additional (1): shard-rkl0 
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_8510_full that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@api_intel_bb@crc32:
-    - shard-tglu-9:       NOTRUN -> [SKIP][1] ([i915#6230])
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-tglu-9/igt@api_intel_bb@crc32.html
-
-  * igt@fbdev@info:
-    - shard-tglu-9:       NOTRUN -> [SKIP][2] ([i915#2582]) +1 similar issue
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-tglu-9/igt@fbdev@info.html
-
-  * igt@gem_exec_fair@basic-deadline:
-    - shard-glk:          [PASS][3] -> [FAIL][4] ([i915#2846])
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12761/shard-glk1/igt@gem_exec_fair@basic-deadline.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-glk5/igt@gem_exec_fair@basic-deadline.html
-
-  * igt@gem_exec_fair@basic-pace-solo@rcs0:
-    - shard-tglu-9:       NOTRUN -> [FAIL][5] ([i915#2842])
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-tglu-9/igt@gem_exec_fair@basic-pace-solo@rcs0.html
-
-  * igt@gem_exec_fair@basic-throttle@rcs0:
-    - shard-glk:          [PASS][6] -> [FAIL][7] ([i915#2842])
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12761/shard-glk5/igt@gem_exec_fair@basic-throttle@rcs0.html
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-glk6/igt@gem_exec_fair@basic-throttle@rcs0.html
-
-  * igt@gem_exec_suspend@basic-s3@smem:
-    - shard-tglu-10:      [PASS][8] -> [ABORT][9] ([i915#5122])
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12761/shard-tglu-10/igt@gem_exec_suspend@basic-s3@smem.html
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-tglu-10/igt@gem_exec_suspend@basic-s3@smem.html
-
-  * igt@gem_exec_suspend@basic-s4-devices@smem:
-    - shard-tglu-10:      NOTRUN -> [ABORT][10] ([i915#7975])
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-tglu-10/igt@gem_exec_suspend@basic-s4-devices@smem.html
-
-  * igt@gem_lmem_swapping@heavy-multi:
-    - shard-tglu-9:       NOTRUN -> [SKIP][11] ([i915#4613])
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-tglu-9/igt@gem_lmem_swapping@heavy-multi.html
-
-  * igt@gem_lmem_swapping@verify-random:
-    - shard-tglu-10:      NOTRUN -> [SKIP][12] ([i915#4613]) +2 similar issues
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-tglu-10/igt@gem_lmem_swapping@verify-random.html
-
-  * igt@gem_pwrite@basic-exhaustion:
-    - shard-tglu-9:       NOTRUN -> [WARN][13] ([i915#2658])
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-tglu-9/igt@gem_pwrite@basic-exhaustion.html
-
-  * igt@gem_pxp@protected-raw-src-copy-not-readible:
-    - shard-tglu-9:       NOTRUN -> [SKIP][14] ([i915#4270])
-   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-tglu-9/igt@gem_pxp@protected-raw-src-copy-not-readible.html
-
-  * igt@gem_pxp@verify-pxp-key-change-after-suspend-resume:
-    - shard-tglu-10:      NOTRUN -> [SKIP][15] ([i915#4270]) +1 similar issue
-   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-tglu-10/igt@gem_pxp@verify-pxp-key-change-after-suspend-resume.html
-
-  * igt@gem_userptr_blits@coherency-sync:
-    - shard-tglu-9:       NOTRUN -> [SKIP][16] ([fdo#110542])
-   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-tglu-9/igt@gem_userptr_blits@coherency-sync.html
-
-  * igt@gem_userptr_blits@invalid-mmap-offset-unsync:
-    - shard-tglu-10:      NOTRUN -> [SKIP][17] ([i915#3297])
-   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-tglu-10/igt@gem_userptr_blits@invalid-mmap-offset-unsync.html
-
-  * igt@gen9_exec_parse@bb-chained:
-    - shard-tglu-9:       NOTRUN -> [SKIP][18] ([i915#2527] / [i915#2856])
-   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-tglu-9/igt@gen9_exec_parse@bb-chained.html
-
-  * igt@gen9_exec_parse@bb-secure:
-    - shard-tglu-10:      NOTRUN -> [SKIP][19] ([i915#2527] / [i915#2856]) +1 similar issue
-   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-tglu-10/igt@gen9_exec_parse@bb-secure.html
-
-  * igt@i915_module_load@resize-bar:
-    - shard-tglu-9:       NOTRUN -> [SKIP][20] ([i915#6412])
-   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-tglu-9/igt@i915_module_load@resize-bar.html
-
-  * igt@i915_pm_backlight@fade-with-suspend:
-    - shard-tglu-9:       NOTRUN -> [SKIP][21] ([i915#7561])
-   [21]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-tglu-9/igt@i915_pm_backlight@fade-with-suspend.html
-
-  * igt@i915_pm_rc6_residency@media-rc6-accuracy:
-    - shard-tglu-10:      NOTRUN -> [SKIP][22] ([fdo#109289]) +2 similar issues
-   [22]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-tglu-10/igt@i915_pm_rc6_residency@media-rc6-accuracy.html
-
-  * igt@i915_pm_rpm@modeset-non-lpsp-stress-no-wait:
-    - shard-tglu-9:       NOTRUN -> [SKIP][23] ([fdo#111644] / [i915#1397])
-   [23]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-tglu-9/igt@i915_pm_rpm@modeset-non-lpsp-stress-no-wait.html
-
-  * igt@i915_pm_rpm@modeset-pc8-residency-stress:
-    - shard-tglu-10:      NOTRUN -> [SKIP][24] ([fdo#109506])
-   [24]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-tglu-10/igt@i915_pm_rpm@modeset-pc8-residency-stress.html
-
-  * igt@i915_suspend@basic-s2idle-without-i915:
-    - shard-snb:          [PASS][25] -> [ABORT][26] ([i915#4528])
-   [25]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12761/shard-snb2/igt@i915_suspend@basic-s2idle-without-i915.html
-   [26]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-snb2/igt@i915_suspend@basic-s2idle-without-i915.html
-
-  * igt@kms_async_flips@crc:
-    - shard-tglu-9:       NOTRUN -> [SKIP][27] ([i915#1845]) +9 similar issues
-   [27]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-tglu-9/igt@kms_async_flips@crc.html
-
-  * igt@kms_big_fb@4-tiled-32bpp-rotate-90:
-    - shard-tglu-10:      NOTRUN -> [SKIP][28] ([i915#5286]) +2 similar issues
-   [28]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-tglu-10/igt@kms_big_fb@4-tiled-32bpp-rotate-90.html
-
-  * igt@kms_big_fb@y-tiled-8bpp-rotate-90:
-    - shard-tglu-10:      NOTRUN -> [SKIP][29] ([fdo#111614])
-   [29]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-tglu-10/igt@kms_big_fb@y-tiled-8bpp-rotate-90.html
-
-  * igt@kms_big_fb@yf-tiled-16bpp-rotate-270:
-    - shard-tglu-9:       NOTRUN -> [SKIP][30] ([fdo#111615] / [i915#1845] / [i915#7651]) +5 similar issues
-   [30]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-tglu-9/igt@kms_big_fb@yf-tiled-16bpp-rotate-270.html
-
-  * igt@kms_big_fb@yf-tiled-addfb-size-offset-overflow:
-    - shard-tglu-10:      NOTRUN -> [SKIP][31] ([fdo#111615]) +1 similar issue
-   [31]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-tglu-10/igt@kms_big_fb@yf-tiled-addfb-size-offset-overflow.html
-
-  * igt@kms_ccs@pipe-a-bad-aux-stride-yf_tiled_ccs:
-    - shard-tglu-10:      NOTRUN -> [SKIP][32] ([fdo#111615] / [i915#3689]) +3 similar issues
-   [32]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-tglu-10/igt@kms_ccs@pipe-a-bad-aux-stride-yf_tiled_ccs.html
-
-  * igt@kms_ccs@pipe-a-ccs-on-another-bo-y_tiled_gen12_rc_ccs:
-    - shard-glk:          NOTRUN -> [SKIP][33] ([fdo#109271]) +36 similar issues
-   [33]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-glk1/igt@kms_ccs@pipe-a-ccs-on-another-bo-y_tiled_gen12_rc_ccs.html
-
-  * igt@kms_ccs@pipe-a-crc-primary-basic-4_tiled_dg2_rc_ccs:
-    - shard-tglu-10:      NOTRUN -> [SKIP][34] ([i915#3689] / [i915#6095])
-   [34]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-tglu-10/igt@kms_ccs@pipe-a-crc-primary-basic-4_tiled_dg2_rc_ccs.html
-
-  * igt@kms_ccs@pipe-b-bad-pixel-format-4_tiled_dg2_rc_ccs_cc:
-    - shard-tglu-9:       NOTRUN -> [SKIP][35] ([i915#1845] / [i915#7651]) +44 similar issues
-   [35]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-tglu-9/igt@kms_ccs@pipe-b-bad-pixel-format-4_tiled_dg2_rc_ccs_cc.html
-
-  * igt@kms_ccs@pipe-b-ccs-on-another-bo-y_tiled_gen12_mc_ccs:
-    - shard-glk:          NOTRUN -> [SKIP][36] ([fdo#109271] / [i915#3886]) +1 similar issue
-   [36]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-glk3/igt@kms_ccs@pipe-b-ccs-on-another-bo-y_tiled_gen12_mc_ccs.html
-
-  * igt@kms_ccs@pipe-c-bad-aux-stride-y_tiled_gen12_mc_ccs:
-    - shard-tglu-10:      NOTRUN -> [SKIP][37] ([i915#3689] / [i915#3886])
-   [37]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-tglu-10/igt@kms_ccs@pipe-c-bad-aux-stride-y_tiled_gen12_mc_ccs.html
-
-  * igt@kms_ccs@pipe-c-random-ccs-data-4_tiled_dg2_mc_ccs:
-    - shard-tglu-10:      NOTRUN -> [SKIP][38] ([i915#6095]) +2 similar issues
-   [38]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-tglu-10/igt@kms_ccs@pipe-c-random-ccs-data-4_tiled_dg2_mc_ccs.html
-
-  * igt@kms_ccs@pipe-d-crc-primary-rotation-180-y_tiled_gen12_mc_ccs:
-    - shard-tglu-10:      NOTRUN -> [SKIP][39] ([i915#3689])
-   [39]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-tglu-10/igt@kms_ccs@pipe-d-crc-primary-rotation-180-y_tiled_gen12_mc_ccs.html
-
-  * igt@kms_cdclk@mode-transition:
-    - shard-tglu-10:      NOTRUN -> [SKIP][40] ([i915#3742])
-   [40]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-tglu-10/igt@kms_cdclk@mode-transition.html
-
-  * igt@kms_chamelium_color@ctm-0-75:
-    - shard-tglu-9:       NOTRUN -> [SKIP][41] ([fdo#111827]) +1 similar issue
-   [41]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-tglu-9/igt@kms_chamelium_color@ctm-0-75.html
-
-  * igt@kms_chamelium_edid@hdmi-edid-stress-resolution-non-4k:
-    - shard-tglu-9:       NOTRUN -> [SKIP][42] ([i915#7828]) +1 similar issue
-   [42]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-tglu-9/igt@kms_chamelium_edid@hdmi-edid-stress-resolution-non-4k.html
-
-  * igt@kms_chamelium_frames@hdmi-crc-nonplanar-formats:
-    - shard-tglu-10:      NOTRUN -> [SKIP][43] ([i915#7828]) +6 similar issues
-   [43]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-tglu-10/igt@kms_chamelium_frames@hdmi-crc-nonplanar-formats.html
-
-  * igt@kms_color@ctm-blue-to-red:
-    - shard-tglu-9:       NOTRUN -> [SKIP][44] ([i915#3546]) +1 similar issue
-   [44]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-tglu-9/igt@kms_color@ctm-blue-to-red.html
-
-  * igt@kms_content_protection@content_type_change:
-    - shard-tglu-10:      NOTRUN -> [SKIP][45] ([i915#6944] / [i915#7116] / [i915#7118])
-   [45]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-tglu-10/igt@kms_content_protection@content_type_change.html
-
-  * igt@kms_content_protection@dp-mst-lic-type-0:
-    - shard-tglu-10:      NOTRUN -> [SKIP][46] ([i915#3116] / [i915#3299])
-   [46]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-tglu-10/igt@kms_content_protection@dp-mst-lic-type-0.html
-
-  * igt@kms_cursor_crc@cursor-sliding-max-size:
-    - shard-tglu-10:      NOTRUN -> [SKIP][47] ([i915#3555]) +2 similar issues
-   [47]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-tglu-10/igt@kms_cursor_crc@cursor-sliding-max-size.html
-
-  * igt@kms_cursor_legacy@2x-long-flip-vs-cursor-atomic:
-    - shard-tglu-10:      NOTRUN -> [SKIP][48] ([fdo#109274])
-   [48]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-tglu-10/igt@kms_cursor_legacy@2x-long-flip-vs-cursor-atomic.html
-
-  * igt@kms_dsc@dsc-with-bpc:
-    - shard-tglu-10:      NOTRUN -> [SKIP][49] ([i915#3840])
-   [49]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-tglu-10/igt@kms_dsc@dsc-with-bpc.html
-
-  * igt@kms_flip@2x-flip-vs-fences-interruptible:
-    - shard-tglu-9:       NOTRUN -> [SKIP][50] ([fdo#109274] / [i915#3637]) +2 similar issues
-   [50]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-tglu-9/igt@kms_flip@2x-flip-vs-fences-interruptible.html
-
-  * igt@kms_flip@2x-plain-flip-fb-recreate-interruptible:
-    - shard-tglu-10:      NOTRUN -> [SKIP][51] ([fdo#109274] / [i915#3637]) +3 similar issues
-   [51]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-tglu-10/igt@kms_flip@2x-plain-flip-fb-recreate-interruptible.html
-
-  * igt@kms_flip@2x-plain-flip-fb-recreate-interruptible@ac-hdmi-a1-hdmi-a2:
-    - shard-glk:          [PASS][52] -> [FAIL][53] ([i915#2122]) +1 similar issue
-   [52]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12761/shard-glk4/igt@kms_flip@2x-plain-flip-fb-recreate-interruptible@ac-hdmi-a1-hdmi-a2.html
-   [53]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-glk7/igt@kms_flip@2x-plain-flip-fb-recreate-interruptible@ac-hdmi-a1-hdmi-a2.html
-
-  * igt@kms_flip@plain-flip-fb-recreate:
-    - shard-tglu-9:       NOTRUN -> [SKIP][54] ([i915#3637]) +2 similar issues
-   [54]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-tglu-9/igt@kms_flip@plain-flip-fb-recreate.html
-
-  * igt@kms_flip_scaled_crc@flip-32bpp-4tile-to-32bpp-4tiledg2rcccs-downscaling@pipe-a-valid-mode:
-    - shard-tglu-10:      NOTRUN -> [SKIP][55] ([i915#2587] / [i915#2672]) +1 similar issue
-   [55]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-tglu-10/igt@kms_flip_scaled_crc@flip-32bpp-4tile-to-32bpp-4tiledg2rcccs-downscaling@pipe-a-valid-mode.html
-
-  * igt@kms_flip_scaled_crc@flip-64bpp-xtile-to-16bpp-xtile-downscaling:
-    - shard-tglu-9:       NOTRUN -> [SKIP][56] ([i915#3555]) +5 similar issues
-   [56]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-tglu-9/igt@kms_flip_scaled_crc@flip-64bpp-xtile-to-16bpp-xtile-downscaling.html
-
-  * igt@kms_frontbuffer_tracking@fbc-2p-primscrn-spr-indfb-fullscreen:
-    - shard-tglu-9:       NOTRUN -> [SKIP][57] ([i915#1849]) +32 similar issues
-   [57]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-tglu-9/igt@kms_frontbuffer_tracking@fbc-2p-primscrn-spr-indfb-fullscreen.html
-
-  * igt@kms_frontbuffer_tracking@psr-1p-primscrn-pri-indfb-draw-mmap-wc:
-    - shard-tglu-10:      NOTRUN -> [SKIP][58] ([fdo#110189]) +11 similar issues
-   [58]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-tglu-10/igt@kms_frontbuffer_tracking@psr-1p-primscrn-pri-indfb-draw-mmap-wc.html
-
-  * igt@kms_frontbuffer_tracking@psr-2p-primscrn-shrfb-msflip-blt:
-    - shard-tglu-10:      NOTRUN -> [SKIP][59] ([fdo#109280]) +13 similar issues
-   [59]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-tglu-10/igt@kms_frontbuffer_tracking@psr-2p-primscrn-shrfb-msflip-blt.html
-
-  * igt@kms_pipe_b_c_ivb@disable-pipe-b-enable-pipe-c:
-    - shard-tglu-9:       NOTRUN -> [SKIP][60] ([fdo#109289])
-   [60]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-tglu-9/igt@kms_pipe_b_c_ivb@disable-pipe-b-enable-pipe-c.html
-
-  * igt@kms_plane_alpha_blend@constant-alpha-max:
-    - shard-tglu-9:       NOTRUN -> [SKIP][61] ([i915#7128] / [i915#7294])
-   [61]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-tglu-9/igt@kms_plane_alpha_blend@constant-alpha-max.html
-
-  * igt@kms_plane_scaling@planes-downscale-factor-0-5@pipe-b-hdmi-a-1:
-    - shard-snb:          NOTRUN -> [SKIP][62] ([fdo#109271]) +21 similar issues
-   [62]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-snb1/igt@kms_plane_scaling@planes-downscale-factor-0-5@pipe-b-hdmi-a-1.html
-
-  * igt@kms_plane_scaling@planes-upscale-20x20-downscale-factor-0-5:
-    - shard-tglu-9:       NOTRUN -> [SKIP][63] ([i915#3555] / [i915#6953])
-   [63]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-tglu-9/igt@kms_plane_scaling@planes-upscale-20x20-downscale-factor-0-5.html
-
-  * igt@kms_prime@d3hot:
-    - shard-tglu-9:       NOTRUN -> [SKIP][64] ([i915#6524])
-   [64]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-tglu-9/igt@kms_prime@d3hot.html
-
-  * igt@kms_psr2_sf@cursor-plane-move-continuous-exceed-sf:
-    - shard-tglu-10:      NOTRUN -> [SKIP][65] ([i915#658]) +1 similar issue
-   [65]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-tglu-10/igt@kms_psr2_sf@cursor-plane-move-continuous-exceed-sf.html
-
-  * igt@kms_psr2_su@page_flip-xrgb8888:
-    - shard-tglu-10:      NOTRUN -> [SKIP][66] ([fdo#109642] / [fdo#111068] / [i915#658])
-   [66]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-tglu-10/igt@kms_psr2_su@page_flip-xrgb8888.html
-
-  * igt@kms_psr@psr2_sprite_plane_onoff:
-    - shard-tglu-9:       NOTRUN -> [SKIP][67] ([fdo#110189]) +2 similar issues
-   [67]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-tglu-9/igt@kms_psr@psr2_sprite_plane_onoff.html
-
-  * igt@kms_pwrite_crc:
-    - shard-tglu-9:       NOTRUN -> [SKIP][68] ([fdo#109274] / [i915#1845])
-   [68]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-tglu-9/igt@kms_pwrite_crc.html
-
-  * igt@kms_rotation_crc@primary-yf-tiled-reflect-x-270:
-    - shard-tglu-9:       NOTRUN -> [SKIP][69] ([fdo#111615] / [i915#1845])
-   [69]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-tglu-9/igt@kms_rotation_crc@primary-yf-tiled-reflect-x-270.html
-
-  * igt@kms_universal_plane@universal-plane-pipe-a-sanity:
-    - shard-tglu-9:       NOTRUN -> [SKIP][70] ([fdo#109274])
-   [70]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-tglu-9/igt@kms_universal_plane@universal-plane-pipe-a-sanity.html
-
-  * igt@kms_writeback@writeback-pixel-formats:
-    - shard-tglu-10:      NOTRUN -> [SKIP][71] ([i915#2437])
-   [71]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-tglu-10/igt@kms_writeback@writeback-pixel-formats.html
-
-  * igt@v3d/v3d_perfmon@create-perfmon-invalid-counters:
-    - shard-tglu-10:      NOTRUN -> [SKIP][72] ([fdo#109315] / [i915#2575]) +2 similar issues
-   [72]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-tglu-10/igt@v3d/v3d_perfmon@create-perfmon-invalid-counters.html
-
-  * igt@v3d/v3d_perfmon@destroy-valid-perfmon:
-    - shard-tglu-9:       NOTRUN -> [SKIP][73] ([fdo#109315] / [i915#2575])
-   [73]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-tglu-9/igt@v3d/v3d_perfmon@destroy-valid-perfmon.html
-
-  * igt@vc4/vc4_dmabuf_poll@poll-write-waits-until-write-done:
-    - shard-tglu-9:       NOTRUN -> [SKIP][74] ([i915#2575]) +2 similar issues
-   [74]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-tglu-9/igt@vc4/vc4_dmabuf_poll@poll-write-waits-until-write-done.html
-
-  * igt@vc4/vc4_lookup_fail@bad-color-write:
-    - shard-tglu-10:      NOTRUN -> [SKIP][75] ([i915#2575]) +6 similar issues
-   [75]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-tglu-10/igt@vc4/vc4_lookup_fail@bad-color-write.html
-
-  
-#### Possible fixes ####
-
-  * igt@drm_fdinfo@most-busy-idle-check-all@rcs0:
-    - {shard-rkl}:        [FAIL][76] ([i915#7742]) -> [PASS][77]
-   [76]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12761/shard-rkl-6/igt@drm_fdinfo@most-busy-idle-check-all@rcs0.html
-   [77]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-rkl-2/igt@drm_fdinfo@most-busy-idle-check-all@rcs0.html
-
-  * igt@fbdev@eof:
-    - {shard-rkl}:        [SKIP][78] ([i915#2582]) -> [PASS][79] +3 similar issues
-   [78]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12761/shard-rkl-5/igt@fbdev@eof.html
-   [79]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-rkl-6/igt@fbdev@eof.html
-
-  * igt@gem_eio@in-flight-external:
-    - {shard-rkl}:        [ABORT][80] ([i915#7811]) -> [PASS][81]
-   [80]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12761/shard-rkl-3/igt@gem_eio@in-flight-external.html
-   [81]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-rkl-5/igt@gem_eio@in-flight-external.html
-
-  * igt@gem_exec_balancer@fairslice:
-    - {shard-rkl}:        [SKIP][82] ([i915#6259]) -> [PASS][83]
-   [82]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12761/shard-rkl-5/igt@gem_exec_balancer@fairslice.html
-   [83]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-rkl-4/igt@gem_exec_balancer@fairslice.html
-
-  * igt@gem_exec_fair@basic-none-share@rcs0:
-    - shard-glk:          [FAIL][84] ([i915#2842]) -> [PASS][85] +3 similar issues
-   [84]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12761/shard-glk9/igt@gem_exec_fair@basic-none-share@rcs0.html
-   [85]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-glk2/igt@gem_exec_fair@basic-none-share@rcs0.html
-
-  * igt@gem_exec_reloc@basic-gtt-read:
-    - {shard-rkl}:        [SKIP][86] ([i915#3281]) -> [PASS][87] +3 similar issues
-   [86]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12761/shard-rkl-1/igt@gem_exec_reloc@basic-gtt-read.html
-   [87]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-rkl-5/igt@gem_exec_reloc@basic-gtt-read.html
-
-  * igt@gem_partial_pwrite_pread@writes-after-reads:
-    - {shard-rkl}:        [SKIP][88] ([i915#3282]) -> [PASS][89] +1 similar issue
-   [88]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12761/shard-rkl-3/igt@gem_partial_pwrite_pread@writes-after-reads.html
-   [89]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-rkl-5/igt@gem_partial_pwrite_pread@writes-after-reads.html
-
-  * igt@gen9_exec_parse@allowed-single:
-    - shard-glk:          [ABORT][90] ([i915#5566]) -> [PASS][91]
-   [90]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12761/shard-glk7/igt@gen9_exec_parse@allowed-single.html
-   [91]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-glk3/igt@gen9_exec_parse@allowed-single.html
-
-  * igt@gen9_exec_parse@cmd-crossing-page:
-    - {shard-rkl}:        [SKIP][92] ([i915#2527]) -> [PASS][93] +1 similar issue
-   [92]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12761/shard-rkl-4/igt@gen9_exec_parse@cmd-crossing-page.html
-   [93]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-rkl-5/igt@gen9_exec_parse@cmd-crossing-page.html
-
-  * igt@i915_hangman@engine-engine-error@bcs0:
-    - {shard-rkl}:        [SKIP][94] ([i915#6258]) -> [PASS][95]
-   [94]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12761/shard-rkl-5/igt@i915_hangman@engine-engine-error@bcs0.html
-   [95]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-rkl-6/igt@i915_hangman@engine-engine-error@bcs0.html
-
-  * igt@i915_pm_rpm@dpms-lpsp:
-    - {shard-rkl}:        [SKIP][96] ([i915#1397]) -> [PASS][97]
-   [96]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12761/shard-rkl-5/igt@i915_pm_rpm@dpms-lpsp.html
-   [97]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-rkl-6/igt@i915_pm_rpm@dpms-lpsp.html
-
-  * igt@i915_pm_rpm@system-suspend-modeset:
-    - {shard-rkl}:        [SKIP][98] ([fdo#109308]) -> [PASS][99] +1 similar issue
-   [98]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12761/shard-rkl-5/igt@i915_pm_rpm@system-suspend-modeset.html
-   [99]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-rkl-6/igt@i915_pm_rpm@system-suspend-modeset.html
-
-  * igt@i915_pm_rps@engine-order:
-    - shard-apl:          [FAIL][100] ([i915#6537]) -> [PASS][101]
-   [100]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12761/shard-apl4/igt@i915_pm_rps@engine-order.html
-   [101]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-apl6/igt@i915_pm_rps@engine-order.html
-
-  * igt@kms_big_fb@y-tiled-max-hw-stride-32bpp-rotate-0-hflip-async-flip:
-    - {shard-rkl}:        [SKIP][102] ([i915#1845] / [i915#4098]) -> [PASS][103] +29 similar issues
-   [102]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12761/shard-rkl-1/igt@kms_big_fb@y-tiled-max-hw-stride-32bpp-rotate-0-hflip-async-flip.html
-   [103]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-rkl-6/igt@kms_big_fb@y-tiled-max-hw-stride-32bpp-rotate-0-hflip-async-flip.html
-
-  * igt@kms_cursor_legacy@flip-vs-cursor@atomic-transitions-varying-size:
-    - shard-glk:          [FAIL][104] ([i915#2346]) -> [PASS][105] +1 similar issue
-   [104]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12761/shard-glk9/igt@kms_cursor_legacy@flip-vs-cursor@atomic-transitions-varying-size.html
-   [105]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-glk7/igt@kms_cursor_legacy@flip-vs-cursor@atomic-transitions-varying-size.html
-
-  * igt@kms_fbcon_fbt@psr:
-    - {shard-rkl}:        [SKIP][106] ([fdo#110189] / [i915#3955]) -> [PASS][107]
-   [106]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12761/shard-rkl-5/igt@kms_fbcon_fbt@psr.html
-   [107]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-rkl-6/igt@kms_fbcon_fbt@psr.html
-
-  * igt@kms_frontbuffer_tracking@psr-1p-primscrn-indfb-plflip-blt:
-    - {shard-rkl}:        [SKIP][108] ([i915#1849] / [i915#4098]) -> [PASS][109] +12 similar issues
-   [108]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12761/shard-rkl-3/igt@kms_frontbuffer_tracking@psr-1p-primscrn-indfb-plflip-blt.html
-   [109]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-rkl-6/igt@kms_frontbuffer_tracking@psr-1p-primscrn-indfb-plflip-blt.html
-
-  * igt@kms_plane@pixel-format@pipe-b-planes:
-    - {shard-rkl}:        [SKIP][110] ([i915#1849]) -> [PASS][111] +4 similar issues
-   [110]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12761/shard-rkl-4/igt@kms_plane@pixel-format@pipe-b-planes.html
-   [111]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-rkl-6/igt@kms_plane@pixel-format@pipe-b-planes.html
-
-  * igt@kms_psr@cursor_mmap_gtt:
-    - {shard-rkl}:        [SKIP][112] ([i915#1072]) -> [PASS][113] +4 similar issues
-   [112]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12761/shard-rkl-1/igt@kms_psr@cursor_mmap_gtt.html
-   [113]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-rkl-6/igt@kms_psr@cursor_mmap_gtt.html
-
-  * igt@kms_psr_stress_test@flip-primary-invalidate-overlay:
-    - {shard-rkl}:        [SKIP][114] ([i915#5461]) -> [PASS][115]
-   [114]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12761/shard-rkl-3/igt@kms_psr_stress_test@flip-primary-invalidate-overlay.html
-   [115]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-rkl-6/igt@kms_psr_stress_test@flip-primary-invalidate-overlay.html
-
-  * igt@kms_universal_plane@universal-plane-pageflip-windowed-pipe-a:
-    - {shard-rkl}:        [SKIP][116] ([i915#4070] / [i915#4098]) -> [PASS][117]
-   [116]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12761/shard-rkl-1/igt@kms_universal_plane@universal-plane-pageflip-windowed-pipe-a.html
-   [117]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-rkl-6/igt@kms_universal_plane@universal-plane-pageflip-windowed-pipe-a.html
-
-  * igt@kms_universal_plane@universal-plane-pageflip-windowed-pipe-b:
-    - {shard-rkl}:        [SKIP][118] ([i915#4098]) -> [PASS][119] +1 similar issue
-   [118]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12761/shard-rkl-5/igt@kms_universal_plane@universal-plane-pageflip-windowed-pipe-b.html
-   [119]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-rkl-6/igt@kms_universal_plane@universal-plane-pageflip-windowed-pipe-b.html
-
-  * igt@perf@stress-open-close:
-    - shard-glk:          [ABORT][120] ([i915#5213]) -> [PASS][121]
-   [120]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12761/shard-glk3/igt@perf@stress-open-close.html
-   [121]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-glk9/igt@perf@stress-open-close.html
-
-  * igt@sysfs_timeslice_duration@timeout@vecs0:
-    - {shard-dg1}:        [FAIL][122] ([i915#1755]) -> [PASS][123] +2 similar issues
-   [122]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12761/shard-dg1-12/igt@sysfs_timeslice_duration@timeout@vecs0.html
-   [123]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-dg1-16/igt@sysfs_timeslice_duration@timeout@vecs0.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [IGT#2]: https://gitlab.freedesktop.org/drm/igt-gpu-tools/issues/2
-  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
-  [fdo#109274]: https://bugs.freedesktop.org/show_bug.cgi?id=109274
-  [fdo#109279]: https://bugs.freedesktop.org/show_bug.cgi?id=109279
-  [fdo#109280]: https://bugs.freedesktop.org/show_bug.cgi?id=109280
-  [fdo#109289]: https://bugs.freedesktop.org/show_bug.cgi?id=109289
-  [fdo#109295]: https://bugs.freedesktop.org/show_bug.cgi?id=109295
-  [fdo#109303]: https://bugs.freedesktop.org/show_bug.cgi?id=109303
-  [fdo#109307]: https://bugs.freedesktop.org/show_bug.cgi?id=109307
-  [fdo#109308]: https://bugs.freedesktop.org/show_bug.cgi?id=109308
-  [fdo#109309]: https://bugs.freedesktop.org/show_bug.cgi?id=109309
-  [fdo#109312]: https://bugs.freedesktop.org/show_bug.cgi?id=109312
-  [fdo#109314]: https://bugs.freedesktop.org/show_bug.cgi?id=109314
-  [fdo#109315]: https://bugs.freedesktop.org/show_bug.cgi?id=109315
-  [fdo#109506]: https://bugs.freedesktop.org/show_bug.cgi?id=109506
-  [fdo#109642]: https://bugs.freedesktop.org/show_bug.cgi?id=109642
-  [fdo#110189]: https://bugs.freedesktop.org/show_bug.cgi?id=110189
-  [fdo#110542]: https://bugs.freedesktop.org/show_bug.cgi?id=110542
-  [fdo#110723]: https://bugs.freedesktop.org/show_bug.cgi?id=110723
-  [fdo#111068]: https://bugs.freedesktop.org/show_bug.cgi?id=111068
-  [fdo#111614]: https://bugs.freedesktop.org/show_bug.cgi?id=111614
-  [fdo#111615]: https://bugs.freedesktop.org/show_bug.cgi?id=111615
-  [fdo#111644]: https://bugs.freedesktop.org/show_bug.cgi?id=111644
-  [fdo#111656]: https://bugs.freedesktop.org/show_bug.cgi?id=111656
-  [fdo#111825]: https://bugs.freedesktop.org/show_bug.cgi?id=111825
-  [fdo#111827]: https://bugs.freedesktop.org/show_bug.cgi?id=111827
-  [fdo#112054]: https://bugs.freedesktop.org/show_bug.cgi?id=112054
-  [fdo#112283]: https://bugs.freedesktop.org/show_bug.cgi?id=112283
-  [i915#1072]: https://gitlab.freedesktop.org/drm/intel/issues/1072
-  [i915#132]: https://gitlab.freedesktop.org/drm/intel/issues/132
-  [i915#1397]: https://gitlab.freedesktop.org/drm/intel/issues/1397
-  [i915#1755]: https://gitlab.freedesktop.org/drm/intel/issues/1755
-  [i915#1769]: https://gitlab.freedesktop.org/drm/intel/issues/1769
-  [i915#1825]: https://gitlab.freedesktop.org/drm/intel/issues/1825
-  [i915#1839]: https://gitlab.freedesktop.org/drm/intel/issues/1839
-  [i915#1845]: https://gitlab.freedesktop.org/drm/intel/issues/1845
-  [i915#1849]: https://gitlab.freedesktop.org/drm/intel/issues/1849
-  [i915#1902]: https://gitlab.freedesktop.org/drm/intel/issues/1902
-  [i915#1937]: https://gitlab.freedesktop.org/drm/intel/issues/1937
-  [i915#2122]: https://gitlab.freedesktop.org/drm/intel/issues/2122
-  [i915#2232]: https://gitlab.freedesktop.org/drm/intel/issues/2232
-  [i915#2346]: https://gitlab.freedesktop.org/drm/intel/issues/2346
-  [i915#2436]: https://gitlab.freedesktop.org/drm/intel/issues/2436
-  [i915#2437]: https://gitlab.freedesktop.org/drm/intel/issues/2437
-  [i915#2527]: https://gitlab.freedesktop.org/drm/intel/issues/2527
-  [i915#2532]: https://gitlab.freedesktop.org/drm/intel/issues/2532
-  [i915#2575]: https://gitlab.freedesktop.org/drm/intel/issues/2575
-  [i915#2582]: https://gitlab.freedesktop.org/drm/intel/issues/2582
-  [i915#2587]: https://gitlab.freedesktop.org/drm/intel/issues/2587
-  [i915#2658]: https://gitlab.freedesktop.org/drm/intel/issues/2658
-  [i915#2672]: https://gitlab.freedesktop.org/drm/intel/issues/2672
-  [i915#2681]: https://gitlab.freedesktop.org/drm/intel/issues/2681
-  [i915#2705]: https://gitlab.freedesktop.org/drm/intel/issues/2705
-  [i915#280]: https://gitlab.freedesktop.org/drm/intel/issues/280
-  [i915#2842]: https://gitlab.freedesktop.org/drm/intel/issues/2842
-  [i915#2846]: https://gitlab.freedesktop.org/drm/intel/issues/2846
-  [i915#2856]: https://gitlab.freedesktop.org/drm/intel/issues/2856
-  [i915#2920]: https://gitlab.freedesktop.org/drm/intel/issues/2920
-  [i915#3116]: https://gitlab.freedesktop.org/drm/intel/issues/3116
-  [i915#3281]: https://gitlab.freedesktop.org/drm/intel/issues/3281
-  [i915#3282]: https://gitlab.freedesktop.org/drm/intel/issues/3282
-  [i915#3291]: https://gitlab.freedesktop.org/drm/intel/issues/3291
-  [i915#3297]: https://gitlab.freedesktop.org/drm/intel/issues/3297
-  [i915#3299]: https://gitlab.freedesktop.org/drm/intel/issues/3299
-  [i915#3323]: https://gitlab.freedesktop.org/drm/intel/issues/3323
-  [i915#3359]: https://gitlab.freedesktop.org/drm/intel/issues/3359
-  [i915#3458]: https://gitlab.freedesktop.org/drm/intel/issues/3458
-  [i915#3469]: https://gitlab.freedesktop.org/drm/intel/issues/3469
-  [i915#3539]: https://gitlab.freedesktop.org/drm/intel/issues/3539
-  [i915#3546]: https://gitlab.freedesktop.org/drm/intel/issues/3546
-  [i915#3555]: https://gitlab.freedesktop.org/drm/intel/issues/3555
-  [i915#3637]: https://gitlab.freedesktop.org/drm/intel/issues/3637
-  [i915#3638]: https://gitlab.freedesktop.org/drm/intel/issues/3638
-  [i915#3689]: https://gitlab.freedesktop.org/drm/intel/issues/3689
-  [i915#3708]: https://gitlab.freedesktop.org/drm/intel/issues/3708
-  [i915#3734]: https://gitlab.freedesktop.org/drm/intel/issues/3734
-  [i915#3742]: https://gitlab.freedesktop.org/drm/intel/issues/3742
-  [i915#3826]: https://gitlab.freedesktop.org/drm/intel/issues/3826
-  [i915#3840]: https://gitlab.freedesktop.org/drm/intel/issues/3840
-  [i915#3886]: https://gitlab.freedesktop.org/drm/intel/issues/3886
-  [i915#3936]: https://gitlab.freedesktop.org/drm/intel/issues/3936
-  [i915#3952]: https://gitlab.freedesktop.org/drm/intel/issues/3952
-  [i915#3955]: https://gitlab.freedesktop.org/drm/intel/issues/3955
-  [i915#3989]: https://gitlab.freedesktop.org/drm/intel/issues/3989
-  [i915#4036]: https://gitlab.freedesktop.org/drm/intel/issues/4036
-  [i915#404]: https://gitlab.freedesktop.org/drm/intel/issues/404
-  [i915#4070]: https://gitlab.freedesktop.org/drm/intel/issues/4070
-  [i915#4077]: https://gitlab.freedesktop.org/drm/intel/issues/4077
-  [i915#4078]: https://gitlab.freedesktop.org/drm/intel/issues/4078
-  [i915#4079]: https://gitlab.freedesktop.org/drm/intel/issues/4079
-  [i915#4083]: https://gitlab.freedesktop.org/drm/intel/issues/4083
-  [i915#4098]: https://gitlab.freedesktop.org/drm/intel/issues/4098
-  [i915#4103]: https://gitlab.freedesktop.org/drm/intel/issues/4103
-  [i915#4212]: https://gitlab.freedesktop.org/drm/intel/issues/4212
-  [i915#4213]: https://gitlab.freedesktop.org/drm/intel/issues/4213
-  [i915#4270]: https://gitlab.freedesktop.org/drm/intel/issues/4270
-  [i915#4525]: https://gitlab.freedesktop.org/drm/intel/issues/4525
-  [i915#4528]: https://gitlab.freedesktop.org/drm/intel/issues/4528
-  [i915#4538]: https://gitlab.freedesktop.org/drm/intel/issues/4538
-  [i915#454]: https://gitlab.freedesktop.org/drm/intel/issues/454
-  [i915#4565]: https://gitlab.freedesktop.org/drm/intel/issues/4565
-  [i915#4613]: https://gitlab.freedesktop.org/drm/intel/issues/4613
-  [i915#4771]: https://gitlab.freedesktop.org/drm/intel/issues/4771
-  [i915#4812]: https://gitlab.freedesktop.org/drm/intel/issues/4812
-  [i915#4833]: https://gitlab.freedesktop.org/drm/intel/issues/4833
-  [i915#4852]: https://gitlab.freedesktop.org/drm/intel/issues/4852
-  [i915#4859]: https://gitlab.freedesktop.org/drm/intel/issues/4859
-  [i915#4860]: https://gitlab.freedesktop.org/drm/intel/issues/4860
-  [i915#4880]: https://gitlab.freedesktop.org/drm/intel/issues/4880
-  [i915#5115]: https://gitlab.freedesktop.org/drm/intel/issues/5115
-  [i915#5122]: https://gitlab.freedesktop.org/drm/intel/issues/5122
-  [i915#5176]: https://gitlab.freedesktop.org/drm/intel/issues/5176
-  [i915#5213]: https://gitlab.freedesktop.org/drm/intel/issues/5213
-  [i915#5235]: https://gitlab.freedesktop.org/drm/intel/issues/5235
-  [i915#5286]: https://gitlab.freedesktop.org/drm/intel/issues/5286
-  [i915#5288]: https://gitlab.freedesktop.org/drm/intel/issues/5288
-  [i915#5289]: https://gitlab.freedesktop.org/drm/intel/issues/5289
-  [i915#5325]: https://gitlab.freedesktop.org/drm/intel/issues/5325
-  [i915#533]: https://gitlab.freedesktop.org/drm/intel/issues/533
-  [i915#5439]: https://gitlab.freedesktop.org/drm/intel/issues/5439
-  [i915#5461]: https://gitlab.freedesktop.org/drm/intel/issues/5461
-  [i915#5563]: https://gitlab.freedesktop.org/drm/intel/issues/5563
-  [i915#5566]: https://gitlab.freedesktop.org/drm/intel/issues/5566
-  [i915#5723]: https://gitlab.freedesktop.org/drm/intel/issues/5723
-  [i915#6095]: https://gitlab.freedesktop.org/drm/intel/issues/6095
-  [i915#6117]: https://gitlab.freedesktop.org/drm/intel/issues/6117
-  [i915#6227]: https://gitlab.freedesktop.org/drm/intel/issues/6227
-  [i915#6230]: https://gitlab.freedesktop.org/drm/intel/issues/6230
-  [i915#6245]: https://gitlab.freedesktop.org/drm/intel/issues/6245
-  [i915#6247]: https://gitlab.freedesktop.org/drm/intel/issues/6247
-  [i915#6248]: https://gitlab.freedesktop.org/drm/intel/issues/6248
-  [i915#6252]: https://gitlab.freedesktop.org/drm/intel/issues/6252
-  [i915#6258]: https://gitlab.freedesktop.org/drm/intel/issues/6258
-  [i915#6259]: https://gitlab.freedesktop.org/drm/intel/issues/6259
-  [i915#6268]: https://gitlab.freedesktop.org/drm/intel/issues/6268
-  [i915#6301]: https://gitlab.freedesktop.org/drm/intel/issues/6301
-  [i915#6334]: https://gitlab.freedesktop.org/drm/intel/issues/6334
-  [i915#6335]: https://gitlab.freedesktop.org/drm/intel/issues/6335
-  [i915#6403]: https://gitlab.freedesktop.org/drm/intel/issues/6403
-  [i915#6412]: https://gitlab.freedesktop.org/drm/intel/issues/6412
-  [i915#6433]: https://gitlab.freedesktop.org/drm/intel/issues/6433
-  [i915#6493]: https://gitlab.freedesktop.org/drm/intel/issues/6493
-  [i915#6497]: https://gitlab.freedesktop.org/drm/intel/issues/6497
-  [i915#6524]: https://gitlab.freedesktop.org/drm/intel/issues/6524
-  [i915#6537]: https://gitlab.freedesktop.org/drm/intel/issues/6537
-  [i915#658]: https://gitlab.freedesktop.org/drm/intel/issues/658
-  [i915#6621]: https://gitlab.freedesktop.org/drm/intel/issues/6621
-  [i915#6768]: https://gitlab.freedesktop.org/drm/intel/issues/6768
-  [i915#6944]: https://gitlab.freedesktop.org/drm/intel/issues/6944
-  [i915#6953]: https://gitlab.freedesktop.org/drm/intel/issues/6953
-  [i915#7037]: https://gitlab.freedesktop.org/drm/intel/issues/7037
-  [i915#7052]: https://gitlab.freedesktop.org/drm/intel/issues/7052
-  [i915#7116]: https://gitlab.freedesktop.org/drm/intel/issues/7116
-  [i915#7118]: https://gitlab.freedesktop.org/drm/intel/issues/7118
-  [i915#7128]: https://gitlab.freedesktop.org/drm/intel/issues/7128
-  [i915#7294]: https://gitlab.freedesktop.org/drm/intel/issues/7294
-  [i915#7561]: https://gitlab.freedesktop.org/drm/intel/issues/7561
-  [i915#7651]: https://gitlab.freedesktop.org/drm/intel/issues/7651
-  [i915#7697]: https://gitlab.freedesktop.org/drm/intel/issues/7697
-  [i915#7707]: https://gitlab.freedesktop.org/drm/intel/issues/7707
-  [i915#7711]: https://gitlab.freedesktop.org/drm/intel/issues/7711
-  [i915#7742]: https://gitlab.freedesktop.org/drm/intel/issues/7742
-  [i915#7811]: https://gitlab.freedesktop.org/drm/intel/issues/7811
-  [i915#7828]: https://gitlab.freedesktop.org/drm/intel/issues/7828
-  [i915#7949]: https://gitlab.freedesktop.org/drm/intel/issues/7949
-  [i915#7957]: https://gitlab.freedesktop.org/drm/intel/issues/7957
-  [i915#7975]: https://gitlab.freedesktop.org/drm/intel/issues/7975
-  [i915#8018]: https://gitlab.freedesktop.org/drm/intel/issues/8018
-  [i915#8150]: https://gitlab.freedesktop.org/drm/intel/issues/8150
-  [i915#8151]: https://gitlab.freedesktop.org/drm/intel/issues/8151
-  [i915#8152]: https://gitlab.freedesktop.org/drm/intel/issues/8152
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_7165 -> IGTPW_8510
-
-  CI-20190529: 20190529
-  CI_DRM_12761: c397c9581e74c066e737721bf308527bc4cb0da3 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_8510: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/index.html
-  IGT_7165: 509e7e63c6377d0fe77d1bd209857fb191f4a84c @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/index.html
-
---===============4243496135083658285==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/gem_barrier_race: Extend support over compute engines</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/114191/">https://patchwork.freedesktop.org/series/114191/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from CI_DRM_12761_full -&gt; IGTPW_8510_full</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/index.html</p>
-<h2>Participating hosts (10 -&gt; 11)</h2>
-<p>Additional (1): shard-rkl0 </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_8510_full that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@api_intel_bb@crc32:</p>
-<ul>
-<li>shard-tglu-9:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-tglu-9/igt@api_intel_bb@crc32.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6230">i915#6230</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@fbdev@info:</p>
-<ul>
-<li>shard-tglu-9:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-tglu-9/igt@fbdev@info.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2582">i915#2582</a>) +1 similar issue</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_exec_fair@basic-deadline:</p>
-<ul>
-<li>shard-glk:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12761/shard-glk1/igt@gem_exec_fair@basic-deadline.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-glk5/igt@gem_exec_fair@basic-deadline.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2846">i915#2846</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_exec_fair@basic-pace-solo@rcs0:</p>
-<ul>
-<li>shard-tglu-9:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-tglu-9/igt@gem_exec_fair@basic-pace-solo@rcs0.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2842">i915#2842</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_exec_fair@basic-throttle@rcs0:</p>
-<ul>
-<li>shard-glk:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12761/shard-glk5/igt@gem_exec_fair@basic-throttle@rcs0.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-glk6/igt@gem_exec_fair@basic-throttle@rcs0.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2842">i915#2842</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_exec_suspend@basic-s3@smem:</p>
-<ul>
-<li>shard-tglu-10:      <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12761/shard-tglu-10/igt@gem_exec_suspend@basic-s3@smem.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-tglu-10/igt@gem_exec_suspend@basic-s3@smem.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5122">i915#5122</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_exec_suspend@basic-s4-devices@smem:</p>
-<ul>
-<li>shard-tglu-10:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-tglu-10/igt@gem_exec_suspend@basic-s4-devices@smem.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7975">i915#7975</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_lmem_swapping@heavy-multi:</p>
-<ul>
-<li>shard-tglu-9:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-tglu-9/igt@gem_lmem_swapping@heavy-multi.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4613">i915#4613</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_lmem_swapping@verify-random:</p>
-<ul>
-<li>shard-tglu-10:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-tglu-10/igt@gem_lmem_swapping@verify-random.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4613">i915#4613</a>) +2 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_pwrite@basic-exhaustion:</p>
-<ul>
-<li>shard-tglu-9:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-tglu-9/igt@gem_pwrite@basic-exhaustion.html">WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2658">i915#2658</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_pxp@protected-raw-src-copy-not-readible:</p>
-<ul>
-<li>shard-tglu-9:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-tglu-9/igt@gem_pxp@protected-raw-src-copy-not-readible.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4270">i915#4270</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_pxp@verify-pxp-key-change-after-suspend-resume:</p>
-<ul>
-<li>shard-tglu-10:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-tglu-10/igt@gem_pxp@verify-pxp-key-change-after-suspend-resume.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4270">i915#4270</a>) +1 similar issue</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_userptr_blits@coherency-sync:</p>
-<ul>
-<li>shard-tglu-9:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-tglu-9/igt@gem_userptr_blits@coherency-sync.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=110542">fdo#110542</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_userptr_blits@invalid-mmap-offset-unsync:</p>
-<ul>
-<li>shard-tglu-10:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-tglu-10/igt@gem_userptr_blits@invalid-mmap-offset-unsync.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3297">i915#3297</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@gen9_exec_parse@bb-chained:</p>
-<ul>
-<li>shard-tglu-9:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-tglu-9/igt@gen9_exec_parse@bb-chained.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2527">i915#2527</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2856">i915#2856</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@gen9_exec_parse@bb-secure:</p>
-<ul>
-<li>shard-tglu-10:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-tglu-10/igt@gen9_exec_parse@bb-secure.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2527">i915#2527</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2856">i915#2856</a>) +1 similar issue</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_module_load@resize-bar:</p>
-<ul>
-<li>shard-tglu-9:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-tglu-9/igt@i915_module_load@resize-bar.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6412">i915#6412</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_pm_backlight@fade-with-suspend:</p>
-<ul>
-<li>shard-tglu-9:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-tglu-9/igt@i915_pm_backlight@fade-with-suspend.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7561">i915#7561</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_pm_rc6_residency@media-rc6-accuracy:</p>
-<ul>
-<li>shard-tglu-10:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-tglu-10/igt@i915_pm_rc6_residency@media-rc6-accuracy.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109289">fdo#109289</a>) +2 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_pm_rpm@modeset-non-lpsp-stress-no-wait:</p>
-<ul>
-<li>shard-tglu-9:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-tglu-9/igt@i915_pm_rpm@modeset-non-lpsp-stress-no-wait.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=111644">fdo#111644</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/1397">i915#1397</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_pm_rpm@modeset-pc8-residency-stress:</p>
-<ul>
-<li>shard-tglu-10:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-tglu-10/igt@i915_pm_rpm@modeset-pc8-residency-stress.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109506">fdo#109506</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_suspend@basic-s2idle-without-i915:</p>
-<ul>
-<li>shard-snb:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12761/shard-snb2/igt@i915_suspend@basic-s2idle-without-i915.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-snb2/igt@i915_suspend@basic-s2idle-without-i915.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4528">i915#4528</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_async_flips@crc:</p>
-<ul>
-<li>shard-tglu-9:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-tglu-9/igt@kms_async_flips@crc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1845">i915#1845</a>) +9 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_big_fb@4-tiled-32bpp-rotate-90:</p>
-<ul>
-<li>shard-tglu-10:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-tglu-10/igt@kms_big_fb@4-tiled-32bpp-rotate-90.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5286">i915#5286</a>) +2 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_big_fb@y-tiled-8bpp-rotate-90:</p>
-<ul>
-<li>shard-tglu-10:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-tglu-10/igt@kms_big_fb@y-tiled-8bpp-rotate-90.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=111614">fdo#111614</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_big_fb@yf-tiled-16bpp-rotate-270:</p>
-<ul>
-<li>shard-tglu-9:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-tglu-9/igt@kms_big_fb@yf-tiled-16bpp-rotate-270.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=111615">fdo#111615</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/1845">i915#1845</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7651">i915#7651</a>) +5 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_big_fb@yf-tiled-addfb-size-offset-overflow:</p>
-<ul>
-<li>shard-tglu-10:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-tglu-10/igt@kms_big_fb@yf-tiled-addfb-size-offset-overflow.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=111615">fdo#111615</a>) +1 similar issue</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_ccs@pipe-a-bad-aux-stride-yf_tiled_ccs:</p>
-<ul>
-<li>shard-tglu-10:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-tglu-10/igt@kms_ccs@pipe-a-bad-aux-stride-yf_tiled_ccs.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=111615">fdo#111615</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3689">i915#3689</a>) +3 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_ccs@pipe-a-ccs-on-another-bo-y_tiled_gen12_rc_ccs:</p>
-<ul>
-<li>shard-glk:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-glk1/igt@kms_ccs@pipe-a-ccs-on-another-bo-y_tiled_gen12_rc_ccs.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +36 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_ccs@pipe-a-crc-primary-basic-4_tiled_dg2_rc_ccs:</p>
-<ul>
-<li>shard-tglu-10:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-tglu-10/igt@kms_ccs@pipe-a-crc-primary-basic-4_tiled_dg2_rc_ccs.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3689">i915#3689</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/6095">i915#6095</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_ccs@pipe-b-bad-pixel-format-4_tiled_dg2_rc_ccs_cc:</p>
-<ul>
-<li>shard-tglu-9:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-tglu-9/igt@kms_ccs@pipe-b-bad-pixel-format-4_tiled_dg2_rc_ccs_cc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1845">i915#1845</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7651">i915#7651</a>) +44 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_ccs@pipe-b-ccs-on-another-bo-y_tiled_gen12_mc_ccs:</p>
-<ul>
-<li>shard-glk:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-glk3/igt@kms_ccs@pipe-b-ccs-on-another-bo-y_tiled_gen12_mc_ccs.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3886">i915#3886</a>) +1 similar issue</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_ccs@pipe-c-bad-aux-stride-y_tiled_gen12_mc_ccs:</p>
-<ul>
-<li>shard-tglu-10:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-tglu-10/igt@kms_ccs@pipe-c-bad-aux-stride-y_tiled_gen12_mc_ccs.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3689">i915#3689</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3886">i915#3886</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_ccs@pipe-c-random-ccs-data-4_tiled_dg2_mc_ccs:</p>
-<ul>
-<li>shard-tglu-10:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-tglu-10/igt@kms_ccs@pipe-c-random-ccs-data-4_tiled_dg2_mc_ccs.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6095">i915#6095</a>) +2 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_ccs@pipe-d-crc-primary-rotation-180-y_tiled_gen12_mc_ccs:</p>
-<ul>
-<li>shard-tglu-10:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-tglu-10/igt@kms_ccs@pipe-d-crc-primary-rotation-180-y_tiled_gen12_mc_ccs.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3689">i915#3689</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_cdclk@mode-transition:</p>
-<ul>
-<li>shard-tglu-10:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-tglu-10/igt@kms_cdclk@mode-transition.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3742">i915#3742</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_chamelium_color@ctm-0-75:</p>
-<ul>
-<li>shard-tglu-9:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-tglu-9/igt@kms_chamelium_color@ctm-0-75.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=111827">fdo#111827</a>) +1 similar issue</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_chamelium_edid@hdmi-edid-stress-resolution-non-4k:</p>
-<ul>
-<li>shard-tglu-9:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-tglu-9/igt@kms_chamelium_edid@hdmi-edid-stress-resolution-non-4k.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7828">i915#7828</a>) +1 similar issue</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_chamelium_frames@hdmi-crc-nonplanar-formats:</p>
-<ul>
-<li>shard-tglu-10:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-tglu-10/igt@kms_chamelium_frames@hdmi-crc-nonplanar-formats.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7828">i915#7828</a>) +6 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_color@ctm-blue-to-red:</p>
-<ul>
-<li>shard-tglu-9:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-tglu-9/igt@kms_color@ctm-blue-to-red.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3546">i915#3546</a>) +1 similar issue</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_content_protection@content_type_change:</p>
-<ul>
-<li>shard-tglu-10:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-tglu-10/igt@kms_content_protection@content_type_change.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6944">i915#6944</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7116">i915#7116</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7118">i915#7118</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_content_protection@dp-mst-lic-type-0:</p>
-<ul>
-<li>shard-tglu-10:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-tglu-10/igt@kms_content_protection@dp-mst-lic-type-0.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3116">i915#3116</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3299">i915#3299</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_cursor_crc@cursor-sliding-max-size:</p>
-<ul>
-<li>shard-tglu-10:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-tglu-10/igt@kms_cursor_crc@cursor-sliding-max-size.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3555">i915#3555</a>) +2 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_cursor_legacy@2x-long-flip-vs-cursor-atomic:</p>
-<ul>
-<li>shard-tglu-10:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-tglu-10/igt@kms_cursor_legacy@2x-long-flip-vs-cursor-atomic.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109274">fdo#109274</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_dsc@dsc-with-bpc:</p>
-<ul>
-<li>shard-tglu-10:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-tglu-10/igt@kms_dsc@dsc-with-bpc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3840">i915#3840</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_flip@2x-flip-vs-fences-interruptible:</p>
-<ul>
-<li>shard-tglu-9:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-tglu-9/igt@kms_flip@2x-flip-vs-fences-interruptible.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109274">fdo#109274</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3637">i915#3637</a>) +2 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_flip@2x-plain-flip-fb-recreate-interruptible:</p>
-<ul>
-<li>shard-tglu-10:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-tglu-10/igt@kms_flip@2x-plain-flip-fb-recreate-interruptible.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109274">fdo#109274</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3637">i915#3637</a>) +3 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_flip@2x-plain-flip-fb-recreate-interruptible@ac-hdmi-a1-hdmi-a2:</p>
-<ul>
-<li>shard-glk:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12761/shard-glk4/igt@kms_flip@2x-plain-flip-fb-recreate-interruptible@ac-hdmi-a1-hdmi-a2.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-glk7/igt@kms_flip@2x-plain-flip-fb-recreate-interruptible@ac-hdmi-a1-hdmi-a2.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2122">i915#2122</a>) +1 similar issue</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_flip@plain-flip-fb-recreate:</p>
-<ul>
-<li>shard-tglu-9:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-tglu-9/igt@kms_flip@plain-flip-fb-recreate.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3637">i915#3637</a>) +2 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_flip_scaled_crc@flip-32bpp-4tile-to-32bpp-4tiledg2rcccs-downscaling@pipe-a-valid-mode:</p>
-<ul>
-<li>shard-tglu-10:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-tglu-10/igt@kms_flip_scaled_crc@flip-32bpp-4tile-to-32bpp-4tiledg2rcccs-downscaling@pipe-a-valid-mode.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2587">i915#2587</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2672">i915#2672</a>) +1 similar issue</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_flip_scaled_crc@flip-64bpp-xtile-to-16bpp-xtile-downscaling:</p>
-<ul>
-<li>shard-tglu-9:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-tglu-9/igt@kms_flip_scaled_crc@flip-64bpp-xtile-to-16bpp-xtile-downscaling.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3555">i915#3555</a>) +5 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_frontbuffer_tracking@fbc-2p-primscrn-spr-indfb-fullscreen:</p>
-<ul>
-<li>shard-tglu-9:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-tglu-9/igt@kms_frontbuffer_tracking@fbc-2p-primscrn-spr-indfb-fullscreen.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1849">i915#1849</a>) +32 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_frontbuffer_tracking@psr-1p-primscrn-pri-indfb-draw-mmap-wc:</p>
-<ul>
-<li>shard-tglu-10:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-tglu-10/igt@kms_frontbuffer_tracking@psr-1p-primscrn-pri-indfb-draw-mmap-wc.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=110189">fdo#110189</a>) +11 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_frontbuffer_tracking@psr-2p-primscrn-shrfb-msflip-blt:</p>
-<ul>
-<li>shard-tglu-10:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-tglu-10/igt@kms_frontbuffer_tracking@psr-2p-primscrn-shrfb-msflip-blt.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109280">fdo#109280</a>) +13 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pipe_b_c_ivb@disable-pipe-b-enable-pipe-c:</p>
-<ul>
-<li>shard-tglu-9:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-tglu-9/igt@kms_pipe_b_c_ivb@disable-pipe-b-enable-pipe-c.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109289">fdo#109289</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_plane_alpha_blend@constant-alpha-max:</p>
-<ul>
-<li>shard-tglu-9:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-tglu-9/igt@kms_plane_alpha_blend@constant-alpha-max.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7128">i915#7128</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7294">i915#7294</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_plane_scaling@planes-downscale-factor-0-5@pipe-b-hdmi-a-1:</p>
-<ul>
-<li>shard-snb:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-snb1/igt@kms_plane_scaling@planes-downscale-factor-0-5@pipe-b-hdmi-a-1.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +21 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_plane_scaling@planes-upscale-20x20-downscale-factor-0-5:</p>
-<ul>
-<li>shard-tglu-9:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-tglu-9/igt@kms_plane_scaling@planes-upscale-20x20-downscale-factor-0-5.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3555">i915#3555</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/6953">i915#6953</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_prime@d3hot:</p>
-<ul>
-<li>shard-tglu-9:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-tglu-9/igt@kms_prime@d3hot.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6524">i915#6524</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@cursor-plane-move-continuous-exceed-sf:</p>
-<ul>
-<li>shard-tglu-10:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-tglu-10/igt@kms_psr2_sf@cursor-plane-move-continuous-exceed-sf.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/658">i915#658</a>) +1 similar issue</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_su@page_flip-xrgb8888:</p>
-<ul>
-<li>shard-tglu-10:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-tglu-10/igt@kms_psr2_su@page_flip-xrgb8888.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109642">fdo#109642</a> / <a href="https://bugs.freedesktop.org/show_bug.cgi?id=111068">fdo#111068</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/658">i915#658</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr@psr2_sprite_plane_onoff:</p>
-<ul>
-<li>shard-tglu-9:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-tglu-9/igt@kms_psr@psr2_sprite_plane_onoff.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=110189">fdo#110189</a>) +2 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pwrite_crc:</p>
-<ul>
-<li>shard-tglu-9:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-tglu-9/igt@kms_pwrite_crc.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109274">fdo#109274</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/1845">i915#1845</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_rotation_crc@primary-yf-tiled-reflect-x-270:</p>
-<ul>
-<li>shard-tglu-9:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-tglu-9/igt@kms_rotation_crc@primary-yf-tiled-reflect-x-270.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=111615">fdo#111615</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/1845">i915#1845</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_universal_plane@universal-plane-pipe-a-sanity:</p>
-<ul>
-<li>shard-tglu-9:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-tglu-9/igt@kms_universal_plane@universal-plane-pipe-a-sanity.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109274">fdo#109274</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_writeback@writeback-pixel-formats:</p>
-<ul>
-<li>shard-tglu-10:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-tglu-10/igt@kms_writeback@writeback-pixel-formats.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2437">i915#2437</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@v3d/v3d_perfmon@create-perfmon-invalid-counters:</p>
-<ul>
-<li>shard-tglu-10:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-tglu-10/igt@v3d/v3d_perfmon@create-perfmon-invalid-counters.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109315">fdo#109315</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2575">i915#2575</a>) +2 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@v3d/v3d_perfmon@destroy-valid-perfmon:</p>
-<ul>
-<li>shard-tglu-9:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-tglu-9/igt@v3d/v3d_perfmon@destroy-valid-perfmon.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109315">fdo#109315</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2575">i915#2575</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@vc4/vc4_dmabuf_poll@poll-write-waits-until-write-done:</p>
-<ul>
-<li>shard-tglu-9:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-tglu-9/igt@vc4/vc4_dmabuf_poll@poll-write-waits-until-write-done.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2575">i915#2575</a>) +2 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@vc4/vc4_lookup_fail@bad-color-write:</p>
-<ul>
-<li>shard-tglu-10:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-tglu-10/igt@vc4/vc4_lookup_fail@bad-color-write.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2575">i915#2575</a>) +6 similar issues</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@drm_fdinfo@most-busy-idle-check-all@rcs0:</p>
-<ul>
-<li>{shard-rkl}:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12761/shard-rkl-6/igt@drm_fdinfo@most-busy-idle-check-all@rcs0.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7742">i915#7742</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-rkl-2/igt@drm_fdinfo@most-busy-idle-check-all@rcs0.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@fbdev@eof:</p>
-<ul>
-<li>{shard-rkl}:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12761/shard-rkl-5/igt@fbdev@eof.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2582">i915#2582</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-rkl-6/igt@fbdev@eof.html">PASS</a> +3 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_eio@in-flight-external:</p>
-<ul>
-<li>{shard-rkl}:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12761/shard-rkl-3/igt@gem_eio@in-flight-external.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7811">i915#7811</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-rkl-5/igt@gem_eio@in-flight-external.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@gem_exec_balancer@fairslice:</p>
-<ul>
-<li>{shard-rkl}:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12761/shard-rkl-5/igt@gem_exec_balancer@fairslice.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6259">i915#6259</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-rkl-4/igt@gem_exec_balancer@fairslice.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@gem_exec_fair@basic-none-share@rcs0:</p>
-<ul>
-<li>shard-glk:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12761/shard-glk9/igt@gem_exec_fair@basic-none-share@rcs0.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2842">i915#2842</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-glk2/igt@gem_exec_fair@basic-none-share@rcs0.html">PASS</a> +3 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_exec_reloc@basic-gtt-read:</p>
-<ul>
-<li>{shard-rkl}:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12761/shard-rkl-1/igt@gem_exec_reloc@basic-gtt-read.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3281">i915#3281</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-rkl-5/igt@gem_exec_reloc@basic-gtt-read.html">PASS</a> +3 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_partial_pwrite_pread@writes-after-reads:</p>
-<ul>
-<li>{shard-rkl}:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12761/shard-rkl-3/igt@gem_partial_pwrite_pread@writes-after-reads.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3282">i915#3282</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-rkl-5/igt@gem_partial_pwrite_pread@writes-after-reads.html">PASS</a> +1 similar issue</li>
-</ul>
-</li>
-<li>
-<p>igt@gen9_exec_parse@allowed-single:</p>
-<ul>
-<li>shard-glk:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12761/shard-glk7/igt@gen9_exec_parse@allowed-single.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5566">i915#5566</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-glk3/igt@gen9_exec_parse@allowed-single.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@gen9_exec_parse@cmd-crossing-page:</p>
-<ul>
-<li>{shard-rkl}:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12761/shard-rkl-4/igt@gen9_exec_parse@cmd-crossing-page.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2527">i915#2527</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-rkl-5/igt@gen9_exec_parse@cmd-crossing-page.html">PASS</a> +1 similar issue</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_hangman@engine-engine-error@bcs0:</p>
-<ul>
-<li>{shard-rkl}:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12761/shard-rkl-5/igt@i915_hangman@engine-engine-error@bcs0.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6258">i915#6258</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-rkl-6/igt@i915_hangman@engine-engine-error@bcs0.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@i915_pm_rpm@dpms-lpsp:</p>
-<ul>
-<li>{shard-rkl}:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12761/shard-rkl-5/igt@i915_pm_rpm@dpms-lpsp.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1397">i915#1397</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-rkl-6/igt@i915_pm_rpm@dpms-lpsp.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@i915_pm_rpm@system-suspend-modeset:</p>
-<ul>
-<li>{shard-rkl}:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12761/shard-rkl-5/igt@i915_pm_rpm@system-suspend-modeset.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109308">fdo#109308</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-rkl-6/igt@i915_pm_rpm@system-suspend-modeset.html">PASS</a> +1 similar issue</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_pm_rps@engine-order:</p>
-<ul>
-<li>shard-apl:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12761/shard-apl4/igt@i915_pm_rps@engine-order.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6537">i915#6537</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-apl6/igt@i915_pm_rps@engine-order.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@kms_big_fb@y-tiled-max-hw-stride-32bpp-rotate-0-hflip-async-flip:</p>
-<ul>
-<li>{shard-rkl}:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12761/shard-rkl-1/igt@kms_big_fb@y-tiled-max-hw-stride-32bpp-rotate-0-hflip-async-flip.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1845">i915#1845</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4098">i915#4098</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-rkl-6/igt@kms_big_fb@y-tiled-max-hw-stride-32bpp-rotate-0-hflip-async-flip.html">PASS</a> +29 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_cursor_legacy@flip-vs-cursor@atomic-transitions-varying-size:</p>
-<ul>
-<li>shard-glk:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12761/shard-glk9/igt@kms_cursor_legacy@flip-vs-cursor@atomic-transitions-varying-size.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2346">i915#2346</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-glk7/igt@kms_cursor_legacy@flip-vs-cursor@atomic-transitions-varying-size.html">PASS</a> +1 similar issue</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_fbcon_fbt@psr:</p>
-<ul>
-<li>{shard-rkl}:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12761/shard-rkl-5/igt@kms_fbcon_fbt@psr.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=110189">fdo#110189</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3955">i915#3955</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-rkl-6/igt@kms_fbcon_fbt@psr.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@kms_frontbuffer_tracking@psr-1p-primscrn-indfb-plflip-blt:</p>
-<ul>
-<li>{shard-rkl}:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12761/shard-rkl-3/igt@kms_frontbuffer_tracking@psr-1p-primscrn-indfb-plflip-blt.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1849">i915#1849</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4098">i915#4098</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-rkl-6/igt@kms_frontbuffer_tracking@psr-1p-primscrn-indfb-plflip-blt.html">PASS</a> +12 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_plane@pixel-format@pipe-b-planes:</p>
-<ul>
-<li>{shard-rkl}:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12761/shard-rkl-4/igt@kms_plane@pixel-format@pipe-b-planes.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1849">i915#1849</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-rkl-6/igt@kms_plane@pixel-format@pipe-b-planes.html">PASS</a> +4 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr@cursor_mmap_gtt:</p>
-<ul>
-<li>{shard-rkl}:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12761/shard-rkl-1/igt@kms_psr@cursor_mmap_gtt.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1072">i915#1072</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-rkl-6/igt@kms_psr@cursor_mmap_gtt.html">PASS</a> +4 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr_stress_test@flip-primary-invalidate-overlay:</p>
-<ul>
-<li>{shard-rkl}:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12761/shard-rkl-3/igt@kms_psr_stress_test@flip-primary-invalidate-overlay.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5461">i915#5461</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-rkl-6/igt@kms_psr_stress_test@flip-primary-invalidate-overlay.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@kms_universal_plane@universal-plane-pageflip-windowed-pipe-a:</p>
-<ul>
-<li>{shard-rkl}:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12761/shard-rkl-1/igt@kms_universal_plane@universal-plane-pageflip-windowed-pipe-a.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4070">i915#4070</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4098">i915#4098</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-rkl-6/igt@kms_universal_plane@universal-plane-pageflip-windowed-pipe-a.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@kms_universal_plane@universal-plane-pageflip-windowed-pipe-b:</p>
-<ul>
-<li>{shard-rkl}:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12761/shard-rkl-5/igt@kms_universal_plane@universal-plane-pageflip-windowed-pipe-b.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4098">i915#4098</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-rkl-6/igt@kms_universal_plane@universal-plane-pageflip-windowed-pipe-b.html">PASS</a> +1 similar issue</li>
-</ul>
-</li>
-<li>
-<p>igt@perf@stress-open-close:</p>
-<ul>
-<li>shard-glk:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12761/shard-glk3/igt@perf@stress-open-close.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5213">i915#5213</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-glk9/igt@perf@stress-open-close.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@sysfs_timeslice_duration@timeout@vecs0:</p>
-<ul>
-<li>{shard-dg1}:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12761/shard-dg1-12/igt@sysfs_timeslice_duration@timeout@vecs0.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1755">i915#1755</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/shard-dg1-16/igt@sysfs_timeslice_duration@timeout@vecs0.html">PASS</a> +2 similar issues</li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_7165 -&gt; IGTPW_8510</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_12761: c397c9581e74c066e737721bf308527bc4cb0da3 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_8510: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8510/index.html<br />
-  IGT_7165: 509e7e63c6377d0fe77d1bd209857fb191f4a84c @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-
-</body>
-</html>
-
---===============4243496135083658285==--
+On Wed, Feb 22, 2023 at 05:35:37PM +0100, Kamil Konieczny wrote:
+> Hi Zbigniew,
+> 
+> I have few nits, see below. I did not review all code so
+> please expect more review in future.
+
+No problem at all. As you know whole series we may start from reviewing
+and merging patches one by one after successful review. It will make
+my work easier instead of resending whole series again. Of course if
+you don't mind about this strategy.
+
+I'm going to send library code in single patch tomorrow in which I will
+address changes to your review.
+
+Thanks a lot for the review.
+--
+Zbigniew
+
+> 
+> On 2023-02-21 at 12:46:15 +0100, Zbigniew Kempczyński wrote:
+> > Xe, is a new driver for Intel GPUs that supports both integrated
+> > and discrete platforms starting with Tiger Lake (first Intel Xe
+> > Architecture).
+> > 
+> > Series was split to allow easier review. Library, drm uapi, tests,
+> > tools and other were squashed according to code subject.
+> > 
+> > This patch introduces library used for Xe tests. As there's not
+> > too trivial to calculate credits for squashed subjects full series
+> > credits are:
+> > 
+> > Co-developed-by: Matthew Brost
+> > [commits: 90 / lines changed: 12574]
+> > Co-developed-by: Mauro Carvalho Chehab
+> > [commits: 28 / lines changed: 1873]
+> > Co-developed-by: Rodrigo Vivi
+> > [commits: 15 / lines changed: 1317]
+> > Co-developed-by: Jason Ekstrand
+> > [commits: 14 / lines changed: 1418]
+> > Co-developed-by: Francois Dugast
+> > [commits: 8 / lines changed: 1082]
+> > Co-developed-by: Philippe Lecluse
+> > [commits: 6 / lines changed: 560]
+> > Co-developed-by: Zbigniew Kempczyński
+> > [commits: 4 / lines changed: 1091]
+> > Co-developed-by: Matthew Auld
+> > [commits: 3 / lines changed: 35]
+> > Co-developed-by: Niranjana Vishwanathapura
+> > [commits: 2 / lines changed: 66]
+> > Co-developed-by: Maarten Lankhorst
+> > [commits: 2 / lines changed: 774]
+> > Co-developed-by: Ryszard Knop
+> > [commits: 1 / lines changed: 12]
+> > Co-developed-by: Thomas Hellström
+> > [commits: 1 / lines changed: 12]
+> > Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+> > ---
+> >  lib/drmtest.c       |   3 +
+> >  lib/drmtest.h       |   1 +
+> >  lib/igt_map.c       |  32 ++++
+> >  lib/igt_map.h       |   3 +
+> 
+> May you split igt_map changes from this series and send
+> separatly ? imho it can be merged as is or at least merged as
+> separate enhancement.
+> 
+> >  lib/igt_pm.c        |  12 ++
+> >  lib/igt_pm.h        |   1 +
+> 
+> Same here, these also can be merged as is.
+> 
+> >  lib/meson.build     |   4 +
+> >  lib/xe/xe_compute.c | 327 ++++++++++++++++++++++++++++++++
+> >  lib/xe/xe_compute.h |  93 ++++++++++
+> >  lib/xe/xe_ioctl.c   | 441 ++++++++++++++++++++++++++++++++++++++++++++
+> >  lib/xe/xe_ioctl.h   | 107 +++++++++++
+> >  lib/xe/xe_query.c   | 377 +++++++++++++++++++++++++++++++++++++
+> >  lib/xe/xe_query.h   |  82 ++++++++
+> >  lib/xe/xe_spin.c    | 157 ++++++++++++++++
+> >  lib/xe/xe_spin.h    |  66 +++++++
+> >  meson.build         |   8 +
+> >  16 files changed, 1714 insertions(+)
+> >  create mode 100644 lib/xe/xe_compute.c
+> >  create mode 100644 lib/xe/xe_compute.h
+> >  create mode 100644 lib/xe/xe_ioctl.c
+> >  create mode 100644 lib/xe/xe_ioctl.h
+> >  create mode 100644 lib/xe/xe_query.c
+> >  create mode 100644 lib/xe/xe_query.h
+> >  create mode 100644 lib/xe/xe_spin.c
+> >  create mode 100644 lib/xe/xe_spin.h
+> > 
+> > diff --git a/lib/drmtest.c b/lib/drmtest.c
+> > index 16e80bdf..859f66ff 100644
+> > --- a/lib/drmtest.c
+> > +++ b/lib/drmtest.c
+> > @@ -189,6 +189,7 @@ static const struct module {
+> >  	{ DRIVER_V3D, "v3d" },
+> >  	{ DRIVER_VC4, "vc4" },
+> >  	{ DRIVER_VGEM, "vgem" },
+> > +	{ DRIVER_XE, "xe" },
+> >  	{}
+> >  };
+> >  
+> > @@ -547,6 +548,8 @@ static const char *chipset_to_str(int chipset)
+> >  		return "panfrost";
+> >  	case DRIVER_MSM:
+> >  		return "msm";
+> > +	case DRIVER_XE:
+> > +		return "xe";
+> >  	case DRIVER_ANY:
+> >  		return "any";
+> >  	default:
+> > diff --git a/lib/drmtest.h b/lib/drmtest.h
+> > index b5debd44..448ac03b 100644
+> > --- a/lib/drmtest.h
+> > +++ b/lib/drmtest.h
+> > @@ -51,6 +51,7 @@
+> >  #define DRIVER_V3D	(1 << 4)
+> >  #define DRIVER_PANFROST	(1 << 5)
+> >  #define DRIVER_MSM	(1 << 6)
+> > +#define DRIVER_XE	(1 << 7)
+> >  
+> >  /*
+> >   * Exclude DRVER_VGEM from DRIVER_ANY since if you run on a system
+> > diff --git a/lib/igt_map.c b/lib/igt_map.c
+> > index da8713a1..8f5ed896 100644
+> > --- a/lib/igt_map.c
+> > +++ b/lib/igt_map.c
+> > @@ -500,3 +500,35 @@ igt_map_random_entry(struct igt_map *map,
+> >  
+> >  	return NULL;
+> >  }
+> > +
+> > +#define GOLDEN_RATIO_PRIME_32 0x9e370001UL
+> > +/**
+> > + * igt_map_hash_32:
+> > + * @key: 32-bit key casted to pointer
+> > + *
+> > + * Function is hashing function for 32-bit keys.
+> > + */
+> > +uint32_t igt_map_hash_32(const void *key)
+> > +{
+> > +	uint32_t hash = (unsigned long)key;
+> > +
+> > +	hash = hash * GOLDEN_RATIO_PRIME_32;
+> > +	return hash;
+> > +}
+> > +
+> > +/**
+> > + * igt_map_equal_32:
+> > + * @key1: first 32-bit key casted to pointer
+> > + * @key2: second 32-bit key casted to pointer
+> > + *
+> > + * Function compares 32-bit keys.
+> > + */
+> > +int igt_map_equal_32(const void *key1, const void *key2)
+> > +{
+> > +	int v1, v2;
+> > +
+> > +	v1 = (unsigned long)key1;
+> > +	v2 = (unsigned long)key2;
+> > +
+> > +	return v1 == v2;
+> > +}
+> > diff --git a/lib/igt_map.h b/lib/igt_map.h
+> > index cadcd6e3..1b651d3a 100644
+> > --- a/lib/igt_map.h
+> > +++ b/lib/igt_map.h
+> > @@ -171,4 +171,7 @@ igt_map_insert_pre_hashed(struct igt_map *map,
+> >  			     uint32_t hash,
+> >  			     const void *key, void *data);
+> >  
+> > +uint32_t igt_map_hash_32(const void *key);
+> > +int igt_map_equal_32(const void *key1, const void *key2);
+> > +
+> >  #endif
+> > diff --git a/lib/igt_pm.c b/lib/igt_pm.c
+> > index 26e8c9f0..0ffd64d7 100644
+> > --- a/lib/igt_pm.c
+> > +++ b/lib/igt_pm.c
+> > @@ -1355,3 +1355,15 @@ int igt_pm_get_runtime_suspended_time(struct pci_device *pci_dev)
+> >  
+> >  	return -1;
+> >  }
+> > +
+> > +int igt_pm_get_runtime_usage(struct pci_device *pci_dev)
+> > +{
+> > +	char usage_str[64];
+> > +	int usage, fd;
+> > +
+> > +	fd = igt_pm_get_power_attr_fd_rdonly(pci_dev, "runtime_usage");
+> > +	if (igt_pm_read_power_attr(fd, usage_str, 64, true))
+> > +		igt_assert(sscanf(usage_str, "%d", &usage) > 0);
+> > +
+> > +	return usage;
+> > +}
+> > diff --git a/lib/igt_pm.h b/lib/igt_pm.h
+> > index f65b960c..d0d6d673 100644
+> > --- a/lib/igt_pm.h
+> > +++ b/lib/igt_pm.h
+> > @@ -86,5 +86,6 @@ void igt_pm_restore_pci_card_runtime_pm(void);
+> >  void igt_pm_print_pci_card_runtime_status(void);
+> >  bool i915_is_slpc_enabled(int fd);
+> >  int igt_pm_get_runtime_suspended_time(struct pci_device *pci_dev);
+> > +int igt_pm_get_runtime_usage(struct pci_device *pci_dev);
+> >  
+> >  #endif /* IGT_PM_H */
+> > diff --git a/lib/meson.build b/lib/meson.build
+> > index c5131d9a..768ce90b 100644
+> > --- a/lib/meson.build
+> > +++ b/lib/meson.build
+> > @@ -98,6 +98,10 @@ lib_sources = [
+> >  	'veboxcopy_gen12.c',
+> >  	'igt_msm.c',
+> >  	'igt_dsc.c',
+> > +	'xe/xe_compute.c',
+> > +	'xe/xe_ioctl.c',
+> > +	'xe/xe_query.c',
+> > +	'xe/xe_spin.c'
+> >  ]
+> >  
+> >  lib_deps = [
+> > diff --git a/lib/xe/xe_compute.c b/lib/xe/xe_compute.c
+> > new file mode 100644
+> > index 00000000..d9d9e4a4
+> > --- /dev/null
+> > +++ b/lib/xe/xe_compute.c
+> > @@ -0,0 +1,327 @@
+> > +/*
+> 
+> Put SPDX with MIT licence here.
+> 
+> > + * Copyright © 2022 Intel Corporation
+> ----------------- ^
+> Maybe 2023 ?
+> 
+> > + *
+> 
+> Delete long licence text below, SPDX replaces it.
+> 
+> > + * Permission is hereby granted, free of charge, to any person obtaining a
+> > + * copy of this software and associated documentation files (the "Software"),
+> > + * to deal in the Software without restriction, including without limitation
+> > + * the rights to use, copy, modify, merge, publish, distribute, sublicense,
+> > + * and/or sell copies of the Software, and to permit persons to whom the
+> > + * Software is furnished to do so, subject to the following conditions:
+> > + *
+> > + * The above copyright notice and this permission notice (including the next
+> > + * paragraph) shall be included in all copies or substantial portions of the
+> > + * Software.
+> > + *
+> > + * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+> > + * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+> > + * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.	IN NO EVENT SHALL
+> > + * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+> > + * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+> > + * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
+> > + * IN THE SOFTWARE.
+> > + *
+> > + * Authors:
+> > + *		Francois Dugast <francois.dugast@intel.com>
+> > + */
+> > +
+> > +#include <stdint.h>
+> > +
+> > +#include "xe_compute.h"
+> > +
+> > +#define PIPE_CONTROL			0x7a000004
+> > +#define MI_LOAD_REGISTER_IMM		0x11000001
+> > +#define PIPELINE_SELECT			0x69040302
+> > +#define MEDIA_VFE_STATE			0x70000007
+> > +#define STATE_BASE_ADDRESS		0x61010014
+> > +#define MEDIA_STATE_FLUSH		0x0
+> > +#define MEDIA_INTERFACE_DESCRIPTOR_LOAD	0x70020002
+> > +#define GPGPU_WALKER			0x7105000d
+> > +#define MI_BATCH_BUFFER_END		(0xA << 23)
+> > +
+> > +void tgllp_create_indirect_data(uint32_t *addr_bo_buffer_batch, uint64_t addr_input, uint64_t addr_output) {
+> > +        int b = 0;
+> > +	addr_bo_buffer_batch[b++] = 0x00000000;
+> > +	addr_bo_buffer_batch[b++] = 0x00000000;
+> > +	addr_bo_buffer_batch[b++] = 0x00000000;
+> > +	addr_bo_buffer_batch[b++] = 0x00000200;
+> > +	addr_bo_buffer_batch[b++] = 0x00000001;
+> > +	addr_bo_buffer_batch[b++] = 0x00000001;
+> > +	addr_bo_buffer_batch[b++] = 0x00000000;
+> > +	addr_bo_buffer_batch[b++] = 0x00000000;
+> > +	addr_bo_buffer_batch[b++] = addr_input & 0xffffffff;
+> > +	addr_bo_buffer_batch[b++] = addr_input >> 32;
+> > +	addr_bo_buffer_batch[b++] = addr_output & 0xffffffff;
+> > +	addr_bo_buffer_batch[b++] = addr_output >> 32;
+> > +	addr_bo_buffer_batch[b++] = 0x00000400;
+> > +	addr_bo_buffer_batch[b++] = 0x00000000;
+> > +	addr_bo_buffer_batch[b++] = 0x00000000;
+> > +	addr_bo_buffer_batch[b++] = 0x00000000;
+> > +	addr_bo_buffer_batch[b++] = 0x00000200;
+> > +	addr_bo_buffer_batch[b++] = 0x00000001;
+> > +	addr_bo_buffer_batch[b++] = 0x00000001;
+> > +	addr_bo_buffer_batch[b++] = 0x00000000;
+> > +	addr_bo_buffer_batch[b++] = 0x00000000;
+> > +	addr_bo_buffer_batch[b++] = 0x00000000;
+> > +	addr_bo_buffer_batch[b++] = 0x00000000;
+> > +	addr_bo_buffer_batch[b++] = 0x00000000;
+> > +	addr_bo_buffer_batch[b++] = 0x00010000;
+> > +	addr_bo_buffer_batch[b++] = 0x00030002;
+> > +	addr_bo_buffer_batch[b++] = 0x00050004;
+> > +	addr_bo_buffer_batch[b++] = 0x00070006;
+> > +	addr_bo_buffer_batch[b++] = 0x00090008;
+> > +	addr_bo_buffer_batch[b++] = 0x000B000A;
+> > +	addr_bo_buffer_batch[b++] = 0x000D000C;
+> > +	addr_bo_buffer_batch[b++] = 0x000F000E;
+> > +	addr_bo_buffer_batch[b++] = 0x00110010;
+> > +	addr_bo_buffer_batch[b++] = 0x00130012;
+> > +	addr_bo_buffer_batch[b++] = 0x00150014;
+> > +	addr_bo_buffer_batch[b++] = 0x00170016;
+> > +	addr_bo_buffer_batch[b++] = 0x00190018;
+> > +	addr_bo_buffer_batch[b++] = 0x001B001A;
+> > +	addr_bo_buffer_batch[b++] = 0x001D001C;
+> > +	addr_bo_buffer_batch[b++] = 0x001F001E;
+> > +	addr_bo_buffer_batch[b++] = 0x00000000;
+> > +	addr_bo_buffer_batch[b++] = 0x00000000;
+> > +	addr_bo_buffer_batch[b++] = 0x00000000;
+> > +	addr_bo_buffer_batch[b++] = 0x00000000;
+> > +	addr_bo_buffer_batch[b++] = 0x00000000;
+> > +	addr_bo_buffer_batch[b++] = 0x00000000;
+> > +	addr_bo_buffer_batch[b++] = 0x00000000;
+> > +	addr_bo_buffer_batch[b++] = 0x00000000;
+> > +	addr_bo_buffer_batch[b++] = 0x00000000;
+> > +	addr_bo_buffer_batch[b++] = 0x00000000;
+> > +	addr_bo_buffer_batch[b++] = 0x00000000;
+> > +	addr_bo_buffer_batch[b++] = 0x00000000;
+> > +	addr_bo_buffer_batch[b++] = 0x00000000;
+> > +	addr_bo_buffer_batch[b++] = 0x00000000;
+> > +	addr_bo_buffer_batch[b++] = 0x00000000;
+> > +	addr_bo_buffer_batch[b++] = 0x00000000;
+> > +	addr_bo_buffer_batch[b++] = 0x00000000;
+> > +	addr_bo_buffer_batch[b++] = 0x00000000;
+> > +	addr_bo_buffer_batch[b++] = 0x00000000;
+> > +	addr_bo_buffer_batch[b++] = 0x00000000;
+> > +	addr_bo_buffer_batch[b++] = 0x00000000;
+> > +	addr_bo_buffer_batch[b++] = 0x00000000;
+> > +	addr_bo_buffer_batch[b++] = 0x00000000;
+> > +	addr_bo_buffer_batch[b++] = 0x00000000;
+> > +	addr_bo_buffer_batch[b++] = 0x00000000;
+> > +	addr_bo_buffer_batch[b++] = 0x00000000;
+> > +	addr_bo_buffer_batch[b++] = 0x00000000;
+> > +	addr_bo_buffer_batch[b++] = 0x00000000;
+> > +	addr_bo_buffer_batch[b++] = 0x00000000;
+> > +	addr_bo_buffer_batch[b++] = 0x00000000;
+> > +	addr_bo_buffer_batch[b++] = 0x00000000;
+> > +	addr_bo_buffer_batch[b++] = 0x00000000;
+> > +	addr_bo_buffer_batch[b++] = 0x00210020;
+> > +	addr_bo_buffer_batch[b++] = 0x00230022;
+> > +	addr_bo_buffer_batch[b++] = 0x00250024;
+> > +	addr_bo_buffer_batch[b++] = 0x00270026;
+> > +	addr_bo_buffer_batch[b++] = 0x00290028;
+> > +	addr_bo_buffer_batch[b++] = 0x002B002A;
+> > +	addr_bo_buffer_batch[b++] = 0x002D002C;
+> > +	addr_bo_buffer_batch[b++] = 0x002F002E;
+> > +	addr_bo_buffer_batch[b++] = 0x00310030;
+> > +	addr_bo_buffer_batch[b++] = 0x00330032;
+> > +	addr_bo_buffer_batch[b++] = 0x00350034;
+> > +	addr_bo_buffer_batch[b++] = 0x00370036;
+> > +	addr_bo_buffer_batch[b++] = 0x00390038;
+> > +	addr_bo_buffer_batch[b++] = 0x003B003A;
+> > +	addr_bo_buffer_batch[b++] = 0x003D003C;
+> > +	addr_bo_buffer_batch[b++] = 0x003F003E;
+> > +}
+> > +
+> > +void tgllp_create_surface_state(uint32_t *addr_bo_buffer_batch, uint64_t addr_input, uint64_t addr_output) {
+> > +        int b = 0;
+> > +	addr_bo_buffer_batch[b++] = 0x00000000;
+> > +	addr_bo_buffer_batch[b++] = 0x00000000;
+> > +	addr_bo_buffer_batch[b++] = 0x00000000;
+> > +	addr_bo_buffer_batch[b++] = 0x00000000;
+> > +	addr_bo_buffer_batch[b++] = 0x00000000;
+> > +	addr_bo_buffer_batch[b++] = 0x00000000;
+> > +	addr_bo_buffer_batch[b++] = 0x00000000;
+> > +	addr_bo_buffer_batch[b++] = 0x00000000;
+> > +	addr_bo_buffer_batch[b++] = 0x00000000;
+> > +	addr_bo_buffer_batch[b++] = 0x00000000;
+> > +	addr_bo_buffer_batch[b++] = 0x00000000;
+> > +	addr_bo_buffer_batch[b++] = 0x00000000;
+> > +	addr_bo_buffer_batch[b++] = 0x00000000;
+> > +	addr_bo_buffer_batch[b++] = 0x00000000;
+> > +	addr_bo_buffer_batch[b++] = 0x00000000;
+> > +	addr_bo_buffer_batch[b++] = 0x00000000;
+> > +	addr_bo_buffer_batch[b++] = 0x87FD4000;
+> > +	addr_bo_buffer_batch[b++] = 0x04000000;
+> > +	addr_bo_buffer_batch[b++] = 0x001F007F;
+> > +	addr_bo_buffer_batch[b++] = 0x00000000;
+> > +	addr_bo_buffer_batch[b++] = 0x00000000;
+> > +	addr_bo_buffer_batch[b++] = 0x00004000;
+> > +	addr_bo_buffer_batch[b++] = 0x00000000;
+> > +	addr_bo_buffer_batch[b++] = 0x00000000;
+> > +	addr_bo_buffer_batch[b++] = addr_input & 0xffffffff;
+> > +	addr_bo_buffer_batch[b++] = addr_input >> 32;
+> > +	addr_bo_buffer_batch[b++] = 0x00000000;
+> > +	addr_bo_buffer_batch[b++] = 0x00000000;
+> > +	addr_bo_buffer_batch[b++] = 0x00000000;
+> > +	addr_bo_buffer_batch[b++] = 0x00000000;
+> > +	addr_bo_buffer_batch[b++] = 0x00000000;
+> > +	addr_bo_buffer_batch[b++] = 0x00000000;
+> > +	addr_bo_buffer_batch[b++] = 0x87FD4000;
+> > +	addr_bo_buffer_batch[b++] = 0x04000000;
+> > +	addr_bo_buffer_batch[b++] = 0x001F007F;
+> > +	addr_bo_buffer_batch[b++] = 0x00000000;
+> > +	addr_bo_buffer_batch[b++] = 0x00000000;
+> > +	addr_bo_buffer_batch[b++] = 0x00004000;
+> > +	addr_bo_buffer_batch[b++] = 0x00000000;
+> > +	addr_bo_buffer_batch[b++] = 0x00000000;
+> > +	addr_bo_buffer_batch[b++] = addr_output & 0xffffffff;
+> > +	addr_bo_buffer_batch[b++] = addr_output >> 32;
+> > +	addr_bo_buffer_batch[b++] = 0x00000000;
+> > +	addr_bo_buffer_batch[b++] = 0x00000000;
+> > +	addr_bo_buffer_batch[b++] = 0x00000000;
+> > +	addr_bo_buffer_batch[b++] = 0x00000000;
+> > +	addr_bo_buffer_batch[b++] = 0x00000000;
+> > +	addr_bo_buffer_batch[b++] = 0x00000000;
+> > +	addr_bo_buffer_batch[b++] = 0x00000040;
+> > +	addr_bo_buffer_batch[b++] = 0x00000080;
+> > +	addr_bo_buffer_batch[b++] = 0x00000000;
+> > +	addr_bo_buffer_batch[b++] = 0x00000000;
+> > +	addr_bo_buffer_batch[b++] = 0x00000000;
+> > +	addr_bo_buffer_batch[b++] = 0x00000000;
+> > +	addr_bo_buffer_batch[b++] = 0x00000000;
+> > +	addr_bo_buffer_batch[b++] = 0x00000000;
+> > +	addr_bo_buffer_batch[b++] = 0x00000000;
+> > +	addr_bo_buffer_batch[b++] = 0x00000000;
+> > +	addr_bo_buffer_batch[b++] = 0x00000000;
+> > +	addr_bo_buffer_batch[b++] = 0x00000000;
+> > +	addr_bo_buffer_batch[b++] = 0x00000000;
+> > +	addr_bo_buffer_batch[b++] = 0x00000000;
+> > +	addr_bo_buffer_batch[b++] = 0x00000000;
+> > +	addr_bo_buffer_batch[b++] = 0x00000000;
+> > +}
+> > +
+> > +void tgllp_create_dynamic_state(uint32_t *addr_bo_buffer_batch, uint64_t offset_kernel) {
+> > +        int b = 0;
+> > +	addr_bo_buffer_batch[b++] = offset_kernel;
+> > +	addr_bo_buffer_batch[b++] = 0x00000000;
+> > +	addr_bo_buffer_batch[b++] = 0x00180000;
+> > +	addr_bo_buffer_batch[b++] = 0x00000000;
+> > +	addr_bo_buffer_batch[b++] = 0x000000C0;
+> > +	addr_bo_buffer_batch[b++] = 0x00060000;
+> > +	addr_bo_buffer_batch[b++] = 0x00000010;
+> > +	addr_bo_buffer_batch[b++] = 0x00000003;
+> > +	addr_bo_buffer_batch[b++] = 0x00000000;
+> > +	addr_bo_buffer_batch[b++] = 0x00000000;
+> > +	addr_bo_buffer_batch[b++] = 0x00000000;
+> > +}
+> > +
+> > +void tgllp_create_batch_compute(uint32_t *addr_bo_buffer_batch,
+> > +	uint64_t addr_surface_state_base, uint64_t addr_dynamic_state_base,
+> > +	uint64_t addr_indirect_object_base, uint64_t offset_indirect_data_start) {
+> > +        int b = 0;
+> > +	addr_bo_buffer_batch[b++] = MI_LOAD_REGISTER_IMM;
+> > +	addr_bo_buffer_batch[b++] = 0x00002580;
+> > +	addr_bo_buffer_batch[b++] = 0x00060002;
+> > +	addr_bo_buffer_batch[b++] = PIPELINE_SELECT;
+> > +	addr_bo_buffer_batch[b++] = MI_LOAD_REGISTER_IMM;
+> > +	addr_bo_buffer_batch[b++] = 0x00007034;
+> > +	addr_bo_buffer_batch[b++] = 0x60000321;
+> > +	addr_bo_buffer_batch[b++] = PIPE_CONTROL;
+> > +	addr_bo_buffer_batch[b++] = 0x00100000;
+> > +	addr_bo_buffer_batch[b++] = 0x00000000;
+> > +	addr_bo_buffer_batch[b++] = 0x00000000;
+> > +	addr_bo_buffer_batch[b++] = 0x00000000;
+> > +	addr_bo_buffer_batch[b++] = 0x00000000;
+> > +	addr_bo_buffer_batch[b++] = MI_LOAD_REGISTER_IMM;
+> > +	addr_bo_buffer_batch[b++] = 0x0000E404;
+> > +	addr_bo_buffer_batch[b++] = 0x00000100;
+> > +	addr_bo_buffer_batch[b++] = PIPE_CONTROL;
+> > +	addr_bo_buffer_batch[b++] = 0x00101021;
+> > +	addr_bo_buffer_batch[b++] = 0x00000000;
+> > +	addr_bo_buffer_batch[b++] = 0x00000000;
+> > +	addr_bo_buffer_batch[b++] = 0x00000000;
+> > +	addr_bo_buffer_batch[b++] = 0x00000000;
+> > +	addr_bo_buffer_batch[b++] = MEDIA_VFE_STATE;
+> > +	addr_bo_buffer_batch[b++] = 0x00000000;
+> > +	addr_bo_buffer_batch[b++] = 0x00000000;
+> > +	addr_bo_buffer_batch[b++] = 0x00A70100;
+> > +	addr_bo_buffer_batch[b++] = 0x00000000;
+> > +	addr_bo_buffer_batch[b++] = 0x07820000;
+> > +	addr_bo_buffer_batch[b++] = 0x00000000;
+> > +	addr_bo_buffer_batch[b++] = 0x00000000;
+> > +	addr_bo_buffer_batch[b++] = 0x00000000;
+> > +	addr_bo_buffer_batch[b++] = PIPE_CONTROL;
+> > +	addr_bo_buffer_batch[b++] = 0x00100420;
+> > +	addr_bo_buffer_batch[b++] = 0x00000000;
+> > +	addr_bo_buffer_batch[b++] = 0x00000000;
+> > +	addr_bo_buffer_batch[b++] = 0x00000000;
+> > +	addr_bo_buffer_batch[b++] = 0x00000000;
+> > +	addr_bo_buffer_batch[b++] = STATE_BASE_ADDRESS;
+> > +	addr_bo_buffer_batch[b++] = 0x00000001;
+> > +	addr_bo_buffer_batch[b++] = 0x00000000;
+> > +	addr_bo_buffer_batch[b++] = 0x00040000;
+> > +	addr_bo_buffer_batch[b++] = (addr_surface_state_base & 0xffffffff) | 0x1;
+> > +	addr_bo_buffer_batch[b++] = addr_surface_state_base >> 32;
+> > +	addr_bo_buffer_batch[b++] = (addr_dynamic_state_base & 0xffffffff) | 0x1;
+> > +	addr_bo_buffer_batch[b++] = addr_dynamic_state_base >> 32;
+> > +	addr_bo_buffer_batch[b++] = (addr_indirect_object_base & 0xffffffff) | 0x1;
+> > +	addr_bo_buffer_batch[b++] = (addr_indirect_object_base >> 32) | 0xffff0000;
+> > +	addr_bo_buffer_batch[b++] = (addr_indirect_object_base & 0xffffffff) | 0x41;
+> > +	addr_bo_buffer_batch[b++] = addr_indirect_object_base >> 32;
+> > +	addr_bo_buffer_batch[b++] = 0xFFFFF001;
+> > +	addr_bo_buffer_batch[b++] = 0x00010001;
+> > +	addr_bo_buffer_batch[b++] = 0xFFFFF001;
+> > +	addr_bo_buffer_batch[b++] = 0xFFFFF001;
+> > +	addr_bo_buffer_batch[b++] = (addr_surface_state_base & 0xffffffff) | 0x1;
+> > +	addr_bo_buffer_batch[b++] = addr_surface_state_base >> 32;
+> > +	addr_bo_buffer_batch[b++] = 0x003BF000;
+> > +	addr_bo_buffer_batch[b++] = 0x00000041;
+> > +	addr_bo_buffer_batch[b++] = 0x00000000;
+> > +	addr_bo_buffer_batch[b++] = 0x00000000;
+> > +	addr_bo_buffer_batch[b++] = PIPE_CONTROL;
+> > +	addr_bo_buffer_batch[b++] = 0x00100000;
+> > +	addr_bo_buffer_batch[b++] = 0x00000000;
+> > +	addr_bo_buffer_batch[b++] = 0x00000000;
+> > +	addr_bo_buffer_batch[b++] = 0x00000000;
+> > +	addr_bo_buffer_batch[b++] = 0x00000000;
+> > +	addr_bo_buffer_batch[b++] = PIPE_CONTROL;
+> > +	addr_bo_buffer_batch[b++] = 0x00100000;
+> > +	addr_bo_buffer_batch[b++] = 0x00000000;
+> > +	addr_bo_buffer_batch[b++] = 0x00000000;
+> > +	addr_bo_buffer_batch[b++] = 0x00000000;
+> > +	addr_bo_buffer_batch[b++] = 0x00000000;
+> > +	addr_bo_buffer_batch[b++] = MEDIA_STATE_FLUSH;
+> > +	addr_bo_buffer_batch[b++] = 0x00000000;
+> > +	addr_bo_buffer_batch[b++] = MEDIA_INTERFACE_DESCRIPTOR_LOAD;
+> > +	addr_bo_buffer_batch[b++] = 0x00000000;
+> > +	addr_bo_buffer_batch[b++] = 0x00000020;
+> > +	addr_bo_buffer_batch[b++] = 0x00000000;
+> > +	addr_bo_buffer_batch[b++] = GPGPU_WALKER;
+> > +	addr_bo_buffer_batch[b++] = 0x00000000;
+> > +	addr_bo_buffer_batch[b++] = 0x00000c80;
+> > +	addr_bo_buffer_batch[b++] = offset_indirect_data_start;
+> > +	addr_bo_buffer_batch[b++] = 0x8000000f;
+> > +	addr_bo_buffer_batch[b++] = 0x00000000;
+> > +	addr_bo_buffer_batch[b++] = 0x00000000;
+> > +	addr_bo_buffer_batch[b++] = 0x00000002;
+> > +	addr_bo_buffer_batch[b++] = 0x00000000;
+> > +	addr_bo_buffer_batch[b++] = 0x00000000;
+> > +	addr_bo_buffer_batch[b++] = 0x00000001;
+> > +	addr_bo_buffer_batch[b++] = 0x00000000;
+> > +	addr_bo_buffer_batch[b++] = 0x00000001;
+> > +	addr_bo_buffer_batch[b++] = 0xffffffff;
+> > +	addr_bo_buffer_batch[b++] = 0xffffffff;
+> > +	addr_bo_buffer_batch[b++] = MEDIA_STATE_FLUSH;
+> > +	addr_bo_buffer_batch[b++] = 0x00000000;
+> > +	addr_bo_buffer_batch[b++] = PIPE_CONTROL;
+> > +	addr_bo_buffer_batch[b++] = 0x00100000;
+> > +	addr_bo_buffer_batch[b++] = 0x00000000;
+> > +	addr_bo_buffer_batch[b++] = 0x00000000;
+> > +	addr_bo_buffer_batch[b++] = 0x00000000;
+> > +	addr_bo_buffer_batch[b++] = 0x00000000;
+> > +	addr_bo_buffer_batch[b++] = PIPE_CONTROL;
+> > +	addr_bo_buffer_batch[b++] = 0x00100120;
+> > +	addr_bo_buffer_batch[b++] = 0x00000000;
+> > +	addr_bo_buffer_batch[b++] = 0x00000000;
+> > +	addr_bo_buffer_batch[b++] = 0x00000000;
+> > +	addr_bo_buffer_batch[b++] = 0x00000000;
+> > +	addr_bo_buffer_batch[b++] = MI_BATCH_BUFFER_END;
+> > +}
+> > diff --git a/lib/xe/xe_compute.h b/lib/xe/xe_compute.h
+> > new file mode 100644
+> > index 00000000..52b0aa51
+> > --- /dev/null
+> > +++ b/lib/xe/xe_compute.h
+> > @@ -0,0 +1,93 @@
+> > +/*
+> 
+> Same here, use SPDX with MIT.
+> 
+> > + * Copyright © 2022 Intel Corporation
+> > + *
+> > + * Permission is hereby granted, free of charge, to any person obtaining a
+> > + * copy of this software and associated documentation files (the "Software"),
+> > + * to deal in the Software without restriction, including without limitation
+> > + * the rights to use, copy, modify, merge, publish, distribute, sublicense,
+> > + * and/or sell copies of the Software, and to permit persons to whom the
+> > + * Software is furnished to do so, subject to the following conditions:
+> > + *
+> > + * The above copyright notice and this permission notice (including the next
+> > + * paragraph) shall be included in all copies or substantial portions of the
+> > + * Software.
+> > + *
+> > + * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+> > + * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+> > + * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.	IN NO EVENT SHALL
+> > + * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+> > + * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+> > + * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
+> > + * IN THE SOFTWARE.
+> > + *
+> > + * Authors:
+> > + *		Francois Dugast <francois.dugast@intel.com>
+> > + */
+> > +
+> > +#ifndef XE_COMPUTE_H
+> > +#define XE_COMPUTE_H
+> > +
+> > +void tgllp_create_indirect_data(uint32_t *addr_bo_buffer_batch, uint64_t addr_input, uint64_t addr_output);
+> > +void tgllp_create_surface_state(uint32_t *addr_bo_buffer_batch, uint64_t addr_input, uint64_t addr_output);
+> > +void tgllp_create_dynamic_state(uint32_t *addr_bo_buffer_batch, uint64_t offset_kernel);
+> > +void tgllp_create_batch_compute(
+> > +	uint32_t *addr_bo_buffer_batch,
+> 
+> May you put it in the same line as function definition
+> and split other ?
+> 
+> > +	uint64_t addr_surface_state_base,
+> > +	uint64_t addr_dynamic_state_base,
+> > +	uint64_t addr_indirect_object_base,
+> > +	uint64_t offset_indirect_data_start);
+> > +
+> > +// generated with: ocloc -file kernel.cl -device tgllp && xxd -i kernel_Gen12LPlp.gen
+> > +unsigned char tgllp_kernel_square_bin[] = {
+> 
+> These should be placed in .c file.
+> 
+> > +	0x61, 0x00, 0x03, 0x80, 0x20, 0x02, 0x05, 0x03, 0x04, 0x00, 0x10, 0x00,
+> > +	0x00, 0x00, 0x00, 0x00, 0x66, 0x01, 0x00, 0x80, 0x20, 0x82, 0x01, 0x80,
+> > +	0x00, 0x80, 0x00, 0x01, 0xc0, 0x04, 0xc0, 0x04, 0x41, 0x01, 0x20, 0x22,
+> > +	0x16, 0x09, 0x11, 0x03, 0x49, 0x00, 0x04, 0xa2, 0x12, 0x09, 0x11, 0x03,
+> > +	0x40, 0x01, 0x04, 0x00, 0x60, 0x06, 0x05, 0x05, 0x04, 0x04, 0x00, 0x01,
+> > +	0x05, 0x01, 0x58, 0x00, 0x40, 0x00, 0x24, 0x00, 0x60, 0x06, 0x05, 0x0a,
+> > +	0x04, 0x04, 0x00, 0x01, 0x05, 0x02, 0x58, 0x00, 0x40, 0x02, 0x0c, 0xa0,
+> > +	0x02, 0x05, 0x10, 0x07, 0x40, 0x02, 0x0e, 0xa6, 0x02, 0x0a, 0x10, 0x07,
+> > +	0x70, 0x02, 0x04, 0x00, 0x60, 0x02, 0x01, 0x00, 0x05, 0x0c, 0x46, 0x52,
+> > +	0x84, 0x08, 0x00, 0x00, 0x70, 0x02, 0x24, 0x00, 0x60, 0x02, 0x01, 0x00,
+> > +	0x05, 0x0e, 0x46, 0x52, 0x84, 0x08, 0x00, 0x00, 0x72, 0x00, 0x02, 0x80,
+> > +	0x50, 0x0d, 0x04, 0x00, 0x05, 0x00, 0x05, 0x1d, 0x05, 0x00, 0x05, 0x00,
+> > +	0x22, 0x00, 0x05, 0x01, 0x00, 0xc0, 0x00, 0x00, 0x90, 0x00, 0x00, 0x00,
+> > +	0x90, 0x00, 0x00, 0x00, 0x69, 0x00, 0x10, 0x60, 0x02, 0x0c, 0x20, 0x00,
+> > +	0x69, 0x00, 0x12, 0x66, 0x02, 0x0e, 0x20, 0x00, 0x40, 0x02, 0x14, 0xa0,
+> > +	0x32, 0x10, 0x10, 0x08, 0x40, 0x02, 0x16, 0xa6, 0x32, 0x12, 0x10, 0x08,
+> > +	0x31, 0xa0, 0x04, 0x00, 0x00, 0x00, 0x14, 0x18, 0x14, 0x14, 0x00, 0xcc,
+> > +	0x00, 0x00, 0x16, 0x00, 0x31, 0x91, 0x24, 0x00, 0x00, 0x00, 0x14, 0x1a,
+> > +	0x14, 0x16, 0x00, 0xcc, 0x00, 0x00, 0x16, 0x00, 0x40, 0x00, 0x10, 0xa0,
+> > +	0x4a, 0x10, 0x10, 0x08, 0x40, 0x00, 0x12, 0xa6, 0x4a, 0x12, 0x10, 0x08,
+> > +	0x41, 0x20, 0x18, 0x20, 0x00, 0x18, 0x00, 0x18, 0x41, 0x21, 0x1a, 0x26,
+> > +	0x00, 0x1a, 0x00, 0x1a, 0x31, 0xa2, 0x04, 0x00, 0x00, 0x00, 0x00, 0x00,
+> > +	0x14, 0x10, 0x02, 0xcc, 0x14, 0x18, 0x96, 0x00, 0x31, 0x93, 0x24, 0x00,
+> > +	0x00, 0x00, 0x00, 0x00, 0x14, 0x12, 0x02, 0xcc, 0x14, 0x1a, 0x96, 0x00,
+> > +	0x25, 0x00, 0x05, 0x00, 0x00, 0x40, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+> > +	0x10, 0x00, 0x00, 0x00, 0x61, 0x00, 0x7f, 0x64, 0x00, 0x03, 0x10, 0x00,
+> > +	0x31, 0x44, 0x03, 0x80, 0x00, 0x00, 0x0c, 0x1c, 0x0c, 0x03, 0x00, 0xa0,
+> > +	0x00, 0x00, 0x78, 0x02, 0x61, 0x24, 0x03, 0x80, 0x20, 0x02, 0x01, 0x00,
+> > +	0x05, 0x1c, 0x46, 0x00, 0x00, 0x00, 0x00, 0x00, 0x61, 0x00, 0x04, 0x80,
+> > +	0xa0, 0x4a, 0x01, 0x20, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+> > +	0x31, 0x01, 0x03, 0x80, 0x04, 0x00, 0x00, 0x00, 0x0c, 0x7f, 0x20, 0x70,
+> > +	0x00, 0x00, 0x00, 0x00, 0x60, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+> > +	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+> > +	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+> > +	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+> > +	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+> > +	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+> > +	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+> > +	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+> > +	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+> > +	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+> > +	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+> > +	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+> > +	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+> > +	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+> > +	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+> > +	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+> > +	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
+> > +};
+> > +unsigned int tgllp_kernel_square_length = 576;
+> -------------------------------------------- ^
+> Better to use sizeof.
+> 
+> > +
+> > +#endif	/* XE_COMPUTE_H */
+> > diff --git a/lib/xe/xe_ioctl.c b/lib/xe/xe_ioctl.c
+> > new file mode 100644
+> > index 00000000..e653aa1e
+> > --- /dev/null
+> > +++ b/lib/xe/xe_ioctl.c
+> > @@ -0,0 +1,441 @@
+> > +/*
+> 
+> Same here, use SPDX with MIT.
+> 
+> > + * Copyright © 2022 Intel Corporation
+> > + *
+> > + * Permission is hereby granted, free of charge, to any person obtaining a
+> > + * copy of this software and associated documentation files (the "Software"),
+> > + * to deal in the Software without restriction, including without limitation
+> > + * the rights to use, copy, modify, merge, publish, distribute, sublicense,
+> > + * and/or sell copies of the Software, and to permit persons to whom the
+> > + * Software is furnished to do so, subject to the following conditions:
+> > + *
+> > + * The above copyright notice and this permission notice (including the next
+> > + * paragraph) shall be included in all copies or substantial portions of the
+> > + * Software.
+> > + *
+> > + * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+> > + * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+> > + * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
+> > + * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+> > + * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+> > + * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
+> > + * IN THE SOFTWARE.
+> > + *
+> > + * Authors:
+> > + *    Jason Ekstrand <jason@jlekstrand.net>
+> > + *    Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+> > + *    Matthew Brost <matthew.brost@intel.com>
+> > + */
+> > +
+> > +#ifdef HAVE_LIBGEN_H
+> > +#include <libgen.h>
+> > +#endif
+> > +#include <stdio.h>
+> > +#include <fcntl.h>
+> > +#include <sys/stat.h>
+> > +#include <sys/ioctl.h>
+> > +#include <string.h>
+> > +#include <sys/mman.h>
+> > +#include <signal.h>
+> > +#include <pciaccess.h>
+> > +#include <getopt.h>
+> > +#include <stdlib.h>
+> > +#include <unistd.h>
+> > +#include <sys/wait.h>
+> > +#include <sys/types.h>
+> > +#include <sys/syscall.h>
+> > +#include <sys/utsname.h>
+> > +#include <termios.h>
+> > +#include <errno.h>
+> 
+> Sort system includes alphabetically.
+> 
+> > +
+> > +#include "drmtest.h"
+> > +#include "config.h"
+> > +
+> > +#ifdef HAVE_VALGRIND
+> > +#include <valgrind/valgrind.h>
+> > +#include <valgrind/memcheck.h>
+> > +
+> > +#define VG(x) x
+> > +#else
+> > +#define VG(x) do {} while (0)
+> > +#endif
+> 
+> Is this needed here ? If possible move it after igt includes.
+> 
+> > +
+> > +#include "xe_ioctl.h"
+> > +#include "xe_query.h"
+> > +#include "igt_syncobj.h"
+> > +#include "ioctl_wrappers.h"
+> > +
+> > +uint32_t
+> > +xe_cs_prefetch_size(int fd)
+> 
+> This is mixing style, please write it in one line:
+> 
+> uint32_t xe_cs_prefetch_size(int fd)
+> 
+> > +{
+> > +	return 512;
+> > +}
+> > +
+> > +uint32_t
+> > +xe_vm_create(int fd, uint32_t flags, uint64_t ext)
+> 
+> Same here.
+> 
+> > +{
+> > +	struct drm_xe_vm_create create = {
+> > +		.extensions = ext,
+> > +		.flags = flags,
+> > +	};
+> > +
+> > +	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_VM_CREATE, &create), 0);
+> > +
+> > +	return create.vm_id;
+> > +}
+> > +
+> > +void xe_vm_unbind_all_async(int fd, uint32_t vm, uint32_t engine,
+> > +			    uint32_t bo, struct drm_xe_sync *sync,
+> > +			    uint32_t num_syncs)
+> > +{
+> > +	__xe_vm_bind_assert(fd, vm, engine, bo, 0, 0, 0,
+> -------- ^
+> This is defined below but imho it is better to call
+> igt_ioctl and assert here, it will help in debug.
+> 
+> > +			    XE_VM_BIND_OP_UNMAP_ALL | XE_VM_BIND_FLAG_ASYNC,
+> > +			    sync, num_syncs, 0, 0);
+> > +}
+> > +
+> > +void xe_vm_bind_array(int fd, uint32_t vm, uint32_t engine,
+> > +		      struct drm_xe_vm_bind_op *bind_ops,
+> > +		      uint32_t num_bind, struct drm_xe_sync *sync,
+> > +		      uint32_t num_syncs)
+> > +{
+> > +	struct drm_xe_vm_bind bind = {
+> > +		.vm_id = vm,
+> > +		.num_binds = num_bind,
+> > +		.vector_of_binds = (uintptr_t)bind_ops,
+> > +		.num_syncs = num_syncs,
+> > +		.syncs = (uintptr_t)sync,
+> > +		.engine_id = engine,
+> > +	};
+> > +
+> > +	igt_assert(num_bind > 1);
+> > +	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_VM_BIND, &bind), 0);
+> > +}
+> > +
+> > +int  __xe_vm_bind(int fd, uint32_t vm, uint32_t engine, uint32_t bo,
+> > +		  uint64_t offset, uint64_t addr, uint64_t size, uint32_t op,
+> > +		  struct drm_xe_sync *sync, uint32_t num_syncs, uint32_t region,
+> > +		  uint64_t ext)
+> > +{
+> > +	struct drm_xe_vm_bind bind = {
+> > +		.extensions = ext,
+> > +		.vm_id = vm,
+> > +		.num_binds = 1,
+> > +		.bind.obj = bo,
+> > +		.bind.obj_offset = offset,
+> > +		.bind.range = size,
+> > +		.bind.addr = addr,
+> > +		.bind.op = op,
+> > +		.bind.region = region,
+> > +		.num_syncs = num_syncs,
+> > +		.syncs = (uintptr_t)sync,
+> > +		.engine_id = engine,
+> > +	};
+> > +
+> > +	if (igt_ioctl(fd, DRM_IOCTL_XE_VM_BIND, &bind))
+> > +		return -errno;
+> > +
+> > +	return 0;
+> > +}
+> > +
+> > +void  __xe_vm_bind_assert(int fd, uint32_t vm, uint32_t engine, uint32_t bo,
+> -------- ^
+> imho this function acts only as wrapper and should be avoided,
+> it is better to code this directly in each function or use
+> macro instead (if you want to avoid typing).
+> 
+> Regards,
+> Kamil
+> 
+> > +			  uint64_t offset, uint64_t addr, uint64_t size,
+> > +			  uint32_t op, struct drm_xe_sync *sync,
+> > +			  uint32_t num_syncs, uint32_t region, uint64_t ext)
+> > +{
+> > +	igt_assert_eq(__xe_vm_bind(fd, vm, engine, bo, offset, addr, size,
+> > +				   op, sync, num_syncs, region, ext), 0);
+> > +}
+> > +
+> > +void xe_vm_bind(int fd, uint32_t vm, uint32_t bo, uint64_t offset,
+> > +		uint64_t addr, uint64_t size,
+> > +		struct drm_xe_sync *sync, uint32_t num_syncs)
+> > +{
+> > +	__xe_vm_bind_assert(fd, vm, 0, bo, offset, addr, size,
+> > +			    XE_VM_BIND_OP_MAP, sync, num_syncs, 0, 0);
+> > +}
+> > +
+> > +void xe_vm_unbind(int fd, uint32_t vm, uint64_t offset,
+> > +		  uint64_t addr, uint64_t size,
+> > +		  struct drm_xe_sync *sync, uint32_t num_syncs)
+> > +{
+> > +	__xe_vm_bind_assert(fd, vm, 0, 0, offset, addr, size,
+> > +			    XE_VM_BIND_OP_UNMAP, sync, num_syncs, 0, 0);
+> > +}
+> > +
+> > +void xe_vm_prefetch_async(int fd, uint32_t vm, uint32_t engine, uint64_t offset,
+> > +			  uint64_t addr, uint64_t size,
+> > +			  struct drm_xe_sync *sync, uint32_t num_syncs,
+> > +			  uint32_t region)
+> > +{
+> > +	__xe_vm_bind_assert(fd, vm, engine, 0, offset, addr, size,
+> > +			    XE_VM_BIND_OP_PREFETCH | XE_VM_BIND_FLAG_ASYNC,
+> > +			    sync, num_syncs, region, 0);
+> > +}
+> > +
+> > +void xe_vm_bind_async(int fd, uint32_t vm, uint32_t engine, uint32_t bo,
+> > +		      uint64_t offset, uint64_t addr, uint64_t size,
+> > +		      struct drm_xe_sync *sync, uint32_t num_syncs)
+> > +{
+> > +	__xe_vm_bind_assert(fd, vm, engine, bo, offset, addr, size,
+> > +			    XE_VM_BIND_OP_MAP | XE_VM_BIND_FLAG_ASYNC, sync,
+> > +			    num_syncs, 0, 0);
+> > +}
+> > +
+> > +void xe_vm_bind_async_flags(int fd, uint32_t vm, uint32_t engine, uint32_t bo,
+> > +			    uint64_t offset, uint64_t addr, uint64_t size,
+> > +			    struct drm_xe_sync *sync, uint32_t num_syncs,
+> > +			    uint32_t flags)
+> > +{
+> > +	__xe_vm_bind_assert(fd, vm, engine, bo, offset, addr, size,
+> > +			    XE_VM_BIND_OP_MAP | XE_VM_BIND_FLAG_ASYNC | flags,
+> > +			    sync, num_syncs, 0, 0);
+> > +}
+> > +
+> > +void xe_vm_bind_userptr_async(int fd, uint32_t vm, uint32_t engine,
+> > +			      uint64_t userptr, uint64_t addr, uint64_t size,
+> > +			      struct drm_xe_sync *sync, uint32_t num_syncs)
+> > +{
+> > +	__xe_vm_bind_assert(fd, vm, engine, 0, userptr, addr, size,
+> > +			    XE_VM_BIND_OP_MAP_USERPTR | XE_VM_BIND_FLAG_ASYNC,
+> > +			    sync, num_syncs, 0, 0);
+> > +}
+> > +
+> > +void xe_vm_bind_userptr_async_flags(int fd, uint32_t vm, uint32_t engine,
+> > +				    uint64_t userptr, uint64_t addr,
+> > +				    uint64_t size, struct drm_xe_sync *sync,
+> > +				    uint32_t num_syncs, uint32_t flags)
+> > +{
+> > +	__xe_vm_bind_assert(fd, vm, engine, 0, userptr, addr, size,
+> > +			    XE_VM_BIND_OP_MAP_USERPTR | XE_VM_BIND_FLAG_ASYNC |
+> > +			    flags, sync, num_syncs, 0, 0);
+> > +}
+> > +
+> > +void xe_vm_unbind_async(int fd, uint32_t vm, uint32_t engine,
+> > +			uint64_t offset, uint64_t addr, uint64_t size,
+> > +			struct drm_xe_sync *sync, uint32_t num_syncs)
+> > +{
+> > +	__xe_vm_bind_assert(fd, vm, engine, 0, offset, addr, size,
+> > +			    XE_VM_BIND_OP_UNMAP | XE_VM_BIND_FLAG_ASYNC, sync,
+> > +			    num_syncs, 0, 0);
+> > +}
+> > +
+> > +static void __xe_vm_bind_sync(int fd, uint32_t vm, uint32_t bo, uint64_t offset,
+> > +			      uint64_t addr, uint64_t size, uint32_t op)
+> > +{
+> > +	struct drm_xe_sync sync = {
+> > +		.flags = DRM_XE_SYNC_SYNCOBJ | DRM_XE_SYNC_SIGNAL,
+> > +		.handle = syncobj_create(fd, 0),
+> > +	};
+> > +
+> > +	__xe_vm_bind_assert(fd, vm, 0, bo, offset, addr, size, op, &sync, 1, 0,
+> > +			    0);
+> > +
+> > +	igt_assert(syncobj_wait(fd, &sync.handle, 1, INT64_MAX, 0, NULL));
+> > +	syncobj_destroy(fd, sync.handle);
+> > +}
+> > +
+> > +void xe_vm_bind_sync(int fd, uint32_t vm, uint32_t bo, uint64_t offset,
+> > +		     uint64_t addr, uint64_t size)
+> > +{
+> > +	__xe_vm_bind_sync(fd, vm, bo, offset, addr, size, XE_VM_BIND_OP_MAP);
+> > +}
+> > +
+> > +void xe_vm_unbind_sync(int fd, uint32_t vm, uint64_t offset,
+> > +		       uint64_t addr, uint64_t size)
+> > +{
+> > +	__xe_vm_bind_sync(fd, vm, 0, offset, addr, size, XE_VM_BIND_OP_UNMAP);
+> > +}
+> > +
+> > +void xe_vm_destroy(int fd, uint32_t vm)
+> > +{
+> > +	struct drm_xe_vm_destroy destroy = {
+> > +		.vm_id = vm,
+> > +	};
+> > +
+> > +	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_VM_DESTROY, &destroy), 0);
+> > +}
+> > +
+> > +uint32_t xe_bo_create_flags(int fd, uint32_t vm, uint64_t size, uint32_t flags)
+> > +{
+> > +	struct drm_xe_gem_create create = {
+> > +		.vm_id = vm,
+> > +		.size = size,
+> > +		.flags = flags,
+> > +	};
+> > +
+> > +	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_GEM_CREATE, &create), 0);
+> > +
+> > +	return create.handle;
+> > +}
+> > +
+> > +uint32_t xe_bo_create(int fd, int gt, uint32_t vm, uint64_t size)
+> > +{
+> > +	struct drm_xe_gem_create create = {
+> > +		.vm_id = vm,
+> > +		.size = size,
+> > +		.flags = vram_if_possible(fd, gt),
+> > +	};
+> > +	int err;
+> > +
+> > +	err = igt_ioctl(fd, DRM_IOCTL_XE_GEM_CREATE, &create);
+> > +	igt_assert_eq(err, 0);
+> > +
+> > +	return create.handle;
+> > +}
+> > +
+> > +uint32_t xe_bind_engine_create(int fd, uint32_t vm, uint64_t ext)
+> > +{
+> > +	struct drm_xe_engine_class_instance instance = {
+> > +		.engine_class = DRM_XE_ENGINE_CLASS_VM_BIND,
+> > +	};
+> > +	struct drm_xe_engine_create create = {
+> > +		.extensions = ext,
+> > +		.vm_id = vm,
+> > +		.width = 1,
+> > +		.num_placements = 1,
+> > +		.instances = to_user_pointer(&instance),
+> > +	};
+> > +
+> > +	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_ENGINE_CREATE, &create), 0);
+> > +
+> > +	return create.engine_id;
+> > +}
+> > +
+> > +uint32_t xe_engine_create(int fd, uint32_t vm,
+> > +			  struct drm_xe_engine_class_instance *instance,
+> > +			  uint64_t ext)
+> > +{
+> > +	struct drm_xe_engine_create create = {
+> > +		.extensions = ext,
+> > +		.vm_id = vm,
+> > +		.width = 1,
+> > +		.num_placements = 1,
+> > +		.instances = to_user_pointer(instance),
+> > +	};
+> > +
+> > +	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_ENGINE_CREATE, &create), 0);
+> > +
+> > +	return create.engine_id;
+> > +}
+> > +
+> > +uint32_t xe_engine_create_class(int fd, uint32_t vm, uint16_t class)
+> > +{
+> > +	struct drm_xe_engine_class_instance instance = {
+> > +		.engine_class = class,
+> > +		.engine_instance = 0,
+> > +		.gt_id = 0,
+> > +	};
+> > +	struct drm_xe_engine_create create = {
+> > +		.vm_id = vm,
+> > +		.width = 1,
+> > +		.num_placements = 1,
+> > +		.instances = to_user_pointer(&instance),
+> > +	};
+> > +
+> > +	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_ENGINE_CREATE, &create), 0);
+> > +
+> > +	return create.engine_id;
+> > +}
+> > +
+> > +void xe_engine_destroy(int fd, uint32_t engine)
+> > +{
+> > +	struct drm_xe_engine_destroy destroy = {
+> > +		.engine_id = engine,
+> > +	};
+> > +
+> > +	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_ENGINE_DESTROY, &destroy), 0);
+> > +}
+> > +
+> > +uint64_t xe_bo_mmap_offset(int fd, uint32_t bo)
+> > +{
+> > +	struct drm_xe_gem_mmap_offset mmo = {
+> > +		.handle = bo,
+> > +	};
+> > +
+> > +	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_GEM_MMAP_OFFSET, &mmo), 0);
+> > +
+> > +	return mmo.offset;
+> > +}
+> > +
+> > +void *xe_bo_map(int fd, uint32_t bo, size_t size)
+> > +{
+> > +	uint64_t mmo;
+> > +	void *map;
+> > +
+> > +	mmo = xe_bo_mmap_offset(fd, bo);
+> > +	map = mmap(NULL, size, PROT_WRITE, MAP_SHARED, fd, mmo);
+> > +	igt_assert(map != MAP_FAILED);
+> > +
+> > +	return map;
+> > +}
+> > +
+> > +void __xe_exec_assert(int fd, struct drm_xe_exec *exec)
+> > +{
+> > +	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_EXEC, exec), 0);
+> > +}
+> > +
+> > +void xe_exec(int fd, uint32_t engine, uint64_t addr, struct drm_xe_sync *sync,
+> > +	     uint32_t num_syncs)
+> > +{
+> > +	struct drm_xe_exec exec = {
+> > +		.engine_id = engine,
+> > +		.syncs = (uintptr_t)sync,
+> > +		.num_syncs = num_syncs,
+> > +		.address = addr,
+> > +		.num_batch_buffer = 1,
+> > +	};
+> > +
+> > +	__xe_exec_assert(fd, &exec);
+> > +}
+> > +
+> > +void xe_exec_wait(int fd, uint32_t engine, uint64_t addr)
+> > +{
+> > +	struct drm_xe_sync sync = {
+> > +		.flags = DRM_XE_SYNC_SYNCOBJ | DRM_XE_SYNC_SIGNAL,
+> > +		.handle = syncobj_create(fd, 0),
+> > +	};
+> > +
+> > +	xe_exec(fd, engine, addr, &sync, 1);
+> > +
+> > +	igt_assert(syncobj_wait(fd, &sync.handle, 1, INT64_MAX, 0, NULL));
+> > +	syncobj_destroy(fd, sync.handle);
+> > +}
+> > +
+> > +void xe_wait_ufence(int fd, uint64_t *addr, uint64_t value,
+> > +		    struct drm_xe_engine_class_instance *eci,
+> > +		    int64_t timeout)
+> > +{
+> > +	struct drm_xe_wait_user_fence wait = {
+> > +		.addr = to_user_pointer(addr),
+> > +		.op = DRM_XE_UFENCE_WAIT_EQ,
+> > +		.flags = !eci ? DRM_XE_UFENCE_WAIT_SOFT_OP : 0,
+> > +		.value = value,
+> > +		.mask = DRM_XE_UFENCE_WAIT_U64,
+> > +		.timeout = timeout,
+> > +		.num_engines = eci ? 1 :0,
+> > +		.instances = eci ? to_user_pointer(eci) : 0,
+> > +	};
+> > +
+> > +	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_WAIT_USER_FENCE, &wait), 0);
+> > +}
+> > +
+> > +void xe_force_gt_reset(int fd, int gt)
+> > +{
+> > +	char reset_string[128];
+> > +
+> > +	sprintf(reset_string, "cat /sys/kernel/debug/dri/0/gt%d/force_reset", gt);
+> > +	system(reset_string);
+> > +}
+> > +
+> > +void xe_vm_madvise(int fd, uint32_t vm, uint64_t addr, uint64_t size,
+> > +		   uint32_t property, uint32_t value)
+> > +{
+> > +	struct drm_xe_vm_madvise madvise = {
+> > +		.vm_id = vm,
+> > +		.range = size,
+> > +		.addr = addr,
+> > +		.property = property,
+> > +		.value = value,
+> > +	};
+> > +
+> > +	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_VM_MADVISE, &madvise), 0);
+> > +}
+> > diff --git a/lib/xe/xe_ioctl.h b/lib/xe/xe_ioctl.h
+> > new file mode 100644
+> > index 00000000..240f3bb3
+> > --- /dev/null
+> > +++ b/lib/xe/xe_ioctl.h
+> > @@ -0,0 +1,107 @@
+> > +/*
+> > + * Copyright © 2022 Intel Corporation
+> > + *
+> > + * Permission is hereby granted, free of charge, to any person obtaining a
+> > + * copy of this software and associated documentation files (the "Software"),
+> > + * to deal in the Software without restriction, including without limitation
+> > + * the rights to use, copy, modify, merge, publish, distribute, sublicense,
+> > + * and/or sell copies of the Software, and to permit persons to whom the
+> > + * Software is furnished to do so, subject to the following conditions:
+> > + *
+> > + * The above copyright notice and this permission notice (including the next
+> > + * paragraph) shall be included in all copies or substantial portions of the
+> > + * Software.
+> > + *
+> > + * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+> > + * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+> > + * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
+> > + * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+> > + * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+> > + * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
+> > + * IN THE SOFTWARE.
+> > + *
+> > + * Authors:
+> > + *    Jason Ekstrand <jason@jlekstrand.net>
+> > + *    Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+> > + *    Matthew Brost <matthew.brost@intel.com>
+> > + */
+> > +
+> > +#ifndef XE_IOCTL_H
+> > +#define XE_IOCTL_H
+> > +
+> > +#include <stdint.h>
+> > +#include <stdbool.h>
+> > +#include <sys/mman.h>
+> > +#include <xe_drm.h>
+> > +
+> > +uint32_t xe_cs_prefetch_size(int fd);
+> > +uint32_t xe_vm_create(int fd, uint32_t flags, uint64_t ext);
+> > +int  __xe_vm_bind(int fd, uint32_t vm, uint32_t engine, uint32_t bo,
+> > +		  uint64_t offset, uint64_t addr, uint64_t size, uint32_t op,
+> > +		  struct drm_xe_sync *sync, uint32_t num_syncs, uint32_t region,
+> > +		  uint64_t ext);
+> > +void  __xe_vm_bind_assert(int fd, uint32_t vm, uint32_t engine, uint32_t bo,
+> > +			  uint64_t offset, uint64_t addr, uint64_t size,
+> > +			  uint32_t op, struct drm_xe_sync *sync,
+> > +			  uint32_t num_syncs, uint32_t region, uint64_t ext);
+> > +void xe_vm_bind(int fd, uint32_t vm, uint32_t bo, uint64_t offset,
+> > +		uint64_t addr, uint64_t size,
+> > +		struct drm_xe_sync *sync, uint32_t num_syncs);
+> > +void xe_vm_unbind(int fd, uint32_t vm, uint64_t offset,
+> > +		  uint64_t addr, uint64_t size,
+> > +		  struct drm_xe_sync *sync, uint32_t num_syncs);
+> > +void xe_vm_prefetch_async(int fd, uint32_t vm, uint32_t engine,
+> > +			  uint64_t offset, uint64_t addr, uint64_t size,
+> > +			  struct drm_xe_sync *sync, uint32_t num_syncs,
+> > +			  uint32_t region);
+> > +void xe_vm_bind_async(int fd, uint32_t vm, uint32_t engine, uint32_t bo,
+> > +		      uint64_t offset, uint64_t addr, uint64_t size,
+> > +		      struct drm_xe_sync *sync, uint32_t num_syncs);
+> > +void xe_vm_bind_userptr_async(int fd, uint32_t vm, uint32_t engine,
+> > +			      uint64_t userptr, uint64_t addr, uint64_t size,
+> > +			      struct drm_xe_sync *sync, uint32_t num_syncs);
+> > +void xe_vm_bind_async_flags(int fd, uint32_t vm, uint32_t engine, uint32_t bo,
+> > +			    uint64_t offset, uint64_t addr, uint64_t size,
+> > +			    struct drm_xe_sync *sync, uint32_t num_syncs,
+> > +			    uint32_t flags);
+> > +void xe_vm_bind_userptr_async_flags(int fd, uint32_t vm, uint32_t engine,
+> > +				    uint64_t userptr, uint64_t addr,
+> > +				    uint64_t size, struct drm_xe_sync *sync,
+> > +				    uint32_t num_syncs, uint32_t flags);
+> > +void xe_vm_unbind_async(int fd, uint32_t vm, uint32_t engine,
+> > +			uint64_t offset, uint64_t addr, uint64_t size,
+> > +			struct drm_xe_sync *sync, uint32_t num_syncs);
+> > +void xe_vm_bind_sync(int fd, uint32_t vm, uint32_t bo, uint64_t offset,
+> > +		     uint64_t addr, uint64_t size);
+> > +void xe_vm_unbind_sync(int fd, uint32_t vm, uint64_t offset,
+> > +		       uint64_t addr, uint64_t size);
+> > +void xe_vm_bind_array(int fd, uint32_t vm, uint32_t engine,
+> > +		      struct drm_xe_vm_bind_op *bind_ops,
+> > +		      uint32_t num_bind, struct drm_xe_sync *sync,
+> > +		      uint32_t num_syncs);
+> > +void xe_vm_unbind_all_async(int fd, uint32_t vm, uint32_t engine,
+> > +			    uint32_t bo, struct drm_xe_sync *sync,
+> > +			    uint32_t num_syncs);
+> > +void xe_vm_destroy(int fd, uint32_t vm);
+> > +uint32_t xe_bo_create_flags(int fd, uint32_t vm, uint64_t size, uint32_t flags);
+> > +uint32_t xe_bo_create(int fd, int gt, uint32_t vm, uint64_t size);
+> > +uint32_t xe_engine_create(int fd, uint32_t vm,
+> > +			  struct drm_xe_engine_class_instance *instance,
+> > +			  uint64_t ext);
+> > +uint32_t xe_bind_engine_create(int fd, uint32_t vm, uint64_t ext);
+> > +uint32_t xe_engine_create_class(int fd, uint32_t vm, uint16_t class);
+> > +void xe_engine_destroy(int fd, uint32_t engine);
+> > +uint64_t xe_bo_mmap_offset(int fd, uint32_t bo);
+> > +void *xe_bo_map(int fd, uint32_t bo, size_t size);
+> > +void __xe_exec_assert(int fd, struct drm_xe_exec *exec);
+> > +void xe_exec(int fd, uint32_t engine, uint64_t addr, struct drm_xe_sync *sync,
+> > +	     uint32_t num_syncs);
+> > +void xe_exec_wait(int fd, uint32_t engine, uint64_t addr);
+> > +void xe_wait_ufence(int fd, uint64_t *addr, uint64_t value,
+> > +		    struct drm_xe_engine_class_instance *eci,
+> > +		    int64_t timeout);
+> > +void xe_force_gt_reset(int fd, int gt);
+> > +void xe_vm_madvise(int fd, uint32_t vm, uint64_t addr, uint64_t size,
+> > +		   uint32_t property, uint32_t value);
+> > +
+> > +#endif /* XE_IOCTL_H */
+> > diff --git a/lib/xe/xe_query.c b/lib/xe/xe_query.c
+> > new file mode 100644
+> > index 00000000..7a399788
+> > --- /dev/null
+> > +++ b/lib/xe/xe_query.c
+> > @@ -0,0 +1,377 @@
+> > +/*
+> > + * Copyright © 2022 Intel Corporation
+> > + *
+> > + * Permission is hereby granted, free of charge, to any person obtaining a
+> > + * copy of this software and associated documentation files (the "Software"),
+> > + * to deal in the Software without restriction, including without limitation
+> > + * the rights to use, copy, modify, merge, publish, distribute, sublicense,
+> > + * and/or sell copies of the Software, and to permit persons to whom the
+> > + * Software is furnished to do so, subject to the following conditions:
+> > + *
+> > + * The above copyright notice and this permission notice (including the next
+> > + * paragraph) shall be included in all copies or substantial portions of the
+> > + * Software.
+> > + *
+> > + * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+> > + * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+> > + * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
+> > + * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+> > + * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+> > + * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
+> > + * IN THE SOFTWARE.
+> > + *
+> > + * Authors:
+> > + *    Matthew Brost <matthew.brost@intel.com>
+> > + */
+> > +
+> > +#include <stdlib.h>
+> > +#include <pthread.h>
+> > +
+> > +#include "drmtest.h"
+> > +#include "ioctl_wrappers.h"
+> > +#include "igt_map.h"
+> > +
+> > +#include "xe_query.h"
+> > +#include "xe_ioctl.h"
+> > +
+> > +static struct drm_xe_query_config *xe_query_config_new(int fd)
+> > +{
+> > +	struct drm_xe_query_config *config;
+> > +	struct drm_xe_device_query query = {
+> > +		.extensions = 0,
+> > +		.query = DRM_XE_DEVICE_QUERY_CONFIG,
+> > +		.size = 0,
+> > +		.data = 0,
+> > +	};
+> > +
+> > +	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_DEVICE_QUERY, &query), 0);
+> > +
+> > +	config = malloc(query.size);
+> > +	igt_assert(config);
+> > +
+> > +	query.data = to_user_pointer(config);
+> > +	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_DEVICE_QUERY, &query), 0);
+> > +
+> > +	igt_assert(config->num_params > 0);
+> > +
+> > +	return config;
+> > +}
+> > +
+> > +static struct drm_xe_query_gts *xe_query_gts_new(int fd)
+> > +{
+> > +	struct drm_xe_query_gts *gts;
+> > +	struct drm_xe_device_query query = {
+> > +		.extensions = 0,
+> > +		.query = DRM_XE_DEVICE_QUERY_GTS,
+> > +		.size = 0,
+> > +		.data = 0,
+> > +	};
+> > +
+> > +	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_DEVICE_QUERY, &query), 0);
+> > +
+> > +	gts = malloc(query.size);
+> > +	igt_assert(gts);
+> > +
+> > +	query.data = to_user_pointer(gts);
+> > +	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_DEVICE_QUERY, &query), 0);
+> > +
+> > +	return gts;
+> > +}
+> > +
+> > +static uint64_t __memory_regions(const struct drm_xe_query_gts *gts)
+> > +{
+> > +	uint64_t regions = 0;
+> > +	int i;
+> > +
+> > +	for (i = 0; i < gts->num_gt; i++)
+> > +		regions |= gts->gts[i].native_mem_regions |
+> > +			   gts->gts[i].slow_mem_regions;
+> > +
+> > +	return regions;
+> > +}
+> > +
+> > +static struct drm_xe_engine_class_instance *
+> > +xe_query_engines_new(int fd, int *num_engines)
+> > +{
+> > +	struct drm_xe_engine_class_instance *hw_engines;
+> > +	struct drm_xe_device_query query = {
+> > +		.extensions = 0,
+> > +		.query = DRM_XE_DEVICE_QUERY_ENGINES,
+> > +		.size = 0,
+> > +		.data = 0,
+> > +	};
+> > +
+> > +	igt_assert(num_engines);
+> > +	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_DEVICE_QUERY, &query), 0);
+> > +
+> > +	hw_engines = malloc(query.size);
+> > +	igt_assert(hw_engines);
+> > +
+> > +	query.data = to_user_pointer(hw_engines);
+> > +	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_DEVICE_QUERY, &query), 0);
+> > +
+> > +	*num_engines = query.size / sizeof(*hw_engines);
+> > +
+> > +	return hw_engines;
+> > +}
+> > +
+> > +static struct drm_xe_query_mem_usage *xe_query_mem_usage_new(int fd)
+> > +{
+> > +	struct drm_xe_query_mem_usage *mem_usage;
+> > +	struct drm_xe_device_query query = {
+> > +		.extensions = 0,
+> > +		.query = DRM_XE_DEVICE_QUERY_MEM_USAGE,
+> > +		.size = 0,
+> > +		.data = 0,
+> > +	};
+> > +
+> > +	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_DEVICE_QUERY, &query), 0);
+> > +
+> > +	mem_usage = malloc(query.size);
+> > +	igt_assert(mem_usage);
+> > +
+> > +	query.data = to_user_pointer(mem_usage);
+> > +	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_DEVICE_QUERY, &query), 0);
+> > +
+> > +	return mem_usage;
+> > +}
+> > +
+> > +/* FIXME: Make generic / multi-GT aware */
+> > +static uint64_t __mem_vram_size(struct drm_xe_query_mem_usage *mem_usage)
+> > +{
+> > +	for (int i = 0; i < mem_usage->num_regions; i++)
+> > +		if (mem_usage->regions[i].mem_class == XE_MEM_REGION_CLASS_VRAM)
+> > +			return mem_usage->regions[i].total_size;
+> > +
+> > +	return 0;
+> > +}
+> > +
+> > +static bool __mem_has_vram(struct drm_xe_query_mem_usage *mem_usage)
+> > +{
+> > +	for (int i = 0; i < mem_usage->num_regions; i++)
+> > +		if (mem_usage->regions[i].mem_class == XE_MEM_REGION_CLASS_VRAM)
+> > +			return true;
+> > +
+> > +	return false;
+> > +}
+> > +
+> > +static uint32_t __mem_default_alignment(struct drm_xe_query_mem_usage *mem_usage)
+> > +{
+> > +	uint32_t alignment = XE_DEFAULT_ALIGNMENT;
+> > +
+> > +	for (int i = 0; i < mem_usage->num_regions; i++)
+> > +		if (alignment < mem_usage->regions[i].min_page_size)
+> > +			alignment = mem_usage->regions[i].min_page_size;
+> > +
+> > +	return alignment;
+> > +}
+> > +
+> > +static bool xe_check_supports_faults(int fd)
+> > +{
+> > +	bool supports_faults;
+> > +
+> > +	struct drm_xe_vm_create create = {
+> > +		.flags = DRM_XE_VM_CREATE_ASYNC_BIND_OPS |
+> > +			 DRM_XE_VM_CREATE_FAULT_MODE,
+> > +	};
+> > +
+> > +	supports_faults = !igt_ioctl(fd, DRM_IOCTL_XE_VM_CREATE, &create);
+> > +
+> > +	if (supports_faults)
+> > +		xe_vm_destroy(fd, create.vm_id);
+> > +
+> > +	return supports_faults;
+> > +}
+> > +
+> > +const char* xe_engine_class_string(uint32_t engine_class)
+> > +{
+> > +	switch (engine_class) {
+> > +		case DRM_XE_ENGINE_CLASS_RENDER:
+> > +			return "DRM_XE_ENGINE_CLASS_RENDER";
+> > +		case DRM_XE_ENGINE_CLASS_COPY:
+> > +			return "DRM_XE_ENGINE_CLASS_COPY";
+> > +		case DRM_XE_ENGINE_CLASS_VIDEO_DECODE:
+> > +			return "DRM_XE_ENGINE_CLASS_VIDEO_DECODE";
+> > +		case DRM_XE_ENGINE_CLASS_VIDEO_ENHANCE:
+> > +			return "DRM_XE_ENGINE_CLASS_VIDEO_ENHANCE";
+> > +		case DRM_XE_ENGINE_CLASS_COMPUTE:
+> > +			return "DRM_XE_ENGINE_CLASS_COMPUTE";
+> > +		default: return "?";
+> > +	}
+> > +}
+> > +
+> > +static struct xe_device_cache {
+> > +	pthread_mutex_t cache_mutex;
+> > +	struct igt_map *map;
+> > +} cache;
+> > +
+> > +static struct xe_device *find_in_cache_unlocked(int fd)
+> > +{
+> > +	return igt_map_search(cache.map, from_user_pointer(fd));
+> > +}
+> > +
+> > +static struct xe_device *find_in_cache(int fd)
+> > +{
+> > +	struct xe_device *xe_dev;
+> > +
+> > +	pthread_mutex_lock(&cache.cache_mutex);
+> > +	xe_dev = find_in_cache_unlocked(fd);
+> > +	pthread_mutex_unlock(&cache.cache_mutex);
+> > +
+> > +	return xe_dev;
+> > +}
+> > +
+> > +struct xe_device *xe_device_get(int fd)
+> > +{
+> > +	struct xe_device *xe_dev;
+> > +
+> > +	xe_dev = find_in_cache(fd);
+> > +	if (xe_dev) {
+> > +		igt_debug("Find in cache, fd: %d\n", fd);
+> > +		return xe_dev;
+> > +	}
+> > +	igt_debug("Not found in the cache, allocating\n");
+> > +
+> > +	xe_dev = calloc(1, sizeof(*xe_dev));
+> > +	igt_assert(xe_dev);
+> > +
+> > +	xe_dev->fd = fd;
+> > +	xe_dev->config = xe_query_config_new(fd);
+> > +	xe_dev->number_gt = xe_dev->config->info[XE_QUERY_CONFIG_GT_COUNT];
+> > +	xe_dev->va_bits = xe_dev->config->info[XE_QUERY_CONFIG_VA_BITS];
+> > +	xe_dev->gts = xe_query_gts_new(fd);
+> > +	xe_dev->memory_regions = __memory_regions(xe_dev->gts);
+> > +	xe_dev->hw_engines = xe_query_engines_new(fd, &xe_dev->number_hw_engines);
+> > +	xe_dev->mem_usage = xe_query_mem_usage_new(fd);
+> > +	xe_dev->vram_size = __mem_vram_size(xe_dev->mem_usage);
+> > +	xe_dev->default_alignment = __mem_default_alignment(xe_dev->mem_usage);
+> > +	xe_dev->has_vram = __mem_has_vram(xe_dev->mem_usage);
+> > +	xe_dev->supports_faults = xe_check_supports_faults(fd);
+> > +
+> > +	igt_map_insert(cache.map, from_user_pointer(fd), xe_dev);
+> > +
+> > +	return xe_dev;
+> > +}
+> > +
+> > +static void xe_device_free(struct xe_device *xe_dev)
+> > +{
+> > +	igt_debug("free device: %d\n", xe_dev->fd);
+> > +	free(xe_dev->config);
+> > +	free(xe_dev->gts);
+> > +	free(xe_dev->hw_engines);
+> > +	free(xe_dev->mem_usage);
+> > +	free(xe_dev);
+> > +}
+> > +
+> > +static void delete_in_cache(struct igt_map_entry *entry)
+> > +{
+> > +	xe_device_free((struct xe_device *)entry->data);
+> > +}
+> > +
+> > +void xe_device_put(int fd)
+> > +{
+> > +	pthread_mutex_lock(&cache.cache_mutex);
+> > +	if (find_in_cache_unlocked(fd))
+> > +		igt_map_remove(cache.map, from_user_pointer(fd), delete_in_cache);
+> > +	pthread_mutex_unlock(&cache.cache_mutex);
+> > +}
+> > +
+> > +static void xe_device_destroy_cache(void)
+> > +{
+> > +	pthread_mutex_lock(&cache.cache_mutex);
+> > +	igt_map_destroy(cache.map, delete_in_cache);
+> > +	pthread_mutex_unlock(&cache.cache_mutex);
+> > +}
+> > +
+> > +static void xe_device_cache_init(void)
+> > +{
+> > +	pthread_mutex_init(&cache.cache_mutex, NULL);
+> > +	xe_device_destroy_cache();
+> > +	cache.map = igt_map_create(igt_map_hash_32, igt_map_equal_32);
+> > +}
+> > +
+> > +#define RETV(__v) \
+> > +	struct xe_device *xe_dev;\
+> > +	xe_dev = find_in_cache(fd);\
+> > +	igt_assert(xe_dev);\
+> > +	return xe_dev->__v
+> > +
+> > +int xe_number_gt(int fd)
+> > +{
+> > +	RETV(number_gt);
+> > +}
+> > +
+> > +uint64_t all_memory_regions(int fd)
+> > +{
+> > +	RETV(memory_regions);
+> > +}
+> > +
+> > +uint64_t system_memory(int fd)
+> > +{
+> > +	uint64_t regions = all_memory_regions(fd);
+> > +
+> > +	return regions & 0x1;
+> > +}
+> > +
+> > +uint64_t vram_memory(int fd, int gt)
+> > +{
+> > +	uint64_t regions = all_memory_regions(fd);
+> > +
+> > +	return regions & (0x2 << gt);
+> > +}
+> > +
+> > +uint64_t vram_if_possible(int fd, int gt)
+> > +{
+> > +	uint64_t regions = all_memory_regions(fd);
+> > +	uint64_t system_memory = regions & 0x1;
+> > +	uint64_t vram = regions & (0x2 << gt);
+> > +
+> > +	return vram ? vram : system_memory;
+> > +}
+> > +
+> > +struct drm_xe_engine_class_instance *xe_hw_engines(int fd)
+> > +{
+> > +	RETV(hw_engines);
+> > +}
+> > +
+> > +struct drm_xe_engine_class_instance *xe_hw_engine(int fd, int idx)
+> > +{
+> > +	struct drm_xe_engine_class_instance *engines = xe_hw_engines(fd);
+> > +
+> > +	return &engines[idx];
+> > +}
+> > +
+> > +int xe_number_hw_engines(int fd)
+> > +{
+> > +	RETV(number_hw_engines);
+> > +}
+> > +
+> > +bool xe_has_vram(int fd)
+> > +{
+> > +	RETV(has_vram);
+> > +}
+> > +
+> > +uint64_t xe_vram_size(int fd)
+> > +{
+> > +	RETV(vram_size);
+> > +}
+> > +
+> > +uint32_t xe_get_default_alignment(int fd)
+> > +{
+> > +	RETV(default_alignment);
+> > +}
+> > +
+> > +bool xe_supports_faults(int fd)
+> > +{
+> > +	RETV(supports_faults);
+> > +}
+> > +
+> > +uint32_t xe_va_bits(int fd)
+> > +{
+> > +	RETV(va_bits);
+> > +}
+> > +
+> > +igt_constructor
+> > +{
+> > +	xe_device_cache_init();
+> > +}
+> > diff --git a/lib/xe/xe_query.h b/lib/xe/xe_query.h
+> > new file mode 100644
+> > index 00000000..2db274af
+> > --- /dev/null
+> > +++ b/lib/xe/xe_query.h
+> > @@ -0,0 +1,82 @@
+> > +/*
+> > + * Copyright © 2022 Intel Corporation
+> > + *
+> > + * Permission is hereby granted, free of charge, to any person obtaining a
+> > + * copy of this software and associated documentation files (the "Software"),
+> > + * to deal in the Software without restriction, including without limitation
+> > + * the rights to use, copy, modify, merge, publish, distribute, sublicense,
+> > + * and/or sell copies of the Software, and to permit persons to whom the
+> > + * Software is furnished to do so, subject to the following conditions:
+> > + *
+> > + * The above copyright notice and this permission notice (including the next
+> > + * paragraph) shall be included in all copies or substantial portions of the
+> > + * Software.
+> > + *
+> > + * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+> > + * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+> > + * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
+> > + * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+> > + * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+> > + * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
+> > + * IN THE SOFTWARE.
+> > + *
+> > + * Authors:
+> > + *    Matthew Brost <matthew.brost@intel.com>
+> > + */
+> > +
+> > +#ifndef XE_QUERY_H
+> > +#define XE_QUERY_H
+> > +
+> > +#include <stdint.h>
+> > +#include <xe_drm.h>
+> > +#include "igt_list.h"
+> > +
+> > +#define XE_DEFAULT_ALIGNMENT           0x1000
+> > +#define XE_DEFAULT_ALIGNMENT_64K       0x10000
+> > +
+> > +struct xe_device {
+> > +	int fd;
+> > +
+> > +	struct drm_xe_query_config *config;
+> > +	struct drm_xe_query_gts *gts;
+> > +	uint64_t memory_regions;
+> > +	struct drm_xe_engine_class_instance *hw_engines;
+> > +	int number_hw_engines;
+> > +	struct drm_xe_query_mem_usage *mem_usage;
+> > +	uint64_t vram_size;
+> > +	uint32_t default_alignment;
+> > +	bool has_vram;
+> > +	bool supports_faults;
+> > +
+> > +	int number_gt;
+> > +	uint32_t va_bits;
+> > +};
+> > +
+> > +#define for_each_hw_engine(__fd, __hwe) \
+> > +	for (int __i = 0; __i < xe_number_hw_engines(__fd) && \
+> > +	     (__hwe = xe_hw_engine(__fd, __i)); ++__i)
+> > +#define for_each_hw_engine_class(__class) \
+> > +	for (__class = 0; __class < DRM_XE_ENGINE_CLASS_COMPUTE + 1; \
+> > +	     ++__class)
+> > +#define for_each_gt(__fd, __gt) \
+> > +	for (__gt = 0; __gt < xe_number_gt(__fd); ++__gt)
+> > +
+> > +int xe_number_gt(int fd);
+> > +uint64_t all_memory_regions(int fd);
+> > +uint64_t system_memory(int fd);
+> > +uint64_t vram_memory(int fd, int gt);
+> > +uint64_t vram_if_possible(int fd, int gt);
+> > +struct drm_xe_engine_class_instance *xe_hw_engines(int fd);
+> > +struct drm_xe_engine_class_instance *xe_hw_engine(int fd, int idx);
+> > +int xe_number_hw_engines(int fd);
+> > +bool xe_has_vram(int fd);
+> > +uint64_t xe_vram_size(int fd);
+> > +uint32_t xe_get_default_alignment(int fd);
+> > +uint32_t xe_va_bits(int fd);
+> > +bool xe_supports_faults(int fd);
+> > +const char* xe_engine_class_string(uint32_t engine_class);
+> > +
+> > +struct xe_device *xe_device_get(int fd);
+> > +void xe_device_put(int fd);
+> > +
+> > +#endif	/* XE_QUERY_H */
+> > diff --git a/lib/xe/xe_spin.c b/lib/xe/xe_spin.c
+> > new file mode 100644
+> > index 00000000..fdbec40e
+> > --- /dev/null
+> > +++ b/lib/xe/xe_spin.c
+> > @@ -0,0 +1,157 @@
+> > +/*
+> > + * Copyright © 2022 Intel Corporation
+> > + *
+> > + * Permission is hereby granted, free of charge, to any person obtaining a
+> > + * copy of this software and associated documentation files (the "Software"),
+> > + * to deal in the Software without restriction, including without limitation
+> > + * the rights to use, copy, modify, merge, publish, distribute, sublicense,
+> > + * and/or sell copies of the Software, and to permit persons to whom the
+> > + * Software is furnished to do so, subject to the following conditions:
+> > + *
+> > + * The above copyright notice and this permission notice (including the next
+> > + * paragraph) shall be included in all copies or substantial portions of the
+> > + * Software.
+> > + *
+> > + * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+> > + * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+> > + * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
+> > + * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+> > + * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+> > + * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
+> > + * IN THE SOFTWARE.
+> > + *
+> > + * Authors:
+> > + *    Matthew Brost <matthew.brost@intel.com>
+> > + */
+> > +
+> > +#include <string.h>
+> > +
+> > +#include "drmtest.h"
+> > +#include "igt.h"
+> > +#include "igt_core.h"
+> > +#include "igt_syncobj.h"
+> > +#include "intel_reg.h"
+> > +#include "xe_ioctl.h"
+> > +#include "xe_spin.h"
+> > +
+> > +void xe_spin_init(struct xe_spin *spin, uint64_t addr, bool preempt)
+> > +{
+> > +	uint64_t batch_offset = (char *)&spin->batch - (char *)spin;
+> > +	uint64_t batch_addr = addr + batch_offset;
+> > +	uint64_t start_offset = (char *)&spin->start - (char *)spin;
+> > +	uint64_t start_addr = addr + start_offset;
+> > +	uint64_t end_offset = (char *)&spin->end - (char *)spin;
+> > +	uint64_t end_addr = addr + end_offset;
+> > +	int b = 0;
+> > +
+> > +	spin->start = 0;
+> > +	spin->end = 0xffffffff;
+> > +
+> > +	spin->batch[b++] = MI_STORE_DWORD_IMM;
+> > +	spin->batch[b++] = start_addr;
+> > +	spin->batch[b++] = start_addr >> 32;
+> > +	spin->batch[b++] = 0xc0ffee;
+> > +
+> > +	if (preempt)
+> > +		spin->batch[b++] = (0x5 << 23);
+> > +
+> > +	spin->batch[b++] = MI_COND_BATCH_BUFFER_END | MI_DO_COMPARE | 2;
+> > +	spin->batch[b++] = 0;
+> > +	spin->batch[b++] = end_addr;
+> > +	spin->batch[b++] = end_addr >> 32;
+> > +
+> > +	spin->batch[b++] = MI_BATCH_BUFFER_START | 1 << 8 | 1;
+> > +	spin->batch[b++] = batch_addr;
+> > +	spin->batch[b++] = batch_addr >> 32;
+> > +
+> > +	igt_assert(b <= ARRAY_SIZE(spin->batch));
+> > +}
+> > +
+> > +bool xe_spin_started(struct xe_spin *spin)
+> > +{
+> > +	return spin->start != 0;
+> > +}
+> > +
+> > +void xe_spin_wait_started(struct xe_spin *spin)
+> > +{
+> > +	while(!xe_spin_started(spin));
+> > +}
+> > +
+> > +void xe_spin_end(struct xe_spin *spin)
+> > +{
+> > +	spin->end = 0;
+> > +}
+> > +
+> > +void xe_cork_init(int fd, struct drm_xe_engine_class_instance *hwe,
+> > +		  struct xe_cork *cork)
+> > +{
+> > +	uint64_t addr = 0; /* ZK xe_get_default_alignment(fd); */
+> > +	size_t bo_size = 0; /* ZK xe_get_default_alignment(fd); */
+> > +	uint32_t vm, bo, engine, syncobj;
+> > +	struct xe_spin *spin;
+> > +	struct drm_xe_sync sync = {
+> > +		.flags = DRM_XE_SYNC_SYNCOBJ | DRM_XE_SYNC_SIGNAL,
+> > +	};
+> > +	struct drm_xe_exec exec = {
+> > +		.num_batch_buffer = 1,
+> > +		.num_syncs = 1,
+> > +		.syncs = to_user_pointer(&sync),
+> > +	};
+> > +
+> > +	vm = xe_vm_create(fd, 0, 0);
+> > +
+> > +	bo = xe_bo_create(fd, hwe->gt_id, vm, bo_size);
+> > +	spin = xe_bo_map(fd, bo, 0x1000);
+> > +
+> > +	xe_vm_bind_sync(fd, vm, bo, 0, addr, bo_size);
+> > +
+> > +	engine = xe_engine_create(fd, vm, hwe, 0);
+> > +	syncobj = syncobj_create(fd, 0);
+> > +
+> > +	xe_spin_init(spin, addr, true);
+> > +	exec.engine_id = engine;
+> > +	exec.address = addr;
+> > +	sync.handle = syncobj;
+> > +	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_EXEC, &exec), 0);
+> > +
+> > +	cork->spin = spin;
+> > +	cork->fd = fd;
+> > +	cork->vm = vm;
+> > +	cork->bo = bo;
+> > +	cork->engine = engine;
+> > +	cork->syncobj = syncobj;
+> > +}
+> > +
+> > +bool xe_cork_started(struct xe_cork *cork)
+> > +{
+> > +	return xe_spin_started(cork->spin);
+> > +}
+> > +
+> > +void xe_cork_wait_started(struct xe_cork *cork)
+> > +{
+> > +	xe_spin_wait_started(cork->spin);
+> > +}
+> > +
+> > +void xe_cork_end(struct xe_cork *cork)
+> > +{
+> > +	xe_spin_end(cork->spin);
+> > +}
+> > +
+> > +void xe_cork_wait_done(struct xe_cork *cork)
+> > +{
+> > +	igt_assert(syncobj_wait(cork->fd, &cork->syncobj, 1, INT64_MAX, 0,
+> > +				NULL));
+> > +}
+> > +
+> > +void xe_cork_fini(struct xe_cork *cork)
+> > +{
+> > +	syncobj_destroy(cork->fd, cork->syncobj);
+> > +	xe_engine_destroy(cork->fd, cork->engine);
+> > +	xe_vm_destroy(cork->fd, cork->vm);
+> > +	gem_close(cork->fd, cork->bo);
+> > +}
+> > +
+> > +uint32_t xe_cork_sync_handle(struct xe_cork *cork)
+> > +{
+> > +	return cork->syncobj;
+> > +}
+> > diff --git a/lib/xe/xe_spin.h b/lib/xe/xe_spin.h
+> > new file mode 100644
+> > index 00000000..cf5747f5
+> > --- /dev/null
+> > +++ b/lib/xe/xe_spin.h
+> > @@ -0,0 +1,66 @@
+> > +/*
+> > + * Copyright © 2022 Intel Corporation
+> > + *
+> > + * Permission is hereby granted, free of charge, to any person obtaining a
+> > + * copy of this software and associated documentation files (the "Software"),
+> > + * to deal in the Software without restriction, including without limitation
+> > + * the rights to use, copy, modify, merge, publish, distribute, sublicense,
+> > + * and/or sell copies of the Software, and to permit persons to whom the
+> > + * Software is furnished to do so, subject to the following conditions:
+> > + *
+> > + * The above copyright notice and this permission notice (including the next
+> > + * paragraph) shall be included in all copies or substantial portions of the
+> > + * Software.
+> > + *
+> > + * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+> > + * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+> > + * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
+> > + * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+> > + * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+> > + * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
+> > + * IN THE SOFTWARE.
+> > + *
+> > + * Authors:
+> > + *    Matthew Brost <matthew.brost@intel.com>
+> > + */
+> > +
+> > +#ifndef XE_SPIN_H
+> > +#define XE_SPIN_H
+> > +
+> > +#include <stdint.h>
+> > +#include <stdbool.h>
+> > +
+> > +#include "xe_query.h"
+> > +
+> > +/* Mapped GPU object */
+> > +struct xe_spin {
+> > +	uint32_t batch[16];
+> > +	uint64_t pad;
+> > +	uint32_t start;
+> > +	uint32_t end;
+> > +};
+> > +
+> > +void xe_spin_init(struct xe_spin *spin, uint64_t addr, bool preempt);
+> > +bool xe_spin_started(struct xe_spin *spin);
+> > +void xe_spin_wait_started(struct xe_spin *spin);
+> > +void xe_spin_end(struct xe_spin *spin);
+> > +
+> > +struct xe_cork {
+> > +	struct xe_spin *spin;
+> > +	int fd;
+> > +	uint32_t vm;
+> > +	uint32_t bo;
+> > +	uint32_t engine;
+> > +	uint32_t syncobj;
+> > +};
+> > +
+> > +void xe_cork_init(int fd, struct drm_xe_engine_class_instance *hwe,
+> > +		  struct xe_cork *cork);
+> > +bool xe_cork_started(struct xe_cork *cork);
+> > +void xe_cork_wait_started(struct xe_cork *cork);
+> > +void xe_cork_end(struct xe_cork *cork);
+> > +void xe_cork_wait_done(struct xe_cork *cork);
+> > +void xe_cork_fini(struct xe_cork *cork);
+> > +uint32_t xe_cork_sync_handle(struct xe_cork *cork);
+> > +
+> > +#endif	/* XE_SPIN_H */
+> > diff --git a/meson.build b/meson.build
+> > index e7a68503..2a7f6078 100644
+> > --- a/meson.build
+> > +++ b/meson.build
+> > @@ -261,6 +261,7 @@ libexecdir = join_paths(get_option('libexecdir'), 'igt-gpu-tools')
+> >  amdgpudir = join_paths(libexecdir, 'amdgpu')
+> >  v3ddir = join_paths(libexecdir, 'v3d')
+> >  vc4dir = join_paths(libexecdir, 'vc4')
+> > +xedir = join_paths(libexecdir, 'xe')
+> >  mandir = get_option('mandir')
+> >  pkgconfigdir = join_paths(libdir, 'pkgconfig')
+> >  python3 = find_program('python3', required : true)
+> > @@ -308,12 +309,19 @@ if get_option('use_rpath')
+> >  		vc4_rpathdir = join_paths(vc4_rpathdir, '..')
+> >  	endforeach
+> >  	vc4_rpathdir = join_paths(vc4_rpathdir, libdir)
+> > +
+> > +	xedir_rpathdir = '$ORIGIN'
+> > +	foreach p : xedir.split('/')
+> > +		xedir_rpathdir = join_paths(xedir_rpathdir, '..')
+> > +	endforeach
+> > +	xedir_rpathdir = join_paths(xedir_rpathdir, libdir)
+> >  else
+> >  	bindir_rpathdir = ''
+> >  	libexecdir_rpathdir = ''
+> >  	amdgpudir_rpathdir = ''
+> >  	v3d_rpathdir = ''
+> >  	vc4_rpathdir = ''
+> > +	xedir_rpathdir = ''
+> >  endif
+> >  
+> >  subdir('lib')
+> > -- 
+> > 2.34.1
+> > 
