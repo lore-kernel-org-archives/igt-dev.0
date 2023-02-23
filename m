@@ -1,22 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 469F210E4B7
- for <igt-dev@lists.freedesktop.org>; Thu, 23 Feb 2023 07:26:47 +0000 (UTC)
-Message-ID: <5082cafe-d957-9012-4b93-845bf68b3ac4@intel.com>
-Date: Thu, 23 Feb 2023 12:56:31 +0530
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B397A10E4AF
+ for <igt-dev@lists.freedesktop.org>; Thu, 23 Feb 2023 08:11:23 +0000 (UTC)
+From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Thu, 23 Feb 2023 09:11:19 +0100
+Message-Id: <20230223081119.21616-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
-Content-Language: en-US
-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org, Uma Shankar <uma.shankar@intel.com>
-References: <20230222104806.4817-1-swati2.sharma@intel.com>
- <20230222104806.4817-2-swati2.sharma@intel.com>
- <20230222143507.tt2afueeos3vpf5r@kamilkon-desk1>
-From: Swati Sharma <swati2.sharma@intel.com>
-In-Reply-To: <20230222143507.tt2afueeos3vpf5r@kamilkon-desk1>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Subject: Re: [igt-dev] [PATCH i-g-t v2 1/2] tests/kms_hdr: Add negative test
- for invalid metadata sizes
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t] i915/gem_softpin: Ensure gpu is idle when
+ we use manual placement
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,106 +22,39 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Thanks for the reviews! Patch pushed.
+For separate execution there is no risk we may reserve offset which is
+still in use by some job. But for running bunch of allocator tests
+which may be still on gpu such risk exists. To avoid failures on
+grouped execution ensure for 'nopin' subtests gpu is idle first.
 
-On 22-Feb-23 8:05 PM, Kamil Konieczny wrote:
-> Hi Swati,
-> 
-> On 2023-02-22 at 16:18:05 +0530, Swati Sharma wrote:
->> Negative test is added in which HDR output metadata prop is
->> set with invalid sizes.
->>
->> v2: -Fixed nitpicks (Kamil)
->>      -Add cleanup (Kamil)
->>
->> Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
->> Reviewed-by: Uma Shankar <uma.shankar@intel.com>
-> 
-> Lgtm,
-> 
-> Acked-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> 
->> ---
->>   tests/kms_hdr.c | 35 +++++++++++++++++++++++++++++++++++
->>   1 file changed, 35 insertions(+)
->>
->> diff --git a/tests/kms_hdr.c b/tests/kms_hdr.c
->> index 655c3e14f..63b03089b 100644
->> --- a/tests/kms_hdr.c
->> +++ b/tests/kms_hdr.c
->> @@ -50,6 +50,7 @@ enum {
->>   	TEST_DPMS = 1 << 1,
->>   	TEST_SUSPEND = 1 << 2,
->>   	TEST_SWAP = 1 << 3,
->> +	TEST_INVALID_METADATA_SIZES = 1 << 4,
->>   };
->>   
->>   /* BPC connector state. */
->> @@ -327,6 +328,18 @@ static void set_hdr_output_metadata(data_t *data,
->>   				     meta ? sizeof(*meta) : 0);
->>   }
->>   
->> +/* Sets the HDR output metadata prop with invalid size. */
->> +static int set_invalid_hdr_output_metadata(data_t *data,
->> +					   struct hdr_output_metadata const *meta,
->> +					   size_t length)
->> +{
->> +	igt_output_replace_prop_blob(data->output,
->> +				     IGT_CONNECTOR_HDR_OUTPUT_METADATA, meta,
->> +				     meta ? length : 0);
->> +
->> +	return igt_display_try_commit_atomic(&data->display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
->> +}
->> +
->>   /* Converts a double to 861-G spec FP format. */
->>   static uint16_t calc_hdr_float(double val)
->>   {
->> @@ -518,6 +531,22 @@ static void test_static_swap(data_t *data, enum pipe pipe, igt_output_t *output)
->>   	igt_remove_fb(data->fd, &afb);
->>   }
->>   
->> +static void test_invalid_metadata_sizes(data_t *data, igt_output_t *output)
->> +{
->> +	struct hdr_output_metadata hdr;
->> +	size_t metadata_size = sizeof(hdr);
->> +
->> +	fill_hdr_output_metadata_st2048(&hdr);
->> +
->> +	igt_assert_eq(set_invalid_hdr_output_metadata(data, &hdr, 1), -EINVAL);
->> +	igt_assert_eq(set_invalid_hdr_output_metadata(data, &hdr, metadata_size + 1), -EINVAL);
->> +	igt_assert_eq(set_invalid_hdr_output_metadata(data, &hdr, metadata_size - 1), -EINVAL);
->> +	igt_assert_eq(set_invalid_hdr_output_metadata(data, &hdr, metadata_size * 2), -EINVAL);
->> +
->> +	test_fini(data);
->> +	igt_remove_fb(data->fd, &afb);
->> +}
->> +
->>   /* Returns true if an output supports HDR metadata property. */
->>   static bool has_hdr(igt_output_t *output)
->>   {
->> @@ -565,6 +594,8 @@ static void test_hdr(data_t *data, uint32_t flags)
->>   						test_static_toggle(data, pipe, output, flags);
->>   					if (flags & TEST_SWAP)
->>   						test_static_swap(data, pipe, output);
->> +					if (flags & TEST_INVALID_METADATA_SIZES)
->> +						test_invalid_metadata_sizes(data, output);
->>   				}
->>   
->>   				/* One pipe is enough */
->> @@ -613,6 +644,10 @@ igt_main
->>   	igt_subtest_with_dynamic("static-swap")
->>   		test_hdr(&data, TEST_SWAP);
->>   
->> +	igt_describe("Tests invalid HDR metadata sizes");
->> +	igt_subtest_with_dynamic("invalid-metadata-sizes")
->> +		test_hdr(&data, TEST_INVALID_METADATA_SIZES);
->> +
->>   	igt_fixture {
->>   		igt_display_fini(&data.display);
->>   		close(data.fd);
->> -- 
->> 2.25.1
->>
+Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+---
+ tests/i915/gem_softpin.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
+diff --git a/tests/i915/gem_softpin.c b/tests/i915/gem_softpin.c
+index ad6d3f531c..c29bfd43d9 100644
+--- a/tests/i915/gem_softpin.c
++++ b/tests/i915/gem_softpin.c
+@@ -1449,13 +1449,17 @@ igt_main
+ 
+ 		igt_describe("Check that we can combine manual placement with automatic"
+ 			     " GTT placement.");
+-		igt_subtest("allocator-nopin")
++		igt_subtest("allocator-nopin") {
++			gem_quiescent_gpu(fd);
+ 			test_allocator_nopin(fd, false);
++		}
+ 
+ 		igt_describe("Check that we can combine manual placement with automatic"
+ 			     " GTT placement and reserves/unreserves space for objects.");
+-		igt_subtest("allocator-nopin-reserve")
++		igt_subtest("allocator-nopin-reserve") {
++			gem_quiescent_gpu(fd);
+ 			test_allocator_nopin(fd, true);
++		}
+ 
+ 		igt_describe("Check if multiple processes can use alloctor.");
+ 		igt_subtest("allocator-fork")
 -- 
-~Swati Sharma
+2.34.1
