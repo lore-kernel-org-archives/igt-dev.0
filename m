@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3931010EBE1
- for <igt-dev@lists.freedesktop.org>; Thu, 23 Feb 2023 15:15:45 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C0A7610EBDB
+ for <igt-dev@lists.freedesktop.org>; Thu, 23 Feb 2023 15:15:41 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Thu, 23 Feb 2023 20:39:52 +0530
-Message-Id: <20230223151018.2565040-26-bhanuprakash.modem@intel.com>
+Date: Thu, 23 Feb 2023 20:39:49 +0530
+Message-Id: <20230223151018.2565040-23-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230223151018.2565040-1-bhanuprakash.modem@intel.com>
 References: <20230223151018.2565040-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t v8 25/51] tests/kms_plane_multiple: Add support
+Subject: [igt-dev] [i-g-t v8 22/51] tests/kms_plane_alpha_blend: Add support
  for Bigjoiner
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -31,55 +31,40 @@ Example:
 * To use 8K mode on a pipe then consecutive pipe must be available & free.
 
 V2: - Use updated helper name
+V3: - Rebase
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Reviewed-by: Karthik B S <karthik.b.s@intel.com>
+Reviewed-by:  Swati Sharma <swati2.sharma@intel.com>
 ---
- tests/kms_plane_multiple.c | 15 ++++++++++++---
- 1 file changed, 12 insertions(+), 3 deletions(-)
+ tests/kms_plane_alpha_blend.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/tests/kms_plane_multiple.c b/tests/kms_plane_multiple.c
-index 756590159..7dd9d586d 100644
---- a/tests/kms_plane_multiple.c
-+++ b/tests/kms_plane_multiple.c
-@@ -103,6 +103,7 @@ get_reference_crc(data_t *data, igt_output_t *output, enum pipe pipe,
- 	igt_plane_t *primary;
- 	int ret;
+diff --git a/tests/kms_plane_alpha_blend.c b/tests/kms_plane_alpha_blend.c
+index b8ead9472..0d03e178a 100644
+--- a/tests/kms_plane_alpha_blend.c
++++ b/tests/kms_plane_alpha_blend.c
+@@ -175,9 +175,6 @@ static void prepare_crtc(data_t *data, igt_output_t *output, enum pipe pipe)
+ 	int w, h;
+ 	igt_plane_t *primary = igt_pipe_get_plane_type(&display->pipes[pipe], DRM_PLANE_TYPE_PRIMARY);
  
-+	igt_display_reset(&data->display);
- 	igt_output_set_pipe(output, pipe);
+-	igt_display_reset(display);
+-	igt_output_set_pipe(output, pipe);
+-
+ 	/* create the pipe_crc object for this pipe */
+ 	igt_pipe_crc_free(data->pipe_crc);
+ 	data->pipe_crc = igt_pipe_crc_new(data->gfx_fd, pipe,
+@@ -655,6 +652,12 @@ static void run_subtests(data_t *data)
+ 				    pipe != active_pipes[last_pipe])
+ 					continue;
  
- 	primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
-@@ -290,6 +291,9 @@ test_plane_position_with_output(data_t *data, enum pipe pipe,
- 	bool loop_forever;
- 	char info[256];
- 
-+	igt_info("Using (pipe %s + %s) to run the subtest.\n",
-+		 kmstest_pipe_name(pipe), igt_output_name(output));
++				igt_display_reset(&data->display);
 +
- 	if (opt.iterations == LOOP_FOREVER) {
- 		loop_forever = true;
- 		sprintf(info, "forever");
-@@ -373,12 +377,17 @@ static void run_test(data_t *data, uint64_t modifier)
- {
- 	enum pipe pipe;
- 	igt_output_t *output;
-+	igt_display_t *display = &data->display;
- 
--	if (!igt_display_has_format_mod(&data->display, DRM_FORMAT_XRGB8888, modifier))
-+	if (!igt_display_has_format_mod(display, DRM_FORMAT_XRGB8888, modifier))
- 		return;
- 
--	for_each_pipe_with_valid_output(&data->display, pipe, output) {
--		igt_display_reset(&data->display);
-+	for_each_pipe_with_valid_output(display, pipe, output) {
-+		igt_display_reset(display);
++				igt_output_set_pipe(output, pipe);
++				if (!i915_pipe_output_combo_valid(&data->display))
++					continue;
 +
-+		igt_output_set_pipe(output, pipe);
-+		if (!i915_pipe_output_combo_valid(display))
-+			continue;
- 
- 		igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), output->name)
- 			test_plane_position(data, pipe, output, modifier);
+ 				prepare_crtc(data, output, pipe);
+ 				if (!pipe_check(data, pipe, subtests[i].blend, subtests[i].must_multiply))
+ 					continue;
 -- 
 2.39.1
