@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3B0AA10E4DB
- for <igt-dev@lists.freedesktop.org>; Thu, 23 Feb 2023 15:15:20 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A03F210E4DB
+ for <igt-dev@lists.freedesktop.org>; Thu, 23 Feb 2023 15:15:22 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Thu, 23 Feb 2023 20:39:31 +0530
-Message-Id: <20230223151018.2565040-5-bhanuprakash.modem@intel.com>
+Date: Thu, 23 Feb 2023 20:39:33 +0530
+Message-Id: <20230223151018.2565040-7-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230223151018.2565040-1-bhanuprakash.modem@intel.com>
 References: <20230223151018.2565040-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t v8 04/51] tests/kms_atomic: Add support for
- Bigjoiner
+Subject: [igt-dev] [i-g-t v8 06/51] tests/kms_atomic_transition: Add support
+ for Bigjoiner
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -33,89 +33,113 @@ Example:
 V2: - Use updated helper name
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Reviewed-by: Swati Sharma <swati2.sharma@intel.com>
+Reviewed-by: Nidhi Gupta <nidhi1.gupta@intel.com>
 ---
- tests/kms_atomic.c | 32 ++++++++++++++++++++++++++++----
- 1 file changed, 28 insertions(+), 4 deletions(-)
+ tests/kms_atomic_transition.c | 50 ++++++++++++++++++++++++++++++++---
+ 1 file changed, 46 insertions(+), 4 deletions(-)
 
-diff --git a/tests/kms_atomic.c b/tests/kms_atomic.c
-index 2a3fb74be..61117a3f9 100644
---- a/tests/kms_atomic.c
-+++ b/tests/kms_atomic.c
-@@ -1265,6 +1265,10 @@ static void atomic_plane_damage(igt_pipe_t *pipe, igt_plane_t *plane, struct igt
+diff --git a/tests/kms_atomic_transition.c b/tests/kms_atomic_transition.c
+index 64e7e7091..f428641fa 100644
+--- a/tests/kms_atomic_transition.c
++++ b/tests/kms_atomic_transition.c
+@@ -68,6 +68,10 @@ run_primary_test(data_t *data, enum pipe pipe, igt_output_t *output)
+ 	unsigned flags = DRM_MODE_ATOMIC_TEST_ONLY | DRM_MODE_ATOMIC_ALLOW_MODESET;
  
- static void atomic_setup(igt_display_t *display, enum pipe pipe, igt_output_t *output, igt_plane_t *primary, struct igt_fb *fb)
- {
+ 	igt_display_reset(&data->display);
++
 +	igt_info("Using (pipe %s + %s) to run the subtest.\n",
 +		 kmstest_pipe_name(pipe), igt_output_name(output));
 +
-+	igt_display_reset(display);
  	igt_output_set_pipe(output, pipe);
- 	igt_plane_set_fb(primary, fb);
+ 	primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
  
-@@ -1293,6 +1297,7 @@ igt_main
- 	igt_plane_t *primary = NULL;
- 	drmModeModeInfo *mode;
- 	struct igt_fb fb;
-+	bool valid_config = false;
+@@ -487,6 +491,9 @@ run_transition_test(data_t *data, enum pipe pipe, igt_output_t *output,
+ 	unsigned flags = 0;
+ 	int ret;
  
- 	igt_fixture {
- 		display.drm_fd = drm_open_driver_master(DRIVER_ANY);
-@@ -1303,8 +1308,16 @@ igt_main
- 		igt_require(display.is_atomic);
- 		igt_display_require_output(&display);
++	igt_info("Using (pipe %s + %s) to run the subtest.\n",
++		 kmstest_pipe_name(pipe), igt_output_name(output));
++
+ 	if (fencing)
+ 		prepare_fencing(data, pipe);
+ 	else
+@@ -759,8 +766,13 @@ static unsigned set_combinations(data_t *data, unsigned mask, struct igt_fb *fb)
+ 			if (output->pending_pipe != PIPE_NONE)
+ 				continue;
  
--		for_each_pipe_with_valid_output(&display, pipe, output)
+-			mode = igt_output_get_mode(output);
 -			break;
-+		for_each_pipe_with_valid_output(&display, pipe, output) {
-+			igt_display_reset(&display);
-+
 +			igt_output_set_pipe(output, pipe);
-+			if (i915_pipe_output_combo_valid(&display)) {
-+				valid_config = true;
++			if (i915_pipe_output_combo_valid(&data->display)) {
++				mode = igt_output_get_mode(output);
 +				break;
++			} else {
++				igt_output_set_pipe(output, PIPE_NONE);
 +			}
-+		}
-+		igt_require(valid_config);
+ 		}
  
- 		pipe_obj = &display.pipes[pipe];
- 		primary = igt_pipe_get_plane_type(pipe_obj, DRM_PLANE_TYPE_PRIMARY);
-@@ -1342,9 +1355,13 @@ igt_main
- 	igt_subtest("plane-primary-overlay-mutable-zpos") {
- 		uint32_t format_primary = DRM_FORMAT_ARGB8888;
- 		uint32_t format_overlay = DRM_FORMAT_ARGB1555;
-+		igt_plane_t *overlay;
+ 		if (!mode)
+@@ -845,8 +857,17 @@ retry:
+ 				continue;
  
--		igt_plane_t *overlay =
--			igt_pipe_get_plane_type(pipe_obj, DRM_PLANE_TYPE_OVERLAY);
-+		igt_info("Using (pipe %s + %s) to run the subtest.\n",
-+			 kmstest_pipe_name(pipe), igt_output_name(output));
+ 			igt_output_set_pipe(output, i);
+-			mode = igt_output_get_mode(output);
+-			break;
++			if (i915_pipe_output_combo_valid(&data->display)) {
++				mode = igt_output_get_mode(output);
 +
-+		igt_display_reset(&display);
-+		overlay = igt_pipe_get_plane_type(pipe_obj, DRM_PLANE_TYPE_OVERLAY);
- 		igt_require(overlay);
- 
- 		igt_require(igt_plane_has_prop(primary, IGT_PLANE_ZPOS));
-@@ -1361,6 +1378,10 @@ igt_main
- 	igt_describe("Verify the reported zpos property of planes by making sure "\
- 		     "only higher zpos planes cover the lower zpos ones.");
- 	igt_subtest("plane-immutable-zpos") {
-+		igt_info("Using (pipe %s + %s) to run the subtest.\n",
-+			 kmstest_pipe_name(pipe), igt_output_name(output));
++				igt_info("(pipe %s + %s), mode:",
++					 kmstest_pipe_name(i), igt_output_name(output));
++				kmstest_dump_mode(mode);
 +
-+		igt_display_reset(&display);
- 		igt_output_set_pipe(output, pipe);
- 		plane_immutable_zpos(&display, pipe_obj, output);
- 	}
-@@ -1370,6 +1391,9 @@ igt_main
- 	igt_subtest("test-only") {
- 		atomic_clear(&display, pipe, primary, output);
++				break;
++			} else {
++				igt_output_set_pipe(output, PIPE_NONE);
++			}
+ 		}
  
-+		igt_info("Using (pipe %s + %s) to run the subtest.\n",
-+			 kmstest_pipe_name(pipe), igt_output_name(output));
+ 		if (mode) {
+@@ -984,6 +1005,21 @@ static void run_modeset_transition(data_t *data, int requested_outputs, bool non
+ 	igt_remove_fb(data->drm_fd, &data->fbs[1]);
+ }
+ 
++static bool pipe_output_combo_valid(igt_display_t *display,
++				    enum pipe pipe, igt_output_t *output)
++{
++	bool ret = true;
 +
- 		test_only(pipe_obj, primary, output);
- 	}
++	igt_display_reset(display);
++
++	igt_output_set_pipe(output, pipe);
++	if (!i915_pipe_output_combo_valid(display))
++		ret = false;
++	igt_output_set_pipe(output, PIPE_NONE);
++
++	return ret;
++}
++
+ static int opt_handler(int opt, int opt_index, void *_data)
+ {
+ 	data_t *data = _data;
+@@ -1083,6 +1119,9 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
+ 			if (pipe_count == 2 * count && !data.extended)
+ 				break;
  
++			if (!pipe_output_combo_valid(&data.display, pipe, output))
++				continue;
++
+ 			pipe_count++;
+ 			igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), igt_output_name(output))
+ 				run_primary_test(&data, pipe, output);
+@@ -1112,6 +1151,9 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
+ 				if (pipe_count == 2 * count && !data.extended)
+ 					break;
+ 
++				if (!pipe_output_combo_valid(&data.display, pipe, output))
++					continue;
++
+ 				pipe_count++;
+ 				igt_dynamic_f("pipe-%s-%s",
+ 					      kmstest_pipe_name(pipe),
 -- 
 2.39.1
