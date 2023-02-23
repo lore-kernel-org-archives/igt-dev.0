@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A2AC988FAE
- for <igt-dev@lists.freedesktop.org>; Thu, 23 Feb 2023 15:16:23 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2F75910EBCB
+ for <igt-dev@lists.freedesktop.org>; Thu, 23 Feb 2023 15:16:21 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Thu, 23 Feb 2023 20:40:17 +0530
-Message-Id: <20230223151018.2565040-51-bhanuprakash.modem@intel.com>
+Date: Thu, 23 Feb 2023 20:40:07 +0530
+Message-Id: <20230223151018.2565040-41-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230223151018.2565040-1-bhanuprakash.modem@intel.com>
 References: <20230223151018.2565040-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t v8 50/51] tests/i915/kms_psr_stress_test: Add
- support for Bigjoiner
+Subject: [igt-dev] [i-g-t v8 40/51] tests/i915/kms_cdclk: Add support for
+ Bigjoiner
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -31,37 +31,69 @@ Example:
 * To use 8K mode on a pipe then consecutive pipe must be available & free.
 
 V2: - Use updated helper name
+V3: - Fix "mode-transition-all-outputs"
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Reviewed-by: Jeevan B <jeevan.b@intel.com>
+Reviewed-by: Swati Sharma <swati2.sharma@intel.com>
 ---
- tests/i915/kms_psr_stress_test.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ tests/i915/kms_cdclk.c | 31 ++++++++++++++++++++++---------
+ 1 file changed, 22 insertions(+), 9 deletions(-)
 
-diff --git a/tests/i915/kms_psr_stress_test.c b/tests/i915/kms_psr_stress_test.c
-index daac41d44..26e222a27 100644
---- a/tests/i915/kms_psr_stress_test.c
-+++ b/tests/i915/kms_psr_stress_test.c
-@@ -72,7 +72,13 @@ static void setup_output(data_t *data)
- 		if (c->connector_type != DRM_MODE_CONNECTOR_eDP)
- 			continue;
+diff --git a/tests/i915/kms_cdclk.c b/tests/i915/kms_cdclk.c
+index 991a7c507..f1a46a7d4 100644
+--- a/tests/i915/kms_cdclk.c
++++ b/tests/i915/kms_cdclk.c
+@@ -257,15 +257,23 @@ static void test_mode_transition_on_all_outputs(data_t *data)
+ 	for_each_connected_output(&data->display, output)
+ 		valid_outputs++;
  
-+		igt_display_reset(display);
- 		igt_output_set_pipe(output, pipe);
++	i = 0;
+ 	for_each_connected_output(display, output) {
+ 		mode = igt_output_get_mode(output);
+ 		igt_assert(mode);
+ 
+-		igt_output_set_pipe(output, PIPE_NONE);
+-
+ 		width = max(width, mode->hdisplay);
+ 		height = max(height, mode->vdisplay);
++
++		mode_hi = get_highres_mode(output);
++		igt_require(mode_hi != NULL);
++
++		igt_output_set_pipe(output, i);
++		igt_output_override_mode(output, mode_hi);
++		i++;
+ 	}
++	igt_require(i915_pipe_output_combo_valid(display));
++	igt_display_reset(display);
+ 
+ 	igt_create_pattern_fb(data->drm_fd, width, height, DRM_FORMAT_XRGB8888,
+ 			      DRM_FORMAT_MOD_LINEAR, &fb);
+@@ -332,13 +340,18 @@ static void run_cdclk_test(data_t *data, uint32_t flags)
+ 	enum pipe pipe;
+ 
+ 	for_each_pipe_with_valid_output(display, pipe, output) {
+-		igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), output->name)
+-			if (igt_pipe_connector_valid(pipe, output)) {
+-				if (flags & TEST_PLANESCALING)
+-					test_plane_scaling(data, pipe, output);
+-				if (flags & TEST_MODETRANSITION)
+-					test_mode_transition(data, pipe, output);
+-			}
++		igt_output_set_pipe(output, pipe);
 +		if (!i915_pipe_output_combo_valid(display)) {
 +			igt_output_set_pipe(output, PIPE_NONE);
 +			continue;
 +		}
 +
- 		data->output = output;
- 		data->mode = igt_output_get_mode(output);
- 
-@@ -374,4 +380,4 @@ igt_main
- 		close(data.debugfs_fd);
- 		close(data.drm_fd);
++		igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), output->name) {
++			if (flags & TEST_PLANESCALING)
++				test_plane_scaling(data, pipe, output);
++			if (flags & TEST_MODETRANSITION)
++				test_mode_transition(data, pipe, output);
++		}
  	}
--}
-\ No newline at end of file
-+}
+ }
+ 
 -- 
 2.39.1
