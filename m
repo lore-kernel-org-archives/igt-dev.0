@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2505410EBC9
- for <igt-dev@lists.freedesktop.org>; Thu, 23 Feb 2023 15:15:26 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E683810EBCB
+ for <igt-dev@lists.freedesktop.org>; Thu, 23 Feb 2023 15:15:30 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Thu, 23 Feb 2023 20:39:36 +0530
-Message-Id: <20230223151018.2565040-10-bhanuprakash.modem@intel.com>
+Date: Thu, 23 Feb 2023 20:39:40 +0530
+Message-Id: <20230223151018.2565040-14-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230223151018.2565040-1-bhanuprakash.modem@intel.com>
 References: <20230223151018.2565040-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t v8 09/51] tests/chamelium/kms_color_chamelium: Add
- support for Bigjoiner
+Subject: [igt-dev] [i-g-t v8 13/51] tests/kms_cursor_edge_walk: Add support
+ for Bigjoiner
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -33,44 +33,28 @@ Example:
 V2: - Use updated helper name
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Reviewed-by: Kunal Joshi <kunal1.joshi@intel.com>
+Reviewed-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
 ---
- tests/chamelium/kms_chamelium_color.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ tests/kms_cursor_edge_walk.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/tests/chamelium/kms_chamelium_color.c b/tests/chamelium/kms_chamelium_color.c
-index 907f4dd55..b7c84ae4d 100644
---- a/tests/chamelium/kms_chamelium_color.c
-+++ b/tests/chamelium/kms_chamelium_color.c
-@@ -458,6 +458,9 @@ run_gamma_degamma_tests_for_pipe(data_t *data, enum pipe p,
- 	data->drm_format = DRM_FORMAT_XRGB8888;
- 	data->mode = igt_output_get_mode(data->output);
+diff --git a/tests/kms_cursor_edge_walk.c b/tests/kms_cursor_edge_walk.c
+index 304c0ea8f..5f423a18f 100644
+--- a/tests/kms_cursor_edge_walk.c
++++ b/tests/kms_cursor_edge_walk.c
+@@ -373,6 +373,13 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
+ 					    data.pipe != active_pipes[last_pipe])
+ 						continue;
  
-+	if (!pipe_output_combo_valid(data, p))
-+		return;
++					igt_display_reset(&data.display);
++					igt_output_set_pipe(data.output, data.pipe);
++					if (!i915_pipe_output_combo_valid(&data.display))
++						continue;
 +
- 	igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(p), data->output->name)
- 		igt_assert(test_t(data, data->primary, data->ports[port_idx]));
- }
-@@ -493,6 +496,9 @@ run_ctm_tests_for_pipe(data_t *data, enum pipe p,
- 	data->drm_format = DRM_FORMAT_XRGB8888;
- 	data->mode = igt_output_get_mode(data->output);
- 
-+	if (!pipe_output_combo_valid(data, p))
-+		return;
++					igt_output_set_pipe(data.output, PIPE_NONE);
 +
- 	igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(p), data->output->name) {
- 		bool success = false;
- 		int i;
-@@ -538,6 +544,9 @@ run_limited_range_ctm_test_for_pipe(data_t *data, enum pipe p,
- 	data->drm_format = DRM_FORMAT_XRGB8888;
- 	data->mode = igt_output_get_mode(data->output);
- 
-+	if (!pipe_output_combo_valid(data, p))
-+		return;
-+
- 	igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(p), data->output->name)
- 		igt_assert(test_t(data, data->primary, data->ports[port_idx]));
- }
+ 					igt_dynamic_f("pipe-%s-%s",
+ 						      kmstest_pipe_name(data.pipe),
+ 						      data.output->name)
 -- 
 2.39.1
