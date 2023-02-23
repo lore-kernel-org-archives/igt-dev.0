@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C60CA10EBCB
- for <igt-dev@lists.freedesktop.org>; Thu, 23 Feb 2023 15:15:29 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 999FF10EBCD
+ for <igt-dev@lists.freedesktop.org>; Thu, 23 Feb 2023 15:15:28 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Thu, 23 Feb 2023 20:39:39 +0530
-Message-Id: <20230223151018.2565040-13-bhanuprakash.modem@intel.com>
+Date: Thu, 23 Feb 2023 20:39:38 +0530
+Message-Id: <20230223151018.2565040-12-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230223151018.2565040-1-bhanuprakash.modem@intel.com>
 References: <20230223151018.2565040-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t v8 12/51] tests/kms_cursor_crc: Add support for
+Subject: [igt-dev] [i-g-t v8 11/51] tests/kms_concurrent: Add support for
  Bigjoiner
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -33,97 +33,33 @@ Example:
 V2: - Use updated helper name
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Reviewed-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
+Reviewed-by: Nidhi Gupta <nidhi1.gupta@intel.com>
 ---
- tests/kms_cursor_crc.c | 34 ++++++++++++++++++++++++++++++++++
- 1 file changed, 34 insertions(+)
+ tests/kms_concurrent.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/tests/kms_cursor_crc.c b/tests/kms_cursor_crc.c
-index 0b5aac30b..962ff27f5 100644
---- a/tests/kms_cursor_crc.c
-+++ b/tests/kms_cursor_crc.c
-@@ -700,6 +700,22 @@ static void test_rapid_movement(data_t *data)
- 	igt_assert_lt(usec, 0.9 * 400 * 1000000 / data->refresh);
+diff --git a/tests/kms_concurrent.c b/tests/kms_concurrent.c
+index 6f8ffd4a6..e6d61a84d 100644
+--- a/tests/kms_concurrent.c
++++ b/tests/kms_concurrent.c
+@@ -330,9 +330,17 @@ run_tests_for_pipe(data_t *data, enum pipe pipe)
+ 	igt_describe("Test atomic mode setting concurrently with multiple planes and screen "
+ 		     "resolution.");
+ 	igt_subtest_with_dynamic_f("pipe-%s", kmstest_pipe_name(pipe)) {
+-		for_each_valid_output_on_pipe(&data->display, pipe, output)
++		for_each_valid_output_on_pipe(&data->display, pipe, output) {
++			igt_display_reset(&data->display);
++
++			igt_output_set_pipe(output, pipe);
++			if (!i915_pipe_output_combo_valid(&data->display))
++				continue;
++
++			igt_output_set_pipe(output, PIPE_NONE);
+ 			igt_dynamic_f("%s", igt_output_name(output))
+ 				run_test(data, pipe, output);
++		}
+ 	}
  }
  
-+static bool valid_pipe_output_combo(data_t *data)
-+{
-+	bool ret = false;
-+	igt_display_t *display = &data->display;
-+
-+	igt_display_reset(display);
-+	igt_output_set_pipe(data->output, data->pipe);
-+
-+	if (i915_pipe_output_combo_valid(display))
-+		ret = true;
-+
-+	igt_output_set_pipe(data->output, PIPE_NONE);
-+
-+	return ret;
-+}
-+
- static void run_size_tests(data_t *data, int w, int h)
- {
- 	enum pipe pipe;
-@@ -752,6 +768,9 @@ static void run_size_tests(data_t *data, int w, int h)
- 			for_each_pipe_with_single_output(&data->display, pipe, data->output) {
- 				data->pipe = pipe;
- 
-+				if (!valid_pipe_output_combo(data))
-+					continue;
-+
- 				if (require_cursor_size(data, w, h)) {
- 					igt_info("Cursor size %dx%d not supported by driver\n", w, h);
- 					continue;
-@@ -785,6 +804,9 @@ static void run_tests_on_pipe(data_t *data)
- 		for_each_pipe_with_single_output(&data->display, pipe, data->output) {
- 			data->pipe = pipe;
- 
-+			if (!valid_pipe_output_combo(data))
-+				continue;
-+
- 			igt_dynamic_f("pipe-%s-%s",
- 				      kmstest_pipe_name(pipe),
- 				      data->output->name)
-@@ -799,6 +821,9 @@ static void run_tests_on_pipe(data_t *data)
- 		for_each_pipe_with_single_output(&data->display, pipe, data->output) {
- 			data->pipe = pipe;
- 
-+			if (!valid_pipe_output_combo(data))
-+				continue;
-+
- 			igt_dynamic_f("pipe-%s-%s",
- 				      kmstest_pipe_name(pipe),
- 				      data->output->name)
-@@ -813,6 +838,9 @@ static void run_tests_on_pipe(data_t *data)
- 		for_each_pipe_with_single_output(&data->display, pipe, data->output) {
- 			data->pipe = pipe;
- 
-+			if (!valid_pipe_output_combo(data))
-+				continue;
-+
- 			igt_dynamic_f("pipe-%s-%s",
- 				      kmstest_pipe_name(pipe),
- 				      data->output->name)
-@@ -831,6 +859,9 @@ static void run_tests_on_pipe(data_t *data)
- 			data->pipe = pipe;
- 			data->flags = TEST_DPMS;
- 
-+			if (!valid_pipe_output_combo(data))
-+				continue;
-+
- 			igt_dynamic_f("pipe-%s-%s",
- 				      kmstest_pipe_name(pipe),
- 				      data->output->name)
-@@ -846,6 +877,9 @@ static void run_tests_on_pipe(data_t *data)
- 			data->pipe = pipe;
- 			data->flags = TEST_SUSPEND;
- 
-+			if (!valid_pipe_output_combo(data))
-+				continue;
-+
- 			igt_dynamic_f("pipe-%s-%s",
- 				      kmstest_pipe_name(pipe),
- 				      data->output->name)
 -- 
 2.39.1
