@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7402210EBCB
- for <igt-dev@lists.freedesktop.org>; Thu, 23 Feb 2023 15:16:23 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 607FA10EBD0
+ for <igt-dev@lists.freedesktop.org>; Thu, 23 Feb 2023 15:16:27 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Thu, 23 Feb 2023 20:40:14 +0530
-Message-Id: <20230223151018.2565040-48-bhanuprakash.modem@intel.com>
+Date: Thu, 23 Feb 2023 20:40:18 +0530
+Message-Id: <20230223151018.2565040-52-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230223151018.2565040-1-bhanuprakash.modem@intel.com>
 References: <20230223151018.2565040-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t v8 47/51] tests/i915/kms_psr2_sf: Add support for
- Bigjoiner
+Subject: [igt-dev] [i-g-t v8 51/51] tests/i915/kms_pwrite_crc: Add support
+ for Bigjoiner
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -31,169 +31,44 @@ Example:
 * To use 8K mode on a pipe then consecutive pipe must be available & free.
 
 V2: - Use updated helper name
+V3: - Fix the usage of pipe & output
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Reviewed-by: Jeevan B <jeevan.b@intel.com>
+Reviewed-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
 ---
- tests/i915/kms_psr2_sf.c | 55 ++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 55 insertions(+)
+ tests/i915/kms_pwrite_crc.c | 12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
 
-diff --git a/tests/i915/kms_psr2_sf.c b/tests/i915/kms_psr2_sf.c
-index 2d761d311..51a36a469 100644
---- a/tests/i915/kms_psr2_sf.c
-+++ b/tests/i915/kms_psr2_sf.c
-@@ -870,6 +870,22 @@ static int check_psr2_support(data_t *data)
- 	return status;
- }
+diff --git a/tests/i915/kms_pwrite_crc.c b/tests/i915/kms_pwrite_crc.c
+index c84a184d8..3278d876d 100644
+--- a/tests/i915/kms_pwrite_crc.c
++++ b/tests/i915/kms_pwrite_crc.c
+@@ -110,6 +110,7 @@ static void prepare_crtc(data_t *data)
+ 	igt_output_t *output = data->output;
+ 	drmModeModeInfo *mode;
  
-+static bool
-+pipe_output_combo_valid(igt_display_t *display,
-+			enum pipe pipe, igt_output_t *output)
-+{
-+	bool ret = true;
-+
 +	igt_display_reset(display);
-+
-+	igt_output_set_pipe(output, pipe);
-+	if (!i915_pipe_output_combo_valid(display))
-+		ret = false;
-+	igt_output_set_pipe(output, PIPE_NONE);
-+
-+	return ret;
-+}
-+
- igt_main
+ 	/* select the pipe we want to use */
+ 	igt_output_set_pipe(output, data->pipe);
+ 
+@@ -156,12 +157,13 @@ static void cleanup_crtc(data_t *data)
+ static void run_test(data_t *data)
  {
- 	data_t data = {};
-@@ -930,6 +946,9 @@ igt_main
- 	igt_describe("Test that selective fetch works on primary plane");
- 	igt_subtest_with_dynamic_f("primary-%s-sf-dmg-area", op_str(data.op)) {
- 		for (i = 0; i < n_pipes; i++) {
-+			if (!pipe_output_combo_valid(&data.display, pipes[i], outputs[i]))
-+				continue;
+ 	igt_display_t *display = &data->display;
+-	igt_output_t *output;
+-	enum pipe pipe;
+ 
+-	for_each_pipe_with_valid_output(display, pipe, output) {
+-		data->output = output;
+-		data->pipe = pipe;
++	for_each_pipe_with_valid_output(display, data->pipe, data->output) {
++		igt_display_reset(display);
 +
- 			for (j = FEATURE_NONE; j < FEATURE_COUNT; j++) {
- 				if (j != FEATURE_NONE && !(coexist_features[i] & j))
- 					continue;
-@@ -956,6 +975,9 @@ igt_main
- 	igt_describe("Test that selective fetch works on primary plane with big fb");
- 	igt_subtest_with_dynamic_f("primary-%s-sf-dmg-area-big-fb", op_str(data.op)) {
- 		for (i = 0; i < n_pipes; i++) {
-+			if (!pipe_output_combo_valid(&data.display, pipes[i], outputs[i]))
-+				continue;
-+
- 			for (j = FEATURE_NONE; j < FEATURE_COUNT; j++) {
- 				if (j != FEATURE_NONE && !(coexist_features[i] & j))
- 					continue;
-@@ -982,6 +1004,9 @@ igt_main
- 	igt_describe("Test that selective fetch works on overlay plane");
- 	igt_subtest_with_dynamic_f("overlay-%s-sf-dmg-area", op_str(data.op)) {
- 		for (i = 0; i < n_pipes; i++) {
-+			if (!pipe_output_combo_valid(&data.display, pipes[i], outputs[i]))
-+				continue;
-+
- 			for (j = FEATURE_NONE; j < FEATURE_COUNT; j++) {
- 				if (j != FEATURE_NONE && !(coexist_features[i] & j))
- 					continue;
-@@ -1008,6 +1033,9 @@ igt_main
- 	igt_describe("Test that selective fetch works on cursor plane");
- 	igt_subtest_with_dynamic_f("cursor-%s-sf", op_str(data.op)) {
- 		for (i = 0; i < n_pipes; i++) {
-+			if (!pipe_output_combo_valid(&data.display, pipes[i], outputs[i]))
-+				continue;
-+
- 			for (j = FEATURE_NONE; j < FEATURE_COUNT; j++) {
- 				if (j != FEATURE_NONE && !(coexist_features[i] & j))
- 					continue;
-@@ -1030,6 +1058,9 @@ igt_main
- 	igt_describe("Test that selective fetch works on moving cursor plane (no update)");
- 	igt_subtest_with_dynamic_f("cursor-%s-sf", op_str(data.op)) {
- 		for (i = 0; i < n_pipes; i++) {
-+			if (!pipe_output_combo_valid(&data.display, pipes[i], outputs[i]))
-+				continue;
-+
- 			for (j = FEATURE_NONE; j < FEATURE_COUNT; j++) {
- 				if (j != FEATURE_NONE && !(coexist_features[i] & j))
- 					continue;
-@@ -1052,6 +1083,9 @@ igt_main
- 	igt_describe("Test that selective fetch works on moving cursor plane exceeding partially visible area (no update)");
- 	igt_subtest_with_dynamic_f("cursor-%s-sf", op_str(data.op)) {
- 		for (i = 0; i < n_pipes; i++) {
-+			if (!pipe_output_combo_valid(&data.display, pipes[i], outputs[i]))
-+				continue;
-+
- 			for (j = FEATURE_NONE; j < FEATURE_COUNT; j++) {
- 				if (j != FEATURE_NONE && !(coexist_features[i] & j))
- 					continue;
-@@ -1074,6 +1108,9 @@ igt_main
- 	igt_describe("Test that selective fetch works on moving cursor plane exceeding fully visible area (no update)");
- 	igt_subtest_with_dynamic_f("cursor-%s-sf", op_str(data.op)) {
- 		for (i = 0; i < n_pipes; i++) {
-+			if (!pipe_output_combo_valid(&data.display, pipes[i], outputs[i]))
-+				continue;
-+
- 			for (j = FEATURE_NONE; j < FEATURE_COUNT; j++) {
- 				if (j != FEATURE_NONE && !(coexist_features[i] & j))
- 					continue;
-@@ -1098,6 +1135,9 @@ igt_main
- 	igt_describe("Test that selective fetch works on moving overlay plane");
- 	igt_subtest_with_dynamic_f("%s-sf-dmg-area", op_str(data.op)) {
- 		for (i = 0; i < n_pipes; i++) {
-+			if (!pipe_output_combo_valid(&data.display, pipes[i], outputs[i]))
-+				continue;
-+
- 			for (j = FEATURE_NONE; j < FEATURE_COUNT; j++) {
- 				if (j != FEATURE_NONE && !(coexist_features[i] & j))
- 					continue;
-@@ -1123,6 +1163,9 @@ igt_main
- 	igt_describe("Test that selective fetch works on moving overlay plane (no update)");
- 	igt_subtest_with_dynamic_f("overlay-%s-sf", op_str(data.op)) {
- 		for (i = 0; i < n_pipes; i++) {
-+			if (!pipe_output_combo_valid(&data.display, pipes[i], outputs[i]))
-+				continue;
-+
- 			for (j = FEATURE_NONE; j < FEATURE_COUNT; j++) {
- 				if (j != FEATURE_NONE && !(coexist_features[i] & j))
- 					continue;
-@@ -1145,6 +1188,9 @@ igt_main
- 	igt_describe("Test that selective fetch works on moving overlay plane partially exceeding visible area (no update)");
- 	igt_subtest_with_dynamic_f("overlay-%s-sf", op_str(data.op)) {
- 		for (i = 0; i < n_pipes; i++) {
-+			if (!pipe_output_combo_valid(&data.display, pipes[i], outputs[i]))
-+				continue;
-+
- 			for (j = FEATURE_NONE; j < FEATURE_COUNT; j++) {
- 				if (j != FEATURE_NONE && !(coexist_features[i] & j))
- 					continue;
-@@ -1167,6 +1213,9 @@ igt_main
- 	igt_describe("Test that selective fetch works on moving overlay plane fully exceeding visible area (no update)");
- 	igt_subtest_with_dynamic_f("overlay-%s-sf", op_str(data.op)) {
- 		for (i = 0; i < n_pipes; i++) {
-+			if (!pipe_output_combo_valid(&data.display, pipes[i], outputs[i]))
-+				continue;
-+
- 			for (j = FEATURE_NONE; j < FEATURE_COUNT; j++) {
- 				if (j != FEATURE_NONE && !(coexist_features[i] & j))
- 					continue;
-@@ -1191,6 +1240,9 @@ igt_main
- 		     "with blended overlay plane");
- 	igt_subtest_with_dynamic_f("%s-sf-dmg-area", op_str(data.op)) {
- 		for (i = 0; i < n_pipes; i++) {
-+			if (!pipe_output_combo_valid(&data.display, pipes[i], outputs[i]))
-+				continue;
-+
- 			for (j = FEATURE_NONE; j < FEATURE_COUNT; j++) {
- 				if (j != FEATURE_NONE && !(coexist_features[i] & j))
- 					continue;
-@@ -1221,6 +1273,9 @@ igt_main
- 	igt_describe("Test that selective fetch works on overlay plane");
- 	igt_subtest_with_dynamic_f("overlay-%s-sf", op_str(data.op)) {
- 		for (i = 0; i < n_pipes; i++) {
-+			if (!pipe_output_combo_valid(&data.display, pipes[i], outputs[i]))
-+				continue;
-+
- 			for (j = FEATURE_NONE; j < FEATURE_COUNT; j++) {
- 				if (j != FEATURE_NONE && !(coexist_features[i] & j))
- 					continue;
++		igt_output_set_pipe(data->output, data->pipe);
++		if (!i915_pipe_output_combo_valid(display))
++			continue;
+ 
+ 		prepare_crtc(data);
+ 		test(data);
 -- 
 2.39.1
