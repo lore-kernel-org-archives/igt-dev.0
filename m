@@ -1,19 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E02B210EB20
- for <igt-dev@lists.freedesktop.org>; Thu, 23 Feb 2023 11:20:44 +0000 (UTC)
-Date: Thu, 23 Feb 2023 12:20:41 +0100
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8A50810EB37
+ for <igt-dev@lists.freedesktop.org>; Thu, 23 Feb 2023 11:26:30 +0000 (UTC)
+Date: Thu, 23 Feb 2023 12:26:26 +0100
 From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
 To: Zbigniew =?UTF-8?B?S2VtcGN6ecWEc2tp?= <zbigniew.kempczynski@intel.com>
-Message-ID: <20230223122041.4e7b13d1@maurocar-mobl2>
-In-Reply-To: <20230221114621.32785-6-zbigniew.kempczynski@intel.com>
-References: <20230221114621.32785-1-zbigniew.kempczynski@intel.com>
- <20230221114621.32785-6-zbigniew.kempczynski@intel.com>
+Message-ID: <20230223122626.74b37eab@maurocar-mobl2>
+In-Reply-To: <20230223105321.49048-1-zbigniew.kempczynski@intel.com>
+References: <20230223105321.49048-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
-Subject: Re: [igt-dev] [PATCH i-g-t 5/7] intel-ci/xe-fast-feedback:
- Introduce xe-fast-feedback list
+Subject: Re: [igt-dev] [PATCH i-g-t 1/3] lib/igt_map: Add 32-bit and 64-bit
+ hash helper functions
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,167 +25,107 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Tue, 21 Feb 2023 12:46:19 +0100
+On Thu, 23 Feb 2023 11:53:19 +0100
 Zbigniew Kempczy=C5=84ski <zbigniew.kempczynski@intel.com> wrote:
 
-> Let's start with something simple that runs very quickly and is
-> currently passing reliably.
+> Creating igt_map requires hashing and comparing function. Common case
+> is using 32-bit (like fd, etc.) or 64-bit keys (offsets) so adding
+> such helpers reduces code duplication.
 >=20
-> Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-> Signed-off-by: Philippe Lecluse <philippe.lecluse@intel.com>
-> Signed-off-by: Francois Dugast <francois.dugast@intel.com>
+> Signed-off-by: Zbigniew Kempczy=C5=84ski <zbigniew.kempczynski@intel.com>
 
-Acked-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+Reviewed-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 
 > ---
->  tests/intel-ci/xe-fast-feedback.testlist | 140 +++++++++++++++++++++++
->  1 file changed, 140 insertions(+)
->  create mode 100644 tests/intel-ci/xe-fast-feedback.testlist
+>  lib/igt_map.c | 59 +++++++++++++++++++++++++++++++++++++++++++++++++++
+>  lib/igt_map.h |  5 +++++
+>  2 files changed, 64 insertions(+)
 >=20
-> diff --git a/tests/intel-ci/xe-fast-feedback.testlist b/tests/intel-ci/xe=
--fast-feedback.testlist
-> new file mode 100644
-> index 00000000..74d0f033
-> --- /dev/null
-> +++ b/tests/intel-ci/xe-fast-feedback.testlist
-> @@ -0,0 +1,140 @@
-> +igt@xe/xe_compute@compute
-> +igt@xe/xe_debugfs@base
-> +igt@xe/xe_debugfs@gt0
-> +igt@xe/xe_debugfs@gt1
-> +igt@xe/xe_debugfs@forcewake
-> +igt@xe/xe_dma_buf_sync@export-dma-buf-once
-> +igt@xe/xe_dma_buf_sync@export-dma-buf-once-read-sync
-> +igt@xe/xe_exec_balancer@twice-virtual-basic
-> +igt@xe/xe_exec_balancer@no-exec-virtual-basic
-> +igt@xe/xe_exec_balancer@twice-cm-virtual-basic
-> +igt@xe/xe_exec_balancer@no-exec-cm-virtual-basic
-> +igt@xe/xe_exec_balancer@twice-virtual-userptr
-> +igt@xe/xe_exec_balancer@no-exec-virtual-userptr
-> +igt@xe/xe_exec_balancer@twice-cm-virtual-userptr
-> +igt@xe/xe_exec_balancer@no-exec-cm-virtual-userptr
-> +igt@xe/xe_exec_balancer@twice-virtual-rebind
-> +igt@xe/xe_exec_balancer@no-exec-virtual-rebind
-> +igt@xe/xe_exec_balancer@twice-cm-virtual-rebind
-> +igt@xe/xe_exec_balancer@no-exec-cm-virtual-rebind
-> +igt@xe/xe_exec_balancer@twice-virtual-userptr-rebind
-> +igt@xe/xe_exec_balancer@no-exec-virtual-userptr-rebind
-> +igt@xe/xe_exec_balancer@twice-cm-virtual-userptr-rebind
-> +igt@xe/xe_exec_balancer@no-exec-cm-virtual-userptr-rebind
-> +igt@xe/xe_exec_balancer@twice-virtual-userptr-invalidate
-> +igt@xe/xe_exec_balancer@no-exec-virtual-userptr-invalidate
-> +igt@xe/xe_exec_balancer@twice-cm-virtual-userptr-invalidate
-> +igt@xe/xe_exec_balancer@no-exec-cm-virtual-userptr-invalidate
-> +igt@xe/xe_exec_balancer@twice-virtual-userptr-invalidate-race
-> +igt@xe/xe_exec_balancer@no-exec-virtual-userptr-invalidate-race
-> +igt@xe/xe_exec_balancer@twice-cm-virtual-userptr-invalidate-race
-> +igt@xe/xe_exec_balancer@no-exec-cm-virtual-userptr-invalidate-race
-> +igt@xe/xe_exec_balancer@twice-parallel-basic
-> +igt@xe/xe_exec_balancer@no-exec-parallel-basic
-> +igt@xe/xe_exec_balancer@twice-parallel-userptr
-> +igt@xe/xe_exec_balancer@no-exec-parallel-userptr
-> +igt@xe/xe_exec_balancer@twice-parallel-rebind
-> +igt@xe/xe_exec_balancer@no-exec-parallel-rebind
-> +igt@xe/xe_exec_balancer@twice-parallel-userptr-rebind
-> +igt@xe/xe_exec_balancer@no-exec-parallel-userptr-rebind
-> +igt@xe/xe_exec_balancer@twice-parallel-userptr-invalidate
-> +igt@xe/xe_exec_balancer@no-exec-parallel-userptr-invalidate
-> +igt@xe/xe_exec_balancer@twice-parallel-userptr-invalidate-race
-> +igt@xe/xe_exec_balancer@no-exec-parallel-userptr-invalidate-race
-> +igt@xe/xe_exec_basic@twice-basic
-> +igt@xe/xe_exec_basic@no-exec-basic
-> +igt@xe/xe_exec_basic@twice-basic-defer-mmap
-> +igt@xe/xe_exec_basic@no-exec-basic-defer-mmap
-> +igt@xe/xe_exec_basic@twice-basic-defer-bind
-> +igt@xe/xe_exec_basic@no-exec-basic-defer-bind
-> +igt@xe/xe_exec_basic@twice-userptr
-> +igt@xe/xe_exec_basic@no-exec-userptr
-> +igt@xe/xe_exec_basic@twice-rebind
-> +igt@xe/xe_exec_basic@no-exec-rebind
-> +igt@xe/xe_exec_basic@twice-userptr-rebind
-> +igt@xe/xe_exec_basic@no-exec-userptr-rebind
-> +igt@xe/xe_exec_basic@twice-userptr-invalidate
-> +igt@xe/xe_exec_basic@no-exec-userptr-invalidate
-> +igt@xe/xe_exec_basic@twice-userptr-invalidate-race
-> +igt@xe/xe_exec_basic@no-exec-userptr-invalidate-race
-> +igt@xe/xe_exec_basic@twice-bindengine
-> +igt@xe/xe_exec_basic@no-exec-bindengine
-> +igt@xe/xe_exec_basic@twice-bindengine-userptr
-> +igt@xe/xe_exec_basic@no-exec-bindengine-userptr
-> +igt@xe/xe_exec_basic@twice-bindengine-rebind
-> +igt@xe/xe_exec_basic@no-exec-bindengine-rebind
-> +igt@xe/xe_exec_basic@twice-bindengine-userptr-rebind
-> +igt@xe/xe_exec_basic@no-exec-bindengine-userptr-rebind
-> +igt@xe/xe_exec_basic@twice-bindengine-userptr-invalidate
-> +igt@xe/xe_exec_basic@no-exec-bindengine-userptr-invalidate
-> +igt@xe/xe_exec_basic@twice-bindengine-userptr-invalidate-race
-> +igt@xe/xe_exec_basic@no-exec-bindengine-userptr-invalidate-race
-> +igt@xe/xe_exec_compute_mode@twice-basic
-> +igt@xe/xe_exec_compute_mode@twice-preempt-fence-early
-> +igt@xe/xe_exec_compute_mode@twice-userptr
-> +igt@xe/xe_exec_compute_mode@twice-rebind
-> +igt@xe/xe_exec_compute_mode@twice-userptr-rebind
-> +igt@xe/xe_exec_compute_mode@twice-userptr-invalidate
-> +igt@xe/xe_exec_compute_mode@twice-userptr-invalidate-race
-> +igt@xe/xe_exec_compute_mode@twice-bindengine
-> +igt@xe/xe_exec_compute_mode@twice-bindengine-userptr
-> +igt@xe/xe_exec_compute_mode@twice-bindengine-rebind
-> +igt@xe/xe_exec_compute_mode@twice-bindengine-userptr-rebind
-> +igt@xe/xe_exec_compute_mode@twice-bindengine-userptr-invalidate
-> +igt@xe/xe_exec_compute_mode@twice-bindengine-userptr-invalidate-race
-> +igt@xe/xe_exec_reset@close-fd-no-exec
-> +igt@xe/xe_exec_reset@cm-close-fd-no-exec
-> +igt@xe/xe_exec_reset@virtual-close-fd-no-exec
-> +#igt@xe/xe_exec_threads@threads-basic
-> +igt@xe/xe_exec_threads@threads-shared-vm-basic
-> +igt@xe/xe_exec_threads@threads-fd-basic
-> +#igt@xe/xe_exec_threads@threads-hang-basic
-> +igt@xe/xe_exec_threads@threads-bal-basic
-> +igt@xe/xe_exec_threads@threads-cm-basic
-> +igt@xe/xe_exec_threads@threads-cm-fd-basic
-> +igt@xe/xe_exec_threads@threads-mixed-basic
-> +igt@xe/xe_exec_threads@threads-mixed-shared-vm-basic
-> +igt@xe/xe_exec_threads@threads-mixed-fd-basic
-> +igt@xe/xe_exec_threads@threads-bal-mixed-basic
-> +igt@xe/xe_exec_threads@threads-bal-mixed-shared-vm-basic
-> +igt@xe/xe_exec_threads@threads-bal-mixed-fd-basic
-> +igt@xe/xe_guc_pc@freq_basic_api
-> +igt@xe/xe_guc_pc@freq_fixed_idle
-> +igt@xe/xe_guc_pc@freq_range_idle
-> +igt@xe/xe_guc_pc@rc6_on_idle
-> +igt@xe/xe_guc_pc@rc0_on_exec
-> +igt@xe/xe_huc_copy@huc_copy
-> +igt@xe/xe_mmap@system
-> +igt@xe/xe_mmap@vram
-> +igt@xe/xe_mmap@vram-system
-> +igt@xe/xe_mmio@mmio-timestamp
-> +igt@xe/xe_mmio@mmio-invalid
-> +igt@xe/xe_prime_self_import@basic-with_one_bo
-> +igt@xe/xe_prime_self_import@basic-with_fd_dup
-> +igt@xe/xe_prime_self_import@export-vs-gem_close-race
-> +igt@xe/xe_prime_self_import@reimport-vs-gem_close-race
-> +#igt@xe/xe_prime_self_import@basic-llseek-size
-> +igt@xe/xe_query@query-engines
-> +igt@xe/xe_query@query-mem-usage
-> +igt@xe/xe_query@query-gts
-> +igt@xe/xe_query@query-config
-> +igt@xe/xe_query@query-hwconfig
-> +igt@xe/xe_query@query-topology
-> +igt@xe/xe_query@query-invalid-query
-> +igt@xe/xe_query@query-invalid-size
-> +#igt@xe/xe_vm@bind-once
-> +#igt@xe/xe_vm@scratch
-> +igt@xe/xe_vm@shared-pte-page
-> +igt@xe/xe_vm@shared-pde-page
-> +igt@xe/xe_vm@shared-pde2-page
-> +igt@xe/xe_vm@shared-pde3-page
-> +igt@xe/xe_vm@bind-engines-independent
-> +igt@xe/xe_vm@munmap-style-unbind-one-partial
-> +igt@xe/xe_vm@munmap-style-unbind-end
-> +igt@xe/xe_vm@munmap-style-unbind-front
-> +igt@xe/xe_vm@munmap-style-unbind-userptr-one-partial
-> +igt@xe/xe_vm@munmap-style-unbind-userptr-end
-> +igt@xe/xe_vm@munmap-style-unbind-userptr-front
-> +igt@xe/xe_vm@munmap-style-unbind-userptr-inval-end
-> +igt@xe/xe_vm@munmap-style-unbind-userptr-inval-front
-> +igt@xe/xe_waitfence@test
+> diff --git a/lib/igt_map.c b/lib/igt_map.c
+> index da8713a186..ffa1e6beaa 100644
+> --- a/lib/igt_map.c
+> +++ b/lib/igt_map.c
+> @@ -196,6 +196,7 @@ igt_map_search(struct igt_map *map, const void *key)
+>   * Returns: map entry or %NULL if no entry is found.
+>   * Note that the data pointer may be modified by the user.
+>   */
+> +
+>  struct igt_map_entry *
+>  igt_map_search_entry(struct igt_map *map, const void *key)
+>  {
+> @@ -500,3 +501,61 @@ igt_map_random_entry(struct igt_map *map,
+> =20
+>  	return NULL;
+>  }
+> +
+> +#define GOLDEN_RATIO_PRIME_32 0x9e370001UL
+> +/**
+> + * igt_map_hash_32:
+> + * @key: pointer to 32-bit key
+> + *
+> + * Function is hashing function for 32-bit keys. Key is pointer to 32-bit
+> + * value so it must be dereferenced.
+> + */
+> +uint32_t igt_map_hash_32(const void *key)
+> +{
+> +	uint32_t hash =3D *(uint32_t *)key;
+> +
+> +	hash =3D hash * GOLDEN_RATIO_PRIME_32;
+> +	return hash;
+> +}
+> +
+> +/**
+> + * igt_map_equal_32:
+> + * @key1: pointer to first 32-bit key
+> + * @key2: pointer to second 32-bit key
+> + *
+> + * Function compares 32-bit keys.
+> + */
+> +int igt_map_equal_32(const void *key1, const void *key2)
+> +{
+> +	return *(uint32_t *)key1 =3D=3D *(uint32_t *)key2;
+> +}
+> +
+> +/*  2^63 + 2^61 - 2^57 + 2^54 - 2^51 - 2^18 + 1 */
+> +#define GOLDEN_RATIO_PRIME_64 0x9e37fffffffc0001ULL
+> +/**
+> + * igt_map_hash_64:
+> + * @key: pointer to 64-bit key
+> + *
+> + * Function is hashing function for 64-bit keys. Key is pointer to 64-bit
+> + * value so it must be dereferenced.
+> + */
+> +uint32_t igt_map_hash_64(const void *key)
+> +{
+> +	uint64_t hash =3D *(uint64_t *)key;
+> +
+> +	hash =3D hash * GOLDEN_RATIO_PRIME_64;
+> +	/* High bits are more random, so use them. */
+> +	return hash >> 32;
+> +}
+> +
+> +/**
+> + * igt_map_equal_64:
+> + * @key1: pointer to first 64-bit key
+> + * @key2: pointer to second 64-bit key
+> + *
+> + * Function compares 64-bit keys.
+> + */
+> +int igt_map_equal_64(const void *key1, const void *key2)
+> +{
+> +	return *(uint64_t *)key1 =3D=3D *(uint64_t *)key2;
+> +}
+> diff --git a/lib/igt_map.h b/lib/igt_map.h
+> index cadcd6e35f..a0fbd1419f 100644
+> --- a/lib/igt_map.h
+> +++ b/lib/igt_map.h
+> @@ -171,4 +171,9 @@ igt_map_insert_pre_hashed(struct igt_map *map,
+>  			     uint32_t hash,
+>  			     const void *key, void *data);
+> =20
+> +uint32_t igt_map_hash_32(const void *key);
+> +int igt_map_equal_32(const void *key1, const void *key2);
+> +uint32_t igt_map_hash_64(const void *key);
+> +int igt_map_equal_64(const void *key1, const void *key2);
+> +
+>  #endif
