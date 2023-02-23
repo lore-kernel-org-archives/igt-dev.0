@@ -1,18 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8A50810EB37
- for <igt-dev@lists.freedesktop.org>; Thu, 23 Feb 2023 11:26:30 +0000 (UTC)
-Date: Thu, 23 Feb 2023 12:26:26 +0100
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 992FD10EB38
+ for <igt-dev@lists.freedesktop.org>; Thu, 23 Feb 2023 11:26:45 +0000 (UTC)
+Date: Thu, 23 Feb 2023 12:26:41 +0100
 From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
 To: Zbigniew =?UTF-8?B?S2VtcGN6ecWEc2tp?= <zbigniew.kempczynski@intel.com>
-Message-ID: <20230223122626.74b37eab@maurocar-mobl2>
-In-Reply-To: <20230223105321.49048-1-zbigniew.kempczynski@intel.com>
+Message-ID: <20230223122641.06bda1da@maurocar-mobl2>
+In-Reply-To: <20230223105321.49048-2-zbigniew.kempczynski@intel.com>
 References: <20230223105321.49048-1-zbigniew.kempczynski@intel.com>
+ <20230223105321.49048-2-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
-Subject: Re: [igt-dev] [PATCH i-g-t 1/3] lib/igt_map: Add 32-bit and 64-bit
- hash helper functions
+Subject: Re: [igt-dev] [PATCH i-g-t 2/3] lib/intel_allocator_*: Use common
+ hash helpers
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,107 +26,120 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Thu, 23 Feb 2023 11:53:19 +0100
+On Thu, 23 Feb 2023 11:53:20 +0100
 Zbigniew Kempczy=C5=84ski <zbigniew.kempczynski@intel.com> wrote:
 
-> Creating igt_map requires hashing and comparing function. Common case
-> is using 32-bit (like fd, etc.) or 64-bit keys (offsets) so adding
-> such helpers reduces code duplication.
+> Reduce code duplication by using common hash helpers from igt_map.
 >=20
 > Signed-off-by: Zbigniew Kempczy=C5=84ski <zbigniew.kempczynski@intel.com>
 
 Reviewed-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 
 > ---
->  lib/igt_map.c | 59 +++++++++++++++++++++++++++++++++++++++++++++++++++
->  lib/igt_map.h |  5 +++++
->  2 files changed, 64 insertions(+)
+>  lib/intel_allocator_reloc.c  | 23 +-------------------
+>  lib/intel_allocator_simple.c | 41 ++----------------------------------
+>  2 files changed, 3 insertions(+), 61 deletions(-)
 >=20
-> diff --git a/lib/igt_map.c b/lib/igt_map.c
-> index da8713a186..ffa1e6beaa 100644
-> --- a/lib/igt_map.c
-> +++ b/lib/igt_map.c
-> @@ -196,6 +196,7 @@ igt_map_search(struct igt_map *map, const void *key)
->   * Returns: map entry or %NULL if no entry is found.
->   * Note that the data pointer may be modified by the user.
->   */
-> +
->  struct igt_map_entry *
->  igt_map_search_entry(struct igt_map *map, const void *key)
+> diff --git a/lib/intel_allocator_reloc.c b/lib/intel_allocator_reloc.c
+> index 60cbb88511..3aa9ebe763 100644
+> --- a/lib/intel_allocator_reloc.c
+> +++ b/lib/intel_allocator_reloc.c
+> @@ -34,27 +34,6 @@ struct intel_allocator_record {
+>  /* Keep the low 256k clear, for negative deltas */
+>  #define BIAS (256 << 10)
+> =20
+> -/* 2^31 + 2^29 - 2^25 + 2^22 - 2^19 - 2^16 + 1 */
+> -#define GOLDEN_RATIO_PRIME_32 0x9e370001UL
+> -
+> -/*  2^63 + 2^61 - 2^57 + 2^54 - 2^51 - 2^18 + 1 */
+> -#define GOLDEN_RATIO_PRIME_64 0x9e37fffffffc0001ULL
+> -
+> -static inline uint32_t hash_handles(const void *val)
+> -{
+> -	uint32_t hash =3D *(uint32_t *) val;
+> -
+> -	hash =3D hash * GOLDEN_RATIO_PRIME_32;
+> -	return hash;
+> -}
+> -
+> -static int equal_handles(const void *a, const void *b)
+> -{
+> -	uint32_t *key1 =3D (uint32_t *) a, *key2 =3D (uint32_t *) b;
+> -
+> -	return *key1 =3D=3D *key2;
+> -}
+> -
+>  static void map_entry_free_func(struct igt_map_entry *entry)
 >  {
-> @@ -500,3 +501,61 @@ igt_map_random_entry(struct igt_map *map,
+>  	free(entry->data);
+> @@ -252,7 +231,7 @@ intel_allocator_reloc_create(int fd, uint64_t start, =
+uint64_t end)
 > =20
->  	return NULL;
->  }
-> +
-> +#define GOLDEN_RATIO_PRIME_32 0x9e370001UL
-> +/**
-> + * igt_map_hash_32:
-> + * @key: pointer to 32-bit key
-> + *
-> + * Function is hashing function for 32-bit keys. Key is pointer to 32-bit
-> + * value so it must be dereferenced.
-> + */
-> +uint32_t igt_map_hash_32(const void *key)
-> +{
-> +	uint32_t hash =3D *(uint32_t *)key;
-> +
-> +	hash =3D hash * GOLDEN_RATIO_PRIME_32;
-> +	return hash;
-> +}
-> +
-> +/**
-> + * igt_map_equal_32:
-> + * @key1: pointer to first 32-bit key
-> + * @key2: pointer to second 32-bit key
-> + *
-> + * Function compares 32-bit keys.
-> + */
-> +int igt_map_equal_32(const void *key1, const void *key2)
-> +{
-> +	return *(uint32_t *)key1 =3D=3D *(uint32_t *)key2;
-> +}
-> +
-> +/*  2^63 + 2^61 - 2^57 + 2^54 - 2^51 - 2^18 + 1 */
-> +#define GOLDEN_RATIO_PRIME_64 0x9e37fffffffc0001ULL
-> +/**
-> + * igt_map_hash_64:
-> + * @key: pointer to 64-bit key
-> + *
-> + * Function is hashing function for 64-bit keys. Key is pointer to 64-bit
-> + * value so it must be dereferenced.
-> + */
-> +uint32_t igt_map_hash_64(const void *key)
-> +{
-> +	uint64_t hash =3D *(uint64_t *)key;
-> +
-> +	hash =3D hash * GOLDEN_RATIO_PRIME_64;
-> +	/* High bits are more random, so use them. */
-> +	return hash >> 32;
-> +}
-> +
-> +/**
-> + * igt_map_equal_64:
-> + * @key1: pointer to first 64-bit key
-> + * @key2: pointer to second 64-bit key
-> + *
-> + * Function compares 64-bit keys.
-> + */
-> +int igt_map_equal_64(const void *key1, const void *key2)
-> +{
-> +	return *(uint64_t *)key1 =3D=3D *(uint64_t *)key2;
-> +}
-> diff --git a/lib/igt_map.h b/lib/igt_map.h
-> index cadcd6e35f..a0fbd1419f 100644
-> --- a/lib/igt_map.h
-> +++ b/lib/igt_map.h
-> @@ -171,4 +171,9 @@ igt_map_insert_pre_hashed(struct igt_map *map,
->  			     uint32_t hash,
->  			     const void *key, void *data);
+>  	ialr =3D ial->priv =3D calloc(1, sizeof(*ialr));
+>  	igt_assert(ial->priv);
+> -	ialr->objects =3D igt_map_create(hash_handles, equal_handles);
+> +	ialr->objects =3D igt_map_create(igt_map_hash_32, igt_map_equal_32);
+>  	ialr->prng =3D (uint32_t) to_user_pointer(ial);
 > =20
-> +uint32_t igt_map_hash_32(const void *key);
-> +int igt_map_equal_32(const void *key1, const void *key2);
-> +uint32_t igt_map_hash_64(const void *key);
-> +int igt_map_equal_64(const void *key1, const void *key2);
-> +
->  #endif
+>  	start =3D max_t(uint64_t, start, BIAS);
+> diff --git a/lib/intel_allocator_simple.c b/lib/intel_allocator_simple.c
+> index 8d5105f114..3d5e45870e 100644
+> --- a/lib/intel_allocator_simple.c
+> +++ b/lib/intel_allocator_simple.c
+> @@ -59,43 +59,6 @@ struct intel_allocator_record {
+>  #define simple_vma_foreach_hole_safe_rev(_hole, _heap, _tmp) \
+>  	igt_list_for_each_entry_safe_reverse(_hole, _tmp,  &(_heap)->holes, lin=
+k)
+> =20
+> -/* 2^31 + 2^29 - 2^25 + 2^22 - 2^19 - 2^16 + 1 */
+> -#define GOLDEN_RATIO_PRIME_32 0x9e370001UL
+> -
+> -/*  2^63 + 2^61 - 2^57 + 2^54 - 2^51 - 2^18 + 1 */
+> -#define GOLDEN_RATIO_PRIME_64 0x9e37fffffffc0001ULL
+> -
+> -static inline uint32_t hash_handles(const void *val)
+> -{
+> -	uint32_t hash =3D *(uint32_t *) val;
+> -
+> -	hash =3D hash * GOLDEN_RATIO_PRIME_32;
+> -	return hash;
+> -}
+> -
+> -static int equal_handles(const void *a, const void *b)
+> -{
+> -	uint32_t *key1 =3D (uint32_t *) a, *key2 =3D (uint32_t *) b;
+> -
+> -	return *key1 =3D=3D *key2;
+> -}
+> -
+> -static inline uint32_t hash_offsets(const void *val)
+> -{
+> -	uint64_t hash =3D *(uint64_t *) val;
+> -
+> -	hash =3D hash * GOLDEN_RATIO_PRIME_64;
+> -	/* High bits are more random, so use them. */
+> -	return hash >> 32;
+> -}
+> -
+> -static int equal_offsets(const void *a, const void *b)
+> -{
+> -	uint64_t *key1 =3D (uint64_t *) a, *key2 =3D (uint64_t *) b;
+> -
+> -	return *key1 =3D=3D *key2;
+> -}
+> -
+>  static void map_entry_free_func(struct igt_map_entry *entry)
+>  {
+>  	free(entry->data);
+> @@ -755,8 +718,8 @@ intel_allocator_simple_create(int fd, uint64_t start,=
+ uint64_t end,
+>  	ials =3D ial->priv =3D malloc(sizeof(struct intel_allocator_simple));
+>  	igt_assert(ials);
+> =20
+> -	ials->objects =3D igt_map_create(hash_handles, equal_handles);
+> -	ials->reserved =3D igt_map_create(hash_offsets, equal_offsets);
+> +	ials->objects =3D igt_map_create(igt_map_hash_32, igt_map_equal_32);
+> +	ials->reserved =3D igt_map_create(igt_map_hash_64, igt_map_equal_64);
+>  	igt_assert(ials->objects && ials->reserved);
+> =20
+>  	ials->start =3D start;
