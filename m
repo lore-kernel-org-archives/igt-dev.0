@@ -1,21 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org,
- Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>,
- Riana Tauro <riana.tauro@intel.com>,
- Zbigniew =?utf-8?B?S2VtcGN6ecWEc2tp?= <zbigniew.kempczynski@intel.com>,
- intel-gfx@lists.freedesktop.org
-Date: Fri, 24 Feb 2023 09:46:53 +0100
-Message-ID: <5908864.lOV4Wx5bFT@jkrzyszt-mobl1.ger.corp.intel.com>
-In-Reply-To: <20230224083854.oharfpdp6aidbfsk@kamilkon-desk1>
-References: <20230213143445.24228-1-janusz.krzysztofik@linux.intel.com>
- <20230224083854.oharfpdp6aidbfsk@kamilkon-desk1>
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CB8AC10E6AC
+ for <igt-dev@lists.freedesktop.org>; Fri, 24 Feb 2023 08:49:12 +0000 (UTC)
+Date: Fri, 24 Feb 2023 09:49:07 +0100
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Message-ID: <20230224084907.tswgjezbrg4w7egv@kamilkon-desk1>
+References: <20230221182557.725785-1-hersenxs.wu@amd.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
-Subject: Re: [igt-dev] [PATCH i-g-t v2] tests/i915_suspend: Refresh device
- list after *-without-i915 subtests
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20230221182557.725785-1-hersenxs.wu@amd.com>
+Subject: Re: [igt-dev] [PATCH] [i-g-t] tests/amdgpu/amd_dp_dsc: fix basic
+ and bpc test be skipped
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,132 +20,194 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: hersen wu <hersenxs.wu@amd.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Friday, 24 February 2023 09:38:54 CET Kamil Konieczny wrote:
-> On 2023-02-13 at 15:34:45 +0100, Janusz Krzysztofik wrote:
-> > If any of *-without-i915 subtests fails or skips for any reason, it may
-> > leave the i915 module unloaded while keeping our device list populated
-> > with initially collected data.  In a follow up igt_fixture section we then
-> > try to reopen the device.  If the test has been executed with a device
-> > filter specified, an attempt to open the device finds a matching entry
-> > that belongs to the no longer existing device in that initially collected
-> > device list, fails to stat() it, concludes that's because of the device
-> > having been already open, and returns an error.  While that error,
-> > triggered after subtests completion, doesn't affect results of the
-> > subtest, reported by CI togethger with those results it is confusing to
-> > users reviewing those reports.
-> > 
-> > Fix this issue by refreshing the potentially outdated device list before
-> > continuing with drm_open_driver() if we've been called with a device
-> > filter specified.
-> > 
-> > While being at it, add a comment that explains why we call
-> > igt_devices_scan() from __igt_device_card_match() but don't force device
-> > rescan, and emit a debug message if we fail in _is_already_opened() on
-> > unsuccessful device stat().
-> > 
-> > v2: don't free the device list -- we can't tell if it has been populated,
-> >     and igt_devices_free() fails if it hasn't,
-> >   - commit message updated, description improved.
-> > 
-> > Subtest basic-s3-without-i915: FAIL (9.572s)
-> > (i915_suspend:9050) drmtest-WARNING: card maching filter 0 is already opened
-> > (i915_suspend:9050) drmtest-CRITICAL: Test abort in function drm_open_driver, file ../lib/drmtest.c:639:
-> > (i915_suspend:9050) drmtest-CRITICAL: abort condition: fd < 0
-> > (i915_suspend:9050) drmtest-CRITICAL: Last errno: 2, No such file or directory
-> > (i915_suspend:9050) drmtest-CRITICAL: No known gpu found for chipset flags 0x1 (intel)
-> > Test i915_suspend failed.
-> > **** DEBUG ****
-> > (i915_suspend:9050) drmtest-DEBUG: Looking for devices to open using filter 0: pci:vendor=intel,device=dg2
-> > (i915_suspend:9050) drmtest-DEBUG: Filter matched /dev/dri/card0 | /dev/dri/renderD128
-> > (i915_suspend:9050) drmtest-WARNING: card maching filter 0 is already opened
-> > (i915_suspend:9050) drmtest-CRITICAL: Test abort in function drm_open_driver, file ../lib/drmtest.c:639:
-> > (i915_suspend:9050) drmtest-CRITICAL: abort condition: fd < 0
-> > (i915_suspend:9050) drmtest-CRITICAL: Last errno: 2, No such file or directory
-> > (i915_suspend:9050) drmtest-CRITICAL: No known gpu found for chipset flags 0x1 (intel)
-> > (i915_suspend:9050) igt_core-INFO: Stack trace:
-> > (i915_suspend:9050) igt_core-INFO:   #0 ../lib/igt_core.c:2066 __igt_abort()
-> > (i915_suspend:9050) igt_core-INFO:   #1 ../lib/drmtest.c:573 drm_open_driver()
-> > (i915_suspend:9050) igt_core-INFO:   #2 ../tests/i915/i915_suspend.c:258 __igt_unique____real_main245()
-> > (i915_suspend:9050) igt_core-INFO:   #3 ../tests/i915/i915_suspend.c:245 main()
-> > (i915_suspend:9050) igt_core-INFO:   #4 ../sysdeps/nptl/libc_start_call_main.h:58 __libc_start_call_main()
-> > (i915_suspend:9050) igt_core-INFO:   #5 ../csu/libc-start.c:128 __libc_start_main@@GLIBC_2.34()
-> > (i915_suspend:9050) igt_core-INFO:   #6 [_start+0x2a]
-> > ****  END  ****
-> > 
-> > Fixes: f7aff600ab16 ("tests/i915/i915_suspend: Disable d3cold_allowed for basic-s2idle-without-i915")
-> > Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-> > Cc: Riana Tauro <riana.tauro@intel.com>
-> 
-> Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Hi Hersen,
 
-Thanks Kamil, pushed.
+On 2023-02-21 at 13:25:57 -0500, hersen wu wrote:
+> pipe is valid with display->pipes[i].enable be true when i is within
+> [0, n_outputs). working on invalid pipe, will cause assert and let
+> test be skipped.
 
-Janusz
+Please improve description, you fixed a bug but you do not need
+to write 1:1 about your code, just describe problem and that
+you fixed it. For example:
+
+Pipe max value was used instead of output one. Fixed that.
+
+You can also give gitlab ticket or tag for commit which you fixed
+or some error logs (but not too big).
 
 > 
-> > ---
-> >  lib/drmtest.c             |  2 +-
-> >  lib/igt_device_scan.c     |  4 ++++
-> >  tests/i915/i915_suspend.c | 12 +++++++++++-
-> >  3 files changed, 16 insertions(+), 2 deletions(-)
-> > 
-> > diff --git a/lib/drmtest.c b/lib/drmtest.c
-> > index 16e80bdfcf..8e2d1ac50b 100644
-> > --- a/lib/drmtest.c
-> > +++ b/lib/drmtest.c
-> > @@ -260,7 +260,7 @@ static bool _is_already_opened(const char *path, int as_idx)
-> >  	 * we cannot even stat the device, so it's of no use - let's claim it's
-> >  	 * already opened
-> >  	 */
-> > -	if (stat(path, &new) != 0)
-> > +	if (igt_debug_on(stat(path, &new) != 0))
-> >  		return true;
-> >  
-> >  	for (int i = 0; i < as_idx; ++i) {
-> > diff --git a/lib/igt_device_scan.c b/lib/igt_device_scan.c
-> > index 8b767eed20..ae69ed09f1 100644
-> > --- a/lib/igt_device_scan.c
-> > +++ b/lib/igt_device_scan.c
-> > @@ -1918,6 +1918,10 @@ static bool __igt_device_card_match(const char *filter,
-> >  		return false;
-> >  	memset(card, 0, sizeof(*card));
-> >  
-> > +	/*
-> > +	 * Scan devices in case the user hasn't yet,
-> > +	 * but leave a decision on forced rescan on the user side.
-> > +	 */
-> >  	igt_devices_scan(false);
-> >  
-> >  	if (igt_device_filter_apply(filter) == false)
-> > diff --git a/tests/i915/i915_suspend.c b/tests/i915/i915_suspend.c
-> > index 815f1c8a2c..1d304a9317 100644
-> > --- a/tests/i915/i915_suspend.c
-> > +++ b/tests/i915/i915_suspend.c
-> > @@ -253,8 +253,18 @@ igt_main
-> >  	igt_subtest("basic-s3-without-i915")
-> >  		test_suspend_without_i915(SUSPEND_STATE_S3);
-> >  
-> > -	igt_fixture
-> > +	igt_fixture {
-> > +		/*
-> > +		 * Since above subtests may fail, leaving i915 module unloaded
-> > +		 * but device list populated, refresh the device list before
-> > +		 * reopening the i915 device if we've been called with a device
-> > +		 * filter specified, otherwise drm_open_driver() will fail
-> > +		 * instead of reloading the i915 module.
-> > +		 */
-> > +		if (igt_device_filter_count())
-> > +			igt_devices_scan(true);
-> >  		fd = drm_open_driver(DRIVER_INTEL);
-> > +	}
-> >  
-> >  	igt_subtest("fence-restore-tiled2untiled") {
-> >  		gem_require_mappable_ggtt(fd);
+> Signed-off-by: hersen wu <hersenxs.wu@amd.com>
+---------------- ^      ^
+This should be uppercase:
+Signed-off-by: Hersen Wu <hersenxs.wu@amd.com>
+
+> ---
+>  tests/amdgpu/amd_dp_dsc.c | 34 +++++++++++++++++-----------------
+>  1 file changed, 17 insertions(+), 17 deletions(-)
 > 
+> diff --git a/tests/amdgpu/amd_dp_dsc.c b/tests/amdgpu/amd_dp_dsc.c
+> index e6b5a43b..a950789c 100644
+> --- a/tests/amdgpu/amd_dp_dsc.c
+> +++ b/tests/amdgpu/amd_dp_dsc.c
+> @@ -49,7 +49,7 @@ static void test_fini(data_t *data)
+>  	igt_display_t *display = &data->display;
+>  	int i;
+>  
+> -	for (i = 0; i < display->n_pipes; ++i) {
+> +	for_each_pipe(display, i) {
 
+Drop this, do not mix improvements with fixes.
 
+>  		igt_pipe_crc_free(data->pipe_crc[i]);
+>  	}
+>  
+> @@ -61,19 +61,19 @@ static void test_fini(data_t *data)
+>  static void test_init(data_t *data)
+>  {
+>  	igt_display_t *display = &data->display;
+> -	int i, n;
+> +	int i, n, max_pipes = display->n_pipes;
 
+Drop this.
+
+>  
+> -	for (i = 0; i < display->n_pipes; ++i) {
+> +	for_each_pipe(display, i) {
+
+Drop this.
+
+>  		data->pipe_id[i] = PIPE_A + i;
+>  		data->pipe[i] = &data->display.pipes[data->pipe_id[i]];
+>  		data->primary[i] = igt_pipe_get_plane_type(
+>  				data->pipe[i], DRM_PLANE_TYPE_PRIMARY);
+>  		data->pipe_crc[i] =
+> -				igt_pipe_crc_new(data->fd, data->pipe_id[i],
+> -						 IGT_PIPE_CRC_SOURCE_AUTO);
+> +			igt_pipe_crc_new(data->fd, data->pipe_id[i],
+> +						IGT_PIPE_CRC_SOURCE_AUTO);
+>  	}
+>  
+> -	for (i = 0, n = 0; i < display->n_outputs && n < display->n_pipes; ++i) {
+> +	for (i = 0, n = 0; i < display->n_outputs && n < max_pipes; ++i) {
+
+Drop this.
+
+>  		igt_output_t *output = &display->outputs[i];
+>  		data->output[n] = output;
+>  
+> @@ -110,7 +110,7 @@ static void test_dsc_enable(data_t *data)
+>  	test_init(data);
+>  	igt_enable_connectors(data->fd);
+>  
+> -	for (i = 0; i < display->n_pipes; i++) {
+> +	for (i = 0; i < display->n_outputs; i++) {
+
+Nice catch, this starts real fixes.
+
+Please keep only fixes and resend v2 with r-b from Alex.
+
+Regards,
+Kamil
+
+>  		/* Setup the output */
+>  		output = data->output[i];
+>  		if (!output || !igt_output_is_connected(output))
+> @@ -248,7 +248,7 @@ static void test_dsc_slice_dimensions_change(data_t *data)
+>  	test_init(data);
+>  	igt_enable_connectors(data->fd);
+>  
+> -	for (i = 0; i < display->n_pipes; i++) {
+> +	for (i = 0; i < display->n_outputs; i++) {
+>  		/* Setup the output */
+>  		output = data->output[i];
+>  		if (!output || !igt_output_is_connected(output))
+> @@ -341,7 +341,7 @@ static void test_dsc_link_settings(data_t *data)
+>      test_init(data);
+>  
+>      /* Setup all outputs */
+> -	for (i = 0; i < display->n_pipes; i++) {
+> +	for (i = 0; i < display->n_outputs; i++) {
+>  		output = data->output[i];
+>  		if (!output || !igt_output_is_connected(output))
+>  			continue;
+> @@ -358,7 +358,7 @@ static void test_dsc_link_settings(data_t *data)
+>  	igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, 0);
+>  
+>      /* Collect reference CRCs */
+> -	for (i = 0; i < display->n_pipes; i++) {
+> +	for (i = 0; i < display->n_outputs; i++) {
+>  		output = data->output[i];
+>  		if (!output || !igt_output_is_connected(output))
+>  			continue;
+> @@ -369,7 +369,7 @@ static void test_dsc_link_settings(data_t *data)
+>  	for (lc = 0; lc < ARRAY_SIZE(lane_count_vals); lc++) {
+>  		for (lr = 0; lr < ARRAY_SIZE(link_rate_vals); lr++) {
+>  			/* Write new link_settings */
+> -			for (i = 0; i < display->n_pipes; i++) {
+> +			for (i = 0; i < display->n_outputs; i++) {
+>  				output = data->output[i];
+>  				if (!output || !igt_output_is_connected(output))
+>  					continue;
+> @@ -387,7 +387,7 @@ static void test_dsc_link_settings(data_t *data)
+>  			/* Trigger commit after writing new link settings */
+>  			igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
+>  
+> -			for (i = 0; i < display->n_pipes; i++) {
+> +			for (i = 0; i < display->n_outputs; i++) {
+>  				output = data->output[i];
+>  				if (!output || !igt_output_is_connected(output))
+>  					continue;
+> @@ -416,7 +416,7 @@ static void test_dsc_link_settings(data_t *data)
+>  	}
+>  
+>  	/* Cleanup all fbs */
+> -	for (i = 0; i < display->n_pipes; i++) {
+> +	for (i = 0; i < display->n_outputs; i++) {
+>  		output = data->output[i];
+>  		if (!output || !igt_output_is_connected(output))
+>  			continue;
+> @@ -439,7 +439,7 @@ static void test_dsc_bpc(data_t *data)
+>      test_init(data);
+>  
+>  	/* Find max supported bpc */
+> -	for (i = 0; i < display->n_pipes; i++) {
+> +	for (i = 0; i < display->n_outputs; i++) {
+>  		output = data->output[i];
+>  		if (!output || !igt_output_is_connected(output))
+>  			continue;
+> @@ -451,7 +451,7 @@ static void test_dsc_bpc(data_t *data)
+>  	for (bpc = 0; bpc < ARRAY_SIZE(bpc_vals); bpc++) {
+>  		igt_info("Testing bpc = %d\n", bpc_vals[bpc]);
+>  
+> -		for (i = 0; i < display->n_pipes; i++) {
+> +		for (i = 0; i < display->n_outputs; i++) {
+>  			output = data->output[i];
+>  			if (!output || !igt_output_is_connected(output))
+>  				continue;
+> @@ -474,7 +474,7 @@ static void test_dsc_bpc(data_t *data)
+>  
+>  		igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, 0);
+>  
+> -		for (i = 0; i < display->n_pipes; i++) {
+> +		for (i = 0; i < display->n_outputs; i++) {
+>  			output = data->output[i];
+>  			if (!output || !igt_output_is_connected(output))
+>  				continue;
+> @@ -501,7 +501,7 @@ static void test_dsc_bpc(data_t *data)
+>  		}
+>  
+>  		/* Cleanup all fbs */
+> -		for (i = 0; i < display->n_pipes; i++) {
+> +		for (i = 0; i < display->n_outputs; i++) {
+>  			output = data->output[i];
+>  			if (!output || !igt_output_is_connected(output))
+>  				continue;
+> -- 
+> 2.25.1
+> 
