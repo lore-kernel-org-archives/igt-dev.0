@@ -1,11 +1,11 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D14CA10E02C
- for <igt-dev@lists.freedesktop.org>; Fri, 24 Feb 2023 05:07:03 +0000 (UTC)
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B241D10E02C
+ for <igt-dev@lists.freedesktop.org>; Fri, 24 Feb 2023 05:11:25 +0000 (UTC)
 From: "Ch, Sai Gowtham" <sai.gowtham.ch@intel.com>
 To: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-Date: Fri, 24 Feb 2023 05:06:56 +0000
-Message-ID: <BYAPR11MB3413EEDE31E54F60EA5432B6D0A89@BYAPR11MB3413.namprd11.prod.outlook.com>
+Date: Fri, 24 Feb 2023 05:11:19 +0000
+Message-ID: <BYAPR11MB34138D7F066AF69B03E8F67CD0A89@BYAPR11MB3413.namprd11.prod.outlook.com>
 References: <mailman.5665.1676648053.930.igt-dev@lists.freedesktop.org>
 In-Reply-To: <mailman.5665.1676648053.930.igt-dev@lists.freedesktop.org>
 Content-Language: en-US
@@ -149,6 +149,8 @@ fferent
 > Cc: Riana Tauro <riana.tauro@intel.com>
 > Cc: Anshuman Gupta <anshuman.gupta@intel.com>
 > Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Looks good to me.
+Reviewed-by: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
 > ---
 >  tests/i915/i915_suspend.c | 19 +++++++++++++------
 >  1 file changed, 13 insertions(+), 6 deletions(-)
@@ -184,8 +186,6 @@ fferent
 > +	}
 > +
 > +	igt_waitchildren();
-Looks good to me.
-Reviewed-by: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
 >  }
 >=20
 >  static void
