@@ -1,19 +1,23 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 192A210E5CF
- for <igt-dev@lists.freedesktop.org>; Fri, 24 Feb 2023 11:20:24 +0000 (UTC)
-Date: Fri, 24 Feb 2023 12:20:20 +0100
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: Vikas Srivastava <vikas.srivastava@intel.com>
-Message-ID: <20230224112020.7f6f7yyt7exlyn7s@zkempczy-mobl2>
-References: <20230223165336.570697-1-vikas.srivastava@intel.com>
+Received: from mail-wr1-x42e.google.com (mail-wr1-x42e.google.com
+ [IPv6:2a00:1450:4864:20::42e])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D6A1C10E8C3
+ for <igt-dev@lists.freedesktop.org>; Fri, 24 Feb 2023 12:46:54 +0000 (UTC)
+Received: by mail-wr1-x42e.google.com with SMTP id q16so3446284wrw.2
+ for <igt-dev@lists.freedesktop.org>; Fri, 24 Feb 2023 04:46:54 -0800 (PST)
+Message-ID: <a0ceeb51-4974-6c6e-f090-b44a66ac4b9f@gmail.com>
+Date: Fri, 24 Feb 2023 14:46:47 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230223165336.570697-1-vikas.srivastava@intel.com>
-Subject: Re: [igt-dev] [PATCH] tests/i915/gem_userptr_blits: Use softpinning
- support for MTL
+Content-Language: en-US
+To: Swati Sharma <swati2.sharma@intel.com>, igt-dev@lists.freedesktop.org
+References: <20230222091950.31758-1-swati2.sharma@intel.com>
+ <20230222091950.31758-4-swati2.sharma@intel.com>
+From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+In-Reply-To: <20230222091950.31758-4-swati2.sharma@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Subject: Re: [igt-dev] [PATCH i-g-t v3 3/3] tests/kms_plane_scaling: Add
+ test to validate max source size
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,168 +25,180 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org
+Reply-To: juhapekka.heikkila@gmail.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Thu, Feb 23, 2023 at 10:23:36PM +0530, Vikas Srivastava wrote:
-> MTL and other platforms which are gen12 must use softpinning
-> instead of relocations so adding no reloc supoprt for MTL target.
+On 22.2.2023 11.19, Swati Sharma wrote:
+> i915 specific test is added to validate max source size. This
+> test is expected to return -EINVAL for platforms where we have
+> max source width 4096 whereas it will pass on platforms having
+> max source width 5120. We have created fb of size 5120x4320
+> (=size of source) and downscaled to 3840x2400(=size of dest).
 > 
-> Signed-off-by: Vikas Srivastava <vikas.srivastava@intel.com>
-
-IMO looks correct:
-
-Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-
---
-Zbigniew
-
+> On MTL(disp_ver=14), in dmesg we can see
+> 
+> [drm:skl_update_scaler [i915]] scaler_user index 0.0: src
+> 5120x4320 dst 3840x2400 size is out of scaler range.
+> 
+> since max source width supported is 4096 whereas same test
+> will pass on ADLP(display_ver=13) since max source width
+> supported is 5120.
+> 
+> v2: -updated comment (JP)
+>      -not declare list of tests (JP)
+>      -fixed indentation (JP)
+>      -added i915_max_source_size_test() inside
+>       igt_subtest_group() (JP)
+> v3: -added restriction to run this test only when HDISPLAY=3840
+> 
+> Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
 > ---
->  tests/i915/gem_userptr_blits.c | 105 ++++++++++++++++++++++-----------
->  1 file changed, 70 insertions(+), 35 deletions(-)
+>   tests/kms_plane_scaling.c | 107 ++++++++++++++++++++++++++++++++++++--
+>   1 file changed, 104 insertions(+), 3 deletions(-)
 > 
-> diff --git a/tests/i915/gem_userptr_blits.c b/tests/i915/gem_userptr_blits.c
-> index 698508669..483570d0a 100644
-> --- a/tests/i915/gem_userptr_blits.c
-> +++ b/tests/i915/gem_userptr_blits.c
-> @@ -204,65 +204,100 @@ blit(int fd, uint32_t dst, uint32_t src, uint32_t *all_bo, int n_bo)
->  	struct drm_i915_gem_relocation_entry reloc[2];
->  	struct drm_i915_gem_exec_object2 *obj;
->  	struct drm_i915_gem_execbuffer2 exec;
-> +	uint32_t devid;
->  	uint32_t handle;
->  	int n, ret, i=0;
-> +	uint64_t src_offset, dst_offset;
-> +	uint32_t size = HEIGHT * WIDTH * 4;
-> +	bool has_relocs = gem_has_relocations(fd);
->  
-> -	batch[i++] = XY_SRC_COPY_BLT_CMD |
-> -		  XY_SRC_COPY_BLT_WRITE_ALPHA |
-> -		  XY_SRC_COPY_BLT_WRITE_RGB;
-> -	if (intel_gen(intel_get_drm_devid(fd)) >= 8)
-> -		batch[i - 1] |= 8;
-> -	else
-> -		batch[i - 1] |= 6;
-> -	batch[i++] = (3 << 24) | /* 32 bits */
-> -		  (0xcc << 16) | /* copy ROP */
-> -		  WIDTH*4;
-> -	batch[i++] = 0; /* dst x1,y1 */
-> -	batch[i++] = (HEIGHT << 16) | WIDTH; /* dst x2,y2 */
-> -	batch[i++] = 0; /* dst reloc */
-> -	if (intel_gen(intel_get_drm_devid(fd)) >= 8)
-> -		batch[i++] = 0;
-> -	batch[i++] = 0; /* src x1,y1 */
-> -	batch[i++] = WIDTH*4;
-> -	batch[i++] = 0; /* src reloc */
-> -	if (intel_gen(intel_get_drm_devid(fd)) >= 8)
-> -		batch[i++] = 0;
-> -	batch[i++] = MI_BATCH_BUFFER_END;
-> -	batch[i++] = MI_NOOP;
-> +	src_offset = src * size;
-> +	dst_offset = dst * size;
->  
-> +	devid = intel_get_drm_devid(fd);
->  	handle = gem_create(fd, 4096);
-> -	gem_write(fd, handle, 0, batch, sizeof(batch));
-> +	memset(&exec, 0, sizeof(exec));
-> +	obj = calloc(n_bo + 1, sizeof(*obj));
-> +	for (n = 0; n < n_bo; n++) {
-> +		obj[n].handle = all_bo[n];
-> +		obj[n].offset = all_bo[n] * size;
-> +		obj[n].flags = EXEC_OBJECT_SUPPORTS_48B_ADDRESS;
-> +		if (all_bo[n] == dst)
-> +			obj[n].flags |= EXEC_OBJECT_WRITE;
-> +		if (!has_relocs)
-> +			obj[n].flags |= EXEC_OBJECT_PINNED;
+> diff --git a/tests/kms_plane_scaling.c b/tests/kms_plane_scaling.c
+> index 795e3daa..dd2138a7 100644
+> --- a/tests/kms_plane_scaling.c
+> +++ b/tests/kms_plane_scaling.c
+> @@ -26,6 +26,8 @@
+>   #include "igt_vec.h"
+>   #include <math.h>
+>   
+> +#define HDISPLAY_4K	3840
+> +
+>   IGT_TEST_DESCRIPTION("Test display plane scaling");
+>   
+>   enum scaler_combo_test_type {
+> @@ -964,6 +966,102 @@ static void invalid_parameter_tests(data_t *d)
+>   	}
+>   }
+>   
+> +/*
+> + *	Max source/destination width/height for i915 driver.
+> + *	These numbers are coming from
+> + *	drivers/gpu/drm/i915/display/skl_scaler.c in kernel sources.
+> + *
+> + *	DISPLAY_VER < 11
+> + *		max_src_w = 4096
+> + *		max_src_h = 4096
+> + *		max_dst_w = 4096
+> + *		max_dst_h = 4096
+> + *
+> + *	DISPLAY_VER = 11
+> + *		max_src_w = 5120
+> + *		max_src_h = 4096
+> + *		max_dst_w = 5120
+> + *		max_dst_h = 4096
+> + *
+> + *	DISPLAY_VER = 12-13
+> + *		max_src_w = 5120
+> + *		max_src_h = 8192
+> + *		max_dst_w = 8192
+> + *		max_dst_h = 8192
+> + *
+> + *	DISPLAY_VER = 14
+> + *		max_src_w = 4096
+> + *		max_src_h = 8192
+> + *		max_dst_w = 8192
+> + *		max_dst_h = 8192
+> + */
+> +
+> +static void i915_max_source_size_test(data_t *d)
+> +{
+> +	enum pipe pipe = PIPE_A;
+> +	drmModeModeInfo *mode;
+> +	igt_output_t *output;
+> +	igt_fb_t fb;
+> +	igt_plane_t *plane;
+> +	int rval;
+> +
+> +	static const struct invalid_paramtests paramtests[] = {
+> +		{
+> +			.testname = "max-src-size",
+> +			.planesize = {3840, 2400},
+> +			.params = {{~0}}
+> +		},
+> +	};
+> +
+> +	igt_fixture {
+> +		igt_require_intel(d->drm_fd);
+> +
+> +		output = igt_get_single_output_for_pipe(&d->display, pipe);
+> +		igt_require(output);
+> +
+> +		mode = igt_output_get_mode(output);
+> +		igt_require(mode->hdisplay == HDISPLAY_4K);
+
+Would this be better with >= instead of == ?
+
+> +
+> +		igt_output_set_pipe(output, pipe);
+> +		plane = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
+> +
+> +		igt_create_fb(d->drm_fd, 5120, 4320,
+> +			      DRM_FORMAT_XRGB8888,
+> +			      DRM_FORMAT_MOD_NONE,
+> +			      &fb);
 > +	}
 > +
-> +	obj[n].handle = handle;
-> +	obj[n].offset = handle * size;
-> +	obj[n].flags = EXEC_OBJECT_SUPPORTS_48B_ADDRESS;
-> +	obj[n].relocation_count = 2;
-> +	obj[n].relocs_ptr = to_user_pointer(reloc);
-> +	if (!has_relocs) {
-> +		obj[n].flags |= EXEC_OBJECT_PINNED;
-> +		obj[n].relocation_count = 0;
-> +	}
->  
->  	reloc[0].target_handle = dst;
->  	reloc[0].delta = 0;
->  	reloc[0].offset = 4 * sizeof(batch[0]);
-> -	reloc[0].presumed_offset = 0;
-> +	reloc[0].presumed_offset = dst_offset;
->  	reloc[0].read_domains = I915_GEM_DOMAIN_RENDER;
->  	reloc[0].write_domain = I915_GEM_DOMAIN_RENDER;
->  
->  	reloc[1].target_handle = src;
->  	reloc[1].delta = 0;
->  	reloc[1].offset = 7 * sizeof(batch[0]);
-> -	if (intel_gen(intel_get_drm_devid(fd)) >= 8)
-> +	if (intel_gen(devid) >= 8)
->  		reloc[1].offset += sizeof(batch[0]);
-> -	reloc[1].presumed_offset = 0;
-> +	reloc[1].presumed_offset = src_offset;
->  	reloc[1].read_domains = I915_GEM_DOMAIN_RENDER;
->  	reloc[1].write_domain = 0;
->  
-> -	memset(&exec, 0, sizeof(exec));
-> -	obj = calloc(n_bo + 1, sizeof(*obj));
-> -	for (n = 0; n < n_bo; n++) {
-> -		obj[n].handle = all_bo[n];
-> -		obj[n].flags = EXEC_OBJECT_SUPPORTS_48B_ADDRESS;
-> +	if (intel_graphics_ver(devid) >= IP_VER(12, 60)) {
-> +		batch[i++] = XY_FAST_COPY_BLT;
-> +		batch[i++] = XY_FAST_COPY_COLOR_DEPTH_32 | WIDTH*4;
-> +		batch[i++] = 0; /* dst x1,y1 */
-> +		batch[i++] = (HEIGHT << 16) | WIDTH; /* dst x2,y2 */
-> +		batch[i++] = lower_32_bits(dst_offset); /* dst address */
-> +		batch[i++] = upper_32_bits(CANONICAL(dst_offset));
-> +		batch[i++] = 0; /* src x1,y1 */
-> +		batch[i++] = WIDTH*4; /* src pitch */
-> +		batch[i++] = lower_32_bits(src_offset); /* src address */
-> +		batch[i++] = upper_32_bits(CANONICAL(src_offset));
-> +		batch[i++] = MI_BATCH_BUFFER_END;
-> +		batch[i++] = MI_NOOP;
-> +	} else {
-> +		batch[i++] = XY_SRC_COPY_BLT_CMD |
-> +			     XY_SRC_COPY_BLT_WRITE_ALPHA |
-> +			     XY_SRC_COPY_BLT_WRITE_RGB;
-> +		if (intel_gen(devid) >= 8)
-> +			batch[i - 1] |= 8;
-> +		else
-> +			batch[i - 1] |= 6;
-> +		batch[i++] = (3 << 24) | /* 32 bits */
-> +			     (0xcc << 16) | /* copy ROP */
-> +			     WIDTH*4;
-> +		batch[i++] = 0; /* dst x1,y1 */
-> +		batch[i++] = (HEIGHT << 16) | WIDTH; /* dst x2,y2 */
-> +		batch[i++] = lower_32_bits(dst_offset);
-> +		if (intel_gen(devid) >= 8)
-> +			batch[i++] = upper_32_bits(CANONICAL(dst_offset));
-> +		batch[i++] = 0; /* src x1,y1 */
-> +		batch[i++] = WIDTH*4;
-> +		batch[i++] = lower_32_bits(src_offset);
-> +		if (intel_gen(devid) >= 8)
-> +			batch[i++] = upper_32_bits(CANONICAL(src_offset));
-> +		batch[i++] = MI_BATCH_BUFFER_END;
-> +		batch[i++] = MI_NOOP;
->  	}
-> -	obj[n].handle = handle;
-> -	obj[n].flags = EXEC_OBJECT_SUPPORTS_48B_ADDRESS;
-> -	obj[n].relocation_count = 2;
-> -	obj[n].relocs_ptr = to_user_pointer(reloc);
+> +	igt_describe("test for validating max source size.");
+> +	igt_subtest_with_dynamic("i915-max-source-size") {
+> +		for (uint32_t i = 0; i < ARRAY_SIZE(paramtests); i++) {
+> +			igt_dynamic(paramtests[i].testname) {
+> +				igt_plane_set_position(plane, 0, 0);
+> +				igt_plane_set_fb(plane, &fb);
+> +				igt_plane_set_size(plane,
+> +						   paramtests[i].planesize[0],
+> +						   paramtests[i].planesize[1]);
 > +
-> +	gem_write(fd, handle, 0, batch, sizeof(batch));
->  
->  	exec.buffers_ptr = to_user_pointer(obj);
->  	exec.buffer_count = n_bo + 1;
->  	exec.flags = HAS_BLT_RING(intel_get_drm_devid(fd)) ? I915_EXEC_BLT : 0;
-> +	exec.flags |= I915_EXEC_NO_RELOC;
->  
->  	ret = __gem_execbuf(fd, &exec);
->  	gem_close(fd, handle);
-> -- 
-> 2.25.1
-> 
+> +				for (uint32_t j = 0; paramtests[i].params[j].prop != ~0; j++)
+> +					igt_plane_set_prop_value(plane,
+> +								 paramtests[i].params[j].prop,
+> +								 paramtests[i].params[j].value);
+
+These params are not being used, are there plans on this or would it be 
+better just to take this loop away along with .params from paramtests 
+structure?
+
+> +
+> +				rval = igt_display_try_commit2(&d->display, COMMIT_ATOMIC);
+> +
+> +				if (intel_display_ver(d->devid) < 11 || intel_display_ver(d->devid) >= 14)
+> +					igt_assert(rval == -EINVAL || rval == -ERANGE);
+> +				else
+> +					igt_assert_eq(rval, 0);
+> +			}
+> +		}
+> +	}
+> +
+> +	igt_fixture {
+> +		igt_remove_fb(d->drm_fd, &fb);
+> +		igt_output_set_pipe(output, PIPE_NONE);
+> +	}
+> +}
+> +
+>   static int opt_handler(int opt, int opt_index, void *_data)
+>   {
+>   	data_t *data = _data;
+> @@ -1123,13 +1221,16 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
+>   		}
+>   	}
+>   
+> +	igt_subtest_group
+> +		invalid_parameter_tests(&data);
+> +
+> +	igt_subtest_group
+> +		i915_max_source_size_test(&data);
+> +
+>   	igt_describe("Tests scaling with multi-pipe.");
+>   	igt_subtest_f("2x-scaler-multi-pipe")
+>   		test_scaler_with_multi_pipe_plane(&data);
+>   
+> -	igt_subtest_group
+> -		invalid_parameter_tests(&data);
+> -
+>   	igt_fixture {
+>   		igt_display_fini(&data.display);
+>   		close(data.drm_fd);
