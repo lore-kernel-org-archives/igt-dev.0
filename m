@@ -1,18 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2BD7210E5A6
- for <igt-dev@lists.freedesktop.org>; Fri, 24 Feb 2023 08:42:24 +0000 (UTC)
-Message-ID: <38ac32f9-8d71-27b9-7920-710b56fbbee7@intel.com>
-Date: Fri, 24 Feb 2023 14:12:10 +0530
-Content-Language: en-US
-To: <igt-dev@lists.freedesktop.org>
-References: <mailman.5665.1676648053.930.igt-dev@lists.freedesktop.org>
-From: "Ch, Sai Gowtham" <sai.gowtham.ch@intel.com>
-In-Reply-To: <mailman.5665.1676648053.930.igt-dev@lists.freedesktop.org>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
+From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ igt-dev@lists.freedesktop.org,
+ Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>,
+ Riana Tauro <riana.tauro@intel.com>,
+ Zbigniew =?utf-8?B?S2VtcGN6ecWEc2tp?= <zbigniew.kempczynski@intel.com>,
+ intel-gfx@lists.freedesktop.org
+Date: Fri, 24 Feb 2023 09:46:53 +0100
+Message-ID: <5908864.lOV4Wx5bFT@jkrzyszt-mobl1.ger.corp.intel.com>
+In-Reply-To: <20230224083854.oharfpdp6aidbfsk@kamilkon-desk1>
+References: <20230213143445.24228-1-janusz.krzysztofik@linux.intel.com>
+ <20230224083854.oharfpdp6aidbfsk@kamilkon-desk1>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] igt-dev Digest, Vol 63, Issue 197
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
+Subject: Re: [igt-dev] [PATCH i-g-t v2] tests/i915_suspend: Refresh device
+ list after *-without-i915 subtests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,157 +27,128 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-
-
-On 2/17/2023 9:04 PM, igt-dev-request@lists.freedesktop.org wrote:
-> Send igt-dev mailing list submissions to
-> 	igt-dev@lists.freedesktop.org
-> 
-> To subscribe or unsubscribe via the World Wide Web, visit
-> 	https://lists.freedesktop.org/mailman/listinfo/igt-dev
-> or, via email, send a message with subject or body 'help' to
-> 	igt-dev-request@lists.freedesktop.org
-> 
-> You can reach the person managing the list at
-> 	igt-dev-owner@lists.freedesktop.org
-> 
-> When replying, please edit your Subject line so it is more specific
-> than "Re: Contents of igt-dev digest..."
-> 
-> 
-> Today's Topics:
-> 
->     1. Re: [PATCH i-g-t] intel_gpu_top: Add display name for compute
->        engine class (Kamil Konieczny)
->     2. [PATCH i-g-t] i915/i915_suspend: run in subprocess to catch
->        oom (Kamil Konieczny)
->     3. ? Fi.CI.BAT: success for Validate max source size (rev3)
->        (Patchwork)
-> 
-> 
-> ----------------------------------------------------------------------
-> 
-> Message: 1
-> Date: Fri, 17 Feb 2023 15:37:12 +0100
-> From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> To: Development mailing list for IGT GPU Tools
-> 	<igt-dev@lists.freedesktop.org>
-> Cc: Christopher Snowhill <chris@kode54.net>, Christopher Snowhill
-> 	<kode54@gmail.com>
-> Subject: Re: [igt-dev] [PATCH i-g-t] intel_gpu_top: Add display name
-> 	for compute engine class
-> Message-ID: <20230217143712.z5dbgg5ua3atifre@kamilkon-desk1>
-> Content-Type: text/plain; charset=utf-8
-> 
-> Hi Christopher,
-> 
-> Sidenote: please decide which is your main e-mail address and
-> if it is different from s-o-b add From: line at begin like:
-> 
-> From: Christopher Snowhill <kode54@gmail.com>
-> 
-> On 2023-01-11 at 05:22:55 -0800, Christopher Snowhill wrote:
->> Add label and abbreviated display name for the compute engine class.
->>
->> Signed-off-by: Christopher Snowhill <kode54@gmail.com>
-> 
-> Patch itself lgtm,
+On Friday, 24 February 2023 09:38:54 CET Kamil Konieczny wrote:
+> On 2023-02-13 at 15:34:45 +0100, Janusz Krzysztofik wrote:
+> > If any of *-without-i915 subtests fails or skips for any reason, it may
+> > leave the i915 module unloaded while keeping our device list populated
+> > with initially collected data.  In a follow up igt_fixture section we then
+> > try to reopen the device.  If the test has been executed with a device
+> > filter specified, an attempt to open the device finds a matching entry
+> > that belongs to the no longer existing device in that initially collected
+> > device list, fails to stat() it, concludes that's because of the device
+> > having been already open, and returns an error.  While that error,
+> > triggered after subtests completion, doesn't affect results of the
+> > subtest, reported by CI togethger with those results it is confusing to
+> > users reviewing those reports.
+> > 
+> > Fix this issue by refreshing the potentially outdated device list before
+> > continuing with drm_open_driver() if we've been called with a device
+> > filter specified.
+> > 
+> > While being at it, add a comment that explains why we call
+> > igt_devices_scan() from __igt_device_card_match() but don't force device
+> > rescan, and emit a debug message if we fail in _is_already_opened() on
+> > unsuccessful device stat().
+> > 
+> > v2: don't free the device list -- we can't tell if it has been populated,
+> >     and igt_devices_free() fails if it hasn't,
+> >   - commit message updated, description improved.
+> > 
+> > Subtest basic-s3-without-i915: FAIL (9.572s)
+> > (i915_suspend:9050) drmtest-WARNING: card maching filter 0 is already opened
+> > (i915_suspend:9050) drmtest-CRITICAL: Test abort in function drm_open_driver, file ../lib/drmtest.c:639:
+> > (i915_suspend:9050) drmtest-CRITICAL: abort condition: fd < 0
+> > (i915_suspend:9050) drmtest-CRITICAL: Last errno: 2, No such file or directory
+> > (i915_suspend:9050) drmtest-CRITICAL: No known gpu found for chipset flags 0x1 (intel)
+> > Test i915_suspend failed.
+> > **** DEBUG ****
+> > (i915_suspend:9050) drmtest-DEBUG: Looking for devices to open using filter 0: pci:vendor=intel,device=dg2
+> > (i915_suspend:9050) drmtest-DEBUG: Filter matched /dev/dri/card0 | /dev/dri/renderD128
+> > (i915_suspend:9050) drmtest-WARNING: card maching filter 0 is already opened
+> > (i915_suspend:9050) drmtest-CRITICAL: Test abort in function drm_open_driver, file ../lib/drmtest.c:639:
+> > (i915_suspend:9050) drmtest-CRITICAL: abort condition: fd < 0
+> > (i915_suspend:9050) drmtest-CRITICAL: Last errno: 2, No such file or directory
+> > (i915_suspend:9050) drmtest-CRITICAL: No known gpu found for chipset flags 0x1 (intel)
+> > (i915_suspend:9050) igt_core-INFO: Stack trace:
+> > (i915_suspend:9050) igt_core-INFO:   #0 ../lib/igt_core.c:2066 __igt_abort()
+> > (i915_suspend:9050) igt_core-INFO:   #1 ../lib/drmtest.c:573 drm_open_driver()
+> > (i915_suspend:9050) igt_core-INFO:   #2 ../tests/i915/i915_suspend.c:258 __igt_unique____real_main245()
+> > (i915_suspend:9050) igt_core-INFO:   #3 ../tests/i915/i915_suspend.c:245 main()
+> > (i915_suspend:9050) igt_core-INFO:   #4 ../sysdeps/nptl/libc_start_call_main.h:58 __libc_start_call_main()
+> > (i915_suspend:9050) igt_core-INFO:   #5 ../csu/libc-start.c:128 __libc_start_main@@GLIBC_2.34()
+> > (i915_suspend:9050) igt_core-INFO:   #6 [_start+0x2a]
+> > ****  END  ****
+> > 
+> > Fixes: f7aff600ab16 ("tests/i915/i915_suspend: Disable d3cold_allowed for basic-s2idle-without-i915")
+> > Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+> > Cc: Riana Tauro <riana.tauro@intel.com>
 > 
 > Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> 
-> Regards,
-> Kamil
-> 
->> ---
->>   tools/intel_gpu_top.c | 4 ++++
->>   1 file changed, 4 insertions(+)
->>
->> diff --git a/tools/intel_gpu_top.c b/tools/intel_gpu_top.c
->> index 6de8a164..08306f51 100644
->> --- a/tools/intel_gpu_top.c
->> +++ b/tools/intel_gpu_top.c
->> @@ -281,6 +281,8 @@ static const char *class_display_name(unsigned int class)
->>   		return "Video";
->>   	case I915_ENGINE_CLASS_VIDEO_ENHANCE:
->>   		return "VideoEnhance";
->> +	case I915_ENGINE_CLASS_COMPUTE:
->> +		return "Compute";
->>   	default:
->>   		return "[unknown]";
->>   	}
->> @@ -297,6 +299,8 @@ static const char *class_short_name(unsigned int class)
->>   		return "VCS";
->>   	case I915_ENGINE_CLASS_VIDEO_ENHANCE:
->>   		return "VECS";
->> +	case I915_ENGINE_CLASS_COMPUTE:
->> +		return "CCS";
->>   	default:
->>   		return "UNKN";
->>   	}
->> -- 
->> 2.39.0
-> 
-> 
-> ------------------------------
-> 
-> Message: 2
-> Date: Fri, 17 Feb 2023 16:12:41 +0100
-> From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> To: igt-dev@lists.freedesktop.org
-> Subject: [igt-dev] [PATCH i-g-t] i915/i915_suspend: run in subprocess
-> 	to catch oom
-> Message-ID: <20230217151241.45317-1-kamil.konieczny@linux.intel.com>
-> 
-> Shrink subtest can end up with oom killing it. Create subprocess
-> and run it from there so it will at least get reported like:
-> 
-> dynamic child 0 pid:70254 died with signal 9, Killed
-> Subtest shrink: FAIL (23.906s)
-> 
-> dmesg reports:
-> 
-> [103335.337309] Out of memory: Killed process 70254 (i915_suspend)
-> 
-> Cc: Riana Tauro <riana.tauro@intel.com>
-> Cc: Anshuman Gupta <anshuman.gupta@intel.com>
-> Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> ---
->   tests/i915/i915_suspend.c | 19 +++++++++++++------
->   1 file changed, 13 insertions(+), 6 deletions(-)
-> 
-> diff --git a/tests/i915/i915_suspend.c b/tests/i915/i915_suspend.c
-> index 815f1c8a..9798ba5c 100644
-> --- a/tests/i915/i915_suspend.c
-> +++ b/tests/i915/i915_suspend.c
-> @@ -176,15 +176,22 @@ test_shrink(int fd, unsigned int mode)
->   	void *mem;
->   
->   	gem_quiescent_gpu(fd);
-> -	igt_purge_vm_caches(fd);
->   
-> -	mem = igt_get_total_pinnable_mem(&size);
-> -	igt_assert(mem != MAP_FAILED);
-> +	igt_multi_fork(child, 1) {
-> +		fd = gem_reopen_driver(fd);
-> +		igt_purge_vm_caches(fd);
->   
-> -	igt_purge_vm_caches(fd);
-> -	igt_system_suspend_autoresume(mode, SUSPEND_TEST_NONE);
-> +		mem = igt_get_total_pinnable_mem(&size);
-> +		igt_assert(mem != MAP_FAILED);
->   
-> -	munmap(mem, size);
-> +		igt_purge_vm_caches(fd);
-> +		igt_system_suspend_autoresume(mode, SUSPEND_TEST_NONE);
-> +
-> +		munmap(mem, size);
-> +		close(fd);
-> +	}
-> +
-> +	igt_waitchildren();
->   }
-Looks good to me.
-Reviewed-by: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
 
->   
->   static void
+Thanks Kamil, pushed.
+
+Janusz
+
+> 
+> > ---
+> >  lib/drmtest.c             |  2 +-
+> >  lib/igt_device_scan.c     |  4 ++++
+> >  tests/i915/i915_suspend.c | 12 +++++++++++-
+> >  3 files changed, 16 insertions(+), 2 deletions(-)
+> > 
+> > diff --git a/lib/drmtest.c b/lib/drmtest.c
+> > index 16e80bdfcf..8e2d1ac50b 100644
+> > --- a/lib/drmtest.c
+> > +++ b/lib/drmtest.c
+> > @@ -260,7 +260,7 @@ static bool _is_already_opened(const char *path, int as_idx)
+> >  	 * we cannot even stat the device, so it's of no use - let's claim it's
+> >  	 * already opened
+> >  	 */
+> > -	if (stat(path, &new) != 0)
+> > +	if (igt_debug_on(stat(path, &new) != 0))
+> >  		return true;
+> >  
+> >  	for (int i = 0; i < as_idx; ++i) {
+> > diff --git a/lib/igt_device_scan.c b/lib/igt_device_scan.c
+> > index 8b767eed20..ae69ed09f1 100644
+> > --- a/lib/igt_device_scan.c
+> > +++ b/lib/igt_device_scan.c
+> > @@ -1918,6 +1918,10 @@ static bool __igt_device_card_match(const char *filter,
+> >  		return false;
+> >  	memset(card, 0, sizeof(*card));
+> >  
+> > +	/*
+> > +	 * Scan devices in case the user hasn't yet,
+> > +	 * but leave a decision on forced rescan on the user side.
+> > +	 */
+> >  	igt_devices_scan(false);
+> >  
+> >  	if (igt_device_filter_apply(filter) == false)
+> > diff --git a/tests/i915/i915_suspend.c b/tests/i915/i915_suspend.c
+> > index 815f1c8a2c..1d304a9317 100644
+> > --- a/tests/i915/i915_suspend.c
+> > +++ b/tests/i915/i915_suspend.c
+> > @@ -253,8 +253,18 @@ igt_main
+> >  	igt_subtest("basic-s3-without-i915")
+> >  		test_suspend_without_i915(SUSPEND_STATE_S3);
+> >  
+> > -	igt_fixture
+> > +	igt_fixture {
+> > +		/*
+> > +		 * Since above subtests may fail, leaving i915 module unloaded
+> > +		 * but device list populated, refresh the device list before
+> > +		 * reopening the i915 device if we've been called with a device
+> > +		 * filter specified, otherwise drm_open_driver() will fail
+> > +		 * instead of reloading the i915 module.
+> > +		 */
+> > +		if (igt_device_filter_count())
+> > +			igt_devices_scan(true);
+> >  		fd = drm_open_driver(DRIVER_INTEL);
+> > +	}
+> >  
+> >  	igt_subtest("fence-restore-tiled2untiled") {
+> >  		gem_require_mappable_ggtt(fd);
+> 
+
+
+
