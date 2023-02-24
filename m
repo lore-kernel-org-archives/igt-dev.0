@@ -1,14 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4372410EC59
- for <igt-dev@lists.freedesktop.org>; Fri, 24 Feb 2023 15:12:37 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C9D7F10EC59
+ for <igt-dev@lists.freedesktop.org>; Fri, 24 Feb 2023 15:12:38 +0000 (UTC)
 From: Swati Sharma <swati2.sharma@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Fri, 24 Feb 2023 20:44:56 +0530
-Message-Id: <20230224151459.17177-1-swati2.sharma@intel.com>
+Date: Fri, 24 Feb 2023 20:44:57 +0530
+Message-Id: <20230224151459.17177-2-swati2.sharma@intel.com>
+In-Reply-To: <20230224151459.17177-1-swati2.sharma@intel.com>
+References: <20230224151459.17177-1-swati2.sharma@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v4 0/3] Validate max source size
+Subject: [igt-dev] [PATCH i-g-t v4 1/3] tests/kms_plane_scaling: Prep work
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,15 +22,50 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-i915 specific test is added to validate max source size width.
+struct can be reused to add more test cases.
 
-Swati Sharma (3):
-  tests/kms_plane_scaling: Prep work
-  tests/kms_plane_scaling: Minor fixes
-  tests/kms_plane_scaling: Add test to validate max source size
+v2: -don't declare list of lists[JP]
 
- tests/kms_plane_scaling.c | 133 ++++++++++++++++++++++++++++++++------
- 1 file changed, 115 insertions(+), 18 deletions(-)
+Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
+---
+ tests/kms_plane_scaling.c | 18 ++++++++++--------
+ 1 file changed, 10 insertions(+), 8 deletions(-)
 
+diff --git a/tests/kms_plane_scaling.c b/tests/kms_plane_scaling.c
+index 74554915f..ecb4087f4 100644
+--- a/tests/kms_plane_scaling.c
++++ b/tests/kms_plane_scaling.c
+@@ -43,6 +43,15 @@ typedef struct {
+ 	bool extended;
+ } data_t;
+ 
++struct invalid_paramtests {
++	const char *testname;
++	uint32_t planesize[2];
++	struct {
++		enum igt_atomic_plane_properties prop;
++		uint32_t value;
++	} params[8];
++};
++
+ const struct {
+ 	const char * const describe;
+ 	const char * const name;
+@@ -901,14 +910,7 @@ static void invalid_parameter_tests(data_t *d)
+ 	igt_plane_t *plane;
+ 	int rval;
+ 
+-	const struct {
+-		const char *testname;
+-		uint32_t planesize[2];
+-		struct {
+-			enum igt_atomic_plane_properties prop;
+-			uint32_t value;
+-		} params[8];
+-	} paramtests[] = {
++	static const struct invalid_paramtests paramtests[] = {
+ 		{
+ 			.testname = "less-than-1-height-src",
+ 			.planesize = {256, 8},
 -- 
 2.25.1
