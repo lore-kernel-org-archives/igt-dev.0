@@ -1,20 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-lf1-x132.google.com (mail-lf1-x132.google.com
- [IPv6:2a00:1450:4864:20::132])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7F43410E05A
- for <igt-dev@lists.freedesktop.org>; Sat, 25 Feb 2023 13:09:17 +0000 (UTC)
-Received: by mail-lf1-x132.google.com with SMTP id n2so2601759lfb.12
- for <igt-dev@lists.freedesktop.org>; Sat, 25 Feb 2023 05:09:17 -0800 (PST)
-Date: Sat, 25 Feb 2023 15:09:14 +0200
-From: Petri Latvala <adrinael@adrinael.net>
-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Message-ID: <Y/oIenZzQOV5OH8G@adrinael.net>
-References: <20230224192703.53697-1-kamil.konieczny@linux.intel.com>
+Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9B79710E083
+ for <igt-dev@lists.freedesktop.org>; Mon, 27 Feb 2023 03:18:50 +0000 (UTC)
+From: Nidhi Gupta <nidhi1.gupta@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Mon, 27 Feb 2023 08:54:59 +0530
+Message-Id: <20230227032459.15497-1-nidhi1.gupta@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230224192703.53697-1-kamil.konieczny@linux.intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t] runner: check disk limit at dumping kmsg
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t v2] tests/kms_color: Limit the execution to
+ two pipes
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,96 +17,111 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org, Arkadiusz Hiler <arkadiusz.hiler@intel.com>,
- Karol Krol <karol.krol@intel.com>
+Cc: Nidhi Gupta <nidhi1.gupta@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Fri, Feb 24, 2023 at 08:27:03PM +0100, Kamil Konieczny wrote:
-> It was reported that kernel dumps can grow beyond disk limit size
-> so add checks for it and report error if that happen.
-> 
-> Reported-by: Karol Krol <karol.krol@intel.com>
-> Ref: https://gitlab.freedesktop.org/drm/igt-gpu-tools/-/issues/129
-> Cc: Petri Latvala <adrinael@adrinael.net>
-> Cc: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
-> Cc: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-> Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> ---
->  runner/executor.c | 24 +++++++++++++++++++-----
->  1 file changed, 19 insertions(+), 5 deletions(-)
-> 
-> diff --git a/runner/executor.c b/runner/executor.c
-> index 597cd7f5..17ebcdb8 100644
-> --- a/runner/executor.c
-> +++ b/runner/executor.c
-> @@ -584,7 +584,7 @@ void close_outputs(int *fds)
->  }
->  
->  /* Returns the number of bytes written to disk, or a negative number on error */
-> -static long dump_dmesg(int kmsgfd, int outfd)
-> +static long dump_dmesg(int kmsgfd, int outfd, size_t disk_limit)
->  {
->  	/*
->  	 * Write kernel messages to the log file until we reach
-> @@ -599,12 +599,18 @@ static long dump_dmesg(int kmsgfd, int outfd)
->  	bool underflow_once = false;
->  	char cont;
->  	char buf[2048];
-> -	ssize_t r;
-> +	ssize_t r, disk_written;
->  	long written = 0;
->  
->  	if (kmsgfd < 0)
->  		return 0;
->  
-> +	disk_written = lseek(outfd, 0, SEEK_SET);
-> +	if (disk_written > disk_limit) {
-> +		errf("Error dumping kmsg: disk limit already exceeded\n");
-> +		return disk_written;
-> +	}
+As the test execution is taking more time on simulation, limit the
+execution to two (first & last) pipes. This optimization is for
+simulation and hardware.
 
-The return value is the amount written to disk by this call, return 0 here.
+This patch will also provide an option (command line flag '-e') to
+execute on all pipes.
 
+Example: ./kms_color -e --run-subtest ctm-0-50
 
-> +
->  	comparefd = open("/dev/kmsg", O_RDONLY | O_NONBLOCK);
->  	if (comparefd < 0) {
->  		errf("Error opening another fd for /dev/kmsg\n");
-> @@ -655,6 +661,13 @@ static long dump_dmesg(int kmsgfd, int outfd)
->  
->  		write(outfd, buf, r);
->  		written += r;
-> +		disk_written += r;
-> +
-> +		if (disk_written > disk_limit) {
-> +			close(comparefd);
-> +			errf("Error dumping kmsg: disk limit exceeded\n");
-> +			return disk_written;
-> +		}
+v2: Restrict the execution only on 2 pipes for
+    real hardware aswell (Ankit)
 
-And same as above, return 'written' here instead of the current size.
+Signed-off-by: Nidhi Gupta <nidhi1.gupta@intel.com>
+---
+ tests/kms_color.c | 43 ++++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 42 insertions(+), 1 deletion(-)
 
-
-All in all, this is a fine solution and it looks like I had a bit of a
-brainfart originally when writing this code. When we're aborting and
-killing the test, the runner lets the test (and kernel) dump out the
-dying screams in hopes that those logs are useful with figuring out
-why that condition happened, but disk limit being exceeded doesn't
-need that additional logging. The damage is already done and what's in
-the assumed-to-be already-humongous logs is the interesting bits.
-
-With the return values changed,
-Reviewed-by: Petri Latvala <adrinael@adrinael.net>
-
-TODO for later:
-1) Instead of letting dmesg log grow to an additional limit (the disk
-usage limit is supposed to be _total_, stdout+stderr+dmesg), let dmesg
-dumping only use what's left of the quota.
-2) When disk limit is exceeded, add a message to dmesg that more
-kernel logs might be available but we stopped collecting.
-
-
+diff --git a/tests/kms_color.c b/tests/kms_color.c
+index 45570083..85d9100f 100644
+--- a/tests/kms_color.c
++++ b/tests/kms_color.c
+@@ -26,6 +26,10 @@
+ 
+ IGT_TEST_DESCRIPTION("Test Color Features at Pipe level");
+ 
++static bool extended;
++static enum pipe active_pipes[IGT_MAX_PIPES];
++static uint32_t last_pipe;
++
+ static bool test_pipe_degamma(data_t *data,
+ 			      igt_plane_t *primary)
+ {
+@@ -878,6 +882,16 @@ run_deep_color_tests_for_pipe(data_t *data, enum pipe p)
+ 	test_cleanup(data);
+ }
+ 
++static bool execution_constraint(enum pipe pipe)
++{
++	if (!extended &&
++	    pipe != active_pipes[0] &&
++	    pipe != active_pipes[last_pipe])
++		return true;
++
++	return false;
++}
++
+ static void
+ run_invalid_tests_for_pipe(data_t *data)
+ {
+@@ -1022,6 +1036,9 @@ run_tests_for_pipe(data_t *data)
+ 		igt_describe_f("%s", ctm_tests[i].desc);
+ 		igt_subtest_with_dynamic_f("%s", ctm_tests[i].name) {
+ 			for_each_pipe(&data->display, pipe) {
++				if (execution_constraint(pipe))
++					continue;
++
+ 				run_ctm_tests_for_pipe(data, pipe,
+ 						       ctm_tests[i].colors,
+ 						       ctm_tests[i].ctm,
+@@ -1041,9 +1058,28 @@ run_tests_for_pipe(data_t *data)
+ 	}
+ }
+ 
+-igt_main
++static int opt_handler(int opt, int opt_index, void *_data)
++{
++	switch (opt) {
++	case 'e':
++		extended = true;
++		break;
++	default:
++		return IGT_OPT_HANDLER_ERROR;
++	}
++
++	return IGT_OPT_HANDLER_SUCCESS;
++}
++
++const char *help_str =
++	"  -e \tExtended tests.\n";
++
++igt_main_args("e", NULL, help_str, opt_handler, NULL)
+ {
+ 	data_t data = {};
++	enum pipe pipe;
++
++	last_pipe = 0;
+ 
+ 	igt_fixture {
+ 		data.drm_fd = drm_open_driver_master(DRIVER_ANY);
+@@ -1052,6 +1088,11 @@ igt_main
+ 		kmstest_set_vt_graphics_mode();
+ 
+ 		igt_display_require(&data.display, data.drm_fd);
++
++		/* Get active pipes. */
++		for_each_pipe(&data.display, pipe)
++			active_pipes[last_pipe++] = pipe;
++		last_pipe--;
+ 	}
+ 
+ 	igt_subtest_group
 -- 
-Petri Latvala
+2.39.0
