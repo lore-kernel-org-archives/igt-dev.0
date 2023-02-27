@@ -1,17 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2FF7410E20D
- for <igt-dev@lists.freedesktop.org>; Mon, 27 Feb 2023 13:41:28 +0000 (UTC)
-From: Swati Sharma <swati2.sharma@intel.com>
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E9F8F10E41B
+ for <igt-dev@lists.freedesktop.org>; Mon, 27 Feb 2023 14:27:54 +0000 (UTC)
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Mon, 27 Feb 2023 19:13:46 +0530
-Message-Id: <20230227134347.28053-4-swati2.sharma@intel.com>
-In-Reply-To: <20230227134347.28053-1-swati2.sharma@intel.com>
-References: <20230227134347.28053-1-swati2.sharma@intel.com>
+Date: Mon, 27 Feb 2023 15:27:48 +0100
+Message-Id: <20230227142748.28811-1-kamil.konieczny@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v4 3/4] tests/kms_plane_scaling: Add test to
- validate max source size
+Subject: [igt-dev] [PATCH v2 i-g-t] runner: check disk limit at dumping kmsg
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,158 +16,109 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: Karol Krol <karol.krol@intel.com>,
+ Arkadiusz Hiler <arkadiusz.hiler@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-i915 specific test is added to validate max source size. This
-test is expected to return -EINVAL for platforms where we have
-max source width 4096 whereas it will pass on platforms having
-max source width 5120. We have created fb of size 5120x4320
-(=size of source) and downscaled to 3840x2400(=size of dest).
+It was reported that kernel dumps can grow beyond disk limit size
+so add checks for it and report error if that happen.
 
-On MTL(disp_ver=14), in dmesg we can see
+v2: return number of written bytes (Petri)
 
-[drm:skl_update_scaler [i915]] scaler_user index 0.0: src
-5120x4320 dst 3840x2400 size is out of scaler range.
-
-since max source width supported is 4096 whereas same test
-will pass on ADLP(display_ver=13) since max source width
-supported is 5120.
-
-v2: -updated comment (JP)
-    -not declare list of tests (JP)
-    -fixed indentation (JP)
-    -added i915_max_source_size_test() inside
-     igt_subtest_group() (JP)
-v3: -added restriction to run this test only when HDISPLAY=3840
-v4: -remove inner loop (JP)
-    -test for HDISPLAY >= 3840 (JP)
-
-Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
+Reported-by: Karol Krol <karol.krol@intel.com>
+Ref: https://gitlab.freedesktop.org/drm/igt-gpu-tools/-/issues/129
+Cc: Petri Latvala <adrinael@adrinael.net>
+Cc: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
+Cc: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Reviewed-by: Petri Latvala <adrinael@adrinael.net>
 ---
- tests/kms_plane_scaling.c | 95 +++++++++++++++++++++++++++++++++++++++
- 1 file changed, 95 insertions(+)
+ runner/executor.c | 24 +++++++++++++++++++-----
+ 1 file changed, 19 insertions(+), 5 deletions(-)
 
-diff --git a/tests/kms_plane_scaling.c b/tests/kms_plane_scaling.c
-index c384a0316..b18af4438 100644
---- a/tests/kms_plane_scaling.c
-+++ b/tests/kms_plane_scaling.c
-@@ -26,6 +26,8 @@
- #include "igt_vec.h"
- #include <math.h>
- 
-+#define HDISPLAY_4K	3840
-+
- IGT_TEST_DESCRIPTION("Test display plane scaling");
- 
- enum scaler_combo_test_type {
-@@ -964,6 +966,96 @@ static void invalid_parameter_tests(data_t *d)
- 	}
+diff --git a/runner/executor.c b/runner/executor.c
+index 597cd7f5..ae6cf1bb 100644
+--- a/runner/executor.c
++++ b/runner/executor.c
+@@ -584,7 +584,7 @@ void close_outputs(int *fds)
  }
  
-+/*
-+ *	Max source/destination width/height for i915 driver.
-+ *	These numbers are coming from
-+ *	drivers/gpu/drm/i915/display/skl_scaler.c in kernel sources.
-+ *
-+ *	DISPLAY_VER < 11
-+ *		max_src_w = 4096
-+ *		max_src_h = 4096
-+ *		max_dst_w = 4096
-+ *		max_dst_h = 4096
-+ *
-+ *	DISPLAY_VER = 11
-+ *		max_src_w = 5120
-+ *		max_src_h = 4096
-+ *		max_dst_w = 5120
-+ *		max_dst_h = 4096
-+ *
-+ *	DISPLAY_VER = 12-13
-+ *		max_src_w = 5120
-+ *		max_src_h = 8192
-+ *		max_dst_w = 8192
-+ *		max_dst_h = 8192
-+ *
-+ *	DISPLAY_VER = 14
-+ *		max_src_w = 4096
-+ *		max_src_h = 8192
-+ *		max_dst_w = 8192
-+ *		max_dst_h = 8192
-+ */
-+
-+static void i915_max_source_size_test(data_t *d)
-+{
-+	enum pipe pipe = PIPE_A;
-+	drmModeModeInfo *mode;
-+	igt_output_t *output;
-+	igt_fb_t fb;
-+	igt_plane_t *plane;
-+	int rval;
-+
-+	static const struct invalid_paramtests paramtests[] = {
-+		{
-+			.testname = "max-src-size",
-+			.planesize = {3840, 2400},
-+		},
-+	};
-+
-+	igt_fixture {
-+		igt_require_intel(d->drm_fd);
-+
-+		output = igt_get_single_output_for_pipe(&d->display, pipe);
-+		igt_require(output);
-+
-+		mode = igt_output_get_mode(output);
-+		igt_require(mode->hdisplay >= HDISPLAY_4K);
-+
-+		igt_output_set_pipe(output, pipe);
-+		plane = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
-+
-+		igt_create_fb(d->drm_fd, 5120, 4320,
-+			      DRM_FORMAT_XRGB8888,
-+			      DRM_FORMAT_MOD_NONE,
-+			      &fb);
-+	}
-+
-+	igt_describe("test for validating max source size.");
-+	igt_subtest_with_dynamic("i915-max-source-size") {
-+		for (uint32_t i = 0; i < ARRAY_SIZE(paramtests); i++) {
-+			igt_dynamic(paramtests[i].testname) {
-+				igt_plane_set_position(plane, 0, 0);
-+				igt_plane_set_fb(plane, &fb);
-+				igt_plane_set_size(plane,
-+						   paramtests[i].planesize[0],
-+						   paramtests[i].planesize[1]);
-+
-+				rval = igt_display_try_commit2(&d->display, COMMIT_ATOMIC);
-+
-+				if (intel_display_ver(d->devid) < 11 || intel_display_ver(d->devid) >= 14)
-+					igt_assert(rval == -EINVAL || rval == -ERANGE);
-+				else
-+					igt_assert_eq(rval, 0);
-+			}
-+		}
-+	}
-+
-+	igt_fixture {
-+		igt_remove_fb(d->drm_fd, &fb);
-+		igt_output_set_pipe(output, PIPE_NONE);
-+	}
-+}
-+
- static int opt_handler(int opt, int opt_index, void *_data)
+ /* Returns the number of bytes written to disk, or a negative number on error */
+-static long dump_dmesg(int kmsgfd, int outfd)
++static long dump_dmesg(int kmsgfd, int outfd, size_t disk_limit)
  {
- 	data_t *data = _data;
-@@ -1126,6 +1218,9 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
- 	igt_subtest_group
- 		invalid_parameter_tests(&data);
+ 	/*
+ 	 * Write kernel messages to the log file until we reach
+@@ -599,12 +599,18 @@ static long dump_dmesg(int kmsgfd, int outfd)
+ 	bool underflow_once = false;
+ 	char cont;
+ 	char buf[2048];
+-	ssize_t r;
++	ssize_t r, disk_written;
+ 	long written = 0;
  
-+	igt_subtest_group
-+		i915_max_source_size_test(&data);
+ 	if (kmsgfd < 0)
+ 		return 0;
+ 
++	disk_written = lseek(outfd, 0, SEEK_SET);
++	if (disk_written > disk_limit) {
++		errf("Error dumping kmsg: disk limit already exceeded\n");
++		return 0; /* number of written bytes */
++	}
 +
- 	igt_describe("Tests scaling with multi-pipe.");
- 	igt_subtest_f("2x-scaler-multi-pipe")
- 		test_scaler_with_multi_pipe_plane(&data);
+ 	comparefd = open("/dev/kmsg", O_RDONLY | O_NONBLOCK);
+ 	if (comparefd < 0) {
+ 		errf("Error opening another fd for /dev/kmsg\n");
+@@ -655,6 +661,13 @@ static long dump_dmesg(int kmsgfd, int outfd)
+ 
+ 		write(outfd, buf, r);
+ 		written += r;
++		disk_written += r;
++
++		if (disk_written > disk_limit) {
++			close(comparefd);
++			errf("Error dumping kmsg: disk limit exceeded\n");
++			return written;
++		}
+ 
+ 		if (comparefd < 0 && sscanf(buf, "%u,%llu,%llu,%c;",
+ 					    &flags, &seq, &usec, &cont) == 4) {
+@@ -890,6 +903,7 @@ static int monitor_output(pid_t child,
+ 	unsigned long taints = 0;
+ 	bool aborting = false;
+ 	size_t disk_usage = 0;
++	const size_t mon_disk_limit = settings->disk_usage_limit ? : (~(size_t)0);
+ 	bool socket_comms_used = false; /* whether the test actually uses comms */
+ 	bool results_received = false; /* whether we already have test results that might need overriding if we detect an abort condition */
+ 
+@@ -1219,7 +1233,7 @@ static int monitor_output(pid_t child,
+ 
+ 			time_last_activity = time_now;
+ 
+-			dmesgwritten = dump_dmesg(kmsgfd, outputs[_F_DMESG]);
++			dmesgwritten = dump_dmesg(kmsgfd, outputs[_F_DMESG], mon_disk_limit);
+ 			if (settings->sync)
+ 				fdatasync(outputs[_F_DMESG]);
+ 
+@@ -1457,7 +1471,7 @@ static int monitor_output(pid_t child,
+ 					asprintf(abortreason, "Child refuses to die, tainted 0x%lx.", taints);
+ 				}
+ 
+-				dump_dmesg(kmsgfd, outputs[_F_DMESG]);
++				dump_dmesg(kmsgfd, outputs[_F_DMESG], mon_disk_limit);
+ 				if (settings->sync)
+ 					fdatasync(outputs[_F_DMESG]);
+ 
+@@ -1483,7 +1497,7 @@ static int monitor_output(pid_t child,
+ 		}
+ 	}
+ 
+-	dump_dmesg(kmsgfd, outputs[_F_DMESG]);
++	dump_dmesg(kmsgfd, outputs[_F_DMESG], mon_disk_limit);
+ 	if (settings->sync)
+ 		fdatasync(outputs[_F_DMESG]);
+ 
 -- 
-2.25.1
+2.37.2
