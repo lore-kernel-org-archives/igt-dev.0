@@ -1,15 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5F8AA10E15C
- for <igt-dev@lists.freedesktop.org>; Mon, 27 Feb 2023 05:56:46 +0000 (UTC)
-From: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Mon, 27 Feb 2023 11:24:09 +0530
-Message-Id: <20230227055409.136175-1-ankit.k.nautiyal@intel.com>
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E022610E35F
+ for <igt-dev@lists.freedesktop.org>; Mon, 27 Feb 2023 06:20:31 +0000 (UTC)
+Message-ID: <2c907b40-7d1d-4a64-1d6b-a280c71e898e@intel.com>
+Date: Mon, 27 Feb 2023 11:50:06 +0530
+Content-Language: en-US
+To: Nidhi Gupta <nidhi1.gupta@intel.com>, <igt-dev@lists.freedesktop.org>
+References: <20230227032459.15497-1-nidhi1.gupta@intel.com>
+From: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
+In-Reply-To: <20230227032459.15497-1-nidhi1.gupta@intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t] tests/kms_lease: Set Aspect ratio client
- cap in case of legacy commit
+Subject: Re: [igt-dev] [PATCH i-g-t v2] tests/kms_color: Limit the execution
+ to two pipes
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,44 +25,113 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-For clients setting DRM_CLIENT_CAP_ATOMIC, the support for aspect ratio
-bits in mode flags is enabled by default. For legacy commit, clients need
-to set the aspect ratio cap explicitly, if they want to set aspect ratio
-bits in the mode flags.
-Currently in case of setcrtc_implicit_plane, the client using the lease
-does not set the aspect-ratio property before using setcrtc ioctl. This
-creates a problem, when there are aspect-ratio bits present in the mode
-flags. In such a case the setcrtc ioctl fails, as driver expects the
-aspect ratio bits unset.
+Hi Nidhi,
 
-So set DRM_CLIENT_CAP_ASPECT_RATIO, if the mode flags do have aspect
-ratio bits set, before calling the setcrtc ioctl.
+On Mon-27-02-2023 08:54 am, Nidhi Gupta wrote:
+> As the test execution is taking more time on simulation, limit the
+> execution to two (first & last) pipes. This optimization is for
+> simulation and hardware.
+> 
+> This patch will also provide an option (command line flag '-e') to
+> execute on all pipes.
+> 
+> Example: ./kms_color -e --run-subtest ctm-0-50
+> 
+> v2: Restrict the execution only on 2 pipes for
+>      real hardware aswell (Ankit)
+> 
+> Signed-off-by: Nidhi Gupta <nidhi1.gupta@intel.com>
+> ---
+>   tests/kms_color.c | 43 ++++++++++++++++++++++++++++++++++++++++++-
+>   1 file changed, 42 insertions(+), 1 deletion(-)
+> 
+> diff --git a/tests/kms_color.c b/tests/kms_color.c
+> index 45570083..85d9100f 100644
+> --- a/tests/kms_color.c
+> +++ b/tests/kms_color.c
+> @@ -26,6 +26,10 @@
+>   
+>   IGT_TEST_DESCRIPTION("Test Color Features at Pipe level");
+>   
+> +static bool extended;
+> +static enum pipe active_pipes[IGT_MAX_PIPES];
+> +static uint32_t last_pipe;
+> +
+>   static bool test_pipe_degamma(data_t *data,
+>   			      igt_plane_t *primary)
+>   {
+> @@ -878,6 +882,16 @@ run_deep_color_tests_for_pipe(data_t *data, enum pipe p)
+>   	test_cleanup(data);
+>   }
+>   
+> +static bool execution_constraint(enum pipe pipe)
+> +{
+> +	if (!extended &&
+> +	    pipe != active_pipes[0] &&
+> +	    pipe != active_pipes[last_pipe])
+> +		return true;
+> +
+> +	return false;
+> +}
+> +
+>   static void
+>   run_invalid_tests_for_pipe(data_t *data)
+>   {
+> @@ -1022,6 +1036,9 @@ run_tests_for_pipe(data_t *data)
+>   		igt_describe_f("%s", ctm_tests[i].desc);
+>   		igt_subtest_with_dynamic_f("%s", ctm_tests[i].name) {
+>   			for_each_pipe(&data->display, pipe) {
+> +				if (execution_constraint(pipe))
+> +					continue;
 
-v2: Set the aspect ratio client cap only for lesse.
+Why it is specific to only ctm tests? Can we extend this logic to other 
+tests too?
 
-Signed-off-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
----
- tests/kms_lease.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+- Bhanu
 
-diff --git a/tests/kms_lease.c b/tests/kms_lease.c
-index 67e8d3bec700..61e1f7dccde7 100644
---- a/tests/kms_lease.c
-+++ b/tests/kms_lease.c
-@@ -345,6 +345,14 @@ static void setcrtc_implicit_plane(data_t *data)
- 	do_or_die(create_lease(data->master.fd, &mcl));
- 	drmSetClientCap(data->master.fd, DRM_CLIENT_CAP_UNIVERSAL_PLANES, 1);
- 
-+	/*
-+	 * For Legacy commit, If userspace wants to send modes with aspect-ratio bits
-+	 * then the client cap for aspect-ratio bits must be set.
-+	 */
-+	if (mode->flags & DRM_MODE_FLAG_PIC_AR_MASK) {
-+		drmSetClientCap(mcl.fd, DRM_CLIENT_CAP_ASPECT_RATIO, 1);
-+	}
-+
- 	/* Set a mode on the leased output */
- 	igt_assert_eq(0, prepare_crtc(&data->master, data));
- 
--- 
-2.25.1
+> +
+>   				run_ctm_tests_for_pipe(data, pipe,
+>   						       ctm_tests[i].colors,
+>   						       ctm_tests[i].ctm,
+> @@ -1041,9 +1058,28 @@ run_tests_for_pipe(data_t *data)
+>   	}
+>   }
+>   
+> -igt_main
+> +static int opt_handler(int opt, int opt_index, void *_data)
+> +{
+> +	switch (opt) {
+> +	case 'e':
+> +		extended = true;
+> +		break;
+> +	default:
+> +		return IGT_OPT_HANDLER_ERROR;
+> +	}
+> +
+> +	return IGT_OPT_HANDLER_SUCCESS;
+> +}
+> +
+> +const char *help_str =
+> +	"  -e \tExtended tests.\n";
+> +
+> +igt_main_args("e", NULL, help_str, opt_handler, NULL)
+>   {
+>   	data_t data = {};
+> +	enum pipe pipe;
+> +
+> +	last_pipe = 0;
+>   
+>   	igt_fixture {
+>   		data.drm_fd = drm_open_driver_master(DRIVER_ANY);
+> @@ -1052,6 +1088,11 @@ igt_main
+>   		kmstest_set_vt_graphics_mode();
+>   
+>   		igt_display_require(&data.display, data.drm_fd);
+> +
+> +		/* Get active pipes. */
+> +		for_each_pipe(&data.display, pipe)
+> +			active_pipes[last_pipe++] = pipe;
+> +		last_pipe--;
+>   	}
+>   
+>   	igt_subtest_group
