@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============3408434166559641495=="
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4EC3010E67D
+ for <igt-dev@lists.freedesktop.org>; Tue, 28 Feb 2023 10:18:15 +0000 (UTC)
+From: Jani Nikula <jani.nikula@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Tue, 28 Feb 2023 12:18:07 +0200
+Message-Id: <20230228101807.921863-1-jani.nikula@intel.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Juha-Pekka Heikkila" <juhapekka.heikkila@gmail.com>
-Date: Mon, 27 Feb 2023 22:30:20 -0000
-Message-ID: <167753702038.26338.5971357233473302370@emeril.freedesktop.org>
-References: <20230227113407.20192-1-juhapekka.heikkila@gmail.com>
-In-Reply-To: <20230227113407.20192-1-juhapekka.heikkila@gmail.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
- =?utf-8?q?kms=5Fplane=3A_add_invalid_pixel_format_tests_=28rev2=29?=
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t] tools/intel_vbt_decode: fix division by
+ zero child device size
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,121 +17,60 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
+Cc: Jani Nikula <jani.nikula@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============3408434166559641495==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Real world VBTs keep fuzzing our decoder, this time with a legacy child
+devices block #11 that has child_dev_size 0, leading to division by
+zero. Check for it, and bail out early, both for legacy and current
+child device blocks.
 
-== Series Details ==
+Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+---
+ tools/intel_vbt_decode.c | 14 ++++++++++----
+ 1 file changed, 10 insertions(+), 4 deletions(-)
 
-Series: tests/kms_plane: add invalid pixel format tests (rev2)
-URL   : https://patchwork.freedesktop.org/series/114416/
-State : success
-
-== Summary ==
-
-CI Bug Log - changes from CI_DRM_12788 -> IGTPW_8534
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8534/index.html
-
-Participating hosts (39 -> 38)
-------------------------------
-
-  Missing    (1): fi-snb-2520m 
-
-
-Changes
--------
-
-  No changes found
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_7174 -> IGTPW_8534
-
-  CI-20190529: 20190529
-  CI_DRM_12788: c2532f7587aa1cf6e8b32afb2e80dac6010bfda3 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_8534: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8534/index.html
-  IGT_7174: 55642b7805d6fc5b987b396c2bbfa46db654db4f @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-
-Testlist changes
-----------------
-
-+igt@kms_plane@invalid-pixel-format-settings
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8534/index.html
-
---===============3408434166559641495==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/kms_plane: add invalid pixel format tests (rev2)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/114416/">https://patchwork.freedesktop.org/series/114416/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8534/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8534/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from CI_DRM_12788 -&gt; IGTPW_8534</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8534/index.html</p>
-<h2>Participating hosts (39 -&gt; 38)</h2>
-<p>Missing    (1): fi-snb-2520m </p>
-<h2>Changes</h2>
-<p>No changes found</p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_7174 -&gt; IGTPW_8534</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_12788: c2532f7587aa1cf6e8b32afb2e80dac6010bfda3 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_8534: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8534/index.html<br />
-  IGT_7174: 55642b7805d6fc5b987b396c2bbfa46db654db4f @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-<h2>Testlist changes</h2>
-<p>+igt@kms_plane@invalid-pixel-format-settings</p>
-
-</body>
-</html>
-
---===============3408434166559641495==--
+diff --git a/tools/intel_vbt_decode.c b/tools/intel_vbt_decode.c
+index 8f707c1f822a..3294f74c2e7c 100644
+--- a/tools/intel_vbt_decode.c
++++ b/tools/intel_vbt_decode.c
+@@ -1118,8 +1118,6 @@ static void dump_general_definitions(struct context *context,
+ 	const struct bdb_general_definitions *defs = block_data(block);
+ 	int child_dev_num;
+ 
+-	child_dev_num = (block->size - sizeof(*defs)) / defs->child_dev_size;
+-
+ 	printf("\tCRT DDC GMBUS addr: 0x%02x\n", defs->crt_ddc_gmbus_pin);
+ 	printf("\tUse DPMS on AIM devices: %s\n", YESNO(defs->dpms_aim));
+ 	printf("\tSkip CRT detect at boot: %s\n",
+@@ -1129,6 +1127,11 @@ static void dump_general_definitions(struct context *context,
+ 	printf("\tBoot display type: 0x%02x%02x\n", defs->boot_display[1],
+ 	       defs->boot_display[0]);
+ 	printf("\tChild device size: %d\n", defs->child_dev_size);
++
++	if (!defs->child_dev_size)
++		return;
++
++	child_dev_num = (block->size - sizeof(*defs)) / defs->child_dev_size;
+ 	printf("\tChild device count: %d\n", child_dev_num);
+ 
+ 	dump_child_devices(context, defs->devices,
+@@ -1141,9 +1144,12 @@ static void dump_legacy_child_devices(struct context *context,
+ 	const struct bdb_legacy_child_devices *defs = block_data(block);
+ 	int child_dev_num;
+ 
+-	child_dev_num = (block->size - sizeof(*defs)) / defs->child_dev_size;
+-
+ 	printf("\tChild device size: %d\n", defs->child_dev_size);
++
++	if (!defs->child_dev_size)
++		return;
++
++	child_dev_num = (block->size - sizeof(*defs)) / defs->child_dev_size;
+ 	printf("\tChild device count: %d\n", child_dev_num);
+ 
+ 	dump_child_devices(context, defs->devices,
+-- 
+2.39.1
