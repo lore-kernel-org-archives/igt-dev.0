@@ -1,19 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 101CE10E499
- for <igt-dev@lists.freedesktop.org>; Tue, 28 Feb 2023 04:57:16 +0000 (UTC)
-Message-ID: <036264c3-b289-541e-80ce-b8af25a6670c@intel.com>
-Date: Tue, 28 Feb 2023 10:26:54 +0530
-Content-Language: en-US
-To: Nidhi Gupta <nidhi1.gupta@intel.com>, <igt-dev@lists.freedesktop.org>
-References: <20230228042418.18881-1-nidhi1.gupta@intel.com>
-From: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
-In-Reply-To: <20230228042418.18881-1-nidhi1.gupta@intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
+Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 86ACB10E499
+ for <igt-dev@lists.freedesktop.org>; Tue, 28 Feb 2023 05:06:08 +0000 (UTC)
+From: Nidhi Gupta <nidhi1.gupta@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Tue, 28 Feb 2023 10:42:22 +0530
+Message-Id: <20230228051222.19339-1-nidhi1.gupta@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t v3] tests/kms_color: Limit the execution
- to two pipes
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t v3] tests/kms_color: Limit the execution to
+ two pipes
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,118 +17,141 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: Nidhi Gupta <nidhi1.gupta@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Nidhi,
+As the test execution is taking more time on simulation, limit the
+execution to two (first & last) pipes. This optimization is for
+simulation and hardware.
 
-On Tue-28-02-2023 09:54 am, Nidhi Gupta wrote:
-> As the test execution is taking more time on simulation, limit the
-> execution to two (first & last) pipes. This optimization is for
-> simulation and hardware.
-> 
-> This patch will also provide an option (command line flag '-e') to
-> execute on all pipes.
-> 
-> Example: ./kms_color -e --run-subtest ctm-0-50
-> 
-> v2: Restrict the execution only on 2 pipes for
->      real hardware aswell (Ankit)
-> v3: Restrict the execution only on 2 pipes for
->      all subtests (Bhanu)
+This patch will also provide an option (command line flag '-e') to
+execute on all pipes.
 
-Still, this change is not present in this patch.
+Example: ./kms_color -e --run-subtest ctm-0-50
 
-- Bhanu
+v2: Restrict the execution only on 2 pipes for
+    real hardware aswell (Ankit)
+v3: Restrict the execution only on 2 pipes for
+    all subtests (Bhanu)
 
-> 
-> Signed-off-by: Nidhi Gupta <nidhi1.gupta@intel.com>
-> ---
->   tests/kms_color.c | 43 ++++++++++++++++++++++++++++++++++++++++++-
->   1 file changed, 42 insertions(+), 1 deletion(-)
-> 
-> diff --git a/tests/kms_color.c b/tests/kms_color.c
-> index 45570083..85d9100f 100644
-> --- a/tests/kms_color.c
-> +++ b/tests/kms_color.c
-> @@ -26,6 +26,10 @@
->   
->   IGT_TEST_DESCRIPTION("Test Color Features at Pipe level");
->   
-> +static bool extended;
-> +static enum pipe active_pipes[IGT_MAX_PIPES];
-> +static uint32_t last_pipe;
-> +
->   static bool test_pipe_degamma(data_t *data,
->   			      igt_plane_t *primary)
->   {
-> @@ -878,6 +882,16 @@ run_deep_color_tests_for_pipe(data_t *data, enum pipe p)
->   	test_cleanup(data);
->   }
->   
-> +static bool execution_constraint(enum pipe pipe)
-> +{
-> +	if (!extended &&
-> +	    pipe != active_pipes[0] &&
-> +	    pipe != active_pipes[last_pipe])
-> +		return true;
-> +
-> +	return false;
-> +}
-> +
->   static void
->   run_invalid_tests_for_pipe(data_t *data)
->   {
-> @@ -1022,6 +1036,9 @@ run_tests_for_pipe(data_t *data)
->   		igt_describe_f("%s", ctm_tests[i].desc);
->   		igt_subtest_with_dynamic_f("%s", ctm_tests[i].name) {
->   			for_each_pipe(&data->display, pipe) {
-> +				if (execution_constraint(pipe))
-> +					continue;
-> +
->   				run_ctm_tests_for_pipe(data, pipe,
->   						       ctm_tests[i].colors,
->   						       ctm_tests[i].ctm,
-> @@ -1041,9 +1058,28 @@ run_tests_for_pipe(data_t *data)
->   	}
->   }
->   
-> -igt_main
-> +static int opt_handler(int opt, int opt_index, void *_data)
-> +{
-> +	switch (opt) {
-> +	case 'e':
-> +		extended = true;
-> +		break;
-> +	default:
-> +		return IGT_OPT_HANDLER_ERROR;
-> +	}
-> +
-> +	return IGT_OPT_HANDLER_SUCCESS;
-> +}
-> +
-> +const char *help_str =
-> +	"  -e \tExtended tests.\n";
-> +
-> +igt_main_args("e", NULL, help_str, opt_handler, NULL)
->   {
->   	data_t data = {};
-> +	enum pipe pipe;
-> +
-> +	last_pipe = 0;
->   
->   	igt_fixture {
->   		data.drm_fd = drm_open_driver_master(DRIVER_ANY);
-> @@ -1052,6 +1088,11 @@ igt_main
->   		kmstest_set_vt_graphics_mode();
->   
->   		igt_display_require(&data.display, data.drm_fd);
-> +
-> +		/* Get active pipes. */
-> +		for_each_pipe(&data.display, pipe)
-> +			active_pipes[last_pipe++] = pipe;
-> +		last_pipe--;
->   	}
->   
->   	igt_subtest_group
+Signed-off-by: Nidhi Gupta <nidhi1.gupta@intel.com>
+---
+ tests/kms_color.c | 52 ++++++++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 51 insertions(+), 1 deletion(-)
+
+diff --git a/tests/kms_color.c b/tests/kms_color.c
+index 45570083..54580315 100644
+--- a/tests/kms_color.c
++++ b/tests/kms_color.c
+@@ -26,6 +26,10 @@
+ 
+ IGT_TEST_DESCRIPTION("Test Color Features at Pipe level");
+ 
++static bool extended;
++static enum pipe active_pipes[IGT_MAX_PIPES];
++static uint32_t last_pipe;
++
+ static bool test_pipe_degamma(data_t *data,
+ 			      igt_plane_t *primary)
+ {
+@@ -878,6 +882,16 @@ run_deep_color_tests_for_pipe(data_t *data, enum pipe p)
+ 	test_cleanup(data);
+ }
+ 
++static bool execution_constraint(enum pipe pipe)
++{
++	if (!extended &&
++	    pipe != active_pipes[0] &&
++	    pipe != active_pipes[last_pipe])
++		return true;
++
++	return false;
++}
++
+ static void
+ run_invalid_tests_for_pipe(data_t *data)
+ {
+@@ -902,6 +916,9 @@ run_invalid_tests_for_pipe(data_t *data)
+ 		igt_describe_f("%s", tests[i].desc);
+ 		igt_subtest_with_dynamic_f("%s", tests[i].name) {
+ 			for_each_pipe(&data->display, pipe) {
++				if (execution_constraint(pipe))
++					continue;
++
+ 				prep_pipe(data, pipe);
+ 
+ 				igt_dynamic_f("pipe-%s", kmstest_pipe_name(pipe))
+@@ -1012,6 +1029,9 @@ run_tests_for_pipe(data_t *data)
+ 		igt_describe_f("%s", gamma_degamma_tests[i].desc);
+ 		igt_subtest_with_dynamic_f("%s", gamma_degamma_tests[i].name) {
+ 			for_each_pipe(&data->display, pipe) {
++				if (execution_constraint(pipe))
++					continue;
++
+ 				run_gamma_degamma_tests_for_pipe(data, pipe,
+ 								 gamma_degamma_tests[i].test_t);
+ 			}
+@@ -1022,6 +1042,9 @@ run_tests_for_pipe(data_t *data)
+ 		igt_describe_f("%s", ctm_tests[i].desc);
+ 		igt_subtest_with_dynamic_f("%s", ctm_tests[i].name) {
+ 			for_each_pipe(&data->display, pipe) {
++				if (execution_constraint(pipe))
++					continue;
++
+ 				run_ctm_tests_for_pipe(data, pipe,
+ 						       ctm_tests[i].colors,
+ 						       ctm_tests[i].ctm,
+@@ -1036,14 +1059,36 @@ run_tests_for_pipe(data_t *data)
+ 	igt_describe("Verify that deep color works correctly");
+ 	igt_subtest_with_dynamic("deep-color") {
+ 		for_each_pipe(&data->display, pipe) {
++			if (execution_constraint(pipe))
++				continue;
++
+ 			run_deep_color_tests_for_pipe(data, pipe);
+ 		}
+ 	}
+ }
+ 
+-igt_main
++static int opt_handler(int opt, int opt_index, void *_data)
++{
++	switch (opt) {
++	case 'e':
++		extended = true;
++		break;
++	default:
++		return IGT_OPT_HANDLER_ERROR;
++	}
++
++	return IGT_OPT_HANDLER_SUCCESS;
++}
++
++const char *help_str =
++	"  -e \tExtended tests.\n";
++
++igt_main_args("e", NULL, help_str, opt_handler, NULL)
+ {
+ 	data_t data = {};
++	enum pipe pipe;
++
++	last_pipe = 0;
+ 
+ 	igt_fixture {
+ 		data.drm_fd = drm_open_driver_master(DRIVER_ANY);
+@@ -1052,6 +1097,11 @@ igt_main
+ 		kmstest_set_vt_graphics_mode();
+ 
+ 		igt_display_require(&data.display, data.drm_fd);
++
++		/* Get active pipes. */
++		for_each_pipe(&data.display, pipe)
++			active_pipes[last_pipe++] = pipe;
++		last_pipe--;
+ 	}
+ 
+ 	igt_subtest_group
+-- 
+2.39.0
