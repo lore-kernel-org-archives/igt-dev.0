@@ -1,18 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 799DB10E00F
- for <igt-dev@lists.freedesktop.org>; Tue, 28 Feb 2023 20:13:01 +0000 (UTC)
-Date: Tue, 28 Feb 2023 21:12:57 +0100
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 650D810E00F
+ for <igt-dev@lists.freedesktop.org>; Tue, 28 Feb 2023 20:14:32 +0000 (UTC)
+Date: Tue, 28 Feb 2023 21:14:28 +0100
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Message-ID: <20230228201257.b7k33r4p3x54bsrb@kamilkon-desk1>
-References: <20230228101807.921863-1-jani.nikula@intel.com>
+Message-ID: <20230228201428.qpxzascs4excsqrt@kamilkon-desk1>
+References: <20230220164927.27283-1-ville.syrjala@linux.intel.com>
+ <167691614348.31318.10975814378655030130@emeril.freedesktop.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20230228101807.921863-1-jani.nikula@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t] tools/intel_vbt_decode: fix division by
- zero child device size
+In-Reply-To: <167691614348.31318.10975814378655030130@emeril.freedesktop.org>
+Subject: Re: [igt-dev]
+ =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSAgZm9yIHRvb2xz?=
+ =?utf-8?q?/intel=5Fvbt=5Fdecode=3A_Dump_mode_backlight_data?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,69 +22,127 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Jani Nikula <jani.nikula@intel.com>
+Cc: Sai Nandan Yedireswarapu <saix.nandan.yedireswarapu@intel.com>,
+ Lakshminarayana Vudum <lakshminarayana.vudum@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On 2023-02-28 at 12:18:07 +0200, Jani Nikula wrote:
-> Real world VBTs keep fuzzing our decoder, this time with a legacy child
-> devices block #11 that has child_dev_size 0, leading to division by
-> zero. Check for it, and bail out early, both for legacy and current
-> child device blocks.
-> 
-> Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+Hi,
 
-lgtm,
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+these are unrelated to change in tools.
 
---
+Regards,
 Kamil
 
-> ---
->  tools/intel_vbt_decode.c | 14 ++++++++++----
->  1 file changed, 10 insertions(+), 4 deletions(-)
+On 2023-02-20 at 18:02:23 -0000, Patchwork wrote:
+> == Series Details ==
 > 
-> diff --git a/tools/intel_vbt_decode.c b/tools/intel_vbt_decode.c
-> index 8f707c1f822a..3294f74c2e7c 100644
-> --- a/tools/intel_vbt_decode.c
-> +++ b/tools/intel_vbt_decode.c
-> @@ -1118,8 +1118,6 @@ static void dump_general_definitions(struct context *context,
->  	const struct bdb_general_definitions *defs = block_data(block);
->  	int child_dev_num;
->  
-> -	child_dev_num = (block->size - sizeof(*defs)) / defs->child_dev_size;
-> -
->  	printf("\tCRT DDC GMBUS addr: 0x%02x\n", defs->crt_ddc_gmbus_pin);
->  	printf("\tUse DPMS on AIM devices: %s\n", YESNO(defs->dpms_aim));
->  	printf("\tSkip CRT detect at boot: %s\n",
-> @@ -1129,6 +1127,11 @@ static void dump_general_definitions(struct context *context,
->  	printf("\tBoot display type: 0x%02x%02x\n", defs->boot_display[1],
->  	       defs->boot_display[0]);
->  	printf("\tChild device size: %d\n", defs->child_dev_size);
-> +
-> +	if (!defs->child_dev_size)
-> +		return;
-> +
-> +	child_dev_num = (block->size - sizeof(*defs)) / defs->child_dev_size;
->  	printf("\tChild device count: %d\n", child_dev_num);
->  
->  	dump_child_devices(context, defs->devices,
-> @@ -1141,9 +1144,12 @@ static void dump_legacy_child_devices(struct context *context,
->  	const struct bdb_legacy_child_devices *defs = block_data(block);
->  	int child_dev_num;
->  
-> -	child_dev_num = (block->size - sizeof(*defs)) / defs->child_dev_size;
-> -
->  	printf("\tChild device size: %d\n", defs->child_dev_size);
-> +
-> +	if (!defs->child_dev_size)
-> +		return;
-> +
-> +	child_dev_num = (block->size - sizeof(*defs)) / defs->child_dev_size;
->  	printf("\tChild device count: %d\n", child_dev_num);
->  
->  	dump_child_devices(context, defs->devices,
-> -- 
-> 2.39.1
+> Series: tools/intel_vbt_decode: Dump mode backlight data
+> URL   : https://patchwork.freedesktop.org/series/114197/
+> State : failure
 > 
+> == Summary ==
+> 
+> CI Bug Log - changes from CI_DRM_12762 -> IGTPW_8511
+> ====================================================
+> 
+> Summary
+> -------
+> 
+>   **FAILURE**
+> 
+>   Serious unknown changes coming with IGTPW_8511 absolutely need to be
+>   verified manually.
+>   
+>   If you think the reported changes have nothing to do with the changes
+>   introduced in IGTPW_8511, please notify your bug team to allow them
+>   to document this new failure mode, which will reduce false positives in CI.
+> 
+>   External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8511/index.html
+> 
+> Participating hosts (40 -> 37)
+> ------------------------------
+> 
+>   Missing    (3): bat-kbl-2 bat-dg1-6 fi-snb-2520m 
+> 
+> Possible new issues
+> -------------------
+> 
+>   Here are the unknown changes that may have been introduced in IGTPW_8511:
+> 
+> ### IGT changes ###
+> 
+> #### Possible regressions ####
+> 
+>   * igt@kms_cursor_legacy@basic-flip-before-cursor@atomic:
+>     - fi-kbl-soraka:      [PASS][1] -> [FAIL][2]
+>    [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12762/fi-kbl-soraka/igt@kms_cursor_legacy@basic-flip-before-cursor@atomic.html
+>    [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8511/fi-kbl-soraka/igt@kms_cursor_legacy@basic-flip-before-cursor@atomic.html
+> 
+>   
+> Known issues
+> ------------
+> 
+>   Here are the changes found in IGTPW_8511 that come from known issues:
+> 
+> ### IGT changes ###
+> 
+> #### Issues hit ####
+> 
+>   * igt@gem_exec_gttfill@basic:
+>     - fi-pnv-d510:        [PASS][3] -> [FAIL][4] ([i915#7229])
+>    [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12762/fi-pnv-d510/igt@gem_exec_gttfill@basic.html
+>    [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8511/fi-pnv-d510/igt@gem_exec_gttfill@basic.html
+> 
+>   * igt@i915_selftest@live@gt_lrc:
+>     - bat-rpls-1:         [PASS][5] -> [INCOMPLETE][6] ([i915#4983])
+>    [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12762/bat-rpls-1/igt@i915_selftest@live@gt_lrc.html
+>    [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8511/bat-rpls-1/igt@i915_selftest@live@gt_lrc.html
+> 
+>   * igt@i915_selftest@live@hangcheck:
+>     - fi-kbl-soraka:      [PASS][7] -> [INCOMPLETE][8] ([i915#7913])
+>    [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12762/fi-kbl-soraka/igt@i915_selftest@live@hangcheck.html
+>    [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8511/fi-kbl-soraka/igt@i915_selftest@live@hangcheck.html
+> 
+>   * igt@i915_selftest@live@requests:
+>     - bat-rpls-2:         [PASS][9] -> [ABORT][10] ([i915#7982])
+>    [9]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12762/bat-rpls-2/igt@i915_selftest@live@requests.html
+>    [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8511/bat-rpls-2/igt@i915_selftest@live@requests.html
+> 
+>   * igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence:
+>     - bat-dg2-11:         NOTRUN -> [SKIP][11] ([i915#5354]) +2 similar issues
+>    [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8511/bat-dg2-11/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence.html
+> 
+>   
+> #### Possible fixes ####
+> 
+>   * igt@i915_selftest@live@gt_heartbeat:
+>     - fi-kbl-soraka:      [DMESG-FAIL][12] ([i915#5334] / [i915#7872]) -> [PASS][13]
+>    [12]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12762/fi-kbl-soraka/igt@i915_selftest@live@gt_heartbeat.html
+>    [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8511/fi-kbl-soraka/igt@i915_selftest@live@gt_heartbeat.html
+> 
+>   
+>   [i915#4983]: https://gitlab.freedesktop.org/drm/intel/issues/4983
+>   [i915#5334]: https://gitlab.freedesktop.org/drm/intel/issues/5334
+>   [i915#5354]: https://gitlab.freedesktop.org/drm/intel/issues/5354
+>   [i915#7229]: https://gitlab.freedesktop.org/drm/intel/issues/7229
+>   [i915#7872]: https://gitlab.freedesktop.org/drm/intel/issues/7872
+>   [i915#7913]: https://gitlab.freedesktop.org/drm/intel/issues/7913
+>   [i915#7982]: https://gitlab.freedesktop.org/drm/intel/issues/7982
+> 
+> 
+> Build changes
+> -------------
+> 
+>   * CI: CI-20190529 -> None
+>   * IGT: IGT_7166 -> IGTPW_8511
+> 
+>   CI-20190529: 20190529
+>   CI_DRM_12762: 7db509313c2f676ff22df731c0e8b1acb4a3d2ba @ git://anongit.freedesktop.org/gfx-ci/linux
+>   IGTPW_8511: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8511/index.html
+>   IGT_7166: 73a66b9f4418cd14b0c0d20d50cdd4d41053f78c @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+> 
+> == Logs ==
+> 
+> For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8511/index.html
