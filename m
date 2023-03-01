@@ -1,14 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A10D310E0BB
- for <igt-dev@lists.freedesktop.org>; Wed,  1 Mar 2023 12:09:49 +0000 (UTC)
-From: Karolina Stolarek <karolina.stolarek@intel.com>
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4D1EB10E0BB
+ for <igt-dev@lists.freedesktop.org>; Wed,  1 Mar 2023 12:12:16 +0000 (UTC)
+From: Anshuman Gupta <anshuman.gupta@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Wed,  1 Mar 2023 13:09:05 +0100
-Message-Id: <20230301120905.1019314-1-karolina.stolarek@intel.com>
+Date: Wed,  1 Mar 2023 17:42:07 +0530
+Message-Id: <20230301121207.169588-1-anshuman.gupta@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t] tests/gem_exercise_blt: Don't allow hangs
+Subject: [igt-dev] [PATCH i-g-t] perf_pmu: Dump i915_runtime_pm_status
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,40 +20,40 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hangs in this test are undesirable, so don't allow them.
+Dump i915_pm_runtime_status in case of i915 device failed to runtime
+suspend, it will dump the rpm wakeref tracking information which
+will useful to debug the runtime pm issues.
 
-Signed-off-by: Karolina Stolarek <karolina.stolarek@intel.com>
+Signed-off-by: Anshuman Gupta <anshuman.gupta@intel.com>
 ---
- tests/i915/gem_exercise_blt.c | 3 ---
- 1 file changed, 3 deletions(-)
+ tests/i915/perf_pmu.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/tests/i915/gem_exercise_blt.c b/tests/i915/gem_exercise_blt.c
-index 02c54f85..fb11fb92 100644
---- a/tests/i915/gem_exercise_blt.c
-+++ b/tests/i915/gem_exercise_blt.c
-@@ -353,7 +353,6 @@ igt_main_args("b:pst:W:H:", NULL, help_str, opt_handler, NULL)
- 	struct igt_collection *set;
- 	const intel_ctx_t *ctx;
- 	int i915;
--	igt_hang_t hang;
+diff --git a/tests/i915/perf_pmu.c b/tests/i915/perf_pmu.c
+index c1779fc9d0..567b2fa5cf 100644
+--- a/tests/i915/perf_pmu.c
++++ b/tests/i915/perf_pmu.c
+@@ -1709,6 +1709,7 @@ test_rc6(int gem_fd, unsigned int flags)
+ 	int64_t duration_ns = 2e9;
+ 	uint64_t idle, busy, prev, ts[2];
+ 	unsigned long slept;
++	bool suspended;
+ 	int fd, fw;
  
- 	igt_fixture {
- 		i915 = drm_open_driver(DRIVER_INTEL);
-@@ -369,7 +368,6 @@ igt_main_args("b:pst:W:H:", NULL, help_str, opt_handler, NULL)
- 					    I915_SYSTEM_MEMORY,
- 					    I915_DEVICE_MEMORY);
- 		ctx = intel_ctx_create_all_physical(i915);
--		hang = igt_allow_hang(i915, ctx->id, 0);
- 	}
+ 	gem_quiescent_gpu(gem_fd);
+@@ -1727,7 +1728,12 @@ test_rc6(int gem_fd, unsigned int flags)
+ 		drmModeFreeResources(res);
  
- 	igt_describe("Check fast-copy blit");
-@@ -383,7 +381,6 @@ igt_main_args("b:pst:W:H:", NULL, help_str, opt_handler, NULL)
- 	}
+ 		igt_require(igt_setup_runtime_pm(gem_fd));
+-		igt_require(igt_wait_for_pm_status(IGT_RUNTIME_PM_STATUS_SUSPENDED));
++		suspended = igt_wait_for_pm_status(IGT_RUNTIME_PM_STATUS_SUSPENDED);
++
++		if (!suspended)
++			__igt_debugfs_dump(gem_fd, "i915_runtime_pm_status", IGT_LOG_INFO);
++
++		igt_require(suspended);
  
- 	igt_fixture {
--		igt_disallow_hang(i915, hang);
- 		close(i915);
- 	}
- }
+ 		/*
+ 		 * Sleep for a bit to see if once woken up estimated RC6 hasn't
 -- 
 2.25.1
