@@ -1,21 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-lj1-x22e.google.com (mail-lj1-x22e.google.com
- [IPv6:2a00:1450:4864:20::22e])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C0F1F10E0E5
- for <igt-dev@lists.freedesktop.org>; Wed,  1 Mar 2023 13:26:02 +0000 (UTC)
-Received: by mail-lj1-x22e.google.com with SMTP id x6so8305853ljq.1
- for <igt-dev@lists.freedesktop.org>; Wed, 01 Mar 2023 05:26:02 -0800 (PST)
-Date: Wed, 1 Mar 2023 15:25:59 +0200
-From: Petri Latvala <adrinael@adrinael.net>
-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Message-ID: <Y/9SZ43ytZpxNJ6V@adrinael.net>
-References: <20230228212538.47984-1-kamil.konieczny@linux.intel.com>
+Content-Type: multipart/alternative;
+ boundary="===============6273696313126713470=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230228212538.47984-1-kamil.konieczny@linux.intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 1/2] runner/resultgen: relax results
- processing
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Karolina Stolarek" <karolina.stolarek@intel.com>
+Date: Wed, 01 Mar 2023 13:53:11 -0000
+Message-ID: <167767879159.6635.4347308063747682758@emeril.freedesktop.org>
+References: <20230301120905.1019314-1-karolina.stolarek@intel.com>
+In-Reply-To: <20230301120905.1019314-1-karolina.stolarek@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3IgdGVzdHMv?=
+ =?utf-8?q?gem=5Fexercise=5Fblt=3A_Don=27t_allow_hangs?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,85 +17,218 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Tue, Feb 28, 2023 at 10:25:37PM +0100, Kamil Konieczny wrote:
-> We observed problems with resume runs when one of tests from
-> run fail to respond to SIGKILL and then don't exits, which
-> was reported like:
-> 
-> [1415.815247] Child refuses to die, tainted 0x40. Aborting.
-> 
-> After machine was rebooted runs were resumed but at the end
-> results from run wasn't processed due to error at comms file
-> from failed test. Try to correct that behaviour and count
-> results if at least one of files (comms or log) or dmesg was
-> successfully processed and fail only when both fail. Also
-> print more detailed info about what failed.
+--===============6273696313126713470==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-What is the comms file error? Are the logs from that run available
-somewhere?
+== Series Details ==
+
+Series: tests/gem_exercise_blt: Don't allow hangs
+URL   : https://patchwork.freedesktop.org/series/114513/
+State : failure
+
+== Summary ==
+
+CI Bug Log - changes from CI_DRM_12796 -> IGTPW_8545
+====================================================
+
+Summary
+-------
+
+  **FAILURE**
+
+  Serious unknown changes coming with IGTPW_8545 absolutely need to be
+  verified manually.
+  
+  If you think the reported changes have nothing to do with the changes
+  introduced in IGTPW_8545, please notify your bug team to allow them
+  to document this new failure mode, which will reduce false positives in CI.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8545/index.html
+
+Participating hosts (39 -> 38)
+------------------------------
+
+  Missing    (1): fi-snb-2520m 
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in IGTPW_8545:
+
+### IGT changes ###
+
+#### Possible regressions ####
+
+  * igt@dmabuf@all-tests@dma_fence:
+    - fi-cfl-8109u:       [PASS][1] -> [DMESG-FAIL][2]
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12796/fi-cfl-8109u/igt@dmabuf@all-tests@dma_fence.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8545/fi-cfl-8109u/igt@dmabuf@all-tests@dma_fence.html
+
+  * igt@dmabuf@all-tests@sanitycheck:
+    - fi-cfl-8109u:       [PASS][3] -> [ABORT][4]
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12796/fi-cfl-8109u/igt@dmabuf@all-tests@sanitycheck.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8545/fi-cfl-8109u/igt@dmabuf@all-tests@sanitycheck.html
+
+  
+Known issues
+------------
+
+  Here are the changes found in IGTPW_8545 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@gem_exec_gttfill@basic:
+    - fi-pnv-d510:        [PASS][5] -> [FAIL][6] ([i915#7229])
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12796/fi-pnv-d510/igt@gem_exec_gttfill@basic.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8545/fi-pnv-d510/igt@gem_exec_gttfill@basic.html
+
+  * igt@i915_selftest@live@gt_heartbeat:
+    - fi-apl-guc:         [PASS][7] -> [DMESG-FAIL][8] ([i915#5334])
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12796/fi-apl-guc/igt@i915_selftest@live@gt_heartbeat.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8545/fi-apl-guc/igt@i915_selftest@live@gt_heartbeat.html
+
+  
+#### Warnings ####
+
+  * igt@i915_selftest@live@slpc:
+    - bat-rpls-1:         [DMESG-FAIL][9] ([i915#6367] / [i915#7996]) -> [DMESG-FAIL][10] ([i915#6367])
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12796/bat-rpls-1/igt@i915_selftest@live@slpc.html
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8545/bat-rpls-1/igt@i915_selftest@live@slpc.html
+
+  
+  [i915#5334]: https://gitlab.freedesktop.org/drm/intel/issues/5334
+  [i915#6367]: https://gitlab.freedesktop.org/drm/intel/issues/6367
+  [i915#7229]: https://gitlab.freedesktop.org/drm/intel/issues/7229
+  [i915#7996]: https://gitlab.freedesktop.org/drm/intel/issues/7996
 
 
--- 
-Petri Latvala
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_7177 -> IGTPW_8545
+
+  CI-20190529: 20190529
+  CI_DRM_12796: 56c017efe176b9f3ab1700b80d3d20970c851414 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_8545: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8545/index.html
+  IGT_7177: 0cdc4a676cd9f9e495ad3ae441ed3322f1e14a88 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
 
 
-> 
-> Cc: Petri Latvala <adrinael@adrinael.net>
-> Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> ---
->  runner/resultgen.c | 14 +++++++++++---
->  1 file changed, 11 insertions(+), 3 deletions(-)
-> 
-> diff --git a/runner/resultgen.c b/runner/resultgen.c
-> index b00bb6ba..ddc2098e 100644
-> --- a/runner/resultgen.c
-> +++ b/runner/resultgen.c
-> @@ -2133,7 +2133,6 @@ static bool parse_test_directory(int dirfd,
->  	if (commsparsed == COMMSPARSE_ERROR) {
->  		fprintf(stderr, "Error parsing output files (comms)\n");
->  		status = false;
-> -		goto parse_output_end;
->  	}
->  
->  	if (commsparsed == COMMSPARSE_EMPTY) {
-> @@ -2147,14 +2146,22 @@ static bool parse_test_directory(int dirfd,
->  		    !fill_from_output(fds[_F_ERR], entry->binary, "err", &subtests, results->tests)) {
->  			fprintf(stderr, "Error parsing output files (out.txt, err.txt)\n");
->  			status = false;
-> -			goto parse_output_end;
->  		}
->  	}
->  
->  	if (!fill_from_dmesg(fds[_F_DMESG], settings, entry->binary, &subtests, results->tests)) {
->  		fprintf(stderr, "Error parsing output files (dmesg.txt)\n");
-> +		if (!status) {
-> +			fprintf(stderr, "resultgen: Error parsing output files and dmesg.txt, bail out\n");
-> +			goto parse_output_end;
-> +		}
-> +
->  		status = false;
-> -		goto parse_output_end;
-> +	}
-> +
-> +	if (!status) {
-> +		fprintf(stderr, "resultgen: Warning: results may be incomplete for %s\n", entry->binary);
-> +		status = true;
->  	}
->  
->  	override_results(entry->binary, &subtests, results->tests);
-> @@ -2302,6 +2309,7 @@ struct json_object *generate_results_json(int dirfd)
->  
->  		if (!parse_test_directory(testdirfd, &job_list.entries[i], &settings, &results)) {
->  			close(testdirfd);
-> +			fprintf(stderr, "resultgen: Cannot parse results for: %s testname: %s\n", name, job_list.entries[i].binary);
->  			return NULL;
->  		}
->  		close(testdirfd);
-> -- 
-> 2.37.2
-> 
+Testlist changes
+----------------
+
+-igt@kms_plane_scaling@i915-max-source-size
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8545/index.html
+
+--===============6273696313126713470==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/gem_exercise_blt: Don&#39;t allow hangs</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/114513/">https://patchwork.freedesktop.org/series/114513/</a></td></tr>
+<tr><td><b>State:</b></td><td>failure</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8545/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8545/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_12796 -&gt; IGTPW_8545</h1>
+<h2>Summary</h2>
+<p><strong>FAILURE</strong></p>
+<p>Serious unknown changes coming with IGTPW_8545 absolutely need to be<br />
+  verified manually.</p>
+<p>If you think the reported changes have nothing to do with the changes<br />
+  introduced in IGTPW_8545, please notify your bug team to allow them<br />
+  to document this new failure mode, which will reduce false positives in CI.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8545/index.html</p>
+<h2>Participating hosts (39 -&gt; 38)</h2>
+<p>Missing    (1): fi-snb-2520m </p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in IGTPW_8545:</p>
+<h3>IGT changes</h3>
+<h4>Possible regressions</h4>
+<ul>
+<li>
+<p>igt@dmabuf@all-tests@dma_fence:</p>
+<ul>
+<li>fi-cfl-8109u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12796/fi-cfl-8109u/igt@dmabuf@all-tests@dma_fence.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8545/fi-cfl-8109u/igt@dmabuf@all-tests@dma_fence.html">DMESG-FAIL</a></li>
+</ul>
+</li>
+<li>
+<p>igt@dmabuf@all-tests@sanitycheck:</p>
+<ul>
+<li>fi-cfl-8109u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12796/fi-cfl-8109u/igt@dmabuf@all-tests@sanitycheck.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8545/fi-cfl-8109u/igt@dmabuf@all-tests@sanitycheck.html">ABORT</a></li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_8545 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@gem_exec_gttfill@basic:</p>
+<ul>
+<li>fi-pnv-d510:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12796/fi-pnv-d510/igt@gem_exec_gttfill@basic.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8545/fi-pnv-d510/igt@gem_exec_gttfill@basic.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7229">i915#7229</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@gt_heartbeat:</p>
+<ul>
+<li>fi-apl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12796/fi-apl-guc/igt@i915_selftest@live@gt_heartbeat.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8545/fi-apl-guc/igt@i915_selftest@live@gt_heartbeat.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5334">i915#5334</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Warnings</h4>
+<ul>
+<li>igt@i915_selftest@live@slpc:<ul>
+<li>bat-rpls-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12796/bat-rpls-1/igt@i915_selftest@live@slpc.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6367">i915#6367</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7996">i915#7996</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8545/bat-rpls-1/igt@i915_selftest@live@slpc.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6367">i915#6367</a>)</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_7177 -&gt; IGTPW_8545</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_12796: 56c017efe176b9f3ab1700b80d3d20970c851414 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_8545: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8545/index.html<br />
+  IGT_7177: 0cdc4a676cd9f9e495ad3ae441ed3322f1e14a88 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+<h2>Testlist changes</h2>
+<p>-igt@kms_plane_scaling@i915-max-source-size</p>
+
+</body>
+</html>
+
+--===============6273696313126713470==--
