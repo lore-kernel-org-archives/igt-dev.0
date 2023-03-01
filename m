@@ -1,15 +1,23 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3C0C910E593
- for <igt-dev@lists.freedesktop.org>; Thu,  2 Mar 2023 22:37:44 +0000 (UTC)
-From: Nidhi Gupta <nidhi1.gupta@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Fri,  3 Mar 2023 04:13:56 +0530
-Message-Id: <20230302224356.28771-1-nidhi1.gupta@intel.com>
+Received: from mail-ed1-x52b.google.com (mail-ed1-x52b.google.com
+ [IPv6:2a00:1450:4864:20::52b])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1844210E23E
+ for <igt-dev@lists.freedesktop.org>; Wed,  1 Mar 2023 19:58:56 +0000 (UTC)
+Received: by mail-ed1-x52b.google.com with SMTP id u9so9158079edd.2
+ for <igt-dev@lists.freedesktop.org>; Wed, 01 Mar 2023 11:58:56 -0800 (PST)
+Message-ID: <fd01e3dc-2f60-b729-3ec5-2b5db9794c50@gmail.com>
+Date: Wed, 1 Mar 2023 21:58:48 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t] tests/kms_cursor_crc: Reduce the execution
- time on simulation
+Content-Language: en-US
+To: Swati Sharma <swati2.sharma@intel.com>, igt-dev@lists.freedesktop.org
+References: <20230301114220.15941-1-swati2.sharma@intel.com>
+ <20230301114220.15941-4-swati2.sharma@intel.com>
+From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+In-Reply-To: <20230301114220.15941-4-swati2.sharma@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Subject: Re: [igt-dev] [PATCH i-g-t v6 3/4] tests/kms_plane_scaling: Add
+ test to validate max source size
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,158 +25,195 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Nidhi Gupta <nidhi1.gupta@intel.com>
+Reply-To: juhapekka.heikkila@gmail.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-As the test execution is taking more time on simulation, limit the
-execution to two (first & last) pipes. This optimization is for
-simulation and hardware.
+On 1.3.2023 13.42, Swati Sharma wrote:
+> i915 specific test is added to validate max source size. This
+> test is expected to return -EINVAL for platforms where we have
+> max source width 4096 whereas it will pass on platforms having
+> max source width 5120. We have created fb of size 5120x4320
+> (=size of source) and downscaled to 3840x2160(=size of dest).
+> 
+> On MTL(disp_ver=14), in dmesg we can see
+> 
+> [drm:skl_update_scaler [i915]] scaler_user index 0.0: src
+> 5120x4320 dst 3840x2160 size is out of scaler range.
+> 
+> since max source width supported is 4096 whereas same test
+> will pass on ADLP(display_ver=13) since max source width
+> supported is 5120.
+> 
+> v2: -updated comment (JP)
+>      -not declare list of tests (JP)
+>      -fixed indentation (JP)
+>      -added i915_max_source_size_test() inside
+>       igt_subtest_group() (JP)
+> v3: -added restriction to run this test only when HDISPLAY=3840
+> v4: -remove inner loop (JP)
+>      -test for HDISPLAY >= 3840 (JP)
+> v5: -override mode with lowest vrefresh to avoid cdclk lim (JP)
+> v6: -add VDISPLAY check (JP)
+>      -add description for find_mode() (JP)
+> 
+> Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
+> ---
+>   tests/kms_plane_scaling.c | 123 ++++++++++++++++++++++++++++++++++++++
+>   1 file changed, 123 insertions(+)
+> 
+> diff --git a/tests/kms_plane_scaling.c b/tests/kms_plane_scaling.c
+> index c384a0316..ddff1a0e5 100644
+> --- a/tests/kms_plane_scaling.c
+> +++ b/tests/kms_plane_scaling.c
+> @@ -26,6 +26,9 @@
+>   #include "igt_vec.h"
+>   #include <math.h>
+>   
+> +#define HDISPLAY_4K	3840
+> +#define VDISPLAY_4K	2160
+> +
+>   IGT_TEST_DESCRIPTION("Test display plane scaling");
+>   
+>   enum scaler_combo_test_type {
+> @@ -964,6 +967,123 @@ static void invalid_parameter_tests(data_t *d)
+>   	}
+>   }
+>   
+> +static drmModeModeInfo *find_mode(data_t *data, igt_output_t *output, const uint32_t planesize[])
+> +{
+> +	drmModeModeInfo *mode = NULL;
+> +
+> +	for (int i = 0; i < output->config.connector->count_modes; i++) {
+> +		if (output->config.connector->modes[i].hdisplay == planesize[0] &&
+> +		    output->config.connector->modes[i].vdisplay == planesize[1] ) {
+> +			if (mode &&
+> +			    mode->vrefresh < output->config.connector->modes[i].vrefresh)
+> +				continue;
+> +
+> +			mode = &output->config.connector->modes[i];
+> +		}
+> +	}
+> +
+> +	return mode;
+> +}
+> +
+> +/*
+> + *	Max source/destination width/height for i915 driver.
+> + *	These numbers are coming from
+> + *	drivers/gpu/drm/i915/display/skl_scaler.c in kernel sources.
+> + *
+> + *	DISPLAY_VER < 11
+> + *		max_src_w = 4096
+> + *		max_src_h = 4096
+> + *		max_dst_w = 4096
+> + *		max_dst_h = 4096
+> + *
+> + *	DISPLAY_VER = 11
+> + *		max_src_w = 5120
+> + *		max_src_h = 4096
+> + *		max_dst_w = 5120
+> + *		max_dst_h = 4096
+> + *
+> + *	DISPLAY_VER = 12-13
+> + *		max_src_w = 5120
+> + *		max_src_h = 8192
+> + *		max_dst_w = 8192
+> + *		max_dst_h = 8192
+> + *
+> + *	DISPLAY_VER = 14
+> + *		max_src_w = 4096
+> + *		max_src_h = 8192
+> + *		max_dst_w = 8192
+> + *		max_dst_h = 8192
+> + */
+> +
+> +static void i915_max_source_size_test(data_t *d)
+> +{
+> +	enum pipe pipe = PIPE_A;
+> +	drmModeModeInfo *mode = NULL;
+> +	igt_output_t *output;
+> +	igt_fb_t fb;
+> +	igt_plane_t *plane;
+> +	int rval;
+> +
+> +	static const struct invalid_paramtests paramtests[] = {
+> +		{
+> +			.testname = "max-src-size",
+> +			.planesize = {3840, 2160},
+> +		},
+> +	};
+> +
+> +	igt_fixture {
+> +		igt_require_intel(d->drm_fd);
+> +
+> +		output = igt_get_single_output_for_pipe(&d->display, pipe);
+> +		igt_require(output);
+> +
+> +		mode = igt_output_get_mode(output);
+> +		igt_require(mode->hdisplay >= HDISPLAY_4K && mode->vdisplay >= VDISPLAY_4K);
+> +
+> +		igt_output_set_pipe(output, pipe);
+> +		plane = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
+> +
+> +		igt_create_fb(d->drm_fd, 5120, 4320,
+> +			      DRM_FORMAT_XRGB8888,
+> +			      DRM_FORMAT_MOD_NONE,
+> +			      &fb);
+> +	}
+> +
+> +	igt_describe("test for validating max source size.");
+> +	igt_subtest_with_dynamic("i915-max-source-size") {
+> +		for (uint32_t i = 0; i < ARRAY_SIZE(paramtests); i++) {
+> +			/*
+> +			 * Need to find mode with lowest vrefresh else
+> +			 * we can exceed cdclk limits.
+> +			 */
+> +			mode = find_mode(d, output, paramtests[i].planesize);
+> +			if (mode) {
+> +				igt_output_override_mode(output, mode);
+> +				igt_output_set_pipe(output, pipe);
 
-This patch will also provide an option (command line flag '-e') to
-execute on all pipes.
+As discussed earlier, pipe does not need to be set twice for output in 
+same commit. With this fixed entire series is
 
-Signed-off-by: Nidhi Gupta <nidhi1.gupta@intel.com>
----
- tests/kms_cursor_crc.c | 60 +++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 59 insertions(+), 1 deletion(-)
+Reviewed-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
 
-diff --git a/tests/kms_cursor_crc.c b/tests/kms_cursor_crc.c
-index 0b5aac30..a69c0444 100644
---- a/tests/kms_cursor_crc.c
-+++ b/tests/kms_cursor_crc.c
-@@ -83,6 +83,11 @@ typedef struct {
- 	cursorarea oldcursorarea[MAXCURSORBUFFER];
- } data_t;
- 
-+static bool extended;
-+static enum pipe active_pipes[IGT_MAX_PIPES];
-+static uint32_t last_pipe;
-+
-+
- #define TEST_DPMS (1<<0)
- #define TEST_SUSPEND (1<<1)
- 
-@@ -700,6 +705,17 @@ static void test_rapid_movement(data_t *data)
- 	igt_assert_lt(usec, 0.9 * 400 * 1000000 / data->refresh);
- }
- 
-+static bool execution_constraint(enum pipe pipe)
-+{
-+	if (!extended &&
-+	    pipe != active_pipes[0] &&
-+	    pipe != active_pipes[last_pipe])
-+		return true;
-+
-+	return false;
-+}
-+
-+
- static void run_size_tests(data_t *data, int w, int h)
- {
- 	enum pipe pipe;
-@@ -750,6 +766,9 @@ static void run_size_tests(data_t *data, int w, int h)
- 			}
- 
- 			for_each_pipe_with_single_output(&data->display, pipe, data->output) {
-+				if (execution_constraint(pipe))
-+					continue;
-+
- 				data->pipe = pipe;
- 
- 				if (require_cursor_size(data, w, h)) {
-@@ -783,6 +802,9 @@ static void run_tests_on_pipe(data_t *data)
- 		     "correctly.");
- 	igt_subtest_with_dynamic("cursor-size-change") {
- 		for_each_pipe_with_single_output(&data->display, pipe, data->output) {
-+			if (execution_constraint(pipe))
-+				continue;
-+
- 			data->pipe = pipe;
- 
- 			igt_dynamic_f("pipe-%s-%s",
-@@ -797,6 +819,9 @@ static void run_tests_on_pipe(data_t *data)
- 		     "plane, i.e., alpha channel equal to 1.0.");
- 	igt_subtest_with_dynamic("cursor-alpha-opaque") {
- 		for_each_pipe_with_single_output(&data->display, pipe, data->output) {
-+			if (execution_constraint(pipe))
-+				continue;
-+
- 			data->pipe = pipe;
- 
- 			igt_dynamic_f("pipe-%s-%s",
-@@ -811,6 +836,9 @@ static void run_tests_on_pipe(data_t *data)
- 		     "plane, i.e., alpha channel equal to 0.0.");
- 	igt_subtest_with_dynamic("cursor-alpha-transparent") {
- 		for_each_pipe_with_single_output(&data->display, pipe, data->output) {
-+			if (execution_constraint(pipe))
-+				continue;
-+
- 			data->pipe = pipe;
- 
- 			igt_dynamic_f("pipe-%s-%s",
-@@ -828,6 +856,9 @@ static void run_tests_on_pipe(data_t *data)
- 	igt_describe("Check random placement of a cursor with DPMS.");
- 	igt_subtest_with_dynamic("cursor-dpms") {
- 		for_each_pipe_with_single_output(&data->display, pipe, data->output) {
-+			if (execution_constraint(pipe))
-+				continue;
-+
- 			data->pipe = pipe;
- 			data->flags = TEST_DPMS;
- 
-@@ -843,6 +874,9 @@ static void run_tests_on_pipe(data_t *data)
- 	igt_describe("Check random placement of a cursor with suspend.");
- 	igt_subtest_with_dynamic("cursor-suspend") {
- 		for_each_pipe_with_single_output(&data->display, pipe, data->output) {
-+			if (execution_constraint(pipe))
-+				continue;
-+
- 			data->pipe = pipe;
- 			data->flags = TEST_SUSPEND;
- 
-@@ -881,16 +915,40 @@ static void run_tests_on_pipe(data_t *data)
- 
- static data_t data;
- 
--igt_main
-+static int opt_handler(int opt, int opt_index, void *_data)
-+{
-+	switch (opt) {
-+	case 'e':
-+		extended = true;
-+		break;
-+	default:
-+		return IGT_OPT_HANDLER_ERROR;
-+	}
-+
-+	return IGT_OPT_HANDLER_SUCCESS;
-+}
-+
-+const char *help_str =
-+	"  -e \tExtended tests.\n";
-+
-+igt_main_args("e", NULL, help_str, opt_handler, NULL)
- {
- 	uint64_t cursor_width = 64, cursor_height = 64;
- 	int ret;
- 
- 	igt_fixture {
-+		enum pipe pipe;
-+
-+		last_pipe = 0;
-+
- 		data.drm_fd = drm_open_driver_master(DRIVER_ANY);
- 
- 		igt_display_require(&data.display, data.drm_fd);
- 		igt_display_require_output(&data.display);
-+		/* Get active pipes. */
-+		for_each_pipe(&data.display, pipe)
-+			active_pipes[last_pipe++] = pipe;
-+		last_pipe--;
- 
- 		ret = drmGetCap(data.drm_fd, DRM_CAP_CURSOR_WIDTH, &cursor_width);
- 		igt_assert(ret == 0 || errno == EINVAL);
--- 
-2.39.0
+> +				igt_dynamic(paramtests[i].testname) {
+> +					igt_plane_set_position(plane, 0, 0);
+> +					igt_plane_set_fb(plane, &fb);
+> +					igt_plane_set_size(plane,
+> +							   paramtests[i].planesize[0],
+> +							   paramtests[i].planesize[1]);
+> +
+> +				rval = igt_display_try_commit2(&d->display, COMMIT_ATOMIC);
+> +
+> +				if (intel_display_ver(d->devid) < 11 || intel_display_ver(d->devid) >= 14)
+> +					igt_assert_eq(rval, -EINVAL);
+> +				else
+> +					igt_assert_eq(rval, 0);
+> +				}
+> +			}
+> +		}
+> +	}
+> +
+> +	igt_fixture {
+> +		igt_remove_fb(d->drm_fd, &fb);
+> +		igt_output_set_pipe(output, PIPE_NONE);
+> +	}
+> +}
+> +
+>   static int opt_handler(int opt, int opt_index, void *_data)
+>   {
+>   	data_t *data = _data;
+> @@ -1126,6 +1246,9 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
+>   	igt_subtest_group
+>   		invalid_parameter_tests(&data);
+>   
+> +	igt_subtest_group
+> +		i915_max_source_size_test(&data);
+> +
+>   	igt_describe("Tests scaling with multi-pipe.");
+>   	igt_subtest_f("2x-scaler-multi-pipe")
+>   		test_scaler_with_multi_pipe_plane(&data);
