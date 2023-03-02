@@ -1,18 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0DFDA10E275
- for <igt-dev@lists.freedesktop.org>; Thu,  2 Mar 2023 11:03:00 +0000 (UTC)
-Date: Thu, 2 Mar 2023 12:02:39 +0100
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Vikas Srivastava <vikas.srivastava@intel.com>
-Message-ID: <20230302110239.pwdbx5tzbb3stj25@kamilkon-desk1>
-References: <20230302063334.81563-1-vikas.srivastava@intel.com>
+Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3781C10E10B
+ for <igt-dev@lists.freedesktop.org>; Thu,  2 Mar 2023 11:10:03 +0000 (UTC)
+From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Thu,  2 Mar 2023 12:09:39 +0100
+Message-Id: <20230302110947.548610-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20230302063334.81563-1-vikas.srivastava@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/i915/gem_userptr_blits: skip
- set-cache-level subtest on MTL platform
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t v4 0/8] Initial Xe test suite
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,49 +17,116 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Vikas,
+This is continuation of https://patchwork.freedesktop.org/series/112191/
 
-On 2023-03-02 at 12:03:34 +0530, Vikas Srivastava wrote:
-> SET_CACHE ioctl is not supported on latest platform like MTL
-> so instead of failing in set-cache-level subtest just skip it.
+Series doesn't contain KUnit changes as they are not upstream IGT ready
+yet. Functional changes (library, tests, etc.) were squashed to dedicated
+patch to make review easier.
 
-You already have patchset: tests/i915: skip gem_set_caching call for mtl
-Why not place it there ?
+v3: address review comments (Kamil, Mauro)
+v4: address review comments (Michał)
+    - add documentation for most of public functions
+    - use function generator instead of RETV() macro
+    - fix gt usage on memory regioning (it might lead to same region)
 
-> 
-> Signed-off-by: Vikas Srivastava <vikas.srivastava@intel.com>
-> ---
->  tests/i915/gem_userptr_blits.c | 5 ++++-
->  1 file changed, 4 insertions(+), 1 deletion(-)
-> 
-> diff --git a/tests/i915/gem_userptr_blits.c b/tests/i915/gem_userptr_blits.c
-> index 483570d0a..402d8810b 100644
-> --- a/tests/i915/gem_userptr_blits.c
-> +++ b/tests/i915/gem_userptr_blits.c
-> @@ -2417,8 +2417,11 @@ igt_main_args("c:", NULL, help_str, opt_handler, NULL)
->  			test_sd_probe(fd);
->  		}
->  
-> -		igt_subtest("set-cache-level")
-> +		igt_subtest("set-cache-level") {
-> +			igt_require_f(__gem_set_caching(fd, 0, 0) != -EOPNOTSUPP,
+Rodrigo Vivi (1):
+  lib/igt_pm: Add a helper to query the runtime_usage.
 
-Maybe better to check for MTL here and skip with message ?
+Zbigniew Kempczyński (7):
+  drm-uapi/xe_drm: Add Xe uAPI
+  lib/xe: Introduce Xe library
+  tests/xe: Add Xe IGT tests
+  tools/xe_reg: Add Xe register read/write tool
+  intel-ci/xe-fast-feedback: Introduce xe-fast-feedback list
+  docs/testplan: Introduce new way for documenting IGT
+  runner/job_list: return error on crashes while running --list-subtests
 
-Regards,
-Kamil
+ docs/meson.build                         |    1 +
+ docs/testplan/meson.build                |   28 +
+ docs/testplan/testplan.css               |    7 +
+ include/drm-uapi/xe_drm.h                |  807 +++++++++++
+ lib/drmtest.c                            |    3 +
+ lib/drmtest.h                            |    1 +
+ lib/igt_pm.c                             |   18 +
+ lib/igt_pm.h                             |    1 +
+ lib/meson.build                          |    4 +
+ lib/xe/xe_compute.c                      |  406 ++++++
+ lib/xe/xe_compute.h                      |   29 +
+ lib/xe/xe_ioctl.c                        |  436 ++++++
+ lib/xe/xe_ioctl.h                        |   87 ++
+ lib/xe/xe_query.c                        |  471 +++++++
+ lib/xe/xe_query.h                        |   94 ++
+ lib/xe/xe_spin.c                         |  157 +++
+ lib/xe/xe_spin.h                         |   48 +
+ meson.build                              |    8 +
+ meson_options.txt                        |    4 +
+ runner/job_list.c                        |    1 +
+ scripts/igt_doc.py                       |  490 ++++++-
+ scripts/meson.build                      |    2 +
+ tests/intel-ci/xe-fast-feedback.testlist |  140 ++
+ tests/meson.build                        |    1 +
+ tests/xe/meson.build                     |   33 +
+ tests/xe/xe_compute.c                    |  148 ++
+ tests/xe/xe_debugfs.c                    |  257 ++++
+ tests/xe/xe_dma_buf_sync.c               |  262 ++++
+ tests/xe/xe_evict.c                      |  623 +++++++++
+ tests/xe/xe_exec_balancer.c              |  714 ++++++++++
+ tests/xe/xe_exec_basic.c                 |  350 +++++
+ tests/xe/xe_exec_compute_mode.c          |  364 +++++
+ tests/xe/xe_exec_fault_mode.c            |  575 ++++++++
+ tests/xe/xe_exec_reset.c                 |  817 +++++++++++
+ tests/xe/xe_exec_threads.c               | 1159 ++++++++++++++++
+ tests/xe/xe_guc_pc.c                     |  425 ++++++
+ tests/xe/xe_huc_copy.c                   |  205 +++
+ tests/xe/xe_mmap.c                       |   79 ++
+ tests/xe/xe_mmio.c                       |   94 ++
+ tests/xe/xe_pm.c                         |  385 ++++++
+ tests/xe/xe_prime_self_import.c          |  489 +++++++
+ tests/xe/xe_query.c                      |  475 +++++++
+ tests/xe/xe_test_config.json             |  133 ++
+ tests/xe/xe_vm.c                         | 1604 ++++++++++++++++++++++
+ tests/xe/xe_waitfence.c                  |  103 ++
+ tools/meson.build                        |    1 +
+ tools/xe_reg.c                           |  366 +++++
+ 47 files changed, 12852 insertions(+), 53 deletions(-)
+ create mode 100644 docs/testplan/meson.build
+ create mode 100644 docs/testplan/testplan.css
+ create mode 100644 include/drm-uapi/xe_drm.h
+ create mode 100644 lib/xe/xe_compute.c
+ create mode 100644 lib/xe/xe_compute.h
+ create mode 100644 lib/xe/xe_ioctl.c
+ create mode 100644 lib/xe/xe_ioctl.h
+ create mode 100644 lib/xe/xe_query.c
+ create mode 100644 lib/xe/xe_query.h
+ create mode 100644 lib/xe/xe_spin.c
+ create mode 100644 lib/xe/xe_spin.h
+ create mode 100644 tests/intel-ci/xe-fast-feedback.testlist
+ create mode 100644 tests/xe/meson.build
+ create mode 100644 tests/xe/xe_compute.c
+ create mode 100644 tests/xe/xe_debugfs.c
+ create mode 100644 tests/xe/xe_dma_buf_sync.c
+ create mode 100644 tests/xe/xe_evict.c
+ create mode 100644 tests/xe/xe_exec_balancer.c
+ create mode 100644 tests/xe/xe_exec_basic.c
+ create mode 100644 tests/xe/xe_exec_compute_mode.c
+ create mode 100644 tests/xe/xe_exec_fault_mode.c
+ create mode 100644 tests/xe/xe_exec_reset.c
+ create mode 100644 tests/xe/xe_exec_threads.c
+ create mode 100644 tests/xe/xe_guc_pc.c
+ create mode 100644 tests/xe/xe_huc_copy.c
+ create mode 100644 tests/xe/xe_mmap.c
+ create mode 100644 tests/xe/xe_mmio.c
+ create mode 100644 tests/xe/xe_pm.c
+ create mode 100644 tests/xe/xe_prime_self_import.c
+ create mode 100644 tests/xe/xe_query.c
+ create mode 100644 tests/xe/xe_test_config.json
+ create mode 100644 tests/xe/xe_vm.c
+ create mode 100644 tests/xe/xe_waitfence.c
+ create mode 100644 tools/xe_reg.c
 
-> +				      "set_caching not supported on this platform");
->  			test_set_caching(fd);
-> +		}
->  
->  		igt_subtest("userfault")
->  			test_userfault(fd);
-> -- 
-> 2.25.1
-> 
+-- 
+2.34.1
