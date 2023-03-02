@@ -1,20 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E5A1710E11F
- for <igt-dev@lists.freedesktop.org>; Thu,  2 Mar 2023 11:36:06 +0000 (UTC)
-From: "Srivastava, Vikas" <vikas.srivastava@intel.com>
-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Date: Thu, 2 Mar 2023 11:34:09 +0000
-Message-ID: <BYAPR11MB3767B87F06B92236F3049E1989B29@BYAPR11MB3767.namprd11.prod.outlook.com>
-References: <20230302063334.81563-1-vikas.srivastava@intel.com>
- <20230302110239.pwdbx5tzbb3stj25@kamilkon-desk1>
-In-Reply-To: <20230302110239.pwdbx5tzbb3stj25@kamilkon-desk1>
-Content-Language: en-US
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: multipart/alternative;
+ boundary="===============1269052558798000632=="
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/i915/gem_userptr_blits: skip
- set-cache-level subtest on MTL platform
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Matthew Brost" <matthew.brost@intel.com>
+Date: Thu, 02 Mar 2023 11:39:20 -0000
+Message-ID: <167775716027.20552.15917142235205321161@emeril.freedesktop.org>
+References: <20230302110947.548610-1-zbigniew.kempczynski@intel.com>
+In-Reply-To: <20230302110947.548610-1-zbigniew.kempczynski@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgSW5pdGlh?=
+ =?utf-8?q?l_Xe_test_suite_=28rev4=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,39 +17,123 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-SGkgS2FtaWwsDQoNClRoYW5rcyBmb3IgY2hlY2tpbmcgLCBvayBJIHdpbGwgc2VuZCB0aGlzIGNo
-YW5nZSBhcyBhIHBhcnQgb2YgIiBza2lwIGdlbV9zZXRfY2FjaGluZyBjYWxsIGZvciBtdGwiLg0K
-DQpSZWdhcmRzLA0KVmlrYXMgDQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJv
-bTogS2FtaWwgS29uaWVjem55IDxrYW1pbC5rb25pZWN6bnlAbGludXguaW50ZWwuY29tPg0KPiBT
-ZW50OiBUaHVyc2RheSwgTWFyY2ggMiwgMjAyMyA0OjMzIFBNDQo+IFRvOiBTcml2YXN0YXZhLCBW
-aWthcyA8dmlrYXMuc3JpdmFzdGF2YUBpbnRlbC5jb20+DQo+IENjOiBpZ3QtZGV2QGxpc3RzLmZy
-ZWVkZXNrdG9wLm9yZw0KPiBTdWJqZWN0OiBSZTogW2lndC1kZXZdIFtQQVRDSCBpLWctdF0gdGVz
-dHMvaTkxNS9nZW1fdXNlcnB0cl9ibGl0czogc2tpcCBzZXQtY2FjaGUtDQo+IGxldmVsIHN1YnRl
-c3Qgb24gTVRMIHBsYXRmb3JtDQo+IA0KPiBIaSBWaWthcywNCj4gDQo+IE9uIDIwMjMtMDMtMDIg
-YXQgMTI6MDM6MzQgKzA1MzAsIFZpa2FzIFNyaXZhc3RhdmEgd3JvdGU6DQo+ID4gU0VUX0NBQ0hF
-IGlvY3RsIGlzIG5vdCBzdXBwb3J0ZWQgb24gbGF0ZXN0IHBsYXRmb3JtIGxpa2UgTVRMIHNvDQo+
-ID4gaW5zdGVhZCBvZiBmYWlsaW5nIGluIHNldC1jYWNoZS1sZXZlbCBzdWJ0ZXN0IGp1c3Qgc2tp
-cCBpdC4NCj4gDQo+IFlvdSBhbHJlYWR5IGhhdmUgcGF0Y2hzZXQ6IHRlc3RzL2k5MTU6IHNraXAg
-Z2VtX3NldF9jYWNoaW5nIGNhbGwgZm9yIG10bCBXaHkNCj4gbm90IHBsYWNlIGl0IHRoZXJlID8N
-Cj4gDQo+ID4NCj4gPiBTaWduZWQtb2ZmLWJ5OiBWaWthcyBTcml2YXN0YXZhIDx2aWthcy5zcml2
-YXN0YXZhQGludGVsLmNvbT4NCj4gPiAtLS0NCj4gPiAgdGVzdHMvaTkxNS9nZW1fdXNlcnB0cl9i
-bGl0cy5jIHwgNSArKysrLQ0KPiA+ICAxIGZpbGUgY2hhbmdlZCwgNCBpbnNlcnRpb25zKCspLCAx
-IGRlbGV0aW9uKC0pDQo+ID4NCj4gPiBkaWZmIC0tZ2l0IGEvdGVzdHMvaTkxNS9nZW1fdXNlcnB0
-cl9ibGl0cy5jDQo+ID4gYi90ZXN0cy9pOTE1L2dlbV91c2VycHRyX2JsaXRzLmMgaW5kZXggNDgz
-NTcwZDBhLi40MDJkODgxMGIgMTAwNjQ0DQo+ID4gLS0tIGEvdGVzdHMvaTkxNS9nZW1fdXNlcnB0
-cl9ibGl0cy5jDQo+ID4gKysrIGIvdGVzdHMvaTkxNS9nZW1fdXNlcnB0cl9ibGl0cy5jDQo+ID4g
-QEAgLTI0MTcsOCArMjQxNywxMSBAQCBpZ3RfbWFpbl9hcmdzKCJjOiIsIE5VTEwsIGhlbHBfc3Ry
-LCBvcHRfaGFuZGxlciwNCj4gTlVMTCkNCj4gPiAgCQkJdGVzdF9zZF9wcm9iZShmZCk7DQo+ID4g
-IAkJfQ0KPiA+DQo+ID4gLQkJaWd0X3N1YnRlc3QoInNldC1jYWNoZS1sZXZlbCIpDQo+ID4gKwkJ
-aWd0X3N1YnRlc3QoInNldC1jYWNoZS1sZXZlbCIpIHsNCj4gPiArCQkJaWd0X3JlcXVpcmVfZihf
-X2dlbV9zZXRfY2FjaGluZyhmZCwgMCwgMCkgIT0gLQ0KPiBFT1BOT1RTVVBQLA0KPiANCj4gTWF5
-YmUgYmV0dGVyIHRvIGNoZWNrIGZvciBNVEwgaGVyZSBhbmQgc2tpcCB3aXRoIG1lc3NhZ2UgPw0K
-PiANCj4gUmVnYXJkcywNCj4gS2FtaWwNCj4gDQo+ID4gKwkJCQkgICAgICAic2V0X2NhY2hpbmcg
-bm90IHN1cHBvcnRlZCBvbiB0aGlzDQo+IHBsYXRmb3JtIik7DQo+ID4gIAkJCXRlc3Rfc2V0X2Nh
-Y2hpbmcoZmQpOw0KPiA+ICsJCX0NCj4gPg0KPiA+ICAJCWlndF9zdWJ0ZXN0KCJ1c2VyZmF1bHQi
-KQ0KPiA+ICAJCQl0ZXN0X3VzZXJmYXVsdChmZCk7DQo+ID4gLS0NCj4gPiAyLjI1LjENCj4gPg0K
+--===============1269052558798000632==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+== Series Details ==
+
+Series: Initial Xe test suite (rev4)
+URL   : https://patchwork.freedesktop.org/series/112191/
+State : success
+
+== Summary ==
+
+CI Bug Log - changes from CI_DRM_12801 -> IGTPW_8553
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8553/index.html
+
+Participating hosts (3 -> 2)
+------------------------------
+
+  Missing    (1): fi-snb-2520m 
+
+
+Changes
+-------
+
+  No changes found
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_7178 -> IGTPW_8553
+
+  CI-20190529: 20190529
+  CI_DRM_12801: 6695d34a4e09a2371e6ad8a2ea8644bfa901744e @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_8553: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8553/index.html
+  IGT_7178: ffe3f6670b91ab975f90799ab3fd0941b6eae019 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+
+Testlist changes
+----------------
+
++++ 787 lines
+--- 1 lines
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8553/index.html
+
+--===============1269052558798000632==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Initial Xe test suite (rev4)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/112191/">https://patchwork.freedesktop.org/series/112191/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8553/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8553/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_12801 -&gt; IGTPW_8553</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8553/index.html</p>
+<h2>Participating hosts (3 -&gt; 2)</h2>
+<p>Missing    (1): fi-snb-2520m </p>
+<h2>Changes</h2>
+<p>No changes found</p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_7178 -&gt; IGTPW_8553</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_12801: 6695d34a4e09a2371e6ad8a2ea8644bfa901744e @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_8553: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8553/index.html<br />
+  IGT_7178: ffe3f6670b91ab975f90799ab3fd0941b6eae019 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+<h2>Testlist changes</h2>
+<p>+++ 787 lines<br />
+--- 1 lines</p>
+
+</body>
+</html>
+
+--===============1269052558798000632==--
