@@ -1,23 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 188C210E387
- for <igt-dev@lists.freedesktop.org>; Thu,  2 Mar 2023 08:05:20 +0000 (UTC)
-From: "Yedireswarapu, SaiX Nandan" <saix.nandan.yedireswarapu@intel.com>
-To: "Stolarek, Karolina" <karolina.stolarek@intel.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-Date: Thu, 2 Mar 2023 08:04:53 +0000
-Message-ID: <PH8PR11MB6952F12929D6588813CECE6EB3B29@PH8PR11MB6952.namprd11.prod.outlook.com>
-References: <20230301120905.1019314-1-karolina.stolarek@intel.com>
- <167767879159.6635.4347308063747682758@emeril.freedesktop.org>
- <a602d845-1999-d6e6-e2b2-97492716bb79@intel.com>
-In-Reply-To: <a602d845-1999-d6e6-e2b2-97492716bb79@intel.com>
-Content-Language: en-US
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0DFDA10E275
+ for <igt-dev@lists.freedesktop.org>; Thu,  2 Mar 2023 11:03:00 +0000 (UTC)
+Date: Thu, 2 Mar 2023 12:02:39 +0100
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: Vikas Srivastava <vikas.srivastava@intel.com>
+Message-ID: <20230302110239.pwdbx5tzbb3stj25@kamilkon-desk1>
+References: <20230302063334.81563-1-vikas.srivastava@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev]
- =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3IgdGVzdHMv?=
- =?utf-8?q?gem=5Fexercise=5Fblt=3A_Don=27t_allow_hangs?=
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20230302063334.81563-1-vikas.srivastava@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/i915/gem_userptr_blits: skip
+ set-cache-level subtest on MTL platform
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,87 +20,49 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: "Vudum, Lakshminarayana" <lakshminarayana.vudum@intel.com>, "Veesam,
- RavitejaX" <ravitejax.veesam@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-SGksDQoNCklzc3VlIHJlLXJlcG9ydGVkLiBodHRwczovL3BhdGNod29yay5mcmVlZGVza3RvcC5v
-cmcvc2VyaWVzLzExNDUxMy8NCg0KVGhhbmtzLA0KWSBTYWkgTmFuZGFuDQoNCg0KLS0tLS1Pcmln
-aW5hbCBNZXNzYWdlLS0tLS0NCkZyb206IFN0b2xhcmVrLCBLYXJvbGluYSA8a2Fyb2xpbmEuc3Rv
-bGFyZWtAaW50ZWwuY29tPiANClNlbnQ6IFRodXJzZGF5LCBNYXJjaCAyLCAyMDIzIDEyOjUxIFBN
-DQpUbzogaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcNCkNjOiBZZWRpcmVzd2FyYXB1LCBT
-YWlYIE5hbmRhbiA8c2FpeC5uYW5kYW4ueWVkaXJlc3dhcmFwdUBpbnRlbC5jb20+OyBWdWR1bSwg
-TGFrc2htaW5hcmF5YW5hIDxsYWtzaG1pbmFyYXlhbmEudnVkdW1AaW50ZWwuY29tPg0KU3ViamVj
-dDogUmU6IOKclyBGaS5DSS5CQVQ6IGZhaWx1cmUgZm9yIHRlc3RzL2dlbV9leGVyY2lzZV9ibHQ6
-IERvbid0IGFsbG93IGhhbmdzDQoNCk9uIDEuMDMuMjAyMyAxNDo1MywgUGF0Y2h3b3JrIHdyb3Rl
-Og0KPiAqUGF0Y2ggRGV0YWlscyoNCj4gKlNlcmllczoqCXRlc3RzL2dlbV9leGVyY2lzZV9ibHQ6
-IERvbid0IGFsbG93IGhhbmdzDQo+ICpVUkw6KglodHRwczovL3BhdGNod29yay5mcmVlZGVza3Rv
-cC5vcmcvc2VyaWVzLzExNDUxMy8gDQo+IDxodHRwczovL3BhdGNod29yay5mcmVlZGVza3RvcC5v
-cmcvc2VyaWVzLzExNDUxMy8+DQo+ICpTdGF0ZToqCWZhaWx1cmUNCj4gKkRldGFpbHM6Kg0KPiBo
-dHRwczovL2ludGVsLWdmeC1jaS4wMS5vcmcvdHJlZS9kcm0tdGlwL0lHVFBXXzg1NDUvaW5kZXgu
-aHRtbA0KPiA8aHR0cHM6Ly9pbnRlbC1nZngtY2kuMDEub3JnL3RyZWUvZHJtLXRpcC9JR1RQV184
-NTQ1L2luZGV4Lmh0bWw+DQo+IA0KPiANCj4gICBDSSBCdWcgTG9nIC0gY2hhbmdlcyBmcm9tIENJ
-X0RSTV8xMjc5NiAtPiBJR1RQV184NTQ1DQo+IA0KPiANCj4gICAgIFN1bW1hcnkNCj4gDQo+ICpG
-QUlMVVJFKg0KPiANCj4gU2VyaW91cyB1bmtub3duIGNoYW5nZXMgY29taW5nIHdpdGggSUdUUFdf
-ODU0NSBhYnNvbHV0ZWx5IG5lZWQgdG8gYmUgDQo+IHZlcmlmaWVkIG1hbnVhbGx5Lg0KPiANCj4g
-SWYgeW91IHRoaW5rIHRoZSByZXBvcnRlZCBjaGFuZ2VzIGhhdmUgbm90aGluZyB0byBkbyB3aXRo
-IHRoZSBjaGFuZ2VzIA0KPiBpbnRyb2R1Y2VkIGluIElHVFBXXzg1NDUsIHBsZWFzZSBub3RpZnkg
-eW91ciBidWcgdGVhbSB0byBhbGxvdyB0aGVtIHRvIA0KPiBkb2N1bWVudCB0aGlzIG5ldyBmYWls
-dXJlIG1vZGUsIHdoaWNoIHdpbGwgcmVkdWNlIGZhbHNlIHBvc2l0aXZlcyBpbiBDSS4NCj4gDQo+
-IEV4dGVybmFsIFVSTDogDQo+IGh0dHBzOi8vaW50ZWwtZ2Z4LWNpLjAxLm9yZy90cmVlL2RybS10
-aXAvSUdUUFdfODU0NS9pbmRleC5odG1sDQo+IA0KPiANCj4gICAgIFBhcnRpY2lwYXRpbmcgaG9z
-dHMgKDM5IC0+IDM4KQ0KPiANCj4gTWlzc2luZyAoMSk6IGZpLXNuYi0yNTIwbQ0KPiANCj4gDQo+
-ICAgICBQb3NzaWJsZSBuZXcgaXNzdWVzDQo+IA0KPiBIZXJlIGFyZSB0aGUgdW5rbm93biBjaGFu
-Z2VzIHRoYXQgbWF5IGhhdmUgYmVlbiBpbnRyb2R1Y2VkIGluIElHVFBXXzg1NDU6DQo+IA0KPiAN
-Cj4gICAgICAgSUdUIGNoYW5nZXMNCj4gDQo+IA0KPiAgICAgICAgIFBvc3NpYmxlIHJlZ3Jlc3Np
-b25zDQo+IA0KPiAgICoNCj4gDQo+ICAgICBpZ3RAZG1hYnVmQGFsbC10ZXN0c0BkbWFfZmVuY2U6
-DQo+IA0KPiAgICAgICBvIGZpLWNmbC04MTA5dTogUEFTUw0KPiAgICAgICAgIDxodHRwczovL2lu
-dGVsLWdmeC1jaS4wMS5vcmcvdHJlZS9kcm0tdGlwL0NJX0RSTV8xMjc5Ni9maS1jZmwtODEwOXUv
-aWd0QGRtYWJ1ZkBhbGwtdGVzdHNAZG1hX2ZlbmNlLmh0bWw+IC0+IERNRVNHLUZBSUwgPGh0dHBz
-Oi8vaW50ZWwtZ2Z4LWNpLjAxLm9yZy90cmVlL2RybS10aXAvSUdUUFdfODU0NS9maS1jZmwtODEw
-OXUvaWd0QGRtYWJ1ZkBhbGwtdGVzdHNAZG1hX2ZlbmNlLmh0bWw+DQo+ICAgKg0KPiANCj4gICAg
-IGlndEBkbWFidWZAYWxsLXRlc3RzQHNhbml0eWNoZWNrOg0KPiANCj4gICAgICAgbyBmaS1jZmwt
-ODEwOXU6IFBBU1MNCj4gICAgICAgICANCj4gPGh0dHBzOi8vaW50ZWwtZ2Z4LWNpLjAxLm9yZy90
-cmVlL2RybS10aXAvQ0lfRFJNXzEyNzk2L2ZpLWNmbC04MTA5dS9pZw0KPiB0QGRtYWJ1ZkBhbGwt
-dGVzdHNAc2FuaXR5Y2hlY2suaHRtbD4gLT4gQUJPUlQgDQo+IDxodHRwczovL2ludGVsLWdmeC1j
-aS4wMS5vcmcvdHJlZS9kcm0tdGlwL0lHVFBXXzg1NDUvZmktY2ZsLTgxMDl1L2lndEANCj4gZG1h
-YnVmQGFsbC10ZXN0c0BzYW5pdHljaGVjay5odG1sPg0KDQpNeSBjaGFuZ2VzIGRpZG4ndCB0b3Vj
-aCB0aGlzIHRlc3QsIHNvIHRoZXNlIGZhaWx1cmVzIGFyZSBub3QgcmVsYXRlZCB0byB0aGUgcGF0
-Y2guDQoNCkFsbCB0aGUgYmVzdCwNCkthcm9saW5hDQoNCj4gDQo+ICAgICBLbm93biBpc3N1ZXMN
-Cj4gDQo+IEhlcmUgYXJlIHRoZSBjaGFuZ2VzIGZvdW5kIGluIElHVFBXXzg1NDUgdGhhdCBjb21l
-IGZyb20ga25vd24gaXNzdWVzOg0KPiANCj4gDQo+ICAgICAgIElHVCBjaGFuZ2VzDQo+IA0KPiAN
-Cj4gICAgICAgICBJc3N1ZXMgaGl0DQo+IA0KPiAgICoNCj4gDQo+ICAgICBpZ3RAZ2VtX2V4ZWNf
-Z3R0ZmlsbEBiYXNpYzoNCj4gDQo+ICAgICAgIG8gZmktcG52LWQ1MTA6IFBBU1MNCj4gICAgICAg
-ICA8aHR0cHM6Ly9pbnRlbC1nZngtY2kuMDEub3JnL3RyZWUvZHJtLXRpcC9DSV9EUk1fMTI3OTYv
-ZmktcG52LWQ1MTAvaWd0QGdlbV9leGVjX2d0dGZpbGxAYmFzaWMuaHRtbD4gLT4gRkFJTCA8aHR0
-cHM6Ly9pbnRlbC1nZngtY2kuMDEub3JnL3RyZWUvZHJtLXRpcC9JR1RQV184NTQ1L2ZpLXBudi1k
-NTEwL2lndEBnZW1fZXhlY19ndHRmaWxsQGJhc2ljLmh0bWw+IChpOTE1IzcyMjkgPGh0dHBzOi8v
-Z2l0bGFiLmZyZWVkZXNrdG9wLm9yZy9kcm0vaW50ZWwvaXNzdWVzLzcyMjk+KQ0KPiAgICoNCj4g
-DQo+ICAgICBpZ3RAaTkxNV9zZWxmdGVzdEBsaXZlQGd0X2hlYXJ0YmVhdDoNCj4gDQo+ICAgICAg
-IG8gZmktYXBsLWd1YzogUEFTUw0KPiAgICAgICAgIA0KPiA8aHR0cHM6Ly9pbnRlbC1nZngtY2ku
-MDEub3JnL3RyZWUvZHJtLXRpcC9DSV9EUk1fMTI3OTYvZmktYXBsLWd1Yy9pZ3RADQo+IGk5MTVf
-c2VsZnRlc3RAbGl2ZUBndF9oZWFydGJlYXQuaHRtbD4gLT4gRE1FU0ctRkFJTCANCj4gPGh0dHBz
-Oi8vaW50ZWwtZ2Z4LWNpLjAxLm9yZy90cmVlL2RybS10aXAvSUdUUFdfODU0NS9maS1hcGwtZ3Vj
-L2lndEBpOQ0KPiAxNV9zZWxmdGVzdEBsaXZlQGd0X2hlYXJ0YmVhdC5odG1sPiAoaTkxNSM1MzM0
-IA0KPiA8aHR0cHM6Ly9naXRsYWIuZnJlZWRlc2t0b3Aub3JnL2RybS9pbnRlbC9pc3N1ZXMvNTMz
-ND4pDQo+IA0KPiANCj4gICAgICAgICBXYXJuaW5ncw0KPiANCj4gICAqIGlndEBpOTE1X3NlbGZ0
-ZXN0QGxpdmVAc2xwYzoNCj4gICAgICAgbyBiYXQtcnBscy0xOiBETUVTRy1GQUlMDQo+ICAgICAg
-ICAgDQo+IDxodHRwczovL2ludGVsLWdmeC1jaS4wMS5vcmcvdHJlZS9kcm0tdGlwL0NJX0RSTV8x
-Mjc5Ni9iYXQtcnBscy0xL2lndEANCj4gaTkxNV9zZWxmdGVzdEBsaXZlQHNscGMuaHRtbD4gKGk5
-MTUjNjM2NyANCj4gPGh0dHBzOi8vZ2l0bGFiLmZyZWVkZXNrdG9wLm9yZy9kcm0vaW50ZWwvaXNz
-dWVzLzYzNjc+IC8gaTkxNSM3OTk2IA0KPiA8aHR0cHM6Ly9naXRsYWIuZnJlZWRlc2t0b3Aub3Jn
-L2RybS9pbnRlbC9pc3N1ZXMvNzk5Nj4pIC0+IERNRVNHLUZBSUwgDQo+IDxodHRwczovL2ludGVs
-LWdmeC1jaS4wMS5vcmcvdHJlZS9kcm0tdGlwL0lHVFBXXzg1NDUvYmF0LXJwbHMtMS9pZ3RAaTkN
-Cj4gMTVfc2VsZnRlc3RAbGl2ZUBzbHBjLmh0bWw+IChpOTE1IzYzNjcgDQo+IDxodHRwczovL2dp
-dGxhYi5mcmVlZGVza3RvcC5vcmcvZHJtL2ludGVsL2lzc3Vlcy82MzY3PikNCj4gDQo+IA0KPiAg
-ICAgQnVpbGQgY2hhbmdlcw0KPiANCj4gICAqIENJOiBDSS0yMDE5MDUyOSAtPiBOb25lDQo+ICAg
-KiBJR1Q6IElHVF83MTc3IC0+IElHVFBXXzg1NDUNCj4gDQo+IENJLTIwMTkwNTI5OiAyMDE5MDUy
-OQ0KPiBDSV9EUk1fMTI3OTY6IDU2YzAxN2VmZTE3NmI5ZjNhYjE3MDBiODBkM2QyMDk3MGM4NTE0
-MTQgQCANCj4gZ2l0Oi8vYW5vbmdpdC5mcmVlZGVza3RvcC5vcmcvZ2Z4LWNpL2xpbnV4DQo+IElH
-VFBXXzg1NDU6IA0KPiBodHRwczovL2ludGVsLWdmeC1jaS4wMS5vcmcvdHJlZS9kcm0tdGlwL0lH
-VFBXXzg1NDUvaW5kZXguaHRtbA0KPiBJR1RfNzE3NzogMGNkYzRhNjc2Y2Q5ZjllNDk1YWQzYWU0
-NDFlZDMzMjJmMWUxNGE4OCBAIA0KPiBodHRwczovL2dpdGxhYi5mcmVlZGVza3RvcC5vcmcvZHJt
-L2lndC1ncHUtdG9vbHMuZ2l0DQo+IA0KPiANCj4gICAgIFRlc3RsaXN0IGNoYW5nZXMNCj4gDQo+
-IC1pZ3RAa21zX3BsYW5lX3NjYWxpbmdAaTkxNS1tYXgtc291cmNlLXNpemUNCj4gDQo=
+Hi Vikas,
+
+On 2023-03-02 at 12:03:34 +0530, Vikas Srivastava wrote:
+> SET_CACHE ioctl is not supported on latest platform like MTL
+> so instead of failing in set-cache-level subtest just skip it.
+
+You already have patchset: tests/i915: skip gem_set_caching call for mtl
+Why not place it there ?
+
+> 
+> Signed-off-by: Vikas Srivastava <vikas.srivastava@intel.com>
+> ---
+>  tests/i915/gem_userptr_blits.c | 5 ++++-
+>  1 file changed, 4 insertions(+), 1 deletion(-)
+> 
+> diff --git a/tests/i915/gem_userptr_blits.c b/tests/i915/gem_userptr_blits.c
+> index 483570d0a..402d8810b 100644
+> --- a/tests/i915/gem_userptr_blits.c
+> +++ b/tests/i915/gem_userptr_blits.c
+> @@ -2417,8 +2417,11 @@ igt_main_args("c:", NULL, help_str, opt_handler, NULL)
+>  			test_sd_probe(fd);
+>  		}
+>  
+> -		igt_subtest("set-cache-level")
+> +		igt_subtest("set-cache-level") {
+> +			igt_require_f(__gem_set_caching(fd, 0, 0) != -EOPNOTSUPP,
+
+Maybe better to check for MTL here and skip with message ?
+
+Regards,
+Kamil
+
+> +				      "set_caching not supported on this platform");
+>  			test_set_caching(fd);
+> +		}
+>  
+>  		igt_subtest("userfault")
+>  			test_userfault(fd);
+> -- 
+> 2.25.1
+> 
