@@ -1,15 +1,25 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5C12310E5F9
- for <igt-dev@lists.freedesktop.org>; Fri,  3 Mar 2023 09:24:31 +0000 (UTC)
-From: Karolina Stolarek <karolina.stolarek@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Fri,  3 Mar 2023 10:24:28 +0100
-Message-Id: <20230303092428.1175360-1-karolina.stolarek@intel.com>
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7241910E07B
+ for <igt-dev@lists.freedesktop.org>; Fri,  3 Mar 2023 09:46:58 +0000 (UTC)
+Message-ID: <d4062a1e-6f96-44ab-ea46-4248aff3dc25@linux.intel.com>
+Date: Fri, 3 Mar 2023 09:46:54 +0000
 MIME-Version: 1.0
+Content-Language: en-US
+To: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
+References: <20230110194720.190515-1-ashutosh.dixit@intel.com>
+ <20230110194720.190515-2-ashutosh.dixit@intel.com>
+ <28df83ea-b443-3135-ccbf-f3fdc233e2ab@linux.intel.com>
+ <87r0urtw29.wl-ashutosh.dixit@intel.com>
+ <40ca1545-6d12-ca17-b7fc-028626fcd156@linux.intel.com>
+ <b5d9cb0e-9a5d-52e5-db97-21e9ca2d0601@linux.intel.com>
+ <878rgey1py.wl-ashutosh.dixit@intel.com>
+From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
+In-Reply-To: <878rgey1py.wl-ashutosh.dixit@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v2] tests/gem_ccs: Remove block-copy-inplace
- subtest
+Subject: Re: [igt-dev] [PATCH i-g-t 1/3] tests/perf_pmu: Compare against
+ requested freq in frequency subtest
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,42 +27,151 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: igt-dev@lists.freedesktop.org, Rodrigo Vivi <rodrigo.vivi@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-In full resolve mode of operation, source and destination have
-to use the same tiling format. block-copy-inplace attempts to
-decompress and detile in the same step, which is not possible.
-Remove the subtest that tries to change the tiling format in-flight.
 
-Signed-off-by: Karolina Stolarek <karolina.stolarek@intel.com>
----
-v2:
-  - Leave the multicopy subtest in, mid and dst surfaces use the same
-    tiling format after all
+On 03/03/2023 03:04, Dixit, Ashutosh wrote:
+> On Thu, 02 Mar 2023 05:50:36 -0800, Tvrtko Ursulin wrote:
+>>
+>> On 02/03/2023 13:37, Tvrtko Ursulin wrote:
+>>>
+> 
+> Hi Tvrtko,
+> 
+>>> On 15/02/2023 04:02, Dixit, Ashutosh wrote:
+>>>> On Wed, 11 Jan 2023 01:54:59 -0800, Tvrtko Ursulin wrote:
+>>>>>
+>>>> Sorry I completely missed your reply and only just saw it again. People
+>>>> needing a recap of the previous discussion can see it here:
+>>>>
+>>>> https://patchwork.freedesktop.org/patch/512274/?series=110574&rev=3#comment_933447
+>>>>
+>>>>> On 10/01/2023 19:47, Ashutosh Dixit wrote:
+>>>>>> After the i915 commit 95ccf312a1e4f ("drm/i915/guc/slpc: Allow SLPC to
+>>>>>> use
+>>>>>> efficient frequency"), FW uses the requested freq as the efficient freq
+>>>>>> which can exceed the max freq set. Therefore, in the "min freq" part
+>>>>>> of the
+>>>>>> igt@perf_pmu@frequency subtest, compare the requested freq reported by
+>>>>>> PMU
+>>>>>> not against the set freq but against the requested freq reported in
+>>>>>> sysfs.
+>>>>>>
+>>>>>> v2: Remove previously added delays. GuC FW is now updated to set
+>>>>>> min/max
+>>>>>>        freq in top half so delays are not needed
+>>>>>> v3: Increase tolerance between measured and requested freq to 10% to
+>>>>>>        account for sporadic failures due to dynamically changing
+>>>>>> efficient
+>>>>>>        freq. Also document the changes in code.
+>>>>>>
+>>>>>> Bug: https://gitlab.freedesktop.org/drm/intel/-/issues/6806
+>>>>>> Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
+>>>>>> ---
+>>>>>>     tests/i915/perf_pmu.c | 12 ++++++++++--
+>>>>>>     1 file changed, 10 insertions(+), 2 deletions(-)
+>>>>>>
+>>>>>> diff --git a/tests/i915/perf_pmu.c b/tests/i915/perf_pmu.c
+>>>>>> index f363db2ba13..f9ef89fb0b3 100644
+>>>>>> --- a/tests/i915/perf_pmu.c
+>>>>>> +++ b/tests/i915/perf_pmu.c
+>>>>>> @@ -1546,7 +1546,7 @@ test_interrupts_sync(int gem_fd)
+>>>>>>     static void
+>>>>>>     test_frequency(int gem_fd)
+>>>>>>     {
+>>>>>> -    uint32_t min_freq, max_freq, boost_freq;
+>>>>>> +    uint32_t min_freq, max_freq, boost_freq, min_req;
+>>>>>>      uint64_t val[2], start[2], slept;
+>>>>>>      double min[2], max[2];
+>>>>>>      igt_spin_t *spin;
+>>>>>> @@ -1587,6 +1587,7 @@ test_frequency(int gem_fd)
+>>>>>>          min[0] = 1e9*(val[0] - start[0]) / slept;
+>>>>>>      min[1] = 1e9*(val[1] - start[1]) / slept;
+>>>>>> +    min_req = igt_sysfs_get_u32(sysfs, "gt_cur_freq_mhz");
+>>>>>
+>>>>> So remove all of the above three igt_sysfs_set_u32 and test still passes
+>>>>> right? What it is testing then?
+>>>>
+>>>> Yes, so since enabling efficient freq (RPe) has broken the kernel ABI was
+>>>> cannot test that the PMU measured freq is min_freq. All we can do, fwiw,
+>>>> is
+>>>> test that the PMU measured freq matches the freq exposed via the sysfs
+>>>> interface (min_req) at this "min point".
+>>>>
+>>>> I believe what I was saying when we last discussed this was that we can
+>>>> have two sets of tests:
+>>>>
+>>>> 1. Current tests with RPe enabled
+>>>> 2. Expose a sysfs from i915 to disable RPe and then use that to go to the
+>>>>      previous versions of the tests here
+>>>>
+>>>> So these patches are for case 1.
+>>>>
+>>>> Now about 2., considering that we are moving to the xe driver soon, I am
+>>>> wondering if there is much ROI in exposing the RPe disabling sysfs from
+>>>> i915. We might as well do something like that in xe? Or should this still
+>>>> be done in i915?
+>>>>
+>>>> In any case, there is interest in closing out these two bugs if possible:
+>>>>
+>>>> Bug: https://gitlab.freedesktop.org/drm/intel/-/issues/6806
+>>>> Bug: https://gitlab.freedesktop.org/drm/intel/-/issues/6786
+>>>>
+>>>> If we are not going to merge these patches (and assuming we won't change
+>>>> i915), how about just saying that due to change in the kernel ABI these
+>>>> tests are no longer valid and therefore blocklisting these tests and
+>>>> closing the bugs as 'will not fix'?
+>>>
+>>> How about we drop any notion of min/max from the test and just check that
+>>> the PMU sees what sysfs sees?
+> 
+> Yes if this is acceptable this would be great.
 
- tests/i915/gem_ccs.c | 8 --------
- 1 file changed, 8 deletions(-)
+You can decide, I resigned due what I wrote - no apparent desire to make 
+sysfs min/max actually be respected. IMO better than leaving effectively 
+dead code in the test.
 
-diff --git a/tests/i915/gem_ccs.c b/tests/i915/gem_ccs.c
-index b7e8bda7..fcac1912 100644
---- a/tests/i915/gem_ccs.c
-+++ b/tests/i915/gem_ccs.c
-@@ -694,14 +694,6 @@ igt_main_args("bf:pst:W:H:", NULL, help_str, opt_handler, NULL)
- 		block_copy_test(i915, &config, ctx, set, BLOCK_MULTICOPY);
- 	}
- 
--	igt_describe("Check block-copy flatccs inplace decompression blit");
--	igt_subtest_with_dynamic("block-copy-inplace") {
--		struct test_config config = { .compression = true,
--					      .inplace = true };
--
--		block_copy_test(i915, &config, ctx, set, BLOCK_COPY);
--	}
--
- 	igt_describe("Check block-multicopy flatccs inplace decompression blit");
- 	igt_subtest_with_dynamic("block-multicopy-inplace") {
- 		struct test_config config = { .compression = true,
--- 
-2.25.1
+>>> Once with idle, once with busy (frequency-idle, frequency-busy; via
+>>> TEST_BUSY/!TEST_BUSY). Would that work and be acceptable?
+> 
+> "frequency-idle" is already there, so I can try coming up with a
+> "frequency-busy" without a notion of min/max.
+> 
+>> To clarify, my angle here is that perf_pmu is testing PMU and not the sysfs
+>> frequency control.
+> 
+> Hmm, but if there is no kernel ABI they would have to be compared against
+> each other.
+
+Yes that's what I meant. Don't set min/max, don't even read them, just 
+check PMU reports the same as the sysfs actual frequency.
+
+>> In a sense any ABI breakage gets swept under the carpet
+>> which sucks but I see zero willingness to unbreak it. Certainly adding more
+>> sysfs knobs to work around it shouldn't be the way.
+> 
+> I was tending this way but won't if you think it's not fruitful. Will save
+> some work.
+
+I don't see how a new sysfs control is justified just for the test. 
+Also, if it is technically possible to disable RPe then why not disable 
+it if user touched the existing control. That would preserve the ABI of 
+existing controls, no?
+
+>> So either remove the test, with a clear admittance of why, or blacklist it
+>> on GuC platforms in the same way.
+> 
+> So most thinking of:
+> 
+> * Skip the "frequency" PMU subtest on GuC platforms
+> * Add a "frequency-busy"
+
+And maybe share the body of frequency-idle with frequency-busy if going 
+this route, if it makes sense.
+
+Regards,
+
+Tvrtko
