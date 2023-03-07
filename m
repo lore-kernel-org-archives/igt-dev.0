@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7F71710E666
- for <igt-dev@lists.freedesktop.org>; Tue,  7 Mar 2023 21:18:43 +0000 (UTC)
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C7C2710E666
+ for <igt-dev@lists.freedesktop.org>; Tue,  7 Mar 2023 21:18:45 +0000 (UTC)
 From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue,  7 Mar 2023 22:18:16 +0100
-Message-Id: <20230307211818.910093-6-zbigniew.kempczynski@intel.com>
+Date: Tue,  7 Mar 2023 22:18:17 +0100
+Message-Id: <20230307211818.910093-7-zbigniew.kempczynski@intel.com>
 In-Reply-To: <20230307211818.910093-1-zbigniew.kempczynski@intel.com>
 References: <20230307211818.910093-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v6 5/7] tools/xe_reg: Add Xe register
- read/write tool
+Subject: [igt-dev] [PATCH i-g-t v6 6/7] intel-ci/xe-fast-feedback: Introduce
+ xe-fast-feedback list
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,407 +24,177 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add xe_reg tool which allows to manipulate Xe registers.
+Let's start with something simple that runs very quickly and is
+currently passing reliably.
 
-Sample use:
-
-./xe_reg read --ring rcs0 --all
-./xe_reg read --ring rcs0 EXECLIST_STATUS
-
-At this moment rings rcs0 and bcs0 are supported.
-
-Signed-off-by: Jason Ekstrand <jason@jlekstrand.net>
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Signed-off-by: Philippe Lecluse <philippe.lecluse@intel.com>
+Signed-off-by: Francois Dugast <francois.dugast@intel.com>
 Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 Acked-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 ---
- tools/meson.build |   1 +
- tools/xe_reg.c    | 366 ++++++++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 367 insertions(+)
- create mode 100644 tools/xe_reg.c
+ tests/intel-ci/meson.build               |   1 +
+ tests/intel-ci/xe-fast-feedback.testlist | 140 +++++++++++++++++++++++
+ 2 files changed, 141 insertions(+)
+ create mode 100644 tests/intel-ci/xe-fast-feedback.testlist
 
-diff --git a/tools/meson.build b/tools/meson.build
-index d2defec870..4c45f16b91 100644
---- a/tools/meson.build
-+++ b/tools/meson.build
-@@ -42,6 +42,7 @@ tools_progs = [
- 	'intel_gvtg_test',
- 	'dpcd_reg',
- 	'lsgpu',
-+	'xe_reg',
+diff --git a/tests/intel-ci/meson.build b/tests/intel-ci/meson.build
+index 62811e92c3..bbbd557009 100644
+--- a/tests/intel-ci/meson.build
++++ b/tests/intel-ci/meson.build
+@@ -5,6 +5,7 @@ intelci_files = [
+   'README',
+   'blacklist.txt',
+   'blacklist-pre-merge.txt',
++  'xe-fast-feedback.testlist',
  ]
- tool_deps = igt_deps
- tool_deps += zlib
-diff --git a/tools/xe_reg.c b/tools/xe_reg.c
+ 
+ install_data(sources : intelci_files, install_dir : datadir)
+diff --git a/tests/intel-ci/xe-fast-feedback.testlist b/tests/intel-ci/xe-fast-feedback.testlist
 new file mode 100644
-index 0000000000..1f7b384d32
+index 0000000000..ac42d52aa9
 --- /dev/null
-+++ b/tools/xe_reg.c
-@@ -0,0 +1,366 @@
-+// SPDX-License-Identifier: MIT
-+/*
-+ * Copyright © 2021 Intel Corporation
-+ */
-+
-+#include "igt.h"
-+#include "igt_device_scan.h"
-+
-+#include "xe_drm.h"
-+
-+#include <stdlib.h>
-+#include <stdio.h>
-+#include <string.h>
-+
-+#define DECL_XE_MMIO_READ_FN(bits) \
-+static inline uint##bits##_t \
-+xe_mmio_read##bits(int fd, uint32_t reg) \
-+{ \
-+	struct drm_xe_mmio mmio = { \
-+		.addr = reg, \
-+		.flags = DRM_XE_MMIO_READ | DRM_XE_MMIO_##bits##BIT, \
-+	}; \
-+\
-+	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_MMIO, &mmio), 0); \
-+\
-+	return mmio.value;\
-+}\
-+static inline void \
-+xe_mmio_write##bits(int fd, uint32_t reg, uint##bits##_t value) \
-+{ \
-+	struct drm_xe_mmio mmio = { \
-+		.addr = reg, \
-+		.flags = DRM_XE_MMIO_WRITE | DRM_XE_MMIO_##bits##BIT, \
-+		.value = value, \
-+	}; \
-+\
-+	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_MMIO, &mmio), 0); \
-+}
-+
-+DECL_XE_MMIO_READ_FN(8)
-+DECL_XE_MMIO_READ_FN(16)
-+DECL_XE_MMIO_READ_FN(32)
-+DECL_XE_MMIO_READ_FN(64)
-+
-+static void print_help(FILE *fp)
-+{
-+	fprintf(fp, "usage: xe_reg read REG1 [REG2]...\n");
-+	fprintf(fp, "       xe_reg write REG VALUE\n");
-+}
-+
-+enum ring {
-+	RING_UNKNOWN = -1,
-+	RING_RCS0,
-+	RING_BCS0,
-+};
-+
-+static const struct ring_info {
-+	enum ring ring;
-+	const char *name;
-+	uint32_t mmio_base;
-+} ring_info[] = {
-+	{RING_RCS0, "rcs0", 0x02000, },
-+	{RING_BCS0, "bcs0", 0x22000, },
-+};
-+
-+static const struct ring_info *ring_info_for_name(const char *name)
-+{
-+	int i;
-+
-+	for (i = 0; i < ARRAY_SIZE(ring_info); i++)
-+		if (strcmp(name, ring_info[i].name) == 0)
-+			return &ring_info[i];
-+
-+	return NULL;
-+}
-+
-+struct reg_info {
-+	const char *name;
-+	bool is_ring;
-+	uint32_t addr_low;
-+	uint32_t addr_high;
-+} reg_info[] = {
-+#define REG32(name, addr) { #name, false, addr }
-+#define REG64(name, low, high) { #name, false, low, high }
-+#define RING_REG32(name, addr) { #name, true, addr }
-+#define RING_REG64(name, low, high) { #name, true, low, high }
-+
-+	RING_REG64(ACTHD, 0x74, 0x5c),
-+	RING_REG32(BB_ADDR_DIFF, 0x154),
-+	RING_REG64(BB_ADDR, 0x140, 0x168),
-+	RING_REG32(BB_PER_CTX_PTR, 0x2c0),
-+	RING_REG64(EXECLIST_STATUS, 0x234, 0x238),
-+	RING_REG64(EXECLIST_SQ0, 0x510, 0x514),
-+	RING_REG64(EXECLIST_SQ1, 0x518, 0x51c),
-+	RING_REG32(HWS_PGA, 0x80),
-+	RING_REG32(INDIRECT_CTX, 0x1C4),
-+	RING_REG32(INDIRECT_CTX_OFFSET, 0x1C8),
-+	RING_REG32(NOPID, 0x94),
-+	RING_REG64(PML4E, 0x270, 0x274),
-+	RING_REG32(RING_BUFFER_CTL, 0x3c),
-+	RING_REG32(RING_BUFFER_HEAD, 0x34),
-+	RING_REG32(RING_BUFFER_START, 0x38),
-+	RING_REG32(RING_BUFFER_TAIL, 0x30),
-+	RING_REG64(SBB_ADDR, 0x114, 0x11c),
-+	RING_REG32(SBB_STATE, 0x118),
-+
-+#undef REG32
-+#undef REG64
-+#undef RING_REG32
-+#undef RING_REG64
-+};
-+
-+static const struct reg_info *reg_info_for_name(const char *name)
-+{
-+	int i;
-+
-+	for (i = 0; i < ARRAY_SIZE(reg_info); i++)
-+		if (strcmp(name, reg_info[i].name) == 0)
-+			return &reg_info[i];
-+
-+	return NULL;
-+}
-+
-+static int print_reg_for_info(int xe, FILE *fp, const struct reg_info *reg,
-+			      const struct ring_info *ring)
-+{
-+	if (reg->is_ring) {
-+		if (!ring) {
-+			fprintf(stderr, "%s is a ring register but --ring "
-+					"not set\n", reg->name);
-+			return EXIT_FAILURE;
-+		}
-+
-+		if (reg->addr_high) {
-+			uint32_t low = xe_mmio_read32(xe, reg->addr_low +
-+							  ring->mmio_base);
-+			uint32_t high = xe_mmio_read32(xe, reg->addr_high +
-+							   ring->mmio_base);
-+
-+			fprintf(fp, "%s[%s] = 0x%08x %08x\n", reg->name,
-+				ring->name, high, low);
-+		} else {
-+			uint32_t value = xe_mmio_read32(xe, reg->addr_low +
-+							    ring->mmio_base);
-+
-+			fprintf(fp, "%s[%s] = 0x%08x\n", reg->name,
-+				ring->name, value);
-+		}
-+	} else {
-+		if (reg->addr_high) {
-+			uint32_t low = xe_mmio_read32(xe, reg->addr_low);
-+			uint32_t high = xe_mmio_read32(xe, reg->addr_high);
-+
-+			fprintf(fp, "%s = 0x%08x %08x\n", reg->name, high, low);
-+		} else {
-+			uint32_t value = xe_mmio_read32(xe, reg->addr_low);
-+
-+			fprintf(fp, "%s = 0x%08x\n", reg->name, value);
-+		}
-+	}
-+
-+	return 0;
-+}
-+
-+static void print_reg_for_addr(int xe, FILE *fp, uint32_t addr)
-+{
-+	uint32_t value = xe_mmio_read32(xe, addr);
-+
-+	fprintf(fp, "MMIO[0x%05x] = 0x%08x\n", addr, value);
-+}
-+
-+enum opt {
-+	OPT_UNKNOWN = '?',
-+	OPT_END = -1,
-+	OPT_DEVICE,
-+	OPT_RING,
-+	OPT_ALL,
-+};
-+
-+static int read_reg(int argc, char *argv[])
-+{
-+	int xe, i, err, index;
-+	unsigned long reg_addr;
-+	char *endp = NULL;
-+	const struct ring_info *ring = NULL;
-+	enum opt opt;
-+	bool dump_all = false;
-+
-+	static struct option options[] = {
-+		{ "device",	required_argument,	NULL,	OPT_DEVICE },
-+		{ "ring",	required_argument,	NULL,	OPT_RING },
-+		{ "all",	no_argument,		NULL,	OPT_ALL },
-+	};
-+
-+	for (opt = 0; opt != OPT_END; ) {
-+		opt = getopt_long(argc, argv, "", options, &index);
-+
-+		switch (opt) {
-+		case OPT_DEVICE:
-+			igt_device_filter_add(optarg);
-+			break;
-+		case OPT_RING:
-+			ring = ring_info_for_name(optarg);
-+			if (!ring) {
-+				fprintf(stderr, "invalid ring: %s\n", optarg);
-+				return EXIT_FAILURE;
-+			}
-+			break;
-+		case OPT_ALL:
-+			dump_all = true;
-+			break;
-+		case OPT_END:
-+			break;
-+		case OPT_UNKNOWN:
-+			return EXIT_FAILURE;
-+		}
-+	}
-+
-+	argc -= optind;
-+	argv += optind;
-+
-+	xe = drm_open_driver(DRIVER_XE);
-+	if (dump_all) {
-+		for (i = 0; i < ARRAY_SIZE(reg_info); i++) {
-+			if (reg_info[i].is_ring != !!ring)
-+				continue;
-+
-+			print_reg_for_info(xe, stdout, &reg_info[i], ring);
-+		}
-+	} else {
-+		for (i = 0; i < argc; i++) {
-+			const struct reg_info *reg = reg_info_for_name(argv[i]);
-+			if (reg) {
-+				err = print_reg_for_info(xe, stdout, reg, ring);
-+				if (err)
-+					return err;
-+				continue;
-+			}
-+			reg_addr = strtoul(argv[i], &endp, 16);
-+			if (!reg_addr || reg_addr >= (4 << 20) || *endp) {
-+				fprintf(stderr, "invalid reg address '%s'\n",
-+					argv[i]);
-+				return EXIT_FAILURE;
-+			}
-+			print_reg_for_addr(xe, stdout, reg_addr);
-+		}
-+	}
-+
-+	return 0;
-+}
-+
-+static int write_reg_for_info(int xe, const struct reg_info *reg,
-+			      const struct ring_info *ring,
-+			      uint64_t value)
-+{
-+	if (reg->is_ring) {
-+		if (!ring) {
-+			fprintf(stderr, "%s is a ring register but --ring "
-+					"not set\n", reg->name);
-+			return EXIT_FAILURE;
-+		}
-+
-+		xe_mmio_write32(xe, reg->addr_low + ring->mmio_base, value);
-+		if (reg->addr_high) {
-+			xe_mmio_write32(xe, reg->addr_high + ring->mmio_base,
-+					value >> 32);
-+		}
-+	} else {
-+		xe_mmio_write32(xe, reg->addr_low, value);
-+		if (reg->addr_high)
-+			xe_mmio_write32(xe, reg->addr_high, value >> 32);
-+	}
-+
-+	return 0;
-+}
-+
-+static void write_reg_for_addr(int xe, uint32_t addr, uint32_t value)
-+{
-+	xe_mmio_write32(xe, addr, value);
-+}
-+
-+static int write_reg(int argc, char *argv[])
-+{
-+	int xe, index;
-+	unsigned long reg_addr;
-+	char *endp = NULL;
-+	const struct ring_info *ring = NULL;
-+	enum opt opt;
-+	const char *reg_name;
-+	const struct reg_info *reg;
-+	uint64_t value;
-+
-+	static struct option options[] = {
-+		{ "device",	required_argument,	NULL,	OPT_DEVICE },
-+		{ "ring",	required_argument,	NULL,	OPT_RING },
-+	};
-+
-+	for (opt = 0; opt != OPT_END; ) {
-+		opt = getopt_long(argc, argv, "", options, &index);
-+
-+		switch (opt) {
-+		case OPT_DEVICE:
-+			igt_device_filter_add(optarg);
-+			break;
-+		case OPT_RING:
-+			ring = ring_info_for_name(optarg);
-+			if (!ring) {
-+				fprintf(stderr, "invalid ring: %s\n", optarg);
-+				return EXIT_FAILURE;
-+			}
-+			break;
-+		case OPT_END:
-+			break;
-+		case OPT_UNKNOWN:
-+			return EXIT_FAILURE;
-+		default:
-+			break;
-+		}
-+	}
-+
-+	argc -= optind;
-+	argv += optind;
-+
-+	if (argc != 2) {
-+		print_help(stderr);
-+		return EXIT_FAILURE;
-+	}
-+
-+	reg_name = argv[0];
-+	value = strtoull(argv[1], &endp, 0);
-+	if (*endp) {
-+		fprintf(stderr, "Invalid register value: %s\n", argv[1]);
-+		return EXIT_FAILURE;
-+	}
-+
-+	xe = drm_open_driver(DRIVER_XE);
-+
-+	reg = reg_info_for_name(reg_name);
-+	if (reg)
-+		return write_reg_for_info(xe, reg, ring, value);
-+
-+	reg_addr = strtoul(reg_name, &endp, 16);
-+	if (!reg_addr || reg_addr >= (4 << 20) || *endp) {
-+		fprintf(stderr, "invalid reg address '%s'\n", reg_name);
-+		return EXIT_FAILURE;
-+	}
-+	write_reg_for_addr(xe, reg_addr, value);
-+
-+	return 0;
-+}
-+
-+int main(int argc, char *argv[])
-+{
-+	if (argc < 2) {
-+		print_help(stderr);
-+		return EXIT_FAILURE;
-+	}
-+
-+	if (strcmp(argv[1], "read") == 0)
-+		return read_reg(argc - 1, argv + 1);
-+	else if (strcmp(argv[1], "write") == 0)
-+		return write_reg(argc - 1, argv + 1);
-+
-+	fprintf(stderr, "invalid sub-command: %s", argv[1]);
-+	return EXIT_FAILURE;
-+}
++++ b/tests/intel-ci/xe-fast-feedback.testlist
+@@ -0,0 +1,140 @@
++igt@xe/xe_compute@compute-square
++igt@xe/xe_debugfs@base
++igt@xe/xe_debugfs@gt0
++igt@xe/xe_debugfs@gt1
++igt@xe/xe_debugfs@forcewake
++igt@xe/xe_dma_buf_sync@export-dma-buf-once
++igt@xe/xe_dma_buf_sync@export-dma-buf-once-read-sync
++igt@xe/xe_exec_balancer@twice-virtual-basic
++igt@xe/xe_exec_balancer@no-exec-virtual-basic
++igt@xe/xe_exec_balancer@twice-cm-virtual-basic
++igt@xe/xe_exec_balancer@no-exec-cm-virtual-basic
++igt@xe/xe_exec_balancer@twice-virtual-userptr
++igt@xe/xe_exec_balancer@no-exec-virtual-userptr
++igt@xe/xe_exec_balancer@twice-cm-virtual-userptr
++igt@xe/xe_exec_balancer@no-exec-cm-virtual-userptr
++igt@xe/xe_exec_balancer@twice-virtual-rebind
++igt@xe/xe_exec_balancer@no-exec-virtual-rebind
++igt@xe/xe_exec_balancer@twice-cm-virtual-rebind
++igt@xe/xe_exec_balancer@no-exec-cm-virtual-rebind
++igt@xe/xe_exec_balancer@twice-virtual-userptr-rebind
++igt@xe/xe_exec_balancer@no-exec-virtual-userptr-rebind
++igt@xe/xe_exec_balancer@twice-cm-virtual-userptr-rebind
++igt@xe/xe_exec_balancer@no-exec-cm-virtual-userptr-rebind
++igt@xe/xe_exec_balancer@twice-virtual-userptr-invalidate
++igt@xe/xe_exec_balancer@no-exec-virtual-userptr-invalidate
++igt@xe/xe_exec_balancer@twice-cm-virtual-userptr-invalidate
++igt@xe/xe_exec_balancer@no-exec-cm-virtual-userptr-invalidate
++igt@xe/xe_exec_balancer@twice-virtual-userptr-invalidate-race
++igt@xe/xe_exec_balancer@no-exec-virtual-userptr-invalidate-race
++igt@xe/xe_exec_balancer@twice-cm-virtual-userptr-invalidate-race
++igt@xe/xe_exec_balancer@no-exec-cm-virtual-userptr-invalidate-race
++igt@xe/xe_exec_balancer@twice-parallel-basic
++igt@xe/xe_exec_balancer@no-exec-parallel-basic
++igt@xe/xe_exec_balancer@twice-parallel-userptr
++igt@xe/xe_exec_balancer@no-exec-parallel-userptr
++igt@xe/xe_exec_balancer@twice-parallel-rebind
++igt@xe/xe_exec_balancer@no-exec-parallel-rebind
++igt@xe/xe_exec_balancer@twice-parallel-userptr-rebind
++igt@xe/xe_exec_balancer@no-exec-parallel-userptr-rebind
++igt@xe/xe_exec_balancer@twice-parallel-userptr-invalidate
++igt@xe/xe_exec_balancer@no-exec-parallel-userptr-invalidate
++igt@xe/xe_exec_balancer@twice-parallel-userptr-invalidate-race
++igt@xe/xe_exec_balancer@no-exec-parallel-userptr-invalidate-race
++igt@xe/xe_exec_basic@twice-basic
++igt@xe/xe_exec_basic@no-exec-basic
++igt@xe/xe_exec_basic@twice-basic-defer-mmap
++igt@xe/xe_exec_basic@no-exec-basic-defer-mmap
++igt@xe/xe_exec_basic@twice-basic-defer-bind
++igt@xe/xe_exec_basic@no-exec-basic-defer-bind
++igt@xe/xe_exec_basic@twice-userptr
++igt@xe/xe_exec_basic@no-exec-userptr
++igt@xe/xe_exec_basic@twice-rebind
++igt@xe/xe_exec_basic@no-exec-rebind
++igt@xe/xe_exec_basic@twice-userptr-rebind
++igt@xe/xe_exec_basic@no-exec-userptr-rebind
++igt@xe/xe_exec_basic@twice-userptr-invalidate
++igt@xe/xe_exec_basic@no-exec-userptr-invalidate
++igt@xe/xe_exec_basic@twice-userptr-invalidate-race
++igt@xe/xe_exec_basic@no-exec-userptr-invalidate-race
++igt@xe/xe_exec_basic@twice-bindengine
++igt@xe/xe_exec_basic@no-exec-bindengine
++igt@xe/xe_exec_basic@twice-bindengine-userptr
++igt@xe/xe_exec_basic@no-exec-bindengine-userptr
++igt@xe/xe_exec_basic@twice-bindengine-rebind
++igt@xe/xe_exec_basic@no-exec-bindengine-rebind
++igt@xe/xe_exec_basic@twice-bindengine-userptr-rebind
++igt@xe/xe_exec_basic@no-exec-bindengine-userptr-rebind
++igt@xe/xe_exec_basic@twice-bindengine-userptr-invalidate
++igt@xe/xe_exec_basic@no-exec-bindengine-userptr-invalidate
++igt@xe/xe_exec_basic@twice-bindengine-userptr-invalidate-race
++igt@xe/xe_exec_basic@no-exec-bindengine-userptr-invalidate-race
++igt@xe/xe_exec_compute_mode@twice-basic
++igt@xe/xe_exec_compute_mode@twice-preempt-fence-early
++igt@xe/xe_exec_compute_mode@twice-userptr
++igt@xe/xe_exec_compute_mode@twice-rebind
++igt@xe/xe_exec_compute_mode@twice-userptr-rebind
++igt@xe/xe_exec_compute_mode@twice-userptr-invalidate
++igt@xe/xe_exec_compute_mode@twice-userptr-invalidate-race
++igt@xe/xe_exec_compute_mode@twice-bindengine
++igt@xe/xe_exec_compute_mode@twice-bindengine-userptr
++igt@xe/xe_exec_compute_mode@twice-bindengine-rebind
++igt@xe/xe_exec_compute_mode@twice-bindengine-userptr-rebind
++igt@xe/xe_exec_compute_mode@twice-bindengine-userptr-invalidate
++igt@xe/xe_exec_compute_mode@twice-bindengine-userptr-invalidate-race
++igt@xe/xe_exec_reset@close-fd-no-exec
++igt@xe/xe_exec_reset@cm-close-fd-no-exec
++igt@xe/xe_exec_reset@virtual-close-fd-no-exec
++#igt@xe/xe_exec_threads@threads-basic
++igt@xe/xe_exec_threads@threads-shared-vm-basic
++igt@xe/xe_exec_threads@threads-fd-basic
++#igt@xe/xe_exec_threads@threads-hang-basic
++igt@xe/xe_exec_threads@threads-bal-basic
++igt@xe/xe_exec_threads@threads-cm-basic
++igt@xe/xe_exec_threads@threads-cm-fd-basic
++igt@xe/xe_exec_threads@threads-mixed-basic
++igt@xe/xe_exec_threads@threads-mixed-shared-vm-basic
++igt@xe/xe_exec_threads@threads-mixed-fd-basic
++igt@xe/xe_exec_threads@threads-bal-mixed-basic
++igt@xe/xe_exec_threads@threads-bal-mixed-shared-vm-basic
++igt@xe/xe_exec_threads@threads-bal-mixed-fd-basic
++igt@xe/xe_guc_pc@freq_basic_api
++igt@xe/xe_guc_pc@freq_fixed_idle
++igt@xe/xe_guc_pc@freq_range_idle
++igt@xe/xe_guc_pc@rc6_on_idle
++igt@xe/xe_guc_pc@rc0_on_exec
++igt@xe/xe_huc_copy@huc_copy
++igt@xe/xe_mmap@system
++igt@xe/xe_mmap@vram
++igt@xe/xe_mmap@vram-system
++igt@xe/xe_mmio@mmio-timestamp
++igt@xe/xe_mmio@mmio-invalid
++igt@xe/xe_prime_self_import@basic-with_one_bo
++igt@xe/xe_prime_self_import@basic-with_fd_dup
++igt@xe/xe_prime_self_import@export-vs-gem_close-race
++igt@xe/xe_prime_self_import@reimport-vs-gem_close-race
++#igt@xe/xe_prime_self_import@basic-llseek-size
++igt@xe/xe_query@query-engines
++igt@xe/xe_query@query-mem-usage
++igt@xe/xe_query@query-gts
++igt@xe/xe_query@query-config
++igt@xe/xe_query@query-hwconfig
++igt@xe/xe_query@query-topology
++igt@xe/xe_query@query-invalid-query
++igt@xe/xe_query@query-invalid-size
++#igt@xe/xe_vm@bind-once
++#igt@xe/xe_vm@scratch
++igt@xe/xe_vm@shared-pte-page
++igt@xe/xe_vm@shared-pde-page
++igt@xe/xe_vm@shared-pde2-page
++igt@xe/xe_vm@shared-pde3-page
++igt@xe/xe_vm@bind-engines-independent
++igt@xe/xe_vm@munmap-style-unbind-one-partial
++igt@xe/xe_vm@munmap-style-unbind-end
++igt@xe/xe_vm@munmap-style-unbind-front
++igt@xe/xe_vm@munmap-style-unbind-userptr-one-partial
++igt@xe/xe_vm@munmap-style-unbind-userptr-end
++igt@xe/xe_vm@munmap-style-unbind-userptr-front
++igt@xe/xe_vm@munmap-style-unbind-userptr-inval-end
++igt@xe/xe_vm@munmap-style-unbind-userptr-inval-front
++igt@xe/xe_waitfence@test
 -- 
 2.34.1
