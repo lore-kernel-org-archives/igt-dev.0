@@ -1,20 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C61CF10E0F7
- for <igt-dev@lists.freedesktop.org>; Tue,  7 Mar 2023 17:09:54 +0000 (UTC)
-From: "Srivastava, Vikas" <vikas.srivastava@intel.com>
-To: "Kempczynski, Zbigniew" <zbigniew.kempczynski@intel.com>
-Date: Tue, 7 Mar 2023 17:06:32 +0000
-Message-ID: <BYAPR11MB376746555D0506773682FC4189B79@BYAPR11MB3767.namprd11.prod.outlook.com>
-References: <20230307162146.499257-1-vikas.srivastava@intel.com>
- <20230307165344.mzxlgkkvrwavvjwh@zkempczy-mobl2>
-In-Reply-To: <20230307165344.mzxlgkkvrwavvjwh@zkempczy-mobl2>
-Content-Language: en-US
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EB47A10E552
+ for <igt-dev@lists.freedesktop.org>; Tue,  7 Mar 2023 22:12:43 +0000 (UTC)
+From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Tue,  7 Mar 2023 23:12:30 +0100
+Message-Id: <20230307221236.913429-2-zbigniew.kempczynski@intel.com>
+In-Reply-To: <20230307221236.913429-1-zbigniew.kempczynski@intel.com>
+References: <20230307221236.913429-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t 1/2] lib: Copy intel_gpu_commands.h from
- the kernel
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t v7 1/7] drm-uapi/xe_drm: Add Xe uAPI
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,648 +19,835 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi @Kempczynski, Zbigniew,=20
+Introduce uAPI contract for Xe IGT.
 
-Yeah I missed that , thanks for checking .=20
+Signed-off-by: Jason Ekstrand <jason@jlekstrand.net>
+Signed-off-by: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+Signed-off-by: Matthew Brost <matthew.brost@intel.com>
+Signed-off-by: Philippe Lecluse <philippe.lecluse@intel.com>
+Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+Acked-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+---
+ include/drm-uapi/xe_drm.h | 807 ++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 807 insertions(+)
+ create mode 100644 include/drm-uapi/xe_drm.h
 
-Regards,
-Vikas=20
-
-> -----Original Message-----
-> From: Kempczynski, Zbigniew <zbigniew.kempczynski@intel.com>
-> Sent: Tuesday, March 7, 2023 10:24 PM
-> To: Srivastava, Vikas <vikas.srivastava@intel.com>
-> Cc: igt-dev@lists.freedesktop.org
-> Subject: Re: [igt-dev] [PATCH i-g-t 1/2] lib: Copy intel_gpu_commands.h f=
-rom
-> the kernel
->=20
-> On Tue, Mar 07, 2023 at 09:51:45PM +0530, Vikas Srivastava wrote:
-> > From: Chris Wilson <chris.p.wilson@linux.intel.com>
-> >
-> > Cherry picking this patch to fix conflicts while merging patch to
-> > resolve gem_exec_await timeout issue.
-> >
-> > The current version of intel_gpu_commands lacks a few definitions and
-> > has a couple of mistakes. This patch should be pushed to the kernel,
-> > along with any other cleanups, and then copied back here.
->=20
-> Looks we worked on same thing:
->=20
-> https://patchwork.freedesktop.org/series/114619/
->=20
-> --
-> Zbigniew
->=20
-> >
-> > Signed-off-by: Chris Wilson <chris.p.wilson@linux.intel.com>
-> > Signed-off-by: Vikas Srivastava <vikas.srivastava@intel.com>
-> > ---
-> >  include/intel_gpu_commands.h | 533
-> > +++++++++++++++++++++++++++++++++++
-> >  1 file changed, 533 insertions(+)
-> >  create mode 100644 include/intel_gpu_commands.h
-> >
-> > diff --git a/include/intel_gpu_commands.h
-> > b/include/intel_gpu_commands.h new file mode 100644 index
-> > 000000000..b5239132f
-> > --- /dev/null
-> > +++ b/include/intel_gpu_commands.h
-> > @@ -0,0 +1,533 @@
-> > +/* SPDX-License-Identifier: MIT*/
-> > +/*
-> > + * Copyright (c) 2003-2018 Intel Corporation  */
-> > +
-> > +#ifndef _INTEL_GPU_COMMANDS_H_
-> > +#define _INTEL_GPU_COMMANDS_H_
-> > +
-> > +#ifdef __KERNEL
-> > +#include <linux/bitops.h>
-> > +#else
-> > +#include "linux_scaffold.h"
-> > +#endif
-> > +
-> > +/*
-> > + * Target address alignments required for GPU access e.g.
-> > + * MI_STORE_DWORD_IMM.
-> > + */
-> > +#define alignof_dword 4
-> > +#define alignof_qword 8
-> > +
-> > +/*
-> > + * Instruction field definitions used by the command parser  */
-> > +#define INSTR_CLIENT_SHIFT      29
-> > +#define   INSTR_MI_CLIENT       0x0
-> > +#define   INSTR_BC_CLIENT       0x2
-> > +#define   INSTR_GSC_CLIENT      0x2 /* MTL + */
-> > +#define   INSTR_RC_CLIENT       0x3
-> > +#define INSTR_SUBCLIENT_SHIFT   27
-> > +#define INSTR_SUBCLIENT_MASK    0x18000000
-> > +#define   INSTR_MEDIA_SUBCLIENT 0x2
-> > +#define INSTR_26_TO_24_MASK	0x7000000
-> > +#define   INSTR_26_TO_24_SHIFT	24
-> > +
-> > +#define __INSTR(client) ((client) << INSTR_CLIENT_SHIFT)
-> > +
-> > +/*
-> > + * Memory interface instructions used by the kernel  */ #define
-> > +MI_INSTR(opcode, flags) \
-> > +	(__INSTR(INSTR_MI_CLIENT) | (opcode) << 23 | (flags))
-> > +/* Many MI commands use bit 22 of the header dword for GGTT vs PPGTT *=
-/
-> > +#define  MI_GLOBAL_GTT    (1<<22)
-> > +
-> > +#define MI_NOOP			MI_INSTR(0, 0)
-> > +#define MI_SET_PREDICATE	MI_INSTR(0x01, 0)
-> > +#define   MI_SET_PREDICATE_DISABLE	(0 << 0)
-> > +#define MI_USER_INTERRUPT	MI_INSTR(0x02, 0)
-> > +#define MI_WAIT_FOR_EVENT       MI_INSTR(0x03, 0)
-> > +#define   MI_WAIT_FOR_OVERLAY_FLIP	(1<<16)
-> > +#define   MI_WAIT_FOR_PLANE_B_FLIP      (1<<6)
-> > +#define   MI_WAIT_FOR_PLANE_A_FLIP      (1<<2)
-> > +#define   MI_WAIT_FOR_PLANE_A_SCANLINES (1<<1)
-> > +#define MI_FLUSH		MI_INSTR(0x04, 0)
-> > +#define   MI_READ_FLUSH		(1 << 0)
-> > +#define   MI_EXE_FLUSH		(1 << 1)
-> > +#define   MI_NO_WRITE_FLUSH	(1 << 2)
-> > +#define   MI_SCENE_COUNT	(1 << 3) /* just increment scene count */
-> > +#define   MI_END_SCENE		(1 << 4) /* flush binner and incr scene
-> count */
-> > +#define   MI_INVALIDATE_ISP	(1 << 5) /* invalidate indirect state poin=
-ters */
-> > +#define MI_REPORT_HEAD		MI_INSTR(0x07, 0)
-> > +#define MI_ARB_ON_OFF		MI_INSTR(0x08, 0)
-> > +#define   MI_ARB_ENABLE			(1<<0)
-> > +#define   MI_ARB_DISABLE		(0<<0)
-> > +#define MI_MEM_FENCE		MI_INSTR(0x09, 0)
-> > +#define MI_ACQUIRE_ENABLE	(1 << 0)
-> > +#define MI_WRITE_FENCE		(3 << 0)
-> > +#define MI_BATCH_BUFFER_END	MI_INSTR(0x0a, 0)
-> > +#define MI_SUSPEND_FLUSH	MI_INSTR(0x0b, 0)
-> > +#define   MI_SUSPEND_FLUSH_EN	(1<<0)
-> > +#define MI_SET_APPID		MI_INSTR(0x0e, 0)
-> > +#define   MI_SET_APPID_SESSION_ID(x)	((x) << 0)
-> > +#define MI_OVERLAY_FLIP		MI_INSTR(0x11, 0)
-> > +#define   MI_OVERLAY_CONTINUE	(0x0<<21)
-> > +#define   MI_OVERLAY_ON		(0x1<<21)
-> > +#define   MI_OVERLAY_OFF	(0x2<<21)
-> > +#define MI_LOAD_SCAN_LINES_INCL MI_INSTR(0x12, 0)
-> > +#define MI_DISPLAY_FLIP		MI_INSTR(0x14, 2)
-> > +#define MI_DISPLAY_FLIP_I915	MI_INSTR(0x14, 1)
-> > +#define   MI_DISPLAY_FLIP_PLANE(n) ((n) << 20)
-> > +/* IVB has funny definitions for which plane to flip. */
-> > +#define   MI_DISPLAY_FLIP_IVB_PLANE_A  (0 << 19)
-> > +#define   MI_DISPLAY_FLIP_IVB_PLANE_B  (1 << 19)
-> > +#define   MI_DISPLAY_FLIP_IVB_SPRITE_A (2 << 19)
-> > +#define   MI_DISPLAY_FLIP_IVB_SPRITE_B (3 << 19)
-> > +#define   MI_DISPLAY_FLIP_IVB_PLANE_C  (4 << 19)
-> > +#define   MI_DISPLAY_FLIP_IVB_SPRITE_C (5 << 19)
-> > +/* SKL ones */
-> > +#define   MI_DISPLAY_FLIP_SKL_PLANE_1_A	(0 << 8)
-> > +#define   MI_DISPLAY_FLIP_SKL_PLANE_1_B	(1 << 8)
-> > +#define   MI_DISPLAY_FLIP_SKL_PLANE_1_C	(2 << 8)
-> > +#define   MI_DISPLAY_FLIP_SKL_PLANE_2_A	(4 << 8)
-> > +#define   MI_DISPLAY_FLIP_SKL_PLANE_2_B	(5 << 8)
-> > +#define   MI_DISPLAY_FLIP_SKL_PLANE_2_C	(6 << 8)
-> > +#define   MI_DISPLAY_FLIP_SKL_PLANE_3_A	(7 << 8)
-> > +#define   MI_DISPLAY_FLIP_SKL_PLANE_3_B	(8 << 8)
-> > +#define   MI_DISPLAY_FLIP_SKL_PLANE_3_C	(9 << 8)
-> > +#define MI_SEMAPHORE_MBOX	MI_INSTR(0x16, 1) /* gen6, gen7 */
-> > +#define   MI_SEMAPHORE_GLOBAL_GTT    (1<<22)
-> > +#define   MI_SEMAPHORE_UPDATE	    (1<<21)
-> > +#define   MI_SEMAPHORE_COMPARE	    (1<<20)
-> > +#define   MI_SEMAPHORE_REGISTER	    (1<<18)
-> > +#define   MI_SEMAPHORE_SYNC_VR	    (0<<16) /* RCS  wait for VCS
-> (RVSYNC) */
-> > +#define   MI_SEMAPHORE_SYNC_VER	    (1<<16) /* RCS  wait for VECS
-> (RVESYNC) */
-> > +#define   MI_SEMAPHORE_SYNC_BR	    (2<<16) /* RCS  wait for BCS
-> (RBSYNC) */
-> > +#define   MI_SEMAPHORE_SYNC_BV	    (0<<16) /* VCS  wait for BCS
-> (VBSYNC) */
-> > +#define   MI_SEMAPHORE_SYNC_VEV	    (1<<16) /* VCS  wait for VECS
-> (VVESYNC) */
-> > +#define   MI_SEMAPHORE_SYNC_RV	    (2<<16) /* VCS  wait for RCS
-> (VRSYNC) */
-> > +#define   MI_SEMAPHORE_SYNC_RB	    (0<<16) /* BCS  wait for RCS
-> (BRSYNC) */
-> > +#define   MI_SEMAPHORE_SYNC_VEB	    (1<<16) /* BCS  wait for VECS
-> (BVESYNC) */
-> > +#define   MI_SEMAPHORE_SYNC_VB	    (2<<16) /* BCS  wait for VCS
-> (BVSYNC) */
-> > +#define   MI_SEMAPHORE_SYNC_BVE	    (0<<16) /* VECS wait for BCS
-> (VEBSYNC) */
-> > +#define   MI_SEMAPHORE_SYNC_VVE	    (1<<16) /* VECS wait for VCS
-> (VEVSYNC) */
-> > +#define   MI_SEMAPHORE_SYNC_RVE	    (2<<16) /* VECS wait for RCS
-> (VERSYNC) */
-> > +#define   MI_SEMAPHORE_SYNC_INVALID (3<<16)
-> > +#define   MI_SEMAPHORE_SYNC_MASK    (3<<16)
-> > +#define MI_SET_CONTEXT		MI_INSTR(0x18, 0)
-> > +#define   MI_MM_SPACE_GTT		(1<<8)
-> > +#define   MI_MM_SPACE_PHYSICAL		(0<<8)
-> > +#define   MI_SAVE_EXT_STATE_EN		(1<<3)
-> > +#define   MI_RESTORE_EXT_STATE_EN	(1<<2)
-> > +#define   MI_FORCE_RESTORE		(1<<1)
-> > +#define   MI_RESTORE_INHIBIT		(1<<0)
-> > +#define   HSW_MI_RS_SAVE_STATE_EN       (1<<3)
-> > +#define   HSW_MI_RS_RESTORE_STATE_EN    (1<<2)
-> > +#define MI_SEMAPHORE_SIGNAL	MI_INSTR(0x1b, 0) /* GEN8+ */
-> > +#define   MI_SEMAPHORE_TARGET(engine)	((engine)<<15)
-> > +#define MI_SEMAPHORE_WAIT	MI_INSTR(0x1c, 2) /* GEN8+ */
-> > +#define MI_SEMAPHORE_WAIT_TOKEN	MI_INSTR(0x1c, 3) /* GEN12+
-> */
-> > +#define   MI_SEMAPHORE_POLL		(1 << 15)
-> > +#define   MI_SEMAPHORE_SAD_GT_SDD	(0 << 12)
-> > +#define   MI_SEMAPHORE_SAD_GTE_SDD	(1 << 12)
-> > +#define   MI_SEMAPHORE_SAD_LT_SDD	(2 << 12)
-> > +#define   MI_SEMAPHORE_SAD_LTE_SDD	(3 << 12)
-> > +#define   MI_SEMAPHORE_SAD_EQ_SDD	(4 << 12)
-> > +#define   MI_SEMAPHORE_SAD_NEQ_SDD	(5 << 12)
-> > +#define   MI_SEMAPHORE_27_TOKEN_MASK	REG_GENMASK(9, 5)
-> > +#define   MI_SEMAPHORE_256_TOKEN_MASK	REG_GENMASK(9, 2)
-> > +#define   MI_SEMAPHORE_27_TOKEN_SHIFT	5
-> > +#define   MI_SEMAPHORE_256_TOKEN_SHIFT	2
-> > +#define MI_STORE_DATA_IMM	MI_INSTR(0x20, 0)
-> > +#define MI_STORE_DWORD_IMM	MI_INSTR(0x20, 1)
-> > +#define MI_STORE_DWORD_IMM_GEN4	MI_INSTR(0x20, 2)
-> > +#define MI_STORE_QWORD_IMM_GEN8_POSTED (MI_INSTR(0x20, 3) | (1 <<
-> > +21)) #define MI_STORE_QWORD_IMM_GEN8 (MI_INSTR(0x20, 3) | (1 << 10)
-> | (1 << 21))
-> > +#define   MI_MEM_VIRTUAL	(1 << 22) /* 945,g33,965 */
-> > +#define   MI_USE_GGTT		(1 << 22) /* g4x+ */
-> > +#define MI_STORE_DWORD_INDEX	MI_INSTR(0x21, 1)
-> > +#define MI_ATOMIC		MI_INSTR(0x2f, 1)
-> > +#define MI_ATOMIC_INLINE	(MI_INSTR(0x2f, 9) |
-> MI_ATOMIC_INLINE_DATA)
-> > +#define   MI_ATOMIC_GLOBAL_GTT		(1 << 22)
-> > +#define   MI_ATOMIC_INLINE_DATA		(1 << 18)
-> > +#define   MI_ATOMIC_CS_STALL		(1 << 17)
-> > +#define	  MI_ATOMIC_MOVE		(0x4 << 8)
-> > +#define	  MI_ATOMIC_INC			(0x5 << 8)
-> > +#define	  MI_ATOMIC_DEC			(0x6 << 8)
-> > +#define	  MI_ATOMIC_ADD			(0x7 << 8)
-> > +#define	  MI_ATOMIC_SUB			(0x8 << 8)
-> > +
-> > +/*
-> > + * Official intel docs are somewhat sloppy concerning
-> MI_LOAD_REGISTER_IMM:
-> > + * - Always issue a MI_NOOP _before_ the MI_LOAD_REGISTER_IMM -
-> otherwise hw
-> > + *   simply ignores the register load under certain conditions.
-> > + * - One can actually load arbitrary many arbitrary registers: Simply =
-issue x
-> > + *   address/value pairs. Don't overdue it, though, x <=3D 2^4 must ho=
-ld!
-> > + */
-> > +#define MI_LOAD_REGISTER_IMM(x)	MI_INSTR(0x22, 2*(x)-1)
-> > +/* Gen11+. addr =3D base + (ctx_restore ? offset & GENMASK(12,2) : off=
-set) */
-> > +#define   MI_LRI_DEST_CS_MMIO		REG_BIT(19)
-> > +#define   MI_LRI_LRM_CS_MMIO		REG_BIT(19)
-> > +#define   MI_LRI_FORCE_POSTED		(1<<12)
-> > +#define MI_LOAD_REGISTER_IMM_MAX_REGS (126)
-> > +#define __MI_STORE_REGISTER_MEM      MI_INSTR(0x24, 0)
-> > +#define MI_STORE_REGISTER_MEM        MI_INSTR(0x24, 1)
-> > +#define MI_STORE_REGISTER_MEM_GEN8   MI_INSTR(0x24, 2)
-> > +#define   MI_SRM_LRM_GLOBAL_GTT		(1<<22)
-> > +#define MI_FLUSH_DW		MI_INSTR(0x26, 1) /* for GEN6 */
-> > +#define   MI_FLUSH_DW_PROTECTED_MEM_EN	(1 << 22)
-> > +#define   MI_FLUSH_DW_STORE_INDEX	(1<<21)
-> > +#define   MI_INVALIDATE_TLB		(1<<18)
-> > +#define   MI_FLUSH_CCS			(1<<16)
-> > +#define   MI_FLUSH_DW_OP_STOREDW	(1<<14)
-> > +#define   MI_FLUSH_DW_OP_MASK		(3<<14)
-> > +#define   MI_FLUSH_LLC			(1<<9)
-> > +#define   MI_FLUSH_DW_NOTIFY		(1<<8)
-> > +#define   MI_INVALIDATE_BSD		(1<<7)
-> > +#define   MI_FLUSH_DW_USE_GTT		(1<<2)
-> > +#define   MI_FLUSH_DW_USE_PPGTT		(0<<2)
-> > +#define __MI_LOAD_REGISTER_MEM	   MI_INSTR(0x29, 0)
-> > +#define MI_LOAD_REGISTER_MEM	   MI_INSTR(0x29, 1)
-> > +#define MI_LOAD_REGISTER_MEM_GEN8  MI_INSTR(0x29, 2)
-> > +#define MI_LOAD_REGISTER_REG    MI_INSTR(0x2A, 1)
-> > +#define   MI_LRR_SOURCE_CS_MMIO		REG_BIT(18)
-> > +#define   MI_LRR_DEST_CS_MMIO		REG_BIT(19)
-> > +#define MI_BATCH_BUFFER		MI_INSTR(0x30, 1)
-> > +#define   MI_BATCH_NON_SECURE		(1)
-> > +/* for snb/ivb/vlv this also means "batch in ppgtt" when ppgtt is enab=
-led. */
-> > +#define   MI_BATCH_NON_SECURE_I965	(1<<8)
-> > +#define   MI_BATCH_PPGTT_HSW		(1<<8)
-> > +#define   MI_BATCH_NON_SECURE_HSW	(1<<13)
-> > +#define MI_BATCH_BUFFER_START	MI_INSTR(0x31, 0)
-> > +#define   MI_BATCH_GTT		    (2<<6) /* aliased with (1<<7) on gen4
-> */
-> > +#define MI_BATCH_BUFFER_START_GEN8	MI_INSTR(0x31, 1)
-> > +#define   MI_BATCH_RESOURCE_STREAMER REG_BIT(10)
-> > +#define   MI_BATCH_PREDICATE         REG_BIT(15) /* HSW+ on RCS only*/
-> > +#define MI_COND_BATCH_BUFFER_END	MI_INSTR(0x36, 0)
-> > +#define   MI_DO_COMPARE				(1 << 21)
-> > +
-> > +/*
-> > + * 3D instructions used by the kernel  */ #define GFX_INSTR(opcode,
-> > +flags) ((0x3 << 29) | ((opcode) << 24) | (flags))
-> > +
-> > +#define GEN9_MEDIA_POOL_STATE     ((0x3 << 29) | (0x2 << 27) | (0x5 <<=
- 16)
-> | 4)
-> > +#define   GEN9_MEDIA_POOL_ENABLE  (1 << 31)
-> > +#define GFX_OP_RASTER_RULES    ((0x3<<29)|(0x7<<24))
-> > +#define GFX_OP_SCISSOR         ((0x3<<29)|(0x1c<<24)|(0x10<<19))
-> > +#define   SC_UPDATE_SCISSOR       (0x1<<1)
-> > +#define   SC_ENABLE_MASK          (0x1<<0)
-> > +#define   SC_ENABLE               (0x1<<0)
-> > +#define GFX_OP_LOAD_INDIRECT   ((0x3<<29)|(0x1d<<24)|(0x7<<16))
-> > +#define GFX_OP_SCISSOR_INFO    ((0x3<<29)|(0x1d<<24)|(0x81<<16)|(0x1))
-> > +#define   SCI_YMIN_MASK      (0xffff<<16)
-> > +#define   SCI_XMIN_MASK      (0xffff<<0)
-> > +#define   SCI_YMAX_MASK      (0xffff<<16)
-> > +#define   SCI_XMAX_MASK      (0xffff<<0)
-> > +#define GFX_OP_SCISSOR_ENABLE	 ((0x3<<29)|(0x1c<<24)|(0x10<<19))
-> > +#define GFX_OP_SCISSOR_RECT	 ((0x3<<29)|(0x1d<<24)|(0x81<<16)|1)
-> > +#define GFX_OP_COLOR_FACTOR      ((0x3<<29)|(0x1d<<24)|(0x1<<16)|0x0)
-> > +#define GFX_OP_STIPPLE           ((0x3<<29)|(0x1d<<24)|(0x83<<16))
-> > +#define GFX_OP_MAP_INFO          ((0x3<<29)|(0x1d<<24)|0x4)
-> > +#define GFX_OP_DESTBUFFER_VARS
-> ((0x3<<29)|(0x1d<<24)|(0x85<<16)|0x0)
-> > +#define GFX_OP_DESTBUFFER_INFO	 ((0x3<<29)|(0x1d<<24)|(0x8e<<16)|1)
-> > +#define GFX_OP_DRAWRECT_INFO
-> ((0x3<<29)|(0x1d<<24)|(0x80<<16)|(0x3))
-> > +#define GFX_OP_DRAWRECT_INFO_I965  ((0x7900<<16)|0x2)
-> > +
-> > +#define XY_CTRL_SURF_COPY_BLT		(2<<29 | 0x48<<22 | 3)
-> > +#define   SRC_ACCESS_TYPE_SHIFT		21
-> > +#define   DST_ACCESS_TYPE_SHIFT		20
-> > +#define   CCS_SIZE_SHIFT		8
-> > +/* Bspec lists field as [31:25], but index alone is at [31:26] */
-> > +#define   XY_CSC_BLT_MOCS_INDEX_MASK_GEN12	GENMASK(31, 26)
-> > +#define   XY_CSC_BLT_MOCS_INDEX_MASK_XE2	GENMASK(31, 28)
-> > +#define   NUM_CCS_BYTES_PER_BLOCK	256
-> > +#define   NUM_CCS_BLKS_PER_XFER	1024
-> > +#define   INDIRECT_ACCESS		0
-> > +#define   DIRECT_ACCESS		1
-> > +
-> > +#define COLOR_BLT_CMD			(2 << 29 | 0x40 << 22 | (5 - 2))
-> > +#define XY_BLOCK_COPY_BLT_CMD		(2 << 29 | 0x41 << 22)
-> > +#define   DEST_MEM_TYPE_SHIFT		(31)
-> > +#define   SRC_MEM_TYPE_SHIFT		(31)
-> > +#define   MEM_TYPE_SYS			1
-> > +#define   MEM_TYPE_LOCAL		0
-> > +#define   COMPRESSION_ENABLE		(1 << 29)
-> > +#define   AUX_CCS_E			(5 << 18)
-> > +#define   FULL_RESOLVE			(1 << 12)
-> > +#define   TILE_4_FORMAT			(2 << 30)
-> > +#define   TILE_4_WIDTH			(128)
-> > +#define   TILE_4_WIDTH_DWORD		((128 >> 2) - 1)
-> > +#define   TILE_4_HEIGHT			(32)
-> > +#define   SURFACE_TYPE_2D		(1 << 29)
-> > +#define   DEST_SURF_WIDTH_SHIFT		(14)
-> > +#define   SRC_SURF_WIDTH_SHIFT		(14)
-> > +/* Bspec lists this field as 27:21, but the index alone is in 27:22 */
-> > +#define   XY_BCB_MOCS_INDEX_MASK_GEN12	GENMASK(27, 22)
-> > +#define   XY_BCB_MOCS_INDEX_MASK_XE2	GENMASK(27, 24)
-> > +#define GEN9_XY_FAST_COPY_BLT_CMD	(2 << 29 | 0x42 << 22)
-> > +#define   XY_FAST_COPY_BLT_D0_SRC_TILING_MASK     REG_GENMASK(21,
-> 20)
-> > +#define   XY_FAST_COPY_BLT_D0_DST_TILING_MASK     REG_GENMASK(14,
-> 13)
-> > +#define   XY_FAST_COPY_BLT_D0_SRC_TILE_MODE(mode)  \
-> > +	REG_FIELD_PREP(XY_FAST_COPY_BLT_D0_SRC_TILING_MASK, mode)
-> > +#define   XY_FAST_COPY_BLT_D0_DST_TILE_MODE(mode)  \
-> > +	REG_FIELD_PREP(XY_FAST_COPY_BLT_D0_DST_TILING_MASK, mode)
-> > +#define     LINEAR				0
-> > +#define     TILE_X				0x1
-> > +#define     XMAJOR				0x1
-> > +#define     YMAJOR				0x2
-> > +#define     TILE_64			0x3
-> > +#define   XY_FAST_COPY_BLT_D1_SRC_TILE4	REG_BIT(31)
-> > +#define   XY_FAST_COPY_BLT_D1_DST_TILE4	REG_BIT(30)
-> > +#define   PVC_ENABLE_COMPRESSED_SURFACE	REG_BIT(16)
-> > +#define   XY_FCB_MOCS_INDEX_MASK_XE2	GENMASK(23, 20)
-> > +#define BLIT_CCTL_SRC_MOCS_MASK  REG_GENMASK(6, 0) #define
-> > +BLIT_CCTL_DST_MOCS_MASK  REG_GENMASK(14, 8)
-> > +/* Note:  MOCS value =3D (index << 1) */ #define
-> > +BLIT_CCTL_SRC_MOCS(idx) \
-> > +	REG_FIELD_PREP(BLIT_CCTL_SRC_MOCS_MASK, idx << 1) #define
-> > +BLIT_CCTL_DST_MOCS(idx) \
-> > +	REG_FIELD_PREP(BLIT_CCTL_DST_MOCS_MASK, idx << 1)
-> > +#define SRC_COPY_BLT_CMD		(2 << 29 | 0x43 << 22)
-> > +#define XY_FAST_COLOR_BLT		(2 << 29 | 0x44 << 22)
-> > +#define   BLT_COLOR_DEPTH_32		(2 << 19)
-> > +#define   BLT_COLOR_DEPTH_64		(3 << 19)
-> > +/* Bspec lists field as [27:21], but index resides in [27:22] */
-> > +#define   XY_FCB_MOCS_INDEX_MASK	GENMASK(27, 22)
-> > +#define XY_COLOR_BLT_CMD		(2 << 29 | 0x50 << 22)
-> > +#define XY_SRC_COPY_BLT_CMD		(2 << 29 | 0x53 << 22)
-> > +#define XY_MONO_SRC_COPY_IMM_BLT	(2 << 29 | 0x71 << 22 | 5)
-> > +#define   BLT_SRCMEM_SYS		(1<<29)
-> > +#define   BLT_WRITE_A			(2<<20)
-> > +#define   BLT_WRITE_RGB			(1<<20)
-> > +#define   BLT_WRITE_RGBA		(BLT_WRITE_RGB | BLT_WRITE_A)
-> > +#define   BLT_DEPTH_8			(0<<24)
-> > +#define   BLT_DEPTH_16_565		(1<<24)
-> > +#define   BLT_DEPTH_16_1555		(2<<24)
-> > +#define   BLT_DEPTH_32			(3<<24)
-> > +#define   BLT_ROP_SRC_COPY		(0xcc<<16)
-> > +#define   BLT_ROP_COLOR_COPY		(0xf0<<16)
-> > +#define PVC_MEM_COPY_CMD		(2 << 29 | 0x5a << 22)
-> > +#define   PVC_MEM_COPY_SRC_COMPRESSIBLE	BIT(16)
-> > +#define   PVC_MEM_COPY_DST_COMPRESSIBLE	BIT(15)
-> > +#define   PVC_MEM_COPY_DST_COMPRESS_EN	BIT(13)
-> > +#define   MEM_COPY_COMPRESSION_FMT_XEHPC	GENMASK(12, 8)
-> > +#define   MEM_COPY_COMPRESSION_FMT_XE2	GENMASK(12, 9)
-> > +/*
-> > + * Bspec lists MOCS fields as [31:25] and [6:0], but the actual
-> > +indices are
-> > + * in [31:26] and [6:1].
-> > + */
-> > +#define   MC_SRC_MOCS_INDEX_MASK_GEN12	GENMASK(31, 26)
-> > +#define   MC_SRC_MOCS_INDEX_MASK_XE2	GENMASK(31, 28)
-> > +#define   MC_DST_MOCS_INDEX_MASK_GEN12	GENMASK(6, 1)
-> > +#define   MC_DST_MOCS_INDEX_MASK_XE2	GENMASK(6, 3)
-> > +#define PVC_MEM_SET_CMD			(2 << 29 | 0x5b << 22)
-> > +#define   PVC_MEM_SET_DST_COMPRESSIBLE	BIT(15)
-> > +#define   PVC_MEM_SET_DST_COMPRESS_EN	BIT(13)
-> > +#define   MEM_SET_COMPRESSION_FMT_XEHPC	GENMASK(12, 8)
-> > +#define   MEM_SET_COMPRESSION_FMT_XE2	GENMASK(12, 9)
-> > +/* Bspec lists field as [6:0], but index alone is from [6:1] */
-> > +#define   MS_MOCS_INDEX_MASK_GEN12	GENMASK(6, 1)
-> > +#define   MS_MOCS_INDEX_MASK_XE2	GENMASK(6, 3)
-> > +#define XY_SRC_COPY_BLT_SRC_TILED	(1<<15) /* 965+ only */
-> > +#define XY_SRC_COPY_BLT_DST_TILED	(1<<11) /* 965+ only */
-> > +#define CMD_OP_DISPLAYBUFFER_INFO ((0x0<<29)|(0x14<<23)|2)
-> > +#define   ASYNC_FLIP                (1<<22)
-> > +#define   DISPLAY_PLANE_A           (0<<20)
-> > +#define   DISPLAY_PLANE_B           (1<<20)
-> > +#define GFX_OP_PIPE_CONTROL(len)	((0x3<<29)|(0x3<<27)|(0x2<<24)|((len)=
--
-> 2))
-> > +#define   PIPE_CONTROL0_HDC_PIPELINE_FLUSH		BIT(9)  /*
-> dword0, gen12 */
-> > +#define   PIPE_CONTROL0_DATAPORT_FLUSH_XE2		BIT(9)	/*
-> dword0, xe2 */
-> > +#define   PIPE_CONTROL_COMMAND_CACHE_INVALIDATE
-> 	(1<<29) /* gen11+ */
-> > +#define   PIPE_CONTROL_TILE_CACHE_FLUSH			(1<<28) /*
-> gen11+ */
-> > +#define   PIPE_CONTROL_FLUSH_L3				(1<<27)
-> > +#define   PIPE_CONTROL_AMFS_FLUSH			(1<<25) /*
-> gen12+ */
-> > +#define   PIPE_CONTROL_GLOBAL_GTT_IVB			(1<<24) /*
-> gen7+ */
-> > +#define   PIPE_CONTROL_MMIO_WRITE			(1<<23)
-> > +#define   PIPE_CONTROL_STORE_DATA_INDEX
-> 	(1<<21)
-> > +#define   PIPE_CONTROL_CS_STALL				(1<<20)
-> > +#define   PIPE_CONTROL_GLOBAL_SNAPSHOT_RESET		(1<<19)
-> > +#define   PIPE_CONTROL_TLB_INVALIDATE			(1<<18)
-> > +#define   PIPE_CONTROL_PSD_SYNC				(1<<17) /*
-> gen11+ */
-> > +#define   PIPE_CONTROL_MEDIA_STATE_CLEAR		(1<<16)
-> > +#define   PIPE_CONTROL_WRITE_TIMESTAMP
-> 	(3<<14)
-> > +#define   PIPE_CONTROL_QW_WRITE				(1<<14)
-> > +#define   PIPE_CONTROL_POST_SYNC_OP_MASK                (3<<14)
-> > +#define   PIPE_CONTROL_DEPTH_STALL			(1<<13)
-> > +#define   PIPE_CONTROL_WRITE_FLUSH			(1<<12)
-> > +#define   PIPE_CONTROL_RENDER_TARGET_CACHE_FLUSH	(1<<12) /*
-> gen6+ */
-> > +#define   PIPE_CONTROL_INSTRUCTION_CACHE_INVALIDATE	(1<<11) /*
-> MBZ on ILK */
-> > +#define   PIPE_CONTROL_TEXTURE_CACHE_INVALIDATE
-> 	(1<<10) /* GM45+ only */
-> > +#define   PIPE_CONTROL_INDIRECT_STATE_DISABLE		(1<<9)
-> > +#define   PIPE_CONTROL_NOTIFY				(1<<8)
-> > +#define   PIPE_CONTROL_FLUSH_ENABLE			(1<<7) /*
-> gen7+ */
-> > +#define   PIPE_CONTROL_DC_FLUSH_ENABLE			(1<<5)
-> > +#define   PIPE_CONTROL_VF_CACHE_INVALIDATE		(1<<4)
-> > +#define   PIPE_CONTROL_CONST_CACHE_INVALIDATE		(1<<3)
-> > +#define   PIPE_CONTROL_STATE_CACHE_INVALIDATE		(1<<2)
-> > +#define   PIPE_CONTROL_STALL_AT_SCOREBOARD		(1<<1)
-> > +#define   PIPE_CONTROL_DEPTH_CACHE_FLUSH		(1<<0)
-> > +#define   PIPE_CONTROL_GLOBAL_GTT (1<<2) /* in addr dword */
-> > +
-> > +/*
-> > + * 3D-related flags that can't be set on _engines_ that lack access
-> > +to the 3D
-> > + * pipeline (i.e., CCS engines).
-> > + */
-> > +#define PIPE_CONTROL_3D_ENGINE_FLAGS (\
-> > +		PIPE_CONTROL_RENDER_TARGET_CACHE_FLUSH | \
-> > +		PIPE_CONTROL_DEPTH_CACHE_FLUSH | \
-> > +		PIPE_CONTROL_TILE_CACHE_FLUSH | \
-> > +		PIPE_CONTROL_DEPTH_STALL | \
-> > +		PIPE_CONTROL_STALL_AT_SCOREBOARD | \
-> > +		PIPE_CONTROL_PSD_SYNC | \
-> > +		PIPE_CONTROL_AMFS_FLUSH | \
-> > +		PIPE_CONTROL_VF_CACHE_INVALIDATE | \
-> > +		PIPE_CONTROL_GLOBAL_SNAPSHOT_RESET)
-> > +
-> > +/* 3D-related flags that can't be set on _platforms_ that lack a 3D
-> > +pipeline */ #define PIPE_CONTROL_3D_ARCH_FLAGS ( \
-> > +		PIPE_CONTROL_3D_ENGINE_FLAGS | \
-> > +		PIPE_CONTROL_INDIRECT_STATE_DISABLE | \
-> > +		PIPE_CONTROL_FLUSH_ENABLE | \
-> > +		PIPE_CONTROL_TEXTURE_CACHE_INVALIDATE | \
-> > +		PIPE_CONTROL_DC_FLUSH_ENABLE)
-> > +
-> > +#define MI_MATH(x)			MI_INSTR(0x1a, (x) - 1)
-> > +#define MI_MATH_INSTR(opcode, op1, op2) ((opcode) << 20 | (op1) << 10
-> > +| (op2))
-> > +/* Opcodes for MI_MATH_INSTR */
-> > +#define   MI_MATH_NOOP			MI_MATH_INSTR(0x000, 0x0,
-> 0x0)
-> > +#define   MI_MATH_LOAD(op1, op2)	MI_MATH_INSTR(0x080, op1, op2)
-> > +#define   MI_MATH_LOADINV(op1, op2)	MI_MATH_INSTR(0x480, op1,
-> op2)
-> > +#define   MI_MATH_LOAD0(op1)		MI_MATH_INSTR(0x081, op1,
-> 0x0)
-> > +#define   MI_MATH_LOAD1(op1)		MI_MATH_INSTR(0x481, op1,
-> 0x0)
-> > +#define   MI_MATH_ADD			MI_MATH_INSTR(0x100, 0x0,
-> 0x0)
-> > +#define   MI_MATH_SUB			MI_MATH_INSTR(0x101, 0x0,
-> 0x0)
-> > +#define   MI_MATH_AND			MI_MATH_INSTR(0x102, 0x0,
-> 0x0)
-> > +#define   MI_MATH_OR			MI_MATH_INSTR(0x103, 0x0,
-> 0x0)
-> > +#define   MI_MATH_XOR			MI_MATH_INSTR(0x104, 0x0,
-> 0x0)
-> > +#define   MI_MATH_STORE(op1, op2)	MI_MATH_INSTR(0x180, op1, op2)
-> > +#define   MI_MATH_STOREINV(op1, op2)	MI_MATH_INSTR(0x580, op1,
-> op2)
-> > +/* DG2+ */
-> > +#define   MI_MATH_SHR			MI_MATH_INSTR(0x106, 0x0,
-> 0x0)
-> > +
-> > +/* Registers used as operands in MI_MATH_INSTR */
-> > +#define   MI_MATH_REG(x)		(x)
-> > +#define   MI_MATH_REG_SRCA		0x20
-> > +#define   MI_MATH_REG_SRCB		0x21
-> > +#define   MI_MATH_REG_ACCU		0x31
-> > +#define   MI_MATH_REG_ZF		0x32
-> > +#define   MI_MATH_REG_CF		0x33
-> > +
-> > +/*
-> > + * Media instructions used by the kernel  */ #define
-> > +MEDIA_INSTR(pipe, op, sub_op, flags) \
-> > +	(__INSTR(INSTR_RC_CLIENT) | (pipe) << INSTR_SUBCLIENT_SHIFT | \
-> > +	(op) << INSTR_26_TO_24_SHIFT | (sub_op) << 16 | (flags))
-> > +
-> > +#define MFX_WAIT				MEDIA_INSTR(1, 0, 0, 0)
-> > +#define  MFX_WAIT_DW0_MFX_SYNC_CONTROL_FLAG	REG_BIT(8)
-> > +#define  MFX_WAIT_DW0_PXP_SYNC_CONTROL_FLAG	REG_BIT(9)
-> > +
-> > +#define CRYPTO_KEY_EXCHANGE			MEDIA_INSTR(2, 6, 9,
-> 0)
-> > +
-> > +/*
-> > + * Commands used only by the command parser  */
-> > +#define MI_SET_PREDICATE        MI_INSTR(0x01, 0)
-> > +#define MI_ARB_CHECK            MI_INSTR(0x05, 0)
-> > +#define MI_RS_CONTROL           MI_INSTR(0x06, 0)
-> > +#define MI_URB_ATOMIC_ALLOC     MI_INSTR(0x09, 0)
-> > +#define MI_PREDICATE            MI_INSTR(0x0C, 0)
-> > +#define MI_RS_CONTEXT           MI_INSTR(0x0F, 0)
-> > +#define MI_TOPOLOGY_FILTER      MI_INSTR(0x0D, 0)
-> > +#define MI_LOAD_SCAN_LINES_EXCL MI_INSTR(0x13, 0)
-> > +#define MI_URB_CLEAR            MI_INSTR(0x19, 0)
-> > +#define MI_UPDATE_GTT           MI_INSTR(0x23, 0)
-> > +#define MI_CLFLUSH              MI_INSTR(0x27, 0)
-> > +#define MI_REPORT_PERF_COUNT    MI_INSTR(0x28, 0)
-> > +#define   MI_REPORT_PERF_COUNT_GGTT (1<<0)
-> > +#define MI_RS_STORE_DATA_IMM    MI_INSTR(0x2B, 0)
-> > +#define MI_LOAD_URB_MEM         MI_INSTR(0x2C, 0)
-> > +#define MI_STORE_URB_MEM        MI_INSTR(0x2D, 0)
-> > +#define MI_CONDITIONAL_BATCH_BUFFER_END MI_INSTR(0x36, 0)
-> > +
-> > +#define STATE_SYSTEM_MEM_FENCE_ADDRESS \
-> > +	((0x3 << 29) | (0x0 << 27) | (0x1 << 24) | (0x9 << 16) | 0x1)
-> > +#define STATE_BASE_ADDRESS \
-> > +	((0x3 << 29) | (0x0 << 27) | (0x1 << 24) | (0x1 << 16))
-> > +#define BASE_ADDRESS_MODIFY		REG_BIT(0)
-> > +#define PIPELINE_SELECT \
-> > +	((0x3 << 29) | (0x1 << 27) | (0x1 << 24) | (0x4 << 16))
-> > +#define PIPELINE_SELECT_MEDIA	       REG_BIT(0)
-> > +#define GFX_OP_3DSTATE_VF_STATISTICS \
-> > +	((0x3 << 29) | (0x1 << 27) | (0x0 << 24) | (0xB << 16)) #define
-> > +MEDIA_VFE_STATE \
-> > +	((0x3 << 29) | (0x2 << 27) | (0x0 << 24) | (0x0 << 16)) #define
-> > +MEDIA_VFE_STATE_MMIO_ACCESS_MASK (0x18) #define
-> > +MEDIA_INTERFACE_DESCRIPTOR_LOAD \
-> > +	((0x3 << 29) | (0x2 << 27) | (0x0 << 24) | (0x2 << 16)) #define
-> > +MEDIA_OBJECT \
-> > +	((0x3 << 29) | (0x2 << 27) | (0x1 << 24) | (0x0 << 16))
-> > +#define GPGPU_OBJECT
-> ((0x3<<29)|(0x2<<27)|(0x1<<24)|(0x4<<16))
-> > +#define GPGPU_WALKER
-> ((0x3<<29)|(0x2<<27)|(0x1<<24)|(0x5<<16))
-> > +#define GFX_OP_3DSTATE_DX9_CONSTANTF_VS \
-> > +	((0x3<<29)|(0x3<<27)|(0x0<<24)|(0x39<<16))
-> > +#define GFX_OP_3DSTATE_DX9_CONSTANTF_PS \
-> > +	((0x3<<29)|(0x3<<27)|(0x0<<24)|(0x3A<<16))
-> > +#define GFX_OP_3DSTATE_SO_DECL_LIST \
-> > +	((0x3<<29)|(0x3<<27)|(0x1<<24)|(0x17<<16))
-> > +
-> > +#define GFX_OP_3DSTATE_BINDING_TABLE_EDIT_VS \
-> > +	((0x3<<29)|(0x3<<27)|(0x0<<24)|(0x43<<16))
-> > +#define GFX_OP_3DSTATE_BINDING_TABLE_EDIT_GS \
-> > +	((0x3<<29)|(0x3<<27)|(0x0<<24)|(0x44<<16))
-> > +#define GFX_OP_3DSTATE_BINDING_TABLE_EDIT_HS \
-> > +	((0x3<<29)|(0x3<<27)|(0x0<<24)|(0x45<<16))
-> > +#define GFX_OP_3DSTATE_BINDING_TABLE_EDIT_DS \
-> > +	((0x3<<29)|(0x3<<27)|(0x0<<24)|(0x46<<16))
-> > +#define GFX_OP_3DSTATE_BINDING_TABLE_EDIT_PS \
-> > +	((0x3<<29)|(0x3<<27)|(0x0<<24)|(0x47<<16))
-> > +
-> > +#define COLOR_BLT     ((0x2<<29)|(0x40<<22))
-> > +#define SRC_COPY_BLT  ((0x2<<29)|(0x43<<22))
-> > +
-> > +/* Bspec 63347*/
-> > +#define GSC_INSTR(opcode, data, flags) \
-> > +	(__INSTR(INSTR_GSC_CLIENT) | (opcode) << 22 | (data) << 9 | (flags))
-> > +
-> > +/* bspec 65346 */
-> > +#define GSC_FW_LOAD GSC_INSTR(1, 0, 2)
-> > +#define   HECI1_FW_LIMIT_VALID (1<<31)
-> > +
-> > +#define GSC_HECI_CMD_PKT GSC_INSTR(0, 0, 6)
-> > +
-> > +/*
-> > + * Used to convert an address to canonical form based on size of
-> > + * virtual address space.
-> > + * Starting from gen8, some commands (e.g. STATE_BASE_ADDRESS,
-> > + * MI_LOAD_REGISTER_MEM and others, see Broadwell PRM Vol2a) require
-> > +the
-> > + * addresses to be in a canonical form:
-> > + * "GraphicsAddress[63:48] are ignored by the HW and assumed to be in
-> > +correct
-> > + * canonical form [63:48] =3D=3D [47]."
-> > + */
-> > +static inline u64 intel_canonical_addr(u32 ppgtt_msb, u64 address) {
-> > +	return sign_extend64(address, ppgtt_msb); }
-> > +
-> > +static inline u64 intel_noncanonical_addr(u32 ppgtt_msb, u64 address)
-> > +{
-> > +	return address & GENMASK_ULL(ppgtt_msb, 0); }
-> > +
-> > +static inline u32 *__gen6_emit_bb_start(u32 *cs, u32 addr, unsigned
-> > +int flags) {
-> > +	*cs++ =3D MI_BATCH_BUFFER_START | flags;
-> > +	*cs++ =3D addr;
-> > +
-> > +	return cs;
-> > +}
-> > +
-> > +#endif /* _INTEL_GPU_COMMANDS_H_ */
-> > --
-> > 2.25.1
-> >
+diff --git a/include/drm-uapi/xe_drm.h b/include/drm-uapi/xe_drm.h
+new file mode 100644
+index 0000000000..593b01ba59
+--- /dev/null
++++ b/include/drm-uapi/xe_drm.h
+@@ -0,0 +1,807 @@
++/*
++ * Copyright 2021 Intel Corporation. All Rights Reserved.
++ *
++ * Permission is hereby granted, free of charge, to any person obtaining a
++ * copy of this software and associated documentation files (the
++ * "Software"), to deal in the Software without restriction, including
++ * without limitation the rights to use, copy, modify, merge, publish,
++ * distribute, sub license, and/or sell copies of the Software, and to
++ * permit persons to whom the Software is furnished to do so, subject to
++ * the following conditions:
++ *
++ * The above copyright notice and this permission notice (including the
++ * next paragraph) shall be included in all copies or substantial portions
++ * of the Software.
++ *
++ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
++ * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
++ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT.
++ * IN NO EVENT SHALL TUNGSTEN GRAPHICS AND/OR ITS SUPPLIERS BE LIABLE FOR
++ * ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
++ * TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
++ * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
++ *
++ */
++
++#ifndef _UAPI_XE_DRM_H_
++#define _UAPI_XE_DRM_H_
++
++#include "drm.h"
++
++#if defined(__cplusplus)
++extern "C" {
++#endif
++
++/* Please note that modifications to all structs defined here are
++ * subject to backwards-compatibility constraints.
++ */
++
++/**
++ * struct i915_user_extension - Base class for defining a chain of extensions
++ *
++ * Many interfaces need to grow over time. In most cases we can simply
++ * extend the struct and have userspace pass in more data. Another option,
++ * as demonstrated by Vulkan's approach to providing extensions for forward
++ * and backward compatibility, is to use a list of optional structs to
++ * provide those extra details.
++ *
++ * The key advantage to using an extension chain is that it allows us to
++ * redefine the interface more easily than an ever growing struct of
++ * increasing complexity, and for large parts of that interface to be
++ * entirely optional. The downside is more pointer chasing; chasing across
++ * the __user boundary with pointers encapsulated inside u64.
++ *
++ * Example chaining:
++ *
++ * .. code-block:: C
++ *
++ *	struct i915_user_extension ext3 {
++ *		.next_extension = 0, // end
++ *		.name = ...,
++ *	};
++ *	struct i915_user_extension ext2 {
++ *		.next_extension = (uintptr_t)&ext3,
++ *		.name = ...,
++ *	};
++ *	struct i915_user_extension ext1 {
++ *		.next_extension = (uintptr_t)&ext2,
++ *		.name = ...,
++ *	};
++ *
++ * Typically the struct i915_user_extension would be embedded in some uAPI
++ * struct, and in this case we would feed it the head of the chain(i.e ext1),
++ * which would then apply all of the above extensions.
++ *
++ */
++struct xe_user_extension {
++	/**
++	 * @next_extension:
++	 *
++	 * Pointer to the next struct i915_user_extension, or zero if the end.
++	 */
++	__u64 next_extension;
++	/**
++	 * @name: Name of the extension.
++	 *
++	 * Note that the name here is just some integer.
++	 *
++	 * Also note that the name space for this is not global for the whole
++	 * driver, but rather its scope/meaning is limited to the specific piece
++	 * of uAPI which has embedded the struct i915_user_extension.
++	 */
++	__u32 name;
++	/**
++	 * @flags: MBZ
++	 *
++	 * All undefined bits must be zero.
++	 */
++	__u32 pad;
++};
++
++/*
++ * i915 specific ioctls.
++ *
++ * The device specific ioctl range is [DRM_COMMAND_BASE, DRM_COMMAND_END) ie
++ * [0x40, 0xa0) (a0 is excluded). The numbers below are defined as offset
++ * against DRM_COMMAND_BASE and should be between [0x0, 0x60).
++ */
++#define DRM_XE_DEVICE_QUERY		0x00
++#define DRM_XE_GEM_CREATE		0x01
++#define DRM_XE_GEM_MMAP_OFFSET		0x02
++#define DRM_XE_VM_CREATE		0x03
++#define DRM_XE_VM_DESTROY		0x04
++#define DRM_XE_VM_BIND			0x05
++#define DRM_XE_ENGINE_CREATE		0x06
++#define DRM_XE_ENGINE_DESTROY		0x07
++#define DRM_XE_EXEC			0x08
++#define DRM_XE_MMIO			0x09
++#define DRM_XE_ENGINE_SET_PROPERTY	0x0a
++#define DRM_XE_WAIT_USER_FENCE		0x0b
++#define DRM_XE_VM_MADVISE		0x0c
++#define DRM_XE_ENGINE_GET_PROPERTY	0x0d
++
++/* Must be kept compact -- no holes */
++#define DRM_IOCTL_XE_DEVICE_QUERY		DRM_IOWR(DRM_COMMAND_BASE + DRM_XE_DEVICE_QUERY, struct drm_xe_device_query)
++#define DRM_IOCTL_XE_GEM_CREATE			DRM_IOWR(DRM_COMMAND_BASE + DRM_XE_GEM_CREATE, struct drm_xe_gem_create)
++#define DRM_IOCTL_XE_GEM_MMAP_OFFSET		DRM_IOWR(DRM_COMMAND_BASE + DRM_XE_GEM_MMAP_OFFSET, struct drm_xe_gem_mmap_offset)
++#define DRM_IOCTL_XE_VM_CREATE			DRM_IOWR(DRM_COMMAND_BASE + DRM_XE_VM_CREATE, struct drm_xe_vm_create)
++#define DRM_IOCTL_XE_VM_DESTROY			DRM_IOW( DRM_COMMAND_BASE + DRM_XE_VM_DESTROY, struct drm_xe_vm_destroy)
++#define DRM_IOCTL_XE_VM_BIND			DRM_IOW( DRM_COMMAND_BASE + DRM_XE_VM_BIND, struct drm_xe_vm_bind)
++#define DRM_IOCTL_XE_ENGINE_CREATE		DRM_IOWR(DRM_COMMAND_BASE + DRM_XE_ENGINE_CREATE, struct drm_xe_engine_create)
++#define DRM_IOCTL_XE_ENGINE_GET_PROPERTY	DRM_IOWR(DRM_COMMAND_BASE + DRM_XE_ENGINE_GET_PROPERTY, struct drm_xe_engine_get_property)
++#define DRM_IOCTL_XE_ENGINE_DESTROY		DRM_IOW( DRM_COMMAND_BASE + DRM_XE_ENGINE_DESTROY, struct drm_xe_engine_destroy)
++#define DRM_IOCTL_XE_EXEC			DRM_IOW( DRM_COMMAND_BASE + DRM_XE_EXEC, struct drm_xe_exec)
++#define DRM_IOCTL_XE_MMIO			DRM_IOWR(DRM_COMMAND_BASE + DRM_XE_MMIO, struct drm_xe_mmio)
++#define DRM_IOCTL_XE_ENGINE_SET_PROPERTY	DRM_IOW( DRM_COMMAND_BASE + DRM_XE_ENGINE_SET_PROPERTY, struct drm_xe_engine_set_property)
++#define DRM_IOCTL_XE_WAIT_USER_FENCE		DRM_IOWR(DRM_COMMAND_BASE + DRM_XE_WAIT_USER_FENCE, struct drm_xe_wait_user_fence)
++#define DRM_IOCTL_XE_VM_MADVISE			DRM_IOW( DRM_COMMAND_BASE + DRM_XE_VM_MADVISE, struct drm_xe_vm_madvise)
++
++struct drm_xe_engine_class_instance {
++	__u16 engine_class;
++
++#define DRM_XE_ENGINE_CLASS_RENDER		0
++#define DRM_XE_ENGINE_CLASS_COPY		1
++#define DRM_XE_ENGINE_CLASS_VIDEO_DECODE	2
++#define DRM_XE_ENGINE_CLASS_VIDEO_ENHANCE	3
++#define DRM_XE_ENGINE_CLASS_COMPUTE		4
++	/*
++	 * Kernel only class (not actual hardware engine class). Used for
++	 * creating ordered queues of VM bind operations.
++	 */
++#define DRM_XE_ENGINE_CLASS_VM_BIND		5
++
++	__u16 engine_instance;
++	__u16 gt_id;
++};
++
++#define XE_MEM_REGION_CLASS_SYSMEM	0
++#define XE_MEM_REGION_CLASS_VRAM	1
++
++struct drm_xe_query_mem_usage {
++	__u32 num_regions;
++	__u32 pad;
++
++	struct drm_xe_query_mem_region {
++		__u16 mem_class;
++		__u16 instance;	/* unique ID even among different classes */
++		__u32 pad;
++		__u32 min_page_size;
++		__u32 max_page_size;
++		__u64 total_size;
++		__u64 used;
++		__u64 reserved[8];
++	} regions[];
++};
++
++struct drm_xe_query_config {
++	__u32 num_params;
++	__u32 pad;
++#define XE_QUERY_CONFIG_REV_AND_DEVICE_ID	0
++#define XE_QUERY_CONFIG_FLAGS			1
++	#define XE_QUERY_CONFIG_FLAGS_HAS_VRAM		(0x1 << 0)
++	#define XE_QUERY_CONFIG_FLAGS_USE_GUC		(0x1 << 1)
++#define XE_QUERY_CONFIG_MIN_ALIGNEMENT		2
++#define XE_QUERY_CONFIG_VA_BITS			3
++#define XE_QUERY_CONFIG_GT_COUNT		4
++#define XE_QUERY_CONFIG_MEM_REGION_COUNT	5
++#define XE_QUERY_CONFIG_NUM_PARAM		XE_QUERY_CONFIG_MEM_REGION_COUNT + 1
++	__u64 info[];
++};
++
++struct drm_xe_query_gts {
++	__u32 num_gt;
++	__u32 pad;
++
++	/*
++	 * TODO: Perhaps info about every mem region relative to this GT? e.g.
++	 * bandwidth between this GT and remote region?
++	 */
++
++	struct drm_xe_query_gt {
++#define XE_QUERY_GT_TYPE_MAIN		0
++#define XE_QUERY_GT_TYPE_REMOTE		1
++#define XE_QUERY_GT_TYPE_MEDIA		2
++		__u16 type;
++		__u16 instance;
++		__u32 clock_freq;
++		__u64 features;
++		__u64 native_mem_regions;	/* bit mask of instances from drm_xe_query_mem_usage */
++		__u64 slow_mem_regions;		/* bit mask of instances from drm_xe_query_mem_usage */
++		__u64 inaccessible_mem_regions;	/* bit mask of instances from drm_xe_query_mem_usage */
++		__u64 reserved[8];
++	} gts[];
++};
++
++struct drm_xe_query_topology_mask {
++	/** @gt_id: GT ID the mask is associated with */
++	__u16 gt_id;
++
++	/** @type: type of mask */
++	__u16 type;
++#define XE_TOPO_DSS_GEOMETRY	(1 << 0)
++#define XE_TOPO_DSS_COMPUTE	(1 << 1)
++#define XE_TOPO_EU_PER_DSS	(1 << 2)
++
++	/** @num_bytes: number of bytes in requested mask */
++	__u32 num_bytes;
++
++	/** @mask: little-endian mask of @num_bytes */
++	__u8 mask[];
++};
++
++struct drm_xe_device_query {
++	/** @extensions: Pointer to the first extension struct, if any */
++	__u64 extensions;
++
++	/** @query: The type of data to query */
++	__u32 query;
++
++#define DRM_XE_DEVICE_QUERY_ENGINES	0
++#define DRM_XE_DEVICE_QUERY_MEM_USAGE	1
++#define DRM_XE_DEVICE_QUERY_CONFIG	2
++#define DRM_XE_DEVICE_QUERY_GTS		3
++#define DRM_XE_DEVICE_QUERY_HWCONFIG	4
++#define DRM_XE_DEVICE_QUERY_GT_TOPOLOGY	5
++
++	/** @size: Size of the queried data */
++	__u32 size;
++
++	/** @data: Queried data is placed here */
++	__u64 data;
++
++	/** @reserved: Reserved */
++	__u64 reserved[2];
++};
++
++struct drm_xe_gem_create {
++	/** @extensions: Pointer to the first extension struct, if any */
++	__u64 extensions;
++
++	/**
++	 * @size: Requested size for the object
++	 *
++	 * The (page-aligned) allocated size for the object will be returned.
++	 */
++	__u64 size;
++
++	/**
++	 * @flags: Flags, currently a mask of memory instances of where BO can
++	 * be placed
++	 */
++#define XE_GEM_CREATE_FLAG_DEFER_BACKING	(0x1 << 24)
++#define XE_GEM_CREATE_FLAG_SCANOUT		(0x1 << 25)
++	__u32 flags;
++
++	/**
++	 * @vm_id: Attached VM, if any
++	 *
++	 * If a VM is specified, this BO must:
++	 *
++	 *  1. Only ever be bound to that VM.
++	 *
++	 *  2. Cannot be exported as a PRIME fd.
++	 */
++	__u32 vm_id;
++
++	/**
++	 * @handle: Returned handle for the object.
++	 *
++	 * Object handles are nonzero.
++	 */
++	__u32 handle;
++
++	/** @reserved: Reserved */
++	__u64 reserved[2];
++};
++
++struct drm_xe_gem_mmap_offset {
++	/** @extensions: Pointer to the first extension struct, if any */
++	__u64 extensions;
++
++	/** @handle: Handle for the object being mapped. */
++	__u32 handle;
++
++	/** @flags: Must be zero */
++	__u32 flags;
++
++	/** @offset: The fake offset to use for subsequent mmap call */
++	__u64 offset;
++
++	/** @reserved: Reserved */
++	__u64 reserved[2];
++};
++
++/**
++ * struct drm_xe_vm_bind_op_error_capture - format of VM bind op error capture
++ */
++struct drm_xe_vm_bind_op_error_capture {
++	/** @error: errno that occured */
++	__s32 error;
++	/** @op: operation that encounter an error */
++	__u32 op;
++	/** @addr: address of bind op */
++	__u64 addr;
++	/** @size: size of bind */
++	__u64 size;
++};
++
++/** struct drm_xe_ext_vm_set_property - VM set property extension */
++struct drm_xe_ext_vm_set_property {
++	/** @base: base user extension */
++	struct xe_user_extension base;
++
++	/** @property: property to set */
++#define XE_VM_PROPERTY_BIND_OP_ERROR_CAPTURE_ADDRESS		0
++	__u32 property;
++
++	/** @value: property value */
++	__u64 value;
++
++	/** @reserved: Reserved */
++	__u64 reserved[2];
++};
++
++struct drm_xe_vm_create {
++	/** @extensions: Pointer to the first extension struct, if any */
++#define XE_VM_EXTENSION_SET_PROPERTY	0
++	__u64 extensions;
++
++	/** @flags: Flags */
++	__u32 flags;
++
++#define DRM_XE_VM_CREATE_SCRATCH_PAGE	(0x1 << 0)
++#define DRM_XE_VM_CREATE_COMPUTE_MODE	(0x1 << 1)
++#define DRM_XE_VM_CREATE_ASYNC_BIND_OPS	(0x1 << 2)
++#define DRM_XE_VM_CREATE_FAULT_MODE	(0x1 << 3)
++
++	/** @vm_id: Returned VM ID */
++	__u32 vm_id;
++
++	/** @reserved: Reserved */
++	__u64 reserved[2];
++};
++
++struct drm_xe_vm_destroy {
++	/** @vm_id: VM ID */
++	__u32 vm_id;
++
++	/** @pad: MBZ */
++	__u32 pad;
++
++	/** @reserved: Reserved */
++	__u64 reserved[2];
++};
++
++struct drm_xe_vm_bind_op {
++	/**
++	 * @obj: GEM object to operate on, MBZ for MAP_USERPTR, MBZ for UNMAP
++	 */
++	__u32 obj;
++
++	union {
++		/**
++		 * @obj_offset: Offset into the object, MBZ for CLEAR_RANGE,
++		 * ignored for unbind
++		 */
++		__u64 obj_offset;
++		/** @userptr: user pointer to bind on */
++		__u64 userptr;
++	};
++
++	/**
++	 * @range: Number of bytes from the object to bind to addr, MBZ for UNMAP_ALL
++	 */
++	__u64 range;
++
++	/** @addr: Address to operate on, MBZ for UNMAP_ALL */
++	__u64 addr;
++
++	/**
++	 * @gt_mask: Mask for which GTs to create binds for, 0 == All GTs,
++	 * only applies to creating new VMAs
++	 */
++	__u64 gt_mask;
++
++	/** @op: Operation to perform (lower 16 bits) and flags (upper 16 bits) */
++	__u32 op;
++
++	/** @mem_region: Memory region to prefetch VMA to, instance not a mask */
++	__u32 region;
++
++#define XE_VM_BIND_OP_MAP		0x0
++#define XE_VM_BIND_OP_UNMAP		0x1
++#define XE_VM_BIND_OP_MAP_USERPTR	0x2
++#define XE_VM_BIND_OP_RESTART		0x3
++#define XE_VM_BIND_OP_UNMAP_ALL		0x4
++#define XE_VM_BIND_OP_PREFETCH		0x5
++
++#define XE_VM_BIND_FLAG_READONLY	(0x1 << 16)
++	/*
++	 * A bind ops completions are always async, hence the support for out
++	 * sync. This flag indicates the allocation of the memory for new page
++	 * tables and the job to program the pages tables is asynchronous
++	 * relative to the IOCTL. That part of a bind operation can fail under
++	 * memory pressure, the job in practice can't fail unless the system is
++	 * totally shot.
++	 *
++	 * If this flag is clear and the IOCTL doesn't return an error, in
++	 * practice the bind op is good and will complete.
++	 *
++	 * If this flag is set and doesn't return return an error, the bind op
++	 * can still fail and recovery is needed. If configured, the bind op that
++	 * caused the error will be captured in drm_xe_vm_bind_op_error_capture.
++	 * Once the user sees the error (via a ufence +
++	 * XE_VM_PROPERTY_BIND_OP_ERROR_CAPTURE_ADDRESS), it should free memory
++	 * via non-async unbinds, and then restart all queue'd async binds op via
++	 * XE_VM_BIND_OP_RESTART. Or alternatively the user should destroy the
++	 * VM.
++	 *
++	 * This flag is only allowed when DRM_XE_VM_CREATE_ASYNC_BIND_OPS is
++	 * configured in the VM and must be set if the VM is configured with
++	 * DRM_XE_VM_CREATE_ASYNC_BIND_OPS and not in an error state.
++	 */
++#define XE_VM_BIND_FLAG_ASYNC		(0x1 << 17)
++	/*
++	 * Valid on a faulting VM only, do the MAP operation immediately rather
++	 * than differing the MAP to the page fault handler.
++	 */
++#define XE_VM_BIND_FLAG_IMMEDIATE	(0x1 << 18)
++
++	/** @reserved: Reserved */
++	__u64 reserved[2];
++};
++
++struct drm_xe_vm_bind {
++	/** @extensions: Pointer to the first extension struct, if any */
++	__u64 extensions;
++
++	/** @vm_id: The ID of the VM to bind to */
++	__u32 vm_id;
++
++	/**
++	 * @engine_id: engine_id, must be of class DRM_XE_ENGINE_CLASS_VM_BIND
++	 * and engine must have same vm_id. If zero, the default VM bind engine
++	 * is used.
++	 */
++	__u32 engine_id;
++
++	/** @num_binds: number of binds in this IOCTL */
++	__u32 num_binds;
++
++	union {
++		/** @bind: used if num_binds == 1 */
++		struct drm_xe_vm_bind_op bind;
++		/**
++		 * @vector_of_binds: userptr to array of struct
++		 * drm_xe_vm_bind_op if num_binds > 1
++		 */
++		__u64 vector_of_binds;
++	};
++
++	/** @num_syncs: amount of syncs to wait on */
++	__u32 num_syncs;
++
++	/** @syncs: pointer to struct drm_xe_sync array */
++	__u64 syncs;
++
++	/** @reserved: Reserved */
++	__u64 reserved[2];
++};
++
++/** struct drm_xe_ext_engine_set_property - engine set property extension */
++struct drm_xe_ext_engine_set_property {
++	/** @base: base user extension */
++	struct xe_user_extension base;
++
++	/** @property: property to set */
++	__u32 property;
++
++	/** @value: property value */
++	__u64 value;
++};
++
++/**
++ * struct drm_xe_engine_set_property - engine set property
++ *
++ * Same namespace for extensions as drm_xe_engine_create
++ */
++struct drm_xe_engine_set_property {
++	/** @extensions: Pointer to the first extension struct, if any */
++	__u64 extensions;
++
++	/** @engine_id: Engine ID */
++	__u32 engine_id;
++
++	/** @property: property to set */
++#define XE_ENGINE_SET_PROPERTY_PRIORITY			0
++#define XE_ENGINE_SET_PROPERTY_TIMESLICE		1
++#define XE_ENGINE_SET_PROPERTY_PREEMPTION_TIMEOUT	2
++	/*
++	 * Long running or ULLS engine mode. DMA fences not allowed in this
++	 * mode. Must match the value of DRM_XE_VM_CREATE_COMPUTE_MODE, serves
++	 * as a sanity check the UMD knows what it is doing. Can only be set at
++	 * engine create time.
++	 */
++#define XE_ENGINE_SET_PROPERTY_COMPUTE_MODE		3
++#define XE_ENGINE_SET_PROPERTY_PERSISTENCE		4
++#define XE_ENGINE_SET_PROPERTY_JOB_TIMEOUT		5
++#define XE_ENGINE_SET_PROPERTY_ACC_TRIGGER		6
++#define XE_ENGINE_SET_PROPERTY_ACC_NOTIFY		7
++#define XE_ENGINE_SET_PROPERTY_ACC_GRANULARITY		8
++	__u32 property;
++
++	/** @value: property value */
++	__u64 value;
++
++	/** @reserved: Reserved */
++	__u64 reserved[2];
++};
++
++struct drm_xe_engine_create {
++	/** @extensions: Pointer to the first extension struct, if any */
++#define XE_ENGINE_EXTENSION_SET_PROPERTY               0
++	__u64 extensions;
++
++	/** @width: submission width (number BB per exec) for this engine */
++	__u16 width;
++
++	/** @num_placements: number of valid placements for this engine */
++	__u16 num_placements;
++
++	/** @vm_id: VM to use for this engine */
++	__u32 vm_id;
++
++	/** @flags: MBZ */
++	__u32 flags;
++
++	/** @engine_id: Returned engine ID */
++	__u32 engine_id;
++
++	/**
++	 * @instances: user pointer to a 2-d array of struct
++	 * drm_xe_engine_class_instance
++	 *
++	 * length = width (i) * num_placements (j)
++	 * index = j + i * width
++	 */
++	__u64 instances;
++
++	/** @reserved: Reserved */
++	__u64 reserved[2];
++};
++
++struct drm_xe_engine_get_property {
++	/** @extensions: Pointer to the first extension struct, if any */
++	__u64 extensions;
++
++	/** @engine_id: Engine ID */
++	__u32 engine_id;
++
++	/** @property: property to get */
++#define XE_ENGINE_GET_PROPERTY_BAN			0
++	__u32 property;
++
++	/** @value: property value */
++	__u64 value;
++
++	/** @reserved: Reserved */
++	__u64 reserved[2];
++};
++
++struct drm_xe_engine_destroy {
++	/** @engine_id: Engine ID */
++	__u32 engine_id;
++
++	/** @pad: MBZ */
++	__u32 pad;
++
++	/** @reserved: Reserved */
++	__u64 reserved[2];
++};
++
++struct drm_xe_sync {
++	/** @extensions: Pointer to the first extension struct, if any */
++	__u64 extensions;
++
++	__u32 flags;
++
++#define DRM_XE_SYNC_SYNCOBJ		0x0
++#define DRM_XE_SYNC_TIMELINE_SYNCOBJ	0x1
++#define DRM_XE_SYNC_DMA_BUF		0x2
++#define DRM_XE_SYNC_USER_FENCE		0x3
++#define DRM_XE_SYNC_SIGNAL		0x10
++
++	union {
++		__u32 handle;
++		/**
++		 * @addr: Address of user fence. When sync passed in via exec
++		 * IOCTL this a GPU address in the VM. When sync passed in via
++		 * VM bind IOCTL this is a user pointer. In either case, it is
++		 * the users responsibility that this address is present and
++		 * mapped when the user fence is signalled. Must be qword
++		 * aligned.
++		 */
++		__u64 addr;
++	};
++
++	__u64 timeline_value;
++
++	/** @reserved: Reserved */
++	__u64 reserved[2];
++};
++
++struct drm_xe_exec {
++	/** @extensions: Pointer to the first extension struct, if any */
++	__u64 extensions;
++
++	/** @vm_id: VM ID to run batch buffer in */
++	__u32 engine_id;
++
++	/** @num_syncs: Amount of struct drm_xe_sync in array. */
++	__u32 num_syncs;
++
++	/** @syncs: Pointer to struct drm_xe_sync array. */
++	__u64 syncs;
++
++	/**
++	  * @address: address of batch buffer if num_batch_buffer == 1 or an
++	  * array of batch buffer addresses
++	  */
++	__u64 address;
++
++	/**
++	 * @num_batch_buffer: number of batch buffer in this exec, must match
++	 * the width of the engine
++	 */
++	__u16 num_batch_buffer;
++
++	/** @reserved: Reserved */
++	__u64 reserved[2];
++};
++
++struct drm_xe_mmio {
++	/** @extensions: Pointer to the first extension struct, if any */
++	__u64 extensions;
++
++	__u32 addr;
++
++	__u32 flags;
++
++#define DRM_XE_MMIO_8BIT	0x0
++#define DRM_XE_MMIO_16BIT	0x1
++#define DRM_XE_MMIO_32BIT	0x2
++#define DRM_XE_MMIO_64BIT	0x3
++#define DRM_XE_MMIO_BITS_MASK	0x3
++#define DRM_XE_MMIO_READ	0x4
++#define DRM_XE_MMIO_WRITE	0x8
++
++	__u64 value;
++
++	/** @reserved: Reserved */
++	__u64 reserved[2];
++};
++
++/**
++ * struct drm_xe_wait_user_fence - wait user fence
++ *
++ * Wait on user fence, XE will wakeup on every HW engine interrupt in the
++ * instances list and check if user fence is complete:
++ * (*addr & MASK) OP (VALUE & MASK)
++ *
++ * Returns to user on user fence completion or timeout.
++ */
++struct drm_xe_wait_user_fence {
++	/** @extensions: Pointer to the first extension struct, if any */
++	__u64 extensions;
++	union {
++		/**
++		 * @addr: user pointer address to wait on, must qword aligned
++		 */
++		__u64 addr;
++		/**
++		 * @vm_id: The ID of the VM which encounter an error used with
++		 * DRM_XE_UFENCE_WAIT_VM_ERROR. Upper 32 bits must be clear.
++		 */
++		__u64 vm_id;
++	};
++	/** @op: wait operation (type of comparison) */
++#define DRM_XE_UFENCE_WAIT_EQ	0
++#define DRM_XE_UFENCE_WAIT_NEQ	1
++#define DRM_XE_UFENCE_WAIT_GT	2
++#define DRM_XE_UFENCE_WAIT_GTE	3
++#define DRM_XE_UFENCE_WAIT_LT	4
++#define DRM_XE_UFENCE_WAIT_LTE	5
++	__u16 op;
++	/** @flags: wait flags */
++#define DRM_XE_UFENCE_WAIT_SOFT_OP	(1 << 0)	/* e.g. Wait on VM bind */
++#define DRM_XE_UFENCE_WAIT_ABSTIME	(1 << 1)
++#define DRM_XE_UFENCE_WAIT_VM_ERROR	(1 << 2)
++	__u16 flags;
++	/** @value: compare value */
++	__u64 value;
++	/** @mask: comparison mask */
++#define DRM_XE_UFENCE_WAIT_U8		0xffu
++#define DRM_XE_UFENCE_WAIT_U16		0xffffu
++#define DRM_XE_UFENCE_WAIT_U32		0xffffffffu
++#define DRM_XE_UFENCE_WAIT_U64		0xffffffffffffffffu
++	__u64 mask;
++	/** @timeout: how long to wait before bailing, value in jiffies */
++	__s64 timeout;
++	/**
++	 * @num_engines: number of engine instances to wait on, must be zero
++	 * when DRM_XE_UFENCE_WAIT_SOFT_OP set
++	 */
++	__u64 num_engines;
++	/**
++	 * @instances: user pointer to array of drm_xe_engine_class_instance to
++	 * wait on, must be NULL when DRM_XE_UFENCE_WAIT_SOFT_OP set
++	 */
++	__u64 instances;
++
++	/** @reserved: Reserved */
++	__u64 reserved[2];
++};
++
++struct drm_xe_vm_madvise {
++	/** @extensions: Pointer to the first extension struct, if any */
++	__u64 extensions;
++
++	/** @vm_id: The ID VM in which the VMA exists */
++	__u32 vm_id;
++
++	/** @range: Number of bytes in the VMA */
++	__u64 range;
++
++	/** @addr: Address of the VMA to operation on */
++	__u64 addr;
++
++	/*
++	 * Setting the preferred location will trigger a migrate of the VMA
++	 * backing store to new location if the backing store is already
++	 * allocated.
++	 */
++#define DRM_XE_VM_MADVISE_PREFERRED_MEM_CLASS	0
++#define DRM_XE_VM_MADVISE_PREFERRED_GT		1
++	/*
++	 * In this case lower 32 bits are mem class, upper 32 are GT.
++	 * Combination provides a single IOCTL plus migrate VMA to preferred
++	 * location.
++	 */
++#define DRM_XE_VM_MADVISE_PREFERRED_MEM_CLASS_GT	2
++	/*
++	 * The CPU will do atomic memory operations to this VMA. Must be set on
++	 * some devices for atomics to behave correctly.
++	 */
++#define DRM_XE_VM_MADVISE_CPU_ATOMIC		3
++	/*
++	 * The device will do atomic memory operations to this VMA. Must be set
++	 * on some devices for atomics to behave correctly.
++	 */
++#define DRM_XE_VM_MADVISE_DEVICE_ATOMIC		4
++	/*
++	 * Priority WRT to eviction (moving from preferred memory location due
++	 * to memory pressure). The lower the priority, the more likely to be
++	 * evicted.
++	 */
++#define DRM_XE_VM_MADVISE_PRIORITY		5
++#define		DRM_XE_VMA_PRIORITY_LOW		0
++#define		DRM_XE_VMA_PRIORITY_NORMAL	1	/* Default */
++#define		DRM_XE_VMA_PRIORITY_HIGH	2	/* Must be elevated user */
++	/* Pin the VMA in memory, must be elevated user */
++#define DRM_XE_VM_MADVISE_PIN			6
++
++	/** @property: property to set */
++	__u32 property;
++
++	/** @value: property value */
++	__u64 value;
++
++	/** @reserved: Reserved */
++	__u64 reserved[2];
++};
++
++#if defined(__cplusplus)
++}
++#endif
++
++#endif /* _UAPI_XE_DRM_H_ */
+-- 
+2.34.1
