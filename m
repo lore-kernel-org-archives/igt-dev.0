@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0C1C810E4E2
- for <igt-dev@lists.freedesktop.org>; Tue,  7 Mar 2023 15:00:17 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2ABA010E4E5
+ for <igt-dev@lists.freedesktop.org>; Tue,  7 Mar 2023 15:00:23 +0000 (UTC)
 From: Karolina Stolarek <karolina.stolarek@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue,  7 Mar 2023 15:59:55 +0100
-Message-Id: <df7acc4f3bbe418410a5b44558ef9a2ef107e74b.1678197486.git.karolina.stolarek@intel.com>
+Date: Tue,  7 Mar 2023 15:59:57 +0100
+Message-Id: <6d9bfbc59bd4c03999c1584569be5c406e71d27b.1678197486.git.karolina.stolarek@intel.com>
 In-Reply-To: <cover.1678197486.git.karolina.stolarek@intel.com>
 References: <cover.1678197486.git.karolina.stolarek@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 3/7] lib/intel_device_info: Add tiling
- information for early gens
+Subject: [igt-dev] [PATCH i-g-t 5/7] lib/intel_batchbuffer: Add wrapper API
+ to use XY_FAST_COPY_BLT/XY_SRC_BLT
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,150 +24,134 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Update relevant intel_device_info entries to store information
-on supported tiling formats.
+From: Vikas Srivastava <vikas.srivastava@intel.com>
 
+Add wrapper API in intel_batchbuffer to call respective copy functions
+for XY_FAST_COPY_BLT or XY_SRC_BLT based on platform on which its
+supported.
+
+Signed-off-by: Vikas Srivastava <vikas.srivastava@intel.com>
 Signed-off-by: Karolina Stolarek <karolina.stolarek@intel.com>
 ---
- lib/intel_device_info.c | 17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
+ lib/intel_batchbuffer.c | 72 +++++++++++++++++++++++++++++++++++++++++
+ lib/intel_batchbuffer.h | 22 +++++++++++++
+ 2 files changed, 94 insertions(+)
 
-diff --git a/lib/intel_device_info.c b/lib/intel_device_info.c
-index 0baad721..bda4fb63 100644
---- a/lib/intel_device_info.c
-+++ b/lib/intel_device_info.c
-@@ -27,12 +27,14 @@ static const struct intel_device_info intel_i830_info = {
- 	.graphics_ver = 2,
- 	.display_ver = 2,
- 	.is_almador = true,
-+	.cmds_info = &pre_gen6_cmds_info,
- 	.codename = "almador"
- };
- static const struct intel_device_info intel_i845_info = {
- 	.graphics_ver = 2,
- 	.display_ver = 2,
- 	.is_brookdale = true,
-+	.cmds_info = &pre_gen6_cmds_info,
- 	.codename = "brookdale"
- };
- static const struct intel_device_info intel_i855_info = {
-@@ -40,12 +42,14 @@ static const struct intel_device_info intel_i855_info = {
- 	.display_ver = 2,
- 	.is_mobile = true,
- 	.is_montara = true,
-+	.cmds_info = &pre_gen6_cmds_info,
- 	.codename = "montara"
- };
- static const struct intel_device_info intel_i865_info = {
- 	.graphics_ver = 2,
- 	.display_ver = 2,
- 	.is_springdale = true,
-+	.cmds_info = &pre_gen6_cmds_info,
- 	.codename = "spingdale"
- };
+diff --git a/lib/intel_batchbuffer.c b/lib/intel_batchbuffer.c
+index 4ea1256e..960231e3 100644
+--- a/lib/intel_batchbuffer.c
++++ b/lib/intel_batchbuffer.c
+@@ -277,6 +277,78 @@ static uint32_t src_copy_dword1(uint32_t dst_pitch, uint32_t bpp)
+ 	return dword1;
+ }
  
-@@ -53,6 +57,7 @@ static const struct intel_device_info intel_i915_info = {
- 	.graphics_ver = 3,
- 	.display_ver = 3,
- 	.is_grantsdale = true,
-+	.cmds_info = &pre_gen6_cmds_info,
- 	.codename = "grantsdale"
- };
- static const struct intel_device_info intel_i915m_info = {
-@@ -60,12 +65,14 @@ static const struct intel_device_info intel_i915m_info = {
- 	.display_ver = 3,
- 	.is_mobile = true,
- 	.is_alviso = true,
-+	.cmds_info = &pre_gen6_cmds_info,
- 	.codename = "alviso"
- };
- static const struct intel_device_info intel_i945_info = {
- 	.graphics_ver = 3,
- 	.display_ver = 3,
- 	.is_lakeport = true,
-+	.cmds_info = &pre_gen6_cmds_info,
- 	.codename = "lakeport"
- };
- static const struct intel_device_info intel_i945m_info = {
-@@ -73,6 +80,7 @@ static const struct intel_device_info intel_i945m_info = {
- 	.display_ver = 3,
- 	.is_mobile = true,
- 	.is_calistoga = true,
-+	.cmds_info = &pre_gen6_cmds_info,
- 	.codename = "calistoga"
- };
++/**
++ * igt_blitter_copy:
++ * @fd: file descriptor of the i915 driver
++ * @ahnd: handle to an allocator
++ * @ctx: context within which execute copy blit
++ * @src_handle: GEM handle of the source buffer
++ * @src_delta: offset into the source GEM bo, in bytes
++ * @src_stride: Stride (in bytes) of the source buffer
++ * @src_tiling: Tiling mode of the source buffer
++ * @src_x: X coordinate of the source region to copy
++ * @src_y: Y coordinate of the source region to copy
++ * @src_size: size of the src bo required for allocator and softpin
++ * @width: Width of the region to copy
++ * @height: Height of the region to copy
++ * @bpp: source and destination bits per pixel
++ * @dst_handle: GEM handle of the destination buffer
++ * @dst_delta: offset into the destination GEM bo, in bytes
++ * @dst_stride: Stride (in bytes) of the destination buffer
++ * @dst_tiling: Tiling mode of the destination buffer
++ * @dst_x: X coordinate of destination
++ * @dst_y: Y coordinate of destination
++ * @dst_size: size of the dst bo required for allocator and softpin
++ *
++ * Wrapper API to call appropriate blitter copy function.
++ */
++
++void igt_blitter_copy(int fd,
++		      uint64_t ahnd,
++		      uint32_t ctx,
++		      const intel_ctx_cfg_t *cfg,
++		      /* src */
++		      uint32_t src_handle,
++		      uint32_t src_delta,
++		      uint32_t src_stride,
++		      uint32_t src_tiling,
++		      uint32_t src_x, uint32_t src_y,
++		      uint64_t src_size,
++		      /* size */
++		      uint32_t width, uint32_t height,
++		      /* bpp */
++		      uint32_t bpp,
++		      /* dst */
++		      uint32_t dst_handle,
++		      uint32_t dst_delta,
++		      uint32_t dst_stride,
++		      uint32_t dst_tiling,
++		      uint32_t dst_x, uint32_t dst_y,
++		      uint64_t dst_size)
++{
++	uint32_t devid;
++
++	devid = intel_get_drm_devid(fd);
++
++	if (intel_graphics_ver(devid) >= IP_VER(12, 60))
++		igt_blitter_fast_copy__raw(fd, ahnd, ctx, NULL,
++					   src_handle, src_delta,
++					   src_stride, src_tiling,
++					   src_x, src_y, src_size,
++					   width, height, bpp,
++					   dst_handle, dst_delta,
++					   dst_stride, dst_tiling,
++					   dst_x, dst_y, dst_size);
++	else
++		igt_blitter_src_copy(fd, ahnd, ctx, NULL,
++				     src_handle, src_delta,
++				     src_stride, src_tiling,
++				     src_x, src_y, src_size,
++				     width, height, bpp,
++				     dst_handle, dst_delta,
++				     dst_stride, dst_tiling,
++				     dst_x, dst_y, dst_size);
++}
+ /**
+  * igt_blitter_src_copy:
+  * @fd: file descriptor of the i915 driver
+diff --git a/lib/intel_batchbuffer.h b/lib/intel_batchbuffer.h
+index 81830d77..aed1d575 100644
+--- a/lib/intel_batchbuffer.h
++++ b/lib/intel_batchbuffer.h
+@@ -36,6 +36,28 @@ uint32_t fast_copy_dword0(unsigned int src_tiling,
+ uint32_t fast_copy_dword1(unsigned int src_tiling,
+ 			  unsigned int dst_tiling,
+ 			  int bpp);
++void igt_blitter_copy(int fd,
++		      uint64_t ahnd,
++		      uint32_t ctx,
++		      const intel_ctx_cfg_t *cfg,
++		      /* src */
++		      uint32_t src_handle,
++		      uint32_t src_delta,
++		      uint32_t src_stride,
++		      uint32_t src_tiling,
++		      uint32_t src_x, uint32_t src_y,
++		      uint64_t src_size,
++		      /* size */
++		      uint32_t width, uint32_t height,
++		      /* bpp */
++		      uint32_t bpp,
++		      /* dst */
++		      uint32_t dst_handle,
++		      uint32_t dst_delta,
++		      uint32_t dst_stride,
++		      uint32_t dst_tiling,
++		      uint32_t dst_x, uint32_t dst_y,
++		      uint64_t dst_size);
  
-@@ -80,6 +88,7 @@ static const struct intel_device_info intel_g33_info = {
- 	.graphics_ver = 3,
- 	.display_ver = 3,
- 	.is_bearlake = true,
-+	.cmds_info = &pre_gen6_cmds_info,
- 	.codename = "bearlake"
- };
- 
-@@ -87,6 +96,7 @@ static const struct intel_device_info intel_pineview_g_info = {
- 	.graphics_ver = 3,
- 	.display_ver = 3,
- 	.is_pineview = true,
-+	.cmds_info = &pre_gen6_cmds_info,
- 	.codename = "pineview"
- };
- 
-@@ -95,6 +105,7 @@ static const struct intel_device_info intel_pineview_m_info = {
- 	.display_ver = 3,
- 	.is_mobile = true,
- 	.is_pineview = true,
-+	.cmds_info = &pre_gen6_cmds_info,
- 	.codename = "pineview"
- };
- 
-@@ -102,6 +113,7 @@ static const struct intel_device_info intel_i965_info = {
- 	.graphics_ver = 4,
- 	.display_ver = 4,
- 	.is_broadwater = true,
-+	.cmds_info = &pre_gen6_cmds_info,
- 	.codename = "broadwater"
- };
- 
-@@ -110,6 +122,7 @@ static const struct intel_device_info intel_i965m_info = {
- 	.display_ver = 4,
- 	.is_mobile = true,
- 	.is_crestline = true,
-+	.cmds_info = &pre_gen6_cmds_info,
- 	.codename = "crestline"
- };
- 
-@@ -117,6 +130,7 @@ static const struct intel_device_info intel_g45_info = {
- 	.graphics_ver = 4,
- 	.display_ver = 4,
- 	.is_eaglelake = true,
-+	.cmds_info = &pre_gen6_cmds_info,
- 	.codename = "eaglelake"
- };
- static const struct intel_device_info intel_gm45_info = {
-@@ -124,6 +138,7 @@ static const struct intel_device_info intel_gm45_info = {
- 	.display_ver = 4,
- 	.is_mobile = true,
- 	.is_cantiga = true,
-+	.cmds_info = &pre_gen6_cmds_info,
- 	.codename = "cantiga"
- };
- 
-@@ -131,6 +146,7 @@ static const struct intel_device_info intel_ironlake_info = {
- 	.graphics_ver = 5,
- 	.display_ver = 5,
- 	.is_ironlake = true,
-+	.cmds_info = &pre_gen6_cmds_info,
- 	.codename = "ironlake" /* clarkdale? */
- };
- static const struct intel_device_info intel_ironlake_m_info = {
-@@ -138,6 +154,7 @@ static const struct intel_device_info intel_ironlake_m_info = {
- 	.display_ver = 5,
- 	.is_mobile = true,
- 	.is_arrandale = true,
-+	.cmds_info = &pre_gen6_cmds_info,
- 	.codename = "arrandale"
- };
- 
+ void igt_blitter_src_copy(int fd,
+ 			  uint64_t ahnd,
 -- 
 2.25.1
