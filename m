@@ -1,20 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B5C4C10E4BB
- for <igt-dev@lists.freedesktop.org>; Tue,  7 Mar 2023 14:32:58 +0000 (UTC)
-Date: Tue, 7 Mar 2023 15:32:50 +0100
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 83B3910E4E0
+ for <igt-dev@lists.freedesktop.org>; Tue,  7 Mar 2023 15:00:12 +0000 (UTC)
+From: Karolina Stolarek <karolina.stolarek@intel.com>
 To: igt-dev@lists.freedesktop.org
-Message-ID: <20230307143249.jsybiw7cs3crztsf@kamilkon-desk1>
-References: <20230307104519.706553-1-zbigniew.kempczynski@intel.com>
- <20230307104519.706553-3-zbigniew.kempczynski@intel.com>
+Date: Tue,  7 Mar 2023 15:59:52 +0100
+Message-Id: <cover.1678197486.git.karolina.stolarek@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230307104519.706553-3-zbigniew.kempczynski@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t v2 2/3] lib/huc_copy: Rename to avoid
- macro name clash
+Subject: [igt-dev] [PATCH i-g-t 0/7] Update gem_blits for newer generations
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,67 +16,47 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: Nirmoy Das <nirmoy.das@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Zbigniew,
+gem_blits test utilizes XY_SRC_COPY_BLT, a legacy blitter command
+that is not available on newer generations such as MTL. To make
+sure the test covers such platforms, update it to switch to
+XY_FAST_COPY_BLT for blit copy operations.
 
-On 2023-03-07 at 11:45:18 +0100, Zbigniew Kempczyński wrote:
-> Adding intel_gpu_commands.h requires to solve some name clashes.
-> Rename MFX_WAIT to HUC_MFX_WAIT to be consistent with other macros
-> in the huc code.
-> 
-> Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+In addition to this change, the series:
+  1) Adds helpers to i915_blt library that check support for
+     XY_SRC_COPY_BLT command and its capabilities
+  2) Updates the definitions of older platforms to properly list
+     all available commands and tilings
+  3) Updates gem_blits to use aforementioned helpers to detect
+     tiling formats supported by the platform
 
-imho it may be better to place it as first patch.
+Arjun Melkaveri (2):
+  tests/i915/gem_blits: Use new copy instruction
+  tests/i915/gem_blits: Add XY_FAST_COPY_BLT support for gem_blits
 
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Karolina Stolarek (4):
+  lib/i915_blt: Add helpers to check XY_SRC_COPY support
+  lib/intel_cmds_info: Correct tiling formats for XY_SRC_COPY
+  lib/intel_device_info: Add tiling information for early gens
+  tests/gem_blits: Use intel_cmds_info library
 
-Regards,
-Kamil
+Vikas Srivastava (1):
+  lib/intel_batchbuffer: Add wrapper API to use
+    XY_FAST_COPY_BLT/XY_SRC_BLT
 
-> ---
->  lib/huc_copy.c | 6 +++---
->  lib/huc_copy.h | 2 +-
->  2 files changed, 4 insertions(+), 4 deletions(-)
-> 
-> diff --git a/lib/huc_copy.c b/lib/huc_copy.c
-> index 6ec68864b7..bf8254c612 100644
-> --- a/lib/huc_copy.c
-> +++ b/lib/huc_copy.c
-> @@ -80,14 +80,14 @@ gen9_huc_copyfunc(int fd, uint64_t ahnd,
->  	buf[i++] = 0;
->  	buf[i++] = 0x3;
->  
-> -	buf[i++] = MFX_WAIT;
-> -	buf[i++] = MFX_WAIT;
-> +	buf[i++] = HUC_MFX_WAIT;
-> +	buf[i++] = HUC_MFX_WAIT;
->  
->  	buf[i++] = HUC_PIPE_MODE_SELECT;
->  	buf[i++] = 0;
->  	buf[i++] = 0;
->  
-> -	buf[i++] = MFX_WAIT;
-> +	buf[i++] = HUC_MFX_WAIT;
->  
->  	memset(reloc, 0, sizeof(reloc));
->  
-> diff --git a/lib/huc_copy.h b/lib/huc_copy.h
-> index 69d1409335..1789e87359 100644
-> --- a/lib/huc_copy.h
-> +++ b/lib/huc_copy.h
-> @@ -31,7 +31,7 @@
->  #include "intel_reg.h"
->  
->  #define PARALLEL_VIDEO_PIPE		(0x3<<29)
-> -#define MFX_WAIT			(PARALLEL_VIDEO_PIPE|(0x1<<27)|(0x1<<8))
-> +#define HUC_MFX_WAIT			(PARALLEL_VIDEO_PIPE|(0x1<<27)|(0x1<<8))
->  
->  #define HUC_IMEM_STATE			(PARALLEL_VIDEO_PIPE|(0x2<<27)|(0xb<<23)|(0x1<<16)|0x3)
->  #define HUC_PIPE_MODE_SELECT		(PARALLEL_VIDEO_PIPE|(0x2<<27)|(0xb<<23)|0x1)
-> -- 
-> 2.34.1
-> 
+ lib/i915/i915_blt.c        |  33 ++++++++
+ lib/i915/i915_blt.h        |   2 +
+ lib/i915/intel_cmds_info.c |  24 ++++--
+ lib/i915/intel_cmds_info.h |   3 +-
+ lib/intel_batchbuffer.c    |  83 ++++++++++++++++++--
+ lib/intel_batchbuffer.h    |  28 +++++++
+ lib/intel_device_info.c    |  29 +++++--
+ tests/i915/gem_blits.c     | 156 ++++++++++++++++++++++++-------------
+ 8 files changed, 283 insertions(+), 75 deletions(-)
+
+-- 
+2.25.1
