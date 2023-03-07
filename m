@@ -1,18 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0BA9B10E50C
- for <igt-dev@lists.freedesktop.org>; Tue,  7 Mar 2023 15:22:02 +0000 (UTC)
-From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C7D7110E4A1
+ for <igt-dev@lists.freedesktop.org>; Tue,  7 Mar 2023 14:09:13 +0000 (UTC)
+Date: Tue, 7 Mar 2023 15:09:09 +0100
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue,  7 Mar 2023 16:21:29 +0100
-Message-Id: <20230307152130.795989-7-zbigniew.kempczynski@intel.com>
-In-Reply-To: <20230307152130.795989-1-zbigniew.kempczynski@intel.com>
-References: <20230307152130.795989-1-zbigniew.kempczynski@intel.com>
+Message-ID: <20230307140909.2iy2kbqitxzw2de7@kamilkon-desk1>
+References: <20230215004648.2100655-1-umesh.nerlige.ramappa@intel.com>
+ <20230215004648.2100655-14-umesh.nerlige.ramappa@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v5 6/7] intel-ci/xe-fast-feedback: Introduce
- xe-fast-feedback list
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20230215004648.2100655-14-umesh.nerlige.ramappa@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 13/31] i915/perf: Add support for oa
+ perf groups
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,181 +21,231 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: Lionel G Landwerlin <lionel.g.landwerlin@linux.intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Let's start with something simple that runs very quickly and is
-currently passing reliably.
+On 2023-02-14 at 16:46:30 -0800, Umesh Nerlige Ramappa wrote:
+> With multiple OA buffers, we need a way to group engines per OA buffer.
+> Add support for oa perf groups for tests
+> 
+> Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Signed-off-by: Philippe Lecluse <philippe.lecluse@intel.com>
-Signed-off-by: Francois Dugast <francois.dugast@intel.com>
-Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-Acked-by: Mauro Carvalho Chehab <mchehab@kernel.org>
----
- tests/intel-ci/meson.build               |   1 +
- tests/intel-ci/xe-fast-feedback.testlist | 140 +++++++++++++++++++++++
- 2 files changed, 141 insertions(+)
- create mode 100644 tests/intel-ci/xe-fast-feedback.testlist
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
-diff --git a/tests/intel-ci/meson.build b/tests/intel-ci/meson.build
-index 62811e92c3..bbbd557009 100644
---- a/tests/intel-ci/meson.build
-+++ b/tests/intel-ci/meson.build
-@@ -5,6 +5,7 @@ intelci_files = [
-   'README',
-   'blacklist.txt',
-   'blacklist-pre-merge.txt',
-+  'xe-fast-feedback.testlist',
- ]
- 
- install_data(sources : intelci_files, install_dir : datadir)
-diff --git a/tests/intel-ci/xe-fast-feedback.testlist b/tests/intel-ci/xe-fast-feedback.testlist
-new file mode 100644
-index 0000000000..ac42d52aa9
---- /dev/null
-+++ b/tests/intel-ci/xe-fast-feedback.testlist
-@@ -0,0 +1,140 @@
-+igt@xe/xe_compute@compute-square
-+igt@xe/xe_debugfs@base
-+igt@xe/xe_debugfs@gt0
-+igt@xe/xe_debugfs@gt1
-+igt@xe/xe_debugfs@forcewake
-+igt@xe/xe_dma_buf_sync@export-dma-buf-once
-+igt@xe/xe_dma_buf_sync@export-dma-buf-once-read-sync
-+igt@xe/xe_exec_balancer@twice-virtual-basic
-+igt@xe/xe_exec_balancer@no-exec-virtual-basic
-+igt@xe/xe_exec_balancer@twice-cm-virtual-basic
-+igt@xe/xe_exec_balancer@no-exec-cm-virtual-basic
-+igt@xe/xe_exec_balancer@twice-virtual-userptr
-+igt@xe/xe_exec_balancer@no-exec-virtual-userptr
-+igt@xe/xe_exec_balancer@twice-cm-virtual-userptr
-+igt@xe/xe_exec_balancer@no-exec-cm-virtual-userptr
-+igt@xe/xe_exec_balancer@twice-virtual-rebind
-+igt@xe/xe_exec_balancer@no-exec-virtual-rebind
-+igt@xe/xe_exec_balancer@twice-cm-virtual-rebind
-+igt@xe/xe_exec_balancer@no-exec-cm-virtual-rebind
-+igt@xe/xe_exec_balancer@twice-virtual-userptr-rebind
-+igt@xe/xe_exec_balancer@no-exec-virtual-userptr-rebind
-+igt@xe/xe_exec_balancer@twice-cm-virtual-userptr-rebind
-+igt@xe/xe_exec_balancer@no-exec-cm-virtual-userptr-rebind
-+igt@xe/xe_exec_balancer@twice-virtual-userptr-invalidate
-+igt@xe/xe_exec_balancer@no-exec-virtual-userptr-invalidate
-+igt@xe/xe_exec_balancer@twice-cm-virtual-userptr-invalidate
-+igt@xe/xe_exec_balancer@no-exec-cm-virtual-userptr-invalidate
-+igt@xe/xe_exec_balancer@twice-virtual-userptr-invalidate-race
-+igt@xe/xe_exec_balancer@no-exec-virtual-userptr-invalidate-race
-+igt@xe/xe_exec_balancer@twice-cm-virtual-userptr-invalidate-race
-+igt@xe/xe_exec_balancer@no-exec-cm-virtual-userptr-invalidate-race
-+igt@xe/xe_exec_balancer@twice-parallel-basic
-+igt@xe/xe_exec_balancer@no-exec-parallel-basic
-+igt@xe/xe_exec_balancer@twice-parallel-userptr
-+igt@xe/xe_exec_balancer@no-exec-parallel-userptr
-+igt@xe/xe_exec_balancer@twice-parallel-rebind
-+igt@xe/xe_exec_balancer@no-exec-parallel-rebind
-+igt@xe/xe_exec_balancer@twice-parallel-userptr-rebind
-+igt@xe/xe_exec_balancer@no-exec-parallel-userptr-rebind
-+igt@xe/xe_exec_balancer@twice-parallel-userptr-invalidate
-+igt@xe/xe_exec_balancer@no-exec-parallel-userptr-invalidate
-+igt@xe/xe_exec_balancer@twice-parallel-userptr-invalidate-race
-+igt@xe/xe_exec_balancer@no-exec-parallel-userptr-invalidate-race
-+igt@xe/xe_exec_basic@twice-basic
-+igt@xe/xe_exec_basic@no-exec-basic
-+igt@xe/xe_exec_basic@twice-basic-defer-mmap
-+igt@xe/xe_exec_basic@no-exec-basic-defer-mmap
-+igt@xe/xe_exec_basic@twice-basic-defer-bind
-+igt@xe/xe_exec_basic@no-exec-basic-defer-bind
-+igt@xe/xe_exec_basic@twice-userptr
-+igt@xe/xe_exec_basic@no-exec-userptr
-+igt@xe/xe_exec_basic@twice-rebind
-+igt@xe/xe_exec_basic@no-exec-rebind
-+igt@xe/xe_exec_basic@twice-userptr-rebind
-+igt@xe/xe_exec_basic@no-exec-userptr-rebind
-+igt@xe/xe_exec_basic@twice-userptr-invalidate
-+igt@xe/xe_exec_basic@no-exec-userptr-invalidate
-+igt@xe/xe_exec_basic@twice-userptr-invalidate-race
-+igt@xe/xe_exec_basic@no-exec-userptr-invalidate-race
-+igt@xe/xe_exec_basic@twice-bindengine
-+igt@xe/xe_exec_basic@no-exec-bindengine
-+igt@xe/xe_exec_basic@twice-bindengine-userptr
-+igt@xe/xe_exec_basic@no-exec-bindengine-userptr
-+igt@xe/xe_exec_basic@twice-bindengine-rebind
-+igt@xe/xe_exec_basic@no-exec-bindengine-rebind
-+igt@xe/xe_exec_basic@twice-bindengine-userptr-rebind
-+igt@xe/xe_exec_basic@no-exec-bindengine-userptr-rebind
-+igt@xe/xe_exec_basic@twice-bindengine-userptr-invalidate
-+igt@xe/xe_exec_basic@no-exec-bindengine-userptr-invalidate
-+igt@xe/xe_exec_basic@twice-bindengine-userptr-invalidate-race
-+igt@xe/xe_exec_basic@no-exec-bindengine-userptr-invalidate-race
-+igt@xe/xe_exec_compute_mode@twice-basic
-+igt@xe/xe_exec_compute_mode@twice-preempt-fence-early
-+igt@xe/xe_exec_compute_mode@twice-userptr
-+igt@xe/xe_exec_compute_mode@twice-rebind
-+igt@xe/xe_exec_compute_mode@twice-userptr-rebind
-+igt@xe/xe_exec_compute_mode@twice-userptr-invalidate
-+igt@xe/xe_exec_compute_mode@twice-userptr-invalidate-race
-+igt@xe/xe_exec_compute_mode@twice-bindengine
-+igt@xe/xe_exec_compute_mode@twice-bindengine-userptr
-+igt@xe/xe_exec_compute_mode@twice-bindengine-rebind
-+igt@xe/xe_exec_compute_mode@twice-bindengine-userptr-rebind
-+igt@xe/xe_exec_compute_mode@twice-bindengine-userptr-invalidate
-+igt@xe/xe_exec_compute_mode@twice-bindengine-userptr-invalidate-race
-+igt@xe/xe_exec_reset@close-fd-no-exec
-+igt@xe/xe_exec_reset@cm-close-fd-no-exec
-+igt@xe/xe_exec_reset@virtual-close-fd-no-exec
-+#igt@xe/xe_exec_threads@threads-basic
-+igt@xe/xe_exec_threads@threads-shared-vm-basic
-+igt@xe/xe_exec_threads@threads-fd-basic
-+#igt@xe/xe_exec_threads@threads-hang-basic
-+igt@xe/xe_exec_threads@threads-bal-basic
-+igt@xe/xe_exec_threads@threads-cm-basic
-+igt@xe/xe_exec_threads@threads-cm-fd-basic
-+igt@xe/xe_exec_threads@threads-mixed-basic
-+igt@xe/xe_exec_threads@threads-mixed-shared-vm-basic
-+igt@xe/xe_exec_threads@threads-mixed-fd-basic
-+igt@xe/xe_exec_threads@threads-bal-mixed-basic
-+igt@xe/xe_exec_threads@threads-bal-mixed-shared-vm-basic
-+igt@xe/xe_exec_threads@threads-bal-mixed-fd-basic
-+igt@xe/xe_guc_pc@freq_basic_api
-+igt@xe/xe_guc_pc@freq_fixed_idle
-+igt@xe/xe_guc_pc@freq_range_idle
-+igt@xe/xe_guc_pc@rc6_on_idle
-+igt@xe/xe_guc_pc@rc0_on_exec
-+igt@xe/xe_huc_copy@huc_copy
-+igt@xe/xe_mmap@system
-+igt@xe/xe_mmap@vram
-+igt@xe/xe_mmap@vram-system
-+igt@xe/xe_mmio@mmio-timestamp
-+igt@xe/xe_mmio@mmio-invalid
-+igt@xe/xe_prime_self_import@basic-with_one_bo
-+igt@xe/xe_prime_self_import@basic-with_fd_dup
-+igt@xe/xe_prime_self_import@export-vs-gem_close-race
-+igt@xe/xe_prime_self_import@reimport-vs-gem_close-race
-+#igt@xe/xe_prime_self_import@basic-llseek-size
-+igt@xe/xe_query@query-engines
-+igt@xe/xe_query@query-mem-usage
-+igt@xe/xe_query@query-gts
-+igt@xe/xe_query@query-config
-+igt@xe/xe_query@query-hwconfig
-+igt@xe/xe_query@query-topology
-+igt@xe/xe_query@query-invalid-query
-+igt@xe/xe_query@query-invalid-size
-+#igt@xe/xe_vm@bind-once
-+#igt@xe/xe_vm@scratch
-+igt@xe/xe_vm@shared-pte-page
-+igt@xe/xe_vm@shared-pde-page
-+igt@xe/xe_vm@shared-pde2-page
-+igt@xe/xe_vm@shared-pde3-page
-+igt@xe/xe_vm@bind-engines-independent
-+igt@xe/xe_vm@munmap-style-unbind-one-partial
-+igt@xe/xe_vm@munmap-style-unbind-end
-+igt@xe/xe_vm@munmap-style-unbind-front
-+igt@xe/xe_vm@munmap-style-unbind-userptr-one-partial
-+igt@xe/xe_vm@munmap-style-unbind-userptr-end
-+igt@xe/xe_vm@munmap-style-unbind-userptr-front
-+igt@xe/xe_vm@munmap-style-unbind-userptr-inval-end
-+igt@xe/xe_vm@munmap-style-unbind-userptr-inval-front
-+igt@xe/xe_waitfence@test
--- 
-2.34.1
+> ---
+>  tests/i915/perf.c | 169 ++++++++++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 169 insertions(+)
+> 
+> diff --git a/tests/i915/perf.c b/tests/i915/perf.c
+> index 90c78929..727eaf4e 100644
+> --- a/tests/i915/perf.c
+> +++ b/tests/i915/perf.c
+> @@ -39,6 +39,7 @@
+>  #include <math.h>
+>  
+>  #include "i915/gem.h"
+> +#include "i915/gem_engine_topology.h"
+>  #include "i915/perf.h"
+>  #include "igt.h"
+>  #include "igt_perf.h"
+> @@ -238,6 +239,8 @@ static int pm_fd = -1;
+>  static int stream_fd = -1;
+>  static uint32_t devid;
+>  static struct intel_execution_engine2 default_e2;
+> +static struct perf_engine_group *perf_oa_groups;
+> +static uint32_t num_perf_oa_groups;
+>  
+>  static uint64_t gt_max_freq_mhz = 0;
+>  static struct intel_perf *intel_perf = NULL;
+> @@ -5312,6 +5315,167 @@ test_sysctl_defaults(void)
+>  		if (e__->class == I915_ENGINE_CLASS_RENDER) \
+>  			igt_dynamic_f("%s", e__->name)
+>  
+> +struct perf_engine_group {
+> +	/* exclusive perf fd per engine group */
+> +	int perf_fd;
+> +
+> +	/* gem context id passed to perf */
+> +	uint32_t ctx_id;
+> +	uint32_t oa_unit_id;
+> +
+> +	/* perf engines in a group */
+> +	int num_engines;
+> +	struct i915_engine_class_instance *ci;
+> +};
+> +
+> +static struct drm_i915_query_engine_info *query_engine_info(int i915)
+> +{
+> +	struct drm_i915_query_engine_info *qinfo;
+> +
+> +#define QUERY_SIZE (0x4000)
+> +	qinfo = malloc(QUERY_SIZE);
+> +	igt_assert(qinfo);
+> +	memset(qinfo, 0, QUERY_SIZE);
+> +	igt_assert(!__gem_query_engines(i915, qinfo, QUERY_SIZE));
+> +#undef QUERY_SIZE
+> +
+> +	return qinfo;
+> +}
+> +
+> +static int compare_engine_oa_unit_id(const void *e1, const void *e2)
+> +{
+> +	const struct drm_i915_engine_info *_e1 = e1;
+> +	const struct drm_i915_engine_info *_e2 = e2;
+> +
+> +	return (int)_e1->rsvd0 - (int)_e2->rsvd0;
+> +}
+> +
+> +static struct perf_engine_group *default_engine_group(uint32_t *num_groups)
+> +{
+> +	struct perf_engine_group *groups = malloc(sizeof(*groups));
+> +
+> +	igt_debug("using default engine group\n");
+> +
+> +	groups->perf_fd = -1,
+> +	groups->ctx_id = 0xffffffff,
+> +	groups->oa_unit_id = 0,
+> +	groups->num_engines = 1,
+> +
+> +	groups->ci = malloc(sizeof(*groups->ci));
+> +	groups->ci->engine_class = default_e2.class;
+> +	groups->ci->engine_instance = default_e2.instance;
+> +
+> +	*num_groups = 1;
+> +
+> +	return groups;
+> +}
+> +
+> +/* Until oa_unit_id is exposed from uapi, work around it */
+> +static void populate_mtl_oa_unit_ids(struct drm_i915_query_engine_info *qinfo)
+> +{
+> +	struct i915_engine_class_instance ci;
+> +	int i;
+> +
+> +	for (i = 0; i < qinfo->num_engines; i++) {
+> +		ci = qinfo->engines[i].engine;
+> +
+> +		switch (ci.engine_class) {
+> +		case I915_ENGINE_CLASS_RENDER:
+> +			qinfo->engines[i].rsvd0 = 0;
+> +			break;
+> +
+> +		case I915_ENGINE_CLASS_VIDEO:
+> +		case I915_ENGINE_CLASS_VIDEO_ENHANCE:
+> +			qinfo->engines[i].rsvd0 = 1;
+> +			break;
+> +
+> +		default:
+> +			qinfo->engines[i].rsvd0 = UINT32_MAX;
+> +			break;
+> +		}
+> +
+> +		igt_debug("class:instance = %d:%d, id = %d\n",
+> +			  ci.engine_class, ci.engine_instance,
+> +			  qinfo->engines[i].rsvd0);
+> +	}
+> +}
+> +
+> +static struct perf_engine_group *get_engine_groups(int i915, uint32_t *num_groups)
+> +{
+> +	struct drm_i915_query_engine_info *qinfo;
+> +	struct perf_engine_group *groups = NULL;
+> +	uint32_t id = UINT32_MAX, num_grps = 0, i = 0, j;
+> +
+> +	qinfo = query_engine_info(i915);
+> +	if (!qinfo)
+> +		return default_engine_group(num_groups);
+> +	igt_assert(qinfo->num_engines);
+> +
+> +	/* Currently only meteorlake is supported with engine groups */
+> +	if (IS_METEORLAKE(devid)) {
+> +		populate_mtl_oa_unit_ids(qinfo);
+> +	} else {
+> +		free(qinfo);
+> +		return default_engine_group(num_groups);
+> +	}
+> +
+> +	/* sort so that engines with same oa id are together */
+> +	qsort(qinfo->engines, qinfo->num_engines, sizeof(qinfo->engines[0]),
+> +	      compare_engine_oa_unit_id);
+> +
+> +	/* create groups */
+> +	for (i = 0; i < qinfo->num_engines; i++) {
+> +		struct i915_engine_class_instance ci = qinfo->engines[i].engine;
+> +
+> +		igt_debug("class:instance = %d:%d, id = %d\n",
+> +			  ci.engine_class, ci.engine_instance,
+> +			  qinfo->engines[i].rsvd0);
+> +
+> +		if (qinfo->engines[i].rsvd0 == UINT32_MAX)
+> +			continue;
+> +
+> +		if (qinfo->engines[i].rsvd0 != id) {
+> +			id = qinfo->engines[i].rsvd0;
+> +			groups = realloc(groups, ++num_grps * sizeof(*groups));
+> +			j = num_grps - 1;
+> +			groups[j].perf_fd = -1;
+> +			groups[j].ctx_id = 0xffffffff;
+> +			groups[j].oa_unit_id = id;
+> +			groups[j].num_engines = 0;
+> +			/* alloc max engines, trim later */
+> +			groups[j].ci = malloc(qinfo->num_engines * sizeof(ci));
+> +		}
+> +		groups[j].ci[groups[j].num_engines++] = ci;
+> +	}
+> +
+> +	igt_assert(num_grps);
+> +
+> +	/* trim engines */
+> +	for (i = 0; i < num_grps; i++) {
+> +		struct i915_engine_class_instance *ci = groups[i].ci;
+> +
+> +		ci = realloc(ci, groups[i].num_engines * sizeof(*ci));
+> +		groups[i].ci = ci;
+> +	}
+> +
+> +	*num_groups = num_grps;
+> +
+> +	free(qinfo);
+> +
+> +	return groups;
+> +}
+> +
+> +static void put_engine_groups(struct perf_engine_group *groups,
+> +			      unsigned int num_groups)
+> +{
+> +	int i;
+> +
+> +	for (i = 0; i < num_groups; i++)
+> +		free(groups[i].ci);
+> +
+> +	free(groups);
+> +}
+> +
+>  static bool has_class_instance(int i915, uint16_t class, uint16_t instance)
+>  {
+>  	int fd;
+> @@ -5382,6 +5546,8 @@ igt_main
+>  		write_u64_file("/proc/sys/dev/i915/oa_max_sample_rate", 100000);
+>  
+>  		gt_max_freq_mhz = sysfs_read(RPS_RP0_FREQ_MHZ);
+> +		perf_oa_groups = get_engine_groups(drm_fd, &num_perf_oa_groups);
+> +		igt_assert(perf_oa_groups && num_perf_oa_groups);
+>  
+>  		if (has_class_instance(drm_fd, I915_ENGINE_CLASS_RENDER, 0))
+>  			render_copy = igt_get_render_copyfunc(devid);
+> @@ -5604,6 +5770,9 @@ igt_main
+>  		if (intel_perf)
+>  			intel_perf_free(intel_perf);
+>  
+> +		if (perf_oa_groups)
+> +			put_engine_groups(perf_oa_groups, num_perf_oa_groups);
+> +
+>  		intel_ctx_destroy(drm_fd, ctx);
+>  		close(drm_fd);
+>  	}
+> -- 
+> 2.36.1
+> 
