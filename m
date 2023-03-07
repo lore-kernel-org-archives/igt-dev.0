@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B2AF210E4E2
- for <igt-dev@lists.freedesktop.org>; Tue,  7 Mar 2023 15:00:14 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0C1C810E4E2
+ for <igt-dev@lists.freedesktop.org>; Tue,  7 Mar 2023 15:00:17 +0000 (UTC)
 From: Karolina Stolarek <karolina.stolarek@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue,  7 Mar 2023 15:59:54 +0100
-Message-Id: <63290b87258277e02930c295ef98c5093db524ce.1678197486.git.karolina.stolarek@intel.com>
+Date: Tue,  7 Mar 2023 15:59:55 +0100
+Message-Id: <df7acc4f3bbe418410a5b44558ef9a2ef107e74b.1678197486.git.karolina.stolarek@intel.com>
 In-Reply-To: <cover.1678197486.git.karolina.stolarek@intel.com>
 References: <cover.1678197486.git.karolina.stolarek@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 2/7] lib/intel_cmds_info: Correct tiling
- formats for XY_SRC_COPY
+Subject: [igt-dev] [PATCH i-g-t 3/7] lib/intel_device_info: Add tiling
+ information for early gens
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,157 +24,150 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Both TileX and TileY are supported since SNB. Update definitions
-for pre-SNB and pre-BDW platforms.
+Update relevant intel_device_info entries to store information
+on supported tiling formats.
 
 Signed-off-by: Karolina Stolarek <karolina.stolarek@intel.com>
 ---
- lib/i915/intel_cmds_info.c | 24 ++++++++++++++++--------
- lib/i915/intel_cmds_info.h |  3 ++-
- lib/intel_device_info.c    | 12 ++++++------
- 3 files changed, 24 insertions(+), 15 deletions(-)
+ lib/intel_device_info.c | 17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
 
-diff --git a/lib/i915/intel_cmds_info.c b/lib/i915/intel_cmds_info.c
-index 2ac6bc2a..08fc981a 100644
---- a/lib/i915/intel_cmds_info.c
-+++ b/lib/i915/intel_cmds_info.c
-@@ -22,11 +22,11 @@
- 
- static const struct blt_cmd_info src_copy = BLT_INFO(SRC_COPY, BIT(T_LINEAR));
- static const struct blt_cmd_info
--		pre_gen8_xy_src_copy = BLT_INFO(XY_SRC_COPY,
-+		pre_gen6_xy_src_copy = BLT_INFO(XY_SRC_COPY,
- 						BIT(T_LINEAR) |
- 						BIT(T_XMAJOR));
- static const struct blt_cmd_info
--		gen8_xy_src_copy = BLT_INFO(XY_SRC_COPY,
-+		gen6_xy_src_copy = BLT_INFO(XY_SRC_COPY,
- 					    BIT(T_LINEAR) |
- 					    BIT(T_XMAJOR) |
- 					    BIT(T_YMAJOR));
-@@ -69,29 +69,37 @@ static const struct blt_cmd_info
- 						 BIT(T_TILE64),
- 						 BLT_CMD_EXTENDED);
- 
--const struct intel_cmds_info pre_gen8_cmds_info = {
-+const struct intel_cmds_info pre_gen6_cmds_info = {
- 	.blt_cmds = {
- 		[SRC_COPY] = &src_copy,
--		[XY_SRC_COPY] = &pre_gen8_xy_src_copy
-+		[XY_SRC_COPY] = &pre_gen6_xy_src_copy
- 	}
- };
- 
-+const struct intel_cmds_info gen6_cmds_info =  {
-+	.blt_cmds = {
-+		[SRC_COPY] = &src_copy,
-+		[XY_SRC_COPY] = &gen6_xy_src_copy
-+	}
-+
-+};
-+
- const struct intel_cmds_info gen8_cmds_info = {
- 	.blt_cmds = {
--		[XY_SRC_COPY] = &gen8_xy_src_copy,
-+		[XY_SRC_COPY] = &gen6_xy_src_copy,
- 	}
- };
- 
- const struct intel_cmds_info gen11_cmds_info = {
- 	.blt_cmds = {
--		[XY_SRC_COPY] = &gen8_xy_src_copy,
-+		[XY_SRC_COPY] = &gen6_xy_src_copy,
- 		[XY_FAST_COPY] = &gen11_xy_fast_copy,
- 	}
- };
- 
- const struct intel_cmds_info gen12_cmds_info = {
- 	.blt_cmds = {
--		[XY_SRC_COPY] = &gen8_xy_src_copy,
-+		[XY_SRC_COPY] = &gen6_xy_src_copy,
- 		[XY_FAST_COPY] = &gen12_xy_fast_copy,
- 		[XY_BLOCK_COPY] = &gen12_xy_block_copy,
- 	}
-@@ -99,7 +107,7 @@ const struct intel_cmds_info gen12_cmds_info = {
- 
- const struct intel_cmds_info gen12_dg2_cmds_info = {
- 	.blt_cmds = {
--		[XY_SRC_COPY] = &gen8_xy_src_copy,
-+		[XY_SRC_COPY] = &gen6_xy_src_copy,
- 		[XY_FAST_COPY] = &dg2_xy_fast_copy,
- 		[XY_BLOCK_COPY] = &dg2_xy_block_copy,
- 	}
-diff --git a/lib/i915/intel_cmds_info.h b/lib/i915/intel_cmds_info.h
-index 9bf6ecd5..57e34c4b 100644
---- a/lib/i915/intel_cmds_info.h
-+++ b/lib/i915/intel_cmds_info.h
-@@ -39,7 +39,8 @@ struct intel_cmds_info {
- 	struct blt_cmd_info const *blt_cmds[__BLT_MAX_CMD];
- };
- 
--extern const struct intel_cmds_info pre_gen8_cmds_info;
-+extern const struct intel_cmds_info pre_gen6_cmds_info;
-+extern const struct intel_cmds_info gen6_cmds_info;
- extern const struct intel_cmds_info gen8_cmds_info;
- extern const struct intel_cmds_info gen11_cmds_info;
- extern const struct intel_cmds_info gen12_cmds_info;
 diff --git a/lib/intel_device_info.c b/lib/intel_device_info.c
-index 12b81d48..0baad721 100644
+index 0baad721..bda4fb63 100644
 --- a/lib/intel_device_info.c
 +++ b/lib/intel_device_info.c
-@@ -145,7 +145,7 @@ static const struct intel_device_info intel_sandybridge_info = {
- 	.graphics_ver = 6,
- 	.display_ver = 6,
- 	.is_sandybridge = true,
--	.cmds_info = &pre_gen8_cmds_info,
-+	.cmds_info = &gen6_cmds_info,
- 	.codename = "sandybridge"
+@@ -27,12 +27,14 @@ static const struct intel_device_info intel_i830_info = {
+ 	.graphics_ver = 2,
+ 	.display_ver = 2,
+ 	.is_almador = true,
++	.cmds_info = &pre_gen6_cmds_info,
+ 	.codename = "almador"
  };
- static const struct intel_device_info intel_sandybridge_m_info = {
-@@ -153,7 +153,7 @@ static const struct intel_device_info intel_sandybridge_m_info = {
- 	.display_ver = 6,
+ static const struct intel_device_info intel_i845_info = {
+ 	.graphics_ver = 2,
+ 	.display_ver = 2,
+ 	.is_brookdale = true,
++	.cmds_info = &pre_gen6_cmds_info,
+ 	.codename = "brookdale"
+ };
+ static const struct intel_device_info intel_i855_info = {
+@@ -40,12 +42,14 @@ static const struct intel_device_info intel_i855_info = {
+ 	.display_ver = 2,
  	.is_mobile = true,
- 	.is_sandybridge = true,
--	.cmds_info = &pre_gen8_cmds_info,
-+	.cmds_info = &gen6_cmds_info,
- 	.codename = "sandybridge"
+ 	.is_montara = true,
++	.cmds_info = &pre_gen6_cmds_info,
+ 	.codename = "montara"
+ };
+ static const struct intel_device_info intel_i865_info = {
+ 	.graphics_ver = 2,
+ 	.display_ver = 2,
+ 	.is_springdale = true,
++	.cmds_info = &pre_gen6_cmds_info,
+ 	.codename = "spingdale"
  };
  
-@@ -161,7 +161,7 @@ static const struct intel_device_info intel_ivybridge_info = {
- 	.graphics_ver = 7,
- 	.display_ver = 7,
- 	.is_ivybridge = true,
--	.cmds_info = &pre_gen8_cmds_info,
-+	.cmds_info = &gen6_cmds_info,
- 	.codename = "ivybridge"
+@@ -53,6 +57,7 @@ static const struct intel_device_info intel_i915_info = {
+ 	.graphics_ver = 3,
+ 	.display_ver = 3,
+ 	.is_grantsdale = true,
++	.cmds_info = &pre_gen6_cmds_info,
+ 	.codename = "grantsdale"
  };
- static const struct intel_device_info intel_ivybridge_m_info = {
-@@ -169,7 +169,7 @@ static const struct intel_device_info intel_ivybridge_m_info = {
- 	.display_ver = 7,
+ static const struct intel_device_info intel_i915m_info = {
+@@ -60,12 +65,14 @@ static const struct intel_device_info intel_i915m_info = {
+ 	.display_ver = 3,
  	.is_mobile = true,
- 	.is_ivybridge = true,
--	.cmds_info = &pre_gen8_cmds_info,
-+	.cmds_info = &gen6_cmds_info,
- 	.codename = "ivybridge"
+ 	.is_alviso = true,
++	.cmds_info = &pre_gen6_cmds_info,
+ 	.codename = "alviso"
+ };
+ static const struct intel_device_info intel_i945_info = {
+ 	.graphics_ver = 3,
+ 	.display_ver = 3,
+ 	.is_lakeport = true,
++	.cmds_info = &pre_gen6_cmds_info,
+ 	.codename = "lakeport"
+ };
+ static const struct intel_device_info intel_i945m_info = {
+@@ -73,6 +80,7 @@ static const struct intel_device_info intel_i945m_info = {
+ 	.display_ver = 3,
+ 	.is_mobile = true,
+ 	.is_calistoga = true,
++	.cmds_info = &pre_gen6_cmds_info,
+ 	.codename = "calistoga"
  };
  
-@@ -177,7 +177,7 @@ static const struct intel_device_info intel_valleyview_info = {
- 	.graphics_ver = 7,
- 	.display_ver = 7,
- 	.is_valleyview = true,
--	.cmds_info = &pre_gen8_cmds_info,
-+	.cmds_info = &gen6_cmds_info,
- 	.codename = "valleyview"
+@@ -80,6 +88,7 @@ static const struct intel_device_info intel_g33_info = {
+ 	.graphics_ver = 3,
+ 	.display_ver = 3,
+ 	.is_bearlake = true,
++	.cmds_info = &pre_gen6_cmds_info,
+ 	.codename = "bearlake"
  };
  
-@@ -185,7 +185,7 @@ static const struct intel_device_info intel_valleyview_info = {
- 	.graphics_ver = 7, \
- 	.display_ver = 7, \
- 	.is_haswell = true, \
--	.cmds_info = &pre_gen8_cmds_info, \
-+	.cmds_info = &gen6_cmds_info, \
- 	.codename = "haswell"
+@@ -87,6 +96,7 @@ static const struct intel_device_info intel_pineview_g_info = {
+ 	.graphics_ver = 3,
+ 	.display_ver = 3,
+ 	.is_pineview = true,
++	.cmds_info = &pre_gen6_cmds_info,
+ 	.codename = "pineview"
+ };
  
- static const struct intel_device_info intel_haswell_gt1_info = {
+@@ -95,6 +105,7 @@ static const struct intel_device_info intel_pineview_m_info = {
+ 	.display_ver = 3,
+ 	.is_mobile = true,
+ 	.is_pineview = true,
++	.cmds_info = &pre_gen6_cmds_info,
+ 	.codename = "pineview"
+ };
+ 
+@@ -102,6 +113,7 @@ static const struct intel_device_info intel_i965_info = {
+ 	.graphics_ver = 4,
+ 	.display_ver = 4,
+ 	.is_broadwater = true,
++	.cmds_info = &pre_gen6_cmds_info,
+ 	.codename = "broadwater"
+ };
+ 
+@@ -110,6 +122,7 @@ static const struct intel_device_info intel_i965m_info = {
+ 	.display_ver = 4,
+ 	.is_mobile = true,
+ 	.is_crestline = true,
++	.cmds_info = &pre_gen6_cmds_info,
+ 	.codename = "crestline"
+ };
+ 
+@@ -117,6 +130,7 @@ static const struct intel_device_info intel_g45_info = {
+ 	.graphics_ver = 4,
+ 	.display_ver = 4,
+ 	.is_eaglelake = true,
++	.cmds_info = &pre_gen6_cmds_info,
+ 	.codename = "eaglelake"
+ };
+ static const struct intel_device_info intel_gm45_info = {
+@@ -124,6 +138,7 @@ static const struct intel_device_info intel_gm45_info = {
+ 	.display_ver = 4,
+ 	.is_mobile = true,
+ 	.is_cantiga = true,
++	.cmds_info = &pre_gen6_cmds_info,
+ 	.codename = "cantiga"
+ };
+ 
+@@ -131,6 +146,7 @@ static const struct intel_device_info intel_ironlake_info = {
+ 	.graphics_ver = 5,
+ 	.display_ver = 5,
+ 	.is_ironlake = true,
++	.cmds_info = &pre_gen6_cmds_info,
+ 	.codename = "ironlake" /* clarkdale? */
+ };
+ static const struct intel_device_info intel_ironlake_m_info = {
+@@ -138,6 +154,7 @@ static const struct intel_device_info intel_ironlake_m_info = {
+ 	.display_ver = 5,
+ 	.is_mobile = true,
+ 	.is_arrandale = true,
++	.cmds_info = &pre_gen6_cmds_info,
+ 	.codename = "arrandale"
+ };
+ 
 -- 
 2.25.1
