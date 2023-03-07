@@ -1,19 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CC40310E4A8
- for <igt-dev@lists.freedesktop.org>; Tue,  7 Mar 2023 13:50:00 +0000 (UTC)
-Date: Tue, 7 Mar 2023 14:49:56 +0100
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0BA9B10E50C
+ for <igt-dev@lists.freedesktop.org>; Tue,  7 Mar 2023 15:22:02 +0000 (UTC)
+From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 To: igt-dev@lists.freedesktop.org
-Message-ID: <20230307134956.bbhoefuakgqs5qec@kamilkon-desk1>
-References: <20230215004648.2100655-1-umesh.nerlige.ramappa@intel.com>
- <20230215004648.2100655-13-umesh.nerlige.ramappa@intel.com>
+Date: Tue,  7 Mar 2023 16:21:29 +0100
+Message-Id: <20230307152130.795989-7-zbigniew.kempczynski@intel.com>
+In-Reply-To: <20230307152130.795989-1-zbigniew.kempczynski@intel.com>
+References: <20230307152130.795989-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20230215004648.2100655-13-umesh.nerlige.ramappa@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 12/31] i915/perf: Use a helper for OA
- format
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t v5 6/7] intel-ci/xe-fast-feedback: Introduce
+ xe-fast-feedback list
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,120 +20,181 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Lionel G Landwerlin <lionel.g.landwerlin@linux.intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On 2023-02-14 at 16:46:29 -0800, Umesh Nerlige Ramappa wrote:
-> Refactor and use a helper for OA format
-> 
-> Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+Let's start with something simple that runs very quickly and is
+currently passing reliably.
 
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Signed-off-by: Philippe Lecluse <philippe.lecluse@intel.com>
+Signed-off-by: Francois Dugast <francois.dugast@intel.com>
+Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+Acked-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+---
+ tests/intel-ci/meson.build               |   1 +
+ tests/intel-ci/xe-fast-feedback.testlist | 140 +++++++++++++++++++++++
+ 2 files changed, 141 insertions(+)
+ create mode 100644 tests/intel-ci/xe-fast-feedback.testlist
 
-> ---
->  tests/i915/perf.c | 24 +++++++++++++++---------
->  1 file changed, 15 insertions(+), 9 deletions(-)
-> 
-> diff --git a/tests/i915/perf.c b/tests/i915/perf.c
-> index add41f7d..90c78929 100644
-> --- a/tests/i915/perf.c
-> +++ b/tests/i915/perf.c
-> @@ -670,6 +670,12 @@ oar_unit_default_format(void)
->  	return test_set->perf_oa_format;
->  }
->  
-> +static int
-> +oa_unit_default_format(void)
-> +{
-> +	return test_set->perf_oa_format;
-> +}
-> +
->  /*
->   * Temporary wrapper to distinguish mappings on !llc platforms,
->   * where it seems cache over GEM_MMAP_OFFSET is not flushed before execution.
-> @@ -1913,7 +1919,7 @@ static bool expected_report_timing_delta(uint32_t delta, uint32_t expected_delta
->  static void
->  test_oa_exponents(const struct intel_execution_engine2 *e)
->  {
-> -	uint64_t fmt = test_set->perf_oa_format;
-> +	uint64_t fmt = oa_unit_default_format();
->  
->  	load_helper_init();
->  	load_helper_run(HIGH);
-> @@ -2256,7 +2262,7 @@ test_blocking(uint64_t requested_oa_period,
->  
->  	ADD_PROPS(props, idx, SAMPLE_OA, true);
->  	ADD_PROPS(props, idx, OA_METRICS_SET, test_set->perf_oa_metrics_set);
-> -	ADD_PROPS(props, idx, OA_FORMAT, test_set->perf_oa_format);
-> +	ADD_PROPS(props, idx, OA_FORMAT, oa_unit_default_format());
->  	ADD_PROPS(props, idx, OA_EXPONENT, oa_exponent);
->  
->  	if (has_param_poll_period() && set_kernel_hrtimer)
-> @@ -2419,7 +2425,7 @@ test_polling(uint64_t requested_oa_period,
->  
->  	ADD_PROPS(props, idx, SAMPLE_OA, true);
->  	ADD_PROPS(props, idx, OA_METRICS_SET, test_set->perf_oa_metrics_set);
-> -	ADD_PROPS(props, idx, OA_FORMAT, test_set->perf_oa_format);
-> +	ADD_PROPS(props, idx, OA_FORMAT, oa_unit_default_format());
->  	ADD_PROPS(props, idx, OA_EXPONENT, oa_exponent);
->  
->  	if (has_param_poll_period() && set_kernel_hrtimer)
-> @@ -2693,7 +2699,7 @@ gen12_test_oa_tlb_invalidate(const struct intel_execution_engine2 *e)
->  		DRM_I915_PERF_PROP_SAMPLE_OA, true,
->  
->  		DRM_I915_PERF_PROP_OA_METRICS_SET, test_set->perf_oa_metrics_set,
-> -		DRM_I915_PERF_PROP_OA_FORMAT, test_set->perf_oa_format,
-> +		DRM_I915_PERF_PROP_OA_FORMAT, oa_unit_default_format(),
->  		DRM_I915_PERF_PROP_OA_EXPONENT, oa_exponent,
->  		DRM_I915_PERF_PROP_OA_ENGINE_CLASS, e->class,
->  		DRM_I915_PERF_PROP_OA_ENGINE_INSTANCE, e->instance,
-> @@ -2736,7 +2742,7 @@ test_buffer_fill(const struct intel_execution_engine2 *e)
->  	/* ~5 micro second period */
->  	int oa_exponent = max_oa_exponent_for_period_lte(5000);
->  	uint64_t oa_period = oa_exponent_to_ns(oa_exponent);
-> -	uint64_t fmt = test_set->perf_oa_format;
-> +	uint64_t fmt = oa_unit_default_format();
->  	uint64_t properties[] = {
->  		/* Include OA reports in samples */
->  		DRM_I915_PERF_PROP_SAMPLE_OA, true,
-> @@ -2972,7 +2978,7 @@ test_enable_disable(const struct intel_execution_engine2 *e)
->  	/* ~5 micro second period */
->  	int oa_exponent = max_oa_exponent_for_period_lte(5000);
->  	uint64_t oa_period = oa_exponent_to_ns(oa_exponent);
-> -	uint64_t fmt = test_set->perf_oa_format;
-> +	uint64_t fmt = oa_unit_default_format();
->  	uint64_t properties[] = {
->  		/* Include OA reports in samples */
->  		DRM_I915_PERF_PROP_SAMPLE_OA, true,
-> @@ -4567,7 +4573,7 @@ test_stress_open_close(const struct intel_execution_engine2 *e)
->  
->  			/* OA unit configuration */
->  			DRM_I915_PERF_PROP_OA_METRICS_SET, test_set->perf_oa_metrics_set,
-> -			DRM_I915_PERF_PROP_OA_FORMAT, test_set->perf_oa_format,
-> +			DRM_I915_PERF_PROP_OA_FORMAT, oa_unit_default_format(),
->  			DRM_I915_PERF_PROP_OA_EXPONENT, oa_exponent,
->  			DRM_I915_PERF_PROP_OA_ENGINE_CLASS, e->class,
->  			DRM_I915_PERF_PROP_OA_ENGINE_INSTANCE, e->instance,
-> @@ -4670,7 +4676,7 @@ test_global_sseu_config_invalid(const struct intel_execution_engine2 *e)
->  
->  		/* OA unit configuration */
->  		DRM_I915_PERF_PROP_OA_METRICS_SET, test_set->perf_oa_metrics_set,
-> -		DRM_I915_PERF_PROP_OA_FORMAT, test_set->perf_oa_format,
-> +		DRM_I915_PERF_PROP_OA_FORMAT, oa_unit_default_format(),
->  		DRM_I915_PERF_PROP_OA_EXPONENT, oa_exp_1_millisec,
->  		DRM_I915_PERF_PROP_GLOBAL_SSEU, to_user_pointer(&sseu_param),
->  		DRM_I915_PERF_PROP_OA_ENGINE_CLASS, e->class,
-> @@ -4759,7 +4765,7 @@ test_global_sseu_config(const struct intel_execution_engine2 *e)
->  
->  		/* OA unit configuration */
->  		DRM_I915_PERF_PROP_OA_METRICS_SET, test_set->perf_oa_metrics_set,
-> -		DRM_I915_PERF_PROP_OA_FORMAT, test_set->perf_oa_format,
-> +		DRM_I915_PERF_PROP_OA_FORMAT, oa_unit_default_format(),
->  		DRM_I915_PERF_PROP_OA_EXPONENT, oa_exp_1_millisec,
->  		DRM_I915_PERF_PROP_GLOBAL_SSEU, to_user_pointer(&sseu_param),
->  		DRM_I915_PERF_PROP_OA_ENGINE_CLASS, e->class,
-> -- 
-> 2.36.1
-> 
+diff --git a/tests/intel-ci/meson.build b/tests/intel-ci/meson.build
+index 62811e92c3..bbbd557009 100644
+--- a/tests/intel-ci/meson.build
++++ b/tests/intel-ci/meson.build
+@@ -5,6 +5,7 @@ intelci_files = [
+   'README',
+   'blacklist.txt',
+   'blacklist-pre-merge.txt',
++  'xe-fast-feedback.testlist',
+ ]
+ 
+ install_data(sources : intelci_files, install_dir : datadir)
+diff --git a/tests/intel-ci/xe-fast-feedback.testlist b/tests/intel-ci/xe-fast-feedback.testlist
+new file mode 100644
+index 0000000000..ac42d52aa9
+--- /dev/null
++++ b/tests/intel-ci/xe-fast-feedback.testlist
+@@ -0,0 +1,140 @@
++igt@xe/xe_compute@compute-square
++igt@xe/xe_debugfs@base
++igt@xe/xe_debugfs@gt0
++igt@xe/xe_debugfs@gt1
++igt@xe/xe_debugfs@forcewake
++igt@xe/xe_dma_buf_sync@export-dma-buf-once
++igt@xe/xe_dma_buf_sync@export-dma-buf-once-read-sync
++igt@xe/xe_exec_balancer@twice-virtual-basic
++igt@xe/xe_exec_balancer@no-exec-virtual-basic
++igt@xe/xe_exec_balancer@twice-cm-virtual-basic
++igt@xe/xe_exec_balancer@no-exec-cm-virtual-basic
++igt@xe/xe_exec_balancer@twice-virtual-userptr
++igt@xe/xe_exec_balancer@no-exec-virtual-userptr
++igt@xe/xe_exec_balancer@twice-cm-virtual-userptr
++igt@xe/xe_exec_balancer@no-exec-cm-virtual-userptr
++igt@xe/xe_exec_balancer@twice-virtual-rebind
++igt@xe/xe_exec_balancer@no-exec-virtual-rebind
++igt@xe/xe_exec_balancer@twice-cm-virtual-rebind
++igt@xe/xe_exec_balancer@no-exec-cm-virtual-rebind
++igt@xe/xe_exec_balancer@twice-virtual-userptr-rebind
++igt@xe/xe_exec_balancer@no-exec-virtual-userptr-rebind
++igt@xe/xe_exec_balancer@twice-cm-virtual-userptr-rebind
++igt@xe/xe_exec_balancer@no-exec-cm-virtual-userptr-rebind
++igt@xe/xe_exec_balancer@twice-virtual-userptr-invalidate
++igt@xe/xe_exec_balancer@no-exec-virtual-userptr-invalidate
++igt@xe/xe_exec_balancer@twice-cm-virtual-userptr-invalidate
++igt@xe/xe_exec_balancer@no-exec-cm-virtual-userptr-invalidate
++igt@xe/xe_exec_balancer@twice-virtual-userptr-invalidate-race
++igt@xe/xe_exec_balancer@no-exec-virtual-userptr-invalidate-race
++igt@xe/xe_exec_balancer@twice-cm-virtual-userptr-invalidate-race
++igt@xe/xe_exec_balancer@no-exec-cm-virtual-userptr-invalidate-race
++igt@xe/xe_exec_balancer@twice-parallel-basic
++igt@xe/xe_exec_balancer@no-exec-parallel-basic
++igt@xe/xe_exec_balancer@twice-parallel-userptr
++igt@xe/xe_exec_balancer@no-exec-parallel-userptr
++igt@xe/xe_exec_balancer@twice-parallel-rebind
++igt@xe/xe_exec_balancer@no-exec-parallel-rebind
++igt@xe/xe_exec_balancer@twice-parallel-userptr-rebind
++igt@xe/xe_exec_balancer@no-exec-parallel-userptr-rebind
++igt@xe/xe_exec_balancer@twice-parallel-userptr-invalidate
++igt@xe/xe_exec_balancer@no-exec-parallel-userptr-invalidate
++igt@xe/xe_exec_balancer@twice-parallel-userptr-invalidate-race
++igt@xe/xe_exec_balancer@no-exec-parallel-userptr-invalidate-race
++igt@xe/xe_exec_basic@twice-basic
++igt@xe/xe_exec_basic@no-exec-basic
++igt@xe/xe_exec_basic@twice-basic-defer-mmap
++igt@xe/xe_exec_basic@no-exec-basic-defer-mmap
++igt@xe/xe_exec_basic@twice-basic-defer-bind
++igt@xe/xe_exec_basic@no-exec-basic-defer-bind
++igt@xe/xe_exec_basic@twice-userptr
++igt@xe/xe_exec_basic@no-exec-userptr
++igt@xe/xe_exec_basic@twice-rebind
++igt@xe/xe_exec_basic@no-exec-rebind
++igt@xe/xe_exec_basic@twice-userptr-rebind
++igt@xe/xe_exec_basic@no-exec-userptr-rebind
++igt@xe/xe_exec_basic@twice-userptr-invalidate
++igt@xe/xe_exec_basic@no-exec-userptr-invalidate
++igt@xe/xe_exec_basic@twice-userptr-invalidate-race
++igt@xe/xe_exec_basic@no-exec-userptr-invalidate-race
++igt@xe/xe_exec_basic@twice-bindengine
++igt@xe/xe_exec_basic@no-exec-bindengine
++igt@xe/xe_exec_basic@twice-bindengine-userptr
++igt@xe/xe_exec_basic@no-exec-bindengine-userptr
++igt@xe/xe_exec_basic@twice-bindengine-rebind
++igt@xe/xe_exec_basic@no-exec-bindengine-rebind
++igt@xe/xe_exec_basic@twice-bindengine-userptr-rebind
++igt@xe/xe_exec_basic@no-exec-bindengine-userptr-rebind
++igt@xe/xe_exec_basic@twice-bindengine-userptr-invalidate
++igt@xe/xe_exec_basic@no-exec-bindengine-userptr-invalidate
++igt@xe/xe_exec_basic@twice-bindengine-userptr-invalidate-race
++igt@xe/xe_exec_basic@no-exec-bindengine-userptr-invalidate-race
++igt@xe/xe_exec_compute_mode@twice-basic
++igt@xe/xe_exec_compute_mode@twice-preempt-fence-early
++igt@xe/xe_exec_compute_mode@twice-userptr
++igt@xe/xe_exec_compute_mode@twice-rebind
++igt@xe/xe_exec_compute_mode@twice-userptr-rebind
++igt@xe/xe_exec_compute_mode@twice-userptr-invalidate
++igt@xe/xe_exec_compute_mode@twice-userptr-invalidate-race
++igt@xe/xe_exec_compute_mode@twice-bindengine
++igt@xe/xe_exec_compute_mode@twice-bindengine-userptr
++igt@xe/xe_exec_compute_mode@twice-bindengine-rebind
++igt@xe/xe_exec_compute_mode@twice-bindengine-userptr-rebind
++igt@xe/xe_exec_compute_mode@twice-bindengine-userptr-invalidate
++igt@xe/xe_exec_compute_mode@twice-bindengine-userptr-invalidate-race
++igt@xe/xe_exec_reset@close-fd-no-exec
++igt@xe/xe_exec_reset@cm-close-fd-no-exec
++igt@xe/xe_exec_reset@virtual-close-fd-no-exec
++#igt@xe/xe_exec_threads@threads-basic
++igt@xe/xe_exec_threads@threads-shared-vm-basic
++igt@xe/xe_exec_threads@threads-fd-basic
++#igt@xe/xe_exec_threads@threads-hang-basic
++igt@xe/xe_exec_threads@threads-bal-basic
++igt@xe/xe_exec_threads@threads-cm-basic
++igt@xe/xe_exec_threads@threads-cm-fd-basic
++igt@xe/xe_exec_threads@threads-mixed-basic
++igt@xe/xe_exec_threads@threads-mixed-shared-vm-basic
++igt@xe/xe_exec_threads@threads-mixed-fd-basic
++igt@xe/xe_exec_threads@threads-bal-mixed-basic
++igt@xe/xe_exec_threads@threads-bal-mixed-shared-vm-basic
++igt@xe/xe_exec_threads@threads-bal-mixed-fd-basic
++igt@xe/xe_guc_pc@freq_basic_api
++igt@xe/xe_guc_pc@freq_fixed_idle
++igt@xe/xe_guc_pc@freq_range_idle
++igt@xe/xe_guc_pc@rc6_on_idle
++igt@xe/xe_guc_pc@rc0_on_exec
++igt@xe/xe_huc_copy@huc_copy
++igt@xe/xe_mmap@system
++igt@xe/xe_mmap@vram
++igt@xe/xe_mmap@vram-system
++igt@xe/xe_mmio@mmio-timestamp
++igt@xe/xe_mmio@mmio-invalid
++igt@xe/xe_prime_self_import@basic-with_one_bo
++igt@xe/xe_prime_self_import@basic-with_fd_dup
++igt@xe/xe_prime_self_import@export-vs-gem_close-race
++igt@xe/xe_prime_self_import@reimport-vs-gem_close-race
++#igt@xe/xe_prime_self_import@basic-llseek-size
++igt@xe/xe_query@query-engines
++igt@xe/xe_query@query-mem-usage
++igt@xe/xe_query@query-gts
++igt@xe/xe_query@query-config
++igt@xe/xe_query@query-hwconfig
++igt@xe/xe_query@query-topology
++igt@xe/xe_query@query-invalid-query
++igt@xe/xe_query@query-invalid-size
++#igt@xe/xe_vm@bind-once
++#igt@xe/xe_vm@scratch
++igt@xe/xe_vm@shared-pte-page
++igt@xe/xe_vm@shared-pde-page
++igt@xe/xe_vm@shared-pde2-page
++igt@xe/xe_vm@shared-pde3-page
++igt@xe/xe_vm@bind-engines-independent
++igt@xe/xe_vm@munmap-style-unbind-one-partial
++igt@xe/xe_vm@munmap-style-unbind-end
++igt@xe/xe_vm@munmap-style-unbind-front
++igt@xe/xe_vm@munmap-style-unbind-userptr-one-partial
++igt@xe/xe_vm@munmap-style-unbind-userptr-end
++igt@xe/xe_vm@munmap-style-unbind-userptr-front
++igt@xe/xe_vm@munmap-style-unbind-userptr-inval-end
++igt@xe/xe_vm@munmap-style-unbind-userptr-inval-front
++igt@xe/xe_waitfence@test
+-- 
+2.34.1
