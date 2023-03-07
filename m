@@ -1,18 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E0E3D10E564
- for <igt-dev@lists.freedesktop.org>; Tue,  7 Mar 2023 22:13:00 +0000 (UTC)
-From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Tue,  7 Mar 2023 23:12:35 +0100
-Message-Id: <20230307221236.913429-7-zbigniew.kempczynski@intel.com>
-In-Reply-To: <20230307221236.913429-1-zbigniew.kempczynski@intel.com>
-References: <20230307221236.913429-1-zbigniew.kempczynski@intel.com>
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v7 6/7] intel-ci/xe-fast-feedback: Introduce
- xe-fast-feedback list
+Content-Transfer-Encoding: quoted-printable
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Matthew Brost" <matthew.brost@intel.com>
+Date: Tue, 07 Mar 2023 22:28:12 -0000
+Message-ID: <167822809289.31452.907942743076014205@emeril.freedesktop.org>
+References: <20230307221236.913429-1-zbigniew.kempczynski@intel.com>
+In-Reply-To: <20230307221236.913429-1-zbigniew.kempczynski@intel.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_I?=
+ =?utf-8?q?nitial_Xe_test_suite_=28rev7=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,181 +17,120 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Let's start with something simple that runs very quickly and is
-currently passing reliably.
+=3D=3D Series Details =3D=3D
 
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Signed-off-by: Philippe Lecluse <philippe.lecluse@intel.com>
-Signed-off-by: Francois Dugast <francois.dugast@intel.com>
-Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-Acked-by: Mauro Carvalho Chehab <mchehab@kernel.org>
----
- tests/intel-ci/meson.build               |   1 +
- tests/intel-ci/xe-fast-feedback.testlist | 140 +++++++++++++++++++++++
- 2 files changed, 141 insertions(+)
- create mode 100644 tests/intel-ci/xe-fast-feedback.testlist
+Series: Initial Xe test suite (rev7)
+URL   : https://patchwork.freedesktop.org/series/112191/
+State : warning
 
-diff --git a/tests/intel-ci/meson.build b/tests/intel-ci/meson.build
-index 62811e92c3..bbbd557009 100644
---- a/tests/intel-ci/meson.build
-+++ b/tests/intel-ci/meson.build
-@@ -5,6 +5,7 @@ intelci_files = [
-   'README',
-   'blacklist.txt',
-   'blacklist-pre-merge.txt',
-+  'xe-fast-feedback.testlist',
- ]
- 
- install_data(sources : intelci_files, install_dir : datadir)
-diff --git a/tests/intel-ci/xe-fast-feedback.testlist b/tests/intel-ci/xe-fast-feedback.testlist
-new file mode 100644
-index 0000000000..ac42d52aa9
---- /dev/null
-+++ b/tests/intel-ci/xe-fast-feedback.testlist
-@@ -0,0 +1,140 @@
-+igt@xe/xe_compute@compute-square
-+igt@xe/xe_debugfs@base
-+igt@xe/xe_debugfs@gt0
-+igt@xe/xe_debugfs@gt1
-+igt@xe/xe_debugfs@forcewake
-+igt@xe/xe_dma_buf_sync@export-dma-buf-once
-+igt@xe/xe_dma_buf_sync@export-dma-buf-once-read-sync
-+igt@xe/xe_exec_balancer@twice-virtual-basic
-+igt@xe/xe_exec_balancer@no-exec-virtual-basic
-+igt@xe/xe_exec_balancer@twice-cm-virtual-basic
-+igt@xe/xe_exec_balancer@no-exec-cm-virtual-basic
-+igt@xe/xe_exec_balancer@twice-virtual-userptr
-+igt@xe/xe_exec_balancer@no-exec-virtual-userptr
-+igt@xe/xe_exec_balancer@twice-cm-virtual-userptr
-+igt@xe/xe_exec_balancer@no-exec-cm-virtual-userptr
-+igt@xe/xe_exec_balancer@twice-virtual-rebind
-+igt@xe/xe_exec_balancer@no-exec-virtual-rebind
-+igt@xe/xe_exec_balancer@twice-cm-virtual-rebind
-+igt@xe/xe_exec_balancer@no-exec-cm-virtual-rebind
-+igt@xe/xe_exec_balancer@twice-virtual-userptr-rebind
-+igt@xe/xe_exec_balancer@no-exec-virtual-userptr-rebind
-+igt@xe/xe_exec_balancer@twice-cm-virtual-userptr-rebind
-+igt@xe/xe_exec_balancer@no-exec-cm-virtual-userptr-rebind
-+igt@xe/xe_exec_balancer@twice-virtual-userptr-invalidate
-+igt@xe/xe_exec_balancer@no-exec-virtual-userptr-invalidate
-+igt@xe/xe_exec_balancer@twice-cm-virtual-userptr-invalidate
-+igt@xe/xe_exec_balancer@no-exec-cm-virtual-userptr-invalidate
-+igt@xe/xe_exec_balancer@twice-virtual-userptr-invalidate-race
-+igt@xe/xe_exec_balancer@no-exec-virtual-userptr-invalidate-race
-+igt@xe/xe_exec_balancer@twice-cm-virtual-userptr-invalidate-race
-+igt@xe/xe_exec_balancer@no-exec-cm-virtual-userptr-invalidate-race
-+igt@xe/xe_exec_balancer@twice-parallel-basic
-+igt@xe/xe_exec_balancer@no-exec-parallel-basic
-+igt@xe/xe_exec_balancer@twice-parallel-userptr
-+igt@xe/xe_exec_balancer@no-exec-parallel-userptr
-+igt@xe/xe_exec_balancer@twice-parallel-rebind
-+igt@xe/xe_exec_balancer@no-exec-parallel-rebind
-+igt@xe/xe_exec_balancer@twice-parallel-userptr-rebind
-+igt@xe/xe_exec_balancer@no-exec-parallel-userptr-rebind
-+igt@xe/xe_exec_balancer@twice-parallel-userptr-invalidate
-+igt@xe/xe_exec_balancer@no-exec-parallel-userptr-invalidate
-+igt@xe/xe_exec_balancer@twice-parallel-userptr-invalidate-race
-+igt@xe/xe_exec_balancer@no-exec-parallel-userptr-invalidate-race
-+igt@xe/xe_exec_basic@twice-basic
-+igt@xe/xe_exec_basic@no-exec-basic
-+igt@xe/xe_exec_basic@twice-basic-defer-mmap
-+igt@xe/xe_exec_basic@no-exec-basic-defer-mmap
-+igt@xe/xe_exec_basic@twice-basic-defer-bind
-+igt@xe/xe_exec_basic@no-exec-basic-defer-bind
-+igt@xe/xe_exec_basic@twice-userptr
-+igt@xe/xe_exec_basic@no-exec-userptr
-+igt@xe/xe_exec_basic@twice-rebind
-+igt@xe/xe_exec_basic@no-exec-rebind
-+igt@xe/xe_exec_basic@twice-userptr-rebind
-+igt@xe/xe_exec_basic@no-exec-userptr-rebind
-+igt@xe/xe_exec_basic@twice-userptr-invalidate
-+igt@xe/xe_exec_basic@no-exec-userptr-invalidate
-+igt@xe/xe_exec_basic@twice-userptr-invalidate-race
-+igt@xe/xe_exec_basic@no-exec-userptr-invalidate-race
-+igt@xe/xe_exec_basic@twice-bindengine
-+igt@xe/xe_exec_basic@no-exec-bindengine
-+igt@xe/xe_exec_basic@twice-bindengine-userptr
-+igt@xe/xe_exec_basic@no-exec-bindengine-userptr
-+igt@xe/xe_exec_basic@twice-bindengine-rebind
-+igt@xe/xe_exec_basic@no-exec-bindengine-rebind
-+igt@xe/xe_exec_basic@twice-bindengine-userptr-rebind
-+igt@xe/xe_exec_basic@no-exec-bindengine-userptr-rebind
-+igt@xe/xe_exec_basic@twice-bindengine-userptr-invalidate
-+igt@xe/xe_exec_basic@no-exec-bindengine-userptr-invalidate
-+igt@xe/xe_exec_basic@twice-bindengine-userptr-invalidate-race
-+igt@xe/xe_exec_basic@no-exec-bindengine-userptr-invalidate-race
-+igt@xe/xe_exec_compute_mode@twice-basic
-+igt@xe/xe_exec_compute_mode@twice-preempt-fence-early
-+igt@xe/xe_exec_compute_mode@twice-userptr
-+igt@xe/xe_exec_compute_mode@twice-rebind
-+igt@xe/xe_exec_compute_mode@twice-userptr-rebind
-+igt@xe/xe_exec_compute_mode@twice-userptr-invalidate
-+igt@xe/xe_exec_compute_mode@twice-userptr-invalidate-race
-+igt@xe/xe_exec_compute_mode@twice-bindengine
-+igt@xe/xe_exec_compute_mode@twice-bindengine-userptr
-+igt@xe/xe_exec_compute_mode@twice-bindengine-rebind
-+igt@xe/xe_exec_compute_mode@twice-bindengine-userptr-rebind
-+igt@xe/xe_exec_compute_mode@twice-bindengine-userptr-invalidate
-+igt@xe/xe_exec_compute_mode@twice-bindengine-userptr-invalidate-race
-+igt@xe/xe_exec_reset@close-fd-no-exec
-+igt@xe/xe_exec_reset@cm-close-fd-no-exec
-+igt@xe/xe_exec_reset@virtual-close-fd-no-exec
-+#igt@xe/xe_exec_threads@threads-basic
-+igt@xe/xe_exec_threads@threads-shared-vm-basic
-+igt@xe/xe_exec_threads@threads-fd-basic
-+#igt@xe/xe_exec_threads@threads-hang-basic
-+igt@xe/xe_exec_threads@threads-bal-basic
-+igt@xe/xe_exec_threads@threads-cm-basic
-+igt@xe/xe_exec_threads@threads-cm-fd-basic
-+igt@xe/xe_exec_threads@threads-mixed-basic
-+igt@xe/xe_exec_threads@threads-mixed-shared-vm-basic
-+igt@xe/xe_exec_threads@threads-mixed-fd-basic
-+igt@xe/xe_exec_threads@threads-bal-mixed-basic
-+igt@xe/xe_exec_threads@threads-bal-mixed-shared-vm-basic
-+igt@xe/xe_exec_threads@threads-bal-mixed-fd-basic
-+igt@xe/xe_guc_pc@freq_basic_api
-+igt@xe/xe_guc_pc@freq_fixed_idle
-+igt@xe/xe_guc_pc@freq_range_idle
-+igt@xe/xe_guc_pc@rc6_on_idle
-+igt@xe/xe_guc_pc@rc0_on_exec
-+igt@xe/xe_huc_copy@huc_copy
-+igt@xe/xe_mmap@system
-+igt@xe/xe_mmap@vram
-+igt@xe/xe_mmap@vram-system
-+igt@xe/xe_mmio@mmio-timestamp
-+igt@xe/xe_mmio@mmio-invalid
-+igt@xe/xe_prime_self_import@basic-with_one_bo
-+igt@xe/xe_prime_self_import@basic-with_fd_dup
-+igt@xe/xe_prime_self_import@export-vs-gem_close-race
-+igt@xe/xe_prime_self_import@reimport-vs-gem_close-race
-+#igt@xe/xe_prime_self_import@basic-llseek-size
-+igt@xe/xe_query@query-engines
-+igt@xe/xe_query@query-mem-usage
-+igt@xe/xe_query@query-gts
-+igt@xe/xe_query@query-config
-+igt@xe/xe_query@query-hwconfig
-+igt@xe/xe_query@query-topology
-+igt@xe/xe_query@query-invalid-query
-+igt@xe/xe_query@query-invalid-size
-+#igt@xe/xe_vm@bind-once
-+#igt@xe/xe_vm@scratch
-+igt@xe/xe_vm@shared-pte-page
-+igt@xe/xe_vm@shared-pde-page
-+igt@xe/xe_vm@shared-pde2-page
-+igt@xe/xe_vm@shared-pde3-page
-+igt@xe/xe_vm@bind-engines-independent
-+igt@xe/xe_vm@munmap-style-unbind-one-partial
-+igt@xe/xe_vm@munmap-style-unbind-end
-+igt@xe/xe_vm@munmap-style-unbind-front
-+igt@xe/xe_vm@munmap-style-unbind-userptr-one-partial
-+igt@xe/xe_vm@munmap-style-unbind-userptr-end
-+igt@xe/xe_vm@munmap-style-unbind-userptr-front
-+igt@xe/xe_vm@munmap-style-unbind-userptr-inval-end
-+igt@xe/xe_vm@munmap-style-unbind-userptr-inval-front
-+igt@xe/xe_waitfence@test
--- 
-2.34.1
+=3D=3D Summary =3D=3D
+
+Pipeline status: FAILED.
+
+see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/824287 fo=
+r the overview.
+
+build:tests-debian-meson-armhf has failed (https://gitlab.freedesktop.org/g=
+fx-ci/igt-ci-tags/-/jobs/37654188):
+  [108/820] Linking target tests/kms_plane_alpha_blend.
+  [109/820] Linking target tests/kms_plane_cursor.
+  [110/820] Compiling C object 'tests/xe/2e9594b@@xe_vm@exe/xe_vm.c.o'.
+  FAILED: tests/xe/2e9594b@@xe_vm@exe/xe_vm.c.o=20
+  /usr/bin/arm-linux-gnueabihf-gcc -Itests/xe/2e9594b@@xe_vm@exe -Itests/xe=
+ -I../tests/xe -I../include/drm-uapi -I../include/linux-uapi -Ilib -I../lib=
+ -I../lib/stubs/syscalls -I. -I../ -I/usr/include/cairo -I/usr/include/glib=
+-2.0 -I/usr/lib/arm-linux-gnueabihf/glib-2.0/include -I/usr/include/pixman-=
+1 -I/usr/include/uuid -I/usr/include/freetype2 -I/usr/include/libpng16 -I/u=
+sr/include/libdrm -I/usr/include/libdrm/nouveau -I/usr/include/arm-linux-gn=
+ueabihf -I/usr/include/valgrind -I/usr/include/alsa -fdiagnostics-color=3Da=
+lways -pipe -D_FILE_OFFSET_BITS=3D64 -Wall -Winvalid-pch -Wextra -std=3Dgnu=
+11 -O2 -g -D_GNU_SOURCE -include config.h -D_FORTIFY_SOURCE=3D2 -Wbad-funct=
+ion-cast -Wdeclaration-after-statement -Wformat=3D2 -Wimplicit-fallthrough=
+=3D0 -Wlogical-op -Wmissing-declarations -Wmissing-format-attribute -Wmissi=
+ng-noreturn -Wmissing-prototypes -Wnested-externs -Wold-style-definition -W=
+pointer-arith -Wredundant-decls -Wshadow -Wstrict-prototypes -Wuninitialize=
+d -Wunused -Wno-clobbered -Wno-maybe-uninitialized -Wno-missing-field-initi=
+alizers -Wno-pointer-arith -Wno-sign-compare -Wno-type-limits -Wno-unused-p=
+arameter -Wno-unused-result -Werror=3Daddress -Werror=3Darray-bounds -Werro=
+r=3Dimplicit -Werror=3Dinit-self -Werror=3Dint-to-pointer-cast -Werror=3Dma=
+in -Werror=3Dmissing-braces -Werror=3Dnonnull -Werror=3Dpointer-to-int-cast=
+ -Werror=3Dreturn-type -Werror=3Dsequence-point -Werror=3Dtrigraphs -Werror=
+=3Dwrite-strings -fno-builtin-malloc -fno-builtin-calloc -pthread  -MD -MQ =
+'tests/xe/2e9594b@@xe_vm@exe/xe_vm.c.o' -MF 'tests/xe/2e9594b@@xe_vm@exe/xe=
+_vm.c.o.d' -o 'tests/xe/2e9594b@@xe_vm@exe/xe_vm.c.o' -c ../tests/xe/xe_vm.c
+  ../tests/xe/xe_vm.c: In function =E2=80=98test_munmap_style_unbind=E2=80=
+=99:
+  ../tests/xe/xe_vm.c:1102:14: error: cast to pointer from integer of diffe=
+rent size [-Werror=3Dint-to-pointer-cast]
+     map =3D mmap((void *)addr, bo_size, PROT_READ |
+                ^
+  ../tests/xe/xe_vm.c:1256:14: error: cast to pointer from integer of diffe=
+rent size [-Werror=3Dint-to-pointer-cast]
+     map =3D mmap((void *)addr, bo_size, PROT_READ |
+                ^
+  cc1: some warnings being treated as errors
+  ninja: build stopped: subcommand failed.
+  section_end:1678227891:step_script
+  section_start:1678227891:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1678227891:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+ =20
+
+build:tests-debian-meson-mips has failed (https://gitlab.freedesktop.org/gf=
+x-ci/igt-ci-tags/-/jobs/37654190):
+  [2/747] Linking target lib/libi915_perf.so.1.5.
+  [3/747] Generating symbol file 'lib/76b5a35@@i915_perf@sha/libi915_perf.s=
+o.1.5.symbols'.
+  [4/747] Compiling C object 'tests/xe/2e9594b@@xe_vm@exe/xe_vm.c.o'.
+  FAILED: tests/xe/2e9594b@@xe_vm@exe/xe_vm.c.o=20
+  /usr/bin/mips-linux-gnu-gcc -Itests/xe/2e9594b@@xe_vm@exe -Itests/xe -I..=
+/tests/xe -I../include/drm-uapi -I../include/linux-uapi -Ilib -I../lib -I..=
+/lib/stubs/syscalls -I. -I../ -I/usr/include/cairo -I/usr/include/glib-2.0 =
+-I/usr/lib/mips-linux-gnu/glib-2.0/include -I/usr/include/pixman-1 -I/usr/i=
+nclude/uuid -I/usr/include/freetype2 -I/usr/include/libpng16 -I/usr/include=
+/libdrm -I/usr/include/libdrm/nouveau -I/usr/include/mips-linux-gnu -I/usr/=
+include/valgrind -I/usr/include/alsa -fdiagnostics-color=3Dalways -pipe -D_=
+FILE_OFFSET_BITS=3D64 -Wall -Winvalid-pch -Wextra -std=3Dgnu11 -O2 -g -D_GN=
+U_SOURCE -include config.h -D_FORTIFY_SOURCE=3D2 -Wbad-function-cast -Wdecl=
+aration-after-statement -Wformat=3D2 -Wimplicit-fallthrough=3D0 -Wlogical-o=
+p -Wmissing-declarations -Wmissing-format-attribute -Wmissing-noreturn -Wmi=
+ssing-prototypes -Wnested-externs -Wold-style-definition -Wpointer-arith -W=
+redundant-decls -Wshadow -Wstrict-prototypes -Wuninitialized -Wunused -Wno-=
+clobbered -Wno-maybe-uninitialized -Wno-missing-field-initializers -Wno-poi=
+nter-arith -Wno-sign-compare -Wno-type-limits -Wno-unused-parameter -Wno-un=
+used-result -Werror=3Daddress -Werror=3Darray-bounds -Werror=3Dimplicit -We=
+rror=3Dinit-self -Werror=3Dint-to-pointer-cast -Werror=3Dmain -Werror=3Dmis=
+sing-braces -Werror=3Dnonnull -Werror=3Dpointer-to-int-cast -Werror=3Dretur=
+n-type -Werror=3Dsequence-point -Werror=3Dtrigraphs -Werror=3Dwrite-strings=
+ -fno-builtin-malloc -fno-builtin-calloc -pthread  -MD -MQ 'tests/xe/2e9594=
+b@@xe_vm@exe/xe_vm.c.o' -MF 'tests/xe/2e9594b@@xe_vm@exe/xe_vm.c.o.d' -o 't=
+ests/xe/2e9594b@@xe_vm@exe/xe_vm.c.o' -c ../tests/xe/xe_vm.c
+  ../tests/xe/xe_vm.c: In function =E2=80=98test_munmap_style_unbind=E2=80=
+=99:
+  ../tests/xe/xe_vm.c:1102:14: error: cast to pointer from integer of diffe=
+rent size [-Werror=3Dint-to-pointer-cast]
+     map =3D mmap((void *)addr, bo_size, PROT_READ |
+                ^
+  ../tests/xe/xe_vm.c:1256:14: error: cast to pointer from integer of diffe=
+rent size [-Werror=3Dint-to-pointer-cast]
+     map =3D mmap((void *)addr, bo_size, PROT_READ |
+                ^
+  cc1: some warnings being treated as errors
+  ninja: build stopped: subcommand failed.
+  section_end:1678227877:step_script
+  section_start:1678227877:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1678227877:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+
+=3D=3D Logs =3D=3D
+
+For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/p=
+ipelines/824287
