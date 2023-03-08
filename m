@@ -1,15 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AFE1510E5B4
- for <igt-dev@lists.freedesktop.org>; Wed,  8 Mar 2023 13:03:27 +0000 (UTC)
-From: Mohammed Thasleem <mohammed.thasleem@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Tue, 30 Aug 2022 17:12:14 +0530
-Message-Id: <20220830114214.8991-1-mohammed.thasleem@intel.com>
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2B45610E5D8
+ for <igt-dev@lists.freedesktop.org>; Wed,  8 Mar 2023 13:07:36 +0000 (UTC)
+Date: Wed, 8 Mar 2023 14:07:10 +0100
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: pallavi.mishra@intel.com
+Message-ID: <20230308130710.mxfq4kdqwgy2o5wj@kamilkon-desk1>
+References: <20230224200941.9867-1-pallavi.mishra@intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 1/2] tests/i915/kms_cdclk: Fixed mode
- selection for extended mode tests
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20230224200941.9867-1-pallavi.mishra@intel.com>
+Subject: Re: [igt-dev] [PATCH 1/2] [PATCH i-g-t]
+ i915/sysfs_heartbeat_interval: Update test to work with GuC submission
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,48 +20,44 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Added check on ENOSPC and EINVAL when two moniters connected
-through MST. This will find the connector mode combo that
-fits into the bandwidth when more than one monitor is connected.
+Hi Pallavi,
 
-Example:
-  When two monitors connected through MST, the second monitor
-  also tries to use the same mode. So two such modes may not
-  fit into the link bandwidth. So, iterate through connected
-  outputs & modes and find a combination of modes those fit
-  into the link BW.
+please subscribe to igt-dev ML on a freedesktop.org page
 
-Signed-off-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
----
- tests/i915/kms_cdclk.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+Regards,
+Kamil
 
-diff --git a/tests/i915/kms_cdclk.c b/tests/i915/kms_cdclk.c
-index 991a7c507..9ee2da5cb 100644
---- a/tests/i915/kms_cdclk.c
-+++ b/tests/i915/kms_cdclk.c
-@@ -313,7 +313,18 @@ static void test_mode_transition_on_all_outputs(data_t *data)
- 		j++;
- 	}
- 
-+	/* In case of DP-MST find suitable mode(s) to fit into the link BW. */
-+	if ((igt_display_try_commit_atomic(display,
-+					   DRM_MODE_ATOMIC_ALLOW_MODESET,
-+					   NULL) != 0) && (errno == EINVAL
-+					   || errno == ENOSPC)) {
-+		bool found = igt_override_all_active_output_modes_to_fit_bw(display);
-+
-+		igt_require_f(found, "No valid mode combo found.\n");
-+	}
-+
- 	igt_display_commit2(display, COMMIT_ATOMIC);
-+
- 	cdclk_new = get_current_cdclk_freq(debugfs_fd);
- 	igt_info("CD clock frequency %d -> %d\n", cdclk_ref, cdclk_new);
- 
--- 
-2.25.1
+On 2023-02-24 at 20:09:40 +0000, pallavi.mishra@intel.com wrote:
+> From: Pallavi Mishra <pallavi.mishra@intel.com>
+> 
+> Increase reset timeout as resets can take a bit longer with GuC
+> submission because an error capture is done and with a large GuC log (16
+> MB) these take a while.
+> 
+> Co-authored-by: Matthew Brost <matthew.brost@intel.com>
+> Signed-off-by: Pallavi Mishra <pallavi.mishra@intel.com>
+> ---
+>  tests/i915/sysfs_heartbeat_interval.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/tests/i915/sysfs_heartbeat_interval.c b/tests/i915/sysfs_heartbeat_interval.c
+> index 8cebf627..63e56cbf 100644
+> --- a/tests/i915/sysfs_heartbeat_interval.c
+> +++ b/tests/i915/sysfs_heartbeat_interval.c
+> @@ -43,7 +43,7 @@
+>  #include "sw_sync.h"
+>  
+>  #define ATTR "heartbeat_interval_ms"
+> -#define RESET_TIMEOUT 50 /* milliseconds, at least one jiffie for kworker */
+> +#define RESET_TIMEOUT 1000 /* milliseconds, long enough for an error capture */
+>  
+>  static bool __enable_hangcheck(int dir, bool state)
+>  {
+> -- 
+> 2.34.1
+> 
