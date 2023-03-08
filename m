@@ -1,18 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1FA2F10E5AC
- for <igt-dev@lists.freedesktop.org>; Wed,  8 Mar 2023 07:54:11 +0000 (UTC)
-From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Wed,  8 Mar 2023 08:53:33 +0100
-Message-Id: <20230308075334.944622-7-zbigniew.kempczynski@intel.com>
-In-Reply-To: <20230308075334.944622-1-zbigniew.kempczynski@intel.com>
-References: <20230308075334.944622-1-zbigniew.kempczynski@intel.com>
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1491610E59E
+ for <igt-dev@lists.freedesktop.org>; Wed,  8 Mar 2023 07:59:24 +0000 (UTC)
+Date: Wed, 8 Mar 2023 08:59:19 +0100
+From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
+To: Dominik Karol Piatkowski <dominik.karol.piatkowski@intel.com>
+Message-ID: <20230308085919.2a3fda86@maurocar-mobl2>
+In-Reply-To: <20230303110715.8183-4-dominik.karol.piatkowski@intel.com>
+References: <20230303110715.8183-1-dominik.karol.piatkowski@intel.com>
+ <20230303110715.8183-4-dominik.karol.piatkowski@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v8 6/7] intel-ci/xe-fast-feedback: Introduce
- xe-fast-feedback list
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [igt-dev] [PATCH i-g-t 3/4] lib/igt_kmod: add compatibility for
+ KUnit
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,181 +21,165 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: igt-dev@lists.freedesktop.org, Isabella Basso <isabbasso@riseup.net>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Let's start with something simple that runs very quickly and is
-currently passing reliably.
+On Fri,  3 Mar 2023 12:07:14 +0100
+Dominik Karol Piatkowski <dominik.karol.piatkowski@intel.com> wrote:
 
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Signed-off-by: Philippe Lecluse <philippe.lecluse@intel.com>
-Signed-off-by: Francois Dugast <francois.dugast@intel.com>
-Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-Acked-by: Mauro Carvalho Chehab <mchehab@kernel.org>
----
- tests/intel-ci/meson.build               |   1 +
- tests/intel-ci/xe-fast-feedback.testlist | 140 +++++++++++++++++++++++
- 2 files changed, 141 insertions(+)
- create mode 100644 tests/intel-ci/xe-fast-feedback.testlist
+> From: Isabella Basso <isabbasso@riseup.net>
+>=20
+> This adds functions for both executing the tests as well as parsing (K)TAP
+> kmsg output, as per the KTAP spec [1].
+>=20
+> [1] https://www.kernel.org/doc/html/latest/dev-tools/ktap.html
+>=20
+> v1 -> v2:
+> - refactor igt_kunit function and ktap parser so that we have only one
+>   parser that we call only once (code size is now less than half the
+>   size as v1)
+> - add lookup_value helper
+> - fix parsing problems
+> v2 -> v3:
+> - move ktap parsing functions to own file
+> - rename to ktap_parser
+> - get rid of unneeded pointers in igt_kunit
+> - change return values to allow for subsequent call to igt_kselftests if
+>   needed
+> - add docs to parsing functions and helpers
+> - switch to line buffering
+> - add line buffering logging helper
+> - fix kunit module handling
+> - fix parsing of version lines
+> - use igt_subtest blocks to improve output handling on the CI
+> - fix output handling during crashes
+>=20
+> Signed-off-by: Isabella Basso <isabbasso@riseup.net>
+>=20
+> v3 -> v4:
+> - handle igt_ktap_parser fail with IGT_EXIT_ABORT code
+>=20
+> Co-authored-by: Dominik Karol Pi=C4=85tkowski <dominik.karol.piatkowski@i=
+ntel.com>
+> ---
+>  lib/igt_kmod.c  |  84 ++++++++++++
+>  lib/igt_kmod.h  |   2 +
+>  lib/igt_ktap.c  | 334 ++++++++++++++++++++++++++++++++++++++++++++++++
+>  lib/igt_ktap.h  |  31 +++++
+>  lib/meson.build |   1 +
+>  5 files changed, 452 insertions(+)
+>  create mode 100644 lib/igt_ktap.c
+>  create mode 100644 lib/igt_ktap.h
+>=20
+> diff --git a/lib/igt_kmod.c b/lib/igt_kmod.c
+> index fbda1aa6..a156e43d 100644
+> --- a/lib/igt_kmod.c
+> +++ b/lib/igt_kmod.c
+> @@ -29,6 +29,7 @@
+>  #include "igt_aux.h"
+>  #include "igt_core.h"
+>  #include "igt_kmod.h"
+> +#include "igt_ktap.h"
+>  #include "igt_sysfs.h"
+>  #include "igt_taints.h"
+> =20
+> @@ -744,6 +745,89 @@ void igt_kselftest_get_tests(struct kmod_module *kmo=
+d,
+>  	kmod_module_info_free_list(pre);
+>  }
+> =20
+> +/**
+> + * igt_kunit:
+> + * @module_name: the name of the module
+> + * @opts: options to load the module
+> + *
+> + * Loads the test module, parses its (k)tap dmesg output, then unloads it
+> + *
+> + * Returns: IGT default codes
+> + */
+> +int igt_kunit(const char *module_name, const char *opts)
+> +{
+> +	struct igt_ktest tst;
+> +	struct kmod_module *kunit_kmod;
+> +	char record[BUF_LEN + 1];
+> +	FILE *f;
+> +	bool is_builtin;
+> +	int ret;
+> +
+> +	ret =3D IGT_EXIT_INVALID;
+> +
+> +	/* get normalized module name */
+> +	if (igt_ktest_init(&tst, module_name) !=3D 0) {
+> +		igt_warn("Unable to initialize ktest for %s\n", module_name);
+> +		return ret;
+> +	}
+> +
+> +	if (igt_ktest_begin(&tst) !=3D 0) {
+> +		igt_warn("Unable to begin ktest for %s\n", module_name);
+> +
+> +		igt_ktest_fini(&tst);
+> +		return ret;
+> +	}
+> +
+> +	if (tst.kmsg < 0) {
+> +		igt_warn("Could not open /dev/kmsg");
+> +		goto unload;
+> +	}
+> +
+> +	if (lseek(tst.kmsg, 0, SEEK_END)) {
+> +		igt_warn("Could not seek the end of /dev/kmsg");
+> +		goto unload;
+> +	}
+> +
+> +	f =3D fdopen(tst.kmsg, "r");
+> +
+> +	if (f =3D=3D NULL) {
+> +		igt_warn("Could not turn /dev/kmsg file descriptor into a FILE pointer=
+");
+> +		goto unload;
+> +	}
+> +
+> +	if (setvbuf(f, record, _IOLBF, BUF_LEN)) {
+> +		igt_warn("Could not set line buffering on /dev/kmsg");
+> +		goto unload;
+> +	}
+> +
+> +	/* The KUnit module is required for running any KUnit tests */
+> +	if (igt_kmod_load("kunit", NULL) !=3D 0 ||
+> +	    kmod_module_new_from_name(kmod_ctx(), "kunit", &kunit_kmod) !=3D 0)=
+ {
+> +		igt_warn("Unable to load KUnit\n");
+> +		igt_fail(IGT_EXIT_FAILURE);
+> +	}
+> +
+> +	is_builtin =3D kmod_module_get_initstate(kunit_kmod) =3D=3D KMOD_MODULE=
+_BUILTIN;
+> +
+> +	if (igt_kmod_load(module_name, opts) !=3D 0) {
+> +		igt_warn("Unable to load %s module\n", module_name);
+> +		igt_fail(IGT_EXIT_FAILURE);
+> +	}
+> +
+> +	ret =3D igt_ktap_parser(f, record, is_builtin);
+> +	if (ret !=3D 0)
+> +		ret =3D IGT_EXIT_ABORT;
 
-diff --git a/tests/intel-ci/meson.build b/tests/intel-ci/meson.build
-index 62811e92c3..bbbd557009 100644
---- a/tests/intel-ci/meson.build
-+++ b/tests/intel-ci/meson.build
-@@ -5,6 +5,7 @@ intelci_files = [
-   'README',
-   'blacklist.txt',
-   'blacklist-pre-merge.txt',
-+  'xe-fast-feedback.testlist',
- ]
- 
- install_data(sources : intelci_files, install_dir : datadir)
-diff --git a/tests/intel-ci/xe-fast-feedback.testlist b/tests/intel-ci/xe-fast-feedback.testlist
-new file mode 100644
-index 0000000000..ac42d52aa9
---- /dev/null
-+++ b/tests/intel-ci/xe-fast-feedback.testlist
-@@ -0,0 +1,140 @@
-+igt@xe/xe_compute@compute-square
-+igt@xe/xe_debugfs@base
-+igt@xe/xe_debugfs@gt0
-+igt@xe/xe_debugfs@gt1
-+igt@xe/xe_debugfs@forcewake
-+igt@xe/xe_dma_buf_sync@export-dma-buf-once
-+igt@xe/xe_dma_buf_sync@export-dma-buf-once-read-sync
-+igt@xe/xe_exec_balancer@twice-virtual-basic
-+igt@xe/xe_exec_balancer@no-exec-virtual-basic
-+igt@xe/xe_exec_balancer@twice-cm-virtual-basic
-+igt@xe/xe_exec_balancer@no-exec-cm-virtual-basic
-+igt@xe/xe_exec_balancer@twice-virtual-userptr
-+igt@xe/xe_exec_balancer@no-exec-virtual-userptr
-+igt@xe/xe_exec_balancer@twice-cm-virtual-userptr
-+igt@xe/xe_exec_balancer@no-exec-cm-virtual-userptr
-+igt@xe/xe_exec_balancer@twice-virtual-rebind
-+igt@xe/xe_exec_balancer@no-exec-virtual-rebind
-+igt@xe/xe_exec_balancer@twice-cm-virtual-rebind
-+igt@xe/xe_exec_balancer@no-exec-cm-virtual-rebind
-+igt@xe/xe_exec_balancer@twice-virtual-userptr-rebind
-+igt@xe/xe_exec_balancer@no-exec-virtual-userptr-rebind
-+igt@xe/xe_exec_balancer@twice-cm-virtual-userptr-rebind
-+igt@xe/xe_exec_balancer@no-exec-cm-virtual-userptr-rebind
-+igt@xe/xe_exec_balancer@twice-virtual-userptr-invalidate
-+igt@xe/xe_exec_balancer@no-exec-virtual-userptr-invalidate
-+igt@xe/xe_exec_balancer@twice-cm-virtual-userptr-invalidate
-+igt@xe/xe_exec_balancer@no-exec-cm-virtual-userptr-invalidate
-+igt@xe/xe_exec_balancer@twice-virtual-userptr-invalidate-race
-+igt@xe/xe_exec_balancer@no-exec-virtual-userptr-invalidate-race
-+igt@xe/xe_exec_balancer@twice-cm-virtual-userptr-invalidate-race
-+igt@xe/xe_exec_balancer@no-exec-cm-virtual-userptr-invalidate-race
-+igt@xe/xe_exec_balancer@twice-parallel-basic
-+igt@xe/xe_exec_balancer@no-exec-parallel-basic
-+igt@xe/xe_exec_balancer@twice-parallel-userptr
-+igt@xe/xe_exec_balancer@no-exec-parallel-userptr
-+igt@xe/xe_exec_balancer@twice-parallel-rebind
-+igt@xe/xe_exec_balancer@no-exec-parallel-rebind
-+igt@xe/xe_exec_balancer@twice-parallel-userptr-rebind
-+igt@xe/xe_exec_balancer@no-exec-parallel-userptr-rebind
-+igt@xe/xe_exec_balancer@twice-parallel-userptr-invalidate
-+igt@xe/xe_exec_balancer@no-exec-parallel-userptr-invalidate
-+igt@xe/xe_exec_balancer@twice-parallel-userptr-invalidate-race
-+igt@xe/xe_exec_balancer@no-exec-parallel-userptr-invalidate-race
-+igt@xe/xe_exec_basic@twice-basic
-+igt@xe/xe_exec_basic@no-exec-basic
-+igt@xe/xe_exec_basic@twice-basic-defer-mmap
-+igt@xe/xe_exec_basic@no-exec-basic-defer-mmap
-+igt@xe/xe_exec_basic@twice-basic-defer-bind
-+igt@xe/xe_exec_basic@no-exec-basic-defer-bind
-+igt@xe/xe_exec_basic@twice-userptr
-+igt@xe/xe_exec_basic@no-exec-userptr
-+igt@xe/xe_exec_basic@twice-rebind
-+igt@xe/xe_exec_basic@no-exec-rebind
-+igt@xe/xe_exec_basic@twice-userptr-rebind
-+igt@xe/xe_exec_basic@no-exec-userptr-rebind
-+igt@xe/xe_exec_basic@twice-userptr-invalidate
-+igt@xe/xe_exec_basic@no-exec-userptr-invalidate
-+igt@xe/xe_exec_basic@twice-userptr-invalidate-race
-+igt@xe/xe_exec_basic@no-exec-userptr-invalidate-race
-+igt@xe/xe_exec_basic@twice-bindengine
-+igt@xe/xe_exec_basic@no-exec-bindengine
-+igt@xe/xe_exec_basic@twice-bindengine-userptr
-+igt@xe/xe_exec_basic@no-exec-bindengine-userptr
-+igt@xe/xe_exec_basic@twice-bindengine-rebind
-+igt@xe/xe_exec_basic@no-exec-bindengine-rebind
-+igt@xe/xe_exec_basic@twice-bindengine-userptr-rebind
-+igt@xe/xe_exec_basic@no-exec-bindengine-userptr-rebind
-+igt@xe/xe_exec_basic@twice-bindengine-userptr-invalidate
-+igt@xe/xe_exec_basic@no-exec-bindengine-userptr-invalidate
-+igt@xe/xe_exec_basic@twice-bindengine-userptr-invalidate-race
-+igt@xe/xe_exec_basic@no-exec-bindengine-userptr-invalidate-race
-+igt@xe/xe_exec_compute_mode@twice-basic
-+igt@xe/xe_exec_compute_mode@twice-preempt-fence-early
-+igt@xe/xe_exec_compute_mode@twice-userptr
-+igt@xe/xe_exec_compute_mode@twice-rebind
-+igt@xe/xe_exec_compute_mode@twice-userptr-rebind
-+igt@xe/xe_exec_compute_mode@twice-userptr-invalidate
-+igt@xe/xe_exec_compute_mode@twice-userptr-invalidate-race
-+igt@xe/xe_exec_compute_mode@twice-bindengine
-+igt@xe/xe_exec_compute_mode@twice-bindengine-userptr
-+igt@xe/xe_exec_compute_mode@twice-bindengine-rebind
-+igt@xe/xe_exec_compute_mode@twice-bindengine-userptr-rebind
-+igt@xe/xe_exec_compute_mode@twice-bindengine-userptr-invalidate
-+igt@xe/xe_exec_compute_mode@twice-bindengine-userptr-invalidate-race
-+igt@xe/xe_exec_reset@close-fd-no-exec
-+igt@xe/xe_exec_reset@cm-close-fd-no-exec
-+igt@xe/xe_exec_reset@virtual-close-fd-no-exec
-+#igt@xe/xe_exec_threads@threads-basic
-+igt@xe/xe_exec_threads@threads-shared-vm-basic
-+igt@xe/xe_exec_threads@threads-fd-basic
-+#igt@xe/xe_exec_threads@threads-hang-basic
-+igt@xe/xe_exec_threads@threads-bal-basic
-+igt@xe/xe_exec_threads@threads-cm-basic
-+igt@xe/xe_exec_threads@threads-cm-fd-basic
-+igt@xe/xe_exec_threads@threads-mixed-basic
-+igt@xe/xe_exec_threads@threads-mixed-shared-vm-basic
-+igt@xe/xe_exec_threads@threads-mixed-fd-basic
-+igt@xe/xe_exec_threads@threads-bal-mixed-basic
-+igt@xe/xe_exec_threads@threads-bal-mixed-shared-vm-basic
-+igt@xe/xe_exec_threads@threads-bal-mixed-fd-basic
-+igt@xe/xe_guc_pc@freq_basic_api
-+igt@xe/xe_guc_pc@freq_fixed_idle
-+igt@xe/xe_guc_pc@freq_range_idle
-+igt@xe/xe_guc_pc@rc6_on_idle
-+igt@xe/xe_guc_pc@rc0_on_exec
-+igt@xe/xe_huc_copy@huc_copy
-+igt@xe/xe_mmap@system
-+igt@xe/xe_mmap@vram
-+igt@xe/xe_mmap@vram-system
-+igt@xe/xe_mmio@mmio-timestamp
-+igt@xe/xe_mmio@mmio-invalid
-+igt@xe/xe_prime_self_import@basic-with_one_bo
-+igt@xe/xe_prime_self_import@basic-with_fd_dup
-+igt@xe/xe_prime_self_import@export-vs-gem_close-race
-+igt@xe/xe_prime_self_import@reimport-vs-gem_close-race
-+#igt@xe/xe_prime_self_import@basic-llseek-size
-+igt@xe/xe_query@query-engines
-+igt@xe/xe_query@query-mem-usage
-+igt@xe/xe_query@query-gts
-+igt@xe/xe_query@query-config
-+igt@xe/xe_query@query-hwconfig
-+igt@xe/xe_query@query-topology
-+igt@xe/xe_query@query-invalid-query
-+igt@xe/xe_query@query-invalid-size
-+#igt@xe/xe_vm@bind-once
-+#igt@xe/xe_vm@scratch
-+igt@xe/xe_vm@shared-pte-page
-+igt@xe/xe_vm@shared-pde-page
-+igt@xe/xe_vm@shared-pde2-page
-+igt@xe/xe_vm@shared-pde3-page
-+igt@xe/xe_vm@bind-engines-independent
-+igt@xe/xe_vm@munmap-style-unbind-one-partial
-+igt@xe/xe_vm@munmap-style-unbind-end
-+igt@xe/xe_vm@munmap-style-unbind-front
-+igt@xe/xe_vm@munmap-style-unbind-userptr-one-partial
-+igt@xe/xe_vm@munmap-style-unbind-userptr-end
-+igt@xe/xe_vm@munmap-style-unbind-userptr-front
-+igt@xe/xe_vm@munmap-style-unbind-userptr-inval-end
-+igt@xe/xe_vm@munmap-style-unbind-userptr-inval-front
-+igt@xe/xe_waitfence@test
--- 
-2.34.1
+
+No. you need to actually start monitoring /dev/kmsg before loading
+the module. The ktap parser should be listening and parsing the messages
+as the tests are executed, and not after the end of module load.
+
+If you don't do that:
+
+1. the test results will only be displayed after the end of all tests;
+2. if a crash happens during a test, the log output will be lost.
+
+In order to preserver Isabella's authorship, my suggestion is to
+write a patch after this one changing the logic of the ktap parser
+for it to run on a thread, started before loading the module, and
+finished after the end of the module probe.
+
+Regards,
+Mauro
