@@ -1,15 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B510410E5A6
- for <igt-dev@lists.freedesktop.org>; Wed,  8 Mar 2023 07:53:51 +0000 (UTC)
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B229210E5A9
+ for <igt-dev@lists.freedesktop.org>; Wed,  8 Mar 2023 07:53:54 +0000 (UTC)
 From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Wed,  8 Mar 2023 08:53:27 +0100
-Message-Id: <20230308075334.944622-1-zbigniew.kempczynski@intel.com>
+Date: Wed,  8 Mar 2023 08:53:30 +0100
+Message-Id: <20230308075334.944622-4-zbigniew.kempczynski@intel.com>
+In-Reply-To: <20230308075334.944622-1-zbigniew.kempczynski@intel.com>
+References: <20230308075334.944622-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v8 0/7] Initial Xe test suite
+Subject: [igt-dev] [PATCH i-g-t v8 3/7] lib/igt_pm: Add a helper to query
+ the runtime_usage.
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,110 +24,55 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-This is continuation of https://patchwork.freedesktop.org/series/112191/
+From: Rodrigo Vivi <rodrigo.vivi@intel.com>
 
-Series doesn't contain KUnit changes as they are not upstream IGT ready
-yet. Functional changes (library, tests, etc.) were squashed to dedicated
-patch to make review easier.
+It will be useful so the tests can assert the expected
+usage counter movement depending on the operation.
 
-v3: address review comments (Kamil, Mauro)
-v4: address review comments (Michał)
-    - add documentation for most of public functions
-    - use function generator instead of RETV() macro
-    - fix gt usage on memory regioning (it might lead to same region)
-v5: - fix _Static_assert() error produced on older compilers
-    - temporary drop igt_doc.py, we'll provide new version for older
-      pythons
-v6: - alter xe_vm to use long long (Zbigniew)
-v7: - fixed missed one subtest which should use long long (Zbigniew)
-v8: - fixed two subtests which didn't compile on mips/armhf (Zbigniew)
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+Acked-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+---
+ lib/igt_pm.c | 18 ++++++++++++++++++
+ lib/igt_pm.h |  1 +
+ 2 files changed, 19 insertions(+)
 
-Rodrigo Vivi (1):
-  lib/igt_pm: Add a helper to query the runtime_usage.
-
-Zbigniew Kempczyński (6):
-  drm-uapi/xe_drm: Add Xe uAPI
-  lib/xe: Introduce Xe library
-  tests/xe: Add Xe IGT tests
-  tools/xe_reg: Add Xe register read/write tool
-  intel-ci/xe-fast-feedback: Introduce xe-fast-feedback list
-  runner/job_list: return error on crashes while running --list-subtests
-
- include/drm-uapi/xe_drm.h                |  807 +++++++++++
- lib/drmtest.c                            |    3 +
- lib/drmtest.h                            |    1 +
- lib/igt_pm.c                             |   18 +
- lib/igt_pm.h                             |    1 +
- lib/meson.build                          |    4 +
- lib/xe/xe_compute.c                      |  406 ++++++
- lib/xe/xe_compute.h                      |   29 +
- lib/xe/xe_ioctl.c                        |  436 ++++++
- lib/xe/xe_ioctl.h                        |   87 ++
- lib/xe/xe_query.c                        |  471 +++++++
- lib/xe/xe_query.h                        |   94 ++
- lib/xe/xe_spin.c                         |  157 +++
- lib/xe/xe_spin.h                         |   48 +
- meson.build                              |    8 +
- runner/job_list.c                        |    1 +
- tests/intel-ci/meson.build               |    1 +
- tests/intel-ci/xe-fast-feedback.testlist |  140 ++
- tests/meson.build                        |    1 +
- tests/xe/meson.build                     |   33 +
- tests/xe/xe_compute.c                    |  148 ++
- tests/xe/xe_debugfs.c                    |  257 ++++
- tests/xe/xe_dma_buf_sync.c               |  262 ++++
- tests/xe/xe_evict.c                      |  623 +++++++++
- tests/xe/xe_exec_balancer.c              |  714 ++++++++++
- tests/xe/xe_exec_basic.c                 |  350 +++++
- tests/xe/xe_exec_compute_mode.c          |  364 +++++
- tests/xe/xe_exec_fault_mode.c            |  575 ++++++++
- tests/xe/xe_exec_reset.c                 |  817 +++++++++++
- tests/xe/xe_exec_threads.c               | 1166 ++++++++++++++++
- tests/xe/xe_guc_pc.c                     |  425 ++++++
- tests/xe/xe_huc_copy.c                   |  205 +++
- tests/xe/xe_mmap.c                       |   79 ++
- tests/xe/xe_mmio.c                       |   94 ++
- tests/xe/xe_pm.c                         |  385 ++++++
- tests/xe/xe_prime_self_import.c          |  489 +++++++
- tests/xe/xe_query.c                      |  475 +++++++
- tests/xe/xe_test_config.json             |  133 ++
- tests/xe/xe_vm.c                         | 1612 ++++++++++++++++++++++
- tests/xe/xe_waitfence.c                  |  103 ++
- tools/meson.build                        |    1 +
- tools/xe_reg.c                           |  366 +++++
- 42 files changed, 12389 insertions(+)
- create mode 100644 include/drm-uapi/xe_drm.h
- create mode 100644 lib/xe/xe_compute.c
- create mode 100644 lib/xe/xe_compute.h
- create mode 100644 lib/xe/xe_ioctl.c
- create mode 100644 lib/xe/xe_ioctl.h
- create mode 100644 lib/xe/xe_query.c
- create mode 100644 lib/xe/xe_query.h
- create mode 100644 lib/xe/xe_spin.c
- create mode 100644 lib/xe/xe_spin.h
- create mode 100644 tests/intel-ci/xe-fast-feedback.testlist
- create mode 100644 tests/xe/meson.build
- create mode 100644 tests/xe/xe_compute.c
- create mode 100644 tests/xe/xe_debugfs.c
- create mode 100644 tests/xe/xe_dma_buf_sync.c
- create mode 100644 tests/xe/xe_evict.c
- create mode 100644 tests/xe/xe_exec_balancer.c
- create mode 100644 tests/xe/xe_exec_basic.c
- create mode 100644 tests/xe/xe_exec_compute_mode.c
- create mode 100644 tests/xe/xe_exec_fault_mode.c
- create mode 100644 tests/xe/xe_exec_reset.c
- create mode 100644 tests/xe/xe_exec_threads.c
- create mode 100644 tests/xe/xe_guc_pc.c
- create mode 100644 tests/xe/xe_huc_copy.c
- create mode 100644 tests/xe/xe_mmap.c
- create mode 100644 tests/xe/xe_mmio.c
- create mode 100644 tests/xe/xe_pm.c
- create mode 100644 tests/xe/xe_prime_self_import.c
- create mode 100644 tests/xe/xe_query.c
- create mode 100644 tests/xe/xe_test_config.json
- create mode 100644 tests/xe/xe_vm.c
- create mode 100644 tests/xe/xe_waitfence.c
- create mode 100644 tools/xe_reg.c
-
+diff --git a/lib/igt_pm.c b/lib/igt_pm.c
+index 6c84e94f63..704acf7d14 100644
+--- a/lib/igt_pm.c
++++ b/lib/igt_pm.c
+@@ -1363,3 +1363,21 @@ int igt_pm_get_runtime_suspended_time(struct pci_device *pci_dev)
+ 
+ 	return -1;
+ }
++
++/**
++ * igt_pm_get_runtime_usage:
++ * @pci_dev: pci device
++ *
++ * Reports the runtime PM usage count of a device.
++ */
++int igt_pm_get_runtime_usage(struct pci_device *pci_dev)
++{
++	char usage_str[64];
++	int usage, fd;
++
++	fd = igt_pm_get_power_attr_fd_rdonly(pci_dev, "runtime_usage");
++	if (igt_pm_read_power_attr(fd, usage_str, 64, true))
++		igt_assert(sscanf(usage_str, "%d", &usage) > 0);
++
++	return usage;
++}
+diff --git a/lib/igt_pm.h b/lib/igt_pm.h
+index f65b960c38..d0d6d673e8 100644
+--- a/lib/igt_pm.h
++++ b/lib/igt_pm.h
+@@ -86,5 +86,6 @@ void igt_pm_restore_pci_card_runtime_pm(void);
+ void igt_pm_print_pci_card_runtime_status(void);
+ bool i915_is_slpc_enabled(int fd);
+ int igt_pm_get_runtime_suspended_time(struct pci_device *pci_dev);
++int igt_pm_get_runtime_usage(struct pci_device *pci_dev);
+ 
+ #endif /* IGT_PM_H */
 -- 
 2.34.1
