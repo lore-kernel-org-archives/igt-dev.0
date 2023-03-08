@@ -1,16 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 966D010E004
- for <igt-dev@lists.freedesktop.org>; Wed,  8 Mar 2023 11:21:03 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9B94810E004
+ for <igt-dev@lists.freedesktop.org>; Wed,  8 Mar 2023 11:21:04 +0000 (UTC)
 From: Karolina Stolarek <karolina.stolarek@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Wed,  8 Mar 2023 12:20:55 +0100
-Message-Id: <cover.1678273325.git.karolina.stolarek@intel.com>
+Date: Wed,  8 Mar 2023 12:20:56 +0100
+Message-Id: <951b57ef149a0e50b3b4760bcceea9f006e8b78b.1678273325.git.karolina.stolarek@intel.com>
+In-Reply-To: <cover.1678273325.git.karolina.stolarek@intel.com>
+References: <cover.1678273325.git.karolina.stolarek@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v2 0/7] Update gem_blits for newer
- generations
+Subject: [igt-dev] [PATCH i-g-t v2 1/7] lib/i915_blt: Add helpers to check
+ XY_SRC_COPY support
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,47 +24,82 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-gem_blits test utilizes XY_SRC_COPY_BLT, a legacy blitter command
-that is not available on newer generations such as MTL. To make
-sure the test covers such platforms, update it to switch to
-XY_FAST_COPY_BLT for blit copy operations.
+Add predicates that check if the command with a specific
+tiling format is supported on the current platform.
 
-In addition to this change, the series:
-  1) Adds helpers to i915_blt library that check support for
-     XY_SRC_COPY_BLT command and its capabilities
-  2) Updates the definitions of older platforms to properly list
-     all available commands and tilings
-  3) Updates gem_blits to use aforementioned helpers to detect
-     tiling formats supported by the platform
+Signed-off-by: Karolina Stolarek <karolina.stolarek@intel.com>
+Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+---
+ lib/i915/i915_blt.c | 33 +++++++++++++++++++++++++++++++++
+ lib/i915/i915_blt.h |  2 ++
+ 2 files changed, 35 insertions(+)
 
-v2:
-  - Remove libdrm include in "tests/i915/gem_blits: Add XY_FAST_COPY_BLT
-    support for gem_blits". It's not needed and causes compile errors
-    on some targets
-
-Arjun Melkaveri (2):
-  tests/i915/gem_blits: Use new copy instruction
-  tests/i915/gem_blits: Add XY_FAST_COPY_BLT support for gem_blits
-
-Karolina Stolarek (4):
-  lib/i915_blt: Add helpers to check XY_SRC_COPY support
-  lib/intel_cmds_info: Correct tiling formats for XY_SRC_COPY
-  lib/intel_device_info: Add tiling information for early gens
-  tests/gem_blits: Use intel_cmds_info library
-
-Vikas Srivastava (1):
-  lib/intel_batchbuffer: Add wrapper API to use
-    XY_FAST_COPY_BLT/XY_SRC_BLT
-
- lib/i915/i915_blt.c        |  33 ++++++++
- lib/i915/i915_blt.h        |   2 +
- lib/i915/intel_cmds_info.c |  24 ++++--
- lib/i915/intel_cmds_info.h |   3 +-
- lib/intel_batchbuffer.c    |  82 +++++++++++++++++--
- lib/intel_batchbuffer.h    |  28 +++++++
- lib/intel_device_info.c    |  29 +++++--
- tests/i915/gem_blits.c     | 156 ++++++++++++++++++++++++-------------
- 8 files changed, 282 insertions(+), 75 deletions(-)
-
+diff --git a/lib/i915/i915_blt.c b/lib/i915/i915_blt.c
+index 63eba4ac..13105820 100644
+--- a/lib/i915/i915_blt.c
++++ b/lib/i915/i915_blt.c
+@@ -295,6 +295,22 @@ bool blt_has_fast_copy(int i915)
+ 	return blt_supports_command(cmds_info, XY_FAST_COPY);
+ }
+ 
++/**
++ * blt_has_xy_src_copy
++ * @i915: drm fd
++ *
++ * Check if XY src copy is supported by @i915 device
++ *
++ * Returns:
++ * true if it does, false otherwise.
++ */
++bool blt_has_xy_src_copy(int i915)
++{
++	const struct intel_cmds_info *cmds_info = GET_CMDS_INFO(i915);
++
++	return blt_supports_command(cmds_info, XY_SRC_COPY);
++}
++
+ /**
+  * blt_fast_copy_supports_tiling
+  * @i915: drm fd
+@@ -329,6 +345,23 @@ bool blt_block_copy_supports_tiling(int i915, enum blt_tiling_type tiling)
+ 	return blt_cmd_supports_tiling(cmds_info, XY_BLOCK_COPY, tiling);
+ }
+ 
++/**
++ * blt_xy_src_copy_supports_tiling
++ * @i915: drm fd
++ * @tiling: tiling format
++ *
++ * Check if XY src copy provided by @i915 device supports @tiling format
++ *
++ * Returns:
++ * true if it does, false otherwise.
++ */
++bool blt_xy_src_copy_supports_tiling(int i915, enum blt_tiling_type tiling)
++{
++	const struct intel_cmds_info *cmds_info = GET_CMDS_INFO(i915);
++
++	return blt_cmd_supports_tiling(cmds_info, XY_SRC_COPY, tiling);
++}
++
+ /**
+  * blt_block_copy_supports_compression
+  * @i915: drm fd
+diff --git a/lib/i915/i915_blt.h b/lib/i915/i915_blt.h
+index c535961e..c477c602 100644
+--- a/lib/i915/i915_blt.h
++++ b/lib/i915/i915_blt.h
+@@ -168,9 +168,11 @@ bool blt_cmd_has_property(const struct intel_cmds_info *cmds_info,
+ 
+ bool blt_has_block_copy(int i915);
+ bool blt_has_fast_copy(int i915);
++bool blt_has_xy_src_copy(int i915);
+ 
+ bool blt_fast_copy_supports_tiling(int i915, enum blt_tiling_type tiling);
+ bool blt_block_copy_supports_tiling(int i915, enum blt_tiling_type tiling);
++bool blt_xy_src_copy_supports_tiling(int i915, enum blt_tiling_type tiling);
+ bool blt_block_copy_supports_compression(int i915);
+ bool blt_uses_extended_block_copy(int i915);
+ 
 -- 
 2.25.1
