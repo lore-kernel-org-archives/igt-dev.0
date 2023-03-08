@@ -1,15 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Content-Type: multipart/alternative;
- boundary="===============8452820789708857355=="
+ boundary="===============4769063839573673241=="
 MIME-Version: 1.0
 From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Matthew Brost" <matthew.brost@intel.com>
-Date: Wed, 08 Mar 2023 20:08:33 -0000
-Message-ID: <167830611358.20402.5808335147064871959@emeril.freedesktop.org>
-References: <20230307152130.795989-1-zbigniew.kempczynski@intel.com>
-In-Reply-To: <20230307152130.795989-1-zbigniew.kempczynski@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLklHVDogc3VjY2VzcyBmb3IgSW5pdGlh?=
- =?utf-8?q?l_Xe_test_suite_=28rev5=29?=
+To: "Srivastava, Vikas" <vikas.srivastava@intel.com>
+Date: Wed, 08 Mar 2023 20:25:38 -0000
+Message-ID: <167830713873.20407.15047728787853121727@emeril.freedesktop.org>
+References: <20230307161713.498564-1-vikas.srivastava@intel.com>
+In-Reply-To: <20230307161713.498564-1-vikas.srivastava@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLklHVDogZmFpbHVyZSBmb3Igc2VyaWVz?=
+ =?utf-8?q?_starting_with_=5B1/2=5D_lib=3A_Copy_intel=5Fgpu=5Fcommands=2Eh?=
+ =?utf-8?q?_from_the_kernel?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,3460 +24,740 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============8452820789708857355==
+--===============4769063839573673241==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 
 == Series Details ==
 
-Series: Initial Xe test suite (rev5)
-URL   : https://patchwork.freedesktop.org/series/112191/
-State : success
+Series: series starting with [1/2] lib: Copy intel_gpu_commands.h from the kernel
+URL   : https://patchwork.freedesktop.org/series/114780/
+State : failure
 
 == Summary ==
 
-CI Bug Log - changes from IGT_7183_full -> IGTPW_8567_full
+CI Bug Log - changes from IGT_7183_full -> IGTPW_8568_full
 ====================================================
 
 Summary
 -------
 
-  **SUCCESS**
+  **FAILURE**
 
-  No regressions found.
+  Serious unknown changes coming with IGTPW_8568_full absolutely need to be
+  verified manually.
+  
+  If you think the reported changes have nothing to do with the changes
+  introduced in IGTPW_8568_full, please notify your bug team to allow them
+  to document this new failure mode, which will reduce false positives in CI.
 
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8567/index.html
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/index.html
 
-Participating hosts (8 -> 11)
+Participating hosts (8 -> 10)
 ------------------------------
 
-  Additional (3): shard-rkl0 shard-tglu-9 shard-tglu0 
+  Additional (2): shard-tglu-9 shard-tglu0 
 
 Possible new issues
 -------------------
 
-  Here are the unknown changes that may have been introduced in IGTPW_8567_full:
+  Here are the unknown changes that may have been introduced in IGTPW_8568_full:
 
 ### IGT changes ###
 
 #### Possible regressions ####
 
-  * {igt@xe/xe_guc_pc@rc6_on_idle} (NEW):
-    - {shard-dg1}:        NOTRUN -> [SKIP][1] +367 similar issues
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8567/shard-dg1-14/igt@xe/xe_guc_pc@rc6_on_idle.html
+  * igt@perf@non-zero-reason:
+    - shard-glk:          [PASS][1] -> [FAIL][2]
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7183/shard-glk1/igt@perf@non-zero-reason.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-glk2/igt@perf@non-zero-reason.html
 
   
-New tests
----------
-
-  New tests have been introduced between IGT_7183_full and IGTPW_8567_full:
-
-### New IGT tests (787) ###
-
-  * igt@xe/xe_compute@compute-square:
-    - Statuses : 3 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_debugfs@base:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_debugfs@forcewake:
-    - Statuses : 3 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_debugfs@gt0:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_debugfs@gt1:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_dma_buf_sync@export-dma-buf-many:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_dma_buf_sync@export-dma-buf-many-read-sync:
-    - Statuses : 3 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_dma_buf_sync@export-dma-buf-once:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_dma_buf_sync@export-dma-buf-once-read-sync:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_evict@evict-beng-cm-threads-large:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_evict@evict-beng-cm-threads-large-multi-vm:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_evict@evict-beng-cm-threads-small:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_evict@evict-beng-cm-threads-small-multi-vm:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_evict@evict-beng-large:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_evict@evict-beng-large-cm:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_evict@evict-beng-large-external:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_evict@evict-beng-large-external-cm:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_evict@evict-beng-large-multi-vm:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_evict@evict-beng-large-multi-vm-cm:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_evict@evict-beng-mixed-many-threads-large:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_evict@evict-beng-mixed-many-threads-small:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_evict@evict-beng-mixed-threads-large:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_evict@evict-beng-mixed-threads-large-multi-vm:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_evict@evict-beng-mixed-threads-small:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_evict@evict-beng-mixed-threads-small-multi-vm:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_evict@evict-beng-small:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_evict@evict-beng-small-cm:
-    - Statuses : 3 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_evict@evict-beng-small-external:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_evict@evict-beng-small-external-cm:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_evict@evict-beng-small-multi-vm:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_evict@evict-beng-small-multi-vm-cm:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_evict@evict-beng-threads-large:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_evict@evict-beng-threads-large-multi-vm:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_evict@evict-beng-threads-small:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_evict@evict-beng-threads-small-multi-vm:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_evict@evict-cm-threads-large:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_evict@evict-cm-threads-large-multi-vm:
-    - Statuses : 3 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_evict@evict-cm-threads-small:
-    - Statuses : 3 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_evict@evict-cm-threads-small-multi-vm:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_evict@evict-large:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_evict@evict-large-cm:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_evict@evict-large-external:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_evict@evict-large-external-cm:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_evict@evict-large-multi-vm:
-    - Statuses : 3 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_evict@evict-large-multi-vm-cm:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_evict@evict-mixed-many-threads-large:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_evict@evict-mixed-many-threads-small:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_evict@evict-mixed-threads-large:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_evict@evict-mixed-threads-large-multi-vm:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_evict@evict-mixed-threads-small:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_evict@evict-mixed-threads-small-multi-vm:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_evict@evict-small:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_evict@evict-small-cm:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_evict@evict-small-external:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_evict@evict-small-external-cm:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_evict@evict-small-multi-vm:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_evict@evict-small-multi-vm-cm:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_evict@evict-threads-large:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_evict@evict-threads-large-multi-vm:
-    - Statuses : 3 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_evict@evict-threads-small:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_evict@evict-threads-small-multi-vm:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_balancer@many-cm-virtual-basic:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_balancer@many-cm-virtual-rebind:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_balancer@many-cm-virtual-userptr:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_balancer@many-cm-virtual-userptr-invalidate:
-    - Statuses : 3 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_balancer@many-cm-virtual-userptr-invalidate-race:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_balancer@many-cm-virtual-userptr-rebind:
-    - Statuses : 3 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_balancer@many-engines-cm-virtual-basic:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_balancer@many-engines-cm-virtual-rebind:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_balancer@many-engines-cm-virtual-userptr:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_balancer@many-engines-cm-virtual-userptr-invalidate:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_balancer@many-engines-cm-virtual-userptr-invalidate-race:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_balancer@many-engines-cm-virtual-userptr-rebind:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_balancer@many-engines-parallel-basic:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_balancer@many-engines-parallel-rebind:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_balancer@many-engines-parallel-userptr:
-    - Statuses : 3 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_balancer@many-engines-parallel-userptr-invalidate:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_balancer@many-engines-parallel-userptr-invalidate-race:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_balancer@many-engines-parallel-userptr-rebind:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_balancer@many-engines-virtual-basic:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_balancer@many-engines-virtual-rebind:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_balancer@many-engines-virtual-userptr:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_balancer@many-engines-virtual-userptr-invalidate:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_balancer@many-engines-virtual-userptr-invalidate-race:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_balancer@many-engines-virtual-userptr-rebind:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_balancer@many-parallel-basic:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_balancer@many-parallel-rebind:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_balancer@many-parallel-userptr:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_balancer@many-parallel-userptr-invalidate:
-    - Statuses : 3 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_balancer@many-parallel-userptr-invalidate-race:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_balancer@many-parallel-userptr-rebind:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_balancer@many-virtual-basic:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_balancer@many-virtual-rebind:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_balancer@many-virtual-userptr:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_balancer@many-virtual-userptr-invalidate:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_balancer@many-virtual-userptr-invalidate-race:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_balancer@many-virtual-userptr-rebind:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_balancer@no-exec-cm-virtual-basic:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_balancer@no-exec-cm-virtual-rebind:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_balancer@no-exec-cm-virtual-userptr:
-    - Statuses : 3 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_balancer@no-exec-cm-virtual-userptr-invalidate:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_balancer@no-exec-cm-virtual-userptr-invalidate-race:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_balancer@no-exec-cm-virtual-userptr-rebind:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_balancer@no-exec-parallel-basic:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_balancer@no-exec-parallel-rebind:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_balancer@no-exec-parallel-userptr:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_balancer@no-exec-parallel-userptr-invalidate:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_balancer@no-exec-parallel-userptr-invalidate-race:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_balancer@no-exec-parallel-userptr-rebind:
-    - Statuses : 3 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_balancer@no-exec-virtual-basic:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_balancer@no-exec-virtual-rebind:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_balancer@no-exec-virtual-userptr:
-    - Statuses : 3 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_balancer@no-exec-virtual-userptr-invalidate:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_balancer@no-exec-virtual-userptr-invalidate-race:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_balancer@no-exec-virtual-userptr-rebind:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_balancer@once-cm-virtual-basic:
-    - Statuses : 3 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_balancer@once-cm-virtual-rebind:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_balancer@once-cm-virtual-userptr:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_balancer@once-cm-virtual-userptr-invalidate:
-    - Statuses : 3 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_balancer@once-cm-virtual-userptr-invalidate-race:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_balancer@once-cm-virtual-userptr-rebind:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_balancer@once-parallel-basic:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_balancer@once-parallel-rebind:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_balancer@once-parallel-userptr:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_balancer@once-parallel-userptr-invalidate:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_balancer@once-parallel-userptr-invalidate-race:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_balancer@once-parallel-userptr-rebind:
-    - Statuses : 3 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_balancer@once-virtual-basic:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_balancer@once-virtual-rebind:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_balancer@once-virtual-userptr:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_balancer@once-virtual-userptr-invalidate:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_balancer@once-virtual-userptr-invalidate-race:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_balancer@once-virtual-userptr-rebind:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_balancer@twice-cm-virtual-basic:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_balancer@twice-cm-virtual-rebind:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_balancer@twice-cm-virtual-userptr:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_balancer@twice-cm-virtual-userptr-invalidate:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_balancer@twice-cm-virtual-userptr-invalidate-race:
-    - Statuses : 3 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_balancer@twice-cm-virtual-userptr-rebind:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_balancer@twice-parallel-basic:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_balancer@twice-parallel-rebind:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_balancer@twice-parallel-userptr:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_balancer@twice-parallel-userptr-invalidate:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_balancer@twice-parallel-userptr-invalidate-race:
-    - Statuses : 3 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_balancer@twice-parallel-userptr-rebind:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_balancer@twice-virtual-basic:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_balancer@twice-virtual-rebind:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_balancer@twice-virtual-userptr:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_balancer@twice-virtual-userptr-invalidate:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_balancer@twice-virtual-userptr-invalidate-race:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_balancer@twice-virtual-userptr-rebind:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_balancer@virtual-all-active:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_basic@many-basic:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_basic@many-basic-defer-bind:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_basic@many-basic-defer-mmap:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_basic@many-bindengine:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_basic@many-bindengine-rebind:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_basic@many-bindengine-userptr:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_basic@many-bindengine-userptr-invalidate:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_basic@many-bindengine-userptr-invalidate-race:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_basic@many-bindengine-userptr-rebind:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_basic@many-engines-basic:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_basic@many-engines-basic-defer-bind:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_basic@many-engines-basic-defer-mmap:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_basic@many-engines-bindengine:
-    - Statuses : 3 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_basic@many-engines-bindengine-rebind:
-    - Statuses : 3 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_basic@many-engines-bindengine-userptr:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_basic@many-engines-bindengine-userptr-invalidate:
-    - Statuses : 3 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_basic@many-engines-bindengine-userptr-invalidate-race:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_basic@many-engines-bindengine-userptr-rebind:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_basic@many-engines-many-vm-basic:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_basic@many-engines-many-vm-basic-defer-bind:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_basic@many-engines-many-vm-basic-defer-mmap:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_basic@many-engines-many-vm-bindengine:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_basic@many-engines-many-vm-bindengine-rebind:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_basic@many-engines-many-vm-bindengine-userptr:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_basic@many-engines-many-vm-bindengine-userptr-invalidate:
-    - Statuses : 3 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_basic@many-engines-many-vm-bindengine-userptr-invalidate-race:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_basic@many-engines-many-vm-bindengine-userptr-rebind:
-    - Statuses : 3 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_basic@many-engines-many-vm-rebind:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_basic@many-engines-many-vm-userptr:
-    - Statuses : 3 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_basic@many-engines-many-vm-userptr-invalidate:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_basic@many-engines-many-vm-userptr-invalidate-race:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_basic@many-engines-many-vm-userptr-rebind:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_basic@many-engines-rebind:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_basic@many-engines-userptr:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_basic@many-engines-userptr-invalidate:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_basic@many-engines-userptr-invalidate-race:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_basic@many-engines-userptr-rebind:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_basic@many-rebind:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_basic@many-userptr:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_basic@many-userptr-invalidate:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_basic@many-userptr-invalidate-race:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_basic@many-userptr-rebind:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_basic@no-exec-basic:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_basic@no-exec-basic-defer-bind:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_basic@no-exec-basic-defer-mmap:
-    - Statuses : 3 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_basic@no-exec-bindengine:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_basic@no-exec-bindengine-rebind:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_basic@no-exec-bindengine-userptr:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_basic@no-exec-bindengine-userptr-invalidate:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_basic@no-exec-bindengine-userptr-invalidate-race:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_basic@no-exec-bindengine-userptr-rebind:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_basic@no-exec-rebind:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_basic@no-exec-userptr:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_basic@no-exec-userptr-invalidate:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_basic@no-exec-userptr-invalidate-race:
-    - Statuses : 3 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_basic@no-exec-userptr-rebind:
-    - Statuses : 3 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_basic@once-basic:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_basic@once-basic-defer-bind:
-    - Statuses : 3 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_basic@once-basic-defer-mmap:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_basic@once-bindengine:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_basic@once-bindengine-rebind:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_basic@once-bindengine-userptr:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_basic@once-bindengine-userptr-invalidate:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_basic@once-bindengine-userptr-invalidate-race:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_basic@once-bindengine-userptr-rebind:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_basic@once-rebind:
-    - Statuses : 3 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_basic@once-userptr:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_basic@once-userptr-invalidate:
-    - Statuses : 3 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_basic@once-userptr-invalidate-race:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_basic@once-userptr-rebind:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_basic@twice-basic:
-    - Statuses : 3 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_basic@twice-basic-defer-bind:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_basic@twice-basic-defer-mmap:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_basic@twice-bindengine:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_basic@twice-bindengine-rebind:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_basic@twice-bindengine-userptr:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_basic@twice-bindengine-userptr-invalidate:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_basic@twice-bindengine-userptr-invalidate-race:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_basic@twice-bindengine-userptr-rebind:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_basic@twice-rebind:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_basic@twice-userptr:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_basic@twice-userptr-invalidate:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_basic@twice-userptr-invalidate-race:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_basic@twice-userptr-rebind:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_compute_mode@many-basic:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_compute_mode@many-bindengine:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_compute_mode@many-bindengine-rebind:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_compute_mode@many-bindengine-userptr:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_compute_mode@many-bindengine-userptr-invalidate:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_compute_mode@many-bindengine-userptr-invalidate-race:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_compute_mode@many-bindengine-userptr-rebind:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_compute_mode@many-engines-basic:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_compute_mode@many-engines-bindengine:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_compute_mode@many-engines-bindengine-rebind:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_compute_mode@many-engines-bindengine-userptr:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_compute_mode@many-engines-bindengine-userptr-invalidate:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_compute_mode@many-engines-bindengine-userptr-rebind:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_compute_mode@many-engines-preempt-fence-early:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_compute_mode@many-engines-rebind:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_compute_mode@many-engines-userptr:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_compute_mode@many-engines-userptr-invalidate:
-    - Statuses : 3 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_compute_mode@many-engines-userptr-rebind:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_compute_mode@many-preempt-fence-early:
-    - Statuses : 3 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_compute_mode@many-rebind:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_compute_mode@many-userptr:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_compute_mode@many-userptr-invalidate:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_compute_mode@many-userptr-invalidate-race:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_compute_mode@many-userptr-rebind:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_compute_mode@once-basic:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_compute_mode@once-bindengine:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_compute_mode@once-bindengine-rebind:
-    - Statuses : 3 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_compute_mode@once-bindengine-userptr:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_compute_mode@once-bindengine-userptr-invalidate:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_compute_mode@once-bindengine-userptr-invalidate-race:
-    - Statuses : 3 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_compute_mode@once-bindengine-userptr-rebind:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_compute_mode@once-preempt-fence-early:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_compute_mode@once-rebind:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_compute_mode@once-userptr:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_compute_mode@once-userptr-invalidate:
-    - Statuses : 3 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_compute_mode@once-userptr-invalidate-race:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_compute_mode@once-userptr-rebind:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_compute_mode@twice-basic:
-    - Statuses : 3 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_compute_mode@twice-bindengine:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_compute_mode@twice-bindengine-rebind:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_compute_mode@twice-bindengine-userptr:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_compute_mode@twice-bindengine-userptr-invalidate:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_compute_mode@twice-bindengine-userptr-invalidate-race:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_compute_mode@twice-bindengine-userptr-rebind:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_compute_mode@twice-preempt-fence-early:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_compute_mode@twice-rebind:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_compute_mode@twice-userptr:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_compute_mode@twice-userptr-invalidate:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_compute_mode@twice-userptr-invalidate-race:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_compute_mode@twice-userptr-rebind:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_fault_mode@atomic-many:
-    - Statuses : 3 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_fault_mode@atomic-many-wait:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_fault_mode@atomic-once:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_fault_mode@atomic-once-wait:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_fault_mode@many-basic:
-    - Statuses : 3 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_fault_mode@many-basic-imm:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_fault_mode@many-basic-prefetch:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_fault_mode@many-bindengine:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_fault_mode@many-bindengine-imm:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_fault_mode@many-bindengine-prefetch:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_fault_mode@many-bindengine-rebind:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_fault_mode@many-bindengine-rebind-imm:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_fault_mode@many-bindengine-rebind-prefetch:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_fault_mode@many-bindengine-userptr:
-    - Statuses : 3 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_fault_mode@many-bindengine-userptr-imm:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_fault_mode@many-bindengine-userptr-invalidate:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_fault_mode@many-bindengine-userptr-invalidate-imm:
-    - Statuses : 3 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_fault_mode@many-bindengine-userptr-invalidate-prefetch:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_fault_mode@many-bindengine-userptr-invalidate-race:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_fault_mode@many-bindengine-userptr-invalidate-race-imm:
-    - Statuses : 3 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_fault_mode@many-bindengine-userptr-invalidate-race-prefetch:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_fault_mode@many-bindengine-userptr-prefetch:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_fault_mode@many-bindengine-userptr-rebind:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_fault_mode@many-bindengine-userptr-rebind-imm:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_fault_mode@many-bindengine-userptr-rebind-prefetch:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_fault_mode@many-engines-basic:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_fault_mode@many-engines-basic-imm:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_fault_mode@many-engines-basic-prefetch:
-    - Statuses : 3 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_fault_mode@many-engines-bindengine:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_fault_mode@many-engines-bindengine-imm:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_fault_mode@many-engines-bindengine-prefetch:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_fault_mode@many-engines-bindengine-rebind:
-    - Statuses : 3 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_fault_mode@many-engines-bindengine-rebind-imm:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_fault_mode@many-engines-bindengine-rebind-prefetch:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_fault_mode@many-engines-bindengine-userptr:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_fault_mode@many-engines-bindengine-userptr-imm:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_fault_mode@many-engines-bindengine-userptr-invalidate:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_fault_mode@many-engines-bindengine-userptr-invalidate-imm:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_fault_mode@many-engines-bindengine-userptr-invalidate-prefetch:
-    - Statuses : 3 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_fault_mode@many-engines-bindengine-userptr-invalidate-race:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_fault_mode@many-engines-bindengine-userptr-invalidate-race-imm:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_fault_mode@many-engines-bindengine-userptr-invalidate-race-prefetch:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_fault_mode@many-engines-bindengine-userptr-prefetch:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_fault_mode@many-engines-bindengine-userptr-rebind:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_fault_mode@many-engines-bindengine-userptr-rebind-imm:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_fault_mode@many-engines-bindengine-userptr-rebind-prefetch:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_fault_mode@many-engines-invalid-fault:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_fault_mode@many-engines-invalid-userptr-fault:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_fault_mode@many-engines-rebind:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_fault_mode@many-engines-rebind-imm:
-    - Statuses : 3 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_fault_mode@many-engines-rebind-prefetch:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_fault_mode@many-engines-userptr:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_fault_mode@many-engines-userptr-imm:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_fault_mode@many-engines-userptr-invalidate:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_fault_mode@many-engines-userptr-invalidate-imm:
-    - Statuses : 3 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_fault_mode@many-engines-userptr-invalidate-prefetch:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_fault_mode@many-engines-userptr-invalidate-race:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_fault_mode@many-engines-userptr-invalidate-race-imm:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_fault_mode@many-engines-userptr-invalidate-race-prefetch:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_fault_mode@many-engines-userptr-prefetch:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_fault_mode@many-engines-userptr-rebind:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_fault_mode@many-engines-userptr-rebind-imm:
-    - Statuses : 3 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_fault_mode@many-engines-userptr-rebind-prefetch:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_fault_mode@many-invalid-fault:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_fault_mode@many-invalid-userptr-fault:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_fault_mode@many-rebind:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_fault_mode@many-rebind-imm:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_fault_mode@many-rebind-prefetch:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_fault_mode@many-userptr:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_fault_mode@many-userptr-imm:
-    - Statuses : 3 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_fault_mode@many-userptr-invalidate:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_fault_mode@many-userptr-invalidate-imm:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_fault_mode@many-userptr-invalidate-prefetch:
-    - Statuses : 3 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_fault_mode@many-userptr-invalidate-race:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_fault_mode@many-userptr-invalidate-race-imm:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_fault_mode@many-userptr-invalidate-race-prefetch:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_fault_mode@many-userptr-prefetch:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_fault_mode@many-userptr-rebind:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_fault_mode@many-userptr-rebind-imm:
-    - Statuses : 3 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_fault_mode@many-userptr-rebind-prefetch:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_fault_mode@once-basic:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_fault_mode@once-basic-imm:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_fault_mode@once-basic-prefetch:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_fault_mode@once-bindengine:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_fault_mode@once-bindengine-imm:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_fault_mode@once-bindengine-prefetch:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_fault_mode@once-bindengine-rebind:
-    - Statuses : 3 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_fault_mode@once-bindengine-rebind-imm:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_fault_mode@once-bindengine-rebind-prefetch:
-    - Statuses : 3 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_fault_mode@once-bindengine-userptr:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_fault_mode@once-bindengine-userptr-imm:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_fault_mode@once-bindengine-userptr-invalidate:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_fault_mode@once-bindengine-userptr-invalidate-imm:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_fault_mode@once-bindengine-userptr-invalidate-prefetch:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_fault_mode@once-bindengine-userptr-invalidate-race:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_fault_mode@once-bindengine-userptr-invalidate-race-imm:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_fault_mode@once-bindengine-userptr-invalidate-race-prefetch:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_fault_mode@once-bindengine-userptr-prefetch:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_fault_mode@once-bindengine-userptr-rebind:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_fault_mode@once-bindengine-userptr-rebind-imm:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_fault_mode@once-bindengine-userptr-rebind-prefetch:
-    - Statuses : 3 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_fault_mode@once-invalid-fault:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_fault_mode@once-invalid-userptr-fault:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_fault_mode@once-rebind:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_fault_mode@once-rebind-imm:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_fault_mode@once-rebind-prefetch:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_fault_mode@once-userptr:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_fault_mode@once-userptr-imm:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_fault_mode@once-userptr-invalidate:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_fault_mode@once-userptr-invalidate-imm:
-    - Statuses : 3 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_fault_mode@once-userptr-invalidate-prefetch:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_fault_mode@once-userptr-invalidate-race:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_fault_mode@once-userptr-invalidate-race-imm:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_fault_mode@once-userptr-invalidate-race-prefetch:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_fault_mode@once-userptr-prefetch:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_fault_mode@once-userptr-rebind:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_fault_mode@once-userptr-rebind-imm:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_fault_mode@once-userptr-rebind-prefetch:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_fault_mode@twice-basic:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_fault_mode@twice-basic-imm:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_fault_mode@twice-basic-prefetch:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_fault_mode@twice-bindengine:
-    - Statuses : 3 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_fault_mode@twice-bindengine-imm:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_fault_mode@twice-bindengine-prefetch:
-    - Statuses : 3 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_fault_mode@twice-bindengine-rebind:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_fault_mode@twice-bindengine-rebind-imm:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_fault_mode@twice-bindengine-rebind-prefetch:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_fault_mode@twice-bindengine-userptr:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_fault_mode@twice-bindengine-userptr-imm:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_fault_mode@twice-bindengine-userptr-invalidate:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_fault_mode@twice-bindengine-userptr-invalidate-imm:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_fault_mode@twice-bindengine-userptr-invalidate-prefetch:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_fault_mode@twice-bindengine-userptr-invalidate-race:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_fault_mode@twice-bindengine-userptr-invalidate-race-imm:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_fault_mode@twice-bindengine-userptr-invalidate-race-prefetch:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_fault_mode@twice-bindengine-userptr-prefetch:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_fault_mode@twice-bindengine-userptr-rebind:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_fault_mode@twice-bindengine-userptr-rebind-imm:
-    - Statuses : 3 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_fault_mode@twice-bindengine-userptr-rebind-prefetch:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_fault_mode@twice-invalid-fault:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_fault_mode@twice-invalid-userptr-fault:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_fault_mode@twice-rebind:
-    - Statuses : 3 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_fault_mode@twice-rebind-imm:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_fault_mode@twice-rebind-prefetch:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_fault_mode@twice-userptr:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_fault_mode@twice-userptr-imm:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_fault_mode@twice-userptr-invalidate:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_fault_mode@twice-userptr-invalidate-imm:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_fault_mode@twice-userptr-invalidate-prefetch:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_fault_mode@twice-userptr-invalidate-race:
-    - Statuses : 3 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_fault_mode@twice-userptr-invalidate-race-imm:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_fault_mode@twice-userptr-invalidate-race-prefetch:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_fault_mode@twice-userptr-prefetch:
-    - Statuses : 3 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_fault_mode@twice-userptr-rebind:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_fault_mode@twice-userptr-rebind-imm:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_fault_mode@twice-userptr-rebind-prefetch:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_reset@cancel:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_reset@cat-error:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_reset@close-engines-close-fd:
-    - Statuses : 3 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_reset@close-fd:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_reset@close-fd-no-exec:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_reset@cm-cat-error:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_reset@cm-close-engines-close-fd:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_reset@cm-close-fd:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_reset@cm-close-fd-no-exec:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_reset@cm-engine-reset:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_reset@cm-gt-reset:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_reset@engine-reset:
-    - Statuses : 3 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_reset@gt-reset:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_reset@gt-reset-stress:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_reset@parallel-cancel:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_reset@parallel-cat-error:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_reset@parallel-close-engines-close-fd:
-    - Statuses : 3 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_reset@parallel-close-fd:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_reset@parallel-close-fd-no-exec:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_reset@parallel-engine-reset:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_reset@parallel-gt-reset:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_reset@spin:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_reset@virtual-cancel:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_reset@virtual-cat-error:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_reset@virtual-close-engines-close-fd:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_reset@virtual-close-fd:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_reset@virtual-close-fd-no-exec:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_reset@virtual-engine-reset:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_reset@virtual-gt-reset:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_threads@threads-bal-basic:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_threads@threads-bal-fd-basic:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_threads@threads-bal-fd-rebind:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_threads@threads-bal-fd-userptr:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_threads@threads-bal-fd-userptr-invalidate:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_threads@threads-bal-fd-userptr-invalidate-race:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_threads@threads-bal-fd-userptr-rebind:
-    - Statuses : 3 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_threads@threads-bal-mixed-basic:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_threads@threads-bal-mixed-fd-basic:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_threads@threads-bal-mixed-fd-rebind:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_threads@threads-bal-mixed-fd-userptr:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_threads@threads-bal-mixed-fd-userptr-invalidate:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_threads@threads-bal-mixed-fd-userptr-invalidate-race:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_threads@threads-bal-mixed-fd-userptr-rebind:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_threads@threads-bal-mixed-rebind:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_threads@threads-bal-mixed-shared-vm-basic:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_threads@threads-bal-mixed-shared-vm-rebind:
-    - Statuses : 3 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_threads@threads-bal-mixed-shared-vm-userptr:
-    - Statuses : 3 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_threads@threads-bal-mixed-shared-vm-userptr-invalidate:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_threads@threads-bal-mixed-shared-vm-userptr-invalidate-race:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_threads@threads-bal-mixed-shared-vm-userptr-rebind:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_threads@threads-bal-mixed-userptr:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_threads@threads-bal-mixed-userptr-invalidate:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_threads@threads-bal-mixed-userptr-invalidate-race:
-    - Statuses : 3 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_threads@threads-bal-mixed-userptr-rebind:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_threads@threads-bal-rebind:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_threads@threads-bal-shared-vm-basic:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_threads@threads-bal-shared-vm-rebind:
-    - Statuses : 3 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_threads@threads-bal-shared-vm-userptr:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_threads@threads-bal-shared-vm-userptr-invalidate:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_threads@threads-bal-shared-vm-userptr-invalidate-race:
-    - Statuses : 3 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_threads@threads-bal-shared-vm-userptr-rebind:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_threads@threads-bal-userptr:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_threads@threads-bal-userptr-invalidate:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_threads@threads-bal-userptr-invalidate-race:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_threads@threads-bal-userptr-rebind:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_threads@threads-basic:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_threads@threads-cm-basic:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_threads@threads-cm-fd-basic:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_threads@threads-cm-fd-rebind:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_threads@threads-cm-fd-userptr:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_threads@threads-cm-fd-userptr-invalidate:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_threads@threads-cm-fd-userptr-invalidate-race:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_threads@threads-cm-fd-userptr-rebind:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_threads@threads-cm-rebind:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_threads@threads-cm-shared-vm-basic:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_threads@threads-cm-shared-vm-rebind:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_threads@threads-cm-shared-vm-userptr:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_threads@threads-cm-shared-vm-userptr-invalidate:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_threads@threads-cm-shared-vm-userptr-invalidate-race:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_threads@threads-cm-shared-vm-userptr-rebind:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_threads@threads-cm-userptr:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_threads@threads-cm-userptr-invalidate:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_threads@threads-cm-userptr-invalidate-race:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_threads@threads-cm-userptr-rebind:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_threads@threads-fd-basic:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_threads@threads-fd-rebind:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_threads@threads-fd-userptr:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_threads@threads-fd-userptr-invalidate:
-    - Statuses : 3 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_threads@threads-fd-userptr-invalidate-race:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_threads@threads-fd-userptr-rebind:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_threads@threads-hang-basic:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_threads@threads-hang-fd-basic:
-    - Statuses : 3 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_threads@threads-hang-fd-rebind:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_threads@threads-hang-fd-userptr:
-    - Statuses : 3 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_threads@threads-hang-fd-userptr-invalidate:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_threads@threads-hang-fd-userptr-invalidate-race:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_threads@threads-hang-fd-userptr-rebind:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_threads@threads-hang-rebind:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_threads@threads-hang-shared-vm-basic:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_threads@threads-hang-shared-vm-rebind:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_threads@threads-hang-shared-vm-rebind-err:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_threads@threads-hang-shared-vm-userptr:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_threads@threads-hang-shared-vm-userptr-invalidate:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_threads@threads-hang-shared-vm-userptr-invalidate-race:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_threads@threads-hang-shared-vm-userptr-rebind:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_threads@threads-hang-shared-vm-userptr-rebind-err:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_threads@threads-hang-userptr:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_threads@threads-hang-userptr-invalidate:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_threads@threads-hang-userptr-invalidate-race:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_threads@threads-hang-userptr-rebind:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_threads@threads-mixed-basic:
-    - Statuses : 3 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_threads@threads-mixed-fd-basic:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_threads@threads-mixed-fd-rebind:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_threads@threads-mixed-fd-userptr:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_threads@threads-mixed-fd-userptr-invalidate:
-    - Statuses : 3 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_threads@threads-mixed-fd-userptr-invalidate-race:
-    - Statuses : 3 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_threads@threads-mixed-fd-userptr-rebind:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_threads@threads-mixed-rebind:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_threads@threads-mixed-shared-vm-basic:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_threads@threads-mixed-shared-vm-rebind:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_threads@threads-mixed-shared-vm-userptr:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_threads@threads-mixed-shared-vm-userptr-invalidate:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_threads@threads-mixed-shared-vm-userptr-invalidate-race:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_threads@threads-mixed-shared-vm-userptr-rebind:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_threads@threads-mixed-userptr:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_threads@threads-mixed-userptr-invalidate:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_threads@threads-mixed-userptr-invalidate-race:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_threads@threads-mixed-userptr-rebind:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_threads@threads-rebind:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_threads@threads-rebind-bindengine:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_threads@threads-shared-vm-basic:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_threads@threads-shared-vm-rebind:
-    - Statuses : 3 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_threads@threads-shared-vm-rebind-bindengine:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_threads@threads-shared-vm-rebind-err:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_threads@threads-shared-vm-userptr:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_threads@threads-shared-vm-userptr-invalidate:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_threads@threads-shared-vm-userptr-invalidate-race:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_threads@threads-shared-vm-userptr-rebind:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_threads@threads-shared-vm-userptr-rebind-err:
-    - Statuses : 3 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_threads@threads-userptr:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_threads@threads-userptr-invalidate:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_threads@threads-userptr-invalidate-race:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_exec_threads@threads-userptr-rebind:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_guc_pc@freq_basic_api:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_guc_pc@freq_fixed_exec:
-    - Statuses : 3 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_guc_pc@freq_fixed_idle:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_guc_pc@freq_low_max:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_guc_pc@freq_range_exec:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_guc_pc@freq_range_idle:
-    - Statuses : 3 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_guc_pc@freq_reset:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_guc_pc@freq_reset_multiple:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_guc_pc@freq_suspend:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_guc_pc@rc0_on_exec:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_guc_pc@rc6_on_idle:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_huc_copy@huc_copy:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_mmap@system:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_mmap@vram:
-    - Statuses : 3 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_mmap@vram-system:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_mmio@mmio-invalid:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_mmio@mmio-timestamp:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_pm@d3cold-basic:
-    - Statuses : 3 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_pm@d3cold-basic-exec:
-    - Statuses : 3 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_pm@d3cold-multiple-execs:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_pm@d3hot-basic:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_pm@d3hot-basic-exec:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_pm@d3hot-multiple-execs:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_pm@s2idle-basic:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_pm@s2idle-basic-exec:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_pm@s2idle-d3cold-basic-exec:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_pm@s2idle-d3hot-basic-exec:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_pm@s2idle-exec-after:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_pm@s2idle-multiple-execs:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_pm@s3-basic:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_pm@s3-basic-exec:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_pm@s3-d3cold-basic-exec:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_pm@s3-d3hot-basic-exec:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_pm@s3-exec-after:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_pm@s3-multiple-execs:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_pm@s4-basic:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_pm@s4-basic-exec:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_pm@s4-d3cold-basic-exec:
-    - Statuses : 3 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_pm@s4-d3hot-basic-exec:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_pm@s4-exec-after:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_pm@s4-multiple-execs:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_prime_self_import@basic-llseek-bad:
-    - Statuses : 3 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_prime_self_import@basic-llseek-size:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_prime_self_import@basic-with_fd_dup:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_prime_self_import@basic-with_one_bo:
-    - Statuses : 3 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_prime_self_import@basic-with_one_bo_two_files:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_prime_self_import@basic-with_two_bos:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_prime_self_import@export-vs-gem_close-race:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_prime_self_import@reimport-vs-gem_close-race:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_query@query-config:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_query@query-engines:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_query@query-gts:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_query@query-hwconfig:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_query@query-invalid-query:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_query@query-invalid-size:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_query@query-mem-usage:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_query@query-topology:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_vm@bind-array-engine-many:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_vm@bind-array-engine-twice:
-    - Statuses : 3 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_vm@bind-array-many:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_vm@bind-array-twice:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_vm@bind-engines-independent:
-    - Statuses : 3 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_vm@bind-once:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_vm@bind-one-bo-many-times:
-    - Statuses : 3 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_vm@bind-one-bo-many-times-many-vm:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_vm@large-binds-1073741824:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_vm@large-binds-134217728:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_vm@large-binds-16777216:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_vm@large-binds-2097152:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_vm@large-binds-2147483648:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_vm@large-binds-268435456:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_vm@large-binds-33554432:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_vm@large-binds-4194304:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_vm@large-binds-536870912:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_vm@large-binds-67108864:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_vm@large-binds-8388608:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_vm@large-misaligned-binds-1073741824:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_vm@large-misaligned-binds-134217728:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_vm@large-misaligned-binds-16777216:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_vm@large-misaligned-binds-2097152:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_vm@large-misaligned-binds-2147483648:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_vm@large-misaligned-binds-268435456:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_vm@large-misaligned-binds-33554432:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_vm@large-misaligned-binds-4194304:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_vm@large-misaligned-binds-536870912:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_vm@large-misaligned-binds-67108864:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_vm@large-misaligned-binds-8388608:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_vm@large-split-binds-1073741824:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_vm@large-split-binds-134217728:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_vm@large-split-binds-16777216:
-    - Statuses : 3 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_vm@large-split-binds-2097152:
-    - Statuses : 3 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_vm@large-split-binds-2147483648:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_vm@large-split-binds-268435456:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_vm@large-split-binds-33554432:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_vm@large-split-binds-4194304:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_vm@large-split-binds-536870912:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_vm@large-split-binds-67108864:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_vm@large-split-binds-8388608:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_vm@large-split-misaligned-binds-1073741824:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_vm@large-split-misaligned-binds-134217728:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_vm@large-split-misaligned-binds-16777216:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_vm@large-split-misaligned-binds-2097152:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_vm@large-split-misaligned-binds-2147483648:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_vm@large-split-misaligned-binds-268435456:
-    - Statuses : 3 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_vm@large-split-misaligned-binds-33554432:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_vm@large-split-misaligned-binds-4194304:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_vm@large-split-misaligned-binds-536870912:
-    - Statuses : 3 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_vm@large-split-misaligned-binds-67108864:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_vm@large-split-misaligned-binds-8388608:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_vm@large-userptr-binds-1073741824:
-    - Statuses : 3 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_vm@large-userptr-binds-134217728:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_vm@large-userptr-binds-16777216:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_vm@large-userptr-binds-2097152:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_vm@large-userptr-binds-2147483648:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_vm@large-userptr-binds-268435456:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_vm@large-userptr-binds-33554432:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_vm@large-userptr-binds-4194304:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_vm@large-userptr-binds-536870912:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_vm@large-userptr-binds-67108864:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_vm@large-userptr-binds-8388608:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_vm@large-userptr-misaligned-binds-1073741824:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_vm@large-userptr-misaligned-binds-134217728:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_vm@large-userptr-misaligned-binds-16777216:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_vm@large-userptr-misaligned-binds-2097152:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_vm@large-userptr-misaligned-binds-2147483648:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_vm@large-userptr-misaligned-binds-268435456:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_vm@large-userptr-misaligned-binds-33554432:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_vm@large-userptr-misaligned-binds-4194304:
-    - Statuses : 3 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_vm@large-userptr-misaligned-binds-536870912:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_vm@large-userptr-misaligned-binds-67108864:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_vm@large-userptr-misaligned-binds-8388608:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_vm@large-userptr-split-binds-1073741824:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_vm@large-userptr-split-binds-134217728:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_vm@large-userptr-split-binds-16777216:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_vm@large-userptr-split-binds-2097152:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_vm@large-userptr-split-binds-2147483648:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_vm@large-userptr-split-binds-268435456:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_vm@large-userptr-split-binds-33554432:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_vm@large-userptr-split-binds-4194304:
-    - Statuses : 3 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_vm@large-userptr-split-binds-536870912:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_vm@large-userptr-split-binds-67108864:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_vm@large-userptr-split-binds-8388608:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_vm@large-userptr-split-misaligned-binds-1073741824:
-    - Statuses : 3 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_vm@large-userptr-split-misaligned-binds-134217728:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_vm@large-userptr-split-misaligned-binds-16777216:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_vm@large-userptr-split-misaligned-binds-2097152:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_vm@large-userptr-split-misaligned-binds-2147483648:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_vm@large-userptr-split-misaligned-binds-268435456:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_vm@large-userptr-split-misaligned-binds-33554432:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_vm@large-userptr-split-misaligned-binds-4194304:
-    - Statuses : 3 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_vm@large-userptr-split-misaligned-binds-536870912:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_vm@large-userptr-split-misaligned-binds-67108864:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_vm@large-userptr-split-misaligned-binds-8388608:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_vm@mixed-binds-1611661312:
-    - Statuses : 3 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_vm@mixed-binds-3145728:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_vm@mixed-misaligned-binds-1611661312:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_vm@mixed-misaligned-binds-3145728:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_vm@mixed-userptr-binds-1611661312:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_vm@mixed-userptr-binds-3145728:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_vm@mixed-userptr-misaligned-binds-1611661312:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_vm@mixed-userptr-misaligned-binds-3145728:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_vm@munmap-style-unbind-all:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_vm@munmap-style-unbind-either-side-full:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_vm@munmap-style-unbind-either-side-partial:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_vm@munmap-style-unbind-either-side-partial-hammer:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_vm@munmap-style-unbind-end:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_vm@munmap-style-unbind-front:
-    - Statuses : 3 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_vm@munmap-style-unbind-many-all:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_vm@munmap-style-unbind-many-either-side-full:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_vm@munmap-style-unbind-many-either-side-partial:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_vm@munmap-style-unbind-many-either-side-partial-hammer:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_vm@munmap-style-unbind-many-end:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_vm@munmap-style-unbind-many-front:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_vm@munmap-style-unbind-one-partial:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_vm@munmap-style-unbind-userptr-all:
-    - Statuses : 3 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_vm@munmap-style-unbind-userptr-either-side-full:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_vm@munmap-style-unbind-userptr-either-side-partial:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_vm@munmap-style-unbind-userptr-end:
-    - Statuses : 3 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_vm@munmap-style-unbind-userptr-front:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_vm@munmap-style-unbind-userptr-inval-either-side-full:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_vm@munmap-style-unbind-userptr-inval-end:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_vm@munmap-style-unbind-userptr-inval-front:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_vm@munmap-style-unbind-userptr-inval-many-all:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_vm@munmap-style-unbind-userptr-inval-many-either-side-full:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_vm@munmap-style-unbind-userptr-inval-many-either-side-partial:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_vm@munmap-style-unbind-userptr-inval-many-end:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_vm@munmap-style-unbind-userptr-inval-many-front:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_vm@munmap-style-unbind-userptr-many-all:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_vm@munmap-style-unbind-userptr-many-either-side-full:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_vm@munmap-style-unbind-userptr-many-end:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_vm@munmap-style-unbind-userptr-many-front:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_vm@munmap-style-unbind-userptr-one-partial:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_vm@scratch:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_vm@shared-pde-page:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_vm@shared-pde2-page:
-    - Statuses : 3 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_vm@shared-pde3-page:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_vm@shared-pte-page:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_vm@unbind-all-2-vmas:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_vm@unbind-all-8-vmas:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_vm@vm-async-ops-err:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_vm@vm-async-ops-err-destroy:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@xe/xe_waitfence@test:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  
-
 Known issues
 ------------
 
-  Here are the changes found in IGTPW_8567_full that come from known issues:
+  Here are the changes found in IGTPW_8568_full that come from known issues:
 
 ### IGT changes ###
 
 #### Issues hit ####
 
-  * igt@device_reset@unbind-cold-reset-rebind:
-    - shard-tglu-10:      NOTRUN -> [SKIP][2] ([i915#7701])
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8567/shard-tglu-10/igt@device_reset@unbind-cold-reset-rebind.html
+  * igt@debugfs_test@basic-hwmon:
+    - shard-tglu-10:      NOTRUN -> [SKIP][3] ([i915#7456])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-tglu-10/igt@debugfs_test@basic-hwmon.html
 
-  * igt@drm_buddy@all-tests:
-    - shard-tglu-10:      NOTRUN -> [SKIP][3] ([i915#6433])
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8567/shard-tglu-10/igt@drm_buddy@all-tests.html
+  * igt@drm_mm@all-tests:
+    - shard-tglu-9:       NOTRUN -> [SKIP][4] ([i915#6433])
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-tglu-9/igt@drm_mm@all-tests.html
 
-  * igt@feature_discovery@display-2x:
-    - shard-tglu-10:      NOTRUN -> [SKIP][4] ([i915#1839])
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8567/shard-tglu-10/igt@feature_discovery@display-2x.html
+  * igt@drm_read@invalid-buffer:
+    - shard-tglu-9:       NOTRUN -> [SKIP][5] ([i915#1845]) +16 similar issues
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-tglu-9/igt@drm_read@invalid-buffer.html
 
-  * igt@gem_ccs@block-multicopy-compressed:
-    - shard-tglu-9:       NOTRUN -> [SKIP][5] ([i915#5325])
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8567/shard-tglu-9/igt@gem_ccs@block-multicopy-compressed.html
+  * igt@feature_discovery@display-3x:
+    - shard-tglu-10:      NOTRUN -> [SKIP][6] ([i915#1839])
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-tglu-10/igt@feature_discovery@display-3x.html
+
+  * igt@feature_discovery@display-4x:
+    - shard-tglu-9:       NOTRUN -> [SKIP][7] ([i915#1839])
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-tglu-9/igt@feature_discovery@display-4x.html
 
   * igt@gem_ccs@ctrl-surf-copy:
-    - shard-tglu-10:      NOTRUN -> [SKIP][6] ([i915#3555] / [i915#5325])
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8567/shard-tglu-10/igt@gem_ccs@ctrl-surf-copy.html
+    - shard-tglu-9:       NOTRUN -> [SKIP][8] ([i915#3555] / [i915#5325])
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-tglu-9/igt@gem_ccs@ctrl-surf-copy.html
 
-  * igt@gem_ctx_param@set-priority-not-supported:
-    - shard-tglu-10:      NOTRUN -> [SKIP][7] ([fdo#109314])
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8567/shard-tglu-10/igt@gem_ctx_param@set-priority-not-supported.html
+  * igt@gem_ccs@suspend-resume:
+    - shard-tglu-10:      NOTRUN -> [SKIP][9] ([i915#5325]) +1 similar issue
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-tglu-10/igt@gem_ccs@suspend-resume.html
+
+  * igt@gem_create@create-ext-cpu-access-sanity-check:
+    - shard-tglu-9:       NOTRUN -> [SKIP][10] ([i915#6335])
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-tglu-9/igt@gem_create@create-ext-cpu-access-sanity-check.html
+
+  * igt@gem_ctx_sseu@engines:
+    - shard-tglu-9:       NOTRUN -> [SKIP][11] ([i915#280])
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-tglu-9/igt@gem_ctx_sseu@engines.html
 
   * igt@gem_ctx_sseu@invalid-sseu:
-    - shard-tglu-9:       NOTRUN -> [SKIP][8] ([i915#280])
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8567/shard-tglu-9/igt@gem_ctx_sseu@invalid-sseu.html
+    - shard-tglu-10:      NOTRUN -> [SKIP][12] ([i915#280])
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-tglu-10/igt@gem_ctx_sseu@invalid-sseu.html
 
-  * igt@gem_exec_fair@basic-none-rrul@rcs0:
-    - shard-glk:          NOTRUN -> [FAIL][9] ([i915#2842])
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8567/shard-glk7/igt@gem_exec_fair@basic-none-rrul@rcs0.html
+  * igt@gem_exec_fair@basic-none-vip@rcs0:
+    - shard-tglu-9:       NOTRUN -> [FAIL][13] ([i915#2842])
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-tglu-9/igt@gem_exec_fair@basic-none-vip@rcs0.html
 
-  * igt@gem_exec_fair@basic-none-share@rcs0:
-    - shard-tglu-10:      NOTRUN -> [FAIL][10] ([i915#2842]) +5 similar issues
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8567/shard-tglu-10/igt@gem_exec_fair@basic-none-share@rcs0.html
+  * igt@gem_exec_fair@basic-none@rcs0:
+    - shard-tglu-10:      NOTRUN -> [FAIL][14] ([i915#2842]) +5 similar issues
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-tglu-10/igt@gem_exec_fair@basic-none@rcs0.html
 
   * igt@gem_exec_fair@basic-throttle@rcs0:
-    - shard-glk:          [PASS][11] -> [FAIL][12] ([i915#2842]) +1 similar issue
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7183/shard-glk6/igt@gem_exec_fair@basic-throttle@rcs0.html
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8567/shard-glk6/igt@gem_exec_fair@basic-throttle@rcs0.html
+    - shard-glk:          [PASS][15] -> [FAIL][16] ([i915#2842]) +1 similar issue
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7183/shard-glk6/igt@gem_exec_fair@basic-throttle@rcs0.html
+   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-glk6/igt@gem_exec_fair@basic-throttle@rcs0.html
 
-  * igt@gem_exec_flush@basic-batch-kernel-default-cmd:
-    - shard-tglu-9:       NOTRUN -> [SKIP][13] ([fdo#109313])
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8567/shard-tglu-9/igt@gem_exec_flush@basic-batch-kernel-default-cmd.html
+  * igt@gem_exec_params@secure-non-master:
+    - shard-tglu-9:       NOTRUN -> [SKIP][17] ([fdo#112283])
+   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-tglu-9/igt@gem_exec_params@secure-non-master.html
 
-  * igt@gem_lmem_evict@dontneed-evict-race:
-    - shard-tglu-9:       NOTRUN -> [SKIP][14] ([i915#7582])
-   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8567/shard-tglu-9/igt@gem_lmem_evict@dontneed-evict-race.html
+  * igt@gem_exec_suspend@basic-s4-devices@smem:
+    - shard-tglu-10:      NOTRUN -> [ABORT][18] ([i915#7975])
+   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-tglu-10/igt@gem_exec_suspend@basic-s4-devices@smem.html
+
+  * igt@gem_lmem_swapping@heavy-multi:
+    - shard-tglu-10:      NOTRUN -> [SKIP][19] ([i915#4613]) +1 similar issue
+   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-tglu-10/igt@gem_lmem_swapping@heavy-multi.html
+
+  * igt@gem_lmem_swapping@heavy-random:
+    - shard-tglu-9:       NOTRUN -> [SKIP][20] ([i915#4613])
+   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-tglu-9/igt@gem_lmem_swapping@heavy-random.html
 
   * igt@gem_lmem_swapping@parallel-random-verify-ccs:
-    - shard-apl:          NOTRUN -> [SKIP][15] ([fdo#109271] / [i915#4613]) +1 similar issue
-   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8567/shard-apl6/igt@gem_lmem_swapping@parallel-random-verify-ccs.html
+    - shard-apl:          NOTRUN -> [SKIP][21] ([fdo#109271] / [i915#4613]) +1 similar issue
+   [21]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-apl4/igt@gem_lmem_swapping@parallel-random-verify-ccs.html
 
-  * igt@gem_lmem_swapping@verify-ccs:
-    - shard-tglu-10:      NOTRUN -> [SKIP][16] ([i915#4613]) +3 similar issues
-   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8567/shard-tglu-10/igt@gem_lmem_swapping@verify-ccs.html
+  * igt@gem_pxp@protected-raw-src-copy-not-readible:
+    - shard-tglu-9:       NOTRUN -> [SKIP][22] ([i915#4270]) +1 similar issue
+   [22]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-tglu-9/igt@gem_pxp@protected-raw-src-copy-not-readible.html
 
-  * igt@gem_media_vme:
-    - shard-tglu-10:      NOTRUN -> [SKIP][17] ([i915#284])
-   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8567/shard-tglu-10/igt@gem_media_vme.html
-
-  * igt@gem_pread@exhaustion:
-    - shard-tglu-10:      NOTRUN -> [WARN][18] ([i915#2658])
-   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8567/shard-tglu-10/igt@gem_pread@exhaustion.html
-
-  * igt@gem_pxp@verify-pxp-key-change-after-suspend-resume:
-    - shard-tglu-10:      NOTRUN -> [SKIP][19] ([i915#4270]) +1 similar issue
-   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8567/shard-tglu-10/igt@gem_pxp@verify-pxp-key-change-after-suspend-resume.html
+  * igt@gem_pxp@regular-baseline-src-copy-readible:
+    - shard-tglu-10:      NOTRUN -> [SKIP][23] ([i915#4270]) +2 similar issues
+   [23]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-tglu-10/igt@gem_pxp@regular-baseline-src-copy-readible.html
 
   * igt@gem_userptr_blits@coherency-sync:
-    - shard-tglu-9:       NOTRUN -> [SKIP][20] ([fdo#110542])
-   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8567/shard-tglu-9/igt@gem_userptr_blits@coherency-sync.html
+    - shard-tglu-10:      NOTRUN -> [SKIP][24] ([fdo#110542])
+   [24]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-tglu-10/igt@gem_userptr_blits@coherency-sync.html
 
-  * igt@gem_userptr_blits@unsync-overlap:
-    - shard-tglu-10:      NOTRUN -> [SKIP][21] ([i915#3297])
-   [21]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8567/shard-tglu-10/igt@gem_userptr_blits@unsync-overlap.html
+  * igt@gem_userptr_blits@coherency-unsync:
+    - shard-tglu-10:      NOTRUN -> [SKIP][25] ([i915#3297])
+   [25]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-tglu-10/igt@gem_userptr_blits@coherency-unsync.html
 
-  * igt@gen9_exec_parse@allowed-all:
-    - shard-tglu-9:       NOTRUN -> [SKIP][22] ([i915#2527] / [i915#2856])
-   [22]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8567/shard-tglu-9/igt@gen9_exec_parse@allowed-all.html
+  * igt@gem_userptr_blits@unsync-unmap-cycles:
+    - shard-tglu-9:       NOTRUN -> [SKIP][26] ([i915#3297]) +1 similar issue
+   [26]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-tglu-9/igt@gem_userptr_blits@unsync-unmap-cycles.html
+
+  * igt@gem_userptr_blits@vma-merge:
+    - shard-tglu-10:      NOTRUN -> [FAIL][27] ([i915#3318])
+   [27]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-tglu-10/igt@gem_userptr_blits@vma-merge.html
 
   * igt@gen9_exec_parse@allowed-single:
-    - shard-apl:          [PASS][23] -> [ABORT][24] ([i915#5566])
-   [23]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7183/shard-apl4/igt@gen9_exec_parse@allowed-single.html
-   [24]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8567/shard-apl2/igt@gen9_exec_parse@allowed-single.html
+    - shard-apl:          [PASS][28] -> [ABORT][29] ([i915#5566])
+   [28]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7183/shard-apl4/igt@gen9_exec_parse@allowed-single.html
+   [29]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-apl1/igt@gen9_exec_parse@allowed-single.html
 
-  * igt@gen9_exec_parse@batch-zero-length:
-    - shard-tglu-10:      NOTRUN -> [SKIP][25] ([i915#2527] / [i915#2856]) +3 similar issues
-   [25]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8567/shard-tglu-10/igt@gen9_exec_parse@batch-zero-length.html
+  * igt@gen9_exec_parse@basic-rejected-ctx-param:
+    - shard-tglu-10:      NOTRUN -> [SKIP][30] ([i915#2527] / [i915#2856]) +2 similar issues
+   [30]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-tglu-10/igt@gen9_exec_parse@basic-rejected-ctx-param.html
 
-  * igt@i915_module_load@load:
-    - shard-tglu-10:      NOTRUN -> [SKIP][26] ([i915#6227])
-   [26]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8567/shard-tglu-10/igt@i915_module_load@load.html
+  * igt@gen9_exec_parse@bb-oversize:
+    - shard-tglu-9:       NOTRUN -> [SKIP][31] ([i915#2527] / [i915#2856]) +2 similar issues
+   [31]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-tglu-9/igt@gen9_exec_parse@bb-oversize.html
 
-  * igt@i915_pm_backlight@bad-brightness:
-    - shard-tglu-10:      NOTRUN -> [SKIP][27] ([i915#7561]) +1 similar issue
-   [27]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8567/shard-tglu-10/igt@i915_pm_backlight@bad-brightness.html
+  * igt@i915_pm_backlight@fade-with-dpms:
+    - shard-tglu-10:      NOTRUN -> [SKIP][32] ([i915#7561]) +1 similar issue
+   [32]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-tglu-10/igt@i915_pm_backlight@fade-with-dpms.html
 
-  * igt@i915_pm_backlight@fade-with-suspend:
-    - shard-tglu-9:       NOTRUN -> [SKIP][28] ([i915#7561])
-   [28]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8567/shard-tglu-9/igt@i915_pm_backlight@fade-with-suspend.html
+  * igt@i915_pm_rc6_residency@media-rc6-accuracy:
+    - shard-tglu-9:       NOTRUN -> [SKIP][33] ([fdo#109289]) +2 similar issues
+   [33]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-tglu-9/igt@i915_pm_rc6_residency@media-rc6-accuracy.html
 
   * igt@i915_pm_rpm@dpms-non-lpsp:
-    - shard-tglu-10:      NOTRUN -> [SKIP][29] ([fdo#111644] / [i915#1397])
-   [29]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8567/shard-tglu-10/igt@i915_pm_rpm@dpms-non-lpsp.html
+    - shard-tglu-9:       NOTRUN -> [SKIP][34] ([fdo#111644] / [i915#1397]) +1 similar issue
+   [34]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-tglu-9/igt@i915_pm_rpm@dpms-non-lpsp.html
 
-  * igt@i915_pm_rpm@pc8-residency:
-    - shard-tglu-10:      NOTRUN -> [SKIP][30] ([fdo#109506])
-   [30]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8567/shard-tglu-10/igt@i915_pm_rpm@pc8-residency.html
+  * igt@i915_query@query-topology-unsupported:
+    - shard-tglu-10:      NOTRUN -> [SKIP][35] ([fdo#109302])
+   [35]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-tglu-10/igt@i915_query@query-topology-unsupported.html
 
-  * igt@i915_pm_rpm@pm-tiling:
-    - shard-tglu-9:       NOTRUN -> [SKIP][31] ([i915#3547])
-   [31]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8567/shard-tglu-9/igt@i915_pm_rpm@pm-tiling.html
+  * igt@i915_suspend@fence-restore-tiled2untiled:
+    - shard-apl:          NOTRUN -> [ABORT][36] ([i915#180])
+   [36]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-apl2/igt@i915_suspend@fence-restore-tiled2untiled.html
 
-  * igt@i915_query@test-query-geometry-subslices:
-    - shard-tglu-10:      NOTRUN -> [SKIP][32] ([i915#5723])
-   [32]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8567/shard-tglu-10/igt@i915_query@test-query-geometry-subslices.html
+  * igt@kms_big_fb@4-tiled-max-hw-stride-32bpp-rotate-0-hflip-async-flip:
+    - shard-tglu-10:      NOTRUN -> [SKIP][37] ([i915#5286]) +4 similar issues
+   [37]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-tglu-10/igt@kms_big_fb@4-tiled-max-hw-stride-32bpp-rotate-0-hflip-async-flip.html
 
-  * igt@kms_addfb_basic@invalid-smem-bo-on-discrete:
-    - shard-tglu-10:      NOTRUN -> [SKIP][33] ([i915#3826])
-   [33]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8567/shard-tglu-10/igt@kms_addfb_basic@invalid-smem-bo-on-discrete.html
+  * igt@kms_big_fb@yf-tiled-32bpp-rotate-0:
+    - shard-tglu-9:       NOTRUN -> [SKIP][38] ([fdo#111615] / [i915#1845] / [i915#7651]) +8 similar issues
+   [38]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-tglu-9/igt@kms_big_fb@yf-tiled-32bpp-rotate-0.html
 
-  * igt@kms_big_fb@4-tiled-16bpp-rotate-270:
-    - shard-tglu-10:      NOTRUN -> [SKIP][34] ([i915#5286]) +5 similar issues
-   [34]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8567/shard-tglu-10/igt@kms_big_fb@4-tiled-16bpp-rotate-270.html
+  * igt@kms_big_fb@yf-tiled-max-hw-stride-64bpp-rotate-0-async-flip:
+    - shard-tglu-10:      NOTRUN -> [SKIP][39] ([fdo#111615]) +3 similar issues
+   [39]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-tglu-10/igt@kms_big_fb@yf-tiled-max-hw-stride-64bpp-rotate-0-async-flip.html
 
-  * igt@kms_big_fb@x-tiled-64bpp-rotate-90:
-    - shard-tglu-10:      NOTRUN -> [SKIP][35] ([fdo#111614]) +4 similar issues
-   [35]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8567/shard-tglu-10/igt@kms_big_fb@x-tiled-64bpp-rotate-90.html
+  * igt@kms_big_joiner@invalid-modeset:
+    - shard-tglu-9:       NOTRUN -> [SKIP][40] ([i915#2705])
+   [40]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-tglu-9/igt@kms_big_joiner@invalid-modeset.html
 
-  * igt@kms_big_fb@yf-tiled-addfb:
-    - shard-tglu-9:       NOTRUN -> [SKIP][36] ([fdo#111615] / [i915#1845] / [i915#7651]) +3 similar issues
-   [36]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8567/shard-tglu-9/igt@kms_big_fb@yf-tiled-addfb.html
+  * igt@kms_ccs@pipe-a-crc-sprite-planes-basic-y_tiled_gen12_mc_ccs:
+    - shard-tglu-10:      NOTRUN -> [SKIP][41] ([i915#3689] / [i915#3886]) +1 similar issue
+   [41]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-tglu-10/igt@kms_ccs@pipe-a-crc-sprite-planes-basic-y_tiled_gen12_mc_ccs.html
 
-  * igt@kms_big_fb@yf-tiled-max-hw-stride-64bpp-rotate-180-async-flip:
-    - shard-tglu-10:      NOTRUN -> [SKIP][37] ([fdo#111615]) +5 similar issues
-   [37]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8567/shard-tglu-10/igt@kms_big_fb@yf-tiled-max-hw-stride-64bpp-rotate-180-async-flip.html
+  * igt@kms_ccs@pipe-b-bad-pixel-format-4_tiled_dg2_rc_ccs:
+    - shard-tglu-10:      NOTRUN -> [SKIP][42] ([i915#3689] / [i915#6095]) +3 similar issues
+   [42]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-tglu-10/igt@kms_ccs@pipe-b-bad-pixel-format-4_tiled_dg2_rc_ccs.html
 
-  * igt@kms_ccs@pipe-a-crc-primary-basic-y_tiled_ccs:
-    - shard-tglu-10:      NOTRUN -> [SKIP][38] ([i915#3689]) +8 similar issues
-   [38]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8567/shard-tglu-10/igt@kms_ccs@pipe-a-crc-primary-basic-y_tiled_ccs.html
+  * igt@kms_ccs@pipe-b-bad-rotation-90-4_tiled_dg2_rc_ccs_cc:
+    - shard-tglu-10:      NOTRUN -> [SKIP][43] ([i915#6095]) +4 similar issues
+   [43]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-tglu-10/igt@kms_ccs@pipe-b-bad-rotation-90-4_tiled_dg2_rc_ccs_cc.html
 
-  * igt@kms_ccs@pipe-a-crc-primary-rotation-180-4_tiled_dg2_rc_ccs:
-    - shard-tglu-10:      NOTRUN -> [SKIP][39] ([i915#3689] / [i915#6095]) +4 similar issues
-   [39]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8567/shard-tglu-10/igt@kms_ccs@pipe-a-crc-primary-rotation-180-4_tiled_dg2_rc_ccs.html
-
-  * igt@kms_ccs@pipe-c-bad-aux-stride-y_tiled_gen12_mc_ccs:
-    - shard-tglu-10:      NOTRUN -> [SKIP][40] ([i915#3689] / [i915#3886]) +3 similar issues
-   [40]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8567/shard-tglu-10/igt@kms_ccs@pipe-c-bad-aux-stride-y_tiled_gen12_mc_ccs.html
+  * igt@kms_ccs@pipe-c-ccs-on-another-bo-yf_tiled_ccs:
+    - shard-tglu-10:      NOTRUN -> [SKIP][44] ([fdo#111615] / [i915#3689])
+   [44]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-tglu-10/igt@kms_ccs@pipe-c-ccs-on-another-bo-yf_tiled_ccs.html
 
   * igt@kms_ccs@pipe-c-crc-primary-basic-y_tiled_gen12_mc_ccs:
-    - shard-apl:          NOTRUN -> [SKIP][41] ([fdo#109271] / [i915#3886]) +2 similar issues
-   [41]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8567/shard-apl2/igt@kms_ccs@pipe-c-crc-primary-basic-y_tiled_gen12_mc_ccs.html
-
-  * igt@kms_ccs@pipe-c-crc-primary-rotation-180-4_tiled_dg2_mc_ccs:
-    - shard-tglu-10:      NOTRUN -> [SKIP][42] ([i915#6095]) +2 similar issues
-   [42]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8567/shard-tglu-10/igt@kms_ccs@pipe-c-crc-primary-rotation-180-4_tiled_dg2_mc_ccs.html
+    - shard-apl:          NOTRUN -> [SKIP][45] ([fdo#109271] / [i915#3886]) +2 similar issues
+   [45]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-apl1/igt@kms_ccs@pipe-c-crc-primary-basic-y_tiled_gen12_mc_ccs.html
 
   * igt@kms_ccs@pipe-c-missing-ccs-buffer-y_tiled_gen12_mc_ccs:
-    - shard-glk:          NOTRUN -> [SKIP][43] ([fdo#109271] / [i915#3886])
-   [43]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8567/shard-glk2/igt@kms_ccs@pipe-c-missing-ccs-buffer-y_tiled_gen12_mc_ccs.html
+    - shard-glk:          NOTRUN -> [SKIP][46] ([fdo#109271] / [i915#3886])
+   [46]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-glk4/igt@kms_ccs@pipe-c-missing-ccs-buffer-y_tiled_gen12_mc_ccs.html
 
-  * igt@kms_ccs@pipe-d-bad-aux-stride-yf_tiled_ccs:
-    - shard-tglu-10:      NOTRUN -> [SKIP][44] ([fdo#111615] / [i915#3689]) +8 similar issues
-   [44]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8567/shard-tglu-10/igt@kms_ccs@pipe-d-bad-aux-stride-yf_tiled_ccs.html
+  * igt@kms_ccs@pipe-d-bad-rotation-90-4_tiled_dg2_rc_ccs_cc:
+    - shard-tglu-10:      NOTRUN -> [SKIP][47] ([i915#3689]) +7 similar issues
+   [47]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-tglu-10/igt@kms_ccs@pipe-d-bad-rotation-90-4_tiled_dg2_rc_ccs_cc.html
 
-  * igt@kms_chamelium_color@ctm-max:
-    - shard-tglu-10:      NOTRUN -> [SKIP][45] ([fdo#111827]) +2 similar issues
-   [45]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8567/shard-tglu-10/igt@kms_chamelium_color@ctm-max.html
+  * igt@kms_cdclk@mode-transition:
+    - shard-tglu-9:       NOTRUN -> [SKIP][48] ([i915#3742])
+   [48]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-tglu-9/igt@kms_cdclk@mode-transition.html
+
+  * igt@kms_chamelium_color@ctm-0-25:
+    - shard-tglu-9:       NOTRUN -> [SKIP][49] ([fdo#111827])
+   [49]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-tglu-9/igt@kms_chamelium_color@ctm-0-25.html
 
   * igt@kms_chamelium_edid@dp-edid-resolution-list:
-    - shard-tglu-9:       NOTRUN -> [SKIP][46] ([i915#7828]) +1 similar issue
-   [46]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8567/shard-tglu-9/igt@kms_chamelium_edid@dp-edid-resolution-list.html
+    - shard-tglu-9:       NOTRUN -> [SKIP][50] ([i915#7828]) +5 similar issues
+   [50]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-tglu-9/igt@kms_chamelium_edid@dp-edid-resolution-list.html
 
-  * igt@kms_chamelium_hpd@hdmi-hpd:
-    - shard-tglu-10:      NOTRUN -> [SKIP][47] ([i915#7828]) +9 similar issues
-   [47]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8567/shard-tglu-10/igt@kms_chamelium_hpd@hdmi-hpd.html
+  * igt@kms_chamelium_edid@hdmi-edid-stress-resolution-4k:
+    - shard-tglu-10:      NOTRUN -> [SKIP][51] ([i915#7828]) +3 similar issues
+   [51]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-tglu-10/igt@kms_chamelium_edid@hdmi-edid-stress-resolution-4k.html
 
-  * igt@kms_content_protection@dp-mst-type-1:
-    - shard-tglu-10:      NOTRUN -> [SKIP][48] ([i915#3116] / [i915#3299]) +1 similar issue
-   [48]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8567/shard-tglu-10/igt@kms_content_protection@dp-mst-type-1.html
+  * igt@kms_color@ctm-0-25@pipe-b-hdmi-a-1:
+    - shard-tglu-10:      NOTRUN -> [FAIL][52] ([i915#315] / [i915#6946]) +3 similar issues
+   [52]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-tglu-10/igt@kms_color@ctm-0-25@pipe-b-hdmi-a-1.html
 
-  * igt@kms_cursor_crc@cursor-offscreen-512x512:
-    - shard-tglu-10:      NOTRUN -> [SKIP][49] ([i915#3359]) +5 similar issues
-   [49]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8567/shard-tglu-10/igt@kms_cursor_crc@cursor-offscreen-512x512.html
+  * igt@kms_color@ctm-green-to-red:
+    - shard-tglu-9:       NOTRUN -> [SKIP][53] ([i915#3546]) +1 similar issue
+   [53]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-tglu-9/igt@kms_color@ctm-green-to-red.html
 
-  * igt@kms_cursor_crc@cursor-random-32x32:
-    - shard-tglu-9:       NOTRUN -> [SKIP][50] ([i915#1845]) +5 similar issues
-   [50]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8567/shard-tglu-9/igt@kms_cursor_crc@cursor-random-32x32.html
+  * igt@kms_content_protection@atomic-dpms:
+    - shard-tglu-10:      NOTRUN -> [SKIP][54] ([i915#6944] / [i915#7116] / [i915#7118])
+   [54]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-tglu-10/igt@kms_content_protection@atomic-dpms.html
 
-  * igt@kms_cursor_crc@cursor-suspend:
-    - shard-tglu-9:       NOTRUN -> [SKIP][51] ([i915#1845] / [i915#7651]) +25 similar issues
-   [51]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8567/shard-tglu-9/igt@kms_cursor_crc@cursor-suspend.html
+  * igt@kms_cursor_crc@cursor-rapid-movement-512x512:
+    - shard-tglu-10:      NOTRUN -> [SKIP][55] ([i915#3359]) +1 similar issue
+   [55]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-tglu-10/igt@kms_cursor_crc@cursor-rapid-movement-512x512.html
 
-  * igt@kms_cursor_legacy@2x-flip-vs-cursor-legacy:
-    - shard-glk:          NOTRUN -> [FAIL][52] ([i915#72])
-   [52]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8567/shard-glk7/igt@kms_cursor_legacy@2x-flip-vs-cursor-legacy.html
+  * igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy:
+    - shard-tglu-10:      NOTRUN -> [SKIP][56] ([i915#4103]) +1 similar issue
+   [56]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-tglu-10/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy.html
 
-  * igt@kms_cursor_legacy@cursorb-vs-flipa-atomic-transitions-varying-size:
-    - shard-tglu-10:      NOTRUN -> [SKIP][53] ([fdo#109274]) +2 similar issues
-   [53]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8567/shard-tglu-10/igt@kms_cursor_legacy@cursorb-vs-flipa-atomic-transitions-varying-size.html
+  * igt@kms_cursor_legacy@cursora-vs-flipb-atomic:
+    - shard-tglu-10:      NOTRUN -> [SKIP][57] ([fdo#109274])
+   [57]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-tglu-10/igt@kms_cursor_legacy@cursora-vs-flipb-atomic.html
 
-  * igt@kms_cursor_legacy@short-busy-flip-before-cursor-atomic-transitions:
-    - shard-tglu-10:      NOTRUN -> [SKIP][54] ([i915#4103]) +2 similar issues
-   [54]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8567/shard-tglu-10/igt@kms_cursor_legacy@short-busy-flip-before-cursor-atomic-transitions.html
+  * igt@kms_cursor_legacy@flip-vs-cursor-atomic-transitions-varying-size:
+    - shard-apl:          [PASS][58] -> [FAIL][59] ([i915#2346])
+   [58]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7183/shard-apl6/igt@kms_cursor_legacy@flip-vs-cursor-atomic-transitions-varying-size.html
+   [59]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-apl3/igt@kms_cursor_legacy@flip-vs-cursor-atomic-transitions-varying-size.html
 
-  * igt@kms_fbcon_fbt@fbc-suspend:
-    - shard-apl:          [PASS][55] -> [FAIL][56] ([i915#4767])
-   [55]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7183/shard-apl2/igt@kms_fbcon_fbt@fbc-suspend.html
-   [56]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8567/shard-apl6/igt@kms_fbcon_fbt@fbc-suspend.html
+  * igt@kms_dsc@dsc-with-formats:
+    - shard-tglu-9:       NOTRUN -> [SKIP][60] ([i915#1845] / [i915#7651]) +74 similar issues
+   [60]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-tglu-9/igt@kms_dsc@dsc-with-formats.html
 
-  * igt@kms_flip@2x-flip-vs-dpms-off-vs-modeset-interruptible:
-    - shard-tglu-9:       NOTRUN -> [SKIP][57] ([fdo#109274] / [i915#3637]) +1 similar issue
-   [57]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8567/shard-tglu-9/igt@kms_flip@2x-flip-vs-dpms-off-vs-modeset-interruptible.html
+  * igt@kms_flip@2x-modeset-vs-vblank-race-interruptible:
+    - shard-tglu-10:      NOTRUN -> [SKIP][61] ([fdo#109274] / [i915#3637])
+   [61]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-tglu-10/igt@kms_flip@2x-modeset-vs-vblank-race-interruptible.html
 
-  * igt@kms_flip@2x-plain-flip-ts-check-interruptible:
-    - shard-tglu-10:      NOTRUN -> [SKIP][58] ([fdo#109274] / [i915#3637]) +6 similar issues
-   [58]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8567/shard-tglu-10/igt@kms_flip@2x-plain-flip-ts-check-interruptible.html
+  * igt@kms_flip@2x-wf_vblank-ts-check-interruptible:
+    - shard-tglu-9:       NOTRUN -> [SKIP][62] ([fdo#109274] / [i915#3637]) +5 similar issues
+   [62]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-tglu-9/igt@kms_flip@2x-wf_vblank-ts-check-interruptible.html
 
-  * igt@kms_flip@basic-plain-flip:
-    - shard-tglu-9:       NOTRUN -> [SKIP][59] ([i915#3637])
-   [59]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8567/shard-tglu-9/igt@kms_flip@basic-plain-flip.html
+  * igt@kms_flip@flip-vs-suspend:
+    - shard-tglu-9:       NOTRUN -> [SKIP][63] ([i915#3637]) +6 similar issues
+   [63]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-tglu-9/igt@kms_flip@flip-vs-suspend.html
 
-  * igt@kms_flip_scaled_crc@flip-32bpp-4tile-to-32bpp-4tiledg2rcccs-upscaling:
-    - shard-tglu-9:       NOTRUN -> [SKIP][60] ([i915#3555]) +5 similar issues
-   [60]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8567/shard-tglu-9/igt@kms_flip_scaled_crc@flip-32bpp-4tile-to-32bpp-4tiledg2rcccs-upscaling.html
+  * igt@kms_flip_scaled_crc@flip-32bpp-yftile-to-64bpp-yftile-upscaling:
+    - shard-tglu-9:       NOTRUN -> [SKIP][64] ([i915#3555]) +12 similar issues
+   [64]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-tglu-9/igt@kms_flip_scaled_crc@flip-32bpp-yftile-to-64bpp-yftile-upscaling.html
 
-  * igt@kms_flip_scaled_crc@flip-32bpp-yftile-to-64bpp-yftile-downscaling@pipe-a-valid-mode:
-    - shard-tglu-10:      NOTRUN -> [SKIP][61] ([i915#2587] / [i915#2672])
-   [61]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8567/shard-tglu-10/igt@kms_flip_scaled_crc@flip-32bpp-yftile-to-64bpp-yftile-downscaling@pipe-a-valid-mode.html
+  * igt@kms_flip_scaled_crc@flip-64bpp-yftile-to-32bpp-yftile-upscaling@pipe-a-valid-mode:
+    - shard-tglu-10:      NOTRUN -> [SKIP][65] ([i915#2587] / [i915#2672])
+   [65]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-tglu-10/igt@kms_flip_scaled_crc@flip-64bpp-yftile-to-32bpp-yftile-upscaling@pipe-a-valid-mode.html
 
-  * igt@kms_frontbuffer_tracking@fbc-2p-primscrn-pri-shrfb-draw-mmap-wc:
-    - shard-tglu-10:      NOTRUN -> [SKIP][62] ([fdo#109280]) +33 similar issues
-   [62]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8567/shard-tglu-10/igt@kms_frontbuffer_tracking@fbc-2p-primscrn-pri-shrfb-draw-mmap-wc.html
+  * igt@kms_force_connector_basic@force-load-detect:
+    - shard-tglu-9:       NOTRUN -> [SKIP][66] ([fdo#109285])
+   [66]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-tglu-9/igt@kms_force_connector_basic@force-load-detect.html
 
-  * igt@kms_frontbuffer_tracking@psr-1p-primscrn-spr-indfb-move:
-    - shard-tglu-10:      NOTRUN -> [SKIP][63] ([fdo#110189]) +27 similar issues
-   [63]: https://intel-gfx-ci.01.org/tree/dr
+  * igt@kms_frontbuffer_tracking@fbc-2p-scndscrn-spr-indfb-onoff:
+    - shard-apl:          NOTRUN -> [SKIP][67] ([fdo#109271]) +88 similar issues
+   [67]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-apl7/igt@kms_frontbuffer_tracking@fbc-2p-scndscrn-spr-indfb-onoff.html
+
+  * igt@kms_frontbuffer_tracking@fbcpsr-1p-primscrn-spr-indfb-draw-pwrite:
+    - shard-tglu-10:      NOTRUN -> [SKIP][68] ([fdo#110189]) +21 similar issues
+   [68]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-tglu-10/igt@kms_frontbuffer_tracking@fbcpsr-1p-primscrn-spr-indfb-draw-pwrite.html
+
+  * igt@kms_frontbuffer_tracking@fbcpsr-2p-scndscrn-cur-indfb-draw-render:
+    - shard-tglu-10:      NOTRUN -> [SKIP][69] ([fdo#109280]) +18 similar issues
+   [69]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-tglu-10/igt@kms_frontbuffer_tracking@fbcpsr-2p-scndscrn-cur-indfb-draw-render.html
+
+  * igt@kms_frontbuffer_tracking@fbcpsr-slowdraw:
+    - shard-glk:          NOTRUN -> [SKIP][70] ([fdo#109271]) +17 similar issues
+   [70]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-glk6/igt@kms_frontbuffer_tracking@fbcpsr-slowdraw.html
+
+  * igt@kms_frontbuffer_tracking@psr-2p-scndscrn-pri-shrfb-draw-mmap-cpu:
+    - shard-tglu-9:       NOTRUN -> [SKIP][71] ([i915#1849]) +47 similar issues
+   [71]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-tglu-9/igt@kms_frontbuffer_tracking@psr-2p-scndscrn-pri-shrfb-draw-mmap-cpu.html
+
+  * igt@kms_panel_fitting@atomic-fastset:
+    - shard-tglu-10:      NOTRUN -> [SKIP][72] ([i915#6301])
+   [72]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-tglu-10/igt@kms_panel_fitting@atomic-fastset.html
+
+  * igt@kms_plane@plane-panning-bottom-right@pipe-a-planes:
+    - shard-tglu-9:       NOTRUN -> [SKIP][73] ([i915#1849] / [i915#3558]) +1 similar issue
+   [73]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-tglu-9/igt@kms_plane@plane-panning-bottom-right@pipe-a-planes.html
+
+  * igt@kms_plane_lowres@tiling-yf:
+    - shard-tglu-10:      NOTRUN -> [SKIP][74] ([fdo#112054] / [i915#5288])
+   [74]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-tglu-10/igt@kms_plane_lowres@tiling-yf.html
+
+  * igt@kms_plane_scaling@planes-unity-scaling-downscale-factor-0-5:
+    - shard-tglu-9:       NOTRUN -> [SKIP][75] ([i915#6953] / [i915#8152])
+   [75]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-tglu-9/igt@kms_plane_scaling@planes-unity-scaling-downscale-factor-0-5.html
+
+  * igt@kms_psr2_sf@plane-move-sf-dmg-area:
+    - shard-tglu-10:      NOTRUN -> [SKIP][76] ([fdo#111068] / [i915#658])
+   [76]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-tglu-10/igt@kms_psr2_sf@plane-move-sf-dmg-area.html
+
+  * igt@kms_psr2_su@frontbuffer-xrgb8888:
+    - shard-tglu-9:       NOTRUN -> [SKIP][77] ([fdo#109642] / [fdo#111068] / [i915#658])
+   [77]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-tglu-9/igt@kms_psr2_su@frontbuffer-xrgb8888.html
+
+  * igt@kms_psr2_su@page_flip-p010:
+    - shard-glk:          NOTRUN -> [SKIP][78] ([fdo#109271] / [i915#658])
+   [78]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-glk4/igt@kms_psr2_su@page_flip-p010.html
+
+  * igt@kms_psr@psr2_dpms:
+    - shard-tglu-9:       NOTRUN -> [SKIP][79] ([fdo#110189]) +5 similar issues
+   [79]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-tglu-9/igt@kms_psr@psr2_dpms.html
+
+  * igt@kms_universal_plane@disable-primary-vs-flip-pipe-d:
+    - shard-tglu-9:       NOTRUN -> [SKIP][80] ([fdo#109274]) +2 similar issues
+   [80]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-tglu-9/igt@kms_universal_plane@disable-primary-vs-flip-pipe-d.html
+
+  * igt@kms_vblank@pipe-a-wait-forked-busy-hang:
+    - shard-apl:          [PASS][81] -> [SKIP][82] ([fdo#109271])
+   [81]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7183/shard-apl7/igt@kms_vblank@pipe-a-wait-forked-busy-hang.html
+   [82]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-apl7/igt@kms_vblank@pipe-a-wait-forked-busy-hang.html
+    - shard-glk:          [PASS][83] -> [SKIP][84] ([fdo#109271])
+   [83]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7183/shard-glk7/igt@kms_vblank@pipe-a-wait-forked-busy-hang.html
+   [84]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-glk4/igt@kms_vblank@pipe-a-wait-forked-busy-hang.html
+
+  * igt@kms_vrr@flip-dpms:
+    - shard-tglu-10:      NOTRUN -> [SKIP][85] ([i915#3555]) +3 similar issues
+   [85]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-tglu-10/igt@kms_vrr@flip-dpms.html
+
+  * igt@perf@gen8-unprivileged-single-ctx-counters:
+    - shard-tglu-10:      NOTRUN -> [SKIP][86] ([fdo#109289]) +2 similar issues
+   [86]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-tglu-10/igt@perf@gen8-unprivileged-single-ctx-counters.html
+
+  * igt@v3d/v3d_get_bo_offset@create-get-offsets:
+    - shard-tglu-10:      NOTRUN -> [SKIP][87] ([fdo#109315] / [i915#2575]) +1 similar issue
+   [87]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-tglu-10/igt@v3d/v3d_get_bo_offset@create-get-offsets.html
+
+  * igt@v3d/v3d_perfmon@destroy-valid-perfmon:
+    - shard-tglu-9:       NOTRUN -> [SKIP][88] ([fdo#109315] / [i915#2575]) +2 similar issues
+   [88]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-tglu-9/igt@v3d/v3d_perfmon@destroy-valid-perfmon.html
+
+  * igt@vc4/vc4_label_bo@set-bad-name:
+    - shard-tglu-9:       NOTRUN -> [SKIP][89] ([i915#2575]) +5 similar issues
+   [89]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-tglu-9/igt@vc4/vc4_label_bo@set-bad-name.html
+
+  * igt@vc4/vc4_perfmon@get-values-invalid-pointer:
+    - shard-tglu-10:      NOTRUN -> [SKIP][90] ([i915#2575]) +4 similar issues
+   [90]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-tglu-10/igt@vc4/vc4_perfmon@get-values-invalid-pointer.html
+
+  
+#### Possible fixes ####
+
+  * igt@drm_read@short-buffer-nonblock:
+    - {shard-rkl}:        [SKIP][91] ([i915#4098]) -> [PASS][92]
+   [91]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7183/shard-rkl-5/igt@drm_read@short-buffer-nonblock.html
+   [92]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-rkl-6/igt@drm_read@short-buffer-nonblock.html
+
+  * igt@fbdev@info:
+    - {shard-rkl}:        [SKIP][93] ([i915#2582]) -> [PASS][94]
+   [93]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7183/shard-rkl-4/igt@fbdev@info.html
+   [94]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-rkl-2/igt@fbdev@info.html
+
+  * {igt@gem_barrier_race@remote-request@rcs0}:
+    - shard-apl:          [ABORT][95] ([i915#8211] / [i915#8234]) -> [PASS][96]
+   [95]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7183/shard-apl1/igt@gem_barrier_race@remote-request@rcs0.html
+   [96]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-apl6/igt@gem_barrier_race@remote-request@rcs0.html
+
+  * igt@gem_exec_endless@dispatch@bcs0:
+    - {shard-rkl}:        [SKIP][97] ([i915#6247]) -> [PASS][98]
+   [97]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7183/shard-rkl-5/igt@gem_exec_endless@dispatch@bcs0.html
+   [98]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-rkl-2/igt@gem_exec_endless@dispatch@bcs0.html
+
+  * igt@gem_exec_fair@basic-deadline:
+    - {shard-rkl}:        [FAIL][99] ([i915#2846]) -> [PASS][100]
+   [99]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7183/shard-rkl-1/igt@gem_exec_fair@basic-deadline.html
+   [100]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-rkl-1/igt@gem_exec_fair@basic-deadline.html
+
+  * igt@gem_exec_fair@basic-pace@rcs0:
+    - {shard-rkl}:        [FAIL][101] ([i915#2842]) -> [PASS][102] +4 similar issues
+   [101]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7183/shard-rkl-4/igt@gem_exec_fair@basic-pace@rcs0.html
+   [102]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-rkl-5/igt@gem_exec_fair@basic-pace@rcs0.html
+
+  * igt@gem_exec_fair@basic-pace@vcs0:
+    - shard-glk:          [FAIL][103] ([i915#2842]) -> [PASS][104] +1 similar issue
+   [103]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7183/shard-glk5/igt@gem_exec_fair@basic-pace@vcs0.html
+   [104]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-glk4/igt@gem_exec_fair@basic-pace@vcs0.html
+
+  * igt@gem_mmap_gtt@coherency:
+    - {shard-rkl}:        [SKIP][105] ([fdo#111656]) -> [PASS][106]
+   [105]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7183/shard-rkl-2/igt@gem_mmap_gtt@coherency.html
+   [106]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-rkl-5/igt@gem_mmap_gtt@coherency.html
+
+  * igt@gem_partial_pwrite_pread@write:
+    - {shard-rkl}:        [SKIP][107] ([i915#3282]) -> [PASS][108] +3 similar issues
+   [107]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7183/shard-rkl-4/igt@gem_partial_pwrite_pread@write.html
+   [108]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-rkl-5/igt@gem_partial_pwrite_pread@write.html
+
+  * igt@gem_set_tiling_vs_blt@tiled-to-untiled:
+    - {shard-rkl}:        [SKIP][109] ([i915#3281]) -> [PASS][110] +1 similar issue
+   [109]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7183/shard-rkl-4/igt@gem_set_tiling_vs_blt@tiled-to-untiled.html
+   [110]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-rkl-5/igt@gem_set_tiling_vs_blt@tiled-to-untiled.html
+
+  * igt@gen9_exec_parse@allowed-all:
+    - shard-apl:          [ABORT][111] ([i915#5566]) -> [PASS][112]
+   [111]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7183/shard-apl7/igt@gen9_exec_parse@allowed-all.html
+   [112]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-apl7/igt@gen9_exec_parse@allowed-all.html
+
+  * igt@gen9_exec_parse@allowed-single:
+    - shard-glk:          [ABORT][113] ([i915#5566]) -> [PASS][114]
+   [113]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7183/shard-glk6/igt@gen9_exec_parse@allowed-single.html
+   [114]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-glk5/igt@gen9_exec_parse@allowed-single.html
+
+  * igt@gen9_exec_parse@bb-chained:
+    - {shard-rkl}:        [SKIP][115] ([i915#2527]) -> [PASS][116] +1 similar issue
+   [115]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7183/shard-rkl-4/igt@gen9_exec_parse@bb-chained.html
+   [116]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-rkl-5/igt@gen9_exec_parse@bb-chained.html
+
+  * igt@i915_hangman@engine-engine-error@bcs0:
+    - {shard-rkl}:        [SKIP][117] ([i915#6258]) -> [PASS][118]
+   [117]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7183/shard-rkl-5/igt@i915_hangman@engine-engine-error@bcs0.html
+   [118]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-rkl-4/igt@i915_hangman@engine-engine-error@bcs0.html
+
+  * igt@i915_pm_rc6_residency@rc6-idle@vcs0:
+    - {shard-rkl}:        [WARN][119] ([i915#2681]) -> [PASS][120]
+   [119]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7183/shard-rkl-5/igt@i915_pm_rc6_residency@rc6-idle@vcs0.html
+   [120]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-rkl-3/igt@i915_pm_rc6_residency@rc6-idle@vcs0.html
+    - {shard-dg1}:        [FAIL][121] ([i915#3591]) -> [PASS][122] +1 similar issue
+   [121]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7183/shard-dg1-17/igt@i915_pm_rc6_residency@rc6-idle@vcs0.html
+   [122]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-dg1-15/igt@i915_pm_rc6_residency@rc6-idle@vcs0.html
+
+  * igt@i915_pm_rpm@fences:
+    - {shard-rkl}:        [SKIP][123] ([i915#1849]) -> [PASS][124]
+   [123]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7183/shard-rkl-4/igt@i915_pm_rpm@fences.html
+   [124]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-rkl-6/igt@i915_pm_rpm@fences.html
+
+  * igt@i915_pm_rpm@modeset-non-lpsp:
+    - {shard-dg1}:        [SKIP][125] ([i915#1397]) -> [PASS][126] +1 similar issue
+   [125]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7183/shard-dg1-14/igt@i915_pm_rpm@modeset-non-lpsp.html
+   [126]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-dg1-15/igt@i915_pm_rpm@modeset-non-lpsp.html
+
+  * igt@i915_selftest@live@gem_contexts:
+    - {shard-rkl}:        [ABORT][127] ([i915#7913]) -> [PASS][128]
+   [127]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7183/shard-rkl-3/igt@i915_selftest@live@gem_contexts.html
+   [128]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-rkl-4/igt@i915_selftest@live@gem_contexts.html
+
+  * igt@i915_suspend@fence-restore-tiled2untiled:
+    - {shard-rkl}:        [FAIL][129] ([fdo#103375]) -> [PASS][130]
+   [129]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7183/shard-rkl-4/igt@i915_suspend@fence-restore-tiled2untiled.html
+   [130]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-rkl-1/igt@i915_suspend@fence-restore-tiled2untiled.html
+
+  * igt@kms_async_flips@alternate-sync-async-flip@pipe-b-hdmi-a-1:
+    - shard-glk:          [FAIL][131] ([i915#2521]) -> [PASS][132]
+   [131]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7183/shard-glk2/igt@kms_async_flips@alternate-sync-async-flip@pipe-b-hdmi-a-1.html
+   [132]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-glk8/igt@kms_async_flips@alternate-sync-async-flip@pipe-b-hdmi-a-1.html
+
+  * igt@kms_cursor_crc@cursor-suspend@pipe-a-dp-1:
+    - shard-apl:          [ABORT][133] ([i915#180]) -> [PASS][134]
+   [133]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7183/shard-apl2/igt@kms_cursor_crc@cursor-suspend@pipe-a-dp-1.html
+   [134]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-apl1/igt@kms_cursor_crc@cursor-suspend@pipe-a-dp-1.html
+
+  * igt@kms_cursor_legacy@flip-vs-cursor-atomic-transitions:
+    - shard-apl:          [FAIL][135] ([i915#2346]) -> [PASS][136]
+   [135]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7183/shard-apl2/igt@kms_cursor_legacy@flip-vs-cursor-atomic-transitions.html
+   [136]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-apl7/igt@kms_cursor_legacy@flip-vs-cursor-atomic-transitions.html
+
+  * igt@kms_frontbuffer_tracking@psr-1p-offscren-pri-shrfb-draw-blt:
+    - {shard-rkl}:        [SKIP][137] ([i915#1849] / [i915#4098]) -> [PASS][138] +5 similar issues
+   [137]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7183/shard-rkl-4/igt@kms_frontbuffer_tracking@psr-1p-offscren-pri-shrfb-draw-blt.html
+   [138]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-rkl-6/igt@kms_frontbuffer_tracking@psr-1p-offscren-pri-shrfb-draw-blt.html
+
+  * igt@kms_psr@primary_blt:
+    - {shard-rkl}:        [SKIP][139] ([i915#1072]) -> [PASS][140] +1 similar issue
+   [139]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7183/shard-rkl-4/igt@kms_psr@primary_blt.html
+   [140]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-rkl-6/igt@kms_psr@primary_blt.html
+
+  * igt@kms_rotation_crc@exhaust-fences:
+    - {shard-rkl}:        [SKIP][141] ([i915#1845] / [i915#4098]) -> [PASS][142] +16 similar issues
+   [141]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7183/shard-rkl-5/igt@kms_rotation_crc@exhaust-fences.html
+   [142]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-rkl-6/igt@kms_rotation_crc@exhaust-fences.html
+
+  * igt@kms_vblank@pipe-a-query-busy-hang:
+    - shard-apl:          [SKIP][143] ([fdo#109271]) -> [PASS][144] +2 similar issues
+   [143]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7183/shard-apl1/igt@kms_vblank@pipe-a-query-busy-hang.html
+   [144]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-apl1/igt@kms_vblank@pipe-a-query-busy-hang.html
+
+  * igt@kms_vblank@pipe-b-query-forked-hang:
+    - shard-glk:          [SKIP][145] ([fdo#109271]) -> [PASS][146] +1 similar issue
+   [145]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7183/shard-glk6/igt@kms_vblank@pipe-b-query-forked-hang.html
+   [146]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-glk8/igt@kms_vblank@pipe-b-query-forked-hang.html
+
+  * igt@perf@gen12-mi-rpc:
+    - {shard-rkl}:        [SKIP][147] ([fdo#109289]) -> [PASS][148]
+   [147]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7183/shard-rkl-5/igt@perf@gen12-mi-rpc.html
+   [148]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-rkl-1/igt@perf@gen12-mi-rpc.html
+
+  * igt@perf_pmu@idle@rcs0:
+    - {shard-rkl}:        [FAIL][149] ([i915#4349]) -> [PASS][150]
+   [149]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7183/shard-rkl-4/igt@perf_pmu@idle@rcs0.html
+   [150]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-rkl-3/igt@perf_pmu@idle@rcs0.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [fdo#103375]: https://bugs.freedesktop.org/show_bug.cgi?id=103375
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [fdo#109274]: https://bugs.freedesktop.org/show_bug.cgi?id=109274
+  [fdo#109280]: https://bugs.freedesktop.org/show_bug.cgi?id=109280
+  [fdo#109283]: https://bugs.freedesktop.org/show_bug.cgi?id=109283
+  [fdo#109285]: https://bugs.freedesktop.org/show_bug.cgi?id=109285
+  [fdo#109289]: https://bugs.freedesktop.org/show_bug.cgi?id=109289
+  [fdo#109295]: https://bugs.freedesktop.org/show_bug.cgi?id=109295
+  [fdo#109302]: https://bugs.freedesktop.org/show_bug.cgi?id=109302
+  [fdo#109308]: https://bugs.freedesktop.org/show_bug.cgi?id=109308
+  [fdo#109309]: https://bugs.freedesktop.org/show_bug.cgi?id=109309
+  [fdo#109315]: https://bugs.freedesktop.org/show_bug.cgi?id=109315
+  [fdo#109506]: https://bugs.freedesktop.org/show_bug.cgi?id=109506
+  [fdo#109642]: https://bugs.freedesktop.org/show_bug.cgi?id=109642
+  [fdo#110189]: https://bugs.freedesktop.org/show_bug.cgi?id=110189
+  [fdo#110542]: https://bugs.freedesktop.org/show_bug.cgi?id=110542
+  [fdo#110723]: https://bugs.freedesktop.org/show_bug.cgi?id=110723
+  [fdo#111068]: https://bugs.freedesktop.org/show_bug.cgi?id=111068
+  [fdo#111614]: https://bugs.freedesktop.org/show_bug.cgi?id=111614
+  [fdo#111615]: https://bugs.freedesktop.org/show_bug.cgi?id=111615
+  [fdo#111644]: https://bugs.freedesktop.org/show_bug.cgi?id=111644
+  [fdo#111656]: https://bugs.freedesktop.org/show_bug.cgi?id=111656
+  [fdo#111825]: https://bugs.freedesktop.org/show_bug.cgi?id=111825
+  [fdo#111827]: https://bugs.freedesktop.org/show_bug.cgi?id=111827
+  [fdo#112054]: https://bugs.freedesktop.org/show_bug.cgi?id=112054
+  [fdo#112283]: https://bugs.freedesktop.org/show_bug.cgi?id=112283
+  [i915#1072]: https://gitlab.freedesktop.org/drm/intel/issues/1072
+  [i915#132]: https://gitlab.freedesktop.org/drm/intel/issues/132
+  [i915#1397]: https://gitlab.freedesktop.org/drm/intel/issues/1397
+  [i915#1769]: https://gitlab.freedesktop.org/drm/intel/issues/1769
+  [i915#180]: https://gitlab.freedesktop.org/drm/intel/issues/180
+  [i915#1825]: https://gitlab.freedesktop.org/drm/intel/issues/1825
+  [i915#1839]: https://gitlab.freedesktop.org/drm/intel/issues/1839
+  [i915#1845]: https://gitlab.freedesktop.org/drm/intel/issues/1845
+  [i915#1849]: https://gitlab.freedesktop.org/drm/intel/issues/1849
+  [i915#2190]: https://gitlab.freedesktop.org/drm/intel/issues/2190
+  [i915#2346]: https://gitlab.freedesktop.org/drm/intel/issues/2346
+  [i915#2433]: https://gitlab.freedesktop.org/drm/intel/issues/2433
+  [i915#2434]: https://gitlab.freedesktop.org/drm/intel/issues/2434
+  [i915#2437]: https://gitlab.freedesktop.org/drm/intel/issues/2437
+  [i915#2521]: https://gitlab.freedesktop.org/drm/intel/issues/2521
+  [i915#2527]: https://gitlab.freedesktop.org/drm/intel/issues/2527
+  [i915#2532]: https://gitlab.freedesktop.org/drm/intel/issues/2532
+  [i915#2575]: https://gitlab.freedesktop.org/drm/intel/issues/2575
+  [i915#2582]: https://gitlab.freedesktop.org/drm/intel/issues/2582
+  [i915#2587]: https://gitlab.freedesktop.org/drm/intel/issues/2587
+  [i915#2672]: https://gitlab.freedesktop.org/drm/intel/issues/2672
+  [i915#2681]: https://gitlab.freedesktop.org/drm/intel/issues/2681
+  [i915#2705]: https://gitlab.freedesktop.org/drm/intel/issues/2705
+  [i915#280]: https://gitlab.freedesktop.org/drm/intel/issues/280
+  [i915#2842]: https://gitlab.freedesktop.org/drm/intel/issues/2842
+  [i915#2846]: https://gitlab.freedesktop.org/drm/intel/issues/2846
+  [i915#2856]: https://gitlab.freedesktop.org/drm/intel/issues/2856
+  [i915#2920]: https://gitlab.freedesktop.org/drm/intel/issues/2920
+  [i915#3116]: https://gitlab.freedesktop.org/drm/intel/issues/3116
+  [i915#315]: https://gitlab.freedesktop.org/drm/intel/issues/315
+  [i915#3281]: https://gitlab.freedesktop.org/drm/intel/issues/3281
+  [i915#3282]: https://gitlab.freedesktop.org/drm/intel/issues/3282
+  [i915#3291]: https://gitlab.freedesktop.org/drm/intel/issues/3291
+  [i915#3297]: https://gitlab.freedesktop.org/drm/intel/issues/3297
+  [i915#3299]: https://gitlab.freedesktop.org/drm/intel/issues/3299
+  [i915#3318]: https://gitlab.freedesktop.org/drm/intel/issues/3318
+  [i915#3359]: https://gitlab.freedesktop.org/drm/intel/issues/3359
+  [i915#3361]: https://gitlab.freedesktop.org/drm/intel/issues/3361
+  [i915#3458]: https://gitlab.freedesktop.org/drm/intel/issues/3458
+  [i915#3469]: https://gitlab.freedesktop.org/drm/intel/issues/3469
+  [i915#3528]: https://gitlab.freedesktop.org/drm/intel/issues/3528
+  [i915#3536]: https://gitlab.freedesktop.org/drm/intel/issues/3536
+  [i915#3539]: https://gitlab.freedesktop.org/drm/intel/issues/3539
+  [i915#3546]: https://gitlab.freedesktop.org/drm/intel/issues/3546
+  [i915#3547]: https://gitlab.freedesktop.org/drm/intel/issues/3547
+  [i915#3555]: https://gitlab.freedesktop.org/drm/intel/issues/3555
+  [i915#3558]: https://gitlab.freedesktop.org/drm/intel/issues/3558
+  [i915#3591]: https://gitlab.freedesktop.org/drm/intel/issues/3591
+  [i915#3637]: https://gitlab.freedesktop.org/drm/intel/issues/3637
+  [i915#3638]: https://gitlab.freedesktop.org/drm/intel/issues/3638
+  [i915#3689]: https://gitlab.freedesktop.org/drm/intel/issues/3689
+  [i915#3708]: https://gitlab.freedesktop.org/drm/intel/issues/3708
+  [i915#3734]: https://gitlab.freedesktop.org/drm/intel/issues/3734
+  [i915#3742]: https://gitlab.freedesktop.org/drm/intel/issues/3742
+  [i915#3840]: https://gitlab.freedesktop.org/drm/intel/issues/3840
+  [i915#3886]: https://gitlab.freedesktop.org/drm/intel/issues/3886
+  [i915#3938]: https://gitlab.freedesktop.org/drm/intel/issues/3938
+  [i915#3952]: https://gitlab.freedesktop.org/drm/intel/issues/3952
+  [i915#3955]: https://gitlab.freedesktop.org/drm/intel/issues/3955
+  [i915#3966]: https://gitlab.freedesktop.org/drm/intel/issues/3966
+  [i915#3989]: https://gitlab.freedesktop.org/drm/intel/issues/3989
+  [i915#404]: https://gitlab.freedesktop.org/drm/intel/issues/404
+  [i915#4070]: https://gitlab.freedesktop.org/drm/intel/issues/4070
+  [i915#4077]: https://gitlab.freedesktop.org/drm/intel/issues/4077
+  [i915#4079]: https://gitlab.freedesktop.org/drm/intel/issues/4079
+  [i915#4083]: https://gitlab.freedesktop.org/drm/intel/issues/4083
+  [i915#4098]: https://gitlab.freedesktop.org/drm/intel/issues/4098
+  [i915#4103]: https://gitlab.freedesktop.org/drm/intel/issues/4103
+  [i915#4212]: https://gitlab.freedesktop.org/drm/intel/issues/4212
+  [i915#4213]: https://gitlab.freedesktop.org/drm/intel/issues/4213
+  [i915#4270]: https://gitlab.freedesktop.org/drm/intel/issues/4270
+  [i915#433]: https://gitlab.freedesktop.org/drm/intel/issues/433
+  [i915#4349]: https://gitlab.freedesktop.org/drm/intel/issues/4349
+  [i915#4387]: https://gitlab.freedesktop.org/drm/intel/issues/4387
+  [i915#4538]: https://gitlab.freedesktop.org/drm/intel/issues/4538
+  [i915#454]: https://gitlab.freedesktop.org/drm/intel/issues/454
+  [i915#4565]: https://gitlab.freedesktop.org/drm/intel/issues/4565
+  [i915#4613]: https://gitlab.freedesktop.org/drm/intel/issues/4613
+  [i915#4812]: https://gitlab.freedesktop.org/drm/intel/issues/4812
+  [i915#4833]: https://gitlab.freedesktop.org/drm/intel/issues/4833
+  [i915#4852]: https://gitlab.freedesktop.org/drm/intel/issues/4852
+  [i915#4860]: https://gitlab.freedesktop.org/drm/intel/issues/4860
+  [i915#4879]: https://gitlab.freedesktop.org/drm/intel/issues/4879
+  [i915#4885]: https://gitlab.freedesktop.org/drm/intel/issues/4885
+  [i915#5176]: https://gitlab.freedesktop.org/drm/intel/issues/5176
+  [i915#5235]: https://gitlab.freedesktop.org/drm/intel/issues/5235
+  [i915#5286]: https://gitlab.freedesktop.org/drm/intel/issues/5286
+  [i915#5288]: https://gitlab.freedesktop.org/drm/intel/issues/5288
+  [i915#5289]: https://gitlab.freedesktop.org/drm/intel/issues/5289
+  [i915#5325]: https://gitlab.freedesktop.org/drm/intel/issues/5325
+  [i915#533]: https://gitlab.freedesktop.org/drm/intel/issues/533
+  [i915#5439]: https://gitlab.freedesktop.org/drm/intel/issues/5439
+  [i915#5563]: https://gitlab.freedesktop.org/drm/intel/issues/5563
+  [i915#5566]: https://gitlab.freedesktop.org/drm/intel/issues/5566
+  [i915#5723]: https://gitlab.freedesktop.org/drm/intel/issues/5723
+  [i915#5784]: https://gitlab.freedesktop.org/drm/intel/issues/5784
+  [i915#6095]: https://gitlab.freedesktop.org/drm/intel/issues/6095
+  [i915#6117]: https://gitlab.freedesktop.org/drm/intel/issues/6117
+  [i915#6227]: https://gitlab.freedesktop.org/drm/intel/issues/6227
+  [i915#6247]: https://gitlab.freedesktop.org/drm/intel/issues/6247
+  [i915#6248]: https://gitlab.freedesktop.org/drm/intel/issues/6248
+  [i915#6252]: https://gitlab.freedesktop.org/drm/intel/issues/6252
+  [i915#6258]: https://gitlab.freedesktop.org/drm/intel/issues/6258
+  [i915#6268]: https://gitlab.freedesktop.org/drm/intel/issues/6268
+  [i915#6301]: https://gitlab.freedesktop.org/drm/intel/issues/6301
+  [i915#6335]: https://gitlab.freedesktop.org/drm/intel/issues/6335
+  [i915#6344]: https://gitlab.freedesktop.org/drm/intel/issues/6344
+  [i915#6412]: https://gitlab.freedesktop.org/drm/intel/issues/6412
+  [i915#6433]: https://gitlab.freedesktop.org/drm/intel/issues/6433
+  [i915#6497]: https://gitlab.freedesktop.org/drm/intel/issues/6497
+  [i915#6524]: https://gitlab.freedesktop.org/drm/intel/issues/6524
+  [i915#658]: https://gitlab.freedesktop.org/drm/intel/issues/658
+  [i915#6590]: https://gitlab.freedesktop.org/drm/intel/issues/6590
+  [i915#6621]: https://gitlab.freedesktop.org/drm/intel/issues/6621
+  [i915#6768]: https://gitlab.freedesktop.org/drm/intel/issues/6768
+  [i915#6944]: https://gitlab.freedesktop.org/drm/intel/issues/6944
+  [i915#6946]: https://gitlab.freedesktop.org/drm/intel/issues/6946
+  [i915#6953]: https://gitlab.freedesktop.org/drm/intel/issues/6953
+  [i915#7037]: https://gitlab.freedesktop.org/drm/intel/issues/7037
+  [i915#7116]: https://gitlab.freedesktop.org/drm/intel/issues/7116
+  [i915#7118]: https://gitlab.freedesktop.org/drm/intel/issues/7118
+  [i915#7128]: https://gitlab.freedesktop.org/drm/intel/issues/7128
+  [i915#7294]: https://gitlab.freedesktop.org/drm/intel/issues/7294
+  [i915#7456]: https://gitlab.freedesktop.org/drm/intel/issues/7456
+  [i915#7561]: https://gitlab.freedesktop.org/drm/intel/issues/7561
+  [i915#7651]: https://gitlab.freedesktop.org/drm/intel/issues/7651
+  [i915#7707]: https://gitlab.freedesktop.org/drm/intel/issues/7707
+  [i915#7711]: https://gitlab.freedesktop.org/drm/intel/issues/7711
+  [i915#7742]: https://gitlab.freedesktop.org/drm/intel/issues/7742
+  [i915#7828]: https://gitlab.freedesktop.org/drm/intel/issues/7828
+  [i915#7913]: https://gitlab.freedesktop.org/drm/intel/issues/7913
+  [i915#7949]: https://gitlab.freedesktop.org/drm/intel/issues/7949
+  [i915#7957]: https://gitlab.freedesktop.org/drm/intel/issues/7957
+  [i915#7975]: https://gitlab.freedesktop.org/drm/intel/issues/7975
+  [i915#7984]: https://gitlab.freedesktop.org/drm/intel/issues/7984
+  [i915#8018]: https://gitlab.freedesktop.org/drm/intel/issues/8018
+  [i915#8152]: https://gitlab.freedesktop.org/drm/intel/issues/8152
+  [i915#8154]: https://gitlab.freedesktop.org/drm/intel/issues/8154
+  [i915#8211]: https://gitlab.freedesktop.org/drm/intel/issues/8211
+  [i915#8234]: https://gitlab.freedesktop.org/drm/intel/issues/8234
+  [i915#8275]: https://gitlab.freedesktop.org/drm/intel/issues/8275
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_7183 -> IGTPW_8568
+
+  CI-20190529: 20190529
+  CI_DRM_12821: 24f94240c4bca70cadfd00528ffd56c3049e5f58 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_8568: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/index.html
+  IGT_7183: 3434cef8be4e487644a740039ad15123cd094526 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8567/index.html
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/index.html
 
---===============8452820789708857355==
+--===============4769063839573673241==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -3496,5908 +777,734 @@ Content-Transfer-Encoding: 7bit
 
 <b>Patch Details</b>
 <table>
-<tr><td><b>Series:</b></td><td>Initial Xe test suite (rev5)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/112191/">https://patchwork.freedesktop.org/series/112191/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
+<tr><td><b>Series:</b></td><td>series starting with [1/2] lib: Copy intel_gpu_commands.h from the kernel</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/114780/">https://patchwork.freedesktop.org/series/114780/</a></td></tr>
+<tr><td><b>State:</b></td><td>failure</td></tr>
 
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8567/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8567/index.html</a></td></tr>
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/index.html</a></td></tr>
 
 </table>
 
 
-    <h1>CI Bug Log - changes from IGT_7183_full -&gt; IGTPW_8567_full</h1>
+    <h1>CI Bug Log - changes from IGT_7183_full -&gt; IGTPW_8568_full</h1>
 <h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8567/index.html</p>
-<h2>Participating hosts (8 -&gt; 11)</h2>
-<p>Additional (3): shard-rkl0 shard-tglu-9 shard-tglu0 </p>
+<p><strong>FAILURE</strong></p>
+<p>Serious unknown changes coming with IGTPW_8568_full absolutely need to be<br />
+  verified manually.</p>
+<p>If you think the reported changes have nothing to do with the changes<br />
+  introduced in IGTPW_8568_full, please notify your bug team to allow them<br />
+  to document this new failure mode, which will reduce false positives in CI.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/index.html</p>
+<h2>Participating hosts (8 -&gt; 10)</h2>
+<p>Additional (2): shard-tglu-9 shard-tglu0 </p>
 <h2>Possible new issues</h2>
-<p>Here are the unknown changes that may have been introduced in IGTPW_8567_full:</p>
+<p>Here are the unknown changes that may have been introduced in IGTPW_8568_full:</p>
 <h3>IGT changes</h3>
 <h4>Possible regressions</h4>
 <ul>
-<li>{igt@xe/xe_guc_pc@rc6_on_idle} (NEW):<ul>
-<li>{shard-dg1}:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8567/shard-dg1-14/igt@xe/xe_guc_pc@rc6_on_idle.html">SKIP</a> +367 similar issues</li>
-</ul>
-</li>
-</ul>
-<h2>New tests</h2>
-<p>New tests have been introduced between IGT_7183_full and IGTPW_8567_full:</p>
-<h3>New IGT tests (787)</h3>
-<ul>
-<li>
-<p>igt@xe/xe_compute@compute-square:</p>
-<ul>
-<li>Statuses : 3 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_debugfs@base:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_debugfs@forcewake:</p>
-<ul>
-<li>Statuses : 3 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_debugfs@gt0:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_debugfs@gt1:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_dma_buf_sync@export-dma-buf-many:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_dma_buf_sync@export-dma-buf-many-read-sync:</p>
-<ul>
-<li>Statuses : 3 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_dma_buf_sync@export-dma-buf-once:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_dma_buf_sync@export-dma-buf-once-read-sync:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_evict@evict-beng-cm-threads-large:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_evict@evict-beng-cm-threads-large-multi-vm:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_evict@evict-beng-cm-threads-small:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_evict@evict-beng-cm-threads-small-multi-vm:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_evict@evict-beng-large:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_evict@evict-beng-large-cm:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_evict@evict-beng-large-external:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_evict@evict-beng-large-external-cm:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_evict@evict-beng-large-multi-vm:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_evict@evict-beng-large-multi-vm-cm:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_evict@evict-beng-mixed-many-threads-large:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_evict@evict-beng-mixed-many-threads-small:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_evict@evict-beng-mixed-threads-large:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_evict@evict-beng-mixed-threads-large-multi-vm:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_evict@evict-beng-mixed-threads-small:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_evict@evict-beng-mixed-threads-small-multi-vm:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_evict@evict-beng-small:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_evict@evict-beng-small-cm:</p>
-<ul>
-<li>Statuses : 3 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_evict@evict-beng-small-external:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_evict@evict-beng-small-external-cm:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_evict@evict-beng-small-multi-vm:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_evict@evict-beng-small-multi-vm-cm:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_evict@evict-beng-threads-large:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_evict@evict-beng-threads-large-multi-vm:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_evict@evict-beng-threads-small:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_evict@evict-beng-threads-small-multi-vm:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_evict@evict-cm-threads-large:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_evict@evict-cm-threads-large-multi-vm:</p>
-<ul>
-<li>Statuses : 3 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_evict@evict-cm-threads-small:</p>
-<ul>
-<li>Statuses : 3 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_evict@evict-cm-threads-small-multi-vm:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_evict@evict-large:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_evict@evict-large-cm:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_evict@evict-large-external:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_evict@evict-large-external-cm:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_evict@evict-large-multi-vm:</p>
-<ul>
-<li>Statuses : 3 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_evict@evict-large-multi-vm-cm:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_evict@evict-mixed-many-threads-large:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_evict@evict-mixed-many-threads-small:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_evict@evict-mixed-threads-large:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_evict@evict-mixed-threads-large-multi-vm:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_evict@evict-mixed-threads-small:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_evict@evict-mixed-threads-small-multi-vm:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_evict@evict-small:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_evict@evict-small-cm:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_evict@evict-small-external:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_evict@evict-small-external-cm:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_evict@evict-small-multi-vm:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_evict@evict-small-multi-vm-cm:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_evict@evict-threads-large:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_evict@evict-threads-large-multi-vm:</p>
-<ul>
-<li>Statuses : 3 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_evict@evict-threads-small:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_evict@evict-threads-small-multi-vm:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_balancer@many-cm-virtual-basic:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_balancer@many-cm-virtual-rebind:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_balancer@many-cm-virtual-userptr:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_balancer@many-cm-virtual-userptr-invalidate:</p>
-<ul>
-<li>Statuses : 3 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_balancer@many-cm-virtual-userptr-invalidate-race:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_balancer@many-cm-virtual-userptr-rebind:</p>
-<ul>
-<li>Statuses : 3 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_balancer@many-engines-cm-virtual-basic:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_balancer@many-engines-cm-virtual-rebind:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_balancer@many-engines-cm-virtual-userptr:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_balancer@many-engines-cm-virtual-userptr-invalidate:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_balancer@many-engines-cm-virtual-userptr-invalidate-race:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_balancer@many-engines-cm-virtual-userptr-rebind:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_balancer@many-engines-parallel-basic:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_balancer@many-engines-parallel-rebind:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_balancer@many-engines-parallel-userptr:</p>
-<ul>
-<li>Statuses : 3 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_balancer@many-engines-parallel-userptr-invalidate:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_balancer@many-engines-parallel-userptr-invalidate-race:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_balancer@many-engines-parallel-userptr-rebind:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_balancer@many-engines-virtual-basic:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_balancer@many-engines-virtual-rebind:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_balancer@many-engines-virtual-userptr:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_balancer@many-engines-virtual-userptr-invalidate:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_balancer@many-engines-virtual-userptr-invalidate-race:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_balancer@many-engines-virtual-userptr-rebind:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_balancer@many-parallel-basic:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_balancer@many-parallel-rebind:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_balancer@many-parallel-userptr:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_balancer@many-parallel-userptr-invalidate:</p>
-<ul>
-<li>Statuses : 3 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_balancer@many-parallel-userptr-invalidate-race:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_balancer@many-parallel-userptr-rebind:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_balancer@many-virtual-basic:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_balancer@many-virtual-rebind:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_balancer@many-virtual-userptr:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_balancer@many-virtual-userptr-invalidate:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_balancer@many-virtual-userptr-invalidate-race:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_balancer@many-virtual-userptr-rebind:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_balancer@no-exec-cm-virtual-basic:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_balancer@no-exec-cm-virtual-rebind:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_balancer@no-exec-cm-virtual-userptr:</p>
-<ul>
-<li>Statuses : 3 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_balancer@no-exec-cm-virtual-userptr-invalidate:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_balancer@no-exec-cm-virtual-userptr-invalidate-race:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_balancer@no-exec-cm-virtual-userptr-rebind:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_balancer@no-exec-parallel-basic:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_balancer@no-exec-parallel-rebind:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_balancer@no-exec-parallel-userptr:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_balancer@no-exec-parallel-userptr-invalidate:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_balancer@no-exec-parallel-userptr-invalidate-race:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_balancer@no-exec-parallel-userptr-rebind:</p>
-<ul>
-<li>Statuses : 3 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_balancer@no-exec-virtual-basic:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_balancer@no-exec-virtual-rebind:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_balancer@no-exec-virtual-userptr:</p>
-<ul>
-<li>Statuses : 3 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_balancer@no-exec-virtual-userptr-invalidate:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_balancer@no-exec-virtual-userptr-invalidate-race:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_balancer@no-exec-virtual-userptr-rebind:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_balancer@once-cm-virtual-basic:</p>
-<ul>
-<li>Statuses : 3 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_balancer@once-cm-virtual-rebind:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_balancer@once-cm-virtual-userptr:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_balancer@once-cm-virtual-userptr-invalidate:</p>
-<ul>
-<li>Statuses : 3 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_balancer@once-cm-virtual-userptr-invalidate-race:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_balancer@once-cm-virtual-userptr-rebind:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_balancer@once-parallel-basic:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_balancer@once-parallel-rebind:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_balancer@once-parallel-userptr:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_balancer@once-parallel-userptr-invalidate:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_balancer@once-parallel-userptr-invalidate-race:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_balancer@once-parallel-userptr-rebind:</p>
-<ul>
-<li>Statuses : 3 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_balancer@once-virtual-basic:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_balancer@once-virtual-rebind:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_balancer@once-virtual-userptr:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_balancer@once-virtual-userptr-invalidate:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_balancer@once-virtual-userptr-invalidate-race:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_balancer@once-virtual-userptr-rebind:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_balancer@twice-cm-virtual-basic:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_balancer@twice-cm-virtual-rebind:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_balancer@twice-cm-virtual-userptr:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_balancer@twice-cm-virtual-userptr-invalidate:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_balancer@twice-cm-virtual-userptr-invalidate-race:</p>
-<ul>
-<li>Statuses : 3 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_balancer@twice-cm-virtual-userptr-rebind:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_balancer@twice-parallel-basic:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_balancer@twice-parallel-rebind:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_balancer@twice-parallel-userptr:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_balancer@twice-parallel-userptr-invalidate:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_balancer@twice-parallel-userptr-invalidate-race:</p>
-<ul>
-<li>Statuses : 3 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_balancer@twice-parallel-userptr-rebind:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_balancer@twice-virtual-basic:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_balancer@twice-virtual-rebind:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_balancer@twice-virtual-userptr:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_balancer@twice-virtual-userptr-invalidate:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_balancer@twice-virtual-userptr-invalidate-race:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_balancer@twice-virtual-userptr-rebind:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_balancer@virtual-all-active:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_basic@many-basic:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_basic@many-basic-defer-bind:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_basic@many-basic-defer-mmap:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_basic@many-bindengine:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_basic@many-bindengine-rebind:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_basic@many-bindengine-userptr:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_basic@many-bindengine-userptr-invalidate:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_basic@many-bindengine-userptr-invalidate-race:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_basic@many-bindengine-userptr-rebind:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_basic@many-engines-basic:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_basic@many-engines-basic-defer-bind:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_basic@many-engines-basic-defer-mmap:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_basic@many-engines-bindengine:</p>
-<ul>
-<li>Statuses : 3 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_basic@many-engines-bindengine-rebind:</p>
-<ul>
-<li>Statuses : 3 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_basic@many-engines-bindengine-userptr:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_basic@many-engines-bindengine-userptr-invalidate:</p>
-<ul>
-<li>Statuses : 3 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_basic@many-engines-bindengine-userptr-invalidate-race:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_basic@many-engines-bindengine-userptr-rebind:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_basic@many-engines-many-vm-basic:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_basic@many-engines-many-vm-basic-defer-bind:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_basic@many-engines-many-vm-basic-defer-mmap:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_basic@many-engines-many-vm-bindengine:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_basic@many-engines-many-vm-bindengine-rebind:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_basic@many-engines-many-vm-bindengine-userptr:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_basic@many-engines-many-vm-bindengine-userptr-invalidate:</p>
-<ul>
-<li>Statuses : 3 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_basic@many-engines-many-vm-bindengine-userptr-invalidate-race:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_basic@many-engines-many-vm-bindengine-userptr-rebind:</p>
-<ul>
-<li>Statuses : 3 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_basic@many-engines-many-vm-rebind:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_basic@many-engines-many-vm-userptr:</p>
-<ul>
-<li>Statuses : 3 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_basic@many-engines-many-vm-userptr-invalidate:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_basic@many-engines-many-vm-userptr-invalidate-race:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_basic@many-engines-many-vm-userptr-rebind:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_basic@many-engines-rebind:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_basic@many-engines-userptr:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_basic@many-engines-userptr-invalidate:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_basic@many-engines-userptr-invalidate-race:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_basic@many-engines-userptr-rebind:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_basic@many-rebind:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_basic@many-userptr:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_basic@many-userptr-invalidate:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_basic@many-userptr-invalidate-race:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_basic@many-userptr-rebind:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_basic@no-exec-basic:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_basic@no-exec-basic-defer-bind:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_basic@no-exec-basic-defer-mmap:</p>
-<ul>
-<li>Statuses : 3 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_basic@no-exec-bindengine:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_basic@no-exec-bindengine-rebind:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_basic@no-exec-bindengine-userptr:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_basic@no-exec-bindengine-userptr-invalidate:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_basic@no-exec-bindengine-userptr-invalidate-race:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_basic@no-exec-bindengine-userptr-rebind:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_basic@no-exec-rebind:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_basic@no-exec-userptr:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_basic@no-exec-userptr-invalidate:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_basic@no-exec-userptr-invalidate-race:</p>
-<ul>
-<li>Statuses : 3 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_basic@no-exec-userptr-rebind:</p>
-<ul>
-<li>Statuses : 3 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_basic@once-basic:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_basic@once-basic-defer-bind:</p>
-<ul>
-<li>Statuses : 3 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_basic@once-basic-defer-mmap:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_basic@once-bindengine:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_basic@once-bindengine-rebind:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_basic@once-bindengine-userptr:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_basic@once-bindengine-userptr-invalidate:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_basic@once-bindengine-userptr-invalidate-race:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_basic@once-bindengine-userptr-rebind:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_basic@once-rebind:</p>
-<ul>
-<li>Statuses : 3 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_basic@once-userptr:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_basic@once-userptr-invalidate:</p>
-<ul>
-<li>Statuses : 3 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_basic@once-userptr-invalidate-race:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_basic@once-userptr-rebind:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_basic@twice-basic:</p>
-<ul>
-<li>Statuses : 3 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_basic@twice-basic-defer-bind:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_basic@twice-basic-defer-mmap:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_basic@twice-bindengine:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_basic@twice-bindengine-rebind:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_basic@twice-bindengine-userptr:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_basic@twice-bindengine-userptr-invalidate:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_basic@twice-bindengine-userptr-invalidate-race:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_basic@twice-bindengine-userptr-rebind:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_basic@twice-rebind:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_basic@twice-userptr:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_basic@twice-userptr-invalidate:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_basic@twice-userptr-invalidate-race:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_basic@twice-userptr-rebind:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_compute_mode@many-basic:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_compute_mode@many-bindengine:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_compute_mode@many-bindengine-rebind:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_compute_mode@many-bindengine-userptr:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_compute_mode@many-bindengine-userptr-invalidate:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_compute_mode@many-bindengine-userptr-invalidate-race:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_compute_mode@many-bindengine-userptr-rebind:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_compute_mode@many-engines-basic:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_compute_mode@many-engines-bindengine:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_compute_mode@many-engines-bindengine-rebind:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_compute_mode@many-engines-bindengine-userptr:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_compute_mode@many-engines-bindengine-userptr-invalidate:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_compute_mode@many-engines-bindengine-userptr-rebind:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_compute_mode@many-engines-preempt-fence-early:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_compute_mode@many-engines-rebind:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_compute_mode@many-engines-userptr:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_compute_mode@many-engines-userptr-invalidate:</p>
-<ul>
-<li>Statuses : 3 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_compute_mode@many-engines-userptr-rebind:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_compute_mode@many-preempt-fence-early:</p>
-<ul>
-<li>Statuses : 3 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_compute_mode@many-rebind:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_compute_mode@many-userptr:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_compute_mode@many-userptr-invalidate:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_compute_mode@many-userptr-invalidate-race:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_compute_mode@many-userptr-rebind:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_compute_mode@once-basic:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_compute_mode@once-bindengine:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_compute_mode@once-bindengine-rebind:</p>
-<ul>
-<li>Statuses : 3 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_compute_mode@once-bindengine-userptr:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_compute_mode@once-bindengine-userptr-invalidate:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_compute_mode@once-bindengine-userptr-invalidate-race:</p>
-<ul>
-<li>Statuses : 3 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_compute_mode@once-bindengine-userptr-rebind:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_compute_mode@once-preempt-fence-early:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_compute_mode@once-rebind:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_compute_mode@once-userptr:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_compute_mode@once-userptr-invalidate:</p>
-<ul>
-<li>Statuses : 3 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_compute_mode@once-userptr-invalidate-race:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_compute_mode@once-userptr-rebind:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_compute_mode@twice-basic:</p>
-<ul>
-<li>Statuses : 3 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_compute_mode@twice-bindengine:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_compute_mode@twice-bindengine-rebind:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_compute_mode@twice-bindengine-userptr:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_compute_mode@twice-bindengine-userptr-invalidate:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_compute_mode@twice-bindengine-userptr-invalidate-race:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_compute_mode@twice-bindengine-userptr-rebind:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_compute_mode@twice-preempt-fence-early:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_compute_mode@twice-rebind:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_compute_mode@twice-userptr:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_compute_mode@twice-userptr-invalidate:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_compute_mode@twice-userptr-invalidate-race:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_compute_mode@twice-userptr-rebind:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_fault_mode@atomic-many:</p>
-<ul>
-<li>Statuses : 3 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_fault_mode@atomic-many-wait:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_fault_mode@atomic-once:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_fault_mode@atomic-once-wait:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_fault_mode@many-basic:</p>
-<ul>
-<li>Statuses : 3 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_fault_mode@many-basic-imm:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_fault_mode@many-basic-prefetch:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_fault_mode@many-bindengine:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_fault_mode@many-bindengine-imm:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_fault_mode@many-bindengine-prefetch:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_fault_mode@many-bindengine-rebind:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_fault_mode@many-bindengine-rebind-imm:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_fault_mode@many-bindengine-rebind-prefetch:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_fault_mode@many-bindengine-userptr:</p>
-<ul>
-<li>Statuses : 3 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_fault_mode@many-bindengine-userptr-imm:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_fault_mode@many-bindengine-userptr-invalidate:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_fault_mode@many-bindengine-userptr-invalidate-imm:</p>
-<ul>
-<li>Statuses : 3 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_fault_mode@many-bindengine-userptr-invalidate-prefetch:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_fault_mode@many-bindengine-userptr-invalidate-race:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_fault_mode@many-bindengine-userptr-invalidate-race-imm:</p>
-<ul>
-<li>Statuses : 3 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_fault_mode@many-bindengine-userptr-invalidate-race-prefetch:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_fault_mode@many-bindengine-userptr-prefetch:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_fault_mode@many-bindengine-userptr-rebind:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_fault_mode@many-bindengine-userptr-rebind-imm:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_fault_mode@many-bindengine-userptr-rebind-prefetch:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_fault_mode@many-engines-basic:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_fault_mode@many-engines-basic-imm:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_fault_mode@many-engines-basic-prefetch:</p>
-<ul>
-<li>Statuses : 3 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_fault_mode@many-engines-bindengine:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_fault_mode@many-engines-bindengine-imm:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_fault_mode@many-engines-bindengine-prefetch:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_fault_mode@many-engines-bindengine-rebind:</p>
-<ul>
-<li>Statuses : 3 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_fault_mode@many-engines-bindengine-rebind-imm:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_fault_mode@many-engines-bindengine-rebind-prefetch:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_fault_mode@many-engines-bindengine-userptr:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_fault_mode@many-engines-bindengine-userptr-imm:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_fault_mode@many-engines-bindengine-userptr-invalidate:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_fault_mode@many-engines-bindengine-userptr-invalidate-imm:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_fault_mode@many-engines-bindengine-userptr-invalidate-prefetch:</p>
-<ul>
-<li>Statuses : 3 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_fault_mode@many-engines-bindengine-userptr-invalidate-race:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_fault_mode@many-engines-bindengine-userptr-invalidate-race-imm:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_fault_mode@many-engines-bindengine-userptr-invalidate-race-prefetch:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_fault_mode@many-engines-bindengine-userptr-prefetch:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_fault_mode@many-engines-bindengine-userptr-rebind:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_fault_mode@many-engines-bindengine-userptr-rebind-imm:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_fault_mode@many-engines-bindengine-userptr-rebind-prefetch:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_fault_mode@many-engines-invalid-fault:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_fault_mode@many-engines-invalid-userptr-fault:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_fault_mode@many-engines-rebind:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_fault_mode@many-engines-rebind-imm:</p>
-<ul>
-<li>Statuses : 3 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_fault_mode@many-engines-rebind-prefetch:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_fault_mode@many-engines-userptr:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_fault_mode@many-engines-userptr-imm:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_fault_mode@many-engines-userptr-invalidate:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_fault_mode@many-engines-userptr-invalidate-imm:</p>
-<ul>
-<li>Statuses : 3 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_fault_mode@many-engines-userptr-invalidate-prefetch:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_fault_mode@many-engines-userptr-invalidate-race:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_fault_mode@many-engines-userptr-invalidate-race-imm:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_fault_mode@many-engines-userptr-invalidate-race-prefetch:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_fault_mode@many-engines-userptr-prefetch:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_fault_mode@many-engines-userptr-rebind:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_fault_mode@many-engines-userptr-rebind-imm:</p>
-<ul>
-<li>Statuses : 3 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_fault_mode@many-engines-userptr-rebind-prefetch:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_fault_mode@many-invalid-fault:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_fault_mode@many-invalid-userptr-fault:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_fault_mode@many-rebind:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_fault_mode@many-rebind-imm:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_fault_mode@many-rebind-prefetch:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_fault_mode@many-userptr:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_fault_mode@many-userptr-imm:</p>
-<ul>
-<li>Statuses : 3 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_fault_mode@many-userptr-invalidate:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_fault_mode@many-userptr-invalidate-imm:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_fault_mode@many-userptr-invalidate-prefetch:</p>
-<ul>
-<li>Statuses : 3 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_fault_mode@many-userptr-invalidate-race:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_fault_mode@many-userptr-invalidate-race-imm:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_fault_mode@many-userptr-invalidate-race-prefetch:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_fault_mode@many-userptr-prefetch:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_fault_mode@many-userptr-rebind:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_fault_mode@many-userptr-rebind-imm:</p>
-<ul>
-<li>Statuses : 3 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_fault_mode@many-userptr-rebind-prefetch:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_fault_mode@once-basic:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_fault_mode@once-basic-imm:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_fault_mode@once-basic-prefetch:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_fault_mode@once-bindengine:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_fault_mode@once-bindengine-imm:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_fault_mode@once-bindengine-prefetch:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_fault_mode@once-bindengine-rebind:</p>
-<ul>
-<li>Statuses : 3 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_fault_mode@once-bindengine-rebind-imm:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_fault_mode@once-bindengine-rebind-prefetch:</p>
-<ul>
-<li>Statuses : 3 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_fault_mode@once-bindengine-userptr:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_fault_mode@once-bindengine-userptr-imm:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_fault_mode@once-bindengine-userptr-invalidate:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_fault_mode@once-bindengine-userptr-invalidate-imm:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_fault_mode@once-bindengine-userptr-invalidate-prefetch:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_fault_mode@once-bindengine-userptr-invalidate-race:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_fault_mode@once-bindengine-userptr-invalidate-race-imm:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_fault_mode@once-bindengine-userptr-invalidate-race-prefetch:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_fault_mode@once-bindengine-userptr-prefetch:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_fault_mode@once-bindengine-userptr-rebind:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_fault_mode@once-bindengine-userptr-rebind-imm:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_fault_mode@once-bindengine-userptr-rebind-prefetch:</p>
-<ul>
-<li>Statuses : 3 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_fault_mode@once-invalid-fault:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_fault_mode@once-invalid-userptr-fault:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_fault_mode@once-rebind:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_fault_mode@once-rebind-imm:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_fault_mode@once-rebind-prefetch:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_fault_mode@once-userptr:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_fault_mode@once-userptr-imm:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_fault_mode@once-userptr-invalidate:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_fault_mode@once-userptr-invalidate-imm:</p>
-<ul>
-<li>Statuses : 3 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_fault_mode@once-userptr-invalidate-prefetch:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_fault_mode@once-userptr-invalidate-race:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_fault_mode@once-userptr-invalidate-race-imm:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_fault_mode@once-userptr-invalidate-race-prefetch:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_fault_mode@once-userptr-prefetch:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_fault_mode@once-userptr-rebind:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_fault_mode@once-userptr-rebind-imm:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_fault_mode@once-userptr-rebind-prefetch:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_fault_mode@twice-basic:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_fault_mode@twice-basic-imm:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_fault_mode@twice-basic-prefetch:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_fault_mode@twice-bindengine:</p>
-<ul>
-<li>Statuses : 3 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_fault_mode@twice-bindengine-imm:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_fault_mode@twice-bindengine-prefetch:</p>
-<ul>
-<li>Statuses : 3 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_fault_mode@twice-bindengine-rebind:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_fault_mode@twice-bindengine-rebind-imm:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_fault_mode@twice-bindengine-rebind-prefetch:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_fault_mode@twice-bindengine-userptr:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_fault_mode@twice-bindengine-userptr-imm:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_fault_mode@twice-bindengine-userptr-invalidate:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_fault_mode@twice-bindengine-userptr-invalidate-imm:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_fault_mode@twice-bindengine-userptr-invalidate-prefetch:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_fault_mode@twice-bindengine-userptr-invalidate-race:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_fault_mode@twice-bindengine-userptr-invalidate-race-imm:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_fault_mode@twice-bindengine-userptr-invalidate-race-prefetch:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_fault_mode@twice-bindengine-userptr-prefetch:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_fault_mode@twice-bindengine-userptr-rebind:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_fault_mode@twice-bindengine-userptr-rebind-imm:</p>
-<ul>
-<li>Statuses : 3 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_fault_mode@twice-bindengine-userptr-rebind-prefetch:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_fault_mode@twice-invalid-fault:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_fault_mode@twice-invalid-userptr-fault:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_fault_mode@twice-rebind:</p>
-<ul>
-<li>Statuses : 3 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_fault_mode@twice-rebind-imm:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_fault_mode@twice-rebind-prefetch:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_fault_mode@twice-userptr:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_fault_mode@twice-userptr-imm:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_fault_mode@twice-userptr-invalidate:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_fault_mode@twice-userptr-invalidate-imm:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_fault_mode@twice-userptr-invalidate-prefetch:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_fault_mode@twice-userptr-invalidate-race:</p>
-<ul>
-<li>Statuses : 3 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_fault_mode@twice-userptr-invalidate-race-imm:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_fault_mode@twice-userptr-invalidate-race-prefetch:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_fault_mode@twice-userptr-prefetch:</p>
-<ul>
-<li>Statuses : 3 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_fault_mode@twice-userptr-rebind:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_fault_mode@twice-userptr-rebind-imm:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_fault_mode@twice-userptr-rebind-prefetch:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_reset@cancel:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_reset@cat-error:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_reset@close-engines-close-fd:</p>
-<ul>
-<li>Statuses : 3 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_reset@close-fd:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_reset@close-fd-no-exec:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_reset@cm-cat-error:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_reset@cm-close-engines-close-fd:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_reset@cm-close-fd:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_reset@cm-close-fd-no-exec:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_reset@cm-engine-reset:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_reset@cm-gt-reset:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_reset@engine-reset:</p>
-<ul>
-<li>Statuses : 3 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_reset@gt-reset:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_reset@gt-reset-stress:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_reset@parallel-cancel:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_reset@parallel-cat-error:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_reset@parallel-close-engines-close-fd:</p>
-<ul>
-<li>Statuses : 3 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_reset@parallel-close-fd:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_reset@parallel-close-fd-no-exec:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_reset@parallel-engine-reset:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_reset@parallel-gt-reset:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_reset@spin:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_reset@virtual-cancel:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_reset@virtual-cat-error:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_reset@virtual-close-engines-close-fd:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_reset@virtual-close-fd:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_reset@virtual-close-fd-no-exec:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_reset@virtual-engine-reset:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_reset@virtual-gt-reset:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_threads@threads-bal-basic:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_threads@threads-bal-fd-basic:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_threads@threads-bal-fd-rebind:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_threads@threads-bal-fd-userptr:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_threads@threads-bal-fd-userptr-invalidate:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_threads@threads-bal-fd-userptr-invalidate-race:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_threads@threads-bal-fd-userptr-rebind:</p>
-<ul>
-<li>Statuses : 3 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_threads@threads-bal-mixed-basic:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_threads@threads-bal-mixed-fd-basic:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_threads@threads-bal-mixed-fd-rebind:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_threads@threads-bal-mixed-fd-userptr:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_threads@threads-bal-mixed-fd-userptr-invalidate:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_threads@threads-bal-mixed-fd-userptr-invalidate-race:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_threads@threads-bal-mixed-fd-userptr-rebind:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_threads@threads-bal-mixed-rebind:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_threads@threads-bal-mixed-shared-vm-basic:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_threads@threads-bal-mixed-shared-vm-rebind:</p>
-<ul>
-<li>Statuses : 3 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_threads@threads-bal-mixed-shared-vm-userptr:</p>
-<ul>
-<li>Statuses : 3 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_threads@threads-bal-mixed-shared-vm-userptr-invalidate:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_threads@threads-bal-mixed-shared-vm-userptr-invalidate-race:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_threads@threads-bal-mixed-shared-vm-userptr-rebind:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_threads@threads-bal-mixed-userptr:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_threads@threads-bal-mixed-userptr-invalidate:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_threads@threads-bal-mixed-userptr-invalidate-race:</p>
-<ul>
-<li>Statuses : 3 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_threads@threads-bal-mixed-userptr-rebind:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_threads@threads-bal-rebind:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_threads@threads-bal-shared-vm-basic:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_threads@threads-bal-shared-vm-rebind:</p>
-<ul>
-<li>Statuses : 3 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_threads@threads-bal-shared-vm-userptr:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_threads@threads-bal-shared-vm-userptr-invalidate:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_threads@threads-bal-shared-vm-userptr-invalidate-race:</p>
-<ul>
-<li>Statuses : 3 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_threads@threads-bal-shared-vm-userptr-rebind:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_threads@threads-bal-userptr:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_threads@threads-bal-userptr-invalidate:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_threads@threads-bal-userptr-invalidate-race:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_threads@threads-bal-userptr-rebind:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_threads@threads-basic:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_threads@threads-cm-basic:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_threads@threads-cm-fd-basic:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_threads@threads-cm-fd-rebind:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_threads@threads-cm-fd-userptr:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_threads@threads-cm-fd-userptr-invalidate:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_threads@threads-cm-fd-userptr-invalidate-race:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_threads@threads-cm-fd-userptr-rebind:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_threads@threads-cm-rebind:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_threads@threads-cm-shared-vm-basic:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_threads@threads-cm-shared-vm-rebind:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_threads@threads-cm-shared-vm-userptr:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_threads@threads-cm-shared-vm-userptr-invalidate:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_threads@threads-cm-shared-vm-userptr-invalidate-race:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_threads@threads-cm-shared-vm-userptr-rebind:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_threads@threads-cm-userptr:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_threads@threads-cm-userptr-invalidate:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_threads@threads-cm-userptr-invalidate-race:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_threads@threads-cm-userptr-rebind:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_threads@threads-fd-basic:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_threads@threads-fd-rebind:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_threads@threads-fd-userptr:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_threads@threads-fd-userptr-invalidate:</p>
-<ul>
-<li>Statuses : 3 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_threads@threads-fd-userptr-invalidate-race:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_threads@threads-fd-userptr-rebind:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_threads@threads-hang-basic:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_threads@threads-hang-fd-basic:</p>
-<ul>
-<li>Statuses : 3 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_threads@threads-hang-fd-rebind:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_threads@threads-hang-fd-userptr:</p>
-<ul>
-<li>Statuses : 3 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_threads@threads-hang-fd-userptr-invalidate:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_threads@threads-hang-fd-userptr-invalidate-race:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_threads@threads-hang-fd-userptr-rebind:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_threads@threads-hang-rebind:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_threads@threads-hang-shared-vm-basic:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_threads@threads-hang-shared-vm-rebind:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_threads@threads-hang-shared-vm-rebind-err:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_threads@threads-hang-shared-vm-userptr:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_threads@threads-hang-shared-vm-userptr-invalidate:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_threads@threads-hang-shared-vm-userptr-invalidate-race:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_threads@threads-hang-shared-vm-userptr-rebind:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_threads@threads-hang-shared-vm-userptr-rebind-err:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_threads@threads-hang-userptr:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_threads@threads-hang-userptr-invalidate:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_threads@threads-hang-userptr-invalidate-race:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_threads@threads-hang-userptr-rebind:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_threads@threads-mixed-basic:</p>
-<ul>
-<li>Statuses : 3 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_threads@threads-mixed-fd-basic:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_threads@threads-mixed-fd-rebind:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_threads@threads-mixed-fd-userptr:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_threads@threads-mixed-fd-userptr-invalidate:</p>
-<ul>
-<li>Statuses : 3 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_threads@threads-mixed-fd-userptr-invalidate-race:</p>
-<ul>
-<li>Statuses : 3 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_threads@threads-mixed-fd-userptr-rebind:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_threads@threads-mixed-rebind:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_threads@threads-mixed-shared-vm-basic:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_threads@threads-mixed-shared-vm-rebind:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_threads@threads-mixed-shared-vm-userptr:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_threads@threads-mixed-shared-vm-userptr-invalidate:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_threads@threads-mixed-shared-vm-userptr-invalidate-race:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_threads@threads-mixed-shared-vm-userptr-rebind:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_threads@threads-mixed-userptr:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_threads@threads-mixed-userptr-invalidate:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_threads@threads-mixed-userptr-invalidate-race:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_threads@threads-mixed-userptr-rebind:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_threads@threads-rebind:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_threads@threads-rebind-bindengine:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_threads@threads-shared-vm-basic:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_threads@threads-shared-vm-rebind:</p>
-<ul>
-<li>Statuses : 3 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_threads@threads-shared-vm-rebind-bindengine:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_threads@threads-shared-vm-rebind-err:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_threads@threads-shared-vm-userptr:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_threads@threads-shared-vm-userptr-invalidate:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_threads@threads-shared-vm-userptr-invalidate-race:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_threads@threads-shared-vm-userptr-rebind:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_threads@threads-shared-vm-userptr-rebind-err:</p>
-<ul>
-<li>Statuses : 3 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_threads@threads-userptr:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_threads@threads-userptr-invalidate:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_threads@threads-userptr-invalidate-race:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_exec_threads@threads-userptr-rebind:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_guc_pc@freq_basic_api:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_guc_pc@freq_fixed_exec:</p>
-<ul>
-<li>Statuses : 3 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_guc_pc@freq_fixed_idle:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_guc_pc@freq_low_max:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_guc_pc@freq_range_exec:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_guc_pc@freq_range_idle:</p>
-<ul>
-<li>Statuses : 3 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_guc_pc@freq_reset:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_guc_pc@freq_reset_multiple:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_guc_pc@freq_suspend:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_guc_pc@rc0_on_exec:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_guc_pc@rc6_on_idle:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_huc_copy@huc_copy:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_mmap@system:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_mmap@vram:</p>
-<ul>
-<li>Statuses : 3 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_mmap@vram-system:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_mmio@mmio-invalid:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_mmio@mmio-timestamp:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_pm@d3cold-basic:</p>
-<ul>
-<li>Statuses : 3 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_pm@d3cold-basic-exec:</p>
-<ul>
-<li>Statuses : 3 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_pm@d3cold-multiple-execs:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_pm@d3hot-basic:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_pm@d3hot-basic-exec:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_pm@d3hot-multiple-execs:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_pm@s2idle-basic:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_pm@s2idle-basic-exec:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_pm@s2idle-d3cold-basic-exec:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_pm@s2idle-d3hot-basic-exec:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_pm@s2idle-exec-after:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_pm@s2idle-multiple-execs:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_pm@s3-basic:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_pm@s3-basic-exec:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_pm@s3-d3cold-basic-exec:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_pm@s3-d3hot-basic-exec:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_pm@s3-exec-after:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_pm@s3-multiple-execs:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_pm@s4-basic:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_pm@s4-basic-exec:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_pm@s4-d3cold-basic-exec:</p>
-<ul>
-<li>Statuses : 3 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_pm@s4-d3hot-basic-exec:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_pm@s4-exec-after:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_pm@s4-multiple-execs:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_prime_self_import@basic-llseek-bad:</p>
-<ul>
-<li>Statuses : 3 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_prime_self_import@basic-llseek-size:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_prime_self_import@basic-with_fd_dup:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_prime_self_import@basic-with_one_bo:</p>
-<ul>
-<li>Statuses : 3 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_prime_self_import@basic-with_one_bo_two_files:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_prime_self_import@basic-with_two_bos:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_prime_self_import@export-vs-gem_close-race:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_prime_self_import@reimport-vs-gem_close-race:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_query@query-config:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_query@query-engines:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_query@query-gts:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_query@query-hwconfig:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_query@query-invalid-query:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_query@query-invalid-size:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_query@query-mem-usage:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_query@query-topology:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_vm@bind-array-engine-many:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_vm@bind-array-engine-twice:</p>
-<ul>
-<li>Statuses : 3 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_vm@bind-array-many:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_vm@bind-array-twice:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_vm@bind-engines-independent:</p>
-<ul>
-<li>Statuses : 3 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_vm@bind-once:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_vm@bind-one-bo-many-times:</p>
-<ul>
-<li>Statuses : 3 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_vm@bind-one-bo-many-times-many-vm:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_vm@large-binds-1073741824:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_vm@large-binds-134217728:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_vm@large-binds-16777216:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_vm@large-binds-2097152:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_vm@large-binds-2147483648:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_vm@large-binds-268435456:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_vm@large-binds-33554432:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_vm@large-binds-4194304:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_vm@large-binds-536870912:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_vm@large-binds-67108864:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_vm@large-binds-8388608:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_vm@large-misaligned-binds-1073741824:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_vm@large-misaligned-binds-134217728:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_vm@large-misaligned-binds-16777216:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_vm@large-misaligned-binds-2097152:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_vm@large-misaligned-binds-2147483648:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_vm@large-misaligned-binds-268435456:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_vm@large-misaligned-binds-33554432:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_vm@large-misaligned-binds-4194304:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_vm@large-misaligned-binds-536870912:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_vm@large-misaligned-binds-67108864:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_vm@large-misaligned-binds-8388608:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_vm@large-split-binds-1073741824:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_vm@large-split-binds-134217728:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_vm@large-split-binds-16777216:</p>
-<ul>
-<li>Statuses : 3 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_vm@large-split-binds-2097152:</p>
-<ul>
-<li>Statuses : 3 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_vm@large-split-binds-2147483648:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_vm@large-split-binds-268435456:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_vm@large-split-binds-33554432:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_vm@large-split-binds-4194304:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_vm@large-split-binds-536870912:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_vm@large-split-binds-67108864:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_vm@large-split-binds-8388608:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_vm@large-split-misaligned-binds-1073741824:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_vm@large-split-misaligned-binds-134217728:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_vm@large-split-misaligned-binds-16777216:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_vm@large-split-misaligned-binds-2097152:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_vm@large-split-misaligned-binds-2147483648:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_vm@large-split-misaligned-binds-268435456:</p>
-<ul>
-<li>Statuses : 3 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_vm@large-split-misaligned-binds-33554432:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_vm@large-split-misaligned-binds-4194304:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_vm@large-split-misaligned-binds-536870912:</p>
-<ul>
-<li>Statuses : 3 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_vm@large-split-misaligned-binds-67108864:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_vm@large-split-misaligned-binds-8388608:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_vm@large-userptr-binds-1073741824:</p>
-<ul>
-<li>Statuses : 3 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_vm@large-userptr-binds-134217728:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_vm@large-userptr-binds-16777216:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_vm@large-userptr-binds-2097152:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_vm@large-userptr-binds-2147483648:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_vm@large-userptr-binds-268435456:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_vm@large-userptr-binds-33554432:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_vm@large-userptr-binds-4194304:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_vm@large-userptr-binds-536870912:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_vm@large-userptr-binds-67108864:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_vm@large-userptr-binds-8388608:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_vm@large-userptr-misaligned-binds-1073741824:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_vm@large-userptr-misaligned-binds-134217728:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_vm@large-userptr-misaligned-binds-16777216:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_vm@large-userptr-misaligned-binds-2097152:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_vm@large-userptr-misaligned-binds-2147483648:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_vm@large-userptr-misaligned-binds-268435456:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_vm@large-userptr-misaligned-binds-33554432:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_vm@large-userptr-misaligned-binds-4194304:</p>
-<ul>
-<li>Statuses : 3 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_vm@large-userptr-misaligned-binds-536870912:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_vm@large-userptr-misaligned-binds-67108864:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_vm@large-userptr-misaligned-binds-8388608:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_vm@large-userptr-split-binds-1073741824:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_vm@large-userptr-split-binds-134217728:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_vm@large-userptr-split-binds-16777216:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_vm@large-userptr-split-binds-2097152:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_vm@large-userptr-split-binds-2147483648:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_vm@large-userptr-split-binds-268435456:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_vm@large-userptr-split-binds-33554432:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_vm@large-userptr-split-binds-4194304:</p>
-<ul>
-<li>Statuses : 3 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_vm@large-userptr-split-binds-536870912:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_vm@large-userptr-split-binds-67108864:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_vm@large-userptr-split-binds-8388608:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_vm@large-userptr-split-misaligned-binds-1073741824:</p>
-<ul>
-<li>Statuses : 3 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_vm@large-userptr-split-misaligned-binds-134217728:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_vm@large-userptr-split-misaligned-binds-16777216:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_vm@large-userptr-split-misaligned-binds-2097152:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_vm@large-userptr-split-misaligned-binds-2147483648:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_vm@large-userptr-split-misaligned-binds-268435456:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_vm@large-userptr-split-misaligned-binds-33554432:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_vm@large-userptr-split-misaligned-binds-4194304:</p>
-<ul>
-<li>Statuses : 3 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_vm@large-userptr-split-misaligned-binds-536870912:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_vm@large-userptr-split-misaligned-binds-67108864:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_vm@large-userptr-split-misaligned-binds-8388608:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_vm@mixed-binds-1611661312:</p>
-<ul>
-<li>Statuses : 3 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_vm@mixed-binds-3145728:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_vm@mixed-misaligned-binds-1611661312:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_vm@mixed-misaligned-binds-3145728:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_vm@mixed-userptr-binds-1611661312:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_vm@mixed-userptr-binds-3145728:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_vm@mixed-userptr-misaligned-binds-1611661312:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_vm@mixed-userptr-misaligned-binds-3145728:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_vm@munmap-style-unbind-all:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_vm@munmap-style-unbind-either-side-full:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_vm@munmap-style-unbind-either-side-partial:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_vm@munmap-style-unbind-either-side-partial-hammer:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_vm@munmap-style-unbind-end:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_vm@munmap-style-unbind-front:</p>
-<ul>
-<li>Statuses : 3 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_vm@munmap-style-unbind-many-all:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_vm@munmap-style-unbind-many-either-side-full:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_vm@munmap-style-unbind-many-either-side-partial:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_vm@munmap-style-unbind-many-either-side-partial-hammer:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_vm@munmap-style-unbind-many-end:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_vm@munmap-style-unbind-many-front:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_vm@munmap-style-unbind-one-partial:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_vm@munmap-style-unbind-userptr-all:</p>
-<ul>
-<li>Statuses : 3 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_vm@munmap-style-unbind-userptr-either-side-full:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_vm@munmap-style-unbind-userptr-either-side-partial:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_vm@munmap-style-unbind-userptr-end:</p>
-<ul>
-<li>Statuses : 3 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_vm@munmap-style-unbind-userptr-front:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_vm@munmap-style-unbind-userptr-inval-either-side-full:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_vm@munmap-style-unbind-userptr-inval-end:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_vm@munmap-style-unbind-userptr-inval-front:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_vm@munmap-style-unbind-userptr-inval-many-all:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_vm@munmap-style-unbind-userptr-inval-many-either-side-full:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_vm@munmap-style-unbind-userptr-inval-many-either-side-partial:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_vm@munmap-style-unbind-userptr-inval-many-end:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_vm@munmap-style-unbind-userptr-inval-many-front:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_vm@munmap-style-unbind-userptr-many-all:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_vm@munmap-style-unbind-userptr-many-either-side-full:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_vm@munmap-style-unbind-userptr-many-end:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_vm@munmap-style-unbind-userptr-many-front:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_vm@munmap-style-unbind-userptr-one-partial:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_vm@scratch:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_vm@shared-pde-page:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_vm@shared-pde2-page:</p>
-<ul>
-<li>Statuses : 3 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_vm@shared-pde3-page:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_vm@shared-pte-page:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_vm@unbind-all-2-vmas:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_vm@unbind-all-8-vmas:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_vm@vm-async-ops-err:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_vm@vm-async-ops-err-destroy:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe/xe_waitfence@test:</p>
-<ul>
-<li>Statuses : 5 skip(s)</li>
-<li>Exec time: [0.0] s</li>
+<li>igt@perf@non-zero-reason:<ul>
+<li>shard-glk:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7183/shard-glk1/igt@perf@non-zero-reason.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-glk2/igt@perf@non-zero-reason.html">FAIL</a></li>
 </ul>
 </li>
 </ul>
 <h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_8567_full that come from known issues:</p>
+<p>Here are the changes found in IGTPW_8568_full that come from known issues:</p>
 <h3>IGT changes</h3>
 <h4>Issues hit</h4>
 <ul>
 <li>
-<p>igt@device_reset@unbind-cold-reset-rebind:</p>
+<p>igt@debugfs_test@basic-hwmon:</p>
 <ul>
-<li>shard-tglu-10:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8567/shard-tglu-10/igt@device_reset@unbind-cold-reset-rebind.html">SKIP</a> ([i915#7701])</li>
+<li>shard-tglu-10:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-tglu-10/igt@debugfs_test@basic-hwmon.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7456">i915#7456</a>)</li>
 </ul>
 </li>
 <li>
-<p>igt@drm_buddy@all-tests:</p>
+<p>igt@drm_mm@all-tests:</p>
 <ul>
-<li>shard-tglu-10:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8567/shard-tglu-10/igt@drm_buddy@all-tests.html">SKIP</a> ([i915#6433])</li>
+<li>shard-tglu-9:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-tglu-9/igt@drm_mm@all-tests.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6433">i915#6433</a>)</li>
 </ul>
 </li>
 <li>
-<p>igt@feature_discovery@display-2x:</p>
+<p>igt@drm_read@invalid-buffer:</p>
 <ul>
-<li>shard-tglu-10:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8567/shard-tglu-10/igt@feature_discovery@display-2x.html">SKIP</a> ([i915#1839])</li>
+<li>shard-tglu-9:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-tglu-9/igt@drm_read@invalid-buffer.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1845">i915#1845</a>) +16 similar issues</li>
 </ul>
 </li>
 <li>
-<p>igt@gem_ccs@block-multicopy-compressed:</p>
+<p>igt@feature_discovery@display-3x:</p>
 <ul>
-<li>shard-tglu-9:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8567/shard-tglu-9/igt@gem_ccs@block-multicopy-compressed.html">SKIP</a> ([i915#5325])</li>
+<li>shard-tglu-10:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-tglu-10/igt@feature_discovery@display-3x.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1839">i915#1839</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@feature_discovery@display-4x:</p>
+<ul>
+<li>shard-tglu-9:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-tglu-9/igt@feature_discovery@display-4x.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1839">i915#1839</a>)</li>
 </ul>
 </li>
 <li>
 <p>igt@gem_ccs@ctrl-surf-copy:</p>
 <ul>
-<li>shard-tglu-10:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8567/shard-tglu-10/igt@gem_ccs@ctrl-surf-copy.html">SKIP</a> ([i915#3555] / [i915#5325])</li>
+<li>shard-tglu-9:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-tglu-9/igt@gem_ccs@ctrl-surf-copy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3555">i915#3555</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/5325">i915#5325</a>)</li>
 </ul>
 </li>
 <li>
-<p>igt@gem_ctx_param@set-priority-not-supported:</p>
+<p>igt@gem_ccs@suspend-resume:</p>
 <ul>
-<li>shard-tglu-10:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8567/shard-tglu-10/igt@gem_ctx_param@set-priority-not-supported.html">SKIP</a> ([fdo#109314])</li>
+<li>shard-tglu-10:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-tglu-10/igt@gem_ccs@suspend-resume.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5325">i915#5325</a>) +1 similar issue</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_create@create-ext-cpu-access-sanity-check:</p>
+<ul>
+<li>shard-tglu-9:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-tglu-9/igt@gem_create@create-ext-cpu-access-sanity-check.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6335">i915#6335</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_ctx_sseu@engines:</p>
+<ul>
+<li>shard-tglu-9:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-tglu-9/igt@gem_ctx_sseu@engines.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/280">i915#280</a>)</li>
 </ul>
 </li>
 <li>
 <p>igt@gem_ctx_sseu@invalid-sseu:</p>
 <ul>
-<li>shard-tglu-9:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8567/shard-tglu-9/igt@gem_ctx_sseu@invalid-sseu.html">SKIP</a> ([i915#280])</li>
+<li>shard-tglu-10:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-tglu-10/igt@gem_ctx_sseu@invalid-sseu.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/280">i915#280</a>)</li>
 </ul>
 </li>
 <li>
-<p>igt@gem_exec_fair@basic-none-rrul@rcs0:</p>
+<p>igt@gem_exec_fair@basic-none-vip@rcs0:</p>
 <ul>
-<li>shard-glk:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8567/shard-glk7/igt@gem_exec_fair@basic-none-rrul@rcs0.html">FAIL</a> ([i915#2842])</li>
+<li>shard-tglu-9:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-tglu-9/igt@gem_exec_fair@basic-none-vip@rcs0.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2842">i915#2842</a>)</li>
 </ul>
 </li>
 <li>
-<p>igt@gem_exec_fair@basic-none-share@rcs0:</p>
+<p>igt@gem_exec_fair@basic-none@rcs0:</p>
 <ul>
-<li>shard-tglu-10:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8567/shard-tglu-10/igt@gem_exec_fair@basic-none-share@rcs0.html">FAIL</a> ([i915#2842]) +5 similar issues</li>
+<li>shard-tglu-10:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-tglu-10/igt@gem_exec_fair@basic-none@rcs0.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2842">i915#2842</a>) +5 similar issues</li>
 </ul>
 </li>
 <li>
 <p>igt@gem_exec_fair@basic-throttle@rcs0:</p>
 <ul>
-<li>shard-glk:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7183/shard-glk6/igt@gem_exec_fair@basic-throttle@rcs0.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8567/shard-glk6/igt@gem_exec_fair@basic-throttle@rcs0.html">FAIL</a> ([i915#2842]) +1 similar issue</li>
+<li>shard-glk:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7183/shard-glk6/igt@gem_exec_fair@basic-throttle@rcs0.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-glk6/igt@gem_exec_fair@basic-throttle@rcs0.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2842">i915#2842</a>) +1 similar issue</li>
 </ul>
 </li>
 <li>
-<p>igt@gem_exec_flush@basic-batch-kernel-default-cmd:</p>
+<p>igt@gem_exec_params@secure-non-master:</p>
 <ul>
-<li>shard-tglu-9:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8567/shard-tglu-9/igt@gem_exec_flush@basic-batch-kernel-default-cmd.html">SKIP</a> ([fdo#109313])</li>
+<li>shard-tglu-9:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-tglu-9/igt@gem_exec_params@secure-non-master.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=112283">fdo#112283</a>)</li>
 </ul>
 </li>
 <li>
-<p>igt@gem_lmem_evict@dontneed-evict-race:</p>
+<p>igt@gem_exec_suspend@basic-s4-devices@smem:</p>
 <ul>
-<li>shard-tglu-9:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8567/shard-tglu-9/igt@gem_lmem_evict@dontneed-evict-race.html">SKIP</a> ([i915#7582])</li>
+<li>shard-tglu-10:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-tglu-10/igt@gem_exec_suspend@basic-s4-devices@smem.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7975">i915#7975</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_lmem_swapping@heavy-multi:</p>
+<ul>
+<li>shard-tglu-10:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-tglu-10/igt@gem_lmem_swapping@heavy-multi.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4613">i915#4613</a>) +1 similar issue</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_lmem_swapping@heavy-random:</p>
+<ul>
+<li>shard-tglu-9:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-tglu-9/igt@gem_lmem_swapping@heavy-random.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4613">i915#4613</a>)</li>
 </ul>
 </li>
 <li>
 <p>igt@gem_lmem_swapping@parallel-random-verify-ccs:</p>
 <ul>
-<li>shard-apl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8567/shard-apl6/igt@gem_lmem_swapping@parallel-random-verify-ccs.html">SKIP</a> ([fdo#109271] / [i915#4613]) +1 similar issue</li>
+<li>shard-apl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-apl4/igt@gem_lmem_swapping@parallel-random-verify-ccs.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4613">i915#4613</a>) +1 similar issue</li>
 </ul>
 </li>
 <li>
-<p>igt@gem_lmem_swapping@verify-ccs:</p>
+<p>igt@gem_pxp@protected-raw-src-copy-not-readible:</p>
 <ul>
-<li>shard-tglu-10:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8567/shard-tglu-10/igt@gem_lmem_swapping@verify-ccs.html">SKIP</a> ([i915#4613]) +3 similar issues</li>
+<li>shard-tglu-9:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-tglu-9/igt@gem_pxp@protected-raw-src-copy-not-readible.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4270">i915#4270</a>) +1 similar issue</li>
 </ul>
 </li>
 <li>
-<p>igt@gem_media_vme:</p>
+<p>igt@gem_pxp@regular-baseline-src-copy-readible:</p>
 <ul>
-<li>shard-tglu-10:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8567/shard-tglu-10/igt@gem_media_vme.html">SKIP</a> ([i915#284])</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_pread@exhaustion:</p>
-<ul>
-<li>shard-tglu-10:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8567/shard-tglu-10/igt@gem_pread@exhaustion.html">WARN</a> ([i915#2658])</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_pxp@verify-pxp-key-change-after-suspend-resume:</p>
-<ul>
-<li>shard-tglu-10:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8567/shard-tglu-10/igt@gem_pxp@verify-pxp-key-change-after-suspend-resume.html">SKIP</a> ([i915#4270]) +1 similar issue</li>
+<li>shard-tglu-10:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-tglu-10/igt@gem_pxp@regular-baseline-src-copy-readible.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4270">i915#4270</a>) +2 similar issues</li>
 </ul>
 </li>
 <li>
 <p>igt@gem_userptr_blits@coherency-sync:</p>
 <ul>
-<li>shard-tglu-9:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8567/shard-tglu-9/igt@gem_userptr_blits@coherency-sync.html">SKIP</a> ([fdo#110542])</li>
+<li>shard-tglu-10:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-tglu-10/igt@gem_userptr_blits@coherency-sync.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=110542">fdo#110542</a>)</li>
 </ul>
 </li>
 <li>
-<p>igt@gem_userptr_blits@unsync-overlap:</p>
+<p>igt@gem_userptr_blits@coherency-unsync:</p>
 <ul>
-<li>shard-tglu-10:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8567/shard-tglu-10/igt@gem_userptr_blits@unsync-overlap.html">SKIP</a> ([i915#3297])</li>
+<li>shard-tglu-10:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-tglu-10/igt@gem_userptr_blits@coherency-unsync.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3297">i915#3297</a>)</li>
 </ul>
 </li>
 <li>
-<p>igt@gen9_exec_parse@allowed-all:</p>
+<p>igt@gem_userptr_blits@unsync-unmap-cycles:</p>
 <ul>
-<li>shard-tglu-9:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8567/shard-tglu-9/igt@gen9_exec_parse@allowed-all.html">SKIP</a> ([i915#2527] / [i915#2856])</li>
+<li>shard-tglu-9:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-tglu-9/igt@gem_userptr_blits@unsync-unmap-cycles.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3297">i915#3297</a>) +1 similar issue</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_userptr_blits@vma-merge:</p>
+<ul>
+<li>shard-tglu-10:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-tglu-10/igt@gem_userptr_blits@vma-merge.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3318">i915#3318</a>)</li>
 </ul>
 </li>
 <li>
 <p>igt@gen9_exec_parse@allowed-single:</p>
 <ul>
-<li>shard-apl:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7183/shard-apl4/igt@gen9_exec_parse@allowed-single.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8567/shard-apl2/igt@gen9_exec_parse@allowed-single.html">ABORT</a> ([i915#5566])</li>
+<li>shard-apl:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7183/shard-apl4/igt@gen9_exec_parse@allowed-single.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-apl1/igt@gen9_exec_parse@allowed-single.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5566">i915#5566</a>)</li>
 </ul>
 </li>
 <li>
-<p>igt@gen9_exec_parse@batch-zero-length:</p>
+<p>igt@gen9_exec_parse@basic-rejected-ctx-param:</p>
 <ul>
-<li>shard-tglu-10:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8567/shard-tglu-10/igt@gen9_exec_parse@batch-zero-length.html">SKIP</a> ([i915#2527] / [i915#2856]) +3 similar issues</li>
+<li>shard-tglu-10:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-tglu-10/igt@gen9_exec_parse@basic-rejected-ctx-param.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2527">i915#2527</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2856">i915#2856</a>) +2 similar issues</li>
 </ul>
 </li>
 <li>
-<p>igt@i915_module_load@load:</p>
+<p>igt@gen9_exec_parse@bb-oversize:</p>
 <ul>
-<li>shard-tglu-10:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8567/shard-tglu-10/igt@i915_module_load@load.html">SKIP</a> ([i915#6227])</li>
+<li>shard-tglu-9:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-tglu-9/igt@gen9_exec_parse@bb-oversize.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2527">i915#2527</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2856">i915#2856</a>) +2 similar issues</li>
 </ul>
 </li>
 <li>
-<p>igt@i915_pm_backlight@bad-brightness:</p>
+<p>igt@i915_pm_backlight@fade-with-dpms:</p>
 <ul>
-<li>shard-tglu-10:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8567/shard-tglu-10/igt@i915_pm_backlight@bad-brightness.html">SKIP</a> ([i915#7561]) +1 similar issue</li>
+<li>shard-tglu-10:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-tglu-10/igt@i915_pm_backlight@fade-with-dpms.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7561">i915#7561</a>) +1 similar issue</li>
 </ul>
 </li>
 <li>
-<p>igt@i915_pm_backlight@fade-with-suspend:</p>
+<p>igt@i915_pm_rc6_residency@media-rc6-accuracy:</p>
 <ul>
-<li>shard-tglu-9:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8567/shard-tglu-9/igt@i915_pm_backlight@fade-with-suspend.html">SKIP</a> ([i915#7561])</li>
+<li>shard-tglu-9:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-tglu-9/igt@i915_pm_rc6_residency@media-rc6-accuracy.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109289">fdo#109289</a>) +2 similar issues</li>
 </ul>
 </li>
 <li>
 <p>igt@i915_pm_rpm@dpms-non-lpsp:</p>
 <ul>
-<li>shard-tglu-10:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8567/shard-tglu-10/igt@i915_pm_rpm@dpms-non-lpsp.html">SKIP</a> ([fdo#111644] / [i915#1397])</li>
+<li>shard-tglu-9:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-tglu-9/igt@i915_pm_rpm@dpms-non-lpsp.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=111644">fdo#111644</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/1397">i915#1397</a>) +1 similar issue</li>
 </ul>
 </li>
 <li>
-<p>igt@i915_pm_rpm@pc8-residency:</p>
+<p>igt@i915_query@query-topology-unsupported:</p>
 <ul>
-<li>shard-tglu-10:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8567/shard-tglu-10/igt@i915_pm_rpm@pc8-residency.html">SKIP</a> ([fdo#109506])</li>
+<li>shard-tglu-10:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-tglu-10/igt@i915_query@query-topology-unsupported.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109302">fdo#109302</a>)</li>
 </ul>
 </li>
 <li>
-<p>igt@i915_pm_rpm@pm-tiling:</p>
+<p>igt@i915_suspend@fence-restore-tiled2untiled:</p>
 <ul>
-<li>shard-tglu-9:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8567/shard-tglu-9/igt@i915_pm_rpm@pm-tiling.html">SKIP</a> ([i915#3547])</li>
+<li>shard-apl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-apl2/igt@i915_suspend@fence-restore-tiled2untiled.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/180">i915#180</a>)</li>
 </ul>
 </li>
 <li>
-<p>igt@i915_query@test-query-geometry-subslices:</p>
+<p>igt@kms_big_fb@4-tiled-max-hw-stride-32bpp-rotate-0-hflip-async-flip:</p>
 <ul>
-<li>shard-tglu-10:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8567/shard-tglu-10/igt@i915_query@test-query-geometry-subslices.html">SKIP</a> ([i915#5723])</li>
+<li>shard-tglu-10:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-tglu-10/igt@kms_big_fb@4-tiled-max-hw-stride-32bpp-rotate-0-hflip-async-flip.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5286">i915#5286</a>) +4 similar issues</li>
 </ul>
 </li>
 <li>
-<p>igt@kms_addfb_basic@invalid-smem-bo-on-discrete:</p>
+<p>igt@kms_big_fb@yf-tiled-32bpp-rotate-0:</p>
 <ul>
-<li>shard-tglu-10:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8567/shard-tglu-10/igt@kms_addfb_basic@invalid-smem-bo-on-discrete.html">SKIP</a> ([i915#3826])</li>
+<li>shard-tglu-9:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-tglu-9/igt@kms_big_fb@yf-tiled-32bpp-rotate-0.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=111615">fdo#111615</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/1845">i915#1845</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7651">i915#7651</a>) +8 similar issues</li>
 </ul>
 </li>
 <li>
-<p>igt@kms_big_fb@4-tiled-16bpp-rotate-270:</p>
+<p>igt@kms_big_fb@yf-tiled-max-hw-stride-64bpp-rotate-0-async-flip:</p>
 <ul>
-<li>shard-tglu-10:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8567/shard-tglu-10/igt@kms_big_fb@4-tiled-16bpp-rotate-270.html">SKIP</a> ([i915#5286]) +5 similar issues</li>
+<li>shard-tglu-10:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-tglu-10/igt@kms_big_fb@yf-tiled-max-hw-stride-64bpp-rotate-0-async-flip.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=111615">fdo#111615</a>) +3 similar issues</li>
 </ul>
 </li>
 <li>
-<p>igt@kms_big_fb@x-tiled-64bpp-rotate-90:</p>
+<p>igt@kms_big_joiner@invalid-modeset:</p>
 <ul>
-<li>shard-tglu-10:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8567/shard-tglu-10/igt@kms_big_fb@x-tiled-64bpp-rotate-90.html">SKIP</a> ([fdo#111614]) +4 similar issues</li>
+<li>shard-tglu-9:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-tglu-9/igt@kms_big_joiner@invalid-modeset.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2705">i915#2705</a>)</li>
 </ul>
 </li>
 <li>
-<p>igt@kms_big_fb@yf-tiled-addfb:</p>
+<p>igt@kms_ccs@pipe-a-crc-sprite-planes-basic-y_tiled_gen12_mc_ccs:</p>
 <ul>
-<li>shard-tglu-9:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8567/shard-tglu-9/igt@kms_big_fb@yf-tiled-addfb.html">SKIP</a> ([fdo#111615] / [i915#1845] / [i915#7651]) +3 similar issues</li>
+<li>shard-tglu-10:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-tglu-10/igt@kms_ccs@pipe-a-crc-sprite-planes-basic-y_tiled_gen12_mc_ccs.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3689">i915#3689</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3886">i915#3886</a>) +1 similar issue</li>
 </ul>
 </li>
 <li>
-<p>igt@kms_big_fb@yf-tiled-max-hw-stride-64bpp-rotate-180-async-flip:</p>
+<p>igt@kms_ccs@pipe-b-bad-pixel-format-4_tiled_dg2_rc_ccs:</p>
 <ul>
-<li>shard-tglu-10:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8567/shard-tglu-10/igt@kms_big_fb@yf-tiled-max-hw-stride-64bpp-rotate-180-async-flip.html">SKIP</a> ([fdo#111615]) +5 similar issues</li>
+<li>shard-tglu-10:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-tglu-10/igt@kms_ccs@pipe-b-bad-pixel-format-4_tiled_dg2_rc_ccs.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3689">i915#3689</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/6095">i915#6095</a>) +3 similar issues</li>
 </ul>
 </li>
 <li>
-<p>igt@kms_ccs@pipe-a-crc-primary-basic-y_tiled_ccs:</p>
+<p>igt@kms_ccs@pipe-b-bad-rotation-90-4_tiled_dg2_rc_ccs_cc:</p>
 <ul>
-<li>shard-tglu-10:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8567/shard-tglu-10/igt@kms_ccs@pipe-a-crc-primary-basic-y_tiled_ccs.html">SKIP</a> ([i915#3689]) +8 similar issues</li>
+<li>shard-tglu-10:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-tglu-10/igt@kms_ccs@pipe-b-bad-rotation-90-4_tiled_dg2_rc_ccs_cc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6095">i915#6095</a>) +4 similar issues</li>
 </ul>
 </li>
 <li>
-<p>igt@kms_ccs@pipe-a-crc-primary-rotation-180-4_tiled_dg2_rc_ccs:</p>
+<p>igt@kms_ccs@pipe-c-ccs-on-another-bo-yf_tiled_ccs:</p>
 <ul>
-<li>shard-tglu-10:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8567/shard-tglu-10/igt@kms_ccs@pipe-a-crc-primary-rotation-180-4_tiled_dg2_rc_ccs.html">SKIP</a> ([i915#3689] / [i915#6095]) +4 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_ccs@pipe-c-bad-aux-stride-y_tiled_gen12_mc_ccs:</p>
-<ul>
-<li>shard-tglu-10:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8567/shard-tglu-10/igt@kms_ccs@pipe-c-bad-aux-stride-y_tiled_gen12_mc_ccs.html">SKIP</a> ([i915#3689] / [i915#3886]) +3 similar issues</li>
+<li>shard-tglu-10:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-tglu-10/igt@kms_ccs@pipe-c-ccs-on-another-bo-yf_tiled_ccs.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=111615">fdo#111615</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3689">i915#3689</a>)</li>
 </ul>
 </li>
 <li>
 <p>igt@kms_ccs@pipe-c-crc-primary-basic-y_tiled_gen12_mc_ccs:</p>
 <ul>
-<li>shard-apl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8567/shard-apl2/igt@kms_ccs@pipe-c-crc-primary-basic-y_tiled_gen12_mc_ccs.html">SKIP</a> ([fdo#109271] / [i915#3886]) +2 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_ccs@pipe-c-crc-primary-rotation-180-4_tiled_dg2_mc_ccs:</p>
-<ul>
-<li>shard-tglu-10:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8567/shard-tglu-10/igt@kms_ccs@pipe-c-crc-primary-rotation-180-4_tiled_dg2_mc_ccs.html">SKIP</a> ([i915#6095]) +2 similar issues</li>
+<li>shard-apl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-apl1/igt@kms_ccs@pipe-c-crc-primary-basic-y_tiled_gen12_mc_ccs.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3886">i915#3886</a>) +2 similar issues</li>
 </ul>
 </li>
 <li>
 <p>igt@kms_ccs@pipe-c-missing-ccs-buffer-y_tiled_gen12_mc_ccs:</p>
 <ul>
-<li>shard-glk:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8567/shard-glk2/igt@kms_ccs@pipe-c-missing-ccs-buffer-y_tiled_gen12_mc_ccs.html">SKIP</a> ([fdo#109271] / [i915#3886])</li>
+<li>shard-glk:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-glk4/igt@kms_ccs@pipe-c-missing-ccs-buffer-y_tiled_gen12_mc_ccs.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3886">i915#3886</a>)</li>
 </ul>
 </li>
 <li>
-<p>igt@kms_ccs@pipe-d-bad-aux-stride-yf_tiled_ccs:</p>
+<p>igt@kms_ccs@pipe-d-bad-rotation-90-4_tiled_dg2_rc_ccs_cc:</p>
 <ul>
-<li>shard-tglu-10:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8567/shard-tglu-10/igt@kms_ccs@pipe-d-bad-aux-stride-yf_tiled_ccs.html">SKIP</a> ([fdo#111615] / [i915#3689]) +8 similar issues</li>
+<li>shard-tglu-10:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-tglu-10/igt@kms_ccs@pipe-d-bad-rotation-90-4_tiled_dg2_rc_ccs_cc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3689">i915#3689</a>) +7 similar issues</li>
 </ul>
 </li>
 <li>
-<p>igt@kms_chamelium_color@ctm-max:</p>
+<p>igt@kms_cdclk@mode-transition:</p>
 <ul>
-<li>shard-tglu-10:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8567/shard-tglu-10/igt@kms_chamelium_color@ctm-max.html">SKIP</a> ([fdo#111827]) +2 similar issues</li>
+<li>shard-tglu-9:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-tglu-9/igt@kms_cdclk@mode-transition.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3742">i915#3742</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_chamelium_color@ctm-0-25:</p>
+<ul>
+<li>shard-tglu-9:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-tglu-9/igt@kms_chamelium_color@ctm-0-25.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=111827">fdo#111827</a>)</li>
 </ul>
 </li>
 <li>
 <p>igt@kms_chamelium_edid@dp-edid-resolution-list:</p>
 <ul>
-<li>shard-tglu-9:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8567/shard-tglu-9/igt@kms_chamelium_edid@dp-edid-resolution-list.html">SKIP</a> ([i915#7828]) +1 similar issue</li>
+<li>shard-tglu-9:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-tglu-9/igt@kms_chamelium_edid@dp-edid-resolution-list.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7828">i915#7828</a>) +5 similar issues</li>
 </ul>
 </li>
 <li>
-<p>igt@kms_chamelium_hpd@hdmi-hpd:</p>
+<p>igt@kms_chamelium_edid@hdmi-edid-stress-resolution-4k:</p>
 <ul>
-<li>shard-tglu-10:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8567/shard-tglu-10/igt@kms_chamelium_hpd@hdmi-hpd.html">SKIP</a> ([i915#7828]) +9 similar issues</li>
+<li>shard-tglu-10:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-tglu-10/igt@kms_chamelium_edid@hdmi-edid-stress-resolution-4k.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7828">i915#7828</a>) +3 similar issues</li>
 </ul>
 </li>
 <li>
-<p>igt@kms_content_protection@dp-mst-type-1:</p>
+<p>igt@kms_color@ctm-0-25@pipe-b-hdmi-a-1:</p>
 <ul>
-<li>shard-tglu-10:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8567/shard-tglu-10/igt@kms_content_protection@dp-mst-type-1.html">SKIP</a> ([i915#3116] / [i915#3299]) +1 similar issue</li>
+<li>shard-tglu-10:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-tglu-10/igt@kms_color@ctm-0-25@pipe-b-hdmi-a-1.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/315">i915#315</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/6946">i915#6946</a>) +3 similar issues</li>
 </ul>
 </li>
 <li>
-<p>igt@kms_cursor_crc@cursor-offscreen-512x512:</p>
+<p>igt@kms_color@ctm-green-to-red:</p>
 <ul>
-<li>shard-tglu-10:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8567/shard-tglu-10/igt@kms_cursor_crc@cursor-offscreen-512x512.html">SKIP</a> ([i915#3359]) +5 similar issues</li>
+<li>shard-tglu-9:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-tglu-9/igt@kms_color@ctm-green-to-red.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3546">i915#3546</a>) +1 similar issue</li>
 </ul>
 </li>
 <li>
-<p>igt@kms_cursor_crc@cursor-random-32x32:</p>
+<p>igt@kms_content_protection@atomic-dpms:</p>
 <ul>
-<li>shard-tglu-9:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8567/shard-tglu-9/igt@kms_cursor_crc@cursor-random-32x32.html">SKIP</a> ([i915#1845]) +5 similar issues</li>
+<li>shard-tglu-10:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-tglu-10/igt@kms_content_protection@atomic-dpms.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6944">i915#6944</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7116">i915#7116</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7118">i915#7118</a>)</li>
 </ul>
 </li>
 <li>
-<p>igt@kms_cursor_crc@cursor-suspend:</p>
+<p>igt@kms_cursor_crc@cursor-rapid-movement-512x512:</p>
 <ul>
-<li>shard-tglu-9:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8567/shard-tglu-9/igt@kms_cursor_crc@cursor-suspend.html">SKIP</a> ([i915#1845] / [i915#7651]) +25 similar issues</li>
+<li>shard-tglu-10:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-tglu-10/igt@kms_cursor_crc@cursor-rapid-movement-512x512.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3359">i915#3359</a>) +1 similar issue</li>
 </ul>
 </li>
 <li>
-<p>igt@kms_cursor_legacy@2x-flip-vs-cursor-legacy:</p>
+<p>igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy:</p>
 <ul>
-<li>shard-glk:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8567/shard-glk7/igt@kms_cursor_legacy@2x-flip-vs-cursor-legacy.html">FAIL</a> ([i915#72])</li>
+<li>shard-tglu-10:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-tglu-10/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4103">i915#4103</a>) +1 similar issue</li>
 </ul>
 </li>
 <li>
-<p>igt@kms_cursor_legacy@cursorb-vs-flipa-atomic-transitions-varying-size:</p>
+<p>igt@kms_cursor_legacy@cursora-vs-flipb-atomic:</p>
 <ul>
-<li>shard-tglu-10:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8567/shard-tglu-10/igt@kms_cursor_legacy@cursorb-vs-flipa-atomic-transitions-varying-size.html">SKIP</a> ([fdo#109274]) +2 similar issues</li>
+<li>shard-tglu-10:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-tglu-10/igt@kms_cursor_legacy@cursora-vs-flipb-atomic.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109274">fdo#109274</a>)</li>
 </ul>
 </li>
 <li>
-<p>igt@kms_cursor_legacy@short-busy-flip-before-cursor-atomic-transitions:</p>
+<p>igt@kms_cursor_legacy@flip-vs-cursor-atomic-transitions-varying-size:</p>
 <ul>
-<li>shard-tglu-10:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8567/shard-tglu-10/igt@kms_cursor_legacy@short-busy-flip-before-cursor-atomic-transitions.html">SKIP</a> ([i915#4103]) +2 similar issues</li>
+<li>shard-apl:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7183/shard-apl6/igt@kms_cursor_legacy@flip-vs-cursor-atomic-transitions-varying-size.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-apl3/igt@kms_cursor_legacy@flip-vs-cursor-atomic-transitions-varying-size.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2346">i915#2346</a>)</li>
 </ul>
 </li>
 <li>
-<p>igt@kms_fbcon_fbt@fbc-suspend:</p>
+<p>igt@kms_dsc@dsc-with-formats:</p>
 <ul>
-<li>shard-apl:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7183/shard-apl2/igt@kms_fbcon_fbt@fbc-suspend.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8567/shard-apl6/igt@kms_fbcon_fbt@fbc-suspend.html">FAIL</a> ([i915#4767])</li>
+<li>shard-tglu-9:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-tglu-9/igt@kms_dsc@dsc-with-formats.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1845">i915#1845</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7651">i915#7651</a>) +74 similar issues</li>
 </ul>
 </li>
 <li>
-<p>igt@kms_flip@2x-flip-vs-dpms-off-vs-modeset-interruptible:</p>
+<p>igt@kms_flip@2x-modeset-vs-vblank-race-interruptible:</p>
 <ul>
-<li>shard-tglu-9:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8567/shard-tglu-9/igt@kms_flip@2x-flip-vs-dpms-off-vs-modeset-interruptible.html">SKIP</a> ([fdo#109274] / [i915#3637]) +1 similar issue</li>
+<li>shard-tglu-10:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-tglu-10/igt@kms_flip@2x-modeset-vs-vblank-race-interruptible.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109274">fdo#109274</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3637">i915#3637</a>)</li>
 </ul>
 </li>
 <li>
-<p>igt@kms_flip@2x-plain-flip-ts-check-interruptible:</p>
+<p>igt@kms_flip@2x-wf_vblank-ts-check-interruptible:</p>
 <ul>
-<li>shard-tglu-10:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8567/shard-tglu-10/igt@kms_flip@2x-plain-flip-ts-check-interruptible.html">SKIP</a> ([fdo#109274] / [i915#3637]) +6 similar issues</li>
+<li>shard-tglu-9:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-tglu-9/igt@kms_flip@2x-wf_vblank-ts-check-interruptible.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109274">fdo#109274</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3637">i915#3637</a>) +5 similar issues</li>
 </ul>
 </li>
 <li>
-<p>igt@kms_flip@basic-plain-flip:</p>
+<p>igt@kms_flip@flip-vs-suspend:</p>
 <ul>
-<li>shard-tglu-9:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8567/shard-tglu-9/igt@kms_flip@basic-plain-flip.html">SKIP</a> ([i915#3637])</li>
+<li>shard-tglu-9:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-tglu-9/igt@kms_flip@flip-vs-suspend.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3637">i915#3637</a>) +6 similar issues</li>
 </ul>
 </li>
 <li>
-<p>igt@kms_flip_scaled_crc@flip-32bpp-4tile-to-32bpp-4tiledg2rcccs-upscaling:</p>
+<p>igt@kms_flip_scaled_crc@flip-32bpp-yftile-to-64bpp-yftile-upscaling:</p>
 <ul>
-<li>shard-tglu-9:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8567/shard-tglu-9/igt@kms_flip_scaled_crc@flip-32bpp-4tile-to-32bpp-4tiledg2rcccs-upscaling.html">SKIP</a> ([i915#3555]) +5 similar issues</li>
+<li>shard-tglu-9:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-tglu-9/igt@kms_flip_scaled_crc@flip-32bpp-yftile-to-64bpp-yftile-upscaling.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3555">i915#3555</a>) +12 similar issues</li>
 </ul>
 </li>
 <li>
-<p>igt@kms_flip_scaled_crc@flip-32bpp-yftile-to-64bpp-yftile-downscaling@pipe-a-valid-mode:</p>
+<p>igt@kms_flip_scaled_crc@flip-64bpp-yftile-to-32bpp-yftile-upscaling@pipe-a-valid-mode:</p>
 <ul>
-<li>shard-tglu-10:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8567/shard-tglu-10/igt@kms_flip_scaled_crc@flip-32bpp-yftile-to-64bpp-yftile-downscaling@pipe-a-valid-mode.html">SKIP</a> ([i915#2587] / [i915#2672])</li>
+<li>shard-tglu-10:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-tglu-10/igt@kms_flip_scaled_crc@flip-64bpp-yftile-to-32bpp-yftile-upscaling@pipe-a-valid-mode.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2587">i915#2587</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2672">i915#2672</a>)</li>
 </ul>
 </li>
 <li>
-<p>igt@kms_frontbuffer_tracking@fbc-2p-primscrn-pri-shrfb-draw-mmap-wc:</p>
+<p>igt@kms_force_connector_basic@force-load-detect:</p>
 <ul>
-<li>shard-tglu-10:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8567/shard-tglu-10/igt@kms_frontbuffer_tracking@fbc-2p-primscrn-pri-shrfb-draw-mmap-wc.html">SKIP</a> ([fdo#109280]) +33 similar issues</li>
+<li>shard-tglu-9:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-tglu-9/igt@kms_force_connector_basic@force-load-detect.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109285">fdo#109285</a>)</li>
 </ul>
 </li>
 <li>
-<p>igt@kms_frontbuffer_tracking@psr-1p-primscrn-spr-indfb-move:</p>
+<p>igt@kms_frontbuffer_tracking@fbc-2p-scndscrn-spr-indfb-onoff:</p>
 <ul>
-<li>shard-tglu-10:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/dr">SKIP</a> ([fdo#110189]) +27 similar issues</li>
+<li>shard-apl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-apl7/igt@kms_frontbuffer_tracking@fbc-2p-scndscrn-spr-indfb-onoff.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +88 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@fbcpsr-1p-primscrn-spr-indfb-draw-pwrite:</p>
+<ul>
+<li>shard-tglu-10:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-tglu-10/igt@kms_frontbuffer_tracking@fbcpsr-1p-primscrn-spr-indfb-draw-pwrite.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=110189">fdo#110189</a>) +21 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@fbcpsr-2p-scndscrn-cur-indfb-draw-render:</p>
+<ul>
+<li>shard-tglu-10:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-tglu-10/igt@kms_frontbuffer_tracking@fbcpsr-2p-scndscrn-cur-indfb-draw-render.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109280">fdo#109280</a>) +18 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@fbcpsr-slowdraw:</p>
+<ul>
+<li>shard-glk:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-glk6/igt@kms_frontbuffer_tracking@fbcpsr-slowdraw.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +17 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@psr-2p-scndscrn-pri-shrfb-draw-mmap-cpu:</p>
+<ul>
+<li>shard-tglu-9:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-tglu-9/igt@kms_frontbuffer_tracking@psr-2p-scndscrn-pri-shrfb-draw-mmap-cpu.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1849">i915#1849</a>) +47 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_panel_fitting@atomic-fastset:</p>
+<ul>
+<li>shard-tglu-10:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-tglu-10/igt@kms_panel_fitting@atomic-fastset.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6301">i915#6301</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane@plane-panning-bottom-right@pipe-a-planes:</p>
+<ul>
+<li>shard-tglu-9:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-tglu-9/igt@kms_plane@plane-panning-bottom-right@pipe-a-planes.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1849">i915#1849</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/3558">i915#3558</a>) +1 similar issue</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_lowres@tiling-yf:</p>
+<ul>
+<li>shard-tglu-10:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-tglu-10/igt@kms_plane_lowres@tiling-yf.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=112054">fdo#112054</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/5288">i915#5288</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@planes-unity-scaling-downscale-factor-0-5:</p>
+<ul>
+<li>shard-tglu-9:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-tglu-9/igt@kms_plane_scaling@planes-unity-scaling-downscale-factor-0-5.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6953">i915#6953</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/8152">i915#8152</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_psr2_sf@plane-move-sf-dmg-area:</p>
+<ul>
+<li>shard-tglu-10:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-tglu-10/igt@kms_psr2_sf@plane-move-sf-dmg-area.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=111068">fdo#111068</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/658">i915#658</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_psr2_su@frontbuffer-xrgb8888:</p>
+<ul>
+<li>shard-tglu-9:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-tglu-9/igt@kms_psr2_su@frontbuffer-xrgb8888.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109642">fdo#109642</a> / <a href="https://bugs.freedesktop.org/show_bug.cgi?id=111068">fdo#111068</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/658">i915#658</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_psr2_su@page_flip-p010:</p>
+<ul>
+<li>shard-glk:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-glk4/igt@kms_psr2_su@page_flip-p010.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/658">i915#658</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_psr@psr2_dpms:</p>
+<ul>
+<li>shard-tglu-9:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-tglu-9/igt@kms_psr@psr2_dpms.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=110189">fdo#110189</a>) +5 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_universal_plane@disable-primary-vs-flip-pipe-d:</p>
+<ul>
+<li>shard-tglu-9:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-tglu-9/igt@kms_universal_plane@disable-primary-vs-flip-pipe-d.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109274">fdo#109274</a>) +2 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_vblank@pipe-a-wait-forked-busy-hang:</p>
+<ul>
+<li>
+<p>shard-apl:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7183/shard-apl7/igt@kms_vblank@pipe-a-wait-forked-busy-hang.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-apl7/igt@kms_vblank@pipe-a-wait-forked-busy-hang.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>)</p>
+</li>
+<li>
+<p>shard-glk:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7183/shard-glk7/igt@kms_vblank@pipe-a-wait-forked-busy-hang.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-glk4/igt@kms_vblank@pipe-a-wait-forked-busy-hang.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>)</p>
+</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_vrr@flip-dpms:</p>
+<ul>
+<li>shard-tglu-10:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-tglu-10/igt@kms_vrr@flip-dpms.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3555">i915#3555</a>) +3 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@perf@gen8-unprivileged-single-ctx-counters:</p>
+<ul>
+<li>shard-tglu-10:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-tglu-10/igt@perf@gen8-unprivileged-single-ctx-counters.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109289">fdo#109289</a>) +2 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@v3d/v3d_get_bo_offset@create-get-offsets:</p>
+<ul>
+<li>shard-tglu-10:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-tglu-10/igt@v3d/v3d_get_bo_offset@create-get-offsets.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109315">fdo#109315</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2575">i915#2575</a>) +1 similar issue</li>
+</ul>
+</li>
+<li>
+<p>igt@v3d/v3d_perfmon@destroy-valid-perfmon:</p>
+<ul>
+<li>shard-tglu-9:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-tglu-9/igt@v3d/v3d_perfmon@destroy-valid-perfmon.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109315">fdo#109315</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2575">i915#2575</a>) +2 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@vc4/vc4_label_bo@set-bad-name:</p>
+<ul>
+<li>shard-tglu-9:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-tglu-9/igt@vc4/vc4_label_bo@set-bad-name.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2575">i915#2575</a>) +5 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@vc4/vc4_perfmon@get-values-invalid-pointer:</p>
+<ul>
+<li>shard-tglu-10:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-tglu-10/igt@vc4/vc4_perfmon@get-values-invalid-pointer.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2575">i915#2575</a>) +4 similar issues</li>
 </ul>
 </li>
 </ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@drm_read@short-buffer-nonblock:</p>
+<ul>
+<li>{shard-rkl}:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7183/shard-rkl-5/igt@drm_read@short-buffer-nonblock.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4098">i915#4098</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-rkl-6/igt@drm_read@short-buffer-nonblock.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@fbdev@info:</p>
+<ul>
+<li>{shard-rkl}:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7183/shard-rkl-4/igt@fbdev@info.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2582">i915#2582</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-rkl-2/igt@fbdev@info.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>{igt@gem_barrier_race@remote-request@rcs0}:</p>
+<ul>
+<li>shard-apl:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7183/shard-apl1/igt@gem_barrier_race@remote-request@rcs0.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/8211">i915#8211</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/8234">i915#8234</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-apl6/igt@gem_barrier_race@remote-request@rcs0.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@gem_exec_endless@dispatch@bcs0:</p>
+<ul>
+<li>{shard-rkl}:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7183/shard-rkl-5/igt@gem_exec_endless@dispatch@bcs0.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6247">i915#6247</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-rkl-2/igt@gem_exec_endless@dispatch@bcs0.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@gem_exec_fair@basic-deadline:</p>
+<ul>
+<li>{shard-rkl}:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7183/shard-rkl-1/igt@gem_exec_fair@basic-deadline.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2846">i915#2846</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-rkl-1/igt@gem_exec_fair@basic-deadline.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@gem_exec_fair@basic-pace@rcs0:</p>
+<ul>
+<li>{shard-rkl}:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7183/shard-rkl-4/igt@gem_exec_fair@basic-pace@rcs0.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2842">i915#2842</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-rkl-5/igt@gem_exec_fair@basic-pace@rcs0.html">PASS</a> +4 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_exec_fair@basic-pace@vcs0:</p>
+<ul>
+<li>shard-glk:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7183/shard-glk5/igt@gem_exec_fair@basic-pace@vcs0.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2842">i915#2842</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-glk4/igt@gem_exec_fair@basic-pace@vcs0.html">PASS</a> +1 similar issue</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_mmap_gtt@coherency:</p>
+<ul>
+<li>{shard-rkl}:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7183/shard-rkl-2/igt@gem_mmap_gtt@coherency.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=111656">fdo#111656</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-rkl-5/igt@gem_mmap_gtt@coherency.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@gem_partial_pwrite_pread@write:</p>
+<ul>
+<li>{shard-rkl}:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7183/shard-rkl-4/igt@gem_partial_pwrite_pread@write.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3282">i915#3282</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-rkl-5/igt@gem_partial_pwrite_pread@write.html">PASS</a> +3 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_set_tiling_vs_blt@tiled-to-untiled:</p>
+<ul>
+<li>{shard-rkl}:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7183/shard-rkl-4/igt@gem_set_tiling_vs_blt@tiled-to-untiled.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3281">i915#3281</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-rkl-5/igt@gem_set_tiling_vs_blt@tiled-to-untiled.html">PASS</a> +1 similar issue</li>
+</ul>
+</li>
+<li>
+<p>igt@gen9_exec_parse@allowed-all:</p>
+<ul>
+<li>shard-apl:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7183/shard-apl7/igt@gen9_exec_parse@allowed-all.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5566">i915#5566</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-apl7/igt@gen9_exec_parse@allowed-all.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@gen9_exec_parse@allowed-single:</p>
+<ul>
+<li>shard-glk:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7183/shard-glk6/igt@gen9_exec_parse@allowed-single.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5566">i915#5566</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-glk5/igt@gen9_exec_parse@allowed-single.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@gen9_exec_parse@bb-chained:</p>
+<ul>
+<li>{shard-rkl}:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7183/shard-rkl-4/igt@gen9_exec_parse@bb-chained.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2527">i915#2527</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-rkl-5/igt@gen9_exec_parse@bb-chained.html">PASS</a> +1 similar issue</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_hangman@engine-engine-error@bcs0:</p>
+<ul>
+<li>{shard-rkl}:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7183/shard-rkl-5/igt@i915_hangman@engine-engine-error@bcs0.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6258">i915#6258</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-rkl-4/igt@i915_hangman@engine-engine-error@bcs0.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_pm_rc6_residency@rc6-idle@vcs0:</p>
+<ul>
+<li>
+<p>{shard-rkl}:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7183/shard-rkl-5/igt@i915_pm_rc6_residency@rc6-idle@vcs0.html">WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2681">i915#2681</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-rkl-3/igt@i915_pm_rc6_residency@rc6-idle@vcs0.html">PASS</a></p>
+</li>
+<li>
+<p>{shard-dg1}:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7183/shard-dg1-17/igt@i915_pm_rc6_residency@rc6-idle@vcs0.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/3591">i915#3591</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-dg1-15/igt@i915_pm_rc6_residency@rc6-idle@vcs0.html">PASS</a> +1 similar issue</p>
+</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_pm_rpm@fences:</p>
+<ul>
+<li>{shard-rkl}:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7183/shard-rkl-4/igt@i915_pm_rpm@fences.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1849">i915#1849</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-rkl-6/igt@i915_pm_rpm@fences.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_pm_rpm@modeset-non-lpsp:</p>
+<ul>
+<li>{shard-dg1}:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7183/shard-dg1-14/igt@i915_pm_rpm@modeset-non-lpsp.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1397">i915#1397</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-dg1-15/igt@i915_pm_rpm@modeset-non-lpsp.html">PASS</a> +1 similar issue</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@gem_contexts:</p>
+<ul>
+<li>{shard-rkl}:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7183/shard-rkl-3/igt@i915_selftest@live@gem_contexts.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7913">i915#7913</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-rkl-4/igt@i915_selftest@live@gem_contexts.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_suspend@fence-restore-tiled2untiled:</p>
+<ul>
+<li>{shard-rkl}:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7183/shard-rkl-4/igt@i915_suspend@fence-restore-tiled2untiled.html">FAIL</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=103375">fdo#103375</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-rkl-1/igt@i915_suspend@fence-restore-tiled2untiled.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@kms_async_flips@alternate-sync-async-flip@pipe-b-hdmi-a-1:</p>
+<ul>
+<li>shard-glk:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7183/shard-glk2/igt@kms_async_flips@alternate-sync-async-flip@pipe-b-hdmi-a-1.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2521">i915#2521</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-glk8/igt@kms_async_flips@alternate-sync-async-flip@pipe-b-hdmi-a-1.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@kms_cursor_crc@cursor-suspend@pipe-a-dp-1:</p>
+<ul>
+<li>shard-apl:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7183/shard-apl2/igt@kms_cursor_crc@cursor-suspend@pipe-a-dp-1.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/180">i915#180</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-apl1/igt@kms_cursor_crc@cursor-suspend@pipe-a-dp-1.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@kms_cursor_legacy@flip-vs-cursor-atomic-transitions:</p>
+<ul>
+<li>shard-apl:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7183/shard-apl2/igt@kms_cursor_legacy@flip-vs-cursor-atomic-transitions.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2346">i915#2346</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-apl7/igt@kms_cursor_legacy@flip-vs-cursor-atomic-transitions.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@psr-1p-offscren-pri-shrfb-draw-blt:</p>
+<ul>
+<li>{shard-rkl}:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7183/shard-rkl-4/igt@kms_frontbuffer_tracking@psr-1p-offscren-pri-shrfb-draw-blt.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1849">i915#1849</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4098">i915#4098</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-rkl-6/igt@kms_frontbuffer_tracking@psr-1p-offscren-pri-shrfb-draw-blt.html">PASS</a> +5 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_psr@primary_blt:</p>
+<ul>
+<li>{shard-rkl}:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7183/shard-rkl-4/igt@kms_psr@primary_blt.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1072">i915#1072</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-rkl-6/igt@kms_psr@primary_blt.html">PASS</a> +1 similar issue</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_rotation_crc@exhaust-fences:</p>
+<ul>
+<li>{shard-rkl}:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7183/shard-rkl-5/igt@kms_rotation_crc@exhaust-fences.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1845">i915#1845</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4098">i915#4098</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-rkl-6/igt@kms_rotation_crc@exhaust-fences.html">PASS</a> +16 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_vblank@pipe-a-query-busy-hang:</p>
+<ul>
+<li>shard-apl:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7183/shard-apl1/igt@kms_vblank@pipe-a-query-busy-hang.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-apl1/igt@kms_vblank@pipe-a-query-busy-hang.html">PASS</a> +2 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_vblank@pipe-b-query-forked-hang:</p>
+<ul>
+<li>shard-glk:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7183/shard-glk6/igt@kms_vblank@pipe-b-query-forked-hang.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-glk8/igt@kms_vblank@pipe-b-query-forked-hang.html">PASS</a> +1 similar issue</li>
+</ul>
+</li>
+<li>
+<p>igt@perf@gen12-mi-rpc:</p>
+<ul>
+<li>{shard-rkl}:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7183/shard-rkl-5/igt@perf@gen12-mi-rpc.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109289">fdo#109289</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-rkl-1/igt@perf@gen12-mi-rpc.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@perf_pmu@idle@rcs0:</p>
+<ul>
+<li>{shard-rkl}:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7183/shard-rkl-4/igt@perf_pmu@idle@rcs0.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4349">i915#4349</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/shard-rkl-3/igt@perf_pmu@idle@rcs0.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_7183 -&gt; IGTPW_8568</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_12821: 24f94240c4bca70cadfd00528ffd56c3049e5f58 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_8568: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8568/index.html<br />
+  IGT_7183: 3434cef8be4e487644a740039ad15123cd094526 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
 
 </body>
 </html>
 
---===============8452820789708857355==--
+--===============4769063839573673241==--
