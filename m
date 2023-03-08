@@ -1,19 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 14ECD10E63C
- for <igt-dev@lists.freedesktop.org>; Wed,  8 Mar 2023 16:21:20 +0000 (UTC)
-Date: Wed, 8 Mar 2023 17:20:42 +0100
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C4A7E10E6BA
+ for <igt-dev@lists.freedesktop.org>; Wed,  8 Mar 2023 17:25:59 +0000 (UTC)
+Date: Wed, 8 Mar 2023 18:25:55 +0100
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Message-ID: <20230308162042.e6wafykzymrx2vbu@kamilkon-desk1>
-References: <20230301124430.186193-1-anshuman.gupta@intel.com>
- <87cz5qyao7.wl-ashutosh.dixit@intel.com>
+Message-ID: <20230308172555.zukogiowlzmiykdn@kamilkon-desk1>
+References: <20220808093622.193800-1-mohammed.thasleem@intel.com>
+ <20220814092816.34933-1-mohammed.thasleem@intel.com>
+ <03ae8ec7-95a8-cab5-ba85-6f9a69b58592@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <87cz5qyao7.wl-ashutosh.dixit@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t] lib: disable console suspend for
- suspend test
+In-Reply-To: <03ae8ec7-95a8-cab5-ba85-6f9a69b58592@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t v2] tests/kms_display_modes: Fixed mode
+ selection for extended mode tests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,90 +26,97 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Anshuman,
+Hi,
 
-On 2023-03-02 at 15:51:20 -0800, Dixit, Ashutosh wrote:
-> On Wed, 01 Mar 2023 04:44:30 -0800, Anshuman Gupta wrote:
-> >
-> > diff --git a/lib/igt_aux.c b/lib/igt_aux.c
-> > index 15e304407f..e1260c1e88 100644
-> > --- a/lib/igt_aux.c
-> > +++ b/lib/igt_aux.c
-> > @@ -694,6 +694,10 @@ void igt_print_activity(void)
-> >  }
-> >
-> >  static int autoresume_delay;
-> > +bool __console_suspend_saved_state;
+On 2023-02-24 at 15:10:07 +0530, Modem, Bhanuprakash wrote:
+> 
+> 
+> On Sun-14-08-2022 02:58 pm, Mohammed Thasleem wrote:
+> > Added check on ENOSPC when two moniters connected through MST.
+> > This will find the connector mode combo that fits into the
+> > bandwidth when more than one monitor is connected.
+> > 
+> > Example:
+> >    When two monitors connected through MST, the second monitor
+> >    also tries to use the same mode. So two such modes may not
+> >    fit into the link bandwidth. So, iterate through connected
+> >    outputs & modes and find a combination of modes those fit
+> >    into the link BW.
+> > 
+> > v2: -Updated commit msg and description. (Bhanu)
+> >      -Renamed restart with retry. (Bhanu)
+> >      -Moved igt_pipe_crc_new before retry. (Bhanu)
+> >      -Removed unrelated changes and new line. (Bhanu)
+> >      -Minor changes.
+> > 
+> > Signed-off-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
+> > ---
+> >   tests/kms_display_modes.c | 25 +++++++++++++++++++++----
+> >   1 file changed, 21 insertions(+), 4 deletions(-)
+> > 
+> > diff --git a/tests/kms_display_modes.c b/tests/kms_display_modes.c
+> > index e4191811..19026dc1 100644
+> > --- a/tests/kms_display_modes.c
+> > +++ b/tests/kms_display_modes.c
+> > @@ -43,7 +43,7 @@ static void run_extendedmode_basic(data_t *data, int pipe1, int pipe2)
+> >   	igt_plane_t *plane[2];
+> >   	igt_pipe_crc_t *pipe_crc[2] = { 0 };
+> >   	igt_crc_t ref_crc[2], crc[2];
+> > -	int count = 0, width, height;
+> > +	int count = 0, width, height, ret;
+> >   	cairo_t *cr;
+> >   	for_each_connected_output(display, output) {
+> > @@ -54,14 +54,16 @@ static void run_extendedmode_basic(data_t *data, int pipe1, int pipe2)
+> >   			break;
+> >   	}
+> > +	pipe_crc[0] = igt_pipe_crc_new(data->drm_fd, pipe1, IGT_PIPE_CRC_SOURCE_AUTO);
+> > +	pipe_crc[1] = igt_pipe_crc_new(data->drm_fd, pipe2, IGT_PIPE_CRC_SOURCE_AUTO);
 > > +
-> > +#define SYSFS_MODULE_PRINTK "/sys/module/printk/parameters/"
-> > +#define CONSOLE_SUSPEND_DISABLE 0
-> >
-> >  static const char *suspend_state_name[] = {
-> >	[SUSPEND_STATE_FREEZE] = "freeze",
-> > @@ -899,6 +903,19 @@ static bool is_mem_sleep_state_supported(int power_dir, enum igt_mem_sleep state
-> >	return str;
-> >  }
-> >
-> > +static void __igt_aux_console_suspend_restore_exit_handler(int sig)
-> > +{
-> > +	int sysfs_fd;
-> > +
-> > +	sysfs_fd = open(SYSFS_MODULE_PRINTK, O_RDONLY);
-> > +
-> > +	if (sysfs_fd <  0)
-> > +		return;
-> > +
-> > +	igt_sysfs_set_boolean(sysfs_fd, "console_suspend", __console_suspend_saved_state);
-> > +	close(sysfs_fd);
-> > +}
-> > +
-> >  /**
-> >   * igt_system_suspend_autoresume:
-> >   * @state: an #igt_suspend_state, the target suspend state
-> > @@ -923,10 +940,15 @@ static bool is_mem_sleep_state_supported(int power_dir, enum igt_mem_sleep state
-> >  void igt_system_suspend_autoresume(enum igt_suspend_state state,
-> >				   enum igt_suspend_test test)
-> >  {
-> > -	int power_dir;
-> > +	int power_dir, sysfs_fd;
-> >	enum igt_suspend_test orig_test;
-> >	enum igt_mem_sleep orig_mem_sleep = MEM_SLEEP_NONE;
-> >
-> > +	igt_require((sysfs_fd = open(SYSFS_MODULE_PRINTK, O_RDONLY)) >= 0);
+> > +retry:
+> >   	igt_output_set_pipe(extended_output[0], pipe1);
+> >   	igt_output_set_pipe(extended_output[1], pipe2);
+> >   	mode[0] = igt_output_get_mode(extended_output[0]);
+> >   	mode[1] = igt_output_get_mode(extended_output[1]);
+> > -	pipe_crc[0] = igt_pipe_crc_new(data->drm_fd, pipe1, IGT_PIPE_CRC_SOURCE_AUTO);
+> > -	pipe_crc[1] = igt_pipe_crc_new(data->drm_fd, pipe2, IGT_PIPE_CRC_SOURCE_AUTO);
+> >   	igt_create_color_fb(data->drm_fd, mode[0]->hdisplay, mode[0]->vdisplay,
+> >   			     DRM_FORMAT_XRGB8888, 0, 1, 0, 0, &fbs[0]);
+> > @@ -79,7 +81,22 @@ static void run_extendedmode_basic(data_t *data, int pipe1, int pipe2)
+> >   	igt_fb_set_size(&fbs[1], plane[1], mode[1]->hdisplay, mode[1]->vdisplay);
+> >   	igt_plane_set_size(plane[1], mode[1]->hdisplay, mode[1]->vdisplay);
+> > -	igt_display_commit2(display, COMMIT_ATOMIC);
+> > +	ret = igt_display_try_commit2(display, COMMIT_ATOMIC);
+> 
+> It would be better to add one or two line comment about this handling. Maybe
+> you can add it while pushing this patch, no need to float a new rev.
+> 
+> Reviewed-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+> 
+> - Bhanu
+> 
 
-Do we really need igt_require here ? imho you can print igt_info
-if this failed but skipping is a little too much.
-In case you want to skip move this into separate function
-with bool returning on fail and do skipping inside test itself.
+One more thing is how is it preventing infinite loop ?
+
+> > +	if (ret != 0 && errno == ENOSPC) {
+> > +		bool found = igt_override_all_active_output_modes_to_fit_bw(display);
+> > +
+> > +		igt_require_f(found, "No valid mode combo found.\n");
+> > +
+> > +		for_each_connected_output(display, output)
+> > +			igt_output_set_pipe(output, PIPE_NONE);
+> > +
+> > +		igt_remove_fb(data->drm_fd, &fbs[0]);
+> > +		igt_remove_fb(data->drm_fd, &fbs[1]);
+> > +
+> > +		goto retry;
+> > +	}
+> > +
+> > +	igt_assert(!ret);
+
+This one should be more elaborate, maybe use igt_assert_f(!ret, "description here\n");
 
 Regards,
 Kamil
 
-> > +	__console_suspend_saved_state = igt_sysfs_get_boolean(sysfs_fd, "console_suspend");
-> > +	igt_sysfs_set_boolean(sysfs_fd, "console_suspend", CONSOLE_SUSPEND_DISABLE);
-> > +	igt_install_exit_handler(__igt_aux_console_suspend_restore_exit_handler);
-> 
-> I think switch the two lines above and use igt_assert with
-> igt_sysfs_set_boolean to check if we were able to set "console_suspend" to 0.
-> 
-> > +
-> >	igt_require((power_dir = open("/sys/power", O_RDONLY)) >= 0);
-> >	igt_require(is_state_supported(power_dir, state));
-> >	igt_require(test == SUSPEND_TEST_NONE ||
-> > @@ -958,7 +980,9 @@ void igt_system_suspend_autoresume(enum igt_suspend_state state,
-> >		set_mem_sleep(power_dir, orig_mem_sleep);
-> >
-> >	set_suspend_test(power_dir, orig_test);
-> > +	igt_sysfs_set_boolean(sysfs_fd, "console_suspend", __console_suspend_saved_state);
-> 
-> Iirc, this is not needed, the exit handler will take care of this (it will
-> execute anyway on process exit).
-> 
-> >	close(power_dir);
-> > +	close(sysfs_fd);
-> >  }
-> >
-> >  static int original_autoresume_delay;
-> > --
-> > 2.25.1
-> >
+> >   	igt_pipe_crc_collect_crc(pipe_crc[0], &ref_crc[0]);
+> >   	igt_pipe_crc_collect_crc(pipe_crc[1], &ref_crc[1]);
