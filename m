@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9B94810E004
- for <igt-dev@lists.freedesktop.org>; Wed,  8 Mar 2023 11:21:04 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 449EA10E004
+ for <igt-dev@lists.freedesktop.org>; Wed,  8 Mar 2023 11:21:06 +0000 (UTC)
 From: Karolina Stolarek <karolina.stolarek@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Wed,  8 Mar 2023 12:20:56 +0100
-Message-Id: <951b57ef149a0e50b3b4760bcceea9f006e8b78b.1678273325.git.karolina.stolarek@intel.com>
+Date: Wed,  8 Mar 2023 12:20:57 +0100
+Message-Id: <6ee211efe5d3be2ec415ebec4efa0fc87f6e5be4.1678273325.git.karolina.stolarek@intel.com>
 In-Reply-To: <cover.1678273325.git.karolina.stolarek@intel.com>
 References: <cover.1678273325.git.karolina.stolarek@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v2 1/7] lib/i915_blt: Add helpers to check
- XY_SRC_COPY support
+Subject: [igt-dev] [PATCH i-g-t v2 2/7] lib/intel_cmds_info: Correct tiling
+ formats for XY_SRC_COPY
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,82 +24,158 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add predicates that check if the command with a specific
-tiling format is supported on the current platform.
+Both TileX and TileY are supported since SNB. Update definitions
+for pre-SNB and pre-BDW platforms.
 
 Signed-off-by: Karolina Stolarek <karolina.stolarek@intel.com>
 Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 ---
- lib/i915/i915_blt.c | 33 +++++++++++++++++++++++++++++++++
- lib/i915/i915_blt.h |  2 ++
- 2 files changed, 35 insertions(+)
+ lib/i915/intel_cmds_info.c | 24 ++++++++++++++++--------
+ lib/i915/intel_cmds_info.h |  3 ++-
+ lib/intel_device_info.c    | 12 ++++++------
+ 3 files changed, 24 insertions(+), 15 deletions(-)
 
-diff --git a/lib/i915/i915_blt.c b/lib/i915/i915_blt.c
-index 63eba4ac..13105820 100644
---- a/lib/i915/i915_blt.c
-+++ b/lib/i915/i915_blt.c
-@@ -295,6 +295,22 @@ bool blt_has_fast_copy(int i915)
- 	return blt_supports_command(cmds_info, XY_FAST_COPY);
- }
+diff --git a/lib/i915/intel_cmds_info.c b/lib/i915/intel_cmds_info.c
+index 2ac6bc2a..08fc981a 100644
+--- a/lib/i915/intel_cmds_info.c
++++ b/lib/i915/intel_cmds_info.c
+@@ -22,11 +22,11 @@
  
-+/**
-+ * blt_has_xy_src_copy
-+ * @i915: drm fd
-+ *
-+ * Check if XY src copy is supported by @i915 device
-+ *
-+ * Returns:
-+ * true if it does, false otherwise.
-+ */
-+bool blt_has_xy_src_copy(int i915)
-+{
-+	const struct intel_cmds_info *cmds_info = GET_CMDS_INFO(i915);
+ static const struct blt_cmd_info src_copy = BLT_INFO(SRC_COPY, BIT(T_LINEAR));
+ static const struct blt_cmd_info
+-		pre_gen8_xy_src_copy = BLT_INFO(XY_SRC_COPY,
++		pre_gen6_xy_src_copy = BLT_INFO(XY_SRC_COPY,
+ 						BIT(T_LINEAR) |
+ 						BIT(T_XMAJOR));
+ static const struct blt_cmd_info
+-		gen8_xy_src_copy = BLT_INFO(XY_SRC_COPY,
++		gen6_xy_src_copy = BLT_INFO(XY_SRC_COPY,
+ 					    BIT(T_LINEAR) |
+ 					    BIT(T_XMAJOR) |
+ 					    BIT(T_YMAJOR));
+@@ -69,29 +69,37 @@ static const struct blt_cmd_info
+ 						 BIT(T_TILE64),
+ 						 BLT_CMD_EXTENDED);
+ 
+-const struct intel_cmds_info pre_gen8_cmds_info = {
++const struct intel_cmds_info pre_gen6_cmds_info = {
+ 	.blt_cmds = {
+ 		[SRC_COPY] = &src_copy,
+-		[XY_SRC_COPY] = &pre_gen8_xy_src_copy
++		[XY_SRC_COPY] = &pre_gen6_xy_src_copy
+ 	}
+ };
+ 
++const struct intel_cmds_info gen6_cmds_info =  {
++	.blt_cmds = {
++		[SRC_COPY] = &src_copy,
++		[XY_SRC_COPY] = &gen6_xy_src_copy
++	}
 +
-+	return blt_supports_command(cmds_info, XY_SRC_COPY);
-+}
++};
 +
- /**
-  * blt_fast_copy_supports_tiling
-  * @i915: drm fd
-@@ -329,6 +345,23 @@ bool blt_block_copy_supports_tiling(int i915, enum blt_tiling_type tiling)
- 	return blt_cmd_supports_tiling(cmds_info, XY_BLOCK_COPY, tiling);
- }
+ const struct intel_cmds_info gen8_cmds_info = {
+ 	.blt_cmds = {
+-		[XY_SRC_COPY] = &gen8_xy_src_copy,
++		[XY_SRC_COPY] = &gen6_xy_src_copy,
+ 	}
+ };
  
-+/**
-+ * blt_xy_src_copy_supports_tiling
-+ * @i915: drm fd
-+ * @tiling: tiling format
-+ *
-+ * Check if XY src copy provided by @i915 device supports @tiling format
-+ *
-+ * Returns:
-+ * true if it does, false otherwise.
-+ */
-+bool blt_xy_src_copy_supports_tiling(int i915, enum blt_tiling_type tiling)
-+{
-+	const struct intel_cmds_info *cmds_info = GET_CMDS_INFO(i915);
-+
-+	return blt_cmd_supports_tiling(cmds_info, XY_SRC_COPY, tiling);
-+}
-+
- /**
-  * blt_block_copy_supports_compression
-  * @i915: drm fd
-diff --git a/lib/i915/i915_blt.h b/lib/i915/i915_blt.h
-index c535961e..c477c602 100644
---- a/lib/i915/i915_blt.h
-+++ b/lib/i915/i915_blt.h
-@@ -168,9 +168,11 @@ bool blt_cmd_has_property(const struct intel_cmds_info *cmds_info,
+ const struct intel_cmds_info gen11_cmds_info = {
+ 	.blt_cmds = {
+-		[XY_SRC_COPY] = &gen8_xy_src_copy,
++		[XY_SRC_COPY] = &gen6_xy_src_copy,
+ 		[XY_FAST_COPY] = &gen11_xy_fast_copy,
+ 	}
+ };
  
- bool blt_has_block_copy(int i915);
- bool blt_has_fast_copy(int i915);
-+bool blt_has_xy_src_copy(int i915);
+ const struct intel_cmds_info gen12_cmds_info = {
+ 	.blt_cmds = {
+-		[XY_SRC_COPY] = &gen8_xy_src_copy,
++		[XY_SRC_COPY] = &gen6_xy_src_copy,
+ 		[XY_FAST_COPY] = &gen12_xy_fast_copy,
+ 		[XY_BLOCK_COPY] = &gen12_xy_block_copy,
+ 	}
+@@ -99,7 +107,7 @@ const struct intel_cmds_info gen12_cmds_info = {
  
- bool blt_fast_copy_supports_tiling(int i915, enum blt_tiling_type tiling);
- bool blt_block_copy_supports_tiling(int i915, enum blt_tiling_type tiling);
-+bool blt_xy_src_copy_supports_tiling(int i915, enum blt_tiling_type tiling);
- bool blt_block_copy_supports_compression(int i915);
- bool blt_uses_extended_block_copy(int i915);
+ const struct intel_cmds_info gen12_dg2_cmds_info = {
+ 	.blt_cmds = {
+-		[XY_SRC_COPY] = &gen8_xy_src_copy,
++		[XY_SRC_COPY] = &gen6_xy_src_copy,
+ 		[XY_FAST_COPY] = &dg2_xy_fast_copy,
+ 		[XY_BLOCK_COPY] = &dg2_xy_block_copy,
+ 	}
+diff --git a/lib/i915/intel_cmds_info.h b/lib/i915/intel_cmds_info.h
+index 9bf6ecd5..57e34c4b 100644
+--- a/lib/i915/intel_cmds_info.h
++++ b/lib/i915/intel_cmds_info.h
+@@ -39,7 +39,8 @@ struct intel_cmds_info {
+ 	struct blt_cmd_info const *blt_cmds[__BLT_MAX_CMD];
+ };
  
+-extern const struct intel_cmds_info pre_gen8_cmds_info;
++extern const struct intel_cmds_info pre_gen6_cmds_info;
++extern const struct intel_cmds_info gen6_cmds_info;
+ extern const struct intel_cmds_info gen8_cmds_info;
+ extern const struct intel_cmds_info gen11_cmds_info;
+ extern const struct intel_cmds_info gen12_cmds_info;
+diff --git a/lib/intel_device_info.c b/lib/intel_device_info.c
+index 12b81d48..0baad721 100644
+--- a/lib/intel_device_info.c
++++ b/lib/intel_device_info.c
+@@ -145,7 +145,7 @@ static const struct intel_device_info intel_sandybridge_info = {
+ 	.graphics_ver = 6,
+ 	.display_ver = 6,
+ 	.is_sandybridge = true,
+-	.cmds_info = &pre_gen8_cmds_info,
++	.cmds_info = &gen6_cmds_info,
+ 	.codename = "sandybridge"
+ };
+ static const struct intel_device_info intel_sandybridge_m_info = {
+@@ -153,7 +153,7 @@ static const struct intel_device_info intel_sandybridge_m_info = {
+ 	.display_ver = 6,
+ 	.is_mobile = true,
+ 	.is_sandybridge = true,
+-	.cmds_info = &pre_gen8_cmds_info,
++	.cmds_info = &gen6_cmds_info,
+ 	.codename = "sandybridge"
+ };
+ 
+@@ -161,7 +161,7 @@ static const struct intel_device_info intel_ivybridge_info = {
+ 	.graphics_ver = 7,
+ 	.display_ver = 7,
+ 	.is_ivybridge = true,
+-	.cmds_info = &pre_gen8_cmds_info,
++	.cmds_info = &gen6_cmds_info,
+ 	.codename = "ivybridge"
+ };
+ static const struct intel_device_info intel_ivybridge_m_info = {
+@@ -169,7 +169,7 @@ static const struct intel_device_info intel_ivybridge_m_info = {
+ 	.display_ver = 7,
+ 	.is_mobile = true,
+ 	.is_ivybridge = true,
+-	.cmds_info = &pre_gen8_cmds_info,
++	.cmds_info = &gen6_cmds_info,
+ 	.codename = "ivybridge"
+ };
+ 
+@@ -177,7 +177,7 @@ static const struct intel_device_info intel_valleyview_info = {
+ 	.graphics_ver = 7,
+ 	.display_ver = 7,
+ 	.is_valleyview = true,
+-	.cmds_info = &pre_gen8_cmds_info,
++	.cmds_info = &gen6_cmds_info,
+ 	.codename = "valleyview"
+ };
+ 
+@@ -185,7 +185,7 @@ static const struct intel_device_info intel_valleyview_info = {
+ 	.graphics_ver = 7, \
+ 	.display_ver = 7, \
+ 	.is_haswell = true, \
+-	.cmds_info = &pre_gen8_cmds_info, \
++	.cmds_info = &gen6_cmds_info, \
+ 	.codename = "haswell"
+ 
+ static const struct intel_device_info intel_haswell_gt1_info = {
 -- 
 2.25.1
