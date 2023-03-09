@@ -1,22 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6AFB010E786
- for <igt-dev@lists.freedesktop.org>; Thu,  9 Mar 2023 05:26:39 +0000 (UTC)
-From: "Thasleem, Mohammed" <mohammed.thasleem@intel.com>
-To: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>, "Nautiyal, Ankit K"
- <ankit.k.nautiyal@intel.com>, "igt-dev@lists.freedesktop.org"
- <igt-dev@lists.freedesktop.org>
-Date: Thu, 9 Mar 2023 05:26:35 +0000
-Message-ID: <PH0PR11MB480637B48F2020598B6C4DA1E4B59@PH0PR11MB4806.namprd11.prod.outlook.com>
-References: <20230227055409.136175-1-ankit.k.nautiyal@intel.com>
- <bee1a161-44cb-d189-29a1-b45c35ba00a0@intel.com>
-In-Reply-To: <bee1a161-44cb-d189-29a1-b45c35ba00a0@intel.com>
-Content-Language: en-US
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 11E7510E7B0
+ for <igt-dev@lists.freedesktop.org>; Thu,  9 Mar 2023 08:38:12 +0000 (UTC)
+From: Vinod Govindapillai <vinod.govindapillai@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Thu,  9 Mar 2023 10:37:50 +0200
+Message-Id: <20230309083751.347335-2-vinod.govindapillai@intel.com>
+In-Reply-To: <20230309083751.347335-1-vinod.govindapillai@intel.com>
+References: <20230309083751.347335-1-vinod.govindapillai@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_lease: Set Aspect ratio
- client cap in case of legacy commit
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t v3 1/2] lib/igt_debugfs: set provision to
+ ignore long HPDs
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,49 +23,68 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-DQoNCi0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQpGcm9tOiBNb2RlbSwgQmhhbnVwcmFrYXNo
-IDxiaGFudXByYWthc2gubW9kZW1AaW50ZWwuY29tPiANClNlbnQ6IE1vbmRheSwgRmVicnVhcnkg
-MjcsIDIwMjMgMTI6MTMgUE0NClRvOiBOYXV0aXlhbCwgQW5raXQgSyA8YW5raXQuay5uYXV0aXlh
-bEBpbnRlbC5jb20+OyBpZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZw0KQ2M6IFRoYXNsZWVt
-LCBNb2hhbW1lZCA8bW9oYW1tZWQudGhhc2xlZW1AaW50ZWwuY29tPg0KU3ViamVjdDogUmU6IFtQ
-QVRDSCBpLWctdF0gdGVzdHMva21zX2xlYXNlOiBTZXQgQXNwZWN0IHJhdGlvIGNsaWVudCBjYXAg
-aW4gY2FzZSBvZiBsZWdhY3kgY29tbWl0DQoNCkhpIEFua2l0LA0KDQpPbiBNb24tMjctMDItMjAy
-MyAxMToyNCBhbSwgQW5raXQgTmF1dGl5YWwgd3JvdGU6DQo+IEZvciBjbGllbnRzIHNldHRpbmcg
-RFJNX0NMSUVOVF9DQVBfQVRPTUlDLCB0aGUgc3VwcG9ydCBmb3IgYXNwZWN0IA0KPiByYXRpbyBi
-aXRzIGluIG1vZGUgZmxhZ3MgaXMgZW5hYmxlZCBieSBkZWZhdWx0LiBGb3IgbGVnYWN5IGNvbW1p
-dCwgDQo+IGNsaWVudHMgbmVlZCB0byBzZXQgdGhlIGFzcGVjdCByYXRpbyBjYXAgZXhwbGljaXRs
-eSwgaWYgdGhleSB3YW50IHRvIA0KPiBzZXQgYXNwZWN0IHJhdGlvIGJpdHMgaW4gdGhlIG1vZGUg
-ZmxhZ3MuDQo+IEN1cnJlbnRseSBpbiBjYXNlIG9mIHNldGNydGNfaW1wbGljaXRfcGxhbmUsIHRo
-ZSBjbGllbnQgdXNpbmcgdGhlIA0KPiBsZWFzZSBkb2VzIG5vdCBzZXQgdGhlIGFzcGVjdC1yYXRp
-byBwcm9wZXJ0eSBiZWZvcmUgdXNpbmcgc2V0Y3J0YyANCj4gaW9jdGwuIFRoaXMgY3JlYXRlcyBh
-IHByb2JsZW0sIHdoZW4gdGhlcmUgYXJlIGFzcGVjdC1yYXRpbyBiaXRzIA0KPiBwcmVzZW50IGlu
-IHRoZSBtb2RlIGZsYWdzLiBJbiBzdWNoIGEgY2FzZSB0aGUgc2V0Y3J0YyBpb2N0bCBmYWlscywg
-YXMgDQo+IGRyaXZlciBleHBlY3RzIHRoZSBhc3BlY3QgcmF0aW8gYml0cyB1bnNldC4NCj4gDQo+
-IFNvIHNldCBEUk1fQ0xJRU5UX0NBUF9BU1BFQ1RfUkFUSU8sIGlmIHRoZSBtb2RlIGZsYWdzIGRv
-IGhhdmUgYXNwZWN0IA0KPiByYXRpbyBiaXRzIHNldCwgYmVmb3JlIGNhbGxpbmcgdGhlIHNldGNy
-dGMgaW9jdGwuDQo+IA0KPiB2MjogU2V0IHRoZSBhc3BlY3QgcmF0aW8gY2xpZW50IGNhcCBvbmx5
-IGZvciBsZXNzZS4NCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tXg0KTml0OiB0eXBvIHMvbGVzc2UvbGVhc2UvDQoNCj4gDQo+IFNpZ25lZC1vZmYtYnk6IEFu
-a2l0IE5hdXRpeWFsIDxhbmtpdC5rLm5hdXRpeWFsQGludGVsLmNvbT4NClRlc3RlZC1ieTogTW9o
-YW1tZWQgVGhhc2xlZW0gPG1vaGFtbWVkLnRoYXNsZWVtQGludGVsLmNvbT4NCj4gLS0tDQo+ICAg
-dGVzdHMva21zX2xlYXNlLmMgfCA4ICsrKysrKysrDQo+ICAgMSBmaWxlIGNoYW5nZWQsIDggaW5z
-ZXJ0aW9ucygrKQ0KPiANCj4gZGlmZiAtLWdpdCBhL3Rlc3RzL2ttc19sZWFzZS5jIGIvdGVzdHMv
-a21zX2xlYXNlLmMgaW5kZXggDQo+IDY3ZThkM2JlYzcwMC4uNjFlMWY3ZGNjZGU3IDEwMDY0NA0K
-PiAtLS0gYS90ZXN0cy9rbXNfbGVhc2UuYw0KPiArKysgYi90ZXN0cy9rbXNfbGVhc2UuYw0KPiBA
-QCAtMzQ1LDYgKzM0NSwxNCBAQCBzdGF0aWMgdm9pZCBzZXRjcnRjX2ltcGxpY2l0X3BsYW5lKGRh
-dGFfdCAqZGF0YSkNCj4gICAJZG9fb3JfZGllKGNyZWF0ZV9sZWFzZShkYXRhLT5tYXN0ZXIuZmQs
-ICZtY2wpKTsNCj4gICAJZHJtU2V0Q2xpZW50Q2FwKGRhdGEtPm1hc3Rlci5mZCwgRFJNX0NMSUVO
-VF9DQVBfVU5JVkVSU0FMX1BMQU5FUywgDQo+IDEpOw0KPiAgIA0KPiArCS8qDQo+ICsJICogRm9y
-IExlZ2FjeSBjb21taXQsIElmIHVzZXJzcGFjZSB3YW50cyB0byBzZW5kIG1vZGVzIHdpdGggYXNw
-ZWN0LXJhdGlvIGJpdHMNCj4gKwkgKiB0aGVuIHRoZSBjbGllbnQgY2FwIGZvciBhc3BlY3QtcmF0
-aW8gYml0cyBtdXN0IGJlIHNldC4NCj4gKwkgKi8NCj4gKwlpZiAobW9kZS0+ZmxhZ3MgJiBEUk1f
-TU9ERV9GTEFHX1BJQ19BUl9NQVNLKSB7DQo+ICsJCWRybVNldENsaWVudENhcChtY2wuZmQsIERS
-TV9DTElFTlRfQ0FQX0FTUEVDVF9SQVRJTywgMSk7DQo+ICsJfQ0KDQpBcyBkcm1fbW9kZV9zZXRj
-cnRjIGxvY3RsIGNoZWNrcyBmb3IgdGhlIGxlYXNlIGFjY2VzcyBiZWZvcmUgY2hlY2tpbmcgdGhl
-IGFzcGVjdC1yYXRpbyBiaXRzLCBzaW1pbGFyIGNoYW5nZSBpcyBub3QgcmVxdWlyZWQgYXQgWzFd
-Lg0KDQpbMV06IA0KaHR0cHM6Ly9naXRsYWIuZnJlZWRlc2t0b3Aub3JnL2RybS9pZ3QtZ3B1LXRv
-b2xzLy0vYmxvYi9tYXN0ZXIvdGVzdHMva21zX2xlYXNlLmMjTDM2NA0KDQpSZXZpZXdlZC1ieTog
-QmhhbnVwcmFrYXNoIE1vZGVtIDxiaGFudXByYWthc2gubW9kZW1AaW50ZWwuY29tPg0KDQotIEJo
-YW51DQoNCj4gKw0KPiAgIAkvKiBTZXQgYSBtb2RlIG9uIHRoZSBsZWFzZWQgb3V0cHV0ICovDQo+
-ICAgCWlndF9hc3NlcnRfZXEoMCwgcHJlcGFyZV9jcnRjKCZkYXRhLT5tYXN0ZXIsIGRhdGEpKTsN
-Cj4gICANCg==
+Add provision to ignore long HPDs as some displays generate
+long HPDs even while connected. For some CI systems with
+such displays it might be usefull to ignore such spurious
+HPDs while executing testcases.
+
+v2: Some sytling issues (Kamil)
+
+Cc: Imre Deak <imre.deak@intel.com>
+Signed-off-by: Vinod Govindapillai <vinod.govindapillai@intel.com>
+---
+ lib/igt_debugfs.c | 26 ++++++++++++++++++++++++++
+ lib/igt_debugfs.h |  1 +
+ 2 files changed, 27 insertions(+)
+
+diff --git a/lib/igt_debugfs.c b/lib/igt_debugfs.c
+index 6de178d6..05889bbe 100644
+--- a/lib/igt_debugfs.c
++++ b/lib/igt_debugfs.c
+@@ -411,6 +411,32 @@ bool igt_debugfs_search(int device, const char *filename, const char *substring)
+ 	return matched;
+ }
+ 
++/**
++ * igt_ignore_long_hpd:
++ * @drm_fd: the DRM device file fd
++ * @enable: flag to control the ignore long HPD entry
++ *
++ * Set / unset ignore long HPD events from the panels. Some panels
++ * generate long HPDs even while connected to the ports causing
++ * unexpected CI execution issues. Set this to ignore such unexpected
++ * long HPDs where we dont expect to disconnect the displays.
++ */
++bool igt_ignore_long_hpd(int drm_fd, bool enable)
++{
++	int fd = igt_debugfs_open(drm_fd, "i915_ignore_long_hpd", O_WRONLY);
++	int ret;
++
++	if (fd < 0) {
++		igt_debug("couldn't open ignore long hpd file\n");
++		return false;
++	}
++
++	ret = write(fd, enable ? "1" : "0", 1);
++
++	close(fd);
++	return ret == 1;
++}
++
+ static void igt_hpd_storm_exit_handler(int sig)
+ {
+ 	int fd = drm_open_driver(DRIVER_INTEL);
+diff --git a/lib/igt_debugfs.h b/lib/igt_debugfs.h
+index a883e2d4..4824344a 100644
+--- a/lib/igt_debugfs.h
++++ b/lib/igt_debugfs.h
+@@ -72,6 +72,7 @@ void igt_hpd_storm_set_threshold(int fd, unsigned int threshold);
+ void igt_hpd_storm_reset(int fd);
+ bool igt_hpd_storm_detected(int fd);
+ void igt_require_hpd_storm_ctl(int fd);
++bool igt_ignore_long_hpd(int fd, bool enable);
+ 
+ /*
+  * Drop caches
+-- 
+2.34.1
