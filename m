@@ -1,17 +1,24 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 29C9510E1E6
- for <igt-dev@lists.freedesktop.org>; Mon,  6 Mar 2023 19:12:07 +0000 (UTC)
-From: Ananya Sharma <ananya.sharma@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Tue,  7 Mar 2023 00:40:49 +0530
-Message-Id: <20230306191050.25936-4-ananya.sharma@intel.com>
-In-Reply-To: <20230306191050.25936-1-ananya.sharma@intel.com>
-References: <20230306191050.25936-1-ananya.sharma@intel.com>
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 85D3210E027
+ for <igt-dev@lists.freedesktop.org>; Thu,  9 Mar 2023 05:11:17 +0000 (UTC)
+Message-ID: <be6216e4-d572-9d91-24ee-123e70b9d971@intel.com>
+Date: Thu, 9 Mar 2023 10:40:50 +0530
+Content-Language: en-US
+To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ <igt-dev@lists.freedesktop.org>, Mohammed Thasleem
+ <mohammed.thasleem@intel.com>
+References: <20220808093622.193800-1-mohammed.thasleem@intel.com>
+ <20220814092816.34933-1-mohammed.thasleem@intel.com>
+ <03ae8ec7-95a8-cab5-ba85-6f9a69b58592@intel.com>
+ <20230308172555.zukogiowlzmiykdn@kamilkon-desk1>
+From: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
+In-Reply-To: <20230308172555.zukogiowlzmiykdn@kamilkon-desk1>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v5 3/4] tests/kms_color: MPO + pipe color
- test for gamma
+Subject: Re: [igt-dev] [PATCH i-g-t v2] tests/kms_display_modes: Fixed mode
+ selection for extended mode tests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,155 +30,110 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Adding multiple planes with two different formats i.e. RGB and
-NV12 in pipe color test for gamma. This will increase the YUV
-coverage in color management.
 
-Signed-off-by: Ananya Sharma <ananya.sharma@intel.com>
----
- tests/kms_color.c | 123 ++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 123 insertions(+)
 
-diff --git a/tests/kms_color.c b/tests/kms_color.c
-index c925336f..c3eac587 100644
---- a/tests/kms_color.c
-+++ b/tests/kms_color.c
-@@ -324,6 +324,126 @@ static bool test_pipe_gamma(data_t *data,
- 	return ret;
- }
- 
-+static bool test_pipe_multiplane_gamma(data_t *data,
-+				       igt_plane_t *primary, bool multiplane)
-+{
-+	igt_output_t *output = data->output;
-+	igt_plane_t *overlay = data->overlay;
-+	igt_display_t *display = &data->display;
-+	gamma_lut_t *gamma_full;
-+	color_t red_green_blue[] = {
-+		{ 1.0, 0.0, 0.0 },
-+		{ 0.0, 1.0, 0.0 },
-+		{ 0.0, 0.0, 1.0 }
-+	};
-+	color_t blue_red_green[] = {
-+		{ 0.0, 1.0, 0.0 },
-+		{ 0.0, 0.0, 1.0 },
-+		{ 1.0, 0.0, 0.0 }
-+	};
-+	drmModeModeInfo *mode = data->mode;
-+	struct igt_fb fb0, fb1;
-+	igt_crc_t crc_fullgamma, crc_fullcolors;
-+	int fb_id0, fb_id1;
-+	int primary_x, primary_y, primary_h, primary_w;
-+	int overlay_x, overlay_y, overlay_h, overlay_w;
-+	bool ret;
-+
-+	igt_require(igt_pipe_obj_has_prop(primary->pipe, IGT_CRTC_GAMMA_LUT));
-+
-+	gamma_full = generate_table_max(data->gamma_lut_size);
-+
-+	igt_output_set_pipe(output, primary->pipe->pipe);
-+	igt_output_override_mode(output, mode);
-+
-+	primary_w = mode->hdisplay;
-+	primary_h = multiplane ? (mode->vdisplay / 2) : mode->vdisplay;
-+	overlay_w = mode->hdisplay;
-+	overlay_h = primary_h + (mode->vdisplay % 2);
-+	primary_x = 0;
-+	primary_y = 0;
-+	overlay_x = 0;
-+	overlay_y = primary_h;
-+
-+	/* Create a framebuffer at the size of the output. */
-+	fb_id0 = igt_create_fb(data->drm_fd,
-+			       primary_w,
-+			       primary_h,
-+			       data->drm_format,
-+			       DRM_FORMAT_MOD_LINEAR,
-+			       &fb0);
-+	igt_assert(fb_id0);
-+	igt_plane_set_fb(primary, &fb0);
-+	igt_plane_set_position(primary, primary_x, primary_y);
-+
-+	fb_id1 = igt_create_fb(data->drm_fd,
-+			       overlay_w,
-+			       overlay_h,
-+			       data->drm_format_overlay,
-+			       DRM_FORMAT_MOD_LINEAR,
-+			       &fb1);
-+	igt_assert(fb_id1);
-+	igt_plane_set_fb(overlay, &fb1);
-+	igt_plane_set_position(overlay, overlay_x, overlay_y);
-+
-+	disable_ctm(primary->pipe);
-+	disable_degamma(primary->pipe);
-+	disable_gamma(primary->pipe);
-+	igt_display_commit2(&data->display, multiplane ? COMMIT_ATOMIC : COMMIT_LEGACY);
-+
-+	/* Draw solid colors with no gamma transformation. */
-+	paint_rectangles(data, primary_h, primary_w, primary_x,
-+			 primary_y, red_green_blue, &fb0);
-+	igt_plane_set_fb(primary, &fb0);
-+	igt_plane_set_position(primary, primary_x, primary_y);
-+
-+	paint_rectangles(data, overlay_h, overlay_w, 0, 0, blue_red_green, &fb1);
-+	igt_plane_set_fb(overlay, &fb1);
-+	igt_plane_set_position(overlay, overlay_x, overlay_y);
-+
-+	igt_display_commit2(&data->display, multiplane ? COMMIT_ATOMIC : COMMIT_LEGACY);
-+	igt_wait_for_vblank(data->drm_fd,
-+			    display->pipes[primary->pipe->pipe].crtc_offset);
-+	igt_pipe_crc_collect_crc(data->pipe_crc, &crc_fullcolors);
-+
-+	/*
-+	 * Draw a gradient with gamma LUT to remap all values
-+	 * to max red/green/blue.
-+	 */
-+	paint_gradient_rectangles(data, primary_h, primary_w, primary_x,
-+				  primary_y, red_green_blue, &fb0);
-+	igt_plane_set_fb(primary, &fb0);
-+	igt_plane_set_position(primary, primary_x, primary_y);
-+
-+	paint_gradient_rectangles(data, overlay_h, overlay_w,
-+				  0, 0, blue_red_green, &fb1);
-+	igt_plane_set_fb(overlay, &fb1);
-+	igt_plane_set_position(overlay, overlay_x, overlay_y);
-+	set_gamma(data, primary->pipe, gamma_full);
-+	igt_display_commit2(&data->display, multiplane ? COMMIT_ATOMIC : COMMIT_LEGACY);
-+	igt_wait_for_vblank(data->drm_fd,
-+			    display->pipes[primary->pipe->pipe].crtc_offset);
-+	igt_pipe_crc_collect_crc(data->pipe_crc, &crc_fullgamma);
-+
-+	/*
-+	 * Verify that the CRC of the software computed output is
-+	 * equal to the CRC of the gamma LUT transformation output.
-+	 */
-+	ret = igt_skip_crc_compare || igt_check_crc_equal(&crc_fullgamma, &crc_fullcolors);
-+
-+	disable_gamma(primary->pipe);
-+	igt_plane_set_fb(primary, NULL);
-+	igt_plane_set_fb(overlay, NULL);
-+	igt_output_set_pipe(output, PIPE_NONE);
-+	igt_display_commit2(&data->display, multiplane ? COMMIT_ATOMIC : COMMIT_LEGACY);
-+	igt_remove_fb(data->drm_fd, &fb0);
-+	igt_remove_fb(data->drm_fd, &fb1);
-+
-+	free_lut(gamma_full);
-+
-+	return ret;
-+}
-+
- /*
-  * Draw 3 gradient rectangles in red, green and blue, with a maxed out legacy
-  * gamma LUT and verify we have the same CRC as drawing solid color rectangles
-@@ -1074,6 +1194,9 @@ run_tests_for_pipe(data_t *data)
- 		{ "gamma", test_pipe_gamma, false,
- 		  "Verify that gamma LUT transformation works correctly" },
- 
-+		{ "gamma-multiplane", test_pipe_multiplane_gamma, true,
-+		  "Verify that gamma LUT transformation works correctly for multiplane" },
-+
- 		{ "legacy-gamma", test_pipe_legacy_gamma, false,
- 		  "Verify that legacy gamma LUT transformation works correctly" },
- 
--- 
-2.25.1
+On Wed-08-03-2023 10:55 pm, Kamil Konieczny wrote:
+> Hi,
+> 
+> On 2023-02-24 at 15:10:07 +0530, Modem, Bhanuprakash wrote:
+>>
+>>
+>> On Sun-14-08-2022 02:58 pm, Mohammed Thasleem wrote:
+>>> Added check on ENOSPC when two moniters connected through MST.
+>>> This will find the connector mode combo that fits into the
+>>> bandwidth when more than one monitor is connected.
+>>>
+>>> Example:
+>>>     When two monitors connected through MST, the second monitor
+>>>     also tries to use the same mode. So two such modes may not
+>>>     fit into the link bandwidth. So, iterate through connected
+>>>     outputs & modes and find a combination of modes those fit
+>>>     into the link BW.
+>>>
+>>> v2: -Updated commit msg and description. (Bhanu)
+>>>       -Renamed restart with retry. (Bhanu)
+>>>       -Moved igt_pipe_crc_new before retry. (Bhanu)
+>>>       -Removed unrelated changes and new line. (Bhanu)
+>>>       -Minor changes.
+>>>
+>>> Signed-off-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
+>>> ---
+>>>    tests/kms_display_modes.c | 25 +++++++++++++++++++++----
+>>>    1 file changed, 21 insertions(+), 4 deletions(-)
+>>>
+>>> diff --git a/tests/kms_display_modes.c b/tests/kms_display_modes.c
+>>> index e4191811..19026dc1 100644
+>>> --- a/tests/kms_display_modes.c
+>>> +++ b/tests/kms_display_modes.c
+>>> @@ -43,7 +43,7 @@ static void run_extendedmode_basic(data_t *data, int pipe1, int pipe2)
+>>>    	igt_plane_t *plane[2];
+>>>    	igt_pipe_crc_t *pipe_crc[2] = { 0 };
+>>>    	igt_crc_t ref_crc[2], crc[2];
+>>> -	int count = 0, width, height;
+>>> +	int count = 0, width, height, ret;
+>>>    	cairo_t *cr;
+>>>    	for_each_connected_output(display, output) {
+>>> @@ -54,14 +54,16 @@ static void run_extendedmode_basic(data_t *data, int pipe1, int pipe2)
+>>>    			break;
+>>>    	}
+>>> +	pipe_crc[0] = igt_pipe_crc_new(data->drm_fd, pipe1, IGT_PIPE_CRC_SOURCE_AUTO);
+>>> +	pipe_crc[1] = igt_pipe_crc_new(data->drm_fd, pipe2, IGT_PIPE_CRC_SOURCE_AUTO);
+>>> +
+>>> +retry:
+>>>    	igt_output_set_pipe(extended_output[0], pipe1);
+>>>    	igt_output_set_pipe(extended_output[1], pipe2);
+>>>    	mode[0] = igt_output_get_mode(extended_output[0]);
+>>>    	mode[1] = igt_output_get_mode(extended_output[1]);
+>>> -	pipe_crc[0] = igt_pipe_crc_new(data->drm_fd, pipe1, IGT_PIPE_CRC_SOURCE_AUTO);
+>>> -	pipe_crc[1] = igt_pipe_crc_new(data->drm_fd, pipe2, IGT_PIPE_CRC_SOURCE_AUTO);
+>>>    	igt_create_color_fb(data->drm_fd, mode[0]->hdisplay, mode[0]->vdisplay,
+>>>    			     DRM_FORMAT_XRGB8888, 0, 1, 0, 0, &fbs[0]);
+>>> @@ -79,7 +81,22 @@ static void run_extendedmode_basic(data_t *data, int pipe1, int pipe2)
+>>>    	igt_fb_set_size(&fbs[1], plane[1], mode[1]->hdisplay, mode[1]->vdisplay);
+>>>    	igt_plane_set_size(plane[1], mode[1]->hdisplay, mode[1]->vdisplay);
+>>> -	igt_display_commit2(display, COMMIT_ATOMIC);
+>>> +	ret = igt_display_try_commit2(display, COMMIT_ATOMIC);
+>>
+>> It would be better to add one or two line comment about this handling. Maybe
+>> you can add it while pushing this patch, no need to float a new rev.
+>>
+>> Reviewed-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+>>
+>> - Bhanu
+>>
+> 
+> One more thing is how is it preventing infinite loop ?
+
+Intention of this patch is to catch the link bandwidth issue (-ENOSPC) & 
+handle it gracefully in the IGT itself.
+
+igt_override_all_active_output_modes_to_fit_bw() returns false if there 
+is no suitable mode to fit in to the link bw. If this is the case we can 
+stop the execution instead of retry.
+
+On anotherhand no -ENOSPC error then no retry.
+
+> 
+>>> +	if (ret != 0 && errno == ENOSPC) {
+>>> +		bool found = igt_override_all_active_output_modes_to_fit_bw(display);
+>>> +
+>>> +		igt_require_f(found, "No valid mode combo found.\n");
+>>> +
+>>> +		for_each_connected_output(display, output)
+>>> +			igt_output_set_pipe(output, PIPE_NONE);
+>>> +
+>>> +		igt_remove_fb(data->drm_fd, &fbs[0]);
+>>> +		igt_remove_fb(data->drm_fd, &fbs[1]);
+>>> +
+>>> +		goto retry;
+>>> +	}
+>>> +
+>>> +	igt_assert(!ret);
+> 
+> This one should be more elaborate, maybe use igt_assert_f(!ret, "description here\n");
+> 
+> Regards,
+> Kamil
+> 
+>>>    	igt_pipe_crc_collect_crc(pipe_crc[0], &ref_crc[0]);
+>>>    	igt_pipe_crc_collect_crc(pipe_crc[1], &ref_crc[1]);
