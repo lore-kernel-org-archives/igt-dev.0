@@ -1,18 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A1E1410E1B9
- for <igt-dev@lists.freedesktop.org>; Thu,  9 Mar 2023 16:41:36 +0000 (UTC)
-Date: Thu, 9 Mar 2023 17:41:32 +0100
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Message-ID: <20230309164132.27qyo2a7av7ygps6@kamilkon-desk1>
-References: <20230309141940.714569-1-vikas.srivastava@intel.com>
+Content-Type: multipart/alternative;
+ boundary="===============5399698589494120327=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20230309141940.714569-1-vikas.srivastava@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/i915: skip gem_set_caching call
- for mtl
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: =?utf-8?q?Zbigniew_Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Date: Thu, 09 Mar 2023 17:04:05 -0000
+Message-ID: <167838144551.12421.15880180249357205716@emeril.freedesktop.org>
+References: <20230309160149.101973-1-zbigniew.kempczynski@intel.com>
+In-Reply-To: <20230309160149.101973-1-zbigniew.kempczynski@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgeGUveGVf?=
+ =?utf-8?q?*=3A_use_correct_MI=5FSTORE=5FDWORD=5FIMM_command_length?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,346 +17,266 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Vikas,
+--===============5399698589494120327==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-On 2023-03-09 at 19:49:40 +0530, Vikas Srivastava wrote:
-> Call to gem_set_caching skips the test since i915_gem_set_caching_ioctl is
-> deprecated for MTL. To avoid this added the return value check for
-> 0 or EOPNOTSUPP in __gem_set_caching.
-> 
-> FIXME: This is a temp solution to fix the IGT test issues where
-> set caching call is used , there is alternate API available
-> but support not yet available to use that.Once set_pat_index
-> support available need to bring that change replacing this one.
-> 
-> Signed-off-by: Vikas Srivastava <vikas.srivastava@intel.com>
-> ---
->  tests/i915/gem_caching.c            |  8 +++++---
->  tests/i915/gem_exec_flush.c         | 10 ++++++----
->  tests/i915/gem_exec_latency.c       |  4 +++-
->  tests/i915/gem_exec_suspend.c       |  7 +++++--
->  tests/i915/gem_render_tiled_blits.c |  5 +++--
->  tests/i915/gem_softpin.c            |  4 +++-
->  tests/i915/gem_userptr_blits.c      | 18 ++++++++++++++----
+== Series Details ==
 
-CI is reporting problem with this test, it often means
-that running it with option --list failed.
+Series: xe/xe_*: use correct MI_STORE_DWORD_IMM command length
+URL   : https://patchwork.freedesktop.org/series/114923/
+State : success
 
->  tests/i915/gem_workarounds.c        |  8 +++++---
->  tests/i915/i915_pm_rpm.c            |  7 +++++--
->  tests/prime_vgem.c                  |  4 +++-
->  10 files changed, 52 insertions(+), 23 deletions(-)
-> 
-> diff --git a/tests/i915/gem_caching.c b/tests/i915/gem_caching.c
-> index eb0170abc..3f6576c47 100644
-> --- a/tests/i915/gem_caching.c
-> +++ b/tests/i915/gem_caching.c
-> @@ -136,7 +136,7 @@ igt_main
->  	struct intel_bb *ibb;
->  	data_t data = {0, };
->  	unsigned flags = TEST_BOTH;
-> -	int i, j;
-> +	int i, j, ret;
->  	uint8_t *cpu_ptr;
->  	uint8_t *gtt_ptr;
->  
-> @@ -163,8 +163,10 @@ igt_main
->  		scratch_buf = intel_buf_create(data.bops, BO_SIZE/4, 1,
->  					       32, 0, I915_TILING_NONE, 0);
->  
-> -		if (!gem_has_lmem(data.fd))
-> -			gem_set_caching(data.fd, scratch_buf->handle, 1);
-> +		if (!gem_has_lmem(data.fd)) {
-> +			ret = __gem_set_caching(data.fd, scratch_buf->handle, 1);
-> +			igt_require(ret == 0 || ret == -EOPNOTSUPP);
-> +		}
->  
->  		staging_buf = intel_buf_create(data.bops, BO_SIZE/4, 1,
->  					       32, 0, I915_TILING_NONE, 0);
-> diff --git a/tests/i915/gem_exec_flush.c b/tests/i915/gem_exec_flush.c
-> index 40c58db2b..bd9fe4cda 100644
-> --- a/tests/i915/gem_exec_flush.c
-> +++ b/tests/i915/gem_exec_flush.c
-> @@ -127,7 +127,7 @@ static void run(int fd, unsigned ring, int nchild, int timeout,
->  		bool snoop = false;
->  		uint32_t *ptr;
->  		uint32_t *map;
-> -		int i;
-> +		int i, ret;
->  		bool has_relocs = gem_has_relocations(fd);
->  
->  		memset(obj, 0, sizeof(obj));
-> @@ -142,7 +142,8 @@ static void run(int fd, unsigned ring, int nchild, int timeout,
->  				       I915_GEM_DOMAIN_WC);
->  		} else {
->  			snoop = flags & COHERENT;
-> -			gem_set_caching(fd, obj[0].handle, snoop);
-> +			ret = __gem_set_caching(fd, obj[0].handle, snoop);
-> +			igt_require(ret == 0 || ret == -EOPNOTSUPP);
->  			map = gem_mmap__cpu(fd, obj[0].handle, 0, 4096, PROT_WRITE);
->  			gem_set_domain(fd, obj[0].handle,
->  				       I915_GEM_DOMAIN_CPU,
-> @@ -394,14 +395,15 @@ static void batch(int fd, unsigned ring, int nchild, int timeout,
->  		unsigned long cycles = 0;
->  		uint32_t *ptr;
->  		uint32_t *map;
-> -		int i;
-> +		int i, ret;
->  		bool has_relocs = gem_has_relocations(fd);
->  
->  		memset(obj, 0, sizeof(obj));
->  		obj[0].handle = gem_create(fd, 4096);
->  		obj[0].flags |= EXEC_OBJECT_WRITE;
->  
-> -		gem_set_caching(fd, obj[0].handle, !!(flags & COHERENT));
-> +		ret = __gem_set_caching(fd, obj[0].handle, !!(flags & COHERENT));
-> +		igt_require(ret == 0 || ret == -EOPNOTSUPP);
->  		map = gem_mmap__cpu(fd, obj[0].handle, 0, 4096, PROT_WRITE);
->  
->  		gem_set_domain(fd, obj[0].handle,
-> diff --git a/tests/i915/gem_exec_latency.c b/tests/i915/gem_exec_latency.c
-> index fcdf7787b..f24e95f33 100644
-> --- a/tests/i915/gem_exec_latency.c
-> +++ b/tests/i915/gem_exec_latency.c
-> @@ -756,6 +756,7 @@ static void context_switch(int i915, const intel_ctx_t *ctx,
->  	const uint32_t mmio_base = gem_engine_mmio_base(i915, e->name);
->  	struct igt_mean mean;
->  	const intel_ctx_t *tmp_ctx[2];
-> +	int ret;
->  
->  	igt_require(mmio_base);
->  	igt_require(gem_class_has_mutable_submission(i915, e->class));
-> @@ -770,7 +771,8 @@ static void context_switch(int i915, const intel_ctx_t *ctx,
->  
->  	memset(obj, 0, sizeof(obj));
->  	obj[0].handle = gem_create(i915, 4096);
-> -	gem_set_caching(i915, obj[0].handle, 1);
-> +	ret = __gem_set_caching(i915, obj[0].handle, 1);
-> +	igt_require(ret == 0 || ret == -EOPNOTSUPP);
->  	results = gem_mmap__cpu(i915, obj[0].handle, 0, 4096, PROT_READ);
->  	gem_set_domain(i915, obj[0].handle, I915_GEM_DOMAIN_CPU, 0);
->  
-> diff --git a/tests/i915/gem_exec_suspend.c b/tests/i915/gem_exec_suspend.c
-> index 3b59966a1..2b5e47725 100644
-> --- a/tests/i915/gem_exec_suspend.c
-> +++ b/tests/i915/gem_exec_suspend.c
-> @@ -86,6 +86,7 @@ static void run_test(int fd, const intel_ctx_t *ctx,
->  	unsigned nengine;
->  	igt_spin_t *spin = NULL;
->  	uint64_t ahnd = get_reloc_ahnd(fd, 0);
-> +	int ret;
->  
->  	nengine = 0;
->  	if (engine == ALL_ENGINES) {
-> @@ -116,8 +117,10 @@ static void run_test(int fd, const intel_ctx_t *ctx,
->  
->  	memset(obj, 0, sizeof(obj));
->  	obj[0].handle = gem_create_in_memory_regions(fd, 4096, region);
-> -	if (!gem_has_lmem(fd))
-> -		gem_set_caching(fd, obj[0].handle, !!(flags & CACHED));
-> +	if (!gem_has_lmem(fd)) {
-> +		ret = __gem_set_caching(fd, obj[0].handle, !!(flags & CACHED));
-> +		igt_require(ret == 0 || ret == -EOPNOTSUPP);
-> +	}
->  	obj[0].flags |= EXEC_OBJECT_WRITE;
->  	obj[1].handle = gem_create_in_memory_regions(fd, 4096, region);
->  	gem_write(fd, obj[1].handle, 0, &bbe, sizeof(bbe));
-> diff --git a/tests/i915/gem_render_tiled_blits.c b/tests/i915/gem_render_tiled_blits.c
-> index eae06a332..c3bf1beaf 100644
-> --- a/tests/i915/gem_render_tiled_blits.c
-> +++ b/tests/i915/gem_render_tiled_blits.c
-> @@ -97,7 +97,7 @@ static void run_test (int fd, int count)
->  	struct intel_bb *ibb;
->  	uint32_t *start_val;
->  	struct intel_buf *bufs;
-> -	int i, j;
-> +	int i, j, ret;
->  	uint32_t devid;
->  
->  	devid = intel_get_drm_devid(fd);
-> @@ -117,7 +117,8 @@ static void run_test (int fd, int count)
->  	intel_buf_init(bops, &linear, WIDTH, HEIGHT, 32, 0,
->  		       I915_TILING_NONE, I915_COMPRESSION_NONE);
->  	if (snoop) {
-> -		gem_set_caching(fd, linear.handle, 1);
-> +		ret = __gem_set_caching(fd, linear.handle, 1);
-> +		igt_require(ret == 0 || ret == -EOPNOTSUPP);
->  		igt_info("Using a snoop linear buffer for comparisons\n");
->  	}
->  
-> diff --git a/tests/i915/gem_softpin.c b/tests/i915/gem_softpin.c
-> index c29bfd43d..ad6fb6b94 100644
-> --- a/tests/i915/gem_softpin.c
-> +++ b/tests/i915/gem_softpin.c
-> @@ -518,6 +518,7 @@ static void test_evict_snoop(int fd, unsigned int flags)
->  	struct drm_i915_gem_execbuffer2 execbuf;
->  	struct drm_i915_gem_exec_object2 object[2];
->  	uint64_t hole;
-> +	int ret;
->  
->  	igt_require(!gem_has_llc(fd));
->  	igt_require(!gem_uses_ppgtt(fd));
-> @@ -537,7 +538,8 @@ static void test_evict_snoop(int fd, unsigned int flags)
->  	/* Create a snoop + uncached pair */
->  	object[0].handle = gem_create(fd, 4096);
->  	object[0].flags = EXEC_OBJECT_PINNED;
-> -	gem_set_caching(fd, object[0].handle, 1);
-> +	ret = __gem_set_caching(fd, object[0].handle, 1);
-> +	igt_require(ret == 0 || ret == -EOPNOTSUPP);
->  	object[1].handle = gem_create(fd, 4096);
->  	object[1].flags = EXEC_OBJECT_PINNED;
->  	gem_write(fd, object[1].handle, 4096-sizeof(bbe), &bbe, sizeof(bbe));
-> diff --git a/tests/i915/gem_userptr_blits.c b/tests/i915/gem_userptr_blits.c
-> index 483570d0a..3dd4f68e2 100644
-> --- a/tests/i915/gem_userptr_blits.c
-> +++ b/tests/i915/gem_userptr_blits.c
-> @@ -1140,15 +1140,17 @@ static void test_relocations(int fd)
->  	struct drm_i915_gem_execbuffer2 exec;
->  	unsigned size;
->  	void *ptr;
-> -	int i;
-> +	int i, ret;
->  
->  	size = PAGE_SIZE + ALIGN(sizeof(*reloc)*256, PAGE_SIZE);
->  
->  	memset(&obj, 0, sizeof(obj));
->  	igt_assert(posix_memalign(&ptr, PAGE_SIZE, size) == 0);
->  	gem_userptr(fd, ptr, size, 0, userptr_flags, &obj.handle);
-> -	if (!gem_has_llc(fd))
-> -		gem_set_caching(fd, obj.handle, 0);
-> +	if (!gem_has_llc(fd)) {
-> +		ret = __gem_set_caching(fd, obj.handle, 0);
-> +		igt_require(ret == 0 || ret == -EOPNOTSUPP);
-> +	}
->  	*(uint32_t *)ptr = MI_BATCH_BUFFER_END;
->  
->  	reloc = (typeof(reloc))((char *)ptr + PAGE_SIZE);
-> @@ -2355,8 +2357,13 @@ const char *help_str = "  -c\tBuffer count\n";
->  igt_main_args("c:", NULL, help_str, opt_handler, NULL)
->  {
->  	int size = sizeof(linear);
-> +	uint16_t devid;
-> +	bool has_set_caching;
->  	igt_fd_t(fd);
->  
-> +	devid = intel_get_drm_devid(fd);
-> +	has_set_caching = IS_METEORLAKE(devid) ? false : true;
-> +
+== Summary ==
 
-Please put it inside fixture after fd open.
+CI Bug Log - changes from CI_DRM_12831 -> IGTPW_8585
+====================================================
 
-Btw why not make it a lib function like other gem_has_ functions ?
-Then you can replace all those checks of NOTSUP with
+Summary
+-------
 
-	has_set_caching(intel_get_drm_devid(fd))
+  **SUCCESS**
 
-and acting accordingly.
-Second thing, is it ok to just not setting caching, will tests
-pass then on MTL ?
+  No regressions found.
 
-Regards,
-Kamil
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8585/index.html
 
->  	igt_fixture {
->  		unsigned int mmo_max = 0;
->  
-> @@ -2417,8 +2424,11 @@ igt_main_args("c:", NULL, help_str, opt_handler, NULL)
->  			test_sd_probe(fd);
->  		}
->  
-> -		igt_subtest("set-cache-level")
-> +		igt_subtest("set-cache-level") {
-> +			igt_require_f((has_set_caching),
-> +				      "set_caching not supported on this platform");
->  			test_set_caching(fd);
-> +		}
->  
->  		igt_subtest("userfault")
->  			test_userfault(fd);
-> diff --git a/tests/i915/gem_workarounds.c b/tests/i915/gem_workarounds.c
-> index 5fb2d73fd..3a580f59f 100644
-> --- a/tests/i915/gem_workarounds.c
-> +++ b/tests/i915/gem_workarounds.c
-> @@ -92,7 +92,7 @@ static int workaround_fail_count(int i915, const intel_ctx_t *ctx)
->  	uint32_t result_sz, batch_sz;
->  	uint32_t *base, *out;
->  	igt_spin_t *spin;
-> -	int fw, fail = 0;
-> +	int fw, fail = 0, ret;
->  	uint64_t ahnd = get_reloc_ahnd(i915, ctx->id);
->  
->  	reloc = calloc(num_wa_regs, sizeof(*reloc));
-> @@ -106,8 +106,10 @@ static int workaround_fail_count(int i915, const intel_ctx_t *ctx)
->  
->  	memset(obj, 0, sizeof(obj));
->  	obj[0].handle = gem_create(i915, result_sz);
-> -	if (!gem_has_lmem(i915))
-> -		gem_set_caching(i915, obj[0].handle, I915_CACHING_CACHED);
-> +	if (!gem_has_lmem(i915)) {
-> +		ret = __gem_set_caching(i915, obj[0].handle, I915_CACHING_CACHED);
-> +		igt_require(ret == 0 || ret == -EOPNOTSUPP);
-> +	}
->  	obj[1].handle = gem_create(i915, batch_sz);
->  	obj[1].relocs_ptr = to_user_pointer(reloc);
->  	obj[1].relocation_count = !ahnd ? num_wa_regs : 0;
-> diff --git a/tests/i915/i915_pm_rpm.c b/tests/i915/i915_pm_rpm.c
-> index 74935430c..9c372e43d 100644
-> --- a/tests/i915/i915_pm_rpm.c
-> +++ b/tests/i915/i915_pm_rpm.c
-> @@ -1977,6 +1977,7 @@ static void pm_test_caching(void)
->  {
->  	uint32_t handle;
->  	uint8_t *gem_buf;
-> +	int ret;
->  
->  	uint32_t i;
->  	uint32_t default_cache_level;
-> @@ -1995,7 +1996,8 @@ static void pm_test_caching(void)
->  
->  	for (i = 0; i < ARRAY_SIZE(cache_levels); i++) {
->  		igt_assert(wait_for_suspended());
-> -		gem_set_caching(drm_fd, handle, default_cache_level);
-> +		ret = __gem_set_caching(drm_fd, handle, default_cache_level);
-> +		igt_require(ret == 0 || ret == -EOPNOTSUPP);
->  
->  		/* Ensure we bind the vma into the GGTT */
->  		memset(gem_buf, 16 << i, gtt_obj_max_size);
-> @@ -2008,7 +2010,8 @@ static void pm_test_caching(void)
->  		 */
->  		igt_debug("Setting cache level %u\n", cache_levels[i]);
->  		igt_assert(wait_for_suspended());
-> -		gem_set_caching(drm_fd, handle, cache_levels[i]);
-> +		ret = __gem_set_caching(drm_fd, handle, cache_levels[i]);
-> +		igt_require(ret == 0 || ret == -EOPNOTSUPP);
->  	}
->  
->  	igt_assert(munmap(gem_buf, gtt_obj_max_size) == 0);
-> diff --git a/tests/prime_vgem.c b/tests/prime_vgem.c
-> index 06be273c0..caef8040f 100644
-> --- a/tests/prime_vgem.c
-> +++ b/tests/prime_vgem.c
-> @@ -316,6 +316,7 @@ static void test_userptr(int vgem, int i915)
->  	};
->  	struct vgem_bo scratch;
->  	uint32_t *ptr;
-> +	int ret;
->  
->  	igt_require(has_userptr(i915));
->  
-> @@ -330,7 +331,8 @@ static void test_userptr(int vgem, int i915)
->  	*ptr = MI_BATCH_BUFFER_END;
->  
->  	gem_userptr(i915, ptr, scratch.size, 0, 0, &obj.handle);
-> -	gem_set_caching(i915, obj.handle, I915_CACHING_NONE); /* for !llc exec */
-> +	ret = __gem_set_caching(i915, obj.handle, I915_CACHING_NONE); /* for !llc exec */
-> +	igt_require(ret == 0 || ret == -EOPNOTSUPP);
->  
->  	gem_execbuf(i915, &execbuf);
->  	gem_close(i915, obj.handle);
-> -- 
-> 2.25.1
-> 
+Participating hosts (35 -> 33)
+------------------------------
+
+  Missing    (2): fi-kbl-x1275 fi-snb-2520m 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_8585 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@gem_exec_suspend@basic-s3@smem:
+    - bat-rpls-1:         [PASS][1] -> [ABORT][2] ([i915#6687] / [i915#7978])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12831/bat-rpls-1/igt@gem_exec_suspend@basic-s3@smem.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8585/bat-rpls-1/igt@gem_exec_suspend@basic-s3@smem.html
+
+  * igt@i915_selftest@live@gt_heartbeat:
+    - fi-apl-guc:         [PASS][3] -> [DMESG-FAIL][4] ([i915#5334])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12831/fi-apl-guc/igt@i915_selftest@live@gt_heartbeat.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8585/fi-apl-guc/igt@i915_selftest@live@gt_heartbeat.html
+
+  * igt@i915_selftest@live@slpc:
+    - bat-rpls-2:         NOTRUN -> [DMESG-FAIL][5] ([i915#6367] / [i915#7913] / [i915#7996])
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8585/bat-rpls-2/igt@i915_selftest@live@slpc.html
+    - bat-rpls-1:         [PASS][6] -> [DMESG-FAIL][7] ([i915#6367] / [i915#7996])
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12831/bat-rpls-1/igt@i915_selftest@live@slpc.html
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8585/bat-rpls-1/igt@i915_selftest@live@slpc.html
+
+  * igt@kms_chamelium_hpd@common-hpd-after-suspend:
+    - bat-rpls-2:         NOTRUN -> [SKIP][8] ([i915#7828])
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8585/bat-rpls-2/igt@kms_chamelium_hpd@common-hpd-after-suspend.html
+    - fi-glk-j4005:       NOTRUN -> [SKIP][9] ([fdo#109271])
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8585/fi-glk-j4005/igt@kms_chamelium_hpd@common-hpd-after-suspend.html
+    - fi-bsw-nick:        NOTRUN -> [SKIP][10] ([fdo#109271]) +1 similar issue
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8585/fi-bsw-nick/igt@kms_chamelium_hpd@common-hpd-after-suspend.html
+
+  * igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence:
+    - bat-dg2-11:         NOTRUN -> [SKIP][11] ([i915#5354]) +2 similar issues
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8585/bat-dg2-11/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence.html
+
+  * igt@kms_pipe_crc_basic@suspend-read-crc:
+    - bat-rpls-2:         NOTRUN -> [SKIP][12] ([i915#1845])
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8585/bat-rpls-2/igt@kms_pipe_crc_basic@suspend-read-crc.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_selftest@live@execlists:
+    - fi-bsw-nick:        [ABORT][13] ([i915#7911] / [i915#7913]) -> [PASS][14]
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12831/fi-bsw-nick/igt@i915_selftest@live@execlists.html
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8585/fi-bsw-nick/igt@i915_selftest@live@execlists.html
+
+  * igt@i915_selftest@live@late_gt_pm:
+    - fi-glk-j4005:       [ABORT][15] ([i915#6217]) -> [PASS][16]
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12831/fi-glk-j4005/igt@i915_selftest@live@late_gt_pm.html
+   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8585/fi-glk-j4005/igt@i915_selftest@live@late_gt_pm.html
+
+  * igt@i915_selftest@live@requests:
+    - bat-rpls-2:         [ABORT][17] ([i915#7694] / [i915#7913]) -> [PASS][18]
+   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12831/bat-rpls-2/igt@i915_selftest@live@requests.html
+   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8585/bat-rpls-2/igt@i915_selftest@live@requests.html
+
+  
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [i915#1845]: https://gitlab.freedesktop.org/drm/intel/issues/1845
+  [i915#5334]: https://gitlab.freedesktop.org/drm/intel/issues/5334
+  [i915#5354]: https://gitlab.freedesktop.org/drm/intel/issues/5354
+  [i915#6217]: https://gitlab.freedesktop.org/drm/intel/issues/6217
+  [i915#6367]: https://gitlab.freedesktop.org/drm/intel/issues/6367
+  [i915#6687]: https://gitlab.freedesktop.org/drm/intel/issues/6687
+  [i915#7694]: https://gitlab.freedesktop.org/drm/intel/issues/7694
+  [i915#7828]: https://gitlab.freedesktop.org/drm/intel/issues/7828
+  [i915#7911]: https://gitlab.freedesktop.org/drm/intel/issues/7911
+  [i915#7913]: https://gitlab.freedesktop.org/drm/intel/issues/7913
+  [i915#7978]: https://gitlab.freedesktop.org/drm/intel/issues/7978
+  [i915#7996]: https://gitlab.freedesktop.org/drm/intel/issues/7996
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_7188 -> IGTPW_8585
+
+  CI-20190529: 20190529
+  CI_DRM_12831: 4910ebea52abc05f63bfc43bc91baebd8af93d45 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_8585: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8585/index.html
+  IGT_7188: b35bfa32fe672d67ced8555557e3e707ace211ad @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+
+Testlist changes
+----------------
+
++igt@kms_plane_scaling@i915-max-source-size
+-igt@kms_plane_scaling@i915-max-src-size
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8585/index.html
+
+--===============5399698589494120327==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>xe/xe_*: use correct MI_STORE_DWORD_IMM command length</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/114923/">https://patchwork.freedesktop.org/series/114923/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8585/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8585/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_12831 -&gt; IGTPW_8585</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8585/index.html</p>
+<h2>Participating hosts (35 -&gt; 33)</h2>
+<p>Missing    (2): fi-kbl-x1275 fi-snb-2520m </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_8585 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@gem_exec_suspend@basic-s3@smem:</p>
+<ul>
+<li>bat-rpls-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12831/bat-rpls-1/igt@gem_exec_suspend@basic-s3@smem.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8585/bat-rpls-1/igt@gem_exec_suspend@basic-s3@smem.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6687">i915#6687</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7978">i915#7978</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@gt_heartbeat:</p>
+<ul>
+<li>fi-apl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12831/fi-apl-guc/igt@i915_selftest@live@gt_heartbeat.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8585/fi-apl-guc/igt@i915_selftest@live@gt_heartbeat.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5334">i915#5334</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@slpc:</p>
+<ul>
+<li>
+<p>bat-rpls-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8585/bat-rpls-2/igt@i915_selftest@live@slpc.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6367">i915#6367</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7913">i915#7913</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7996">i915#7996</a>)</p>
+</li>
+<li>
+<p>bat-rpls-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12831/bat-rpls-1/igt@i915_selftest@live@slpc.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8585/bat-rpls-1/igt@i915_selftest@live@slpc.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6367">i915#6367</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7996">i915#7996</a>)</p>
+</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_chamelium_hpd@common-hpd-after-suspend:</p>
+<ul>
+<li>
+<p>bat-rpls-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8585/bat-rpls-2/igt@kms_chamelium_hpd@common-hpd-after-suspend.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7828">i915#7828</a>)</p>
+</li>
+<li>
+<p>fi-glk-j4005:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8585/fi-glk-j4005/igt@kms_chamelium_hpd@common-hpd-after-suspend.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>)</p>
+</li>
+<li>
+<p>fi-bsw-nick:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8585/fi-bsw-nick/igt@kms_chamelium_hpd@common-hpd-after-suspend.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +1 similar issue</p>
+</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence:</p>
+<ul>
+<li>bat-dg2-11:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8585/bat-dg2-11/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5354">i915#5354</a>) +2 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@suspend-read-crc:</p>
+<ul>
+<li>bat-rpls-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8585/bat-rpls-2/igt@kms_pipe_crc_basic@suspend-read-crc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1845">i915#1845</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live@execlists:</p>
+<ul>
+<li>fi-bsw-nick:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12831/fi-bsw-nick/igt@i915_selftest@live@execlists.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7911">i915#7911</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7913">i915#7913</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8585/fi-bsw-nick/igt@i915_selftest@live@execlists.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@late_gt_pm:</p>
+<ul>
+<li>fi-glk-j4005:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12831/fi-glk-j4005/igt@i915_selftest@live@late_gt_pm.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6217">i915#6217</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8585/fi-glk-j4005/igt@i915_selftest@live@late_gt_pm.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@requests:</p>
+<ul>
+<li>bat-rpls-2:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12831/bat-rpls-2/igt@i915_selftest@live@requests.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7694">i915#7694</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7913">i915#7913</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8585/bat-rpls-2/igt@i915_selftest@live@requests.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_7188 -&gt; IGTPW_8585</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_12831: 4910ebea52abc05f63bfc43bc91baebd8af93d45 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_8585: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8585/index.html<br />
+  IGT_7188: b35bfa32fe672d67ced8555557e3e707ace211ad @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+<h2>Testlist changes</h2>
+<p>+igt@kms_plane_scaling@i915-max-source-size<br />
+-igt@kms_plane_scaling@i915-max-src-size</p>
+
+</body>
+</html>
+
+--===============5399698589494120327==--
