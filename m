@@ -1,15 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Content-Type: multipart/alternative;
- boundary="===============8546065456246109805=="
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id F007010E20B
+ for <igt-dev@lists.freedesktop.org>; Thu,  9 Mar 2023 22:56:09 +0000 (UTC)
+Date: Thu, 9 Mar 2023 14:55:56 -0800
+From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+To: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
+Message-ID: <ZApj/EvZeaLuSe1X@orsosgc001.jf.intel.com>
+References: <20230215004648.2100655-1-umesh.nerlige.ramappa@intel.com>
+ <20230215004648.2100655-9-umesh.nerlige.ramappa@intel.com>
+ <87o7p5mq2r.wl-ashutosh.dixit@intel.com>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Disposition: inline
+In-Reply-To: <87o7p5mq2r.wl-ashutosh.dixit@intel.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Vinay Belgaumkar" <vinay.belgaumkar@intel.com>
-Date: Thu, 09 Mar 2023 20:49:26 -0000
-Message-ID: <167839496631.12422.15105481389835193293@emeril.freedesktop.org>
-References: <20230309194841.241213-1-vinay.belgaumkar@intel.com>
-In-Reply-To: <20230309194841.241213-1-vinay.belgaumkar@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgZ2VtX2N0?=
- =?utf-8?q?x=5Ffreq=3A_Remove_reference_to_non-existent_sysfs_entry?=
+Subject: Re: [igt-dev] [PATCH i-g-t 08/31] i915/perf: Treat ticks as 64 bit
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,233 +21,117 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org,
+ Lionel G Landwerlin <lionel.g.landwerlin@linux.intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============8546065456246109805==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+On Mon, Mar 06, 2023 at 03:13:00PM -0800, Dixit, Ashutosh wrote:
+>On Tue, 14 Feb 2023 16:46:25 -0800, Umesh Nerlige Ramappa wrote:
+>>
+>
+>Hi Umesh,
+>
+>> To support 64 bit OA report headers, treat all ticks as 64 bits.
+>>
+>> Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+>> ---
+>>  tests/i915/perf.c | 79 ++++++++++++++++++++++++++++++++---------------
+>>  1 file changed, 54 insertions(+), 25 deletions(-)
+>>
+>> diff --git a/tests/i915/perf.c b/tests/i915/perf.c
+>> index bd3cdb6a..4c7b4e49 100644
+>> --- a/tests/i915/perf.c
+>> +++ b/tests/i915/perf.c
+>> @@ -125,6 +125,7 @@ struct oa_format {
+>>	int c_off;
+>>	int n_c;
+>>	int oa_type;
+>> +	bool report_hdr_64bit;
+>>  };
+>>
+>>  static struct oa_format hsw_oa_formats[I915_OA_FORMAT_MAX] = {
+>> @@ -244,7 +245,7 @@ static bool *undefined_a_counters;
+>>  static uint64_t oa_exp_1_millisec;
+>>
+>>  static igt_render_copyfunc_t render_copy = NULL;
+>> -static uint32_t (*read_report_ticks)(const uint32_t *report,
+>> +static uint64_t (*read_report_ticks)(const uint32_t *report,
+>>				     enum drm_i915_oa_format format);
+>>  static void (*sanity_check_reports)(const uint32_t *oa_report0,
+>>				    const uint32_t *oa_report1,
+>> @@ -438,7 +439,7 @@ sysfs_read(enum i915_attr_id id)
+>>   * C2 corresponds to a clock counter for the Haswell render basic metric set
+>>   * but it's not included in all of the formats.
+>>   */
+>> -static uint32_t
+>> +static uint64_t
+>>  hsw_read_report_ticks(const uint32_t *report, enum drm_i915_oa_format format)
+>>  {
+>>	uint32_t *c = (uint32_t *)(((uint8_t *)report) + get_oa_format(format).c_off);
+>> @@ -448,10 +449,41 @@ hsw_read_report_ticks(const uint32_t *report, enum drm_i915_oa_format format)
+>>	return c[2];
+>>  }
+>>
+>> -static uint32_t
+>> +static uint64_t
+>>  gen8_read_report_ticks(const uint32_t *report, enum drm_i915_oa_format format)
+>>  {
+>> -	return report[3];
+>> +
+>> +	struct oa_format fmt = get_oa_format(format);
+>> +
+>> +	return fmt.report_hdr_64bit ? *(uint64_t *)&report[6] : report[3];
+>> +}
+>> +
+>> +/*
+>> + * t0 is a value sampled before t1. width is number of bits used to represent
+>> + * t0/t1. Normally t1 is greater than t0. In cases where t1 < t0 use this
+>> + * helper. Since the size of t1/t0 is already 64 bits, no special handling is
+>> + * needed for width = 64.
+>> + */
+>> +static uint64_t
+>> +elapsed_delta(uint64_t t1, uint64_t t0, uint32_t width)
+>> +{
+>> +	uint32_t max_bits = sizeof(t1) * 8;
+>> +
+>> +	igt_assert(width <= max_bits);
+>> +
+>> +	if (t1 < t0 && width != max_bits)
+>> +		return ((1ULL << width) - t0) + t1;
+>> +
+>> +	return t1 - t0;
+>
+>OK, this looks fine due to 2's complement arithmentic.
+>
+>> +}
+>> +
+>> +static uint64_t
+>> +oa_tick_delta(const uint32_t *report1,
+>> +	      const uint32_t *report0,
+>> +	      enum drm_i915_oa_format format)
+>> +{
+>> +	return elapsed_delta(read_report_ticks(report1, format),
+>> +			     read_report_ticks(report0, format), 32);
+>
+>Why are ticks always considered 32 bits? For 64 bit report headers aren't
+>ticks 64 bits?
 
-== Series Details ==
+The report headers have space for 64 bits, but the upper 32 bits have 
+not been defined in the header definition.
+>
+>Also, sorry my ignorance, what is the difference between timestamps and
+>ticks (both are present in the report headers)?
 
-Series: gem_ctx_freq: Remove reference to non-existent sysfs entry
-URL   : https://patchwork.freedesktop.org/series/114930/
-State : success
+I believe the ticks will vary with gt frequency (and spec says this 
+value can be used to normalize the counters), whereas the timestamp 
+provides a fixed elapsed time based on the cs/oa timestamp frequency 
+(19.2 MHz or something fixed per platform).
 
-== Summary ==
-
-CI Bug Log - changes from CI_DRM_12832 -> IGTPW_8586
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8586/index.html
-
-Participating hosts (36 -> 35)
-------------------------------
-
-  Additional (1): fi-kbl-soraka 
-  Missing    (2): bat-atsm-1 fi-snb-2520m 
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_8586 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@gem_huc_copy@huc-copy:
-    - fi-kbl-soraka:      NOTRUN -> [SKIP][1] ([fdo#109271] / [i915#2190])
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8586/fi-kbl-soraka/igt@gem_huc_copy@huc-copy.html
-
-  * igt@gem_lmem_swapping@basic:
-    - fi-kbl-soraka:      NOTRUN -> [SKIP][2] ([fdo#109271] / [i915#4613]) +3 similar issues
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8586/fi-kbl-soraka/igt@gem_lmem_swapping@basic.html
-
-  * igt@i915_selftest@live@execlists:
-    - fi-bsw-n3050:       [PASS][3] -> [INCOMPLETE][4] ([i915#6972])
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12832/fi-bsw-n3050/igt@i915_selftest@live@execlists.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8586/fi-bsw-n3050/igt@i915_selftest@live@execlists.html
-    - fi-bsw-nick:        [PASS][5] -> [ABORT][6] ([i915#7911] / [i915#7913])
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12832/fi-bsw-nick/igt@i915_selftest@live@execlists.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8586/fi-bsw-nick/igt@i915_selftest@live@execlists.html
-
-  * igt@i915_selftest@live@gem_contexts:
-    - fi-kbl-soraka:      NOTRUN -> [INCOMPLETE][7] ([i915#7913])
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8586/fi-kbl-soraka/igt@i915_selftest@live@gem_contexts.html
-
-  * igt@i915_selftest@live@gt_heartbeat:
-    - fi-apl-guc:         [PASS][8] -> [DMESG-FAIL][9] ([i915#5334])
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12832/fi-apl-guc/igt@i915_selftest@live@gt_heartbeat.html
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8586/fi-apl-guc/igt@i915_selftest@live@gt_heartbeat.html
-
-  * igt@i915_selftest@live@gt_pm:
-    - fi-kbl-soraka:      NOTRUN -> [DMESG-FAIL][10] ([i915#1886])
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8586/fi-kbl-soraka/igt@i915_selftest@live@gt_pm.html
-
-  * igt@kms_chamelium_frames@hdmi-crc-fast:
-    - fi-kbl-soraka:      NOTRUN -> [SKIP][11] ([fdo#109271]) +16 similar issues
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8586/fi-kbl-soraka/igt@kms_chamelium_frames@hdmi-crc-fast.html
-
-  
-#### Possible fixes ####
-
-  * igt@i915_selftest@live@dmabuf:
-    - bat-rplp-1:         [DMESG-WARN][12] ([i915#2867]) -> [PASS][13] +29 similar issues
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12832/bat-rplp-1/igt@i915_selftest@live@dmabuf.html
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8586/bat-rplp-1/igt@i915_selftest@live@dmabuf.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
-  [i915#1886]: https://gitlab.freedesktop.org/drm/intel/issues/1886
-  [i915#2190]: https://gitlab.freedesktop.org/drm/intel/issues/2190
-  [i915#2867]: https://gitlab.freedesktop.org/drm/intel/issues/2867
-  [i915#4613]: https://gitlab.freedesktop.org/drm/intel/issues/4613
-  [i915#5334]: https://gitlab.freedesktop.org/drm/intel/issues/5334
-  [i915#6972]: https://gitlab.freedesktop.org/drm/intel/issues/6972
-  [i915#7911]: https://gitlab.freedesktop.org/drm/intel/issues/7911
-  [i915#7913]: https://gitlab.freedesktop.org/drm/intel/issues/7913
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_7188 -> IGTPW_8586
-
-  CI-20190529: 20190529
-  CI_DRM_12832: 40eaf607cfcc6f514cd3ea652525704137bcea15 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_8586: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8586/index.html
-  IGT_7188: b35bfa32fe672d67ced8555557e3e707ace211ad @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8586/index.html
-
---===============8546065456246109805==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>gem_ctx_freq: Remove reference to non-existent sysfs entry</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/114930/">https://patchwork.freedesktop.org/series/114930/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8586/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8586/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from CI_DRM_12832 -&gt; IGTPW_8586</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8586/index.html</p>
-<h2>Participating hosts (36 -&gt; 35)</h2>
-<p>Additional (1): fi-kbl-soraka <br />
-  Missing    (2): bat-atsm-1 fi-snb-2520m </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_8586 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@gem_huc_copy@huc-copy:</p>
-<ul>
-<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8586/fi-kbl-soraka/igt@gem_huc_copy@huc-copy.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2190">i915#2190</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_lmem_swapping@basic:</p>
-<ul>
-<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8586/fi-kbl-soraka/igt@gem_lmem_swapping@basic.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/4613">i915#4613</a>) +3 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@execlists:</p>
-<ul>
-<li>
-<p>fi-bsw-n3050:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12832/fi-bsw-n3050/igt@i915_selftest@live@execlists.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8586/fi-bsw-n3050/igt@i915_selftest@live@execlists.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6972">i915#6972</a>)</p>
-</li>
-<li>
-<p>fi-bsw-nick:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12832/fi-bsw-nick/igt@i915_selftest@live@execlists.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8586/fi-bsw-nick/igt@i915_selftest@live@execlists.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7911">i915#7911</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7913">i915#7913</a>)</p>
-</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@gem_contexts:</p>
-<ul>
-<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8586/fi-kbl-soraka/igt@i915_selftest@live@gem_contexts.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7913">i915#7913</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@gt_heartbeat:</p>
-<ul>
-<li>fi-apl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12832/fi-apl-guc/igt@i915_selftest@live@gt_heartbeat.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8586/fi-apl-guc/igt@i915_selftest@live@gt_heartbeat.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/5334">i915#5334</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@gt_pm:</p>
-<ul>
-<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8586/fi-kbl-soraka/igt@i915_selftest@live@gt_pm.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1886">i915#1886</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_chamelium_frames@hdmi-crc-fast:</p>
-<ul>
-<li>fi-kbl-soraka:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8586/fi-kbl-soraka/igt@kms_chamelium_frames@hdmi-crc-fast.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +16 similar issues</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>igt@i915_selftest@live@dmabuf:<ul>
-<li>bat-rplp-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12832/bat-rplp-1/igt@i915_selftest@live@dmabuf.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2867">i915#2867</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8586/bat-rplp-1/igt@i915_selftest@live@dmabuf.html">PASS</a> +29 similar issues</li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_7188 -&gt; IGTPW_8586</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_12832: 40eaf607cfcc6f514cd3ea652525704137bcea15 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_8586: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8586/index.html<br />
-  IGT_7188: b35bfa32fe672d67ced8555557e3e707ace211ad @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-
-</body>
-</html>
-
---===============8546065456246109805==--
+Thanks,
+Umesh
+>
+>Thanks.
+>--
+>Ashutosh
