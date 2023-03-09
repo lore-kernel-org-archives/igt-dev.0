@@ -1,19 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 848D510E815
- for <igt-dev@lists.freedesktop.org>; Thu,  9 Mar 2023 13:51:39 +0000 (UTC)
-From: =?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>
-To: Melissa Wen <mwen@igalia.com>, Daniel Vetter <daniel@ffwll.ch>,
- Petri Latvala <adrinael@adrinael.net>,
- Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Date: Thu,  9 Mar 2023 10:51:16 -0300
-Message-Id: <20230309135116.128602-3-mcanal@igalia.com>
-In-Reply-To: <20230309135116.128602-1-mcanal@igalia.com>
-References: <20230309135116.128602-1-mcanal@igalia.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CF22010E813
+ for <igt-dev@lists.freedesktop.org>; Thu,  9 Mar 2023 13:52:59 +0000 (UTC)
+Message-ID: <f8090d8c-c318-049e-b6ad-62dee798c74d@intel.com>
+Date: Thu, 9 Mar 2023 14:53:02 +0100
+Content-Language: en-US
+To: Vikas Srivastava <vikas.srivastava@intel.com>
+References: <20230302055424.75446-1-vikas.srivastava@intel.com>
+From: Karolina Stolarek <karolina.stolarek@intel.com>
+In-Reply-To: <20230302055424.75446-1-vikas.srivastava@intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v2 2/2] tests/vgem_basic: Add negative tests
+MIME-Version: 1.0
+Subject: Re: [igt-dev] [PATCH] lib/intel_batchbuffer: Skip media-fill test
+ for Graphics version 12.50 and above
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,95 +26,46 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Currently, the vgem_basic tests don't cover any negative tests. So, add
-tests covering possible error paths of the driver by inputting invalid
-arguments and checking if the driver is returning the correct values.
+On 2.03.2023 06:54, Vikas Srivastava wrote:
+> From: Sinjan Kumar <sinjan.kumar@intel.com>
+> 
+> Xe_HP and beyond platforms does not have media pipeline.
+> So, this test is not applicable for those platforms.
+> 
+> Cc: Chris Wilson <chris.p.wilson@linux.intel.com>
+> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> Cc: Dominik Grzegorzek <dominik.grzegorzek@intel.com>
+> Cc: Zbigniew Kempczy��ski <zbigniew.kempczynski@intel.com>
 
-Signed-off-by: Maíra Canal <mcanal@igalia.com>
----
- tests/vgem_basic.c | 63 ++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 63 insertions(+)
+Not sure if it's your git send-email playing tricks or something, but 
+char coding is off. You can either try to force git to use UTF-8 or just 
+write "Kempczynski" here.
 
-diff --git a/tests/vgem_basic.c b/tests/vgem_basic.c
-index 2a2900f8..4f371b3d 100644
---- a/tests/vgem_basic.c
-+++ b/tests/vgem_basic.c
-@@ -152,6 +152,27 @@ static void test_dmabuf_export(int fd)
- 	close(other);
- }
- 
-+static void test_busy_fence(int fd)
-+{
-+	struct drm_vgem_fence_attach arg = {};
-+	struct vgem_bo bo;
-+
-+	bo.width = 1024;
-+	bo.height = 1;
-+	bo.bpp = 32;
-+	vgem_create(fd, &bo);
-+
-+	/* Attach a fence for reading */
-+	vgem_fence_attach(fd, &bo, 0);
-+
-+	/* Attach a fence for writing, so it should be an exclusive fence */
-+	arg.handle = bo.handle;
-+	arg.flags = VGEM_FENCE_WRITE;
-+
-+	/* As the fence is not exclusive, return -EBUSY, indicating a conflicting fence */
-+	do_ioctl_err(fd, DRM_IOCTL_VGEM_FENCE_ATTACH, &arg, EBUSY);
-+}
-+
- static void test_dmabuf_mmap(int fd)
- {
- 	struct vgem_bo bo;
-@@ -434,6 +455,48 @@ igt_main
- 	igt_subtest_f("mmap")
- 		test_mmap(fd);
- 
-+	igt_describe("Make sure a fence cannot be attached and signaled with invalid flags.");
-+	igt_subtest("bad-flag") {
-+		struct drm_vgem_fence_attach attach = {
-+			.flags = 0xff,
-+		};
-+
-+		struct drm_vgem_fence_signal signal = {
-+			.flags = 0xff,
-+		};
-+
-+		do_ioctl_err(fd, DRM_IOCTL_VGEM_FENCE_ATTACH, &attach, EINVAL);
-+		do_ioctl_err(fd, DRM_IOCTL_VGEM_FENCE_SIGNAL, &signal, EINVAL);
-+	}
-+
-+	igt_describe("Make sure the pad is zero.");
-+	igt_subtest("bad-pad") {
-+		struct drm_vgem_fence_attach arg = {
-+			.pad = 0x01,
-+		};
-+		do_ioctl_err(fd, DRM_IOCTL_VGEM_FENCE_ATTACH, &arg, EINVAL);
-+	}
-+
-+	igt_describe("Make sure a fence cannot be attached to a invalid handle.");
-+	igt_subtest("bad-handle") {
-+		struct drm_vgem_fence_attach arg = {
-+			.handle = 0xff,
-+		};
-+		do_ioctl_err(fd, DRM_IOCTL_VGEM_FENCE_ATTACH, &arg, ENOENT);
-+	}
-+
-+	igt_describe("Make sure a non-existent fence cannot be signaled.");
-+	igt_subtest("bad-fence") {
-+		struct drm_vgem_fence_signal arg = {
-+			.fence = 0xff,
-+		};
-+		do_ioctl_err(fd, DRM_IOCTL_VGEM_FENCE_SIGNAL, &arg, ENOENT);
-+	}
-+
-+	igt_describe("Make sure a conflicting fence cannot be attached.");
-+	igt_subtest("busy-fence")
-+		test_busy_fence(fd);
-+
- 	igt_subtest_group {
- 		igt_fixture {
- 			igt_require(has_prime_export(fd));
--- 
-2.39.2
+With all tags corrected:
+
+Reviewed-by: Karolina Stolarek <karolina.stolarek@intel.com>
+
+> Cc: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
+> Cc: Rahul Kumar <janga.rahul.kumar@intel.com>
+> Reviewed-by: Chris Wilson <chris.p.wilson@linux.intel.com>
+> Signed-off-by: Sinjan Kumar <sinjan.kumar@intel.com>
+> Signed-off-by: Vikas Srivastava <vikas.srivastava@intel.com>
+> ---
+>   lib/intel_batchbuffer.c | 4 +++-
+>   1 file changed, 3 insertions(+), 1 deletion(-)
+> 
+> diff --git a/lib/intel_batchbuffer.c b/lib/intel_batchbuffer.c
+> index 59c788e68..cbb513f79 100644
+> --- a/lib/intel_batchbuffer.c
+> +++ b/lib/intel_batchbuffer.c
+> @@ -643,7 +643,9 @@ igt_fillfunc_t igt_get_media_fillfunc(int devid)
+>   {
+>   	igt_fillfunc_t fill = NULL;
+>   
+> -	if (IS_GEN12(devid))
+> +	if (intel_graphics_ver(devid) >= IP_VER(12, 50)) {
+> +		/* current implementation defeatured PIPELINE_MEDIA */
+> +	} else if (IS_GEN12(devid))
+>   		fill = gen12_media_fillfunc;
+>   	else if (IS_GEN9(devid) || IS_GEN10(devid) || IS_GEN11(devid))
+>   		fill = gen9_media_fillfunc;
