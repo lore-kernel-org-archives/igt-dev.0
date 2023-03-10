@@ -1,18 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 15F1610E980
- for <igt-dev@lists.freedesktop.org>; Fri, 10 Mar 2023 08:24:08 +0000 (UTC)
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E769010E97C
+ for <igt-dev@lists.freedesktop.org>; Fri, 10 Mar 2023 08:24:04 +0000 (UTC)
 From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Fri, 10 Mar 2023 09:23:20 +0100
-Message-Id: <20230310082326.12088-13-zbigniew.kempczynski@intel.com>
+Date: Fri, 10 Mar 2023 09:23:19 +0100
+Message-Id: <20230310082326.12088-12-zbigniew.kempczynski@intel.com>
 In-Reply-To: <20230310082326.12088-1-zbigniew.kempczynski@intel.com>
 References: <20230310082326.12088-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 12/18] testplan/meson.build: add targets to
- build Xe test documentation
+Subject: [igt-dev] [PATCH i-g-t 11/18] scripts/igt_doc.py: use a different
+ logic to get IGT prefix
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,80 +25,82 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Mauro Carvalho Chehab <mchehab@kernel.org>
 
-Produce documentation from igt_doc.py markups inside the Xe driver
-at build time.
+The past logic was dependent on how the initial Xe IGT support
+was conceived. Change it to be more generic and use
+os.path.commonprefix.
 
 Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
-Acked-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 ---
- docs/testplan/meson.build | 59 +++++++++++++++++++++++++++++++++++++++
- 1 file changed, 59 insertions(+)
- create mode 100644 docs/testplan/meson.build
+ scripts/igt_doc.py | 19 ++++++-------------
+ 1 file changed, 6 insertions(+), 13 deletions(-)
 
-diff --git a/docs/testplan/meson.build b/docs/testplan/meson.build
-new file mode 100644
-index 0000000000..11c0857330
---- /dev/null
-+++ b/docs/testplan/meson.build
-@@ -0,0 +1,59 @@
-+testplan_title = 'IGT test plans'
+diff --git a/scripts/igt_doc.py b/scripts/igt_doc.py
+index 5b08ac1442..f1b6d64615 100755
+--- a/scripts/igt_doc.py
++++ b/scripts/igt_doc.py
+@@ -235,7 +235,6 @@ class TestList:
+     def __init__(self, config_fname, include_plan, file_list):
+         self.doc = {}
+         self.test_number = 0
+-        self.min_test_prefix = ''
+         self.config = None
+         self.filenames = file_list
+         self.plan_filenames = []
+@@ -494,7 +493,7 @@ class TestList:
+         for test in self.doc:                   # pylint: disable=C0206
+             fname = self.doc[test]["File"]
+ 
+-            name = re.sub(r'.*tests/', '', fname)
++            name = re.sub(r'.*/', '', fname)
+             name = re.sub(r'\.[\w+]$', '', name)
+             name = "igt@" + name
+ 
+@@ -548,7 +547,7 @@ class TestList:
+         for test in sorted(self.doc.keys()):
+             fname = self.doc[test]["File"]
+ 
+-            name = re.sub(r'.*tests/', '', fname)
++            name = re.sub(r'.*/', '', fname)
+             name = re.sub(r'\.[ch]', '', name)
+             name = "igt@" + name
+ 
+@@ -720,7 +719,7 @@ class TestList:
+         for test in sorted(self.doc.keys()):
+             fname = self.doc[test]["File"]
+ 
+-            test_name = re.sub(r'.*tests/', '', fname)
++            test_name = re.sub(r'.*/', '', fname)
+             test_name = re.sub(r'\.[ch]', '', test_name)
+             test_name = "igt@" + test_name
+ 
+@@ -759,10 +758,12 @@ class TestList:
+         for i in range(0, len(doc_subtests)): # pylint: disable=C0200
+             doc_subtests[i] = re.sub(r'\<[^\>]+\>', r'\\d+', doc_subtests[i])
+ 
++        test_prefix = os.path.commonprefix(doc_subtests)
 +
-+build_testplan = get_option('testplan')
-+build_sphinx = get_option('sphinx')
-+
-+rst2html = find_program('rst2html-3', 'rst2html', required : build_testplan)
-+sphinx = find_program('sphinx-build', required: build_sphinx)
-+
-+stylesheet = meson.current_source_dir() + '/testplan.css'
-+
-+test_dict = { 'xe_tests': {
-+                 'input': xe_test_config, 'extra_args': []
-+              }
-+            }
-+
-+if igt_doc_script.found()
-+    foreach testplan, fields: test_dict
-+        rst = custom_target(testplan + '.rst',
-+                            build_by_default : true,
-+                            command : [ igt_doc_script, '--config', '@INPUT@', '--rest', '@OUTPUT@' ] + fields['extra_args'],
-+                            depends : test_executables,
-+                            input : fields['input'],
-+                            output : testplan + '.rst'
-+                            )
-+
-+        if rst2html.found()
-+            custom_target(testplan + '.html',
-+                          build_by_default : true,
-+                          command : [ rst2html, '--stylesheet=' + stylesheet, '--field-name-limit=0', '@INPUT@', '@OUTPUT@' ],
-+                          input : rst,
-+                          output : testplan + '.html'
-+                          )
-+        endif
-+    endforeach
-+endif
-+
-+if sphinx.found()
-+    if gen_rst_index.found()
-+        sphinx_out_dir = meson.current_build_dir()+ '/indexed_html'
-+
-+        index_rst = custom_target('index.rst',
-+                                build_by_default : true,
-+                                command : [ gen_rst_index, testplan_title, test_dict.keys(), meson.current_build_dir()],
-+                                input : rst,
-+                                output : 'index.rst'
-+                                )
-+
-+        custom_target('index.html',
-+                    build_by_default : true,
-+                    command : [ 'sphinx-build', '-c', meson.current_source_dir(), meson.current_build_dir(), sphinx_out_dir],
-+                    input : index_rst,
-+                    output : 'index.html'
-+                    )
-+    endif
-+endif
-+
-+build_info += 'Build ReST test documentation: @0@'.format(igt_doc_script.found())
-+build_info += 'Build simple html testplan documentation: @0@'.format(rst2html.found())
-+build_info += 'Build indexed html testplan documentation: @0@'.format(sphinx.found())
+         # Get a list of tests from
+         try:
+             result = subprocess.run([ f"{IGT_BUILD_PATH}/{IGT_RUNNER}",
+-                                    "-L", "-t",  self.min_test_prefix,
++                                    "-L", "-t",  test_prefix,
+                                     f"{IGT_BUILD_PATH}/tests"], check = True,
+                                     stdout=subprocess.PIPE, universal_newlines=True)
+         except subprocess.CalledProcessError as sub_err:
+@@ -824,14 +825,6 @@ class TestList:
+         cur_arg = -1
+         cur_arg_element = 0
+ 
+-        prefix = re.sub(r'.*tests/', '', fname)
+-        prefix = r'igt\@' + re.sub(r'(.*/).*', r'\1', prefix)
+-
+-        if self.min_test_prefix == '':
+-            self.min_test_prefix = prefix
+-        elif len(prefix) < len(self.min_test_prefix):
+-            self.min_test_prefix = prefix
+-
+         with open(fname, 'r', encoding='utf8') as handle:
+             arg_ref = None
+             current_test = ''
 -- 
 2.34.1
