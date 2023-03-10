@@ -1,17 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E05D510E0B6
- for <igt-dev@lists.freedesktop.org>; Fri, 10 Mar 2023 19:42:21 +0000 (UTC)
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 22BB410E323
+ for <igt-dev@lists.freedesktop.org>; Fri, 10 Mar 2023 19:42:14 +0000 (UTC)
 From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Fri, 10 Mar 2023 20:41:17 +0100
-Message-Id: <20230310194125.14781-12-zbigniew.kempczynski@intel.com>
+Date: Fri, 10 Mar 2023 20:41:15 +0100
+Message-Id: <20230310194125.14781-10-zbigniew.kempczynski@intel.com>
 In-Reply-To: <20230310194125.14781-1-zbigniew.kempczynski@intel.com>
 References: <20230310194125.14781-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v2 11/19] scripts/igt_doc.py: use a
- different logic to get IGT prefix
+Subject: [igt-dev] [PATCH i-g-t v2 09/19] scripts/igt_doc.py: make it
+ compatible with Python 3.6
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,82 +26,24 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Mauro Carvalho Chehab <mchehab@kernel.org>
 
-The past logic was dependent on how the initial Xe IGT support
-was conceived. Change it to be more generic and use
-os.path.commonprefix.
-
 Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+Acked-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 ---
- scripts/igt_doc.py | 19 ++++++-------------
- 1 file changed, 6 insertions(+), 13 deletions(-)
+ scripts/igt_doc.py | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/scripts/igt_doc.py b/scripts/igt_doc.py
-index 5b08ac1442..f1b6d64615 100755
+index 1d1d7856f2..0795272275 100755
 --- a/scripts/igt_doc.py
 +++ b/scripts/igt_doc.py
-@@ -235,7 +235,6 @@ class TestList:
-     def __init__(self, config_fname, include_plan, file_list):
-         self.doc = {}
-         self.test_number = 0
--        self.min_test_prefix = ''
-         self.config = None
-         self.filenames = file_list
-         self.plan_filenames = []
-@@ -494,7 +493,7 @@ class TestList:
-         for test in self.doc:                   # pylint: disable=C0206
-             fname = self.doc[test]["File"]
- 
--            name = re.sub(r'.*tests/', '', fname)
-+            name = re.sub(r'.*/', '', fname)
-             name = re.sub(r'\.[\w+]$', '', name)
-             name = "igt@" + name
- 
-@@ -548,7 +547,7 @@ class TestList:
-         for test in sorted(self.doc.keys()):
-             fname = self.doc[test]["File"]
- 
--            name = re.sub(r'.*tests/', '', fname)
-+            name = re.sub(r'.*/', '', fname)
-             name = re.sub(r'\.[ch]', '', name)
-             name = "igt@" + name
- 
-@@ -720,7 +719,7 @@ class TestList:
-         for test in sorted(self.doc.keys()):
-             fname = self.doc[test]["File"]
- 
--            test_name = re.sub(r'.*tests/', '', fname)
-+            test_name = re.sub(r'.*/', '', fname)
-             test_name = re.sub(r'\.[ch]', '', test_name)
-             test_name = "igt@" + test_name
- 
-@@ -759,10 +758,12 @@ class TestList:
-         for i in range(0, len(doc_subtests)): # pylint: disable=C0200
-             doc_subtests[i] = re.sub(r'\<[^\>]+\>', r'\\d+', doc_subtests[i])
- 
-+        test_prefix = os.path.commonprefix(doc_subtests)
-+
-         # Get a list of tests from
-         try:
+@@ -760,7 +760,7 @@ class TestList:
              result = subprocess.run([ f"{IGT_BUILD_PATH}/{IGT_RUNNER}",
--                                    "-L", "-t",  self.min_test_prefix,
-+                                    "-L", "-t",  test_prefix,
+                                     "-L", "-t",  self.min_test_prefix,
                                      f"{IGT_BUILD_PATH}/tests"], check = True,
-                                     stdout=subprocess.PIPE, universal_newlines=True)
+-                                    capture_output = True, text = True)
++                                    stdout=subprocess.PIPE, universal_newlines=True)
          except subprocess.CalledProcessError as sub_err:
-@@ -824,14 +825,6 @@ class TestList:
-         cur_arg = -1
-         cur_arg_element = 0
- 
--        prefix = re.sub(r'.*tests/', '', fname)
--        prefix = r'igt\@' + re.sub(r'(.*/).*', r'\1', prefix)
--
--        if self.min_test_prefix == '':
--            self.min_test_prefix = prefix
--        elif len(prefix) < len(self.min_test_prefix):
--            self.min_test_prefix = prefix
--
-         with open(fname, 'r', encoding='utf8') as handle:
-             arg_ref = None
-             current_test = ''
+             print(sub_err.stderr)
+             print("Error:", sub_err)
 -- 
 2.34.1
