@@ -1,18 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5A96510E323
- for <igt-dev@lists.freedesktop.org>; Fri, 10 Mar 2023 19:42:18 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E05D510E0B6
+ for <igt-dev@lists.freedesktop.org>; Fri, 10 Mar 2023 19:42:21 +0000 (UTC)
 From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Fri, 10 Mar 2023 20:41:16 +0100
-Message-Id: <20230310194125.14781-11-zbigniew.kempczynski@intel.com>
+Date: Fri, 10 Mar 2023 20:41:17 +0100
+Message-Id: <20230310194125.14781-12-zbigniew.kempczynski@intel.com>
 In-Reply-To: <20230310194125.14781-1-zbigniew.kempczynski@intel.com>
 References: <20230310194125.14781-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v2 10/19] scripts/igt_doc.py: sets the
- minimal version to run the script
+Subject: [igt-dev] [PATCH i-g-t v2 11/19] scripts/igt_doc.py: use a
+ different logic to get IGT prefix
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,46 +25,82 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Mauro Carvalho Chehab <mchehab@kernel.org>
 
-according with vermin, the minimal version for this script is 3.6 due
-to:
-
-	  'argparse' module requires 2.7, 3.2
-	  'enumerate' member requires 2.3, 3.0
-	  'json' module requires 2.6, 3.0
-	  'open(encoding)' requires !2, 3.0
-	  'os.path.realpath' member requires 2.2, 3.0
-	  'sorted' member requires 2.4, 3.0
-	  'sorted(key)' requires 2.4, 3.0
-	  'str.format' member requires 2.6, 3.0
-	  'subprocess' module requires 2.4, 3.0
-	  'subprocess.run' member requires !2, 3.5
-	  'sys.version_info' member requires 2.0, 3.0
-	  `with` requires 2.5, 3.0
-	  f-strings require !2, 3.6
-	  print(expr) requires 2.0, 3.0
-
-So, print an error if one tries to run with an older version.
+The past logic was dependent on how the initial Xe IGT support
+was conceived. Change it to be more generic and use
+os.path.commonprefix.
 
 Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
-Acked-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 ---
- scripts/igt_doc.py | 4 ++++
- 1 file changed, 4 insertions(+)
+ scripts/igt_doc.py | 19 ++++++-------------
+ 1 file changed, 6 insertions(+), 13 deletions(-)
 
 diff --git a/scripts/igt_doc.py b/scripts/igt_doc.py
-index 0795272275..5b08ac1442 100755
+index 5b08ac1442..f1b6d64615 100755
 --- a/scripts/igt_doc.py
 +++ b/scripts/igt_doc.py
-@@ -18,6 +18,10 @@ import re
- import subprocess
- import sys
+@@ -235,7 +235,6 @@ class TestList:
+     def __init__(self, config_fname, include_plan, file_list):
+         self.doc = {}
+         self.test_number = 0
+-        self.min_test_prefix = ''
+         self.config = None
+         self.filenames = file_list
+         self.plan_filenames = []
+@@ -494,7 +493,7 @@ class TestList:
+         for test in self.doc:                   # pylint: disable=C0206
+             fname = self.doc[test]["File"]
  
-+MIN_PYTHON = (3, 6)
-+if sys.version_info < MIN_PYTHON:
-+    sys.exit("Python %s.%s or later is required.\n" % MIN_PYTHON) # pylint: disable=C0209
+-            name = re.sub(r'.*tests/', '', fname)
++            name = re.sub(r'.*/', '', fname)
+             name = re.sub(r'\.[\w+]$', '', name)
+             name = "igt@" + name
+ 
+@@ -548,7 +547,7 @@ class TestList:
+         for test in sorted(self.doc.keys()):
+             fname = self.doc[test]["File"]
+ 
+-            name = re.sub(r'.*tests/', '', fname)
++            name = re.sub(r'.*/', '', fname)
+             name = re.sub(r'\.[ch]', '', name)
+             name = "igt@" + name
+ 
+@@ -720,7 +719,7 @@ class TestList:
+         for test in sorted(self.doc.keys()):
+             fname = self.doc[test]["File"]
+ 
+-            test_name = re.sub(r'.*tests/', '', fname)
++            test_name = re.sub(r'.*/', '', fname)
+             test_name = re.sub(r'\.[ch]', '', test_name)
+             test_name = "igt@" + test_name
+ 
+@@ -759,10 +758,12 @@ class TestList:
+         for i in range(0, len(doc_subtests)): # pylint: disable=C0200
+             doc_subtests[i] = re.sub(r'\<[^\>]+\>', r'\\d+', doc_subtests[i])
+ 
++        test_prefix = os.path.commonprefix(doc_subtests)
 +
- IGT_BUILD_PATH = 'build'
- IGT_RUNNER = 'runner/igt_runner'
+         # Get a list of tests from
+         try:
+             result = subprocess.run([ f"{IGT_BUILD_PATH}/{IGT_RUNNER}",
+-                                    "-L", "-t",  self.min_test_prefix,
++                                    "-L", "-t",  test_prefix,
+                                     f"{IGT_BUILD_PATH}/tests"], check = True,
+                                     stdout=subprocess.PIPE, universal_newlines=True)
+         except subprocess.CalledProcessError as sub_err:
+@@ -824,14 +825,6 @@ class TestList:
+         cur_arg = -1
+         cur_arg_element = 0
  
+-        prefix = re.sub(r'.*tests/', '', fname)
+-        prefix = r'igt\@' + re.sub(r'(.*/).*', r'\1', prefix)
+-
+-        if self.min_test_prefix == '':
+-            self.min_test_prefix = prefix
+-        elif len(prefix) < len(self.min_test_prefix):
+-            self.min_test_prefix = prefix
+-
+         with open(fname, 'r', encoding='utf8') as handle:
+             arg_ref = None
+             current_test = ''
 -- 
 2.34.1
