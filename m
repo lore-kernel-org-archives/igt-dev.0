@@ -1,17 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B6F4410E321
- for <igt-dev@lists.freedesktop.org>; Fri, 10 Mar 2023 19:41:57 +0000 (UTC)
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C666210E323
+ for <igt-dev@lists.freedesktop.org>; Fri, 10 Mar 2023 19:42:10 +0000 (UTC)
 From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Fri, 10 Mar 2023 20:41:11 +0100
-Message-Id: <20230310194125.14781-6-zbigniew.kempczynski@intel.com>
+Date: Fri, 10 Mar 2023 20:41:14 +0100
+Message-Id: <20230310194125.14781-9-zbigniew.kempczynski@intel.com>
 In-Reply-To: <20230310194125.14781-1-zbigniew.kempczynski@intel.com>
 References: <20230310194125.14781-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v2 05/19] scripts/igt_doc.py: improve
- --show-subtests logic
+Subject: [igt-dev] [PATCH i-g-t v2 08/19] scripts/igt_doc.py: don't use ":="
+ operator
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,130 +26,118 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Mauro Carvalho Chehab <mchehab@kernel.org>
 
-Add command line parameters to improve --show-subtests:
-1) to sort results of --show-subtest based on the contents of a field.
-   This is useful, for instance, to check if all subtests have
-   proper values for a given field.
-2) to filter for an specific field value. This is interesting to be
-   able to compare testlists with the expected documented test list.
+As this was introduced on python 3.8, remove its usage, in order
+to make the script compatible with version 3.7.
 
 Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+Acked-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 ---
- scripts/igt_doc.py | 64 ++++++++++++++++++++++++++++++++++++++++------
- 1 file changed, 56 insertions(+), 8 deletions(-)
+ scripts/igt_doc.py | 30 ++++++++++++++++++++----------
+ 1 file changed, 20 insertions(+), 10 deletions(-)
 
 diff --git a/scripts/igt_doc.py b/scripts/igt_doc.py
-index 643c7e7a7b..712e22c9d3 100755
+index cd8dccecb4..1d1d7856f2 100755
 --- a/scripts/igt_doc.py
 +++ b/scripts/igt_doc.py
-@@ -1,5 +1,5 @@
- #!/usr/bin/env python3
--# pylint: disable=C0301,R0902,R0914,R0912,R0915
-+# pylint: disable=C0301,R0902,R0914,R0912,R0915,R1702,C0302
- # SPDX-License-Identifier: (GPL-2.0 OR MIT)
+@@ -58,7 +58,8 @@ def plural(field):
  
- ## Copyright (C) 2023    Intel Corporation                 ##
-@@ -689,11 +689,27 @@ class TestList:
-     # Subtest list methods
-     #
+     """
  
--    def get_subtests(self):
-+    def get_subtests(self, sort_field = None, filter_field_expr = None):
+-    if (match := re.match(r"(.*)\b(\S+)", field)):
++    match = re.match(r"(.*)\b(\S+)", field)
++    if match:
+         ret_str = match.group(1)
+         word = match.group(2)
  
-         """Return an array with all subtests"""
+@@ -702,7 +703,8 @@ class TestList:
+             sort_field = self.field_list[sort_field.lower()]
  
--        subtests = []
-+        subtests = {}
-+        subtests[""] = []
-+
-+        if sort_field:
-+            if sort_field.lower() not in self.field_list:
-+                sys.exit(f"Field '{sort_field}' is not defined")
-+            sort_field = self.field_list[sort_field.lower()]
-+
-+        if filter_field_expr:
-+            if not (match := re.match(r"(.*)=~\s*(.*)", filter_field_expr)):
-+                sys.exit(f"Filter field {filter_field_expr} is not at <field> =~ <regex> syntax")
-+
-+            field = match.group(1).strip().lower()
-+            if field not in self.field_list:
-+                sys.exit(f"Field '{field}' is not defined")
-+            filter_field = self.field_list[field]
-+            regex = re.compile("{0}".format(match.group(2).strip()), re.I) # pylint: disable=C0209
+         if filter_field_expr:
+-            if not (match := re.match(r"(.*)=~\s*(.*)", filter_field_expr)):
++            match = re.match(r"(.*)=~\s*(.*)", filter_field_expr)
++            if not match:
+                 sys.exit(f"Filter field {filter_field_expr} is not at <field> =~ <regex> syntax")
  
-         for test in sorted(self.doc.keys()):
-             fname = self.doc[test]["File"]
-@@ -702,10 +718,26 @@ class TestList:
-             test_name = re.sub(r'\.[ch]', '', test_name)
-             test_name = "igt@" + test_name
+             field = match.group(1).strip().lower()
+@@ -859,7 +861,8 @@ class TestList:
+                     current_field = ''
  
--            subtest_array = self.expand_subtest(fname, test_name, test)
-+            subtest_array = self.expand_subtest(fname, test_name, test, True)
+                     # Check if it is a new TEST section
+-                    if (match := re.match(r'^TEST:\s*(.*)', file_line)):
++                    match = re.match(r'^TEST:\s*(.*)', file_line)
++                    if match:
+                         current_test = self.test_number
+                         self.test_number += 1
  
-             for subtest in subtest_array:
--                subtests.append(subtest["Summary"])
-+                if filter_field_expr:
-+                    if filter_field not in subtest:
-+                        continue
-+                    if not re.match(regex, subtest[filter_field]):
-+                        continue
-+
-+                if sort_field:
-+                    if sort_field in subtest:
-+                        if subtest[sort_field] not in subtests:
-+                            subtests[subtest[sort_field]] = []
-+
-+                        subtests[subtest[sort_field]].append(subtest["Summary"])
-+                    else:
-+                        subtests[""].append(subtest["Summary"])
-+
-+                else:
-+                    subtests[""].append(subtest["Summary"])
+@@ -878,7 +881,8 @@ class TestList:
+                         continue
  
-         return subtests
+                 # Check if it is a new SUBTEST section
+-                if (match := re.match(r'^SUBTESTS?:\s*(.*)', file_line)):
++                match = re.match(r'^SUBTESTS?:\s*(.*)', file_line)
++                if match:
+                     current_subtest = subtest_number
+                     subtest_number += 1
  
-@@ -716,7 +748,7 @@ class TestList:
+@@ -915,7 +919,8 @@ class TestList:
+                     continue
  
-         """Compare documented subtests with the IGT test list"""
+                 # It is a known section. Parse its contents
+-                if (match := re.match(field_re, file_line)):
++                match = re.match(field_re, file_line)
++                if match:
+                     current_field = self.field_list[match.group(1).lower()]
+                     match_val = match.group(2)
  
--        doc_subtests = sorted(self.get_subtests())
-+        doc_subtests = sorted(self.get_subtests()[""])
+@@ -929,7 +934,8 @@ class TestList:
+                     continue
  
-         for i in range(0, len(doc_subtests)): # pylint: disable=C0200
-             doc_subtests[i] = re.sub(r'\<[^\>]+\>', r'\\d+', doc_subtests[i])
-@@ -990,6 +1022,10 @@ parser.add_argument("--to-json",
-                     help="Output test documentation in JSON format as TO_JSON file")
- parser.add_argument("--show-subtests", action="store_true",
-                     help="Shows the name of the documented subtests in alphabetical order.")
-+parser.add_argument("--sort-field",
-+                    help="modify --show-subtests to sort output based on SORT_FIELD value")
-+parser.add_argument("--filter-field",
-+                    help="modify --show-subtests to filter output based a regex given by FILTER_FIELD=~'regex'")
- parser.add_argument("--check-testlist", action="store_true",
-                     help="Compare documentation against IGT runner testlist.")
- parser.add_argument("--include-plan", action="store_true",
-@@ -1007,8 +1043,20 @@ tests = TestList(parse_args.config, parse_args.include_plan, parse_args.files)
- RUN = 0
- if parse_args.show_subtests:
-     RUN = 1
--    for sub in tests.get_subtests():
--        print (sub)
-+    if parse_args.sort_field:
-+        test_subtests = tests.get_subtests(parse_args.sort_field, parse_args.filter_field)
-+        for val_key in sorted(test_subtests.keys()):
-+            if not test_subtests[val_key]:
-+                continue
-+            if val_key == "":
-+                print("not defined:")
-+            else:
-+                print(f"{val_key}:")
-+            for sub in test_subtests[val_key]:
-+                print (f"  {sub}")
-+    else:
-+        for sub in tests.get_subtests(parse_args.sort_field, parse_args.filter_field)[""]:
-+            print (sub)
+                 # Use hashes for arguments to avoid duplication
+-                if (match := re.match(r'arg\[(\d+)\]:\s*(.*)', file_line)):
++                match = re.match(r'arg\[(\d+)\]:\s*(.*)', file_line)
++                if match:
+                     current_field = ''
+                     if arg_ref is None:
+                         sys.exit(f"{fname}:{file_ln + 1}: arguments should be defined after one or more subtests, at the same comment")
+@@ -946,7 +952,8 @@ class TestList:
  
- if parse_args.check_testlist:
-     RUN = 1
+                     continue
+ 
+-                if (match := re.match(r'\@(\S+):\s*(.*)', file_line)):
++                match = re.match(r'\@(\S+):\s*(.*)', file_line)
++                if match:
+                     if cur_arg >= 0:
+                         current_field = ''
+                         if arg_ref is None:
+@@ -962,7 +969,8 @@ class TestList:
+                     continue
+ 
+                 # We don't need a multi-lined version here
+-                if (match := re.match(r'arg\[(\d+)\]\.values:\s*(.*)', file_line)):
++                match = re.match(r'arg\[(\d+)\]\.values:\s*(.*)', file_line)
++                if match:
+                     cur_arg = int(match.group(1)) - 1
+ 
+                     if cur_arg not in self.doc[current_test]["arg"][arg_ref]:
+@@ -978,7 +986,8 @@ class TestList:
+ 
+                 # Handle multi-line field contents
+                 if current_field:
+-                    if (match := re.match(r'\s+(.*)', file_line)):
++                    match = re.match(r'\s+(.*)', file_line)
++                    if match:
+                         if handle_section == 'test':
+                             dic = self.doc[current_test]
+                         else:
+@@ -991,7 +1000,8 @@ class TestList:
+ 
+                 # Handle multi-line argument contents
+                 if cur_arg >= 0 and arg_ref is not None:
+-                    if (match := re.match(r'\s+\*?\s*(.*)', file_line)):
++                    match = re.match(r'\s+\*?\s*(.*)', file_line)
++                    if match:
+                         match_val = match.group(1)
+ 
+                         match = re.match(r'^(\<.*)\>$',self.doc[current_test]["arg"][arg_ref][cur_arg][cur_arg_element])
 -- 
 2.34.1
