@@ -1,18 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8630910E976
- for <igt-dev@lists.freedesktop.org>; Fri, 10 Mar 2023 08:23:39 +0000 (UTC)
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C8E5210E978
+ for <igt-dev@lists.freedesktop.org>; Fri, 10 Mar 2023 08:23:45 +0000 (UTC)
 From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Fri, 10 Mar 2023 09:23:10 +0100
-Message-Id: <20230310082326.12088-3-zbigniew.kempczynski@intel.com>
+Date: Fri, 10 Mar 2023 09:23:12 +0100
+Message-Id: <20230310082326.12088-5-zbigniew.kempczynski@intel.com>
 In-Reply-To: <20230310082326.12088-1-zbigniew.kempczynski@intel.com>
 References: <20230310082326.12088-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 02/18] scripts/igt_doc.py: add JSON file
- output
+Subject: [igt-dev] [PATCH i-g-t 04/18] scripts/igt_doc.py: add support to
+ specify numeric values
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,105 +25,67 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Mauro Carvalho Chehab <mchehab@kernel.org>
 
-At least for debugging purposes, it is interesting to see how the
-script is parsing the input files and expanding wildcards on a more
-condensed way. So, add support to output the dictionary contents
-into a json file.
+Add a way to specify a set of default values to be used when numeric
+wildcards like "%d" are present at the igt subtest.
 
 Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
-Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 ---
- scripts/igt_doc.py | 51 ++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 51 insertions(+)
+ scripts/igt_doc.py | 36 ++++++++++++++++++++++++++++++++++++
+ 1 file changed, 36 insertions(+)
 
 diff --git a/scripts/igt_doc.py b/scripts/igt_doc.py
-index c8bd4054f6..d21f87dc71 100644
+index 425240b2f7..643c7e7a7b 100755
 --- a/scripts/igt_doc.py
 +++ b/scripts/igt_doc.py
-@@ -11,6 +11,7 @@
- """Maintain test plan and test implementation documentation on IGT."""
+@@ -147,6 +147,27 @@ class TestList:
+          * @userptr-misaligned-binds:	userptr misaligned
+          */
  
- import argparse
-+import json
- import re
- import subprocess
- import sys
-@@ -231,6 +232,42 @@ class TestList:
++    It is also possible to define a list of values that will actually be
++    used by the test and no string replacement is needed.
++    This is done by using one or multiple arg[n].values lines:
++
++        /**
++         * SUBTEST: unbind-all-%d-vmas
++         * Description: unbind all with %arg[1] VMAs
++         *
++         * arg[1].values: 2, 8
++         * arg[1].values: 16, 32
++         */
++
++        /**
++         * SUBTEST: unbind-all-%d-vmas
++         * Description: unbind all with %arg[1] VMAs
++         *
++         * arg[1].values: 64, 128
++         */
++
++    Such feature is specially useful for numeric parameters
++
+     The valid `field` values are defined on a JSON configuration file.
  
-         return subtest_array
+     The TEST documents the common fields present on all tests. Typically,
+@@ -905,6 +926,21 @@ class TestList:
  
-+    def expand_dictionary(self):
+                     continue
+ 
++                # We don't need a multi-lined version here
++                if (match := re.match(r'arg\[(\d+)\]\.values:\s*(.*)', file_line)):
++                    cur_arg = int(match.group(1)) - 1
 +
-+        """ prepares a dictonary with subtest arguments expanded """
++                    if cur_arg not in self.doc[current_test]["arg"][arg_ref]:
++                        self.doc[current_test]["arg"][arg_ref][cur_arg] = {}
 +
-+        test_dict = {}
++                    values = match.group(2).split(",")
++                    for split_val in values:
++                        if split_val == "":
++                            continue
++                        self.doc[current_test]["arg"][arg_ref][cur_arg][split_val.strip()] = split_val.strip()
 +
-+        for test in self.doc:                   # pylint: disable=C0206
-+            fname = self.doc[test]["File"]
-+
-+            name = re.sub(r'.*tests/', '', fname)
-+            name = re.sub(r'\.[ch]', '', name)
-+            name = "igt@" + name
-+
-+            test_dict[name] = {}
-+
-+            for field in self.doc[test]:
-+                if field == "subtest":
 +                    continue
-+                if field == "arg":
-+                    continue
 +
-+                test_dict[name][field] = self.doc[test][field]
-+
-+            subtest_array = self.expand_subtest(fname, name, test)
-+            for subtest in subtest_array:
-+                summary = subtest["Summary"]
-+                test_dict[name][summary] = {}
-+                for field in sorted(subtest.keys()):
-+                    if field == 'Summary':
-+                        continue
-+                    if field == 'arg':
-+                        continue
-+                    test_dict[name][summary][field] = subtest[field]
-+
-+        return test_dict
-+
-     #
-     # Output methods
-     #
-@@ -280,6 +317,14 @@ class TestList:
-             print()
-             print()
- 
-+    def print_json(self, out_fname):
-+
-+        """Adds the contents of test/subtest documentation form a file"""
-+        test_dict = self.expand_dictionary()
-+
-+        with open(out_fname, "w", encoding='utf8') as write_file:
-+            json.dump(test_dict, write_file, indent=4)
-+
-     #
-     # Subtest list methods
-     #
-@@ -541,6 +586,8 @@ parser = argparse.ArgumentParser(description = "Print formatted kernel documenta
-                                  epilog = 'If no action specified, assume --rest.')
- parser.add_argument("--rest", action="store_true",
-                     help="Generate documentation from the source files, in ReST file format.")
-+parser.add_argument("--to-json",
-+                    help="Output test documentation in JSON format as TO_JSON file")
- parser.add_argument("--show-subtests", action="store_true",
-                     help="Shows the name of the documented subtests in alphabetical order.")
- parser.add_argument("--check-testlist", action="store_true",
-@@ -570,5 +617,9 @@ if parse_args.check_testlist:
-     RUN = 1
-     tests.check_tests()
- 
-+if parse_args.to_json:
-+    RUN = 1
-+    tests.print_json(parse_args.to_json)
-+
- if not RUN or parse_args.rest:
-     tests.print_test()
+                 if (match := re.match(r'^(.*):', file_line)):
+                     sys.exit(f"{fname}:{file_ln + 1}: Error: unrecognized field '%s'. Need to add at %s" %
+                             (match.group(1), self.config_fname))
 -- 
 2.34.1
