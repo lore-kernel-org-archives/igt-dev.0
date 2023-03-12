@@ -1,17 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 65A3B10E31D
- for <igt-dev@lists.freedesktop.org>; Fri, 10 Mar 2023 19:41:54 +0000 (UTC)
-From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B3E0510E272
+ for <igt-dev@lists.freedesktop.org>; Sun, 12 Mar 2023 19:07:12 +0000 (UTC)
+From: Vikas Srivastava <vikas.srivastava@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Fri, 10 Mar 2023 20:41:10 +0100
-Message-Id: <20230310194125.14781-5-zbigniew.kempczynski@intel.com>
-In-Reply-To: <20230310194125.14781-1-zbigniew.kempczynski@intel.com>
-References: <20230310194125.14781-1-zbigniew.kempczynski@intel.com>
+Date: Mon, 13 Mar 2023 00:34:13 +0530
+Message-Id: <20230312190416.1056981-1-vikas.srivastava@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v2 04/19] scripts/igt_doc.py: add support to
- specify numeric values
+Subject: [igt-dev] [PATCH i-g-t 1/4] tests/i915/gem_caching: Enable
+ XY_FAST_COPY_BLT for MTL
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,69 +21,48 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Mauro Carvalho Chehab <mchehab@kernel.org>
+Test case uses legacy command XY_SRC_COPY_BLT_CMD which is not supported
+on PVC and beyond platforms. Modified test to use XY_FAST_COPY_BLT.
 
-Add a way to specify a set of default values to be used when numeric
-wildcards like "%d" are present at the igt subtest.
-
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+Signed-off-by: Vikas Srivastava <vikas.srivastava@intel.com>
 ---
- scripts/igt_doc.py | 36 ++++++++++++++++++++++++++++++++++++
- 1 file changed, 36 insertions(+)
+ tests/i915/gem_caching.c | 24 ++++++++++++++----------
+ 1 file changed, 14 insertions(+), 10 deletions(-)
 
-diff --git a/scripts/igt_doc.py b/scripts/igt_doc.py
-index 425240b2f7..643c7e7a7b 100755
---- a/scripts/igt_doc.py
-+++ b/scripts/igt_doc.py
-@@ -147,6 +147,27 @@ class TestList:
-          * @userptr-misaligned-binds:	userptr misaligned
-          */
+diff --git a/tests/i915/gem_caching.c b/tests/i915/gem_caching.c
+index eb0170abca..70b56e2cd4 100644
+--- a/tests/i915/gem_caching.c
++++ b/tests/i915/gem_caching.c
+@@ -81,16 +81,20 @@ copy_bo(struct intel_bb *ibb, struct intel_buf *src, struct intel_buf *dst)
  
-+    It is also possible to define a list of values that will actually be
-+    used by the test and no string replacement is needed.
-+    This is done by using one or multiple arg[n].values lines:
+ 	intel_bb_add_intel_buf(ibb, src, false);
+ 	intel_bb_add_intel_buf(ibb, dst, true);
+-
+-	intel_bb_out(ibb,
+-		     XY_SRC_COPY_BLT_CMD |
+-		     XY_SRC_COPY_BLT_WRITE_ALPHA |
+-		     XY_SRC_COPY_BLT_WRITE_RGB |
+-		     (6 + 2 * has_64b_reloc));
+-
+-	intel_bb_out(ibb, (3 << 24) | /* 32 bits */
+-		     (0xcc << 16) | /* copy ROP */
+-		     4096);
++	if (intel_graphics_ver(ibb->devid) >= IP_VER(12, 60)) {
++		intel_bb_out(ibb, XY_FAST_COPY_BLT);
++		intel_bb_out(ibb, XY_FAST_COPY_COLOR_DEPTH_32 | 4096);
++	} else {
++		intel_bb_out(ibb,
++			     XY_SRC_COPY_BLT_CMD |
++			     XY_SRC_COPY_BLT_WRITE_ALPHA |
++			     XY_SRC_COPY_BLT_WRITE_RGB |
++			     (6 + 2 * has_64b_reloc));
 +
-+        /**
-+         * SUBTEST: unbind-all-%d-vmas
-+         * Description: unbind all with %arg[1] VMAs
-+         *
-+         * arg[1].values: 2, 8
-+         * arg[1].values: 16, 32
-+         */
-+
-+        /**
-+         * SUBTEST: unbind-all-%d-vmas
-+         * Description: unbind all with %arg[1] VMAs
-+         *
-+         * arg[1].values: 64, 128
-+         */
-+
-+    Such feature is specially useful for numeric parameters
-+
-     The valid `field` values are defined on a JSON configuration file.
- 
-     The TEST documents the common fields present on all tests. Typically,
-@@ -905,6 +926,21 @@ class TestList:
- 
-                     continue
- 
-+                # We don't need a multi-lined version here
-+                if (match := re.match(r'arg\[(\d+)\]\.values:\s*(.*)', file_line)):
-+                    cur_arg = int(match.group(1)) - 1
-+
-+                    if cur_arg not in self.doc[current_test]["arg"][arg_ref]:
-+                        self.doc[current_test]["arg"][arg_ref][cur_arg] = {}
-+
-+                    values = match.group(2).split(",")
-+                    for split_val in values:
-+                        if split_val == "":
-+                            continue
-+                        self.doc[current_test]["arg"][arg_ref][cur_arg][split_val.strip()] = split_val.strip()
-+
-+                    continue
-+
-                 if (match := re.match(r'^(.*):', file_line)):
-                     sys.exit(f"{fname}:{file_ln + 1}: Error: unrecognized field '%s'. Need to add at %s" %
-                             (match.group(1), self.config_fname))
++		intel_bb_out(ibb, (3 << 24) | /* 32 bits */
++			     (0xcc << 16) | /* copy ROP */
++			     4096);
++	}
+ 	intel_bb_out(ibb, 0 << 16 | 0);
+ 	intel_bb_out(ibb, (BO_SIZE/4096) << 16 | 1024);
+ 	intel_bb_emit_reloc_fenced(ibb, dst->handle,
 -- 
-2.34.1
+2.25.1
