@@ -1,21 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 57BEE10E309
- for <igt-dev@lists.freedesktop.org>; Mon, 13 Mar 2023 06:48:20 +0000 (UTC)
-Date: Mon, 13 Mar 2023 07:48:16 +0100
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 20B2710E465
+ for <igt-dev@lists.freedesktop.org>; Mon, 13 Mar 2023 06:50:21 +0000 (UTC)
+Date: Mon, 13 Mar 2023 07:50:17 +0100
 From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: "Das, Nirmoy" <nirmoy.das@linux.intel.com>
-Message-ID: <20230313064816.kwt5lzjjsyrpwtzk@zkempczy-mobl2>
-References: <20230310082326.12088-1-zbigniew.kempczynski@intel.com>
- <20230310082326.12088-18-zbigniew.kempczynski@intel.com>
- <87e775e9-e63a-1011-ad82-3e1e513c11bc@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Message-ID: <20230313065017.omhkamx7owwqdl3k@zkempczy-mobl2>
+References: <20230310194125.14781-1-zbigniew.kempczynski@intel.com>
+ <20230310194125.14781-5-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <87e775e9-e63a-1011-ad82-3e1e513c11bc@linux.intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 17/18] xe_mmap: skip VRAM tests if no
- VRAM is found
+In-Reply-To: <20230310194125.14781-5-zbigniew.kempczynski@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t v2 04/19] scripts/igt_doc.py: add
+ support to specify numeric values
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,49 +22,80 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Fri, Mar 10, 2023 at 11:52:15AM +0100, Das, Nirmoy wrote:
+On Fri, Mar 10, 2023 at 08:41:10PM +0100, Zbigniew Kempczyński wrote:
+> From: Mauro Carvalho Chehab <mchehab@kernel.org>
 > 
-> On 3/10/2023 9:23 AM, Zbigniew Kempczyński wrote:
-> > From: Mauro Carvalho Chehab <mchehab@kernel.org>
-> > 
-> > Instead of producing an error, if there's no VRAM, the test
-> > should be skipped. There's a logic there that would be doing
-> > that, except that it doesn't really work :-)
-> > 
-> > Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
-> > Acked-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-> > ---
-> >   tests/xe/xe_mmap.c | 3 +--
-> >   1 file changed, 1 insertion(+), 2 deletions(-)
-> > 
-> > diff --git a/tests/xe/xe_mmap.c b/tests/xe/xe_mmap.c
-> > index 9dce6adbe2..6b313a1895 100644
-> > --- a/tests/xe/xe_mmap.c
-> > +++ b/tests/xe/xe_mmap.c
-> > @@ -42,8 +42,7 @@ test_mmap(int fd, uint32_t flags)
-> >   	uint64_t mmo;
-> >   	void *map;
-> > -	if (flags & vram_memory(fd, 0))
-> > -		igt_require(xe_has_vram(fd));
+> Add a way to specify a set of default values to be used when numeric
+> wildcards like "%d" are present at the igt subtest.
 > 
-> This check should go to the igt_main instead.
+> Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+> ---
+>  scripts/igt_doc.py | 36 ++++++++++++++++++++++++++++++++++++
+>  1 file changed, 36 insertions(+)
+> 
+> diff --git a/scripts/igt_doc.py b/scripts/igt_doc.py
+> index 425240b2f7..643c7e7a7b 100755
+> --- a/scripts/igt_doc.py
+> +++ b/scripts/igt_doc.py
+> @@ -147,6 +147,27 @@ class TestList:
+>           * @userptr-misaligned-binds:	userptr misaligned
+>           */
+>  
+> +    It is also possible to define a list of values that will actually be
+> +    used by the test and no string replacement is needed.
+> +    This is done by using one or multiple arg[n].values lines:
+> +
+> +        /**
+> +         * SUBTEST: unbind-all-%d-vmas
+> +         * Description: unbind all with %arg[1] VMAs
+> +         *
+> +         * arg[1].values: 2, 8
+> +         * arg[1].values: 16, 32
+> +         */
+> +
+> +        /**
+> +         * SUBTEST: unbind-all-%d-vmas
+> +         * Description: unbind all with %arg[1] VMAs
+> +         *
+> +         * arg[1].values: 64, 128
+> +         */
+> +
+> +    Such feature is specially useful for numeric parameters
+> +
+>      The valid `field` values are defined on a JSON configuration file.
+>  
+>      The TEST documents the common fields present on all tests. Typically,
+> @@ -905,6 +926,21 @@ class TestList:
+>  
+>                      continue
+>  
+> +                # We don't need a multi-lined version here
+> +                if (match := re.match(r'arg\[(\d+)\]\.values:\s*(.*)', file_line)):
+> +                    cur_arg = int(match.group(1)) - 1
+> +
+> +                    if cur_arg not in self.doc[current_test]["arg"][arg_ref]:
+> +                        self.doc[current_test]["arg"][arg_ref][cur_arg] = {}
+> +
+> +                    values = match.group(2).split(",")
+> +                    for split_val in values:
+> +                        if split_val == "":
+> +                            continue
+> +                        self.doc[current_test]["arg"][arg_ref][cur_arg][split_val.strip()] = split_val.strip()
+> +
+> +                    continue
+> +
+>                  if (match := re.match(r'^(.*):', file_line)):
+>                      sys.exit(f"{fname}:{file_ln + 1}: Error: unrecognized field '%s'. Need to add at %s" %
+>                              (match.group(1), self.config_fname))
+> -- 
+> 2.34.1
+>
 
-You mean to igt_subtest()? In igt_main() you can't use fd.
-IMO change is ok, if there's no region on xe fd flags passed == 0
-what will cause skip on require.
+Acked-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 
 --
 Zbigniew
-
-> 
-> 
-> Nirmoy
-> 
-> > +	igt_require_f(flags, "Device doesn't support such memory region\n");
-> >   	bo = xe_bo_create_flags(fd, 0, 4096, flags);
-> >   	mmo = xe_bo_mmap_offset(fd, bo);
