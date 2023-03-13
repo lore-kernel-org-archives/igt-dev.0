@@ -1,17 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 05DA110E4E2
- for <igt-dev@lists.freedesktop.org>; Mon, 13 Mar 2023 11:30:48 +0000 (UTC)
-From: Mohammed Thasleem <mohammed.thasleem@intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Sun,  4 Sep 2022 15:39:54 +0530
-Message-Id: <20220904100954.126137-1-mohammed.thasleem@intel.com>
-In-Reply-To: <20220808093622.193800-1-mohammed.thasleem@intel.com>
-References: <20220808093622.193800-1-mohammed.thasleem@intel.com>
+Content-Type: multipart/alternative;
+ boundary="===============4948221764707334728=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t] tests/kms_display_modes: Fixed mode
- selection for extended mode tests
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Mohammed Thasleem" <mohammed.thasleem@intel.com>
+Date: Mon, 13 Mar 2023 12:05:32 -0000
+Message-ID: <167870913274.1034.13527221763599508563@emeril.freedesktop.org>
+References: <20220808093622.193800-1-mohammed.thasleem@intel.com>
+In-Reply-To: <20220808093622.193800-1-mohammed.thasleem@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
+ =?utf-8?q?kms=5Fdisplay=5Fmodes=3A_Add_check_on_ENOSPC_for_DP_MST_config_?=
+ =?utf-8?b?KHJldjQp?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,165 +18,165 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Added check on DP-MST and 4k panels when two moniters connected
-through MST.
-This will find the connector mode combo that fits into the
-bandwidth when more than one monitor is connected.
+--===============4948221764707334728==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Example:
-  When two monitors connected through MST, the second monitor
-  also tries to use the same mode. So two such modes may not
-  fit into the link bandwidth. So, iterate through connected
-  outputs & modes and find a combination of modes those fit
-  into the link BW.
+== Series Details ==
 
-v2: -Updated commit msg and description. (Bhanu)
-    -Renamed restart with retry. (Bhanu)
-    -Moved igt_pipe_crc_new before retry. (Bhanu)
-    -Removed unrelated changes and new line. (Bhanu)
-    -Minor changes.
-v3: Updated discription and added EINVAL check.
-v4: Removed EINVAL and ENOSPC checks.
-    Added check for DP-MST and 4k panels.
-    Updated discription.
+Series: tests/kms_display_modes: Add check on ENOSPC for DP MST config (rev4)
+URL   : https://patchwork.freedesktop.org/series/114000/
+State : success
 
-Signed-off-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
-Reviewed-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
----
- tests/kms_display_modes.c | 88 ++++++++++++++++++++++++++++++++++++---
- 1 file changed, 83 insertions(+), 5 deletions(-)
+== Summary ==
 
-diff --git a/tests/kms_display_modes.c b/tests/kms_display_modes.c
-index e4191811e..4acc6bb3c 100644
---- a/tests/kms_display_modes.c
-+++ b/tests/kms_display_modes.c
-@@ -34,16 +34,70 @@ typedef struct {
- 	int n_pipes;
- } data_t;
- 
-+static int parse_path_blob(char *blob_data)
-+{
-+	int connector_id;
-+	char *encoder;
-+
-+	encoder = strtok(blob_data, ":");
-+	igt_assert_f(!strcmp(encoder, "mst"), "PATH connector property expected to have 'mst'\n");
-+
-+	connector_id = atoi(strtok(NULL, "-"));
-+
-+	return connector_id;
-+}
-+
-+static bool output_is_dp_mst(data_t *data, igt_output_t *output, int i)
-+{
-+	drmModePropertyBlobPtr path_blob = NULL;
-+	uint64_t path_blob_id;
-+	drmModeConnector *connector = output->config.connector;
-+	struct kmstest_connector_config config;
-+	const char *encoder;
-+	int connector_id;
-+	static int prev_connector_id;
-+
-+	kmstest_get_connector_config(data->drm_fd, output->config.connector->connector_id, -1, &config);
-+	encoder = kmstest_encoder_type_str(config.encoder->encoder_type);
-+
-+	if (strcmp(encoder, "DP MST"))
-+		return false;
-+
-+	igt_assert(kmstest_get_property(data->drm_fd, connector->connector_id,
-+		   DRM_MODE_OBJECT_CONNECTOR, "PATH", NULL,
-+		   &path_blob_id, NULL));
-+
-+	igt_assert(path_blob = drmModeGetPropertyBlob(data->drm_fd, path_blob_id));
-+
-+	connector_id = parse_path_blob((char *) path_blob->data);
-+
-+	/*
-+	 * Discarding outputs of other DP MST topology.
-+	 * Testing only on outputs on the topology we got previously
-+	 */
-+	if (i == 0) {
-+		prev_connector_id = connector_id;
-+	} else {
-+		if (connector_id != prev_connector_id)
-+			return false;
-+	}
-+
-+	drmModeFreePropertyBlob(path_blob);
-+
-+	return true;
-+}
-+
- static void run_extendedmode_basic(data_t *data, int pipe1, int pipe2)
- {
- 	struct igt_fb fb, fbs[2];
- 	drmModeModeInfo *mode[2];
-+	drmModeModeInfo *mode_mst;
- 	igt_output_t *output, *extended_output[2];
- 	igt_display_t *display = &data->display;
- 	igt_plane_t *plane[2];
- 	igt_pipe_crc_t *pipe_crc[2] = { 0 };
- 	igt_crc_t ref_crc[2], crc[2];
--	int count = 0, width, height;
-+	int count = 0, width, height, ret, dp_mst_outputs = 0;
- 	cairo_t *cr;
- 
- 	for_each_connected_output(display, output) {
-@@ -54,15 +108,16 @@ static void run_extendedmode_basic(data_t *data, int pipe1, int pipe2)
- 			break;
- 	}
- 
-+	pipe_crc[0] = igt_pipe_crc_new(data->drm_fd, pipe1, IGT_PIPE_CRC_SOURCE_AUTO);
-+	pipe_crc[1] = igt_pipe_crc_new(data->drm_fd, pipe2, IGT_PIPE_CRC_SOURCE_AUTO);
-+
-+retry:
- 	igt_output_set_pipe(extended_output[0], pipe1);
- 	igt_output_set_pipe(extended_output[1], pipe2);
- 
- 	mode[0] = igt_output_get_mode(extended_output[0]);
- 	mode[1] = igt_output_get_mode(extended_output[1]);
- 
--	pipe_crc[0] = igt_pipe_crc_new(data->drm_fd, pipe1, IGT_PIPE_CRC_SOURCE_AUTO);
--	pipe_crc[1] = igt_pipe_crc_new(data->drm_fd, pipe2, IGT_PIPE_CRC_SOURCE_AUTO);
--
- 	igt_create_color_fb(data->drm_fd, mode[0]->hdisplay, mode[0]->vdisplay,
- 			     DRM_FORMAT_XRGB8888, 0, 1, 0, 0, &fbs[0]);
- 	igt_create_color_fb(data->drm_fd, mode[1]->hdisplay, mode[1]->vdisplay,
-@@ -79,7 +134,30 @@ static void run_extendedmode_basic(data_t *data, int pipe1, int pipe2)
- 	igt_fb_set_size(&fbs[1], plane[1], mode[1]->hdisplay, mode[1]->vdisplay);
- 	igt_plane_set_size(plane[1], mode[1]->hdisplay, mode[1]->vdisplay);
- 
--	igt_display_commit2(display, COMMIT_ATOMIC);
-+	for_each_connected_output(display, output) {
-+		mode_mst = igt_output_get_mode(output);
-+		if (output_is_dp_mst(data, output, dp_mst_outputs) &&
-+		   (mode_mst->hdisplay == 3840 && mode_mst->vdisplay == 2160))
-+			dp_mst_outputs++;
-+	}
-+
-+	ret = igt_display_try_commit2(display, COMMIT_ATOMIC);
-+	/* In case of DP-MST find suitable mode(s) to fit into the link BW. */
-+	if (ret != 0 && dp_mst_outputs > 1) {
-+		bool found = igt_override_all_active_output_modes_to_fit_bw(display);
-+
-+		igt_require_f(found, "No valid mode combo found for MST modeset.\n");
-+
-+		for_each_connected_output(display, output)
-+			igt_output_set_pipe(output, PIPE_NONE);
-+
-+		igt_remove_fb(data->drm_fd, &fbs[0]);
-+		igt_remove_fb(data->drm_fd, &fbs[1]);
-+
-+		goto retry;
-+	}
-+
-+	igt_assert(!ret);
- 
- 	igt_pipe_crc_collect_crc(pipe_crc[0], &ref_crc[0]);
- 	igt_pipe_crc_collect_crc(pipe_crc[1], &ref_crc[1]);
--- 
-2.25.1
+CI Bug Log - changes from CI_DRM_12850 -> IGTPW_8595
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8595/index.html
+
+Participating hosts (37 -> 37)
+------------------------------
+
+  No changes in participating hosts
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_8595 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@i915_selftest@live@execlists:
+    - fi-bsw-n3050:       [PASS][1] -> [ABORT][2] ([i915#7911])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12850/fi-bsw-n3050/igt@i915_selftest@live@execlists.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8595/fi-bsw-n3050/igt@i915_selftest@live@execlists.html
+
+  * igt@i915_selftest@live@reset:
+    - bat-rpls-1:         [PASS][3] -> [ABORT][4] ([i915#4983])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12850/bat-rpls-1/igt@i915_selftest@live@reset.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8595/bat-rpls-1/igt@i915_selftest@live@reset.html
+
+  
+#### Warnings ####
+
+  * igt@i915_selftest@live@slpc:
+    - bat-rpls-2:         [DMESG-FAIL][5] ([i915#6997] / [i915#7913]) -> [DMESG-FAIL][6] ([i915#6367] / [i915#7913] / [i915#7996])
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12850/bat-rpls-2/igt@i915_selftest@live@slpc.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8595/bat-rpls-2/igt@i915_selftest@live@slpc.html
+
+  
+  [i915#4983]: https://gitlab.freedesktop.org/drm/intel/issues/4983
+  [i915#6367]: https://gitlab.freedesktop.org/drm/intel/issues/6367
+  [i915#6997]: https://gitlab.freedesktop.org/drm/intel/issues/6997
+  [i915#7911]: https://gitlab.freedesktop.org/drm/intel/issues/7911
+  [i915#7913]: https://gitlab.freedesktop.org/drm/intel/issues/7913
+  [i915#7996]: https://gitlab.freedesktop.org/drm/intel/issues/7996
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_7191 -> IGTPW_8595
+
+  CI-20190529: 20190529
+  CI_DRM_12850: 86e99de09f7efc034962f62e22089ecfe872d57c @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_8595: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8595/index.html
+  IGT_7191: a6766ee8a971366299671b06af8febc8192c0f74 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8595/index.html
+
+--===============4948221764707334728==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/kms_display_modes: Add check on ENOSPC for DP MST config (rev4)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/114000/">https://patchwork.freedesktop.org/series/114000/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8595/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8595/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_12850 -&gt; IGTPW_8595</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8595/index.html</p>
+<h2>Participating hosts (37 -&gt; 37)</h2>
+<p>No changes in participating hosts</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_8595 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live@execlists:</p>
+<ul>
+<li>fi-bsw-n3050:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12850/fi-bsw-n3050/igt@i915_selftest@live@execlists.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8595/fi-bsw-n3050/igt@i915_selftest@live@execlists.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/7911">i915#7911</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@reset:</p>
+<ul>
+<li>bat-rpls-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12850/bat-rpls-1/igt@i915_selftest@live@reset.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8595/bat-rpls-1/igt@i915_selftest@live@reset.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/4983">i915#4983</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Warnings</h4>
+<ul>
+<li>igt@i915_selftest@live@slpc:<ul>
+<li>bat-rpls-2:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_12850/bat-rpls-2/igt@i915_selftest@live@slpc.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6997">i915#6997</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7913">i915#7913</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8595/bat-rpls-2/igt@i915_selftest@live@slpc.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/6367">i915#6367</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7913">i915#7913</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/7996">i915#7996</a>)</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_7191 -&gt; IGTPW_8595</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_12850: 86e99de09f7efc034962f62e22089ecfe872d57c @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_8595: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_8595/index.html<br />
+  IGT_7191: a6766ee8a971366299671b06af8febc8192c0f74 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============4948221764707334728==--
