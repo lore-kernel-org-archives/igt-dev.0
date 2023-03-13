@@ -1,15 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 431CE10E5F9
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B68C910E5F9
  for <igt-dev@lists.freedesktop.org>; Mon, 13 Mar 2023 18:02:26 +0000 (UTC)
 From: Vikas Srivastava <vikas.srivastava@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Mon, 13 Mar 2023 23:29:27 +0530
-Message-Id: <20230313175928.1159426-1-vikas.srivastava@intel.com>
+Date: Mon, 13 Mar 2023 23:29:28 +0530
+Message-Id: <20230313175928.1159426-2-vikas.srivastava@intel.com>
+In-Reply-To: <20230313175928.1159426-1-vikas.srivastava@intel.com>
+References: <20230313175928.1159426-1-vikas.srivastava@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 1/2] lib/i915/gem_engine_topology: list
- engines specific to gt
+Subject: [igt-dev] [PATCH i-g-t 2/2] lib/intel_ctx: Create intel_ctx with
+ physical engines in a single gt
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,119 +23,99 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Riana Tauro <riana.tauro@intel.com>
+From: Ashutosh Dixit <ashutosh.dixit@intel.com>
 
-Add a function that returns all engines belonging to a gt
-Currently the function is specific to MTL and returns gt id
-based on engine
+Introduce intel_ctx_create_for_gt for creating an intel_ctx_t containing
+all physical engines belonging to a single gt.
 
+Cc: Zbigniew Kempczynski <zbigniew.kempczynski@intel.com>
+Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
 Signed-off-by: Riana Tauro <riana.tauro@intel.com>
 Signed-off-by: Vikas Srivastava <vikas.srivastava@intel.com>
 ---
- lib/i915/gem_engine_topology.c | 73 ++++++++++++++++++++++++++++++++++
- lib/i915/gem_engine_topology.h |  6 +++
- 2 files changed, 79 insertions(+)
+ lib/intel_ctx.c | 42 ++++++++++++++++++++++++++++++++++++++++++
+ lib/intel_ctx.h |  2 ++
+ 2 files changed, 44 insertions(+)
 
-diff --git a/lib/i915/gem_engine_topology.c b/lib/i915/gem_engine_topology.c
-index ca3333c252..6c8929ec59 100644
---- a/lib/i915/gem_engine_topology.c
-+++ b/lib/i915/gem_engine_topology.c
-@@ -350,6 +350,79 @@ struct intel_execution_engine2 gem_eb_flags_to_engine(unsigned int flags)
- 	return e2__;
+diff --git a/lib/intel_ctx.c b/lib/intel_ctx.c
+index e19a54a896..ded9c0f1e4 100644
+--- a/lib/intel_ctx.c
++++ b/lib/intel_ctx.c
+@@ -61,6 +61,28 @@ intel_ctx_cfg_t intel_ctx_cfg_all_physical(int fd)
+ 	return cfg;
  }
  
-+/*
-+ * MTL has two GT's, one containing render/compute/copy and the other
-+ * containing media engines. Return gt id based on engine.
-+ */
-+static int
-+mtl_engine_to_gt_map(const struct i915_engine_class_instance *e)
-+{
-+	switch (e->engine_class) {
-+	case I915_ENGINE_CLASS_RENDER:
-+	case I915_ENGINE_CLASS_COMPUTE:
-+	case I915_ENGINE_CLASS_COPY:
-+		return 0;
-+	case I915_ENGINE_CLASS_VIDEO:
-+	case I915_ENGINE_CLASS_VIDEO_ENHANCE:
-+		return 1;
-+	default:
-+		igt_assert_f(0, "Unsupported engine class %d\n", e->engine_class);
-+	}
-+}
-+
-+static int gem_engine_to_gt_map(int i915, const struct i915_engine_class_instance *engine)
-+{
-+	igt_require(IS_METEORLAKE(intel_get_drm_devid(i915)));
-+	return mtl_engine_to_gt_map(engine);
-+}
-+
 +/**
-+ * gem_list_engines:
-+ * @i915: i915 drm file descriptor
-+ * @gt_mask: gt mask
-+ * @class_mask: engine class mask
-+ * @out: returned engine count
++ * intel_ctx_cfg_for_gt:
++ * @fd: open i915 drm file descriptor
++ * @gt: gt id
 + *
-+ * Returns: the list of all physical engines belonging to the gt.
-+ * Caller must free memory after use
++ * Returns an intel_ctx_cfg_t containing all physical engines belonging to @gt
 + */
-+struct i915_engine_class_instance *
-+gem_list_engines(int i915,
-+		 uint32_t gt_mask,
-+		 uint32_t class_mask,
-+		 unsigned int *out)
++intel_ctx_cfg_t intel_ctx_cfg_for_gt(int fd, int gt)
 +{
-+	struct i915_engine_class_instance *engines;
-+	struct drm_i915_query_engine_info *info;
-+	const int size = 256 << 10; /* enough for 8 classes of 256 engines */
-+	unsigned int max = 0, count = 0;
++	struct i915_engine_class_instance *ci;
++	intel_ctx_cfg_t cfg = {};
++	unsigned int count;
 +
-+	info = calloc(1, size);
-+	igt_assert(!__gem_query_engines(i915, info, size));
++	ci = gem_list_engines(fd, 1u << gt, ~0u, &count);
++	igt_assert(ci);
++	memcpy(&cfg.engines, ci, count * sizeof(*ci));
++	cfg.num_engines = count;
++	free(ci);
 +
-+	max = info->num_engines;
-+	engines = (struct i915_engine_class_instance *)info;
-+	for (unsigned int i = 0; i < max; i++) {
-+		const struct i915_engine_class_instance *e =
-+			&info->engines[i].engine;
-+
-+		if (!((class_mask >> e->engine_class) & 1))
-+			continue;
-+		if (!((gt_mask >> gem_engine_to_gt_map(i915, e)) & 1))
-+			continue;
-+
-+		engines[count++] = *e;
-+	}
-+
-+	if (!count) {
-+		free(engines);
-+		engines = NULL;
-+	}
-+
-+	*out = count;
-+	return engines;
++	return cfg;
 +}
 +
- bool gem_engine_is_equal(const struct intel_execution_engine2 *e1,
- 			 const struct intel_execution_engine2 *e2)
- {
-diff --git a/lib/i915/gem_engine_topology.h b/lib/i915/gem_engine_topology.h
-index 987f2bf944..89642c3172 100644
---- a/lib/i915/gem_engine_topology.h
-+++ b/lib/i915/gem_engine_topology.h
-@@ -61,6 +61,12 @@ intel_get_current_physical_engine(struct intel_engine_data *ed);
+ /**
+  * intel_ctx_cfg_for_engine:
+  * @class: engine class
+@@ -295,6 +317,26 @@ const intel_ctx_t *intel_ctx_create_all_physical(int fd)
+ 	return intel_ctx_create(fd, &cfg);
+ }
  
- void intel_next_engine(struct intel_engine_data *ed);
- 
-+struct i915_engine_class_instance *
-+gem_list_engines(int i915,
-+		 uint32_t gt_mask,
-+		 uint32_t class_mask,
-+		 unsigned int *count);
++/**
++ * intel_ctx_create_for_gt:
++ * @fd: open i915 drm file descriptor
++ * @gt: gt id
++ *
++ * Creates an intel_ctx_t containing all physical engines belonging to @gt
++ */
++const intel_ctx_t *intel_ctx_create_for_gt(int fd, int gt)
++{
++	intel_ctx_cfg_t cfg;
 +
- bool gem_engine_is_equal(const struct intel_execution_engine2 *e1,
- 			 const struct intel_execution_engine2 *e2);
++	igt_require(gem_has_contexts(fd) || !gt);
++
++	if (!gem_has_contexts(fd))
++		return intel_ctx_0(fd);
++
++	cfg = intel_ctx_cfg_for_gt(fd, gt);
++	return intel_ctx_create(fd, &cfg);
++}
++
+ /**
+  * intel_ctx_cfg_engine_class:
+  * @cfg: an intel_ctx_cfg_t
+diff --git a/lib/intel_ctx.h b/lib/intel_ctx.h
+index 89c65fcd39..3cfeaae81e 100644
+--- a/lib/intel_ctx.h
++++ b/lib/intel_ctx.h
+@@ -54,6 +54,7 @@ typedef struct intel_ctx_cfg {
  
+ intel_ctx_cfg_t intel_ctx_cfg_for_engine(unsigned int class, unsigned int inst);
+ intel_ctx_cfg_t intel_ctx_cfg_all_physical(int fd);
++intel_ctx_cfg_t intel_ctx_cfg_for_gt(int fd, int gt);
+ int intel_ctx_cfg_engine_class(const intel_ctx_cfg_t *cfg, unsigned int engine);
+ 
+ /**
+@@ -75,6 +76,7 @@ const intel_ctx_t *intel_ctx_0(int fd);
+ const intel_ctx_t *intel_ctx_create_for_engine(int fd, unsigned int class,
+ 					       unsigned int inst);
+ const intel_ctx_t *intel_ctx_create_all_physical(int fd);
++const intel_ctx_t *intel_ctx_create_for_gt(int fd, int gt);
+ void intel_ctx_destroy(int fd, const intel_ctx_t *ctx);
+ 
+ unsigned int intel_ctx_engine_class(const intel_ctx_t *ctx, unsigned int engine);
 -- 
 2.25.1
