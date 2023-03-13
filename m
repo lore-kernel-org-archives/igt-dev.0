@@ -1,19 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BA19610E5A2
- for <igt-dev@lists.freedesktop.org>; Mon, 13 Mar 2023 15:52:35 +0000 (UTC)
-Date: Mon, 13 Mar 2023 16:52:11 +0100
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 751FE10E573
+ for <igt-dev@lists.freedesktop.org>; Mon, 13 Mar 2023 15:56:04 +0000 (UTC)
+Date: Mon, 13 Mar 2023 16:55:13 +0100
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Message-ID: <20230313155211.ih2po2ocfxsoilhk@kamilkon-desk1>
+Message-ID: <20230313155513.cryy3w7rq5u4lekh@kamilkon-desk1>
 References: <20230215004648.2100655-1-umesh.nerlige.ramappa@intel.com>
- <20230215004648.2100655-18-umesh.nerlige.ramappa@intel.com>
+ <20230215004648.2100655-20-umesh.nerlige.ramappa@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20230215004648.2100655-18-umesh.nerlige.ramappa@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 17/31] i915/perf: Choose OAM format for
- media metrics
+In-Reply-To: <20230215004648.2100655-20-umesh.nerlige.ramappa@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 19/31] lib/perf: Add MTL to supprted HW
+ in oa guid registry
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,99 +28,36 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 Hi Umesh,
 
-add 'lib/' before i915 in subject.
+why 'oa' in small letters ? imho you should follow
+convention and write it in capitals, 'OA guid registry'.
 
-With that
-Acked-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
 Regards,
 Kamil
 
-On 2023-02-14 at 16:46:34 -0800, Umesh Nerlige Ramappa wrote:
-> If the metric set has OAM format defined, update the generated metrics
-> accordingly.
+On 2023-02-14 at 16:46:36 -0800, Umesh Nerlige Ramappa wrote:
+> Add MTL to supprted HW in oa guid registry
 > 
 > Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 > ---
->  lib/i915/perf-configs/codegen.py              |  4 +++
->  lib/i915/perf-configs/mdapi-xml-convert.py    |  1 +
->  .../perf-configs/perf-metricset-codegen.py    | 36 ++++++++++++-------
->  3 files changed, 29 insertions(+), 12 deletions(-)
+>  lib/i915/perf-configs/oa_guid_registry.py | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
 > 
-> diff --git a/lib/i915/perf-configs/codegen.py b/lib/i915/perf-configs/codegen.py
-> index 755142cc..020e76ef 100644
-> --- a/lib/i915/perf-configs/codegen.py
-> +++ b/lib/i915/perf-configs/codegen.py
-> @@ -117,6 +117,10 @@ class Set:
->      def underscore_name(self):
->          return self.xml.get('underscore_name')
+> diff --git a/lib/i915/perf-configs/oa_guid_registry.py b/lib/i915/perf-configs/oa_guid_registry.py
+> index 50076e95..f520f817 100644
+> --- a/lib/i915/perf-configs/oa_guid_registry.py
+> +++ b/lib/i915/perf-configs/oa_guid_registry.py
+> @@ -100,7 +100,8 @@ class Registry:
+>                             'RKL',
+>                             'DG1',
+>                             'ACM',
+> -                           'PVC' )
+> +                           'PVC',
+> +                           'MTL', )
+>          if name in known_chipsets:
+>              return name
 >  
-> +    @property
-> +    def oa_format(self):
-> +        return self.xml.get('oa_format')
-> +
->      def findall(self, path):
->          return self.xml.findall(path)
->  
-> diff --git a/lib/i915/perf-configs/mdapi-xml-convert.py b/lib/i915/perf-configs/mdapi-xml-convert.py
-> index 5c784643..3b7d0663 100755
-> --- a/lib/i915/perf-configs/mdapi-xml-convert.py
-> +++ b/lib/i915/perf-configs/mdapi-xml-convert.py
-> @@ -659,6 +659,7 @@ for arg in args.xml:
->          set.set('symbol_name', set_symbol_name)
->          set.set('underscore_name', underscore(mdapi_set.get('SymbolName')))
->          set.set('mdapi_supported_apis', strip_dx_apis(mdapi_set.get('SupportedAPI')))
-> +        set.set('oa_format', oa_format)
->  
->  
->          # Look at the hardware register config before looking at the counters.
-> diff --git a/lib/i915/perf-configs/perf-metricset-codegen.py b/lib/i915/perf-configs/perf-metricset-codegen.py
-> index 08351309..8b2c5d7b 100644
-> --- a/lib/i915/perf-configs/perf-metricset-codegen.py
-> +++ b/lib/i915/perf-configs/perf-metricset-codegen.py
-> @@ -128,18 +128,30 @@ def generate_metric_sets(args, gen):
->  
->              """))
->          elif gen.chipset.startswith("acm") or gen.chipset.startswith("mtl"):
-> -            c(textwrap.dedent("""\
-> -                metric_set->perf_oa_format = I915_OA_FORMAT_A24u40_A14u32_B8_C8;
-> -
-> -                metric_set->perf_raw_size = 256;
-> -                metric_set->gpu_time_offset = 0;
-> -                metric_set->gpu_clock_offset = 1;
-> -                metric_set->a_offset = 2;
-> -                metric_set->b_offset = metric_set->a_offset + 38;
-> -                metric_set->c_offset = metric_set->b_offset + 8;
-> -                metric_set->perfcnt_offset = metric_set->c_offset + 8;
-> -
-> -            """))
-> +            if set.oa_format == "128B_MPEC8_NOA16":
-> +                c(textwrap.dedent("""\
-> +                    metric_set->perf_oa_format = I915_OAM_FORMAT_MPEC8u32_B8_C8;
-> +
-> +                    metric_set->perf_raw_size = 128;
-> +                    metric_set->gpu_time_offset = 0;
-> +                    metric_set->gpu_clock_offset = 1;
-> +                    metric_set->a_offset = 2;
-> +                    metric_set->b_offset = metric_set->a_offset + 8;
-> +                    metric_set->c_offset = metric_set->b_offset + 8;
-> +                    metric_set->perfcnt_offset = metric_set->c_offset + 8;
-> +                """))
-> +            else:
-> +                c(textwrap.dedent("""\
-> +                    metric_set->perf_oa_format = I915_OA_FORMAT_A24u40_A14u32_B8_C8;
-> +
-> +                    metric_set->perf_raw_size = 256;
-> +                    metric_set->gpu_time_offset = 0;
-> +                    metric_set->gpu_clock_offset = 1;
-> +                    metric_set->a_offset = 2;
-> +                    metric_set->b_offset = metric_set->a_offset + 38;
-> +                    metric_set->c_offset = metric_set->b_offset + 8;
-> +                    metric_set->perfcnt_offset = metric_set->c_offset + 8;
-> +                """))
->          else:
->              c(textwrap.dedent("""\
->                  metric_set->perf_oa_format = I915_OA_FORMAT_A32u40_A4u32_B8_C8;
 > -- 
 > 2.36.1
 > 
