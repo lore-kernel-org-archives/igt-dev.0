@@ -1,17 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6969410E577
- for <igt-dev@lists.freedesktop.org>; Mon, 13 Mar 2023 15:17:44 +0000 (UTC)
-From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-To: igt-dev@lists.freedesktop.org,
-	ville.syrjala@linux.intel.com
-Date: Mon, 13 Mar 2023 20:44:06 +0530
-Message-Id: <20230313151406.2113963-3-bhanuprakash.modem@intel.com>
-In-Reply-To: <20230313151406.2113963-1-bhanuprakash.modem@intel.com>
-References: <20230313151406.2113963-1-bhanuprakash.modem@intel.com>
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1F43C10E56C
+ for <igt-dev@lists.freedesktop.org>; Mon, 13 Mar 2023 15:21:25 +0000 (UTC)
+Date: Mon, 13 Mar 2023 16:21:21 +0100
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Message-ID: <20230313152121.kml6iabgta2teh6s@kamilkon-desk1>
+References: <20230215004648.2100655-1-umesh.nerlige.ramappa@intel.com>
+ <20230215004648.2100655-16-umesh.nerlige.ramappa@intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V2 3/3] tests/kms: Add missing igt_put_cairo_ctx()
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20230215004648.2100655-16-umesh.nerlige.ramappa@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 15/31] i915/perf: Add OAM support
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,78 +20,414 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: Lionel G Landwerlin <lionel.g.landwerlin@linux.intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Remeber to call igt_put_cairo_ctx() after rendering to make
-sure the results actually end up in the framebuffer (in case
-the rendering happens to a temporary buffer and there needs
-to be a copy back at the end).
+Hi Umesh,
 
-Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
----
- tests/kms_async_flips.c | 4 ++++
- tests/kms_lease.c       | 2 +-
- tests/kms_writeback.c   | 1 +
- 3 files changed, 6 insertions(+), 1 deletion(-)
+On 2023-02-14 at 16:46:32 -0800, Umesh Nerlige Ramappa wrote:
+> Add OAM formats and support for media engines in perf tests
+> 
+> Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+> ---
+>  include/drm-uapi/i915_drm.h |   4 ++
+>  lib/intel_chipset.h         |   3 +
+>  lib/intel_device_info.c     |   1 +
+>  tests/i915/perf.c           | 138 +++++++++++++++++++++++++-----------
+>  4 files changed, 105 insertions(+), 41 deletions(-)
+> 
+> diff --git a/include/drm-uapi/i915_drm.h b/include/drm-uapi/i915_drm.h
+> index 5fab3066..ab244346 100644
+> --- a/include/drm-uapi/i915_drm.h
+> +++ b/include/drm-uapi/i915_drm.h
+> @@ -2545,6 +2545,10 @@ enum drm_i915_oa_format {
+>  	I915_OAR_FORMAT_A32u40_A4u32_B8_C8,
+>  	I915_OA_FORMAT_A24u40_A14u32_B8_C8,
+>  
+> +	/* MTL OAM */
+> +	I915_OAM_FORMAT_MPEC8u64_B8_C8,
+> +	I915_OAM_FORMAT_MPEC8u32_B8_C8,
+> +
+>  	I915_OA_FORMAT_MAX	    /* non-ABI */
+>  };
+>  
 
-diff --git a/tests/kms_async_flips.c b/tests/kms_async_flips.c
-index 55be0bd87..34808f401 100644
---- a/tests/kms_async_flips.c
-+++ b/tests/kms_async_flips.c
-@@ -494,9 +494,11 @@ static void test_crc(data_t *data)
- 
- 	cr = igt_get_cairo_ctx(data->drm_fd, &data->bufs[frame]);
- 	igt_paint_color(cr, 0, 0, data->bufs[frame].width, data->bufs[frame].height, 1.0, 0.0, 0.0);
-+	igt_put_cairo_ctx(cr);
- 
- 	cr = igt_get_cairo_ctx(data->drm_fd, &data->bufs[!frame]);
- 	igt_paint_color(cr, 0, 0, data->bufs[!frame].width, data->bufs[!frame].height, 1.0, 0.0, 0.0);
-+	igt_put_cairo_ctx(cr);
- 
- 	ret = drmModeSetCrtc(data->drm_fd, data->crtc_id, data->bufs[frame].fb_id, 0, 0,
- 			     &data->output->config.connector->connector_id, 1,
-@@ -518,6 +520,7 @@ static void test_crc(data_t *data)
- 		/* fill the next fb with the expected color */
- 		cr = igt_get_cairo_ctx(data->drm_fd, &data->bufs[frame]);
- 		igt_paint_color(cr, 0, 0, 1, data->bufs[frame].height, 1.0, 0.0, 0.0);
-+		igt_put_cairo_ctx(cr);
- 
- 		data->flip_pending = true;
- 		ret = drmModePageFlip(data->drm_fd, data->crtc_id, data->bufs[frame].fb_id,
-@@ -530,6 +533,7 @@ static void test_crc(data_t *data)
- 		frame = !frame;
- 		cr = igt_get_cairo_ctx(data->drm_fd, &data->bufs[frame]);
- 		igt_paint_color_rand(cr, 0, 0, 1, data->bufs[frame].height);
-+		igt_put_cairo_ctx(cr);
- 	}
- 
- 	igt_pipe_crc_stop(data->pipe_crc);
-diff --git a/tests/kms_lease.c b/tests/kms_lease.c
-index 7eab77078..b9b669420 100644
---- a/tests/kms_lease.c
-+++ b/tests/kms_lease.c
-@@ -207,7 +207,7 @@ static int paint_fb(int drm_fd, struct igt_fb *fb, const char *test_name,
- 	igt_cairo_printf_line(cr, align_hcenter, 10, "%s", connector_str);
- 	igt_cairo_printf_line(cr, align_hcenter, 10, "%s", pipe_str);
- 
--	cairo_destroy(cr);
-+	igt_put_cairo_ctx(cr);
- 
- 	return 0;
- }
-diff --git a/tests/kms_writeback.c b/tests/kms_writeback.c
-index 9d1345857..c4808b02c 100644
---- a/tests/kms_writeback.c
-+++ b/tests/kms_writeback.c
-@@ -414,6 +414,7 @@ static void commit_and_dump_fb(igt_display_t *display, igt_output_t *output, igt
- 	snprintf(filepath_out, PATH_MAX, "%s/%s.png", path_name, file_name);
- 	status = cairo_surface_write_to_png(fb_surface_out, filepath_out);
- 	igt_assert_eq(status, CAIRO_STATUS_SUCCESS);
-+	cairo_surface_destroy(fb_surface_out);
- 
- 	igt_remove_fb(display->drm_fd, &output_fb);
- }
--- 
-2.39.1
+I would prefer to have drm-uapi changes in separate patch.
+
+> diff --git a/lib/intel_chipset.h b/lib/intel_chipset.h
+> index c9762ae6..c2c8998d 100644
+> --- a/lib/intel_chipset.h
+> +++ b/lib/intel_chipset.h
+> @@ -45,6 +45,7 @@ struct intel_device_info {
+>  	unsigned gt; /* 0 if unknown */
+>  	bool has_4tile : 1;
+>  	bool has_flatccs : 1;
+> +	bool has_oam : 1;
+>  	bool is_mobile : 1;
+>  	bool is_whitney : 1;
+>  	bool is_almador : 1;
+> @@ -231,4 +232,6 @@ void intel_check_pch(void);
+>  
+>  #define HAS_FLATCCS(devid)	(intel_get_device_info(devid)->has_flatccs)
+>  
+> +#define HAS_OAM(devid)		(intel_get_device_info(devid)->has_oam)
+> +
+>  #endif /* _INTEL_CHIPSET_H */
+> diff --git a/lib/intel_device_info.c b/lib/intel_device_info.c
+> index 12b81d48..0b11dfce 100644
+> --- a/lib/intel_device_info.c
+> +++ b/lib/intel_device_info.c
+> @@ -472,6 +472,7 @@ static const struct intel_device_info intel_meteorlake_info = {
+>  	.graphics_rel = 70,
+>  	.display_ver = 14,
+>  	.has_4tile = true,
+> +	.has_oam = true,
+>  	.is_meteorlake = true,
+>  	.codename = "meteorlake",
+>  	.cmds_info = &gen12_mtl_cmds_info,
+
+imho here also lib changes for lib/intel_device_info should be
+in separate patch, they can be merged separatly before.
+
+> diff --git a/tests/i915/perf.c b/tests/i915/perf.c
+> index 9c926fd2..9c546cc1 100644
+> --- a/tests/i915/perf.c
+> +++ b/tests/i915/perf.c
+> @@ -212,6 +212,40 @@ static struct oa_format dg2_oa_formats[I915_OA_FORMAT_MAX] = {
+>  		.c_off = 224, .n_c = 8, .oa_type = OAG, },
+>  };
+>  
+> +static struct oa_format mtl_oa_formats[I915_OA_FORMAT_MAX] = {
+> +	[I915_OAR_FORMAT_A32u40_A4u32_B8_C8] = {
+> +		"A32u40_A4u32_B8_C8", .size = 256,
+> +		.a40_high_off = 160, .a40_low_off = 16, .n_a40 = 32,
+> +		.a_off = 144, .n_a = 4, .first_a = 32,
+> +		.b_off = 192, .n_b = 8,
+> +		.c_off = 224, .n_c = 8, .oa_type = OAR, },
+> +	/* This format has A36 and A37 interleaved with high bytes of some A
+> +	 * counters, so we will accumulate only subset of counters.
+> +	 */
+> +	[I915_OA_FORMAT_A24u40_A14u32_B8_C8] = {
+> +		"A24u40_A14u32_B8_C8", .size = 256,
+> +		/* u40: A4 - A23 */
+> +		.a40_high_off = 160, .a40_low_off = 16, .n_a40 = 20, .first_a40 = 4,
+> +		/* u32: A0 - A3 */
+> +		.a_off = 16, .n_a = 4,
+> +		.b_off = 192, .n_b = 8,
+> +		.c_off = 224, .n_c = 8, .oa_type = OAG, },
+> +
+> +	/* Treat MPEC countes as A counters for now */
+> +	[I915_OAM_FORMAT_MPEC8u64_B8_C8] = {
+> +		"MPEC8u64_B8_C8", .size = 192,
+> +		.a64_off = 32, .n_a64 = 8,
+> +		.b_off = 96, .n_b = 8,
+> +		.c_off = 128, .n_c = 8, .oa_type = OAM,
+> +		.report_hdr_64bit = true, },
+> +	[I915_OAM_FORMAT_MPEC8u32_B8_C8] = {
+> +		"MPEC8u32_B8_C8", .size = 128,
+> +		.a_off = 32, .n_a = 8,
+> +		.b_off = 64, .n_b = 8,
+> +		.c_off = 96, .n_c = 8, .oa_type = OAM,
+> +		.report_hdr_64bit = true, },
+> +};
+> +
+>  static bool hsw_undefined_a_counters[45] = {
+>  	[4] = true,
+>  	[6] = true,
+> @@ -273,8 +307,10 @@ get_oa_format(enum drm_i915_oa_format format)
+>  {
+>  	if (IS_HASWELL(devid))
+>  		return hsw_oa_formats[format];
+> -	else if (IS_DG2(devid) || IS_METEORLAKE(devid))
+> +	else if (IS_DG2(devid))
+>  		return dg2_oa_formats[format];
+> +	else if (IS_METEORLAKE(devid))
+> +		return mtl_oa_formats[format];
+
+After some recent discussion it is prefered to have order
+from new ones to oldest one.
+
+>  	else if (IS_GEN12(devid))
+>  		return gen12_oa_formats[format];
+>  	else
+> @@ -356,21 +392,6 @@ static int i915_perf_revision(int fd)
+>  	return value;
+>  }
+>  
+> -/*
+> - * perf_supports_engine is used in the for loop that iterates over engines and
+> - * determines if perf test can be run on a particular engine. For perf revisions
+> - * below 10, we only need to run the test once, so we return true only for rcs0.
+> - * Note that the test itself ignores the class instance parameters if they are
+> - * not supported by the perf interface. This enables us to use a single for-loop
+> - * construct to run the same test on all platforms and all perf revisions.
+> - */
+> -static bool
+> -perf_supports_engine(const struct intel_execution_engine2 *e)
+> -{
+> -	return e->class == I915_ENGINE_CLASS_RENDER &&
+> -	       e->instance == 0;
+> -}
+> -
+>  static bool
+>  has_param_class_instance(void)
+>  {
+> @@ -674,8 +695,12 @@ oar_unit_default_format(void)
+>  }
+>  
+>  static int
+> -oa_unit_default_format(void)
+> +oa_unit_default_format(const struct intel_execution_engine2 *e)
+>  {
+> +	if (e->class == I915_ENGINE_CLASS_VIDEO ||
+> +	    e->class == I915_ENGINE_CLASS_VIDEO_ENHANCE)
+> +		return I915_OAM_FORMAT_MPEC8u32_B8_C8;
+> +
+>  	return test_set->perf_oa_format;
+>  }
+>  
+> @@ -1752,6 +1777,20 @@ print_report(uint32_t *report, int fmt)
+>  }
+>  #endif
+>  
+> +static bool
+> +oa_unit_supports_engine(int oa_unit, const struct intel_execution_engine2 *e)
+> +{
+> +	switch (oa_unit) {
+> +	case OAM:
+> +		return e->class == I915_ENGINE_CLASS_VIDEO ||
+> +		       e->class == I915_ENGINE_CLASS_VIDEO_ENHANCE;
+> +	case OAG:
+> +		return e->class == I915_ENGINE_CLASS_RENDER;
+> +	}
+> +
+> +	return false;
+> +}
+> +
+>  static void
+>  test_oa_formats(const struct intel_execution_engine2 *e)
+>  {
+> @@ -1763,7 +1802,7 @@ test_oa_formats(const struct intel_execution_engine2 *e)
+>  		if (!format.name) /* sparse, indexed by ID */
+>  			continue;
+>  
+> -		if (format.oa_type != OAG) /* sparse, indexed by ID */
+> +		if (!oa_unit_supports_engine(format.oa_type, e))
+>  			continue;
+>  
+>  		igt_debug("Checking OA format %s\n", format.name);
+> @@ -1922,7 +1961,7 @@ static bool expected_report_timing_delta(uint32_t delta, uint32_t expected_delta
+>  static void
+>  test_oa_exponents(const struct intel_execution_engine2 *e)
+>  {
+> -	uint64_t fmt = oa_unit_default_format();
+> +	uint64_t fmt = oa_unit_default_format(e);
+>  
+>  	load_helper_init();
+>  	load_helper_run(HIGH);
+> @@ -2266,7 +2305,7 @@ test_blocking(uint64_t requested_oa_period,
+>  
+>  	ADD_PROPS(props, idx, SAMPLE_OA, true);
+>  	ADD_PROPS(props, idx, OA_METRICS_SET, test_set->perf_oa_metrics_set);
+> -	ADD_PROPS(props, idx, OA_FORMAT, oa_unit_default_format());
+> +	ADD_PROPS(props, idx, OA_FORMAT, oa_unit_default_format(e));
+>  	ADD_PROPS(props, idx, OA_EXPONENT, oa_exponent);
+>  
+>  	if (has_param_poll_period() && set_kernel_hrtimer)
+> @@ -2429,7 +2468,7 @@ test_polling(uint64_t requested_oa_period,
+>  
+>  	ADD_PROPS(props, idx, SAMPLE_OA, true);
+>  	ADD_PROPS(props, idx, OA_METRICS_SET, test_set->perf_oa_metrics_set);
+> -	ADD_PROPS(props, idx, OA_FORMAT, oa_unit_default_format());
+> +	ADD_PROPS(props, idx, OA_FORMAT, oa_unit_default_format(e));
+>  	ADD_PROPS(props, idx, OA_EXPONENT, oa_exponent);
+>  
+>  	if (has_param_poll_period() && set_kernel_hrtimer)
+> @@ -2703,7 +2742,7 @@ gen12_test_oa_tlb_invalidate(const struct intel_execution_engine2 *e)
+>  		DRM_I915_PERF_PROP_SAMPLE_OA, true,
+>  
+>  		DRM_I915_PERF_PROP_OA_METRICS_SET, test_set->perf_oa_metrics_set,
+> -		DRM_I915_PERF_PROP_OA_FORMAT, oa_unit_default_format(),
+> +		DRM_I915_PERF_PROP_OA_FORMAT, oa_unit_default_format(e),
+>  		DRM_I915_PERF_PROP_OA_EXPONENT, oa_exponent,
+>  		DRM_I915_PERF_PROP_OA_ENGINE_CLASS, e->class,
+>  		DRM_I915_PERF_PROP_OA_ENGINE_INSTANCE, e->instance,
+> @@ -2746,7 +2785,7 @@ test_buffer_fill(const struct intel_execution_engine2 *e)
+>  	/* ~5 micro second period */
+>  	int oa_exponent = max_oa_exponent_for_period_lte(5000);
+>  	uint64_t oa_period = oa_exponent_to_ns(oa_exponent);
+> -	uint64_t fmt = oa_unit_default_format();
+> +	uint64_t fmt = oa_unit_default_format(e);
+>  	uint64_t properties[] = {
+>  		/* Include OA reports in samples */
+>  		DRM_I915_PERF_PROP_SAMPLE_OA, true,
+> @@ -2982,7 +3021,7 @@ test_enable_disable(const struct intel_execution_engine2 *e)
+>  	/* ~5 micro second period */
+>  	int oa_exponent = max_oa_exponent_for_period_lte(5000);
+>  	uint64_t oa_period = oa_exponent_to_ns(oa_exponent);
+> -	uint64_t fmt = oa_unit_default_format();
+> +	uint64_t fmt = oa_unit_default_format(e);
+>  	uint64_t properties[] = {
+>  		/* Include OA reports in samples */
+>  		DRM_I915_PERF_PROP_SAMPLE_OA, true,
+> @@ -4577,7 +4616,7 @@ test_stress_open_close(const struct intel_execution_engine2 *e)
+>  
+>  			/* OA unit configuration */
+>  			DRM_I915_PERF_PROP_OA_METRICS_SET, test_set->perf_oa_metrics_set,
+> -			DRM_I915_PERF_PROP_OA_FORMAT, oa_unit_default_format(),
+> +			DRM_I915_PERF_PROP_OA_FORMAT, oa_unit_default_format(e),
+>  			DRM_I915_PERF_PROP_OA_EXPONENT, oa_exponent,
+>  			DRM_I915_PERF_PROP_OA_ENGINE_CLASS, e->class,
+>  			DRM_I915_PERF_PROP_OA_ENGINE_INSTANCE, e->instance,
+> @@ -4680,7 +4719,7 @@ test_global_sseu_config_invalid(const struct intel_execution_engine2 *e)
+>  
+>  		/* OA unit configuration */
+>  		DRM_I915_PERF_PROP_OA_METRICS_SET, test_set->perf_oa_metrics_set,
+> -		DRM_I915_PERF_PROP_OA_FORMAT, oa_unit_default_format(),
+> +		DRM_I915_PERF_PROP_OA_FORMAT, oa_unit_default_format(e),
+>  		DRM_I915_PERF_PROP_OA_EXPONENT, oa_exp_1_millisec,
+>  		DRM_I915_PERF_PROP_GLOBAL_SSEU, to_user_pointer(&sseu_param),
+>  		DRM_I915_PERF_PROP_OA_ENGINE_CLASS, e->class,
+> @@ -4769,7 +4808,7 @@ test_global_sseu_config(const struct intel_execution_engine2 *e)
+>  
+>  		/* OA unit configuration */
+>  		DRM_I915_PERF_PROP_OA_METRICS_SET, test_set->perf_oa_metrics_set,
+> -		DRM_I915_PERF_PROP_OA_FORMAT, oa_unit_default_format(),
+> +		DRM_I915_PERF_PROP_OA_FORMAT, oa_unit_default_format(e),
+>  		DRM_I915_PERF_PROP_OA_EXPONENT, oa_exp_1_millisec,
+>  		DRM_I915_PERF_PROP_GLOBAL_SSEU, to_user_pointer(&sseu_param),
+>  		DRM_I915_PERF_PROP_OA_ENGINE_CLASS, e->class,
+> @@ -5306,10 +5345,27 @@ test_sysctl_defaults(void)
+>  	igt_assert_eq(max_freq, 100000);
+>  }
+>  
+> -#define __for_each_perf_enabled_engine(fd__, e__) \
+> -	for_each_physical_engine(fd__, e__) \
+> -		if (perf_supports_engine(e__)) \
+> -			igt_dynamic_f("%s", e__->name)
+> +static struct intel_execution_engine2 *
+> +__ci_to_e2(const intel_ctx_t *ctx, struct i915_engine_class_instance *ci)
+> +{
+> +	static struct intel_execution_engine2 e2;
+
+e2 is on stack, see below, so it should be *e2
+
+> +	struct intel_execution_engine2 *e;
+> +
+> +	for_each_ctx_engine(drm_fd, ctx, e) {
+> +		if (e->class == ci->engine_class && e->instance == ci->engine_instance) {
+> +			e2 = *e;
+> +			break;
+> +		}
+> +	}
+> +
+> +	return &e2;
+--------------- ^
+imho you should allocate memory for this and return NULL when
+not found.
+
+> +}
+> +
+> +#define __for_random_engine_in_each_group(groups_, ctx_, e_) \
+> +	for (int i_ = 0; \
+> +	     i_ < num_perf_oa_groups && !!(e_ = __ci_to_e2(ctx_, random_engine(&groups_[i_]))); \
+> +	     i_++) \
+> +		igt_dynamic_f("%d-%s", i_, e_->name)
+>  
+>  #define __for_each_render_engine(fd__, e__) \
+>  	for_each_physical_engine(fd__, e__) \
+> @@ -5684,7 +5740,7 @@ igt_main
+>  		test_missing_sample_flags();
+>  
+>  	igt_subtest_with_dynamic("oa-formats")
+> -		__for_each_perf_enabled_engine(drm_fd, e)
+> +		__for_random_engine_in_each_group(perf_oa_groups, ctx, e)
+>  			test_oa_formats(e);
+
+Do you free 'e' before exit from test ?
+
+Regards,
+Kamil
+
+>  
+>  	igt_subtest("invalid-oa-exponent")
+> @@ -5692,7 +5748,7 @@ igt_main
+>  	igt_subtest("low-oa-exponent-permissions")
+>  		test_low_oa_exponent_permissions();
+>  	igt_subtest_with_dynamic("oa-exponents")
+> -		__for_each_perf_enabled_engine(drm_fd, e)
+> +		__for_random_engine_in_each_group(perf_oa_groups, ctx, e)
+>  			test_oa_exponents(e);
+>  
+>  	igt_subtest("per-context-mode-unprivileged") {
+> @@ -5701,7 +5757,7 @@ igt_main
+>  	}
+>  
+>  	igt_subtest_with_dynamic("buffer-fill")
+> -		__for_each_perf_enabled_engine(drm_fd, e)
+> +		__for_random_engine_in_each_group(perf_oa_groups, ctx, e)
+>  			test_buffer_fill(e);
+>  
+>  	igt_describe("Test that reason field in OA reports is never 0 on Gen8+");
+> @@ -5717,12 +5773,12 @@ igt_main
+>  		test_non_sampling_read_error();
+>  
+>  	igt_subtest_with_dynamic("enable-disable")
+> -		__for_each_perf_enabled_engine(drm_fd, e)
+> +		__for_random_engine_in_each_group(perf_oa_groups, ctx, e)
+>  			test_enable_disable(e);
+>  
+>  	igt_describe("Test blocking read with default hrtimer frequency");
+>  	igt_subtest_with_dynamic("blocking") {
+> -		__for_each_perf_enabled_engine(drm_fd, e)
+> +		__for_random_engine_in_each_group(perf_oa_groups, ctx, e)
+>  			test_blocking(40 * 1000 * 1000 /* 40ms oa period */,
+>  				      false /* set_kernel_hrtimer */,
+>  				      5 * 1000 * 1000 /* default 5ms/200Hz hrtimer */,
+> @@ -5750,7 +5806,7 @@ igt_main
+>  
+>  	igt_describe("Test polled read with default hrtimer frequency");
+>  	igt_subtest_with_dynamic("polling") {
+> -		__for_each_perf_enabled_engine(drm_fd, e)
+> +		__for_random_engine_in_each_group(perf_oa_groups, ctx, e)
+>  			test_polling(40 * 1000 * 1000 /* 40ms oa period */,
+>  				     false /* set_kernel_hrtimer */,
+>  				     5 * 1000 * 1000 /* default 5ms/200Hz hrtimer */,
+> @@ -5820,7 +5876,7 @@ igt_main
+>  
+>  		igt_describe("Test OA TLB invalidate");
+>  		igt_subtest_with_dynamic("gen12-oa-tlb-invalidate")
+> -			__for_each_perf_enabled_engine(drm_fd, e)
+> +			__for_random_engine_in_each_group(perf_oa_groups, ctx, e)
+>  				gen12_test_oa_tlb_invalidate(e);
+>  
+>  		igt_describe("Measure performance for a specific context using OAR in Gen 12");
+> @@ -5857,7 +5913,7 @@ igt_main
+>  
+>  	igt_describe("Stress tests opening & closing the i915-perf stream in a busy loop");
+>  	igt_subtest_with_dynamic("stress-open-close")
+> -		__for_each_perf_enabled_engine(drm_fd, e)
+> +		__for_random_engine_in_each_group(perf_oa_groups, ctx, e)
+>  			test_stress_open_close(e);
+>  
+>  	igt_subtest_group {
+> @@ -5868,12 +5924,12 @@ igt_main
+>  
+>  		igt_describe("Verify invalid SSEU opening parameters");
+>  		igt_subtest_with_dynamic("global-sseu-config-invalid")
+> -			__for_each_perf_enabled_engine(drm_fd, e)
+> +			__for_random_engine_in_each_group(perf_oa_groups, ctx, e)
+>  				test_global_sseu_config_invalid(e);
+>  
+>  		igt_describe("Verify specifying SSEU opening parameters");
+>  		igt_subtest_with_dynamic("global-sseu-config")
+> -			__for_each_perf_enabled_engine(drm_fd, e)
+> +			__for_random_engine_in_each_group(perf_oa_groups, ctx, e)
+>  				test_global_sseu_config(e);
+>  	}
+>  
+> -- 
+> 2.36.1
+> 
