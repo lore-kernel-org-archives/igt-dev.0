@@ -1,18 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D951710E0AB
- for <igt-dev@lists.freedesktop.org>; Mon, 13 Mar 2023 17:49:42 +0000 (UTC)
-Date: Mon, 13 Mar 2023 18:49:24 +0100
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 431CE10E5F9
+ for <igt-dev@lists.freedesktop.org>; Mon, 13 Mar 2023 18:02:26 +0000 (UTC)
+From: Vikas Srivastava <vikas.srivastava@intel.com>
 To: igt-dev@lists.freedesktop.org
-Message-ID: <20230313174924.7gkzzeyfjrpicvyw@kamilkon-desk1>
-References: <20230224200941.9867-1-pallavi.mishra@intel.com>
+Date: Mon, 13 Mar 2023 23:29:27 +0530
+Message-Id: <20230313175928.1159426-1-vikas.srivastava@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20230224200941.9867-1-pallavi.mishra@intel.com>
-Subject: Re: [igt-dev] [PATCH 1/2] [PATCH i-g-t]
- i915/sysfs_heartbeat_interval: Update test to work with GuC submission
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t 1/2] lib/i915/gem_engine_topology: list
+ engines specific to gt
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,40 +21,119 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Pallavi,
+From: Riana Tauro <riana.tauro@intel.com>
 
-On 2023-02-24 at 20:09:40 +0000, pallavi.mishra@intel.com wrote:
-> From: Pallavi Mishra <pallavi.mishra@intel.com>
-> 
-> Increase reset timeout as resets can take a bit longer with GuC
-> submission because an error capture is done and with a large GuC log (16
-> MB) these take a while.
-> 
-> Co-authored-by: Matthew Brost <matthew.brost@intel.com>
-> Signed-off-by: Pallavi Mishra <pallavi.mishra@intel.com>
-> ---
->  tests/i915/sysfs_heartbeat_interval.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/tests/i915/sysfs_heartbeat_interval.c b/tests/i915/sysfs_heartbeat_interval.c
-> index 8cebf627..63e56cbf 100644
-> --- a/tests/i915/sysfs_heartbeat_interval.c
-> +++ b/tests/i915/sysfs_heartbeat_interval.c
-> @@ -43,7 +43,7 @@
->  #include "sw_sync.h"
->  
->  #define ATTR "heartbeat_interval_ms"
-> -#define RESET_TIMEOUT 50 /* milliseconds, at least one jiffie for kworker */
-> +#define RESET_TIMEOUT 1000 /* milliseconds, long enough for an error capture */
+Add a function that returns all engines belonging to a gt
+Currently the function is specific to MTL and returns gt id
+based on engine
 
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Signed-off-by: Riana Tauro <riana.tauro@intel.com>
+Signed-off-by: Vikas Srivastava <vikas.srivastava@intel.com>
+---
+ lib/i915/gem_engine_topology.c | 73 ++++++++++++++++++++++++++++++++++
+ lib/i915/gem_engine_topology.h |  6 +++
+ 2 files changed, 79 insertions(+)
 
---
-Kamil
-
->  
->  static bool __enable_hangcheck(int dir, bool state)
->  {
-> -- 
-> 2.34.1
-> 
+diff --git a/lib/i915/gem_engine_topology.c b/lib/i915/gem_engine_topology.c
+index ca3333c252..6c8929ec59 100644
+--- a/lib/i915/gem_engine_topology.c
++++ b/lib/i915/gem_engine_topology.c
+@@ -350,6 +350,79 @@ struct intel_execution_engine2 gem_eb_flags_to_engine(unsigned int flags)
+ 	return e2__;
+ }
+ 
++/*
++ * MTL has two GT's, one containing render/compute/copy and the other
++ * containing media engines. Return gt id based on engine.
++ */
++static int
++mtl_engine_to_gt_map(const struct i915_engine_class_instance *e)
++{
++	switch (e->engine_class) {
++	case I915_ENGINE_CLASS_RENDER:
++	case I915_ENGINE_CLASS_COMPUTE:
++	case I915_ENGINE_CLASS_COPY:
++		return 0;
++	case I915_ENGINE_CLASS_VIDEO:
++	case I915_ENGINE_CLASS_VIDEO_ENHANCE:
++		return 1;
++	default:
++		igt_assert_f(0, "Unsupported engine class %d\n", e->engine_class);
++	}
++}
++
++static int gem_engine_to_gt_map(int i915, const struct i915_engine_class_instance *engine)
++{
++	igt_require(IS_METEORLAKE(intel_get_drm_devid(i915)));
++	return mtl_engine_to_gt_map(engine);
++}
++
++/**
++ * gem_list_engines:
++ * @i915: i915 drm file descriptor
++ * @gt_mask: gt mask
++ * @class_mask: engine class mask
++ * @out: returned engine count
++ *
++ * Returns: the list of all physical engines belonging to the gt.
++ * Caller must free memory after use
++ */
++struct i915_engine_class_instance *
++gem_list_engines(int i915,
++		 uint32_t gt_mask,
++		 uint32_t class_mask,
++		 unsigned int *out)
++{
++	struct i915_engine_class_instance *engines;
++	struct drm_i915_query_engine_info *info;
++	const int size = 256 << 10; /* enough for 8 classes of 256 engines */
++	unsigned int max = 0, count = 0;
++
++	info = calloc(1, size);
++	igt_assert(!__gem_query_engines(i915, info, size));
++
++	max = info->num_engines;
++	engines = (struct i915_engine_class_instance *)info;
++	for (unsigned int i = 0; i < max; i++) {
++		const struct i915_engine_class_instance *e =
++			&info->engines[i].engine;
++
++		if (!((class_mask >> e->engine_class) & 1))
++			continue;
++		if (!((gt_mask >> gem_engine_to_gt_map(i915, e)) & 1))
++			continue;
++
++		engines[count++] = *e;
++	}
++
++	if (!count) {
++		free(engines);
++		engines = NULL;
++	}
++
++	*out = count;
++	return engines;
++}
++
+ bool gem_engine_is_equal(const struct intel_execution_engine2 *e1,
+ 			 const struct intel_execution_engine2 *e2)
+ {
+diff --git a/lib/i915/gem_engine_topology.h b/lib/i915/gem_engine_topology.h
+index 987f2bf944..89642c3172 100644
+--- a/lib/i915/gem_engine_topology.h
++++ b/lib/i915/gem_engine_topology.h
+@@ -61,6 +61,12 @@ intel_get_current_physical_engine(struct intel_engine_data *ed);
+ 
+ void intel_next_engine(struct intel_engine_data *ed);
+ 
++struct i915_engine_class_instance *
++gem_list_engines(int i915,
++		 uint32_t gt_mask,
++		 uint32_t class_mask,
++		 unsigned int *count);
++
+ bool gem_engine_is_equal(const struct intel_execution_engine2 *e1,
+ 			 const struct intel_execution_engine2 *e2);
+ 
+-- 
+2.25.1
