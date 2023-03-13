@@ -1,11 +1,11 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 751FE10E573
- for <igt-dev@lists.freedesktop.org>; Mon, 13 Mar 2023 15:56:04 +0000 (UTC)
-Date: Mon, 13 Mar 2023 16:55:13 +0100
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7D32210E573
+ for <igt-dev@lists.freedesktop.org>; Mon, 13 Mar 2023 15:57:56 +0000 (UTC)
+Date: Mon, 13 Mar 2023 16:57:52 +0100
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Message-ID: <20230313155513.cryy3w7rq5u4lekh@kamilkon-desk1>
+Message-ID: <20230313155752.6xrd7pobgyqjkccg@kamilkon-desk1>
 References: <20230215004648.2100655-1-umesh.nerlige.ramappa@intel.com>
  <20230215004648.2100655-20-umesh.nerlige.ramappa@intel.com>
 MIME-Version: 1.0
@@ -26,12 +26,14 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Umesh,
+Hi Umesh, few more nits in subject:
 
-why 'oa' in small letters ? imho you should follow
-convention and write it in capitals, 'OA guid registry'.
+lib/perf: Add MTL to supprted HW in oa guid registry
+--- ^ ------------------ ^ -------- ^
+lib/i915/perf:
 
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+s/supprted/supported/
+s/oa/OA/
 
 Regards,
 Kamil
