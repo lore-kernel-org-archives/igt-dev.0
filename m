@@ -1,18 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 164E210EA94
- for <igt-dev@lists.freedesktop.org>; Tue, 14 Mar 2023 16:10:34 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 56B6210EAA1
+ for <igt-dev@lists.freedesktop.org>; Tue, 14 Mar 2023 16:10:35 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org,
 	zbigniew.kempczynski@intel.com
-Date: Tue, 14 Mar 2023 21:35:00 +0530
-Message-Id: <20230314160503.2237121-3-bhanuprakash.modem@intel.com>
+Date: Tue, 14 Mar 2023 21:35:03 +0530
+Message-Id: <20230314160503.2237121-6-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230314160503.2237121-1-bhanuprakash.modem@intel.com>
 References: <20230314160503.2237121-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V2 2/5] i915: s/igt_require_intel/igt_require_i915
+Subject: [igt-dev] [i-g-t V2 5/5] lib/igt_kms: Cache xe_device info for kms
+ tests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,87 +25,48 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Update to use the i915 specific helper.
+Create or get xe_device data from Cache, so that all KMS tests
+will utilize.
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-Acked-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+Acked-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+Reviewed-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 ---
- lib/i915/gem.c    | 2 +-
- lib/igt_fb.c      | 6 +++---
- lib/igt_kms.c     | 2 +-
- tests/i915/perf.c | 2 +-
- 4 files changed, 6 insertions(+), 6 deletions(-)
+ lib/igt_kms.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/lib/i915/gem.c b/lib/i915/gem.c
-index 27b872c28..ed45a9ed5 100644
---- a/lib/i915/gem.c
-+++ b/lib/i915/gem.c
-@@ -140,7 +140,7 @@ void igt_require_gem(int i915)
- {
- 	int err;
- 
--	igt_require_intel(i915);
-+	igt_require_i915(i915);
- 
- 	/*
- 	 * We only want to use the throttle-ioctl for its -EIO reporting
-diff --git a/lib/igt_fb.c b/lib/igt_fb.c
-index ed4623139..ba89e1f60 100644
---- a/lib/igt_fb.c
-+++ b/lib/igt_fb.c
-@@ -442,7 +442,7 @@ void igt_get_fb_tile_size(int fd, uint64_t modifier, int fb_bpp,
- 		*height_ret = 1;
- 		break;
- 	case I915_FORMAT_MOD_X_TILED:
--		igt_require_intel(fd);
-+		igt_require_i915(fd);
- 		if (intel_display_ver(intel_get_drm_devid(fd)) == 2) {
- 			*width_ret = 128;
- 			*height_ret = 16;
-@@ -460,7 +460,7 @@ void igt_get_fb_tile_size(int fd, uint64_t modifier, int fb_bpp,
- 	case I915_FORMAT_MOD_4_TILED_DG2_RC_CCS:
- 	case I915_FORMAT_MOD_4_TILED_DG2_MC_CCS:
- 	case I915_FORMAT_MOD_4_TILED_DG2_RC_CCS_CC:
--		igt_require_intel(fd);
-+		igt_require_i915(fd);
- 		if (intel_display_ver(intel_get_drm_devid(fd)) == 2) {
- 			*width_ret = 128;
- 			*height_ret = 16;
-@@ -474,7 +474,7 @@ void igt_get_fb_tile_size(int fd, uint64_t modifier, int fb_bpp,
- 		break;
- 	case I915_FORMAT_MOD_Yf_TILED:
- 	case I915_FORMAT_MOD_Yf_TILED_CCS:
--		igt_require_intel(fd);
-+		igt_require_i915(fd);
- 		switch (fb_bpp) {
- 		case 8:
- 			*width_ret = 64;
 diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-index 8c7dd85b8..84091d5ce 100644
+index 84091d5ce..d88863a90 100644
 --- a/lib/igt_kms.c
 +++ b/lib/igt_kms.c
-@@ -1458,7 +1458,7 @@ bool kmstest_force_connector(int drm_fd, drmModeConnector *connector,
- 	 * Forcing DP connectors doesn't currently work, so
- 	 * fail early to allow the test to skip if required.
- 	 */
--	if (is_i915_device(drm_fd) &&
-+	if (is_intel_device(drm_fd) &&
- 	    connector->connector_type == DRM_MODE_CONNECTOR_DisplayPort)
- 		return false;
+@@ -59,6 +59,7 @@
+ #include "igt_device.h"
+ #include "igt_sysfs.h"
+ #include "sw_sync.h"
++#include "xe/xe_query.h"
+ #ifdef HAVE_CHAMELIUM
+ #include "igt_chamelium.h"
+ #endif
+@@ -2541,6 +2542,9 @@ void igt_display_require(igt_display_t *display, int drm_fd)
+ 	}
+ #endif
  
-diff --git a/tests/i915/perf.c b/tests/i915/perf.c
-index 6453354cf..edb922c75 100644
---- a/tests/i915/perf.c
-+++ b/tests/i915/perf.c
-@@ -4946,7 +4946,7 @@ test_i915_ref_count(void)
- 	igt_debug("baseline ref count (drm fd closed) = %u\n", baseline);
++	if (is_xe_device(drm_fd))
++		xe_device_get(drm_fd);
++
+ 	/*
+ 	 * With non-contiguous pipes display, crtc mapping is not always same
+ 	 * as pipe mapping, In i915 pipe is enum id of i915's crtc object.
+@@ -2889,6 +2893,10 @@ static void igt_output_fini(igt_output_t *output)
+ void igt_display_fini(igt_display_t *display)
+ {
+ 	int i;
++	int drm_fd = display->drm_fd;
++
++	if (is_xe_device(drm_fd))
++		xe_device_put(drm_fd);
  
- 	drm_fd = __drm_open_driver(DRIVER_INTEL);
--	igt_require_intel(drm_fd);
-+	igt_require_i915(drm_fd);
- 	devid = intel_get_drm_devid(drm_fd);
- 	sysfs = perf_sysfs_open(drm_fd);
- 
+ 	for (i = 0; i < display->n_planes; ++i) {
+ 		igt_plane_t *plane = &display->planes[i];
 -- 
 2.39.1
