@@ -1,22 +1,22 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from NAM11-CO1-obe.outbound.protection.outlook.com
- (mail-co1nam11on20611.outbound.protection.outlook.com
- [IPv6:2a01:111:f400:7eab::611])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3A39E10E39F
- for <igt-dev@lists.freedesktop.org>; Fri, 17 Mar 2023 15:51:03 +0000 (UTC)
-Message-ID: <01bf7c6e-6455-4ebb-2e10-1b5b0c332fe1@amd.com>
-Date: Fri, 17 Mar 2023 11:51:56 -0400
-To: Hersen Wu <hersenxs.wu@amd.com>, igt-dev@lists.freedesktop.org,
- rodrigo.siqueira@amd.com, alex.hung@amd.com, aurabindo.pillai@amd.com
-References: <20230317144745.24785-1-hersenxs.wu@amd.com>
-Content-Language: en-US
-From: Hamza Mahfooz <hamza.mahfooz@amd.com>
-In-Reply-To: <20230317144745.24785-1-hersenxs.wu@amd.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 53E0310E799
+ for <igt-dev@lists.freedesktop.org>; Tue, 14 Mar 2023 12:26:46 +0000 (UTC)
+Message-ID: <50cf0cb3-b02f-8c2d-1bac-9249b08aba0c@linux.intel.com>
+Date: Tue, 14 Mar 2023 13:26:32 +0100
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH] [i-g-t] tests/amdgpu/amd_dp_dsc: fix test
- crash signal sigsegv
+Content-Language: en-US
+To: =?UTF-8?Q?Zbigniew_Kempczy=c5=84ski?= <zbigniew.kempczynski@intel.com>
+References: <20230310082326.12088-1-zbigniew.kempczynski@intel.com>
+ <20230310082326.12088-18-zbigniew.kempczynski@intel.com>
+ <87e775e9-e63a-1011-ad82-3e1e513c11bc@linux.intel.com>
+ <20230313064816.kwt5lzjjsyrpwtzk@zkempczy-mobl2>
+From: "Das, Nirmoy" <nirmoy.das@linux.intel.com>
+In-Reply-To: <20230313064816.kwt5lzjjsyrpwtzk@zkempczy-mobl2>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Subject: Re: [igt-dev] [PATCH i-g-t 17/18] xe_mmap: skip VRAM tests if no
+ VRAM is found
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,127 +24,59 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On 3/17/23 10:47, Hersen Wu wrote:
-> array size of data.output is 6. when n_outputs is greater than 6,
-> test will crash. valid combinations of pipe and output are available
-> for pipes with display->pipes[i].enable = true. macro for_each_pipe
-> should be used for loop.
-> 
-> Signed-off-by: Hersen Wu <hersenxs.wu@amd.com>
 
-Reviewed-by: Hamza Mahfooz <hamza.mahfooz@amd.com>
+On 3/13/2023 7:48 AM, Zbigniew Kempczyński wrote:
+> On Fri, Mar 10, 2023 at 11:52:15AM +0100, Das, Nirmoy wrote:
+>> On 3/10/2023 9:23 AM, Zbigniew Kempczyński wrote:
+>>> From: Mauro Carvalho Chehab <mchehab@kernel.org>
+>>>
+>>> Instead of producing an error, if there's no VRAM, the test
+>>> should be skipped. There's a logic there that would be doing
+>>> that, except that it doesn't really work :-)
+>>>
+>>> Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+>>> Acked-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+>>> ---
+>>>    tests/xe/xe_mmap.c | 3 +--
+>>>    1 file changed, 1 insertion(+), 2 deletions(-)
+>>>
+>>> diff --git a/tests/xe/xe_mmap.c b/tests/xe/xe_mmap.c
+>>> index 9dce6adbe2..6b313a1895 100644
+>>> --- a/tests/xe/xe_mmap.c
+>>> +++ b/tests/xe/xe_mmap.c
+>>> @@ -42,8 +42,7 @@ test_mmap(int fd, uint32_t flags)
+>>>    	uint64_t mmo;
+>>>    	void *map;
+>>> -	if (flags & vram_memory(fd, 0))
+>>> -		igt_require(xe_has_vram(fd));
+>> This check should go to the igt_main instead.
+> You mean to igt_subtest()? In igt_main() you can't use fd.
 
-> ---
->   tests/amdgpu/amd_dp_dsc.c | 22 +++++++++++-----------
->   1 file changed, 11 insertions(+), 11 deletions(-)
-> 
-> diff --git a/tests/amdgpu/amd_dp_dsc.c b/tests/amdgpu/amd_dp_dsc.c
-> index b3f3cafb..e782ce84 100644
-> --- a/tests/amdgpu/amd_dp_dsc.c
-> +++ b/tests/amdgpu/amd_dp_dsc.c
-> @@ -110,7 +110,7 @@ static void test_dsc_enable(data_t *data)
->   	test_init(data);
->   	igt_enable_connectors(data->fd);
->   
-> -	for (i = 0; i < display->n_outputs; i++) {
-> +	for_each_pipe(&data->display, i) {
->   		/* Setup the output */
->   		output = data->output[i];
->   		if (!output || !igt_output_is_connected(output))
-> @@ -248,7 +248,7 @@ static void test_dsc_slice_dimensions_change(data_t *data)
->   	test_init(data);
->   	igt_enable_connectors(data->fd);
->   
-> -	for (i = 0; i < display->n_outputs; i++) {
-> +	for_each_pipe(&data->display, i) {
->   		/* Setup the output */
->   		output = data->output[i];
->   		if (!output || !igt_output_is_connected(output))
-> @@ -341,7 +341,7 @@ static void test_dsc_link_settings(data_t *data)
->       test_init(data);
->   
->       /* Setup all outputs */
-> -	for (i = 0; i < display->n_outputs; i++) {
-> +	for_each_pipe(&data->display, i) {
->   		output = data->output[i];
->   		if (!output || !igt_output_is_connected(output))
->   			continue;
-> @@ -358,7 +358,7 @@ static void test_dsc_link_settings(data_t *data)
->   	igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, 0);
->   
->       /* Collect reference CRCs */
-> -	for (i = 0; i < display->n_outputs; i++) {
-> +	for_each_pipe(&data->display, i) {
->   		output = data->output[i];
->   		if (!output || !igt_output_is_connected(output))
->   			continue;
-> @@ -369,7 +369,7 @@ static void test_dsc_link_settings(data_t *data)
->   	for (lc = 0; lc < ARRAY_SIZE(lane_count_vals); lc++) {
->   		for (lr = 0; lr < ARRAY_SIZE(link_rate_vals); lr++) {
->   			/* Write new link_settings */
-> -			for (i = 0; i < display->n_outputs; i++) {
-> +			for_each_pipe(&data->display, i) {
->   				output = data->output[i];
->   				if (!output || !igt_output_is_connected(output))
->   					continue;
-> @@ -387,7 +387,7 @@ static void test_dsc_link_settings(data_t *data)
->   			/* Trigger commit after writing new link settings */
->   			igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
->   
-> -			for (i = 0; i < display->n_outputs; i++) {
-> +			for_each_pipe(&data->display, i) {
->   				output = data->output[i];
->   				if (!output || !igt_output_is_connected(output))
->   					continue;
-> @@ -416,7 +416,7 @@ static void test_dsc_link_settings(data_t *data)
->   	}
->   
->   	/* Cleanup all fbs */
-> -	for (i = 0; i < display->n_outputs; i++) {
-> +	for_each_pipe(&data->display, i) {
->   		output = data->output[i];
->   		if (!output || !igt_output_is_connected(output))
->   			continue;
-> @@ -439,7 +439,7 @@ static void test_dsc_bpc(data_t *data)
->       test_init(data);
->   
->   	/* Find max supported bpc */
-> -	for (i = 0; i < display->n_outputs; i++) {
-> +	for_each_pipe(&data->display, i) {
->   		output = data->output[i];
->   		if (!output || !igt_output_is_connected(output))
->   			continue;
-> @@ -451,7 +451,7 @@ static void test_dsc_bpc(data_t *data)
->   	for (bpc = 0; bpc < ARRAY_SIZE(bpc_vals); bpc++) {
->   		igt_info("Testing bpc = %d\n", bpc_vals[bpc]);
->   
-> -		for (i = 0; i < display->n_outputs; i++) {
-> +		for_each_pipe(&data->display, i) {
->   			output = data->output[i];
->   			if (!output || !igt_output_is_connected(output))
->   				continue;
-> @@ -474,7 +474,7 @@ static void test_dsc_bpc(data_t *data)
->   
->   		igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, 0);
->   
-> -		for (i = 0; i < display->n_outputs; i++) {
-> +		for_each_pipe(&data->display, i) {
->   			output = data->output[i];
->   			if (!output || !igt_output_is_connected(output))
->   				continue;
-> @@ -501,7 +501,7 @@ static void test_dsc_bpc(data_t *data)
->   		}
->   
->   		/* Cleanup all fbs */
-> -		for (i = 0; i < display->n_outputs; i++) {
-> +		for_each_pipe(&data->display, i) {
->   			output = data->output[i];
->   			if (!output || !igt_output_is_connected(output))
->   				continue;
+Ah okay.  Yes then we can't do much.
 
--- 
-Hamza
+> IMO change is ok, if there's no region on xe fd flags passed == 0
+> what will cause skip on require.
+
+
+I am fine with the change. It was that xe_has_vram() seemed more readable.
+
+
+Thanks,
+
+Nirmoy
+
+>
+> --
+> Zbigniew
+>
+>>
+>> Nirmoy
+>>
+>>> +	igt_require_f(flags, "Device doesn't support such memory region\n");
+>>>    	bo = xe_bo_create_flags(fd, 0, 4096, flags);
+>>>    	mmo = xe_bo_mmap_offset(fd, bo);
