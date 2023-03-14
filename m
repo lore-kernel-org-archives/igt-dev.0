@@ -1,19 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 696AA10E0D2
- for <igt-dev@lists.freedesktop.org>; Tue, 14 Mar 2023 11:21:05 +0000 (UTC)
-Date: Tue, 14 Mar 2023 12:20:37 +0100
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E4E4E10E0DA
+ for <igt-dev@lists.freedesktop.org>; Tue, 14 Mar 2023 11:38:11 +0000 (UTC)
+Date: Tue, 14 Mar 2023 12:38:08 +0100
 From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 To: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Message-ID: <20230314112037.67m33u3crzh65nx3@zkempczy-mobl2>
+Message-ID: <20230314113808.qj5osq4phyxgqivi@zkempczy-mobl2>
 References: <20230314105452.2169208-1-bhanuprakash.modem@intel.com>
- <20230314105452.2169208-5-bhanuprakash.modem@intel.com>
+ <20230314105452.2169208-6-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20230314105452.2169208-5-bhanuprakash.modem@intel.com>
-Subject: Re: [igt-dev] [i-g-t 4/5] lib/intel_chipset: Add support to XE
- driver to get devid
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20230314105452.2169208-6-bhanuprakash.modem@intel.com>
+Subject: Re: [igt-dev] [i-g-t 5/5] lib/igt_kms: Cache xe_device info for kms
+ tests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,88 +27,58 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Tue, Mar 14, 2023 at 04:24:51PM +0530, Bhanuprakash Modem wrote:
-> As many tests are using intel devid, add a helper to get it for
-> XE driver.
+On Tue, Mar 14, 2023 at 04:24:52PM +0530, Bhanuprakash Modem wrote:
+> Create or get xe_device data from Cache, so that all KMS tests
+> will utilize.
 > 
 > Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 > ---
->  lib/intel_chipset.c | 30 ++++++++++++++++++++----------
->  1 file changed, 20 insertions(+), 10 deletions(-)
+>  lib/igt_kms.c | 8 ++++++++
+>  1 file changed, 8 insertions(+)
 > 
-> diff --git a/lib/intel_chipset.c b/lib/intel_chipset.c
-> index efb6f1771..73dbd813d 100644
-> --- a/lib/intel_chipset.c
-> +++ b/lib/intel_chipset.c
-> @@ -41,6 +41,7 @@
->  #include "drmtest.h"
->  #include "intel_chipset.h"
->  #include "igt_core.h"
+> diff --git a/lib/igt_kms.c b/lib/igt_kms.c
+> index 84091d5ce..d88863a90 100644
+> --- a/lib/igt_kms.c
+> +++ b/lib/igt_kms.c
+> @@ -59,6 +59,7 @@
+>  #include "igt_device.h"
+>  #include "igt_sysfs.h"
+>  #include "sw_sync.h"
 > +#include "xe/xe_query.h"
+>  #ifdef HAVE_CHAMELIUM
+>  #include "igt_chamelium.h"
+>  #endif
+> @@ -2541,6 +2542,9 @@ void igt_display_require(igt_display_t *display, int drm_fd)
+>  	}
+>  #endif
 >  
->  /**
->   * SECTION:intel_chipset
-> @@ -112,9 +113,22 @@ intel_get_pci_device(void)
->  	return pci_dev;
->  }
->  
-> +static uint32_t __i915_get_drm_devid(int fd)
-> +{
-> +	struct drm_i915_getparam gp;
-> +	int devid = 0;
+> +	if (is_xe_device(drm_fd))
+> +		xe_device_get(drm_fd);
 > +
-> +	memset(&gp, 0, sizeof(gp));
-> +	gp.param = I915_PARAM_CHIPSET_ID;
-> +	gp.value = &devid;
-> +	ioctl(fd, DRM_IOCTL_I915_GETPARAM, &gp, sizeof(gp));
-> +
-> +	return devid;
-> +}
-> +
->  /**
->   * intel_get_drm_devid:
-> - * @fd: open i915 drm file descriptor
-> + * @fd: open i915/xe drm file descriptor
->   *
->   * Queries the kernel for the pci device id corresponding to the drm file
->   * descriptor.
-> @@ -125,22 +139,18 @@ intel_get_pci_device(void)
->  uint32_t
->  intel_get_drm_devid(int fd)
->  {
-> -	struct drm_i915_getparam gp;
->  	const char *override;
-> -	int devid = 0;
->  
-> -	igt_assert(is_i915_device(fd));
-> +	igt_assert(is_intel_device(fd));
->  
->  	override = getenv("INTEL_DEVID_OVERRIDE");
->  	if (override)
->  		return strtol(override, NULL, 0);
->  
-> -	memset(&gp, 0, sizeof(gp));
-> -	gp.param = I915_PARAM_CHIPSET_ID;
-> -	gp.value = &devid;
-> -	ioctl(fd, DRM_IOCTL_I915_GETPARAM, &gp, sizeof(gp));
-> -
-> -	return devid;
-> +	if (is_i915_device(fd))
-> +		return __i915_get_drm_devid(fd);
-> +	else
-> +		return xe_dev_id(fd);
 
-This is the problem, it depends on implicit xe_device calls I've
-added to cache driver/hw settings, but this function shouldn't
-rely on it. I mean similar to __i915_get_drm_devid() you should
-create helper which doesn't depend on anything.
+Maybe in the future we will try to use xe_device more explicitly but at
+the moment it would require to rewrite almost everything. So for this
+change in the library:
+
+Acked-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 
 --
 Zbigniew
 
->  }
+>  	/*
+>  	 * With non-contiguous pipes display, crtc mapping is not always same
+>  	 * as pipe mapping, In i915 pipe is enum id of i915's crtc object.
+> @@ -2889,6 +2893,10 @@ static void igt_output_fini(igt_output_t *output)
+>  void igt_display_fini(igt_display_t *display)
+>  {
+>  	int i;
+> +	int drm_fd = display->drm_fd;
+> +
+> +	if (is_xe_device(drm_fd))
+> +		xe_device_put(drm_fd);
 >  
->  /**
+>  	for (i = 0; i < display->n_planes; ++i) {
+>  		igt_plane_t *plane = &display->planes[i];
 > -- 
 > 2.39.1
 > 
