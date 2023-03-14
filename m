@@ -1,16 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 19A9010EA94
- for <igt-dev@lists.freedesktop.org>; Tue, 14 Mar 2023 16:10:33 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7DBAD10EA94
+ for <igt-dev@lists.freedesktop.org>; Tue, 14 Mar 2023 16:10:34 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org,
 	zbigniew.kempczynski@intel.com
-Date: Tue, 14 Mar 2023 21:34:58 +0530
-Message-Id: <20230314160503.2237121-1-bhanuprakash.modem@intel.com>
+Date: Tue, 14 Mar 2023 21:35:01 +0530
+Message-Id: <20230314160503.2237121-4-bhanuprakash.modem@intel.com>
+In-Reply-To: <20230314160503.2237121-1-bhanuprakash.modem@intel.com>
+References: <20230314160503.2237121-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V2 0/5] Add basic helpers to support display in XE
+Subject: [igt-dev] [i-g-t V2 3/5] lib/xe/xe_query: Add dev_id() interface
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,30 +24,66 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add basic helpers to enbale the display in XE.
+Add support to query XE_QUERY_CONFIG_REV_AND_DEVICE_ID.
 
-This series includes:
-- XE device detection
-- s/igt_require_intel/igt_require_i915/
-- Cache dev_id
+V2: - Use uint16_t as value is truncating with 0xffff (Zbigniew)
 
-Bhanuprakash Modem (5):
-  lib/drmtest: Add helpers to check and require the XE driver
-  i915: s/igt_require_intel/igt_require_i915
-  lib/xe/xe_query: Add dev_id() interface
-  lib/intel_chipset: Add support to XE driver to get devid
-  lib/igt_kms: Cache xe_device info for kms tests
+Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+Reviewed-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+---
+ lib/xe/xe_query.c | 9 +++++++++
+ lib/xe/xe_query.h | 4 ++++
+ 2 files changed, 13 insertions(+)
 
- lib/drmtest.c       | 20 +++++++++++++++++
- lib/drmtest.h       |  4 ++++
- lib/i915/gem.c      |  2 +-
- lib/igt_fb.c        |  6 ++---
- lib/igt_kms.c       | 10 ++++++++-
- lib/intel_chipset.c | 54 ++++++++++++++++++++++++++++++++++++---------
- lib/xe/xe_query.c   |  9 ++++++++
- lib/xe/xe_query.h   |  4 ++++
- tests/i915/perf.c   |  2 +-
- 9 files changed, 95 insertions(+), 16 deletions(-)
-
---
+diff --git a/lib/xe/xe_query.c b/lib/xe/xe_query.c
+index a6926057f..e27d14383 100644
+--- a/lib/xe/xe_query.c
++++ b/lib/xe/xe_query.c
+@@ -247,6 +247,7 @@ struct xe_device *xe_device_get(int fd)
+ 	xe_dev->config = xe_query_config_new(fd);
+ 	xe_dev->number_gt = xe_dev->config->info[XE_QUERY_CONFIG_GT_COUNT];
+ 	xe_dev->va_bits = xe_dev->config->info[XE_QUERY_CONFIG_VA_BITS];
++	xe_dev->dev_id = xe_dev->config->info[XE_QUERY_CONFIG_REV_AND_DEVICE_ID] & 0xffff;
+ 	xe_dev->gts = xe_query_gts_new(fd);
+ 	xe_dev->memory_regions = __memory_regions(xe_dev->gts);
+ 	xe_dev->hw_engines = xe_query_engines_new(fd, &xe_dev->number_hw_engines);
+@@ -465,6 +466,14 @@ xe_dev_FN(xe_supports_faults, supports_faults, bool);
+  */
+ xe_dev_FN(xe_va_bits, va_bits, uint32_t);
+ 
++/**
++ * xe_dev_id:
++ * @fd: xe device fd
++ *
++ * Returns Device id of xe device @fd.
++ */
++xe_dev_FN(xe_dev_id, dev_id, uint32_t);
++
+ igt_constructor
+ {
+ 	xe_device_cache_init();
+diff --git a/lib/xe/xe_query.h b/lib/xe/xe_query.h
+index fe1343f61..13ac77d3d 100644
+--- a/lib/xe/xe_query.h
++++ b/lib/xe/xe_query.h
+@@ -58,6 +58,9 @@ struct xe_device {
+ 
+ 	/** @va_bits: va length in bits */
+ 	uint32_t va_bits;
++
++	/** @dev_id: Device id of xe device */
++	uint16_t dev_id;
+ };
+ 
+ #define for_each_hw_engine(__fd, __hwe) \
+@@ -85,6 +88,7 @@ bool xe_has_vram(int fd);
+ uint64_t xe_vram_size(int fd, int gt);
+ uint32_t xe_get_default_alignment(int fd);
+ uint32_t xe_va_bits(int fd);
++uint32_t xe_dev_id(int fd);
+ bool xe_supports_faults(int fd);
+ const char *xe_engine_class_string(uint32_t engine_class);
+ 
+-- 
 2.39.1
