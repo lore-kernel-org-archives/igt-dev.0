@@ -1,18 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E215010E81E
- for <igt-dev@lists.freedesktop.org>; Tue, 14 Mar 2023 14:44:43 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 12DED10E816
+ for <igt-dev@lists.freedesktop.org>; Tue, 14 Mar 2023 14:44:38 +0000 (UTC)
 From: Karolina Stolarek <karolina.stolarek@intel.com>
 To: igt-dev@lists.freedesktop.org
-Date: Tue, 14 Mar 2023 15:44:35 +0100
-Message-Id: <af61dd51dd90df03d2f563adf322e115aa539493.1678804829.git.karolina.stolarek@intel.com>
-In-Reply-To: <cover.1678804829.git.karolina.stolarek@intel.com>
-References: <cover.1678804829.git.karolina.stolarek@intel.com>
+Date: Tue, 14 Mar 2023 15:44:32 +0100
+Message-Id: <cover.1678804829.git.karolina.stolarek@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t v3 3/8] lib/intel_device_info: Add tiling
- information for early gens
+Subject: [igt-dev] [PATCH i-g-t v3 0/8] Update gem_blits for newer
+ generations
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,151 +22,56 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Update relevant intel_device_info entries to store information
-on supported tiling formats.
+gem_blits test utilizes XY_SRC_COPY_BLT, a legacy blitter command
+that is not available on newer generations such as MTL. To make
+sure the test covers such platforms, update it to switch to
+XY_FAST_COPY_BLT for blit copy operations.
 
-Signed-off-by: Karolina Stolarek <karolina.stolarek@intel.com>
-Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
----
- lib/intel_device_info.c | 17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
+In addition to this change, the series:
+  1) Adds helpers to i915_blt library that check support for
+     XY_SRC_COPY_BLT command and its capabilities
+  2) Updates the definitions of older platforms to properly list
+     all available commands and tilings
+  3) Updates gem_blits to use aforementioned helpers to detect
+     tiling formats supported by the platform
 
-diff --git a/lib/intel_device_info.c b/lib/intel_device_info.c
-index 0baad721..bda4fb63 100644
---- a/lib/intel_device_info.c
-+++ b/lib/intel_device_info.c
-@@ -27,12 +27,14 @@ static const struct intel_device_info intel_i830_info = {
- 	.graphics_ver = 2,
- 	.display_ver = 2,
- 	.is_almador = true,
-+	.cmds_info = &pre_gen6_cmds_info,
- 	.codename = "almador"
- };
- static const struct intel_device_info intel_i845_info = {
- 	.graphics_ver = 2,
- 	.display_ver = 2,
- 	.is_brookdale = true,
-+	.cmds_info = &pre_gen6_cmds_info,
- 	.codename = "brookdale"
- };
- static const struct intel_device_info intel_i855_info = {
-@@ -40,12 +42,14 @@ static const struct intel_device_info intel_i855_info = {
- 	.display_ver = 2,
- 	.is_mobile = true,
- 	.is_montara = true,
-+	.cmds_info = &pre_gen6_cmds_info,
- 	.codename = "montara"
- };
- static const struct intel_device_info intel_i865_info = {
- 	.graphics_ver = 2,
- 	.display_ver = 2,
- 	.is_springdale = true,
-+	.cmds_info = &pre_gen6_cmds_info,
- 	.codename = "spingdale"
- };
- 
-@@ -53,6 +57,7 @@ static const struct intel_device_info intel_i915_info = {
- 	.graphics_ver = 3,
- 	.display_ver = 3,
- 	.is_grantsdale = true,
-+	.cmds_info = &pre_gen6_cmds_info,
- 	.codename = "grantsdale"
- };
- static const struct intel_device_info intel_i915m_info = {
-@@ -60,12 +65,14 @@ static const struct intel_device_info intel_i915m_info = {
- 	.display_ver = 3,
- 	.is_mobile = true,
- 	.is_alviso = true,
-+	.cmds_info = &pre_gen6_cmds_info,
- 	.codename = "alviso"
- };
- static const struct intel_device_info intel_i945_info = {
- 	.graphics_ver = 3,
- 	.display_ver = 3,
- 	.is_lakeport = true,
-+	.cmds_info = &pre_gen6_cmds_info,
- 	.codename = "lakeport"
- };
- static const struct intel_device_info intel_i945m_info = {
-@@ -73,6 +80,7 @@ static const struct intel_device_info intel_i945m_info = {
- 	.display_ver = 3,
- 	.is_mobile = true,
- 	.is_calistoga = true,
-+	.cmds_info = &pre_gen6_cmds_info,
- 	.codename = "calistoga"
- };
- 
-@@ -80,6 +88,7 @@ static const struct intel_device_info intel_g33_info = {
- 	.graphics_ver = 3,
- 	.display_ver = 3,
- 	.is_bearlake = true,
-+	.cmds_info = &pre_gen6_cmds_info,
- 	.codename = "bearlake"
- };
- 
-@@ -87,6 +96,7 @@ static const struct intel_device_info intel_pineview_g_info = {
- 	.graphics_ver = 3,
- 	.display_ver = 3,
- 	.is_pineview = true,
-+	.cmds_info = &pre_gen6_cmds_info,
- 	.codename = "pineview"
- };
- 
-@@ -95,6 +105,7 @@ static const struct intel_device_info intel_pineview_m_info = {
- 	.display_ver = 3,
- 	.is_mobile = true,
- 	.is_pineview = true,
-+	.cmds_info = &pre_gen6_cmds_info,
- 	.codename = "pineview"
- };
- 
-@@ -102,6 +113,7 @@ static const struct intel_device_info intel_i965_info = {
- 	.graphics_ver = 4,
- 	.display_ver = 4,
- 	.is_broadwater = true,
-+	.cmds_info = &pre_gen6_cmds_info,
- 	.codename = "broadwater"
- };
- 
-@@ -110,6 +122,7 @@ static const struct intel_device_info intel_i965m_info = {
- 	.display_ver = 4,
- 	.is_mobile = true,
- 	.is_crestline = true,
-+	.cmds_info = &pre_gen6_cmds_info,
- 	.codename = "crestline"
- };
- 
-@@ -117,6 +130,7 @@ static const struct intel_device_info intel_g45_info = {
- 	.graphics_ver = 4,
- 	.display_ver = 4,
- 	.is_eaglelake = true,
-+	.cmds_info = &pre_gen6_cmds_info,
- 	.codename = "eaglelake"
- };
- static const struct intel_device_info intel_gm45_info = {
-@@ -124,6 +138,7 @@ static const struct intel_device_info intel_gm45_info = {
- 	.display_ver = 4,
- 	.is_mobile = true,
- 	.is_cantiga = true,
-+	.cmds_info = &pre_gen6_cmds_info,
- 	.codename = "cantiga"
- };
- 
-@@ -131,6 +146,7 @@ static const struct intel_device_info intel_ironlake_info = {
- 	.graphics_ver = 5,
- 	.display_ver = 5,
- 	.is_ironlake = true,
-+	.cmds_info = &pre_gen6_cmds_info,
- 	.codename = "ironlake" /* clarkdale? */
- };
- static const struct intel_device_info intel_ironlake_m_info = {
-@@ -138,6 +154,7 @@ static const struct intel_device_info intel_ironlake_m_info = {
- 	.display_ver = 5,
- 	.is_mobile = true,
- 	.is_arrandale = true,
-+	.cmds_info = &pre_gen6_cmds_info,
- 	.codename = "arrandale"
- };
- 
+v3:
+  - Rebase the changes, as they stopped applying cleanly
+  - Add static asserts on tiling enums, to make sure that changing
+    defines or blt_tiling_type results in a compiler error
+  - Reorder T_YFMAJOR value to it directly follows Tile4. Thanks to
+    __block_tiling() and __fast_tiling() switches, this change
+    shouldn't break gem_ccs/gem_exercise_blt tests
+
+v2:
+  - Remove libdrm include in "tests/i915/gem_blits: Add XY_FAST_COPY_BLT
+    support for gem_blits". It's not needed and causes compile errors
+    on some targets
+
+Arjun Melkaveri (2):
+  tests/i915/gem_blits: Use new copy instruction
+  tests/i915/gem_blits: Add XY_FAST_COPY_BLT support for gem_blits
+
+Karolina Stolarek (5):
+  lib/i915_blt: Add helpers to check XY_SRC_COPY support
+  lib/intel_cmds_info: Correct tiling formats for XY_SRC_COPY
+  lib/intel_device_info: Add tiling information for early gens
+  lib/intel_cmds_info: Reorder blt_tiling_type enum
+  tests/gem_blits: Use intel_cmds_info library
+
+Vikas Srivastava (1):
+  lib/intel_batchbuffer: Add wrapper API to use
+    XY_FAST_COPY_BLT/XY_SRC_BLT
+
+ lib/i915/i915_blt.c        |  39 ++++++++++
+ lib/i915/i915_blt.h        |   2 +
+ lib/i915/intel_cmds_info.c |  24 ++++--
+ lib/i915/intel_cmds_info.h |   5 +-
+ lib/intel_batchbuffer.c    |  82 +++++++++++++++++--
+ lib/intel_batchbuffer.h    |  28 +++++++
+ lib/intel_device_info.c    |  29 +++++--
+ tests/i915/gem_blits.c     | 156 ++++++++++++++++++++++++-------------
+ 8 files changed, 289 insertions(+), 76 deletions(-)
+
 -- 
 2.25.1
