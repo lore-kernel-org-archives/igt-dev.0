@@ -1,19 +1,22 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9739910E5A2
- for <igt-dev@lists.freedesktop.org>; Mon, 13 Mar 2023 16:08:54 +0000 (UTC)
-Date: Mon, 13 Mar 2023 17:04:03 +0100
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Message-ID: <20230313160403.ufchmzs7n6kc7n5o@kamilkon-desk1>
-References: <20230215004648.2100655-1-umesh.nerlige.ramappa@intel.com>
- <20230215004648.2100655-21-umesh.nerlige.ramappa@intel.com>
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E1F3D10E2C2
+ for <igt-dev@lists.freedesktop.org>; Tue, 14 Mar 2023 21:46:35 +0000 (UTC)
+From: "Teres Alexis, Alan Previn" <alan.previn.teres.alexis@intel.com>
+To: "Dong, Zhanjun" <zhanjun.dong@intel.com>, "igt-dev@lists.freedesktop.org"
+ <igt-dev@lists.freedesktop.org>
+Date: Tue, 14 Mar 2023 21:46:27 +0000
+Message-ID: <7421415def6d627b3398b2c17371fac505f7e1df.camel@intel.com>
+References: <20221206085849.271505-2-alan.previn.teres.alexis@intel.com>
+ <5122d036-9fed-3ebd-5680-574596d6b74a@intel.com>
+In-Reply-To: <5122d036-9fed-3ebd-5680-574596d6b74a@intel.com>
+Content-Language: en-US
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <A96E31DB272C7844A8E8C4F0A9EEFB8E@namprd11.prod.outlook.com>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20230215004648.2100655-21-umesh.nerlige.ramappa@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 20/31] lib/perf: Add support for OAM
- format in codegen
+Subject: Re: [igt-dev] [i-g-t, v2,
+ 01/11] tools/intel_guc_logger: Re-enable basic functionality
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,217 +24,40 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: Lionel G Landwerlin <lionel.g.landwerlin@linux.intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On 2023-02-14 at 16:46:37 -0800, Umesh Nerlige Ramappa wrote:
-> Include OAM samedia format for MTL.
-------------- ^
-imho it would help if you write full name here, is it
-sample media ?
-
-Acked-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-
-Regards,
-Kamil
-
-> 
-> Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
-> ---
->  lib/i915/perf-configs/mdapi-xml-convert.py | 118 +++++++++++++++++++--
->  1 file changed, 112 insertions(+), 6 deletions(-)
-> 
-> diff --git a/lib/i915/perf-configs/mdapi-xml-convert.py b/lib/i915/perf-configs/mdapi-xml-convert.py
-> index eee12ad5..ba0b7ba4 100755
-> --- a/lib/i915/perf-configs/mdapi-xml-convert.py
-> +++ b/lib/i915/perf-configs/mdapi-xml-convert.py
-> @@ -135,6 +135,36 @@ xehpsdv_chipset_params = {
->  
->  # There is no ReportType field in most Metrics XML files, Use 256B_GENERIC_NOA16
->  # to denote the generic 256 byte format that is used by most chipsets
-> +# Just treat the MPEC counter names as A counters here. If a format has both A
-> +# and MPEC counters, then we need to change this.
-> +mtl_chipset_oam_samedia_ll_params = {
-> +    'a_offset': 32,
-> +    'b_offset': 96,
-> +    'c_offset': 128,
-> +    'oa_report_size': 192,
-> +    'config_reg_blacklist': {
-> +        0x2364, # OACTXID
-> +    },
-> +    'register_offsets': {
-> +        0x1b0: 'PERFCNT 0',
-> +        0x1b8: 'PERFCNT 1',
-> +    }
-> +}
-> +
-> +mtl_chipset_oam_samedia_params = {
-> +    'a_offset': 32,
-> +    'b_offset': 64,
-> +    'c_offset': 96,
-> +    'oa_report_size': 128,
-> +    'config_reg_blacklist': {
-> +        0x2364, # OACTXID
-> +    },
-> +    'register_offsets': {
-> +        0x1b0: 'PERFCNT 0',
-> +        0x1b8: 'PERFCNT 1',
-> +    }
-> +}
-> +
->  hsw_chipset_oa_formats = {
->      '256B_GENERIC_NOA16': hsw_chipset_params,
->  }
-> @@ -147,6 +177,11 @@ xehpsdv_chipset_oa_formats = {
->      '256B_GENERIC_NOA16': xehpsdv_chipset_params,
->  }
->  
-> +mtl_chipset_oa_formats = {
-> +    '256B_GENERIC_NOA16': xehpsdv_chipset_params,
-> +    '192B_MPEC8LL_NOA16': mtl_chipset_oam_samedia_ll_params,
-> +    '128B_MPEC8_NOA16': mtl_chipset_oam_samedia_params,
-> +}
->  
->  chipsets = {
->      'HSW': hsw_chipset_oa_formats,
-> @@ -165,7 +200,7 @@ chipsets = {
->      'DG1': gen8_11_chipset_oa_formats,
->      'ADL': gen8_11_chipset_oa_formats,
->      'ACM': xehpsdv_chipset_oa_formats,
-> -    'MTL': xehpsdv_chipset_oa_formats,
-> +    'MTL': mtl_chipset_oa_formats,
->  }
->  
->  xehp_plus = ( 'ACM', 'MTL' )
-> @@ -202,7 +237,62 @@ def read_value(chipset, offset, oa_format):
->      assert 0
->  
->  
-> -def read_token_to_rpn_read(chipset, token, raw_offsets, oa_format):
-> +def read_token_to_rpn_read_oam(chipset, token, raw_offsets, oa_format):
-> +    width, offset_str = token.split('@')
-> +    offset = int(offset_str, 16)
-> +
-> +    if width == 'qw':
-> +        den = 8
-> +    else:
-> +        den = 4
-> +
-> +    if raw_offsets:
-> +        # Location in the HW reports
-> +        a_offset = chipsets[chipset][oa_format]['a_offset']
-> +        b_offset = chipsets[chipset][oa_format]['b_offset']
-> +        c_offset = chipsets[chipset][oa_format]['c_offset']
-> +        report_size = chipsets[chipset][oa_format]['oa_report_size']
-> +
-> +        if offset < a_offset:
-> +            if offset == 8:
-> +                return "GPU_TIME 0 READ"
-> +            elif offset == 24:
-> +                return "GPU_CLOCK 0 READ"
-> +            else:
-> +                assert 0
-> +        elif offset < b_offset:
-> +            a_cnt_offset = int((offset - a_offset) / den)
-> +            return "A " + str(a_cnt_offset) + " READ"
-> +        elif offset < c_offset:
-> +            return "B " + str(int((offset - b_offset) / den)) + " READ"
-> +        elif offset < report_size:
-> +            return "C " + str(int((offset - c_offset) / den)) + " READ"
-> +        else:
-> +            return "{0} READ".format(read_value(chipset, offset, oa_format))
-> +    else:
-> +        # Location in the accumulated deltas
-> +        idx = int(offset / 8)
-> +        if chipset in xehp_plus:
-> +            # For XEHPSDV the array of accumulated counters is
-> +            # assumed to start with a GPU_TIME then GPU_CLOCK,
-> +            # then 38 A counters, then 8 B counters and finally
-> +            # 8 C counters.
-> +            if idx == 0:
-> +                return "GPU_TIME 0 READ"
-> +            elif idx == 1:
-> +                return "GPU_CLOCK 0 READ"
-> +            elif idx < 40:
-> +                return "A " + str(idx - 2) + " READ"
-> +            elif idx < 48:
-> +                return "B " + str(idx - 40) + " READ"
-> +            elif idx < 56:
-> +                return "C " + str(idx - 48) + " READ"
-> +            else:
-> +                return "{0} READ".format(read_value(chipset, offset, oa_format))
-> +
-> +    assert 0
-> +
-> +def read_token_to_rpn_read_oag(chipset, token, raw_offsets, oa_format):
->      width, offset_str = token.split('@')
->  
->      # For Broadwell the raw read notation was extended for 40 bit
-> @@ -298,6 +388,16 @@ def read_token_to_rpn_read(chipset, token, raw_offsets, oa_format):
->  
->      assert 0
->  
-> +
-> +def read_token_to_rpn_read(chipset, token, raw_offsets, oa_format):
-> +    if oa_format == '256B_GENERIC_NOA16':
-> +        return read_token_to_rpn_read_oag(chipset, token, raw_offsets, oa_format)
-> +
-> +    if oa_format in ['192B_MPEC8LL_NOA16', '128B_MPEC8_NOA16']:
-> +        return read_token_to_rpn_read_oam(chipset, token, raw_offsets, oa_format)
-> +
-> +    assert 0
-> +
->  def replace_read_tokens_with_rpn_read_ops(chipset, oa_format, equation, raw_offsets):
->      # MDAPI MetricSet equations use tokens like 'dw@0xff' for reading raw
->      # values from snapshots, but this doesn't seem convenient for a few
-> @@ -625,10 +725,13 @@ for arg in args.xml:
->      for mdapi_set in mdapi.findall(".//MetricSet"):
->  
->          apis = mdapi_set.get('SupportedAPI')
-> -        if "OGL" not in apis and "OCL" not in apis and "MEDIA" not in apis:
-> +        if "OGL" not in apis and "OCL" not in apis and "MEDIA" not in apis and "IO" not in apis:
->              continue
->  
->          oa_format = '256B_GENERIC_NOA16'
-> +        if mdapi_set.get('ReportType') in chipsets[chipset]:
-> +            oa_format = mdapi_set.get('ReportType')
-> +
->          set_symbol_name = oa_registry.Registry.sanitize_symbol_name(mdapi_set.get('SymbolName'))
->  
->          if set_symbol_name in sets:
-> @@ -647,7 +750,7 @@ for arg in args.xml:
->          if set_symbol_name in set_blacklist:
->              continue
->  
-> -        if mdapi_set.get('SnapshotReportSize') != '256':
-> +        if mdapi_set.get('SnapshotReportSize') != str(chipsets[chipset][oa_format]['oa_report_size']):
->              print_err("WARNING: skipping metric set '{0}', report size {1} invalid".format(set_symbol_name, mdapi_set.get('SnapshotReportSize')))
->              continue
->  
-> @@ -880,8 +983,11 @@ for arg in args.xml:
->              # XXX: As a special case, we override the raw and delta report
->              # equations for the GpuTime counters, which seem inconsistent
->              if mdapi_counter.get('SymbolName') == "GpuTime":
-> -                mdapi_counter.set('SnapshotReportReadEquation', "dw@0x04 1000000000 UMUL $GpuTimestampFrequency UDIV")
->                  mdapi_counter.set('DeltaReportReadEquation', "qw@0x0 1000000000 UMUL $GpuTimestampFrequency UDIV")
-> +                if chipset == 'MTL' and oa_format != '256B_GENERIC_NOA16':
-> +                    mdapi_counter.set('SnapshotReportReadEquation', "qw@0x08 1000000000 UMUL $GpuTimestampFrequency UDIV")
-> +                else:
-> +                    mdapi_counter.set('SnapshotReportReadEquation', "dw@0x04 1000000000 UMUL $GpuTimestampFrequency UDIV")
->  
->              availability = fixup_equation(mdapi_counter.get('AvailabilityEquation'))
->              if availability == "":
-> @@ -919,7 +1025,7 @@ for arg in args.xml:
->                            "(" + mdapi_counter.get('ShortName') + ")" + "\"")
->                  # Media metric counters currently have no delta equation even
->                  # though they have normalization equations that reference $Self
-> -                if "MEDIA" in apis:
-> +                if "MEDIA" in apis or "IO" in apis:
->                      print_err("WARNING: -> Treating inconsistent media metric's 'raw' equation as a 'delta report' equation, but results should be double checked!")
->                      delta_read_eq = raw_read_eq
->                  else:
-> -- 
-> 2.36.1
-> 
+dGhhbmtzIGZvciByZXZpZXdpbmcgLSB3aWxsIHJlcmV2IHdpdGggYmVsb3cgZml4ZXMNCg0KT24g
+RnJpLCAyMDIzLTAxLTIwIGF0IDE1OjI2IC0wNTAwLCBEb25nLCBaaGFuanVuIHdyb3RlOg0KPiBT
+ZWUgbXkgY29tbWVudHMgaW5saW5lIGJlbG93Lg0KPiANCj4gDQo+IFJlZ2FyZHMsDQo+IA0KPiBa
+aGFuanVuIERvbmcNCj4gDQo+IA0KPiBPbiAyMDIyLTEyLTA2IDM6NTggYS5tLiwgQWxhbiBQcmV2
+aW4gd3JvdGU6DQo+ID4gRml4IHRoZXNlIG11bHRpcGxlIGlzc3VlcyB0byBnZXQgYmFzaWMgZnVu
+Y3Rpb25hbGl0eSB1cA0KPiA+IGFuZCBydW5uaW5nIG9uIEd1QyB1c2luZzoNCj4gPiANCj4gPiAN
+Cj4gPiANCmFsYW46c25pcA0KPiA+ICsJc3ViYnVmX3NpemUgPSB0bXBbMF07DQo+ID4gKwlzdWJi
+dWZfY291bnQgPSB0bXBbMV07DQo+IEhvdyBhYm91dCBkZWZpbmUgdG1wW3hdIHRoZSBzYW1lIGRh
+dGEgdHlwZSBhcyBzdWJidWZfeHh4IHRvIGF2b2lkIHR5cGUgDQo+IHJhbmcgZGlmZj8NCj4gPiAN
+Cj4gPiANCnN1cmUgLSB3aWxsIGZpeA0KDQphbGFuOnNuaXANCj4gPiAtCXJldCA9IHdyaXRlKGNv
+bnRyb2xfZmQsIGRhdGEsIHJldCk7DQo+ID4gLQlpZ3RfYXNzZXJ0X2YocmV0ID4gMCwgImNvdWxk
+bid0IHdyaXRlIHRvIHRoZSBsb2cgY29udHJvbCBmaWxlXG4iKTsNCj4gPiArc3RhdGljIHZvaWQg
+Z3VjX2xvZ19jb250cm9sKGJvb2wgZW5hYmxlLCB1aW50MzJfdCBsb2dfbGV2ZWwpDQo+IEhvdyBh
+Ym91dCB0byBoYXZlIHRoZSBzYW1lIGxvZ19sZXZlbCB0eXBlIGFtb25nIHRoZSBmaWxlPw0KDQpy
+aWdodCAtIHdpbGwgZml4IHRoaXMuDQoNCmFsYW46c25pcA0KPiA+ICsNCj4gDQo+IHZhbCBjb3Vs
+ZCBvbmx5IGJlIDAgb3IgMSBpbiB0aGlzIGZ1bmN0aW9uIG5vdywgbm8gdWludDY0IG5lZWRlZCwg
+aXQgDQo+IGNvdWxkIGJlIHNvbWV0aGluZyBsaWtlOg0KPiANCj4gIMKgwqDCoCBzdHIgPSB2YWw/
+ICIweDEiIDogIjB4MCI7DQo+IA0KPiBObyBzdHJpbmcgYWxsb2MvZnJlZSBuZWVkZWQuDQoNCmFs
+YW46IGFjdHVhbGx5IGluIGNvbWluZyBwYXRjaGVzIG1vcmUgd2UgZW5kIHVwIHdpdGggMyBvcHRp
+b25zICIweDEiLCAiMHgyIiBvciAiMHgzIi4NCmluc3RlYWQsIGkgY291bGQgYWRkIGEgbG9jYWwg
+YXJyYXkgb2YgJ2NvbnN0IGNoYXIgKiBhcnJheV9zdHJpbmdzID0geyAiMHgxIiwgIjB4MiIsICIw
+eDMiIH07Jw0KYW5kIHVzZSBzdHJpbmcgJ2FycmF5X3N0cmluZ3NbdmFsLTFdJyAoYWZ0ZXIgdmVy
+aWZ5aW5nIHZhbCk/DQpzaW5jZSBpdHMgYSBrbm93biBzaG9ydCBsaXN0LCB3ZSBkb250IG5lZWQg
+dG8gdXNlIHRoZSBhc3ByaW50Zg0KDQphbGFuOnNuaXANCj4gPiBAQCAtNDA0LDYgKzQ3NiwxMSBA
+QCBpbnQgbWFpbihpbnQgYXJnYywgY2hhciAqKmFyZ3YpDQo+ID4gICAJaW50IG5mZHM7DQo+ID4g
+ICAJaW50IHJldDsNCj4gPiAgIA0KPiA+ICsJZHJtX2ZkID0gZHJtX29wZW5fZHJpdmVyKERSSVZF
+Ul9JTlRFTCk7DQo+ID4gKwlpZ3RfYXNzZXJ0KGRybV9mZCAhPSAtMSk7DQo+ID4gKwlpZ3RfYXNz
+ZXJ0X25lcShhc3ByaW50ZigmZ3VjZnNwYXRoLCAiZ3QwL3VjIiksIC0xKTsNCj4gPiArDQo+ID4g
+KwlnZXRfZ3VjX3N1YmJ1Zl9pbmZvKCk7DQo+ID4gICAJcHJvY2Vzc19jb21tYW5kX2xpbmUoYXJn
+YywgYXJndik7DQo+ID4gICANCj4gQ2FuIHdlIHBhcnNlIG9wdGlvbnMgYmVmb3JlIG9wZW4gZHJp
+dmVyPyBXaGVuIHJ1biB3aXRoIC1oLCBvcGVuIGRyaXZlciANCj4gaXMgbm90IGV4cGVjdGVkLg0K
+DQphbGFuOiBhcyBwZXIgb3VyIG9mZmxpbmUgam9pbnQgZGVidWc6IHllcyBkZWZpbml0ZWx5IDop
+DQoNCg==
