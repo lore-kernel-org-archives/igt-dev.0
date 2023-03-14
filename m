@@ -1,19 +1,26 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A65FB10E78E
- for <igt-dev@lists.freedesktop.org>; Tue, 14 Mar 2023 11:57:56 +0000 (UTC)
-Date: Tue, 14 Mar 2023 12:57:52 +0100
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5883B10E162
+ for <igt-dev@lists.freedesktop.org>; Tue, 14 Mar 2023 11:41:42 +0000 (UTC)
+Received: from linux.intel.com (maurocar-mobl2.ger.corp.intel.com
+ [10.252.14.106])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by linux.intel.com (Postfix) with ESMTPS id 77B11580BF2
+ for <igt-dev@lists.freedesktop.org>; Tue, 14 Mar 2023 04:41:32 -0700 (PDT)
+Received: from maurocar by linux.intel.com with local (Exim 4.96)
+ (envelope-from <mauro.chehab@linux.intel.com>) id 1pc322-002j49-1y
+ for igt-dev@lists.freedesktop.org; Tue, 14 Mar 2023 12:41:30 +0100
 From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
-To: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Message-ID: <20230314125752.009f197a@maurocar-mobl2>
-In-Reply-To: <20230314105452.2169208-2-bhanuprakash.modem@intel.com>
-References: <20230314105452.2169208-1-bhanuprakash.modem@intel.com>
- <20230314105452.2169208-2-bhanuprakash.modem@intel.com>
+To: igt-dev@lists.freedesktop.org
+Date: Tue, 14 Mar 2023 12:41:22 +0100
+Message-Id: <20230314114127.649447-2-mauro.chehab@linux.intel.com>
+In-Reply-To: <20230314114127.649447-1-mauro.chehab@linux.intel.com>
+References: <20230314114127.649447-1-mauro.chehab@linux.intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Subject: Re: [igt-dev] [i-g-t 1/5] lib/drmtest: Add helpers to check and
- require the XE driver
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t 1/6] xe_test_config.json: do some
+ adjustments at the output hierarchy
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,100 +28,69 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Cc: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Tue, 14 Mar 2023 16:24:48 +0530
-Bhanuprakash Modem <bhanuprakash.modem@intel.com> wrote:
+From: Mauro Carvalho Chehab <mchehab@kernel.org>
 
-> In order to add support for features specific to the XE driver, add
-> helpers for checking and requiring the driver.
-> 
-> This patch will also update igt_require_intel() to support XE, and
-> create new helper igt_require_i915() as both i915 & XE belongs to
-> intel.
-> 
-> Credits-to: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-> ---
->  lib/drmtest.c | 20 ++++++++++++++++++++
->  lib/drmtest.h |  4 ++++
->  2 files changed, 24 insertions(+)
-> 
-> diff --git a/lib/drmtest.c b/lib/drmtest.c
-> index 0ceab1038..ef0d4909f 100644
-> --- a/lib/drmtest.c
-> +++ b/lib/drmtest.c
-> @@ -139,6 +139,16 @@ bool is_vc4_device(int fd)
->  	return __is_device(fd, "vc4");
->  }
->  
-> +bool is_xe_device(int fd)
-> +{
-> +	return __is_device(fd, "xe");
-> +}
-> +
-> +bool is_intel_device(int fd)
-> +{
-> +	return is_i915_device(fd) || is_xe_device(fd);
-> +}
-> +
->  static char _forced_driver[16] = "";
->  
->  /**
-> @@ -645,6 +655,11 @@ void igt_require_amdgpu(int fd)
->  }
->  
->  void igt_require_intel(int fd)
-> +{
-> +	igt_require(is_i915_device(fd) || is_xe_device(fd));
+Place "Mega feature" inside the same hierarchical level,
+placing it on a higher level than sub-category, as this provides
+a higher level of group for functionalities.
 
-I would code it as:
+While here, better document the fields.
 
-	igt_require(is_intel_device(fd))
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+---
+ tests/xe/xe_test_config.json | 30 +++++++++++++++---------------
+ 1 file changed, 15 insertions(+), 15 deletions(-)
 
-With that:
-
-Reviewed-by: Mauro Carvalho Chehab <mchehab@kernel.org>
-
-> +}
-> +
-> +void igt_require_i915(int fd)
->  {
->  	igt_require(is_i915_device(fd));
->  }
-> @@ -658,3 +673,8 @@ void igt_require_vc4(int fd)
->  {
->  	igt_require(is_vc4_device(fd));
->  }
-> +
-> +void igt_require_xe(int fd)
-> +{
-> +	igt_require(is_xe_device(fd));
-> +}
-> diff --git a/lib/drmtest.h b/lib/drmtest.h
-> index 448ac03b4..392470ac0 100644
-> --- a/lib/drmtest.h
-> +++ b/lib/drmtest.h
-> @@ -99,8 +99,10 @@ int __drm_open_driver_render(int chipset);
->  
->  void igt_require_amdgpu(int fd);
->  void igt_require_intel(int fd);
-> +void igt_require_i915(int fd);
->  void igt_require_nouveau(int fd);
->  void igt_require_vc4(int fd);
-> +void igt_require_xe(int fd);
->  
->  bool is_amdgpu_device(int fd);
->  bool is_i915_device(int fd);
-> @@ -108,6 +110,8 @@ bool is_mtk_device(int fd);
->  bool is_msm_device(int fd);
->  bool is_nouveau_device(int fd);
->  bool is_vc4_device(int fd);
-> +bool is_xe_device(int fd);
-> +bool is_intel_device(int fd);
->  
->  /**
->   * do_or_die:
+diff --git a/tests/xe/xe_test_config.json b/tests/xe/xe_test_config.json
+index 6c474d6053f3..666fe6cd315c 100644
+--- a/tests/xe/xe_test_config.json
++++ b/tests/xe/xe_test_config.json
+@@ -4,27 +4,27 @@
+     "fields": {
+         "Category": {
+             "_properties_": {
+-                "description": "Contains the major group for the tested functionality"
++                "description": "Contains the major group for the tested functionality, being hardware, software or firmware"
+             },
+-            "Sub-category": {
++            "Mega feature": {
+                 "_properties_": {
+-                    "description": "Contains the minor group of the functionality"
+-                },
+-                "Functionality": {
+-                    "_properties_": {
+-                        "description": "Groups page table tests per functionality"
+-                    }
++                    "description": "Contains the mega feature for end to end use case, e. g. the 'sellable' feature."
+                 },
+-                "Run type": {
++                "Sub-category": {
+                     "_properties_": {
+-                        "description": "Defines what category of testlist it belongs"
++                        "description": "Contains the the technical feature/functionality"
++                    },
++                    "Functionality": {
++                        "_properties_": {
++                            "description": "Groups page table tests on buckets containg more detailed functionality"
++                        }
++                    },
++                    "Run type": {
++                        "_properties_": {
++                            "description": "Defines what category of testlist it belongs"
++                        }
+                     }
+                 }
+-            },
+-            "Mega feature": {
+-                "_properties_": {
+-                    "description": "Contains the mega feature for E2E use case"
+-                }
+             }
+         },
+         "Test category": {
+-- 
+2.39.2
