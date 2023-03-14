@@ -1,19 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6A9F910EA9C
- for <igt-dev@lists.freedesktop.org>; Tue, 14 Mar 2023 16:10:33 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 18E0310E84C
+ for <igt-dev@lists.freedesktop.org>; Tue, 14 Mar 2023 16:10:35 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org,
 	zbigniew.kempczynski@intel.com
-Date: Tue, 14 Mar 2023 21:34:59 +0530
-Message-Id: <20230314160503.2237121-2-bhanuprakash.modem@intel.com>
+Date: Tue, 14 Mar 2023 21:35:02 +0530
+Message-Id: <20230314160503.2237121-5-bhanuprakash.modem@intel.com>
 In-Reply-To: <20230314160503.2237121-1-bhanuprakash.modem@intel.com>
 References: <20230314160503.2237121-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [i-g-t V2 1/5] lib/drmtest: Add helpers to check and
- require the XE driver
+Subject: [igt-dev] [i-g-t V2 4/5] lib/intel_chipset: Add support to XE
+ driver to get devid
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,89 +24,104 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-In order to add support for features specific to the XE driver, add
-helpers for checking and requiring the driver.
+As many tests are using intel devid, add a helper to get it for
+XE driver.
 
-This patch will also update igt_require_intel() to support XE, and
-create new helper igt_require_i915() as both i915 & XE belongs to
-intel.
+V2: - Separate function for XE (Zbigniew)
 
-V2: - Re-use existing helpers for igt_require_intel (Mauro)
-
-Credits-to: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 Reviewed-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 ---
- lib/drmtest.c | 20 ++++++++++++++++++++
- lib/drmtest.h |  4 ++++
- 2 files changed, 24 insertions(+)
+ lib/intel_chipset.c | 54 ++++++++++++++++++++++++++++++++++++---------
+ 1 file changed, 44 insertions(+), 10 deletions(-)
 
-diff --git a/lib/drmtest.c b/lib/drmtest.c
-index 0ceab1038..3f669740b 100644
---- a/lib/drmtest.c
-+++ b/lib/drmtest.c
-@@ -139,6 +139,16 @@ bool is_vc4_device(int fd)
- 	return __is_device(fd, "vc4");
- }
- 
-+bool is_xe_device(int fd)
-+{
-+	return __is_device(fd, "xe");
-+}
-+
-+bool is_intel_device(int fd)
-+{
-+	return is_i915_device(fd) || is_xe_device(fd);
-+}
-+
- static char _forced_driver[16] = "";
+diff --git a/lib/intel_chipset.c b/lib/intel_chipset.c
+index efb6f1771..1d7166aef 100644
+--- a/lib/intel_chipset.c
++++ b/lib/intel_chipset.c
+@@ -41,6 +41,8 @@
+ #include "drmtest.h"
+ #include "intel_chipset.h"
+ #include "igt_core.h"
++#include "ioctl_wrappers.h"
++#include "xe/xe_query.h"
  
  /**
-@@ -645,6 +655,11 @@ void igt_require_amdgpu(int fd)
+  * SECTION:intel_chipset
+@@ -112,9 +114,45 @@ intel_get_pci_device(void)
+ 	return pci_dev;
  }
  
- void igt_require_intel(int fd)
++static uint32_t __i915_get_drm_devid(int fd)
 +{
-+	igt_require(is_intel_device(fd));
++	struct drm_i915_getparam gp;
++	int devid = 0;
++
++	memset(&gp, 0, sizeof(gp));
++	gp.param = I915_PARAM_CHIPSET_ID;
++	gp.value = &devid;
++	ioctl(fd, DRM_IOCTL_I915_GETPARAM, &gp, sizeof(gp));
++
++	return devid;
 +}
 +
-+void igt_require_i915(int fd)
- {
- 	igt_require(is_i915_device(fd));
- }
-@@ -658,3 +673,8 @@ void igt_require_vc4(int fd)
- {
- 	igt_require(is_vc4_device(fd));
- }
-+
-+void igt_require_xe(int fd)
++static uint32_t __xe_get_drm_devid(int fd)
 +{
-+	igt_require(is_xe_device(fd));
++	struct drm_xe_query_config *config;
++	struct drm_xe_device_query query = {
++		.extensions = 0,
++		.query = DRM_XE_DEVICE_QUERY_CONFIG,
++		.size = 0,
++		.data = 0,
++	};
++
++	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_DEVICE_QUERY, &query), 0);
++
++	config = malloc(query.size);
++	igt_assert(config);
++
++	query.data = to_user_pointer(config);
++	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_DEVICE_QUERY, &query), 0);
++
++	igt_assert(config->num_params > 0);
++
++	return config->info[XE_QUERY_CONFIG_REV_AND_DEVICE_ID] & 0xffff;
 +}
-diff --git a/lib/drmtest.h b/lib/drmtest.h
-index 448ac03b4..392470ac0 100644
---- a/lib/drmtest.h
-+++ b/lib/drmtest.h
-@@ -99,8 +99,10 @@ int __drm_open_driver_render(int chipset);
++
+ /**
+  * intel_get_drm_devid:
+- * @fd: open i915 drm file descriptor
++ * @fd: open i915/xe drm file descriptor
+  *
+  * Queries the kernel for the pci device id corresponding to the drm file
+  * descriptor.
+@@ -125,22 +163,18 @@ intel_get_pci_device(void)
+ uint32_t
+ intel_get_drm_devid(int fd)
+ {
+-	struct drm_i915_getparam gp;
+ 	const char *override;
+-	int devid = 0;
  
- void igt_require_amdgpu(int fd);
- void igt_require_intel(int fd);
-+void igt_require_i915(int fd);
- void igt_require_nouveau(int fd);
- void igt_require_vc4(int fd);
-+void igt_require_xe(int fd);
+-	igt_assert(is_i915_device(fd));
++	igt_assert(is_intel_device(fd));
  
- bool is_amdgpu_device(int fd);
- bool is_i915_device(int fd);
-@@ -108,6 +110,8 @@ bool is_mtk_device(int fd);
- bool is_msm_device(int fd);
- bool is_nouveau_device(int fd);
- bool is_vc4_device(int fd);
-+bool is_xe_device(int fd);
-+bool is_intel_device(int fd);
+ 	override = getenv("INTEL_DEVID_OVERRIDE");
+ 	if (override)
+ 		return strtol(override, NULL, 0);
+ 
+-	memset(&gp, 0, sizeof(gp));
+-	gp.param = I915_PARAM_CHIPSET_ID;
+-	gp.value = &devid;
+-	ioctl(fd, DRM_IOCTL_I915_GETPARAM, &gp, sizeof(gp));
+-
+-	return devid;
++	if (is_i915_device(fd))
++		return __i915_get_drm_devid(fd);
++	else
++		return __xe_get_drm_devid(fd);
+ }
  
  /**
-  * do_or_die:
 -- 
 2.39.1
