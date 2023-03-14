@@ -1,26 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DFC7110E162
- for <igt-dev@lists.freedesktop.org>; Tue, 14 Mar 2023 11:41:40 +0000 (UTC)
-Received: from linux.intel.com (maurocar-mobl2.ger.corp.intel.com
- [10.252.14.106])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by linux.intel.com (Postfix) with ESMTPS id 862C7580D28
- for <igt-dev@lists.freedesktop.org>; Tue, 14 Mar 2023 04:41:32 -0700 (PDT)
-Received: from maurocar by linux.intel.com with local (Exim 4.96)
- (envelope-from <mauro.chehab@linux.intel.com>) id 1pc322-002j4F-24
- for igt-dev@lists.freedesktop.org; Tue, 14 Mar 2023 12:41:30 +0100
-From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Date: Tue, 14 Mar 2023 12:41:24 +0100
-Message-Id: <20230314114127.649447-4-mauro.chehab@linux.intel.com>
-In-Reply-To: <20230314114127.649447-1-mauro.chehab@linux.intel.com>
-References: <20230314114127.649447-1-mauro.chehab@linux.intel.com>
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A63A510E776
+ for <igt-dev@lists.freedesktop.org>; Tue, 14 Mar 2023 10:58:29 +0000 (UTC)
+From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+To: igt-dev@lists.freedesktop.org,
+	zbigniew.kempczynski@intel.com
+Date: Tue, 14 Mar 2023 16:24:48 +0530
+Message-Id: <20230314105452.2169208-2-bhanuprakash.modem@intel.com>
+In-Reply-To: <20230314105452.2169208-1-bhanuprakash.modem@intel.com>
+References: <20230314105452.2169208-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [igt-dev] [PATCH i-g-t 3/6] scripts/igt_doc.py: add support to
- generate testlists
+Subject: [igt-dev] [i-g-t 1/5] lib/drmtest: Add helpers to check and require
+ the XE driver
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -32,78 +24,85 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Mauro Carvalho Chehab <mchehab@kernel.org>
+In order to add support for features specific to the XE driver, add
+helpers for checking and requiring the driver.
 
-As the testlists are part of the documentation, add support
-to generate them from the documentation on an specified
-directory.
+This patch will also update igt_require_intel() to support XE, and
+create new helper igt_require_i915() as both i915 & XE belongs to
+intel.
 
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+Credits-to: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- scripts/igt_doc.py | 37 +++++++++++++++++++++++++++++++++++++
- 1 file changed, 37 insertions(+)
+ lib/drmtest.c | 20 ++++++++++++++++++++
+ lib/drmtest.h |  4 ++++
+ 2 files changed, 24 insertions(+)
 
-diff --git a/scripts/igt_doc.py b/scripts/igt_doc.py
-index cc2768ae0847..efbcee5e74e2 100755
---- a/scripts/igt_doc.py
-+++ b/scripts/igt_doc.py
-@@ -1037,6 +1037,35 @@ class TestList:
-             for sub in tests.get_subtests(sort_field, filter_field)[""]:
-                 print (sub)
+diff --git a/lib/drmtest.c b/lib/drmtest.c
+index 0ceab1038..ef0d4909f 100644
+--- a/lib/drmtest.c
++++ b/lib/drmtest.c
+@@ -139,6 +139,16 @@ bool is_vc4_device(int fd)
+ 	return __is_device(fd, "vc4");
+ }
  
-+    def gen_testlist(self, directory, sort_field, filter_field):
++bool is_xe_device(int fd)
++{
++	return __is_device(fd, "xe");
++}
 +
-+        """Generate testlists from the test documentation"""
++bool is_intel_device(int fd)
++{
++	return is_i915_device(fd) || is_xe_device(fd);
++}
 +
-+        test_prefix = os.path.commonprefix(self.get_subtests()[""])
-+        test_prefix = re.sub(r'^igt@', '', test_prefix)
-+
-+        test_subtests = self.get_subtests(sort_field, filter_field)
-+
-+        for test in test_subtests.keys():  # pylint: disable=C0201,C0206
-+            if not test_subtests[test]:
-+                continue
-+
-+            testlist = test.lower()
-+            if testlist == "":
-+                fname = "other"
-+            elif testlist == "bat":
-+                fname = "fast-feedback"
-+            else:
-+                fname = testlist
-+
-+            fname = directory + "/" + test_prefix + fname + ".testlist"
-+            fname = re.sub(r"[\s_]+", "-", fname)
-+
-+            with open(fname, 'w', encoding='utf8') as handler:
-+                for sub in test_subtests[test]:
-+                    handler.write (f"{sub}\n")
-+                print(f"{fname} created.")
-+
- #
- # Main
- #
-@@ -1065,6 +1094,8 @@ parser.add_argument("--include-plan", action="store_true",
- parser.add_argument("--igt-build-path",
-                     help="Path where the IGT runner is sitting. Used by --check-testlist.",
-                     default=IGT_BUILD_PATH)
-+parser.add_argument("--gen-testlist",
-+                    help="Generate documentation at the GEN_TESTLIST directory, using SORT_FIELD to split the tests. Requires --sort-field.")
- parser.add_argument('--files', nargs='+',
-                     help="File name(s) to be processed")
+ static char _forced_driver[16] = "";
  
-@@ -1081,6 +1112,12 @@ if parse_args.check_testlist:
-     RUN = 1
-     tests.check_tests()
+ /**
+@@ -645,6 +655,11 @@ void igt_require_amdgpu(int fd)
+ }
  
-+if parse_args.gen_testlist:
-+    RUN = 1
-+    if not parse_args.sort_field:
-+        sys.exit("Need a field to split the testlists")
-+    tests.gen_testlist(parse_args.gen_testlist, parse_args.sort_field, parse_args.filter_field)
+ void igt_require_intel(int fd)
++{
++	igt_require(is_i915_device(fd) || is_xe_device(fd));
++}
 +
- if parse_args.to_json:
-     RUN = 1
-     tests.print_json(parse_args.to_json)
++void igt_require_i915(int fd)
+ {
+ 	igt_require(is_i915_device(fd));
+ }
+@@ -658,3 +673,8 @@ void igt_require_vc4(int fd)
+ {
+ 	igt_require(is_vc4_device(fd));
+ }
++
++void igt_require_xe(int fd)
++{
++	igt_require(is_xe_device(fd));
++}
+diff --git a/lib/drmtest.h b/lib/drmtest.h
+index 448ac03b4..392470ac0 100644
+--- a/lib/drmtest.h
++++ b/lib/drmtest.h
+@@ -99,8 +99,10 @@ int __drm_open_driver_render(int chipset);
+ 
+ void igt_require_amdgpu(int fd);
+ void igt_require_intel(int fd);
++void igt_require_i915(int fd);
+ void igt_require_nouveau(int fd);
+ void igt_require_vc4(int fd);
++void igt_require_xe(int fd);
+ 
+ bool is_amdgpu_device(int fd);
+ bool is_i915_device(int fd);
+@@ -108,6 +110,8 @@ bool is_mtk_device(int fd);
+ bool is_msm_device(int fd);
+ bool is_nouveau_device(int fd);
+ bool is_vc4_device(int fd);
++bool is_xe_device(int fd);
++bool is_intel_device(int fd);
+ 
+ /**
+  * do_or_die:
 -- 
-2.39.2
+2.39.1
