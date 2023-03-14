@@ -1,18 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6D03310E16C
- for <igt-dev@lists.freedesktop.org>; Wed, 22 Mar 2023 19:12:08 +0000 (UTC)
-Date: Wed, 22 Mar 2023 20:11:32 +0100
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Message-ID: <20230322191132.n6ghypqffm2ssygl@kamilkon-desk1>
-References: <20230322082826.1770429-1-mauro.chehab@linux.intel.com>
- <20230322082826.1770429-5-mauro.chehab@linux.intel.com>
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id AA59C10E821
+ for <igt-dev@lists.freedesktop.org>; Tue, 14 Mar 2023 14:31:30 +0000 (UTC)
+Message-ID: <bf72f848-1dc0-b100-1cc2-7a207a6ce54e@intel.com>
+Date: Tue, 14 Mar 2023 20:00:45 +0530
+References: <20230314105452.2169208-1-bhanuprakash.modem@intel.com>
+ <20230314105452.2169208-5-bhanuprakash.modem@intel.com>
+ <20230314130805.7276dcd9@maurocar-mobl2>
+ <20230314122019.nmjrvhx7xloqdcky@zkempczy-mobl2>
+Content-Language: en-US
+From: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
+In-Reply-To: <20230314122019.nmjrvhx7xloqdcky@zkempczy-mobl2>
+Content-Type: text/plain; charset="utf-8"; format="flowed"
+Content-Transfer-Encoding: 8bit
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20230322082826.1770429-5-mauro.chehab@linux.intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t v4 4/8] meson: get rid of a
- future-deprecated warning
+Subject: Re: [igt-dev] [i-g-t 4/5] lib/intel_chipset: Add support to XE
+ driver to get devid
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,63 +25,111 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
+To: =?UTF-8?Q?Zbigniew_Kempczy=c5=84ski?= <zbigniew.kempczynski@intel.com>, Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On 2023-03-22 at 09:28:22 +0100, Mauro Carvalho Chehab wrote:
-> From: Mauro Carvalho Chehab <mchehab@kernel.org>
-> 
-> A warning is generated with newer meson versions:
-> 
-> 	NOTICE: Future-deprecated features used:
-> 	 * 0.56.0: {'meson.source_root'}
-> 
-> While there is a new macro to get it, that would rise the
-> dependency chain to meson 0.56. So, instead, just store it
-> on a variable.
-> 
-> Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 
-Thank you for that cleanup,
 
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-
---
-Kamil
-
-> ---
->  lib/meson.build | 2 +-
->  meson.build     | 3 +++
->  2 files changed, 4 insertions(+), 1 deletion(-)
+On Tue-14-03-2023 05:50 pm, Zbigniew Kempczyński wrote:
+> On Tue, Mar 14, 2023 at 01:08:05PM +0100, Mauro Carvalho Chehab wrote:
+>> On Tue, 14 Mar 2023 16:24:51 +0530
+>> Bhanuprakash Modem <bhanuprakash.modem@intel.com> wrote:
+>>
+>>> As many tests are using intel devid, add a helper to get it for
+>>> XE driver.
+>>>
+>>> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+>>> ---
+>>>   lib/intel_chipset.c | 30 ++++++++++++++++++++----------
+>>>   1 file changed, 20 insertions(+), 10 deletions(-)
+>>>
+>>> diff --git a/lib/intel_chipset.c b/lib/intel_chipset.c
+>>> index efb6f1771..73dbd813d 100644
+>>> --- a/lib/intel_chipset.c
+>>> +++ b/lib/intel_chipset.c
+>>> @@ -41,6 +41,7 @@
+>>>   #include "drmtest.h"
+>>>   #include "intel_chipset.h"
+>>>   #include "igt_core.h"
+>>> +#include "xe/xe_query.h"
+>>>   
+>>>   /**
+>>>    * SECTION:intel_chipset
+>>> @@ -112,9 +113,22 @@ intel_get_pci_device(void)
+>>>   	return pci_dev;
+>>>   }
+>>>   
+>>> +static uint32_t __i915_get_drm_devid(int fd)
+>>> +{
+>>> +	struct drm_i915_getparam gp;
+>>> +	int devid = 0;
+>>> +
+>>> +	memset(&gp, 0, sizeof(gp));
+>>> +	gp.param = I915_PARAM_CHIPSET_ID;
+>>> +	gp.value = &devid;
+>>> +	ioctl(fd, DRM_IOCTL_I915_GETPARAM, &gp, sizeof(gp));
+>>> +
+>>> +	return devid;
+>>> +}
+>>> +
+>>
+>> Hmm... Shouldn't it be cached? Anyway:
+>>
+>> Reviewed-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+>>
+>>
+>>>   /**
+>>>    * intel_get_drm_devid:
+>>> - * @fd: open i915 drm file descriptor
+>>> + * @fd: open i915/xe drm file descriptor
+>>>    *
+>>>    * Queries the kernel for the pci device id corresponding to the drm file
+>>>    * descriptor.
+>>> @@ -125,22 +139,18 @@ intel_get_pci_device(void)
+>>>   uint32_t
+>>>   intel_get_drm_devid(int fd)
+>>>   {
+>>> -	struct drm_i915_getparam gp;
+>>>   	const char *override;
+>>> -	int devid = 0;
+>>>   
+>>> -	igt_assert(is_i915_device(fd));
+>>> +	igt_assert(is_intel_device(fd));
+>>>   
+>>>   	override = getenv("INTEL_DEVID_OVERRIDE");
+>>>   	if (override)
+>>>   		return strtol(override, NULL, 0);
+>>>   
+>>> -	memset(&gp, 0, sizeof(gp));
+>>> -	gp.param = I915_PARAM_CHIPSET_ID;
+>>> -	gp.value = &devid;
+>>> -	ioctl(fd, DRM_IOCTL_I915_GETPARAM, &gp, sizeof(gp));
+>>> -
+>>> -	return devid;
+>>> +	if (is_i915_device(fd))
+>>> +		return __i915_get_drm_devid(fd);
+>>> +	else
+>>> +		return xe_dev_id(fd);
 > 
-> diff --git a/lib/meson.build b/lib/meson.build
-> index 768ce90b54df..ad9e2abef4c3 100644
-> --- a/lib/meson.build
-> +++ b/lib/meson.build
-> @@ -178,7 +178,7 @@ endif
->  if get_option('srcdir') != ''
->      srcdir = join_paths(get_option('srcdir'), 'tests')
->  else
-> -    srcdir = join_paths(meson.source_root(), 'tests')
-> +    srcdir = join_paths(source_root, 'tests')
->  endif
->  
->  if get_option('version_hash') != ''
-> diff --git a/meson.build b/meson.build
-> index b896283e3244..12d5113a9042 100644
-> --- a/meson.build
-> +++ b/meson.build
-> @@ -13,6 +13,9 @@ if get_option('b_ndebug') != 'false'
->  	error('Building without -Db_ndebug=false is not supported')
->  endif
->  
-> +# meson.source_root is marked as a future-deprecated feature
-> +source_root = meson.current_source_dir()
-> +
->  cc = meson.get_compiler('c')
->  
->  # Also make sure that the user doesn't have -DNDEBUG defined in their config
-> -- 
-> 2.39.2
+> This call is problematic imo, it strongly depends on previously
+> calling xe_device_get(). As this library part I would explicitly
+> call config query ioctl() to get device id to avoid this dependency.
+
+Every KMS test is supposed to call xe_device_get() before starting the 
+execution (Please check patch [5/5] in this series).
+
+Still, having a separate helper to get the dev_id is a good option to 
+me. I'll float a new rev by adding this.
+
+- Bhanu
+
 > 
+> --
+> Zbigniew
+> 
+> 
+>>>   }
+>>>   
+>>>   /**
 
