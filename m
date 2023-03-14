@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8E47710E4C4
- for <igt-dev@lists.freedesktop.org>; Mon, 13 Mar 2023 09:49:14 +0000 (UTC)
-Date: Mon, 13 Mar 2023 10:49:10 +0100
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A88FB10E827
+ for <igt-dev@lists.freedesktop.org>; Tue, 14 Mar 2023 14:44:53 +0000 (UTC)
+From: Karolina Stolarek <karolina.stolarek@intel.com>
 To: igt-dev@lists.freedesktop.org
-Message-ID: <20230313094910.tyqglppo4lbzzal5@kamilkon-desk1>
-References: <20230313094051.2395229-1-adrinael@adrinael.net>
+Date: Tue, 14 Mar 2023 15:44:38 +0100
+Message-Id: <086a30feb1e8015eaf3b362e9e09cea50c97a39d.1678804829.git.karolina.stolarek@intel.com>
+In-Reply-To: <cover.1678804829.git.karolina.stolarek@intel.com>
+References: <cover.1678804829.git.karolina.stolarek@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20230313094051.2395229-1-adrinael@adrinael.net>
-Subject: Re: [igt-dev] [PATCH] gitlab-ci: Remove senseless runner restriction
+Content-Transfer-Encoding: 8bit
+Subject: [igt-dev] [PATCH i-g-t v3 6/8] tests/i915/gem_blits: Add
+ XY_FAST_COPY_BLT support for gem_blits
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,85 +19,71 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Cc: Arjun Melkaveri <arjun.melkaveri@intel.com>,
+ Nirmoy Das <nirmoy.das@intel.com>
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On 2023-03-13 at 11:40:51 +0200, Petri Latvala wrote:
-> With d4ff2b4ab88d62a1888cb0316e70a1729fe4a685 gitlab-ci was limited to
-> "gstreamer" runners, because they were the only ones able to get
-> through qemu-using tests without having the processes get stuck. Those
-> tests are now removed from execution (mips, arm) so we can remove the
-> now-senseless restriction of runners.
-> 
-> Signed-off-by: Petri Latvala <adrinael@adrinael.net>
-> Cc: Arkadiusz Hiler <arek@hiler.eu>
-> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+From: Arjun Melkaveri <arjun.melkaveri@intel.com>
 
-Acked-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Test case uses legacy command XY_SRC_COPY_BLT_CMD which is not supported
+on newer generations. Modify test to use XY_FAST_COPY_BLT.
 
-> ---
->  .gitlab-ci.yml | 12 ------------
->  1 file changed, 12 deletions(-)
-> 
-> diff --git a/.gitlab-ci.yml b/.gitlab-ci.yml
-> index 0263dab3..a6c076db 100644
-> --- a/.gitlab-ci.yml
-> +++ b/.gitlab-ci.yml
-> @@ -164,8 +164,6 @@ build:tests-debian-meson-mips:
->  #################### TEST ##########################
->  
->  test:ninja-test:
-> -  tags:
-> -    - gstreamer
->    retry: 2
->    dependencies:
->      - build:tests-fedora
-> @@ -173,8 +171,6 @@ test:ninja-test:
->    script: meson test -C build --num-processes ${FDO_CI_CONCURRENT:-4}
->  
->  test:ninja-test-clang:
-> -  tags:
-> -    - gstreamer
->    retry: 2
->    dependencies:
->      - build:tests-fedora-clang
-> @@ -184,8 +180,6 @@ test:ninja-test-clang:
->    script: meson test -C build --num-processes ${FDO_CI_CONCURRENT:-4}
->  
->  test:ninja-test-minimal:
-> -  tags:
-> -    - gstreamer
->    retry: 2
->    image: $CI_REGISTRY/$CI_PROJECT_PATH/build-debian-minimal:commit-$CI_COMMIT_SHA
->    dependencies:
-> @@ -195,8 +189,6 @@ test:ninja-test-minimal:
->  
->  # arm testing temporarily disabled until converted to run on native arm HW
->  # test:ninja-test-arm64:
-> -#   tags:
-> -#     - gstreamer
->  #   retry: 2
->  #   image: $CI_REGISTRY/$CI_PROJECT_PATH/build-debian-arm64:commit-$CI_COMMIT_SHA
->  #   dependencies:
-> @@ -212,8 +204,6 @@ test:ninja-test-minimal:
->  #     when: on_failure
->  #
->  # test:ninja-test-armhf:
-> -#   tags:
-> -#     - gstreamer
->  #   retry: 2
->  #   image: $CI_REGISTRY/$CI_PROJECT_PATH/build-debian-armhf:commit-$CI_COMMIT_SHA
->  #   dependencies:
-> @@ -230,8 +220,6 @@ test:ninja-test-minimal:
->  
->  # mips testing temporarily disabled
->  # test:ninja-test-mips:
-> -#   tags:
-> -#     - gstreamer
->  #   retry: 2
->  #   image: $CI_REGISTRY/$CI_PROJECT_PATH/build-debian-mips:commit-$CI_COMMIT_SHA
->  #   dependencies:
-> -- 
-> 2.30.2
-> 
+Signed-off-by: Arjun Melkaveri <arjun.melkaveri@intel.com>
+Signed-off-by: Vikas Srivastava <vikas.srivastava@intel.com>
+Signed-off-by: Karolina Stolarek <karolina.stolarek@intel.com>
+Cc: Nirmoy Das <nirmoy.das@intel.com>
+Cc: Andi Shyti <andi.shyti@linux.intel.com>
+---
+ tests/i915/gem_blits.c | 21 +++++++++++++++++----
+ 1 file changed, 17 insertions(+), 4 deletions(-)
+
+diff --git a/tests/i915/gem_blits.c b/tests/i915/gem_blits.c
+index e5ef3662..b38d6c7e 100644
+--- a/tests/i915/gem_blits.c
++++ b/tests/i915/gem_blits.c
+@@ -216,7 +216,12 @@ static void buffer_set_tiling(const struct device *device,
+ 
+ 	if (!blt_has_xy_src_copy(device->fd)) {
+ 		batch[i++] = fast_copy_dword0(buffer->tiling, tiling);
+-		dword1 = fast_copy_dword1(buffer->tiling, tiling, 32);
++		/* Post ATS-M platforms require tile4 bit to be set for YMAJOR mode */
++		dword1 = fast_copy_dword1(buffer->tiling ?
++					  I915_TILING_Yf : I915_TILING_NONE,
++					  tiling ?
++					  I915_TILING_Yf : I915_TILING_NONE,
++					  32);
+ 		batch[i++] = dword1 | pitch;
+ 	} else {
+ 		batch[i] = (XY_SRC_COPY_BLT_CMD |
+@@ -361,8 +366,11 @@ static bool blit_to_linear(const struct device *device,
+ 	}
+ 
+ 	if (!blt_has_xy_src_copy(device->fd)) {
+-		batch[i++] = fast_copy_dword0(buffer->tiling, I915_TILING_NONE);
+-		dword1 = fast_copy_dword1(buffer->tiling, I915_TILING_NONE, 32);
++		batch[i++] = fast_copy_dword0(buffer->tiling, 0);
++		/* Post ATS-M platforms require tile4 bit to be set for YMAJOR mode */
++		dword1 = fast_copy_dword1(buffer->tiling ?
++					  I915_TILING_Yf : I915_TILING_NONE,
++					  0, 32);
+ 		batch[i++] = dword1 | buffer->stride;
+ 	} else {
+ 		batch[i] = (XY_SRC_COPY_BLT_CMD |
+@@ -705,7 +713,12 @@ blit(const struct device *device,
+ 
+ 	if (!blt_has_xy_src_copy(device->fd)) {
+ 		batch[i++] = fast_copy_dword0(src->tiling, dst->tiling);
+-		dword1 = fast_copy_dword1(src->tiling, dst->tiling, 32);
++		/* Post ATS-M platforms require tile4 bit to be set for YMAJOR mode */
++		dword1 = fast_copy_dword1(src->tiling ?
++					  I915_TILING_Yf : I915_TILING_NONE,
++					  dst->tiling ?
++					  I915_TILING_Yf : I915_TILING_NONE,
++					  32);
+ 		batch[i++] = dword1 | pitch;
+ 	} else {
+ 		batch[i] = (XY_SRC_COPY_BLT_CMD |
+-- 
+2.25.1
